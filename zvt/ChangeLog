@@ -1,3 +1,9 @@
+1999-08-16  Michael Zucchi  <mzucchi@denr.sa.gov.au>
+
+	* update.c (vt_line_update): When checking for common blocks of
+	unchanged characters following changed characters, make sure the
+	current attr is taken into account.
+
 1999-08-02  Elliot Lee <sopwith@redhat.com>
 	* subshell.c, gnome-pty-helper.c: Actually the problem was
 	that zvt was depending on receiving certain signals, but

@@ -148,17 +148,17 @@ static void vt_line_update(struct _vtx *vx, struct vt_line *l, struct vt_line *b
     else
       newchar = lastchar;
 
-    lastchar = newchar & VTATTR_MASK;
-
     /* check for selected block */
     if (i >= sx && i < ex) {
       newchar ^= VTATTR_REVERSE;
     }
 
+    /* used in both if cases */
+    newattr = newchar & VTATTR_MASK;
+
     /* if there are no changes, quit right here ... */
     if (oldchar != newchar || force) {
       bl->data[i] = newchar;
-      newattr = newchar & VTATTR_MASK;
       oldattr = oldchar & VTATTR_MASK;
       if (run) {
 	if (newattr == attr) {
@@ -201,7 +201,7 @@ static void vt_line_update(struct _vtx *vx, struct vt_line *l, struct vt_line *b
 #ifdef VT_THRESHHOLD
 	/* check for runs of common characters, if they are short, then
 	   use them */
-	if (commonrun>VT_THRESHHOLD) {
+	if (commonrun>VT_THRESHHOLD || (newattr!=attr)) {
 	  vx->draw_text(vx->vt.user_data, bl,
 			line, runstart, run, attr);
 	  run=0;
@@ -216,6 +216,7 @@ static void vt_line_update(struct _vtx *vx, struct vt_line *l, struct vt_line *b
 #endif
       }
     }
+    lastchar = newchar & VTATTR_MASK;
   }
 
   if (run) {
