@@ -1,3 +1,13 @@
+1998-12-05  Michael Zucchi  <zucchi@zedzone.mmc.com.au>
+
+	* zvtterm.c (zvt_term_get_buffer): New api function.  Returns a
+	malloc'd block of memory containing buffer/scrollback contents as
+	a sequence of bytes.
+
+	* update.c (vt_select_block): New function, returns a malloc'd
+	block of memory containing the scrollback contents.
+	(vt_get_selection): Moved most of the code into vt_select_block.
+
 Fri Dec  4 16:45:11 1998  Manish Vachharajani <mvachhar@vger.rutgers.edu>
 
 	* gnome-pty-helper.c: Don't bail out if we can't open /dev/tty.

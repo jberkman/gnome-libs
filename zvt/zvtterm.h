@@ -128,6 +128,11 @@ extern "C" {
 
   void          zvt_term_set_scrollback           (ZvtTerm *term, int lines);
 
+  char *        zvt_term_get_buffer		  (ZvtTerm *term, int *len,
+						   int type,
+						   int sx, int sy,
+						   int ex, int ey);
+
   void          zvt_term_set_font_name            (ZvtTerm *term, char *name);
   void          zvt_term_set_fonts                (ZvtTerm *term,
 						   GdkFont *font,

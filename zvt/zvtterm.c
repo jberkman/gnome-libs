@@ -2437,3 +2437,96 @@ zvt_term_get_capabilities(ZvtTerm *term)
 	return out;
 }
 
+/**
+ * zvt_term_get_buffer:
+ * @term: Valid &ZvtTerm widget.
+ * @len: Placeholder to store the length of text selected.  May be
+ *       %NULL in which case the value is not returned.
+ * @type: Type of selection.  %VT_SELTYPE_LINE, select by line,
+ *       %VT_SELTYPE_WORD, select by word, or %VT_SELTYPE_CHAR, select
+ *       by character.
+ * @sx: Start of selection, horizontal.
+ * @sy: Start of selection, vertical.  0 is the top of the visible
+ *      screen, <0 is scrollback lines, >0 is visible lines (upto the
+ *      height of the window).
+ * @ex: End of selection, horizontal.
+ * @ey: End of selection, vertical, as above.
+ * 
+ * Convert the buffer memory into a contiguous array which may be
+ * saved or processed.  Note that this is not gauranteed to match the
+ * order of characters processed by the terminal, only the order in
+ * which they were displayed.  Tabs will normally be preserved in
+ * the output.
+ *
+ * All inputs are range-checked first, so it is possible to fudge
+ * a full buffer grab.
+ *
+ * Examples:
+ *  data = zvt_term_get_buffer(term, NULL, VT_SELTYPE_LINE,
+ *       -term->vx->vt.scrollbackmax, 0,
+ *        term->vx->vt.height, 0);
+ *  or, as a rule -
+ *  data = zvt_term_get_buffer(term, NULL, VT_SELTYPE_LINE,
+ *       -10000, 0, 10000, 0);
+ *
+ * Will return the contents of the entire scrollback and on-screen
+ * buffers, remembering that all inputs are range-checked first.
+ *
+ *  data = zvt_term_get_buffer(term, NULL, VT_SELTYPE_CHAR,
+ *       0, 0, 5, 10);
+ *
+ * Will return the first 5 lines of the visible screen, and the 6th
+ * line upto column 10.
+ * 
+ * Return value: A pointer to a %NUL terminated buffer containing the
+ * raw text from the buffer.  If memory could not be allocated, then
+ * returns %NULL.  Note that it is upto the caller to free the memory,
+ * using free(3c).  If @len was supplied, then the length of data is
+ * stored there.
+ **/
+char *
+zvt_term_get_buffer(ZvtTerm *term, int *len, int type, int sx, int sy, int ex, int ey)
+{
+  struct _vtx *vx;
+  int ssx, ssy, sex, sey, stype;
+  char *sdata;
+  char *data;
+
+  g_return_val_if_fail (term != NULL, 0);
+  g_return_val_if_fail (ZVT_IS_TERM (term), 0);
+
+  vx = term->vx;
+
+  /* this is a bit messy - we save the current selection state,
+     override it, 'select' the new text, then restore the old
+     selection state but return the new ...
+     api should be more separated.  vt_get_block() is a start on this.
+  */
+
+  ssx = vx->selstartx;
+  ssy = vx->selstarty;
+  sex = vx->selendx;
+  sey = vx->selendy;
+  sdata = vx->selection_data;
+  stype = vx->selectiontype;
+
+  vx->selstartx = sx;
+  vx->selstarty = sy;
+  vx->selendx = ex;
+  vx->selendy = ey;
+  vx->selection_data = 0;
+  vx->selectiontype = type & VT_SELTYPE_MASK;
+
+  vt_fix_selection(vx);
+
+  data = vt_get_selection(vx, len);
+
+  vx->selstartx = ssx;
+  vx->selstarty = ssy;
+  vx->selendx = sex;
+  vx->selendy = sey;
+  vx->selection_data = sdata;
+  vx->selectiontype = stype;
+
+  return data;
+}

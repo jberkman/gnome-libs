@@ -805,39 +805,34 @@ static char *vt_expand_line(struct vt_line *l, int start, int end, char *out)
 }
 
 /*
-  return currently selected text
+  slect block (sx,sy)-(ex,ey) from the buffer.
+
+  Line '0' is the top of the screen, negative lines are part of the
+  scrollback, positive lines are part of the visible screen.
 */
-char *vt_get_selection(struct _vtx *vx, int *len)
+char *vt_get_block(struct _vtx *vx, int sx, int sy, int ex, int ey, int *len)
 {
   struct vt_line *wn, *nn;
   int line;
-  char *out;
-  int sx, sy, ex, ey;
+  char *out, *data;
+  int tmp;
 
-  if ( ((vx->selstarty == vx->selendy) && (vx->selstartx > vx->selendx)) ||
-       (vx->selstarty > vx->selendy) ) {
-    ex = vx->selstartx;		/* swap start/end */
-    ey = vx->selstarty;
-    sx = vx->selendx;
-    sy = vx->selendy;
-  } else {			/* keep start/end same */
-    sx = vx->selstartx;      
-    sy = vx->selstarty;
-    ex = vx->selendx;
-    ey = vx->selendy;
+  if ( ((sy == ey) && (sx > ex)) ||
+       (sy > ey) ) {
+    /* swap start/end values */
+    tmp = sx; sx=ex; ex=tmp;
+    tmp = sy; sy=ey; ey=tmp;
   }
 
-  /* FIXME: assumes buffer hasn't shrunk much horizontally */
-  if (vx->selection_data)
-    free(vx->selection_data);
-
-  if ( (vx->selection_data = malloc((ey-sy+1)*(vx->vt.width+20))) == 0 ) {
-    vx->selection_size = 0;
+  /* makes a rough assumption about the buffer size needed */
+  if ( (data = malloc((ey-sy+1)*(vx->vt.width+20))) == 0 ) {
+    if (len)
+      *len = 0;
     printf("ERROR: Cannot malloc selection buffer\n");
     return 0;
   }
 
-  out = vx->selection_data;
+  out = data;
 
   line = sy;
   wn = (struct vt_line *)vt_list_index((line<0)?(&vx->vt.scrollback):(&vx->vt.lines), line);
@@ -845,8 +840,10 @@ char *vt_get_selection(struct _vtx *vx, int *len)
   if (wn)
     nn = wn->next;
   else {
-    vx->selection_size = 0;
-    return 0;
+    if (len)
+      *len = 0;
+    strcpy(data, "");
+    return data;
   }
 
   /* FIXME: check 'wn' exists ... */
@@ -878,13 +875,26 @@ char *vt_get_selection(struct _vtx *vx, int *len)
       out = vt_expand_line(wn, 0, ex, out);
   }
 
-  vx->selection_size = out-vx->selection_data;
   if (len)
-    *len = vx->selection_size;
+    *len = out-data;
 
   d(printf("selected text = \n");
-    fwrite(vx->selection_data, vx->selection_size, 1, stdout);
+    fwrite(data, out-data, 1, stdout);
     printf("\n"));
+
+  return data;
+}
+
+/*
+  return currently selected text
+*/
+char *vt_get_selection(struct _vtx *vx, int *len)
+{
+  if (vx->selection_data)
+    free(vx->selection_data);
+
+  vx->slection_data = vt_select_block(vx, vx->selstartx, vx->selstarty,
+				      vx->selendx, vx->selendy, len);
 
   return vx->selection_data;
 }
