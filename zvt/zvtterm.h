@@ -117,7 +117,7 @@ extern "C" {
 
   int           zvt_term_killchild                (ZvtTerm *term, int signal);
 
-  void		zvt_term_bell			  (ZvtTerm *term);
+  void		zvt_term_bell			  (void *zvt_term);
 
   guint         zvt_term_get_type                 (void);
 

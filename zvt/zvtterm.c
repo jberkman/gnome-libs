@@ -2319,7 +2319,7 @@ zvt_term_set_del_key_swap (ZvtTerm *term, int state)
  * Generate a terminal bell.  Currently this is just a beep.
  **/
 void
-zvt_term_bell(ZvtTerm *term)
+zvt_term_bell(void *user_data)
 {
   gdk_beep();
 }
