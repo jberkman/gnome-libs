@@ -197,7 +197,7 @@ write_logout_record (void *data)
 	
 	free (data);
 }
-#else
+#else /* not HAVE_UTMPX_H */
 void 
 write_logout_record (void *data)
 {
@@ -227,10 +227,10 @@ write_logout_record (void *data)
 	}
 	endutent ();
 }
-#endif
+#endif /* not HAVE_UTMPX_H */
 
 #else /* Otherwise, use BSD-like utmp updating */
 
-#endif
+#endif /* USE_SYSV_UTMP */
 
 
