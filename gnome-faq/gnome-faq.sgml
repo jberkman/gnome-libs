@@ -2,6 +2,9 @@
 <!entity mailweb       "webmaster@gnome.org">
 <!entity mailfaq       "gnomefaq@gnu.org">
 <!entity mailrequest   "gnome-list-request@gnome.org">
+<!entity gnomedevelreq "gnome-devel-list-request@gnome.org">
+<!entity majorunam     "majordomo@nuclecu.unam.mx">
+<!entity gnomeguireq   "gnome-gui-list-request@gnome.org">
 <!entity mailbug       "submit@bugs.gnome.org">
 <!entity maildeb       "debian-gtk-gnome@lists.debian.org">
 <!entity wwwgtk        "http://www.gtk.org">
@@ -44,6 +47,7 @@
 <!entity wwwftpmail    "http://www.csdl.tamu.edu/~cchung/cpsc689/ftpmail/ftpmtoc.html">
 <!entity wwwftpmlist   "http://www.cix.co.uk/~net-services/mrcool/stats.htm">
 <!entity wwwi18n       "http://www.vlsivie.tuwien.ac.at/mike/i18n.html">
+<!entity gwwwi18n      "http://www.gnome.org/i18n">
 <!entity wwwxdnd       "http://www.cco.caltech.edu/~jafl/xdnd/">
 <!entity wwwjimpick    "http://jimpick.com">
 <!entity wwwdebpack    "http://www.debian.org/~jim/debian-gtk-gnome/README">
@@ -55,6 +59,7 @@
 <!entity wwwgtktheme   "http://gtk.themes.org">
 <!entity wwwlj         "http://www.linuxjournal.com">
 <!entity wwwicodes     "http://www.twics.com/~craig/writings/linux-nihongo/node93.html">
+<!entity wwwgui        "http://www.jcinteractive.com/gnome-ui/">
 <!entity ftpgnome      "ftp://ftp.gnome.org">
 <!entity ftpwgn        "ftp://gnomeftp.wgn.net/pub/gnome">
 <!entity ftpsnap       "ftp://ftp.jimpick.com/pub/gnome/snap">
@@ -256,11 +261,30 @@
       <emphasis>must</emphasis> be
       <userinput>subscribe</userinput>.</para>
 
-      <para>Within a few minutes (possibly a little longer if you
-      aren't in North America), you should get an automatic reply
-      back asking for confirmation.  Follow the directions in this
-      email, and you will be subscribed.  Finally, the system will
-      send you two emails with help on how to use the system.</para>
+      <para>
+        For questions about developing GNOME applications and
+        developing GNOME, suscribe to the <ulink
+        url="mailto:&gnomedevelreq;">gnome-devel-list@gnome.org</ulink>
+        mailing list. 
+      </para>
+
+      <para>
+        If you have a good idea or a great concept on how to improve
+        the user interface experience in GNOME, please subscribe to
+        the <ulink
+        url="mailto:&gnomeguireq;">gnome-gui-list@gnome.org</ulink>.
+        The user interface team is lead by Jim Cape who maintains a
+        web page with the suggested improvements at <ulink
+        url="&wwwgui;">&wwwgui;</ulink>
+      </para>
+
+      <para>
+        Within a few minutes (possibly a little longer if you aren't
+        in North America), you should get an automatic reply back
+        asking for confirmation.  Follow the directions in this email,
+        and you will be subscribed.  Finally, the system will send you
+        two emails with help on how to use the system.
+      </para>
     </sect1>
 
     <sect1 id="Archives">
@@ -2697,6 +2721,38 @@ WM=foo</screen>
       update</command> as far as only downloading what is new or
       updated.</para>
     </sect1>
+
+    <sect1>
+      <title>I am not a programmer, how can I contribute?</title>
+      <para>
+        There are many ways to contribute to the GNOME effort if you
+        are a not a programmer.  You can help writing documentation
+        (contact the people at docs@gnome.org for this), you can
+        review the existing documentation and fix typos, format, and
+        make the documentation more clear or enhance the examples.
+      </para>
+      <para>
+  	If you are a non-english speaker and you understand english,
+  	you can also help with the translation effort.  This means
+  	translating application textual strings and documentation.  To
+  	work on this, please subscribe to the
+  	gnome-i18n@nuclecu.unam.mx mailing list.  To subscribe send a
+  	message to &majorunam; and in the body of the message put
+  	"subscribe gnome-i18n".  You can view the current status for
+  	our language translation effort in the <ulink
+  	url="&gwwwi18n;">&gwwwi18n;</ulink> web page.
+      </para>
+      <para>
+        If you have a good idea or a great concept on how to improve
+        the user interface experience in GNOME, please subscribe to
+        the <ulink
+        url="mailto:&gnomeguireq;">gnome-gui-list@gnome.org</ulink>.
+        The user interface team is lead by Jim Cape who maintains a
+        web page with the suggested improvements at <ulink
+        url="&wwwgui;">&wwwgui;</ulink>
+      </para>
+      </para>
+    </sect1>
   </chapter>
 
   <chapter id="FAQIssues">
@@ -2735,12 +2791,13 @@ WM=foo</screen>
     <sect1 id="Copyright">
       <title>Copyright and Disclaimer</title>
 
-      <para>This work is copyright 1998 by Todd Lewis and Gleef (David
-      Zoll).  Parts of it are (C) Rasaki Bidem Bolante Temidire. This
-      documentation is free software; you can redistribute it and/or
-      modify it under the terms of the GNU General Public License as
-      published by the Free Software Foundation; either version 2 of
-      the License, or (at your option) any later version.</para>
+      <para>This work is copyright 1998 by Todd Lewis, Gleef (David
+      Zoll) and Miguel de Icaza.  Parts of it are (C) Rasaki Bidem
+      Bolante Temidire. This documentation is free software; you can
+      redistribute it and/or modify it under the terms of the GNU
+      General Public License as published by the Free Software
+      Foundation; either version 2 of the License, or (at your option)
+      any later version.</para>
 
       <para>This article is provided as is without any express or
       implied warranties. While every effort has been taken to ensure
