@@ -70,6 +70,10 @@ AC_DEFUN(AC_GEMVT_REQUIREMENTS,
 		X_LIBS="$X_LIBS -lgtk -lgdk -lglib $x_libs -lm",
 		[AC_MSG_ERROR(Can not link with gtk/gdk/glib)],
 		-lgdk -lglib $x_libs -lm)
+
+	LDFLAGS="$saved_ldflags"
+	AC_CHECK_LIB(intl, bindtextdomain, INTLLIBS="-lintl", ,)
+	AC_SUBST(INTLLIBS)
 	
 	dnl Check for functions.
 	AC_CHECK_FUNC(putenv,,[AC_MSG_ERROR(Can not set environment variables)])
