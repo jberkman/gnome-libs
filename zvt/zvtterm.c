@@ -2457,6 +2457,12 @@ zvt_term_key_press (GtkWidget *widget, GdkEventKey *event)
   case GDK_Mode_switch:
   case GDK_Multi_key:
     break;
+  case GDK_ISO_Left_Tab:
+    *p++ = gdk_keyval_from_name("Tab");
+    break;
+  case GDK_Tab:
+    *p++ = event->keyval;
+    break;
   case ' ':
     /* maps single characters to correct control and alt versions */
     if (event->state & GDK_CONTROL_MASK)
@@ -2989,7 +2995,6 @@ vt_draw_text(void *user_data, struct vt_line *line, int row, int col, int len, i
     d(printf("txt = '%.*s'\n", len, text));
   }
 #endif
-  d(printf("txt = '%.*s'\n", len, text));
 
   font_private = (GdkFontPrivate*) f;
   drawable_private = (GdkWindowPrivate *)widget->window;

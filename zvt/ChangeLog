@@ -1,3 +1,10 @@
+1999-09-28  Elliot Lee <sopwith@redhat.com>
+	* zvtterm.c (zvt_term_key_press): Catch GDK_Tab _and_ GDK_ISO_Left_Tab
+	and use them appropriately. I don't think GDK_Tab really needed to be caught,
+	but oh well.
+
+	Also make builds with d(x) = x work.
+
 1999-09-29  Michael Zucchi  <mzucchi@denr.sa.gov.au>
 
 	* zvtterm.c (zvt_term_button_release): Ahh no, we dont want to do
