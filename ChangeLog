@@ -1,3 +1,8 @@
+1998-10-20  Ettore Perazzoli  <ettore@comm2000.it>
+
+	* libgnome/Makefile.am (gnome_moz_remote_LDADD): Added `-lXt'.
+  	Otherwise, Red Hat 5.x links the old libXt for libc5 by default.
+
 Sun Oct 18 02:08:20 1998  Owen Taylor  <otaylor@gtk.org>
 
 	* libgnome/libgnome.h: Add in gnome-mime.h, since 
