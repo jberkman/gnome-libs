@@ -202,7 +202,10 @@ gtk_xmhtml_init (GtkXmHTML *html)
 {
 	gtk_xmhtml_resource_init (html);
 	gtk_xmhtml_reset_pending_flags (html);
+
+	/* Gtk port bits */
 	html->frozen = 0;
+	html->children = NULL;
 }
 
 GtkWidget *
@@ -458,14 +461,84 @@ CreateAnchorCursor(XmHTMLWidget html)
 static void
 FormScroll (XmHTMLWidget html)
 {
-	fprintf (stderr, "FormScroll called\n");
+	int x, y, xs, ys;
+	XmHTMLFormData *form;
+	XmHTMLForm *entry;
+	Boolean did_anything = False;
+
+	_XmHTMLDebug(1, ("XmHTML.c: FormScroll, Start\n"));
+	
+	for(form = html->html.form_data; form != NULL; form = form->next)
+	{
+		for(entry = form->components; entry != NULL; entry = entry->next)
+		{
+			if(entry->w)
+			{
+				/* save current TWidget position */
+				x = entry->x;
+				y = entry->y;
+
+				/* compute new TWidget position */
+				xs = entry->data->x - html->html.scroll_x;
+				ys = entry->data->y - html->html.scroll_y;
+
+				/* check if we need to show this TWidget */
+				if(xs + entry->width > 0 && xs < html->html.work_width &&
+					ys + entry->height > 0 && ys < html->html.work_height)
+				{
+					_XmHTMLDebug(1, ("XmHTML.c: FormScroll, moving "
+						"TWidget %s to %ix%i\n", entry->name, xs, ys));
+
+					/* save new TWidget position */
+					entry->x = xs;
+					entry->y = ys;
+
+					/* and move to it */
+					gtk_xmhtml_set_geometry (entry->w, xs, ys,
+								 entry->width, entry->height);
+					gtk_widget_show (entry->w);
+					
+					/* show it */
+					if(!entry->mapped)
+					{
+						entry->mapped = True;
+					}
+
+					/* restore background at previously obscured position */
+					Refresh(html, x, y, entry->width, entry->height);
+
+					did_anything = True;
+				}
+				else
+				{
+					/* hide by unmapping it */
+					if(entry->mapped)
+					{
+						_XmHTMLDebug(1, ("XmHTML.c: FormScroll, hiding "
+							"TWidget %s\n", entry->name));
+
+						gtk_widget_hide (entry->w);
+						entry->mapped = False;
+
+						/* restore background at previously obscured position */
+						Refresh(html, x, y, entry->width, entry->height);
+
+						did_anything = True;
+					}
+				}
+			}
+		}
+	}
+	if (did_anything)
+		gdk_flush ();
 }
 
 static void
 gtk_xmhtml_draw (GtkWidget *widget, GdkRectangle *area)
 {
-	GtkXmHTML *html = GTK_XMHTML (widget);
+	GtkXmHTML    *html = GTK_XMHTML (widget);
 	GdkRectangle na;
+	GList        *children;
 	int i;
 
 	if (!GTK_WIDGET_DRAWABLE (widget))
@@ -480,9 +553,18 @@ gtk_xmhtml_draw (GtkWidget *widget, GdkRectangle *area)
 	if (gtk_widget_intersect (html->html.work_area, area, &na))
 		gtk_widget_draw (html->html.work_area, &na);
 
+	/* frames */
 	for (i = 0; i < html->html.nframes; i++)
 		if (gtk_widget_intersect (html->html.frames [i]->frame, area, &na))
 		    gtk_widget_draw (html->html.frames [i]->frame, &na);
+
+	/* forms */
+	for (children = html->children; children; children = children->next){
+		GtkWidget *w = GTK_WIDGET (children->data);
+
+		if (gtk_widget_intersect (w, area, &na))
+			gtk_widget_draw (w, &na);
+	}
 }
 
 static gint
@@ -853,12 +935,6 @@ gtk_xmhtml_unrealize (GtkWidget *widget)
 	widget->window = NULL;
 }
 
-static void
-gtk_xmhtml_add (GtkContainer *container, GtkWidget *widget)
-{
-	fprintf (stderr, "GtkXmHTML: you should not use gtk_container_add on this container\n");
-}
-
 void
 gtk_xmhtml_manage (GtkContainer *container, GtkWidget *widget)
 {
@@ -879,6 +955,18 @@ gtk_xmhtml_manage (GtkContainer *container, GtkWidget *widget)
 		gtk_widget_queue_resize (GTK_WIDGET (html));
 }
 
+/*
+ * Add a widget to this container, used by the forms code
+ */
+static void
+gtk_xmhtml_add (GtkContainer *container, GtkWidget *widget)
+{
+	GtkXmHTML *html = GTK_XMHTML (container);
+	
+	gtk_xmhtml_manage (container, widget);
+	html->children = g_list_append (html->children, widget);
+}
+
 static void
 gtk_map_item (GtkWidget *w)
 {
@@ -889,8 +977,9 @@ gtk_map_item (GtkWidget *w)
 static void
 gtk_xmhtml_map (GtkWidget *widget)
 {
-	GtkWidget *scrollbar;
 	GtkXmHTML *html = GTK_XMHTML (widget);
+	GtkWidget *scrollbar;
+	GList     *children;
 	int i;
 	
 	g_return_if_fail (widget != NULL);
@@ -920,9 +1009,14 @@ gtk_xmhtml_map (GtkWidget *widget)
 	gtk_map_item (html->html.vsb);
 	gtk_map_item (html->html.hsb);
 	
+	/* Frames */
 	for (i = 0; i < html->html.nframes; i++)
 		gtk_map_item (html->html.frames [i]->frame);
-	
+
+	/* Form widgets */
+	for (children = html->children; children; children = children->next)
+		gtk_map_item  (GTK_WIDGET (children->data));
+
 	Layout(html);
 	
 	_XmHTMLDebug(1, ("XmHTML.c: Mapped end.\n"));

@@ -43,6 +43,7 @@ struct _GtkXmHTML
 	int layout_needed;
 
 	int initialized;
+	GList *children;
 };
 
 struct _GtkXmHTMLClass
