@@ -23,9 +23,8 @@ $(gnorba_built): $(top_srcdir)/idl/gnome-factory.idl
 	$(ORBIT_IDL) $<
 
 libgnorba_la_SOURCES = \
-	orbitgtk.c goad.c gnome-plugins.c \
-	gnome-factory-skels.c gnome-factory-stubs.c \
-	gnome-factory-common.c
+	$(gnorba_built) \
+	orbitgtk.c goad.c gnome-plugins.c
 
 libgnorbainclude_HEADERS = \
 	gnorba.h gnome-factory.h
