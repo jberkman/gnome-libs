@@ -31,6 +31,8 @@ char **gnome_plugin_get_available_plugins(void)
 
   g_free(dirname);
 
+  dirents = g_ptr_array_new();
+
   while((dent = readdir(dirh))) {
     g_ptr_array_add(dirents, g_strdup(dent->d_name));
   }
@@ -48,16 +50,16 @@ char **gnome_plugin_get_available_plugins(void)
       structure from it.
 */
 
-const GNOME_Plugin *
+const GnomePlugin *
 gnome_plugin_use(const char *plugin_id)
 {
   char *rel_filename, *abs_filename, *ctmp;
   GModule *gmod;
-  GNOME_Plugin *retval;
+  GnomePlugin *retval;
 
   g_assert(g_module_supported());
 
-  g_return_if_fail(plugin_id);
+  g_return_val_if_fail(plugin_id, NULL);
 
   rel_filename = g_copy_strings("CORBA/plugins", plugin_id);
   abs_filename = gnome_libdir_file(rel_filename);
@@ -73,7 +75,7 @@ gnome_plugin_use(const char *plugin_id)
 				   keep a list of active plugins around
 				   and provide a way to free them - no fun */
 
-  if(!g_module_symbol(gmod, "GNOME_Plugins_list", &retval))
+  if(!g_module_symbol(gmod, "GNOME_Plugins_list", (gpointer *)&retval))
     goto error;
 
   return retval;
@@ -82,5 +84,6 @@ gnome_plugin_use(const char *plugin_id)
   ctmp = g_module_error();
   g_warning(ctmp);
   g_free(ctmp);
+
   return NULL;
 }
