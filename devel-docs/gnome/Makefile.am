@@ -76,6 +76,13 @@ html:
 	test -d $(srcdir)/html || mkdir $(srcdir)/html
 	-cd $(srcdir)/html && gtkdoc-mkhtml $(DOC_MODULE) ../$(DOC_MAIN_SGML_FILE)
 
+tags: sgml
+	rm -f gnome-tags\
+	&& cd $(srcdir)/sgml\
+	&& for file in *sgml; do\
+		grep "^<title><anchor" $$file |sed -e 's/<title><anchor id=\"\(.*\)\">\(.*\)<\/title>.*/\2:gnome\/'$$file'\.html#\1/g' -e 's/\.sgml//g' -e 's/^enum //g' -e 's/^struct //g' -e 's/ \?():/:/g' >> ../gnome-tags;\
+	done
+
 clean-local:
 	rm -f *~ *.bak *.hierarchy *.signals *-unused.txt
 
