@@ -137,7 +137,7 @@ property_dialog_do_connections (GnomePropertyBox *property_box)
         static GnomeHelpMenuEntry help_entry = { "application-id", "base-name" };
 
 	gtk_signal_connect (GTK_OBJECT (property_box), "help",
-	                    GTK_SIGNAL_FUNC(gnome_help_pbox_display), &help_entry);
+	                    GTK_SIGNAL_FUNC(gnome_help_pbox_display), &amp;help_entry);
 }
       </programlisting>
     </example>
