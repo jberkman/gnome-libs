@@ -158,10 +158,10 @@ goad_server_list_read(const char *filename,
 
     if (*filename == '=')
       g_string_sprintf(dummy, "=%s/=description",
-		       newval.description);
+		       newval.server_id);
     else
       g_string_sprintf(dummy, "%s/description",
-		       newval.description);
+		       newval.server_id);
     newval.description = gnome_config_get_string(dummy->str);
 
     if (*filename == '=')
