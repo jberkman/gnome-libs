@@ -4,8 +4,7 @@ noinst_PROGRAMS = testgnome
 
 testgnome_SOURCES = 	\
 	testgnome.c	\
-	testgnome.h	\
-	canvas.c
+	testgnome.h	
 
 testgnome_LDADD = $(GNOME_LIBDIR) \
         $(GNOMEUI_LIBS) \
