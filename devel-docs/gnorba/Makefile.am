@@ -51,6 +51,7 @@ sgml:
 html:
 	test -d $(srcdir)/html || mkdir $(srcdir)/html
 	-cd $(srcdir)/html && gtkdoc-mkhtml $(DOC_MODULE) ../gnorba-docs.sgml
+	-cd $(srcdir)/html && perl -pi -e 's,libgnorba\.html,index.html,gi' *.html
 
 clean-local:
 	rm -f *~ *.bak *.hierarchy *.signals *-unused.txt
