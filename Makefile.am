@@ -49,12 +49,6 @@ release:
 confexecdir=$(datadir)/gnome/conf/$(GNOME_INTERFACE_VERSION)
 confexec_DATA=gnomeConf.sh
 
-## to automatically rebuild aclocal.m4 if any of the macros in
-## `macros/' change
-#@MAINT@include macros/macros.dep
-#@MAINT@macros/macros.dep: macros/Makefile.am
-#@MAINT@	cd macros && $(MAKE) macros.dep
-
 ## We create gnomeConf.sh here and not from configure because we want
 ## to get the paths expanded correctly.  Macros like srcdir are given
 ## the value NONE in configure if the user doesn't specify them (this
@@ -86,9 +80,6 @@ compatConf.sh: compatConf.sh.in Makefile
 
 CLEANFILES=gnomeConf.sh
 
-m4datadir=$(datadir)/aclocal
-m4data_DATA=gnome.m4
-
 EXTRA_DIST =	HACKING gnomeConf.sh.in gnome-bug.in gnome-config.in \
-		gnome-libs.spec.in gnome.m4
+		gnome-libs.spec.in
 
