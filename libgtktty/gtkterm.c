@@ -20,8 +20,6 @@
  */
 #include <config.h>
 #include "gtkterm.h"
-#include <stdio.h>
-
 #include <gtk/gtkmain.h>
 #include <gtk/gtksignal.h>
 #include <gtk/gtkselection.h>

@@ -29,6 +29,10 @@
 #include	<unistd.h>
 #include	<string.h>
 
+#ifdef	GNOMIFY
+#include	"gnome.h"
+#endif	GNOMIFY
+
 
 /* --- typedefs --- */
 typedef struct
@@ -108,27 +112,70 @@ int
 main	(int	argc,
 	 char	*argv[])
 {
-  GtkWidget	*window;
-  GtkWidget	*main_vbox;
-  GtkWidget	*tty_vbox;
-  GtkWidget	*tty_hbox;
-  GtkWidget	*status_hbox;
-  GtkWidget	*led_hbox;
-  GtkWidget	*led[8];
-  GtkWidget	*label;
-  GtkWidget	*tty;
-  GtkWidget	*exec_hbox;
-  GtkWidget	*entry;
-  GtkWidget	*button;
-  GtkWidget	*gem;
-  guchar	*message;
-  guint		i;
+  register gchar	*home_dir;
+  register gchar	*rc_file;
+  register guchar	*string;
+  register GtkWidget	*window;
+  register GtkWidget	*main_vbox;
+  register GtkWidget	*tty_vbox;
+  register GtkWidget	*tty_hbox;
+  register GtkWidget	*status_hbox;
+  register GtkWidget	*led_hbox;
+  GtkWidget		*led[8];
+  register GtkWidget	*label;
+  register GtkWidget	*tty;
+  register GtkWidget	*exec_hbox;
+  register GtkWidget	*entry;
+  register GtkWidget	*button;
+  register GtkWidget	*gem;
+  register guint	i;
+  
 
   prg_name = g_strdup (argv[0]);
   
-  /* gtk/gdk initialization
+  /* Gtk+/GNOME initialization
    */
+#ifdef	GNOMIFY
+  gnome_init(&argc, &argv);
+#else	/* !GNOMIFY */
   gtk_init (&argc, &argv);
+#endif	/* !GNOMIFY */
+
+  /* parse ~/.gtkrc, (this file also ommitted by the gnome_init stuff
+   */
+  home_dir = getenv ("HOME");
+  if (!home_dir) /* fatal! */
+    home_dir = ".";
+  
+  string = "gtkrc";
+  rc_file = g_new (gchar, strlen (home_dir) + 2 + strlen (string) + 1);
+  *rc_file = 0;
+  strcat (rc_file, home_dir);
+  strcat (rc_file, "/.");
+  strcat (rc_file, string);
+
+  printf("%s\n", rc_file);
+  gtk_rc_parse (rc_file);
+  g_free (rc_file);
+  
+  string = strrchr (prg_name, '/');
+  if (string)
+    string++;
+  else
+    string = prg_name;
+  rc_file = g_new (gchar, strlen (home_dir) + 2 + strlen (string) + 2 + 1);
+  *rc_file = 0;
+  strcat (rc_file, home_dir);
+  strcat (rc_file, "/.");
+  strcat (rc_file, string);
+  strcat (rc_file, "rc");
+
+  /* parse ~/.<prgname>rc
+   */
+  printf("%s\n", rc_file);
+  /* FIXME: invoke rc-parser here, this requires GScanner in GLib first ;( */
+  g_free (rc_file);
+
   
   /* catch system signals
    */
@@ -182,12 +229,13 @@ main	(int	argc,
     gtk_widget_show (led[i]);
   }
   
-  message = "Hi, this is GemVt bothering you ;)\n\r"
-	    "Enter `-bash' or something the like and\n\r"
-	    "Have Fun!!!\n\r";
+  string =
+    "Hi, this is GemVt bothering you ;)\n\r"
+    "Enter `-bash' or something the like and\n\r"
+    "Have Fun!!!\n\r";
   
   tty = gtk_tty_new (80, 25, 99);
-  gtk_tty_put_out (GTK_TTY (tty), message, strlen (message));
+  gtk_tty_put_out (GTK_TTY (tty), string, strlen (string));
   gtk_box_pack_start (GTK_BOX (tty_vbox), tty, TRUE, TRUE, 5);
   for (i = 0; i < 8; i++)
   {
