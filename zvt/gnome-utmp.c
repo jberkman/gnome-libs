@@ -117,9 +117,31 @@ update_wtmp (char *file, UTMP *putmp)
 }
 #endif /* !HAVE_GETUTMPX */
 
-#if !defined(HAVE_GETUTENT) && defined(HAVE_GETTTYENT)
+
+#if defined(HAVE_GETUTMPX)
 static void
-pututline (UTMP *ut)
+update_utmp (UTMP *ut)
+{
+    /* struct utmp ut_aux; */
+
+    setutxent();
+    pututxline (ut);
+
+    /* FIXME: Do we need this?
+    getutmp (ut, &ut_aux);
+    pututline (&ut_aux);
+    */
+}
+#elif defined(HAVE_GETUTENT)
+static void
+update_utmp (UTMP *ut)
+{
+    setutent();
+    pututline (ut);
+}
+#elif defined(HAVE_GETTTYENT)
+static void
+update_utmp (UTMP *ut)
 {
     struct ttyent *ty;
     int fd, pos = 0;
@@ -141,13 +163,12 @@ pututline (UTMP *ut)
 
     close(fd);
 }
-#endif /* !HAVE_GETUTENT && HAVE_GETTTYENT */
+#endif
 
 void 
 write_logout_record (void *data, int utmp, int wtmp)
 {
 	UTMP put, *ut = data;
-	struct utmp ut_aux;
 
 	memset (&put, 0, sizeof(UTMP));
 
@@ -167,19 +188,7 @@ write_logout_record (void *data, int utmp, int wtmp)
 #endif
 
 	if (utmp)
-#if defined(HAVE_GETUTMPX)
-		{
-		setutxent();
-		pututxline (&put);
-		getutmp (&put, &ut_aux);
-		pututline (&ut_aux);
-		}
-#else
-		{
-		setutent();
-		pututline (&put);
-		}
-#endif
+		update_utmp (&put);
 
 	if (wtmp)
 		update_wtmp (WTMP_OUTPUT_FILENAME, &put);
@@ -191,7 +200,6 @@ void *
 write_login_record (char *login_name, char *display_name, char *term_name, int utmp, int wtmp)
 {
 	UTMP *ut;
-	struct utmp ut_aux;
 	char *p, *pty = term_name;
 
 	if((ut=(UTMP *) malloc (sizeof (UTMP))) == NULL)
@@ -215,10 +223,15 @@ write_login_record (char *login_name, char *display_name, char *term_name, int u
 	    strncmp (pty, "tty", 3) == NULL)
 		strncpy (ut->ut_id, pty+3, sizeof (ut->ut_id));
 	else {
-		if (strncmp (pty, "pts/", 4) == 0)
-			sprintf (ut->ut_id, "v%02x", atoi (pty+4));
+		int num;
+		char buf[5];
+		
+		if (sscanf (pty, "%*[^0-9]%d", &num) == 1){
+			sprintf (buf, "gt%02x", num));
+			strncpy (ut->ut_id, buf, sizeof (ut->ut_id));
+		} 
 		else
-			ut->ut_id [0] = 0;
+			ut->ut_id [0] = '\0';
 	}
 #elif defined(HAVE_STRRCHR)
 	if ((p=strrchr (pty, '/')) != NULL) 
@@ -247,19 +260,7 @@ write_login_record (char *login_name, char *display_name, char *term_name, int u
 #endif
 
 	if (utmp)
-#if defined(HAVE_GETUTMPX)
-		{
-		setutxent();
-		pututxline (ut);
-		getutmp (ut, &ut_aux);
-		pututline (&ut_aux);
-		}
-#else
-		{
-		setutent();
-		pututline (ut);
-		}
-#endif
+		update_utmp (ut);
 
 	if (wtmp)
 		update_wtmp (WTMP_OUTPUT_FILENAME, ut);

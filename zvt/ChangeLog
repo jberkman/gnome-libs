@@ -1,3 +1,11 @@
+1999-03-28 Timur Bakeyev <mc@bat.ru>
+
+	* gnome-pty.c (update_utmp): New function, which accumulates OS 
+	specific utmp-handling routines. Fixed a problem with BSD systems,
+	introdused by previous patch.
+	A bit different aproach for ut->ut_id and /dev/pts - original code
+	by Michael Zucchi, just inserted. Keeps 4 chars for ut_id.
+
 1999-03-27  Michael Zucchi  <zucchi@zzedzone.mmc.com.au>
 
 	* vt.c (vt_mode): Patch from Matthijs Melchior to support extended
@@ -11,6 +19,7 @@
 	utmp entries per process). ut->ut_id was also being set to a string
 	of 4 chars on /dev/pts systems, which makes the '\0' on the end
 	overwrite ut_user -- use a 3 character string instead.
+
 	* gnome_pty_helper.c (open_ptys): Set effective user and group ids
 	to real user and group before opening unix98 ptys (this forces the
 	proper owner/group on the /dev/pts file
