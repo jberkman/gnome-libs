@@ -47,13 +47,13 @@ confexec_DATA = gnomeConf.sh
 ## is an autoconf feature, not a bug).
 gnomeConf.sh: gnomeConf.sh.in Makefile
 ## Use sed and then mv to avoid problems if the user interrupts.
-	sed -e 's,\@GNOME_LIBDIR\@,$(GNOME_LIBDIR),g' \
-	    -e 's,\@GNOME_INCLUDEDIR\@,$(GNOME_INCLUDEDIR),g' \
-	    -e 's,\@GNOME_LIBS\@,$(GNOME_LIBS),g' \
-	    -e 's,\@GNOMEUI_LIBS\@,$(GNOMEUI_LIBS),g' \
-	    -e 's,\@GTKXMHTML_LIBS\@,$(GTKXMHTML_LIBS),g' \
-            -e 's,\@GTK_CFLAGS\@,$(GTK_CFLAGS),g' \
-	    -e 's,\@need_gnome_support\@,$(need_gnome_support),g' \
+	sed -e 's^\@GNOME_LIBDIR\@^$(GNOME_LIBDIR)^g' \
+	    -e 's^\@GNOME_INCLUDEDIR\@^$(GNOME_INCLUDEDIR)^g' \
+	    -e 's^\@GNOME_LIBS\@^$(GNOME_LIBS)^g' \
+	    -e 's^\@GNOMEUI_LIBS\@^$(GNOMEUI_LIBS)^g' \
+	    -e 's^\@GTKXMHTML_LIBS\@^$(GTKXMHTML_LIBS)^g' \
+            -e 's^\@GTK_CFLAGS\@^$(GTK_CFLAGS)^g' \
+	    -e 's^\@need_gnome_support\@^$(need_gnome_support)^g' \
 	      < $(srcdir)/gnomeConf.sh.in > gnomeConf.tmp \
 	  && mv gnomeConf.tmp gnomeConf.sh
 
