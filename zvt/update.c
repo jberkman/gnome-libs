@@ -718,14 +718,15 @@ void vt_set_wordclass(struct _vtx *vx, unsigned char *s)
 	end = start;
 	s++;
       }
-      for (i=start;i<end;i++) {
+      for (i=start;i<=end;i++) {
 	vx->wordclass[i>>3] |= 1<<(i&7);
       }
     }
   } else {
     for(i=0;i<256;i++)
-      if (isalnum(i) || i=='_')
+      if (isalnum(i) || i=='_') {
 	vx->wordclass[i>>3] |= 1<<(i&7);
+      }
   }
 }
 

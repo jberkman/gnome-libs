@@ -92,6 +92,8 @@ struct vt_em {
   int msgfd;			/* "it's dead" messages come through here */
 
   int savex,savey;		/* saved cursor position */
+  uint32 savemode,saveattr;	/* saved mode too */
+  unsigned char *saveremaptable;
   struct vt_line *savethis;
 
   int cx, cy;			/* cursor position in pixels */
@@ -137,7 +139,9 @@ struct vt_em {
 
 #define VTMODE_INSERT 0x00000001 /* insert mode active */
 #define VTMODE_SEND_MOUSE 0x00000002 /* send mouse clicks */
+#define VTMODE_WRAPOFF 0x04	/* wrap screenmode? (default = on) */
 #define VTMODE_APP_CURSOR 0x00000008 /* application cursor keys */
+#define VTMODE_RELATIVE 0x10	/* relative origin mode */
 
 #define VTMODE_ALTSCREEN 0x80000000 /* on alternate screen? */
 

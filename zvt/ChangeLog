@@ -1,4 +1,36 @@
-1999-02-06  Michael Zucchi  <zucchi@zzedzone.fsi.com.au>
+1999-02-06  Michael Zucchi  <zucchi@zedzone.mmc.com.au>
+
+	* update.c (vt_set_wordclass): Fix loop end condition so it
+	doesn't drop last of a range, or single characters.
+
+	* zterm.c (main): Set word selection class so it will get url's ok.
+	* zterm.c (main): Use the zvt_term_new_with_size function to
+	create the widget.
+
+	* vt.c (vt_modeh): Set relative cursor mode.
+	(vt_model): Remove relative cursor mode.
+	(vt_gotoxy): goto position based on args.
+	(vt_goto): Handle relative origin mode for goto.
+	(vt_scroll): Reset cursor position when origin/size changed.
+
+	* vt.c: Added ESC[x;xf "horizontal and vertical position" command.
+	For ESCD do cursor down (IND), not ignore.
+	(vt_parse_vt): Store state back into vt->state so callbacks know
+	where they were called from.
+	(vt_nl): Support ESCE for "next line" function.
+	(vt_left): Always cursor left, at least 1.
+	(vt_right): Always cursor right, at least 1.
+	(vt_parse_vt): In state ESC[xxxY, handle embedded control codes by
+	executing them.
+	(vt_parse_vt): Support linewrap mode on/off.
+	(vt_modeh): Support linewrap setting ESC?7h
+	(vt_model): Support linewrap setting ESC?7l
+	(vt_restore_cursor): Restore mode/attributes and character set as
+	well as position.
+	(vt_save_cursor): Save mode/attributes and character set as well
+	as position.
+
+1999-02-06  Michael Zucchi  <zucchi@zedzone.mmc.com.au>
 
 	* zvtterm.c (zvt_term_set_wordclass): User API call to set the
 	character class for words.

@@ -181,9 +181,8 @@ main (gint argc, gchar *argv[])
   gtk_widget_show (hbox);
 
   /* create terminal */
-  term = zvt_term_new ();
+  term = zvt_term_new_with_size(80,25);
   gtk_box_pack_start (GTK_BOX (hbox), term, 1, 1, 0);
-  zvt_term_set_size(ZVT_TERM (term), 80, 25);
   zvt_term_set_font_name(ZVT_TERM (term), FONT);
   zvt_term_set_blink (ZVT_TERM (term), TRUE);
   zvt_term_set_bell (ZVT_TERM (term), TRUE);
@@ -191,6 +190,7 @@ main (gint argc, gchar *argv[])
   zvt_term_set_scroll_on_keystroke (ZVT_TERM (term), TRUE);
   zvt_term_set_scroll_on_output (ZVT_TERM (term), FALSE);
   zvt_term_set_background (ZVT_TERM (term), NULL, 0, 0);
+  zvt_term_set_wordclass (ZVT_TERM (term), "-A-Za-z0-9/_:.,?+%=");
   
   gtk_signal_connect (
       GTK_OBJECT (term),
