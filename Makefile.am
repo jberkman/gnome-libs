@@ -34,5 +34,6 @@ gnomeConf.sh: gnomeConf.sh.in Makefile
 	    -e 's,\@GNOMEUI_LIBS\@,$(GNOMEUI_LIBS),g' \
 	    -e 's,\@GTKXMHTML_LIBS\@,$(GTKXMHTML_LIBS),g' \
             -e 's,\@GTK_CFLAGS\@,$(GTK_CFLAGS),g' \
+	    -e 's,\@need_gnome_support\@,$(need_gnome_support),g' \
 	      < $(srcdir)/gnomeConf.sh.in > gnomeConf.tmp \
 	  && mv gnomeConf.tmp gnomeConf.sh

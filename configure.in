@@ -4,23 +4,45 @@ dnl
 
 AC_INIT(gnome.h)
 AM_CONFIG_HEADER(config.h)
+AC_CANONICAL_SYSTEM
+
+AM_ACLOCAL_INCLUDE(macros)
+
+dnl This is necessary for cross-compiling for programs
+dnl that need to run on the build host.
+
+
+AC_CHECK_PROG(build_CC, gcc, gcc)
+if test -z "$build_CC" ; then
+  AC_CHECK_PROG(build_CC, cc, cc, , , /usr/ucb/cc)
+  test -z "$build_CC" && \
+	AC_MSG_ERROR([no acceptable cc found in \$PATH])
+fi
+
+AC_ISC_POSIX
+AC_PROG_CC
+AC_STDC_HEADERS
+AC_ARG_PROGRAM
+
+AC_CHECK_TOOL(RANLIB,ranlib)
+AC_CHECK_TOOL(AS,as)
+AC_CHECK_TOOL(AR,ar)
+AC_CHECK_TOOL(NM,nm)
+
+NM=`which $NM`
+export CC CXX RANLIB LD AS AR NM
+export cross_compiling
+AM_PROG_LIBTOOL
 
 AM_INIT_AUTOMAKE(gnome-libs, 0.20)
 
 AM_MAINTAINER_MODE
-
-AM_ACLOCAL_INCLUDE(macros)
 
 dnl
 dnl let applications configure for gnome
 dnl
 gnome_cv_use_gnome=yes
 
-AC_ISC_POSIX
-AC_PROG_CC
-AC_HEADER_STDC
-AC_ARG_PROGRAM
-AM_PROG_LIBTOOL
 GNOME_X_CHECKS
 GNOME_SUPPORT_CHECKS
 
