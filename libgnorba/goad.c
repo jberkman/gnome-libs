@@ -141,10 +141,10 @@ goad_server_list_read(const char *filename,
     g_string_sprintf(dummy, "%s/repo_id", newval.id);
     newval.repo_id = gnome_config_get_string(dummy->str);
 
-    g_string_sprintf(dummy, "%s/description", newval.description);
+    g_string_sprintf(dummy, "%s/description", newval.id);
     newval.description = gnome_config_get_string(dummy->str);
 
-    g_string_sprintf(dummy, "%s/location_info", newval.description);
+    g_string_sprintf(dummy, "%s/location_info", newval.id);
     newval.location_info = gnome_config_get_string(dummy->str);
     g_array_append_val(servinfo, newval);
   }
