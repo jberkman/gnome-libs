@@ -1,3 +1,10 @@
+1998-10-20  Michael Zucchi  <zucchi@zzedzone.fsi.com.au>
+
+	* update.c: Include (missing) alloca.h.
+	(vt_line_update): Handle line size changes (i.e. if rendering
+	scrollback from before a resize).  Removed the g_return_if_fail
+	for line size mismatch.
+
 1998-10-19  Michael Zucchi  <zucchi@zzedzone.fsi.com.au>
 
 	* update.c (vt_line_update): Toggle, not OR reverse bit, for

@@ -32,6 +32,7 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <unistd.h>
+#include <alloca.h>
 
 #include "lists.h"
 #include "memory.h"
@@ -65,6 +66,26 @@ static void vt_line_update(struct _vtx *vx, struct vt_line *l, int line, int alw
 
   d(printf("updating line from (%d-%d) ->", start, end));
 
+  /* for 'scrollback' where the window has changed size -
+     create a proper-length line (this is easier than special case code below */
+  bl = (struct vt_line *)vt_list_index(&vx->vt.lines_back, line);
+  if (bl->width > l->width) {
+    struct vt_line *newline;
+
+    d(printf("line size mismatch %d != %d\n", bl->width, l->width));
+
+    /* create a new temp line, and set it to a clear
+       last-character (attributes) of the new line */
+    newline = alloca(sizeof(*l)+bl->width*sizeof(bl->data[0]));
+    memcpy(newline, l, sizeof(*l)+l->width*sizeof(l->data[0]));
+    c = l->data[l->width-1]&0xffff0000;
+    for (i=l->width;i<bl->width;i++) {
+      newline->data[i] = c;
+    }
+    /* over-write the 'l' pointer */
+    l = newline;
+  }
+
   /* check range conditions */
   if (end>l->width) {
     end = l->width;
@@ -75,12 +96,9 @@ static void vt_line_update(struct _vtx *vx, struct vt_line *l, int line, int alw
 
   runbuffer = alloca(vx->vt.width * sizeof(char));
 
-  bl = (struct vt_line *)vt_list_index(&vx->vt.lines_back, line);
-
   /* some sanity checks */
   g_return_if_fail (bl != NULL);
   g_return_if_fail (runbuffer != NULL);
-  g_return_if_fail (bl->width == l->width);
 
   /* work out if selections are being rendered */
   if (vx->selected &&
