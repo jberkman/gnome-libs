@@ -1374,8 +1374,11 @@ void vt_draw_text(void *user_data, int col, int row, char *text, int len, int at
     f=term->font;
   }
 
-  fore = or | (attr & VTATTR_FORECOLOURM) >> VTATTR_FORECOLOURB;
+  fore = (attr & VTATTR_FORECOLOURM) >> VTATTR_FORECOLOURB;
   back = (attr & VTATTR_BACKCOLOURM) >> VTATTR_BACKCOLOURB;
+
+  if (fore<8)
+    fore|=or;
 
   /* set the right colour in the appropriate gc */
   fgc = term->fore_gc;

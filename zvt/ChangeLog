@@ -3,6 +3,7 @@
 	* zvtterm.c (zvt_term_set_font_name): Removed "loading xxx font"
 	message.  Probably needs some fallback if it can't load a font
 	... better than the one it has.
+	(vt_draw_text): Only set 'bright' colours, if a bold equivalent exists.
 
 	* update.c (vt_draw_cursor): only draw/undraw cursor if not
 	scrolled back at all.
