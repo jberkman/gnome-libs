@@ -1,5 +1,20 @@
 1998-04-27  Miguel de Icaza  <miguel@nuclecu.unam.mx>
 
+	* vt.h (VTATTR_BACK_SET): Added two new attribute flags to
+	indicate if explicit foreground or background have been set. 
+
+	* zvtterm.c (zvt_term_class_init): New overwritten method:
+	unrealize
+	(zvt_term_unrealize): Relese resources allocated on the realize
+	method. 
+	(zvt_term_realize): Allocate a color context for the foreground
+	and one for the backgroudn;  Allocate colors with the gdk color
+	context code.  
+	(vt_draw_text): Add color support. 
+
+	* vt.c (vt_mode): fix, process any number of arguments to the mode
+	escape sequence.
+
 	* zvtterm.c (zvt_term_key_press): Backspace sends ^H; Delete sends
 	\177, and KP_Delete sends \033[3~.
 

@@ -707,7 +707,7 @@ static void vt_modek(struct vt_em *vt)
 
 static void vt_mode(struct vt_em *vt)
 {
-  int i;
+  int i, j;
   int mode_map[] = {0, VTATTR_BOLD, 0, 0,
 		    VTATTR_UNDERLINE, VTATTR_BLINK, 0,
 		    VTATTR_REVERSE, VTATTR_CONCEALED};
@@ -715,19 +715,20 @@ static void vt_mode(struct vt_em *vt)
   d(printf("draw mode called\n"));
   if (vt->argcnt==0) {
     vt->attr=VTATTR_CLEAR;	/* clear all attributes */
-  } else if (vt->argcnt==1) {
-    i = atoi(vt->args[0]);
-    if (i==0) {
-      vt->attr=VTATTR_CLEAR;
-    } else if (i<9) {
-      vt->attr |= mode_map[i];	/* add a mode */
-    } else if (i>=30 && i <=37) {
-      vt->attr = (vt->attr & ~VTATTR_FORECOLOURM) | (i-30) << VTATTR_FORECOLOURB;
-    } else if (i>=40 && i <=47) {
-      vt->attr = (vt->attr & ~VTATTR_BACKCOLOURM) | (i-40) << VTATTR_BACKCOLOURB;
-    }
   } else {
-    d(printf("Unknown args to mode set\n"));
+    for (j = 0; j < vt->argcnt; j++)
+      {
+	i = atoi(vt->args[j]);
+	if (i==0) {
+	  vt->attr=VTATTR_CLEAR;
+	} else if (i<9) {
+	  vt->attr |= mode_map[i];	/* add a mode */
+	} else if (i>=30 && i <=37) {
+	  vt->attr = (vt->attr & ~VTATTR_FORECOLOURM) | ((i-30) << VTATTR_FORECOLOURB) | VTATTR_FORE_SET;
+	} else if (i>=40 && i <=47) {
+	  vt->attr = (vt->attr & ~VTATTR_BACKCOLOURM) | ((i-40) << VTATTR_BACKCOLOURB) | VTATTR_BACK_SET;
+	}
+      }
   }
 }
 
@@ -1080,7 +1081,7 @@ int vt_forkpty(struct vt_em *vt)
     fcntl(vt->childfd, F_SETFL, O_NONBLOCK);
   }
 
-  d(fprintf(stderr, "program started on pid %d, on tty %s\n", child_pid, ttyname));
+  d(fprintf(stderr, "program started on pid %d, on tty %s\n", vt->childpid, ttyname));
   return vt->childpid;
 }
 

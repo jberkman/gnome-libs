@@ -61,11 +61,13 @@ extern "C" {
     GdkCursor *cursor_bar,	/* I beam cursor */
       *cursor_dot,		/* the blank cursor */
       *cursor_current;		/* current active cursor */
-    GdkPixmap *cursor_dot_pm;	/* 'dot' pixmap, for dot cursor (invisible) */
     guint timeout_id;		/* id of timeout function */
     GdkFont *font,		/* current normal font */
       *font_bold;		/* current bold font */
     GdkGC *scroll_gc;		/* special GC used for scrolling */
+    GdkGC *fore_gc, *back_gc;	/* GCs for the foreground and background colors */
+    GdkColorContext *color_ctx;	/* The color context in use, where we allocate our colors */
+    gulong colors [16];		/* Our colors, pixel values. */
   };
 
   struct _ZvtTermClass

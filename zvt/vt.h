@@ -46,12 +46,14 @@ struct vt_line {
   uint32 data[1];		/* the line data follows this structure */
 };
 
-#define VTATTR_BOLD 0x01000000
-#define VTATTR_UNDERLINE 0x02000000
-#define VTATTR_BLINK 0x03000000
-#define VTATTR_REVERSE 0x04000000
-#define VTATTR_CONCEALED 0x05000000
-#define VTATTR_CHANGED 0x80000000
+#define VTATTR_BOLD       0x01000000
+#define VTATTR_UNDERLINE  0x02000000
+#define VTATTR_BLINK      0x03000000
+#define VTATTR_REVERSE    0x04000000
+#define VTATTR_CONCEALED  0x05000000
+#define VTATTR_FORE_SET   0x08000000
+#define VTATTR_BACK_SET   0x10000000
+#define VTATTR_CHANGED    0x80000000
 
 #define VTATTR_CLEAR 0x00	/* 'clear' character and attributes */
 

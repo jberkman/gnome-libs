@@ -39,6 +39,7 @@ static void zvt_term_init (ZvtTerm *term);
 GtkWidget* zvt_term_new (void);
 static void zvt_term_destroy (GtkObject *object);
 static void zvt_term_realize (GtkWidget *widget);
+static void zvt_term_unrealize (GtkWidget *widget);
 static void zvt_term_size_request (GtkWidget *widget, GtkRequisition *requisition);
 static void zvt_term_size_allocate (GtkWidget *widget, GtkAllocation *allocation);
 static gint zvt_term_expose (GtkWidget *widget, GdkEventExpose *event);
@@ -102,6 +103,7 @@ zvt_term_class_init (ZvtTermClass *class)
   object_class->destroy = zvt_term_destroy;
 
   widget_class->realize = zvt_term_realize;
+  widget_class->unrealize = zvt_term_unrealize;
   widget_class->draw = zvt_term_draw;
   widget_class->expose_event = zvt_term_expose;
   widget_class->focus_in_event = zvt_term_focus_in;
@@ -178,18 +180,28 @@ zvt_term_destroy (GtkObject *object)
   g_return_if_fail (ZVT_IS_TERM (object));
 
   term = ZVT_TERM (object);
-
+  gdk_cursor_destroy (term->cursor_bar);
+  gdk_cursor_destroy (term->cursor_dot);
   if (GTK_OBJECT_CLASS (parent_class)->destroy)
     (* GTK_OBJECT_CLASS (parent_class)->destroy) (object);
 }
 
+static gushort default_red[] = {0x0000,0xaaaa,0x0000,0xaaaa,0x0000,0xaaaa,0x0000,0xaaaa,
+				0x5555,0xffff,0x5555,0xffff,0x5555,0xffff,0x5555,0xffff};
+static gushort default_grn[] = {0x0000,0x0000,0xaaaa,0x5555,0x0000,0x0000,0xaaaa,0xaaaa,
+				0x5555,0x5555,0xffff,0xffff,0x5555,0x5555,0xffff,0xffff};
+static gushort default_blu[] = {0x0000,0x0000,0x0000,0x0000,0xaaaa,0xaaaa,0xaaaa,0xaaaa,
+				0x5555,0x5555,0x5555,0x5555,0xffff,0xffff,0xffff,0xffff};
+	
 static void
 zvt_term_realize (GtkWidget *widget)
 {
   ZvtTerm *term;
   GdkWindowAttr attributes;
+  GdkPixmap *cursor_dot_pm;
   gint attributes_mask;
-
+  int  nallocated;
+  
   g_return_if_fail (widget != NULL);
   g_return_if_fail (ZVT_IS_TERM (widget));
 
@@ -220,18 +232,19 @@ zvt_term_realize (GtkWidget *widget)
   gtk_style_set_background (widget->style, widget->window, GTK_STATE_ACTIVE);
 
   /* create pixmaps for this window */
-  term->cursor_dot_pm=gdk_pixmap_create_from_data(widget->window,
-						"\0", 1, 1, 1,
-						&widget->style->fg[GTK_STATE_ACTIVE],
-						&widget->style->bg[GTK_STATE_ACTIVE]);
+  cursor_dot_pm=gdk_pixmap_create_from_data(widget->window,
+					    "\0", 1, 1, 1,
+					    &widget->style->fg[GTK_STATE_ACTIVE],
+					    &widget->style->bg[GTK_STATE_ACTIVE]);
 
   /* Get I beam cursor, and also create a blank one based on the blank image */
   term->cursor_bar = gdk_cursor_new(GDK_XTERM);
-  term->cursor_dot = gdk_cursor_new_from_pixmap(term->cursor_dot_pm, term->cursor_dot_pm,
+  term->cursor_dot = gdk_cursor_new_from_pixmap(cursor_dot_pm, cursor_dot_pm,
 					      &widget->style->fg[GTK_STATE_ACTIVE],
 					      &widget->style->bg[GTK_STATE_ACTIVE],
 					      0, 0);
   gdk_window_set_cursor(widget->window, term->cursor_bar);
+  gdk_pixmap_unref (cursor_dot_pm);
   term->cursor_current = term->cursor_bar;
 
   /* setup blinking cursor */
@@ -241,11 +254,33 @@ zvt_term_realize (GtkWidget *widget)
   term->scroll_gc = gdk_gc_new (GTK_WIDGET(term)->window);
   gdk_gc_set_exposures (term->scroll_gc, TRUE);
 
+  /* Colors */
+  term->fore_gc = gdk_gc_new (term->widget.window);
+  term->back_gc = gdk_gc_new (term->widget.window);
+  term->color_ctx = gdk_color_context_new (gtk_widget_get_visual (GTK_WIDGET (term)),
+					   gtk_widget_get_colormap (GTK_WIDGET (term)));
+  /* Allocate default color set */
+  memset (term->colors, 0, sizeof (term->colors));
+  nallocated = 0;
+  gdk_color_context_get_pixels (term->color_ctx, default_red, default_grn, default_blu,
+				16, term->colors, &nallocated);
   /* FIXME: not sure if this is right or not? */
   if (!GTK_WIDGET_HAS_FOCUS (widget))
     gtk_widget_grab_focus (widget);
 }
 
+static void
+zvt_term_unrealize (GtkWidget *widget)
+{
+  ZvtTerm *term = ZVT_TERM (widget);
+  /* free resources */
+  gdk_color_context_free (term->color_ctx);
+  gdk_gc_destroy (term->scroll_gc);
+  gdk_gc_destroy (term->back_gc);
+  gdk_gc_destroy (term->fore_gc);
+  if (GTK_WIDGET_CLASS (parent_class)->unrealize)
+    (*GTK_WIDGET_CLASS (parent_class)->unrealize) (widget);
+}
 
 static gint zvt_term_focus_in(GtkWidget *widget, GdkEventFocus *event)
 {
@@ -1178,7 +1213,11 @@ void vt_draw_text(void *user_data, int col, int row, char *text, int len, int at
   struct _vtx *vx;
   ZvtTerm *term;
   GtkWidget *widget;
-
+  GdkColor fore_pix, back_pix;
+  int fore, back;
+  static int last_fore = -1, last_back = -1;
+  GdkColor pen;
+  
   widget = user_data;
 
   g_return_if_fail (widget != NULL);
@@ -1192,29 +1231,47 @@ void vt_draw_text(void *user_data, int col, int row, char *text, int len, int at
   if (attr&VTATTR_BOLD)
     f=term->font_bold;
 
-  if (attr&VTATTR_REVERSE) {
-    gc1=widget->style->fg_gc[GTK_WIDGET_STATE (widget)];
-    gc2=widget->style->bg_gc[GTK_WIDGET_STATE (widget)];
-  } else {
-    gc2=widget->style->fg_gc[GTK_WIDGET_STATE (widget)];
-    gc1=widget->style->bg_gc[GTK_WIDGET_STATE (widget)];
-  }
+  fore = 7;
+  back = 0;
+  if (attr & VTATTR_FORE_SET)
+    fore = (attr & VTATTR_FORECOLOURM) >> VTATTR_FORECOLOURB;
 
+  if (attr & VTATTR_BACK_SET)
+    back = (attr & VTATTR_BACKCOLOURM) >> VTATTR_BACKCOLOURB;
+
+  if (attr & VTATTR_REVERSE){
+    int tmp = fore;
+
+    fore = back;
+    back = tmp;
+  }
+  if (last_back != back){
+    pen.pixel = term->colors [back];
+    gdk_gc_set_foreground (term->back_gc, &pen);
+    last_back = back;
+  }
+  
   gdk_draw_rectangle(widget->window,
-		     gc1,
+		     term->back_gc,
 		     1,
 		     col*term->charwidth, row*term->charheight,
 		     len*term->charwidth, term->charheight);
+
+  if (last_fore != fore){
+    pen.pixel = term->colors [fore];
+    gdk_gc_set_foreground (term->fore_gc, &pen);
+    last_fore = fore;
+  }
   gdk_draw_text(widget->window,
 		f,
-		gc2,
+		term->fore_gc,
 		col*term->charwidth, row*term->charheight+term->font->ascent,
 		text, len);
 
   /* check for underline */
   if (attr&VTATTR_UNDERLINE) {
     gdk_draw_line(widget->window,
-		  gc2,
+		  term->fore_gc,
 		  col*term->charwidth, row*term->charheight+term->font->ascent+1,
 		  (col+len)*term->charwidth, row*term->charheight+term->font->ascent+1);
   }
