@@ -73,7 +73,7 @@
   <bookinfo>
     <title>GNOME Frequently Asked Questions</title>
     <titleabbrev>GNOME-FAQ</titleabbrev>
-    <edition>v1.0.7</edition>
+    <edition>v1.0.8</edition>
     <authorgroup>
       <author>
 	<firstname>Todd</firstname>
@@ -135,11 +135,13 @@
       <para>I, your lowly FAQ maintainer, like to explain GNOME as
       everything that's expected in a modern programming
       environment. In this respect, it is approximately equivalent to
-      CDE, Win32, NextStep, or KDE. The big difference is that, unlike
-      any of the above-mentioned examples, every single component of
-      GNOME is <ulink url="&wwwgnufree;">Free Software</ulink>. Not 
-      only that, but GNOME is extremely customizable compared to most 
-      desktop environments.</para>
+      CDE, Win32, NextStep, or KDE. However, GNOME is unique in combining
+      the following: every single component is <ulink url="&wwwgnufree;">free
+      software</ulink>, it is extremely customizable compared to most
+      desktop environments, applications can be developed in a large 
+      variety of computer languages, and it will provide an extremely
+      powerful intrastructure (not just a purportedly "good enough" 
+      structure that lacks power.</para>
 
       <para>For the project geographers out there, here are some of
       the higher mountains to be found in GNOME-land:</para>
@@ -223,7 +225,7 @@
 	</listitem>
 
 	<listitem>
-	  <para>GNOME applications will support several Drag and Drop
+	  <para>GNOME applications support several Drag and Drop
 	  protocols for maximum interoperability with other
 	  applications. (See <link linkend="XDND">Drag and
 	  Drop</link>)</para>
@@ -365,44 +367,66 @@
 
       <para>CDE is not Free Software, it isn't even close.  Many
       people also find it lacking in features, performance and
-      functionality.</para>
+      functionality. One <ulink url="http://www.32bitsonline.com/article.php3?file=issues/199904/gnomevscde">in-depth review</ulink> found that, as of 
+      April 1999, "GNOME matches or exceeds the features found in a typical
+      CDE desktop... and GNOME is also evolving at an accelerated pace..."
+      Given the high-speed development of GNOME, it's doubtful that CDE
+      will ever catch up.
 
       <para>At the time of GNOME's inception, KDE had serious
       licensing problems, which they are still trying to resolve.
       First, KDE is based on a library called Qt, which was originally
       non-free.  However TrollTech's recent release of Qt version 2.0
-      uses the QPL, so it qualifies as Free Software.  KDE Development
-      releases are based on the QPL'ed versions of Qt.</para>
-
-      <para>The other issue is that originally, KDE programs were
-      released under the GPL.  The GPL was designed to encourage more
-      GNU software, so it doesn't work well when linked to software
-      under other licenses.  This incompatibility doesn't prevent
-      anyone from using KDE, but it does make it troublesome to
-      distribute.  For more details, you can read <ulink
-      url="&wwwdebkde;">Debian's position on KDE</ulink>.  KDE is in
-      the process of changing their licenses over to the Artistic
-      license, which avoids the problem.  However, changing licenses
-      on a large project with many authors like KDE is a long and
-      difficult process, so it will take them a while.</para>
+      for X uses the QPL, which qualifies as Free Software. KDE 
+      Development releases are based on the QPL'd versions of Qt. There
+      are still many people uncomfortable with Qt's licensing situation;
+      its owners still enjoy special privileges not normally granted to
+      the developer of such a critical piece of infrastructure in an
+      open source project. Developers of proprietary software in 
+      particular should note that developing KDE applications using Qt
+      requires a fee. Note that the MS Windows version of Qt is not
+      open source, while the GTK+ port to MS Windows is open source.</para>
 
       <para>The GNOME people like the KDE people, and we consider this
-      an unfortunate situation that is in the process of being fixed.
+      an unfortunate situation that is in the process of being partly fixed.
       Hopefully, this will cease to be an issue soon, and GNOME and
-      KDE can compete friendlily on technical merit and design.  This
-      matter has been hashed out time and time again on the gnome-list
-      mailing list.  Asking this question on gnome-list is discouraged
-      behavior. If you want to go somewhere and start a flame war on
-      this topic, then please do it somewhere far far away where we
-      don't have to listen to you.</para>
+      KDE can compete friendlily on technical merit and design.  In fact,
+      the GNOME and KDE people currently cooperate on a variety of issues
+      to increase interoperability between the two desktop environments. 
+      The issue of needing both GNOME and KDE has been hashed out time and 
+      time again on the gnome-list mailing list.  Asking this question on 
+      gnome-list is discouraged behavior. If you want to go somewhere and 
+      start a flame war on this topic, then please do it somewhere far far 
+      away where we don't have to listen to you.</para>
 
       <para>There are significant design differences between KDE and
       GNOME.  Top of the list is a difference in widget set.  We find
       GTK+ to be nicer, more customizable, more friendly to
       development in various programming languages, and more flexible
-      than Qt; others may disagree. In all, the projects are different 
-      enough so that both should be able to coexist and even 
-      collaborate.</para>
+      than Qt; others may disagree. The GNOME developers believe that
+      KDE's integration approach has many technical problems, in
+      particular, OpenParts (used by KDE) is over-complex and lacks
+      a number of features and simplicity found in other compound
+      document systems. This led the GNOME developers to develop 
+      Bonobo instead. The GNOME developer's found KDE's chosen 
+      CORBA implementation, MICO, quite inadequate due to its poor
+      performance, large size, and dependence on a single programming
+      language. Instead of depending on a poor component, the GNOME
+      developers re-developed their own implementation of CORBA. This
+      illustrates a general point: the GNOME developers would rather
+      build a good architecture implemented correctly than to try 
+      to work around poorly-performing components.</para>
+
+      <para>A long time ago another difference was that KDE was tied
+      to a single window manager, while GNOME permitted a choice; KDE
+      has long since changed their position, and in fact the GNOME and
+      KDE projects are working together to create a unified specification
+      for window managers.</para>
+
+      <para>In all, the KDE and GNOME projects are different enough
+      so that both should be able to coexist and in many cases
+      collaborate. Note that users can run KDE applications on a GNOME
+      desktop, and vice versa.</para>
 
       <para>GNUStep is another desktop environment that has a lot of
       good things going for it.  One issue with GNUStep are that they
@@ -462,9 +486,9 @@
       placement and decoration.</para>
 
       <para>There are many window managers out there, and GNOME should
-      work well with all of them.  There are a few GNOME features
-      (such as session management, and the GNOME pager), that won't
-      work with all of them.  For best results, go with a
+      work with all of them.  There are a few GNOME features
+      (such as session management and the GNOME pager) that won't
+      work well with all of them.  For best results, go with a
       GNOME-compliant window manager.  The most compliant are
       currently Enlightenment, Sawmill, Window Maker, and IceWM, with 
       FVWM, SCWM, AfterStep and QVWM putting finishing touches on
