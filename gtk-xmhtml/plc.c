@@ -38,6 +38,9 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.3  1997/12/18 00:39:23  unammx
+* It compiles and links -miguel
+*
 * Revision 1.2  1997/12/17 04:40:29  unammx
 * Your daily XmHTML code is here.  It almost links.  Only the
 * images.c file is left to port.  Once this is ported we are all
@@ -1389,7 +1392,7 @@ _PLC_IMG_Transfer(PLC *plc)
 		/* allocate pixmaps */
 #ifdef __GTK__
 		if ((any_image->pixmap = gdk_pixmap_new(win, image->width, image->height,
-							gdk_color_context_get_depth (html->html.xcc))) == NULL)
+							 html->html.xcc->visual->depth)) == NULL)
 #else
 		if((any_image->pixmap = XCreatePixmap(dpy, win, image->width,
 			image->height, html->html.xcc->visualInfo->depth)) == None)

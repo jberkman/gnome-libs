@@ -57,7 +57,7 @@ typedef XVisualInfo TVisualInfo;
 #define TJoinRound      GDK_JOIN_ROUND
 
 #define TLSBFirst GDK_LSB_FIRST
-#define TMSBFIRST GDK_MSB_FIRST
+#define TMSBFirst GDK_MSB_FIRST
 
 #define XtCallCallbackList(a,b,c) fprintf (stderr, "Warning callback being invoked\n");
 #define Toolkit_Is_Realized(w) GTK_WIDGET_REALIZED(w)
@@ -111,18 +111,19 @@ typedef XVisualInfo TVisualInfo;
 #define Toolkit_Image_Destroy(i) gdk_image_destroy(i)
 #define Toolkit_Image_Data(i) (i->mem)
 #define Toolkit_Image_Bytes_Per_Line(i) (i->bpl)
-#define Toolkit_Image_Bits_Per_Pixel(i) (i->bpp)
+#define Toolkit_Timeout_Remove(t) gtk_timeout_remove(t)
 
 #define XCCCreate(w,v,c)   gdk_color_context_new (v, c)
 #define XCCFree(c)         gdk_color_context_free (c)
-#define XCCGetNumColors(c) gdk_color_context_get_num_colors (c)
-#define XCCGetDepth(c)     gdk_color_context_get_depth (c)
+#define XCCGetDepth(c)     (c)->visual->depth
 #define XCCGetParentVisual(w) gtk_widget_get_visual(w)
 #define XCCGetPixels(cc,r,g,b,n,co,a) gdk_color_context_get_pixels (cc,r,g,b,n,co,a)
 #define XCCGetPixelsIncremental(cc,r,g,b,n,u,co,na) \
 		do{gdk_color_context_get_pixels_incremental (cc,r,g,b,n,u,co,na);}while (0)
 #define XCCAddPalette(c,p,n) gdk_color_context_add_palette (c,p,n)
 #define XCCInitDither(cc) gdk_color_context_init_dither (cc)
+#define XCCGetIndexFromPalette(cc,r,g,b,f) gdk_color_context_get_index_from_palette(cc,r,g,b,f)
+typedef GdkColorContextDither XCCDither;
 #else
 
 #define TNone        None
@@ -153,7 +154,7 @@ typedef XVisualInfo TVisualInfo;
 #define TJoinRound      JoinRound
 
 #define TLSBFirst LSBFirst
-#define TMSBFIRST MSBFirst
+#define TMSBFirst MSBFirst
 
 #define Toolkit_Is_Realized(w) XtIsRealized ((Widget) w)
 #define Toolkit_Widget_Window(x) XtWindow((x))
@@ -207,12 +208,11 @@ typedef XVisualInfo TVisualInfo;
 #define Toolkit_Image_Destroy(i) XDestroyImage(i)
 #define Toolkit_Image_Data(i) (i->data)
 #define Toolkit_Image_Bytes_Per_Line(i) (i->bytes_per_line)
-#define Toolkit_Image_Bits_Per_Pixel(i) (i->bits_per_pixel)
-
+#define Toolkit_Timeout_Remove(t) XtRemoveTimeOut(t)
 #define	TALIGNMENT_END       XmALIGNMENT_END 
 #define TALIGNMENT_CENTER    XmALIGNMENT_CENTER
 #define TALIGNMENT_BEGINNING XmALIGNMENT_BEGINNING
-
+#define XCCGetDepth(c) c->visualInfo->depth
 #endif
 
 #endif

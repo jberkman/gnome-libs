@@ -35,6 +35,9 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.8  1997/12/18 00:39:20  unammx
+* It compiles and links -miguel
+*
 * Revision 1.7  1997/12/17 04:40:27  unammx
 * Your daily XmHTML code is here.  It almost links.  Only the
 * images.c file is left to port.  Once this is ported we are all
@@ -1544,7 +1547,7 @@ CheckMaxColorSetting(XmHTMLWidget html)
 		_XmHTMLCheckXCC(html);
 	
 	/* get maximum allowable colors */
-	max_colors = XCCGetNumColors(html->html.xcc);
+	max_colors = html->html.xcc->num_colors;
 
 	/* limit to 256 colors */
 	if(max_colors > MAX_IMAGE_COLORS)

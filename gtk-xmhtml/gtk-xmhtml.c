@@ -529,3 +529,7 @@ autoSizeWidget (XmHTMLWidget html)
 {
 	fprintf (stderr, "Autosize widget called\n");
 }
+
+/* XmImage configuration hook */
+XmImageConfig *_xmimage_cfg;
+

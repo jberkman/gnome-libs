@@ -35,6 +35,9 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.2  1997/12/18 00:39:21  unammx
+* It compiles and links -miguel
+*
 * Revision 1.1  1997/12/17 04:40:28  unammx
 * Your daily XmHTML code is here.  It almost links.  Only the
 * images.c file is left to port.  Once this is ported we are all
@@ -753,7 +756,7 @@ _XmHTMLAddPalette(XmHTMLWidget html)
 			else
 			{
 				/* check how many colors are really allowed on this display */
-				if(ncolors < XCCGetNumColors(html->html.xcc))
+				if(ncolors < html->html.xcc->num_colors)
 					html->html.max_image_colors = ncolors;
 				else
 					ncolors = html->html.max_image_colors;
@@ -843,7 +846,7 @@ CreateColormap(XmHTMLWidget html, TColor *cmap)
 	{
 		GdkColorContextMode mode;
 		
-		mode = gdk_color_context_get_mode (html->html.xcc);
+		mode = html->html.xcc->mode;
 
 		if (mode == GDK_CC_MODE_BW || mode == GDK_CC_MODE_MY_GRAY)
 			nc = 1;

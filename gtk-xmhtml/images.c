@@ -34,9 +34,18 @@ static char rcsId[]="$Header$";
 * Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 *
 *****/
+/* NOTE NOTE NOTE NOTE NOTE
+ *
+ * This port to Gtk/Gdk assumes that Gdk has proper support for GdkImages under
+ * 8 bits per pixel, which right now is not the case.  Thus, I have not tested
+ * it for displays with less than 8 bpp.
+ */
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.2  1997/12/18 00:39:22  unammx
+* It compiles and links -miguel
+*
 * Revision 1.1  1997/12/17 04:40:29  unammx
 * Your daily XmHTML code is here.  It almost links.  Only the
 * images.c file is left to port.  Once this is ported we are all
@@ -121,7 +130,9 @@ static char rcsId[]="$Header$";
 
 #include "XmHTMLP.h"
 #include "XmHTMLfuncs.h"
+#ifdef WITH_MOTIF
 #include "XCCP.h"
+#endif
 #include "plc.h"
 
 #include <bitmaps/boomerang.xpm>
@@ -267,6 +278,7 @@ readImage(TWidget html, ImageBuffer *ib)
 			img_data = _XmHTMLReadXPM(html, ib);
 			_XmHTMLDebug(6, ("readImage: loaded Xpm3 image %s\n", ib->file));
 			break;
+#ifdef WITH_MOTIF
 		case IMAGE_JPEG:
 			img_data = _XmHTMLReadJPEG(html, ib);
 			_XmHTMLDebug(6, ("readImage: loaded jpeg image %s\n", ib->file));
@@ -275,6 +287,7 @@ readImage(TWidget html, ImageBuffer *ib)
 			img_data = _XmHTMLReadPNG(html, ib);
 			_XmHTMLDebug(6, ("readImage: loaded png image %s\n", ib->file));
 			break;
+#endif
 		case IMAGE_FLG:		/* treated wholy differently */
 			break;
 		case IMAGE_UNKNOWN:
@@ -494,17 +507,25 @@ getMaxColors(TWidget w, int max_colors)
 * A function used when an XImage can not be created for this type of
 * display (depth and/or bits_per_pixel).
 *****/
-static XImage*
+static TXImage*
 XImageBizarre(XmHTMLWidget html, int depth, TXImage *ximage)
 {
+#ifdef WITH_MOTIF
 	_XmHTMLWarning(__WFUNC__(html, "_XmHTMLCreateXImage"),
 		"This display's too bizarre (depth = %d bits, bits per pixel = %d).\n"
-		"     Can't create XImage.", depth, Toolkit_Image_Bits_Per_Pixel(ximage));
+		"     Can't create XImage.", depth, ximage->bits_per_pixel);
+#else
+	/* XXX: bytes per pixel instead of bits per pixel; need image
+	 * support from Gdk
+	 */
+	_XmHTMLWarning(__WFUNC__(html, "_XmHTMLCreateXImage"),
+		"This display's too bizarre (depth = %d bits, bytes per pixel = %d).\n"
+		"     Can't create XImage.", depth, ximage->bpp);
+#endif
 	Toolkit_Image_Destroy(ximage);
 	return((TXImage*)NULL);
 }
 
-#ifdef WITH_MOTIF
 /*****
 * Name: 		_XmHTMLCreateXImage
 * Return Type: 	XImage
@@ -522,30 +543,29 @@ TXImage*
 _XmHTMLCreateXImage(XmHTMLWidget html, XCC xcc, Dimension width,
 	Dimension height, String url)
 {
+#ifdef WITH_MOTIF
 	int depth     = xcc->visualInfo->depth;
-	TVisual *vis   = xcc->visual;
+#else
+	int depth     = xcc->visual->depth; 
+#endif
+	TVisual *vis  = xcc->visual;
 	Display *dpy  = Toolkit_Display((TWidget)html);
 	static TXImage *ximage = NULL;
 
 	_XmHTMLDebug(6, ("images.c: _XmHTMLCreateXImage, creating XImage\n"));
 
+#ifdef WITH_MOTIF
 	/* branch to correct display depth */
 	switch(depth)
 	{
 		case 1:
 			{
 				Byte *data;
-#ifdef WITH_MOTIF
+
 				ximage = XCreateImage(dpy, vis, depth, XYPixmap, 0, NULL, 
 							      width, height, 32, 0);
 				data = (Byte*)malloc(ximage->bytes_per_line * height);
 				ximage->data = (char *)data;
-#else
-				ximage = gdk_image_new(GDK_IMAGE_FASTEST, vis, width, height);
-				/* FIXME!!!  This is completely fucked up!
-				 * GdkImage does not seem to have good support for 1-bit images
-				 */
-#endif
 
 				/*****
 				* FIXME
@@ -574,7 +594,6 @@ _XmHTMLCreateXImage(XmHTMLWidget html, XCC xcc, Dimension width,
 			{
 				Byte *data;
 				int bpp;
-
 				ximage = XCreateImage(dpy, vis, depth, ZPixmap, 0, NULL, 
 					width,  height, 8, 0);
 
@@ -656,6 +675,14 @@ _XmHTMLCreateXImage(XmHTMLWidget html, XCC xcc, Dimension width,
 			}
 			break;
 	}
+#else
+	ximage = gdk_image_new(GDK_IMAGE_FASTEST, vis, width, height);
+	/* FIXME: Things will fail later when any of the conditions XmHTML expects
+	 * (the "if (ximage->bits_per_pixel != foo)" stuff above) are not met.  This
+	 * has to be solved by adding proper support to Gdk for the image types it
+	 * is missing.
+	 */
+#endif
 	if(ximage == NULL)
 	{
 		_XmHTMLWarning(__WFUNC__(html, "_XmHTMLCreateXImage"),
@@ -665,26 +692,6 @@ _XmHTMLCreateXImage(XmHTMLWidget html, XCC xcc, Dimension width,
 	}
 	return(ximage);
 }
-#else
-TXImage*
-_XmHTMLCreateXImage(XmHTMLWidget html, XCC xcc, Dimension width, Dimension height, String url)
-{
-	int depth     = xcc->visualInfo->depth;
-	TVisual *vis  = xcc->visual;
-	static TXImage *ximage = NULL;
-
-	gdk_image_new (GDK_IMAGE_FASTEST, vis, width, height);
-	if(ximage == NULL)
-	{
-		_XmHTMLWarning(__WFUNC__(html, "_XmHTMLCreateXImage"),
-			"%s: Internal error:\n    Could not create ximage",
-			url ? url : "(animation frame)");
-		return(NULL);
-	}
-	return ximage;
-}
-#endif
-
 
 /*****
 * Name: 		_XmHTMLFillXImage
@@ -737,7 +744,7 @@ _XmHTMLFillXImage(XmHTMLWidget html, TXImage *ximage, XCC xcc, Byte *data,
 #ifdef WITH_MOTIF
 	switch(xcc->visualInfo->depth)
 #else
-	switch(gdk_color_context_get_depth(xcc))
+	switch(xcc->visual->depth)
 #endif
 	{
 		case 8:
@@ -746,9 +753,14 @@ _XmHTMLFillXImage(XmHTMLWidget html, TXImage *ximage, XCC xcc, Byte *data,
 			int imWIDE, nullCount;
 			register int j;
 			register Byte *ip, *pp;
+
+			/* XXX: this nullCount calculation should work in Gdk because GdkImage
+			 * always uses 32-bit padding of scanlines.  I don't know why this code
+			 * does not simply use bytes_per_line and such.
+			 */
   
 			/* # of padding bytes per line */
-			nullCount = (4 - (wide % 4)) & 0x03;  
+			nullCount = (4 - (wide % 4)) & 0x03;
 
 			imWIDE = wide + nullCount;
  
@@ -783,8 +795,12 @@ _XmHTMLFillXImage(XmHTMLWidget html, TXImage *ximage, XCC xcc, Byte *data,
 			bperline = Toolkit_Image_Bytes_Per_Line(ximage);
     
 			pp = data;
-
-			if(Toolkit_Image_Bits_Per_Pixel(ximage) == 4)
+#ifdef WITH_MOTIF
+			if(ximage->bits_per_pixel == 4)
+#else
+			/* XXX: This will always fail; need image support from Gdk */
+			if (FALSE)
+#endif
 			{
 				lo /= wide;	/* starting scanline index (image data) */
 				hi /= wide;	/* ending scanline index (image data) */
@@ -842,13 +858,16 @@ _XmHTMLFillXImage(XmHTMLWidget html, TXImage *ximage, XCC xcc, Byte *data,
 			register int j, half;
 			register Byte *pp;
 
-			bperline  = ximage->bytes_per_line;
+			bperline  = Toolkit_Image_Bytes_Per_Line(ximage);
 
 			pp = data;
-
+#ifdef WITH_MOTIF
 			if(ximage->bits_per_pixel == 2)
+#else
+			/* XXX: this will always fail; need image support from Gdk */
+			if (FALSE)
+#endif
 			{
-
 				lo /= wide;	/* starting scanline index (image data) */
 				hi /= wide;	/* ending scanline index (image data) */
 
@@ -863,7 +882,7 @@ _XmHTMLFillXImage(XmHTMLWidget html, TXImage *ximage, XCC xcc, Byte *data,
 #ifdef WITH_MOTIF
 						if (ximage->bitmap_bit_order == TLSBFirst)
 #else
-						if (((GdkImagePrivate *)ximage)->bitmap_bit_order == TLSBFirst)
+						if (((GdkImagePrivate *)ximage)->ximage->bitmap_bit_order == TLSBFirst)
 #endif
 						{
 							if(half%4==0)
@@ -898,7 +917,12 @@ _XmHTMLFillXImage(XmHTMLWidget html, TXImage *ximage, XCC xcc, Byte *data,
 			}
 			else
 			{
-				if(Toolkit_Image_Bits_Per_Pixel(ximage) == 4)
+#ifdef WITH_MOTIF
+				if(ximage->bits_per_pixel == 4)
+#else
+				/* XXX: this will always fail; need image support from Gdk */
+				if (FALSE)
+#endif
 				{
 					lo /= wide;	/* starting scanline index (image data) */
 					hi /= wide;	/* ending scanline index (image data) */
@@ -915,7 +939,8 @@ _XmHTMLFillXImage(XmHTMLWidget html, TXImage *ximage, XCC xcc, Byte *data,
 #ifdef WITH_MOTIF
 							if(ximage->bitmap_bit_order == TLSBFirst)
 #else
-							if(((GdkImagePrivate *)ximage)->bitmap_bit_order == TLSBFirst)
+							if(((GdkImagePrivate *)ximage)->ximage->bitmap_bit_order
+							   == TLSBFirst)
 #endif
 							{
 								if(half&1)
@@ -958,7 +983,7 @@ _XmHTMLFillXImage(XmHTMLWidget html, TXImage *ximage, XCC xcc, Byte *data,
 			Byte *imagedata;
 			register Byte *ip, *pp;
     
-			bperline = ximage->bytes_per_line;
+			bperline = Toolkit_Image_Bytes_Per_Line(ximage);
 			imagedata = (Byte*)Toolkit_Image_Data(ximage) + (lo/wide)*bperline;
 
 			pp = data;
@@ -1012,8 +1037,11 @@ _XmHTMLFillXImage(XmHTMLWidget html, TXImage *ximage, XCC xcc, Byte *data,
 
 			/* 4 bytes per pixel */
 			imagedata = (Byte*)Toolkit_Image_Data(ximage) + lo*bperline;
-      
-			do32 = (Toolkit_Image_Bits_Per_Pixel(ximage) == 32);
+#ifdef WITH_MOTIF      
+			do32 = (ximage->bits_per_pixel == 32);
+#else
+			do32 = (ximage->bpp == 4); /* XXX: bytes per pixel */
+#endif
 
 			pp = data;
 
@@ -1133,7 +1161,7 @@ freePixmaps(XmHTMLWidget html, XmHTMLImage *image)
 		FreePixmap(dpy, image->pixmap);
 		FreePixmap(dpy, image->clip);
 	}
-	image->pixmap = image->clip = None;
+	image->pixmap = image->clip = TNone;
 	image->npixels = 0;
 }
 
@@ -2142,20 +2170,20 @@ imageDelayedProc(TWidget w, XmHTMLRawImageData *img_data, ImageBuffer *ib)
 * Returns:
 *	A pixmap upon success, None otherwise.
 *****/
-Pixmap
+TPixmap
 _XmHTMLInfoToPixmap(XmHTMLWidget html, XmHTMLImage *image, 
 	XmImageInfo *info, Dimension width, Dimension height, 
-	unsigned long *global_cmap, Pixmap *clip)
+	unsigned long *global_cmap, TPixmap *clip)
 {
 	Display *dpy = Toolkit_Display((Widget)html);
-	Colormap cmap;
-	Window win;
+	TColormap cmap;
+	TWindow win;
 	unsigned long *color_map;
-	XImage *ximage = NULL;
-	static Pixmap pixmap;
+	TXImage *ximage = NULL;
+	static TPixmap pixmap;
 	XCC xcc;
 
-	*clip = None;
+	*clip = TNone;
 
 	/*
 	* external images are only scaled if the dimensions specified in the
@@ -2174,14 +2202,14 @@ _XmHTMLInfoToPixmap(XmHTMLWidget html, XmHTMLImage *image,
 	* get a window
 	* if we are realized we have a window
 	*/
-	if(XtIsRealized((Widget)html))
-		win = (XmIsHTML((Widget)html) ? XtWindow(html->html.work_area) :
-			XtWindow((Widget)html));
+	if(Toolkit_Is_Realized((Widget)html))
+		win = (XmIsHTML((Widget)html) ? Toolkit_Widget_Window(html->html.work_area) :
+			Toolkit_Widget_Window((TWidget)html));
 	else
-		win = DefaultRootWindow(dpy);
+		win = Toolkit_Default_Root_Window(dpy);
 
 	/* get colormap: every widget is derived from core so this is easy */
-	cmap = html->core.colormap;
+	cmap = Toolkit_Widget_Colormap(html);
 
 	/* 
 	* Set XCC for this image. 
@@ -2221,34 +2249,56 @@ _XmHTMLInfoToPixmap(XmHTMLWidget html, XmHTMLImage *image,
 
 	if(ximage != NULL)
 	{
-		GC gc;
+		TGC gc;
 
 		/* create the pixmap */
-		if((pixmap = XCreatePixmap(dpy, win, info->width, info->height, 
-			image->xcc->visualInfo->depth)) == None)
+#ifdef WITH_MOTIF
+		if((pixmap = Toolkit_Create_Pixmap(dpy, win, info->width, info->height, 
+			image->xcc->visualInfo->depth)) == TNone)
+#else
+		if((pixmap = Toolkit_Create_Pixmap(dpy, win, info->width, info->height, 
+						   image->xcc->visual->depth)) == TNone)
+#endif
 		{
 			_XmHTMLWarning(__WFUNC__(html, "_XmHTMLInfoToPixmap"),
 				"%s: failed to create Pixmap.", image->url ?
 					image->url : "(animation frame)");
-			XDestroyImage(ximage);
-			return(None);
+			Toolkit_Image_Destroy(ximage);
+			return(TNone);
 		}
 		/* copy the image into the pixmap */
+#ifdef WITH_MOTIF
 		gc = XCreateGC(dpy, pixmap, 0, 0);
 		XSetFunction(dpy, gc, GXcopy);
 		XPutImage(dpy, pixmap, gc, ximage, 0, 0, 0, 0, info->width, 
 			info->height);
 		XFreeGC(dpy, gc);
-		XDestroyImage(ximage);
+#else
+		gc = gdk_gc_new(pixmap);
+		gdk_gc_set_function(gc, GDK_COPY);
+		gdk_draw_image(pixmap, gc, ximage, 0, 0, 0, 0, info->width, info->height);
+		gdk_gc_destroy(gc);
+#endif
+		Toolkit_Image_Destroy(ximage);
 
 		/* Create a clip mask if are to use one */
 		if(ImageInfoClipmask(info))
 		{
 			_XmHTMLDebug(6, ("images.c, _XmHTMLInfoToPixmap, "
 				"creating clip mask for %s\n", image->url));
-
+#ifdef WITH_MOTIF
 			*clip = XCreatePixmapFromBitmapData(dpy, win, 
 				(char*)info->clip, info->width, info->height, 1, 0, 1);
+#else
+			{
+				GdkColor fg, bg;
+
+				fg.pixel = 1;
+				bg.pixel = 0;
+				*clip = gdk_pixmap_create_from_data(win, info->clip, info->width, info->height,
+								    1, &fg, &bg);
+			}
+#endif
 #ifdef DEBUG
 			/* write out this bitmap */
 			if(XmIsHTML((Widget)html) && html->html.debug_save_clipmasks)
@@ -2281,7 +2331,7 @@ _XmHTMLInfoToPixmap(XmHTMLWidget html, XmHTMLImage *image,
 		_XmHTMLWarning(__WFUNC__(html, "_XmHTMLInfoToPixmap"),
 			"XCreateImage failed for %s, ignoring this image.",
 			image->url ? image->url : "(animation frame)");
-		return(None);
+		return(TNone);
 	}
 }
 
@@ -2301,7 +2351,7 @@ void
 _XmHTMLMakeAnimation(XmHTMLWidget html, XmHTMLImage *image, Dimension width, 
 	Dimension height)
 {
-	Pixmap pixmap, clip;
+	TPixmap pixmap, clip;
 	int i = 0, nframes = image->html_image->nframes;
 	Dimension w = width, h = height;
 	XmImageInfo *frame = image->html_image;
@@ -2315,7 +2365,11 @@ _XmHTMLMakeAnimation(XmHTMLWidget html, XmHTMLImage *image, Dimension width,
 	image->nframes = nframes;
 	image->frames = (XmImageFrame*)calloc(nframes, sizeof(XmImageFrame));
 	image->html = html;
+#ifdef WITH_MOTIF
 	image->context = XtWidgetToApplicationContext((TWidget)html);
+#else
+	image->context = NULL; /* FIXME */
+#endif
 	image->current_frame = 0;
 
 	/*****
@@ -2364,7 +2418,7 @@ _XmHTMLMakeAnimation(XmHTMLWidget html, XmHTMLImage *image, Dimension width,
 			* Only use local colormap if we've got one.
 			*****/
 			if((pixmap = _XmHTMLInfoToPixmap(html, image, frame, w, h,
-					i && frame->ncolors ? NULL : global_cmap, &clip)) == None)
+					i && frame->ncolors ? NULL : global_cmap, &clip)) == TNone)
 			{
 				image->html_image->nframes = i;
 				return;
@@ -2373,7 +2427,7 @@ _XmHTMLMakeAnimation(XmHTMLWidget html, XmHTMLImage *image, Dimension width,
 			image->frames[i].clip = clip;
 		}
 		else
-			image->frames[i].pixmap = None;
+			image->frames[i].pixmap = TNone;
 
 		image->frames[i].x = (int)(width_p*(float)frame->x);
 		image->frames[i].y = (int)(height_p*(float)frame->y);
@@ -2401,18 +2455,22 @@ _XmHTMLMakeAnimation(XmHTMLWidget html, XmHTMLImage *image, Dimension width,
 	if(XmIsHTML((Widget)html) && ImageHasState(image))
 	{
 		Display *dpy = Toolkit_Display((Widget)html);
-		Window win = (html->html.gc == NULL ?
-			DefaultRootWindow(dpy) : XtWindow(html->html.work_area));
+		TWindow win = (html->html.gc == NULL ?
+			Toolkit_Default_Root_Window(dpy) : Toolkit_Widget_Window(html->html.work_area));
 
 		/* empty pixmap for current animation state */
-		image->pixmap = XCreatePixmap(dpy, win, width, height,
+#ifdef WITH_MOTIF
+		image->pixmap = Toolkit_Create_Pixmap(dpy, win, width, height,
 			html->html.xcc->visualInfo->depth);
-
+#else
+		image->pixmap = Toolkit_Create_Pixmap(dpy, win, width, height,
+			html->html.xcc->visual->depth);
+#endif
 		/* no clipmask for the current animation state */
 
 		/* first frame is first state of this animation */
 		if(html->html.gc != NULL)
-			XCopyArea(dpy, image->frames[0].pixmap, image->pixmap,
+			Toolkit_Copy_Area(dpy, image->frames[0].pixmap, image->pixmap,
 				html->html.gc, 0, 0, width, height, 0, 0);
 
 		_XmHTMLDebug(6, ("images.c: _XmHTMLMakeAnimation, allocated a "
@@ -2648,14 +2706,22 @@ copyHTMLImage(XmHTMLWidget html, XmHTMLImage *image, String attributes)
 		_XmHTMLDebug(6, ("images.c: copyHTMLImage, found an orphaned "
 			"image: %s!\n", image->url));
 		image->options &= ~IMG_ORPHANED;
+#ifdef WITH_MOTIF
 		image->context = XtWidgetToApplicationContext((TWidget)html);
+#else
+	image->context = NULL; /* FIXME */
+#endif
 		image->html    = html;
 		return(image);
 	}
 	dest = copyImage(image, attributes);
 
 	/* These are unique to an image. */
+#ifdef WITH_MOTIF
 	dest->context = XtWidgetToApplicationContext((TWidget)html);
+#else
+	image->context = NULL; /* FIXME */
+#endif
 	dest->html    = html;
 
 	_XmHTMLDebug(6, ("images.c: copyHTMLImage, image %s copied, "
@@ -2706,21 +2772,29 @@ initAlphaChannels(XmHTMLWidget html, Boolean for_body_image)
 		free(html->html.alpha_buffer->bg_cmap);
 
 	alpha = html->html.alpha_buffer;
-	alpha->bg_cmap = (XColor*)NULL;
+	alpha->bg_cmap = (TColor*)NULL;
 	alpha->ncolors = 0;
+#ifdef WITH_MOTIF
 	alpha->fb_maxsample = (1 << html->core.depth) - 1;
+#else
+	alpha->fb_maxsample = (1 << gtk_widget_get_visual(GTK_WIDGET(html))->depth) - 1;
+#endif
 
 	/* no body image or this *is* the body image, use background color */
 	if(html->html.body_image == NULL || for_body_image)
 	{
-		XColor bg_color;
+		TColor bg_color;
 
 		/* current background color */
 		bg_color.pixel = html->html.body_bg;
 
 		/* get rgb components */
+#ifdef WITH_MOTIF
 		XQueryColor(XtDisplay((Widget)html), html->core.colormap,
 			&bg_color);
+#else
+		my_x_query_colors(Toolkit_Widget_Colormap(html), &bg_color, 1);
+#endif
 
 		/* downscale to range 0-255, required for alpha channel processing */
 		alpha->background[0] = bg_color.red >> 8;
@@ -2759,7 +2833,7 @@ initAlphaChannels(XmHTMLWidget html, Boolean for_body_image)
 		alpha->ncolors = bg_image->ncolors;
 
 		/* initialize body image colormap */
-		alpha->bg_cmap = (XColor*)calloc(alpha->ncolors, sizeof(XColor));
+		alpha->bg_cmap = (TColor*)calloc(alpha->ncolors, sizeof(TColor));
 		for(i = 0; i < alpha->ncolors; i++)
 			alpha->bg_cmap[i].pixel = color_map[i];
 
@@ -2767,8 +2841,12 @@ initAlphaChannels(XmHTMLWidget html, Boolean for_body_image)
 		free(color_map);
 
 		/* get rgb values */
+#ifdef WITH_MOTIF
 		XQueryColors(Toolkit_Display((TWidget)html), html->core.colormap,
 			alpha->bg_cmap, alpha->ncolors);
+#else
+		my_x_query_colors(Toolkit_Widget_Colormap(html), alpha->bg_cmap, alpha->ncolors);
+#endif
 
 		/* downscale to range 0-255, required for alpha channel processing */
 		for(i = 0; i < alpha->ncolors ; i++)
@@ -2802,7 +2880,7 @@ doAlphaChannel(XmHTMLWidget html, XmHTMLImage *image)
 	XmImageInfo *new_info;
 	XmHTMLRawImageData *img_data = NULL, raw_data;
 	int x = 0, y = 0;
-	Pixmap pixmap, clip;
+	TPixmap pixmap, clip;
 	unsigned int flags = 0;
 
 	_XmHTMLDebug(6, ("doAlphaChannel, rereading image %s\n", image->url));
@@ -2876,8 +2954,11 @@ doAlphaChannel(XmHTMLWidget html, XmHTMLImage *image)
 		XtCallCallbackList((TWidget)html, html->html.anchor_track_callback,
 			&cbs);
 
-		XSync(Toolkit_Display((TWidget)html), False);
+		Toolkit_Flush (Toolkit_Display((TWidget)html), False);
+
+#ifdef WITH_MOTIF
 		XmUpdateDisplay((TWidget)html);
+#endif
 	}
 
 
@@ -2887,7 +2968,7 @@ doAlphaChannel(XmHTMLWidget html, XmHTMLImage *image)
 	raw_data.width    = html_image->swidth;
 	raw_data.height   = html_image->sheight;
 	raw_data.bg       = -1;
-	raw_data.cmap     = (XColor*)NULL;
+	raw_data.cmap     = (TColor*)NULL;
 	raw_data.cmapsize = 0;
 	raw_data.type     = html_image->type;
 	raw_data.fg_gamma = html_image->fg_gamma;
@@ -2896,8 +2977,11 @@ doAlphaChannel(XmHTMLWidget html, XmHTMLImage *image)
 
 	_XmHTMLDebug(6, ("doAlphaChannel, processing alpha channel.\n"));
 
+#ifdef WITH_MOTIF
 	img_data = _XmHTMLReReadPNG(html, &raw_data, x, y, image->owner == NULL);
-
+#else
+	fprintf (stderr, "No rereadpng yet\n");
+#endif
 	_XmHTMLDebug(6, ("doAlphaChannel, processing read image data.\n"));
 
 	img_data->type = IMAGE_PNG;
@@ -3064,20 +3148,21 @@ processBodyImage(XmHTMLWidget html, XmHTMLImage *body_image,
 		* real image onto it. Then we replace the old background image
 		* with the new semi-transparent background image.
 		*****/
-		if(!ImageDelayedCreation(body_image) && body_image->clip != None)
+		if(!ImageDelayedCreation(body_image) && body_image->clip != TNone)
 		{
-			Window win;
-			Pixmap pixmap;
+			TWindow win;
+			TPixmap pixmap;
 			Display *dpy = Toolkit_Display((TWidget)html);
 
-			if(XtIsRealized((TWidget)html))
-				win = XtWindow(html->html.work_area);
+			if(Toolkit_Widget_Is_Realized((TWidget)html))
+				win = Toolkit_Widget_Window(html->html.work_area);
 			else
-				win = DefaultRootWindow(dpy);
+				win = Toolkit_Default_Root_Window(dpy);
 
 			/* create a new pixmap */
-			if((pixmap = XCreatePixmap(dpy, win, width, height,
-				html->html.xcc->visualInfo->depth)) != None)
+#ifdef WITH_MOTIF
+			if((pixmap = Toolkit_Create_Pixmap(dpy, win, width, height,
+				html->html.xcc->visualInfo->depth)) != TNone)
 			{
 				GC gc;
 				XGCValues values;
@@ -3097,21 +3182,37 @@ processBodyImage(XmHTMLWidget html, XmHTMLImage *body_image,
 				values.clip_y_origin = 0;
 				XChangeGC(dpy, gc, GCClipMask | GCClipXOrigin | GCClipYOrigin,
 					&values);
+#else
+			if((pixmap = Toolkit_Create_Pixmap(dpy, win, width, height,
+				html->html.xcc->visual->depth)) != TNone)
+			{
+				TGC gc;
+				TColor color;
 
+				gc = gdk_gc_new(win);
+
+				color.pixel = html->html.body_bg;
+
+				gdk_gc_set_foreground(gc, &color);
+				gdk_draw_rectangle(pixmap, gc, TRUE, 0, 0, width, height);
+
+				gdk_gc_set_clip_mask(gc, body_image->clip);
+				gdk_gc_set_clip_origin(gc, 0, 0);
+#endif
 				/* and copy original pixmap to the new pixmap */
-				XCopyArea(dpy, body_image->pixmap, pixmap, gc, 0, 0,
-						width, height, 0, 0);
+				Toolkit_Copy_Area(dpy, body_image->pixmap, pixmap, gc, 0, 0,
+						  width, height, 0, 0);
 
 				/* release original pixmap/gc */
 				FreePixmap(dpy, body_image->pixmap);
 				FreePixmap(dpy, body_image->clip);
 
 				/* release gc */
-				XFreeGC(dpy, gc);
+				Toolkit_GC_Free(dpy, gc);
 
 				/* save new pixmap */
 				body_image->pixmap = pixmap;
-				body_image->clip = None;
+				body_image->clip = TNone;
 
 				/* all done! */
 			}
@@ -3199,7 +3300,7 @@ _XmHTMLNewImage(XmHTMLWidget html, String attributes, Dimension *width,
 	static XmImageInfo *html_image;
 	String src;
 	unsigned char image_type = 0;
-	Pixmap pixmap = None, clip = None;
+	TPixmap pixmap = TNone, clip = TNone;
 
 	/* no XmImage stuff, so reset it to NULL */
 	_xmimage_cfg = (XmImageConfig*)NULL;
@@ -3450,7 +3551,7 @@ _XmHTMLNewImage(XmHTMLWidget html, String attributes, Dimension *width,
 		{
 			/* _XmHTMLInfoToPixmap will scale the image if required */
 			if((pixmap = _XmHTMLInfoToPixmap(html, image, html_image, 
-				*width, *height, NULL, &clip)) == None)
+				*width, *height, NULL, &clip)) == TNone)
 			{
 				_XmHTMLFreeImage(html, image);
 				return(NULL);
@@ -3550,7 +3651,7 @@ _XmHTMLReplaceOrUpdateImage(XmHTMLWidget html, XmImageInfo *info,
 	XmImageInfo *new_info, XmHTMLObjectTableElement *elePtr)
 {
 	XmHTMLImage *image = NULL;
-	Pixmap pixmap = None, clip = None;
+	TPixmap pixmap = TNone, clip = TNone;
 	Boolean do_return = False;
 	int img_width, img_height;
 
@@ -3666,7 +3767,7 @@ _XmHTMLReplaceOrUpdateImage(XmHTMLWidget html, XmImageInfo *info,
 					*/
 					if((pixmap = _XmHTMLInfoToPixmap(html, image, 
 						image->html_image, image->width, image->height, NULL,
-						&clip)) == None)
+						&clip)) == TNone)
 						return(XmIMAGE_ERROR);
 
 					/* store it */
@@ -3744,8 +3845,8 @@ _XmHTMLFreeImage(XmHTMLWidget html, XmHTMLImage *image)
 	/* always remove the animation timeout proc */
 	if(image->proc_id)
 	{
-		XtRemoveTimeOut(image->proc_id);
-		image->proc_id = None;
+		Toolkit_Timeout_Remove(image->proc_id);
+		image->proc_id = TNullTimeout;
 	}
 
 	/* see if this is image has been copied */
@@ -4101,7 +4202,9 @@ XmHTMLImageDefaultProc(TWidget w, String file, unsigned char *buf, int size)
 			break;
 		case IMAGE_FLG:
 			/* bypasses the readImage + defaultImage proc entirely */
+#ifdef WITH_MOTIF
 			image = _XmHTMLReadFLG((XmHTMLWidget)w, ib);
+#endif
 			break;
 		case IMAGE_XPM:
 		case IMAGE_XBM:

@@ -59,6 +59,9 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.2  1997/12/18 00:39:23  unammx
+* It compiles and links -miguel
+*
 * Revision 1.1  1997/11/28 03:38:58  gnomecvs
 * Work in progress port of XmHTML;  No, it does not compile, don't even try -mig
 *
@@ -74,11 +77,13 @@ static char rcsId[]="$Header$";
 
 #include "XmHTMLP.h"
 #include "XmHTMLfuncs.h"
+#ifdef WITH_MOTIF
 #include "XCCP.h"
-
 /*** External Function Prototype Declarations ***/
 extern Byte XCCGetIndexFromPalette(XCC _xcc, int *_red, int *_green,
 	int *_blue, Boolean *failed);
+
+#endif
 
 /*** Public Variable Declarations ***/
 
@@ -1125,7 +1130,11 @@ _XmHTMLDitherImage(XmHTMLWidget html, XmHTMLRawImageData *img_data)
 	TColor *cmap = img_data->cmap;
 	XCC xcc = html->html.xcc;
 	XCCDither *dm = xcc->fast_dither;
+#ifdef WITH_MOTIF
 	Boolean f;
+#else
+	int f;
+#endif
 
 	size = width * height;
 
@@ -1294,5 +1303,5 @@ _XmHTMLDitherImage(XmHTMLWidget html, XmHTMLRawImageData *img_data)
 	img_data->cmapsize = xcc->num_palette;
 	img_data->cmap = (TColor*)realloc(img_data->cmap,
 		xcc->num_palette*sizeof(TColor));
-	memcpy(img_data->cmap, xcc->palette, xcc->num_palette*sizeof(XColor));
+	memcpy(img_data->cmap, xcc->palette, xcc->num_palette*sizeof(TColor));
 }

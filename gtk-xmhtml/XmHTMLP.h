@@ -35,6 +35,9 @@
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.3  1997/12/18 00:39:21  unammx
+* It compiles and links -miguel
+*
 * Revision 1.2  1997/12/17 04:40:28  unammx
 * Your daily XmHTML code is here.  It almost links.  Only the
 * images.c file is left to port.  Once this is ported we are all
@@ -138,7 +141,7 @@
 # ifdef WITH_MOTIF
 #  include "XCC.h"		/* XColorContext definitions and protos */
 # else
-typedef void *XCC;
+typedef GdkColorContext *XCC;
 # endif
 # ifdef _ZCONF_H
 #  ifndef BYTE_ALREADY_TYPEDEFED

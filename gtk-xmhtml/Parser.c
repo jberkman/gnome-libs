@@ -36,6 +36,9 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.2  1997/12/18 00:39:19  unammx
+* It compiles and links -miguel
+*
 * Revision 1.1  1997/11/28 03:38:54  gnomecvs
 * Work in progress port of XmHTML;  No, it does not compile, don't even try -mig
 *
@@ -2920,7 +2923,7 @@ documentCallback(PARSER, Boolean verified)
 	if(ATTR(document_callback))
 	{
 		cbs.reason     = XmCR_HTML_DOCUMENT;
-		cbs.event      = (XEvent*)NULL;
+		cbs.event      = (TEvent*)NULL;
 		cbs.html32     = ATTR(html32);
 		cbs.verified   = verified;
 		cbs.terminated = ATTR(terminated);
