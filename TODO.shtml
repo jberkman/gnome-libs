@@ -416,7 +416,7 @@
 	  <td>???</td>
 	  <td>
 	    <b>gnome-font-picker</b>:  Make the button prettier, revise the
-	    API a bit, maybe.
+	    API a bit, maybe.  Make public "internal" functions static.
 	  </td>
 	</tr>
 
@@ -825,8 +825,8 @@ libgnomeui API doc status:
 
 gnome-about.c			done
 gnome-animator.c		done
-gnome-app-helper.c		done
-gnome-app-util.c		done
+gnome-app-helper.c		incomplete
+gnome-app-util.c		incomplete
 gnome-app.c			the new dock-related API is not doc'd
 gnome-appbar.c			done
 gnome-calculator.c		done
@@ -838,13 +838,14 @@ gnome-canvas-text.c		needed? - federico's on it
 gnome-canvas-util.c		none yet - federico's on it
 gnome-canvas-widget.c		needed? - federico's on it
 gnome-canvas.c			done
-gnome-client.c			stubbed
+gnome-client.c			incomplete but stubbed
 gnome-color-picker.c		done
 gnome-dateedit.c		done
 gnome-dentry-edit.c		none yet
-gnome-dialog-util.c		only one of several functions doc'd
-gnome-dialog.c			none yet
-gnome-dns.c			none yet
+gnome-dialog-util.c		incomplete
+gnome-dialog.c			done
+gnome-dns.c			none yet - docs are there, just need
+				to be in API doc format
 gnome-dock.c                    none yet
 gnome-dock-band.c               none yet
 gnome-dock-item.c               none yet
@@ -857,9 +858,9 @@ gnome-geometry.c		done
 gnome-guru.c			none yet
 gnome-href.c			done
 gnome-ice.c			none yet
-gnome-icon-entry.c		done
+gnome-icon-entry.c		incomplete (just one func to be done)
 gnome-icon-item.c		done
-gnome-icon-list.c		done
+gnome-icon-list.c		incomplete (just one func to be done)
 gnome-icon-sel.c		done
 gnome-icon-text.c		done
 gnome-init.c			done
@@ -872,9 +873,9 @@ gnome-messagebox.c		done
 gnome-number-entry.c		none yet
 gnome-paper-selector.c		none yet
 gnome-pixmap-entry.c		done
-gnome-pixmap.c			none yet
+gnome-pixmap.c			incomplete
 gnome-popup-help.c		none yet
-gnome-popup-menu.c		none yet
+gnome-popup-menu.c		incomplete
 gnome-preferences.c		none yet
 gnome-procbar.c			none yet
 gnome-properties.c		none yet
@@ -882,7 +883,8 @@ gnome-property-entries.c	none yet
 gnome-propertybox.c		done
 gnome-rootwin.c			not needed, as it should be killed.
 gnome-scores.c			none yet
-gnome-startup.c			none yet
+gnome-spell.c			done
+gnome-startup.c			none yet - but hey, it's only 1 func
 gnome-stock.c			none yet
 gnome-winhints.c		none yet
 gtk-clock.c			none yet
@@ -890,7 +892,6 @@ gtk-ted.c			none yet
 gtkcauldron.c			none yet
 gtkdial.c			none yet
 gtkpixmapmenuitem.c		none yet
-gtkspell.c			none yet
 </pre>
 <p>
 <!-- End of Table -->
