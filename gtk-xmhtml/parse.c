@@ -35,6 +35,11 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.6  1998/02/13 23:52:47  rhlabs
+* Added fix for parsing HTML with tags which contain newlines
+*
+* Dr Mike <msf@redhat.com>
+*
 * Revision 1.5  1998/02/12 03:09:42  unammx
 * Merge to Koen's XmHTML 1.1.2 + following fixes:
 *
@@ -2253,7 +2258,11 @@ _ParserStoreElement(Parser *parser, char *start, char *end)
 					chPtr = NULL;
 		}
 		else	/* closing element, can't have any attributes */
-			chPtr = NULL;
+		{ 
+		    if(*chPtr)
+			content[chPtr-elePtr] = '\0';
+		    chPtr = NULL;
+		}
 
 		/* Ignore elements we do not know */
 		if((id = _ParserTokenToId(parser, elePtr, parser->warn)) != -1)
