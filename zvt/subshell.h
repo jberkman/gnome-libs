@@ -18,7 +18,8 @@
    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-int init_subshell (int *master, char *pty_name);
+int init_subshell (int *master, char *pty_name, int * msgfd);
 int resize_subshell (int fd, int col, int row, int xpixel, int ypixel);
+void close_msgfd (pid_t childpid);
 
 #endif /* _SUBSHELL_H */

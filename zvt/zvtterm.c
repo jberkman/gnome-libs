@@ -61,6 +61,7 @@ static void zvt_term_child_died(ZvtTerm *term);
 static gint zvt_term_cursor_blink(gpointer data);
 static void zvt_term_scrollbar_moved (GtkAdjustment *adj, GtkWidget *widget);
 static void zvt_term_readdata(gpointer data, gint fd, GdkInputCondition condition);
+static void zvt_term_readmsg(gpointer data, gint fd, GdkInputCondition condition);
 
 static void zvt_term_fix_scrollbar(ZvtTerm *term);
 
@@ -157,8 +158,9 @@ zvt_term_init (ZvtTerm *term)
   term->ic = NULL;
   term->in_expose = 0;
 
-  /* input handler */
+  /* input handlers */
   term->input_id = -1;
+  term->msg_id = -1;
 
   zvt_term_set_font_name(term, "-misc-fixed-medium-r-semicondensed--13-120-75-75-c-60-iso8859-1");
 
@@ -1067,9 +1069,8 @@ int zvt_term_forkpty(ZvtTerm *term)
 
   pid = vt_forkpty(&term->vx->vt);
   if (pid>0) {
-    if (term->input_id==-1) {
-      term->input_id = gdk_input_add(term->vx->vt.childfd, GDK_INPUT_READ, zvt_term_readdata, term);
-    }
+    term->input_id = gdk_input_add(term->vx->vt.childfd, GDK_INPUT_READ, zvt_term_readdata, term);
+    term->msg_id = gdk_input_add(term->vx->vt.msgfd, GDK_INPUT_READ, zvt_term_readmsg, term);
   }
   return pid;
 }
@@ -1098,6 +1099,10 @@ int zvt_term_closepty(ZvtTerm *term)
   if (term->input_id!=-1) {
     gdk_input_remove(term->input_id);
     term->input_id=-1;
+  }
+  if (term->msg_id!=-1) {
+    gdk_input_remove(term->msg_id);
+    term->msg_id=-1;
   }
   return vt_closepty(&term->vx->vt);
 }
@@ -1307,7 +1312,7 @@ static void zvt_term_child_died(ZvtTerm *term)
   g_return_if_fail (term != NULL);
   g_return_if_fail (ZVT_IS_TERM (term));
 
-  printf("Warning: Child died\n");
+  /* perhaps we should do something here? */
 }
 
 /*
@@ -1328,6 +1333,7 @@ static void zvt_term_readdata(gpointer data, gint fd, GdkInputCondition conditio
   ZvtTerm *term;
 
   term = (ZvtTerm *)data;
+  if (term->input_id == -1) return;
   vx = term->vx;
 
   /* need to 'un-render' selected area */
@@ -1368,20 +1374,30 @@ static void zvt_term_readdata(gpointer data, gint fd, GdkInputCondition conditio
      lots of screen updates and reducing interactivity on a busy terminal */
   gdk_flush();
 
-  /* read failed?
-      assume pipe cut - just quit */
-  if (count<0 && saveerrno!=EAGAIN) {
-    /* close this fd, just to make sure (removes input handler too) */
-    zvt_term_closepty(term);
-
-    /* signal application FIXME: include error/non error code */
-    gtk_signal_emit(GTK_OBJECT(term), term_signals[CHILD_DIED]);
-
-    return;
-  }
+  /* read failed? oh well, that's life -- we handle dead children via
+     SIGCHLD */
 
   /* fix scroll bar */
   zvt_term_fix_scrollbar(term);
+
+}
+
+static void zvt_term_readmsg(gpointer data, gint fd, GdkInputCondition condition)
+{
+  ZvtTerm *term = (ZvtTerm *)data;
+
+  /* I suppose I should bother reading the message from the fd, but
+     it doesn't seem worth the trouble <shrug> */
+
+  if (term->input_id!=-1) {
+    gdk_input_remove(term->input_id);
+    term->input_id=-1;
+  }
+
+  zvt_term_closepty(term);
+
+  /* signal application FIXME: include error/non error code */
+  gtk_signal_emit(GTK_OBJECT(term), term_signals[CHILD_DIED]);
 }
 
 /*

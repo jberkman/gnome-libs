@@ -55,6 +55,7 @@ extern "C" {
     int charheight;
 
     gint input_id;		/* input handler id */
+    gint msg_id;		/* message handler id */
 
     /* sub-objects required */
     GtkAdjustment *adjustment;	/* scrollback position adjustement */

@@ -1225,19 +1225,14 @@ struct vt_em *vt_init(struct vt_em *vt, int width, int height)
 /*
   start a child process running in the VT emulator
 
-   fork the child process.
-
-     NOTE: Uses the glibc2+ function 'forkpty()' to take care of
-      1. finding a free pty
-      2. forking a child on that pty
-      3. setting the child's master terminal to be that pty
+   fork the child process
 
 */
 int vt_forkpty(struct vt_em *vt)
 {
   char ttyname[256];
 
-  vt->childpid = init_subshell(&vt->childfd, ttyname);
+  vt->childpid = init_subshell(&vt->childfd, ttyname, &vt->msgfd);
   if (vt->childpid>0) {
     fcntl(vt->childfd, F_SETFL, O_NONBLOCK);
     resize_subshell(vt->childfd, vt->width, vt->height, vt->width*8, vt->height*8); /* FIXME: approx sizes only */
@@ -1285,7 +1280,8 @@ int vt_closepty(struct vt_em *vt)
 
   if (vt->childfd != -1){
 	  ret = close(vt->childfd);
-	  vt->childfd = -1;
+	  close_msgfd(vt->childpid);
+	  vt->msgfd = vt->childfd = -1;
   } else
 	  ret = 0;
   return ret;

@@ -24,7 +24,8 @@
 /* {{{ Declarations */
 
 #include <stdio.h>      
-#include <fcntl.h>
+#include <fcntl.h>	/* for close-on-exec stuff	      */
+#include <sys/signal.h> 
 #include <stdlib.h>	/* For errno, putenv, etc.	      */
 #include <errno.h>	/* For errno on SunOS systems	      */
 #include <termios.h>	/* tcgetattr(), struct termios, etc.  */
@@ -77,6 +78,13 @@
 static int pty_open_master (char *pty_name);
 static int pty_open_slave (const char *pty_name);
 
+/* List of all subshells we're watching */
+struct child_list {
+	pid_t pid;
+	int fd;
+	struct child_list * next;
+} * children = NULL;
+
 /* }}} */
 /* {{{ Definitions */
 
@@ -94,18 +102,61 @@ static int pty_open_slave (const char *pty_name);
 
 /* {{{ init_subshell */
 
+void close_msgfd (int childpid) {
+  struct child_list * prev, * child;
+
+    child = children, prev = NULL;
+    while (child && child->pid != childpid) {
+	prev = child;
+	child = child->next;
+    }
+
+    if (!child) return;
+
+    if (!prev)
+	children = child->next;
+    else
+	prev->next = child->next;
+
+    close(child->fd);
+    free(child);
+}
+
 /*
  *  Fork the subshell, and set up many, many things.
  *
  */
 
-int init_subshell (int *master, char *pty_name)
+static void sigchld_handler(int signo) {
+  struct child_list * child;
+  pid_t pid;
+  int status;
+
+    pid = wait(&status);
+
+    child = children;
+    while (child && child->pid != pid) {
+	child = child->next;
+    }
+
+    if (child) {
+	child->pid = 0;
+	write(child->fd, "D", 1);
+    }
+}
+
+int init_subshell (int *master, char *pty_name, int * msgfd)
 {
     /* {{{ Local variables */
 
   int pty_slave;
   int subshell_pty;
   int subshell_pid;
+  struct sigaction sa;
+  struct child_list * child;
+  pid_t pid;
+  int status;
+  int p[2];
 
     /* }}} */
 
@@ -209,32 +260,35 @@ int init_subshell (int *master, char *pty_name)
 	dup2 (pty_slave, STDERR_FILENO);
 
 	/* }}} */
-	/* {{{ Execute the subshell at last */
-
-	close (pty_slave);  /* These may be FD_CLOEXEC, but just in case... */
-
-	/* }}} */
     } else {
       /* this is the parent process ... */
       close(pty_slave);
     }
 
+    if (!children) {
+	memset(&sa, 0, sizeof(sa));
+	sa.sa_handler = sigchld_handler;
+	sigaction(SIGCHLD, &sa, NULL);
+    } 
 
-#if 0				/* Z: this can be moved to the caller */
-    /* {{{ Install our handler for SIGCHLD */
+    pipe(p);
+    *msgfd = p[0];
 
-    init_sigchld ();
+    child = malloc(sizeof(*child));
+    child->next = children;
+    child->pid = subshell_pid;
+    child->fd = p[1];
+    children = child;
 
     /* We could have received the SIGCHLD signal for the subshell 
      * before installing the init_sigchld */
     pid = waitpid (subshell_pid, &status, WUNTRACED | WNOHANG);
-    if (pid == subshell_pid){
-	use_subshell = FALSE;
-	return;
+    if (pid == subshell_pid && child->pid >= 0){
+	child->pid = 0;
+	write(child->fd, "D", 1);
+	return -1;
     }
 
-    /* }}} */
-#endif
     *master = subshell_pty;
     return subshell_pid;
 }

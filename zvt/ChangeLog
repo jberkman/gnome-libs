@@ -2,6 +2,7 @@
 
 	* subshell.c (pty_open_slave, pty_open_master): Set close-on-exec
 	flag for slave and master file descriptors
+	* handle SIGCHLD for proper termination detection
 
 1998-09-04    <nicholas@cefiro.cs.nthu.edu.tw>
 

@@ -72,6 +72,7 @@ struct vt_em {
 
   int childpid;			/* child process id */
   int childfd;			/* child file descriptor (for read/write) */
+  int msgfd;			/* "it's dead" messages come through here */
 
   int savex,savey;		/* saved cursor position */
   struct vt_line *savethis;
