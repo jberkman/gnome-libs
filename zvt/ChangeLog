@@ -1,3 +1,8 @@
+1999-09-23  Michael Zucchi  <mzucchi@denr.sa.gov.au>
+
+	* gnome-pty-helper.c (open_ptys): Another attempt ... this time
+	conditionally check every bloody flag before we try and use it.
+
 1999-09-22  Michael Zucchi  <zucchi@zedzone.mmc.com.au>
 
 	* gnome-pty-helper.c: Make the use of ECHOKE/ECHOCTL conditional.

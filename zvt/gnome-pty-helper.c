@@ -318,35 +318,6 @@ path_max (void)
 #endif
 }
 
-/*
-  Use ttydefault definitions, if they exist, otherwise
-  make something up ...
-*/
-#ifndef TTYDEF_IFLAG
-	/*ICRNL|IXON;*/
-#define TTYDEF_IFLAG (BRKINT | ICRNL | IMAXBEL | IXON | IXANY)
-#endif
-#ifndef TTYDEF_OFLAG
-	/*OPOST|ONLCR|NL0|CR0|TAB0|BS0|VT0|FF0;*/
-#define TTYDEF_OFLAG (OPOST | ONLCR)
-#endif
-#ifndef TTYDEF_LFLAG
-	/*ISIG|ICANON|IEXTEN|ECHO|ECHOE|ECHOK|ECHOCTL|ECHOKE;*/
-/* The symbols ECHOKE and ECHOCTL is not defined when compiling on irix. */
-#ifndef ECHOKE
-#define ECHOKE 0
-#endif
-#ifndef ECHOCTL
-#define ECHOCTL 0
-#endif
-#define TTYDEF_LFLAG (ECHO | ICANON | ISIG | IEXTEN | ECHOE | ECHOKE | ECHOCTL)
-#endif
-#ifndef TTYDEF_CFLAG
-	/*EXTB|CS8|CREAD|HUPCL;*/
-	/* B38400 isnt portable EXTB isn't really either, B9600 though  .. */
-#define TTYDEF_CFLAG (B9600 | CREAD | CS8 | HUPCL)
-#endif
-
 static int
 open_ptys (int utmp, int wtmp)
 {
@@ -383,10 +354,91 @@ open_ptys (int utmp, int wtmp)
 	 */
 	memset(&term, 0, sizeof(term));
 
-	term.c_iflag = TTYDEF_IFLAG;
-	term.c_oflag = TTYDEF_OFLAG;
-	term.c_cflag = TTYDEF_CFLAG;
-	term.c_lflag = TTYDEF_LFLAG;
+	term.c_iflag = 0
+#ifdef BRKINT
+	  | BRKINT
+#endif
+#ifdef ICRNL
+	  | ICRNL
+#endif
+#ifdef IMAXBEL
+	  | IMAXBEL
+#endif
+#ifdef IXON
+	  | IXON
+#endif
+#ifdef IXANY
+	  | IXANY
+#endif
+	  ;
+	term.c_oflag = 0
+#ifdef OPOST
+	  | OPOST
+#endif
+#ifdef ONLCR
+	  | ONLCR
+#endif
+#ifdef NL0
+	  | NL0
+#endif
+#ifdef CR0
+	  | CR0
+#endif
+#ifdef TAB0
+	  | TAB0
+#endif
+#ifdef BS0
+	  | BS0
+#endif
+#ifdef VT0
+	  | VT0
+#endif
+#ifdef FF0
+	  | FF0
+#endif
+	  ;
+	term.c_cflag = 0
+#ifdef EXTB
+	  | EXTB
+#else
+# ifdef B9600
+	  | B9600
+# endif
+#endif /* EXTB */
+#ifdef CREAD
+	  | CREAD
+#endif
+#ifdef CS8
+	  | CS8
+#endif
+#ifdef HUPCL
+	  | HUPCL
+#endif
+	  ;
+	term.c_lflag = 0
+#ifdef ECHO
+	  | ECHO
+#endif
+#ifdef ICANON
+	  | ICANON
+#endif
+#ifdef ISIG
+	  | ISIG
+#endif
+#ifdef IEXTEN
+	  | IEXTEN
+#endif
+#ifdef ECHOE
+	  | ECHOE
+#endif
+#ifdef ECHOKE
+	  | ECHOKE
+#endif
+#ifdef ECHOCTL
+	  | ECHOCTL
+#endif
+	  ;
+
 #ifdef N_TTY
 	/* should really be a check for c_line, but maybe this is good enough */
 	term.c_line = N_TTY;
