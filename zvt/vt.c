@@ -909,8 +909,12 @@ vt_mode(struct vt_em *vt)
 	  vt->attr |= mode_map[i];	/* add a mode */
 	} else if (i>=30 && i <=37) {
 	  vt->attr = (vt->attr & ~VTATTR_FORECOLOURM) | ((i-30) << VTATTR_FORECOLOURB);
+	} else if (i==39) {
+	  vt->attr = (vt->attr & ~VTATTR_FORECOLOURM) | ((VTATTR_CLEAR) & VTATTR_FORECOLOURM);
 	} else if (i>=40 && i <=47) {
 	  vt->attr = (vt->attr & ~VTATTR_BACKCOLOURM) | ((i-40) << VTATTR_BACKCOLOURB);
+	} else if (i==49) {
+	  vt->attr = (vt->attr & ~VTATTR_BACKCOLOURM) | ((VTATTR_CLEAR) & VTATTR_BACKCOLOURM);
 	}
       }
   }
