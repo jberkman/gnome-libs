@@ -1,3 +1,9 @@
+1998-05-30  Marius Vollmer  <mvo@zagadka.ping.de>
+
+	* testgnome.c (create_newwin): Do not connect to the
+	"delete_event" when being NORMAL.  This was causing segfaults left
+	and right.
+
 Wed Jun 10 14:19:39 EDT 1998 Gregory McLean <gregm@comstar.net>
 
 	* fixed up this so that the canvas is only built if it was built in 
