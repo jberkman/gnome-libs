@@ -91,7 +91,7 @@ gnomelib_parse_args (int argc, char *argv[], int popt_flags)
 	memset(&end_opt, 0, sizeof(end_opt));
 	g_array_append_val(opt_tables, end_opt);
 
-	base = g_path_basename(argv[0]);
+	base = g_path_get_basename(argv[0]);
 	gnome_program_init(base, "broken!", argc, argv, GNOME_PARAM_POPT_FLAGS,
 			   popt_flags, GNOME_PARAM_POPT_TABLE,
 			   opt_tables->data, NULL);

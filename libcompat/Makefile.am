@@ -10,21 +10,30 @@ lib_LIBRARIES = libgnomeui-1-compat-2.a libgnome-1-compat-2.a
 #
 libgnomeuiincludedir = $(includedir)/gnome/$(GNOME_INTERFACE_VERSION)/libgnomeui
 
-INCLUDES = -I.. -I$(srcdir)/.. -I$(srcdir)/../libgnomeui \
-	$(SUPPORTINCS) -I$(top_srcdir)/intl -I$(top_builddir)/intl \
-	-I$(includedir) $(GDK_IMLIB_CFLAGS) \
-	$(AUDIOFILE_CFLAGS) $(ESD_CFLAGS) \
-        -DGNOMELIBDIR=\""$(libdir)"\" \
-        -DGNOMEDATADIR=\""$(datadir)"\" \
-        -DGNOMEBINDIR=\""$(bindir)"\" \
-        -DGNOMELOCALSTATEDIR=\""$(localstatedir)"\" \
-        -DGNOMELOCALEDIR=\""$(gnomelocaledir)"\" \
-	-DG_LOG_DOMAIN=\"GnomeUI\"
+INCLUDES = \
+	-I$(top_builddir)				\
+	-I$(top_srcdir)					\
+	-I$(top_srcdir)/intl 				\
+	-I$(top_builddir)/intl				\
+	-I$(top_srcdir)/libgnomeui 			\
+	-I$(top_builddir)/libgnomeui			\
+	$(SUPPORTINCS) 					\
+	$(GLIB_CFLAGS)					\
+	$(GTK_CFLAGS)					\
+	$(LIBART_CFLAGS)				\
+	-I$(includedir)					\
+	$(AUDIOFILE_CFLAGS)				\
+	$(ESD_CFLAGS)					\
+        -DGNOMELIBDIR=\""$(libdir)"\"			\
+        -DGNOMEDATADIR=\""$(datadir)"\"			\
+        -DGNOMEBINDIR=\""$(bindir)"\"			\
+        -DGNOMELOCALSTATEDIR=\""$(localstatedir)"\"	\
+        -DGNOMELOCALEDIR=\""$(gnomelocaledir)"\"	\
+	-DG_LOG_DOMAIN=\"GnomeCompat\"
 
 libgnomeui10compatincludedir = $(libgnomeuiincludedir)/compat/1
 
 libgnomeui_1_compat_2_a_SOURCES =\
-	gnome-font-selector.c 		\
 	gnome-guru.c			\
 	gnome-spell.c			\
 	gnome-startup.c			\
@@ -37,6 +46,9 @@ libgnomeui_1_compat_2_a_SOURCES =\
 	gnome-procbar.c			\
 	gnome-properties.c		\
 	gnome-property-entries.c
+
+#FIXME: need to move this
+#	gnome-font-selector.c
 
 # This probably won't work right
 #	gnome-canvas-image.c

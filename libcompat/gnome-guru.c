@@ -68,8 +68,9 @@ gnome_guru_get_type ()
 	sizeof (GnomeGuruClass),
 	(GtkClassInitFunc) gnome_guru_class_init,
 	(GtkObjectInitFunc) gnome_guru_init,
-	(GtkArgSetFunc) NULL,
-	(GtkArgGetFunc) NULL,
+	NULL,
+	NULL,
+	NULL
       };
 
       guru_type = gtk_type_unique (gtk_vbox_get_type (), &guru_info);
@@ -92,7 +93,7 @@ gnome_guru_class_init (GnomeGuruClass *klass)
   guru_signals[CANCELLED] =
     gtk_signal_new ("cancelled",
 		    GTK_RUN_LAST,
-		    object_class->type,
+		    GTK_CLASS_TYPE (object_class),
 		    GTK_SIGNAL_OFFSET (GnomeGuruClass, cancelled),
 		    gtk_signal_default_marshaller,
 		    GTK_TYPE_NONE, 0);
@@ -100,7 +101,7 @@ gnome_guru_class_init (GnomeGuruClass *klass)
   guru_signals[FINISHED] =
     gtk_signal_new ("finished",
 		    GTK_RUN_LAST,
-		    object_class->type,
+		    GTK_CLASS_TYPE (object_class),
 		    GTK_SIGNAL_OFFSET (GnomeGuruClass, finished),
 		    gtk_signal_default_marshaller,
 		    GTK_TYPE_NONE, 0);
