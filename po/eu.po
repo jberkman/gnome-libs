@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-libs 1.0.11\n"
-"POT-Creation-Date: 1999-08-31 15:54-0500\n"
+"POT-Creation-Date: 1999-09-17 14:43-0500\n"
 "PO-Revision-Date: 1999-04-01 17:11+0200\n"
 "Last-Translator: Joseba Bidaurrazaga van Dierdonck <gcpbivaj@lg.ehu.es>\n"
 "Language-Team: euskara <linux-eu@chanae.alphanet.ch>\n"
@@ -667,7 +667,7 @@ msgstr "Sesioaren kudeaketa aukerak"
 msgid "Cancel Logout"
 msgstr "Etsi Logout"
 
-#: libgnomeui/gnome-color-picker.c:313
+#: libgnomeui/gnome-color-picker.c:314
 msgid "Pick a color"
 msgstr "Aukeratu kolorea"
 
@@ -1166,7 +1166,17 @@ msgstr "enuaren item"
 msgid "Accelerator"
 msgstr "Azkarrarazlea"
 
-#: libgnomeui/gnome_segv.c:44
+#: libgnomeui/gnome_segv.c:50
+#, c-format
+msgid ""
+"The GNOME Session Manager (process %d) has crashed\n"
+"due to a fatal error (%s).\n"
+"When you close this dialog, all applications will close and your session "
+"will exit.\n"
+"Please save all your files before closing this dialog."
+msgstr ""
+
+#: libgnomeui/gnome_segv.c:55
 #, c-format
 msgid ""
 "Application \"%s\" (process %d) has crashed\n"
@@ -1174,11 +1184,11 @@ msgid ""
 "(%s)"
 msgstr ""
 
-#: libgnomeui/gnome_segv.c:49
+#: libgnomeui/gnome_segv.c:61
 msgid "Usage: gnome_segv appname signum\n"
 msgstr ""
 
-#: libgnomeui/gnome_segv.c:61
+#: libgnomeui/gnome_segv.c:73
 msgid "Please visit the GNOME Application Crash page for more information"
 msgstr ""
 
@@ -1374,8 +1384,8 @@ msgstr "Copyright © 1998"
 #: libgnomeui/winhints_demo.c:413
 #, fuzzy
 msgid ""
-"Simple test app to check how the WIN_HINTS work.  And to test the "
-"gnome_win_hints_* functions for errors. :)"
+"Simple test app to check how the WIN_HINTS work.\n"
+"And to test the gnome_win_hints_* functions for errors. :)"
 msgstr ""
 "WIN_HINTS-ek nola dabilen ikusteko azterketa aplikazioa.Eta "
 "gnome_win_hints_*-aren funtzionamenuan akatsik dagoen ikusteko. :)"
@@ -1412,7 +1422,7 @@ msgstr ""
 "instalatutako zerbitzurik edo hauek lortzeko biderik ez dut.\n"
 "Dena dela, zure GNOME-ren instalakuntza aztertu."
 
-#: libgnorba/goad.c:1321
+#: libgnorba/goad.c:1350
 msgid "(Internal use only) GOAD server ID to activate"
 msgstr "(Barrurako) GOAD zerbitzariaren ID aktibatuz"
 
@@ -1431,6 +1441,35 @@ msgstr "GOAD zerbitzaria ezagutzeko behar duen ordezko ID"
 #: libgnorba/loadshlib.c:12
 msgid "REPO_ID"
 msgstr "REPO_ID"
+
+#: libgnorba/orbitgtk.c:138
+#, c-format
+msgid "Failed to open CORBA cookie file (%s) for writing: %s\n"
+msgstr ""
+
+#: libgnorba/orbitgtk.c:145
+#, c-format
+msgid "Failed to write CORBA cookie file (%s): %s\n"
+msgstr ""
+
+#: libgnorba/orbitgtk.c:171
+#, c-format
+msgid "Failed to write CORBA cookie to `%s': %s\n"
+msgstr ""
+
+#: libgnorba/orbitgtk.c:181
+#, c-format
+msgid "Failed to open CORBA cookie file `%s': %s\n"
+msgstr ""
+
+#: libgnorba/orbitgtk.c:187
+#, c-format
+msgid "Failed to read CORBA cookie file `%s': %s\n"
+msgstr ""
+
+#: libgnorba/orbitgtk.c:213
+msgid "Failed to obtain CORBA authentication cookie, exiting\n"
+msgstr ""
 
 #: libgnorba/orbitns.c:295
 msgid "Could not get name service!"

@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-libs 1.0.12\n"
-"POT-Creation-Date: 1999-08-31 15:54-0500\n"
+"POT-Creation-Date: 1999-09-17 14:43-0500\n"
 "PO-Revision-Date: 1999-08-01 17:58-0400\n"
 "Last-Translator: Ettore Perazzoli <ettore@comm2000.it>\n"
 "Language-Team: Italiano <it@li.org>\n"
@@ -683,7 +683,7 @@ msgstr "Opzioni di gestione della sessione"
 msgid "Cancel Logout"
 msgstr "Annulla Uscita"
 
-#: libgnomeui/gnome-color-picker.c:313
+#: libgnomeui/gnome-color-picker.c:314
 msgid "Pick a color"
 msgstr "Scegli un colore"
 
@@ -1182,7 +1182,17 @@ msgstr "Elemento di Menu"
 msgid "Accelerator"
 msgstr "Tasti rapidi"
 
-#: libgnomeui/gnome_segv.c:44
+#: libgnomeui/gnome_segv.c:50
+#, c-format
+msgid ""
+"The GNOME Session Manager (process %d) has crashed\n"
+"due to a fatal error (%s).\n"
+"When you close this dialog, all applications will close and your session "
+"will exit.\n"
+"Please save all your files before closing this dialog."
+msgstr ""
+
+#: libgnomeui/gnome_segv.c:55
 #, c-format
 msgid ""
 "Application \"%s\" (process %d) has crashed\n"
@@ -1193,11 +1203,11 @@ msgstr ""
 "per via di un errore non recuperabile.\n"
 "(%s)"
 
-#: libgnomeui/gnome_segv.c:49
+#: libgnomeui/gnome_segv.c:61
 msgid "Usage: gnome_segv appname signum\n"
 msgstr "Uso: gnome_segv <nome applicazione> <numero segnale>\n"
 
-#: libgnomeui/gnome_segv.c:61
+#: libgnomeui/gnome_segv.c:73
 msgid "Please visit the GNOME Application Crash page for more information"
 msgstr "Visitate la GNOME Application Crash Page per ulteriori informazioni"
 
@@ -1393,10 +1403,14 @@ msgid "Copyright (C) 1998"
 msgstr "Copyright (C) 1998"
 
 #: libgnomeui/winhints_demo.c:413
+#, fuzzy
 msgid ""
-"Simple test app to check how the WIN_HINTS work.  And to test the "
-"gnome_win_hints_* functions for errors. :)"
-msgstr "Semplice applicazione di prova per verificare il funzionamento dei WIN_HINTS.  E per verificare se le funzioni gnome_win_hints_* contengono errori :)"
+"Simple test app to check how the WIN_HINTS work.\n"
+"And to test the gnome_win_hints_* functions for errors. :)"
+msgstr ""
+"Semplice applicazione di prova per verificare il funzionamento dei "
+"WIN_HINTS.  E per verificare se le funzioni gnome_win_hints_* contengono "
+"errori :)"
 
 #: libgnorba/gnome-name-server.c:229
 #, c-format
@@ -1430,7 +1444,7 @@ msgstr ""
 "o io non conosco il path corretto per trovarli.  In entrambi i casi,\n"
 "controllare l'installazione di GNOME."
 
-#: libgnorba/goad.c:1321
+#: libgnorba/goad.c:1350
 msgid "(Internal use only) GOAD server ID to activate"
 msgstr "ID server GOAD da attivare (solo per uso interno)"
 
@@ -1449,6 +1463,35 @@ msgstr "Repository ID attraverso il quale GOAD conosce questo server"
 #: libgnorba/loadshlib.c:12
 msgid "REPO_ID"
 msgstr "REPO_ID"
+
+#: libgnorba/orbitgtk.c:138
+#, c-format
+msgid "Failed to open CORBA cookie file (%s) for writing: %s\n"
+msgstr ""
+
+#: libgnorba/orbitgtk.c:145
+#, c-format
+msgid "Failed to write CORBA cookie file (%s): %s\n"
+msgstr ""
+
+#: libgnorba/orbitgtk.c:171
+#, c-format
+msgid "Failed to write CORBA cookie to `%s': %s\n"
+msgstr ""
+
+#: libgnorba/orbitgtk.c:181
+#, c-format
+msgid "Failed to open CORBA cookie file `%s': %s\n"
+msgstr ""
+
+#: libgnorba/orbitgtk.c:187
+#, c-format
+msgid "Failed to read CORBA cookie file `%s': %s\n"
+msgstr ""
+
+#: libgnorba/orbitgtk.c:213
+msgid "Failed to obtain CORBA authentication cookie, exiting\n"
+msgstr ""
 
 #: libgnorba/orbitns.c:295
 msgid "Could not get name service!"

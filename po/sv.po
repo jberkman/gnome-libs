@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-libs 1.0.12\n"
-"POT-Creation-Date: 1999-09-05 10:25+0200\n"
+"POT-Creation-Date: 1999-09-17 14:43-0500\n"
 "PO-Revision-Date: 1999-08-07 11:18+0200\n"
 "Last-Translator: Richard Hult <rhult@hem2.passagen.se>\n"
 "Language-Team: Swedish <sv@li.org>\n"
@@ -667,7 +667,7 @@ msgstr "Alternativ för sessionshanteraren"
 msgid "Cancel Logout"
 msgstr "Avbryt utloggning"
 
-#: libgnomeui/gnome-color-picker.c:313
+#: libgnomeui/gnome-color-picker.c:314
 msgid "Pick a color"
 msgstr "Välj en färg"
 
@@ -1163,7 +1163,17 @@ msgstr "Menyval"
 msgid "Accelerator"
 msgstr "Snabbtangent"
 
-#: libgnomeui/gnome_segv.c:44
+#: libgnomeui/gnome_segv.c:50
+#, c-format
+msgid ""
+"The GNOME Session Manager (process %d) has crashed\n"
+"due to a fatal error (%s).\n"
+"When you close this dialog, all applications will close and your session "
+"will exit.\n"
+"Please save all your files before closing this dialog."
+msgstr ""
+
+#: libgnomeui/gnome_segv.c:55
 #, c-format
 msgid ""
 "Application \"%s\" (process %d) has crashed\n"
@@ -1174,11 +1184,11 @@ msgstr ""
 "pga ett fel.\n"
 "(%s)"
 
-#: libgnomeui/gnome_segv.c:49
+#: libgnomeui/gnome_segv.c:61
 msgid "Usage: gnome_segv appname signum\n"
 msgstr "Använding: gnome_segv programnamn signalnummer\n"
 
-#: libgnomeui/gnome_segv.c:61
+#: libgnomeui/gnome_segv.c:73
 msgid "Please visit the GNOME Application Crash page for more information"
 msgstr "Besök GNOME-programkraschsidan för mer information"
 
@@ -1371,9 +1381,10 @@ msgid "Copyright (C) 1998"
 msgstr "Copyright (C) 1998"
 
 #: libgnomeui/winhints_demo.c:413
+#, fuzzy
 msgid ""
-"Simple test app to check how the WIN_HINTS work.  And to test the "
-"gnome_win_hints_* functions for errors. :)"
+"Simple test app to check how the WIN_HINTS work.\n"
+"And to test the gnome_win_hints_* functions for errors. :)"
 msgstr ""
 "Enkelt testprogram för att kontrollera hur WIN_HINTS fungerar, samt leta "
 "efter fel i gnome_win_hints_* funktionerna. :)"
@@ -1410,7 +1421,7 @@ msgstr ""
 "du inga tjänster installerade, eller så är sökvägen till dem ogiltig.\n"
 "Kontrollera din GNOME-installation."
 
-#: libgnorba/goad.c:1321
+#: libgnorba/goad.c:1350
 msgid "(Internal use only) GOAD server ID to activate"
 msgstr "(Endast internt bruk) GOAD server ID att aktivera"
 
@@ -1429,6 +1440,35 @@ msgstr "Den här serverns Repository ID"
 #: libgnorba/loadshlib.c:12
 msgid "REPO_ID"
 msgstr "REPO_ID"
+
+#: libgnorba/orbitgtk.c:138
+#, c-format
+msgid "Failed to open CORBA cookie file (%s) for writing: %s\n"
+msgstr ""
+
+#: libgnorba/orbitgtk.c:145
+#, c-format
+msgid "Failed to write CORBA cookie file (%s): %s\n"
+msgstr ""
+
+#: libgnorba/orbitgtk.c:171
+#, c-format
+msgid "Failed to write CORBA cookie to `%s': %s\n"
+msgstr ""
+
+#: libgnorba/orbitgtk.c:181
+#, c-format
+msgid "Failed to open CORBA cookie file `%s': %s\n"
+msgstr ""
+
+#: libgnorba/orbitgtk.c:187
+#, c-format
+msgid "Failed to read CORBA cookie file `%s': %s\n"
+msgstr ""
+
+#: libgnorba/orbitgtk.c:213
+msgid "Failed to obtain CORBA authentication cookie, exiting\n"
+msgstr ""
 
 #: libgnorba/orbitns.c:295
 msgid "Could not get name service!"

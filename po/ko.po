@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-libs 1.0.15\n"
-"POT-Creation-Date: 1999-08-31 15:54-0500\n"
+"POT-Creation-Date: 1999-09-17 14:43-0500\n"
 "PO-Revision-Date: 1999-08-31 07:40+0900\n"
 "Last-Translator: Changwoo Ryu <cwryu@debian.org>\n"
 "Language-Team: Korean <ko@li.org>\n"
@@ -667,7 +667,7 @@ msgstr "세션 관리 선택사항"
 msgid "Cancel Logout"
 msgstr "로그아웃 취소"
 
-#: libgnomeui/gnome-color-picker.c:313
+#: libgnomeui/gnome-color-picker.c:314
 msgid "Pick a color"
 msgstr "색상 선택"
 
@@ -1163,7 +1163,17 @@ msgstr "메뉴 항목"
 msgid "Accelerator"
 msgstr "단축키"
 
-#: libgnomeui/gnome_segv.c:44
+#: libgnomeui/gnome_segv.c:50
+#, c-format
+msgid ""
+"The GNOME Session Manager (process %d) has crashed\n"
+"due to a fatal error (%s).\n"
+"When you close this dialog, all applications will close and your session "
+"will exit.\n"
+"Please save all your files before closing this dialog."
+msgstr ""
+
+#: libgnomeui/gnome_segv.c:55
 #, c-format
 msgid ""
 "Application \"%s\" (process %d) has crashed\n"
@@ -1174,11 +1184,11 @@ msgstr ""
 "오류로 인해 비정상적으로 종료되었습니다.\n"
 "(%s)"
 
-#: libgnomeui/gnome_segv.c:49
+#: libgnomeui/gnome_segv.c:61
 msgid "Usage: gnome_segv appname signum\n"
 msgstr "사용법: gnome_segv 프로그램명 시그널번호\n"
 
-#: libgnomeui/gnome_segv.c:61
+#: libgnomeui/gnome_segv.c:73
 msgid "Please visit the GNOME Application Crash page for more information"
 msgstr ""
 "자세한 정보는 그놈 응용프로그램의 비정상 종료 안내 웹페이지에 있습니다."
@@ -1372,9 +1382,10 @@ msgid "Copyright (C) 1998"
 msgstr "Copyright (C) 1998"
 
 #: libgnomeui/winhints_demo.c:413
+#, fuzzy
 msgid ""
-"Simple test app to check how the WIN_HINTS work.  And to test the "
-"gnome_win_hints_* functions for errors. :)"
+"Simple test app to check how the WIN_HINTS work.\n"
+"And to test the gnome_win_hints_* functions for errors. :)"
 msgstr ""
 "Simple test app to check how the WIN_HINTS work.  And to test the "
 "gnome_win_hints_* functions for errors. :)"
@@ -1411,7 +1422,7 @@ msgstr ""
 "않았거나 서비스를 찾을 경로를 알지 못합니다.  어떤 경우든\n"
 "간에 GNOME 설치 상태를 검사하십시오."
 
-#: libgnorba/goad.c:1321
+#: libgnorba/goad.c:1350
 msgid "(Internal use only) GOAD server ID to activate"
 msgstr "(내부 사용) 활성화할 GOAD 서버 ID"
 
@@ -1430,6 +1441,35 @@ msgstr "GOAD가 알고 있는 서버에서 사용할 저장소 ID"
 #: libgnorba/loadshlib.c:12
 msgid "REPO_ID"
 msgstr "저장소_ID"
+
+#: libgnorba/orbitgtk.c:138
+#, c-format
+msgid "Failed to open CORBA cookie file (%s) for writing: %s\n"
+msgstr ""
+
+#: libgnorba/orbitgtk.c:145
+#, c-format
+msgid "Failed to write CORBA cookie file (%s): %s\n"
+msgstr ""
+
+#: libgnorba/orbitgtk.c:171
+#, c-format
+msgid "Failed to write CORBA cookie to `%s': %s\n"
+msgstr ""
+
+#: libgnorba/orbitgtk.c:181
+#, c-format
+msgid "Failed to open CORBA cookie file `%s': %s\n"
+msgstr ""
+
+#: libgnorba/orbitgtk.c:187
+#, c-format
+msgid "Failed to read CORBA cookie file `%s': %s\n"
+msgstr ""
+
+#: libgnorba/orbitgtk.c:213
+msgid "Failed to obtain CORBA authentication cookie, exiting\n"
+msgstr ""
 
 #: libgnorba/orbitns.c:295
 msgid "Could not get name service!"

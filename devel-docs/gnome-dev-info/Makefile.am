@@ -43,7 +43,6 @@ PIC_FILES= \
 EXTRA_DIST = \
 	gnome-app-helper.sgml		\
 	gnome-canvas.sgml		\
-	gnome-dev-info.html		\
 	gnome-dev-info.sgml		\
 	gnome-message-utils.sgml	\
 	x-concepts.sgml			\
@@ -57,7 +56,7 @@ EXTRA_DIST = \
 
 dist-hook:
 	tar cvf - gnome-dev-info | (cd $(distdir); tar xf -)
-
+	
 install-data-local: gnome-dev-info/book1.html
 	$(mkinstalldirs) $(DESTDIR)$(htmldir)
 	installfiles=`echo $(srcdir)/gnome-dev-info/*.html`;		    \

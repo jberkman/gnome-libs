@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-libs 1.0.16\n"
-"POT-Creation-Date: 1999-09-13 21:01+0200\n"
+"POT-Creation-Date: 1999-09-17 14:43-0500\n"
 "PO-Revision-Date: 1999-09-14 21:47+02:00\n"
 "Last-Translator: Karl Eichwalder <ke@suse.de>\n"
 "Language-Team: Matthias Warkus <mawa@iname.com>\n"
@@ -1167,7 +1167,17 @@ msgstr "Menüeintrag"
 msgid "Accelerator"
 msgstr "Tastaturkürzel"
 
-#: libgnomeui/gnome_segv.c:44
+#: libgnomeui/gnome_segv.c:50
+#, c-format
+msgid ""
+"The GNOME Session Manager (process %d) has crashed\n"
+"due to a fatal error (%s).\n"
+"When you close this dialog, all applications will close and your session "
+"will exit.\n"
+"Please save all your files before closing this dialog."
+msgstr ""
+
+#: libgnomeui/gnome_segv.c:55
 #, c-format
 msgid ""
 "Application \"%s\" (process %d) has crashed\n"
@@ -1178,11 +1188,11 @@ msgstr ""
 "eines fatalen Fehlers abgestürzt.\n"
 "(%s)"
 
-#: libgnomeui/gnome_segv.c:49
+#: libgnomeui/gnome_segv.c:61
 msgid "Usage: gnome_segv appname signum\n"
 msgstr "Syntax: gnome_segv appname signum\n"
 
-#: libgnomeui/gnome_segv.c:61
+#: libgnomeui/gnome_segv.c:73
 msgid "Please visit the GNOME Application Crash page for more information"
 msgstr ""
 "Bitte besuchen Sie die »GNOME Application Crash«-Seite, um an mehr "
@@ -1417,7 +1427,7 @@ msgstr ""
 "finden kann.  Wie auch immer, bitte überprüfen Sie Ihre\n"
 "GNOME-Installation."
 
-#: libgnorba/goad.c:1321
+#: libgnorba/goad.c:1350
 msgid "(Internal use only) GOAD server ID to activate"
 msgstr "(Nur intern) zu aktivierende GOAD-Server-ID"
 
@@ -1436,6 +1446,35 @@ msgstr "Repository-ID, unter der GOAD den Server kennt"
 #: libgnorba/loadshlib.c:12
 msgid "REPO_ID"
 msgstr "REPO_ID"
+
+#: libgnorba/orbitgtk.c:138
+#, c-format
+msgid "Failed to open CORBA cookie file (%s) for writing: %s\n"
+msgstr ""
+
+#: libgnorba/orbitgtk.c:145
+#, c-format
+msgid "Failed to write CORBA cookie file (%s): %s\n"
+msgstr ""
+
+#: libgnorba/orbitgtk.c:171
+#, c-format
+msgid "Failed to write CORBA cookie to `%s': %s\n"
+msgstr ""
+
+#: libgnorba/orbitgtk.c:181
+#, c-format
+msgid "Failed to open CORBA cookie file `%s': %s\n"
+msgstr ""
+
+#: libgnorba/orbitgtk.c:187
+#, c-format
+msgid "Failed to read CORBA cookie file `%s': %s\n"
+msgstr ""
+
+#: libgnorba/orbitgtk.c:213
+msgid "Failed to obtain CORBA authentication cookie, exiting\n"
+msgstr ""
 
 #: libgnorba/orbitns.c:295
 msgid "Could not get name service!"

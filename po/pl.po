@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-libs\n"
-"POT-Creation-Date: 1999-08-29 16:46+0200\n"
+"POT-Creation-Date: 1999-09-17 14:43-0500\n"
 "PO-Revision-Date: 1999-07-23 14:45+CET\n"
 "Last-Translator: GNOME PL Team\n"
 "Language-Team: Polish <gnomepl@pandora.info.bielsko.pl>\n"
@@ -663,7 +663,7 @@ msgstr "Opcje zarz±dzania sesj±"
 msgid "Cancel Logout"
 msgstr "Anuluj zakoñczenie sesji"
 
-#: libgnomeui/gnome-color-picker.c:313
+#: libgnomeui/gnome-color-picker.c:314
 msgid "Pick a color"
 msgstr "Wska¿ kolor"
 
@@ -740,12 +740,12 @@ msgstr "Podstawowe"
 msgid "Advanced"
 msgstr "Zaawansowane"
 
-#: libgnomeui/gnome-file-entry.c:148
+#: libgnomeui/gnome-file-entry.c:151
 msgid "Select file"
 msgstr "Wybierz plik"
 
 #. browse button ...
-#: libgnomeui/gnome-file-entry.c:277 libgnomeui/gnome-spell.c:617
+#: libgnomeui/gnome-file-entry.c:280 libgnomeui/gnome-spell.c:617
 #: libgnomeui/gnome-spell.c:634 libgnomeui/gnome-spell.c:651
 msgid "Browse..."
 msgstr "Przegl±daj..."
@@ -854,7 +854,7 @@ msgid "MODULE"
 msgstr "MODU£"
 
 #. dialog display isn't working out
-#: libgnomeui/gnome-init.c:608
+#: libgnomeui/gnome-init.c:606
 msgid "Giving up on displaying error dialog"
 msgstr "Rezygnacja przy wy¶wietlaniu okna z b³êdem"
 
@@ -1161,7 +1161,17 @@ msgstr "Element menu"
 msgid "Accelerator"
 msgstr "Akcelerator"
 
-#: libgnomeui/gnome_segv.c:44
+#: libgnomeui/gnome_segv.c:50
+#, c-format
+msgid ""
+"The GNOME Session Manager (process %d) has crashed\n"
+"due to a fatal error (%s).\n"
+"When you close this dialog, all applications will close and your session "
+"will exit.\n"
+"Please save all your files before closing this dialog."
+msgstr ""
+
+#: libgnomeui/gnome_segv.c:55
 #, c-format
 msgid ""
 "Application \"%s\" (process %d) has crashed\n"
@@ -1172,11 +1182,11 @@ msgstr ""
 "z powodu powa¿nego b³êdu.\n"
 "(%s)"
 
-#: libgnomeui/gnome_segv.c:49
+#: libgnomeui/gnome_segv.c:61
 msgid "Usage: gnome_segv appname signum\n"
 msgstr "U¿ycie: gnome_segv nazw_apl num_sygn\n"
 
-#: libgnomeui/gnome_segv.c:61
+#: libgnomeui/gnome_segv.c:73
 msgid "Please visit the GNOME Application Crash page for more information"
 msgstr ""
 "Proszê odwiedziæ stronê \"GNOME Application Crash\" aby uzyskaæ wiêcej "
@@ -1371,9 +1381,10 @@ msgid "Copyright (C) 1998"
 msgstr "Copyright (C) 1998"
 
 #: libgnomeui/winhints_demo.c:413
+#, fuzzy
 msgid ""
-"Simple test app to check how the WIN_HINTS work.  And to test the "
-"gnome_win_hints_* functions for errors. :)"
+"Simple test app to check how the WIN_HINTS work.\n"
+"And to test the gnome_win_hints_* functions for errors. :)"
 msgstr ""
 "Prosta aplikacja testowa, sprawdzaj±ca dzia³anie WIN_HINTS (oraz wy³apuj±ca "
 "b³êdy w funkcjach gnome_win_hints_* :)."
@@ -1410,7 +1421,7 @@ msgstr ""
 "Byæ mo¿e rzeczywi¶cie nie zainstalowano ¿adnych us³ug.\n"
 "Proszê sprawdziæ instalacjê GNOME."
 
-#: libgnorba/goad.c:1321
+#: libgnorba/goad.c:1350
 msgid "(Internal use only) GOAD server ID to activate"
 msgstr "(Do u¿ytku wewnêtrznego) GOAD ID aktywowanego serwera"
 
@@ -1429,6 +1440,35 @@ msgstr "Identyfikator repozytorium, po którym GOAD rozpoznaje serwer"
 #: libgnorba/loadshlib.c:12
 msgid "REPO_ID"
 msgstr "REPO_ID"
+
+#: libgnorba/orbitgtk.c:138
+#, c-format
+msgid "Failed to open CORBA cookie file (%s) for writing: %s\n"
+msgstr ""
+
+#: libgnorba/orbitgtk.c:145
+#, c-format
+msgid "Failed to write CORBA cookie file (%s): %s\n"
+msgstr ""
+
+#: libgnorba/orbitgtk.c:171
+#, c-format
+msgid "Failed to write CORBA cookie to `%s': %s\n"
+msgstr ""
+
+#: libgnorba/orbitgtk.c:181
+#, c-format
+msgid "Failed to open CORBA cookie file `%s': %s\n"
+msgstr ""
+
+#: libgnorba/orbitgtk.c:187
+#, c-format
+msgid "Failed to read CORBA cookie file `%s': %s\n"
+msgstr ""
+
+#: libgnorba/orbitgtk.c:213
+msgid "Failed to obtain CORBA authentication cookie, exiting\n"
+msgstr ""
 
 #: libgnorba/orbitns.c:295
 msgid "Could not get name service!"
