@@ -74,6 +74,7 @@ if test $ac_cv_func_gethostbyname = no; then
   AC_CHECK_LIB(nsl,gethostbyname,NSL_LIBS=-lnsl)
 fi
 AC_SUBST(NSL_LIBS)
+AC_CHECK_FUNC(inet_aton,,[AC_CHECK_LIB(resolv,inet_aton)])
 
 dnl libgtkxmhtml enables a workaround if this isn't present
 xLIBS="$LIBS"
