@@ -185,14 +185,86 @@ gnome_icon_selector_construct (GnomeIconSelector *iselector,
 			       const gchar *history_id,
 			       const gchar *dialog_title,
 			       GtkWidget *selector_widget,
-			       GtkWidget *browse_dialog)
+			       GtkWidget *browse_dialog,
+			       guint32 flags)
 {
 	g_return_if_fail (iselector != NULL);
 	g_return_if_fail (GNOME_IS_ICON_SELECTOR (iselector));
 
+	/* Create the default selector widget if requested. */
+	if (flags & GNOME_SELECTOR_DEFAULT_SELECTOR_WIDGET) {
+		GtkWidget *box, *sb, *frame, *list;
+		GtkAdjustment *vadj;
+
+		if (selector_widget != NULL) {
+			g_warning (G_STRLOC ": It makes no sense to use "
+				   "GNOME_SELECTOR_DEFAULT_SELECTOR_WIDGET "
+				   "and pass a `selector_widget' as well.");
+			return;
+		}
+
+		box = gtk_hbox_new (FALSE, 5);
+
+		sb = gtk_vscrollbar_new (NULL);
+		vadj = gtk_range_get_adjustment (GTK_RANGE(sb));
+		gtk_box_pack_end (GTK_BOX(box), sb, FALSE, FALSE, 0);
+		gtk_widget_show (sb);
+
+		list = gnome_icon_list_new_flags (ICON_SIZE+30, vadj, FALSE);
+		gtk_widget_set_usize (list, 100, 300);
+
+		frame = gtk_frame_new (NULL);
+		gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_IN);
+		gtk_box_pack_start (GTK_BOX (box), frame, TRUE, TRUE, 0);
+		gtk_widget_show (frame);
+
+		gtk_container_add (GTK_CONTAINER (frame), list);
+
+		gnome_icon_list_set_selection_mode (GNOME_ICON_LIST (list),
+						    GTK_SELECTION_SINGLE);
+
+		iselector->_priv->icon_list = GNOME_ICON_LIST (list);
+	
+		gtk_widget_show_all (box);
+
+		selector_widget = box;
+	}
+
+	/* Create the default browser dialog if requested. */
+	if (flags & GNOME_SELECTOR_DEFAULT_BROWSE_DIALOG) {
+		GtkWidget *filesel_widget;
+		GtkFileSelection *filesel;
+
+		if (browse_dialog != NULL) {
+			g_warning (G_STRLOC ": It makes no sense to use "
+				   "GNOME_SELECTOR_DEFAULT_BROWSE_DIALOG "
+				   "and pass a `browse_dialog' as well.");
+			return;
+		}
+
+		filesel_widget = gtk_file_selection_new (dialog_title);
+		filesel = GTK_FILE_SELECTION (filesel_widget);
+
+		gtk_signal_connect (GTK_OBJECT (filesel->cancel_button),
+				    "clicked", browse_dialog_cancel,
+				    iselector);
+		gtk_signal_connect (GTK_OBJECT (filesel->ok_button),
+				    "clicked", browse_dialog_ok,
+				    iselector);
+
+		browse_dialog = GTK_WIDGET (filesel);
+	}
+
 	gnome_selector_construct (GNOME_SELECTOR (iselector),
 				  history_id, dialog_title,
-				  selector_widget, browse_dialog);
+				  selector_widget, browse_dialog,
+				  flags);
+
+	if (flags & GNOME_SELECTOR_DEFAULT_BROWSE_DIALOG) {
+		/* We need to unref this since it isn't put in any
+		 * container so it won't get destroyed otherwise. */
+		gtk_widget_unref (browse_dialog);
+	}
 }
 
 /**
@@ -210,48 +282,18 @@ gnome_icon_selector_new (const gchar *history_id,
 			 const gchar *dialog_title)
 {
 	GnomeIconSelector *iselector;
-	GtkWidget *box, *sb, *frame, *list;
-	GtkFileSelection *filesel;
-	GtkAdjustment *vadj;
+	guint32 flags;
 
 	iselector = gtk_type_new (gnome_icon_selector_get_type ());
 
-	box = gtk_hbox_new (FALSE, 5);
-
-	sb = gtk_vscrollbar_new (NULL);
-	vadj = gtk_range_get_adjustment (GTK_RANGE(sb));
-	gtk_box_pack_end (GTK_BOX(box), sb, FALSE, FALSE, 0);
-	gtk_widget_show (sb);
-
-	list = gnome_icon_list_new_flags (ICON_SIZE+30, vadj, FALSE);
-	gtk_widget_set_usize (list, 100, 300);
-
-	frame = gtk_frame_new (NULL);
-	gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_IN);
-	gtk_box_pack_start (GTK_BOX (box), frame, TRUE, TRUE, 0);
-	gtk_widget_show (frame);
-
-	gtk_container_add (GTK_CONTAINER (frame), list);
-
-	gnome_icon_list_set_selection_mode (GNOME_ICON_LIST (list),
-					    GTK_SELECTION_SINGLE);
-
-	iselector->_priv->icon_list = GNOME_ICON_LIST (list);
-	
-	gtk_widget_show_all (box);
-
-	filesel = GTK_FILE_SELECTION (gtk_file_selection_new (dialog_title));
-
-	gtk_signal_connect (GTK_OBJECT (filesel->cancel_button), "clicked",
-			    browse_dialog_cancel, iselector);
-	gtk_signal_connect (GTK_OBJECT (filesel->ok_button), "clicked",
-			    browse_dialog_ok, iselector);
+	flags = GNOME_SELECTOR_DEFAULT_SELECTOR_WIDGET |
+		GNOME_SELECTOR_DEFAULT_BROWSE_DIALOG |
+		GNOME_SELECTOR_WANT_BROWSE_BUTTON |
+		GNOME_SELECTOR_WANT_CLEAR_BUTTON;
 
 	gnome_icon_selector_construct (iselector, history_id,
-				       dialog_title, box,
-				       GTK_WIDGET (filesel));
-
-	gtk_widget_unref (GTK_WIDGET (filesel));
+				       dialog_title, NULL, NULL,
+				       flags);
 
 	return GTK_WIDGET (iselector);
 }
@@ -260,7 +302,8 @@ GtkWidget *
 gnome_icon_selector_new_custom (const gchar *history_id,
 				const gchar *dialog_title,
 				GtkWidget *selector_widget,
-				GtkWidget *browse_dialog)
+				GtkWidget *browse_dialog,
+				guint32 flags)
 {
 	GnomeIconSelector *iselector;
 
@@ -268,7 +311,7 @@ gnome_icon_selector_new_custom (const gchar *history_id,
 
 	gnome_icon_selector_construct (iselector, history_id,
 				       dialog_title, selector_widget,
-				       browse_dialog);
+				       browse_dialog, flags);
 
 	return GTK_WIDGET (iselector);
 }
