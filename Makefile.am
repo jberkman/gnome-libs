@@ -6,12 +6,6 @@ AUTOMAKE_OPTIONS = 1.3
 
 bin_SCRIPTS = gnome-config
 
-if HAVE_ORBIT
-GNORBA = libgnorba
-else
-GNORBA = 
-endif
-
 if COMPILE_GNOME_HELLO
 gnome_hello = gnome-hello
 else
@@ -27,7 +21,7 @@ endif
 SUBDIRS = po intl support macros \
 	tools \
 	libgnome libgnomeui gtk-xmhtml $(gnome_hello) zvt \
-	$(GNORBA) idl $(test_gnome) devel-docs
+	libgnorba idl $(test_gnome) devel-docs
 
 include_HEADERS = gnome.h
 

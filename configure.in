@@ -268,12 +268,7 @@ AC_SUBST(LIBGTKXMHTML_LIBS)
 dnl
 dnl ORBit checks
 dnl
-GNOME_ORBIT_HOOK([have_orbit=true],[])
-AM_CONDITIONAL(HAVE_ORBIT, test x$have_orbit = xtrue)
-if test x$have_orbit != xtrue ; then
-  AC_MSG_WARN([
-*** ORBit not found - CORBA parts will not be built.])
-fi
+GNOME_ORBIT_CHECK
 
 dnl
 dnl Gnome-Hello
