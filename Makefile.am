@@ -8,7 +8,7 @@ DISTCLEANFILES = stamp-v
 
 include_HEADERS = gnome.h
 
-EXTRA_DIST = HACKING
+EXTRA_DIST = HACKING gnomeConf.sh.in
 
 release:
 	$(MAKE) dist distdir=$(PACKAGE)$(VERSION)
