@@ -306,7 +306,7 @@ ART_LIBS="-lart_lgpl"
 GNOME_LIBS="-lgnome -lgnomesupport $LIBGNOME_LIBS"
 GNOMEUI_LIBS="-lgnomeui $ART_LIBS $GDK_IMLIB_LIBS $GTK_LIBS $GNOME_LIBS"
 GTKXMHTML_LIBS="-lgtkxmhtml $LIBGTKXMHTML_LIBS"
-ZVT_LIBS="-lzvt $GTK_LIBS"
+ZVT_LIBS="-lzvt $UTIL_LIBS $GTK_LIBS"
 
 dnl These definitions are expanded in make and gnome-config
 GNOME_LIBDIR='-L${libdir}'
