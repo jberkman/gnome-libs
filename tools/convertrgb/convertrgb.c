@@ -114,7 +114,7 @@ static void convert(char *real_file)
 				fprintf(f, "static const GdkImlibColor %s_alpha  = { -1, -1, -1, 0 };\n", data_var);
 			}
 
-		fprintf(f, "static const char %s[] = {\n", data_var);
+		fprintf(f, "static const unsigned char %s[] = {\n", data_var);
 
 		for (y=0;y < h; y++)
 			for (x=0;x < w; x++)
@@ -183,7 +183,7 @@ static void convert(char *real_file)
 			}
 		*/
 
-		fprintf(f, "static const char %s[] = {\n", data_var);
+		fprintf(f, "static const unsigned char %s[] = {\n", data_var);
 
 		while (fread(buf, sizeof(unsigned char), 8, sf) == 8)
 			{
