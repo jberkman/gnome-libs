@@ -29,3 +29,4 @@
 #undef PACKAGE
 #undef VERSION
 #undef TEST_INTERNALS
+#undef umode_t
