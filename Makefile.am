@@ -11,5 +11,8 @@ EXTRA_DIST = HACKING
 release:
 	$(MAKE) disk distdir=$(PACKAGE)$(VERSION)
 
-libdir = $(prefix)/lib
-lib_DATA = gnomeConf.sh
+install-data-local:
+	$(INSTALL_DATA) $(srcdir)/gnomeConf.sh $(prefix)/lib
+	echo >> $(prefix)/lib/gnomeConf.sh
+	echo "GNOME_LIBDIR=\"-L$(libdir)\"" >> $(prefix)/lib/gnomeConf.sh
+	echo "GNOME_INCLUDEDIR=\"-I$(includedir)\"" >> $(prefix)/lib/gnomeConf.sh

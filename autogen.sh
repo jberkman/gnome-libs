@@ -79,6 +79,8 @@ do
     (cd $srcdir/$i; \
     libtoolize --copy --force; \
     if test -d macros; then aclocal -I macros; else aclocal; fi; \
+    autoheader; \
+    automake --add-missing; \
     automake --gnu; autoheader; autoconf)
 done
 

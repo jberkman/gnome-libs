@@ -1,4 +1,4 @@
-dnl aclocal.m4 generated automatically by aclocal 1.2d
+dnl aclocal.m4 generated automatically by aclocal 1.2c
 
 dnl Copyright (C) 1994, 1995, 1996, 1997 Free Software Foundation, Inc.
 dnl This Makefile.in is free software; the Free Software Foundation
@@ -418,19 +418,6 @@ for am_file in <<$1>>; do
 done<<>>dnl>>)
 changequote([,]))])
 
-# Define a conditional.
-
-AC_DEFUN(AM_CONDITIONAL,
-[AC_SUBST($1_TRUE)
-AC_SUBST($1_FALSE)
-if $2; then
-  $1_TRUE=
-  $1_FALSE='#'
-else
-  $1_TRUE='#'
-  $1_FALSE=
-fi])
-
 # Do all the work for Automake.  This macro actually does too much --
 # some checks are only needed if your package does certain things.
 # But this isn't really a big deal.
@@ -453,8 +440,8 @@ fi
 ifelse([$3],,
 AC_DEFINE_UNQUOTED(PACKAGE, "$PACKAGE")
 AC_DEFINE_UNQUOTED(VERSION, "$VERSION"))
-AC_REQUIRE([AM_SANITY_CHECK])
-AC_REQUIRE([AC_ARG_PROGRAM])
+AM_SANITY_CHECK
+AC_ARG_PROGRAM
 dnl FIXME This is truly gross.
 missing_dir=`cd $ac_aux_dir && pwd`
 AM_MISSING_PROG(ACLOCAL, aclocal, $missing_dir)
@@ -462,7 +449,7 @@ AM_MISSING_PROG(AUTOCONF, autoconf, $missing_dir)
 AM_MISSING_PROG(AUTOMAKE, automake, $missing_dir)
 AM_MISSING_PROG(AUTOHEADER, autoheader, $missing_dir)
 AM_MISSING_PROG(MAKEINFO, makeinfo, $missing_dir)
-AC_REQUIRE([AC_PROG_MAKE_SET])])
+AC_PROG_MAKE_SET])
 
 
 # serial 1
@@ -493,17 +480,6 @@ if (
       # -L didn't work.
       set X `ls -t $srcdir/configure conftestfile`
    fi
-   if test "[$]*" != "X $srcdir/configure conftestfile" \
-      && test "[$]*" != "X conftestfile $srcdir/configure"; then
-
-      # If neither matched, then we have a broken ls.  This can happen
-      # if, for instance, CONFIG_SHELL is bash and it inherits a
-      # broken ls alias from the environment.  This has actually
-      # happened.  Such a system could not be considered "sane".
-      AC_MSG_ERROR([ls -t appears to fail.  Make sure there is not a broken
-alias in your environment])
-   fi
-
    test "[$]2" = conftestfile
    )
 then
@@ -554,6 +530,17 @@ AC_DEFUN(AM_MAINTAINER_MODE,
   AC_SUBST(MAINT)dnl
 ]
 )
+
+# aclocal-include.m4
+# 
+# This macro adds the name macrodir to the set of directories
+# that `aclocal' searches for macros.  
+
+# serial 1
+
+dnl AM_ACLOCAL_INCLUDE(macrodir)
+AC_DEFUN([AM_ACLOCAL_INCLUDE],
+[ACLOCAL="$ACLOCAL -I $1"])
 
 
 # serial 17 AM_PROG_LIBTOOL
@@ -747,4 +734,77 @@ NM="$ac_cv_path_NM"
 AC_MSG_RESULT([$NM])
 AC_SUBST(NM)
 ])
+
+AC_DEFUN([GNOME_X_CHECKS],
+[
+        AC_PATH_X
+        AC_PATH_XTRA
+
+        saved_cflags="$CFLAGS"
+        saved_ldflags="$LDFLAGS"
+
+        CFLAGS="$X_CFLAGS"
+        LDFLAGS="$X_LDFLAGS $X_LIBS"
+
+        dnl Checks for libraries.
+        AC_CHECK_LIB(X11, XOpenDisplay,
+                x_libs="$X_PRE_LIBS -lX11 $X_EXTRA_LIBS",
+                [AC_MSG_ERROR(No X11 installed)],
+                $X_EXTRA_LIBS)
+	AC_SUBST(x_libs)
+
+        LDFLAGS="$saved_ldflags $X_LDFLAGS $X_LIBS $x_libs"
+
+        AC_CHECK_LIB(Xext, XShmAttach,
+                x_libs="$x_libs -lXext", ,
+                $x_libs)
+
+	gnome_cv_passdown_x_libs="$x_libs"
+	gnome_cv_passdown_X_LIBS="$X_LIBS"
+	gnome_cv_passdown_X_CFLAGS="$X_CFLAGS"
+
+        LDFLAGS="$saved_ldflags $X_LDFLAGS $X_LIBS"
+
+	dnl Assume that if we have -lSM then we also have -lICE.
+	AC_CHECK_LIB(SM, SmcSaveYourselfDone,
+	        [AC_DEFINE(HAVE_LIBSM)
+	        x_libs="$x_libs -lSM -lICE"], ,
+		$x_libs -lICE)
+		AM_CONDITIONAL(ENABLE_GSM,
+			test "x$ac_cv_lib_SM_SmcSaveYourselfDone" = "xyes")
+
+        AC_CHECK_LIB(gtk, gdk_pixmap_unref,
+                GTK_LIBS="-lgtk -lgdk -lglib -lm",
+                [AC_MSG_ERROR(Can not find a Gtk 0.99.1, probably you have an older version?)],
+                -lgdk -lglib $x_libs -lm)
+	AC_SUBST(GTK_LIBS)
+
+	gnome_cv_passdown_GTK_LIBS="$GTK_LIBS"
+
+	XPM_LIBS=""
+	AC_CHECK_LIB(Xpm, XpmFreeXpmImage, [XPM_LIBS="-lXpm"], , $x_libs)
+	AC_SUBST(XPM_LIBS)
+
+	PTHREAD_LIB=""
+	AC_CHECK_LIB(pthread, pthread_create, PTHREAD_LIB="-lpthread",
+		[AC_CHECK_LIB(c_r, pthread_create, PTHREAD_LIB="-lc_r")])
+	AC_SUBST(PTHREAD_LIB)
+
+        CFLAGS="$saved_cflags $X_CFLAGS"
+        LDFLAGS="$saved_ldflags"
+	AC_PROVIDE([GNOME_X_CHECKS])
+])
+
+# Define a conditional.
+
+AC_DEFUN(AM_CONDITIONAL,
+[AC_SUBST($1_TRUE)
+AC_SUBST($1_FALSE)
+if $2; then
+  $1_TRUE=
+  $1_FALSE='#'
+else
+  $1_TRUE='#'
+  $1_FALSE=
+fi])
 
