@@ -205,7 +205,7 @@ static void vt_line_update(struct _vtx *vx, struct vt_line *l, int line, int alw
 	((c & (VTATTR_MASK^VTATTR_FORECOLOURM)) != 
 	 (l->data[i] & (VTATTR_MASK^VTATTR_FORECOLOURM)))) {
 
-#if 0
+#if 1
       d(printf("bl->data[i] = %08x != %08x, c=%d (back now=%d not %d)\n", 
 	       bl->data[i], l->data[i], c, 
 	       (l->data[i]&VTATTR_BACKCOLOURM)>>VTATTR_BACKCOLOURB, 
@@ -214,10 +214,10 @@ static void vt_line_update(struct _vtx *vx, struct vt_line *l, int line, int alw
       vx->back_match = 0;
       break;
     } else {
-#if 0
+#if 1
       d(printf("bl->data[i] == %08x == %08x, c=%08x back=%d\n",
 	       bl->data[i], l->data[i], c,
-	       (l->data[i]&VTATTR_BACKCOLOURM)>>VTATTR_BACKCOLOURB);
+	       (l->data[i]&VTATTR_BACKCOLOURM)>>VTATTR_BACKCOLOURB));
 #endif
     }
   }

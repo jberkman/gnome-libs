@@ -68,6 +68,7 @@ typedef enum {
 /* all attributes mask, and no-attributes mask */
 #define VTATTR_MASK	  0xffff0000
 #define VTATTR_DATAMASK	  (~VTATTR_MASK)
+#define VTATTR_CLEARMASK  (~(VTATTR_BOLD|VTATTR_UNDERLINE|VTATTR_BLINK|VTATTR_REVERSE))
 
 /* bitmasks for colour map information */
 #define VTATTR_FORECOLOURM 0x03e00000

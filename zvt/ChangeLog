@@ -1,3 +1,20 @@
+1999-02-18  Michael Zucchi  <mzucchi@denr.sa.gov.au>
+
+	* vt.c (vt_scroll_up): Apply CLEARMASK to blank character (and
+	then actually use it).
+	(vt_scroll_down): Apply CLEARMASK to blank character.
+	(vt_delete_chars): When deleting characters, extend the attributes
+	from the end of the line (dont apply the latest attributes!).
+	(vt_insert_lines): Apply CLEARMASK to blank character.
+	(vt_delete_lines): Ditto.
+	(vt_clear_line_portion): Ditto.
+	(vt_newline): Ditto!
+	(vt_resize): Ditto (for vt_resize_lines calls).
+	(vt_insert_chars): Ditto for inserting blanks.
+
+	* vt.h (VTATTR_CLEARMASK): Mask to apply to the attributes to
+	generate a 'clear' character.
+
 Thu Feb 18 03:29:00 1999  Timur Bakeyev <mc@bat.ru>
 
         * gnome-utmp.c: Re-arrange source, so (suppose) it compilable on
