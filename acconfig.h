@@ -55,7 +55,4 @@
 #undef HAVE_STROPTS_H
 #undef HAVE_DLFCN_H
 
-@BOTTOM@
-#ifndef HAVE_HYPOT
-#define hypot(x, y) sqrt((x) * (x) + (y) * (y))
-#endif
+#undef WITH_SMBFS
