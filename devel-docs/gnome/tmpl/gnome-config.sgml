@@ -11,8 +11,11 @@ Simple access to configuration values (50% done)
 storing configuration values (the routines provide handling of default
 values to simplify the code).</para>
 
-<sect2>
-  <title>Definitions</title>
+  
+  <formalpara>
+   <title>Definitions</title>
+
+  </formalpara>
   <para>
     <itemizedlist>
       <listitem><para><emphasis>config path:</emphasis> a string that
@@ -62,13 +65,14 @@ values to simplify the code).</para>
       <listitem><para>"section" - a group of config items and other
       config sections</para></listitem>
     </itemizedlist>
-  </para>
-</sect2>
+   </para>
 
-<sect2>
+
+<formalpara>
   <title>How Config Items are Read</title>
-  <para>
 
+</formalpara>
+<para>
     Gnome has a versatile method of storing config items.  When a
     config item is written by a program, it is written to a file under
     the <filename>~/.gnome</filename> heirachy.  However, when config
@@ -104,8 +108,8 @@ values to simplify the code).</para>
     they are needed, so putting defaults into the
     <filename>config-override</filename> directory will not always
     completely enforce a setting.
-  </para>
-</sect2>
+</para>
+
 
 <para>There are two types of routines</para> 
 
