@@ -6,6 +6,8 @@ LINK = $(LIBTOOL) --mode=link $(CC) $(CFLAGS) $(LDFLAGS) -o $@
 
 libgnorbaincludedir = $(includedir)/libgnorba
 
+EXTRA_DIST = yes.xpm no.xpm
+
 INCLUDES = 						\
 	-I.. 						\
 	-I$(srcdir)/..					\
