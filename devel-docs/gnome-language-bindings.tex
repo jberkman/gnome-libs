@@ -1,7 +1,7 @@
 \documentclass{article}
 \begin{document}
 \title{Design Guidelines to make Gnome language bindings friendly}
-\author{Andreas Kostyrka, andreas@ag.or.at}
+\author{Andreas Kostyrka, andreas@ag.or.at\\Marius Vollmer, mvo@zagadka.ping.de}
 \maketitle
 \tableofcontents
 \section{Rationale for this document}
@@ -163,4 +163,107 @@ designers in how far my ideas are doable.
 
 Also, English is not my native language, so any corrections in this
 area are welcome too.
+
+Anyway, I've just been told that someone else want's to say something,
+too, so I'm handing the mike over to, \dots, err, excuse me what was
+your name again?
+
+\section{More stuff}
+
+Cough, cough, hello, my name is Marius Vollmer and I've done the Guile
+bindings so I thought I just step up here and, well, ok, I just drone
+on, then\dots
+
+I'd like to bring up two points and illustrate them with some sample
+code.
+\begin{itemize}
+\item Making reference counting and a tracing GC cooperate,
+\item The importance of destroy notification,
+\end{itemize}
+
+The sample code will implement a simple struct that is reference
+counted and can initiate a callback.  Here is the first version of it:
+\begin{quote}
+\begin{verbatim}
+typedef struct _foo foo;
+typedef void (*foo_callback) (foo *, int n, void *data);
+
+struct _foo {
+  int ref_count;
+  foo *peer;
+
+  foo_callback callback_func;
+  void *callback_data;
+  GtkDestroyNotify callback_notify;
+};
+
+foo *
+foo_new ()
+{
+  foo *f = alloc_one_foo ();
+  f->ref_count = 1;
+  f->peer = NULL;
+  f->callback_func = NULL;
+  f->callback_notify = NULL;
+}
+
+void
+foo_ref (foo *f)
+{
+  f->ref_count++;
+}
+
+void
+foo_unref (foo *f)
+{
+  f->ref_count--;
+  if (f->ref_count == 0)
+    {
+      if (callback_notify)
+        f->callback_notify (f->callback_data);
+      if (f->peer)
+        foo_unref (f->peer);
+      free_one_foo (f);
+    }
+}
+
+void
+foo_set_peer (foo *f, foo *p)
+{
+  if (p)
+    foo_ref (p);
+  if (f->peer)
+    foo_unref (f->peer);
+  f->peer = p;
+}
+
+void
+foo_set_callback (foo *f, foo_callback func, void *data,
+                  GtkDestroyNotify notify)
+{
+  if (f->callback_notify)
+    f->callback_notify (f->data);
+  f->callback_func = func;
+  f->callback_data = data;
+  f->callback_notify = notify;
+}
+
+static void
+foo_invoke_callback (foo *f, int n)
+{
+  if (f->callback_func)
+    f->callback_func (f, n, f->callback_data);
+}
+
+void
+foo_trace_refs (foo *f, void (*tracer)(void *, void *), void *data)
+{
+  if (f->peer)
+    tracer (f->peer, data);
+}
+\end{verbatim}
+\end{quote}
+
+[Need more explanations.]
+
 \end{document}
