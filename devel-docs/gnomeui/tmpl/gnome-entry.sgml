@@ -6,16 +6,45 @@ Entry widget with history tracking.
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-  This widget is a wrapper around the GtkEntry widget, but it provides
+  This widget is a wrapper around the #GtkEntry widget, but it provides
   a history mechanism for all the input entered into the widget.  The
   way this works is that a special identifier is provided when
-  creating the GnomEntry widget, and this identifier is used to load
-  and save the history of the text.
+  creating the <type>GnomeEntry</type> widget, and this identifier
+  is used to load and save the history of the text.
 </para>
+
+<para>
+  Here is an example of how to use the widget
+
+  <example>
+     <title>Sample usage of the GnomeEntry widget</title>
+     <programlisting>
+GtkWidget *gnomeentry, *gtkentry;
+char *text;
+
+...
+
+/* create a gnome entry */
+gnomeentry = gnome_entry_new("some_history_id");
+
+/* get the GtkEntry widget */
+gtkentry = gnome_entry_gtk_entry (GNOME_ENTRY (gnomeentry));
+
+/* set the text to "BLAH" */
+gtk_entry_set_text(GTK_ENTRY(gtkentry), "BLAH");
+
+...
+
+/*somewhere else we wish to retrieve the contents*/
+text = gtk_entry_get_text(GTK_ENTRY(gtkentry));
+     </programlisting>
+  </example>
+</para>
+
 
 <!-- ##### SECTION See_Also ##### -->
 <para>
-
+  #GnomeFileEntry, #GnomeIconEntry, #GnomePixmapEntry, #GnomeNumberEntry
 </para>
 
 <!-- ##### STRUCT GnomeEntry ##### -->

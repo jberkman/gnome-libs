@@ -2,16 +2,18 @@
 GnomeFileEntry
 
 <!-- ##### SECTION Short_Description ##### -->
-
+File entry widget.
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-
+  This widget provides an entry box with history such as the #GnomeEntry one
+  and a button which can pop up a file selector diaog box. It also accepts
+  DND drops from the filemanager and other sources
 </para>
 
 <!-- ##### SECTION See_Also ##### -->
 <para>
-
+  #GnomeEntry, #GnomeIconEntry, #GnomePixmapEntry, #GnomeNumberEntry
 </para>
 
 <!-- ##### STRUCT GnomeFileEntry ##### -->
@@ -96,7 +98,8 @@ GnomeFileEntry
 
 <!-- ##### SIGNAL GnomeFileEntry::browse-clicked ##### -->
 <para>
-
+  Signal emitted when the browse button is clicked. This is so that you
+  can add stuff to the file selector or to override this method.
 </para>
 
 @fileentry: the object which received the signal.
