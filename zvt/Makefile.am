@@ -2,10 +2,9 @@ libzvtincludedir = $(includedir)/zvt
 
 INCLUDES = -I.. -I$(srcdir)/.. 	\
 	-I$(includedir) 	\
-	@SUPPORTINCS@ 		\
-        @GTK_CFLAGS@  		\
-	-I$(top_srcdir)/intl 	\
-	-I$(top_srcdir)/support
+	$(SUPPORTINCS) 		\
+        $(GTK_CFLAGS)  		\
+	-I$(top_srcdir)/intl -I$(top_builddir)/intl
 
 lib_LTLIBRARIES = libzvt.la
 
