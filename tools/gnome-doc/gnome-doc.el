@@ -69,7 +69,7 @@ function types are properly supported at the moment."
 		(looking-at ".*void[ \t]*$"))
 	    (setq c-isvoid 1))
 	(save-excursion
-	  (if (re-search-forward "\\([A-Za-z_]+\\)[ \t\n]*\\(([^)]*)\\)" c-point nil)
+	  (if (re-search-forward "\\([A-Za-z_:]+\\)[ \t\n]*\\(([^)]*)\\)" c-point nil)
 	      (let ((c-argstart (match-beginning 2))
 		    (c-argend (match-end 2)))
 		(setq c-funcname (buffer-substring (match-beginning 1) (match-end 1)))
