@@ -48,6 +48,10 @@ static void mode_book_cb(GtkWidget *w);
 static void mode_modal_cb(GtkWidget *w);
 static void inc_counter_cb(GtkWidget *w, gpointer user_data);
 
+#ifndef USE_TEMPLATES
+static void app_created_handler(GnomeMDI *, GnomeApp *);
+#endif
+
 static gchar         *my_child_get_config_string(GnomeMDIChild *, gpointer);
 static GnomeMDIChild *my_child_new_from_config (const gchar *);
 static GtkWidget     *my_child_set_label(GnomeMDIChild *, GtkWidget *, gpointer);
@@ -464,6 +468,10 @@ static GtkMenuBar *mdi_create_menus(GnomeMDI *mdi) {
 
 	return GTK_MENU_BAR(bar);
 }  
+
+void app_created_handler(GnomeMDI *mdi, GnomeApp *app) {
+	gnome_app_set_menus (app, mdi_create_menus(mdi));
+}
 #endif
 
 int main(int argc, char **argv) {
@@ -495,9 +503,6 @@ int main(int argc, char **argv) {
 	   main_menu[] will remain intact */
 #ifdef USE_TEMPLATES
 	gnome_mdi_set_menubar_template(mdi, main_menu);
-#else
-	/* we connect the handler providing our custom-built menus */
-	gnome_mdi_set_menubar_creator(mdi, mdi_create_menus);
 #endif
 
 	/* and document menu and document list paths (see gnome-app-helper menu
@@ -536,6 +541,11 @@ int main(int argc, char **argv) {
 					   GTK_SIGNAL_FUNC(cleanup_cb), NULL);
 	gtk_signal_connect(GTK_OBJECT(mdi), "remove_child",
 					   GTK_SIGNAL_FUNC(remove_child_handler), NULL);
+#ifndef USE_TEMPLATES
+	gtk_signal_connect(GTK_OBJECT(mdi), "app_created",
+					   GTK_SIGNAL_FUNC(app_created_handler), NULL);
+#endif
+	
 	/* we could also connect handlers to other signals, but since we're lazy, we won't ;) */
 
 	/* Restore MDI session. */
