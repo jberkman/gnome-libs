@@ -87,11 +87,66 @@ AC_CHECK_HEADERS(sys/select.h)
 
 dnl Image handling libraries
 Z_LIBS= JPEG_LIBS= PNG_LIBS= TIFF_LIBS= GIF_LIBS= GDK_IMLIB_LIBS=
-AC_CHECK_LIB(z, inflate, [Z_LIBS="-lz";  AC_DEFINE(HAVE_LIBZ)])
-AC_CHECK_LIB(jpeg, jpeg_abort, [JPEG_LIBS="-ljpeg"; AC_DEFINE(HAVE_LIBJPEG)])
-AC_CHECK_LIB(png, png_get_valid, [PNG_LIBS="-lpng"; AC_DEFINE(HAVE_LIBPNG)], , $Z_LIBS)
-AC_CHECK_LIB(tiff, TIFFClose, [TIFF_LIBS="-ltiff $Z_LIBS $JPEG_LIBS"; AC_DEFINE(HAVE_LIBTIFF)], ,$Z_LIBS $JPEG_LIBS)
-AC_CHECK_LIB(gif, DGifOpenFileName, [GIF_LIBS="-lgif"; AC_DEFINE(HAVE_LIBGIF)], ,$GTK_LIBS $X_LIBS $x_libs)
+
+dnl Test for libz
+AC_CHECK_LIB(z, inflate,
+  AC_CHECK_HEADER(zlib.h,
+    Z_LIBS="-lz";  AC_DEFINE(HAVE_LIBZ)))
+
+dnl Test for libjpeg
+AC_CHECK_LIB(jpeg, jpeg_destroy_decompress,
+  jpeg_ok=yes,
+  jpeg_ok=no)
+if test "$jpeg_ok" = yes; then
+  AC_MSG_CHECKING([for jpeg.h])
+  AC_TRY_CPP(
+[#include <stdio.h>
+#undef PACKAGE
+#undef VERSION
+#include <jpeglib.h>],
+    jpeg_ok=yes,
+    jpeg_ok=no)
+  AC_MSG_RESULT($jpeg_ok)
+  if test "$jpeg_ok" = yes; then
+    JPEG_LIBS="-ljpeg"; AC_DEFINE(HAVE_LIBJPEG)
+  fi
+fi
+
+dnl Test for libtiff
+AC_CHECK_LIB(tiff, TIFFReadScanline,
+  AC_CHECK_HEADER(tiffio.h,
+    TIFF_LIBS="-ltiff"; AC_DEFINE(HAVE_LIBTIFF)),
+  AC_CHECK_LIB(tiff, TIFFWriteScanline,
+    AC_CHECK_HEADER(tiffio.h,
+      TIFF_LIBS="-ltiff $JPEG_LIBS $Z_LIBS"; AC_DEFINE(HAVE_LIBTIFF)),
+    AC_CHECK_LIB(tiff34, TIFFFlushData,
+      AC_CHECK_HEADER(tiffio.h,
+        TIFF_LIBS="-ltiff34 $JPEG_LIBS $Z_LIBS"; AC_DEFINE(HAVE_LIBTIFF)),,
+$JPEG_LIBS $Z_LIBS -lm), $JPEG_LIBS $Z_LIBS -lm))
+
+dnl Test for libgif
+AC_CHECK_LIB(gif, DGifOpenFileName,
+  AC_CHECK_HEADER(gif_lib.h,
+    GIF_LIBS="-lgif"; AC_DEFINE(HAVE_LIBGIF)))
+
+dnl Test for libpng
+AC_CHECK_LIB(png, png_read_info,
+  AC_CHECK_HEADER(png.h,
+    png_ok=yes,
+    png_ok=no),,$Z_LIBS)
+if test "$png_ok" = yes; then
+  AC_MSG_CHECKING([for png_structp in png.h])
+  AC_TRY_COMPILE([#include <png.h>],
+    [png_structp pp; png_infop info; png_colorp cmap; png_create_read_struct
+;],
+    png_ok=yes,
+    png_ok=no)
+  AC_MSG_RESULT($png_ok)
+  if test "$png_ok" = yes; then
+    PNG_LIBS="-lpng $Z_LIBS"; AC_DEFINE(HAVE_LIBPNG)
+  fi
+fi
+
 AC_CHECK_LIB(gdk_imlib, gdk_imlib_init, [
  GDK_IMLIB_LIBS="-lgdk_imlib $TIFF_LIBS $GIF_LIBS $JPEG_LIBS $PNG_LIBS $Z_LIBS"
 ],[
