@@ -122,46 +122,46 @@ update_wtmp (char *file, UTMP *putmp)
 static void
 update_utmp (UTMP *ut)
 {
-    /* struct utmp ut_aux; */
-
-    setutxent();
-    pututxline (ut);
-
-    /* FIXME: Do we need this?
-    getutmp (ut, &ut_aux);
-    pututline (&ut_aux);
-    */
+	/* struct utmp ut_aux; */
+	
+	setutxent();
+	pututxline (ut);
+	
+	/* FIXME: Do we need this?
+	   getutmp (ut, &ut_aux);
+	   pututline (&ut_aux);
+	*/
 }
 #elif defined(HAVE_GETUTENT)
 static void
 update_utmp (UTMP *ut)
 {
-    setutent();
-    pututline (ut);
+	setutent();
+	pututline (ut);
 }
 #elif defined(HAVE_GETTTYENT)
 static void
 update_utmp (UTMP *ut)
 {
-    struct ttyent *ty;
-    int fd, pos = 0;
-
-    if((fd=open(UTMP_OUTPUT_FILENAME, O_RDWR|O_CREAT, 0644)) < 0) 
-	return;
-
-    setttyent ();
-    while ((ty = getttyent()) != NULL)
+	struct ttyent *ty;
+	int fd, pos = 0;
+	
+	if ((fd=open (UTMP_OUTPUT_FILENAME, O_RDWR|O_CREAT, 0644)) < 0) 
+		return;
+	
+	setttyent ();
+	while ((ty = getttyent ()) != NULL)
 	{
-	++pos;
-	if (strncmp(ty->ty_name, ut->ut_line, sizeof(ut->ut_line)) == NULL)
-	    {
-	    lseek (fd, (off_t)(pos * sizeof(UTMP)), SEEK_SET);
-	    write(fd, ut, sizeof(UTMP));
-	    }
+		++pos;
+		if (strncmp (ty->ty_name, ut->ut_line, sizeof (ut->ut_line)) == NULL)
+		{
+			lseek (fd, (off_t)(pos * sizeof(UTMP)), SEEK_SET);
+			write(fd, ut, sizeof(UTMP));
+		}
 	}
-    endttyent ();
-
-    close(fd);
+	endttyent ();
+	
+	close(fd);
 }
 #endif
 
@@ -200,7 +200,7 @@ void *
 write_login_record (char *login_name, char *display_name, char *term_name, int utmp, int wtmp)
 {
 	UTMP *ut;
-	char *p, *pty = term_name;
+	char *pty = term_name;
 
 	if((ut=(UTMP *) malloc (sizeof (UTMP))) == NULL)
 		return NULL;
@@ -234,8 +234,12 @@ write_login_record (char *login_name, char *display_name, char *term_name, int u
 			ut->ut_id [0] = '\0';
 	}
 #elif defined(HAVE_STRRCHR)
-	if ((p=strrchr (pty, '/')) != NULL) 
-	    pty = p + 1;
+	{
+		char *p;
+		
+		if ((p = strrchr (pty, '/')) != NULL) 
+			pty = p + 1;
+	}
 #endif
 
 	strncpy (ut->ut_line, pty, sizeof (ut->ut_line));
@@ -271,5 +275,5 @@ write_login_record (char *login_name, char *display_name, char *term_name, int u
 void *
 update_dbs (int utmp, int wtmp, char *login_name, char *display_name, char *term_name)
 {
-    return write_login_record (login_name, display_name, term_name, utmp, wtmp);
+	return write_login_record (login_name, display_name, term_name, utmp, wtmp);
 }
