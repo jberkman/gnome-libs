@@ -254,13 +254,13 @@ gtk_term_init (GtkTerm *term)
 			       GDK_SELECTION_PRIMARY,
 			       atom_text,
 			       gtk_entry_selection_handler,
-			       NULL, NULL);
+			       NULL);
   if (atom_string != GDK_NONE)
     gtk_selection_add_handler (GTK_WIDGET (term),
 			       GDK_SELECTION_PRIMARY,
 			       atom_string,
 			       gtk_entry_selection_handler,
-			       NULL, NULL);
+			       NULL);
   
   
   GTK_WIDGET_SET_FLAGS (term, GTK_CAN_FOCUS);
