@@ -128,6 +128,7 @@ struct _ZvtTermClass
 
 
 GtkWidget*   zvt_term_new                      (void);
+GtkWidget*   zvt_term_new_with_size            (int cols, int rows);
 void         zvt_term_feed                     (ZvtTerm *term,
 						char *text, int len);
 int	     zvt_term_forkpty		       (ZvtTerm *term, int do_uwtmp_log);
@@ -157,7 +158,8 @@ void         zvt_term_set_color_scheme         (ZvtTerm *term,
 						gushort *blu);
 void         zvt_term_set_default_color_scheme (ZvtTerm *term);
 void         zvt_term_set_del_key_swap         (ZvtTerm *term, int state);
-	
+void	     zvt_term_set_wordclass	       (ZvtTerm *term, unsigned char *class);
+
 /* transparency stuff, it's left in even if we don't compile
  * transparency/backround pixmaps, if we don't, it will just be ignored,
  * setting pixmap_file to NULL disables the background pixmap

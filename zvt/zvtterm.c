@@ -227,7 +227,7 @@ zvt_term_init (ZvtTerm *term)
   GTK_WIDGET_SET_FLAGS (term, GTK_CAN_FOCUS);
 
   /* create and configure callbacks for the teminal back-end */
-  term->vx = vtx_new (1, 1, term);
+  term->vx = vtx_new (80, 24, term);
   term->vx->vt.ring_my_bell = zvt_term_bell;
   term->vx->vt.change_my_name = zvt_term_title_changed_raise;
 
@@ -366,11 +366,61 @@ zvt_term_set_scroll_on_output   (ZvtTerm *term, int state)
 }
 
 /**
+ * zvt_term_set_wordclass:
+ * @term: A &ZvtTerm widget.
+ * @class: A string of characters to consider a "word" character.
+ *
+ * Sets the list of characters (character class) that are considered
+ * part of a word, when selecting by word.  The @class is defined
+ * the same was as a regular expression character class (as normally
+ * defined using []'s, but without those included).  A leading or trailing
+ * hypen (-) is used to include a hyphen in the character class.
+ *
+ * Passing a %NULL @class restores the default behaviour of alphanumerics
+ * plus "_"  (i.e. "A-Za-z0-9_").
+ */
+void zvt_term_set_wordclass(ZvtTerm *term, unsigned char *class)
+{
+  g_return_if_fail (term != NULL);                     
+  g_return_if_fail (ZVT_IS_TERM (term));
+
+  vt_set_wordclass(term->vx, class);
+}
+
+/**
+ * zvt_term_new_with_size:
+ * @cols: Number of columns required.
+ * @rows: Number of rows required.
+ *
+ * Creates a new ZVT Terminal widget of the given character dimentions.
+ * If the encompassing widget is resizable, then this size may change
+ * afterwards, but should be correct at realisation time.
+ *
+ * Return Value: A pointer to a &ZvtTerm widget is returned, or %NULL
+ * on error.
+ */
+GtkWidget*
+zvt_term_new_with_size (int cols, int rows)
+{
+  ZvtTerm *term;
+  term = gtk_type_new (zvt_term_get_type ());
+
+  /* fudge the pixel size, not (really) used anyway */
+  vt_resize (&term->vx->vt, cols, rows, cols*8, rows*8);
+  term->grid_width = cols;
+  term->grid_height = rows;
+  term->set_grid_size_pending = TRUE;
+
+  return GTK_WIDGET (term);
+}
+
+
+/**
  * zvt_term_new:
  *
  * Creates a new ZVT Terminal widget.  By default the terminal will be
  * setup as 80 colmns x 24 rows, but it will size automatically to its
- * encompassing widget.
+ * encompassing widget, and may be smaller or larger upon realisation.
  *
  * Return Value: A pointer to a &ZvtTerm widget is returned, or %NULL
  * on error.
@@ -759,16 +809,17 @@ zvt_term_size_request (GtkWidget      *widget,
       grid_width = term->grid_width;
       grid_height = term->grid_height;
       
-      if (grid_width == 0)
-	grid_width = 1;
+      if (grid_width <= 0)
+	grid_width = 8;
       
-      if (grid_height == 0)
-	grid_height = 1;
+      if (grid_height <= 0)
+	grid_height = 2;
+      term->set_grid_size_pending = FALSE;
     }
   else
     {
-      grid_width = 1;
-      grid_height = 1;
+      grid_width = 8;
+      grid_height = 2;
     }
 
   requisition->width = (grid_width * term->charwidth) + 
@@ -1132,7 +1183,6 @@ zvt_term_set_font_name (ZvtTerm *term, char *name)
       zvt_term_set_fonts_internal (term, font, font_bold);
     }
 
- cleanup:
   g_string_free (newname, TRUE);
   g_string_free (outname, TRUE);
 }
@@ -1314,7 +1364,7 @@ zvt_term_button_release (GtkWidget      *widget,
 			 GdkEventButton *event)
 {
   ZvtTerm *term;
-  gint x, y, len;
+  gint x, y;
   GdkModifierType mask;
   struct _vtx *vx;
   
@@ -1364,7 +1414,7 @@ zvt_term_button_release (GtkWidget      *widget,
 
     vx->selectiontype = VT_SELTYPE_NONE; /* 'turn off' selecting */
     
-    vt_get_selection(vx, &len);
+    vt_get_selection(vx, 0);
 
     gtk_selection_owner_set (widget,
 			     GDK_SELECTION_PRIMARY,
@@ -2445,14 +2495,14 @@ zvt_term_get_capabilities (ZvtTerm *term)
  * Return value: A pointer to a %NUL terminated buffer containing the
  * raw text from the buffer.  If memory could not be allocated, then
  * returns %NULL.  Note that it is upto the caller to free the memory,
- * using free(3c).  If @len was supplied, then the length of data is
+ * using g_free(3c).  If @len was supplied, then the length of data is
  * stored there.
  **/
 char *
 zvt_term_get_buffer(ZvtTerm *term, int *len, int type, int sx, int sy, int ex, int ey)
 {
   struct _vtx *vx;
-  int ssx, ssy, sex, sey, stype, llen;
+  int ssx, ssy, sex, sey, stype, slen;
   char *sdata;
   char *data;
 
@@ -2472,6 +2522,7 @@ zvt_term_get_buffer(ZvtTerm *term, int *len, int type, int sx, int sy, int ex, i
   sex = vx->selendx;
   sey = vx->selendy;
   sdata = vx->selection_data;
+  slen = vx->selection_size;
   stype = vx->selectiontype;
 
   vx->selstartx = sx;
@@ -2483,16 +2534,14 @@ zvt_term_get_buffer(ZvtTerm *term, int *len, int type, int sx, int sy, int ex, i
 
   vt_fix_selection(vx);
 
-  data = vt_get_selection(vx, &llen);
-  if (len)
-    *len = llen;
-  vx->selection_size = llen;
+  data = vt_get_selection(vx, len);
   
   vx->selstartx = ssx;
   vx->selstarty = ssy;
   vx->selendx = sex;
   vx->selendy = sey;
   vx->selection_data = sdata;
+  vx->selection_size = slen;
   vx->selectiontype = stype;
 
   return data;

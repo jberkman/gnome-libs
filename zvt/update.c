@@ -57,7 +57,7 @@ static void vt_line_update(struct _vtx *vx, struct vt_line *l, int line, int alw
   int i;
   int run;
   int runstart;
-  char *runbuffer, *p;
+  char *p;
   uint32 attr, newattr;
   uint32 c;
   int ch;
@@ -66,7 +66,6 @@ static void vt_line_update(struct _vtx *vx, struct vt_line *l, int line, int alw
   struct vt_line *newline;
 
   newline = NULL;  
-  runbuffer = NULL;
 
   d(printf("updating line %d: ", line));
   d(fwrite(l->data, l->width, 1, stdout));
@@ -101,10 +100,9 @@ static void vt_line_update(struct _vtx *vx, struct vt_line *l, int line, int alw
 
     /* over-write the 'l' pointer */
     l = newline;
-  }
 
-  /* if the old line was shorter... */
-  if (bl->width < l->width) {
+    /* if the old line was shorter... */
+  } else if (bl->width < l->width) {
     d(printf("line size mismatch %d != %d\n", bl->width, l->width));
 
     newline = g_malloc(VT_LINE_SIZE(bl->width));
@@ -120,7 +118,8 @@ static void vt_line_update(struct _vtx *vx, struct vt_line *l, int line, int alw
   }
 
   if (start >= end) {
-    goto cleanup;
+    g_free(newline);
+    return;
   }
 
   /* work out if selections are being rendered */
@@ -230,7 +229,10 @@ static void vt_line_update(struct _vtx *vx, struct vt_line *l, int line, int alw
   runstart = 0;
   p = NULL;
   
-  runbuffer = g_malloc(vx->vt.width * sizeof(char));
+  if (vx->vt.width > vx->runbuffer_size) {
+    vx->runbuffer_size = vx->vt.width;
+    vx->runbuffer = g_realloc(vx->runbuffer, vx->runbuffer_size);
+  }
 
   for(i = start; i < end; i++) {
     /* map on 'selected' areas, and copy to screen buffer */
@@ -245,15 +247,15 @@ static void vt_line_update(struct _vtx *vx, struct vt_line *l, int line, int alw
 
     if (run == 0) {
       runstart = i;
-      p = runbuffer;
+      p = vx->runbuffer;
       attr = newattr;
     } else {
       if (attr != newattr) { /* check run of same type ... */
 	d(printf("found a run of %d characters from %d: '", run, runstart));
-	d(fwrite(runbuffer, run, 1, stdout));
-	vt_draw_text(vx->vt.user_data, runstart, line, runbuffer, run, attr);
+	d(fwrite(vx->runbuffer, run, 1, stdout));
+	vt_draw_text(vx->vt.user_data, runstart, line, vx->runbuffer, run, attr);
 	runstart = i;
-	p = runbuffer;
+	p = vx->runbuffer;
 	run = 0;
 	attr = newattr;
       }
@@ -271,16 +273,14 @@ static void vt_line_update(struct _vtx *vx, struct vt_line *l, int line, int alw
 
   if (run) {
     d(printf("found a run of %d characters from %d: '", run, runstart));
-    d(fwrite(runbuffer, run, 1, stdout));
-    vt_draw_text(vx->vt.user_data, runstart, line, runbuffer, run, attr);
+    d(fwrite(vx->runbuffer, run, 1, stdout));
+    vt_draw_text(vx->vt.user_data, runstart, line, vx->runbuffer, run, attr);
     d(printf("'\n"));
   }
   l->modcount = 0;
   bl->line = line;
 
- cleanup:
   g_free(newline);
-  g_free(runbuffer);
 }
 
 
@@ -688,13 +688,47 @@ void vt_update_rect(struct _vtx *vx, int csx, int csy, int cex, int cey)
 /*
   returns true if 'c' is in a 'wordclass' (for selections)
 */
-static int vt_in_wordclass(uint32 c)
+static int vt_in_wordclass(struct _vtx *vx, uint32 c)
 {
   int ch;
 
   ch = c&0xff;
-  return (isalnum(ch));
+  return (vx->wordclass[ch>>3]&(1<<(ch&7)))!=0;
 }
+
+/*
+  set the match wordclass.  is a string of characters which constitute word
+  characters which are selected when match by word is active.
+
+  The syntax is similar to character classes in regec, but without the
+  []'s.  Ranges ban be set using A-Z, or 0-9.  Use a leading - to include a
+  hyphen.
+*/
+void vt_set_wordclass(struct _vtx *vx, unsigned char *s)
+{
+  int start, end, i;
+
+  memset(vx->wordclass, 0, sizeof(vx->wordclass));
+  if (s) {
+    while ( (start = *s) ) {
+      if (s[1]=='-' && s[2]) {
+	end = s[2];
+	s+=3;
+      } else {
+	end = start;
+	s++;
+      }
+      for (i=start;i<end;i++) {
+	vx->wordclass[i>>3] |= 1<<(i&7);
+      }
+    }
+  } else {
+    for(i=0;i<256;i++)
+      if (isalnum(i) || i=='_')
+	vx->wordclass[i>>3] |= 1<<(i&7);
+  }
+}
+
 
 /*
   fixes up the selection boundaries made by the mouse, so they
@@ -762,11 +796,11 @@ void vt_fix_selection(struct _vtx *vx)
 	sx++;
     } else {
       while ((sx>0) &&
-	     (( (vt_in_wordclass(s->data[sx])))))
+	     (( (vt_in_wordclass(vx, s->data[sx])))))
 	sx--;
 
       if (sx &&
-	  (!vt_in_wordclass(s->data[sx]&0xff)) )
+	  (!vt_in_wordclass(vx, s->data[sx]&0xff)) )
 	sx++;
     }
     d(printf("%d\n", sx));
@@ -776,9 +810,9 @@ void vt_fix_selection(struct _vtx *vx)
     if ( !((ex >0) && ((e->data[ex-1]&0xff) != 0)) )
       while ((ex<e->width) && ((e->data[ex]&0xff) == 0))
 	ex++;
-    if ( !((ex >0) && (!vt_in_wordclass(e->data[ex-1]))) )
+    if ( !((ex >0) && (!vt_in_wordclass(vx, e->data[ex-1]))) )
       while ((ex<e->width) && 
-	     ( (vt_in_wordclass(e->data[ex]))))
+	     ( (vt_in_wordclass(vx, e->data[ex]))))
 	ex++;
 
     break;
@@ -956,8 +990,10 @@ char *vt_get_selection(struct _vtx *vx, int *len)
     g_free(vx->selection_data);
 
   vx->selection_data = vt_select_block(vx, vx->selstartx, vx->selstarty,
-				      vx->selendx, vx->selendy, len);
-  vx->selection_size = *len;
+				      vx->selendx, vx->selendy, &vx->selection_size);
+  if (len)
+    *len = vx->selection_size;
+
   return vx->selection_data;
 }
 
@@ -1061,6 +1097,7 @@ void vt_draw_cursor(struct _vtx *vx, int state)
 struct _vtx *vtx_new(int width, int height, void *user_data)
 {
   struct _vtx *vx;
+  int i;
 
   vx = g_malloc0(sizeof(struct _vtx));
 
@@ -1072,9 +1109,17 @@ struct _vtx *vtx_new(int width, int height, void *user_data)
   vx->selected = 0;
   vx->selectiontype = VT_SELTYPE_NONE;
 
+  vx->runbuffer = 0L;
+  vx->runbuffer_size = 0;
+
   /* other parameters initialised to 0 by calloc */
 
   vx->vt.user_data = user_data;
+
+  /* set '1' bits for all characters considered a 'word' */
+  for(i=0;i<256;i++)
+    if (isalnum(i) || i=='_')
+      vx->wordclass[i>>3] |= 1<<(i&7);
 
   return vx;
 }
@@ -1086,6 +1131,7 @@ void vtx_destroy(struct _vtx *vx)
     vt_destroy(&vx->vt);
     if (vx->selection_data)
       g_free(vx->selection_data);
+    g_free(vx->runbuffer);
     g_free(vx);
   }
 }

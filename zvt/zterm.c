@@ -185,7 +185,7 @@ main (gint argc, gchar *argv[])
   gtk_box_pack_start (GTK_BOX (hbox), term, 1, 1, 0);
   zvt_term_set_size(ZVT_TERM (term), 80, 25);
   zvt_term_set_font_name(ZVT_TERM (term), FONT);
-  zvt_term_set_blink (ZVT_TERM (term), FALSE);
+  zvt_term_set_blink (ZVT_TERM (term), TRUE);
   zvt_term_set_bell (ZVT_TERM (term), TRUE);
   zvt_term_set_scrollback(ZVT_TERM (term), scrollbacklines);
   zvt_term_set_scroll_on_keystroke (ZVT_TERM (term), TRUE);

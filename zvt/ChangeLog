@@ -1,3 +1,51 @@
+1999-02-06  Michael Zucchi  <zucchi@zzedzone.fsi.com.au>
+
+	* zvtterm.c (zvt_term_set_wordclass): User API call to set the
+	character class for words.
+
+	* update.c (vt_set_wordclass): New function, sets the bitmap used
+	to lookup word classes.
+	(vt_in_wordclass): Now uses a bitmap (in the vtx structure) to
+	determine which characters are part of a word.
+	(vtx_new): Initialise the wordclass to alphanumerics + "_".
+
+	* zvtterm.c (zvt_term_size_request): Set the minimum grid size to
+	8x2.  1x1 is useless.
+
+	* zterm.c (main): I want a blinking cursor, who changed it? :P
+
+	* zvtterm.c (zvt_term_init): Changed default init size to 80x24.
+	This doesn't change the resize behaviour.
+	(zvt_term_new): Changed the description to more accurately reflect
+	the inital size behaviour.
+	(zvt_term_size_request): Change sense of grid_width/height test -
+	to make sure its not negative or 0.  Properly reset the
+	set_grid_size_pending flag off.
+	(zvt_term_set_font_name): Removed redundant "cleanup" label.  Why
+	is everything reformatted wrong?
+
+	* update.c (vt_get_selection): Fixed calling vt_get_selection, so
+	a null *len is allowed.
+
+	* zvtterm.c (zvt_term_get_buffer): Update the documentation to
+	reflect the change from malloc/free to g_malloc/g_free.
+	(zvt_term_get_buffer): Do not set vx->selection_size when
+	returning the buffer contents.
+	(zvt_term_button_release): Removed useless 'len' argument to
+	vt_get_selection().  The api was int anyway, not gint.
+
+	* update.c: Changed to else/if when comparing line lengths.  More
+	obvious that only one case will be executed (and hence memory wont
+	be lost).
+	Removed goto.
+	Removed g_malloc()/g_free() of runbuffer.  Now statically
+	allocated, but grown if need be.
+	(vtx_new): Set runbuffer/runbuffer_size on init.
+	(vtx_destroy): Free runbuffer on destroy.
+
+	* zvtterm.h(zvt_term_new_with_size): New allocate-with-size api
+	call.
+
 Thu Feb  4 16:34:03 1999  Owen Taylor  <otaylor@redhat.com>
 
 	* vt.c (vt_mode): Add support for ESC[39m and ESC[49m
