@@ -44,7 +44,7 @@ EXTRA_DIST = TODO BUGS README
 zterm_SOURCES	= zterm.c
 
 zterm_LDADD	= 			\
-	$(top_builddir)/zvt/libzvt.la	\
+	libzvt.la			\
 	$(UTIL_LIBS)			\
 	$(GTK_LIBS) 			\
 	$(GDK_IMLIB_LIBS)		\

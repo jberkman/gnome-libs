@@ -60,10 +60,9 @@ noinst_PROGRAMS = htmltest
 
 htmltest_SOURCES = test.c
 
-htmltest: $(top_builddir)/gtk-xmhtml/libgtkxmhtml.la 
+htmltest: libgtkxmhtml.la 
 
-htmltest_LDADD   = $(top_builddir)/gtk-xmhtml/libgtkxmhtml.la \
-	$(LIBGTKXMHTML_LIBS) $(INTLLIBS)
+htmltest_LDADD   = libgtkxmhtml.la  $(LIBGTKXMHTML_LIBS) $(INTLLIBS)
 
 ## These are included by XmHTML.c:
 

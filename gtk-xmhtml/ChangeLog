@@ -1,3 +1,8 @@
+1999-02-21  Nuno Ferreira  <nmrf@rnl.ist.utl.pt>
+
+	* Makefile.am (htmltest_LDADD): Use libgtkxmhtml.la  without the
+	path from the topdir so that AM_MAKEFLAGS=-j4 works.
+
 1999-0101  Raffaele Sena <raff@aromatic.com> via Russell Nelson <nelson@crynwr.com>
 
 	* ARM gcc (and egcs) predefines arm to identify the processor. 

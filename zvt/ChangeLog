@@ -1,3 +1,8 @@
+1999-02-21  Nuno Ferreira  <nmrf@rnl.ist.utl.pt>
+
+	* Makefile.am (zterm_LDADD): Use libzvt.la without the path from
+	the topdir so that AM_MAKEFLAGS=-j4 works.
+
 1999-02-21  Michael Zucchi  <zucchi@zzedzone.mmc.com.au>
 
 	* vt.c (vt_resize): If we remove lines from the top of the buffer,

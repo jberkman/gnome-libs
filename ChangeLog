@@ -1,3 +1,10 @@
+1999-02-21  Nuno Ferreira  <nmrf@rnl.ist.utl.pt>
+
+	* libgnorba/Makefile.am (loadshlib_LDADD): Use libgnorba.la
+	without the path from the topdir so that AM_MAKEFLAGS=-j4 works.
+	(goad_browser_LDADD): Likewise.
+	(gnome_name_service_LDADD): Likewise for libgnorbagtk.la.
+
 Sat Feb 20 16:53:37 1999  Timur Bakeyev <mc@bat.ru>
 
 	* acconfig.h, acinclude.m4: Add defenition of UTMP macro during
