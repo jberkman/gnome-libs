@@ -169,12 +169,16 @@ write_logout_record (void *data, int utmp, int wtmp)
 	if (utmp)
 #if defined(HAVE_GETUTMPX)
 		{
+		setutxent();
 		pututxline (&put);
 		getutmp (&put, &ut_aux);
 		pututline (&ut_aux);
 		}
 #else
+		{
+		setutent();
 		pututline (&put);
+		}
 #endif
 
 	if (wtmp)
@@ -189,7 +193,7 @@ write_login_record (char *login_name, char *display_name, char *term_name, int u
 	UTMP *ut;
 	struct utmp ut_aux;
 	char *p, *pty = term_name;
-	
+
 	if((ut=(UTMP *) malloc (sizeof (UTMP))) == NULL)
 		return NULL;
 	
@@ -212,7 +216,7 @@ write_login_record (char *login_name, char *display_name, char *term_name, int u
 		strncpy (ut->ut_id, pty+3, sizeof (ut->ut_id));
 	else {
 		if (strncmp (pty, "pts/", 4) == 0)
-			sprintf (ut->ut_id, "vt%02x", atoi (pty+4));
+			sprintf (ut->ut_id, "v%02x", atoi (pty+4));
 		else
 			ut->ut_id [0] = 0;
 	}
@@ -245,12 +249,16 @@ write_login_record (char *login_name, char *display_name, char *term_name, int u
 	if (utmp)
 #if defined(HAVE_GETUTMPX)
 		{
+		setutxent();
 		pututxline (ut);
 		getutmp (ut, &ut_aux);
 		pututline (&ut_aux);
 		}
 #else
+		{
+		setutent();
 		pututline (ut);
+		}
 #endif
 
 	if (wtmp)

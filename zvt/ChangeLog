@@ -1,3 +1,14 @@
+1999-03-24  Erik Troan  <ewt@redhat.com>
+
+	* gnome-pty.c (write_logout_record): Before writing a utmp record,
+	you need to reset the utmp file pointer (esp as we have multiple
+	utmp entries per process). ut->ut_id was also being set to a string
+	of 4 chars on /dev/pts systems, which makes the '\0' on the end
+	overwrite ut_user -- use a 3 character string instead.
+	* gnome_pty_helper.c (open_ptys): Set effective user and group ids
+	to real user and group before opening unix98 ptys (this forces the
+	proper owner/group on the /dev/pts file
+
 1999-03-21  Michael Zucchi  <zucchi@zzedzone.mmc.com.au>
 
 	* vt.c (vt_delete_line): Changed to properly handle the difference

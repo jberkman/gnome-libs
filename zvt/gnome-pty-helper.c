@@ -284,7 +284,11 @@ open_ptys (int utmp, int wtmp)
 		exit (1);
 	}
 	
+	seteuid(pwent->pw_gid);
+	setegid(pwent->pw_gid);
 	status = openpty (&master_pty, &slave_pty, term_name, NULL, NULL);
+	setuid(getuid());
+	setgid(getgid());
 	if (status == -1){
 		result = 0;
 		write (STDIN_FILENO, &result, sizeof (result));
