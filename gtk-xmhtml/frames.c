@@ -36,6 +36,9 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.8  1997/12/29 03:17:10  sopwith
+* amessagetosatisfyCVS
+*
 * Revision 1.7  1997/12/28 17:45:51  unammx
 * Make it compile
 *
@@ -1062,7 +1065,7 @@ frameDoneCallback(XmHTMLWidget html, XmHTMLFrameWidget *frame,
 {
 	XmHTMLFrameCallbackStruct cbs;
 
-	CHECK_CALBACK(html, frame_callback, FRAME);
+	CHECK_CALLBACK(html, frame_callback, FRAME);
 
 	/* inform user that this frame is finished */
 	if(!html->html.frame_callback)

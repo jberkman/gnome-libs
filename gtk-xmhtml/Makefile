@@ -24,6 +24,9 @@ xtest: test.o $(HTMLOBJS)
 test.o: test.c
 	$(CC) -c test.c -I. -g
 
+%.o: %.c
+	$(CC) -c -o $@ $< $(CFLAGS)
+
 XmHTML.o: XmHTML.c gtk-xmhtml.c XmHTML.h
 
 clean:
