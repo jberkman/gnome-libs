@@ -27,5 +27,17 @@ Try to use:
      not care about the color usage, Imlib will dither to a nice
      palette on low-end displays.
 
+   - For text-input that might benefit from a history, use the
+     GnomeEntry widget (this will provide automatic history for you).
+
+   - For file-input entry widgets, use the GnomeFileEntry widget, this
+     will provde a browse selector (and in the future it will use the
+     enhanced file open dialog box).
+
+   - When you require an entry for typing in an icon name, use the
+     GnomeIconEntry widget. 
+
+   
+
 Miguel.
 
