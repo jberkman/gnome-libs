@@ -134,6 +134,7 @@ struct _ZvtTermClass
 
   void (* child_died) (ZvtTerm *term);    
   void (* title_changed) (ZvtTerm *term, VTTITLE_TYPE type, char *newtitle);
+  void (* got_output) (ZvtTerm*);
   void (* match_clicked) (ZvtTerm *term, GdkEventButton *event, char *match, void *data);
 };
 

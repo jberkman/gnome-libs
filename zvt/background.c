@@ -68,7 +68,7 @@ pixmap_from_atom(GdkWindow *win, GdkAtom pmap)
     }
     g_free(data);
   } else {
-    g_warning("Cannot get window property %d\n", pmap);
+    g_warning("Cannot get window property %ld\n", pmap);
   }
   gdk_error_trap_pop();
 
@@ -734,7 +734,7 @@ zvt_background_set(ZvtTerm *term)
   /* if we have a pixbuf, then we need to convert it to a pixmap to actually
      use it ... */
   if (pixbuf!=NULL) {
-    static init=0;
+    static int init=0;
 
     if (!init) {
       gdk_rgb_init();

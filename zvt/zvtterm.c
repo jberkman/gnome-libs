@@ -39,6 +39,7 @@
 #include <gtk/gtkmain.h>
 #include <gtk/gtksignal.h>
 #include <gtk/gtkselection.h>
+#include <gtk/gtkwindow.h>
 
 #include "zvtterm.h"
 
@@ -87,6 +88,7 @@ static void zvt_term_selection_get (GtkWidget *widget,
 static void zvt_term_child_died (ZvtTerm *term);
 static void zvt_term_title_changed (ZvtTerm *term, VTTITLE_TYPE type, char *str);
 static void zvt_term_title_changed_raise (void *user_data, VTTITLE_TYPE type, char *str);
+static void zvt_term_got_output (ZvtTerm *term, const gchar *buffer, gint count);
 static gint zvt_term_cursor_blink (gpointer data);
 static void zvt_term_scrollbar_moved (GtkAdjustment *adj, GtkWidget *widget);
 static void zvt_term_readdata (gpointer data, gint fd, GdkInputCondition condition);
@@ -129,6 +131,7 @@ enum
 {
   CHILD_DIED,
   TITLE_CHANGED,
+  GOT_OUTPUT,
   LAST_SIGNAL
 };
 static guint term_signals[LAST_SIGNAL] = { 0 };
@@ -191,6 +194,15 @@ zvt_term_class_init (ZvtTermClass *class)
                     GTK_TYPE_NONE, 2,
 		    GTK_TYPE_INT,
 		    GTK_TYPE_STRING);
+  term_signals[GOT_OUTPUT] =
+      gtk_signal_new ("got_output",
+		      GTK_RUN_FIRST,
+		      object_class->type,
+		      GTK_SIGNAL_OFFSET (ZvtTermClass, child_died),
+		      gtk_marshal_NONE__POINTER_INT,
+		      GTK_TYPE_NONE, 2,
+		      GTK_TYPE_STRING,
+		      GTK_TYPE_INT);
 
   gtk_object_class_add_signals (object_class, term_signals, LAST_SIGNAL);
 
@@ -217,6 +229,7 @@ zvt_term_class_init (ZvtTermClass *class)
 
   term_class->child_died = zvt_term_child_died;
   term_class->title_changed = zvt_term_title_changed;
+  term_class->got_output = NULL;
 }
 
 
@@ -451,7 +464,7 @@ term_force_size(ZvtTerm *term)
       GdkGeometry hints;
       GtkWidget *app;
       
-      app = gtk_widget_get_toplevel(term);
+      app = gtk_widget_get_toplevel(GTK_WIDGET(term));
       g_assert (app != NULL);
 
       hints.base_width = (GTK_WIDGET (term)->style->klass->xthickness * 2) + PADDING;
@@ -466,7 +479,7 @@ term_force_size(ZvtTerm *term)
 	       hints.min_width, hints.min_height, hints.base_width, hints.base_height,
 	       hints.width_inc, hints.height_inc));
 
-      gtk_window_set_geometry_hints(app,
+      gtk_window_set_geometry_hints(GTK_WINDOW(app),
 				    GTK_WIDGET(term),
 				    &hints,
 				    GDK_HINT_RESIZE_INC|GDK_HINT_MIN_SIZE|GDK_HINT_BASE_SIZE);
@@ -2709,6 +2722,17 @@ zvt_term_title_changed_raise (void *user_data, VTTITLE_TYPE type, char *str)
   gtk_signal_emit(GTK_OBJECT(term), term_signals[TITLE_CHANGED], type, str);
 }
 
+/* emit the got_output signal */
+static void
+zvt_term_got_output (ZvtTerm *term, const gchar *buffer, gint count)
+{
+    g_return_if_fail (term != NULL);
+    g_return_if_fail (ZVT_IS_TERM (term));
+    
+    gtk_signal_emit(GTK_OBJECT(term), term_signals[GOT_OUTPUT],
+		    buffer, count);
+}
+
 static void
 vtx_unrender_selection (struct _vtx *vx)
 {
@@ -2757,6 +2781,10 @@ zvt_term_readdata (gpointer data, gint fd, GdkInputCondition condition)
     update = TRUE;
     saveerrno = errno;
     vt_parse_vt (&vx->vt, buffer, count);
+
+    if (gtk_signal_handler_pending(GTK_OBJECT(term),
+				   term_signals[GOT_OUTPUT], TRUE))
+	zvt_term_got_output(term, buffer, count);
   }
 
   if (update) {
