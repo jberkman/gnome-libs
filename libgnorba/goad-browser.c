@@ -167,7 +167,10 @@ gb_create_server_list(GtkWidget *w, GtkCList *clist)
   memset(maxw, 0, sizeof(maxw));
 
   if (slist == NULL) {
-    no_server_warning = gnome_warning_dialog(_("I couldn't find any installed services.  Either you don't have\nany services installed or I don't know the path to find them.\nIn either case, please check your GNOME installation."));
+    no_server_warning = gnome_warning_dialog(
+	    _("I couldn't find any installed services.  Either you don't have\n"
+	      "any services installed or I don't know the path to find them.\n"
+	      "In either case, please check your GNOME installation."));
     gtk_signal_connect(GTK_OBJECT(no_server_warning), "destroy",
 		       gtk_widget_destroy, no_server_warning);
   }

@@ -1,6 +1,9 @@
 mimedir = $(datadir)/mime-info
 mime_DATA = gnome.mime
 
+convertdir = $(datadir)/type-convert
+convert_DATA = type.convert
+
 GAMES_GROUP = games
 
 EXTRA_DIST = 			\

@@ -47,29 +47,30 @@ Display *display;
 int x_error_code = 0;
 GMainLoop *ml;
 
-static int x_error_handler(Display *disp, XErrorEvent *ev)
+static int
+x_error_handler (Display *disp, XErrorEvent *ev)
 {
-  x_error_code = ev->error_code;
+	x_error_code = ev->error_code;
 
-  return 0;
+	return 0;
 }
 
 static gboolean
-handle_x_connection(GIOChannel *source, GIOCondition cond,
-		    Display *disp)
+handle_x_connection (GIOChannel *source, GIOCondition cond, Display *disp)
 {
-  XEvent ev;
-
-  if(cond & (G_IO_ERR|G_IO_HUP|G_IO_NVAL)) {
-    XCloseDisplay(disp);
-    g_main_quit(ml);
-    return TRUE;
-  }
-
-  /* ignore everything */
-  while(XPending(disp)) XNextEvent(disp, &ev);
-
-  return TRUE;
+	XEvent ev;
+	
+	if(cond & (G_IO_ERR|G_IO_HUP|G_IO_NVAL)) {
+		XCloseDisplay (disp);
+		g_main_quit (ml);
+		return TRUE;
+	}
+	
+	/* ignore everything */
+	while (XPending (disp))
+		XNextEvent (disp, &ev);
+	
+	return TRUE;
 }
 
 static gboolean
@@ -167,15 +168,15 @@ setup_atomically_name_server_ior (CORBA_char *ior)
 static void
 signal_handler (int signo)
 {
-  syslog (LOG_ERR, "Receveived signal %d\nshutting down.", signo);
-
-  switch(signo) {
-    case SIGSEGV:
+	syslog (LOG_ERR, "Receveived signal %d\nshutting down.", signo);
+	
+	switch(signo) {
+	case SIGSEGV:
 	abort();
-
-    default:
-	exit(1);
-  }
+	
+	default:
+		exit (1);
+	}
 }
 
 

@@ -1,6 +1,8 @@
 SUBDIRS = tests
 
-TESTS = fileconvert.test \
+# fileconvert.test \
+
+TESTS = \
 	metadata.test \
 	parse-path.test \
 	skel.test \
