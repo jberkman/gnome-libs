@@ -11,12 +11,10 @@ TESTS = \
 
 noinst_SCRIPTS = $(TESTS)
 
-if MAINTAINER_MODE
-%.test: 
-	echo "the_test=$*" > $(srcdir)/$@; \
-	echo ". $(srcdir)/runtest.sh" >> $(srcdir)/$@; \
-	chmod +x $(srcdir)/$@
-endif
+@MAINT@%.test: 
+@MAINT@	echo "the_test=$*" > $(srcdir)/$@; \
+@MAINT@	echo ". $(srcdir)/runtest.sh" >> $(srcdir)/$@; \
+@MAINT@	chmod +x $(srcdir)/$@
 
 # Always run via sh so we don't have to worry about permissions
 TESTS_ENVIRONMENT = $(SHELL) 
