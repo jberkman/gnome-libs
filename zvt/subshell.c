@@ -144,6 +144,13 @@ receive_fd (int helper_fd)
 
 	return *(int *) CMSG_DATA (cmptr);
 }
+
+int
+s_pipe (int fd [2])
+{
+	return socketpair (AF_UNIX, SOCK_STREAM, 0, fd);
+}
+
 #else
 static int
 receive_fd (int helper_fd)
@@ -169,6 +176,11 @@ receive_fd (int helper_fd)
 	return recvfd.fd;
 }
 
+int
+s_pipe (int fd [2])
+{
+	return pipe (fd);
+}
 #endif
 
 static void *
@@ -182,10 +194,10 @@ get_ptys (int *master, int *slave, int update_wutmp)
 		return NULL;
 
 	if (helper_pid == 0){
-		if (socketpair (AF_UNIX, SOCK_STREAM, 0, helper_socket_protocol) == -1)
+		if (s_pipe (helper_socket_protocol) == -1)
 			return NULL;
 
-		if (socketpair (AF_UNIX, SOCK_STREAM, 0, helper_socket_fdpassing) == -1){
+		if (s_pipe (helper_socket_fdpassing) == -1){
 			close (helper_socket_protocol [0]);
 			close (helper_socket_protocol [1]);
 			return NULL;

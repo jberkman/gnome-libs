@@ -1,5 +1,8 @@
 1999-02-07  Miguel de Icaza  <miguel@nuclecu.unam.mx>
 
+	* subshell.c (s_pipe): Split the creation of the pipe mechanism.
+	In SVR4 use pipe, on BSD use socketpair.
+
 	* vt.c (vt_restore_cursor): Only restore the cursor modes (this
 	does not include cursor tracking).
 
