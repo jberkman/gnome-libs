@@ -1,3 +1,8 @@
+Thu Apr 30 23:19:07 1998  Tom Tromey  <tromey@cygnus.com>
+
+	* forkpty.c (openpty): Removed buffer, buflen, and grbuffer
+	variables.  Correctly call getgrnam.
+
 1998-04-30  Miguel de Icaza  <miguel@nuclecu.unam.mx>
 
 	* zvtterm.h: Use unsigned ints for the flags.

@@ -94,25 +94,16 @@ openpty(amaster, aslave, name, termp, winp)
 	char line[11];
 	register const char *cp1, *cp2;
 	register int master, slave, ttygid;
-#ifdef _SC_GETGR_R_SIZE_MAX
-	size_t buflen = sysconf (_SC_GETGR_R_SIZE_MAX);
-#else
-	size_t buflen = 1024;
-#endif
-	struct group grbuffer;
 	struct group *gr;
-	char   *buffer;
-	
-	buffer = malloc (buflen + 1);
-	
+
 	strcpy (line, "/dev/ptyXX");
 
-	if (getgrnam("tty", &grbuffer, buffer, buflen) >= 0)
-		ttygid = grbuffer.gr_gid;
+	gr = getgrnam("tty");
+	if (gr != NULL)
+		ttygid = gr->gr_gid;
 	else
 		ttygid = -1;
-	free (buffer);
-	
+
 	for (cp1 = "pqrs"; *cp1; cp1++) {
 		line[8] = *cp1;
 		for (cp2 = "0123456789abcdef"; *cp2; cp2++) {
