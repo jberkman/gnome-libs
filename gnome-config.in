@@ -18,6 +18,8 @@ includedir=@includedir@
 pkgdatadir=${datadir}/@PACKAGE@
 pkglibdir=${libdir}/@PACKAGE@
 pkgincludedir=${includedir}/@PACKAGE@
+MODULE_VERSION=@PACKAGE@-@VERSION@
+module_dirs="$libdir:$GNOME_LIBCONFIG_PATH"
 
 usage()
 {
@@ -27,8 +29,9 @@ usage()
 Usage: gnome-config [OPTION]... [LIBRARY]...
 
 Generic options
-  --version	output gnome version information
-  --help	display this help and exit
+  --version	output gnome version information.
+  --modversion  output the module version information.
+  --help	display this help and exit.
 
 Compilation support options
   --cflags	print pre-processor and compiler flags
@@ -61,7 +64,9 @@ appear to be:
 
 EOF
 
-    conf_shs=`cd ${libdir}; echo *Conf.sh`
+    for dir in `echo $module_dirs | sed 's/:/ /'`; do
+       conf_shs="${conf_shs} `cd ${dir}; echo *Conf.sh`"
+    done
 
     if test "x$conf_shs" = x || test "x$conf_shs" = 'x*Conf.sh'; then
 	echo "    <NONE>"
@@ -99,6 +104,7 @@ fi
 cflags=false
 libs_L=false
 libs_l=false
+modversion=false
 
 while test $# -gt 0; do
     case "$1" in
@@ -142,6 +148,9 @@ while test $# -gt 0; do
     --libs-only-l)
 	libs_l=true
 	;;
+    --modversion)
+        modversion=true
+	;;
     --*)
 	usage 1
 	;;
@@ -175,16 +184,21 @@ while test $# -gt 0; do
 	the_libs="$the_libs @GNOME_LIBDIR@ @ZVT_LIBS@"
 	;;
     *)
-	cnf_sh=${libdir}/${1}Conf.sh
-	if test -f ${cnf_sh}; then
-	    . ${cnf_sh}
-	    up_name=`echo $1 | tr a-z A-Z`
-	    cnf_libdir=\$${up_name}_LIBDIR
-	    cnf_libs=\$${up_name}_LIBS
-	    cnf_flags=\$${up_name}_INCLUDEDIR
-	    the_libs="$the_libs `eval echo $cnf_libdir` `eval echo $cnf_libs`"
-	    the_flags="$the_flags `eval echo $cnf_flags`"
-	else
+        error=true
+        for dir in `echo $module_dirs | sed 's/:/ /'`; do
+   	    cnf_sh=${dir}/${1}Conf.sh
+	    if test -f ${cnf_sh}; then
+    		. ${cnf_sh}
+    		up_name=`echo $1 | tr a-z A-Z`
+    		cnf_libdir=\$${up_name}_LIBDIR
+    		cnf_libs=\$${up_name}_LIBS
+    		cnf_flags=\$${up_name}_INCLUDEDIR
+    		the_libs="$the_libs `eval echo $cnf_libdir` `eval echo $cnf_libs`"
+    		the_flags="$the_flags `eval echo $cnf_flags`"
+		error=false
+    	    fi
+        done
+	if $error; then
 	    echo Unknown library \`$1\' 1>&2
 	fi
 	;;
@@ -202,6 +216,11 @@ fi
 
 if test -z "$all_flags" || test "x$all_flags" = "x "; then
     exit 1
+fi
+
+if $modversion; then
+    echo $MODULE_VERSION
+    exit 0
 fi
 
 # Straight out any possible duplicates, but be careful to
