@@ -7,5 +7,7 @@ typedef enum {
 	GNOME_PTY_CLOSE_PTY,
 } GnomePtyOps;
 
+extern char *login_name;
+void update_dbs (char *login_name, char *display_name, char *term_name);
 
 #endif

@@ -18,14 +18,14 @@
  *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-#ifndef _VT_H
-#define _VT_H
+#ifndef _ZVT_VT_H_
+#define _ZVT_VT_H_
 
 #include "lists.h"
 
 /* defines for screen update routine */
-#define UPDATE_CHANGES 0x00	/* only update changed areas */
-#define UPDATE_REFRESH 0x01	/* just refersh all */
+#define UPDATE_CHANGES    0x00	/* only update changed areas */
+#define UPDATE_REFRESH    0x01	/* just refersh all */
 #define UPDATE_SCROLLBACK 0x02	/* if in scrollback mode, make sure everything is redrawn */
 
 
@@ -33,8 +33,8 @@ typedef unsigned int uint32;	/* 32 bit unsigned int */
 /* perhaps should be a bitfield ? */
 
 /* defines for VT argument processing, also used for textual arguments */
-#define VTPARAM_MAXARGS 5	/* maximum number of arguments */
-#define VTPARAM_ARGMAX 20	/* number of characters in each arg maximum */
+#define VTPARAM_MAXARGS   5	/* maximum number of arguments */
+#define VTPARAM_ARGMAX   20	/* number of characters in each arg maximum */
 
 
 struct vt_line {
@@ -51,8 +51,10 @@ struct vt_line {
 #define VTATTR_BLINK      0x10000000
 #define VTATTR_REVERSE    0x08000000
 #define VTATTR_CONCEALED  0x04000000
-/*#define VTATTR_FORE_SET   0x08000000
-  #define VTATTR_BACK_SET   0x10000000*/
+/*
+  #define VTATTR_FORE_SET   0x08000000
+  #define VTATTR_BACK_SET   0x10000000
+*/
 #define VTATTR_CHANGED    0x80000000
 
 /* bitmasks for colour map information */
@@ -70,8 +72,9 @@ struct vt_em {
   int scrolltop;		/* line from which scrolling occurs */
   int scrollbottom;		/* line after which scrolling occurs */
 
-  int childpid;			/* child process id */
+  pid_t childpid;		/* child process id */
   int childfd;			/* child file descriptor (for read/write) */
+  void *pty_tag;		/* Tag used to talk to the gnome-pty-helper */
   int msgfd;			/* "it's dead" messages come through here */
 
   int savex,savey;		/* saved cursor position */
@@ -122,19 +125,19 @@ struct vt_em {
 
 #define VTMODE_ALTSCREEN 0x80000000 /* on alternate screen? */
 
-struct vt_em *vt_init(struct vt_em *vt, int width, int height);
-void vt_destroy(struct vt_em *vt);
-void vt_resize(struct vt_em *vt, int width, int height, int pixwidth, int pixheight);
-void parse_vt(struct vt_em *vt, char *ptr, int length);
+struct vt_em *vt_init           (struct vt_em *vt, int width, int height);
+void          vt_destroy        (struct vt_em *vt);
+void          vt_resize         (struct vt_em *vt, int width, int height,
+			         int pixwidth, int pixheight);
+void          vt_parse_vt       (struct vt_em *vt, char *ptr, int length);
+void          vt_swap_buffers   (struct vt_em *vt);
+pid_t  	      vt_forkpty        (struct vt_em *vt, int do_uwtmp_log);
+int   	      vt_readchild      (struct vt_em *vt, char *buffer, int len);
+int   	      vt_writechild     (struct vt_em *vt, char *buffer, int len);
+int   	      vt_report_button  (struct vt_em *vt, int button, int qual,
+			         int x, int y);
+void  	      vt_scrollback_set (struct vt_em *vt, int lines);
+int   	      vt_killchild      (struct vt_em *vt, int signal);
+int   	      vt_closepty       (struct vt_em *vt);
 
-void vt_swap_buffers(struct vt_em *vt);
-
-int vt_forkpty(struct vt_em *vt);
-int vt_readchild(struct vt_em *vt, char *buffer, int len);
-int vt_writechild(struct vt_em *vt, char *buffer, int len);
-int vt_report_button(struct vt_em *vt, int button, int qual, int x, int y);
-void vt_scrollback_set(struct vt_em *vt, int lines);
-int vt_killchild(struct vt_em *vt, int signal);
-int vt_closepty(struct vt_em *vt);
-
-#endif
+#endif /* _ZVT_VT_H_ */

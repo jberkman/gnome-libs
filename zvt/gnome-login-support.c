@@ -1,5 +1,6 @@
 /*
- * gnome-login-support.c: Replacement for systems that lack login_tty, open_pty and forkpty
+ * gnome-login-support.c:
+ *    Replacement for systems that lack login_tty, open_pty and forkpty
  *
  * Author:
  *    Miguel de Icaza (miguel@gnu.org)
@@ -7,8 +8,22 @@
  *
  */
 #include <config.h>
+#include <termios.h>
 #include <unistd.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <fcntl.h>
+#include <string.h>
 #include <sys/ioctl.h>
+#include <sys/stat.h>
+#include <errno.h>
+#include <grp.h>
+#include <sys/types.h>
+#include "gnome-login-support.h"
+
+/*
+ * HAVE_OPENPTY => HAVE_FORKPTY
+ */
 
 #ifndef HAVE_LOGIN_TTY
 int
@@ -33,68 +48,194 @@ login_tty (int fd)
 #endif
 
 #ifndef HAVE_OPENPTY
+static int
+pty_open_master_bsd (char *pty_name, int *used_bsd)
+{
+	int pty_master;
+	char *ptr1, *ptr2;
+
+	*used_bsd = 1;
+	
+	strcpy (pty_name, "/dev/ptyXX");
+	for (ptr1 = "pqrstuvwxyzPQRST"; *ptr1; ++ptr1)
+	{
+		pty_name [8] = *ptr1;
+		for (ptr2 = "0123456789abcdef"; *ptr2; ++ptr2)
+		{
+			pty_name [9] = *ptr2;
+			
+			/* Try to open master */
+			if ((pty_master = open (pty_name, O_RDWR)) == -1) {
+				if (errno == ENOENT)  /* Different from EIO */
+					return -1;	      /* Out of pty devices */
+				else
+					continue;	      /* Try next pty device */
+			}
+			pty_name [5] = 't';	      /* Change "pty" to "tty" */
+			if (access (pty_name, 6)){
+				close (pty_master);
+				pty_name [5] = 'p';
+				continue;
+			}
+			return pty_master;
+		}
+	}
+	return -1;  /* Ran out of pty devices */
+}
 
 static int
-pty_open_master (char *pty_name)
+pty_open_slave_bsd (const char *pty_name)
 {
+	int pty_slave;
+	struct group *group_info = getgrnam ("tty");
+	
+	if (group_info != NULL)
+	{
+		/* The following two calls will only succeed if we are root */
+		
+		chown (pty_name, getuid (), group_info->gr_gid);
+		chmod (pty_name, S_IRUSR | S_IWUSR | S_IWGRP);
+	}
+
+	if ((pty_slave = open (pty_name, O_RDWR)) == -1){
+		return -1;
+	}
+
+	return pty_slave;
+}
+
+/* SystemVish pty opening */
+#ifdef HAVE_GRANTPT
+
+static int
+pty_open_slave (const char *pty_name)
+{
+	int pty_slave = open (pty_name, O_RDWR);
+	
+	if (pty_slave == -1)
+		return -1;
+	
+#if !defined(__osf__)
+	if (!ioctl (pty_slave, I_FIND, "ptem"))
+		if (ioctl (pty_slave, I_PUSH, "ptem") == -1){
+			close (pty_slave);
+			return -1;
+		}
+	
+    if (!ioctl (pty_slave, I_FIND, "ldterm"))
+	    if (ioctl (pty_slave, I_PUSH, "ldterm") == -1){
+		    close (pty_slave);
+		    return -1;
+	    }
+    
+#if !defined(sgi) && !defined(__sgi)
+    if (!ioctl (pty_slave, I_FIND, "ttcompat"))
+	    if (ioctl (pty_slave, I_PUSH, "ttcompat") == -1)
+	    {
+		    perror ("ioctl (pty_slave, I_PUSH, \"ttcompat\")");
+		    close (pty_slave);
+		    return -1;
+	    }
+#endif /* sgi || __sgi */
+#endif /* __osf__ */
+    
+    return pty_slave;
+}
+
+static int
+pty_open_master (char *pty_name, int *used_bsd)
+{
+	int pty_master;
+	
 	strcpy (pty_name, "/dev/ptmx");
 
 	pty_master = open (pty_name, O_RDWR);
 
-	/* Try BSD open */
-	if (pty_master == -1)
+	/*
+	 * Try BSD open, this is needed for Linux which
+	 * might have Unix98 devices but no kernel support
+	 * for those.
+	 */
+	if (pty_master == -1){
+		*used_bsd = 1;
 		return pty_open_master_bsd (pty_name);
+	}
+	*used_bsd = 0;
 
-#ifdef HAVE_
+	if (grantpt  (pty_master) == -1 || unlockpt (pty_master) == -1){
+		close (pty_master);
+		return -1;
+	}
+	if ((slave_name = ptsname (pty_master)) == NULL){
+		close (pty_master);
+		return -1;
+	}
+	strcpy (pty_name, slave_name);
+	return pty_master;
 }
+#else
+#    define pty_open_master pty_open_master_bsd
+#    define pty_open_slave  pty_open_slave_bsd
+#endif
 
 int
-open_pty (int *master_fd, int *slavefd, char *name, struct termios *termp, struct winsize *winp)
+openpty (int *master_fd, int *slave_fd, char *name, struct termios *termp, struct winsize *winp)
 {
-	int pty_master, pty_slave;
+	int pty_master, pty_slave, used_bsd = 0;
+	struct group *group_info;
 	char line [256];
-	
-	pty_master = pty_open_master (line);
+
+	pty_master = pty_open_master (line, &used_bsd);
+	fcntl (pty_master, F_SETFD, FD_CLOEXEC);
 
 	if (pty_master == -1)
 		return -1;
 
-	chown (line, getuid (), ttygid);
-	chmod (line, S_IRUSR|S_IWUSR|S_IWGRP);
+	group_info = getgrnam ("tty");
+	
+	if (group_info){
+		chown (line, getuid (), group_info->gr_gid);
+		chmod (line, S_IRUSR | S_IWUSR | S_IWGRP);
+	}
+
 #ifdef HAVE_REVOKE
 	revoke (line);
 #endif
 	
 	/* Open slave side */
-	slave = pty_open_slave (line);
+	if (used_bsd)
+		pty_slave = pty_open_slave_bsd (line);
+	else
+		pty_slave = pty_open_slave (line);
+	
 	if (pty_slave == -1){
 		close (pty_master);
 
 		errno = ENOENT;
 		return -1;
 	}
+	fcntl (pty_slave, F_SETFD, FD_CLOEXEC);
 
 	*master_fd = pty_master;
 	*slave_fd  = pty_slave;
 
 	if (termp)
-		tcsetattr (slave_fd, TCSAFLUSH, termp);
+		tcsetattr (pty_slave, TCSAFLUSH, termp);
 
 	if (winp)
-		ioctl (slave_fd, TIOCSWINSZ, winp);
+		ioctl (pty_slave, TIOCSWINSZ, winp);
 	
 	if (name)
 		strcpy (name, line);
 
 	return 0;
 }
-#endif
 
-#ifndef HAVE_FORKPTY
 pid_t
 forkpty (int *master_fd, char *name, struct termios *termp, struct winsize *winp)
 {
 	int master, slave;
+	pid_t pid;
 	
 	if (openpty (&master, &slave, name, termp, winp) == -1)
 		return -1;
@@ -115,4 +256,4 @@ forkpty (int *master_fd, char *name, struct termios *termp, struct winsize *winp
 	
 	return pid;
 }
-#endif
+#endif /* HAVE_OPENPTY */

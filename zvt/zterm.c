@@ -33,7 +33,7 @@
 
 #include "zvtterm.h"
 
-void child_died_event(ZvtTerm *term)
+static void child_died_event(ZvtTerm *term)
 {
   exit(0);
 }
@@ -104,7 +104,7 @@ gint main (gint argc, gchar *argv[])
 
   gdk_window_set_hints (((GtkWidget *)window)->window, 0, 0, 50, 50, 0, 0, GDK_HINT_MIN_SIZE);
 
-  switch (zvt_term_forkpty(term)) {
+  switch (zvt_term_forkpty(term, TRUE)) {
   case -1:
     perror("ERROR: unable to fork:");
     exit(1);

@@ -103,37 +103,44 @@ extern "C" {
   };
 
 
-  GtkWidget*    zvt_term_new                    (void);
-  void          zvt_term_feed                   (ZvtTerm *term, char *text, int len);
-  int		zvt_term_forkpty		(ZvtTerm *term);
-  int           zvt_term_closepty               (ZvtTerm *term);
+  GtkWidget*    zvt_term_new                      (void);
+  void          zvt_term_feed                     (ZvtTerm *term,
+						   char *text, int len);
+  int		zvt_term_forkpty		  (ZvtTerm *term, int do_uwtmp_log);
+  int           zvt_term_closepty                 (ZvtTerm *term);
 
-  int           zvt_term_killchild              (ZvtTerm *term, int signal);
+  int           zvt_term_killchild                (ZvtTerm *term, int signal);
 
-  guint         zvt_term_get_type               (void);
+  guint         zvt_term_get_type                 (void);
 
-  void          zvt_term_set_scrollback         (ZvtTerm *term, int lines);
+  void          zvt_term_set_scrollback           (ZvtTerm *term, int lines);
 
-  void          zvt_term_set_font_name          (ZvtTerm *term, char *name);
-  void          zvt_term_set_fonts              (ZvtTerm *term,
-						 GdkFont *font, GdkFont *font_bold);
+  void          zvt_term_set_font_name            (ZvtTerm *term, char *name);
+  void          zvt_term_set_fonts                (ZvtTerm *term,
+						   GdkFont *font,
+						   GdkFont *font_bold);
 
-  void          zvt_term_hide_pointer           (ZvtTerm *term);
-  void          zvt_term_show_pointer           (ZvtTerm *term);
+  void          zvt_term_hide_pointer             (ZvtTerm *term);
+  void          zvt_term_show_pointer             (ZvtTerm *term);
 
-  void          zvt_term_set_blink              (ZvtTerm *term, int state);
-  void          zvt_term_set_scroll_on_keystroke(ZvtTerm *term, int state);
-  void          zvt_term_set_scroll_on_output   (ZvtTerm *term, int state);
-  void          zvt_term_set_color_scheme       (ZvtTerm *term, gushort *red, gushort *grn, gushort *blu);
+  void          zvt_term_set_blink                (ZvtTerm *term, int state);
+  void          zvt_term_set_scroll_on_keystroke  (ZvtTerm *term, int state);
+  void          zvt_term_set_scroll_on_output     (ZvtTerm *term, int state);
+  void          zvt_term_set_color_scheme         (ZvtTerm *term,
+						   gushort *red,
+						   gushort *grn,
+						   gushort *blu);
   void          zvt_term_set_default_color_scheme (ZvtTerm *term);
 
-  /*transparency stuff, it's left in even if we don't compile
-    transparency/backround pixmaps, if we don't, it will just be ignored,
-    setting pixmap_file to NULL disables the background pixmap*/
-  void		zvt_term_set_background		   (ZvtTerm      *terminal,
-						    char	 *pixmap_file,
-						    int		  transparent,
-						    int		  shaded);
+  /*
+   * transparency stuff, it's left in even if we don't compile
+   * transparency/backround pixmaps, if we don't, it will just be ignored,
+   * setting pixmap_file to NULL disables the background pixmap
+   */
+  void		zvt_term_set_background		  (ZvtTerm      *terminal,
+						   char	 *pixmap_file,
+						   int		  transparent,
+						   int		  shaded);
 	
   /*GtkAdjustment* zvt_term_get_adjustment         (ZvtTerm      *terminal);
     void           zvk_term_set_adjustment         (ZvtTerm      *dial,

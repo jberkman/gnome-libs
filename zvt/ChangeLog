@@ -1,3 +1,22 @@
+1998-11-02  Miguel de Icaza  <miguel@nuclecu.unam.mx>
+
+	* zvtterm.c, vt.c: Added documentation to the API entyr points in
+	zvt and vt.
+
+	* gnome-pty-helper.c: New suid program that takes care of pty
+	allocation, permission setting and utmp/wtmp record updating. 
+
+	* gnome-login-support.c: Utility functions to portably open pseudo
+	terminals.  The code in this module is used by gnome-pty-helper.
+
+	* Makefile.am (libzvt_la_SOURCES): Do not install subshell.h this
+	is an internal header file.
+	
+	Add helper program.  Makie gnome-pty-helper program setuid root.
+	
+	* subshell.c (zvt_resize_subshell), vt.c: Cleaned up the name
+	space. 
+	
 Tue Oct 27 14:19:15 1998  George Lebl  <jirka@5z.com>
 
 	(this is a detailed changelog even for the last commit)

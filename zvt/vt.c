@@ -30,14 +30,15 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <signal.h>
+#include <errno.h>
 
 #include <termios.h>
 #include <sys/ioctl.h>
 
-#include "subshell.h"
 #include "lists.h"
 #include "memory.h"
 #include "vt.h"
+#include "subshell.h"
 
 #define SCROLLBACK_BUFFER	/* use scrollback buffer? */
 #define DOUBLE_BUFFER		/* use back buffer to represent screen
@@ -63,7 +64,8 @@ void vt_clear_line_portion(struct vt_em *vt, int start_col, int end_col);
 static unsigned char vt_remap_dec[256];
 
 #ifdef DEBUG
-static void dump_scrollback(struct vt_em *vt)
+static void
+dump_scrollback(struct vt_em *vt)
 {
   struct vt_line *wn, *nn;
 
@@ -78,7 +80,8 @@ static void dump_scrollback(struct vt_em *vt)
 }
 #endif
 
-static void vt_dump(struct vt_em *vt)
+static void
+vt_dump(struct vt_em *vt)
 {
   struct vt_line *wn, *nn;
   int i;
@@ -98,14 +101,14 @@ static void vt_dump(struct vt_em *vt)
 }
 
 /***********************************************************************
- Update functions
-*/
+ * Update functions
+ */
 
 /*
-  set the screen, either
-    screen=0 for main screen
-          =1 for alternate screen
-*/
+ *set the screen, either
+ *  screen = 0 for main screen
+ *         = 1 for alternate screen
+ */
 
 static void vt_set_screen(struct vt_em *vt, int screen)
 {
@@ -170,10 +173,15 @@ static void vt_set_screen(struct vt_em *vt, int screen)
 
 #ifdef SCROLLBACK_BUFFER
 
-/*
-  set the scrollback buffer size
-*/
-void vt_scrollback_set(struct vt_em *vt, int lines)
+/**
+ * vt_scrollback_set:
+ * @vt: the vt
+ * @lines: number of lines to set the scrollback to
+ *
+ * sets the scrollback buffer size (in lines).
+ */
+void
+vt_scrollback_set(struct vt_em *vt, int lines)
 {
   struct vt_line *ln;
 
@@ -188,14 +196,15 @@ void vt_scrollback_set(struct vt_em *vt, int lines)
 }
 
 /*
-  clone the line 'line' and add it to the bottom of
-  the scrollback buffer.
-
-  if the scrollback buffer is full, discard the oldest line
-
-  it is up-to the caller to free or 'discard' the old line
-*/
-static void vt_scrollback_add(struct vt_em *vt, struct vt_line *wn)
+ * clone the line 'line' and add it to the bottom of
+ * the scrollback buffer.
+ *
+ * if the scrollback buffer is full, discard the oldest line
+ *
+ * it is up-to the caller to free or 'discard' the old line
+ */
+static void
+vt_scrollback_add(struct vt_em *vt, struct vt_line *wn)
 {
   struct vt_line *ln;
 
@@ -221,8 +230,15 @@ static void vt_scrollback_add(struct vt_em *vt, struct vt_line *wn)
 
 #endif /* SCROLLBACK_BUFFER */
 
-/* normal scroll */
-void vt_scroll_up(struct vt_em *vt, int count)
+/**
+ * vt_scroll_up:
+ * @vt: the vt to scroll
+ * @count: number of lines
+ *
+ * scrolls the vt count lines up.
+ */
+void
+vt_scroll_up(struct vt_em *vt, int count)
 {
   struct vt_line *wn, *nn;
   int i;
@@ -266,8 +282,16 @@ void vt_scroll_up(struct vt_em *vt, int count)
   d(printf("vt_scroll_up() done\n"));
 }
 
-/* reverse scroll */
-void vt_scroll_down(struct vt_em *vt, int count)
+
+/**
+ * vt_scroll_down:
+ * @vt: the vt to scroll
+ * @count: number of lines
+ *
+ * scrolls the vt count lines down (reverse).
+ */
+void
+vt_scroll_down(struct vt_em *vt, int count)
 {
   struct vt_line *wn, *nn;
   int i;
@@ -296,7 +320,13 @@ void vt_scroll_down(struct vt_em *vt, int count)
   }
 }
 
-void vt_insert_chars(struct vt_em *vt, int count)
+/**
+ * vt_insert_chars:
+ * @vt: the vt
+ * @count: Number of character to insert
+ */
+void
+vt_insert_chars(struct vt_em *vt, int count)
 {
   int i, j;
   struct vt_line *l;		/* FIXME: kludge */
@@ -317,7 +347,8 @@ void vt_insert_chars(struct vt_em *vt, int count)
   l->modcount+=count;
 }
 
-void vt_delete_chars(struct vt_em *vt, int count)
+void
+vt_delete_chars(struct vt_em *vt, int count)
 {
   int i, j;
   struct vt_line *l;
@@ -563,7 +594,8 @@ static void vt_delete_char(struct vt_em *vt)
 }
 
 /* insert lines and scroll down */
-static void vt_insert_line(struct vt_em *vt)
+static void
+vt_insert_line(struct vt_em *vt)
 {
   d(printf("insert line(s)\n"));
   if (vt->argcnt==0) {
@@ -576,7 +608,8 @@ static void vt_insert_line(struct vt_em *vt)
 }
 
 /* delete lines and scroll up */
-static void vt_delete_line(struct vt_em *vt)
+static void
+vt_delete_line(struct vt_em *vt)
 {
   d(printf("delete line(s)\n"));
   if (vt->argcnt==0) {
@@ -594,7 +627,8 @@ static void vt_delete_line(struct vt_em *vt)
 }
 
 /* clear from current cursor position to end of screen */
-static void vt_cleareos(struct vt_em *vt)
+static void
+vt_cleareos(struct vt_em *vt)
 {
   d(printf("clear screen/end of screen\n"));
   vt_clear_line_portion(vt, vt->cursorx, vt->this->width);
@@ -603,7 +637,8 @@ static void vt_cleareos(struct vt_em *vt)
   }
 }
 
-static void vt_clear_lineportion(struct vt_em *vt)
+static void
+vt_clear_lineportion(struct vt_em *vt)
 {
   d(printf("Clear part of line\n"));
   if (vt->argcnt>1) {
@@ -620,14 +655,16 @@ static void vt_clear_lineportion(struct vt_em *vt)
 
 
 /* cursor save/restore */
-static void vt_save_cursor(struct vt_em *vt)
+static void
+vt_save_cursor(struct vt_em *vt)
 {
   d(printf("save cursor\n"));
   vt->savex = vt->cursorx;
   vt->savey = vt->cursory;
 }
 
-static void vt_restore_cursor(struct vt_em *vt)
+static void
+vt_restore_cursor(struct vt_em *vt)
 {
   d(printf("restore cursor\n"));
   vt->cursorx = vt->savex;
@@ -645,7 +682,8 @@ static void vt_restore_cursor(struct vt_em *vt)
 
 /* cursor movement */
 /* in app-cursor mode, this will cause the screen to scroll ? */
-static void vt_up(struct vt_em *vt)
+static void
+vt_up(struct vt_em *vt)
 {
   int count=1;
 
@@ -663,7 +701,8 @@ static void vt_up(struct vt_em *vt)
   vt->this = (struct vt_line *)vt_list_index(&vt->lines, vt->cursory);
 }
 
-static void vt_down(struct vt_em *vt)
+static void
+vt_down(struct vt_em *vt)
 {
   int count=1;
 
@@ -678,7 +717,8 @@ static void vt_down(struct vt_em *vt)
   vt->this = (struct vt_line *)vt_list_index(&vt->lines, vt->cursory);
 }
 
-static void vt_right(struct vt_em *vt)
+static void
+vt_right(struct vt_em *vt)
 {
   int count=1;
 
@@ -691,7 +731,8 @@ static void vt_right(struct vt_em *vt)
     vt->cursorx=vt->width-1;
 }
 
-static void vt_left(struct vt_em *vt)
+static void
+vt_left(struct vt_em *vt)
 {
   int count=1;
 
@@ -705,7 +746,8 @@ static void vt_left(struct vt_em *vt)
 }
 
 /* jump to a cursor position */
-static void vt_goto(struct vt_em *vt)
+static void
+vt_goto(struct vt_em *vt)
 {
   d(printf("goto position\n"));
   if (vt->argcnt==0) {
@@ -737,7 +779,8 @@ static void vt_goto(struct vt_em *vt)
 }
 
 /* various mode stuff */
-static void vt_modeh(struct vt_em *vt)
+static void
+vt_modeh(struct vt_em *vt)
 {
   d(printf("mode h set\n"));
   if (vt->argcnt==1) {
@@ -766,7 +809,8 @@ static void vt_modeh(struct vt_em *vt)
 }
 
 
-static void vt_model(struct vt_em *vt)
+static void
+vt_model(struct vt_em *vt)
 {
 d(printf("mode l set\n"));
   if (vt->argcnt==1) {
@@ -793,7 +837,8 @@ d(printf("mode l set\n"));
   }
 }
 
-static void vt_modek(struct vt_em *vt)
+static void
+vt_modek(struct vt_em *vt)
 {
   d(printf("mode k set\n"));
   if (vt->argcnt==1) {
@@ -809,7 +854,8 @@ static void vt_modek(struct vt_em *vt)
 }
 
 
-static void vt_mode(struct vt_em *vt)
+static void
+vt_mode(struct vt_em *vt)
 {
   int i, j;
   int mode_map[] = {0, VTATTR_BOLD, 0, 0,
@@ -837,9 +883,10 @@ static void vt_mode(struct vt_em *vt)
 }
 
 /*
-  set g0-g3 charset
-*/
-static void vt_gx_set(struct vt_em *vt)
+ *  sets g0-g3 charset
+ */
+static void
+vt_gx_set(struct vt_em *vt)
 {
   int index;
   unsigned char *table;
@@ -867,7 +914,8 @@ static void vt_gx_set(struct vt_em *vt)
 /*
   device status report
 */
-static void vt_dsr(struct vt_em *vt)
+static void
+vt_dsr(struct vt_em *vt)
 {
   char status[16];
 
@@ -886,7 +934,8 @@ static void vt_dsr(struct vt_em *vt)
   }
 }
 
-static void vt_scroll(struct vt_em *vt)
+static void
+vt_scroll(struct vt_em *vt)
 {
   d(printf("set scroll region called\n"));
   if (vt->argcnt==0) {
@@ -908,9 +957,10 @@ static void vt_scroll(struct vt_em *vt)
 }
 
 /*
-  master soft reset ^[c
-*/
-static void vt_reset(struct vt_em *vt)
+ * master soft reset ^[c
+ */
+static void
+vt_reset(struct vt_em *vt)
 {
   vt->cursorx=0;
   vt->cursory=0;
@@ -929,7 +979,8 @@ static void vt_reset(struct vt_em *vt)
 }
 
 /* function keys */
-static void vt_func(struct vt_em *vt)
+static void
+vt_func(struct vt_em *vt)
 {
   int i;
 
@@ -1008,16 +1059,23 @@ struct vt_jump vtjumps[] = {
   {0,VT_LIT}, {0,VT_LIT}, {vt_func,VT_EBL}, {0,VT_LIT},	/* |}~? */
 };
 
-  /* parse vt commands:
-     states:
-     0: normal escape mode
-     1: escape mode.  switch on next character.
-     2: '[' escape mode (keep finding numbers until a command code found)
-     3: 'O' escape mode.  switch on next character.
-     4: ']' escape mode.  swallows until following bell (or newline).
-     needs a little work on '[' mode (with parameter grabbing)
-  */
-void parse_vt(struct vt_em *vt, char *ptr, int length)
+/**
+ * vt_parse_vt:
+ * @vt: the vt
+ * @ptr: points to the text we got
+ * @lenght: lenght of the text.
+ *
+ * Parses a vt command. 
+ * states:
+ *  0: normal escape mode
+ *   1: escape mode.  switch on next character.
+ *   2: '[' escape mode (keep finding numbers until a command code found)
+ *   3: 'O' escape mode.  switch on next character.
+ *   4: ']' escape mode.  swallows until following bell (or newline).
+ *   needs a little work on '[' mode (with parameter grabbing)
+ */
+void
+vt_parse_vt (struct vt_em *vt, char *ptr, int length)
 {
   register int c;
   register int state;
@@ -1149,9 +1207,14 @@ void parse_vt(struct vt_em *vt, char *ptr, int length)
   vt->state = state;
 }
 
-/*
-  Allocate a new line
-*/
+/**
+ * vt_newline:
+ * @vt: vt where allocation will take place
+ *
+ * Allocates a new line.
+ *
+ * Returns the new line.
+ */
 struct vt_line *vt_newline(struct vt_em *vt)
 {
   struct vt_line *n;
@@ -1171,12 +1234,18 @@ struct vt_line *vt_newline(struct vt_em *vt)
   return n;
 }
 
-/*
-  Setup a new VT terminal
-
-  FIXME: check allocations
-*/
-struct vt_em *vt_init(struct vt_em *vt, int width, int height)
+/**
+ * vt_init:
+ * @vt: The vt to initialize
+ * @width: desired width in chars
+ * @height: desired height in chars
+ *
+ * Setup a new VT terminal
+ *
+ * Returns the vt passed.
+ */
+struct vt_em *
+vt_init(struct vt_em *vt, int width, int height)
 {
   struct vt_line *vl;
   int i;
@@ -1241,57 +1310,99 @@ struct vt_em *vt_init(struct vt_em *vt, int width, int height)
   return vt;
 }
 
-/*
-  start a child process running in the VT emulator
-
-   fork the child process
-
-*/
-int vt_forkpty(struct vt_em *vt)
+/**
+ * vt_forkpty:
+ * @vt:           the vt descriptor
+ * @do_uwtmp_log: if TRUE, updates utmp/wtmp records.
+ *
+ * start a child process running in the VT emulator
+ *
+ * fork the child process
+ *
+ * Retunrs the PID of the child process.
+ */
+pid_t
+vt_forkpty (struct vt_em *vt, int do_uwtmp_log)
 {
   char ttyname[256];
 
-  vt->childpid = init_subshell(&vt->childfd, ttyname, &vt->msgfd);
-  if (vt->childpid>0) {
-    fcntl(vt->childfd, F_SETFL, O_NONBLOCK);
-    resize_subshell(vt->childfd, vt->width, vt->height, vt->width*8, vt->height*8); /* FIXME: approx sizes only */
+  if (zvt_init_subshell(vt, ttyname, do_uwtmp_log) == -1)
+	  return -1;
+  
+  if (vt->childpid > 0){
+	  fcntl(vt->childfd, F_SETFL, O_NONBLOCK);
+
+	  /* FIXME: approx sizes only */
+	  zvt_resize_subshell (vt->childfd, vt->width, vt->height, vt->width*8, vt->height*8); 
   }
 
   d(fprintf(stderr, "program started on pid %d, on tty %s\n", vt->childpid, ttyname));
   return vt->childpid;
 }
 
-/*
-  write to the child process
-*/
-int vt_writechild(struct vt_em *vt, char *buffer, int len)
+/**
+ * vt_writechild:
+ * @vt:     the vt to write to.
+ * @buffer: a buffer of LEN bytes
+ * @len:    length of the buffer that is going to be written to the child.
+ *
+ * write to the child process
+ *
+ * Returns the number of bytes written to.
+ */
+int
+vt_writechild(struct vt_em *vt, char *buffer, int len)
 {
   return write(vt->childfd, buffer, len);
 }
 
-/*
-  read from the child process
-*/
-int vt_readchild(struct vt_em *vt, char *buffer, int len)
+/**
+ * vt_readchild:
+ * @vt:     the vt to read from
+ * @buffer: buffer where we read the information into
+ * @len:    number of bytes to read from the child
+ *
+ * read from the child process
+ *
+ * Returns the number of bytes read.
+ */
+int
+vt_readchild(struct vt_em *vt, char *buffer, int len)
 {
   return read(vt->childfd, buffer, len);
 }
 
-/*
-  signal the child process
-*/
-int vt_killchild(struct vt_em *vt, int signal)
+/**
+ * vt_killchild:
+ * @vt:  the vt to which we will send the signal
+ * @signal: signal number to send to child process
+ *
+ * signal the child process
+ *
+ * Returns zero if successful, otherwise returns -1 and
+ * errno is set.
+ */
+int
+vt_killchild(struct vt_em *vt, int signal)
 {
   if (vt->childpid!=-1) {
     return kill(vt->childpid, signal);
   }
+  errno = ENOENT;
   return -1;
 }
 
-/*
-  close the child connection pty, and invalidates it.
-*/
-int vt_closepty(struct vt_em *vt)
+/**
+ * vt_closepty:
+ * @vt: the virtual terminal to close.
+ *
+ * close the child connection pty, and invalidates it.
+ *
+ * Returns the value returned from the close system call on the
+ * child descriptor.
+ */
+int
+vt_closepty(struct vt_em *vt)
 {
   int ret;
 
@@ -1299,17 +1410,21 @@ int vt_closepty(struct vt_em *vt)
 
   if (vt->childfd != -1){
 	  ret = close(vt->childfd);
-	  close_msgfd(vt->childpid);
+	  zvt_close_msgfd(vt->childpid);
 	  vt->msgfd = vt->childfd = -1;
   } else
 	  ret = 0;
   return ret;
 }
 
-/*
-  destroy all data associated with a given 'vt' structure
-*/
-void vt_destroy(struct vt_em *vt)
+/**
+ * vt_destroy:
+ * @vt: the vt
+ *
+ * destroy all data associated with a given 'vt' structure
+ */
+void
+vt_destroy(struct vt_em *vt)
 {
   struct vt_line *wn;
 
@@ -1496,7 +1611,7 @@ void vt_resize(struct vt_em *vt, int width, int height, int pixwidth, int pixhei
   /* re-fix 'this line' pointer */
   vt->this = (struct vt_line *)vt_list_index(&vt->lines, vt->cursory);
 
-  resize_subshell(vt->childfd, width, height, pixwidth, pixheight);
+  zvt_resize_subshell(vt->childfd, width, height, pixwidth, pixheight);
 
   d(printf("resized to %d,%d, this = %p\n", vt->width, vt->height, vt->this));
 }
