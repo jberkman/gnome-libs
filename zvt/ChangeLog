@@ -1,3 +1,10 @@
+1999-09-14  Michael Zucchi  <mzucchi@denr.sa.gov.au>
+
+	* gnome-pty-helper.c (open_ptys): init the termio's structure to
+	0's (unknown fields?).  Added some portability fixes for Solaris
+	at least (maybe this isn't as portable as it was supposed to be?)
+	(main): Fixed a warning with the uid type.
+
 1999-09-14  Michael Zucchi  <zucchi@zedzone.mmc.com.au>
 
 	* gnome-pty-helper.c (open_ptys): Added patch from Alan Cox

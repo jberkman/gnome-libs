@@ -325,7 +325,6 @@ open_ptys (int utmp, int wtmp)
 	int status, master_pty, slave_pty;
 	pty_info *p;
 	int result;
-	int size;
 	pid_t savedUid;
 	gid_t savedGid;
 	struct group *group_info;
@@ -353,13 +352,17 @@ open_ptys (int utmp, int wtmp)
 	 *	Don't change this to a structure init - POSIX doesn't say
 	 *	anything about field order.
 	 */
-	 
+	memset(&term, 0, sizeof(term));
+ 
 	term.c_iflag = ICRNL|IXON;
 	term.c_oflag = OPOST|ONLCR|NL0|CR0|TAB0|BS0|VT0|FF0;
 	/* B38400 isnt portable EXTB is .. */
 	term.c_cflag = EXTB|CS8|CREAD|HUPCL;
 	term.c_lflag = ISIG|ICANON|IEXTEN|ECHO|ECHOE|ECHOK|ECHOCTL|ECHOKE;
+#ifdef N_TTY
+	/* should really be a check for c_line, but maybe this is good enough */
 	term.c_line = N_TTY;
+#endif
 
 	/* These two may overlap so set them first */
 	term.c_cc[VTIME] =  0;
@@ -374,7 +377,9 @@ open_ptys (int utmp, int wtmp)
 	term.c_cc[VERASE] = 'H'-64;
 	term.c_cc[VKILL] =  'U'-64;
 	term.c_cc[VEOF] =  'D'-64;
+#ifdef VSWTC
 	term.c_cc[VSWTC] = 0;
+#endif
 	term.c_cc[VSTART] = 'Q'-64;
 	term.c_cc[VSTOP] = 'S'-64;
 	term.c_cc[VSUSP] =  'Z'-64;
@@ -552,7 +557,7 @@ main (int argc, char *argv [])
 	if (pwent)
 		login_name = pwent->pw_name;
 	else {
-		sprintf (login_name_buffer, "#%d", getuid ());
+		sprintf (login_name_buffer, "#%u", (unsigned int)getuid ());
 		login_name = login_name_buffer;
 	}
 
