@@ -3,7 +3,7 @@
 DOC_MODULE=gnorba
 
 # The top-level SGML file.
-DOC_MAIN_SGML_FILE=gnorba-docs.sgml
+DOC_MAIN_SGML_FILE=gnorba.sgml
 
 # The directory containing the source code (if it contains documentation).
 DOC_SOURCE_DIR=$(GNOME_LIBS_DIR)/libgnorba
@@ -13,48 +13,29 @@ HTML_DIR=$(datadir)/gnome/html
 TARGET_DIR=$(HTML_DIR)/$(DOC_MODULE)
 
 tmpl_sources =				\
-	tmpl/gnome-config.sgml		\
-	tmpl/gnome-defs.sgml		\
-	tmpl/gnome-dentry.sgml		\
-	tmpl/gnome-exec.sgml		\
-	tmpl/gnome-fileconvert.sgml	\
-	tmpl/gnome-help.sgml		\
-	tmpl/gnome-history.sgml		\
-	tmpl/gnome-i18n.sgml		\
-	tmpl/gnome-metadata.sgml	\
-	tmpl/gnome-mime-info.sgml	\
-	tmpl/gnome-mime.sgml		\
-	tmpl/gnome-paper.sgml		\
-	tmpl/gnome-popt.sgml		\
-	tmpl/gnome-regex.sgml		\
-	tmpl/gnome-remote.sgml		\
-	tmpl/gnome-score.sgml		\
-	tmpl/gnome-sound.sgml		\
-	tmpl/gnome-triggers.sgml	\
-	tmpl/gnome-unused.sgml		\
-	tmpl/gnome-url.sgml		\
-	tmpl/gnome-util.sgml		\
-	tmpl/libgnome.sgml
+	tmpl/gnorba-unused.sgml		\
+	tmpl/goad.sgml			\
+	tmpl/gnorba.sgml
 
 gnorba_docdir = $(HTML_DIR)
 gnorba_doc_DATA = 			\
-	gnorba.html			\
+	libgnorba.html			\
 	gnorba-decl.txt			\
 	gnorba-sections.txt
 
 EXTRA_DIST = $(gnorba_doc_DATA)
 
 if HAVE_GTK_DOC
-gnorba.html: html/book1.html
-	-cd $(srcdir) && cp html/book1.html gnorba.html
+libgnorba.html: html/book1.html
+	-cd $(srcdir) && cp html/book1.html libgnorba.html
 else
 gnorba.html:
 endif
 
-html/book1.html: sgml/libgnorba.sgml
+html/book1.html: sgml/gnorba.sgml
 	$(MAKE) html
 
-sgml/libgnorba.sgml: $(tmpl_sources)
+sgml/gnorba.sgml: $(addprefix $(srcdir)/,$(tmpl_sources))
 	$(MAKE) sgml	
 
 scan:
@@ -71,7 +52,7 @@ sgml:
 
 html:
 	test -d $(srcdir)/html || mkdir $(srcdir)/html
-	-cd $(srcdir)/html && gtkdoc-mkhtml $(DOC_MODULE) ../$(DOC_MAIN_SGML_FILE)
+	-cd $(srcdir)/html && gtkdoc-mkhtml $(DOC_MODULE) ../sgml/$(DOC_MAIN_SGML_FILE)
 
 clean-local:
 	rm -f *~ *.bak *.hierarchy *.signals *-unused.txt
