@@ -162,9 +162,11 @@ goad_server_list_get(void)
   goad_server_list_read(SERVER_LISTING_PATH "/", servinfo, tmpstr, newl);
 
   newl->list = (GoadServer *)servinfo->data;
-  for(i = 0; newl->list[i].repo_id; i++)
-    g_hash_table_insert(newl->by_goad_id,
-			newl->list[i].server_id, &newl->list[i]);
+  if(newl->list) {
+    for(i = 0; newl->list[i].repo_id; i++)
+      g_hash_table_insert(newl->by_goad_id,
+			  newl->list[i].server_id, &newl->list[i]);
+  }
 
   g_array_free(servinfo, FALSE);
   g_string_free(tmpstr, TRUE);
@@ -820,6 +822,7 @@ goad_server_unregister_atexit(ActiveServerInfo *ai, CORBA_Environment *ev)
   CORBA_exception_free(ev); /* Clear previous exceptions */
 
   name_service = gnome_name_service_get();
+  g_assert(name_service != CORBA_OBJECT_NIL);
 
   poa = (PortableServer_POA)CORBA_ORB_resolve_initial_references(_gnorba_gnome_orbit_orb,
 								 "RootPOA", ev);
@@ -1105,6 +1108,8 @@ goad_server_register(CORBA_Object name_server,
   if(name_server == CORBA_OBJECT_NIL)
     name_server = gnome_name_service_get();
 
+  g_assert(name_server != CORBA_OBJECT_NIL);
+
   old_server = CosNaming_NamingContext_resolve(name_server, &nom, ev);
 
   if(ev->_major == CORBA_NO_EXCEPTION) {
@@ -1169,6 +1174,8 @@ goad_server_unregister(CORBA_Object name_server,
 
   if(name_server == CORBA_OBJECT_NIL)
     name_server = gnome_name_service_get();
+
+  g_assert(name_server != CORBA_OBJECT_NIL);
 
   nc[2].id   = (char *)name;
   nc[2].kind = (char *)kind;
