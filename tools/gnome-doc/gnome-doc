@@ -270,12 +270,19 @@ sub output_sgml {
     print " </refpurpose>\n";
     print "</refnamediv>\n";
 
-    print "<refsect1>\n";
+    print "<refsynopsisdiv>\n";
     print " <title>Synopsis</title>\n";
     print "  <funcsynopsis>\n";
     print "   <funcdef>".$args{'functiontype'}." ";
     print "<function>".$args{'function'}." ";
     print "</function></funcdef>\n";
+
+#    print "<refsect1>\n";
+#    print " <title>Synopsis</title>\n";
+#    print "  <funcsynopsis>\n";
+#    print "   <funcdef>".$args{'functiontype'}." ";
+#    print "<function>".$args{'function'}." ";
+#    print "</function></funcdef>\n";
 
     $count = 0;
     if ($#{$args{'parameterlist'}} >= 0) {
@@ -287,7 +294,8 @@ sub output_sgml {
 	print "  <void>\n";
     }
     print "  </funcsynopsis>\n";
-    print "</refsect1>\n";
+    print "</refsynopsisdiv>\n";
+#    print "</refsect1>\n";
 
     # print parameters
     print "<refsect1>\n <title>Arguments</title>\n";
