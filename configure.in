@@ -120,13 +120,13 @@ fi
 
 ALL_LINGUAS="ca cs da de el en_GB es et eu fi fr ga gl hr hu it ja ko nl no pl pt pt_BR ru sk sv uk wa zh_TW.Big5"
 	
-MY_AM_GNOME_GETTEXT
+AM_GNOME_GETTEXT
 # AM_GNOME_GETTEXT above substs $DATADIRNAME
 # this is the directory where the *.{mo,gmo} files are installed
 gnomelocaledir='${prefix}/${DATADIRNAME}/locale'
 AC_SUBST(gnomelocaledir)
 
-AC_CHECK_LIB(m, main)
+AC_CHECK_LIB(m, floor)
 
 AC_CHECK_LIB(popt, poptGetContext,, [AC_MSG_ERROR(The popt library is required to build gnome-libs. You can download the latest version from ftp://ftp.redhat.com/pub/redhat/code/popt/)
 ])
