@@ -907,7 +907,7 @@ zvt_term_size_allocate (GtkWidget     *widget,
 			      allocation->width,
 			      allocation->height);
 
-      term_width = allocation->width - (2 * widget->style->klass->xthickness);
+      term_width = allocation->width - (2 * widget->style->klass->xthickness) - PADDING;
       term_height = allocation->height - (2 * widget->style->klass->ythickness);
 
       gdk_window_move_resize (term->term_window,
@@ -916,21 +916,24 @@ zvt_term_size_allocate (GtkWidget     *widget,
 			      term_width,
 			      term_height);
 
-      /* resize the virtual terminal buffer, minimal size is 1x1 */
+      /* resize the virtual terminal buffer, if its size has changed, minimal size is 1x1 */
       grid_width = MAX(term_width / term->charwidth, 1);
       grid_height = MAX(term_height / term->charheight, 1);
-      vt_resize (&term->vx->vt, grid_width, grid_height, term_width, term_height);
-      vt_update (term->vx, UPDATE_REFRESH|UPDATE_SCROLLBACK);
+      if (grid_width != term->charwidth
+	  || grid_height != term->charheight) {
+	vt_resize (&term->vx->vt, grid_width, grid_height, term_width, term_height);
+	vt_update (term->vx, UPDATE_REFRESH|UPDATE_SCROLLBACK);
+	
+	d( printf("zvt_term_size_allocate grid calc x=%d y=%d\n", 
+		  grid_width,
+		  grid_height) );
 
-      d( printf("zvt_term_size_allocate grid calc x=%d y=%d\n", 
-		grid_width,
-		grid_height) );
+	/* is this right? Seems we have to update this... */
+	/* term->set_grid_size_pending = TRUE; */
+	term->grid_height = grid_height;
+	term->grid_width = grid_width;
+      }
 
-      /* is this right? Seems we have to update this... */
-      term->set_grid_size_pending = TRUE;
-      term->grid_height = grid_height;
-      term->grid_width = grid_width;
-      
       /* resize the scrollbar */
       zvt_term_fix_scrollbar (term);
 
@@ -963,6 +966,7 @@ zvt_term_draw (GtkWidget *widget, GdkRectangle *area)
 
       term->in_expose = 1;
 
+#if 0
       /* draw shadow/border */
       if (term->shadow_type != GTK_SHADOW_NONE)
 	      gtk_draw_shadow (
@@ -985,6 +989,7 @@ zvt_term_draw (GtkWidget *widget, GdkRectangle *area)
       vt_update_rect (term->vx, 0, 0,
 		      width / term->charwidth,
 		      height / term->charheight);
+#endif
 
       term->in_expose = 0;
     }	  
@@ -1001,7 +1006,11 @@ zvt_term_expose (GtkWidget      *widget,
   g_return_val_if_fail (ZVT_IS_TERM (widget), FALSE);
   g_return_val_if_fail (event != NULL, FALSE);
 
-  /* d(printf("exposed!\n")); */
+  d(printf("exposed!  (%d,%d) %dx%d\n",
+	   event->area.x, 
+	   event->area.y,
+	   event->area.width, 
+	   event->area.height));
 
   if (GTK_WIDGET_DRAWABLE (widget))
     {
@@ -1017,8 +1026,8 @@ zvt_term_expose (GtkWidget      *widget,
 	    widget->allocation.width,
 	    widget->allocation.height);
 
-      if (event->window == term->term_window)
-	{
+      if (event->window == term->term_window) {
+
 	  if(term->transparent || term->pixmap_filename)
 	    draw_back_pixmap(widget,
 			     event->area.x, 
@@ -1026,8 +1035,7 @@ zvt_term_expose (GtkWidget      *widget,
 			     event->area.width, 
 			     event->area.height);
 
-	  vt_update_rect (
-              term->vx,
+	  vt_update_rect (term->vx,
 	      event->area.x / term->charwidth,
 	      event->area.y / term->charheight,
 	      (event->area.x + event->area.width) / term->charwidth+1,
@@ -1361,9 +1369,11 @@ zvt_term_button_press (GtkWidget      *widget,
     }
 
     if (event->type != GDK_BUTTON_PRESS) {
-      vt_fix_selection(vx);
-      vt_draw_selection(vx);	/* handles by line/by word update */
+      vt_fix_selection(vx);	/* handles by line/by word select update */
     }
+
+    /* either draw (double/triple click) or undraw (single click) selection */
+    vt_draw_selection(vx);
 
     d( printf("selection starting %d %d\n", x, y) );
 
@@ -1904,6 +1914,7 @@ zvt_term_key_press (GtkWidget *widget, GdkEventKey *event)
   ZvtTerm *term;
   int handled;
   char *cursor;
+  int appl_keypad;
   
   g_return_val_if_fail (widget != NULL, FALSE);
   g_return_val_if_fail (ZVT_IS_TERM (widget), FALSE);
@@ -1911,6 +1922,8 @@ zvt_term_key_press (GtkWidget *widget, GdkEventKey *event)
 
   term = ZVT_TERM (widget);
   vx = term->vx;
+
+  appl_keypad = (vx->vt.mode & VTMODE_APP_KEYPAD) != 0;
 
   zvt_term_hide_pointer(term);
   
@@ -1989,15 +2002,6 @@ zvt_term_key_press (GtkWidget *widget, GdkEventKey *event)
       p+=sprintf (p, "\033[6~");
     break;
 
-    /*
-        key_enter=\EOM, key_f1=\E[11~, key_f10=\E[21~, 
-        key_f11=\E[23~, key_f12=\E[24~, key_f2=\E[12~, 
-        key_f3=\E[13~, key_f4=\E[14~, key_f5=\E[15~, 
-        key_f6=\E[17~, key_f7=\E[18~, key_f8=\E[19~, 
-        key_f9=\E[20~, key_home=\EO\200, key_ic=\E[2~, 
-        key_left=\EOD, key_mouse=\E[M, key_npage=\E[6~, 
-    */
-
   case GDK_KP_F1:
   case GDK_F1:
     p+=sprintf (p, "\033OP");
@@ -2038,6 +2042,59 @@ zvt_term_key_press (GtkWidget *widget, GdkEventKey *event)
   case GDK_F12:
     p+=sprintf (p, "\033[24~");
     break;
+
+  case GDK_KP_0:
+  case GDK_KP_1:
+  case GDK_KP_2:
+  case GDK_KP_3:
+  case GDK_KP_4:
+  case GDK_KP_5:
+  case GDK_KP_6:
+  case GDK_KP_7:
+  case GDK_KP_8:
+  case GDK_KP_9:
+    if (appl_keypad) {
+      p+=sprintf (p, "\033O%c", 'p' + (event->keyval - GDK_KP_0));
+    } else {
+      *p++ = '0' + (event->keyval - GDK_KP_0);
+    }
+    break;
+  case GDK_KP_Enter:
+    if (appl_keypad) {
+      p+=sprintf (p, "\033OM");
+    } else {
+      *p++ = '\r';
+    }
+    break;
+  case GDK_KP_Add:
+    if (appl_keypad) {
+      p+=sprintf (p, "\033Ok");
+    } else {
+      *p++ = '+';
+    }
+    break;
+  case GDK_KP_Subtract:
+    if (appl_keypad) {
+      p+=sprintf (p, "\033Om");
+    } else {
+      *p++ = '-';
+    }
+    break;
+  case GDK_KP_Separator:  /* aka KP Comma */
+    if (appl_keypad) {
+      p+=sprintf (p, "\033Ol");
+    } else {
+      *p++ = '-';
+    }
+    break;
+  case GDK_KP_Decimal:
+    if (appl_keypad) {
+      p+=sprintf (p, "\033On");
+    } else {
+      *p++ = '.';
+    }
+    break;
+
   case GDK_KP_Begin:
     /* ? middle key of keypad */
   case GDK_Print:
@@ -2423,7 +2480,8 @@ vt_draw_text(void *user_data, int col, int row, char *text, int len, int attr)
    */
   if (term->in_expose || vx->back_match == 0)
     {
-      if ((!term->transparent && !term->pixmap_filename) || back < 17)
+      if ( (term->in_expose && back < 17)
+	   || ( term->in_expose==0 && !vx->back_match ))
 	{
 	  gdk_draw_rectangle (
               term->term_window,
@@ -2432,9 +2490,9 @@ vt_draw_text(void *user_data, int col, int row, char *text, int len, int attr)
 	      row * term->charheight,
 	      len * term->charwidth,
 	      term->charheight);
-	  
 	} 
-      else if (!term->in_expose) 
+      else if ((term->transparent || term->pixmap_filename)
+	       && !term->in_expose) 
 	{
 	  draw_back_pixmap (
               widget,

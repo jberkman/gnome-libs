@@ -77,11 +77,12 @@ size_allocate (GtkWidget *widget)
   
   g_assert (widget != NULL);
   term = ZVT_TERM (widget);
-  
+
+#define PADDING 2  
   sizehints.base_width = 
     (GTK_WIDGET (window)->allocation.width) +
     (GTK_WIDGET (term)->style->klass->xthickness * 2) -
-    (GTK_WIDGET (term)->allocation.width);
+    (GTK_WIDGET (term)->allocation.width) + PADDING;
   
   sizehints.base_height =
     (GTK_WIDGET (window)->allocation.height) +
@@ -173,7 +174,7 @@ main (gint argc, gchar *argv[])
 	case '?':
 	case 'h':
 	default:
-	  fprintf(stderr, "Usage: zterm [-sNN] [-l] [-r] [-e command args]");
+	  fprintf(stderr, "Usage: zterm [-sNN] [-l] [-r] [-e command args]\n");
 	  exit(1);
 	  break;
 	}

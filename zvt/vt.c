@@ -226,7 +226,7 @@ vt_scrollback_add(struct vt_em *vt, struct vt_line *wn)
 
   /* add it to the scrollback buffer */
   vt_list_addtail(&vt->scrollback, (struct vt_listnode *)ln);
-  ln->line = ln->prev->line + 1;
+  ln->line = -1;
   
   /* limit the total number of lines in scrollback */
   if (vt->scrollbacklines >= vt->scrollbackmax) 
@@ -1587,7 +1587,7 @@ struct vt_line *vt_newline(struct vt_em *vt)
   l->prev = NULL;
   l->next = NULL;
   l->width = vt->width;
-  l->line = 0;
+  l->line = -1;
   l->modcount = vt->width;
 
   for (i = 0; i < vt->width; i++) {
@@ -1965,6 +1965,18 @@ void vt_resize(struct vt_em *vt, int width, int height, int pixwidth, int pixhei
       count--;
     }
 
+    /* reset the line index of now-missing lines to -1 */
+    count = vt->height - height;
+    if ((vt->mode & VTMODE_ALTSCREEN)==0)
+      wn = (struct vt_line *)vt->lines.tailpred;
+    else
+      wn = (struct vt_line *)vt->lines_alt.tailpred;
+    while (count && wn->prev) {
+      wn->line = -1;
+      wn=wn->prev;
+      count--;
+    }
+
     /* fix up cursors on resized window */
     if (vt->cursory >= height) {
       vt->cursory = height - 1;
@@ -2052,6 +2064,19 @@ void vt_resize(struct vt_em *vt, int width, int height, int pixwidth, int pixhei
   vt->this_line = (struct vt_line *) vt_list_index(&vt->lines, vt->cursory);
   n(vt->this_line);
   zvt_resize_subshell(vt->childfd, width, height, pixwidth, pixheight);
+
+#if 0
+  {
+    printf("resize line no's\n");
+    printf("line\talt\tback\n");
+    for (i=0;i<height;i++) {
+      printf("%d\t%d\t%d\n",
+	     ((struct vt_line *)vt_list_index(&vt->lines, i))->line,
+	     ((struct vt_line *)vt_list_index(&vt->lines_alt, i))->line,
+	     ((struct vt_line *)vt_list_index(&vt->lines_back, i))->line);
+    }
+  }
+#endif
 
   d(printf("resized to %d,%d, this = %p\n", vt->width, vt->height, vt->this_line));
 }

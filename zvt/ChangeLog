@@ -1,3 +1,29 @@
+1999-04-24  Michael Zucchi  <zucchi@zzedzone.mmc.com.au>
+
+	* vt.c (vt_newline): Make sure a new-line is initialised with an
+	invalid line number.
+	(vt_scrollback_add): Set the new line's line no to -1.
+	(vt_resize): Set the line no's of lines that are no longer there
+	to -1.
+
+	* zterm.c (size_allocate): Make sure we add the PADDING width to
+	the size allocation of the terminal window when setting the window
+	base width hint.  Hey it sizes right now!  Now just to fix
+	gnome-terminal ...
+	(main): Add \n to the end of usage info.
+
+	* zvtterm.c (vt_draw_text): Changed conditions under which the
+	background is 'reset'.  Should speed up refresh under expose
+	(since the screen is already cleared to the background colour).
+	(zvt_term_key_press): Implementation of application keypad
+	keycodes, from Kenn Humborg <kenn@avalon.wombat.ie>.
+	(zvt_term_button_press): Clear the rendered selection upon a
+	single-click.
+	(zvt_term_size_allocate): Dont size the terminal if it hasn't
+	changed.  Also, why set size_pending?  We just sized!
+	(zvt_term_size_allocate): Make sure we remove the PADDING area off
+	the size after we've sized it.
+
 1999-04-15  Michael Zucchi  <zucchi@zzedzone.mmc.com.au>
 
 	* vt.c (vt_scroll_up): Make sure vt->this_line is correct still
