@@ -1,0 +1,750 @@
+<!-- Config Stuff and Banner -->
+<!--#set var="title" value="GNU Network Object Model Environment" -->
+<!--#include virtual="/include/header.shtml" -->
+
+<!-- Standard Page Table Heading -->
+<!--#set var="title" value="Task list for gnome-libs-1.0" --> 
+<!--#include virtual="/include/table-start.shtml" -->
+
+    <h1>What this is all about</h1>
+
+    <p>
+      We are pushing for a freeze of gnome-libs really soon.  Actually
+      the freeze is to make a stable branch on cvs and fix the
+      remaining bugs there, while development can continue on the main
+      CVS branch.  The stable branch is what we will ship for
+      gnome-libs-1.0.  Any changes or additions to the API for 1.0
+      should be done <em>now</em>.
+    </p>
+
+    <p>
+      Here is a big table of what needs to be done for
+      gnome-libs-1.0.  The first column indicates whether a particular
+      item has been finished or not.  If it has not been finished,
+      then the second column indicates whether someone is working on
+      it or not.  The third column lists what needs to be done to each
+      submodule in gnome-libs.
+    </p>
+
+    <p>
+      If you see something that has not been done yet, and there is no
+      one working on it, please fix it!  Also, mail <a
+      href="mailto:federico@nucleucu.unam.mx">Federico</a> about it so
+      that he can update this page.  And if you have finished fixing
+      something, send mail as well.  Also mail if you detect any
+      missing things or inaccuracies in the information presented
+      here.
+    </p>
+
+    <p>
+      Please help with tucking in all the loose ends for gnome-libs-1.0!
+    </p>
+
+    <h1>libgnome</h1>
+
+    <table width="100%" border="1">
+      <tbody>
+	<tr>
+	  <td>Done</td>
+	  <td>Owner</td>
+	  <td>What</td>
+	</tr>
+	<tr>
+	  <td>Yes</td>
+	  <td></td>
+	  <td>
+	    <b>gnome-config</b>:  OK.
+	  </td>
+	</tr>
+
+	<tr>
+	  <td>Yes</td>
+	  <td></td>
+	  <td>
+	    <b>gnome-dentry</b>:  OK.
+	  </td>
+	</tr>
+
+	<tr>
+	  <td><b>NO</b></td>
+	  <td>???</td>
+	  <td>
+	    <b>gnome-exec</b>:  OK, needs a function to fetch the PID back
+	    (ask <a href="mailto:jrb@redhat.com">Jonathan</a>).
+	  </td>
+	</tr>
+
+	<tr>
+	  <td><b>NO</b></td>
+	  <td>???</td>
+	  <td>
+	    <b>gnome-fileconvert</b>:  Mark as immature.
+	  </td>
+	</tr>
+
+	<tr>
+	  <td><b>NO</b></td>
+	  <td>???</td>
+	  <td>
+	    <b>gnome-help</b>:  It works; it is not perfect, but it will do
+	    for now until we settle on the documentation/help system.
+	  </td>
+	</tr>
+
+	<tr>
+	  <td><b>NO</b></td>
+	  <td>???</td>
+	  <td>
+	    <b>gnome-history</b>:  Mark as immature.
+	  </td>
+	</tr>
+
+	<tr>
+	  <td><b>NO</b></td>
+	  <td>???</td>
+	  <td>
+	    <b>gnome-hook</b>:  Remove it, obsoleted by hooks in Glib.
+	  </td>
+	</tr>
+
+	<tr>
+	  <td>Yes</td>
+	  <td></td>
+	  <td>
+	    <b>gnome-i18n</b>:  OK.
+	  </td>
+	</tr>
+
+	<tr>
+	  <td><b>NO</b></td>
+	  <td>???</td>
+	  <td>
+	    <b>gnome-metadata</b>:  OK, fix NULL hash table warning
+	    (ask <a
+	    href="mailto:federico@nuclecu.unam.mx">Federico</a>). Figure
+	    out a way to prime the database at installation time.
+	  </td>
+	</tr>
+
+	<tr>
+	  <td>Yes</td>
+	  <td></td>
+	  <td>
+	    <b>gnome-mime</b>:  OK.
+	  </td>
+	</tr>
+
+	<tr>
+	  <td><b>NO</b></td>
+	  <td>???</td>
+	  <td>
+	    <b>gnome-paper</b>:  OK.  Maybe needs a capplet to configure/add
+	    new paper types.
+	  </td>
+	</tr>
+
+	<tr>
+	  <td>Yes</td>
+	  <td></td>
+	  <td>
+	    <b>gnome-popt</b>:  OK.
+	  </td>
+	</tr>
+
+	<tr>
+	  <td>Yes</td>
+	  <td></td>
+	  <td>
+	    <b>gnome-regex</b>:  OK.
+	  </td>
+	</tr>
+
+	<tr>
+	  <td>Yes</td>
+	  <td></td>
+	  <td>
+	    <b>gnome-score</b>:  OK.
+	  </td>
+	</tr>
+
+	<tr>
+	  <td><b>NO</b></td>
+	  <td><a href="mailto:sopwith@redhat.com">Elliot Lee</a></td>
+	  <td>
+	    <b>gnome-sound</b>:  OK, Elliot will finalize it for 1.0.  Is it
+	    possible to get some stock sounds by then?
+	  </td>
+	</tr>
+
+	<tr>
+	  <td><b>NO</b></td>
+	  <td>???</td>
+	  <td>
+	    <b>gnome-triggers</b>:  OK for now, will be overhauled after
+	    1.0.
+	  </td>
+	</tr>
+
+	<tr>
+	  <td><b>NO</b></td>
+	  <td>???</td>
+	  <td>
+	    <b>gnome-url</b>:  OK for now, needs a bit of revising in terms of
+	    configurability and API.
+	  </td>
+	</tr>
+
+	<tr>
+	  <td><b>NO</b></td>
+	  <td>???</td>
+	  <td>
+	    <b>gnome-util</b>:  OK, see what is duplicated from Glib and mark
+	    it as deprecated.  The rest is OK.  Make sure everything that looks
+	    for files in $GNOMEDIR actually uses the gnome_*file()
+	    functions.
+	  </td>
+	</tr>
+      </tbody>
+    </table>
+
+    <h1>libgnomeui</h1>
+
+    <table width="100%" border="1">
+      <tbody>
+	<tr>
+	  <td>Done</td>
+	  <td>Owner</td>
+	  <td>What</td>
+	</tr>
+	<tr>
+	  <td><b>NO</b></td>
+	  <td>???</td>
+	  <td>
+	    <b>gnome-about</b>:  OK, except for the yucky green -- make it
+	    respect the theme.  Make sure all applications invoke it in the same
+	    way (the dialog should not be modal, but only one dialog can be popped
+	    up at a time).
+	  </td>
+	</tr>
+
+	<tr>
+	  <td><b>NO</b></td>
+	  <td>???</td>
+	  <td>
+	    <b>gnome-animator</b>:  Mark as immature.
+	  </td>
+	</tr>
+
+	<tr>
+	  <td><b>NO</b></td>
+	  <td>???</td>
+	  <td>
+	    <b>gnome-app</b>:  OK.  Can we have multiple toolbars on
+	    time?  <a href="mailto:ettore@comm2000.it">Ettore</a> and
+	    <a href="mailto:jaka.mocnik@kiss.uni-lj.si">Jaka</a> know
+	    about the multiple toolbars problem.
+	  </td>
+	</tr>
+
+	<tr>
+	  <td><b>NO</b></td>
+	  <td>???</td>
+	  <td>
+	    <b>gnome-app-helper</b>:  OK.  Scratch the right-justify property.
+	    Add a GNOMEUIINFO_SUBTREE_STOCK() macro, to create submenus with
+	    icons.
+	  </td>
+	</tr>
+
+	<tr>
+	  <td><b>NO</b></td>
+	  <td>???</td>
+	  <td>
+	    <b>gnome-appbar</b>:  Ask <a
+	    href="mailto:rhpennin@midway.uchicago.edu">Havoc</a> about
+	    it, should be pretty much OK.
+	  </td>
+	</tr>
+
+	<tr>
+	  <td><b>NO</b></td>
+	  <td>???</td>
+	  <td>
+	    <b>gnome-calculator</b>:  OK.
+	  </td>
+	</tr>
+
+	<tr>
+	  <td><b>NO</b></td>
+	  <td><a href="mailto:federico@nuclecu.unam.mx">Federico Mena</a></td>
+	  <td>
+	    <b>gnome-canvas</b>:  OK.  Finish the widget item, maybe add the
+	    reparent do_not_move flag (see the TODO list in
+	    gnome-canvas.c).
+	  </td>
+	</tr>
+
+	<tr>
+	  <td>Yes</td>
+	  <td></td>
+	  <td>
+	    <b>gnome-client</b>:  OK.
+	  </td>
+	</tr>
+
+	<tr>
+	  <td>Yes</td>
+	  <td></td>
+	  <td>
+	    <b>gnome-color-picker</b>:  OK.
+	  </td>
+	</tr>
+
+	<tr>
+	  <td><b>NO</b></td>
+	  <td>???</td>
+	  <td>
+	    <b>gnome-color-selector</b>:  Dump it, make sure nothing is using
+	    it, and convert it to use gnome-color-picker instead.
+	  </td>
+	</tr>
+
+	<tr>
+	  <td><b>NO</b></td>
+	  <td>???</td>
+	  <td>
+	    <b>gnome-cursors</b>:  Does not exist now, but we need stock
+	    cursors with hotspots.  Maybe it should go in gnome-stock.  X's
+	    default cursors are butt-ugly, so we need pretty cursors that are
+	    standard across applications.
+	  </td>
+	</tr>
+
+	<tr>
+	  <td><b>NO</b></td>
+	  <td>???</td>
+	  <td>
+	    <b>gnome-dateedit</b>:  Fix it to display the popup
+	    calendar.
+	  </td>
+	</tr>
+
+	<tr>
+	  <td><b>NO</b></td>
+	  <td>???</td>
+	  <td>
+	    <b>gnome-dentry-edit</b>:  Make sure it works, make it
+	    pretty.
+	  </td>
+	</tr>
+
+	<tr>
+	  <td><b>NO</b></td>
+	  <td>???</td>
+	  <td>
+	    <b>gnome-dialog</b>:  OK.  Remove the obsolete functions, and fix
+	    the code that (still) uses them.  Provide a way to add buttons with
+	    icons that are not stock buttons.
+	  </td>
+	</tr>
+
+	<tr>
+	  <td><b>NO</b></td>
+	  <td>???</td>
+	  <td>
+	    <b>gnome-dialog-util</b>:  OK, just test it a bit more.
+	  </td>
+	</tr>
+
+	<tr>
+	  <td><b>NO</b></td>
+	  <td>???</td>
+	  <td>
+	    <b>gnome-dns</b>:  OK, make sure it works.
+	  </td>
+	</tr>
+
+	<tr>
+	  <td><b>NO</b></td>
+	  <td>???</td>
+	  <td>
+	    <b>gnome-entry</b>:  Make it use GtkCList.  Longer term -- rewrite
+	    GtkCombo.
+	  </td>
+	</tr>
+
+	<tr>
+	  <td><b>NO</b></td>
+	  <td>???</td>
+	  <td>
+	    <b>gnome-file-entry</b>:  The API sucks (ask <a href="mailto:federico@nuclecu.unam.mx">Federico</a>).
+	  </td>
+	</tr>
+
+	<tr>
+	  <td><b>NO</b></td>
+	  <td>???</td>
+	  <td>
+	    <b>gnome-font-picker</b>:  Make the button prettier, revise the
+	    API a bit, maybe.
+	  </td>
+	</tr>
+
+	<tr>
+	  <td><b>NO</b></td>
+	  <td>???</td>
+	  <td>
+	    <b>gnome-font-selector</b>:  Scratch it and make things use
+	    gnome-font-picker instead.
+	  </td>
+	</tr>
+
+	<tr>
+	  <td>Yes</td>
+	  <td></td>
+	  <td>
+	    <b>gnome-geometry</b>:  OK.
+	  </td>
+	</tr>
+
+	<tr>
+	  <td><b>NO</b></td>
+	  <td>???</td>
+	  <td>
+	    <b>gnome-gtk-utils</b>:  Scratch it.
+	  </td>
+	</tr>
+
+	<tr>
+	  <td><b>NO</b></td>
+	  <td>???</td>
+	  <td>
+	    <b>gnome-guru</b>:  Mark as immature.
+	  </td>
+	</tr>
+
+	<tr>
+	  <td><b>NO</b></td>
+	  <td>???</td>
+	  <td>
+	    <b>gnome-href</b>:  Mark as immature.
+	  </td>
+	</tr>
+
+	<tr>
+	  <td>Yes</td>
+	  <td></td>
+	  <td>
+	    <b>gnome-ice</b>:  OK.
+	  </td>
+	</tr>
+
+	<tr>
+	  <td>Yes</td>
+	  <td></td>
+	  <td>
+	    <b>gnome-icon-item</b>:  OK.
+	  </td>
+	</tr>
+
+	<tr>
+	  <td>Yes</td>
+	  <td></td>
+	  <td>
+	    <b>gnome-icon-list</b>:  OK.
+	  </td>
+	</tr>
+
+	<tr>
+	  <td><b>NO</b></td>
+	  <td>???</td>
+	  <td>
+	    <b>gnome-icon-sel</b>:  Needs to use GnomeIconList instead of
+	    GtkCList.
+	  </td>
+	</tr>
+
+	<tr>
+	  <td>Yes</td>
+	  <td></td>
+	  <td>
+	    <b>gnome-icon-text</b>:  OK.
+	  </td>
+	</tr>
+
+	<tr>
+	  <td>Yes</td>
+	  <td></td>
+	  <td>
+	    <b>gnome-init</b>:  OK.
+	  </td>
+	</tr>
+
+	<tr>
+	  <td>Yes</td>
+	  <td></td>
+	  <td>
+	    <b>gnome-less</b>:  OK.
+	  </td>
+	</tr>
+
+	<tr>
+	  <td><b>NO</b></td>
+	  <td>???</td>
+	  <td>
+	    <b>gnome-mdi</b>:  OK, although several people think it is a bit
+	    painful to have to derive widgets in order to MDI-ify
+	    applications.
+	  </td>
+	</tr>
+
+	<tr>
+	  <td><b>NO</b></td>
+	  <td>???</td>
+	  <td>
+	    <b>gnome-messagebox</b>:  OK, see if does not duplicate anything
+	    from gnome-dialog-utils gnome or-app-util.
+	  </td>
+	</tr>
+
+	<tr>
+	  <td><b>NO</b></td>
+	  <td>???</td>
+	  <td>
+	    <b>gnome-net</b>:  Scratch it.
+	  </td>
+	</tr>
+
+	<tr>
+	  <td>Yes</td>
+	  <td></td>
+	  <td>
+	    <b>gnome-number-entry</b>:  OK.
+	  </td>
+	</tr>
+
+	<tr>
+	  <td><b>NO</b></td>
+	  <td>???</td>
+	  <td>
+	    <b>gnome-paper-selector</b>:  OK, but check <a
+	    href="http://aachen.heimat.de/leute/luedi/gnome.html">http://aachen.heimat.de/leute/luedi/gnome.html</a>;
+	    why is that one prettier?
+	  </td>
+	</tr>
+
+	<tr>
+	  <td><b>NO</b></td>
+	  <td>???</td>
+	  <td>
+	    <b>gnome-pixmap</b>:  Fix so that it does not use a window unless
+	    the Imlib and Gtk visuals are different.
+	  </td>
+	</tr>
+
+	<tr>
+	  <td><b>NO</b></td>
+	  <td>???</td>
+	  <td>
+	    <b>gnome-popup-help</b>:  OK.  Menus need to be disabled if the
+	    entries are disabled (ask <a href="mailto:jrb@redhat.com">Jonathan</a>).
+	  </td>
+	</tr>
+
+	<tr>
+	  <td><b>NO</b></td>
+	  <td>???</td>
+	  <td>
+	    <b>gnome-popup-menu</b>:  OK.  Fix <a
+	    href="mailto:rhpennin@midway.uchicago.edu">Havoc</a>'s bug
+	    report about the user_data not being propagated to
+	    submenus.
+	  </td>
+	</tr>
+
+	<tr>
+	  <td><b>NO</b></td>
+	  <td>???</td>
+	  <td>
+	    <b>gnome-preferences</b>:  OK -- write the capplet to configure
+	    user preferences.
+	  </td>
+	</tr>
+
+	<tr>
+	  <td><b>NO</b></td>
+	  <td>???</td>
+	  <td>
+	    <b>gnome-properties</b>:  Scratch ASAP, and make things use
+	    GnomePropertyBox instead.
+	  </td>
+	</tr>
+
+	<tr>
+	  <td><b>NO</b></td>
+	  <td>???</td>
+	  <td>
+	    <b>gnome-propertybox</b>:  OK, needs to support verification of
+	    data (enter bogus value, click OK/Apply, callback to the verification
+	    routine, and have an error box pop up).
+	  </td>
+	</tr>
+
+	<tr>
+	  <td><b>NO</b></td>
+	  <td>???</td>
+	  <td>
+	    <b>gnome-rootwin</b>:  SCRATCH THIS SMELLY PILE OF POO.
+	  </td>
+	</tr>
+
+	<tr>
+	  <td>Yes</td>
+	  <td></td>
+	  <td>
+	    <b>gnome-scores</b>:  OK.
+	  </td>
+	</tr>
+
+	<tr>
+	  <td>Yes</td>
+	  <td></td>
+	  <td>
+	    <b>gnome-startup</b>:  OK.
+	  </td>
+	</tr>
+
+	<tr>
+	  <td><b>NO</b></td>
+	  <td>???</td>
+	  <td>
+	    <b>gnome-stock</b>:  OK.  Remove the deprecated functions.
+	    Come up with list of missing icons for <a
+	    href="tigert@gimp.org">Tigert</a> to make :-) Fix the
+	    yes/no icons (may be insulting in some languages).  Add
+	    stock cursors.  Maybe see how to make the icons themable.
+	  </td>
+	</tr>
+
+	<tr>
+	  <td><b>NO</b></td>
+	  <td>???</td>
+	  <td>
+	    <b>gnome-types</b>:  Move these to where the types are actually
+	    used (gnome-dialog-util, maybe).
+	  </td>
+	</tr>
+
+	<tr>
+	  <td><b>NO</b></td>
+	  <td>???</td>
+	  <td>
+	    <b>gnome-uidefs</b>:  Only the keybindings are useful.  Keep the
+	    GNOME_PAD_* stuff for 1.0, but scratch it later when Gtk gets
+	    uniformized padding support.
+	  </td>
+	</tr>
+
+	<tr>
+	  <td>Yes</td>
+	  <td></td>
+	  <td>
+	    <b>gnome-winhints</b>:  OK.
+	  </td>
+	</tr>
+
+	<tr>
+	  <td>Yes</td>
+	  <td></td>
+	  <td>
+	    <b>gtk-clock</b>:  OK for now.
+	  </td>
+	</tr>
+
+	<tr>
+	  <td><b>NO</b></td>
+	  <td><a href="mailto:otaylor@redhat.com">Owen Taylor</a></td>
+	  <td>
+	    <b>gtk-plug and gtk-socket</b>:  OK, they are getting moved to
+	    Gtk.
+	  </td>
+	</tr>
+
+	<tr>
+	  <td><b>NO</b></td>
+	  <td><a href="mailto:miguel@nuclecu.unam.mx">Miguel de Icaza</a></td>
+	  <td>
+	    <b>gtk-ted</b>:  Eeeek.  Keep for hack value (?).
+	  </td>
+	</tr>
+
+	<tr>
+	  <td>Yes</td>
+	  <td></td>
+	  <td>
+	    <b>gtk-cauldron</b>:  Keep it for hack value.
+	  </td>
+	</tr>
+
+	<tr>
+	  <td>Yes</td>
+	  <td></td>
+	  <td>
+	    <b>gtkdial</b>:  OK.
+	  </td>
+	</tr>
+
+	<tr>
+	  <td><b>NO</b></td>
+	  <td><a href="mailto:otaylor@redhat.com">Owen Taylor</a></td>
+	  <td>
+	    <b>gtklayout</b>:  OK, it is getting moved to Gtk.
+	  </td>
+	</tr>
+
+	<tr>
+	  <td>Yes</td>
+	  <td></td>
+	  <td>
+	    <b>gtkspell</b>:  Keep it around until it gets
+	    Baboon-ified.
+	  </td>
+	</tr>
+      </tbody>
+    </table>
+
+    <h1>gtk-xmhtml</h1>
+    <p>
+      Sigh, the only thing we can do is wait for <a
+      href="ripley@xs4all.nl">Koen</a> :-(
+    </p>
+
+    <h1>libgnorba</h1>
+    <p>
+      <a href="mailto:sopwith@redhat.com">Elliot</a> knows what needs
+      to be done for 1.0.
+    </p>
+
+    <h1>libgtktty</h1>
+    <p>
+      Ignore it, since it is not being distributed.
+    </p>
+
+    <h1>libvfs</h1>
+    <p>
+      Ignore it for now, since it is not yet usable outside of MC.
+    </p>
+
+    <h1>zvt</h1>
+    <p>
+      <a href="mailto:mzucchi@denr.sa.gov.au">Michael</a> knows what
+      needs to be done for 1.0.
+    </p>
+
+
+<!-- End of Table -->
+<!--#include virtual="/include/table-end.html" -->
+
+
+<!-- The very end -->
+<!--#include virtual="/include/footer.html" -->
