@@ -38,14 +38,12 @@
 
 #include "zvtterm.h"
 
-#ifndef ZVT_NO_TRANSPARENT
 #include <gdk/gdkx.h>
 #include <gdk_imlib.h>
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
 #include <X11/Xatom.h>
 #include <X11/Xos.h>
-#endif /* ZVT_NO_TRANSPARENT */
 
 
 /* define to 'x' to enable copious debug output */
@@ -94,7 +92,6 @@ static void vtx_unrender_selection (struct _vtx *vx);
 static void zvt_term_scroll (ZvtTerm *term, int n);
 
 
-#ifndef ZVT_NO_TRANSPARENT
 /* transparent terminal prototypes */
 static Window     get_desktop_window (Window the_window);
 static Pixmap     get_pixmap_prop (Window the_window, char *prop_id);
@@ -102,7 +99,6 @@ static GdkPixmap *load_pixmap_back (char *file, int shaded);
 static GdkPixmap *create_shaded_pixmap (Pixmap p, int x, int y, int w, int h);
 static void       draw_back_pixmap (GtkWidget *widget, int nx, int ny, int nw, int nh);
 static gint       safe_strcmp(gchar *a, gchar *b);
-#endif /* ZVT_NO_TRANSPARENT */
 
 
 /* static data */
@@ -870,15 +866,14 @@ zvt_term_draw (GtkWidget *widget, GdkRectangle *area)
 
       gdk_window_get_size (term->term_window, &width, &height);
 
-      /* FIXME: this doesn't need to be done if we're going
-       * draw a pixmap background! --JMP
-       */
-      gdk_window_clear_area (term->term_window, 0, 0, width, height);
-
-#ifndef ZVT_NO_TRANSPARENT
-      if(term->transparent || term->pixmap_filename)
-	draw_back_pixmap(widget, 0, 0, width, height);
-#endif
+      if (term->transparent || term->pixmap_filename)
+	{
+	  draw_back_pixmap(widget, 0, 0, width, height);
+	}
+      else
+	{
+	  gdk_window_clear_area (term->term_window, 0, 0, width, height);
+	}
 
       vt_update_rect (term->vx, 0, 0,
 		      width / term->charwidth,
@@ -917,15 +912,14 @@ zvt_term_expose (GtkWidget      *widget,
 
       if (event->window == term->term_window)
 	{
-#ifndef ZVT_NO_TRANSPARENT
 	  if(term->transparent || term->pixmap_filename)
 	    draw_back_pixmap(widget,
 			     event->area.x, 
 			     event->area.y,
 			     event->area.width, 
 			     event->area.height);
-#endif
-	  vt_update_rect(
+
+	  vt_update_rect (
               term->vx,
 	      event->area.x / term->charwidth,
 	      event->area.y / term->charheight,
@@ -2056,7 +2050,6 @@ void
 zvt_term_set_background (ZvtTerm *terminal, char *pixmap_file, 
 			 int transparent, int shaded)
 {
-#ifndef ZVT_NO_TRANSPARENT
   if (!(zvt_term_get_capabilities (terminal) & ZVT_TERM_PIXMAP_SUPPORT))  
     return; 
 
@@ -2076,13 +2069,12 @@ zvt_term_set_background (ZvtTerm *terminal, char *pixmap_file,
   terminal->shaded = shaded;
   g_free (terminal->pixmap_filename);
   
-  if(pixmap_file)
+  if (pixmap_file)
     terminal->pixmap_filename = g_strdup (pixmap_file);
   else
     terminal->pixmap_filename = NULL;
 
   gtk_widget_queue_draw(GTK_WIDGET(terminal));
-#endif
 }
 
 /*
@@ -2191,41 +2183,57 @@ vt_draw_text(void *user_data, int col, int row, char *text, int len, int attr)
    * if the terminal is transparent we must redraw 
    * all the time as we can't optimize in that case
    */
-  if (term->in_expose || vx->back_match==0) {
-#ifndef ZVT_NO_TRANSPARENT
-	  if((!term->transparent && !term->pixmap_filename) || back<17) {
-#endif
-		  gdk_draw_rectangle(term->term_window,
-				     bgc,
-				     1,
-				     col*term->charwidth, row*term->charheight,
-				     len*term->charwidth, term->charheight);
-#ifndef ZVT_NO_TRANSPARENT
-	  } else if(!term->in_expose) {
-		  draw_back_pixmap(widget,
-				   col*term->charwidth, row*term->charheight,
-				   len*term->charwidth, term->charheight);
-	  }
-#endif
-  } else {
-    d(printf("not clearing background in_expose = %d, back_match=%d\n", term->in_expose, vx->back_match));
-    d(printf("txt = '%.*s'\n", len, text));
-  }
-
-  gdk_draw_text(term->term_window,
-		f,
-		fgc,
-		col*term->charwidth, row*term->charheight+term->font->ascent,
-		text, len);
+  if (term->in_expose || vx->back_match == 0)
+    {
+      if ((!term->transparent && !term->pixmap_filename) || back < 17)
+	{
+	  gdk_draw_rectangle (
+              term->term_window,
+	      bgc, 1,
+	      col * term->charwidth,
+	      row * term->charheight,
+	      len * term->charwidth,
+	      term->charheight);
+	  
+	} 
+      else if (!term->in_expose) 
+	{
+	  draw_back_pixmap (
+              widget,
+	      col * term->charwidth,
+	      row * term->charheight,
+	      len * term->charwidth,
+	      term->charheight);
+	}
+    } 
+  else 
+    {
+      d(printf("not clearing background in_expose = %d, back_match=%d\n", 
+	       term->in_expose, vx->back_match));
+      d(printf("txt = '%.*s'\n", len, text));
+    }
+  
+  gdk_draw_text(
+      term->term_window, f, fgc,
+      col * term->charwidth,
+      row * term->charheight + term->font->ascent,
+      text, len);
 
   /* check for underline */
-  if (attr&VTATTR_UNDERLINE) {
-    gdk_draw_line(term->term_window,
-		  fgc,
-		  col*term->charwidth, row*term->charheight+term->font->ascent+1,
-		  (col+len)*term->charwidth, row*term->charheight+term->font->ascent+1);
-  }
+  if (attr&VTATTR_UNDERLINE)
+    {
+      gdk_draw_line(
+          term->term_window, fgc,
+	  col * term->charwidth,
+	  row * term->charheight + term->font->ascent + 1,
+	  (col + len) * term->charwidth,
+	  row * term->charheight + term->font->ascent + 1);
+    }
 }
+
+
+
+
 
 void
 vt_scroll_area(void *user_data, int firstrow, int count, int offset, int fill)
@@ -2241,13 +2249,12 @@ vt_scroll_area(void *user_data, int firstrow, int count, int offset, int fill)
   
   term = ZVT_TERM (widget);
 
-#ifndef ZVT_NO_TRANSPARENT
-  if(term->transparent || term->pixmap_filename) {
-	  /* FIXME: bad hack */ /* tell me about it... --JMP */
-	  gtk_widget_queue_draw(widget);
-	  return;
-  }
-#endif
+  if(term->transparent || term->pixmap_filename)
+    {
+      /* FIXME: bad hack */ /* tell me about it... --JMP */
+      gtk_widget_queue_draw(widget);
+      return;
+    }
 
   /* FIXME: check args */
   d(printf("scrolling %d rows from %d, by %d lines\n", count,firstrow,offset));
@@ -2379,16 +2386,15 @@ zvt_term_set_shadow_type(ZvtTerm  *term, GtkShadowType type)
  * Returns: a bitmask of the capabilities
  **/
 guint32
-zvt_term_get_capabilities(ZvtTerm *term)
+zvt_term_get_capabilities (ZvtTerm *term)
 {
   guint32 out = 0;
 
-/*pixmap and transparency support*/
-#ifndef ZVT_NO_TRANSPARENT
+  /* pixmap and transparency support */
   out |= ZVT_TERM_PIXMAP_SUPPORT;
   if (gdk_imlib_get_visual () == gtk_widget_get_default_visual ())
     out |= ZVT_TERM_PIXMAP_SUPPORT;
-#endif
+
   return out;
 }
 
@@ -2492,7 +2498,6 @@ zvt_term_get_buffer(ZvtTerm *term, int *len, int type, int sx, int sy, int ex, i
 /******************************/
 /**** TRANSPARENT TERMINAL ****/
 
-#ifndef ZVT_NO_TRANSPARENT
 
 /* kind of stolen from Eterm and needs heavy cleanup */
 static Window desktop_window = None;
@@ -2789,5 +2794,3 @@ safe_strcmp(gchar *a, gchar *b)
 
   return 1;
 }
-
-#endif /* ZVT_NO_TRANSPARENT */

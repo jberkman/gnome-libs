@@ -1,5 +1,11 @@
 1999-01-03  Jay Painter <jpaint@serv.net>
 
+	* zvtterm.c: removed ifdefs so building without background pixmap
+	support is no longer a option; cleaned up the flickering a little
+	with scrolling when we have a background pixmap.
+
+1999-01-03  Jay Painter <jpaint@serv.net>
+
 	* zvtterm.c, zvtterm.h: more widget cleanup, rearranged structure
 	to take up less memory by putting all the bitfields at the end of
 	the zvtterm structure (and breaking binary compatibility); fixed
