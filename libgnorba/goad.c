@@ -157,8 +157,10 @@ static GoadActivationFlags
 goad_activation_combine_flags(GoadServer *sinfo,
 			      GoadActivationFlags user_flags)
 {
-  GoadActivationFlags retval = 0;
+  GoadActivationFlags retval;
 
+  retval = (user_flags & ~(GOAD_ACTIVATE_REMOTE|GOAD_ACTIVATE_SHLIB|GOAD_ACTIVATE_NEW_ONLY|GOAD_ACTIVATE_EXISTING_ONLY));
+  
   if(sinfo->flags & (GOAD_ACTIVATE_REMOTE|GOAD_ACTIVATE_SHLIB))
     retval |= sinfo->flags & (GOAD_ACTIVATE_REMOTE|GOAD_ACTIVATE_SHLIB);
   else
