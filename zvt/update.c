@@ -163,9 +163,6 @@ static void vt_line_update(struct _vtx *vx, struct vt_line *l, int line, int alw
       end--;
     }
     
-    if (end<l->width)
-      end++;
-    
     /* copy changed section of line to destination line */
     for(i=start;i<end;i++) {
       bl->data[i]=l->data[i];
@@ -602,7 +599,7 @@ void vt_update(struct _vtx *vx, int update_state)
     while (nb) {
       printf("%d: ", wb->line);
       for (i=0;i<wb->width;i++) {
-	(printf("%c", (wb->data[i]&0xffff)>=32?(wb->data[i]&0xffff):' '));
+	(printf("%c", (wb->data[i]&0xffff))); /*>=32?(wb->data[i]&0xffff):' '));*/
       }
       (printf("\n"));
       wb=nb;
@@ -992,7 +989,7 @@ void vt_draw_cursor(struct _vtx *vx, int state)
   if (vx->vt.scrollbackoffset == 0) {
     attr = vx->vt.this->data[vx->vt.cursorx];
     c = attr & 0xff;
-    if (c==9)			/* remap tab */
+    if (c==9 || c==0)			/* remap tab */
       c=' ';
     if (state) {			/* must swap fore/background colour */
       attr = (((attr & VTATTR_FORECOLOURM) >> VTATTR_FORECOLOURB) << VTATTR_BACKCOLOURB)
