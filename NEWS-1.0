@@ -1,3 +1,4 @@
+========================================================================
 gnome-libs-1.0.6
 ----------------
 
@@ -62,8 +63,111 @@ Hello,
 	    Mena and Matthijs Melchior
 
 
+======================================================================
+gnome-libs-1.0.5
+----------------
+
+Hello, lovers of exotic primates,
+
+The GNOME team has just released version 1.0.5 of the gnome-libs
+module.  This is mainly a bugfix release.
+
+* Availability:
+
+    ftp://ftp.gnome.org/pub/GNOME/sources/latest/gnome-libs-1.0.5.tar.gz
+
+* New features:
+
+	- For developers only:  now you can run configure with
+          --disable-gtk-doc, and then gnome-libs will not try to build
+	  the HTML documentation from the SGML sources.  This is of no
+	  concern to users, since the pre-packaged HTML files will be
+	  installed correctly (Martin Baulig).
+
+* Fixes:
+
+	- Fixed stale references to the GNOME name server (Miguel de
+          Icaza).
+
+	- #include fixes in the .idl files (Elliot Lee).
+
+	- Gnome-config and gnome-scores fixes (George Lebl).
+
+	- Const-correctness fixes for gnome-fileconvert (Miguel de
+          Icaza).
+
+	- Canvas event propagation and item destruction fixes
+          (Federico Mena).
+
+	- Accelerator/menu fixes (Tim Janik).
+
+	- Fixed ordering of some operations in gnome-client (Felix
+          Bellaby).
+
+	- Sanity checks for random parts of the libgnomeui code
+          (George Lebl and Pavel Machek).
+
+	- Correctness and permissions fixes in gnome-pty-helper (Erik
+          Troan).
+
+Please note that you may want to upgrade to Gtk+-1.2.1, since it has
+some menu accelerator fixes as well.  You will get a big loud warning
+if you don't upgrade :-)
+
+Enjoy,
+
+  Federico
+
+======================================================================
+gnome-libs-1.0.4
+----------------
+
+Hello, lovers of bugfix releases
+
+The GNOME team has just released version 1.0.4 of the gnome-libs
+package.
+
+* Availability:
+
+	ftp://ftp.gnome.org/pub/GNOME/sources/latest/gnome-libs-1.0.4.tar.gz
+
+* Major new features:
+
+	- gnome-moz-remote: Now makes sure it uses a local copy of
+          Mozilla for local URLs (i.e. "file:" ones).  Now uses GNOME
+          WM hints if available to look for client windows (James
+          Henstridge).
+
+	- Users should now be able to properly customize their menu
+          accelerators on the fly, and they should be saved correctly
+          upon termination of the topmost gtk_main() loop (Tim Janik).
+
+	- Zvt now supports selection when scrolling (Michael Zucchi).
+
+* Minor fixes:
+
+	- Making of documentation files now works for srcdir !=
+          builddir (Raja Harinath).
+
+	- gnome-moz-remote no longer depends on -lXmu or -lXt (James
+          Henstridge).
+
+	- Canvas item bounding and icon list button event fixes
+          (Richard Hult).
+
+	- Dialogs in gnome-dialog-util now get the correct focus
+          (Federico Mena).
+
+	- Timeout removal fixes in gnome-icon-list and
+          gnome-pixmap-entry (George Lebl).
 
 
+Have fun,
+
+  Federico
+
+
+======================================================================
 gnome-libs-1.0.3
 ----------------
 
@@ -112,6 +216,9 @@ Hello shared library lovers,
 
 Enjoy,
 Miguel.
+
+
+======================================================================
 gnome-libs-1.0.2
 ----------------
 Hello shared library lovers,
@@ -163,6 +270,7 @@ What is new on this release:
 	- SIGPIPE will be set to SGI_DFL on the child after fork.
 
 
+======================================================================
 0.99.5
 ------
 Hello guys,
@@ -356,6 +464,9 @@ me.
   I did on gnome-libs.
 
 Miguel
+
+
+======================================================================
 0.99.4
 ------
 Hello guys,
@@ -420,7 +531,7 @@ significant fewer parasites.
 	ftp://ftp.gnome.org/pub/GNOME/sources/latest
 
 
-
+======================================================================
 
 Feb/10/1998
 -----------
