@@ -1,3 +1,11 @@
+1999-09-29  Michael Zucchi  <mzucchi@denr.sa.gov.au>
+
+	* zvtterm.c (zvt_term_button_release): Ahh no, we dont want to do
+	the extend selection thing if the button was pressed, tahts why
+	this damn moved flag is here in the first place ...
+	(zvt_term_button_press): We want to indicate a 'moved' mouse
+	whenever we get a right click.  Raph was right!
+
 1999-09-28  Michael Zucchi  <zucchi@zedzone.mmc.com.au>
 
 	* vt.c (vt_setmode): Ahh .. if we switch from alt screen using

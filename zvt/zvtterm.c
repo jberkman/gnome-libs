@@ -1525,13 +1525,13 @@ zvt_term_button_press (GtkWidget      *widget,
 
       switch(event->type) {
       case GDK_BUTTON_PRESS:
-	vx->selectiontype = VT_SELTYPE_CHAR;
+	vx->selectiontype = VT_SELTYPE_CHAR|VT_SELTYPE_MOVED;
 	break;
       case GDK_2BUTTON_PRESS:
-	vx->selectiontype = VT_SELTYPE_WORD;
+	vx->selectiontype = VT_SELTYPE_WORD|VT_SELTYPE_MOVED;
 	break;
       case GDK_3BUTTON_PRESS:
-	vx->selectiontype = VT_SELTYPE_LINE;
+	vx->selectiontype = VT_SELTYPE_LINE|VT_SELTYPE_MOVED;
 	break;
       default:
 	break;
@@ -1648,7 +1648,7 @@ zvt_term_button_release (GtkWidget      *widget,
 	gdk_input_add(term->vx->vt.childfd, GDK_INPUT_READ, zvt_term_readdata, term);
     }
 
-    if (vx->selectiontype & (VT_SELTYPE_MOVED|VT_SELTYPE_BYEND|VT_SELTYPE_BYSTART)) {
+    if (vx->selectiontype & VT_SELTYPE_MOVED) {
       vt_fix_selection(vx);
       vt_draw_selection(vx);
           
