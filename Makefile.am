@@ -6,10 +6,6 @@ AUTOMAKE_OPTIONS = 1.3
 
 bin_SCRIPTS = gnome-config
 
-if FALSE
-libvfs = libvfs
-endif
-
 if HAVE_ORBIT
 GNORBA = libgnorba
 else
@@ -19,7 +15,7 @@ endif
 SUBDIRS = po intl support macros \
 	tools	\
 	libgnome libgnomeui gtk-xmhtml gnome-hello zvt \
-	$(GNORBA) test-gnome test-suite devel-docs $(libvfs)
+	$(GNORBA) test-gnome test-suite devel-docs
 
 include_HEADERS = gnome.h
 
