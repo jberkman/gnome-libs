@@ -2195,4 +2195,20 @@ zvt_term_set_bell(ZvtTerm *term, int state)
     term->vx->vt.ring_my_bell = 0;
 }
 
+/**
+ * zvt_term_get_bell:
+ * @term: A &ZvtTerm widget.
+ * 
+ * get the terminal bell state.  If the bell on then %TRUE is
+ * returned, otherwise %FALSE.
+ **/
+gboolean
+zvt_term_get_bell(ZvtTerm *term)
+{
+  g_return_if_fail (term != NULL);
+  g_return_if_fail (ZVT_IS_TERM (term));
+
+  return (term->vx->vt.ring_my_bell)?TRUE:FALSE;
+}
+
 

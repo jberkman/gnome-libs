@@ -127,6 +127,7 @@ extern "C" {
   void          zvt_term_show_pointer             (ZvtTerm *term);
 
   void		zvt_term_set_bell		  (ZvtTerm *term, int state);
+  gboolean	zvt_term_get_bell		  (ZvtTerm *term);
   void          zvt_term_set_blink                (ZvtTerm *term, int state);
   void          zvt_term_set_scroll_on_keystroke  (ZvtTerm *term, int state);
   void          zvt_term_set_scroll_on_output     (ZvtTerm *term, int state);
