@@ -35,6 +35,9 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.7  1999/04/02 19:17:11  asbjoer
+* open in text mode
+*
 * Revision 1.6  1998/02/13 23:52:47  rhlabs
 * Added fix for parsing HTML with tags which contain newlines
 *
@@ -2606,7 +2609,7 @@ writeParsedOutputToFile(XmHTMLObject *objects, String prefix)
 	sprintf(name, "%s.%i", prefix, count);
 	count++;
 
-	if((file = fopen(name, "w")) == NULL)
+	if((file = fopen(name, "wt")) == NULL)
 	{
 		perror(name);
 		return;
@@ -2686,7 +2689,7 @@ ParserWriteHTMLOutputToFile(XmHTMLObject *objects, String prefix,
 	sprintf(name, "%s.%i.html", prefix, count);
 	count++;
 
-	if((file = fopen(name, "w")) == NULL)
+	if((file = fopen(name, "wt")) == NULL)
 	{
 		perror(name);
 		return;

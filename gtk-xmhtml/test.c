@@ -101,7 +101,7 @@ main (int argc, char *argv [])
 
 	file_contents = g_string_new(NULL);
 	if(argc == 2) {
-		afile = fopen(argv[1], "r");
+		afile = fopen(argv[1], "rt");
 		if(afile != NULL) {
 		  while(fgets(aline, sizeof(aline), afile))
 			file_contents = g_string_append(file_contents, aline);
