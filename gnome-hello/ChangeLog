@@ -1,3 +1,8 @@
+1998-02-23  Mark Galassi  <rosalia@nis.lanl.gov>
+
+	* Makefile.am (LDADD): added $(LIBGNOMEUI_LIBS), since gnome-hello
+	needs those libraries (especially gdk_imlib).
+
 1998-02-19  Federico Mena Quintero  <federico@nuclecu.unam.mx>
 
 	* gnome-hello-5-dnd.c (main): Added app_id "gnome-hello-5-dnd".

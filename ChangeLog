@@ -1,3 +1,10 @@
+1998-02-23  Mark Galassi  <rosalia@nis.lanl.gov>
+
+	* configure.in (LIBGNOMEUI_LIBS):
+	(GNOMEUI_LIBS): added $Z_LIBS to both of these, sine gdk_imlib
+	might require them, and gdk_imlib is now always linked in
+	libgnomeui.
+
 1998-02-23  Marc Ewing  <marc@redhat.com>
 
 	* libgnomeui/gnome-app-helper.{c,h}: added radio and check/toggle
