@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-libs 0.30\n"
-"POT-Creation-Date: 1998-11-06 22:55+0100\n"
+"POT-Creation-Date: 1998-11-17 18:25+0100\n"
 "PO-Revision-Date: 1998-11-07 10:30+0100\n"
 "Last-Translator: Kjartan Maraas <kmaraas@fib.hl.no>\n"
 "Language-Team: Norwegian <no@li.org>\n"
@@ -272,6 +272,15 @@ msgstr "November"
 #: libgnome/lib_date.c:80
 msgid "December"
 msgstr "Desember"
+
+#: libgnome/gnome-popt.c:75
+#, c-format
+msgid ""
+"Error on option %s: %s.\n"
+"Run '%s --help' to see a full list of available command line options.\n"
+msgstr ""
+"Feil ved valg %s: %s.\n"
+"Kjør '%s --help' for å få en full liste med tilgjengelige kommandolinjevalg.\n"
 
 #: libgnomeui/gnome-about.c:201
 msgid "Author:"
@@ -542,7 +551,7 @@ msgstr "Velg en farge"
 #. Only add the label if all the children are to be shown.  Otherwise
 #. * things look too wide; in that case just show the arrow.
 #.
-#: libgnomeui/gnome-dateedit.c:395
+#: libgnomeui/gnome-dateedit.c:392
 msgid "Calendar"
 msgstr "Kalender"
 
@@ -612,84 +621,84 @@ msgstr "Velg fil"
 msgid "Browse..."
 msgstr "Se på..."
 
-#: libgnomeui/gnome-icon-sel.c:245
+#: libgnomeui/gnome-icon-sel.c:252
 msgid "Loading Icons..."
 msgstr "Laster ikoner..."
 
-#: libgnomeui/gnome-init.c:158
+#: libgnomeui/gnome-init.c:162
 msgid "Gdk debugging flags to set"
 msgstr "Gdk avlusingsflagg som skal slås på"
 
-#: libgnomeui/gnome-init.c:158 libgnomeui/gnome-init.c:160
-#: libgnomeui/gnome-init.c:180 libgnomeui/gnome-init.c:182
+#: libgnomeui/gnome-init.c:162 libgnomeui/gnome-init.c:164
+#: libgnomeui/gnome-init.c:184 libgnomeui/gnome-init.c:186
 msgid "FLAGS"
 msgstr "FLAGG"
 
-#: libgnomeui/gnome-init.c:160
+#: libgnomeui/gnome-init.c:164
 msgid "Gdk debugging flags to unset"
 msgstr "Gdk avlusingsflagg som skal slås av"
 
-#: libgnomeui/gnome-init.c:162
+#: libgnomeui/gnome-init.c:166
 msgid "X display to use"
 msgstr "X-display som skal brukes"
 
-#: libgnomeui/gnome-init.c:162
+#: libgnomeui/gnome-init.c:166
 msgid "DISPLAY"
 msgstr "DISPLAY"
 
-#: libgnomeui/gnome-init.c:164
+#: libgnomeui/gnome-init.c:168
 msgid "Make X calls synchronous"
 msgstr ""
 
-#: libgnomeui/gnome-init.c:166
+#: libgnomeui/gnome-init.c:170
 msgid "Don't use X shared memory extension"
 msgstr "Ikke bruk X-utvidelse for delt minne"
 
-#: libgnomeui/gnome-init.c:168
+#: libgnomeui/gnome-init.c:172
 msgid "Program name as used by the window manager"
 msgstr "Programnavn som brukt av vindusbehandleren"
 
-#: libgnomeui/gnome-init.c:168
+#: libgnomeui/gnome-init.c:172
 msgid "NAME"
 msgstr "NAVN"
 
-#: libgnomeui/gnome-init.c:170
+#: libgnomeui/gnome-init.c:174
 msgid "Program class as used by the window manager"
 msgstr "Programklasse som brukt av vindusbehandleren"
 
-#: libgnomeui/gnome-init.c:170
+#: libgnomeui/gnome-init.c:174
 msgid "CLASS"
 msgstr "KLASSE"
 
-#: libgnomeui/gnome-init.c:172
+#: libgnomeui/gnome-init.c:176
 msgid "HOST"
 msgstr "VERT"
 
-#: libgnomeui/gnome-init.c:174
+#: libgnomeui/gnome-init.c:178
 msgid "PORT"
 msgstr "PORT"
 
-#: libgnomeui/gnome-init.c:176 libgnomeui/gnome-init.c:178
+#: libgnomeui/gnome-init.c:180 libgnomeui/gnome-init.c:182
 msgid "STYLE"
 msgstr "STIL"
 
-#: libgnomeui/gnome-init.c:180
+#: libgnomeui/gnome-init.c:184
 msgid "Gtk+ debugging flags to set"
 msgstr "Gtk+ avlusingsflagg som skal slås på"
 
-#: libgnomeui/gnome-init.c:182
+#: libgnomeui/gnome-init.c:186
 msgid "Gtk+ debugging flags to unset"
 msgstr "Gtk+ avlusingsflagg som skal slås av"
 
-#: libgnomeui/gnome-init.c:184
+#: libgnomeui/gnome-init.c:188
 msgid "Make all warnings fatal"
 msgstr "Gjør all advarsler til fatale"
 
-#: libgnomeui/gnome-init.c:186
+#: libgnomeui/gnome-init.c:190
 msgid "Load an additional Gtk module"
 msgstr "Last Gtk+ tilleggsmoduler"
 
-#: libgnomeui/gnome-init.c:186
+#: libgnomeui/gnome-init.c:190
 msgid "MODULE"
 msgstr "MODUL"
 
@@ -1010,38 +1019,38 @@ msgstr ""
 "Enkel testapplikasjon for å sjekke hvordan WIN_HINTS virker, og for å teste "
 "gnome_win_hints_*-funksjonene for feil. :)"
 
-#: support/argp-parse.c:90
+#: support/argp-parse.c:95
 msgid "Give this help list"
 msgstr "Vis denne hjelpelisten"
 
-#: support/argp-parse.c:91
+#: support/argp-parse.c:96
 msgid "Give a short usage message"
 msgstr "Gi en kort bruksbeskrivelse"
 
-#: support/argp-parse.c:92
+#: support/argp-parse.c:97
 msgid "Set the program name"
 msgstr "Sett programnavnet"
 
-#: support/argp-parse.c:94
+#: support/argp-parse.c:99
 msgid "Hang for SECS seconds (default 3600)"
 msgstr "Heng i SEK sekunder (forvalgt 3600)"
 
-#: support/argp-parse.c:151
+#: support/argp-parse.c:156
 msgid "Print program version"
 msgstr "Skriv ut programversjonen"
 
-#: support/argp-parse.c:167
+#: support/argp-parse.c:172
 msgid "(PROGRAM ERROR) No version known!?"
 msgstr "(PROGRAM-FEIL) Versjon ikke kjent!?"
 
 # , c-format
 # , c-format
-#: support/argp-parse.c:641
+#: support/argp-parse.c:646
 #, c-format
 msgid "%s: Too many arguments\n"
 msgstr "%s: For mange argumenter\n"
 
-#: support/argp-parse.c:780
+#: support/argp-parse.c:785
 msgid "(PROGRAM ERROR) Option should have been recognized!?"
 msgstr "(PROGRAM-FEIL) Flagget skulle blitt gjenkjent!?"
 
@@ -1130,45 +1139,45 @@ msgstr "%s: flagget `-W %s' er flertydig\n"
 msgid "%s: option `-W %s' doesn't allow an argument\n"
 msgstr "%s: flagget `-W %s' tillater ikke argumenter\n"
 
-#: test-gnome/testgnome.c:340
+#: test-gnome/testgnome.c:328
 msgid "Guru-in-a-dialog test"
 msgstr ""
 
 #. Pixmap
-#: test-gnome/testgnome.c:614
+#: test-gnome/testgnome.c:602
 msgid "Default Pixmap"
 msgstr "Forvalgt bilde"
 
-#: test-gnome/testgnome.c:622 test-gnome/testgnome.c:663
-#: test-gnome/testgnome.c:688
+#: test-gnome/testgnome.c:610 test-gnome/testgnome.c:651
+#: test-gnome/testgnome.c:676
 msgid "If you choose a font it will appear here"
 msgstr "Hvis du velger en skrifttype vil den vises her"
 
 #. Font_Info
-#: test-gnome/testgnome.c:629
+#: test-gnome/testgnome.c:617
 msgid "Font Info"
 msgstr "Info om skrifttye"
 
-#: test-gnome/testgnome.c:639
+#: test-gnome/testgnome.c:627
 msgid "Use Font in button with size"
 msgstr "Bruk skrifttype på knapp med størrelse"
 
-#: test-gnome/testgnome.c:646
+#: test-gnome/testgnome.c:634
 msgid "Show font size"
 msgstr "Vis skrifttypens størrelse"
 
-#: test-gnome/testgnome.c:682
+#: test-gnome/testgnome.c:670
 msgid "This is an hbox with pixmap and text"
 msgstr "Dette er en hboks med bilde og tekst"
 
-#: test-gnome/testgnome.c:922
+#: test-gnome/testgnome.c:863
 msgid "The user chose Yes/OK with data:\n"
 msgstr "Brukeren valgte Ja/OK med data:\n"
 
-#: test-gnome/testgnome.c:926
+#: test-gnome/testgnome.c:867
 msgid "The user chose No/Cancel with data:\n"
 msgstr "Brukeren valgte Nei/Avbryt med data:\n"
 
-#: test-gnome/testgnome.c:937
+#: test-gnome/testgnome.c:878
 msgid "Weird number in reply callback"
 msgstr "Snålt nummer i tilbakeringingssvaret"
