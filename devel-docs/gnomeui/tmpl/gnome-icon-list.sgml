@@ -411,11 +411,9 @@ print_selected_icons (GnomeIconList *gil)
     </para>
   </important>
 
-@iconlist: Icon list which emitted the signal
-@arg1: 
-@event: Event that triggered the selection, or NULL if none
-<!-- # Unused Parameters # -->
-@num: Index of the icon that became selected
+@iconlist: Icon list which emitted the signal.
+@num: Index of the icon that became selected.
+@event: Event that triggered the selection, or NULL if none.
 
 <!-- ##### SIGNAL GnomeIconList::unselect-icon ##### -->
   <para>
@@ -432,11 +430,9 @@ print_selected_icons (GnomeIconList *gil)
     </para>
   </important>
 
-@iconlist: Icon list which emitted the signal
-@arg1: 
-@event: Event that triggered the unselection, or NULL if none
-<!-- # Unused Parameters # -->
-@num: Index of the icon that became unselected
+@iconlist: Icon list which emitted the signal.
+@num: Index of the icon that became unselected.
+@event: Event that triggered the unselection, or NULL if none.
 
 <!-- ##### SIGNAL GnomeIconList::text-changed ##### -->
   <para>
@@ -456,13 +452,10 @@ print_selected_icons (GnomeIconList *gil)
     accepted, the text is automatically reset to its original state.
   </para>
 
-@iconlist: Icon list which emitted the signal
-@arg1: 
-@arg2: 
-@Returns: Whether the change is accepted by the application or not
-<!-- # Unused Parameters # -->
-@num: Index of the icon whose text was edited
-@new_text: Text entered by the user, which must be validated
+@iconlist: Icon list which emitted the signal.
+@num: Index of the icon whose text was edited.
+@new_text: Text entered by the user, which must be validated.
+@Returns: Whether the change is accepted by the application or not.
 
 <!-- ##### ARG GnomeIconList:hadjustment ##### -->
   <para>
