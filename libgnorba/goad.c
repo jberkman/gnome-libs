@@ -207,7 +207,7 @@ goad_server_activate_with_repo_id(GoadServer *server_list,
   GoadServer *slist;
   CORBA_Object retval = CORBA_OBJECT_NIL;
   int i;
-  enum { PASS_EXISTING, PASS_PREFER, PASS_FALLBACK, PASS_DONE } passnum;
+  enum { PASS_CHECK_EXISTING, PASS_PREFER, PASS_FALLBACK, PASS_DONE } passnum;
 
   g_return_val_if_fail(repo_id, CORBA_OBJECT_NIL);
   g_return_val_if_fail(!((flags & GOAD_ACTIVATE_EXISTING_ONLY)
@@ -265,7 +265,7 @@ goad_server_activate_with_repo_id(GoadServer *server_list,
        || ((passnum == PASS_CHECK_EXISTING)
 	   && (flags & GOAD_ACTIVATE_EXISTING_ONLY))
        || ((passnum == PASS_PREFER)
-	   && !(flags & (GOAD_ACTIVATE_SHLIB|GOAD_ACTIVATE_REMOTE)))
+	   && !(flags & (GOAD_ACTIVATE_SHLIB|GOAD_ACTIVATE_REMOTE))))
       break;
   }
 
