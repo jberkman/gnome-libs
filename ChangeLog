@@ -1,3 +1,9 @@
+2000-08-30  Martin Baulig  <baulig@suse.de>
+
+	* configure.in: Killed the libglade dependency again and put
+	back GNOME2_X_CHECKS ("works for me" and AM_PATH_GTK_2_0 lacks
+	-lICE and -lSM).
+
 Thu Aug 24 03:36:35 2000  George Lebl <jirka@5z.com>
 
 	* configure.in: Add AM_PATH_GTK_2_0 as GNOME2_X_CHECKS is broke

@@ -59,10 +59,7 @@ fi
 
 AC_SUBST(GNOME_HAVE_ALLOCA_H)
 
-dnl
-dnl FIXME this is required because GNOME2_X_CHECKS is b0rk
-dnl
-AM_PATH_GTK_2_0(1.3.0,,)
+GNOME2_X_CHECKS
 
 AM_PATH_GLIB_2_0(1.3.0,,
 AC_MSG_ERROR([
@@ -137,9 +134,6 @@ AM_GNOME2_GETTEXT
 # this is the directory where the *.{mo,gmo} files are installed
 gnomelocaledir='${prefix}/${DATADIRNAME}/locale'
 AC_SUBST(gnomelocaledir)
-
-dnl We need libglade
-AM_PATH_LIBGLADE(, AC_MSG_ERROR([Libglade is required to build gnome-libs.]))
 
 AC_CHECK_LIB(m, floor)
 
@@ -376,13 +370,13 @@ dnl
 dnl These are for building the appropriate lib*
 dnl
 LIBGNOME_LIBS="$DB_LIB $GLIB_LIBS $DL_LIB -lpopt"
-LIBGNOMEUI_LIBS="$LIBGNOME_LIBS $LIBGLADE_LIBS $GTK_LIBS $OAF_LIBS"
+LIBGNOMEUI_LIBS="$LIBGNOME_LIBS $GTK_LIBS $OAF_LIBS"
 LIBGTKXMHTML_LIBS="$XPM_LIBS $JPEG_LIBS $PNG_LIBS $Z_LIBS $GTK_LIBS"
 SUPPORTINCS='-DNEED_GNOMESUPPORT_H -I$(top_builddir)/support -I$(top_srcdir)/support'
 
 dnl These are for using lib*
 GNOME_LIBS="-lgnome-$GNOME_INTERFACE_VERSION $LIBGNOME_LIBS"
-GNOMEUI_LIBS="-lgnomeui-$GNOME_INTERFACE_VERSION $LIBGLADE_LIBS $OAF_LIBS $ORBIT_LIBS $LIBART_LIBS $GTK_LIBS $GNOME_LIBS"
+GNOMEUI_LIBS="-lgnomeui-$GNOME_INTERFACE_VERSION $OAF_LIBS $ORBIT_LIBS $LIBART_LIBS $GTK_LIBS $GNOME_LIBS"
 
 GTKXMHTML_LIBS="-lgtkxmhtml $LIBGTKXMHTML_LIBS"
 ZVT_LIBS="-lzvt-$GNOME_INTERFACE_VERSION $GTK_LIBS $UTIL_LIBS $GTK_LIBS"
