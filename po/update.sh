@@ -1,6 +1,6 @@
 #!/bin/sh
 
-PACKAGE="gnome-core"
+PACKAGE="gnome-libs"
 
 if [ "x$1" = "x--help" ]; then
 
