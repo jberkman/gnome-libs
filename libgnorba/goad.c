@@ -1,28 +1,39 @@
+/*
+ * goad.c:
+ *
+ * Author:
+ *   Elliot Lee (sopwith@cuc.edu)
+ */
+#include <config.h>
 #include "gnorba.h"
 #include <dirent.h>
 
 #define SERVER_LISTING_PATH "/CORBA/Servers"
 
 typedef struct {
-  gpointer impl_ptr;
-  char *id;
+	gpointer impl_ptr;
+	char     *id;
 } ActiveServerInfo;
 
 extern CORBA_ORB gnome_orbit_orb; /* In orbitgtk.c */
-static GSList *our_active_servers = NULL;
 
-static GoadServerType goad_server_typename_to_type(const char *typename);
-static CORBA_Object goad_server_activate_shlib(GoadServer *sinfo,
-					       GoadActivationFlags flags,
-					       CORBA_Environment *ev);
-static CORBA_Object goad_server_activate_exe(GoadServer *sinfo,
-					     GoadActivationFlags flags,
-					     CORBA_Environment *ev);
-static void goad_servers_unregister_atexit(void);
+static GSList   *our_active_servers = NULL;
 
-/**** goad_server_list_get
-      Description: Returns an array listing all the servers available
-                   for activation.
+static GoadServerType goad_server_typename_to_type (const char *typename);
+static CORBA_Object   goad_server_activate_shlib   (GoadServer *sinfo,
+						    GoadActivationFlags flags,
+						    CORBA_Environment *ev);
+static CORBA_Object   goad_server_activate_exe     (GoadServer *sinfo,
+						    GoadActivationFlags flags,
+						    CORBA_Environment *ev);
+
+static void goad_servers_unregister_atexit         (void);
+
+/*
+ * goad_server_list_get
+ *
+ * Description: Returns an array listing all the servers available
+ * for activation.
  */
 GoadServer *
 goad_server_list_get(void)
@@ -89,14 +100,18 @@ goad_server_typename_to_type(const char *typename)
     return 0; /* Invalid */
 }
 
-/**** goad_server_list_free
-      Inputs: 'server_list' - an array of GoadServer structures.
-      Description: Frees up all the memory associated with 'server_list'
-                   (which should have been received from goad_server_list_get())
-      Side effects: Invalidates the memory pointed to by 'server_list'.
+/*
+ * goad_server_list_free
+ *
+ * @server_list: an array of GoadServer structures.
+ *
+ * Description: Frees up all the memory associated with 'server_list'
+ * (which should have been received from goad_server_list_get())
+ *
+ * Side effects: Invalidates the memory pointed to by 'server_list'.
  */
 void
-goad_server_list_free(GoadServer *server_list)
+goad_server_list_free (GoadServer *server_list)
 {
   int i;
 
@@ -110,7 +125,9 @@ goad_server_list_free(GoadServer *server_list)
   g_free(server_list);
 }
 
-/* Picks the first one on the list that meets criteria */
+/*
+ * Picks the first one on the list that meets criteria
+ */
 CORBA_Object
 goad_server_activate_with_repo_id(GoadServer *server_list,
 				  const char *repo_id,
@@ -121,12 +138,15 @@ goad_server_activate_with_repo_id(GoadServer *server_list,
   return CORBA_OBJECT_NIL;
 }
 
-/**** goad_server_activate
-      Inputs: 'sinfo' - information on the server to be "activated"
-              'flags' - information on how the application wants
-	                the server to be activated.
-      Description: Activates a CORBA server specified by 'sinfo', using
-                   the 'flags' hints on how to activate that server.
+/*
+ * goad_server_activate
+ *
+ * @sinfo: information on the server to be "activated"
+ * @flags: information on how the application wants
+ *         the server to be activated.
+ *
+ * Description: Activates a CORBA server specified by 'sinfo', using
+ * the 'flags' hints on how to activate that server.
  */
 CORBA_Object
 goad_server_activate(GoadServer *sinfo,
@@ -181,8 +201,10 @@ goad_server_activate(GoadServer *sinfo,
     break;
   }
 
-  /* This goes _before_ "out:" - don't want to reregister
-     the object with the name service if we got it from there ;-) */
+  /*
+   * This goes _before_ "out:" - don't want to reregister
+   * the object with the name service if we got it from there ;-)
+   */
   if(!CORBA_Object_is_nil(retval, &ev)
      && !(flags & GOAD_ACTIVATE_NO_NS_REGISTER)) {
     /* Register this object with the name service */
@@ -204,20 +226,22 @@ goad_server_activate(GoadServer *sinfo,
   return retval;
 }
 
-/**** goad_server_activate_shlib
-      Inputs: 'sinfo' - information on the plugin to be loaded.
-              'flags' - information about how the plugin should be loaded, etc.
-	      'ev' - exception information (passed in to save us
-	      creating another one)
-      Pre-conditions: Assumes sinfo->type == GOAD_SERVER_SHLIB
-
-      Side effects: May add information on the newly created server to
-      'our_active_servers' list, so we can unregister the server from the
-      name service when we exit.
-
-      Description: Loads the plugin specified in 'sinfo'. Looks for
-                   an object of id 'sinfo->id' in it, and activates it
-		   if found.
+/*
+ * goad_server_activate_shlib
+ * @sinfo: information on the plugin to be loaded.
+ * @flags: information about how the plugin should be loaded, etc.
+ * @ev:    exception information (passed in to save us
+ *         creating another one)
+ *
+ * Pre-conditions: Assumes sinfo->type == GOAD_SERVER_SHLIB
+ *
+ * Side effects: May add information on the newly created server to
+ * 'our_active_servers' list, so we can unregister the server from the
+ * name service when we exit.
+ *
+ * Description: Loads the plugin specified in 'sinfo'. Looks for
+ * an object of id 'sinfo->id' in it, and activates it
+ * if found.
  */
 static CORBA_Object
 goad_server_activate_shlib(GoadServer *sinfo,
@@ -263,9 +287,11 @@ goad_server_activate_shlib(GoadServer *sinfo,
 }
 
 
-/**** goad_servers_unregister_atexit
-      Description: For each shlib server that we had started,
-                   try to unregister it from the name service.
+/*
+ * goad_servers_unregister_atexit
+ *
+ * Description: For each shlib server that we had started,
+ * try to unregister it from the name service.
  */
 static void
 goad_server_unregister_atexit(ActiveServerInfo *ai, CORBA_Environment *ev)

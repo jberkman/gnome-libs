@@ -70,12 +70,14 @@ typedef enum {
 
 	/* these two are mutually exclusive */
 	GOAD_ACTIVATE_EXISTING_ONLY = 1 << 2, /* Only do lookup in name
-						 service for currently running
-						 version. */
+					       * service for currently running
+					       * version.
+					       */
 	GOAD_ACTIVATE_NEW_ONLY = 1 << 3,      /* No lookup in name service. */
 
 	GOAD_ACTIVATE_NO_NS_REGISTER = 1 << 4 /* DON'T register this new
-						 server with the name service */
+					       * server with the name service
+					       */
 } GoadActivationFlags;
 
 /*
@@ -87,8 +89,10 @@ typedef enum {
 GoadServer *      goad_server_list_get              (void);
 void              goad_server_list_free             (GoadServer *server_list);
 
-/* Passing GOAD_ACTIVATE_{REMOTE,SHLIB} flags to this routine doesn't make sense,
-   since the activation info is already specified in 'sinfo'. */
+/*
+ * Passing GOAD_ACTIVATE_{REMOTE,SHLIB} flags to this routine doesn't make sense,
+ * since the activation info is already specified in 'sinfo'.
+ */
 CORBA_Object      goad_server_activate              (GoadServer *sinfo,
 						     GoadActivationFlags flags);
 
