@@ -37,3 +37,7 @@ gnomeConf.sh: gnomeConf.sh.in Makefile
 	    -e 's,\@need_gnome_support\@,$(need_gnome_support),g' \
 	      < $(srcdir)/gnomeConf.sh.in > gnomeConf.tmp \
 	  && mv gnomeConf.tmp gnomeConf.sh
+
+
+
+
