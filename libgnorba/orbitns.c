@@ -143,9 +143,6 @@ gnome_name_service_get(void)
 
   CORBA_exception_init(&ev);
 
-  propname = gdk_atom_intern("CORBA_NAME_SERVICE", FALSE);
-  proptype = gdk_atom_intern("STRING", FALSE);
-
   if(CORBA_Object_is_nil(name_service, &ev)) {
     int iopipes[2];
     char iorbuf[2048];
@@ -219,18 +216,6 @@ gnome_name_service_get(void)
       if (iorbuf[strlen(iorbuf)-1] == '\n')
 	iorbuf[strlen(iorbuf)-1] = '\0';
 
-      /*
-	we have to save the strlen+1 to get the terminating '\0' in
-	the property
-      */
-      gdk_property_change(GDK_ROOT_PARENT(), propname, proptype, 8,
-			  GDK_PROP_MODE_REPLACE, iorbuf, strlen(iorbuf)+1);
-      /*
-	without flush, we won't set the property now. If the client
-	dosn't read anything from the X server, the  property will
-	never be set. 
-      */
-      XFlush(GDK_DISPLAY());
       name_service = CORBA_ORB_string_to_object(gnome_orbit_orb, iorbuf, &ev);
       if (name_service != CORBA_OBJECT_NIL) {
 	  /*
