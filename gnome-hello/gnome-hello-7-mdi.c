@@ -218,7 +218,7 @@ static void my_child_class_init (MyChildClass *class) {
 static void my_child_init (MyChild *child) {
 #ifdef USE_APP_HELPER
   /* if we provide GnomeUIInfo menu templates */
-  gnome_mdi_child_set_menu_template(GNOME_MDI_CHILD(child), main_child_menu);
+  gnome_mdi_child_set_menu_template(GNOME_MDI_CHILD(child), main_child_menu, TRUE);
 #endif
 }
 
@@ -426,7 +426,7 @@ int main(int argc, char **argv) {
   /* set up MDI menus: note that GnomeMDI will copy this struct for its own use, so
      main_menu[] will remain intact */
 #ifdef USE_APP_HELPER
-  gnome_mdi_set_menu_template(mdi, main_menu);
+  gnome_mdi_set_menu_template(mdi, main_menu, TRUE);
 #else
   /* we'd use this to provide our custom-built menus */
   gtk_signal_connect(GTK_OBJECT(mdi), "create_menus", GTK_SIGNAL_FUNC(mdi_create_menus), NULL);
