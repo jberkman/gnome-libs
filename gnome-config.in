@@ -22,7 +22,7 @@ pkgincludedir=${includedir}/@PACKAGE@
 usage()
 {
     cat <<EOF
-Usage: gnome-config [OPTION] [LIBRARY]...
+Usage: gnome-config [OPTION]... [LIBRARY]...
 
   --libs	print library linking information
   --cflags	print pre-processor and compiler flags
@@ -31,10 +31,10 @@ Usage: gnome-config [OPTION] [LIBRARY]...
 
 Known values for LIBRARY are:
 
-    glib
+    glib	(calls glib-config)
     gnome
     gnomeui
-    gtk
+    gtk		(calls gtk-config)
     gtkxmhtml	(only --libs)
     zvt		(only --libs)
 
@@ -63,8 +63,9 @@ while test $# -gt 0; do
 
     case $1 in
     --version)
-	echo $GNOME_VERSION
-       	;;
+	echo @PACKAGE@ @VERSION@
+	exit 0
+	;;
     --help)
 	usage 0
 	;;
@@ -97,7 +98,7 @@ while test $# -gt 0; do
 	the_libs="$the_libs @GNOME_LIBDIR@ @GTKXMHTML_LIBS@"
 	;;
     zvt)
-	the_libs="@GNOME_LIBDIR@ @ZVT_LIBS@ $the_libs"
+	the_libs="$the_libs @GNOME_LIBDIR@ @ZVT_LIBS@"
 	;;
     *)
 	cnf_sh=${libdir}/${1}Conf.sh
@@ -118,15 +119,15 @@ while test $# -gt 0; do
 done
 
 if $cflags; then
-	all_flags="$the_flags"
+    all_flags="$the_flags"
 fi
 
 if $libs; then
-	all_flags="$all_flags $the_libs"
+    all_flags="$all_flags $the_libs"
 fi
 
 if test "x$all_flags" = "x "; then
-   exit 1
+    exit 1
 fi
 
 #
