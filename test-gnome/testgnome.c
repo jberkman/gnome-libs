@@ -1816,13 +1816,13 @@ static void
 create_dentry_edit(void)
 {
 	GtkWidget *app;
-	GtkWidget *edit;
+	GtkObject *edit;
 	GtkWidget *nbook;
 
 	nbook = gtk_notebook_new();
 
 	app = create_newwin(TRUE,"testGNOME","DEntry Entry");
-	edit = GTK_WIDGET (gnome_dentry_edit_new_notebook(GTK_NOTEBOOK(nbook)));
+	edit = gnome_dentry_edit_new_notebook(GTK_NOTEBOOK(nbook));
 	gnome_app_set_contents(GNOME_APP(app),nbook);
 	gtk_widget_show_all(app);
 }

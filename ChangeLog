@@ -1,3 +1,10 @@
+1999-08-16 Elliot Lee <sopwith@redhat.com>
+	* gnome-libs.spec.in: Use sysconfdir=/etc instead of $prefix/etc
+	* libgnome/gnome-config.c: Ignore lines that begin with a '#'
+	* libgnomeui/gnome-dentry-edit.c: Attempt to remove the memory
+	  leak from not destroy the icon entry window.
+	* test-gnome/testgnome.c: A GnomeDentryEdit is not a widget.
+	
 1999-08-16  Pablo Saratxaga <srtxg@chanae.alphanet.ch>
 	* libgnomeui/gnome-scores.c: use strftime() to allow showing
 	the dates in a localized way.

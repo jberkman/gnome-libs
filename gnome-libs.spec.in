@@ -94,9 +94,9 @@ packages.
 MYCFLAGS="$RPM_OPT_FLAGS"
 
 if [ ! -f configure ]; then
-  CFLAGS="$MYCFLAGS" ./autogen.sh $MYARCH_FLAGS --prefix=%prefix --localstatedir=/var/lib
+  CFLAGS="$MYCFLAGS" ./autogen.sh $MYARCH_FLAGS --prefix=%prefix --localstatedir=/var/lib --sysconfdir=/etc
 else
-  CFLAGS="$MYCFLAGS" ./configure $MYARCH_FLAGS --prefix=%prefix --localstatedir=/var/lib
+  CFLAGS="$MYCFLAGS" ./configure $MYARCH_FLAGS --prefix=%prefix --localstatedir=/var/lib --sysconfdir=/etc
 fi
 
 if [ "$SMP" != "" ]; then
@@ -136,7 +136,7 @@ fi
 %config %{prefix}/share/gtkrc*
 %{prefix}/share/mime-info/gnome.mime
 %{prefix}/share/type-convert/type.convert
-%config %{prefix}/etc/*
+%config /etc/*
 
 %files devel
 %defattr(-, root, root)
