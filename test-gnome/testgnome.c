@@ -1870,7 +1870,7 @@ href_cb(GtkObject *button)
 	if (!label || ! label[0])
 		label = url;
 	gnome_href_set_url(GNOME_HREF(href), url);
-	gnome_href_set_label(GNOME_HREF(href), label);
+	gnome_href_set_text(GNOME_HREF(href), label);
 }
 
 static void
