@@ -64,7 +64,7 @@ struct _GtkXmHTMLClass
 	GtkContainerClass parent_class;
 
 	void (*activate)        (GtkXmHTML *, void *);
-	void (*arm)             (GtkXmHTML *, void *);
+	void (*rearm)           (GtkXmHTML *, void *);
 	void (*anchor_track)    (GtkXmHTML *, void *);
 	void (*frame)           (GtkXmHTML *, void *);
 	void (*form)            (GtkXmHTML *, void *);

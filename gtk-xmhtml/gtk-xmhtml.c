@@ -290,7 +290,7 @@ gtk_xmhtml_class_init (GtkXmHTMLClass *class)
 		gtk_signal_new ("arm",
 				GTK_RUN_FIRST,
 				object_class->type,
-				GTK_SIGNAL_OFFSET (GtkXmHTMLClass, arm),
+				GTK_SIGNAL_OFFSET (GtkXmHTMLClass, rearm),
 				gtk_xmthml_marshall_1, GTK_TYPE_NONE, 1, GTK_TYPE_POINTER);
 	gtk_xmhtml_signals [GTK_XMHTML_ANCHOR_TRACK] =
 		gtk_signal_new ("anchor_track",
