@@ -47,7 +47,7 @@
 <!entity wwwftpmail    "http://www.csdl.tamu.edu/~cchung/cpsc689/ftpmail/ftpmtoc.html">
 <!entity wwwftpmlist   "http://www.cix.co.uk/~net-services/mrcool/stats.htm">
 <!entity wwwi18n       "http://www.vlsivie.tuwien.ac.at/mike/i18n.html">
-<!entity gwwwi18n      "http://www.gnome.org/i18n">
+<!entity gwwwi18n      "http://developer.gnome.org/arch/translate/">
 <!entity wwwxdnd       "http://www.cco.caltech.edu/~jafl/xdnd/">
 <!entity wwwjimpick    "http://jimpick.com">
 <!entity wwwdebpack    "http://www.debian.org/~jim/debian-gtk-gnome/README">
@@ -1678,6 +1678,16 @@ Program received signal SIGINT, Interrupt.
 	Because the value is absent, it gives the warning.</para>
       </sect2>
 
+      <sect2 id="libesd">
+        <title>I get an error about needing 
+        <filename>libesd.so</filename>. Where do I get that?</title>
+
+        <para><filename>libesd.so</filename> is needed for esd, also
+        known as esound. This is a program which allows multiple sounds
+        to be played at once, since normally linux only allows one
+        connection to the sound card.</para>
+      </sect2>
+
       <sect2 id="db185">
 	<title>While compiling the program
 	<filename>gnome-gen-mimedb</filename> segfaults</title>
@@ -1839,6 +1849,20 @@ WM=foo</screen>
         <para>After that, you should be able to 
         <command>mount /dev/pts</command> and have everything work 
         properly.</para>
+      </sect2>
+
+      <sect2 id="panelgone">
+        <title>My panel disappeared, how do I get it back?</title>
+        <para>Open a terminal (rxvt, xterm, eterm, etc - You can open 
+        one in Enlightenment by middle-clicking on the desktop and 
+        going to "Other Pograms"). In the terminal, type 
+        <command>gnome-run</command>. A new dialog box will appear. 
+        In that box, type <command>panel</command>. Your panel will
+        reappear, although it may ask you if you want to start 
+        another panel - just click Yes if it does. You can close the 
+        terminal now. After that, go to the Foot menu, then "Settings" 
+        and choose "Save Current Session". That will ensure that the 
+        panel is reloaded next time you start up.</para>
       </sect2>
     </sect1>
   </chapter>
