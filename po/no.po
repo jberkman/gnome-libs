@@ -4,9 +4,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: gnome-libs 0.99.1\n"
-"POT-Creation-Date: 1999-01-03 00:47+0100\n"
-"PO-Revision-Date: 1999-01-03 00:50+0100\n"
+"Project-Id-Version: gnome-libs 0.99.2\n"
+"POT-Creation-Date: 1999-01-08 00:30+0100\n"
+"PO-Revision-Date: 1999-01-08 01:01+0100\n"
 "Last-Translator: Kjartan Maraas <kmaraas@fib.hl.no>\n"
 "Language-Team: Norwegian <no@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -25,6 +25,7 @@ msgstr "Hello GNOME\n"
 msgid "The Hello World Gnomified"
 msgstr "Hello World Gnomifisert"
 
+#. copyright notice
 #: gnome-hello/gnome-hello-2-i18n.c:61
 #: gnome-hello/gnome-hello-3-parse-args.c:61
 msgid "(C) 1998 the Free Software Foundation"
@@ -163,6 +164,7 @@ msgid "<control>A"
 msgstr "<ctrl>A"
 
 #: gnome-hello/gnome-hello.c:208
+#, c-format
 msgid ""
 "%s: A gnomified 'Hello World' program\n"
 "\n"
@@ -181,6 +183,7 @@ msgstr ""
 "        --version  viser versjonsinformasjon og avslutter\n"
 
 #: gnome-hello/gnome-hello.c:217
+#, c-format
 msgid "Gnome Hello %s.\n"
 msgstr "Gnome Hello %s.\n"
 
@@ -208,7 +211,8 @@ msgstr "sett"
 msgid "Set config entry"
 msgstr "Sett konfigurasjonsoppføring"
 
-#: libgnome/gnome-popt.c:75
+#: libgnome/gnome-popt.c:92
+#, c-format
 msgid ""
 "Error on option %s: %s.\n"
 "Run '%s --help' to see a full list of available command line options.\n"
@@ -463,32 +467,32 @@ msgstr "="
 msgid "INV"
 msgstr "INV"
 
-#: libgnomeui/gnome-client.c:750
+#: libgnomeui/gnome-client.c:757
 msgid "Specify session management ID"
 msgstr "Spesifiser ID for sesjonskontroll"
 
-#: libgnomeui/gnome-client.c:750 libgnorba/goad-browser.c:23
+#: libgnomeui/gnome-client.c:757 libgnorba/goad-browser.c:23
 msgid "ID"
 msgstr "ID"
 
-#: libgnomeui/gnome-client.c:752
+#: libgnomeui/gnome-client.c:759
 msgid "Specify prefix of saved configuration"
 msgstr "Spesifiser prefiks for lagret konfigurasjon"
 
-#: libgnomeui/gnome-client.c:752
+#: libgnomeui/gnome-client.c:759
 msgid "PREFIX"
 msgstr "PREFIKS"
 
-#: libgnomeui/gnome-client.c:754
+#: libgnomeui/gnome-client.c:761
 msgid "Disable connection to session manager"
 msgstr "Fjern forbindelse til sesjonsbehandler"
 
 #. Register commandline options.
-#: libgnomeui/gnome-client.c:875
+#: libgnomeui/gnome-client.c:881
 msgid "Session management options"
 msgstr "Alternativer for sesjonskontroll"
 
-#: libgnomeui/gnome-client.c:2133
+#: libgnomeui/gnome-client.c:2192
 msgid "Cancel Logout"
 msgstr "Avbryt utlogging"
 
@@ -536,8 +540,8 @@ msgid "Documentation:"
 msgstr "Dokumentasjon:"
 
 #: libgnomeui/gnome-dentry-edit.c:310
-msgid "Easy"
-msgstr "Lett"
+msgid "Basic"
+msgstr "Enkel"
 
 #: libgnomeui/gnome-dentry-edit.c:314
 msgid "Advanced"
@@ -561,7 +565,7 @@ msgstr "Velg en skrifttype"
 msgid "Font"
 msgstr "Skrifttype"
 
-#: libgnomeui/gnome-icon-entry.c:87 libgnomeui/gnome-icon-entry.c:346
+#: libgnomeui/gnome-icon-entry.c:87 libgnomeui/gnome-icon-entry.c:374
 msgid "No Icon"
 msgstr "Ikke noe ikon"
 
@@ -577,80 +581,80 @@ msgstr "Forhåndsvisning"
 msgid "Loading Icons..."
 msgstr "Laster ikoner..."
 
-#: libgnomeui/gnome-init.c:176
+#: libgnomeui/gnome-init.c:180
 msgid "Gdk debugging flags to set"
 msgstr "Gdk avlusingsflagg som skal slås på"
 
-#: libgnomeui/gnome-init.c:176 libgnomeui/gnome-init.c:178
-#: libgnomeui/gnome-init.c:198 libgnomeui/gnome-init.c:200
+#: libgnomeui/gnome-init.c:180 libgnomeui/gnome-init.c:182
+#: libgnomeui/gnome-init.c:202 libgnomeui/gnome-init.c:204
 msgid "FLAGS"
 msgstr "FLAGG"
 
-#: libgnomeui/gnome-init.c:178
+#: libgnomeui/gnome-init.c:182
 msgid "Gdk debugging flags to unset"
 msgstr "Gdk avlusingsflagg som skal slås av"
 
-#: libgnomeui/gnome-init.c:180
+#: libgnomeui/gnome-init.c:184
 msgid "X display to use"
 msgstr "X-display som skal brukes"
 
-#: libgnomeui/gnome-init.c:180
+#: libgnomeui/gnome-init.c:184
 msgid "DISPLAY"
 msgstr "DISPLAY"
 
-#: libgnomeui/gnome-init.c:182
+#: libgnomeui/gnome-init.c:186
 msgid "Make X calls synchronous"
 msgstr "Bruk synkrone X-kall"
 
-#: libgnomeui/gnome-init.c:184
+#: libgnomeui/gnome-init.c:188
 msgid "Don't use X shared memory extension"
 msgstr "Ikke bruk X-utvidelse for delt minne"
 
-#: libgnomeui/gnome-init.c:186
+#: libgnomeui/gnome-init.c:190
 msgid "Program name as used by the window manager"
 msgstr "Programnavn som brukt av vindusbehandleren"
 
-#: libgnomeui/gnome-init.c:186
+#: libgnomeui/gnome-init.c:190
 msgid "NAME"
 msgstr "NAVN"
 
-#: libgnomeui/gnome-init.c:188
+#: libgnomeui/gnome-init.c:192
 msgid "Program class as used by the window manager"
 msgstr "Programklasse som brukt av vindusbehandleren"
 
-#: libgnomeui/gnome-init.c:188
+#: libgnomeui/gnome-init.c:192
 msgid "CLASS"
 msgstr "KLASSE"
 
-#: libgnomeui/gnome-init.c:190
+#: libgnomeui/gnome-init.c:194
 msgid "HOST"
 msgstr "VERT"
 
-#: libgnomeui/gnome-init.c:192
+#: libgnomeui/gnome-init.c:196
 msgid "PORT"
 msgstr "PORT"
 
-#: libgnomeui/gnome-init.c:194 libgnomeui/gnome-init.c:196
+#: libgnomeui/gnome-init.c:198 libgnomeui/gnome-init.c:200
 msgid "STYLE"
 msgstr "STIL"
 
-#: libgnomeui/gnome-init.c:198
+#: libgnomeui/gnome-init.c:202
 msgid "Gtk+ debugging flags to set"
 msgstr "Gtk+ avlusingsflagg som skal slås på"
 
-#: libgnomeui/gnome-init.c:200
+#: libgnomeui/gnome-init.c:204
 msgid "Gtk+ debugging flags to unset"
 msgstr "Gtk+ avlusingsflagg som skal slås av"
 
-#: libgnomeui/gnome-init.c:202
+#: libgnomeui/gnome-init.c:206
 msgid "Make all warnings fatal"
 msgstr "Gjør all advarsler til fatale"
 
-#: libgnomeui/gnome-init.c:204
+#: libgnomeui/gnome-init.c:208
 msgid "Load an additional Gtk module"
 msgstr "Last Gtk+ tilleggsmoduler"
 
-#: libgnomeui/gnome-init.c:204
+#: libgnomeui/gnome-init.c:208
 msgid "MODULE"
 msgstr "MODUL"
 
@@ -682,7 +686,7 @@ msgstr "Kalkulator"
 msgid "Calculator..."
 msgstr "Kalkulator..."
 
-#: libgnomeui/gnome-pixmap-entry.c:79 libgnomeui/gnome-pixmap-entry.c:217
+#: libgnomeui/gnome-pixmap-entry.c:79 libgnomeui/gnome-pixmap-entry.c:252
 msgid "No Image"
 msgstr "Ikke noe bile"
 
@@ -727,6 +731,7 @@ msgid "Select dictionary"
 msgstr "Velg ordbok"
 
 #: libgnomeui/gnome-spell.c:233
+#, c-format
 msgid ""
 "The word `%s'\n"
 "is not in the dictionary.\n"
@@ -923,6 +928,7 @@ msgstr ""
 # , c-format
 # , c-format
 #: libgnomeui/gnome_segv.c:79
+#, c-format
 msgid ""
 "Application \"%s\" has a bug.\n"
 "SIGSEGV received at PC %#lx in PID %d.\n"
@@ -1128,13 +1134,15 @@ msgstr ""
 "Enkel testapplikasjon for å sjekke hvordan WIN_HINTS virker, og for å teste "
 "gnome_win_hints_*-funksjonene for feil. :)"
 
-#: libgnorba/gnome-name-server.c:175
+#: libgnorba/gnome-name-server.c:199
+#, c-format
 msgid "Creating '/GNOME' context %s %d"
 msgstr "Oppretter '/GNOME' kontekst %s %d"
 
-#: libgnorba/gnome-name-server.c:192
+#: libgnorba/gnome-name-server.c:216
+#, c-format
 msgid "Creating '/GNOME/Servers' context %s %d"
-msgstr "Oppretter 'GNOME/Servers' kontekst %s %d"
+msgstr "Oppretter '/GNOME/Servers' kontekst %s %d"
 
 #: libgnorba/goad-browser.c:23
 msgid "GOAD ID of the server to activate"
@@ -1146,19 +1154,19 @@ msgstr ""
 
 #: libgnorba/goad-browser.c:24
 msgid "REPO-ID"
-msgstr ""
+msgstr "REPO-ID"
 
-#: libgnorba/goad.c:1123
+#: libgnorba/goad.c:1153
 msgid "(Internal use only) GOAD server ID to activate"
 msgstr "(Kun for intern bruk) GOAD-tjener ID som skal aktiveres"
 
 #: libgnorba/loadshlib.c:18
 msgid "ID under which GOAD knows this server"
-msgstr ""
+msgstr "ID som GOAD kjenner tjeneren under"
 
 #: libgnorba/loadshlib.c:18
 msgid "GOAD_ID"
-msgstr ""
+msgstr "GOAD_ID"
 
 #: libgnorba/loadshlib.c:19
 msgid "Repository ID under which GOAD knows this server"
@@ -1166,33 +1174,34 @@ msgstr ""
 
 #: libgnorba/loadshlib.c:19
 msgid "REPO_ID"
-msgstr ""
+msgstr "REPO_ID"
 
-#: libgnorba/orbitgtk.c:133
+#: libgnorba/orbitgtk.c:146
 msgid "Can not write to the cookie file"
 msgstr "Kan ikke skrive til cookie-filen"
 
-#: libgnorba/orbitgtk.c:135
+#: libgnorba/orbitgtk.c:148
 msgid "Unknown error while writing cookie file"
 msgstr "Ukjent feil under skriving til cookie-filen"
 
-#: libgnorba/orbitgtk.c:146
+#: libgnorba/orbitgtk.c:159
 msgid "Could not open the cookie file"
 msgstr "Kunne ikke åpne cookie-filen"
 
-#: libgnorba/orbitgtk.c:154
+#: libgnorba/orbitgtk.c:167
 msgid "Can not read the cookie file\n"
 msgstr "Kan ikke lese cookie-filen\n"
 
-#: libgnorba/orbitgtk.c:156
+#: libgnorba/orbitgtk.c:169
 msgid "While reading the cookie file\n"
 msgstr "Under lesing av cookie-filen\n"
 
-#: libgnorba/orbitns.c:254
+#: libgnorba/orbitns.c:251
 msgid "Could not get name service!"
 msgstr "Fikk ikke kontakt med navnetjenesten!"
 
 #: libvfs/extfs.c:274
+#, c-format
 msgid ""
 "Couldn't open %s archive\n"
 "%s"
@@ -1213,6 +1222,7 @@ msgid "Sorry, we can not do password authenticated connections for now."
 msgstr "Beklager, vi støtter ikke passordautentiserte forbindelser ennå."
 
 #: libvfs/ftpfs.c:461
+#, c-format
 msgid " Could not set source routing (%s)"
 msgstr " Kunne ikke slå på kilderuting (%s)"
 
@@ -1271,6 +1281,7 @@ msgid " Too many open connections "
 msgstr " For mange åpne forbindelser "
 
 #: libvfs/tar.c:83 libvfs/tar.c:100
+#, c-format
 msgid ""
 "Couldn't open tar archive\n"
 "%s"
@@ -1288,6 +1299,7 @@ msgstr "Ukonsistent tar-arkiv"
 
 #. Error on first record
 #: libvfs/tar.c:393
+#, c-format
 msgid ""
 "Hmm,...\n"
 "%s\n"
@@ -1297,7 +1309,7 @@ msgstr ""
 "%s\n"
 "ser ikke ut som et tar-arkiv."
 
-#: libvfs/vfs.c:1706
+#: libvfs/vfs.c:1723
 msgid "Password:"
 msgstr "Passord:"
 
@@ -1308,25 +1320,28 @@ msgstr "Ukjent systemfeil"
 # , c-format
 # , c-format
 #: support/getopt.c:669
+#, c-format
 msgid "%s: option `%s' is ambiguous\n"
 msgstr "%s: flagget `%s' er flertydig\n"
 
 # , c-format
 # , c-format
-#. --option
 #: support/getopt.c:693
+#, c-format
 msgid "%s: option `--%s' doesn't allow an argument\n"
 msgstr "%s: flagget `--%s' tillater ikke argumenter\n"
 
 # , c-format
 # , c-format
 #: support/getopt.c:698
+#, c-format
 msgid "%s: option `%c%s' doesn't allow an argument\n"
 msgstr "%s: flagget `%c%s' tillater ikke argumenter\n"
 
 # , c-format
 # , c-format
 #: support/getopt.c:715 support/getopt.c:888
+#, c-format
 msgid "%s: option `%s' requires an argument\n"
 msgstr "%s: flagget `%s' krever et argument\n"
 
@@ -1334,12 +1349,15 @@ msgstr "%s: flagget `%s' krever et argument\n"
 # , c-format
 #. --option
 #: support/getopt.c:744
+#, c-format
 msgid "%s: unrecognized option `--%s'\n"
 msgstr "%s: ukjent flagg `--%s'\n"
 
 # , c-format
 # , c-format
+#. +option or -option
 #: support/getopt.c:748
+#, c-format
 msgid "%s: unrecognized option `%c%s'\n"
 msgstr "%s: ukjent flagg `%c%s'\n"
 
@@ -1347,12 +1365,14 @@ msgstr "%s: ukjent flagg `%c%s'\n"
 # , c-format
 #. 1003.2 specifies the format of this message.
 #: support/getopt.c:774
+#, c-format
 msgid "%s: illegal option -- %c\n"
 msgstr "%s: ulovlig flagg -- %c\n"
 
 # , c-format
 # , c-format
 #: support/getopt.c:777
+#, c-format
 msgid "%s: invalid option -- %c\n"
 msgstr "%s: ugyldig flagg -- %c\n"
 
@@ -1360,18 +1380,21 @@ msgstr "%s: ugyldig flagg -- %c\n"
 # , c-format
 #. 1003.2 specifies the format of this message.
 #: support/getopt.c:807 support/getopt.c:937
+#, c-format
 msgid "%s: option requires an argument -- %c\n"
 msgstr "%s: flagget krever et argument -- %c\n"
 
 # , c-format
 # , c-format
 #: support/getopt.c:854
+#, c-format
 msgid "%s: option `-W %s' is ambiguous\n"
 msgstr "%s: flagget `-W %s' er flertydig\n"
 
 # , c-format
 # , c-format
 #: support/getopt.c:872
+#, c-format
 msgid "%s: option `-W %s' doesn't allow an argument\n"
 msgstr "%s: flagget `-W %s' tillater ikke argumenter\n"
 
