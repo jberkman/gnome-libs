@@ -27,8 +27,8 @@ struct _GtkXmHTML
 	XmHTMLPart html;
 
 	/* Scrollbar adjustements */
-	GtkAdjustment *vsba;
-	GtkAdjustment *hsba;
+	GtkObject *vsba;
+	GtkObject *hsba;
 };
 
 struct _GtkXmHTMLClass

@@ -151,8 +151,8 @@ gtk_xmhtml_new (char *html_source)
 	GtkXmHTML *html;
 	
 	html = gtk_type_new (gtk_xmhtml_get_type ());
-	GTK_WIDGET(html)->allocation.width  = width;
-	GTK_WIDGET(html)->allocation.height = height;
+	GTK_WIDGET(html)->allocation.width  = 200;
+	GTK_WIDGET(html)->allocation.height = 200;
 	XmHTML_Initialize (html, html, html_source);
 	return GTK_WIDGET (html);
 }
@@ -358,7 +358,7 @@ gtk_xmhtml_draw (GtkWidget *widget, GdkRectangle *area)
 	if (gtk_widget_intersect (html->html.hsb, area, &na))
 		gtk_widget_draw (html->html.hsb, &na);
 
-	if (gtk_widget_intersect (html->html.work_area, &area, &na))
+	if (gtk_widget_intersect (html->html.work_area, area, &na))
 		gtk_widget_draw (html->html.work_area, &na);
 }
 
@@ -468,13 +468,13 @@ CreateHTMLWidget(XmHTMLWidget html)
 	 */
 	if (html->html.hsb == NULL){
 		html->hsba = gtk_adjustment_new (0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
-		html->html.hsb = gtk_hscrollbar_new (html->hsba);
+		html->html.hsb = gtk_hscrollbar_new (GTK_ADJUSTMENT (html->hsba));
 		gtk_xmhtml_manage (GTK_CONTAINER(html), GTK_WIDGET (html->html.hsb));
 		gtk_widget_show (html->html.hsb);
 	}
 	if (html->html.vsb == NULL){
 		html->vsba = gtk_adjustment_new (0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
-		html->html.vsb = gtk_vscrollbar_new (html->vsba);
+		html->html.vsb = gtk_vscrollbar_new (GTK_ADJUSTMENT (html->vsba));
 		gtk_xmhtml_manage (GTK_CONTAINER(html), GTK_WIDGET (html->html.vsb));
 		gtk_widget_show (html->html.vsb);
 	}
@@ -590,6 +590,13 @@ gtk_xmhtml_manage (GtkContainer *container, GtkWidget *widget)
 }
 
 static void
+gtk_map_item (GtkWidget *w)
+{
+	if (GTK_WIDGET_VISIBLE (w) && !GTK_WIDGET_MAPPED (w))
+		gtk_widget_map (w);
+}
+
+static void
 gtk_xmhtml_map (GtkWidget *widget)
 {
 	GtkWidget *scrollbar;
@@ -600,10 +607,7 @@ gtk_xmhtml_map (GtkWidget *widget)
 	if (GTK_WIDGET_CLASS (parent_class)->map)
 		(*GTK_WIDGET_CLASS (parent_class)->map)(widget);
 
-	if (GTK_WIDGET_VISIBLE (html->html.work_area) &&
-	    !GTK_WIDGET_MAPPED (html->html.work_area))
-		gtk_widget_map (html->html.work_area);
-	
+	gtk_map_item (html->html.work_area);
 	_XmHTMLDebug(1, ("XmHTML.c: Mapped start\n"));
 	_XmHTMLDebug(1, ("XmHTML.c: Mapped, work area dimensions: %ix%i\n",
 		html->html.work_width, html->html.work_height));
@@ -621,7 +625,8 @@ gtk_xmhtml_map (GtkWidget *widget)
 
 	/* configure the scrollbars, will also resize work_area */
 	CheckScrollBars (html);
-
+	gtk_map_item (html->html.vsb);
+	gtk_map_item (html->html.hsb);
 	Layout(html);
 	
 	_XmHTMLDebug(1, ("XmHTML.c: Mapped end.\n"));
@@ -645,6 +650,8 @@ CheckScrollBars(XmHTMLWidget html)
 	int hsb_on_top, vsb_on_left;
 	/* forced display of scrollbars: XmSTATIC or frames with scrolling = yes */
 	int force_vsb = FALSE, force_hsb = FALSE;
+	GtkAdjustment *hsba = GTK_ADJUSTMENT (html->hsba);
+	GtkAdjustment *vsba = GTK_ADJUSTMENT (html->vsba);
 
 	if (f)
 		xf = (XFontStruct *) ((GdkFontPrivate *) f)->xfont;
@@ -781,13 +788,13 @@ CheckScrollBars(XmHTMLWidget html)
 			html->html.scroll_x = 0;
 		}
 
-		html->hsba->upper          = (gfloat) html->html.formatted_width;
-		html->hsba->value          = (gfloat) html->html.scroll_x;
-		html->hsba->page_size      = (gfloat) pinc;
-		html->hsba->page_increment = (gfloat) pinc;
-		html->hsba->step_increment = (f ? xf->max_bounds.width : HORIZONTAL_INCREMENT);
+		hsba->upper          = (gfloat) html->html.formatted_width;
+		hsba->value          = (gfloat) html->html.scroll_x;
+		hsba->page_size      = (gfloat) pinc;
+		hsba->page_increment = (gfloat) pinc;
+		hsba->step_increment = (f ? xf->max_bounds.width : HORIZONTAL_INCREMENT);
 		gtk_signal_emit_by_name (GTK_OBJECT (html->hsba), "changed");
-
+		
 		/* adjust x-position if vsb is on left */
  		dx = (html->html.needs_vsb && vsb_on_left ? vsb_width : 0);
 
@@ -832,18 +839,18 @@ CheckScrollBars(XmHTMLWidget html)
 			html->html.scroll_y = 0;
 		}
 
-		html->vsba->upper          = (gfloat) html->html.formatted_height;
-		html->vsba->value          = (gfloat) html->html.scroll_y;
-		html->vsba->page_size      = (gfloat) pinc;
-		html->vsba->page_increment = (gfloat) pinc;
-		html->vsba->step_increment =  (html->html.default_font
-					      ? html->html.default_font->height
-					      : VERTICAL_INCREMENT);
+		vsba->upper          = (gfloat) html->html.formatted_height;
+		vsba->value          = (gfloat) html->html.scroll_y;
+		vsba->page_size      = (gfloat) pinc;
+		vsba->page_increment = (gfloat) pinc;
+		vsba->step_increment = (html->html.default_font
+					 ? html->html.default_font->height
+					: VERTICAL_INCREMENT);
 		gtk_signal_emit_by_name (GTK_OBJECT (html->vsba), "changed");
-
+		
 		/* adjust y-position if hsb is on top */
  		dy = (html->html.needs_hsb && hsb_on_top ? hsb_height : 0);
-
+		
 		/* place it */
 		if(vsb_on_left)
 			gtk_widget_set_uposition (html->html.vsb, 0, dy);
