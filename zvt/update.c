@@ -878,6 +878,12 @@ void vt_fix_selection(struct _vtx *vx)
   if (vx->selstarty < (-vx->vt.scrollbacklines))
     vx->selstarty = -vx->vt.scrollbacklines;
 
+  /* range check horizontal */
+  if (vx->selstartx<0)
+    vx->selstartx=0;
+  if (vx->selendx<0)
+    vx->selendx=0;
+
   /* make sure 'start' is at the top/left */
   if ( ((vx->selstarty == vx->selendy) && (vx->selstartx > vx->selendx)) ||
        (vx->selstarty > vx->selendy) ) {
@@ -1000,6 +1006,9 @@ static char *vt_expand_line(struct vt_line *l, int start, int end, char *out)
     lf = 1;			/* we selected past the end of the line */
     end = dataend;
   }
+
+  if (start<0)
+    start=0;
  
   for (i=start;i<end;i++) {
     c = l->data[i] & 0xff;

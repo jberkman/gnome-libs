@@ -1,5 +1,9 @@
 1999-06-14  Michael Zucchi  <mzucchi@zedzone.mmc.com.au>
 
+	* update.c (vt_expand_line): Range check start value.
+	(vt_fix_selection): Range check x values, at least above 0.  For
+	bug #966.
+
 	* zterm.c (set_hints): Renamed size_allocate to set_hints.
 	Changed to use gtk_window_set_geometry_hints() instead of the X
 	call.
