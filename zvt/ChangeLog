@@ -1,3 +1,19 @@
+1999-02-22  Miguel de Icaza  <miguel@nuclecu.unam.mx>
+
+	These fixes are from Chris Evans audit on gnome-pty-helper.
+	
+	* gnome-utmp.c (update_dbs): Add check for malloc return value
+	here. 
+	(update_dbs): 0-terminate ut->ut_host.
+
+	* gnome-pty-helper.c (open_ptys): Check for alloca return value.
+	(pty_add): Call memset after we check the value returned from
+	malloc. 
+	(pty_add): Check for return value of strdup.
+
+	* gnome-pty-helper.c (sanity_checks): We were checking if stdin
+	was open twice instead of testing stdin and stdout
+
 1999-02-23  Michael Zucchi  <zucchi@zzedzone.mmc.com.au>
 
 	* vt.c (vt_parse_vt): Dont process more than VTPARAM_MAXARGS

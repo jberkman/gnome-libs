@@ -183,6 +183,9 @@ update_dbs (int utmp, int wtmp, char *login_name, char *display_name, char *term
 	char *pty = term_name;
 
 	ut = (UTMP *) malloc (sizeof (UTMP));
+	if (!ut)
+		return;
+	
 	memset (ut, 0, sizeof (UTMP));
 
 #if defined(HAVE_GETUTENT)
@@ -230,6 +233,7 @@ update_dbs (int utmp, int wtmp, char *login_name, char *display_name, char *term
 #endif
 #if defined(HAVE_UT_UT_HOST)
 	strncpy (ut->ut_host, display_name, sizeof (ut->ut_host));
+	ut->ut_host [sizeof (ut->ut_host)-1] = 0;
 #endif
 #if defined(HAVE_UT_UT_TV)
 	gettimeofday (&tv, NULL);

@@ -227,17 +227,22 @@ pty_add (int utmp, int wtmp, int master_fd, int slave_fd, char *line)
 {
 	pty_info *pi = malloc (sizeof (pty_info));
 
-	memset (pi, 0, sizeof (pty_info));
-	
 	if (pi == NULL){
 		shutdown_helper ();
 		exit (1);
 	}
 
+	memset (pi, 0, sizeof (pty_info));
+	
 	if (strncmp (line, "/dev/", 5))
 		pi->line = strdup (line);
 	else
 		pi->line = strdup (line+5);
+
+	if (pi->line == NULL){
+		shutdown_helper ();
+		exit (1);
+	}
 	
 	pi->master_fd = master_fd;
 	pi->slave_fd  = slave_fd;
@@ -274,6 +279,10 @@ open_ptys (int utmp, int wtmp)
 	int size;
 	
 	term_name = ((char *)alloca (path_max())) + 1;
+
+	if (term_name == NULL){
+		exit (1);
+	}
 	
 	status = openpty (&master_pty, &slave_pty, term_name, NULL, NULL);
 	if (status == -1){
@@ -344,7 +353,7 @@ sanity_checks (void)
 	 * for our program to work and closes potential security holes.
 	 */
 	if ((fcntl (0, F_GETFL, &flag) == EBADF) ||
-	    (fcntl (0, F_GETFL, &flag) == EBADF)){
+	    (fcntl (1, F_GETFL, &flag) == EBADF)){
 		exit (1);
 	}
 
