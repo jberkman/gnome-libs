@@ -7,6 +7,7 @@ INCLUDES =					\
 	-I$(top_srcdir)/gdk-pixbuf              \
 	$(GLIB_CFLAGS) $(GTK_CFLAGS)		\
 	$(OAF_CFLAGS)				\
+	$(LIBGLADE_CFLAGS)			\
 	$(LIBART_CFLAGS)			\
 	$(ORBIT_CFLAGS)				\
 	$(GCONF_CFLAGS)
