@@ -113,6 +113,7 @@ main (gint argc, gchar *argv[])
   char buffer[60], **p;
   struct passwd *pw;
   GtkWidget *term, *hbox, *scrollbar;
+  enum { RIGHT, LEFT } scrollpos = LEFT;
 
   login_shell = 0;
   cmdindex = 0;
@@ -149,7 +150,7 @@ main (gint argc, gchar *argv[])
   gtk_init(&argc, &argv);
 
   /* process arguments */
-  while ( (cmdindex==0) && (c=getopt(argc, argv, "le:s:")) != EOF )
+  while ( (cmdindex==0) && (c=getopt(argc, argv, "le:s:rh")) != EOF )
     {
       switch(c) 
 	{
@@ -163,6 +164,17 @@ main (gint argc, gchar *argv[])
 
 	case 'l':
 	  login_shell = 1;
+	  break;
+
+	case 'r':
+	  scrollpos = RIGHT;
+	  break;
+
+	case '?':
+	case 'h':
+	default:
+	  fprintf(stderr, "Usage: zterm [-sNN] [-l] [-r] [-e command args]");
+	  exit(1);
 	  break;
 	}
     }
@@ -182,7 +194,6 @@ main (gint argc, gchar *argv[])
 
   /* create terminal */
   term = zvt_term_new_with_size(80,25);
-  gtk_box_pack_start (GTK_BOX (hbox), term, 1, 1, 0);
   zvt_term_set_font_name(ZVT_TERM (term), FONT);
   zvt_term_set_blink (ZVT_TERM (term), TRUE);
   zvt_term_set_bell (ZVT_TERM (term), TRUE);
@@ -216,7 +227,13 @@ main (gint argc, gchar *argv[])
   scrollbar = 
     gtk_vscrollbar_new (GTK_ADJUSTMENT (ZVT_TERM (term)->adjustment));
   GTK_WIDGET_UNSET_FLAGS (scrollbar, GTK_CAN_FOCUS);
-  gtk_box_pack_start (GTK_BOX (hbox), scrollbar, FALSE, TRUE, 0);
+  if (scrollpos == LEFT) {
+    gtk_box_pack_start (GTK_BOX (hbox), scrollbar, FALSE, TRUE, 0);
+    gtk_box_pack_start (GTK_BOX (hbox), term, 1, 1, 0);
+  } else {
+    gtk_box_pack_start (GTK_BOX (hbox), term, 1, 1, 0);
+    gtk_box_pack_start (GTK_BOX (hbox), scrollbar, FALSE, TRUE, 0);
+  }
   gtk_widget_show (scrollbar);
 
   /* show them all! */

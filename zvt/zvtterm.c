@@ -1279,17 +1279,18 @@ zvt_term_button_press (GtkWidget      *widget,
     vx->selendy = y;
     
     /* reset 'drawn' screen (to avoid mis-refreshes) */
-    if (!vx->selected)
-      {
-	vx->selstartxold = x;
-	vx->selstartyold = y;
-	vx->selendxold = x;
-	vx->selendyold = y;
-	vx->selected =1;
-      }
-    
-    vt_fix_selection(vx);
-    vt_draw_selection(vx);	/* handles by line/by word update */
+    if (!vx->selected) {
+      vx->selstartxold = x;
+      vx->selstartyold = y;
+      vx->selendxold = x;
+      vx->selendyold = y;
+      vx->selected =1;
+    }
+
+    if (event->type != GDK_BUTTON_PRESS) {
+      vt_fix_selection(vx);
+      vt_draw_selection(vx);	/* handles by line/by word update */
+    }
 
     d( printf("selection starting %d %d\n", x, y) );
 
@@ -1408,17 +1409,20 @@ zvt_term_button_release (GtkWidget      *widget,
 
     gtk_grab_remove (widget);
     gdk_pointer_ungrab (0);
-    
-    vt_fix_selection(vx);
-    vt_draw_selection(vx);
+
+    if (vx->selectiontype & VT_SELTYPE_MOVED) {
+      vt_fix_selection(vx);
+      vt_draw_selection(vx);
+          
+      vt_get_selection(vx, 0);
+      
+      gtk_selection_owner_set (widget,
+			       GDK_SELECTION_PRIMARY,
+			       event->time);
+    }
 
     vx->selectiontype = VT_SELTYPE_NONE; /* 'turn off' selecting */
-    
-    vt_get_selection(vx, 0);
 
-    gtk_selection_owner_set (widget,
-			     GDK_SELECTION_PRIMARY,
-			     event->time);
   }
 
   return FALSE;
@@ -1457,6 +1461,8 @@ zvt_term_motion_notify (GtkWidget      *widget,
       vx->selstartx = x;
       vx->selstarty = y + vx->vt.scrollbackoffset;
     }
+
+    vx->selectiontype |= VT_SELTYPE_MOVED;
     
     vt_fix_selection(vx);
     vt_draw_selection(vx);

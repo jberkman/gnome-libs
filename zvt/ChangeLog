@@ -1,3 +1,20 @@
+1999-02-18  Michael Zucchi  <mzucchi@denr.sa.gov.au>
+
+	* zterm.c (main): Added bad argument/-h usage instructions, and
+	'r' option to put the scrollbar on the right (changed the default
+	to left!).
+
+	* zvtterm.c (zvt_term_motion_notify): Record when selecting mouse
+	has moved.
+	(zvt_term_button_press): Make sure we fix selection/update if it
+	is only a single click.
+
+	* vtx.h (VT_SELTYPE_MOVED): Flag to indicate mouse has moved.
+
+	* zvtterm.c (zvt_term_button_release): Dont select anything if the
+	mouse hasn't moved.
+	(zvt_term_button_press): Dont re-render selection yet.
+
 1999-02-17  Miguel de Icaza  <miguel@nuclecu.unam.mx>
 
 	* zvtterm.c (zvt_term_size_allocate): Do not remove the PADDING

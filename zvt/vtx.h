@@ -47,6 +47,7 @@ typedef enum {
 #define VT_SELTYPE_MASK 0xff
 #define VT_SELTYPE_BYEND 0x8000
 #define VT_SELTYPE_BYSTART 0x4000
+#define VT_SELTYPE_MOVED 0x2000 /* has motion occured? */
 
 /* 'X' extension data for VT terminal emulation */
 struct _vtx
