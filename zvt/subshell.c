@@ -155,21 +155,8 @@ s_pipe (int fd [2])
 static int
 receive_fd (int helper_fd)
 {
-	int flag;
-	char buf [128];
-	struct strbuf dat;
 	struct strrecvfd recvfd;
 	
-	dat.buf = buf;
-	dat.maxlen = sizeof (buf);
-	flag = 0;
-	
-	if (getmsg (helper_fd, NULL, &dat, &flag) < 0)
-		return -1;
-
-	if (dat.len == 0)
-		return -1;
-
 	if (ioctl (helper_fd, I_RECVFD, &recvfd) < 0)
 		return -1;
 
