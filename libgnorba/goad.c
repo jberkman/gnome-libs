@@ -21,6 +21,7 @@
 #include <signal.h>
 #include "gnome-factory.h"
 
+#define MAX_TTD        64
 #define GOAD_MAGIC_FD 123
 
 #ifdef HAVE_DLFCN_H
@@ -56,20 +57,24 @@ static GoadServerType goad_server_typename_to_type(const char *typename);
 static CORBA_Object real_goad_server_activate(GoadServer *sinfo,
 					      GoadActivationFlags flags,
 					      const char **params,
-					      GoadServerList *server_list);
+					      GoadServerList *server_list,
+					      int ttd);
 static CORBA_Object goad_server_activate_shlib(GoadServer *sinfo,
 					       GoadActivationFlags flags,
 					       const char **params,
-					       CORBA_Environment *ev);
+					       CORBA_Environment *ev,
+					       int ttd);
 static CORBA_Object goad_server_activate_exe(GoadServer *sinfo,
 					     GoadActivationFlags flags,
 					     const char **params,
-					     CORBA_Environment *ev);
+					     CORBA_Environment *ev,
+					     int ttd);
 static CORBA_Object goad_server_activate_factory(GoadServer *sinfo,
 						 GoadActivationFlags flags,
 						 const char **params,
 						 CORBA_Environment *ev,
-						 GoadServerList *slist);
+						 GoadServerList *slist,
+						 int ttd);
 void goad_register_arguments(void);
 
 static int string_array_len(const char **array)
@@ -415,25 +420,13 @@ goad_server_list_free (GoadServerList *server_list)
   g_free(server_list);
 }
 
-/**
- * goad_server_activate_with_id:
- * @server_list: a server listing returned by goad_server_list_get.
- * If NULL, we will call that function ourself and use that.
- * @server_id: the GOAD ID of the server that we want to activate.
- * @flags: information on how the application wants the server to be activated.
- * @params: NULL for now.
- *
- * Activates a CORBA server specified by 'repo_id', using
- * the 'flags' hints on how to activate that server.
- * Picks the first one on the list that matches.
- *
- * Returns the newly activated object.
- */
-CORBA_Object
-goad_server_activate_with_id (GoadServerList *server_list,
+
+static CORBA_Object
+real_server_activate_with_id (GoadServerList *server_list,
 			      const char *server_id,
 			      GoadActivationFlags flags,
-			      const char **params)
+			      const char **params,
+			      int ttd)
 {
   GoadServerList *my_servlist;
   GoadServer *slist;
@@ -461,13 +454,37 @@ goad_server_activate_with_id (GoadServerList *server_list,
   slist = g_hash_table_lookup(my_servlist->by_goad_id, server_id);
 
   if(slist)
-    retval = real_goad_server_activate(slist, flags, params, my_servlist);
+    retval = real_goad_server_activate(slist, flags, params, my_servlist, ttd);
 
  errout:
   if(!server_list)
     goad_server_list_free(my_servlist);
 
   return retval;
+}
+
+/**
+ * goad_server_activate_with_id:
+ * @server_list: a server listing returned by goad_server_list_get.
+ * If NULL, we will call that function ourself and use that.
+ * @server_id: the GOAD ID of the server that we want to activate.
+ * @flags: information on how the application wants the server to be activated.
+ * @params: NULL for now.
+ *
+ * Activates a CORBA server specified by 'repo_id', using
+ * the 'flags' hints on how to activate that server.
+ * Picks the first one on the list that matches.
+ *
+ * Returns the newly activated object.
+ */
+CORBA_Object
+goad_server_activate_with_id (GoadServerList *server_list,
+			      const char *server_id,
+			      GoadActivationFlags flags,
+			      const char **params)
+{
+	return real_server_activate_with_id (server_list, server_id,
+					     flags, params, MAX_TTD);
 }
 
 /**
@@ -545,11 +562,11 @@ goad_server_activate_with_repo_id(GoadServerList *server_list,
       /* entry matched */
       if(passnum == PASS_CHECK_EXISTING) {
 	retval = real_goad_server_activate(&slist[i], flags | GOAD_ACTIVATE_EXISTING_ONLY,
-				      params, my_slist);
+				      params, my_slist, MAX_TTD);
       }
       else {
 	retval = real_goad_server_activate(&slist[i], flags | GOAD_ACTIVATE_NEW_ONLY,
-					   params, my_slist);
+					   params, my_slist, MAX_TTD);
       }
       if (retval != CORBA_OBJECT_NIL)
 	break;
@@ -593,7 +610,7 @@ goad_server_activate(GoadServer *sinfo,
 		     GoadActivationFlags flags,
 		     const char **params)
 {
-  return real_goad_server_activate(sinfo, flags, params, NULL);
+  return real_goad_server_activate(sinfo, flags, params, NULL, MAX_TTD);
 }
 
 /* Allows using an already-read server list */
@@ -601,7 +618,8 @@ static CORBA_Object
 real_goad_server_activate(GoadServer *sinfo,
 			  GoadActivationFlags flags,
 			  const char **params,
-			  GoadServerList *server_list)
+			  GoadServerList *server_list,
+			  int ttd)
 {
   CORBA_Environment       ev;
   CORBA_Object            name_service;
@@ -623,6 +641,12 @@ real_goad_server_activate(GoadServer *sinfo,
 		   && (flags & GOAD_ACTIVATE_REMOTE)), CORBA_OBJECT_NIL);
   g_return_val_if_fail(!((flags & GOAD_ACTIVATE_EXISTING_ONLY)
 		   && (flags & GOAD_ACTIVATE_NEW_ONLY)), CORBA_OBJECT_NIL);
+
+  if (ttd-- < 1) { /* A circular reference */
+	  g_warning ("Circular reference for '%s'",
+		     sinfo->server_id?sinfo->server_id:"no-id");
+	  return CORBA_OBJECT_NIL;
+  }
 
   flags = goad_activation_combine_flags(sinfo, flags);
 
@@ -674,20 +698,20 @@ real_goad_server_activate(GoadServer *sinfo,
       g_snprintf(cmdline, sizeof(cmdline), "loadshlib -i %s -r %s %s",
 		 sinfo->server_id, sinfo->repo_id[0], sinfo->location_info);
       fake_sinfo.location_info = cmdline;
-      retval = goad_server_activate_exe(&fake_sinfo, flags, params, &ev);
+      retval = goad_server_activate_exe(&fake_sinfo, flags, params, &ev, ttd);
     } else {
-      retval = goad_server_activate_shlib(sinfo, flags, params, &ev);
+      retval = goad_server_activate_shlib(sinfo, flags, params, &ev, ttd);
     }
     break;
   case GOAD_SERVER_EXE:
-    retval = goad_server_activate_exe(sinfo, flags, params, &ev);
+    retval = goad_server_activate_exe(sinfo, flags, params, &ev, ttd);
     break;
   case GOAD_SERVER_RELAY:
     g_warning("Relay interface not yet defined (write an RFC :). Relay objects NYI");
     break;
   case GOAD_SERVER_FACTORY:
     retval = goad_server_activate_factory(sinfo, flags, params, &ev,
-					  server_list);
+					  server_list, ttd);
   }
  out:
   CORBA_exception_free(&ev);
@@ -714,7 +738,8 @@ static CORBA_Object
 goad_server_activate_shlib(GoadServer *sinfo,
 			   GoadActivationFlags flags,
 			   const char **params,
-			   CORBA_Environment *ev)
+			   CORBA_Environment *ev,
+			   int ttd)
 {
   const GnomePlugin *plugin;
   int i;
@@ -928,14 +953,15 @@ goad_server_activate_factory(GoadServer *sinfo,
 			     GoadActivationFlags flags,
 			     const char **params,
 			     CORBA_Environment *ev,
-			     GoadServerList *slist)
+			     GoadServerList *slist,
+			     int ttd)
 {
   CORBA_Object factory_obj, retval;
   GNOME_stringlist sl;
   int dout;
 
-  factory_obj = goad_server_activate_with_id(slist, sinfo->location_info,
-					     flags & ~(GOAD_ACTIVATE_ASYNC|GOAD_ACTIVATE_NEW_ONLY), NULL);
+  factory_obj = real_server_activate_with_id (slist, sinfo->location_info,
+					      flags & ~(GOAD_ACTIVATE_ASYNC|GOAD_ACTIVATE_NEW_ONLY), NULL, ttd);
 
   dout = getenv("GOAD_DEBUG_EXERUN")?1:0;
 
@@ -1025,7 +1051,8 @@ static CORBA_Object
 goad_server_activate_exe(GoadServer *sinfo,
 			 GoadActivationFlags flags,
 			 const char **params,
-			 CORBA_Environment *ev)
+			 CORBA_Environment *ev,
+			 int ttd)
 {
   gint                    iopipes[2];
   CORBA_Object            retval = CORBA_OBJECT_NIL;

@@ -1,3 +1,11 @@
+1999-09-16  Michael Meeks  <michael@nuclecu.unam.mx>
+
+	* libgnorba/goad.c (real_server_activate_with_id, goad_server_activate_with_id),
+	(goad_server_activate_with_repo_id, goad_server_activate), 
+	(real_goad_server_activate, goad_server_activate_shlib),
+	(goad_server_activate_factory, goad_server_activate_exe): Added time to die to
+	catch circular references safely.
+
 1999-09-14  Havoc Pennington  <hp@pobox.com>
 
 	* libgnorba/orbitgtk.c (_gnorba_get_cookie_reliably): Add all
