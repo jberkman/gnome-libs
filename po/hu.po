@@ -56,7 +56,7 @@ msgstr "Szerver:port ahol az ESD (ESound Server) fut"
 
 #: libgnome/gnomelib-init.c:135
 msgid "HOSTNAME:PORT"
-msgstr ""
+msgstr "SZERVER:PORT"
 
 #: libgnome/gnomelib-init.c:144
 msgid "GNOME Options"
@@ -640,7 +640,7 @@ msgstr ""
 
 #: libgnomeui/gnome-client.c:828
 msgid "Specify session management ID"
-msgstr ""
+msgstr "Session-kezelõi azonosító megadása"
 
 #: libgnomeui/gnome-client.c:828 libgnorba/goad-browser.c:27
 msgid "ID"
@@ -839,11 +839,11 @@ msgstr ""
 
 #: libgnomeui/gnome-init.c:179
 msgid "Gtk+ debugging flags to set"
-msgstr ""
+msgstr "Bekapcsolt GTK+ hibakeresõ lehetõségek"
 
 #: libgnomeui/gnome-init.c:181
 msgid "Gtk+ debugging flags to unset"
-msgstr ""
+msgstr "Kikapcsolt GTK+ hibakeresõ lehetõségek"
 
 #: libgnomeui/gnome-init.c:183
 msgid "Make all warnings fatal"
@@ -860,7 +860,7 @@ msgstr ""
 #. dialog display isn't working out
 #: libgnomeui/gnome-init.c:606
 msgid "Giving up on displaying error dialog"
-msgstr ""
+msgstr "Nem próbálom többször a hibajelzõ ablak megjelenítését"
 
 #: libgnomeui/gnome-messagebox.c:111 libgnomeui/gnome-messagebox.c:240
 msgid "Information"
@@ -1389,7 +1389,7 @@ msgstr "Beállításból kihagyás"
 
 #: libgnomeui/winhints_demo.c:410
 msgid "WIN_HINTS Test"
-msgstr ""
+msgstr "WIN_HINTS teszt"
 
 #: libgnomeui/winhints_demo.c:411
 msgid "Copyright (C) 1998"
@@ -1400,6 +1400,8 @@ msgid ""
 "Simple test app to check how the WIN_HINTS work.\n"
 "And to test the gnome_win_hints_* functions for errors. :)"
 msgstr ""
+"Egyszerû tesztalkalmazás a WIN_HINTS mûködésének kipróbálására.\n"
+"(és persze arra, hogy a gnome_win_hints_* függvényekben hibákat keressek :))"
 
 #: libgnorba/gnome-name-server.c:229
 #, c-format
@@ -1413,7 +1415,7 @@ msgstr "/GNOME/Servers környezet létrehozása: %s %d"
 
 #: libgnorba/goad-browser.c:27
 msgid "GOAD ID of the server to activate"
-msgstr ""
+msgstr "Aktiválandó szerver GOAD azonosítója"
 
 #: libgnorba/goad-browser.c:28
 msgid "Repository ID of the server to activate"
@@ -1432,7 +1434,7 @@ msgstr ""
 
 #: libgnorba/goad.c:1350
 msgid "(Internal use only) GOAD server ID to activate"
-msgstr ""
+msgstr "Aktiválandó GOAD szerver azonosítója (csak belsõ használatra)"
 
 #: libgnorba/loadshlib.c:11
 msgid "ID under which GOAD knows this server"
@@ -1453,27 +1455,27 @@ msgstr ""
 #: libgnorba/orbitgtk.c:138
 #, c-format
 msgid "Failed to open CORBA cookie file (%s) for writing: %s\n"
-msgstr ""
+msgstr "A %s CORBA cookie file nem megnyitható (hibaüzenet: %s)\n"
 
 #: libgnorba/orbitgtk.c:145
 #, c-format
 msgid "Failed to write CORBA cookie file (%s): %s\n"
-msgstr ""
+msgstr "A %s CORBA cookie file nem írható (hibaüzenet: %s)\n"
 
 #: libgnorba/orbitgtk.c:171
 #, c-format
 msgid "Failed to write CORBA cookie to `%s': %s\n"
-msgstr ""
+msgstr "A `%s' CORBA cookie file nem írható (hibaüzenet: %s)\n"
 
 #: libgnorba/orbitgtk.c:181
 #, c-format
 msgid "Failed to open CORBA cookie file `%s': %s\n"
-msgstr ""
+msgstr "A `%s' CORBA cookie file nem megnyitható (hibaüzenet: %s)\n"
 
 #: libgnorba/orbitgtk.c:187
 #, c-format
 msgid "Failed to read CORBA cookie file `%s': %s\n"
-msgstr ""
+msgstr "A `%s' CORBA cookie file nem olvasható (hibaüzenet: %s)\n"
 
 #: libgnorba/orbitgtk.c:213
 msgid "Failed to obtain CORBA authentication cookie, exiting\n"
@@ -1499,21 +1501,21 @@ msgstr "%s: a `%s' kapcsoló nem egyértelmû\n"
 #: support/getopt.c:693
 #, c-format
 msgid "%s: option `--%s' doesn't allow an argument\n"
-msgstr ""
+msgstr "%s: a `--%s' kapcsolóhoz nem tartozik paraméter\n"
 
 # , c-format
 # , c-format
 #: support/getopt.c:698
 #, c-format
 msgid "%s: option `%c%s' doesn't allow an argument\n"
-msgstr ""
+msgstr "%s: a '%c%s' kapcsolóhoz nem tartozik paraméter\n"
 
 # , c-format
 # , c-format
 #: support/getopt.c:715 support/getopt.c:888
 #, c-format
 msgid "%s: option `%s' requires an argument\n"
-msgstr ""
+msgstr "%s: a `%s' kapcsolóhoz paraméter is tartozik\n"
 
 # , c-format
 # , c-format
@@ -1521,7 +1523,7 @@ msgstr ""
 #: support/getopt.c:744
 #, c-format
 msgid "%s: unrecognized option `--%s'\n"
-msgstr ""
+msgstr "%s: a `--%s' kapcsoló nem értelmezhetõ\n"
 
 # , c-format
 # , c-format
@@ -1529,7 +1531,7 @@ msgstr ""
 #: support/getopt.c:748
 #, c-format
 msgid "%s: unrecognized option `%c%s'\n"
-msgstr ""
+msgstr "%s: a `%c%s' kapcsoló nem értelmezhetõ\n"
 
 # , c-format
 # , c-format
@@ -1537,14 +1539,14 @@ msgstr ""
 #: support/getopt.c:774
 #, c-format
 msgid "%s: illegal option -- %c\n"
-msgstr ""
+msgstr "%s: érvénytelen kapcsoló: %c\n"
 
 # , c-format
 # , c-format
 #: support/getopt.c:777
 #, c-format
 msgid "%s: invalid option -- %c\n"
-msgstr ""
+msgstr "%s: érvénytelen kapcsoló -- %c\n"
 
 # , c-format
 # , c-format
@@ -1584,12 +1586,12 @@ msgstr ""
 #: test-gnome/testgnome.c:800 test-gnome/testgnome.c:841
 #: test-gnome/testgnome.c:866
 msgid "If you choose a font it will appear here"
-msgstr ""
+msgstr "A kiválasztott betûtípus itt jelenik meg"
 
 #. Font_Info
 #: test-gnome/testgnome.c:807
 msgid "Font Info"
-msgstr ""
+msgstr "Betûinformációk"
 
 #: test-gnome/testgnome.c:817
 msgid "Use Font in button with size"
@@ -1597,20 +1599,20 @@ msgstr ""
 
 #: test-gnome/testgnome.c:824
 msgid "Show font size"
-msgstr ""
+msgstr "Betûméret megjelenítése"
 
 #: test-gnome/testgnome.c:860
 msgid "This is an hbox with pixmap and text"
-msgstr ""
+msgstr "Ez egy GtkHBox, képpel és szöveggel"
 
 #: test-gnome/testgnome.c:1072
 msgid "The user chose Yes/OK with data:\n"
-msgstr ""
+msgstr "A felhasználó az Igen/OK választ választotta; adat:\n"
 
 #: test-gnome/testgnome.c:1076
 msgid "The user chose No/Cancel with data:\n"
-msgstr ""
+msgstr "A felhasználó a Nem/Mégsem választ választotta; adat:\n"
 
 #: test-gnome/testgnome.c:1087
 msgid "Weird number in reply callback"
-msgstr ""
+msgstr "A szignálhoz valami fura szám tartozott adatként..."
