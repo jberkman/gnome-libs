@@ -388,7 +388,7 @@ sanity_checks (void)
 		}
 	}
 
-	/* Make sure SIGIO is SIG_IGN */
+	/* Make sure SIGIO/SIGINT is SIG_IGN */
 	{
 		struct sigaction sa;
 
@@ -397,6 +397,7 @@ sanity_checks (void)
 		sa.sa_flags = 0;
 		
 		sigaction (SIGIO, &sa, NULL);
+		sigaction (SIGINT, &sa, NULL);
 	}
 }
 

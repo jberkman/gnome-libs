@@ -1,7 +1,13 @@
 1999-02-09  Miguel de Icaza  <miguel@nuclecu.unam.mx>
 
-	* gnome-pty-helper.c (shutdown_pty): record logout.  Keep track of
-	the utmp/wtmp updating.
+	* subshell.c (zvt_close_msgfd): Implement with GList.
+	(sigchld_handler): Do not reset the child->pid here to zero, or
+	there wont be a way to eliminate this child from the list, and
+	thus waitpid test will get hossed.
+
+	* gnome-pty-helper.c (sanity_checks): Ignore SIGINT.
+	(shutdown_pty): record logout.  Keep track of the utmp/wtmp
+	updating.
 
 	* subshell.c: Add support for split utmp/wtmp recording.
 

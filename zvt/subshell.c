@@ -42,34 +42,29 @@ int helper_socket_protocol  [2];
 int helper_socket_fdpassing [2];
 
 /* List of all subshells we're watching */
-struct child_list {
+static GSList *children;
+
+typedef struct {
 	pid_t pid;
 	int fd;
-	struct child_list * next;
-} * children = NULL;
+	int listen_fd;
+} child_info_t;
 
 void
 zvt_close_msgfd (pid_t childpid)
 {
-	struct child_list * prev, * child;
+	GSList *l;
 
-	child = children;
-	prev = NULL;
+	for (l = children; l; l = l->next){
+		child_info_t *child = l->data;
 
-	while (child && child->pid != childpid){
-		prev = child;
-		child = child->next;
+		if (child->pid == childpid){
+			close (child->fd);
+			g_free (child);
+			children = g_slist_remove (children, l->data);
+			return;
+		}
 	}
-	
-	if (!child) return;
-	
-	if (!prev)
-		children = child->next;
-	else
-		prev->next = child->next;
-	
-	close (child->fd);
-	g_free (child);
 }
 
 /*
@@ -80,7 +75,7 @@ zvt_close_msgfd (pid_t childpid)
 static void
 sigchld_handler (int signo)
 {
-	struct child_list * child;
+	GSList *l;
 	pid_t pid;
 	int status;
 
@@ -89,14 +84,14 @@ sigchld_handler (int signo)
 		return;
 	}
 
-	for (child = children; child; child = child->next){
+	for (l = children; l; l = l->next){
+		child_info_t *child = l->data;
+		
 		if (waitpid (child->pid, &status, WNOHANG) == child->pid){
-			child->pid = 0;
 			write (child->fd, "D", 1);
 			return;
 		}
 	}
-
 	/* No children of ours, chain */
 	if (old_sigchld_handler.sa_handler)
 		(*old_sigchld_handler.sa_handler)(signo);
@@ -272,7 +267,7 @@ zvt_init_subshell (struct vt_em *vt, char *pty_name, int log)
 	int slave_pty, master_pty;
 	int subshell_pid;
 	struct sigaction sa;
-	struct child_list * child;
+	child_info_t *child;
 	pid_t pid;
 	int status;
 	int p[2];
@@ -302,29 +297,30 @@ zvt_init_subshell (struct vt_em *vt, char *pty_name, int log)
 		login_tty (slave_pty);
 	} else {
 		close (slave_pty);
-	}
-	
-	pipe(p);
-	vt->msgfd = p [0];
-	
-	child = g_malloc(sizeof(*child));
-	child->next = children;
-	child->pid = vt->childpid;
-	child->fd = p[1];
-	children = child;
-	
-	/* We could have received the SIGCHLD signal for the subshell 
-	 * before installing the init_sigchld
-	 */
-	pid = waitpid (vt->childpid, &status, WUNTRACED | WNOHANG);
-	if (pid == vt->childpid && child->pid >= 0){
-		child->pid = 0;
-		write (child->fd, "D", 1);
-		return -1;
-	}
-	
-	vt->keyfd = vt->childfd = master_pty;
 
+		pipe(p);
+
+		vt->msgfd = p [0];
+		
+		child = g_malloc(sizeof(child_info_t));
+		child->pid = vt->childpid;
+		child->fd = p[1];
+		child->listen_fd = p [0];
+		children = g_slist_prepend (children, child);
+		
+		/* We could have received the SIGCHLD signal for the subshell 
+		 * before installing the init_sigchld
+		 */
+		pid = waitpid (vt->childpid, &status, WUNTRACED | WNOHANG);
+		if (pid == vt->childpid && child->pid >= 0){
+			child->pid = 0;
+			write (child->fd, "D", 1);
+			return -1;
+		}
+		
+		vt->keyfd = vt->childfd = master_pty;
+	}
+	
 	return vt->childpid;
 }
 
