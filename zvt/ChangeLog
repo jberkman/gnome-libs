@@ -1,3 +1,8 @@
+1999-09-14  Michael Zucchi  <mzucchi@denr.sa.gov.au>
+
+	* vt.c (vt_setmode): Properly handle 1047 (==47) and 1048
+	(save/restore cursor position).
+
 1999-09-12  Michael Zucchi  <zucchi@zedzone.mmc.com.au>
 
 	* zterm.c (button_press_event): Changed to perform the lookup

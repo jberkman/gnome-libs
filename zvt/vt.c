@@ -1103,6 +1103,7 @@ vt_setmode(struct vt_em *vt, int on)
 	break;
       case 25:			/* cursor invisible/normal */
 	break;
+      case 1047:
       case 47:
 	vt_set_screen(vt, on?1:0);
 	break;
@@ -1117,6 +1118,12 @@ vt_setmode(struct vt_em *vt, int on)
 	vt->mode &= VTMODE_SEND_MOUSE_MASK;
 	if (on)
 	  vt->mode |= VTMODE_SEND_MOUSE_BOTH;
+	break;
+      case 1048:
+	if (on)
+	  vt_save_cursor(vt);
+	else
+	  vt_restore_cursor(vt);
 	break;
       }
     }
