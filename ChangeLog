@@ -1,3 +1,8 @@
+1998-11-09  Martin Baulig  <martin@home-of-linux.org>
+
+	* configure.in (AC_CHECK_HEADERS): Add `utmpx.h pty.h libutil.h'.
+	(AC_CHECK_FUNCS): Check for `login' if `openpty' was already found.
+
 1998-11-06  Raja R Harinath  <harinath@cs.umn.edu>
 
 	* configure.in (AC_CHECK_HEADERS): Add paths.h.  
