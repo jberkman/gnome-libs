@@ -35,6 +35,22 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.12  1998/05/25 02:36:33  sopwith
+* libgnomeui/gnome-dialog.[ch]:
+* Fix gnome_dialog_run_modal() to do the "sane thing" (while incorporating
+* Havoc's bug fixes):
+* 	- Havoc, it is plausible that the programmer might want to
+* 	get back a "the user did not press ANY button". Let them handle it,
+* 	it's more flexible. Also removed other various overkills.
+*
+* I think there may still be a possible bug in using gtk_main_quit as a
+* delete_event handler - perhaps need a gnome_dialog_delete_event_handler()
+* that just calls gtk_main_quit() and returns FALSE (so the dialog doesn't
+* get auto-destroyed).
+*
+* The other changes, I might wind up reverting because, while my tree
+* compiles, I have no idea what the xmhtml change is, sorry :(
+*
 * Revision 1.11  1998/02/12 03:08:30  unammx
 * Merge to Koen's XmHTML 1.1.2 + following fixes:
 *
@@ -840,7 +856,8 @@ _XmHTMLRecomputeColors(XmHTMLWidget html)
 		XtSetValues((Widget)html, args, 3);
 #else
 		gulong top, bottom, highlight;
-		
+		if(!GTK_WIDGET_REALIZED(html))
+		  gtk_widget_realize(GTK_WIDGET(html));
 		my_get_colors(gtk_widget_get_colormap(GTK_WIDGET(html)), html->html.body_bg, &top, &bottom, &highlight);
 		set_widget_colors(html, &top, &bottom, &highlight);
 #endif

@@ -209,10 +209,13 @@ void toggle_boolean(GtkWidget * toggle, gboolean * setme)
   *setme = !current;
 }
 
-void block_until_clicked(GtkWidget * ignore, GnomeDialog * dialog)
+void block_until_clicked(GtkWidget *ignore)
 {
   gint button;
-  button = gnome_dialog_run_modal(dialog);
+  GnomeDialog *dlg_modal;
+  dlg_modal = gnome_dialog_new("Test run_modal", "OK", "Cancel", NULL);
+  button = gnome_dialog_run_modal(dlg_modal);
+  gtk_widget_destroy(GTK_WIDGET(dlg_modal));
   g_print("Modal run ended, button %d clicked\n", button);
 }
 
