@@ -241,8 +241,9 @@ LIBSUPPORT='$(top_builddir)/support/libgnomesupport.la'
 SUPPORTINCS='-DNEED_GNOMESUPPORT_H -I$(top_builddir)/support -I$(top_srcdir)/support'
 
 dnl These are for using lib*
+ART_LIBS="-lart_lgpl"
 GNOME_LIBS="-lgnome -lgnomesupport $LIBGNOME_LIBS"
-GNOMEUI_LIBS="-lgnomeui $GDK_IMLIB_LIBS $GTK_LIBS $GNOME_LIBS"
+GNOMEUI_LIBS="-lgnomeui $ART_LIBS $GDK_IMLIB_LIBS $GTK_LIBS $GNOME_LIBS"
 GTKXMHTML_LIBS="-lgtkxmhtml $LIBGTKXMHTML_LIBS"
 ZVT_LIBS="-lzvt $GTK_LIBS"
 
@@ -289,6 +290,8 @@ if test x$test_internals = xyes ; then
 fi
 
 dnl AC_CONFIG_SUBDIRS(libgtktty)
+
+AC_CONFIG_SUBDIRS(libart_lgpl)
 
 AC_OUTPUT([
 Makefile

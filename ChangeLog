@@ -1,3 +1,16 @@
+Wed Nov 18 16:30:22 1998  Raph Levien  <raph@gimp.org>
+
+	* Integrating libart_lgpl
+
+	* libart_lgpl/ : This file is now a virtual module
+	* Makefile.am: SUBDIRS includes libart_lgpl
+	* configure.in: AC_CONFIG_SUBDIRS(libart_lgpl)
+	* libgnomeui/Makefile.am: added links to libart_lgpl
+	* libgnomeui/gnome-canvas.c: minimal dependency on libart
+
+	Please look in libart_lgpl/ChangeLog for libart-specific change
+	entries.
+	
 Tue Nov 17 19:27:50 PST 1998 Manish Singh <yosh@gimp.org>
 
 	* libgnorba/goad.c
