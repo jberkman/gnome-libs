@@ -2,11 +2,15 @@
 GnomeDEntryEdit
 
 <!-- ##### SECTION Short_Description ##### -->
-
+Editting object for dentries (.desktop files)
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-
+  GnomeDEntryEdit is a simpleobject, not a widget.  It is used for adding
+  pages to some properties notebook for editting a .desktop entries (such
+  as in a menu editor).  Since it is not a widget you don't add it to the
+  notebook, but you use the #gnome_dentry_edit_new_notebook method to make
+  a new object and automatically add it as the last pages to some notebook.
 </para>
 
 <!-- ##### SECTION See_Also ##### -->
@@ -30,18 +34,20 @@ GnomeDEntryEdit
 
 <!-- ##### MACRO gnome_dentry_edit_child1 ##### -->
 <para>
-
+  Get the first child widget pointer (page 1, basic), if you want to
+  add it to a notebook yourself.
 </para>
 
-@d: 
+@d: the GnomeDEntryEdit object to work with
 
 
 <!-- ##### MACRO gnome_dentry_edit_child2 ##### -->
 <para>
-
+  Get the first child widget pointer (page 2, advanced), if you want to
+  add it to a notebook yourself.
 </para>
 
-@d: 
+@d: the GnomeDEntryEdit object to work with
 
 
 <!-- ##### FUNCTION gnome_dentry_edit_new_notebook ##### -->
@@ -108,21 +114,21 @@ GnomeDEntryEdit
 
 <!-- ##### SIGNAL GnomeDEntryEdit::changed ##### -->
 <para>
-
+  Something has changed in the editting areas.
 </para>
 
 @dentryedit: the object which received the signal.
 
 <!-- ##### SIGNAL GnomeDEntryEdit::icon-changed ##### -->
 <para>
-
+  The icon entry has changed.
 </para>
 
 @dentryedit: the object which received the signal.
 
 <!-- ##### SIGNAL GnomeDEntryEdit::name-changed ##### -->
 <para>
-
+  The name entry has changed.
 </para>
 
 @dentryedit: the object which received the signal.
