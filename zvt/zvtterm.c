@@ -925,6 +925,10 @@ zvt_term_size_allocate (GtkWidget     *widget,
       d( printf("zvt_term_size_allocate grid calc x=%d y=%d\n", 
 		grid_width,
 		grid_height) );
+
+      /* is this right? Seems we have to update this... */
+      term->grid_height = grid_height;
+      term->grid_width = grid_width;
       
       /* resize the scrollbar */
       zvt_term_fix_scrollbar (term);
