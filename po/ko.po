@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: GNOME-libraries 0.13\n"
-"POT-Creation-Date: 1999-01-02 04:17+0900\n"
+"POT-Creation-Date: 1999-01-12 18:43-0600\n"
 "PO-Revision-Date: 1998-12-15 03:20+0900\n"
 "Last-Translator: Changwoo Ryu <cwryu@adam.kaist.ac.kr>\n"
 "Language-Team: Korean <ko@li.org>\n"
@@ -25,6 +25,7 @@ msgstr "Hello GNOME\n"
 msgid "The Hello World Gnomified"
 msgstr "The Hello World Gnomified"
 
+#. copyright notice
 #: gnome-hello/gnome-hello-2-i18n.c:61
 #: gnome-hello/gnome-hello-3-parse-args.c:61
 msgid "(C) 1998 the Free Software Foundation"
@@ -60,7 +61,7 @@ msgstr "File"
 
 #: gnome-hello/gnome-hello-2-i18n.c:85
 #: gnome-hello/gnome-hello-3-parse-args.c:85 gnome-hello/gnome-hello-4-SM.c:78
-#: gnome-hello/gnome-hello-7-mdi.c:484 libgnomeui/gnome-stock.c:776
+#: gnome-hello/gnome-hello-7-mdi.c:484 libgnomeui/gnome-stock.c:773
 #: libgnomeui/stock_demo.c:290
 msgid "Help"
 msgstr "Help"
@@ -163,6 +164,7 @@ msgid "<control>A"
 msgstr "<control>A"
 
 #: gnome-hello/gnome-hello.c:208
+#, c-format
 msgid ""
 "%s: A gnomified 'Hello World' program\n"
 "\n"
@@ -181,6 +183,7 @@ msgstr ""
 "        --version  output version information and exit\n"
 
 #: gnome-hello/gnome-hello.c:217
+#, c-format
 msgid "Gnome Hello %s.\n"
 msgstr "Gnome Hello %s.\n"
 
@@ -208,7 +211,8 @@ msgstr "쓰기"
 msgid "Set config entry"
 msgstr "컨피그 항목의 값 쓰기"
 
-#: libgnome/gnome-popt.c:75
+#: libgnome/gnome-popt.c:92
+#, c-format
 msgid ""
 "Error on option %s: %s.\n"
 "Run '%s --help' to see a full list of available command line options.\n"
@@ -216,23 +220,23 @@ msgstr ""
 "option %s에 오류: %s.\n"
 "가능한 모든 명령행 옵션을 보려면 '%s --help'을 실행하십시오.\n"
 
-#: libgnome/gnomelib-init.c:113
+#: libgnome/gnomelib-init.c:114
 msgid "Disable sound server usage"
 msgstr "사운드 서버 사용하지 않음"
 
-#: libgnome/gnomelib-init.c:115
+#: libgnome/gnomelib-init.c:116
 msgid "Enable sound server usage"
 msgstr "사운드 서버 사용함"
 
-#: libgnome/gnomelib-init.c:117
+#: libgnome/gnomelib-init.c:118
 msgid "Host:port on which the sound server to use is running"
 msgstr "사용할 사운드 서버가 실행중인 호스트:포트"
 
-#: libgnome/gnomelib-init.c:118
+#: libgnome/gnomelib-init.c:119
 msgid "HOSTNAME:PORT"
 msgstr "호스트이름:포트"
 
-#: libgnome/gnomelib-init.c:126
+#: libgnome/gnomelib-init.c:127
 msgid "GNOME Options"
 msgstr "GNOME 옵션"
 
@@ -462,32 +466,32 @@ msgstr "="
 msgid "INV"
 msgstr "INV"
 
-#: libgnomeui/gnome-client.c:750
+#: libgnomeui/gnome-client.c:757
 msgid "Specify session management ID"
 msgstr "세션 관리 id 지정"
 
-#: libgnomeui/gnome-client.c:750 libgnorba/goad-browser.c:23
+#: libgnomeui/gnome-client.c:757 libgnorba/goad-browser.c:23
 msgid "ID"
 msgstr "ID"
 
-#: libgnomeui/gnome-client.c:752
+#: libgnomeui/gnome-client.c:759
 msgid "Specify prefix of saved configuration"
 msgstr "이미 저장된 설정의 앞부분을 지정"
 
-#: libgnomeui/gnome-client.c:752
+#: libgnomeui/gnome-client.c:759
 msgid "PREFIX"
 msgstr "PREFIX"
 
-#: libgnomeui/gnome-client.c:754
+#: libgnomeui/gnome-client.c:761
 msgid "Disable connection to session manager"
 msgstr "세션 관리자에 연결하지 않음"
 
 #. Register commandline options.
-#: libgnomeui/gnome-client.c:875
+#: libgnomeui/gnome-client.c:881
 msgid "Session management options"
 msgstr "세션 관리 선택사항"
 
-#: libgnomeui/gnome-client.c:2133
+#: libgnomeui/gnome-client.c:2192
 msgid "Cancel Logout"
 msgstr "로그아웃 취소"
 
@@ -498,7 +502,7 @@ msgstr "색상 선택"
 #. Only add the label if all the children are to be shown.  Otherwise
 #. * things look too wide; in that case just show the arrow.
 #.
-#: libgnomeui/gnome-dateedit.c:426
+#: libgnomeui/gnome-dateedit.c:430
 msgid "Calendar"
 msgstr "달력"
 
@@ -535,8 +539,8 @@ msgid "Documentation:"
 msgstr "문서:"
 
 #: libgnomeui/gnome-dentry-edit.c:310
-msgid "Easy"
-msgstr "쉽게"
+msgid "Basic"
+msgstr ""
 
 #: libgnomeui/gnome-dentry-edit.c:314
 msgid "Advanced"
@@ -556,19 +560,19 @@ msgstr "찾아보기..."
 msgid "Pick a Font"
 msgstr "글꼴 선택"
 
-#: libgnomeui/gnome-font-picker.c:542 libgnomeui/gnome-stock.c:781
+#: libgnomeui/gnome-font-picker.c:542 libgnomeui/gnome-stock.c:778
 msgid "Font"
 msgstr "글꼴"
 
-#: libgnomeui/gnome-icon-entry.c:87 libgnomeui/gnome-icon-entry.c:346
+#: libgnomeui/gnome-icon-entry.c:88 libgnomeui/gnome-icon-entry.c:375
 msgid "No Icon"
 msgstr "아이콘 없음"
 
-#: libgnomeui/gnome-icon-entry.c:199 libgnomeui/gnome-pixmap-entry.c:176
+#: libgnomeui/gnome-icon-entry.c:200 libgnomeui/gnome-pixmap-entry.c:177
 msgid "Can't find an hbox, using a normal file selection"
 msgstr "hbox를 찾을 수 없음, 보통 파일 선택을 사용함"
 
-#: libgnomeui/gnome-icon-entry.c:205 libgnomeui/gnome-pixmap-entry.c:182
+#: libgnomeui/gnome-icon-entry.c:206 libgnomeui/gnome-pixmap-entry.c:183
 msgid "Preview"
 msgstr "미리 보기"
 
@@ -576,80 +580,80 @@ msgstr "미리 보기"
 msgid "Loading Icons..."
 msgstr "아이콘 읽어오기..."
 
-#: libgnomeui/gnome-init.c:176
+#: libgnomeui/gnome-init.c:130
 msgid "Gdk debugging flags to set"
 msgstr "Gdk 디버깅 플래그를 set"
 
-#: libgnomeui/gnome-init.c:176 libgnomeui/gnome-init.c:178
-#: libgnomeui/gnome-init.c:198 libgnomeui/gnome-init.c:200
+#: libgnomeui/gnome-init.c:130 libgnomeui/gnome-init.c:132
+#: libgnomeui/gnome-init.c:152 libgnomeui/gnome-init.c:154
 msgid "FLAGS"
 msgstr "FLAGS"
 
-#: libgnomeui/gnome-init.c:178
+#: libgnomeui/gnome-init.c:132
 msgid "Gdk debugging flags to unset"
 msgstr "Gdk 디버깅 플래그를 unset"
 
-#: libgnomeui/gnome-init.c:180
+#: libgnomeui/gnome-init.c:134
 msgid "X display to use"
 msgstr "사용할 X display"
 
-#: libgnomeui/gnome-init.c:180
+#: libgnomeui/gnome-init.c:134
 msgid "DISPLAY"
 msgstr "DISPLAY"
 
-#: libgnomeui/gnome-init.c:182
+#: libgnomeui/gnome-init.c:136
 msgid "Make X calls synchronous"
 msgstr "X call 동기화"
 
-#: libgnomeui/gnome-init.c:184
+#: libgnomeui/gnome-init.c:138
 msgid "Don't use X shared memory extension"
 msgstr "X 공유 기억장치 확장 기능을 사용하지 않음"
 
-#: libgnomeui/gnome-init.c:186
+#: libgnomeui/gnome-init.c:140
 msgid "Program name as used by the window manager"
 msgstr "윈도우 관리자가 사용할 프로그램 이름"
 
-#: libgnomeui/gnome-init.c:186
+#: libgnomeui/gnome-init.c:140
 msgid "NAME"
 msgstr "NAME"
 
-#: libgnomeui/gnome-init.c:188
+#: libgnomeui/gnome-init.c:142
 msgid "Program class as used by the window manager"
 msgstr "윈도우 관리자가 사용할 프로그램 클래스"
 
-#: libgnomeui/gnome-init.c:188
+#: libgnomeui/gnome-init.c:142
 msgid "CLASS"
 msgstr "CLASS"
 
-#: libgnomeui/gnome-init.c:190
+#: libgnomeui/gnome-init.c:144
 msgid "HOST"
 msgstr "HOST"
 
-#: libgnomeui/gnome-init.c:192
+#: libgnomeui/gnome-init.c:146
 msgid "PORT"
 msgstr "PORT"
 
-#: libgnomeui/gnome-init.c:194 libgnomeui/gnome-init.c:196
+#: libgnomeui/gnome-init.c:148 libgnomeui/gnome-init.c:150
 msgid "STYLE"
 msgstr "STYLE"
 
-#: libgnomeui/gnome-init.c:198
+#: libgnomeui/gnome-init.c:152
 msgid "Gtk+ debugging flags to set"
 msgstr "Gtk+ 디버깅 플래그를 set"
 
-#: libgnomeui/gnome-init.c:200
+#: libgnomeui/gnome-init.c:154
 msgid "Gtk+ debugging flags to unset"
 msgstr "Gtk+ 디버깅 플래그를 unset"
 
-#: libgnomeui/gnome-init.c:202
+#: libgnomeui/gnome-init.c:156
 msgid "Make all warnings fatal"
 msgstr "모든 경고를 치명적으로 생각함"
 
-#: libgnomeui/gnome-init.c:204
+#: libgnomeui/gnome-init.c:158
 msgid "Load an additional Gtk module"
 msgstr "Gtk 모듈을 추가로 읽어들임"
 
-#: libgnomeui/gnome-init.c:204
+#: libgnomeui/gnome-init.c:158
 msgid "MODULE"
 msgstr "MODULE"
 
@@ -681,7 +685,7 @@ msgstr "계산기"
 msgid "Calculator..."
 msgstr "계산기..."
 
-#: libgnomeui/gnome-pixmap-entry.c:79 libgnomeui/gnome-pixmap-entry.c:217
+#: libgnomeui/gnome-pixmap-entry.c:80 libgnomeui/gnome-pixmap-entry.c:253
 msgid "No Image"
 msgstr "그림 없음"
 
@@ -726,6 +730,7 @@ msgid "Select dictionary"
 msgstr "사전 선택"
 
 #: libgnomeui/gnome-spell.c:233
+#, c-format
 msgid ""
 "The word `%s'\n"
 "is not in the dictionary.\n"
@@ -739,11 +744,11 @@ msgstr ""
 msgid "Confirm"
 msgstr "확인"
 
-#: libgnomeui/gnome-spell.c:246 libgnomeui/gnome-stock.c:770
+#: libgnomeui/gnome-spell.c:246 libgnomeui/gnome-stock.c:767
 msgid "OK"
 msgstr "확인"
 
-#: libgnomeui/gnome-spell.c:253 libgnomeui/gnome-stock.c:772
+#: libgnomeui/gnome-spell.c:253 libgnomeui/gnome-stock.c:769
 msgid "Cancel"
 msgstr "취소"
 
@@ -863,51 +868,51 @@ msgstr "Spell"
 msgid "Configure"
 msgstr "설정"
 
-#: libgnomeui/gnome-stock.c:771
+#: libgnomeui/gnome-stock.c:768
 msgid "Apply"
 msgstr "적용"
 
-#: libgnomeui/gnome-stock.c:773 libgnomeui/stock_demo.c:144
+#: libgnomeui/gnome-stock.c:770 libgnomeui/stock_demo.c:144
 msgid "Close"
 msgstr "닫기"
 
-#: libgnomeui/gnome-stock.c:774
+#: libgnomeui/gnome-stock.c:771
 msgid "Yes"
 msgstr "예"
 
-#: libgnomeui/gnome-stock.c:775
+#: libgnomeui/gnome-stock.c:772
 msgid "No"
 msgstr "아니오"
 
-#: libgnomeui/gnome-stock.c:777
+#: libgnomeui/gnome-stock.c:774
 msgid "Next"
 msgstr "다음"
 
-#: libgnomeui/gnome-stock.c:778
+#: libgnomeui/gnome-stock.c:775
 msgid "Prev"
 msgstr "이전"
 
-#: libgnomeui/gnome-stock.c:779
+#: libgnomeui/gnome-stock.c:776
 msgid "Up"
 msgstr "위로"
 
-#: libgnomeui/gnome-stock.c:780
+#: libgnomeui/gnome-stock.c:777
 msgid "Down"
 msgstr "아래로"
 
-#: libgnomeui/gnome-stock.c:1789
+#: libgnomeui/gnome-stock.c:1787
 msgid "Menu Accelerator Keys"
 msgstr "메뉴 단축키"
 
-#: libgnomeui/gnome-stock.c:1791
+#: libgnomeui/gnome-stock.c:1789
 msgid "Global"
 msgstr "전체 설정"
 
-#: libgnomeui/gnome-stock.c:1793
+#: libgnomeui/gnome-stock.c:1791
 msgid "Menu Item"
 msgstr "메뉴 항목"
 
-#: libgnomeui/gnome-stock.c:1794
+#: libgnomeui/gnome-stock.c:1792
 msgid "Accelerator"
 msgstr "단축키"
 
@@ -920,6 +925,7 @@ msgstr ""
 "SIGSEGV가 발생해도 무시"
 
 #: libgnomeui/gnome_segv.c:79
+#, c-format
 msgid ""
 "Application \"%s\" has a bug.\n"
 "SIGSEGV received at PC %#lx in PID %d.\n"
@@ -1125,11 +1131,13 @@ msgstr ""
 "Simple test app to check how the WIN_HINTS work. And to test the "
 "gnome_win_hints_* functions for errors. :)"
 
-#: libgnorba/gnome-name-server.c:175
+#: libgnorba/gnome-name-server.c:199
+#, c-format
 msgid "Creating '/GNOME' context %s %d"
 msgstr "/GNOME context %s %d 만들기"
 
-#: libgnorba/gnome-name-server.c:192
+#: libgnorba/gnome-name-server.c:216
+#, c-format
 msgid "Creating '/GNOME/Servers' context %s %d"
 msgstr "/GNOME/Servers context %s %d 만들기"
 
@@ -1145,7 +1153,7 @@ msgstr "활성화할 서버의 저장소 ID"
 msgid "REPO-ID"
 msgstr "저장소-ID"
 
-#: libgnorba/goad.c:1123
+#: libgnorba/goad.c:1153
 msgid "(Internal use only) GOAD server ID to activate"
 msgstr "(내부 사용) 활성화할 GOAD 서버 ID"
 
@@ -1165,188 +1173,90 @@ msgstr "GOAD가 알고 있는 서버에서 사용할 저장소 ID"
 msgid "REPO_ID"
 msgstr "저장소_ID"
 
-#: libgnorba/orbitgtk.c:133
+#: libgnorba/orbitgtk.c:146
 msgid "Can not write to the cookie file"
 msgstr "쿠키 파일을 쓸 수 없습니다"
 
-#: libgnorba/orbitgtk.c:135
+#: libgnorba/orbitgtk.c:148
 msgid "Unknown error while writing cookie file"
 msgstr "쿠키 파일을 쓰는데 알 수 없는 애러"
 
-#: libgnorba/orbitgtk.c:146
+#: libgnorba/orbitgtk.c:159
 msgid "Could not open the cookie file"
 msgstr "쿠키 파일을 열 수 없습니다"
 
-#: libgnorba/orbitgtk.c:154
+#: libgnorba/orbitgtk.c:167
 msgid "Can not read the cookie file\n"
 msgstr "쿠키 파일을 읽을 수 없습니다\n"
 
-#: libgnorba/orbitgtk.c:156
+#: libgnorba/orbitgtk.c:169
 msgid "While reading the cookie file\n"
 msgstr "쿠키 파일을 읽는 중에\n"
 
-#: libgnorba/orbitns.c:254
+#: libgnorba/orbitns.c:251
 msgid "Could not get name service!"
 msgstr "네임 서비스를 받을 수 없었습니다!"
-
-#: libvfs/extfs.c:274
-msgid ""
-"Couldn't open %s archive\n"
-"%s"
-msgstr ""
-"%s 아카이브를 열수 없습니다\n"
-"%s"
-
-#: libvfs/extfs.c:306 libvfs/extfs.c:326
-msgid "Inconsistent extfs archive"
-msgstr "모순된 extfs 아카이브"
-
-#: libvfs/fish.c:226
-msgid " Error "
-msgstr "오류 "
-
-#: libvfs/fish.c:226
-msgid "Sorry, we can not do password authenticated connections for now."
-msgstr "아쉽게도, 현재 암호로 승인된 연결을 할 수 없습니다."
-
-#: libvfs/ftpfs.c:461
-msgid " Could not set source routing (%s)"
-msgstr " 라우팅을 결정할 수 없습니다 (%s)"
-
-#: libvfs/ftpfs.c:1863 libvfs/ftpfs.c:1878
-msgid ""
-"~/.netrc file has not correct mode.\n"
-"Remove password or correct mode."
-msgstr ""
-"~/.netrc 파일의 모드가 올바르지 않습니다.\n"
-"암호를 없애거나 모드를 수정하십시오."
-
-#: libvfs/mcfs.c:155
-msgid " MCFS "
-msgstr " MCFS "
-
-#: libvfs/mcfs.c:155
-msgid " The server does not support this version "
-msgstr " 서버가 이 버전을 지원하지 않습니다 "
-
-#: libvfs/mcfs.c:171
-msgid " Warning "
-msgstr "경고"
-
-#: libvfs/mcfs.c:172
-msgid ""
-" The remote server is not running on a system port \n"
-" you need a password to log in, but the information may \n"
-" not be safe on the remote side.  Continue? \n"
-msgstr ""
-" 원격 서버가 시스템 포트에 실행중이 아닙니다 \n"
-" 로그인하려면 암호가 필요하지만, 이 정보는 원격 \n"
-" 서버쪽에서 안전하지 않을 수도 있습니다.  계속할까요? \n"
-
-#: libvfs/mcfs.c:175
-msgid " Yes "
-msgstr "예 "
-
-#: libvfs/mcfs.c:175
-msgid " No "
-msgstr "아니오 "
-
-#: libvfs/mcfs.c:177
-msgid " The remote server is running on strange port. Giving up.\n"
-msgstr " 원격 서버가 이상한 포트에서 실행중입니다. 동작 포기.\n"
-
-#: libvfs/mcfs.c:189
-msgid " MCFS Password required "
-msgstr " MCFS 암호가 필요함 "
-
-#: libvfs/mcfs.c:203
-msgid " Invalid password "
-msgstr " 암호가 틀렸습니다 "
-
-#: libvfs/mcfs.c:322
-msgid " Too many open connections "
-msgstr " 연결이 너무 많습니다 "
-
-#: libvfs/tar.c:83 libvfs/tar.c:100
-msgid ""
-"Couldn't open tar archive\n"
-"%s"
-msgstr ""
-"tar 아카이브를 열 수 없습니다\n"
-"%s"
-
-#: libvfs/tar.c:272
-msgid "Unexpected EOF on archive file"
-msgstr "아카이브 파일에 예기치 않은 EOF"
-
-#: libvfs/tar.c:327 libvfs/tar.c:334
-msgid "Inconsistent tar archive"
-msgstr "모순된 tar 아카이브"
-
-#. Error on first record
-#: libvfs/tar.c:393
-msgid ""
-"Hmm,...\n"
-"%s\n"
-"doesn't look like a tar archive."
-msgstr ""
-"음,...\n"
-"%s\n"
-"는 tar 아카이브가 아닌 것으로 보입니다."
-
-#: libvfs/vfs.c:1706
-msgid "Password:"
-msgstr "암호:"
 
 #: support/error.c:109
 msgid "Unknown system error"
 msgstr "알려지지 않은 시스템 에러"
 
 #: support/getopt.c:669
+#, c-format
 msgid "%s: option `%s' is ambiguous\n"
 msgstr "%s: `%s' 옵션이 모호합니다\n"
 
-#. --option
 #: support/getopt.c:693
+#, c-format
 msgid "%s: option `--%s' doesn't allow an argument\n"
 msgstr "%s: `--%s' 옵션은 인자를 받을 수 없습니다\n"
 
 #: support/getopt.c:698
+#, c-format
 msgid "%s: option `%c%s' doesn't allow an argument\n"
 msgstr "%s: `%c%s' 옵션은 인자를 받을 수 없습니다\n"
 
 #: support/getopt.c:715 support/getopt.c:888
+#, c-format
 msgid "%s: option `%s' requires an argument\n"
 msgstr "%s: 옵션 `%s'는 인자가 필요합니다\n"
 
 #. --option
 #: support/getopt.c:744
+#, c-format
 msgid "%s: unrecognized option `--%s'\n"
 msgstr "%s: 알 수 없는 옵션 `--%s'\n"
 
+#. +option or -option
 #: support/getopt.c:748
+#, c-format
 msgid "%s: unrecognized option `%c%s'\n"
 msgstr "%s: 알 수 없는 옵션 `%c%s'\n"
 
 #. 1003.2 specifies the format of this message.
 #: support/getopt.c:774
+#, c-format
 msgid "%s: illegal option -- %c\n"
 msgstr "%s: 이상한 옵션 -- %c\n"
 
 #: support/getopt.c:777
+#, c-format
 msgid "%s: invalid option -- %c\n"
 msgstr "%s: 이상한 옵션 -- %c\n"
 
 #. 1003.2 specifies the format of this message.
 #: support/getopt.c:807 support/getopt.c:937
+#, c-format
 msgid "%s: option requires an argument -- %c\n"
 msgstr "%s: 다음 옵션은 인자가 필요합니다 -- %c\n"
 
 #: support/getopt.c:854
+#, c-format
 msgid "%s: option `-W %s' is ambiguous\n"
 msgstr "%s: `-W %s' 옵션이 모호합니다\n"
 
 #: support/getopt.c:872
+#, c-format
 msgid "%s: option `-W %s' doesn't allow an argument\n"
 msgstr "%s: `-W %s' 옵션은 인자를 받을 수 없습니다\n"
 
@@ -1400,3 +1310,93 @@ msgstr "The user chose No/Cancel with data:\n"
 #: test-gnome/testgnome.c:935
 msgid "Weird number in reply callback"
 msgstr "Weird number in reply callback"
+
+#~ msgid "Easy"
+#~ msgstr "쉽게"
+
+#~ msgid ""
+#~ "Couldn't open %s archive\n"
+#~ "%s"
+#~ msgstr ""
+#~ "%s 아카이브를 열수 없습니다\n"
+#~ "%s"
+
+#~ msgid "Inconsistent extfs archive"
+#~ msgstr "모순된 extfs 아카이브"
+
+#~ msgid " Error "
+#~ msgstr "오류 "
+
+#~ msgid "Sorry, we can not do password authenticated connections for now."
+#~ msgstr "아쉽게도, 현재 암호로 승인된 연결을 할 수 없습니다."
+
+#~ msgid " Could not set source routing (%s)"
+#~ msgstr " 라우팅을 결정할 수 없습니다 (%s)"
+
+#~ msgid ""
+#~ "~/.netrc file has not correct mode.\n"
+#~ "Remove password or correct mode."
+#~ msgstr ""
+#~ "~/.netrc 파일의 모드가 올바르지 않습니다.\n"
+#~ "암호를 없애거나 모드를 수정하십시오."
+
+#~ msgid " MCFS "
+#~ msgstr " MCFS "
+
+#~ msgid " The server does not support this version "
+#~ msgstr " 서버가 이 버전을 지원하지 않습니다 "
+
+#~ msgid " Warning "
+#~ msgstr "경고"
+
+#~ msgid ""
+#~ " The remote server is not running on a system port \n"
+#~ " you need a password to log in, but the information may \n"
+#~ " not be safe on the remote side.  Continue? \n"
+#~ msgstr ""
+#~ " 원격 서버가 시스템 포트에 실행중이 아닙니다 \n"
+#~ " 로그인하려면 암호가 필요하지만, 이 정보는 원격 \n"
+#~ " 서버쪽에서 안전하지 않을 수도 있습니다.  계속할까요? \n"
+
+#~ msgid " Yes "
+#~ msgstr "예 "
+
+#~ msgid " No "
+#~ msgstr "아니오 "
+
+#~ msgid " The remote server is running on strange port. Giving up.\n"
+#~ msgstr " 원격 서버가 이상한 포트에서 실행중입니다. 동작 포기.\n"
+
+#~ msgid " MCFS Password required "
+#~ msgstr " MCFS 암호가 필요함 "
+
+#~ msgid " Invalid password "
+#~ msgstr " 암호가 틀렸습니다 "
+
+#~ msgid " Too many open connections "
+#~ msgstr " 연결이 너무 많습니다 "
+
+#~ msgid ""
+#~ "Couldn't open tar archive\n"
+#~ "%s"
+#~ msgstr ""
+#~ "tar 아카이브를 열 수 없습니다\n"
+#~ "%s"
+
+#~ msgid "Unexpected EOF on archive file"
+#~ msgstr "아카이브 파일에 예기치 않은 EOF"
+
+#~ msgid "Inconsistent tar archive"
+#~ msgstr "모순된 tar 아카이브"
+
+#~ msgid ""
+#~ "Hmm,...\n"
+#~ "%s\n"
+#~ "doesn't look like a tar archive."
+#~ msgstr ""
+#~ "음,...\n"
+#~ "%s\n"
+#~ "는 tar 아카이브가 아닌 것으로 보입니다."
+
+#~ msgid "Password:"
+#~ msgstr "암호:"

@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 1998-12-16 02:52-0500\n"
+"POT-Creation-Date: 1999-01-12 18:43-0600\n"
 "PO-Revision-Date: 1998-04-23 14:20+0300\n"
 "Last-Translator: Ville Hautam‰ki <villeh@photon.joensuu.fi>\n"
 "Language-Team: Finnish <fi@li.org>\n"
@@ -26,6 +26,7 @@ msgstr "Moro GNOME\n"
 msgid "The Hello World Gnomified"
 msgstr "Moro Maailma Gnomena"
 
+#. copyright notice
 #: gnome-hello/gnome-hello-2-i18n.c:61
 #: gnome-hello/gnome-hello-3-parse-args.c:61
 msgid "(C) 1998 the Free Software Foundation"
@@ -62,7 +63,7 @@ msgstr "Tiedosto/Poistu"
 
 #: gnome-hello/gnome-hello-2-i18n.c:85
 #: gnome-hello/gnome-hello-3-parse-args.c:85 gnome-hello/gnome-hello-4-SM.c:78
-#: gnome-hello/gnome-hello-7-mdi.c:484 libgnomeui/gnome-stock.c:776
+#: gnome-hello/gnome-hello-7-mdi.c:484 libgnomeui/gnome-stock.c:773
 #: libgnomeui/stock_demo.c:290
 msgid "Help"
 msgstr "Apua"
@@ -167,6 +168,7 @@ msgid "<control>A"
 msgstr "<control>A"
 
 #: gnome-hello/gnome-hello.c:208
+#, c-format
 msgid ""
 "%s: A gnomified 'Hello World' program\n"
 "\n"
@@ -178,6 +180,7 @@ msgid ""
 msgstr ""
 
 #: gnome-hello/gnome-hello.c:217
+#, c-format
 msgid "Gnome Hello %s.\n"
 msgstr ""
 
@@ -206,29 +209,30 @@ msgstr "K‰ytt‰j‰"
 msgid "Set config entry"
 msgstr ""
 
-#: libgnome/gnome-popt.c:75
+#: libgnome/gnome-popt.c:92
+#, c-format
 msgid ""
 "Error on option %s: %s.\n"
 "Run '%s --help' to see a full list of available command line options.\n"
 msgstr ""
 
-#: libgnome/gnomelib-init.c:113
+#: libgnome/gnomelib-init.c:114
 msgid "Disable sound server usage"
 msgstr ""
 
-#: libgnome/gnomelib-init.c:115
+#: libgnome/gnomelib-init.c:116
 msgid "Enable sound server usage"
 msgstr ""
 
-#: libgnome/gnomelib-init.c:117
+#: libgnome/gnomelib-init.c:118
 msgid "Host:port on which the sound server to use is running"
 msgstr ""
 
-#: libgnome/gnomelib-init.c:118
+#: libgnome/gnomelib-init.c:119
 msgid "HOSTNAME:PORT"
 msgstr ""
 
-#: libgnome/gnomelib-init.c:126
+#: libgnome/gnomelib-init.c:127
 msgid "GNOME Options"
 msgstr ""
 
@@ -461,34 +465,34 @@ msgstr "="
 msgid "INV"
 msgstr "INV"
 
-#: libgnomeui/gnome-client.c:750
+#: libgnomeui/gnome-client.c:757
 #, fuzzy
 msgid "Specify session management ID"
 msgstr "M‰‰rittele istunnon hallinnan id"
 
-#: libgnomeui/gnome-client.c:750 libgnorba/goad-browser.c:23
+#: libgnomeui/gnome-client.c:757 libgnorba/goad-browser.c:23
 msgid "ID"
 msgstr "ID"
 
-#: libgnomeui/gnome-client.c:752
+#: libgnomeui/gnome-client.c:759
 msgid "Specify prefix of saved configuration"
 msgstr ""
 
-#: libgnomeui/gnome-client.c:752
+#: libgnomeui/gnome-client.c:759
 msgid "PREFIX"
 msgstr ""
 
-#: libgnomeui/gnome-client.c:754
+#: libgnomeui/gnome-client.c:761
 msgid "Disable connection to session manager"
 msgstr "Katkaise yhteys istunnon hallintaan"
 
 #. Register commandline options.
-#: libgnomeui/gnome-client.c:875
+#: libgnomeui/gnome-client.c:881
 #, fuzzy
 msgid "Session management options"
 msgstr "M‰‰rittele istunnon hallinnan id"
 
-#: libgnomeui/gnome-client.c:2133
+#: libgnomeui/gnome-client.c:2192
 #, fuzzy
 msgid "Cancel Logout"
 msgstr "Palauta"
@@ -501,7 +505,7 @@ msgstr ""
 #. Only add the label if all the children are to be shown.  Otherwise
 #. * things look too wide; in that case just show the arrow.
 #.
-#: libgnomeui/gnome-dateedit.c:426
+#: libgnomeui/gnome-dateedit.c:430
 msgid "Calendar"
 msgstr "Tyhjenn‰"
 
@@ -538,8 +542,8 @@ msgid "Documentation:"
 msgstr "Dokumentaatio:"
 
 #: libgnomeui/gnome-dentry-edit.c:310
-msgid "Easy"
-msgstr "Helppo"
+msgid "Basic"
+msgstr ""
 
 #: libgnomeui/gnome-dentry-edit.c:314
 msgid "Advanced"
@@ -559,22 +563,22 @@ msgstr "Selaa..."
 msgid "Pick a Font"
 msgstr ""
 
-#: libgnomeui/gnome-font-picker.c:542 libgnomeui/gnome-stock.c:781
+#: libgnomeui/gnome-font-picker.c:542 libgnomeui/gnome-stock.c:778
 msgid "Font"
 msgstr ""
 
-#: libgnomeui/gnome-icon-entry.c:87 libgnomeui/gnome-icon-entry.c:346
+#: libgnomeui/gnome-icon-entry.c:88 libgnomeui/gnome-icon-entry.c:375
 #, fuzzy
 msgid "No Icon"
 msgstr ""
 "Ei\n"
 "kuvake"
 
-#: libgnomeui/gnome-icon-entry.c:199 libgnomeui/gnome-pixmap-entry.c:176
+#: libgnomeui/gnome-icon-entry.c:200 libgnomeui/gnome-pixmap-entry.c:177
 msgid "Can't find an hbox, using a normal file selection"
 msgstr ""
 
-#: libgnomeui/gnome-icon-entry.c:205 libgnomeui/gnome-pixmap-entry.c:182
+#: libgnomeui/gnome-icon-entry.c:206 libgnomeui/gnome-pixmap-entry.c:183
 #, fuzzy
 msgid "Preview"
 msgstr "Edellinen"
@@ -583,80 +587,80 @@ msgstr "Edellinen"
 msgid "Loading Icons..."
 msgstr "Lataa kuvakkeet..."
 
-#: libgnomeui/gnome-init.c:176
+#: libgnomeui/gnome-init.c:130
 msgid "Gdk debugging flags to set"
 msgstr ""
 
-#: libgnomeui/gnome-init.c:176 libgnomeui/gnome-init.c:178
-#: libgnomeui/gnome-init.c:198 libgnomeui/gnome-init.c:200
+#: libgnomeui/gnome-init.c:130 libgnomeui/gnome-init.c:132
+#: libgnomeui/gnome-init.c:152 libgnomeui/gnome-init.c:154
 msgid "FLAGS"
 msgstr ""
 
-#: libgnomeui/gnome-init.c:178
+#: libgnomeui/gnome-init.c:132
 msgid "Gdk debugging flags to unset"
 msgstr ""
 
-#: libgnomeui/gnome-init.c:180
+#: libgnomeui/gnome-init.c:134
 msgid "X display to use"
 msgstr "k‰ytˆss‰ oleva X-n‰yttˆ"
 
-#: libgnomeui/gnome-init.c:180
+#: libgnomeui/gnome-init.c:134
 msgid "DISPLAY"
 msgstr "DISPLAY"
 
-#: libgnomeui/gnome-init.c:182
+#: libgnomeui/gnome-init.c:136
 msgid "Make X calls synchronous"
 msgstr ""
 
-#: libgnomeui/gnome-init.c:184
+#: libgnomeui/gnome-init.c:138
 msgid "Don't use X shared memory extension"
 msgstr "ƒl‰ k‰yt‰ X:n jaettu muisti -laajennusta"
 
-#: libgnomeui/gnome-init.c:186
+#: libgnomeui/gnome-init.c:140
 msgid "Program name as used by the window manager"
 msgstr ""
 
-#: libgnomeui/gnome-init.c:186
+#: libgnomeui/gnome-init.c:140
 msgid "NAME"
 msgstr "NIMI"
 
-#: libgnomeui/gnome-init.c:188
+#: libgnomeui/gnome-init.c:142
 msgid "Program class as used by the window manager"
 msgstr ""
 
-#: libgnomeui/gnome-init.c:188
+#: libgnomeui/gnome-init.c:142
 msgid "CLASS"
 msgstr "LUOKKA"
 
-#: libgnomeui/gnome-init.c:190
+#: libgnomeui/gnome-init.c:144
 msgid "HOST"
 msgstr "KONE"
 
-#: libgnomeui/gnome-init.c:192
+#: libgnomeui/gnome-init.c:146
 msgid "PORT"
 msgstr "PORTTI"
 
-#: libgnomeui/gnome-init.c:194 libgnomeui/gnome-init.c:196
+#: libgnomeui/gnome-init.c:148 libgnomeui/gnome-init.c:150
 msgid "STYLE"
 msgstr "TYYLI"
 
-#: libgnomeui/gnome-init.c:198
+#: libgnomeui/gnome-init.c:152
 msgid "Gtk+ debugging flags to set"
 msgstr ""
 
-#: libgnomeui/gnome-init.c:200
+#: libgnomeui/gnome-init.c:154
 msgid "Gtk+ debugging flags to unset"
 msgstr ""
 
-#: libgnomeui/gnome-init.c:202
+#: libgnomeui/gnome-init.c:156
 msgid "Make all warnings fatal"
 msgstr ""
 
-#: libgnomeui/gnome-init.c:204
+#: libgnomeui/gnome-init.c:158
 msgid "Load an additional Gtk module"
 msgstr ""
 
-#: libgnomeui/gnome-init.c:204
+#: libgnomeui/gnome-init.c:158
 msgid "MODULE"
 msgstr ""
 
@@ -688,7 +692,7 @@ msgstr "Laskin"
 msgid "Calculator..."
 msgstr "Laskin..."
 
-#: libgnomeui/gnome-pixmap-entry.c:79 libgnomeui/gnome-pixmap-entry.c:217
+#: libgnomeui/gnome-pixmap-entry.c:80 libgnomeui/gnome-pixmap-entry.c:253
 msgid "No Image"
 msgstr ""
 
@@ -738,6 +742,7 @@ msgid "Select dictionary"
 msgstr ""
 
 #: libgnomeui/gnome-spell.c:233
+#, c-format
 msgid ""
 "The word `%s'\n"
 "is not in the dictionary.\n"
@@ -748,11 +753,11 @@ msgstr ""
 msgid "Confirm"
 msgstr ""
 
-#: libgnomeui/gnome-spell.c:246 libgnomeui/gnome-stock.c:770
+#: libgnomeui/gnome-spell.c:246 libgnomeui/gnome-stock.c:767
 msgid "OK"
 msgstr "OK"
 
-#: libgnomeui/gnome-spell.c:253 libgnomeui/gnome-stock.c:772
+#: libgnomeui/gnome-spell.c:253 libgnomeui/gnome-stock.c:769
 msgid "Cancel"
 msgstr "Palauta"
 
@@ -865,51 +870,51 @@ msgstr ""
 msgid "Configure"
 msgstr "M‰‰rittele toolbarin asetukset"
 
-#: libgnomeui/gnome-stock.c:771
+#: libgnomeui/gnome-stock.c:768
 msgid "Apply"
 msgstr "Toteuta"
 
-#: libgnomeui/gnome-stock.c:773 libgnomeui/stock_demo.c:144
+#: libgnomeui/gnome-stock.c:770 libgnomeui/stock_demo.c:144
 msgid "Close"
 msgstr "Sulje"
 
-#: libgnomeui/gnome-stock.c:774
+#: libgnomeui/gnome-stock.c:771
 msgid "Yes"
 msgstr "Kyll‰"
 
-#: libgnomeui/gnome-stock.c:775
+#: libgnomeui/gnome-stock.c:772
 msgid "No"
 msgstr "Ei"
 
-#: libgnomeui/gnome-stock.c:777
+#: libgnomeui/gnome-stock.c:774
 msgid "Next"
 msgstr "Seuraava"
 
-#: libgnomeui/gnome-stock.c:778
+#: libgnomeui/gnome-stock.c:775
 msgid "Prev"
 msgstr "Edellinen"
 
-#: libgnomeui/gnome-stock.c:779
+#: libgnomeui/gnome-stock.c:776
 msgid "Up"
 msgstr ""
 
-#: libgnomeui/gnome-stock.c:780
+#: libgnomeui/gnome-stock.c:777
 msgid "Down"
 msgstr ""
 
-#: libgnomeui/gnome-stock.c:1789
+#: libgnomeui/gnome-stock.c:1787
 msgid "Menu Accelerator Keys"
 msgstr "Menun pikavalintan‰pp‰imet"
 
-#: libgnomeui/gnome-stock.c:1791
+#: libgnomeui/gnome-stock.c:1789
 msgid "Global"
 msgstr "Koko koneen"
 
-#: libgnomeui/gnome-stock.c:1793
+#: libgnomeui/gnome-stock.c:1791
 msgid "Menu Item"
 msgstr "Menun kohta"
 
-#: libgnomeui/gnome-stock.c:1794
+#: libgnomeui/gnome-stock.c:1792
 msgid "Accelerator"
 msgstr "Pikavalinta"
 
@@ -924,6 +929,7 @@ msgstr ""
 # , c-format
 # , c-format
 #: libgnomeui/gnome_segv.c:79
+#, c-format
 msgid ""
 "Application \"%s\" has a bug.\n"
 "SIGSEGV received at PC %#lx in PID %d.\n"
@@ -1130,11 +1136,13 @@ msgid ""
 "gnome_win_hints_* functions for errors. :)"
 msgstr ""
 
-#: libgnorba/gnome-name-server.c:175
+#: libgnorba/gnome-name-server.c:199
+#, c-format
 msgid "Creating '/GNOME' context %s %d"
 msgstr ""
 
-#: libgnorba/gnome-name-server.c:192
+#: libgnorba/gnome-name-server.c:216
+#, c-format
 msgid "Creating '/GNOME/Servers' context %s %d"
 msgstr ""
 
@@ -1150,7 +1158,7 @@ msgstr ""
 msgid "REPO-ID"
 msgstr ""
 
-#: libgnorba/goad.c:1123
+#: libgnorba/goad.c:1153
 msgid "(Internal use only) GOAD server ID to activate"
 msgstr ""
 
@@ -1170,150 +1178,33 @@ msgstr ""
 msgid "REPO_ID"
 msgstr ""
 
-#: libgnorba/orbitgtk.c:133
+#: libgnorba/orbitgtk.c:146
 msgid "Can not write to the cookie file"
 msgstr ""
 
-#: libgnorba/orbitgtk.c:135
+#: libgnorba/orbitgtk.c:148
 msgid "Unknown error while writing cookie file"
 msgstr ""
 
 # , c-format
-#: libgnorba/orbitgtk.c:146
+#: libgnorba/orbitgtk.c:159
 #, fuzzy
 msgid "Could not open the cookie file"
 msgstr ""
 "Ei voinut avata tar pakkausta\n"
 "%s"
 
-#: libgnorba/orbitgtk.c:154
+#: libgnorba/orbitgtk.c:167
 msgid "Can not read the cookie file\n"
 msgstr ""
 
-#: libgnorba/orbitgtk.c:156
+#: libgnorba/orbitgtk.c:169
 msgid "While reading the cookie file\n"
 msgstr ""
 
-#: libgnorba/orbitns.c:254
+#: libgnorba/orbitns.c:251
 msgid "Could not get name service!"
 msgstr ""
-
-# , c-format
-#: libvfs/extfs.c:274
-msgid ""
-"Couldn't open %s archive\n"
-"%s"
-msgstr ""
-"Ei voinut avata %s-pakkausta\n"
-"%s"
-
-#: libvfs/extfs.c:306 libvfs/extfs.c:326
-msgid "Inconsistent extfs archive"
-msgstr "extfs-pakkaus on sekaisin"
-
-#: libvfs/fish.c:226
-msgid " Error "
-msgstr ""
-
-#: libvfs/fish.c:226
-msgid "Sorry, we can not do password authenticated connections for now."
-msgstr ""
-
-# , c-format
-#: libvfs/ftpfs.c:461
-msgid " Could not set source routing (%s)"
-msgstr " ei voinut asettaa l‰hdereitityst‰ (%s)"
-
-#: libvfs/ftpfs.c:1863 libvfs/ftpfs.c:1878
-msgid ""
-"~/.netrc file has not correct mode.\n"
-"Remove password or correct mode."
-msgstr ""
-"~/.netrc tiedosto ei ole oikeassa moodissa.\n"
-"Poista salasana tai muuta moodia oikeaksi."
-
-#: libvfs/mcfs.c:155
-msgid " MCFS "
-msgstr " MCFS "
-
-#: libvfs/mcfs.c:155
-msgid " The server does not support this version "
-msgstr " Palvelin ei tue t‰t‰ versiota "
-
-# , fuzzy
-# , fuzzy
-#: libvfs/mcfs.c:171
-msgid " Warning "
-msgstr "Varoitus"
-
-#: libvfs/mcfs.c:172
-msgid ""
-" The remote server is not running on a system port \n"
-" you need a password to log in, but the information may \n"
-" not be safe on the remote side.  Continue? \n"
-msgstr ""
-" Et‰palvelin ei ole k‰ynniss‰ systeemiportissa \n"
-" tarvitset salasanan kirjautuaksesi sis‰‰n, mutta informaatio ei\n"
-" v‰ltt‰m‰tt‰ ole turvassa. Jatka? \n"
-
-# , fuzzy
-#: libvfs/mcfs.c:175
-msgid " Yes "
-msgstr "Kyll‰"
-
-# , fuzzy
-#: libvfs/mcfs.c:175
-msgid " No "
-msgstr "Ei"
-
-#: libvfs/mcfs.c:177
-msgid " The remote server is running on strange port. Giving up.\n"
-msgstr " Et‰palvelin on k‰ynniss‰ kummallisessa portissa. Luovutan. \n"
-
-#: libvfs/mcfs.c:189
-msgid " MCFS Password required "
-msgstr " MCFS Salasana tarvitaan "
-
-#: libvfs/mcfs.c:203
-msgid " Invalid password "
-msgstr " V‰‰r‰ salasana "
-
-#: libvfs/mcfs.c:322
-msgid " Too many open connections "
-msgstr " Liian monta yhteytt‰ "
-
-# , c-format
-#: libvfs/tar.c:83 libvfs/tar.c:100
-msgid ""
-"Couldn't open tar archive\n"
-"%s"
-msgstr ""
-"Ei voinut avata tar pakkausta\n"
-"%s"
-
-#: libvfs/tar.c:272
-msgid "Unexpected EOF on archive file"
-msgstr "Pakkaustiedo loppui odottamattomasti"
-
-#: libvfs/tar.c:327 libvfs/tar.c:334
-msgid "Inconsistent tar archive"
-msgstr "Rikkin‰inen tar pakkaus"
-
-# , c-format
-#. Error on first record
-#: libvfs/tar.c:393
-msgid ""
-"Hmm,...\n"
-"%s\n"
-"doesn't look like a tar archive."
-msgstr ""
-"Hmm,...\n"
-"%s\n"
-"ei n‰yt‰ tar-pakkaukselta."
-
-#: libvfs/vfs.c:1706
-msgid "Password:"
-msgstr "Salasana:"
 
 #: support/error.c:109
 msgid "Unknown system error"
@@ -1322,25 +1213,28 @@ msgstr "Tuntematon j‰rjestelm‰virhe"
 # , c-format
 # , c-format
 #: support/getopt.c:669
+#, c-format
 msgid "%s: option `%s' is ambiguous\n"
 msgstr "%s: asetus `%s' on ep‰selv‰\n"
 
 # , c-format
 # , c-format
-#. --option
 #: support/getopt.c:693
+#, c-format
 msgid "%s: option `--%s' doesn't allow an argument\n"
 msgstr "%s: asetus `--%s' ei hyv‰ksy parametria\n"
 
 # , c-format
 # , c-format
 #: support/getopt.c:698
+#, c-format
 msgid "%s: option `%c%s' doesn't allow an argument\n"
 msgstr "%s: asetus `%c%s' ei hyv‰ksy parametria\n"
 
 # , fuzzy, c-format
 # , c-format
 #: support/getopt.c:715 support/getopt.c:888
+#, c-format
 msgid "%s: option `%s' requires an argument\n"
 msgstr "%s: asetus `%s' vaatii parametrin\n"
 
@@ -1348,12 +1242,15 @@ msgstr "%s: asetus `%s' vaatii parametrin\n"
 # , c-format
 #. --option
 #: support/getopt.c:744
+#, c-format
 msgid "%s: unrecognized option `--%s'\n"
 msgstr "%s: tuntematon asetus `--%s'\n"
 
 # , c-format
 # , c-format
+#. +option or -option
 #: support/getopt.c:748
+#, c-format
 msgid "%s: unrecognized option `%c%s'\n"
 msgstr "%s: tuntematon asetus `%c%s'\n"
 
@@ -1361,12 +1258,14 @@ msgstr "%s: tuntematon asetus `%c%s'\n"
 # , c-format
 #. 1003.2 specifies the format of this message.
 #: support/getopt.c:774
+#, c-format
 msgid "%s: illegal option -- %c\n"
 msgstr "%s: tuntematon asetus -- %c\n"
 
 # , c-format
 # , c-format
 #: support/getopt.c:777
+#, c-format
 msgid "%s: invalid option -- %c\n"
 msgstr "%s: v‰‰r‰ asetus -- %c\n"
 
@@ -1374,18 +1273,21 @@ msgstr "%s: v‰‰r‰ asetus -- %c\n"
 # , c-format
 #. 1003.2 specifies the format of this message.
 #: support/getopt.c:807 support/getopt.c:937
+#, c-format
 msgid "%s: option requires an argument -- %c\n"
 msgstr "%s: Liian monta parametri‰ -- %c\n"
 
 # , c-format
 # , c-format
 #: support/getopt.c:854
+#, c-format
 msgid "%s: option `-W %s' is ambiguous\n"
 msgstr "%s: asetus `-W %s' on ep‰selv‰\n"
 
 # , c-format
 # , c-format
 #: support/getopt.c:872
+#, c-format
 msgid "%s: option `-W %s' doesn't allow an argument\n"
 msgstr "%s: asetus `-W %s' ei hyv‰ksy parametria\n"
 
@@ -1440,6 +1342,98 @@ msgstr "K‰ytt‰j‰ valitsi Ei/Peru datalla:\n"
 #: test-gnome/testgnome.c:935
 msgid "Weird number in reply callback"
 msgstr "Omituinen numero vastauksen callback-rutiinissa"
+
+#~ msgid "Easy"
+#~ msgstr "Helppo"
+
+# , c-format
+#~ msgid ""
+#~ "Couldn't open %s archive\n"
+#~ "%s"
+#~ msgstr ""
+#~ "Ei voinut avata %s-pakkausta\n"
+#~ "%s"
+
+#~ msgid "Inconsistent extfs archive"
+#~ msgstr "extfs-pakkaus on sekaisin"
+
+# , c-format
+#~ msgid " Could not set source routing (%s)"
+#~ msgstr " ei voinut asettaa l‰hdereitityst‰ (%s)"
+
+#~ msgid ""
+#~ "~/.netrc file has not correct mode.\n"
+#~ "Remove password or correct mode."
+#~ msgstr ""
+#~ "~/.netrc tiedosto ei ole oikeassa moodissa.\n"
+#~ "Poista salasana tai muuta moodia oikeaksi."
+
+#~ msgid " MCFS "
+#~ msgstr " MCFS "
+
+#~ msgid " The server does not support this version "
+#~ msgstr " Palvelin ei tue t‰t‰ versiota "
+
+# , fuzzy
+# , fuzzy
+#~ msgid " Warning "
+#~ msgstr "Varoitus"
+
+#~ msgid ""
+#~ " The remote server is not running on a system port \n"
+#~ " you need a password to log in, but the information may \n"
+#~ " not be safe on the remote side.  Continue? \n"
+#~ msgstr ""
+#~ " Et‰palvelin ei ole k‰ynniss‰ systeemiportissa \n"
+#~ " tarvitset salasanan kirjautuaksesi sis‰‰n, mutta informaatio ei\n"
+#~ " v‰ltt‰m‰tt‰ ole turvassa. Jatka? \n"
+
+# , fuzzy
+#~ msgid " Yes "
+#~ msgstr "Kyll‰"
+
+# , fuzzy
+#~ msgid " No "
+#~ msgstr "Ei"
+
+#~ msgid " The remote server is running on strange port. Giving up.\n"
+#~ msgstr " Et‰palvelin on k‰ynniss‰ kummallisessa portissa. Luovutan. \n"
+
+#~ msgid " MCFS Password required "
+#~ msgstr " MCFS Salasana tarvitaan "
+
+#~ msgid " Invalid password "
+#~ msgstr " V‰‰r‰ salasana "
+
+#~ msgid " Too many open connections "
+#~ msgstr " Liian monta yhteytt‰ "
+
+# , c-format
+#~ msgid ""
+#~ "Couldn't open tar archive\n"
+#~ "%s"
+#~ msgstr ""
+#~ "Ei voinut avata tar pakkausta\n"
+#~ "%s"
+
+#~ msgid "Unexpected EOF on archive file"
+#~ msgstr "Pakkaustiedo loppui odottamattomasti"
+
+#~ msgid "Inconsistent tar archive"
+#~ msgstr "Rikkin‰inen tar pakkaus"
+
+# , c-format
+#~ msgid ""
+#~ "Hmm,...\n"
+#~ "%s\n"
+#~ "doesn't look like a tar archive."
+#~ msgstr ""
+#~ "Hmm,...\n"
+#~ "%s\n"
+#~ "ei n‰yt‰ tar-pakkaukselta."
+
+#~ msgid "Password:"
+#~ msgstr "Salasana:"
 
 #~ msgid "Discard session"
 #~ msgstr "Lopeta istunto"

@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-libs VERSION\n"
-"POT-Creation-Date: 1998-12-16 02:52-0500\n"
+"POT-Creation-Date: 1999-01-12 18:43-0600\n"
 "PO-Revision-Date: 1998-12-11 07:13+09:00\n"
 "Last-Translator: Eiichiro ITANI <emu@ceres.dti.ne.jp>\n"
 "Language-Team: <gnome@lists.hypercore.co.jp>\n"
@@ -26,6 +26,7 @@ msgstr "こんにちは GNOME\n"
 msgid "The Hello World Gnomified"
 msgstr "Gnome版Hello World"
 
+#. copyright notice
 #: gnome-hello/gnome-hello-2-i18n.c:61
 #: gnome-hello/gnome-hello-3-parse-args.c:61
 msgid "(C) 1998 the Free Software Foundation"
@@ -62,7 +63,7 @@ msgstr "ファイル"
 
 #: gnome-hello/gnome-hello-2-i18n.c:85
 #: gnome-hello/gnome-hello-3-parse-args.c:85 gnome-hello/gnome-hello-4-SM.c:78
-#: gnome-hello/gnome-hello-7-mdi.c:484 libgnomeui/gnome-stock.c:776
+#: gnome-hello/gnome-hello-7-mdi.c:484 libgnomeui/gnome-stock.c:773
 #: libgnomeui/stock_demo.c:290
 msgid "Help"
 msgstr "ヘルプ"
@@ -165,6 +166,7 @@ msgid "<control>A"
 msgstr ""
 
 #: gnome-hello/gnome-hello.c:208
+#, c-format
 msgid ""
 "%s: A gnomified 'Hello World' program\n"
 "\n"
@@ -183,6 +185,7 @@ msgstr ""
 "        --version  バージョン情報を表示して終了する\n"
 
 #: gnome-hello/gnome-hello.c:217
+#, c-format
 msgid "Gnome Hello %s.\n"
 msgstr "こんにちは GNOME %s.\n"
 
@@ -211,7 +214,8 @@ msgstr "ユーザ"
 msgid "Set config entry"
 msgstr ""
 
-#: libgnome/gnome-popt.c:75
+#: libgnome/gnome-popt.c:92
+#, c-format
 msgid ""
 "Error on option %s: %s.\n"
 "Run '%s --help' to see a full list of available command line options.\n"
@@ -219,23 +223,23 @@ msgstr ""
 "オプション %s にエラー: %s.\n"
 "'%s --help' を実行すれば使用可能なオプションの一覧が見られます。\n"
 
-#: libgnome/gnomelib-init.c:113
+#: libgnome/gnomelib-init.c:114
 msgid "Disable sound server usage"
 msgstr ""
 
-#: libgnome/gnomelib-init.c:115
+#: libgnome/gnomelib-init.c:116
 msgid "Enable sound server usage"
 msgstr ""
 
-#: libgnome/gnomelib-init.c:117
+#: libgnome/gnomelib-init.c:118
 msgid "Host:port on which the sound server to use is running"
 msgstr ""
 
-#: libgnome/gnomelib-init.c:118
+#: libgnome/gnomelib-init.c:119
 msgid "HOSTNAME:PORT"
 msgstr ""
 
-#: libgnome/gnomelib-init.c:126
+#: libgnome/gnomelib-init.c:127
 msgid "GNOME Options"
 msgstr ""
 
@@ -465,32 +469,32 @@ msgstr ""
 msgid "INV"
 msgstr ""
 
-#: libgnomeui/gnome-client.c:750
+#: libgnomeui/gnome-client.c:757
 msgid "Specify session management ID"
 msgstr "セッションマネージメントIDの指定"
 
-#: libgnomeui/gnome-client.c:750 libgnorba/goad-browser.c:23
+#: libgnomeui/gnome-client.c:757 libgnorba/goad-browser.c:23
 msgid "ID"
 msgstr ""
 
-#: libgnomeui/gnome-client.c:752
+#: libgnomeui/gnome-client.c:759
 msgid "Specify prefix of saved configuration"
 msgstr ""
 
-#: libgnomeui/gnome-client.c:752
+#: libgnomeui/gnome-client.c:759
 msgid "PREFIX"
 msgstr ""
 
-#: libgnomeui/gnome-client.c:754
+#: libgnomeui/gnome-client.c:761
 msgid "Disable connection to session manager"
 msgstr "セッションマネージャと接続しない"
 
 #. Register commandline options.
-#: libgnomeui/gnome-client.c:875
+#: libgnomeui/gnome-client.c:881
 msgid "Session management options"
 msgstr "セッションマネージャオプション"
 
-#: libgnomeui/gnome-client.c:2133
+#: libgnomeui/gnome-client.c:2192
 #, fuzzy
 msgid "Cancel Logout"
 msgstr "キャンセル"
@@ -502,7 +506,7 @@ msgstr "色の選択"
 #. Only add the label if all the children are to be shown.  Otherwise
 #. * things look too wide; in that case just show the arrow.
 #.
-#: libgnomeui/gnome-dateedit.c:426
+#: libgnomeui/gnome-dateedit.c:430
 msgid "Calendar"
 msgstr "カレンダー"
 
@@ -539,8 +543,8 @@ msgid "Documentation:"
 msgstr "ドキュメント:"
 
 #: libgnomeui/gnome-dentry-edit.c:310
-msgid "Easy"
-msgstr "初級"
+msgid "Basic"
+msgstr ""
 
 #: libgnomeui/gnome-dentry-edit.c:314
 msgid "Advanced"
@@ -561,19 +565,19 @@ msgstr "参照..."
 msgid "Pick a Font"
 msgstr "色の選択"
 
-#: libgnomeui/gnome-font-picker.c:542 libgnomeui/gnome-stock.c:781
+#: libgnomeui/gnome-font-picker.c:542 libgnomeui/gnome-stock.c:778
 msgid "Font"
 msgstr "フォント"
 
-#: libgnomeui/gnome-icon-entry.c:87 libgnomeui/gnome-icon-entry.c:346
+#: libgnomeui/gnome-icon-entry.c:88 libgnomeui/gnome-icon-entry.c:375
 msgid "No Icon"
 msgstr ""
 
-#: libgnomeui/gnome-icon-entry.c:199 libgnomeui/gnome-pixmap-entry.c:176
+#: libgnomeui/gnome-icon-entry.c:200 libgnomeui/gnome-pixmap-entry.c:177
 msgid "Can't find an hbox, using a normal file selection"
 msgstr ""
 
-#: libgnomeui/gnome-icon-entry.c:205 libgnomeui/gnome-pixmap-entry.c:182
+#: libgnomeui/gnome-icon-entry.c:206 libgnomeui/gnome-pixmap-entry.c:183
 #, fuzzy
 msgid "Preview"
 msgstr "前"
@@ -582,80 +586,80 @@ msgstr "前"
 msgid "Loading Icons..."
 msgstr "アイコンを読み込み中..."
 
-#: libgnomeui/gnome-init.c:176
+#: libgnomeui/gnome-init.c:130
 msgid "Gdk debugging flags to set"
 msgstr "立てるGdkデバッグフラグ"
 
-#: libgnomeui/gnome-init.c:176 libgnomeui/gnome-init.c:178
-#: libgnomeui/gnome-init.c:198 libgnomeui/gnome-init.c:200
+#: libgnomeui/gnome-init.c:130 libgnomeui/gnome-init.c:132
+#: libgnomeui/gnome-init.c:152 libgnomeui/gnome-init.c:154
 msgid "FLAGS"
 msgstr "フラグ"
 
-#: libgnomeui/gnome-init.c:178
+#: libgnomeui/gnome-init.c:132
 msgid "Gdk debugging flags to unset"
 msgstr "下ろすGdkデバッグフラグ"
 
-#: libgnomeui/gnome-init.c:180
+#: libgnomeui/gnome-init.c:134
 msgid "X display to use"
 msgstr "使用するXディスプレイ"
 
-#: libgnomeui/gnome-init.c:180
+#: libgnomeui/gnome-init.c:134
 msgid "DISPLAY"
 msgstr "ディスプレイ"
 
-#: libgnomeui/gnome-init.c:182
+#: libgnomeui/gnome-init.c:136
 msgid "Make X calls synchronous"
 msgstr "X呼出を同期モードで行なう"
 
-#: libgnomeui/gnome-init.c:184
+#: libgnomeui/gnome-init.c:138
 msgid "Don't use X shared memory extension"
 msgstr "X共有メモリエクステンションを使用しない"
 
-#: libgnomeui/gnome-init.c:186
+#: libgnomeui/gnome-init.c:140
 msgid "Program name as used by the window manager"
 msgstr "ウィンドウマネージャに指示するプログラム名"
 
-#: libgnomeui/gnome-init.c:186
+#: libgnomeui/gnome-init.c:140
 msgid "NAME"
 msgstr "名前"
 
-#: libgnomeui/gnome-init.c:188
+#: libgnomeui/gnome-init.c:142
 msgid "Program class as used by the window manager"
 msgstr "ウィンドウマネージャに指示するクラス名"
 
-#: libgnomeui/gnome-init.c:188
+#: libgnomeui/gnome-init.c:142
 msgid "CLASS"
 msgstr "クラス"
 
-#: libgnomeui/gnome-init.c:190
+#: libgnomeui/gnome-init.c:144
 msgid "HOST"
 msgstr "ホスト"
 
-#: libgnomeui/gnome-init.c:192
+#: libgnomeui/gnome-init.c:146
 msgid "PORT"
 msgstr "ポート"
 
-#: libgnomeui/gnome-init.c:194 libgnomeui/gnome-init.c:196
+#: libgnomeui/gnome-init.c:148 libgnomeui/gnome-init.c:150
 msgid "STYLE"
 msgstr "スタイル"
 
-#: libgnomeui/gnome-init.c:198
+#: libgnomeui/gnome-init.c:152
 msgid "Gtk+ debugging flags to set"
 msgstr "立てるGtk+デバッグフラグ"
 
-#: libgnomeui/gnome-init.c:200
+#: libgnomeui/gnome-init.c:154
 msgid "Gtk+ debugging flags to unset"
 msgstr "下ろすGtk+デバッグフラグ"
 
-#: libgnomeui/gnome-init.c:202
+#: libgnomeui/gnome-init.c:156
 msgid "Make all warnings fatal"
 msgstr "すべての警告を致命的にする"
 
-#: libgnomeui/gnome-init.c:204
+#: libgnomeui/gnome-init.c:158
 msgid "Load an additional Gtk module"
 msgstr "追加Gtkモジュールの読み込み"
 
-#: libgnomeui/gnome-init.c:204
+#: libgnomeui/gnome-init.c:158
 msgid "MODULE"
 msgstr "モジュール"
 
@@ -687,7 +691,7 @@ msgstr "電卓"
 msgid "Calculator..."
 msgstr "電卓..."
 
-#: libgnomeui/gnome-pixmap-entry.c:79 libgnomeui/gnome-pixmap-entry.c:217
+#: libgnomeui/gnome-pixmap-entry.c:80 libgnomeui/gnome-pixmap-entry.c:253
 msgid "No Image"
 msgstr ""
 
@@ -736,6 +740,7 @@ msgid "Select dictionary"
 msgstr ""
 
 #: libgnomeui/gnome-spell.c:233
+#, c-format
 msgid ""
 "The word `%s'\n"
 "is not in the dictionary.\n"
@@ -746,11 +751,11 @@ msgstr ""
 msgid "Confirm"
 msgstr ""
 
-#: libgnomeui/gnome-spell.c:246 libgnomeui/gnome-stock.c:770
+#: libgnomeui/gnome-spell.c:246 libgnomeui/gnome-stock.c:767
 msgid "OK"
 msgstr ""
 
-#: libgnomeui/gnome-spell.c:253 libgnomeui/gnome-stock.c:772
+#: libgnomeui/gnome-spell.c:253 libgnomeui/gnome-stock.c:769
 msgid "Cancel"
 msgstr "キャンセル"
 
@@ -864,51 +869,51 @@ msgstr ""
 msgid "Configure"
 msgstr "ツールバーの設定"
 
-#: libgnomeui/gnome-stock.c:771
+#: libgnomeui/gnome-stock.c:768
 msgid "Apply"
 msgstr "適用"
 
-#: libgnomeui/gnome-stock.c:773 libgnomeui/stock_demo.c:144
+#: libgnomeui/gnome-stock.c:770 libgnomeui/stock_demo.c:144
 msgid "Close"
 msgstr "閉じる"
 
-#: libgnomeui/gnome-stock.c:774
+#: libgnomeui/gnome-stock.c:771
 msgid "Yes"
 msgstr "はい"
 
-#: libgnomeui/gnome-stock.c:775
+#: libgnomeui/gnome-stock.c:772
 msgid "No"
 msgstr "いいえ"
 
-#: libgnomeui/gnome-stock.c:777
+#: libgnomeui/gnome-stock.c:774
 msgid "Next"
 msgstr "次"
 
-#: libgnomeui/gnome-stock.c:778
+#: libgnomeui/gnome-stock.c:775
 msgid "Prev"
 msgstr "前"
 
-#: libgnomeui/gnome-stock.c:779
+#: libgnomeui/gnome-stock.c:776
 msgid "Up"
 msgstr "上"
 
-#: libgnomeui/gnome-stock.c:780
+#: libgnomeui/gnome-stock.c:777
 msgid "Down"
 msgstr "下"
 
-#: libgnomeui/gnome-stock.c:1789
+#: libgnomeui/gnome-stock.c:1787
 msgid "Menu Accelerator Keys"
 msgstr "メニューアクセラレータキー"
 
-#: libgnomeui/gnome-stock.c:1791
+#: libgnomeui/gnome-stock.c:1789
 msgid "Global"
 msgstr "グローバル"
 
-#: libgnomeui/gnome-stock.c:1793
+#: libgnomeui/gnome-stock.c:1791
 msgid "Menu Item"
 msgstr "メニューアイテム"
 
-#: libgnomeui/gnome-stock.c:1794
+#: libgnomeui/gnome-stock.c:1792
 msgid "Accelerator"
 msgstr "アクセラレータ"
 
@@ -921,6 +926,7 @@ msgstr ""
 "以後のSIGSEGVは無視"
 
 #: libgnomeui/gnome_segv.c:79
+#, c-format
 msgid ""
 "Application \"%s\" has a bug.\n"
 "SIGSEGV received at PC %#lx in PID %d.\n"
@@ -1126,11 +1132,13 @@ msgstr ""
 "WIN_HINTSがどうやって動作するかをチェックするシンプルなテストアプリケーション"
 "。そしてgnome_winhints_* 関数のエラーをテストするためのもの。:)"
 
-#: libgnorba/gnome-name-server.c:175
+#: libgnorba/gnome-name-server.c:199
+#, c-format
 msgid "Creating '/GNOME' context %s %d"
 msgstr ""
 
-#: libgnorba/gnome-name-server.c:192
+#: libgnorba/gnome-name-server.c:216
+#, c-format
 msgid "Creating '/GNOME/Servers' context %s %d"
 msgstr ""
 
@@ -1146,7 +1154,7 @@ msgstr ""
 msgid "REPO-ID"
 msgstr ""
 
-#: libgnorba/goad.c:1123
+#: libgnorba/goad.c:1153
 msgid "(Internal use only) GOAD server ID to activate"
 msgstr ""
 
@@ -1166,191 +1174,93 @@ msgstr ""
 msgid "REPO_ID"
 msgstr ""
 
-#: libgnorba/orbitgtk.c:133
+#: libgnorba/orbitgtk.c:146
 msgid "Can not write to the cookie file"
 msgstr ""
 
-#: libgnorba/orbitgtk.c:135
+#: libgnorba/orbitgtk.c:148
 msgid "Unknown error while writing cookie file"
 msgstr ""
 
-#: libgnorba/orbitgtk.c:146
+#: libgnorba/orbitgtk.c:159
 #, fuzzy
 msgid "Could not open the cookie file"
 msgstr ""
 "tar アーカイブを開けません。\n"
 "%s"
 
-#: libgnorba/orbitgtk.c:154
+#: libgnorba/orbitgtk.c:167
 msgid "Can not read the cookie file\n"
 msgstr ""
 
-#: libgnorba/orbitgtk.c:156
+#: libgnorba/orbitgtk.c:169
 msgid "While reading the cookie file\n"
 msgstr ""
 
-#: libgnorba/orbitns.c:254
+#: libgnorba/orbitns.c:251
 msgid "Could not get name service!"
 msgstr ""
-
-#: libvfs/extfs.c:274
-msgid ""
-"Couldn't open %s archive\n"
-"%s"
-msgstr ""
-"アーカイブ %s を開けません\n"
-"%s"
-
-#: libvfs/extfs.c:306 libvfs/extfs.c:326
-msgid "Inconsistent extfs archive"
-msgstr "不完全な extfsアーカイブです"
-
-#: libvfs/fish.c:226
-msgid " Error "
-msgstr ""
-
-#: libvfs/fish.c:226
-msgid "Sorry, we can not do password authenticated connections for now."
-msgstr ""
-
-#: libvfs/ftpfs.c:461
-msgid " Could not set source routing (%s)"
-msgstr ""
-
-#: libvfs/ftpfs.c:1863 libvfs/ftpfs.c:1878
-msgid ""
-"~/.netrc file has not correct mode.\n"
-"Remove password or correct mode."
-msgstr ""
-"~/.netrc のモードが正しくありません。\n"
-"パスワードを取り除くか、モードを直して下さい。"
-
-#: libvfs/mcfs.c:155
-msgid " MCFS "
-msgstr ""
-
-#: libvfs/mcfs.c:155
-msgid " The server does not support this version "
-msgstr " サーバがこのバージョンをサポートしていません"
-
-#: libvfs/mcfs.c:171
-msgid " Warning "
-msgstr " 警告 "
-
-#: libvfs/mcfs.c:172
-msgid ""
-" The remote server is not running on a system port \n"
-" you need a password to log in, but the information may \n"
-" not be safe on the remote side.  Continue? \n"
-msgstr ""
-"リモートサーバがシステムポートで動いていません。\n"
-"ログインするためにパスワードが必要なのですが、\n"
-"リモート側では情報が安全ではありません。続けますか?\n"
-
-#: libvfs/mcfs.c:175
-msgid " Yes "
-msgstr "はい"
-
-#: libvfs/mcfs.c:175
-msgid " No "
-msgstr "いいえ"
-
-#: libvfs/mcfs.c:177
-msgid " The remote server is running on strange port. Giving up.\n"
-msgstr "リモートサーバがへんなポートで動いています。 中止します。\n"
-
-#: libvfs/mcfs.c:189
-msgid " MCFS Password required "
-msgstr " MCFS パスワードが必要です "
-
-#: libvfs/mcfs.c:203
-msgid " Invalid password "
-msgstr " パスワードが正しくありません "
-
-#: libvfs/mcfs.c:322
-msgid " Too many open connections "
-msgstr " 接続が多過ぎます "
-
-#: libvfs/tar.c:83 libvfs/tar.c:100
-msgid ""
-"Couldn't open tar archive\n"
-"%s"
-msgstr ""
-"tar アーカイブを開けません。\n"
-"%s"
-
-#: libvfs/tar.c:272
-msgid "Unexpected EOF on archive file"
-msgstr "アーカイブが途中で切れています"
-
-#: libvfs/tar.c:327 libvfs/tar.c:334
-msgid "Inconsistent tar archive"
-msgstr "不完全な tar アーカイブです"
-
-#. Error on first record
-#: libvfs/tar.c:393
-msgid ""
-"Hmm,...\n"
-"%s\n"
-"doesn't look like a tar archive."
-msgstr ""
-"えー、\n"
-"%s\n"
-"は tar アーカイブではないようです。"
-
-#: libvfs/vfs.c:1706
-msgid "Password:"
-msgstr "パスワード:"
 
 #: support/error.c:109
 msgid "Unknown system error"
 msgstr "未知のシステムエラー"
 
 #: support/getopt.c:669
+#, c-format
 msgid "%s: option `%s' is ambiguous\n"
 msgstr "%s: オプション `%s' はあいまいです\n"
 
-#. --option
 #: support/getopt.c:693
+#, c-format
 msgid "%s: option `--%s' doesn't allow an argument\n"
 msgstr "%s: オプション `--%s' には引数はありません\n"
 
 #: support/getopt.c:698
+#, c-format
 msgid "%s: option `%c%s' doesn't allow an argument\n"
 msgstr "%s: オプション `%c%s' には引数はありません\n"
 
 #: support/getopt.c:715 support/getopt.c:888
+#, c-format
 msgid "%s: option `%s' requires an argument\n"
 msgstr "%s: オプション `%s' には引数が必要です\n"
 
 #. --option
 #: support/getopt.c:744
+#, c-format
 msgid "%s: unrecognized option `--%s'\n"
 msgstr "%s: 認識されないオプションです `--%s'\n"
 
+#. +option or -option
 #: support/getopt.c:748
+#, c-format
 msgid "%s: unrecognized option `%c%s'\n"
 msgstr "%s: 認識されないオプションです '%c%s'\n"
 
 #. 1003.2 specifies the format of this message.
 #: support/getopt.c:774
+#, c-format
 msgid "%s: illegal option -- %c\n"
 msgstr "%s: 誤ったオプションです -- %c\n"
 
 #: support/getopt.c:777
+#, c-format
 msgid "%s: invalid option -- %c\n"
 msgstr "%s: 不正なオプションです -- %c\n"
 
 #. 1003.2 specifies the format of this message.
 #: support/getopt.c:807 support/getopt.c:937
+#, c-format
 msgid "%s: option requires an argument -- %c\n"
 msgstr "%s: オプションには引数が必要です -- %c\n"
 
 #: support/getopt.c:854
+#, c-format
 msgid "%s: option `-W %s' is ambiguous\n"
 msgstr "%s: オプション `-W %s' はあいまいです\n"
 
 #: support/getopt.c:872
+#, c-format
 msgid "%s: option `-W %s' doesn't allow an argument\n"
 msgstr "%s: オプション `-W %s' には引数はありません\n"
 
@@ -1405,6 +1315,84 @@ msgstr "以下のデータでユーザはいいえ/キャンセルを選択:\n"
 #: test-gnome/testgnome.c:935
 msgid "Weird number in reply callback"
 msgstr "リプライコールバックに変な番号"
+
+#~ msgid "Easy"
+#~ msgstr "初級"
+
+#~ msgid ""
+#~ "Couldn't open %s archive\n"
+#~ "%s"
+#~ msgstr ""
+#~ "アーカイブ %s を開けません\n"
+#~ "%s"
+
+#~ msgid "Inconsistent extfs archive"
+#~ msgstr "不完全な extfsアーカイブです"
+
+#~ msgid ""
+#~ "~/.netrc file has not correct mode.\n"
+#~ "Remove password or correct mode."
+#~ msgstr ""
+#~ "~/.netrc のモードが正しくありません。\n"
+#~ "パスワードを取り除くか、モードを直して下さい。"
+
+#~ msgid " The server does not support this version "
+#~ msgstr " サーバがこのバージョンをサポートしていません"
+
+#~ msgid " Warning "
+#~ msgstr " 警告 "
+
+#~ msgid ""
+#~ " The remote server is not running on a system port \n"
+#~ " you need a password to log in, but the information may \n"
+#~ " not be safe on the remote side.  Continue? \n"
+#~ msgstr ""
+#~ "リモートサーバがシステムポートで動いていません。\n"
+#~ "ログインするためにパスワードが必要なのですが、\n"
+#~ "リモート側では情報が安全ではありません。続けますか?\n"
+
+#~ msgid " Yes "
+#~ msgstr "はい"
+
+#~ msgid " No "
+#~ msgstr "いいえ"
+
+#~ msgid " The remote server is running on strange port. Giving up.\n"
+#~ msgstr "リモートサーバがへんなポートで動いています。 中止します。\n"
+
+#~ msgid " MCFS Password required "
+#~ msgstr " MCFS パスワードが必要です "
+
+#~ msgid " Invalid password "
+#~ msgstr " パスワードが正しくありません "
+
+#~ msgid " Too many open connections "
+#~ msgstr " 接続が多過ぎます "
+
+#~ msgid ""
+#~ "Couldn't open tar archive\n"
+#~ "%s"
+#~ msgstr ""
+#~ "tar アーカイブを開けません。\n"
+#~ "%s"
+
+#~ msgid "Unexpected EOF on archive file"
+#~ msgstr "アーカイブが途中で切れています"
+
+#~ msgid "Inconsistent tar archive"
+#~ msgstr "不完全な tar アーカイブです"
+
+#~ msgid ""
+#~ "Hmm,...\n"
+#~ "%s\n"
+#~ "doesn't look like a tar archive."
+#~ msgstr ""
+#~ "えー、\n"
+#~ "%s\n"
+#~ "は tar アーカイブではないようです。"
+
+#~ msgid "Password:"
+#~ msgstr "パスワード:"
 
 #~ msgid "Discard session"
 #~ msgstr "セッションを破棄する"

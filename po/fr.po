@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-libs VERSION\n"
-"POT-Creation-Date: 1998-12-29 13:34+0100\n"
+"POT-Creation-Date: 1999-01-12 18:43-0600\n"
 "Last-Translator: Vincent Renardias <vincent@ldsol.com>\n"
 "Language-Team: Vincent Renardias <vincent@ldsol.com>\n"
 "MIME-Version: 1.0\n"
@@ -25,6 +25,7 @@ msgstr "Hello GNOME\n"
 msgid "The Hello World Gnomified"
 msgstr "Hello World Gnomifié"
 
+#. copyright notice
 #: gnome-hello/gnome-hello-2-i18n.c:61
 #: gnome-hello/gnome-hello-3-parse-args.c:61
 msgid "(C) 1998 the Free Software Foundation"
@@ -60,7 +61,7 @@ msgstr "Fichier"
 
 #: gnome-hello/gnome-hello-2-i18n.c:85
 #: gnome-hello/gnome-hello-3-parse-args.c:85 gnome-hello/gnome-hello-4-SM.c:78
-#: gnome-hello/gnome-hello-7-mdi.c:484 libgnomeui/gnome-stock.c:776
+#: gnome-hello/gnome-hello-7-mdi.c:484 libgnomeui/gnome-stock.c:773
 #: libgnomeui/stock_demo.c:290
 msgid "Help"
 msgstr "Aide"
@@ -163,6 +164,7 @@ msgid "<control>A"
 msgstr "<control>A"
 
 #: gnome-hello/gnome-hello.c:208
+#, c-format
 msgid ""
 "%s: A gnomified 'Hello World' program\n"
 "\n"
@@ -181,6 +183,7 @@ msgstr ""
 "\t--version\taffiche le numéro de version et termine le programme\n"
 
 #: gnome-hello/gnome-hello.c:217
+#, c-format
 msgid "Gnome Hello %s.\n"
 msgstr "Gnome Hello %s.\n"
 
@@ -209,7 +212,8 @@ msgstr "Insérer"
 msgid "Set config entry"
 msgstr ""
 
-#: libgnome/gnome-popt.c:75
+#: libgnome/gnome-popt.c:92
+#, c-format
 msgid ""
 "Error on option %s: %s.\n"
 "Run '%s --help' to see a full list of available command line options.\n"
@@ -218,23 +222,23 @@ msgstr ""
 "Utilisez '%s --help' pour avoir la liste compléte des options de la ligne de "
 "commande.\n"
 
-#: libgnome/gnomelib-init.c:113
+#: libgnome/gnomelib-init.c:114
 msgid "Disable sound server usage"
 msgstr ""
 
-#: libgnome/gnomelib-init.c:115
+#: libgnome/gnomelib-init.c:116
 msgid "Enable sound server usage"
 msgstr ""
 
-#: libgnome/gnomelib-init.c:117
+#: libgnome/gnomelib-init.c:118
 msgid "Host:port on which the sound server to use is running"
 msgstr ""
 
-#: libgnome/gnomelib-init.c:118
+#: libgnome/gnomelib-init.c:119
 msgid "HOSTNAME:PORT"
 msgstr ""
 
-#: libgnome/gnomelib-init.c:126
+#: libgnome/gnomelib-init.c:127
 msgid "GNOME Options"
 msgstr ""
 
@@ -464,32 +468,32 @@ msgstr "="
 msgid "INV"
 msgstr "INV"
 
-#: libgnomeui/gnome-client.c:750
+#: libgnomeui/gnome-client.c:757
 msgid "Specify session management ID"
 msgstr "Spécifiez l'ID de gestion de session"
 
-#: libgnomeui/gnome-client.c:750 libgnorba/goad-browser.c:23
+#: libgnomeui/gnome-client.c:757 libgnorba/goad-browser.c:23
 msgid "ID"
 msgstr "ID"
 
-#: libgnomeui/gnome-client.c:752
+#: libgnomeui/gnome-client.c:759
 msgid "Specify prefix of saved configuration"
 msgstr "Spécifiez le préfixe pour la configuration sauvegardée"
 
-#: libgnomeui/gnome-client.c:752
+#: libgnomeui/gnome-client.c:759
 msgid "PREFIX"
 msgstr "PREFIX"
 
-#: libgnomeui/gnome-client.c:754
+#: libgnomeui/gnome-client.c:761
 msgid "Disable connection to session manager"
 msgstr "Désactive la connexion avec le gestionnaire de session"
 
 #. Register commandline options.
-#: libgnomeui/gnome-client.c:875
+#: libgnomeui/gnome-client.c:881
 msgid "Session management options"
 msgstr "Options de la gestion de session"
 
-#: libgnomeui/gnome-client.c:2133
+#: libgnomeui/gnome-client.c:2192
 msgid "Cancel Logout"
 msgstr "Annuler la demande de fin de session"
 
@@ -500,7 +504,7 @@ msgstr "Choisissez une couleur"
 #. Only add the label if all the children are to be shown.  Otherwise
 #. * things look too wide; in that case just show the arrow.
 #.
-#: libgnomeui/gnome-dateedit.c:426
+#: libgnomeui/gnome-dateedit.c:430
 msgid "Calendar"
 msgstr "Calendrier"
 
@@ -537,8 +541,8 @@ msgid "Documentation:"
 msgstr "Documentation:"
 
 #: libgnomeui/gnome-dentry-edit.c:310
-msgid "Easy"
-msgstr "Facile"
+msgid "Basic"
+msgstr ""
 
 #: libgnomeui/gnome-dentry-edit.c:314
 msgid "Advanced"
@@ -558,19 +562,19 @@ msgstr "Parcourir..."
 msgid "Pick a Font"
 msgstr "Choisissez une police"
 
-#: libgnomeui/gnome-font-picker.c:542 libgnomeui/gnome-stock.c:781
+#: libgnomeui/gnome-font-picker.c:542 libgnomeui/gnome-stock.c:778
 msgid "Font"
 msgstr "Police"
 
-#: libgnomeui/gnome-icon-entry.c:87 libgnomeui/gnome-icon-entry.c:346
+#: libgnomeui/gnome-icon-entry.c:88 libgnomeui/gnome-icon-entry.c:375
 msgid "No Icon"
 msgstr "Pas d'icone"
 
-#: libgnomeui/gnome-icon-entry.c:199 libgnomeui/gnome-pixmap-entry.c:176
+#: libgnomeui/gnome-icon-entry.c:200 libgnomeui/gnome-pixmap-entry.c:177
 msgid "Can't find an hbox, using a normal file selection"
 msgstr ""
 
-#: libgnomeui/gnome-icon-entry.c:205 libgnomeui/gnome-pixmap-entry.c:182
+#: libgnomeui/gnome-icon-entry.c:206 libgnomeui/gnome-pixmap-entry.c:183
 msgid "Preview"
 msgstr "Précédent"
 
@@ -578,80 +582,80 @@ msgstr "Précédent"
 msgid "Loading Icons..."
 msgstr "Chargement des icones..."
 
-#: libgnomeui/gnome-init.c:176
+#: libgnomeui/gnome-init.c:130
 msgid "Gdk debugging flags to set"
 msgstr "Option de débogage de Gdk a activer"
 
-#: libgnomeui/gnome-init.c:176 libgnomeui/gnome-init.c:178
-#: libgnomeui/gnome-init.c:198 libgnomeui/gnome-init.c:200
+#: libgnomeui/gnome-init.c:130 libgnomeui/gnome-init.c:132
+#: libgnomeui/gnome-init.c:152 libgnomeui/gnome-init.c:154
 msgid "FLAGS"
 msgstr "DRAPEAUX"
 
-#: libgnomeui/gnome-init.c:178
+#: libgnomeui/gnome-init.c:132
 msgid "Gdk debugging flags to unset"
 msgstr "Option de débogage de Gdk a désactiver"
 
-#: libgnomeui/gnome-init.c:180
+#: libgnomeui/gnome-init.c:134
 msgid "X display to use"
 msgstr "Affichage X à utiliser"
 
-#: libgnomeui/gnome-init.c:180
+#: libgnomeui/gnome-init.c:134
 msgid "DISPLAY"
 msgstr "AFFICHAGE"
 
-#: libgnomeui/gnome-init.c:182
+#: libgnomeui/gnome-init.c:136
 msgid "Make X calls synchronous"
 msgstr "Utiliser des appels X synchrones"
 
-#: libgnomeui/gnome-init.c:184
+#: libgnomeui/gnome-init.c:138
 msgid "Don't use X shared memory extension"
 msgstr "Ne pas utiliser l'entention mémoire partagée X11"
 
-#: libgnomeui/gnome-init.c:186
+#: libgnomeui/gnome-init.c:140
 msgid "Program name as used by the window manager"
 msgstr "Nom du programme tel qu'utilisé par le gestionnaire de fenêtres"
 
-#: libgnomeui/gnome-init.c:186
+#: libgnomeui/gnome-init.c:140
 msgid "NAME"
 msgstr "NOM"
 
-#: libgnomeui/gnome-init.c:188
+#: libgnomeui/gnome-init.c:142
 msgid "Program class as used by the window manager"
 msgstr "Classe du programme tel qu'utilisé par le gestionnaire de fenêtres"
 
-#: libgnomeui/gnome-init.c:188
+#: libgnomeui/gnome-init.c:142
 msgid "CLASS"
 msgstr "CLASSE"
 
-#: libgnomeui/gnome-init.c:190
+#: libgnomeui/gnome-init.c:144
 msgid "HOST"
 msgstr "HOTE"
 
-#: libgnomeui/gnome-init.c:192
+#: libgnomeui/gnome-init.c:146
 msgid "PORT"
 msgstr "PORT"
 
-#: libgnomeui/gnome-init.c:194 libgnomeui/gnome-init.c:196
+#: libgnomeui/gnome-init.c:148 libgnomeui/gnome-init.c:150
 msgid "STYLE"
 msgstr "STYLE"
 
-#: libgnomeui/gnome-init.c:198
+#: libgnomeui/gnome-init.c:152
 msgid "Gtk+ debugging flags to set"
 msgstr "Options de débogage de Gtk+ a activer"
 
-#: libgnomeui/gnome-init.c:200
+#: libgnomeui/gnome-init.c:154
 msgid "Gtk+ debugging flags to unset"
 msgstr "Options de débogage de Gtk+ a désactiver"
 
-#: libgnomeui/gnome-init.c:202
+#: libgnomeui/gnome-init.c:156
 msgid "Make all warnings fatal"
 msgstr "Rendre tous les avertissements fatals"
 
-#: libgnomeui/gnome-init.c:204
+#: libgnomeui/gnome-init.c:158
 msgid "Load an additional Gtk module"
 msgstr "Charger un module Gtk additionnel"
 
-#: libgnomeui/gnome-init.c:204
+#: libgnomeui/gnome-init.c:158
 msgid "MODULE"
 msgstr "MODULE"
 
@@ -683,7 +687,7 @@ msgstr "Calculatrice"
 msgid "Calculator..."
 msgstr "Calculatrice..."
 
-#: libgnomeui/gnome-pixmap-entry.c:79 libgnomeui/gnome-pixmap-entry.c:217
+#: libgnomeui/gnome-pixmap-entry.c:80 libgnomeui/gnome-pixmap-entry.c:253
 msgid "No Image"
 msgstr ""
 
@@ -732,6 +736,7 @@ msgid "Select dictionary"
 msgstr "Choix du dictionnaire"
 
 #: libgnomeui/gnome-spell.c:233
+#, c-format
 msgid ""
 "The word `%s'\n"
 "is not in the dictionary.\n"
@@ -744,11 +749,11 @@ msgstr ""
 msgid "Confirm"
 msgstr "Confirmer"
 
-#: libgnomeui/gnome-spell.c:246 libgnomeui/gnome-stock.c:770
+#: libgnomeui/gnome-spell.c:246 libgnomeui/gnome-stock.c:767
 msgid "OK"
 msgstr "OK"
 
-#: libgnomeui/gnome-spell.c:253 libgnomeui/gnome-stock.c:772
+#: libgnomeui/gnome-spell.c:253 libgnomeui/gnome-stock.c:769
 msgid "Cancel"
 msgstr "Annuler"
 
@@ -864,51 +869,51 @@ msgstr "Epeler"
 msgid "Configure"
 msgstr "Configurer"
 
-#: libgnomeui/gnome-stock.c:771
+#: libgnomeui/gnome-stock.c:768
 msgid "Apply"
 msgstr "Appliquer"
 
-#: libgnomeui/gnome-stock.c:773 libgnomeui/stock_demo.c:144
+#: libgnomeui/gnome-stock.c:770 libgnomeui/stock_demo.c:144
 msgid "Close"
 msgstr "Fermer"
 
-#: libgnomeui/gnome-stock.c:774
+#: libgnomeui/gnome-stock.c:771
 msgid "Yes"
 msgstr "Oui"
 
-#: libgnomeui/gnome-stock.c:775
+#: libgnomeui/gnome-stock.c:772
 msgid "No"
 msgstr "Non"
 
-#: libgnomeui/gnome-stock.c:777
+#: libgnomeui/gnome-stock.c:774
 msgid "Next"
 msgstr "Suiv"
 
-#: libgnomeui/gnome-stock.c:778
+#: libgnomeui/gnome-stock.c:775
 msgid "Prev"
 msgstr "Prec"
 
-#: libgnomeui/gnome-stock.c:779
+#: libgnomeui/gnome-stock.c:776
 msgid "Up"
 msgstr "Haut"
 
-#: libgnomeui/gnome-stock.c:780
+#: libgnomeui/gnome-stock.c:777
 msgid "Down"
 msgstr "Bas"
 
-#: libgnomeui/gnome-stock.c:1789
+#: libgnomeui/gnome-stock.c:1787
 msgid "Menu Accelerator Keys"
 msgstr "Touches Accélératrices du Menu"
 
-#: libgnomeui/gnome-stock.c:1791
+#: libgnomeui/gnome-stock.c:1789
 msgid "Global"
 msgstr "Global"
 
-#: libgnomeui/gnome-stock.c:1793
+#: libgnomeui/gnome-stock.c:1791
 msgid "Menu Item"
 msgstr "Elément de Menu"
 
-#: libgnomeui/gnome-stock.c:1794
+#: libgnomeui/gnome-stock.c:1792
 msgid "Accelerator"
 msgstr "Accélérateur"
 
@@ -923,6 +928,7 @@ msgstr ""
 # , c-format
 # , c-format
 #: libgnomeui/gnome_segv.c:79
+#, c-format
 msgid ""
 "Application \"%s\" has a bug.\n"
 "SIGSEGV received at PC %#lx in PID %d.\n"
@@ -1126,11 +1132,13 @@ msgid ""
 "gnome_win_hints_* functions for errors. :)"
 msgstr ""
 
-#: libgnorba/gnome-name-server.c:175
+#: libgnorba/gnome-name-server.c:199
+#, c-format
 msgid "Creating '/GNOME' context %s %d"
 msgstr ""
 
-#: libgnorba/gnome-name-server.c:192
+#: libgnorba/gnome-name-server.c:216
+#, c-format
 msgid "Creating '/GNOME/Servers' context %s %d"
 msgstr ""
 
@@ -1146,7 +1154,7 @@ msgstr ""
 msgid "REPO-ID"
 msgstr ""
 
-#: libgnorba/goad.c:1123
+#: libgnorba/goad.c:1153
 msgid "(Internal use only) GOAD server ID to activate"
 msgstr ""
 
@@ -1166,137 +1174,32 @@ msgstr ""
 msgid "REPO_ID"
 msgstr ""
 
-#: libgnorba/orbitgtk.c:133
+#: libgnorba/orbitgtk.c:146
 msgid "Can not write to the cookie file"
 msgstr ""
 
-#: libgnorba/orbitgtk.c:135
+#: libgnorba/orbitgtk.c:148
 msgid "Unknown error while writing cookie file"
 msgstr ""
 
-#: libgnorba/orbitgtk.c:146
+#: libgnorba/orbitgtk.c:159
 #, fuzzy
 msgid "Could not open the cookie file"
 msgstr ""
 "Impossible d'ouvrir l'archive tar\n"
 "%s"
 
-#: libgnorba/orbitgtk.c:154
+#: libgnorba/orbitgtk.c:167
 msgid "Can not read the cookie file\n"
 msgstr "Impossible de lire le fichier de cookies\n"
 
-#: libgnorba/orbitgtk.c:156
+#: libgnorba/orbitgtk.c:169
 msgid "While reading the cookie file\n"
 msgstr ""
 
-#: libgnorba/orbitns.c:254
+#: libgnorba/orbitns.c:251
 msgid "Could not get name service!"
 msgstr ""
-
-#: libvfs/extfs.c:274
-msgid ""
-"Couldn't open %s archive\n"
-"%s"
-msgstr ""
-"Impossible d'ouvrir l'archive %s\n"
-"%s"
-
-#: libvfs/extfs.c:306 libvfs/extfs.c:326
-msgid "Inconsistent extfs archive"
-msgstr "Archive extfs inconsistante"
-
-#: libvfs/fish.c:226
-#, fuzzy
-msgid " Error "
-msgstr "Erreur"
-
-#: libvfs/fish.c:226
-msgid "Sorry, we can not do password authenticated connections for now."
-msgstr ""
-
-#: libvfs/ftpfs.c:461
-msgid " Could not set source routing (%s)"
-msgstr ""
-
-#: libvfs/ftpfs.c:1863 libvfs/ftpfs.c:1878
-msgid ""
-"~/.netrc file has not correct mode.\n"
-"Remove password or correct mode."
-msgstr ""
-
-#: libvfs/mcfs.c:155
-msgid " MCFS "
-msgstr " MCFS "
-
-#: libvfs/mcfs.c:155
-msgid " The server does not support this version "
-msgstr " Le serveur ne supporte pas cette version "
-
-#: libvfs/mcfs.c:171
-msgid " Warning "
-msgstr " Avertissement "
-
-#: libvfs/mcfs.c:172
-msgid ""
-" The remote server is not running on a system port \n"
-" you need a password to log in, but the information may \n"
-" not be safe on the remote side.  Continue? \n"
-msgstr ""
-
-#: libvfs/mcfs.c:175
-msgid " Yes "
-msgstr " Oui "
-
-#: libvfs/mcfs.c:175
-msgid " No "
-msgstr " Non "
-
-#: libvfs/mcfs.c:177
-msgid " The remote server is running on strange port. Giving up.\n"
-msgstr " Le serveur distant tourne sur un port étrange. J'abandonne.\n"
-
-#: libvfs/mcfs.c:189
-msgid " MCFS Password required "
-msgstr " Mot de passe MCFS requit "
-
-#: libvfs/mcfs.c:203
-msgid " Invalid password "
-msgstr " Mot de passe invalide "
-
-#: libvfs/mcfs.c:322
-msgid " Too many open connections "
-msgstr " Trop de connexions ouvertes "
-
-#: libvfs/tar.c:83 libvfs/tar.c:100
-msgid ""
-"Couldn't open tar archive\n"
-"%s"
-msgstr ""
-"Impossible d'ouvrir l'archive tar\n"
-"%s"
-
-#: libvfs/tar.c:272
-msgid "Unexpected EOF on archive file"
-msgstr "Fin de fichier inatendue dans le fichier archive"
-
-#: libvfs/tar.c:327 libvfs/tar.c:334
-msgid "Inconsistent tar archive"
-msgstr "Archive tar inconsistante"
-
-#. Error on first record
-#: libvfs/tar.c:393
-msgid ""
-"Hmm,...\n"
-"%s\n"
-"doesn't look like a tar archive."
-msgstr ""
-"Hmm,...\n"
-"%s\n"
-"ne ressemble pas à une archive tar."
-
-#: libvfs/vfs.c:1706
-msgid "Password:"
-msgstr "Mot de passe:"
 
 #: support/error.c:109
 msgid "Unknown system error"
@@ -1305,24 +1208,27 @@ msgstr "Erreur système inconnue"
 # , c-format
 # , c-format
 #: support/getopt.c:669
+#, c-format
 msgid "%s: option `%s' is ambiguous\n"
 msgstr "%s: option `%s' ambigüe\n"
 
 # , c-format
 # , c-format
-#. --option
 #: support/getopt.c:693
+#, c-format
 msgid "%s: option `--%s' doesn't allow an argument\n"
 msgstr "%s: l'option `--%s' n'a pas d'arguments\n"
 
 # , c-format
 # , c-format
 #: support/getopt.c:698
+#, c-format
 msgid "%s: option `%c%s' doesn't allow an argument\n"
 msgstr "%s: l'option `%c%s' n'a pas d'argument\n"
 
 # , c-format
 #: support/getopt.c:715 support/getopt.c:888
+#, c-format
 msgid "%s: option `%s' requires an argument\n"
 msgstr "%s: l'option `%s' requiert un argument\n"
 
@@ -1330,12 +1236,15 @@ msgstr "%s: l'option `%s' requiert un argument\n"
 # , c-format
 #. --option
 #: support/getopt.c:744
+#, c-format
 msgid "%s: unrecognized option `--%s'\n"
 msgstr "%s: option `--%s' non reconnue\n"
 
 # , c-format
 # , c-format
+#. +option or -option
 #: support/getopt.c:748
+#, c-format
 msgid "%s: unrecognized option `%c%s'\n"
 msgstr "%s: option `%c%s' non reconnue\n"
 
@@ -1343,30 +1252,35 @@ msgstr "%s: option `%c%s' non reconnue\n"
 # , c-format
 #. 1003.2 specifies the format of this message.
 #: support/getopt.c:774
+#, c-format
 msgid "%s: illegal option -- %c\n"
 msgstr "%s: option illégale -- %c\n"
 
 # , c-format
 # , c-format
 #: support/getopt.c:777
+#, c-format
 msgid "%s: invalid option -- %c\n"
 msgstr "%s: option invalide -- %c\n"
 
 # , c-format
 #. 1003.2 specifies the format of this message.
 #: support/getopt.c:807 support/getopt.c:937
+#, c-format
 msgid "%s: option requires an argument -- %c\n"
 msgstr "%s: cette option requiert un argument -- %c\n"
 
 # , c-format
 # , c-format
 #: support/getopt.c:854
+#, c-format
 msgid "%s: option `-W %s' is ambiguous\n"
 msgstr "%s: l'option `-W %s' est ambigüe\n"
 
 # , c-format
 # , c-format
 #: support/getopt.c:872
+#, c-format
 msgid "%s: option `-W %s' doesn't allow an argument\n"
 msgstr "%s: l'option `-W %s' n'a pas d'argument\n"
 
@@ -1421,6 +1335,75 @@ msgstr ""
 #: test-gnome/testgnome.c:935
 msgid "Weird number in reply callback"
 msgstr ""
+
+#~ msgid "Easy"
+#~ msgstr "Facile"
+
+#~ msgid ""
+#~ "Couldn't open %s archive\n"
+#~ "%s"
+#~ msgstr ""
+#~ "Impossible d'ouvrir l'archive %s\n"
+#~ "%s"
+
+#~ msgid "Inconsistent extfs archive"
+#~ msgstr "Archive extfs inconsistante"
+
+#, fuzzy
+#~ msgid " Error "
+#~ msgstr "Erreur"
+
+#~ msgid " MCFS "
+#~ msgstr " MCFS "
+
+#~ msgid " The server does not support this version "
+#~ msgstr " Le serveur ne supporte pas cette version "
+
+#~ msgid " Warning "
+#~ msgstr " Avertissement "
+
+#~ msgid " Yes "
+#~ msgstr " Oui "
+
+#~ msgid " No "
+#~ msgstr " Non "
+
+#~ msgid " The remote server is running on strange port. Giving up.\n"
+#~ msgstr " Le serveur distant tourne sur un port étrange. J'abandonne.\n"
+
+#~ msgid " MCFS Password required "
+#~ msgstr " Mot de passe MCFS requit "
+
+#~ msgid " Invalid password "
+#~ msgstr " Mot de passe invalide "
+
+#~ msgid " Too many open connections "
+#~ msgstr " Trop de connexions ouvertes "
+
+#~ msgid ""
+#~ "Couldn't open tar archive\n"
+#~ "%s"
+#~ msgstr ""
+#~ "Impossible d'ouvrir l'archive tar\n"
+#~ "%s"
+
+#~ msgid "Unexpected EOF on archive file"
+#~ msgstr "Fin de fichier inatendue dans le fichier archive"
+
+#~ msgid "Inconsistent tar archive"
+#~ msgstr "Archive tar inconsistante"
+
+#~ msgid ""
+#~ "Hmm,...\n"
+#~ "%s\n"
+#~ "doesn't look like a tar archive."
+#~ msgstr ""
+#~ "Hmm,...\n"
+#~ "%s\n"
+#~ "ne ressemble pas à une archive tar."
+
+#~ msgid "Password:"
+#~ msgstr "Mot de passe:"
 
 #~ msgid "Discard session"
 #~ msgstr "Ne pas sauver la session"
