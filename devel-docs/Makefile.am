@@ -3,7 +3,10 @@ SUBDIRS = ui-guide templates
 htmldir = $(prefix)/html
 html_DATA = gnome-dev-info.html
 
-gnome-dev-info.html: gnome-dev-info.sgml libgnomeui.sgml libgnome.sgml
+gnome-dev-info.html: gnome-dev-info/book1.html
+	-cp gnome-dev-info/book1.html gnome-dev-info.html
+
+gnome-dev-info/book1.html: gnome-dev-info.sgml libgnomeui.sgml libgnome.sgml
 	-db2html gnome-dev-info.sgml > /dev/null
 
 libgnomeui.sgml:
@@ -61,3 +64,7 @@ EXTRA_DIST = \
 
 docdir   = $(prefix)/doc
 doc_DATA = $(TEXT_FILES)
+
+dist-hook:
+	tar cvf - gnome-dev-info | (cd $(distdir); tar xf -)
+

@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: GNOME-libraries 0.99.3\n"
-"POT-Creation-Date: 1999-01-21 00:56+0100\n"
+"POT-Creation-Date: 1999-01-31 16:27-0600\n"
 "PO-Revision-Date: 1999-01-16 03:20+0900\n"
 "Last-Translator: Changwoo Ryu <cwryu@adam.kaist.ac.kr>\n"
 "Language-Team: Korean <ko@li.org>\n"
@@ -211,7 +211,7 @@ msgstr "쓰기"
 msgid "Set config entry"
 msgstr "컨피그 항목의 값 쓰기"
 
-#: libgnome/gnome-popt.c:92
+#: libgnome/gnome-popt.c:90
 #, c-format
 msgid ""
 "Error on option %s: %s.\n"
@@ -220,23 +220,23 @@ msgstr ""
 "option %s에 오류: %s.\n"
 "가능한 모든 명령행 옵션을 보려면 '%s --help'을 실행하십시오.\n"
 
-#: libgnome/gnomelib-init.c:115
+#: libgnome/gnomelib-init.c:117
 msgid "Disable sound server usage"
 msgstr "사운드 서버 사용하지 않음"
 
-#: libgnome/gnomelib-init.c:117
+#: libgnome/gnomelib-init.c:119
 msgid "Enable sound server usage"
 msgstr "사운드 서버 사용함"
 
-#: libgnome/gnomelib-init.c:119
+#: libgnome/gnomelib-init.c:121
 msgid "Host:port on which the sound server to use is running"
 msgstr "사용할 사운드 서버가 실행중인 호스트:포트"
 
-#: libgnome/gnomelib-init.c:120
+#: libgnome/gnomelib-init.c:122
 msgid "HOSTNAME:PORT"
 msgstr "호스트이름:포트"
 
-#: libgnome/gnomelib-init.c:128
+#: libgnome/gnomelib-init.c:130
 msgid "GNOME Options"
 msgstr "GNOME 옵션"
 
@@ -257,75 +257,142 @@ msgstr "만든이: "
 msgid "About"
 msgstr "이 프로그램은"
 
+#: libgnomeui/gnome-app-helper.c:77
+#, fuzzy
+msgid "_File"
+msgstr "File"
+
+#: libgnomeui/gnome-app-helper.c:78
+#, fuzzy
+msgid "_File/"
+msgstr "File"
+
+#: libgnomeui/gnome-app-helper.c:79
+#, fuzzy
+msgid "_Edit"
+msgstr "편집"
+
+#: libgnomeui/gnome-app-helper.c:80
+#, fuzzy
+msgid "_Edit/"
+msgstr "편집"
+
+#: libgnomeui/gnome-app-helper.c:81
+#, fuzzy
+msgid "_View"
+msgstr "Add View"
+
+#: libgnomeui/gnome-app-helper.c:82
+msgid "_View/"
+msgstr ""
+
+#: libgnomeui/gnome-app-helper.c:83
+msgid "_Settings"
+msgstr ""
+
+#: libgnomeui/gnome-app-helper.c:84
+msgid "_Settings/"
+msgstr ""
+
+#: libgnomeui/gnome-app-helper.c:85
+#, fuzzy
+msgid "Fi_les"
+msgstr "File"
+
+#: libgnomeui/gnome-app-helper.c:86
+#, fuzzy
+msgid "Fi_les/"
+msgstr "File"
+
+#: libgnomeui/gnome-app-helper.c:87
+#, fuzzy
+msgid "_Windows"
+msgstr "새 창(_N)..."
+
+#: libgnomeui/gnome-app-helper.c:88
+#, fuzzy
+msgid "_Game"
+msgstr "저장(_S)"
+
+#: libgnomeui/gnome-app-helper.c:89
+#, fuzzy
+msgid "_Help"
+msgstr "Help"
+
+#: libgnomeui/gnome-app-helper.c:90
+#, fuzzy
+msgid "_Windows/"
+msgstr "새 창(_N)..."
+
 #. Open
-#: libgnomeui/gnome-app-helper.c:65
+#: libgnomeui/gnome-app-helper.c:102
 msgid "_Open..."
 msgstr "열기(_O)..."
 
-#: libgnomeui/gnome-app-helper.c:65
+#: libgnomeui/gnome-app-helper.c:102
 msgid "Open a file"
 msgstr "파일 열기"
 
 #. Save
-#: libgnomeui/gnome-app-helper.c:70
+#: libgnomeui/gnome-app-helper.c:107
 msgid "_Save"
 msgstr "저장(_S)"
 
-#: libgnomeui/gnome-app-helper.c:70
+#: libgnomeui/gnome-app-helper.c:107
 msgid "Save the current file"
 msgstr "현재 파일 저장"
 
 #. Save As
-#: libgnomeui/gnome-app-helper.c:75
+#: libgnomeui/gnome-app-helper.c:112
 msgid "Save _As..."
 msgstr "다른 이름으로 저장(_A)..."
 
-#: libgnomeui/gnome-app-helper.c:76
+#: libgnomeui/gnome-app-helper.c:113
 msgid "Save the current file with a different name"
 msgstr "현재 파일을 다른 이름으로 저장하기"
 
 #. Revert
-#: libgnomeui/gnome-app-helper.c:81
+#: libgnomeui/gnome-app-helper.c:118
 msgid "_Revert"
 msgstr "되돌아가기(_R)"
 
-#: libgnomeui/gnome-app-helper.c:82
+#: libgnomeui/gnome-app-helper.c:119
 msgid "Revert to a saved version of the file"
 msgstr "저장된 파일의 상태로 되돌아가기"
 
 #. Print
-#: libgnomeui/gnome-app-helper.c:87
+#: libgnomeui/gnome-app-helper.c:124
 msgid "_Print"
 msgstr "인쇄(_P)..."
 
-#: libgnomeui/gnome-app-helper.c:87
+#: libgnomeui/gnome-app-helper.c:124
 msgid "Print the current file"
 msgstr "현재 파일 인쇄하기"
 
 #. Print Setup
-#: libgnomeui/gnome-app-helper.c:92
+#: libgnomeui/gnome-app-helper.c:129
 msgid "Print S_etup..."
 msgstr "인쇄 설정(_E)..."
 
-#: libgnomeui/gnome-app-helper.c:93
+#: libgnomeui/gnome-app-helper.c:130
 msgid "Setup the page settings for your current printer"
 msgstr "현재 프린터의 페이지 설정을 맞추기"
 
 #. Close
-#: libgnomeui/gnome-app-helper.c:98
+#: libgnomeui/gnome-app-helper.c:135
 msgid "_Close"
 msgstr "닫기(_C)"
 
-#: libgnomeui/gnome-app-helper.c:98
+#: libgnomeui/gnome-app-helper.c:135
 msgid "Close the current file"
 msgstr "현재 파일을 닫을 수 없습니다"
 
 #. Exit
-#: libgnomeui/gnome-app-helper.c:103
+#: libgnomeui/gnome-app-helper.c:140
 msgid "E_xit"
 msgstr "종료(_X)"
 
-#: libgnomeui/gnome-app-helper.c:103
+#: libgnomeui/gnome-app-helper.c:140
 msgid "Exit the program"
 msgstr "프로그램 종료하기"
 
@@ -333,93 +400,93 @@ msgstr "프로그램 종료하기"
 #. * The "Edit" menu
 #.
 #. Cut
-#: libgnomeui/gnome-app-helper.c:111
+#: libgnomeui/gnome-app-helper.c:148
 msgid "C_ut"
 msgstr "자르기(_C)"
 
-#: libgnomeui/gnome-app-helper.c:111
+#: libgnomeui/gnome-app-helper.c:148
 msgid "Cut the selection"
 msgstr "선택된 부분 자르기"
 
 #. 10
 #. Copy
-#: libgnomeui/gnome-app-helper.c:117 libgnomeui/gnome-popup-help.c:59
+#: libgnomeui/gnome-app-helper.c:154 libgnomeui/gnome-popup-help.c:59
 msgid "_Copy"
 msgstr "복사(_C)"
 
-#: libgnomeui/gnome-app-helper.c:117
+#: libgnomeui/gnome-app-helper.c:154
 msgid "Copy the selection"
 msgstr "선택된 부분 복사"
 
 #. Paste
-#: libgnomeui/gnome-app-helper.c:122 libgnomeui/gnome-popup-help.c:61
+#: libgnomeui/gnome-app-helper.c:159 libgnomeui/gnome-popup-help.c:61
 msgid "_Paste"
 msgstr "붙이기(_P)"
 
-#: libgnomeui/gnome-app-helper.c:122
+#: libgnomeui/gnome-app-helper.c:159
 msgid "Paste the clipboard"
 msgstr "클립보드를 붙이기"
 
 #. Clear
-#: libgnomeui/gnome-app-helper.c:127
+#: libgnomeui/gnome-app-helper.c:164
 msgid "C_lear"
 msgstr "지우기(_L)"
 
-#: libgnomeui/gnome-app-helper.c:127
+#: libgnomeui/gnome-app-helper.c:164
 msgid "Clear the selection"
 msgstr "선택된 부분 지우기"
 
 #. Undo
-#: libgnomeui/gnome-app-helper.c:132
+#: libgnomeui/gnome-app-helper.c:169
 msgid "_Undo"
 msgstr "실행 취소(_U)"
 
-#: libgnomeui/gnome-app-helper.c:132
+#: libgnomeui/gnome-app-helper.c:169
 msgid "Undo the last action"
 msgstr "마지막 실행 취소하기"
 
 #. Redo
-#: libgnomeui/gnome-app-helper.c:137
+#: libgnomeui/gnome-app-helper.c:174
 msgid "_Redo"
 msgstr "다시 실행(_R)"
 
-#: libgnomeui/gnome-app-helper.c:137
+#: libgnomeui/gnome-app-helper.c:174
 msgid "Redo the undone action"
 msgstr "실행 취소한 실행을 다시 실행하기"
 
 #. Find
-#: libgnomeui/gnome-app-helper.c:142
+#: libgnomeui/gnome-app-helper.c:179
 msgid "_Find..."
 msgstr "찾기(_F)..."
 
-#: libgnomeui/gnome-app-helper.c:142
+#: libgnomeui/gnome-app-helper.c:179
 msgid "Search for a string"
 msgstr "문자열 찾기"
 
 #. Find Again
-#: libgnomeui/gnome-app-helper.c:147
+#: libgnomeui/gnome-app-helper.c:184
 msgid "Find _Again"
 msgstr "다시 찾기(_A)"
 
-#: libgnomeui/gnome-app-helper.c:148
+#: libgnomeui/gnome-app-helper.c:185
 msgid "Search again for the same string"
 msgstr "같은 문자열을 다시 찾기"
 
 #. Replace
-#: libgnomeui/gnome-app-helper.c:153
+#: libgnomeui/gnome-app-helper.c:190
 msgid "_Replace..."
 msgstr "치환(_R)"
 
-#: libgnomeui/gnome-app-helper.c:153
+#: libgnomeui/gnome-app-helper.c:190
 msgid "Replace a string"
 msgstr "문자열 치환"
 
 #. Properties
-#: libgnomeui/gnome-app-helper.c:158
+#: libgnomeui/gnome-app-helper.c:195
 msgid "_Properties..."
 msgstr "속성(_P)..."
 
-#: libgnomeui/gnome-app-helper.c:159
+#: libgnomeui/gnome-app-helper.c:196
 msgid "Modify the file's properties"
 msgstr "파일의 속성을 변경하기"
 
@@ -427,11 +494,11 @@ msgstr "파일의 속성을 변경하기"
 #. * The Settings menu
 #.
 #. Settings
-#: libgnomeui/gnome-app-helper.c:167
+#: libgnomeui/gnome-app-helper.c:204
 msgid "_Preferences..."
 msgstr "선택사항(_P)..."
 
-#: libgnomeui/gnome-app-helper.c:168
+#: libgnomeui/gnome-app-helper.c:205
 msgid "Configure the application"
 msgstr "프로그램 설정하기"
 
@@ -440,106 +507,106 @@ msgstr "프로그램 설정하기"
 #. * And the "Help" menu
 #.
 #. About
-#: libgnomeui/gnome-app-helper.c:177
+#: libgnomeui/gnome-app-helper.c:214
 msgid "_About..."
 msgstr "이 프로그램은(_A)..."
 
-#: libgnomeui/gnome-app-helper.c:178
+#: libgnomeui/gnome-app-helper.c:215
 msgid "About this application"
 msgstr "이 프로그램에 대하여"
 
-#: libgnomeui/gnome-app-helper.c:181
+#: libgnomeui/gnome-app-helper.c:218
 msgid "_Select All"
 msgstr "모두 선택(_S)"
 
-#: libgnomeui/gnome-app-helper.c:182
+#: libgnomeui/gnome-app-helper.c:219
 msgid "Select everything"
 msgstr "모두 선택하기"
 
 #.
 #. * Window menu
 #.
-#: libgnomeui/gnome-app-helper.c:190
+#: libgnomeui/gnome-app-helper.c:227
 msgid "_New Window..."
 msgstr "새 창(_N)..."
 
-#: libgnomeui/gnome-app-helper.c:191
+#: libgnomeui/gnome-app-helper.c:228
 msgid "Create a new window"
 msgstr "새로운 창 만들기"
 
-#: libgnomeui/gnome-app-helper.c:195
+#: libgnomeui/gnome-app-helper.c:232
 msgid "_Close Window..."
 msgstr "창 닫기(_C)..."
 
-#: libgnomeui/gnome-app-helper.c:196
+#: libgnomeui/gnome-app-helper.c:233
 msgid "Close the current window"
 msgstr "현재 창 닫기"
 
 #.
 #. * The "Game" menu
 #.
-#: libgnomeui/gnome-app-helper.c:204
+#: libgnomeui/gnome-app-helper.c:241
 msgid "_New game"
 msgstr "새 게임(_N)"
 
-#: libgnomeui/gnome-app-helper.c:205
+#: libgnomeui/gnome-app-helper.c:242
 msgid "Start a new game"
 msgstr "새로운 게임 시작"
 
-#: libgnomeui/gnome-app-helper.c:209
+#: libgnomeui/gnome-app-helper.c:246
 msgid "_Pause game"
 msgstr "게임 일시정지(_P)"
 
-#: libgnomeui/gnome-app-helper.c:210
+#: libgnomeui/gnome-app-helper.c:247
 msgid "Pause the game"
 msgstr "게임을 일시 정지하기"
 
-#: libgnomeui/gnome-app-helper.c:214
+#: libgnomeui/gnome-app-helper.c:251
 msgid "_Restart game"
 msgstr "게임 다시 시작(_R)"
 
-#: libgnomeui/gnome-app-helper.c:215
+#: libgnomeui/gnome-app-helper.c:252
 msgid "Restart the game"
 msgstr "게임을 다시 시작하기"
 
-#: libgnomeui/gnome-app-helper.c:219
+#: libgnomeui/gnome-app-helper.c:256
 msgid "_Undo move"
 msgstr "움직임 실행 취소"
 
-#: libgnomeui/gnome-app-helper.c:220
+#: libgnomeui/gnome-app-helper.c:257
 msgid "Undo the last move"
 msgstr "마지막 움직임 실행 취소"
 
-#: libgnomeui/gnome-app-helper.c:224
+#: libgnomeui/gnome-app-helper.c:261
 msgid "_Redo move"
 msgstr "움직임 다시 실행"
 
-#: libgnomeui/gnome-app-helper.c:225
+#: libgnomeui/gnome-app-helper.c:262
 msgid "Redo the undone move"
 msgstr "실행 취소된 움직임 다시 실행"
 
-#: libgnomeui/gnome-app-helper.c:229
+#: libgnomeui/gnome-app-helper.c:266
 msgid "_Hint"
 msgstr "힌트(_H)"
 
-#: libgnomeui/gnome-app-helper.c:230
+#: libgnomeui/gnome-app-helper.c:267
 msgid "Get a hint for your next move"
 msgstr "다음 움직임에 대한 힌트 보기"
 
 #. 30
-#: libgnomeui/gnome-app-helper.c:235
+#: libgnomeui/gnome-app-helper.c:272
 msgid "_Scores..."
 msgstr "점수(_S)..."
 
-#: libgnomeui/gnome-app-helper.c:236
+#: libgnomeui/gnome-app-helper.c:273
 msgid "View the scores"
 msgstr "점수 보기"
 
-#: libgnomeui/gnome-app-helper.c:240
+#: libgnomeui/gnome-app-helper.c:277
 msgid "_End game"
 msgstr "게임 끝(_E)"
 
-#: libgnomeui/gnome-app-helper.c:241
+#: libgnomeui/gnome-app-helper.c:278
 msgid "End the current game"
 msgstr "현재 게임 끝내기"
 
@@ -752,32 +819,32 @@ msgstr "="
 msgid "INV"
 msgstr "INV"
 
-#: libgnomeui/gnome-client.c:792
+#: libgnomeui/gnome-client.c:802
 msgid "Specify session management ID"
 msgstr "세션 관리 id 지정"
 
-#: libgnomeui/gnome-client.c:792 libgnorba/goad-browser.c:27
+#: libgnomeui/gnome-client.c:802 libgnorba/goad-browser.c:27
 msgid "ID"
 msgstr "ID"
 
-#: libgnomeui/gnome-client.c:794
+#: libgnomeui/gnome-client.c:804
 msgid "Specify prefix of saved configuration"
 msgstr "이미 저장된 설정의 앞부분을 지정"
 
-#: libgnomeui/gnome-client.c:794
+#: libgnomeui/gnome-client.c:804
 msgid "PREFIX"
 msgstr "PREFIX"
 
-#: libgnomeui/gnome-client.c:796
+#: libgnomeui/gnome-client.c:806
 msgid "Disable connection to session manager"
 msgstr "세션 관리자에 연결하지 않음"
 
 #. Register commandline options.
-#: libgnomeui/gnome-client.c:922
+#: libgnomeui/gnome-client.c:932
 msgid "Session management options"
 msgstr "세션 관리 선택사항"
 
-#: libgnomeui/gnome-client.c:2223
+#: libgnomeui/gnome-client.c:2244
 msgid "Cancel Logout"
 msgstr "로그아웃 취소"
 
@@ -832,13 +899,13 @@ msgstr "기본"
 msgid "Advanced"
 msgstr "자세히"
 
-#: libgnomeui/gnome-file-entry.c:144
+#: libgnomeui/gnome-file-entry.c:146
 msgid "Select file"
 msgstr "파일 선택"
 
 #. browse button ...
-#: libgnomeui/gnome-file-entry.c:242 libgnomeui/gnome-spell.c:607
-#: libgnomeui/gnome-spell.c:624 libgnomeui/gnome-spell.c:641
+#: libgnomeui/gnome-file-entry.c:274 libgnomeui/gnome-spell.c:617
+#: libgnomeui/gnome-spell.c:634 libgnomeui/gnome-spell.c:651
 msgid "Browse..."
 msgstr "찾아보기..."
 
@@ -850,15 +917,15 @@ msgstr "글꼴 선택"
 msgid "Font"
 msgstr "글꼴"
 
-#: libgnomeui/gnome-icon-entry.c:88 libgnomeui/gnome-icon-entry.c:375
+#: libgnomeui/gnome-icon-entry.c:88 libgnomeui/gnome-icon-entry.c:388
 msgid "No Icon"
 msgstr "아이콘 없음"
 
-#: libgnomeui/gnome-icon-entry.c:200 libgnomeui/gnome-pixmap-entry.c:177
+#: libgnomeui/gnome-icon-entry.c:200 libgnomeui/gnome-pixmap-entry.c:166
 msgid "Can't find an hbox, using a normal file selection"
 msgstr "hbox를 찾을 수 없음, 보통 파일 선택을 사용함"
 
-#: libgnomeui/gnome-icon-entry.c:206 libgnomeui/gnome-pixmap-entry.c:183
+#: libgnomeui/gnome-icon-entry.c:206 libgnomeui/gnome-pixmap-entry.c:172
 msgid "Preview"
 msgstr "미리 보기"
 
@@ -866,80 +933,80 @@ msgstr "미리 보기"
 msgid "Loading Icons..."
 msgstr "아이콘 읽어오기..."
 
-#: libgnomeui/gnome-init.c:131
+#: libgnomeui/gnome-init.c:145
 msgid "Gdk debugging flags to set"
 msgstr "Gdk 디버깅 플래그를 set"
 
-#: libgnomeui/gnome-init.c:131 libgnomeui/gnome-init.c:133
-#: libgnomeui/gnome-init.c:153 libgnomeui/gnome-init.c:155
+#: libgnomeui/gnome-init.c:145 libgnomeui/gnome-init.c:147
+#: libgnomeui/gnome-init.c:167 libgnomeui/gnome-init.c:169
 msgid "FLAGS"
 msgstr "FLAGS"
 
-#: libgnomeui/gnome-init.c:133
+#: libgnomeui/gnome-init.c:147
 msgid "Gdk debugging flags to unset"
 msgstr "Gdk 디버깅 플래그를 unset"
 
-#: libgnomeui/gnome-init.c:135
+#: libgnomeui/gnome-init.c:149
 msgid "X display to use"
 msgstr "사용할 X display"
 
-#: libgnomeui/gnome-init.c:135
+#: libgnomeui/gnome-init.c:149
 msgid "DISPLAY"
 msgstr "DISPLAY"
 
-#: libgnomeui/gnome-init.c:137
+#: libgnomeui/gnome-init.c:151
 msgid "Make X calls synchronous"
 msgstr "X call 동기화"
 
-#: libgnomeui/gnome-init.c:139
+#: libgnomeui/gnome-init.c:153
 msgid "Don't use X shared memory extension"
 msgstr "X 공유 기억장치 확장 기능을 사용하지 않음"
 
-#: libgnomeui/gnome-init.c:141
+#: libgnomeui/gnome-init.c:155
 msgid "Program name as used by the window manager"
 msgstr "윈도우 관리자가 사용할 프로그램 이름"
 
-#: libgnomeui/gnome-init.c:141
+#: libgnomeui/gnome-init.c:155
 msgid "NAME"
 msgstr "NAME"
 
-#: libgnomeui/gnome-init.c:143
+#: libgnomeui/gnome-init.c:157
 msgid "Program class as used by the window manager"
 msgstr "윈도우 관리자가 사용할 프로그램 클래스"
 
-#: libgnomeui/gnome-init.c:143
+#: libgnomeui/gnome-init.c:157
 msgid "CLASS"
 msgstr "CLASS"
 
-#: libgnomeui/gnome-init.c:145
+#: libgnomeui/gnome-init.c:159
 msgid "HOST"
 msgstr "HOST"
 
-#: libgnomeui/gnome-init.c:147
+#: libgnomeui/gnome-init.c:161
 msgid "PORT"
 msgstr "PORT"
 
-#: libgnomeui/gnome-init.c:149 libgnomeui/gnome-init.c:151
+#: libgnomeui/gnome-init.c:163 libgnomeui/gnome-init.c:165
 msgid "STYLE"
 msgstr "STYLE"
 
-#: libgnomeui/gnome-init.c:153
+#: libgnomeui/gnome-init.c:167
 msgid "Gtk+ debugging flags to set"
 msgstr "Gtk+ 디버깅 플래그를 set"
 
-#: libgnomeui/gnome-init.c:155
+#: libgnomeui/gnome-init.c:169
 msgid "Gtk+ debugging flags to unset"
 msgstr "Gtk+ 디버깅 플래그를 unset"
 
-#: libgnomeui/gnome-init.c:157
+#: libgnomeui/gnome-init.c:171
 msgid "Make all warnings fatal"
 msgstr "모든 경고를 치명적으로 생각함"
 
-#: libgnomeui/gnome-init.c:159
+#: libgnomeui/gnome-init.c:173
 msgid "Load an additional Gtk module"
 msgstr "Gtk 모듈을 추가로 읽어들임"
 
-#: libgnomeui/gnome-init.c:159
+#: libgnomeui/gnome-init.c:173
 msgid "MODULE"
 msgstr "MODULE"
 
@@ -971,7 +1038,7 @@ msgstr "계산기"
 msgid "Calculator..."
 msgstr "계산기..."
 
-#: libgnomeui/gnome-pixmap-entry.c:80 libgnomeui/gnome-pixmap-entry.c:253
+#: libgnomeui/gnome-pixmap-entry.c:78 libgnomeui/gnome-pixmap-entry.c:242
 msgid "No Image"
 msgstr "그림 없음"
 
@@ -1003,11 +1070,11 @@ msgstr "점수"
 msgid "Date"
 msgstr "날짜"
 
-#: libgnomeui/gnome-spell.c:186
+#: libgnomeui/gnome-spell.c:196
 msgid "Select dictionary"
 msgstr "사전 선택"
 
-#: libgnomeui/gnome-spell.c:233
+#: libgnomeui/gnome-spell.c:243
 #, c-format
 msgid ""
 "The word `%s'\n"
@@ -1018,31 +1085,31 @@ msgstr ""
 "사전에 없습니다.\n"
 "계속할까요?"
 
-#: libgnomeui/gnome-spell.c:237
+#: libgnomeui/gnome-spell.c:247
 msgid "Confirm"
 msgstr "확인"
 
-#: libgnomeui/gnome-spell.c:246 libgnomeui/gnome-stock.c:780
+#: libgnomeui/gnome-spell.c:256 libgnomeui/gnome-stock.c:780
 msgid "OK"
 msgstr "확인"
 
-#: libgnomeui/gnome-spell.c:253 libgnomeui/gnome-stock.c:782
+#: libgnomeui/gnome-spell.c:263 libgnomeui/gnome-stock.c:782
 msgid "Cancel"
 msgstr "취소"
 
-#: libgnomeui/gnome-spell.c:515
+#: libgnomeui/gnome-spell.c:525
 msgid "Word:"
 msgstr "단어:"
 
-#: libgnomeui/gnome-spell.c:532
+#: libgnomeui/gnome-spell.c:542
 msgid "Alternatives:"
 msgstr "후보:"
 
-#: libgnomeui/gnome-spell.c:551
+#: libgnomeui/gnome-spell.c:561
 msgid "Accept"
 msgstr "받아들임"
 
-#: libgnomeui/gnome-spell.c:556
+#: libgnomeui/gnome-spell.c:566
 msgid ""
 "Accept the word for\n"
 "this session only"
@@ -1050,11 +1117,11 @@ msgstr ""
 "이번 세션에서만\n"
 "이 단어를 받아들임"
 
-#: libgnomeui/gnome-spell.c:558
+#: libgnomeui/gnome-spell.c:568
 msgid "Skip"
 msgstr "지나치기"
 
-#: libgnomeui/gnome-spell.c:563
+#: libgnomeui/gnome-spell.c:573
 msgid ""
 "Ignore this word\n"
 "this time only"
@@ -1062,19 +1129,19 @@ msgstr ""
 "이번 세션에서만\n"
 "이 단어를 무시함"
 
-#: libgnomeui/gnome-spell.c:565
+#: libgnomeui/gnome-spell.c:575
 msgid "Replace"
 msgstr "치환"
 
-#: libgnomeui/gnome-spell.c:570
+#: libgnomeui/gnome-spell.c:580
 msgid "Replace the word"
 msgstr "이 단어 치환"
 
-#: libgnomeui/gnome-spell.c:572
+#: libgnomeui/gnome-spell.c:582
 msgid "Insert"
 msgstr "삽입"
 
-#: libgnomeui/gnome-spell.c:577
+#: libgnomeui/gnome-spell.c:587
 msgid ""
 "Insert the word\n"
 "in your personal dictionary"
@@ -1082,11 +1149,11 @@ msgstr ""
 "이 단어를\n"
 "개인용 사전에 추가"
 
-#: libgnomeui/gnome-spell.c:579
+#: libgnomeui/gnome-spell.c:589
 msgid "Insert with case"
 msgstr "대소문자 구별해서 삽입"
 
-#: libgnomeui/gnome-spell.c:585
+#: libgnomeui/gnome-spell.c:595
 msgid ""
 "Insert the word\n"
 "in your personal dictionary\n"
@@ -1098,51 +1165,51 @@ msgstr ""
 "(대소문자가 섞여 있으면\n"
 "대소문자 구별해서 추가)"
 
-#: libgnomeui/gnome-spell.c:600
+#: libgnomeui/gnome-spell.c:610
 msgid "Ispell command:"
 msgstr "Ispell 명령:"
 
-#: libgnomeui/gnome-spell.c:618
+#: libgnomeui/gnome-spell.c:628
 msgid "Main dictionary:"
 msgstr "주요 사전:"
 
-#: libgnomeui/gnome-spell.c:635
+#: libgnomeui/gnome-spell.c:645
 msgid "Personal dictionary:"
 msgstr "개인용 사전:"
 
-#: libgnomeui/gnome-spell.c:652
+#: libgnomeui/gnome-spell.c:662
 msgid "Valid chars in words:"
 msgstr "단어 내에 가능한 문자:"
 
-#: libgnomeui/gnome-spell.c:663
+#: libgnomeui/gnome-spell.c:673
 msgid "Check words longer than:"
 msgstr "다음보다 긴 단어 검사:"
 
-#: libgnomeui/gnome-spell.c:674
+#: libgnomeui/gnome-spell.c:684
 msgid "Sort by correctness"
 msgstr "맞는 정도로 정렬"
 
-#: libgnomeui/gnome-spell.c:682
+#: libgnomeui/gnome-spell.c:692
 msgid "Accept run-together words"
 msgstr "동시에 나타나는 단어들 받아들임"
 
-#: libgnomeui/gnome-spell.c:692
+#: libgnomeui/gnome-spell.c:702
 msgid "Discard accepted words on kill"
 msgstr "죽을 때 받아들인 단어 버리기"
 
-#: libgnomeui/gnome-spell.c:700
+#: libgnomeui/gnome-spell.c:710
 msgid "Enable tooltips"
 msgstr "툴팁 사용"
 
-#: libgnomeui/gnome-spell.c:714
+#: libgnomeui/gnome-spell.c:724
 msgid "Kill ispell process"
 msgstr "ispell 프로세스 죽이기"
 
-#: libgnomeui/gnome-spell.c:740
+#: libgnomeui/gnome-spell.c:750
 msgid "Spell"
 msgstr "Spell"
 
-#: libgnomeui/gnome-spell.c:747
+#: libgnomeui/gnome-spell.c:757
 msgid "Configure"
 msgstr "설정"
 
@@ -1453,12 +1520,12 @@ msgstr ""
 "Simple test app to check how the WIN_HINTS work. And to test the "
 "gnome_win_hints_* functions for errors. :)"
 
-#: libgnorba/gnome-name-server.c:199
+#: libgnorba/gnome-name-server.c:200
 #, c-format
 msgid "Creating '/GNOME' context %s %d"
 msgstr "/GNOME context %s %d 만들기"
 
-#: libgnorba/gnome-name-server.c:216
+#: libgnorba/gnome-name-server.c:217
 #, c-format
 msgid "Creating '/GNOME/Servers' context %s %d"
 msgstr "/GNOME/Servers context %s %d 만들기"
@@ -1475,7 +1542,7 @@ msgstr "활성화할 서버의 저장소 ID"
 msgid "REPO-ID"
 msgstr "저장소-ID"
 
-#: libgnorba/goad-browser.c:170
+#: libgnorba/goad-browser.c:171
 msgid ""
 "I couldn't find any installed services.  Either you don't have\n"
 "any services installed or I don't know the path to find them.\n"
