@@ -47,6 +47,7 @@ static void zvt_background_set_translate(ZvtTerm *term);
  * Utility functions
  */
 
+#if 0
 static void
 pixmap_free_atom(GdkPixmap *pp)
 {
@@ -54,6 +55,7 @@ pixmap_free_atom(GdkPixmap *pp)
   g_dataset_destroy (pp);
   g_free (pp);
 }
+#endif
 
 static GdkPixmap *
 pixmap_from_atom(GdkWindow *win, GdkAtom pmap)
@@ -94,7 +96,9 @@ pixbuf_from_atom(GdkWindow *win, GdkAtom pmap)
 				      gdk_window_get_colormap(win),
 				      0, 0, 0, 0,
 				      pwidth, pheight);
-    pixmap_free_atom(pp);
+    /* Theoretically this should not destroy the pixmap on X, otherwise
+     * we'll need another hack like pixmap_free_atom */
+    gdk_pixmap_unref(pp);
     return pb;
   }
   return NULL;

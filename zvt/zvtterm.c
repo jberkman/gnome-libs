@@ -154,8 +154,9 @@ zvt_term_get_type (void)
 	sizeof (ZvtTermClass),
 	(GtkClassInitFunc) zvt_term_class_init,
 	(GtkObjectInitFunc) zvt_term_init,
-	(GtkArgSetFunc) NULL,
-	(GtkArgGetFunc) NULL,
+	NULL,
+	NULL,
+	NULL
       };
       
       term_type = gtk_type_unique (gtk_widget_get_type (), &term_info);
@@ -181,7 +182,7 @@ zvt_term_class_init (ZvtTermClass *class)
   term_signals[CHILD_DIED] =
     gtk_signal_new ("child_died",
                     GTK_RUN_FIRST,
-                    object_class->type,
+                    GTK_CLASS_TYPE (object_class),
                     GTK_SIGNAL_OFFSET (ZvtTermClass, child_died),
                     gtk_signal_default_marshaller,
                     GTK_TYPE_NONE, 0);
@@ -189,7 +190,7 @@ zvt_term_class_init (ZvtTermClass *class)
   term_signals[TITLE_CHANGED] =
     gtk_signal_new ("title_changed",
                     GTK_RUN_FIRST,
-                    object_class->type,
+                    GTK_CLASS_TYPE (object_class),
                     GTK_SIGNAL_OFFSET (ZvtTermClass, child_died),
                     gtk_marshal_NONE__INT_POINTER,
                     GTK_TYPE_NONE, 2,
@@ -198,7 +199,7 @@ zvt_term_class_init (ZvtTermClass *class)
   term_signals[GOT_OUTPUT] =
       gtk_signal_new ("got_output",
 		      GTK_RUN_FIRST,
-		      object_class->type,
+		      GTK_CLASS_TYPE (object_class),
 		      GTK_SIGNAL_OFFSET (ZvtTermClass, child_died),
 		      gtk_marshal_NONE__POINTER_INT,
 		      GTK_TYPE_NONE, 2,
@@ -468,8 +469,8 @@ term_force_size(ZvtTerm *term)
       app = gtk_widget_get_toplevel(GTK_WIDGET(term));
       g_assert (app != NULL);
 
-      hints.base_width = (GTK_WIDGET (term)->style->klass->xthickness * 2) + PADDING;
-      hints.base_height =  (GTK_WIDGET (term)->style->klass->ythickness * 2);
+      hints.base_width = (GTK_WIDGET (term)->style->xthickness * 2) + PADDING;
+      hints.base_height =  (GTK_WIDGET (term)->style->ythickness * 2);
       
       hints.width_inc = term->charwidth;
       hints.height_inc = term->charheight;
@@ -749,8 +750,8 @@ zvt_term_realize (GtkWidget *widget)
 
   attributes.x = widget->allocation.x;
   attributes.y = widget->allocation.y;
-  attributes.width = widget->allocation.width - (2 * widget->style->klass->xthickness) - PADDING;
-  attributes.height = widget->allocation.height - (2 * widget->style->klass->ythickness);
+  attributes.width = widget->allocation.width - (2 * widget->style->xthickness) - PADDING;
+  attributes.height = widget->allocation.height - (2 * widget->style->ythickness);
   attributes.wclass = GDK_INPUT_OUTPUT;
   attributes.window_type = GDK_WINDOW_CHILD;
   attributes.event_mask = gtk_widget_get_events (widget) |
@@ -1016,9 +1017,9 @@ zvt_term_size_request (GtkWidget      *widget,
     grid_height = 2;
 
   requisition->width = (grid_width * term->charwidth) + 
-    (widget->style->klass->xthickness * 2) + PADDING;
+    (widget->style->xthickness * 2) + PADDING;
   requisition->height = (grid_height * term->charheight) + 
-    (widget->style->klass->ythickness * 2);
+    (widget->style->ythickness * 2);
 
   /* debug ouput */
   d( printf("zvt_term_size_request x=%d y=%d\n", grid_width, grid_height) );
@@ -1057,8 +1058,8 @@ zvt_term_size_allocate (GtkWidget     *widget,
 			      allocation->width,
 			      allocation->height);
 
-      term_width = allocation->width - (2 * widget->style->klass->xthickness) - PADDING;
-      term_height = allocation->height - (2 * widget->style->klass->ythickness);
+      term_width = allocation->width - (2 * widget->style->xthickness) - PADDING;
+      term_height = allocation->height - (2 * widget->style->ythickness);
 
       /* resize the virtual terminal buffer, if its size has changed, minimal size is 1x1 */
       grid_width = MAX(term_width / term->charwidth, 1);
@@ -1129,30 +1130,30 @@ zvt_term_draw (GtkWidget *widget, GdkRectangle *area)
       gdk_draw_rectangle (widget->window,
 			  term->back_gc, 1,
 			  0,
-			  widget->style->klass->ythickness,
-			  widget->style->klass->xthickness + PADDING,
-			  height - (widget->style->klass->ythickness*2));
+			  widget->style->ythickness,
+			  widget->style->xthickness + PADDING,
+			  height - (widget->style->ythickness*2));
       /* right edge */
       gdk_draw_rectangle (widget->window,
 			  term->back_gc, 1,
-			  width - widget->style->klass->xthickness,
-			  widget->style->klass->ythickness,
-			  widget->style->klass->xthickness,
-			  height - (widget->style->klass->ythickness*2));
+			  width - widget->style->xthickness,
+			  widget->style->ythickness,
+			  widget->style->xthickness,
+			  height - (widget->style->ythickness*2));
       /* top */
       gdk_draw_rectangle (widget->window,
 			  term->back_gc, 1,
 			  0,
 			  0,
 			  width,
-			  widget->style->klass->ythickness);
+			  widget->style->ythickness);
       /* bottom */
       gdk_draw_rectangle (widget->window,
 			  term->back_gc, 1,
 			  0,
-			  height - widget->style->klass->ythickness,
+			  height - widget->style->ythickness,
 			  width,
-			  widget->style->klass->ythickness);
+			  widget->style->ythickness);
       /* force a full redraw of everything else */
       fill = -1;
     } else
@@ -1188,8 +1189,8 @@ zvt_term_expose (GtkWidget      *widget,
   g_return_val_if_fail (ZVT_IS_TERM (widget), FALSE);
   g_return_val_if_fail (event != NULL, FALSE);
 
-  offx = widget->style->klass->xthickness + PADDING;
-  offy = widget->style->klass->ythickness;
+  offx = widget->style->xthickness + PADDING;
+  offy = widget->style->ythickness;
 
   d(printf("exposed!  (%d,%d) %dx%d\n",
 	   event->area.x, 
@@ -1326,7 +1327,7 @@ zvt_term_set_fonts_internal(ZvtTerm *term, GdkFont *font, GdkFont *font_bold)
     break;
   }
   case GDK_FONT_FONTSET: {
-    XFontSet fontset = (XFontSet) ((GdkFontPrivate *)font)->xfont;
+    XFontSet fontset = (XFontSet) GDK_FONT_XFONT(font);
     XFontSetExtents *extents = XExtentsOfFontSet(fontset);
     term->charwidth = extents->max_logical_extent.width;
     term->charheight = extents->max_logical_extent.height;
@@ -2981,8 +2982,8 @@ vt_cursor_state(void *user_data, int state)
         vt_draw_cursor(term->vx, FALSE);
         if (term->vx->vt.scrollbackold == 0 &&
 	    term->vx->vt.cursorx < term->vx->vt.width) {
-	  int offx = widget->style->klass->xthickness + PADDING;
-	  int offy = widget->style->klass->ythickness;
+	  int offx = widget->style->xthickness + PADDING;
+	  int offy = widget->style->ythickness;
 	  gdk_draw_rectangle (widget->window,
 			      term->fore_gc, 0,
 			      offx + term->vx->vt.cursorx *
@@ -3016,9 +3017,6 @@ vt_draw_text(void *user_data, struct vt_line *line, int row, int col, int len, i
   uint32 c;
   struct _zvtprivate *zp=0;
 
-  GdkFontPrivate *font_private;
-  GdkWindowPrivate *drawable_private;
-  GdkGCPrivate *gc_private;
   
   widget = user_data;
 
@@ -3038,8 +3036,8 @@ vt_draw_text(void *user_data, struct vt_line *line, int row, int col, int len, i
   /* rendering offsetx */
   x = col * term->charwidth;
   y = row * term->charheight + term->font->ascent;
-  offx = widget->style->klass->xthickness + PADDING;
-  offy = widget->style->klass->ythickness;
+  offx = widget->style->xthickness + PADDING;
+  offy = widget->style->ythickness;
   zp = _ZVT_PRIVATE(term);
 
   if (attr & VTATTR_BOLD)  {
@@ -3153,10 +3151,6 @@ vt_draw_text(void *user_data, struct vt_line *line, int row, int col, int len, i
   }
 #endif
 
-  font_private = (GdkFontPrivate*) f;
-  drawable_private = (GdkWindowPrivate *)widget->window;
-  gc_private = (GdkGCPrivate *)fgc;
-
   /* make sure we have the space to expand the text */
   if (zp->text_expand==0 || zp->text_expandlen<len) {
     zp->text_expand = g_realloc(zp->text_expand, len*sizeof(uint32));
@@ -3177,18 +3171,18 @@ vt_draw_text(void *user_data, struct vt_line *line, int row, int col, int len, i
     }
 
     /* render characters, with fill if we can */
-    xfont = (XFontStruct *) font_private->xfont;
-    XSetFont(drawable_private->xdisplay, gc_private->xgc, xfont->fid);
+    xfont = (XFontStruct *) GDK_FONT_XFONT(f);
+    XSetFont(GDK_WINDOW_XDISPLAY(widget->window), GDK_GC_XGC(fgc), xfont->fid);
     if (dofill) {
-      XDrawImageString(drawable_private->xdisplay, drawable_private->xwindow,
-		       gc_private->xgc, offx + x, offy + y, expand, len);
+      XDrawImageString(GDK_WINDOW_XDISPLAY(widget->window), GDK_WINDOW_XWINDOW(widget->window),
+		       GDK_GC_XGC(fgc), offx + x, offy + y, expand, len);
     } else {
-      XDrawString(drawable_private->xdisplay, drawable_private->xwindow,
-		  gc_private->xgc, offx + x, offy + y, expand, len);
+      XDrawString(GDK_WINDOW_XDISPLAY(widget->window), GDK_WINDOW_XWINDOW(widget->window),
+		  GDK_GC_XGC(fgc), offx + x, offy + y, expand, len);
     }
     if (overstrike)
-      XDrawString(drawable_private->xdisplay, drawable_private->xwindow,
-		  gc_private->xgc, offx + x + 1, offy + y, expand, len);
+      XDrawString(GDK_WINDOW_XDISPLAY(widget->window), GDK_WINDOW_XWINDOW(widget->window),
+		  GDK_GC_XGC(fgc), offx + x + 1, offy + y, expand, len);
   }
   break;
   case ZVT_FONT_2BYTE: {
@@ -3205,24 +3199,24 @@ vt_draw_text(void *user_data, struct vt_line *line, int row, int col, int len, i
     /*    printf("\n");*/
 
     /* render 2-byte characters, with fill if we can */
-    xfont = (XFontStruct *) font_private->xfont;
-    XSetFont(drawable_private->xdisplay, gc_private->xgc, xfont->fid);
+    xfont = (XFontStruct *) GDK_FONT_XFONT(f);
+    XSetFont(GDK_WINDOW_XDISPLAY(widget->window), GDK_GC_XGC(fgc), xfont->fid);
     if (dofill) {
-      XDrawImageString16(drawable_private->xdisplay, drawable_private->xwindow,
-			 gc_private->xgc, offx + x, offy + y, expand16, len);
+      XDrawImageString16(GDK_WINDOW_XDISPLAY(widget->window), GDK_WINDOW_XWINDOW(widget->window),
+			 GDK_GC_XGC(fgc), offx + x, offy + y, expand16, len);
     } else {
-      XDrawString16(drawable_private->xdisplay, drawable_private->xwindow,
-		    gc_private->xgc, offx + x, offy + y, expand16, len);
+      XDrawString16(GDK_WINDOW_XDISPLAY(widget->window), GDK_WINDOW_XWINDOW(widget->window),
+		    GDK_GC_XGC(fgc), offx + x, offy + y, expand16, len);
     }
     if (overstrike)
-      XDrawString16(drawable_private->xdisplay, drawable_private->xwindow,
-		    gc_private->xgc, offx + x + 1, offy + y, expand16, len);
+      XDrawString16(GDK_WINDOW_XDISPLAY(widget->window), GDK_WINDOW_XWINDOW(widget->window),
+		    GDK_GC_XGC(fgc), offx + x + 1, offy + y, expand16, len);
   }
   break;
   /* this is limited to 65535 characters! */
   case ZVT_FONT_FONTSET: {
     wchar_t *expandwc = zp->text_expand;
-    XFontSet fontset = (XFontSet) font_private->xfont;
+    XFontSet fontset = (XFontSet) GDK_FONT_XFONT(f);
 
     for (i=0;i<len;i++) {
       expandwc[i] = VT_ASCII(line->data[i+col]);
@@ -3230,15 +3224,15 @@ vt_draw_text(void *user_data, struct vt_line *line, int row, int col, int len, i
 
     /* render wide characters, with fill if we can */
     if (dofill) {
-      XwcDrawImageString(drawable_private->xdisplay, drawable_private->xwindow,
-			 fontset, gc_private->xgc, offx + x, offy + y, expandwc, len);
+      XwcDrawImageString(GDK_WINDOW_XDISPLAY(widget->window), GDK_WINDOW_XWINDOW(widget->window),
+			 fontset, GDK_GC_XGC(fgc), offx + x, offy + y, expandwc, len);
     } else {
-      XwcDrawString(drawable_private->xdisplay, drawable_private->xwindow,
-		    fontset, gc_private->xgc, offx + x, offy + y, expandwc, len);
+      XwcDrawString(GDK_WINDOW_XDISPLAY(widget->window), GDK_WINDOW_XWINDOW(widget->window),
+		    fontset, GDK_GC_XGC(fgc), offx + x, offy + y, expandwc, len);
     }
     if (overstrike)
-      XwcDrawString(drawable_private->xdisplay, drawable_private->xwindow,
-		    fontset, gc_private->xgc, offx + x + 1, offy + y, expandwc, len);
+      XwcDrawString(GDK_WINDOW_XDISPLAY(widget->window), GDK_WINDOW_XWINDOW(widget->window),
+		    fontset, GDK_GC_XGC(fgc), offx + x + 1, offy + y, expandwc, len);
   }
   }
 
@@ -3291,8 +3285,8 @@ vt_scroll_area(void *user_data, int firstrow, int count, int offset, int fill)
 	  count,firstrow,offset,fill));
 
   width = term->charwidth * term->vx->vt.width;
-  offx = widget->style->klass->xthickness + PADDING;
-  offy = widget->style->klass->ythickness;
+  offx = widget->style->xthickness + PADDING;
+  offy = widget->style->ythickness;
 
   /* "scroll" area */
   gdk_draw_pixmap(widget->window,

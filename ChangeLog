@@ -1,3 +1,41 @@
+Thu Jul 06 01:21:08 2000  George Lebl <jirka@5z.com>
+
+	* configure.in: raise version to 1.95.0 so that it's at least more
+	  then 1.2.  Use AM_GNOME_GETTEXT and not AM_GNOME2_GETTEXT, this
+	  seems to work but sounds wrong.  Remove the gnorba devel-docs
+	  makefile as gnorba is out anyway
+
+	* devel-docs/Makefile.am: take out gnorba dir
+
+	* libgnomeui/*.h: Add a _GET_CLASS macro to all gtk objects
+
+	* libgnomeui/*.c: For all gtk objects, fixup get_type function,	
+	  fixup all references to klass and type.  Remove the
+	  push_visual/pop_visual functions as per gtk2.0 changes file.
+	  shutdown and finalize are now in GObject. 
+
+	* libgnomeui/gnome-helpsys.c: GdkRectangle, GtkRequisition have
+	  gint as the numbers, not guint16 nor gint16
+
+	* libgnomeui/gnome-popup-help.c: Use a separate private structure
+	  instead of reuising GtkTooltipsData which was broken anyway
+
+	* libgnomeui/gnome-roo.c: finalize class calls parent handler now
+
+	* libgnomeui/gnome-winhints.c: Don't use the private structure, but
+	  use the standard macros for getting at the Xlib stuff
+
+	* libgnomeui/gnometypes.c:  try porting this to glib1.3 type stuff,
+	  appears to work, not sure if it's all correct.
+
+	* test-gnome/*.c: visual stuff, _GET_CLASS, and other fixes
+
+	* zvt/background.c: take out and shoot some hackish gdk stuff, and
+	  hope that gdk 1.3 does not kill the background pixmap now like gdk
+	  used to.
+
+	* zvt/zvtterm.c:  the regular changes for 1.3 as in libgnomeui
+
 2000-06-17  Pablo Saratxaga <pablo@mandrakesoft.com>
 
 	* configure.in,po/sp.po,po/sr.po: Added Serbian language files

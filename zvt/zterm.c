@@ -100,8 +100,8 @@ set_hints (GtkWidget *widget)
 	g_assert (app != NULL);
 
 #define PADDING 2
-	hints.base_width = (GTK_WIDGET (term)->style->klass->xthickness * 2) + PADDING;
-	hints.base_height =  (GTK_WIDGET (term)->style->klass->ythickness * 2);
+	hints.base_width = (GTK_WIDGET (term)->style->xthickness * 2) + PADDING;
+	hints.base_height =  (GTK_WIDGET (term)->style->ythickness * 2);
 
 	hints.width_inc = term->charwidth;
 	hints.height_inc = term->charheight;

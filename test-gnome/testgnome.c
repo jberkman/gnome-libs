@@ -611,7 +611,7 @@ static void
 create_message_box(void)
 {
 	GtkWidget *box;
-	char *buttons[3] = {0};
+	const char *buttons[3] = {0};
 
 	box = gnome_message_box_new("Test",GNOME_MESSAGE_BOX_INFO,
 				    GNOME_STOCK_BUTTON_OK,
