@@ -33,9 +33,9 @@ Example:
   win = XCreateSimpleWindow(disp, root_window, -200, -200, 5, 5, 0, 0, 0);
   val = win;
   XChangeProperty(disp, root_window, atom_set, XA_CARDINAL, 32, 
-                  PropModeReplace, (unsigned char *)&val, 1);
+                  PropModeReplace, (unsigned char *)&amp;val, 1);
   XChangeProperty(disp, win, atom_set, XA_CARDINAL, 32, PropModeReplace,
-		  (unsigned char *)&val, 1);
+		  (unsigned char *)&amp;val, 1);
 
 </programlisting></para>
 </sect1>
@@ -141,11 +141,11 @@ Example:
   atom_set = XInternAtom(disp, "_WIN_WORKSPACE", False);
   val = (CARD32) current_desk;
   XChangeProperty(disp, root_window, atom_set, XA_CARDINAL, 32, 
-                  PropModeReplace, (unsigned char *)&val, 1);
+                  PropModeReplace, (unsigned char *)&amp;val, 1);
   atom_set = XInternAtom(disp, "_WIN_WORKSPACE_COUNT", False);
   val = (CARD32) number_of_desks;
   XChangeProperty(disp, root_window, atom_set, XA_CARDINAL, 32, 
-                  PropModeReplace, (unsigned char *)&val, 1);
+                  PropModeReplace, (unsigned char *)&amp;val, 1);
   atom_set = XInternAtom(disp, "_WIN_WORKSPACE_NAMES", False);
   names = malloc(sizeof(char *) * number_of_desks);
   for (i = 0; i < number_of_desks; i++)
@@ -154,9 +154,9 @@ Example:
       names[i] = malloc(strlen(s) + 1);
       strcpy(names[i], s);
     }
-  if (XStringListToTextProperty(names, mode.numdesktops, &text))
+  if (XStringListToTextProperty(names, mode.numdesktops, &amp;text))
     {
-      XSetTextProperty(disp, root_window, &text, atom_set);
+      XSetTextProperty(disp, root_window, &amp;text, atom_set);
       XFree(text.value);
     }
   for (i = 0; i < number_of_desks; i++)
@@ -250,7 +250,7 @@ this property is simply the numeric for the desktop 0, being the first desktop a
   xev.message_type = XInternAtom(disp, XA_WIN_LAYER, False);
   xev.format = 32;
   xev.data.l[0] = new_layer;
-  XSendEvent(disp, root, False, SubstructureNotifyMask, (XEvent *) &xev);
+  XSendEvent(disp, root, False, SubstructureNotifyMask, (XEvent *) &amp;xev);
 
   Display             *disp;
   Window               root, client_window;
@@ -263,7 +263,7 @@ this property is simply the numeric for the desktop 0, being the first desktop a
   xev.format = 32;
   xev.data.l[0] = mask_of_members_to_change;
   xev.data.l[1] = new_members;
-  XSendEvent(disp, root, False, SubstructureNotifyMask, (XEvent *) &xev);
+  XSendEvent(disp, root, False, SubstructureNotifyMask, (XEvent *) &amp;xev);
  
   Display             *disp;
   Window               root, client_window;
@@ -284,7 +284,7 @@ this property is simply the numeric for the desktop 0, being the first desktop a
   xev.message_type = XInternAtom(disp, XA_WIN_WORKSPACE, False);
   xev.format = 32;
   xev.data.l[0] = new_desktop_number;
-  XSendEvent(disp, root, False, SubstructureNotifyMask, (XEvent *) &xev);
+  XSendEvent(disp, root, False, SubstructureNotifyMask, (XEvent *) &amp;xev);
 </programlisting>
 </para>
 
@@ -322,9 +322,9 @@ this property is simply the numeric for the desktop 0, being the first desktop a
   bpress_win = ECreateWindow(root, -80, -80, 24, 24, 0);
   val = bpress_win;
   XChangeProperty(disp, root, atom_set, XA_CARDINAL, 32, 
-                    PropModeReplace, (unsigned char *)&val, 1);
+                    PropModeReplace, (unsigned char *)&amp;val, 1);
   XChangeProperty(disp, bpress_win, atom_set, XA_CARDINAL, 32, 
-                    PropModeReplace, (unsigned char *)&val, 1);
+                    PropModeReplace, (unsigned char *)&amp;val, 1);
   </programlisting>
   </listitem>
 
@@ -406,7 +406,7 @@ this property is simply the numeric for the desktop 0, being the first desktop a
   xev.format = 32;
   xev.data.l[0] = new_active_area_x;
   xev.data.l[0] = new_active_area_y;
-  XSendEvent(disp, root, False, SubstructureNotifyMask, (XEvent *) &xev);
+  XSendEvent(disp, root, False, SubstructureNotifyMask, (XEvent *) &amp;xev);
 
 </programlisting>
 
