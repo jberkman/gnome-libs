@@ -373,7 +373,6 @@ create_test_dialog (GtkWidget * button, gboolean * settings)
 {
   static GnomeDialog * dialog = NULL;
   GtkWidget * entry;
-  GtkWidget * button;
   GtkWidget * app;
 
   if (dialog) {
@@ -383,6 +382,9 @@ create_test_dialog (GtkWidget * button, gboolean * settings)
   }
 
   app = gtk_object_get_user_data(GTK_OBJECT(button));
+
+  g_return_if_fail(app != NULL);
+  g_return_if_fail(GTK_IS_WINDOW(app));
 
   dialog = GNOME_DIALOG(gnome_dialog_new( "A Test Dialog", 
 					  GNOME_STOCK_BUTTON_OK,
@@ -1571,11 +1573,17 @@ create_app_helper (GtkWidget *widget, gpointer data)
 	GtkWidget *vbox2;
 	GtkWidget *w;
 	GtkWidget *popup;
+        GnomeAppBar *bar;
 	GnomeCanvasItem *item;
 
 	app = gnome_app_new ("testGNOME", "GnomeAppHelper test");
 	gnome_app_create_menus (GNOME_APP (app), helper_main_menu);
 	gnome_app_create_toolbar (GNOME_APP (app), helper_toolbar);
+
+        bar = GNOME_APPBAR(gnome_appbar_new(FALSE, TRUE, GNOME_PREFERENCES_USER));
+        gnome_app_set_statusbar(GNOME_APP(app), GTK_WIDGET(bar));  
+
+        gnome_app_install_appbar_menu_hints(GNOME_APPBAR(bar), helper_main_menu);
 
 	vbox = gtk_vbox_new (FALSE, GNOME_PAD_SMALL);
 	gtk_container_border_width (GTK_CONTAINER (vbox), GNOME_PAD_SMALL);
