@@ -1111,7 +1111,7 @@ goad_server_register(CORBA_Object name_server,
 
   if(!did_print_ior
      && goad_activation_id
-     && !strcmp(goad_activation_id, name)) {
+     && (!name || !strcmp(goad_activation_id, name))) {
     CORBA_char *strior;
     FILE *iorout;
     struct sigaction oldaction, myaction;
@@ -1136,6 +1136,12 @@ goad_server_register(CORBA_Object name_server,
     did_print_ior = 1;
   }
 
+  if (!name)
+    return 0;
+
+  if (!kind)
+    kind = "server";
+  
   nc[2].id   = (char *)name;
   nc[2].kind = (char *)kind;
 

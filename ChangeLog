@@ -1,3 +1,11 @@
+1999-06-09  Matt Loper  <matt@gnome-support.com>
+
+	* libgnorba/goad.c (goad_server_register): If `name' is passed in
+	as NULL, an object keeps from registering in the name service,
+	although it still exposes its IOR as before. If `name' isn't NULL
+	but `kind' is NULL, `kind' is set to "server", and the object is
+	placed in the naming service.
+
 1999-06-07  Matt Loper  <matt@gnome-support.com>
 
 	* idl/GnomeObject.idl: Removed `oneway' from ref and unref; when
