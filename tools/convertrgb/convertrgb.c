@@ -46,7 +46,13 @@ static void convert(char *real_file)
 		}
 	else
 		{
-		strcpy (outfile, file);
+		ptr = file + strlen(file);
+		while(ptr > &file[0] && ptr[0] != '/') ptr--;
+		if (ptr[0] == '/')
+			ptr++;
+		else
+			ptr = file;
+		strcpy (outfile, ptr);
 		ptr = outfile + strlen(outfile);
 		while (ptr > &outfile[0] && ptr[0] != '.') ptr--;
 		ptr[0] = '\0';
