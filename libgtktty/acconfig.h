@@ -3,6 +3,8 @@
 #undef	HAVE_GETTEXT
 #undef	HAVE_LC_MESSAGES
 #undef	HAVE_STPCPY
+#undef	HAVE_WAIT4
+#undef	HAVE_LIBSM
 
 /* build with consideration of "linux" entry in termcap?
  */

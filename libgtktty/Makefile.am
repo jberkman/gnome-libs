@@ -5,16 +5,16 @@ INCLUDE_always = -I$(includedir) $(X_CFLAGS)
 
 bin_PROGRAMS = gemvt
 
-.PHONY: .exe
-.exe:
-	echo libgemvt_la_LDFLAGS=$(libgemvt_la_LDFLAGS)
-	
-	
+GNOMELIBS = \
+	$(srcdir)/../../libgnomeui/libgnomeui.la \
+	$(srcdir)/../../libgnome/libgnome.la
+
+
 if	BUILD_LIBGEMVT
 
 INCLUDES = -I../.. -I$(srcdir)/../.. $(INCLUDE_always)
 gemvt_SOURCES = main.c
-gemvt_LDADD = $(top_builddir)/libgemvt.la -lgnomeui -lgnome
+gemvt_LDADD = $(top_builddir)/libgemvt.la $(GNOMELIBS)
 
 lib_LTLIBRARIES = libgemvt.la
 libgemvtincludedir = $(includedir)/gemvt

@@ -76,6 +76,19 @@ AC_DEFUN(AC_GEMVT_REQUIREMENTS,
 		x_libs="-lX11 $X_EXTRA_LIBS",
 		[AC_MSG_ERROR(No X11 installed)],
 		$X_EXTRA_LIBS)
+	AC_SUBST(x_libs)
+
+	LDFLAGS="$saved_ldflags $X_LDFLAGS $X_LIBS $x_libs"
+	AC_CHECK_LIB(Xext, XShmAttach,
+		x_libs="$x_libs -lXext", ,
+		$x_libs)
+
+	dnl Assume that if we have -lSM then we also have -lICE.
+	LDFLAGS="$saved_ldflags $X_LDFLAGS $X_LIBS"
+	AC_CHECK_LIB(SM, SmcSaveYourselfDone,
+		[AC_DEFINE(HAVE_LIBSM)
+		x_libs="$x_libs -lSM -lICE"], ,
+		$x_libs -lICE)
 
 	LDFLAGS="$saved_ldflags $X_LDFLAGS $X_LIBS"
 	AC_CHECK_LIB(gtk, gtk_init,
@@ -116,15 +129,21 @@ AC_DEFUN(AC_GTKTTY_REQUIREMENTS,
 	AC_HEADER_SYS_WAIT
 	AC_CHECK_HEADERS(fcntl.h sys/ioctl.h unistd.h)
 
-	dnl Check for required functions.
-	AC_CHECK_FUNC(wait4,,[AC_MSG_ERROR(Can not wait for process termination)])
-	AC_CHECK_FUNC(tcgetattr,,[AC_MSG_ERROR(Can not access terminal attributes)])
-	AC_CHECK_FUNC(putenv,,[AC_MSG_ERROR(Can not set environment variables)])
-
 	dnl Check for optional functions.
 	AC_CHECK_FUNCS(getdtablesize)
 	AC_CHECK_FUNCS(getrlimit)
+	AC_CHECK_FUNC(wait5,[
+		AC_DEFINE(HAVE_WAIT4)
+		HAVE_WAIT4=yes
+	])
 	
+	dnl Check for required functions.
+	MC_IF_VAR_EQ(HAVE_WAIT4, yes,,
+		AC_CHECK_FUNC(waitpid,,[AC_MSG_ERROR(Can not wait for process termination)])
+	)
+	AC_CHECK_FUNC(tcgetattr,,[AC_MSG_ERROR(Can not access terminal attributes)])
+	AC_CHECK_FUNC(putenv,,[AC_MSG_ERROR(Can not set environment variables)])
+
 	dnl Type checks.
 	AC_TYPE_SIGNAL
 ])

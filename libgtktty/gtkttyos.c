@@ -311,16 +311,24 @@ static	void
 gtk_tty_os_wait (GtkTty		*tty)
 {
   gint		err;
-  struct rusage res_usage;
   int		status;
   gboolean	restart = FALSE;
+#ifdef	HAVE_WAIT4
+  struct rusage res_usage;
+#endif	/* HAVE_WAIT4 */
   
   g_assert (tty->pid > 0); /* paranoid */
-  
+
+
 wait_restart:
   do
   {
+#ifdef	HAVE_WAIT4
+    memset (&resusage, 0, sizeof (resusage));
     err = wait4 (tty->pid, &status, WNOHANG, &res_usage);
+#else	/* not HAVE_WAIT4 */
+    err = waitpid (tty->pid, &status, WNOHANG);
+#endif	/* not HAVE_WAIT4 */
   }
   while (err == -1 && errno == EINTR);
   
@@ -361,10 +369,12 @@ wait_restart:
     }
     else
     {
+#ifdef	HAVE_WAIT4
       tty->sys_usec = res_usage.ru_stime.tv_usec;
       tty->sys_sec = res_usage.ru_stime.tv_sec;
       tty->user_usec = res_usage.ru_utime.tv_usec;
       tty->user_sec = res_usage.ru_utime.tv_sec;
+#endif	/* HAVE_WAIT4 */
     }
   }
 }
