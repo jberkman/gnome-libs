@@ -26,25 +26,91 @@
 ;;
 ;; It works ok with emacs-20, AFAIK it should work on other versions too.
 
+(defgroup gnome-doc nil 
+"Generates automatic headers for functions"
+:prefix "gnome"
+:group 'tools)
+
+(defcustom gnome-doc-header "/**\n * %s:\n"
+"Start of documentation header.
+
+Using '%s' will expand to the name of the function."
+:type '(string)
+:group 'gnome-doc)
+
+(defcustom gnome-doc-blank " * \n"
+"Used to put a blank line into the header."
+:type '(string)
+:group 'gnome-doc)
+
+(defcustom gnome-doc-trailer " **/\n"
+"End of documentation header.
+
+Using '%s' will expand to the name of the function being defined."
+:type '(string)
+:group 'gnome-doc)
+
+(defcustom gnome-doc-parameter " * @%s: \n"
+"Used to add another parameter to the header.
+
+Using '%s' will be replaced with the name of the parameter."
+:type '(string)
+:group 'gnome-doc)
+
+(defcustom gnome-doc-section " * %s: \n"
+"How to define a new section in the output.
+
+Using '%s' is replaced with the name of the section.
+Currently this will only be used to define the 'return value' field."
+:type '(string)
+:group 'gnome-doc)
+
+(defcustom gnome-doc-match-block "^ \\*"
+"This is a regular expression which will be used to match lines in a header.
+
+It should match every line produced by any of the header specifiers.
+It is therefore convenient to start all header lines with a common
+comment prefix"
+:type '(string)
+:group 'gnome-doc)
+
+(defcustom gnome-doc-match-header "^/\\*\\*"
+"This is a regular expression which will be used to match the first line of a header.
+
+It is used to identify if a header has already been applied to this
+function.  It should match the line produced by gnome-doc-header, or
+at least the first line of this which matches gnome-doc-match-block"
+:type '(string)
+:group 'gnome-doc)
+
+
+(make-variable-buffer-local 'gnome-doc-header)
+(make-variable-buffer-local 'gnome-doc-trailer)
+(make-variable-buffer-local 'gnome-doc-parameter)
+(make-variable-buffer-local 'gnome-doc-section)
+(make-variable-buffer-local 'gnome-doc-blank)
+(make-variable-buffer-local 'gnome-doc-match-block)
+(make-variable-buffer-local 'gnome-doc-match-header)
+
 ;; insert header at current location
 (defun gnome-doc-insert-header (function)
-  (insert "/**\n * " function ":\n"))
+  (insert (format gnome-doc-header function)))
 
 ;; insert a single variable, at current location
 (defun gnome-doc-insert-var (var)
-  (insert " * @" var ": \n"))
+  (insert (format gnome-doc-parameter var)))
 
 ;; insert a 'blank' comment line
 (defun gnome-doc-insert-blank ()
-  (insert " * \n"))
+  (insert gnome-doc-blank))
 
 ;; insert a section comment line
 (defun gnome-doc-insert-section (section)
-  (insert " * " section ": \n"))
+  (insert (format gnome-doc-section section)))
 
 ;; insert the end of the header
-(defun gnome-doc-insert-footer ()
-  (insert " **/\n"))
+(defun gnome-doc-insert-footer (func)
+  (insert (format gnome-doc-trailer func)))
 
 (defun gnome-doc-insert ()
   "Add a gnome documentation header to the current function.  Only C
@@ -69,7 +135,7 @@ function types are properly supported at the moment."
 		(looking-at ".*void[ \t]*$"))
 	    (setq c-isvoid 1))
 	(save-excursion
-	  (if (re-search-forward "\\([A-Za-z_:]+\\)[ \t\n]*\\(([^)]*)\\)" c-point nil)
+	  (if (re-search-forward "\\([A-Za-z_:~]+\\)[ \t\n]*\\(([^)]*)\\)" c-point nil)
 	      (let ((c-argstart (match-beginning 2))
 		    (c-argend (match-end 2)))
 		(setq c-funcname (buffer-substring (match-beginning 1) (match-end 1)))
@@ -82,9 +148,9 @@ function types are properly supported at the moment."
 	;; see if we already have a header here ...
 	(save-excursion
 	  (forward-line -1)
-	  (while (looking-at "^ \\*")
+	  (while (looking-at gnome-doc-match-block)
 	    (forward-line -1))
-	  (if (looking-at "^/\\*\\*")
+	  (if (looking-at gnome-doc-match-header)
 	      (error "Header already exists")
 	    (setq c-doinsert t)))
 
@@ -110,7 +176,7 @@ function types are properly supported at the moment."
 		    (gnome-doc-insert-blank)
 		    (gnome-doc-insert-section "Return Value")))
 	      
-	      (gnome-doc-insert-footer)))))
+	      (gnome-doc-insert-footer c-funcname)))))
 	
 	;; goto the start of the description saved above
 	(goto-char c-insert-here)))
