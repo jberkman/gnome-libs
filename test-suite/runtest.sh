@@ -8,15 +8,15 @@ else
 fi
 for I in $TESTS; do
 	TEST=`basename $I .c`
-	$CC -L../../libgnome/_libs -lgnome -L../../libgnomeui/_libs \
-		-lgnomeui -I../.. -lgtk -lgdk -lglib -L/usr/X11R6/lib \
+	$CC tests/$TEST.c -L../../libgnomeui/.libs -lgnomeui -L../../libgnome/.libs \
+		-lgnome -I../.. -lgtk -lgdk -lglib -L/usr/X11R6/lib \
 		-lXext -lSM -lX11 -lm \
-		-Wl,-rpath,../../libgnome/_libs \
-		-Wl,-rpath,../../libgnomeui/_libs \
-		-Wl,-rpath,../../../libgnome/_libs \
-		-Wl,-rpath,../../../libgnomeui/_libs \
-		-g \
-		-o tests/$TEST tests/$TEST.c > /tmp/.$$ 2>&1
+		-Wl,-rpath,../../libgnome/.libs \
+		-Wl,-rpath,../../libgnomeui/.libs \
+		-Wl,-rpath,../../../libgnome/.libs \
+		-Wl,-rpath,../../../libgnomeui/.libs \
+		-g -static \
+		-o tests/$TEST > /tmp/.$$ 2>&1
 	T=$?
 	if [ $T != 0 ]; then
 		echo "CFAIL: $TEST" >&3
