@@ -1,7 +1,19 @@
 GtkObject
   GtkWidget
+    GtkRange
+      GtkScrollbar
+        GtkVScrollbar
+        GtkHScrollbar
     GtkContainer
       GtkBin
+        GtkButton
+          GtkToggleButton
+            GtkCheckButton
+              GtkRadioButton
+          GnomeColorPicker
+          GnomeFontPicker
+          GnomeHRef
+        GtkScrolledWindow
         GtkWindow
           GnomeDialog
             GnomeAbout
@@ -11,10 +23,6 @@ GtkObject
           GnomeApp
           GtkDialog
             GnomeFontSelector
-        GtkButton
-          GnomeColorPicker
-          GnomeFontPicker
-          GnomeHRef
         GnomeDockItem
         GtkItem
           GtkMenuItem
@@ -23,6 +31,9 @@ GtkObject
           GnomeDruidPageStart
           GnomeDruidPageFinish
           GnomeDruidPageStandard
+      GtkPaned
+        GtkVPaned
+        GtkHPaned
       GtkBox
         GtkHBox
           GnomeAppBar
@@ -56,6 +67,8 @@ GtkObject
       GtkLabel
         GtkClock
     GtkDial
+  GtkData
+    GtkAdjustment
   GnomeCanvasItem
     GnomeCanvasRE
       GnomeCanvasEllipse
@@ -73,5 +86,3 @@ GtkObject
   GnomeMDIChild
     GnomeMDIGenericChild
   GnomeMDI
-  GtkData
-    GtkAdjustment

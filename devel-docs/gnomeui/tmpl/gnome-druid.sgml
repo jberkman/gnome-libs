@@ -2,11 +2,11 @@
 GnomeDruid
 
 <!-- ##### SECTION Short_Description ##### -->
-  The top-level widget of the GNOME DRUID system.
+  The top-level widget of the GNOME druid system.
 
 <!-- ##### SECTION Long_Description ##### -->
   <para>
-    The GNOME DRUID is a system for assisting the user with installing a
+    The GNOME druid is a system for assisting the user with installing a
     service.  It is roughly equivilent in functionality to the
     "Wizards" available in windows.
   </para>
@@ -22,9 +22,9 @@ GnomeDruid
     no reason why more couldn't be written.
   </para>
   <refsect2>
-    <title>Creating a DRUID</title>
+    <title>Creating a druid</title>
     <para>
-      GNOME DRUIDs are fairly simple to program with.  You start by
+      GNOME druids are fairly simple to program with.  You start by
       creating a #GnomeDruid into which one puts all of your pages.
       This widget will handle the presentation of the #GnomeDruidPage
       widgets.
@@ -35,7 +35,7 @@ GnomeDruid
       no reason why you couldn't right a custom one.  They are the
       #GnomeDruidPageStart, the #GnomeDruidPageStandard, and the
       #GnomeDruidPageFinish.  The #GnomeDruidPageStandard acts as a
-      #GtkContainer, and is probably the most commonly used DRUID page.
+      #GtkContainer, and is probably the most commonly used druid page.
       More information on the specific properties of these widgets can
       be found on their respective pages.
     </para>
@@ -45,11 +45,11 @@ GnomeDruid
       using the gnome_druid_prepend_page(), gnome_druid_append_page(),
       and gnome_druid_insert_page() will place them into it.  
     </para>
-  </refsect>
+  </refsect2>
   <refsect2>
-    <title>Managing the control-flow in a DRUID</title>
+    <title>Managing the control-flow in a druid</title>
     <para>
-      The control-flow in a DRUID is managed at the #GnomeDruidPage
+      The control-flow in a druid is managed at the #GnomeDruidPage
       level, and is a little complex.  The signals available are "back",
       "next", "finish", "cancel" and "prepare", and all but the last are
       triggered when their respective buttons are pressed.  In the
@@ -57,11 +57,12 @@ GnomeDruid
       cycle through the pages in the order of the internal list.  
     </para>
     <para>
-      If the DRUID The current page will emit the appropriate signal in this case.
-      It is up to the DRUID author to trap this signal when necessary.
+      If the druid The current page will emit the appropriate signal in this case.
+      It is up to the druid author to trap this signal when necessary.
       Most druids that have a non-linear flow of pages will want to call
       gnome_druid_set_page() with the next page.  In addition, they will
-      want to
+      want to return TRUE to let the druid know that it has handled the
+      page change.
     </para>
     <para>
       

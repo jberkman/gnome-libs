@@ -38,6 +38,194 @@ const gchar	*title,const gchar	*version,const gchar	*copyright,const gchar	**aut
 <RETURNS>void</RETURNS>
 GnomeAbout *about,const gchar	*title,const gchar	*version,const gchar   *copyright,const gchar   **authors,const gchar   *comments,const gchar   *logo
 </FUNCTION>
+<MACRO>
+<NAME>GNOME_ANIMATOR</NAME>
+#define GNOME_ANIMATOR(obj) \
+  GTK_CHECK_CAST (obj, gnome_animator_get_type (), GnomeAnimator)
+</MACRO>
+<MACRO>
+<NAME>GNOME_ANIMATOR_CLASS</NAME>
+#define GNOME_ANIMATOR_CLASS(klass) \
+  GTK_CHECK_CLASS_CAST (klass, gnome_animator_get_type (), GnomeAnimatorClass)
+</MACRO>
+<MACRO>
+<NAME>GNOME_IS_ANIMATOR</NAME>
+#define GNOME_IS_ANIMATOR(obj) \
+  GTK_CHECK_TYPE (obj, gnome_animator_get_type ())
+</MACRO>
+<ENUM>
+<NAME>GnomeAnimatorStatus</NAME>
+typedef enum
+{
+    GNOME_ANIMATOR_STATUS_STOPPED,
+    GNOME_ANIMATOR_STATUS_RUNNING
+} GnomeAnimatorStatus;
+</ENUM>
+<ENUM>
+<NAME>GnomeAnimatorLoopType</NAME>
+typedef enum
+{
+    /* No loop: after the last (first) frame is played, the animation
+       is stopped.  */
+    GNOME_ANIMATOR_LOOP_NONE,
+
+    /* After the last (first) frame is played, restart from the first
+       (last) frame.  */
+    GNOME_ANIMATOR_LOOP_RESTART,
+
+    /* After the last (first) frame is played, the playback direction
+       is reversed.  */
+    GNOME_ANIMATOR_LOOP_PING_PONG
+} GnomeAnimatorLoopType;
+</ENUM>
+<STRUCT>
+<NAME>GnomeAnimator</NAME>
+</STRUCT>
+<STRUCT>
+<NAME>GnomeAnimatorClass</NAME>
+</STRUCT>
+<STRUCT>
+<NAME>GnomeAnimatorFrame</NAME>
+</STRUCT>
+<STRUCT>
+<NAME>GnomeAnimatorPrivate</NAME>
+</STRUCT>
+<STRUCT>
+<NAME>GnomeAnimator</NAME>
+struct GnomeAnimator
+  {
+    GtkWidget widget;
+
+    guint num_frames;
+
+    guint current_frame_number;
+
+    GnomeAnimatorStatus status;
+
+    GnomeAnimatorLoopType loop_type;
+
+    gint playback_direction;
+
+    gdouble playback_speed;
+
+    GnomeAnimatorPrivate *privat;
+  };
+</STRUCT>
+<FUNCTION>
+<NAME>gnome_animator_get_type</NAME>
+<RETURNS>guint  </RETURNS>
+void
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_animator_new_with_size</NAME>
+<RETURNS>GtkWidget  *</RETURNS>
+guint width,guint height
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_animator_set_loop_type</NAME>
+<RETURNS>void  </RETURNS>
+GnomeAnimator *animator,GnomeAnimatorLoopType loop_type
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_animator_get_loop_type</NAME>
+<RETURNS>GnomeAnimatorLoopType  </RETURNS>
+GnomeAnimator *animator
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_animator_set_playback_direction</NAME>
+<RETURNS>void  </RETURNS>
+GnomeAnimator *animator,gint playback_direction
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_animator_get_playback_direction</NAME>
+<RETURNS>gint  </RETURNS>
+GnomeAnimator *animator
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_animator_append_frame_from_imlib_at_size</NAME>
+<RETURNS>gboolean  </RETURNS>
+GnomeAnimator *animator,GdkImlibImage *image,gint x_offset,gint y_offset,guint32 interval,guint width,guint height
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_animator_append_frame_from_imlib</NAME>
+<RETURNS>gboolean  </RETURNS>
+GnomeAnimator *animator,GdkImlibImage *image,gint x_offset,gint y_offset,guint32 interval
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_animator_append_frame_from_file_at_size</NAME>
+<RETURNS>gboolean  </RETURNS>
+GnomeAnimator *animator,const gchar *name,gint x_offset,gint y_offset,guint32 interval,guint width,guint height
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_animator_append_frame_from_file</NAME>
+<RETURNS>gboolean  </RETURNS>
+GnomeAnimator *animator,const gchar *name,gint x_offset,gint y_offset,guint32 interval
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_animator_append_frames_from_imlib_at_size</NAME>
+<RETURNS>gboolean  </RETURNS>
+GnomeAnimator *animator,GdkImlibImage *image,gint x_offset,gint y_offset,guint32 interval,gint x_unit,guint width,guint height
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_animator_append_frames_from_imlib</NAME>
+<RETURNS>gboolean  </RETURNS>
+GnomeAnimator *animator,GdkImlibImage *image,gint x_offset,gint y_offset,guint32 interval,gint x_unit
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_animator_append_frames_from_file_at_size</NAME>
+<RETURNS>gboolean  </RETURNS>
+GnomeAnimator *animator,const gchar *name,gint x_offset,gint y_offset,guint32 interval,gint x_unit,guint width,guint height
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_animator_append_frames_from_file</NAME>
+<RETURNS>gboolean  </RETURNS>
+GnomeAnimator *animator,const gchar *name,gint x_offset,gint y_offset,guint32 interval,gint x_unit
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_animator_append_frame_from_gnome_pixmap</NAME>
+<RETURNS>gboolean  </RETURNS>
+GnomeAnimator *animator,GnomePixmap *pixmap,gint x_offset,gint y_offset,guint32 interval
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_animator_start</NAME>
+<RETURNS>void  </RETURNS>
+GnomeAnimator *animator
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_animator_stop</NAME>
+<RETURNS>void  </RETURNS>
+GnomeAnimator *animator
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_animator_advance</NAME>
+<RETURNS>gboolean  </RETURNS>
+GnomeAnimator *animator,gint num
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_animator_goto_frame</NAME>
+<RETURNS>void  </RETURNS>
+GnomeAnimator *animator,guint frame_number
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_animator_get_current_frame_number</NAME>
+<RETURNS>guint  </RETURNS>
+GnomeAnimator *animator
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_animator_get_status</NAME>
+<RETURNS>GnomeAnimatorStatus  </RETURNS>
+GnomeAnimator *animator
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_animator_set_playback_speed</NAME>
+<RETURNS>void  </RETURNS>
+GnomeAnimator *animator,gdouble speed
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_animator_get_playback_speed</NAME>
+<RETURNS>gdouble  </RETURNS>
+GnomeAnimator *animator
+</FUNCTION>
 <ENUM>
 <NAME>GnomeUIInfoType</NAME>
 typedef enum {
@@ -1357,6 +1545,82 @@ struct GnomeCanvasLine {
 <RETURNS>GtkType  </RETURNS>
 void
 </FUNCTION>
+<FUNCTION>
+<NAME>gnome_canvas_load_alpha</NAME>
+<RETURNS>GdkImlibImage  *</RETURNS>
+char *file
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_canvas_destroy_image</NAME>
+<RETURNS>void  </RETURNS>
+GdkImlibImage *image
+</FUNCTION>
+<MACRO>
+<NAME>GNOME_TYPE_CANVAS_POLYGON</NAME>
+#define GNOME_TYPE_CANVAS_POLYGON            (gnome_canvas_polygon_get_type ())
+</MACRO>
+<MACRO>
+<NAME>GNOME_CANVAS_POLYGON</NAME>
+#define GNOME_CANVAS_POLYGON(obj)            (GTK_CHECK_CAST ((obj), GNOME_TYPE_CANVAS_POLYGON, GnomeCanvasPolygon))
+</MACRO>
+<MACRO>
+<NAME>GNOME_CANVAS_POLYGON_CLASS</NAME>
+#define GNOME_CANVAS_POLYGON_CLASS(klass)    (GTK_CHECK_CLASS_CAST ((klass), GNOME_TYPE_CANVAS_POLYGON, GnomeCanvasPolygonClass))
+</MACRO>
+<MACRO>
+<NAME>GNOME_IS_CANVAS_POLYGON</NAME>
+#define GNOME_IS_CANVAS_POLYGON(obj)         (GTK_CHECK_TYPE ((obj), GNOME_TYPE_CANVAS_POLYGON))
+</MACRO>
+<MACRO>
+<NAME>GNOME_IS_CANVAS_POLYGON_CLASS</NAME>
+#define GNOME_IS_CANVAS_POLYGON_CLASS(klass) (GTK_CHECK_CLASS_TYPE ((klass), GNOME_TYPE_CANVAS_POLYGON))
+</MACRO>
+<STRUCT>
+<NAME>GnomeCanvasPolygon</NAME>
+</STRUCT>
+<STRUCT>
+<NAME>GnomeCanvasPolygonClass</NAME>
+</STRUCT>
+<STRUCT>
+<NAME>GnomeCanvasPolygon</NAME>
+struct GnomeCanvasPolygon {
+	GnomeCanvasItem item;
+
+	int num_points;			/* Number of points in the polygon */
+	double *coords;			/* Array of coordinates for the polygon's points.  X coords
+					 * are in the even indices, Y coords are in the odd indices.
+					 */
+
+	double width;			/* Width of polygon's outline */
+
+	guint fill_color;		/* Fill color, RGBA */
+	guint outline_color;		/* Outline color, RGBA */
+
+	gulong fill_pixel;		/* Color for fill */
+	gulong outline_pixel;		/* Color for outline */
+
+	GdkBitmap *fill_stipple;	/* Stipple for fill */
+	GdkBitmap *outline_stipple;	/* Stipple for outline */
+
+	GdkGC *fill_gc;			/* GC for filling */
+	GdkGC *outline_gc;		/* GC for outline */
+
+	guint fill_set : 1;		/* Is fill color set? */
+	guint outline_set : 1;		/* Is outline color set? */
+	guint width_pixels : 1;		/* Is outline width specified in pixels or units? */
+
+	/* Antialiased specific stuff follows */
+	guint32 fill_rgba;		/* RGBA color for filling */
+	ArtSVP *fill_svp;		/* The SVP for the filled shape */
+	guint32 outline_rgba;		/* RGBA color for outline */
+	ArtSVP *outline_svp;		/* The SVP for the outline shape */
+};
+</STRUCT>
+<FUNCTION>
+<NAME>gnome_canvas_polygon_get_type</NAME>
+<RETURNS>GtkType  </RETURNS>
+void
+</FUNCTION>
 <MACRO>
 <NAME>GNOME_TYPE_CANVAS_RE</NAME>
 #define GNOME_TYPE_CANVAS_RE            (gnome_canvas_re_get_type ())
@@ -1685,6 +1949,57 @@ GdkJoinStyle gdk_join
 <NAME>gnome_canvas_cap_gdk_to_art</NAME>
 <RETURNS>ArtPathStrokeCapType  </RETURNS>
 GdkCapStyle gdk_cap
+</FUNCTION>
+<MACRO>
+<NAME>GNOME_TYPE_CANVAS_WIDGET</NAME>
+#define GNOME_TYPE_CANVAS_WIDGET            (gnome_canvas_widget_get_type ())
+</MACRO>
+<MACRO>
+<NAME>GNOME_CANVAS_WIDGET</NAME>
+#define GNOME_CANVAS_WIDGET(obj)            (GTK_CHECK_CAST ((obj), GNOME_TYPE_CANVAS_WIDGET, GnomeCanvasWidget))
+</MACRO>
+<MACRO>
+<NAME>GNOME_CANVAS_WIDGET_CLASS</NAME>
+#define GNOME_CANVAS_WIDGET_CLASS(klass)    (GTK_CHECK_CLASS_CAST ((klass), GNOME_TYPE_CANVAS_WIDGET, GnomeCanvasWidgetClass))
+</MACRO>
+<MACRO>
+<NAME>GNOME_IS_CANVAS_WIDGET</NAME>
+#define GNOME_IS_CANVAS_WIDGET(obj)         (GTK_CHECK_TYPE ((obj), GNOME_TYPE_CANVAS_WIDGET))
+</MACRO>
+<MACRO>
+<NAME>GNOME_IS_CANVAS_WIDGET_CLASS</NAME>
+#define GNOME_IS_CANVAS_WIDGET_CLASS(klass) (GTK_CHECK_CLASS_TYPE ((klass), GNOME_TYPE_CANVAS_WIDGET))
+</MACRO>
+<STRUCT>
+<NAME>GnomeCanvasWidget</NAME>
+</STRUCT>
+<STRUCT>
+<NAME>GnomeCanvasWidgetClass</NAME>
+</STRUCT>
+<STRUCT>
+<NAME>GnomeCanvasWidget</NAME>
+struct GnomeCanvasWidget {
+	GnomeCanvasItem item;
+
+	GtkWidget *widget;		/* The child widget */
+
+	double x, y;			/* Position at anchor */
+	double width, height;		/* Dimensions of widget */
+	GtkAnchorType anchor;		/* Anchor side for widget */
+
+	int cx, cy;			/* Top-left canvas coordinates for widget */
+	int cwidth, cheight;		/* Size of widget in pixels */
+
+	guint destroy_id;		/* Signal connection id for destruction of child widget */
+
+	guint size_pixels : 1;		/* Is size specified in (unchanging) pixels or units (get scaled)? */
+	guint in_destroy : 1;		/* Is child widget being destroyed? */
+};
+</STRUCT>
+<FUNCTION>
+<NAME>gnome_canvas_widget_get_type</NAME>
+<RETURNS>GtkType  </RETURNS>
+void
 </FUNCTION>
 <MACRO>
 <NAME>GNOME_CANVAS_EPSILON</NAME>
@@ -2522,6 +2837,111 @@ GnomeClient *client,GnomeDialogType dialog,GtkCallbackMarshal func,gpointer data
 <RETURNS>void  </RETURNS>
 gint     key,gboolean cancel_shutdown
 </FUNCTION>
+<MACRO>
+<NAME>GNOME_TYPE_COLOR_PICKER</NAME>
+#define GNOME_TYPE_COLOR_PICKER            (gnome_color_picker_get_type ())
+</MACRO>
+<MACRO>
+<NAME>GNOME_COLOR_PICKER</NAME>
+#define GNOME_COLOR_PICKER(obj)            (GTK_CHECK_CAST ((obj), GNOME_TYPE_COLOR_PICKER, GnomeColorPicker))
+</MACRO>
+<MACRO>
+<NAME>GNOME_COLOR_PICKER_CLASS</NAME>
+#define GNOME_COLOR_PICKER_CLASS(klass)    (GTK_CHECK_CLASS_CAST ((klass), GNOME_TYPE_COLOR_PICKER, GnomeColorPickerClass))
+</MACRO>
+<MACRO>
+<NAME>GNOME_IS_COLOR_PICKER</NAME>
+#define GNOME_IS_COLOR_PICKER(obj)         (GTK_CHECK_TYPE ((obj), GNOME_TYPE_COLOR_PICKER))
+</MACRO>
+<MACRO>
+<NAME>GNOME_IS_COLOR_PICKER_CLASS</NAME>
+#define GNOME_IS_COLOR_PICKER_CLASS(klass) (GTK_CHECK_CLASS_TYPE ((klass), GNOME_TYPE_COLOR_PICKER))
+</MACRO>
+<STRUCT>
+<NAME>GnomeColorPicker</NAME>
+</STRUCT>
+<STRUCT>
+<NAME>GnomeColorPickerClass</NAME>
+</STRUCT>
+<STRUCT>
+<NAME>GnomeColorPicker</NAME>
+struct GnomeColorPicker {
+	GtkButton button;
+
+	gdouble r, g, b, a;	/* Red, green, blue, and alpha values */
+
+	GdkImlibImage *im;	/* Imlib image for rendering dithered sample */
+	GdkPixmap *pixmap;	/* Pixmap with the sample contents */
+	GdkGC *gc;		/* GC for drawing */
+
+	GtkWidget *da;		/* Drawing area for color sample */
+	GtkWidget *cs_dialog;	/* Color selection dialog */
+
+	gchar *title;		/* Title for the color selection window */
+
+	guint dither : 1;	/* Dither or just paint a solid color? */
+	guint use_alpha : 1;	/* Use alpha or not */
+};
+</STRUCT>
+<FUNCTION>
+<NAME>gnome_color_picker_get_type</NAME>
+<RETURNS>GtkType  </RETURNS>
+void
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_color_picker_new</NAME>
+<RETURNS>GtkWidget  *</RETURNS>
+void
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_color_picker_set_d</NAME>
+<RETURNS>void  </RETURNS>
+GnomeColorPicker *cp, gdouble r, gdouble g, gdouble b, gdouble a
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_color_picker_get_d</NAME>
+<RETURNS>void  </RETURNS>
+GnomeColorPicker *cp, gdouble *r, gdouble *g, gdouble *b, gdouble *a
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_color_picker_set_i8</NAME>
+<RETURNS>void  </RETURNS>
+GnomeColorPicker *cp, guint8 r, guint8 g, guint8 b, guint8 a
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_color_picker_get_i8</NAME>
+<RETURNS>void  </RETURNS>
+GnomeColorPicker *cp, guint8 *r, guint8 *g, guint8 *b, guint8 *a
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_color_picker_set_i16</NAME>
+<RETURNS>void  </RETURNS>
+GnomeColorPicker *cp, gushort r, gushort g, gushort b, gushort a
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_color_picker_get_i16</NAME>
+<RETURNS>void  </RETURNS>
+GnomeColorPicker *cp, gushort *r, gushort *g, gushort *b, gushort *a
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_color_picker_set_dither</NAME>
+<RETURNS>void  </RETURNS>
+GnomeColorPicker *cp, gboolean dither
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_color_picker_set_use_alpha</NAME>
+<RETURNS>void  </RETURNS>
+GnomeColorPicker *cp, gboolean use_alpha
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_color_picker_set_title</NAME>
+<RETURNS>void  </RETURNS>
+GnomeColorPicker *cp, const gchar *title
+</FUNCTION>
+<MACRO>
+<NAME>GNOME_IS_MDI_MDI_CHILD</NAME>
+#  define GNOME_IS_MDI_MDI_CHILD(obj)     GNOME_IS_MDI_GENERIC_CHILD(obj)
+</MACRO>
 <ENUM>
 <NAME>GnomeDateEditFlags</NAME>
 typedef enum {
@@ -2987,6 +3407,526 @@ const char *hostname,void (* callback) (guint32 ip_addr, void *callback_data),vo
 guint32 tag
 </FUNCTION>
 <MACRO>
+<NAME>GNOME_DOCK_BAND</NAME>
+#define GNOME_DOCK_BAND(obj) \
+  GTK_CHECK_CAST (obj, gnome_dock_band_get_type (), GnomeDockBand)
+</MACRO>
+<MACRO>
+<NAME>GNOME_DOCK_BAND_CLASS</NAME>
+#define GNOME_DOCK_BAND_CLASS(class) \
+  GTK_CHECK_CLASS_CAST (class, gnome_dock_band_get_type (), GnomeDockBandClass)
+</MACRO>
+<MACRO>
+<NAME>GNOME_IS_DOCK_BAND</NAME>
+#define GNOME_IS_DOCK_BAND(obj) \
+  GTK_CHECK_TYPE (obj, gnome_dock_band_get_type ())
+</MACRO>
+<STRUCT>
+<NAME>GnomeDockBand</NAME>
+</STRUCT>
+<STRUCT>
+<NAME>GnomeDockBandClass</NAME>
+</STRUCT>
+<STRUCT>
+<NAME>GnomeDockBandChild</NAME>
+</STRUCT>
+<STRUCT>
+<NAME>GnomeDockBand</NAME>
+struct GnomeDockBand
+{
+  GtkContainer container;
+
+  GtkOrientation orientation;
+
+  GList *children;              /* GnomeDockBandChild */
+  guint num_children;
+
+  GList *floating_child;        /* GnomeDockBandChild */
+
+  gboolean doing_drag;
+
+  guint max_space_requisition;
+  guint tot_offsets;
+
+  /* This used to remember the allocation before the drag begin: it is
+     necessary to do so because we actually decide what docking action
+     happens depending on it, instead of using the current allocation
+     (which might be constantly changing while the user drags things
+     around).  */
+  GtkAllocation drag_allocation;
+
+  guint new_for_drag : 1;
+};
+</STRUCT>
+<STRUCT>
+<NAME>GnomeDockBandChild</NAME>
+struct GnomeDockBandChild
+{
+  GtkWidget *widget;
+
+  /* Maximum (requested) offset from the previous child.  */
+  guint offset;
+
+  /* Actual offset.  */
+  guint real_offset;
+
+  guint drag_offset;
+
+  GtkAllocation drag_allocation;
+
+  guint prev_space, foll_space;
+  guint drag_prev_space, drag_foll_space;
+
+  guint max_space_requisition;
+};
+</STRUCT>
+<FUNCTION>
+<NAME>gnome_dock_band_new</NAME>
+<RETURNS>GtkWidget      *</RETURNS>
+void
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_dock_band_get_type</NAME>
+<RETURNS>guint  </RETURNS>
+void
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_dock_band_set_orientation</NAME>
+<RETURNS>void  </RETURNS>
+GnomeDockBand *band,GtkOrientation orientation
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_dock_band_get_orientation</NAME>
+<RETURNS>GtkOrientation  </RETURNS>
+GnomeDockBand *band
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_dock_band_insert</NAME>
+<RETURNS>gboolean  </RETURNS>
+GnomeDockBand *band,GtkWidget *child,guint offset,gint position
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_dock_band_prepend</NAME>
+<RETURNS>gboolean  </RETURNS>
+GnomeDockBand *band,GtkWidget *child,guint offset
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_dock_band_append</NAME>
+<RETURNS>gboolean  </RETURNS>
+GnomeDockBand *band,GtkWidget *child,guint offset
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_dock_band_set_child_offset</NAME>
+<RETURNS>void  </RETURNS>
+GnomeDockBand *band,GtkWidget *child,guint offset
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_dock_band_get_child_offset</NAME>
+<RETURNS>guint  </RETURNS>
+GnomeDockBand *band,GtkWidget *child
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_dock_band_move_child</NAME>
+<RETURNS>void  </RETURNS>
+GnomeDockBand *band,GList *old_child,guint new_num
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_dock_band_get_num_children</NAME>
+<RETURNS>guint  </RETURNS>
+GnomeDockBand *band
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_dock_band_drag_begin</NAME>
+<RETURNS>void  </RETURNS>
+GnomeDockBand *band,GnomeDockItem *item
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_dock_band_drag_to</NAME>
+<RETURNS>gboolean  </RETURNS>
+GnomeDockBand *band,GnomeDockItem *item,gint x, gint y
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_dock_band_drag_end</NAME>
+<RETURNS>void  </RETURNS>
+GnomeDockBand *band,GnomeDockItem *item
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_dock_band_get_item_by_name</NAME>
+<RETURNS>GnomeDockItem  *</RETURNS>
+GnomeDockBand *band,const char *name,guint *position_return,guint *offset_return
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_dock_band_layout_add</NAME>
+<RETURNS>void  </RETURNS>
+GnomeDockBand *band,GnomeDockLayout *layout,GnomeDockPlacement placement,guint band_num
+</FUNCTION>
+<MACRO>
+<NAME>GNOME_DOCK_ITEM</NAME>
+#define GNOME_DOCK_ITEM(obj) \
+  GTK_CHECK_CAST (obj, gnome_dock_item_get_type (), GnomeDockItem)
+</MACRO>
+<MACRO>
+<NAME>GNOME_DOCK_ITEM_CLASS</NAME>
+#define GNOME_DOCK_ITEM_CLASS(klass) \
+  GTK_CHECK_CLASS_CAST (klass, gnome_dock_item_get_type (), GnomeDockItemClass)
+</MACRO>
+<MACRO>
+<NAME>GNOME_IS_DOCK_ITEM</NAME>
+#define GNOME_IS_DOCK_ITEM(obj) \
+  GTK_CHECK_TYPE (obj, gnome_dock_item_get_type ())
+</MACRO>
+<ENUM>
+<NAME>GnomeDockItemBehavior</NAME>
+typedef enum
+{
+  GNOME_DOCK_ITEM_BEH_NORMAL = 0,
+  GNOME_DOCK_ITEM_BEH_EXCLUSIVE = 1 << 0,
+  GNOME_DOCK_ITEM_BEH_NEVER_FLOATING = 1 << 1,
+  GNOME_DOCK_ITEM_BEH_NEVER_VERTICAL = 1 << 2,
+  GNOME_DOCK_ITEM_BEH_NEVER_HORIZONTAL = 1 << 3,
+  GNOME_DOCK_ITEM_BEH_LOCKED = 1 << 4
+} GnomeDockItemBehavior;
+</ENUM>
+<MACRO>
+<NAME>GNOME_DOCK_ITEM_BEH_NEVER_DETACH</NAME>
+#define GNOME_DOCK_ITEM_BEH_NEVER_DETACH GNOME_DOCK_ITEM_BEH_NEVER_FLOATING
+</MACRO>
+<MACRO>
+<NAME>GNOME_DOCK_ITEM_NOT_LOCKED</NAME>
+#define GNOME_DOCK_ITEM_NOT_LOCKED(x) (! (GNOME_DOCK_ITEM(x)->behavior \
+                                          & GNOME_DOCK_ITEM_BEH_LOCKED))
+</MACRO>
+<STRUCT>
+<NAME>GnomeDockItem</NAME>
+</STRUCT>
+<STRUCT>
+<NAME>GnomeDockItemClass</NAME>
+</STRUCT>
+<STRUCT>
+<NAME>GnomeDockItem</NAME>
+struct GnomeDockItem
+{
+  GtkBin bin;
+
+  gchar                *name;
+
+  GdkWindow            *bin_window; /* parent window for children */
+  GdkWindow            *float_window;
+  GtkShadowType         shadow_type;
+
+  GtkOrientation        orientation;
+  GnomeDockItemBehavior behavior;
+
+  guint                 float_window_mapped : 1;
+  guint                 is_floating : 1;
+  guint                 in_drag : 1;
+
+  /* Start drag position (wrt widget->window).  */
+  gint                  dragoff_x, dragoff_y;
+
+  /* Position of the floating window.  */
+  gint                  float_x, float_y;
+
+  /* If TRUE, the pointer must be grabbed on "map_event".  */
+  guint                 grab_on_map_event;
+};
+</STRUCT>
+<FUNCTION>
+<NAME>gnome_dock_item_get_type</NAME>
+<RETURNS>guint  </RETURNS>
+void
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_dock_item_new</NAME>
+<RETURNS>GtkWidget      *</RETURNS>
+const gchar *name,GnomeDockItemBehavior behavior
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_dock_item_get_child</NAME>
+<RETURNS>GtkWidget      *</RETURNS>
+GnomeDockItem *dock_item
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_dock_item_get_name</NAME>
+<RETURNS>char           *</RETURNS>
+GnomeDockItem *dock_item
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_dock_item_set_shadow_type</NAME>
+<RETURNS>void  </RETURNS>
+GnomeDockItem *dock_item,GtkShadowType type
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_dock_item_get_shadow_type</NAME>
+<RETURNS>GtkShadowType  </RETURNS>
+GnomeDockItem *dock_item
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_dock_item_set_orientation</NAME>
+<RETURNS>gboolean  </RETURNS>
+GnomeDockItem *dock_item,GtkOrientation orientation
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_dock_item_get_orientation</NAME>
+<RETURNS>GtkOrientation  </RETURNS>
+GnomeDockItem *dock_item
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_dock_item_get_behavior</NAME>
+<RETURNS>GnomeDockItemBehavior</RETURNS>
+GnomeDockItem *dock_item
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_dock_item_detach</NAME>
+<RETURNS>gboolean  </RETURNS>
+GnomeDockItem *item,gint x, gint y
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_dock_item_attach</NAME>
+<RETURNS>void  </RETURNS>
+GnomeDockItem *item,GtkWidget *parent,gint x, gint y
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_dock_item_grab_pointer</NAME>
+<RETURNS>void  </RETURNS>
+GnomeDockItem *item
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_dock_item_drag_floating</NAME>
+<RETURNS>void  </RETURNS>
+GnomeDockItem *item,gint x, gint y
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_dock_item_handle_size_request</NAME>
+<RETURNS>void  </RETURNS>
+GnomeDockItem *item,GtkRequisition *requisition
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_dock_item_get_floating_position</NAME>
+<RETURNS>void  </RETURNS>
+GnomeDockItem *item,gint *x, gint *y
+</FUNCTION>
+<MACRO>
+<NAME>GNOME_DOCK_LAYOUT</NAME>
+#define GNOME_DOCK_LAYOUT(obj) \
+  GTK_CHECK_CAST (obj, gnome_dock_layout_get_type (), GnomeDockLayout)
+</MACRO>
+<MACRO>
+<NAME>GNOME_DOCK_LAYOUT_CLASS</NAME>
+#define GNOME_DOCK_LAYOUT_CLASS(klass) \
+  GTK_CHECK_CLASS_CAST (klass, gnome_dock_layout_get_type (), GnomeDockLayoutClass)
+</MACRO>
+<MACRO>
+<NAME>GNOME_IS_DOCK_LAYOUT</NAME>
+#define GNOME_IS_DOCK_LAYOUT(obj) \
+  GTK_CHECK_TYPE (obj, gnome_dock_layout_get_type ())
+</MACRO>
+<STRUCT>
+<NAME>GnomeDockLayoutItem</NAME>
+</STRUCT>
+<STRUCT>
+<NAME>GnomeDockLayoutClass</NAME>
+</STRUCT>
+<STRUCT>
+<NAME>GnomeDockLayout</NAME>
+</STRUCT>
+<STRUCT>
+<NAME>GnomeDockLayoutItem</NAME>
+struct GnomeDockLayoutItem
+{
+  GnomeDockItem *item;
+
+  GnomeDockPlacement placement;
+
+  union
+  {
+    struct
+    {
+      gint x;
+      gint y;
+      GtkOrientation orientation;
+    } floating;
+
+    struct
+    {
+      gint band_num;
+      gint band_position;
+      gint offset;
+    } docked;
+
+  } position;
+};
+</STRUCT>
+<STRUCT>
+<NAME>GnomeDockLayout</NAME>
+struct GnomeDockLayout
+{
+  GtkObject object;
+
+  GList *items;                 /* GnomeDockLayoutItem */
+};
+</STRUCT>
+<FUNCTION>
+<NAME>gnome_dock_layout_new</NAME>
+<RETURNS>GnomeDockLayout      *</RETURNS>
+void
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_dock_layout_get_type</NAME>
+<RETURNS>guint  </RETURNS>
+void
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_dock_layout_add_item</NAME>
+<RETURNS>gboolean  </RETURNS>
+GnomeDockLayout *layout,GnomeDockItem *item,GnomeDockPlacement placement,gint band_num,gint band_position,gint offset
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_dock_layout_add_floating_item</NAME>
+<RETURNS>gboolean  </RETURNS>
+GnomeDockLayout *layout,GnomeDockItem *item,gint x, gint y,GtkOrientation orientation
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_dock_layout_get_item</NAME>
+<RETURNS>GnomeDockLayoutItem  *</RETURNS>
+GnomeDockLayout *layout,GnomeDockItem *item
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_dock_layout_get_item_by_name</NAME>
+<RETURNS>GnomeDockLayoutItem  *</RETURNS>
+GnomeDockLayout *layout,const gchar *name
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_dock_layout_remove_item</NAME>
+<RETURNS>gboolean  </RETURNS>
+GnomeDockLayout *layout,GnomeDockItem *item
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_dock_layout_remove_item_by_name</NAME>
+<RETURNS>gboolean  </RETURNS>
+GnomeDockLayout *layout,const gchar *name
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_dock_layout_create_string</NAME>
+<RETURNS>gchar                *</RETURNS>
+GnomeDockLayout *layout
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_dock_layout_parse_string</NAME>
+<RETURNS>gboolean  </RETURNS>
+GnomeDockLayout *layout,const gchar *string
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_dock_layout_add_to_dock</NAME>
+<RETURNS>gboolean  </RETURNS>
+GnomeDockLayout *layout,GnomeDock *dock
+</FUNCTION>
+<MACRO>
+<NAME>GNOME_DOCK</NAME>
+#define GNOME_DOCK(obj) \
+  GTK_CHECK_CAST (obj, gnome_dock_get_type (), GnomeDock)
+</MACRO>
+<MACRO>
+<NAME>GNOME_DOCK_CLASS</NAME>
+#define GNOME_DOCK_CLASS(klass) \
+  GTK_CHECK_CLASS_CAST (klass, gnome_dock_get_type (), GnomeDockClass)
+</MACRO>
+<MACRO>
+<NAME>GNOME_IS_DOCK</NAME>
+#define GNOME_IS_DOCK(obj) \
+  GTK_CHECK_TYPE (obj, gnome_dock_get_type ())
+</MACRO>
+<ENUM>
+<NAME>GnomeDockPlacement</NAME>
+typedef enum
+{
+  GNOME_DOCK_TOP,
+  GNOME_DOCK_RIGHT,
+  GNOME_DOCK_BOTTOM,
+  GNOME_DOCK_LEFT,
+  GNOME_DOCK_FLOATING
+} GnomeDockPlacement;
+</ENUM>
+<STRUCT>
+<NAME>GnomeDock</NAME>
+</STRUCT>
+<STRUCT>
+<NAME>GnomeDockClass</NAME>
+</STRUCT>
+<STRUCT>
+<NAME>GnomeDock</NAME>
+struct GnomeDock
+{
+  GtkContainer container;
+
+  GtkWidget *client_area;
+
+  /* GnomeDockBands associated with this dock.  */
+  GList *top_bands;
+  GList *bottom_bands;
+  GList *right_bands;
+  GList *left_bands;
+
+  /* Children that are currently not docked.  */
+  GList *floating_children;     /* GtkWidget */
+
+  /* Client rectangle before drag.  */
+  GtkAllocation client_rect;
+
+  gboolean floating_items_allowed : 1;
+};
+</STRUCT>
+<FUNCTION>
+<NAME>gnome_dock_new</NAME>
+<RETURNS>GtkWidget      *</RETURNS>
+void
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_dock_get_type</NAME>
+<RETURNS>guint  </RETURNS>
+void
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_dock_allow_floating_items</NAME>
+<RETURNS>void  </RETURNS>
+GnomeDock *dock,gboolean enable
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_dock_add_item</NAME>
+<RETURNS>void  </RETURNS>
+GnomeDock             *dock,GnomeDockItem         *item,GnomeDockPlacement  placement,guint                  band_num,gint                   position,guint                  offset,gboolean               in_new_band
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_dock_add_floating_item</NAME>
+<RETURNS>void  </RETURNS>
+GnomeDock *dock,GnomeDockItem *widget,gint x, gint y,GtkOrientation orientation
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_dock_set_client_area</NAME>
+<RETURNS>void  </RETURNS>
+GnomeDock             *dock,GtkWidget             *widget
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_dock_get_client_area</NAME>
+<RETURNS>GtkWidget      *</RETURNS>
+GnomeDock             *dock
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_dock_get_item_by_name</NAME>
+<RETURNS>GnomeDockItem  *</RETURNS>
+GnomeDock *dock,const gchar *name,GnomeDockPlacement *placement_return,guint *num_band_return,guint *band_position_return,guint *offset_return
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_dock_get_layout</NAME>
+<RETURNS>GnomeDockLayout  *</RETURNS>
+GnomeDock *dock
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_dock_add_from_layout</NAME>
+<RETURNS>gboolean  </RETURNS>
+GnomeDock *dock,GnomeDockLayout *layout
+</FUNCTION>
+<MACRO>
 <NAME>GNOME_ENTRY</NAME>
 #define GNOME_ENTRY(obj)         GTK_CHECK_CAST (obj, gnome_entry_get_type (), GnomeEntry)
 </MACRO>
@@ -3141,6 +4081,128 @@ GnomeFileEntry *fentry,int file_must_exist
 <RETURNS>void  </RETURNS>
 GnomeFileEntry *fentry,int is_modal
 </FUNCTION>
+<ENUM>
+<NAME>GnomeFontPickerMode</NAME>
+typedef enum {
+    GNOME_FONT_PICKER_MODE_PIXMAP,
+    GNOME_FONT_PICKER_MODE_FONT_INFO,
+    GNOME_FONT_PICKER_MODE_USER_WIDGET,
+    GNOME_FONT_PICKER_MODE_UNKNOWN
+} GnomeFontPickerMode;
+</ENUM>
+<MACRO>
+<NAME>GNOME_TYPE_FONT_PICKER</NAME>
+#define GNOME_TYPE_FONT_PICKER            (gnome_font_picker_get_type ())
+</MACRO>
+<MACRO>
+<NAME>GNOME_FONT_PICKER</NAME>
+#define GNOME_FONT_PICKER(obj)            (GTK_CHECK_CAST ((obj), GNOME_TYPE_FONT_PICKER, GnomeFontPicker))
+</MACRO>
+<MACRO>
+<NAME>GNOME_FONT_PICKER_CLASS</NAME>
+#define GNOME_FONT_PICKER_CLASS(klass)    (GTK_CHECK_CLASS_CAST ((klass), GNOME_TYPE_FONT_PICKER, GnomeFontPickerClass))
+</MACRO>
+<MACRO>
+<NAME>GNOME_IS_FONT_PICKER</NAME>
+#define GNOME_IS_FONT_PICKER(obj)         (GTK_CHECK_TYPE ((obj), GNOME_TYPE_FONT_PICKER))
+</MACRO>
+<MACRO>
+<NAME>GNOME_IS_FONT_PICKER_CLASS</NAME>
+#define GNOME_IS_FONT_PICKER_CLASS(klass) (GTK_CHECK_CLASS_TYPE ((klass), GNOME_TYPE_FONT_PICKER))
+</MACRO>
+<STRUCT>
+<NAME>GnomeFontPicker</NAME>
+</STRUCT>
+<STRUCT>
+<NAME>GnomeFontPickerClass</NAME>
+</STRUCT>
+<STRUCT>
+<NAME>GnomeFontPicker</NAME>
+struct GnomeFontPicker {
+        GtkButton button;
+    
+	GtkWidget     *font_dialog;
+        GtkWidget     *inside;
+        GtkWidget     *font_label,*vsep,*size_label;
+
+        
+        /* Do not change, use set/get functions */
+        GnomeFontPickerMode mode;
+        gchar         *font_name;
+        gchar         *preview_text;
+        /* Only for GNOME_FONT_PICKER_MODE_FONT_INFO */
+        gboolean      use_font_in_label;
+        gboolean      use_font_in_label_size;
+        gboolean      show_size;
+
+        gchar         *title;
+};
+</STRUCT>
+<FUNCTION>
+<NAME>gnome_font_picker_get_type</NAME>
+<RETURNS>GtkType  </RETURNS>
+void
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_font_picker_new</NAME>
+<RETURNS>GtkWidget  *</RETURNS>
+void
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_font_picker_set_title</NAME>
+<RETURNS>void  </RETURNS>
+GnomeFontPicker *gfp, const gchar *title
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_font_picker_get_mode</NAME>
+<RETURNS>GnomeFontPickerMode</RETURNS>
+GnomeFontPicker *gfp
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_font_picker_set_mode</NAME>
+<RETURNS>void  </RETURNS>
+GnomeFontPicker *gfp,GnomeFontPickerMode mode
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_font_picker_fi_set_use_font_in_label</NAME>
+<RETURNS>void  </RETURNS>
+GnomeFontPicker *gfp,gboolean use_font_in_label,gint size
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_font_picker_fi_set_show_size</NAME>
+<RETURNS>void  </RETURNS>
+GnomeFontPicker *gfp,gboolean show_size
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_font_picker_uw_set_widget</NAME>
+<RETURNS>void  </RETURNS>
+GnomeFontPicker *gfp,GtkWidget       *widget
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_font_picker_get_font_name</NAME>
+<RETURNS>gchar *</RETURNS>
+GnomeFontPicker *gfp
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_font_picker_get_font</NAME>
+<RETURNS>GdkFont *</RETURNS>
+GnomeFontPicker *gfp
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_font_picker_set_font_name</NAME>
+<RETURNS>gboolean  </RETURNS>
+GnomeFontPicker *gfp,const gchar     *fontname
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_font_picker_get_preview_text</NAME>
+<RETURNS>gchar *</RETURNS>
+GnomeFontPicker *gfp
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_font_picker_set_preview_text</NAME>
+<RETURNS>void 	</RETURNS>
+GnomeFontPicker *gfp,const gchar     *text
+</FUNCTION>
 <STRUCT>
 <NAME>GnomeFontSelector</NAME>
 </STRUCT>
@@ -3229,10 +4291,533 @@ const gchar *geometry, gint *xpos, gint *ypos,gint *width, gint *height
 <RETURNS>gchar  *</RETURNS>
 GdkWindow * window
 </FUNCTION>
+<STRUCT>
+<NAME>GnomeGuru</NAME>
+</STRUCT>
+<STRUCT>
+<NAME>GnomeGuruClass</NAME>
+</STRUCT>
+<MACRO>
+<NAME>GNOME_GURU</NAME>
+#define GNOME_GURU(obj) GTK_CHECK_CAST (obj, gnome_guru_get_type (), GnomeGuru)
+</MACRO>
+<MACRO>
+<NAME>GNOME_GURU_CLASS</NAME>
+#define GNOME_GURU_CLASS(klass)  GTK_CHECK_CLASS_CAST (klass, gnome_guru_get_type (), GnomeGuruClass)
+</MACRO>
+<MACRO>
+<NAME>GNOME_IS_GURU</NAME>
+#define GNOME_IS_GURU(obj)  GTK_CHECK_TYPE (obj, gnome_guru_get_type ())
+</MACRO>
+<STRUCT>
+<NAME>GnomeGuru</NAME>
+struct GnomeGuru {
+  GtkVBox vbox;
+
+  /* all private, don't touch it. */
+
+  GtkWidget * graphic;
+
+  GList * pages;
+
+  struct _GnomeGuruPage* current_page;
+
+  GtkWidget * next;
+  GtkWidget * back;
+  GtkWidget * finish;
+  GtkWidget * page_title;
+  GtkWidget * page_box;
+  GtkWidget * buttonbox;
+
+  guint has_dialog : 1;
+};
+</STRUCT>
+<FUNCTION>
+<NAME>gnome_guru_get_type</NAME>
+<RETURNS>guint  </RETURNS>
+void
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_guru_new</NAME>
+<RETURNS>GtkWidget  *</RETURNS>
+const gchar * name,GtkWidget   * graphic,GnomeDialog * dialog
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_guru_construct</NAME>
+<RETURNS>void  </RETURNS>
+GnomeGuru   * guru,const gchar * name,GtkWidget   * graphic,GnomeDialog * dialog
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_guru_append_page</NAME>
+<RETURNS>void  </RETURNS>
+GnomeGuru   * guru,const gchar * name,GtkWidget   * widget
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_guru_next_set_sensitive</NAME>
+<RETURNS>void  </RETURNS>
+GnomeGuru   * guru,gboolean      sensitivity
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_guru_back_set_sensitive</NAME>
+<RETURNS>void  </RETURNS>
+GnomeGuru   * guru,gboolean      sensitivity
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_guru_current_page</NAME>
+<RETURNS>GtkWidget  *</RETURNS>
+GnomeGuru   * guru
+</FUNCTION>
+<MACRO>
+<NAME>GNOME_HREF</NAME>
+#define GNOME_HREF(obj) GTK_CHECK_CAST(obj, gnome_href_get_type(), GnomeHRef)
+</MACRO>
+<MACRO>
+<NAME>GNOME_HREF_CLASS</NAME>
+#define GNOME_HREF_CLASS(klass) GTK_CHECK_CLASS_CAST(klass, gnome_href_get_type, GnomeHRefClass)
+</MACRO>
+<MACRO>
+<NAME>GNOME_IS_HREF</NAME>
+#define GNOME_IS_HREF(obj) GTK_CHECK_TYPE(obj, gnome_href_get_type())
+</MACRO>
+<STRUCT>
+<NAME>GnomeHRef</NAME>
+</STRUCT>
+<STRUCT>
+<NAME>GnomeHRefClass</NAME>
+</STRUCT>
+<STRUCT>
+<NAME>GnomeHRef</NAME>
+struct GnomeHRef {
+  GtkButton button;
+
+  gchar *url;
+  GtkWidget *label;
+};
+</STRUCT>
+<FUNCTION>
+<NAME>gnome_href_get_type</NAME>
+<RETURNS>guint  </RETURNS>
+void
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_href_new</NAME>
+<RETURNS>GtkWidget  *</RETURNS>
+const gchar *url, const gchar *label
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_href_set_url</NAME>
+<RETURNS>void  </RETURNS>
+GnomeHRef *href, const gchar *url
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_href_get_url</NAME>
+<RETURNS>gchar  *</RETURNS>
+GnomeHRef *href
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_href_set_label</NAME>
+<RETURNS>void  </RETURNS>
+GnomeHRef *href, const gchar *label
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_href_get_label</NAME>
+<RETURNS>gchar  *</RETURNS>
+GnomeHRef *href
+</FUNCTION>
 <FUNCTION>
 <NAME>gnome_ice_init</NAME>
 <RETURNS>void  </RETURNS>
 void
+</FUNCTION>
+<MACRO>
+<NAME>GNOME_ICON_ENTRY</NAME>
+#define GNOME_ICON_ENTRY(obj)         GTK_CHECK_CAST (obj, gnome_icon_entry_get_type (), GnomeIconEntry)
+</MACRO>
+<MACRO>
+<NAME>GNOME_ICON_ENTRY_CLASS</NAME>
+#define GNOME_ICON_ENTRY_CLASS(klass) GTK_CHECK_CLASS_CAST (klass, gnome_icon_entry_get_type (), GnomeIconEntryClass)
+</MACRO>
+<MACRO>
+<NAME>GNOME_IS_ICON_ENTRY</NAME>
+#define GNOME_IS_ICON_ENTRY(obj)      GTK_CHECK_TYPE (obj, gnome_icon_entry_get_type ())
+</MACRO>
+<STRUCT>
+<NAME>GnomeIconEntry</NAME>
+</STRUCT>
+<STRUCT>
+<NAME>GnomeIconEntryClass</NAME>
+</STRUCT>
+<STRUCT>
+<NAME>GnomeIconEntry</NAME>
+struct GnomeIconEntry {
+	GtkVBox vbox;
+	
+	GtkWidget *fentry;
+
+	GtkWidget *pickbutton;
+	
+	GtkWidget *pick_dialog;
+	char *pick_dialog_dir;
+};
+</STRUCT>
+<FUNCTION>
+<NAME>gnome_icon_entry_get_type</NAME>
+<RETURNS>guint  </RETURNS>
+void
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_icon_entry_new</NAME>
+<RETURNS>GtkWidget  *</RETURNS>
+char *history_id,char *browse_dialog_title
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_icon_entry_set_pixmap_subdir</NAME>
+<RETURNS>void  </RETURNS>
+GnomeIconEntry *ientry,const char *subdir
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_icon_entry_set_icon</NAME>
+<RETURNS>void  </RETURNS>
+GnomeIconEntry *ientry,const char *filename
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_icon_entry_gnome_file_entry</NAME>
+<RETURNS>GtkWidget  *</RETURNS>
+GnomeIconEntry *ientry
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_icon_entry_gnome_entry</NAME>
+<RETURNS>GtkWidget  *</RETURNS>
+GnomeIconEntry *ientry
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_icon_entry_gtk_entry</NAME>
+<RETURNS>GtkWidget  *</RETURNS>
+GnomeIconEntry *ientry
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_icon_entry_get_filename</NAME>
+<RETURNS>char       *</RETURNS>
+GnomeIconEntry *ientry
+</FUNCTION>
+<MACRO>
+<NAME>GNOME_ICON_TEXT_ITEM</NAME>
+#define GNOME_ICON_TEXT_ITEM(obj)     (GTK_CHECK_CAST((obj), \
+        gnome_icon_text_item_get_type (), GnomeIconTextItem))
+</MACRO>
+<MACRO>
+<NAME>GNOME_ICON_TEXT_ITEM_CLASS</NAME>
+#define GNOME_ICON_TEXT_ITEM_CLASS(k) (GTK_CHECK_CLASS_CAST ((k),\
+	gnome_icon_text_item_get_type ()))
+</MACRO>
+<MACRO>
+<NAME>GNOME_IS_ICON_TEXT_ITEM</NAME>
+#define GNOME_IS_ICON_TEXT_ITEM(o)    (GTK_CHECK_TYPE((o), \
+	gnome_icon_text_item_get_type ()))
+</MACRO>
+<STRUCT>
+<NAME>GnomeIconTextItem</NAME>
+typedef struct {
+	GnomeCanvasItem canvas_item;
+
+	/* Size and maximum allowed width */
+	int x, y;
+	int width;
+
+	/* Font name */
+	char *fontname;
+
+	/* Private data */
+	gpointer priv; /* was GtkEntry *entry */
+	gpointer pad1; /* was GtkWidget *entry_top */
+	gpointer pad2; /* was GdkFont *font */
+
+	/* Actual text */
+	char *text;
+
+	/* Text layout information */
+	GnomeIconTextInfo *ti;
+
+	/* Whether the text is being edited */
+	unsigned int editing : 1;
+
+	/* Whether the text item is selected */
+	unsigned int selected : 1;
+
+	unsigned int pad3; /* was unsigned int unselected_click : 1 */
+
+	/* Whether the user is select-dragging a block of text */
+	unsigned int selecting : 1;
+
+	/* Whether the text is editable */
+	unsigned int is_editable : 1;
+
+	/* Whether the text is allocated by us (FALSE if allocated by the client) */
+	unsigned int is_text_allocated : 1;
+} GnomeIconTextItem;
+</STRUCT>
+<FUNCTION>
+<NAME>gnome_icon_text_item_get_type</NAME>
+<RETURNS>GtkType  </RETURNS>
+void
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_icon_text_item_configure</NAME>
+<RETURNS>void  </RETURNS>
+GnomeIconTextItem *iti,int                x,int                y,int                width,const char        *fontname,const char        *text,gboolean           is_editable,gboolean           is_static
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_icon_text_item_setxy</NAME>
+<RETURNS>void  </RETURNS>
+GnomeIconTextItem *iti,int                x,int                y
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_icon_text_item_select</NAME>
+<RETURNS>void  </RETURNS>
+GnomeIconTextItem *iti,int                sel
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_icon_text_item_get_text</NAME>
+<RETURNS>char     *</RETURNS>
+GnomeIconTextItem *iti
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_icon_text_item_stop_editing</NAME>
+<RETURNS>void  </RETURNS>
+GnomeIconTextItem *iti,gboolean           accept
+</FUNCTION>
+<MACRO>
+<NAME>GNOME_ICON_LIST</NAME>
+#define GNOME_ICON_LIST(obj)     GTK_CHECK_CAST (obj, gnome_icon_list_get_type (), GnomeIconList)
+</MACRO>
+<MACRO>
+<NAME>GNOME_ICON_LIST_CLASS</NAME>
+#define GNOME_ICON_LIST_CLASS(k) GTK_CHECK_CLASS_CAST (k, gnome_icon_list_get_type (), GnomeIconListClass)
+</MACRO>
+<MACRO>
+<NAME>GNOME_IS_ICON_LIST</NAME>
+#define GNOME_IS_ICON_LIST(obj)  GTK_CHECK_TYPE (obj, gnome_icon_list_get_type ())
+</MACRO>
+<ENUM>
+<NAME>GnomeIconListMode</NAME>
+typedef enum {
+	GNOME_ICON_LIST_ICONS,
+	GNOME_ICON_LIST_TEXT_BELOW,
+	GNOME_ICON_LIST_TEXT_RIGHT
+} GnomeIconListMode;
+</ENUM>
+<STRUCT>
+<NAME>GnomeIconList</NAME>
+typedef struct {
+	GnomeCanvas canvas;
+
+	/* Private data */
+	gpointer priv; /* was GtkAdjustment *adj */
+
+	gpointer pad1; /* was GtkAdjustment *hadj */
+
+	/* Number of icons in the list */
+	int icons;
+
+	gpointer pad2; /* was GList *icon_list */
+	int pad3; /* was int frozen */
+	int pad4; /* was int dirty */
+	int pad5; /* was int row_spacing */
+	int pad6; /* was int col_spacing */
+	int pad7; /* was int text_spacing */
+	int pad8; /* was int icon_border */
+	gpointer pad9; /* was char *separators */
+	GnomeIconListMode pad10; /* was GnomeIconListMode mode */
+
+	GtkSelectionMode pad11; /* was GtkSelectionMode selection_mode */
+
+	/* A list of integers with the indices of the currently selected icons */
+	GList *selection;
+
+	gpointer pad12; /* was GList *preserve_selection */
+	int pad13; /* was int icon_width */
+	unsigned int pad14 : 1; /* was unsigned int is_editable : 1 */
+	unsigned int pad15 : 1; /* was unsigned int static_text : 1 */
+	int pad16; /* was int last_selected */
+	gpointer pad17; /* was void *last_clicked */
+	int pad18; /* was int timer_tag */
+	int pad19; /* was int value_diff */
+	gdouble pad20; /* was gdouble event_last_x */
+	gdouble pad21; /* was gdouble event_last_y */
+	gpointer pad22; /* was GList *lines */
+	int pad23; /* was int total_height */
+	double pad24; /* was double sel_start_x */
+	double pad25; /* was double sel_start_y */
+	gpointer pad26; /* was GnomeCanvasItem *sel_rect */
+} GnomeIconList;
+</STRUCT>
+<MACRO>
+<NAME>GNOME_ICON_LIST_IS_EDITABLE</NAME>
+#define GNOME_ICON_LIST_IS_EDITABLE 1
+</MACRO>
+<MACRO>
+<NAME>GNOME_ICON_LIST_STATIC_TEXT</NAME>
+#define GNOME_ICON_LIST_STATIC_TEXT 2
+</MACRO>
+<FUNCTION>
+<NAME>gnome_icon_list_get_type</NAME>
+<RETURNS>guint  </RETURNS>
+void
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_icon_list_new</NAME>
+<RETURNS>GtkWidget      *</RETURNS>
+guint         icon_width,GtkAdjustment *adj,int           flags
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_icon_list_new_flags</NAME>
+<RETURNS>GtkWidget      *</RETURNS>
+guint         icon_width,GtkAdjustment *adj,int           flags
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_icon_list_construct</NAME>
+<RETURNS>void  </RETURNS>
+GnomeIconList *gil,guint icon_width,GtkAdjustment *adj,int flags
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_icon_list_set_hadjustment</NAME>
+<RETURNS>void  </RETURNS>
+GnomeIconList *gil,GtkAdjustment *hadj
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_icon_list_set_vadjustment</NAME>
+<RETURNS>void  </RETURNS>
+GnomeIconList *gil,GtkAdjustment *vadj
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_icon_list_freeze</NAME>
+<RETURNS>void  </RETURNS>
+GnomeIconList *gil
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_icon_list_thaw</NAME>
+<RETURNS>void  </RETURNS>
+GnomeIconList *gil
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_icon_list_insert</NAME>
+<RETURNS>void  </RETURNS>
+GnomeIconList *gil,int pos, const char *icon_filename,const char *text
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_icon_list_insert_imlib</NAME>
+<RETURNS>void  </RETURNS>
+GnomeIconList *gil,int pos, GdkImlibImage *im,const char *text
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_icon_list_append</NAME>
+<RETURNS>int  </RETURNS>
+GnomeIconList *gil,const char *icon_filename,const char *text
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_icon_list_append_imlib</NAME>
+<RETURNS>int  </RETURNS>
+GnomeIconList *gil,GdkImlibImage *im,char *text
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_icon_list_clear</NAME>
+<RETURNS>void  </RETURNS>
+GnomeIconList *gil
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_icon_list_remove</NAME>
+<RETURNS>void  </RETURNS>
+GnomeIconList *gil, int pos
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_icon_list_set_selection_mode</NAME>
+<RETURNS>void  </RETURNS>
+GnomeIconList *gil,GtkSelectionMode mode
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_icon_list_select_icon</NAME>
+<RETURNS>void  </RETURNS>
+GnomeIconList *gil,int idx
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_icon_list_unselect_icon</NAME>
+<RETURNS>void  </RETURNS>
+GnomeIconList *gil,int pos
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_icon_list_unselect_all</NAME>
+<RETURNS>int  </RETURNS>
+GnomeIconList *gil,GdkEvent *event, gpointer keep
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_icon_list_set_icon_width</NAME>
+<RETURNS>void  </RETURNS>
+GnomeIconList *gil,int w
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_icon_list_set_row_spacing</NAME>
+<RETURNS>void  </RETURNS>
+GnomeIconList *gil,int pixels
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_icon_list_set_col_spacing</NAME>
+<RETURNS>void  </RETURNS>
+GnomeIconList *gil,int pixels
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_icon_list_set_text_spacing</NAME>
+<RETURNS>void  </RETURNS>
+GnomeIconList *gil,int pixels
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_icon_list_set_icon_border</NAME>
+<RETURNS>void  </RETURNS>
+GnomeIconList *gil,int pixels
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_icon_list_set_separators</NAME>
+<RETURNS>void  </RETURNS>
+GnomeIconList *gil,const char *sep
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_icon_list_set_icon_data</NAME>
+<RETURNS>void  </RETURNS>
+GnomeIconList *gil,int pos, gpointer data
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_icon_list_set_icon_data_full</NAME>
+<RETURNS>void  </RETURNS>
+GnomeIconList *gil,int pos, gpointer data,GtkDestroyNotify destroy
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_icon_list_find_icon_from_data</NAME>
+<RETURNS>int  </RETURNS>
+GnomeIconList *gil,gpointer data
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_icon_list_get_icon_data</NAME>
+<RETURNS>gpointer  </RETURNS>
+GnomeIconList *gil,int pos
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_icon_list_moveto</NAME>
+<RETURNS>void  </RETURNS>
+GnomeIconList *gil,int pos, double yalign
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_icon_list_icon_is_visible</NAME>
+<RETURNS>GtkVisibility  </RETURNS>
+GnomeIconList *gil,int pos
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_icon_list_get_icon_at</NAME>
+<RETURNS>int  </RETURNS>
+GnomeIconList *gil, int x, int y
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_icon_list_get_items_per_line</NAME>
+<RETURNS>int  </RETURNS>
+GnomeIconList *gil
 </FUNCTION>
 <STRUCT>
 <NAME>GnomeIconSelection</NAME>
@@ -3310,6 +4895,50 @@ GnomeIconSelection * gis,const gchar * filename
 <NAME>gnome_icon_selection_stop_loading</NAME>
 <RETURNS>void  </RETURNS>
 GnomeIconSelection * gis
+</FUNCTION>
+<STRUCT>
+<NAME>GnomeIconTextInfoRow</NAME>
+typedef struct {
+	char *text;
+	int width;
+	GdkWChar *text_wc;	/* text in wide characters */
+	int text_length;	/* number of characters */
+} GnomeIconTextInfoRow;
+</STRUCT>
+<STRUCT>
+<NAME>GnomeIconTextInfo</NAME>
+typedef struct {
+	GList *rows;
+	GdkFont *font;
+	int width;
+	int height;
+	int baseline_skip;
+} GnomeIconTextInfo;
+</STRUCT>
+<FUNCTION>
+<NAME>gnome_icon_layout_text</NAME>
+<RETURNS>GnomeIconTextInfo  *</RETURNS>
+GdkFont *font, char *text,char *separators, int max_width,int confine
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_icon_paint_text</NAME>
+<RETURNS>void  </RETURNS>
+GnomeIconTextInfo *ti,GdkDrawable *drawable, GdkGC *gc,int x, int y,GtkJustification just
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_icon_text_info_free</NAME>
+<RETURNS>void  </RETURNS>
+GnomeIconTextInfo *ti
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_init</NAME>
+<RETURNS>int  </RETURNS>
+const char *app_id, const char *app_version,int argc, char **argv
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_init_with_popt_table</NAME>
+<RETURNS>int  </RETURNS>
+const char *app_id,const char *app_version,int argc, char **argv,const struct poptOption *options,int flags,poptContext *return_ctx
 </FUNCTION>
 <STRUCT>
 <NAME>GnomeLess</NAME>
@@ -3489,6 +5118,110 @@ GnomeMDIChild *mdi_child, gchar *name
 <NAME>gnome_mdi_child_set_menu_template</NAME>
 <RETURNS>void  </RETURNS>
 GnomeMDIChild *mdi_child, GnomeUIInfo *menu_tmpl
+</FUNCTION>
+<MACRO>
+<NAME>GNOME_MDI_GENERIC_CHILD</NAME>
+#define GNOME_MDI_GENERIC_CHILD(obj)          GTK_CHECK_CAST (obj, gnome_mdi_generic_child_get_type (), GnomeMDIGenericChild)
+</MACRO>
+<MACRO>
+<NAME>GNOME_MDI_GENERIC_CHILD_CLASS</NAME>
+#define GNOME_MDI_GENERIC_CHILD_CLASS(klass)  GTK_CHECK_CLASS_CAST (klass, gnome_mdi_generic_child_get_type (), GnomeMDIGenericChildClass)
+</MACRO>
+<MACRO>
+<NAME>GNOME_IS_MDI_GENERIC_CHILD</NAME>
+#define GNOME_IS_MDI_GENERIC_CHILD(obj)       GTK_CHECK_TYPE (obj, gnome_mdi_generic_child_get_type ())
+</MACRO>
+<STRUCT>
+<NAME>GnomeMDIGenericChild</NAME>
+</STRUCT>
+<STRUCT>
+<NAME>GnomeMDIGenericChildClass</NAME>
+</STRUCT>
+<STRUCT>
+<NAME>GnomeMDIGenericChild</NAME>
+struct GnomeMDIGenericChild {
+	GnomeMDIChild mdi_child;
+
+	/* if any of these are set they override the virtual functions
+	   in GnomeMDIChildClass. create_view is mandatory, as no default
+	   handler is provided, others may be NULL */
+	GnomeMDIChildViewCreator create_view;
+	GnomeMDIChildMenuCreator create_menus;
+	GnomeMDIChildConfigFunc  get_config_string;
+	GnomeMDIChildLabelFunc   set_label;
+
+	GtkCallbackMarshal create_view_cbm, create_menus_cbm,
+		               get_config_string_cbm, set_label_cbm;
+	GtkDestroyNotify   create_view_dn, create_menus_dn,
+		               get_config_string_dn, set_label_dn;
+	gpointer           create_view_data, create_menus_data,
+		               get_config_string_data, set_label_data;
+};
+</STRUCT>
+<FUNCTION>
+<NAME>gnome_mdi_generic_child_get_type</NAME>
+<RETURNS>guint  </RETURNS>
+void
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_mdi_generic_child_new</NAME>
+<RETURNS>GnomeMDIGenericChild  *</RETURNS>
+gchar *name
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_mdi_generic_child_set_view_creator</NAME>
+<RETURNS>void  </RETURNS>
+GnomeMDIGenericChild *child,GnomeMDIChildViewCreator func,gpointer data
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_mdi_generic_child_set_view_creator_full</NAME>
+<RETURNS>void  </RETURNS>
+GnomeMDIGenericChild *child,GnomeMDIChildViewCreator func,GtkCallbackMarshal marshal,gpointer data,GtkDestroyNotify notify
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_mdi_generic_child_set_menu_creator</NAME>
+<RETURNS>void  </RETURNS>
+GnomeMDIGenericChild *child,GnomeMDIChildMenuCreator func,gpointer data
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_mdi_generic_child_set_menu_creator_full</NAME>
+<RETURNS>void  </RETURNS>
+GnomeMDIGenericChild *child,GnomeMDIChildMenuCreator func,GtkCallbackMarshal marshal,gpointer data,GtkDestroyNotify notify
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_mdi_generic_child_set_config_func</NAME>
+<RETURNS>void  </RETURNS>
+GnomeMDIGenericChild *child,GnomeMDIChildConfigFunc func,gpointer data
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_mdi_generic_child_set_config_func_full</NAME>
+<RETURNS>void  </RETURNS>
+GnomeMDIGenericChild *child,GnomeMDIChildConfigFunc func,GtkCallbackMarshal marshal,gpointer data,GtkDestroyNotify notify
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_mdi_generic_child_set_label_func</NAME>
+<RETURNS>void  </RETURNS>
+GnomeMDIGenericChild *child,GnomeMDIChildLabelFunc func,gpointer data
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_mdi_generic_child_set_label_func_full</NAME>
+<RETURNS>void  </RETURNS>
+GnomeMDIGenericChild *child,GnomeMDIChildLabelFunc func,GtkCallbackMarshal marshal,gpointer data,GtkDestroyNotify notify
+</FUNCTION>
+<USER_FUNCTION>
+<NAME>GnomeMDIChildCreator</NAME>
+<RETURNS>GnomeMDIChild *</RETURNS>
+const gchar *
+</USER_FUNCTION>
+<FUNCTION>
+<NAME>gnome_mdi_restore_state</NAME>
+<RETURNS>gboolean 	</RETURNS>
+GnomeMDI *mdi, const char *section,GnomeMDIChildCreator child_create_func
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_mdi_save_state</NAME>
+<RETURNS>void 	</RETURNS>
+GnomeMDI *mdi, const gchar *section
 </FUNCTION>
 <MACRO>
 <NAME>GNOME_MDI</NAME>
@@ -3824,6 +5557,179 @@ GnomeNumberEntry *nentry,char *calc_dialog_title
 GnomeNumberEntry *nentry
 </FUNCTION>
 <MACRO>
+<NAME>GNOME_PAPER_SELECTOR</NAME>
+#define GNOME_PAPER_SELECTOR(obj)         GTK_CHECK_CAST (obj, gnome_paper_selector_get_type (), GnomePaperSelector)
+</MACRO>
+<MACRO>
+<NAME>GNOME_PAPER_SELECTOR_CLASS</NAME>
+#define GNOME_PAPER_SELECTOR_CLASS(klass) GTK_CHECK_CLASS_CAST (klass, gnome_paper_selector_get_type (), GnomePaperSelectorClass)
+</MACRO>
+<MACRO>
+<NAME>GNOME_IS_PAPER_SELECTOR</NAME>
+#define GNOME_IS_PAPER_SELECTOR(obj)      GTK_CHECK_TYPE (obj, gnome_paper_selector_get_type ())
+</MACRO>
+<STRUCT>
+<NAME>GnomePaperSelector</NAME>
+</STRUCT>
+<STRUCT>
+<NAME>GnomePaperSelectorClass</NAME>
+</STRUCT>
+<STRUCT>
+<NAME>GnomePaperSelector</NAME>
+struct GnomePaperSelector {
+  GtkVBox vbox;
+  
+  GtkWidget *paper;
+  GtkWidget *width;
+  GtkWidget *height;
+  GtkWidget *unit;
+  GtkWidget *unit_label;
+
+  gint paper_id;
+  gint width_id;
+  gint height_id;
+};
+</STRUCT>
+<FUNCTION>
+<NAME>gnome_paper_selector_get_type</NAME>
+<RETURNS>guint 	</RETURNS>
+void
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_paper_selector_new</NAME>
+<RETURNS>GtkWidget 	*</RETURNS>
+void
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_paper_selector_get_name</NAME>
+<RETURNS>gchar 		*</RETURNS>
+GnomePaperSelector *gspaper
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_paper_selector_get_width</NAME>
+<RETURNS>gfloat 	</RETURNS>
+GnomePaperSelector *gspaper
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_paper_selector_get_height</NAME>
+<RETURNS>gfloat 	</RETURNS>
+GnomePaperSelector *gspaper
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_paper_selector_get_left_margin</NAME>
+<RETURNS>gfloat  </RETURNS>
+GnomePaperSelector *gspaper
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_paper_selector_get_right_margin</NAME>
+<RETURNS>gfloat  </RETURNS>
+GnomePaperSelector *gspaper
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_paper_selector_get_top_margin</NAME>
+<RETURNS>gfloat  </RETURNS>
+GnomePaperSelector *gspaper
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_paper_selector_get_bottom_margin</NAME>
+<RETURNS>gfloat  </RETURNS>
+GnomePaperSelector *gspaper
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_paper_selector_set_name</NAME>
+<RETURNS>void 	</RETURNS>
+GnomePaperSelector *gspaper,gchar *name
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_paper_selector_set_width</NAME>
+<RETURNS>void 	</RETURNS>
+GnomePaperSelector *gspaper,gfloat width
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_paper_selector_set_height</NAME>
+<RETURNS>void 	</RETURNS>
+GnomePaperSelector *gspaper,gfloat height
+</FUNCTION>
+<MACRO>
+<NAME>GNOME_PIXMAP_ENTRY</NAME>
+#define GNOME_PIXMAP_ENTRY(obj)         GTK_CHECK_CAST (obj, gnome_pixmap_entry_get_type (), GnomePixmapEntry)
+</MACRO>
+<MACRO>
+<NAME>GNOME_PIXMAP_ENTRY_CLASS</NAME>
+#define GNOME_PIXMAP_ENTRY_CLASS(klass) GTK_CHECK_CLASS_CAST (klass, gnome_pixmap_entry_get_type (), GnomePixmapEntryClass)
+</MACRO>
+<MACRO>
+<NAME>GNOME_IS_PIXMAP_ENTRY</NAME>
+#define GNOME_IS_PIXMAP_ENTRY(obj)      GTK_CHECK_TYPE (obj, gnome_pixmap_entry_get_type ())
+</MACRO>
+<STRUCT>
+<NAME>GnomePixmapEntry</NAME>
+</STRUCT>
+<STRUCT>
+<NAME>GnomePixmapEntryClass</NAME>
+</STRUCT>
+<STRUCT>
+<NAME>GnomePixmapEntry</NAME>
+struct GnomePixmapEntry {
+	GtkVBox vbox;
+	
+	GtkWidget *fentry;
+
+	int do_preview; /*put a preview frame with the pixmap next to
+			  the entry*/
+	GtkWidget *preview;
+	GtkWidget *preview_sw;
+	
+	/*very private*/
+	char *last_preview;
+};
+</STRUCT>
+<FUNCTION>
+<NAME>gnome_pixmap_entry_get_type</NAME>
+<RETURNS>guint  </RETURNS>
+void
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_pixmap_entry_new</NAME>
+<RETURNS>GtkWidget  *</RETURNS>
+char *history_id,char *browse_dialog_title,int do_preview
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_pixmap_entry_set_pixmap_subdir</NAME>
+<RETURNS>void  </RETURNS>
+GnomePixmapEntry *pentry,const char *subdir
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_pixmap_entry_gnome_file_entry</NAME>
+<RETURNS>GtkWidget  *</RETURNS>
+GnomePixmapEntry *pentry
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_pixmap_entry_gnome_entry</NAME>
+<RETURNS>GtkWidget  *</RETURNS>
+GnomePixmapEntry *pentry
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_pixmap_entry_gtk_entry</NAME>
+<RETURNS>GtkWidget  *</RETURNS>
+GnomePixmapEntry *pentry
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_pixmap_entry_set_preview</NAME>
+<RETURNS>void  </RETURNS>
+GnomePixmapEntry *pentry,int do_preview
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_pixmap_entry_set_preview_size</NAME>
+<RETURNS>void 	</RETURNS>
+GnomePixmapEntry *pentry,int preview_w,int preview_h
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_pixmap_entry_get_filename</NAME>
+<RETURNS>char       *</RETURNS>
+GnomePixmapEntry *pentry
+</FUNCTION>
+<MACRO>
 <NAME>GNOME_PIXMAP</NAME>
 #define GNOME_PIXMAP(obj)         GTK_CHECK_CAST (obj, gnome_pixmap_get_type (), GnomePixmap)
 </MACRO>
@@ -3959,6 +5865,46 @@ GnomePixmap *gpixmap,GdkImlibImage *im
 <NAME>gnome_pixmap_load_imlib_at_size</NAME>
 <RETURNS>void  </RETURNS>
 GnomePixmap *gpixmap,GdkImlibImage *im,int width, int height
+</FUNCTION>
+<MACRO>
+<NAME>gnome_widget_add_help</NAME>
+#define gnome_widget_add_help(widget, help) \
+	(gnome_widget_add_help_with_uidata((widget),(help),NULL, NULL))
+</MACRO>
+<FUNCTION>
+<NAME>gnome_widget_add_help_with_uidata</NAME>
+<RETURNS>void  </RETURNS>
+GtkWidget *widget,gchar *help,GnomeUIInfo *menuinfo,gpointer user_data
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_popup_menu_new</NAME>
+<RETURNS>GtkWidget  *</RETURNS>
+GnomeUIInfo *uiinfo
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_popup_menu_new_with_accelgroup</NAME>
+<RETURNS>GtkWidget  *</RETURNS>
+GnomeUIInfo *uiinfo,GtkAccelGroup *accelgroup
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_popup_menu_get_accel_group</NAME>
+<RETURNS>GtkAccelGroup  *</RETURNS>
+GtkMenu *menu
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_popup_menu_attach</NAME>
+<RETURNS>void  </RETURNS>
+GtkWidget *popup, GtkWidget *widget,gpointer user_data
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_popup_menu_do_popup</NAME>
+<RETURNS>void  </RETURNS>
+GtkWidget *popup, GtkMenuPositionFunc pos_func, gpointer pos_data,GdkEventButton *event, gpointer user_data
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_popup_menu_do_popup_modal</NAME>
+<RETURNS>int  </RETURNS>
+GtkWidget *popup, GtkMenuPositionFunc pos_func, gpointer pos_data,GdkEventButton *event, gpointer user_data
 </FUNCTION>
 <STRUCT>
 <NAME>GnomePreferences</NAME>
@@ -4211,6 +6157,85 @@ void
 <RETURNS>void  </RETURNS>
 int disable_imlib_cache
 </FUNCTION>
+<MACRO>
+<NAME>GNOME_PROC_BAR</NAME>
+#define GNOME_PROC_BAR(obj)		GTK_CHECK_CAST (obj, gnome_proc_bar_get_type (), GnomeProcBar)
+</MACRO>
+<MACRO>
+<NAME>GNOME_PROC_BAR__CLASS</NAME>
+#define GNOME_PROC_BAR__CLASS(klass)	GTK_CHECK_CLASS_CAST (klass, gnome_proc_bar_get_type (), GnomeProcBarClass)
+</MACRO>
+<MACRO>
+<NAME>GNOME_IS_PROC_BAR</NAME>
+#define GNOME_IS_PROC_BAR(obj)		GTK_CHECK_TYPE (obj, gnome_proc_bar_get_type ())
+</MACRO>
+<STRUCT>
+<NAME>GnomeProcBar</NAME>
+</STRUCT>
+<STRUCT>
+<NAME>GnomeProcBarClass</NAME>
+</STRUCT>
+<STRUCT>
+<NAME>GnomeProcBar</NAME>
+struct GnomeProcBar {
+
+	GtkHBox hbox;
+
+	GtkWidget *bar;
+	GtkWidget *label;
+	GtkWidget *frame;
+
+	gboolean vertical : 1;
+
+	GdkPixmap *bs;
+	GdkColor *colors;
+
+	gint colors_allocated;
+	gint first_request;
+	gint n;
+	gint tag;
+
+	unsigned *last;
+
+	gint (*cb)();
+	gpointer cb_data;
+};
+</STRUCT>
+<FUNCTION>
+<NAME>gnome_proc_bar_get_type</NAME>
+<RETURNS>guint  </RETURNS>
+void
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_proc_bar_new</NAME>
+<RETURNS>GtkWidget  *</RETURNS>
+GtkWidget *label,gint n, GdkColor *colors,gint (*cb)()
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_proc_bar_set_values</NAME>
+<RETURNS>void  </RETURNS>
+GnomeProcBar *pb, unsigned val []
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_proc_bar_set_orient</NAME>
+<RETURNS>void  </RETURNS>
+GnomeProcBar *pb, gboolean vertical
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_proc_bar_start</NAME>
+<RETURNS>void  </RETURNS>
+GnomeProcBar *pb, gint gtime, gpointer data
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_proc_bar_stop</NAME>
+<RETURNS>void  </RETURNS>
+GnomeProcBar *pb
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_proc_bar_update</NAME>
+<RETURNS>void  </RETURNS>
+GnomeProcBar *pb, GdkColor *colors
+</FUNCTION>
 <STRUCT>
 <NAME>GnomePropertyObject</NAME>
 </STRUCT>
@@ -4310,6 +6335,16 @@ GnomePropertyObject *object
 <NAME>gnome_property_object_changed</NAME>
 <RETURNS>void  </RETURNS>
 GnomePropertyObject *object
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_property_entry_font</NAME>
+<RETURNS>GtkWidget  *</RETURNS>
+GnomePropertyObject *object, const gchar *label,gchar **font_name_ptr, GdkFont **font_ptr
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_property_entry_colors</NAME>
+<RETURNS>GtkWidget  *</RETURNS>
+GnomePropertyObject *object, const gchar *label,gint num_colors, gint columns, gint *table_pos,GdkColor *colors, const gchar *texts []
 </FUNCTION>
 <MACRO>
 <NAME>GNOME_PROPERTY_BOX</NAME>
@@ -4458,6 +6493,106 @@ GnomeScores *gs,gchar *txt
 <NAME>gnome_scores_set_current_player</NAME>
 <RETURNS>void  </RETURNS>
 GnomeScores *gs,gint i
+</FUNCTION>
+<MACRO>
+<NAME>GNOME_SPELL</NAME>
+#define GNOME_SPELL(obj)		GTK_CHECK_CAST(obj, gnome_spell_get_type(), GnomeSpell)
+</MACRO>
+<MACRO>
+<NAME>GNOME_SPELL_CLASS</NAME>
+#define GNOME_SPELL_CLASS(klass)		GTK_CHECK_CLASS_CAST(klass, gnome_spell_get_type(), GnomeSpelliClass)
+</MACRO>
+<MACRO>
+<NAME>GNOME_IS_SPELL</NAME>
+#define GNOME_IS_SPELL(obj)		GTK_CHECK_TYPE(obj, gnome_spell_get_type())
+</MACRO>
+<STRUCT>
+<NAME>GnomeSpell</NAME>
+</STRUCT>
+<STRUCT>
+<NAME>GnomeSpellClass</NAME>
+</STRUCT>
+<STRUCT>
+<NAME>GnomeSpellInfo</NAME>
+</STRUCT>
+<STRUCT>
+<NAME>GnomeSpellInfo</NAME>
+struct GnomeSpellInfo {
+	gchar* original;
+	gchar* replacement;
+	gchar* word;
+	guint offset;
+	GSList * words;
+};
+</STRUCT>
+<STRUCT>
+<NAME>GnomeSpell</NAME>
+struct GnomeSpell {
+	GtkVBox vbox;
+
+	GSList * spellinfo;
+
+	GtkWidget* page_spell;
+	GtkWidget* page_config;
+	GtkWidget* word;
+	GtkWidget* list;
+	GtkWidget* b_accept;
+	GtkWidget* b_skip;
+	GtkWidget* b_replace;
+	GtkWidget* b_insert;
+	GtkWidget* b_insertl;
+	GtkWidget* command;
+	GtkWidget* dict;
+	GtkWidget* pdict;
+	GtkWidget* wchars;
+	GtkWidget* wlen;
+	GtkWidget* sort;
+	GtkWidget* runtog;
+	GtkWidget* discard;
+	GtkWidget* tooltip;
+	GtkWidget* killproc;
+	GtkTooltips* tooltips;
+	GSList* awords;
+
+	FILE* rispell;
+	FILE* wispell;
+	pid_t spell_pid;
+};
+</STRUCT>
+<FUNCTION>
+<NAME>gnome_spell_get_type</NAME>
+<RETURNS>guint  </RETURNS>
+void
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_spell_new</NAME>
+<RETURNS>GtkWidget *</RETURNS>
+void
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_spell_check</NAME>
+<RETURNS>gint  </RETURNS>
+GnomeSpell* gtkspell, gchar* str
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_spell_accept</NAME>
+<RETURNS>void  </RETURNS>
+GnomeSpell* gtkspell, gchar* word
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_spell_insert</NAME>
+<RETURNS>void  </RETURNS>
+GnomeSpell* gtkspell, gchar* word, gint lowercase
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_spell_next</NAME>
+<RETURNS>int 	</RETURNS>
+GnomeSpell* gtkspell
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_spell_kill</NAME>
+<RETURNS>void 	</RETURNS>
+GnomeSpell* gtkspell
 </FUNCTION>
 <FUNCTION>
 <NAME>gnome_startup_acquire_token</NAME>
@@ -5670,122 +7805,258 @@ typedef enum {
 <NAME>GNOME_KEY_MOD_NEW_GAME</NAME>
 #define GNOME_KEY_MOD_NEW_GAME          (GDK_CONTROL_MASK)
 </MACRO>
-<VARIABLE>
-<NAME>GTK_TYPE_GNOME_ANIMATOR_STATUS</NAME>
-extern GtkType GTK_TYPE_GNOME_ANIMATOR_STATUS;
-</VARIABLE>
-<VARIABLE>
-<NAME>GTK_TYPE_GNOME_ANIMATOR_LOOP_TYPE</NAME>
-extern GtkType GTK_TYPE_GNOME_ANIMATOR_LOOP_TYPE;
-</VARIABLE>
-<VARIABLE>
-<NAME>GTK_TYPE_GNOME_UI_INFO_TYPE</NAME>
-extern GtkType GTK_TYPE_GNOME_UI_INFO_TYPE;
-</VARIABLE>
-<VARIABLE>
-<NAME>GTK_TYPE_GNOME_UI_INFO_CONFIGURABLE_TYPES</NAME>
-extern GtkType GTK_TYPE_GNOME_UI_INFO_CONFIGURABLE_TYPES;
-</VARIABLE>
-<VARIABLE>
-<NAME>GTK_TYPE_GNOME_UI_PIXMAP_TYPE</NAME>
-extern GtkType GTK_TYPE_GNOME_UI_PIXMAP_TYPE;
-</VARIABLE>
-<VARIABLE>
-<NAME>GTK_TYPE_GNOME_CALCULATOR_MODE</NAME>
-extern GtkType GTK_TYPE_GNOME_CALCULATOR_MODE;
-</VARIABLE>
-<VARIABLE>
-<NAME>GTK_TYPE_GNOME_INTERACT_STYLE</NAME>
-extern GtkType GTK_TYPE_GNOME_INTERACT_STYLE;
-</VARIABLE>
-<VARIABLE>
-<NAME>GTK_TYPE_GNOME_DIALOG_TYPE</NAME>
-extern GtkType GTK_TYPE_GNOME_DIALOG_TYPE;
-</VARIABLE>
-<VARIABLE>
-<NAME>GTK_TYPE_GNOME_SAVE_STYLE</NAME>
-extern GtkType GTK_TYPE_GNOME_SAVE_STYLE;
-</VARIABLE>
-<VARIABLE>
-<NAME>GTK_TYPE_GNOME_RESTART_STYLE</NAME>
-extern GtkType GTK_TYPE_GNOME_RESTART_STYLE;
-</VARIABLE>
-<VARIABLE>
-<NAME>GTK_TYPE_GNOME_CLIENT_STATE</NAME>
-extern GtkType GTK_TYPE_GNOME_CLIENT_STATE;
-</VARIABLE>
-<VARIABLE>
-<NAME>GTK_TYPE_GNOME_CLIENT_FLAGS</NAME>
-extern GtkType GTK_TYPE_GNOME_CLIENT_FLAGS;
-</VARIABLE>
-<VARIABLE>
-<NAME>GTK_TYPE_GNOME_DATE_EDIT_FLAGS</NAME>
-extern GtkType GTK_TYPE_GNOME_DATE_EDIT_FLAGS;
-</VARIABLE>
-<VARIABLE>
-<NAME>GTK_TYPE_GNOME_DOCK_PLACEMENT</NAME>
-extern GtkType GTK_TYPE_GNOME_DOCK_PLACEMENT;
-</VARIABLE>
-<VARIABLE>
-<NAME>GTK_TYPE_GNOME_DOCK_ITEM_BEHAVIOR</NAME>
-extern GtkType GTK_TYPE_GNOME_DOCK_ITEM_BEHAVIOR;
-</VARIABLE>
-<VARIABLE>
-<NAME>GTK_TYPE_GNOME_FONT_PICKER_MODE</NAME>
-extern GtkType GTK_TYPE_GNOME_FONT_PICKER_MODE;
-</VARIABLE>
-<VARIABLE>
-<NAME>GTK_TYPE_GNOME_ICON_LIST_MODE</NAME>
-extern GtkType GTK_TYPE_GNOME_ICON_LIST_MODE;
-</VARIABLE>
-<VARIABLE>
-<NAME>GTK_TYPE_GNOME_MDI_MODE</NAME>
-extern GtkType GTK_TYPE_GNOME_MDI_MODE;
-</VARIABLE>
-<VARIABLE>
-<NAME>GTK_TYPE_GNOME_PROPERTY_ACTION</NAME>
-extern GtkType GTK_TYPE_GNOME_PROPERTY_ACTION;
-</VARIABLE>
-<VARIABLE>
-<NAME>GTK_TYPE_GNOME_STOCK_PIXMAP_TYPE</NAME>
-extern GtkType GTK_TYPE_GNOME_STOCK_PIXMAP_TYPE;
-</VARIABLE>
-<VARIABLE>
-<NAME>GTK_TYPE_GNOME_PREFERENCES_TYPE</NAME>
-extern GtkType GTK_TYPE_GNOME_PREFERENCES_TYPE;
-</VARIABLE>
-<VARIABLE>
-<NAME>GTK_TYPE_GNOME_WIN_LAYER</NAME>
-extern GtkType GTK_TYPE_GNOME_WIN_LAYER;
-</VARIABLE>
-<VARIABLE>
-<NAME>GTK_TYPE_GNOME_WIN_STATE</NAME>
-extern GtkType GTK_TYPE_GNOME_WIN_STATE;
-</VARIABLE>
-<VARIABLE>
-<NAME>GTK_TYPE_GNOME_WIN_HINTS</NAME>
-extern GtkType GTK_TYPE_GNOME_WIN_HINTS;
-</VARIABLE>
-<VARIABLE>
-<NAME>GTK_TYPE_GNOME_WIN_APP_STATE</NAME>
-extern GtkType GTK_TYPE_GNOME_WIN_APP_STATE;
-</VARIABLE>
-<VARIABLE>
-<NAME>GTK_TYPE_CLOCK_TYPE</NAME>
-extern GtkType GTK_TYPE_CLOCK_TYPE;
-</VARIABLE>
-<VARIABLE>
-<NAME>GTK_TYPE_GDK_IMLIB_IMAGE</NAME>
-extern GtkType GTK_TYPE_GDK_IMLIB_IMAGE;
-</VARIABLE>
-<VARIABLE>
-<NAME>GTK_TYPE_GNOME_CANVAS_POINTS</NAME>
-extern GtkType GTK_TYPE_GNOME_CANVAS_POINTS;
-</VARIABLE>
 <MACRO>
-<NAME>GNOME_TYPE_NUM_BUILTINS</NAME>
-#define	GNOME_TYPE_NUM_BUILTINS	(28)
+<NAME>XA_WIN_PROTOCOLS</NAME>
+#define XA_WIN_PROTOCOLS           "_WIN_PROTOCOLS"
 </MACRO>
+<MACRO>
+<NAME>XA_WIN_ICONS</NAME>
+#define XA_WIN_ICONS               "_WIN_ICONS"
+</MACRO>
+<MACRO>
+<NAME>XA_WIN_WORKSPACE</NAME>
+#define XA_WIN_WORKSPACE           "_WIN_WORKSPACE"
+</MACRO>
+<MACRO>
+<NAME>XA_WIN_WORKSPACE_COUNT</NAME>
+#define XA_WIN_WORKSPACE_COUNT     "_WIN_WORKSPACE_COUNT"
+</MACRO>
+<MACRO>
+<NAME>XA_WIN_WORKSPACE_NAMES</NAME>
+#define XA_WIN_WORKSPACE_NAMES     "_WIN_WORKSPACE_NAMES"    
+</MACRO>
+<MACRO>
+<NAME>XA_WIN_LAYER</NAME>
+#define XA_WIN_LAYER               "_WIN_LAYER"
+</MACRO>
+<MACRO>
+<NAME>XA_WIN_STATE</NAME>
+#define XA_WIN_STATE               "_WIN_STATE"
+</MACRO>
+<MACRO>
+<NAME>XA_WIN_HINTS</NAME>
+#define XA_WIN_HINTS               "_WIN_HINTS"
+</MACRO>
+<MACRO>
+<NAME>XA_WIN_WORKAREA</NAME>
+#define XA_WIN_WORKAREA            "_WIN_WORKAREA"
+</MACRO>
+<MACRO>
+<NAME>XA_WIN_CLIENT_LIST</NAME>
+#define XA_WIN_CLIENT_LIST         "_WIN_CLIENT_LIST"
+</MACRO>
+<MACRO>
+<NAME>XA_WIN_APP_STATE</NAME>
+#define XA_WIN_APP_STATE           "_WIN_APP_STATE"
+</MACRO>
+<MACRO>
+<NAME>XA_WIN_EXPANDED_SIZE</NAME>
+#define XA_WIN_EXPANDED_SIZE       "_WIN_EXPANDED_SIZE"
+</MACRO>
+<MACRO>
+<NAME>XA_WIN_CLIENT_MOVING</NAME>
+#define XA_WIN_CLIENT_MOVING       "_WIN_CLIENT_MOVING"
+</MACRO>
+<MACRO>
+<NAME>XA_WIN_SUPPORTING_WM_CHECK</NAME>
+#define XA_WIN_SUPPORTING_WM_CHECK "_WIN_SUPPORTING_WM_CHECK"
+</MACRO>
+<ENUM>
+<NAME>GnomeWinLayer</NAME>
+typedef enum
+{
+  WIN_LAYER_DESKTOP     = 0,
+  WIN_LAYER_BELOW       = 2,
+  WIN_LAYER_NORMAL      = 4,
+  WIN_LAYER_ONTOP       = 6,
+  WIN_LAYER_DOCK        = 8,
+  WIN_LAYER_ABOVE_DOCK  = 10
+} GnomeWinLayer;
+</ENUM>
+<ENUM>
+<NAME>GnomeWinState</NAME>
+typedef enum
+{
+  WIN_STATE_STICKY          = (1<<0), /* everyone knows sticky */
+  WIN_STATE_MINIMIZED       = (1<<1), /* ??? */
+  WIN_STATE_MAXIMIZED_VERT  = (1<<2), /* window in maximized V state */
+  WIN_STATE_MAXIMIZED_HORIZ = (1<<3), /* window in maximized H state */
+  WIN_STATE_HIDDEN          = (1<<4), /* not on taskbar but window visible */
+  WIN_STATE_SHADED          = (1<<5), /* shaded (NeXT style) */
+  WIN_STATE_HID_WORKSPACE   = (1<<6), /* not on current desktop */
+  WIN_STATE_HID_TRANSIENT   = (1<<7), /* owner of transient is hidden */
+  WIN_STATE_FIXED_POSITION  = (1<<8), /* window is fixed in position even */
+  WIN_STATE_ARRANGE_IGNORE  = (1<<9)  /* ignore for auto arranging */
+} GnomeWinState;
+</ENUM>
+<ENUM>
+<NAME>GnomeWinHints</NAME>
+typedef enum
+{
+  WIN_HINTS_SKIP_FOCUS      = (1<<0), /* "alt-tab" skips this win */
+  WIN_HINTS_SKIP_WINLIST    = (1<<1), /* not in win list */
+  WIN_HINTS_SKIP_TASKBAR    = (1<<2), /* not on taskbar */
+  WIN_HINTS_GROUP_TRANSIENT = (1<<3), /* ??????? */
+  WIN_HINTS_FOCUS_ON_CLICK  = (1<<4), /* app only accepts focus when clicked */
+  WIN_HINTS_DO_NOT_COVER    = (1<<5)  /* attempt to not cover this window */
+} GnomeWinHints;
+</ENUM>
+<ENUM>
+<NAME>GnomeWinAppState</NAME>
+typedef enum
+{
+  WIN_APP_STATE_NONE,
+  WIN_APP_STATE_ACTIVE1,
+  WIN_APP_STATE_ACTIVE2,
+  WIN_APP_STATE_ERROR1,
+  WIN_APP_STATE_ERROR2,
+  WIN_APP_STATE_FATAL_ERROR1,
+  WIN_APP_STATE_FATAL_ERROR2,
+  WIN_APP_STATE_IDLE1,
+  WIN_APP_STATE_IDLE2,
+  WIN_APP_STATE_WAITING1,
+  WIN_APP_STATE_WAITING2,
+  WIN_APP_STATE_WORKING1,
+  WIN_APP_STATE_WORKING2,
+  WIN_APP_STATE_NEED_USER_INPUT1,
+  WIN_APP_STATE_NEED_USER_INPUT2,
+  WIN_APP_STATE_STRUGGLING1,
+  WIN_APP_STATE_STRUGGLING2,
+  WIN_APP_STATE_DISK_TRAFFIC1,
+  WIN_APP_STATE_DISK_TRAFFIC2,
+  WIN_APP_STATE_NETWORK_TRAFFIC1,
+  WIN_APP_STATE_NETWORK_TRAFFIC2,
+  WIN_APP_STATE_OVERLOADED1,
+  WIN_APP_STATE_OVERLOADED2,
+  WIN_APP_STATE_PERCENT000_1,
+  WIN_APP_STATE_PERCENT000_2,
+  WIN_APP_STATE_PERCENT010_1,
+  WIN_APP_STATE_PERCENT010_2,
+  WIN_APP_STATE_PERCENT020_1,
+  WIN_APP_STATE_PERCENT020_2,
+  WIN_APP_STATE_PERCENT030_1,
+  WIN_APP_STATE_PERCENT030_2,
+  WIN_APP_STATE_PERCENT040_1,
+  WIN_APP_STATE_PERCENT040_2,
+  WIN_APP_STATE_PERCENT050_1,
+  WIN_APP_STATE_PERCENT050_2,
+  WIN_APP_STATE_PERCENT060_1,
+  WIN_APP_STATE_PERCENT060_2,
+  WIN_APP_STATE_PERCENT070_1,
+  WIN_APP_STATE_PERCENT070_2,
+  WIN_APP_STATE_PERCENT080_1,
+  WIN_APP_STATE_PERCENT080_2,
+  WIN_APP_STATE_PERCENT090_1,
+  WIN_APP_STATE_PERCENT090_2,
+  WIN_APP_STATE_PERCENT100_1,
+  WIN_APP_STATE_PERCENT100_2
+} GnomeWinAppState;
+</ENUM>
+<FUNCTION>
+<NAME>gnome_win_hints_init</NAME>
+<RETURNS>void</RETURNS>
+void
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_win_hints_set_layer</NAME>
+<RETURNS>void</RETURNS>
+GtkWidget *window, GnomeWinLayer layer
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_win_hints_get_layer</NAME>
+<RETURNS>GnomeWinLayer</RETURNS>
+GtkWidget *window
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_win_hints_set_state</NAME>
+<RETURNS>void</RETURNS>
+GtkWidget *window, GnomeWinState state
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_win_hints_get_state</NAME>
+<RETURNS>GnomeWinState</RETURNS>
+GtkWidget *window
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_win_hints_set_hints</NAME>
+<RETURNS>void</RETURNS>
+GtkWidget *window, GnomeWinHints skip
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_win_hints_get_hints</NAME>
+<RETURNS>GnomeWinHints</RETURNS>
+GtkWidget *window
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_win_hints_set_workspace</NAME>
+<RETURNS>void</RETURNS>
+GtkWidget *window, gint workspace
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_win_hints_get_workspace</NAME>
+<RETURNS>gint</RETURNS>
+GtkWidget *window
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_win_hints_set_current_workspace</NAME>
+<RETURNS>void</RETURNS>
+gint workspace
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_win_hints_get_current_workspace</NAME>
+<RETURNS>gint</RETURNS>
+void
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_win_hints_get_workspace_names</NAME>
+<RETURNS>GList *</RETURNS>
+void
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_win_hints_get_workspace_count</NAME>
+<RETURNS>gint</RETURNS>
+void
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_win_hints_set_expanded_size</NAME>
+<RETURNS>void</RETURNS>
+GtkWidget *window, gint x, gint y, gint width, gint height
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_win_hints_get_expanded_size</NAME>
+<RETURNS>gboolean</RETURNS>
+GtkWidget *window, gint *x, gint *y, gint *width, gint *height
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_win_hints_set_moving</NAME>
+<RETURNS>void</RETURNS>
+GtkWidget *window, gboolean moving
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_win_hints_set_app_state</NAME>
+<RETURNS>void</RETURNS>
+GtkWidget *window,  GnomeWinAppState state
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_win_hints_get_app_state</NAME>
+<RETURNS>GnomeWinAppState</RETURNS>
+GtkWidget *window
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_win_hints_set_moving</NAME>
+<RETURNS>void</RETURNS>
+GtkWidget *window, gboolean moving
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_win_hints_wm_exists</NAME>
+<RETURNS>gboolean</RETURNS>
+void
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_win_hints_get_client_window_ids</NAME>
+<RETURNS>GList *</RETURNS>
+void
+</FUNCTION>
 <MACRO>
 <NAME>GTK_CLOCK</NAME>
 #define GTK_CLOCK(obj) GTK_CHECK_CAST(obj, gtk_clock_get_type(), GtkClock)
@@ -6142,1226 +8413,6 @@ GtkDial        *dial
 <RETURNS>void  </RETURNS>
 GtkDial        *dial,gboolean       view_only
 </FUNCTION>
-<FUNCTION>
-<NAME>gnome_canvas_load_alpha</NAME>
-<RETURNS>GdkImlibImage  *</RETURNS>
-char *file
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_canvas_destroy_image</NAME>
-<RETURNS>void  </RETURNS>
-GdkImlibImage *image
-</FUNCTION>
-<MACRO>
-<NAME>GNOME_PROC_BAR</NAME>
-#define GNOME_PROC_BAR(obj)		GTK_CHECK_CAST (obj, gnome_proc_bar_get_type (), GnomeProcBar)
-</MACRO>
-<MACRO>
-<NAME>GNOME_PROC_BAR__CLASS</NAME>
-#define GNOME_PROC_BAR__CLASS(klass)	GTK_CHECK_CLASS_CAST (klass, gnome_proc_bar_get_type (), GnomeProcBarClass)
-</MACRO>
-<MACRO>
-<NAME>GNOME_IS_PROC_BAR</NAME>
-#define GNOME_IS_PROC_BAR(obj)		GTK_CHECK_TYPE (obj, gnome_proc_bar_get_type ())
-</MACRO>
-<STRUCT>
-<NAME>GnomeProcBar</NAME>
-</STRUCT>
-<STRUCT>
-<NAME>GnomeProcBarClass</NAME>
-</STRUCT>
-<STRUCT>
-<NAME>GnomeProcBar</NAME>
-struct GnomeProcBar {
-
-	GtkHBox hbox;
-
-	GtkWidget *bar;
-	GtkWidget *label;
-	GtkWidget *frame;
-
-	gboolean vertical : 1;
-
-	GdkPixmap *bs;
-	GdkColor *colors;
-
-	gint colors_allocated;
-	gint first_request;
-	gint n;
-	gint tag;
-
-	unsigned *last;
-
-	gint (*cb)();
-	gpointer cb_data;
-};
-</STRUCT>
-<FUNCTION>
-<NAME>gnome_proc_bar_get_type</NAME>
-<RETURNS>guint  </RETURNS>
-void
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_proc_bar_new</NAME>
-<RETURNS>GtkWidget  *</RETURNS>
-GtkWidget *label,gint n, GdkColor *colors,gint (*cb)()
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_proc_bar_set_values</NAME>
-<RETURNS>void  </RETURNS>
-GnomeProcBar *pb, unsigned val []
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_proc_bar_set_orient</NAME>
-<RETURNS>void  </RETURNS>
-GnomeProcBar *pb, gboolean vertical
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_proc_bar_start</NAME>
-<RETURNS>void  </RETURNS>
-GnomeProcBar *pb, gint gtime, gpointer data
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_proc_bar_stop</NAME>
-<RETURNS>void  </RETURNS>
-GnomeProcBar *pb
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_proc_bar_update</NAME>
-<RETURNS>void  </RETURNS>
-GnomeProcBar *pb, GdkColor *colors
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_init</NAME>
-<RETURNS>int  </RETURNS>
-const char *app_id, const char *app_version,int argc, char **argv
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_init_with_popt_table</NAME>
-<RETURNS>int  </RETURNS>
-const char *app_id,const char *app_version,int argc, char **argv,const struct poptOption *options,int flags,poptContext *return_ctx
-</FUNCTION>
-<STRUCT>
-<NAME>GnomeGuru</NAME>
-</STRUCT>
-<STRUCT>
-<NAME>GnomeGuruClass</NAME>
-</STRUCT>
-<MACRO>
-<NAME>GNOME_GURU</NAME>
-#define GNOME_GURU(obj) GTK_CHECK_CAST (obj, gnome_guru_get_type (), GnomeGuru)
-</MACRO>
-<MACRO>
-<NAME>GNOME_GURU_CLASS</NAME>
-#define GNOME_GURU_CLASS(klass)  GTK_CHECK_CLASS_CAST (klass, gnome_guru_get_type (), GnomeGuruClass)
-</MACRO>
-<MACRO>
-<NAME>GNOME_IS_GURU</NAME>
-#define GNOME_IS_GURU(obj)  GTK_CHECK_TYPE (obj, gnome_guru_get_type ())
-</MACRO>
-<STRUCT>
-<NAME>GnomeGuru</NAME>
-struct GnomeGuru {
-  GtkVBox vbox;
-
-  /* all private, don't touch it. */
-
-  GtkWidget * graphic;
-
-  GList * pages;
-
-  struct _GnomeGuruPage* current_page;
-
-  GtkWidget * next;
-  GtkWidget * back;
-  GtkWidget * finish;
-  GtkWidget * page_title;
-  GtkWidget * page_box;
-  GtkWidget * buttonbox;
-
-  guint has_dialog : 1;
-};
-</STRUCT>
-<FUNCTION>
-<NAME>gnome_guru_get_type</NAME>
-<RETURNS>guint  </RETURNS>
-void
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_guru_new</NAME>
-<RETURNS>GtkWidget  *</RETURNS>
-const gchar * name,GtkWidget   * graphic,GnomeDialog * dialog
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_guru_construct</NAME>
-<RETURNS>void  </RETURNS>
-GnomeGuru   * guru,const gchar * name,GtkWidget   * graphic,GnomeDialog * dialog
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_guru_append_page</NAME>
-<RETURNS>void  </RETURNS>
-GnomeGuru   * guru,const gchar * name,GtkWidget   * widget
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_guru_next_set_sensitive</NAME>
-<RETURNS>void  </RETURNS>
-GnomeGuru   * guru,gboolean      sensitivity
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_guru_back_set_sensitive</NAME>
-<RETURNS>void  </RETURNS>
-GnomeGuru   * guru,gboolean      sensitivity
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_guru_current_page</NAME>
-<RETURNS>GtkWidget  *</RETURNS>
-GnomeGuru   * guru
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_property_entry_font</NAME>
-<RETURNS>GtkWidget  *</RETURNS>
-GnomePropertyObject *object, const gchar *label,gchar **font_name_ptr, GdkFont **font_ptr
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_property_entry_colors</NAME>
-<RETURNS>GtkWidget  *</RETURNS>
-GnomePropertyObject *object, const gchar *label,gint num_colors, gint columns, gint *table_pos,GdkColor *colors, const gchar *texts []
-</FUNCTION>
-<MACRO>
-<NAME>GNOME_PIXMAP_ENTRY</NAME>
-#define GNOME_PIXMAP_ENTRY(obj)         GTK_CHECK_CAST (obj, gnome_pixmap_entry_get_type (), GnomePixmapEntry)
-</MACRO>
-<MACRO>
-<NAME>GNOME_PIXMAP_ENTRY_CLASS</NAME>
-#define GNOME_PIXMAP_ENTRY_CLASS(klass) GTK_CHECK_CLASS_CAST (klass, gnome_pixmap_entry_get_type (), GnomePixmapEntryClass)
-</MACRO>
-<MACRO>
-<NAME>GNOME_IS_PIXMAP_ENTRY</NAME>
-#define GNOME_IS_PIXMAP_ENTRY(obj)      GTK_CHECK_TYPE (obj, gnome_pixmap_entry_get_type ())
-</MACRO>
-<STRUCT>
-<NAME>GnomePixmapEntry</NAME>
-</STRUCT>
-<STRUCT>
-<NAME>GnomePixmapEntryClass</NAME>
-</STRUCT>
-<STRUCT>
-<NAME>GnomePixmapEntry</NAME>
-struct GnomePixmapEntry {
-	GtkVBox vbox;
-	
-	GtkWidget *fentry;
-
-	int do_preview; /*put a preview frame with the pixmap next to
-			  the entry*/
-	GtkWidget *preview;
-	GtkWidget *preview_sw;
-	
-	/*very private*/
-	char *last_preview;
-};
-</STRUCT>
-<FUNCTION>
-<NAME>gnome_pixmap_entry_get_type</NAME>
-<RETURNS>guint  </RETURNS>
-void
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_pixmap_entry_new</NAME>
-<RETURNS>GtkWidget  *</RETURNS>
-char *history_id,char *browse_dialog_title,int do_preview
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_pixmap_entry_set_pixmap_subdir</NAME>
-<RETURNS>void  </RETURNS>
-GnomePixmapEntry *pentry,const char *subdir
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_pixmap_entry_gnome_file_entry</NAME>
-<RETURNS>GtkWidget  *</RETURNS>
-GnomePixmapEntry *pentry
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_pixmap_entry_gnome_entry</NAME>
-<RETURNS>GtkWidget  *</RETURNS>
-GnomePixmapEntry *pentry
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_pixmap_entry_gtk_entry</NAME>
-<RETURNS>GtkWidget  *</RETURNS>
-GnomePixmapEntry *pentry
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_pixmap_entry_set_preview</NAME>
-<RETURNS>void  </RETURNS>
-GnomePixmapEntry *pentry,int do_preview
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_pixmap_entry_set_preview_size</NAME>
-<RETURNS>void 	</RETURNS>
-GnomePixmapEntry *pentry,int preview_w,int preview_h
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_pixmap_entry_get_filename</NAME>
-<RETURNS>char       *</RETURNS>
-GnomePixmapEntry *pentry
-</FUNCTION>
-<MACRO>
-<NAME>GNOME_DOCK_LAYOUT</NAME>
-#define GNOME_DOCK_LAYOUT(obj) \
-  GTK_CHECK_CAST (obj, gnome_dock_layout_get_type (), GnomeDockLayout)
-</MACRO>
-<MACRO>
-<NAME>GNOME_DOCK_LAYOUT_CLASS</NAME>
-#define GNOME_DOCK_LAYOUT_CLASS(klass) \
-  GTK_CHECK_CLASS_CAST (klass, gnome_dock_layout_get_type (), GnomeDockLayoutClass)
-</MACRO>
-<MACRO>
-<NAME>GNOME_IS_DOCK_LAYOUT</NAME>
-#define GNOME_IS_DOCK_LAYOUT(obj) \
-  GTK_CHECK_TYPE (obj, gnome_dock_layout_get_type ())
-</MACRO>
-<STRUCT>
-<NAME>GnomeDockLayoutItem</NAME>
-</STRUCT>
-<STRUCT>
-<NAME>GnomeDockLayoutClass</NAME>
-</STRUCT>
-<STRUCT>
-<NAME>GnomeDockLayout</NAME>
-</STRUCT>
-<STRUCT>
-<NAME>GnomeDockLayoutItem</NAME>
-struct GnomeDockLayoutItem
-{
-  GnomeDockItem *item;
-
-  GnomeDockPlacement placement;
-
-  union
-  {
-    struct
-    {
-      gint x;
-      gint y;
-      GtkOrientation orientation;
-    } floating;
-
-    struct
-    {
-      gint band_num;
-      gint band_position;
-      gint offset;
-    } docked;
-
-  } position;
-};
-</STRUCT>
-<STRUCT>
-<NAME>GnomeDockLayout</NAME>
-struct GnomeDockLayout
-{
-  GtkObject object;
-
-  GList *items;                 /* GnomeDockLayoutItem */
-};
-</STRUCT>
-<FUNCTION>
-<NAME>gnome_dock_layout_new</NAME>
-<RETURNS>GnomeDockLayout      *</RETURNS>
-void
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_dock_layout_get_type</NAME>
-<RETURNS>guint  </RETURNS>
-void
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_dock_layout_add_item</NAME>
-<RETURNS>gboolean  </RETURNS>
-GnomeDockLayout *layout,GnomeDockItem *item,GnomeDockPlacement placement,gint band_num,gint band_position,gint offset
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_dock_layout_add_floating_item</NAME>
-<RETURNS>gboolean  </RETURNS>
-GnomeDockLayout *layout,GnomeDockItem *item,gint x, gint y,GtkOrientation orientation
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_dock_layout_get_item</NAME>
-<RETURNS>GnomeDockLayoutItem  *</RETURNS>
-GnomeDockLayout *layout,GnomeDockItem *item
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_dock_layout_get_item_by_name</NAME>
-<RETURNS>GnomeDockLayoutItem  *</RETURNS>
-GnomeDockLayout *layout,const gchar *name
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_dock_layout_remove_item</NAME>
-<RETURNS>gboolean  </RETURNS>
-GnomeDockLayout *layout,GnomeDockItem *item
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_dock_layout_remove_item_by_name</NAME>
-<RETURNS>gboolean  </RETURNS>
-GnomeDockLayout *layout,const gchar *name
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_dock_layout_create_string</NAME>
-<RETURNS>gchar                *</RETURNS>
-GnomeDockLayout *layout
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_dock_layout_parse_string</NAME>
-<RETURNS>gboolean  </RETURNS>
-GnomeDockLayout *layout,const gchar *string
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_dock_layout_add_to_dock</NAME>
-<RETURNS>gboolean  </RETURNS>
-GnomeDockLayout *layout,GnomeDock *dock
-</FUNCTION>
-<MACRO>
-<NAME>GNOME_SPELL</NAME>
-#define GNOME_SPELL(obj)		GTK_CHECK_CAST(obj, gnome_spell_get_type(), GnomeSpell)
-</MACRO>
-<MACRO>
-<NAME>GNOME_SPELL_CLASS</NAME>
-#define GNOME_SPELL_CLASS(klass)		GTK_CHECK_CLASS_CAST(klass, gnome_spell_get_type(), GnomeSpelliClass)
-</MACRO>
-<MACRO>
-<NAME>GNOME_IS_SPELL</NAME>
-#define GNOME_IS_SPELL(obj)		GTK_CHECK_TYPE(obj, gnome_spell_get_type())
-</MACRO>
-<STRUCT>
-<NAME>GnomeSpell</NAME>
-</STRUCT>
-<STRUCT>
-<NAME>GnomeSpellClass</NAME>
-</STRUCT>
-<STRUCT>
-<NAME>GnomeSpellInfo</NAME>
-</STRUCT>
-<STRUCT>
-<NAME>GnomeSpellInfo</NAME>
-struct GnomeSpellInfo {
-	gchar* original;
-	gchar* replacement;
-	gchar* word;
-	guint offset;
-	GSList * words;
-};
-</STRUCT>
-<STRUCT>
-<NAME>GnomeSpell</NAME>
-struct GnomeSpell {
-	GtkVBox vbox;
-
-	GSList * spellinfo;
-
-	GtkWidget* page_spell;
-	GtkWidget* page_config;
-	GtkWidget* word;
-	GtkWidget* list;
-	GtkWidget* b_accept;
-	GtkWidget* b_skip;
-	GtkWidget* b_replace;
-	GtkWidget* b_insert;
-	GtkWidget* b_insertl;
-	GtkWidget* command;
-	GtkWidget* dict;
-	GtkWidget* pdict;
-	GtkWidget* wchars;
-	GtkWidget* wlen;
-	GtkWidget* sort;
-	GtkWidget* runtog;
-	GtkWidget* discard;
-	GtkWidget* tooltip;
-	GtkWidget* killproc;
-	GtkTooltips* tooltips;
-	GSList* awords;
-
-	FILE* rispell;
-	FILE* wispell;
-	pid_t spell_pid;
-};
-</STRUCT>
-<FUNCTION>
-<NAME>gnome_spell_get_type</NAME>
-<RETURNS>guint  </RETURNS>
-void
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_spell_new</NAME>
-<RETURNS>GtkWidget *</RETURNS>
-void
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_spell_check</NAME>
-<RETURNS>gint  </RETURNS>
-GnomeSpell* gtkspell, gchar* str
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_spell_accept</NAME>
-<RETURNS>void  </RETURNS>
-GnomeSpell* gtkspell, gchar* word
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_spell_insert</NAME>
-<RETURNS>void  </RETURNS>
-GnomeSpell* gtkspell, gchar* word, gint lowercase
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_spell_next</NAME>
-<RETURNS>int 	</RETURNS>
-GnomeSpell* gtkspell
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_spell_kill</NAME>
-<RETURNS>void 	</RETURNS>
-GnomeSpell* gtkspell
-</FUNCTION>
-<MACRO>
-<NAME>GNOME_IS_MDI_MDI_CHILD</NAME>
-#  define GNOME_IS_MDI_MDI_CHILD(obj)     GNOME_IS_MDI_GENERIC_CHILD(obj)
-</MACRO>
-<MACRO>
-<NAME>GNOME_ICON_ENTRY</NAME>
-#define GNOME_ICON_ENTRY(obj)         GTK_CHECK_CAST (obj, gnome_icon_entry_get_type (), GnomeIconEntry)
-</MACRO>
-<MACRO>
-<NAME>GNOME_ICON_ENTRY_CLASS</NAME>
-#define GNOME_ICON_ENTRY_CLASS(klass) GTK_CHECK_CLASS_CAST (klass, gnome_icon_entry_get_type (), GnomeIconEntryClass)
-</MACRO>
-<MACRO>
-<NAME>GNOME_IS_ICON_ENTRY</NAME>
-#define GNOME_IS_ICON_ENTRY(obj)      GTK_CHECK_TYPE (obj, gnome_icon_entry_get_type ())
-</MACRO>
-<STRUCT>
-<NAME>GnomeIconEntry</NAME>
-</STRUCT>
-<STRUCT>
-<NAME>GnomeIconEntryClass</NAME>
-</STRUCT>
-<STRUCT>
-<NAME>GnomeIconEntry</NAME>
-struct GnomeIconEntry {
-	GtkVBox vbox;
-	
-	GtkWidget *fentry;
-
-	GtkWidget *pickbutton;
-	
-	GtkWidget *pick_dialog;
-	char *pick_dialog_dir;
-};
-</STRUCT>
-<FUNCTION>
-<NAME>gnome_icon_entry_get_type</NAME>
-<RETURNS>guint  </RETURNS>
-void
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_icon_entry_new</NAME>
-<RETURNS>GtkWidget  *</RETURNS>
-char *history_id,char *browse_dialog_title
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_icon_entry_set_pixmap_subdir</NAME>
-<RETURNS>void  </RETURNS>
-GnomeIconEntry *ientry,const char *subdir
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_icon_entry_set_icon</NAME>
-<RETURNS>void  </RETURNS>
-GnomeIconEntry *ientry,const char *filename
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_icon_entry_gnome_file_entry</NAME>
-<RETURNS>GtkWidget  *</RETURNS>
-GnomeIconEntry *ientry
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_icon_entry_gnome_entry</NAME>
-<RETURNS>GtkWidget  *</RETURNS>
-GnomeIconEntry *ientry
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_icon_entry_gtk_entry</NAME>
-<RETURNS>GtkWidget  *</RETURNS>
-GnomeIconEntry *ientry
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_icon_entry_get_filename</NAME>
-<RETURNS>char       *</RETURNS>
-GnomeIconEntry *ientry
-</FUNCTION>
-<MACRO>
-<NAME>GNOME_MDI_GENERIC_CHILD</NAME>
-#define GNOME_MDI_GENERIC_CHILD(obj)          GTK_CHECK_CAST (obj, gnome_mdi_generic_child_get_type (), GnomeMDIGenericChild)
-</MACRO>
-<MACRO>
-<NAME>GNOME_MDI_GENERIC_CHILD_CLASS</NAME>
-#define GNOME_MDI_GENERIC_CHILD_CLASS(klass)  GTK_CHECK_CLASS_CAST (klass, gnome_mdi_generic_child_get_type (), GnomeMDIGenericChildClass)
-</MACRO>
-<MACRO>
-<NAME>GNOME_IS_MDI_GENERIC_CHILD</NAME>
-#define GNOME_IS_MDI_GENERIC_CHILD(obj)       GTK_CHECK_TYPE (obj, gnome_mdi_generic_child_get_type ())
-</MACRO>
-<STRUCT>
-<NAME>GnomeMDIGenericChild</NAME>
-</STRUCT>
-<STRUCT>
-<NAME>GnomeMDIGenericChildClass</NAME>
-</STRUCT>
-<STRUCT>
-<NAME>GnomeMDIGenericChild</NAME>
-struct GnomeMDIGenericChild {
-	GnomeMDIChild mdi_child;
-
-	/* if any of these are set they override the virtual functions
-	   in GnomeMDIChildClass. create_view is mandatory, as no default
-	   handler is provided, others may be NULL */
-	GnomeMDIChildViewCreator create_view;
-	GnomeMDIChildMenuCreator create_menus;
-	GnomeMDIChildConfigFunc  get_config_string;
-	GnomeMDIChildLabelFunc   set_label;
-
-	GtkCallbackMarshal create_view_cbm, create_menus_cbm,
-		               get_config_string_cbm, set_label_cbm;
-	GtkDestroyNotify   create_view_dn, create_menus_dn,
-		               get_config_string_dn, set_label_dn;
-	gpointer           create_view_data, create_menus_data,
-		               get_config_string_data, set_label_data;
-};
-</STRUCT>
-<FUNCTION>
-<NAME>gnome_mdi_generic_child_get_type</NAME>
-<RETURNS>guint  </RETURNS>
-void
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_mdi_generic_child_new</NAME>
-<RETURNS>GnomeMDIGenericChild  *</RETURNS>
-gchar *name
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_mdi_generic_child_set_view_creator</NAME>
-<RETURNS>void  </RETURNS>
-GnomeMDIGenericChild *child,GnomeMDIChildViewCreator func,gpointer data
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_mdi_generic_child_set_view_creator_full</NAME>
-<RETURNS>void  </RETURNS>
-GnomeMDIGenericChild *child,GnomeMDIChildViewCreator func,GtkCallbackMarshal marshal,gpointer data,GtkDestroyNotify notify
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_mdi_generic_child_set_menu_creator</NAME>
-<RETURNS>void  </RETURNS>
-GnomeMDIGenericChild *child,GnomeMDIChildMenuCreator func,gpointer data
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_mdi_generic_child_set_menu_creator_full</NAME>
-<RETURNS>void  </RETURNS>
-GnomeMDIGenericChild *child,GnomeMDIChildMenuCreator func,GtkCallbackMarshal marshal,gpointer data,GtkDestroyNotify notify
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_mdi_generic_child_set_config_func</NAME>
-<RETURNS>void  </RETURNS>
-GnomeMDIGenericChild *child,GnomeMDIChildConfigFunc func,gpointer data
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_mdi_generic_child_set_config_func_full</NAME>
-<RETURNS>void  </RETURNS>
-GnomeMDIGenericChild *child,GnomeMDIChildConfigFunc func,GtkCallbackMarshal marshal,gpointer data,GtkDestroyNotify notify
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_mdi_generic_child_set_label_func</NAME>
-<RETURNS>void  </RETURNS>
-GnomeMDIGenericChild *child,GnomeMDIChildLabelFunc func,gpointer data
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_mdi_generic_child_set_label_func_full</NAME>
-<RETURNS>void  </RETURNS>
-GnomeMDIGenericChild *child,GnomeMDIChildLabelFunc func,GtkCallbackMarshal marshal,gpointer data,GtkDestroyNotify notify
-</FUNCTION>
-<ENUM>
-<NAME>GnomeFontPickerMode</NAME>
-typedef enum {
-    GNOME_FONT_PICKER_MODE_PIXMAP,
-    GNOME_FONT_PICKER_MODE_FONT_INFO,
-    GNOME_FONT_PICKER_MODE_USER_WIDGET,
-    GNOME_FONT_PICKER_MODE_UNKNOWN
-} GnomeFontPickerMode;
-</ENUM>
-<MACRO>
-<NAME>GNOME_TYPE_FONT_PICKER</NAME>
-#define GNOME_TYPE_FONT_PICKER            (gnome_font_picker_get_type ())
-</MACRO>
-<MACRO>
-<NAME>GNOME_FONT_PICKER</NAME>
-#define GNOME_FONT_PICKER(obj)            (GTK_CHECK_CAST ((obj), GNOME_TYPE_FONT_PICKER, GnomeFontPicker))
-</MACRO>
-<MACRO>
-<NAME>GNOME_FONT_PICKER_CLASS</NAME>
-#define GNOME_FONT_PICKER_CLASS(klass)    (GTK_CHECK_CLASS_CAST ((klass), GNOME_TYPE_FONT_PICKER, GnomeFontPickerClass))
-</MACRO>
-<MACRO>
-<NAME>GNOME_IS_FONT_PICKER</NAME>
-#define GNOME_IS_FONT_PICKER(obj)         (GTK_CHECK_TYPE ((obj), GNOME_TYPE_FONT_PICKER))
-</MACRO>
-<MACRO>
-<NAME>GNOME_IS_FONT_PICKER_CLASS</NAME>
-#define GNOME_IS_FONT_PICKER_CLASS(klass) (GTK_CHECK_CLASS_TYPE ((klass), GNOME_TYPE_FONT_PICKER))
-</MACRO>
-<STRUCT>
-<NAME>GnomeFontPicker</NAME>
-</STRUCT>
-<STRUCT>
-<NAME>GnomeFontPickerClass</NAME>
-</STRUCT>
-<STRUCT>
-<NAME>GnomeFontPicker</NAME>
-struct GnomeFontPicker {
-        GtkButton button;
-    
-	GtkWidget     *font_dialog;
-        GtkWidget     *inside;
-        GtkWidget     *font_label,*vsep,*size_label;
-
-        
-        /* Do not change, use set/get functions */
-        GnomeFontPickerMode mode;
-        gchar         *font_name;
-        gchar         *preview_text;
-        /* Only for GNOME_FONT_PICKER_MODE_FONT_INFO */
-        gboolean      use_font_in_label;
-        gboolean      use_font_in_label_size;
-        gboolean      show_size;
-
-        gchar         *title;
-};
-</STRUCT>
-<FUNCTION>
-<NAME>gnome_font_picker_get_type</NAME>
-<RETURNS>GtkType  </RETURNS>
-void
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_font_picker_new</NAME>
-<RETURNS>GtkWidget  *</RETURNS>
-void
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_font_picker_set_title</NAME>
-<RETURNS>void  </RETURNS>
-GnomeFontPicker *gfp, const gchar *title
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_font_picker_get_mode</NAME>
-<RETURNS>GnomeFontPickerMode</RETURNS>
-GnomeFontPicker *gfp
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_font_picker_set_mode</NAME>
-<RETURNS>void  </RETURNS>
-GnomeFontPicker *gfp,GnomeFontPickerMode mode
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_font_picker_fi_set_use_font_in_label</NAME>
-<RETURNS>void  </RETURNS>
-GnomeFontPicker *gfp,gboolean use_font_in_label,gint size
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_font_picker_fi_set_show_size</NAME>
-<RETURNS>void  </RETURNS>
-GnomeFontPicker *gfp,gboolean show_size
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_font_picker_uw_set_widget</NAME>
-<RETURNS>void  </RETURNS>
-GnomeFontPicker *gfp,GtkWidget       *widget
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_font_picker_get_font_name</NAME>
-<RETURNS>gchar *</RETURNS>
-GnomeFontPicker *gfp
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_font_picker_get_font</NAME>
-<RETURNS>GdkFont *</RETURNS>
-GnomeFontPicker *gfp
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_font_picker_set_font_name</NAME>
-<RETURNS>gboolean  </RETURNS>
-GnomeFontPicker *gfp,const gchar     *fontname
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_font_picker_get_preview_text</NAME>
-<RETURNS>gchar *</RETURNS>
-GnomeFontPicker *gfp
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_font_picker_set_preview_text</NAME>
-<RETURNS>void 	</RETURNS>
-GnomeFontPicker *gfp,const gchar     *text
-</FUNCTION>
-<MACRO>
-<NAME>XA_WIN_PROTOCOLS</NAME>
-#define XA_WIN_PROTOCOLS           "_WIN_PROTOCOLS"
-</MACRO>
-<MACRO>
-<NAME>XA_WIN_ICONS</NAME>
-#define XA_WIN_ICONS               "_WIN_ICONS"
-</MACRO>
-<MACRO>
-<NAME>XA_WIN_WORKSPACE</NAME>
-#define XA_WIN_WORKSPACE           "_WIN_WORKSPACE"
-</MACRO>
-<MACRO>
-<NAME>XA_WIN_WORKSPACE_COUNT</NAME>
-#define XA_WIN_WORKSPACE_COUNT     "_WIN_WORKSPACE_COUNT"
-</MACRO>
-<MACRO>
-<NAME>XA_WIN_WORKSPACE_NAMES</NAME>
-#define XA_WIN_WORKSPACE_NAMES     "_WIN_WORKSPACE_NAMES"    
-</MACRO>
-<MACRO>
-<NAME>XA_WIN_LAYER</NAME>
-#define XA_WIN_LAYER               "_WIN_LAYER"
-</MACRO>
-<MACRO>
-<NAME>XA_WIN_STATE</NAME>
-#define XA_WIN_STATE               "_WIN_STATE"
-</MACRO>
-<MACRO>
-<NAME>XA_WIN_HINTS</NAME>
-#define XA_WIN_HINTS               "_WIN_HINTS"
-</MACRO>
-<MACRO>
-<NAME>XA_WIN_WORKAREA</NAME>
-#define XA_WIN_WORKAREA            "_WIN_WORKAREA"
-</MACRO>
-<MACRO>
-<NAME>XA_WIN_CLIENT_LIST</NAME>
-#define XA_WIN_CLIENT_LIST         "_WIN_CLIENT_LIST"
-</MACRO>
-<MACRO>
-<NAME>XA_WIN_APP_STATE</NAME>
-#define XA_WIN_APP_STATE           "_WIN_APP_STATE"
-</MACRO>
-<MACRO>
-<NAME>XA_WIN_EXPANDED_SIZE</NAME>
-#define XA_WIN_EXPANDED_SIZE       "_WIN_EXPANDED_SIZE"
-</MACRO>
-<MACRO>
-<NAME>XA_WIN_CLIENT_MOVING</NAME>
-#define XA_WIN_CLIENT_MOVING       "_WIN_CLIENT_MOVING"
-</MACRO>
-<MACRO>
-<NAME>XA_WIN_SUPPORTING_WM_CHECK</NAME>
-#define XA_WIN_SUPPORTING_WM_CHECK "_WIN_SUPPORTING_WM_CHECK"
-</MACRO>
-<ENUM>
-<NAME>GnomeWinLayer</NAME>
-typedef enum
-{
-  WIN_LAYER_DESKTOP     = 0,
-  WIN_LAYER_BELOW       = 2,
-  WIN_LAYER_NORMAL      = 4,
-  WIN_LAYER_ONTOP       = 6,
-  WIN_LAYER_DOCK        = 8,
-  WIN_LAYER_ABOVE_DOCK  = 10
-} GnomeWinLayer;
-</ENUM>
-<ENUM>
-<NAME>GnomeWinState</NAME>
-typedef enum
-{
-  WIN_STATE_STICKY          = (1<<0), /* everyone knows sticky */
-  WIN_STATE_MINIMIZED       = (1<<1), /* ??? */
-  WIN_STATE_MAXIMIZED_VERT  = (1<<2), /* window in maximized V state */
-  WIN_STATE_MAXIMIZED_HORIZ = (1<<3), /* window in maximized H state */
-  WIN_STATE_HIDDEN          = (1<<4), /* not on taskbar but window visible */
-  WIN_STATE_SHADED          = (1<<5), /* shaded (NeXT style) */
-  WIN_STATE_HID_WORKSPACE   = (1<<6), /* not on current desktop */
-  WIN_STATE_HID_TRANSIENT   = (1<<7), /* owner of transient is hidden */
-  WIN_STATE_FIXED_POSITION  = (1<<8), /* window is fixed in position even */
-  WIN_STATE_ARRANGE_IGNORE  = (1<<9)  /* ignore for auto arranging */
-} GnomeWinState;
-</ENUM>
-<ENUM>
-<NAME>GnomeWinHints</NAME>
-typedef enum
-{
-  WIN_HINTS_SKIP_FOCUS      = (1<<0), /* "alt-tab" skips this win */
-  WIN_HINTS_SKIP_WINLIST    = (1<<1), /* not in win list */
-  WIN_HINTS_SKIP_TASKBAR    = (1<<2), /* not on taskbar */
-  WIN_HINTS_GROUP_TRANSIENT = (1<<3), /* ??????? */
-  WIN_HINTS_FOCUS_ON_CLICK  = (1<<4), /* app only accepts focus when clicked */
-  WIN_HINTS_DO_NOT_COVER    = (1<<5)  /* attempt to not cover this window */
-} GnomeWinHints;
-</ENUM>
-<ENUM>
-<NAME>GnomeWinAppState</NAME>
-typedef enum
-{
-  WIN_APP_STATE_NONE,
-  WIN_APP_STATE_ACTIVE1,
-  WIN_APP_STATE_ACTIVE2,
-  WIN_APP_STATE_ERROR1,
-  WIN_APP_STATE_ERROR2,
-  WIN_APP_STATE_FATAL_ERROR1,
-  WIN_APP_STATE_FATAL_ERROR2,
-  WIN_APP_STATE_IDLE1,
-  WIN_APP_STATE_IDLE2,
-  WIN_APP_STATE_WAITING1,
-  WIN_APP_STATE_WAITING2,
-  WIN_APP_STATE_WORKING1,
-  WIN_APP_STATE_WORKING2,
-  WIN_APP_STATE_NEED_USER_INPUT1,
-  WIN_APP_STATE_NEED_USER_INPUT2,
-  WIN_APP_STATE_STRUGGLING1,
-  WIN_APP_STATE_STRUGGLING2,
-  WIN_APP_STATE_DISK_TRAFFIC1,
-  WIN_APP_STATE_DISK_TRAFFIC2,
-  WIN_APP_STATE_NETWORK_TRAFFIC1,
-  WIN_APP_STATE_NETWORK_TRAFFIC2,
-  WIN_APP_STATE_OVERLOADED1,
-  WIN_APP_STATE_OVERLOADED2,
-  WIN_APP_STATE_PERCENT000_1,
-  WIN_APP_STATE_PERCENT000_2,
-  WIN_APP_STATE_PERCENT010_1,
-  WIN_APP_STATE_PERCENT010_2,
-  WIN_APP_STATE_PERCENT020_1,
-  WIN_APP_STATE_PERCENT020_2,
-  WIN_APP_STATE_PERCENT030_1,
-  WIN_APP_STATE_PERCENT030_2,
-  WIN_APP_STATE_PERCENT040_1,
-  WIN_APP_STATE_PERCENT040_2,
-  WIN_APP_STATE_PERCENT050_1,
-  WIN_APP_STATE_PERCENT050_2,
-  WIN_APP_STATE_PERCENT060_1,
-  WIN_APP_STATE_PERCENT060_2,
-  WIN_APP_STATE_PERCENT070_1,
-  WIN_APP_STATE_PERCENT070_2,
-  WIN_APP_STATE_PERCENT080_1,
-  WIN_APP_STATE_PERCENT080_2,
-  WIN_APP_STATE_PERCENT090_1,
-  WIN_APP_STATE_PERCENT090_2,
-  WIN_APP_STATE_PERCENT100_1,
-  WIN_APP_STATE_PERCENT100_2
-} GnomeWinAppState;
-</ENUM>
-<FUNCTION>
-<NAME>gnome_win_hints_init</NAME>
-<RETURNS>void</RETURNS>
-void
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_win_hints_set_layer</NAME>
-<RETURNS>void</RETURNS>
-GtkWidget *window, GnomeWinLayer layer
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_win_hints_get_layer</NAME>
-<RETURNS>GnomeWinLayer</RETURNS>
-GtkWidget *window
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_win_hints_set_state</NAME>
-<RETURNS>void</RETURNS>
-GtkWidget *window, GnomeWinState state
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_win_hints_get_state</NAME>
-<RETURNS>GnomeWinState</RETURNS>
-GtkWidget *window
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_win_hints_set_hints</NAME>
-<RETURNS>void</RETURNS>
-GtkWidget *window, GnomeWinHints skip
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_win_hints_get_hints</NAME>
-<RETURNS>GnomeWinHints</RETURNS>
-GtkWidget *window
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_win_hints_set_workspace</NAME>
-<RETURNS>void</RETURNS>
-GtkWidget *window, gint workspace
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_win_hints_get_workspace</NAME>
-<RETURNS>gint</RETURNS>
-GtkWidget *window
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_win_hints_set_current_workspace</NAME>
-<RETURNS>void</RETURNS>
-gint workspace
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_win_hints_get_current_workspace</NAME>
-<RETURNS>gint</RETURNS>
-void
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_win_hints_get_workspace_names</NAME>
-<RETURNS>GList *</RETURNS>
-void
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_win_hints_get_workspace_count</NAME>
-<RETURNS>gint</RETURNS>
-void
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_win_hints_set_expanded_size</NAME>
-<RETURNS>void</RETURNS>
-GtkWidget *window, gint x, gint y, gint width, gint height
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_win_hints_get_expanded_size</NAME>
-<RETURNS>gboolean</RETURNS>
-GtkWidget *window, gint *x, gint *y, gint *width, gint *height
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_win_hints_set_moving</NAME>
-<RETURNS>void</RETURNS>
-GtkWidget *window, gboolean moving
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_win_hints_set_app_state</NAME>
-<RETURNS>void</RETURNS>
-GtkWidget *window,  GnomeWinAppState state
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_win_hints_get_app_state</NAME>
-<RETURNS>GnomeWinAppState</RETURNS>
-GtkWidget *window
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_win_hints_set_moving</NAME>
-<RETURNS>void</RETURNS>
-GtkWidget *window, gboolean moving
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_win_hints_wm_exists</NAME>
-<RETURNS>gboolean</RETURNS>
-void
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_win_hints_get_client_window_ids</NAME>
-<RETURNS>GList *</RETURNS>
-void
-</FUNCTION>
-<MACRO>
-<NAME>GNOME_ANIMATOR</NAME>
-#define GNOME_ANIMATOR(obj) \
-  GTK_CHECK_CAST (obj, gnome_animator_get_type (), GnomeAnimator)
-</MACRO>
-<MACRO>
-<NAME>GNOME_ANIMATOR_CLASS</NAME>
-#define GNOME_ANIMATOR_CLASS(klass) \
-  GTK_CHECK_CLASS_CAST (klass, gnome_animator_get_type (), GnomeAnimatorClass)
-</MACRO>
-<MACRO>
-<NAME>GNOME_IS_ANIMATOR</NAME>
-#define GNOME_IS_ANIMATOR(obj) \
-  GTK_CHECK_TYPE (obj, gnome_animator_get_type ())
-</MACRO>
-<ENUM>
-<NAME>GnomeAnimatorStatus</NAME>
-typedef enum
-{
-    GNOME_ANIMATOR_STATUS_STOPPED,
-    GNOME_ANIMATOR_STATUS_RUNNING
-} GnomeAnimatorStatus;
-</ENUM>
-<ENUM>
-<NAME>GnomeAnimatorLoopType</NAME>
-typedef enum
-{
-    /* No loop: after the last (first) frame is played, the animation
-       is stopped.  */
-    GNOME_ANIMATOR_LOOP_NONE,
-
-    /* After the last (first) frame is played, restart from the first
-       (last) frame.  */
-    GNOME_ANIMATOR_LOOP_RESTART,
-
-    /* After the last (first) frame is played, the playback direction
-       is reversed.  */
-    GNOME_ANIMATOR_LOOP_PING_PONG
-} GnomeAnimatorLoopType;
-</ENUM>
-<STRUCT>
-<NAME>GnomeAnimator</NAME>
-</STRUCT>
-<STRUCT>
-<NAME>GnomeAnimatorClass</NAME>
-</STRUCT>
-<STRUCT>
-<NAME>GnomeAnimatorFrame</NAME>
-</STRUCT>
-<STRUCT>
-<NAME>GnomeAnimatorPrivate</NAME>
-</STRUCT>
-<STRUCT>
-<NAME>GnomeAnimator</NAME>
-struct GnomeAnimator
-  {
-    GtkWidget widget;
-
-    guint num_frames;
-
-    guint current_frame_number;
-
-    GnomeAnimatorStatus status;
-
-    GnomeAnimatorLoopType loop_type;
-
-    gint playback_direction;
-
-    gdouble playback_speed;
-
-    GnomeAnimatorPrivate *privat;
-  };
-</STRUCT>
-<FUNCTION>
-<NAME>gnome_animator_get_type</NAME>
-<RETURNS>guint  </RETURNS>
-void
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_animator_new_with_size</NAME>
-<RETURNS>GtkWidget  *</RETURNS>
-guint width,guint height
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_animator_set_loop_type</NAME>
-<RETURNS>void  </RETURNS>
-GnomeAnimator *animator,GnomeAnimatorLoopType loop_type
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_animator_get_loop_type</NAME>
-<RETURNS>GnomeAnimatorLoopType  </RETURNS>
-GnomeAnimator *animator
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_animator_set_playback_direction</NAME>
-<RETURNS>void  </RETURNS>
-GnomeAnimator *animator,gint playback_direction
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_animator_get_playback_direction</NAME>
-<RETURNS>gint  </RETURNS>
-GnomeAnimator *animator
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_animator_append_frame_from_imlib_at_size</NAME>
-<RETURNS>gboolean  </RETURNS>
-GnomeAnimator *animator,GdkImlibImage *image,gint x_offset,gint y_offset,guint32 interval,guint width,guint height
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_animator_append_frame_from_imlib</NAME>
-<RETURNS>gboolean  </RETURNS>
-GnomeAnimator *animator,GdkImlibImage *image,gint x_offset,gint y_offset,guint32 interval
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_animator_append_frame_from_file_at_size</NAME>
-<RETURNS>gboolean  </RETURNS>
-GnomeAnimator *animator,const gchar *name,gint x_offset,gint y_offset,guint32 interval,guint width,guint height
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_animator_append_frame_from_file</NAME>
-<RETURNS>gboolean  </RETURNS>
-GnomeAnimator *animator,const gchar *name,gint x_offset,gint y_offset,guint32 interval
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_animator_append_frames_from_imlib_at_size</NAME>
-<RETURNS>gboolean  </RETURNS>
-GnomeAnimator *animator,GdkImlibImage *image,gint x_offset,gint y_offset,guint32 interval,gint x_unit,guint width,guint height
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_animator_append_frames_from_imlib</NAME>
-<RETURNS>gboolean  </RETURNS>
-GnomeAnimator *animator,GdkImlibImage *image,gint x_offset,gint y_offset,guint32 interval,gint x_unit
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_animator_append_frames_from_file_at_size</NAME>
-<RETURNS>gboolean  </RETURNS>
-GnomeAnimator *animator,const gchar *name,gint x_offset,gint y_offset,guint32 interval,gint x_unit,guint width,guint height
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_animator_append_frames_from_file</NAME>
-<RETURNS>gboolean  </RETURNS>
-GnomeAnimator *animator,const gchar *name,gint x_offset,gint y_offset,guint32 interval,gint x_unit
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_animator_append_frame_from_gnome_pixmap</NAME>
-<RETURNS>gboolean  </RETURNS>
-GnomeAnimator *animator,GnomePixmap *pixmap,gint x_offset,gint y_offset,guint32 interval
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_animator_start</NAME>
-<RETURNS>void  </RETURNS>
-GnomeAnimator *animator
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_animator_stop</NAME>
-<RETURNS>void  </RETURNS>
-GnomeAnimator *animator
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_animator_advance</NAME>
-<RETURNS>gboolean  </RETURNS>
-GnomeAnimator *animator,gint num
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_animator_goto_frame</NAME>
-<RETURNS>void  </RETURNS>
-GnomeAnimator *animator,guint frame_number
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_animator_get_current_frame_number</NAME>
-<RETURNS>guint  </RETURNS>
-GnomeAnimator *animator
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_animator_get_status</NAME>
-<RETURNS>GnomeAnimatorStatus  </RETURNS>
-GnomeAnimator *animator
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_animator_set_playback_speed</NAME>
-<RETURNS>void  </RETURNS>
-GnomeAnimator *animator,gdouble speed
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_animator_get_playback_speed</NAME>
-<RETURNS>gdouble  </RETURNS>
-GnomeAnimator *animator
-</FUNCTION>
-<USER_FUNCTION>
-<NAME>GnomeMDIChildCreator</NAME>
-<RETURNS>GnomeMDIChild *</RETURNS>
-const gchar *
-</USER_FUNCTION>
-<FUNCTION>
-<NAME>gnome_mdi_restore_state</NAME>
-<RETURNS>gboolean 	</RETURNS>
-GnomeMDI *mdi, const char *section,GnomeMDIChildCreator child_create_func
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_mdi_save_state</NAME>
-<RETURNS>void 	</RETURNS>
-GnomeMDI *mdi, const gchar *section
-</FUNCTION>
 <MACRO>
 <NAME>GTK_TYPE_PIXMAP_MENU_ITEM</NAME>
 #define GTK_TYPE_PIXMAP_MENU_ITEM	    (gtk_pixmap_menu_item_get_type ())
@@ -7411,181 +8462,6 @@ void
 <NAME>gtk_pixmap_menu_item_set_pixmap</NAME>
 <RETURNS>void  </RETURNS>
 GtkPixmapMenuItem *menu_item,GtkWidget *pixmap
-</FUNCTION>
-<MACRO>
-<NAME>GNOME_TYPE_CANVAS_WIDGET</NAME>
-#define GNOME_TYPE_CANVAS_WIDGET            (gnome_canvas_widget_get_type ())
-</MACRO>
-<MACRO>
-<NAME>GNOME_CANVAS_WIDGET</NAME>
-#define GNOME_CANVAS_WIDGET(obj)            (GTK_CHECK_CAST ((obj), GNOME_TYPE_CANVAS_WIDGET, GnomeCanvasWidget))
-</MACRO>
-<MACRO>
-<NAME>GNOME_CANVAS_WIDGET_CLASS</NAME>
-#define GNOME_CANVAS_WIDGET_CLASS(klass)    (GTK_CHECK_CLASS_CAST ((klass), GNOME_TYPE_CANVAS_WIDGET, GnomeCanvasWidgetClass))
-</MACRO>
-<MACRO>
-<NAME>GNOME_IS_CANVAS_WIDGET</NAME>
-#define GNOME_IS_CANVAS_WIDGET(obj)         (GTK_CHECK_TYPE ((obj), GNOME_TYPE_CANVAS_WIDGET))
-</MACRO>
-<MACRO>
-<NAME>GNOME_IS_CANVAS_WIDGET_CLASS</NAME>
-#define GNOME_IS_CANVAS_WIDGET_CLASS(klass) (GTK_CHECK_CLASS_TYPE ((klass), GNOME_TYPE_CANVAS_WIDGET))
-</MACRO>
-<STRUCT>
-<NAME>GnomeCanvasWidget</NAME>
-</STRUCT>
-<STRUCT>
-<NAME>GnomeCanvasWidgetClass</NAME>
-</STRUCT>
-<STRUCT>
-<NAME>GnomeCanvasWidget</NAME>
-struct GnomeCanvasWidget {
-	GnomeCanvasItem item;
-
-	GtkWidget *widget;		/* The child widget */
-
-	double x, y;			/* Position at anchor */
-	double width, height;		/* Dimensions of widget */
-	GtkAnchorType anchor;		/* Anchor side for widget */
-
-	int cx, cy;			/* Top-left canvas coordinates for widget */
-	int cwidth, cheight;		/* Size of widget in pixels */
-
-	guint destroy_id;		/* Signal connection id for destruction of child widget */
-
-	guint size_pixels : 1;		/* Is size specified in (unchanging) pixels or units (get scaled)? */
-	guint in_destroy : 1;		/* Is child widget being destroyed? */
-};
-</STRUCT>
-<FUNCTION>
-<NAME>gnome_canvas_widget_get_type</NAME>
-<RETURNS>GtkType  </RETURNS>
-void
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_popup_menu_new</NAME>
-<RETURNS>GtkWidget  *</RETURNS>
-GnomeUIInfo *uiinfo
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_popup_menu_new_with_accelgroup</NAME>
-<RETURNS>GtkWidget  *</RETURNS>
-GnomeUIInfo *uiinfo,GtkAccelGroup *accelgroup
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_popup_menu_get_accel_group</NAME>
-<RETURNS>GtkAccelGroup  *</RETURNS>
-GtkMenu *menu
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_popup_menu_attach</NAME>
-<RETURNS>void  </RETURNS>
-GtkWidget *popup, GtkWidget *widget,gpointer user_data
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_popup_menu_do_popup</NAME>
-<RETURNS>void  </RETURNS>
-GtkWidget *popup, GtkMenuPositionFunc pos_func, gpointer pos_data,GdkEventButton *event, gpointer user_data
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_popup_menu_do_popup_modal</NAME>
-<RETURNS>int  </RETURNS>
-GtkWidget *popup, GtkMenuPositionFunc pos_func, gpointer pos_data,GdkEventButton *event, gpointer user_data
-</FUNCTION>
-<MACRO>
-<NAME>GNOME_PAPER_SELECTOR</NAME>
-#define GNOME_PAPER_SELECTOR(obj)         GTK_CHECK_CAST (obj, gnome_paper_selector_get_type (), GnomePaperSelector)
-</MACRO>
-<MACRO>
-<NAME>GNOME_PAPER_SELECTOR_CLASS</NAME>
-#define GNOME_PAPER_SELECTOR_CLASS(klass) GTK_CHECK_CLASS_CAST (klass, gnome_paper_selector_get_type (), GnomePaperSelectorClass)
-</MACRO>
-<MACRO>
-<NAME>GNOME_IS_PAPER_SELECTOR</NAME>
-#define GNOME_IS_PAPER_SELECTOR(obj)      GTK_CHECK_TYPE (obj, gnome_paper_selector_get_type ())
-</MACRO>
-<STRUCT>
-<NAME>GnomePaperSelector</NAME>
-</STRUCT>
-<STRUCT>
-<NAME>GnomePaperSelectorClass</NAME>
-</STRUCT>
-<STRUCT>
-<NAME>GnomePaperSelector</NAME>
-struct GnomePaperSelector {
-  GtkVBox vbox;
-  
-  GtkWidget *paper;
-  GtkWidget *width;
-  GtkWidget *height;
-  GtkWidget *unit;
-  GtkWidget *unit_label;
-
-  gint paper_id;
-  gint width_id;
-  gint height_id;
-};
-</STRUCT>
-<FUNCTION>
-<NAME>gnome_paper_selector_get_type</NAME>
-<RETURNS>guint 	</RETURNS>
-void
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_paper_selector_new</NAME>
-<RETURNS>GtkWidget 	*</RETURNS>
-void
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_paper_selector_get_name</NAME>
-<RETURNS>gchar 		*</RETURNS>
-GnomePaperSelector *gspaper
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_paper_selector_get_width</NAME>
-<RETURNS>gfloat 	</RETURNS>
-GnomePaperSelector *gspaper
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_paper_selector_get_height</NAME>
-<RETURNS>gfloat 	</RETURNS>
-GnomePaperSelector *gspaper
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_paper_selector_get_left_margin</NAME>
-<RETURNS>gfloat  </RETURNS>
-GnomePaperSelector *gspaper
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_paper_selector_get_right_margin</NAME>
-<RETURNS>gfloat  </RETURNS>
-GnomePaperSelector *gspaper
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_paper_selector_get_top_margin</NAME>
-<RETURNS>gfloat  </RETURNS>
-GnomePaperSelector *gspaper
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_paper_selector_get_bottom_margin</NAME>
-<RETURNS>gfloat  </RETURNS>
-GnomePaperSelector *gspaper
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_paper_selector_set_name</NAME>
-<RETURNS>void 	</RETURNS>
-GnomePaperSelector *gspaper,gchar *name
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_paper_selector_set_width</NAME>
-<RETURNS>void 	</RETURNS>
-GnomePaperSelector *gspaper,gfloat width
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_paper_selector_set_height</NAME>
-<RETURNS>void 	</RETURNS>
-GnomePaperSelector *gspaper,gfloat height
 </FUNCTION>
 <MACRO>
 <NAME>GNOME_TYPE_DRUID_PAGE_FINISH</NAME>
@@ -7702,63 +8578,6 @@ GnomeDruidPageFinish *druid_page_finish,GdkImlibImage *logo_image
 GnomeDruidPageFinish *druid_page_finish,GdkImlibImage *watermark
 </FUNCTION>
 <MACRO>
-<NAME>GNOME_HREF</NAME>
-#define GNOME_HREF(obj) GTK_CHECK_CAST(obj, gnome_href_get_type(), GnomeHRef)
-</MACRO>
-<MACRO>
-<NAME>GNOME_HREF_CLASS</NAME>
-#define GNOME_HREF_CLASS(klass) GTK_CHECK_CLASS_CAST(klass, gnome_href_get_type, GnomeHRefClass)
-</MACRO>
-<MACRO>
-<NAME>GNOME_IS_HREF</NAME>
-#define GNOME_IS_HREF(obj) GTK_CHECK_TYPE(obj, gnome_href_get_type())
-</MACRO>
-<STRUCT>
-<NAME>GnomeHRef</NAME>
-</STRUCT>
-<STRUCT>
-<NAME>GnomeHRefClass</NAME>
-</STRUCT>
-<STRUCT>
-<NAME>GnomeHRef</NAME>
-struct GnomeHRef {
-  GtkButton button;
-
-  gchar *url;
-  GtkWidget *label;
-};
-</STRUCT>
-<FUNCTION>
-<NAME>gnome_href_get_type</NAME>
-<RETURNS>guint  </RETURNS>
-void
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_href_new</NAME>
-<RETURNS>GtkWidget  *</RETURNS>
-const gchar *url, const gchar *label
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_href_set_url</NAME>
-<RETURNS>void  </RETURNS>
-GnomeHRef *href, const gchar *url
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_href_get_url</NAME>
-<RETURNS>gchar  *</RETURNS>
-GnomeHRef *href
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_href_set_label</NAME>
-<RETURNS>void  </RETURNS>
-GnomeHRef *href, const gchar *label
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_href_get_label</NAME>
-<RETURNS>gchar  *</RETURNS>
-GnomeHRef *href
-</FUNCTION>
-<MACRO>
 <NAME>GNOME_TYPE_DRUID_PAGE_STANDARD</NAME>
 #define GNOME_TYPE_DRUID_PAGE_STANDARD			(gnome_druid_page_standard_get_type ())
 </MACRO>
@@ -7846,107 +8665,6 @@ GnomeDruidPageStandard *druid_page_standard,gchar *title
 <NAME>gnome_druid_page_standard_set_logo</NAME>
 <RETURNS>void  </RETURNS>
 GnomeDruidPageStandard *druid_page_standard,GdkImlibImage *logo_image
-</FUNCTION>
-<MACRO>
-<NAME>GNOME_TYPE_COLOR_PICKER</NAME>
-#define GNOME_TYPE_COLOR_PICKER            (gnome_color_picker_get_type ())
-</MACRO>
-<MACRO>
-<NAME>GNOME_COLOR_PICKER</NAME>
-#define GNOME_COLOR_PICKER(obj)            (GTK_CHECK_CAST ((obj), GNOME_TYPE_COLOR_PICKER, GnomeColorPicker))
-</MACRO>
-<MACRO>
-<NAME>GNOME_COLOR_PICKER_CLASS</NAME>
-#define GNOME_COLOR_PICKER_CLASS(klass)    (GTK_CHECK_CLASS_CAST ((klass), GNOME_TYPE_COLOR_PICKER, GnomeColorPickerClass))
-</MACRO>
-<MACRO>
-<NAME>GNOME_IS_COLOR_PICKER</NAME>
-#define GNOME_IS_COLOR_PICKER(obj)         (GTK_CHECK_TYPE ((obj), GNOME_TYPE_COLOR_PICKER))
-</MACRO>
-<MACRO>
-<NAME>GNOME_IS_COLOR_PICKER_CLASS</NAME>
-#define GNOME_IS_COLOR_PICKER_CLASS(klass) (GTK_CHECK_CLASS_TYPE ((klass), GNOME_TYPE_COLOR_PICKER))
-</MACRO>
-<STRUCT>
-<NAME>GnomeColorPicker</NAME>
-</STRUCT>
-<STRUCT>
-<NAME>GnomeColorPickerClass</NAME>
-</STRUCT>
-<STRUCT>
-<NAME>GnomeColorPicker</NAME>
-struct GnomeColorPicker {
-	GtkButton button;
-
-	gdouble r, g, b, a;	/* Red, green, blue, and alpha values */
-
-	GdkImlibImage *im;	/* Imlib image for rendering dithered sample */
-	GdkPixmap *pixmap;	/* Pixmap with the sample contents */
-	GdkGC *gc;		/* GC for drawing */
-
-	GtkWidget *da;		/* Drawing area for color sample */
-	GtkWidget *cs_dialog;	/* Color selection dialog */
-
-	gchar *title;		/* Title for the color selection window */
-
-	guint dither : 1;	/* Dither or just paint a solid color? */
-	guint use_alpha : 1;	/* Use alpha or not */
-};
-</STRUCT>
-<FUNCTION>
-<NAME>gnome_color_picker_get_type</NAME>
-<RETURNS>GtkType  </RETURNS>
-void
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_color_picker_new</NAME>
-<RETURNS>GtkWidget  *</RETURNS>
-void
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_color_picker_set_d</NAME>
-<RETURNS>void  </RETURNS>
-GnomeColorPicker *cp, gdouble r, gdouble g, gdouble b, gdouble a
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_color_picker_get_d</NAME>
-<RETURNS>void  </RETURNS>
-GnomeColorPicker *cp, gdouble *r, gdouble *g, gdouble *b, gdouble *a
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_color_picker_set_i8</NAME>
-<RETURNS>void  </RETURNS>
-GnomeColorPicker *cp, guint8 r, guint8 g, guint8 b, guint8 a
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_color_picker_get_i8</NAME>
-<RETURNS>void  </RETURNS>
-GnomeColorPicker *cp, guint8 *r, guint8 *g, guint8 *b, guint8 *a
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_color_picker_set_i16</NAME>
-<RETURNS>void  </RETURNS>
-GnomeColorPicker *cp, gushort r, gushort g, gushort b, gushort a
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_color_picker_get_i16</NAME>
-<RETURNS>void  </RETURNS>
-GnomeColorPicker *cp, gushort *r, gushort *g, gushort *b, gushort *a
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_color_picker_set_dither</NAME>
-<RETURNS>void  </RETURNS>
-GnomeColorPicker *cp, gboolean dither
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_color_picker_set_use_alpha</NAME>
-<RETURNS>void  </RETURNS>
-GnomeColorPicker *cp, gboolean use_alpha
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_color_picker_set_title</NAME>
-<RETURNS>void  </RETURNS>
-GnomeColorPicker *cp, const gchar *title
 </FUNCTION>
 <MACRO>
 <NAME>GNOME_TYPE_DRUID_PAGE_START</NAME>
@@ -8207,837 +8925,119 @@ GnomeDruid *druid, GnomeDruidPage *page
 <RETURNS>void 	</RETURNS>
 GnomeDruid *druid, GnomeDruidPage *page
 </FUNCTION>
+<VARIABLE>
+<NAME>GTK_TYPE_GNOME_ANIMATOR_STATUS</NAME>
+extern GtkType GTK_TYPE_GNOME_ANIMATOR_STATUS;
+</VARIABLE>
+<VARIABLE>
+<NAME>GTK_TYPE_GNOME_ANIMATOR_LOOP_TYPE</NAME>
+extern GtkType GTK_TYPE_GNOME_ANIMATOR_LOOP_TYPE;
+</VARIABLE>
+<VARIABLE>
+<NAME>GTK_TYPE_GNOME_UI_INFO_TYPE</NAME>
+extern GtkType GTK_TYPE_GNOME_UI_INFO_TYPE;
+</VARIABLE>
+<VARIABLE>
+<NAME>GTK_TYPE_GNOME_UI_INFO_CONFIGURABLE_TYPES</NAME>
+extern GtkType GTK_TYPE_GNOME_UI_INFO_CONFIGURABLE_TYPES;
+</VARIABLE>
+<VARIABLE>
+<NAME>GTK_TYPE_GNOME_UI_PIXMAP_TYPE</NAME>
+extern GtkType GTK_TYPE_GNOME_UI_PIXMAP_TYPE;
+</VARIABLE>
+<VARIABLE>
+<NAME>GTK_TYPE_GNOME_CALCULATOR_MODE</NAME>
+extern GtkType GTK_TYPE_GNOME_CALCULATOR_MODE;
+</VARIABLE>
+<VARIABLE>
+<NAME>GTK_TYPE_GNOME_INTERACT_STYLE</NAME>
+extern GtkType GTK_TYPE_GNOME_INTERACT_STYLE;
+</VARIABLE>
+<VARIABLE>
+<NAME>GTK_TYPE_GNOME_DIALOG_TYPE</NAME>
+extern GtkType GTK_TYPE_GNOME_DIALOG_TYPE;
+</VARIABLE>
+<VARIABLE>
+<NAME>GTK_TYPE_GNOME_SAVE_STYLE</NAME>
+extern GtkType GTK_TYPE_GNOME_SAVE_STYLE;
+</VARIABLE>
+<VARIABLE>
+<NAME>GTK_TYPE_GNOME_RESTART_STYLE</NAME>
+extern GtkType GTK_TYPE_GNOME_RESTART_STYLE;
+</VARIABLE>
+<VARIABLE>
+<NAME>GTK_TYPE_GNOME_CLIENT_STATE</NAME>
+extern GtkType GTK_TYPE_GNOME_CLIENT_STATE;
+</VARIABLE>
+<VARIABLE>
+<NAME>GTK_TYPE_GNOME_CLIENT_FLAGS</NAME>
+extern GtkType GTK_TYPE_GNOME_CLIENT_FLAGS;
+</VARIABLE>
+<VARIABLE>
+<NAME>GTK_TYPE_GNOME_DATE_EDIT_FLAGS</NAME>
+extern GtkType GTK_TYPE_GNOME_DATE_EDIT_FLAGS;
+</VARIABLE>
+<VARIABLE>
+<NAME>GTK_TYPE_GNOME_DOCK_PLACEMENT</NAME>
+extern GtkType GTK_TYPE_GNOME_DOCK_PLACEMENT;
+</VARIABLE>
+<VARIABLE>
+<NAME>GTK_TYPE_GNOME_DOCK_ITEM_BEHAVIOR</NAME>
+extern GtkType GTK_TYPE_GNOME_DOCK_ITEM_BEHAVIOR;
+</VARIABLE>
+<VARIABLE>
+<NAME>GTK_TYPE_GNOME_FONT_PICKER_MODE</NAME>
+extern GtkType GTK_TYPE_GNOME_FONT_PICKER_MODE;
+</VARIABLE>
+<VARIABLE>
+<NAME>GTK_TYPE_GNOME_ICON_LIST_MODE</NAME>
+extern GtkType GTK_TYPE_GNOME_ICON_LIST_MODE;
+</VARIABLE>
+<VARIABLE>
+<NAME>GTK_TYPE_GNOME_MDI_MODE</NAME>
+extern GtkType GTK_TYPE_GNOME_MDI_MODE;
+</VARIABLE>
+<VARIABLE>
+<NAME>GTK_TYPE_GNOME_PROPERTY_ACTION</NAME>
+extern GtkType GTK_TYPE_GNOME_PROPERTY_ACTION;
+</VARIABLE>
+<VARIABLE>
+<NAME>GTK_TYPE_GNOME_STOCK_PIXMAP_TYPE</NAME>
+extern GtkType GTK_TYPE_GNOME_STOCK_PIXMAP_TYPE;
+</VARIABLE>
+<VARIABLE>
+<NAME>GTK_TYPE_GNOME_PREFERENCES_TYPE</NAME>
+extern GtkType GTK_TYPE_GNOME_PREFERENCES_TYPE;
+</VARIABLE>
+<VARIABLE>
+<NAME>GTK_TYPE_GNOME_WIN_LAYER</NAME>
+extern GtkType GTK_TYPE_GNOME_WIN_LAYER;
+</VARIABLE>
+<VARIABLE>
+<NAME>GTK_TYPE_GNOME_WIN_STATE</NAME>
+extern GtkType GTK_TYPE_GNOME_WIN_STATE;
+</VARIABLE>
+<VARIABLE>
+<NAME>GTK_TYPE_GNOME_WIN_HINTS</NAME>
+extern GtkType GTK_TYPE_GNOME_WIN_HINTS;
+</VARIABLE>
+<VARIABLE>
+<NAME>GTK_TYPE_GNOME_WIN_APP_STATE</NAME>
+extern GtkType GTK_TYPE_GNOME_WIN_APP_STATE;
+</VARIABLE>
+<VARIABLE>
+<NAME>GTK_TYPE_CLOCK_TYPE</NAME>
+extern GtkType GTK_TYPE_CLOCK_TYPE;
+</VARIABLE>
+<VARIABLE>
+<NAME>GTK_TYPE_GDK_IMLIB_IMAGE</NAME>
+extern GtkType GTK_TYPE_GDK_IMLIB_IMAGE;
+</VARIABLE>
+<VARIABLE>
+<NAME>GTK_TYPE_GNOME_CANVAS_POINTS</NAME>
+extern GtkType GTK_TYPE_GNOME_CANVAS_POINTS;
+</VARIABLE>
 <MACRO>
-<NAME>GNOME_ICON_LIST</NAME>
-#define GNOME_ICON_LIST(obj)     GTK_CHECK_CAST (obj, gnome_icon_list_get_type (), GnomeIconList)
+<NAME>GNOME_TYPE_NUM_BUILTINS</NAME>
+#define	GNOME_TYPE_NUM_BUILTINS	(28)
 </MACRO>
-<MACRO>
-<NAME>GNOME_ICON_LIST_CLASS</NAME>
-#define GNOME_ICON_LIST_CLASS(k) GTK_CHECK_CLASS_CAST (k, gnome_icon_list_get_type (), GnomeIconListClass)
-</MACRO>
-<MACRO>
-<NAME>GNOME_IS_ICON_LIST</NAME>
-#define GNOME_IS_ICON_LIST(obj)  GTK_CHECK_TYPE (obj, gnome_icon_list_get_type ())
-</MACRO>
-<ENUM>
-<NAME>GnomeIconListMode</NAME>
-typedef enum {
-	GNOME_ICON_LIST_ICONS,
-	GNOME_ICON_LIST_TEXT_BELOW,
-	GNOME_ICON_LIST_TEXT_RIGHT
-} GnomeIconListMode;
-</ENUM>
-<STRUCT>
-<NAME>GnomeIconList</NAME>
-typedef struct {
-	GnomeCanvas canvas;
-
-	/* Private data */
-	gpointer priv; /* was GtkAdjustment *adj */
-
-	gpointer pad1; /* was GtkAdjustment *hadj */
-
-	/* Number of icons in the list */
-	int icons;
-
-	gpointer pad2; /* was GList *icon_list */
-	int pad3; /* was int frozen */
-	int pad4; /* was int dirty */
-	int pad5; /* was int row_spacing */
-	int pad6; /* was int col_spacing */
-	int pad7; /* was int text_spacing */
-	int pad8; /* was int icon_border */
-	gpointer pad9; /* was char *separators */
-	GnomeIconListMode pad10; /* was GnomeIconListMode mode */
-
-	GtkSelectionMode pad11; /* was GtkSelectionMode selection_mode */
-
-	/* A list of integers with the indices of the currently selected icons */
-	GList *selection;
-
-	gpointer pad12; /* was GList *preserve_selection */
-	int pad13; /* was int icon_width */
-	unsigned int pad14 : 1; /* was unsigned int is_editable : 1 */
-	unsigned int pad15 : 1; /* was unsigned int static_text : 1 */
-	int pad16; /* was int last_selected */
-	gpointer pad17; /* was void *last_clicked */
-	int pad18; /* was int timer_tag */
-	int pad19; /* was int value_diff */
-	gdouble pad20; /* was gdouble event_last_x */
-	gdouble pad21; /* was gdouble event_last_y */
-	gpointer pad22; /* was GList *lines */
-	int pad23; /* was int total_height */
-	double pad24; /* was double sel_start_x */
-	double pad25; /* was double sel_start_y */
-	gpointer pad26; /* was GnomeCanvasItem *sel_rect */
-} GnomeIconList;
-</STRUCT>
-<MACRO>
-<NAME>GNOME_ICON_LIST_IS_EDITABLE</NAME>
-#define GNOME_ICON_LIST_IS_EDITABLE 1
-</MACRO>
-<MACRO>
-<NAME>GNOME_ICON_LIST_STATIC_TEXT</NAME>
-#define GNOME_ICON_LIST_STATIC_TEXT 2
-</MACRO>
-<FUNCTION>
-<NAME>gnome_icon_list_get_type</NAME>
-<RETURNS>guint  </RETURNS>
-void
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_icon_list_new</NAME>
-<RETURNS>GtkWidget      *</RETURNS>
-guint         icon_width,GtkAdjustment *adj,int           flags
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_icon_list_new_flags</NAME>
-<RETURNS>GtkWidget      *</RETURNS>
-guint         icon_width,GtkAdjustment *adj,int           flags
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_icon_list_construct</NAME>
-<RETURNS>void  </RETURNS>
-GnomeIconList *gil,guint icon_width,GtkAdjustment *adj,int flags
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_icon_list_set_hadjustment</NAME>
-<RETURNS>void  </RETURNS>
-GnomeIconList *gil,GtkAdjustment *hadj
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_icon_list_set_vadjustment</NAME>
-<RETURNS>void  </RETURNS>
-GnomeIconList *gil,GtkAdjustment *vadj
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_icon_list_freeze</NAME>
-<RETURNS>void  </RETURNS>
-GnomeIconList *gil
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_icon_list_thaw</NAME>
-<RETURNS>void  </RETURNS>
-GnomeIconList *gil
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_icon_list_insert</NAME>
-<RETURNS>void  </RETURNS>
-GnomeIconList *gil,int pos, const char *icon_filename,const char *text
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_icon_list_insert_imlib</NAME>
-<RETURNS>void  </RETURNS>
-GnomeIconList *gil,int pos, GdkImlibImage *im,const char *text
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_icon_list_append</NAME>
-<RETURNS>int  </RETURNS>
-GnomeIconList *gil,const char *icon_filename,const char *text
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_icon_list_append_imlib</NAME>
-<RETURNS>int  </RETURNS>
-GnomeIconList *gil,GdkImlibImage *im,char *text
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_icon_list_clear</NAME>
-<RETURNS>void  </RETURNS>
-GnomeIconList *gil
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_icon_list_remove</NAME>
-<RETURNS>void  </RETURNS>
-GnomeIconList *gil, int pos
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_icon_list_set_selection_mode</NAME>
-<RETURNS>void  </RETURNS>
-GnomeIconList *gil,GtkSelectionMode mode
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_icon_list_select_icon</NAME>
-<RETURNS>void  </RETURNS>
-GnomeIconList *gil,int idx
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_icon_list_unselect_icon</NAME>
-<RETURNS>void  </RETURNS>
-GnomeIconList *gil,int pos
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_icon_list_unselect_all</NAME>
-<RETURNS>int  </RETURNS>
-GnomeIconList *gil,GdkEvent *event, gpointer keep
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_icon_list_set_icon_width</NAME>
-<RETURNS>void  </RETURNS>
-GnomeIconList *gil,int w
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_icon_list_set_row_spacing</NAME>
-<RETURNS>void  </RETURNS>
-GnomeIconList *gil,int pixels
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_icon_list_set_col_spacing</NAME>
-<RETURNS>void  </RETURNS>
-GnomeIconList *gil,int pixels
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_icon_list_set_text_spacing</NAME>
-<RETURNS>void  </RETURNS>
-GnomeIconList *gil,int pixels
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_icon_list_set_icon_border</NAME>
-<RETURNS>void  </RETURNS>
-GnomeIconList *gil,int pixels
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_icon_list_set_separators</NAME>
-<RETURNS>void  </RETURNS>
-GnomeIconList *gil,const char *sep
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_icon_list_set_icon_data</NAME>
-<RETURNS>void  </RETURNS>
-GnomeIconList *gil,int pos, gpointer data
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_icon_list_set_icon_data_full</NAME>
-<RETURNS>void  </RETURNS>
-GnomeIconList *gil,int pos, gpointer data,GtkDestroyNotify destroy
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_icon_list_find_icon_from_data</NAME>
-<RETURNS>int  </RETURNS>
-GnomeIconList *gil,gpointer data
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_icon_list_get_icon_data</NAME>
-<RETURNS>gpointer  </RETURNS>
-GnomeIconList *gil,int pos
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_icon_list_moveto</NAME>
-<RETURNS>void  </RETURNS>
-GnomeIconList *gil,int pos, double yalign
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_icon_list_icon_is_visible</NAME>
-<RETURNS>GtkVisibility  </RETURNS>
-GnomeIconList *gil,int pos
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_icon_list_get_icon_at</NAME>
-<RETURNS>int  </RETURNS>
-GnomeIconList *gil, int x, int y
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_icon_list_get_items_per_line</NAME>
-<RETURNS>int  </RETURNS>
-GnomeIconList *gil
-</FUNCTION>
-<MACRO>
-<NAME>GNOME_ICON_TEXT_ITEM</NAME>
-#define GNOME_ICON_TEXT_ITEM(obj)     (GTK_CHECK_CAST((obj), \
-        gnome_icon_text_item_get_type (), GnomeIconTextItem))
-</MACRO>
-<MACRO>
-<NAME>GNOME_ICON_TEXT_ITEM_CLASS</NAME>
-#define GNOME_ICON_TEXT_ITEM_CLASS(k) (GTK_CHECK_CLASS_CAST ((k),\
-	gnome_icon_text_item_get_type ()))
-</MACRO>
-<MACRO>
-<NAME>GNOME_IS_ICON_TEXT_ITEM</NAME>
-#define GNOME_IS_ICON_TEXT_ITEM(o)    (GTK_CHECK_TYPE((o), \
-	gnome_icon_text_item_get_type ()))
-</MACRO>
-<STRUCT>
-<NAME>GnomeIconTextItem</NAME>
-typedef struct {
-	GnomeCanvasItem canvas_item;
-
-	/* Size and maximum allowed width */
-	int x, y;
-	int width;
-
-	/* Font name */
-	char *fontname;
-
-	/* Private data */
-	gpointer priv; /* was GtkEntry *entry */
-	gpointer pad1; /* was GtkWidget *entry_top */
-	gpointer pad2; /* was GdkFont *font */
-
-	/* Actual text */
-	char *text;
-
-	/* Text layout information */
-	GnomeIconTextInfo *ti;
-
-	/* Whether the text is being edited */
-	unsigned int editing : 1;
-
-	/* Whether the text item is selected */
-	unsigned int selected : 1;
-
-	unsigned int pad3; /* was unsigned int unselected_click : 1 */
-
-	/* Whether the user is select-dragging a block of text */
-	unsigned int selecting : 1;
-
-	/* Whether the text is editable */
-	unsigned int is_editable : 1;
-
-	/* Whether the text is allocated by us (FALSE if allocated by the client) */
-	unsigned int is_text_allocated : 1;
-} GnomeIconTextItem;
-</STRUCT>
-<FUNCTION>
-<NAME>gnome_icon_text_item_get_type</NAME>
-<RETURNS>GtkType  </RETURNS>
-void
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_icon_text_item_configure</NAME>
-<RETURNS>void  </RETURNS>
-GnomeIconTextItem *iti,int                x,int                y,int                width,const char        *fontname,const char        *text,gboolean           is_editable,gboolean           is_static
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_icon_text_item_setxy</NAME>
-<RETURNS>void  </RETURNS>
-GnomeIconTextItem *iti,int                x,int                y
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_icon_text_item_select</NAME>
-<RETURNS>void  </RETURNS>
-GnomeIconTextItem *iti,int                sel
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_icon_text_item_get_text</NAME>
-<RETURNS>char     *</RETURNS>
-GnomeIconTextItem *iti
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_icon_text_item_stop_editing</NAME>
-<RETURNS>void  </RETURNS>
-GnomeIconTextItem *iti,gboolean           accept
-</FUNCTION>
-<MACRO>
-<NAME>GNOME_TYPE_CANVAS_POLYGON</NAME>
-#define GNOME_TYPE_CANVAS_POLYGON            (gnome_canvas_polygon_get_type ())
-</MACRO>
-<MACRO>
-<NAME>GNOME_CANVAS_POLYGON</NAME>
-#define GNOME_CANVAS_POLYGON(obj)            (GTK_CHECK_CAST ((obj), GNOME_TYPE_CANVAS_POLYGON, GnomeCanvasPolygon))
-</MACRO>
-<MACRO>
-<NAME>GNOME_CANVAS_POLYGON_CLASS</NAME>
-#define GNOME_CANVAS_POLYGON_CLASS(klass)    (GTK_CHECK_CLASS_CAST ((klass), GNOME_TYPE_CANVAS_POLYGON, GnomeCanvasPolygonClass))
-</MACRO>
-<MACRO>
-<NAME>GNOME_IS_CANVAS_POLYGON</NAME>
-#define GNOME_IS_CANVAS_POLYGON(obj)         (GTK_CHECK_TYPE ((obj), GNOME_TYPE_CANVAS_POLYGON))
-</MACRO>
-<MACRO>
-<NAME>GNOME_IS_CANVAS_POLYGON_CLASS</NAME>
-#define GNOME_IS_CANVAS_POLYGON_CLASS(klass) (GTK_CHECK_CLASS_TYPE ((klass), GNOME_TYPE_CANVAS_POLYGON))
-</MACRO>
-<STRUCT>
-<NAME>GnomeCanvasPolygon</NAME>
-</STRUCT>
-<STRUCT>
-<NAME>GnomeCanvasPolygonClass</NAME>
-</STRUCT>
-<STRUCT>
-<NAME>GnomeCanvasPolygon</NAME>
-struct GnomeCanvasPolygon {
-	GnomeCanvasItem item;
-
-	int num_points;			/* Number of points in the polygon */
-	double *coords;			/* Array of coordinates for the polygon's points.  X coords
-					 * are in the even indices, Y coords are in the odd indices.
-					 */
-
-	double width;			/* Width of polygon's outline */
-
-	guint fill_color;		/* Fill color, RGBA */
-	guint outline_color;		/* Outline color, RGBA */
-
-	gulong fill_pixel;		/* Color for fill */
-	gulong outline_pixel;		/* Color for outline */
-
-	GdkBitmap *fill_stipple;	/* Stipple for fill */
-	GdkBitmap *outline_stipple;	/* Stipple for outline */
-
-	GdkGC *fill_gc;			/* GC for filling */
-	GdkGC *outline_gc;		/* GC for outline */
-
-	guint fill_set : 1;		/* Is fill color set? */
-	guint outline_set : 1;		/* Is outline color set? */
-	guint width_pixels : 1;		/* Is outline width specified in pixels or units? */
-
-	/* Antialiased specific stuff follows */
-	guint32 fill_rgba;		/* RGBA color for filling */
-	ArtSVP *fill_svp;		/* The SVP for the filled shape */
-	guint32 outline_rgba;		/* RGBA color for outline */
-	ArtSVP *outline_svp;		/* The SVP for the outline shape */
-};
-</STRUCT>
-<FUNCTION>
-<NAME>gnome_canvas_polygon_get_type</NAME>
-<RETURNS>GtkType  </RETURNS>
-void
-</FUNCTION>
-<STRUCT>
-<NAME>GnomeIconTextInfoRow</NAME>
-typedef struct {
-	char *text;
-	int width;
-	GdkWChar *text_wc;	/* text in wide characters */
-	int text_length;	/* number of characters */
-} GnomeIconTextInfoRow;
-</STRUCT>
-<STRUCT>
-<NAME>GnomeIconTextInfo</NAME>
-typedef struct {
-	GList *rows;
-	GdkFont *font;
-	int width;
-	int height;
-	int baseline_skip;
-} GnomeIconTextInfo;
-</STRUCT>
-<FUNCTION>
-<NAME>gnome_icon_layout_text</NAME>
-<RETURNS>GnomeIconTextInfo  *</RETURNS>
-GdkFont *font, char *text,char *separators, int max_width,int confine
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_icon_paint_text</NAME>
-<RETURNS>void  </RETURNS>
-GnomeIconTextInfo *ti,GdkDrawable *drawable, GdkGC *gc,int x, int y,GtkJustification just
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_icon_text_info_free</NAME>
-<RETURNS>void  </RETURNS>
-GnomeIconTextInfo *ti
-</FUNCTION>
-<MACRO>
-<NAME>GNOME_DOCK_BAND</NAME>
-#define GNOME_DOCK_BAND(obj) \
-  GTK_CHECK_CAST (obj, gnome_dock_band_get_type (), GnomeDockBand)
-</MACRO>
-<MACRO>
-<NAME>GNOME_DOCK_BAND_CLASS</NAME>
-#define GNOME_DOCK_BAND_CLASS(class) \
-  GTK_CHECK_CLASS_CAST (class, gnome_dock_band_get_type (), GnomeDockBandClass)
-</MACRO>
-<MACRO>
-<NAME>GNOME_IS_DOCK_BAND</NAME>
-#define GNOME_IS_DOCK_BAND(obj) \
-  GTK_CHECK_TYPE (obj, gnome_dock_band_get_type ())
-</MACRO>
-<STRUCT>
-<NAME>GnomeDockBand</NAME>
-</STRUCT>
-<STRUCT>
-<NAME>GnomeDockBandClass</NAME>
-</STRUCT>
-<STRUCT>
-<NAME>GnomeDockBandChild</NAME>
-</STRUCT>
-<STRUCT>
-<NAME>GnomeDockBand</NAME>
-struct GnomeDockBand
-{
-  GtkContainer container;
-
-  GtkOrientation orientation;
-
-  GList *children;              /* GnomeDockBandChild */
-  guint num_children;
-
-  GList *floating_child;        /* GnomeDockBandChild */
-
-  gboolean doing_drag;
-
-  guint max_space_requisition;
-  guint tot_offsets;
-
-  /* This used to remember the allocation before the drag begin: it is
-     necessary to do so because we actually decide what docking action
-     happens depending on it, instead of using the current allocation
-     (which might be constantly changing while the user drags things
-     around).  */
-  GtkAllocation drag_allocation;
-
-  guint new_for_drag : 1;
-};
-</STRUCT>
-<STRUCT>
-<NAME>GnomeDockBandChild</NAME>
-struct GnomeDockBandChild
-{
-  GtkWidget *widget;
-
-  /* Maximum (requested) offset from the previous child.  */
-  guint offset;
-
-  /* Actual offset.  */
-  guint real_offset;
-
-  guint drag_offset;
-
-  GtkAllocation drag_allocation;
-
-  guint prev_space, foll_space;
-  guint drag_prev_space, drag_foll_space;
-
-  guint max_space_requisition;
-};
-</STRUCT>
-<FUNCTION>
-<NAME>gnome_dock_band_new</NAME>
-<RETURNS>GtkWidget      *</RETURNS>
-void
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_dock_band_get_type</NAME>
-<RETURNS>guint  </RETURNS>
-void
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_dock_band_set_orientation</NAME>
-<RETURNS>void  </RETURNS>
-GnomeDockBand *band,GtkOrientation orientation
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_dock_band_get_orientation</NAME>
-<RETURNS>GtkOrientation  </RETURNS>
-GnomeDockBand *band
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_dock_band_insert</NAME>
-<RETURNS>gboolean  </RETURNS>
-GnomeDockBand *band,GtkWidget *child,guint offset,gint position
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_dock_band_prepend</NAME>
-<RETURNS>gboolean  </RETURNS>
-GnomeDockBand *band,GtkWidget *child,guint offset
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_dock_band_append</NAME>
-<RETURNS>gboolean  </RETURNS>
-GnomeDockBand *band,GtkWidget *child,guint offset
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_dock_band_set_child_offset</NAME>
-<RETURNS>void  </RETURNS>
-GnomeDockBand *band,GtkWidget *child,guint offset
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_dock_band_get_child_offset</NAME>
-<RETURNS>guint  </RETURNS>
-GnomeDockBand *band,GtkWidget *child
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_dock_band_move_child</NAME>
-<RETURNS>void  </RETURNS>
-GnomeDockBand *band,GList *old_child,guint new_num
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_dock_band_get_num_children</NAME>
-<RETURNS>guint  </RETURNS>
-GnomeDockBand *band
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_dock_band_drag_begin</NAME>
-<RETURNS>void  </RETURNS>
-GnomeDockBand *band,GnomeDockItem *item
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_dock_band_drag_to</NAME>
-<RETURNS>gboolean  </RETURNS>
-GnomeDockBand *band,GnomeDockItem *item,gint x, gint y
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_dock_band_drag_end</NAME>
-<RETURNS>void  </RETURNS>
-GnomeDockBand *band,GnomeDockItem *item
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_dock_band_get_item_by_name</NAME>
-<RETURNS>GnomeDockItem  *</RETURNS>
-GnomeDockBand *band,const char *name,guint *position_return,guint *offset_return
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_dock_band_layout_add</NAME>
-<RETURNS>void  </RETURNS>
-GnomeDockBand *band,GnomeDockLayout *layout,GnomeDockPlacement placement,guint band_num
-</FUNCTION>
-<MACRO>
-<NAME>GNOME_DOCK_ITEM</NAME>
-#define GNOME_DOCK_ITEM(obj) \
-  GTK_CHECK_CAST (obj, gnome_dock_item_get_type (), GnomeDockItem)
-</MACRO>
-<MACRO>
-<NAME>GNOME_DOCK_ITEM_CLASS</NAME>
-#define GNOME_DOCK_ITEM_CLASS(klass) \
-  GTK_CHECK_CLASS_CAST (klass, gnome_dock_item_get_type (), GnomeDockItemClass)
-</MACRO>
-<MACRO>
-<NAME>GNOME_IS_DOCK_ITEM</NAME>
-#define GNOME_IS_DOCK_ITEM(obj) \
-  GTK_CHECK_TYPE (obj, gnome_dock_item_get_type ())
-</MACRO>
-<ENUM>
-<NAME>GnomeDockItemBehavior</NAME>
-typedef enum
-{
-  GNOME_DOCK_ITEM_BEH_NORMAL = 0,
-  GNOME_DOCK_ITEM_BEH_EXCLUSIVE = 1 << 0,
-  GNOME_DOCK_ITEM_BEH_NEVER_FLOATING = 1 << 1,
-  GNOME_DOCK_ITEM_BEH_NEVER_VERTICAL = 1 << 2,
-  GNOME_DOCK_ITEM_BEH_NEVER_HORIZONTAL = 1 << 3,
-  GNOME_DOCK_ITEM_BEH_LOCKED = 1 << 4
-} GnomeDockItemBehavior;
-</ENUM>
-<MACRO>
-<NAME>GNOME_DOCK_ITEM_BEH_NEVER_DETACH</NAME>
-#define GNOME_DOCK_ITEM_BEH_NEVER_DETACH GNOME_DOCK_ITEM_BEH_NEVER_FLOATING
-</MACRO>
-<MACRO>
-<NAME>GNOME_DOCK_ITEM_NOT_LOCKED</NAME>
-#define GNOME_DOCK_ITEM_NOT_LOCKED(x) (! (GNOME_DOCK_ITEM(x)->behavior \
-                                          & GNOME_DOCK_ITEM_BEH_LOCKED))
-</MACRO>
-<STRUCT>
-<NAME>GnomeDockItem</NAME>
-</STRUCT>
-<STRUCT>
-<NAME>GnomeDockItemClass</NAME>
-</STRUCT>
-<STRUCT>
-<NAME>GnomeDockItem</NAME>
-struct GnomeDockItem
-{
-  GtkBin bin;
-
-  gchar                *name;
-
-  GdkWindow            *bin_window; /* parent window for children */
-  GdkWindow            *float_window;
-  GtkShadowType         shadow_type;
-
-  GtkOrientation        orientation;
-  GnomeDockItemBehavior behavior;
-
-  guint                 float_window_mapped : 1;
-  guint                 is_floating : 1;
-  guint                 in_drag : 1;
-
-  /* Start drag position (wrt widget->window).  */
-  gint                  dragoff_x, dragoff_y;
-
-  /* Position of the floating window.  */
-  gint                  float_x, float_y;
-
-  /* If TRUE, the pointer must be grabbed on "map_event".  */
-  guint                 grab_on_map_event;
-};
-</STRUCT>
-<FUNCTION>
-<NAME>gnome_dock_item_get_type</NAME>
-<RETURNS>guint  </RETURNS>
-void
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_dock_item_new</NAME>
-<RETURNS>GtkWidget      *</RETURNS>
-const gchar *name,GnomeDockItemBehavior behavior
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_dock_item_get_child</NAME>
-<RETURNS>GtkWidget      *</RETURNS>
-GnomeDockItem *dock_item
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_dock_item_get_name</NAME>
-<RETURNS>char           *</RETURNS>
-GnomeDockItem *dock_item
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_dock_item_set_shadow_type</NAME>
-<RETURNS>void  </RETURNS>
-GnomeDockItem *dock_item,GtkShadowType type
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_dock_item_get_shadow_type</NAME>
-<RETURNS>GtkShadowType  </RETURNS>
-GnomeDockItem *dock_item
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_dock_item_set_orientation</NAME>
-<RETURNS>gboolean  </RETURNS>
-GnomeDockItem *dock_item,GtkOrientation orientation
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_dock_item_get_orientation</NAME>
-<RETURNS>GtkOrientation  </RETURNS>
-GnomeDockItem *dock_item
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_dock_item_get_behavior</NAME>
-<RETURNS>GnomeDockItemBehavior</RETURNS>
-GnomeDockItem *dock_item
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_dock_item_detach</NAME>
-<RETURNS>gboolean  </RETURNS>
-GnomeDockItem *item,gint x, gint y
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_dock_item_attach</NAME>
-<RETURNS>void  </RETURNS>
-GnomeDockItem *item,GtkWidget *parent,gint x, gint y
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_dock_item_grab_pointer</NAME>
-<RETURNS>void  </RETURNS>
-GnomeDockItem *item
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_dock_item_drag_floating</NAME>
-<RETURNS>void  </RETURNS>
-GnomeDockItem *item,gint x, gint y
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_dock_item_handle_size_request</NAME>
-<RETURNS>void  </RETURNS>
-GnomeDockItem *item,GtkRequisition *requisition
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_dock_item_get_floating_position</NAME>
-<RETURNS>void  </RETURNS>
-GnomeDockItem *item,gint *x, gint *y
-</FUNCTION>
-<MACRO>
-<NAME>GNOME_DOCK</NAME>
-#define GNOME_DOCK(obj) \
-  GTK_CHECK_CAST (obj, gnome_dock_get_type (), GnomeDock)
-</MACRO>
-<MACRO>
-<NAME>GNOME_DOCK_CLASS</NAME>
-#define GNOME_DOCK_CLASS(klass) \
-  GTK_CHECK_CLASS_CAST (klass, gnome_dock_get_type (), GnomeDockClass)
-</MACRO>
-<MACRO>
-<NAME>GNOME_IS_DOCK</NAME>
-#define GNOME_IS_DOCK(obj) \
-  GTK_CHECK_TYPE (obj, gnome_dock_get_type ())
-</MACRO>
-<ENUM>
-<NAME>GnomeDockPlacement</NAME>
-typedef enum
-{
-  GNOME_DOCK_TOP,
-  GNOME_DOCK_RIGHT,
-  GNOME_DOCK_BOTTOM,
-  GNOME_DOCK_LEFT,
-  GNOME_DOCK_FLOATING
-} GnomeDockPlacement;
-</ENUM>
-<STRUCT>
-<NAME>GnomeDock</NAME>
-</STRUCT>
-<STRUCT>
-<NAME>GnomeDockClass</NAME>
-</STRUCT>
-<STRUCT>
-<NAME>GnomeDock</NAME>
-struct GnomeDock
-{
-  GtkContainer container;
-
-  GtkWidget *client_area;
-
-  /* GnomeDockBands associated with this dock.  */
-  GList *top_bands;
-  GList *bottom_bands;
-  GList *right_bands;
-  GList *left_bands;
-
-  /* Children that are currently not docked.  */
-  GList *floating_children;     /* GtkWidget */
-
-  /* Client rectangle before drag.  */
-  GtkAllocation client_rect;
-
-  gboolean floating_items_allowed : 1;
-};
-</STRUCT>
-<FUNCTION>
-<NAME>gnome_dock_new</NAME>
-<RETURNS>GtkWidget      *</RETURNS>
-void
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_dock_get_type</NAME>
-<RETURNS>guint  </RETURNS>
-void
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_dock_allow_floating_items</NAME>
-<RETURNS>void  </RETURNS>
-GnomeDock *dock,gboolean enable
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_dock_add_item</NAME>
-<RETURNS>void  </RETURNS>
-GnomeDock             *dock,GnomeDockItem         *item,GnomeDockPlacement  placement,guint                  band_num,gint                   position,guint                  offset,gboolean               in_new_band
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_dock_add_floating_item</NAME>
-<RETURNS>void  </RETURNS>
-GnomeDock *dock,GnomeDockItem *widget,gint x, gint y,GtkOrientation orientation
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_dock_set_client_area</NAME>
-<RETURNS>void  </RETURNS>
-GnomeDock             *dock,GtkWidget             *widget
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_dock_get_client_area</NAME>
-<RETURNS>GtkWidget      *</RETURNS>
-GnomeDock             *dock
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_dock_get_item_by_name</NAME>
-<RETURNS>GnomeDockItem  *</RETURNS>
-GnomeDock *dock,const gchar *name,GnomeDockPlacement *placement_return,guint *num_band_return,guint *band_position_return,guint *offset_return
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_dock_get_layout</NAME>
-<RETURNS>GnomeDockLayout  *</RETURNS>
-GnomeDock *dock
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_dock_add_from_layout</NAME>
-<RETURNS>gboolean  </RETURNS>
-GnomeDock *dock,GnomeDockLayout *layout
-</FUNCTION>
-<MACRO>
-<NAME>gnome_widget_add_help</NAME>
-#define gnome_widget_add_help(widget, help) \
-	(gnome_widget_add_help_with_uidata((widget),(help),NULL, NULL))
-</MACRO>
-<FUNCTION>
-<NAME>gnome_widget_add_help_with_uidata</NAME>
-<RETURNS>void  </RETURNS>
-GtkWidget *widget,gchar *help,GnomeUIInfo *menuinfo,gpointer user_data
-</FUNCTION>
