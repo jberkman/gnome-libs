@@ -16,7 +16,7 @@ SUBDIRS = po intl support macros \
 
 include_HEADERS = gnome.h
 
-EXTRA_DIST = HACKING gnomeConf.sh.in gnome-config.in
+EXTRA_DIST = HACKING gnomeConf.sh.in gnome-config.in gnome-libs.spec
 
 release:
 	$(MAKE) dist distdir=$(PACKAGE)$(VERSION)
