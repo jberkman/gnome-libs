@@ -1,79 +1,4 @@
 <FUNCTION>
-<NAME>login</NAME>
-<RETURNS>void  </RETURNS>
-struct utmp *ut
-</FUNCTION>
-<FUNCTION>
-<NAME>login_tty</NAME>
-<RETURNS>int  </RETURNS>
-int fd
-</FUNCTION>
-<FUNCTION>
-<NAME>logout</NAME>
-<RETURNS>int  </RETURNS>
-char *line
-</FUNCTION>
-<FUNCTION>
-<NAME>logwtmp</NAME>
-<RETURNS>void  </RETURNS>
-const char *line, const char *name, const char *host
-</FUNCTION>
-<FUNCTION>
-<NAME>openpty</NAME>
-<RETURNS>int  </RETURNS>
-int *amaster, int *aslave, char *name, struct termios *termp, struct winsize *winp
-</FUNCTION>
-<FUNCTION>
-<NAME>forkpty</NAME>
-<RETURNS>int  </RETURNS>
-int *amaster, char *name, struct termios *termp, struct winsize *winp
-</FUNCTION>
-<FUNCTION>
-<NAME>openpty</NAME>
-<RETURNS>int  </RETURNS>
-int *master_fd, int *slavefd, char *name, struct termios *termp, struct winsize *winp
-</FUNCTION>
-<FUNCTION>
-<NAME>forkpty</NAME>
-<RETURNS>pid_t  </RETURNS>
-int *master_fd, char *name, struct termios *termp, struct winsize *winp
-</FUNCTION>
-<FUNCTION>
-<NAME>login_tty</NAME>
-<RETURNS>int  </RETURNS>
-int fd
-</FUNCTION>
-<FUNCTION>
-<NAME>n_read</NAME>
-<RETURNS>int  </RETURNS>
-int fd, void *buffer, int size
-</FUNCTION>
-<ENUM>
-<NAME>GnomePtyOps</NAME>
-typedef enum {
-	GNOME_PTY_OPEN_PTY_UTMP = 1,
-	GNOME_PTY_OPEN_PTY_UWTMP,
-	GNOME_PTY_OPEN_PTY_WTMP,
-	GNOME_PTY_OPEN_NO_DB_UPDATE,
-	GNOME_PTY_CLOSE_PTY
-} GnomePtyOps;
-</ENUM>
-<FUNCTION>
-<NAME>update_dbs</NAME>
-<RETURNS>void  *</RETURNS>
-int utmp, int wtmp, char *login_name, char *display_name, char *term_name
-</FUNCTION>
-<FUNCTION>
-<NAME>write_login_record</NAME>
-<RETURNS>void  *</RETURNS>
-char *login_name, char *display_name, char *term_name, int utmp, int wtmp
-</FUNCTION>
-<FUNCTION>
-<NAME>write_logout_record</NAME>
-<RETURNS>void  </RETURNS>
-void *data, int utmp, int wtmp
-</FUNCTION>
-<FUNCTION>
 <NAME>vt_list_new</NAME>
 <RETURNS>void  </RETURNS>
 struct vt_list *v
@@ -83,14 +8,6 @@ struct vt_list *v
 <RETURNS>int  </RETURNS>
 struct vt_list *l
 </FUNCTION>
-<MACRO>
-<NAME>WEXITSTATUS</NAME>
-#   define WEXITSTATUS(stat_val) ((unsigned)(stat_val) >> 8)
-</MACRO>
-<MACRO>
-<NAME>WIFEXITED</NAME>
-#   define WIFEXITED(stat_val) (((stat_val) & 255) == 0)
-</MACRO>
 <FUNCTION>
 <NAME>zvt_init_subshell</NAME>
 <RETURNS>int  </RETURNS>
@@ -98,18 +15,13 @@ struct vt_em *vt, char *pty_name, int full
 </FUNCTION>
 <FUNCTION>
 <NAME>zvt_shutdown_subshell</NAME>
-<RETURNS>void  </RETURNS>
+<RETURNS>int  </RETURNS>
 struct vt_em *vt
 </FUNCTION>
 <FUNCTION>
 <NAME>zvt_resize_subshell</NAME>
 <RETURNS>int  </RETURNS>
 int fd, int col, int row, int xpixel, int ypixel
-</FUNCTION>
-<FUNCTION>
-<NAME>zvt_close_msgfd</NAME>
-<RETURNS>void  </RETURNS>
-pid_t childpid
 </FUNCTION>
 <MACRO>
 <NAME>UPDATE_CHANGES</NAME>
@@ -134,6 +46,10 @@ typedef unsigned int uint32;
 <MACRO>
 <NAME>VTPARAM_ARGMAX</NAME>
 #define VTPARAM_ARGMAX   20	/* number of characters in each arg maximum */
+</MACRO>
+<MACRO>
+<NAME>VTPARAM_INTARGS</NAME>
+#define VTPARAM_INTARGS  20	/* maximum args for integers, should be less than MAXARGS*ARGMAX bytes! */
 </MACRO>
 <MACRO>
 <NAME>VT_LINE_SIZE</NAME>
@@ -220,6 +136,10 @@ typedef enum {
 #define VTMODE_RELATIVE 0x10	/* relative origin mode */
 </MACRO>
 <MACRO>
+<NAME>VTMODE_APP_KEYPAD</NAME>
+#define VTMODE_APP_KEYPAD 0x20	/* application keypad on */
+</MACRO>
+<MACRO>
 <NAME>VTMODE_ALTSCREEN</NAME>
 #define VTMODE_ALTSCREEN 0x80000000 /* on alternate screen? */
 </MACRO>
@@ -277,6 +197,11 @@ struct vt_em *vt, int signal
 <NAME>vt_closepty</NAME>
 <RETURNS>int  </RETURNS>
 struct vt_em *vt
+</FUNCTION>
+<FUNCTION>
+<NAME>vt_reset_terminal</NAME>
+<RETURNS>void 	</RETURNS>
+struct vt_em *vt, int hard
 </FUNCTION>
 <MACRO>
 <NAME>UPDATE_CHANGES</NAME>
@@ -402,6 +327,14 @@ struct _vtx *vx, unsigned char *s
 <NAME>ZVT_IS_TERM</NAME>
 #define ZVT_IS_TERM(obj)       GTK_CHECK_TYPE (obj, zvt_term_get_type ())
 </MACRO>
+<MACRO>
+<NAME>ZVT_TERM_PIXMAP_SUPPORT</NAME>
+#define ZVT_TERM_PIXMAP_SUPPORT		0x01
+</MACRO>
+<MACRO>
+<NAME>ZVT_TERM_EMBOLDEN_SUPPORT</NAME>
+#define ZVT_TERM_EMBOLDEN_SUPPORT	0x02
+</MACRO>
 <STRUCT>
 <NAME>ZvtTerm</NAME>
 </STRUCT>
@@ -477,6 +410,16 @@ struct ZvtTermClass
   void (* title_changed) (ZvtTerm *term, VTTITLE_TYPE type, char *newtitle);
 };
 </STRUCT>
+<STRUCT>
+<NAME>zvtprivate</NAME>
+struct zvtprivate
+{
+  gint scrollselect_id;
+  int scrollselect_dir;		/* scrolling selection direction/step */  
+  XChar2b *text16;		/* 2-byte text expansion area */
+  int text16len;		/* how much space here */
+};
+</STRUCT>
 <MACRO>
 <NAME>ZVT_TERM_DO_UTMP_LOG</NAME>
 #define ZVT_TERM_DO_UTMP_LOG 1
@@ -494,6 +437,11 @@ void
 <NAME>zvt_term_new_with_size</NAME>
 <RETURNS>GtkWidget *</RETURNS>
 int cols, int rows
+</FUNCTION>
+<FUNCTION>
+<NAME>zvt_term_reset</NAME>
+<RETURNS>void 	</RETURNS>
+ZvtTerm *term, int hard
 </FUNCTION>
 <FUNCTION>
 <NAME>zvt_term_feed</NAME>
@@ -630,3 +578,86 @@ ZvtTerm      *terminal
 <RETURNS>void  </RETURNS>
 ZvtTerm      *dial,GtkAdjustment *adjustment
 </FUNCTION>
+<ENUM>
+<NAME>GnomePtyOps</NAME>
+typedef enum {
+	GNOME_PTY_OPEN_PTY_UTMP = 1,
+	GNOME_PTY_OPEN_PTY_UWTMP,
+	GNOME_PTY_OPEN_PTY_WTMP,
+	GNOME_PTY_OPEN_NO_DB_UPDATE,
+	GNOME_PTY_CLOSE_PTY
+} GnomePtyOps;
+</ENUM>
+<FUNCTION>
+<NAME>update_dbs</NAME>
+<RETURNS>void  *</RETURNS>
+int utmp, int wtmp, char *login_name, char *display_name, char *term_name
+</FUNCTION>
+<FUNCTION>
+<NAME>write_login_record</NAME>
+<RETURNS>void  *</RETURNS>
+char *login_name, char *display_name, char *term_name, int utmp, int wtmp
+</FUNCTION>
+<FUNCTION>
+<NAME>write_logout_record</NAME>
+<RETURNS>void  </RETURNS>
+void *data, int utmp, int wtmp
+</FUNCTION>
+<FUNCTION>
+<NAME>login</NAME>
+<RETURNS>void  </RETURNS>
+struct utmp *ut
+</FUNCTION>
+<FUNCTION>
+<NAME>login_tty</NAME>
+<RETURNS>int  </RETURNS>
+int fd
+</FUNCTION>
+<FUNCTION>
+<NAME>logout</NAME>
+<RETURNS>int  </RETURNS>
+char *line
+</FUNCTION>
+<FUNCTION>
+<NAME>logwtmp</NAME>
+<RETURNS>void  </RETURNS>
+const char *line, const char *name, const char *host
+</FUNCTION>
+<FUNCTION>
+<NAME>openpty</NAME>
+<RETURNS>int  </RETURNS>
+int *amaster, int *aslave, char *name, struct termios *termp, struct winsize *winp
+</FUNCTION>
+<FUNCTION>
+<NAME>forkpty</NAME>
+<RETURNS>int  </RETURNS>
+int *amaster, char *name, struct termios *termp, struct winsize *winp
+</FUNCTION>
+<FUNCTION>
+<NAME>openpty</NAME>
+<RETURNS>int  </RETURNS>
+int *master_fd, int *slavefd, char *name, struct termios *termp, struct winsize *winp
+</FUNCTION>
+<FUNCTION>
+<NAME>forkpty</NAME>
+<RETURNS>pid_t  </RETURNS>
+int *master_fd, char *name, struct termios *termp, struct winsize *winp
+</FUNCTION>
+<FUNCTION>
+<NAME>login_tty</NAME>
+<RETURNS>int  </RETURNS>
+int fd
+</FUNCTION>
+<FUNCTION>
+<NAME>n_read</NAME>
+<RETURNS>int  </RETURNS>
+int fd, void *buffer, int size
+</FUNCTION>
+<MACRO>
+<NAME>WEXITSTATUS</NAME>
+#   define WEXITSTATUS(stat_val) ((unsigned)(stat_val) >> 8)
+</MACRO>
+<MACRO>
+<NAME>WIFEXITED</NAME>
+#   define WIFEXITED(stat_val) (((stat_val) & 255) == 0)
+</MACRO>

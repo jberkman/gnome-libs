@@ -1,32 +1,7 @@
 <SECTION>
-<FILE>gnome-login-support</FILE>
-login
-login_tty
-logout
-logwtmp
-openpty
-forkpty
-n_read
-</SECTION>
-
-<SECTION>
-<FILE>gnome-pty</FILE>
-GnomePtyOps
-update_dbs
-write_login_record
-write_logout_record
-</SECTION>
-
-<SECTION>
 <FILE>lists</FILE>
 vt_list_new
 vt_list_empty
-</SECTION>
-
-<SECTION>
-<FILE>subshell-includes</FILE>
-WEXITSTATUS
-WIFEXITED
 </SECTION>
 
 <SECTION>
@@ -34,7 +9,6 @@ WIFEXITED
 zvt_init_subshell
 zvt_shutdown_subshell
 zvt_resize_subshell
-zvt_close_msgfd
 </SECTION>
 
 <SECTION>
@@ -45,6 +19,7 @@ UPDATE_SCROLLBACK
 uint32
 VTPARAM_MAXARGS
 VTPARAM_ARGMAX
+VTPARAM_INTARGS
 VT_LINE_SIZE
 VTTITLE_TYPE
 VTATTR_BOLD
@@ -65,6 +40,7 @@ VTMODE_SEND_MOUSE
 VTMODE_WRAPOFF
 VTMODE_APP_CURSOR
 VTMODE_RELATIVE
+VTMODE_APP_KEYPAD
 VTMODE_ALTSCREEN
 vt_destroy
 vt_resize
@@ -77,6 +53,7 @@ vt_report_button
 vt_scrollback_set
 vt_killchild
 vt_closepty
+vt_reset_terminal
 </SECTION>
 
 <SECTION>
@@ -105,12 +82,16 @@ vt_set_wordclass
 ZVT_TERM
 ZVT_TERM_CLASS
 ZVT_IS_TERM
+ZVT_TERM_PIXMAP_SUPPORT
+ZVT_TERM_EMBOLDEN_SUPPORT
 ZvtTerm
 ZvtTermClass
+zvtprivate
 ZVT_TERM_DO_UTMP_LOG
 ZVT_TERM_DO_WTMP_LOG
 zvt_term_new
 zvt_term_new_with_size
+zvt_term_reset
 zvt_term_feed
 zvt_term_forkpty
 zvt_term_closepty
@@ -138,5 +119,30 @@ zvt_term_set_size
 zvt_term_get_capabilities
 zvt_term_get_adjustment
 zvk_term_set_adjustment
+</SECTION>
+
+<SECTION>
+<FILE>gnome-pty</FILE>
+GnomePtyOps
+update_dbs
+write_login_record
+write_logout_record
+</SECTION>
+
+<SECTION>
+<FILE>gnome-login-support</FILE>
+login
+login_tty
+logout
+logwtmp
+openpty
+forkpty
+n_read
+</SECTION>
+
+<SECTION>
+<FILE>subshell-includes</FILE>
+WEXITSTATUS
+WIFEXITED
 </SECTION>
 
