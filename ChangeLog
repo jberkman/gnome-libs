@@ -1,3 +1,16 @@
+1998-04-27  Michael Fulbright  <msf@redhat.com>
+
+        * libgnome/gnome-help.c (gnome_help_file_find_file):
+	  strip off last '#' in the requested path, since most help
+	  requests are going to be URLs.
+	
+	* libgnome/gnome-help.c (gnome_help_display):
+	  use gnome_help_file_find_file() function
+
+	* libgnomeui/gnome-app-helper.c (gnome_app_add_help_menu_entries):
+	  use gnome_help_file_find_file() function to find topic.dat
+
+
 1998-04-27  Carsten Schaar  <nhadcasc@fs-maphy.uni-hannover.de>
 
 	* libgnome/gnome-help.c (gnome_help_file_find_file): Changed to
