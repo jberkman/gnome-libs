@@ -90,7 +90,7 @@ dnl
 dnl gnome-pty-support checks
 dnl
 AC_CHECK_HEADERS(utmpx.h pty.h libutil.h)
-AC_CHECK_FUNCS(grantpt sendmsg)
+AC_CHECK_FUNCS(grantpt sendmsg login setutent)
 oLIBS="$LIBS"
 LIBS="$LIBS -lutil"
 AC_CHECK_FUNC(openpty, [

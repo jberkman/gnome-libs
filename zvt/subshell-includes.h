@@ -53,3 +53,4 @@
 #include "vt.h"
 #include "subshell.h"
 #include "gnome-pty.h"
+#include <glib.h>

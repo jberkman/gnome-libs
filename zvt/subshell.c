@@ -30,7 +30,11 @@ static int sigchld_inited = 0;
 /* Points to a possibly previously installed sigchld handler */
 static struct sigaction old_sigchld_handler;
 
-int helper_socket [2];
+/* The socketpair used for the protocol */
+int helper_socket_protocol  [2];
+
+/* The paralell socketpair used to transfer file descriptors */
+int helper_socket_fdpassing [2];
 
 /* List of all subshells we're watching */
 struct child_list {
@@ -174,28 +178,42 @@ get_ptys (int *master, int *slave, int update_wutmp)
 		return NULL;
 
 	if (helper_pid == 0){
-		if (socketpair (AF_UNIX, SOCK_STREAM, 0, helper_socket) == -1)
+		if (socketpair (AF_UNIX, SOCK_STREAM, 0, helper_socket_protocol) == -1)
 			return NULL;
+
+		if (socketpair (AF_UNIX, SOCK_STREAM, 0, helper_socket_fdpassing) == -1){
+			close (helper_socket_protocol [0]);
+			close (helper_socket_protocol [1]);
+			return NULL;
+		}
 		
 		helper_pid = fork ();
 		
-		if (helper_pid == -1)
+		if (helper_pid == -1){
+			close (helper_socket_protocol [0]);
+			close (helper_socket_protocol [1]);
+			close (helper_socket_fdpassing [0]);
+			close (helper_socket_fdpassing [1]);
 			return NULL;
+		}
 
 		if (helper_pid == 0){
 			close (0);
 			close (1);
-			dup2 (helper_socket [1], 0);
-			dup2 (helper_socket [1], 1);
+			dup2 (helper_socket_protocol  [1], 0);
+			dup2 (helper_socket_fdpassing [1], 1);
 
 			/* Close aliases */
-			close (helper_socket [0]);
-			close (helper_socket [1]);
+			close (helper_socket_protocol  [0]);
+			close (helper_socket_protocol  [1]);
+			close (helper_socket_fdpassing [0]);
+			close (helper_socket_fdpassing [1]);
 
 			execl (GNOMESBINDIR "/gnome-pty-helper", "gnome-pty-helper", NULL);
 			exit (1);
 		} else {
-			close (helper_socket [1]);
+			close (helper_socket_fdpassing [1]);
+			close (helper_socket_protocol  [1]);
 		}
 	}
 	if (update_wutmp)
@@ -203,17 +221,17 @@ get_ptys (int *master, int *slave, int update_wutmp)
 	else
 		op = GNOME_PTY_OPEN_NO_DB_UPDATE;
 	
-	if (write (helper_socket [0], &op, sizeof (op)) < 0)
+	if (write (helper_socket_protocol [0], &op, sizeof (op)) < 0)
 		return NULL;
 	
-	read (helper_socket [0], &result, sizeof (result));
+	read (helper_socket_protocol [0], &result, sizeof (result));
 	if (result == 0)
 		return NULL;
 
-	read (helper_socket [0], &tag, sizeof (tag));
+	read (helper_socket_protocol [0], &tag, sizeof (tag));
 
-	*master = receive_fd (helper_socket [0]);
-	*slave  = receive_fd (helper_socket [0]);
+	*master = receive_fd (helper_socket_fdpassing [0]);
+	*slave  = receive_fd (helper_socket_fdpassing [0]);
 	
 	return tag;
 }
@@ -236,8 +254,10 @@ zvt_init_subshell (struct vt_em *vt, char *pty_name, int log)
 	pid_t pid;
 	int status;
 	int p[2];
+
+	g_return_val_if_fail (vt != NULL, -1);
 	
-	if (get_ptys (&master_pty, &slave_pty, log) == NULL)
+	if ((vt->pty_tag = get_ptys (&master_pty, &slave_pty, log)) == NULL)
 		return -1;
 
 	/* Fork the subshell */
@@ -302,3 +322,23 @@ int zvt_resize_subshell (int fd, int col, int row, int xpixel, int ypixel)
 #endif
 }
 
+/**
+ * zvt_shutdown_subsheel:
+ * @vt: The terminal emulator object
+ * 
+ * Shuts down the pseudo terminal information. 
+ **/
+void
+zvt_shutdown_subshell (struct vt_em *vt)
+{
+	GnomePtyOps op;
+	
+	g_return_if_fail (vt != NULL);
+
+	if (vt->pty_tag == NULL)
+		return;
+
+	op = GNOME_PTY_CLOSE_PTY;
+	write (helper_socket_protocol [0], &op, sizeof (op));
+	vt->pty_tag == NULL;
+}

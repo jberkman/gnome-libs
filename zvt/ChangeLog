@@ -1,5 +1,24 @@
 1998-11-10  Miguel de Icaza  <miguel@nuclecu.unam.mx>
 
+	* gnome-utmp.c (update_dbs): Add support for UTMPX
+	implementations. 
+	Use getutid to find an available slot.
+	(write_logout_record): New function to write a logout record.
+
+	* vt.c (vt_closepty): Shutdown the pty properly (to register
+	logout state). 
+
+	* subshell.c (zvt_shutdown_subshell): Ask the PTY helper to
+	write the logout record information.
+
+
+	* subshell.c (get_ptys):
+	* gnome-pty-helper.c: Use STDIN_FILENO to transfer protocol
+	information.  Use STDOUT_FILENO to transfer file descriptors, as
+	some BSD kernels crash if you use the same socket for transfering
+	data and file descriptors (this information comes from Theo de
+	Raadt). 
+	
 	* subshell.c (sigchld_handler): Chain signal handlers.
 	Use waitpid with WNOHANG set to check for any of our known
 	processes. 

@@ -8,6 +8,7 @@ typedef enum {
 } GnomePtyOps;
 
 extern char *login_name;
-void update_dbs (char *login_name, char *display_name, char *term_name);
 
+void *update_dbs         (char *login_name, char *display_name, char *term_name);
+void write_logout_record (void *data);
 #endif

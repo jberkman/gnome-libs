@@ -1431,6 +1431,7 @@ vt_closepty(struct vt_em *vt)
   d(printf("vt_closepty called\n"));
 
   if (vt->childfd != -1){
+	  zvt_shutdown_subshell (vt);
 	  ret = close(vt->childfd);
 	  zvt_close_msgfd(vt->childpid);
 	  vt->msgfd = vt->childfd = -1;

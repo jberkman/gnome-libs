@@ -3,6 +3,9 @@
  *
  * Author:
  *    Miguel de Icaza (miguel@gnu.org).
+ *
+ * FIXME: Do we want to register the PID of the process running *under* the subshell
+ * or the PID of the parent process? (we are doing the latter now).
  */
  
 #include <config.h>
@@ -25,6 +28,7 @@
 #ifdef HAVE_PATHS_H
 #    include <paths.h>
 #endif
+
 #ifdef HAVE_UTMPX_H
 #    include <utmpx.h>
 #    define USE_SYSV_UTMP
@@ -44,16 +48,20 @@
 #    endif
 #endif
 
-#ifdef __FreeBSD__
+#if defined(__FreeBSD__) || defined(__OpenBSD__) || defined(__NetBSD__)
 #define _HAVE_UT_HOST 1
 #define _HAVE_UT_TIME 1
 #endif
 
+#ifdef USE_SYSV_UTMP
 #ifdef HAVE_UTMPX_H
+#    define UTMP struct utmpx
 #    undef WTMP_FILENAME
 #    define WTMP_FILENAME WTMPX_FILE
 #    define update_wtmp updwtmpx
 #else
+#    define UTMP struct utmp
+
 static void
 update_wtmp (char *file, struct utmp *putmp)
 {
@@ -97,20 +105,19 @@ update_wtmp (char *file, struct utmp *putmp)
 #    endif
 #endif
 
-void
+void *
 update_dbs (char *login_name, char *display_name, char *term_name)
 {
-	struct utmp ut;
+	UTMP *ut;
+	struct utmp ut_aux;
 	struct timeval tv;
 	char *pty = term_name;
 
-	memset (&ut, 0, sizeof (ut));
+	ut = (UTMP *) malloc (sizeof (UTMP));
+	memset (ut, 0, sizeof (*ut));
 	
-#ifdef _HAVE_UT_TYPE
-	ut.ut_type = USER_PROCESS;
-#endif
 #ifdef _HAVE_UT_PID
-	ut.ut_pid  = getppid ();
+	ut->ut_pid  = getppid ();
 #endif
 	if (strncmp (pty, "/dev/", 5) == 0)
 		pty += 5;
@@ -119,37 +126,109 @@ update_dbs (char *login_name, char *display_name, char *term_name)
 	/* BSD-like terminal name */
 	if (strncmp (pty, "pty", 3) == 0 ||
 	    strncmp (pty, "tty", 3) == 0)
-		strncpy (ut.ut_id, pty+3, sizeof (ut.ut_id));
+		strncpy (ut->ut_id, pty+3, sizeof (ut->ut_id));
 	else {
 		if (strncmp (pty, "pts/", 4) == 0)
-			sprintf (ut.ut_id, "vt%02x", atoi (pty+4));
+			sprintf (ut->ut_id, "vt%02x", atoi (pty+4));
 		else
-			ut.ut_id [0] = 0;
+			ut->ut_id [0] = 0;
 	}
 #endif
-	fprintf (stderr, "Poneidno: %s\n", pty);
-	strncpy (ut.ut_name, login_name, sizeof (ut.ut_name));
+#ifdef _HAVE_UT_TYPE
+	ut->ut_type = DEAD_PROCESS;
+#endif
+#ifdef HAVE_UTMPX_H
+	getutmp (ut, &ut_aux);
+	getutid (&utmp_aux);
+#else
+	getutid (ut);
+#endif
+	
+#ifdef _HAVE_UT_TYPE
+	ut->ut_type = USER_PROCESS;
+#endif
+	strncpy (ut->ut_name, login_name, sizeof (ut->ut_name));
 #ifdef _HAVE_UT_USER
-	strncpy (ut.ut_user, login_name, sizeof (ut.ut_user));
+	strncpy (ut->ut_user, login_name, sizeof (ut->ut_user));
 #endif
 #ifdef _HAVE_UT_TV
 	gettimeofday (&tv, NULL);
-	ut.ut_tv = tv;
+	ut->ut_tv = tv;
 #endif
 #ifdef _HAVE_UT_TIME
-	time (&ut.ut_time);
+	time (&ut->ut_time);
 #endif
 #ifdef _HAVE_UT_HOST
-	strncpy (ut.ut_host, display_name, sizeof (ut.ut_host));
+	strncpy (ut->ut_host, display_name, sizeof (ut->ut_host));
 #endif
-	strncpy (ut.ut_line, pty, sizeof (ut.ut_line));
+	strncpy (ut->ut_line, pty, sizeof (ut->ut_line));
 
 #ifdef HAVE_LOGIN
-	login (&ut);
+	login (ut);
 #else
 	utmpname (UTMP_FILENAME);
-	pututline (&ut);
-	update_wtmp (WTMP_FILENAME, &ut);
+	pututline (ut);
+	update_wtmp (WTMP_FILENAME, ut);
 	endutent ();
 #endif
+
+	return ut;
 }
+
+#ifdef HAVE_UTMPX_H
+void
+write_logout_record (void *data)
+{
+	struct utmp utmp_aux;
+	struct utmpx ut;
+
+	utmpname (UTMP_FILENAME);
+	setutend ();
+	if (getutid (&ut) == NULL)
+		return;
+	ut.ut_type = DEAD_PROCESS;
+	ut.ut_time = time (NULL);
+	pututline (&ut);
+	getutmpx (&ut, &utmp_aux);
+	update_wtmp (WTMP_FILENAME, &ut);
+	endutent ();
+	
+	free (data);
+}
+#else
+void 
+write_logout_record (void *data)
+{
+	struct utmp *ut = data;
+	struct utmp *wut;
+	
+	utmpname (UTMP_FILENAME);
+	setutent ();
+
+	while ((wut = getutent ()) != NULL){
+		if (strncmp (wut->ut_line, ut->ut_line, sizeof (ut->ut_line)) == 0){
+			wut->ut_type = DEAD_PROCESS;
+#ifdef _HAVE_UT_PID
+			wut->ut_pid  = 0;
+#endif
+#ifdef _HAVE_UT_USER
+			memset (wut->ut_user, 0, sizeof (wut->ut_user));
+#endif
+#ifdef _HAVE_UT_TIME
+			wut->ut_time = time (NULL);
+			
+#endif
+			pututline (wut);
+			update_wtmp (WTMP_FILENAME, wut);
+			break;
+		}
+	}
+	endutent ();
+}
+#endif
+
+#else /* Otherwise, use BSD-like utmp updating */
+
+#endif
+
+

@@ -6,7 +6,15 @@
  * Author:
  *    Miguel de Icaza (miguel@gnu.org)
  *
- * Parent application talks to us via a pipe, sample protocol is used:
+ * Parent application talks to us via a couple of sockets that are strategically
+ * placed on file descriptors 0 and 1 (STDIN_FILENO and STDOUT_FILENO).
+ *
+ * We use the STDIN_FILENO to read and write the protocol information and we use
+ * the STDOUT_FILENO to pass the file descriptors (we need two different file
+ * descriptors as using a socket for both data transfers and file descriptor
+ * passing crashes some BSD kernels according to Theo de Raadt)
+ *
+ * A sample protocol is used:
  *
  * OPEN_PTY             => 1 <tag> <master-pty-fd> <slave-pty-fd>
  *                      => 0
@@ -152,11 +160,10 @@ pty_remove (pty_info *pi)
 static void
 shutdown_pty (pty_info *pi)
 {
-#ifdef __FreeBSD__
+#ifdef HAVE_LOGIN
 	logwtmp (pi->line, "", "");
 	logout (pi->line);
 #endif
-
 	close (pi->master_fd);
 	close (pi->slave_fd);
 
@@ -205,20 +212,20 @@ open_ptys (int update_db)
 	status = openpty (&master_pty, &slave_pty, term_name, NULL, NULL);
 	if (status == -1){
 		result = 0;
-		write (STDOUT_FILENO, &result, sizeof (result));
+		write (STDIN_FILENO, &result, sizeof (result));
 		return 0;
 	}
 
 	p = pty_add (master_pty, slave_pty, term_name);
 	result = 1;
 
-	write (STDOUT_FILENO, &result, sizeof (result));
-	write (STDOUT_FILENO, &p, sizeof (p));
+	write (STDIN_FILENO, &result, sizeof (result));
+	write (STDIN_FILENO, &p, sizeof (p));
 	pass_fd (STDOUT_FILENO, master_pty);
 	pass_fd (STDOUT_FILENO, slave_pty);
 
 	if (update_db){
-#ifdef __FreeBSD__
+#ifdef HAVE_LOGIN
 		/* We have to fork and make the slave_pty our
 		 * controlling pty if we don't want to clobber the
 		 * parent's one ... */
@@ -240,6 +247,14 @@ open_ptys (int update_db)
 static void
 close_pty_pair (void *tag)
 {
+	pty_info *pi;
+
+	for (pi = pty_list; pi; pi = pty_list){
+		if (tag == pi){
+			shutdown_pty (pi);
+			break;
+		}
+	}
 }
 
 int
