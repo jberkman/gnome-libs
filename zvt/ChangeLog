@@ -1,3 +1,22 @@
+1999-05-07  Michael Zucchi  <zucchi@zzedzone.mmc.com.au>
+
+	* zvtterm.c (zvt_term_button_press): Use a better extend-select
+	end-choosing method.  i.e. same as xterm.  If you click before the
+	middle of the selection, it changes the start, otherwise it
+	changes the end.
+
+	* update.c (vt_fix_selection): If selecting the first word of a
+	line, 'by word', and it was 1 space from the left border, it would
+	select that space too - no longer!.
+
+	* zvtterm.c (zvt_term_button_press): Remove the input handler for
+	input_id when selecting text - i.e. block during selection.
+	(zvt_term_button_release): re-enable input if it was removed, and
+	the childfd exists.
+	(zvt_term_button_release): Only allow dropping of button-release
+	events if we're not selecting something (otherwise, select-drag,
+	hold ctrl, and release - it doesn't!).
+
 Mon May 03 20:14:49 1999  George Lebl  <jirka@5z.com>
 
 	* zvtterm.c: change the way we draw the background for transparent

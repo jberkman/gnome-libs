@@ -1381,6 +1381,12 @@ zvt_term_button_press (GtkWidget      *widget,
 		      GDK_BUTTON_MOTION_MASK |
 		      GDK_POINTER_MOTION_HINT_MASK,
 		      NULL, NULL, 0);
+
+    /* 'block' input while we're selecting text */
+    if (term->input_id!=-1) {
+      gdk_input_remove(term->input_id);
+      term->input_id=-1;
+    }
     break;
 
   case 2:			/* middle button - paste */
@@ -1389,7 +1395,9 @@ zvt_term_button_press (GtkWidget      *widget,
 
   case 3:			/* right button - select extend? */
     if (vx->selected) {
-	
+      int midpos;
+      int mypos;
+
       switch(event->type) {
       case GDK_BUTTON_PRESS:
 	vx->selectiontype = VT_SELTYPE_CHAR;
@@ -1404,10 +1412,9 @@ zvt_term_button_press (GtkWidget      *widget,
 	break;
       }
 
-      /* FIXME: the way this works out which end to select from, and
-	 what happens to the other end is a little different to Xterm -
-	 but it kinda works ok */
-      if (y<=vx->selstarty) {
+      midpos = ((vx->selstarty+vx->selendy)/2)*vx->vt.width + (vx->selendx+vx->selstartx)/2;
+      mypos = y*vx->vt.width + x;
+      if (mypos < midpos) {
 	vx->selstarty=y;
 	vx->selstartx=x;
 	vx->selectiontype |= VT_SELTYPE_BYEND;
@@ -1416,7 +1423,7 @@ zvt_term_button_press (GtkWidget      *widget,
 	vx->selendx=x;
 	vx->selectiontype |= VT_SELTYPE_BYSTART;
       }
-      
+
       vt_fix_selection(vx);
       vt_draw_selection(vx);
       
@@ -1426,7 +1433,12 @@ zvt_term_button_press (GtkWidget      *widget,
 			GDK_BUTTON_MOTION_MASK |
 			GDK_POINTER_MOTION_HINT_MASK,
 			NULL, NULL, 0);
+      /* 'block' input while we're selecting text */
+      if (term->input_id!=-1) {
+	gdk_input_remove(term->input_id);
+	term->input_id=-1;
       }
+    }
     break;
 
   case 4:
@@ -1476,14 +1488,16 @@ zvt_term_button_release (GtkWidget      *widget,
   if (event->button == 4 || event->button == 5)
     return FALSE;
   
-  /* report mouse to terminal */
-  if (!(event->state & GDK_SHIFT_MASK))
-    if (vt_report_button(&vx->vt, 0, event->state, x, y))
+  if (vx->selectiontype == VT_SELTYPE_NONE) {
+    /* report mouse to terminal */
+    if (!(event->state & GDK_SHIFT_MASK))
+      if (vt_report_button(&vx->vt, 0, event->state, x, y))
+	return FALSE;
+    
+    /* ignore all control-clicks' at this level */
+    if (event->state & GDK_CONTROL_MASK) {
       return FALSE;
-
-  /* ignore all control-clicks' at this level */
-  if (event->state & GDK_CONTROL_MASK) {
-    return FALSE;
+    }
   }
 
   if (vx->selectiontype & VT_SELTYPE_BYSTART) {
@@ -1502,6 +1516,12 @@ zvt_term_button_release (GtkWidget      *widget,
 
     gtk_grab_remove (widget);
     gdk_pointer_ungrab (0);
+
+    /* re-enable input */
+    if (term->input_id==-1 && term->vx->vt.childfd !=-1) {
+      term->input_id =
+	gdk_input_add(term->vx->vt.childfd, GDK_INPUT_READ, zvt_term_readdata, term);
+    }
 
     if (vx->selectiontype & VT_SELTYPE_MOVED) {
       vt_fix_selection(vx);

@@ -809,8 +809,8 @@ void vt_fix_selection(struct _vtx *vx)
 	     (( (vt_in_wordclass(vx, s->data[sx])))))
 	sx--;
 
-      if (sx &&
-	  (!vt_in_wordclass(vx, s->data[sx]&0xff)) )
+      if ((s->data[sx]&0xff)
+	  && (!vt_in_wordclass(vx, s->data[sx]&0xff)) )
 	sx++;
     }
     d(printf("%d\n", sx));
@@ -846,7 +846,8 @@ void vt_fix_selection(struct _vtx *vx)
       while ((ex<e->width) && ((e->data[ex]&0xff) == 0))
 	ex++;
   }
-  
+
+#if 1
   if ( ((vx->selstarty == vx->selendy) && (vx->selstartx > vx->selendx)) ||
        (vx->selstarty > vx->selendy) ) {
     vx->selstartx = ex;		/* swap end/start values */
@@ -855,6 +856,18 @@ void vt_fix_selection(struct _vtx *vx)
     vx->selstartx = sx;		/* swap end/start values */
     vx->selendx = ex;
   }
+#else
+  if ( ((vx->selstarty == vx->selendy) && (vx->selstartx > vx->selendx)) ||
+       (vx->selstarty > vx->selendy) ) {
+    vx->selectiontype = (vx->selectiontype & ~(VT_SELTYPE_BYSTART|VT_SELTYPE_BYEND))|VT_SELTYPE_BYEND;
+  } else {
+    vx->selectiontype = (vx->selectiontype & ~(VT_SELTYPE_BYSTART|VT_SELTYPE_BYEND))|VT_SELTYPE_BYSTART;
+  }
+  vx->selstartx = sx;
+  vx->selstarty = sy;
+  vx->selendx = ex;
+  vx->selendy = ey;
+#endif
 
   d(printf("fixed selection, now    at (%d,%d) (%d,%d)\n", sx, sy, ex, ey));
 }
