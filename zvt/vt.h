@@ -21,6 +21,8 @@
 #ifndef _ZVT_VT_H_
 #define _ZVT_VT_H_
 
+#include <unistd.h>
+
 #include "lists.h"
 
 #ifdef __cplusplus
@@ -160,7 +162,7 @@ int   	      vt_report_button  (struct vt_em *vt, int button, int qual,
 void  	      vt_scrollback_set (struct vt_em *vt, int lines);
 int   	      vt_killchild      (struct vt_em *vt, int signal);
 int   	      vt_closepty       (struct vt_em *vt);
-
+void	      vt_reset_terminal (struct vt_em *vt, int hard);
 
 #ifdef __cplusplus
 	   }

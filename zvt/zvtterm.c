@@ -225,6 +225,8 @@ zvt_term_class_init (ZvtTermClass *class)
 static void
 zvt_term_init (ZvtTerm *term)
 {
+  struct _zvtprivate *zp;
+
   GTK_WIDGET_SET_FLAGS (term, GTK_CAN_FOCUS);
 
   /* create and configure callbacks for the teminal back-end */
@@ -298,6 +300,13 @@ zvt_term_init (ZvtTerm *term)
       GDK_SELECTION_PRIMARY,
       GDK_SELECTION_TYPE_STRING, 
       0);
+
+  /* private data */
+  zp = g_malloc(sizeof(*zp));
+  if (zp) {
+    zp->scrollselect_id = -1;
+  }
+  gtk_object_set_data(GTK_OBJECT (term), "_zvtprivate", zp);
 }
 
 /**
@@ -438,11 +447,13 @@ static void
 zvt_term_destroy (GtkObject *object)
 {
   ZvtTerm *term;
+  struct _zvtprivate *zp;
 
   g_return_if_fail (object != NULL);
   g_return_if_fail (ZVT_IS_TERM (object));
 
   term = ZVT_TERM (object);
+  zp = gtk_object_get_data (GTK_OBJECT (term), "_zvtprivate");
 
   zvt_term_closepty (term);
   vtx_destroy (term->vx);
@@ -473,8 +484,34 @@ zvt_term_destroy (GtkObject *object)
       term->ic = NULL;
     }
 
+  /* release private data */
+  if (zp) {
+    g_free(zp);
+    gtk_object_set_data (GTK_OBJECT (term), "_zvtprivate", 0);
+  }
+
   if (GTK_OBJECT_CLASS (parent_class)->destroy)
     (* GTK_OBJECT_CLASS (parent_class)->destroy) (object);
+}
+
+/**
+ * zvt_term_reset:
+ * @term: A &ZvtTerm widget.
+ * @hard: If %TRUE, then perform a HARD reset.
+ * 
+ * Performs a complete reset on the terminal.  Resets all
+ * attributes, and if @hard is %TRUE, also clears the screen.
+ **/
+void
+zvt_term_reset (ZvtTerm *term, int hard)
+{
+  g_return_if_fail (term != NULL);
+  g_return_if_fail (ZVT_IS_TERM (term));
+
+  vt_cursor_state (term, 0);
+  vt_reset_terminal(&term->vx->vt, hard);
+  vt_update (term->vx, UPDATE_CHANGES);
+  vt_cursor_state (term, 1);
 }
 
 
@@ -530,6 +567,15 @@ zvt_term_set_default_color_scheme (ZvtTerm *term)
   zvt_term_set_color_scheme (term, default_red, default_grn, default_blu);
 }
 
+/**
+ * zvt_term_set_size:
+ * @term: A &ZvtTerm widget.
+ * @width: Width of terminal, in columns.
+ * @height: Height of terminal, in rows.
+ * 
+ * Causes the terminal to attempt to resize to the absolute character
+ * size of @width rows by @height columns.
+ **/
 void
 zvt_term_set_size (ZvtTerm *term, guint width, guint height)
 {
@@ -1244,6 +1290,7 @@ zvt_term_button_press (GtkWidget      *widget,
   GdkModifierType mask;
   struct _vtx *vx;
   ZvtTerm *term;
+  struct _zvtprivate *zp;
 
   d(printf("button pressed\n"));
 
@@ -1253,12 +1300,19 @@ zvt_term_button_press (GtkWidget      *widget,
 
   term = ZVT_TERM (widget);
   vx = term->vx;
+  zp = gtk_object_get_data (GTK_OBJECT (term), "_zvtprivate");
 
   zvt_term_show_pointer (term);
+
 
   gdk_window_get_pointer(term->term_window, &x, &y, &mask);
   x /= term->charwidth;
   y = y / term->charheight + vx->vt.scrollbackoffset;
+
+  if (zp && zp->scrollselect_id!=-1) {
+    gtk_timeout_remove(zp->scrollselect_id);
+    zp->scrollselect_id=-1;
+  }
 
   /* Shift is an overwrite key for the reporting of the buttons */
   if (!(event->state & GDK_SHIFT_MASK))
@@ -1384,7 +1438,8 @@ zvt_term_button_release (GtkWidget      *widget,
   gint x, y;
   GdkModifierType mask;
   struct _vtx *vx;
-  
+  struct _zvtprivate *zp;
+
   d(printf("button released\n"));
 
   g_return_val_if_fail (widget != NULL, FALSE);
@@ -1393,11 +1448,18 @@ zvt_term_button_release (GtkWidget      *widget,
 
   term = ZVT_TERM (widget);
   vx = term->vx;
+  zp = gtk_object_get_data (GTK_OBJECT (term), "_zvtprivate");
 
   gdk_window_get_pointer (term->term_window, &x, &y, &mask);
 
   x = x/term->charwidth;
   y = y/term->charheight + vx->vt.scrollbackoffset;
+
+  /* reset scrolling selection timer if it is enabled */
+  if (zp && zp->scrollselect_id!=-1) {
+    gtk_timeout_remove(zp->scrollselect_id);
+    zp->scrollselect_id=-1;
+  }
 
   /* ignore wheel mice buttons (4 and 5) */
   /* otherwise they affect the selection */
@@ -1464,10 +1526,27 @@ zvt_term_scroll_by_lines (ZvtTerm *term, int n)
   gtk_adjustment_set_value (term->adjustment, new_value);
 }
 
+static gint zvt_selectscroll(gpointer data)
+{
+  ZvtTerm *term;
+  GtkWidget *widget;
+  struct _zvtprivate *zp;
+
+  widget = data;
+  term = ZVT_TERM (widget);
+  zp = gtk_object_get_data (GTK_OBJECT (term), "_zvtprivate");
+
+  if (zp) {
+    zvt_term_scroll_by_lines(term, zp->scrollselect_dir);
+  }
+  return TRUE;
+}
+
 /*
   mouse motion notify.
   only gets called for the first motion?  why?
 */
+
 static gint
 zvt_term_motion_notify (GtkWidget      *widget,
 			GdkEventMotion *event)
@@ -1475,6 +1554,7 @@ zvt_term_motion_notify (GtkWidget      *widget,
   struct _vtx *vx;
   gint x, y;
   ZvtTerm *term;
+  struct _zvtprivate *zp;
   
   g_return_val_if_fail (widget != NULL, FALSE);
   g_return_val_if_fail (ZVT_IS_TERM (widget), FALSE);
@@ -1482,8 +1562,7 @@ zvt_term_motion_notify (GtkWidget      *widget,
 
   term = ZVT_TERM (widget);
   vx = term->vx;
-
-  /* d(printf("Motion notify\n")); */
+  zp = gtk_object_get_data (GTK_OBJECT (term), "_zvtprivate");
 
   if (vx->selectiontype != VT_SELTYPE_NONE){
     x=(((int)event->x))/term->charwidth;
@@ -1502,6 +1581,21 @@ zvt_term_motion_notify (GtkWidget      *widget,
     
     vt_fix_selection(vx);
     vt_draw_selection(vx);
+
+    if (zp) {
+      if (zp->scrollselect_id!=-1) {
+	gtk_timeout_remove(zp->scrollselect_id);
+	zp->scrollselect_id = -1;
+      }
+      
+      if (y<0 || y>vx->vt.height) {
+	if (y<0)
+	  zp->scrollselect_dir = -1;
+	else
+	  zp->scrollselect_dir = 1;
+	zp->scrollselect_id = gtk_timeout_add(100, zvt_selectscroll, term);
+      }
+    }
   }
   /* otherwise, just a mouse event */
   /* make sure the pointer is visible! */
@@ -1510,7 +1604,7 @@ zvt_term_motion_notify (GtkWidget      *widget,
   return FALSE;
 }
 
-/**
+/*
  * zvt_term_selection_clear: [internal]
  * @term: A &ZvtTerm widget.
  * @event: Event that triggered the selection claim.
@@ -1637,11 +1731,15 @@ zvt_term_scrollbar_moved (GtkAdjustment *adj, GtkWidget *widget)
 {
   int line;
   ZvtTerm *term;
+  struct _vtx *vx;
+  struct _zvtprivate *zp;
 
   g_return_if_fail (widget != NULL);
   g_return_if_fail (ZVT_IS_TERM (widget));
 
   term = ZVT_TERM (widget);
+  vx = term->vx;
+  zp = gtk_object_get_data (GTK_OBJECT (term), "_zvtprivate");
 
   line = term->vx->vt.scrollbacklines - (int)adj->value;
 
@@ -1655,6 +1753,30 @@ zvt_term_scrollbar_moved (GtkAdjustment *adj, GtkWidget *widget)
 
   /* will redraw if scrollbar moved */
   vt_update (term->vx, UPDATE_SCROLLBACK);
+
+  /* for scrolling selection */
+  if (zp && zp->scrollselect_id != -1) {
+    int x,y;
+
+    if (zp->scrollselect_dir>0) {
+      x = vx->vt.width-1;
+      y = vx->vt.height-1;
+    } else {
+      x = 0;
+      y = 0;
+    }
+
+    if (vx->selectiontype & VT_SELTYPE_BYSTART) {
+      vx->selendx = x;
+      vx->selendy = y + vx->vt.scrollbackoffset;
+    } else {
+      vx->selstartx = x;
+      vx->selstarty = y + vx->vt.scrollbackoffset;
+    }
+
+    vt_fix_selection(vx);
+    vt_draw_selection(vx);
+  }
 }
 
 
@@ -2437,7 +2559,7 @@ zvt_term_set_del_key_swap (ZvtTerm *term, int state)
   term->swap_del_key = state != 0;
 }
 
-/**
+/*
  * zvt_term_bell:
  * @term: Terminal.
  *

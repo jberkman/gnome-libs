@@ -126,11 +126,20 @@ struct _ZvtTermClass
   void (* title_changed) (ZvtTerm *term, VTTITLE_TYPE type, char *newtitle);
 };
 
+/* private data structure, stored under "_zvtprivate" */
+/* Yes, this data *really*is* private to the widget! */
+struct _zvtprivate
+{
+  gint scrollselect_id;
+  int scrollselect_dir;		/* scrolling selection direction/step */  
+};
+
 #define ZVT_TERM_DO_UTMP_LOG 1
 #define ZVT_TERM_DO_WTMP_LOG 2
 
 GtkWidget*   zvt_term_new                      (void);
 GtkWidget*   zvt_term_new_with_size            (int cols, int rows);
+void	     zvt_term_reset		       (ZvtTerm *term, int hard);
 void         zvt_term_feed                     (ZvtTerm *term,
 						char *text, int len);
 int	     zvt_term_forkpty		       (ZvtTerm *term, int do_uwtmp_log);

@@ -512,7 +512,30 @@ void vt_clear_line_portion(struct vt_em *vt, int start_col, int end_col)
   this_line->modcount+=(this_line->width-vt->cursorx);
 }
 
+/*
+  resets terminal state completely
+*/
+void vt_reset_terminal(struct vt_em *vt, int hard)
+{
 
+  vt->attr=VTATTR_CLEAR;	/* reset attributes */
+  vt->remaptable = 0;		/* no character remapping */
+  vt->mode = 0;
+
+  vt->Gx=0;			/* reset all fonts */
+  vt->G[0]=0;
+  vt->G[1]=vt_remap_dec;
+  vt->G[2]=0;
+  vt->G[3]=0;
+
+  if (hard) {
+    vt->cursorx=0;
+    vt->cursory=0;
+    vt->this_line = (struct vt_line *)vt->lines.head;
+    vt_set_screen(vt, 0);
+    vt_clear_lines(vt, 0, vt->height);
+  }
+}
 
 
 /********************************************************************************\
@@ -1101,20 +1124,7 @@ vt_reset(struct vt_em *vt)
     /* report device attributes */
     vt_writechild(vt, DEVICE_ATTRIBUTES, sizeof(DEVICE_ATTRIBUTES));
   } else {
-    vt->cursorx=0;
-    vt->cursory=0;
-    vt->this_line = (struct vt_line *)vt->lines.head;
-    vt->attr=VTATTR_CLEAR;	/* reset attributes */
-    vt->remaptable = 0;		/* no character remapping */
-    vt_set_screen(vt, 0);
-    vt->mode = 0;
-    vt_clear_lines(vt, 0, vt->height);
-    
-    vt->Gx=0;			/* reset all fonts */
-    vt->G[0]=0;
-    vt->G[1]=vt_remap_dec;
-    vt->G[2]=0;
-    vt->G[3]=0;
+    vt_reset_terminal(vt, 0);
   }
 }
 

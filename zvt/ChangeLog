@@ -1,3 +1,47 @@
+1999-03-18  Michael Zucchi  <zucchi@zzedzone.mmc.com.au>
+
+	* -- MERGED IN ZVT_SCROLLSELECT BRANCH --
+		No longer binary incompatible (thanks Miguel :)
+		Framework for future extension similarly.
+	
+	* zvtterm.h (struct _zvtprivate): Created new structure for
+	private data.x
+
+	* zvtterm.c (zvt_term_init): Changed to use "_zvtprivate" data for
+	scrollselect info.
+	(zvt_term_button_press): Ditto.
+	(zvt_term_button_release): Ditto.
+	(zvt_selectscroll): Ditto.
+	(zvt_term_motion_notify): Ditto.
+	(zvt_term_scrollbar_moved): Ditto.
+	(zvt_term_destroy): Free zvtprivate data on destroy.  Do the input
+	handlers need destorying?
+	(zvt_term_init): Setup zvtprivate data on create.
+
+	* zvtterm.h: Added prototype for zvt_term_reset().
+
+	* zvtterm.c (zvt_term_reset): New function - external API to
+	vt_reset_terminal().
+
+	* vt.c (vt_reset): Removed terminal reset code into
+	vt_reset_terminal().
+
+	* vt.h: Added prototype for vt_reset_terminal().
+
+	* vt.c (vt_reset_terminal): New function - soft(hard) reset of
+	terminal.
+
+1999-02-28  Michael Zucchi  <zucchi@zzedzone.mmc.com.au>
+
+	* zvtterm.c (zvt_term_selection_clear): Changed header so it isn't
+	auto-documented.
+	(zvt_term_bell): Same.
+	(zvt_term_set_size): Add documentation.
+
+1999-02-26  Michael Zucchi  <zucchi@zzedzone.mmc.com.au>
+
+	* vt.h: Include unistd.h, for pid_t.
+
 1999-03-18  Michael Zucchi  <mzucchi@denr.sa.gov.au>
 
 	* zterm.c (main): Catch "destroy" signal to die on.
