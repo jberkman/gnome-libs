@@ -337,16 +337,6 @@ if test x$define_imlib_1_9 = xtrue; then
 fi
 
 dnl
-dnl Check for esound library
-dnl
-AM_PATH_ESD(0.2.5, AC_DEFINE(HAVE_ESD))
-
-dnl
-dnl Check for audiofile library
-dnl
-AM_PATH_AUDIOFILE(0.1.5,AC_DEFINE(HAVE_LIBAUDIOFILE))
-
-dnl
 dnl These are for building the appropriate lib*
 dnl
 LIBGNOME_LIBS="$ESD_LIBS $AUDIOFILE_LIBS $DB_LIB $GLIB_LIBS $DL_LIB"
@@ -368,9 +358,9 @@ GNOME_INCLUDEDIR='-I${includedir} -DNEED_GNOMESUPPORT_H -I${pkglibdir}/include'
 GNOME_IDLDIR='-I${datadir}/idl'
 
 dnl
-dnl ORBit checks
+dnl ORBit check
 dnl
-GNOME_ORBIT_CHECK
+AM_PATH_ORBIT(0.5.1)
 
 dnl
 dnl test-gnome
@@ -400,8 +390,6 @@ if test -f $srcdir/.lclintrc.in; then
 	ln -sf `pwd`/.lclintrc $srcdir/libgnome/.lclintrc
 	ln -sf `pwd`/.lclintrc $srcdir/libgnomeui/.lclintrc
 fi
-
-dnl AC_CONFIG_SUBDIRS(libgtktty)
 
 dnl
 dnl LibART_LGPL
@@ -524,4 +512,16 @@ echo "If you are using this source tree from CVS, please run:"
 echo "	cvs update -r gnome-libs-1-0"
 echo "now."
 ])
+
+dnl ############## Graveyard for temporarily-unused macros
+dnl
+dnl Check for esound library
+dnl
+dnl AM_PATH_ESD(0.2.5, AC_DEFINE(HAVE_ESD))
+
+dnl
+dnl Check for audiofile library
+dnl
+dnl AM_PATH_AUDIOFILE(0.1.5,AC_DEFINE(HAVE_LIBAUDIOFILE))
+
 

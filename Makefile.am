@@ -12,12 +12,21 @@ else
 test_gnome =
 endif
 
+gnome_vfs_SUBDIRS=
+gconf_SUBDIRS=
+
 SUBDIRS = po intl support \
 	tools \
 	images \
+	libgnome \
 	libart_lgpl \
-	libgnome libgnomeui gtk-xmhtml zvt \
-	oaf idl $(test_gnome) devel-docs gnome-data man \
+	libgnomeui \
+	gtk-xmhtml \
+	zvt \
+	oaf idl \
+	$(gconf_SUBDIRS) \
+	$(gnome_vfs_SUBDIRS) \
+	$(test_gnome) devel-docs gnome-data man \
 	gnome-faq
 
 if COMPILE_TEST_GNOME
