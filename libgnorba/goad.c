@@ -689,3 +689,89 @@ goad_server_activate_exe(GoadServer *sinfo,
 out:
   return retval;
 }
+
+int
+goad_server_register(CORBA_Object name_server,
+		     CORBA_Object server,
+		     const char* name,
+		     const char* kind,
+		     CORBA_Environment* ev)
+{
+  CosNaming_NameComponent nc[3] = {{"GNOME", "subcontext"},
+				   {"Servers", "subcontext"}};
+  CosNaming_Name          nom = {0, 3, nc, CORBA_FALSE};
+  CORBA_Object            old_server;
+
+  nc[2].id   = name;
+  nc[2].kind = kind;
+
+  ev->_major = CORBA_NO_EXCEPTION;
+  old_server = CosNaming_NamingContext_resolve(name_server, &nom, ev);
+  if (ev->_major != CORBA_NO_EXCEPTION) {
+    switch( ev->_major ) {
+    case CORBA_SYSTEM_EXCEPTION:
+      g_warning("sysex: %s.\n", CORBA_exception_id(ev));
+    case CORBA_USER_EXCEPTION:
+      g_warning( "usrex: %s.\n", CORBA_exception_id(ev));
+    default:
+      break;
+    }
+  }
+  if (ev->_major == CORBA_USER_EXCEPTION &&
+      !strcmp(CORBA_exception_id(ev),ex_CosNaming_NamingContext_NotFound)) {
+    CosNaming_NamingContext_bind(name_server, &nom, server, ev);
+    if (ev->_major != CORBA_NO_EXCEPTION) {
+      switch( ev->_major ) {
+      case CORBA_SYSTEM_EXCEPTION:
+	g_warning("sysex: %s.\n", CORBA_exception_id(ev));
+      case CORBA_USER_EXCEPTION:
+	g_warning( "usrex: %s.\n", CORBA_exception_id(ev));
+      default:
+	break;
+      }
+    }
+  }
+  else {
+    CORBA_Object_release(old_server, ev);
+    return -2;
+  }
+  if (ev->_major != CORBA_NO_EXCEPTION) {
+    switch( ev->_major ) {
+    case CORBA_SYSTEM_EXCEPTION:
+      g_warning("sysex: %s.\n", CORBA_exception_id(ev));
+    case CORBA_USER_EXCEPTION:
+      g_warning( "usrex: %s.\n", CORBA_exception_id(ev));
+    default:
+      break;
+    }
+    return -1;
+  }
+  return 0;
+}
+
+int
+goad_server_unregister(CORBA_Object name_server,
+		       const char* name,
+		       const char* kind,
+		       CORBA_Environment* ev)
+{
+  CosNaming_NameComponent nc[3] = {{"GNOME", "subcontext"},
+				   {"Servers", "subcontext"}};
+  CosNaming_Name          nom = {0, 3, nc, CORBA_FALSE};
+
+  nc[2].id   = name;
+  nc[2].kind = kind;
+  CosNaming_NamingContext_unbind(name_server, &nom, ev);
+  if (ev->_major != CORBA_NO_EXCEPTION) {
+    switch( ev->_major ) {
+    case CORBA_SYSTEM_EXCEPTION:
+      g_warning("sysex: %s.\n", CORBA_exception_id(ev));
+    case CORBA_USER_EXCEPTION:
+      g_warning( "usr	ex: %s.\n", CORBA_exception_id(ev));
+    default:
+      break;
+    }
+    return -1;
+  }
+  return 0;
+}

@@ -31,24 +31,30 @@ CORBA_ORB gnome_CORBA_init_with_popt_table(char *app_id,
 CORBA_Object gnome_name_service_get       (void);
 
 /* register an object with the name server. name_server is the object
-   returned by a call to gnome_name_service_get, and server is your
-   CORBA server.
+ * returned by a call to gnome_name_service_get, and server is your
+ *  CORBA server.
+ *
+ * Return -1 on error,
+ *        -2 if another server with the same NAME and
+ *            KIND is already active and running,
+ *         0 otherwise;
+ * You might check ev for more error information.
+ */
+int
+goad_server_register (CORBA_Object name_server,
+		      CORBA_Object server,
+		      const char* name,
+		      const char* kind,
+		      CORBA_Environment* ev);
 
-   Return -1 on error,
-          -2 if another server with the same NAME and
-	     KIND is already active and running,
-	   0 otherwise;
-   You might check ev for more error information.
-*/
-int          gnome_register_corba_server  (CORBA_Object name_server, CORBA_Object server,
-					   gchar* name, gchar* kind, CORBA_Environment* ev);
 /*
-  Deregister name from the name server.
-*/
-int          gnome_unregister_corba_server  (CORBA_Object name_server,
-					     gchar* name, gchar* kind, CORBA_Environment* ev);
-
-
+ * Deregister name from the name server.
+ */
+int
+goad_server_unregister  (CORBA_Object name_server,
+			 const char* name,
+			 const char* kind,
+			 CORBA_Environment* ev);
 
 /**** gnome-plugins module ****/
 typedef struct {
