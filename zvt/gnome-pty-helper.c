@@ -311,16 +311,8 @@ open_ptys (int utmp, int wtmp)
 	}
 
 	group_info = getgrnam ("tty");
-	
-	if (group_info){
-		fchown (slave_pty, getuid (), group_info->gr_gid);
-		fchmod (slave_pty, S_IRUSR | S_IWUSR | S_IWGRP);
-	}
-	else
-	{
-		fchown (slave_pty, getuid (), -1);
-		fchmod (slave_pty, S_IRUSR | S_IWUSR | S_IWGRP);
-	}
+	fchown (slave_pty, getuid (), group_info?group_info->gr_gid:-1);
+	fchmod (slave_pty, S_IRUSR | S_IWUSR | S_IWGRP);
 
 	p = pty_add (utmp, wtmp, master_pty, slave_pty, term_name);
 	result = 1;

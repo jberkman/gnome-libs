@@ -4,6 +4,7 @@
 	slave pty's ownership/permissions after openpty() returns.  IMHO
 	this is fixing a non-existant bug, but who am I to argue?
 	(): Also include sys/stat.h, for S_* defines.
+	(open_ptys): Rewrote the last change to be a bit simpler!
 
 1999-06-02  Michael Zucchi  <mzucchi@zedzone.mmc.com.au>
 
