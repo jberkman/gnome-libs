@@ -253,7 +253,7 @@ about_cb (GtkWidget *widget, void *data)
           };
 
   about = gnome_about_new ( _("The Hello World Gnomified"), VERSION,
-        		/* copyrigth notice */
+        		/* copyright notice */
                         "(C) 1998 the Free Software Foundation",
                         authors,
                         /* another comments */
