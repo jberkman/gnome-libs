@@ -24,8 +24,6 @@ fi
 GNOME_COMMON_INIT
 GNOME_PLATFORM_GNOME_2(yes, force)
 
-AC_CONFIG_SUBDIRS(gnome-faq)
-
 AC_ISC_POSIX
 AC_PROG_CC
 AC_STDC_HEADERS
@@ -406,6 +404,7 @@ libgnomeui/Makefile
 libgnomeui/pixmaps/Makefile
 libcompat/Makefile
 zvt/Makefile
+demos/Makefile
 test-suite/Makefile
 test-suite/tests/Makefile
 gnome-data/Makefile

@@ -34,8 +34,7 @@ SUBDIRS = \
 	$(gnome_vfs_SUBDIRS)	\
 	$(test_gnome)		\
 	devel-docs		\
-	gnome-data man		\
-	gnome-faq
+	gnome-data man
 
 if COMPILE_TEST_GNOME
 compat_headers = gnome-compat-1.0.h
