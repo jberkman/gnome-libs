@@ -32,7 +32,9 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <unistd.h>
+#ifdef HAVE_ALLOCA_H
 #include <alloca.h>
+#endif
 
 #include "lists.h"
 #include "memory.h"

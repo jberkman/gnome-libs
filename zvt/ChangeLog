@@ -1,3 +1,7 @@
+1998-10-24  Martin Baulig  <martin@home-of-linux.org>
+
+	* update.c: Only #include <alloca.h> if we `HAVE_ALLOCA_H'.
+
 1998-10-22  Michael Zucchi  <zucchi@zzedzone.fsi.com.au>
 
 	* update.c (vt_update_rect): Was going to the wrong next node when
