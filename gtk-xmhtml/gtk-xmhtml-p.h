@@ -24,4 +24,3 @@ enum {
 	XmCR_ARM
 };
 
-

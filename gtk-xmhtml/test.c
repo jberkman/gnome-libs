@@ -9,6 +9,21 @@ char *urls [] = {
 	"exec:foo_bar", "internal"
 };
 
+char *test_string2 =
+"<html>\n"
+"<head><title>The Gtk/XmHTML test</title></head>\n"
+"This is the Gtk/XmHTML test program<p>\n"
+"You can invoke this program with a command line argument, like this:\n"
+"<hr>"
+"<tt>./xtest filename.html</tt>"
+"<hr>"
+"Click here to load a different <a href=\"nothing\">test message</a>"
+"</html>";
+
+char *test_string =
+"<html><head><title>h</title></head>"
+"<body>This is a freshly loaded text into the widget!</body></html>";
+
 void
 click (GtkWidget *widget, gpointer data)
 {
@@ -24,6 +39,7 @@ click (GtkWidget *widget, gpointer data)
 	printf ("title:   %s\n", cbs->title);
 	printf ("doit:    %d\n", cbs->doit);
 	printf ("visited: %s\n", cbs->visited);
+	gtk_xmhtml_source (GTK_XMHTML (widget), test_string2);
 }
 
 int
@@ -48,11 +64,7 @@ main (int argc, char *argv [])
 		}
 	}
 	if(strlen(file_contents->str) <= 0)
-		file_contents = g_string_append(file_contents, "<html>\n"
-			       "<head><title>Hola</title></head>\n"
-			       "<b>Bold</b><p>Nuevo parrafo<p><a href=\"xxx\">test</a>.<p>"
-			       "<ul><li>Uno<li>Dos<li>Tres</ul>"
-			       "</html>");
+		file_contents = g_string_append(file_contents, test_string);
 	gtk_signal_connect(GTK_OBJECT(window), "delete_event",
 		GTK_SIGNAL_FUNC(gtk_true), NULL);
 	gtk_signal_connect(GTK_OBJECT(window), "destroy",

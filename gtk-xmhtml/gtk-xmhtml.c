@@ -11,6 +11,10 @@
 #define SetScrollBars(HTML)
 #define AdjustVerticalScrollValue(VSB,VAL)
 
+guint gtk_xmhtml_get_type (void);
+gint gtk_xmhtml_signals [GTK_XMHTML_LAST_SIGNAL] = { 0, };
+
+
 /*
  * Gdk does not have a visibility mask thingie *yet*
  */
@@ -22,8 +26,6 @@
 
 static GtkContainer *parent_class = NULL;
 
-gint gtk_xmhtml_signals [GTK_XMHTML_LAST_SIGNAL] = { 0, };
-
 /* prototypes for functions defined here */
 static void gtk_xmhtml_realize (GtkWidget *widget);
 static void gtk_xmhtml_unrealize (GtkWidget *widget);
@@ -34,7 +36,6 @@ static void gtk_xmhtml_add (GtkContainer *container, GtkWidget *widget);
 static void gtk_xmhtml_manage (GtkContainer *container, GtkWidget *widget);
 static void gtk_xmhtml_size_allocate (GtkWidget *widget, GtkAllocation *allocation);
 static void gtk_xmhtml_size_request (GtkWidget *widget, GtkRequisition *requisition);
-guint gtk_xmhtml_get_type (void);
 
 static void CheckScrollBars(XmHTMLWidget html);
 static void GetScrollDim(XmHTMLWidget html, int *hsb_height, int *vsb_width);
@@ -43,7 +44,7 @@ static void	ExtendEnd  (TWidget w, TEvent *event);
 
 typedef gint (*GtkXmHTMLSignal1) (GtkObject *object,
                                   gpointer   arg1,
-                                  gpointer   data);                                                
+                                  gpointer   data);
 
 static void
 gtk_xmthml_marshall_1 (GtkObject *object, GtkSignalFunc func, gpointer data, GtkArg *args)
@@ -174,9 +175,21 @@ gtk_xmhtml_resource_init (GtkXmHTML *html)
 }
 
 static void
+gtk_xmhtml_reset_pending_flags (GtkXmHTML *html)
+{
+	html->parse_needed = 0;
+	html->reformat_needed = 0;
+	html->redraw_needed = 0;
+	html->free_images_needed = 0;
+	html->layout_needed = 0;
+}
+
+static void
 gtk_xmhtml_init (GtkXmHTML *html)
 {
 	gtk_xmhtml_resource_init (html);
+	gtk_xmhtml_reset_pending_flags (html);
+	html->frozen = 0;
 }
 
 GtkWidget *
@@ -302,7 +315,7 @@ gtk_xmhtml_class_init (GtkXmHTMLClass *class)
 	container_class->add = gtk_xmhtml_add;
 }
 
-void
+static void
 gtk_xmhtml_size_request (GtkWidget *widget, GtkRequisition *requisition)
 {
 	GtkXmHTML *html = GTK_XMHTML (widget);
@@ -337,7 +350,7 @@ gtk_xmhtml_size_request (GtkWidget *widget, GtkRequisition *requisition)
 	requisition->height += GTK_CONTAINER (widget)->border_width * 2 + extra_height;
 }
 
-void
+static void
 gtk_xmhtml_size_allocate (GtkWidget *widget, GtkAllocation *allocation)
 {
 	GtkXmHTML *html = GTK_XMHTML (widget);
@@ -897,8 +910,7 @@ CheckScrollBars(XmHTMLWidget html)
 	GtkAdjustment *hsba = GTK_ADJUSTMENT (html->hsba);
 	GtkAdjustment *vsba = GTK_ADJUSTMENT (html->vsba);
 
-	if (f)
-		xf = (XFontStruct *) ((GdkFontPrivate *) f)->xfont;
+	xf = f ? (XFontStruct *) ((GdkFontPrivate *) f)->xfont : NULL;
 
 	/* don't do a thing if we aren't managed yet */
 	if (!GTK_WIDGET_MAPPED (html))
@@ -1238,3 +1250,578 @@ autoSizeWidget (XmHTMLWidget html)
 /* XmImage configuration hook */
 XmImageConfig *_xmimage_cfg;
 
+/*
+ * Configurability of the XmHTML widget 
+ * 
+ */
+
+static void
+gtk_xmhtml_sync_parse (GtkXmHTML *html)
+{
+	int ov;
+	
+	_XmHTMLKillPLCCycler (html);
+
+	/* new text has been set, kill of any existing PLC's */
+	_XmHTMLKillPLCCycler(html);
+	
+	/* release event database */
+	_XmHTMLFreeEventDatabase(html, html);
+	
+	/* destroy any form data */
+	_XmHTMLFreeForm(html, html->html.form_data);
+	html->html.form_data = (XmHTMLFormData*)NULL;
+	
+	/* Parse the raw HTML text */
+	ov = html->html.in_layout;
+	html->html.elements = _XmHTMLparseHTML(html, html->html.elements, html->html.source, html);
+	html->html.in_layout = ov;
+	
+	/* reset topline */
+	html->html.top_line = 0;
+	
+	/* keep current frame setting and check if new frames are allowed */
+	html->html.nframes = _XmHTMLCheckForFrames(html, html->html.elements);
+	
+	/* Trigger link callback */
+	if(html->html.link_callback)
+		_XmHTMLLinkCallback(html);
+
+	html->reformat_needed   = TRUE;
+	html->redraw_needed     = TRUE;
+	html->free_images_needed = TRUE;
+}
+
+static void
+gtk_xmhtml_sync_reformat (GtkXmHTML *html)
+{
+	int is_frame;
+	
+	/*
+	 * Now format the list of parsed objects.
+	 * Don't do a bloody thing if we are already in layout as this will
+	 * cause unnecessary reloading and screen flickering.
+	 */
+	if (html->html.in_layout)
+		return;
+
+	/*****
+	 * It the current document makes heavy use of images we first need
+	 * to clear it. Not doing this would cause a shift in the colors of 
+	 * the current document (as they are being released) which does not 
+	 * look nice. Therefore first clear the entire display* area *before* 
+	 * freeing anything at all.
+	 *****/
+	if(html->html.gc != NULL){
+		Toolkit_Clear_Area (Toolkit_Display (html->html.work_area), 
+				    Toolkit_Widget_Window(html->html.work_area),
+				    0, 0,
+				    Toolkit_Widget_Dim(html).width,
+				    Toolkit_Widget_Dim(html).height, False);
+	}
+	
+	/* destroy any form data */
+	_XmHTMLFreeForm(html, html->html.form_data);
+	html->html.form_data = (XmHTMLFormData*)NULL;
+
+	/* Free all non-persistent resources */
+	FreeExpendableResources(html, html->free_images_needed);
+
+	/* reset some important vars */
+	ResetWidget(html, html->free_images_needed);
+
+#if 0
+	/* FIXME: I dont support this yet :-( */
+		/* reset background color */
+	XtVaSetValues(w_new->html.work_area, 
+		      XmNbackground, w_new->html.body_bg, NULL);
+#endif
+
+	/* get new values for top, bottom & highlight */
+	_XmHTMLRecomputeColors(html);
+
+	is_frame = html->html.is_frame;
+
+	/* go and format the parsed HTML data */
+	if(!_XmHTMLCreateFrames(html, html)){
+		html->html.frames = NULL;
+		html->html.nframes = 0;
+		html->html.is_frame = is_frame;
+	}
+	
+	_XmHTMLformatObjects(html, html);
+
+	/* and check for possible external imagemaps */
+	_XmHTMLCheckImagemaps(html);
+
+	/* compute new screen layout */
+	Layout(html);
+	
+	/* if new text has been set, fire up the PLCCycler */
+	if(html->parse_needed){
+		html->html.plc_suspended = False;
+		_XmHTMLPLCCycler((TPointer)html);
+	}
+	html->free_images_needed = 0;
+	html->redraw_needed = 1;
+	html->layout_needed = 0;
+	
+}
+
+static void
+gtk_xmhtml_sync_redraw (GtkXmHTML *html)
+{
+	if (html->free_images_needed){
+			XmHTMLImage *img;
+			for(img = html->html.images; img != NULL; img = img->next)
+			{
+				if(!ImageInfoFreed(img) &&
+					ImageInfoDelayedCreation(img->html_image))
+				{
+					img->options |= IMG_DELAYED_CREATION;
+					html->html.delayed_creation = True;
+				}
+			}
+			if(html->html.delayed_creation)
+				_XmHTMLImageCheckDelayedCreation(html);
+	}
+	if (html->html.gc != NULL)
+		_XmHTMLClearArea (html, 0, 0,
+				  Toolkit_Widget_Dim (html).width,
+				  Toolkit_Widget_Dim (html).height);
+	gtk_widget_draw (GTK_WIDGET (html), NULL);
+}
+
+static void
+gtk_xmhtml_sync (GtkXmHTML *html)
+{
+	if (html->parse_needed)
+		gtk_xmhtml_sync_parse (html);
+	if (html->reformat_needed)
+		gtk_xmhtml_sync_reformat (html);
+	if (html->redraw_needed)
+		gtk_xmhtml_sync_redraw (html);
+
+	/* FIXME: compute the need_tracking variable depending on the following settings:
+	 * anchor_track_callback
+	 * anchor_cursor
+	 * highlight_on_enter
+	 * motion_track_callback
+	 * focus_callback
+	 * losing_focus_callback
+	 */
+	gtk_xmhtml_reset_pending_flags (html);
+}
+
+
+static void
+gtk_xmhtml_try_sync (GtkXmHTML *html)
+{
+	if (html->frozen)
+		return;
+	gtk_xmhtml_sync (html);
+}
+
+void
+gtk_xmhtml_freeze (GtkXmHTML *html)
+{
+	html->frozen = 1;
+}
+
+void
+gtk_xmhtml_thaw (GtkXmHTML *html)
+{
+	if (!html->frozen)
+		return;
+
+	html->frozen = 0;
+	gtk_xmhtml_sync (html);
+}
+
+void
+gtk_xmhtml_source (GtkXmHTML *html, char *source)
+{
+	int parse = FALSE;
+
+	/* If we already have some HTML source code */
+	if (html->html.source){
+		if (source){	/* new text supplied */
+			if (strcmp (source, html->html.source)){
+				parse = TRUE;
+				free (html->html.source);
+				html->html.source = strdup (source);
+			} else
+				parse = FALSE;
+		} else {	/* have to clear current text */
+			parse = TRUE;
+			free (html->html.source);
+			html->html.source = NULL;
+		}
+	} else { 		/* we did not have any source */
+		if (source){
+			parse = TRUE;
+			html->html.source = strdup (source);
+		} else
+			parse = FALSE; /* still empty */
+	}
+	html->html.value = html->html.source;
+	html->parse_needed = parse;
+	gtk_xmhtml_try_sync (html);
+	if (!html->frozen && parse)
+		gtk_xmhtml_sync_parse (html);
+}
+
+void
+gtk_xmhtml_set_string_direction (GtkXmHTML *html, int direction)
+{
+	if (html->html.string_direction == direction)
+		return;
+	html->html.string_direction = direction;
+	html->parse_needed  = 1;
+	html->reformat_needed = 1;
+	gtk_xmhtml_try_sync (html);
+}
+
+void
+gtk_xmhtml_set_alignment (GtkXmHTML *html, int alignment)
+{
+	if (html->html.enable_outlining)
+		html->html.default_halign = XmHALIGN_JUSTIFY;
+	else {
+		/* default alignment depends on string direction */
+		if(html->html.string_direction == TSTRING_DIRECTION_R_TO_L)
+			html->html.default_halign = XmHALIGN_RIGHT;
+		else
+			html->html.default_halign = XmHALIGN_LEFT;
+
+		html->html.alignment = alignment;
+		if(alignment == TALIGNMENT_BEGINNING)
+			html->html.default_halign = XmHALIGN_LEFT;
+		if(alignment == TALIGNMENT_END)
+			html->html.default_halign = XmHALIGN_RIGHT;
+		else if(alignment == TALIGNMENT_CENTER)
+			html->html.default_halign = XmHALIGN_CENTER;
+	}
+	html->parse_needed  = 1;
+	html->reformat_needed = 1;
+	gtk_xmhtml_try_sync (html);
+}
+
+void
+gtk_xmhtml_set_outline (GtkXmHTML *html, int flag)
+{
+	html->html.enable_outlining = flag;
+	html->reformat_needed = 1;
+	gtk_xmhtml_try_sync (html);
+}
+
+static void
+gtk_xmhtml_fonts_changed (GtkXmHTML *html)
+{
+	html->html.default_font = _XmHTMLSelectFontCache (html, TRUE);
+	html->reformat_needed = 1;
+	gtk_xmhtml_try_sync (html);
+}
+
+void
+gtk_xmhtml_set_font_familty (GtkXmHTML *html, char *family, char *sizes)
+{
+	g_free (html->html.font_family);
+	g_free (html->html.font_sizes);
+	html->html.font_family = g_strdup (family);
+	html->html.font_sizes = g_strdup (sizes);
+	gtk_xmhtml_fonts_changed (html);
+}
+
+void
+gtk_xmhtml_set_font_familty_fixed (GtkXmHTML *html, char *family, char *sizes)
+{
+	g_free (html->html.font_family_fixed);
+	g_free (html->html.font_sizes);
+	html->html.font_family_fixed = g_strdup (family);
+	html->html.font_sizes_fixed = g_strdup (sizes);
+	gtk_xmhtml_fonts_changed (html);
+}
+
+void
+gtk_xmhtml_set_font_charset (GtkXmHTML *html, char *charset)
+{
+	g_free (html->html.charset);
+	html->html.charset = g_strdup (charset);
+	gtk_xmhtml_fonts_changed (html);
+}
+
+void
+gtk_xmhtml_set_allow_body_colors (GtkXmHTML *html, int enable)
+{
+	if (enable == html->html.body_colors_enabled)
+		return;
+
+	html->html.body_fg             = html->html.body_fg_save;
+	html->html.body_bg             = html->html.body_bg_save;
+	html->html.anchor_fg           = html->html.anchor_fg_save;
+	html->html.anchor_visited_fg   = html->html.anchor_visited_fg_save;
+	html->html.anchor_activated_fg = html->html.anchor_activated_fg_save;
+	html->reformat_needed = 1;
+	gtk_xmhtml_try_sync (html);
+}
+
+void
+gtk_xmhtml_set_colors (GtkXmHTML *html,
+		       Pixel foreground,
+		       Pixel background,
+		       Pixel anchor_fg,
+		       Pixel anchor_target_fg,
+		       Pixel anchor_visited_fg,
+		       Pixel anchor_activated_fg,
+		       Pixel anchor_activated_bg)
+{
+	/* FIXME: Not so sure about the api, what to do? */
+	/* FIXME; put the code to update our colors with the new values here */
+	_XmHTMLRecomputeColors (html);
+	html->reformat_needed = 1;
+	gtk_xmhtml_try_sync (html);
+}
+
+void
+gtk_xmhtml_set_hilight_on_enter (GtkXmHTML *html, int flag)
+{
+	html->html.armed_anchor = NULL;
+	html->html.highlight_on_enter = flag;
+}
+
+static void
+gtk_xmhtml_check_underline_type (int underline_type, int *type, int *value)
+{
+	switch (underline_type){
+	case GTK_ANCHOR_NOLINE:
+		*value = NO_LINE;
+		break;
+	case GTK_ANCHOR_DASHED_LINE:
+		*value = LINE_DASHED|LINE_UNDER|LINE_SINGLE;
+		break;
+	case GTK_ANCHOR_DOUBLE_LINE:
+		*value = LINE_SOLID|LINE_UNDER|LINE_DOUBLE;;
+		break;
+	case GTK_ANCHOR_DOUBLE_DASHED_LINE:
+		*value = LINE_DASHED|LINE_UNDER|LINE_DOUBLE;;
+		break;
+	case GTK_ANCHOR_SINGLE_LINE:
+	default:
+		*value = LINE_SOLID | LINE_UNDER | LINE_SINGLE;
+		underline_type = GTK_ANCHOR_SINGLE_LINE;
+		break;
+	}
+	*type = underline_type;
+}
+
+void
+gtk_xmhtml_set_anchor_underline_type (GtkXmHTML *html, int underline_type)
+{
+	int type, value;
+	
+	gtk_xmhtml_check_underline_type (underline_type, &type, &value);
+	html->html.anchor_underline_type = type;
+	html->html.anchor_line = value;
+	html->reformat_needed = 1;
+	gtk_xmhtml_try_sync (html);
+}
+
+void
+gtk_xmhtml_set_anchor_visited_underline_type (GtkXmHTML *html, int underline_type)
+{
+	int type, value;
+	
+	gtk_xmhtml_check_underline_type (underline_type, &type, &value);
+	html->html.anchor_visited_underline_type = type;
+	html->html.anchor_visited_line = value;
+	html->reformat_needed = 1;
+	gtk_xmhtml_try_sync (html);
+}
+
+void
+gtk_xmhtml_set_anchor_target_underline_type (GtkXmHTML *html, int underline_type)
+{
+	int type, value;
+	
+	gtk_xmhtml_check_underline_type (underline_type, &type, &value);
+	html->html.anchor_target_underline_type = type;
+	html->html.anchor_target_line = value;
+	html->reformat_needed = 1;
+	gtk_xmhtml_try_sync (html);
+}
+
+void
+gtk_xmhtml_set_allow_color_switching (GtkXmHTML *html, int flag)
+{
+	if (html->html.allow_color_switching == flag)
+		return;
+	html->html.allow_color_switching = flag;
+	html->reformat_needed = 1;
+	gtk_xmhtml_try_sync (html);
+}
+
+void
+gtk_xmhtml_set_allow_font_switching (GtkXmHTML *html, int flag)
+{
+	if (html->html.allow_font_switching == flag)
+		return;
+	html->html.allow_font_switching = flag;
+	html->reformat_needed = 1;
+	gtk_xmhtml_try_sync (html);
+}
+
+/* See documentation for XmNimageMapToPalette/XmNimageRGBConversion for possible values */
+void
+gtk_xmhtml_set_dithering (GtkXmHTML *html, XmHTMLDitherType flag)
+{
+	if (html->html.map_to_palette == flag)
+		return;
+
+	/* from on to off or off to on */
+	if (html->html.map_to_palette == XmDISABLED || flag == XmDISABLED ){
+		/* free current stuff */
+		XCCFree(html->html.xcc);
+		
+		/* and create a new one */
+		html->html.xcc = NULL;
+		_XmHTMLCheckXCC (html);
+		
+		/* add palette if necessary */
+		if(flag != XmDISABLED)
+			_XmHTMLAddPalette(html);
+	} else {
+		/* fast & best methods require precomputed error matrices */
+		if(flag == XmBEST || flag == XmFAST)
+			XCCInitDither(html->html.xcc);
+		else
+			XCCFreeDither(html->html.xcc);
+	}
+	html->html.map_to_palette = flag;
+	html->reformat_needed = 1;
+	gtk_xmhtml_try_sync (html);
+}
+
+void
+gtk_xmhtml_set_max_image_colors (GtkXmHTML *html, int max_colors)
+{
+	int prev_max = html->html.max_image_colors;
+	int new_max  = max_colors;
+	int free_images = html->free_images_needed;
+	
+	html->html.max_image_colors = max_colors;
+	CheckMaxColorSetting(html);
+	
+	/*
+	 * check if we have any images with more colors than allowed or
+	 * we had images that were dithered. If so we need to redo the layout
+	 */
+	if(html->reformat_needed){
+		XmHTMLImage *image;
+		
+		for(image = html->html.images; image != NULL && !free_images; image = image->next){
+			/* ImageInfo is still available. Compare against it */
+			if(!ImageInfoFreed(image))
+			{
+				/*
+				 * redo image composition if any of the following
+				 * conditions is True:
+				 * - current image has more colors than allowed;
+				 * - current image has less colors than allowed but the
+				 *	original image had more colors than allowed previously.
+				 */
+				if(image->html_image->ncolors > new_max ||
+				   (image->html_image->scolors < new_max &&
+				    image->html_image->scolors > prev_max))
+					html->free_images_needed = True;
+			}
+				/* info no longer available. Check against allocated colors */
+			else
+				if(image->npixels > new_max)
+					free_images = True;
+		}
+		/* need to redo the layout if we are to redo the images */
+		html->reformat_needed = free_images;
+	}
+	html->free_images_needed = free_images;
+	gtk_xmhtml_try_sync (html);
+}
+
+void
+gtk_xmhtml_set_allow_images (GtkXmHTML *html, int flag)
+{
+	if (html->html.images_enabled == flag)
+		return;
+	html->html.images_enabled = flag;
+	html->free_images_needed = 1;
+	html->reformat_needed = 1;
+	gtk_xmhtml_try_sync (html);
+}
+
+void
+gtk_xmhtml_set_plc_intervals (GtkXmHTML *html, int min_delay, int max_delay, int def_delay)
+{
+	if ((html->html.plc_min_delay == min_delay) &&
+	    (html->html.plc_max_delay == max_delay) &&
+	    (html->html.plc_delay == def_delay))
+		return;
+	html->html.plc_min_delay = min_delay;
+	html->html.plc_max_delay = max_delay;
+	html->html.plc_def_delay = def_delay;
+	html->html.plc_delay     = def_delay;
+	CheckPLCIntervals (html);
+}
+
+void
+gtk_xmhtml_set_def_body_image_url (GtkXmHTML *html, char *url)
+{
+	/* FIXME, need to write this routien based on the Motif code */
+}
+
+void
+gtk_xmhtml_set_anchor_buttons (GtkXmHTML *html, int flag)
+{
+	if (html->html.anchor_buttons == flag)
+		return;
+	html->html.anchor_buttons = flag;
+	html->redraw_needed = 1;
+	gtk_xmhtml_try_sync (html);
+}
+
+void
+gtk_xmhtml_set_anchor_cursor (GtkXmHTML *html, GdkCursor *cursor, int flag)
+{
+	html->html.anchor_display_cursor = flag;
+	if (!flag){
+		Toolkit_Free_Cursor (Toolkit_Display(html), html->html.anchor_cursor);
+		html->html.anchor_cursor = None;
+		return;
+	}
+	html->html.anchor_cursor = (TCursor) cursor;
+}
+
+void
+gtk_xmhtml_set_topline (GtkXmHTML *html, int line)
+{
+	html->html.top_line = line;
+	ScrollToLine (html, line);
+	html->redraw_needed = 1;
+	gtk_xmhtml_try_sync (html);
+}
+
+/* FIXME: should we support setting the scroll repeat value?  Motif code does it */
+
+void
+gtk_xmhtml_set_freeze_animations (GtkXmHTML *html, int flag)
+{
+	if (html->html.freeze_animations == flag)
+		return;
+
+	_XmHTMLRestartAnimations (html);
+}
+
+char *
+gtk_xmhtml_get_source (GtkXmHTML *html)
+{
+	return XmHTMLTextGetSource (GTK_WIDGET (html));
+}

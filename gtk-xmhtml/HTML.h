@@ -37,6 +37,19 @@
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.4  1997/12/26 23:54:37  unammx
+* More Gtk/XmHTML work: now a number of features can be configured on
+* the widget, look at the gazillions of options in gtk-xmhtml.h for
+* more information.  This is probably not complete, I have to read
+* over the XmHTML/Motif docs for figuring which other bits I am missing.
+*
+* Known bug: the parser is not fixing documents without <BODY> tags,
+* so this means that the program is crashing if you pass a document
+* withou the BODY.   I bet this is caused by some mistake of mine in
+* the handling of the old/new/current widgets as created by Motif.
+*
+* Miguel.
+*
 * Revision 1.3  1997/12/25 01:34:08  unammx
 * Good news for the day:
 *
@@ -512,13 +525,13 @@ enum{
 *
 * Note: these values are represented by the XmCConversionMode resource class.
 *****/
-enum{
+typedef enum {
 	XmQUICK = 0,
 	XmBEST,
 	XmFAST,
 	XmSLOW,
 	XmDISABLED
-};
+} XmHTMLDitherType;
 
 /*****
 * Search directions: forward or backward search

@@ -147,6 +147,7 @@ typedef XVisualInfo TVisualInfo;
 #define XCCAddPalette(c,p,n) gdk_color_context_add_palette (c,p,n)
 #define XCCInitDither(cc) gdk_color_context_init_dither (cc)
 #define XCCGetIndexFromPalette(cc,r,g,b,f) gdk_color_context_get_index_from_palette(cc,r,g,b,f)
+#define XCCFreeDither(cc) gdk_color_context_free_dither (cc)
 typedef GdkColorContextDither XCCDither;
 #else
 

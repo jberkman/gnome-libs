@@ -35,6 +35,19 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.14  1997/12/26 23:54:38  unammx
+* More Gtk/XmHTML work: now a number of features can be configured on
+* the widget, look at the gazillions of options in gtk-xmhtml.h for
+* more information.  This is probably not complete, I have to read
+* over the XmHTML/Motif docs for figuring which other bits I am missing.
+*
+* Known bug: the parser is not fixing documents without <BODY> tags,
+* so this means that the program is crashing if you pass a document
+* withou the BODY.   I bet this is caused by some mistake of mine in
+* the handling of the old/new/current widgets as created by Motif.
+*
+* Miguel.
+*
 * Revision 1.13  1997/12/25 01:34:09  unammx
 * Good news for the day:
 *
@@ -257,6 +270,9 @@ static void Resize(TWidget w);
 void _XmHTMLClearArea(XmHTMLWidget html, int x, int y, int width, int height);
 static void AnchorTrack (XmHTMLWidget html, TEvent *event, int x, int y);
 static void LeaveAnchor(XmHTMLWidget html);
+static void FreeExpendableResources(XmHTMLWidget html, Boolean free_img);
+static void ResetWidget(XmHTMLWidget html, Boolean free_img);
+static void ScrollToLine(XmHTMLWidget html, int line);
 
 #ifdef WITH_MOTIF
 #    include "XmHTML-motif.c"
@@ -479,7 +495,7 @@ XmHTML_Initialize (XmHTMLWidget html, XmHTMLWidget init, char *html_source)
 	if(html_source)
 	{
 		html->html.source   = strdup(html_source);
-		html->html.elements = _XmHTMLparseHTML(html, NULL, html_source, html);
+		html->html.elements = _XmHTMLparseHTML(html, NULL, html_source, NULL);
 
 		/* check for frames */
 		html->html.nframes = _XmHTMLCheckForFrames(html, html->html.elements);

@@ -31,6 +31,14 @@ struct _GtkXmHTML
 	/* Scrollbar adjustements */
 	GtkObject *vsba;
 	GtkObject *hsba;
+
+	/* managing our code */
+	int frozen;
+	int parse_needed;
+	int reformat_needed;
+	int redraw_needed;
+	int free_images_needed;
+	int layout_needed;
 };
 
 struct _GtkXmHTMLClass
@@ -53,7 +61,71 @@ struct _GtkXmHTMLClass
 	void (*html_event)   (GtkXmHTML *, void *); /* HTML 4.0 event */
 };
 
-GtkWidget *gtk_xmhtml_new (char *html_source);
+GtkWidget *gtk_xmhtml_new         	   	  (char *html_source);
+void gtk_xmhtml_freeze       	   	     	  (GtkXmHTML *html);
+void gtk_xmhtml_thaw         	   	     	  (GtkXmHTML *html);
+void gtk_xmhtml_source       	   	     	  (GtkXmHTML *html,
+						   char *source);
+void gtk_xmhtml_set_string_direction  	     	  (GtkXmHTML *html,
+						   int direction);
+void gtk_xmhtml_set_alignment         	     	  (GtkXmHTML *html,
+						   int alignment);
+void gtk_xmhtml_outline               	     	  (GtkXmHTML *html,
+					   	   int flag);
+void gtk_xmhtml_set_font_familty                  (GtkXmHTML *html,
+						   char *family,
+						   char *sizes);
+void gtk_xmhtml_set_font_familty_fixed            (GtkXmHTML *html,
+						   char *family,
+						   char *sizes);
+void gtk_xmhtml_set_font_charset                  (GtkXmHTML *html,
+						   char *charset);
+void gtk_xmhtml_set_allow_body_colors             (GtkXmHTML *html,
+						   int enable);
+void gtk_xmhtml_set_hilight_on_enter              (GtkXmHTML *html,
+						   int flag);
+void gtk_xmhtml_set_anchor_underline_type         (GtkXmHTML *html,
+						   int underline_type);
+void gtk_xmhtml_set_anchor_visited_underline_type (GtkXmHTML *html,
+						   int underline_type);
+void gtk_xmhtml_set_anchor_target_underline_type  (GtkXmHTML *html,
+						   int underline_type);
+void gtk_xmhtml_set_allow_color_switching         (GtkXmHTML *html,
+						   int flag);
+void gtk_xmhtml_set_dithering                     (GtkXmHTML *html,
+						   XmHTMLDitherType flag);
+void gtk_xmhtml_set_allow_font_switching          (GtkXmHTML *html,
+						   int flag);
+void gtk_xmhtml_set_max_image_colors              (GtkXmHTML *html,
+						   int max_colors);
+void gtk_xmhtml_set_allow_images                  (GtkXmHTML *html,
+						   int flag);
+void gtk_xmhtml_set_plc_intervals                 (GtkXmHTML *html, 
+						   int min_delay,
+						   int max_delay,
+						   int def_delay);
+void gtk_xmhtml_set_def_body_image_url            (GtkXmHTML *html,
+						   char *url);
+void gtk_xmhtml_set_anchor_buttons                (GtkXmHTML *html,
+						   int flag);
+void gtk_xmhtml_set_anchor_cursor                 (GtkXmHTML *html,
+						   GdkCursor * cursor,
+						   int flag);
+void gtk_xmhtml_set_topline                       (GtkXmHTML *html,
+						   int line);
+void gtk_xmhtml_set_freeze_animations             (GtkXmHTML *html,
+						   int flag);
+char *gtk_xmhtml_get_source                       (GtkXmHTML *html);
+ 
+
+
+enum {
+	GTK_ANCHOR_NOLINE,
+	GTK_ANCHOR_SINGLE_LINE,
+	GTK_ANCHOR_DOUBLE_LINE,
+	GTK_ANCHOR_DASHED_LINE,
+	GTK_ANCHOR_DOUBLE_DASHED_LINE
+};
 
 /* For compatibility with the Motif sources */
 typedef struct {
