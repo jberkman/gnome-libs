@@ -80,7 +80,6 @@ static void gnome_icon_selector_init        (GnomeIconSelector      *iselector);
 static void gnome_icon_selector_destroy     (GtkObject              *object);
 static void gnome_icon_selector_finalize    (GObject                *object);
 
-static void      clear_handler              (GnomeSelector     *selector);
 static void      freeze_handler             (GnomeSelector     *selector);
 static void      thaw_handler               (GnomeSelector     *selector);
 static void      set_selection_mode_handler (GnomeSelector     *selector,
@@ -90,9 +89,12 @@ static GSList *  get_selection_handler      (GnomeSelector     *selector);
 static void      free_entry_func            (gpointer           data,
 					     gpointer           user_data);
 
+static void      clear_handler              (GnomeSelector            *selector,
+					     guint                     list_id);
 static void      add_file_handler           (GnomeSelector            *selector,
                                              const gchar              *uri,
                                              gint                      position,
+					     guint                     list_id,
                                              GnomeSelectorAsyncHandle *async_handle);
 
 
@@ -370,7 +372,7 @@ gnome_icon_selector_finalize (GObject *object)
 }
 
 static void
-clear_handler (GnomeSelector *selector)
+clear_handler (GnomeSelector *selector, guint list_id)
 {
     GnomeIconSelector *iselector;
 
@@ -379,10 +381,11 @@ clear_handler (GnomeSelector *selector)
 
     iselector = GNOME_ICON_SELECTOR (selector);
 
-    gnome_icon_list_clear (iselector->_priv->icon_list);
+    if (list_id == GNOME_SELECTOR_LIST_PRIMARY)
+	gnome_icon_list_clear (iselector->_priv->icon_list);
 
     if (GNOME_SELECTOR_CLASS (parent_class)->clear)
-	(* GNOME_SELECTOR_CLASS (parent_class)->clear) (selector);
+	(* GNOME_SELECTOR_CLASS (parent_class)->clear) (selector, list_id);
 }
 
 static void
@@ -406,6 +409,8 @@ add_file_async_done_cb (gpointer data)
     gnome_gdk_pixbuf_new_from_uri_cancel (async_data->handle);
 
     /* free the async data. */
+    g_message (G_STRLOC ": unref %p -> %p", async_data,
+	       async_data->iselector);
     gtk_object_unref (GTK_OBJECT (async_data->iselector));
     gnome_vfs_uri_unref (async_data->uri);
     g_free (async_data);
@@ -470,9 +475,8 @@ add_file_async_cb (GnomeGdkPixbufAsyncHandle *handle,
     GNOME_CALL_PARENT_HANDLER (GNOME_SELECTOR_CLASS, add_file,
 			       (GNOME_SELECTOR (iselector),
 				path, async_data->position,
+				GNOME_SELECTOR_LIST_PRIMARY,
 				async_data->async_handle));
-
-    _gnome_selector_async_handle_completed (async_data->async_handle, TRUE);
 
     gdk_pixbuf_unref (scaled);
     g_free (path);
@@ -496,7 +500,7 @@ add_file_done_cb (GnomeGdkPixbufAsyncHandle *handle,
 
 static void
 add_file_handler (GnomeSelector *selector, const gchar *uri, gint position,
-		  GnomeSelectorAsyncHandle *async_handle)
+		  guint list_id, GnomeSelectorAsyncHandle *async_handle)
 {
     GnomeIconSelector *iselector;
     GnomeIconSelectorAsyncData *async_data;
@@ -509,6 +513,14 @@ add_file_handler (GnomeSelector *selector, const gchar *uri, gint position,
 
     iselector = GNOME_ICON_SELECTOR (selector);
 
+    if (list_id != GNOME_SELECTOR_LIST_PRIMARY) {
+	GNOME_CALL_PARENT_HANDLER (GNOME_SELECTOR_CLASS, add_file,
+				   (GNOME_SELECTOR (iselector),
+				    uri, position, list_id,
+				    async_handle));
+	return;
+    }
+
     async_data = g_new0 (GnomeIconSelectorAsyncData, 1);
     async_data->iselector = iselector;
     async_data->async_handle = async_handle;
@@ -516,6 +528,8 @@ add_file_handler (GnomeSelector *selector, const gchar *uri, gint position,
     async_data->position = position;
 
     gtk_object_ref (GTK_OBJECT (async_data->iselector));
+    g_message (G_STRLOC ": ref %p -> %p", async_data,
+	       async_data->iselector);
 
     _gnome_selector_async_handle_add (async_handle, async_data,
 				      add_file_async_done_cb);
@@ -643,7 +657,8 @@ gnome_icon_selector_add_defaults (GnomeIconSelector *iselector)
     pixmap_dir = gnome_unconditional_datadir_file ("pixmaps");
   
     gnome_selector_add_uri (GNOME_SELECTOR (iselector), NULL, pixmap_dir,
-			    -1, FALSE, add_defaults_async_cb, NULL);
+			    -1, GNOME_SELECTOR_LIST_DEFAULT,
+			    add_defaults_async_cb, NULL);
 
     g_free (pixmap_dir);
 }
