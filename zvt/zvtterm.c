@@ -1779,6 +1779,7 @@ zvt_term_key_press (GtkWidget *widget, GdkEventKey *event)
   struct _vtx *vx;
   ZvtTerm *term;
   int handled;
+  char *cursor;
   
   g_return_val_if_fail (widget != NULL, FALSE);
   g_return_val_if_fail (ZVT_IS_TERM (widget), FALSE);
@@ -1803,19 +1804,24 @@ zvt_term_key_press (GtkWidget *widget, GdkEventKey *event)
     break;
   case GDK_KP_Right:
   case GDK_Right:
-    p+=sprintf(p, "\033[C");
-    break;
+    cursor ="C";
+    goto do_cursor;
   case GDK_KP_Left:
   case GDK_Left:
-    p+=sprintf (p, "\033[D");
-    break;
+    cursor = "D";
+    goto do_cursor;
   case GDK_KP_Up:
   case GDK_Up:
-    p+=sprintf (p, "\033[A");
-    break;
+    cursor = "A";
+    goto do_cursor;
   case GDK_KP_Down:
   case GDK_Down:
-    p+=sprintf (p, "\033[B");
+    cursor = "B";
+    do_cursor:
+    if (vx->vt.mode & VTMODE_APP_CURSOR)
+      p+=sprintf (p, "\033O%s", cursor);
+    else
+      p+=sprintf (p, "\033[%s", cursor);
     break;
   case GDK_KP_Insert:
   case GDK_Insert:
