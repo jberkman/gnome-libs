@@ -14,6 +14,13 @@ if test -z "$CERTIFIED_GNOMIE"; then
   exit 1
 fi
 
+AC_CACHE_VAL(ac_cv_gnome2_dir, ac_cv_gnome2_dir="$GNOME2_DIR")
+
+if test ! -z "$ac_cv_gnome2_dir" ; then
+  LD_LIBRARY_PATH="$ac_cv_gnome2_dir/lib:$LD_LIBRARY_PATH"
+  export LD_LIBRARY_PATH
+fi
+
 # When this value is updated, {libgnome,libgnomeui}/Makefile.am also need updating to reflect the change,
 # since this value is hardcoded into the library names (I love you automake!)
 GNOME_INTERFACE_VERSION=2
