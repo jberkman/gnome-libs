@@ -1,13 +1,15 @@
 GTK=/usr/local/include
 
-CFLAGS = -I. -I$(GTK) -DVERSION=1 -g
+CFLAGS = -I. -I$(GTK) -DVERSION=1 -g -Wall
 
-all: Parser.o LZWStream.o StringUtil.o parse.o plc.o \
+all: xmhtml test
+
+xmhtml: Parser.o LZWStream.o StringUtil.o parse.o plc.o \
 	readBitmap.o readFLG.o readXPM.o fonts.o paint.o \
 	format.o map.o quantize.o  XmHTML.o frames.o numbers.o \
 	readGIF.o readGIFplc.o readFLG.o colors.o gtk-error.o gtk-forms.o \
 	readJPEG.o readJPEGplc.o readPNG.o callbacks.o \
-	images.o
+	images.o 
 
 XmImage.o:
 

@@ -38,6 +38,9 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.4  1997/12/19 03:58:11  unammx
+* Simple test program works!  -mig&fed
+*
 * Revision 1.3  1997/12/18 00:39:23  unammx
 * It compiles and links -miguel
 *
@@ -903,7 +906,11 @@ _XmHTMLPLCCycler(TPointer call_data, TIntervalId *proc_id)
 	* image loading has been suspended.
 	*****/
 	if((plc = html->html.plc_buffer) == NULL || html->html.plc_suspended)
+#ifdef WITH_MOTIF
 		return;
+#else
+	        return TIdleRemove;
+#endif
 
 	/* make sure we aren't grabbing anything (total server lockup!) */
 	Toolkit_Pointer_Ungrab (XtDisplay((Widget)html), Toolkit_CurrentTime);

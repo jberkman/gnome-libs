@@ -18,7 +18,13 @@ static GtkContainer *parent_class = NULL;
 static gint gtk_xmhtml_signals [LAST_SIGNAL] = { 0, };
 
 /* prototypes for functions defined here */
+static void gtk_xmhtml_realize (GtkWidget *widget);
+static void gtk_xmhtml_unrealize (GtkWidget *widget);
 static void gtk_xmhtml_map (GtkWidget *widget);
+static gint gtk_xmhtml_expose (GtkWidget *widget, GdkEventExpose *event);
+static void gtk_xmhtml_add (GtkContainer *container, GtkWidget *widget);
+static void gtk_xmhtml_size_allocate (GtkWidget *widget, GtkAllocation *allocation);
+static void gtk_xmhtml_size_request (GtkWidget *widget, GtkRequisition *requisition);
 guint gtk_xmhtml_get_type (void);
 
 static void CheckScrollBars(XmHTMLWidget html);
@@ -34,6 +40,7 @@ pixel_color (char *color_name)
 }
 
 /* These are initialized in the Motif sources with the resources */
+void
 gtk_xmhtml_resource_init (GtkXmHTML *html)
 {
 	/* The strings */
@@ -131,10 +138,9 @@ gtk_xmhtml_resource_init (GtkXmHTML *html)
 }
 
 static void
-gtk_xmhtml_init (GtkXmHTML *html, char *html_source)
+gtk_xmhtml_init (GtkXmHTML *html)
 {
 	gtk_xmhtml_resource_init (html);
-	XmHTML_Initialize (html, html, html_source);
 }
 
 GtkWidget *
@@ -143,30 +149,61 @@ gtk_xmhtml_new (char *html_source)
 	GtkXmHTML *html;
 	
 	html = gtk_type_new (gtk_xmhtml_get_type ());
+	XmHTML_Initialize (html, html, html_source);
 	return GTK_WIDGET (html);
 }
 
 static void
 gtk_xmhtml_class_init (GtkXmHTMLClass *class)
 {
-	GtkObjectClass *object_class;
-	GtkWidgetClass *widget_class;
+	GtkObjectClass    *object_class;
+	GtkWidgetClass    *widget_class;
+	GtkContainerClass *container_class;
 		
-	object_class = (GtkObjectClass *) class;
-	widget_class = (GtkWidgetClass *) class;
+	object_class    = (GtkObjectClass *) class;
+	widget_class    = (GtkWidgetClass *) class;
+	container_class = (GtkContainerClass *) class;
 
 	parent_class = gtk_type_class (gtk_container_get_type ());
 	
-	gtk_xmhtml_signals [GTK_XMHTML_TEST_SIGNAL] = gtk_signal_new ("test-gtkxmhtml",
-			      GTK_RUN_FIRST,
-			      object_class->type,
-			      GTK_SIGNAL_OFFSET (GtkXmHTMLClass, testsignal),
-			      gtk_signal_default_marshaller, GTK_TYPE_NONE, 0);
+	gtk_xmhtml_signals [GTK_XMHTML_TEST_SIGNAL] =
+		gtk_signal_new ("test-gtkxmhtml",
+				GTK_RUN_FIRST,
+				object_class->type,
+				GTK_SIGNAL_OFFSET (GtkXmHTMLClass, testsignal),
+				gtk_signal_default_marshaller, GTK_TYPE_NONE, 0);
 
 	gtk_object_class_add_signals (object_class, gtk_xmhtml_signals, LAST_SIGNAL);
 	class->testsignal = NULL;
 
-	widget_class->map = gtk_xmhtml_map;
+	widget_class->map           = gtk_xmhtml_map;
+/*	widget_class->realize       = gtk_xmhtml_realize; */
+/*	widget_class->unrealize     = gtk_xmhtml_unrealize; */
+	widget_class->size_request  = gtk_xmhtml_size_request;
+	widget_class->size_allocate = gtk_xmhtml_size_allocate;
+	widget_class->expose_event  = gtk_xmhtml_expose;
+
+	container_class->add = gtk_xmhtml_add;
+}
+
+void
+gtk_xmhtml_size_request (GtkWidget *widget, GtkRequisition *requisition)
+{
+	/* cuanto quiero */
+	requisition->width = 300;
+	requisition->height = 250;
+}
+
+void
+gtk_xmhtml_size_allocate (GtkWidget *widget, GtkAllocation *allocation)
+{
+	GtkXmHTML *html = GTK_XMHTML (widget);
+		
+	/* resizear hijos */
+	widget->allocation = *allocation;
+	allocation->x = 0;
+	allocation->y = 0;
+	gtk_widget_size_allocate (html->html.work_area, allocation);
 }
 
 guint
@@ -203,9 +240,7 @@ static void
 CreateAnchorCursor(XmHTMLWidget html)
 {
 	TPixmap shape, mask;
-	TColor white_def, black_def;
 	TWindow window = Toolkit_Widget_Window((TWidget)html);
-	Display *display = Toolkit_Display((TWidget)html);
 	GdkColormap *colormap;
 	GdkColor fg, bg, white, black;
 
@@ -261,7 +296,6 @@ FormScroll (XmHTMLWidget html)
 static void
 ClearArea(XmHTMLWidget html, int x, int y, int width, int height)
 {
-	Display *dpy = Toolkit_Display (html->html.work_area);
 	TWindow win =  Toolkit_Widget_Window (html->html.work_area);
 
 	_XmHTMLDebug(1, ("XmHTML.c: ClearArea Start, x: %i, y: %i, width: %i "
@@ -303,27 +337,11 @@ _XmHTMLMoveToPos(TWidget w, XmHTMLWidget html, int value)
 	fprintf (stderr, "Move to pos called %d\n", value);
 }
 
-/*
- * html_work_areea_callback:
- *
- * Description:         Handles all of the events generated on an html->work_area
- */
-gint
-html_work_area_callback (GtkWidget *widget, GdkEvent *event, void *d)
+static gint
+gtk_xmhtml_expose (GtkWidget *widget, GdkEventExpose *event)
 {
-	GtkXmHTML *html = GTK_XMHTML (d);
+	GtkXmHTML *html = GTK_XMHTML (widget);
 
-	switch (event->type){
-	case GDK_EXPOSE:
-		/* DrawRedisplay */
-		return TRUE;
-		
-	case 999999 + GDK_VISIBILITY_MASK:
-		/* Visibility Handler, 999999 is because there is no GDK_VIS yet */
-		html->html.visibility = 0; /* event->xvisibility.state; */
-		return TRUE;
-
-	}
 	return FALSE;
 }
 
@@ -374,6 +392,18 @@ CheckGC(XmHTMLWidget html)
 	_XmHTMLDebug(1, ("XmHTML.c: CheckGC End\n"));
 }
 
+gint
+work_area_expose (GtkWidget *widget, GdkEvent *event, gpointer closure)
+{
+	GtkXmHTML *html = closure;
+
+	fprintf (stderr, "->Expose %d %d!\n", widget->allocation.width, widget->allocation.height);
+
+	Refresh(html, 0, 0, widget->allocation.width, widget->allocation.height);
+	fprintf (stderr, "<-Expose!\n");
+	return FALSE;
+}
+     
 /*****
  * Name: 		CreateHTMLWidget
  * Return Type: 	void
@@ -395,20 +425,22 @@ CreateHTMLWidget(XmHTMLWidget html)
 	if(html->html.work_area == NULL)
 	{
 		GtkWidget *draw_area;
-		draw_area = gtk_drawing_area_new ();
+		int events;
+		
+		html->html.work_area = draw_area = gtk_drawing_area_new ();
 		gtk_drawing_area_size (GTK_DRAWING_AREA (draw_area),
-				       GTK_WIDGET(html)->allocation.width,
-				       GTK_WIDGET(html)->allocation.height);
+				       125, 600);
+		gtk_xmhtml_add (GTK_CONTAINER (html), draw_area);
+		gtk_signal_connect (GTK_OBJECT (draw_area), "expose_event",
+				    work_area_expose, html);
+
+		events = gtk_widget_get_events (draw_area);
+		gtk_widget_set_events (draw_area, events | GDK_EXPOSURE_MASK);
+		fprintf (stderr, "tamaño: %d %d\n",
+			 GTK_WIDGET(html)->allocation.width,
+			 GTK_WIDGET(html)->allocation.height);
+		gtk_widget_show (draw_area);
 	}
-	/* catch all exposure events on the render window */
-	gtk_widget_set_events (html->html.work_area,
-			       gtk_widget_get_events (html->html.work_area) |
-			       GDK_EXPOSURE_MASK | GDK_VISIBILITY_MASK);
-
-	gtk_signal_connect (GTK_OBJECT(html->html.work_area),
-			    "event",
-			    (GtkSignalFunc) html_work_area_callback, (gpointer) html);
-
 	fprintf (stderr, "XT MANAGE IS NOT PRESENT\n");
 #if 0
 	XtManageChild(html->html.work_area);
@@ -463,16 +495,86 @@ CreateHTMLWidget(XmHTMLWidget html)
 }
 
 static void
+gtk_xmhtml_realize (GtkWidget *widget)
+{
+	GdkWindowAttr attributes;
+	gint attributes_mask;
+	
+	g_return_if_fail (widget != NULL);
+	g_return_if_fail (GTK_IS_XMHTML (widget));
+	
+	GTK_WIDGET_SET_FLAGS (widget, GTK_REALIZED);
+	
+	attributes.window_type = GDK_WINDOW_CHILD;
+	attributes.x = widget->allocation.x;
+	attributes.y = widget->allocation.y;
+	attributes.width = widget->allocation.width;
+	attributes.height = widget->allocation.height;
+	attributes.wclass = GDK_INPUT_OUTPUT;
+	attributes.visual = gtk_widget_get_visual (widget);
+	attributes.colormap = gtk_widget_get_colormap (widget);
+	attributes.event_mask = gtk_widget_get_events (widget);
+	attributes.event_mask |= GDK_EXPOSURE_MASK | GDK_BUTTON_PRESS_MASK;
+	
+	attributes_mask = GDK_WA_X | GDK_WA_Y | GDK_WA_VISUAL | GDK_WA_COLORMAP;
+	
+	widget->window = gdk_window_new (widget->parent->window, &attributes, 
+					 attributes_mask);
+	gdk_window_set_user_data (widget->window, widget);
+	
+	widget->style = gtk_style_attach (widget->style, widget->window);
+	gtk_style_set_background (widget->style, widget->window, GTK_STATE_NORMAL);
+}
+
+static void
+gtk_xmhtml_unrealize (GtkWidget *widget)
+{
+	g_return_if_fail (widget != NULL);
+	g_return_if_fail (GTK_IS_XMHTML (widget));
+
+	GTK_WIDGET_UNSET_FLAGS (widget, GTK_REALIZED | GTK_MAPPED);
+
+	gtk_style_detach (widget->style);
+	gdk_window_destroy (widget->window);
+	widget->window = NULL;
+}
+
+static void
+gtk_xmhtml_add (GtkContainer *container, GtkWidget *widget)
+{
+	GtkXmHTML *html;
+	g_return_if_fail (container != NULL);
+	g_return_if_fail (widget != NULL);
+
+	html = GTK_XMHTML (container);
+	gtk_widget_set_parent (widget, GTK_WIDGET (container));
+
+	if (GTK_WIDGET_REALIZED (html) && !GTK_WIDGET_REALIZED (widget))
+		gtk_widget_realize (widget);
+
+	if (GTK_WIDGET_MAPPED (html) && !GTK_WIDGET_MAPPED (widget))
+		gtk_widget_map (widget);
+
+	if (GTK_WIDGET_VISIBLE (html) && GTK_WIDGET_VISIBLE (widget))
+		gtk_widget_queue_resize (GTK_WIDGET (html));
+}
+
+static void
 gtk_xmhtml_map (GtkWidget *widget)
 {
 	GtkWidget *scrollbar;
 	GtkXmHTML *html = GTK_XMHTML (widget);
+
+	GTK_WIDGET_SET_FLAGS(widget, GTK_MAPPED);
 	
 	if (GTK_WIDGET_CLASS (parent_class)->map)
 		(*GTK_WIDGET_CLASS (parent_class)->map)(widget);
+
+	if (GTK_WIDGET_VISIBLE (html->html.work_area) &&
+	    !GTK_WIDGET_MAPPED (html->html.work_area))
+		gtk_widget_map (html->html.work_area);
 	
 	_XmHTMLDebug(1, ("XmHTML.c: Mapped start\n"));
-
 	_XmHTMLDebug(1, ("XmHTML.c: Mapped, work area dimensions: %ix%i\n",
 		html->html.work_width, html->html.work_height));
 
@@ -482,7 +584,7 @@ gtk_xmhtml_map (GtkWidget *widget)
 	
 	html->html.work_height = widget->allocation.height;
 	html->html.work_width = widget->allocation.width - 
-		(html->html.margin_width + scrollbar->allocation.width);
+		(html->html.margin_width + (scrollbar ? scrollbar->allocation.width : 0));
 
 	_XmHTMLDebug(1, ("XmHTML.c: Mapped, new work area dimensions: %ix%i\n",
 			 html->html.work_width, html->html.work_height));
@@ -513,8 +615,6 @@ CheckScrollBars(XmHTMLWidget html)
 static void
 XmHTML_Frontend_Redisplay (XmHTMLWidget html)
 {
-	GtkWidget *w = GTK_WIDGET (html);
-	
 	gtk_widget_draw (GTK_WIDGET (html), NULL);
 
 	if (GTK_WIDGET_MAPPED (html->html.vsb))

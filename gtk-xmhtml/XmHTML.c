@@ -35,6 +35,9 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.9  1997/12/19 03:58:10  unammx
+* Simple test program works!  -mig&fed
+*
 * Revision 1.8  1997/12/18 00:39:20  unammx
 * It compiles and links -miguel
 *
@@ -208,6 +211,7 @@ static void XmHTML_Initialize (XmHTMLWidget html, XmHTMLWidget init, char *html_
 static void Layout(XmHTMLWidget html);
 static void CheckMaxColorSetting(XmHTMLWidget html);
 static void CheckPLCIntervals(XmHTMLWidget html);
+static void Refresh(XmHTMLWidget html, int x, int y, int width, int height);
 
 #ifdef WITH_MOTIF
 #    include "XmHTML-motif.c"
@@ -805,8 +809,10 @@ Resize(TWidget w)
 static void
 PaintBackground(XmHTMLWidget html, int x, int y, int width, int height)
 {
+#ifdef WITH_MOTIF
 	XGCValues values;
 	unsigned long valuemask;
+#endif
 	Display *dpy;
 	int tile_width, tile_height, x_dist, y_dist, ntiles_x, ntiles_y;
 	int x_offset, y_offset, tsx, tsy;
