@@ -1,3 +1,11 @@
+1998-02-13  Raja R Harinath  <harinath@cs.umn.edu>
+
+	* Makefile.am (SUBDIRS): Add macros.
+	(macros/macros.dep): New maintainer rule for handling automatic
+	rebuilding of aclocal.m4 if any of the macros in `macros/' change.
+
+	* configure.in (AC_OUTPUT): Generate macros/Makefile too.
+
 1998-02-12  Raja R Harinath  <harinath@cs.umn.edu>
 
 	* configure.in (GNOME_LIBDIR,GNOME_INCLUDEDIR): New configuration

@@ -109,4 +109,5 @@ libgnomeui/Makefile
 test-suite/Makefile
 gnome-hello/Makefile
 support/Makefile
+macros/Makefile
 version.h],[sed -e "/POTFILES =/r po/POTFILES" po/Makefile.in > po/Makefile])
