@@ -7,6 +7,7 @@
 #include <config.h>
 #include "gnorba.h"
 #include <dirent.h>
+#include <ctype.h>
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <sys/stat.h>

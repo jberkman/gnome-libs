@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <limits.h>
 #include <ctype.h>
+#include <errno.h>
 #include <pwd.h>
 #include <signal.h>
 #include <sys/types.h>
@@ -70,24 +71,25 @@ gnome_ORBit_request_validate(CORBA_unsigned_long request_id,
 static void
 get_exclusive_lock (int fd)
 {
-  /* flock (fd, LOCK_EX); */
-  struct flock lbuf;
-  lbuf.l_type = F_WRLCK;
-  lbuf.l_whence = SEEK_SET;
-  lbuf.l_start = lbuf.l_len = 0L; /* Lock the whole file.  */
-  fcntl (fd, F_SETLKW, &lbuf);
+	/* flock (fd, LOCK_EX); */
+	struct flock lbuf;
 
+	lbuf.l_type = F_WRLCK;
+	lbuf.l_whence = SEEK_SET;
+	lbuf.l_start = lbuf.l_len = 0L; /* Lock the whole file.  */
+	fcntl (fd, F_SETLKW, &lbuf);
 }
 
 static void
 release_lock (int fd)
 {
-  /* flock (fd, LOCK_UN); */
-  struct flock lbuf;
-  lbuf.l_type = F_UNLCK;
-  lbuf.l_whence = SEEK_SET;
-  lbuf.l_start = lbuf.l_len = 0L; /* Unlock the whole file.  */
-  fcntl (fd, F_SETLKW, &lbuf);
+	/* flock (fd, LOCK_UN); */
+	struct flock lbuf;
+
+	lbuf.l_type = F_UNLCK;
+	lbuf.l_whence = SEEK_SET;
+	lbuf.l_start = lbuf.l_len = 0L; /* Unlock the whole file.  */
+	fcntl (fd, F_SETLKW, &lbuf);
 }
 
 /*
@@ -114,6 +116,7 @@ get_cookie_reliably (void)
 	fd = open (name, O_CREAT|O_EXCL|O_WRONLY, S_IRUSR | S_IWUSR );
 	if (fd >= 0){
 		unsigned int i;
+		int v;
 
 		get_exclusive_lock (fd);
 		srandom (time (NULL));
@@ -122,16 +125,39 @@ get_cookie_reliably (void)
 		
 		random_string [sizeof(random_string)-1] = 0;
 
-		write (fd, random_string, sizeof (random_string)-1);
+		while (1){
+			v = write (fd, random_string, sizeof (random_string)-1);
+			if (v == sizeof (random_string)-1)
+				break;
+			if (v == 0)
+				g_error (_("Can not write to the cookie file"));
+			if (v == -1 && errno != EINTR){
+				perror (_("Unknown error while writing cookie file"));
+				exit (1);
+			}
+		}
 		close (fd);
 		release_lock (fd);
 	} else {
+		int v;
+		
 		fd = open (name, O_RDONLY);
 		if (fd == -1)
-			g_error ("Could not open the cookie file");
+			g_error (_("Could not open the cookie file"));
 		get_exclusive_lock (fd);
+
 		memset (random_string, 0, sizeof (random_string));
-		read (fd, random_string, sizeof (random_string)-1);
+
+		while (1){
+			v = read (fd, random_string, sizeof (random_string)-1);
+			if (v == 0)
+				g_error (_("Can not read the cookie file\n"));
+			if (v == -1 && errno != EINTR){
+				perror (_("While reading the cookie file\n"));
+				exit (1);
+			}
+			break;
+		}
 		release_lock (fd);
 		close (fd);
 	}
@@ -217,210 +243,3 @@ gnome_CORBA_ORB(void)
   return gnome_orbit_orb;
 }
 
-/**** gnome_name_service_get
-
-      Outputs: 'retval' - an object reference to the name service.
-
-      Description: This routine bootstraps CORBA connectivity for a
-      GNOME desktop session...
- */
-CORBA_Object
-gnome_name_service_get(void)
-{
-  static CORBA_Object name_service = CORBA_OBJECT_NIL;
-  CORBA_Object gnome_context       = CORBA_OBJECT_NIL;
-  CORBA_Object server_context      = CORBA_OBJECT_NIL;
-  CORBA_Object retval = NULL;
-  char *ior;
-  GdkAtom propname, proptype;
-  CORBA_Environment ev;
-  CosNaming_NameComponent nc;
-  CosNaming_Name          context_name;
-  
-  g_return_val_if_fail(gnome_orbit_orb, CORBA_OBJECT_NIL);
-
-  CORBA_exception_init(&ev);
-
-  propname = gdk_atom_intern("CORBA_NAME_SERVICE", FALSE);
-  proptype = gdk_atom_intern("STRING", FALSE);
-
-  if(CORBA_Object_is_nil(name_service, &ev)) {
-    int iopipes[2];
-    char iorbuf[2048];
-
-    ior = 0;
-    
-    /* First, try and see if another application has started the name service
-       (and indicated its presence by setting a root window property */
-    gdk_property_get(GDK_ROOT_PARENT(), propname, proptype,
-		     0, 9999, FALSE, NULL,
-		     NULL, NULL, (guchar **)&ior);
-    
-    if (ior) {
-	name_service = CORBA_ORB_string_to_object(gnome_orbit_orb, ior, &ev);
-    }
-
-    if (!CORBA_Object_is_nil(name_service, &ev)) {
-      CosNaming_NameComponent nc = {"GNOME", "subcontext"};
-      CosNaming_Name          nom = {0, 1, &nc, CORBA_FALSE};
-      CORBA_Object            gnome_context;
-      
-      gnome_context = CosNaming_NamingContext_resolve(name_service, &nom, &ev);
-      
-      if (gnome_context != CORBA_OBJECT_NIL && ev._major == CORBA_NO_EXCEPTION)
-	/* Everything is well, the orbit-name server found is working */
-	goto out;
-      
-      if (ev._major == CORBA_SYSTEM_EXCEPTION && !CORBA_exception_id(&ev)) {
-	/*
-	  The property is set, but the name server is not running.
-	  Maybe we should use the same trick here, as we are using in the name server code
-	  to detect dead servers
-	*/
-      } else if (ev._major != CORBA_NO_EXCEPTION) {
-	/*
-	  An error occured. Inform the user, and start a fresh name server.
-	*/
-	switch (ev._major) {
-	case CORBA_USER_EXCEPTION:
-	  g_warning("Unexpected USER exception '%s', during orbit-name-server detection\n",
-		    CORBA_exception_id(&ev));
-	  break;
-	case CORBA_SYSTEM_EXCEPTION:
-	  g_warning("Unexpected SYSTEM exception '%s', during orbit-name-server detection\n",
-		    CORBA_exception_id(&ev));
-	default:
-	}
-      }
-      
-    }
-    /* Since we're pretty sure no name server is running, we start it ourself
-       and tell the (GNOME session) world about it */
-    /* fork & get the ior from orbit-name-service stdout */
-    pipe(iopipes);
-
-    if(fork()) {
-      FILE *iorfh;
-
-      /* Parent */
-      close(iopipes[1]);
-
-      iorfh = fdopen(iopipes[0], "r");
-
-      while(fgets(iorbuf, sizeof(iorbuf), iorfh) && strncmp(iorbuf, "IOR:", 4))
-	/* Just read lines until we get what we're looking for */ ;
-
-      if(strncmp(iorbuf, "IOR:", 4)) {
-	name_service = CORBA_OBJECT_NIL;
-	goto out;
-      }
-
-      fclose(iorfh);
-      /* strip newline if it's there */
-      if (iorbuf[strlen(iorbuf)-1] == '\n')
-	iorbuf[strlen(iorbuf)-1] = '\0';
-
-      /*
-	we have to save the strlen+1 to get the terminating '\0' in
-	the property
-      */
-      gdk_property_change(GDK_ROOT_PARENT(), propname, proptype, 8,
-			  GDK_PROP_MODE_REPLACE, iorbuf, strlen(iorbuf)+1);
-      /*
-	without flush, we won't set the property now. If the client
-	dosn't read anything from the X server, the  property will
-	never be set. 
-      */
-      XFlush(GDK_DISPLAY());
-      name_service = CORBA_ORB_string_to_object(gnome_orbit_orb, iorbuf, &ev);
-      if (name_service != CORBA_OBJECT_NIL) {
-	  /*
-	    Create the default context "/GNOME/servers"
-	  */
-	context_name._maximum = 0;
-	context_name._length  = 1;
-	context_name._buffer = &nc;
-	context_name._release = CORBA_FALSE;
-	nc.id = "GNOME";
-	nc.kind = "subcontext";
-	gnome_context = CosNaming_NamingContext_bind_new_context(name_service, &context_name, &ev);
-	if (ev._major != CORBA_NO_EXCEPTION) {
-	  g_warning("Creating '/GNOME' context %s %d", __FILE__, __LINE__);
-	  switch( ev._major ) {
-	  case CORBA_SYSTEM_EXCEPTION:
-	    g_warning("sysex: %s.\n", CORBA_exception_id(&ev));
-	    break;
-	  case CORBA_USER_EXCEPTION:
-	    g_warning("usrex: %s.\n", CORBA_exception_id( &ev ) );
-	  default:
-	    break;
-	  }
-	}
-	ev._major = CORBA_NO_EXCEPTION;
-	if (CORBA_Object_is_nil(gnome_context, &ev)) {
-	  g_warning("gnome_name_server_get: '/GNOME' context is nil\n");
-	  return CORBA_OBJECT_NIL;
-	}
-
-	nc.id="Servers";
-	nc.kind = "subcontext";
-	server_context = CosNaming_NamingContext_bind_new_context(gnome_context, &context_name, &ev);
-	if (ev._major != CORBA_NO_EXCEPTION) {
-	  g_warning("Creating '/GNOME/servers' context %s %d", __FILE__, __LINE__);
-	  switch( ev._major ) {
-	  case CORBA_SYSTEM_EXCEPTION:
-	    g_warning("	sysex: %s.\n", CORBA_exception_id(&ev));
-	    break;
-	  case CORBA_USER_EXCEPTION:
-	    g_warning("usr	ex: %s.\n", CORBA_exception_id( &ev ) );
-	  default:
-	    break;
-	  }
-	}
-	if (CORBA_Object_is_nil(server_context, &ev)) {
-	  g_warning("gnome_name_server_get: '/GNOME/servers context is nil\n");
-	  return CORBA_OBJECT_NIL;
-	}
-      } else {
-	return CORBA_OBJECT_NIL;
-      }
-    } else if(fork()) {
-      _exit(0); /* de-zombifier process, just exit */
-    } else {
-      /* Child of a child. We run the naming service */
-      struct sigaction sa;
-      struct rlimit rl;
-      int    i;
-      
-      getrlimit(RLIMIT_NOFILE, &rl);
-      i = rl.rlim_cur;
-      
-      sa.sa_handler = SIG_IGN;
-      sigaction(SIGPIPE, &sa, 0);
-      close(0);
-      close(iopipes[0]);
-      dup2(iopipes[1], 1);
-      dup2(iopipes[1], 2);
-      /* close all file descriptors */
-      while (i > 2) {
-	close(i);
-	i--;
-      }
-      
-      setsid();
-      
-      execlp("gnome-name-server", "gnome-name-server", NULL);
-      execlp("orbit-name-server", "orbit-name-server", NULL);
-      _exit(1);
-    }
-  }
-  
- out:
-  if(!CORBA_Object_is_nil(name_service, &ev))
-    retval = CORBA_Object_duplicate(name_service, &ev);
-  else
-    g_warning("Could not get name service!");
-
-  CORBA_exception_free(&ev);
-  return retval;
-}
