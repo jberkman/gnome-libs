@@ -33,7 +33,7 @@ SUBDIRS = po intl support macros \
 include_HEADERS = gnome.h
 
 EXTRA_DIST =	HACKING gnomeConf.sh.in gnome-bug.in gnome-config.in \
-		gnome-libs.spec
+		gnome-libs.spec.in
 
 release:
 	$(MAKE) dist distdir=$(PACKAGE)$(VERSION)
