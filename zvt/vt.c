@@ -1008,21 +1008,23 @@ static void
 vt_mode(struct vt_em *vt)
 {
   int i, j;
-  int mode_map[] = {0, VTATTR_BOLD, 0, 0,
-		    VTATTR_UNDERLINE, VTATTR_BLINK, 0,
-		    VTATTR_REVERSE, VTATTR_CONCEALED};
+  static int mode_map[] = {0, VTATTR_BOLD, 0, 0,
+			   VTATTR_UNDERLINE, VTATTR_BLINK, 0,
+			   VTATTR_REVERSE, VTATTR_CONCEALED};
 
   d(printf("draw mode called\n"));
   if (vt->argcnt==0) {
     vt->attr=VTATTR_CLEAR;	/* clear all attributes */
   } else {
-    for (j = 0; j < vt->argcnt; j++)
-      {
+    for (j = 0; j < vt->argcnt; j++) {
 	i = atoi(vt->args[j]);
 	if (i==0) {
 	  vt->attr=VTATTR_CLEAR;
 	} else if (i<9) {
 	  vt->attr |= mode_map[i];	/* add a mode */
+	} else if (i>=20 && i <=28) {
+	  if (i==22) i=21;	/* 22 resets bold, not 21 */
+	  vt->attr &= ~mode_map[i-20]; /* remove a mode */
 	} else if (i>=30 && i <=37) {
 	  vt->attr = (vt->attr & ~VTATTR_FORECOLOURM) | ((i-30) << VTATTR_FORECOLOURB);
 	} else if (i==39) {
@@ -1031,6 +1033,10 @@ vt_mode(struct vt_em *vt)
 	  vt->attr = (vt->attr & ~VTATTR_BACKCOLOURM) | ((i-40) << VTATTR_BACKCOLOURB);
 	} else if (i==49) {
 	  vt->attr = (vt->attr & ~VTATTR_BACKCOLOURM) | ((VTATTR_CLEAR) & VTATTR_BACKCOLOURM);
+	} else if (i>=90 && i <=97) {
+	  vt->attr = (vt->attr & ~VTATTR_FORECOLOURM) | ((i-90 + 8) << VTATTR_FORECOLOURB);
+	} else if (i>=100 && i <=107) {
+	  vt->attr = (vt->attr & ~VTATTR_BACKCOLOURM) | ((i-100 + 8) << VTATTR_BACKCOLOURB);
 	}
       }
   }

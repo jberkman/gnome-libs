@@ -1,3 +1,9 @@
+1999-03-27  Michael Zucchi  <zucchi@zzedzone.mmc.com.au>
+
+	* vt.c (vt_mode): Patch from Matthijs Melchior to support extended
+	foreground/background colours (the 'bright' set).  Also support
+	un-setting render attributes individually.
+
 1999-03-24  Erik Troan  <ewt@redhat.com>
 
 	* gnome-pty.c (write_logout_record): Before writing a utmp record,
