@@ -22,13 +22,15 @@ endif
 gnome_vfs_SUBDIRS=
 gconf_SUBDIRS=
 
+zvt_SUBDIRS=
+
 SUBDIRS = \
 	tools			\
 	images			\
 	libgnome		\
 	libgnomeui		\
 	$(libcompat_SUBDIRS)	\
-	zvt			\
+	$(zvt_SUBDIRS)		\
 	idl			\
 	$(gconf_SUBDIRS)	\
 	$(gnome_vfs_SUBDIRS)	\
