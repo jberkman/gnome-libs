@@ -1068,7 +1068,7 @@ gtk_term_motion_notify (GtkWidget      *widget,
   term->sel_e_y = y;
   
   /*
-    printf ("(%u, %u, %u, %u)\n", term->sel_b_x, term->sel_b_y, term->sel_e_x, term->sel_e_y);
+    g_print ("(%u, %u, %u, %u)\n", term->sel_b_x, term->sel_b_y, term->sel_e_x, term->sel_e_y);
     */
   
   return FALSE;
@@ -1240,7 +1240,7 @@ gtk_entry_selection_handler (GtkWidget		*widget,
 			    sizeof (gchar) * 8,
 			    term->sel_buffer,
 			    term->sel_len);
-    printf ("selction: \"%s\"\n", term->sel_buffer);
+    g_print ("selction: \"%s\"\n", term->sel_buffer);
   }
 }
 
