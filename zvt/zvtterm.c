@@ -2594,6 +2594,34 @@ zvt_term_match_clear(ZvtTerm *term, char *regex)
   vt_match_clear(term->vx, regex);
 }
 
+/**
+ * zvt_term_match_check:
+ * @term: An initialised &ZvtTerm.
+ * @x: X coordinate, in character coordinates.
+ * @y: Y coordinate to check, in character coordinates.
+ * @user_data_ptr: A pointer to a location to hold the user-data
+ * associated with this match.  If NULL, then this is ignored.
+ * 
+ * Check for a match at a given character location.
+ *
+ * Return Values: Returns the string matched.  If @user_data_ptr is
+ * non-NULL, then it is set to the user_data associated with this
+ * match type.  The return value is only guaranteed valid until the next
+ * iteration of the gtk main loop.
+ **/
+char *
+zvt_term_match_check(ZvtTerm *term, int x, int y, void **user_data_ptr)
+{
+  struct vt_match *m;
+  m = vt_match_check(term->vx, x, y);
+  if (m) {
+    if (user_data_ptr)
+      *user_data_ptr = m->match->user_data;
+    return m->matchstr;
+  }
+  return 0;
+}
+
 /* raise the title_changed signal */
 static void
 zvt_term_title_changed_raise (void *user_data, VTTITLE_TYPE type, char *str)

@@ -221,6 +221,8 @@ void	     zvt_term_set_wordclass	       (ZvtTerm *term, unsigned char *klass);
 int	     zvt_term_match_add		       (ZvtTerm *term, char *regex,
 						uint32 highlight_mask, void *data);
 void	     zvt_term_match_clear	       (ZvtTerm *term, char *regex);
+char *	     zvt_term_match_check	       (ZvtTerm *term, int x, int y,
+						void **user_data_ptr);
 
 /* transparency stuff, it's left in even if we don't compile
  * transparency/backround pixmaps, if we don't, it will just be ignored,
