@@ -13,7 +13,8 @@ generate DocBook output.
  * function description.  You can include references to parameters
  * here like @par1 and their font will be set properly on the output.
  * constants can be references with %constant as well to make their
- * string descriptions use a font specification. 
+ * string descriptions use a font specification.  This function
+ * is simliar to #function_name2 in this and that
  * 
  * return values: an integer.
  */
@@ -51,4 +52,11 @@ the function description matches the regexp:
 
 It is taken to be the description of the return value for the
 function.  
+
+Text inside the descritpion can have any of the following special tags
+on the beginning:
+
+   @name:   reference to a parameter.
+   %name:   reference to a constant.
+   #name:   function reference.
 
