@@ -58,11 +58,25 @@ dnl
 dnl The libgnomeui specific checks
 dnl
 
+dnl gdk_imlib depends on these; checks copied from imlib/configure.in
+IM_Z_LIBS=""
+TIFF_LIBS=""
+GIF_LIBS=""
+IM_JPEG_LIBS=""
+IM_PNG_LIBS=""
+AC_CHECK_LIB(z, main, [IM_Z_LIBS="-lz"])
+AC_CHECK_LIB(tiff, main, [TIFF_LIBS="-ltiff"])
+AC_CHECK_LIB(gif, main, [GIF_LIBS="-lgif"])
+AC_CHECK_LIB(jpeg, main, [IM_JPEG_LIBS="-ljpeg"])
+AC_CHECK_LIB(png, png_get_valid, [IM_PNG_LIBS="-lpng"])
+
+GDK_IMLIB_LIBS="-lgdk_imlib $IM_Z_LIBS $TIFF_LIBS $GIF_LIBS $IM_JPEG_LIBS $IM_PNG_LIBS"
+
 LIBGNOME_LIBS="$DL_LIB"
 GNOME_LIBS="-lgnome $LIBGNOME_LIBS"
 
-LIBGNOMEUI_LIBS="$LIBGNOME_LIBS -lgdk_imlib $GTK_LIBS $X_LIBS $x_libs $Z_LIBS"
-GNOMEUI_LIBS="-lgnomeui -lgdk_imlib $GNOME_LIBS $GTK_LIBS $X_LIBS $x_libs $Z_LIBS"
+LIBGNOMEUI_LIBS="$LIBGNOME_LIBS $GDK_IMLIB_LIBS $GTK_LIBS $X_LIBS $x_libs $Z_LIBS"
+GNOMEUI_LIBS="-lgnomeui $GDK_IMLIB_LIBS $GNOME_LIBS $GTK_LIBS $X_LIBS $x_libs $Z_LIBS"
 
 LIBGTKXMHTML_LIBS="$GTK_LIBS $XPM_LIBS $JPEG_LIBS $PNG_LIBS $Z_LIBS $X_LIBS $x_libs"
 GTKXMHTML_LIBS="-lgtkxmhtml $LIBGTKXMHTML_LIBS"
