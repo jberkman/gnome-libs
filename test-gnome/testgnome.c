@@ -147,10 +147,7 @@ create_clock(void)
 	clock=gtk_clock_new(0);
 	gnome_app_set_contents(GNOME_APP(app),clock);
 	gtk_clock_set_seconds(GTK_CLOCK(clock),0);
-/* If I start the clock, and then close the window, it will sigsegv.
-   FIXME
-   gtk_clock_start(GTK_CLOCK(clock));
-*/
+        gtk_clock_start(GTK_CLOCK(clock));
 	gtk_widget_show(clock);
 	gtk_widget_show(app);
 }
