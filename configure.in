@@ -59,7 +59,6 @@ AC_SUBST(LDFLAGS)
 ALL_LINGUAS="ca cs da de es fi fr ga it ja ko no pt sv ru_RU"
 
 AM_GNU_GETTEXT
-AC_LINK_FILES($nls_cv_header_libgt, $nls_cv_header_intl)
 
 AC_CHECK_LIB(m, main)
 
@@ -102,7 +101,7 @@ dnl
 dnl gnome-pty-support checks
 dnl
 AC_CHECK_HEADERS(utmpx.h pty.h libutil.h)
-AC_CHECK_FUNCS(grantpt sendmsg login setutent)
+AC_CHECK_FUNCS(grantpt sendmsg login utmpxname utmpname setutent)
 oLIBS="$LIBS"
 LIBS="$LIBS -lutil"
 AC_CHECK_FUNC(openpty, [
@@ -328,4 +327,5 @@ devel-docs/ui-guide/Makefile
 support/Makefile
 tools/Makefile
 tools/convertrgb/Makefile
-macros/Makefile],[sed -e "/POTFILES =/r po/POTFILES" po/Makefile.in > po/Makefile])
+macros/Makefile])
+
