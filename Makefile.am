@@ -10,9 +10,15 @@ if FALSE
 libvfs = libvfs
 endif
 
+if HAVE_ORBIT
+GNORBA = libgnorba
+else
+GNORBA = 
+endif
+
 SUBDIRS = po intl support macros \
-	libgnome libgnomeui gtk-xmhtml gnome-hello libgtktty zvt \
-	test-gnome test-suite devel-docs $(libvfs)
+	libgnome libgnomeui gtk-xmhtml gnome-hello zvt \
+	$(GNORBA) test-gnome test-suite devel-docs $(libvfs)
 
 include_HEADERS = gnome.h
 

@@ -25,3 +25,4 @@
 #undef USE_NETCODE
 #undef USE_TERMNET
 #undef USE_VFS
+#undef HAVE_ORBIT

@@ -6,7 +6,7 @@ libgnorbaincludedir = $(includedir)/libgnorba
 
 INCLUDES = -I.. -I$(srcdir)/.. -I$(includedir) $(SUPPORTINCS) \
         $(GNOME_INCLUDES)  \
-	$(ORBIT_INCLUDES) \
+	$(ORBIT_CFLAGS) \
 	$(GLIB_INCLUDES) \
 	-DGNOMEBINDIR=$(bindir)
 

@@ -89,7 +89,9 @@ LIBS="$LIBS $GTK_LIBS $X_LIBS $x_libs"
 AC_CHECK_FUNCS(gtk_signal_handler_pending)
 LIBS="$xLIBS"
 
+dnl
 dnl zvt checks
+dnl
 AC_CHECK_HEADERS(sys/select.h)
 
 dnl Image handling libraries
@@ -162,7 +164,9 @@ if test "$png_ok" = yes; then
   fi
 fi
 
-dnl Check for db stuff.
+dnl
+dnl Check for db stuff (gnome-metadata)
+dnl
 DB_LIB=
 AC_CHECK_FUNC(dbopen,,[
   AC_CHECK_LIB(db, dbopen, DB_LIB="-ldb",[
@@ -180,8 +184,9 @@ fi
 AM_PATH_GDK_IMLIB(1.8, ,
         AC_MSG_ERROR([*** IMLIB 1.8 not installed - please install first ***]))
 
+dnl
 dnl These are for building the appropriate lib*
-
+dnl
 LIBGNOME_LIBS="$DB_LIB $GLIB_LIBS $DL_LIB"
 LIBGNOMEUI_LIBS="$LIBGNOME_LIBS $GDK_IMLIB_LIBS $GTK_LIBS"
 LIBGTKXMHTML_LIBS="$XPM_LIBS $JPEG_LIBS $PNG_LIBS $Z_LIBS $GTK_LIBS"
@@ -223,6 +228,12 @@ AC_SUBST(LIBGNOME_LIBS)
 AC_SUBST(LIBGNOMEUI_LIBS)
 AC_SUBST(LIBGTKXMHTML_LIBS)
 
+dnl
+dnl ORBit checks
+dnl
+GNOME_ORBIT_HOOK([have_orbit=true],[])
+AM_CONDITIONAL(HAVE_ORBIT, test x$have_orbit = xtrue)
+	
 AC_CONFIG_SUBDIRS(libgtktty)
 
 AC_OUTPUT([
@@ -234,6 +245,7 @@ gtk-xmhtml/Makefile
 libgnome/Makefile
 libgnomeui/Makefile
 libgnomeui/pixmaps/Makefile
+libgnorba/Makefile
 libvfs/Makefile
 zvt/Makefile
 test-suite/Makefile

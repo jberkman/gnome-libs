@@ -107,6 +107,10 @@ while test $# -gt 0; do
     gtkxmhtml)
 	the_libs="$the_libs @GNOME_LIBDIR@ @GTKXMHTML_LIBS@"
 	;;
+    gnorba)
+        the_libs="$the_libs @GNOME_LIBDIR@ @ORBIT_LIBS@"
+	the_flags="$the_flags @GNOME_INCLUDEDIR@ @ORBIT_CFLAGS@"
+        ;;
     zvt)
 	the_libs="$the_libs @GNOME_LIBDIR@ @ZVT_LIBS@"
 	;;
