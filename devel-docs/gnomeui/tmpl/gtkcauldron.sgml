@@ -14,7 +14,7 @@ for those writing dialogs for GUI applications:
   <programlisting>
     gtk_dialog_cauldron ("Search", 0,
         " ( (Enter search string:) | %Eod ) / ( %Bqrxfp || %Bqxfp ) ", 
-            &search_string, "Ok", "Cancel");
+            &amp;search_string, "Ok", "Cancel");
   </programlisting>
 </informalexample>
 
@@ -66,7 +66,7 @@ widget also derives its default text from this variable.</para>
 size, while the label and entry widgets are spaced as they
 require.</para> 
 
-<sect2>
+<refsect2>
    <title>Reference</title> 
      <para>The following is a complete list of
        the widgets. Each widget can take additional options which are
@@ -81,7 +81,7 @@ require.</para>
 
        <listitem><para><emphasis>%F, %N, %E, %P</emphasis> Entry. This
          is one of a File, Number, plain text Entry or Password entry
-         widget. Causes one va_arg conversion of type </type>char
+         widget. Causes one va_arg conversion of type <type>char
          **</type> which must contain the default text to be inserted
          into the entry widget, and must be writable to return the
          result. If the <emphasis>g</emphasis> option is present then
@@ -137,9 +137,9 @@ require.</para>
          its enclosing frame.  </para></listitem>
 
    </itemizedlist>
-</sect2>
+</refsect2>
 
-<sect2>
+<refsect2>
    <title>Frames</title> 
      
      <para>Different kinds of brackets specify different kinds of
@@ -171,7 +171,7 @@ require.</para>
 </programlisting>
 </informalexample>
 
-         </para>is a button inside an shadowed frame. The shadow is of type
+         <para>is a button inside an shadowed frame. The shadow is of type
          etched outer.</para>
 
          <para>The closing <emphasis>) </emphasis> may be followed by
@@ -199,12 +199,12 @@ require.</para>
           to the <emphasis>n </emphasis> option, then the notebook
           will have its tags placed to the left descending vertically,
           otherwise the tags are place in the conventional position
-          above the notebook.</para>
+          above the notebook.</para></listitem>
 
      </itemizedlist>
-</sect2>
+</refsect2>
 
-<sect2>
+<refsect2>
    <title>Options</title> 
 
      <para>Conversions caused by an option happen in the following
@@ -231,7 +231,7 @@ require.</para>
          box. This must not be used with <emphasis>x</emphasis>,
          <emphasis>f</emphasis>, or <emphasis>p</emphasis>. </para></listitem>
 
-       <listitem><para><emphasis> <emphasis>si</emphasis>,
+       <listitem><para><emphasis>si</emphasis>,
          <emphasis>so</emphasis>, <emphasis>sei</emphasis>,
          <emphasis>seo</emphasis> Shadow, (see
          gtk_frame_set_shadow_type). This stands for one of
@@ -305,7 +305,7 @@ require.</para>
          <emphasis>key</emphasis> argument is passed the same label
          that is used to label the widget. The widget will contain an
          underbar under the character following the & symbol. For
-         example "clicked", "&Cancel", GDK_MOD1_MASK. Binds the widget
+         example "clicked", "&amp;Cancel", GDK_MOD1_MASK. Binds the widget
          to Alt-C and completely ignores the remaining characters. You
          can then use the same label for the actual contents of the
          cancel button to cause an underbar to be written under the
@@ -327,11 +327,12 @@ require.</para>
 
        <listitem><para><emphasis> n </emphasis> notebook. Cause a
          <emphasis>[</emphasis> <emphasis>]</emphasis> to be become a
-         notebook page. See frames above.
+         notebook page. See frames above.</para></listitem>
 
-</sect2>
+     </itemizedlist>
+</refsect2>
 
-<sect2>
+<refsect2>
   <title>Accelerator ampersands</title> 
   
     <para>Any widget's text having an <emphasis>&</emphasis> sign in
@@ -344,20 +345,20 @@ require.</para>
      accelerator automatically added to them along with the
      underbar. It will be bound to the key Alt-X where X is the letter
      following the ampersand.</para>
-</sect2>
+</refsect2>
 
-<sect2>
+<refsect2>
    <title>Examples</title>
 <informalexample>
 <programlisting>
     gtk_dialog_cauldron ("Search", 0,
     " ( %Ld | %Eod ) / %[ ( %Cd // %Cd // %Cd ) ]seo / ( %Bqrxfp || %Bqxfp ) ", 
 /* %L */		"Enter search string:",
-/* %E */		&search_string,
+/* %E */		&amp;search_string,
 /* %[ */		"Search options",
-/* %C */		"Case sensitive", &case_sensitive,
-/* %C */		"Whole words only", &whole_word,
-/* %C */		"Regular expression", &regular_expression,
+/* %C */		"Case sensitive", &amp;case_sensitive,
+/* %C */		"Whole words only", &amp;whole_word,
+/* %C */		"Regular expression", &amp;regular_expression,
 /* %B */		"Ok",
 /* %B */		"Cancel");
 </programlisting>
@@ -388,7 +389,7 @@ by adding space after the bracket, eg:</para>
 <para>Each space character counts 3 pixels by default. This default can
 be changed, see global options.</para>
 
-</sect2>
+</refsect2>
 
 <!-- ##### MACRO GTK_CAULDRON_TOPLEVEL ##### -->
 <para>
