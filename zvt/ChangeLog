@@ -1,5 +1,8 @@
 1999-12-30  Michael Zucchi  <zucchi@zedzone.mmc.com.au>
 
+	* zvtterm.c (zvt_term_draw): Remove the background pixmap on the
+	window if we have a background image.  Much cleaner opaque resize.
+
 	* background.c (pixmap_from_atom): Trap errors, so a missing root
 	pixmap doesn't crash us!
 	(zvt_background_set): Do some valid pointer checking before we try

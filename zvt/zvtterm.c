@@ -1094,6 +1094,8 @@ zvt_term_draw (GtkWidget *widget, GdkRectangle *area)
       GdkColor c;
       c.pixel = term->colors [17];
       gdk_window_set_background (GTK_WIDGET (term)->window, &c);
+    } else {
+      gdk_window_set_back_pixmap (GTK_WIDGET (term)->window, 0, 0);
     }
 
     term->in_expose = 1;
