@@ -289,7 +289,7 @@ of the more important and useful ones.
 Few GLib Utility Functions
 </title>
 
-<tgroup cols=3>
+<tgroup cols=2>
 <thead>
 <row>
 <entry>Prototype</entry>
@@ -341,13 +341,109 @@ functionality.</para>
 <title>Containers</title>
 
 <para>
-Although probably the best part of GLib are the containers. Such as linked
-lists (<emphasis>GList</emphasis>) or re-sizable arrays (<emphasis>Array</emphasis>) or hash tables
-(<emphasis>GHashTable</emphasis>) and others. The easiest to use are <emphasis>GList</emphasis>'s.
-The basic <emphasis>GList</emphasis> structure is just a single node of the linked list
-and you can put your data into the data pointer in the <emphasis>GList</emphasis>
+Probably the best part of GLib are its containers. Here's a list of
+GLib's containers.
+
+<table>
+<title>
+Common GLib containers
+</title>
+
+<tgroup cols=2>
+<thead>
+<row>
+<entry>Name</entry>
+<entry>Description</entry>
+</row>
+</thead>
+<tbody>
+
+<row><entry>GList</entry>
+<entry>Doubly linked list</entry></row>
+<row><entry>GSList</entry>
+<entry>Singly linked list</entry></row>
+<row><entry>GHashTable</entry>
+<entry>Hash table</entry></row>
+<row><entry>GCache</entry>
+<entry>Cache</entry></row>
+<row><entry>GTree</entry>
+<entry>Balanced binary tree</entry></row>
+<row><entry>GNode</entry>
+<entry>n-ary tree</entry></row>
+<row><entry>GString</entry>
+<entry>Dynamically sized string</entry></row>
+<row><entry>GArray</entry>
+<entry>Dynamically sized array</entry></row>
+<row><entry>GPtrArray</entry>
+<entry>Dynamically sized array of pointers</entry></row>
+<row><entry>GByteArray</entry>
+<entry>Dynamically sized array of bytes (guint8)</entry></row>
+
+</tbody>
+</tgroup>
+</table>
+
+</para>
+
+<sect3>
+<title>GList</title>
+
+<para>
+The easiest to use are <emphasis>GList</emphasis>'s.
+The basic <emphasis>GList</emphasis> structure is just a single node
+of the linked list and you can put your data into the data pointer
+in the <emphasis>GList</emphasis>
 structure. To store a linked list you just store a pointer to the
-first node of the list. So code that would create a linked list of
+first node of the list. Here is the list of functions that operate on
+a GList. The functions usually take in a pointer and return the new
+pointer of the list, since the first node could now be a different one.
+
+<table>
+<title>
+Most important GList functions
+</title>
+
+<tgroup cols=2>
+<thead>
+<row>
+<entry>Prototype</entry>
+<entry>Description</entry>
+</row>
+</thead>
+<tbody>
+
+<row><entry>GList* g_list_append(GList *list, gpointer data)</entry>
+<entry>Append 'data' to a list. 'list' can be NULL to make a new list.</entry></row>
+
+<row><entry>GList* g_list_prepend(GList *list, gpointer data)</entry>
+<entry>Prepend 'data' to a list. 'list' can be NULL to make a new list.</entry></row>
+
+<row><entry>GList* g_list_remove(GList *list, gpointer data)</entry>
+<entry>Remove the node containing 'data' from the list.</entry></row>
+
+<row><entry>GList* g_list_find(GList *list, gpointer data)</entry>
+<entry>Find the GList node that contains the 'data'</entry></row>
+
+<row><entry>GList* g_list_next(GList *list)</entry>
+<entry>A macro that returns a pointer to the next node</entry></row>
+
+<row><entry>GList* g_list_previous(GList *list)</entry>
+<entry>A macro that returns a pointer to the next node</entry></row>
+
+<row><entry>void g_list_free(GList *list)</entry>
+<entry>Free the entire list.</entry></row>
+
+</tbody>
+</tgroup>
+</table>
+
+</para>
+
+<para>
+To access the data from a particular <emphasis>GList</emphasis> node
+You look at the <emphasis>data</emphasis> member in the
+<emphasis>GList</emphasis> structure.
+So code that would create a linked list of
 two elements which are strdup'ed strings, and later free that list
 and the strings would look like:
 
@@ -368,7 +464,99 @@ for(li = list; li!= NULL; li = g_list_next(li)) {
 }
 g_list_free(list);
 </programlisting></informalexample></para>
+</sect3>
 
+<sect3>
+<title>GString</title>
+
+<para>Another simple to use and useful container is the
+<emphasis>GString</emphasis> container.
+It's a dynamically sized string container for the times when you don't
+know how large the string you will need will be. Here's a list of the
+most important functions.
+
+<table>
+<title>
+Most important GString functions
+</title>
+
+<tgroup cols=2>
+<thead>
+<row>
+<entry>Prototype</entry>
+<entry>Description</entry>
+</row>
+</thead>
+<tbody>
+
+<row><entry>GString* g_string_new(const gchar *init)</entry>
+<entry>Create a new GString with initial value of 'init'</entry></row>
+
+<row><entry>void g_string_free(GString *string, int free_segment)</entry>
+<entry>Free the GString structure and optionally also the string data segment</entry></row>
+
+<row><entry>GString* g_string_append(GString *string, const gchar *val)</entry>
+<entry>Append 'val' to 'string'</entry></row>
+
+<row><entry>GString* g_string_prepend(GString *string, const gchar *val)</entry>
+<entry>Prepend 'val' to 'string'</entry></row>
+
+<row><entry>void g_string_sprintf(GString *string, const gchar *format, ...)</entry>
+<entry>A sprintf like function for GString</entry></row>
+
+<row><entry>void g_string_sprintfa(GString *string, const gchar *format, ...)</entry>
+<entry>A sprintf like function for GString, but appends the string instead of overwriting it</entry></row>
+
+</tbody>
+</tgroup>
+</table>
+
+</para>
+
+<para>
+To access the string data for use as a <emphasis>char *</emphasis>, just
+access the <emphasis>str</emphasis> element of the
+<emphasis>GString</emphasis> structure. You can actually free the
+<emphasis>GString</emphasis> structure without freeing this data segment.
+This is useful if you want to create a normal C string. The following example
+is a function that takes an array of integers and sprintfs them into a string
+and returns a <emphasis>char *</emphasis>.
+
+<informalexample><programlisting>
+char *
+create_number_list(int array[], int array_len)
+{
+        int i;           /* the array iterator */
+        GString *string; /* the GString */
+        char *ret;       /* the return value */
+
+        /* make a new GString that is empty */
+        string = g_string_new("");
+
+        /* iterate over the integer array */
+        for(i=0; i&lt;array_len; i++) {
+                /* append the number to the string in parenthesis */
+                g_string_sprintfa(string, "(%d)", array[i]);
+        }
+
+        /* setup the return value */
+        ret = string-&gt;str;
+
+        /* free the GString structure, but not the data */
+        g_string_free(string,FALSE);
+
+        /* return the string */
+        return ret;
+}
+</programlisting></informalexample></para>
+
+</sect3>
+
+</sect2>
+
+
+<sect2>
+<title>More GLib information</title>
 <para>
 For more information look at the <emphasis>glib.h</emphasis> header file and at the
 documentation on the <ulink url="http://www.gtk.org/">www.gtk.org</ulink> web site.</para></sect2></sect1>
