@@ -1,0 +1,14 @@
+Wed Dec 24 12:05:31 1997  Miguel de Icaza  <miguel@nuclecu.unam.mx>
+
+	* XmHTML-motif.c, XmHTML.c, XmHTMLP.h, callbacks.c, forms.c,
+	frames.c, gtk-xmhtml.c gtk-xmhtml.h images.c, map.c, test.c,
+	toolkit.c: More code sharing between the Motif frontend an the Gtk
+	frontned;   More portability macros;  
+
+	* The widget now emits signals for all of the events that are
+	interesting (same as the Motif ones, but signalified). 
+
+	* Lots of events are now handled, only missing are the keybaord
+	events. 
+	
+
