@@ -36,6 +36,9 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.3  1997/12/25 01:38:29  unammx
+* Small bug fixes
+*
 * Revision 1.2  1997/12/25 01:34:10  unammx
 * Good news for the day:
 *
@@ -953,7 +956,7 @@ initializeFontSizeLists(XmHTMLWidget html)
 XmHTMLfont*
 _XmHTMLSelectFontCache(XmHTMLWidget html, Boolean reset)
 {
-	Display *dpy = Toolkit_Display((Widget)html);
+	Display *dpy = Toolkit_Display((TWidget)html);
 	fontCache *cache;
 
 	_XmHTMLDebug(8, ("fonts.c: _XmHTMLSelectFontCache start\n"));
@@ -1116,13 +1119,13 @@ _XmHTMLLoadFont(XmHTMLWidget html, htmlEnum font_id, int size,
 		case HT_EM:
 		case HT_DFN:
 		case HT_ADDRESS:
-			new_font = _XmHTMLloadQueryFont((Widget)html, family, NULL, 
+			new_font = _XmHTMLloadQueryFont((TWidget)html, family, NULL, 
 				xmhtml_basefont_sizes[size-1], new_style|FONT_ITALIC, &ok);  
 			break;
 		case HT_STRONG:
 		case HT_B:
 		case HT_CAPTION:
-			new_font = _XmHTMLloadQueryFont((Widget)html, family, NULL, 
+			new_font = _XmHTMLloadQueryFont((TWidget)html, family, NULL, 
 				xmhtml_basefont_sizes[size-1], new_style | FONT_BOLD, &ok);
 			break;
 
@@ -1136,14 +1139,14 @@ _XmHTMLLoadFont(XmHTMLWidget html, htmlEnum font_id, int size,
 		case HT_CODE:
 		case HT_KBD:
  		case HT_PRE:	/* fix 01/20/97-03, kdh */
-			new_font = _XmHTMLloadQueryFont((Widget)html,
+			new_font = _XmHTMLloadQueryFont((TWidget)html,
 				html->html.font_family_fixed, NULL, xmhtml_fn_fixed_sizes[0],
 				new_style |FONT_FIXED, &ok);
 			break;
 
 		/* The <FONT> element is useable in *every* state */
 		case HT_FONT:
-			new_font = _XmHTMLloadQueryFont((Widget)html, family, NULL, size,
+			new_font = _XmHTMLloadQueryFont((TWidget)html, family, NULL, size,
 				new_style, &ok);
 			break;
 
@@ -1153,32 +1156,32 @@ _XmHTMLLoadFont(XmHTMLWidget html, htmlEnum font_id, int size,
 		* true font from the current font.
 		*****/
 		case HT_H1:
-			new_font = _XmHTMLloadQueryFont((Widget)html,
+			new_font = _XmHTMLloadQueryFont((TWidget)html,
 				html->html.font_family, NULL, xmhtml_fn_sizes[2],
 				FONT_SCALABLE|FONT_BOLD, &ok);
 			break;
 		case HT_H2:
-			new_font = _XmHTMLloadQueryFont((Widget)html,
+			new_font = _XmHTMLloadQueryFont((TWidget)html,
 				html->html.font_family, NULL, xmhtml_fn_sizes[3],
 				FONT_SCALABLE|FONT_BOLD, &ok);
 			break;
 		case HT_H3:
-			new_font = _XmHTMLloadQueryFont((Widget)html,
+			new_font = _XmHTMLloadQueryFont((TWidget)html,
 				html->html.font_family, NULL, xmhtml_fn_sizes[4],
 				FONT_SCALABLE|FONT_BOLD, &ok);
 			break;
 		case HT_H4:
-			new_font = _XmHTMLloadQueryFont((Widget)html,
+			new_font = _XmHTMLloadQueryFont((TWidget)html,
 				html->html.font_family, NULL, xmhtml_fn_sizes[5],
 				FONT_SCALABLE|FONT_BOLD, &ok);
 			break;
 		case HT_H5:
-			new_font = _XmHTMLloadQueryFont((Widget)html,
+			new_font = _XmHTMLloadQueryFont((TWidget)html,
 				html->html.font_family, NULL, xmhtml_fn_sizes[6],
 				FONT_SCALABLE|FONT_BOLD, &ok);
 			break;
 		case HT_H6:
-			new_font = _XmHTMLloadQueryFont((Widget)html,
+			new_font = _XmHTMLloadQueryFont((TWidget)html,
 				html->html.font_family, NULL, xmhtml_fn_sizes[7],
 				FONT_SCALABLE|FONT_BOLD, &ok);
 			break;
@@ -1191,7 +1194,7 @@ _XmHTMLLoadFont(XmHTMLWidget html, htmlEnum font_id, int size,
 #endif /* PEDANTIC */
 			/* this will always succeed */
 			ok = False;
-			new_font = _XmHTMLloadQueryFont((Widget)html, family, NULL, ptsz, 
+			new_font = _XmHTMLloadQueryFont((TWidget)html, family, NULL, ptsz, 
 				FONT_SCALABLE|FONT_REGULAR|FONT_MEDIUM, &ok);
 			break;
 	}
@@ -1288,7 +1291,7 @@ _XmHTMLLoadFontWithFace(XmHTMLWidget html, int size, String face,
 		* a font of which we don't know if it exists.
 		*****/
 		ok = False;
-		new_font = _XmHTMLloadQueryFont((Widget)html, family, chPtr, size,
+		new_font = _XmHTMLloadQueryFont((TWidget)html, family, chPtr, size,
 			new_style, &ok);
 		if(new_font && ok)
 		{

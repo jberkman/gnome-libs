@@ -35,6 +35,9 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.4  1997/12/25 01:38:29  unammx
+* Small bug fixes
+*
 * Revision 1.3  1997/12/25 01:34:13  unammx
 * Good news for the day:
 *
@@ -323,8 +326,8 @@ DrawText(XmHTMLWidget html, XmHTMLObjectTableElement data)
 	{
 		xs = data->x - html->html.scroll_x;
 		ys = data->y - html->html.scroll_y;
-		XSetForeground(dpy, gc, data->bg);
-		XFillRectangle(dpy, win, gc, xs, ys - words[0].font->xfont->ascent,
+		Toolkit_Set_Foreground(dpy, gc, data->bg);
+		Toolkit_Fill_Rectangle(dpy, win, gc, xs, ys - words[0].font->xfont->ascent,
 			data->width, data->height);
 	}
 
