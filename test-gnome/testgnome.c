@@ -917,11 +917,11 @@ reply_cb(gint reply, gpointer thedata)
   gchar * data = (gchar *)thedata;
   gchar * s = NULL;
   if (reply == GNOME_YES) {
-    s = g_copy_strings(_("The user chose Yes/OK with data:\n"),
+    s = g_strconcat(_("The user chose Yes/OK with data:\n"),
 		       data, NULL);
   }
   else if (reply == GNOME_NO) {
-    s = g_copy_strings(_("The user chose No/Cancel with data:\n"),
+    s = g_strconcat(_("The user chose No/Cancel with data:\n"),
 		       data, NULL);
   }
 
@@ -974,7 +974,7 @@ ok_cancel_modal_cb(GtkWidget * b, GtkEntry * e)
 static void
 string_cb(gchar * string, gpointer data)
 {
-  gchar * s = g_copy_strings("Got string \"", string, "\" and data \"",
+  gchar * s = g_strconcat("Got string \"", string, "\" and data \"",
 			     data, "\"", NULL);
   g_free(string);
   g_print(s);

@@ -269,20 +269,20 @@ save_state (gpointer client_data, GnomeSaveStyle save_style,
   gdk_window_get_geometry (app->window, &x, &y, &w, &h, NULL);
 
   /* Save the state using gnome-config stuff. */
-  sess = g_copy_strings ("/gnome-hello/Saved-Session-",
+  sess = g_strconcat ("/gnome-hello/Saved-Session-",
                          session_id,
                          NULL);
 
-  buf = g_copy_strings ( sess, "/x", NULL);
+  buf = g_strconcat ( sess, "/x", NULL);
   gnome_config_set_int (buf, x);
   g_free(buf);
-  buf = g_copy_strings ( sess, "/y", NULL);
+  buf = g_strconcat ( sess, "/y", NULL);
   gnome_config_set_int (buf, y);
   g_free(buf);
-  buf = g_copy_strings ( sess, "/w", NULL);
+  buf = g_strconcat ( sess, "/w", NULL);
   gnome_config_set_int (buf, w);
   g_free(buf);
-  buf = g_copy_strings ( sess, "/h", NULL);
+  buf = g_strconcat ( sess, "/h", NULL);
   gnome_config_set_int (buf, h);
   g_free(buf);
 
@@ -313,18 +313,18 @@ restart_session (gchar *id)
 
   restarted = 1;
   
-  sess = g_copy_strings ("/gnome-hello/Saved-Session-", id, NULL);
+  sess = g_strconcat ("/gnome-hello/Saved-Session-", id, NULL);
 
-  buf = g_copy_strings ( sess, "/x", NULL);
+  buf = g_strconcat ( sess, "/x", NULL);
   os_x = gnome_config_get_int (buf);
   g_free(buf);
-  buf = g_copy_strings ( sess, "/y", NULL);
+  buf = g_strconcat ( sess, "/y", NULL);
   os_y = gnome_config_get_int (buf);
   g_free(buf);
-  buf = g_copy_strings ( sess, "/w", NULL);
+  buf = g_strconcat ( sess, "/w", NULL);
   os_w = gnome_config_get_int (buf);
   g_free(buf);
-  buf = g_copy_strings ( sess, "/h", NULL);
+  buf = g_strconcat ( sess, "/h", NULL);
   os_h = gnome_config_get_int (buf);
   g_free(buf);
 
@@ -336,7 +336,7 @@ discard_session (gchar *id)
 {
   gchar *sess;
 
-  sess = g_copy_strings ("/gnome-hello/Saved-Session-", id, NULL);
+  sess = g_strconcat ("/gnome-hello/Saved-Session-", id, NULL);
 
   /* we use the gnome_config_get_* to work around a bug in gnome-config 
      (it's going under a redesign/rewrite, so i didn't correct it) */

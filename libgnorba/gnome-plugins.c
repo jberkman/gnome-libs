@@ -62,7 +62,7 @@ gnome_plugin_use(const char *plugin_id)
   g_return_val_if_fail(plugin_id, NULL);
 
   if (*plugin_id != '/') {
-    rel_filename = g_copy_strings("CORBA/plugins/", plugin_id, 0);
+    rel_filename = g_strconcat("CORBA/plugins/", plugin_id, 0);
     abs_filename = gnome_libdir_file(rel_filename);
     g_free(rel_filename);
   } else {

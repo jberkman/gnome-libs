@@ -107,7 +107,7 @@ get_cookie_reliably (void)
 	pwent = getpwuid(getuid());
 	g_assert(pwent);
 	
-	name = g_copy_strings ("/tmp/orbit-", pwent->pw_name, "/cookie", NULL);
+	name = g_strconcat ("/tmp/orbit-", pwent->pw_name, "/cookie", NULL);
 
 	/*
 	 * Create the file exclusively with permissions rw for the

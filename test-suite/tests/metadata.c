@@ -43,7 +43,7 @@ main (int argc, char *argv[])
 	gnome_metadata_db_file_name = "test.db";
 	unlink (gnome_metadata_db_file_name);
 
-	gnome_metadata_app_dir = g_copy_strings (getenv ("srcdir"),
+	gnome_metadata_app_dir = g_strconcat (getenv ("srcdir"),
 						 "/data", NULL);
 
 	/* Populate the database.  */
