@@ -49,6 +49,12 @@ typedef enum {
 #define VT_SELTYPE_BYSTART 0x4000
 #define VT_SELTYPE_MOVED 0x2000 /* has motion occured? */
 
+typedef enum {
+  VT_SCROLL_ALWAYS=0,		/* normal display */
+  VT_SCROLL_SOMETIMES,		/* with 'fast scroll' background pixmap */
+  VT_SCROLL_NEVER		/* with transparency pixmap or fixed pixmap */
+} VT_SCROLLTYPE;
+
 /* 'X' extension data for VT terminal emulation */
 struct _vtx
 {
@@ -80,6 +86,10 @@ struct _vtx
   /* previously rendered values */
   int selstartxold, selstartyold;
   int selendxold, selendyold;
+
+  /* added in gnome-libs 1.0.10
+     ... this shouldn't break bin compatibility? */
+  unsigned char scroll_type;	/* how we scroll (see VT_SCROLLTYPE enum) */
 };
 
 
@@ -88,7 +98,7 @@ char *vt_get_selection   (struct _vtx *vx, int *len);
 void vt_clear_selection  (struct _vtx *vx);
 void vt_fix_selection    (struct _vtx *vx);
 void vt_draw_selection   (struct _vtx *vx);
-void vt_update_rect      (struct _vtx *vx, int sx, int sy, int ex, int ey);
+void vt_update_rect      (struct _vtx *vx, int fill, int sx, int sy, int ex, int ey);
 void vt_update           (struct _vtx *vt, int state);
 void vt_draw_cursor      (struct _vtx *vx, int state);
 void vt_set_wordclass    (struct _vtx *vx, unsigned char *s);

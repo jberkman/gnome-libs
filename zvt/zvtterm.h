@@ -41,10 +41,20 @@ extern "C" {
 #define ZVT_TERM_CLASS(klass)  GTK_CHECK_CLASS_CAST (klass, zvt_term_get_type (), ZvtTermClass)
 #define ZVT_IS_TERM(obj)       GTK_CHECK_TYPE (obj, zvt_term_get_type ())
 	
-/*capabilities, it's for the pixmap/transparency stuff only for now*/
+  /* Capabilities
+
+     NOTE: These are added at different stages of development always
+     check their existance before using them */
+
 /* changed to a #define for easier compile-time checking */
 #define ZVT_TERM_PIXMAP_SUPPORT		0x01
+/* zvt can auto-bold data, to be removed for 2.0 */
 #define ZVT_TERM_EMBOLDEN_SUPPORT	0x02
+/* added to check explicity for transparency support (checks window manager can do it)
+   if this is not defined, then assume that if PIXMAP_SUPPORT is defined, that transparency works */
+#define ZVT_TERM_TRANSPARENCY_SUPPORT	0x04
+/* zvt can scroll pixmap data, if it isn't a transparency pixmap */
+#define ZVT_TERM_PIXMAPSCROLL_SUPPORT	0x08
 
 typedef struct _ZvtTerm        ZvtTerm;
 typedef struct _ZvtTermClass   ZvtTermClass;
@@ -134,10 +144,17 @@ struct _zvtprivate
   int scrollselect_dir;		/* scrolling selection direction/step */  
   XChar2b *text16;		/* 2-byte text expansion area */
   int text16len;		/* how much space here */
+  int scroll_position;		/* offset for background pixmap when scrolling */
+  GdkPixmap *bold_save;		/* when drawing bold, use this to save the
+				   maybe-overwritten line. */
 };
 
 #define ZVT_TERM_DO_UTMP_LOG 1
 #define ZVT_TERM_DO_WTMP_LOG 2
+
+/* background flag options */
+#define ZVT_BACKGROUND_SHADED 0x01 /* shade background image.  This must be left as 1 for api compat! */
+#define ZVT_BACKGROUND_SCROLL 0x02 /* background can scroll, exclusive option with transparency */
 
 GtkWidget*   zvt_term_new                      (void);
 GtkWidget*   zvt_term_new_with_size            (int cols, int rows);
@@ -180,7 +197,7 @@ void	     zvt_term_set_wordclass	       (ZvtTerm *term, unsigned char *klass);
 void	     zvt_term_set_background		(ZvtTerm       *terminal,
 						 char          *pixmap_file,
 						 int		transparent,
-						 int		shaded);
+						 int		flags);
 void         zvt_term_set_shadow_type           (ZvtTerm       *term,
 						 GtkShadowType  type);
 void         zvt_term_set_size                  (ZvtTerm       *term,

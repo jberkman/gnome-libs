@@ -58,15 +58,14 @@ child_died_event (ZvtTerm *term)
 static void
 title_changed_event (ZvtTerm *term, VTTITLE_TYPE type, char *newtitle)
 {
-  switch(type) 
-    {
-    case VTTITLE_WINDOW:
-    case VTTITLE_WINDOWICON:
-      gtk_window_set_title (GTK_WINDOW (window), newtitle);
-      break;
-    default:
-      break;
-    }
+  switch(type) {
+  case VTTITLE_WINDOW:
+  case VTTITLE_WINDOWICON:
+    gtk_window_set_title (GTK_WINDOW (window), newtitle);
+    break;
+  default:
+    break;
+  }
 }
 
 static void
@@ -126,22 +125,15 @@ main (gint argc, gchar *argv[])
   for (p = env; *p; p++);
   i = p - env;
   env_copy = (char **) g_malloc (sizeof (char *) * (i + 3));
-  for (i = 0, p = env; *p; p++)
-    {
+  for (i = 0, p = env; *p; p++) {
       if (strncmp (*p, "TERM=", 5) == 0)
-	{
 	  env_copy [i++] = "TERM=xterm";
-	}
       else if ((strncmp (*p, "COLUMNS=", 8) == 0) ||
 	       (strncmp (*p, "LINES=", 6) == 0))
-	{
 	  continue;
-	} 
       else
-	{
 	  env_copy [i++] = *p;
-	}
-    }
+  }
 
   env_copy [i++] = "COLORTERM=zterm";
   winid_pos = i++;
@@ -151,34 +143,32 @@ main (gint argc, gchar *argv[])
   gtk_init(&argc, &argv);
 
   /* process arguments */
-  while ( (cmdindex==0) && (c=getopt(argc, argv, "le:s:rh")) != EOF )
-    {
-      switch(c) 
-	{
-	case 'e':
-	  cmdindex = optind-1;	/* index of argv array to pass to exec */
-	  break;
-
-	case 's':
-	  scrollbacklines = atoi(optarg);
-	  break;
-
-	case 'l':
-	  login_shell = 1;
-	  break;
-
-	case 'r':
-	  scrollpos = RIGHT;
-	  break;
-
-	case '?':
-	case 'h':
-	default:
-	  fprintf(stderr, "Usage: zterm [-sNN] [-l] [-r] [-e command args]\n");
-	  exit(1);
-	  break;
-	}
+  while ( (cmdindex==0) && (c=getopt(argc, argv, "le:s:rh")) != EOF ) {
+    switch(c) {
+    case 'e':
+      cmdindex = optind-1;	/* index of argv array to pass to exec */
+      break;
+      
+    case 's':
+      scrollbacklines = atoi(optarg);
+      break;
+      
+    case 'l':
+      login_shell = 1;
+      break;
+      
+    case 'r':
+      scrollpos = RIGHT;
+      break;
+      
+    case '?':
+    case 'h':
+    default:
+      fprintf(stderr, "Usage: zterm [-sNN] [-l] [-r] [-e command args]\n");
+      exit(1);
+      break;
     }
+  }
 
   /* Create widgets and set options */
   window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
@@ -247,62 +237,49 @@ main (gint argc, gchar *argv[])
   gtk_widget_show (window);
 
   /* fork the shell/program */
-  switch (zvt_term_forkpty(ZVT_TERM (term), ZVT_TERM_DO_UTMP_LOG | ZVT_TERM_DO_WTMP_LOG))
-    {
-    case -1:
-      perror("ERROR: unable to fork:");
-      exit(1);
-      break;
-
-    case 0:
-      if (cmdindex)
-	{
-	  environ = env_copy;
-	  execvp(argv[cmdindex], &argv[cmdindex]);
+  switch (zvt_term_forkpty(ZVT_TERM (term), ZVT_TERM_DO_UTMP_LOG | ZVT_TERM_DO_WTMP_LOG)) {
+  case -1:
+    perror("ERROR: unable to fork:");
+    exit(1);
+    break;
+    
+  case 0:
+    if (cmdindex) {
+      environ = env_copy;
+      execvp(argv[cmdindex], &argv[cmdindex]);
+    } else {
+      GString *shell, *name;
+      
+      /* get shell from passwd */
+      pw = getpwuid(getuid());
+      if (pw) {
+	shell = g_string_new(pw->pw_shell);
+	if (login_shell) {
+	  name = g_string_new("-");
+	} else {
+	  name = g_string_new("");
 	}
-      else
-	{
-	  GString *shell, *name;
-	  
-	  /* get shell from passwd */
-	  pw = getpwuid(getuid());
-	  if (pw)
-	    {
-	      shell = g_string_new(pw->pw_shell);
-	      if (login_shell)
-		{
-		  name = g_string_new("-");
-		}
-	      else
-		{
-		  name = g_string_new("");
-		}
 	      
-	      g_string_append(name, strrchr(pw->pw_shell, '/'));
-	    }
-	  else
-	    {
-	      shell = g_string_new("/bin/sh");
-	      if (login_shell)
-		{
-		  name = g_string_new("-sh");
-		}
-	      else
-		{
-		  name = g_string_new("sh");
-		}
-	    }
-
-	  execle (shell->str, name->str, NULL, env_copy);
-	  perror ("Could not exec\n");
-	  _exit (127);
+	g_string_append(name, strrchr(pw->pw_shell, '/'));
+      } else {
+	shell = g_string_new("/bin/sh");
+	if (login_shell) {
+	  name = g_string_new("-sh");
+	} else {
+	  name = g_string_new("sh");
 	}
-      perror("ERROR: Cannot exec command:");
-      exit(1);
-
-    default:
-      break;
+      }
+      
+      execle (shell->str, name->str, NULL, env_copy);
+      perror ("Could not exec\n");
+      _exit (127);
     }
+    perror("ERROR: Cannot exec command:");
+    exit(1);
+    
+  default:
+    break;
+  }
   
   /* main loop */
   gtk_main ();

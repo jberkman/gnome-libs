@@ -44,6 +44,8 @@
 
 
 #define d(x)
+/* 'update' line debug */
+#define u(x)
 
 /*
   update line 'line' (node 'l') of the vt
@@ -51,19 +53,20 @@
   always==1  assumes all line data is stale
   start/end columns to update
 */
-static void vt_line_update(struct _vtx *vx, struct vt_line *l, int line, int always,
+static void vt_line_update(struct _vtx *vx, struct vt_line *l, struct vt_line *bl, int line, int always,
 			   int start, int end)
 {
   int i;
-  int run;
-  int runstart;
+  int run, commonrun;
+  int runstart, commonrunstart;
   char *p;
-  uint32 attr, newattr;
+  uint32 attr, newattr, oldattr, oldchar, newchar, oldback, newback, lastchar;
   uint32 c;
   int ch;
-  struct vt_line *bl;
+  /*  struct vt_line *bl;*/
   int sx, ex;			/* start/end selection */
   struct vt_line *newline;
+  int force;
 
   newline = NULL;  
 
@@ -71,56 +74,16 @@ static void vt_line_update(struct _vtx *vx, struct vt_line *l, int line, int alw
   d(fwrite(l->data, l->width, 1, stdout));
   d(printf("\n"));
 
-  d(printf("updating line from (%d-%d) ->", start, end));
+  u(printf("updating line from (%d-%d) ->", start, end));
 
   /* for 'scrollback' where the window has changed size -
      create a proper-length line (this is easier than special case code below */
-  bl = (struct vt_line *)vt_list_index(&vx->vt.lines_back, line);
+
+  /*  bl = (struct vt_line *)vt_list_index(&vx->vt.lines_back, line); */
 
   /* some sanity checks */
   g_return_if_fail (bl != NULL);
   g_return_if_fail (bl->next != NULL);
-
-
-  /* if the old line was longer ... */ 
-  if (bl->width > l->width) {
-    d(printf("line size mismatch %d != %d\n", bl->width, l->width));
-
-    /* create a new temp line, and set it to a clear
-     * last-character (attributes) of the new line 
-     */
-    newline = g_malloc(VT_LINE_SIZE(bl->width));
-    memcpy(newline, l, sizeof(struct vt_line) + (l->width * sizeof(uint32)));
-
-    c = l->data[l->width-1] & VTATTR_MASK;
-
-    for (i = l->width ; i < bl->width; i++) {
-      newline->data[i] = c;
-    }
-
-    /* over-write the 'l' pointer */
-    l = newline;
-
-    /* if the old line was shorter... */
-  } else if (bl->width < l->width) {
-    d(printf("line size mismatch %d != %d\n", bl->width, l->width));
-
-    newline = g_malloc(VT_LINE_SIZE(bl->width));
-    memcpy(newline, l, sizeof(struct vt_line) + (bl->width * sizeof(uint32)));
-    newline->width = bl->width;
-
-    l = newline;
-  }
-
-  /* check range conditions */
-  if (end > l->width) {
-    end = l->width;
-  }
-
-  if (start >= end) {
-    g_free(newline);
-    return;
-  }
 
   /* work out if selections are being rendered */
   if (vx->selected &&
@@ -159,147 +122,127 @@ static void vt_line_update(struct _vtx *vx, struct vt_line *l, int line, int alw
   }
   /* ^^ at this point sx -- ex needs to be inverted (it is selected) */
 
-  /* work out the minimum range of change */
-  if (!always) {
-
-    
-    while (start < end) {
-      c = l->data[start];
-
-      if (start >= sx && start < ex)
-	c ^= VTATTR_REVERSE;
-
-      if (c != bl->data[start])
-	break;
-
-      start++;
-    }
-    
-    while (end > start) {
-      c = l->data[end-1];
-
-      if (end >= sx && end < ex)
-	c ^= VTATTR_REVERSE;
-
-      if (c != bl->data[end-1])
-	break;
-
-      end--;
-    }
-
-    /* always update the end if its a space ... */
-    if (end<l->width
-	&& ( (ch = l->data[end]&VTATTR_DATAMASK)==0
-	     || ch==9
-	     || ch==' '))
-      end++;
-
-  }  /* else, update everything */
-
-
-  /* see if on-screen is all background ... */
-  /* (this is messy, and probably slow?) */
-  vx->back_match = 1;
-  for(i = start; i < end; i++) {
-
-    /* check for clear of the same background colour */
-    c = bl->data[i];
-
-    ch = c & VTATTR_DATAMASK;
-    if (i >= sx && i < ex)
-      c ^= VTATTR_REVERSE;
-
-    if ((ch != 0 && ch != 9 && ch != ' ') ||
-	((c & (VTATTR_MASK^VTATTR_FORECOLOURM)) != 
-	 (l->data[i] & (VTATTR_MASK^VTATTR_FORECOLOURM)))) {
-
-#if 0
-      d(printf("bl->data[i] = %08x != %08x, c=%d (back now=%d not %d)\n", 
-	       bl->data[i], l->data[i], c, 
-	       (l->data[i]&VTATTR_BACKCOLOURM)>>VTATTR_BACKCOLOURB, 
-	       (bl->data[i]&VTATTR_BACKCOLOURM)>>VTATTR_BACKCOLOURB));
-#endif
-      vx->back_match = 0;
-      break;
-    } else {
-#if 0
-      d(printf("bl->data[i] == %08x == %08x, c=%08x back=%d\n",
-	       bl->data[i], l->data[i], c,
-	       (l->data[i]&VTATTR_BACKCOLOURM)>>VTATTR_BACKCOLOURB));
-#endif
-    }
-  }
-
-  d(printf("actually (%d-%d)?\n", start, end));
-
-  run = 0;
-  attr = 0;
-  runstart = 0;
-  p = NULL;
-  
+  /* scan line, checking back vs front, if there are differences, then
+     look to render */
   if (vx->vt.width > vx->runbuffer_size) {
     vx->runbuffer_size = vx->vt.width;
     vx->runbuffer = g_realloc(vx->runbuffer, vx->runbuffer_size);
   }
 
-  for(i = start; i < end; i++) {
-    /* map on 'selected' areas, and copy to screen buffer */
-    newattr = l->data[i] & VTATTR_MASK;
+  run = 0;
+  attr = 0;
+  runstart = 0;
+  p = NULL;
+  oldback = 0;
+  commonrun = 0;
+  lastchar = 0;
 
+  /* start out optimistic */
+  vx->back_match = 1;
+
+#define VT_BLANK(n) ((n)==0 || (n)==9 || (n)==32)
+#define VT_BMASK(n) ((n) & (VTATTR_FORECOLOURM|VTATTR_BACKCOLOURM|VTATTR_REVERSE|VTATTR_UNDERLINE))
+#define VT_ASCII(n) ((((n)&0xff)==0 || ((n)&0xff)==9)?32:((n)&0xff))
+#define VT_THRESHHOLD (4)
+
+  force = always;
+
+  /* actual size to use is bl->width */
+  if (end>bl->width)
+    end=bl->width;
+  if (start>bl->width)
+    start=bl->width;
+
+  for (i=start;i<end;i++) {
+    oldchar = bl->data[i];
+
+    /* handle smaller line size, from scrollback */
+    if (i<l->width)
+      newchar = l->data[i];
+    else
+      newchar = lastchar;
+
+    lastchar = newchar & VTATTR_MASK;
+
+    /* check for selected block */
     if (i >= sx && i < ex) {
-      newattr ^= VTATTR_REVERSE;
-      bl->data[i] = l->data[i] ^ VTATTR_REVERSE;
-    } else {
-      bl->data[i] = l->data[i];
+      newchar ^= VTATTR_REVERSE;
     }
 
-    /* hide rendering of text (make forground=background)*/
-    if (newattr & VTATTR_CONCEALED) {
-      if (newattr & VTATTR_REVERSE)
-	newattr = (newattr&~VTATTR_BACKCOLOURM)|((newattr&VTATTR_FORECOLOURM)>>(VTATTR_FORECOLOURB-VTATTR_BACKCOLOURB));
-      else
-	newattr = (newattr&~VTATTR_FORECOLOURM)|((newattr&VTATTR_BACKCOLOURM)<<(VTATTR_FORECOLOURB-VTATTR_BACKCOLOURB));
-    }
-
-    if (run == 0) {
-      runstart = i;
-      p = vx->runbuffer;
-      attr = newattr;
-    } else {
-      if (attr != newattr) { /* check run of same type ... */
-	d(printf("found a run of %d characters from %d: '", run, runstart));
-	d(fwrite(vx->runbuffer, run, 1, stdout));
-	d(printf("\n"));
-	vt_draw_text(vx->vt.user_data, runstart, line, vx->runbuffer, run, attr);
+    /* if there are no changes, quit right here ... */
+    if (oldchar != newchar || force) {
+      bl->data[i] = newchar;
+      newattr = newchar & VTATTR_MASK;
+      oldattr = oldchar & VTATTR_MASK;
+      if (run) {
+	if (newattr == attr) {
+	  if (vx->back_match) {
+	    if (!VT_BLANK(oldchar & 0xffff) || (VT_BMASK(newattr) != VT_BMASK(oldattr)))
+	      vx->back_match = 0;
+	  }
+#ifdef VT_THRESHHOLD
+	  if (commonrun) {
+	    run += commonrun;
+	    commonrun=0;
+	  }
+#endif
+	  vx->runbuffer[run] = VT_ASCII(newchar);
+	  run++;
+	} else {
+	  /* render 'run so far' */
+	  vt_draw_text(vx->vt.user_data,
+		       runstart, line, vx->runbuffer, run, attr);
+	  vx->back_match = always?0:
+	    ((VT_BMASK(newattr) == VT_BMASK(oldattr)) && VT_BLANK(oldchar&0xffff));
+	  vx->runbuffer[0] = VT_ASCII(newchar);
+	  run = 1;
+	  runstart = i;
+	  attr = newattr;
+	  commonrun = 0;
+	}
+      } else {
+	vx->back_match = always?0:
+	  ((VT_BMASK(newattr) == VT_BMASK(oldattr)) && VT_BLANK(oldchar&0xffff));
+	vx->runbuffer[0] = VT_ASCII(newchar);
 	runstart = i;
-	p = vx->runbuffer;
-	run = 0;
-	attr = newattr;
+	attr = newchar & VTATTR_MASK;
+	run=1;
+	commonrun = 0;
+      }
+    } else {
+      if (run) {
+#ifdef VT_THRESHHOLD
+	/* check for runs of common characters, if they are short, then
+	   use them */
+	if (commonrun>VT_THRESHHOLD) {
+	  vt_draw_text(vx->vt.user_data,
+		       runstart, line, vx->runbuffer, run, attr);
+	  run=0;
+	  commonrun=0;
+	} else {
+	  vx->runbuffer[run+commonrun]=VT_ASCII(newchar);
+	  commonrun++;
+	}
+#else
+	vt_draw_text(vx->vt.user_data,
+		     runstart, line, vx->runbuffer, run, attr);
+	run=0;
+#endif
       }
     }
-
-    c = l->data[i] & 0xff;
-    /* FIXME: this is needed for alternate charsets
-     * will need to do something else to mark empty-space and tabs?
-     */
-    if ((c == 0) || (c == 9))
-      c = ' ';
-    *p++ = c;
-    run++;
   }
 
   if (run) {
-    d(printf("found a run of %d characters from %d: '", run, runstart));
-    d(fwrite(vx->runbuffer, run, 1, stdout));
-    vt_draw_text(vx->vt.user_data, runstart, line, vx->runbuffer, run, attr);
-    d(printf("'\n"));
+    vt_draw_text(vx->vt.user_data,
+		 runstart, line, vx->runbuffer, run, attr);
   }
+
   l->modcount = 0;
   bl->line = line;
+  l->line = line;
 
   g_free(newline);
 }
-
 
 
 int vt_get_attr_at (struct _vtx *vx, int col, int row)
@@ -314,84 +257,208 @@ int vt_get_attr_at (struct _vtx *vx, int col, int row)
   scroll/update a section of lines
   from firstline (fn), scroll count lines 'offset' lines
 */
-static void vt_scroll_update(struct _vtx *vx, int firstline, int count, int offset)
+static int vt_scroll_update(struct _vtx *vx, struct vt_line *fn, int firstline, int count, int offset, int scrolled)
 {
-  struct vt_line *tn, *bn, *dn, *nn;	/* top/bottom of scroll area */
+  struct vt_line *tn, *bn, *dn, *nn, *bl;	/* top/bottom of scroll area */
   int i, fill;
+  int force;
+  int top,bottom;
+  int index;
+
+  /* if we are not scrolling, then the background doesn't need rendering! */
+  if (vx->scroll_type == VT_SCROLL_SOMETIMES)
+    force=1;
+  else
+    force=0;
 
   d(printf("scrolling %d lines from %d, by %d\n", count, firstline, offset));
 
   d({
+    struct vt_line *wn;
     printf("before:\n");
-    dn = &vx->vt.lines_back.head;
-    while(dn) {
-      printf("node %p:  n: %p  p:%p -> %d\n", dn, dn->next, dn->prev, dn->line);
-      dn = dn->next;
+    wn = &vx->vt.lines_back.head;
+    while(wn) {
+      printf("node %p:  n: %p  p:%p -> %d\n", wn, wn->next, wn->prev, wn->line);
+      wn = wn->next;
     }
   });
 
+  /* if we can optimise scrolling - do so */
+  if (vx->scroll_type == VT_SCROLL_ALWAYS
+      || (vx->scroll_type == VT_SCROLL_SOMETIMES
+	  && count>(vx->vt.height/2))) {
 
-  /* find start/end of scroll area */
-  if (offset > 0) {
-    /* grab n lines at bottom of scroll area, and move them to above it */
-    tn = (struct vt_line *)vt_list_index(&vx->vt.lines_back, firstline);
-    nn = (struct vt_line *)vt_list_index(&vx->vt.lines, firstline);
-    bn = (struct vt_line *)vt_list_index(&vx->vt.lines_back, firstline+offset-1);
-    dn = (struct vt_line *)vt_list_index(&vx->vt.lines_back, firstline+count+offset);
-  } else {
-    /* grab n lines at top of scroll area, and move them to below it */
-    tn = (struct vt_line *)vt_list_index(&vx->vt.lines_back, firstline+count+offset);
-    nn = (struct vt_line *)vt_list_index(&vx->vt.lines, firstline+count+offset);
-    bn = (struct vt_line *)vt_list_index(&vx->vt.lines_back, firstline+count-1);
-    dn = (struct vt_line *)vt_list_index(&vx->vt.lines_back, firstline+offset);
-  }
-
-  if (!tn || !nn || !bn || !dn)
-    {
+    /* find start/end of scroll area */
+    if (offset > 0) {
+      /* grab n lines at bottom of scroll area, and move them to above it */
+      tn = (struct vt_line *)vt_list_index(&vx->vt.lines_back, firstline);
+      nn = (struct vt_line *)vt_list_index(&vx->vt.lines, firstline);
+      bn = (struct vt_line *)vt_list_index(&vx->vt.lines_back, firstline+offset-1);
+      dn = (struct vt_line *)vt_list_index(&vx->vt.lines_back, firstline+count+offset);
+    } else {
+      /* grab n lines at top of scroll area, and move them to below it */
+      tn = (struct vt_line *)vt_list_index(&vx->vt.lines_back, firstline+count+offset);
+      nn = (struct vt_line *)vt_list_index(&vx->vt.lines, firstline+count+offset);
+      bn = (struct vt_line *)vt_list_index(&vx->vt.lines_back, firstline+count-1);
+      dn = (struct vt_line *)vt_list_index(&vx->vt.lines_back, firstline+offset);
+    }
+    
+    if (!tn || !nn || !bn || !dn) {
       g_error("vt_scroll_update tn=%p nn=%p bn=%p dn=%p\n", tn, nn, bn, dn);
     }
 
-  /*    
-    0->dn->4->tn->1->2->bn->5
-    0->dn->4->5
-    0->tn->1->2->bn->dn->4->5
-  */
+    /*    
+	  0->dn->4->tn->1->2->bn->5
+	  0->dn->4->5
+	  0->tn->1->2->bn->dn->4->5
+    */
+    
+    /* remove the scroll segment */
+    tn->prev->next = bn->next;
+    bn->next->prev = tn->prev;
+    
+    /* insert it again at the destination */
+    tn->prev = dn->prev;
+    dn->prev->next = tn;
+    bn->next = dn;
+    dn->prev = bn;
+    
+    d({
+      struct vt_line *wn;
+      int line;
+      printf("After\n");
+      wn = &vx->vt.lines_back.head;
+      line=0;
+      while(wn && line<vx->vt.height) {
+	printf("node %p:  n: %p  p:%p -> %d\n", wn, wn->next, wn->prev, wn->line);
+	wn = wn->next;
+	line++;
+      }
+    });
 
-  /* remove the scroll segment */
-  tn->prev->next = bn->next;
-  bn->next->prev = tn->prev;
-  
-  /* insert it again at the destination */
-  tn->prev = dn->prev;
-  dn->prev->next = tn;
-  bn->next = dn;
-  dn->prev = bn;
+    /* this 'clears' the rendered data, to properly reflect what just happened.
+       SPEEDUP: I suppose we could just leave it as is if we dont have a pixmap ... */
+    fill = nn->data[0] & VTATTR_MASK;
+    do {
+      d(printf("clearning line %d\n", tn->line));
+      for (i = 0; i < tn->width; i++) {
+	tn->data[i] = fill;
+      }
+    } while ((tn!=bn) && (tn=tn->next));
+    
+    /* find out what colour the new lines is - make it match (use
+     * first character as a guess), and perform the visual scroll 
+     */
+    d(printf("firstline = %d, count = %d, offset = %d\n", firstline, count, offset));
+    
+    /* idea:
+       if scrolling 'most' of the screen, always scroll.
+       then fix up the other areas by redrawing them, so the background repairs.
+    */
+    
+    d(printf("scrolling ...\n"));
+    fill = (nn->data[0] & VTATTR_BACKCOLOURM) >> VTATTR_BACKCOLOURB;
+    vt_scroll_area(vx->vt.user_data, firstline, count, offset, fill);
+    /* force update of every other line */
 
-  d({
-    printf("After\n");
-    dn = &vx->vt.lines_back.head;
-    while(dn) {
-      printf("node %p:  n: %p  p:%p -> %d\n", dn, dn->next, dn->prev, dn->line);
-      dn = dn->next;
+    /* get the top line */
+    index = vx->vt.scrollbackoffset;
+    if (index<0) {
+      nn = (struct vt_line *)vt_list_index(&vx->vt.scrollback, index);
+      if (!nn) {
+	/* check for error condition */
+	printf("LINE UNDERFLOW!\n");
+	nn = (struct vt_line *)vx->vt.scrollback.head;
+      }
+    } else {
+      nn = (struct vt_line *)vx->vt.lines.head;
     }
-  });
+    bl = (struct vt_line *)vx->vt.lines_back.head;
 
-  /* find out what colour the new lines is - make it match (use
-   * first character as a guess), and perform the visual scroll 
-   */
-  fill = (nn->data[0] & VTATTR_BACKCOLOURM) >> VTATTR_BACKCOLOURB;
-  vt_scroll_area(vx->vt.user_data, firstline, count, offset, fill);
+    top=firstline;bottom=firstline+count-1;
+    
+    d(printf("fixing up [force=%d] from %d-%d\n", force, top, bottom));
+    for (i=0;nn->next && i<vx->vt.height;i++) {
+      d(printf("looking at line %d [%p] ", i, nn));
+      if (i<top || i>bottom) {
+	d(printf("forcing update of %d [force=%d]\n", i, force));
+	vt_line_update(vx, nn, bl, i, force, 0, nn->width);
+      } else {
+	d(printf(" leaving\n"));
+	/* umm, force this line not updated */
+	nn->line = i;
+      }
+      nn->line = i;
+      d(printf("%p: line %d, was %d\n", nn, i, nn->line));
 
-  /* need to clear tn->bn lines.  Use attributes from first 
-   * character of corresponding new line 
-   */
-  fill = nn->data[0] & VTATTR_MASK;
-  do {
-    d(printf("clearning line %d\n", tn->line));
-    for (i = 0; i < tn->width; i++) {
-      tn->data[i] = fill;
+      if (nn==(struct vt_line *)vx->vt.scrollback.tailpred) {
+	d(printf("++ skipping to real lines at line %d\n", line));
+	nn = (struct vt_line *)vx->vt.lines.head;
+      } else {
+	d(printf("++ going to next line ...\n"));
+	nn = nn->next;
+      }
+      bl = bl->next;
     }
-  } while ((tn!=bn) && (tn=tn->next));
+    scrolled=1;
+  } else {
+    nn = fn;
+    /* otherwise, scroll the area by redrawing what we have ... */
+
+    /* we only have to force if we've scrolled this time */
+    if (!scrolled && force)
+      force=0;
+
+    d(printf("fake scrolling ... [force=%d]\n", force));
+    if (offset>0) {
+      bl = (struct vt_line *)vt_list_index(&vx->vt.lines_back, firstline);
+
+      for (i=firstline;nn->next && i<(firstline+count+offset);i++) {
+	d(printf("updating line %d\n", i));
+	vt_line_update(vx, nn, bl, i, force, 0, nn->width);
+
+	if (nn==(struct vt_line *)vx->vt.scrollback.tailpred) {
+	  d(printf("++ skipping to real lines at line %d\n", line));
+	  nn = (struct vt_line *)vx->vt.lines.head;
+	} else {
+	  d(printf("++ going to next line ...\n"));
+	  nn = nn->next;
+	}
+	bl = bl->next;
+      }
+    } else {
+      index = vx->vt.scrollbackoffset + offset + firstline;
+
+      if (index<0) {
+	nn = (struct vt_line *)vt_list_index(&vx->vt.scrollback, index);
+	if (!nn) {
+	  /* check for error condition */
+	  printf("LINE UNDERFLOW!\n");
+	  nn = (struct vt_line *)vx->vt.scrollback.head;
+	}
+      } else {
+	nn = (struct vt_line *)vt_list_index(&vx->vt.lines, index);
+      }
+      bl = (struct vt_line *)vt_list_index(&vx->vt.lines_back, offset+firstline);
+
+      d(printf("updating %d to %d\n", firstline+offset, firstline+count));
+      
+      d(printf("negative offset - ooops\n"));
+      for (i=firstline+offset;nn->next && i<firstline+count;i++) {
+	d(printf("updating line %d\n", i));
+	vt_line_update(vx, nn, bl, i, force, 0, nn->width);
+	if (nn==(struct vt_line *)vx->vt.scrollback.tailpred) {
+	  d(printf("++ skipping to real lines at line %d\n", line));
+	  nn = (struct vt_line *)vx->vt.lines.head;
+	} else {
+	  d(printf("++ going to next line ...\n"));
+	  nn = nn->next;
+	}
+	bl = bl->next;
+      }
+    }
+  }
+  return scrolled;
 }
 
 /*
@@ -409,11 +476,12 @@ void vt_update(struct _vtx *vx, int update_state)
   int line=0;
   int offset;
   int oldoffset=0;
-  struct vt_line *wn, *nn, *fn;
+  struct vt_line *wn, *nn, *fn, *bl;
   int firstline;
   int old_state;
   int update_start=-1;	/* where to start/stop update */
   int update_end=-1;
+  int scrolled=0, force;
 
   d(printf("updating screen\n"));
 
@@ -473,23 +541,26 @@ void vt_update(struct _vtx *vx, int update_state)
     firstline = 0;		/* this isn't really necessary (quietens compiler) */
     fn = wn;
     while (nn && line<vx->vt.height) {
+      int oldline;
 
       /* enforce full update for 'scrollback' areas */
       if (line>update_start && line<update_end) {
 	d(printf("forcing scroll update refresh (line %d)\n", line));
-	wn->line = -1;
+	oldline = -1;
+      } else {
+	oldline = wn->line;
       }
 
       d(printf("%p: scanning line %d, offset=%d : line = %d\n ", wn, line, (wn->line-line), wn->line));
       d(printf("(%d - %d)\n", line, wn->line));
-      if ((wn->line!=-1) && ((offset = wn->line-line) >0)) {
+      if ((oldline!=-1) && ((offset = oldline-line) >0)) {
 	wn->line = line;
 	if (offset == oldoffset) {
 	  /* accumulate "update" lines */
 	} else {
 	  if (oldoffset != 0) {
 	    d(printf("scrolling (1.1)\n"));
-	    vt_scroll_update(vx, firstline, line-firstline, oldoffset); /* scroll/update a line */
+	    scrolled = vt_scroll_update(vx, fn, firstline, line-firstline, oldoffset, scrolled); /* scroll/update a line */
 	  }
 	  d(printf("found a scrolled line\n"));
 	  firstline = line;	/* first line to scroll */
@@ -498,7 +569,7 @@ void vt_update(struct _vtx *vx, int update_state)
       } else {
 	if (oldoffset != 0) {
 	  d(printf("scrolling (1.2)\n"));
-	  vt_scroll_update(vx, firstline, line-firstline, oldoffset); /* scroll/update a line */
+	  scrolled = vt_scroll_update(vx, fn, firstline, line-firstline, oldoffset, scrolled); /* scroll/update a line */
 	}
 	offset=0;
       }
@@ -519,7 +590,7 @@ void vt_update(struct _vtx *vx, int update_state)
     if (oldoffset != 0) {
       d(printf("scrolling (1.3)\n"));
       d(printf("oldoffset = %d, must scroll\n", oldoffset));
-      vt_scroll_update(vx, firstline, line-firstline, oldoffset); /* scroll/update a line */
+      scrolled = vt_scroll_update(vx, fn, firstline, line-firstline, oldoffset, scrolled); /* scroll/update a line */
     }
 
     /* now scan backwards ! */
@@ -537,16 +608,27 @@ void vt_update(struct _vtx *vx, int update_state)
     line = vx->vt.height;
     oldoffset = 0;
     while (nn && line) {
+      int oldline;
+
       line--;
+
+      /* enforce full update for 'scrollback' areas */
+      if (line>update_start && line<update_end) {
+	d(printf("forcing scroll update refresh (line %d)\n", line));
+	oldline = -1;
+      } else {
+	oldline = wn->line;
+      }
+
       d(printf("%p: scanning line %d, offset=%d : line = %d, oldoffset=%d\n ", wn, line, (wn->line-line), wn->line, oldoffset));
-      if ((wn->line !=-1) && ((offset = wn->line-line) < 0)) {
+      if ((oldline !=-1) && ((offset = oldline-line) < 0)) {
 	wn->line = line;
 	if (offset == oldoffset) {
 	  /* accumulate "update" lines */
 	} else {
 	  if (oldoffset != 0) {
 	    d(printf("scrolling (2.1)\n"));
-	    vt_scroll_update(vx, line, firstline-line+1, oldoffset); /* scroll/update a line */
+	    scrolled = vt_scroll_update(vx, fn, line, firstline-line+1, oldoffset, scrolled); /* scroll/update a line */
 	  }
 	  d(printf("found a scrolled line\n"));
 	  firstline = line;	/* first line to scroll */
@@ -555,7 +637,7 @@ void vt_update(struct _vtx *vx, int update_state)
       } else {
 	if (oldoffset != 0) {
 	  d(printf("scrolling (2.2)\n"));
-	  vt_scroll_update(vx, line+1, firstline-line, oldoffset); /* scroll/update a line */
+	  scrolled = vt_scroll_update(vx, fn, line+1, firstline-line, oldoffset, scrolled); /* scroll/update a line */
 	}
 	offset=0;
       }
@@ -576,7 +658,7 @@ void vt_update(struct _vtx *vx, int update_state)
     if (oldoffset != 0) {
       d(printf("scrolling (2.3)\n"));
       d(printf("oldoffset = %d, must scroll 2\n", oldoffset));
-      vt_scroll_update(vx, 0, firstline-line+1, oldoffset); /* scroll/update a line */
+      scrolled = vt_scroll_update(vx, fn, 0, firstline-line+1, oldoffset, scrolled); /* scroll/update a line */
     }
 
     /* have to align the pointer properly for the last pass */
@@ -587,23 +669,31 @@ void vt_update(struct _vtx *vx, int update_state)
       d(printf("++ going to next line ...\n"));
       wn = wn->next;
     }
-
   }
 
   /* now, re-scan, since all lines should be at the right position now,
      and update as required */
   d(printf("scanning from top again\n"));
 
+  /* see if we have to force an update */
+  if (scrolled && vx->scroll_type == VT_SCROLL_SOMETIMES)
+    force = 1;
+  else
+    force = 0;
+
   nn = wn->next;
   firstline = 0;		/* this isn't really necessary */
   fn = wn;
   line=0;
+  bl = (struct vt_line *)vx->vt.lines_back.head;
   while (nn && line<vx->vt.height) {
     d(printf("%p: scanning line %d, was %d\n", wn, line, wn->line));
     if (wn->line==-1) {
-      vt_line_update(vx, wn, line, 0, 0, wn->width);
+      vt_line_update(vx, wn, bl, line, 0, 0, wn->width);
+      d(printf("manual: updating line %d\n", line));
     } else if (wn->modcount || update_state&UPDATE_REFRESH) {
-      vt_line_update(vx, wn, line, update_state, 0, wn->width);
+      vt_line_update(vx, wn, bl, line, force, 0, wn->width);
+      d(printf("manual, forced: updating line %d\n", line));
     }
     wn->line = line;		/* make sure line is reset */
     line++;
@@ -617,6 +707,7 @@ void vt_update(struct _vtx *vx, int update_state)
     }
     
     nn = wn->next;
+    bl = bl->next;
     d(printf("  -- wn = %p, wn->next = %p\n", wn, wn->next));
   }
 
@@ -651,12 +742,17 @@ void vt_update(struct _vtx *vx, int update_state)
 
   pass in rectangle of screen to draw (in pixel coordinates)
    - assumes screen order is up-to-date.
+   fill is the 'colour' the rectangle is currently.  use a fill colour of -1
+   to indicate that the contents of the screen is unknown.
 */
-void vt_update_rect(struct _vtx *vx, int csx, int csy, int cex, int cey)
+void vt_update_rect(struct _vtx *vx, int fill, int csx, int csy, int cex, int cey)
 {
   int lines;
   struct vt_line *wn, *nn;
   int old_state;
+  int i;
+  struct vt_line *bl;
+  uint32 fillin;
 
   old_state = vt_cursor_state(vx->vt.user_data, 0);	/* ensure cursor is really off */
 
@@ -681,11 +777,21 @@ void vt_update_rect(struct _vtx *vx, int csx, int csy, int cex, int cey)
   } else {
     wn = (struct vt_line *)vt_list_index(&vx->vt.lines, vx->vt.scrollbackoffset+csy);
   }
+
+  bl = (struct vt_line *)vt_list_index(&vx->vt.lines_back, csy);
+  fillin = (fill<<VTATTR_BACKCOLOURB)&VTATTR_BACKCOLOURM;
+
   if (wn) {
     nn = wn->next;
     while ((csy<=cey) && nn) {
       d(printf("updating line %d\n", csy));
-      vt_line_update(vx, wn, csy, 1, csx, cex);
+
+      /* make the back buffer match the screen state */
+      for (i=csx;i<cex && i<bl->width;i++) {
+	bl->data[i] = fillin;
+      }
+
+      vt_line_update(vx, wn, bl, csy, 0, csx, cex);
       csy++;
 
       /* skip out of scrollback buffer if need be */
@@ -696,6 +802,7 @@ void vt_update_rect(struct _vtx *vx, int csx, int csy, int cex, int cey)
       }
 
       nn = wn->next;
+      bl = bl->next;
     }
   }
 
@@ -855,7 +962,6 @@ void vt_fix_selection(struct _vtx *vx)
 	ex++;
   }
 
-#if 1
   if ( ((vx->selstarty == vx->selendy) && (vx->selstartx > vx->selendx)) ||
        (vx->selstarty > vx->selendy) ) {
     vx->selstartx = ex;		/* swap end/start values */
@@ -864,18 +970,6 @@ void vt_fix_selection(struct _vtx *vx)
     vx->selstartx = sx;		/* swap end/start values */
     vx->selendx = ex;
   }
-#else
-  if ( ((vx->selstarty == vx->selendy) && (vx->selstartx > vx->selendx)) ||
-       (vx->selstarty > vx->selendy) ) {
-    vx->selectiontype = (vx->selectiontype & ~(VT_SELTYPE_BYSTART|VT_SELTYPE_BYEND))|VT_SELTYPE_BYEND;
-  } else {
-    vx->selectiontype = (vx->selectiontype & ~(VT_SELTYPE_BYSTART|VT_SELTYPE_BYEND))|VT_SELTYPE_BYSTART;
-  }
-  vx->selstartx = sx;
-  vx->selstarty = sy;
-  vx->selendx = ex;
-  vx->selendy = ey;
-#endif
 
   d(printf("fixed selection, now    at (%d,%d) (%d,%d)\n", sx, sy, ex, ey));
 }
@@ -1047,7 +1141,7 @@ void vt_clear_selection(struct _vtx *vx)
 static void vt_draw_selection_part(struct _vtx *vx, int sx, int sy, int ex, int ey)
 {
   int tmp;
-  struct vt_line *l;
+  struct vt_line *l, *bl;
   int line;
 
   /* always draw top->bottom */
@@ -1059,16 +1153,26 @@ static void vt_draw_selection_part(struct _vtx *vx, int sx, int sy, int ex, int 
   d(printf("selecting from (%d,%d) to (%d,%d)\n", sx, sy, ex, ey));
 
   line = sy;
-  if (line<0)
+  if (line<0) {
     l = (struct vt_line *)vt_list_index(&vx->vt.scrollback, line);
-  else
+  } else {
     l = (struct vt_line *)vt_list_index(&vx->vt.lines, line);
+  }
+
+  if ((line-vx->vt.scrollbackoffset)>=0)
+    bl = (struct vt_line *)vt_list_index(&vx->vt.lines_back, line-vx->vt.scrollbackoffset);
+  else
+    bl = (struct vt_line *)vx->vt.lines_back.head;
 
   d(printf("selecting from (%d,%d) to (%d,%d)\n", sx, sy-vx->vt.scrollbackoffset, ex, ey-vx->vt.scrollbackoffset));
   while ((line<=ey) && (l->next) && ((line-vx->vt.scrollbackoffset)<vx->vt.height)) {
     d(printf("line %d = %p ->next = %p\n", line, l, l->next));
-    if ((line-vx->vt.scrollbackoffset)>=0)
-      vt_line_update(vx, l, line-vx->vt.scrollbackoffset, 1, 0, l->width);
+    if ((line-vx->vt.scrollbackoffset)>=0) {
+      vt_line_update(vx, l, bl, line-vx->vt.scrollbackoffset, 0, 0, l->width);
+      bl=bl->next;
+      if (bl->next==0)
+	return;
+    }
     line++;
     if (line==0) {
       l = (struct vt_line *)vt_list_index(&vx->vt.lines, 0);
@@ -1151,6 +1255,7 @@ struct _vtx *vtx_new(int width, int height, void *user_data)
 
   vx->runbuffer = 0L;
   vx->runbuffer_size = 0;
+  vx->scroll_type = VT_SCROLL_ALWAYS;
 
   /* other parameters initialised to 0 by calloc */
 

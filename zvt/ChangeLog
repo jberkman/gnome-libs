@@ -1,3 +1,119 @@
+1999-06-02  Michael Zucchi  <mzucchi@zedzone.mmc.com.au>
+
+	* zvtterm.c (vt_scroll_area): Added back some old code from about
+	version 1.10, that forces all expose events to be processed before
+	scrolling exits.  If we are rendering scrolled pixmaps, things get
+	kinda bogged down and events get processed out of order.
+
+	* Merged ZVT_PXIMAP branch back to head!
+
+1999-06-02  Michael Zucchi  <mzucchi@zedzone.mmc.com.au >
+
+	* zvtterm.c (zvt_term_init): Set _zvtprivate data before calling
+	any functions.
+	(zvt_term_set_fonts_internal): Create the bold-save pixmap of the
+	right size, if we need it (rendering bold).
+	(vt_draw_text): When drawing a bold text, grab 1 pixel of data
+	past the end of the text, draw it, embolden it, then draw the
+	pixmap back again.  What a mess, but required for some TINY fonts
+	which use up all of thier size.
+	(zvt_term_destroy): Free the bold_save pixmap if it was setup.
+	(zvt_term_init): Initialise bold_save pointer to null.
+
+	* zvtterm.h (struct _zvtprivate): Add bold_save - a pixmap used to
+	save possibly overwritten screen when algorithmically generating
+	bold.
+
+	* update.c (vt_draw_selection_part): Make sure the back line
+	matches the draw line.  Broke badly on selecting in scrollback.
+
+1999-06-02  Michael Zucchi  <mzucchi@denr.sa.gov.au>
+
+	* update.c (vt_line_update): Added background line to use for
+	updates.  Fixed all callers.  Saves a lot of calls to
+	vt_list_index() for each line rendered (maybe tops 2-3% difference).
+
+	* zvtterm.c (zvt_term_draw): Pass in background colour just
+	cleared to update_rect, so we dont render it twice.
+	(zvt_term_expose): Ditto.
+
+	* update.c (vt_line_update): Almost completely rewritten.
+	Simpler, and more obvious, and faster too!
+	(vt_update_rect): Added a fill argument, the fill colour that the
+	rectangle is set to.
+	(vt_draw_selection_part): Dont force update, cleaner selection
+	visual.
+	(vt_update): Only force background update if we are on a scrolled pixmap.
+
+1999-06-01  Michael Zucchi  <mzucchi@zedzone.mmc.com.au>
+
+	* zvtterm.c (zvt_term_set_color_scheme): Removed reference to
+	term_window.
+	(zvt_term_realize): Same.
+	(vt_draw_text): Dont draw a background box explicity, use
+	XDrawImageString() when we can get away with it.  Maybe this saves
+	X traffic?
+
+	* vt.c (vt_resize_lines): Fixed up the indenting again.
+	(vt_resize): More indenting fixes.
+
+	* vtx.h (struct _vtx): Added scroll_type to the _vtx structure.
+	Indicates how the display might be scrolled, always (no
+	background) sometimes (scrolling background), or never (static
+	background).  Added to end of structure, still bin compatible.
+
+	* zvtterm.c (zvt_term_realize): No longer setup a separate
+	terminal window.
+	(zvt_term_unrealize): Removed references to term_window.
+	(zvt_term_map): Ditto.
+	(zvt_term_unmap): Ditto.
+	(zvt_term_focus_in): Ditto.
+	(zvt_term_draw): Ditto.  Also use back_gc as the clearing
+	mechanism.
+	(zvt_term_expose): Ditto.  Also use fill to back_gc as the
+	clearning mechanism for pixmap backgrounds.
+	(zvt_term_show_pointer): Ditto.
+	(zvt_term_hide_pointer): Ditto.
+	(zvt_term_button_press): Ditto.
+	(zvt_term_button_release): Ditto.
+	(vt_draw_text): Ditto, plus a whole bunch of other messy changes!
+	Render pixmaps differently, and use XDrawImageString() when we can
+	for less X traffic.  Offset rendering by klass->width/height,etc.
+	(vt_scroll_area): Ditto.  Account for scrolling pixmap offsets
+	here.
+	(load_background): Ditto.  General code cleanup.  Renamed from
+	draw_back_pixmap.
+
+	* zvtterm.h: New options, ZVT_TERM_PIXMAPSCROLL_SUPPORT and
+	ZVT_TERM_TRANSPARENCY_SUPPORT, indicating that the terminal can do
+	transparency/scrolling pixmap.  Transparency support is calculated
+	at run time.  These should be checked with a #ifdef for 1.0.x
+	code.
+	New flag options to set_background.
+
+	* update.c (vt_scroll_update): Significant changes.  The update
+	algorithm now knows about scrolled/static backgrounds.  It uses
+	this to try and optimise screen updates.
+	(vt_update): A whole bunch of changes to accomodate the changes to
+	the scroll_update.
+	(vt_line_update): If we are in a scrolled-background mode, never
+	let the background text match, since the background !=
+	background.  This should be dependent on if we are updating a
+	previously scrolled section or not?  Room for minor speedup.
+	(vt_fix_selection): Removed some old dead code.
+
+1999-05-31  Michael Zucchi  <mzucchi@denr.sa.gov.au>
+
+	* zterm.c (main): Repaired the fucked-up indenting.
+
+	* vt.c (vt_erase_chars): Only erase 'n' characters, rather than
+	from here+n to end of line.  I think i got that really wrong last
+	time.
+
+1999-05-29  Michael Zucchi  <mzucchi@denr.sa.gov.au>
+
+	* vt.c (vt_tab): Set attributes for tab's too.
+
 1999-05-24  Miguel de Icaza  <miguel@nuclecu.unam.mx>
 
 	* gnome-login-support.c: Do not use ifdef (HAVE_STROPTS) but ifdef

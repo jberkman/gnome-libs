@@ -326,7 +326,7 @@ vt_scroll_down(struct vt_em *vt, int count)
   struct vt_line *wn, *nn;
   int i;
   uint32 blank = vt->attr & VTATTR_CLEARMASK;
-  
+
   d(printf("vt_scroll_down count=%d top=%d bottom=%d\n",
 	   count, vt->scrolltop, vt->scrollbottom));
 
@@ -425,7 +425,7 @@ vt_erase_chars(struct vt_em *vt, int count)
   int i;
 
   l = vt->this_line;
-  for (i = vt->cursorx+count;i<l->width;i++)
+  for (i = vt->cursorx; i<vt->cursorx+count && i<l->width;i++)
     l->data[i] = vt->attr & VTATTR_CLEARMASK;
 }
 
@@ -637,7 +637,7 @@ static void vt_tab(struct vt_em *vt)
     /* We do not store the attribute as tabs are transparent
      * with respect to attributes
      */
-    l->data[vt->cursorx] = 9 | VTATTR_CLEAR;
+    l->data[vt->cursorx] = 9 | vt->attr;
   }
 
   /* move cursor to new tab position */
@@ -1845,47 +1845,40 @@ vt_resize_lines(struct vt_line *wn, int width, uint32 default_attr)
     /* d(printf("wn->line=%d wn->width=%d width=%d\n", wn->line, wn->width, width)); */
     
     /* terminal width grew */
-    if (wn->width < width)
-      {
-	/* get the attribute of the last charactor for fill */
-	if (wn->width > 0)
-	  {
-	    c = wn->data[wn->width-1] & VTATTR_MASK;
-	  }
-	else
-	  {
-	    c = default_attr;
-	  }
-
-	/* resize the line */
-	wn = g_realloc(wn, VT_LINE_SIZE(width));
-	
-	/* re-link line into linked list */
-	wn->next->prev = wn;
-	wn->prev->next = wn;
-	
-	/* if the line got bigger, fix it up */
-	for (i = wn->width; i < width; i++) 
-	  {
-	    wn->data[i] = c;
-	    wn->modcount++;
-	    }
-	
-	wn->width = width;
+    if (wn->width < width) {
+      /* get the attribute of the last charactor for fill */
+      if (wn->width > 0)
+	c = wn->data[wn->width-1] & VTATTR_MASK;
+      else
+	c = default_attr;
+      
+      /* resize the line */
+      wn = g_realloc(wn, VT_LINE_SIZE(width));
+      
+      /* re-link line into linked list */
+      wn->next->prev = wn;
+      wn->prev->next = wn;
+      
+      /* if the line got bigger, fix it up */
+      for (i = wn->width; i < width; i++) {
+	wn->data[i] = c;
+	wn->modcount++;
       }
+	
+      wn->width = width;
+    }
     
     /* terminal shrunk */
-    if (wn->width > width) 
-      {
-	/* resize the line */
-	wn = g_realloc(wn, VT_LINE_SIZE(width));
-	
-	/* re-link line into linked list */
-	wn->next->prev = wn;
-	wn->prev->next = wn;
-	
-	wn->width = width;
-      }
+    if (wn->width > width) {
+      /* resize the line */
+      wn = g_realloc(wn, VT_LINE_SIZE(width));
+      
+      /* re-link line into linked list */
+      wn->next->prev = wn;
+      wn->prev->next = wn;
+      
+      wn->width = width;
+    }
     
     wn = nn;
     nn = nn->next;
@@ -1934,46 +1927,40 @@ void vt_resize(struct vt_em *vt, int width, int height, int pixwidth, int pixhei
        * switch to a mode where we just dispose of the lines at the bottom
        * of the terminal
        */
-      if (vt->cursory==0)
-	{
-	  if ( (wn = (struct vt_line *)vt_list_remtail(&vt->lines)) ) {
-	    g_free(wn);
-	  }
+      if (vt->cursory==0) {
+	if ( (wn = (struct vt_line *)vt_list_remtail(&vt->lines)) )
+	  g_free(wn);
+	
+	/* and for 'alternate' screen */
+	if ( (wn = (struct vt_line *)vt_list_remtail(&vt->lines_alt)) )
+	  g_free(wn);
 	  
-	  /* and for 'alternate' screen */
-	  if ( (wn = (struct vt_line *)vt_list_remtail(&vt->lines_alt)) ) {
-	    g_free(wn);
-	  }
-	  
-	  /* repeat for backbuffer */
-	  if ( (wn = (struct vt_line *)vt_list_remtail(&vt->lines_back)) )
-	    g_free(wn);
+	/* repeat for backbuffer */
+	if ( (wn = (struct vt_line *)vt_list_remtail(&vt->lines_back)) )
+	  g_free(wn);
+      } else {
+	if ( (wn = (struct vt_line *)vt_list_remhead(&vt->lines)) ) {
+	  if ((vt->mode & VTMODE_ALTSCREEN)==0)
+	    vt_scrollback_add(vt, wn);
+	  g_free(wn);
 	}
-      else
-	{
-	  if ( (wn = (struct vt_line *)vt_list_remhead(&vt->lines)) ) {
-	    if ((vt->mode & VTMODE_ALTSCREEN)==0)
-	      vt_scrollback_add(vt, wn);
-	    g_free(wn);
-	  }
-	  
-	  /* and for 'alternate' screen */
-	  if ( (wn = (struct vt_line *)vt_list_remhead(&vt->lines_alt)) ) {
-	    if ((vt->mode & VTMODE_ALTSCREEN)!=0)
-	      vt_scrollback_add(vt, wn);
-	    g_free(wn);
-	  }
-	  
-	  /* repeat for backbuffer */
-	  if ( (wn = (struct vt_line *)vt_list_remhead(&vt->lines_back)) )
-	    g_free(wn);
-
-	  vt->cursory--;
+	
+	/* and for 'alternate' screen */
+	if ( (wn = (struct vt_line *)vt_list_remhead(&vt->lines_alt)) ) {
+	  if ((vt->mode & VTMODE_ALTSCREEN)!=0)
+	    vt_scrollback_add(vt, wn);
+	  g_free(wn);
 	}
-
+	
+	/* repeat for backbuffer */
+	if ( (wn = (struct vt_line *)vt_list_remhead(&vt->lines_back)) )
+	  g_free(wn);
+	
+	vt->cursory--;
+      }
       count--;
     }
-
+    
     /* reset the line index of now-missing lines to -1 */
     count = vt->height - height;
     if ((vt->mode & VTMODE_ALTSCREEN)==0)
