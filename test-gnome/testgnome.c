@@ -440,7 +440,7 @@ create_test_dialog (GtkWidget * ignored, gboolean * settings)
   
   if (settings[modal]) {
     g_print("Modal... ");
-    gnome_dialog_set_modal(dialog);
+    gtk_window_set_modal(dialog);
   }
   if (settings[just_hide]) {
     g_print("Close hides... ");
