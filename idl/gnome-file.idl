@@ -1,0 +1,58 @@
+#ifndef __GNOME_FILE_IDL__
+#define __GNOME_FILE_IDL__
+
+#if defined(__ORBIT_IDL__)
+%{
+#pragma include_defs gnome-file.idl
+%}
+#pragma inhibit push
+#endif
+
+#include <gnome-object.idl>
+
+module GNOME {
+	enum SEEKFROM {
+		SEEK_START,
+		SEEK_CURRENT,
+		SEEK_END
+	};
+
+	typedef long SearchOption;
+	const SearchOption REG_REGEX = 1
+	const SearchOption REG_ICASE = 2;
+	const SearchOption REG_NOSUB = 4;
+	const SearchOption REG_NEWLINE = 8;
+
+	interface FileFactory {
+		exception NotFound {};
+
+		Object open (in string path) raises (NotFound);
+		Object open_existing (in string path) raises (NotFound);
+	};
+
+	interface File : GNOME::object {
+		exception SaveError {};
+		exception OutOfRange {};
+		exception NotFound {};
+
+		readonly attribute string path;
+		readonly attribute unsigned long currentline;
+		readonly attribute unsigned long currentcolumn;
+
+		void scroll (in long                offset,
+		             in GNOME::SEEKFROM     whence) raises (OutOfRange);
+		void search (in string              regexp,
+		             in GNOME::SEEKFROM     whence,
+		             in GNOME::SearchOption flags) raises (NotFound);
+
+		void save () raises (SaveError);
+		void save_as (in string path) raises (SaveError);
+		void close ();
+	};
+};
+
+#if defined(__ORBIT_IDL__)
+#pragma inhibit pop
+#endif
+
+#endif /* __GNOME_FILEBUFFER_IDL__ */

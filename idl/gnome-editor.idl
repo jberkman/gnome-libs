@@ -1,35 +1,33 @@
 #ifndef __GNOME_EDITOR_IDL__
 #define __GNOME_EDITOR_IDL__
 
-
+#if defined(__ORBIT_IDL__)
+%{
+#pragma include_defs gnome-editor.h
+%}
 #pragma inhibit push
-#include <GnomeObject.idl>
-#pragma inhibit pop
+#endif
+
+#include <gnome-filebuffer.idl>
 
 module GNOME {
-	interface EditorFactory {
-		exception NotFound {};
 
-		Object open (in string path) raises (NotFound);
-  };
+	/* kept this because it looks cleaner (IMHO) when you use this */
+	interface EditorFactory : GNOME::FileFactory {
+	};
 
-	interface Editor : GNOME::object {
-		enum {
-			SCROLL_START,
-			SCROLL_CURRENT,
-			SCROLL_END
-		} ScrollFrom;
-
-		exception SaveError {};
-
-		void save () raises (SaveError);
-		void save_as (in string path) raises (SaveError);
-		void close ();
-
-		attribute currentline;
-		void scroll (in unsigned long offset, in ScrollFrom whence);
+	interface Editor : GNOME::File {
+		void insert (in string              new);
+		void delete (in unsigned long       charcount);
+		void replace (in string             regexp,
+		              in string             newstring,
+						  in GNOME::SEEKFROM    whence,
+		              in GNOME::SearchOption flags) raises (NotFound);
 	};
 };
 
+#if defined(__ORBIT_IDL__)
+#pragma inhibit pop
+#endif
 
 #endif /* __GNOME_EDITOR_IDL__ */
