@@ -30,13 +30,14 @@ libgnome.sgml:
 		cat trailer.sgml >> libgnome.sgml; \
 	fi
 
-TEXT_FILES =				\
-	README.gtkcauldron		\
-	README.gtkcauldron_for_python	\
-	adding-sounds.txt		\
-	api-comment-style.txt		\
-	gtk_dialog_cauldron.3		\
-	suggestions.txt			\
+TEXT_FILES =					\
+	README.gtkcauldron			\
+	README.gtkcauldron_for_python		\
+	adding-file-manager-new-items.txt	\
+	adding-sounds.txt			\
+	api-comment-style.txt			\
+	gtk_dialog_cauldron.3			\
+	suggestions.txt				\
 	mime-type-handling.txt
 
 # automake does not yet dig .sgml files, so for now the DocBook
