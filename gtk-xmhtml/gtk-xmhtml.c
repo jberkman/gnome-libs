@@ -2077,6 +2077,12 @@ gtk_xmhtml_set_topline (GtkXmHTML *html, int line)
 	gtk_xmhtml_try_sync (html);
 }
 
+int
+gtk_xmhtml_get_topline (GtkXmHTML *html)
+{
+	return html->html.top_line;
+}
+
 /* FIXME: should we support setting the scroll repeat value?  Motif code does it */
 
 void

@@ -132,6 +132,7 @@ void gtk_xmhtml_set_anchor_cursor                 (GtkXmHTML *html,
 						   int flag);
 void gtk_xmhtml_set_topline                       (GtkXmHTML *html,
 						   int line);
+int gtk_xmhtml_get_topline                        (GtkXmHTML *html);
 void gtk_xmhtml_set_freeze_animations             (GtkXmHTML *html,
 						   int flag);
 char *gtk_xmhtml_get_source                       (GtkXmHTML *html);
