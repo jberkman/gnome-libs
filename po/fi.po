@@ -69,7 +69,7 @@ msgstr "Moro Maailma Gnomena"
 #: gnome-hello/gnome-hello-4-SM.c:260
 msgid "GNOME is a civilized software system so we've a \"hello world\" program"
 msgstr ""
-"GNOME on sivistynyt ohjelma, jonka vuoksi meillä on \"hello world\" ohjelma"
+"GNOME on sivistynyt ohjelma, joten meillä on \"hello world\" ohjelma"
 
 #: gnome-hello/gnome-hello-3-parse-args.c:43
 msgid "Run silently"
@@ -137,7 +137,7 @@ msgstr "Poista lapsi"
 
 #: gnome-hello/gnome-hello-7-mdi.c:371
 msgid "Notebook"
-msgstr ""
+msgstr "Muistikirja"
 
 #: gnome-hello/gnome-hello-7-mdi.c:377
 msgid "Toplevel"
@@ -149,7 +149,7 @@ msgstr "Modaali"
 
 #: gnome-hello/gnome-hello-7-mdi.c:389
 msgid "MDI Mode"
-msgstr "MDI moodi"
+msgstr "MDI-moodi"
 
 #: gnome-hello/gnome-hello-7-mdi.c:438
 msgid "Children/"
@@ -216,7 +216,7 @@ msgstr " (kyllä tai ei)"
 
 #: libgnomeui/gnome-app-util.c:287
 msgid "  - OK? (yes or no)"
-msgstr "  - OK? (kyllä tai ei)"
+msgstr "  - OK? (kyllä vai ei)"
 
 #: libgnomeui/gnome-app-util.c:520
 msgid "Progress"
@@ -481,9 +481,9 @@ msgid ""
 "load\n"
 "icon"
 msgstr ""
-"Ei voinut\n"
+"Kuvaketta\n"
+"ei voitu\n"
 "ladata"
-"kuvaketta"
 
 #: libgnomeui/gnome-dentry-edit.c:603
 msgid "Choose an icon"
@@ -515,11 +515,11 @@ msgstr "DISPLAY"
 
 #: libgnomeui/gnome-init.c:51
 msgid "X display to use"
-msgstr "käytössä oleva X näyttö"
+msgstr "käytössä oleva X-näyttö"
 
 #: libgnomeui/gnome-init.c:53
 msgid "Don't use X shared memory extension"
-msgstr "Älä käytä X:n shared memory lisäystä"
+msgstr "Älä käytä X:n jaettu muisti -laajennusta"
 
 #: libgnomeui/gnome-init.c:54
 msgid "NAME"
@@ -625,7 +625,7 @@ msgstr "Edellinen"
 
 #: libgnomeui/gnome-stock.c:1646
 msgid "Menu Accelerator Keys"
-msgstr "Menun pikavalinta näppäimet"
+msgstr "Menun pikavalintanäppäimet"
 
 #: libgnomeui/gnome-stock.c:1648
 msgid "Global"
@@ -658,7 +658,7 @@ msgid ""
 "\n"
 "Do you want to exit this program?"
 msgstr ""
-"Ohjelmassa \"%s\" on bugi.\n"
+"Ohjelmassa \"%s\" on virhe.\n"
 "SIGSEGV havaittu PC %#lx :een PID %d. :ssä\n"
 "\n"
 "\n"
@@ -741,18 +741,18 @@ msgid ""
 "Couldn't open %s archive\n"
 "%s"
 msgstr ""
-"Ei voinut avata %s pakkausta\n"
+"Ei voinut avata %s-pakkausta\n"
 "%s"
 
 #: libvfs/extfs.c:300 libvfs/extfs.c:320
 msgid "Inconsistent extfs archive"
-msgstr "extfs on sekaisin"
+msgstr "extfs-pakkaus on sekaisin"
 
 # , c-format
 #: libvfs/ftpfs.c:602
 #, c-format
 msgid " Could not set source routing (%s)"
-msgstr " ei voinut asettaa lähde reititystä (%s)"
+msgstr " ei voinut asettaa lähdereititystä (%s)"
 
 #: libvfs/ftpfs.c:2783 libvfs/ftpfs.c:2798
 msgid ""
@@ -782,9 +782,9 @@ msgid ""
 " you need a password to log in, but the information may \n"
 " not be safe on the remote side.  Continue? \n"
 msgstr ""
-" Etä palvelin ei ole käynnissä systeemi portissa \n"
-" tarvitset salasanan kirjautuaksesi sisään, mutta informaatio voi\n"
-" olla epäturvallista pavelimella. Jatka? \n"
+" Etäpalvelin ei ole käynnissä systeemiportissa \n"
+" tarvitset salasanan kirjautuaksesi sisään, mutta informaatio ei\n"
+" välttämättä ole turvassa. Jatka? \n"
 
 
 # , fuzzy
@@ -799,7 +799,7 @@ msgstr "Ei"
 
 #: libvfs/mcfs.c:178
 msgid " The remote server is running on strange port. Giving up.\n"
-msgstr " Etä palvelin on käynnissä kummallisessa portissa. Luovutan. \n"
+msgstr " Etäpalvelin on käynnissä kummallisessa portissa. Luovutan. \n"
 
 #: libvfs/mcfs.c:190
 msgid " MCFS Password required "
@@ -807,7 +807,7 @@ msgstr " MCFS Salasana tarvitaan "
 
 #: libvfs/mcfs.c:204
 msgid " Invalid password "
-msgstr " Väärä salsana "
+msgstr " Väärä salasana "
 
 #: libvfs/mcfs.c:270
 msgid " Too many open connections "
@@ -815,7 +815,7 @@ msgstr " Liian monta yhteyttä "
 
 #: libvfs/tar.c:586
 msgid "Unexpected EOF on archive file"
-msgstr "Yllättävä EOF pakkaus tiedostossa"
+msgstr "Pakkaustiedo loppui odottamattomasti"
 
 #: libvfs/tar.c:640 libvfs/tar.c:661
 msgid "Inconsistent tar archive"
@@ -843,7 +843,7 @@ msgid ""
 msgstr ""
 "Hmm,...\n"
 "%s\n"
-"ei näytä tar pakkaukselta."
+"ei näytä tar-pakkaukselta."
 
 #: libvfs/vfs.c:1538
 msgid "Password:"
@@ -851,11 +851,11 @@ msgstr "Salasana:"
 
 #: support/argp-parse.c:90
 msgid "Give this help list"
-msgstr "Näytä tämä apu viesti"
+msgstr "Näytä tämä apuviesti"
 
 #: support/argp-parse.c:91
 msgid "Give a short usage message"
-msgstr "Näytä lyhyt käyttö ohje"
+msgstr "Näytä lyhyt käyttöohje"
 
 #: support/argp-parse.c:92
 msgid "Set the program name"
@@ -867,26 +867,26 @@ msgstr "Odota SECS sekuntteja (oletus 3600)"
 
 #: support/argp-parse.c:151
 msgid "Print program version"
-msgstr "Näytä ohjelman nimi"
+msgstr "Näytä ohjelman versio"
 
 #: support/argp-parse.c:167
 msgid "(PROGRAM ERROR) No version known!?"
-msgstr "Ohjelman virhe (ei tunnettua versiota!?)"
+msgstr "Ohjelmavirhe (ei tunnettua versiota!?)"
 
 # , c-format
 # , c-format
 #: support/argp-parse.c:641
 #, c-format
 msgid "%s: Too many arguments\n"
-msgstr "%s: Liian monta parametriä\n"
+msgstr "%s: Liian monta parametria\n"
 
 #: support/argp-parse.c:780
 msgid "(PROGRAM ERROR) Option should have been recognized!?"
-msgstr "Ohjelman virhe (Optio olisi pitänyt tunnistaa!?)"
+msgstr "Ohjelmavirhe (Optio olisi pitänyt tunnistaa!?)"
 
 #: support/error.c:109
 msgid "Unknown system error"
-msgstr "Tuntematon järjestelmä virhe"
+msgstr "Tuntematon järjestelmävirhe"
 
 # , c-format
 # , c-format
@@ -914,7 +914,7 @@ msgstr "%s: asetus `%c%s' ei hyväksy parametria\n"
 #: support/getopt.c:715 support/getopt.c:888
 #, c-format
 msgid "%s: option `%s' requires an argument\n"
-msgstr "%s: Liian monta parametriä\n"
+msgstr "%s: asetus `%s' vaatii parametrin\n"
 
 # , c-format
 # , c-format
@@ -938,14 +938,14 @@ msgstr "%s: tuntematon asetus `%c%s'\n"
 #: support/getopt.c:774
 #, c-format
 msgid "%s: illegal option -- %c\n"
-msgstr ""
+msgstr "%s: tuntematon asetus -- %c\n"
 
 # , c-format
 # , c-format
 #: support/getopt.c:777
 #, c-format
 msgid "%s: invalid option -- %c\n"
-msgstr ""
+msgstr "%s: väärä asetus -- %c\n"
 
 # , fuzzy, c-format
 # , c-format
@@ -979,4 +979,4 @@ msgstr "Käyttäjä valitsi Ei/Peru datalla:\n"
 
 #: test-gnome/testgnome.c:566
 msgid "Weird number in reply callback"
-msgstr ""
+msgstr "Omituinen numero vastauksen callback-rutiinissa"
