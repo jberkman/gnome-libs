@@ -23,8 +23,8 @@ GnomeDruidPage
 
 </para>
 
-@druid_page: 
-@Returns: 
+@druid_page:
+@Returns:
 
 
 <!-- ##### FUNCTION gnome_druid_page_prepare ##### -->
@@ -32,7 +32,7 @@ GnomeDruidPage
 
 </para>
 
-@druid_page: 
+@druid_page:
 
 
 <!-- ##### FUNCTION gnome_druid_page_back ##### -->
@@ -40,8 +40,8 @@ GnomeDruidPage
 
 </para>
 
-@druid_page: 
-@Returns: 
+@druid_page:
+@Returns:
 
 
 <!-- ##### FUNCTION gnome_druid_page_cancel ##### -->
@@ -49,8 +49,8 @@ GnomeDruidPage
 
 </para>
 
-@druid_page: 
-@Returns: 
+@druid_page:
+@Returns:
 
 
 <!-- ##### FUNCTION gnome_druid_page_finish ##### -->
@@ -58,49 +58,61 @@ GnomeDruidPage
 
 </para>
 
-@druid_page: 
+@druid_page:
 
 
 <!-- ##### SIGNAL GnomeDruidPage::next ##### -->
 <para>
-This signal is emitted by the druid when the next button is pressed.  If
-the page wants to 
+This signal is emitted by the druid when the next button is pressed.  It
+is overridden by the application when it wants to go to a different
+page.  If the signal returns TRUE, then it has handled the control-flow,
+and the druid will not change the page.
 </para>
 
 @druidpage: the object which received the signal.
-@arg1: 
+@arg1: the druid that emitted the signal.
 @Returns: TRUE or FALSE.
 
 <!-- ##### SIGNAL GnomeDruidPage::prepare ##### -->
 <para>
-
+This signal is sent to all pages just before they are shown.  It gives
+them an opportunity to prepare the page before it is realized.
 </para>
 
 @druidpage: the object which received the signal.
-@arg1: 
+@arg1: the druid that emitted the signal.
 
 <!-- ##### SIGNAL GnomeDruidPage::back ##### -->
 <para>
-
+This signal is emitted by the druid when the back button is pressed.  It
+is overridden by the application when it wants to go to a different
+page.  If the signal returns TRUE, then it has handled the control-flow,
+and the druid will not change the page.
 </para>
 
 @druidpage: the object which received the signal.
-@arg1: 
-@Returns: 
+@arg1: the druid that emitted the signal.
+@Returns: TRUE or FALSE.
 
 <!-- ##### SIGNAL GnomeDruidPage::finish ##### -->
 <para>
-
+This signal is sent when the "finish" button is pressed on the druid.
+It should finish setting up whatever the druid is doing, and quit.
 </para>
 
 @druidpage: the object which received the signal.
-@arg1: 
+@arg1: the druid that emitted the signal.
 
 <!-- ##### SIGNAL GnomeDruidPage::cancel ##### -->
 <para>
-
+This signal is sent when the "cancel" button is pressed on the druid.
+It should put up a dialog if needed to confirm the users exit.  If it
+does intend on quitting, it should return FALSE, which will cause @arg1
+to emit it's "cancel" signal.  If it returns TRUE, it is assumed that
+the DRUID does not want to quit, and it will keep running.  This return
+value should be used with some caution.
 </para>
 
 @druidpage: the object which received the signal.
-@arg1: 
-
+@arg1: the druid that emitted the signal.
+@Returns: TRUE or FALSE.

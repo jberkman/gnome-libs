@@ -2,7 +2,7 @@
 GnomeDruid
 
 <!-- ##### SECTION Short_Description ##### -->
-  The top-level widget of the GNOME druid system.
+  The main widget of the GNOME druid system.
 
 <!-- ##### SECTION Long_Description ##### -->
   <para>
@@ -13,12 +13,13 @@ GnomeDruid
   <para>
     There are two major parts of the druid, the #GnomeDruid widget, and
     the set of #GnomeDruidPage widgets.  The #GnomeDruid widget is the
-    top level widget that interacts with the user.  It has a Next, a
+    main widget that interacts with the user.  It has a Next, a
     Prev, and a Cancel button, and acts as a container for the pages.
-    It is not a top-level widget, so it needs to be put in a #GtkWindow
-    in almost all cases.  The #GnomeDruidPage is a virtual widget, from
-    which all of the actual content of the page inherits from.  There
-    are currently three of these available withing gnome-libs.
+    It is not a top-level window, so it needs to be put in a
+    #GtkWindow in almost all cases.  The #GnomeDruidPage is a virtual
+    widget, from which all of the actual content of the page inherits
+    from.  There are currently three of these available withing
+    gnome-libs.
   </para>
   <refsect2>
     <title>Creating a druid</title>
