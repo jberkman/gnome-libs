@@ -463,10 +463,10 @@ zvt_term_size_allocate (GtkWidget     *widget,
 			      allocation->x, allocation->y,
 			      allocation->width, allocation->height);
 
-      /* resize the virtual terminal buffer */
+      /* resize the virtual terminal buffer, minimal size is 1x1 */
       vt_resize(&term->vx->vt,
-		allocation->width/term->charwidth,
-		allocation->height/term->charheight,
+		MAX(allocation->width/term->charwidth,1),
+		MAX(allocation->height/term->charheight,1),
 		allocation->width,
 		allocation->height);
       vt_update(term->vx, UPDATE_REFRESH|UPDATE_SCROLLBACK);/* redraw everything, unconditionally */
