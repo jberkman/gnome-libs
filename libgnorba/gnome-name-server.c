@@ -3,6 +3,7 @@
  *
  * Author:
  *   Miguel de Icaza (miguel@gnu.org)
+ *   Elliot Lee (sopwith@cuc.edu)
  *
  * This is just a version of the name service that registers its IOR
  * with the X server.  That way GNOME applications running against that
@@ -148,6 +149,66 @@ signal_handler (int signo)
   }
 }
 
+static gboolean
+setup_name_server (CORBA_Object name_service, CORBA_Environment *ev)
+{
+	CosNaming_Name          context_name;
+	CosNaming_NameComponent nc;
+	CORBA_Object gnome_context  = CORBA_OBJECT_NIL;
+	CORBA_Object server_context = CORBA_OBJECT_NIL;
+
+	/*
+	  Create the default context "/GNOME/servers"
+	*/
+	context_name._maximum = 0;
+	context_name._length  = 1;
+	context_name._buffer = &nc;
+	context_name._release = CORBA_FALSE;
+	nc.id = "GNOME";
+	nc.kind = "subcontext";
+	
+	gnome_context = CosNaming_NamingContext_bind_new_context(name_service, &context_name, ev);
+	if (ev->_major != CORBA_NO_EXCEPTION) {
+		g_warning(_("Creating '/GNOME' context %s %d"), __FILE__, __LINE__);
+		switch( ev->_major ) {
+		case CORBA_SYSTEM_EXCEPTION:
+			g_warning("sysex: %s.\n", CORBA_exception_id(ev));
+			break;
+		case CORBA_USER_EXCEPTION:
+			g_warning("usrex: %s.\n", CORBA_exception_id( ev ) );
+		default:
+			break;
+		}
+	}
+	ev->_major = CORBA_NO_EXCEPTION;
+	if (CORBA_Object_is_nil(gnome_context, ev)) {
+		g_warning(_("gnome_name_server_get: '/GNOME' context is nil\n"));
+		return FALSE;
+	}
+	
+	nc.id="Servers";
+	nc.kind = "subcontext";
+	server_context = CosNaming_NamingContext_bind_new_context(gnome_context, &context_name, ev);
+	if (ev->_major != CORBA_NO_EXCEPTION) {
+		g_warning(_("Creating '/GNOME/servers' context %s %d"), __FILE__, __LINE__);
+		switch( ev->_major ) {
+		case CORBA_SYSTEM_EXCEPTION:
+			g_warning("	sysex: %s.\n", CORBA_exception_id(ev));
+			break;
+		case CORBA_USER_EXCEPTION:
+			g_warning("usr	ex: %s.\n", CORBA_exception_id( ev ) );
+		default:
+			break;
+		}
+	}
+	if (CORBA_Object_is_nil(server_context, ev)) {
+		g_warning(_("gnome_name_server_get: '/GNOME/servers context is nil\n"));
+		return FALSE;
+	}
+
+	return TRUE;
+}
+
 int
 main (int argc, char *argv [])
 {
@@ -185,7 +246,13 @@ main (int argc, char *argv [])
 
 	root_poa = (PortableServer_POA)
 		CORBA_ORB_resolve_initial_references (orb, "RootPOA", &ev);
+
 	name_server = impl_CosNaming_NamingContext__create (root_poa, &ev);
+	if (!setup_name_server (name_server, &ev)){
+		syslog (LOG_INFO, "Could not setup the name server\n");
+		CORBA_Object_release (name_server, &ev);
+		return 1;
+	}
 	
 	ior = CORBA_ORB_object_to_string (orb, name_server, &ev);
 
@@ -204,6 +271,7 @@ main (int argc, char *argv [])
 	pm = PortableServer_POA__get_the_POAManager (root_poa, &ev);
 	PortableServer_POAManager_activate (pm, &ev);
 
+	
 	gtk_main ();
 	syslog (LOG_INFO, "exiting");
 	return 0;

@@ -1,5 +1,24 @@
 1998-12-10  Miguel de Icaza  <miguel@nuclecu.unam.mx>
 
+	* libgnorba/orbitns.c (gnome_name_service_get): We do not register
+	the /GNOME/server stuff here, we do that on the name server now.
+
+	* libgnorba/gnome-name-server.c: Now we register the stuff here. 
+
+1998-12-07  Miguel de Icaza  <miguel@nuclecu.unam.mx>
+
+	* libgnome/gnome-config.c (dump_profile): Wonder who has been
+	hacking madly at this, as the ->to_be_deleted feature did not seem
+	to work these days at all.  I even wonder when was this introduced.
+	(gnome_config_assemble_vector): Account for the spaces inserted
+	between the strings.
+
+	* libgnorba/orbitgtk.c (gnome_name_service_get): Use a reliable
+	scheme for fetching the name server IOR.  We use the proxy window
+	scheme to find the name service IOR. 
+	
+1998-12-10  Miguel de Icaza  <miguel@nuclecu.unam.mx>
+
 	* libgnome/gnome-gen-mimedb.c (main): 
 
 1998-12-08  Miguel de Icaza  <miguel@nuclecu.unam.mx>
