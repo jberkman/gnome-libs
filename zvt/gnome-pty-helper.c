@@ -422,6 +422,7 @@ open_ptys (int utmp, int wtmp)
 #       endif
 #   endif
 #endif /* EXTB */
+
 	term.c_lflag = 0
 #ifdef ECHO
 	  | ECHO
@@ -455,9 +456,13 @@ open_ptys (int utmp, int wtmp)
 	term.c_cc[VTIME] =  0;
 	term.c_cc[VMIN] = 0;
 	
-	/* Now set the characters. This is of course a religious matter
-	   but we use the defaults, with erase bound to the key gnome-terminal
-	   maps */
+	/*
+	 * Now set the characters. This is of course a religious matter
+	 * but we use the defaults, with erase bound to the key gnome-terminal
+	 * maps.
+	 *
+	 * These are the ones set by "stty sane".
+	 */
 	   
 	term.c_cc[VINTR] = 'C'-64;
 	term.c_cc[VQUIT] = '\\'-64;
@@ -567,8 +572,8 @@ sanity_checks (void)
 	 * Make sure stdin/stdout are open.  This is a requirement
 	 * for our program to work and closes potential security holes.
 	 */
-	if ((fcntl (0, F_GETFL, &flag) == EBADF) ||
-	    (fcntl (1, F_GETFL, &flag) == EBADF)){
+	if ((fcntl (0, F_GETFL, &flag) == -1 && errno == EBADF) ||
+	    (fcntl (1, F_GETFL, &flag) == -1 && errno == EBADF)){
 		exit (1);
 	}
 
@@ -579,7 +584,7 @@ sanity_checks (void)
 	 *
 	 * Make stderr point to a terminal.
 	 */
-	if (fcntl (2, F_GETFL, &flag) == EBADF){
+	if (fcntl (2, F_GETFL, &flag) == -1 && errno == EBADF){
 		stderr_fd = open ("/dev/tty", O_RDWR);
 		if (stderr_fd == -1){
 			stderr_fd = open ("/dev/null", O_RDWR);

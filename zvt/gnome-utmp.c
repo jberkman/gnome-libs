@@ -214,13 +214,13 @@ write_login_record (char *login_name, char *display_name, char *term_name, int u
 #endif
 
 	/* This shouldn't happen */
-	if (strncmp (pty, "/dev/", 5) == NULL)
+	if (strncmp (pty, "/dev/", 5) == 0)
 	    pty += 5;
 	    
 #if defined(HAVE_UT_UT_ID)
 	/* BSD-like terminal name */
-	if (strncmp (pty, "pty", 3) == NULL ||
-	    strncmp (pty, "tty", 3) == NULL)
+	if (strncmp (pty, "pty", 3) == 0 ||
+	    strncmp (pty, "tty", 3) == 0)
 		strncpy (ut->ut_id, pty+3, sizeof (ut->ut_id));
 	else {
 		int num;

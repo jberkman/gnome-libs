@@ -1,4 +1,24 @@
+1999-12-06  Michael Zucchi  <zucchi@zedzone.mmc.com.au>
+
+	* gnome-utmp.c (write_login_record): Duh, strncmp() returns an
+	int, not a pointer!
+
+	* zterm.c (main): Fix invalid escape sequence.
+
+	* MERGE gnome-libs-1-0 into HEAD, from the zvt-merge-1 point.
+
+	* vt.c (vt_down): Use gotoxy to move down, and ignore scrollbottom
+	boundary.
+	(vt_up): Similarly to move up.
+	(vt_left/right): Do the same here.
+
 1999-12-05  Michael Zucchi  <zucchi@zedzone.mmc.com.au>
+
+	* background.c (zvt_term_background_load): If not realised yet,
+	then queue the background setting till we are.
+
+	* zvtterm.c (zvt_term_set_background): Remove background load
+	queue, and put it in zvt_term_background_load().
 
 	* background.c (zvt_term_background_load): Always unload the
 	background first.
@@ -79,6 +99,74 @@
 	* gnome-pty-helper.c (open_ptys): VDISCARD character is control-o,
 	not control-u, which is already used for VKILL.  Fixes problem
 	posted to gnome-list.
+
+1999-10-19  Michael Zucchi  <mzucchi@denr.sa.gov.au>
+
+	* vt.c (vt_lf): Make sure we dont linefeed off the end of the
+	screen, bug #2885 (and probably most other segfaults).  This may
+	cause problems elsewhere, but probably not.
+
+1999-11-16  Michael Zucchi  <mzucchi@denr.sa.gov.au>
+
+	* zterm.c (main): Highlight url's using colour as well as
+	underline.  Ick red on green!
+
+	* vtx.h (struct vt_match_block): Include 'saveline', a place to
+	store a copy of the line if we're highlighting using colour.
+
+	* update.c (copy_line): Convenience function, clones a vt line.
+	(vt_highlight): If the highlight includes colour, then save the
+	line temporarily.
+	(vt_unhighlight): New function, removes highlight.  If the
+	highlight line was saved, then restore that, rather than just
+	inverting.
+	(vt_match_highlight): Call vt_match_unhighlight() when removing a
+	match highlight.
+	(vt_free_match_blocks): Free the b->saveline, if it is set (should
+	never happen ...).
+	(vt_getmatches): Initilaise saveline to 0.
+
+	* zvtterm.c (zvt_term_match_add): Dont strip off colour bits.
+	Updated doco.
+
+1999-11-02  Miguel de Icaza  <miguel@gnu.org>
+
+	* gnome-pty-helper.c (open_ptys): Use cfsetispeed and cfsetospeed
+	for setting the line speed instead.
+
+1999-10-28  Miguel de Icaza  <miguel@gnu.org>
+
+	* gnome-pty-helper.c (open_ptys): The defaults are now set to stty
+	sane. 
+
+1999-11-01  Dick Porter <dick@acm.org>
+
+	* gnome-pty-helper.c: Fix fcntl() error handling
+
+1999-10-29  Michael Zucchi  <zucchi@zedzone.mmc.com.au>
+
+	* vt.c (vt_setmode): Oops, inverted the blank cursor logic.
+
+1999-10-28  Michael Zucchi  <zucchi@zedzone.mmc.com.au>
+
+	* update.c (vt_getmatches): Incase we get a dumb regex that
+	matches an empty string, we need to scan the whole line, character
+	by character.  Slow slow.
+
+	* vt.h (VTMODE_BLANK_CURSOR): New flag bit for mode.  Indicates a
+	blank cursor - do not poke this bit directly!
+
+	* update.c (vt_draw_cursor): Do not draw the cursor at all, if we
+	are in blank cursor mode.  Blank cursor by issuing \E[?25h,
+	\E[?25l to turn it on again.
+
+	* vt.c (vt_setmode): Implement cursor blank control character.
+
+1999-10-20  Miguel de Icaza  <miguel@gnu.org>
+
+	* gnome-pty-helper.c (open_ptys): VDISCARD character is control-o,
+	not control-u, which is already used for VKILL.  Fixes problem
+	posted to gnome-libs.
 
 1999-10-19  Michael Zucchi  <mzucchi@denr.sa.gov.au>
 

@@ -127,6 +127,7 @@ struct vt_match {
 struct vt_match_block {
   struct vt_match_block *next;	/* in single-linked list of blocks */
   struct vt_line *line;		/* line of this block */
+  struct vt_line *saveline;	/* saved, when highlighting using colour */
   unsigned int lineno;		/* line number of this block */
   unsigned int start;		/* start/end of block, in characters */
   unsigned int end;

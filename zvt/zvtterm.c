@@ -927,13 +927,15 @@ zvt_term_size_allocate (GtkWidget     *widget,
   gint term_width, term_height;
   guint grid_width, grid_height;
   ZvtTerm *term;
-  
+  struct _zvtprivate *zp;
+
   g_return_if_fail (widget != NULL);
   g_return_if_fail (ZVT_IS_TERM (widget));
   g_return_if_fail (allocation != NULL);
 
   if (GTK_WIDGET_REALIZED (widget)) {
       term = ZVT_TERM (widget);
+      zp = _ZVT_PRIVATE(term);
 
       d( printf("zvt_term_size_allocate old grid x=%d y=%d\n", 
 		term->vx->vt.width,
@@ -2509,8 +2511,8 @@ zvt_term_title_changed (ZvtTerm *term, VTTITLE_TYPE type, char *str)
  * @term: An initialised &ZvtTerm.
  * @regex: A regular expression to match.  It should be concise
  * enough so that it doesn't match whole lines.
- * @highlight_mask: Mask of bits used to highlight the text
- * as the mouse moves over it.
+ * @highlight_mask: Mask of bits used to set the attributes used
+ * to highlight the match as the mouse moves over it.
  * @data: User data.
  * 
  * Add a new auto-match regular expression.  The
@@ -2521,8 +2523,12 @@ zvt_term_title_changed (ZvtTerm *term, VTTITLE_TYPE type, char *str)
  * line in the visible buffer.
  *
  * The @highlight_mask is taken from the VTATTR_* bits, as defined
- * in vt.h.  These include VTATTR_BOLD, VTATTR_UNDERLINE, etc, but
- * not the colours.
+ * in vt.h.  These include VTATTR_BOLD, VTATTR_UNDERLINE, etc.
+ * Colours may also be set by including the colour index in the
+ * appropriate bit position.  Colours and attributes may be combined.
+ *
+ * e.g. to set foreground colour 2, and background colour 5, use
+ * highlight_mask = (2<<VTATTR_FORECOLOURB)|(5<<VTATTR_BACKCOLOURB).
  *
  * Return value: Returns -1 when the regular expression is invalid
  * and cannot be compiled (see regcomp(3c)).  Otherwise returns 0.
@@ -2538,8 +2544,7 @@ zvt_term_match_add(ZvtTerm *term, char *regex, uint32 highlight_mask, void *data
     m->regex = g_strdup(regex);
     vt_list_addtail(&vx->magic_list, (struct vt_listnode *)m);
     m->user_data = data;
-    m->highlight_mask = highlight_mask
-      & (VTATTR_MASK & ~(VTATTR_FORECOLOURM|VTATTR_BACKCOLOURM));
+    m->highlight_mask = highlight_mask & VTATTR_MASK;
   } else {
     g_free(m);
     return -1;
@@ -2795,14 +2800,9 @@ zvt_term_set_background (ZvtTerm *terminal, char *pixmap_file,
       zvt_term_background_set_translate(b, ZVT_BGTRANSLATE_SCROLL, 0, 0);  
   }
 
-  /* load it, if we can ... */
-  if (GTK_WIDGET_REALIZED (terminal)) {
-    zvt_term_background_load(terminal, b);
-    zvt_term_background_unref(b);
-  } else {
-    zvt_term_background_ref(b);
-    zp->background_queue = b;
-  }
+  /* load the background */
+  zvt_term_background_load(terminal, b);
+  zvt_term_background_unref(b);
 
   /* FIXME: required to make gnome-terminal's prefs to work properly *sigh* */
   terminal->transparent = transparent;

@@ -183,7 +183,7 @@ struct vt_em {
 #define VTMODE_SEND_MOUSE_PRESS 0x42 /* send mouse press, include bit 1 for compatability */
 #define VTMODE_SEND_MOUSE_BOTH 0x82 /* send mouse press & release */
 #define VTMODE_SEND_MOUSE_MASK 0xc2 /* mask of options for mouse reports, bit 1 is used for compatability */
-
+#define VTMODE_BLANK_CURSOR 0x100 /* cursor is blanked */
 #define VTMODE_ALTSCREEN 0x80000000 /* on alternate screen? */
 
 /* some useful macro's for working with the line contents */

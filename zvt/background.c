@@ -566,6 +566,14 @@ zvt_term_background_load(ZvtTerm *term, struct zvt_background *b)
   int watchatom=0;
   int watchmove=0;
 
+  /* load it, if we can ... */
+  if (!GTK_WIDGET_REALIZED (term)) {
+    zvt_term_background_ref(b);
+    zvt_term_background_unref(zp->background_queue);
+    zp->background_queue = b;
+    return 0;
+  }
+
   zvt_term_background_unload(term);
 #if 0
   if (zp->background) {
@@ -790,8 +798,6 @@ zvt_configure_window(GtkWidget *widget, GdkEventConfigure *event, ZvtTerm *term)
 
   d(printf("configure event, pos %d,%d size %d-%d\n", x, y, width, height));
   d(printf("last was at %d,%d %d-%d\n", b->pos.x, b->pos.y, b->pos.w, b->pos.h));
-
-  d(printf("new size?  %d,%d %d-%d\n", event->x, event->y, event->width, event->height));
 
   /* see if we need to reload (scale) the image */
   if (b->scale.type == ZVT_BGSCALE_WINDOW

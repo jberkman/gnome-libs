@@ -1279,7 +1279,7 @@ void vt_draw_cursor(struct _vtx *vx, int state)
 
   if (vx->vt.scrollbackold == 0 && vx->vt.cursorx<vx->vt.width) {
     attr = vx->vt.this_line->data[vx->vt.cursorx];
-    if (state) {			/* must swap fore/background colour */
+    if (state && (vx->vt.mode & VTMODE_BLANK_CURSOR)==0) {			/* must swap fore/background colour */
       attr = (((attr & VTATTR_FORECOLOURM) >> VTATTR_FORECOLOURB) << VTATTR_BACKCOLOURB)
 	| (((attr & VTATTR_BACKCOLOURM) >> VTATTR_BACKCOLOURB) << VTATTR_FORECOLOURB)
       | ( attr & ~(VTATTR_FORECOLOURM|VTATTR_BACKCOLOURM));
@@ -1306,6 +1306,13 @@ dummy_cursor_state(void *user_data, int state)
   return 0;
 }
 
+static struct vt_line *copy_line(struct vt_line *l)
+{
+  struct vt_line *n = g_malloc(VT_LINE_SIZE(l->width));
+  memcpy(n, l, VT_LINE_SIZE(l->width));
+  return n;
+}
+
 static void vt_highlight(struct _vtx *vx, struct vt_match *m)
 {
   struct vt_line *l;
@@ -1318,9 +1325,44 @@ static void vt_highlight(struct _vtx *vx, struct vt_match *m)
   while (b) {
     l = b->line;
     d(printf("updating %d; %d-%d: ", b->lineno, b->start, b->end));
-    for (i=b->start; i<b->end; i++) {
-      l->data[i] ^= mask;
-      d(printf("%c", l->data[i]&0xff));
+    if ((mask & (VTATTR_FORECOLOURM|VTATTR_BACKCOLOURM)) == 0) {
+      for (i=b->start; i<b->end; i++) {
+	l->data[i] ^= mask;
+      }
+    } else {
+      b->saveline = copy_line(l);
+      for (i=b->start; i<b->end; i++) {
+	l->data[i] = (l->data[i] & VTATTR_DATAMASK) | mask;
+      }
+    }
+    d(printf("\n"));
+    vt_update_rect(vx, -1, b->start, b->lineno, b->end, b->lineno);
+    b = b->next;
+  }
+
+}
+
+static void vt_unhighlight(struct _vtx *vx, struct vt_match *m)
+{
+  struct vt_line *l;
+  struct vt_match_block *b;
+  int i;
+  uint32 mask;
+
+  mask = m->match->highlight_mask;
+  b = m->blocks;
+  while (b) {
+    l = b->line;
+    d(printf("updating %d; %d-%d: ", b->lineno, b->start, b->end));
+
+    if (b->saveline==0) {
+      for (i=b->start; i<b->end; i++) {
+	l->data[i] ^= mask;
+      }
+    } else {
+      memcpy(l->data, b->saveline->data, l->width * sizeof(l->data[0]));
+      g_free(b->saveline);
+      b->saveline = 0;
     }
     d(printf("\n"));
     vt_update_rect(vx, -1, b->start, b->lineno, b->end, b->lineno);
@@ -1338,7 +1380,7 @@ void vt_match_highlight(struct _vtx *vx, struct vt_match *m)
   if (m!=vx->match_shown) {
     if (vx->match_shown) {
       d(printf("unhilighting match '%s'\n", vx->match_shown->matchstr));
-      vt_highlight(vx, vx->match_shown);
+      vt_unhighlight(vx, vx->match_shown);
     }
     vx->match_shown = m;
     if (m) {
@@ -1362,6 +1404,8 @@ void vt_free_match_blocks(struct _vtx *vx)
     b = m->blocks;
     while (b) {
       n = b->next;
+      if (b->saveline)
+	g_free(b->saveline);
       g_free(b);
       b=n;
     }
@@ -1448,11 +1492,19 @@ void vt_getmatches(struct _vtx *vx)
 
 	/* check this regex, for multiple matches ... */
 	out = line;
-	while ((out<outend) && regexec(&mw->preg, out, 1, pmatch, 0)==0) {
+	while ((out<outend) && regexec(&mw->preg, out, 2, pmatch, 0)==0) {
 	  int start = pmatch[0].rm_so + (out-line);
 	  int end = pmatch[0].rm_eo + (out-line);
 	  struct vt_match_block *b;
 	  struct vt_match *m;
+
+	  /* if the user supplied a dumb regex, and it matches the empty string, then
+	     we have to scan every character - slow and yuck, but it gives them what
+	     they want. */
+	  if (pmatch[0].rm_eo == 0) {
+	    out++;
+	    continue;
+	  }
 
 	  /* find the line on which this block starts */
 	  while ((start-matchoffset)>sol->width) {
@@ -1477,6 +1529,7 @@ void vt_getmatches(struct _vtx *vx)
 	  /* add a block */
 	  b = g_malloc(sizeof(*b));
 	  b->line = sol;
+	  b->saveline = 0;
 	  b->lineno = solineno;
 	  b->start = start-matchoffset;
 	  b->end = (end-matchoffset)>sol->width?sol->width:end-matchoffset;
@@ -1499,6 +1552,7 @@ void vt_getmatches(struct _vtx *vx)
 
 	    b = g_malloc(sizeof(*b));
 	    b->line = sol;
+	    b->saveline = 0;
 	    b->lineno = solineno;
 	    b->start = 0;
 	    b->end = (end-matchoffset)>sol->width?sol->width:end-matchoffset;
@@ -1620,6 +1674,7 @@ struct _vtx *vtx_new(int width, int height, void *user_data)
   vt_list_new(&vx->magic_list);
   vx->magic_matched = 0;
   vx->matches = 0;
+  vx->match_shown = 0;
 
   return vx;
 }

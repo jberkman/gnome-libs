@@ -211,9 +211,10 @@ main (gint argc, gchar *argv[])
   zvt_term_set_background (ZVT_TERM (term), NULL, 0, 0);
   zvt_term_set_wordclass (ZVT_TERM (term), "-A-Za-z0-9/_:.,?+%=");
 
-  zvt_term_match_add (ZVT_TERM (term), "http://[^ ]*[^\\.]", VTATTR_UNDERLINE, "http");
+  zvt_term_match_add (ZVT_TERM (term), "http://[^ ]*[^\\.]", VTATTR_UNDERLINE|(1<<VTATTR_FORECOLOURB)|(2<<VTATTR_BACKCOLOURB), "http");
   zvt_term_match_add (ZVT_TERM (term), "ftp://[^ ]*[^\\.]", VTATTR_BOLD, "ftp");
   zvt_term_match_add (ZVT_TERM (term), "file://[^ ]*[^\\.]", VTATTR_REVERSE, "file");
+  zvt_term_match_add (ZVT_TERM (term), "[0-9\\.]*", VTATTR_BOLD, "ip #");
 
   gtk_signal_connect (
       GTK_OBJECT (term),

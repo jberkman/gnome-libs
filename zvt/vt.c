@@ -65,10 +65,9 @@ void vt_clear_lines(struct vt_em *vt, int top, int count);
 void vt_clear_line_portion(struct vt_em *vt, int start_col, int end_col);
 
 static void vt_resize_lines(struct vt_line *wm, int width, uint32 default_attr);
-
+static void vt_gotoxy(struct vt_em *vt, int x, int y);
 
 static unsigned char vt_remap_dec[256];
-
 
 #ifdef DEBUG
 static void
@@ -903,16 +902,8 @@ vt_up(struct vt_em *vt)
     break;
   default:
     count = vt->arg.num.intargs[0]?vt->arg.num.intargs[0]:1;
-
     d(printf("cursor up %d, from %d\n", count, vt->cursory));
-    
-    vt->cursory-=count;
-    if (vt->cursory<vt->scrolltop) {
-      vt->cursory=vt->scrolltop;
-    }
-    
-    vt->this_line = (struct vt_line *)vt_list_index(&vt->lines, vt->cursory);
-    n(vt->this_line);
+    vt_gotoxy(vt, vt->cursorx, vt->cursory-count);
   }
 }
 
@@ -922,15 +913,8 @@ vt_down(struct vt_em *vt)
   int count;
 
   d(printf("cursor down\n"));
-
   count = vt->arg.num.intargs[0]?vt->arg.num.intargs[0]:1;
-
-  vt->cursory+=count;
-  if (vt->cursory>vt->scrollbottom)
-    vt->cursory=vt->scrollbottom;
-
-  vt->this_line = (struct vt_line *)vt_list_index(&vt->lines, vt->cursory);
-  n(vt->this_line);
+  vt_gotoxy(vt, vt->cursorx, vt->cursory+count);
 }
 
 static void
@@ -939,12 +923,8 @@ vt_right(struct vt_em *vt)
   int count;
 
   count = vt->arg.num.intargs[0]?vt->arg.num.intargs[0]:1;
-
   d(printf("cursor right(%d)\n", count));
-
-  vt->cursorx+=count;
-  if (vt->cursorx>=vt->width)	/* wrapping? end of line? */
-    vt->cursorx=vt->width-1;
+  vt_gotoxy(vt, vt->cursorx+count, vt->cursory);
 }
 
 /*
@@ -962,13 +942,9 @@ vt_left(struct vt_em *vt)
     vt_lf(vt);
     break;
   default:
-    count = vt->arg.num.intargs[0]?vt->arg.num.intargs[0]:1;
-    
+    count = vt->arg.num.intargs[0]?vt->arg.num.intargs[0]:1;    
     d(printf("cursor left(%d)\n", count));
-    
-    vt->cursorx-=count;
-    if (vt->cursorx < 0)
-      vt->cursorx=0;
+    vt_gotoxy(vt, vt->cursorx-count, vt->cursory);
   }
 }
 
@@ -1106,6 +1082,10 @@ vt_setmode(struct vt_em *vt, int on)
 	  vt->mode |= VTMODE_WRAPOFF;
 	break;
       case 25:			/* cursor invisible/normal */
+	if (on)
+	  vt->mode &= ~VTMODE_BLANK_CURSOR;
+	else
+	  vt->mode |= VTMODE_BLANK_CURSOR;
 	break;
       case 1047:		/* clear the screen if coming from the alt screen */
 	if (on==0 && (vt->mode&&VTMODE_ALTSCREEN))
