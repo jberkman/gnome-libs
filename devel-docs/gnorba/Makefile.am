@@ -19,21 +19,22 @@ tmpl_sources =				\
 
 gnorba_docdir = $(HTML_DIR)
 gnorba_doc_DATA = 			\
-	html/index.html	                \
 	gnorba-decl.txt			\
 	gnorba-sections.txt
 
 EXTRA_DIST = $(gnorba_doc_DATA)
 
+all-local: html/book1.html
+
 if ENABLE_GTK_DOC
-html/index.html: sgml/gnorba.sgml sgml/goad.sgml
+html/book1.html: sgml/gnorba-doc.bottom
 	$(MAKE) html
 else
 gnorba.html:
-html/index.html:
+html/book1.html:
 endif
 
-sgml/goad.sgml sgml/gnorba.sgml: $(tmpl_sources) gnorba-docs.sgml
+sgml/gnorba-doc.bottom: $(tmpl_sources) gnorba-docs.sgml
 	$(MAKE) sgml	
 
 scan:

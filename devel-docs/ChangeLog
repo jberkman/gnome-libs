@@ -1,3 +1,11 @@
+1999-07-20  Raja R Harinath  <harinath@cs.umn.edu>
+
+	* gnorba/Makefile.am (all-local): New target.
+	(html/book1.html): Renamed from `html/index.html' to reflect
+	change in SGML document.
+	(gnorba_doc_DATA): Don't install `html/index.html' into
+	$(HTML_DIR).  
+	
 1999-07-18  Ettore Perazzoli  <ettore@comm2000.it>
 
 	* gnomeui/tmpl/gnome-dock.sgml: Added references to the "See also"
