@@ -1,3 +1,26 @@
+1998-11-24  Miguel de Icaza  <miguel@nuclecu.unam.mx>
+
+	The following changes have been implemented after the comments
+	from Pavel Kankovsky (peak@kerberos.troja.mff.cuni.cz) who audited
+	the gnome-pty-helper code.
+
+	Now I understand why Theo says that most of us mere programmers
+	do not get properly aquainted with the proper Unix system call API.
+	
+	* gnome-login-support.c (pty_open_slave_bsd): Set the owner and
+	group even if getgrnam fails due to a low memory condition on the system
+
+	* gnome-pty-helper.c: Make the pty_info->line information be a
+	character pointer instead of a static array.
+	(pty_add, pty_remove): fix accordingly.
+	
+	(open_ptys): Size the array passed to openpty correctly: use
+	sysconf (_SC_TTY_NAME_MAX) if available or PATH_MAX otherwise.
+
+	dup2() might fail with EINTR, handle this case.
+
+	A couple of extra problems still remain, will fix those tomorrow.
+	
 1998-11-23  Jay Painter <jpaint@serv.net>
 
 	* zvtterm.c: added zvt_term_map & zvt_term_unmap so that the

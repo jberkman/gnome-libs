@@ -98,6 +98,11 @@ pty_open_slave_bsd (const char *pty_name)
 		chown (pty_name, getuid (), group_info->gr_gid);
 		chmod (pty_name, S_IRUSR | S_IWUSR | S_IWGRP);
 	}
+	else
+	{
+		chown (pty_name, getuid (), -1);
+		chmod (pty_name, S_IRUSR | S_IWUSR | S_IWGRP);
+	}
 
 	if ((pty_slave = open (pty_name, O_RDWR)) == -1){
 		return -1;
@@ -199,6 +204,11 @@ openpty (int *master_fd, int *slave_fd, char *name, struct termios *termp, struc
 	if (group_info){
 		chown (line, getuid (), group_info->gr_gid);
 		chmod (line, S_IRUSR | S_IWUSR | S_IWGRP);
+	}
+	else
+	{
+		chown (pty_name, getuid (), -1);
+		chmod (pty_name, S_IRUSR | S_IWUSR | S_IWGRP);
 	}
 
 #ifdef HAVE_REVOKE

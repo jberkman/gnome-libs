@@ -29,6 +29,7 @@
 #include <config.h>
 #include <sys/types.h>
 #include <unistd.h>
+#include <fcntl.h>
 #include <termios.h>
 #include <errno.h>
 #include <malloc.h>
@@ -42,12 +43,13 @@
 #include "gnome-login-support.h"
 
 static struct passwd *pwent;
+static char login_name_buffer [48];
 static char *login_name, *display_name;
 
 struct pty_info {
 	struct pty_info *next;
 	int    master_fd, slave_fd;
-	char   line [256];
+	char   *line;
 };
 
 typedef struct pty_info pty_info;
@@ -90,7 +92,7 @@ static int
 pass_fd (int client_fd, int fd)
 {
         struct iovec  iov[1];
-        struct msghdr msg;                                                                       
+        struct msghdr msg;
         char          buf [1];
 
 	iov [0].iov_base = buf;
@@ -149,6 +151,7 @@ pty_remove (pty_info *pi)
 				pty_list = pi->next;
 			else
 				last->next = pi->next;
+			free (pi->line);
 			pty_free (pi);
 			break;
 		}
@@ -189,8 +192,10 @@ pty_add (int master_fd, int slave_fd, char *line)
 		exit (1);
 	}
 
-	strncpy (pi->line, strncmp (line, "/dev/", 5) ? line : line+5, 255);
-	pi->line [255] = 0;
+	if (strncmp (line, "/dev/", 5))
+		pi->line = strdup (line);
+	else
+		pi->line = strdup (line+5);
 	
 	pi->master_fd = master_fd;
 	pi->slave_fd  = slave_fd;
@@ -204,10 +209,16 @@ pty_add (int master_fd, int slave_fd, char *line)
 static int
 open_ptys (int update_db)
 {
-	char term_name [256];
+	char *term_name;
 	int status, master_pty, slave_pty;
 	pty_info *p;
 	int result;
+
+#ifdef _SC_TTY_NAME_MAX
+	term_name = alloca (sysconf (_SC_TTY_NAME_MAX) + 1);
+#else
+	term_name = alloca (PATH_MAX) + 1;
+#endif
 	
 	status = openpty (&master_pty, &slave_pty, term_name, NULL, NULL);
 	if (status == -1){
@@ -219,19 +230,26 @@ open_ptys (int update_db)
 	p = pty_add (master_pty, slave_pty, term_name);
 	result = 1;
 
-	write (STDIN_FILENO, &result, sizeof (result));
-	write (STDIN_FILENO, &p, sizeof (p));
-	pass_fd (STDOUT_FILENO, master_pty);
-	pass_fd (STDOUT_FILENO, slave_pty);
+	if (write (STDIN_FILENO, &result, sizeof (result)) == -1 ||
+	    write (STDIN_FILENO, &p, sizeof (p)) == -1 ||
+	    pass_fd (STDOUT_FILENO, master_pty)  == -1 ||
+	    pass_fd (STDOUT_FILENO, slave_pty)   == -1){
+		exit (0);
+	}
 
 	if (update_db){
 #ifdef HAVE_LOGIN
 		/* We have to fork and make the slave_pty our
 		 * controlling pty if we don't want to clobber the
-		 * parent's one ... */
-		if (fork () == 0) {
+		 * parent's one ...
+		 */
+		pid_t pid;
+		
+		pid = fork ();
+		if (pid == 0) {
 			setsid ();
-			dup2 (slave_pty, 0);
+			while (dup2 (slave_pty, 0) == -1 && errno == EINTR)
+				;
 #ifdef USE_SYSV_UTMP
 			/* [FIXME]: This is only a hack since we
 			 * declared `update_dbs' conditionally to
@@ -241,6 +259,7 @@ open_ptys (int update_db)
 #endif
 			exit (0);
 		}
+		
 		return 1;
 #else
 #ifdef USE_SYSV_UTMP
@@ -275,9 +294,28 @@ main (int argc, char *argv [])
 	int res;
 	void *tag;
 	GnomePtyOps op;
-
+	int stderr_fd;
+	
+	/*
+	 * File descriptors 0 and 1 have been setup by the parent process
+	 * to be used for the protocol exchange and for transfering
+	 * file descriptors.
+	 *
+	 * Make stderr point to a terminal.
+	 */
+	close (2);
+	stderr_fd = open ("/dev/tty", O_RDWR);
+	if (stderr_fd != 2){
+		while (dup2 (stderr_fd, 2) == -1 && errno == EINTR)
+			;
+	}
 	pwent = getpwuid (getuid ());
-	login_name = pwent ? pwent->pw_name : "noname";
+	if (pwent)
+		login_name = pwent->pw_name;
+	else {
+		sprintf (login_name_buffer, "#%d", getuid ());
+		login_name = login_name_buffer;
+	}
 
 	display_name = getenv ("DISPLAY");
 	if (!display_name)
