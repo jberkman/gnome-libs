@@ -1,0 +1,951 @@
+<!doctype book PUBLIC "-//Davenport//DTD DocBook V3.0//EN" [
+<!entity zvt-zvtterm SYSTEM "sgml/zvtterm.sgml">
+]>
+<book>
+  <title>ZVT Terminal Widget Reference Guide</title>
+  <bookinfo>
+    <title>ZVT Terminal Widget</title>
+    <authorgroup>
+	<author>
+	  <firstname>Michael</firstname>
+	  <surname>Zucchi</surname>
+	  <authorblurb>
+	    <simpara><email>zucchi@zedzone.mmc.com.au</email></simpara>
+	  </authorblurb>
+	</author>
+      </authorgroup>
+    
+    <copyright>
+	<year>1999</year>
+	<holder>Michael Zucchi</holder>
+      </copyright>
+    
+    <legalnotice>
+	<para>Permission is granted to make and distribute verbatim
+      copies of this manual provided the copyright notice and this
+      permission notice are preserved on all copies.</para>
+	
+	<para>Permission is granted to copy and distribute modified
+      versions of this manual under the conditions for verbatim
+      copying, provided also that the entire resulting derived work is
+      distributed under the terms of a permission notice identical to
+      this one.</para>
+	
+	<para>Permission is granted to copy and distribute translations
+      of this manual into another language, under the above conditions
+      for modified versions.</para>
+	
+      </legalnotice>
+  </bookinfo>
+
+  <chapter id="zvtterm">
+    <title>ZVT Terminal Widget</title>
+
+    <para>The ZVT Terminal Widget (zvtterm) provides high level access
+    to a xterm-compliant terminal emulator which can be used for
+    terminal emulation or as a high performance text output engine
+    with scrollback and selection facilities.</para>
+
+    <para><xref linkend="zvtterm-reference"> contains the detailed
+    function call descriptions of all publically callable functions.</para>
+
+    <para><xref linkend="zvtterm-notes"> covers some
+    implementation ideas and issues that will guide the implementor.</para>
+
+    <sect1>
+      <title>Creating a Terminal</title>
+      <para>The following functions are available to create a
+      terminal:</para>
+      <itemizedlist>
+	<listitem>
+	  <para><xref linkend="zvtterm-zvt-term-new"
+	  endterm="zvtterm-zvt-term-new"> -
+	  create a default widget.</para>
+	</listitem>
+	<listitem>
+	  <para><xref linkend="zvtterm-zvt-term-new-with-size"
+	      endterm="zvtterm-zvt-term-new-with-size"> -
+	  create a widget with a specified terminal size.</para>
+	</listitem>
+      </itemizedlist>
+      <para>Unless there are specific reasons not to, you should
+      normally use <function>zvt_term_new_with_size()</function> to
+      create a new terminal.  Otherwise you must be careful of the
+      order you perform size operations on the terminal.  It would
+      normally make sense to call
+      <function>zvt_term_set_size()</function> before the widget is
+      realized anyway.
+</para>
+    </sect1>
+    
+    <sect1 id="zvtterm-properties">
+      <title>Terminal properties</title>
+      <para> The terminal has a large number of properties which can
+      be set via object methods.</para>
+      <itemizedlist>
+	<listitem><para><xref linkend="zvtterm-zvt-term-set-size"
+	    endterm="zvtterm-zvt-term-set-size"> - set absolute
+	    terminal size.</para></listitem>
+	<listitem><para><xref linkend="zvtterm-zvt-term-set-blink"
+	    endterm="zvtterm-zvt-term-set-blink"> - enable/disable blinking
+	  cursor.</para></listitem>
+	<listitem><para><xref linkend="zvtterm-zvt-term-set-bell"
+	    endterm="zvtterm-zvt-term-set-bell"> - enable/disable
+	    bell.</para></listitem>
+	<listitem><para><xref linkend="zvtterm-zvt-term-get-bell"
+	    endterm="zvtterm-zvt-term-get-bell"> - read bell
+	    state.</para></listitem>
+	<listitem><para><xref linkend="zvtterm-zvt-term-set-scroll-on-keystroke"
+	    endterm="zvtterm-zvt-term-set-scroll-on-keystroke"> - enable/disable
+	  auto-scroll on keystroke</para></listitem>
+	<listitem><para><xref linkend="zvtterm-zvt-term-set-scroll-on-output"
+	    endterm="zvtterm-zvt-term-set-scroll-on-output"> - enable/disable
+	  auto-scroll on output</para></listitem>
+	<listitem><para><xref linkend="zvtterm-zvt-term-set-del-key-swap"
+	    endterm="zvtterm-zvt-term-set-del-key-swap"> - enable/disable
+	  DEL-BS key swap.</para></listitem>
+	<listitem><para><xref linkend="zvtterm-zvt-term-set-wordclass"
+	    endterm="zvtterm-zvt-term-set-wordclass"> - set characters which
+	  match words in selections</para></listitem>
+	<listitem><para><xref linkend="zvtterm-zvt-term-set-color-scheme"
+	    endterm="zvtterm-zvt-term-set-color-scheme"> - set the colour
+	  palette</para></listitem>
+	<listitem><para><xref linkend="zvtterm-zvt-term-set-default-color-scheme"
+	    endterm="zvtterm-zvt-term-set-default-color-scheme"> - restore
+	  default colour palette.</para></listitem>
+	<listitem><para><xref linkend="zvtterm-zvt-term-set-scrollback"
+	    endterm="zvtterm-zvt-term-set-scrollback"> - set scrollback buffer
+	  size.</para></listitem>
+	<listitem><para><xref linkend="zvtterm-zvt-term-set-fonts"
+	    endterm="zvtterm-zvt-term-set-fonts"> - set fonts.</para></listitem>
+	<listitem><para><xref linkend="zvtterm-zvt-term-set-font-name"
+	    endterm="zvtterm-zvt-term-set-font-name"> - set bold/normal font
+	  by name.</para></listitem>
+	<listitem><para><xref linkend="zvtterm-zvt-term-set-background"
+	    endterm="zvtterm-zvt-term-set-background"> - set background
+	  picture/transparency options.</para></listitem>
+	<listitem><para><xref linkend="zvtterm-zvt-term-get-capabilities"
+	    endterm="zvtterm-zvt-term-get-capabilities"> - query compiled
+	  capabilities.</para></listitem>
+      </itemizedlist>
+      <para>These commands change the behaviour at runtime.</para>
+      <itemizedlist>
+	<listitem><para><xref linkend="zvtterm-zvt-term-show-pointer"
+	    endterm="zvtterm-zvt-term-show-pointer"> - Make the mouse pointer
+	  visible.</para></listitem>
+	<listitem><para><xref linkend="zvtterm-zvt-term-hide-pointer"
+	    endterm="zvtterm-zvt-term-hide-pointer"> - Make the mouse pointer
+	  invisible.</para></listitem>
+      </itemizedlist>
+    </sect1>
+
+    <sect1>
+      <title>Input to terminal</title>
+      <para>The terminal can either take input from a sub-process, or
+      from the application directly.
+</para>
+      <sect2>
+	<title>Subshell commands</title>
+	<itemizedlist>
+	  <listitem><para><xref linkend="zvtterm-zvt-term-forkpty"
+		endterm="zvtterm-zvt-term-forkpty">
+	    - to fork a session in which to launch a terminal
+	    application.</para></listitem>
+	  <listitem><para><xref linkend="zvtterm-zvt-term-killchild"
+	      endterm="zvtterm-zvt-term-killchild"> - to signal the
+	    child process (as in signal(2)).</para></listitem>
+	  <listitem><para><xref linkend="zvtterm-zvt-term-closepty"
+	      endterm="zvtterm-zvt-term-closepty"> - to close the master
+	    pty, and let the child quit.</para></listitem>
+	</itemizedlist>
+      </sect2>
+      <sect2>
+	<title>Application input</title>
+	<itemizedlist>
+	  <listitem><para><xref linkend="zvtterm-zvt-term-feed"
+	      endterm="zvtterm-zvt-term-feed"> - Feed data directly to the
+	    terminal</para></listitem>
+	</itemizedlist>
+      </sect2>
+    </sect1>
+
+    <sect1>
+      <title>Retrieving data from terminal</title>
+      <para></para>
+      <itemizedlist>
+	<listitem><para><xref linkend="zvtterm-zvt-term-get-buffer"
+	    endterm="zvtterm-zvt-term-get-buffer"> - Retrieve the raw
+	  screen/scrollback text.</listitem>
+      </itemizedlist>
+    </sect1>
+  </chapter>
+  <chapter id="zvtterm-reference">
+    <title>API Reference</title>
+    <para>The following pages contain the complete api reference.
+    </para>
+      &zvt-zvtterm;
+  </chapter>
+  <chapter id="zvtterm-notes">
+    <title>Implementation notes</title>
+    <para>This chapter discusses some issues and ideas which may be
+    applicable to using the ZvtTerm terminal widget in your
+    application.</para>
+    <sect2>
+      <title>When to use a ZvtTerm</title>
+      <para>You might consider using a ZvtTerm in your application, if
+      you require any of the following features:</para>
+      <itemizedlist>
+	<listitem><para>When you need to execute a sub-ordinate
+	terminal-based application and display its output.  ZvtTerm
+	provides all of the necessary emulation and tty handling code
+	to simplify your job.</para>
+	</listitem>
+	<listitem><para>When you wish to provide a graphical front-end
+	to an exsiting terminal-based application, including
+	integrated cut-and-paste, scrollback, and ANSI colour support.</para>
+	</listitem>
+	<listitem><para>When you want to generate coloured output
+	and display it in a scrollable window.  ZvtTerm includes an
+	efficient and fast display and rendering engine (although the
+	pixmap background implementation is currently very
+	poor).</para>
+	</listitem>
+      </itemizedlist>
+    </sect2>
+    <sect2>
+      <title>When not to use a ZvtTerm</title>
+      <itemizedlist>
+	<listitem><para>When you need a word-wrapped or
+	proportinal-font display.  ZvtTerm <emphasis>only
+	works correctly</emphasis> with fixed-width fonts.</para>
+	</listitem>
+	<listitem><para>If you require any other rendering elements
+	apart from simple or ANSI-like text.</listitem>
+      </itemizedlist>
+    </sect2>
+
+    <sect1>
+      <title>Embedding applications</title>
+      <para>One may wish to embed an existing curses or simple text-based application
+    within a prettier frame-work, and/or add extra macro or session
+    functionality to simplify its use.</para>
+      <para>One such example of this is
+    the Crescendo application, which embeds the TinyFuge mud client
+    into a gnome-aware GUI application and provides some
+    point-and-click functionality.</para>
+    <para>This is very easy to do using the
+    ZvtTerm widget.  All you have to do is instantiate the widget, and
+    then execute the controlled program in the appropriate
+    environment.  The
+    <xref linkend="zvtterm-zvt-term-forkpty"
+	  endterm="zvtterm-zvt-term-forkpty"> and
+    <xref linkend="zvtterm-zvt-term-new-with-size"
+	  endterm="zvtterm-zvt-term-new-with-size">
+    functions are used for this purpose.
+    </para>
+      <sect2>
+	<title>Creating an appropriate widget</title>
+	<para>
+	Typically applications such
+	as these are designed to run in a 80x24 character-mode terminal,
+	you should use zvt_term_new_with_size() to create the initial
+	80x24 terminal.</para>
+	<para>You may also need to force the application window not to
+	be resized, if the embedded application cannot handle it.
+	This can be done using the normal gdk/gtk window hints
+	mechanism.</para>
+      </sect2>
+      <sect2>
+	<title>Creating an appropriate execution environment</title>
+	<para>The <xref linkend="zvtterm-zvt-term-forkpty"
+	    endterm="zvtterm-zvt-term-forkpty"> function should be
+	used to create the child process required to execute the
+	program in.  It works just like fork(2) with some additional
+	features.</para>
+	<para>This will setup the pseudo tty (pty) for the
+	subordinate program, and register the login session if required.
+	ZvtTerm uses a secure set-uid helper application to register
+	the session, so applications need not (and should not!) be run
+	as a priviledged user to register login sessions.</para>
+	<para>The environment must also be setup appropriately if any
+	curses/ncurses or similar application is to be run within the
+	terminal.  The following environmental variables should be modified/set
+	as shown:</para>
+	<variablelist>
+	  <varlistentry>
+	    <term><envar>TERM</envar></term>
+	    <listitem>
+	      <para>Should be set to xterm, as the ZvtTerm widget
+	      tries to emulate an xterm.  vt100 or vt220 may also work if xterm
+	      is not understood by the application.
+              </para>
+	    </listitem>
+	  </varlistentry>
+	  <varlistentry>
+	    <term><envar>COLORTERM</envar></term>
+	    <listitem>
+	      <para>Can be set to anything, including the name of the
+	      application.  Although it may be appropriate to set it
+	      to the value "zterm".  This will enable colour rendering
+	      in a modern colour-capable curses, like ncurses.
+              </para>
+	    </listitem>
+	  </varlistentry>
+	  <varlistentry>
+	    <term><envar>COLUMNS</envar> &amp; <envar>ROWS</envar></term>
+	    <listitem>
+	      <para>These variables should be removed from the
+	      environment passed to the child process.  However it may
+	      be necessary to initialise it to the size of the
+	      terminal, if it will not change.  The terminal size is
+	      always set properly on the pseudo-tty.
+              </para>
+	    </listitem>
+	  </varlistentry>
+	</variablelist>
+	<para>These should only be set in the child process (that
+	which received a 0 return value from zvt_term_forkpty()).  The
+	program should then be executed using execle(2), execpe(2) or
+	similar.  If these environment variables are not set, the
+	terminal will still function, but any embedded application may
+	not properly display.
+        </para>
+      </sect2>
+      <sect2>
+	<title>Setting up an exit handler</title>
+	<para>The widget will generate a "child_died" signal when the
+	child process terminates.  This signal should be caught if you
+	wish to detect when the subordinate process exits.</para>
+      </sect2>
+
+      <para>Further information can be found in <xref linkend="zvtterm-input-output">
+      about how to interact with the subordinate application. </para>
+    </sect1>
+
+    <sect1>
+      <title>As a colour output device</title>
+      <para>Another way to use the terminal emulator is as an output
+      device with full colour and xterm emulation support.  This will
+      let your application gain the benefits of an automatic
+      scrollback capability and a cursor-addressable display, if
+      required.  Text may also be selected from any part of the
+      display into the clipboard.
+      </para>
+      <para>The gnome-enabled version of the xchat irc client is an
+      example of this type of application.
+      </para>
+      <para>This is even easier than using a child process to generate
+      output.  You do not need to call zvt_term_forkpty(), and you
+      do not need to setup any special environment.  Simply
+      call <xref linkend="zvtterm-zvt-term-feed"
+	      endterm="zvtterm-zvt-term-feed"> once the terminal has
+      been created, and it will write directly to the display.</para>
+      <para>All of
+      the usual colour and style-setting attributes can be encoded as
+      simple strings fed into the terminal display engine.
+      </para>
+    </sect1>
+
+    <sect1 id="zvtterm-input-output">
+      <title>Terminal input and output</title>
+      <sect2>
+	<title>Display output</title>
+	<para>The terminal engine receives display data from one of 2 sources.
+      </para>
+	<variablelist>
+	  <varlistentry>
+	    <term>Directly from the application</term>
+	    <listitem>
+	      <para>
+	     <xref linkend="zvtterm-zvt-term-feed"
+		  endterm="zvtterm-zvt-term-feed"> can be used to feed
+		output from the running application directly into the
+		terminal emulator.  Any such input will not be seen by
+		any subordinate application, but will behave as if
+		that application had generated it.  This normally used
+		  when the ZvtTerm is only being used as a local
+		  output device.</para>
+	    </listitem>
+	  </varlistentry>
+	  <varlistentry>
+	    <term>From the sub-ordinate application</term>
+	    <listitem>
+	      <para>If a child process has been launched via
+	    zvt_term_forkpty(), then it will be executing
+	    asynchronously to the GUI application.  If it generates
+	    any output while it is executing this will automatically
+	    be processed and displayed by the widget during the gtk
+	    event loop processing.  This will never generate output if
+	    zvt_term_forkpty() has not executed successfully.</para>
+	    </listitem>
+	  </varlistentry>
+	</variablelist>
+	<para>Any input from any of the sources is treated the same - as
+      xterm escape sequences or escape sequence fragments and simple text.  It would
+      generally not make sense to use both methods of display
+      generation at the same time as the display state may not be
+      known between calls to the parser.</para>
+      </sect2>
+      <sect2>
+	<title>Inserting keystrokes</title>
+	<para>Within the ZvtTerm object definition there is available
+	a file descriptor which is assigned to the application to
+	"add" extra keystrokes to the child's input.  This file
+	descriptor is stored in
+	<literal>term-&gt;vt-&gt;vx.keyfd</literal>.
+        Input to this file descriptor will be
+	processed as if they were typed in by the user.
+	zvt_term_feed() cannot be used for this purpose as it
+	by-passes the child's input and output streams and writes
+	directly to the display engine.  Of course, this file
+	descriptor is only valid if zvt_term_forkpty() was executed
+	successfully on the terminal object.</para>
+	<example>
+	  <title>Adding characters to the input stream</title>
+	  <programlisting>
+    /* feeds in 'ls -l\r\n' into the current child process */
+    write(term-&gt;vx-&gt;vt.keyfd, "ls -l\r\n", sizeof("ls -l\r\n"));
+</programlisting>
+	</example>
+      </sect2>
+    </sect1>
+
+    <sect1>
+      <title>Fonts</title>
+      <para>You should always use fixed-width fonts.  The terminal is
+      designed as a character-mode device emulator.  Character mode
+      devices use fixed-width fonts.  There is little that can be done
+      about this!</para>
+      <para>As a recommendation I would suggest you use either the
+      font "fixed", or the font "10x20" as your default font (if the
+      user is not allowed a choice).  These are by far the cleanest
+      and most readable of the smaller fixed-width fonts.</para>
+      <para>You may also like to use the courier fonts, but they
+      aren't very readable unless they are larger font sizes.</para>
+      <para>Also
+      remember that some users <emphasis>WILL</emphasis> have
+      low-resolution displays (&lt;=800x600).  Please cater for such
+      users by using a small, readable, and available font such as
+      "fixed" as your default font.
+      </para>
+      <para>If you give users an option to set the font, make sure
+      they know that proportional fonts will not work correctly.
+      Unfortunately there is no easy and general way to do this using
+      the gnome or
+      gtk font selector widgets.  It may require an explicit check of
+      the font before it is set in the terminal.  If users are allowed
+      to set arbitrary fonts then the display can become very ugly and
+      distorted, but if they know this, then they can simply choose a
+      fixed-width font.
+      </para>
+    </sect1>
+
+    <sect1 id="zvtterm-window-hints">
+      <title>Window Hints</title>
+      <para>
+      Currently it is upto the calling application to appropriately
+      setup the window hints for the application so the terminal will
+      size properly (i.e. to the nearest character cell position).
+      Unfortunately, gdk does not provide the required functionality
+      in its hint functions, and so
+      the application must use the corresponding X calls where
+      required.
+      </para>
+      <para>If the application's main window area is not the terminal
+      then it may not make sense to set these hints - the terminal
+      will still operate and resize correctly, but may be resized to
+      fractions of a character cell, which will leave a blank space
+      along the right or bottom edges.
+      </para>
+      <example>
+	<title>A size_allocate signal handler which sets the proper
+window hints for character-accurate window resizing.</title>
+	<programlisting>
+static void
+size_allocate (GtkWidget *widget)
+{
+  ZvtTerm *term;
+  XSizeHints sizehints;
+  
+  g_assert (widget != NULL);
+  term = ZVT_TERM (widget);
+
+#define PADDING 2  
+  sizehints.base_width = 
+    (GTK_WIDGET (window)-&gt;allocation.width) +
+    (GTK_WIDGET (term)->style-&gt;klass-&gt;xthickness * 2) -
+    (GTK_WIDGET (term)-&gt;allocation.width) + PADDING;
+  
+  sizehints.base_height =
+    (GTK_WIDGET (window)-&gt;allocation.height) +
+    (GTK_WIDGET (term)-&gt;style-&gt;klass-&gt;ythickness * 2) -
+    (GTK_WIDGET (term)-&gt;allocation.height);
+  
+  sizehints.width_inc = term-&gt;charwidth;
+  sizehints.height_inc = term-&gt;charheight;
+  sizehints.min_width = sizehints.base_width + sizehints.width_inc;
+  sizehints.min_height = sizehints.base_height + sizehints.height_inc;
+  
+  sizehints.flags = (PBaseSize|PMinSize|PResizeInc);
+  
+  XSetWMNormalHints (GDK_DISPLAY(),
+                     GDK_WINDOW_XWINDOW (GTK_WIDGET (window)-&gt;window),
+                     &amp;sizehints);
+  gdk_flush ();
+}
+</programlisting>
+      </example>
+      <para>The example above sets the window hints so that the window
+      manager will force resizes to the nearest character, and report
+      the character dimensions if it provides that
+      functionality.</para>
+      <para>It should be attatched to the terminal instance using
+      gtk_signal_attach_after, because gtk/gdk will set its own
+      (incomplete) window
+      hints every time the window is resized and we must over-ride
+      that.</para>
+      <example>
+	<title>Attaching the signal resize handler to the
+	terminal</title>
+	<programlisting>
+  gtk_signal_connect_after (
+      GTK_OBJECT (term),
+      "size_allocate",
+      GTK_SIGNAL_FUNC (size_allocate),
+      term);
+</programlisting></example>
+    </sect1>
+
+    <sect1>
+      <title>Other ideas</title>
+      <sect2>
+	<title>Adding a scrollbar</title>
+	<para>Often a scrollbar will be added to the ZvtTerm widget to
+      allow its scrollback buffer to be controlled via a mouse (see
+      <xref linkend="zvtterm-zvt-term-set-scrollback"
+	    endterm="zvtterm-zvt-term-set-scrollback">).  Each ZvtTerm
+      provides this via an adjustment defined in the object structure
+      as simply <literal>adjustment</literal>.</para>
+	<para>Also note that mouse-wheel mice are automatically
+	handled by the button event handler if the terminal widget has
+	focus, and perform a page up/down function.
+      </para>
+	<example>
+	  <title>Creating an appropriate scrollbar</title>
+	  <programlisting>
+    gtk_vscrollbar_new (GTK_ADJUSTMENT (ZVT_TERM (term)-&gt;adjustment));
+    GTK_WIDGET_UNSET_FLAGS (scrollbar, GTK_CAN_FOCUS);
+</programlisting>
+	  </example>
+	<para>You will normally want to disable focus on the
+	  scrollbar otherwise gtk may switch focus inappropriately.
+          </para>
+      </sect2>
+
+      <sect2>
+	<title>Reading data from the screen</title>
+	<para>There are no helper functions for this, but the same may
+	be achived simply using the following code fragment.</para>
+	<example>
+	  <title>Converting window coordinates to character
+	  coordinates.</title>
+	  <programlisting>
+void mouse_to_char(ZvtTerm *term, int mousex, int mousey, int *x, int *y)
+{
+	*x = mousex/term-&gt;charwidth;
+	*y = mousey/term-&gt;charheight;
+}
+</programlisting>
+	</example>
+	<para>These values are then suitable for using with
+        <xref linkend="zvtterm-zvt-term-get-buffer"
+	    endterm="zvtterm-zvt-term-get-buffer"> to let the
+        application read data from the screen.</para>
+      </sect2>
+    </sect1>
+
+    <sect1>
+      <title>The zterm application</title>
+      <para>The complete listing for a simple, but fully functional
+      terminal program is explained in this section.</para>
+
+      <sect2>
+	<title>The annotated application</title>
+
+      <para>First, the pre-amble and headers</para>
+<programlisting>
+/*  zterm.c - Zed's Virtual Terminal
+ *  Copyright (C) 1998  Michael Zucchi
+ *
+ *  A simple terminal program, based on ZTerm.
+ *
+ *  This program is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ */
+
+#include &lt;stdio.h&gt;
+#include &lt;unistd.h&gt;
+#include &lt;fcntl.h&gt;
+#include &lt;sys/time.h&gt;
+#include &lt;sys/types.h&gt;
+#include &lt;unistd.h&gt;
+#include &lt;errno.h&gt;
+#include &lt;string.h&gt;
+#include &lt;pwd.h&gt;
+#include &lt;stdlib.h&gt;
+
+#include &lt;gtk/gtk.h&gt;
+#include &lt;gdk/gdkx.h&gt;
+#include &lt;gdk/gdkprivate.h&gt;
+#include &lt;gdk/gdkkeysyms.h&gt;
+
+#include &lt;zvt/zvtterm.h&gt;
+</programlisting>
+
+      <para>Yes, you should always remember the license!  Of course,
+      i'm rather fond of GNU's version ...</para>
+<programlisting>
+#define FONT "-misc-fixed-medium-r-normal--12-200-75-75-c-100-iso8859-1"
+</programlisting>
+      <para>Here we have the font we're using.  This is the full name
+of "fixed".  A nice readable fixed-width, and small font.</para>
+
+<programlisting>
+extern char      **environ;		
+static char      **env;
+static char      **env_copy;
+static int         winid_pos;
+static GtkWidget  *window = NULL;
+</programlisting>
+      <para>A few globals needed elsewhere.  Including the environment
+      setup.</para>
+<programlisting>
+static void
+child_died_event (ZvtTerm *term)
+{
+  gtk_exit(0);
+}
+</programlisting>
+      <para>This is later setup as the child_died signal handler.  In
+      the case of a terminal we just terminate the whole application
+      when this happens.</para>
+<programlisting>
+static void
+title_changed_event (ZvtTerm *term, VTTITLE_TYPE type, char *newtitle)
+{
+  switch(type) 
+    {
+    case VTTITLE_WINDOW:
+    case VTTITLE_WINDOWICON:
+      gtk_window_set_title (GTK_WINDOW (window), newtitle);
+      break;
+    default:
+      break;
+    }
+}
+</programlisting>
+      <para>Another signal that may be generated by the widget is the
+      title_changed signal.  This signal is generated when the xterm
+      escape sequence to set a title is processed.  Here we setup a
+      simple handler that will change the window title when this
+      sequence is caught.  By default no action is taken.</para>
+<programlisting>
+static void
+size_allocate (GtkWidget *widget)
+{
+  ZvtTerm *term;
+  XSizeHints sizehints;
+  
+  g_assert (widget != NULL);
+  term = ZVT_TERM (widget);
+
+#define PADDING 2  
+  sizehints.base_width = 
+    (GTK_WIDGET (window)-&gt;allocation.width) +
+    (GTK_WIDGET (term)-&gt;style-&gt;klass-&gt;xthickness * 2) -
+    (GTK_WIDGET (term)-&gt;allocation.width) + PADDING;
+  
+  sizehints.base_height =
+    (GTK_WIDGET (window)-&gt;allocation.height) +
+    (GTK_WIDGET (term)-&gt;style-&gt;klass-&gt;ythickness * 2) -
+    (GTK_WIDGET (term)-&gt;allocation.height);
+  
+  sizehints.width_inc = term-&gt;charwidth;
+  sizehints.height_inc = term-&gt;charheight;
+  sizehints.min_width = sizehints.base_width + sizehints.width_inc;
+  sizehints.min_height = sizehints.base_height + sizehints.height_inc;
+  
+  sizehints.flags = (PBaseSize|PMinSize|PResizeInc);
+  
+  XSetWMNormalHints (GDK_DISPLAY(),
+		     GDK_WINDOW_XWINDOW (GTK_WIDGET (window)-&gt;window),
+		     &amp;sizehints);
+  gdk_flush ();
+}
+</programlisting>
+      <para>Here we have the same code as explained in <xref
+	  linkend="zvtterm-window-hints">, for setting appropriate
+	  window-resize hints.</para>
+      <para>The main program follows:</para>
+<programlisting>
+gint 
+main (gint argc, gchar *argv[])
+{
+  int i, c, cmdindex, scrollbacklines, login_shell;
+  char buffer[60], **p;
+  struct passwd *pw;
+  GtkWidget *term, *hbox, *scrollbar;
+  enum { RIGHT, LEFT } scrollpos = LEFT;
+
+  login_shell = 0;
+  cmdindex = 0;
+  scrollbacklines = 50;
+</programlisting>
+      <para>The next section sets up the environment as explained
+      elsewhere.  We setup the TERM environment and drop the terminal
+      size environment, and add the COLORTERM value, to enable colour
+      output for specific applications.</para>
+      <para>We also setup a placeholder for the WINDOWID environment
+      when it is known later on.  This is used by some X-aware
+      terminal applications to manipulate the terminal window.</para>
+<programlisting>
+  /* set up terminal environment */
+  env = environ;
+
+  for (p = env; *p; p++);
+  i = p - env;
+  env_copy = (char **) g_malloc (sizeof (char *) * (i + 3));
+  for (i = 0, p = env; *p; p++) {
+      if (strncmp (*p, "TERM=", 5) == 0) {
+	  env_copy [i++] = "TERM=xterm";
+      } else if ((strncmp (*p, "COLUMNS=", 8) == 0) ||
+	       (strncmp (*p, "LINES=", 6) == 0)) {
+	  continue;
+      } else {
+	  env_copy [i++] = *p;
+      }
+  }
+
+  env_copy [i++] = "COLORTERM=zterm";
+  winid_pos = i++;
+  env_copy [winid_pos] = "TEST";
+  env_copy [i] = NULL;
+  
+  gtk_init(&amp;argc, &amp;argv);
+</programlisting>
+      <para>Process the command line options.  Note the saving of the
+      position of the '-e' option and the termination of processing
+      once it has been found.  This is a compatability with the
+      'xterm' '-e' command line option.</para>
+<programlisting>
+  /* process arguments */
+  while ( (cmdindex==0) &amp;&amp; (c=getopt(argc, argv, "le:s:rh")) != EOF ) {
+      switch(c)  {
+	case 'e':
+	  cmdindex = optind-1;	/* index of argv array to pass to exec */
+	  break;
+
+	case 's':
+	  scrollbacklines = atoi(optarg);
+	  break;
+
+	case 'l':
+	  login_shell = 1;
+	  break;
+
+	case 'r':
+	  scrollpos = RIGHT;
+	  break;
+
+	case '?':
+	case 'h':
+	default:
+	  fprintf(stderr, "Usage: zterm [-sNN] [-l] [-r] [-e command args]\n");
+	  exit(1);
+	  break;
+	}
+    }
+</programlisting>
+      <para>Now we are ready to create our application widgets
+      ...</para>
+<programlisting>
+  /* Create widgets and set options */
+  window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+  gtk_window_set_title (GTK_WINDOW (window), "zterm");
+  gtk_window_set_wmclass (GTK_WINDOW (window), "zterm", "zterm");
+  gtk_widget_realize (window);
+
+  /* create hbox */
+  hbox = gtk_hbox_new (FALSE, 0);
+  gtk_box_set_spacing (GTK_BOX (hbox), 2);
+  gtk_container_set_border_width (GTK_CONTAINER (hbox), 2);
+  gtk_container_add (GTK_CONTAINER (window), hbox);
+  gtk_widget_show (hbox);
+
+</programlisting>
+      <para>Here we create the terminal widget, and setup a number of
+      options, as covered in <xref linkend="zvtterm-properties">.  We
+      setup a basic set of options which are much the same as the
+      defaults (but i also like a blinking cursor!).</para>
+<programlisting>
+  /* create terminal */
+  term = zvt_term_new_with_size(80,24);
+  zvt_term_set_font_name(ZVT_TERM (term), FONT);
+  zvt_term_set_blink (ZVT_TERM (term), TRUE);
+  zvt_term_set_bell (ZVT_TERM (term), TRUE);
+  zvt_term_set_scrollback(ZVT_TERM (term), scrollbacklines);
+  zvt_term_set_scroll_on_keystroke (ZVT_TERM (term), TRUE);
+  zvt_term_set_scroll_on_output (ZVT_TERM (term), FALSE);
+  zvt_term_set_background (ZVT_TERM (term), NULL, 0, 0);
+  zvt_term_set_wordclass (ZVT_TERM (term), "-A-Za-z0-9/_:.,?+%=");
+
+</programlisting>
+      <para>Attatch the signal handlers we defined above.  We also
+      attach the destroy signal to the exit handling event - if the
+      window is closed by the window manager then this catches that
+      event.  Otherwise the close button doesn't work!</para>
+<programlisting>
+  
+  gtk_signal_connect (
+      GTK_OBJECT (term),
+      "child_died",
+      GTK_SIGNAL_FUNC (child_died_event),
+      NULL);
+
+  gtk_signal_connect (
+      GTK_OBJECT (term),
+      "destroy",
+      GTK_SIGNAL_FUNC (child_died_event),
+      NULL);
+
+  gtk_signal_connect (
+      GTK_OBJECT (term),
+      "title_changed",
+      GTK_SIGNAL_FUNC (title_changed_event),
+      NULL);
+  
+  gtk_signal_connect_after (
+      GTK_OBJECT (term),
+      "size_allocate",
+      GTK_SIGNAL_FUNC (size_allocate),
+      term);
+
+  gtk_widget_show (term);
+
+</programlisting>
+      <para>And here we show how the scrollbar is attached to the term
+      adjustment designed for this purpose, and how the scrollbar has
+      its focus disabled.  We also give the user the option for a left
+      or right scrollbar.</para><para>Although many perfer the windows/motif
+      convention of a right-mounted scrollbar, but a left-mounted
+      scrollbar should be an option if possible, as it is often a much
+      more practical position to have it in.  Particularly if there
+      are overlapping windows, or windows partly off-screen.</para>
+<programlisting>
+
+  /* scrollbar */
+  scrollbar = 
+    gtk_vscrollbar_new (GTK_ADJUSTMENT (ZVT_TERM (term)-&gt;adjustment));
+  GTK_WIDGET_UNSET_FLAGS (scrollbar, GTK_CAN_FOCUS);
+  if (scrollpos == LEFT) {
+    gtk_box_pack_start (GTK_BOX (hbox), scrollbar, FALSE, TRUE, 0);
+    gtk_box_pack_start (GTK_BOX (hbox), term, 1, 1, 0);
+  } else {
+    gtk_box_pack_start (GTK_BOX (hbox), term, 1, 1, 0);
+    gtk_box_pack_start (GTK_BOX (hbox), scrollbar, FALSE, TRUE, 0);
+  }
+  gtk_widget_show (scrollbar);
+
+  /* show them all! */
+  gtk_widget_show (window);
+
+</programlisting>
+      <para>Here we show how the sub-shell is created using
+      zvt_term_forkpty().  We also give the user the option of logging
+      the session in utmp/wtmp.  This probably isn't that necessary
+      for a non-shell application, but might be useful.</para>
+      <para>It also shows how either a shell is executed, or the
+      command given on the command line is executed.  And how the
+      login shell arguments are processed.  Again this is not normally
+      required for a non-shell application.</para>
+<programlisting>
+  /* fork the shell/program */
+  switch (zvt_term_forkpty(ZVT_TERM (term), ZVT_TERM_DO_UTMP_LOG |  ZVT_TERM_DO_WTMP_LOG)) {
+    case -1:
+      perror("ERROR: unable to fork:");
+      exit(1);
+      break;
+
+    case 0:
+      if (cmdindex) {
+	  environ = env_copy;
+	  execvp(argv[cmdindex], &amp;argv[cmdindex]);
+      } else {
+	  GString *shell, *name;
+	  
+	  /* get shell from passwd */
+	  pw = getpwuid(getuid());
+	  if (pw) {
+	      shell = g_string_new(pw-&gt;pw_shell);
+	      if (login_shell)
+		  name = g_string_new("-");
+	      else
+		  name = g_string_new("");
+	      
+	      g_string_append(name, strrchr(pw-&gt;pw_shell, '/'));
+	  } else {
+	      shell = g_string_new("/bin/sh");
+	      if (login_shell)
+		  name = g_string_new("-sh");
+	      else
+		  name = g_string_new("sh");
+	    }
+
+	  execle (shell-&gt;str, name-&gt;str, NULL, env_copy);
+	  perror ("Could not exec\n");
+	  _exit (127);
+	}
+      perror("ERROR: Cannot exec command:");
+      exit(1);
+
+    default:
+      break;
+    }
+</programlisting>
+      <para>And thats it!  We're ready to go into the main processing
+      loop!</para>
+<programlisting>
+  /* main loop */
+  gtk_main ();
+  gtk_exit(0);
+  return 0;
+}
+</programlisting>
+      </sect2>
+      <sect2>
+	<title>Further examples</title>
+
+	<para>This example is basically the 'zterm' test-application
+      which is in the source code tree under gnome-libs/zvt/zterm.c.
+      The gnome-terminal application (in gnome-core/gnome-terminal)
+      provides a much richer set of features.  It exercises all
+      configurable options of the terminal emulator as well.</para>
+	<para>Crescendo and xchat are two other examples that use the
+      widget in different ways.  Crescendo runs a subordinate tinyfuge
+      mud client, and xchat uses it as a colour output device.</para>
+      </sect2>
+    </sect1>
+    
+  </chapter>
+</book>
