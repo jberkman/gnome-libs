@@ -21,8 +21,10 @@ CORBA_ORB _gnorba_gnome_orbit_orb;
 CORBA_Principal _gnorba_request_cookie;
 
 static char *_gnorba_get_cookie_reliably(const char *setme);
-void _gnome_gnorba_cookie_setup(Display *disp, Window rootwin);
+void         _gnome_gnorba_cookie_setup(Display *disp, Window rootwin);
 extern void goad_register_arguments(void);
+
+int _gnorba_corba_prio;
 
 #ifndef ORBIT_USES_GLIB_MAIN_LOOP
 
@@ -31,40 +33,40 @@ orb_handle_connection(GIOChannel *source, GIOCondition cond,
 		      GIOPConnection *cnx)
 {
 
-  /* The best way to know about an fd exception is if select()/poll()
+	/* The best way to know about an fd exception is if select()/poll()
 	 * tells you about it, so we just relay that information on to ORBit
 	 * if possible
 	 */
 	
-  if(cond & (G_IO_HUP|G_IO_NVAL|G_IO_ERR))
-    giop_main_handle_connection_exception(cnx);
-  else
-    giop_main_handle_connection(cnx);
-
-  return TRUE;
+	if(cond & (G_IO_HUP|G_IO_NVAL|G_IO_ERR))
+		giop_main_handle_connection_exception(cnx);
+	else
+		giop_main_handle_connection(cnx);
+	
+	return TRUE;
 }
 
 static void
 orb_add_connection(GIOPConnection *cnx)
 {
-  int tag;
-  GIOChannel *channel;
-
-  channel = g_io_channel_unix_new(GIOP_CONNECTION_GET_FD(cnx));
-  tag = g_io_add_watch_full   (channel, G_PRIORITY_DEFAULT,
-			       G_IO_IN|G_IO_ERR|G_IO_HUP|G_IO_NVAL, 
-			       (GIOFunc)orb_handle_connection,
-			       cnx, NULL);
-  g_io_channel_unref (channel);
-
-  cnx->user_data = GUINT_TO_POINTER (tag);
+	int tag;
+	GIOChannel *channel;
+	
+	channel = g_io_channel_unix_new(GIOP_CONNECTION_GET_FD(cnx));
+	tag = g_io_add_watch_full   (channel, _gnorba_corba_prio,
+				     G_IO_IN|G_IO_ERR|G_IO_HUP|G_IO_NVAL, 
+				     (GIOFunc)orb_handle_connection,
+				     cnx, NULL);
+	g_io_channel_unref (channel);
+	
+	cnx->user_data = GUINT_TO_POINTER (tag);
 }
 
 static void
 orb_remove_connection(GIOPConnection *cnx)
 {
-  g_source_remove(GPOINTER_TO_UINT (cnx->user_data));
-  cnx->user_data = GINT_TO_POINTER (-1);
+	g_source_remove(GPOINTER_TO_UINT (cnx->user_data));
+	cnx->user_data = GINT_TO_POINTER (-1);
 }
 
 #endif /* !ORBIT_USES_GLIB_MAIN_LOOP */
@@ -116,70 +118,71 @@ release_lock (int fd)
 static char *
 _gnorba_get_cookie_reliably (const char *setme)
 {
-  struct passwd *pwent;
-  char buf[64];
-  char *random_string = NULL;
-  char *name;
-  int fd = -1;
-
-  pwent = getpwuid(getuid());
-  g_assert(pwent);
-
-  name = g_strconcat ("/tmp/orbit-", pwent->pw_name, "/cookie", NULL);
-
-  if(setme) {
-
-    /* Just write it into the file for reference purposes */
-    fd = open (name, O_CREAT|O_WRONLY, S_IRUSR | S_IWUSR);
-
-    if (fd < 0)
-      goto out;
-
-    get_exclusive_lock(fd);
-    write(fd, setme, strlen(setme));
-    release_lock(fd);
-    random_string = g_strdup(setme);
-
-  } else {
-
-    buf [sizeof(buf)-1] = '\0';
-
-    /*
-     * Create the file exclusively with permissions rw for the
-     * user.  if this fails, it means the file already existed
-     */
-    fd = open (name, O_CREAT|O_EXCL|O_WRONLY, S_IRUSR | S_IWUSR);
-
-    if(fd >= 0) {
-      unsigned int i;
-
-      get_exclusive_lock (fd);
-      srandom (time (NULL));
-      for (i = 0; i < sizeof (buf)-1; i++)
-	buf [i] = (random () % (126-33)) + 33;
-
-      if(write(fd, buf, sizeof(buf)-1) < (sizeof(buf)-1))
-	goto out;
-
-      release_lock(fd);
-    } else if(fd < 0) {
-      int i;
-      fd = open(name, O_RDONLY);
-      i = read(fd, buf, sizeof(buf)-1);
-      if(i < 0)
-	goto out;
-      buf[i] = '\0';
-    } else /* error */
-      goto out;
-
-    random_string = g_strdup(buf);
-  }
-
+	struct passwd *pwent;
+	char buf[64];
+	char *random_string = NULL;
+	char *name;
+	int fd = -1;
+	
+	pwent = getpwuid(getuid());
+	g_assert(pwent);
+	
+	name = g_strconcat ("/tmp/orbit-", pwent->pw_name, "/cookie", NULL);
+	
+	if(setme) {
+		
+		/* Just write it into the file for reference purposes */
+		fd = open (name, O_CREAT|O_WRONLY, S_IRUSR | S_IWUSR);
+		
+		if (fd < 0)
+			goto out;
+		
+		get_exclusive_lock(fd);
+		write(fd, setme, strlen(setme));
+		release_lock(fd);
+		random_string = g_strdup(setme);
+		
+	} else {
+		
+		buf [sizeof(buf)-1] = '\0';
+		
+		/*
+		 * Create the file exclusively with permissions rw for the
+		 * user.  if this fails, it means the file already existed
+		 */
+		fd = open (name, O_CREAT|O_EXCL|O_WRONLY, S_IRUSR | S_IWUSR);
+		
+		if(fd >= 0) {
+			unsigned int i;
+			
+			get_exclusive_lock (fd);
+			srandom (time (NULL));
+			for (i = 0; i < sizeof (buf)-1; i++)
+				buf [i] = (random () % (126-33)) + 33;
+			
+			if(write(fd, buf, sizeof(buf)-1) < (sizeof(buf)-1))
+				goto out;
+			
+			release_lock(fd);
+		} else if(fd < 0) {
+			int i;
+			fd = open(name, O_RDONLY);
+			i = read(fd, buf, sizeof(buf)-1);
+			if(i < 0)
+				goto out;
+			buf[i] = '\0';
+		} else /* error */
+			goto out;
+		
+		random_string = g_strdup(buf);
+	}
+	
  out:
-  if(fd >= 0) close(fd);
-  g_free(name);
-
-  return random_string;
+	if(fd >= 0)
+		close(fd);
+	g_free(name);
+	
+	return random_string;
 }
 
 static const char *
@@ -279,10 +282,15 @@ gnorba_CORBA_init(int *argc, char **argv,
 	IIOPRemoveConnectionHandler = orb_remove_connection;
 #endif /* !ORBIT_USES_GLIB_MAIN_LOOP */
 
+	if (flags & GNORBA_INIT_CORBA_PRIO_HIGH)
+		_gnorba_corba_prio = G_PRIORITY_DEFAULT;
+	else
+		_gnorba_corba_prio = G_PRIORITY_LOW;
+	
 	_gnorba_gnome_orbit_orb = retval = CORBA_ORB_init(argc, argv, "orbit-local-orb", ev);
 	
 	if(!(flags & GNORBA_INIT_DISABLE_COOKIES))
-	  _gnorba_cookie_setup(NULL);
+		_gnorba_cookie_setup(NULL);
 	
 	return retval;
 }

@@ -10,7 +10,8 @@
 
 typedef enum {
   GNORBA_INIT_SERVER_FUNC = 1 << 0,
-  GNORBA_INIT_DISABLE_COOKIES = 1 << 1
+  GNORBA_INIT_DISABLE_COOKIES = 1 << 1,
+  GNORBA_INIT_CORBA_PRIO_HIGH = 1 << 2
 } GnorbaInitFlags;
 /* 
  * Almost the same as gnome_init, except it initializes ORBit for use
