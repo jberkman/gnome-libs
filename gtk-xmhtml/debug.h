@@ -35,6 +35,9 @@
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.3  1997/12/30 03:32:51  unammx
+* More work on getting the frames working, still some bits are missing - Miguel
+*
 * Revision 1.2  1997/12/25 01:34:10  unammx
 * Good news for the day:
 *
@@ -99,7 +102,7 @@ extern int debug_disable_warnings;
 extern int  __rsd_selectDebugLevels(char *levels);
 extern void __rsd_setDebugLevels(int *argc, char **argv);
 extern void __rsd_initDebug(int initial);
-extern void __rsd_fprintf(String fmt, ...);
+extern void __rsd_fprintf(char * fmt, ...);
 
 #endif /* NO_DEBUG */
 

@@ -36,6 +36,9 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.3  1997/12/30 03:32:52  unammx
+* More work on getting the frames working, still some bits are missing - Miguel
+*
 * Revision 1.2  1997/12/29 22:16:31  unammx
 * This version does:
 *
@@ -262,7 +265,8 @@ _XmHTMLComputeLayout(XmHTMLWidget html)
 		"\tCore offset: %ix%i\n"
 		"\tmargins: width = %i, height = %i\n"
 		"\twidget offset: %ix%i\n",
-		html->core.x, html->core.y, box.lmargin, box.tmargin, box.x, box.y));
+		Toolkit_Widget_Dim (html).x, Toolkit_Widget_Dim (html).y,
+			 box.lmargin, box.tmargin, box.x, box.y));
 #endif
 
 	/* sanity check */

@@ -15,7 +15,6 @@
 
 /*** Private Datatype Declarations ****/
 #ifdef DEBUG
-Boolean debug_disable_warnings = False;
 #endif
 
 /*** Private Function Prototype Declarations ****/

@@ -3,9 +3,11 @@
 
 #include <gdk/gdk.h>
 #include <gtk/gtkobject.h>
-#define _XFUNCPROTOEND 
-#define XFUNCPROTOEND
-#include "XmHTMLP.h"
+
+#ifndef GTK_XMHTML_LIBRARY
+#include <gtk-xmhtml/XmHTML.h>
+#include <gtk-xmhtml/XmHTMLP.h>
+#endif
 
 #ifdef __cplusplus
 extern "C" {
@@ -39,6 +41,8 @@ struct _GtkXmHTML
 	int redraw_needed;
 	int free_images_needed;
 	int layout_needed;
+
+	int initialized;
 };
 
 struct _GtkXmHTMLClass
@@ -62,7 +66,7 @@ struct _GtkXmHTMLClass
 	void (*anchor_visited)  (GtkXmHTML *, char *, void *);
 };
 
-GtkWidget *gtk_xmhtml_new         	   	  (char *html_source);
+GtkWidget *gtk_xmhtml_new         	   	  (void);
 void gtk_xmhtml_freeze       	   	     	  (GtkXmHTML *html);
 void gtk_xmhtml_thaw         	   	     	  (GtkXmHTML *html);
 void gtk_xmhtml_source       	   	     	  (GtkXmHTML *html,
@@ -136,8 +140,11 @@ void gtk_xmhtml_set_mime_type                     (GtkXmHTML *html, char *mime_t
 void gtk_xmhtml_set_alpha_processing              (GtkXmHTML *html, int flag);
 void gtk_xmhtml_set_rgb_conv_mode                 (GtkXmHTML *html, int val);
 
-/* This one is used internally: */
+/* These ones are used internally: */
 void *gtk_xmhtml_signal_get_handlers (GtkXmHTML *html, int type);
+void  gtk_xmhtml_set_geometry (GtkWidget *widget, int x, int y, int width, int height);
+guint gtk_xmhtml_get_type (void);
+void  gtk_xmhtml_manage (GtkContainer *container, GtkWidget *widget);
 
 enum {
 	GTK_ANCHOR_NOLINE,

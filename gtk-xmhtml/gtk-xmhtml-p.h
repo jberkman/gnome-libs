@@ -1,3 +1,7 @@
+#define _XFUNCPROTOEND 
+#define XFUNCPROTOEND
+#include "XmHTMLP.h"
+
 enum {
 	GTK_XMHTML_ACTIVATE,
 	GTK_XMHTML_ARM,
@@ -24,4 +28,5 @@ enum {
 	XmCR_LOSING_FOCUS,
 	XmCR_ARM
 };
-
+#define  GTK_XMHTML_LIBRARY
+#include "gtk-xmhtml.h"

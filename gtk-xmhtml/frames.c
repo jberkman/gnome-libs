@@ -36,6 +36,9 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.10  1997/12/30 03:32:52  unammx
+* More work on getting the frames working, still some bits are missing - Miguel
+*
 * Revision 1.9  1997/12/29 22:16:28  unammx
 * This version does:
 *
@@ -1046,7 +1049,8 @@ mapFrames(XmHTMLWidget html)
 		/* map to screen */
 		XtSetMappedWhenManaged(frame->frame, True);
 #else
-		fprintf (stderr, "MappedWhenManaged True\n");
+		gtk_xmhtml_manage (GTK_CONTAINER (html), frame->frame);
+		gtk_widget_show (frame->frame);
 #endif
 		/* call notifier */
 		frameDoneCallback(html, frame, frame->frame);
@@ -1075,7 +1079,7 @@ frameDoneCallback(XmHTMLWidget html, XmHTMLFrameWidget *frame,
 	XmHTMLFrameCallbackStruct cbs;
 
 	if (!CHECK_CALLBACK(html, frame_callback, FRAME))
-		return
+		return;
 			
 	/* inform user that this frame is finished */
 
@@ -1191,8 +1195,10 @@ TWidget
 _XmHTMLFrameCreateCallback(XmHTMLWidget html, XmHTMLFrameWidget *frame)
 {
 	XmHTMLFrameCallbackStruct cbs;
+#ifdef WITH_MOTIF
 	Arg args[20];
 	Dimension argc = 0;
+#endif
 	XmHTMLWidget html_widget;
 	static TWidget widget;
 
@@ -1221,9 +1227,6 @@ _XmHTMLFrameCreateCallback(XmHTMLWidget html, XmHTMLFrameWidget *frame)
 	XtSetArg(args[argc], XmNborderWidth, frame->border); argc++;
 	XtSetArg(args[argc], XmNborderColor, html->manager.top_shadow_color);argc++;
 	XtSetArg(args[argc], XmNmappedWhenManaged, False); argc++;
-#else
-	fprintf (stderr, "GtkXmHTML: MISSING Frame constraints\n");
-#endif
 	
 	/* scrolling gets handled in the widget code itself, so don't set it */
 
@@ -1232,19 +1235,18 @@ _XmHTMLFrameCreateCallback(XmHTMLWidget html, XmHTMLFrameWidget *frame)
 	* XmHTML widget.
 	*/
 	if(cbs.doit == True || cbs.html == NULL)
-		widget = Toolkit_CreateHTML(html->html.work_area, cbs.name, args, argc);
+		widget = XmCreateHTML(html->html.work_area, cbs.name, args, argc);
 	else if(!XmIsHTML(cbs.html))
 	{
 		/* not a HTML widget, spit out a warning and create one ourselves */
 		_XmHTMLWarning(__WFUNC__(cbs.html, "_XmHTMLFrameCreateCallback"),
 			"Bad HTML frame widget: not a XmHTMLWidget.");
-		widget = Toolkit_CreateHTML(html->html.work_area, cbs.name, args, argc);
+		widget = XmCreateHTML(html->html.work_area, cbs.name, args, argc);
 	}
 	else
 	{
 		widget = cbs.html;
 
-#ifdef WITH_MOTIF
 		/* first unmanage if it's still up */
 		if(XtIsManaged(widget))
 			XtUnmanageChild(widget);
@@ -1264,11 +1266,41 @@ _XmHTMLFrameCreateCallback(XmHTMLWidget html, XmHTMLFrameWidget *frame)
 		((XmHTMLWidget)widget)->html.needs_hsb = False;
 		XtUnmanageChild(((XmHTMLWidget)widget)->html.hsb);
 		XtUnmanageChild(((XmHTMLWidget)widget)->html.vsb);
-#else
-		fprintf (stderr, "FRAME: Important missing bit\n");
-#endif
 	}
-	
+#else
+	if (cbs.doit == True || cbs.html == NULL){
+		widget = gtk_xmhtml_new ();
+	} else if (!XmIsHTML (cbs.html)){
+		/* not a HTML widget, spit out a warning and create one ourselves */
+		_XmHTMLWarning(__WFUNC__(cbs.html, "_XmHTMLFrameCreateCallback"),
+			"Bad HTML frame widget: not a XmHTMLWidget.");
+		widget = gtk_xmhtml_new ();
+	} else {
+		widget = cbs.html;
+
+		gtk_widget_hide (GTK_WIDGET (html));
+		if (html->html.source)
+			gtk_xmhtml_source (html, NULL);
+		
+		/* unmanage scrollbars as well */
+		((XmHTMLWidget)widget)->html.needs_vsb = False;
+		((XmHTMLWidget)widget)->html.needs_hsb = False;
+		gtk_widget_hide (html->html.hsb);
+		gtk_widget_hide (html->html.vsb);
+	}
+	printf ("PONIENDO: %d %d %d %d\n", 
+				 frame->x,
+				 frame->y,
+				 frame->width - frame->border,
+				 frame->height - frame->border);
+	gtk_xmhtml_set_geometry (widget,
+				 frame->x,
+				 frame->y,
+				 frame->width - frame->border,
+				 frame->height - frame->border);	
+/* GtkFIXME: I am not handling borders yet */
+				 
+#endif
 	html_widget = (XmHTMLWidget)widget;
 	html_widget->html.is_frame = True;
 	html_widget->html.frame_border = frame->border;
@@ -1278,7 +1310,8 @@ _XmHTMLFrameCreateCallback(XmHTMLWidget html, XmHTMLFrameWidget *frame)
 	/* manage it */
 	XtManageChild(widget);
 #else
-	fprintf (stderr, "FRAME: Important missing bot\n");
+	gtk_widget_show (widget);
+	gtk_xmhtml_manage (GTK_CONTAINER (html), widget);
 #endif
 	return(widget);
 }

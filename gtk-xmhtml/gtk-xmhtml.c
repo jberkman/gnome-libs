@@ -11,9 +11,7 @@
 #define SetScrollBars(HTML)
 #define AdjustVerticalScrollValue(VSB,VAL)
 
-guint gtk_xmhtml_get_type (void);
 gint gtk_xmhtml_signals [GTK_XMHTML_LAST_SIGNAL] = { 0, };
-
 
 /*
  * Gdk does not have a visibility mask thingie *yet*
@@ -33,7 +31,6 @@ static void gtk_xmhtml_map (GtkWidget *widget);
 static void gtk_xmhtml_draw (GtkWidget *widget, GdkRectangle *area);
 static gint gtk_xmhtml_expose (GtkWidget *widget, GdkEventExpose *event);
 static void gtk_xmhtml_add (GtkContainer *container, GtkWidget *widget);
-static void gtk_xmhtml_manage (GtkContainer *container, GtkWidget *widget);
 static void gtk_xmhtml_size_allocate (GtkWidget *widget, GtkAllocation *allocation);
 static void gtk_xmhtml_size_request (GtkWidget *widget, GtkRequisition *requisition);
 
@@ -209,14 +206,14 @@ gtk_xmhtml_init (GtkXmHTML *html)
 }
 
 GtkWidget *
-gtk_xmhtml_new (char *html_source)
+gtk_xmhtml_new (void)
 {
 	GtkXmHTML *html;
-	
+
 	html = gtk_type_new (gtk_xmhtml_get_type ());
-	GTK_WIDGET(html)->allocation.width  = 200;
-	GTK_WIDGET(html)->allocation.height = 200;
-	XmHTML_Initialize (html, html, html_source);
+	GTK_WIDGET(html)->allocation.width  = 300;
+	GTK_WIDGET(html)->allocation.height = 300;
+	html->initialized = 0;
 	return GTK_WIDGET (html);
 }
 
@@ -317,7 +314,7 @@ gtk_xmhtml_class_init (GtkXmHTMLClass *class)
 				object_class->type,
 				GTK_SIGNAL_OFFSET (GtkXmHTMLClass, motion_track),
 				gtk_xmthml_marshall_1, GTK_TYPE_NONE, 1, GTK_TYPE_POINTER);
-	gtk_xmhtml_signals [GTK_XMHTML_HTML_EVENT] =
+	gtk_xmhtml_signals [GTK_XMHTML_ANCHOR_VISITED] =
 		gtk_signal_new ("anchor_visited",
 				GTK_RUN_FIRST,
 				object_class->type,
@@ -469,6 +466,7 @@ gtk_xmhtml_draw (GtkWidget *widget, GdkRectangle *area)
 {
 	GtkXmHTML *html = GTK_XMHTML (widget);
 	GdkRectangle na;
+	int i;
 
 	if (!GTK_WIDGET_DRAWABLE (widget))
 		return;
@@ -481,6 +479,10 @@ gtk_xmhtml_draw (GtkWidget *widget, GdkRectangle *area)
 
 	if (gtk_widget_intersect (html->html.work_area, area, &na))
 		gtk_widget_draw (html->html.work_area, &na);
+
+	for (i = 0; i < html->html.nframes; i++)
+		if (gtk_widget_intersect (html->html.frames [i]->frame, area, &na))
+		    gtk_widget_draw (html->html.frames [i]->frame, &na);
 }
 
 static gint
@@ -587,12 +589,33 @@ gtk_xmhtml_motion_event (GtkWidget *widget, GdkEvent *event, gpointer closure)
 	return TRUE;
 }
 
+/* Stolen from GtkSignal.c */
+typedef struct _GtkHandler GtkHandler;
+struct _GtkHandler
+{
+  guint16 id;
+  guint signal_type : 13;
+  guint object_signal : 1;
+  guint blocked : 1;
+  guint after : 1;
+  guint no_marshal : 1;
+  GtkSignalFunc func;
+  gpointer func_data;
+  GtkSignalDestroy destroy_func;
+  GtkHandler *next;
+};
+
 void *
 gtk_xmhtml_signal_get_handlers (GtkXmHTML *obj, int type)
 {
-	void *handlers = gtk_object_get_data (GTK_OBJECT (obj), "signal_handlers");
+	GtkHandler *handlers = gtk_object_get_data (GTK_OBJECT (obj), "signal_handlers");
 
-	return handlers;
+	while (handlers){
+		if (handlers->signal_type == type)
+			return handlers;
+		handlers = handlers->next;
+	}
+	return NULL;
 }
 
 /*
@@ -833,7 +856,7 @@ gtk_xmhtml_add (GtkContainer *container, GtkWidget *widget)
 	fprintf (stderr, "GtkXmHTML: you should not use gtk_container_add on this container\n");
 }
 
-static void
+void
 gtk_xmhtml_manage (GtkContainer *container, GtkWidget *widget)
 {
 	GtkXmHTML *html;
@@ -865,7 +888,8 @@ gtk_xmhtml_map (GtkWidget *widget)
 {
 	GtkWidget *scrollbar;
 	GtkXmHTML *html = GTK_XMHTML (widget);
-
+	int i;
+	
 	g_return_if_fail (widget != NULL);
 	GTK_WIDGET_SET_FLAGS(widget, GTK_MAPPED);
 	
@@ -892,12 +916,16 @@ gtk_xmhtml_map (GtkWidget *widget)
 	CheckScrollBars (html);
 	gtk_map_item (html->html.vsb);
 	gtk_map_item (html->html.hsb);
+	
+	for (i = 0; i < html->html.nframes; i++)
+		gtk_map_item (html->html.frames [i]->frame);
+	
 	Layout(html);
 	
 	_XmHTMLDebug(1, ("XmHTML.c: Mapped end.\n"));
 }
 
-static void
+void
 gtk_xmhtml_set_geometry (GtkWidget *widget, int x, int y, int width, int height)
 {
 	GtkAllocation allocation;
@@ -1460,17 +1488,21 @@ gtk_xmhtml_thaw (GtkXmHTML *html)
 }
 
 void
-gtk_xmhtml_source (GtkXmHTML *html, char *source)
+gtk_xmhtml_source (GtkXmHTML *html, char *html_source)
 {
 	int parse = FALSE;
 
+	if (!html->initialized){
+		html->initialized = 1;
+		XmHTML_Initialize (html, html, html_source);
+	}
 	/* If we already have some HTML source code */
 	if (html->html.source){
-		if (source){	/* new text supplied */
-			if (strcmp (source, html->html.source)){
+		if (html_source){	/* new text supplied */
+			if (strcmp (html_source, html->html.source)){
 				parse = TRUE;
 				free (html->html.source);
-				html->html.source = strdup (source);
+				html->html.source = strdup (html_source);
 			} else
 				parse = FALSE;
 		} else {	/* have to clear current text */
@@ -1479,9 +1511,9 @@ gtk_xmhtml_source (GtkXmHTML *html, char *source)
 			html->html.source = NULL;
 		}
 	} else { 		/* we did not have any source */
-		if (source){
+		if (html_source){
 			parse = TRUE;
-			html->html.source = strdup (source);
+			html->html.source = strdup (html_source);
 		} else
 			parse = FALSE; /* still empty */
 	}
@@ -1922,7 +1954,4 @@ gtk_xmhtml_set_rgb_conv_mode (GtkXmHTML *html, int val)
 {
 	html->html.rgb_conv_mode = val;
 }
-
-
-
 

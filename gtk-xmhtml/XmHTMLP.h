@@ -35,6 +35,9 @@
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.7  1997/12/30 03:32:51  unammx
+* More work on getting the frames working, still some bits are missing - Miguel
+*
 * Revision 1.6  1997/12/29 22:16:22  unammx
 * This version does:
 *
@@ -1055,7 +1058,6 @@ externalref XmHTMLClassRec xmHTMLClassRec;
 #endif
 
 #ifndef WITH_MOTIF
-#    include "gtk-xmhtml.h"
 #    include "gtk-xmhtml-p.h"
 #endif
 

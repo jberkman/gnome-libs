@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <gtk/gtk.h>
+#include <X11/Xatom.h>		/* property defines */
+#include <XmHTML/toolkit.h>
 #include "gtk-xmhtml.h"
 
 char *urls [] = {
@@ -22,7 +24,7 @@ char *test_string2 =
 
 char *test_string =
 "<html><head><title>h</title></head>"
-"<body>This is a freshly loaded text into the widget!</body></html>";
+"<body>Item: %s<p>Frame: %s<p></body></html>";
 
 void
 click (GtkWidget *widget, gpointer data)
@@ -42,6 +44,32 @@ click (GtkWidget *widget, gpointer data)
 	gtk_xmhtml_source (GTK_XMHTML (widget), test_string2);
 }
 
+void
+frame (GtkWidget *widget, gpointer data)
+{
+	XmHTMLFrameCallbackStruct *cbs = (void *) data;
+
+	printf ("Frame callback: ");
+	if (cbs->reason == XmCR_HTML_FRAME){
+		char buffer [1024];
+		GtkXmHTML *html = GTK_XMHTML (cbs->html);
+
+		sprintf (buffer, test_string, cbs->src, cbs->name);
+		printf ("frame: %s\n", buffer);
+		gtk_xmhtml_source (html, buffer);
+		return;
+	}
+
+	if (cbs->reason == XmCR_HTML_FRAMECREATE){
+		printf ("create\n");
+		return;
+	}
+	if (cbs->reason == XmCR_HTML_FRAMEDESTROY){
+		printf ("destroy\n");
+		return;
+	}
+}
+
 int
 main (int argc, char *argv [])
 {
@@ -50,7 +78,7 @@ main (int argc, char *argv [])
 	GString *file_contents;
 	char aline[1024];
 	FILE *afile = NULL;
-			  
+
 	gtk_init (&argc, &argv);
 	window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
 	gtk_widget_show (window);
@@ -69,11 +97,14 @@ main (int argc, char *argv [])
 		GTK_SIGNAL_FUNC(gtk_true), NULL);
 	gtk_signal_connect(GTK_OBJECT(window), "destroy",
 		GTK_SIGNAL_FUNC(gtk_main_quit), NULL);
-	html = gtk_xmhtml_new (file_contents->str);
-	gtk_widget_show (html);
+	html = gtk_xmhtml_new ();
 
 	gtk_signal_connect (GTK_OBJECT(html), "activate", (GtkSignalFunc) click, html);
-	
+	gtk_signal_connect (GTK_OBJECT(html), "frame", (GtkSignalFunc) frame, html);
+
+	gtk_widget_set_usize (GTK_WIDGET(window), 400, 400);
+	gtk_xmhtml_source (GTK_XMHTML (html), file_contents->str);
+	gtk_widget_show (html);
 	gtk_container_add (GTK_CONTAINER (window), html);
 	gtk_main ();
 	return 0;

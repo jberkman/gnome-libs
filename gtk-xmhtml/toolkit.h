@@ -126,7 +126,6 @@ typedef XVisualInfo TVisualInfo;
 			gdk_window_clear_area ((w),(xs),(ys),(wi),(h)); \
 		} while (0);
 #define Toolkit_Widget_Destroy(w) gtk_widget_destroy (w)
-#define Toolkit_CreateHTML(w,n,as,ac) gtk_xmhtml_new ("")
 #define Toolkit_Widget_Colormap(w) gtk_widget_get_colormap (GTK_WIDGET (w))
 #define Toolkit_Parse_Color(dpy,cm,c,d) gdk_color_parse (c, d)
 #define Toolkit_Alloc_Color(dpy,cm,c) gdk_color_alloc (cm,c)
@@ -236,7 +235,6 @@ typedef GdkColorContextDither XCCDither;
 #define Toolkit_Widget_Is_Realized(w) XtIsRealized (w)
 #define Toolkit_Clear_Area(d,wid,xs,ys,w,h,b) XClearArea ((d),(wid),(xs),(ys),(w),(h), b);
 #define Toolkit_Widget_Destroy(w) XtDestroyWidget (w)
-#define Toolkit_CreateHTML(w,n,as,ac) XmCreateHTML(w,n,as,ac)
 #define Toolkit_Widget_Colormap(w) (w)->core.colormap
 #define Toolkit_Parse_Color(dpy,cm,c,d) XParseColor((dpy),(cm),(c),(d))
 #define Toolkit_Alloc_Color(dpy,cm,c) do{(c)->flags=DoRed|DoGreen|DoBlue;XAllocColor (dpy,cm,c)}while (0)
