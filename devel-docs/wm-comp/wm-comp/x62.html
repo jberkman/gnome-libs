@@ -1,0 +1,213 @@
+<!DOCTYPE HTML PUBLIC "-//Norman Walsh//DTD DocBook HTML 1.0//EN">
+<HTML
+><HEAD
+><TITLE
+>Section 2 - State Change Requests</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet"><LINK
+REL="HOME"
+TITLE="GNOME Window Manager Compliance - How to write a GNOME compliant Window Manager"
+HREF="book1.html"><LINK
+REL="UP"
+TITLE="Reading State Requests From Clients"
+HREF="c44.html"><LINK
+REL="PREVIOUS"
+TITLE="Reading State Requests From Clients"
+HREF="c44.html"><LINK
+REL="NEXT"
+TITLE="Desktop areas, button presses, and releases on the root window."
+HREF="c71.html"></HEAD
+><BODY
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>GNOME Window Manager Compliance - How to write a GNOME compliant Window Manager</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="c44.html"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 2. Reading State Requests From Clients</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="c71.html"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="AEN62"
+>Section 2 - State Change Requests</A
+></H1
+>
+
+<P
+>After an application has mapped a window, it may wish to change its own state. To do this the client sends ClientMessages to the root window with information on how to change the application's state. Clients will send messages as follows:</P
+>
+
+<P
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>&#13;  Display             *disp;
+  Window               root, client_window;
+  XClientMessageEvent  xev;
+  CARD32                new_layer;
+  
+  xev.type = ClientMessage;
+  xev.window = client_window;
+  xev.message_type = XInternAtom(disp, XA_WIN_LAYER, False);
+  xev.format = 32;
+  xev.data.l[0] = new_layer;
+  XSendEvent(disp, root, False, SubstructureNotifyMask, (XEvent *) );
+
+  Display             *disp;
+  Window               root, client_window;
+  XClientMessageEvent  xev;
+  CARD32               mask_of_members_to_change, new_members;
+
+  xev.type = ClientMessage;
+  xev.window = client_window;
+  xev.message_type = XInternAtom(disp, XA_WIN_STATE, False);
+  xev.format = 32;
+  xev.data.l[0] = mask_of_members_to_change;
+  xev.data.l[1] = new_members;
+  XSendEvent(disp, root, False, SubstructureNotifyMask, (XEvent *) );
+ 
+  Display             *disp;
+  Window               root, client_window;
+  XClientMessageEvent  xev;
+  CARD32               new_desktop_number;</PRE
+></TD
+></TR
+></TABLE
+></P
+>
+
+
+
+<P
+>If an application wishes to change the current active desktop it will send a client message to the root window as follows:</P
+>
+
+
+<P
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>  xev.type = ClientMessage;
+  xev.window = client_window;
+  xev.message_type = XInternAtom(disp, XA_WIN_WORKSPACE, False);
+  xev.format = 32;
+  xev.data.l[0] = new_desktop_number;
+  XSendEvent(disp, root, False, SubstructureNotifyMask, (XEvent *) );</PRE
+></TD
+></TR
+></TABLE
+></P
+>
+
+
+<P
+>If the Window Manager picks up any of these ClientMessage events it should honor them.</P
+>&#13;</DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="c44.html"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book1.html"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="c71.html"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Reading State Requests From Clients</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="c44.html"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Desktop areas, button presses, and releases on the root window.</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

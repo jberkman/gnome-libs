@@ -1,0 +1,241 @@
+<!DOCTYPE HTML PUBLIC "-//Norman Walsh//DTD DocBook HTML 1.0//EN">
+<HTML
+><HEAD
+><TITLE
+>Section 2 - Desktop Areas as opposed to multiple desktops.</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet"><LINK
+REL="HOME"
+TITLE="GNOME Window Manager Compliance - How to write a GNOME compliant Window Manager"
+HREF="book1.html"><LINK
+REL="UP"
+TITLE="Desktop areas, button presses, and releases on the root window."
+HREF="c71.html"><LINK
+REL="PREVIOUS"
+TITLE="Desktop areas, button presses, and releases on the root window."
+HREF="c71.html"><LINK
+REL="NEXT"
+TITLE="The Future"
+HREF="c98.html"></HEAD
+><BODY
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>GNOME Window Manager Compliance - How to write a GNOME compliant Window Manager</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="c71.html"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 3. Desktop areas, button presses, and releases on the root window.</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="c98.html"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="AEN88"
+>Section 2 - Desktop Areas as opposed to multiple desktops.</A
+></H1
+> 
+
+ <P
+>The best way to explain this is as follows. Desktops are completely
+geometrically disjoint workspaces. They have no geometric relevance to
+each other in terms of the client window plane. Desktop Areas have geometric
+relevance - they are next to, above or below each other. The best examples
+are FVWM's desktops and virtual desktops - you can have multiple desktops
+that are disjoint and each desktop can be N x M screens in size - these N x
+M areas are what are termed ``desktop areas'' for the purposes of this
+document and the WM API.</P
+>
+
+ <P
+>If your WM supports both methods like FVMW, Enlightenment and possible
+others, you should use _WIN_WORKSPACE messages and atoms for the
+geometrically disjoint desktops - for geometrically arranged desktops you
+should use the _WIN_AREA messages and atoms. if you only support one of
+these it is preferable to use _WIN_WORKSPACE only.</P
+>
+
+ <P
+>The APi for _WIN_AREA is very similar to _WIN_WORKSPACE. To advertise the
+size of your areas (ie N x M screens in size) you set an atom on the root
+window as follows:</P
+>
+
+ <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>  Display            *disp;
+  Window              root;
+  Atom                atom_set;
+  CARD32              val[2];
+    
+  atom_set = XInternAtom(disp, "_WIN_AREA_COUNT", False);
+  val[0] = number_of_screens_horizontally;
+  val[1] = number_of_screens_vertically;
+  XChangeProperty(disp, root, atom_set, XA_CARDINAL, 32, PropModeReplace,
+                  (unsigned char *)val, 2);
+ </PRE
+></TD
+></TR
+></TABLE
+>
+
+
+ <P
+>To advertise which desktop area is the currently active one:</P
+>
+
+ <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>  Display            *disp;
+  Window              root;
+  Atom                atom_set;
+  CARD32              val[2];
+
+  atom_set = XInternAtom(disp, "_WIN_AREA", False);
+  val[0] = current_active_area_x; /* starts at 0 */
+  val[1] = current_active_area_y; /* starts at 0 */
+  XChangeProperty(disp, root, atom_set, XA_CARDINAL, 32, PropModeReplace,
+                  (unsigned char *)val, 2);
+ </PRE
+></TD
+></TR
+></TABLE
+>
+
+
+<P
+>If a client wishes to change what the current active area is they simply
+send a client message like:</P
+>
+
+<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>  Display            *disp;
+  Window              root;
+  XClientMessageEvent xev;
+  
+  xev.type = ClientMessage;
+  xev.window = root;
+  xev.message_type = XInternAtom(disp, "_WIN_AREA", False);
+  xev.format = 32;
+  xev.data.l[0] = new_active_area_x;
+  xev.data.l[0] = new_active_area_y;
+  XSendEvent(disp, root, False, SubstructureNotifyMask, (XEvent *) );&#13;</PRE
+></TD
+></TR
+></TABLE
+>
+&#13;</DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="c71.html"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book1.html"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="c98.html"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Desktop areas, button presses, and releases on the root window.</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="c71.html"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>The Future</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

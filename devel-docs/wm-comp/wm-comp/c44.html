@@ -1,0 +1,259 @@
+<!DOCTYPE HTML PUBLIC "-//Norman Walsh//DTD DocBook HTML 1.0//EN">
+<HTML
+><HEAD
+><TITLE
+>Reading State Requests From Clients</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet"><LINK
+REL="HOME"
+TITLE="GNOME Window Manager Compliance - How to write a GNOME compliant Window Manager"
+HREF="book1.html"><LINK
+REL="PREVIOUS"
+TITLE="Section 3 -  Providing Multiple/Virtual Desktop Information."
+HREF="x37.html"><LINK
+REL="NEXT"
+TITLE="Section 2 - State Change Requests"
+HREF="x62.html"></HEAD
+><BODY
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>GNOME Window Manager Compliance - How to write a GNOME compliant Window Manager</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x37.html"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x62.html"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="CHAPTER"
+><H1
+><A
+NAME="AEN44"
+>Chapter 2. Reading State Requests From Clients</A
+></H1
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+><A
+HREF="c44.html#AEN46"
+>Section 1 - Initial Properties Set On Client Window</A
+></DT
+><DT
+><A
+HREF="x62.html"
+>Section 2 - State Change Requests</A
+></DT
+></DL
+></DIV
+>
+
+<DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="AEN46"
+>Section 1 - Initial Properties Set On Client Window</A
+></H1
+>
+
+<P
+>When a client first maps a window, before calling XMapWindow, it will set properties on the client window with certain atoms as their types. The property atoms set can be any or all of _WIN_LAYER, _WIN_STATE, _WIN_WORKSPACE, _WIN_EXPANDED_SIZE and _WIN_HINTS. </P
+>
+
+<P
+>Each of these properties is of the type CARDINAL, and _WIN_EXPANDED_SIZE is an array of 4 CARDINAL's. For the _WIN_STATE and _WIN_HINTS properties, the bits set mean that state/property is desired by the client. The bitmask for _WIN_STATE is as follows:</P
+>
+
+<P
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>#define WIN_STATE_STICKY          (1&#60;&#60;0) /*everyone knows sticky*/
+#define WIN_STATE_MINIMIZED       (1&#60;&#60;1) /*Reserved - definition is unclear*/
+#define WIN_STATE_MAXIMIZED_VERT  (1&#60;&#60;2) /*window in maximized V state*/
+#define WIN_STATE_MAXIMIZED_HORIZ (1&#60;&#60;3) /*window in maximized H state*/
+#define WIN_STATE_HIDDEN          (1&#60;&#60;4) /*not on taskbar but window visible*/
+#define WIN_STATE_SHADED          (1&#60;&#60;5) /*shaded (MacOS / Afterstep style)*/
+#define WIN_STATE_HID_WORKSPACE   (1&#60;&#60;6) /*not on current desktop*/
+#define WIN_STATE_HID_TRANSIENT   (1&#60;&#60;7) /*owner of transient is hidden*/
+#define WIN_STATE_FIXED_POSITION  (1&#60;&#60;8) /*window is fixed in position even*/
+#define WIN_STATE_ARRANGE_IGNORE  (1&#60;&#60;9) /*ignore for auto arranging*/</PRE
+></TD
+></TR
+></TABLE
+></P
+>
+
+<P
+>These are a simple bitmasks - if the bit is set, that state is desired by the application. Once the application window has been mapped it is the responsibility of the Window Manager to set these properties to the current state of the Window whenever it changes states. If the window is unmapped the application is again responsible, if unmapped by the application.</P
+>
+
+<P
+>The bitmask for _WIN_HINTS is as follows:</P
+>
+
+<P
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>#define WIN_HINTS_SKIP_FOCUS      (1&#60;&#60;0) /*"alt-tab" skips this win*/
+#define WIN_HINTS_SKIP_WINLIST    (1&#60;&#60;1) /*do not show in window list*/
+#define WIN_HINTS_SKIP_TASKBAR    (1&#60;&#60;2) /*do not show on taskbar*/
+#define WIN_HINTS_GROUP_TRANSIENT (1&#60;&#60;3) /*Reserved - definition is unclear*/
+#define WIN_HINTS_FOCUS_ON_CLICK  (1&#60;&#60;4) /*app only accepts focus if clicked*/</PRE
+></TD
+></TR
+></TABLE
+></P
+>
+
+
+<P
+>This is also a simple bitmask but only the application changes it, thus whenever this property changes the Window Manager should re-read it and honor any changes.</P
+>
+
+<P
+>_WIN_WORKSPACE is a CARDINAL that is the Desktop number the app would like to be on. This desktop number is updated by the Window Manager after the window is mapped and until the window is unmapped by the application. The value for
+this property is simply the numeric for the desktop 0, being the first desktop available.</P
+>
+
+<P
+>_WIN_LAYER is also a CARDINAL that is the stacking layer the application wishes to exist in. The values for this property are:</P
+>
+
+<P
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>#define WIN_LAYER_DESKTOP                0
+#define WIN_LAYER_BELOW                  2
+#define WIN_LAYER_NORMAL                 4
+#define WIN_LAYER_ONTOP                  6
+#define WIN_LAYER_DOCK                   8
+#define WIN_LAYER_ABOVE_DOCK             10
+#define WIN_LAYER_MENU                   12</PRE
+></TD
+></TR
+></TABLE
+></P
+>
+
+
+<P
+>The application can choose one of these layers to exist in. It can also specify a layer other than the ones listed above if it wishes to exist between 2 layers. The layer remains constant and the window will always be arranged in stacking order between windows in the layers above and below its own layer. If the Window Manager changes the layer of an application it should change this property.</P
+></DIV
+>
+
+</DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x37.html"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book1.html"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x62.html"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Section 3 -  Providing Multiple/Virtual Desktop Information.</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Section 2 - State Change Requests</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

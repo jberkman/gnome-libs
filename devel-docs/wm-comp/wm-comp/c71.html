@@ -1,0 +1,262 @@
+<!DOCTYPE HTML PUBLIC "-//Norman Walsh//DTD DocBook HTML 1.0//EN">
+<HTML
+><HEAD
+><TITLE
+>Desktop areas, button presses, and releases on the root window.</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet"><LINK
+REL="HOME"
+TITLE="GNOME Window Manager Compliance - How to write a GNOME compliant Window Manager"
+HREF="book1.html"><LINK
+REL="PREVIOUS"
+TITLE="Section 2 - State Change Requests"
+HREF="x62.html"><LINK
+REL="NEXT"
+TITLE="Section 2 - Desktop Areas as opposed to multiple desktops."
+HREF="x88.html"></HEAD
+><BODY
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>GNOME Window Manager Compliance - How to write a GNOME compliant Window Manager</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x62.html"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x88.html"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="CHAPTER"
+><H1
+><A
+NAME="AEN71"
+>Chapter 3. Desktop areas, button presses, and releases on the root window.</A
+></H1
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+><A
+HREF="c71.html#AEN73"
+>Section 1 - Button press and release forwarding for the desktop window.</A
+></DT
+><DT
+><A
+HREF="x88.html"
+>Section 2 - Desktop Areas as opposed to multiple desktops.</A
+></DT
+></DL
+></DIV
+>
+
+ <DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="AEN73"
+>Section 1 - Button press and release forwarding for the desktop window.</A
+></H1
+> 
+ <P
+>X imposes a limitiation - that only 1 client can select for button presses
+on a window - this is due to the implicit grab nature of button press events
+in X. This poses a problem when more than one client wishes to select for
+these events on the same window - ie the root window, or in the case of a WM
+that has more than one root window (virtual root windows) any of these
+windows. The solution to this is to have the client that recieves these
+events handle any of the events it is interested in, and then ``proxy'' or
+``pass on'' any events it doesnt not care about. Seeing the traditional
+model has always been that the WM selects for butotn presses on the desktop,
+it is only natural that it keep doing this BUT have a way of sending
+unwanted presses onto some other process(es) that may well be interested.</P
+>
+
+
+ <P
+>This is done as follows:</P
+>
+
+ <P
+></P
+><UL
+>&#13;  <LI
+>  <P
+>1. Set a property on the root window called _WIN_DESKTOP_BUTTON_PROXY. It is
+of the type cardinal - its value is the Window ID of another window that is
+not mapped that is created as an immediate child of the root window. This
+window also has this property set on it pointing to itself.</P
+>
+  <FONT
+COLOR="RED"
+>  Display            *disp;
+  Window              root, bpress_win;
+  Atom                atom_set;
+  CARD32              val;
+ 
+  atom_set = XInternAtom(disp, "_WIN_DESKTOP_BUTTON_PROXY", False);
+  bpress_win = ECreateWindow(root, -80, -80, 24, 24, 0);
+  val = bpress_win;
+  XChangeProperty(disp, root, atom_set, XA_CARDINAL, 32, 
+                    PropModeReplace, (unsigned char *), 1);
+  XChangeProperty(disp, bpress_win, atom_set, XA_CARDINAL, 32, 
+                    PropModeReplace, (unsigned char *), 1);
+  </FONT
+>
+  </LI
+>
+
+  <LI
+>  <P
+>2. Whenever the WM gets a button press or release event it can check the
+button on the mouse pressed, any modifiers etc. - if the WM wants the event
+it can deal with it as per normal and not proxy it on - if the WM does not
+wish to do anything as a result of this event, then it shoudl pass the event
+along like following:</P
+>
+
+  <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="90%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>  Display            *disp;
+  Window              bpress_win;
+  XEvent             *ev;
+   
+  XUngrabPointer(disp, CurrentTime);
+  XSendEvent(disp, bpress_win, False, SubstructureNotifyMask, ev);
+
+  </PRE
+></TD
+></TR
+></TABLE
+>
+
+  <P
+>where ev is a pointer to the actual Button press or release event it
+receives from the X Server (retaining timestamp, original window ID,
+co-ordinates etc.)</P
+>
+
+  <P
+>NB - the XUngrabPointer is only required before proxying a press, not a
+release.</P
+>
+
+  <P
+>The WM should proxy both button press and release events. It should only
+proxy a release if it also proxied the press corresponding to that release.</P
+>
+
+  <P
+>It is the responsibility of any apps listening for these events (and as many
+apps as want to can since they are being sent under the guise of 
+SubstructureNotify events), to handle grabbing the pointer again and
+handling all events for the mouse while pressed until release etc.</P
+>
+  </LI
+>
+  </UL
+>&#13;</DIV
+>
+
+
+ </DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x62.html"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book1.html"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x88.html"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Section 2 - State Change Requests</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Section 2 - Desktop Areas as opposed to multiple desktops.</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

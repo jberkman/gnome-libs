@@ -1,0 +1,194 @@
+<!DOCTYPE HTML PUBLIC "-//Norman Walsh//DTD DocBook HTML 1.0//EN">
+<HTML
+><HEAD
+><TITLE
+>Section 3 -  Providing Multiple/Virtual Desktop Information.</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet"><LINK
+REL="HOME"
+TITLE="GNOME Window Manager Compliance - How to write a GNOME compliant Window Manager"
+HREF="book1.html"><LINK
+REL="UP"
+TITLE="Providing Client Information For The Window Manager"
+HREF="c4.html"><LINK
+REL="PREVIOUS"
+TITLE="Section 3 - Providing Shortcuts Managed Clients"
+HREF="x32.html"><LINK
+REL="NEXT"
+TITLE="Reading State Requests From Clients"
+HREF="c44.html"></HEAD
+><BODY
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>GNOME Window Manager Compliance - How to write a GNOME compliant Window Manager</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x32.html"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 1. Providing Client Information For The Window Manager</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="c44.html"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="AEN37"
+>Section 3 -  Providing Multiple/Virtual Desktop Information.</A
+></H1
+>
+
+<P
+>If your Window Manager supports the concept of Multiple/Virtual Desktops or Workspaces then you will definitely want to include it. This involves your Window Manager setting several properties on the root window. </P
+>
+
+<P
+>First you should advertise how many Desktops your Window Manager supports. This is done by setting a property on the root window with the atom name _WIN_WORKSPACE_COUNT of type CARDINAL. The properties data is a 32-bit integer that is the number of Desktops your Window Manager currently supports. If you can add and delete desktops while running, you may change this property and its value whenever required. You should also set a property of the atom _WIN_WORKSPACE of type CARDINAL that contains the number of the currently active desktop (which is a number between 0 and the number advertised by _WIN_WORKSPACE_COUNT - 1). Whenever the active desktop changes, change this property.</P
+> 
+
+<P
+>Lastly you should set a property that is a list of strings called _WIN_WORKSPACE_NAMES that contains names for the desktops (the first string is the name of the first desktop, the second string is the second desktop, etc.). This will allow applications to know what the name of the desktop is too, possibly to display it.</P
+>
+
+<P
+>Example:
+
+<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>  Display            *disp;
+  Window              root_window;
+  Atom                atom_set;
+  XTextProperty       text;
+  int                 i, current_desk, number_of_desks;
+  char              **names, s[1024];
+  CARD32              val;
+  
+  atom_set = XInternAtom(disp, "_WIN_WORKSPACE", False);
+  val = (CARD32) current_desk;
+  XChangeProperty(disp, root_window, atom_set, XA_CARDINAL, 32, 
+                  PropModeReplace, (unsigned char *), 1);
+  atom_set = XInternAtom(disp, "_WIN_WORKSPACE_COUNT", False);
+  val = (CARD32) number_of_desks;
+  XChangeProperty(disp, root_window, atom_set, XA_CARDINAL, 32, 
+                  PropModeReplace, (unsigned char *), 1);
+  atom_set = XInternAtom(disp, "_WIN_WORKSPACE_NAMES", False);
+  names = malloc(sizeof(char *) * number_of_desks);
+  for (i = 0; i &#60; number_of_desks; i++)
+    {
+      snprintf(s, sizeof(s), "Desktop %i", i);
+      names[i] = malloc(strlen(s) + 1);
+      strcpy(names[i], s);
+    }
+  if (XStringListToTextProperty(names, mode.numdesktops, ))
+    {
+      XSetTextProperty(disp, root_window, , atom_set);
+      XFree(text.value);
+    }
+  for (i = 0; i &#60; number_of_desks; i++)
+    free(names[i]);
+  free(names);
+  &#13;</PRE
+></TD
+></TR
+></TABLE
+></P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x32.html"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book1.html"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="c44.html"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Section 3 - Providing Shortcuts Managed Clients</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="c4.html"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Reading State Requests From Clients</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

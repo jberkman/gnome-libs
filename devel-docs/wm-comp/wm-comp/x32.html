@@ -1,0 +1,167 @@
+<!DOCTYPE HTML PUBLIC "-//Norman Walsh//DTD DocBook HTML 1.0//EN">
+<HTML
+><HEAD
+><TITLE
+>Section 3 - Providing Shortcuts Managed Clients</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet"><LINK
+REL="HOME"
+TITLE="GNOME Window Manager Compliance - How to write a GNOME compliant Window Manager"
+HREF="book1.html"><LINK
+REL="UP"
+TITLE="Providing Client Information For The Window Manager"
+HREF="c4.html"><LINK
+REL="PREVIOUS"
+TITLE="Section 2 - Listing GNOME Window Manager Compliance"
+HREF="x13.html"><LINK
+REL="NEXT"
+TITLE="Section 3 -  Providing Multiple/Virtual Desktop Information."
+HREF="x37.html"></HEAD
+><BODY
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>GNOME Window Manager Compliance - How to write a GNOME compliant Window Manager</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x13.html"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 1. Providing Client Information For The Window Manager</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x37.html"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="AEN32"
+>Section 3 - Providing Shortcuts Managed Clients</A
+></H1
+>
+
+<P
+>As an aide in having external applications be able to list and access clients being managed by the Window Manager, a property should be set on the root window of the name _WIN_CLIENT_LIST which is an array of type CARDINAL. Each entry is the Window ID of a managed client. If the list of managed clients changes, clients are added or deleted, this list should be updated. </P
+>
+
+<P
+>Example:
+<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+> 
+ Display            *disp;
+  Window              root_window;
+  Atom                atom_set;
+  Window             *wl;
+  int                 num;
+	
+  atom_set = XInternAtom(disp, "_WIN_CLIENT_LIST", False);
+  num = number_of_clients;
+  wl = malloc(sizeof(Window) * num);
+  /* Fill in array of window ID's */
+  XChangeProperty(disp, root_window, atom_set, XA_CARDINAL, 32, 
+                  PropModeReplace, (unsigned char *)wl, num);
+  if (wl)
+    free(wl);</PRE
+></TD
+></TR
+></TABLE
+></P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x13.html"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book1.html"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x37.html"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Section 2 - Listing GNOME Window Manager Compliance</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="c4.html"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Section 3 -  Providing Multiple/Virtual Desktop Information.</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

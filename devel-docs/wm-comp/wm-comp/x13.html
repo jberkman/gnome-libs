@@ -1,0 +1,225 @@
+<!DOCTYPE HTML PUBLIC "-//Norman Walsh//DTD DocBook HTML 1.0//EN">
+<HTML
+><HEAD
+><TITLE
+>Section 2 - Listing GNOME Window Manager Compliance</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet"><LINK
+REL="HOME"
+TITLE="GNOME Window Manager Compliance - How to write a GNOME compliant Window Manager"
+HREF="book1.html"><LINK
+REL="UP"
+TITLE="Providing Client Information For The Window Manager"
+HREF="c4.html"><LINK
+REL="PREVIOUS"
+TITLE="Providing Client Information For The Window Manager"
+HREF="c4.html"><LINK
+REL="NEXT"
+TITLE="Section 3 - Providing Shortcuts Managed Clients"
+HREF="x32.html"></HEAD
+><BODY
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>GNOME Window Manager Compliance - How to write a GNOME compliant Window Manager</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="c4.html"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 1. Providing Client Information For The Window Manager</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x32.html"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="AEN13"
+>Section 2 - Listing GNOME Window Manager Compliance</A
+></H1
+>
+
+<P
+>It is important to list which parts of GNOME Window Manager compliance are supported. This is done fairly easily by doing the following:</P
+>
+
+<P
+>Create a property on the root window of the atom name _WIN_PROTOCOLS. This property contains a list(array)of atoms that are all the properties the Window Manager supports. These atoms are any number of the following:</P
+>
+
+<P
+><P
+></P
+><UL
+><LI
+STYLE="list-style-type: none"
+>_WIN_LAYER</LI
+>
+<LI
+STYLE="list-style-type: none"
+>_WIN_STATE</LI
+>
+<LI
+STYLE="list-style-type: none"
+>_WIN_HINTS</LI
+>
+<LI
+STYLE="list-style-type: none"
+>_WIN_APP_STATE</LI
+>
+<LI
+STYLE="list-style-type: none"
+>_WIN_EXPANDED_SIZE</LI
+>
+<LI
+STYLE="list-style-type: none"
+>_WIN_ICONS</LI
+>
+<LI
+STYLE="list-style-type: none"
+>_WIN_WORKSPACE</LI
+>
+<LI
+STYLE="list-style-type: none"
+>_WIN_WORKSPACE_COUNT</LI
+>
+<LI
+STYLE="list-style-type: none"
+>_WIN_WORKSPACE_NAMES</LI
+>
+<LI
+STYLE="list-style-type: none"
+>_WIN_CLIENT_LIST</LI
+></UL
+></P
+>
+
+<P
+>If you list one of these properties then you support it and applications can expect information provided by, or accepted by the Window Manager to work.</P
+>
+
+<P
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>Example:
+  Display            *disp;
+  Window              root_window;
+  Atom                atom_set;
+  Atom                list[10];
+
+  atom_set = XInternAtom(disp, "_WIN_PROTOCOLS", False);
+  list[0] = XInternAtom(disp, "_WIN_LAYER", False);
+  list[1] = XInternAtom(disp, "_WIN_STATE", False);
+  list[2] = XInternAtom(disp, "_WIN_HINTS", False);
+  list[3] = XInternAtom(disp, "_WIN_APP_STATE", False);
+  list[4] = XInternAtom(disp, "_WIN_EXPANDED_SIZE", False);
+  list[5] = XInternAtom(disp, "_WIN_ICONS", False);
+  list[6] = XInternAtom(disp, "_WIN_WORKSPACE", False);
+  list[7] = XInternAtom(disp, "_WIN_WORKSPACE_COUNT", False);
+  list[8] = XInternAtom(disp, "_WIN_WORKSPACE_NAMES", False);
+  list[9] = XInternAtom(disp, "_WIN_CLIENT_LIST", False);
+  XChangeProperty(disp, root_window, atom_set, XA_ATOM, 32, PropModeReplace,
+                  (unsigned char *)list, 10);&#13;</PRE
+></TD
+></TR
+></TABLE
+></P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="c4.html"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book1.html"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x32.html"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Providing Client Information For The Window Manager</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="c4.html"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Section 3 - Providing Shortcuts Managed Clients</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

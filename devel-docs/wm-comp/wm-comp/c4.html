@@ -1,0 +1,215 @@
+<!DOCTYPE HTML PUBLIC "-//Norman Walsh//DTD DocBook HTML 1.0//EN">
+<HTML
+><HEAD
+><TITLE
+>Providing Client Information For The Window Manager</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet"><LINK
+REL="HOME"
+TITLE="GNOME Window Manager Compliance - How to write a GNOME compliant Window Manager"
+HREF="book1.html"><LINK
+REL="PREVIOUS"
+TITLE="GNOME Window Manager Compliance - How to write a GNOME compliant Window Manager"
+HREF="book1.html"><LINK
+REL="NEXT"
+TITLE="Section 2 - Listing GNOME Window Manager Compliance"
+HREF="x13.html"></HEAD
+><BODY
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>GNOME Window Manager Compliance - How to write a GNOME compliant Window Manager</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="book1.html"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x13.html"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="CHAPTER"
+><H1
+><A
+NAME="AEN4"
+>Chapter 1. Providing Client Information For The Window Manager</A
+></H1
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+><A
+HREF="c4.html#AEN6"
+>Section 1 - Detection of a GNOME compliant Window Manager</A
+></DT
+><DT
+><A
+HREF="x13.html"
+>Section 2 - Listing GNOME Window Manager Compliance</A
+></DT
+><DT
+><A
+HREF="x32.html"
+>Section 3 - Providing Shortcuts Managed Clients</A
+></DT
+><DT
+><A
+HREF="x37.html"
+>Section 3 -  Providing Multiple/Virtual Desktop Information.</A
+></DT
+></DL
+></DIV
+>
+
+
+<DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="AEN6"
+>Section 1 - Detection of a GNOME compliant Window Manager</A
+></H1
+>
+
+<P
+>There is a single unambiguous way to detect if there currently is a GNOME compliant Window Manager running. It is the job of the Window Manager to set up a few things to make this possible. Using the following method it is also possible for applications to detect compliance by receiving an event when the Window Manager exits.</P
+>
+
+<P
+>To do this the Window Manager should create a Window, that is a child of the root window. There is no need to map it, just create it. The Window Manager may reuse ANY window it has for this purpose - even if it is mapped, just as long as the window is never destroyed while the Window Manager is running.</P
+>
+
+<P
+>Once the Window is created the Window Manager should set a property on the root window of the name _WIN_SUPPORTING_WM_CHECK, and type CARDINAL. The atom's data would be a CARDINAL that is the Window ID of the window that was created above. The window that was created would ALSO have this property set on it with the same values and type.</P
+>
+
+<P
+>Example:
+
+<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>  Display            *disp;
+  Window              root_window;
+  Atom                atom_set;
+  CARD32              val;
+  Window              win;
+	
+  atom_set = XInternAtom(disp, "_WIN_SUPPORTING_WM_CHECK", False);
+  win = XCreateSimpleWindow(disp, root_window, -200, -200, 5, 5, 0, 0, 0);
+  val = win;
+  XChangeProperty(disp, root_window, atom_set, XA_CARDINAL, 32, 
+                  PropModeReplace, (unsigned char *), 1);
+  XChangeProperty(disp, win, atom_set, XA_CARDINAL, 32, PropModeReplace,
+		  (unsigned char *), 1);&#13;</PRE
+></TD
+></TR
+></TABLE
+></P
+></DIV
+>
+
+
+
+
+
+
+</DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="book1.html"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book1.html"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x13.html"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>GNOME Window Manager Compliance - How to write a GNOME compliant Window Manager</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Section 2 - Listing GNOME Window Manager Compliance</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>
