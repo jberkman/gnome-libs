@@ -28,3 +28,4 @@
 #undef HAVE_LIBESD
 #undef PACKAGE
 #undef VERSION
+#undef TEST_INTERNALS

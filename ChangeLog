@@ -1,3 +1,17 @@
+1998-10-16  Martin Baulig  <martin@home-of-linux.org>
+
+	* configure.in (--enable-test-internals): New parameter. Define
+	`TEST_INTERNALS' if enabled and add new `TEST_INTERNALS' automake
+	conditional. This is used to add wrapper functions for some
+	static functions so they can be used in the test suite.
+
+	* acconfig.h (TEST_INTERNALS): Define this if configured with
+	`--enable-test-internals'.
+
+	* libgnome/gnome-config.c (_test_suite_gnome_config_parse_path):
+	If `TEST_INTERNALS' is defined, define this function which is a
+	wrapper for parse_path ().
+
 1998-10-15  Michael Lausch  <mla@gams.at>
 
 	* libgnorba/orbitgtk.c (gnome_name_service_get): change g_error to
