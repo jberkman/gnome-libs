@@ -30,6 +30,7 @@ html/index.html: html/book1.html
 	-cd $(srcdir) && mv html/book1.html html/index.html
 else
 gnorba.html:
+html/index.html:
 endif
 
 html/book1.html: sgml/gnorba.sgml sgml/goad.sgml
