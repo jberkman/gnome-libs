@@ -6,14 +6,15 @@ An entry widget for file names.
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-  This widget provides an entry box with history such as the #GnomeEntry one
-  and a button which can pop up a file selector diaog box. It also accepts
-  DND drops from the filemanager and other sources
+  This widget provides an entry box with history (a #GnomeEntry) and a
+  button which can pop up a file selector dialog box
+  (GtkFileSelection). It also accepts DND drops from the filemanager
+  and other sources.
 </para>
 
 <para>
-The following is an example of its use. It is an excerpt from the sound
-section of the GNOME control center.</para>
+The following is an example of its use. It is a collection of excerpts
+from the sound section of the GNOME control center.</para>
 
 <informalexample>
   <programlisting>
@@ -106,17 +107,15 @@ ctmp);
 
 <!-- ##### FUNCTION gnome_file_entry_new ##### -->
 <para>
-The function instantiates a 
 </para>
 
-@history_id: 
-@browse_dialog_title: 
-@Returns: 
+@history_id: An id for the entry widget (see #GnomeEntry)
+@browse_dialog_title: Title for the dialog window.
+@Returns: A pointer to the widget, NULL if it cannot be created.
 
 
 <!-- ##### FUNCTION gnome_file_entry_gnome_entry ##### -->
 <para>
-
 </para>
 
 @fentry: 
@@ -125,7 +124,6 @@ The function instantiates a
 
 <!-- ##### FUNCTION gnome_file_entry_gtk_entry ##### -->
 <para>
-
 </para>
 
 @fentry: 
@@ -134,16 +132,14 @@ The function instantiates a
 
 <!-- ##### FUNCTION gnome_file_entry_set_title ##### -->
 <para>
-
 </para>
 
-@fentry: 
-@browse_dialog_title: 
+@fentry: Pointer to the #GnomeFileEntry widget
+@browse_dialog_title: String with the new title
 
 
 <!-- ##### FUNCTION gnome_file_entry_set_default_path ##### -->
 <para>
-
 </para>
 
 @fentry: 
