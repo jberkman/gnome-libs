@@ -1,3 +1,10 @@
+1998-02-12  Raja R Harinath  <harinath@cs.umn.edu>
+
+	* gtk-forms.c (_XmHTMLFormActivate): CHECK_CALLBACK returns int, 
+	not pointer.
+
+	* Makefile.am (htmltest_LDADD): Add $(INTLLIBS).
+
 Wed Feb 11 20:27:19 1998  Miguel de Icaza  <miguel@nuclecu.unam.mx>
 
 	* gtk-forms.c (freeForm): gtk_destroy_widget is no longer needed

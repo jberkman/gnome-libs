@@ -302,7 +302,7 @@ _XmHTMLFormActivate(XmHTMLWidget html, TEvent *event, XmHTMLForm *entry)
 		"%s\n", entry->name));
 
 	/* only do something when a form callback has been installed */
-	if(CHECK_CALLBACK (html, form_callback, FORM) == NULL)
+	if (CHECK_CALLBACK (html, form_callback, FORM) == 0)
 		return;
 
 	/*****
