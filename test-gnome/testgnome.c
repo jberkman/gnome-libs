@@ -1160,15 +1160,206 @@ static GnomeUIInfo helper_toolbar[] = {
 	GNOMEUIINFO_END
 };
 
+/* These three functions insert some silly text in the GtkEntry specified in the user data */
+
+static void
+insert_red (GtkWidget *widget, gpointer data)
+{
+	int pos;
+	GtkWidget *entry;
+
+	entry = GTK_WIDGET (data);
+
+	pos = gtk_editable_get_position (GTK_EDITABLE (entry));
+	gtk_editable_insert_text (GTK_EDITABLE (entry), "red book ", strlen ("red book "), &pos);
+}
+
+static void
+insert_green (GtkWidget *widget, gpointer data)
+{
+	int pos;
+	GtkWidget *entry;
+
+	entry = GTK_WIDGET (data);
+
+	pos = gtk_editable_get_position (GTK_EDITABLE (entry));
+	gtk_editable_insert_text (GTK_EDITABLE (entry), "green book ", strlen ("green book "), &pos);
+}
+
+static void
+insert_blue (GtkWidget *widget, gpointer data)
+{
+	int pos;
+	GtkWidget *entry;
+
+	entry = GTK_WIDGET (data);
+
+	pos = gtk_editable_get_position (GTK_EDITABLE (entry));
+	gtk_editable_insert_text (GTK_EDITABLE (entry), "blue book ", strlen ("blue book "), &pos);
+}
+
+/* Shared popup menu definition for the GnomeAppHelper test */
+
+static GnomeUIInfo helper_shared_popup[] = {
+	{ GNOME_APP_UI_ITEM, "Insert a _red book", NULL, insert_red, NULL, NULL,
+	  GNOME_APP_PIXMAP_STOCK, GNOME_STOCK_MENU_BOOK_RED, 0, 0, NULL },
+	{ GNOME_APP_UI_ITEM, "Insert a _green book", NULL, insert_green, NULL, NULL,
+	  GNOME_APP_PIXMAP_STOCK, GNOME_STOCK_MENU_BOOK_GREEN, 0, 0, NULL },
+	{ GNOME_APP_UI_ITEM, "Insert a _blue book", NULL, insert_blue, NULL, NULL,
+	  GNOME_APP_PIXMAP_STOCK, GNOME_STOCK_MENU_BOOK_BLUE, 0, 0, NULL },
+	GNOMEUIINFO_END
+};
+
+/* These function change the fill color of the canvas item specified in the user data */
+
+static void
+set_cyan (GtkWidget *widget, gpointer data)
+{
+	GnomeCanvasItem *item;
+
+	item = GNOME_CANVAS_ITEM (data);
+
+	gnome_canvas_item_set (item,
+			       "fill_color", "cyan",
+			       NULL);
+}
+
+static void
+set_magenta (GtkWidget *widget, gpointer data)
+{
+	GnomeCanvasItem *item;
+
+	item = GNOME_CANVAS_ITEM (data);
+
+	gnome_canvas_item_set (item,
+			       "fill_color", "magenta",
+			       NULL);
+}
+
+static void
+set_yellow (GtkWidget *widget, gpointer data)
+{
+	GnomeCanvasItem *item;
+
+	item = GNOME_CANVAS_ITEM (data);
+
+	gnome_canvas_item_set (item,
+			       "fill_color", "yellow",
+			       NULL);
+}
+
+/* Explicit popup menu definition for the GnomeAppHelper test */
+
+static GnomeUIInfo helper_explicit_popup[] = {
+	{ GNOME_APP_UI_ITEM, "Set color to _cyan", NULL, set_cyan, NULL, NULL,
+	  GNOME_APP_PIXMAP_NONE, NULL, 0, 0, NULL },
+	{ GNOME_APP_UI_ITEM, "Set color to _magenta", NULL, set_magenta, NULL, NULL,
+	  GNOME_APP_PIXMAP_NONE, NULL, 0, 0, NULL },
+	{ GNOME_APP_UI_ITEM, "Set color to _yellow", NULL, set_yellow, NULL, NULL,
+	  GNOME_APP_PIXMAP_NONE, NULL, 0, 0, NULL },
+	GNOMEUIINFO_END
+};
+
+/* Event handler for canvas items in the explicit popup menu demo */
+
+static gint
+item_event (GnomeCanvasItem *item, GdkEvent *event, gpointer data)
+{
+	if (!((event->type == GDK_BUTTON_PRESS) && (event->button.button == 3)))
+		return FALSE;
+
+	gnome_popup_menu_do_popup (GTK_WIDGET (data), NULL, NULL, (GdkEventButton *) event, item);
+
+	return TRUE;
+}
+
 /* Test the GnomeAppHelper module */
 static void
 create_app_helper (GtkWidget *widget, gpointer data)
 {
 	GtkWidget *app;
+	GtkWidget *vbox;
+	GtkWidget *frame;
+	GtkWidget *vbox2;
+	GtkWidget *w;
+	GtkWidget *popup;
+	GnomeCanvasItem *item;
 
 	app = gnome_app_new ("testGNOME", "GnomeAppHelper test");
 	gnome_app_create_menus (GNOME_APP (app), helper_main_menu);
 	gnome_app_create_toolbar (GNOME_APP (app), helper_toolbar);
+
+	vbox = gtk_vbox_new (FALSE, GNOME_PAD_SMALL);
+	gtk_container_border_width (GTK_CONTAINER (vbox), GNOME_PAD_SMALL);
+
+	/* Shared popup menu */
+
+	popup = gnome_popup_menu_new (helper_shared_popup);
+
+	frame = gtk_frame_new ("Shared popup menu");
+	gtk_box_pack_start (GTK_BOX (vbox), frame, FALSE, FALSE, 0);
+	gtk_widget_show (frame);
+
+	vbox2 = gtk_vbox_new (FALSE, GNOME_PAD_SMALL);
+	gtk_container_border_width (GTK_CONTAINER (vbox2), GNOME_PAD_SMALL);
+	gtk_container_add (GTK_CONTAINER (frame), vbox2);
+	gtk_widget_show (vbox2);
+
+	w = gtk_entry_new ();
+	gtk_box_pack_start (GTK_BOX (vbox2), w, FALSE, FALSE, 0);
+	gtk_widget_show (w);
+	gnome_popup_menu_attach (popup, w, w);
+
+	w = gtk_entry_new ();
+	gtk_box_pack_start (GTK_BOX (vbox2), w, FALSE, FALSE, 0);
+	gtk_widget_show (w);
+	gnome_popup_menu_attach (popup, w, w);
+
+	/* Popup menu explicitly popped */
+
+	popup = gnome_popup_menu_new (helper_explicit_popup);
+
+	frame = gtk_frame_new ("Explicit popup menu");
+	gtk_box_pack_start (GTK_BOX (vbox), frame, TRUE, TRUE, 0);
+	gtk_widget_show (frame);
+
+	w = gnome_canvas_new ();
+	gnome_canvas_set_size (GNOME_CANVAS (w), 200, 100);
+	gnome_canvas_set_scroll_region (GNOME_CANVAS (w), 0.0, 0.0, 200.0, 100.0);
+	gtk_container_add (GTK_CONTAINER (frame), w);
+	gtk_widget_show (w);
+
+	gtk_signal_connect (GTK_OBJECT (w), "destroy",
+			    (GtkSignalFunc) delete_event,
+			    popup);
+
+	item = gnome_canvas_item_new (gnome_canvas_root (GNOME_CANVAS (w)),
+				      gnome_canvas_ellipse_get_type (),
+				      "x1", 5.0,
+				      "y1", 5.0,
+				      "x2", 95.0,
+				      "y2", 95.0,
+				      "fill_color", "white",
+				      "outline_color", "black",
+				      NULL);
+	gtk_signal_connect (GTK_OBJECT (item), "event",
+			    (GtkSignalFunc) item_event,
+			    popup);
+
+	item = gnome_canvas_item_new (gnome_canvas_root (GNOME_CANVAS (w)),
+				      gnome_canvas_ellipse_get_type (),
+				      "x1", 105.0,
+				      "y1", 0.0,
+				      "x2", 195.0,
+				      "y2", 95.0,
+				      "fill_color", "white",
+				      "outline_color", "black",
+				      NULL);
+	gtk_signal_connect (GTK_OBJECT (item), "event",
+			    (GtkSignalFunc) item_event,
+			    popup);
+
+	gnome_app_set_contents (GNOME_APP (app), vbox);
 	gtk_widget_show (app);
 }
 
@@ -1184,9 +1375,7 @@ main (int argc, char *argv[])
 		  { "app-helper", create_app_helper },
 		  { "calendar", create_calendar },
 		  { "calculator", create_calc },
-#ifdef GTK_HAVE_FEATURES_1_1_0
 		  { "canvas", create_canvas },
-#endif
 		  { "clock",	create_clock },
 		  { "color picker", create_color_picker },
 		  { "color-sel", create_colorsel },

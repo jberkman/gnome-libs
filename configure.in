@@ -28,14 +28,6 @@ gnome_cv_use_gnome=yes
 GNOME_COMPILE_WARNINGS
 
 GNOME_X_CHECKS
-if test "$USE_DEVGTK" = true; then
-   GNOME_CANVAS_SRC="gnome-canvas.c gnome-canvas-image.c gnome-canvas-line.c gnome-canvas-rect-ellipse.c gnome-canvas-text.c gnome-canvas-util.c gnome-canvas-widget.c"
-   GNOME_CANVAS_HED="gnome-canvas.h gnome-canvas-image.h gnome-canvas-line.h gnome-canvas-rect-ellipse.h gnome-canvas-text.h gnome-canvas-util.h gnome-canvas-widget.h"
-   GNOME_CANVAS_OBJS="gnome-canvas.lo gnome-canvas-image.lo gnome-canvas-line.lo gnome-canvas-rect-ellipse.lo gnome-canvas-text.lo gnome-canvas-util.lo gnome-canvas-widget.lo"
-fi
-AC_SUBST(GNOME_CANVAS_SRC)
-AC_SUBST(GNOME_CANVAS_HED)
-AC_SUBST(GNOME_CANVAS_OBJS)
 
 GNOME_SUPPORT_CHECKS
 
