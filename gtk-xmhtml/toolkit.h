@@ -100,8 +100,12 @@ typedef XVisualInfo TVisualInfo;
 	gdk_window_copy_area ((dst),(gc),(dx),(dy),(src),(sx),(sy),(w),(h))
 #define Toolkit_Create_Pixmap(dpy,win,w,h,d) gdk_pixmap_new((win),(w),(h),(d))
 #define Toolkit_Free_Pixmap(d,p) gdk_pixmap_unref (p)
-#define Toolkit_Create_Image(d,v,depth,form,off,data,w,h,bp,bpl) \
-		gdk_image_new(type, (vis), (w), (h))
+#define Toolkit_Create_Image(d,v,depth,form,off,data,w,h,bp,bpl) my_gdk_image_new((v),(w),(h),(data),(bp),(bpl))
+#define Toolkit_Image_Bits_Per_Pixel(i) (((GdkImagePrivate *) i)->ximage->bits_per_pixel)
+#define Toolkit_Set_Image_Data(i, d) do {			\
+		((GdkImagePrivate *) i)->ximage->data = d;	\
+		i->mem = d;					\
+	} while (0)
 #define Toolkit_GC_Free(dpy,gc) gdk_gc_destroy(gc)
 #define Toolkit_Widget_Repaint(w) \
 	_XmHTMLClearArea((w), 0, 0, GTK_WIDGET(w)->allocation.width, GTK_WIDGET(w)->allocation.height)
@@ -129,7 +133,7 @@ typedef XVisualInfo TVisualInfo;
 #define Toolkit_Alloc_Color(dpy,cm,c) gdk_color_alloc (cm,c)
 #define Toolkit_Get_Visual(w, dest) dest = gtk_widget_get_visual (w)
 #define Toolkit_Image_Destroy(i) gdk_image_destroy(i)
-#define Toolkit_Image_Data(i) (i->mem)
+#define Toolkit_Get_Image_Data(i) (i->mem)
 #define Toolkit_Image_Bytes_Per_Line(i) (i->bpl)
 #define Toolkit_Timeout_Remove(t) gtk_timeout_remove(t)
 #define Toolkit_Call_Callback(w,c,s,d) \
@@ -217,6 +221,8 @@ typedef GdkColorContextDither XCCDither;
 #define Toolkit_Free_Pixmap(d,p) XFreePixmap ((d),(p))
 #define Toolkit_Create_Image(d,v,depth,form,off,data,w,h,bp,bpl) \
 	     XCreateImage ((d),(v),(depth),(form),(off),(data),(w),(h),(bp),(bpl))
+#define Toolkit_Image_Bits_Per_Pixel(i) (image->bits_per_pixel)
+#define Toolkit_Set_Image_Data(i, d) do { i->data = d; } while (0)
 #define Toolkit_GC_Free(dpy,gc) XFreeGC((dpy),(gc))
 #define Toolkit_Free_Cursor(dpy,cursor) XFreeCursor ((dpy), (cursor))
 #define Toolkit_Widget_Repaint(w) _XmHTMLClearArea((w), 0, 0, (w)->core.width, (w)->core.height)
@@ -238,7 +244,7 @@ typedef GdkColorContextDither XCCDither;
 #define Toolkit_Alloc_Color(dpy,cm,c) do{(c)->flags=DoRed|DoGreen|DoBlue;XAllocColor (dpy,cm,c)}while (0)
 #define Toolkit_Get_Visual(w, dest) XtVaGetValues((w),XmNvisual, &dest, NULL)
 #define Toolkit_Image_Destroy(i) XDestroyImage(i)
-#define Toolkit_Image_Data(i) (i->data)
+#define Toolkit_Get_Image_Data(i) (i->data)
 #define Toolkit_Image_Bytes_Per_Line(i) (i->bytes_per_line)
 #define Toolkit_Timeout_Remove(t) XtRemoveTimeOut(t)
 #define Toolkit_Call_Callback(w,c,s,d) XtCallCallbackList ((w),(c),(d))

@@ -43,6 +43,23 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.8  1998/01/09 02:15:27  unammx
+* OK, fixed the non-working images on 16 bpp.  This is done by putting
+* in a my_gdk_image_new() that explicitly takes the data, padding and
+* bytes_per_line parameters for XCreateImage().  The function is a copy
+* of the GDK_IMAGE_NORMAL part of the real gdk_image_new(); it just uses
+* the specified parameters instead of the Gdk hardcoded values.
+*
+* This is needed because by default gdk_image_new() always creates
+* images with a 32-bit padding for scanclines.  XmHTML, however, uses
+* different paddings depending on the image depth.
+*
+* As a sidenote, does anyone know where to get documentation for XShm?
+* I am not using GDK_IMAGE_FASTEST because I do not see a way to pass
+* the padding parameter to the XShm functions.
+*
+* - Federico
+*
 * Revision 1.7  1998/01/07 01:45:37  unammx
 * Gtk/XmHTML is ready to be used by the Gnome hackers now!
 * Weeeeeee!
@@ -596,6 +613,90 @@ XImageBizarre(XmHTMLWidget html, int depth, TXImage *ximage)
 	return((TXImage*)NULL);
 }
 
+#ifndef WITH_MOTIF
+static void
+my_gdk_image_put_normal (GdkDrawable *drawable,
+			 GdkGC       *gc,
+			 GdkImage    *image,
+			 gint         xsrc,
+			 gint         ysrc,
+			 gint         xdest,
+			 gint         ydest,
+			 gint         width,
+			 gint         height)
+{
+  GdkWindowPrivate *drawable_private;
+  GdkImagePrivate *image_private;
+  GdkGCPrivate *gc_private;
+
+  g_return_if_fail (drawable != NULL);
+  g_return_if_fail (image != NULL);
+  g_return_if_fail (gc != NULL);
+
+  drawable_private = (GdkWindowPrivate*) drawable;
+  image_private = (GdkImagePrivate*) image;
+  gc_private = (GdkGCPrivate*) gc;
+
+  g_return_if_fail (image->type == GDK_IMAGE_NORMAL);
+
+  XPutImage (drawable_private->xdisplay, drawable_private->xwindow,
+	     gc_private->xgc, image_private->ximage,
+	     xsrc, ysrc, xdest, ydest, width, height);
+}
+
+static GdkImage *
+my_gdk_image_new(GdkVisual *visual,
+		 gint       width,
+		 gint       height,
+		 char      *data,
+		 gint       padding,
+		 gint       bytes_per_line)
+{
+  GdkImage *image;
+  GdkImagePrivate *private;
+  Visual *xvisual;
+
+  private = g_new (GdkImagePrivate, 1);
+  image = (GdkImage*) private;
+
+  private->xdisplay = gdk_display;
+  private->image_put = my_gdk_image_put_normal;
+
+  image->type = GDK_IMAGE_NORMAL;
+  image->visual = visual;
+  image->width = width;
+  image->height = height;
+  image->depth = visual->depth;
+
+  xvisual = ((GdkVisualPrivate*) visual)->xvisual;
+
+  private->ximage = XCreateImage (private->xdisplay, xvisual, visual->depth,
+				  ZPixmap, 0, data, width, height, padding, bytes_per_line);
+
+  image->byte_order = private->ximage->byte_order;
+  image->mem = private->ximage->data;
+  image->bpl = private->ximage->bytes_per_line;
+
+  switch (private->ximage->bits_per_pixel)
+    {
+    case 8:
+      image->bpp = 1;
+      break;
+    case 16:
+      image->bpp = 2;
+      break;
+    case 24:
+      image->bpp = 3;
+      break;
+    case 32:
+      image->bpp = 4;
+      break;
+    }
+
+  return image;
+}
+#endif
+
 /*****
 * Name: 		_XmHTMLCreateXImage
 * Return Type: 	XImage
@@ -620,18 +721,17 @@ _XmHTMLCreateXImage(XmHTMLWidget html, XCC xcc, Dimension width,
 
 	_XmHTMLDebug(6, ("images.c: _XmHTMLCreateXImage, creating XImage\n"));
 
-#ifdef WITH_MOTIF
 	/* branch to correct display depth */
 	switch(depth)
 	{
 		case 1:
 			{
 				Byte *data;
-
-				ximage = XCreateImage(dpy, vis, depth, XYPixmap, 0, NULL, 
+				/* XXX: Is a 1-bit deep XYPixmap the same as a 1-bit ZPixmap? */
+				ximage = Toolkit_Create_Image(dpy, vis, depth, XYPixmap, 0, NULL, 
 							      width, height, 32, 0);
-				data = (Byte*)malloc(ximage->bytes_per_line * height);
-				ximage->data = (char *)data;
+				data = (Byte*)malloc(Toolkit_Image_Bytes_Per_Line(ximage) * height);
+				Toolkit_Set_Image_Data(ximage, (char *)data);
 
 				/*****
 				* FIXME
@@ -644,32 +744,32 @@ _XmHTMLCreateXImage(XmHTMLWidget html, XCC xcc, Dimension width,
 				Byte *data;
 				int bpp;
 
-				ximage = XCreateImage(dpy, vis, depth, ZPixmap, 0, NULL, 
-					width, height, 8, 0);
+				ximage = Toolkit_Create_Image(dpy, vis, depth, ZPixmap, 0, NULL, 
+							      width, height, 8, 0);
 
-				bpp = ximage->bits_per_pixel;
+				bpp = Toolkit_Image_Bits_Per_Pixel(ximage);
 
 				if(bpp != 2 && bpp != 4 && bpp != 8)
 					return(XImageBizarre(html, depth, ximage));
 
-				data = (Byte*)malloc(ximage->bytes_per_line * height);
-				ximage->data = (char*)data;
+				data = (Byte*)malloc(Toolkit_Image_Bytes_Per_Line(ximage) * height);
+				Toolkit_Set_Image_Data(ximage, (char*)data);
 			}
 			break;
 		case 4:
 			{
 				Byte *data;
 				int bpp;
-				ximage = XCreateImage(dpy, vis, depth, ZPixmap, 0, NULL, 
-					width,  height, 8, 0);
+				ximage = Toolkit_Create_Image(dpy, vis, depth, ZPixmap, 0, NULL, 
+							      width,  height, 8, 0);
 
-				bpp = ximage->bits_per_pixel;
+				bpp = Toolkit_Image_Bits_Per_Pixel(ximage);
 
 				if(bpp != 4 && bpp != 8)
 					return(XImageBizarre(html, depth, ximage));
 
-				data = (Byte*)malloc(ximage->bytes_per_line * height);
-				ximage->data = (char*)data;
+				data = (Byte*)malloc(Toolkit_Image_Bytes_Per_Line(ximage) * height);
+				Toolkit_Set_Image_Data(ximage, (char*)data);
 			}
 			break;
 		case 5:
@@ -677,14 +777,14 @@ _XmHTMLCreateXImage(XmHTMLWidget html, XCC xcc, Dimension width,
 			{
 				Byte *data;
 
-				ximage = XCreateImage(dpy, vis, depth, ZPixmap, 0, NULL,
-					width, height, 8, 0);
+				ximage = Toolkit_Create_Image(dpy, vis, depth, ZPixmap, 0, NULL,
+							      width, height, 8, 0);
 
-				if(ximage->bits_per_pixel != 8)
+				if(Toolkit_Image_Bits_Per_Pixel(ximage) != 8)
 					return(XImageBizarre(html, depth, ximage));
 
-				data = (Byte*)malloc(ximage->bytes_per_line * height);
-				ximage->data = (char*)data;
+				data = (Byte*)malloc(Toolkit_Image_Bytes_Per_Line(ximage) * height);
+				Toolkit_Set_Image_Data(ximage, (char*)data);
 			}
 			break;
 		case 8:
@@ -699,8 +799,8 @@ _XmHTMLCreateXImage(XmHTMLWidget html, XCC xcc, Dimension width,
  
 				data = (Byte*)malloc(imWIDE * height);
     
-				ximage = XCreateImage(dpy, vis, depth, ZPixmap, 0,
-					(char*)data, width,  height, 32, imWIDE);
+				ximage = Toolkit_Create_Image(dpy, vis, depth, ZPixmap, 0,
+							      (char*)data, width,  height, 32, imWIDE);
 			}
 			break;
 		case 12:
@@ -709,14 +809,14 @@ _XmHTMLCreateXImage(XmHTMLWidget html, XCC xcc, Dimension width,
 			{
 				unsigned short *data;
 
-				ximage = XCreateImage(dpy, vis, depth, ZPixmap, 0, NULL,
-					width, height, 16, 0);
+				ximage = Toolkit_Create_Image(dpy, vis, depth, ZPixmap, 0, NULL,
+							      width, height, 16, 0);
 
-				if(depth == 12 && ximage->bits_per_pixel != 16)
+				if(depth == 12 && Toolkit_Image_Bits_Per_Pixel(ximage) != 16)
 					return(XImageBizarre(html, depth, ximage));
 
 				data = (unsigned short*)malloc(2 * width * height);
-				ximage->data = (char*)data;
+				Toolkit_Set_Image_Data(ximage, (char*)data);
 			}
 			break;
 		case 24:
@@ -724,11 +824,11 @@ _XmHTMLCreateXImage(XmHTMLWidget html, XCC xcc, Dimension width,
 			{
 				Byte *data;
 
-				ximage = XCreateImage(dpy, vis, depth, ZPixmap, 0, NULL,
-					width, height, 32, 0);
+				ximage = Toolkit_Create_Image(dpy, vis, depth, ZPixmap, 0, NULL,
+							      width, height, 32, 0);
 
 				data = (Byte*)malloc(4 * width * height);
-				ximage->data = (char*)data;
+				Toolkit_Set_Image_Data(ximage, (char*)data);
 			}
 			break;
 		default:
@@ -741,14 +841,12 @@ _XmHTMLCreateXImage(XmHTMLWidget html, XCC xcc, Dimension width,
 			}
 			break;
 	}
-#else
-	ximage = gdk_image_new(GDK_IMAGE_FASTEST, vis, width, height);
 	/* FIXME: Things will fail later when any of the conditions XmHTML expects
 	 * (the "if (ximage->bits_per_pixel != foo)" stuff above) are not met.  This
 	 * has to be solved by adding proper support to Gdk for the image types it
 	 * is missing.
 	 */
-#endif
+
 	if(ximage == NULL)
 	{
 		_XmHTMLWarning(__WFUNC__(html, "_XmHTMLCreateXImage"),
@@ -837,7 +935,7 @@ _XmHTMLFillXImage(XmHTMLWidget html, TXImage *ximage, XCC xcc, Byte *data,
 			* lo*imWIDE contains the no of XImage data bytes already
 			* processed.
 			*/
-			imagedata = (Byte*)Toolkit_Image_Data(ximage) + lo*imWIDE;
+			imagedata = (Byte*)Toolkit_Get_Image_Data(ximage) + lo*imWIDE;
 
 			pp = data;
 
@@ -872,7 +970,7 @@ _XmHTMLFillXImage(XmHTMLWidget html, TXImage *ximage, XCC xcc, Byte *data,
 				hi /= wide;	/* ending scanline index (image data) */
 
 				/* compute offset into XImage data */
-				imagedata = (Byte*)Toolkit_Image_Data(ximage) + lo*bperline;
+				imagedata = (Byte*)Toolkit_Get_Image_Data(ximage) + lo*bperline;
 
 				for(i = lo, lip = imagedata; i < hi; i++, lip += bperline)
 				{
@@ -909,7 +1007,7 @@ _XmHTMLFillXImage(XmHTMLWidget html, TXImage *ximage, XCC xcc, Byte *data,
 			else /* ximage->bits_per_pixel == 8 */
 			{
 				/* compute offset into XImage data */
-				imagedata = (Byte*)Toolkit_Image_Data(ximage) + lo;
+				imagedata = (Byte*)Toolkit_Get_Image_Data(ximage) + lo;
 
 				for(i = hi, ip = imagedata; i > lo; i--, pp++, ip++)
 					*ip = (Byte) xcolors[*pp];
@@ -937,7 +1035,7 @@ _XmHTMLFillXImage(XmHTMLWidget html, TXImage *ximage, XCC xcc, Byte *data,
 				lo /= wide;	/* starting scanline index (image data) */
 				hi /= wide;	/* ending scanline index (image data) */
 
-				imagedata = (Byte*)Toolkit_Image_Data(ximage) + lo*bperline;
+				imagedata = (Byte*)Toolkit_Get_Image_Data(ximage) + lo*bperline;
 
 				for(i = lo, lip = imagedata; i < hi; i++, lip += bperline)
 				{
@@ -993,7 +1091,7 @@ _XmHTMLFillXImage(XmHTMLWidget html, TXImage *ximage, XCC xcc, Byte *data,
 					lo /= wide;	/* starting scanline index (image data) */
 					hi /= wide;	/* ending scanline index (image data) */
 
-					imagedata = (Byte*)Toolkit_Image_Data(ximage) + lo*bperline;
+					imagedata = (Byte*)Toolkit_Get_Image_Data(ximage) + lo*bperline;
 
 					for(i = lo, lip = imagedata; i < hi; i++, lip += bperline)
 					{
@@ -1033,7 +1131,7 @@ _XmHTMLFillXImage(XmHTMLWidget html, TXImage *ximage, XCC xcc, Byte *data,
 				}
 				else /* ximage->bits_per_pixel == 8 */
 				{
-					imagedata = (Byte*)Toolkit_Image_Data(ximage) + lo;
+					imagedata = (Byte*)Toolkit_Get_Image_Data(ximage) + lo;
 
 					for(i = hi, ip = imagedata; i > lo; i--, pp++, ip++)
 						*ip = (Byte)xcolors[*pp];
@@ -1050,7 +1148,7 @@ _XmHTMLFillXImage(XmHTMLWidget html, TXImage *ximage, XCC xcc, Byte *data,
 			register Byte *ip, *pp;
     
 			bperline = Toolkit_Image_Bytes_Per_Line(ximage);
-			imagedata = (Byte*)Toolkit_Image_Data(ximage) + (lo/wide)*bperline;
+			imagedata = (Byte*)Toolkit_Get_Image_Data(ximage) + (lo/wide)*bperline;
 
 			pp = data;
 
@@ -1070,7 +1168,7 @@ _XmHTMLFillXImage(XmHTMLWidget html, TXImage *ximage, XCC xcc, Byte *data,
 
 			/* 2 bytes per pixel */
 			bperline = Toolkit_Image_Bytes_Per_Line(ximage);
-			imagedata = (unsigned short*)Toolkit_Image_Data(ximage) + (lo/wide)*bperline;
+			imagedata = (unsigned short*)Toolkit_Get_Image_Data(ximage) + (lo/wide)*bperline;
 
 			pp = data;
 
@@ -1102,7 +1200,7 @@ _XmHTMLFillXImage(XmHTMLWidget html, TXImage *ximage, XCC xcc, Byte *data,
 			hi /= wide;	/* ending scanline index (image data) */
 
 			/* 4 bytes per pixel */
-			imagedata = (Byte*)Toolkit_Image_Data(ximage) + lo*bperline;
+			imagedata = (Byte*)Toolkit_Get_Image_Data(ximage) + lo*bperline;
 #ifdef WITH_MOTIF      
 			do32 = (ximage->bits_per_pixel == 32);
 #else
