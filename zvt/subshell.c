@@ -267,8 +267,15 @@ zvt_init_subshell (struct vt_em *vt, char *pty_name, int log)
 	int p[2];
 
 	g_return_val_if_fail (vt != NULL, -1);
-	
+
 	if (!sigchld_inited){
+		sigset_t sigset;
+
+		sigemptyset(&sigset);
+		sigaddset(&sigset, SIGPIPE);
+		sigaddset(&sigset, SIGCHLD);
+		sigprocmask(SIG_UNBLOCK, &sigset, NULL);
+
 		memset(&sa, 0, sizeof(sa));
 		sa.sa_handler = sigchld_handler;
 		sigaction (SIGCHLD, &sa, &old_sigchld_handler);

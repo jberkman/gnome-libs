@@ -423,10 +423,16 @@ sanity_checks (void)
 	/* Make sure SIGIO/SIGINT is SIG_IGN */
 	{
 		struct sigaction sa;
+		sigset_t sigset;
 
 		sa.sa_handler = SIG_IGN;
 		sigemptyset (&sa.sa_mask);
 		sa.sa_flags = 0;
+
+		sigemptyset(&sigset);
+		sigaddset(&sigset, SIGIO);
+		sigaddset(&sigset, SIGINT);
+		sigprocmask(SIG_UNBLOCK, &sigset, NULL);
 		
 		sigaction (SIGIO, &sa, NULL);
 		sigaction (SIGINT, &sa, NULL);

@@ -1,3 +1,9 @@
+1999-08-02  Elliot Lee <sopwith@redhat.com>
+	* subshell.c, gnome-pty-helper.c: Actually the problem was
+	that zvt was depending on receiving certain signals, but
+	zvt didn't do sigprocmask() to unblock signals that had been
+	blocked by the panel.
+
 1999-08-02  Miguel de Icaza  <miguel@nuclecu.unam.mx>
 
 	* subshell.c (zvt_shutdown_subshell): Fix the problem Elliot is
