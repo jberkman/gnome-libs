@@ -636,7 +636,7 @@ static void vt_tab(struct vt_em *vt)
     /* We do not store the attribute as tabs are transparent
      * with respect to attributes
      */
-    l->data[vt->cursorx] = 9 | vt->attr;
+    l->data[vt->cursorx] = 9 | (l->data[vt->cursorx]&VTATTR_MASK);
   }
 
   /* move cursor to new tab position */

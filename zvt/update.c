@@ -180,7 +180,9 @@ static void vt_line_update(struct _vtx *vx, struct vt_line *l, struct vt_line *b
 	  vx->draw_text(vx->vt.user_data, bl,
 			line, runstart, run, attr);
 	  vx->back_match = always?0:
-	    ((VT_BMASK(newattr) == VT_BMASK(oldattr)) && VT_BLANK(oldchar&0xffff));
+	    ((VT_BMASK(newattr) == VT_BMASK(oldattr))
+	     && VT_BLANK(oldchar&0xffff)
+	     && (newattr&VTATTR_REVERSE)==0);
 	  run = 1;
 	  runstart = i;
 	  attr = newattr;
@@ -188,9 +190,11 @@ static void vt_line_update(struct _vtx *vx, struct vt_line *l, struct vt_line *b
 	}
       } else {
 	vx->back_match = always?0:
-	  ((VT_BMASK(newattr) == VT_BMASK(oldattr)) && VT_BLANK(oldchar&0xffff));
+	  ((VT_BMASK(newattr) == VT_BMASK(oldattr))
+	   && VT_BLANK(oldchar&0xffff)
+	   && (newattr&VTATTR_REVERSE)==0);
 	runstart = i;
-	attr = newchar & VTATTR_MASK;
+	attr = newattr;
 	run=1;
 	commonrun = 0;
       }
@@ -915,8 +919,7 @@ void vt_fix_selection(struct _vtx *vx)
       while ((sx>0) &&
 	     (( (vt_in_wordclass(vx, s->data[sx])))))
 	sx--;
-      if ((s->data[sx]&0xff)==0
-	  || (s->data[sx]&0xff)==9)
+      if (!vt_in_wordclass(vx, s->data[sx]))
 	sx++;
     }
     d(printf("%d\n", sx));
@@ -939,7 +942,7 @@ void vt_fix_selection(struct _vtx *vx)
     if (ex==sx && ex<e->width && sy==ey)
       ex++;
 
-    if ((s->data[sx]&0xff)==0) {
+    if ((s->data[sx]&0xff)==0 || (s->data[sx]&0xff)==9) {
       while ((sx>0) && ((s->data[sx]&0xff) == 0))
 	sx--;
       if (sx &&

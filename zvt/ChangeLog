@@ -1,3 +1,13 @@
+1999-06-26  Michael Zucchi  <mzucchi@zedzone.mmc.com.au>
+
+	* update.c (vt_line_update): When reverse video set, then force
+	background render always.  Fixes a really nasty bug where lots of
+	text starts to vanish.
+	(vt_fix_selection): Another minor select-by-word fix.
+
+	* vt.c (vt_tab): When storing tab, dont over-write blank
+	attributes.
+
 1999-06-23  Michael Zucchi  <mzucchi@zedzone.mmc.com.au>
 
 	* update.c (vt_in_wordclass): Make sure we ignore attributes before
