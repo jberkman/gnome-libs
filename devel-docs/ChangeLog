@@ -1,3 +1,18 @@
+1998-10-05  Martin Baulig  <baulig@merkur.uni-trier.de>
+
+	* gnome-mdi.sgml: New file. Started writing documentation
+	of the GnomeMDI object.
+	
+	* gnome-dev-info.sgml: Include gnome-app-helper.sgml,
+	gnome-message-utils.sgml, x-concepts.sgml, libgnorba.sgml
+	and gnome-mdi.sgml here.
+
+	* Makefile.am: Redirect output of db2html to /dev/null, this
+	will be less confusing if there are errors.
+ 	(EXTRA_DIST): Added gnome-app-helper.sgml, gnome-mesage-utils.sgml,
+ 	x-concepts.sgml, libgnorba.sgml and gnome-mdi.sgml to the list of
+ 	distributed files.
+
 1998-10-04  Havoc Pennington  <hp@pobox.com>
 
 	* gnome-message-utils.sgml: Finished documenting all important

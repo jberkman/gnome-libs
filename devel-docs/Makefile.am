@@ -4,7 +4,7 @@ htmldir = $(prefix)/html
 html_DATA = gnome-dev-info.html
 
 gnome-dev-info.html: gnome-dev-info.sgml libgnomeui.sgml libgnome.sgml
-	-db2html gnome-dev-info.sgml
+	-db2html gnome-dev-info.sgml > /dev/null
 
 libgnomeui.sgml:
 	if $(SHELL) -c 'gdoc -V > /dev/null 2>&1 < /dev/null'; then \
@@ -38,5 +38,10 @@ EXTRA_DIST = \
 	gnome-canvas.sgml	\
 	gnome-dev-info.html	\
 	gnome-dev-info.sgml	\
+	gnome-app-helper.sgml	\
+	gnome-mesage-utils.sgml	\
+	x-concepts.sgml		\
+	libgnorba.sgml		\
+	gnome-mdi.sgml		\
 	libgnomeui.sgml		\
 	libgnome.sgml

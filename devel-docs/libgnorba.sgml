@@ -12,6 +12,7 @@ and connecting to new or existing servers using specified parameters.
 <sect2 id="goad-server-list-get">
 <title>goad_server_list_get - get a listing of objects which we know how to bootstrap</title>
 <funcsynopsis><funcdef>GoadServer *<function>goad_server_list_get</function></funcdef>
+<void>
 </funcsynopsis>
 <sect3><title>Description</title>
 <para>This function returns an array of GoadServer structures that list the objects that a program can use.</para>
@@ -44,7 +45,7 @@ int i;
 servlist = goad_server_list_get();
 for(i = 0; servlist[i].repo_id; i++) {
     if(!strcmp(servlist[i].id, "gnumeric")) {
-	    chosen = &servlist[i];
+	    chosen = &amp;servlist[i];
 	    break;
     }
 }
@@ -129,8 +130,8 @@ int main(int argc, char *argv)
 	CORBA_ORB my_orb;
 	CORBA_Environment ev;
 
-	CORBA_exception_init(&ev);
-	my_orb = gnome_CORBA_init("myapp", NULL, &argc, &argv, 0, NULL, &ev);
+	CORBA_exception_init(&amp;ev);
+	my_orb = gnome_CORBA_init("myapp", NULL, &amp;argc, &amp;argv, 0, NULL, &amp;ev);
 	if(ev._major != CORBA_NO_EXCEPTION)
 	    exit(1); /* error initializing ORB */
 
@@ -169,12 +170,14 @@ int main(int argc, char *argv)
 <para>Pointer to a CORBA exception information structure,
 to allow the ORB initialization functions to signal any errors that occur.</para>
 </listitem>
+</itemizedlist>
 </sect3>
 </sect2>
 <sect2 id="gnome-name-service-get">
 <title>gnome_name_service_get - retrieves an object reference to the root name service context for the current GNOME session</title>
 <funcsynopsis><funcdef>CORBA_Object
 <function>gnome_name_service_get</function></funcdef>
+<void>
 </funcsynopsis>
 <sect3><title>Description</title>
 <para>This routine is used to get access to the top naming context for
@@ -185,11 +188,11 @@ This function assumes that both gtk and ORBit have been initialized.
 </para>
 </sect3>
 <sect3><title>Usage</title>
-<programlist>
+<programlisting>
 CORBA_Object ns;
 
 ns = gnome_name_service_get();
-</programlist>
+</programlisting>
 </sect3>
 </sect2>
 </sect1>

@@ -1,6 +1,12 @@
 <!doctype book PUBLIC "-//Davenport//DTD DocBook V3.0//EN" [
 <!entity libgnome SYSTEM "libgnome.sgml">
 <!entity libgnomeui SYSTEM "libgnomeui.sgml">
+<!entity gnome-app-helper SYSTEM "gnome-app-helper.sgml">
+<!entity gnome-canvas SYSTEM "gnome-canvas.sgml">
+<!entity gnome-message-utils SYSTEM "gnome-message-utils.sgml">
+<!entity x-concepts SYSTEM "x-concepts.sgml">
+<!entity libgnorba SYSTEM "libgnorba.sgml">
+<!entity gnome-mdi SYSTEM "gnome-mdi.sgml">
 ]>
 <book>
   <bookinfo>
@@ -972,4 +978,36 @@ save_yourself (GnomeClient        *client,
         </para>
       &libgnomeui;
     </chapter>
+
+  <chapter id="gnome-app-helper-docs">
+    <title>Automatic menu and toolbar creation with GnomeAppHelper</title>
+    &gnome-app-helper;
+  </chapter>
+
+  <chapter id="GnomeCanvas-docs">
+    <title>The <type>GnomeCanvas</type> widget</title>
+    &gnome-canvas;
+  </chapter>
+
+  <chapter id="DialogAppUtil-docs">
+    <title>Talking to the user: <type>GnomeDialog</type>, <type>GnomeMessageBox</type>,
+    <type>GnomeAppBar</type>, and utility functions.</title>
+    &gnome-message-utils;
+  </chapter>
+
+  <chapter id="x-concepts-docs">
+    <title>Basic X concepts</title>
+    &x-concepts;
+  </chapter>
+
+  <chapter id="libgnorba-docs">
+    <title>LibGnorba Documentation</title>
+    &libgnorba;
+  </chapter>
+
+  <chapter id="gnome-mdi-docs">
+    <title>Gnome-MDI (Gnome Multi Document Interface)</title>
+    &gnome-mdi;
+  </chapter>
+
 </book>
