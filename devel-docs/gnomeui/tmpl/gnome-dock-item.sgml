@@ -6,11 +6,11 @@ A dockable widget.
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-GnomeDockItem is a container widget that can be used to make widgets
-dockable.  "Making a widget dockable" means that the widget gets a
-handle, through which users can drag it around the dock widget or
-detach it, so that it gets displayed into its own window (thus
-becoming a "floating" item).
+<type>GnomeDockItem</type> is a container widget that can be used to
+make widgets dockable.  "Making a widget dockable" means that the
+widget gets a handle through which users can drag it around the dock
+widget or detach it so that it gets displayed into its own window
+(thus becoming a "floating" item).
 </para>
 
 <!-- ##### STRUCT GnomeDockItem ##### -->
@@ -168,30 +168,32 @@ becoming a "floating" item).
 
 <!-- ##### SIGNAL GnomeDockItem::dock-drag-begin ##### -->
 <para>
-
+This signal is emitted as soon as the user starts dragging the dock item.
 </para>
 
 @dockitem: the object which received the signal.
 
 <!-- ##### SIGNAL GnomeDockItem::dock-drag-end ##### -->
 <para>
-
+This signal is emitted at the end of a dock item drag.
 </para>
 
 @dockitem: the object which received the signal.
 
 <!-- ##### SIGNAL GnomeDockItem::dock-drag-motion ##### -->
 <para>
-
+This signal is emitted while the item is being dragged and reports
+that the pointer position has changed.
 </para>
 
 @dockitem: the object which received the signal.
-@arg1: 
-@arg2: 
+@arg1: the new X coordinate of the upper left corner of the item.
+@arg2: the new Y coordinate of the upper left corner of the item.
 
 <!-- ##### SIGNAL GnomeDockItem::dock-detach ##### -->
 <para>
-
+This signal is emitted when an item is detached from its parent dock
+band and thus becomes a floating item.
 </para>
 
 @dockitem: the object which received the signal.
