@@ -1,13 +1,12 @@
 ? oaf-0.6.1.tar.gz
 ? oaf-2.6.1.tar.gz
-? test/output
 Index: .cvsignore
 ===================================================================
 RCS file: /cvs/gnome/oaf/.cvsignore,v
 retrieving revision 1.7
 diff -u -u -r1.7 .cvsignore
 --- .cvsignore	2000/06/19 16:08:10	1.7
-+++ .cvsignore	2000/12/09 17:04:48
++++ .cvsignore	2000/12/10 18:10:23
 @@ -23,3 +23,4 @@
  po
  stamp-h
@@ -19,7 +18,7 @@ RCS file: /cvs/gnome/oaf/ChangeLog,v
 retrieving revision 1.127
 diff -u -u -r1.127 ChangeLog
 --- ChangeLog	2000/11/25 23:18:09	1.127
-+++ ChangeLog	2000/12/09 17:04:50
++++ ChangeLog	2000/12/10 18:10:26
 @@ -1,3 +1,12 @@
 +2000-11-22  Martin Baulig  <martin@home-of-linux.org>
 +
@@ -39,7 +38,7 @@ RCS file: /cvs/gnome/oaf/Makefile.am,v
 retrieving revision 1.12
 diff -u -u -r1.12 Makefile.am
 --- Makefile.am	2000/08/10 21:55:58	1.12
-+++ Makefile.am	2000/12/09 17:04:50
++++ Makefile.am	2000/12/10 18:10:26
 @@ -28,6 +28,7 @@
  	ChangeLog 		\
  	NEWS 			\
@@ -64,7 +63,7 @@ RCS file: /cvs/gnome/oaf/autogen.sh,v
 retrieving revision 1.3
 diff -u -u -r1.3 autogen.sh
 --- autogen.sh	2000/08/31 09:23:39	1.3
-+++ autogen.sh	2000/12/09 17:04:50
++++ autogen.sh	2000/12/10 18:10:26
 @@ -4,77 +4,12 @@
  srcdir=`dirname $0`
  test -z "$srcdir" && srcdir=.
@@ -153,7 +152,7 @@ RCS file: /cvs/gnome/oaf/configure.in,v
 retrieving revision 1.49
 diff -u -u -r1.49 configure.in
 --- configure.in	2000/11/12 15:49:08	1.49
-+++ configure.in	2000/12/09 17:04:50
++++ configure.in	2000/12/10 18:10:26
 @@ -1,15 +1,32 @@
  dnl Process this file with autoconf to produce a configure script.
  AC_INIT(idl/oaf.idl)
@@ -289,7 +288,7 @@ Index: oaf-2.0.pc.in
 RCS file: oaf-2.0.pc.in
 diff -N oaf-2.0.pc.in
 --- /dev/null	Tue May  5 16:32:27 1998
-+++ oaf-2.0.pc.in	Sat Dec  9 12:04:50 2000
++++ oaf-2.0.pc.in	Sun Dec 10 13:10:26 2000
 @@ -0,0 +1,12 @@
 +prefix=@prefix@
 +exec_prefix=@exec_prefix@
@@ -309,7 +308,7 @@ RCS file: /cvs/gnome/oaf/liboaf/Makefile.am,v
 retrieving revision 1.19
 diff -u -u -r1.19 Makefile.am
 --- liboaf/Makefile.am	2000/10/06 04:25:33	1.19
-+++ liboaf/Makefile.am	2000/12/09 17:04:50
++++ liboaf/Makefile.am	2000/12/10 18:10:26
 @@ -15,6 +15,7 @@
  LDFLAGS=		\
  	@ORBIT_LIBS@ 	\
@@ -318,13 +317,32 @@ diff -u -u -r1.19 Makefile.am
  	$(NULL)
  
  liboafincludedir = $(includedir)/liboaf
+Index: liboaf/oaf-mainloop.c
+===================================================================
+RCS file: /cvs/gnome/oaf/liboaf/oaf-mainloop.c,v
+retrieving revision 1.27
+diff -u -u -r1.27 oaf-mainloop.c
+--- liboaf/oaf-mainloop.c	2000/11/16 23:08:08	1.27
++++ liboaf/oaf-mainloop.c	2000/12/10 18:10:27
+@@ -50,9 +50,9 @@
+ 
+ #include <orb/orbit.h>
+ 
+-static int oaf_corba_prio = G_PRIORITY_LOW;
+-
+ #ifndef ORBIT_USES_GLIB_MAIN_LOOP
++
++static int oaf_corba_prio = G_PRIORITY_LOW;
+ 
+ static gboolean
+ orb_handle_connection (GIOChannel * source, GIOCondition cond,
 Index: oafd/main.c
 ===================================================================
 RCS file: /cvs/gnome/oaf/oafd/main.c,v
 retrieving revision 1.22
 diff -u -u -r1.22 main.c
 --- oafd/main.c	2000/11/09 17:49:59	1.22
-+++ oafd/main.c	2000/12/09 17:04:51
++++ oafd/main.c	2000/12/10 18:10:28
 @@ -31,6 +31,8 @@
  #include <stdlib.h>
  #include <locale.h>
@@ -346,12 +364,63 @@ diff -u -u -r1.22 main.c
  
  	ml = g_main_new (FALSE);
  
+Index: oafd/od-load.c
+===================================================================
+RCS file: /cvs/gnome/oaf/oafd/od-load.c,v
+retrieving revision 1.19
+diff -u -u -r1.19 od-load.c
+--- oafd/od-load.c	2000/11/09 17:49:59	1.19
++++ oafd/od-load.c	2000/12/10 18:10:28
+@@ -53,7 +53,7 @@
+ static void
+ od_entry_read_props (OAF_ServerInfo * ent, xmlNodePtr node)
+ {
+-	int i, n;
++	int n;
+ 	xmlNodePtr sub;
+ 	OAF_Property *curprop;
+ 
+@@ -71,9 +71,12 @@
+ 	ent->props._length = n;
+ 	ent->props._buffer = curprop = g_new (OAF_Property, n);
+ 
+-	for (i = 0, sub = node->xmlChildrenNode; i < n; sub = sub->next, i++) {
++	for (sub = node->xmlChildrenNode; sub; sub = sub->next) {
+ 		char *type, *valuestr;
+ 
++		if (sub->type != XML_ELEMENT_NODE)
++			continue;
++
+ 		type = xmlGetProp (sub, "type");
+ 		if (!type)
+ 			continue;
+@@ -110,8 +113,10 @@
+ 			curprop->v._u.value_stringv._buffer =
+ 				CORBA_sequence_CORBA_string_allocbuf (o);
+ 
+-			for (j = 0, sub2 = sub->xmlChildrenNode; j < o;
+-			     sub2 = sub2->next, j++) {
++			for (j = 0, sub2 = sub->xmlChildrenNode; sub2;
++			     sub2 = sub2->next) {
++                                if (sub2->type != XML_ELEMENT_NODE)
++                                        continue;
+ 				valuestr = xmlGetProp (sub2, "value");
+ 				if (valuestr)
+ 					curprop->v._u.
+@@ -126,6 +131,7 @@
+ 						CORBA_string_dup ("");
+ 				}
+ 				free (valuestr);
++                                j++;
+ 			}
+ 
+ 		} else if (!strcasecmp (type, "number")) {
 Index: po/Makefile.in.in
 ===================================================================
 RCS file: Makefile.in.in
 diff -N Makefile.in.in
 --- /dev/null	Tue May  5 16:32:27 1998
-+++ Makefile.in.in	Sat Dec  9 12:04:51 2000
++++ Makefile.in.in	Sun Dec 10 13:10:29 2000
 @@ -0,0 +1,248 @@
 +# Makefile for program source directory in GNU NLS utilities package.
 +# Copyright (C) 1995, 1996, 1997 by Ulrich Drepper <drepper@gnu.ai.mit.edu>
@@ -607,7 +676,7 @@ RCS file: /cvs/gnome/oaf/po/da.po,v
 retrieving revision 1.8
 diff -u -u -r1.8 da.po
 --- po/da.po	2000/10/25 17:16:47	1.8
-+++ po/da.po	2000/12/09 17:04:51
++++ po/da.po	2000/12/10 18:10:29
 @@ -6,7 +6,7 @@
  msgid ""
  msgstr ""
@@ -733,7 +802,7 @@ RCS file: /cvs/gnome/oaf/po/de.po,v
 retrieving revision 1.9
 diff -u -u -r1.9 de.po
 --- po/de.po	2000/10/25 17:16:47	1.9
-+++ po/de.po	2000/12/09 17:04:52
++++ po/de.po	2000/12/10 18:10:29
 @@ -6,7 +6,7 @@
  msgid ""
  msgstr ""
@@ -859,7 +928,7 @@ RCS file: /cvs/gnome/oaf/po/es.po,v
 retrieving revision 1.6
 diff -u -u -r1.6 es.po
 --- po/es.po	2000/11/21 14:08:03	1.6
-+++ po/es.po	2000/12/09 17:04:52
++++ po/es.po	2000/12/10 18:10:29
 @@ -5,7 +5,7 @@
  msgid ""
  msgstr ""
@@ -931,7 +1000,7 @@ RCS file: /cvs/gnome/oaf/po/fi.po,v
 retrieving revision 1.2
 diff -u -u -r1.2 fi.po
 --- po/fi.po	2000/10/25 17:16:47	1.2
-+++ po/fi.po	2000/12/09 17:04:52
++++ po/fi.po	2000/12/10 18:10:29
 @@ -7,7 +7,7 @@
  msgid ""
  msgstr ""
@@ -1057,7 +1126,7 @@ RCS file: /cvs/gnome/oaf/po/fr.po,v
 retrieving revision 1.8
 diff -u -u -r1.8 fr.po
 --- po/fr.po	2000/10/26 08:53:10	1.8
-+++ po/fr.po	2000/12/09 17:04:52
++++ po/fr.po	2000/12/10 18:10:29
 @@ -7,7 +7,7 @@
  msgid ""
  msgstr ""
@@ -1185,7 +1254,7 @@ RCS file: /cvs/gnome/oaf/po/ga.po,v
 retrieving revision 1.3
 diff -u -u -r1.3 ga.po
 --- po/ga.po	2000/10/25 17:16:47	1.3
-+++ po/ga.po	2000/12/09 17:04:52
++++ po/ga.po	2000/12/10 18:10:29
 @@ -4,7 +4,7 @@
  msgid ""
  msgstr ""
@@ -1311,7 +1380,7 @@ RCS file: /cvs/gnome/oaf/po/gl.po,v
 retrieving revision 1.5
 diff -u -u -r1.5 gl.po
 --- po/gl.po	2000/10/29 15:09:51	1.5
-+++ po/gl.po	2000/12/09 17:04:52
++++ po/gl.po	2000/12/10 18:10:29
 @@ -10,7 +10,7 @@
  msgid ""
  msgstr ""
@@ -1438,7 +1507,7 @@ RCS file: /cvs/gnome/oaf/po/hu.po,v
 retrieving revision 1.1
 diff -u -u -r1.1 hu.po
 --- po/hu.po	2000/11/08 18:26:12	1.1
-+++ po/hu.po	2000/12/09 17:04:52
++++ po/hu.po	2000/12/10 18:10:29
 @@ -1,7 +1,7 @@
  msgid ""
  msgstr ""
@@ -1622,7 +1691,7 @@ RCS file: /cvs/gnome/oaf/po/it.po,v
 retrieving revision 1.5
 diff -u -u -r1.5 it.po
 --- po/it.po	2000/12/03 16:31:22	1.5
-+++ po/it.po	2000/12/09 17:04:52
++++ po/it.po	2000/12/10 18:10:30
 @@ -5,7 +5,7 @@
  msgid ""
  msgstr ""
@@ -1693,7 +1762,7 @@ RCS file: /cvs/gnome/oaf/po/ja.po,v
 retrieving revision 1.4
 diff -u -u -r1.4 ja.po
 --- po/ja.po	2000/10/25 17:16:48	1.4
-+++ po/ja.po	2000/12/09 17:04:53
++++ po/ja.po	2000/12/10 18:10:30
 @@ -6,7 +6,7 @@
  msgid ""
  msgstr ""
@@ -1819,7 +1888,7 @@ RCS file: /cvs/gnome/oaf/po/ko.po,v
 retrieving revision 1.3
 diff -u -u -r1.3 ko.po
 --- po/ko.po	2000/10/25 17:16:48	1.3
-+++ po/ko.po	2000/12/09 17:04:53
++++ po/ko.po	2000/12/10 18:10:30
 @@ -5,7 +5,7 @@
  msgid ""
  msgstr ""
@@ -1947,7 +2016,7 @@ RCS file: /cvs/gnome/oaf/po/no.po,v
 retrieving revision 1.4
 diff -u -u -r1.4 no.po
 --- po/no.po	2000/10/25 17:16:48	1.4
-+++ po/no.po	2000/12/09 17:04:53
++++ po/no.po	2000/12/10 18:10:30
 @@ -5,7 +5,7 @@
  msgid ""
  msgstr ""
@@ -2075,7 +2144,7 @@ RCS file: /cvs/gnome/oaf/po/pl.po,v
 retrieving revision 1.2
 diff -u -u -r1.2 pl.po
 --- po/pl.po	2000/11/04 22:01:06	1.2
-+++ po/pl.po	2000/12/09 17:04:53
++++ po/pl.po	2000/12/10 18:10:30
 @@ -2,7 +2,7 @@
  msgid ""
  msgstr ""
@@ -2326,7 +2395,7 @@ RCS file: /cvs/gnome/oaf/po/ru.po,v
 retrieving revision 1.4
 diff -u -u -r1.4 ru.po
 --- po/ru.po	2000/10/25 17:16:48	1.4
-+++ po/ru.po	2000/12/09 17:04:53
++++ po/ru.po	2000/12/10 18:10:30
 @@ -4,7 +4,7 @@
  msgid ""
  msgstr ""
@@ -2453,7 +2522,7 @@ RCS file: /cvs/gnome/oaf/po/sl.po,v
 retrieving revision 1.6
 diff -u -u -r1.6 sl.po
 --- po/sl.po	2000/11/01 17:19:43	1.6
-+++ po/sl.po	2000/12/09 17:04:53
++++ po/sl.po	2000/12/10 18:10:30
 @@ -5,7 +5,7 @@
  msgid ""
  msgstr ""
@@ -2579,7 +2648,7 @@ RCS file: /cvs/gnome/oaf/po/sv.po,v
 retrieving revision 1.5
 diff -u -u -r1.5 sv.po
 --- po/sv.po	2000/10/25 17:16:48	1.5
-+++ po/sv.po	2000/12/09 17:04:53
++++ po/sv.po	2000/12/10 18:10:30
 @@ -5,7 +5,7 @@
  msgid ""
  msgstr ""
@@ -2705,7 +2774,7 @@ RCS file: /cvs/gnome/oaf/po/tr.po,v
 retrieving revision 1.7
 diff -u -u -r1.7 tr.po
 --- po/tr.po	2000/10/25 17:16:48	1.7
-+++ po/tr.po	2000/12/09 17:04:53
++++ po/tr.po	2000/12/10 18:10:31
 @@ -5,7 +5,7 @@
  msgid ""
  msgstr ""
@@ -2831,7 +2900,7 @@ RCS file: /cvs/gnome/oaf/po/uk.po,v
 retrieving revision 1.3
 diff -u -u -r1.3 uk.po
 --- po/uk.po	2000/10/25 17:16:48	1.3
-+++ po/uk.po	2000/12/09 17:04:54
++++ po/uk.po	2000/12/10 18:10:31
 @@ -5,7 +5,7 @@
  msgid ""
  msgstr ""
