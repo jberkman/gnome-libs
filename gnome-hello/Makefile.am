@@ -13,17 +13,12 @@ LDADD = \
         $(X_LIBS) $(x_libs) $(INTLLIBS)			\
 	$(top_builddir)/support/libsupport.a
 
-bin_PROGRAMS =  gnome-hello-0-basic 		\
-		gnome-hello-1-menus 		\
-		gnome-hello-2-i18n  		\
-		gnome-hello-3-parse-args	\
-		gnome-hello-4-SM
-
-gnome_hello_0_basic_LDADD = $(LDADD)
-gnome_hello_1_menus_LDADD = $(LDADD)
-gnome_hello_2_i18n_LDADD = $(LDADD)
-gnome_hello_3_parse_args_LDADD = $(LDADD)
-gnome_hello_4_SM_LDADD = $(LDADD)
+noinst_PROGRAMS =  \
+	gnome-hello-0-basic 		\
+	gnome-hello-1-menus 		\
+	gnome-hello-2-i18n  		\
+	gnome-hello-3-parse-args	\
+	gnome-hello-4-SM
 
 htmldir = $(prefix)/html
 html_DATA = gnome-hello.html

@@ -1,3 +1,13 @@
+1998-02-07  Raja R Harinath  <harinath@cs.umn.edu>
+
+	* Makefile.am (*_LDADD): Remove redundant *_LDADD=$(LDADD).  This
+	is already the default for Automake.
+	(noinst_PROGRAMS): Don't install the gnome-hello-* programs.
+
+Wed Feb  4 19:37:31 ART 1998  Horacio Peña  <horape@compendium.com.ar>
+
+	* gnome-hello-*: little fixes.
+	
 1998-02-01  Raja R Harinath  <harinath@cs.umn.edu>
 
 	* Makefile.am (EXTRA_DIST): Also distribute the generated
