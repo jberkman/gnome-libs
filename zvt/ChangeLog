@@ -1,3 +1,16 @@
+1998-05-03  Michael Zucchi  <zucchi@zzedzone.box.net.au>
+
+	* vt.c (vt_resize): Now calls resize_subshell() instead of calling
+	the ioctl directly.
+
+	* subshell.h: New file.  Defines functions in subshell.c.
+
+	* subshell.c: New file.  Includes init_subshell() and
+	resize_subshell() commands.  Taken from 'mc' source tree.
+
+	* vt.c (vt_forkpty): Changed to use init_subshell() call from
+	subshell.c.  No longer needs forkpty() function!
+
 1998-05-02  Michael Zucchi  <zucchi@zzedzone.box.net.au>
 
 	* vt.c (vt_swap_buffers): Removed.  Not needed in the end.

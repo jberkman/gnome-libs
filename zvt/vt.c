@@ -31,14 +31,10 @@
 #include <unistd.h>
 #include <signal.h>
 
-/* #include <pty.h> */
 #include <termios.h>
 #include <sys/ioctl.h>
 
-#ifndef HAVE_FORKPTY
-#include "forkpty.h"
-#endif
-
+#include "subshell.h"
 #include "lists.h"
 #include "memory.h"
 #include "vt.h"
@@ -1083,17 +1079,12 @@ struct vt_em *vt_init(struct vt_em *vt, int width, int height)
 */
 int vt_forkpty(struct vt_em *vt)
 {
-  struct winsize win;
   char ttyname[256];
 
-  win.ws_row = 24;
-  win.ws_col = 80;
-  win.ws_xpixel = 640;
-  win.ws_ypixel = 480;
-  vt->childpid = forkpty(&vt->childfd, ttyname, 0, &win);
-
+  vt->childpid = init_subshell(&vt->childfd, ttyname);
   if (vt->childpid>0) {
     fcntl(vt->childfd, F_SETFL, O_NONBLOCK);
+    resize_subshell(vt->childfd, vt->width, vt->height, vt->width*8, vt->height*8); /* FIXME: approx sizes only */
   }
 
   d(fprintf(stderr, "program started on pid %d, on tty %s\n", vt->childpid, ttyname));
@@ -1182,7 +1173,6 @@ void vt_resize(struct vt_em *vt, int width, int height, int pixwidth, int pixhei
   int pass;
 #endif
   int old_width;
-  struct winsize win;
 
   old_width = vt->width;
   vt->width = width;
@@ -1284,12 +1274,7 @@ void vt_resize(struct vt_em *vt, int width, int height, int pixwidth, int pixhei
   /* re-fix 'this line' pointer */
   vt->this = (struct vt_line *)vt_list_index(&vt->lines, vt->cursory);
 
-  /* resize the application tty */
-  win.ws_row = height;
-  win.ws_col = width;
-  win.ws_xpixel = pixwidth;
-  win.ws_ypixel = pixheight;
-  ioctl(vt->childfd, TIOCSWINSZ, (char *)&win);
+  resize_subshell(vt->childfd, width, height, pixwidth, pixheight);
 
   d(printf("resized to %d,%d\n", vt->width, vt->height));
 }
