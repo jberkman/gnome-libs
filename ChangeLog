@@ -1,3 +1,11 @@
+1999-10-29  Elliot Lee  <sopwith@redhat.com>
+
+	* liboafgnome/: builds now.
+	* support/: Integrate new popt. Don't install this library.
+	* libgnome/Makefile.am: Link ../support/libgnomesupport.la in as part of libgnome.la
+	* */Makefile.am: Reflect this
+	* configure.in: Use AM_PATH_ORBIT macro 
+
 1999-10-22  Jonathan Blandford  <jrb@redhat.com>
 
 	* compatConf.sh.in: added gnome-config options.

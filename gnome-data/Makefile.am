@@ -36,6 +36,6 @@ install-data-local:
 m4datadir = $(datadir)/aclocal
 m4data_DATA=compiler-flags.m4 gnome-common.m4 gnome-cxx-check.m4 \
 	gnome-fileutils.m4 gnome-gettext.m4 gnome-gnorba-check.m4 \
-	gnome-orbit-check.m4 gnome-pthread-check.m4 gnome-support.m4 \
+	gnome-pthread-check.m4 gnome-support.m4 \
 	gnome-x-checks.m4 gnome.m4 linger.m4 need-declaration.m4 \
 	aclocal-include.m4

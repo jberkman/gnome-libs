@@ -117,7 +117,7 @@ AC_CHECK_LIB(m, main)
 AC_CHECK_LIB(popt, poptGetContext,, [AC_MSG_ERROR(The popt library is required to build gnome-libs. You can download the latest version from ftp://ftp.redhat.com/pub/redhat/code/popt/)
 ])
 
-AC_CHECK_HEADERS(dlfcn.h dl.h utmp.h locale.h)
+AC_CHECK_HEADERS(dlfcn.h dl.h utmp.h locale.h mcheck.h unistd.h)
 
 DL_LIB=
 AC_CHECK_FUNCS(dlopen,,[
@@ -342,12 +342,11 @@ dnl
 LIBGNOME_LIBS="$ESD_LIBS $AUDIOFILE_LIBS $DB_LIB $GLIB_LIBS $DL_LIB"
 LIBGNOMEUI_LIBS="$LIBGNOME_LIBS $GDK_IMLIB_LIBS $GTK_LIBS"
 LIBGTKXMHTML_LIBS="$XPM_LIBS $JPEG_LIBS $PNG_LIBS $Z_LIBS $GTK_LIBS"
-LIBSUPPORT='$(top_builddir)/support/libgnomesupport.la'
 SUPPORTINCS='-DNEED_GNOMESUPPORT_H -I$(top_builddir)/support -I$(top_srcdir)/support'
 
 dnl These are for using lib*
 ART_LIBS="-lart_lgpl"
-GNOME_LIBS="-lgnome -lgnomesupport $LIBGNOME_LIBS"
+GNOME_LIBS="-lgnome $LIBGNOME_LIBS"
 GNOMEUI_LIBS="-lgnomeui $ART_LIBS $GDK_IMLIB_LIBS $GTK_LIBS $GNOME_LIBS"
 GTKXMHTML_LIBS="-lgtkxmhtml $LIBGTKXMHTML_LIBS"
 ZVT_LIBS="-lzvt $UTIL_LIBS $GTK_LIBS"
@@ -360,7 +359,7 @@ GNOME_IDLDIR='-I${datadir}/idl'
 dnl
 dnl ORBit check
 dnl
-AM_PATH_ORBIT(0.5.1)
+AM_PATH_ORBIT(0.5.1, , AC_MSG_ERROR([You must have ORBit installed.]))
 
 dnl
 dnl test-gnome
@@ -436,7 +435,6 @@ AC_SUBST(GTKXMHTML_LIBS)
 AC_SUBST(GNOME_LIBDIR)
 AC_SUBST(GNOME_INCLUDEDIR)
 AC_SUBST(GNOME_IDLDIR)
-AC_SUBST(LIBSUPPORT)
 AC_SUBST(SUPPORTINCS)
 
 AC_SUBST(LIBGNOME_LIBS)
@@ -460,7 +458,6 @@ libgnome/Makefile
 libgnome/gnome-portability.h
 libgnomeui/Makefile
 libgnomeui/pixmaps/Makefile
-libgnorba/Makefile
 zvt/Makefile
 test-suite/Makefile
 test-suite/tests/Makefile
@@ -481,6 +478,7 @@ support/Makefile
 tools/Makefile
 tools/convertrgb/Makefile
 tools/gnome-doc/Makefile
+liboafgnome/Makefile
 $LCLINTRC_OUT
 ],[case "$CONFIG_FILES" in
 *gnome-config*)chmod +x gnome-config;;
@@ -523,5 +521,3 @@ dnl
 dnl Check for audiofile library
 dnl
 dnl AM_PATH_AUDIOFILE(0.1.5,AC_DEFINE(HAVE_LIBAUDIOFILE))
-
-

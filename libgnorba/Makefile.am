@@ -16,7 +16,6 @@ INCLUDES = 						\
         $(GNOME_INCLUDES)  				\
 	$(ORBIT_CFLAGS) 				\
 	$(GLIB_INCLUDES) 				\
-	$(AUDIOFILE_CFLAGS) $(ESD_CFLAGS) 		\
 	$(GDK_IMLIB_CFLAGS)				\
 	-DGNOMEBINDIR=$(bindir) 			\
 	-DGNOMESYSCONFDIR=\"$(sysconfdir)\" 		\
@@ -85,7 +84,6 @@ loadshlib_LDADD = 					\
         $(top_builddir)/libgnome/libgnome.la		\
         $(top_builddir)/libgnomeui/libgnomeui.la	\
 	$(top_builddir)/libart_lgpl/libart_lgpl.la	\
-        @LIBSUPPORT@					\
         $(LIBGNOMEUI_LIBS) $(LIBGNOME_LIBS)		\
 	$(INTLLIBS)
 
@@ -98,7 +96,6 @@ goad_browser_LDADD = 					\
         $(top_builddir)/libgnomeui/libgnomeui.la	\
         $(top_builddir)/libgnome/libgnome.la		\
 	$(top_builddir)/libart_lgpl/libart_lgpl.la	\
-        @LIBSUPPORT@					\
         $(LIBGNOMEUI_LIBS) $(LIBGNOME_LIBS) 		\
 	$(INTLLIBS)
 
@@ -111,7 +108,6 @@ gnome_name_service_LDADD = 				\
 	$(ORBIT_LIBS) 					\
         $(top_builddir)/libgnome/libgnome.la		\
         $(LIBGNOMEUI_LIBS) $(LIBGNOME_LIBS)		\
-	$(LIBSUPPORT)					\
 	$(X_LIBS) -lX11					\
 	$(INTLLIBS)
 

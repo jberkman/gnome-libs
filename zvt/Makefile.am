@@ -54,7 +54,7 @@ zterm_LDADD	= 			\
 	$(UTIL_LIBS)			\
 	$(GTK_LIBS) 			\
 	$(GDK_IMLIB_LIBS)		\
-	@LIBSUPPORT@ $(INTLLIBS)
+	$(INTLLIBS)
 
 test_utmp_SOURCES =			\
 	gnome-utmp.c			\

@@ -10,6 +10,6 @@ INCLUDES =					\
 LDADD = $(top_builddir)/libgnomeui/libgnomeui.la	\
 	$(top_builddir)/libgnome/libgnome.la		\
 	$(top_builddir)/libart_lgpl/libart_lgpl.la	\
-	@LIBSUPPORT@ $(LIBGNOMEUI_LIBS) $(INTLLIBS)
+	$(LIBGNOMEUI_LIBS) $(INTLLIBS)
 
 EXTRA_DIST = fileconvert.in lynxdump.sh types.cvt trigs.in
