@@ -8,7 +8,7 @@
 ##
 
 EXTRA_DIST	= gnome-faq.sgml
-SUFFIXES	= .stamp .sgml
+SUFFIXES	= .tar.gz .sgml
 
 if INSIDE_GNOME_LIBS
 
@@ -35,12 +35,12 @@ htmldir		= $(datadir)/html
 html_subdirs	= gnome-faq
 
 # Well, yes - you are using GNU Make, aren't you ... ?
-stamp_FILES	= $(addsuffix .stamp,$(html_subdirs))
+tgz_FILES	= $(addsuffix .tar.gz,$(html_subdirs))
 sgml_FILES	= $(addsuffix .sgml,$(html_subdirs))
 
-noinst_DATA	= $(stamp_FILES)
+noinst_DATA	= $(tgz_FILES)
 
-CLEANFILES	= $(stamp_FILES)
+CLEANFILES	= $(tgz_FILES)
 
 include $(TOPDIR)/scripts/Makefile.Common
 
