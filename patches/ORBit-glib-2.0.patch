@@ -1,36 +1,90 @@
+Index: .cvsignore
+===================================================================
+RCS file: /cvs/gnome/ORBit/.cvsignore,v
+retrieving revision 1.6
+diff -u -u -r1.6 .cvsignore
+--- .cvsignore	1999/06/21 23:03:42	1.6
++++ .cvsignore	2000/09/29 21:52:11
+@@ -20,3 +20,4 @@
+ install-sh
+ mkinstalldirs
+ ORBit.spec
++ORBit-2.0.pc
+Index: Makefile.am
+===================================================================
+RCS file: /cvs/gnome/ORBit/Makefile.am,v
+retrieving revision 1.13.4.1
+diff -u -u -r1.13.4.1 Makefile.am
+--- Makefile.am	2000/02/21 18:39:51	1.13.4.1
++++ Makefile.am	2000/09/29 21:52:11
+@@ -4,7 +4,7 @@
+ 
+ bin_SCRIPTS=orbit-config
+ 
+-EXTRA_DIST=ORBit.spec.in ORBit.m4
++EXTRA_DIST=ORBit.spec.in ORBit.m4 ORBit-2.0.pc
+ 
+ dist-hook: ORBit.spec
+ 	mkdir $(distdir)/docs
+@@ -16,3 +16,7 @@
+ 
+ m4datadir=$(datadir)/aclocal
+ m4data_DATA=ORBit.m4
++
++pkgconfigdir = $(libexecdir)/pkgconfig
++pkgconfig_DATA = ORBit-2.0.pc
++
+Index: ORBit-2.0.pc.in
+===================================================================
+RCS file: ORBit-2.0.pc.in
+diff -N ORBit-2.0.pc.in
+--- /dev/null	Tue May  5 16:32:27 1998
++++ ORBit-2.0.pc.in	Fri Sep 29 17:52:11 2000
+@@ -0,0 +1,14 @@
++prefix=@prefix@
++exec_prefix=@exec_prefix@
++libdir=@libdir@
++includedir=@includedir@
++
++VERSION="@VERSION@"
++REQUIRES="glib-2.0"
++CFLAGS="-I${includedir} $CFLAGS"
++LIBS_PATH="-L${libdir} $LIBS_PATH"
++LIBS_LINK_SELF="-lORBit -lIIOP -lORBitutil $LIBS_LINK_SELF"
++LIBS_LINK_SYSTEM="@LIBS@ -lm $LIBS_LINK_SYSTEM"
++
++#Name: ORBit
++#Description: High-performance CORBA Object Request Broker.
 Index: configure.in
 ===================================================================
 RCS file: /cvs/gnome/ORBit/configure.in,v
-retrieving revision 1.98.4.4
-diff -u -p -r1.98.4.4 configure.in
---- configure.in	2000/07/25 22:41:59	1.98.4.4
-+++ configure.in	2000/09/01 01:55:13
-@@ -99,14 +99,14 @@ AC_DEFINE_UNQUOTED(INDENT_COMMAND,"$INDE
+retrieving revision 1.98.4.5
+diff -u -u -r1.98.4.5 configure.in
+--- configure.in	2000/09/24 19:16:42	1.98.4.5
++++ configure.in	2000/09/29 21:52:12
+@@ -99,7 +99,7 @@
  dnl Checks for libraries.
  
  # Make sure that we have glib>=1.1.16
 -AM_PATH_GLIB(1.2.1,,
-+AM_PATH_GLIB_2_0(1.3.1,,
++AM_PATH_GLIB_2_0(1.2.1,,
  AC_MSG_ERROR([
  *** GLIB 1.2.1 or better is required. The latest version of GLIB
  *** is always available from ftp://ftp.gtk.org/.]))
- 
--GMODULE_CFLAGS=`glib-config --cflags gmodule`
-+GMODULE_CFLAGS=`glib-config-2.0 --cflags gmodule`
- AC_SUBST(GMODULE_CFLAGS)
--GMODULE_LIBS=`glib-config --libs gmodule`
-+GMODULE_LIBS=`glib-config-2.0 --libs gmodule`
- AC_SUBST(GMODULE_LIBS)
- 
- AC_PROG_YACC
+@@ -347,4 +347,5 @@
+ test/Makefile
+ test/idl/Makefile
+ test/test-poa/Makefile
++ORBit-2.0.pc
+ ORBit.spec)
 Index: orbit-config.in
 ===================================================================
 RCS file: /cvs/gnome/ORBit/orbit-config.in,v
 retrieving revision 1.7
-diff -u -p -r1.7 orbit-config.in
+diff -u -u -r1.7 orbit-config.in
 --- orbit-config.in	1999/10/08 04:49:07	1.7
-+++ orbit-config.in	2000/09/01 01:55:13
-@@ -87,8 +87,8 @@ while test $# -gt 0; do
++++ orbit-config.in	2000/09/29 21:52:12
+@@ -87,8 +87,8 @@
         	;;
  
      client|server)
@@ -41,28 +95,51 @@ diff -u -p -r1.7 orbit-config.in
  	;;
  
     --use-service=*)
+Index: libIDL/.cvsignore
+===================================================================
+RCS file: /cvs/gnome/libIDL/.cvsignore,v
+retrieving revision 1.8
+diff -u -u -r1.8 .cvsignore
+--- libIDL/.cvsignore	1999/07/17 18:16:14	1.8
++++ libIDL/.cvsignore	2000/09/29 21:52:12
+@@ -28,3 +28,4 @@
+ libIDL.m4
+ Makefile.msc
+ libIDL.spec
++libIDL-2.0.pc
+Index: libIDL/Makefile.am
+===================================================================
+RCS file: /cvs/gnome/libIDL/Makefile.am,v
+retrieving revision 1.65.4.1
+diff -u -u -r1.65.4.1 Makefile.am
+--- libIDL/Makefile.am	2000/02/21 18:39:52	1.65.4.1
++++ libIDL/Makefile.am	2000/09/29 21:52:12
+@@ -32,7 +32,8 @@
+ EXTRA_DIST		= BUGS parser.y lexer.l \
+ 			  Makefile.msc README.win32 \
+ 			  libIDL.def libIDLConf.sh.in \
+-			  stamp-parser lexer.c parser.c parser.h
++			  stamp-parser lexer.c parser.c parser.h \
++			  libIDL-2.0.pc.in
+ 
+ info_TEXINFOS		= libIDL.texi
+ pkginclude_HEADERS	= IDL.h
+@@ -70,3 +71,6 @@
+ 		-e 's?\@VERSION\@?$(VERSION)?g' \
+ 		< $(srcdir)/libIDLConf.sh.in > libIDLConf.tmp \
+ 		&& mv libIDLConf.tmp libIDLConf.sh
++
++pkgconfigdir = $(libexecdir)/pkgconfig
++pkgconfig_DATA = libIDL-2.0.pc
 Index: libIDL/configure.in
 ===================================================================
 RCS file: /cvs/gnome/libIDL/configure.in,v
 retrieving revision 1.54
-diff -u -p -r1.54 configure.in
+diff -u -u -r1.54 configure.in
 --- libIDL/configure.in	1999/10/01 21:58:10	1.54
-+++ libIDL/configure.in	2000/09/01 01:55:13
-@@ -19,7 +19,7 @@ LIBIDL_MICRO_VERSION=8
- LIBIDL_INTERFACE_AGE=4
- LIBIDL_BINARY_AGE=8
- LIBIDL_LIBRARY_VERSION=$LIBIDL_MAJOR_VERSION.$LIBIDL_MINOR_VERSION.$LIBIDL_MICRO_VERSION
--GLIB_VERSION_REQUIRED=1.2.0
-+GLIB_VERSION_REQUIRED=1.3.1
- AC_DIVERT_POP()dnl
- 
- AC_SUBST(LIBIDL_MAJOR_VERSION)
-@@ -79,10 +79,10 @@ AM_PROG_LIBTOOL
- AM_MAINTAINER_MODE
- 
- dnl Checks for libraries.
--AC_CHECK_PROG(HAVE_GLIB_CONFIG, glib-config, yes, no)
-+AC_CHECK_PROG(HAVE_GLIB_CONFIG, glib-config-2.0, yes, no)
++++ libIDL/configure.in	2000/09/29 21:52:12
+@@ -82,7 +82,7 @@
+ AC_CHECK_PROG(HAVE_GLIB_CONFIG, glib-config, yes, no)
  
  AC_SUBST(GLIB_VERSION_REQUIRED)
 -AM_PATH_GLIB($GLIB_VERSION_REQUIRED)
@@ -70,150 +147,32 @@ diff -u -p -r1.54 configure.in
  
  AC_STDC_HEADERS
  AC_CHECK_HEADERS(stddef.h)
-Index: libIDL/util.c
+@@ -104,6 +104,7 @@
+ libIDL.m4
+ libIDL.spec
+ IDL.h.new
++libIDL-2.0.pc
+ ],[
+ AC_UPDATE_IF_CHANGED(IDL.h, IDL.h.new)
+ ])
+Index: libIDL/libIDL-2.0.pc.in
 ===================================================================
-RCS file: /cvs/gnome/libIDL/util.c,v
-retrieving revision 1.113
-diff -u -p -r1.113 util.c
---- libIDL/util.c	1999/10/01 21:58:10	1.113
-+++ libIDL/util.c	2000/09/01 01:55:14
-@@ -503,9 +503,9 @@ void yyerrorl (const char *s, int ofs)
- 
- 	if (__IDL_cur_filename) {
- #ifdef HAVE_CPP_PIPE_STDIN
--		filename = __IDL_cur_filename;
-+		filename = g_strdup (__IDL_cur_filename);
- #else
--		filename = g_basename (__IDL_cur_filename);
-+		filename = g_path_get_basename (__IDL_cur_filename);
- #endif
- 	} else
- 		line = -1;
-@@ -525,6 +525,8 @@ void yyerrorl (const char *s, int ofs)
- 		else
- 			fprintf (stderr, "Error: %s\n", s);
- 	}
+RCS file: libIDL-2.0.pc.in
+diff -N libIDL-2.0.pc.in
+--- /dev/null	Tue May  5 16:32:27 1998
++++ libIDL-2.0.pc.in	Fri Sep 29 17:52:12 2000
+@@ -0,0 +1,14 @@
++prefix=@prefix@
++exec_prefix=@exec_prefix@
++libdir=@libdir@
++includedir=@includedir@
 +
-+	g_free (filename);
- }
- 
- void yywarningl (int level, const char *s, int ofs)
-@@ -538,9 +540,9 @@ void yywarningl (int level, const char *
- 
- 	if (__IDL_cur_filename) {
- #ifdef HAVE_CPP_PIPE_STDIN
--		filename = __IDL_cur_filename;
-+		filename = g_strdup (__IDL_cur_filename);
- #else
--		filename = g_basename (__IDL_cur_filename);
-+		filename = g_path_get_basename (__IDL_cur_filename);
- #endif
- 	} else
- 		line = -1;
-@@ -555,6 +557,8 @@ void yywarningl (int level, const char *
- 		else
- 			fprintf (stderr, "Warning: %s\n", s);
- 	}
++VERSION="@VERSION@"
++REQUIRES="glib-2.0"
++CFLAGS="-I${includedir} $CFLAGS"
++LIBS_PATH="-L${libdir} $LIBS_PATH"
++LIBS_LINK_SELF="-lIDL $LIBS_LINK_SELF"
++LIBS_LINK_SYSTEM="$LIBS_LINK_SYSTEM"
 +
-+	g_free (filename);
- }
- 
- void yyerror (const char *s)
-Index: src/IIOP/connection.c
-===================================================================
-RCS file: /cvs/gnome/ORBit/src/IIOP/connection.c,v
-retrieving revision 1.97
-diff -u -p -r1.97 connection.c
---- src/IIOP/connection.c	2000/02/18 13:55:30	1.97
-+++ src/IIOP/connection.c	2000/09/01 01:55:14
-@@ -105,7 +105,7 @@ void giop_init(const char *argv0)
-   g_assert(sizeof(GIOPMessageHeader) == 12);
- 
- #if defined(HAVE_HOSTS_ACCESS) && defined (HAVE_TCPD_H)
--  argv0_val = g_strdup(g_basename(argv0)); /* For TCP wrappers */
-+  argv0_val = g_path_get_basename(argv0); /* For TCP wrappers */
- #endif
- 
-   memset(&mypipe, '\0', sizeof(mypipe));
-Index: src/idl-compiler/orbit-c-backend.c
-===================================================================
-RCS file: /cvs/gnome/ORBit/src/idl-compiler/orbit-c-backend.c,v
-retrieving revision 1.84
-diff -u -p -r1.84 orbit-c-backend.c
---- src/idl-compiler/orbit-c-backend.c	1999/05/28 03:32:32	1.84
-+++ src/idl-compiler/orbit-c-backend.c	2000/09/01 01:55:15
-@@ -30,7 +30,7 @@ orbit_IDL_tree_to_c(const char *base_fil
-       orbit_cbe_print_node(tree, 0);
-   }
-   
--  base_filename = g_basename(base_filename);
-+  base_filename = g_path_get_basename(base_filename);
- 
-   if(!disable_headers) {
-     g_string_sprintf(curfile_name, "%s > %s.h",
-@@ -47,7 +47,7 @@ orbit_IDL_tree_to_c(const char *base_fil
-     fclose(curfile);
-   }
-   g_string_sprintf(curfile_name, "%s.h", base_filename);
--  hdrname = g_strdup(g_basename(curfile_name->str));
-+  hdrname = g_path_get_basename(curfile_name->str);
- 
-   if(!disable_common) {
-     g_string_sprintf(curfile_name, "%s > %s-common.c",
-@@ -111,6 +111,7 @@ orbit_IDL_tree_to_c(const char *base_fil
- 
-   g_string_free(curfile_name, TRUE);
-   g_free(hdrname);
-+  g_free(base_filename);
- }
- 
- void indent(int level) {
-Index: src/orbit-idl-compiler/orbit-idl-main.c
-===================================================================
-RCS file: /cvs/gnome/ORBit/src/orbit-idl-compiler/orbit-idl-main.c,v
-retrieving revision 1.4.4.1
-diff -u -p -r1.4.4.1 orbit-idl-main.c
---- src/orbit-idl-compiler/orbit-idl-main.c	2000/03/09 17:16:49	1.4.4.1
-+++ src/orbit-idl-compiler/orbit-idl-main.c	2000/09/01 01:55:15
-@@ -155,7 +155,9 @@ int main(int argc, char *argv[])
- 
-   /* Do it */
-   while((arg=poptGetArg(pcon))!=NULL) {
--    rinfo.input_filename = g_basename(arg);
-+
-+    /* Possible memory leak */
-+    rinfo.input_filename = g_path_get_basename(arg);
-     if (!orbit_idl_to_backend(arg, &rinfo)) {
-       g_warning("%s compilation failed", arg);
-     }
-Index: src/orbit-idl-compiler/backends/c/orbit-idl-c-backend.c
-===================================================================
-RCS file: /cvs/gnome/ORBit/src/orbit-idl-compiler/backends/c/orbit-idl-c-backend.c,v
-retrieving revision 1.5
-diff -u -p -r1.5 orbit-idl-c-backend.c
---- src/orbit-idl-compiler/backends/c/orbit-idl-c-backend.c	1999/06/25 14:34:22	1.5
-+++ src/orbit-idl-compiler/backends/c/orbit-idl-c-backend.c	2000/09/01 01:55:15
-@@ -15,7 +15,7 @@ orbit_idl_output_c(OIDL_Output_Tree *tre
-   char *ctmp;
-   OIDL_C_Info ci;
- 
--  ci.base_name = g_strdup(g_basename(rinfo->input_filename));
-+  ci.base_name = g_path_get_basename(rinfo->input_filename);
-   ctmp = strrchr(ci.base_name, '.');
-   g_assert(ctmp);
-   *ctmp = '\0';
-@@ -60,9 +60,13 @@ out_for_pass(const char *input_filename,
-   char *basein;
-   char *ctmp;
-   char *cmdline;
-+  char *tmpbasename;
- 
-   basein = alloca(strlen(input_filename) + sizeof("-skelimpl.c"));
--  strcpy(basein, g_basename(input_filename));
-+
-+  tmpbasename = g_path_get_basename (input_filename);
-+  strcpy(basein, tmpbasename);
-+  g_free (tmpbasename);
- 
-   ctmp = strrchr(basein, '.');
- 
++#Name: libIDL
++#Description: IDL parsing library
