@@ -305,6 +305,9 @@ main (int argc, char *argv [])
 	 */
 	close (2);
 	stderr_fd = open ("/dev/tty", O_RDWR);
+	if (stderr_fd == -1)
+		exit (1);
+	
 	if (stderr_fd != 2){
 		while (dup2 (stderr_fd, 2) == -1 && errno == EINTR)
 			;
