@@ -1,3 +1,58 @@
+1998-05-10  Michael Zucchi  <zucchi@zzedzone.box.net.au>
+
+	* zvtterm.c (zvt_term_set_font_name): Removed "loading xxx font"
+	message.  Probably needs some fallback if it can't load a font
+	... better than the one it has.
+
+	* update.c (vt_draw_cursor): only draw/undraw cursor if not
+	scrolled back at all.
+
+	* zvtterm.c (zvt_term_button_release): Added GDK_SHIFT_MASK check
+	before reporting mouse up events.
+
+	* update.c (vt_draw_selection_part): Changed to use rendered
+	selection, rather than inverting the rectangle.  May be slower for
+	detailed screens.  Some of the arguments are now not used.
+
+	* vtx.h: Added vt_draw_cursor() prototype.
+
+	* zvtterm.c (vt_draw_text): Expanded to use 5 bit colour
+	selection.  Put back in old default-colour handling code - needed
+	for new cursor rendering algorithm.  Now swaps the referenced gc's
+	rather than the gc's referenced colour,	when inverse mode set.
+	Should fix some rendering glitches.
+
+	* vt.c (vt_mode): removed VTATTR_FORE/BACK_SET bit settings, as
+	these bits no longer exist.
+
+	* vt.h : redordered VTATTR_* bits.  Modified fore/background
+	colour to have 5 bits.
+
+	* zvtterm.c (vt_cursor_state): Calls vt_draw_cursor() to render
+	the cursor.
+
+	* update.c (vt_get_selection): Fixed bug where it added the first
+	line of a selection twice to the selection buffer.
+	(vt_draw_text_select): Fixed update bug when refreshing could
+	corrupt first and last line of a selection.
+	(vt_draw_cursor): New function.  Draws the cursor onto the
+	display.  Draws the cursor using vt_draw_text() and not an
+	inverted box.
+
+	* zvtterm.c: Fixed up calls to vt_draw_selection(), to call
+	vt_fix_selection() where appropriate.
+
+	* update.c (vt_draw_selection): Removed call to
+	vt_fix_selection().  Now must be performed explicitly by caller.
+
+1998-05-09  Michael Zucchi  <zucchi@zzedzone.box.net.au>
+
+	* update.c (vt_update): Changed behaviour slightly for scroll-wrap
+	lines.  Always update them.
+
+	* vt.c (vt_delete_chars): Fixed out-by-1 error in scrolling the
+	deleted charcters into place.
+
 1998-05-08  Miguel de Icaza  <miguel@nuclecu.unam.mx>
 
 	* zvtterm.c (zvt_term_set_color_scheme): Set the GdkWindow color

@@ -306,7 +306,7 @@ void vt_delete_chars(struct vt_em *vt, int count)
   l=vt->this;
 
   /* scroll data over count bytes */
-  j = (l->width-count-1)-vt->cursorx;
+  j = (l->width-count)-vt->cursorx;
   for (i=vt->cursorx;j>0;i++,j--) {
     l->data[i] = l->data[i+count]|VTATTR_CHANGED;
   }
@@ -801,9 +801,9 @@ static void vt_mode(struct vt_em *vt)
 	} else if (i<9) {
 	  vt->attr |= mode_map[i];	/* add a mode */
 	} else if (i>=30 && i <=37) {
-	  vt->attr = (vt->attr & ~VTATTR_FORECOLOURM) | ((i-30) << VTATTR_FORECOLOURB) | VTATTR_FORE_SET;
+	  vt->attr = (vt->attr & ~VTATTR_FORECOLOURM) | ((i-30) << VTATTR_FORECOLOURB);
 	} else if (i>=40 && i <=47) {
-	  vt->attr = (vt->attr & ~VTATTR_BACKCOLOURM) | ((i-40) << VTATTR_BACKCOLOURB) | VTATTR_BACK_SET;
+	  vt->attr = (vt->attr & ~VTATTR_BACKCOLOURM) | ((i-40) << VTATTR_BACKCOLOURB);
 	}
       }
   }

@@ -90,6 +90,7 @@ void vt_fix_selection(struct _vtx *vx);
 void vt_draw_selection(struct _vtx *vx);
 void vt_update_rect(struct _vtx *vx, int sx, int sy, int ex, int ey);
 void vt_update(struct _vtx *vt, int state);
+void vt_draw_cursor(struct _vtx *vx, int state);
 
 struct _vtx *vtx_new(void *user_data);
 void vtx_destroy(struct _vtx *vx);

@@ -59,6 +59,8 @@ void vt_draw_text_select(struct _vtx *vx, int col, int row, char *text, int len,
       ((row <= (vx->selstarty - vx->vt.scrollbackoffset)) && /* start<end */
       (row >= (vx->selendy - vx->vt.scrollbackoffset)))) ) {
 
+    d(printf("drawing text from %d for %d\n", col, len));
+
     newattr = attr ^ VTATTR_REVERSE;
     sx = 0;
     ex = col+len;
@@ -86,7 +88,14 @@ void vt_draw_text_select(struct _vtx *vx, int col, int row, char *text, int len,
     /* now calculate which bits of the line are selected/otherwise */
     startlen = (sx-col)<0?0:(sx-col);
     endlen = (col+len-ex)<0?0:(col+len-ex);
+    if (startlen>len)
+      startlen = len;
+    if (endlen>len)
+      endlen = len;
     midlen = (len-startlen-endlen);
+
+    d(printf("startx = %d, endx = %d\n", sx, ex));
+    d(printf("drawing text <%d> normal <%d> selected <%d> normal\n", startlen, midlen, endlen));
 
     if (startlen)
       vt_draw_text(vx->user_data, col, row, text, startlen, attr);
@@ -561,11 +570,10 @@ void vt_update(struct _vtx *vx, int update_state)
     fn = wn;
     line=0;
     while (nn) {
-      if (wn->modcount || update_state) {
-	/*if (wn->line==-1)
-	  vt_line_update(vx, wn, line, 0, 0, wn->width);
-	  else*/
-	  vt_line_update(vx, wn, line, update_state, 0, wn->width);
+      if (wn->line==-1) {
+	vt_line_update(vx, wn, line, 0, 0, wn->width);
+      } else if (wn->modcount || update_state) {
+	vt_line_update(vx, wn, line, update_state, 0, wn->width);
       }
       wn->line = line;		/* make sure line is reset */
       line++;
@@ -684,6 +692,8 @@ void vt_fix_selection(struct _vtx *vx)
     ey = vx->selendy;
   }
 
+  d(printf("fixing selection, starting at (%d,%d) (%d,%d)\n", sx, sy, ex, ey));
+
   /* check if it is 'on screen' or in the scroll back memory */
   s = (struct vt_line *)vt_list_index(sy<0?(&vx->vt.scrollback):(&vx->vt.lines), sy);
   e = (struct vt_line *)vt_list_index(ey<0?(&vx->vt.scrollback):(&vx->vt.lines), ey);
@@ -747,6 +757,8 @@ void vt_fix_selection(struct _vtx *vx)
     vx->selstartx = sx;		/* swap end/start values */
     vx->selendx = ex;
   }
+
+  d(printf("fixed selection, now    at (%d,%d) (%d,%d)\n", sx, sy, ex, ey));
 }
 
 /* convert columns start to column end of line l, into
@@ -853,13 +865,14 @@ char *vt_get_selection(struct _vtx *vx, int *len)
   if (sy == ey) {
     out = vt_expand_line(wn, sx, ex, out);
   } else {
-    /* first line */
-    out = vt_expand_line(wn, sx, wn->width, out);
-
-    /* scan rest of lines ... */
+    /* scan lines */
     while (nn && (line<ey)) {
       d(printf("adding selection from line %d\n", line));
-      out = vt_expand_line(wn, 0, wn->width, out);
+      if (line == sy) {
+	out = vt_expand_line(wn, sx, wn->width, out); /* first line */
+      } else {
+	out = vt_expand_line(wn, 0, wn->width, out);
+      }
       line++;
       if (line==0) {		/* wrapped into 'on screen' area? */
 	wn = (struct vt_line *)vt_list_index(&vx->vt.lines, 0);
@@ -880,8 +893,8 @@ char *vt_get_selection(struct _vtx *vx, int *len)
     *len = vx->selection_size;
 
   d(printf("selected text = \n");
-  fwrite(vx->selection_data, vx->selection_size, 1, stdout);
-  printf("\n"));
+    fwrite(vx->selection_data, vx->selection_size, 1, stdout);
+    printf("\n"));
 
   return vx->selection_data;
 }
@@ -904,6 +917,8 @@ void vt_clear_selection(struct _vtx *vx)
 void vt_draw_selection_part(struct _vtx *vx, int sx, int sy, int ex, int ey)
 {
   int tmp;
+  struct vt_line *l;
+  int line;
 
   /* always draw top->bottom */
   if (sy>ey) {
@@ -913,38 +928,22 @@ void vt_draw_selection_part(struct _vtx *vx, int sx, int sy, int ex, int ey)
 
   d(printf("selecting from (%d,%d) to (%d,%d)\n", sx, sy, ex, ey));
 
-  if (sy==ey) {
-    vt_hightlight_block(vx->user_data,
-			(sx<ex?sx:ex),
-			(sy-vx->vt.scrollbackoffset),
-			(sx<ex?ex-sx:sx-ex),
-			1);
-  } else {
+  line = sy;
+  if (line<0)
+    l = (struct vt_line *)vt_list_index(&vx->vt.scrollback, line);
+  else
+    l = (struct vt_line *)vt_list_index(&vx->vt.lines, line);
 
-    vt_hightlight_block(vx->user_data,
-			sx,
-			(sy-vx->vt.scrollbackoffset),
-			(sy==ey?ex-sx:vx->vt.width-sx),
-			1);
-
-    /* middle section */
-    if (ey > (sy+1)) {
-      d(printf("drawing middle section\n"));
-      vt_hightlight_block(vx->user_data,
-			  0,
-			  (sy+1-vx->vt.scrollbackoffset),
-			  vx->vt.width,
-			  (ey-sy-1));
-      
+  d(printf("selecting from (%d,%d) to (%d,%d)\n", sx, sy-vx->vt.scrollbackoffset, ex, ey-vx->vt.scrollbackoffset));
+  while ((line<=ey) && (l->next) && ((line-vx->vt.scrollbackoffset)<vx->vt.height)) {
+    d(printf("line %d = %p ->next = %p\n", line, l, l->next));
+    vt_line_update(vx, l, line-vx->vt.scrollbackoffset, 1, 0, l->width);
+    line++;
+    if (line==0) {
+      l = (struct vt_line *)vt_list_index(&vx->vt.lines, 0);
+    } else {
+      l=l->next;
     }
-
-    /* bottom section */
-    d(printf("drawing bottom section\n"));
-      vt_hightlight_block(vx->user_data,
-			  0,
-			  (ey-vx->vt.scrollbackoffset),
-			  (ex),
-			  1);
   }
 }
 
@@ -953,9 +952,6 @@ void vt_draw_selection_part(struct _vtx *vx, int sx, int sy, int ex, int ey)
 */
 void vt_draw_selection(struct _vtx *vx)
 {
-  /* fixes the selection, to handle line feeds, tabs, etc */
-  vt_fix_selection(vx);
-
   /* draw in 2 parts
      difference between old start and new start
      difference between old end and new end
@@ -976,6 +972,27 @@ void vt_draw_selection(struct _vtx *vx)
   vx->selstartyold = vx->selstarty;
 }
 
+/*
+  draw/undraw the cursor
+*/
+void vt_draw_cursor(struct _vtx *vx, int state)
+{
+  unsigned char c;
+  uint32 attr;
+
+  if (vx->vt.scrollbackoffset == 0) {
+    attr = vx->vt.this->data[vx->vt.cursorx];
+    c = attr & 0xff;
+    if (c==9)			/* remap tab */
+      c=' ';
+    if (state) {			/* must swap fore/background colour */
+      attr = (((attr & VTATTR_FORECOLOURM) >> VTATTR_FORECOLOURB) << VTATTR_BACKCOLOURB)
+	| (((attr & VTATTR_BACKCOLOURM) >> VTATTR_BACKCOLOURB) << VTATTR_FORECOLOURB)
+      | ( attr & ~(VTATTR_FORECOLOURM|VTATTR_BACKCOLOURM));
+    }
+    vt_draw_text(vx->user_data, vx->vt.cursorx, vx->vt.cursory, &c, 1, attr);
+  }
+}
 
 struct _vtx *vtx_new(void *user_data)
 {

@@ -46,23 +46,23 @@ struct vt_line {
   uint32 data[1];		/* the line data follows this structure */
 };
 
-#define VTATTR_BOLD       0x01000000
-#define VTATTR_UNDERLINE  0x02000000
-#define VTATTR_BLINK      0x03000000
-#define VTATTR_REVERSE    0x04000000
-#define VTATTR_CONCEALED  0x05000000
-#define VTATTR_FORE_SET   0x08000000
-#define VTATTR_BACK_SET   0x10000000
+#define VTATTR_BOLD       0x40000000
+#define VTATTR_UNDERLINE  0x20000000
+#define VTATTR_BLINK      0x10000000
+#define VTATTR_REVERSE    0x08000000
+#define VTATTR_CONCEALED  0x04000000
+/*#define VTATTR_FORE_SET   0x08000000
+  #define VTATTR_BACK_SET   0x10000000*/
 #define VTATTR_CHANGED    0x80000000
 
 /* bitmasks for colour map information */
-#define VTATTR_FORECOLOURM 0x00f00000
-#define VTATTR_BACKCOLOURM 0x000f0000
-#define VTATTR_FORECOLOURB 20
+#define VTATTR_FORECOLOURM 0x03e00000
+#define VTATTR_BACKCOLOURM 0x001f0000
+#define VTATTR_FORECOLOURB 21
 #define VTATTR_BACKCOLOURB 16
 
 /* 'clear' character and attributes of default clear character */
-#define VTATTR_CLEAR (7<<VTATTR_FORECOLOURB)|(0<<VTATTR_BACKCOLOURB)|0x0000
+#define VTATTR_CLEAR (16<<VTATTR_FORECOLOURB)|(17<<VTATTR_BACKCOLOURB)|0x0000
 
 struct vt_em {
   int cursorx, cursory;		/* cursor position in characters */

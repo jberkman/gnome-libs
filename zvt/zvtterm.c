@@ -606,11 +606,11 @@ void zvt_term_set_font_name(ZvtTerm *term, char *name)
   }
   if (rest) {
     sprintf(outname, "%s-medium-r%s", newname, rest);
-    printf("loading normal font %s\n", outname);
+    d(printf("loading normal font %s\n", outname));
     font = gdk_font_load(outname);
 
     sprintf(outname, "%s-bold-r%s", newname, rest);
-    printf("loading bold font %s\n", outname);
+    d(printf("loading bold font %s\n", outname));
     font_bold = gdk_font_load(outname);
 
     zvt_term_set_fonts_internal(term, font, font_bold);
@@ -704,6 +704,7 @@ zvt_term_button_press (GtkWidget      *widget,
       vx->selected =1;
     }
 
+    vt_fix_selection(vx);
     vt_draw_selection(vx);	/* handles by line/by word update */
 
     d(printf("selection starting %d %d\n", x, y));
@@ -759,6 +760,7 @@ zvt_term_button_press (GtkWidget      *widget,
 	vx->selectiontype |= VT_SELTYPE_BYSTART;
       }
       
+      vt_fix_selection(vx);
       vt_draw_selection(vx);
       
       gtk_grab_add (widget);
@@ -796,9 +798,9 @@ zvt_term_button_release (GtkWidget      *widget,
   x = x/term->charwidth;
   y = y/term->charheight + vx->vt.scrollbackoffset;
 
-  if (vt_report_button(&vx->vt, 0, event->state, x, y)) {
-    return FALSE;
-  }
+  if (!(event->state & GDK_SHIFT_MASK))
+    if (vt_report_button(&vx->vt, 0, event->state, x, y))
+      return FALSE;
 
   if (vx->selectiontype & VT_SELTYPE_BYSTART) {
     vx->selendx = x;
@@ -817,6 +819,7 @@ zvt_term_button_release (GtkWidget      *widget,
     gtk_grab_remove (widget);
     gdk_pointer_ungrab (0);
     
+    vt_fix_selection(vx);
     vt_draw_selection(vx);
 
     vx->selectiontype = VT_SELTYPE_NONE; /* 'turn off' selecting */
@@ -865,6 +868,7 @@ zvt_term_motion_notify (GtkWidget      *widget,
       vx->selstarty = y + vx->vt.scrollbackoffset;
     }
     
+    vt_fix_selection(vx);
     vt_draw_selection(vx);
   }
   /* otherwise, just a mouse event */
@@ -938,7 +942,7 @@ zvt_term_selection_received (GtkWidget *widget, GtkSelectionData *selection_data
   term = ZVT_TERM (widget);
   vx = term->vx;
 
-  d(printf("got selection from system!\n"));
+  (printf("got selection from system\n"));
 
   /* **** IMPORTANT **** Check to see if retrieval succeeded  */
   if (selection_data->length < 0)
@@ -1261,7 +1265,7 @@ static void zvt_term_readdata(gpointer data, gint fd, GdkInputCondition conditio
   if (vx->selected) {		/* FIXME: modularise */
     vx->selstartx = vx->selendx;
     vx->selstarty = vx->selendy;
-    vt_draw_selection(vx);
+    vt_draw_selection(vx);	/* un-render selection */
     vx->selected = 0;
   }
 
@@ -1316,7 +1320,6 @@ static void zvt_term_readdata(gpointer data, gint fd, GdkInputCondition conditio
   zvt_term_fix_scrollbar(term);
 }
 
-
 /*
   external rendering functions called by vt_update, etc
 */
@@ -1333,23 +1336,13 @@ int vt_cursor_state(void *user_data, int state)
 
   term = ZVT_TERM (widget);
   old_state = term->cursor_on;
-  
-  if (GTK_WIDGET_DRAWABLE (widget)){
-    gdk_gc_set_function(widget->style->fg_gc[GTK_WIDGET_STATE (widget)], GDK_INVERT);
-    
-    if ((state && !term->cursor_on) ||	/* turn it on, or*/
-	(!state && term->cursor_on)) {	/* turn it off - then toggle it */
-      gdk_draw_rectangle(widget->window,
-			 widget->style->fg_gc[GTK_WIDGET_STATE (widget)],
-			 term->cursor_filled,
-			 term->vx->vt.cursorx*
-			 term->charwidth,
-			 (term->vx->vt.cursory-term->vx->vt.scrollbackoffset)*term->charheight,
-			 term->charwidth, term->charheight);
-      term->cursor_on ^= 1;
+
+  /* only call vt_draw_cursor if the state has changed */
+  if (old_state ^ state) {
+    if (GTK_WIDGET_DRAWABLE (widget)){
+      vt_draw_cursor(term->vx, state);
+      term->cursor_on = state;
     }
-    
-    gdk_gc_set_function(widget->style->fg_gc[GTK_WIDGET_STATE (widget)], GDK_COPY);
   }
   return old_state;
 }
@@ -1362,6 +1355,7 @@ void vt_draw_text(void *user_data, int col, int row, char *text, int len, int at
   GtkWidget *widget;
   int fore, back, or;
   GdkColor pen;
+  GdkGC *fgc, *bgc;
   
   widget = user_data;
 
@@ -1372,57 +1366,57 @@ void vt_draw_text(void *user_data, int col, int row, char *text, int len, int at
 
   vx = term->vx;
 
-  back = 17;
-  fore = 16;
-  
-  f=term->font;
   if (attr&VTATTR_BOLD) {
-      or = 8;
+    or = 8;
     f=term->font_bold;
-  } else
-      or = 0;
-  
-  if (attr & VTATTR_FORE_SET)
-	  fore = or | (attr & VTATTR_FORECOLOURM) >> VTATTR_FORECOLOURB;
-
-  if (attr & VTATTR_BACK_SET)
-	  back = (attr & VTATTR_BACKCOLOURM) >> VTATTR_BACKCOLOURB;
-
-
-  if (attr & VTATTR_REVERSE){
-    int tmp = fore;
-
-    fore = back;
-    back = tmp;
+  } else {
+    or = 0;
+    f=term->font;
   }
+
+  fore = or | (attr & VTATTR_FORECOLOURM) >> VTATTR_FORECOLOURB;
+  back = (attr & VTATTR_BACKCOLOURM) >> VTATTR_BACKCOLOURB;
+
+  /* set the right colour in the appropriate gc */
+  fgc = term->fore_gc;
+  bgc = term->back_gc;
 
   if (term->back_last != back){
     pen.pixel = term->colors [back];
-    gdk_gc_set_foreground (term->back_gc, &pen);
+    gdk_gc_set_foreground (bgc, &pen);
     term->back_last = back;
   }
   
+  if (term->fore_last != fore){
+    pen.pixel = term->colors [fore];
+    gdk_gc_set_foreground (fgc, &pen);
+    term->fore_last = fore;
+  }
+
+  /* for reverse, swap gc's */
+  if (attr & VTATTR_REVERSE){
+    GdkGC *tmp = fgc;
+
+    fgc = bgc;
+    bgc = tmp;
+  }
+
   gdk_draw_rectangle(widget->window,
-		     term->back_gc,
+		     bgc,
 		     1,
 		     col*term->charwidth, row*term->charheight,
 		     len*term->charwidth, term->charheight);
 
-  if (term->fore_last != fore){
-    pen.pixel = term->colors [fore];
-    gdk_gc_set_foreground (term->fore_gc, &pen);
-    term->fore_last = fore;
-  }
   gdk_draw_text(widget->window,
 		f,
-		term->fore_gc,
+		fgc,
 		col*term->charwidth, row*term->charheight+term->font->ascent,
 		text, len);
 
   /* check for underline */
   if (attr&VTATTR_UNDERLINE) {
     gdk_draw_line(widget->window,
-		  term->fore_gc,
+		  fgc,
 		  col*term->charwidth, row*term->charheight+term->font->ascent+1,
 		  (col+len)*term->charwidth, row*term->charheight+term->font->ascent+1);
   }
