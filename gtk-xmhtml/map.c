@@ -36,6 +36,9 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.2  1997/12/18 23:00:16  unammx
+* More fixes and added PNG support. - Federico
+*
 * Revision 1.1  1997/11/28 03:38:57  gnomecvs
 * Work in progress port of XmHTML;  No, it does not compile, don't even try -mig
 *
@@ -297,14 +300,14 @@ static void
 drawSelectionPolygon(XmHTMLWidget html, XmHTMLImage *image, 
 	mapArea *area)
 {
-	XPoint *points;
+	TPoint *points;
 	int i, npoints;
 	int x = image->owner->x - html->html.scroll_x;
 	int y = image->owner->y - html->html.scroll_y;
 
 	npoints = area->ncoords/2;
 
-	points = (XPoint*)calloc(npoints+1, sizeof(XPoint));
+	points = (TPoint*)calloc(npoints+1, sizeof(TPoint));
 
 	for(i = 0; i < npoints; i++)
 	{
@@ -317,9 +320,9 @@ drawSelectionPolygon(XmHTMLWidget html, XmHTMLImage *image,
 
 	Toolkit_Set_Foreground(Toolkit_Display(html->html.work_area), html->html.gc,
 			       html->html.imagemap_fg);
-	XDrawLines(Toolkit_Display(html->html.work_area),
-		   Toolkit_Widget_Window(html->html.work_area), html->html.gc,
-		   points, npoints+1, CoordModeOrigin);
+	Toolkit_Draw_Lines(Toolkit_Display(html->html.work_area),
+			   Toolkit_Widget_Window(html->html.work_area), html->html.gc,
+			   points, npoints+1, CoordModeOrigin);
 	free(points);
 }
 

@@ -40,6 +40,9 @@
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.3  1997/12/18 23:00:16  unammx
+* More fixes and added PNG support. - Federico
+*
 * Revision 1.2  1997/12/11 21:20:21  unammx
 * Step 2: more gtk/xmhtml code, still non-working - mig
 *
@@ -377,7 +380,7 @@ extern Byte _XmHTMLGetImageType(ImageBuffer *ib);
 #define ResetRawImage(IMG) do { \
 	memset(IMG, 0, sizeof(XmHTMLRawImageData)); \
 	if(IMG->cmap) free(IMG->cmap); /* erase existing colormap */ \
-	IMG->cmap = (XColor*)NULL; \
+	IMG->cmap = (TColor*)NULL; \
 	IMG->cmapsize = 0; \
 	IMG->bg = -1; \
 	IMG->width = 0; \
