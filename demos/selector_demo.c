@@ -195,7 +195,7 @@ main (int argc, char **argv)
     gtk_box_pack_start (GTK_BOX (vbox), frame1, FALSE, FALSE,
 			GNOME_PAD);
 
-    fselector = gnome_file_selector_new ("test", "Albert Einstein", 0);
+    fselector = gnome_file_selector_new ("test", "Albert Einstein");
 
     gtk_container_add (GTK_CONTAINER (frame1), fselector);
 
@@ -222,9 +222,7 @@ main (int argc, char **argv)
     gtk_box_pack_start (GTK_BOX (vbox), frame2, TRUE, TRUE,
 			GNOME_PAD);
 
-    iselector = gnome_icon_selector_new ("test2", NULL,
-					 GNOME_SELECTOR_AUTO_SAVE_HISTORY |
-					 GNOME_SELECTOR_AUTO_SAVE_ALL);
+    iselector = gnome_icon_selector_new ("test2", NULL);
 
     gnome_icon_selector_add_defaults (GNOME_ICON_SELECTOR (iselector));
 
