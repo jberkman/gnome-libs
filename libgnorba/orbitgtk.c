@@ -237,7 +237,10 @@ _gnome_gnorba_cookie_setup(Display *disp, Window rootwin)
   if(ret_type == None)
     ret_prop = NULL;
   else
-    XUngrabServer(disp);
+    {
+      XUngrabServer(disp);
+      XFlush(disp);
+    }
 
   setval = _gnorba_cookie_setup(ret_prop);
 
@@ -245,11 +248,9 @@ _gnome_gnorba_cookie_setup(Display *disp, Window rootwin)
     XChangeProperty(disp, rootwin, prop, XA_STRING, 8, PropModeReplace,
 		    setval, strlen(setval));
     XUngrabServer(disp);
-  }
-
-  if(ret_prop) {
+    XFlush(disp);
+  } else {
     XFree(ret_prop); /* XFree barfs on NULL ptrs */
-    XUngrabServer(disp);
   }
 }
 

@@ -1,3 +1,10 @@
+1999-02-11  Owen Taylor  <otaylor@redhat.com>
+
+	* libgnorba/orbitgtk.c (_gnome_gnorba_cookie_setup):
+	Avoid ungrabbing twice, and (more importantly)
+	XFlush() after calling XUngrabServer(), so that
+	we release the server grab as quickly as possible.
+
 1999-02-10  Federico Mena Quintero  <federico@nuclecu.unam.mx>
 
 	* libgnorba/goad.c (goad_server_list_get): Only load files that
