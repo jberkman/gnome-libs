@@ -24,6 +24,7 @@
 /* {{{ Declarations */
 
 #include <stdio.h>      
+#include <fcntl.h>
 #include <stdlib.h>	/* For errno, putenv, etc.	      */
 #include <errno.h>	/* For errno on SunOS systems	      */
 #include <termios.h>	/* tcgetattr(), struct termios, etc.  */
@@ -288,6 +289,8 @@ static int pty_open_master (char *pty_name)
 	}
 	return pty_master;
     }
+    fcntl(pty_slave, F_SETFD, 1);
+
     return -1;  /* Ran out of pty devices */
 }
 
@@ -308,6 +311,8 @@ static int pty_open_slave (const char *pty_name)
     }
     if ((pty_slave = open (pty_name, O_RDWR)) == -1)
 	perror ("open (pty_name, O_RDWR)");
+    fcntl(pty_slave, F_SETFD, FD_CLOEXEC);
+
     return pty_slave;
 }
 
@@ -332,6 +337,7 @@ static int pty_open_master (char *pty_name)
 	return -1;
     }
     strcpy (pty_name, slave_name);
+    fcntl(pty_master, F_SETFD, FD_CLOEXEC);
     return pty_master;
 }
 
@@ -376,6 +382,8 @@ static int pty_open_slave (const char *pty_name)
 #endif /* sgi || __sgi */
 #endif /* __osf__ */
 
+    fcntl(pty_slave, F_SETFD, FD_CLOEXEC);
+
     return pty_slave;
 }
 
@@ -411,6 +419,7 @@ static int pty_open_master (char *pty_name)
 		pty_name [5] = 'p';
 		continue;
 	    }
+	    fcntl(pty_master, F_SETFD, FD_CLOEXEC);
 	    return pty_master;
 	}
     }
@@ -434,6 +443,7 @@ static int pty_open_slave (const char *pty_name)
     }
     if ((pty_slave = open (pty_name, O_RDWR)) == -1)
 	perror ("open (pty_name, O_RDWR)");
+    fcntl(pty_slave, F_SETFD, FD_CLOEXEC);
     return pty_slave;
 }
 

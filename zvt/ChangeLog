@@ -1,3 +1,8 @@
+1998-40-08  Erik Troan  <ewt@redhat.com>
+
+	* subshell.c (pty_open_slave, pty_open_master): Set close-on-exec
+	flag for slave and master file descriptors
+
 1998-09-04    <nicholas@cefiro.cs.nthu.edu.tw>
 
 	* vt.c (vt_goto): reset vt->cursorx or vt->cursory to zero
