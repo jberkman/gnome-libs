@@ -45,10 +45,11 @@ gnome_CORBA_init (const char *app_id,
 
 	gnome_init(app_id, app_version, *argc, argv);
 	retval = gnorba_CORBA_init(argc, argv,
-				   gnorba_flags&GNORBA_INIT_DISABLE_COOKIES,
+				   gnorba_flags|GNORBA_INIT_DISABLE_COOKIES,
 				   ev);
 
-	_gnome_gnorba_cookie_setup(GDK_DISPLAY(), GDK_ROOT_WINDOW());
+	if(!(gnorba_flags & GNORBA_INIT_DISABLE_COOKIES))
+	  _gnome_gnorba_cookie_setup(GDK_DISPLAY(), GDK_ROOT_WINDOW());
 
 	return retval;
 }
@@ -98,10 +99,11 @@ gnome_CORBA_init_with_popt_table (const char *app_id,
 				   popt_flags, return_ctx);
 
 	retval = gnorba_CORBA_init(argc, argv,
-				   gnorba_flags&GNORBA_INIT_DISABLE_COOKIES,
+				   gnorba_flags|GNORBA_INIT_DISABLE_COOKIES,
 				   ev);
 
-	_gnome_gnorba_cookie_setup(GDK_DISPLAY(), GDK_ROOT_WINDOW());
+	if(!(gnorba_flags & GNORBA_INIT_DISABLE_COOKIES))
+	  _gnome_gnorba_cookie_setup(GDK_DISPLAY(), GDK_ROOT_WINDOW());
 
 	return retval;
 }

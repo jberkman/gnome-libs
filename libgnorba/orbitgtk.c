@@ -18,7 +18,7 @@
 #include "gnorba.h"
 
 CORBA_ORB _gnorba_gnome_orbit_orb;
-CORBA_Principal _gnorba_request_cookie;
+static CORBA_Principal _gnorba_request_cookie = { 0, 0, NULL, CORBA_FALSE };
 
 static char *_gnorba_get_cookie_reliably(const char *setme);
 void         _gnome_gnorba_cookie_setup(Display *disp, Window rootwin);
@@ -188,6 +188,8 @@ _gnorba_get_cookie_reliably (const char *setme)
 static const char *
 _gnorba_cookie_setup(const char *setme)
 {
+  g_return_val_if_fail(!_gnorba_request_cookie._buffer, _gnorba_request_cookie._buffer);
+
   _gnorba_request_cookie._buffer = _gnorba_get_cookie_reliably (setme);
 		
   g_assert(_gnorba_request_cookie._buffer && *_gnorba_request_cookie._buffer);
