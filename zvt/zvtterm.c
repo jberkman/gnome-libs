@@ -453,7 +453,18 @@ zvt_term_size_allocate (GtkWidget     *widget,
 
 static void zvt_term_draw (GtkWidget *widget, GdkRectangle *area)
 {
-  d(printf("zvt_term_draw called\n"));
+  ZvtTerm *term;
+  
+  g_return_if_fail (widget != NULL);
+  g_return_if_fail (ZVT_IS_TERM (widget));
+
+  term = ZVT_TERM (widget);
+  vt_update_rect (term->vx,
+		  area->x/term->charwidth,
+		  area->y/term->charheight,
+		  (area->x+area->width)/term->charwidth+1,
+		  (area->y+area->height)/term->charheight+1);
+		  
 }
 
 static gint
