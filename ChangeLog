@@ -1,3 +1,10 @@
+Sun Aug 09 13:46:12 1998  George Lebl  <jirka@5z.com>
+
+	* libgnome/gnome-config.c: store a dirty flag in the profile
+	  structure. that way we don't dump to disk everything we have
+	  in memory, even stuff we have just read. (or stuff which was
+	  already synced)
+
 1998-08-08  Mandrake (Geoff Harrison) <mandrake@mandrake.net>
 
 	* changed version numbers of 0.0.0 stuff to 0.26.0
