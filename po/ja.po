@@ -5,33 +5,13 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-libs 1.0.12\n"
-"POT-Creation-Date: 1999-09-20 14:41-0500\n"
-"PO-Revision-Date: 1999-06-23 06:04+09:00\n"
+"POT-Creation-Date: 1999-09-17 01:28+0900\n"
+"PO-Revision-Date: 1999-09-17 02:08+09:00\n"
 "Last-Translator: Eiichiro ITANI <emu@ceres.dti.ne.jp>\n"
 "Language-Team: <gnome@lists.hypercore.co.jp>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=EUC-jp\n"
 "Content-Transfer-Encoding: 8bit\n"
-
-#: libgnome/gconfigger.c:32
-msgid "get"
-msgstr ""
-
-#: libgnome/gconfigger.c:32
-msgid "Get config entry"
-msgstr "設定エントリを取得"
-
-#: libgnome/gconfigger.c:32 libgnome/gconfigger.c:33
-msgid "CONFIG-PATH"
-msgstr ""
-
-#: libgnome/gconfigger.c:33
-msgid "set"
-msgstr ""
-
-#: libgnome/gconfigger.c:33
-msgid "Set config entry"
-msgstr "設定エントリを設定"
 
 #: libgnome/gnome-popt.c:90
 #, c-format
@@ -41,26 +21,6 @@ msgid ""
 msgstr ""
 "オプション %s にエラー: %s.\n"
 "'%s --help' を実行すれば使用可能なオプションの一覧が見られます。\n"
-
-#: libgnome/gnomelib-init.c:130
-msgid "Disable sound server usage"
-msgstr "音サーバを使わない"
-
-#: libgnome/gnomelib-init.c:132
-msgid "Enable sound server usage"
-msgstr "音サーバを使う"
-
-#: libgnome/gnomelib-init.c:134
-msgid "Host:port on which the sound server to use is running"
-msgstr "使用する音サーバの作動している ホスト:ポート"
-
-#: libgnome/gnomelib-init.c:135
-msgid "HOSTNAME:PORT"
-msgstr "ホスト名:ポート番号"
-
-#: libgnome/gnomelib-init.c:144
-msgid "GNOME Options"
-msgstr "GNOMEオプション"
 
 #: libgnomeui/gnome-about.c:187
 msgid "Author:"
@@ -78,356 +38,6 @@ msgstr "作者一覧:"
 #: libgnomeui/winhints_demo.c:256
 msgid "About"
 msgstr "情報"
-
-#: libgnomeui/gnome-app-helper.c:78
-msgid "_File"
-msgstr "ファイル(_F)"
-
-#: libgnomeui/gnome-app-helper.c:79
-msgid "_File/"
-msgstr "ファイル(_F)/"
-
-#: libgnomeui/gnome-app-helper.c:80
-msgid "_Edit"
-msgstr "編集(_E)"
-
-#: libgnomeui/gnome-app-helper.c:81
-msgid "_Edit/"
-msgstr "編集(_E)/"
-
-#: libgnomeui/gnome-app-helper.c:82
-msgid "_View"
-msgstr "ビューの追加(_V)"
-
-#: libgnomeui/gnome-app-helper.c:83
-msgid "_View/"
-msgstr "ビューの追加(_V)/"
-
-#: libgnomeui/gnome-app-helper.c:84
-msgid "_Settings"
-msgstr "設定(_S)"
-
-#: libgnomeui/gnome-app-helper.c:85
-msgid "_Settings/"
-msgstr "設定(_S)/"
-
-#: libgnomeui/gnome-app-helper.c:86
-msgid "_New"
-msgstr "新規(_N)"
-
-#: libgnomeui/gnome-app-helper.c:87
-msgid "_New/"
-msgstr "新規(_N)/"
-
-#: libgnomeui/gnome-app-helper.c:88
-msgid "Fi_les"
-msgstr "ファイル(_L)"
-
-#: libgnomeui/gnome-app-helper.c:89
-msgid "Fi_les/"
-msgstr "ファイル(_L)/"
-
-#: libgnomeui/gnome-app-helper.c:90
-msgid "_Windows"
-msgstr "ウインドウ(_W)"
-
-#: libgnomeui/gnome-app-helper.c:91
-msgid "_Game"
-msgstr "ゲーム(_G)"
-
-#: libgnomeui/gnome-app-helper.c:92
-msgid "_Help"
-msgstr "ヘルプ(_H)"
-
-#: libgnomeui/gnome-app-helper.c:93
-msgid "_Windows/"
-msgstr "ウインドウ(_W)/"
-
-#. Open
-#: libgnomeui/gnome-app-helper.c:105
-msgid "_Open..."
-msgstr "開く(_O)..."
-
-#: libgnomeui/gnome-app-helper.c:105
-msgid "Open a file"
-msgstr "ファイルを開く"
-
-#. Save
-#: libgnomeui/gnome-app-helper.c:110
-msgid "_Save"
-msgstr "保存(_S)"
-
-#: libgnomeui/gnome-app-helper.c:110
-msgid "Save the current file"
-msgstr "現在のファイルを保存"
-
-#. Save As
-#: libgnomeui/gnome-app-helper.c:115
-msgid "Save _As..."
-msgstr "名前をつけて保存(_A)..."
-
-#: libgnomeui/gnome-app-helper.c:116
-msgid "Save the current file with a different name"
-msgstr "現在のファイルを別名で保存"
-
-#. Revert
-#: libgnomeui/gnome-app-helper.c:121
-msgid "_Revert"
-msgstr "戻す(_R)"
-
-#: libgnomeui/gnome-app-helper.c:122
-msgid "Revert to a saved version of the file"
-msgstr "ファイルを保存されたものに戻す"
-
-#. Print
-#: libgnomeui/gnome-app-helper.c:127
-msgid "_Print"
-msgstr "印刷(_P)"
-
-#: libgnomeui/gnome-app-helper.c:127
-msgid "Print the current file"
-msgstr "現在のファイルを印刷"
-
-#. Print Setup
-#: libgnomeui/gnome-app-helper.c:132
-msgid "Print S_etup..."
-msgstr "印刷の設定(_E)..."
-
-#: libgnomeui/gnome-app-helper.c:133
-msgid "Setup the page settings for your current printer"
-msgstr "使っているプリンタのページ設定"
-
-#. Close
-#: libgnomeui/gnome-app-helper.c:138
-msgid "_Close"
-msgstr "閉じる(_C)"
-
-#: libgnomeui/gnome-app-helper.c:138
-msgid "Close the current file"
-msgstr "現在のファイルを閉じる"
-
-#. Exit
-#: libgnomeui/gnome-app-helper.c:143
-msgid "E_xit"
-msgstr "終了(_X)"
-
-#: libgnomeui/gnome-app-helper.c:143
-msgid "Exit the program"
-msgstr "プログラムの終了"
-
-#.
-#. * The "Edit" menu
-#.
-#. Cut
-#: libgnomeui/gnome-app-helper.c:151
-msgid "C_ut"
-msgstr "切取り(_U)"
-
-#: libgnomeui/gnome-app-helper.c:151
-msgid "Cut the selection"
-msgstr "セレクションを切取る"
-
-#. 10
-#. Copy
-#: libgnomeui/gnome-app-helper.c:157 libgnomeui/gnome-popup-help.c:59
-msgid "_Copy"
-msgstr "コピー(_C)"
-
-#: libgnomeui/gnome-app-helper.c:157
-msgid "Copy the selection"
-msgstr "セレクションをコピー"
-
-#. Paste
-#: libgnomeui/gnome-app-helper.c:162 libgnomeui/gnome-popup-help.c:61
-msgid "_Paste"
-msgstr "貼り付け(_P)"
-
-#: libgnomeui/gnome-app-helper.c:162
-msgid "Paste the clipboard"
-msgstr "クリップボードから貼り付け"
-
-#. Clear
-#: libgnomeui/gnome-app-helper.c:167
-msgid "C_lear"
-msgstr "消去(_L)"
-
-#: libgnomeui/gnome-app-helper.c:167
-msgid "Clear the selection"
-msgstr "セレクションの消去"
-
-#. Undo
-#: libgnomeui/gnome-app-helper.c:172
-msgid "_Undo"
-msgstr "元に戻す(_U)"
-
-#: libgnomeui/gnome-app-helper.c:172
-msgid "Undo the last action"
-msgstr "直前の操作を取り消す"
-
-#. Redo
-#: libgnomeui/gnome-app-helper.c:177
-msgid "_Redo"
-msgstr "やり直し(_R)"
-
-#: libgnomeui/gnome-app-helper.c:177
-msgid "Redo the undone action"
-msgstr "取り消した操作をやり直す"
-
-#. Find
-#: libgnomeui/gnome-app-helper.c:182
-msgid "_Find..."
-msgstr "検索(_F)..."
-
-#: libgnomeui/gnome-app-helper.c:182
-msgid "Search for a string"
-msgstr "文字列を検索する"
-
-#. Find Again
-#: libgnomeui/gnome-app-helper.c:187
-msgid "Find _Again"
-msgstr "再検索(_A)"
-
-#: libgnomeui/gnome-app-helper.c:188
-msgid "Search again for the same string"
-msgstr "更に同じ文字列を探す"
-
-#. Replace
-#: libgnomeui/gnome-app-helper.c:193
-msgid "_Replace..."
-msgstr "置換(_R)..."
-
-#: libgnomeui/gnome-app-helper.c:193
-msgid "Replace a string"
-msgstr "文字列を置き換える"
-
-#. Properties
-#: libgnomeui/gnome-app-helper.c:198
-msgid "_Properties..."
-msgstr "プロパティ(_P)..."
-
-#: libgnomeui/gnome-app-helper.c:199
-msgid "Modify the file's properties"
-msgstr "ファイルのプロパティを変更する"
-
-#.
-#. * The Settings menu
-#.
-#. Settings
-#: libgnomeui/gnome-app-helper.c:207
-msgid "_Preferences..."
-msgstr "設定(_P)..."
-
-#: libgnomeui/gnome-app-helper.c:208
-msgid "Configure the application"
-msgstr "アプリケーションを設定する"
-
-#. 20
-#.
-#. * And the "Help" menu
-#.
-#. About
-#: libgnomeui/gnome-app-helper.c:217
-msgid "_About..."
-msgstr "情報(_A)..."
-
-#: libgnomeui/gnome-app-helper.c:218
-msgid "About this application"
-msgstr "このアプリケーションに関して"
-
-#: libgnomeui/gnome-app-helper.c:221
-msgid "_Select All"
-msgstr "全選択(_A)"
-
-#: libgnomeui/gnome-app-helper.c:222
-msgid "Select everything"
-msgstr "すべてを選択する"
-
-#.
-#. * Window menu
-#.
-#: libgnomeui/gnome-app-helper.c:230
-msgid "Create New _Window"
-msgstr "新ウインドウを開く(_W)"
-
-#: libgnomeui/gnome-app-helper.c:231
-msgid "Create a new window"
-msgstr "新しいウインドウを開く"
-
-#: libgnomeui/gnome-app-helper.c:235
-msgid "_Close This Window"
-msgstr "ウインドウを閉じる(_C)"
-
-#: libgnomeui/gnome-app-helper.c:236
-msgid "Close the current window"
-msgstr "現在のウインドウを閉じる"
-
-#.
-#. * The "Game" menu
-#.
-#: libgnomeui/gnome-app-helper.c:244
-msgid "_New game"
-msgstr "新遊戯(_N)"
-
-#: libgnomeui/gnome-app-helper.c:245
-msgid "Start a new game"
-msgstr "新しくゲームを始める"
-
-#: libgnomeui/gnome-app-helper.c:249
-msgid "_Pause game"
-msgstr "遊戯停止(_P)"
-
-#: libgnomeui/gnome-app-helper.c:250
-msgid "Pause the game"
-msgstr "ゲームを一時停止する"
-
-#: libgnomeui/gnome-app-helper.c:254
-msgid "_Restart game"
-msgstr "遊戯再開(_R)"
-
-#: libgnomeui/gnome-app-helper.c:255
-msgid "Restart the game"
-msgstr "ゲームを再開する"
-
-#: libgnomeui/gnome-app-helper.c:259
-msgid "_Undo move"
-msgstr "待った(_U)"
-
-#: libgnomeui/gnome-app-helper.c:260
-msgid "Undo the last move"
-msgstr "直前の手を取り消す"
-
-#: libgnomeui/gnome-app-helper.c:264
-msgid "_Redo move"
-msgstr "まあよい(_R)"
-
-#: libgnomeui/gnome-app-helper.c:265
-msgid "Redo the undone move"
-msgstr "待ったした手を再び打つ"
-
-#: libgnomeui/gnome-app-helper.c:269
-msgid "_Hint"
-msgstr "ヒント(_H)"
-
-#: libgnomeui/gnome-app-helper.c:270
-msgid "Get a hint for your next move"
-msgstr "次の手のヒントを見る"
-
-#. 30
-#: libgnomeui/gnome-app-helper.c:275
-msgid "_Scores..."
-msgstr "得点(_S)..."
-
-#: libgnomeui/gnome-app-helper.c:276
-msgid "View the scores"
-msgstr "得点を見る"
-
-#: libgnomeui/gnome-app-helper.c:280
-msgid "_End game"
-msgstr "遊戯終了(_E)"
-
-#: libgnomeui/gnome-app-helper.c:281
-msgid "End the current game"
-msgstr "今のゲームを終了する"
 
 #: libgnomeui/gnome-app-util.c:93
 msgid " (press return)"
@@ -469,7 +79,7 @@ msgstr " - よろしい? (はい か いいえ)"
 msgid "Progress"
 msgstr "経過"
 
-#: libgnomeui/gnome-calculator.c:917 libgnomeui/gnome-calculator.c:1061
+#: libgnomeui/gnome-calculator.c:917
 msgid "DEG"
 msgstr "°"
 
@@ -481,187 +91,9 @@ msgstr "RAD"
 msgid "GRAD"
 msgstr "GRAD"
 
-#: libgnomeui/gnome-calculator.c:1051
-msgid "1/x"
-msgstr "逆数"
-
-#: libgnomeui/gnome-calculator.c:1052
-msgid "x^2"
-msgstr "自乗"
-
-#: libgnomeui/gnome-calculator.c:1053
-msgid "SQRT"
-msgstr "√"
-
-#: libgnomeui/gnome-calculator.c:1054
-msgid "CE/C"
-msgstr "CE/C"
-
-#: libgnomeui/gnome-calculator.c:1055
-msgid "AC"
-msgstr "AC"
-
-#. inverse button
-#: libgnomeui/gnome-calculator.c:1058
-msgid "sin"
-msgstr "sin"
-
-#: libgnomeui/gnome-calculator.c:1059
-msgid "cos"
-msgstr "cos"
-
-#: libgnomeui/gnome-calculator.c:1060
-msgid "tan"
-msgstr "tan"
-
-#: libgnomeui/gnome-calculator.c:1063
-msgid "e"
-msgstr "e"
-
-#: libgnomeui/gnome-calculator.c:1064
-msgid "EE"
-msgstr "EE"
-
-#: libgnomeui/gnome-calculator.c:1065
-msgid "log"
-msgstr "log"
-
-#: libgnomeui/gnome-calculator.c:1066
-msgid "ln"
-msgstr "ln"
-
-#: libgnomeui/gnome-calculator.c:1067
-msgid "x^y"
-msgstr "x^y"
-
-#: libgnomeui/gnome-calculator.c:1069
-msgid "PI"
-msgstr "π"
-
-#: libgnomeui/gnome-calculator.c:1070
-msgid "x!"
-msgstr "階乗"
-
-#: libgnomeui/gnome-calculator.c:1071
-msgid "("
-msgstr "("
-
-#: libgnomeui/gnome-calculator.c:1072
-msgid ")"
-msgstr ")"
-
-#: libgnomeui/gnome-calculator.c:1073
-msgid "/"
-msgstr "/"
-
-#: libgnomeui/gnome-calculator.c:1075
-msgid "STO"
-msgstr "STO"
-
-#: libgnomeui/gnome-calculator.c:1076
-msgid "7"
-msgstr "7"
-
-#: libgnomeui/gnome-calculator.c:1077
-msgid "8"
-msgstr "8"
-
-#: libgnomeui/gnome-calculator.c:1078
-msgid "9"
-msgstr "9"
-
-#: libgnomeui/gnome-calculator.c:1079
-msgid "*"
-msgstr "×"
-
-#: libgnomeui/gnome-calculator.c:1081
-msgid "RCL"
-msgstr "RCL"
-
-#: libgnomeui/gnome-calculator.c:1082
-msgid "4"
-msgstr "4"
-
-#: libgnomeui/gnome-calculator.c:1083
-msgid "5"
-msgstr "5"
-
-#: libgnomeui/gnome-calculator.c:1084
-msgid "6"
-msgstr "6"
-
-#: libgnomeui/gnome-calculator.c:1085
-msgid "-"
-msgstr "-"
-
-#: libgnomeui/gnome-calculator.c:1087
-msgid "SUM"
-msgstr "SUM"
-
-#: libgnomeui/gnome-calculator.c:1088
-msgid "1"
-msgstr "1"
-
-#: libgnomeui/gnome-calculator.c:1089
-msgid "2"
-msgstr "2"
-
-#: libgnomeui/gnome-calculator.c:1090
-msgid "3"
-msgstr "3"
-
-#: libgnomeui/gnome-calculator.c:1091
-msgid "+"
-msgstr "+"
-
-#: libgnomeui/gnome-calculator.c:1093
-msgid "EXC"
-msgstr "EXC"
-
-#: libgnomeui/gnome-calculator.c:1094
-msgid "0"
-msgstr "0"
-
-#: libgnomeui/gnome-calculator.c:1095
-msgid "."
-msgstr "."
-
-#: libgnomeui/gnome-calculator.c:1096
-msgid "+/-"
-msgstr "±"
-
-#: libgnomeui/gnome-calculator.c:1097
-msgid "="
-msgstr "="
-
 #: libgnomeui/gnome-calculator.c:1186
 msgid "INV"
 msgstr "INV"
-
-#: libgnomeui/gnome-client.c:828
-msgid "Specify session management ID"
-msgstr "セッションマネージメントIDの指定"
-
-#: libgnomeui/gnome-client.c:828 libgnorba/goad-browser.c:27
-msgid "ID"
-msgstr "ID"
-
-#: libgnomeui/gnome-client.c:830
-msgid "Specify prefix of saved configuration"
-msgstr "設定を保存する際のプレフィクスを指定する"
-
-#: libgnomeui/gnome-client.c:830
-msgid "PREFIX"
-msgstr "プレフィクス"
-
-#: libgnomeui/gnome-client.c:832
-msgid "Disable connection to session manager"
-msgstr "セッションマネージャと接続しない"
-
-#. Register commandline options.
-#: libgnomeui/gnome-client.c:961
-msgid "Session management options"
-msgstr "セッションマネージャオプション"
 
 #: libgnomeui/gnome-client.c:2341
 msgid "Cancel Logout"
@@ -672,7 +104,7 @@ msgid "Pick a color"
 msgstr "色の選択"
 
 #. Calendar label, only shown if the date editor has a time field
-#: libgnomeui/gnome-dateedit.c:454
+#: libgnomeui/gnome-dateedit.c:452
 msgid "Calendar"
 msgstr "カレンダー"
 
@@ -714,28 +146,25 @@ msgstr "ドキュメント:"
 
 #: libgnomeui/gnome-dentry-edit.c:383
 msgid "Name/Comment translations:"
-msgstr ""
+msgstr "名前/説明の訳:"
 
 #: libgnomeui/gnome-dentry-edit.c:386
 msgid "Language"
-msgstr ""
+msgstr "言語"
 
 #: libgnomeui/gnome-dentry-edit.c:387
-#, fuzzy
 msgid "Name"
-msgstr "名前:"
+msgstr "名前"
 
 #: libgnomeui/gnome-dentry-edit.c:388
-#, fuzzy
 msgid "Comment"
-msgstr "説明:"
+msgstr "説明"
 
 #: libgnomeui/gnome-dentry-edit.c:416
-#, fuzzy
 msgid "Add/Set"
-msgstr "追加"
+msgstr "追加/設定"
 
-#: libgnomeui/gnome-dentry-edit.c:421 libgnomeui/gnome-stock.c:825
+#: libgnomeui/gnome-dentry-edit.c:421
 msgid "Remove"
 msgstr "削除"
 
@@ -757,11 +186,11 @@ msgstr "ファイルの選択"
 msgid "Browse..."
 msgstr "参照..."
 
-#: libgnomeui/gnome-font-picker.c:160
+#: libgnomeui/gnome-font-picker.c:159
 msgid "Pick a Font"
 msgstr "フォントの選択"
 
-#: libgnomeui/gnome-font-picker.c:706 libgnomeui/gnome-stock.c:845
+#: libgnomeui/gnome-font-picker.c:705
 msgid "Font"
 msgstr "フォント"
 
@@ -781,87 +210,10 @@ msgstr "プレビュー"
 msgid "Loading Icons..."
 msgstr "アイコンを読み込み中..."
 
-#: libgnomeui/gnome-init.c:157
-msgid "Gdk debugging flags to set"
-msgstr "セットするGdkデバッグフラグ"
-
-#: libgnomeui/gnome-init.c:157 libgnomeui/gnome-init.c:159
-#: libgnomeui/gnome-init.c:179 libgnomeui/gnome-init.c:181
-msgid "FLAGS"
-msgstr "フラグ"
-
-#: libgnomeui/gnome-init.c:159
-msgid "Gdk debugging flags to unset"
-msgstr "下ろすGdkデバッグフラグ"
-
-#: libgnomeui/gnome-init.c:161
-msgid "X display to use"
-msgstr "使用するXディスプレイ"
-
-#: libgnomeui/gnome-init.c:161
-msgid "DISPLAY"
-msgstr "ディスプレイ"
-
-#: libgnomeui/gnome-init.c:163
-msgid "Make X calls synchronous"
-msgstr "X呼出を同期モードで行なう"
-
-#: libgnomeui/gnome-init.c:165
-msgid "Don't use X shared memory extension"
-msgstr "X共有メモリエクステンションを使用しない"
-
-#: libgnomeui/gnome-init.c:167
-msgid "Program name as used by the window manager"
-msgstr "ウィンドウマネージャに指示するプログラム名"
-
-#: libgnomeui/gnome-init.c:167
-msgid "NAME"
-msgstr "名前"
-
-#: libgnomeui/gnome-init.c:169
-msgid "Program class as used by the window manager"
-msgstr "ウィンドウマネージャに指示するクラス名"
-
-#: libgnomeui/gnome-init.c:169
-msgid "CLASS"
-msgstr "クラス"
-
-#: libgnomeui/gnome-init.c:171
-msgid "HOST"
-msgstr "ホスト"
-
-#: libgnomeui/gnome-init.c:173
-msgid "PORT"
-msgstr "ポート"
-
-#: libgnomeui/gnome-init.c:175 libgnomeui/gnome-init.c:177
-msgid "STYLE"
-msgstr "スタイル"
-
-#: libgnomeui/gnome-init.c:179
-msgid "Gtk+ debugging flags to set"
-msgstr "立てるGtk+デバッグフラグ"
-
-#: libgnomeui/gnome-init.c:181
-msgid "Gtk+ debugging flags to unset"
-msgstr "下ろすGtk+デバッグフラグ"
-
-#: libgnomeui/gnome-init.c:183
-msgid "Make all warnings fatal"
-msgstr "すべての警告を致命的にする"
-
-#: libgnomeui/gnome-init.c:185
-msgid "Load an additional Gtk module"
-msgstr "追加Gtkモジュールの読み込み"
-
-#: libgnomeui/gnome-init.c:185
-msgid "MODULE"
-msgstr "モジュール"
-
 #. dialog display isn't working out
 #: libgnomeui/gnome-init.c:606
 msgid "Giving up on displaying error dialog"
-msgstr ""
+msgstr "エラーダイアログの表示ができませんでした"
 
 #: libgnomeui/gnome-messagebox.c:111 libgnomeui/gnome-messagebox.c:240
 msgid "Information"
@@ -894,14 +246,6 @@ msgstr "電卓..."
 #: libgnomeui/gnome-pixmap-entry.c:106 libgnomeui/gnome-pixmap-entry.c:387
 msgid "No Image"
 msgstr "絵なし"
-
-#: libgnomeui/gnome-popup-help.c:51
-msgid "_Help with this"
-msgstr "これのヘルプ(_H)"
-
-#: libgnomeui/gnome-popup-help.c:57
-msgid "Cu_t"
-msgstr "切取り(_T)"
 
 #: libgnomeui/gnome-property-entries.c:254
 msgid "Select"
@@ -954,11 +298,11 @@ msgstr ""
 msgid "Confirm"
 msgstr "確認"
 
-#: libgnomeui/gnome-spell.c:256 libgnomeui/gnome-stock.c:834
+#: libgnomeui/gnome-spell.c:256
 msgid "OK"
 msgstr "OK"
 
-#: libgnomeui/gnome-spell.c:263 libgnomeui/gnome-stock.c:836
+#: libgnomeui/gnome-spell.c:263
 msgid "Cancel"
 msgstr "キャンセル"
 
@@ -1078,78 +422,6 @@ msgstr "スペル"
 msgid "Configure"
 msgstr "設定"
 
-#: libgnomeui/gnome-stock.c:822
-msgid "Add"
-msgstr "追加"
-
-#: libgnomeui/gnome-stock.c:823
-msgid "Clear"
-msgstr "消去"
-
-#: libgnomeui/gnome-stock.c:824
-msgid "Select Color"
-msgstr "色の選択"
-
-#: libgnomeui/gnome-stock.c:826
-msgid "Table Borders"
-msgstr "表の枠"
-
-#: libgnomeui/gnome-stock.c:827
-msgid "Table Fill"
-msgstr ""
-
-#: libgnomeui/gnome-stock.c:828
-msgid "Bulleted List"
-msgstr "`・'で一覧"
-
-#: libgnomeui/gnome-stock.c:829
-msgid "Numbered List"
-msgstr "数字で一覧"
-
-#: libgnomeui/gnome-stock.c:830
-msgid "Indent"
-msgstr "字下げ"
-
-#: libgnomeui/gnome-stock.c:831
-msgid "Un-Indent"
-msgstr "字下げしない"
-
-#: libgnomeui/gnome-stock.c:835
-msgid "Apply"
-msgstr "適用"
-
-#: libgnomeui/gnome-stock.c:837 libgnomeui/stock_demo.c:144
-msgid "Close"
-msgstr "閉じる"
-
-#: libgnomeui/gnome-stock.c:838
-msgid "Yes"
-msgstr "はい"
-
-#: libgnomeui/gnome-stock.c:839
-msgid "No"
-msgstr "いいえ"
-
-#: libgnomeui/gnome-stock.c:840 libgnomeui/stock_demo.c:290
-msgid "Help"
-msgstr "ヘルプ"
-
-#: libgnomeui/gnome-stock.c:841
-msgid "Next"
-msgstr "次"
-
-#: libgnomeui/gnome-stock.c:842
-msgid "Prev"
-msgstr "前"
-
-#: libgnomeui/gnome-stock.c:843
-msgid "Up"
-msgstr "上"
-
-#: libgnomeui/gnome-stock.c:844
-msgid "Down"
-msgstr "下"
-
 #: libgnomeui/gnome-stock.c:1888
 msgid "Menu Accelerator Keys"
 msgstr "メニューアクセラレータキー"
@@ -1166,31 +438,24 @@ msgstr "メニューアイテム"
 msgid "Accelerator"
 msgstr "アクセラレータ"
 
-#: libgnomeui/gnome_segv.c:50
-#, c-format
-msgid ""
-"The GNOME Session Manager (process %d) has crashed\n"
-"due to a fatal error (%s).\n"
-"When you close this dialog, all applications will close and your session "
-"will exit.\n"
-"Please save all your files before closing this dialog."
-msgstr ""
-
-#: libgnomeui/gnome_segv.c:55
+#: libgnomeui/gnome_segv.c:44
 #, c-format
 msgid ""
 "Application \"%s\" (process %d) has crashed\n"
 "due to a fatal error.\n"
 "(%s)"
 msgstr ""
+"アプリケーション「%s」(プロセス %d) は\n"
+"致命的なエラーによってクラッシュしました。\n"
+"(%s)"
+
+#: libgnomeui/gnome_segv.c:49
+msgid "Usage: gnome_segv appname signum\n"
+msgstr "使用法: gnome_segv アプリケーション名 シグナル番号\n"
 
 #: libgnomeui/gnome_segv.c:61
-msgid "Usage: gnome_segv appname signum\n"
-msgstr ""
-
-#: libgnomeui/gnome_segv.c:73
 msgid "Please visit the GNOME Application Crash page for more information"
-msgstr ""
+msgstr "より詳しい情報は、GNOME アプリケーションクラッシュページを見て下さい"
 
 #: libgnomeui/stock_demo.c:112
 msgid "New..."
@@ -1207,6 +472,10 @@ msgstr "保存"
 #: libgnomeui/stock_demo.c:136
 msgid "Save as..."
 msgstr "名前をつけて保存..."
+
+#: libgnomeui/stock_demo.c:144
+msgid "Close"
+msgstr "閉じる"
 
 #: libgnomeui/stock_demo.c:156
 msgid "Print..."
@@ -1263,6 +532,10 @@ msgstr "スコア..."
 #: libgnomeui/stock_demo.c:274
 msgid "Edit"
 msgstr "編集"
+
+#: libgnomeui/stock_demo.c:290
+msgid "Help"
+msgstr "ヘルプ"
 
 #: libgnomeui/winhints_demo.c:46
 msgid "wmhints-test"
@@ -1377,18 +650,16 @@ msgid "WIN_HINTS Test"
 msgstr "WIN_HINTSのテスト"
 
 #: libgnomeui/winhints_demo.c:411
-#, fuzzy
 msgid "Copyright (C) 1998"
-msgstr "Copyright (C)1998"
+msgstr "Copyright (C) 1998"
 
 #: libgnomeui/winhints_demo.c:413
-#, fuzzy
 msgid ""
 "Simple test app to check how the WIN_HINTS work.\n"
 "And to test the gnome_win_hints_* functions for errors. :)"
 msgstr ""
-"WIN_HINTSがどうやって動作するかをチェックするシンプルなテストアプリケーション"
-"。そしてgnome_winhints_* 関数のエラーをテストするためのもの。:)"
+"WIN_HINTSの動作をチェックする簡単なテストアプリケーション。\n"
+"あるいは gnome_win_hints_* 関数にエラーがないかテストするもの。:)"
 
 #: libgnorba/gnome-name-server.c:229
 #, c-format
@@ -1400,18 +671,6 @@ msgstr "'/GNOME' コンテクスト %s %d を作成中"
 msgid "Creating '/GNOME/Servers' context %s %d"
 msgstr "'/GNOME/Servers' コンテクスト %s %d を作成中"
 
-#: libgnorba/goad-browser.c:27
-msgid "GOAD ID of the server to activate"
-msgstr "活性化するサーバの GOAD ID"
-
-#: libgnorba/goad-browser.c:28
-msgid "Repository ID of the server to activate"
-msgstr "活性化するサーバのリポジトリID"
-
-#: libgnorba/goad-browser.c:28
-msgid "REPO-ID"
-msgstr "REPO-ID"
-
 #: libgnorba/goad-browser.c:171
 msgid ""
 "I couldn't find any installed services.  Either you don't have\n"
@@ -1422,54 +681,34 @@ msgstr ""
 "インストールしていないのか、パスを知らない為なのかは判りません。\n"
 "いずれにせよ、GNOMEのインストール環境を確認して下さい。"
 
-#: libgnorba/goad.c:1350
-msgid "(Internal use only) GOAD server ID to activate"
-msgstr "(内部使用のみ)活性化する GOAD サーバの ID"
-
-#: libgnorba/loadshlib.c:11
-msgid "ID under which GOAD knows this server"
-msgstr "GOADがこのサーバとして認識する ID"
-
-#: libgnorba/loadshlib.c:11
-msgid "GOAD_ID"
-msgstr "GOAD_ID"
-
-#: libgnorba/loadshlib.c:12
-msgid "Repository ID under which GOAD knows this server"
-msgstr "GOADがこのサーバとして認識するリポジトリ ID"
-
-#: libgnorba/loadshlib.c:12
-msgid "REPO_ID"
-msgstr ""
-
 #: libgnorba/orbitgtk.c:138
 #, c-format
 msgid "Failed to open CORBA cookie file (%s) for writing: %s\n"
-msgstr ""
+msgstr "書き込み用CORBAクッキーファイル(%s)が開けませんでした: %s\n"
 
 #: libgnorba/orbitgtk.c:145
 #, c-format
 msgid "Failed to write CORBA cookie file (%s): %s\n"
-msgstr ""
+msgstr "CORBAクッキーファイル(%s)に書き込めませんでした: %s\n"
 
 #: libgnorba/orbitgtk.c:171
 #, c-format
 msgid "Failed to write CORBA cookie to `%s': %s\n"
-msgstr ""
+msgstr "CORBAクッキーを`%s'に書き込めませんでした: %s\n"
 
 #: libgnorba/orbitgtk.c:181
 #, c-format
 msgid "Failed to open CORBA cookie file `%s': %s\n"
-msgstr ""
+msgstr "CORBAクッキーファイル`%s'を開けませんでした: %s\n"
 
 #: libgnorba/orbitgtk.c:187
 #, c-format
 msgid "Failed to read CORBA cookie file `%s': %s\n"
-msgstr ""
+msgstr "CORBAクッキーファイル`%s'を読み込めませんでした: %s\n"
 
 #: libgnorba/orbitgtk.c:213
 msgid "Failed to obtain CORBA authentication cookie, exiting\n"
-msgstr ""
+msgstr "CORBA認証クッキーの取得ができませんでしたので、終了します\n"
 
 #: libgnorba/orbitns.c:295
 msgid "Could not get name service!"
@@ -1538,14 +777,6 @@ msgstr "%s: オプション `-W %s' はあいまいです\n"
 msgid "%s: option `-W %s' doesn't allow an argument\n"
 msgstr "%s: オプション `-W %s' には引数はありません\n"
 
-#: support/popthelp.c:35
-msgid "Show this help message"
-msgstr "このヘルプを表示"
-
-#: support/popthelp.c:36
-msgid "Display brief usage message"
-msgstr "使い方に関する簡単な説明を表示"
-
 #. Pixmap
 #: test-gnome/testgnome.c:792
 msgid "Default Pixmap"
@@ -1584,6 +815,528 @@ msgstr "以下のデータでユーザはいいえ/キャンセルを選択:\n"
 #: test-gnome/testgnome.c:1087
 msgid "Weird number in reply callback"
 msgstr "リプライコールバックに変な番号"
+
+#~ msgid "Get config entry"
+#~ msgstr "設定エントリを取得"
+
+#~ msgid "Set config entry"
+#~ msgstr "設定エントリを設定"
+
+#~ msgid "Disable sound server usage"
+#~ msgstr "音サーバを使わない"
+
+#~ msgid "Enable sound server usage"
+#~ msgstr "音サーバを使う"
+
+#~ msgid "Host:port on which the sound server to use is running"
+#~ msgstr "使用する音サーバの作動している ホスト:ポート"
+
+#~ msgid "HOSTNAME:PORT"
+#~ msgstr "ホスト名:ポート番号"
+
+#~ msgid "GNOME Options"
+#~ msgstr "GNOMEオプション"
+
+#~ msgid "_File"
+#~ msgstr "ファイル(_F)"
+
+#~ msgid "_File/"
+#~ msgstr "ファイル(_F)/"
+
+#~ msgid "_Edit"
+#~ msgstr "編集(_E)"
+
+#~ msgid "_Edit/"
+#~ msgstr "編集(_E)/"
+
+#~ msgid "_View"
+#~ msgstr "ビューの追加(_V)"
+
+#~ msgid "_View/"
+#~ msgstr "ビューの追加(_V)/"
+
+#~ msgid "_Settings"
+#~ msgstr "設定(_S)"
+
+#~ msgid "_Settings/"
+#~ msgstr "設定(_S)/"
+
+#~ msgid "_New"
+#~ msgstr "新規(_N)"
+
+#~ msgid "_New/"
+#~ msgstr "新規(_N)/"
+
+#~ msgid "Fi_les"
+#~ msgstr "ファイル(_L)"
+
+#~ msgid "Fi_les/"
+#~ msgstr "ファイル(_L)/"
+
+#~ msgid "_Windows"
+#~ msgstr "ウインドウ(_W)"
+
+#~ msgid "_Game"
+#~ msgstr "ゲーム(_G)"
+
+#~ msgid "_Help"
+#~ msgstr "ヘルプ(_H)"
+
+#~ msgid "_Windows/"
+#~ msgstr "ウインドウ(_W)/"
+
+#~ msgid "_Open..."
+#~ msgstr "開く(_O)..."
+
+#~ msgid "Open a file"
+#~ msgstr "ファイルを開く"
+
+#~ msgid "_Save"
+#~ msgstr "保存(_S)"
+
+#~ msgid "Save the current file"
+#~ msgstr "現在のファイルを保存"
+
+#~ msgid "Save _As..."
+#~ msgstr "名前をつけて保存(_A)..."
+
+#~ msgid "Save the current file with a different name"
+#~ msgstr "現在のファイルを別名で保存"
+
+#~ msgid "_Revert"
+#~ msgstr "戻す(_R)"
+
+#~ msgid "Revert to a saved version of the file"
+#~ msgstr "ファイルを保存されたものに戻す"
+
+#~ msgid "_Print"
+#~ msgstr "印刷(_P)"
+
+#~ msgid "Print the current file"
+#~ msgstr "現在のファイルを印刷"
+
+#~ msgid "Print S_etup..."
+#~ msgstr "印刷の設定(_E)..."
+
+#~ msgid "Setup the page settings for your current printer"
+#~ msgstr "使っているプリンタのページ設定"
+
+#~ msgid "_Close"
+#~ msgstr "閉じる(_C)"
+
+#~ msgid "Close the current file"
+#~ msgstr "現在のファイルを閉じる"
+
+#~ msgid "E_xit"
+#~ msgstr "終了(_X)"
+
+#~ msgid "Exit the program"
+#~ msgstr "プログラムの終了"
+
+#~ msgid "C_ut"
+#~ msgstr "切取り(_U)"
+
+#~ msgid "Cut the selection"
+#~ msgstr "セレクションを切取る"
+
+#~ msgid "_Copy"
+#~ msgstr "コピー(_C)"
+
+#~ msgid "Copy the selection"
+#~ msgstr "セレクションをコピー"
+
+#~ msgid "_Paste"
+#~ msgstr "貼り付け(_P)"
+
+#~ msgid "Paste the clipboard"
+#~ msgstr "クリップボードから貼り付け"
+
+#~ msgid "C_lear"
+#~ msgstr "消去(_L)"
+
+#~ msgid "Clear the selection"
+#~ msgstr "セレクションの消去"
+
+#~ msgid "_Undo"
+#~ msgstr "元に戻す(_U)"
+
+#~ msgid "Undo the last action"
+#~ msgstr "直前の操作を取り消す"
+
+#~ msgid "_Redo"
+#~ msgstr "やり直し(_R)"
+
+#~ msgid "Redo the undone action"
+#~ msgstr "取り消した操作をやり直す"
+
+#~ msgid "_Find..."
+#~ msgstr "検索(_F)..."
+
+#~ msgid "Search for a string"
+#~ msgstr "文字列を検索する"
+
+#~ msgid "Find _Again"
+#~ msgstr "再検索(_A)"
+
+#~ msgid "Search again for the same string"
+#~ msgstr "更に同じ文字列を探す"
+
+#~ msgid "_Replace..."
+#~ msgstr "置換(_R)..."
+
+#~ msgid "Replace a string"
+#~ msgstr "文字列を置き換える"
+
+#~ msgid "_Properties..."
+#~ msgstr "プロパティ(_P)..."
+
+#~ msgid "Modify the file's properties"
+#~ msgstr "ファイルのプロパティを変更する"
+
+#~ msgid "_Preferences..."
+#~ msgstr "設定(_P)..."
+
+#~ msgid "Configure the application"
+#~ msgstr "アプリケーションを設定する"
+
+#~ msgid "_About..."
+#~ msgstr "情報(_A)..."
+
+#~ msgid "About this application"
+#~ msgstr "このアプリケーションに関して"
+
+#~ msgid "_Select All"
+#~ msgstr "全選択(_A)"
+
+#~ msgid "Select everything"
+#~ msgstr "すべてを選択する"
+
+#~ msgid "Create New _Window"
+#~ msgstr "新ウインドウを開く(_W)"
+
+#~ msgid "Create a new window"
+#~ msgstr "新しいウインドウを開く"
+
+#~ msgid "_Close This Window"
+#~ msgstr "ウインドウを閉じる(_C)"
+
+#~ msgid "Close the current window"
+#~ msgstr "現在のウインドウを閉じる"
+
+#~ msgid "_New game"
+#~ msgstr "新遊戯(_N)"
+
+#~ msgid "Start a new game"
+#~ msgstr "新しくゲームを始める"
+
+#~ msgid "_Pause game"
+#~ msgstr "遊戯停止(_P)"
+
+#~ msgid "Pause the game"
+#~ msgstr "ゲームを一時停止する"
+
+#~ msgid "_Restart game"
+#~ msgstr "遊戯再開(_R)"
+
+#~ msgid "Restart the game"
+#~ msgstr "ゲームを再開する"
+
+#~ msgid "_Undo move"
+#~ msgstr "待った(_U)"
+
+#~ msgid "Undo the last move"
+#~ msgstr "直前の手を取り消す"
+
+#~ msgid "_Redo move"
+#~ msgstr "まあよい(_R)"
+
+#~ msgid "Redo the undone move"
+#~ msgstr "待ったした手を再び打つ"
+
+#~ msgid "_Hint"
+#~ msgstr "ヒント(_H)"
+
+#~ msgid "Get a hint for your next move"
+#~ msgstr "次の手のヒントを見る"
+
+#~ msgid "_Scores..."
+#~ msgstr "得点(_S)..."
+
+#~ msgid "View the scores"
+#~ msgstr "得点を見る"
+
+#~ msgid "_End game"
+#~ msgstr "遊戯終了(_E)"
+
+#~ msgid "End the current game"
+#~ msgstr "今のゲームを終了する"
+
+#~ msgid "1/x"
+#~ msgstr "逆数"
+
+#~ msgid "x^2"
+#~ msgstr "自乗"
+
+#~ msgid "SQRT"
+#~ msgstr "√"
+
+#~ msgid "CE/C"
+#~ msgstr "CE/C"
+
+#~ msgid "AC"
+#~ msgstr "AC"
+
+#~ msgid "sin"
+#~ msgstr "sin"
+
+#~ msgid "cos"
+#~ msgstr "cos"
+
+#~ msgid "tan"
+#~ msgstr "tan"
+
+#~ msgid "e"
+#~ msgstr "e"
+
+#~ msgid "EE"
+#~ msgstr "EE"
+
+#~ msgid "log"
+#~ msgstr "log"
+
+#~ msgid "ln"
+#~ msgstr "ln"
+
+#~ msgid "x^y"
+#~ msgstr "x^y"
+
+#~ msgid "PI"
+#~ msgstr "π"
+
+#~ msgid "x!"
+#~ msgstr "階乗"
+
+#~ msgid "("
+#~ msgstr "("
+
+#~ msgid ")"
+#~ msgstr ")"
+
+#~ msgid "/"
+#~ msgstr "/"
+
+#~ msgid "STO"
+#~ msgstr "STO"
+
+#~ msgid "7"
+#~ msgstr "7"
+
+#~ msgid "8"
+#~ msgstr "8"
+
+#~ msgid "9"
+#~ msgstr "9"
+
+#~ msgid "*"
+#~ msgstr "×"
+
+#~ msgid "RCL"
+#~ msgstr "RCL"
+
+#~ msgid "4"
+#~ msgstr "4"
+
+#~ msgid "5"
+#~ msgstr "5"
+
+#~ msgid "6"
+#~ msgstr "6"
+
+#~ msgid "-"
+#~ msgstr "-"
+
+#~ msgid "SUM"
+#~ msgstr "SUM"
+
+#~ msgid "1"
+#~ msgstr "1"
+
+#~ msgid "2"
+#~ msgstr "2"
+
+#~ msgid "3"
+#~ msgstr "3"
+
+#~ msgid "+"
+#~ msgstr "+"
+
+#~ msgid "EXC"
+#~ msgstr "EXC"
+
+#~ msgid "0"
+#~ msgstr "0"
+
+#~ msgid "."
+#~ msgstr "."
+
+#~ msgid "+/-"
+#~ msgstr "±"
+
+#~ msgid "="
+#~ msgstr "="
+
+#~ msgid "Specify session management ID"
+#~ msgstr "セッションマネージメントIDの指定"
+
+#~ msgid "ID"
+#~ msgstr "ID"
+
+#~ msgid "Specify prefix of saved configuration"
+#~ msgstr "設定を保存する際のプレフィクスを指定する"
+
+#~ msgid "PREFIX"
+#~ msgstr "プレフィクス"
+
+#~ msgid "Disable connection to session manager"
+#~ msgstr "セッションマネージャと接続しない"
+
+#~ msgid "Session management options"
+#~ msgstr "セッションマネージャオプション"
+
+#~ msgid "Gdk debugging flags to set"
+#~ msgstr "セットするGdkデバッグフラグ"
+
+#~ msgid "FLAGS"
+#~ msgstr "フラグ"
+
+#~ msgid "Gdk debugging flags to unset"
+#~ msgstr "下ろすGdkデバッグフラグ"
+
+#~ msgid "X display to use"
+#~ msgstr "使用するXディスプレイ"
+
+#~ msgid "DISPLAY"
+#~ msgstr "ディスプレイ"
+
+#~ msgid "Make X calls synchronous"
+#~ msgstr "X呼出を同期モードで行なう"
+
+#~ msgid "Don't use X shared memory extension"
+#~ msgstr "X共有メモリエクステンションを使用しない"
+
+#~ msgid "Program name as used by the window manager"
+#~ msgstr "ウィンドウマネージャに指示するプログラム名"
+
+#~ msgid "NAME"
+#~ msgstr "名前"
+
+#~ msgid "Program class as used by the window manager"
+#~ msgstr "ウィンドウマネージャに指示するクラス名"
+
+#~ msgid "CLASS"
+#~ msgstr "クラス"
+
+#~ msgid "HOST"
+#~ msgstr "ホスト"
+
+#~ msgid "PORT"
+#~ msgstr "ポート"
+
+#~ msgid "STYLE"
+#~ msgstr "スタイル"
+
+#~ msgid "Gtk+ debugging flags to set"
+#~ msgstr "立てるGtk+デバッグフラグ"
+
+#~ msgid "Gtk+ debugging flags to unset"
+#~ msgstr "下ろすGtk+デバッグフラグ"
+
+#~ msgid "Make all warnings fatal"
+#~ msgstr "すべての警告を致命的にする"
+
+#~ msgid "Load an additional Gtk module"
+#~ msgstr "追加Gtkモジュールの読み込み"
+
+#~ msgid "MODULE"
+#~ msgstr "モジュール"
+
+#~ msgid "_Help with this"
+#~ msgstr "これのヘルプ(_H)"
+
+#~ msgid "Cu_t"
+#~ msgstr "切取り(_T)"
+
+#~ msgid "Add"
+#~ msgstr "追加"
+
+#~ msgid "Clear"
+#~ msgstr "消去"
+
+#~ msgid "Select Color"
+#~ msgstr "色の選択"
+
+#~ msgid "Table Borders"
+#~ msgstr "表の枠"
+
+#~ msgid "Bulleted List"
+#~ msgstr "`・'で一覧"
+
+#~ msgid "Numbered List"
+#~ msgstr "数字で一覧"
+
+#~ msgid "Indent"
+#~ msgstr "字下げ"
+
+#~ msgid "Un-Indent"
+#~ msgstr "字下げしない"
+
+#~ msgid "Apply"
+#~ msgstr "適用"
+
+#~ msgid "Yes"
+#~ msgstr "はい"
+
+#~ msgid "No"
+#~ msgstr "いいえ"
+
+#~ msgid "Next"
+#~ msgstr "次"
+
+#~ msgid "Prev"
+#~ msgstr "前"
+
+#~ msgid "Up"
+#~ msgstr "上"
+
+#~ msgid "Down"
+#~ msgstr "下"
+
+#~ msgid "GOAD ID of the server to activate"
+#~ msgstr "活性化するサーバの GOAD ID"
+
+#~ msgid "Repository ID of the server to activate"
+#~ msgstr "活性化するサーバのリポジトリID"
+
+#~ msgid "REPO-ID"
+#~ msgstr "REPO-ID"
+
+#~ msgid "(Internal use only) GOAD server ID to activate"
+#~ msgstr "(内部使用のみ)活性化する GOAD サーバの ID"
+
+#~ msgid "ID under which GOAD knows this server"
+#~ msgstr "GOADがこのサーバとして認識する ID"
+
+#~ msgid "GOAD_ID"
+#~ msgstr "GOAD_ID"
+
+#~ msgid "Repository ID under which GOAD knows this server"
+#~ msgstr "GOADがこのサーバとして認識するリポジトリ ID"
+
+#~ msgid "Show this help message"
+#~ msgstr "このヘルプを表示"
+
+#~ msgid "Display brief usage message"
+#~ msgstr "使い方に関する簡単な説明を表示"
 
 #~ msgid "Guru-in-a-dialog test"
 #~ msgstr "ダイアログ導師のテスト"
