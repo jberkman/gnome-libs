@@ -234,41 +234,6 @@ create_color_picker (void)
 	gtk_widget_show (app);
 }
 
-static void
-color_changed_cb( GnomeColorSelector *widget, gchar **color )
-{
-        char *tmp;
-        int r,g,b;
-
-        tmp = malloc(24);
-        if( !tmp )
-        {
-                g_warning( "Can't allocate memory for color\n" );
-                return;
-        }
-        gnome_color_selector_get_color_int(
-                widget, &r, &g, &b, 255 );
-
-        sprintf( tmp, "#%02x%02x%02x", r, g, b );
-        *color = tmp;
-}
-
-static void
-create_colorsel(void)
-{
-	GnomeColorSelector *colorsel;
-	GtkWidget *colbutton;
-	GtkWidget *app;
-	gchar *dummy;
-	app = create_newwin(TRUE,"testGNOME","Color Selection");
-	colorsel = gnome_color_selector_new( (SetColorFunc)color_changed_cb,
-					     &dummy);
-	colbutton = gnome_color_selector_get_button( colorsel );
-	gnome_app_set_contents(GNOME_APP(app),colbutton);
-	gtk_widget_show(colbutton);
-	gtk_widget_show(app);
-}
-
 static void guru_finish(GnomeGuru* guru, GtkWidget* destroyme)
 {
   gnome_ok_dialog("Guru successfully completed, emitted 'finished'");
@@ -773,16 +738,6 @@ create_font_picker (void)
         
         gtk_widget_show_all(app);
     
-}
-
-
-static void
-create_font_sel(void)
-{
-	GtkWidget *fontsel;
-
-	fontsel = gnome_font_selector_new();
-	gtk_widget_show(fontsel);
 }
 
 static void
@@ -1695,7 +1650,6 @@ main (int argc, char *argv[])
 		  { "canvas", create_canvas },
 		  { "clock",	create_clock },
 		  { "color picker", create_color_picker },
-		  { "color-sel", create_colorsel },
 		  { "guru", create_guru },
 		  { "paper-sel", create_papersel },
 		  { "date edit", create_date_edit },
@@ -1705,7 +1659,6 @@ main (int argc, char *argv[])
                   { "icon entry", create_icon_entry },
                   { "number entry", create_number_entry },
                   { "font picker", create_font_picker },                  
-		  { "font sel", create_font_sel },
 		  { "icon list", create_icon_list }, 
 		  { "less", create_less },
 		  { "pixmap", create_pixmap },
