@@ -1,3 +1,8 @@
+1998-02-13  Raja R Harinath  <harinath@cs.umn.edu>
+
+	* Makefile.am (LDADD): Use $(LIBGNOME_LIBS) too.  Should fix some
+	problems with missing -ldl.
+	
 1998-02-12  Raja R Harinath  <harinath@cs.umn.edu>
 
 	* gnome-hello-3-parse-args.c: Look for getopt.h in `support' too.

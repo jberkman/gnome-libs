@@ -8,7 +8,7 @@ LDADD = \
 	$(top_builddir)/libgnome/libgnome.la		\
 	$(top_builddir)/gtk-xmhtml/libgtkxmhtml.la	\
 	$(top_builddir)/support/libsupport.a		\
-	$(LIBGTKXMHTML_LIBS) $(INTLLIBS)
+	$(LIBGTKXMHTML_LIBS) $(LIBGNOME_LIBS) $(INTLLIBS)
 
 noinst_PROGRAMS =  \
 	gnome-hello-0-basic 		\
