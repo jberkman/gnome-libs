@@ -2629,7 +2629,7 @@ zvt_term_set_shadow_type(ZvtTerm  *term, GtkShadowType type)
 guint32
 zvt_term_get_capabilities (ZvtTerm *term)
 {
-  guint32 out = 0;
+  guint32 out = ZVT_TERM_EMBOLDEN_SUPPORT;
 
   /* pixmap and transparency support */
   if (gdk_imlib_get_visual () == gtk_widget_get_default_visual ())

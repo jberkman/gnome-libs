@@ -1,3 +1,14 @@
+1999-04-04  Michael Zucchi  <zucchi@zzedzone.mmc.com.au>
+
+	* zvtterm.h: Changed capability bits to #define's so they can more
+	easily be checked in new coder.
+
+	* zvtterm.c (zvt_term_get_capabilities): Set
+	ZVT_TERM_EMBOLDEN_SUPPORT for this version of the terminal.
+
+	* zvtterm.h (enum): ZVT_TERM_EMBOLDEN_SUPPORT - can call set fonts with a
+	NULL bold font to auto-generate bold effect.
+
 1999-04-03  Michael Zucchi  <zucchi@zzedzone.fsi.com.au>
 
 	* update.c (vt_fix_selection): Make sure we only increment 'ex' if

@@ -41,10 +41,9 @@ extern "C" {
 #define ZVT_IS_TERM(obj)       GTK_CHECK_TYPE (obj, zvt_term_get_type ())
 	
 /*capabilities, it's for the pixmap/transparency stuff only for now*/
-enum
-{
-  ZVT_TERM_PIXMAP_SUPPORT = 1<<0
-};
+/* changed to a #define for easier compile-time checking */
+#define ZVT_TERM_PIXMAP_SUPPORT		0x01
+#define ZVT_TERM_EMBOLDEN_SUPPORT	0x02
 
 typedef struct _ZvtTerm        ZvtTerm;
 typedef struct _ZvtTermClass   ZvtTermClass;
