@@ -17,9 +17,10 @@ Menus:
           New, Open, Save, Save As, Revert, SEPARATOR, Print, Print
           Setup, SEPARATOR, Close, Exit
 
-     It is appropriate to call the menu something other than File if
-     your program does not deal with Files (e.g. gnome-terminal calls
-     it "Terminal").
+     The first menu must always be the "File" menu, and it must always
+     be called "_File", even if you application never touches a file.
+     The main reason for this is that it is important for the menu
+     accelerators to be consistent.
 
    - The prescribed order of standard menu items in the "Edit" menu is
      the following:
