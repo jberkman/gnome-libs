@@ -1,4 +1,12 @@
-1998-30-26  Erik Troan  <ewt@redhat.com>
+1998-08-28  Erik Troan  <ewt@redhat.com> 
+
+	* vt.c (process_vt): wrapped some debugging printf()
+	statements with d()
+	* vt.c (process_vt): don't let ^]*X (w/ X >= 0x80)
+	segv the box
+	* vt.h: made the parameter stuff unsigned chars
+
+1998-08-26  Erik Troan  <ewt@redhat.com>
 
 	* zvtterm.c (vt_draw_text): attempted vx->back_match 
 	optimization was incorrect, and to ghost selections

@@ -989,6 +989,7 @@ void parse_vt(struct vt_em *vt, char *ptr, int length)
   register int c;
   register int state;
   register int mode;
+  int handled;
   struct vt_jump *modes = vtjumps;
   char *ptrend;
   void (*process)(struct vt_em *vt);	/* process function */
@@ -999,111 +1000,118 @@ void parse_vt(struct vt_em *vt, char *ptr, int length)
     c=(*ptr++) & 0xff;		/* convert to unsigned byte */
     mode = modes[c & 0x7f].modes;
     process = modes[c & 0x7f].process;
-    switch(state) {
-    case 0:
-      if (mode & VT_LIT) {
-	/* remap character? */
-	if (vt->remaptable)
-	  c=vt->remaptable[c];
+    do {
+      handled = 1;
+      switch(state) {
+      case 0:
+	if (mode & VT_LIT) {
+	  /* remap character? */
+	  if (vt->remaptable)
+	    c=vt->remaptable[c];
 
-	/* insert mode? */
-	if (vt->mode & VTMODE_INSERT)
-	  vt_insert_chars(vt, 1);
+	  /* insert mode? */
+	  if (vt->mode & VTMODE_INSERT)
+	    vt_insert_chars(vt, 1);
 
-	/* need to wrap? */
-	if (vt->cursorx>=vt->width) {
-	  vt_lf(vt);
-	  vt->cursorx=0;
+	  /* need to wrap? */
+	  if (vt->cursorx>=vt->width) {
+	    vt_lf(vt);
+	    vt->cursorx=0;
+	  }
+
+	  /* output character */
+	  vt->this->data[vt->cursorx] = ((vt->attr | VTATTR_CHANGED) & 0xffff0000) | c;
+	  vt->this->modcount++;
+	  d(printf("literal %c\n", c));
+	  vt->cursorx++;
+	} else if (mode & VT_CON) {
+	  process(vt);
+	} else if (c==27) {
+	  state=1;
 	}
-
-	/* output character */
-	vt->this->data[vt->cursorx] = ((vt->attr | VTATTR_CHANGED) & 0xffff0000) | c;
-	vt->this->modcount++;
-	d(printf("literal %c\n", c));
-	vt->cursorx++;
-      } else if (mode & VT_CON) {
-	process(vt);
-      } else if (c==27) {
-	state=1;
-      }
-      /* else ignore */
-      break;
-    case 1:			/* received 'esc', next byte */
-      if (mode & VT_ESC) {	/* got a \Ex sequence */
-	vt->argcnt = 0;
-	process(vt);
-	state=0;
-      } else if (c=='[') {
-	vt->argptr = vt->args;	/* initialise output arg pointers */
-	vt->outptr = vt->argptr[0];
-	vt->outend = vt->outptr+VTPARAM_ARGMAX;
-	state = 2;
-      } else if (c=='O') {
-	state = 3;
-      } else if (c==']') {	/* set text parameters, read parameters */
-	state = 4;
-	vt->argptr = vt->args;
-	vt->outptr = vt->argptr[0];
-	vt->outend = vt->outptr+VTPARAM_ARGMAX*VTPARAM_MAXARGS-1;
-      } else if (mode & VT_EXA) {
-	vt->args[0][0]=c;
-	state = 5;
-      } else {
-	state = 0;		/* dont understand input */
-      }
-      break;
-    case 2:
-      if (mode & VT_ARG) {
-	if (vt->outptr<vt->outend) /* truncate excessive args */
-	  *(vt->outptr)++=c;
-      } else if (c==';') {	/* looking for 'arg;arg;...' */
-	if (vt->argcnt<VTPARAM_MAXARGS) { /* goto next argument */
-	  *(vt->outptr)=0;
-	  vt->argptr++;
+	/* else ignore */
+	break;
+      case 1:			/* received 'esc', next byte */
+	if (mode & VT_ESC) {	/* got a \Ex sequence */
+	  vt->argcnt = 0;
+	  process(vt);
+	  state=0;
+	} else if (c=='[') {
+	  vt->argptr = vt->args;	/* initialise output arg pointers */
 	  vt->outptr = vt->argptr[0];
 	  vt->outend = vt->outptr+VTPARAM_ARGMAX;
+	  state = 2;
+	} else if (c=='O') {
+	  state = 3;
+	} else if (c==']') {	/* set text parameters, read parameters */
+	  state = 4;
+	  vt->argptr = vt->args;
+	  vt->outptr = vt->argptr[0];
+	  vt->outend = vt->outptr+VTPARAM_ARGMAX*VTPARAM_MAXARGS-1;
+	} else if (mode & VT_EXA) {
+	  vt->args[0][0]=c;
+	  state = 5;
+	} else {
+	  state = 0;		/* dont understand input */
 	}
-	/* others are ignored */
-      } else if (mode & VT_EXB) {
-	if (vt->outptr!=vt->argptr[0])
-	  vt->argptr++;
-	*(vt->outptr)=0;
-	vt->argcnt = (vt->argptr-vt->args);
-	process(vt);
+	break;
+      case 2:
+	if (mode & VT_ARG) {
+	  if (vt->outptr<vt->outend) /* truncate excessive args */
+	    *(vt->outptr)++=c;
+	} else if (c==';') {	/* looking for 'arg;arg;...' */
+	  if (vt->argcnt<VTPARAM_MAXARGS) { /* goto next argument */
+	    *(vt->outptr)=0;
+	    vt->argptr++;
+	    vt->outptr = vt->argptr[0];
+	    vt->outend = vt->outptr+VTPARAM_ARGMAX;
+	  }
+	  /* others are ignored */
+	} else if (mode & VT_EXB) {
+	  if (vt->outptr!=(char *) vt->argptr[0])
+	    vt->argptr++;
+	  *(vt->outptr)=0;
+	  vt->argcnt = (vt->argptr-vt->args);
+	  process(vt);
+	  state=0;
+	} else {
+	  d(printf("unknown option '%c'\n", c));
+	  state=0;		/* unexpected escape sequence - ignore */
+	}
+	break;
+      case 3:			/* \EOx */
+	if (mode & VT_EXO) {
+	  process(vt);
+	}	/* ignore otherwise */
 	state=0;
-      } else {
-	(printf("unknown option '%c'\n", c));
-	state=0;		/* unexpected escape sequence - ignore */
+	break;
+      case 4:			/* \E]..;...BEL */
+	if (c==0x07) {
+	  /* handle output */
+	  *(vt->outptr)=0;
+	  d(printf("received text mode: %s\n", vt->argptr[0]));
+	  state = 0;
+	} else if (c==0x0a) {
+	  state = 0;		/* abort command */
+	} else {
+	  if (vt->outptr<vt->outend) /* truncate excessive args */
+	    *(vt->outptr)++=c;
+	}
+	break;
+      case 5:			/* \E?x */
+	vt->args[0][1]=c;
+	if (vt->args[0][0] < 0x7f) {
+	  process = modes[vt->args[0][0]].process;
+	  if (process) {		/* check, if doesn't exist, then ignore and lose */
+	    process(vt);
+	  }
+	} else {
+	  handled = 0;
+	}
+	state=0;
+	break;
       }
-      break;
-    case 3:			/* \EOx */
-      if (mode & VT_EXO) {
-	process(vt);
-      }	/* ignore otherwise */
-      state=0;
-      break;
-    case 4:			/* \E]..;...BEL */
-      if (c==0x07) {
-	/* handle output */
-	*(vt->outptr)=0;
-	printf("received text mode: %s\n", vt->argptr[0]);
-	state = 0;
-      } else if (c==0x0a) {
-	state = 0;		/* abort command */
-      } else {
-	if (vt->outptr<vt->outend) /* truncate excessive args */
-	  *(vt->outptr)++=c;
-      }
-      break;
-    case 5:			/* \E?x */
-      vt->args[0][1]=c;
-      process = modes[vt->args[0][0]].process;
-      if (process) {		/* check, if doesn't exist, then ignore and lose */
-	process(vt);
-      }
-      state=0;
-      break;
-    }
+    } while (!handled);
   }
   vt->state = state;
 }

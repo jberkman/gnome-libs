@@ -89,9 +89,9 @@ struct vt_em {
 
   uint32 mode;			/* vt modes.  see below */
 
-  char *args[VTPARAM_MAXARGS];	/* run-time emulation arguments */
+  unsigned char *args[VTPARAM_MAXARGS];	/* run-time emulation arguments */
   char args_mem[VTPARAM_MAXARGS*VTPARAM_ARGMAX];
-  char **argptr;
+  unsigned char **argptr;
   char *outptr;
   char *outend;
   int argcnt;
