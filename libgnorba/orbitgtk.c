@@ -3,6 +3,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <limits.h>
+#include <ctype.h>
 #include <gdk/gdkx.h>
 #include <gtk/gtk.h>
 #include "gnorba.h"
@@ -100,76 +101,37 @@ gnome_get_name_service(void)
   char *ior;
   GdkAtom propname, proptype;
   CORBA_Environment ev;
+  gint len;
 
   g_return_val_if_fail(gnome_orbit_orb, CORBA_OBJECT_NIL);
 
   CORBA_exception_init(&ev);
 
   propname = gdk_atom_intern("CORBA_NAME_SERVICE", FALSE);
-  proptype = gdk_atom_intern("XA_STRING", FALSE);
+  proptype = gdk_atom_intern("STRING", FALSE);
 
   if(CORBA_Object_is_nil(name_service, &ev)) {
-    int iopipes[2];
-    GdkAtom return_proptype;
-    gint fmt, len;
-    char iorbuf[2048];
 
     /* First, try and see if another application has started the name service
        (and indicated its presence by setting a root window property */
-    if(gdk_property_get(GDK_ROOT_PARENT(), propname, proptype,
-			0, UINT_MAX, FALSE, &return_proptype,
-			&fmt, &len, (guchar **)&ior)) {
-      name_service = CORBA_ORB_string_to_object(gnome_orbit_orb, ior, &ev);
-      if(ev._major != CORBA_NO_EXCEPTION)
-	name_service = CORBA_OBJECT_NIL;
+    gdk_property_get(GDK_ROOT_PARENT(), propname, proptype,
+		     0, 9999, FALSE, NULL,
+		     NULL, NULL, (guchar **)&ior);
+    if(!ior)
       goto out;
-    }
 
-    /* Since we're pretty sure no name server is running, we start it ourself
-       and tell the (GNOME session) world about it */
-    /* fork & get the ior from orbit-name-service stdout */
-    pipe(iopipes);
+    name_service = CORBA_ORB_string_to_object(gnome_orbit_orb, ior, &ev);
 
-    if(fork()) {
-      FILE *iorfh;
-
-      /* Parent */
-      close(iopipes[1]);
-
-      iorfh = fdopen(iopipes[0], "r");
-
-      while(fgets(iorbuf, sizeof(iorbuf), iorfh) && strncmp(iorbuf, "IOR:", 4))
-	/* Just read lines until we get what we're looking for */ ;
-
-      if(strncmp(iorbuf, "IOR:", 4)) {
-	name_service = CORBA_OBJECT_NIL;
-	goto out;
-      }
-
-      fclose(iorfh);
-
-      gdk_property_change(GDK_ROOT_PARENT(), propname, proptype, 8,
-			  GDK_PROP_MODE_REPLACE, iorbuf, strlen(iorbuf));
-      name_service = CORBA_ORB_string_to_object(gnome_orbit_orb, iorbuf, &ev);
-      
-      if(ev._major != CORBA_NO_EXCEPTION)
-	name_service = CORBA_OBJECT_NIL;
-
-    } else if(fork()) {
-      _exit(0); /* de-zombifier process, so we exit */
-    } else {
-      /* Child of a child. We run the naming service */
-      close(0);
-      close(iopipes[0]);
-      dup2(iopipes[1], 1);
-      dup2(iopipes[1], 2);
-      execlp("gnome-naming-server", "gnome-naming-server", NULL);
-      _exit(1);
-    }
+    if(ev._major != CORBA_NO_EXCEPTION)
+      name_service = CORBA_OBJECT_NIL;
   }
 
  out:
-  retval = CORBA_Object_duplicate(name_service, &ev);
+  if(!CORBA_Object_is_nil(name_service, &ev))
+    retval = CORBA_Object_duplicate(name_service, &ev);
+  else
+    g_error("Could not get name service!");
+
   CORBA_exception_free(&ev);
   return retval;
 }
