@@ -33,7 +33,6 @@ gnome_parse_geometry (char *geometry, int *xpos, int *ypos, int *width, int *hei
 	int value;
 	int substract;
 
-	g_return_val_if_fail (geometry != NULL, 0);
 	g_return_val_if_fail (xpos != NULL, 0);
 	g_return_val_if_fail (ypos != NULL, 0);
 	g_return_val_if_fail (width != NULL, 0);
