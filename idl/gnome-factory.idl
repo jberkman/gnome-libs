@@ -1,9 +1,15 @@
 /*
- * factory.idl:  Basic object factory interface.
+ * gnome-factory.idl: Basic object factory interface, based on CORBA
+ * LifeCycle version
  */
 module GNOME {
-	interface Factory {
-		Object new ();
-		Object new_args (in string argument);
+	typedef sequence<string> stringlist;
+
+	interface GenericFactory {
+		exception CannotActivate { };
+		boolean supports(in string obj_goad_id);
+
+		Object create_object(in string goad_id, in stringlist params)
+			raises(CannotActivate);
 	};
 };

@@ -4,6 +4,7 @@
 #include <orb/orbit.h>
 #include <ORBitservices/CosNaming.h>
 #include <gnome.h>
+#include <libgnorba/gnome-factory.h>
 
 /**** orbitgtk module ****/
 
@@ -75,6 +76,7 @@ typedef struct {
 	const char   *description;
 	CORBA_Object (*activate)   (PortableServer_POA poa,
 				    gpointer *impl_ptr,
+				    const char **params,
 				    CORBA_Environment *ev);
 	void         (*deactivate) (PortableServer_POA poa,
 				    gpointer impl_ptr,

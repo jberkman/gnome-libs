@@ -123,7 +123,7 @@ main(int argc, char* argv[])
   PortableServer_POAManager_activate(pm, &ev);
   Exception(&ev);
 
-  retval = plugin->plugin_object_list[i].activate(root_poa, &impl_ptr, &ev);
+  retval = plugin->plugin_object_list[i].activate(root_poa, &impl_ptr, NULL, &ev);
   local_server_info.impl_ptr = impl_ptr;
   local_server_info.server_id = id;
   g_atexit(goad_server_unregister_atexit);

@@ -40,6 +40,10 @@ static void goad_server_list_read(const char *filename,
 				  GArray *servinfo,
 				  GString *tmpstr);
 static GoadServerType goad_server_typename_to_type(const char *typename);
+static CORBA_Object real_goad_server_activate(GoadServer *sinfo,
+					      GoadActivationFlags flags,
+					      const char **params,
+					      GoadServer *server_list);
 static CORBA_Object goad_server_activate_shlib(GoadServer *sinfo,
 					       GoadActivationFlags flags,
 					       const char **params,
@@ -54,6 +58,17 @@ static CORBA_Object goad_server_activate_factory(GoadServer *sinfo,
 						 CORBA_Environment *ev,
 						 GoadServer *slist);
 static void goad_servers_unregister_atexit(void);
+
+static int string_array_len(const char **array)
+{
+  int i;
+
+  if(!array) return 0;
+
+  for(i = 0; array[i]; i++) /* */ ;
+
+  return i;
+}
 
 static gboolean string_in_array(const char *string, const char **array)
 {
@@ -339,7 +354,7 @@ goad_server_activate_with_id(GoadServer *server_list,
   }
 
   if(slist[i].repo_id)
-    retval = goad_server_activate(&slist[i], flags, params);
+    retval = real_goad_server_activate(&slist[i], flags, params, slist);
 
   if(!server_list)
     goad_server_list_free(slist);
@@ -419,8 +434,8 @@ goad_server_activate_with_repo_id(GoadServer *server_list,
 				      params);
       }
       else {
-	retval = goad_server_activate(&slist[i], flags | GOAD_ACTIVATE_NEW_ONLY,
-				      params);
+	retval = real_goad_server_activate(&slist[i], flags | GOAD_ACTIVATE_NEW_ONLY,
+				      params, slist);
       }
       if (retval != CORBA_OBJECT_NIL)
 	break;
@@ -457,6 +472,16 @@ CORBA_Object
 goad_server_activate(GoadServer *sinfo,
 		     GoadActivationFlags flags,
 		     const char **params)
+{
+  return real_goad_server_activate(sinfo, flags, params, NULL);
+}
+
+/* Allows using an already-read server list */
+static CORBA_Object
+real_goad_server_activate(GoadServer *sinfo,
+			  GoadActivationFlags flags,
+			  const char **params,
+			  GoadServer *server_list)
 {
   CORBA_Environment       ev;
   CORBA_Object            name_service;
@@ -536,7 +561,8 @@ goad_server_activate(GoadServer *sinfo,
     g_warning("Relay interface not yet defined (write an RFC :). Relay objects NYI");
     break;
   case GOAD_SERVER_FACTORY:
-    retval = goad_server_activate_factory(sinfo, flags, params, &ev, NULL);
+    retval = goad_server_activate_factory(sinfo, flags, params, &ev,
+					  server_list);
   }
  out:
   CORBA_exception_free(&ev);
@@ -632,7 +658,7 @@ normal_loading:
   poa = (PortableServer_POA)CORBA_ORB_resolve_initial_references(gnome_orbit_orb,
 								 "RootPOA", ev);
 
-  retval = plugin->plugin_object_list[i].activate(poa, &impl_ptr, ev);
+  retval = plugin->plugin_object_list[i].activate(poa, &impl_ptr, NULL, ev);
   if (ev->_major != CORBA_NO_EXCEPTION) {
     g_warning("goad_server_activate_shlib: activation function raises exception");
     switch( ev->_major ) {
@@ -746,12 +772,27 @@ goad_server_activate_factory(GoadServer *sinfo,
 			     CORBA_Environment *ev,
 			     GoadServer *slist)
 {
-  CORBA_Object factory_obj;
+  CORBA_Object factory_obj, retval;
+  GNOME_stringlist sl;
 
   factory_obj = goad_server_activate_with_id(slist, sinfo->location_info,
 					     0, NULL);
 
-  return CORBA_OBJECT_NIL;
+  if(factory_obj == CORBA_OBJECT_NIL)
+    return CORBA_OBJECT_NIL;
+
+  sl._length = string_array_len(params);
+  sl._buffer = (char **)params;
+
+  retval = GNOME_GenericFactory_create_object(factory_obj,
+					      sinfo->server_id, &sl, ev);
+
+  if(ev->_major != CORBA_NO_EXCEPTION)
+    retval = CORBA_OBJECT_NIL;
+
+  CORBA_Object_release(factory_obj, ev);
+
+  return retval;
 }
 
 
