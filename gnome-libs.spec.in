@@ -3,12 +3,12 @@
 %define rel      1
 %define prefix   /usr
 
-Summary: GNOME basic libraries
+Summary: The libraries needed by the GNOME GUI desktop environment.
 Name: gnome-libs
 Version: %ver
 Release: %rel
 Copyright: LGPL
-Group: X11/gnome
+Group: System Environment/Libraries
 Source: ftp://ftp.gnome.org/pub/GNOME/sources/gnome-libs/gnome-libs-%{ver}.tar.gz
 BuildRoot: /var/tmp/gnome-libs-root
 Obsoletes: gnome
@@ -18,20 +18,37 @@ Requires: gtk+ >= 1.1
 Docdir: %{prefix}/doc
 
 %description
-Basic libraries you must have installed to use GNOME.
+GNOME (GNU Network Object Model Environment) is a user-friendly set of
+applications and desktop tools to be used in conjunction with a window
+manager for the X Window System.  GNOME is similar in purpose and scope
+to CDE and KDE, but GNOME is based completely on Open Source software.
+The gnome-libs package includes libraries that are needed by GNOME.
 
-GNOME is the GNU Network Object Model Environment.  That's a fancy
-name but really GNOME is a nice GUI desktop environment.  It makes
-using your computer easy, powerful, and easy to configure.
+You should install the gnome-libs package if you would like to use the
+GNOME desktop environment.  You'll also need to install the gnome-core
+package.  If you would like to develop GNOME applications, you'll also
+need to install gnome-libs-devel.
 
 %package devel
-Summary: Libraries, includes, etc to develop GNOME applications
-Group: X11/gnome
+Summary: Libraries and include files for developing GNOME applications.
+Group: Development/Libraries
 Requires: gnome-libs = %{PACKAGE_VERSION}
 Obsoletes: gnome
 
 %description devel
-Libraries, include files, etc you can use to develop GNOME applications.
+GNOME (GNU Network Object Model Environment) is a user-friendly set of
+applications and desktop tools to be used in conjunction with a window
+manager for the X Window System.  GNOME is similar in purpose and scope
+to CDE and KDE, but GNOME is based completely on Open Source software. 
+The gnome-libs-devel package includes the libraries and include files that
+you will need to develop GNOME applications.  
+
+You should install the gnome-libs-devel package if you would like to
+develop GNOME applications.  You don't need to install gnome-libs-devel
+if you just want to use the GNOME desktop environment.  If you are going
+to develop GNOME applications and/or you're going to use the GNOME desktop
+environment, you'll also need to install the gnome-core and gnome-libs
+packages.
 
 %changelog
 * Wed Feb 17 1999 Elliot Lee <sopwith@redhat.com>
