@@ -342,6 +342,13 @@ AM_PATH_OAF(0.1.0, , AC_MSG_ERROR([You must have OAF installed.]))
 AM_PATH_GCONF(0.1.0, , AC_MSG_ERROR([You must have GConf installed.]), gconf-gtk)
 
 dnl
+dnl Libart, GdkPixbuf checks
+dnl
+AM_PATH_LIBART(2.1.0, , AC_MSG_ERROR([You must have libart installed.]))
+AM_PATH_GDK_PIXBUF(0.4.0, , AC_MSG_ERROR([You must have gdk-pixbuf installed.]))
+
+
+dnl
 dnl This is needed for the gnome-moz-remote program.  It doesn't use GDK,
 dnl since some of the code in it was written before GDK existed.
 dnl
@@ -357,10 +364,8 @@ LIBGTKXMHTML_LIBS="$XPM_LIBS $JPEG_LIBS $PNG_LIBS $Z_LIBS $GTK_LIBS"
 SUPPORTINCS='-DNEED_GNOMESUPPORT_H -I$(top_builddir)/support -I$(top_srcdir)/support'
 
 dnl These are for using lib*
-ART_LIBS="-lart_lgpl"
-
 GNOME_LIBS="-lgnome-$GNOME_INTERFACE_VERSION $LIBGNOME_LIBS"
-GNOMEUI_LIBS="-lgnomeui-$GNOME_INTERFACE_VERSION $OAF_LIBS $ORBIT_LIBS $ART_LIBS $GTK_LIBS $GNOME_LIBS"
+GNOMEUI_LIBS="-lgnomeui-$GNOME_INTERFACE_VERSION $OAF_LIBS $ORBIT_LIBS $LIBART_LIBS $GTK_LIBS $GNOME_LIBS"
 
 GTKXMHTML_LIBS="-lgtkxmhtml $LIBGTKXMHTML_LIBS"
 ZVT_LIBS="-lzvt-$GNOME_INTERFACE_VERSION $GTK_LIBS $UTIL_LIBS $GTK_LIBS"
@@ -398,9 +403,6 @@ dnl 	mkdir -p $srcdir/libgnome $srcdir/libgnomeui
 dnl 	ln -sf `pwd`/.lclintrc $srcdir/libgnome/.lclintrc
 dnl 	ln -sf `pwd`/.lclintrc $srcdir/libgnomeui/.lclintrc
 dnl fi
-
-AM_PATH_LIBART(2.1.0, , AC_MSG_ERROR([You must have libart installed.]))
-AM_PATH_GDK_PIXBUF(0.4.0, , AC_MSG_ERROR([You must have gdk-pixbuf installed.]))
 
 dnl
 dnl GNOME libs Documentation

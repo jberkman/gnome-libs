@@ -1,3 +1,13 @@
+Fri May 05 19:23:41 2000  George Lebl <jirka@5z.com>
+
+	* configure.in: massage the libart check for things to compile
+
+	* **/Makefile.am: add @LIBART_LIBS@ to LDADD in files that need
+	  it.
+
+	* idl/gnome-corba-rexec.idl: kill the quotes around the included
+	  files, orbit-idl doesn't jive with that it seems
+
 2000-05-1  John Sullivan <sullivan@eazel.com>
 
 	* gnome-data/gnome.mime: Added big obvious disclaimer
