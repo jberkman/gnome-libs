@@ -1,5 +1,5 @@
 /* testGNOME - program similar to testgtk which shows gnome lib functions.
- * 
+ *
  * Author : Richard Hestilow <hestgray@ionet.net>
  *
  * Copyright (C) 1998 Free Software Foundation
@@ -241,7 +241,7 @@ static void guru_cancel(GnomeGuru* guru, GtkWidget* destroyme)
   gtk_widget_destroy(destroyme);
 }
 
-static void 
+static void
 create_guru(void)
 {
   /* We want to test both in a dialog, and without a dialog. */
@@ -259,9 +259,9 @@ create_guru(void)
   guru = gnome_guru_new("Test Gnome Guru (without dialog)",
 			graphic,
 			NULL);
-  
+
   window = create_newwin(TRUE, "testGNOME", "Gnome Guru Test Window");
-  
+
   gnome_app_set_contents(GNOME_APP(window), guru);
 
   page = gtk_label_new("Page one");
@@ -269,15 +269,15 @@ create_guru(void)
   page = gtk_label_new("Page two");
   gnome_guru_append_page(GNOME_GURU(guru), "Second page", page);
   page = gtk_label_new("Page three");
-  gnome_guru_append_page(GNOME_GURU(guru), "Third page", page);  
+  gnome_guru_append_page(GNOME_GURU(guru), "Third page", page);
   page = gtk_label_new("Page four");
-  gnome_guru_append_page(GNOME_GURU(guru), "Fourth page", page);  
+  gnome_guru_append_page(GNOME_GURU(guru), "Fourth page", page);
 
-  gtk_signal_connect(GTK_OBJECT(guru), "finished", 
+  gtk_signal_connect(GTK_OBJECT(guru), "finished",
 		     GTK_SIGNAL_FUNC(guru_finish),
 		     window);
 
-  gtk_signal_connect(GTK_OBJECT(guru), "cancelled", 
+  gtk_signal_connect(GTK_OBJECT(guru), "cancelled",
 		     GTK_SIGNAL_FUNC(guru_cancel),
 		     window);
 
@@ -286,7 +286,7 @@ create_guru(void)
 
   dialog = gnome_dialog_new(_("Guru-in-a-dialog test"),
 			    NULL);
- 
+
   pix = gnome_pixmap_file("gnome-logo-large.png");
   graphic = gnome_pixmap_new_from_file_at_size(pix, 100, 300);
   g_free(pix);
@@ -300,23 +300,23 @@ create_guru(void)
   page = gtk_label_new("Page two");
   gnome_guru_append_page(GNOME_GURU(guru), "Second page", page);
   page = gtk_label_new("Page three");
-  gnome_guru_append_page(GNOME_GURU(guru), "Third page", page);  
+  gnome_guru_append_page(GNOME_GURU(guru), "Third page", page);
   page = gtk_label_new("Page four");
-  gnome_guru_append_page(GNOME_GURU(guru), "Fourth page", page);  
+  gnome_guru_append_page(GNOME_GURU(guru), "Fourth page", page);
 
-  gtk_signal_connect(GTK_OBJECT(guru), "finished", 
+  gtk_signal_connect(GTK_OBJECT(guru), "finished",
 		     GTK_SIGNAL_FUNC(guru_finish),
 		     dialog);
 
-  gtk_signal_connect(GTK_OBJECT(guru), "cancelled", 
+  gtk_signal_connect(GTK_OBJECT(guru), "cancelled",
 		     GTK_SIGNAL_FUNC(guru_cancel),
 		     dialog);
-  
+
   gtk_widget_show(guru);
-  gtk_widget_show(dialog); 
+  gtk_widget_show(dialog);
 }
 
-/* 
+/*
  * GnomePaperSelector
  */
 
@@ -333,14 +333,14 @@ create_papersel(void)
 	gtk_widget_show(app);
 }
 
-/* 
+/*
  * GnomeDialog
  */
 
 enum {
-  modal, 
+  modal,
   just_hide,
-  click_closes, 
+  click_closes,
   editable_enters
 };
 
@@ -383,27 +383,27 @@ create_test_dialog (GtkWidget * button, gboolean * settings)
   g_return_if_fail(app != NULL);
   g_return_if_fail(GTK_IS_WINDOW(app));
 
-  dialog = GNOME_DIALOG(gnome_dialog_new( "A Test Dialog", 
+  dialog = GNOME_DIALOG(gnome_dialog_new( "A Test Dialog",
 					  GNOME_STOCK_BUTTON_OK,
 					  "Not a stock button",
 					  GNOME_STOCK_BUTTON_CANCEL, NULL ));
 
   gnome_dialog_set_parent(dialog,GTK_WINDOW(app));
-  
+
   entry = gtk_entry_new();
   button = gtk_button_new_with_label("gnome_dialog_run");
-  
-  gtk_signal_connect(GTK_OBJECT(button), "clicked", 
-		     GTK_SIGNAL_FUNC(block_until_clicked), 
+
+  gtk_signal_connect(GTK_OBJECT(button), "clicked",
+		     GTK_SIGNAL_FUNC(block_until_clicked),
 		     dialog);
-  
+
   gtk_signal_connect(GTK_OBJECT(dialog), "destroy",
 		     GTK_SIGNAL_FUNC(set_to_null),
 		     &dialog);
-  
+
   gtk_box_pack_start(GTK_BOX(dialog->vbox), entry, TRUE, TRUE, GNOME_PAD);
   gtk_box_pack_start(GTK_BOX(dialog->vbox), button, FALSE, FALSE, GNOME_PAD);
-  
+
   if (settings[modal]) {
     g_print("Modal... ");
     gtk_window_set_modal(GTK_WINDOW (dialog), TRUE);
@@ -438,32 +438,32 @@ create_dialog(void)
   app = create_newwin(TRUE,"testGNOME","Dialog Boxes");
   vbox = gtk_vbox_new(FALSE, GNOME_PAD);
   hbox = gtk_hbox_new(FALSE, GNOME_PAD);
-  
+
   gnome_app_set_contents(GNOME_APP(app),vbox);
-  
+
   gtk_box_pack_start(GTK_BOX(vbox), hbox, TRUE, TRUE, GNOME_PAD);
 
   toggle = gtk_toggle_button_new_with_label("Modal");
   gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(toggle), settings[modal]);
-  gtk_signal_connect(GTK_OBJECT(toggle), "toggled", 
+  gtk_signal_connect(GTK_OBJECT(toggle), "toggled",
 		     GTK_SIGNAL_FUNC(toggle_boolean), &settings[modal]);
   gtk_box_pack_start(GTK_BOX(hbox), toggle, FALSE, FALSE, GNOME_PAD);
 
   toggle = gtk_toggle_button_new_with_label("Hide don't destroy");
   gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(toggle), settings[just_hide]);
-  gtk_signal_connect(GTK_OBJECT(toggle), "toggled", 
+  gtk_signal_connect(GTK_OBJECT(toggle), "toggled",
 		     GTK_SIGNAL_FUNC(toggle_boolean), &settings[just_hide]);
   gtk_box_pack_start(GTK_BOX(hbox), toggle, FALSE, FALSE, GNOME_PAD);
 
   toggle = gtk_toggle_button_new_with_label("Close on click");
   gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(toggle), settings[click_closes]);
-  gtk_signal_connect(GTK_OBJECT(toggle), "toggled", 
+  gtk_signal_connect(GTK_OBJECT(toggle), "toggled",
 		     GTK_SIGNAL_FUNC(toggle_boolean), &settings[click_closes]);
   gtk_box_pack_start(GTK_BOX(hbox), toggle, FALSE, FALSE, GNOME_PAD);
 
   toggle = gtk_toggle_button_new_with_label("Editable enters");
   gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(toggle), settings[editable_enters]);
-  gtk_signal_connect(GTK_OBJECT(toggle), "toggled", 
+  gtk_signal_connect(GTK_OBJECT(toggle), "toggled",
 		     GTK_SIGNAL_FUNC(toggle_boolean), &settings[editable_enters]);
   gtk_box_pack_start(GTK_BOX(hbox), toggle, FALSE, FALSE, GNOME_PAD);
 
@@ -471,8 +471,8 @@ create_dialog(void)
 
   gtk_object_set_user_data(GTK_OBJECT(button),app);
 
-  gtk_signal_connect(GTK_OBJECT(button), "clicked", 
-		     GTK_SIGNAL_FUNC(create_test_dialog), 
+  gtk_signal_connect(GTK_OBJECT(button), "clicked",
+		     GTK_SIGNAL_FUNC(create_test_dialog),
 		     &settings[0]);
 
   gtk_box_pack_end(GTK_BOX(vbox), button, FALSE, FALSE, GNOME_PAD);
@@ -488,7 +488,7 @@ file_entry_update_files(GtkWidget *w, GnomeFileEntry *fentry)
 
 	GtkLabel *l1 = gtk_object_get_data(GTK_OBJECT(w),"l1");
 	GtkLabel *l2 = gtk_object_get_data(GTK_OBJECT(w),"l2");
-	
+
 	p = gnome_file_entry_get_full_path(fentry,FALSE);
 	pp = g_strconcat("File name: ",p,NULL);
 	gtk_label_set_text(l1,pp);
@@ -529,13 +529,13 @@ create_file_entry(void)
 
 	entry = gnome_file_entry_new("Foo","Bar");
 	gtk_box_pack_start(GTK_BOX(box),entry,FALSE,FALSE,0);
-	
+
 	l1 = gtk_label_new("File name: ");
 	gtk_box_pack_start(GTK_BOX(box),l1,FALSE,FALSE,0);
-	
+
 	l2 = gtk_label_new("File name(if exists only): ");
 	gtk_box_pack_start(GTK_BOX(box),l2,FALSE,FALSE,0);
-	
+
 	but = gtk_button_new_with_label("Update file labels");
 	gtk_object_set_data(GTK_OBJECT(but),"l1",l1);
 	gtk_object_set_data(GTK_OBJECT(but),"l2",l2);
@@ -543,7 +543,7 @@ create_file_entry(void)
 			   GTK_SIGNAL_FUNC(file_entry_update_files),
 			   entry);
 	gtk_box_pack_start(GTK_BOX(box),but,FALSE,FALSE,0);
-	
+
 	but = gtk_toggle_button_new_with_label("Make browse dialog modal");
 	gtk_signal_connect(GTK_OBJECT(but),"toggled",
 			   GTK_SIGNAL_FUNC(file_entry_modal_toggle),
@@ -605,10 +605,10 @@ static void cfp_ck_UseFont(GtkWidget *widget,GnomeFontPicker *gfp)
 {
     gboolean show;
     gint size;
-    
+
     show=!gfp->use_font_in_label;
     size=gfp->use_font_in_label_size;
-    
+
     gnome_font_picker_fi_set_use_font_in_label(gfp,show,size);
 
 }
@@ -616,10 +616,10 @@ static void cfp_sp_value_changed(GtkAdjustment *adj,GnomeFontPicker *gfp)
 {
     gboolean show;
     gint size;
-    
+
     show=gfp->use_font_in_label;
     size=(gint)adj->value;
-    
+
     gnome_font_picker_fi_set_use_font_in_label(gfp,show,size);
 
 }
@@ -644,7 +644,7 @@ static void
 create_font_picker (void)
 {
         GtkWidget *fontpicker1,*fontpicker2,*fontpicker3;
-        
+
         GtkWidget *app;
         GtkWidget *vbox,*vbox1,*vbox2,*vbox3;
         GtkWidget *hbox1,*hbox3;
@@ -662,7 +662,7 @@ create_font_picker (void)
 
         /* Pixmap */
         frPixmap=gtk_frame_new(_("Default Pixmap"));
-        gtk_box_pack_start(GTK_BOX(vbox),frPixmap,TRUE,TRUE,0);        
+        gtk_box_pack_start(GTK_BOX(vbox),frPixmap,TRUE,TRUE,0);
         vbox1=gtk_vbox_new(FALSE,FALSE);
         gtk_container_add(GTK_CONTAINER(frPixmap),vbox1);
         /* GnomeFontPicker with pixmap */
@@ -674,18 +674,18 @@ create_font_picker (void)
 
         gtk_signal_connect(GTK_OBJECT(fontpicker1),"font_set",
                            GTK_SIGNAL_FUNC(cfp_set_font),lbPixmap);
-        
+
         /* Font_Info */
         frFontInfo=gtk_frame_new(_("Font Info"));
         gtk_box_pack_start(GTK_BOX(vbox),frFontInfo,TRUE,TRUE,0);
         vbox2=gtk_vbox_new(FALSE,FALSE);
-        gtk_container_set_border_width(GTK_CONTAINER(vbox2),5);        
+        gtk_container_set_border_width(GTK_CONTAINER(vbox2),5);
         gtk_container_add(GTK_CONTAINER(frFontInfo),vbox2);
-        
+
         /* GnomeFontPicker with fontinfo */
         hbox1=gtk_hbox_new(FALSE,5);
         gtk_box_pack_start(GTK_BOX(vbox2),hbox1,FALSE,FALSE,0);
-        
+
         ckUseFont=gtk_check_button_new_with_label(_("Use Font in button with size"));
         gtk_box_pack_start(GTK_BOX(hbox1),ckUseFont,TRUE,TRUE,0);
 
@@ -696,7 +696,7 @@ create_font_picker (void)
         ckShowSize=gtk_check_button_new_with_label(_("Show font size"));
         gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(ckShowSize),TRUE);
         gtk_box_pack_start(GTK_BOX(vbox2),ckShowSize,FALSE,FALSE,5);
-        
+
         fontpicker2 = gnome_font_picker_new();
         gnome_font_picker_set_mode(GNOME_FONT_PICKER(fontpicker2),GNOME_FONT_PICKER_MODE_FONT_INFO);
         gtk_box_pack_start(GTK_BOX(vbox2),fontpicker2,TRUE,TRUE,0);
@@ -706,17 +706,17 @@ create_font_picker (void)
 
         gtk_signal_connect(GTK_OBJECT(ckShowSize),"toggled",
                            (GtkSignalFunc)cfp_ck_ShowSize,fontpicker2);
-        
+
         gtk_signal_connect(GTK_OBJECT(adj),"value_changed",
                            (GtkSignalFunc)cfp_sp_value_changed,fontpicker2);
-        
+
         lbFontInfo=gtk_label_new(_("If you choose a font it will appear here"));
         gtk_box_pack_start(GTK_BOX(vbox2),lbFontInfo,TRUE,TRUE,5);
 
         gtk_signal_connect(GTK_OBJECT(fontpicker2),"font_set",
                            GTK_SIGNAL_FUNC(cfp_set_font),lbFontInfo);
-        
-        
+
+
         /* User Widget */
         frUser=gtk_frame_new("User Widget");
         gtk_box_pack_start(GTK_BOX(vbox),frUser,TRUE,TRUE,0);
@@ -740,9 +740,9 @@ create_font_picker (void)
 
         gtk_signal_connect(GTK_OBJECT(fontpicker3),"font_set",
                            GTK_SIGNAL_FUNC(cfp_set_font),lbUser);
-        
+
         gtk_widget_show_all(app);
-    
+
 }
 
 static void
@@ -753,7 +753,7 @@ create_icon_list(void)
 	GtkWidget *iconlist;
 	GdkImlibImage *pix;
 	int i;
-	
+
 	app = create_newwin(TRUE,"testGNOME","Icon List");
 
 	sw = gtk_scrolled_window_new (NULL, NULL);
@@ -764,13 +764,13 @@ create_icon_list(void)
 
 	iconlist = gnome_icon_list_new (80, NULL, TRUE);
 	gtk_container_add (GTK_CONTAINER (sw), iconlist);
-	
+
 	GTK_WIDGET_SET_FLAGS(iconlist, GTK_CAN_FOCUS);
 	pix = gdk_imlib_create_image_from_xpm_data((gchar **)bomb_xpm);
 	gdk_imlib_render (pix, pix->rgb_width, pix->rgb_height);
 
 	gtk_widget_grab_focus (iconlist);
-	
+
 	gnome_icon_list_freeze (GNOME_ICON_LIST (iconlist));
 
 	for (i = 0; i < 30; i++) {
@@ -778,7 +778,7 @@ create_icon_list(void)
 		gnome_icon_list_append_imlib(GNOME_ICON_LIST(iconlist), pix, "Bar");
 		gnome_icon_list_append_imlib(GNOME_ICON_LIST(iconlist), pix, "LaLa");
 	}
-	
+
 	gnome_icon_list_set_selection_mode (GNOME_ICON_LIST (iconlist), GTK_SELECTION_MULTIPLE);
 	gnome_icon_list_thaw (GNOME_ICON_LIST (iconlist));
 	gtk_widget_show (iconlist);
@@ -809,7 +809,7 @@ create_pixmap(void)
 	GtkWidget *pixmap;
 	app = create_newwin(TRUE,"testGNOME","Pixmap");
 	pixmap = gnome_pixmap_new_from_xpm_d (bomb_xpm);
-		
+
 	gnome_app_set_contents(GNOME_APP(app),pixmap);
 	gtk_widget_show(pixmap);
 	gtk_widget_show(app);
@@ -818,7 +818,7 @@ create_pixmap(void)
 static void
 create_property_box(void)
 {
-/* this is broken, I dunno why. FIXME 
+/* this is broken, I dunno why. FIXME
    GtkWidget *vbox;
    GtkWidget *label;
    GtkWidget *check;
@@ -842,7 +842,7 @@ create_property_box(void)
 
 static void
 make_entry_hbox(GtkBox * box,
-		gchar * buttontext, gchar * entrydefault, 
+		gchar * buttontext, gchar * entrydefault,
 		GtkSignalFunc callback, gpointer entrydata)
 {
   GtkWidget * hbox;
@@ -856,7 +856,7 @@ make_entry_hbox(GtkBox * box,
   gtk_box_pack_end(GTK_BOX(hbox), entry, TRUE, TRUE, GNOME_PAD);
   button = gtk_button_new_with_label(buttontext);
   gtk_box_pack_start(GTK_BOX(hbox), button, TRUE, TRUE, GNOME_PAD);
-  gtk_signal_connect(GTK_OBJECT(button), "clicked", 
+  gtk_signal_connect(GTK_OBJECT(button), "clicked",
 		     callback, entry);
 
   gtk_box_pack_start(box, hbox, TRUE, TRUE, GNOME_PAD);
@@ -872,7 +872,7 @@ make_button_hbox(GtkBox * box, gchar * buttontext,
   hbox = gtk_hbox_new(TRUE, GNOME_PAD);
   button = gtk_button_new_with_label(buttontext);
   gtk_box_pack_start(GTK_BOX(hbox), button, TRUE, TRUE, GNOME_PAD);
-  gtk_signal_connect(GTK_OBJECT(button), "clicked", 
+  gtk_signal_connect(GTK_OBJECT(button), "clicked",
 		     callback, data);
 
   gtk_box_pack_start(box, hbox, TRUE, TRUE, GNOME_PAD);
@@ -885,21 +885,21 @@ message_cb(GtkWidget * button, GtkEntry * e)
   gnome_app_message(app, gtk_entry_get_text(e));
 }
 
-static void 
+static void
 flash_cb(GtkWidget * b, GtkEntry * e)
 {
   GnomeApp * app = gtk_object_get_user_data(GTK_OBJECT(e));
   gnome_app_flash(app, gtk_entry_get_text(e));
 }
 
-static void 
+static void
 error_cb(GtkWidget * b, GtkEntry * e)
 {
   GnomeApp * app = gtk_object_get_user_data(GTK_OBJECT(e));
   gnome_app_error(app, gtk_entry_get_text(e));
 }
 
-static void 
+static void
 warning_cb(GtkWidget * b, GtkEntry * e)
 {
   GnomeApp * app = gtk_object_get_user_data(GTK_OBJECT(e));
@@ -923,7 +923,7 @@ reply_cb(gint reply, gpointer thedata)
   if (s) {
     g_print(s);
     g_print("\n");
-    gnome_ok_dialog(s); 
+    gnome_ok_dialog(s);
     g_free(s);
   }
   else {
@@ -948,7 +948,7 @@ question_modal_cb(GtkWidget * b, GtkEntry * e)
   gnome_app_question_modal(app, gtk_entry_get_text(e),
 			   reply_cb, data_string);
 }
- 
+
 static void
 ok_cancel_cb(GtkWidget * b, GtkEntry * e)
 {
@@ -986,8 +986,8 @@ request_string_cb(GtkWidget * b, GtkEntry * e)
 			   string_cb, data_string);
 }
 
-static gdouble 
-percent_cb(gpointer ignore) 
+static gdouble
+percent_cb(gpointer ignore)
 {
   static gdouble progress = 0.0;
   progress += 0.05;
@@ -1001,7 +1001,7 @@ cancel_cb(gpointer ignore, GtkWidget *widget)
   gnome_ok_dialog("Progress cancelled!");
 }
 
-static void 
+static void
 stop_progress_cb(GnomeDialog * d, gint button, GnomeAppProgressKey key)
 {
   gnome_app_progress_done(key);
@@ -1021,10 +1021,10 @@ progress_timeout_cb(GtkWidget * b, GnomeApp * app)
 				   cancel_cb,
 				   dialog);
 
-  gtk_signal_connect(GTK_OBJECT(dialog), "clicked", 
+  gtk_signal_connect(GTK_OBJECT(dialog), "clicked",
 		     GTK_SIGNAL_FUNC(stop_progress_cb), key);
   gtk_signal_connect_object(GTK_OBJECT(app), "destroy",
-			    GTK_SIGNAL_FUNC(gnome_dialog_close), 
+			    GTK_SIGNAL_FUNC(gnome_dialog_close),
 			    GTK_OBJECT(dialog));
 
   gtk_widget_show(dialog);
@@ -1034,7 +1034,7 @@ static void
 bar_push_cb(GtkWidget * b, GtkEntry * e)
 {
   GnomeApp * app = gtk_object_get_user_data(GTK_OBJECT(e));
-  gnome_appbar_push(GNOME_APPBAR(app->statusbar), 
+  gnome_appbar_push(GNOME_APPBAR(app->statusbar),
 		    gtk_entry_get_text(e));
 }
 
@@ -1042,7 +1042,7 @@ static void
 bar_set_status_cb(GtkWidget * b, GtkEntry * e)
 {
   GnomeApp * app = gtk_object_get_user_data(GTK_OBJECT(e));
-  gnome_appbar_set_status(GNOME_APPBAR(app->statusbar), 
+  gnome_appbar_set_status(GNOME_APPBAR(app->statusbar),
 			  gtk_entry_get_text(e));
 }
 
@@ -1050,7 +1050,7 @@ static void
 bar_set_default_cb(GtkWidget * b, GtkEntry * e)
 {
   GnomeApp * app = gtk_object_get_user_data(GTK_OBJECT(e));
-  gnome_appbar_set_default(GNOME_APPBAR(app->statusbar), 
+  gnome_appbar_set_default(GNOME_APPBAR(app->statusbar),
 			   gtk_entry_get_text(e));
 }
 
@@ -1058,7 +1058,7 @@ static void
 bar_set_prompt_cb(GtkWidget * b, GtkEntry * e)
 {
   GnomeApp * app = gtk_object_get_user_data(GTK_OBJECT(e));
-  gnome_appbar_set_prompt(GNOME_APPBAR(app->statusbar), 
+  gnome_appbar_set_prompt(GNOME_APPBAR(app->statusbar),
 			  gtk_entry_get_text(e), FALSE);
 }
 
@@ -1066,7 +1066,7 @@ static void
 bar_set_prompt_modal_cb(GtkWidget * b, GtkEntry * e)
 {
   GnomeApp * app = gtk_object_get_user_data(GTK_OBJECT(e));
-  gnome_appbar_set_prompt(GNOME_APPBAR(app->statusbar), 
+  gnome_appbar_set_prompt(GNOME_APPBAR(app->statusbar),
 			  gtk_entry_get_text(e), TRUE);
 }
 
@@ -1175,8 +1175,8 @@ create_app_util(void)
   GtkWidget * hbox, * entry, * button;
   GtkAdjustment * adj;
 
-  app = 
-    GNOME_APP(gnome_app_new("testGNOME", 
+  app =
+    GNOME_APP(gnome_app_new("testGNOME",
 			    "gnome-app-util/gnome-appbar/gnome-dialog-util test"));
 
   bar = GNOME_APPBAR(gnome_appbar_new(TRUE, TRUE, GNOME_PREFERENCES_USER));
@@ -1200,11 +1200,11 @@ create_app_util(void)
 			"appbar vs. dialogs.");
   gtk_box_pack_start(vbox, label, TRUE, TRUE, GNOME_PAD);
 
-  make_entry_hbox(vbox, "Message", "This is a message", 
+  make_entry_hbox(vbox, "Message", "This is a message",
 		  GTK_SIGNAL_FUNC(message_cb), app);
-  make_entry_hbox(vbox, "Flash", "Should disappear shortly", 
+  make_entry_hbox(vbox, "Flash", "Should disappear shortly",
 		  GTK_SIGNAL_FUNC(flash_cb), app);
-  make_entry_hbox(vbox, "Error", "an error", 
+  make_entry_hbox(vbox, "Error", "an error",
 		  GTK_SIGNAL_FUNC(error_cb), app);
   make_entry_hbox(vbox, "Warning", "Warning!",
 		  GTK_SIGNAL_FUNC(warning_cb), app);
@@ -1218,12 +1218,12 @@ create_app_util(void)
 		  GTK_SIGNAL_FUNC(ok_cancel_modal_cb), app);
   make_entry_hbox(vbox, "Request string", "Enter a string:",
 		  GTK_SIGNAL_FUNC(request_string_cb), app);
-  make_button_hbox(vbox, "Timeout Progress", 
+  make_button_hbox(vbox, "Timeout Progress",
 		   GTK_SIGNAL_FUNC(progress_timeout_cb), app);
 
   label = gtk_label_new("App Bar Functions");
   gtk_box_pack_start(vbox, label, TRUE, TRUE, GNOME_PAD);
-  
+
   make_entry_hbox(vbox, "AppBar push", "This text was pushed",
 		  GTK_SIGNAL_FUNC(bar_push_cb), app);
   make_entry_hbox(vbox, "AppBar set status", "This is a status",
@@ -1235,13 +1235,13 @@ create_app_util(void)
   make_entry_hbox(vbox, "AppBar set modal prompt", "a modal prompt",
 		  GTK_SIGNAL_FUNC(bar_set_prompt_modal_cb), app);
 
-  make_button_hbox(vbox, "AppBar pop", 
+  make_button_hbox(vbox, "AppBar pop",
 		   GTK_SIGNAL_FUNC(bar_pop_cb), app);
-  make_button_hbox(vbox, "AppBar clear stack", 
+  make_button_hbox(vbox, "AppBar clear stack",
 		   GTK_SIGNAL_FUNC(bar_clear_stack_cb), app);
-  make_button_hbox(vbox, "AppBar refresh", 
-		   GTK_SIGNAL_FUNC(bar_refresh_cb), app);  
-  make_button_hbox(vbox, "AppBar clear prompt", 
+  make_button_hbox(vbox, "AppBar refresh",
+		   GTK_SIGNAL_FUNC(bar_refresh_cb), app);
+  make_button_hbox(vbox, "AppBar clear prompt",
 		   GTK_SIGNAL_FUNC(bar_clear_prompt_cb), app);
 
   adj = GTK_ADJUSTMENT(gtk_adjustment_new(0.5, 0.0, 1.0, 0.01, 0.05, 0.05));
@@ -1252,7 +1252,7 @@ create_app_util(void)
   gtk_box_pack_start(GTK_BOX(hbox), button, TRUE, TRUE, GNOME_PAD);
   gtk_box_pack_end(GTK_BOX(hbox), entry, TRUE, TRUE, GNOME_PAD);
   gtk_box_pack_start(vbox, hbox, TRUE, TRUE, GNOME_PAD);
-  gtk_signal_connect(GTK_OBJECT(button), "clicked", 
+  gtk_signal_connect(GTK_OBJECT(button), "clicked",
 		     GTK_SIGNAL_FUNC(bar_progress_cb), entry);
 
   label = gtk_label_new("Dialog Util Functions");
@@ -1262,7 +1262,7 @@ create_app_util(void)
 		  GTK_SIGNAL_FUNC(dialog_ok_cb), app);
   make_entry_hbox(vbox, "Error dialog", "An error! An error!",
 		  GTK_SIGNAL_FUNC(dialog_error_cb), app);
-  make_entry_hbox(vbox, "Warning dialog", "I'm warning you...", 
+  make_entry_hbox(vbox, "Warning dialog", "I'm warning you...",
 		  GTK_SIGNAL_FUNC(dialog_warning_cb), app);
   make_entry_hbox(vbox, "OK-Cancel dialog", "OK or should I cancel?",
 		  GTK_SIGNAL_FUNC(dialog_ok_cancel_cb), app);
@@ -1302,7 +1302,7 @@ static GnomeUIInfo helper_file_menu[] = {
 	  GNOME_APP_PIXMAP_STOCK, GNOME_STOCK_MENU_SAVE, 's', GDK_CONTROL_MASK, NULL },
 	{ GNOME_APP_UI_ITEM, "Save _as...", "Save the current file with a new name", item_activated, "file/save as", NULL,
 	  GNOME_APP_PIXMAP_STOCK, GNOME_STOCK_MENU_SAVE_AS, 0, 0, NULL },
-	
+
 	GNOMEUIINFO_SEPARATOR,
 
 	{ GNOME_APP_UI_ITEM, "_Print...", "Print the current file", item_activated, "file/print", NULL,
@@ -1576,7 +1576,7 @@ create_app_helper (GtkWidget *widget, gpointer data)
 	gnome_app_create_toolbar (GNOME_APP (app), helper_toolbar);
 
         bar = GNOME_APPBAR(gnome_appbar_new(FALSE, TRUE, GNOME_PREFERENCES_USER));
-        gnome_app_set_statusbar(GNOME_APP(app), GTK_WIDGET(bar));  
+        gnome_app_set_statusbar(GNOME_APP(app), GTK_WIDGET(bar));
 
         gnome_app_install_appbar_menu_hints(GNOME_APPBAR(bar), helper_main_menu);
 
@@ -1661,7 +1661,7 @@ create_dentry_edit(void)
 	GtkWidget *app;
 	GtkWidget *edit;
 	GtkWidget *nbook;
-	
+
 	nbook = gtk_notebook_new();
 
 	app = create_newwin(TRUE,"testGNOME","DEntry Entry");
@@ -1709,7 +1709,7 @@ create_href(void)
 	ent1 = gtk_entry_new();
 	gtk_entry_set_text(GTK_ENTRY(ent1), "http://www.gnome.org/");
 	gtk_box_pack_start(GTK_BOX(vbox), ent1, TRUE, TRUE, 0);
-	
+
 	ent2 = gtk_entry_new();
 	gtk_entry_set_text(GTK_ENTRY(ent2), "Gnome Website");
 	gtk_box_pack_start(GTK_BOX(vbox), ent2, TRUE, TRUE, 0);
@@ -1747,8 +1747,8 @@ main (int argc, char *argv[])
                   { "pixmap entry", create_pixmap_entry },
                   { "icon entry", create_icon_entry },
                   { "number entry", create_number_entry },
-                  { "font picker", create_font_picker },                  
-		  { "icon list", create_icon_list }, 
+                  { "font picker", create_font_picker },
+		  { "icon list", create_icon_list },
 		  { "less", create_less },
 		  { "pixmap", create_pixmap },
 		  { "dentry edit", create_dentry_edit },
@@ -1758,7 +1758,7 @@ main (int argc, char *argv[])
 	  };
 	int nbuttons = sizeof (buttons) / sizeof (buttons[0]);
 	GtkWidget *app;
-	GtkWidget *box1; 
+	GtkWidget *box1;
 	GtkWidget *box2;
 	GtkWidget *button;
 	GtkWidget *scrolled_window;
