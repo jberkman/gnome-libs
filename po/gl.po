@@ -13,8 +13,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-libs 1.1.0\n"
-"POT-Creation-Date: 2000-02-21 18:12-0500\n"
-"PO-Revision-Date: 2000-01-06 16:06+0100\n"
+"POT-Creation-Date: 2000-04-07 20:20+0200\n"
+"PO-Revision-Date: 2000-04-07 23:39+0200\n"
 "Last-Translator: Jesus Bravo Alvarez <jba@pobox.com>\n"
 "Language-Team: Galician <gpul-traduccion@ceu.fi.udc.es>\n"
 "MIME-Version: 1.0\n"
@@ -25,6 +25,8 @@ msgstr ""
 #, c-format
 msgid "Could not create per-user gnome configuration directory `%s': %s\n"
 msgstr ""
+"Non se puido crea-lo directorio do usuario de configuración de gnome `%s': "
+"%s\n"
 
 #: libgnome/gnomelib-init.c:199
 #, c-format
@@ -32,25 +34,27 @@ msgid ""
 "Could not set mode 0700 on private per-user gnome configuration directory "
 "`%s': %s\n"
 msgstr ""
+"Non se puido establece-lo modo 0700 no directorio privado do usuario de "
+"configuración de gnome `%s': %s\n"
 
 #: libgnome/gnomelib-init.c:206
 #, c-format
 msgid "Could not create gnome accelerators directory `%s': %s\n"
-msgstr ""
+msgstr "Non se puido crea-lo directorio de aceleradores de gnome `%s': %s\n"
 
-#: libgnomeui/gnome-about.c:320
+#: libgnomeui/gnome-about.c:332
 msgid "Author:"
 msgstr "Autor:"
 
-#: libgnomeui/gnome-about.c:323 libgnomeui/gnome-about.c:325
+#: libgnomeui/gnome-about.c:335 libgnomeui/gnome-about.c:337
 msgid "Authors:"
 msgstr "Autores:"
 
-#: libgnomeui/gnome-about.c:630
+#: libgnomeui/gnome-about.c:643
 msgid "Authors: "
 msgstr "Autores: "
 
-#: libgnomeui/gnome-about.c:971 libgnomeui/stock_demo.c:307
+#: libgnomeui/gnome-about.c:1020 libgnomeui/stock_demo.c:307
 #: libgnomeui/winhints_demo.c:256
 msgid "About"
 msgstr "Acerca de"
@@ -303,9 +307,8 @@ msgstr "Configura-la aplicación"
 #.
 #. About
 #: libgnomeui/gnome-app-helper.c:213
-#, fuzzy
 msgid "_About"
-msgstr "Acerca de"
+msgstr "_Acerca de"
 
 #: libgnomeui/gnome-app-helper.c:214
 msgid "About this application"
@@ -736,7 +739,7 @@ msgstr "Seleccionar ficheiro"
 #: libgnomeui/gnome-file-entry.c:304 libgnomeui/gnome-spell.c:620
 #: libgnomeui/gnome-spell.c:637 libgnomeui/gnome-spell.c:654
 msgid "Browse..."
-msgstr "Buscar..."
+msgstr "Procurar..."
 
 #: libgnomeui/gnome-font-picker.c:161
 msgid "Pick a Font"
@@ -746,18 +749,22 @@ msgstr "Escoller unha fonte"
 msgid "Font"
 msgstr "Fonte"
 
-#: libgnomeui/gnome-icon-entry.c:157 libgnomeui/gnome-icon-entry.c:612
+#: libgnomeui/gnome-icon-entry.c:273 libgnomeui/gnome-icon-entry.c:770
 msgid "No Icon"
 msgstr "Sen Icono"
 
-#: libgnomeui/gnome-icon-entry.c:321 libgnomeui/gnome-pixmap-entry.c:296
+#: libgnomeui/gnome-icon-entry.c:447 libgnomeui/gnome-pixmap-entry.c:429
 msgid "Can't find an hbox, using a normal file selection"
 msgstr ""
 "Non se pode atopar unha hbox, usando unha selección de ficheiros normal"
 
-#: libgnomeui/gnome-icon-entry.c:327 libgnomeui/gnome-pixmap-entry.c:302
+#: libgnomeui/gnome-icon-entry.c:453 libgnomeui/gnome-pixmap-entry.c:435
 msgid "Preview"
 msgstr "Previsualización"
+
+#: libgnomeui/gnome-icon-entry.c:791
+msgid "Browse"
+msgstr "Procurar"
 
 #: libgnomeui/gnome-icon-sel.c:338
 msgid "Loading Icons..."
@@ -866,15 +873,15 @@ msgstr "Pregunta"
 msgid "Message"
 msgstr "Mensaxe"
 
-#: libgnomeui/gnome-number-entry.c:177
+#: libgnomeui/gnome-number-entry.c:200
 msgid "Calculator"
 msgstr "Calculadora"
 
-#: libgnomeui/gnome-number-entry.c:233
+#: libgnomeui/gnome-number-entry.c:256
 msgid "Calculator..."
 msgstr "Calculadora..."
 
-#: libgnomeui/gnome-pixmap-entry.c:128 libgnomeui/gnome-pixmap-entry.c:399
+#: libgnomeui/gnome-pixmap-entry.c:251 libgnomeui/gnome-pixmap-entry.c:532
 msgid "No Image"
 msgstr "Sen Imaxe"
 
@@ -1133,19 +1140,19 @@ msgstr "Arriba"
 msgid "Down"
 msgstr "Abaixo"
 
-#: libgnomeui/gnome-stock.c:1426
+#: libgnomeui/gnome-stock.c:1421
 msgid "Menu Accelerator Keys"
 msgstr "Atallos de menú"
 
-#: libgnomeui/gnome-stock.c:1428
+#: libgnomeui/gnome-stock.c:1423
 msgid "Global"
 msgstr "Global"
 
-#: libgnomeui/gnome-stock.c:1430
+#: libgnomeui/gnome-stock.c:1425
 msgid "Menu Item"
 msgstr "Elemento de menú"
 
-#: libgnomeui/gnome-stock.c:1431
+#: libgnomeui/gnome-stock.c:1426
 msgid "Accelerator"
 msgstr "Atallo"
 
@@ -1501,103 +1508,4 @@ msgstr "Número estraño na resposta"
 
 #: test-gnome/testgnome.c:1963
 msgid "Test GNOME"
-msgstr ""
-
-#~ msgid "CONFIG-PATH"
-#~ msgstr "ROTA-DA-CONFIGURACIÓN"
-
-#~ msgid "Get config entry"
-#~ msgstr "Ler entrada da configuración"
-
-#~ msgid "get"
-#~ msgstr "ler"
-
-#~ msgid "Set config entry"
-#~ msgstr "Definir entrada da configuración"
-
-#~ msgid "set"
-#~ msgstr "definir"
-
-#~ msgid ""
-#~ "Error on option %s: %s.\n"
-#~ "Run '%s --help' to see a full list of available command line options.\n"
-#~ msgstr ""
-#~ "Erro na opción %s: %s.\n"
-#~ "Execute '%s --help' para ver unha lista de tódalas opcións de liña de "
-#~ "comandos disponibles\n"
-
-#~ msgid "Disable sound server usage"
-#~ msgstr "Desactiva-lo uso do servidor de son"
-
-#~ msgid "Enable sound server usage"
-#~ msgstr "Activa-lo uso do servidor de son"
-
-#~ msgid "Host:port on which the sound server to use is running"
-#~ msgstr "Máquina:porto no que está a se executar o servidor de son a usar"
-
-#~ msgid "HOSTNAME:PORT"
-#~ msgstr "MÁQUINA:PORTO"
-
-#~ msgid "_About..."
-#~ msgstr "_Acerca de..."
-
-#~ msgid "Creating '/GNOME' context %s %d"
-#~ msgstr "Creando contexto '/GNOME' %s %d"
-
-#~ msgid "Creating '/GNOME/Servers' context %s %d"
-#~ msgstr "Creando contexto '/GNOME/Servers' %s %d"
-
-#~ msgid "GOAD ID of the server to activate"
-#~ msgstr "ID GOAD do servidor a activar"
-
-#~ msgid "REPO-ID"
-#~ msgstr "ID-REPO"
-
-#~ msgid "Repository ID of the server to activate"
-#~ msgstr "ID de repositorio do servidor a activar"
-
-#~ msgid ""
-#~ "I couldn't find any installed services.  Either you don't have\n"
-#~ "any services installed or I don't know the path to find them.\n"
-#~ "In either case, please check your GNOME installation."
-#~ msgstr ""
-#~ "Non se puido atopar ningún servicio instalado.  Ou non ten ningún\n"
-#~ "servicio instalado, ou non coñezo o camiño para os atopar.  En\n"
-#~ "calquera caso verifique a súa instalación GNOME, se fai o favor."
-
-#~ msgid "(Internal use only) GOAD server ID to activate"
-#~ msgstr "(Só para uso interno) ID do servidor GOAD a activar"
-
-#~ msgid "GOAD_ID"
-#~ msgstr "ID_GOAD"
-
-#~ msgid "ID under which GOAD knows this server"
-#~ msgstr "ID polo cal GOAD coñece este servidor"
-
-#~ msgid "REPO_ID"
-#~ msgstr "ID_REPO"
-
-#~ msgid "Repository ID under which GOAD knows this server"
-#~ msgstr "ID de Repositorio polo cal GOAD coñece este servidor"
-
-#~ msgid "Failed to open CORBA cookie file (%s) for writing: %s\n"
-#~ msgstr ""
-#~ "Erro ó abri-lo ficheiro \"cookie\" de CORBA (%s) para escribir: %s\n"
-
-#~ msgid "Failed to write CORBA cookie file (%s): %s\n"
-#~ msgstr "Erro ó escribi-lo ficheiro \"cookie\" de CORBA (%s): %s\n"
-
-#~ msgid "Failed to write CORBA cookie to `%s': %s\n"
-#~ msgstr "Erro ó escribi-lo ficheiro \"cookie\" de CORBA a `%s': %s\n"
-
-#~ msgid "Failed to open CORBA cookie file `%s': %s\n"
-#~ msgstr "Erro ó abri-lo ficheiro \"cookie\" de CORBA `%s': %s\n"
-
-#~ msgid "Failed to read CORBA cookie file `%s': %s\n"
-#~ msgstr "Erro ó le-lo ficheiro \"cookie\" de CORBA `%s': %s\n"
-
-#~ msgid "Failed to obtain CORBA authentication cookie, exiting\n"
-#~ msgstr "Erro ó obte-lo \"cookie\" de autentificación CORBA; saíndo\n"
-
-#~ msgid "Could not get name service!"
-#~ msgstr "¡Non se puido obte-lo servicio de nomes!"
+msgstr "Proba de GNOME"
