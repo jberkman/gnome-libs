@@ -37,6 +37,10 @@ AC_SUBST(GNOME_CANVAS_OBJS)
 
 GNOME_SUPPORT_CHECKS
 
+AM_PATH_GLIB(1.1.0,,[
+  GLIB_LIBS=
+  AC_MSG_WARN(GLIB not installed, or glib-config not in path)])
+
 dnl Utility conditional
 AM_CONDITIONAL(FALSE, test x = y)
 
@@ -154,7 +158,7 @@ AC_MSG_ERROR(I could not find gdk_imlib, which is required by Gnome libs)
 ],$TIFF_LIBS $GIF_LIBS $JPEG_LIBS $PNG_LIBS $Z_LIBS $GTK_LIBS $X_LIBS $x_libs)
 
 dnl These are for building the apporpriate lib*
-LIBGNOME_LIBS="$DL_LIB"
+LIBGNOME_LIBS="$GLIB_LIBS $DL_LIB"
 LIBGNOMEUI_LIBS="$LIBGNOME_LIBS $GDK_IMLIB_LIBS $GTK_LIBS"
 LIBGTKXMHTML_LIBS="$XPM_LIBS $JPEG_LIBS $PNG_LIBS $Z_LIBS $GTK_LIBS"
 LIBSUPPORT=
@@ -170,7 +174,7 @@ if test "$need_gnome_support" = yes; then
 else
    GNOME_LIBS="-lgnome $LIBGNOME_LIBS"
 fi
-GNOMEUI_LIBS="-lgnomeui $GNOME_LIBS $GDK_IMLIB_LIBS $GTK_LIBS"
+GNOMEUI_LIBS="-lgnomeui $GDK_IMLIB_LIBS $GTK_LIBS $GNOME_LIBS"
 GTKXMHTML_LIBS="-lgtkxmhtml $LIBGTKXMHTML_LIBS"
 ZVT_LIBS="-lzvt $GTK_LIBS"
 
