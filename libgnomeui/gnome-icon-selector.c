@@ -216,6 +216,7 @@ gnome_icon_selector_construct (GnomeIconSelector *iselector,
                                   GTK_SIGNAL_FUNC (icon_selected_cb),
                                   iselector);
 
+	gtk_object_ref (GTK_OBJECT (list));
 	iselector->_priv->icon_list = GNOME_ICON_LIST (list);
 	
 	gtk_widget_show_all (box);
@@ -296,10 +297,8 @@ gnome_icon_selector_destroy (GtkObject *object)
     iselector = GNOME_ICON_SELECTOR (object);
 
     if (iselector->_priv) {
-#if 0
 	if (iselector->_priv->icon_list)
 	    gtk_widget_unref (iselector->_priv->icon_list);
-#endif
 	iselector->_priv->icon_list = NULL;
 
 	g_slist_foreach (iselector->_priv->file_list,
