@@ -76,8 +76,11 @@ fi
 for i in libgtktty .
 do 
     echo processing $srcdir/$i
-    (cd $srcdir/$i; libtoolize --copy --force; aclocal; automake --gnu; autoheader; autoconf)
+    (cd $srcdir/$i; \
+    libtoolize --copy --force; \
+    if test -d macros; then aclocal -I macros; else aclocal; fi; \
+    automake --gnu; autoheader; autoconf)
 done
 
 echo running $srcdir/configure
-$srcdir/configure "$@" && echo Now type \`make\' to compile the Gnome Libraries.
+$srcdir/configure "$@" && echo Now type \`make\' to compile the Gnome Libraries
