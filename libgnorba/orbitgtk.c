@@ -24,41 +24,45 @@ extern void goad_register_arguments(void);
 CORBA_ORB gnome_orbit_orb;
 CORBA_Principal request_cookie;
 
-static void
-orb_handle_connection(GIOPConnection *cnx, gint source, GdkInputCondition cond)
+static gboolean
+orb_handle_connection(GIOChannel *source, GIOCondition cond,
+		      GIOPConnection *cnx)
 {
 
-	/* The best way to know about an fd exception is if select()/poll()
+  /* The best way to know about an fd exception is if select()/poll()
 	 * tells you about it, so we just relay that information on to ORBit
 	 * if possible
 	 */
 	
-	switch(cond) {
-	case GDK_INPUT_EXCEPTION:
-		giop_main_handle_connection_exception(cnx);
-		break;
-	default:
-		giop_main_handle_connection(cnx);
-	}
+  if(cond & (G_IO_HUP|G_IO_NVAL|G_IO_ERR))
+    giop_main_handle_connection_exception(cnx);
+  else
+    giop_main_handle_connection(cnx);
+
+  return TRUE;
 }
 
 static void
 orb_add_connection(GIOPConnection *cnx)
 {
-	int tag;
+  int tag;
+  GIOChannel *channel;
 
-	tag = gtk_input_add_full(GIOP_CONNECTION_GET_FD(cnx),
-				 GDK_INPUT_READ|GDK_INPUT_EXCEPTION,
-				 (GdkInputFunction)orb_handle_connection,
-				 NULL, cnx, NULL);
-	cnx->user_data = GINT_TO_POINTER (tag);
+  channel = g_io_channel_unix_new(GIOP_CONNECTION_GET_FD(cnx));
+  tag = g_io_add_watch_full   (channel, G_PRIORITY_DEFAULT,
+			       G_IO_IN|G_IO_ERR|G_IO_HUP|G_IO_NVAL, 
+			       orb_handle_connection,
+			       cnx, NULL);
+  g_io_channel_unref (channel);
+
+  cnx->user_data = GINT_TO_POINTER (tag);
 }
 
 static void
 orb_remove_connection(GIOPConnection *cnx)
 {
-	gtk_input_remove (GPOINTER_TO_UINT (cnx->user_data));
-	cnx->user_data = GINT_TO_POINTER (-1);
+  g_source_remove(GPOINTER_TO_UINT (cnx->user_data));
+  cnx->user_data = GINT_TO_POINTER (-1);
 }
 
 static CORBA_boolean

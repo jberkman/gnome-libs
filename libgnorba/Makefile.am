@@ -80,7 +80,7 @@ gnome_name_service_SOURCES =				\
 gnome_name_service_LDADD = 				\
 	$(top_builddir)/libgnorba/libgnorbagtk.la	\
 	$(ORBIT_LIBS) 					\
-	$(GTK_LIBS)					\
+	$(X_LIBS) -lX11					\
 	-lname-server					\
 	$(INTLLIBS)
 

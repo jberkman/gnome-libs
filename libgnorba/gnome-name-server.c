@@ -33,54 +33,83 @@
 #endif
 #include <sys/types.h>
 
-#include <gtk/gtk.h>
+#include <glib.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <syslog.h>
 #include <signal.h>
-#include <gtk/gtkinvisible.h>
+#include <X11/Xlib.h>
 #include <ORBitservices/CosNaming.h>
 #include <ORBitservices/CosNaming_impl.h>
-#include <gdk/gdkx.h>
-#include <gdk/gdkprivate.h>
 #include "gnorba.h"
 
 /* The widget that points to the proxy window that keeps the IOR alive */
-GtkWidget *proxy_window;
+Window proxy_window;
+Display *display;
+
+int x_error_code = 0;
+GMainLoop *ml;
+
+static int x_error_handler(Display *disp, XErrorEvent *ev)
+{
+  x_error_code = ev->error_code;
+
+  return 0;
+}
+
+static gboolean
+handle_x_connection(GIOChannel *source, GIOCondition cond,
+		    Display *disp)
+{
+  XEvent ev;
+
+  if(cond & (G_IO_ERR|G_IO_HUP|G_IO_NVAL)) {
+    XCloseDisplay(disp);
+    g_main_quit(ml);
+    return TRUE;
+  }
+
+  /* ignore everything */
+  while(XPending(disp)) XNextEvent(disp, &ev);
+
+  return TRUE;
+}
 
 static gboolean
 setup_atomically_name_server_ior (CORBA_char *ior)
 {
-	GdkAtom name_server_atom, name_server_ior_atom, window_atom, string_atom;
-	guint32 proxy_xid;
+	Atom name_server_atom, name_server_ior_atom, window_atom, string_atom;
 	Atom type;
 	int format;
 	Window *proxy_data;
-	Window proxy;
+	Window proxy, proxy_xid;
 	guint32 old_warnings;
 	unsigned long nitems, after;
+	Window rootwin;
 	
-	proxy_window = gtk_invisible_new ();
-	gtk_widget_show (proxy_window);
-		
-	name_server_atom = gdk_atom_intern ("GNOME_NAME_SERVER", FALSE);
-	name_server_ior_atom = gdk_atom_intern ("GNOME_NAME_SERVER_IOR", FALSE);
-	window_atom = gdk_atom_intern ("WINDOW", FALSE);
-	string_atom = gdk_atom_intern ("STRING", FALSE),
-	
-	XGrabServer (GDK_DISPLAY ());
-	proxy_xid = GDK_WINDOW_XWINDOW (proxy_window->window);
+	name_server_atom = XInternAtom (display, "GNOME_NAME_SERVER", FALSE);
+	name_server_ior_atom = XInternAtom (display, "GNOME_NAME_SERVER_IOR", FALSE);
+	window_atom = XInternAtom (display, "WINDOW", FALSE);
+	string_atom = XInternAtom (display, "STRING", FALSE);
+
+	rootwin = DefaultRootWindow(display);
+	proxy_window = proxy_xid = XCreateSimpleWindow(display,
+						       rootwin,
+						       -10, -10, 1, 1, 1, 
+						       0, 0);
+	XGrabServer (display);
+
 	type = None;
 	proxy = None;
 
-	old_warnings = gdk_error_warnings;
-	gdk_error_code = 0;
-	gdk_error_warnings = 0;
+	x_error_code = 0;
 
-	XGetWindowProperty (
-		GDK_DISPLAY (), GDK_ROOT_WINDOW(), name_server_atom, 0, 1, False, AnyPropertyType,
-		&type, &format, &nitems, &after, (guchar **) &proxy_data);
+	XGetWindowProperty (display,
+			    rootwin, name_server_atom, 0, 1, False,
+			    AnyPropertyType,
+			    &type, &format, &nitems, &after,
+			    (guchar **) &proxy_data);
 
 	if (type != None){
 		if ((format == 32) && (nitems == 1))
@@ -94,19 +123,19 @@ setup_atomically_name_server_ior (CORBA_char *ior)
 	 * a "GNOME_NAME_SERVER" property pointing to itself
 	 */
 	if (proxy){
-		XGetWindowProperty (GDK_DISPLAY (), proxy,
+		XGetWindowProperty (display, proxy,
 				    name_server_atom, 0,
 				    1, False, AnyPropertyType,
 				    &type, &format, &nitems, &after,
 				    (guchar **) &proxy_data);
 
-		if (!gdk_error_code && type != None){
+		if (!x_error_code && type != None){
 			if ((format == 32) && (nitems == 1))
 				if (*proxy_data != proxy)
-					proxy = GDK_NONE;
+					proxy = None;
 			XFree (proxy_data);
 		} else
-			proxy = GDK_NONE;
+			proxy = None;
 	}
 
 	/*
@@ -114,27 +143,24 @@ setup_atomically_name_server_ior (CORBA_char *ior)
 	 */
 	if (!proxy){
 		syslog (LOG_INFO, "Stale reference to the GNOME name server");
-		XChangeProperty (GDK_DISPLAY (), GDK_ROOT_WINDOW(), name_server_atom,
+		XChangeProperty (display, rootwin, name_server_atom,
 				 window_atom,
 				 32, PropModeReplace, (guchar *) &proxy_xid, 1);
 	}
 
 	if (!proxy){
 		XChangeProperty (
-			GDK_DISPLAY (), proxy_xid,
+			display, proxy_xid,
 			name_server_atom, window_atom,
 			32, PropModeReplace, (guchar *) &proxy_xid, 1);
 
 		XChangeProperty (
-			GDK_DISPLAY (), proxy_xid,
+			display, proxy_xid,
 			name_server_ior_atom, string_atom,
 			8, PropModeReplace, (guchar *) ior, strlen (ior)+1);
 	}
-	XUngrabServer (GDK_DISPLAY ());
-	gdk_flush ();
-	gdk_error_code = 0;
-	gdk_error_warnings = old_warnings;
-	gdk_flush ();
+	XUngrabServer (display);
+	XSync(display, True);
 
 	if (proxy)
 		return FALSE;
@@ -165,7 +191,8 @@ setup_name_server (CORBA_Object name_service, CORBA_Environment *ev)
 	CosNaming_NameComponent nc [2] =
 	{ {"GNOME","subcontext"},
 	  {"Servers", "subcontext"} };
-	CosNaming_Name context_name = { 2, 2, &nc, FALSE };
+	CosNaming_Name context_name = { 2, 2,
+					(CosNaming_NameComponent *)&nc, FALSE };
 
 	context_name._length = 1;
 	/*
@@ -220,7 +247,8 @@ main (int argc, char *argv [])
 	sigset_t empty_mask;
 	CORBA_char *ior;
 	gboolean v;
-	
+	GIOChannel *channel;
+
 	/* Logs */
 	openlog ("gnome-name-server", LOG_NDELAY | LOG_PID, LOG_DAEMON);
 	syslog (LOG_INFO, "starting");
@@ -241,9 +269,19 @@ main (int argc, char *argv [])
 	sigemptyset (&empty_mask);
 
 	CORBA_exception_init (&ev);
-	gtk_init (&argc, &argv);
-	orb = gnorba_CORBA_init (&argc, argv, 0, &ev);
+	display = XOpenDisplay(getenv("DISPLAY"));
+	XSetErrorHandler(x_error_handler);
 
+	channel = g_io_channel_unix_new(ConnectionNumber(display));
+	g_io_add_watch_full(channel, G_PRIORITY_DEFAULT,
+			    G_IO_IN|G_IO_ERR|G_IO_HUP|G_IO_NVAL, 
+			    (GIOFunc)handle_x_connection,
+			    display, NULL);
+	g_io_channel_unref (channel);
+
+	ml = g_main_new(FALSE);
+
+	orb = gnorba_CORBA_init (&argc, argv, 0, &ev);
 	root_poa = (PortableServer_POA)
 		CORBA_ORB_resolve_initial_references (orb, "RootPOA", &ev);
 
@@ -267,14 +305,13 @@ main (int argc, char *argv [])
 	printf ("%s\n", ior);
 	fflush (stdout);
 	CORBA_free (ior);
-	
+
 	pm = PortableServer_POA__get_the_POAManager (root_poa, &ev);
 	PortableServer_POAManager_activate (pm, &ev);
-
 	
-	gtk_main ();
+	g_main_run(ml);
+
 	syslog (LOG_INFO, "exiting");
+
 	return 0;
 }
-
-

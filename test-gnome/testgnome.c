@@ -1806,5 +1806,8 @@ main (int argc, char *argv[])
 
 	gtk_widget_show (app);
 	gtk_main();
+
+	gtk_widget_destroy(app);
+
 	return 0;
 }
