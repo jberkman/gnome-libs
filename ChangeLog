@@ -1,3 +1,16 @@
+1998-02-23  Marc Ewing  <marc@redhat.com>
+
+	* libgnomeui/gnome-app-helper.{c,h}: added radio and check/toggle
+	button support, for both menus and toolbars.  Also added two
+	new fields to the struct _GnomeUIInfo: user_data - is used as the
+	data parameter to the gtk_signal_connect() call for each item,
+	and unsed_data which should always be NULL.  Previously the
+	data paramenter to gtk_signal_connect() came from the data
+	parameters to the *_interp() and *_with_data(), which was less
+	than optimal.
+
+	* libgnomeui/gnome-font-selector.c: Changes to support above.
+
 1998-02-23  Federico Mena Quintero  <federico@nuclecu.unam.mx>
 
 	* libgnome/gnome-dl.c: 
