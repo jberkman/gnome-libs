@@ -1,5 +1,11 @@
 1998-12-03  Raja R Harinath  <harinath@cs.umn.edu>
 
+	* libgnome/gnome-config.c: Include parse-path.cP.
+	(parse_path): Move to ...
+	* libgnome/parse-path.cP: ... here.  New file.
+	* libgnome/Makefile.am (EXTRA_DIST): Distribute `parse-path.cP'.
+	(gnome-config.o): Add explicit dependency to parse-path.cP.
+
 	* Makefile.am (SUBDIRS): Distribute, but don't build, `libvfs'.
 
 1998-12-03  Changwoo Ryu  <cwryu@adam.kaist.ac.kr>
