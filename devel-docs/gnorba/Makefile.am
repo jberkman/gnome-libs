@@ -26,17 +26,14 @@ gnorba_doc_DATA = 			\
 EXTRA_DIST = $(gnorba_doc_DATA)
 
 if ENABLE_GTK_DOC
-html/index.html: html/book1.html
-	-cd $(srcdir) && mv html/book1.html html/index.html
+html/index.html: sgml/gnorba.sgml sgml/goad.sgml
+	$(MAKE) html
 else
 gnorba.html:
 html/index.html:
 endif
 
-html/book1.html: sgml/gnorba.sgml sgml/goad.sgml
-	$(MAKE) html
-
-sgml/goad.sgml sgml/gnorba.sgml: $(addprefix $(srcdir)/,$(tmpl_sources)) gnorba-docs.sgml
+sgml/goad.sgml sgml/gnorba.sgml: $(tmpl_sources) gnorba-docs.sgml
 	$(MAKE) sgml	
 
 scan:
@@ -54,7 +51,6 @@ sgml:
 html:
 	test -d $(srcdir)/html || mkdir $(srcdir)/html
 	-cd $(srcdir)/html && gtkdoc-mkhtml $(DOC_MODULE) ../gnorba-docs.sgml
-	-cd $(srcdir)/html && perl -pi -e 's,libgnorba\.html,index.html,gi' *.html
 
 clean-local:
 	rm -f *~ *.bak *.hierarchy *.signals *-unused.txt
