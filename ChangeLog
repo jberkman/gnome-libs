@@ -1,3 +1,10 @@
+Mon May 18 14:10:42 1998  Tom Tromey  <tromey@cygnus.com>
+
+	* libgnome/gnome-config.c (_gnome_config_set_vector): Also quote
+	`\' characters.
+	(_gnome_config_get_vector_with_default): Don't duplicate result of
+	access_config.  Allocate each element of array separately.
+
 1998-05-18  Miguel de Icaza  <miguel@nuclecu.unam.mx>
 
 	* libgnome/gnome-config.c (_gnome_config_get_vector_with_default):
