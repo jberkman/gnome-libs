@@ -53,6 +53,8 @@
 
 #include <libgnomevfs/gnome-vfs.h>
 
+#undef DEBUG
+
 #define ICON_SIZE 48
 
 typedef struct _GnomeIconSelectorAsyncData      GnomeIconSelectorAsyncData;
@@ -396,7 +398,9 @@ add_file_async_done_cb (gpointer data)
 
     iselector = async_data->iselector;
 
+#ifdef DEBUG
     g_message (G_STRLOC ": %p", async_data->async_handle);
+#endif
 
     /* When the operation was successful, this is already NULL. */
     gnome_gdk_pixbuf_new_from_uri_cancel (async_data->handle);
@@ -468,6 +472,8 @@ add_file_async_cb (GnomeGdkPixbufAsyncHandle *handle,
 				path, async_data->position,
 				async_data->async_handle));
 
+    _gnome_selector_async_handle_completed (async_data->async_handle, TRUE);
+
     gdk_pixbuf_unref (scaled);
     g_free (path);
 }
@@ -480,7 +486,9 @@ add_file_done_cb (GnomeGdkPixbufAsyncHandle *handle,
 
     g_return_if_fail (async_data != NULL);
 
+#ifdef DEBUG
     g_message (G_STRLOC ": %p", async_data->async_handle);
+#endif
 
     _gnome_selector_async_handle_remove (async_data->async_handle,
 					 async_data);
@@ -636,8 +644,8 @@ gnome_icon_selector_add_defaults (GnomeIconSelector *iselector)
 
     pixmap_dir = gnome_unconditional_datadir_file ("pixmaps");
   
-    gnome_selector_add_directory (GNOME_SELECTOR (iselector), NULL, pixmap_dir,
-				  -1, FALSE, add_defaults_async_cb, NULL);
+    gnome_selector_add_uri (GNOME_SELECTOR (iselector), NULL, pixmap_dir,
+			    -1, FALSE, add_defaults_async_cb, NULL);
 
     g_free (pixmap_dir);
 }
