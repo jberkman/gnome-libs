@@ -149,24 +149,20 @@ signal_handler (int signo)
   }
 }
 
+
 static gboolean
 setup_name_server (CORBA_Object name_service, CORBA_Environment *ev)
 {
-	CosNaming_Name          context_name;
-	CosNaming_NameComponent nc;
 	CORBA_Object gnome_context  = CORBA_OBJECT_NIL;
 	CORBA_Object server_context = CORBA_OBJECT_NIL;
+	CosNaming_NameComponent nc[2] = {{"GNOME","subcontext"},
+				 {"Servers", "subcontext"}};
+	CosNaming_Name context_name = {2, 2, &nc, FALSE};
 
+	context_name._length = 1;
 	/*
 	  Create the default context "/GNOME/servers"
 	*/
-	context_name._maximum = 0;
-	context_name._length  = 1;
-	context_name._buffer = &nc;
-	context_name._release = CORBA_FALSE;
-	nc.id = "GNOME";
-	nc.kind = "subcontext";
-	
 	gnome_context = CosNaming_NamingContext_bind_new_context(name_service, &context_name, ev);
 	if (ev->_major != CORBA_NO_EXCEPTION) {
 		g_warning(_("Creating '/GNOME' context %s %d"), __FILE__, __LINE__);
@@ -179,16 +175,12 @@ setup_name_server (CORBA_Object name_service, CORBA_Environment *ev)
 		default:
 			break;
 		}
-	}
-	ev->_major = CORBA_NO_EXCEPTION;
-	if (CORBA_Object_is_nil(gnome_context, ev)) {
-		g_warning(_("gnome_name_server_get: '/GNOME' context is nil\n"));
 		return FALSE;
 	}
-	
-	nc.id="Servers";
-	nc.kind = "subcontext";
-	server_context = CosNaming_NamingContext_bind_new_context(gnome_context, &context_name, ev);
+	CORBA_Object_release(gnome_context, ev);
+
+	context_name._length = 2;
+	server_context = CosNaming_NamingContext_bind_new_context(name_service, &context_name, ev);
 	if (ev->_major != CORBA_NO_EXCEPTION) {
 		g_warning(_("Creating '/GNOME/servers' context %s %d"), __FILE__, __LINE__);
 		switch( ev->_major ) {
@@ -200,11 +192,10 @@ setup_name_server (CORBA_Object name_service, CORBA_Environment *ev)
 		default:
 			break;
 		}
-	}
-	if (CORBA_Object_is_nil(server_context, ev)) {
-		g_warning(_("gnome_name_server_get: '/GNOME/servers context is nil\n"));
 		return FALSE;
 	}
+
+	CORBA_Object_release(server_context, ev);
 
 	return TRUE;
 }
@@ -253,7 +244,7 @@ main (int argc, char *argv [])
 		CORBA_Object_release (name_server, &ev);
 		return 1;
 	}
-	
+
 	ior = CORBA_ORB_object_to_string (orb, name_server, &ev);
 
 	v = setup_atomically_name_server_ior (ior);

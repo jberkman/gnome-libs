@@ -1000,52 +1000,20 @@ goad_server_register(CORBA_Object name_server,
     name_server = gnome_name_service_get();
 
   old_server = CosNaming_NamingContext_resolve(name_server, &nom, ev);
-#if 0
-  if (ev->_major != CORBA_NO_EXCEPTION) {
-    switch( ev->_major ) {
-    case CORBA_SYSTEM_EXCEPTION:
-      g_warning("sysex: %s.\n", CORBA_exception_id(ev));
-    case CORBA_USER_EXCEPTION:
-      g_warning( "usrex: %s.\n", CORBA_exception_id(ev));
-    default:
-      break;
-    }
-  }
-#endif
 
-  if (ev->_major == CORBA_USER_EXCEPTION &&
-      !strcmp(CORBA_exception_id(ev),ex_CosNaming_NamingContext_NotFound)) {
+  if (ev->_major != CORBA_USER_EXCEPTION ||
+      strcmp(CORBA_exception_id(ev),ex_CosNaming_NamingContext_NotFound)) {
 
-    CosNaming_NamingContext_bind(name_server, &nom, server, ev);
-    if (ev->_major != CORBA_NO_EXCEPTION) {
-      switch( ev->_major ) {
-      case CORBA_SYSTEM_EXCEPTION:
-	g_warning("sysex: %s.\n", CORBA_exception_id(ev));
-      case CORBA_USER_EXCEPTION:
-	g_warning( "usrex: %s.\n", CORBA_exception_id(ev));
-      default:
-	break;
-      }
-    }
-
-  } else {
     if(orig_ns == CORBA_OBJECT_NIL)
       CORBA_Object_release(name_server, ev);
 
     CORBA_Object_release(old_server, ev);
     return -2;
   }
+
+  CosNaming_NamingContext_bind(name_server, &nom, server, ev);
+
   if (ev->_major != CORBA_NO_EXCEPTION) {
-#if 0
-    switch( ev->_major ) {
-    case CORBA_SYSTEM_EXCEPTION:
-      g_warning("sysex: %s.\n", CORBA_exception_id(ev));
-    case CORBA_USER_EXCEPTION:
-      g_warning( "usrex: %s.\n", CORBA_exception_id(ev));
-    default:
-      break;
-    }
-#endif
     if(orig_ns == CORBA_OBJECT_NIL)
       CORBA_Object_release(name_server, ev);
 
