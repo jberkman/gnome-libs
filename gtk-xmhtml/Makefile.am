@@ -53,7 +53,7 @@ libgtkxmhtmlinclude_HEADERS =	\
 	gtk-xmhtml.h		\
 	toolkit.h
 
-libgtkxmhtml_la_LDFLAGS = -version-info 1:0:0 -rpath $(libdir)
+libgtkxmhtml_la_LDFLAGS = -version-info 1:1:0 -rpath $(libdir)
 libgtkxmhtml_la_LIBADD = $(LIBGTKXMHTML_LIBS)
 
 noinst_PROGRAMS = htmltest
