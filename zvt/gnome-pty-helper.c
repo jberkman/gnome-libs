@@ -28,11 +28,6 @@
  */
 #include <config.h>
 
-/* needed for sigaction under 'gcc -ansi -pedantic' on GNU/Linux */
-#ifndef _POSIX_SOURCE
-#  define _POSIX_SOURCE 1
-#endif
-
 #include <sys/types.h>
 #include <sys/time.h>
 #include <sys/resource.h>
