@@ -94,7 +94,7 @@ extern "C" {
     GdkColorContext *color_ctx;	/* The color context in use, where we allocate our colors */
     gulong colors [18];		/* Our colors, pixel values. */
 
-    GdkIC ic;			/* input context */
+    GdkIC *ic;			/* input context */
     
     /*transparency stuff, it's left in even if we don't compile
       transparency/background pixmaps, if we don't, it will just be ignored*/

@@ -633,9 +633,12 @@ zvt_term_realize (GtkWidget *widget)
 
   /* input context */
   if (gdk_im_ready() && !term->ic) {
-    GdkIMStyle style = GDK_IM_PREEDIT_NOTHING | GDK_IM_STATUS_NOTHING;
+    GdkICAttr attr;
+
     /* FIXME: do we have any window yet? */
-    term->ic = gdk_ic_new(term->term_window, term->term_window, style, NULL);
+    attr.style = GDK_IM_PREEDIT_NOTHING | GDK_IM_STATUS_NOTHING;
+    attr.client_window = attr.focus_window = term->term_window;
+    term->ic = gdk_ic_new(&attr, GDK_IC_ALL_REQ);
 
     if (!term->ic) {
       g_warning("Can't create input context.");
