@@ -1,5 +1,8 @@
 Wed Feb 17 12:20:21 1999  Maciej Stachowiak  <mstachow@alum.mit.edu>
 
+	* gnome-login-support.c (login_tty): Replace an #elsif with an
+ 	#else in the fix below. D'oh!
+
 	* gnome-login-support.c (login_tty): On SVR4 systems, make sure to
  	allocate a controlling terminal. Since the right way to do this is
  	simply to open a terminal after calling setsid(), but we already
