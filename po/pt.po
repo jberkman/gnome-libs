@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-libs 0.99.2\n"
-"POT-Creation-Date: 1999-01-31 16:27-0600\n"
+"POT-Creation-Date: 1999-02-04 17:28-0500\n"
 "PO-Revision-Date: 1999-01-09 12:44+00:00\n"
 "Last-Translator: Nuno Ferreira <nmrf@rnl.ist.utl.pt>\n"
 "Language-Team: Portuguese <pt@li.org>\n"
@@ -839,32 +839,32 @@ msgstr "="
 msgid "INV"
 msgstr "INV"
 
-#: libgnomeui/gnome-client.c:802
+#: libgnomeui/gnome-client.c:807
 msgid "Specify session management ID"
 msgstr "Especifique o identificador da sessão"
 
-#: libgnomeui/gnome-client.c:802 libgnorba/goad-browser.c:27
+#: libgnomeui/gnome-client.c:807 libgnorba/goad-browser.c:27
 msgid "ID"
 msgstr "ID"
 
-#: libgnomeui/gnome-client.c:804
+#: libgnomeui/gnome-client.c:809
 msgid "Specify prefix of saved configuration"
 msgstr "Especifica prefixo da configuração gravada"
 
-#: libgnomeui/gnome-client.c:804
+#: libgnomeui/gnome-client.c:809
 msgid "PREFIX"
 msgstr "PREFIXO"
 
-#: libgnomeui/gnome-client.c:806
+#: libgnomeui/gnome-client.c:811
 msgid "Disable connection to session manager"
 msgstr "Não efectuar ligação ao gestor de sessão"
 
 #. Register commandline options.
-#: libgnomeui/gnome-client.c:932
+#: libgnomeui/gnome-client.c:939
 msgid "Session management options"
 msgstr "Opções de gestão de sessão"
 
-#: libgnomeui/gnome-client.c:2244
+#: libgnomeui/gnome-client.c:2230
 msgid "Cancel Logout"
 msgstr "Cancelar Logout"
 
@@ -872,10 +872,8 @@ msgstr "Cancelar Logout"
 msgid "Pick a color"
 msgstr "Escolha uma cor"
 
-#. Only add the label if all the children are to be shown.  Otherwise
-#. * things look too wide; in that case just show the arrow.
-#.
-#: libgnomeui/gnome-dateedit.c:430
+#. Calendar label, only shown if the date editor has a time field
+#: libgnomeui/gnome-dateedit.c:452
 msgid "Calendar"
 msgstr "Calendário"
 
@@ -919,12 +917,12 @@ msgstr "Básico"
 msgid "Advanced"
 msgstr "Avançado"
 
-#: libgnomeui/gnome-file-entry.c:146
+#: libgnomeui/gnome-file-entry.c:148
 msgid "Select file"
 msgstr "Seleccione ficheiro"
 
 #. browse button ...
-#: libgnomeui/gnome-file-entry.c:274 libgnomeui/gnome-spell.c:617
+#: libgnomeui/gnome-file-entry.c:276 libgnomeui/gnome-spell.c:617
 #: libgnomeui/gnome-spell.c:634 libgnomeui/gnome-spell.c:651
 msgid "Browse..."
 msgstr "Procurar..."
@@ -933,19 +931,19 @@ msgstr "Procurar..."
 msgid "Pick a Font"
 msgstr "Escolha uma Cor"
 
-#: libgnomeui/gnome-font-picker.c:542 libgnomeui/gnome-stock.c:791
+#: libgnomeui/gnome-font-picker.c:705 libgnomeui/gnome-stock.c:791
 msgid "Font"
 msgstr "Fonte"
 
-#: libgnomeui/gnome-icon-entry.c:88 libgnomeui/gnome-icon-entry.c:388
+#: libgnomeui/gnome-icon-entry.c:112 libgnomeui/gnome-icon-entry.c:428
 msgid "No Icon"
 msgstr "Sem Ícone"
 
-#: libgnomeui/gnome-icon-entry.c:200 libgnomeui/gnome-pixmap-entry.c:166
+#: libgnomeui/gnome-icon-entry.c:226 libgnomeui/gnome-pixmap-entry.c:166
 msgid "Can't find an hbox, using a normal file selection"
 msgstr "Não encontro uma hbox, vou usar a seleccão de ficheiros normal"
 
-#: libgnomeui/gnome-icon-entry.c:206 libgnomeui/gnome-pixmap-entry.c:172
+#: libgnomeui/gnome-icon-entry.c:232 libgnomeui/gnome-pixmap-entry.c:172
 msgid "Preview"
 msgstr "Prever"
 
@@ -1540,12 +1538,12 @@ msgid ""
 "gnome_win_hints_* functions for errors. :)"
 msgstr ""
 
-#: libgnorba/gnome-name-server.c:200
+#: libgnorba/gnome-name-server.c:209
 #, c-format
 msgid "Creating '/GNOME' context %s %d"
 msgstr "Criando contexto '/GNOME' %s %d"
 
-#: libgnorba/gnome-name-server.c:217
+#: libgnorba/gnome-name-server.c:226
 #, c-format
 msgid "Creating '/GNOME/Servers' context %s %d"
 msgstr "Criando contexto '/GNOME/Servers' %s %d"
@@ -1569,7 +1567,7 @@ msgid ""
 "In either case, please check your GNOME installation."
 msgstr ""
 
-#: libgnorba/goad.c:1163
+#: libgnorba/goad.c:1220
 msgid "(Internal use only) GOAD server ID to activate"
 msgstr "(Só para uso interno) ID do servidor GOAD a activar"
 
@@ -1589,27 +1587,7 @@ msgstr "ID de Repositório pelo qual o GOAD conhece este servidor"
 msgid "REPO_ID"
 msgstr "ID_REPO"
 
-#: libgnorba/orbitgtk.c:150
-msgid "Can not write to the cookie file"
-msgstr "Não consegui escrever o ficheiro de cookie"
-
-#: libgnorba/orbitgtk.c:152
-msgid "Unknown error while writing cookie file"
-msgstr "Erro desconhecido ao escrever o ficheiro de cookie"
-
-#: libgnorba/orbitgtk.c:163
-msgid "Could not open the cookie file"
-msgstr "Não consegui abrir ficheiro de cookies"
-
-#: libgnorba/orbitgtk.c:171
-msgid "Can not read the cookie file\n"
-msgstr "Não consegui ler o ficheiro de cookie\n"
-
-#: libgnorba/orbitgtk.c:173
-msgid "While reading the cookie file\n"
-msgstr "Ao ler o ficheiro de cookie\n"
-
-#: libgnorba/orbitns.c:250
+#: libgnorba/orbitns.c:289
 msgid "Could not get name service!"
 msgstr "Não consegui obter o serviço de nomes!"
 
@@ -1748,6 +1726,21 @@ msgstr "O utilizador escolheu Não/Cancelar com os dados:\n"
 #: test-gnome/testgnome.c:932
 msgid "Weird number in reply callback"
 msgstr "Número estranho na resposta"
+
+#~ msgid "Can not write to the cookie file"
+#~ msgstr "Não consegui escrever o ficheiro de cookie"
+
+#~ msgid "Unknown error while writing cookie file"
+#~ msgstr "Erro desconhecido ao escrever o ficheiro de cookie"
+
+#~ msgid "Could not open the cookie file"
+#~ msgstr "Não consegui abrir ficheiro de cookies"
+
+#~ msgid "Can not read the cookie file\n"
+#~ msgstr "Não consegui ler o ficheiro de cookie\n"
+
+#~ msgid "While reading the cookie file\n"
+#~ msgstr "Ao ler o ficheiro de cookie\n"
 
 #~ msgid ""
 #~ "Couldn't open %s archive\n"

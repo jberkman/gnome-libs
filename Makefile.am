@@ -25,6 +25,7 @@ endif
 
 SUBDIRS = po intl support macros \
 	tools \
+	images \
 	libart_lgpl \
 	libgnome libgnomeui gtk-xmhtml $(gnome_hello) zvt \
 	libgnorba idl $(test_gnome) devel-docs gnome-data $(libvfs)

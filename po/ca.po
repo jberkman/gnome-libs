@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-libs 0.30\n"
-"POT-Creation-Date: 1999-01-31 16:27-0600\n"
+"POT-Creation-Date: 1999-02-04 17:28-0500\n"
 "PO-Revision-Date: 1998-11-30 15:50+01:00\n"
 "Last-Translator: Ivan Vilata i Balaguer <al011097@alumail.uji.es>\n"
 "Language-Team: \n"
@@ -838,32 +838,32 @@ msgstr "="
 msgid "INV"
 msgstr "INV"
 
-#: libgnomeui/gnome-client.c:802
+#: libgnomeui/gnome-client.c:807
 msgid "Specify session management ID"
 msgstr "Especificar l'ID del gestor de sessions"
 
-#: libgnomeui/gnome-client.c:802 libgnorba/goad-browser.c:27
+#: libgnomeui/gnome-client.c:807 libgnorba/goad-browser.c:27
 msgid "ID"
 msgstr "ID"
 
-#: libgnomeui/gnome-client.c:804
+#: libgnomeui/gnome-client.c:809
 msgid "Specify prefix of saved configuration"
 msgstr ""
 
-#: libgnomeui/gnome-client.c:804
+#: libgnomeui/gnome-client.c:809
 msgid "PREFIX"
 msgstr ""
 
-#: libgnomeui/gnome-client.c:806
+#: libgnomeui/gnome-client.c:811
 msgid "Disable connection to session manager"
 msgstr "Desactivar connexió amb el gestor de sessions"
 
 #. Register commandline options.
-#: libgnomeui/gnome-client.c:932
+#: libgnomeui/gnome-client.c:939
 msgid "Session management options"
 msgstr "Opcions del gestor de sessions"
 
-#: libgnomeui/gnome-client.c:2244
+#: libgnomeui/gnome-client.c:2230
 #, fuzzy
 msgid "Cancel Logout"
 msgstr "Cancel·lar"
@@ -872,10 +872,8 @@ msgstr "Cancel·lar"
 msgid "Pick a color"
 msgstr "Tria un color"
 
-#. Only add the label if all the children are to be shown.  Otherwise
-#. * things look too wide; in that case just show the arrow.
-#.
-#: libgnomeui/gnome-dateedit.c:430
+#. Calendar label, only shown if the date editor has a time field
+#: libgnomeui/gnome-dateedit.c:452
 msgid "Calendar"
 msgstr "Calendari"
 
@@ -919,12 +917,12 @@ msgstr ""
 msgid "Advanced"
 msgstr "Avançat"
 
-#: libgnomeui/gnome-file-entry.c:146
+#: libgnomeui/gnome-file-entry.c:148
 msgid "Select file"
 msgstr "Tria un fitxer"
 
 #. browse button ...
-#: libgnomeui/gnome-file-entry.c:274 libgnomeui/gnome-spell.c:617
+#: libgnomeui/gnome-file-entry.c:276 libgnomeui/gnome-spell.c:617
 #: libgnomeui/gnome-spell.c:634 libgnomeui/gnome-spell.c:651
 msgid "Browse..."
 msgstr "Buscar..."
@@ -934,19 +932,19 @@ msgstr "Buscar..."
 msgid "Pick a Font"
 msgstr "Tria un color"
 
-#: libgnomeui/gnome-font-picker.c:542 libgnomeui/gnome-stock.c:791
+#: libgnomeui/gnome-font-picker.c:705 libgnomeui/gnome-stock.c:791
 msgid "Font"
 msgstr ""
 
-#: libgnomeui/gnome-icon-entry.c:88 libgnomeui/gnome-icon-entry.c:388
+#: libgnomeui/gnome-icon-entry.c:112 libgnomeui/gnome-icon-entry.c:428
 msgid "No Icon"
 msgstr ""
 
-#: libgnomeui/gnome-icon-entry.c:200 libgnomeui/gnome-pixmap-entry.c:166
+#: libgnomeui/gnome-icon-entry.c:226 libgnomeui/gnome-pixmap-entry.c:166
 msgid "Can't find an hbox, using a normal file selection"
 msgstr ""
 
-#: libgnomeui/gnome-icon-entry.c:206 libgnomeui/gnome-pixmap-entry.c:172
+#: libgnomeui/gnome-icon-entry.c:232 libgnomeui/gnome-pixmap-entry.c:172
 #, fuzzy
 msgid "Preview"
 msgstr "Previ"
@@ -1535,12 +1533,12 @@ msgstr ""
 "Programa simple per provar com funcionen els WM_HINTS, i per si les funcions "
 "gnome_win_hints_* tenen errors. :)"
 
-#: libgnorba/gnome-name-server.c:200
+#: libgnorba/gnome-name-server.c:209
 #, c-format
 msgid "Creating '/GNOME' context %s %d"
 msgstr ""
 
-#: libgnorba/gnome-name-server.c:217
+#: libgnorba/gnome-name-server.c:226
 #, c-format
 msgid "Creating '/GNOME/Servers' context %s %d"
 msgstr ""
@@ -1564,7 +1562,7 @@ msgid ""
 "In either case, please check your GNOME installation."
 msgstr ""
 
-#: libgnorba/goad.c:1163
+#: libgnorba/goad.c:1220
 msgid "(Internal use only) GOAD server ID to activate"
 msgstr ""
 
@@ -1584,27 +1582,7 @@ msgstr ""
 msgid "REPO_ID"
 msgstr ""
 
-#: libgnorba/orbitgtk.c:150
-msgid "Can not write to the cookie file"
-msgstr ""
-
-#: libgnorba/orbitgtk.c:152
-msgid "Unknown error while writing cookie file"
-msgstr ""
-
-#: libgnorba/orbitgtk.c:163
-msgid "Could not open the cookie file"
-msgstr ""
-
-#: libgnorba/orbitgtk.c:171
-msgid "Can not read the cookie file\n"
-msgstr ""
-
-#: libgnorba/orbitgtk.c:173
-msgid "While reading the cookie file\n"
-msgstr ""
-
-#: libgnorba/orbitns.c:250
+#: libgnorba/orbitns.c:289
 msgid "Could not get name service!"
 msgstr ""
 
