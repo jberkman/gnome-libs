@@ -1,3 +1,9 @@
+Tue Dec  1 02:22:27 EST 1998 Nick Fetchak <nuke@bayside.net>
+
+	* libgnomeui/gnome-client.c: removed a g_free() of a pointer to
+	a getpwuid(). (this shouldn't point to static memory, but trying
+	to free it causes consistant segfaults on my system)
+
 1998-11-29  Justin Maurer  <justin@openprojects.net>
 
 	* libgnome/gnome-hook.[ch]: removed. Updated Makefiles/etc. to reflect 
