@@ -30,3 +30,5 @@ libgnorba_la_LIBADD = $(ORBIT_LIBS) $(GLIB_LIBS) -lm
 
 $(name_IDL_SOURCES): $(top_srcdir)/idl/name-service.idl
 	orbit-idl $(top_srcdir)/idl/name-service.idl
+
+CLEANFILES = $(name_IDL_SOURCES)
