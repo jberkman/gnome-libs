@@ -569,7 +569,7 @@ int main(int argc, char **argv) {
 }
 
 static error_t
-parse_an_arg (int key, char *arg, struct argp_state G_GNUC_UNUSED *state)
+parse_an_arg (int key, char *arg, struct argp_state *state)
 {
 	if (key == DISCARD_KEY) {
 		discard_session (arg);
@@ -584,11 +584,11 @@ parse_an_arg (int key, char *arg, struct argp_state G_GNUC_UNUSED *state)
 /* Session management */
 
 static int save_state (GnomeClient        *client,
-		       gint                G_GNUC_UNUSED phase,
-		       GnomeRestartStyle   G_GNUC_UNUSED save_style,
-		       gint                G_GNUC_UNUSED shutdown,
-		       GnomeInteractStyle  G_GNUC_UNUSED interact_style,
-		       gint                G_GNUC_UNUSED fast,
+		       gint                phase,
+		       GnomeRestartStyle   save_style,
+		       gint                shutdown,
+		       GnomeInteractStyle  interact_style,
+		       gint                fast,
 		       gpointer            client_data)
 {
   gchar *session_id;
