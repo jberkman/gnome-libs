@@ -907,12 +907,14 @@ create_icon_list(void)
 	app = create_newwin(TRUE,"testGNOME","Icon List");
 
 	sw = gtk_scrolled_window_new (NULL, NULL);
-	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (sw), GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
+	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (sw),
+					GTK_POLICY_AUTOMATIC,
+					GTK_POLICY_AUTOMATIC);
 	gnome_app_set_contents (GNOME_APP (app), sw);
 	gtk_widget_set_usize (sw, 430, 300);
 	gtk_widget_show (sw);
 
-	iconlist = gnome_icon_list_new (80, NULL, TRUE);
+	iconlist = gnome_icon_list_new_flags (80, NULL, GNOME_ICON_LIST_IS_EDITABLE);
 	gtk_container_add (GTK_CONTAINER (sw), iconlist);
 	gtk_signal_connect (GTK_OBJECT (iconlist), "select_icon",
 			    GTK_SIGNAL_FUNC (select_icon),
