@@ -60,8 +60,14 @@ GnomeUIInfo help_menu[] = {
   { GNOME_APP_UI_ENDOFINFO }
 };
 
+GnomeUIInfo empty_menu[] = {
+  { GNOME_APP_UI_ENDOFINFO }
+};
+
 GnomeUIInfo main_menu[] = {
   { GNOME_APP_UI_SUBTREE, ("File"), NULL, file_menu, NULL, NULL,
+    GNOME_APP_PIXMAP_NONE, NULL, 0, 0, NULL },
+  { GNOME_APP_UI_SUBTREE, ("Children"), NULL, empty_menu, NULL, NULL,
     GNOME_APP_PIXMAP_NONE, NULL, 0, 0, NULL },
   { GNOME_APP_UI_SUBTREE, ("MDI Mode"), NULL, mode_menu, NULL, NULL,
     GNOME_APP_PIXMAP_NONE, NULL, 0, 0, NULL },
@@ -427,7 +433,7 @@ int main(int argc, char **argv) {
   /* and document menu and document list paths (see gnome-app-helper menu
      insertion routines for details)  */
   gnome_mdi_set_child_menu_path(mdi, _("File"));
-  gnome_mdi_set_child_list_path(mdi, _("MDI Mode"));
+  gnome_mdi_set_child_list_path(mdi, _("Children/"));
   
   /* connect signals */
   gtk_signal_connect(GTK_OBJECT(mdi), "destroy", GTK_SIGNAL_FUNC(cleanup_cb), NULL);
