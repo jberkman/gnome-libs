@@ -1019,14 +1019,14 @@ void vt_draw_cursor(struct _vtx *vx, int state)
   }
 }
 
-struct _vtx *vtx_new(void *user_data)
+struct _vtx *vtx_new(int width, int height, void *user_data)
 {
   struct _vtx *vx;
 
-  vx = g_malloc0(sizeof(*vx));
+  vx = g_malloc0(sizeof(struct _vtx));
 
   /* initial settings */
-  vt_init(&vx->vt, 80,24);
+  vt_init(&vx->vt, width, height);
 
   vx->selection_data = 0;
   vx->selection_size = 0;
@@ -1040,9 +1040,7 @@ struct _vtx *vtx_new(void *user_data)
   return vx;
 }
 
-/*
-  reverse of new!
-*/
+
 void vtx_destroy(struct _vtx *vx)
 {
   if (vx) {

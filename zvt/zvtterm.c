@@ -219,7 +219,7 @@ zvt_term_init (ZvtTerm *term)
   /* create and configure callbacks for the teminal
    * back-end
    */
-  term->vx = vtx_new (term);
+  term->vx = vtx_new (1, 1, term);
   term->vx->vt.ring_my_bell = zvt_term_bell;
   term->vx->vt.change_my_name = zvt_term_title_changed_raise;
 
@@ -442,6 +442,9 @@ zvt_term_set_size (ZvtTerm *term, guint width, guint height)
   term->set_grid_size_pending = TRUE;
   term->grid_width = width;
   term->grid_height = height;
+
+  printf("zvt_term_set_size term->grid_width=%d term->grid_height=%d\n",
+	 term->grid_width, term->grid_height);
 
   gtk_widget_queue_resize (GTK_WIDGET (term));
 }
@@ -709,21 +712,19 @@ zvt_term_size_request (GtkWidget      *widget,
 
   if (term->set_grid_size_pending)
     {
-      term->set_grid_size_pending = FALSE;
-
       grid_width = term->grid_width;
       grid_height = term->grid_height;
-
+      
       if (grid_width == 0)
-	grid_width = term->vx->vt.width;
-
+	grid_width = 1;
+      
       if (grid_height == 0)
-	grid_height = term->vx->vt.height;
+	grid_height = 1;
     }
   else
     {
-      grid_width = term->vx->vt.width;
-      grid_height = term->vx->vt.height;
+      grid_width = 1;
+      grid_height = 1;
     }
 
   requisition->width = (grid_width * term->charwidth) + 
@@ -732,7 +733,7 @@ zvt_term_size_request (GtkWidget      *widget,
     (widget->style->klass->ythickness * 2);
 
   /* debug ouput */
-  d( printf("zvt_term_size_request x=%d y=%d\n", grid_width, grid_height) );
+  printf("zvt_term_size_request x=%d y=%d\n", grid_width, grid_height);
 }
 
 
@@ -961,9 +962,12 @@ zvt_term_set_fonts_internal(ZvtTerm *term, GdkFont *font, GdkFont *font_bold)
    * what the queue resize will resize the widget to
    * have the same grid size
    */
-  term->set_grid_size_pending = TRUE;
-  term->grid_width = term->vx->vt.width;
-  term->grid_height = term->vx->vt.height;
+  if (!term->set_grid_size_pending)
+    {
+      term->set_grid_size_pending = TRUE;
+      term->grid_width = term->vx->vt.width;
+      term->grid_height = term->vx->vt.height;
+    }
 
   if (font) 
     {

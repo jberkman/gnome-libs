@@ -49,17 +49,22 @@ typedef enum {
 #define VT_SELTYPE_BYSTART 0x4000
 
 /* 'X' extension data for VT terminal emulation */
-struct _vtx {
+struct _vtx
+{
   struct vt_em vt;
 
-  unsigned int back_match:1;	/* when updating, background colour matches for whole contents of line */
+  /* when updating, background colour matches for whole contents of line */
+  unsigned int back_match:1;
 
   /* selection stuff */
   char *selection_data;		/* actual selection */
   int selection_size;
   
-  int selected;			/* true if something selected */
-  VT_SELTYPE selectiontype;	/* if selection active, what type? (by char/word/line)*/
+  /* true if something selected */
+  int selected;
+
+  /* if selection active, what type? (by char/word/line) */
+  VT_SELTYPE selectiontype;
 
   int selstartx, selstarty;
   int selendx, selendy;
@@ -67,20 +72,6 @@ struct _vtx {
   /* previously rendered values */
   int selstartxold, selstartyold;
   int selendxold, selendyold;
-
-#ifdef STAND_ALONE
-  /* all tool-kit specific data goes here ... */
-  GtkWidget *drawingarea;	/* rendering area */
-  GtkObject *adjustment;	/* scrollback position adjustement */
-  GdkCursor *cursor_bar,	/* I beam cursor */
-    *cursor_dot,		/* the blank cursor */
-    *cursor_current;		/* current active cursor */
-  GdkPixmap *cursor_dot_pm;	/* 'dot' pixmap, for dot cursor (invisible) */
-  guint timeout_id;		/* id of timeout function */
-  GdkFont *font,		/* current normal font */
-    *font_bold;			/* current bold font */
-				/* (add italic font?) */
-#endif
 };
 
 
@@ -93,7 +84,7 @@ void vt_update_rect      (struct _vtx *vx, int sx, int sy, int ex, int ey);
 void vt_update           (struct _vtx *vt, int state);
 void vt_draw_cursor      (struct _vtx *vx, int state);
 			 
-struct _vtx *vtx_new     (void *user_data);
+struct _vtx *vtx_new     (int width, int height, void *user_data);
 void vtx_destroy         (struct _vtx *vx);
 void vtx_set_fontsize    (struct _vtx *vx, int width, int height);
 			 
