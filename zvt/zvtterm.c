@@ -96,6 +96,7 @@ static void vtx_unrender_selection (struct _vtx *vx);
 static void zvt_term_scroll (ZvtTerm *term, int n);
 static void zvt_term_scroll_by_lines (ZvtTerm *term, int n);
 static int vt_cursor_state(void *user_data, int state);
+static void zvt_term_writemore (gpointer data, gint fd, GdkInputCondition condition);
 
 /* callbacks from update layer */
 void vt_draw_text(void *user_data, struct vt_line *line, int row, int col, int len, int attr);
@@ -302,6 +303,8 @@ zvt_term_init (ZvtTerm *term)
     zp->default_char=0;
     zp->bold_save = 0;
     zp->transpix = 0;
+    zp->paste_id = -1;
+    zp->paste = 0;
   }
   gtk_object_set_data(GTK_OBJECT (term), "_zvtprivate", zp);
 
@@ -532,6 +535,10 @@ zvt_term_destroy (GtkObject *object)
     if (zp->bold_save)
       gdk_pixmap_unref(zp->bold_save);
     free_transpix(term);
+    if (zp->paste)
+      g_free(zp->paste);
+    if (zp->paste_id != -1)
+      gdk_input_remove(zp->paste_id);
     g_free(zp);
     gtk_object_set_data (GTK_OBJECT (term), "_zvtprivate", 0);
   }
@@ -1946,9 +1953,83 @@ zvt_term_selection_received (GtkWidget *widget, GtkSelectionData *selection_data
 
       if (term->scroll_on_keystroke)
 	zvt_term_scroll (term, 0);
-      vt_writechild(&vx->vt, selection_data->data, selection_data->length);
+      zvt_term_writechild(term, selection_data->data, selection_data->length);
     }
 }  
+
+/**
+ * zvt_term_writechild:
+ * @term: A &ZvtTerm widget.
+ * @data: Data to write.
+ * @len: Length of data to write.
+ *
+ * Writes @len bytes of data, starting from @data to the subordinate
+ * child process.  If the child is unable to handle all of the data
+ * at once, then it will return, and asynchronously continue to feed
+ * the data to the child.
+ *
+ * Return Value: The number of bytes written initially.
+ */
+int
+zvt_term_writechild(ZvtTerm *term, char *data, int len)
+{
+  int length;
+  struct _zvtprivate *zp;
+
+  zp = gtk_object_get_data (GTK_OBJECT (term), "_zvtprivate");
+
+  /* if we are already pasting something, make sure we append ... */
+  if (zp->paste_id == -1)
+    length = vt_writechild(&term->vx->vt, data, len);
+  else
+    length = 0;
+
+  d(printf("wrote %d bytes of %d bytes\n", length, len));
+
+  if (length>=0 && length < len) {
+
+    if (zp->paste_id == -1) {
+      zp->paste = g_malloc(len-length);
+      zp->paste_offset = 0;
+      zp->paste_len = len-length;
+      memcpy(zp->paste, data+length, len-length);
+      zp->paste_id =
+	gdk_input_add(term->vx->vt.keyfd, GDK_INPUT_WRITE, zvt_term_writemore, term);
+    } else {
+      /* could also drop off offset, but its rarely likely to happen? */
+      zp->paste = g_realloc(zp->paste, zp->paste_len + len - length);
+      memcpy(zp->paste + zp->paste_len, data+length, len-length);
+      zp->paste_len += (len - length);
+    }
+  }
+  return length;
+}
+
+static void
+zvt_term_writemore (gpointer data, gint fd, GdkInputCondition condition)
+{
+  ZvtTerm *term = (ZvtTerm *)data;
+  struct _zvtprivate *zp;
+  int length;
+
+  zp = gtk_object_get_data (GTK_OBJECT (term), "_zvtprivate");
+  length = vt_writechild(&term->vx->vt, zp->paste + zp->paste_offset, zp->paste_len);
+
+  d(printf("zvt_writemore(): written %d of %d bytes\n", length, zp->paste_len));
+
+  if (length == -1 || length==zp->paste_len) {
+    if (length == -1) {
+      g_warning("Write failed to child process\n");
+    }
+    g_free(zp->paste);
+    zp->paste = 0;
+    gdk_input_remove(zp->paste_id);
+    zp->paste_id = -1;
+  } else {
+    zp->paste_offset += length;
+    zp->paste_len -= length;
+  }
+}
 
 
 static gint

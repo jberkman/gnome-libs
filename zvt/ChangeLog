@@ -1,3 +1,22 @@
+1999-08-26  Michael Zucchi  <mzucchi@denr.sa.gov.au>
+
+	* zvtterm.h (struct _zvtprivate): Added new parameters for
+	asynchronous writing/pasting of lots of text.
+	(zvt_term_writechild): New public function.  Shouldn't be used by
+	pre 1.2 (1.0.50?) code.
+
+	* zvtterm.c (zvt_term_selection_received): Now calls
+	zvt_term_writechild() to write data to the child.
+	(zvt_term_writechild): New function - writes any amount of data to
+	the child sub-process through the child pipe, asynchronously if
+	required.  Can be called mutiple times before writes are complete.
+	(zvt_term_writemore): New io write callback.  Used to deal out
+	blocks of data overflowed from zvt_term_writechild() until its run
+	out.  These changes fix bug #1899 & #1539.
+	(zvt_term_init): Initialise zp->paste_id & paste pointer.
+	(zvt_term_destroy): Free any resources from zp->paste_id or paste
+	pointer.
+
 1999-08-16  Michael Zucchi  <mzucchi@denr.sa.gov.au>
 
 	* update.c (vt_line_update): When checking for common blocks of

@@ -1788,6 +1788,8 @@ vt_forkpty (struct vt_em *vt, int do_uwtmp_log)
  * @len: Length of valid data pointed to by @buffer.
  *
  * Write characters to the child process started using vt_forkpty().
+ * Because blocking pipes may truncate writes, additional
+ * writes may be required, asynchronously.
  *
  * Return value: The number of characters successfully written.
  * See Also: write(2)

@@ -160,7 +160,12 @@ struct _zvtprivate
   GdkPixmap *transpix;		/* transparency pixmap.  Must be treated
 				   differently so we dont blow away the root
 				   pixmap! */
+  char *paste;			/* where paste overflow is stored temporarily */
+  int paste_len;		/* how much left to write */
+  int paste_offset;		/* how much written so far */
+  int paste_id;			/* for the paste write handler */
 };
+
 /* *** DO NOT USE THIS IN APPS! *** */
 #define _ZVT_PRIVATE(term) ((struct _zvtprivate *)gtk_object_get_data (GTK_OBJECT (term), "_zvtprivate"))
 
@@ -177,6 +182,7 @@ GtkWidget*   zvt_term_new_with_size            (int cols, int rows);
 void	     zvt_term_reset		       (ZvtTerm *term, int hard);
 void         zvt_term_feed                     (ZvtTerm *term,
 						char *text, int len);
+int   	     zvt_term_writechild	       (ZvtTerm *term, char *data, int len);
 int	     zvt_term_forkpty		       (ZvtTerm *term, int do_uwtmp_log);
 int          zvt_term_closepty                 (ZvtTerm *term);
 int          zvt_term_killchild                (ZvtTerm *term, int signal);
