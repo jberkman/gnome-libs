@@ -1,3 +1,10 @@
+1999-01-27  Raja R Harinath  <harinath@cs.umn.edu>
+
+	* Makefile.am (%.test): Defer $srcdir decision to runtime, not
+	when the script is created.
+	Bug report from Zach Frey <zfrey@bright.net>.
+	* *.test: Update.
+
 1999-01-18  Raja R Harinath  <harinath@cs.umn.edu>
 
 	* runtest.sh: Make it handle `one in N outputs'.

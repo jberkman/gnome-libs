@@ -13,7 +13,7 @@ noinst_SCRIPTS = $(TESTS)
 
 @MAINT@%.test: 
 @MAINT@	echo "the_test=$*" > $(srcdir)/$@; \
-@MAINT@	echo ". $(srcdir)/runtest.sh" >> $(srcdir)/$@; \
+@MAINT@	echo '. $$srcdir/runtest.sh' >> $(srcdir)/$@; \
 @MAINT@	chmod +x $(srcdir)/$@
 
 # Always run via sh so we don't have to worry about permissions
