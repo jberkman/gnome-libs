@@ -29,7 +29,7 @@
 #    include <paths.h>
 #endif
 
-#ifdef HAVE_UTMPX_H
+#ifdef HAVE_GETUTMPX
 #    include <utmpx.h>
 #endif
 
@@ -49,7 +49,7 @@
 #endif
 
 #ifdef USE_SYSV_UTMP
-#ifdef HAVE_UTMPX_H
+#ifdef HAVE_GETUTMPX
 #    define UTMP struct utmpx
 #    undef WTMP_FILENAME
 #    define WTMP_FILENAME WTMPX_FILE
@@ -132,7 +132,7 @@ update_dbs (char *login_name, char *display_name, char *term_name)
 #ifdef _HAVE_UT_TYPE
 	ut->ut_type = DEAD_PROCESS;
 #endif
-#ifdef HAVE_UTMPX_H
+#ifdef HAVE_GETUTMPX
 	getutmp (ut, &ut_aux);
 	getutid (&ut_aux);
 #else
@@ -170,7 +170,7 @@ update_dbs (char *login_name, char *display_name, char *term_name)
 	return ut;
 }
 
-#ifdef HAVE_UTMPX_H
+#ifdef HAVE_GETUTMPX
 void
 write_logout_record (void *data)
 {
@@ -192,7 +192,7 @@ write_logout_record (void *data)
 	
 	free (data);
 }
-#else /* not HAVE_UTMPX_H */
+#else /* not HAVE_GETUTMPX */
 void 
 write_logout_record (void *data)
 {
@@ -222,7 +222,7 @@ write_logout_record (void *data)
 	}
 	endutent ();
 }
-#endif /* not HAVE_UTMPX_H */
+#endif /* not HAVE_GETUTMPX */
 
 #else /* Otherwise, use BSD-like utmp updating */
 

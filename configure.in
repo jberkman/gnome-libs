@@ -56,7 +56,7 @@ AC_SUBST(CFLAGS)
 AC_SUBST(CPPFLAGS)
 AC_SUBST(LDFLAGS)
 
-ALL_LINGUAS="ca cs da de es fi fr ga it ja ko no pt sv ru pl hu"=
+ALL_LINGUAS="ca cs da de es fi fr ga it ja ko no pt sv ru pl hu"
 
 AM_GNOME_GETTEXT
 
@@ -100,8 +100,8 @@ AC_CHECK_HEADERS(sys/select.h sys/un.h paths.h sys/syslimits.h)
 dnl
 dnl gnome-pty-support checks
 dnl
-AC_CHECK_HEADERS(utmpx.h pty.h libutil.h)
-AC_CHECK_FUNCS(grantpt login utmpxname utmpname setutent)
+AC_CHECK_HEADERS(pty.h libutil.h)
+AC_CHECK_FUNCS(grantpt login utmpxname utmpname getutmpx setutent)
 AC_MSG_CHECKING([for Unix98 sendmsg])
 AC_TRY_LINK([
 #include <stdio.h>
