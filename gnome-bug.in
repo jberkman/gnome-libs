@@ -156,6 +156,12 @@ SYSTEM=`( [ -f /bin/uname ] && /bin/uname -a ) || \
 ARCH=`[ -f /bin/arch ] && /bin/arch`
 MACHINE=`[ -f /bin/machine ] && /bin/machine`
 
+# FIXME: Add detection code for the other distro.
+DISTRO=`( [ -f /etc/debian_version ] && echo "Debian") || \
+        ( [ -f /etc/redhat-release ] && echo "Red Hat") || echo ""`
+DISTROVERSION=`( [ -f /etc/debian_version ] && cat /etc/debian_version) || \
+        ( [ -f /etc/redhat-release ] && cat /etc/redhat-release) || echo ""`
+
 COMMAND=`echo $0 | sed -e 's,.*/,,'`
 ## USAGE="Usage: $COMMAND [-PVL] [-t address] [-f filename] [--request-id] 
 USAGE="Usage: $COMMAND [-PVL]
@@ -332,11 +338,11 @@ __EOF__
 
       cat >> $file << __EOF__
 To: $GNATS_ADDR
-Subject: 
+Subject: <summarize bug in one line here>
 From: $FROM
 
 Package:	$CATEGORY_C
-Version:	< only if known (one line) >
+Version:	<only if known (one line)>
 Severity:	$SEVERITY_C
 
 >Originator: 	 $ORIGINATOR
@@ -350,6 +356,7 @@ ${ORGANIZATION-$ORGANIZATION_C}
 `[ -n "$SYSTEM" ] && echo System: $SYSTEM`
 `[ -n "$ARCH" ] && echo Architecture: $ARCH`
 `[ -n "$MACHINE" ] && echo Machine: $MACHINE`
+`[ -n "$DISTRO" ] && echo Distribution: $DISTRO` `[ -n "$DISTROVERSION" ] && echo Version: $DISTROVERSION`
 
 >Description:
 	$DESCRIPTION_C
