@@ -34,6 +34,7 @@
 #ifndef GNOME_DISABLE_COMPAT_H
 
 #include <gnome-entry.h>
+#include <gnome-icon-entry.h>
 
 #  define GNOME_IS_MDI_MDI_CHILD(obj)     GNOME_IS_MDI_GENERIC_CHILD(obj)
 
@@ -60,6 +61,18 @@ void         gnome_entry_append_history   (GnomeEntry  *gentry,
 void         gnome_entry_load_history     (GnomeEntry  *gentry);
 void         gnome_entry_save_history     (GnomeEntry  *gentry);
 void         gnome_entry_clear_history    (GnomeEntry  *gentry);
+
+/*
+ * GnomeIconEntry
+ */
+
+void         gnome_icon_entry_set_pixmap_subdir (GnomeIconEntry *ientry,
+                                                 const gchar    *subdir);
+
+gchar       *gnome_icon_entry_get_filename      (GnomeIconEntry *ientry);
+
+gboolean     gnome_icon_entry_set_filename      (GnomeIconEntry *ientry,
+                                                 const gchar    *filename);
 
 #endif /* GNOME_DISABLE_COMPAT_H */
 #endif
