@@ -1,3 +1,19 @@
+Sun Aug 16 19:42:41 1998  Tom Tromey  <tromey@cygnus.com>
+
+	A couple of -Wall -Wmissing-prototypes fixes:
+	* libgnome/gnomelib-init.c: Include libgnomeP.h.
+	* libgnome/gnome-i18nP.h: Add prototypes for
+	gnome_i18n_set_preferred_language and
+	gnome_i18n_get_preferred_language.
+
+	* libgnome/libgnomeP.h: Include gnome-remote.h.
+	* libgnome/libgnome.h: Include gnome-remote.h.
+	* libgnome/Makefile.am (libgnome_la_SOURCES): Added
+	gnome-remote.c.
+	(libgnomeinclude_HEADERS): Added gnome-remote.h.
+	* libgnome/gnome-remote.c: New file.
+	* libgnome/gnome-remote.h: New file.
+
 1998-08-16 Mandrake (Geoff Harrison) <mandrake@mandrake.net>
 
 	* Changed version numbers to 0.27.0 in lib dirs.  I will likely
