@@ -1508,7 +1508,7 @@ zvt_term_scrollbar_moved (GtkAdjustment *adj, GtkWidget *widget)
 
   term->vx->vt.scrollbackoffset = -line;
 
-  d(printf("scrollbar moved to: %f\n\n", adj->value);
+  d(printf("zvt_term_scrollbar_moved adj->value=%f\n", adj->value));
 
   /* will redraw if scrollbar moved */
   vt_update (term->vx, UPDATE_SCROLLBACK);
