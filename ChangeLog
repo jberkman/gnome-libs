@@ -1,3 +1,11 @@
+Thu Feb 25 03:41:23 1999  Timur Bakeyev <mc@bat.ru>
+
+	* configere.in: Added several more checks for functions, used by
+	gnome-utmp.c.
+	
+	* acconfig.h, acinclude.m4: Added check against ut.ut_syslen menmber
+	of struct utmpx.
+
 1999-02-24  Miguel de Icaza  <miguel@nuclecu.unam.mx>
 
 	* gnome-data/Makefile.am (convert_SCRIPTS): Add this script that

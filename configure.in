@@ -138,7 +138,7 @@ AC_MSG_RESULT(yes)],[AC_MSG_RESULT(no)])
 
 AC_CHECK_UTMP
 
-AC_CHECK_HEADERS(pty.h util.h libutil.h)
+AC_CHECK_HEADERS(pty.h util.h libutil.h ttyent.h)
 
 AC_CHECK_LIB(util, openpty,
     [
@@ -149,8 +149,8 @@ AC_CHECK_LIB(util, openpty,
     AC_SUBST(UTIL_LIBS)
     ])
 
-AC_CHECK_FUNCS(grantpt utmpxname utmpname getutmpx getutent)
-AC_CHECK_FUNCS(fcntl flock)
+AC_CHECK_FUNCS(grantpt utmpxname utmpname getutmpx getutent getttyent)
+AC_CHECK_FUNCS(updwtmpx updwtmp fcntl flock strrchr)
 
 dnl And workaround for a Autoconf 2.4 bug:
 if test x$ac_cv_func_grantpt = xyes; then

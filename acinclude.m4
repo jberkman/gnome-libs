@@ -549,4 +549,26 @@ if test "$result" = "yes"; then
 fi
 AC_MSG_RESULT($result)
 
+AC_MSG_CHECKING(for ut_syslen field in the utmp structure)
+AC_TRY_COMPILE([#ifdef TIME_WITH_SYS_TIME
+#include <sys/time.h>
+#include <time.h>
+#else
+#ifdef HAVE_SYS_TIME_H
+#include <sys/time.h>
+#else
+#include <time.h>
+#endif
+#endif
+#ifdef HAVE_UTMP_H
+#include <utmp.h>
+#endif
+#ifdef HAVE_UTMPX_H
+#include <utmpx.h>
+#endif],[UTMP ut; ut.ut_syslen=0;],result=yes,result=no)
+if test "$result" = "yes"; then
+  AC_DEFINE(HAVE_UT_UT_SYSLEN)
+fi
+AC_MSG_RESULT($result)
+
 ])
