@@ -50,6 +50,7 @@
 <!entity wwwredbean    "http://www.red-bean.com/guile">
 <!entity wwwschemerpt  "http://www-swiss.ai.mit.edu/~jaffer/r5rs_toc.html">
 <!entity wwwfhs        "http://www.pathname.com/fhs/2.0/fhs-toc.html">
+<!entity wwwgtktheme   "http://gtk.themes.org">
 <!entity ftpgnome      "ftp://ftp.gnome.org">
 <!entity ftpwgn        "ftp://gnomeftp.wgn.net/pub/gnome">
 <!entity ftpsnap       "ftp://ftp.jimpick.com/pub/gnome/snap">
@@ -63,7 +64,7 @@
   <bookinfo>
     <title>GNOME Frequently Asked Questions</title>
     <titleabbrev>GNOME-FAQ</titleabbrev>
-    <edition>v1.0.5a</edition>
+    <edition>v1.0.6a</edition>
     <authorgroup>
       <author>
 	<firstname>Todd</firstname>
@@ -419,9 +420,9 @@
       (such as session management, and the GNOME pager), that won't
       work with all of them.  For best results, go with a
       GNOME-compliant window manager.  The two most compliant are
-      currently Enlightenment and IceWM, with FVWM, SCWM, Window Maker
-      and QVWM putting finishing touches on GNOME-compliance as we
-      speak.</para>
+      currently Enlightenment and IceWM, with FVWM, SCWM, Window
+      Maker, AfterStep and QVWM putting finishing touches on
+      GNOME-compliance as we speak.</para>
     </sect1>
 
     <sect1 id="FreeSoftware">
@@ -2056,6 +2057,7 @@ WM=foo</screen>
 	  <member>Scheme (Guile)</member>
 	  <member>TOM</member>
 	  <member>Gwydion Dylan</member>
+	  <member>Ada95</member>
 	</simplelist>
 
 	<para>If there are others, then please let us know about
@@ -2105,89 +2107,49 @@ WM=foo</screen>
 	<title>What's the deal with themes?</title>
 
 	<para>Themes let you change the look and feel of GTK+
-	applications without recompiling them. Eventually, you should
-	be able to change the theme of all GTK+ apps on a given display
-	at the same time. For now, though, you can hard-code the theme
-	at startup.</para>
+	applications without recompiling them.  With themes, you are
+	able to change the theme of all GTK+ apps on a given display
+	at the same time.</para>
+
+	<para>There are actually two parts of a theme in GTK+, the
+	engine and the configuration.  The engine is a specially
+	constructed shared library with instructions on the themes way
+	to draw the widgets (the controls of a window, like the
+	buttons, scrollbars and menus).  The configuration includes
+	information like fonts, colors, which engine to use, and
+	sometimes graphic images to incorporate into the theme.
+	Together, the two make the Theme, and give GTK+ its flexible
+	appearance.</para>
 
 	<para>To see some examples of what themed GTK+ apps look like,
-	take a look at: <ulink url="http://gtk.themes.org">
-	http://gtk.themes.org</ulink>.</para>
+	take a look at: <ulink url="&wwwgtktheme;">
+	&wwwgtktheme;</ulink>.</para>
       </sect2>
 
       <sect2>
 	<title>How do I get themes working?</title>
 
-	<para>OK, I have gotten themes working on my machine; this is
-	roughly how I did it.  First, you have to reinstall GTK. Do a
-	"make uninstall" on your present install, and then do the
-	following:</para>
+	<para>First, you need a recent version of GTK+, I recommend
+	version 1.2.1 at the moment, but 1.2.0 works fine as well.
+	You then get the themes you want.  A good selection of themes
+	is available in the gtk-engines module.  Even more are
+	available at <ulink url="&wwwgtktheme;">
+	&wwwgtktheme;</ulink>.</para>
 
-<screen>
-<prompt>%</prompt> <userinput>cvs get -r themes-2 -d themes-gtk+ gtk+</userinput>
-<prompt>%</prompt> <userinput>cd themes-gtk+</userinput>
-<prompt>%</prompt> <userinput>./autogen.sh --prefix=/opt/gnome &amp;&amp; make &amp;&amp; make install</userinput>
-<prompt>%</prompt> <userinput>cd themes</userinput>
-<prompt>%</prompt> <userinput>./autogen.sh --prefix=/opt/gnome &amp;&amp; make &amp;&amp; make install</userinput></screen>
+	<para>Many of the themes include an engine.  You need to
+	compile the engine, and install it.  In gtk-engines, this is
+	done the same way as any GNOME module.  The themes from the
+	website might have different instructions, check their
+	documentation.  Some of the themes on the website are merely
+	alternate configurations for another engine, many of them are
+	for the pixmap engine in gtk-engines.</para>
 
-	<para>You need the new imlib installed to do this; if you get
-	an error because of an undefined AM_PATH_GDK_IMLIB, it's
-	because imlib.m4 is not found, either because you don't have a
-	new imlib, or because of normal Autoconf m4 file issues.  (See
-	<link linkend="Autoconf">Autoconf</link>)</para>
-
-	<para>This should give you a working, themefied version of
-	GTK+. Now, you need to do the following. Remember, in these
-	examples, you should replace "/opt/gnome" with wherever you
-	have gnome installed, which might be some place
-	different.</para>
-
-<screen>
-<prompt>%</prompt> <userinput>cd /opt/gnome/share</userinput>
-<prompt>%</prompt> <userinput>mv gtkrc gtkrc.orig</userinput>
-<prompt>%</prompt> <userinput>ln -s gtk/themes/$(theme)/gtkrc gtkrc</userinput></screen>
-
-	<para>Where $(theme) is one of the subdirectories of
-	gtk/themes; at present there are the following:</para>
-	<simplelist>
-	  <member>Pixmap</member>
-	  <member>Redmond95 (a Win95-like theme)</member>
-	  <member>Notif (a Motif-like theme)</member>
-	  <member>Metal</member>
-	</simplelist>
-
-	<para>That's it! After you make this symbolic link, all new GTK apps
-	will be started with that the theme. You can even have
-	multiple apps with multiple themes running at the same time. A
-	theme lasts for the duration of that application.</para>
-
-	<para>I was changing themes so often that I came up with a
-	silly shell script to do it for me. Here it is:</para>
-
-	<programlisting>
-#!/bin/sh
-
-ls -l /opt/gnome/share/gtkrc
-
-cd /opt/gnome/share/
-test -f gtkrc &amp;&amp; mv gtkrc gtkrc.orig
-
-echo "select from the following theme choices:"
-cd /opt/gnome/share/gtk/themes/
-find -name gtkrc | sed 'sH^\.\/HHg;sH\/gtkrc&dollar;HHg'
-
-cd /opt/gnome/share/
-theme=
-while ! test -f gtk/themes/&dollar;theme/gtkrc
-do
-   echo -n "Choose a theme: "
-   read theme
-done
-
-rm -f gtkrc
-ln -s gtk/themes/&dollar;theme/gtkrc gtkrc
-ls -l /opt/gnome/share/gtkrc
-        </programlisting>
+	<para>Once the theme is installed, you can select them through
+	the GNOME Control Center, under Desktop->Theme Selector.  The
+	selector will allow you to choose between all the themes
+	installed on the fly, preview what the the theme will look
+	like, and in version 1.04 or later even let you select the
+	font.</para>
 
 	<comment> You can see what the FAQ author's themefied GTK apps
         look like at: <ulink url="&wwwtoddtheme;">
