@@ -1,0 +1,22 @@
+diff -ru pkgconfig-0.3.5.orig/pkg.m4 pkgconfig-0.3.5/pkg.m4
+--- pkgconfig-0.3.5.orig/pkg.m4	Mon Jul 10 14:11:36 2000
++++ pkgconfig-0.3.5/pkg.m4	Sat Sep 30 17:47:05 2000
+@@ -67,7 +67,7 @@
+ AC_DEFUN(PKG_CHECK_MODULES,
+ [
+     if test -z "$PKG_CONFIG"; then
+-	AC_PATH_PROG(PKG_CONFIG, pkg-config, no)
++	AC_PATH_PROG(PKG_CONFIG, experimental-pkg-config, no)
+     fi
+ 
+     name=$1
+@@ -126,7 +126,8 @@
+ 	    eval $name'_DEPENDS'=\"$pkg_list\"
+ 	fi
+     fi
+-    pkg_varlist=`$PKG_CONFIG --extra-flags $pkg_list`
++    #pkg_varlist=`$PKG_CONFIG --extra-flags $pkg_list`
++    pkg_varlist=
+     if test -n "$pkg_varlist"; then
+ 	for pkgvar in $pkg_varlist; do
+ 	    eval ${name}'_'${pkgvar}=\"`$PKG_CONFIG --get-flag $pkgvar $pkg_list`\"

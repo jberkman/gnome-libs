@@ -4,7 +4,7 @@ RCS file: /cvs/gnome/gnome-vfs/.cvsignore,v
 retrieving revision 1.4
 diff -u -u -r1.4 .cvsignore
 --- .cvsignore	2000/08/31 11:32:38	1.4
-+++ .cvsignore	2000/09/30 02:34:34
++++ .cvsignore	2000/09/30 15:45:29
 @@ -28,3 +28,4 @@
  vfscorbaConf.sh
  vfspthreadConf.sh
@@ -16,7 +16,7 @@ RCS file: /cvs/gnome/gnome-vfs/Makefile.am,v
 retrieving revision 1.15
 diff -u -u -r1.15 Makefile.am
 --- Makefile.am	2000/09/05 14:20:32	1.15
-+++ Makefile.am	2000/09/30 02:34:34
++++ Makefile.am	2000/09/30 15:45:29
 @@ -37,7 +37,8 @@
  	vfsConf.sh.in				\
  	vfscorbaConf.sh.in			\
@@ -40,7 +40,7 @@ RCS file: /cvs/gnome/gnome-vfs/configure.in,v
 retrieving revision 1.73
 diff -u -u -r1.73 configure.in
 --- configure.in	2000/09/29 05:05:16	1.73
-+++ configure.in	2000/09/30 02:34:35
++++ configure.in	2000/09/30 15:45:29
 @@ -11,7 +11,7 @@
  AM_PROG_LIBTOOL
  
@@ -75,7 +75,7 @@ Index: gnomevfs-2.0.pc.in
 RCS file: gnomevfs-2.0.pc.in
 diff -N gnomevfs-2.0.pc.in
 --- /dev/null	Tue May  5 16:32:27 1998
-+++ gnomevfs-2.0.pc.in	Fri Sep 29 22:34:35 2000
++++ gnomevfs-2.0.pc.in	Sat Sep 30 11:45:29 2000
 @@ -0,0 +1,12 @@
 +prefix=/gnome/head/INSTALL
 +exec_prefix=${prefix}

@@ -4,7 +4,7 @@ RCS file: /cvs/gnome/ORBit/.cvsignore,v
 retrieving revision 1.6.4.1
 diff -u -u -r1.6.4.1 .cvsignore
 --- .cvsignore	2000/09/29 23:34:02	1.6.4.1
-+++ .cvsignore	2000/09/30 02:21:26
++++ .cvsignore	2000/09/30 15:44:19
 @@ -20,4 +20,4 @@
  install-sh
  mkinstalldirs
@@ -17,7 +17,7 @@ RCS file: /cvs/gnome/ORBit/Makefile.am,v
 retrieving revision 1.13.4.3
 diff -u -u -r1.13.4.3 Makefile.am
 --- Makefile.am	2000/09/30 02:09:43	1.13.4.3
-+++ Makefile.am	2000/09/30 02:21:26
++++ Makefile.am	2000/09/30 15:44:19
 @@ -4,7 +4,7 @@
  
  bin_SCRIPTS=orbit-config
@@ -39,7 +39,7 @@ Index: ORBit-2.0.pc.in
 RCS file: ORBit-2.0.pc.in
 diff -N ORBit-2.0.pc.in
 --- /dev/null	Tue May  5 16:32:27 1998
-+++ ORBit-2.0.pc.in	Fri Sep 29 22:21:26 2000
++++ ORBit-2.0.pc.in	Sat Sep 30 11:44:19 2000
 @@ -0,0 +1,12 @@
 +prefix=@prefix@
 +exec_prefix=@exec_prefix@
@@ -59,7 +59,7 @@ RCS file: /cvs/gnome/ORBit/configure.in,v
 retrieving revision 1.98.4.6
 diff -u -u -r1.98.4.6 configure.in
 --- configure.in	2000/09/29 23:34:02	1.98.4.6
-+++ configure.in	2000/09/30 02:21:27
++++ configure.in	2000/09/30 15:44:19
 @@ -99,7 +99,7 @@
  dnl Checks for libraries.
  
@@ -82,7 +82,7 @@ RCS file: /cvs/gnome/ORBit/orbit-config.in,v
 retrieving revision 1.7
 diff -u -u -r1.7 orbit-config.in
 --- orbit-config.in	1999/10/08 04:49:07	1.7
-+++ orbit-config.in	2000/09/30 02:21:27
++++ orbit-config.in	2000/09/30 15:44:19
 @@ -87,8 +87,8 @@
         	;;
  
@@ -100,7 +100,7 @@ RCS file: /cvs/gnome/libIDL/.cvsignore,v
 retrieving revision 1.8.4.1
 diff -u -u -r1.8.4.1 .cvsignore
 --- libIDL/.cvsignore	2000/09/29 23:35:50	1.8.4.1
-+++ libIDL/.cvsignore	2000/09/30 02:21:27
++++ libIDL/.cvsignore	2000/09/30 15:44:19
 @@ -28,4 +28,4 @@
  libIDL.m4
  Makefile.msc
@@ -113,7 +113,7 @@ RCS file: /cvs/gnome/libIDL/Makefile.am,v
 retrieving revision 1.65.4.3
 diff -u -u -r1.65.4.3 Makefile.am
 --- libIDL/Makefile.am	2000/09/30 02:09:43	1.65.4.3
-+++ libIDL/Makefile.am	2000/09/30 02:21:27
++++ libIDL/Makefile.am	2000/09/30 15:44:19
 @@ -33,7 +33,7 @@
  			  Makefile.msc README.win32 \
  			  libIDL.def libIDLConf.sh.in \
@@ -136,7 +136,7 @@ RCS file: /cvs/gnome/libIDL/configure.in,v
 retrieving revision 1.54.4.1
 diff -u -u -r1.54.4.1 configure.in
 --- libIDL/configure.in	2000/09/29 23:35:50	1.54.4.1
-+++ libIDL/configure.in	2000/09/30 02:21:27
++++ libIDL/configure.in	2000/09/30 15:44:20
 @@ -82,7 +82,7 @@
  AC_CHECK_PROG(HAVE_GLIB_CONFIG, glib-config, yes, no)
  
@@ -159,7 +159,7 @@ Index: libIDL/libIDL-2.0.pc.in
 RCS file: libIDL-2.0.pc.in
 diff -N libIDL-2.0.pc.in
 --- /dev/null	Tue May  5 16:32:27 1998
-+++ libIDL-2.0.pc.in	Fri Sep 29 22:21:27 2000
++++ libIDL-2.0.pc.in	Sat Sep 30 11:44:20 2000
 @@ -0,0 +1,12 @@
 +prefix=@prefix@
 +exec_prefix=@exec_prefix@
