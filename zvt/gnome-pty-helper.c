@@ -249,7 +249,7 @@ close_pty_pair (void *tag)
 {
 	pty_info *pi;
 
-	for (pi = pty_list; pi; pi = pty_list){
+	for (pi = pty_list; pi; pi = pi->next){
 		if (tag == pi){
 			shutdown_pty (pi);
 			break;
