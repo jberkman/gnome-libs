@@ -1,3 +1,18 @@
+1998-10-28  Federico Mena Quintero  <federico@nuclecu.unam.mx>
+
+	* libgnome/gnome-fileconvert.c (gfc_read_FileConverters): 
+	Made static.
+	(gfc_reset_path): Likewise.
+
+	* libgnome/gnome-triggers.c (actiontypes): Made const.
+
+	* libgnome/gnome-util.c (image_extensions): Made const.
+
+	* libgnome/gnome-paper.c (units): Made const.
+
+	* libgnome/lib_date.c: Made the data arrays const so that they can
+	be shared.
+
 1998-10-24  Martin Baulig  <martin@home-of-linux.org>
 
 	* configure.in (GNOME_ORBIT_HOOK): Print a warning on failure.
