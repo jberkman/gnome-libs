@@ -170,13 +170,12 @@ doing this.
 
 * GnomeAppBar - MODIFIED
 
-  The following functions are deprecated:
+  The following functions have been renamed:
 
-  - gnome_appbar_set_progress() - use gnome_appbar_set_progress_percentage().
+  - gnome_appbar_set_progress() -> gnome_appbar_set_progress_percentage().
 
   The following new functions have been added:
 
-  - gnome_appbar_set_progress_percentage()
   - gnome_appbar_get_status()
 
   Other source incompatible changes:
@@ -200,6 +199,76 @@ doing this.
 * gtk-ted - REMOVED
 
 * gnome-font-selector - OBSOLETE
+
+* gnome-color-picker - MODIFIED
+
+  The following functions have been added:
+
+  - gnome_color_picker_get_dither ()
+  - gnome_color_picker_get_use_alpha ()
+  - gnome_color_picker_get_title ()
+ 
+  - all fields have been removed from the GnomeColorPicker instance struct.
+
+* gnome-date-edit - MODIFIED
+
+  - all fields have been removed from the GnomeDateEdit instance struct.
+
+  The following functions have been renamed:
+
+  - gnome_date_edit_get_date() -> gnome_date_edit_get_time()
+
+  The following functions have been added:
+
+  - gnome_date_edit_get_initial_time()
+
+- gnome-font-picker - MODIFIED
+
+  - private fields have been removed from the GnomeFontPicker instance struct.
+
+  The following functions have been added:
+
+  - gnome_font_picker_get_font_name()
+
+- gnome-href - MODIFIED
+
+  - all fields have been removed from the GnomeHRef instance struct.
+
+  The following functions have been renamed:
+
+  - gnome_href_get_label() -> gnome_href_get_text()
+  - gnome_href_set_label() -> gnome_href_set_text()
+
+- gnome-icon-list - MODIFIED and ADDED FUNCTIONALITY
+
+  - all fields have been removed from the GnomeIconList instance struct.
+
+  The following functions have a different API:
+
+  - gnome_icon_list_new() - removed `GtkAdjustment *adj' argument
+  - gnome_icon_list_unselect_all() - removed `GdkEvent *event' and
+  `gpointer keep' arguments.
+
+  The following functions have been removed:
+
+  - gnome_icon_list_new_flags()
+  - gnome_icon_list_set_hadjustment()
+  - gnome_icon_list_set_vadjustment()
+  - gnome_icon_list_insert_imlib()
+  - gnome_icon_list_append_imlib()
+
+  The following new functions have been added:
+
+  - gnome_icon_list_insert_pixbuf()
+  - gnome_icon_list_append_pixbuf()
+  - gnome_icon_list_get_selection_mode()
+  - gnome_icon_list_get_selectinon()
+  - gnome_icon_list_get_icon_filename()
+  - gnome_icon_list_find_icon_from_filename()
+
+* gnome-icon-sel - OBSOLETE
+
+  Use GnomeIconSelector.
 
 
 libgnome stuff:
