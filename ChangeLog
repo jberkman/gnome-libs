@@ -1,3 +1,29 @@
+Sat May 16 00:44:21 1998  Tom Tromey  <tromey@cygnus.com>
+
+	* libgnome/gnome-string.c: Removed dead check for delim==NULL.
+
+	* libgnome/gnome-dentry.c (gnome_desktop_entry_launch): Look up
+	desired terminal program in config database.
+
+	* libgnome/gnome-i18n.c (LANGKEY): Changed value.
+
+	* libgnome/gnome-dentry.c (gnome_desktop_entry_load_flags): Treat
+	"Exec" entry as a vector.
+	(gnome_desktop_entry_save): Likewise.
+	(gnome_desktop_entry_free): Likewise.
+	(gnome_desktop_entry_launch): Likewse.  Also use
+	gnome_execute_async.
+	* libgnome/gnome-dentry.h (GnomeDesktopEntry): Added `exec_length'
+	member.  `exec' member now a `char**'.
+	* libgnome/libgnome.h: Include gnome-exec.h.
+	* libgnome/Makefile.am (libgnome_la_SOURCES): Added gnome-exec.c.
+	(libgnomeinclude_HEADERS): Added gnome-exec.h.
+	* libgnome/gnome-exec.h: New file.
+	* libgnome/gnome-exec.c: New file.
+
+	* libgnome/gnome-config.c (_gnome_config_get_vector_with_default):
+	If no value available, set *argvp to NULL.
+
 1998-05-14  Raja R Harinath  <harinath@cs.umn.edu>
 
 	* libgnome/gnome-i18n.c (gnome_i18n_init): It is not safe to pass
