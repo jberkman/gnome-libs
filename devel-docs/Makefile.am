@@ -34,15 +34,22 @@ libgnome.sgml:
 # files must be extra_dist.  Also, distribute the `.html' file
 # so that people without DocBook can still use the docs.
 EXTRA_DIST = \
-	gnome-doc-framework.txt	\
-	gnome-app-helper.sgml	\
-	gnome-canvas.sgml	\
-	gnome-dev-info.html	\
-	gnome-dev-info.sgml	\
-	gnome-app-helper.sgml	\
+	README.gtkcauldron		\
+	README.gtkcauldron_for_pyton	\	
+	adding-sounds.txt		\
+	api-comment-style.txt		\
+	gnome-doc-framework.txt		\
+	gnome-app-helper.sgml		\
+	gnome-canvas.sgml		\
+	gnome-dev-info.html		\
+	gnome-dev-info.sgml		\
+	gnome-app-helper.sgml		\
 	gnome-message-utils.sgml	\
-	x-concepts.sgml		\
-	libgnorba.sgml		\
-	gnome-mdi.sgml		\
-	libgnomeui.sgml		\
+	x-concepts.sgml			\
+	libgnorba.sgml			\
+	gnome-mdi.sgml			\
+	libgnomeui.sgml			\
+	gtk_dialog_cauldron.3		\
+	suggestions.txt			\
+	mime-type-handling.txt		\
 	libgnome.sgml
