@@ -18,7 +18,7 @@
 #endif
 #include <ctype.h>
 
-#define SERVER_LISTING_PATH "/CORBA/Servers"
+#define SERVER_LISTING_PATH "/CORBA/servers"
 
 typedef struct {
 	gpointer impl_ptr;
@@ -94,12 +94,33 @@ goad_server_list_get(void)
   GArray *servinfo;
   GoadServer *retval;
   GString *tmpstr;
+  GString *usersrvpath;
   DIR *dirh;
 
   servinfo = g_array_new(TRUE, FALSE, sizeof(GoadServer));
   tmpstr = g_string_new(NULL);
 
-  dirh = opendir(GNOMESYSCONFDIR "/CORBA/servers");
+  /* User servers (preferred over system) */
+  usersrvpath = g_string_new(NULL);
+  g_string_sprintf(usersrvpath, "%s" SERVER_LISTING_PATH, gnome_user_dir);
+  dirh = opendir(usersrvpath->str);
+  if(dirh) {
+    struct dirent *dent;
+    
+    while((dent = readdir(dirh))) {
+	    if (!strcmp(dent->d_name, ".") || !strcmp(dent->d_name, ".."))
+		    continue;
+	    
+	    g_string_sprintf(tmpstr, "=%s/%s", usersrvpath->str, dent->d_name);
+	    
+	    goad_server_list_read(tmpstr->str, servinfo, tmpstr);
+    }
+    closedir(dirh);
+  }
+  g_string_free(usersrvpath, TRUE);
+  
+  /* System servers */
+  dirh = opendir(GNOMESYSCONFDIR SERVER_LISTING_PATH);
   if(dirh) {
     struct dirent *dent;
 
@@ -107,7 +128,7 @@ goad_server_list_get(void)
 	    if (!strcmp(dent->d_name, ".") || !strcmp(dent->d_name, ".."))
 		    continue;
 
-      g_string_sprintf(tmpstr, "=" GNOMESYSCONFDIR "/CORBA/servers/%s",
+      g_string_sprintf(tmpstr, "=" GNOMESYSCONFDIR SERVER_LISTING_PATH "/%s",
 		       dent->d_name);
 		       
       goad_server_list_read(tmpstr->str, servinfo, tmpstr);
@@ -115,7 +136,7 @@ goad_server_list_get(void)
     closedir(dirh);
   }
 
-  goad_server_list_read("/CORBA/servers/", servinfo, tmpstr);
+  goad_server_list_read(SERVER_LISTING_PATH "/", servinfo, tmpstr);
 
   retval = (GoadServer *)servinfo->data;
   g_array_free(servinfo, FALSE);
