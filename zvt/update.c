@@ -794,7 +794,7 @@ void vt_fix_selection(struct _vtx *vx)
     /* scan back over word chars */
     d(printf("startx = %d %p-> \n", sx, s->data));
 
-    if (ex==sx && ex<e->width)
+    if (ex==sx && ex<e->width && sy==ey)
       ex++;
 
     if ((s->data[sx]&0xff)==0) {
@@ -829,7 +829,7 @@ void vt_fix_selection(struct _vtx *vx)
   default:
     d(printf("selecting by char\n"));
 
-    if (ex==sx && ex<e->width)
+    if (ex==sx && ex<e->width && sy==ey)
       ex++;
 
     if ((s->data[sx]&0xff)==0) {

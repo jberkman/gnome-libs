@@ -1,5 +1,8 @@
 1999-04-03  Michael Zucchi  <zucchi@zzedzone.fsi.com.au>
 
+	* update.c (vt_fix_selection): Make sure we only increment 'ex' if
+	it equals 'sx' on the same line, otherwise 'ex' can creep.
+
 	* Merged in ZVT_XTERMNEW branch again, to pick up Miguel's
 	stropts.h changes.
 
