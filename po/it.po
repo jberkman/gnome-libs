@@ -6,19 +6,19 @@ msgstr ""
 "Xgettext-Options: --default-domain=gnome-libs --directory=.. --add-comments --keyword=_ --keyword=N_ --files-from=./POTFILES.in\n"
 "Files: libgnomeui/gnome-about.c libgnomeui/gnome-scores.c libgnomeui/gnome-messagebox.c gnome-hello/gnome-hello-2-i18n.c gnome-hello/gnome-hello-3-parse-args.c gnome-hello/gnome-hello-4-SM.c\n"
 
-#: libgnomeui/gnome-about.c:194
+#: libgnomeui/gnome-about.c:193
 msgid "Author:"
 msgstr "Autore:"
 
-#: libgnomeui/gnome-about.c:196 libgnomeui/gnome-about.c:198
+#: libgnomeui/gnome-about.c:195 libgnomeui/gnome-about.c:197
 msgid "Authors:"
 msgstr "Autori:"
 
-#: libgnomeui/gnome-about.c:359
+#: libgnomeui/gnome-about.c:357
 msgid "Authors: "
 msgstr "Autori: "
 
-#: libgnomeui/gnome-about.c:553
+#: libgnomeui/gnome-about.c:550
 msgid "About"
 msgstr "Informazioni"
 
@@ -50,49 +50,63 @@ msgstr "Domanda"
 msgid "Message"
 msgstr "Messaggio"
 
-#: libgnomeui/gnome-init.c:34
+#: libgnomeui/gnome-init.c:42
+msgid ""
+"\n"
+"Gtk toolkit options"
+msgstr "\nOpzioni per Gtk"
+
+#: libgnomeui/gnome-init.c:45
 msgid "DISPLAY"
 msgstr "DISPLAY"
 
-#: libgnomeui/gnome-init.c:34
+#: libgnomeui/gnome-init.c:45
 msgid "X display to use"
 msgstr "Display X da utilizzare"
 
-#: libgnomeui/gnome-init.c:36
+#: libgnomeui/gnome-init.c:47
 msgid "Don't use X shared memory extension"
 msgstr "Non usare le estensioni X per la memoria condivisa"
 
-#: libgnomeui/gnome-init.c:37
+#: libgnomeui/gnome-init.c:48
 msgid "NAME"
 msgstr "NOME"
 
-#: libgnomeui/gnome-init.c:37 libgnomeui/gnome-init.c:38 libgnomeui/gnome-init.c:39 libgnomeui/gnome-init.c:40 libgnomeui/gnome-init.c:41 libgnomeui/gnome-init.c:42
+#: libgnomeui/gnome-init.c:48 libgnomeui/gnome-init.c:49 libgnomeui/gnome-init.c:50 libgnomeui/gnome-init.c:51 libgnomeui/gnome-init.c:52 libgnomeui/gnome-init.c:53
 msgid "FIXME"
 msgstr "AGGIUSTAMI"
 
-#: libgnomeui/gnome-init.c:38
+#: libgnomeui/gnome-init.c:49
 msgid "CLASS"
 msgstr "CLASSE"
 
-#: libgnomeui/gnome-init.c:39
+#: libgnomeui/gnome-init.c:50
 msgid "HOST"
 msgstr "HOST"
 
-#: libgnomeui/gnome-init.c:40
+#: libgnomeui/gnome-init.c:51
 msgid "PORT"
 msgstr "PORTA"
 
-#: libgnomeui/gnome-init.c:41 libgnomeui/gnome-init.c:42
+#: libgnomeui/gnome-init.c:52 libgnomeui/gnome-init.c:53
 msgid "STYLE"
 msgstr "STILE"
 
-#: gnome-hello/gnome-hello-4-SM.c:67 libgnomeui/gnome-client.c:145
+#: gnome-hello/gnome-hello-4-SM.c:67 libgnomeui/gnome-client.c:158 libgnomeui/gnome-client.c:160
 msgid "ID"
 msgstr "ID"
 
-#: libgnomeui/gnome-client.c:146
+#: libgnomeui/gnome-client.c:159
 msgid "Specify session management id"
 msgstr "Indica identificatore del controllo di sessione"
+
+#: libgnomeui/gnome-client.c:161
+msgid "Specify id of cloned client"
+msgstr "Specifica identificatore per applicazione clonata"
+
+#: libgnomeui/gnome-client.c:163
+msgid "Disable connetion to session manager"
+msgstr "Disabilita connessione al gestore di sessione"
 
 #: libgnomeui/gnome_segv.c:58
 msgid ""
@@ -116,172 +130,171 @@ msgstr ""
 "\n"
 "Si vuole terminare questo programma?"
 
-#: libgnomeui/gnome-calculator.c:888 libgnomeui/gnome-calculator.c:1048
+#: libgnomeui/gnome-calculator.c:889 libgnomeui/gnome-calculator.c:1049
 msgid "DEG"
 msgstr "DEG"
 
-#: libgnomeui/gnome-calculator.c:890
+#: libgnomeui/gnome-calculator.c:891
 msgid "RAD"
 msgstr "RAD"
 
-#: libgnomeui/gnome-calculator.c:892
+#: libgnomeui/gnome-calculator.c:893
 msgid "GRAD"
 msgstr "GRAD"
 
-#: libgnomeui/gnome-calculator.c:1038
+#: libgnomeui/gnome-calculator.c:1039
 msgid "1/x"
 msgstr "1/x"
 
-#: libgnomeui/gnome-calculator.c:1039
+#: libgnomeui/gnome-calculator.c:1040
 msgid "x^2"
 msgstr "x^2"
 
-#: libgnomeui/gnome-calculator.c:1040
+#: libgnomeui/gnome-calculator.c:1041
 msgid "SQRT"
 msgstr "SQRT"
 
-#: libgnomeui/gnome-calculator.c:1041
+#: libgnomeui/gnome-calculator.c:1042
 msgid "CE/C"
 msgstr "CE/C"
 
-#: libgnomeui/gnome-calculator.c:1042
+#: libgnomeui/gnome-calculator.c:1043
 msgid "AC"
 msgstr "AC"
 
-#. inverse button
-#: libgnomeui/gnome-calculator.c:1045
+#: libgnomeui/gnome-calculator.c:1046
 msgid "sin"
 msgstr "sin"
 
-#: libgnomeui/gnome-calculator.c:1046
+#: libgnomeui/gnome-calculator.c:1047
 msgid "cos"
 msgstr "cos"
 
-#: libgnomeui/gnome-calculator.c:1047
+#: libgnomeui/gnome-calculator.c:1048
 msgid "tan"
 msgstr "tan"
 
-#: libgnomeui/gnome-calculator.c:1050
+#: libgnomeui/gnome-calculator.c:1051
 msgid "e"
 msgstr "e"
 
-#: libgnomeui/gnome-calculator.c:1051
+#: libgnomeui/gnome-calculator.c:1052
 msgid "EE"
 msgstr "EE"
 
-#: libgnomeui/gnome-calculator.c:1052
+#: libgnomeui/gnome-calculator.c:1053
 msgid "log"
 msgstr "log"
 
-#: libgnomeui/gnome-calculator.c:1053
+#: libgnomeui/gnome-calculator.c:1054
 msgid "ln"
 msgstr "ln"
 
-#: libgnomeui/gnome-calculator.c:1054
+#: libgnomeui/gnome-calculator.c:1055
 msgid "x^y"
 msgstr "x^y"
 
-#: libgnomeui/gnome-calculator.c:1056
+#: libgnomeui/gnome-calculator.c:1057
 msgid "PI"
 msgstr "PI"
 
-#: libgnomeui/gnome-calculator.c:1057
+#: libgnomeui/gnome-calculator.c:1058
 msgid "x!"
 msgstr "x!"
 
-#: libgnomeui/gnome-calculator.c:1058
+#: libgnomeui/gnome-calculator.c:1059
 msgid "("
 msgstr "("
 
-#: libgnomeui/gnome-calculator.c:1059
+#: libgnomeui/gnome-calculator.c:1060
 msgid ")"
 msgstr ")"
 
-#: libgnomeui/gnome-calculator.c:1060
+#: libgnomeui/gnome-calculator.c:1061
 msgid "/"
 msgstr "/"
 
-#: libgnomeui/gnome-calculator.c:1062
+#: libgnomeui/gnome-calculator.c:1063
 msgid "STO"
 msgstr "STO"
 
-#: libgnomeui/gnome-calculator.c:1063
+#: libgnomeui/gnome-calculator.c:1064
 msgid "7"
 msgstr "7"
 
-#: libgnomeui/gnome-calculator.c:1064
+#: libgnomeui/gnome-calculator.c:1065
 msgid "8"
 msgstr "8"
 
-#: libgnomeui/gnome-calculator.c:1065
+#: libgnomeui/gnome-calculator.c:1066
 msgid "9"
 msgstr "9"
 
-#: libgnomeui/gnome-calculator.c:1066
+#: libgnomeui/gnome-calculator.c:1067
 msgid "*"
 msgstr "*"
 
-#: libgnomeui/gnome-calculator.c:1068
+#: libgnomeui/gnome-calculator.c:1069
 msgid "RCL"
 msgstr "RCL"
 
-#: libgnomeui/gnome-calculator.c:1069
+#: libgnomeui/gnome-calculator.c:1070
 msgid "4"
 msgstr "4"
 
-#: libgnomeui/gnome-calculator.c:1070
+#: libgnomeui/gnome-calculator.c:1071
 msgid "5"
 msgstr "5"
 
-#: libgnomeui/gnome-calculator.c:1071
+#: libgnomeui/gnome-calculator.c:1072
 msgid "6"
 msgstr "6"
 
-#: libgnomeui/gnome-calculator.c:1072
+#: libgnomeui/gnome-calculator.c:1073
 msgid "-"
 msgstr "-"
 
-#: libgnomeui/gnome-calculator.c:1074
+#: libgnomeui/gnome-calculator.c:1075
 msgid "SUM"
 msgstr "SUM"
 
-#: libgnomeui/gnome-calculator.c:1075
+#: libgnomeui/gnome-calculator.c:1076
 msgid "1"
 msgstr "1"
 
-#: libgnomeui/gnome-calculator.c:1076
+#: libgnomeui/gnome-calculator.c:1077
 msgid "2"
 msgstr "2"
 
-#: libgnomeui/gnome-calculator.c:1077
+#: libgnomeui/gnome-calculator.c:1078
 msgid "3"
 msgstr "3"
 
-#: libgnomeui/gnome-calculator.c:1078
+#: libgnomeui/gnome-calculator.c:1079
 msgid "+"
 msgstr "+"
 
-#: libgnomeui/gnome-calculator.c:1080
+#: libgnomeui/gnome-calculator.c:1081
 msgid "EXC"
 msgstr "EXC"
 
-#: libgnomeui/gnome-calculator.c:1081
+#: libgnomeui/gnome-calculator.c:1082
 msgid "0"
 msgstr "0"
 
-#: libgnomeui/gnome-calculator.c:1082
+#: libgnomeui/gnome-calculator.c:1083
 msgid "."
 msgstr "."
 
-#: libgnomeui/gnome-calculator.c:1083
+#: libgnomeui/gnome-calculator.c:1084
 msgid "+/-"
 msgstr "+/-"
 
-#: libgnomeui/gnome-calculator.c:1084
+#: libgnomeui/gnome-calculator.c:1085
 msgid "="
 msgstr "="
 
-#: libgnomeui/gnome-calculator.c:1128
+#: libgnomeui/gnome-calculator.c:1149
 msgid "INV"
 msgstr "INV"
 
@@ -373,47 +386,47 @@ msgstr "Azzera"
 msgid "Top Ten"
 msgstr "Classifica"
 
-#: libgnomeui/gnome-stock.c:466
+#: libgnomeui/gnome-stock.c:484
 msgid "OK"
 msgstr "OK"
 
-#: libgnomeui/gnome-stock.c:467
+#: libgnomeui/gnome-stock.c:485
 msgid "Apply"
 msgstr "Applica"
 
-#: libgnomeui/gnome-stock.c:468
+#: libgnomeui/gnome-stock.c:486
 msgid "Cancel"
 msgstr "Annulla"
 
-#: libgnomeui/gnome-stock.c:469
+#: libgnomeui/gnome-stock.c:487
 msgid "Close"
 msgstr "Chiudi"
 
-#: libgnomeui/gnome-stock.c:470
+#: libgnomeui/gnome-stock.c:488
 msgid "Yes"
 msgstr "Sì"
 
-#: libgnomeui/gnome-stock.c:471
+#: libgnomeui/gnome-stock.c:489
 msgid "No"
 msgstr "No"
 
-#: libgnomeui/gnome-stock.c:472
+#: libgnomeui/gnome-stock.c:490
 msgid "Help"
 msgstr "Aiuto"
 
-#: libgnomeui/gnome-stock.c:1279
+#: libgnomeui/gnome-stock.c:1399
 msgid "Menu Accelerator Keys"
 msgstr "Tasti di Scelta Rapida da Menu"
 
-#: libgnomeui/gnome-stock.c:1281
+#: libgnomeui/gnome-stock.c:1401
 msgid "Global"
 msgstr "Globale"
 
-#: libgnomeui/gnome-stock.c:1283
+#: libgnomeui/gnome-stock.c:1403
 msgid "Menu Item"
 msgstr "Elemento di Menu"
 
-#: libgnomeui/gnome-stock.c:1284
+#: libgnomeui/gnome-stock.c:1404
 msgid "Accelerator"
 msgstr "Tasti rapidi"
 
