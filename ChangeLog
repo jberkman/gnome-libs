@@ -1,3 +1,12 @@
+2001-02-15  Darin Adler  <darin@eazel.com>
+
+	* libgnome/gnomelib-init2.c: (gnome_program_preinita):
+	Mark "Help options" with a N_ so it can be translated.
+	* libgnomeui/gnome-init.c: (gnome_register_options): Use N_, not
+	_, for the popt table names. 
+	(gnome_init_with_popt_table): Remove g_free that screws up the
+	popt option section.
+
 2001-02-06  Alexander Larsson  <alexl@redhat.com>
 
 	* libgnomeui/gnome-canvas-text.[ch]:
