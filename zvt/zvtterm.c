@@ -344,7 +344,7 @@ zvt_term_realize (GtkWidget *widget)
 
   /* input context */
   if (gdk_im_ready() && !term->ic) {
-    GdkIMStyle style = GdkIMPreeditNothing | GdkIMStatusNothing;
+    GdkIMStyle style = GDK_IM_PREEDIT_NOTHING | GDK_IM_STATUS_NOTHING;
     /* FIXME: do we have any window yet? */
     term->ic = gdk_ic_new(widget->window, widget->window, style, NULL);
     if (!term->ic) {
