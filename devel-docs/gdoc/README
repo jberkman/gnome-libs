@@ -1,0 +1,31 @@
+This is the first release of gdoc, the GNOME Documenter. 
+
+It's intended to be used to autodocument the GNOME libgnome/libgnomeui API.
+
+DOCUMENTING YOUR APIs
+=====================
+
+	Just add comments in the headers. For an example see gnome-about.h.
+
+USING gdoc
+==========
+
+	You shouldn't need it unless you're enough brave to want to change
+the code. I'm going to run it frequently to have it actualized. 
+
+	If you want risks, get the c2man 2.41's sources (i've downloaded them
+from ftp.debian.org) and patch it with c2man-to-gdoc-patch, compile and install
+it. Now when you run make in devel-docs, it should detect it and generate the
+new doc's.
+
+CHANGING IT/HOW DOES IT WORKS
+=============================
+
+	Well, if you want to maintain the code, it's yours...
+
+	After spending some time trying to understand how c2man works and
+failing, i give up and started gdb.
+
+	The result is really ugly. I wrote a new output_manual_pages that
+dumps the c2man's structs to perl-code. This code is catched by gdoc.pl
+and it generates the docbook output. 

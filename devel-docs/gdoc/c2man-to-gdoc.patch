@@ -1,0 +1,276 @@
+diff -u c2man-2.41.orig/Makefile.SH gdoc/Makefile.SH
+--- c2man-2.41.orig/Makefile.SH	Wed Apr 24 01:13:44 1996
++++ gdoc/Makefile.SH	Wed Feb 18 07:38:55 1998
+@@ -71,7 +71,7 @@
+ all: c2man c2man.1
+ 
+ install: all
+-	$(CP) c2man $(bin)
++	$(CP) c2man $(bin)/gdoc
+ 	$(CP) c2man.1 $(mansrc)/c2man.$(manext)
+ 	-mkdir $(privlib)
+ 	chmod 755 $(privlib)
+Common subdirectories: c2man-2.41.orig/amiga and gdoc/amiga
+Common subdirectories: c2man-2.41.orig/eg and gdoc/eg
+diff -u c2man-2.41.orig/grammar.y gdoc/grammar.y
+--- c2man-2.41.orig/grammar.y	Wed Apr 24 01:13:43 1996
++++ gdoc/grammar.y	Wed Feb 18 07:38:55 1998
+@@ -98,7 +98,10 @@
+ 
+ program
+ 	: /* empty */
+-	| translation_unit
++	| T_COMMENT translation_unit
++	{
++	  file_comment = $1;
++	}
+ 	;
+ 
+ translation_unit
+Common subdirectories: c2man-2.41.orig/libc and gdoc/libc
+diff -u c2man-2.41.orig/manpage.c gdoc/manpage.c
+--- c2man-2.41.orig/manpage.c	Wed Apr 24 01:13:44 1996
++++ gdoc/manpage.c	Wed Feb 18 07:39:37 1998
+@@ -1,3 +1,6 @@
++/* WARNING: This isn't the original c2man's manpage.c.
++   It was patched by HoraPe to be used by the GNOME. */
++
+ /* $Id: c2man-to-gdoc.patch,v 1.1 1998/02/18 12:34:11 horape Exp $
+  * stuff to do with manual page outputing
+  */
+@@ -21,6 +24,8 @@
+ ManualPage *firstpage = NULL;
+ ManualPage **lastpagenext = &firstpage;
+ 
++char *file_comment = NULL;
++
+ void dummy() {}
+ 
+ void
+@@ -1184,153 +1189,72 @@
+     return TRUE;
+ }
+ 
+-/* output all the manual pages in a list */
++char *escape (char *s)
++{
++putchar('\"');
++for(;s && *s;s++) {
++   switch(*s) {
++	case '\\':
++		printf("\\\\");break;
++	case '\n':
++		printf("\\n");break;
++	case '\"':
++		printf("\\\"");break;
++	case '@':
++		printf("\\@");break;
++	default:
++		putchar(*s);
++   	}
++   }
++printf("\"");
++}
++
++/* Real ugly hack: it does a dump of the c2man structs to be parsed by gdoc.pl 
++   */
+ void output_manual_pages(first, input_files, link_type)
+     ManualPage *first;
+-    int input_files;	/* number of different input files */
++    int  input_files;	/* number of different input files */
+     enum LinkType link_type;	/* how grouped pages will be linked */
+ {
+-    ManualPage *page;
+-    int tostdout = output_dir && !strcmp(output_dir,"-");
+-
+-    char *filename = NULL;
+-
+-    /* output each page, in turn */
+-    for (page = first; page; page = page->next)
+-    {
+-	char *input_file_base = NULL;
+-	enum Output_Object output_type =
+-			page_output_type(page->decl_spec, page->declarator);
+-
+-	/* the manual name is used as the output file extension, and also in
+-	 * the nroff output header.
+-	 */
+-	const char *section = page_manual_section(output_type);
+-
+-	/* work out the base name of the file this was generated from */
+-	if (page->sourcefile)
+-	{
+-	    const char *base = strrchr(firstpage->sourcefile, '/');
+-	    const char *last;
+-    
+-	    /* use the file name as the manual page title */
+-	    if (base == NULL)
+-		base = firstpage->sourcefile;
+-	    else
+-		base++;
+-	    last = strrchr(base, '.');
+-	    if (last == NULL)
+-		last = base + strlen(base);
+-    
+-	    input_file_base = alloc_string(base, last);
+-	}
+-
+-	if (!tostdout)
+-	{
+-	    safe_free(filename);	/* free previous, if any */
+-	    filename = page_file_name(
+-		use_input_name && input_file_base
+-				? input_file_base : page->declarator->name,
+-		output_type, section);
+-	    fprintf(stderr,"generating: %s\n",filename);
+-
+-	    /* a previous run may have left links, so nuke old file first */
+-	    if (!remove_old_file(filename))	exit(1);
+-
+-	    if (freopen(filename, "w", stdout) == NULL)
+-	    {
+-		my_perror("error opening output file", filename);
+-		free(filename);
+-		exit(1);
+-	    }
+-	}
+-
+-	/* do the page itself */
+-	output_manpage(first, page, input_files,
+-	    group_together && input_file_base ? input_file_base
+-					      : page->declarator->name,
+-	    group_together ? manual_section : section);
+-
+-	safe_free(input_file_base);
++ManualPage *decl;
++Parameter *param;
+ 
+-	/* don't continue if grouped, because all info went into this page */
+-	if (group_together)		break;
++printf("$FILE_COMMENT = "); escape(file_comment); printf(";\n\n");
+ 
+-	if (tostdout &&	page->next)	output->character('\f');
+-    }
+-
+-    /* close the last output file if there was one */
+-    if (!tostdout && fclose(stdout) == EOF)
+-    {
+-	my_perror("error linking closing file", filename);
+-	exit(1);
+-    }
+-
+-    /* if pages are grouped, just link the rest to the first */
+-    if (group_together && !tostdout && link_type != LINK_NONE)
+-    {
+-	for (page=use_input_name && first->sourcefile ? first : first->next;
+-						    page; page = page->next)
+-	{
+-	    enum Output_Object output_type =
+-			page_output_type(page->decl_spec, page->declarator);
+-	    const char *extension = page_manual_section(output_type);
+-	    char *linkname = page_file_name(page->declarator->name,
+-							output_type, extension);
+-	    int result = 0;
+-
+-	    /* we may have a function with the same name as the sourcefile */
+-	    if (!strcmp(filename, linkname))
+-	    {
+-		free(linkname);
+-		continue;
+-	    }
+-			
+-	    fprintf(stderr,"%s: %s\n",
+-		link_type == LINK_REMOVE ? "removing" : "linking", linkname);
+-
+-	    /* always nuke old output file, since it may be linked to the one
+-	     * we've just generated, so LINK_FILE may trash it.
+-	     */
+-	    if (!remove_old_file(linkname))	exit(1);
+-
+-	    switch(link_type)
+-	    {
+-#ifdef HAS_LINK
+-	    case LINK_HARD:
+-		result = link(filename, linkname);
+-		break;
+-#endif
+-#ifdef HAS_SYMLINK
+-	    case LINK_SOFT:
+-		result = symlink(filename, linkname);
+-		break;
+-#endif
+-	    case LINK_FILE:
+-		if (freopen(linkname, "w", stdout) == NULL)
+-		{
+-		    result = -1;
+-		    break;
+-		}
+-		output_warning();
+-		output->include(filename);
+-		if (fclose(stdout) == EOF)
+-		    result = -1;
+-		break;
+-	    case LINK_NONE:
+-	    case LINK_REMOVE:
+-		break;
+-	    }
++printf("@DECL = (\n");
++for ( decl = first ; decl ; decl = decl->next ) {
++	printf( "           {\n");
++	printf( "            \"spec\" => \"%s\",\n", decl->decl_spec->text);
++	printf( "            \"type\" => %d,\n",     decl->declarator->type);
++	printf( "            \"name\" => \"%s\",\n", decl->declarator->name);
++	printf( "            \"text\" => \"%s\",\n", decl->declarator->text);
++	printf( "            \"comm\" => ");
++	            escape(decl->declarator->comment);
++	            printf(",\n");
++	printf( "            \"ret\" => ");
++	            escape(decl->declarator->retcomment);
++	            printf(",\n");
++	printf( "            \"param\" => [\n");
++
++#define SPC     "                            "
++	for ( param = decl->declarator->params.first ; 
++	      param ;
++	      param = param->next)
++	      {
++		printf( SPC "{\n");
++		printf( SPC "\"type\" => \"%s\",\n", param->decl_spec.text);
++		printf( SPC "\"name\" => \"%s\",\n", param->declarator->text);
++	        printf( SPC "\"comm\" => ");
++	            escape(param->declarator->comment);
++	            printf(",\n");
++		printf( SPC "},\n");
++		if ( param == param->next)
++			break;
++	      }
+ 
+-	    /* check it went OK */
+-	    if (result == -1)
+-	    {
+-		my_perror("error linking output file", linkname);
+-		exit(1);
+-	    }
+-	    free(linkname);
++	printf( "                         ]\n");
++	printf( "           },\n\n");
+ 	}
+-    }
++printf("        );\n");
+ 
+-    safe_free(filename);
+ }
+diff -u c2man-2.41.orig/manpage.h gdoc/manpage.h
+--- c2man-2.41.orig/manpage.h	Tue Nov  9 17:43:12 1993
++++ gdoc/manpage.h	Wed Feb 18 07:38:55 1998
+@@ -44,6 +44,8 @@
+ /* list of manual pages */
+ extern ManualPage *firstpage;
+ 
++char *file_comment;
++
+ void
+ new_manual_page _((char *comment, DeclSpec *decl_spec, Declarator *declarator));
+ 
+Common subdirectories: c2man-2.41.orig/pc and gdoc/pc
+Common subdirectories: c2man-2.41.orig/vms and gdoc/vms
