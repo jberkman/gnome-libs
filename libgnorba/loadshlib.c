@@ -86,7 +86,7 @@ main(int argc, char* argv[])
   CORBA_exception_init(&ev);
 
   orb = gnome_CORBA_init_with_popt_table("loadshlib", VERSION, &argc, argv, options,
-			 0, &ctx, 0, &ev);
+			 0, &ctx, GNORBA_INIT_SERVER_FUNC, &ev);
   if(!(id || rid)) {
     fprintf(stderr, "You must specify a GOAD ID or a Repository ID.\n\n");
     poptPrintHelp(ctx, stdout, 0);

@@ -225,6 +225,7 @@ goad_server_activate_with_id(GoadServer *server_list,
   g_return_val_if_fail(!((flags & GOAD_ACTIVATE_SHLIB)
 		   && (flags & GOAD_ACTIVATE_REMOTE)), CORBA_OBJECT_NIL);
 
+  /* XXX TODO: try getting a running server from the name service first */
   if(server_list)
     slist = server_list;
   else
@@ -628,24 +629,26 @@ goad_server_activate_exe(GoadServer *sinfo,
 			 CORBA_Environment *ev)
 {
   gint                    iopipes[2];
-  gchar                   iorbuf[2048];
+  gchar                   iorbuf[2048] = "";
   CORBA_Object            retval = CORBA_OBJECT_NIL;
+  int childpid;
 
   pipe(iopipes);
   /* fork & get the ior from stdout */
 
-  if(fork()) {
+  if((childpid = fork())) {
     int     status;
     FILE*   iorfh;
+    char *do_srv_output;
     
     close(iopipes[1]);
     iorfh = fdopen(iopipes[0], "r");
 
-    while (fgets(iorbuf, sizeof(iorbuf), iorfh) && strncmp(iorbuf, "IOR:", 4))
-#if 0
-      g_message("srv output: '%s'", iorbuf)
-#endif
-	;
+    do_srv_output = getenv("GOAD_DEBUG_EXERUN");
+    while (fgets(iorbuf, sizeof(iorbuf), iorfh) && strncmp(iorbuf, "IOR:", 4)) {
+      if(do_srv_output)
+	g_message("srv output: '%s'", iorbuf);
+    }
 
     if (strncmp(iorbuf, "IOR:", 4)) {
       retval = CORBA_OBJECT_NIL;
@@ -669,7 +672,7 @@ goad_server_activate_exe(GoadServer *sinfo,
     }
 #endif
     fclose(iorfh);
-    wait(&status);
+    waitpid(childpid, &status, 0);
   } else if(fork()) {
     _exit(0); /* de-zombifier process, just exit */
   } else {
