@@ -704,6 +704,10 @@ static void vt_goto(struct vt_em *vt)
   } else {
     d(printf("position had too many parameters\n"));
   }
+  if (vt->cursorx < 0)
+    vt->cursorx = 0;
+  if (vt->cursory < 0)
+    vt->cursory = 0;
   if (vt->cursorx >= vt->width)
     vt->cursorx = vt->width-1;
   if (vt->cursory >= vt->height)

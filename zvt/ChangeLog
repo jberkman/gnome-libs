@@ -1,3 +1,8 @@
+1998-09-04    <nicholas@cefiro.cs.nthu.edu.tw>
+
+	* vt.c (vt_goto): reset vt->cursorx or vt->cursory to zero
+	when it is negative number
+
 1998-08-31  Miguel de Icaza  <miguel@nuclecu.unam.mx>
 
 	* zvtterm.c (zvt_term_scroll): Clear any pending cached
