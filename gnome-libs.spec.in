@@ -34,6 +34,9 @@ Obsoletes: gnome
 Libraries, include files, etc you can use to develop GNOME applications.
 
 %changelog
+* Wed Feb 17 1999 Elliot Lee <sopwith@redhat.com>
+
+- Add debugging disabling flags to $CFLAGS
 
 * Fri Nov 20 1998 Pablo Saratxaga <srtxg@chanae.alphanet.ch>
 
@@ -58,10 +61,14 @@ Libraries, include files, etc you can use to develop GNOME applications.
 
 %build
 # Needed for snapshot releases.
+
+MYCFLAGS="-DGTK_NO_CHECK_CASTS -DG_DISABLE_ASSERT -DG_DISABLE_CHECKS \
+$RPM_OPT_FLAGS"
+
 if [ ! -f configure ]; then
-  CFLAGS="$RPM_OPT_FLAGS" ./autogen.sh --prefix=%prefix --localstatedir=/var/lib
+  CFLAGS="$MYCFLAGS" ./autogen.sh --prefix=%prefix --localstatedir=/var/lib
 else
-  CFLAGS="$RPM_OPT_FLAGS" ./configure --prefix=%prefix --localstatedir=/var/lib
+  CFLAGS="$MYCFLAGS" ./configure --prefix=%prefix --localstatedir=/var/lib
 fi
 
 if [ "$SMP" != "" ]; then
