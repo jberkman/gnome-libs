@@ -100,8 +100,7 @@ else
 fi
 
 if [ "$SMP" != "" ]; then
-  (make "MAKE=make -k -j $SMP"; exit 0)
-  make
+  make -j$SMP "MAKE=make -j$SMP"
 else
   make
 fi
@@ -109,7 +108,7 @@ fi
 %install
 rm -rf $RPM_BUILD_ROOT
 
-make prefix=$RPM_BUILD_ROOT%{prefix} install
+make sysconfdir=$RPM_BUILD_ROOT/etc prefix=$RPM_BUILD_ROOT%{prefix} install
 
 %clean
 rm -rf $RPM_BUILD_ROOT
