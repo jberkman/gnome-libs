@@ -23,7 +23,6 @@ static void about_cb (GtkWidget *widget, void *data);
 static void quit_cb (GtkWidget *widget, void *data);
 
 static void prepare_app(void);
-static void parse_args (int argc, char *argv[]);
 static GtkMenuFactory *create_menu ();
 
 static gint save_state      (GnomeClient        *client,
@@ -82,33 +81,13 @@ static GnomeUIInfo main_menu[]=
 
 
 /* True if parsing determined that all the work is already done.  */
-int just_exit = 0;
 
-/* These are the arguments that our application supports.  */
-static struct argp_option arguments[] =
-{
-#define DISCARD_KEY -1
-  { "discard-session", DISCARD_KEY, N_("ID"), 0, N_("Discard session"), 1 },
-  { NULL, 0, NULL, 0, NULL, 0 }
-};
+char *just_exit = NULL;
 
-/* Forward declaration of the function that gets called when one of
-   our arguments is recognized.  */
-static error_t parse_an_arg (int key, char *arg, struct argp_state *state);
-
-/* This structure defines our parser.  It can be used to specify some
-   options for how our parsing function should be called.  */
-static struct argp parser =
-{
-  arguments,			/* Options.  */
-  parse_an_arg,			/* The parser function.  */
-  NULL,				/* Some docs.  */
-  NULL,				/* Some more docs.  */
-  NULL,				/* Child arguments -- gnome_init fills
-				   this in for us.  */
-  NULL,				/* Help filter.  */
-  NULL				/* Translation domain; for the app it
-				   can always be NULL.  */
+struct poptOption prog_options[] = {
+  {"discard-session", 'd', POPT_ARG_STRING, &just_exit, 0,
+   N_("Discard session"), N_("ID")},
+  {NULL, '\0', 0, NULL, 0}
 };
 
 int
@@ -116,17 +95,24 @@ main(int argc, char *argv[])
 {
   GnomeClient *client;
 
-  argp_program_version = VERSION;
-
   /* Initialize the i18n stuff */
   bindtextdomain (PACKAGE, GNOMELOCALEDIR);
   textdomain (PACKAGE);
 
-  /* gnome_init() is always called at the beginning of a program.  it
-     takes care of initializing both Gtk and GNOME.  It also parses
-     the command-line arguments.  */
-  gnome_init ("gnome-hello-4-SM", &parser, argc, argv,
-	      0, NULL);
+  gnome_init_with_popt_table("gnome-hello-4-SM", VERSION,
+			     argc, argv, prog_options, 0, NULL);
+
+  if(just_exit) {
+    /* This should discard the saved information about this client.
+       Unfortunatlly is doesn't do so, yet.  */
+    gnome_config_clean_file (just_exit);
+    gnome_config_sync ();
+    
+    /* We really do not need to connect to the session manager in
+       this case, because we'll just exit after the gnome_init call.  */
+    gnome_client_disable_master_connection ();
+  }
+
 
   /* Get the master client, that was hopefully connected to the
      session manager int the 'gnome_init' call.  All communication to
@@ -263,28 +249,6 @@ about_cb (GtkWidget *widget, void *data)
   gtk_widget_show (about);
 
   return;
-}
-
-static error_t
-parse_an_arg (int key, char *arg, struct argp_state *state)
-{
-  if (key == DISCARD_KEY)
-    {
-      /* This should discard the saved information about this client.
-         Unfortunatlly is doesn't do so, yet.  */
-      gnome_config_clean_file (arg);
-      gnome_config_sync ();
-
-      /* We really do not need to connect to the session manager in
-         this case, because we'll just exit after the gnome_init call.  */
-      gnome_client_disable_master_connection ();
-
-      just_exit = 1;
-      return 0;
-    }
-
-  /* We didn't recognize it.  */
-  return ARGP_ERR_UNKNOWN;
 }
 
 /* Session management */

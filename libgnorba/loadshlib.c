@@ -1,50 +1,23 @@
-#include <orb/orbit.h>
+#include <stdio.h>
 #include <gnome.h>
-#include "gnorba.h"
+#include "libgnorba/gnorba.h"
 
 typedef struct {
 	gpointer impl_ptr;
-	char     *id;
+	char     *server_id;
 } ActiveServerInfo;
 
-static struct argp_option options[] = {
-  { "id",    'i',   N_("GOAD-id"),   0, N_("ID under which GOAD knows this server"), 1},
-  { "rid",   'r',   N_("REPO-id"),   0, N_("Repository ID under which GOAD knows this server"), 1},
-  { NULL,    0,     NULL,            0, NULL,                                     0}
-};
-
 static gchar*           shlib = 0;
-static gchar*           id = "";
-static gchar*           rid = "";
+static gchar*           id = NULL;
+static gchar*           rid = NULL;
 static ActiveServerInfo local_server_info;
 static CORBA_ORB        orb;
 
-static error_t
-parseit(int key, char* arg,  struct argp_state* state)
-{
-  switch (key)
-    {
-    case 'i':
-      id = g_strdup(arg);
-      break;
-    case 'r':
-      rid = g_strdup(arg);
-      break;
-    case ARGP_KEY_ARG:
-      if (shlib)
-	argp_usage(state);
-      else
-	shlib = g_strdup(arg);
-    default:
-      return ARGP_KEY_ARG;
-    }
-  return 0;
-}
 
-
-
-static struct argp parser = {
-  options, parseit, N_("shared-library"), NULL, NULL, NULL, NULL
+static const struct poptOption options[] = {
+  {"id", 'i', POPT_ARG_STRING, &id, 0, N_("ID under which GOAD knows this server"), N_("GOAD_ID")},
+  {"rid", 'r', POPT_ARG_STRING, &rid, 0, N_("Repository ID under which GOAD knows this server"), N_("REPO_ID")},
+  {NULL, '\0', 0, NULL, 0}
 };
 
 static
@@ -85,7 +58,7 @@ goad_server_unregister_atexit()
   
   /* Check if the object is still active. If so, then deactivate it. */
   if(oid && !ev._major) {
-    nc[2].id = local_server_info.id;
+    nc[2].id = local_server_info.server_id;
     nc[2].kind = "object";
     CosNaming_NamingContext_unbind(name_service, &nom, &ev);
     
@@ -107,15 +80,27 @@ main(int argc, char* argv[])
   gpointer           impl_ptr;
   CORBA_Object       retval;
   PortableServer_POAManager pm;
+  poptContext ctx;
+  char **args;
   
   CORBA_exception_init(&ev);
-  orb = gnome_CORBA_init("loadshlib", &parser, &argc, argv, 0, NULL, &ev);
 
-  plugin = gnome_plugin_use(shlib);
-  g_return_val_if_fail(plugin, -1);
+  orb = gnome_CORBA_init_with_popt_table("loadshlib", VERSION, &argc, argv, options,
+			 0, &ctx, &ev);
+  if(!(id || rid)) {
+    fprintf(stderr, "You must specify a GOAD ID or a Repository ID.\n\n");
+    poptPrintHelp(ctx, stdout, 0);
+    return 1;
+  }
+
+  args = poptGetArgs(ctx);
+
+  g_return_val_if_fail(args, 1);
+  plugin = gnome_plugin_use(args[0]);
+  g_return_val_if_fail(plugin, 1);
 
   for(i = 0; plugin->plugin_object_list[i].repo_id; i++) {
-    if(!strcmp(id, plugin->plugin_object_list[i].id)
+    if(!strcmp(id, plugin->plugin_object_list[i].server_id)
        && !strcmp(rid, plugin->plugin_object_list[i].repo_id))
        break;
   }
@@ -140,9 +125,12 @@ main(int argc, char* argv[])
 
   retval = plugin->plugin_object_list[i].activate(root_poa, &impl_ptr, &ev);
   local_server_info.impl_ptr = impl_ptr;
-  local_server_info.id = id;
+  local_server_info.server_id = id;
   g_atexit(goad_server_unregister_atexit);
-  fprintf(stderr,"%s\n", CORBA_ORB_object_to_string(orb, retval, &ev));
-  CORBA_ORB_run(orb, &ev);
-  exit(0);
+
+  fprintf(stdout, "%s\n", CORBA_ORB_object_to_string(orb, retval, &ev));
+
+  gtk_main();
+
+  return 0;
 }

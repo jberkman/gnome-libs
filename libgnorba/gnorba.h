@@ -11,11 +11,16 @@
  * with gtk+ too 
  */
 CORBA_ORB gnome_CORBA_init          (char *app_id,
-				     struct argp *app_parser,
+				     char *app_version,
 				     int *argc, char **argv,
-				     unsigned int flags,
-				     int *arg_index,
 				     CORBA_Environment *ev);
+CORBA_ORB gnome_CORBA_init_with_popt_table(char *app_id,
+					   char *app_version,
+					   int *argc, char **argv,
+					   const struct poptOption *options,
+					   int popt_flags,
+					   poptContext *return_ctx,
+					   CORBA_Environment *ev);
 
 /*
   Gets the naming server from the X Propery on the root window. If
@@ -48,7 +53,7 @@ int          gnome_unregister_corba_server  (CORBA_Object name_server,
 /**** gnome-plugins module ****/
 typedef struct {
 	const char   *repo_id;
-	const char   *id;
+	const char   *server_id;
 	const char   *kind;
 	const char   *description;
 	CORBA_Object (*activate)   (PortableServer_POA poa,
@@ -80,7 +85,7 @@ typedef enum {
 typedef struct {
 	GoadServerType type;
 	char     *repo_id;
-	char     *id;
+	char     *server_id;
 	char     *description;
 	
         /*
@@ -138,5 +143,13 @@ CORBA_Object      goad_server_activate              (GoadServer *sinfo,
 CORBA_Object      goad_server_activate_with_repo_id (GoadServer *server_list,
 						     const char *repo_id,
 						     GoadActivationFlags flags);
+
+/*
+ * Activates a specific server by its GOAD ID.
+ */
+CORBA_Object
+goad_server_activate_with_id(GoadServer *server_list,
+			     const char *server_id,
+			     GoadActivationFlags flags);
 
 #endif

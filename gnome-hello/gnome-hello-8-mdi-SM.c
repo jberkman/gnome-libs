@@ -29,35 +29,15 @@
    templates */
 #define USE_APP_HELPER 1
 
-/* These are the arguments that our application supports.  */
-static struct argp_option arguments[] =
+static int restarted = 0;
+
+static char *just_exit=NULL;
+static struct poptOption prog_options[] = 
 {
-#define DISCARD_KEY -1
-  { "discard-session", DISCARD_KEY, N_("ID"), 0,
-    N_("Discard session"), 1 },
-  { NULL, 0, NULL, 0, NULL, 0 }
+  {"discard-session", '\0', POPT_ARG_STRING, &just_exit, 0, N_("Discard session"), "ID"},
+  POPT_AUTOHELP
+  {NULL, '\0', 0, NULL, 0}
 };
-
-/* Forward declaration of the function that gets called when one of
-   our arguments is recognized.  */
-static error_t parse_an_arg (int key, char *arg, struct argp_state *state);
-
-/* This structure defines our parser.  It can be used to specify some
-   options for how our parsing function should be called.  */
-static struct argp parser =
-{
-  arguments,		/* Options.  */
-  parse_an_arg,		/* The parser function.  */
-  NULL,			/* Some docs.  */
-  NULL,			/* Some more docs.  */
-  NULL,			/* Child arguments -- gnome_init fills
-			   this in for us.  */
-  NULL,			/* Help filter.  */
-  NULL			/* Translation domain; for the app it
-			   can always be NULL.  */
-};
-
-static int restarted = 0, just_exit = FALSE;
 
 static int save_state (GnomeClient *, gint, GnomeRestartStyle, gint,
 		       GnomeInteractStyle, gint, gpointer);
@@ -485,13 +465,13 @@ int main(int argc, char **argv) {
   GnomeClient *cloned;
   gboolean restart_ok = FALSE;
 
-  argp_program_version = VERSION;
-
   /* gnome_init() is always called at the beginning of a program.  it
      takes care of initializing both Gtk and GNOME.  It also parses
      the command-line arguments.  */
-  gnome_init ("gnome-hello-8-mdi-SM", &parser, argc, argv,
-	      0, NULL);
+
+  gnome_init_with_popt_table("gnome-hello-8-mdi-SM",
+			     VERSION, argc, argv,
+			     prog_options, 0, NULL);
 
   /* session management init */
   client = gnome_master_client ();
@@ -499,7 +479,10 @@ int main(int argc, char **argv) {
   gtk_signal_connect (GTK_OBJECT (client), "save_yourself",
 		      GTK_SIGNAL_FUNC (save_state), NULL);
 
-  if (just_exit) return 0;
+  if (just_exit) {
+    discard_session(just_exit);
+    return 0;
+  }
   
   mdi = GNOME_MDI(gnome_mdi_new("gnome-hello-8-mdi-SM", "GNOME MDI Hello"));
 
@@ -566,19 +549,6 @@ int main(int argc, char **argv) {
   gtk_main();
 
   return 0;
-}
-
-static error_t
-parse_an_arg (int key, char *arg, struct argp_state *state)
-{
-	if (key == DISCARD_KEY) {
-		discard_session (arg);
-		just_exit = 1;
-		return 0;
-	}
-	
-	/* We didn't recognize it.  */
-	return ARGP_ERR_UNKNOWN;
 }
 
 /* Session management */

@@ -67,7 +67,7 @@ main (int argc, char *argv[])
 	for (i = 0; vec[i]; ++i)
 		;
 	printf ("vec has %d elements\n", i);
-	gnome_string_array_free (vec);
+	g_strfreev (vec);
 
 	gnome_metadata_get ("alpha.txt", "frob-key", &len, &buffer);
 	printf ("alpha.txt has %s\n", buffer);
@@ -90,7 +90,7 @@ main (int argc, char *argv[])
 	for (i = 0; vec[i]; ++i)
 		;
 	printf ("now vec has %d elements\n", i);
-	gnome_string_array_free (vec);
+	g_strfreev (vec);
 
 	gnome_metadata_copy ("foo.txt", "bar");
 	gnome_metadata_get ("bar", "frob-key", &len, &buffer);

@@ -89,8 +89,6 @@ static GnomeUIInfo main_menu [] = {
 int
 main (int argc, char *argv[])
 {
-	argp_program_version = VERSION;
-	
 	/* Initialize the i18n stuff */
 	bindtextdomain (PACKAGE, GNOMELOCALEDIR);
 	textdomain (PACKAGE);
@@ -100,7 +98,7 @@ main (int argc, char *argv[])
 	 * takes care of initializing both Gtk and GNOME.  It also parses
 	 * the command-line arguments.
 	 */
-	gnome_init ("gnome-hello-1-menus", NULL, argc, argv, 0, NULL);
+	gnome_init ("gnome-hello-2-i18n", VERSION, argc, argv);
 	
 	/*
 	 * prepare_app() makes all the gtk calls necessary to set up a

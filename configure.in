@@ -206,9 +206,23 @@ dnl
 AM_PATH_ESD(0.2.5)
 
 dnl
+dnl Check for popt library
+dnl
+AC_CHECK_LIB(popt, poptGetInvocationName,[POPT_LIB=-lpopt
+	AC_DEFINE(USE_POPT)
+], AC_MSG_ERROR([*** popt >= 1.2.1 is not installed - please install first ***]))
+
+dnl
+dnl Check for audiofile library
+dnl
+AC_CHECK_LIB(audiofile, afOpenFile, {AUDIOFILE_LIB=-laudiofile
+	AC_DEFINE(HAVE_LIBAUDIOFILE)
+],,[$ESD_LIBS])
+
+dnl
 dnl These are for building the appropriate lib*
 dnl
-LIBGNOME_LIBS="$ESD_LIBS $DB_LIB $GLIB_LIBS $DL_LIB"
+LIBGNOME_LIBS="$ESD_LIBS $DB_LIB $GLIB_LIBS $DL_LIB $POPT_LIB"
 LIBGNOMEUI_LIBS="$LIBGNOME_LIBS $GDK_IMLIB_LIBS $GTK_LIBS"
 LIBGTKXMHTML_LIBS="$XPM_LIBS $JPEG_LIBS $PNG_LIBS $Z_LIBS $GTK_LIBS"
 LIBSUPPORT=

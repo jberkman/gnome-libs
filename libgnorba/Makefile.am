@@ -1,4 +1,4 @@
-bin_PROGRAMS = loadshlib
+bin_PROGRAMS = loadshlib #goad-browser
 
 lib_LTLIBRARIES = libgnorba.la
 
@@ -11,7 +11,8 @@ INCLUDES = -I.. -I$(srcdir)/.. -I$(includedir) $(SUPPORTINCS) \
 	$(ORBIT_CFLAGS) \
 	$(GLIB_INCLUDES) \
 	-DGNOMEBINDIR=$(bindir) \
-	-DGNOMESYSCONFDIR=\"$(sysconfdir)\"
+	-DGNOMESYSCONFDIR=\"$(sysconfdir)\" \
+	-DVERSION=\""$(VERSION)"\"
 
 BUILT_SOURCES=\
 	$(name_IDL_SOURCES)
@@ -43,5 +44,16 @@ loadshlib_LDADD = \
         $(LIBGNOME_LIBS) $(LIBGNOMEUI_LIBS)		\
 	$(top_builddir)/libgnorba/libgnorba.la		\
 	$(INTLLIBS)
+
+#goad_browser_SOURCES = goad-browser.c
+
+#goad_browser_LDADD = \
+#	$(ORBIT_LIBS) \
+#        $(top_builddir)/libgnome/libgnome.la		\
+#        $(top_builddir)/libgnomeui/libgnomeui.la	\
+#        @LIBSUPPORT@					\
+#        $(LIBGNOME_LIBS) $(LIBGNOMEUI_LIBS)		\
+#	$(top_builddir)/libgnorba/libgnorba.la		\
+#	$(INTLLIBS)
 
 CLEANFILES = $(name_IDL_SOURCES)

@@ -66,7 +66,10 @@ goad_server_list_get(void)
     struct dirent *dent;
 
     while((dent = readdir(dirh))) {
-      g_string_sprintf(tmpstr, "=" GNOMESYSCONFDIR "/CORBA/servers/" "%s",
+	    if (!strcmp(dent->d_name, ".") || !strcmp(dent->d_name, ".."))
+		    continue;
+
+      g_string_sprintf(tmpstr, "=" GNOMESYSCONFDIR "/CORBA/servers/%s",
 		       dent->d_name);
 		       
       goad_server_list_read(tmpstr->str, servinfo, tmpstr);
@@ -124,28 +127,28 @@ goad_server_list_read(const char *filename,
   gnome_config_push_prefix(filename);
   iter = gnome_config_init_iterator_sections(filename);
 
-  while((iter = gnome_config_iterator_next(iter, &newval.id, NULL))) {
+  while((iter = gnome_config_iterator_next(iter, &newval.server_id, NULL))) {
     if (*filename == '=')
       g_string_sprintf(dummy, "=%s/=type",
-		       newval.id);
+		       newval.server_id);
     else
       g_string_sprintf(dummy, "%s/type",
-		       newval.id);
+		       newval.server_id);
     typename = gnome_config_get_string(dummy->str);
     newval.type = goad_server_typename_to_type(typename);
     g_free(typename);
     if(!newval.type) {
-      g_warning("Server %s has invalid activation method.", newval.id);
-      g_free(newval.id);
+      g_warning("Server %s has invalid activation method.", newval.server_id);
+      g_free(newval.server_id);
       continue;
     }
 
     if (*filename == '=')
       g_string_sprintf(dummy, "=%s/=repo_id",
-		       newval.id);
+		       newval.server_id);
     else
       g_string_sprintf(dummy, "%s/repo_id",
-		       newval.id);
+		       newval.server_id);
     newval.repo_id = gnome_config_get_string(dummy->str);
 
     if (*filename == '=')
@@ -158,7 +161,7 @@ goad_server_list_read(const char *filename,
 
     if (*filename == '=')
       g_string_sprintf(dummy, "=%s/=location_info",
-		       newval.id);
+		       newval.server_id);
     else
       g_string_sprintf(dummy, "%s/location_info",
 		       newval.description);
@@ -186,12 +189,58 @@ goad_server_list_free (GoadServer *server_list)
 
   for(i = 0; server_list[i].repo_id; i++) {
     g_free(server_list[i].repo_id);
-    g_free(server_list[i].id);
+    g_free(server_list[i].server_id);
     g_free(server_list[i].description);
     g_free(server_list[i].location_info);
   }
 
   g_free(server_list);
+}
+
+/**** goad_server_list_activate_with_id
+      Inputs: 'server_list' - a server listing
+                              returned by goad_server_list_get.
+			      If NULL, we will call the function ourself
+			      and use that.
+	      'id' - the goad ID of the server that we want to activate.
+              'flags' - information on how the application wants
+	                the server to be activated.
+      Description: Activates a CORBA server specified by 'repo_id', using
+                   the 'flags' hints on how to activate that server.
+                   Picks the first one on the list that matches
+ */
+CORBA_Object
+goad_server_activate_with_id(GoadServer *server_list,
+			     const char *server_id,
+			     GoadActivationFlags flags)
+{
+  GoadServer *slist;
+  CORBA_Object retval = CORBA_OBJECT_NIL;
+  int i;
+
+  g_return_val_if_fail(server_id, CORBA_OBJECT_NIL);
+  g_return_val_if_fail(!((flags & GOAD_ACTIVATE_EXISTING_ONLY)
+		   && (flags & GOAD_ACTIVATE_NEW_ONLY)), CORBA_OBJECT_NIL);
+  g_return_val_if_fail(!((flags & GOAD_ACTIVATE_SHLIB)
+		   && (flags & GOAD_ACTIVATE_REMOTE)), CORBA_OBJECT_NIL);
+
+  if(server_list)
+    slist = server_list;
+  else
+    slist = goad_server_list_get();
+
+  for(i = 0; slist[i].repo_id; i++) {
+    if(!strcmp(slist[i].server_id, server_id))
+      break;
+  }
+
+  if(slist[i].repo_id)
+    retval = goad_server_activate(&slist[i], flags);
+
+  if(!server_list)
+    goad_server_list_free(slist);
+
+  return retval;
 }
 
 /**** goad_server_activate_with_repo_id
@@ -207,7 +256,7 @@ goad_server_list_free (GoadServer *server_list)
                    the 'flags' hints on how to activate that server.
                    Picks the first one on the list that meets criteria.
 
-		   This is done by possibly making two passes through the list,
+		   This is done by possibly making three passes through the list,
 		   the first pass checking for existing objects only,
 		   the second pass taking into account any activation method
 		   preferences, and the last pass just doing "best we can get"
@@ -320,12 +369,11 @@ goad_server_activate(GoadServer *sinfo,
 
   /* First, do name service lookup (if not specifically told not to) */
   if(!(flags & GOAD_ACTIVATE_NEW_ONLY)) {
-    CORBA_Object name_service;
 
     name_service = gnome_name_service_get();
     g_assert(name_service != CORBA_OBJECT_NIL);
 
-    nc[2].id = sinfo->id;
+    nc[2].id = sinfo->server_id;
     nc[2].kind = "object";
     retval = CosNaming_NamingContext_resolve(name_service, &nom, &ev);
     if (ev._major == CORBA_USER_EXCEPTION
@@ -361,10 +409,10 @@ goad_server_activate(GoadServer *sinfo,
       
       fake_sinfo.type = GOAD_SERVER_EXE;
       fake_sinfo.repo_id     = "loadshlib";
-      fake_sinfo.id          = "loadshlib";
+      fake_sinfo.server_id          = "loadshlib";
       fake_sinfo.description = "DLL Loader for GOAD";
       g_snprintf(cmdline, sizeof(cmdline), "loadshlib -i %s -r %s %s",
-		 sinfo->id, sinfo->repo_id, sinfo->location_info);
+		 sinfo->server_id, sinfo->repo_id, sinfo->location_info);
       fake_sinfo.location_info = cmdline;
       retval = goad_server_activate_exe(&fake_sinfo, flags, &ev);
     } else {
@@ -387,7 +435,7 @@ goad_server_activate(GoadServer *sinfo,
   if(!CORBA_Object_is_nil(retval, &ev) && !(flags & GOAD_ACTIVATE_NO_NS_REGISTER)) {
     
     name_service = gnome_name_service_get();
-    nc[2].id = sinfo->id;
+    nc[2].id = sinfo->server_id;
     nc[2].kind = "object";
     CosNaming_NamingContext_bind(name_service, &nom, retval, &ev);
     if (ev._major != CORBA_NO_EXCEPTION)
@@ -422,7 +470,7 @@ goad_server_activate(GoadServer *sinfo,
                     the server from the name service when we exit.
 
       Description: Loads the plugin specified in 'sinfo'. Looks for an
-                   object of id 'sinfo->id' in it, and activates it if
+                   object of id 'sinfo->server_id' in it, and activates it if
                    found.
 */
 static CORBA_Object
@@ -441,7 +489,7 @@ goad_server_activate_shlib(GoadServer *sinfo,
   g_return_val_if_fail(plugin, CORBA_OBJECT_NIL);
 
   for(i = 0; plugin->plugin_object_list[i].repo_id; i++) {
-    if(!strcmp(sinfo->id, plugin->plugin_object_list[i].id)
+    if(!strcmp(sinfo->server_id, plugin->plugin_object_list[i].server_id)
        && !strcmp(sinfo->repo_id, plugin->plugin_object_list[i].repo_id))
        break;
   }
@@ -466,7 +514,7 @@ goad_server_activate_shlib(GoadServer *sinfo,
 
   local_server_info = g_new(ActiveServerInfo, 1);
   local_server_info->impl_ptr = impl_ptr;
-  local_server_info->id = g_strdup(sinfo->id);
+  local_server_info->id = g_strdup(sinfo->server_id);
   
   if(!our_active_servers)
     g_atexit(goad_servers_unregister_atexit);
@@ -526,17 +574,21 @@ static ServerCmd*
 get_cmd(gchar* line)
 {
   static ServerCmd retval;
-  gchar* ptr = line;
+  gchar* ptr;
   gint   argc = 1;
   gchar* tok;
   
   retval.argv = (gchar**)malloc(sizeof(char*) * 2);
   retval.argv[1] = 0;
-  line = ptr;
-  while (ptr&& isspace(*ptr))
+
+  ptr = line;
+
+  while (ptr && isspace(*ptr))
     ptr++;
+
   if (!*ptr)
-    return 0;
+    return &retval;
+
   retval.cmd = strtok(ptr, " \t");
   retval.argv[0] = retval.cmd;
   while (1)
@@ -580,7 +632,7 @@ goad_server_activate_exe(GoadServer *sinfo,
 
   pipe(iopipes);
   /* fork & get the ior from stdout */
-  
+
   if(fork()) {
     int     status;
     FILE*   iorfh;
@@ -589,11 +641,11 @@ goad_server_activate_exe(GoadServer *sinfo,
     iorfh = fdopen(iopipes[0], "r");
 
     while (fgets(iorbuf, sizeof(iorbuf), iorfh) && strncmp(iorbuf, "IOR:", 4))
-#if 0
+#if 1
       g_message("srv output: '%s'", iorbuf)
-#else
-	;
 #endif
+	;
+
     if (strncmp(iorbuf, "IOR:", 4)) {
       retval = CORBA_OBJECT_NIL;
       goto out;
@@ -618,9 +670,9 @@ goad_server_activate_exe(GoadServer *sinfo,
   } else if(fork()) {
     _exit(0); /* de-zombifier process, just exit */
   } else {
+    char **args;
     struct sigaction sa;
-    ServerCmd* cmd;
-    
+
     close(0);
     close(iopipes[0]);
     dup2(iopipes[1], 1);
@@ -629,8 +681,8 @@ goad_server_activate_exe(GoadServer *sinfo,
     setsid();
     sa.sa_handler = SIG_IGN;
     sigaction(SIGPIPE, &sa, 0);
-    cmd = get_cmd(sinfo->location_info);
-    execvp(cmd->cmd, cmd->argv);
+    args = g_strsplit(sinfo->location_info, " ", -1);
+    execvp(args[0], args);
     _exit(1);
   }
 out:

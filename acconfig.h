@@ -25,8 +25,10 @@
 #undef USE_VFS
 #undef HAVE_ORBIT
 #undef HAVE_GTKCAL
-#undef HAVE_LIBESD
+#undef HAVE_ESD
 #undef PACKAGE
 #undef VERSION
+#undef USE_POPT
 #undef TEST_INTERNALS
+#undef HAVE_LIBAUDIOFILE
 #undef umode_t

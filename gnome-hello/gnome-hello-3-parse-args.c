@@ -26,14 +26,6 @@
 
 static void prepare_app(void);
 
-/*
- * I dont really know what arguments to use, so this is just a tmp fix
- */
-static struct argp_option arguments[] = {
-	{ NULL, 0, NULL, 0, NULL, 0 }
-};
-
-
 /* app points to our toplevel window */
 GtkWidget *app;
 
@@ -94,45 +86,16 @@ static GnomeUIInfo main_menu [] = {
 	GNOMEUIINFO_END
 };
 
-/*
- * This routine parse our arguments
- */
-static error_t
-parse_an_arg (int key, char *arg, struct argp_state *state)
-{
-	if (key == 'q')
-	{
-		/* We found our argument.  Unfortunately, it does nothing here.
-		 */
-		return 0;
-	}
-	
-	/* We didn't recognize it.  */
-	return ARGP_ERR_UNKNOWN;
-}
-
-
-
-/*
- * This structure defines our parser.  It can be used to specify some
- * options for how our parsing function should be called.
- */
-static struct argp parser =
-{
-	arguments,			/* Options.  */
-	parse_an_arg,			/* The parser function.  */
-	NULL,				/* Some docs.  */
-	NULL,				/* Some more docs.  */
-	NULL,				/* Child arguments -- gnome_init fills
-					   this in for us.  */
-	NULL,				/* Help filter.  */
-	NULL				/* Translation domain; for the app it
-					   can always be NULL.  */
-};
 int
 main (int argc, char *argv[])
 {
-	argp_program_version = VERSION;
+	int got_quixote_option = 0;
+	poptContext ctx;
+	struct poptOption prog_options[] = {
+	{"quixote", 'q', POPT_ARG_NONE, &got_quixote_option, 0, NULL, "Just an option"},
+	POPT_AUTOHELP
+	{NULL, '\0', 0, NULL}
+	};
 	
 	/* Initialize the i18n stuff */
 	bindtextdomain (PACKAGE, GNOMELOCALEDIR);
@@ -143,7 +106,12 @@ main (int argc, char *argv[])
 	 * takes care of initializing both Gtk and GNOME.  It also parses
 	 * the command-line arguments.
 	 */
-	gnome_init ("gnome-hello-1-menus", &parser, argc, argv, 0, NULL);
+	gnome_init_with_popt_table ("gnome-hello-1-menus", VERSION,
+				    argc, argv, prog_options, 0, NULL);
+
+	if(got_quixote_option) {
+		g_message("We got the quixote option!");
+	}
 	
 	/*
 	 * prepare_app() makes all the gtk calls necessary to set up a

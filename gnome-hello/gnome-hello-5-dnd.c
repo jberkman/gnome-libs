@@ -38,13 +38,10 @@ enum {
 int
 main(int argc, char *argv[])
 {
-  argp_program_version = VERSION;
-
   /* gnome_init() is always called at the beginning of a program.  it
      takes care of initializing both Gtk and GNOME.  It also parses
      the command-line arguments.  */
-  gnome_init ("gnome-hello-5-dnd", NULL, argc, argv,
-	      0, NULL);
+  gnome_init ("gnome-hello-5-dnd", VERSION, argc, argv);
 
   prepare_app ();
 

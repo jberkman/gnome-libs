@@ -1581,8 +1581,8 @@ main (int argc, char *argv[])
 	GtkWidget *button;
 	GtkWidget *scrolled_window;
 	int i;
-	
-	gnome_init ("testGNOME", NULL, argc, argv, 0, NULL);
+
+	gnome_init ("testGNOME", VERSION, argc, argv);
 
 	app = create_newwin(FALSE,"testGNOME", "testGNOME");
 	gtk_widget_set_usize (app, 200,300);

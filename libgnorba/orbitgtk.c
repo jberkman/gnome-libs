@@ -138,7 +138,7 @@ get_cookie_reliably (void)
 	return g_strdup (random_string);
 }
 
-/*** gnome_CORBA_init
+/*** do_CORBA_init
      Description: Sets up the ORBit connection add/remove function pointers
                   to our routines, which inform the gtk main loop about
 		  the CORBA connection fd's.
@@ -147,20 +147,14 @@ get_cookie_reliably (void)
 
 		  Sets up a cookie for requests.
  */
-CORBA_ORB
-gnome_CORBA_init(char *app_id,
-		 struct argp *app_parser,
-		 int *argc, char **argv,
-		 unsigned int flags,
-		 int *arg_index,
-		 CORBA_Environment *ev)
+static CORBA_ORB
+do_CORBA_init(int *argc, char **argv,
+	      CORBA_Environment *ev)
 {
   CORBA_ORB retval;
-  
+
   IIOPAddConnectionHandler = orb_add_connection;
   IIOPRemoveConnectionHandler = orb_remove_connection;
-
-  gnome_init(app_id, app_parser, *argc, argv, flags, arg_index);
 
   gnome_orbit_orb = retval = CORBA_ORB_init(argc, argv, "orbit-local-orb", ev);
 
@@ -172,6 +166,38 @@ gnome_CORBA_init(char *app_id,
 
   ORBit_set_request_validation_handler(&gnome_ORBit_request_validate);
   ORBit_set_default_principal(&request_cookie);
+
+  return retval;
+}
+
+CORBA_ORB
+gnome_CORBA_init(char *app_id,
+		 char *app_version,
+		 int *argc, char **argv,
+		 CORBA_Environment *ev)
+{
+  CORBA_ORB retval;
+
+  retval = do_CORBA_init(argc, argv, ev);
+  gnome_init(app_id, app_version, *argc, argv);
+
+  return retval;
+}
+
+CORBA_ORB
+gnome_CORBA_init_with_popt_table(char *app_id,
+				 char *app_version,
+				 int *argc, char **argv,
+				 const struct poptOption *options,
+				 int popt_flags,
+				 poptContext *return_ctx,
+				 CORBA_Environment *ev)
+{
+  CORBA_ORB retval;
+
+  retval = do_CORBA_init(argc, argv, ev);
+  gnome_init_with_popt_table(app_id, app_version, *argc, argv, options,
+			     popt_flags, return_ctx);
 
   return retval;
 }
@@ -247,6 +273,7 @@ gnome_name_service_get(void)
 	case CORBA_SYSTEM_EXCEPTION:
 	  g_warning("Unexpected SYSTEM exception '%s', during orbit-name-server detection\n",
 		    CORBA_exception_id(&ev));
+	default:
 	}
       }
       
