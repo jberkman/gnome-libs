@@ -1,3 +1,9 @@
+Thu Feb  4 16:34:03 1999  Owen Taylor  <otaylor@redhat.com>
+
+	* vt.c (vt_mode): Add support for ESC[39m and ESC[49m
+	to reset foreground and background colors respectivly.
+	(Supported by Linux console and xterm among others)
+
 1999-02-04  Miguel de Icaza  <miguel@nuclecu.unam.mx>
 
 	* zvtterm.c (zvt_term_init): Set shadow to none.  We should kill
