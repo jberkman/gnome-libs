@@ -30,7 +30,7 @@
 
 /* Use this to pull SCM_RIGHTS definition on IRIX */
 #if defined(irix) || defined (__irix__) || defined(sgi) || defined (__sgi__)
-#    define _XOPEN_SOURCE
+#    define _XOPEN_SOURCE 1
 #endif
 
 #include <sys/types.h>

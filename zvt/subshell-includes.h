@@ -3,7 +3,7 @@
 
 #include <stdio.h>      
 #include <fcntl.h>	/* for close-on-exec stuff	      */
-#define _XOPEN_SOURCE
+#define _XOPEN_SOURCE 1
 
 #include <sys/types.h>
 #include <sys/time.h>
