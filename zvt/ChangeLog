@@ -1,3 +1,8 @@
+1999-02-23  Miguel de Icaza  <miguel@nuclecu.unam.mx>
+
+	* zvtterm.c (zvt_term_button_press): Consider double-click as
+	VT_SELTYPE_MOVED.  Closes critical bug report 315.
+
 1999-02-22  Miguel de Icaza  <miguel@nuclecu.unam.mx>
 
 	These fixes are from Chris Evans audit on gnome-pty-helper.
