@@ -30,13 +30,13 @@ htmldir = $(prefix)/html
 html_DATA = gnome-hello.html
 
 gnome-hello.html: gnome-hello.sgml
-	db2html $<
+	-db2html $<
 
 gnome-hello.dvi: gnome-hello.sgml
-	db2dvi $<
+	-db2dvi $<
 
 gnome-hello.ps: gnome-hello.dvi
-	dvips -o $@ $<
+	-dvips -o $@ $<
 
 # automake does not yet dig .sgml files, so for now the DocBook
 # files must be extra_dist.
