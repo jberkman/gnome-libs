@@ -1,12 +1,20 @@
 #!/bin/sh
 CC=cc
 exec 3>./results.summary
-for I in `find tests -name '*.c'`; do
+if [ -z "$@" ]; then
+	TESTS=`find tests -name '*.c'`
+else
+	TESTS="$@"
+fi
+for I in $TESTS; do
 	TEST=`basename $I .c`
 	$CC -L../../libgnome/_libs -lgnome -L../../libgnomeui/_libs \
 		-lgnomeui -I../.. -lgtk -lgdk -lglib -L/usr/X11R6/lib \
-		-lXext -lX11 -lm -Wl,-rpath,../../libgnome/_libs \
+		-lXext -lSM -lX11 -lm \
+		-Wl,-rpath,../../libgnome/_libs \
 		-Wl,-rpath,../../libgnomeui/_libs \
+		-Wl,-rpath,../../../libgnome/_libs \
+		-Wl,-rpath,../../../libgnomeui/_libs \
 		-g \
 		-o tests/$TEST tests/$TEST.c > /tmp/.$$ 2>&1
 	T=$?
