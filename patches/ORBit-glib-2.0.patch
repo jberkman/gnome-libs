@@ -1,13 +1,16 @@
-? ORBit-0.5.5.tar.gz
-? ORBit-2.5.5.tar.gz
-? test/test-dynany
+? test/everything/everything-stubs.c
+? test/everything/everything-skels.c
+? test/everything/everything-common.c
+? test/everything/everything.h
+? test/everything/client
+? test/everything/server
 Index: .cvsignore
 ===================================================================
 RCS file: /cvs/gnome/ORBit/.cvsignore,v
 retrieving revision 1.6.4.1
 diff -u -u -r1.6.4.1 .cvsignore
 --- .cvsignore	2000/09/29 23:34:02	1.6.4.1
-+++ .cvsignore	2000/12/13 10:37:12
++++ .cvsignore	2001/02/23 00:32:27
 @@ -20,4 +20,6 @@
  install-sh
  mkinstalldirs
@@ -21,7 +24,7 @@ RCS file: /cvs/gnome/ORBit/Makefile.am,v
 retrieving revision 1.13.4.3
 diff -u -u -r1.13.4.3 Makefile.am
 --- Makefile.am	2000/09/30 02:09:43	1.13.4.3
-+++ Makefile.am	2000/12/13 10:37:12
++++ Makefile.am	2001/02/23 00:32:27
 @@ -4,7 +4,7 @@
  
  bin_SCRIPTS=orbit-config
@@ -43,7 +46,7 @@ Index: ORBit-2.0.pc.in
 RCS file: ORBit-2.0.pc.in
 diff -N ORBit-2.0.pc.in
 --- /dev/null	Tue May  5 16:32:27 1998
-+++ ORBit-2.0.pc.in	Wed Dec 13 05:37:12 2000
++++ ORBit-2.0.pc.in	Thu Feb 22 19:32:27 2001
 @@ -0,0 +1,12 @@
 +prefix=@prefix@
 +exec_prefix=@exec_prefix@
@@ -63,7 +66,7 @@ RCS file: /cvs/gnome/ORBit/autogen.sh,v
 retrieving revision 1.26.4.1
 diff -u -u -r1.26.4.1 autogen.sh
 --- autogen.sh	2000/02/22 00:52:22	1.26.4.1
-+++ autogen.sh	2000/12/13 10:37:12
++++ autogen.sh	2001/02/23 00:32:27
 @@ -4,78 +4,11 @@
  srcdir=`dirname $0`
  test -z "$srcdir" && srcdir=.
@@ -148,10 +151,10 @@ diff -u -u -r1.26.4.1 autogen.sh
 Index: configure.in
 ===================================================================
 RCS file: /cvs/gnome/ORBit/configure.in,v
-retrieving revision 1.98.4.7
-diff -u -u -r1.98.4.7 configure.in
---- configure.in	2000/11/30 18:12:40	1.98.4.7
-+++ configure.in	2000/12/13 10:37:12
+retrieving revision 1.98.4.10
+diff -u -u -r1.98.4.10 configure.in
+--- configure.in	2001/01/18 20:16:42	1.98.4.10
++++ configure.in	2001/02/23 00:32:28
 @@ -18,7 +18,7 @@
  # sonames we'll start using that for binary compat, but until then
  # caveat user :)
@@ -159,7 +162,7 @@ diff -u -u -r1.98.4.7 configure.in
 -ORBIT_MAJOR_VERSION=0
 +ORBIT_MAJOR_VERSION=2
  ORBIT_MINOR_VERSION=5
- ORBIT_MICRO_VERSION=5
+ ORBIT_MICRO_VERSION=7
  ORBIT_INTERFACE_AGE=0
 @@ -30,14 +30,10 @@
  AC_SUBST(ORBIT_VERSION)
@@ -212,10 +215,10 @@ diff -u -u -r1.98.4.7 configure.in
  
  AC_PROG_YACC
  AM_PROG_LEX
-@@ -347,5 +348,6 @@
- test/Makefile
+@@ -348,5 +349,6 @@
  test/idl/Makefile
  test/test-poa/Makefile
+ test/everything/Makefile
 +ORBit-2.0.pc
  ORBit.pc
  ORBit.spec)
@@ -225,7 +228,7 @@ RCS file: /cvs/gnome/ORBit/orbit-config.in,v
 retrieving revision 1.7
 diff -u -u -r1.7 orbit-config.in
 --- orbit-config.in	1999/10/08 04:49:07	1.7
-+++ orbit-config.in	2000/12/13 10:37:13
++++ orbit-config.in	2001/02/23 00:32:28
 @@ -87,8 +87,8 @@
         	;;
  
@@ -243,7 +246,7 @@ RCS file: /cvs/gnome/libIDL/.cvsignore,v
 retrieving revision 1.8.4.1
 diff -u -u -r1.8.4.1 .cvsignore
 --- libIDL/.cvsignore	2000/09/29 23:35:50	1.8.4.1
-+++ libIDL/.cvsignore	2000/12/13 10:37:13
++++ libIDL/.cvsignore	2001/02/23 00:32:28
 @@ -29,3 +29,4 @@
  Makefile.msc
  libIDL.spec
@@ -255,7 +258,7 @@ RCS file: /cvs/gnome/libIDL/Makefile.am,v
 retrieving revision 1.65.4.3
 diff -u -u -r1.65.4.3 Makefile.am
 --- libIDL/Makefile.am	2000/09/30 02:09:43	1.65.4.3
-+++ libIDL/Makefile.am	2000/12/13 10:37:13
++++ libIDL/Makefile.am	2001/02/23 00:32:28
 @@ -33,7 +33,7 @@
  			  Makefile.msc README.win32 \
  			  libIDL.def libIDLConf.sh.in \
@@ -278,7 +281,7 @@ RCS file: /cvs/gnome/libIDL/configure.in,v
 retrieving revision 1.54.4.1
 diff -u -u -r1.54.4.1 configure.in
 --- libIDL/configure.in	2000/09/29 23:35:50	1.54.4.1
-+++ libIDL/configure.in	2000/12/13 10:37:13
++++ libIDL/configure.in	2001/02/23 00:32:29
 @@ -13,13 +13,12 @@
  # if backwards compatibility has been broken,
  # set LIBIDL_BINARY_AGE and LIBIDL_INTERFACE_AGE to 0.
@@ -328,7 +331,7 @@ Index: libIDL/libIDL-2.0.pc.in
 RCS file: libIDL-2.0.pc.in
 diff -N libIDL-2.0.pc.in
 --- /dev/null	Tue May  5 16:32:27 1998
-+++ libIDL/libIDL-2.0.pc.in	Wed Dec 13 05:37:13 2000
++++ libIDL-2.0.pc.in	Thu Feb 22 19:32:29 2001
 @@ -0,0 +1,12 @@
 +prefix=@prefix@
 +exec_prefix=@exec_prefix@
