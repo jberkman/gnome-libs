@@ -65,7 +65,9 @@ AC_CHECK_LIB(tiff, main, [TIFF_LIBS="-ltiff"])
 AC_CHECK_LIB(gif, main, [GIF_LIBS="-lgif"])
 AC_CHECK_LIB(gdk_imlib, main, [
  GDK_IMLIB_LIBS="-lgdk_imlib $TIFF_LIBS $GIF_LIBS $JPEG_LIBS $PNG_LIBS $Z_LIBS"
-],,$TIFF_LIBS $GIF_LIBS $JPEG_LIBS $PNG_LIBS $Z_LIBS $GTK_LIBS $X_LIBS $x_libs)
+],[
+AC_MSG_ERROR(I could not find gdk_imlib, which is required by Gnome libs)
+],$TIFF_LIBS $GIF_LIBS $JPEG_LIBS $PNG_LIBS $Z_LIBS $GTK_LIBS $X_LIBS $x_libs)
 
 dnl These are for building the apporpriate lib*
 LIBGNOME_LIBS="$DL_LIB"
