@@ -1,3 +1,33 @@
+1999-08-29  Karl Eichwalder  <ke@gnu.franken.de>
+
+	* README: Note about new subdir gnome-dev-info.
+
+1999-08-29  Karl Eichwalder  <ke@suse.de>
+
+	* Makefile.am (SUBDIRS): Add gnome-dev-info.
+	(htmldir): Remove.
+	(html_DATA): Ditto.
+	(gnome-dev-info.html): Ditto.
+	(gnome-dev-info/book1.html): Ditto.
+	(libgnomeui.sgml): Ditto.
+	(libgnome.sgml): Ditto.
+	(dist-hook): Ditto.
+	(install-data-local): Ditto.
+	(EXTRA_DIST): Remove from this list gnome-app-helper.sgml
+	gnome-canvas.sgml gnome-dev-info.html gnome-dev-info.sgml
+	gnome-app-helper.sgml gnome-message-utils.sgml x-concepts.sgml
+	libgnorba.sgml gnome-mdi.sgml libgnomeui.sgml libgnome.sgml.
+
+	* cp Makefile.am to gnome-dev-info.
+
+	* mv gnome-app-helper.sgml gnome-hello-1-menus.jpg libgnome.sgml
+	gnome-canvas.sgml gnome-hello-2-i18n.jpg libgnomeui.sgml
+	gnome-dev-info.sgml gnome-mdi.sgml libgnorba.sgml
+	gnome-hello-0-basic.jpg gnome-message-utils.sgml trailer.sgml
+	x-concepts.sgml to gnome-dev-info.
+
+	* mkdir `gnome-dev-info'.
+
 Sat Aug 21 12:23:44 1999  George Lebl  <jirka@5z.com>
 
 	* gnomeui/gnomeui-docs.sgml: added GnomeDockLayout as it

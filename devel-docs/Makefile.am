@@ -1,37 +1,4 @@
-SUBDIRS = gnome gnomeui zvt templates ui-guide gnorba
-
-htmldir = $(prefix)/html
-html_DATA = gnome-dev-info.html
-
-gnome-dev-info.html: gnome-dev-info/book1.html
-	-cp $(srcdir)/gnome-dev-info/book1.html gnome-dev-info.html
-
-gnome-dev-info/book1.html: gnome-dev-info.sgml libgnomeui.sgml libgnome.sgml
-	-(cd $(srcdir); db2html gnome-dev-info.sgml) > /dev/null
-
-libgnomeui.sgml:
-	if $(SHELL) -c 'gdoc -V > /dev/null 2>&1 < /dev/null'; then \
-## Inputs and generated files all are in srcdir.
-		cd $(srcdir); \
-		: > libgnomeui.sgml; \
-		for i in ../libgnomeui/*.h; do \
-## FIXME: should use explicit perl invocation here.
-			./gdoc/gdoc.pl $$i >> libgnomeui.sgml; \
-		done; \
-		cat trailer.sgml >> libgnomeui.sgml; \
-	fi
-
-libgnome.sgml:
-	if $(SHELL) -c 'gdoc -V > /dev/null 2>&1 < /dev/null'; then \
-## Inputs and generated files all are in srcdir.
-		cd $(srcdir); \
-		: > libgnome.sgml; \
-## FIXME: should use explicit perl invocation here.
-		for i in ../libgnome/*.h; do \
-			./gdoc/gdoc.pl $$i >> libgnome.sgml; \
-		done; \
-		cat trailer.sgml >> libgnome.sgml; \
-	fi
+SUBDIRS = gnome gnome-dev-info gnomeui zvt templates ui-guide gnorba
 
 TEXT_FILES =					\
 	README.gtkcauldron			\
@@ -50,28 +17,9 @@ TEXT_FILES =					\
 EXTRA_DIST = \
 	TODO.sgml			\
 	gnome-doc-framework.txt		\
-	gnome-app-helper.sgml		\
-	gnome-canvas.sgml		\
-	gnome-dev-info.html		\
-	gnome-dev-info.sgml		\
-	gnome-app-helper.sgml		\
-	gnome-message-utils.sgml	\
-	x-concepts.sgml			\
-	libgnorba.sgml			\
-	gnome-mdi.sgml			\
-	libgnomeui.sgml			\
-	libgnome.sgml			\
 	$(TEXT_FILES)
 
 docdir   = $(prefix)/doc
 doc_DATA = $(TEXT_FILES)
 
-dist-hook:
-	tar cvf - gnome-dev-info | (cd $(distdir); tar xf -)
-
-install-data-local: gnome-dev-info.html
-	-for file in $(srcdir)/gnome-dev-info/*.html $(srcdir)/gnome-dev-info/*.css; do \
-          basefile=`echo $$file | sed -e 's,^.*/,,'`; \
-          $(INSTALL_DATA) $$file $(DESTDIR)$(htmldir)/$$basefile; \
-        done
-
+# devel-docs/Makefile.am ends here

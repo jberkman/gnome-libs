@@ -1,0 +1,14 @@
+1999-08-29  Karl Eichwalder  <ke@suse.de>
+
+	* Makefile.am (htmldir): Install documentation conforming to
+	http://developer.gnome.org/doc/tutorials/helpsys.html.
+
+	* Makefile.am: New file, major parts taken from the old
+	../Makefile.am.
+	(EXTRA_DIST): Add trailer.sgml.
+	(gnome-dev-info.html): Create index.html to make the help browser
+	happy.
+
+	* New directory; start with files from `..'; have a look at
+	../ChangeLog for details.
+
