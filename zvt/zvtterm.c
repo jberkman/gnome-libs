@@ -489,7 +489,7 @@ zvt_term_destroy (GtkObject *object)
  * in all elements.
  *
  * The elements 0 trough 15 are the first 16 colours for the terminal,
- * with element 16 and 17 the defualt foreground and background colour
+ * with element 16 and 17 the default foreground and background colour
  * respectively.
  */
 void
