@@ -1,0 +1,166 @@
+\documentclass{article}
+\begin{document}
+\title{Design Guidelines to make Gnome language bindings friendly}
+\author{Andreas Kostyrka, andreas@ag.or.at}
+\maketitle
+\tableofcontents
+\section{Rationale for this document}
+The author of this document has been writting the TOM bindings of
+Gnome/Gtk.
+
+In doing so, I've noticed that there are certain constructs and
+designing habits with Gnome that make it difficult to wrap the
+resulting Gnome code for usage in any other language that
+C.\footnote{This includes probably also C++, with the exception, that
+the C++ programmer can always include C code with his program, while
+this is not an option with other languages.}
+I presume that this is not by intend, but by not knowing.\footnote{The
+language bindings authors seem to be a minority of the Gnome Hackers.}
+
+This document should help the average Gnome hacker to focus upon his
+work and still to produce wrappable code.
+
+This document has been written with TOM in mind, but probably applies
+to most other languages too. Should some language binding author have
+an additional problem, just send me\footnote{andreas@ag.or.at} an
+email.
+
+\section{Differences between C and other languages}
+
+There are certain differences between C, which is basically a very
+lowlevel language, and other languages that are usually higher level.
+
+\subsection{Memory management}
+
+C allows the programmer to do practically anything. Other languages do
+not have this flexibility.
+
+For example, TOM has the following memory management scheme:
+\begin{itemize}
+\item memory for TOM objects is garbage collected. memory allocated
+      with malloc is not. TOM objects that hold pointers to such C
+      language memory blocks should clear it up in the dealloc method
+      which is called by the garbage collector.
+      The implication here is, that a TOM object doesn't have a fine
+      grained control about the time of deallocation, which is
+      probably true for all garbage collected languages.
+\item 
+        In TOM, an object is always handled by reference; think `pointer
+        to struct' if you like.  Objects reside on the heap: they can not
+        reside on the stack or within another object.
+
+      This means that it is not possible to declare a static struct array to
+      describe things in TOM, instead such an array has to build
+      dynamically. Again this is probably true for many languages:
+      struct array parameters like GnomeUIInfo that are a convienence
+      in C, require quite a lot of work to get working with any other language.
+\end{itemize}
+
+\subsection{Functions}
+
+Language bindings usually are not able to provide dynamically new C
+language functions. In some compiled language like ObjC, C++, and even
+TOM this is possible with lesser or greater pains, but interpreted
+languages are out of luck.\footnote{No, generating dynamically
+function stubs as data and making it executable is not really good
+portable programming, and makes also for fun debugging.}
+
+\section{Pitfalls in C}
+
+Here I want to describe some things that are quite possible in C, but
+are difficult or impossible to wrap in other languages.
+
+\subsection{variable number of arguments}
+Also called the ``The \dots\ problem''. It is not possible to to call
+such function in a general fashion in C. Witness, that in C, there are
+special versions of printf that take an va\_arg as an argument,
+instead of using the standard printf.
+
+The proposed solution is to provide primarly array arguments, and if
+doomed important enough to provide convienence functions taking a
+variable number of arguments. Example for a current problem in Gnome:
+{\tt gnome\_dialog\_new()}.
+
+\subsection{memory ownership}
+In C you have 100\% full control how and which memory
+    is used. As noted earlier, not so in many languages that are often
+    garbage collected.
+    So if at all possible, a pointer passed in should be deep copied.
+    Example: TOM bindings for GnomeUIInfo arrays. These bindings force the
+    TOM programmer to retain the object somewhere where it will not be
+    collected because collecting the TOM object frees also the C structure
+    assembled, which could have \emph{bad} influence on Gnome.
+
+    Basically for most languages one has to assume, that they are
+    garbage collected, and that pointers in GtkObjects don't protect
+    host language objects. 
+
+\subsection{usage patterns}
+When designing an widget make clear how certain structs are intended
+to be used. That is why GtkObjects are rather good (as they can be
+dealt with once in general in OO languages\footnote{In tomgtk for
+example GtkObject deals with all the proxing stuff, and child classes
+don't need to reconsider how to proxy themselves.}), while GdkStructs are
+problematic.
+
+If you have to use non-OO structs, follow one usage pattern: Either
+copy the struct, or store the pointer. Catering for two different
+usages makes the bindings only more difficult than neccessary.
+An example for correct usage is {\tt GdkColor}, which seems always to
+be copied. Try if at all to provide functions to copy the objects, and
+do other basic functionality: Some language could want to create
+temporaries, and managing them as references to another instance of
+the object complicates things drastically.
+
+\subsection{Requirements for callbacks}
+Callbacks must always carry one freely setable pointer
+argument. Callbacks should also have a DestroyNotify.
+
+This requirements come from the fact that it is not acceptable to
+expect
+the user to create a new function for every menu item, as it may be
+completly impossible to do so in some languages.
+
+Usually language bindings map all callbacks (at least of one kind) to a
+    given function, and this function uses the pointer argument to
+    know which binding in the host language is meant.  As the data
+    areas for method binding are probably dynamically allocated, a
+    DestroyNotify is a "good thing"(tm) to prevent memory leaks. 
+
+Example with problems: {\tt gnome\_mdi\_child\_set\_menu\_template} that uses
+    gnomeapp\_create\_menus\_with\_data. This is basically
+    non usable from anything else than C/C++/ObjC\footnote{And in C++/ObjC it
+    also means some contortions in design probably.}.
+
+\subsection{Subclassing}
+At the moment I believe there is
+    no language wrapping for subclassing a GtkObject class. To wrap
+    this process is by
+    design difficult, as it involves structs that point to callbacks
+    without the needed extra parameter and other niceties :( 
+    So don't expect full blown GtkObject subclassing in anything else
+    than C in the near future.
+
+    Do not
+    force the user of your widget to subclass some object to use your
+    code. You can make it easier by subclassing but always leave a
+    possibility to do it without full blown subclassing. To explain
+    what is probably managable from all languages: 
+\begin{verbatim}
+C: GnomeMDIChild                    TOM: GnomeMDIChild 
+                                    \- MyChild 
+\end{verbatim}
+So on the C side {\tt MyChild} objects are
+    represented by {\tt GnomeMDIChilds}. Callbacks are handled in such an
+    setup not by overwriting function pointers in the class struct (as
+    in {\tt gnome-hello-7-mdi MyChild} class), but by connecting signals to
+    these slots.
+
+\section{Last comments}
+As I had TOM in mind when I wrote this, I'd like to hear comments
+from other language bindings authors and also comments from gnome-libs
+designers in how far my ideas are doable.
+
+Also, English is not my native language, so any corrections in this
+area are welcome too.
+\end{document}
