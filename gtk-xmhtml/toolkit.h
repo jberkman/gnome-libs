@@ -26,6 +26,8 @@ enum {
 #define TNullTimeout 0
 #define TIntervalId  int
 #define TEvent       GdkEvent
+#define TButtonPressedEvent GdkEventButton
+#define TButtonReleasedEvent GdkEventButton
 
 typedef void *TPointer;
 
@@ -63,8 +65,11 @@ typedef XVisualInfo TVisualInfo;
 
 #define TLSBFirst GDK_LSB_FIRST
 #define TMSBFirst GDK_MSB_FIRST
+#define XmAnyCallbackStruct gtk_xmhtml_callback_info
 
 #define XtCallCallbackList(a,b,c) fprintf (stderr, "Warning callback being invoked\n");
+#define TPROTO(f,a,b,c,d) f (a, b)
+#define Toolkit_Widget_Parent(w) GTK_WIDGET(w)->parent
 #define Toolkit_Is_Realized(w) GTK_WIDGET_REALIZED(w)
 #define Toolkit_Widget_Window(x) (x)->window
 #define Toolkit_Default_Root_Window(dpy) ((GdkWindow*) &gdk_root_parent)
@@ -123,7 +128,11 @@ typedef XVisualInfo TVisualInfo;
 #define Toolkit_Image_Data(i) (i->mem)
 #define Toolkit_Image_Bytes_Per_Line(i) (i->bpl)
 #define Toolkit_Timeout_Remove(t) gtk_timeout_remove(t)
-
+#define Toolkit_Call_Callback(w,c,s,d) \
+    gtk_signal_emit (GTK_OBJECT(w), gtk_xmhtml_signals [GTK_XMHTML_##s], d)
+#define Toolkit_Undefine_Cursor(d,w) gdk_window_set_cursor ((w), NULL)
+#define Toolkit_Define_Cursor(d,w,c) gdk_window_set_cursor ((w),(c))
+	    
 #define XCCCreate(w,v,c)   gdk_color_context_new (v, c)
 #define XCCFree(c)         gdk_color_context_free (c)
 #define XCCGetDepth(c)     (c)->visual->depth
@@ -149,6 +158,9 @@ typedef GdkColorContextDither XCCDither;
 #define TVisual      Visual
 #define TNullTimeout None
 #define TEvent       XEvent
+#define TButtonPressedEvent  XButtonPressedEvent
+#define TButtonReleasedEvent XButtonReleasedEvent
+
 #define TCallbackList XtCallbackList
 #define TIntervalId  XtIntervalId
 #define TAppContext  XtAppContext
@@ -168,6 +180,8 @@ typedef GdkColorContextDither XCCDither;
 #define TLSBFirst LSBFirst
 #define TMSBFirst MSBFirst
 
+#define TPROTO(f,a,b,c,d) f (a, b, c, d)
+#define Toolkit_Widget_Parent(w) XtParent(w)
 #define Toolkit_Is_Realized(w) XtIsRealized ((Widget) w)
 #define Toolkit_Widget_Window(x) XtWindow((x))
 #define Toolkit_Default_Root_Window(dpy) DefaultRootWindow(dpy)
@@ -221,6 +235,10 @@ typedef GdkColorContextDither XCCDither;
 #define Toolkit_Image_Data(i) (i->data)
 #define Toolkit_Image_Bytes_Per_Line(i) (i->bytes_per_line)
 #define Toolkit_Timeout_Remove(t) XtRemoveTimeOut(t)
+#define Toolkit_Call_Callback(w,c,s,d) XtCallCallbackList ((w),(c),(d))
+#define Toolkit_Undefine_Cursor(d,w) XUndefineCursor ((d), (w))
+#define Toolkit_Define_Cursor(d,w,c) XDefineCursor ((d), (w),(c))
+
 #define	TALIGNMENT_END       XmALIGNMENT_END 
 #define TALIGNMENT_CENTER    XmALIGNMENT_CENTER
 #define TALIGNMENT_BEGINNING XmALIGNMENT_BEGINNING

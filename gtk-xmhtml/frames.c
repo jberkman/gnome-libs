@@ -36,6 +36,25 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.3  1997/12/24 17:53:54  unammx
+* Fun stuff:
+*
+* 	The widget now handles mouse motion, mouse clicks, anchors can
+* 	be clicked.
+*
+* 	The widget emits signals for all of the interesting events
+* 	(the same events that were used by the Motif port, we just use
+* 	signals instead of XtCallbacks).
+*
+* Boring stuff:
+*
+* 	The widget now handles focusin/focusout/enternotif/leavenotify
+*
+* 	More code sharing between the Motif frontend an the Gtk
+* 	frontned;   More portability macros;
+*
+* 	Cleaned up some more the privte widget header files.
+*
 * Revision 1.2  1997/12/17 04:40:28  unammx
 * Your daily XmHTML code is here.  It almost links.  Only the
 * images.c file is left to port.  Once this is ported we are all
@@ -1030,7 +1049,7 @@ frameDoneCallback(XmHTMLWidget html, XmHTMLFrameWidget *frame,
 	cbs.doit = False;
 
 	/* call the callback list */
-	XtCallCallbackList((TWidget)html, html->html.frame_callback, &cbs);
+	Toolkit_Call_Callback((TWidget)html, html->html.frame_callback, FRAME, &cbs);
 }
 
 /********
@@ -1097,7 +1116,7 @@ _XmHTMLFrameDestroyCallback(XmHTMLWidget html, XmHTMLFrameWidget *frame)
 	cbs.doit = True;
 
 	/* call the callback list */
-	XtCallCallbackList((Widget)html, html->html.frame_callback, &cbs);
+	Toolkit_Call_Callback((Widget)html, html->html.frame_callback, FRAME, &cbs);
 
 	/* always destroy this */
 	if(frame->src)
@@ -1152,7 +1171,7 @@ _XmHTMLFrameCreateCallback(XmHTMLWidget html, XmHTMLFrameWidget *frame)
 	cbs.doit = True;
 
 	/* call the callback list */
-	XtCallCallbackList((TWidget)html, html->html.frame_callback, &cbs);
+	Toolkit_Call_Callback((TWidget)html, html->html.frame_callback, FRAME, &cbs);
 
 #ifdef WITH_MOTIF
 	/* set constraints and other frame stuff */

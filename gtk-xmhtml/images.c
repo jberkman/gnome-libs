@@ -43,6 +43,25 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.4  1997/12/24 17:53:55  unammx
+* Fun stuff:
+*
+* 	The widget now handles mouse motion, mouse clicks, anchors can
+* 	be clicked.
+*
+* 	The widget emits signals for all of the interesting events
+* 	(the same events that were used by the Motif port, we just use
+* 	signals instead of XtCallbacks).
+*
+* Boring stuff:
+*
+* 	The widget now handles focusin/focusout/enternotif/leavenotify
+*
+* 	More code sharing between the Motif frontend an the Gtk
+* 	frontned;   More portability macros;
+*
+* 	Cleaned up some more the privte widget header files.
+*
 * Revision 1.3  1997/12/23 04:44:30  unammx
 * Ok kiddies, news for the day:
 *
@@ -2961,8 +2980,8 @@ doAlphaChannel(XmHTMLWidget html, XmHTMLImage *image)
 		cbs.doit     = False;		/* doesn't matter */
 		cbs.visited  = False;		/* doesn't matter */
 
-		XtCallCallbackList((TWidget)html, html->html.anchor_track_callback,
-			&cbs);
+		Toolkit_Call_Callback ((TWidget)html, html->html.anchor_track_callback,
+				       ANCHOR_TRACK, &cbs);
 
 		Toolkit_Flush (Toolkit_Display((TWidget)html), False);
 

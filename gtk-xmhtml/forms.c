@@ -36,6 +36,25 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.2  1997/12/24 17:53:54  unammx
+* Fun stuff:
+*
+* 	The widget now handles mouse motion, mouse clicks, anchors can
+* 	be clicked.
+*
+* 	The widget emits signals for all of the interesting events
+* 	(the same events that were used by the Motif port, we just use
+* 	signals instead of XtCallbacks).
+*
+* Boring stuff:
+*
+* 	The widget now handles focusin/focusout/enternotif/leavenotify
+*
+* 	More code sharing between the Motif frontend an the Gtk
+* 	frontned;   More portability macros;
+*
+* 	Cleaned up some more the privte widget header files.
+*
 * Revision 1.1  1997/12/18 00:40:42  unammx
 * .
 *
@@ -1780,7 +1799,7 @@ _XmHTMLFormActivate(XmHTMLWidget html, XEvent *event, XmHTMLForm *entry)
 	cbs.ncomponents = nComponents;
 	cbs.components  = components;
 
-	XtCallCallbackList((Widget)html, html->html.form_callback, &cbs);
+	Toolkit_Call_Callback((Widget)html, html->html.form_callback, FORM, &cbs);
 
 	/* free all */
 	for(i = 0; i < j; i++)

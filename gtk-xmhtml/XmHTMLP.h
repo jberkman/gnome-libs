@@ -35,6 +35,25 @@
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.4  1997/12/24 17:53:54  unammx
+* Fun stuff:
+*
+* 	The widget now handles mouse motion, mouse clicks, anchors can
+* 	be clicked.
+*
+* 	The widget emits signals for all of the interesting events
+* 	(the same events that were used by the Motif port, we just use
+* 	signals instead of XtCallbacks).
+*
+* Boring stuff:
+*
+* 	The widget now handles focusin/focusout/enternotif/leavenotify
+*
+* 	More code sharing between the Motif frontend an the Gtk
+* 	frontned;   More portability macros;
+*
+* 	Cleaned up some more the privte widget header files.
+*
 * Revision 1.3  1997/12/18 00:39:21  unammx
 * It compiles and links -miguel
 *
@@ -909,6 +928,7 @@ externalref XmHTMLClassRec xmHTMLClassRec;
 
 #ifndef WITH_MOTIF
 #    include "gtk-xmhtml.h"
+#    include "gtk-xmhtml-p.h"
 #endif
 
 _XFUNCPROTOEND

@@ -36,6 +36,25 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.3  1997/12/24 17:53:55  unammx
+* Fun stuff:
+*
+* 	The widget now handles mouse motion, mouse clicks, anchors can
+* 	be clicked.
+*
+* 	The widget emits signals for all of the interesting events
+* 	(the same events that were used by the Motif port, we just use
+* 	signals instead of XtCallbacks).
+*
+* Boring stuff:
+*
+* 	The widget now handles focusin/focusout/enternotif/leavenotify
+*
+* 	More code sharing between the Motif frontend an the Gtk
+* 	frontned;   More portability macros;
+*
+* 	Cleaned up some more the privte widget header files.
+*
 * Revision 1.2  1997/12/18 23:00:16  unammx
 * More fixes and added PNG support. - Federico
 *
@@ -783,8 +802,8 @@ _XmHTMLCheckImagemaps(XmHTMLWidget html)
 					cbs.map_name, cbs.image_name));
 
 				/* trigger the imagemap callback */
-				XtCallCallbackList((TWidget)html, html->html.imagemap_callback, 
-					&cbs);
+				Toolkit_Call_Callback((TWidget)html, html->html.imagemap_callback, 
+						      IMAGEMAP, &cbs);
 
 				_XmHTMLDebug(10, ("map.c: _XmHTMLCheckImagemaps, return from "
 					"imagemap_callback, %s imagemap.\n",

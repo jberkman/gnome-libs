@@ -1,3 +1,8 @@
+/*
+ * Gtk/XmHTML widget port.
+ *
+ * Miguel de Icaza, 1997
+ */
 #define SetScrollBars(HTML)
 #define AdjustVerticalScrollValue(VSB,VAL)
 
@@ -10,14 +15,9 @@
 
 #define SCROLLBAR_SPACING 0
 
-enum {
-	GTK_XMHTML_TEST_SIGNAL,
-	LAST_SIGNAL
-};
-
 static GtkContainer *parent_class = NULL;
 
-static gint gtk_xmhtml_signals [LAST_SIGNAL] = { 0, };
+gint gtk_xmhtml_signals [GTK_XMHTML_LAST_SIGNAL] = { 0, };
 
 /* prototypes for functions defined here */
 static void gtk_xmhtml_realize (GtkWidget *widget);
@@ -33,6 +33,22 @@ guint gtk_xmhtml_get_type (void);
 
 static void CheckScrollBars(XmHTMLWidget html);
 static void GetScrollDim(XmHTMLWidget html, int *hsb_height, int *vsb_width);
+static void	ExtendStart(TWidget w, TEvent *event);
+static void	ExtendEnd  (TWidget w, TEvent *event);
+
+typedef gint (*GtkXmHTMLSignal1) (GtkObject *object,
+                                  gpointer   arg1,
+                                  gpointer   data);                                                
+
+static void
+gtk_xmthml_marshall_1 (GtkObject *object, GtkSignalFunc func, gpointer data, GtkArg *args)
+{
+	GtkXmHTMLSignal1 rfunc;
+
+	rfunc = (GtkXmHTMLSignal1) func;
+
+	(* rfunc) (object, GTK_VALUE_POINTER (args[0]), data);
+}
 
 static Pixel
 pixel_color (char *color_name)
@@ -79,6 +95,11 @@ gtk_xmhtml_resource_init (GtkXmHTML *html)
 	html->html.anchor_visited_proc   = NULL;
 	html->html.image_proc            = NULL;
 	html->html.gif_proc              = NULL;
+
+#if 0
+	/* The Gtk edition of the code does not actually use these,
+	 * it uses the signal mechanism instead
+	 */
 	html->html.anchor_track_callback = NULL;
 	html->html.activate_callback     = NULL;
 	html->html.arm_callback          = NULL;
@@ -91,6 +112,7 @@ gtk_xmhtml_resource_init (GtkXmHTML *html)
 	html->html.motion_track_callback = NULL;
 	html->html.imagemap_callback     = NULL;
 	html->html.document_callback     = NULL;
+#endif
 	
 	html->html.hsb                   = NULL;
 	html->html.vsb                   = NULL;
@@ -171,16 +193,87 @@ gtk_xmhtml_class_init (GtkXmHTMLClass *class)
 	container_class = (GtkContainerClass *) class;
 
 	parent_class = gtk_type_class (gtk_container_get_type ());
-	
-	gtk_xmhtml_signals [GTK_XMHTML_TEST_SIGNAL] =
-		gtk_signal_new ("test-gtkxmhtml",
+
+	gtk_xmhtml_signals [GTK_XMHTML_ACTIVATE] =
+		gtk_signal_new ("activate",
 				GTK_RUN_FIRST,
 				object_class->type,
-				GTK_SIGNAL_OFFSET (GtkXmHTMLClass, testsignal),
-				gtk_signal_default_marshaller, GTK_TYPE_NONE, 0);
+				GTK_SIGNAL_OFFSET (GtkXmHTMLClass, activate),
+				gtk_xmthml_marshall_1, GTK_TYPE_NONE, 1, GTK_TYPE_POINTER);
+	gtk_xmhtml_signals [GTK_XMHTML_ARM] =
+		gtk_signal_new ("arm",
+				GTK_RUN_FIRST,
+				object_class->type,
+				GTK_SIGNAL_OFFSET (GtkXmHTMLClass, arm),
+				gtk_xmthml_marshall_1, GTK_TYPE_NONE, 1, GTK_TYPE_POINTER);
+	gtk_xmhtml_signals [GTK_XMHTML_ANCHOR_TRACK] =
+		gtk_signal_new ("anchor_track",
+				GTK_RUN_FIRST,
+				object_class->type,
+				GTK_SIGNAL_OFFSET (GtkXmHTMLClass, anchor_track),
+				gtk_xmthml_marshall_1, GTK_TYPE_NONE, 1, GTK_TYPE_POINTER);
+	gtk_xmhtml_signals [GTK_XMHTML_FRAME] =
+		gtk_signal_new ("frame",
+				GTK_RUN_FIRST,
+				object_class->type,
+				GTK_SIGNAL_OFFSET (GtkXmHTMLClass, frame),
+				gtk_xmthml_marshall_1, GTK_TYPE_NONE, 1, GTK_TYPE_POINTER);
+	gtk_xmhtml_signals [GTK_XMHTML_FORM] =
+		gtk_signal_new ("form",
+				GTK_RUN_FIRST,
+				object_class->type,
+				GTK_SIGNAL_OFFSET (GtkXmHTMLClass, form),
+				gtk_xmthml_marshall_1, GTK_TYPE_NONE, 1, GTK_TYPE_POINTER);
+	gtk_xmhtml_signals [GTK_XMHTML_INPUT] =
+		gtk_signal_new ("input",
+				GTK_RUN_FIRST,
+				object_class->type,
+				GTK_SIGNAL_OFFSET (GtkXmHTMLClass, input),
+				gtk_xmthml_marshall_1, GTK_TYPE_NONE, 1, GTK_TYPE_POINTER);
+	gtk_xmhtml_signals [GTK_XMHTML_LINK] =
+		gtk_signal_new ("link",
+				GTK_RUN_FIRST,
+				object_class->type,
+				GTK_SIGNAL_OFFSET (GtkXmHTMLClass, link),
+				gtk_xmthml_marshall_1, GTK_TYPE_NONE, 1, GTK_TYPE_POINTER);
+	gtk_xmhtml_signals [GTK_XMHTML_MOTION] =
+		gtk_signal_new ("motion",
+				GTK_RUN_FIRST,
+				object_class->type,
+				GTK_SIGNAL_OFFSET (GtkXmHTMLClass, motion),
+				gtk_xmthml_marshall_1, GTK_TYPE_NONE, 1, GTK_TYPE_POINTER);
+	gtk_xmhtml_signals [GTK_XMHTML_IMAGEMAP] =
+		gtk_signal_new ("imagemap",
+				GTK_RUN_FIRST,
+				object_class->type,
+				GTK_SIGNAL_OFFSET (GtkXmHTMLClass, imagemap),
+				gtk_xmthml_marshall_1, GTK_TYPE_NONE, 1, GTK_TYPE_POINTER);
+	gtk_xmhtml_signals [GTK_XMHTML_DOCUMENT] =
+		gtk_signal_new ("document",
+				GTK_RUN_FIRST,
+				object_class->type,
+				GTK_SIGNAL_OFFSET (GtkXmHTMLClass, document),
+				gtk_xmthml_marshall_1, GTK_TYPE_NONE, 1, GTK_TYPE_POINTER);
+	gtk_xmhtml_signals [GTK_XMHTML_FOCUS] =
+		gtk_signal_new ("focus",
+				GTK_RUN_FIRST,
+				object_class->type,
+				GTK_SIGNAL_OFFSET (GtkXmHTMLClass, focus),
+				gtk_xmthml_marshall_1, GTK_TYPE_INT, 1, GTK_TYPE_POINTER);
+	gtk_xmhtml_signals [GTK_XMHTML_LOSING_FOCUS] =
+		gtk_signal_new ("losing_focus",
+				GTK_RUN_FIRST,
+				object_class->type,
+				GTK_SIGNAL_OFFSET (GtkXmHTMLClass, losing_focus),
+				gtk_xmthml_marshall_1, GTK_TYPE_NONE, 1, GTK_TYPE_POINTER);
 
-	gtk_object_class_add_signals (object_class, gtk_xmhtml_signals, LAST_SIGNAL);
-	class->testsignal = NULL;
+	gtk_xmhtml_signals [GTK_XMHTML_MOTION_TRACK] =
+		gtk_signal_new ("motion_track",
+				GTK_RUN_FIRST,
+				object_class->type,
+				GTK_SIGNAL_OFFSET (GtkXmHTMLClass, motion_track),
+				gtk_xmthml_marshall_1, GTK_TYPE_NONE, 0);
+	gtk_object_class_add_signals (object_class, gtk_xmhtml_signals, GTK_XMHTML_LAST_SIGNAL);
 
 	widget_class->map           = gtk_xmhtml_map;
 /*	widget_class->unmap         = gtk_xmhtml_unmap; */
@@ -392,30 +485,121 @@ CheckGC(XmHTMLWidget html)
 	_XmHTMLDebug(1, ("XmHTML.c: CheckGC End\n"));
 }
 
-gint
-work_area_expose (GtkWidget *widget, GdkEvent *event, gpointer closure)
+static gint
+gtk_xmhtml_expose_event (GtkWidget *widget, GdkEvent *event, gpointer closure)
 {
 	GtkXmHTML *html = closure;
 	GdkEventExpose *e = (GdkEventExpose *) event;
 	
+
 	Refresh(html, e->area.x, e->area.y, e->area.width, e->area.height);
 	return FALSE;
 }
 
-void
-horizontal_scroll (GtkObject *obj, gpointer user_data)
+/*****
+* Name: 		TrackMotion
+* Return Type: 	void
+* Description: 	mouse tracker; calls XmNanchorTrackCallback if 
+*				entering/leaving an anchor.
+*				Also calls XmNmotionTrackCallback when installed.
+* In: 
+*	w:			XmHTMLWidget
+*	event:		MotionEvent structure
+*	params:		additional args, unused
+*	num_parmas:	no of additional args, unused
+* Returns:
+*	nothing
+*****/
+static gint
+gtk_xmhtml_motion_event (GtkWidget *widget, GdkEvent *event, gpointer closure)
 {
-	GtkAdjustment *adj = GTK_ADJUSTMENT (obj);
+	GtkXmHTML *html = GTK_XMHTML (closure);
+	GdkEventMotion *motion = (GdkEventMotion *) event;
+	XmAnyCallbackStruct cbs;
+	int x, y;
+	
+	/* ignore if we don't have to make any more feedback to the user */
+	if (!html->html.need_tracking)
+		return TRUE;
+
+	/* pass down to motion tracker callback if installed */
+	cbs.reason = XmCR_HTML_MOTIONTRACK;
+	cbs.event = event;
+	gtk_signal_emit (GTK_OBJECT (html), gtk_xmhtml_signals [GTK_XMHTML_MOTION_TRACK], &cbs);
+	x = motion->x;
+	y = motion->y;
+	AnchorTrack (html, event, x, y);
+
+	return TRUE;
+}
+
+static void *
+gtk_signal_get_handlers (GtkObject *obj, int type)
+{
+	void *handlers = gtk_object_get_data (obj, "signal_handlers");
+
+	return handlers;
+}
+
+/*
+ * Handles focus_in, focus_out, leave_notify, enter_notify
+ */
+static int
+gtk_xmhtml_focus (GtkWidget *widget, GdkEvent *event, gpointer closure)
+{
+	GtkXmHTML *html = GTK_XMHTML (closure);
+	GtkObject *htmlo = GTK_OBJECT (closure);
+	GdkEventFocus *focus = (GdkEventFocus *) event;
+	XmAnyCallbackStruct cbs;
+	int focusing_in;
+	
+	if (event->type == GDK_FOCUS_CHANGE)
+		focusing_in = (focus->window == html->html.work_area->window);
+
+	if (event->type == GDK_FOCUS_CHANGE && focusing_in){
+		cbs.reason = XmCR_FOCUS;
+		cbs.event = event;
+		gtk_signal_emit (htmlo, gtk_xmhtml_signals [GTK_XMHTML_FOCUS], &cbs);
+		gdk_window_set_cursor (html->html.work_area->window, NULL);
+		return TRUE;
+	}
+
+	/* Both Leave notify and focus out are handled here */
+	
+	/* invalidate current selection if there is one */
+	if (gtk_signal_get_handlers (htmlo, gtk_xmhtml_signals [GTK_XMHTML_ANCHOR_TRACK])
+		&& html->html.anchor_current_cursor_element)
+		_XmHTMLTrackCallback (html, event, NULL);
+
+	/* loses focus, remove anchor highlight */
+	if(html->html.highlight_on_enter && html->html.armed_anchor)
+		LeaveAnchor(html);
+	
+	html->html.armed_anchor = NULL;
+	html->html.anchor_current_cursor_element = NULL;
+	gdk_window_set_cursor (html->html.work_area->window, NULL);
+
+	/* final step: call focusOut callback */
+	if(event->type == FocusOut && html->html.losing_focus_callback){
+		cbs.reason = XmCR_LOSING_FOCUS;
+		cbs.event = event;
+		gtk_signal_emit (htmlo, gtk_xmhtml_signals [GTK_XMHTML_LOSING_FOCUS], &cbs);
+	}
+	return TRUE;
+}
+		
+static void
+horizontal_scroll (GtkAdjustment *adj, gpointer user_data)
+{
 	GtkXmHTML *html = GTK_XMHTML (user_data);
 
 	_XmHTMLDebug(1, ("XmHTML.c: ScrollCB, calling _XmHTMLMoveToPos\n"));
 	_XmHTMLMoveToPos (html->html.hsb, html, adj->value);
 }
 
-void
-vertical_scroll (GtkObject *obj, gpointer user_data)
+static void
+vertical_scroll (GtkAdjustment *adj, gpointer user_data)
 {
-	GtkAdjustment *adj = GTK_ADJUSTMENT (obj);
 	GtkXmHTML *html = GTK_XMHTML (user_data);
 	
 	_XmHTMLDebug(1, ("XmHTML.c: ScrollCB, calling _XmHTMLMoveToPos\n"));
@@ -450,11 +634,42 @@ CreateHTMLWidget(XmHTMLWidget html)
 		gtk_xmhtml_manage (GTK_CONTAINER (html), draw_area);
 		
 		gtk_signal_connect (GTK_OBJECT (draw_area), "expose_event",
-				    (GtkSignalFunc) work_area_expose, html);
+				    (GtkSignalFunc) gtk_xmhtml_expose_event, html);
+		
+		gtk_signal_connect (GTK_OBJECT (draw_area), "motion_notify_event",
+				    (GtkSignalFunc) gtk_xmhtml_motion_event, html);
+
+		gtk_signal_connect (GTK_OBJECT (draw_area), "focus_in_event",
+				    (GtkSignalFunc) gtk_xmhtml_focus, html);
+
+		gtk_signal_connect (GTK_OBJECT (draw_area), "focus_out_event",
+				    (GtkSignalFunc) gtk_xmhtml_focus, html);
+
+		gtk_signal_connect (GTK_OBJECT (draw_area), "leave_notify_event",
+				    (GtkSignalFunc) gtk_xmhtml_focus, html);
+
+		gtk_signal_connect (GTK_OBJECT (draw_area), "enter_notify_event",
+				    (GtkSignalFunc) gtk_xmhtml_focus, html);
+
+		gtk_signal_connect (GTK_OBJECT (draw_area), "button_press_event",
+				    (GtkSignalFunc) ExtendStart, html);
+		
+		gtk_signal_connect (GTK_OBJECT (draw_area), "button_release_event",
+				    (GtkSignalFunc) ExtendEnd, html);
 		
 		events = gtk_widget_get_events (draw_area);
-		gtk_widget_set_events (draw_area, events | GDK_EXPOSURE_MASK);
-		
+		gtk_widget_set_events (draw_area, events
+				       | GDK_EXPOSURE_MASK
+				       | GDK_FOCUS_CHANGE_MASK
+				       | GDK_POINTER_MOTION_MASK
+				       | GDK_LEAVE_NOTIFY_MASK
+				       | GDK_ENTER_NOTIFY_MASK
+				       | GDK_BUTTON_RELEASE_MASK
+				       | GDK_BUTTON_PRESS_MASK
+
+				       /* not yet handled */
+				       | GDK_KEY_PRESS_MASK
+				       | GDK_KEY_RELEASE_MASK);
 		gtk_widget_show (draw_area);
 	}
 

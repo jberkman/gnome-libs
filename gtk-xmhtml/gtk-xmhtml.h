@@ -35,11 +35,27 @@ struct _GtkXmHTMLClass
 {
 	GtkContainerClass parent_class;
 
-	void (* testsignal) (GtkXmHTML *xmhtml);
+	void (*activate)     (GtkXmHTML *, void *);
+	void (*arm)          (GtkXmHTML *, void *);
+	void (*anchor_track) (GtkXmHTML *, void *);
+	void (*frame)        (GtkXmHTML *, void *);
+	void (*form)         (GtkXmHTML *, void *);
+	void (*input)        (GtkXmHTML *, void *);
+	void (*link)         (GtkXmHTML *, void *);
+	void (*motion)       (GtkXmHTML *, void *);
+	void (*imagemap)     (GtkXmHTML *, void *);
+	void (*document)     (GtkXmHTML *, void *);
+	void (*focus)        (GtkXmHTML *, void *);
+	void (*losing_focus) (GtkXmHTML *, void *);
+	void (*motion_track) (GtkXmHTML *, void *);
 };
 
 GtkWidget *gtk_xmhtml_new (char *html_source);
 
-#define XmCR_ACTIVATE 0
+/* For compatibility with the Motif sources */
+typedef struct {
+	int reason;
+	GdkEvent *event;
+} gtk_xmhtml_callback_info;
 
 #endif

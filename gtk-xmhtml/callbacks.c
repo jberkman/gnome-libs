@@ -35,6 +35,25 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.2  1997/12/24 17:53:54  unammx
+* Fun stuff:
+*
+* 	The widget now handles mouse motion, mouse clicks, anchors can
+* 	be clicked.
+*
+* 	The widget emits signals for all of the interesting events
+* 	(the same events that were used by the Motif port, we just use
+* 	signals instead of XtCallbacks).
+*
+* Boring stuff:
+*
+* 	The widget now handles focusin/focusout/enternotif/leavenotify
+*
+* 	More code sharing between the Motif frontend an the Gtk
+* 	frontned;   More portability macros;
+*
+* 	Cleaned up some more the privte widget header files.
+*
 * Revision 1.1  1997/12/17 04:40:28  unammx
 * Your daily XmHTML code is here.  It almost links.  Only the
 * images.c file is left to port.  Once this is ported we are all
@@ -306,7 +325,7 @@ _XmHTMLLinkCallback(XmHTMLWidget html)
 	if(num_link == 0 || start == NULL)
 	{
 		cbs.link = NULL;
-		XtCallCallbackList((Widget)html, html->html.link_callback, &cbs);
+		Toolkit_Call_Callback ((TWidget)html, html->html.link_callback, LINK, &cbs);
 		return;
 	}
 
@@ -314,7 +333,7 @@ _XmHTMLLinkCallback(XmHTMLWidget html)
 	cbs.link = ParseLinks(start, &num_link);
 	cbs.num_link = num_link;
 
-	XtCallCallbackList((Widget)html, html->html.link_callback, &cbs);
+	Toolkit_Call_Callback ((TWidget)html, html->html.link_callback, LINK, &cbs);
 
 	/* free everything */
 	for(i = 0; i < num_link; i++)
@@ -372,7 +391,7 @@ _XmHTMLTrackCallback(XmHTMLWidget html, TEvent *event, XmHTMLAnchor *anchor)
 		cbs.visited  = anchor->visited;		/* doesn't matter */
 	}
 
-	XtCallCallbackList((Widget)html, html->html.anchor_track_callback, &cbs);
+	Toolkit_Call_Callback((TWidget)html, html->html.anchor_track_callback, ANCHOR_TRACK, &cbs);
 
 	_XmHTMLDebug(3, ("callbacks.c: _XmHTMLTrackCallback End\n"));
 }
@@ -421,7 +440,7 @@ _XmHTMLActivateCallback(XmHTMLWidget html, TEvent *event, XmHTMLAnchor *anchor)
 	cbs.doit     = False;
 	cbs.visited  = anchor->visited;
 
-	XtCallCallbackList((Widget)html, html->html.activate_callback, &cbs);
+	Toolkit_Call_Callback((TWidget)html, html->html.activate_callback, ACTIVATE, &cbs);
 
 	/* 
 	* If we have a local anchor, see if we should mark it as visited
@@ -546,7 +565,7 @@ _XmHTMLDocumentCallback(XmHTMLWidget html, Boolean html32, Boolean verified,
 		cbs.pass_level = pass_level;
 		cbs.redo       = !balanced;
 
-		XtCallCallbackList((Widget)html, html->html.document_callback, &cbs);
+		Toolkit_Call_Callback((TWidget)html, html->html.document_callback, DOCUMENT, &cbs);
 
 		return(cbs.redo);
 	}
