@@ -686,12 +686,13 @@ void vt_update(struct _vtx *vx, int update_state)
   fn = wn;
   line=0;
   bl = (struct vt_line *)vx->vt.lines_back.head;
+  offset = vx->vt.scrollbackoffset;
   while (nn && line<vx->vt.height) {
     d(printf("%p: scanning line %d, was %d\n", wn, line, wn->line));
     if (wn->line==-1) {
       vt_line_update(vx, wn, bl, line, 0, 0, bl->width);
       d(printf("manual: updating line %d\n", line));
-    } else if (wn->modcount || update_state&UPDATE_REFRESH) {
+    } else if (wn->modcount || update_state) {
       vt_line_update(vx, wn, bl, line, force, 0, bl->width);
       d(printf("manual, forced: updating line %d\n", line));
     }

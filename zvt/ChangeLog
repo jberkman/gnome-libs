@@ -3,6 +3,9 @@
 	* update.c (vt_expand_line): Range check start value.
 	(vt_fix_selection): Range check x values, at least above 0.  For
 	bug #966.
+	(vt_update): When checking to see if we update the line, always
+	update if the scrollbar moved.  vt_line_update() will optimise
+	rendering anyway.
 
 	* zterm.c (set_hints): Renamed size_allocate to set_hints.
 	Changed to use gtk_window_set_geometry_hints() instead of the X
