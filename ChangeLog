@@ -1,3 +1,11 @@
+1999-08-25 Elliot Lee <sopwith@redhat.com>
+	* libgnomeui/gnome_segv.c: Include a GnomeHref to point to the GNOME appcrash page.
+	* libgnomeui/gnome-init.c: Clean up fatal signal handling, add env variable, etc.
+	                           Don't copy arguments unnecessarily for gnome_client's purposes.
+				   Remove POPT_AUTOHELP (it's already in libgnome) and move --version to libgnome
+	* libgnome/gnomelib-init.c: Move --version option handling here.
+
+
 1999-08-19 Elliot Lee <sopwith@redhat.com>
 	* libgnorba/orbitgnome.c: Fix brain-dead cookie setup logic (s/&/|/) and
 	  don't enable cookies if app asked for them to be turned off.
