@@ -3,12 +3,37 @@ GnomePropertyBox
 
 <!-- ##### SECTION Short_Description ##### -->
 
+Standarized dialog box for handling configuration
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
+The <type>GnomePropertyBox</type> widget simplifies coding a
+consistent dialog box for configuring properties of any kind.</para>
 
-</para>
+<para>The <type>GnomePropertyBox</type> is a toplevel widget (it will
+create its own window), inside it contains a <type>GtkNotebook</type>
+which is used to hold the various property pages.</para>
 
+<para>The box will include ok, cancel, apply and help buttons (the
+actual buttons depends on the settings the user has, for example,
+apply can be hidden).  The ok and apply buttons will start up in
+non-sensitive state, the programmer needs to configure the widgets
+inserted into the property box to inform the widget of any state
+changes to enable the ok and apply buttons.  This is done by calling
+the gnome_property_box_changed() function.</para>
+
+<para>To use this widget, you create the widget using
+gnome_property_box_new() and then you call
+gnome_property_box_append_page() for each property page you want in
+the property box.</para>
+
+<para>The widget emits two signals: "apply" and "help".  To make a
+functional dialog box you will want to connect to at least the "apply"
+signal: your function will be invoked once for each page and one more
+time at the end, passing a special value of -1 for the page
+number.</para> 
+
+<!- Documentation author, Miguel de Icaza -->
 
 <!-- ##### STRUCT GnomePropertyBox ##### -->
 <para>
@@ -61,15 +86,24 @@ GnomePropertyBox
 
 <!-- ##### SIGNAL GnomePropertyBox::apply ##### -->
 <para>
-
-</para>
+This signal is invoked with the page number that is being applied.
+The signal is emited with the special page number -1 when it has
+finished emiting the signals for all of the property pages.</para>
 
 @propertybox: the object which received the signal.
-@arg1: 
+@arg1: The page number.
 
 <!-- ##### SIGNAL GnomePropertyBox::help ##### -->
 <para>
+This signal is invoked when the user clicks on the help button in the
+property box.  An argument is passed that identifies the currently
+active page number.</para>
 
+<para>
+There are a number of utility functions in the module gnome-help that
+can help you hook help into your application: gnome_help_pbox_goto()
+and gnome_help_pbox_display provide two different ways to hook the
+help into this signal.
 </para>
 
 @propertybox: the object which received the signal.
