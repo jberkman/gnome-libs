@@ -12,6 +12,10 @@
 #include <sys/stat.h>
 #include <signal.h>
 #include <fcntl.h>
+#define SHLIB_DEPENDENCIES 1
+#ifdef SHLIB_DEPENDENCIES
+#include <dlfcn.h>
+#endif
 #include <ctype.h>
 
 #define SERVER_LISTING_PATH "/CORBA/Servers"
@@ -486,7 +490,56 @@ goad_server_activate_shlib(GoadServer *sinfo,
   CORBA_Object retval;
   ActiveServerInfo *local_server_info;
   gpointer impl_ptr;
-
+#define SHLIB_DEPENDENCIES 1
+#ifdef SHLIB_DEPENDENCIES
+  FILE* lafile;
+  gchar* ptr;
+  gchar line[128];
+  gint len = strlen(sinfo->location_info);
+  void* handle;
+  
+  if (!strcmp(sinfo->location_info + (len - 2), "la")) {
+    /* find inter-library depencies in the .la file */
+    lafile = fopen(sinfo->location_info, "r");
+    if (!lafile)
+      goto normal_loading;	/* bail out and let the normal loading
+				   code handle the error */
+    while ((ptr = fgets(line, sizeof(line), lafile))) {
+      if (!strncmp(line, "dependency_libs='", strlen("dependency_libs='")))
+	break;
+    }
+    if (!ptr) {
+      /* no dependcy line, just load the lib */
+      goto normal_loading;
+    }
+    ptr = line + strlen("dependency_libs='") + 1;
+    /* ptr now is on the '-' of the first lib */ 
+    while (1) {
+      gchar*  libpath;
+      gchar*  libstart;
+      gchar   libname[128];
+      ptr += 2;
+      libstart = ptr;
+      while (*ptr != '\'' && !isspace(*ptr))
+	ptr++;
+      if (*ptr == '\'')
+	break;
+      memset(libname, 0, sizeof(libname));
+      strcpy(libname, "lib");
+      strncat(libname, libstart, ptr - libstart);
+      strcat(libname, ".so");
+      fprintf(stderr,"Using '%s' for dlopen\n", libname);
+      handle = dlopen(libname, RTLD_GLOBAL | RTLD_LAZY);
+      if (!handle) {
+	g_warning("Cannot load %s: %s", libname, dlerror());
+      }
+      ptr += 1;
+    }
+normal_loading:
+    sinfo->location_info[len-1] = 'o';
+    sinfo->location_info[len-2] = 's';
+  }
+#endif  
   plugin = gnome_plugin_use(sinfo->location_info);
   g_return_val_if_fail(plugin, CORBA_OBJECT_NIL);
 
