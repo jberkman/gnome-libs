@@ -24,7 +24,7 @@ a possible time expensive operation to figure out the information.
 The routines that classify a file by its name, use the contents of all
 of the files with the extension <filename>.mime</filename> from the
 <filename>$gnome_prefix/share/mime-info</filename> directory and the
-<filename>~/.gnome/mime-info</directory> to build the database for
+<filename>~/.gnome/mime-info</filename> to build the database for
 filename matching.  The latter is supported to enable users to provide
 their mime types to extend the system defaults.</para>
 
@@ -49,6 +49,7 @@ of the file <filename>$gnome_prefix/etc/mime-magic</filename> to
 determine the contents of a file (this database is usually kept in a
 fast machine-preprocessed format in the
 <filename>$gnome_prefix/etc/mime-magic.dat</filename> file).
+</para>
 
 <!-- ##### FUNCTION gnome_mime_type ##### -->
 <para>

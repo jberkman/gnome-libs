@@ -15,7 +15,7 @@ actions and behaviour.</para>
 To add keys to a mime-type, it is necessary to install a file with the
 extension <filename>.keys</filename> in the
 <filename>$gnome/share/mime-info</filename> directory or in the
-<filename>~/.gnome/mime-info directory<filename> directory.  The
+<filename>~/.gnome/mime-info directory</filename> directory.  The
 former is for system-provided mime-information and the latter is to
 enable the user to extend the actions as provided by the system.
 </para>
@@ -86,32 +86,35 @@ desktop:</para>
 
 <itemizedlist>
   <listitem><para><emphasis>open</emphasis>: Open the file with this
-    command.</para>
+    command.</para></listitem>
 
 
-    filename with the icon that should be used to represent files of
-    this type.</para>
+  <listitem><para><emphasis>icon-filename</emphasis>: The filename
+    with the icon that should be used to represent files of this type.</para>
+  </listitem>
 
   <listitem><para><emphasis>view</emphasis>: Command to view the file
-    contents.</para>
+    contents.</para></listitem>
 
   <listitem><para><emphasis>ascii-view</emphasis>: A command that
    should be used to do an ascii-rendering of the file.  Used as a
    fallback by the filemanager if a <emphasis>view</emphasis> action
-   does not exist.
-
+   does not exist.</para></listitem>
 
   <listitem><para><emphasis>fm-open</emphasis>:file-manager open.  If
    present, the file manager will use this action instead of the value
    in open to perform this action (the filemanager for example will
-   open archive files as if they were directories by using the VFS).
+   open archive files as if they were directories by using the VFS).</para>
+  </listitem>
 
   <listitem><para><emphasis>fm-view</emphasis>: file-manager view.  If
     present, invoking the view opertion on the file manager will use
     the value defined here instead of the value in "view".
+  </para></listitem>
 
   <listitem><para><emphasis>fm-ascii-view</emphasis>:Fallback
-    operation for the file manager as well.
+    operation for the file manager as well.</para>
+  </listitem>
 
 </itemizedlist>
 
