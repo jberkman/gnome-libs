@@ -122,7 +122,7 @@ AC_CHECK_LIB(tiff, TIFFReadScanline,
     AC_CHECK_LIB(tiff34, TIFFFlushData,
       AC_CHECK_HEADER(tiffio.h,
         TIFF_LIBS="-ltiff34 $JPEG_LIBS $Z_LIBS"; AC_DEFINE(HAVE_LIBTIFF)),,
-$JPEG_LIBS $Z_LIBS -lm), $JPEG_LIBS $Z_LIBS -lm))
+$JPEG_LIBS $Z_LIBS -lm), $JPEG_LIBS $Z_LIBS -lm), -lm)
 
 dnl Test for libgif
 AC_CHECK_LIB(gif, DGifOpenFileName,
@@ -133,7 +133,7 @@ dnl Test for libpng
 AC_CHECK_LIB(png, png_read_info,
   AC_CHECK_HEADER(png.h,
     png_ok=yes,
-    png_ok=no),,$Z_LIBS)
+    png_ok=no),,$Z_LIBS -lm)
 if test "$png_ok" = yes; then
   AC_MSG_CHECKING([for png_structp in png.h])
   AC_TRY_COMPILE([#include <png.h>],
