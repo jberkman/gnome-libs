@@ -53,7 +53,7 @@ main(int argc, char *argv[])
 static void
 prepare_app(void)
 {
-  GtkWidget *source, *drop_target, *vbox;
+  GtkWidget *source, *source2, *drop_target, *vbox, *list;
 
   /* This is the list of formats the drag source exports */
   static GtkTargetEntry drag_types[] = {
@@ -75,10 +75,14 @@ prepare_app(void)
 
   vbox = gtk_hbox_new(5, FALSE);
   gnome_app_set_contents ( GNOME_APP (app), vbox);
-  
-  source = gtk_button_new_with_label ("Drag me");
+
+  list = gtk_list_new();
+  source = gtk_list_item_new_with_label ("Drag me");
+  source2 = gtk_list_item_new_with_label ("Drag me too!");
   drop_target = gtk_button_new_with_label ("to this button");
-  gtk_container_add(GTK_CONTAINER(vbox), source);
+  gtk_container_add(GTK_CONTAINER(list), source);
+  gtk_container_add(GTK_CONTAINER(list), source2);
+  gtk_container_add(GTK_CONTAINER(vbox), list);
   gtk_container_add(GTK_CONTAINER(vbox), drop_target);
 
   gtk_signal_connect (GTK_OBJECT (source), "drag_data_get",
@@ -91,6 +95,16 @@ prepare_app(void)
 
   gtk_container_set_border_width (GTK_CONTAINER (source), 60);
 
+  gtk_signal_connect (GTK_OBJECT (source2), "drag_data_get",
+		      GTK_SIGNAL_FUNC(drag_data_get_cb), NULL);
+
+  gtk_drag_source_set (source2, 
+		       GDK_BUTTON1_MASK,
+		       drag_types, sizeof(drag_types) / sizeof(drag_types[0]),
+		       GDK_ACTION_COPY);
+
+  gtk_container_set_border_width (GTK_CONTAINER (source2), 60);
+
   gtk_signal_connect (GTK_OBJECT (drop_target), "drag_data_received",
 		      GTK_SIGNAL_FUNC(drop_cb), NULL);
 
@@ -101,7 +115,7 @@ prepare_app(void)
 		     drop_types, sizeof(drop_types) / sizeof(drop_types[0]),
 		     GDK_ACTION_COPY);
 
-  gtk_container_border_width (GTK_CONTAINER (drop_target), 60);
+  gtk_container_set_border_width (GTK_CONTAINER (drop_target), 60);
 
   gtk_widget_show_all (app);
 }
