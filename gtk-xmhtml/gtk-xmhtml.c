@@ -78,11 +78,19 @@ gtk_xmthml_marshall_2 (GtkObject *object, GtkSignalFunc func, gpointer data, Gtk
 }
 
 static Pixel
-pixel_color (char *color_name)
+pixel_color (GtkXmHTML *html, char *color_name)
 {
 	GdkColor c;
+	int n;
+
+	_XmHTMLCheckXCC (html);
 	
 	gdk_color_parse (color_name, &c);
+
+	c.pixel = 0;
+	n = 0;
+
+	XCCGetPixels (html->html.xcc, &c.red, &c.green, &c.blue, 1, &c.pixel, &n);
 	return c.pixel;
 }
 
@@ -111,11 +119,11 @@ gtk_xmhtml_resource_init (GtkXmHTML *html)
 	html->html.anchor_display_cursor = TRUE;
 	html->html.anchor_buttons        = TRUE;
 	
-	html->html.anchor_fg             = pixel_color ("blue1");
-	html->html.anchor_visited_fg     = pixel_color ("red");
-	html->html.anchor_target_fg      = pixel_color ("blue1");
-	html->html.anchor_activated_fg   = pixel_color ("red");
-	html->html.anchor_activated_bg   = pixel_color ("white");
+	html->html.anchor_fg             = pixel_color (html, "blue1");
+	html->html.anchor_visited_fg     = pixel_color (html, "red");
+	html->html.anchor_target_fg      = pixel_color (html, "blue1");
+	html->html.anchor_activated_fg   = pixel_color (html, "red");
+	html->html.anchor_activated_bg   = pixel_color (html, "white");
 	
 	html->html.highlight_on_enter    = TRUE;
 	html->html.anchor_underline_type = LINE_SOLID | LINE_UNDER | LINE_SINGLE;
@@ -175,7 +183,7 @@ gtk_xmhtml_resource_init (GtkXmHTML *html)
 	html->html.allow_color_switching = TRUE;
 	html->html.allow_font_switching  = TRUE;
 	html->html.allow_form_coloring   = TRUE;
-	html->html.imagemap_fg           = pixel_color ("White");
+	html->html.imagemap_fg           = pixel_color (html, "White");
 	html->html.imagemap_draw         = FALSE;
 	html->html.repeat_delay          = 25;
 	html->html.freeze_animations     = FALSE;

@@ -1,3 +1,8 @@
+1998-04-23  Federico Mena Quintero  <federico@nuclecu.unam.mx>
+
+	* gtk-xmhtml.c (pixel_color): Actually allocate the color,
+	otherwise the pixel value will contain garbage.
+
 1998-03-28  Miguel de Icaza  <miguel@nuclecu.unam.mx>
 
 	* gtk-forms.c (_XmHTMLFormActivate): Do not free the values from
