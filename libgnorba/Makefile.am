@@ -14,11 +14,21 @@ INCLUDES = -I.. -I$(srcdir)/.. $(SUPPORTINCS) -I$(includedir) \
 	-DGNOMESYSCONFDIR=\"$(sysconfdir)\" \
 	-DVERSION=\""$(VERSION)"\"
 
+gnorba_built=gnome-factory.h gnome-factory-skels.c \
+	gnome-factory-stubs.c gnome-factory-common.c
+
+ORBIT_IDL=orbit-idl
+
+$(gnorba_built): $(top_srcdir)/idl/gnome-factory.idl
+	$(ORBIT_IDL) $<
+
 libgnorba_la_SOURCES = \
-	orbitgtk.c goad.c gnome-plugins.c
+	orbitgtk.c goad.c gnome-plugins.c \
+	gnome-factory-skels.c gnome-factory-stubs.c \
+	gnome-factory-common.c
 
 libgnorbainclude_HEADERS = \
-	gnorba.h
+	gnorba.h gnome-factory.h
 
 libgnorba_la_LDFLAGS = -version-info 26:0:26 -rpath $(libdir)
 libgnorba_la_LIBADD = $(ORBIT_LIBS) $(GLIB_LIBS) -lm

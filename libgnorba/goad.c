@@ -42,10 +42,17 @@ static void goad_server_list_read(const char *filename,
 static GoadServerType goad_server_typename_to_type(const char *typename);
 static CORBA_Object goad_server_activate_shlib(GoadServer *sinfo,
 					       GoadActivationFlags flags,
+					       const char **params,
 					       CORBA_Environment *ev);
 static CORBA_Object goad_server_activate_exe(GoadServer *sinfo,
 					     GoadActivationFlags flags,
+					     const char **params,
 					     CORBA_Environment *ev);
+static CORBA_Object goad_server_activate_factory(GoadServer *sinfo,
+						 GoadActivationFlags flags,
+						 const char **params,
+						 CORBA_Environment *ev,
+						 GoadServer *slist);
 static void goad_servers_unregister_atexit(void);
 
 static gboolean string_in_array(const char *string, const char **array)
@@ -101,16 +108,81 @@ goad_server_list_get(void)
 
   return retval;
 }
+
+static GoadActivationFlags
+goad_activation_combine_flags(GoadServer *sinfo,
+			      GoadActivationFlags user_flags)
+{
+  GoadActivationFlags retval = 0;
+
+  if(sinfo->flags & (GOAD_ACTIVATE_REMOTE|GOAD_ACTIVATE_SHLIB))
+    retval |= sinfo->flags & (GOAD_ACTIVATE_REMOTE|GOAD_ACTIVATE_SHLIB);
+  else
+    retval |= user_flags & (GOAD_ACTIVATE_REMOTE|GOAD_ACTIVATE_SHLIB);
+
+  if(sinfo->flags & (GOAD_ACTIVATE_NEW_ONLY|GOAD_ACTIVATE_EXISTING_ONLY))
+    retval |=
+      sinfo->flags & (GOAD_ACTIVATE_NEW_ONLY|GOAD_ACTIVATE_EXISTING_ONLY);
+  else
+    retval |= user_flags & (GOAD_ACTIVATE_NEW_ONLY|GOAD_ACTIVATE_EXISTING_ONLY);
+
+  return retval;
+}
   
+static GoadActivationFlags
+goad_server_flagstring_to_flags(char *flstr)
+{
+  char **ctmp;
+  GoadActivationFlags retval = 0;
+  int i;
+
+  g_strstrip(flstr);
+
+  if(!*flstr) return retval;
+
+  ctmp = g_strsplit(flstr, "|", 0);
+
+  for(i = 0; ctmp[i]; i++) {
+    if(!strcasecmp(ctmp[i], "new_only")) {
+      if(retval & GOAD_ACTIVATE_EXISTING_ONLY)
+	g_warning("Can't combine existing_only and new_only activation flags");
+      else
+	retval |= GOAD_ACTIVATE_NEW_ONLY;
+    } else if(!strcasecmp(ctmp[i], "existing_only")) {
+      if(retval & GOAD_ACTIVATE_NEW_ONLY)
+	g_warning("Can't combine existing_only and new_only activation flags");
+      else
+	retval |= GOAD_ACTIVATE_EXISTING_ONLY;
+    } else if(!strcasecmp(ctmp[i], "shlib")) {
+      if(retval & GOAD_ACTIVATE_REMOTE)
+	g_warning("Can't combine shlib and remote activation flags");
+      else
+	retval |= GOAD_ACTIVATE_SHLIB;
+    } else if(!strcasecmp(ctmp[i], "remote")) {
+      if(retval & GOAD_ACTIVATE_SHLIB)
+	g_warning("Can't combine shlib and remote activation flags");
+      else
+	retval |= GOAD_ACTIVATE_REMOTE;
+    } else
+      g_warning("Unknown activation flag %s", ctmp[i]);
+  }
+
+  g_strfreev(ctmp);
+
+  return retval;
+}
+
 static GoadServerType
 goad_server_typename_to_type(const char *typename)
 {
-  if(!strcmp(typename, "shlib"))
+  if(!strcasecmp(typename, "shlib"))
     return GOAD_SERVER_SHLIB;
   else if(!strcmp(typename, "exe"))
     return GOAD_SERVER_EXE;
-  else if(!strcmp(typename, "relay"))
+  else if(!strcasecmp(typename, "relay"))
     return GOAD_SERVER_RELAY;
+  else if(!strcasecmp(typename, "factory"))
+    return GOAD_SERVER_FACTORY;
   else
     return 0; /* Invalid */
 }
@@ -160,6 +232,16 @@ goad_server_list_read(const char *filename,
       g_free(newval.server_id);
       continue;
     }
+
+    if (*filename == '=')
+      g_string_sprintf(dummy, "=%s/=flags",
+		       newval.server_id);
+    else
+      g_string_sprintf(dummy, "%s/flags",
+		       newval.server_id);
+    typename = gnome_config_get_string(dummy->str);
+    newval.flags = goad_server_flagstring_to_flags(typename);
+    g_free(typename);
 
     if (*filename == '=')
       g_string_sprintf(dummy, "=%s/=repo_id",
@@ -232,7 +314,8 @@ goad_server_list_free (GoadServer *server_list)
 CORBA_Object
 goad_server_activate_with_id(GoadServer *server_list,
 			     const char *server_id,
-			     GoadActivationFlags flags)
+			     GoadActivationFlags flags,
+			     const char **params)
 {
   GoadServer *slist;
   CORBA_Object retval = CORBA_OBJECT_NIL;
@@ -256,7 +339,7 @@ goad_server_activate_with_id(GoadServer *server_list,
   }
 
   if(slist[i].repo_id)
-    retval = goad_server_activate(&slist[i], flags);
+    retval = goad_server_activate(&slist[i], flags, params);
 
   if(!server_list)
     goad_server_list_free(slist);
@@ -286,7 +369,8 @@ goad_server_activate_with_id(GoadServer *server_list,
 CORBA_Object
 goad_server_activate_with_repo_id(GoadServer *server_list,
 				  const char *repo_id,
-				  GoadActivationFlags flags)
+				  GoadActivationFlags flags,
+				  const char **params)
 {
   GoadServer *slist;
   CORBA_Object retval = CORBA_OBJECT_NIL;
@@ -331,10 +415,12 @@ goad_server_activate_with_repo_id(GoadServer *server_list,
 	
       /* entry matched */
       if(passnum == PASS_CHECK_EXISTING) {
-	retval = goad_server_activate(&slist[i], flags | GOAD_ACTIVATE_EXISTING_ONLY);
+	retval = goad_server_activate(&slist[i], flags | GOAD_ACTIVATE_EXISTING_ONLY,
+				      params);
       }
       else {
-	retval = goad_server_activate(&slist[i], flags | GOAD_ACTIVATE_NEW_ONLY);
+	retval = goad_server_activate(&slist[i], flags | GOAD_ACTIVATE_NEW_ONLY,
+				      params);
       }
       if (retval != CORBA_OBJECT_NIL)
 	break;
@@ -369,7 +455,8 @@ goad_server_activate_with_repo_id(GoadServer *server_list,
  */
 CORBA_Object
 goad_server_activate(GoadServer *sinfo,
-		     GoadActivationFlags flags)
+		     GoadActivationFlags flags,
+		     const char **params)
 {
   CORBA_Environment       ev;
   CORBA_Object            name_service;
@@ -380,11 +467,14 @@ goad_server_activate(GoadServer *sinfo,
   CORBA_Object retval = CORBA_OBJECT_NIL;
 
   g_return_val_if_fail(sinfo, CORBA_OBJECT_NIL);
+
   /* make sure they passed in a sane 'flags' */
   g_return_val_if_fail(!((flags & GOAD_ACTIVATE_SHLIB)
 		   && (flags & GOAD_ACTIVATE_REMOTE)), CORBA_OBJECT_NIL);
   g_return_val_if_fail(!((flags & GOAD_ACTIVATE_EXISTING_ONLY)
 		   && (flags & GOAD_ACTIVATE_NEW_ONLY)), CORBA_OBJECT_NIL);
+
+  flags = goad_activation_combine_flags(sinfo, flags);
 
   CORBA_exception_init(&ev);
 
@@ -434,17 +524,19 @@ goad_server_activate(GoadServer *sinfo,
       g_snprintf(cmdline, sizeof(cmdline), "loadshlib -i %s -r %s %s",
 		 sinfo->server_id, sinfo->repo_id[0], sinfo->location_info);
       fake_sinfo.location_info = cmdline;
-      retval = goad_server_activate_exe(&fake_sinfo, flags, &ev);
+      retval = goad_server_activate_exe(&fake_sinfo, flags, params, &ev);
     } else {
-      retval = goad_server_activate_shlib(sinfo, flags, &ev);
+      retval = goad_server_activate_shlib(sinfo, flags, params, &ev);
     }
     break;
   case GOAD_SERVER_EXE:
-    retval = goad_server_activate_exe(sinfo, flags, &ev);
+    retval = goad_server_activate_exe(sinfo, flags, params, &ev);
     break;
   case GOAD_SERVER_RELAY:
     g_warning("Relay interface not yet defined (write an RFC :). Relay objects NYI");
     break;
+  case GOAD_SERVER_FACTORY:
+    retval = goad_server_activate_factory(sinfo, flags, params, &ev, NULL);
   }
  out:
   CORBA_exception_free(&ev);
@@ -469,6 +561,7 @@ goad_server_activate(GoadServer *sinfo,
 static CORBA_Object
 goad_server_activate_shlib(GoadServer *sinfo,
 			   GoadActivationFlags flags,
+			   const char **params,
 			   CORBA_Environment *ev)
 {
   const GnomePlugin *plugin;
@@ -645,6 +738,22 @@ get_cmd(gchar* line)
 }
 
 
+/* Talks to the factory and asks it for info */
+static CORBA_Object
+goad_server_activate_factory(GoadServer *sinfo,
+			     GoadActivationFlags flags,
+			     const char **params,
+			     CORBA_Environment *ev,
+			     GoadServer *slist)
+{
+  CORBA_Object factory_obj;
+
+  factory_obj = goad_server_activate_with_id(slist, sinfo->location_info,
+					     0, NULL);
+
+  return CORBA_OBJECT_NIL;
+}
+
 
 /**** goad_server_activate_exe
       Description: 
@@ -665,6 +774,7 @@ get_cmd(gchar* line)
 CORBA_Object
 goad_server_activate_exe(GoadServer *sinfo,
 			 GoadActivationFlags flags,
+			 const char **params,
 			 CORBA_Environment *ev)
 {
   gint                    iopipes[2];

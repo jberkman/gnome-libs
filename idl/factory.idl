@@ -1,9 +1,0 @@
-/*
- * factory.idl:  Basic object factory interface.
- */
-module GNOME {
-	interface Factory {
-		Object new ();
-		Object new_args (in string argument);
-	};
-};

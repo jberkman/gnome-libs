@@ -96,21 +96,9 @@ const GnomePlugin *gnome_plugin_use (const char *plugin_id);
 typedef enum {
 	GOAD_SERVER_SHLIB = 1,
 	GOAD_SERVER_EXE = 2,
-	GOAD_SERVER_RELAY = 3
+	GOAD_SERVER_RELAY = 3,
+	GOAD_SERVER_FACTORY = 4
 } GoadServerType;
-
-typedef struct {
-	GoadServerType type;
-	char     **repo_id;
-	char     *server_id;
-	char     *description;
-	
-        /*
-	 * Executable/shlib path, relayer IOR, whatever.
-	 * This field may disappear at any time. You have been warned ;-)
-	 */
-	char     *location_info;
-} GoadServer;
 
 typedef enum {
 	/* these two are mutually exclusive */
@@ -123,18 +111,22 @@ typedef enum {
 					       * version.
 					       */
 	GOAD_ACTIVATE_NEW_ONLY = 1 << 3,      /* No lookup in name service. */
-
-	/*
-	  Since name server registration now happens in the server,
-	  this is not necessary and the server doesn't know about it 
-	  either.
-	*/
-#if 0	
-	GOAD_ACTIVATE_NO_NS_REGISTER = 1 << 4 /* DON'T register this new
-					       * server with the name service
-					       */
-#endif
 } GoadActivationFlags;
+
+typedef struct {
+	GoadServerType type;
+        GoadActivationFlags flags; /* only GOAD_ACTIVATE_NEW_ONLY
+				      currently parsed in */
+	char     **repo_id;
+	char     *server_id;
+	char     *description;
+
+        /*
+	 * Executable/shlib path, relayer IOR, whatever.
+	 * This field may disappear at any time. You have been warned ;-)
+	 */
+	char     *location_info;
+} GoadServer;
 
 /*
  * goad_servers_list:
@@ -150,7 +142,8 @@ void              goad_server_list_free             (GoadServer *server_list);
  * since the activation info is already specified in 'sinfo'.
  */
 CORBA_Object      goad_server_activate              (GoadServer *sinfo,
-						     GoadActivationFlags flags);
+						     GoadActivationFlags flags,
+						     const char **params);
 
 /*
  * Picks the first one on the list that meets criteria.
@@ -159,7 +152,8 @@ CORBA_Object      goad_server_activate              (GoadServer *sinfo,
  */
 CORBA_Object      goad_server_activate_with_repo_id (GoadServer *server_list,
 						     const char *repo_id,
-						     GoadActivationFlags flags);
+						     GoadActivationFlags flags,
+						     const char **params);
 
 /*
  * Activates a specific server by its GOAD ID.
@@ -167,6 +161,7 @@ CORBA_Object      goad_server_activate_with_repo_id (GoadServer *server_list,
 CORBA_Object
 goad_server_activate_with_id(GoadServer *server_list,
 			     const char *server_id,
-			     GoadActivationFlags flags);
+			     GoadActivationFlags flags,
+			     const char **params);
 
 #endif

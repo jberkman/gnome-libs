@@ -41,9 +41,9 @@ int main(int argc, char *argv[])
 					 0, &ev);
 
   if(activate_id) {
-    obj = goad_server_activate_with_id(NULL, activate_id, 0);
+    obj = goad_server_activate_with_id(NULL, activate_id, 0, NULL);
   } else if(activate_repo_id) {
-    obj = goad_server_activate_with_repo_id(NULL, activate_repo_id, 0);
+    obj = goad_server_activate_with_repo_id(NULL, activate_repo_id, 0, NULL);
   } else {
     /* setup then main loop */
 
@@ -241,7 +241,7 @@ gb_activate_server(GtkWidget *w, GtkCList *clist)
   serv = gtk_clist_get_row_data(clist, GPOINTER_TO_INT(clist->selection->data));
   if(!serv) return;
 
-  obj = goad_server_activate(serv, 0);
+  obj = goad_server_activate(serv, 0, NULL);
 
   if(!CORBA_Object_is_nil(obj, &ev)) {
     iorstr = CORBA_ORB_object_to_string(orb, obj, &ev);
