@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-libs 1.0.5\n"
-"POT-Creation-Date: 1999-09-17 14:43-0500\n"
+"POT-Creation-Date: 1999-09-18 18:37+0200\n"
 "PO-Revision-Date: 1999-05-09 20:32+02:00\n"
 "Last-Translator: Ivan Vilata i Balaguer <al011097@alumail.uji.es>\n"
 "Language-Team: linux-ca@chanae.alphanet.ch\n"
@@ -10,25 +10,25 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "From: Ivan Vilata i Balaguer <al011097@alumail.uji.es>\n"
 
-#: libgnome/gconfigger.c:32
-msgid "get"
-msgstr "obtenir"
+#: libgnome/gconfigger.c:32 libgnome/gconfigger.c:33
+msgid "CONFIG-PATH"
+msgstr "RUTA-CONFIGURACIÓ"
 
 #: libgnome/gconfigger.c:32
 msgid "Get config entry"
 msgstr "Obtenir entrada de configuració"
 
-#: libgnome/gconfigger.c:32 libgnome/gconfigger.c:33
-msgid "CONFIG-PATH"
-msgstr "RUTA-CONFIGURACIÓ"
-
-#: libgnome/gconfigger.c:33
-msgid "set"
-msgstr "establir"
+#: libgnome/gconfigger.c:32
+msgid "get"
+msgstr "obtenir"
 
 #: libgnome/gconfigger.c:33
 msgid "Set config entry"
 msgstr "Establir entrada de configuració"
+
+#: libgnome/gconfigger.c:33
+msgid "set"
+msgstr "establir"
 
 #: libgnome/gnome-popt.c:90
 #, c-format
@@ -141,23 +141,23 @@ msgstr "_Ajuda"
 msgid "_Windows/"
 msgstr "Fi_nestres/"
 
+#: libgnomeui/gnome-app-helper.c:105
+msgid "Open a file"
+msgstr "Obre un fitxer"
+
 #. Open
 #: libgnomeui/gnome-app-helper.c:105
 msgid "_Open..."
 msgstr "_Obrir..."
 
-#: libgnomeui/gnome-app-helper.c:105
-msgid "Open a file"
-msgstr "Obre un fitxer"
+#: libgnomeui/gnome-app-helper.c:110
+msgid "Save the current file"
+msgstr "Guarda el fitxer actual"
 
 #. Save
 #: libgnomeui/gnome-app-helper.c:110
 msgid "_Save"
 msgstr "_Guardar"
-
-#: libgnomeui/gnome-app-helper.c:110
-msgid "Save the current file"
-msgstr "Guarda el fitxer actual"
 
 #. Save As
 #: libgnomeui/gnome-app-helper.c:115
@@ -177,14 +177,14 @@ msgstr "_Revertir"
 msgid "Revert to a saved version of the file"
 msgstr "Reverteix el fitxer a una versió guardada"
 
+#: libgnomeui/gnome-app-helper.c:127
+msgid "Print the current file"
+msgstr "Imprimeix el fitxer actual"
+
 #. Print
 #: libgnomeui/gnome-app-helper.c:127
 msgid "_Print"
 msgstr "Im_primir"
-
-#: libgnomeui/gnome-app-helper.c:127
-msgid "Print the current file"
-msgstr "Imprimeix el fitxer actual"
 
 #. Print Setup
 #: libgnomeui/gnome-app-helper.c:132
@@ -195,14 +195,14 @@ msgstr "_Configurar impressió..."
 msgid "Setup the page settings for your current printer"
 msgstr "Configurar la pàgina per la vostra impressora actual"
 
+#: libgnomeui/gnome-app-helper.c:138
+msgid "Close the current file"
+msgstr "Tanca el fitxer actual"
+
 #. Close
 #: libgnomeui/gnome-app-helper.c:138
 msgid "_Close"
 msgstr "_Tancar"
-
-#: libgnomeui/gnome-app-helper.c:138
-msgid "Close the current file"
-msgstr "Tanca el fitxer actual"
 
 #. Exit
 #: libgnomeui/gnome-app-helper.c:143
@@ -225,24 +225,24 @@ msgstr "_Tallar"
 msgid "Cut the selection"
 msgstr "Talla la selecció"
 
+#: libgnomeui/gnome-app-helper.c:157
+msgid "Copy the selection"
+msgstr "Còpia la selecció"
+
 #. 10
 #. Copy
 #: libgnomeui/gnome-app-helper.c:157 libgnomeui/gnome-popup-help.c:59
 msgid "_Copy"
 msgstr "_Copiar"
 
-#: libgnomeui/gnome-app-helper.c:157
-msgid "Copy the selection"
-msgstr "Còpia la selecció"
+#: libgnomeui/gnome-app-helper.c:162
+msgid "Paste the clipboard"
+msgstr "Apega el contingut del portapapers"
 
 #. Paste
 #: libgnomeui/gnome-app-helper.c:162 libgnomeui/gnome-popup-help.c:61
 msgid "_Paste"
 msgstr "A_pegar"
-
-#: libgnomeui/gnome-app-helper.c:162
-msgid "Paste the clipboard"
-msgstr "Apega el contingut del portapapers"
 
 #. Clear
 #: libgnomeui/gnome-app-helper.c:167
@@ -253,32 +253,32 @@ msgstr "Es_borrar"
 msgid "Clear the selection"
 msgstr "Esborra la selecció"
 
+#: libgnomeui/gnome-app-helper.c:172
+msgid "Undo the last action"
+msgstr "Desfà l'última acció"
+
 #. Undo
 #: libgnomeui/gnome-app-helper.c:172
 msgid "_Undo"
 msgstr "_Desfer"
 
-#: libgnomeui/gnome-app-helper.c:172
-msgid "Undo the last action"
-msgstr "Desfà l'última acció"
+#: libgnomeui/gnome-app-helper.c:177
+msgid "Redo the undone action"
+msgstr "Refà l'acció desfeta"
 
 #. Redo
 #: libgnomeui/gnome-app-helper.c:177
 msgid "_Redo"
 msgstr "_Refer"
 
-#: libgnomeui/gnome-app-helper.c:177
-msgid "Redo the undone action"
-msgstr "Refà l'acció desfeta"
+#: libgnomeui/gnome-app-helper.c:182
+msgid "Search for a string"
+msgstr "Cerca una cadena"
 
 #. Find
 #: libgnomeui/gnome-app-helper.c:182
 msgid "_Find..."
 msgstr "C_ercar..."
-
-#: libgnomeui/gnome-app-helper.c:182
-msgid "Search for a string"
-msgstr "Cerca una cadena"
 
 #. Find Again
 #: libgnomeui/gnome-app-helper.c:187
@@ -289,14 +289,14 @@ msgstr "Cercar _altra volta"
 msgid "Search again for the same string"
 msgstr "Cerca la mateixa cadena altra volta"
 
+#: libgnomeui/gnome-app-helper.c:193
+msgid "Replace a string"
+msgstr "Substitueix una cadena"
+
 #. Replace
 #: libgnomeui/gnome-app-helper.c:193
 msgid "_Replace..."
 msgstr "_Substituir"
-
-#: libgnomeui/gnome-app-helper.c:193
-msgid "Replace a string"
-msgstr "Substitueix una cadena"
 
 #. Properties
 #: libgnomeui/gnome-app-helper.c:198
@@ -636,21 +636,21 @@ msgstr "="
 msgid "INV"
 msgstr "INV"
 
-#: libgnomeui/gnome-client.c:828
-msgid "Specify session management ID"
-msgstr "Especifiqueu l'ID de la gestió de sessions"
-
 #: libgnomeui/gnome-client.c:828 libgnorba/goad-browser.c:27
 msgid "ID"
 msgstr "ID"
 
-#: libgnomeui/gnome-client.c:830
-msgid "Specify prefix of saved configuration"
-msgstr "Especifiqueu el prefix de la configuració guardada"
+#: libgnomeui/gnome-client.c:828
+msgid "Specify session management ID"
+msgstr "Especifiqueu l'ID de la gestió de sessions"
 
 #: libgnomeui/gnome-client.c:830
 msgid "PREFIX"
 msgstr "PREFIX"
+
+#: libgnomeui/gnome-client.c:830
+msgid "Specify prefix of saved configuration"
+msgstr "Especifiqueu el prefix de la configuració guardada"
 
 #: libgnomeui/gnome-client.c:832
 msgid "Disable connection to session manager"
@@ -781,26 +781,26 @@ msgstr "Vista prèvia"
 msgid "Loading Icons..."
 msgstr "Carregant icones..."
 
-#: libgnomeui/gnome-init.c:157
-msgid "Gdk debugging flags to set"
-msgstr "Marques de depuració de GDK a activar"
-
 #: libgnomeui/gnome-init.c:157 libgnomeui/gnome-init.c:159
 #: libgnomeui/gnome-init.c:179 libgnomeui/gnome-init.c:181
 msgid "FLAGS"
 msgstr "MARQUES"
+
+#: libgnomeui/gnome-init.c:157
+msgid "Gdk debugging flags to set"
+msgstr "Marques de depuració de GDK a activar"
 
 #: libgnomeui/gnome-init.c:159
 msgid "Gdk debugging flags to unset"
 msgstr "Marques de depuració de GDK a desactivar"
 
 #: libgnomeui/gnome-init.c:161
-msgid "X display to use"
-msgstr "Pantalla X a usar"
-
-#: libgnomeui/gnome-init.c:161
 msgid "DISPLAY"
 msgstr "PANTALLA"
+
+#: libgnomeui/gnome-init.c:161
+msgid "X display to use"
+msgstr "Pantalla X a usar"
 
 #: libgnomeui/gnome-init.c:163
 msgid "Make X calls synchronous"
@@ -811,20 +811,20 @@ msgid "Don't use X shared memory extension"
 msgstr "No usar extensió X de memòria compartida"
 
 #: libgnomeui/gnome-init.c:167
-msgid "Program name as used by the window manager"
-msgstr "Nom del programa com l'usa el gestor de finestres"
-
-#: libgnomeui/gnome-init.c:167
 msgid "NAME"
 msgstr "NOM"
 
-#: libgnomeui/gnome-init.c:169
-msgid "Program class as used by the window manager"
-msgstr "Classe del programa com l'usa el gestor de finestres"
+#: libgnomeui/gnome-init.c:167
+msgid "Program name as used by the window manager"
+msgstr "Nom del programa com l'usa el gestor de finestres"
 
 #: libgnomeui/gnome-init.c:169
 msgid "CLASS"
 msgstr "CLASSE"
+
+#: libgnomeui/gnome-init.c:169
+msgid "Program class as used by the window manager"
+msgstr "Classe del programa com l'usa el gestor de finestres"
 
 #: libgnomeui/gnome-init.c:171
 msgid "HOST"
@@ -1266,12 +1266,12 @@ msgid "Edit"
 msgstr "Editar"
 
 #: libgnomeui/winhints_demo.c:46
-msgid "wmhints-test"
-msgstr "test wmhints"
-
-#: libgnomeui/winhints_demo.c:46
 msgid "winhints-test"
 msgstr "test winhints"
+
+#: libgnomeui/winhints_demo.c:46
+msgid "wmhints-test"
+msgstr "test wmhints"
 
 #: libgnomeui/winhints_demo.c:71
 msgid "Layer:"
@@ -1406,12 +1406,12 @@ msgid "GOAD ID of the server to activate"
 msgstr "ID GOAD del servidor a activar"
 
 #: libgnorba/goad-browser.c:28
-msgid "Repository ID of the server to activate"
-msgstr "ID de repositori del servidor a activar"
-
-#: libgnorba/goad-browser.c:28
 msgid "REPO-ID"
 msgstr "REPO-ID"
+
+#: libgnorba/goad-browser.c:28
+msgid "Repository ID of the server to activate"
+msgstr "ID de repositori del servidor a activar"
 
 #: libgnorba/goad-browser.c:171
 msgid ""
@@ -1428,20 +1428,20 @@ msgid "(Internal use only) GOAD server ID to activate"
 msgstr "(Només per ús intern) ID del servidor GOAD a activar"
 
 #: libgnorba/loadshlib.c:11
-msgid "ID under which GOAD knows this server"
-msgstr "ID pel qual GOAD coneix aquest servidor"
-
-#: libgnorba/loadshlib.c:11
 msgid "GOAD_ID"
 msgstr "GOAD_ID"
 
-#: libgnorba/loadshlib.c:12
-msgid "Repository ID under which GOAD knows this server"
-msgstr "ID de repositori pel qual GOAD coneix aquest servidor"
+#: libgnorba/loadshlib.c:11
+msgid "ID under which GOAD knows this server"
+msgstr "ID pel qual GOAD coneix aquest servidor"
 
 #: libgnorba/loadshlib.c:12
 msgid "REPO_ID"
 msgstr "REPO_ID"
+
+#: libgnorba/loadshlib.c:12
+msgid "Repository ID under which GOAD knows this server"
+msgstr "ID de repositori pel qual GOAD coneix aquest servidor"
 
 #: libgnorba/orbitgtk.c:138
 #, c-format
@@ -1587,40 +1587,88 @@ msgstr "L'usuari trià No/Cancel·lar amb les dades:\n"
 msgid "Weird number in reply callback"
 msgstr "Número estrany a l'acció de resposta"
 
-#~ msgid "Guru-in-a-dialog test"
-#~ msgstr "Test Gurú-a-un-diàleg"
+#~ msgid "Hello GNOME\n"
+#~ msgstr "Hola GNOME\n"
+
+#~ msgid "The Hello World Gnomified"
+#~ msgstr "L'«Hola món» gnomificat"
+
+#~ msgid "(C) 1998 the Free Software Foundation"
+#~ msgstr "(C) 1998 Free Software Foundation"
 
 #~ msgid ""
-#~ "Application \"%s\" has a bug.\n"
-#~ "SIGSEGV received at PC %#lx in PID %d.\n"
-#~ "\n"
-#~ "\n"
-#~ "Do you want to exit this program?"
+#~ "GNOME is a civilized software system so we've a \"hello world\" program"
 #~ msgstr ""
-#~ "L'aplicació «%s» té un error de programació.\n"
-#~ "Error de segmentació al PC %#lx del PID %d.\n"
-#~ "\n"
-#~ "\n"
-#~ "Voleu abandonar aquest programa?"
+#~ "GNOME és un sistema civilitzat, i per això tenim un programa «Hola món»"
 
-#~ msgid ""
-#~ "No, and ignore\n"
-#~ "future SIGSEGV's"
-#~ msgstr ""
-#~ "No, i ignorar\n"
-#~ "SIGSEGVs futurs."
+#~ msgid "About GnomeHello..."
+#~ msgstr "A propòsit de «Hola GNOME»..."
 
-#~ msgid "Ask next time"
-#~ msgstr "Preguntar a la pròxima volta"
+#~ msgid "Exit"
+#~ msgstr "Eixir"
 
-#~ msgid "Really log out?"
-#~ msgstr "Realment voleu eixir?"
+#~ msgid "Hello World Gnomified"
+#~ msgstr "L'«Hola món» gnomificat"
 
-#~ msgid "Options error\n"
-#~ msgstr "Error a les opcions\n"
+#~ msgid "Hello GNOME"
+#~ msgstr "Hola GNOME"
 
-#~ msgid "Gnome Hello %s.\n"
-#~ msgstr "Hola GNOME %s.\n"
+#~ msgid "Exit GNOME hello"
+#~ msgstr "Eixir de «Hola GNOME»"
+
+#~ msgid "About..."
+#~ msgstr "A propòsit de..."
+
+#~ msgid "Info about GNOME hello"
+#~ msgstr "Informació sobre «Hola GNOME»"
+
+#~ msgid "Add View"
+#~ msgstr "Afegir vista"
+
+#~ msgid "Remove View"
+#~ msgstr "Eliminar vista"
+
+#~ msgid "Increase Counter"
+#~ msgstr "Incrementar comptador"
+
+#~ msgid "Child"
+#~ msgstr "Fill"
+
+#~ msgid "Add Child"
+#~ msgstr "Afegir fill"
+
+#~ msgid "Remove Child"
+#~ msgstr "Eliminar fill"
+
+#~ msgid "Children"
+#~ msgstr "Fills"
+
+#~ msgid "Notebook"
+#~ msgstr "Bloc de notes"
+
+#~ msgid "Toplevel"
+#~ msgstr "Primer pla"
+
+#~ msgid "Modal"
+#~ msgstr "Modal"
+
+#~ msgid "MDI Mode"
+#~ msgstr "Mode MDI"
+
+#~ msgid "Children/"
+#~ msgstr "Fills/"
+
+#~ msgid "File/Exit"
+#~ msgstr "Fitxer/Eixir"
+
+#~ msgid "<control>E"
+#~ msgstr "<control>E"
+
+#~ msgid "Help/About..."
+#~ msgstr "Ajuda/A propòsit de..."
+
+#~ msgid "<control>A"
+#~ msgstr "<control>A"
 
 #~ msgid ""
 #~ "%s: A gnomified 'Hello World' program\n"
@@ -1639,85 +1687,37 @@ msgstr "Número estrany a l'acció de resposta"
 #~ "        --help     mostra aquesta ajuda i ix\n"
 #~ "        --version  mostra informació sobre la versió i ix\n"
 
-#~ msgid "<control>A"
-#~ msgstr "<control>A"
+#~ msgid "Gnome Hello %s.\n"
+#~ msgstr "Hola GNOME %s.\n"
 
-#~ msgid "Help/About..."
-#~ msgstr "Ajuda/A propòsit de..."
+#~ msgid "Options error\n"
+#~ msgstr "Error a les opcions\n"
 
-#~ msgid "<control>E"
-#~ msgstr "<control>E"
+#~ msgid "Really log out?"
+#~ msgstr "Realment voleu eixir?"
 
-#~ msgid "File/Exit"
-#~ msgstr "Fitxer/Eixir"
-
-#~ msgid "Children/"
-#~ msgstr "Fills/"
-
-#~ msgid "MDI Mode"
-#~ msgstr "Mode MDI"
-
-#~ msgid "Modal"
-#~ msgstr "Modal"
-
-#~ msgid "Toplevel"
-#~ msgstr "Primer pla"
-
-#~ msgid "Notebook"
-#~ msgstr "Bloc de notes"
-
-#~ msgid "Children"
-#~ msgstr "Fills"
-
-#~ msgid "Remove Child"
-#~ msgstr "Eliminar fill"
-
-#~ msgid "Add Child"
-#~ msgstr "Afegir fill"
-
-#~ msgid "Child"
-#~ msgstr "Fill"
-
-#~ msgid "Increase Counter"
-#~ msgstr "Incrementar comptador"
-
-#~ msgid "Remove View"
-#~ msgstr "Eliminar vista"
-
-#~ msgid "Add View"
-#~ msgstr "Afegir vista"
-
-#~ msgid "Info about GNOME hello"
-#~ msgstr "Informació sobre «Hola GNOME»"
-
-#~ msgid "About..."
-#~ msgstr "A propòsit de..."
-
-#~ msgid "Exit GNOME hello"
-#~ msgstr "Eixir de «Hola GNOME»"
-
-#~ msgid "Hello GNOME"
-#~ msgstr "Hola GNOME"
-
-#~ msgid "Hello World Gnomified"
-#~ msgstr "L'«Hola món» gnomificat"
-
-#~ msgid "Exit"
-#~ msgstr "Eixir"
-
-#~ msgid "About GnomeHello..."
-#~ msgstr "A propòsit de «Hola GNOME»..."
+#~ msgid "Ask next time"
+#~ msgstr "Preguntar a la pròxima volta"
 
 #~ msgid ""
-#~ "GNOME is a civilized software system so we've a \"hello world\" program"
+#~ "No, and ignore\n"
+#~ "future SIGSEGV's"
 #~ msgstr ""
-#~ "GNOME és un sistema civilitzat, i per això tenim un programa «Hola món»"
+#~ "No, i ignorar\n"
+#~ "SIGSEGVs futurs."
 
-#~ msgid "(C) 1998 the Free Software Foundation"
-#~ msgstr "(C) 1998 Free Software Foundation"
+#~ msgid ""
+#~ "Application \"%s\" has a bug.\n"
+#~ "SIGSEGV received at PC %#lx in PID %d.\n"
+#~ "\n"
+#~ "\n"
+#~ "Do you want to exit this program?"
+#~ msgstr ""
+#~ "L'aplicació «%s» té un error de programació.\n"
+#~ "Error de segmentació al PC %#lx del PID %d.\n"
+#~ "\n"
+#~ "\n"
+#~ "Voleu abandonar aquest programa?"
 
-#~ msgid "The Hello World Gnomified"
-#~ msgstr "L'«Hola món» gnomificat"
-
-#~ msgid "Hello GNOME\n"
-#~ msgstr "Hola GNOME\n"
+#~ msgid "Guru-in-a-dialog test"
+#~ msgstr "Test Gurú-a-un-diàleg"
