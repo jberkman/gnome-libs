@@ -59,7 +59,7 @@ bin_PROGRAMS = htmltest
 
 htmltest_SOURCES = test.c
 htmltest_LDADD   = $(top_builddir)/gtk-xmhtml/libgtkxmhtml.la \
-	$(GTK_LIBS) $(X_LIBS) $(x_libs) 
+	$(GTK_LIBS) $(X_LIBS) $(x_libs) $(Z_LIBS) $(JPEG_LIBS) $(PNG_LIBS) $(XPM_LIBS)
 
 ## These are included by XmHTML.c:
 

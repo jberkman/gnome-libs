@@ -77,6 +77,7 @@ INTLDEPS =
 INTLLIBS = 
 INTLOBJS = 
 INTLSUB = intl
+JPEG_LIBS = -ljpeg
 LD = /usr/bin/ld
 LDFLAGS = 
 LEX = flex
@@ -88,6 +89,7 @@ MSGFMT = /usr/bin/msgfmt
 OBJC = gcc
 OSOCKADDR_CFLAGS = 
 PACKAGE = gnome
+PNG_LIBS = -lpng
 POFILES = 
 POSUB = po
 PTHREAD_LIB = -lpthread
@@ -97,8 +99,10 @@ READLINE_LIB =
 TERMCAP_LIB = 
 VERSION = 0.10
 XF86MISC_LIBS = -lXxf86misc
+XPM_LIBS = -lXpm
 YACC = bison -y
-x_libs = -lX11  -lXext -lSM -lICE -lXpm
+Z_LIBS = -lz
+x_libs = -lX11  -lXext -lSM -lICE
 
 libgtkxmhtmlincludedir = $(includedir)/gtk-xmhtml
 
@@ -158,7 +162,7 @@ bin_PROGRAMS = htmltest
 
 htmltest_SOURCES = test.c
 htmltest_LDADD   = $(top_builddir)/gtk-xmhtml/libgtkxmhtml.la \
-	$(GTK_LIBS) $(X_LIBS) $(x_libs) 
+	$(GTK_LIBS) $(X_LIBS) $(x_libs) $(Z_LIBS) $(JPEG_LIBS) $(PNG_LIBS) $(XPM_LIBS)
 
 EXTRA_DIST = gtk-xmhtml.c XmHTML-motif.c
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
@@ -168,7 +172,7 @@ LTLIBRARIES =  $(lib_LTLIBRARIES)
 
 
 DEFS = -DHAVE_CONFIG_H -I. -I$(srcdir) -I..
-LIBS = -lpng -ljpeg -lz -lm 
+LIBS = 
 X_CFLAGS =  -I/usr/X11R6/include
 X_LIBS =  -L/usr/X11R6/lib
 X_EXTRA_LIBS = 
