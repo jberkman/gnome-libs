@@ -1,3 +1,11 @@
+1998-02-17  Federico Mena Quintero  <federico@nuclecu.unam.mx>
+
+	* gnome-hello-2-i18n.c:
+	* gnome-hello-3-parse-args.c: 
+	* gnome-hello-4-SM.c: Added call to bindtextdomain() right before
+	call to textdomain().  NOTE NOTE NOTE:  This has to be done in all
+	applications to set the correct translations directory.
+
 1998-02-14  Carsten Schaar  <nhadcasc@fs-maphy.uni-hannover.de>
 
 	* gnome-hello-4-SM.c (parse_args): Changed to use new SM support.

@@ -79,6 +79,7 @@ main(int argc, char *argv[])
   parse_args (argc, argv);
 
   /* Initialize the i18n stuff */
+  bindtextdomain (PACKAGE, GNOMELOCALEDIR);
   textdomain (PACKAGE);
 
   /* prepare_app() makes all the gtk calls necessary to set up a

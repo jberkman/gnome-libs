@@ -41,6 +41,7 @@ main(int argc, char *argv[])
   gnome_init (&argc, &argv);
 
   /* Initialize the i18n stuff */
+  bindtextdomain (PACKAGE, GNOMELOCALEDIR);
   textdomain (PACKAGE);
 
   /* prepare_app() makes all the gtk calls necessary to set up a
