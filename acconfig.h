@@ -56,3 +56,6 @@
 #undef HAVE_DLFCN_H
 
 #undef WITH_SMBFS
+
+#undef KDE_ICONDIR
+#undef KDE_MINI_ICONDIR

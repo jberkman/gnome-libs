@@ -1,3 +1,10 @@
+1999-09-01  Jacob Berkman  <jberkman@andrew.cmu.edu>
+
+	* configure.in: added --with-kde-datadir flag for specifying
+	where kde dentry icons can be found (stolen from gnome-core)
+
+	* acconfig.h: added KDE_ICONDIR and KDE_MINI_ICONDIR
+
 1999-09-01 Elliot Lee <sopwith@redhat.com>
 	* libgnome/gnome-exec.c: Open stdin to be /dev/null if close_fd's
 	  is specified - we don't want programs reading from our tty and

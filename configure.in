@@ -361,6 +361,20 @@ AC_SUBST(GNOME_LIBS_DIR)
 AM_CONDITIONAL(INSIDE_GNOME_DOCU, false)
 
 dnl
+dnl Place to look for KDE icons
+dnl
+AC_ARG_WITH(kde-datadir, [  --with-kde-datadir=DIR         Location of KDE data])
+
+if test "x$with_kde_datadir" = x ; then
+  kde_datadir=/usr/share
+else
+  kde_datadir=$with_kde_datadir
+fi
+
+AC_DEFINE_UNQUOTED(KDE_ICONDIR, "$kde_datadir/icons")
+AC_DEFINE_UNQUOTED(KDE_MINI_ICONDIR, "$kde_datadir/icons/mini")
+
+dnl
 dnl Substitutions
 dnl
 
