@@ -42,7 +42,7 @@ typedef struct {
 } ServerCmd;
 
 
-extern CORBA_ORB gnome_orbit_orb; /* In orbitgtk.c */
+extern CORBA_ORB _gnorba_gnome_orbit_orb; /* In orbitgtk.c */
 
 static GSList *our_active_servers = NULL;
 static const char *goad_activation_id = NULL;
@@ -759,7 +759,7 @@ normal_loading:
   }
   g_return_val_if_fail(plugin->plugin_object_list[i].repo_id, CORBA_OBJECT_NIL);
 
-  poa = (PortableServer_POA)CORBA_ORB_resolve_initial_references(gnome_orbit_orb,
+  poa = (PortableServer_POA)CORBA_ORB_resolve_initial_references(_gnorba_gnome_orbit_orb,
 								 "RootPOA", ev);
 
   retval = plugin->plugin_object_list[i].activate(poa,
@@ -818,7 +818,7 @@ goad_server_unregister_atexit(ActiveServerInfo *ai, CORBA_Environment *ev)
 
   name_service = gnome_name_service_get();
 
-  poa = (PortableServer_POA)CORBA_ORB_resolve_initial_references(gnome_orbit_orb,
+  poa = (PortableServer_POA)CORBA_ORB_resolve_initial_references(_gnorba_gnome_orbit_orb,
 								 "RootPOA", ev);
   oid = PortableServer_POA_servant_to_id(poa, ai->impl_ptr, ev);
 
@@ -965,7 +965,7 @@ goad_server_activate_exe(GoadServer *sinfo,
     }
     if (iorbuf[strlen(iorbuf)-1] == '\n')
       iorbuf[strlen(iorbuf)-1] = '\0';
-    retval = CORBA_ORB_string_to_object(gnome_orbit_orb, iorbuf, ev);
+    retval = CORBA_ORB_string_to_object(_gnorba_gnome_orbit_orb, iorbuf, ev);
 
   no_wait:
     fclose(iorfh);

@@ -16,7 +16,7 @@
 #include <gtk/gtk.h>
 #include "gnorba.h"
 
-extern CORBA_ORB gnome_orbit_orb;
+extern CORBA_ORB _gnorba_gnome_orbit_orb;
 
 /*
  * get_name_server_ior_from_root_window:
@@ -162,7 +162,7 @@ name_server_by_forking (CORBA_Environment *ev)
 		if (iorbuf[strlen(iorbuf)-1] == '\n')
 			iorbuf[strlen(iorbuf)-1] = '\0';
 		
-		name_service = CORBA_ORB_string_to_object((CORBA_ORB)gnome_orbit_orb, iorbuf, ev);
+		name_service = CORBA_ORB_string_to_object((CORBA_ORB)_gnorba_gnome_orbit_orb, iorbuf, ev);
 	} else if (fork ()) {
 		/* de-zombifier process, just exit */
 		_exit(0);
@@ -215,7 +215,7 @@ gnome_name_service_get(void)
 	char *ior;
 	int attempts;
 	
-	g_return_val_if_fail(gnome_orbit_orb, CORBA_OBJECT_NIL);
+	g_return_val_if_fail(_gnorba_gnome_orbit_orb, CORBA_OBJECT_NIL);
 	
 	CORBA_exception_init(&ev);
 
@@ -229,7 +229,7 @@ gnome_name_service_get(void)
 	for (attempts = 0; attempts < 3; attempts++){
 		ior = get_name_server_ior_from_root_window ();
 		if (ior) {
-			name_service = CORBA_ORB_string_to_object(gnome_orbit_orb, ior, &ev);
+			name_service = CORBA_ORB_string_to_object(_gnorba_gnome_orbit_orb, ior, &ev);
 			g_free (ior);
 
 			if (!CORBA_Object_is_nil (name_service, &ev)){

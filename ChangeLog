@@ -1,3 +1,11 @@
+1999-02-01  Elliot Lee  <sopwith@bogus.cuc.ml.org>
+
+	* libgnorba/{gnome-name-service.c,goad.c,orbitgnome.c,orbitgtk.c}
+	  - rename variables to make sure nobody is using internal global
+	  vars.
+	  - Set the cookie on the $DISPLAY, and coordinate that with
+	  /tmp/orbit-username/cookie file.
+
 1999-02-01  Federico Mena Quintero  <federico@nuclecu.unam.mx>
 
 	* configure.in: Added devel-docs/{gnome,gnomeui}/Makefile to the

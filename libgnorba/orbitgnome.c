@@ -13,6 +13,7 @@
 #include "gnorba.h"
 
 extern void goad_register_arguments(void);
+extern void _gnome_gnorba_cookie_setup(Display *disp, Window rootwin);
 
 /**
  * gnome_CORBA_init:
@@ -43,7 +44,11 @@ gnome_CORBA_init (const char *app_id,
 		goad_register_arguments();
 
 	gnome_init(app_id, app_version, *argc, argv);
-	retval = gnorba_CORBA_init(argc, argv, gnorba_flags, ev);
+	retval = gnorba_CORBA_init(argc, argv,
+				   gnorba_flags&GNORBA_INIT_DISABLE_COOKIES,
+				   ev);
+
+	_gnome_gnorba_cookie_setup(GDK_DISPLAY(), GDK_ROOT_WINDOW());
 
 	return retval;
 }
@@ -90,7 +95,12 @@ gnome_CORBA_init_with_popt_table (const char *app_id,
 
 	gnome_init_with_popt_table(app_id, app_version, *argc, argv, options,
 				   popt_flags, return_ctx);
-	retval = gnorba_CORBA_init(argc, argv, gnorba_flags, ev);
+
+	retval = gnorba_CORBA_init(argc, argv,
+				   gnorba_flags&GNORBA_INIT_DISABLE_COOKIES,
+				   ev);
+
+	_gnome_gnorba_cookie_setup(GDK_DISPLAY(), GDK_ROOT_WINDOW());
 
 	return retval;
 }

@@ -24,6 +24,11 @@
  *
  * Code and ideas are based on Owen Taylor's and Federico Mena's proxy window
  * for the Midnight Commander.
+ *
+ * XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+ * Warning: internal ORBit & gnome API's get used here. You probably
+ * don't want to use this program as an example of the API's that normal
+ * programs should use. 
  */
 #include <config.h>
 
@@ -236,6 +241,8 @@ setup_name_server (CORBA_Object name_service, CORBA_Environment *ev)
 	return TRUE;
 }
 
+extern void _gnome_gnorba_cookie_setup(Display *disp, Window rootwin);
+
 int
 main (int argc, char *argv [])
 {
@@ -271,6 +278,7 @@ main (int argc, char *argv [])
 
 	CORBA_exception_init (&ev);
 	display = XOpenDisplay(getenv("DISPLAY"));
+	g_return_val_if_fail(display, 1);
 	XSetErrorHandler(x_error_handler);
 
 	channel = g_io_channel_unix_new(ConnectionNumber(display));
@@ -282,7 +290,8 @@ main (int argc, char *argv [])
 
 	ml = g_main_new(FALSE);
 
-	orb = gnorba_CORBA_init (&argc, argv, 0, &ev);
+	orb = gnorba_CORBA_init (&argc, argv, GNORBA_INIT_DISABLE_COOKIES, &ev);
+	_gnome_gnorba_cookie_setup(display, DefaultRootWindow(display));
 	root_poa = (PortableServer_POA)
 		CORBA_ORB_resolve_initial_references (orb, "RootPOA", &ev);
 

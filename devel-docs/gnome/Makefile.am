@@ -9,6 +9,7 @@ DOC_MAIN_SGML_FILE=gnome-docs.sgml
 # The directory containing the source code (if it contains documentation).
 DOC_SOURCE_DIR=$(GNOME_LIBS_DIR)/libgnome
 
+HTML_DIR=$(datadir)/gnome/html
 
 TARGET_DIR=$(HTML_DIR)/$(DOC_MODULE)
 
@@ -31,7 +32,7 @@ clean-local:
 maintainer-clean-local: clean
 	rm -rf sgml html $(DOC_MODULE)-decl-list.txt $(DOC_MODULE)-decl.txt 
 
-install-data-local:
+install-data-local: html
 	install -d -m 0755 $(TARGET_DIR)
 	install -m 0644 html/*.html $(TARGET_DIR)
 	install -m 0644 html/index.sgml $(TARGET_DIR)

@@ -4,10 +4,10 @@ htmldir = $(prefix)/html
 html_DATA = gnome-dev-info.html
 
 gnome-dev-info.html: gnome-dev-info/book1.html
-	-cp gnome-dev-info/book1.html gnome-dev-info.html
+	-cp $(srcdir)/gnome-dev-info/book1.html gnome-dev-info.html
 
 gnome-dev-info/book1.html: gnome-dev-info.sgml libgnomeui.sgml libgnome.sgml
-	-db2html gnome-dev-info.sgml > /dev/null
+	-(cd $(srcdir); db2html gnome-dev-info.sgml) > /dev/null
 
 libgnomeui.sgml:
 	if $(SHELL) -c 'gdoc -V > /dev/null 2>&1 < /dev/null'; then \

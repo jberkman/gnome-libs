@@ -12,6 +12,7 @@ DOC_SOURCE_DIR=$(GNOME_LIBS_DIR)/libgnomeui
 CFLAGS=`gnome-config --cflags gnomeui`
 LDFLAGS=`gnome-config --libs gnomeui`
 
+HTML_DIR=$(datadir)/gnome/html
 
 TARGET_DIR=$(HTML_DIR)/$(DOC_MODULE)
 

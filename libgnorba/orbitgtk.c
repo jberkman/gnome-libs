@@ -14,15 +14,15 @@
 #include <fcntl.h>
 #include <gdk/gdkx.h>
 #include <gtk/gtk.h>
+#include <X11/Xatom.h>
 #include "gnorba.h"
 
-CORBA_ORB gnome_orbit_orb;
-CORBA_Principal request_cookie;
+CORBA_ORB _gnorba_gnome_orbit_orb;
+CORBA_Principal _gnorba_request_cookie;
 
+char *_gnorba_get_cookie_reliably(const char *setme);
+void _gnome_gnorba_cookie_setup(Display *disp, Window rootwin);
 extern void goad_register_arguments(void);
-
-CORBA_ORB gnome_orbit_orb;
-CORBA_Principal request_cookie;
 
 #ifndef ORBIT_USES_GLIB_MAIN_LOOP
 
@@ -69,17 +69,17 @@ orb_remove_connection(GIOPConnection *cnx)
 
 #endif /* !ORBIT_USES_GLIB_MAIN_LOOP */
 
-static CORBA_boolean
+static ORBit_MessageValidationResult
 gnome_ORBit_request_validate(CORBA_unsigned_long request_id,
 			     CORBA_Principal *principal,
 			     CORBA_char *operation)
 {
-	if (principal->_length == request_cookie._length
+	if (principal->_length == _gnorba_request_cookie._length
 	    && !(principal->_buffer[principal->_length - 1])
-	    && !strcmp(principal->_buffer, request_cookie._buffer))
-		return CORBA_TRUE;
+	    && !strcmp(principal->_buffer, _gnorba_request_cookie._buffer))
+		return ORBIT_MESSAGE_ALLOW_ALL;
 	else
-		return CORBA_FALSE;
+		return ORBIT_MESSAGE_BAD;
 }
 
 /*
@@ -113,73 +113,148 @@ release_lock (int fd)
  * We assume that if we could get this far, then /tmp/orbit-$username is
  * secured (because of CORBA_ORB_init).
  */
-static char *
-get_cookie_reliably (void)
+char *
+_gnorba_get_cookie_reliably (const char *setme)
 {
-	char random_string [64];
-	struct passwd *pwent;
-	char *name;
-	int fd;
+  struct passwd *pwent;
+  char buf[64];
+  char *random_string = NULL;
+  char *name;
+  int fd = -1;
 
-	pwent = getpwuid(getuid());
-	g_assert(pwent);
-	
-	name = g_strconcat ("/tmp/orbit-", pwent->pw_name, "/cookie", NULL);
+  pwent = getpwuid(getuid());
+  g_assert(pwent);
 
-	/*
-	 * Create the file exclusively with permissions rw for the
-	 * user.  if this fails, it means the file already existed
-	 */
-	fd = open (name, O_CREAT|O_EXCL|O_WRONLY, S_IRUSR | S_IWUSR );
-	if (fd >= 0){
-		unsigned int i;
-		int v;
+  name = g_strconcat ("/tmp/orbit-", pwent->pw_name, "/cookie", NULL);
 
-		get_exclusive_lock (fd);
-		srandom (time (NULL));
-		for (i = 0; i < sizeof (random_string)-2; i++)
-			random_string [i] = (random () % (126-33)) + 33;
+  if(setme) {
+
+    creat(name, S_IRUSR|S_IWUSR); /* let it fail, who cares */
+
+    /* Just write it into the file for reference purposes */
+    fd = open (name, O_EXCL|O_WRONLY, S_IRUSR | S_IWUSR);
+
+    if (fd < 0)
+      goto out;
+
+    get_exclusive_lock(fd);
+    write(fd, setme, strlen(setme));
+    release_lock(fd);
+    random_string = g_strdup(setme);
+
+  } else {
+
+    buf [sizeof(buf)-1] = '\0';
+
+    /*
+     * Create the file exclusively with permissions rw for the
+     * user.  if this fails, it means the file already existed
+     */
+    fd = open (name, O_CREAT|O_EXCL|O_WRONLY, S_IRUSR | S_IWUSR);
+
+    if(fd >= 0) {
+      unsigned int i;
+      int v;
+
+      get_exclusive_lock (fd);
+      srandom (time (NULL));
+      for (i = 0; i < sizeof (buf)-1; i++)
+	buf [i] = (random () % (126-33)) + 33;
+
+      if(write(fd, buf, sizeof(buf)-1) < (sizeof(buf)-1))
+	goto out;
+
+      release_lock(fd);
+    } else if(fd < 0) {
+      int i;
+      fd = open(name, O_RDONLY);
+      i = read(fd, buf, sizeof(buf)-1);
+      if(i < 0)
+	goto out;
+      buf[i] = '\0';
+    } else /* error */
+      goto out;
+
+    random_string = g_strdup(buf);
+  }
+
+ out:
+  if(fd >= 0) close(fd);
+  g_free(name);
+
+  return random_string;
+}
+
+/* placate gcc */
+const char* _gnorba_cookie_setup(const char *setme);
+
+const char *
+_gnorba_cookie_setup(const char *setme)
+{
+  _gnorba_request_cookie._buffer = _gnorba_get_cookie_reliably (setme);
 		
-		random_string [sizeof(random_string)-1] = 0;
-
-		while (1){
-			v = write (fd, random_string, sizeof (random_string)-1);
-			if (v == sizeof (random_string)-1)
-				break;
-			if (v == 0)
-				g_error (_("Can not write to the cookie file"));
-			if (v == -1 && errno != EINTR){
-				perror (_("Unknown error while writing cookie file"));
-				exit (1);
-			}
-		}
-		close (fd);
-		release_lock (fd);
-	} else {
-		int v;
+  g_assert(_gnorba_request_cookie._buffer && *_gnorba_request_cookie._buffer);
 		
-		fd = open (name, O_RDONLY);
-		if (fd == -1)
-			g_error (_("Could not open the cookie file"));
-		get_exclusive_lock (fd);
+  _gnorba_request_cookie._length = strlen(_gnorba_request_cookie._buffer) + 1;
 
-		memset (random_string, 0, sizeof (random_string));
+  ORBit_set_request_validation_handler(&gnome_ORBit_request_validate);
+  ORBit_set_default_principal(&_gnorba_request_cookie);
 
-		while (1){
-			v = read (fd, random_string, sizeof (random_string)-1);
-			if (v == 0)
-				g_error (_("Can not read the cookie file\n"));
-			if (v == -1 && errno != EINTR){
-				perror (_("While reading the cookie file\n"));
-				exit (1);
-			}
-			break;
-		}
-		release_lock (fd);
-		close (fd);
-	}
-	g_free (name);
-	return g_strdup (random_string);
+  return _gnorba_request_cookie._buffer;
+}
+
+/* GUI version of the above function.
+ * description:
+ * Grabs the X server to guarantee mutual exclusion
+ *
+ * Tries to retrieve the cookie from the display.
+ *
+ * If the cookie is already there, we ungrab as we won't be needing to touch
+ * the display any more WRT cookies.
+ *
+ * Do the cookie getting/setting stuff with the local file.
+ *
+ * If a cookie wasn't already set on $DISPLAY, then set it from the value
+ * that is now in the local file and ungrab the server.
+ * 
+ * note: Please be extremely careful when playing around with the grab
+ * behaviour.  It is not simplified in order to minimize the amount of
+ * time the display is grabbed.
+ */
+void
+_gnome_gnorba_cookie_setup(Display *disp, Window rootwin)
+{
+  int len, ret_fmt;
+  Atom prop, ret_type;
+  unsigned long ret_nitems, ret_bytes_after;
+  unsigned char *ret_prop;
+  const char *setval;
+
+  prop = XInternAtom(disp, "GNOME_SESSION_CORBA_COOKIE", False);
+  XGrabServer(disp);
+  XGetWindowProperty(disp, rootwin, prop, 0, 9999, False, XA_STRING,
+		     &ret_type, &ret_fmt, &ret_nitems, &ret_bytes_after,
+		     &ret_prop);
+
+  if(ret_type == None)
+    ret_prop = NULL;
+  else
+    XUngrabServer(disp);
+
+  setval = _gnorba_cookie_setup(ret_prop);
+
+  if(ret_prop == NULL) {
+    XChangeProperty(disp, rootwin, prop, XA_STRING, 8, PropModeReplace,
+		    setval, strlen(setval));
+    XUngrabServer(disp);
+  }
+
+  if(ret_prop) {
+    XFree(ret_prop); /* XFree barfs on NULL ptrs */
+    XUngrabServer(disp);
+  }
+
+  g_message("Set cookie to %s", setval);
 }
 
 /**
@@ -199,8 +274,8 @@ get_cookie_reliably (void)
  */
 CORBA_ORB
 gnorba_CORBA_init(int *argc, char **argv,
-	      GnorbaInitFlags flags,
-	      CORBA_Environment *ev)
+		  GnorbaInitFlags flags,
+		  CORBA_Environment *ev)
 {
 	CORBA_ORB retval;
 
@@ -209,18 +284,10 @@ gnorba_CORBA_init(int *argc, char **argv,
 	IIOPRemoveConnectionHandler = orb_remove_connection;
 #endif /* !ORBIT_USES_GLIB_MAIN_LOOP */
 
-	gnome_orbit_orb = retval = CORBA_ORB_init(argc, argv, "orbit-local-orb", ev);
+	_gnorba_gnome_orbit_orb = retval = CORBA_ORB_init(argc, argv, "orbit-local-orb", ev);
 	
-	if(!(flags & GNORBA_INIT_DISABLE_COOKIES)) {
-		request_cookie._buffer = get_cookie_reliably ();
-		
-		g_assert(request_cookie._buffer && *request_cookie._buffer);
-		
-		request_cookie._length = strlen(request_cookie._buffer) + 1;
-		
-		ORBit_set_request_validation_handler(&gnome_ORBit_request_validate);
-		ORBit_set_default_principal(&request_cookie);
-	}
+	if(!(flags & GNORBA_INIT_DISABLE_COOKIES))
+	  _gnorba_cookie_setup(NULL);
 	
 	return retval;
 }
@@ -233,6 +300,6 @@ gnorba_CORBA_init(int *argc, char **argv,
 CORBA_ORB
 gnome_CORBA_ORB(void)
 {
-	return gnome_orbit_orb;
+	return _gnorba_gnome_orbit_orb;
 }
 
