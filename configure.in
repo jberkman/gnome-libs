@@ -77,7 +77,7 @@ AM_CONDITIONAL(ENABLE_GTK_DOC, test x$enable_gtkdoc = xyes)
 AC_CHECK_PROG(INDENT, indent, indent)
 
 REBUILD=\#
-if test -n "$PERL" && perl -v | grep 'version 5.' > /dev/null ; then
+if test -n "$PERL" && $PERL -v | grep 'version 5.' > /dev/null ; then
   if test -n "$AWK" ; then 
     REBUILD=
   fi
