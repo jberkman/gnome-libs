@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-libs VERSION\n"
-"POT-Creation-Date: 1999-09-28 09:50-0500\n"
+"POT-Creation-Date: 1999-10-06 21:34-0500\n"
 "PO-Revision-Date: 1999-09-15 15:54 +0100\n"
 "Last-Translator: Shooby Ban <bansz@szif.hu>\n"
 "Language-Team: Hungarian <hu@li.org>\n"
@@ -1174,7 +1174,7 @@ msgstr "Menüelem"
 msgid "Accelerator"
 msgstr "Gyorsító"
 
-#: libgnomeui/gnome_segv.c:50
+#: libgnomeui/gnome_segv.c:57
 #, c-format
 msgid ""
 "The GNOME Session Manager (process %d) has crashed\n"
@@ -1189,7 +1189,7 @@ msgstr ""
 "befejezõdik.\n"
 "Az ablak bezárása elõtt ments el minden file-odat."
 
-#: libgnomeui/gnome_segv.c:55
+#: libgnomeui/gnome_segv.c:62
 #, c-format
 msgid ""
 "Application \"%s\" (process %d) has crashed\n"
@@ -1200,17 +1200,19 @@ msgstr ""
 "helyrehozhatatlan hiba miatt leállt.\n"
 "(%s)"
 
-#: libgnomeui/gnome_segv.c:61
+#: libgnomeui/gnome_segv.c:70
 msgid "Usage: gnome_segv appname signum\n"
 msgstr "Használata: gnome_segv alkalmazás_neve szignál_száma\n"
 
-#. Please download http://www.gnome.org/application_crashed-shtml.txt,
-#. * translate the plain text, and send the file to webmaster@gnome.org.
-#: libgnomeui/gnome_segv.c:74
+#: libgnomeui/gnome_segv.c:87
+msgid "Submit a bug report"
+msgstr ""
+
+#: libgnomeui/gnome_segv.c:93
 msgid "http://www.gnome.org/application_crashed.shtml"
 msgstr ""
 
-#: libgnomeui/gnome_segv.c:75
+#: libgnomeui/gnome_segv.c:99
 msgid "Please visit the GNOME Application Crash page for more information"
 msgstr "Látogass el a GNOME Alkalmazási Hibák oldalra további információkért"
 
