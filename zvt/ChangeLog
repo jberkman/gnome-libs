@@ -1,3 +1,12 @@
+1999-04-13  Michael Zucchi  <zucchi@zzedzone.mmc.com.au>
+
+	* zvtterm.c (vt_draw_text): When drawing underline, dont go beyond
+	our char boundaries.  I think this fixes the dot problems.  Thanks
+	to Jesus Bravo Alvarez for this one.
+	(zvt_term_set_fonts): No need to check that 'font' is NULL.  Its
+	not allowed to be by the api, and the g_return* assertion prevents
+	it from being called.
+
 1999-04-10  Michael Fulbright  <msf@majestic.labs.redhat.com>
 
 	* zvtterm.c (zvt_term_size_allocate): set term->grid_[height/width]

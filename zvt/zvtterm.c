@@ -1155,8 +1155,7 @@ zvt_term_set_fonts (ZvtTerm *term, GdkFont *font, GdkFont *font_bold)
 
   zvt_term_set_fonts_internal (term, font, font_bold);
 
-  if (font)
-      gdk_font_ref (font);
+  gdk_font_ref (font);
   if (font_bold)
       gdk_font_ref (font_bold);
 }
@@ -2469,7 +2468,7 @@ vt_draw_text(void *user_data, int col, int row, char *text, int len, int attr)
           term->term_window, fgc,
 	  col * term->charwidth,
 	  row * term->charheight + term->font->ascent + 1,
-	  (col + len) * term->charwidth,
+	  (col + len) * term->charwidth - 1,
 	  row * term->charheight + term->font->ascent + 1);
     }
 }
