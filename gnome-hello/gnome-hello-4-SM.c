@@ -33,11 +33,6 @@ static int save_state      (GnomeClient        *client,
 			    GnomeInteractStyle  interact_style,
 			    gint                fast,
 			    gpointer            client_data);
-static void connect_client (GnomeClient *client, 
-			    gint         was_restarted, 
-			    gpointer     client_data);
-
-void discard_session (gchar *id);
 
 GtkWidget *app;
 
@@ -98,22 +93,44 @@ main(int argc, char *argv[])
   bindtextdomain (PACKAGE, GNOMELOCALEDIR);
   textdomain (PACKAGE);
 
-  /* This creates the default client and arranges for it to parse some
-     command-line arguments and connect the session manager if
-     possible.  */
-  client = gnome_client_new_default ();
-
-  /* Arrange to be told when something interesting happens.  */
-  gtk_signal_connect (GTK_OBJECT (client), "save_yourself",
-		      GTK_SIGNAL_FUNC (save_state), (gpointer) argv[0]);
-  gtk_signal_connect (GTK_OBJECT (client), "connect",
-		      GTK_SIGNAL_FUNC (connect_client), NULL);
-
   /* gnome_init() is always called at the beginning of a program.  it
      takes care of initializing both Gtk and GNOME.  It also parses
      the command-line arguments.  */
   gnome_init ("gnome-hello-4-SM", &parser, argc, argv,
 	      0, NULL);
+
+  /* Get the master client, that was hopefully connected to the
+     session manager int the 'gnome_init' call.  */
+  client= gnome_master_client ();
+  
+  /* Arrange to be told when something interesting happens.  */
+  gtk_signal_connect (GTK_OBJECT (client), "save_yourself",
+		      GTK_SIGNAL_FUNC (save_state), (gpointer) argv[0]);
+
+  if (GNOME_CLIENT_CONNECTED (client))
+    {
+      /* Get the client, that may hold the configuration for this
+         program.  */
+      GnomeClient *cloned= gnome_cloned_client ();
+
+      if (cloned)
+	{
+	  restarted= 1;
+
+	  /* We restore information that was stored once before.  Note,
+             that we use the cloned client here, because it may be
+             that we are a clone of another client, which had another
+             client id than we have.  */
+	  gnome_config_push_prefix (gnome_client_get_config_prefix (cloned));
+	  
+	  os_x = gnome_config_get_int ("Geometry/x");
+	  os_y = gnome_config_get_int ("Geometry/y");
+	  os_w = gnome_config_get_int ("Geometry/w");
+	  os_h = gnome_config_get_int ("Geometry/h");
+	  
+	  gnome_config_pop_prefix ();
+	}
+    }
 
   if (! just_exit)
     {
@@ -235,7 +252,14 @@ parse_an_arg (int key, char *arg, struct argp_state *state)
 {
   if (key == DISCARD_KEY)
     {
-      discard_session (arg);
+      /* This discards the saved information about this client.  */
+      gnome_config_clean_file (arg);
+      gnome_config_sync ();
+
+      /* We really need not to connect, because we just exit after the
+         gnome_init call.  */
+      gnome_client_disable_master_connection ();
+
       just_exit = 1;
       return 0;
     }
@@ -256,8 +280,6 @@ save_state (GnomeClient        *client,
 	    gpointer            client_data)
 {
   gchar *session_id;
-  gchar *sess;
-  gchar *buf;
   gchar *argv[3];
   gint x, y, w, h;
 
@@ -268,32 +290,22 @@ save_state (GnomeClient        *client,
   gdk_window_get_geometry (app->window, &x, &y, &w, &h, NULL);
 
   /* Save the state using gnome-config stuff. */
-  sess = g_copy_strings ("/gnome-hello/Saved-Session-",
-                         session_id,
-                         NULL);
+  gnome_config_push_prefix (gnome_client_get_config_prefix (client));
+  
+  gnome_config_set_int ("Geometry/x", x);
+  gnome_config_set_int ("Geometry/y", y);
+  gnome_config_set_int ("Geometry/w", w);
+  gnome_config_set_int ("Geometry/h", h);
 
-  buf = g_copy_strings ( sess, "/x", NULL);
-  gnome_config_set_int (buf, x);
-  g_free(buf);
-  buf = g_copy_strings ( sess, "/y", NULL);
-  gnome_config_set_int (buf, y);
-  g_free(buf);
-  buf = g_copy_strings ( sess, "/w", NULL);
-  gnome_config_set_int (buf, w);
-  g_free(buf);
-  buf = g_copy_strings ( sess, "/h", NULL);
-  gnome_config_set_int (buf, h);
-  g_free(buf);
-
+  gnome_config_pop_prefix ();
   gnome_config_sync();
-  g_free(sess);
 
   /* Here is the real SM code. We set the argv to the parameters needed
      to restart/discard the session that we've just saved and call
      the gnome_session_set_*_command to tell the session manager it. */
   argv[0] = (char*) client_data;
   argv[1] = "--discard-session";
-  argv[2] = session_id;
+  argv[2] = gnome_client_get_config_prefix (client);
   gnome_client_set_discard_command (client, 3, argv);
 
   /* Set commands to clone and restart this application.  Note that we
@@ -304,64 +316,4 @@ save_state (GnomeClient        *client,
   gnome_client_set_restart_command (client, 1, argv);
 
   return TRUE;
-}
-
-/* Connected to session manager. If restarted from a former session:
-   reads the state of the previous session. Sets os_* (prepare_app
-   uses them) */
-void
-connect_client (GnomeClient *client, gint was_restarted, gpointer client_data)
-{
-  gchar *session_id;
-
-  /* Note that information is stored according to our *old*
-     session id.  The id can change across sessions.  */
-  session_id = gnome_client_get_previous_id (client);
-
-  if (was_restarted && session_id != NULL)
-    {
-      gchar *sess;
-      gchar *buf;
-
-      restarted = 1;
-
-      sess = g_copy_strings ("/gnome-hello/Saved-Session-", session_id, NULL);
-
-      buf = g_copy_strings ( sess, "/x", NULL);
-      os_x = gnome_config_get_int (buf);
-      g_free(buf);
-      buf = g_copy_strings ( sess, "/y", NULL);
-      os_y = gnome_config_get_int (buf);
-      g_free(buf);
-      buf = g_copy_strings ( sess, "/w", NULL);
-      os_w = gnome_config_get_int (buf);
-      g_free(buf);
-      buf = g_copy_strings ( sess, "/h", NULL);
-      os_h = gnome_config_get_int (buf);
-      g_free(buf);
-    }
-
-  /* If we had an old session, we clean up after ourselves.  */
-  if (session_id != NULL)
-    discard_session (session_id);
-
-  return;
-}
-
-void
-discard_session (gchar *id)
-{
-  gchar *sess;
-
-  sess = g_copy_strings ("/gnome-hello/Saved-Session-", id, NULL);
-
-  /* we use the gnome_config_get_* to work around a bug in gnome-config 
-     (it's going under a redesign/rewrite, so i didn't correct it) */
-  gnome_config_get_int ("/gnome-hello/Bug/work-around=0");
-
-  gnome_config_clean_section (sess);
-  gnome_config_sync ();
-
-  g_free (sess);
-  return;
 }

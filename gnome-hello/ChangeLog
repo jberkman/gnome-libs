@@ -1,3 +1,12 @@
+1998-06-13  Carsten Schaar  <nhadcasc@fs-maphy.uni-hannover.de>
+
+	* gnome-hello-4-SM.c: Removed 'connect_client' and
+ 	'discard_session'.
+	(save_state): Uses the new 'gnome_client_get_config_prefix' stuff.
+	(parse_an_arg): Includes the former discard_session stuff.
+	(main): Use 'gnome_master_client' instead of
+ 	'gnome_client_new_default'.
+
 1998-06-07  Jaka Mocnik  <jaka.mocnik@kiss.uni-lj.si>
 
 	* gnome-hello-7-mdi.c: demonstrates use of GnomeMDI object.
