@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-libs 1.0.9\n"
-"POT-Creation-Date: 2000-04-03 14:12+0200\n"
+"POT-Creation-Date: 2000-07-13 01:11+0200\n"
 "PO-Revision-Date: 1999-10-07 19:30\n"
 "Last-Translator: Gert Dewit <Gert.Dewit@sos.be>\n"
 "Language-Team: nl <nl@li.org>\n"
@@ -33,22 +33,31 @@ msgstr ""
 msgid "Could not create gnome accelerators directory `%s': %s\n"
 msgstr "Kan geen gnome snelkoppelingendirectory aanmaken `%s': %s\n"
 
-#: libgnomeui/gnome-about.c:332
+#: libgnomeui/gnome-about.c:352
 msgid "Author:"
 msgstr "Auteur:"
 
-#: libgnomeui/gnome-about.c:335 libgnomeui/gnome-about.c:337
+#: libgnomeui/gnome-about.c:355 libgnomeui/gnome-about.c:357
 msgid "Authors:"
 msgstr "Auteurs:"
 
-#: libgnomeui/gnome-about.c:643
+#: libgnomeui/gnome-about.c:663
 msgid "Authors: "
 msgstr "Auteurs: "
 
-#: libgnomeui/gnome-about.c:1020 libgnomeui/stock_demo.c:307
+#: libgnomeui/gnome-about.c:1048 libgnomeui/stock_demo.c:307
 #: libgnomeui/winhints_demo.c:256
 msgid "About"
 msgstr "Info"
+
+#: libgnomeui/gnome-about.c:1151
+msgid ""
+"Error occured while trying to launch the URL handler.\n"
+"Please check the settings in the Control Center if they are correct."
+msgstr ""
+"Een fout verscheen tijdens het laden van URL handler.\n"
+"Kijk alstublieft naar de instellingen in het Control Center of ze correct "
+"zijn."
 
 #: libgnomeui/gnome-app-helper.c:74
 msgid "_File"
@@ -440,172 +449,172 @@ msgstr "  - OK? (ja of nee)"
 msgid "Progress"
 msgstr "Vooruitgang"
 
-#: libgnomeui/gnome-calculator.c:982 libgnomeui/gnome-calculator.c:1132
+#: libgnomeui/gnome-calculator.c:468 libgnomeui/gnome-calculator.c:1117
 msgid "DEG"
 msgstr "DEG"
 
-#: libgnomeui/gnome-calculator.c:984
+#: libgnomeui/gnome-calculator.c:470
 msgid "RAD"
 msgstr "RAD"
 
-#: libgnomeui/gnome-calculator.c:986
+#: libgnomeui/gnome-calculator.c:472
 msgid "GRAD"
 msgstr "GRAD"
 
-#: libgnomeui/gnome-calculator.c:1122
+#: libgnomeui/gnome-calculator.c:1107
 msgid "1/x"
 msgstr "1/x"
 
-#: libgnomeui/gnome-calculator.c:1123
+#: libgnomeui/gnome-calculator.c:1108
 msgid "x^2"
 msgstr "x^2"
 
-#: libgnomeui/gnome-calculator.c:1124
+#: libgnomeui/gnome-calculator.c:1109
 msgid "SQRT"
 msgstr "SQRT"
 
-#: libgnomeui/gnome-calculator.c:1125
+#: libgnomeui/gnome-calculator.c:1110
 msgid "CE/C"
 msgstr "CE/C"
 
-#: libgnomeui/gnome-calculator.c:1126
+#: libgnomeui/gnome-calculator.c:1111
 msgid "AC"
 msgstr "AC"
 
 #. inverse button
-#: libgnomeui/gnome-calculator.c:1129
+#: libgnomeui/gnome-calculator.c:1114
 msgid "sin"
 msgstr "sin"
 
-#: libgnomeui/gnome-calculator.c:1130
+#: libgnomeui/gnome-calculator.c:1115
 msgid "cos"
 msgstr "cos"
 
-#: libgnomeui/gnome-calculator.c:1131
+#: libgnomeui/gnome-calculator.c:1116
 msgid "tan"
 msgstr "tan"
 
-#: libgnomeui/gnome-calculator.c:1134
+#: libgnomeui/gnome-calculator.c:1119
 msgid "e"
 msgstr "e"
 
-#: libgnomeui/gnome-calculator.c:1135
+#: libgnomeui/gnome-calculator.c:1120
 msgid "EE"
 msgstr "EE"
 
-#: libgnomeui/gnome-calculator.c:1136
+#: libgnomeui/gnome-calculator.c:1121
 msgid "log"
 msgstr "log"
 
-#: libgnomeui/gnome-calculator.c:1137
+#: libgnomeui/gnome-calculator.c:1122
 msgid "ln"
 msgstr "ln"
 
-#: libgnomeui/gnome-calculator.c:1138
+#: libgnomeui/gnome-calculator.c:1123
 msgid "x^y"
 msgstr "x^y"
 
-#: libgnomeui/gnome-calculator.c:1140
+#: libgnomeui/gnome-calculator.c:1125
 msgid "PI"
 msgstr "PI"
 
-#: libgnomeui/gnome-calculator.c:1141
+#: libgnomeui/gnome-calculator.c:1126
 msgid "x!"
 msgstr "x!"
 
-#: libgnomeui/gnome-calculator.c:1142
+#: libgnomeui/gnome-calculator.c:1127
 msgid "("
 msgstr "("
 
-#: libgnomeui/gnome-calculator.c:1143
+#: libgnomeui/gnome-calculator.c:1128
 msgid ")"
 msgstr ")"
 
-#: libgnomeui/gnome-calculator.c:1144
+#: libgnomeui/gnome-calculator.c:1129
 msgid "/"
 msgstr "/"
 
-#: libgnomeui/gnome-calculator.c:1146
+#: libgnomeui/gnome-calculator.c:1131
 msgid "STO"
 msgstr "STO"
 
-#: libgnomeui/gnome-calculator.c:1147
+#: libgnomeui/gnome-calculator.c:1132
 msgid "7"
 msgstr "7"
 
-#: libgnomeui/gnome-calculator.c:1148
+#: libgnomeui/gnome-calculator.c:1133
 msgid "8"
 msgstr "8"
 
-#: libgnomeui/gnome-calculator.c:1149
+#: libgnomeui/gnome-calculator.c:1134
 msgid "9"
 msgstr "9"
 
-#: libgnomeui/gnome-calculator.c:1150
+#: libgnomeui/gnome-calculator.c:1135
 msgid "*"
 msgstr "*"
 
-#: libgnomeui/gnome-calculator.c:1152
+#: libgnomeui/gnome-calculator.c:1137
 msgid "RCL"
 msgstr "RCL"
 
-#: libgnomeui/gnome-calculator.c:1153
+#: libgnomeui/gnome-calculator.c:1138
 msgid "4"
 msgstr "4"
 
-#: libgnomeui/gnome-calculator.c:1154
+#: libgnomeui/gnome-calculator.c:1139
 msgid "5"
 msgstr "5"
 
-#: libgnomeui/gnome-calculator.c:1155
+#: libgnomeui/gnome-calculator.c:1140
 msgid "6"
 msgstr "6"
 
-#: libgnomeui/gnome-calculator.c:1156
+#: libgnomeui/gnome-calculator.c:1141
 msgid "-"
 msgstr "-"
 
-#: libgnomeui/gnome-calculator.c:1158
+#: libgnomeui/gnome-calculator.c:1143
 msgid "SUM"
 msgstr "SOM"
 
-#: libgnomeui/gnome-calculator.c:1159
+#: libgnomeui/gnome-calculator.c:1144
 msgid "1"
 msgstr "1"
 
-#: libgnomeui/gnome-calculator.c:1160
+#: libgnomeui/gnome-calculator.c:1145
 msgid "2"
 msgstr "2"
 
-#: libgnomeui/gnome-calculator.c:1161
+#: libgnomeui/gnome-calculator.c:1146
 msgid "3"
 msgstr "3"
 
-#: libgnomeui/gnome-calculator.c:1162
+#: libgnomeui/gnome-calculator.c:1147
 msgid "+"
 msgstr "+"
 
-#: libgnomeui/gnome-calculator.c:1164
+#: libgnomeui/gnome-calculator.c:1149
 msgid "EXC"
 msgstr "EXC"
 
-#: libgnomeui/gnome-calculator.c:1165
+#: libgnomeui/gnome-calculator.c:1150
 msgid "0"
 msgstr "0"
 
-#: libgnomeui/gnome-calculator.c:1166
+#: libgnomeui/gnome-calculator.c:1151
 msgid "."
 msgstr "."
 
-#: libgnomeui/gnome-calculator.c:1167
+#: libgnomeui/gnome-calculator.c:1152
 msgid "+/-"
 msgstr "+/-"
 
-#: libgnomeui/gnome-calculator.c:1168
+#: libgnomeui/gnome-calculator.c:1153
 msgid "="
 msgstr "="
 
-#: libgnomeui/gnome-calculator.c:1237
+#: libgnomeui/gnome-calculator.c:1359
 msgid "INV"
 msgstr "INV"
 
@@ -633,11 +642,15 @@ msgstr "Desactiveer de connectie naar de sessiebeheerder"
 msgid "Session management"
 msgstr "Sessiebeheer"
 
-#: libgnomeui/gnome-client.c:2330
+#: libgnomeui/gnome-client.c:2331
 msgid "Cancel Logout"
 msgstr "Annuleer logout"
 
-#: libgnomeui/gnome-color-picker.c:338
+#: libgnomeui/gnome-color-picker.c:409
+msgid "Received invalid color data\n"
+msgstr "Ontving niet juiste kleur data\n"
+
+#: libgnomeui/gnome-color-picker.c:473
 msgid "Pick a color"
 msgstr "Kies een kleur"
 
@@ -702,7 +715,7 @@ msgstr "Commentaar"
 msgid "Add/Set"
 msgstr "Toevoegen/Instellen"
 
-#: libgnomeui/gnome-dentry-edit.c:424 libgnomeui/gnome-stock.c:644
+#: libgnomeui/gnome-dentry-edit.c:424 libgnomeui/gnome-stock.c:707
 msgid "Remove"
 msgstr "Verwijderen"
 
@@ -714,20 +727,20 @@ msgstr "Eenvoudig"
 msgid "Advanced"
 msgstr "Geavanceerd"
 
-#: libgnomeui/gnome-druid.c:135
+#: libgnomeui/gnome-druid.c:145
 msgid "Back"
 msgstr "Terug"
 
-#: libgnomeui/gnome-druid.c:143
+#: libgnomeui/gnome-druid.c:153
 msgid "Finish"
 msgstr "Einde"
 
-#: libgnomeui/gnome-file-entry.c:175
+#: libgnomeui/gnome-file-entry.c:310
 msgid "Select file"
 msgstr "Kies een bestand"
 
 #. browse button ...
-#: libgnomeui/gnome-file-entry.c:304 libgnomeui/gnome-spell.c:620
+#: libgnomeui/gnome-file-entry.c:441 libgnomeui/gnome-spell.c:620
 #: libgnomeui/gnome-spell.c:637 libgnomeui/gnome-spell.c:654
 msgid "Browse..."
 msgstr "Bladeren..."
@@ -736,27 +749,27 @@ msgstr "Bladeren..."
 msgid "Pick a Font"
 msgstr "Kies een lettertype"
 
-#: libgnomeui/gnome-font-picker.c:719 libgnomeui/gnome-stock.c:664
+#: libgnomeui/gnome-font-picker.c:719 libgnomeui/gnome-stock.c:727
 msgid "Font"
 msgstr "Lettertype"
 
-#: libgnomeui/gnome-icon-entry.c:273 libgnomeui/gnome-icon-entry.c:770
+#: libgnomeui/gnome-icon-entry.c:280 libgnomeui/gnome-icon-entry.c:777
 msgid "No Icon"
 msgstr "Geen pictogram"
 
-#: libgnomeui/gnome-icon-entry.c:447 libgnomeui/gnome-pixmap-entry.c:429
+#: libgnomeui/gnome-icon-entry.c:454 libgnomeui/gnome-pixmap-entry.c:430
 msgid "Can't find an hbox, using a normal file selection"
 msgstr "Kan geen hbox vinden, gebruik normale bestandsselectie"
 
-#: libgnomeui/gnome-icon-entry.c:453 libgnomeui/gnome-pixmap-entry.c:435
+#: libgnomeui/gnome-icon-entry.c:460 libgnomeui/gnome-pixmap-entry.c:436
 msgid "Preview"
 msgstr "Voorbeeld"
 
-#: libgnomeui/gnome-icon-entry.c:791
+#: libgnomeui/gnome-icon-entry.c:798
 msgid "Browse"
 msgstr "Bladeren"
 
-#: libgnomeui/gnome-icon-sel.c:338
+#: libgnomeui/gnome-icon-sel.c:356
 msgid "Loading Icons..."
 msgstr "Pictogrammen laden..."
 
@@ -843,35 +856,35 @@ msgid "Multiple segmentation faults occurred; can't display error dialog\n"
 msgstr ""
 "Er waren meerdere segmentation faults, kan de foutboodschap niet tonen\n"
 
-#: libgnomeui/gnome-messagebox.c:137
+#: libgnomeui/gnome-messagebox.c:159
 msgid "Information"
 msgstr "Informatie"
 
-#: libgnomeui/gnome-messagebox.c:146
+#: libgnomeui/gnome-messagebox.c:168
 msgid "Warning"
 msgstr "Waarschuwing"
 
-#: libgnomeui/gnome-messagebox.c:155
+#: libgnomeui/gnome-messagebox.c:177
 msgid "Error"
 msgstr "Fout"
 
-#: libgnomeui/gnome-messagebox.c:164
+#: libgnomeui/gnome-messagebox.c:186
 msgid "Question"
 msgstr "Vraag"
 
-#: libgnomeui/gnome-messagebox.c:173
+#: libgnomeui/gnome-messagebox.c:195
 msgid "Message"
 msgstr "Boodschap"
 
-#: libgnomeui/gnome-number-entry.c:200
+#: libgnomeui/gnome-number-entry.c:212
 msgid "Calculator"
 msgstr "Calculator"
 
-#: libgnomeui/gnome-number-entry.c:256
+#: libgnomeui/gnome-number-entry.c:270
 msgid "Calculator..."
 msgstr "Calculator..."
 
-#: libgnomeui/gnome-pixmap-entry.c:251 libgnomeui/gnome-pixmap-entry.c:532
+#: libgnomeui/gnome-pixmap-entry.c:252 libgnomeui/gnome-pixmap-entry.c:533
 msgid "No Image"
 msgstr "Geen beeld"
 
@@ -887,33 +900,36 @@ msgstr "Knippen"
 msgid "Select"
 msgstr "Selecteer"
 
-#: libgnomeui/gnome-scores.c:112
+#: libgnomeui/gnome-scores.c:104
 msgid "Top Ten"
 msgstr "Top 10"
 
-#: libgnomeui/gnome-scores.c:123
+#: libgnomeui/gnome-scores.c:114
 msgid "User"
 msgstr "Gebruiker"
 
-#: libgnomeui/gnome-scores.c:126
+#: libgnomeui/gnome-scores.c:117
 msgid "Score"
 msgstr "Score"
 
-#: libgnomeui/gnome-scores.c:129
+#: libgnomeui/gnome-scores.c:120
 msgid "Date"
 msgstr "Datum"
 
 #. the localized string should fit (after replacing the %a %b
-#. etc) in ~18 chars; so drop some if needed; after all this
-#. is for games scores, there is no need for extra precision.
+#. etc) in ~18 chars.
 #. %a is abbreviated weekday, %A is full weekday,
 #. %b %B are abbreviated and full monthname, %Y is year,
 #. %d is day of month, %m is month number, %T full hour,
 #. %H hours, %M minutes, %S seconds
 #.
-#: libgnomeui/gnome-scores.c:155
+#: libgnomeui/gnome-scores.c:215
 msgid "%a %b %d %T %Y"
 msgstr "%a %d %b %Y %T"
+
+#: libgnomeui/gnome-scores.c:423
+msgid "-freefont-garamond-*-*-*-*-30-170-*-*-*-*-*-*"
+msgstr "-freefont-garamond-*-*-*-*-30-170-*-*-*-*-*-*"
 
 #: libgnomeui/gnome-spell.c:199
 msgid "Select dictionary"
@@ -934,11 +950,11 @@ msgstr ""
 msgid "Confirm"
 msgstr "Bevestig"
 
-#: libgnomeui/gnome-spell.c:259 libgnomeui/gnome-stock.c:653
+#: libgnomeui/gnome-spell.c:259 libgnomeui/gnome-stock.c:716
 msgid "OK"
 msgstr "OK"
 
-#: libgnomeui/gnome-spell.c:266 libgnomeui/gnome-stock.c:655
+#: libgnomeui/gnome-spell.c:266 libgnomeui/gnome-stock.c:718
 msgid "Cancel"
 msgstr "Annuleren"
 
@@ -1058,95 +1074,95 @@ msgstr "Spelling"
 msgid "Configure"
 msgstr "Configureren"
 
-#: libgnomeui/gnome-stock.c:641
+#: libgnomeui/gnome-stock.c:704
 msgid "Add"
 msgstr "Toevoegen"
 
-#: libgnomeui/gnome-stock.c:642
+#: libgnomeui/gnome-stock.c:705
 msgid "Clear"
 msgstr "Leeg maken"
 
-#: libgnomeui/gnome-stock.c:643
+#: libgnomeui/gnome-stock.c:706
 msgid "Select Color"
 msgstr "Kies een kleur"
 
-#: libgnomeui/gnome-stock.c:645
+#: libgnomeui/gnome-stock.c:708
 msgid "Table Borders"
 msgstr "Tabelranden"
 
-#: libgnomeui/gnome-stock.c:646
+#: libgnomeui/gnome-stock.c:709
 msgid "Table Fill"
 msgstr "Tabelachtergrong"
 
-#: libgnomeui/gnome-stock.c:647
+#: libgnomeui/gnome-stock.c:710
 msgid "Bulleted List"
 msgstr "Opsomlijst"
 
-#: libgnomeui/gnome-stock.c:648
+#: libgnomeui/gnome-stock.c:711
 msgid "Numbered List"
 msgstr "Genummerde lijst"
 
-#: libgnomeui/gnome-stock.c:649
+#: libgnomeui/gnome-stock.c:712
 msgid "Indent"
 msgstr "Inspringen"
 
-#: libgnomeui/gnome-stock.c:650
+#: libgnomeui/gnome-stock.c:713
 msgid "Un-Indent"
 msgstr "Uitspringen"
 
-#: libgnomeui/gnome-stock.c:654
+#: libgnomeui/gnome-stock.c:717
 msgid "Apply"
 msgstr "Toepassen"
 
-#: libgnomeui/gnome-stock.c:656 libgnomeui/stock_demo.c:169
+#: libgnomeui/gnome-stock.c:719 libgnomeui/stock_demo.c:169
 msgid "Close"
 msgstr "Sluiten"
 
-#: libgnomeui/gnome-stock.c:657
+#: libgnomeui/gnome-stock.c:720
 msgid "Yes"
 msgstr "Ja"
 
-#: libgnomeui/gnome-stock.c:658
+#: libgnomeui/gnome-stock.c:721
 msgid "No"
 msgstr "Nee"
 
-#: libgnomeui/gnome-stock.c:659 libgnomeui/stock_demo.c:315
+#: libgnomeui/gnome-stock.c:722 libgnomeui/stock_demo.c:315
 msgid "Help"
 msgstr "Help"
 
-#: libgnomeui/gnome-stock.c:660
+#: libgnomeui/gnome-stock.c:723
 msgid "Next"
 msgstr "Volgende"
 
-#: libgnomeui/gnome-stock.c:661
+#: libgnomeui/gnome-stock.c:724
 msgid "Prev"
 msgstr "Vorige"
 
-#: libgnomeui/gnome-stock.c:662
+#: libgnomeui/gnome-stock.c:725
 msgid "Up"
 msgstr "Boven"
 
-#: libgnomeui/gnome-stock.c:663
+#: libgnomeui/gnome-stock.c:726
 msgid "Down"
 msgstr "Onder"
 
-#: libgnomeui/gnome-stock.c:1421
+#: libgnomeui/gnome-stock.c:1498
 msgid "Menu Accelerator Keys"
 msgstr "Menu sneltoetsen"
 
-#: libgnomeui/gnome-stock.c:1423
+#: libgnomeui/gnome-stock.c:1500
 msgid "Global"
 msgstr "Globaal"
 
-#: libgnomeui/gnome-stock.c:1425
+#: libgnomeui/gnome-stock.c:1502
 msgid "Menu Item"
 msgstr "Menu element"
 
-#: libgnomeui/gnome-stock.c:1426
+#: libgnomeui/gnome-stock.c:1503
 msgid "Accelerator"
 msgstr "Sneltoets"
 
-#: libgnomeui/gnome_segv.c:81
+#: libgnomeui/gnome_segv.c:84
 #, c-format
 msgid ""
 "The GNOME Session Manager (process %d) has crashed\n"
@@ -1161,7 +1177,7 @@ msgstr ""
 "verlaten worden.\n"
 "Bewaar al uw bestanden voor u dit dialoogvenster sluit."
 
-#: libgnomeui/gnome_segv.c:87
+#: libgnomeui/gnome_segv.c:94
 #, c-format
 msgid ""
 "Application \"%s\" (process %d) has crashed\n"
@@ -1172,19 +1188,23 @@ msgstr ""
 "ten gevolge van een fatale fout.\n"
 "(%s)"
 
-#: libgnomeui/gnome_segv.c:95
+#: libgnomeui/gnome_segv.c:102
 msgid "Usage: gnome_segv appname signum\n"
 msgstr "Gebruik: gnome_segv toepnaam signum\n"
 
-#: libgnomeui/gnome_segv.c:109
+#: libgnomeui/gnome_segv.c:116
 msgid "Submit a bug report"
 msgstr "Stuur een bug rapport"
 
-#: libgnomeui/gnome_segv.c:115
+#: libgnomeui/gnome_segv.c:126
+msgid "Debug"
+msgstr "Debug"
+
+#: libgnomeui/gnome_segv.c:133
 msgid "http://www.gnome.org/application_crashed.shtml"
 msgstr "http://www.gnome.org/application_crashed.nl.shtml"
 
-#: libgnomeui/gnome_segv.c:121
+#: libgnomeui/gnome_segv.c:139
 msgid "Please visit the GNOME Application Crash page for more information"
 msgstr "Bezoek de \"GNOME Application Crash\" pagina voor meer informatie"
 
