@@ -430,7 +430,7 @@ void create_less()
 	app = create_newwin(TRUE,"testGNOME","Less");
 	less = gnome_less_new();
 	gnome_app_set_contents(GNOME_APP(app),less);
-	gnome_less_fixed_font(GNOME_LESS(less));
+	gnome_less_set_fixed_font(GNOME_LESS(less), TRUE);
 	gtk_widget_show(less);
 	gtk_widget_show(app);
 	gnome_less_show_command(GNOME_LESS(less),"fortune");
