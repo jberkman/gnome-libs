@@ -4,8 +4,9 @@ INCLUDES = 			\
 	-I$(includedir)		\
 	$(X_CFLAGS)
 
-bin_PROGRAMS =
+TESTS = runtest.sh
 
-test:
-	chmod +x runtest.sh
-	./runtest.sh
+# Always run via sh so we don't have to worry about permissions.
+TESTS_ENVIRONMENT = /bin/sh
+
+EXTRA_DIST = $(TESTS)
