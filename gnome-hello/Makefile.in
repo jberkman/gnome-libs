@@ -81,6 +81,7 @@ JPEG_LIBS = @JPEG_LIBS@
 LD = @LD@
 LDFLAGS = @LDFLAGS@
 LEX = @LEX@
+LIBOBJS = @LIBOBJS@
 LIBTOOL = @LIBTOOL@
 LISPDIR = @LISPDIR@
 LN_S = @LN_S@
@@ -88,12 +89,17 @@ MAINT = @MAINT@
 MAKEINFO = @MAKEINFO@
 MSGFMT = @MSGFMT@
 NM = @NM@
+NSL_LIBS = @NSL_LIBS@
 OBJC = @OBJC@
 OSOCKADDR_CFLAGS = @OSOCKADDR_CFLAGS@
 PACKAGE = @PACKAGE@
 PNG_LIBS = @PNG_LIBS@
 POFILES = @POFILES@
 POSUB = @POSUB@
+PROGRAMS_GENIUS = @PROGRAMS_GENIUS@
+PROGRAMS_GMIX = @PROGRAMS_GMIX@
+PROGRAMS_GNOMETALK = @PROGRAMS_GNOMETALK@
+PROGRAMS_GTOP = @PROGRAMS_GTOP@
 PTHREAD_LIB = @PTHREAD_LIB@
 QTTHREADS_LIB = @QTTHREADS_LIB@
 RANLIB = @RANLIB@
@@ -120,6 +126,9 @@ HELLO_HELP_DIR = $(datadir)/gnome-hello
 #	-DLOCALEDIR=\"$(datadir)/locale\" \
 #	$(X_CFLAGS)
 
+INCLUDES=-I../.. -I$(srcdir)/../.. -I$(includedir) \
+	 -DLOCALEDIR=\"$(datadir)/locale\"
+
 bin_PROGRAMS = gnome-hello
 
 gnome_hello_SOURCES = gnome-hello.c
@@ -132,7 +141,7 @@ gnome_hello_LDADD = \
 	$(XPM_LIBS)					\
 	$(GTK_LIBS)					\
 	$(DL_LIB)					\
-        $(X_LIBS) $(x_libs) $(INTLLIBS)
+        $(X_LIBS) $(x_libs) $(INTLLIBS) $(top_srcdir)/support/libsupport.a
 
 htmldir = $(prefix)/html
 html_DATA = gnome-hello.html
@@ -155,7 +164,8 @@ X_PRE_LIBS = @X_PRE_LIBS@
 gnome_hello_OBJECTS =  gnome-hello.o
 gnome_hello_DEPENDENCIES =  $(top_builddir)/libgnomeui/libgnomeui.la \
 $(top_builddir)/libgnome/libgnome.la $(top_builddir)/intl/libintl.a \
-$(top_builddir)/gtk-xmhtml/libgtkxmhtml.la
+$(top_builddir)/gtk-xmhtml/libgtkxmhtml.la \
+$(top_srcdir)/support/libsupport.a
 gnome_hello_LDFLAGS = 
 COMPILE = $(CC) $(DEFS) $(INCLUDES) $(CPPFLAGS) $(CFLAGS)
 LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(INCLUDES) $(CPPFLAGS) $(CFLAGS)

@@ -171,7 +171,6 @@ MC_IF_VAR_EQ(GCC, yes,
 
 	dnl Optimizations
 	MC_ADD_TO_VAR(CFLAGS, -O, -O6)
-	MC_ADD_TO_VAR(CFLAGS, -pipe, -pipe)
 	MC_ADD_TO_VAR(CFLAGS, -fstrength-reduce, -fstrength-reduce)
 	MC_ADD_TO_VAR(CFLAGS, -fexpensive-optimizations, -fexpensive-optimizations)
 	MC_ADD_TO_VAR(CFLAGS, -finline-functions, -finline-functions)

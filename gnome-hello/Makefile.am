@@ -19,7 +19,7 @@ gnome_hello_LDADD = \
 	$(XPM_LIBS)					\
 	$(GTK_LIBS)					\
 	$(DL_LIB)					\
-        $(X_LIBS) $(x_libs) $(INTLLIBS)
+        $(X_LIBS) $(x_libs) $(INTLLIBS) $(top_srcdir)/support/libsupport.a
 
 htmldir = $(prefix)/html
 html_DATA = gnome-hello.html
