@@ -14,19 +14,25 @@ Menus:
    - The prescribed order of standard menu items in the "File" menu is
      the following:
 
-          New, Open, Save, Save As, Revert, SEPARATOR, Print, Print
-          Setup, SEPARATOR, Close, Exit
+          New window, SEPARATOR, New, Open, Save, Save As, Revert,
+          SEPARATOR, Print, Print Setup, SEPARATOR, Close, Exit
 
      The first menu must always be the "File" menu, and it must always
      be called "_File", even if you application never touches a file.
      The main reason for this is that it is important for the menu
      accelerators to be consistent.
 
+     All of these are optional, except Exit.
+
    - The prescribed order of standard menu items in the "Edit" menu is
      the following:
 
-          Undo, Redo, separator, Cut, Copy, Paste, Clear, SEPARATOR,
-          Properties
+          Undo, Redo, SEPARATOR, Cut, Copy, Paste, Clear, SEPARATOR,
+	  New
+
+     The "New" item should be used to insert new editable items,
+     e.g. a new card in a rolodex app.  If there is more than one type
+     of insertable editable item, "New" should be a menu subtree.
 
    - The Settings menu should contain:
 	. All toggles (as menu items)
@@ -39,6 +45,8 @@ Menus:
 		SEPARATOR
 		Configuration dialog menu items
 		Preferences
+
+     It is ok if the only item in Settings is "Preferences".
 
    - The 'Windows' menu should be used by MDI applications to contain
      a list of the document windows.
