@@ -697,17 +697,21 @@ static void
 create_icon_list(void)
 {
 	GtkWidget *app;
-	GtkWidget *iconlist, *hbox, *scroll;
+	GtkWidget *sw;
+	GtkWidget *iconlist;
 	GdkImlibImage *pix;
 	int i;
 	
 	app = create_newwin(TRUE,"testGNOME","Icon List");
 
+	sw = gtk_scrolled_window_new (NULL, NULL);
+	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (sw), GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
+	gnome_app_set_contents (GNOME_APP (app), sw);
+	gtk_widget_set_usize (sw, 200, 200);
+	gtk_widget_show (sw);
+
 	iconlist = gnome_icon_list_new (80, NULL, TRUE);
-	hbox = gtk_hbox_new (0, 0);
-	scroll = gtk_vscrollbar_new (GNOME_ICON_LIST (iconlist)->adj);
-	gtk_box_pack_start (GTK_BOX (hbox), iconlist, 1, 1, 0);
-	gtk_box_pack_start (GTK_BOX (hbox), scroll, 0, 0, 0);
+	gtk_container_add (GTK_CONTAINER (sw), iconlist);
 	
 	GTK_WIDGET_SET_FLAGS(iconlist, GTK_CAN_FOCUS);
 	pix = gdk_imlib_create_image_from_xpm_data((gchar **)bomb_xpm);
@@ -715,19 +719,15 @@ create_icon_list(void)
 
 	gtk_widget_grab_focus (iconlist);
 	
-	for (i = 0; i < 30; i++){
+	for (i = 0; i < 30; i++) {
 		gnome_icon_list_append_imlib(GNOME_ICON_LIST(iconlist), pix, "Foo");
 		gnome_icon_list_append_imlib(GNOME_ICON_LIST(iconlist), pix, "Bar");
 		gnome_icon_list_append_imlib(GNOME_ICON_LIST(iconlist), pix, "LaLa");
 	}
 	
-	gnome_app_set_contents(GNOME_APP(app),hbox);
 	gnome_icon_list_set_selection_mode (GNOME_ICON_LIST (iconlist), GTK_SELECTION_MULTIPLE);
 	gnome_icon_list_thaw (GNOME_ICON_LIST (iconlist));
-
-	gtk_widget_set_usize (iconlist, 200, 200);
-	gtk_widget_show(scroll);
-	gtk_widget_show(iconlist);
+	gtk_widget_show (iconlist);
 	gtk_widget_show(app);
 }
 
