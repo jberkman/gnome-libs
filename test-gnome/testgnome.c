@@ -929,7 +929,7 @@ int main (int argc, char *argv[])
 		  { "app-util/appbar/dialog-util", create_app_util },
 		  { "calendar", create_calendar },
 		  { "calculator", create_calc },
-#ifdef GTK_HAVE_ACCEL_GROUP
+#ifdef GTK_HAVE_FEATURES_1_1_0
 		  { "canvas", create_canvas },
 #endif
 		  { "clock",	create_clock },

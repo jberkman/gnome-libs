@@ -4,6 +4,6 @@
 
 
 GtkWidget *create_newwin(gboolean normal, gchar *appname, gchar *title);
-#ifdef GTK_HAVE_ACCEL_GROUP
+#ifdef GTK_HAVE_FEATURES_1_1_0
 void create_canvas (void);
 #endif
