@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-libs 2.0\n"
-"POT-Creation-Date: 2001-02-27 13:04+0100\n"
+"POT-Creation-Date: 2001-04-07 12:37-0400\n"
 "PO-Revision-Date: 2001-02-27 13:04+01:00\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian <no@li.org>\n"
@@ -72,46 +72,50 @@ msgstr "Lukk spesifisert vindu."
 msgid "Print the X window ID of the utilized window."
 msgstr "Skriv ut ID for aktivt X-vindu."
 
-#: libgnome/gnome-url.c:117
+#: libgnome/gnome-url.c:124
 #, c-format
 msgid "Error parsing '%s' (empty result)"
 msgstr "Feil under tolking av '%s' (tomt resultat)"
 
-#: libgnome/gnome-url.c:133
+#: libgnome/gnome-url.c:140
 #, c-format
 msgid "Mozilla not found as '%s'"
 msgstr "Mozilla ikke funnet som '%s'"
 
-#: libgnome/gnome-url.c:291 libgnome/gnome-url.c:295
+#: libgnome/gnome-url.c:298 libgnome/gnome-url.c:302
 #, c-format
 msgid "Cannot open a pipe: %s"
 msgstr "Kan ikke åpne et rør: %s"
 
-#: libgnome/gnome-url.c:305 libgnome/gnome-url.c:363
+#: libgnome/gnome-url.c:312 libgnome/gnome-url.c:370
 #, c-format
 msgid "Cannot parse handler template: %s"
 msgstr "Kan ikke lese håndterermal: %s"
 
-#: libgnome/gnome-url.c:315 libgnome/gnome-url.c:319 libgnome/gnome-url.c:368
-#: libgnome/gnome-url.c:372
+#: libgnome/gnome-url.c:322 libgnome/gnome-url.c:326 libgnome/gnome-url.c:375
+#: libgnome/gnome-url.c:379
 #, c-format
 msgid "Cannot execute command '%s'!"
 msgstr "Kan ikke kjøre kommando '%s'!"
 
-#: libgnome/gnome-url.c:351
+#: libgnome/gnome-url.c:358
 #, c-format
 msgid "Command '%s' did not return an ID!"
 msgstr "Kommando '%s' returnerte ikke en ID!"
 
-#: libgnome/gnomelib-init2.c:1203
+#: libgnome/gnome-program.c:1149
 msgid "Help options"
 msgstr "Hjelp-alternativer"
 
-#: libgnome/gnomelib-init2.c:1228
+#: libgnome/gnome-program.c:1154
+msgid "Application options"
+msgstr "Alternativer for applikasjon"
+
+#: libgnome/gnome-program.c:1170
 msgid "Dynamic modules to load"
 msgstr "Dynamiske moduler som skal lastes"
 
-#: libgnome/gnomelib-init2.c:1229
+#: libgnome/gnome-program.c:1171
 msgid "MODULE1,MODULE2,..."
 msgstr "MODUL1,MODUL2,..."
 
@@ -282,109 +286,108 @@ msgstr ""
 msgid "GConf error details: %s\n"
 msgstr "Detaljer om GConf feil: %s\n"
 
-#: libgnomeui/gnome-helpsys.c:117
+#: libgnomeui/gnome-helpsys.c:115
 msgid "_Popup"
 msgstr "_Oppsprett"
 
-#: libgnomeui/gnome-helpsys.c:118
+#: libgnomeui/gnome-helpsys.c:116
 msgid "Show help in temporary popup windows"
 msgstr "Vis hjelp i midlertidig dialogvindu"
 
-#: libgnomeui/gnome-helpsys.c:120
+#: libgnomeui/gnome-helpsys.c:118
 msgid "_Embedded"
 msgstr "_Innebygget"
 
-#: libgnomeui/gnome-helpsys.c:121
+#: libgnomeui/gnome-helpsys.c:119
 msgid "Show help inside the application window"
 msgstr "Vis hjelp inne i applikasjonsvinduet"
 
-#: libgnomeui/gnome-helpsys.c:123
+#: libgnomeui/gnome-helpsys.c:121
 msgid "_Browser"
 msgstr "_Leser"
 
-#: libgnomeui/gnome-helpsys.c:124
+#: libgnomeui/gnome-helpsys.c:122
 msgid "Show help in a help browser window"
 msgstr "Vis hjelp i et hjelpleservindu"
 
-#: libgnomeui/gnome-helpsys.c:172
+#: libgnomeui/gnome-helpsys.c:170
 msgid "App style"
 msgstr "App-stil"
 
-#: libgnomeui/gnome-helpsys.c:173
+#: libgnomeui/gnome-helpsys.c:171
 msgid "The style of GnomeHelpView"
 msgstr "GnomeHelpView stil"
 
-#: libgnomeui/gnome-helpsys.c:182
+#: libgnomeui/gnome-helpsys.c:180
 msgid "App style priority"
 msgstr "Prioritet for app-stil"
 
-#: libgnomeui/gnome-helpsys.c:183
+#: libgnomeui/gnome-helpsys.c:181
 msgid "The priority of style of GnomeHelpView"
 msgstr "Prioriteten for GnomeHelpView stilen"
 
 #. orientation
-#: libgnomeui/gnome-helpsys.c:192 libgnomeui/gnome-helpsys.c:193
+#: libgnomeui/gnome-helpsys.c:190 libgnomeui/gnome-helpsys.c:191
 #: libgnomeui/gnome-paper-selector.c:191
 msgid "Orientation"
 msgstr "Orientering"
 
-#: libgnomeui/gnome-helpsys.c:202
+#: libgnomeui/gnome-helpsys.c:200
 msgid "Toplevel"
 msgstr "Toppnivå"
 
-#: libgnomeui/gnome-helpsys.c:203
+#: libgnomeui/gnome-helpsys.c:201
 msgid "The toplevel widget"
 msgstr "Det øverste widgetet"
 
-#: demos/stock_demo.c:315 libgnomeui/gnome-helpsys.c:219
-#: libgnomeui/gnome-stock.c:581
+#: libgnomeui/gnome-helpsys.c:217 libgnomeui/gnome-stock.c:581
 msgid "Help"
 msgstr "Hjelp"
 
-#: libgnomeui/gnome-helpsys.c:220
+#: libgnomeui/gnome-helpsys.c:218
 msgid "Show help for a specific region of the application"
 msgstr "Vis hjelp for en spesiell del av applikasjonen"
 
-#: libgnomeui/gnome-helpsys.c:225
+#: libgnomeui/gnome-helpsys.c:223
 msgid "Style"
 msgstr "Stil"
 
-#: libgnomeui/gnome-helpsys.c:226
+#: libgnomeui/gnome-helpsys.c:224
 msgid "Change the way help is displayed"
 msgstr "Endre måten hjelpen vises"
 
-#: libgnomeui/gnome-helpsys.c:928 libgnomeui/gnome-helpsys.c:1022
+#: libgnomeui/gnome-helpsys.c:924 libgnomeui/gnome-helpsys.c:1018
 msgid "No help is available for the selected portion of the application."
 msgstr ""
 "Ingen hjelp er tilgjengelig for den valgte delen av denne applikasjonen."
 
 #. FIXME: properly handle the error!
-#: libgnomeui/gnome-helpsys.c:1192
+#: libgnomeui/gnome-helpsys.c:1188
 #, c-format
 msgid "Cought GnomeURL error: %s"
 msgstr "Fanget opp GnomeURL feil: %s"
 
-#: libgnomeui/gnome-href.c:114
+#: libgnomeui/gnome-href.c:112
 msgid "URL"
 msgstr "URL"
 
-#: libgnomeui/gnome-href.c:115
+#: libgnomeui/gnome-href.c:113
 msgid "The URL that GnomeHRef activates"
 msgstr "URLen som GnomeHRef aktiverer"
 
-#: libgnomeui/gnome-href.c:122
+#: libgnomeui/gnome-href.c:120
 msgid "Text"
 msgstr "Tekst"
 
-#: libgnomeui/gnome-href.c:123
+#: libgnomeui/gnome-href.c:121
 msgid "The text on the button"
 msgstr "Teksten på knappen"
 
-#: libgnomeui/gnome-href.c:124
+#: libgnomeui/gnome-href.c:122
 msgid "End World Hunger"
 msgstr "End world hunger"
 
-#: libgnomeui/gnome-about.c:1169 libgnomeui/gnome-href.c:399
+#: libgnomeui/gnome-about.c:1169 libgnomeui/gnome-href.c:397
 msgid ""
 "Error occured while trying to launch the URL handler.\n"
 "Please check the settings in the Control Center if they are correct."
@@ -494,35 +497,35 @@ msgstr "Plassér ikoner"
 msgid "Autoarrange icons"
 msgstr "Plassér ikoner automatisk"
 
-#: libgnomeui/gnome-recently-used.c:113
+#: libgnomeui/gnome-recently-used.c:111
 msgid "App Specific"
 msgstr "Applikasjonsspesifikk"
 
-#: libgnomeui/gnome-recently-used.c:114
+#: libgnomeui/gnome-recently-used.c:112
 msgid "Is this list application specific"
 msgstr "Er denne listen applikasjonsspesifikk"
 
-#: libgnomeui/gnome-recently-used.c:897
+#: libgnomeui/gnome-recently-used.c:893
 #, c-format
 msgid "bad GnomeRecentDocument attribute: %s\n"
 msgstr "ugyldig GnomeRecentDocument attributt: %s\n"
 
-#: libgnomeui/gnome-recently-used.c:1127
+#: libgnomeui/gnome-recently-used.c:1123
 msgid "Unknown"
 msgstr "Ukjent"
 
 #. browse button ...
 #: libcompat/gnome-file-entry.c:445 libcompat/gnome-spell.c:620
 #: libcompat/gnome-spell.c:637 libcompat/gnome-spell.c:654
-#: libgnomeui/gnome-selector.c:1040
+#: libgnomeui/gnome-selector.c:1037
 msgid "Browse..."
 msgstr "Bla gjennom..."
 
-#: libgnomeui/gnome-selector.c:1051
+#: libgnomeui/gnome-selector.c:1048
 msgid "Default..."
 msgstr "Forvalgt..."
 
-#: libgnomeui/gnome-selector.c:1062
+#: libgnomeui/gnome-selector.c:1059
 msgid "Clear..."
 msgstr "Tøm..."
 
@@ -534,12 +537,12 @@ msgstr "Brukernavn:"
 msgid "Password:"
 msgstr "Passord:"
 
-#: libgnome/gnomelib-init.c:200 libgnome/gnomelib-init.c:214
+#: libgnome/gnomelib-init.c:158 libgnome/gnomelib-init.c:172
 #, c-format
 msgid "Could not create per-user gnome configuration directory `%s': %s\n"
 msgstr "Kunn ikke opprette per-bruker gnome konfigurasjonskatalog `%s': %s\n"
 
-#: libgnome/gnomelib-init.c:223
+#: libgnome/gnomelib-init.c:181
 #, c-format
 msgid ""
 "Could not set mode 0700 on private per-user gnome configuration directory "
@@ -548,7 +551,7 @@ msgstr ""
 "Kunne ikke sette modus 0700 på privat per-bruker gnome konfigurasjonskatalog "
 "`%s': %s\n"
 
-#: libgnome/gnomelib-init.c:230
+#: libgnome/gnomelib-init.c:188
 #, c-format
 msgid "Could not create gnome accelerators directory `%s': %s\n"
 msgstr "Kunne ikke opprette gnome akselleratorkatalog `%s': %s\n"
@@ -565,7 +568,6 @@ msgstr "Forfattere:"
 msgid "Authors: "
 msgstr "Forfattere: "
 
-#: demos/stock_demo.c:307 demos/winhints_demo.c:256
 #: libgnomeui/gnome-about.c:1075
 msgid "About"
 msgstr "Om"
@@ -960,11 +962,11 @@ msgstr "  - OK? (ja eller nei)"
 msgid "Progress"
 msgstr "Fremgang"
 
-#: libgnomeui/gnome-app.c:151
+#: libgnomeui/gnome-app.c:149
 msgid "App ID"
 msgstr "App-ID"
 
-#: libgnomeui/gnome-app.c:152
+#: libgnomeui/gnome-app.c:150
 msgid "The application ID string"
 msgstr "Applikasjonens ID-streng"
 
@@ -992,64 +994,64 @@ msgstr "Fjern forbindelse til sesjonsbehandler"
 msgid "Session management"
 msgstr "Sesjonshåndtering"
 
-#: libgnomeui/gnome-client.c:2340
+#: libgnomeui/gnome-client.c:2345
 msgid "Cancel Logout"
 msgstr "Avbryt utlogging"
 
-#: libgnomeui/gnome-color-picker.c:423
+#: libgnomeui/gnome-color-picker.c:421
 msgid "Received invalid color data\n"
 msgstr "Mottok ugyldige fargedata\n"
 
-#: libgnomeui/gnome-color-picker.c:487
+#: libgnomeui/gnome-color-picker.c:485
 msgid "Pick a color"
 msgstr "Velg en farge"
 
-#: libgnomeui/gnome-dateedit.c:361
+#: libgnomeui/gnome-dateedit.c:359
 msgid "Time"
 msgstr "Tid"
 
-#: libgnomeui/gnome-dateedit.c:362
+#: libgnomeui/gnome-dateedit.c:360
 msgid "The time currentlyselected"
 msgstr "Valgt tid"
 
-#: libgnomeui/gnome-dateedit.c:373
+#: libgnomeui/gnome-dateedit.c:371
 msgid "DateEdit Flags"
 msgstr "DateEdit flagg"
 
-#: libgnomeui/gnome-dateedit.c:374
+#: libgnomeui/gnome-dateedit.c:372
 msgid "Flags for how DateEdit looks"
 msgstr "Flagg for hvordanm DateEdit ser ut"
 
-#: libgnomeui/gnome-dateedit.c:383
+#: libgnomeui/gnome-dateedit.c:381
 msgid "Lower Hour"
 msgstr "Laveste tid"
 
-#: libgnomeui/gnome-dateedit.c:384
+#: libgnomeui/gnome-dateedit.c:382
 msgid "Lower hour in the time popup selector"
 msgstr "Laveste timetall i velgeren"
 
-#: libgnomeui/gnome-dateedit.c:394
+#: libgnomeui/gnome-dateedit.c:392
 msgid "Upper Hour"
 msgstr "Øvre tid"
 
-#: libgnomeui/gnome-dateedit.c:395
+#: libgnomeui/gnome-dateedit.c:393
 msgid "Upper hour in the time popup selector"
 msgstr "Øvre time i velgeren"
 
-#: libgnomeui/gnome-dateedit.c:405
+#: libgnomeui/gnome-dateedit.c:403
 msgid "Initial Time"
 msgstr "Opprinnelig tid"
 
-#: libgnomeui/gnome-dateedit.c:406
+#: libgnomeui/gnome-dateedit.c:404
 msgid "The initial time"
 msgstr "Opprinnelig tid"
 
 #. Calendar label, only shown if the date editor has a time field
-#: libgnomeui/gnome-dateedit.c:651
+#: libgnomeui/gnome-dateedit.c:647
 msgid "Calendar"
 msgstr "Kalender"
 
-#: libgnomeui/gnome-dateedit.c:847
+#: libgnomeui/gnome-dateedit.c:843
 msgid "gnome_date_edit_get_date deprecated, use gnome_date_edit_get_time"
 msgstr "gnome_date_edit_get_date har gått ut, bruk gnome_date_edit_get_time"
 
@@ -1065,116 +1067,102 @@ msgstr "Fullfør"
 msgid "Font"
 msgstr "Skrifttype"
 
-#: libgnomeui/gnome-icon-entry.c:351 libgnomeui/gnome-icon-entry.c:720
-#: libgnomeui/gnome-icon-entry.c:737
+#: libgnomeui/gnome-icon-entry.c:348 libgnomeui/gnome-icon-entry.c:717
+#: libgnomeui/gnome-icon-entry.c:734
 msgid "No Icon"
 msgstr "Uten ikon"
 
-#: libgnomeui/gnome-icon-sel.c:280
-#, c-format
-msgid "GnomeIconSelection: '%s' does not exist or is not a directory"
-msgstr "GnomeIconSelection: '%s' eksisterer ikke eller er ikke en katalog"
-
-#: libgnomeui/gnome-icon-sel.c:288
-#, c-format
-msgid "GnomeIconSelection: couldn't open directory '%s'"
-msgstr "GnomeIconSelection: kunne ikke åpne katalog '%s'"
-
-#: libgnomeui/gnome-icon-sel.c:361
-msgid "Loading Icons..."
-msgstr "Laster ikoner..."
-
-#: libgnomeui/gnome-init.c:81
+#: libgnomeui/gnome-init.c:84
 msgid "Gdk debugging flags to set"
 msgstr "Gdk avlusingsflagg som skal slås på"
 
-#: libgnomeui/gnome-init.c:81 libgnomeui/gnome-init.c:84
-#: libgnomeui/gnome-init.c:114 libgnomeui/gnome-init.c:117
+#: libgnomeui/gnome-init.c:84 libgnomeui/gnome-init.c:87
+#: libgnomeui/gnome-init.c:117 libgnomeui/gnome-init.c:120
 msgid "FLAGS"
 msgstr "FLAGG"
 
-#: libgnomeui/gnome-init.c:84
+#: libgnomeui/gnome-init.c:87
 msgid "Gdk debugging flags to unset"
 msgstr "Gdk avlusingsflagg som skal slås av"
 
-#: libgnomeui/gnome-init.c:87 libgnomeui/gnome-init.c:241
+#: libgnomeui/gnome-init.c:90 libgnomeui/gnome-init.c:254
 msgid "X display to use"
 msgstr "X-display som skal brukes"
 
-#: libgnomeui/gnome-init.c:87 libgnomeui/gnome-init.c:241
+#: libgnomeui/gnome-init.c:90 libgnomeui/gnome-init.c:254
 msgid "DISPLAY"
 msgstr "DISPLAY"
 
-#: libgnomeui/gnome-init.c:90
+#: libgnomeui/gnome-init.c:93
 msgid "Make X calls synchronous"
 msgstr "Bruk synkrone X-kall"
 
-#: libgnomeui/gnome-init.c:93
+#: libgnomeui/gnome-init.c:96
 msgid "Don't use X shared memory extension"
 msgstr "Ikke bruk X-utvidelse for delt minne"
 
-#: libgnomeui/gnome-init.c:96
+#: libgnomeui/gnome-init.c:99
 msgid "Program name as used by the window manager"
 msgstr "Programnavn som brukt av vindusbehandleren"
 
-#: libgnomeui/gnome-init.c:96
+#: libgnomeui/gnome-init.c:99
 msgid "NAME"
 msgstr "NAVN"
 
-#: libgnomeui/gnome-init.c:99
+#: libgnomeui/gnome-init.c:102
 msgid "Program class as used by the window manager"
 msgstr "Programklasse som brukt av vindusbehandleren"
 
-#: libgnomeui/gnome-init.c:99
+#: libgnomeui/gnome-init.c:102
 msgid "CLASS"
 msgstr "KLASSE"
 
-#: libgnomeui/gnome-init.c:102
+#: libgnomeui/gnome-init.c:105
 msgid "HOST"
 msgstr "VERT"
 
-#: libgnomeui/gnome-init.c:105
+#: libgnomeui/gnome-init.c:108
 msgid "PORT"
 msgstr "PORT"
 
-#: libgnomeui/gnome-init.c:108 libgnomeui/gnome-init.c:111
+#: libgnomeui/gnome-init.c:111 libgnomeui/gnome-init.c:114
 msgid "STYLE"
 msgstr "STIL"
 
-#: libgnomeui/gnome-init.c:114
+#: libgnomeui/gnome-init.c:117
 msgid "Gtk+ debugging flags to set"
 msgstr "Gtk+ avlusingsflagg som skal slås på"
 
-#: libgnomeui/gnome-init.c:117
+#: libgnomeui/gnome-init.c:120
 msgid "Gtk+ debugging flags to unset"
 msgstr "Gtk+ avlusingsflagg som skal slås av"
 
-#: libgnomeui/gnome-init.c:120
+#: libgnomeui/gnome-init.c:123
 msgid "Make all warnings fatal"
 msgstr "Gjør alle advarsler til fatale"
 
-#: libgnomeui/gnome-init.c:123
+#: libgnomeui/gnome-init.c:126
 msgid "Load an additional Gtk module"
 msgstr "Last tilleggsmodul for Gtk+"
 
-#: libgnomeui/gnome-init.c:123
+#: libgnomeui/gnome-init.c:126
 msgid "MODULE"
 msgstr "MODUL"
 
 #. dialog display isn't working out
-#: libgnomeui/gnome-init.c:473
+#: libgnomeui/gnome-init.c:498
 msgid "Multiple segmentation faults occurred; can't display error dialog\n"
 msgstr "Flere segmenteringsfeil oppstod; kan ikke vise feildialogen\n"
 
-#: libgnomeui/gnome-init.c:636
+#: libgnomeui/gnome-init.c:669
 msgid "GTK options"
 msgstr "GTK-alternativer"
 
-#: libgnomeui/gnome-init.c:637
+#: libgnomeui/gnome-init.c:670
 msgid "GNOME GUI options"
 msgstr "GNOME GUI-alternativer"
 
-#: libgnomeui/gnome-init.c:788
+#: libgnomeui/gnome-init.c:821
 #, c-format
 msgid "%s options"
 msgstr "%s-alternativer"
@@ -1286,7 +1274,7 @@ msgstr "Bruk"
 msgid "Cancel"
 msgstr "Avbryt"
 
-#: demos/stock_demo.c:169 libgnomeui/gnome-stock.c:578
+#: libgnomeui/gnome-stock.c:578
 msgid "Close"
 msgstr "Lukk"
 
@@ -1377,45 +1365,45 @@ msgid "Please visit the GNOME Application Crash page for more information"
 msgstr "Vennligst besøk GNOME Applikasjonskrasj-siden for mer informasjon"
 
 #. Pixmap
-#: test-gnome/testgnome.c:713
+#: test-gnome/testgnome.c:715
 msgid "Default Pixmap"
 msgstr "Forvalgt bilde"
 
-#: test-gnome/testgnome.c:721 test-gnome/testgnome.c:762
-#: test-gnome/testgnome.c:787
+#: test-gnome/testgnome.c:723 test-gnome/testgnome.c:764
+#: test-gnome/testgnome.c:789
 msgid "If you choose a font it will appear here"
 msgstr "Hvis du velger en skrifttype vil den vises her"
 
 #. Font_Info
-#: test-gnome/testgnome.c:728
+#: test-gnome/testgnome.c:730
 msgid "Font Info"
 msgstr "Info om skrifttye"
 
-#: test-gnome/testgnome.c:738
+#: test-gnome/testgnome.c:740
 msgid "Use Font in button with size"
 msgstr "Bruk skrifttype på knapp med størrelse"
 
-#: test-gnome/testgnome.c:745
+#: test-gnome/testgnome.c:747
 msgid "Show font size"
 msgstr "Vis skrifttypens størrelse"
 
-#: test-gnome/testgnome.c:781
+#: test-gnome/testgnome.c:783
 msgid "This is an hbox with pixmap and text"
 msgstr "Dette er en hboks med bilde og tekst"
 
-#: test-gnome/testgnome.c:993
+#: test-gnome/testgnome.c:995
 msgid "The user chose Yes/OK with data:\n"
 msgstr "Brukeren valgte Ja/OK med data:\n"
 
-#: test-gnome/testgnome.c:997
+#: test-gnome/testgnome.c:999
 msgid "The user chose No/Cancel with data:\n"
 msgstr "Brukeren valgte Nei/Avbryt med data:\n"
 
-#: test-gnome/testgnome.c:1008
+#: test-gnome/testgnome.c:1010
 msgid "Weird number in reply callback"
 msgstr "Rart nummer i tilbakeringingssvaret"
 
-#: test-gnome/testgnome.c:1860
+#: test-gnome/testgnome.c:1862
 msgid "Test GNOME"
 msgstr "Test GNOME"
 
@@ -1600,6 +1588,20 @@ msgstr "-adobe-helvetica-medium-r-normal-*-*-120-*-*-p-*-*-*"
 msgid "Select file"
 msgstr "Velg fil"
 
+#: libcompat/gnome-icon-sel.c:280
+#, c-format
+msgid "GnomeIconSelection: '%s' does not exist or is not a directory"
+msgstr "GnomeIconSelection: '%s' eksisterer ikke eller er ikke en katalog"
+
+#: libcompat/gnome-icon-sel.c:288
+#, c-format
+msgid "GnomeIconSelection: couldn't open directory '%s'"
+msgstr "GnomeIconSelection: kunne ikke åpne katalog '%s'"
+
+#: libcompat/gnome-icon-sel.c:361
+msgid "Loading Icons..."
+msgstr "Laster ikoner..."
+
 #: libcompat/gnome-number-entry.c:217
 msgid "Calculator"
 msgstr "Kalkulator"
@@ -1759,217 +1761,165 @@ msgstr "Stav"
 msgid "Configure"
 msgstr "Konfigurer"
 
-#: demos/mdi_demo.c:116
-msgid "Child Item 1"
-msgstr "Avkom-oppføring 1"
+#~ msgid "Child Item 1"
+#~ msgstr "Avkom-oppføring 1"
 
-#: demos/mdi_demo.c:117
-msgid "Hint for item 1"
-msgstr "Hint for oppføring 1"
+#~ msgid "Hint for item 1"
+#~ msgstr "Hint for oppføring 1"
 
-#: demos/mdi_demo.c:119
-msgid "Child Item 2"
-msgstr "Avkom-oppføring 2"
+#~ msgid "Child Item 2"
+#~ msgstr "Avkom-oppføring 2"
 
-#: demos/mdi_demo.c:120
-msgid "Hint for item 2"
-msgstr "Hint for oppføring 2"
+#~ msgid "Hint for item 2"
+#~ msgstr "Hint for oppføring 2"
 
-#: demos/stock_demo.c:137
-msgid "New..."
-msgstr "Ny..."
+#~ msgid "New..."
+#~ msgstr "Ny..."
 
-#: demos/stock_demo.c:145
-msgid "Open..."
-msgstr "Åpne..."
+#~ msgid "Open..."
+#~ msgstr "Åpne..."
 
-#: demos/stock_demo.c:153
-msgid "Save"
-msgstr "Lagre"
+#~ msgid "Save"
+#~ msgstr "Lagre"
 
-#: demos/stock_demo.c:161
-msgid "Save as..."
-msgstr "Lagre som..."
+#~ msgid "Save as..."
+#~ msgstr "Lagre som..."
 
-#: demos/stock_demo.c:181
-msgid "Print..."
-msgstr "Skriv ut..."
+#~ msgid "Print..."
+#~ msgstr "Skriv ut..."
 
-#: demos/stock_demo.c:189
-msgid "Setup Page..."
-msgstr "Sideoppsett..."
+#~ msgid "Setup Page..."
+#~ msgstr "Sideoppsett..."
 
-#: demos/stock_demo.c:198
-msgid "Quit"
-msgstr "Avslutt"
+#~ msgid "Quit"
+#~ msgstr "Avslutt"
 
-#: demos/stock_demo.c:209
-msgid "File"
-msgstr "Fil"
+#~ msgid "File"
+#~ msgstr "Fil"
 
-#: demos/stock_demo.c:216
-msgid "Undo"
-msgstr "Angre"
+#~ msgid "Undo"
+#~ msgstr "Angre"
 
-#: demos/stock_demo.c:224
-msgid "Redo"
-msgstr "Gjenopprett"
+#~ msgid "Redo"
+#~ msgstr "Gjenopprett"
 
-#: demos/stock_demo.c:233
-msgid "Delete"
-msgstr "Slett"
+#~ msgid "Delete"
+#~ msgstr "Slett"
 
-#: demos/stock_demo.c:238
-msgid "Cut"
-msgstr "Klipp ut"
+#~ msgid "Cut"
+#~ msgstr "Klipp ut"
 
-#: demos/stock_demo.c:246
-msgid "Copy"
-msgstr "Kopier"
+#~ msgid "Copy"
+#~ msgstr "Kopier"
 
-#: demos/stock_demo.c:254
-msgid "Paste"
-msgstr "Lim inn"
+#~ msgid "Paste"
+#~ msgstr "Lim inn"
 
-#: demos/stock_demo.c:266
-msgid "Properties..."
-msgstr "Egenskaper..."
+#~ msgid "Properties..."
+#~ msgstr "Egenskaper..."
 
-#: demos/stock_demo.c:276
-msgid "Preferences..."
-msgstr "Brukervalg..."
+#~ msgid "Preferences..."
+#~ msgstr "Brukervalg..."
 
-#: demos/stock_demo.c:291
-msgid "Scores..."
-msgstr "Poengsummer..."
+#~ msgid "Scores..."
+#~ msgstr "Poengsummer..."
 
-#: demos/stock_demo.c:299
-msgid "Edit"
-msgstr "Rediger"
+#~ msgid "Edit"
+#~ msgstr "Rediger"
 
-#: demos/winhints_demo.c:46
-msgid "wmhints-test"
-msgstr "wmhints-test"
+#~ msgid "wmhints-test"
+#~ msgstr "wmhints-test"
 
-#: demos/winhints_demo.c:46
-msgid "winhints-test"
-msgstr "winhints-test"
+#~ msgid "winhints-test"
+#~ msgstr "winhints-test"
 
-#: demos/winhints_demo.c:71
-msgid "Layer:"
-msgstr "Lag:"
+#~ msgid "Layer:"
+#~ msgstr "Lag:"
 
-#: demos/winhints_demo.c:94
-msgid "Above Dock"
-msgstr "Over dokk"
+#~ msgid "Above Dock"
+#~ msgstr "Over dokk"
 
-#: demos/winhints_demo.c:98
-msgid "Dock"
-msgstr "Dokk"
+#~ msgid "Dock"
+#~ msgstr "Dokk"
 
-#: demos/winhints_demo.c:102
-msgid "On Top"
-msgstr "Øverst"
+#~ msgid "On Top"
+#~ msgstr "Øverst"
 
-#: demos/winhints_demo.c:106
-msgid "Normal"
-msgstr "Normal"
+#~ msgid "Normal"
+#~ msgstr "Normal"
 
-#: demos/winhints_demo.c:110
-msgid "Below"
-msgstr "Under"
+#~ msgid "Below"
+#~ msgstr "Under"
 
-#: demos/winhints_demo.c:114
-msgid "Desktop"
-msgstr "Skrivebord"
+#~ msgid "Desktop"
+#~ msgstr "Skrivebord"
 
-#: demos/winhints_demo.c:122
-msgid "Set Layer"
-msgstr "Sett lag"
+#~ msgid "Set Layer"
+#~ msgstr "Sett lag"
 
-#: demos/winhints_demo.c:129
-msgid "Workspaces:"
-msgstr "Arbeidsområder:"
+#~ msgid "Workspaces:"
+#~ msgstr "Arbeidsområder:"
 
-#: demos/winhints_demo.c:151
-msgid "Sticky"
-msgstr "Klebrig"
+#~ msgid "Sticky"
+#~ msgstr "Klebrig"
 
-#: demos/winhints_demo.c:155
-msgid "Set Workspace"
-msgstr "Sett arbeidsplass"
+#~ msgid "Set Workspace"
+#~ msgstr "Sett arbeidsplass"
 
-#: demos/winhints_demo.c:165
-msgid "State Toggles:"
-msgstr "Tilstandsvelgere:"
+#~ msgid "State Toggles:"
+#~ msgstr "Tilstandsvelgere:"
 
-#: demos/winhints_demo.c:175
-msgid "Minimized"
-msgstr "Minimert"
+#~ msgid "Minimized"
+#~ msgstr "Minimert"
 
-#: demos/winhints_demo.c:179
-msgid "Maximized Vertical"
-msgstr "Maksimert vertikalt"
+#~ msgid "Maximized Vertical"
+#~ msgstr "Maksimert vertikalt"
 
-#: demos/winhints_demo.c:183
-msgid "Maximized Horizontal"
-msgstr "Maksimert horisontalt"
+#~ msgid "Maximized Horizontal"
+#~ msgstr "Maksimert horisontalt"
 
-#: demos/winhints_demo.c:187
-msgid "Hidden"
-msgstr "Skjult"
+#~ msgid "Hidden"
+#~ msgstr "Skjult"
 
-#: demos/winhints_demo.c:191
-msgid "Shaded"
-msgstr "Skyggelagt"
+#~ msgid "Shaded"
+#~ msgstr "Skyggelagt"
 
-#: demos/winhints_demo.c:195
-msgid "Fixed Position"
-msgstr "Fast posisjon"
+#~ msgid "Fixed Position"
+#~ msgstr "Fast posisjon"
 
-#: demos/winhints_demo.c:199
-msgid "Ignore on Arrange"
-msgstr "Ignorer ved plassering"
+#~ msgid "Ignore on Arrange"
+#~ msgstr "Ignorer ved plassering"
 
-#: demos/winhints_demo.c:203
-msgid "Set State"
-msgstr "Set tilstand"
+#~ msgid "Set State"
+#~ msgstr "Set tilstand"
 
-#: demos/winhints_demo.c:209
-msgid "Skip Toggles:"
-msgstr "Hopp over velgere:"
+#~ msgid "Skip Toggles:"
+#~ msgstr "Hopp over velgere:"
 
-#: demos/winhints_demo.c:219
-msgid "Skip Focus"
-msgstr "Hopp over fokus"
+#~ msgid "Skip Focus"
+#~ msgstr "Hopp over fokus"
 
-#: demos/winhints_demo.c:223
-msgid "Skip Window Menu"
-msgstr "Hopp over vindusmeny"
+#~ msgid "Skip Window Menu"
+#~ msgstr "Hopp over vindusmeny"
 
-#: demos/winhints_demo.c:227
-msgid "Skip Taskbar / WinList"
-msgstr "Hopp over oppgavelinje / vindusliste"
+#~ msgid "Skip Taskbar / WinList"
+#~ msgstr "Hopp over oppgavelinje / vindusliste"
 
-#: demos/winhints_demo.c:231
-msgid "Set Skip"
-msgstr "Hopp over"
+#~ msgid "Set Skip"
+#~ msgstr "Hopp over"
 
-#: demos/winhints_demo.c:410
-msgid "WIN_HINTS Test"
-msgstr "WIN_HINTS test"
+#~ msgid "WIN_HINTS Test"
+#~ msgstr "WIN_HINTS test"
 
-#: demos/winhints_demo.c:411
-msgid "Copyright (C) 1998"
-msgstr "Copyright (C) 1998"
+#~ msgid "Copyright (C) 1998"
+#~ msgstr "Copyright (C) 1998"
 
-#: demos/winhints_demo.c:413
-msgid ""
-"Simple test app to check how the WIN_HINTS work.\n"
-"And to test the gnome_win_hints_* functions for errors. :)"
-msgstr ""
-"Enkel testapplikasjon for å sjekke hvordan WIN_HINTS virker.\n"
-"Og for å teste gnome_win_hints_*-funksjonene for feil. :)"
+#~ msgid ""
+#~ "Simple test app to check how the WIN_HINTS work.\n"
+#~ "And to test the gnome_win_hints_* functions for errors. :)"
+#~ msgstr ""
+#~ "Enkel testapplikasjon for å sjekke hvordan WIN_HINTS virker.\n"
+#~ "Og for å teste gnome_win_hints_*-funksjonene for feil. :)"
 
 #~ msgid ""
 #~ "gnome_appbar_set_progress deprecated, use "
