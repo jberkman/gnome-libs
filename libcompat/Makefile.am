@@ -50,7 +50,8 @@ libgnome_1_compat_2_a_SOURCES =\
 	gnome-help.c			\
 	gnome-dentry.c			\
 	gnome-popt.c			\
-	gnome-history.c
+	gnome-history.c			\
+	gnome-icon-sel.c
 
 # This probably won't work right
 #	gnome-canvas-image.c
@@ -79,7 +80,8 @@ libgnome1compatinclude_HEADERS = \
 	gnome-help.h			\
 	gnome-dentry.h			\
 	gnome-popt.h			\
-	gnome-history.h
+	gnome-history.h			\
+	gnome-icon-sel.h
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = libgnome-1-compat-2.0.pc
