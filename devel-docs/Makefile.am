@@ -5,7 +5,7 @@ gnome-dev-info.html: gnome-dev-info.sgml libgnomeui.sgml libgnome.sgml
 	-db2html gnome-dev-info.sgml
 
 libgnomeui.sgml:
-	if [ -x `which gdoc` ]; then \
+	if $(SHELL) -c 'gdoc -V > /dev/null 2>&1 < /dev/null'; then \
 ## Inputs and generated files all are in srcdir.
 		cd $(srcdir); \
 		: > libgnomeui.sgml; \
@@ -17,13 +17,13 @@ libgnomeui.sgml:
 	fi
 
 libgnome.sgml:
-	if [ -x `which gdoc` ]; then \
+	if $(SHELL) -c 'gdoc -V > /dev/null 2>&1 < /dev/null'; then \
 ## Inputs and generated files all are in srcdir.
 		cd $(srcdir); \
 		: > libgnome.sgml; \
 ## FIXME: should use explicit perl invocation here.
 		for i in ../libgnome/*.h; do \
-			gdoc/gdoc.pl $$i >> libgnome.sgml; \
+			./gdoc/gdoc.pl $$i >> libgnome.sgml; \
 		done; \
 		cat trailer.sgml >> libgnome.sgml; \
 	fi
