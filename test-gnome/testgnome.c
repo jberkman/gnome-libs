@@ -1675,6 +1675,61 @@ create_dentry_edit(void)
 	gtk_widget_show_all(app);
 }
 
+static void
+href_cb(GtkObject *button)
+{
+	GtkWidget *href = gtk_object_get_data(button, "href");
+	GtkWidget *url_ent = gtk_object_get_data(button, "url");
+	GtkWidget *label_ent = gtk_object_get_data(button, "label");
+	gchar *url, *label;
+
+	url = gtk_entry_get_text(GTK_ENTRY(url_ent));
+	label = gtk_entry_get_text(GTK_ENTRY(label_ent));
+	if (!label || ! label[0])
+		label = url;
+	gnome_href_set_url(GNOME_HREF(href), url);
+	gnome_href_set_label(GNOME_HREF(href), label);
+}
+
+static void
+create_href(void)
+{
+	GtkWidget *app, *vbox, *href, *ent1, *ent2, *wid;
+
+	app = create_newwin(TRUE,"testGNOME","HRef test");
+	vbox = gtk_vbox_new(FALSE, 5);
+	gtk_container_set_border_width(GTK_CONTAINER(vbox), 5);
+	gnome_app_set_contents(GNOME_APP(app), vbox);
+
+	href = gnome_href_new("http://www.gnome.org/", "Gnome Website");
+	gtk_box_pack_start(GTK_BOX(vbox), href, FALSE, FALSE, 0);
+
+	wid = gtk_hseparator_new();
+	gtk_box_pack_start(GTK_BOX(vbox), wid, TRUE, FALSE, 0);
+
+	wid = gtk_label_new("The launch behaviour of the\n"
+			    "configured with the control center");
+	gtk_box_pack_start(GTK_BOX(vbox), wid, TRUE, FALSE, 0);
+
+	ent1 = gtk_entry_new();
+	gtk_entry_set_text(GTK_ENTRY(ent1), "http://www.gnome.org/");
+	gtk_box_pack_start(GTK_BOX(vbox), ent1, TRUE, TRUE, 0);
+	
+	ent2 = gtk_entry_new();
+	gtk_entry_set_text(GTK_ENTRY(ent2), "Gnome Website");
+	gtk_box_pack_start(GTK_BOX(vbox), ent2, TRUE, TRUE, 0);
+
+	wid = gtk_button_new_with_label("set href props");
+	gtk_object_set_data(GTK_OBJECT(wid), "href", href);
+	gtk_object_set_data(GTK_OBJECT(wid), "url", ent1);
+	gtk_object_set_data(GTK_OBJECT(wid), "label", ent2);
+	gtk_signal_connect(GTK_OBJECT(wid), "clicked",
+			   GTK_SIGNAL_FUNC(href_cb), NULL);
+	gtk_box_pack_start(GTK_BOX(vbox), wid, TRUE, TRUE, 0);
+
+	gtk_widget_show_all(app);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -1702,6 +1757,7 @@ main (int argc, char *argv[])
 		  { "less", create_less },
 		  { "pixmap", create_pixmap },
 		  { "dentry edit", create_dentry_edit },
+		  { "href", create_href },
 		  { "(Reload preferences)", gnome_preferences_load },
 /*	{ "prop box", create_property_box }, */
 	  };
