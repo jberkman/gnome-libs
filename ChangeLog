@@ -1,3 +1,10 @@
+1998-10-03  Martin Baulig  <martin@home-of-linux.org>
+
+	* configure.in (--disable-gnome-hello, --disable-test-gnome):
+	New parameters to configure.in to disable building of gnome-hello,
+	test-gnome and test-suite, it's enabled by default.
+	(COMPILE_GNOME_HELLO, COMPILE_TEST_GNOME): New automake conditionals.
+
 1998-10-02  Michael Lausch  <mla@gams.at>
 
 	* libgnorba/orbitgtk.c (gnome_name_service_get): If the

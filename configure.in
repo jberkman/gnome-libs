@@ -239,6 +239,15 @@ dnl ORBit checks
 dnl
 GNOME_ORBIT_HOOK([have_orbit=true],[])
 AM_CONDITIONAL(HAVE_ORBIT, test x$have_orbit = xtrue)
+
+dnl
+dnl Gnome-Hello
+dnl
+AC_ARG_ENABLE(gnome-hello, [  --enable-gnome-hello    compile the gnome-hello examples [default=yes]],[compile_gnome_hello="$enableval"],[compile_gnome_hello=yes])
+AM_CONDITIONAL(COMPILE_GNOME_HELLO, test x$compile_gnome_hello = xyes)
+
+AC_ARG_ENABLE(test-gnome, [  --enable-test-gnome     compile the test-gnome examples [default=yes]],[compile_test_gnome="$enableval"],[compile_test_gnome=yes])
+AM_CONDITIONAL(COMPILE_TEST_GNOME, test x$compile_test_gnome = xyes)
 	
 dnl AC_CONFIG_SUBDIRS(libgtktty)
 

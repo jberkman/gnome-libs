@@ -12,10 +12,22 @@ else
 GNORBA = 
 endif
 
+if COMPILE_GNOME_HELLO
+gnome_hello = gnome-hello
+else
+gnome_hello =
+endif
+
+if COMPILE_TEST_GNOME
+test_gnome = test-gnome test-suite
+else
+test_gnome =
+endif
+
 SUBDIRS = po intl support macros \
 	tools \
-	libgnome libgnomeui gtk-xmhtml gnome-hello zvt \
-	$(GNORBA) idl test-gnome test-suite devel-docs
+	libgnome libgnomeui gtk-xmhtml $(gnome_hello) zvt \
+	$(GNORBA) idl $(test_gnome) devel-docs
 
 include_HEADERS = gnome.h
 
