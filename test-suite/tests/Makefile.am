@@ -1,4 +1,4 @@
-noinst_PROGRAMS = fileconvert metadata parse-path skel split trigs
+noinst_PROGRAMS = fileconvert parse-path skel split trigs
 
 INCLUDES =					\
 	-I$(top_builddir) -I$(top_srcdir)	\
