@@ -1,4 +1,10 @@
-SUBDIRS = gnome gnomeui ui-guide templates 
+if ENABLE_GTK_DOC
+gtk_doc_SUBDIRS = gnome gnomeui templates
+else
+gtk_doc_SUBDIRS =
+endif
+
+SUBDIRS = $(gtk_doc_SUBDIRS) ui-guide
 
 htmldir = $(prefix)/html
 html_DATA = gnome-dev-info.html
