@@ -62,7 +62,23 @@ void vt_clear_line_portion(struct vt_em *vt, int start_col, int end_col);
 
 static unsigned char vt_remap_dec[256];
 
-void vt_dump(struct vt_em *vt)
+#ifdef DEBUG
+static void dump_scrollback(struct vt_em *vt)
+{
+  struct vt_line *wn, *nn;
+
+  printf("****** scrollback list:\n");
+  
+  wn=&vt->scrollback.head;
+  wn=&vt->lines.head;
+  while (wn) {
+    printf(" %p: p<: %p, n>:%p\n", wn, wn->prev, wn->next);
+    wn = wn->next;
+  }
+}
+#endif
+
+static void vt_dump(struct vt_em *vt)
 {
   struct vt_line *wn, *nn;
   int i;
@@ -179,7 +195,7 @@ void vt_scrollback_set(struct vt_em *vt, int lines)
 
   it is up-to the caller to free or 'discard' the old line
 */
-void vt_scrollback_add(struct vt_em *vt, struct vt_line *wn)
+static void vt_scrollback_add(struct vt_em *vt, struct vt_line *wn)
 {
   struct vt_line *ln;
 
@@ -1384,17 +1400,48 @@ void vt_resize(struct vt_em *vt, int width, int height, int pixwidth, int pixhei
       d(printf("scroll top too big, reset\n"));
     }
   } else if (height>vt->height) {
-    /* if we just got bigger, add new lines to the bottom */
-    /* FIXME: this should look in the scrollback buffer if it exists 
-      no - would upset the memory allocation of the scrollback buffer */
+    /* if we just got bigger, try and recover scrollback lines into the top
+       of the buffer, or failing that, add new lines to the bottom */
     count = (height-vt->height);
     d(printf("adding %d lines to buffer window\n", count));
     for(i=0;i<count;i++) {
-      vt_list_addtail(&vt->lines, (struct vt_listnode *)vt_newline(vt));
+#ifdef SCROLLBACK_BUFFER
+      /* if scrollback exists, remove it from the buffer and add it to the
+	 top of the screen */
+      if (vt->scrollbacklines>0) {
+	int len;
+	int j;
+
+	d(printf("removing scrollback -> top of screen\n"));
+
+	nn = vt_newline(vt);
+	wn = (struct vt_line *)vt_list_remtail(&vt->scrollback);
+
+	len = nn->width<wn->width?nn->width:wn->width;
+	memcpy(nn->data, wn->data, len*sizeof(nn->data[0]));
+	for(j=wn->width;j<nn->width;j++) {
+	  nn->data[j]=wn->data[j];
+	}
+	vt_mem_unget(&vt->mem_list, wn);
+	vt_list_addhead(&vt->lines, (struct vt_listnode *)nn);
+	vt_list_addhead(&vt->lines_alt, (struct vt_listnode *)vt_newline(vt));
 #ifdef DOUBLE_BUFFER
-      vt_list_addtail(&vt->lines_back, (struct vt_listnode *)vt_newline(vt));
+	vt_list_addhead(&vt->lines_back, (struct vt_listnode *)vt_newline(vt));
 #endif
-      vt_list_addtail(&vt->lines_alt, (struct vt_listnode *)vt_newline(vt));
+	vt->scrollbacklines--;	/* since we just nuked one */
+	vt->cursory++;		/* fix up cursor */
+      } else {
+#endif /* SCROLLBACK_BUFFER */
+	d(printf("adding line to bottom of screen\n"));
+	/* otherwise just add blank lines to the bottom */
+	vt_list_addtail(&vt->lines, (struct vt_listnode *)vt_newline(vt));
+#ifdef DOUBLE_BUFFER
+	vt_list_addtail(&vt->lines_back, (struct vt_listnode *)vt_newline(vt));
+#endif
+	vt_list_addtail(&vt->lines_alt, (struct vt_listnode *)vt_newline(vt));
+#ifdef SCROLLBACK_BUFFER
+      } /* if scrollbacklines */
+#endif
     }
   } /* otherwise width may have changed? */
 

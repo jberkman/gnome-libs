@@ -26,5 +26,6 @@
 int vt_mem_init(struct vt_list *memlist);
 void *vt_mem_get(struct vt_list *memlist, int size);
 void vt_mem_push(struct vt_list *memlist, void *mem, int size);
+void vt_mem_unget(struct vt_list *mem_list, void *mem);
 
 #endif /* _MEMORY_H */

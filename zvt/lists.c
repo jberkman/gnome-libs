@@ -34,7 +34,7 @@ void vt_list_new(struct vt_list *v)
 struct vt_listnode *vt_list_addhead(struct vt_list *l, struct vt_listnode *n)
 {
   n->next = l->head;
-  n->prev = (struct vt_listnode *)&l->tailpred;
+  n->prev = (struct vt_listnode *)&l->head;
   l->head->prev = n;
   l->head = n;
   return n;
@@ -87,12 +87,14 @@ struct vt_listnode *vt_list_remtail(struct vt_list *l)
 {
   struct vt_listnode *n;
 
-  if (vt_list_empty(l))
+  if (vt_list_empty(l)) {
+    d(printf("empty list, returning null\n"));
     return 0L;
-  else {
-    n = l->tail;
+  } else {
+    d(printf("unlinling last element\n"));
+    n = l->tailpred;
     n->prev->next = n->next;
-    l->tail = n->prev;
+    l->tailpred = n->prev;
   }
   return n;
 }

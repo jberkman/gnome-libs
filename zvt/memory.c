@@ -27,10 +27,12 @@
 
 #include <stdlib.h>
 #include "lists.h"
+#include "memory.h"
 
 #define d(x)
 
 #define MEM_BLOCK_SIZE 10240
+#define MEM_BLOCK_ALIGN 0x03	/* align mask 3=4 bytes, 7=8 bytes */
 
 struct _mem {
   struct _mem *next;
@@ -52,7 +54,10 @@ void *vt_mem_get(struct vt_list *mem_list, int size)
 {
   char *out;
   struct _mem *block;
-  size = (size+3) & (~3);	/* long align size */
+  size = (size+MEM_BLOCK_ALIGN) & (~MEM_BLOCK_ALIGN);	/* long align size */
+
+  d(printf("mem_get(%d)\n", size));
+  d(printf("  ptr = %d\n", vt_list_empty(mem_list)?0:((struct _mem *)mem_list->tailpred)->ptr));
 
   block = (struct _mem *) mem_list->tailpred;
   if (vt_list_empty(mem_list) || ((MEM_BLOCK_SIZE - block->ptr) < size)) {
@@ -66,7 +71,43 @@ void *vt_mem_get(struct vt_list *mem_list, int size)
   }
   out = &block->mem[block->ptr];
   block->ptr += size;
+  d(printf(" return mem_get() = %p\n", out));
   return out;
+}
+
+/* 'unget' a block of memory */
+/*  Note that memory blocks can only be ungot in reverse order to
+    how they were got (like a stack) or, alternatively, all
+    allocations following the free'd one also be invalid (like an obstack). */
+void vt_mem_unget(struct vt_list *mem_list, void *mem)
+{
+  struct _mem *wn, *nn;
+  char *mem_ptr;
+  
+  d(printf("ungetting memory: %p\n", mem));
+
+  mem_ptr = mem;
+  wn = (struct _mem *)mem_list->tailpred;
+  nn = wn->prev;
+  while (nn) {
+    if ((mem_ptr >= wn->mem) && mem_ptr < wn->mem+MEM_BLOCK_SIZE) {
+      break;
+    }
+    wn = nn;
+    nn = nn->prev;
+  }
+  
+  if (nn) {
+    d(printf("mem_unget: match found!\n"));
+    /* remove any following memory blocks */
+    while (wn != (struct _mem *)mem_list->tailpred) {
+      d(printf("removing tail of list\n"));
+      nn = (struct _mem *)vt_list_remtail(mem_list);
+      free(nn);
+    }
+    wn->ptr = mem_ptr - wn->mem;
+    d(printf("ptr set to %d\n", wn->ptr));
+  }
 }
 
 /* 'free' a memory block, from a given pool
@@ -82,7 +123,9 @@ void vt_mem_push(struct vt_list *mem_list, void *mem, int size)
   struct _mem *wn, *nn;
   char *mem_ptr;
 
-  size = (size+3) & (~3);	/* long align data */
+  size = (size+MEM_BLOCK_ALIGN) & (~MEM_BLOCK_ALIGN);	/* long align data */
+
+  d(printf("vt_mem_push called\n"));
 
   mem_ptr = mem;
   wn = (struct _mem *)mem_list->head;

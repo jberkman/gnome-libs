@@ -1,3 +1,23 @@
+1998-10-21  Michael Zucchi  <zucchi@zzedzone.fsi.com.au>
+
+	* lists.c (vt_list_remtail): This would never have worked.  Just
+	lucky I never used it!  Changed tail to tailpred.
+	(vt_list_addhead): This would never have worked either.  Changed
+	tailpred to head *sigh*.
+
+	* vt.c (vt_scrollback_add): Changed to static.
+	(vt_dump): Changed to static.
+
+	* memory.h (vt_mem_unget): Add vt_mem_unget() prototype.
+
+	* memory.c: Include "memory.h" for prototypes.
+
+	* vt.c (vt_resize): Recover old scrollback lines if they exist,
+	and the view is getting bigger.
+
+	* memory.c (MEM_BLOCK_ALIGN): New constant - defines alignment of
+	allocations.  Pointers need to align to this.
+
 1998-10-20  Michael Zucchi  <zucchi@zzedzone.fsi.com.au>
 
 	* update.c: Include (missing) alloca.h.
