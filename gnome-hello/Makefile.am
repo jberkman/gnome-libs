@@ -15,11 +15,11 @@ gnome_hello_LDADD = \
 	$(top_builddir)/libgnome/libgnome.la		\
 	$(top_builddir)/intl/libintl.a			\
 	$(top_builddir)/gtk-xmhtml/libgtkxmhtml.la	\
-	$(top_builddir)/support/libsupport.a		\
 	$(XPM_LIBS)					\
 	$(GTK_LIBS)					\
 	$(DL_LIB)					\
-        $(X_LIBS) $(x_libs) $(INTLLIBS) $(top_srcdir)/support/libsupport.a
+        $(X_LIBS) $(x_libs) $(INTLLIBS)			\
+	$(top_builddir)/support/libsupport.a
 
 htmldir = $(prefix)/html
 html_DATA = gnome-hello.html
