@@ -19,23 +19,23 @@ tmpl_sources =				\
 
 gnorba_docdir = $(HTML_DIR)
 gnorba_doc_DATA = 			\
-	libgnorba.html			\
+	html/index.html	                \
 	gnorba-decl.txt			\
 	gnorba-sections.txt
 
 EXTRA_DIST = $(gnorba_doc_DATA)
 
 if HAVE_GTK_DOC
-libgnorba.html: html/book1.html
-	-cd $(srcdir) && cp html/book1.html libgnorba.html
+html/index.html: html/book1.html
+	-cd $(srcdir) && mv html/book1.html html/index.html
 else
 gnorba.html:
 endif
 
-html/book1.html: sgml/gnorba.sgml
+html/book1.html: sgml/gnorba.sgml sgml/goad.sgml
 	$(MAKE) html
 
-sgml/gnorba.sgml: $(addprefix $(srcdir)/,$(tmpl_sources))
+sgml/goad.sgml sgml/gnorba.sgml: $(addprefix $(srcdir)/,$(tmpl_sources)) gnorba-docs.sgml
 	$(MAKE) sgml	
 
 scan:
@@ -52,7 +52,8 @@ sgml:
 
 html:
 	test -d $(srcdir)/html || mkdir $(srcdir)/html
-	-cd $(srcdir)/html && gtkdoc-mkhtml $(DOC_MODULE) ../sgml/$(DOC_MAIN_SGML_FILE)
+	-cd $(srcdir)/html && gtkdoc-mkhtml $(DOC_MODULE) ../gnorba-docs.sgml
+	-cd $(srcdir)/html && perl -pi -e 's,libgnorba\.html,index.html,gi' *.html
 
 clean-local:
 	rm -f *~ *.bak *.hierarchy *.signals *-unused.txt

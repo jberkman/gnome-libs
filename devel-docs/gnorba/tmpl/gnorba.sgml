@@ -6,7 +6,10 @@ gnorba
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-
+The gnorba routines relate to making basic use of CORBA in a GNOME
+application. This covers integrating the ORBit main loop with glib,
+adding basic security to CORBA connections, and accessing the CORBA
+name service for the session.
 </para>
 
 
@@ -18,7 +21,12 @@ gnorba
 
 <!-- ##### ENUM GnorbaInitFlags ##### -->
 <para>
-
+<itemizedlist>
+<listitem><para>GNORBA_INIT_SERVER_FUNC specifies that this program
+intends to export implementations of CORBA objects to other
+programs</para></listitem>
+<listitem><para>GNORBA_INIT_DISABLE_COOKIES turns of the GNOME CORBA security mechanism</para></listitem>
+</itemizedlist>
 </para>
 
 
