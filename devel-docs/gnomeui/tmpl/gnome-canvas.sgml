@@ -2,14 +2,21 @@
 GnomeCanvas
 
 <!-- ##### SECTION Short_Description ##### -->
-A generic engine for structured graphics
+A generic engine for structured graphics.
 
 <!-- ##### SECTION Long_Description ##### -->
   <para>
     The GNOME canvas is an engine for creating structured graphics.
     This means that graphical <emphasis>items</emphasis> like lines,
     rectangles, and text, can be inserted into the canvas and referred
-    to later for manipulation.  Item attributes include properties
+    to later for manipulation.  Items may be moved and re-stacked in
+    the canvas, and organized in hierarchical groups.  Items receive
+    mouse and keyboard events and emit signals like if they were
+    normal Gtk+ widgets.
+  </para>
+
+  <para>
+    Items can have a number of attributes, which include properties
     like their position and color.  The canvas takes care of all
     drawing operations so that it will never flicker.  The canvas is
     designed to be extensible by letting the user define custom
@@ -18,15 +25,18 @@ A generic engine for structured graphics
   </para>
 
 <!-- ##### SECTION See_Also ##### -->
-<para>
-
-</para>
+  <para>
+    #GnomeCanvasItem, #GnomeCanvasGroup, GnomeCanvasRE,
+    #GnomeCanvasRectEllipse, #GnomeCanvasImage, #GnomeCanvasLine,
+    #GnomeCanvasPolygon, #GnomeCanvasText, #GnomeCanvasWidget
+  </para>
 
 
 <!-- ##### STRUCT GnomeCanvas ##### -->
-<para>
-
-</para>
+  <para>
+    Most of the fields in this structure are for private use only.
+    However, canvas item implementations may make use of some of them.
+  </para>
 
 
 <!-- ##### MACRO GNOME_CANVAS_EPSILON ##### -->
@@ -208,7 +218,7 @@ A generic engine for structured graphics
 
 </para>
 
-@Returns: 
+@Returns:
 
 
 <!-- ##### FUNCTION gnome_canvas_new_aa ##### -->
@@ -216,7 +226,7 @@ A generic engine for structured graphics
 
 </para>
 
-@Returns: 
+@Returns:
 
 
 <!-- ##### FUNCTION gnome_canvas_root ##### -->
@@ -224,8 +234,8 @@ A generic engine for structured graphics
 
 </para>
 
-@canvas: 
-@Returns: 
+@canvas:
+@Returns:
 
 
 <!-- ##### FUNCTION gnome_canvas_set_scroll_region ##### -->
@@ -233,11 +243,11 @@ A generic engine for structured graphics
 
 </para>
 
-@canvas: 
-@x1: 
-@y1: 
-@x2: 
-@y2: 
+@canvas:
+@x1:
+@y1:
+@x2:
+@y2:
 
 
 <!-- ##### FUNCTION gnome_canvas_get_scroll_region ##### -->
@@ -245,11 +255,11 @@ A generic engine for structured graphics
 
 </para>
 
-@canvas: 
-@x1: 
-@y1: 
-@x2: 
-@y2: 
+@canvas:
+@x1:
+@y1:
+@x2:
+@y2:
 
 
 <!-- ##### FUNCTION gnome_canvas_set_pixels_per_unit ##### -->
@@ -257,8 +267,8 @@ A generic engine for structured graphics
 
 </para>
 
-@canvas: 
-@n: 
+@canvas:
+@n:
 
 
 <!-- ##### FUNCTION gnome_canvas_scroll_to ##### -->
@@ -266,9 +276,9 @@ A generic engine for structured graphics
 
 </para>
 
-@canvas: 
-@cx: 
-@cy: 
+@canvas:
+@cx:
+@cy:
 
 
 <!-- ##### FUNCTION gnome_canvas_get_scroll_offsets ##### -->
@@ -276,9 +286,9 @@ A generic engine for structured graphics
 
 </para>
 
-@canvas: 
-@cx: 
-@cy: 
+@canvas:
+@cx:
+@cy:
 
 
 <!-- ##### FUNCTION gnome_canvas_update_now ##### -->
@@ -286,7 +296,7 @@ A generic engine for structured graphics
 
 </para>
 
-@canvas: 
+@canvas:
 
 
 <!-- ##### FUNCTION gnome_canvas_get_item_at ##### -->
@@ -294,10 +304,10 @@ A generic engine for structured graphics
 
 </para>
 
-@canvas: 
-@x: 
-@y: 
-@Returns: 
+@canvas:
+@x:
+@y:
+@Returns:
 
 
 <!-- ##### FUNCTION gnome_canvas_request_redraw_uta ##### -->
@@ -305,8 +315,8 @@ A generic engine for structured graphics
 
 </para>
 
-@canvas: 
-@uta: 
+@canvas:
+@uta:
 
 
 <!-- ##### FUNCTION gnome_canvas_request_redraw ##### -->
@@ -314,11 +324,11 @@ A generic engine for structured graphics
 
 </para>
 
-@canvas: 
-@x1: 
-@y1: 
-@x2: 
-@y2: 
+@canvas:
+@x1:
+@y1:
+@x2:
+@y2:
 
 
 <!-- ##### FUNCTION gnome_canvas_w2c_affine ##### -->
@@ -326,8 +336,8 @@ A generic engine for structured graphics
 
 </para>
 
-@canvas: 
-@affine: 
+@canvas:
+@affine:
 
 
 <!-- ##### FUNCTION gnome_canvas_w2c ##### -->
@@ -335,11 +345,11 @@ A generic engine for structured graphics
 
 </para>
 
-@canvas: 
-@wx: 
-@wy: 
-@cx: 
-@cy: 
+@canvas:
+@wx:
+@wy:
+@cx:
+@cy:
 
 
 <!-- ##### FUNCTION gnome_canvas_w2c_d ##### -->
@@ -347,11 +357,11 @@ A generic engine for structured graphics
 
 </para>
 
-@canvas: 
-@wx: 
-@wy: 
-@cx: 
-@cy: 
+@canvas:
+@wx:
+@wy:
+@cx:
+@cy:
 
 
 <!-- ##### FUNCTION gnome_canvas_c2w ##### -->
@@ -359,11 +369,11 @@ A generic engine for structured graphics
 
 </para>
 
-@canvas: 
-@cx: 
-@cy: 
-@wx: 
-@wy: 
+@canvas:
+@cx:
+@cy:
+@wx:
+@wy:
 
 
 <!-- ##### FUNCTION gnome_canvas_window_to_world ##### -->
@@ -371,11 +381,11 @@ A generic engine for structured graphics
 
 </para>
 
-@canvas: 
-@winx: 
-@winy: 
-@worldx: 
-@worldy: 
+@canvas:
+@winx:
+@winy:
+@worldx:
+@worldy:
 
 
 <!-- ##### FUNCTION gnome_canvas_world_to_window ##### -->
@@ -383,11 +393,11 @@ A generic engine for structured graphics
 
 </para>
 
-@canvas: 
-@worldx: 
-@worldy: 
-@winx: 
-@winy: 
+@canvas:
+@worldx:
+@worldy:
+@winx:
+@winy:
 
 
 <!-- ##### FUNCTION gnome_canvas_get_color ##### -->
@@ -395,10 +405,10 @@ A generic engine for structured graphics
 
 </para>
 
-@canvas: 
-@spec: 
-@color: 
-@Returns: 
+@canvas:
+@spec:
+@color:
+@Returns:
 
 
 <!-- ##### FUNCTION gnome_canvas_set_stipple_origin ##### -->
@@ -406,8 +416,8 @@ A generic engine for structured graphics
 
 </para>
 
-@canvas: 
-@gc: 
+@canvas:
+@gc:
 
 <!--
 Local variables:
@@ -415,5 +425,3 @@ mode: sgml
 sgml-parent-document: ("../gnomeui-docs.sgml" "book" "sect1" "")
 End:
 -->
-
-
