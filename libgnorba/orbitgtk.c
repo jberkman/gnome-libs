@@ -37,7 +37,7 @@ static void orb_remove_connection(GIOPConnection *cnx)
   cnx->user_data = (gpointer)-1;
 }
 
-static CORBA_ORB orb;
+CORBA_ORB gnome_orbit_orb;
 
 CORBA_ORB
 gnome_CORBA_ORB_init(int *argc, char **argv, CORBA_ORBid orb_identifier,
@@ -47,7 +47,7 @@ gnome_CORBA_ORB_init(int *argc, char **argv, CORBA_ORBid orb_identifier,
   IIOPAddConnectionHandler = orb_add_connection;
   IIOPRemoveConnectionHandler = orb_remove_connection;
 
-  orb = retval = CORBA_ORB_init(argc, argv, orb_identifier, ev);
+  gnome_orbit_orb = retval = CORBA_ORB_init(argc, argv, orb_identifier, ev);
 
   return retval;
 }
@@ -62,7 +62,7 @@ gnome_get_name_service(void)
   GdkAtom propname, proptype;
   CORBA_Environment ev;
 
-  g_return_val_if_fail(orb, CORBA_OBJECT_NIL);
+  g_return_val_if_fail(gnome_orbit_orb, CORBA_OBJECT_NIL);
 
   CORBA_exception_init(&ev);
 
@@ -80,7 +80,7 @@ gnome_get_name_service(void)
     if(gdk_property_get(GDK_ROOT_PARENT(), propname, proptype,
 			0, UINT_MAX, FALSE, &return_proptype,
 			&fmt, &len, (guchar **)&ior)) {
-      name_service = CORBA_ORB_string_to_object(orb, ior, &ev);
+      name_service = CORBA_ORB_string_to_object(gnome_orbit_orb, ior, &ev);
       if(ev._major != CORBA_NO_EXCEPTION)
 	name_service = CORBA_OBJECT_NIL;
       goto out;
@@ -111,7 +111,7 @@ gnome_get_name_service(void)
 
       gdk_property_change(GDK_ROOT_PARENT(), propname, proptype, 8,
 			  GDK_PROP_MODE_REPLACE, iorbuf, strlen(iorbuf));
-      name_service = CORBA_ORB_string_to_object(orb, iorbuf, &ev);
+      name_service = CORBA_ORB_string_to_object(gnome_orbit_orb, iorbuf, &ev);
       
       if(ev._major != CORBA_NO_EXCEPTION)
 	name_service = CORBA_OBJECT_NIL;
