@@ -422,8 +422,6 @@ gtk_xmhtml_size_allocate (GtkWidget *widget, GtkAllocation *allocation)
 	GtkXmHTML *html = GTK_XMHTML (widget);
 	
 	widget->allocation = *allocation;
-	gtk_container_disable_resize (GTK_CONTAINER (html));
-
 	
 /*	printf ("Size Allocate: (%d,%d) %d %d\n",
 		allocation->x,
@@ -432,7 +430,6 @@ gtk_xmhtml_size_allocate (GtkWidget *widget, GtkAllocation *allocation)
 		allocation->width);
 */
 	Resize (widget);
-	gtk_container_enable_resize (GTK_CONTAINER (html));
 }
 
 guint
