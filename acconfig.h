@@ -18,4 +18,3 @@
 #undef HAVE_LIBZ
 #undef HAVE_LIBPNG
 #undef GNOME_ENABLE_DEBUG
-#undef HAVE_DEVGTK

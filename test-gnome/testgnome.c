@@ -460,7 +460,7 @@ int main (int argc, char *argv[])
 	  {
 		  { "calendar", create_calendar },
 		  { "calculator", create_calc },
-#ifdef HAVE_DEVGTK
+#ifdef GTK_HAVE_ACCEL_GROUP
 		  { "canvas", create_canvas },
 #endif
 		  { "clock",	create_clock },
