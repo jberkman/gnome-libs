@@ -25,6 +25,8 @@ dnl let applications configure for gnome
 dnl
 gnome_cv_use_gnome=yes
 
+GNOME_COMPILE_WARNINGS
+
 GNOME_X_CHECKS
 if test "$USE_DEVGTK" = true; then
    GNOME_CANVAS_SRC="gnome-canvas.c gnome-canvas-image.c gnome-canvas-line.c gnome-canvas-rect-ellipse.c gnome-canvas-text.c gnome-canvas-util.c gnome-canvas-widget.c"
