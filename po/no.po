@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-libs 0.30\n"
-"POT-Creation-Date: 1998-10-01 22:28+0200\n"
-"PO-Revision-Date: 1998-10-10 17:18+0100\n"
+"POT-Creation-Date: 1998-10-25 02:01+0200\n"
+"PO-Revision-Date: 1998-10-25 02:02+0100\n"
 "Last-Translator: Kjartan Maraas <kmaraas@fib.hl.no>\n"
 "Language-Team: Norwegian <no@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -61,7 +61,7 @@ msgstr "Fil"
 
 #: gnome-hello/gnome-hello-2-i18n.c:85
 #: gnome-hello/gnome-hello-3-parse-args.c:93 gnome-hello/gnome-hello-4-SM.c:79
-#: gnome-hello/gnome-hello-7-mdi.c:404 libgnomeui/gnome-stock.c:776
+#: gnome-hello/gnome-hello-7-mdi.c:404 libgnomeui/gnome-stock.c:765
 #: libgnomeui/stock_demo.c:290
 msgid "Help"
 msgstr "Hjelp"
@@ -179,10 +179,9 @@ msgstr ""
 "\n"
 "Bruk: %s [--help] [--version]\n"
 "\n"
-"Valg:\n"
+"Flagg:\n"
 "        --help     viser denne hjelpeteksten og avslutter\n"
 "        --version  viser versjonsinformasjon og avslutter\n"
-
 
 #: gnome-hello/gnome-hello.c:217
 #, c-format
@@ -191,7 +190,7 @@ msgstr "Gnome Hello %s.\n"
 
 #: gnome-hello/gnome-hello.c:231
 msgid "Options error\n"
-msgstr "Feil valg\n"
+msgstr "Feil flagg\n"
 
 #: libgnome/gnome-parse.c:44
 msgid ""
@@ -199,7 +198,7 @@ msgid ""
 "Generic options"
 msgstr ""
 "\n"
-"Vanlige valg"
+"Vanlige flagg"
 
 #: libgnome/lib_date.c:73 libgnome/lib_date.c:79
 #: libgnomeui/gnome-messagebox.c:117
@@ -295,7 +294,7 @@ msgid "Authors: "
 msgstr "Forfattere: "
 
 #: libgnomeui/gnome-about.c:575 libgnomeui/stock_demo.c:282
-#: libgnomeui/winhints_demo.c:246
+#: libgnomeui/winhints_demo.c:258
 msgid "About"
 msgstr "Om"
 
@@ -609,11 +608,11 @@ msgstr ""
 msgid "Choose an icon"
 msgstr "Velg et ikon"
 
-#: libgnomeui/gnome-file-entry.c:90
+#: libgnomeui/gnome-file-entry.c:97
 msgid "Select file"
 msgstr "Velg fil"
 
-#: libgnomeui/gnome-file-entry.c:147
+#: libgnomeui/gnome-file-entry.c:151
 msgid "Browse..."
 msgstr "Se på..."
 
@@ -635,11 +634,11 @@ msgid "FLAGS"
 msgstr "FLAGG"
 
 #: libgnomeui/gnome-init.c:50
-msgid "Gdk debuging flags to set"
+msgid "Gdk debugging flags to set"
 msgstr "Gdk avlusingsflagg som skal slås på"
 
 #: libgnomeui/gnome-init.c:51
-msgid "Gdk debuging flags to unset"
+msgid "Gdk debugging flags to unset"
 msgstr "Gdk avlusingsflagg som skal slås av"
 
 #: libgnomeui/gnome-init.c:52
@@ -688,11 +687,11 @@ msgid "STYLE"
 msgstr "STIL"
 
 #: libgnomeui/gnome-init.c:61
-msgid "Gtk+ debuging flags to set"
+msgid "Gtk+ debugging flags to set"
 msgstr "Gtk+ avlusingsflagg som skal slås på"
 
 #: libgnomeui/gnome-init.c:62
-msgid "Gtk+ debuging flags to unset"
+msgid "Gtk+ debugging flags to unset"
 msgstr "Gtk+ avlusingsflagg som skal slås av"
 
 #: libgnomeui/gnome-init.c:63
@@ -704,8 +703,8 @@ msgid "MODULE"
 msgstr "MODUL"
 
 #: libgnomeui/gnome-init.c:64
-msgid "Load additional Gtk modules"
-msgstr "Last Gtk tilleggsmoduler"
+msgid "Load additional Gtk+ modules"
+msgstr "Last Gtk+ tilleggsmoduler"
 
 #: libgnomeui/gnome-messagebox.c:99
 msgid "Information"
@@ -747,59 +746,63 @@ msgstr "Poengsum"
 msgid "Date"
 msgstr "Dato"
 
-#: libgnomeui/gnome-stock.c:770
+#: libgnomeui/gnome-stock.c:759
 msgid "OK"
 msgstr "OK"
 
-#: libgnomeui/gnome-stock.c:771
+#: libgnomeui/gnome-stock.c:760
 msgid "Apply"
 msgstr "Bruk"
 
-#: libgnomeui/gnome-stock.c:772
+#: libgnomeui/gnome-stock.c:761
 msgid "Cancel"
 msgstr "Avbryt"
 
-#: libgnomeui/gnome-stock.c:773 libgnomeui/stock_demo.c:144
+#: libgnomeui/gnome-stock.c:762 libgnomeui/stock_demo.c:144
 msgid "Close"
 msgstr "Lukk"
 
-#: libgnomeui/gnome-stock.c:774
+#: libgnomeui/gnome-stock.c:763
 msgid "Yes"
 msgstr "Ja"
 
-#: libgnomeui/gnome-stock.c:775
+#: libgnomeui/gnome-stock.c:764
 msgid "No"
 msgstr "Nei"
 
-#: libgnomeui/gnome-stock.c:777
+#: libgnomeui/gnome-stock.c:766
 msgid "Next"
 msgstr "Neste"
 
-#: libgnomeui/gnome-stock.c:778
+#: libgnomeui/gnome-stock.c:767
 msgid "Prev"
 msgstr "Forrige"
 
-#: libgnomeui/gnome-stock.c:779
+#: libgnomeui/gnome-stock.c:768
 msgid "Up"
 msgstr "Opp"
 
-#: libgnomeui/gnome-stock.c:780
+#: libgnomeui/gnome-stock.c:769
 msgid "Down"
 msgstr "Ned"
 
-#: libgnomeui/gnome-stock.c:1802
+#: libgnomeui/gnome-stock.c:770
+msgid "Font"
+msgstr "Skrifttype"
+
+#: libgnomeui/gnome-stock.c:1767
 msgid "Menu Accelerator Keys"
 msgstr "Taster for meny-akselleratorer"
 
-#: libgnomeui/gnome-stock.c:1804
+#: libgnomeui/gnome-stock.c:1769
 msgid "Global"
 msgstr "Global"
 
-#: libgnomeui/gnome-stock.c:1806
+#: libgnomeui/gnome-stock.c:1771
 msgid "Menu Item"
 msgstr "Menyvalg"
 
-#: libgnomeui/gnome-stock.c:1807
+#: libgnomeui/gnome-stock.c:1772
 msgid "Accelerator"
 msgstr "Aksellerator"
 
@@ -828,6 +831,34 @@ msgstr ""
 "\n"
 "Vil du avslutte dette programmet?"
 
+#: libgnomeui/gtkcalendar.c:893
+msgid "Su"
+msgstr "Sø"
+
+#: libgnomeui/gtkcalendar.c:893
+msgid "Mo"
+msgstr "Ma"
+
+#: libgnomeui/gtkcalendar.c:893
+msgid "Tu"
+msgstr "Ti"
+
+#: libgnomeui/gtkcalendar.c:893
+msgid "We"
+msgstr "On"
+
+#: libgnomeui/gtkcalendar.c:893
+msgid "Th"
+msgstr "To"
+
+#: libgnomeui/gtkcalendar.c:893
+msgid "Fr"
+msgstr "Fr"
+
+#: libgnomeui/gtkcalendar.c:893
+msgid "Sa"
+msgstr "Lø"
+
 #: libgnomeui/stock_demo.c:112
 msgid "New..."
 msgstr "Ny..."
@@ -850,7 +881,7 @@ msgstr "Skriv ut..."
 
 #: libgnomeui/stock_demo.c:164
 msgid "Setup Page..."
-msgstr "Sideoppsett..."
+msgstr "Oppsett av side..."
 
 #: libgnomeui/stock_demo.c:173
 msgid "Quit"
@@ -904,117 +935,125 @@ msgstr "wmhints-test"
 msgid "winhints-test"
 msgstr "winhints-test"
 
-#: libgnomeui/winhints_demo.c:69
+#: libgnomeui/winhints_demo.c:73
 msgid "Layer:"
 msgstr "Lag:"
 
-#: libgnomeui/winhints_demo.c:92
+#: libgnomeui/winhints_demo.c:96
 msgid "Above Dock"
 msgstr "Over dokk"
 
-#: libgnomeui/winhints_demo.c:96
+#: libgnomeui/winhints_demo.c:100
 msgid "Dock"
 msgstr "Dokk"
 
-#: libgnomeui/winhints_demo.c:100
+#: libgnomeui/winhints_demo.c:104
 msgid "On Top"
 msgstr "Øverst"
 
-#: libgnomeui/winhints_demo.c:104
+#: libgnomeui/winhints_demo.c:108
 msgid "Normal"
 msgstr "Normal"
 
-#: libgnomeui/winhints_demo.c:108
+#: libgnomeui/winhints_demo.c:112
 msgid "Below"
 msgstr "Under"
 
-#: libgnomeui/winhints_demo.c:112
+#: libgnomeui/winhints_demo.c:116
 msgid "Desktop"
 msgstr "Skrivebord"
 
-#: libgnomeui/winhints_demo.c:120
+#: libgnomeui/winhints_demo.c:124
 msgid "Set Layer"
 msgstr "Sett lag"
 
-#: libgnomeui/winhints_demo.c:127
+#: libgnomeui/winhints_demo.c:131
 msgid "Workspaces:"
 msgstr "Arbeidsområde:"
 
-#: libgnomeui/winhints_demo.c:149
-msgid "Occupy all workspaces"
-msgstr "Okkuper alle arbeidsområder"
-
 #: libgnomeui/winhints_demo.c:153
+msgid "Sticky"
+msgstr "Klebrig"
+
+#: libgnomeui/winhints_demo.c:157
 msgid "Set Workspace"
 msgstr "Sett arbeidsplass"
 
-#: libgnomeui/winhints_demo.c:163
+#: libgnomeui/winhints_demo.c:167
 msgid "State Toggles:"
 msgstr "Tilstandsvelger:"
 
-#: libgnomeui/winhints_demo.c:173
+#: libgnomeui/winhints_demo.c:177
 msgid "Minimized"
 msgstr "Minimert"
 
-#: libgnomeui/winhints_demo.c:177
+#: libgnomeui/winhints_demo.c:181
 msgid "Maximized Vertical"
 msgstr "Maksimert vertikalt"
 
-#: libgnomeui/winhints_demo.c:181
+#: libgnomeui/winhints_demo.c:185
 msgid "Maximized Horizontal"
 msgstr "Maksimert horisontalt"
 
-#: libgnomeui/winhints_demo.c:185
+#: libgnomeui/winhints_demo.c:189
 msgid "Hidden"
 msgstr "Gjemt"
 
-#: libgnomeui/winhints_demo.c:189
-msgid "Roll-Up"
-msgstr "Rull opp"
-
 #: libgnomeui/winhints_demo.c:193
-msgid "Set State"
-msgstr "Set status"
+msgid "Shaded"
+msgstr "Skyggelagt"
 
-#: libgnomeui/winhints_demo.c:199
+#: libgnomeui/winhints_demo.c:197
+msgid "Fixed Position"
+msgstr "Fast posisjon"
+
+#: libgnomeui/winhints_demo.c:201
+msgid "Ignore on Arrange"
+msgstr "Ignorer ved plassering"
+
+#: libgnomeui/winhints_demo.c:205
+msgid "Set State"
+msgstr "Set tilstand"
+
+#: libgnomeui/winhints_demo.c:211
 msgid "Skip Toggles:"
 msgstr "Hopp over velgere:"
 
-#: libgnomeui/winhints_demo.c:209
+#: libgnomeui/winhints_demo.c:221
 msgid "Skip Focus"
 msgstr "Hopp over fokus"
 
-#: libgnomeui/winhints_demo.c:213
+#: libgnomeui/winhints_demo.c:225
 msgid "Skip Window Menu"
 msgstr "Hopp over vindusmeny"
 
-#: libgnomeui/winhints_demo.c:217
+#: libgnomeui/winhints_demo.c:229
 msgid "Skip Taskbar / WinList"
 msgstr "Hopp over oppgavelinje / vindusliste"
 
-#: libgnomeui/winhints_demo.c:221
+#: libgnomeui/winhints_demo.c:233
 msgid "Set Skip"
 msgstr "Hopp over"
 
-#: libgnomeui/winhints_demo.c:404
+#: libgnomeui/winhints_demo.c:413
 msgid "WIN_HINTS Test"
 msgstr "WIN_HINTS test"
 
-#: libgnomeui/winhints_demo.c:405
+#: libgnomeui/winhints_demo.c:414
 msgid "Copyright (C)1998"
 msgstr "Copyright (C)1998"
 
-#: libgnomeui/winhints_demo.c:407
+#: libgnomeui/winhints_demo.c:416
 msgid ""
 "Simple test app to check how the WIN_HINTS work. And to test the "
 "gnome_win_hints_* functions for errors. :)"
 msgstr ""
-"Enkel testapplikasjon for å sjekke hvordan WIN_HINTS virker, og for å teste"
-"gnome_win_hints_*-funksjonene for feil. :)"
+"Enkel testapplikasjon for å sjekke hvordan WIN_HINTS virker, og for å "
+"teste gnome_win_hints_*-funksjonene for feil. :)"
 
 #: support/argp-parse.c:90
 msgid "Give this help list"
-msgstr "Gi denne hjelpelisten"
+msgstr "Vis denne hjelpelisten"
 
 #: support/argp-parse.c:91
 msgid "Give a short usage message"
@@ -1132,14 +1171,41 @@ msgstr "%s: flagget `-W %s' er flertydig\n"
 msgid "%s: option `-W %s' doesn't allow an argument\n"
 msgstr "%s: flagget `-W %s' tillater ikke argumenter\n"
 
-#: test-gnome/testgnome.c:670
+#. Pixmap
+#: test-gnome/testgnome.c:527
+msgid "Default Pixmap"
+msgstr "Forvalgt bilde"
+
+#: test-gnome/testgnome.c:535 test-gnome/testgnome.c:576
+#: test-gnome/testgnome.c:601
+msgid "If you choose a font it will appear here"
+msgstr "Hvis du velger en skrifttype vil den vises her"
+
+#. Font_Info
+#: test-gnome/testgnome.c:542
+msgid "Font Info"
+msgstr "Info om skrifttye"
+
+#: test-gnome/testgnome.c:552
+msgid "Use Font in button with size"
+msgstr "Bruk skrifttype på knapp med størrelse"
+
+#: test-gnome/testgnome.c:559
+msgid "Show font size"
+msgstr "Vis skrifttypens størrelse"
+
+#: test-gnome/testgnome.c:595
+msgid "This is an hbox with pixmap and text"
+msgstr "Dette er en hboks med bilde og tekst"
+
+#: test-gnome/testgnome.c:834
 msgid "The user chose Yes/OK with data:\n"
 msgstr "Brukeren valgte Ja/OK med data:\n"
 
-#: test-gnome/testgnome.c:674
+#: test-gnome/testgnome.c:838
 msgid "The user chose No/Cancel with data:\n"
 msgstr "Brukeren valgte Nei/Avbryt med data:\n"
 
-#: test-gnome/testgnome.c:685
+#: test-gnome/testgnome.c:849
 msgid "Weird number in reply callback"
 msgstr "Snålt nummer i tilbakeringingssvaret"
