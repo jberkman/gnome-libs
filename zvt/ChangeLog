@@ -1,3 +1,9 @@
+1999-02-24  Miguel de Icaza  <miguel@nuclecu.unam.mx>
+
+	* subshell.c (zvt_init_subshell): Reset the child signal handlers
+	to SIG_DFL and the job-control signals to SIG_IGN (to let subshell
+	set those up by itself).
+
 1999-02-25  Michael Zucchi  <mzucchi@denr.sa.gov.au>
 
 	* vt.c (vt_tab): Check for cursorx=width, and dont tab (unless
