@@ -24,7 +24,11 @@
 #include <gdk/gdkx.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
 
-#include <libart_lgpl/art_rgb_pixbuf_affine.h>
+#include <libart_lgpl/art_misc.h>
+#include <libart_lgpl/art_filterlevel.h>
+#include <libart_lgpl/art_affine.h>
+#include <libart_lgpl/art_rgb_affine.h>
+#include <libart_lgpl/art_rgb_rgba_affine.h>
 
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
@@ -96,36 +100,6 @@ pixbuf_from_atom(GdkWindow *win, GdkAtom pmap)
   return NULL;
 }
 
-static GdkPixbuf *
-pixbuf_scale(GdkPixbuf *pb, int wwidth, int wheight)
-{
-  GdkPixbuf *pb2;
-  double scale[6];
-  int width = gdk_pixbuf_get_width(pb);
-  int height = gdk_pixbuf_get_height(pb);
-
-  if (wwidth==width && wheight==height)
-    return pb;
-
-  pb2 =  gdk_pixbuf_new(ART_PIX_RGB, 0, 8, wwidth, wheight);
-
-  /* clear pixbuf dest */
-  memset(gdk_pixbuf_get_pixels(pb2), 0, gdk_pixbuf_get_rowstride(pb2)*wheight);
-  
-  art_affine_scale(scale, (double)wwidth/(double)width, (double)wheight/(double)height);
-  
-  /* scale screen data */
-  art_rgb_pixbuf_affine(gdk_pixbuf_get_pixels(pb2),
-			0, 0, wwidth, wheight,
-			gdk_pixbuf_get_rowstride(pb2),
-			pb->art_pixbuf, scale, ART_FILTER_NEAREST, NULL);
-
-  /* throw away the old one */
-  gdk_pixbuf_unref(pb);
-  pb = pb2;
-  return pb;
-}
-
 static void
 pixbuf_shade(GdkPixbuf *pb, int r, int g, int b, int a)
 {
@@ -180,11 +154,12 @@ static struct vt_list watchlist = { (struct vt_listnode *)&watchlist.tail,
 				    0,
 				    (struct vt_listnode *)&watchlist.head };
 
-static int
-zvt_filter_prop_change(XEvent *xevent, GdkEvent *event, void *data)
+static GdkFilterReturn
+zvt_filter_prop_change(GdkXEvent *_xevent, GdkEvent *event, void *data)
 {
   struct _watchwin *w = data;
   struct _watchatom *a;
+  XEvent *xevent = (XEvent *)_xevent;
 
   d(printf("got window event ... %d\n", xevent->type));
   if (xevent->type == PropertyNotify) {
@@ -726,8 +701,12 @@ zvt_background_set(ZvtTerm *term)
 	height = b->scale.y;
 	break;
       }
-      if (b->scale.type != ZVT_BGSCALE_NONE)
-	pixbuf = pixbuf_scale(pixbuf, width, height);
+      if (b->scale.type != ZVT_BGSCALE_NONE) {
+        GdkPixbuf *tmp = gdk_pixbuf_scale_simple(pixbuf, width, height,
+						 GDK_INTERP_NEAREST);
+	gdk_pixbuf_unref(pixbuf);
+	pixbuf = tmp;
+      }
     }
   }
 
