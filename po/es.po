@@ -1,9 +1,9 @@
 msgid ""
 msgstr ""
-"Date: 1998-11-07 13:01:00+0200\n"
+"Date: 1998-11-14 13:01:00+0100\n"
 "Project-Id-Version: gnome-libs 0.30\n"
 "POT-Creation-Date: 1998-04-20 20:15:47-0500\n"
-"PO-Revision-Date: 1998-11-07 13:01:00+0100\n"
+"PO-Revision-Date: 1998-11-14 13:01:00+0100\n"
 "From: Miguel de Icaza,computo,622-4680 <miguel@metropolis.nuclecu.unam.mx>\n"
 "Last-Translator: Pablo Saratxaga <srtxg@chanae.alphanet.ch>\n"
 "Language-Team: \n"
@@ -248,6 +248,14 @@ msgstr "noviembre"
 #: libgnome/lib_date.c:80
 msgid "December"
 msgstr "diciembre"
+
+#: libgnome/gnome-popt.c:75
+msgid ""
+"Error on option %s: %s.\n"
+"Run '%s --help' to see a full list of available command line options.\n"
+msgstr ""
+"Error en la opción %s: %s.\n"
+"Lance '%s --help' para ver la lista completa de las opciones disponibles.\n"
 
 #: libgnomeui/gnome-about.c:201
 msgid "Author:"
@@ -514,7 +522,7 @@ msgstr "Opciones del controlador de sesiones"
 msgid "Pick a color"
 msgstr "Elija un color"
 
-#: libgnomeui/gnome-dateedit.c:395
+#: libgnomeui/gnome-dateedit.c:392
 msgid "Calendar"
 msgstr "Calendario"
 
@@ -588,79 +596,79 @@ msgstr "Buscar..."
 msgid "Loading Icons..."
 msgstr "Cargando íconos..."
 
-#: libgnomeui/gnome-init.c:158
+#: libgnomeui/gnome-init.c:162
 msgid "Gdk debugging flags to set"
 msgstr "Flags de epuración de Gdk a activar"
 
-#: libgnomeui/gnome-init.c:158 libgnomeui/gnome-init.c:160 libgnomeui/gnome-init.c:180 libgnomeui/gnome-init.c:182
+#: libgnomeui/gnome-init.c:162 libgnomeui/gnome-init.c:164 libgnomeui/gnome-init.c:184 libgnomeui/gnome-init.c:186
 msgid "FLAGS"
 msgstr "FLAGS"
 
-#: libgnomeui/gnome-init.c:160
+#: libgnomeui/gnome-init.c:164
 msgid "Gdk debugging flags to unset"
 msgstr "Flags de epuración de Gdk a desactivar"
 
-#: libgnomeui/gnome-init.c:162
+#: libgnomeui/gnome-init.c:166
 msgid "X display to use"
 msgstr "Pantalla X donde se despliega"
 
-#: libgnomeui/gnome-init.c:162
+#: libgnomeui/gnome-init.c:166
 msgid "DISPLAY"
 msgstr "DISPLAY"
 
-#: libgnomeui/gnome-init.c:164
+#: libgnomeui/gnome-init.c:168
 msgid "Make X calls synchronous"
 msgstr "Hacer llamadas X sincronas"
 
-#: libgnomeui/gnome-init.c:166
+#: libgnomeui/gnome-init.c:170
 msgid "Don't use X shared memory extension"
 msgstr "No puedo emplear la extensión de memoria compartida de X"
 
-#: libgnomeui/gnome-init.c:168
+#: libgnomeui/gnome-init.c:172
 msgid "Program name as used by the window manager"
 msgstr "Nombre del programa usado por el gestor de ventanas"
 
-#: libgnomeui/gnome-init.c:168
+#: libgnomeui/gnome-init.c:172
 msgid "NAME"
 msgstr "NOMBRE"
 
-#: libgnomeui/gnome-init.c:170
+#: libgnomeui/gnome-init.c:174
 msgid "Program class as used by the window manager"
 msgstr "Clase del programa usada por el gestor de ventanas"
 
-#: libgnomeui/gnome-init.c:170
+#: libgnomeui/gnome-init.c:174
 msgid "CLASS"
 msgstr "CLASE"
 
-#: libgnomeui/gnome-init.c:172
+#: libgnomeui/gnome-init.c:176
 msgid "HOST"
 msgstr "NODO"
 
-#: libgnomeui/gnome-init.c:174
+#: libgnomeui/gnome-init.c:178
 msgid "PORT"
 msgstr "PUERTO"
 
-#: libgnomeui/gnome-init.c:176 libgnomeui/gnome-init.c:178
+#: libgnomeui/gnome-init.c:180 libgnomeui/gnome-init.c:182
 msgid "STYLE"
 msgstr "ESTILO"
 
-#: libgnomeui/gnome-init.c:180
+#: libgnomeui/gnome-init.c:184
 msgid "Gtk+ debugging flags to set"
 msgstr "Flags de epuración de Gtk+ a activar"
 
-#: libgnomeui/gnome-init.c:182
+#: libgnomeui/gnome-init.c:186
 msgid "Gtk+ debugging flags to unset"
 msgstr "Flags de epuración de Gtk+ a desactivar"
 
-#: libgnomeui/gnome-init.c:184
+#: libgnomeui/gnome-init.c:188
 msgid "Make all warnings fatal"
 msgstr "Transformar las advertencias en fallos fatales"
 
-#: libgnomeui/gnome-init.c:186
+#: libgnomeui/gnome-init.c:190
 msgid "Load an additional Gtk module"
 msgstr "Cargar un módulo Gtk adicional"
 
-#: libgnomeui/gnome-init.c:186
+#: libgnomeui/gnome-init.c:190
 msgid "MODULE"
 msgstr "MÓDULO"
 
@@ -974,35 +982,35 @@ msgstr "Copyright ©1998"
 msgid "Simple test app to check how the WIN_HINTS work. And to test the gnome_win_hints_* functions for errors. :)"
 msgstr "Simple programa de test para verificar el funcionamiento de los mensajes WIN_HINTS. Y para ayudar a encontrar errores en las funciones gnome_win_hints_*. :)"
 
-#: support/argp-parse.c:90
+#: support/argp-parse.c:95
 msgid "Give this help list"
 msgstr "Muestra esta lista de ayuda"
 
-#: support/argp-parse.c:91
+#: support/argp-parse.c:96
 msgid "Give a short usage message"
 msgstr "Muestra una pequeña ayuda"
 
-#: support/argp-parse.c:92
+#: support/argp-parse.c:97
 msgid "Set the program name"
 msgstr "Establece el nombre del programa"
 
-#: support/argp-parse.c:94
+#: support/argp-parse.c:99
 msgid "Hang for SECS seconds (default 3600)"
 msgstr "Espera durante SEGS segundos (por omisión 3600)"
 
-#: support/argp-parse.c:151
+#: support/argp-parse.c:156
 msgid "Print program version"
 msgstr "Imprime la versión del programa"
 
-#: support/argp-parse.c:167
+#: support/argp-parse.c:172
 msgid "(PROGRAM ERROR) No version known!?"
 msgstr "Error del programa (no se conoce la versión)"
 
-#: support/argp-parse.c:641
+#: support/argp-parse.c:646
 msgid "%s: Too many arguments\n"
 msgstr "%s: Demasiados argumentos\n"
 
-#: support/argp-parse.c:780
+#: support/argp-parse.c:785
 msgid "(PROGRAM ERROR) Option should have been recognized!?"
 msgstr "(ERROR DEL PROGRAMA) ¿¡La opción deberá haber sido reconocida?!"
 
@@ -1058,44 +1066,44 @@ msgstr "%s: la opción `-W %s' es ambigua\n"
 msgid "%s: option `-W %s' doesn't allow an argument\n"
 msgstr "%s: la opción `-W %s' no accepta un argumento\n"
 
-#: test-gnome/testgnome.c:340
+#: test-gnome/testgnome.c:328
 msgid "Guru-in-a-dialog test"
 msgstr "Prueba Guru-in-a-dialog"
 
 #. Pixmap
-#: test-gnome/testgnome.c:614
+#: test-gnome/testgnome.c:602
 msgid "Default Pixmap"
 msgstr "Pixmap por omisión"
 
-#: test-gnome/testgnome.c:622 test-gnome/testgnome.c:663 test-gnome/testgnome.c:688
+#: test-gnome/testgnome.c:610 test-gnome/testgnome.c:651 test-gnome/testgnome.c:676
 msgid "If you choose a font it will appear here"
 msgstr "Si elije une fuente aparecerá aquí"
 
 #. Font_Info
-#: test-gnome/testgnome.c:629
+#: test-gnome/testgnome.c:617
 msgid "Font Info"
 msgstr "Información Fuente"
 
-#: test-gnome/testgnome.c:639
+#: test-gnome/testgnome.c:627
 msgid "Use Font in button with size"
 msgstr "Usar fuente en el botón con tamaño"
 
-#: test-gnome/testgnome.c:646
+#: test-gnome/testgnome.c:634
 msgid "Show font size"
 msgstr "Mostrar tamaño de la fuente"
 
-#: test-gnome/testgnome.c:682
+#: test-gnome/testgnome.c:670
 msgid "This is an hbox with pixmap and text"
 msgstr "Esta es una hbox con pixmap y texto"
 
-#: test-gnome/testgnome.c:875
+#: test-gnome/testgnome.c:863
 msgid "The user chose Yes/OK with data:\n"
 msgstr "El usuario eligió Sí/OK con los datos:\n"
 
-#: test-gnome/testgnome.c:879
+#: test-gnome/testgnome.c:867
 msgid "The user chose No/Cancel with data:\n"
 msgstr "El usuario eligió No/Anular con los datos:\n"
 
-#: test-gnome/testgnome.c:890
+#: test-gnome/testgnome.c:878
 msgid "Weird number in reply callback"
 msgstr "Número raro en la respuesta"
