@@ -851,7 +851,7 @@ normal_loading:
   poa = (PortableServer_POA)CORBA_ORB_resolve_initial_references(_gnorba_gnome_orbit_orb,
 								 "RootPOA", ev);
 
-  retval = plugin->plugin_object_list[i].activate(poa, plugin->plugin_object_list[i].server_id, NULL, &impl_ptr, ev);
+  retval = plugin->plugin_object_list[i].activate(poa, plugin->plugin_object_list[i].server_id, params, &impl_ptr, ev);
 
 
   if (ev->_major != CORBA_NO_EXCEPTION) {
