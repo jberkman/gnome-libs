@@ -1,0 +1,5273 @@
+diff -rNu emptydir/gnome-entry.c urlaub/gnome-entry.c
+--- emptydir/gnome-entry.c	Thu Jan  1 01:00:00 1970
++++ urlaub/gnome-entry.c	Wed Aug  9 00:14:46 2000
+@@ -0,0 +1,613 @@
++/* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
++/*
++ * Copyright (C) 1997, 1998, 1999, 2000 Free Software Foundation
++ * All rights reserved.
++ *
++ * This file is part of the Gnome Library.
++ *
++ * The Gnome Library is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU Library General Public License as
++ * published by the Free Software Foundation; either version 2 of the
++ * License, or (at your option) any later version.
++ *
++ * The Gnome Library is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++ * Library General Public License for more details.
++ *
++ * You should have received a copy of the GNU Library General Public
++ * License along with the Gnome Library; see the file COPYING.LIB.  If not,
++ * write to the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
++ * Boston, MA 02111-1307, USA.
++ */
++/*
++  @NOTATION@
++ */
++
++/* GnomeEntry widget - combo box with auto-saved history
++ *
++ * Author: Federico Mena <federico@nuclecu.unam.mx>
++ */
++
++#include <config.h>
++
++#include <stdio.h>
++#include <string.h>
++#include <gtk/gtkentry.h>
++#include <gtk/gtkcombo.h>
++#include <gtk/gtklist.h>
++#include <gtk/gtklistitem.h>
++#include <gtk/gtksignal.h>
++#include "libgnome/libgnomeP.h"
++#include "gnome-entry.h"
++
++/*FIXME: Add GtkArg stuff */
++
++
++struct _GnomeEntryPrivate {
++	gchar     *history_id;
++
++	GList     *items;
++
++	GtkWidget *combo;
++	GtkWidget *entry;
++
++	guint32    changed : 1;
++};
++	
++
++static void   gnome_entry_class_init   (GnomeEntryClass *class);
++static void   gnome_entry_init         (GnomeEntry      *gentry);
++static void   gnome_entry_destroy      (GtkObject       *object);
++static void   gnome_entry_finalize     (GObject         *object);
++
++static void   entry_set_arg            (GtkObject       *object,
++                                        GtkArg          *arg,
++                                        guint            arg_id);
++static void   entry_get_arg            (GtkObject       *object,
++                                        GtkArg          *arg,
++                                        guint            arg_id);
++
++static gchar *get_entry_text_handler   (GnomeSelector   *selector);
++static void   set_entry_text_handler   (GnomeSelector   *selector,
++                                        const gchar     *text);
++static void   activate_entry_handler   (GnomeSelector   *selector);
++static void   history_changed_handler  (GnomeSelector   *selector);
++static void   entry_activated_cb       (GtkWidget       *widget,
++                                        gpointer         data);
++
++
++static GnomeSelectorClass *parent_class;
++
++enum {
++	ARG_0,
++	ARG_GTK_ENTRY
++};
++
++guint
++gnome_entry_get_type (void)
++{
++	static guint entry_type = 0;
++
++	if (!entry_type) {
++		GtkTypeInfo entry_info = {
++			"GnomeEntry",
++			sizeof (GnomeEntry),
++			sizeof (GnomeEntryClass),
++			(GtkClassInitFunc) gnome_entry_class_init,
++			(GtkObjectInitFunc) gnome_entry_init,
++			NULL,
++			NULL,
++			NULL
++		};
++
++		entry_type = gtk_type_unique (gnome_selector_get_type (), &entry_info);
++	}
++
++	return entry_type;
++}
++
++static void
++gnome_entry_class_init (GnomeEntryClass *class)
++{
++	GnomeSelectorClass *selector_class;
++	GtkObjectClass *object_class;
++	GObjectClass *gobject_class;
++
++	selector_class = (GnomeSelectorClass *) class;
++	object_class = (GtkObjectClass *) class;
++	gobject_class = (GObjectClass *) class;
++
++	parent_class = gtk_type_class (gnome_selector_get_type ());
++
++	gtk_object_add_arg_type("GnomeEntry::gtk_entry",
++				GTK_TYPE_POINTER,
++				GTK_ARG_READABLE,
++				ARG_GTK_ENTRY);
++
++	object_class->destroy = gnome_entry_destroy;
++	gobject_class->finalize = gnome_entry_finalize;
++	object_class->get_arg = entry_get_arg;
++	object_class->set_arg = entry_set_arg;
++
++	selector_class->get_entry_text = get_entry_text_handler;
++	selector_class->set_entry_text = set_entry_text_handler;
++	selector_class->activate_entry = activate_entry_handler;
++	selector_class->history_changed = history_changed_handler;
++}
++
++static void
++entry_set_arg (GtkObject *object,
++	       GtkArg *arg,
++	       guint arg_id)
++{
++	GnomeEntry *self;
++
++	self = GNOME_ENTRY (object);
++
++	switch (arg_id) {
++	default:
++		break;
++	}
++}
++
++static void
++entry_get_arg (GtkObject *object,
++	       GtkArg *arg,
++	       guint arg_id)
++{
++	GnomeEntry *self;
++
++	self = GNOME_ENTRY (object);
++
++	switch (arg_id) {
++	default:
++		break;
++	}
++}
++
++static void
++gnome_entry_init (GnomeEntry *gentry)
++{
++	gentry->_priv = g_new0(GnomeEntryPrivate, 1);
++
++	gentry->_priv->changed      = FALSE;
++	gentry->_priv->items        = NULL;
++}
++
++/**
++ * gnome_entry_construct:
++ * @gentry: Pointer to GnomeEntry object.
++ * @history_id: If not %NULL, the text id under which history data is stored
++ *
++ * Constructs a #GnomeEntry object, for language bindings or subclassing
++ * use #gnome_entry_new from C
++ *
++ * Returns: 
++ */
++void
++gnome_entry_construct (GnomeEntry *gentry, 
++		       const gchar *history_id)
++{
++	guint32 flags;
++
++	g_return_if_fail (gentry != NULL);
++
++	gentry->_priv->history_id = g_strdup (history_id);
++
++	flags = GNOME_SELECTOR_DEFAULT_ENTRY_WIDGET;
++
++	gnome_entry_construct_full (gentry, history_id, NULL, NULL,
++				    NULL, NULL, flags);
++}
++
++void
++gnome_entry_construct_full (GnomeEntry *gentry,
++			    const gchar *history_id,
++			    const gchar *dialog_title,
++			    GtkWidget *entry_widget,
++			    GtkWidget *selector_widget,
++			    GtkWidget *browse_dialog,
++			    guint32 flags)
++{
++	guint32 newflags = flags;
++
++	g_return_if_fail (gentry != NULL);
++
++	/* Create the default selector widget if requested. */
++	if (flags & GNOME_SELECTOR_DEFAULT_ENTRY_WIDGET) {
++		if (entry_widget != NULL) {
++			g_warning (G_STRLOC ": It makes no sense to use "
++				   "GNOME_SELECTOR_DEFAULT_ENTRY_WIDGET "
++				   "and pass a `entry_widget' as well.");
++			return;
++		}
++
++		entry_widget = gtk_combo_new ();
++
++		gentry->_priv->combo = entry_widget;
++		gentry->_priv->entry = GTK_COMBO (entry_widget)->entry;
++
++		gtk_combo_disable_activate (GTK_COMBO (entry_widget));
++		gtk_combo_set_case_sensitive (GTK_COMBO (entry_widget), TRUE);
++
++		gtk_signal_connect (GTK_OBJECT (gentry->_priv->entry),
++				    "activate", entry_activated_cb, gentry);
++
++		newflags &= ~GNOME_SELECTOR_DEFAULT_ENTRY_WIDGET;
++	}
++
++	gnome_selector_construct (GNOME_SELECTOR (gentry),
++				  history_id, dialog_title,
++				  entry_widget, selector_widget,
++				  browse_dialog, newflags);
++}
++
++
++/**
++ * gnome_entry_new
++ * @history_id: If not %NULL, the text id under which history data is stored
++ *
++ * Description: Creates a new GnomeEntry widget.  If  @history_id is
++ * not %NULL, then the history list will be saved and restored between
++ * uses under the given id.
++ *
++ * Returns: Newly-created GnomeEntry widget.
++ */
++GtkWidget *
++gnome_entry_new (const gchar *history_id)
++{
++	GnomeEntry *gentry;
++
++	gentry = gtk_type_new (gnome_entry_get_type ());
++
++	gnome_entry_construct (gentry, history_id);
++
++	return GTK_WIDGET (gentry);
++}
++
++static void
++gnome_entry_destroy (GtkObject *object)
++{
++	GnomeEntry *gentry;
++
++	/* remember, destroy can be run multiple times! */
++
++	g_return_if_fail (object != NULL);
++	g_return_if_fail (GNOME_IS_ENTRY (object));
++
++	gentry = GNOME_ENTRY (object);
++
++	if (GTK_OBJECT_CLASS (parent_class)->destroy)
++		(* GTK_OBJECT_CLASS (parent_class)->destroy) (object);
++}
++
++static void
++gnome_entry_finalize (GObject *object)
++{
++	GnomeEntry *gentry;
++
++	g_return_if_fail (object != NULL);
++	g_return_if_fail (GNOME_IS_ENTRY (object));
++
++	gentry = GNOME_ENTRY (object);
++
++	if (gentry->_priv) {
++		g_free (gentry->_priv->history_id);
++	}
++
++	g_free (gentry->_priv);
++	gentry->_priv = NULL;
++
++	if (G_OBJECT_CLASS (parent_class)->finalize)
++		(* G_OBJECT_CLASS (parent_class)->finalize) (object);
++}
++
++static gchar *
++get_entry_text_handler (GnomeSelector *selector)
++{
++	GnomeEntry *gentry;
++	gchar *text;
++
++	g_return_val_if_fail (selector != NULL, NULL);
++	g_return_val_if_fail (GNOME_IS_ENTRY (selector), NULL);
++
++	gentry = GNOME_ENTRY (selector);
++
++	text = gtk_entry_get_text (GTK_ENTRY (gentry->_priv->entry));
++	return g_strdup (text);
++}
++
++static void
++set_entry_text_handler (GnomeSelector *selector, const gchar *text)
++{
++	GnomeEntry *gentry;
++
++	g_return_if_fail (selector != NULL);
++	g_return_if_fail (GNOME_IS_ENTRY (selector));
++
++	gentry = GNOME_ENTRY (selector);
++
++	gtk_entry_set_text (GTK_ENTRY (gentry->_priv->entry), text);
++}
++
++static void
++activate_entry_handler (GnomeSelector *selector)
++{
++	GnomeEntry *gentry;
++	gchar *text;
++
++	g_return_if_fail (selector != NULL);
++	g_return_if_fail (GNOME_IS_ENTRY (selector));
++
++	g_message (G_STRLOC);
++
++	gentry = GNOME_ENTRY (selector);
++
++	text = gtk_entry_get_text (GTK_ENTRY (gentry->_priv->entry));
++	gnome_selector_prepend_history (selector, TRUE, text);
++
++	if (GNOME_SELECTOR_CLASS (parent_class)->activate_entry)
++		(* GNOME_SELECTOR_CLASS (parent_class)->activate_entry)
++			(selector);
++}
++
++static void
++history_changed_handler (GnomeSelector *selector)
++{
++	GnomeEntry *gentry;
++	GtkWidget *list_widget;
++	GList *items = NULL;
++	GSList *history_list, *c;
++
++	g_return_if_fail (selector != NULL);
++	g_return_if_fail (GNOME_IS_ENTRY (selector));
++
++	gentry = GNOME_ENTRY (selector);
++
++	list_widget = GTK_COMBO (gentry->_priv->combo)->list;
++
++	gtk_list_clear_items (GTK_LIST (list_widget), 0, -1);
++
++	history_list = gnome_selector_get_history (GNOME_SELECTOR (gentry));
++
++	for (c = history_list; c; c = c->next) {
++		GtkWidget *item;
++
++		item = gtk_list_item_new_with_label (c->data);
++		items = g_list_prepend (items, item);
++		gtk_widget_show_all (item);
++	}
++
++	items = g_list_reverse (items);
++
++	gtk_list_prepend_items (GTK_LIST (list_widget), items);
++
++	g_slist_foreach (history_list, (GFunc) g_free, NULL);
++	g_slist_free (history_list);
++}
++
++static void
++entry_activated_cb (GtkWidget *widget, gpointer data)
++{
++	g_return_if_fail (data != NULL);
++	g_return_if_fail (GNOME_IS_SELECTOR (data));
++
++	gnome_selector_activate_entry (GNOME_SELECTOR (data));
++}
++
++
++/**
++ * gnome_entry_gtk_entry
++ * @gentry: Pointer to GnomeEntry object.
++ *
++ * Description: Obtain pointer to GnomeEntry's internal text entry
++ *
++ * Returns: Pointer to GtkEntry widget.
++ */
++GtkWidget *
++gnome_entry_gtk_entry (GnomeEntry *gentry)
++{
++	g_return_val_if_fail (gentry != NULL, NULL);
++	g_return_val_if_fail (GNOME_IS_ENTRY (gentry), NULL);
++
++	g_warning (G_STRLOC ": This function is deprecated.");
++
++	return GTK_COMBO (gentry->_priv->combo)->entry;
++}
++
++
++/**
++ * gnome_entry_set_history_id
++ * @gentry: Pointer to GnomeEntry object.
++ * @history_id: If not %NULL, the text id under which history data is stored
++ *
++ * Description: Set or clear the history id of the GnomeEntry widget.  If
++ * @history_id is %NULL, the widget's history id is cleared.  Otherwise,
++ * the given id replaces the previous widget history id.
++ *
++ * Returns:
++ */
++void
++gnome_entry_set_history_id (GnomeEntry *gentry, const gchar *history_id)
++{
++	g_return_if_fail (gentry != NULL);
++	g_return_if_fail (GNOME_IS_ENTRY (gentry));
++
++	g_warning (G_STRLOC ": This function is deprecated and has no "
++		   "effect at all.");
++}
++
++
++/**
++ * gnome_entry_get_history_id
++ * @gentry: Pointer to GnomeEntry object.
++ *
++ * Description: Returns the current history id of the GnomeEntry widget.
++ *
++ * Returns: The current history id.
++ */
++const gchar *
++gnome_entry_get_history_id (GnomeEntry *gentry)
++{
++	g_return_val_if_fail (gentry != NULL, NULL);
++	g_return_val_if_fail (GNOME_IS_ENTRY (gentry), NULL);
++
++	g_warning (G_STRLOC ": This function is deprecated.");
++
++	return gentry->_priv->history_id;
++}
++
++
++/**
++ * gnome_entry_set_max_saved
++ * @gentry: Pointer to GnomeEntry object.
++ * @max_saved: Maximum number of history items to save
++ *
++ * Description: Set internal limit on number of history items saved
++ * to the config file, when #gnome_entry_save_history() is called.
++ * Zero is an acceptable value for @max_saved, but the same thing is
++ * accomplished by setting the history id of @gentry to %NULL.
++ *
++ * Returns:
++ */
++void
++gnome_entry_set_max_saved (GnomeEntry *gentry, guint max_saved)
++{
++	g_return_if_fail (gentry != NULL);
++	g_return_if_fail (GNOME_IS_ENTRY (gentry));
++
++	g_warning (G_STRLOC ": This function is deprecated, use "
++		   "gnome_selector_set_history_length() instead.");
++
++	gnome_selector_set_history_length (GNOME_SELECTOR (gentry), max_saved);
++}
++
++/**
++ * gnome_entry_get_max_saved
++ * @gentry: Pointer to GnomeEntry object.
++ *
++ * Description: Get internal limit on number of history items saved
++ * to the config file, when #gnome_entry_save_history() is called.
++ * See #gnome_entry_set_max_saved().
++ *
++ * Returns: An unsigned integer
++ */
++guint
++gnome_entry_get_max_saved (GnomeEntry *gentry)
++{
++	g_return_val_if_fail (gentry != NULL, 0);
++	g_return_val_if_fail (GNOME_IS_ENTRY (gentry), 0);
++
++	g_warning (G_STRLOC ": This function is deprecated, use "
++		   "gnome_selector_get_history_length() instead.");
++
++	return gnome_selector_get_history_length (GNOME_SELECTOR (gentry));
++}
++
++
++/**
++ * gnome_entry_prepend_history
++ * @gentry: Pointer to GnomeEntry object.
++ * @save: If %TRUE, history entry will be saved to config file
++ * @text: Text to add
++ *
++ * Description: Adds a history item of the given @text to the head of
++ * the history list inside @gentry.  If @save is %TRUE, the history
++ * item will be saved in the config file (assuming that @gentry's
++ * history id is not %NULL).
++ *
++ * Returns:
++ */
++void
++gnome_entry_prepend_history (GnomeEntry *gentry, gboolean save,
++			     const gchar *text)
++{
++	g_return_if_fail (gentry != NULL);
++	g_return_if_fail (GNOME_IS_ENTRY (gentry));
++
++	gnome_selector_prepend_history (GNOME_SELECTOR (gentry), save, text);
++}
++
++
++/**
++ * gnome_entry_append_history
++ * @gentry: Pointer to GnomeEntry object.
++ * @save: If %TRUE, history entry will be saved to config file
++ * @text: Text to add
++ *
++ * Description: Adds a history item of the given @text to the tail
++ * of the history list inside @gentry.  If @save is %TRUE, the
++ * history item will be saved in the config file (assuming that
++ * @gentry's history id is not %NULL).
++ *
++ * Returns:
++ */
++void
++gnome_entry_append_history (GnomeEntry *gentry, gboolean save,
++			    const gchar *text)
++{
++	g_return_if_fail (gentry != NULL);
++	g_return_if_fail (GNOME_IS_ENTRY (gentry));
++
++	gnome_selector_append_history (GNOME_SELECTOR (gentry), save, text);
++}
++
++
++/**
++ * gnome_entry_load_history
++ * @gentry: Pointer to GnomeEntry object.
++ *
++ * Description: Loads a stored history list from the GNOME config file,
++ * if one is available.  If the history id of @gentry is %NULL,
++ * nothing occurs.
++ *
++ * Returns:
++ */
++void
++gnome_entry_load_history (GnomeEntry *gentry)
++{
++	g_return_if_fail (gentry != NULL);
++	g_return_if_fail (GNOME_IS_ENTRY (gentry));
++
++	gnome_selector_load_history (GNOME_SELECTOR (gentry));
++}
++
++
++/**
++ * gnome_entry_clear_history
++ * @gentry: Pointer to GnomeEntry object.
++ *
++ * Description:  Clears the history, you should call #gnome_entry_save_history
++ * To make the change permanent.
++ *
++ * Returns:
++ */
++void
++gnome_entry_clear_history (GnomeEntry *gentry)
++{
++	g_return_if_fail (gentry != NULL);
++	g_return_if_fail (GNOME_IS_ENTRY (gentry));
++
++	gnome_selector_clear_history (GNOME_SELECTOR (gentry));
++}
++
++
++/**
++ * gnome_entry_save_history
++ * @gentry: Pointer to GnomeEntry object.
++ *
++ * Description: Force the history items of the widget to be stored
++ * in a configuration file.  If the history id of @gentry is %NULL,
++ * nothing occurs.
++ *
++ * Returns:
++ */
++void
++gnome_entry_save_history (GnomeEntry *gentry)
++{
++	g_return_if_fail (gentry != NULL);
++	g_return_if_fail (GNOME_IS_ENTRY (gentry));
++
++	gnome_selector_save_history (GNOME_SELECTOR (gentry));
++}
+diff -rNu emptydir/gnome-file-selector.c urlaub/gnome-file-selector.c
+--- emptydir/gnome-file-selector.c	Thu Jan  1 01:00:00 1970
++++ urlaub/gnome-file-selector.c	Wed Aug  9 00:11:01 2000
+@@ -0,0 +1,322 @@
++/* -*- Mode: C; c-set-style: gnu indent-tabs-mode: t; c-basic-offset: 4; tab-width: 8 -*- */
++/*
++ * Copyright (C) 2000 SuSE GmbH
++ * Author: Martin Baulig <baulig@suse.de>
++ *
++ * This file is part of the Gnome Library.
++ *
++ * The Gnome Library is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU Library General Public License as
++ * published by the Free Software Foundation; either version 2 of the
++ * License, or (at your option) any later version.
++ *
++ * The Gnome Library is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++ * Library General Public License for more details.
++ *
++ * You should have received a copy of the GNU Library General Public
++ * License along with the Gnome Library; see the file COPYING.LIB.  If not,
++ * write to the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
++ * Boston, MA 02111-1307, USA.
++ */
++/*
++  @NOTATION@
++ */
++
++/* GnomeFileSelector widget - a file selector widget.
++ *
++ * Author: Martin Baulig <baulig@suse.de>
++ */
++
++#include <config.h>
++
++#include <stdio.h>
++#include <string.h>
++#include <gtk/gtkfilesel.h>
++#include <gtk/gtklist.h>
++#include <gtk/gtklistitem.h>
++#include <gtk/gtksignal.h>
++#include "libgnome/libgnomeP.h"
++#include "gnome-file-selector.h"
++#include "gnome-selectorP.h"
++#include "gnome-entry.h"
++
++struct _GnomeFileSelectorPrivate {
++};
++	
++
++static void gnome_file_selector_class_init  (GnomeFileSelectorClass *class);
++static void gnome_file_selector_init        (GnomeFileSelector      *fselector);
++static void gnome_file_selector_destroy     (GtkObject       *object);
++static void gnome_file_selector_finalize    (GObject         *object);
++
++static void      activate_entry_handler     (GnomeSelector   *selector);
++
++static GnomeEntryClass *parent_class;
++
++guint
++gnome_file_selector_get_type (void)
++{
++    static guint fselector_type = 0;
++
++    if (!fselector_type) {
++	GtkTypeInfo fselector_info = {
++	    "GnomeFileSelector",
++	    sizeof (GnomeFileSelector),
++	    sizeof (GnomeFileSelectorClass),
++	    (GtkClassInitFunc) gnome_file_selector_class_init,
++	    (GtkObjectInitFunc) gnome_file_selector_init,
++	    NULL,
++	    NULL,
++	    NULL
++	};
++
++	fselector_type = gtk_type_unique 
++	    (gnome_entry_get_type (), &fselector_info);
++    }
++
++    return fselector_type;
++}
++
++static void
++gnome_file_selector_class_init (GnomeFileSelectorClass *class)
++{
++    GnomeSelectorClass *selector_class;
++    GtkObjectClass *object_class;
++    GObjectClass *gobject_class;
++
++    selector_class = (GnomeSelectorClass *) class;
++    object_class = (GtkObjectClass *) class;
++    gobject_class = (GObjectClass *) class;
++
++    parent_class = gtk_type_class (gnome_entry_get_type ());
++
++    object_class->destroy = gnome_file_selector_destroy;
++    gobject_class->finalize = gnome_file_selector_finalize;
++
++    selector_class->activate_entry = activate_entry_handler;
++}
++
++static void
++activate_entry_handler (GnomeSelector *selector)
++{
++    GnomeFileSelector *fselector;
++    gchar *text;
++
++    g_return_if_fail (selector != NULL);
++    g_return_if_fail (GNOME_IS_FILE_SELECTOR (selector));
++
++    g_message (G_STRLOC);
++
++    fselector = GNOME_FILE_SELECTOR (selector);
++
++    if (GNOME_SELECTOR_CLASS (parent_class)->activate_entry)
++	(* GNOME_SELECTOR_CLASS (parent_class)->activate_entry) (selector);
++
++    text = gnome_selector_get_entry_text (selector);
++
++    gnome_selector_freeze (selector);
++
++    if (g_file_test (text, G_FILE_TEST_ISFILE)) {
++	gnome_selector_append_file (selector, text, FALSE);
++    } else if (g_file_test (text, G_FILE_TEST_ISDIR)) {
++	gnome_selector_append_directory (selector, text, FALSE);
++    }
++
++    gnome_selector_thaw (selector);
++
++    g_free (text);
++}
++
++static void
++gnome_file_selector_init (GnomeFileSelector *fselector)
++{
++    fselector->_priv = g_new0 (GnomeFileSelectorPrivate, 1);
++}
++
++static void
++browse_dialog_cancel (GtkWidget *widget, gpointer data)
++{
++    GnomeSelector *selector;
++    GtkFileSelection *fs;
++
++    selector = GNOME_SELECTOR (data);
++    fs = GTK_FILE_SELECTION (selector->_priv->browse_dialog);
++
++    if (GTK_WIDGET (fs)->window)
++	gdk_window_lower (GTK_WIDGET (fs)->window);
++    gtk_widget_hide (GTK_WIDGET (fs));
++}
++
++static void
++browse_dialog_ok (GtkWidget *widget, gpointer data)
++{
++    GnomeSelector *selector;
++    GtkFileSelection *fs;
++    gchar *filename;
++
++    selector = GNOME_SELECTOR (data);
++
++    fs = GTK_FILE_SELECTION (selector->_priv->browse_dialog);
++    filename = gtk_file_selection_get_filename (fs);
++
++    /* This is "directory safe". */
++    if (!gnome_selector_set_filename (selector, filename)) {
++	gdk_beep ();
++	return;
++    }
++
++    if (GTK_WIDGET (fs)->window)
++	gdk_window_lower (GTK_WIDGET (fs)->window);
++    gtk_widget_hide (GTK_WIDGET (fs));
++}
++
++/**
++ * gnome_file_selector_construct:
++ * @fselector: Pointer to GnomeFileSelector object.
++ * @history_id: If not %NULL, the text id under which history data is stored
++ *
++ * Constructs a #GnomeFileSelector object, for language bindings or subclassing
++ * use #gnome_file_selector_new from C
++ *
++ * Returns: 
++ */
++void
++gnome_file_selector_construct (GnomeFileSelector *fselector,
++			       const gchar *history_id,
++			       const gchar *dialog_title,
++			       GtkWidget *entry_widget,
++			       GtkWidget *selector_widget,
++			       GtkWidget *browse_dialog,
++			       guint32 flags)
++{
++    guint32 newflags = flags;
++
++    g_return_if_fail (fselector != NULL);
++    g_return_if_fail (GNOME_IS_FILE_SELECTOR (fselector));
++
++    /* Create the default browser dialog if requested. */
++    if (flags & GNOME_SELECTOR_DEFAULT_BROWSE_DIALOG) {
++	GtkWidget *filesel_widget;
++	GtkFileSelection *filesel;
++
++	if (browse_dialog != NULL) {
++	    g_warning (G_STRLOC ": It makes no sense to use "
++		       "GNOME_SELECTOR_DEFAULT_BROWSE_DIALOG "
++		       "and pass a `browse_dialog' as well.");
++	    return;
++	}
++
++	filesel_widget = gtk_file_selection_new (dialog_title);
++	filesel = GTK_FILE_SELECTION (filesel_widget);
++
++	gtk_signal_connect (GTK_OBJECT (filesel->cancel_button),
++			    "clicked", browse_dialog_cancel,
++			    fselector);
++	gtk_signal_connect (GTK_OBJECT (filesel->ok_button),
++			    "clicked", browse_dialog_ok,
++			    fselector);
++
++	browse_dialog = GTK_WIDGET (filesel);
++
++	newflags &= ~GNOME_SELECTOR_DEFAULT_BROWSE_DIALOG;
++    }
++
++    gnome_entry_construct_full (GNOME_ENTRY (fselector),
++				history_id, dialog_title,
++				entry_widget, selector_widget,
++				browse_dialog, newflags);
++
++    if (flags & GNOME_SELECTOR_DEFAULT_BROWSE_DIALOG) {
++	/* We need to unref this since it isn't put in any
++	 * container so it won't get destroyed otherwise. */
++	gtk_widget_unref (browse_dialog);
++    }
++}
++
++/**
++ * gnome_file_selector_new
++ * @history_id: If not %NULL, the text id under which history data is stored
++ *
++ * Description: Creates a new GnomeFileSelector widget.  If  @history_id
++ * is not %NULL, then the history list will be saved and restored between
++ * uses under the given id.
++ *
++ * Returns: Newly-created GnomeFileSelector widget.
++ */
++GtkWidget *
++gnome_file_selector_new (const gchar *history_id,
++			 const gchar *dialog_title,
++			 guint32 flags)
++{
++    GnomeFileSelector *fselector;
++
++    g_return_val_if_fail ((flags & ~GNOME_SELECTOR_USER_FLAGS) == 0, NULL);
++
++    fselector = gtk_type_new (gnome_file_selector_get_type ());
++
++    flags |= GNOME_SELECTOR_DEFAULT_ENTRY_WIDGET |
++	GNOME_SELECTOR_DEFAULT_SELECTOR_WIDGET |
++	GNOME_SELECTOR_DEFAULT_BROWSE_DIALOG |
++	GNOME_SELECTOR_WANT_BROWSE_BUTTON;
++
++    gnome_file_selector_construct (fselector, history_id, dialog_title,
++				   NULL, NULL, NULL, flags);
++
++    return GTK_WIDGET (fselector);
++}
++
++GtkWidget *
++gnome_file_selector_new_custom (const gchar *history_id,
++				const gchar *dialog_title,
++				GtkWidget *entry_widget,
++				GtkWidget *selector_widget,
++				GtkWidget *browse_dialog,
++				guint32 flags)
++{
++    GnomeFileSelector *fselector;
++
++    fselector = gtk_type_new (gnome_file_selector_get_type ());
++
++    gnome_file_selector_construct (fselector, history_id,
++				   dialog_title, entry_widget,
++				   selector_widget, browse_dialog,
++				   flags);
++
++    return GTK_WIDGET (fselector);
++}
++
++
++static void
++gnome_file_selector_destroy (GtkObject *object)
++{
++    GnomeFileSelector *fselector;
++
++    /* remember, destroy can be run multiple times! */
++
++    g_return_if_fail (object != NULL);
++    g_return_if_fail (GNOME_IS_SELECTOR (object));
++
++    fselector = GNOME_FILE_SELECTOR (object);
++
++    if (GTK_OBJECT_CLASS (parent_class)->destroy)
++	(* GTK_OBJECT_CLASS (parent_class)->destroy) (object);
++}
++
++static void
++gnome_file_selector_finalize (GObject *object)
++{
++    GnomeFileSelector *fselector;
++
++    g_return_if_fail (object != NULL);
++    g_return_if_fail (GNOME_IS_SELECTOR (object));
++
++    fselector = GNOME_FILE_SELECTOR (object);
++
++    g_free (fselector->_priv);
++    fselector->_priv = NULL;
++
++    if (G_OBJECT_CLASS (parent_class)->finalize)
++	(* G_OBJECT_CLASS (parent_class)->finalize) (object);
++}
+diff -rNu emptydir/gnome-file-selector.h urlaub/gnome-file-selector.h
+--- emptydir/gnome-file-selector.h	Thu Jan  1 01:00:00 1970
++++ urlaub/gnome-file-selector.h	Mon Aug  7 14:36:02 2000
+@@ -0,0 +1,92 @@
++/* -*- Mode: C; c-set-style: gnu indent-tabs-mode: t; c-basic-offset: 4; tab-width: 8 -*- */
++/*
++ * Copyright (C) 2000 SuSE GmbH
++ * Author: Martin Baulig <baulig@suse.de>
++ *
++ * This file is part of the Gnome Library.
++ *
++ * The Gnome Library is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU Library General Public License as
++ * published by the Free Software Foundation; either version 2 of the
++ * License, or (at your option) any later version.
++ *
++ * The Gnome Library is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++ * Library General Public License for more details.
++ *
++ * You should have received a copy of the GNU Library General Public
++ * License along with the Gnome Library; see the file COPYING.LIB.  If not,
++ * write to the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
++ * Boston, MA 02111-1307, USA.
++ */
++/*
++  @NOTATION@
++ */
++
++/* GnomeFileSelector widget - a file selector widget.
++ *
++ * Author: Martin Baulig <baulig@suse.de>
++ */
++
++#ifndef GNOME_FILE_SELECTOR_H
++#define GNOME_FILE_SELECTOR_H
++
++
++#include <gtk/gtkvbox.h>
++#include <libgnome/gnome-defs.h>
++#include "gnome-entry.h"
++
++
++BEGIN_GNOME_DECLS
++
++
++#define GNOME_TYPE_FILE_SELECTOR            (gnome_file_selector_get_type ())
++#define GNOME_FILE_SELECTOR(obj)            (GTK_CHECK_CAST ((obj), GNOME_TYPE_FILE_SELECTOR, GnomeFileSelector))
++#define GNOME_FILE_SELECTOR_CLASS(klass)    (GTK_CHECK_CLASS_CAST ((klass), GNOME_TYPE_FILE_SELECTOR, GnomeFileSelectorClass))
++#define GNOME_IS_FILE_SELECTOR(obj)         (GTK_CHECK_TYPE ((obj), GNOME_TYPE_FILE_SELECTOR))
++#define GNOME_IS_FILE_SELECTOR_CLASS(klass) (GTK_CHECK_CLASS_TYPE ((klass), GNOME_TYPE_FILE_SELECTOR))
++#define GNOME_FILE_SELECTOR_GET_CLASS(obj)  (GTK_CHECK_GET_CLASS ((obj), GNOME_TYPE_FILE_SELECTOR, GnomeFileSelectorClass))
++
++
++typedef struct _GnomeFileSelector         GnomeFileSelector;
++typedef struct _GnomeFileSelectorPrivate  GnomeFileSelectorPrivate;
++typedef struct _GnomeFileSelectorClass    GnomeFileSelectorClass;
++
++struct _GnomeFileSelector {
++        GnomeEntry entry;
++        
++        /*< private >*/
++        GnomeFileSelectorPrivate *_priv;
++};
++
++struct _GnomeFileSelectorClass {
++        GnomeEntryClass parent_class;
++};
++
++
++guint        gnome_file_selector_get_type    (void);
++
++GtkWidget   *gnome_file_selector_new         (const gchar *history_id,
++                                              const gchar *dialog_title,
++					      guint32 flags);
++
++GtkWidget   *gnome_file_selector_new_custom  (const gchar *history_id,
++                                              const gchar *dialog_title,
++                                              GtkWidget *entry_widget,
++                                              GtkWidget *selector_widget,
++                                              GtkWidget *browse_dialog,
++                                              guint32 flags);
++
++void         gnome_file_selector_construct   (GnomeFileSelector *selector,
++                                              const gchar *history_id,
++                                              const gchar *dialog_title,
++                                              GtkWidget *entry_widget,
++                                              GtkWidget *selector_widget,
++                                              GtkWidget *browse_dialog,
++                                              guint32 flags);
++
++
++END_GNOME_DECLS
++
++#endif
+diff -rNu emptydir/gnome-icon-entry.c urlaub/gnome-icon-entry.c
+--- emptydir/gnome-icon-entry.c	Thu Jan  1 01:00:00 1970
++++ urlaub/gnome-icon-entry.c	Wed Aug 30 20:09:22 2000
+@@ -0,0 +1,1149 @@
++/* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
++/*
++ * Copyright (C) 1998, 1999, 2000 Free Software Foundation
++ * All rights reserved.
++ *
++ * This file is part of the Gnome Library.
++ *
++ * The Gnome Library is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU Library General Public License as
++ * published by the Free Software Foundation; either version 2 of the
++ * License, or (at your option) any later version.
++ *
++ * The Gnome Library is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++ * Library General Public License for more details.
++ *
++ * You should have received a copy of the GNU Library General Public
++ * License along with the Gnome Library; see the file COPYING.LIB.  If not,
++ * write to the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
++ * Boston, MA 02111-1307, USA.
++ */
++/*
++  @NOTATION@
++ */
++
++/* GnomeIconEntry widget - A button with the icon which allows graphical
++ *			   picking of new icons.  The browse dialog is the
++ *			   gnome-icon-sel with a gnome-file-entry which is
++ *			   similiar to gnome-pixmap-entry.
++ *
++ *
++ * Author: George Lebl <jirka@5z.com>
++ * icon selection based on original dentry-edit code which was:
++ *	Written by: Havoc Pennington, based on code by John Ellis.
++ */
++#include <config.h>
++#include <unistd.h> /*getcwd*/
++#include <gdk-pixbuf/gdk-pixbuf.h>
++#include <gtk/gtkbutton.h>
++#include <gtk/gtkdnd.h>
++#include <gtk/gtkentry.h>
++#include <gtk/gtkfilesel.h>
++#include <gtk/gtkframe.h>
++#include <gtk/gtklabel.h>
++#include <gtk/gtkmain.h>
++#include <gtk/gtksignal.h>
++#include <gtk/gtkpixmap.h>
++#include <gtk/gtkscrolledwindow.h>
++#include "libgnome/gnome-defs.h"
++#include "libgnome/gnome-i18nP.h"
++#include "libgnome/gnome-mime.h"
++#include "libgnome/gnome-util.h"
++#include "libgnome/gnome-ditem.h"
++#include "gnome-dialog.h"
++#include "gnome-stock.h"
++#include "gnome-file-entry.h"
++#include "gnome-icon-list.h"
++#include "gnome-icon-sel.h"
++#include "gnome-icon-entry.h"
++#include "gnome-pixmap.h"
++#include <sys/stat.h>
++#include <unistd.h>
++#include <string.h>
++
++struct _GnomeIconEntryPrivate {
++	GtkWidget *fentry;
++
++	GtkWidget *pickbutton;
++	
++	GtkWidget *pick_dialog;
++	gchar *pick_dialog_dir;
++
++	gchar *history_id;
++	gchar *browse_dialog_title;
++};
++
++static void gnome_icon_entry_class_init (GnomeIconEntryClass *class);
++static void gnome_icon_entry_init       (GnomeIconEntry      *ientry);
++static void drag_data_get		(GtkWidget          *widget,
++					 GdkDragContext     *context,
++					 GtkSelectionData   *selection_data,
++					 guint               info,
++					 guint               time,
++					 GnomeIconEntry     *ientry);
++static void drag_data_received		(GtkWidget        *widget,
++					 GdkDragContext   *context,
++					 gint              x,
++					 gint              y,
++					 GtkSelectionData *selection_data,
++					 guint             info,
++					 guint32           time,
++					 GnomeIconEntry   *ientry);
++static void ientry_destroy		(GtkObject *object);
++static void ientry_finalize		(GObject *object);
++static void ientry_get_arg		(GtkObject *object,
++					 GtkArg *arg,
++					 guint arg_id);
++static void ientry_set_arg		(GtkObject *object,
++					 GtkArg *arg,
++					 guint arg_id);
++static void ientry_browse               (GnomeIconEntry *ientry);
++
++static GtkVBoxClass *parent_class;
++
++static GtkTargetEntry drop_types[] = { { "text/uri-list", 0, 0 } };
++
++enum {
++	ARG_0,
++	ARG_HISTORY_ID,
++	ARG_BROWSE_DIALOG_TITLE,
++	ARG_PIXMAP_SUBDIR,
++	ARG_FILENAME,
++	ARG_PICK_DIALOG
++};
++
++enum {
++	CHANGED_SIGNAL,
++	BROWSE_SIGNAL,
++	LAST_SIGNAL
++};
++
++static gint gnome_ientry_signals[LAST_SIGNAL] = {0};
++
++
++guint
++gnome_icon_entry_get_type (void)
++{
++	static guint icon_entry_type = 0;
++
++	if (!icon_entry_type) {
++		GtkTypeInfo icon_entry_info = {
++			"GnomeIconEntry",
++			sizeof (GnomeIconEntry),
++			sizeof (GnomeIconEntryClass),
++			(GtkClassInitFunc) gnome_icon_entry_class_init,
++			(GtkObjectInitFunc) gnome_icon_entry_init,
++			NULL,
++			NULL,
++			NULL
++		};
++
++		icon_entry_type = gtk_type_unique (gtk_vbox_get_type (),
++						   &icon_entry_info);
++	}
++
++	return icon_entry_type;
++}
++
++static void
++gnome_icon_entry_class_init (GnomeIconEntryClass *class)
++{
++	GtkObjectClass *object_class = (GtkObjectClass *)class;
++	GObjectClass *gobject_class = (GObjectClass *)class;
++
++	parent_class = gtk_type_class (gtk_vbox_get_type ());
++
++	gnome_ientry_signals[CHANGED_SIGNAL] =
++		gtk_signal_new("changed",
++			       GTK_RUN_LAST,
++			       GTK_CLASS_TYPE(object_class),
++			       GTK_SIGNAL_OFFSET(GnomeIconEntryClass,
++			       			 changed),
++			       gtk_signal_default_marshaller,
++			       GTK_TYPE_NONE, 0);
++	gnome_ientry_signals[BROWSE_SIGNAL] =
++		gtk_signal_new("browse",
++			       GTK_RUN_LAST,
++			       GTK_CLASS_TYPE(object_class),
++			       GTK_SIGNAL_OFFSET(GnomeIconEntryClass,
++			       			 browse),
++			       gtk_signal_default_marshaller,
++			       GTK_TYPE_NONE, 0);
++	gtk_object_class_add_signals (object_class, gnome_ientry_signals,
++				      LAST_SIGNAL);
++	class->changed = NULL;
++	class->browse = ientry_browse;
++
++	gobject_class->finalize = ientry_finalize;
++	object_class->destroy = ientry_destroy;
++
++	gtk_object_add_arg_type("GnomeIconEntry::history_id",
++				GTK_TYPE_STRING,
++				GTK_ARG_READWRITE,
++				ARG_HISTORY_ID);
++	gtk_object_add_arg_type("GnomeIconEntry::browse_dialog_title",
++				GTK_TYPE_STRING,
++				GTK_ARG_READWRITE,
++				ARG_BROWSE_DIALOG_TITLE);
++	gtk_object_add_arg_type("GnomeIconEntry::pixmap_subdir",
++				GTK_TYPE_STRING,
++				GTK_ARG_WRITABLE,
++				ARG_PIXMAP_SUBDIR);
++	gtk_object_add_arg_type("GnomeIconEntry::filename",
++				GTK_TYPE_STRING,
++				GTK_ARG_READWRITE,
++				ARG_FILENAME);
++	gtk_object_add_arg_type("GnomeIconEntry::pick_dialog",
++				GTK_TYPE_POINTER,
++				GTK_ARG_READABLE,
++				ARG_PICK_DIALOG);
++
++	object_class->set_arg = ientry_set_arg;
++	object_class->get_arg = ientry_get_arg;
++}
++
++static void
++ientry_set_arg (GtkObject *object,
++		GtkArg *arg,
++		guint arg_id)
++{
++	GnomeIconEntry *self;
++
++	self = GNOME_ICON_ENTRY (object);
++
++	switch (arg_id) {
++	case ARG_HISTORY_ID:
++		gnome_icon_entry_set_history_id(self, GTK_VALUE_STRING(*arg));
++		break;
++	case ARG_BROWSE_DIALOG_TITLE:
++		gnome_icon_entry_set_browse_dialog_title
++			(self, GTK_VALUE_STRING(*arg));
++		break;
++	case ARG_PIXMAP_SUBDIR:
++		gnome_icon_entry_set_pixmap_subdir(self,
++						   GTK_VALUE_STRING(*arg));
++		break;
++	case ARG_FILENAME:
++		gnome_icon_entry_set_filename(self, GTK_VALUE_STRING(*arg));
++		break;
++	default:
++		break;
++	}
++}
++
++static void
++ientry_get_arg (GtkObject *object,
++		GtkArg *arg,
++		guint arg_id)
++{
++	GnomeIconEntry *self;
++
++	self = GNOME_ICON_ENTRY (object);
++
++	switch (arg_id) {
++	case ARG_HISTORY_ID:
++		GTK_VALUE_STRING(*arg) = g_strdup(self->_priv->history_id);
++		break;
++	case ARG_BROWSE_DIALOG_TITLE:
++		GTK_VALUE_STRING(*arg) = g_strdup(self->_priv->browse_dialog_title);
++		break;
++	case ARG_FILENAME:
++		GTK_VALUE_STRING(*arg) = gnome_icon_entry_get_filename(self);
++		break;
++	case ARG_PICK_DIALOG:
++		GTK_VALUE_POINTER(*arg) = gnome_icon_entry_pick_dialog(self);
++		break;
++	default:
++		break;
++	}
++}
++
++
++static void
++entry_changed(GtkWidget *widget, GnomeIconEntry *ientry)
++{
++	gchar *t;
++        GdkPixbuf *pixbuf;
++	GtkWidget *child;
++	int w,h;
++
++	g_return_if_fail (ientry != NULL);
++	g_return_if_fail (GNOME_IS_ICON_ENTRY (ientry));
++
++	t = gnome_file_entry_get_full_path(GNOME_FILE_ENTRY(ientry->_priv->fentry),
++					   FALSE);
++
++	child = GTK_BIN(ientry->_priv->pickbutton)->child;
++	
++	if(!t || !g_file_test (t, G_FILE_TEST_ISLINK|G_FILE_TEST_ISFILE) ||
++	   !(pixbuf = gdk_pixbuf_new_from_file (t))) {
++		if(GNOME_IS_PIXMAP(child)) {
++			gtk_drag_source_unset (ientry->_priv->pickbutton);
++			gtk_widget_destroy(child);
++			child = gtk_label_new(_("No Icon"));
++			gtk_widget_show(child);
++			gtk_container_add(GTK_CONTAINER(ientry->_priv->pickbutton),
++					  child);
++		}
++		g_free(t);
++		return;
++	}
++	g_free(t);
++	w = gdk_pixbuf_get_width(pixbuf);
++	h = gdk_pixbuf_get_height(pixbuf);
++	if(w>h) {
++		if(w>48) {
++			h = h*(48.0/w);
++			w = 48;
++		}
++	} else {
++		if(h>48) {
++			w = w*(48.0/h);
++			h = 48;
++		}
++	}
++	if(GNOME_IS_PIXMAP(child)) {
++                gnome_pixmap_clear(GNOME_PIXMAP(child));
++		gnome_pixmap_set_pixbuf(GNOME_PIXMAP(child), pixbuf);
++		gnome_pixmap_set_pixbuf_size (GNOME_PIXMAP(child), w, h);
++        } else {
++		gtk_widget_destroy(child);
++		child = gnome_pixmap_new_from_pixbuf_at_size (pixbuf, w, h);
++		gtk_widget_show(child);
++		gtk_container_add(GTK_CONTAINER(ientry->_priv->pickbutton), child);
++
++		if(!GTK_WIDGET_NO_WINDOW(child)) {
++			gtk_signal_connect (GTK_OBJECT (child), "drag_data_get",
++					    GTK_SIGNAL_FUNC (drag_data_get),ientry);
++			gtk_drag_source_set (child,
++					     GDK_BUTTON1_MASK|GDK_BUTTON3_MASK,
++					     drop_types, 1,
++					     GDK_ACTION_COPY);
++		}
++	}
++        gdk_pixbuf_unref(pixbuf);
++	gtk_drag_source_set (ientry->_priv->pickbutton,
++			     GDK_BUTTON1_MASK|GDK_BUTTON3_MASK,
++			     drop_types, 1,
++			     GDK_ACTION_COPY);
++}
++
++static void
++entry_activated(GtkWidget *widget, GnomeIconEntry *ientry)
++{
++	struct stat buf;
++	GnomeIconSelection * gis;
++	gchar *filename;
++
++	g_return_if_fail (widget != NULL);
++	g_return_if_fail (GTK_IS_ENTRY (widget));
++	g_return_if_fail (ientry != NULL);
++	g_return_if_fail (GNOME_IS_ICON_ENTRY (ientry));
++
++	filename = gtk_entry_get_text (GTK_ENTRY (widget));
++
++	if (!filename)
++		return;
++
++	stat (filename, &buf);
++	if (S_ISDIR (buf.st_mode)) {
++		gis = gtk_object_get_user_data(GTK_OBJECT(ientry));
++		gnome_icon_selection_clear (gis, TRUE);
++		gnome_icon_selection_add_directory (gis, filename);
++		gnome_icon_selection_show_icons(gis);
++	} else {
++		/* We pretend like ok has been called */
++		entry_changed (NULL, ientry);
++		gtk_widget_hide (ientry->_priv->pick_dialog);
++	}
++}
++
++static void
++setup_preview(GtkWidget *widget)
++{
++	gchar *p;
++	GList *l;
++	GtkWidget *pp = NULL;
++        GdkPixbuf *pixbuf;
++	int w,h;
++	GtkWidget *frame;
++	GtkFileSelection *fs;
++
++	g_return_if_fail (widget != NULL);
++	g_return_if_fail (GTK_IS_WIDGET (widget));
++
++	frame = gtk_object_get_data(GTK_OBJECT(widget),"frame");
++	fs = gtk_object_get_data(GTK_OBJECT(frame),"fs");
++
++	if((l = gtk_container_children(GTK_CONTAINER(frame))) != NULL) {
++		pp = l->data;
++		g_list_free(l);
++	}
++
++	if(pp)
++		gtk_widget_destroy(pp);
++	
++	p = gtk_file_selection_get_filename(fs);
++	if(!p || !g_file_test (p,G_FILE_TEST_ISLINK|G_FILE_TEST_ISFILE) ||
++	   !(pixbuf = gdk_pixbuf_new_from_file (p)))
++		return;
++
++	w = gdk_pixbuf_get_width(pixbuf);
++	h = gdk_pixbuf_get_height(pixbuf);
++	if(w>h) {
++		if(w>100) {
++			h = h*(100.0/w);
++			w = 100;
++		}
++	} else {
++		if(h>100) {
++			w = w*(100.0/h);
++			h = 100;
++		}
++	}
++	pp = gnome_pixmap_new_from_pixbuf_at_size (pixbuf, w, h);
++	gtk_widget_show(pp);
++	gtk_container_add(GTK_CONTAINER(frame),pp);
++
++        gdk_pixbuf_unref(pixbuf);
++}
++
++static void
++ientry_destroy(GtkObject *object)
++{
++	GnomeIconEntry *ientry;
++
++	/* remember, destroy can be run multiple times! */
++
++	g_return_if_fail (object != NULL);
++	g_return_if_fail (GNOME_IS_ICON_ENTRY (object));
++
++	ientry = GNOME_ICON_ENTRY(object);
++
++	if(ientry->_priv->fentry)
++		gtk_widget_unref (ientry->_priv->fentry);
++	ientry->_priv->fentry = NULL;
++
++	if(ientry->_priv->pick_dialog)
++		gtk_widget_destroy(ientry->_priv->pick_dialog);
++	ientry->_priv->pick_dialog = NULL;
++
++	g_free(ientry->_priv->pick_dialog_dir);
++	ientry->_priv->pick_dialog_dir = NULL;
++
++	g_free(ientry->_priv->history_id);
++	ientry->_priv->history_id = NULL;
++
++	g_free(ientry->_priv->browse_dialog_title);
++	ientry->_priv->browse_dialog_title = NULL;
++
++	if(GTK_OBJECT_CLASS(parent_class)->destroy)
++		(* GTK_OBJECT_CLASS(parent_class)->destroy)(object);
++
++}
++
++static void
++ientry_finalize(GObject *object)
++{
++	GnomeIconEntry *ientry;
++
++	g_return_if_fail (object != NULL);
++	g_return_if_fail (GNOME_IS_ICON_ENTRY (object));
++
++	ientry = GNOME_ICON_ENTRY(object);
++
++	g_free(ientry->_priv);
++	ientry->_priv = NULL;
++
++	if(G_OBJECT_CLASS(parent_class)->finalize)
++		(* G_OBJECT_CLASS(parent_class)->finalize)(object);
++
++}
++
++static void
++browse_clicked(GnomeFileEntry *fentry, GnomeIconEntry *ientry)
++{
++	GtkWidget *w;
++	GtkWidget *hbox;
++
++	GtkFileSelection *fs;
++
++	g_return_if_fail (fentry != NULL);
++	g_return_if_fail (GNOME_IS_FILE_ENTRY (fentry));
++	g_return_if_fail (ientry != NULL);
++	g_return_if_fail (GNOME_IS_ICON_ENTRY (ientry));
++
++	if(!fentry->fsw)
++		return;
++	fs = GTK_FILE_SELECTION(fentry->fsw);
++	
++	hbox = fs->file_list;
++	do {
++		hbox = hbox->parent;
++		if(!hbox) {
++			g_warning(_("Can't find an hbox, using a normal file "
++				    "selection"));
++			return;
++		}
++	} while(!GTK_IS_HBOX(hbox));
++
++	w = gtk_frame_new(_("Preview"));
++	gtk_widget_show(w);
++	gtk_box_pack_end(GTK_BOX(hbox),w,FALSE,FALSE,0);
++	gtk_widget_set_usize(w,110,110);
++	gtk_object_set_data(GTK_OBJECT(w),"fs",fs);
++	
++	gtk_object_set_data(GTK_OBJECT(fs->file_list),"frame",w);
++	gtk_signal_connect(GTK_OBJECT(fs->file_list),"select_row",
++			   GTK_SIGNAL_FUNC(setup_preview),NULL);
++	gtk_object_set_data(GTK_OBJECT(fs->selection_entry),"frame",w);
++	gtk_signal_connect_while_alive(GTK_OBJECT(fs->selection_entry),
++				       "changed",
++				       GTK_SIGNAL_FUNC(setup_preview),NULL,
++				       GTK_OBJECT(fs));
++}
++
++static void
++icon_selected_cb(GtkButton * button, GnomeIconEntry * ientry)
++{
++	const gchar * icon;
++	GnomeIconSelection * gis;
++
++	g_return_if_fail (ientry != NULL);
++	g_return_if_fail (GNOME_IS_ICON_ENTRY (ientry));
++
++	gis =  gtk_object_get_user_data(GTK_OBJECT(ientry));
++	gnome_icon_selection_stop_loading(gis);
++	icon = gnome_icon_selection_get_icon(gis, TRUE);
++
++	if (icon != NULL) {
++		GtkWidget *e = gnome_icon_entry_gtk_entry(ientry);
++		gtk_entry_set_text(GTK_ENTRY(e),icon);
++		entry_changed (NULL, ientry);
++	}
++
++	gtk_signal_emit(GTK_OBJECT(ientry),
++			gnome_ientry_signals[CHANGED_SIGNAL]);
++}
++
++static void
++cancel_pressed(GtkButton * button, GnomeIconEntry * ientry)
++{
++	GnomeIconSelection * gis;
++
++	g_return_if_fail (ientry != NULL);
++	g_return_if_fail (GNOME_IS_ICON_ENTRY (ientry));
++
++	gis =  gtk_object_get_user_data(GTK_OBJECT(ientry));
++	gnome_icon_selection_stop_loading(gis);
++}
++
++
++static void
++gil_icon_selected_cb(GnomeIconList *gil, gint num, GdkEvent *event, GnomeIconEntry *ientry)
++{
++	const gchar * icon;
++	GnomeIconSelection * gis;
++
++	g_return_if_fail (ientry != NULL);
++	g_return_if_fail (GNOME_IS_ICON_ENTRY (ientry));
++
++	gis =  gtk_object_get_user_data(GTK_OBJECT(ientry));
++	icon = gnome_icon_selection_get_icon(gis, TRUE);
++
++	if (icon != NULL) {
++		GtkWidget *e = gnome_icon_entry_gtk_entry(ientry);
++		gtk_entry_set_text(GTK_ENTRY(e),icon);
++		
++	}
++
++	if(event && event->type == GDK_2BUTTON_PRESS && ((GdkEventButton *)event)->button == 1) {
++		gnome_icon_selection_stop_loading(gis);
++		entry_changed (NULL, ientry);
++		gtk_widget_hide(ientry->_priv->pick_dialog);
++	}
++
++	gtk_signal_emit(GTK_OBJECT(ientry),
++			gnome_ientry_signals[CHANGED_SIGNAL]);
++}
++
++static void
++ientry_browse(GnomeIconEntry *ientry)
++{
++	GnomeFileEntry *fe;
++	gchar *p;
++	gchar *curfile;
++	GtkWidget *tl;
++
++	g_return_if_fail (ientry != NULL);
++	g_return_if_fail (GNOME_IS_ICON_ENTRY (ientry));
++
++	fe = GNOME_FILE_ENTRY(ientry->_priv->fentry);
++	p = gnome_file_entry_get_full_path(fe,FALSE);
++	curfile = gnome_icon_entry_get_filename(ientry);
++
++	/* Are we part of a modal window?  If so, we need to be modal too. */
++	tl = gtk_widget_get_toplevel (GTK_WIDGET (ientry->_priv->pickbutton));
++	
++	if(!p) {
++		if(fe->default_path)
++			p = g_strdup(fe->default_path);
++		else {
++			/*get around the g_free/free issue*/
++			gchar *cwd = g_get_current_dir ();
++			p = g_strdup(cwd);
++			g_free(cwd);
++		}
++		gtk_entry_set_text (GTK_ENTRY (gnome_file_entry_gtk_entry (GNOME_FILE_ENTRY (ientry->_priv->fentry))),
++				    p);
++	}
++
++	/*figure out the directory*/
++	if(!g_file_test (p,G_FILE_TEST_ISDIR)) {
++		gchar *d;
++		d = g_dirname (p);
++		g_free (p);
++		p = d;
++		if(!g_file_test (p,G_FILE_TEST_ISDIR)) {
++			g_free (p);
++			if(fe->default_path)
++				p = g_strdup(fe->default_path);
++			else {
++				/*get around the g_free/free issue*/
++				gchar *cwd = g_get_current_dir ();
++				p = g_strdup(cwd);
++				free(cwd);
++			}
++			gtk_entry_set_text (GTK_ENTRY (gnome_file_entry_gtk_entry (GNOME_FILE_ENTRY (ientry->_priv->fentry))),
++				    p);
++			g_return_if_fail(g_file_test (p,G_FILE_TEST_ISDIR));
++		}
++	}
++	
++
++	if(ientry->_priv->pick_dialog==NULL ||
++	   ientry->_priv->pick_dialog_dir==NULL ||
++	   strcmp(p,ientry->_priv->pick_dialog_dir)!=0) {
++		GtkWidget * iconsel;
++		GtkWidget * gil;
++		
++		if(ientry->_priv->pick_dialog) {
++			gtk_container_remove (GTK_CONTAINER (ientry->_priv->fentry->parent), ientry->_priv->fentry);
++			gtk_widget_destroy(ientry->_priv->pick_dialog);
++		}
++		
++		g_free(ientry->_priv->pick_dialog_dir);
++		ientry->_priv->pick_dialog_dir = p;
++		ientry->_priv->pick_dialog = 
++			gnome_dialog_new(ientry->_priv->browse_dialog_title,
++					 GNOME_STOCK_BUTTON_OK,
++					 GNOME_STOCK_BUTTON_CANCEL,
++					 NULL);
++		if (GTK_WINDOW (tl)->modal) {
++			gtk_window_set_modal (GTK_WINDOW (ientry->_priv->pick_dialog), TRUE);
++			gnome_dialog_set_parent (GNOME_DIALOG (ientry->_priv->pick_dialog), GTK_WINDOW (tl)); 
++		}
++		gnome_dialog_close_hides(GNOME_DIALOG(ientry->_priv->pick_dialog), TRUE);
++		gnome_dialog_set_close  (GNOME_DIALOG(ientry->_priv->pick_dialog), TRUE);
++
++		gtk_window_set_policy(GTK_WINDOW(ientry->_priv->pick_dialog), 
++				      TRUE, TRUE, TRUE);
++
++		iconsel = gnome_icon_selection_new();
++
++		gtk_object_set_user_data(GTK_OBJECT(ientry), iconsel);
++
++		gnome_icon_selection_add_directory(GNOME_ICON_SELECTION(iconsel),
++						   ientry->_priv->pick_dialog_dir);
++
++
++		gtk_box_pack_start(GTK_BOX(GNOME_DIALOG(ientry->_priv->pick_dialog)->vbox),
++				   ientry->_priv->fentry, FALSE, FALSE, 0);
++		gtk_box_pack_start(GTK_BOX(GNOME_DIALOG(ientry->_priv->pick_dialog)->vbox),
++				   iconsel, TRUE, TRUE, 0);
++
++		gtk_widget_show_all(ientry->_priv->pick_dialog);
++
++		gnome_icon_selection_show_icons(GNOME_ICON_SELECTION(iconsel));
++
++		if(curfile != NULL) {
++			char *base = g_path_get_basename(curfile);
++			gnome_icon_selection_select_icon(GNOME_ICON_SELECTION(iconsel), 
++							 base);
++			g_free(base);
++		}
++
++		gnome_dialog_button_connect(GNOME_DIALOG(ientry->_priv->pick_dialog), 
++					    0, /* OK button */
++					    GTK_SIGNAL_FUNC(icon_selected_cb),
++					    ientry);
++		gnome_dialog_button_connect(GNOME_DIALOG(ientry->_priv->pick_dialog), 
++					    1, /* Cancel button */
++					    GTK_SIGNAL_FUNC(cancel_pressed),
++					    ientry);
++		
++		gil = gnome_icon_selection_get_gil(GNOME_ICON_SELECTION(iconsel));
++		gtk_signal_connect_after(GTK_OBJECT(gil), "select_icon",
++					 GTK_SIGNAL_FUNC(gil_icon_selected_cb),
++					 ientry);
++	} else {
++		GnomeIconSelection *gis =
++			gtk_object_get_user_data(GTK_OBJECT(ientry));
++		if(!GTK_WIDGET_VISIBLE(ientry->_priv->pick_dialog))
++			gtk_widget_show(ientry->_priv->pick_dialog);
++		if(gis) gnome_icon_selection_show_icons(gis);
++	}
++}
++
++static void
++show_icon_selection(GtkButton * b, GnomeIconEntry * ientry)
++{
++	g_return_if_fail (ientry != NULL);
++	g_return_if_fail (GNOME_IS_ICON_ENTRY (ientry));
++
++	gtk_signal_emit(GTK_OBJECT(ientry),
++			gnome_ientry_signals[BROWSE_SIGNAL]);
++}
++
++static void
++drag_data_received (GtkWidget        *widget,
++		    GdkDragContext   *context,
++		    gint              x,
++		    gint              y,
++		    GtkSelectionData *selection_data,
++		    guint             info,
++		    guint32           time,
++		    GnomeIconEntry   *ientry)
++{
++	GList *files, *li;
++
++	g_return_if_fail (ientry != NULL);
++	g_return_if_fail (GNOME_IS_ICON_ENTRY (ientry));
++
++	/*here we extract the filenames from the URI-list we recieved*/
++	files = gnome_uri_list_extract_filenames(selection_data->data);
++	/*if there's isn't a file*/
++	if(!files) {
++		gtk_drag_finish(context,FALSE,FALSE,time);
++		return;
++	}
++
++	for(li = files; li!=NULL; li = li->next) {
++		const char *mimetype;
++
++		mimetype = gnome_mime_type(li->data);
++
++		if(mimetype
++			&& !strcmp(mimetype, "application/x-gnome-app-info")) {
++			/* hmmm a desktop, try loading the icon from that */
++			GnomeDesktopItem * item;
++			const char *icon;
++
++			item = gnome_desktop_item_new_from_file
++				(li->data,
++				 GNOME_DESKTOP_ITEM_LOAD_NO_SYNC |
++				 GNOME_DESKTOP_ITEM_LOAD_NO_OTHER_SECTIONS);
++			if(!item)
++				continue;
++			icon = gnome_desktop_item_get_icon_path(item);
++
++			if(gnome_icon_entry_set_filename(ientry, icon)) {
++				gnome_desktop_item_unref(item);
++				break;
++			}
++			gnome_desktop_item_unref(item);
++		} else if(gnome_icon_entry_set_filename(ientry, li->data))
++			break;
++	}
++
++	/*free the list of files we got*/
++	gnome_uri_list_free_strings (files);
++}
++
++static void  
++drag_data_get  (GtkWidget          *widget,
++		GdkDragContext     *context,
++		GtkSelectionData   *selection_data,
++		guint               info,
++		guint               time,
++		GnomeIconEntry     *ientry)
++{
++	gchar *string;
++	gchar *file;
++
++	g_return_if_fail (ientry != NULL);
++	g_return_if_fail (GNOME_IS_ICON_ENTRY (ientry));
++
++	file = gnome_file_entry_get_full_path(GNOME_FILE_ENTRY(ientry->_priv->fentry),
++					      TRUE);
++
++	if(!file) {
++		/*FIXME: cancel the drag*/
++		return;
++	}
++
++	string = g_strdup_printf("file:%s\r\n",file);
++	g_free(file);
++	gtk_selection_data_set (selection_data,
++				selection_data->target,
++				8, string, strlen(string)+1);
++	g_free(string);
++}
++
++
++static void
++gnome_icon_entry_init (GnomeIconEntry *ientry)
++{
++	GtkWidget *w;
++	gchar *p;
++
++	ientry->_priv = g_new0(GnomeIconEntryPrivate, 1);
++
++	gtk_box_set_spacing (GTK_BOX (ientry), 4);
++
++	ientry->_priv->pick_dialog = NULL;
++	ientry->_priv->pick_dialog_dir = NULL;
++	
++	w = gtk_alignment_new (0.5, 0.5, 0.0, 0.0);
++	gtk_widget_show(w);
++	gtk_box_pack_start (GTK_BOX (ientry), w, TRUE, TRUE, 0);
++	ientry->_priv->pickbutton = gtk_button_new_with_label(_("No Icon"));
++	gtk_drag_dest_set (GTK_WIDGET (ientry->_priv->pickbutton),
++			   GTK_DEST_DEFAULT_MOTION |
++			   GTK_DEST_DEFAULT_HIGHLIGHT |
++			   GTK_DEST_DEFAULT_DROP,
++			   drop_types, 1, GDK_ACTION_COPY);
++	gtk_signal_connect (GTK_OBJECT (ientry->_priv->pickbutton),
++			    "drag_data_received",
++			    GTK_SIGNAL_FUNC (drag_data_received),ientry);
++	gtk_signal_connect (GTK_OBJECT (ientry->_priv->pickbutton),
++			    "drag_data_get",
++			    GTK_SIGNAL_FUNC (drag_data_get),ientry);
++
++	gtk_signal_connect(GTK_OBJECT(ientry->_priv->pickbutton), "clicked",
++			   GTK_SIGNAL_FUNC(show_icon_selection),ientry);
++	/*FIXME: 60x60 is just larger then default 48x48, though icon sizes
++	  are supposed to be selectable I guess*/
++	gtk_widget_set_usize(ientry->_priv->pickbutton,60,60);
++	gtk_container_add (GTK_CONTAINER (w), ientry->_priv->pickbutton);
++	gtk_widget_show (ientry->_priv->pickbutton);
++
++	ientry->_priv->fentry = gnome_file_entry_new (NULL, _("Browse"));
++	/*BORPORP */
++	gnome_file_entry_set_modal (GNOME_FILE_ENTRY (ientry->_priv->fentry),
++				    TRUE);
++	gtk_widget_ref (ientry->_priv->fentry);
++	gtk_signal_connect_after(GTK_OBJECT(ientry->_priv->fentry),
++				 "browse_clicked",
++				 GTK_SIGNAL_FUNC(browse_clicked),
++				 ientry);
++
++	gtk_widget_show (ientry->_priv->fentry);
++	
++	p = gnome_pixmap_file(".");
++	gnome_file_entry_set_default_path(GNOME_FILE_ENTRY(ientry->_priv->fentry),p);
++	g_free(p);
++	
++	w = gnome_file_entry_gtk_entry(GNOME_FILE_ENTRY(ientry->_priv->fentry));
++/*	gtk_signal_connect_while_alive(GTK_OBJECT(w), "changed",
++				       GTK_SIGNAL_FUNC(entry_changed),
++				       ientry, GTK_OBJECT(ientry));*/
++	gtk_signal_connect_while_alive(GTK_OBJECT(w), "activate",
++				       GTK_SIGNAL_FUNC(entry_activated),
++				       ientry, GTK_OBJECT(ientry));
++	
++	
++	/*just in case there is a default that is an image*/
++	entry_changed(w,ientry);
++}
++
++/**
++ * gnome_icon_entry_construct:
++ * @ientry: the GnomeIconEntry to work with
++ * @history_id: the id given to #gnome_entry_new in the browse dialog
++ * @browse_dialog_title: title of the icon selection dialog
++ *
++ * Description: For language bindings and subclassing, from C use
++ * #gnome_icon_entry_new
++ *
++ * Returns:
++ **/
++void
++gnome_icon_entry_construct (GnomeIconEntry *ientry,
++			    const gchar *history_id,
++			    const gchar *browse_dialog_title)
++{
++	g_return_if_fail (ientry != NULL);
++	g_return_if_fail (GNOME_IS_ICON_ENTRY (ientry));
++
++	gnome_icon_entry_set_history_id(ientry, history_id);
++	gnome_icon_entry_set_browse_dialog_title(ientry, browse_dialog_title);
++}
++
++/**
++ * gnome_icon_entry_new:
++ * @history_id: the id given to #gnome_entry_new
++ * @browse_dialog_title: title of the browse dialog and icon selection dialog
++ *
++ * Description: Creates a new icon entry widget
++ *
++ * Returns: Returns the new object
++ **/
++GtkWidget *
++gnome_icon_entry_new (const gchar *history_id, const gchar *browse_dialog_title)
++{
++	GnomeIconEntry *ientry;
++
++	ientry = gtk_type_new (gnome_icon_entry_get_type ());
++
++	gnome_icon_entry_construct (ientry, history_id, browse_dialog_title);
++	
++	return GTK_WIDGET (ientry);
++}
++
++
++/**
++ * gnome_icon_entry_set_pixmap_subdir:
++ * @ientry: the GnomeIconEntry to work with
++ * @subdir: subdirectory
++ *
++ * Description: Sets the subdirectory below gnome's default
++ * pixmap directory to use as the default path for the file
++ * entry.  The path can also be an absolute one.  If %NULL is passed
++ * then the pixmap directory itself is used.
++ *
++ * Returns:
++ **/
++void
++gnome_icon_entry_set_pixmap_subdir(GnomeIconEntry *ientry,
++				   const gchar *subdir)
++{
++	g_return_if_fail (ientry != NULL);
++	g_return_if_fail (GNOME_IS_ICON_ENTRY (ientry));
++	
++	if(!subdir)
++		subdir = ".";
++
++	if(g_path_is_absolute(subdir)) {
++		gnome_file_entry_set_default_path(GNOME_FILE_ENTRY(ientry->_priv->fentry), subdir);
++	} else {
++		gchar *p = gnome_pixmap_file(subdir);
++		gnome_file_entry_set_default_path(GNOME_FILE_ENTRY(ientry->_priv->fentry), p);
++		g_free(p);
++	}
++}
++
++/**
++ * gnome_icon_entry_set_filename:
++ * @ientry: the GnomeIconEntry to work with
++ * @filename: a filename
++ * 
++ * Description: Sets the icon of GnomeIconEntry to be the one pointed to by
++ * @filename (in the current subdirectory).
++ *
++ * Returns: %TRUE if icon was loaded ok, %FALSE otherwise
++ **/
++gboolean
++gnome_icon_entry_set_filename(GnomeIconEntry *ientry,
++			      const gchar *filename)
++{
++	GtkWidget *child;
++
++	g_return_val_if_fail (ientry != NULL, FALSE);
++	g_return_val_if_fail (GNOME_IS_ICON_ENTRY (ientry), FALSE);
++	
++	if(!filename)
++		filename = "";
++
++	gtk_entry_set_text (GTK_ENTRY (gnome_icon_entry_gtk_entry (ientry)),
++			    filename);
++	entry_changed (NULL, ientry);
++	gtk_signal_emit(GTK_OBJECT(ientry),
++			gnome_ientry_signals[CHANGED_SIGNAL]);
++
++	child = GTK_BIN(ientry->_priv->pickbutton)->child;
++	/* this happens if it doesn't exist or isn't an image */
++	if(!GNOME_IS_PIXMAP(child))
++		return FALSE;
++
++	return TRUE;
++}
++
++/**
++ * gnome_icon_entry_get_filename:
++ * @ientry: the GnomeIconEntry to work with
++ *
++ * Description: Gets the file name of the image if it was possible
++ * to load it into the preview. That is, it will only return a filename
++ * if the image exists and it was possible to load it as an image.
++ *
++ * Returns: a newly allocated string with the path or %NULL if it
++ * couldn't load the file
++ **/
++gchar *
++gnome_icon_entry_get_filename(GnomeIconEntry *ientry)
++{
++	GtkWidget *child;
++
++	g_return_val_if_fail (ientry != NULL,NULL);
++	g_return_val_if_fail (GNOME_IS_ICON_ENTRY (ientry),NULL);
++
++	child = GTK_BIN(ientry->_priv->pickbutton)->child;
++	
++	/* this happens if it doesn't exist or isn't an image */
++	if( ! GNOME_IS_PIXMAP(child))
++		return NULL;
++	
++	return gnome_file_entry_get_full_path(GNOME_FILE_ENTRY(ientry->_priv->fentry),
++					      TRUE);
++}
++
++/**
++ * gnome_icon_entry_pick_dialog:
++ * @ientry: the GnomeIconEntry to work with
++ *
++ * Description: If a pick dialog exists, return a pointer to it or
++ * return NULL.  This is if you need to do something with all dialogs.
++ * You would use the browse signal with connect_after to get the
++ * pick dialog when it is displayed.
++ * 
++ * Returns: The pick dialog or %NULL if none exists
++ **/
++GtkWidget *
++gnome_icon_entry_pick_dialog(GnomeIconEntry *ientry)
++{
++	g_return_val_if_fail (ientry != NULL,NULL);
++	g_return_val_if_fail (GNOME_IS_ICON_ENTRY (ientry),NULL);
++
++	return ientry->_priv->pick_dialog;
++}
++
++/**
++ * gnome_icon_entry_set_browse_dialog_title:
++ * @ientry: the GnomeIconEntry to work with
++ * @browse_dialog_title: title of the icon selection dialog
++ *
++ * Description:  Set the title of the browse dialog.  It will not effect
++ * an existing dialog.
++ *
++ * Returns:
++ **/
++void
++gnome_icon_entry_set_browse_dialog_title(GnomeIconEntry *ientry,
++					 const gchar *browse_dialog_title)
++{
++	g_return_if_fail (ientry != NULL);
++	g_return_if_fail (GNOME_IS_ICON_ENTRY (ientry));
++
++	g_free(ientry->_priv->browse_dialog_title);
++	ientry->_priv->browse_dialog_title = g_strdup(browse_dialog_title);
++}
++
++/**
++ * gnome_icon_entry_set_history_id:
++ * @ientry: the GnomeIconEntry to work with
++ * @history_id: the id given to #gnome_entry_new in the browse dialog
++ *
++ * Description:  Set the history_id of the entry in the browse dialog
++ * and reload the history
++ *
++ * Returns:
++ **/
++void
++gnome_icon_entry_set_history_id(GnomeIconEntry *ientry,
++				const gchar *history_id)
++{
++	GtkWidget *gentry;
++
++	g_free(ientry->_priv->history_id);
++	ientry->_priv->history_id = g_strdup(history_id);
++
++	gentry = gnome_file_entry_gnome_entry(GNOME_FILE_ENTRY(ientry->_priv->fentry));
++	gnome_entry_set_history_id (GNOME_ENTRY(gentry), history_id);
++	gnome_entry_load_history (GNOME_ENTRY(gentry));
++}
++
++/* DEPRECATED routines left for compatibility only, will disapear in
++ * some very distant future */
++
++/**
++ * gnome_icon_entry_set_icon:
++ * @ientry: the GnomeIconEntry to work with
++ * @filename: a filename
++ * 
++ * Description: Deprecated in favour of #gnome_icon_entry_set_filename
++ *
++ * Returns:
++ **/
++void
++gnome_icon_entry_set_icon(GnomeIconEntry *ientry,
++			  const gchar *filename)
++{
++	g_warning("gnome_icon_entry_set_icon deprecated, "
++		  "use gnome_icon_entry_set_filename!");
++	gnome_icon_entry_set_filename(ientry, filename);
++}
++
++/**
++ * gnome_icon_entry_gnome_file_entry:
++ * @ientry: the GnomeIconEntry to work with
++ *
++ * Description: Get the GnomeFileEntry widget that's part of the entry
++ * DEPRECATED! Use the "changed" signal for getting changes
++ *
++ * Returns: Returns GnomeFileEntry widget
++ **/
++GtkWidget *
++gnome_icon_entry_gnome_file_entry (GnomeIconEntry *ientry)
++{
++	g_return_val_if_fail (ientry != NULL, NULL);
++	g_return_val_if_fail (GNOME_IS_ICON_ENTRY (ientry), NULL);
++
++	g_warning("gnome_icon_entry_gnome_file_entry deprecated, "
++		  "use changed signal!");
++	return ientry->_priv->fentry;
++}
++
++/**
++ * gnome_icon_entry_gnome_entry:
++ * @ientry: the GnomeIconEntry to work with
++ *
++ * Description: Get the GnomeEntry widget that's part of the entry
++ * DEPRECATED! Use the "changed" signal for getting changes
++ *
++ * Returns: Returns GnomeEntry widget
++ **/
++GtkWidget *
++gnome_icon_entry_gnome_entry (GnomeIconEntry *ientry)
++{
++	g_return_val_if_fail (ientry != NULL, NULL);
++	g_return_val_if_fail (GNOME_IS_ICON_ENTRY (ientry), NULL);
++
++	g_warning("gnome_icon_entry_gnome_entry deprecated, "
++		  "use changed signal!");
++
++	return gnome_file_entry_gnome_entry(GNOME_FILE_ENTRY(ientry->_priv->fentry));
++}
++
++/**
++ * gnome_icon_entry_gtk_entry:
++ * @ientry: the GnomeIconEntry to work with
++ *
++ * Description: Get the GtkEntry widget that's part of the entry.
++ * DEPRECATED! Use the "changed" signal for getting changes
++ *
++ * Returns: Returns GtkEntry widget
++ **/
++GtkWidget *
++gnome_icon_entry_gtk_entry (GnomeIconEntry *ientry)
++{
++	g_return_val_if_fail (ientry != NULL, NULL);
++	g_return_val_if_fail (GNOME_IS_ICON_ENTRY (ientry), NULL);
++
++	g_warning("gnome_icon_entry_gtk_entry deprecated, "
++		  "use changed signal!");
++
++	return gnome_file_entry_gtk_entry (GNOME_FILE_ENTRY (ientry->_priv->fentry));
++}
+diff -rNu emptydir/gnome-icon-entry.h urlaub/gnome-icon-entry.h
+--- emptydir/gnome-icon-entry.h	Thu Jan  1 01:00:00 1970
++++ urlaub/gnome-icon-entry.h	Tue Aug  8 23:25:42 2000
+@@ -0,0 +1,126 @@
++/* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*- */
++/*
++ * Copyright (C) 1998, 1999, 2000 Free Software Foundation
++ * All rights reserved.
++ *
++ * This file is part of the Gnome Library.
++ *
++ * The Gnome Library is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU Library General Public License as
++ * published by the Free Software Foundation; either version 2 of the
++ * License, or (at your option) any later version.
++ *
++ * The Gnome Library is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++ * Library General Public License for more details.
++ *
++ * You should have received a copy of the GNU Library General Public
++ * License along with the Gnome Library; see the file COPYING.LIB.  If not,
++ * write to the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
++ * Boston, MA 02111-1307, USA.
++ */
++/*
++  @NOTATION@
++ */
++
++/* GnomeIconEntry widget - Combo box with "Browse" button for files and
++ *			   A pick button which can display a list of icons
++ *			   in a current directory, the browse button displays
++ *			   same dialog as pixmap-entry
++ *
++ * Author: George Lebl <jirka@5z.com>
++ * icon selection based on original dentry-edit code which was:
++ *	Written by: Havoc Pennington, based on code by John Ellis.
++ */
++
++#ifndef GNOME_ICON_ENTRY_H
++#define GNOME_ICON_ENTRY_H
++
++
++#include <glib.h>
++#include <libgnome/gnome-defs.h>
++#include "gnome-selector.h"
++
++
++
++BEGIN_GNOME_DECLS
++
++
++#define GNOME_TYPE_ICON_ENTRY            (gnome_icon_entry_get_type ())
++#define GNOME_ICON_ENTRY(obj)            (GTK_CHECK_CAST ((obj), GNOME_TYPE_ICON_ENTRY, GnomeIconEntry))
++#define GNOME_ICON_ENTRY_CLASS(klass)    (GTK_CHECK_CLASS_CAST ((klass), GNOME_TYPE_ICON_ENTRY, GnomeIconEntryClass))
++#define GNOME_IS_ICON_ENTRY(obj)         (GTK_CHECK_TYPE ((obj), GNOME_TYPE_ICON_ENTRY))
++#define GNOME_IS_ICON_ENTRY_CLASS(klass) (GTK_CHECK_CLASS_TYPE ((klass), GNOME_TYPE_ICON_ENTRY))
++#define GNOME_ICON_ENTRY_GET_CLASS(obj)  (GTK_CHECK_GET_CLASS ((obj), GNOME_TYPE_ICON_ENTRY, GnomeIconEntryClass))
++
++
++typedef struct _GnomeIconEntry         GnomeIconEntry;
++typedef struct _GnomeIconEntryPrivate  GnomeIconEntryPrivate;
++typedef struct _GnomeIconEntryClass    GnomeIconEntryClass;
++
++struct _GnomeIconEntry {
++	GnomeSelector selector;
++	
++	/*< private >*/
++	GnomeIconEntryPrivate *_priv;
++};
++
++struct _GnomeIconEntryClass {
++	GnomeSelectorClass parent_class;
++};
++
++
++guint      gnome_icon_entry_get_type    (void);
++GtkWidget *gnome_icon_entry_new         (const gchar *history_id,
++					 const gchar *browse_dialog_title);
++
++/* for language bindings and subclassing, use gnome_icon_entry_new from C */
++void       gnome_icon_entry_construct   (GnomeIconEntry *ientry,
++					 const gchar *history_id,
++					 const gchar *browse_dialog_title);
++
++void       gnome_icon_entry_construct_full (GnomeIconEntry *ientry,
++                                            const gchar *history_id,
++                                            const gchar *dialog_title,
++                                            GtkWidget *entry_widget,
++                                            GtkWidget *selector_widget,
++                                            GtkWidget *browse_dialog,
++                                            guint32 flags);
++
++/*by default gnome_pixmap entry sets the default directory to the
++  gnome pixmap directory, this will set it to a subdirectory of that,
++  or one would use the file_entry functions for any other path*/
++void       gnome_icon_entry_set_pixmap_subdir (GnomeIconEntry *ientry,
++					       const gchar *subdir);
++
++#ifndef GNOME_EXCLUDE_DEPRECATED
++/* DEPRECATED routines left for compatibility only, will disapear in
++ * some very distant future */
++
++/*only return a file if it was possible to load it with gdk-pixbuf*/
++gchar      *gnome_icon_entry_get_filename(GnomeIconEntry *ientry);
++
++/* set the icon to something, returns TRUE on success */
++gboolean   gnome_icon_entry_set_filename(GnomeIconEntry *ientry,
++					 const gchar *filename);
++
++void       gnome_icon_entry_set_browse_dialog_title(GnomeIconEntry *ientry,
++						    const gchar *browse_dialog_title);
++void       gnome_icon_entry_set_history_id(GnomeIconEntry *ientry,
++					   const gchar *history_id);
++
++GtkWidget *gnome_icon_entry_pick_dialog	(GnomeIconEntry *ientry);
++
++void       gnome_icon_entry_set_icon(GnomeIconEntry *ientry,
++				     const gchar *filename);
++GtkWidget *gnome_icon_entry_gnome_file_entry(GnomeIconEntry *ientry);
++GtkWidget *gnome_icon_entry_gnome_entry (GnomeIconEntry *ientry);
++GtkWidget *gnome_icon_entry_gtk_entry   (GnomeIconEntry *ientry);
++
++#endif /* not GNOME_EXCLUDE_DEPRECATED */
++
++
++END_GNOME_DECLS
++
++#endif
+diff -rNu emptydir/gnome-icon-selector.c urlaub/gnome-icon-selector.c
+--- emptydir/gnome-icon-selector.c	Thu Jan  1 01:00:00 1970
++++ urlaub/gnome-icon-selector.c	Wed Aug  9 00:52:48 2000
+@@ -0,0 +1,642 @@
++/* -*- Mode: C; c-set-style: gnu indent-tabs-mode: t; c-basic-offset: 4; tab-width: 8 -*- */
++/*
++ * Copyright (C) 2000 SuSE GmbH
++ * Author: Martin Baulig <baulig@suse.de>
++ *
++ * This file is part of the Gnome Library.
++ *
++ * The Gnome Library is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU Library General Public License as
++ * published by the Free Software Foundation; either version 2 of the
++ * License, or (at your option) any later version.
++ *
++ * The Gnome Library is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++ * Library General Public License for more details.
++ *
++ * You should have received a copy of the GNU Library General Public
++ * License along with the Gnome Library; see the file COPYING.LIB.  If not,
++ * write to the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
++ * Boston, MA 02111-1307, USA.
++ */
++/*
++  @NOTATION@
++ */
++
++/* GnomeIconSelector widget - an icon selector widget.
++ *
++ * Author: Martin Baulig <baulig@suse.de>
++ */
++
++#include <config.h>
++
++#include <stdio.h>
++#include <string.h>
++#include <gtk/gtkmain.h>
++#include <gtk/gtkentry.h>
++#include <gtk/gtklabel.h>
++#include <gtk/gtkframe.h>
++#include <gtk/gtkrange.h>
++#include <gtk/gtkprogressbar.h>
++#include <gtk/gtkvscrollbar.h>
++#include <gtk/gtkscrolledwindow.h>
++#include <gtk/gtksignal.h>
++#include "libgnome/libgnomeP.h"
++#include "gnome-selectorP.h"
++#include "gnome-file-selector.h"
++#include "gnome-icon-selector.h"
++#include "gnome-icon-list.h"
++#include "gnome-entry.h"
++
++#define ICON_SIZE 48
++
++struct _GnomeIconSelectorPrivate {
++    GnomeIconList *icon_list;
++
++    GtkWidget *entry;
++
++    GSList *file_list;
++
++    /* a flag set to stop the loading of images in midprocess */
++    gboolean stop_loading;
++};
++	
++
++static void gnome_icon_selector_class_init  (GnomeIconSelectorClass *class);
++static void gnome_icon_selector_init        (GnomeIconSelector      *iselector);
++static void gnome_icon_selector_destroy     (GtkObject       *object);
++static void gnome_icon_selector_finalize    (GObject         *object);
++
++static void      clear_handler              (GnomeSelector   *selector);
++static gboolean  check_filename_handler     (GnomeSelector   *selector,
++                                             const gchar     *filename);
++static void      freeze_handler             (GnomeSelector   *selector);
++static void      update_file_list_handler   (GnomeSelector   *selector);
++static void      thaw_handler               (GnomeSelector   *selector);
++static void      set_selection_mode_handler (GnomeSelector   *selector,
++                                             guint            mode);
++static GSList *  get_selection_handler      (GnomeSelector   *selector);
++
++static void      free_entry_func            (gpointer         data,
++					     gpointer         user_data);
++
++static GnomeFileSelectorClass *parent_class;
++
++guint
++gnome_icon_selector_get_type (void)
++{
++    static guint iselector_type = 0;
++
++    if (!iselector_type) {
++	GtkTypeInfo iselector_info = {
++	    "GnomeIconSelector",
++	    sizeof (GnomeIconSelector),
++	    sizeof (GnomeIconSelectorClass),
++	    (GtkClassInitFunc) gnome_icon_selector_class_init,
++	    (GtkObjectInitFunc) gnome_icon_selector_init,
++	    NULL,
++	    NULL,
++	    NULL
++	};
++
++	iselector_type = gtk_type_unique 
++	    (gnome_file_selector_get_type (), &iselector_info);
++    }
++
++    return iselector_type;
++}
++
++static void
++gnome_icon_selector_class_init (GnomeIconSelectorClass *class)
++{
++    GnomeSelectorClass *selector_class;
++    GtkWidgetClass *widget_class;
++    GtkObjectClass *object_class;
++    GObjectClass *gobject_class;
++
++    selector_class = (GnomeSelectorClass *) class;
++    widget_class = (GtkWidgetClass *) class;
++    object_class = (GtkObjectClass *) class;
++    gobject_class = (GObjectClass *) class;
++
++    parent_class = gtk_type_class (gnome_file_selector_get_type ());
++
++    object_class->destroy = gnome_icon_selector_destroy;
++    gobject_class->finalize = gnome_icon_selector_finalize;
++
++    selector_class->clear = clear_handler;
++    selector_class->check_filename = check_filename_handler;
++    selector_class->freeze = freeze_handler;
++    selector_class->update_file_list = update_file_list_handler;
++    selector_class->thaw = thaw_handler;
++    selector_class->set_selection_mode = set_selection_mode_handler;
++    selector_class->get_selection = get_selection_handler;
++}
++
++static void
++gnome_icon_selector_init (GnomeIconSelector *iselector)
++{
++    iselector->_priv = g_new0 (GnomeIconSelectorPrivate, 1);
++}
++
++static void
++icon_selected_cb (GnomeIconList *gil, gint num, GdkEvent *event,
++		  GnomeIconSelector *iselector)
++{
++	g_return_if_fail (iselector != NULL);
++	g_return_if_fail (GNOME_IS_ICON_SELECTOR (iselector));
++
++	gtk_signal_emit_by_name (GTK_OBJECT (iselector),
++				 "selection_changed");
++}
++
++
++/**
++ * gnome_icon_selector_construct:
++ * @iselector: Pointer to GnomeIconSelector object.
++ * @history_id: If not %NULL, the text id under which history data is stored
++ *
++ * Constructs a #GnomeIconSelector object, for language bindings or subclassing
++ * use #gnome_icon_selector_new from C
++ *
++ * Returns: 
++ */
++void
++gnome_icon_selector_construct (GnomeIconSelector *iselector,
++			       const gchar *history_id,
++			       const gchar *dialog_title,
++			       GtkWidget *entry_widget,
++			       GtkWidget *selector_widget,
++			       GtkWidget *browse_dialog,
++			       guint32 flags)
++{
++    guint32 newflags = flags;
++
++    g_return_if_fail (iselector != NULL);
++    g_return_if_fail (GNOME_IS_ICON_SELECTOR (iselector));
++
++    /* Create the default selector widget if requested. */
++    if (flags & GNOME_SELECTOR_DEFAULT_SELECTOR_WIDGET) {
++	GtkWidget *box, *sb, *frame, *list;
++	GtkAdjustment *vadj;
++
++	if (selector_widget != NULL) {
++	    g_warning (G_STRLOC ": It makes no sense to use "
++		       "GNOME_SELECTOR_DEFAULT_SELECTOR_WIDGET "
++		       "and pass a `selector_widget' as well.");
++	    return;
++	}
++
++	box = gtk_hbox_new (FALSE, 5);
++
++	list = gnome_icon_list_new (ICON_SIZE+30, FALSE);
++	vadj = gtk_layout_get_vadjustment (GTK_LAYOUT (list));
++	gtk_widget_set_usize (list, 100, 300);
++
++	sb = gtk_vscrollbar_new (vadj);
++	gtk_box_pack_end (GTK_BOX(box), sb, FALSE, FALSE, 0);
++	gtk_widget_show (sb);
++
++	frame = gtk_frame_new (NULL);
++	gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_IN);
++	gtk_box_pack_start (GTK_BOX (box), frame, TRUE, TRUE, 0);
++	gtk_widget_show (frame);
++
++	gtk_container_add (GTK_CONTAINER (frame), list);
++
++	gnome_icon_list_set_selection_mode (GNOME_ICON_LIST (list),
++					    GTK_SELECTION_SINGLE);
++
++	gtk_signal_connect_after (GTK_OBJECT (list), "select_icon",
++				  GTK_SIGNAL_FUNC (icon_selected_cb),
++				  iselector);
++
++	iselector->_priv->icon_list = GNOME_ICON_LIST (list);
++	
++	gtk_widget_show_all (box);
++
++	selector_widget = box;
++
++	newflags &= ~GNOME_SELECTOR_DEFAULT_SELECTOR_WIDGET;
++    }
++
++    gnome_file_selector_construct (GNOME_FILE_SELECTOR (iselector),
++				   history_id, dialog_title,
++				   entry_widget, selector_widget,
++				   browse_dialog, newflags);
++}
++
++/**
++ * gnome_icon_selector_new
++ * @history_id: If not %NULL, the text id under which history data is stored
++ *
++ * Description: Creates a new GnomeIconSelector widget.  If  @history_id
++ * is not %NULL, then the history list will be saved and restored between
++ * uses under the given id.
++ *
++ * Returns: Newly-created GnomeIconSelector widget.
++ */
++GtkWidget *
++gnome_icon_selector_new (const gchar *history_id,
++			 const gchar *dialog_title,
++			 guint32 flags)
++{
++    GnomeIconSelector *iselector;
++
++    g_return_val_if_fail ((flags & ~GNOME_SELECTOR_USER_FLAGS) == 0, NULL);
++
++    iselector = gtk_type_new (gnome_icon_selector_get_type ());
++
++    flags |= GNOME_SELECTOR_DEFAULT_ENTRY_WIDGET |
++	GNOME_SELECTOR_DEFAULT_SELECTOR_WIDGET |
++	GNOME_SELECTOR_DEFAULT_BROWSE_DIALOG |
++	GNOME_SELECTOR_WANT_BROWSE_BUTTON |
++	GNOME_SELECTOR_WANT_DEFAULT_BUTTON |
++	GNOME_SELECTOR_WANT_CLEAR_BUTTON;
++
++    gnome_icon_selector_construct (iselector, history_id, dialog_title,
++				   NULL, NULL, NULL, flags);
++
++    return GTK_WIDGET (iselector);
++}
++
++GtkWidget *
++gnome_icon_selector_new_custom (const gchar *history_id,
++				const gchar *dialog_title,
++				GtkWidget *entry_widget,
++				GtkWidget *selector_widget,
++				GtkWidget *browse_dialog,
++				guint32 flags)
++{
++    GnomeIconSelector *iselector;
++
++    iselector = gtk_type_new (gnome_icon_selector_get_type ());
++
++    gnome_icon_selector_construct (iselector, history_id, dialog_title,
++				   entry_widget, selector_widget,
++				   browse_dialog, flags);
++
++    return GTK_WIDGET (iselector);
++}
++
++
++static void
++gnome_icon_selector_destroy (GtkObject *object)
++{
++    GnomeIconSelector *iselector;
++
++    /* remember, destroy can be run multiple times! */
++
++    g_return_if_fail (object != NULL);
++    g_return_if_fail (GNOME_IS_ICON_SELECTOR (object));
++
++    iselector = GNOME_ICON_SELECTOR (object);
++
++    if (iselector->_priv) {
++#if 0
++	if (iselector->_priv->icon_list)
++	    gtk_widget_unref (iselector->_priv->icon_list);
++#endif
++	iselector->_priv->icon_list = NULL;
++
++	g_slist_foreach (iselector->_priv->file_list,
++			 free_entry_func, iselector);
++	iselector->_priv->file_list = NULL;
++    }
++
++    if (GTK_OBJECT_CLASS (parent_class)->destroy)
++	(* GTK_OBJECT_CLASS (parent_class)->destroy) (object);
++}
++
++static void
++gnome_icon_selector_finalize (GObject *object)
++{
++    GnomeIconSelector *iselector;
++
++    g_return_if_fail (object != NULL);
++    g_return_if_fail (GNOME_IS_ICON_SELECTOR (object));
++
++    iselector = GNOME_ICON_SELECTOR (object);
++
++    g_free (iselector->_priv);
++    iselector->_priv = NULL;
++
++    if (G_OBJECT_CLASS (parent_class)->finalize)
++	(* G_OBJECT_CLASS (parent_class)->finalize) (object);
++}
++
++static void
++clear_handler (GnomeSelector *selector)
++{
++    GnomeIconSelector *iselector;
++
++    g_return_if_fail (selector != NULL);
++    g_return_if_fail (GNOME_IS_ICON_SELECTOR (selector));
++
++    iselector = GNOME_ICON_SELECTOR (selector);
++
++    gnome_icon_list_clear (iselector->_priv->icon_list);
++
++    if (GNOME_SELECTOR_CLASS (parent_class)->clear)
++	(* GNOME_SELECTOR_CLASS (parent_class)->clear) (selector);
++}
++
++static gboolean
++check_filename_handler (GnomeSelector *selector, const gchar *filename)
++{
++    const char *mimetype;
++
++    g_return_val_if_fail (selector != NULL, FALSE);
++    g_return_val_if_fail (GNOME_IS_ICON_SELECTOR (selector), FALSE);
++    g_return_val_if_fail (filename != NULL, FALSE);
++
++    if (g_file_test (filename, G_FILE_TEST_ISDIR))
++	return TRUE;
++
++    mimetype = gnome_mime_type_from_magic (filename);
++    if (!mimetype || strncmp (mimetype, "image", sizeof("image")-1))
++	return FALSE;
++    else
++	return TRUE;
++
++    return TRUE;
++}
++
++static void 
++append_an_icon (GnomeIconSelector *gis, const gchar *path)
++{
++    GdkPixbuf *iml;
++    GdkPixbuf *im;
++    gchar *basename;
++    int pos;
++    int w,h;
++
++    iml = gdk_pixbuf_new_from_file (path);
++    /*if I can't load it, ignore it*/
++    if(!iml)
++	return;
++	
++    w = gdk_pixbuf_get_width (iml);
++    h = gdk_pixbuf_get_height (iml);
++
++    if(w>h) {
++	if(w>ICON_SIZE) {
++	    h = h*((double)ICON_SIZE/w);
++	    w = ICON_SIZE;
++	}
++    } else {
++	if(h>ICON_SIZE) {
++	    w = w*((double)ICON_SIZE/h);
++	    h = ICON_SIZE;
++	}
++    }
++    w = w>0?w:1;
++    h = h>0?h:1;
++
++    im = gdk_pixbuf_scale_simple (iml, w, h, GDK_INTERP_BILINEAR);
++    gdk_pixbuf_unref (iml);
++    if(!im)
++	return;
++
++    basename = g_path_get_basename (path);
++	
++    pos = gnome_icon_list_append_pixbuf (gis->_priv->icon_list, im,
++					 path, basename);
++    gdk_pixbuf_unref (im);
++
++    g_free (basename);
++}
++
++
++static void
++set_flag (GtkWidget *w, int *flag)
++{
++    *flag = TRUE;
++}
++
++static void
++freeze_handler (GnomeSelector *selector)
++{
++    GnomeIconSelector *iselector;
++
++    g_return_if_fail (selector != NULL);
++    g_return_if_fail (GNOME_IS_ICON_SELECTOR (selector));
++
++    iselector = GNOME_ICON_SELECTOR (selector);
++
++    g_message (G_STRLOC ": %p", iselector->_priv->icon_list);
++
++    gnome_icon_list_freeze (iselector->_priv->icon_list);
++
++    if (GNOME_SELECTOR_CLASS (parent_class)->freeze)
++	(* GNOME_SELECTOR_CLASS (parent_class)->freeze) (selector);
++}
++
++static void
++thaw_handler (GnomeSelector *selector)
++{
++    GnomeIconSelector *iselector;
++
++    g_return_if_fail (selector != NULL);
++    g_return_if_fail (GNOME_IS_ICON_SELECTOR (selector));
++
++    iselector = GNOME_ICON_SELECTOR (selector);
++
++    g_message (G_STRLOC ": %p", iselector->_priv->icon_list);
++
++    gnome_icon_list_thaw (iselector->_priv->icon_list);
++
++    if (GNOME_SELECTOR_CLASS (parent_class)->thaw)
++	(* GNOME_SELECTOR_CLASS (parent_class)->thaw) (selector);
++}
++
++static void
++set_selection_mode_handler (GnomeSelector *selector, guint mode)
++{
++    GnomeIconSelector *iselector;
++
++    g_return_if_fail (selector != NULL);
++    g_return_if_fail (GNOME_IS_ICON_SELECTOR (selector));
++
++    iselector = GNOME_ICON_SELECTOR (selector);
++
++    g_message (G_STRLOC ": %d", mode);
++
++    gnome_icon_list_set_selection_mode (iselector->_priv->icon_list,
++					(GtkSelectionMode) mode);
++
++    if (GNOME_SELECTOR_CLASS (parent_class)->set_selection_mode)
++	(* GNOME_SELECTOR_CLASS (parent_class)->set_selection_mode)
++	    (selector, mode);
++}
++
++static GSList *
++get_selection_handler (GnomeSelector *selector)
++{
++    GnomeIconSelector *iselector;
++    GnomeIconList *gil;
++    GSList *selection = NULL;
++    GList *list, *c;
++
++    g_return_val_if_fail (selector != NULL, NULL);
++    g_return_val_if_fail (GNOME_IS_ICON_SELECTOR (selector), NULL);
++
++    iselector = GNOME_ICON_SELECTOR (selector);
++    gil = GNOME_ICON_LIST (iselector->_priv->icon_list);
++    list = gnome_icon_list_get_selection (gil);
++
++    g_message (G_STRLOC);
++
++    for (c = list; c; c = c->next) {
++	guint pos = GPOINTER_TO_INT (c->data);
++	gchar *filename;
++
++	filename = gnome_icon_list_get_icon_filename (gil, pos);
++
++	selection = g_slist_prepend (selection, filename);
++    }
++
++    return g_slist_reverse (selection);
++}
++
++static void
++free_entry_func (gpointer data, gpointer user_data)
++{
++    g_free (data);
++}
++
++static void
++update_file_list_handler (GnomeSelector *gs)
++{
++    GtkWidget *label;
++    GtkWidget *progressbar;
++    int file_count, i;
++    int local_dest;
++    int was_destroyed = FALSE;
++    GnomeIconSelector *gis;
++
++    g_return_if_fail (gs != NULL);
++    g_return_if_fail (GNOME_IS_ICON_SELECTOR (gs));
++
++    if (GNOME_SELECTOR_CLASS (parent_class)->update_file_list)
++	(* GNOME_SELECTOR_CLASS (parent_class)->update_file_list) (gs);
++
++    gis = GNOME_ICON_SELECTOR (gs);
++
++    g_slist_foreach (gis->_priv->file_list, free_entry_func, gis);
++    gis->_priv->file_list = g_slist_copy (gs->_priv->total_list);
++
++    file_count = g_slist_length (gis->_priv->file_list);
++    i = 0;
++
++    g_message (G_STRLOC ": %d", file_count);
++
++    /* Locate previous progressbar/label,
++     * if previously called. */
++    progressbar = label = NULL;
++    progressbar = gtk_object_get_user_data (GTK_OBJECT (gis));
++    if (progressbar)
++	label = gtk_object_get_user_data (GTK_OBJECT (progressbar));
++
++    if (!label && !progressbar) {
++	label = gtk_label_new (_("Loading Icons..."));
++	gtk_box_pack_end (GTK_BOX (gs->_priv->box), label,
++			  FALSE, FALSE, 0);
++	gtk_widget_show (label);
++
++	progressbar = gtk_progress_bar_new ();
++	gtk_box_pack_end (GTK_BOX (gs->_priv->box),
++			  progressbar, FALSE, FALSE, 0);
++	gtk_widget_show (progressbar);
++
++	/* attach label to progressbar, progressbar to gs 
++	 * for recovery if show_icons() called again */
++	gtk_object_set_user_data (GTK_OBJECT (progressbar), label);
++	gtk_object_set_user_data (GTK_OBJECT (gis), progressbar);
++    } else {
++	if (!label && progressbar) g_assert_not_reached();
++	if (label && !progressbar) g_assert_not_reached();
++    }
++         
++    gnome_icon_list_freeze (gis->_priv->icon_list);
++    gnome_icon_list_clear (gis->_priv->icon_list);
++
++    /* this can be set with the stop_loading method to stop the
++       display in the middle */
++    gis->_priv->stop_loading = FALSE;
++  
++    /*bind destroy so that we can bail out of this function if the
++      whole thing was destroyed while doing the main_iteration*/
++    local_dest = gtk_signal_connect (GTK_OBJECT (gis), "destroy",
++				     GTK_SIGNAL_FUNC (set_flag),
++				     &was_destroyed);
++
++    while (gis->_priv->file_list) {
++	GSList * list = gis->_priv->file_list;
++	append_an_icon (gis, list->data);
++	gis->_priv->file_list = g_slist_remove_link
++	    (gis->_priv->file_list, list);
++	g_slist_free_1 (list);
++
++	gtk_progress_bar_update (GTK_PROGRESS_BAR (progressbar),
++				 (float)i / file_count);
++	while (gtk_events_pending()) {
++	    gtk_main_iteration ();
++
++	    /*if the gs was destroyed from underneath us ...
++	     * bail out*/
++	    if (was_destroyed) 
++		return;
++                  
++	    if (gis->_priv->stop_loading)
++		goto out;
++	}
++
++	i++;
++    }
++
++ out:
++  
++    gtk_signal_disconnect (GTK_OBJECT (gis), local_dest);
++
++    gnome_icon_list_thaw (gis->_priv->icon_list);
++
++    progressbar = label = NULL;
++    progressbar = gtk_object_get_user_data (GTK_OBJECT (gis));
++    if (progressbar)
++	label = gtk_object_get_user_data (GTK_OBJECT (progressbar));
++    if (progressbar) gtk_widget_destroy (progressbar);
++    if (label) gtk_widget_destroy (label);
++
++    /* cleanse gs of evil progressbar/label ptrs */
++    /* also let previous calls to show_icons() know that rendering
++     * is done. */
++    gtk_object_set_user_data (GTK_OBJECT(gis), NULL);
++}
++
++
++/**
++ * gnome_icon_selector_add_defaults:
++ * @gis: GnomeIconSelector to work with
++ *
++ * Description: Adds the default pixmap directory into the selector
++ * widget.
++ *
++ * Returns:
++ **/
++void
++gnome_icon_selector_add_defaults (GnomeIconSelector *iselector)
++{
++    gchar *pixmap_dir;
++
++    g_return_if_fail (iselector != NULL);
++    g_return_if_fail (GNOME_IS_ICON_SELECTOR (iselector));
++
++    pixmap_dir = gnome_unconditional_datadir_file ("pixmaps");
++  
++    gnome_selector_append_directory (GNOME_SELECTOR (iselector),
++				     pixmap_dir, TRUE);
++
++    g_free (pixmap_dir);
++}
+diff -rNu emptydir/gnome-selector.c urlaub/gnome-selector.c
+--- emptydir/gnome-selector.c	Thu Jan  1 01:00:00 1970
++++ urlaub/gnome-selector.c	Wed Aug  9 00:42:28 2000
+@@ -0,0 +1,1810 @@
++/* -*- Mode: C; c-set-style: gnu indent-tabs-mode: t; c-basic-offset: 4; tab-width: 8 -*- */
++/*
++ * Copyright (C) 2000 SuSE GmbH
++ * Author: Martin Baulig <baulig@suse.de>
++ *
++ * This file is part of the Gnome Library.
++ *
++ * The Gnome Library is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU Library General Public License as
++ * published by the Free Software Foundation; either version 2 of the
++ * License, or (at your option) any later version.
++ *
++ * The Gnome Library is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++ * Library General Public License for more details.
++ *
++ * You should have received a copy of the GNU Library General Public
++ * License along with the Gnome Library; see the file COPYING.LIB.  If not,
++ * write to the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
++ * Boston, MA 02111-1307, USA.
++ */
++/*
++  @NOTATION@
++ */
++
++/* GnomeSelector widget - pure virtual widget.
++ *
++ *   Use the Gnome{File,Icon,Pixmap}Selector subclasses.
++ *
++ * Author: Martin Baulig <baulig@suse.de>
++ */
++
++#include <config.h>
++
++#include <stdio.h>
++#include <string.h>
++#include <sys/stat.h>
++#include <sys/types.h>
++#include <dirent.h>
++#include <gtk/gtkhbox.h>
++#include <gtk/gtkvbox.h>
++#include <gtk/gtkbutton.h>
++#include <gtk/gtksignal.h>
++#include "libgnome/libgnomeP.h"
++#include "gnome-selectorP.h"
++#include "gnome-uidefs.h"
++#include "gnome-gconf.h"
++
++
++static void gnome_selector_class_init          (GnomeSelectorClass *class);
++static void gnome_selector_init                (GnomeSelector      *selector);
++static void gnome_selector_destroy             (GtkObject          *object);
++static void gnome_selector_finalize            (GObject            *object);
++
++static void selector_set_arg                   (GtkObject          *object,
++                                                GtkArg             *arg,
++                                                guint               arg_id);
++static void selector_get_arg                   (GtkObject          *object,
++                                                GtkArg             *arg,
++                                                guint               arg_id);
++
++static void     update_handler                 (GnomeSelector   *selector);
++static void     browse_handler                 (GnomeSelector   *selector);
++static void     clear_handler                  (GnomeSelector   *selector);
++static void     clear_default_handler          (GnomeSelector   *selector);
++
++static gboolean set_filename_handler           (GnomeSelector   *selector,
++                                                const gchar     *filename);
++static gboolean check_filename_handler         (GnomeSelector   *selector,
++                                                const gchar     *filename);
++static void     add_file_handler               (GnomeSelector   *selector,
++                                                const gchar     *filename);
++static void     add_file_default_handler       (GnomeSelector   *selector,
++                                                const gchar     *filename);
++static gboolean check_directory_handler        (GnomeSelector   *selector,
++                                                const gchar     *filename);
++static void     add_directory_handler          (GnomeSelector   *selector,
++                                                const gchar     *directory);
++static void     add_directory_default_handler  (GnomeSelector   *selector,
++                                                const gchar     *directory);
++static void     update_file_list_handler       (GnomeSelector   *selector);
++
++static void     free_entry_func                (gpointer         data,
++                                                gpointer         user_data);
++
++#define GNOME_SELECTOR_GCONF_DIR "/desktop/standard/gnome-selector"
++
++static GtkVBoxClass *parent_class;
++
++enum {
++    ARG_0,
++};
++
++enum {
++    BROWSE_SIGNAL,
++    CLEAR_SIGNAL,
++    CLEAR_DEFAULT_SIGNAL,
++    CHECK_FILENAME_SIGNAL,
++    SET_FILENAME_SIGNAL,
++    ADD_FILE_SIGNAL,
++    ADD_FILE_DEFAULT_SIGNAL,
++    CHECK_DIRECTORY_SIGNAL,
++    ADD_DIRECTORY_SIGNAL,
++    ADD_DIRECTORY_DEFAULT_SIGNAL,
++    FREEZE_SIGNAL,
++    UPDATE_SIGNAL,
++    UPDATE_FILE_LIST_SIGNAL,
++    THAW_SIGNAL,
++    SET_SELECTION_MODE_SIGNAL,
++    GET_SELECTION_SIGNAL,
++    SELECTION_CHANGED_SIGNAL,
++    SET_ENTRY_TEXT_SIGNAL,
++    GET_ENTRY_TEXT_SIGNAL,
++    ACTIVATE_ENTRY_SIGNAL,
++    HISTORY_CHANGED_SIGNAL,
++    LAST_SIGNAL
++};
++
++static int gnome_selector_signals [LAST_SIGNAL] = {0};
++
++guint
++gnome_selector_get_type (void)
++{
++    static guint selector_type = 0;
++
++    if (!selector_type) {
++	GtkTypeInfo selector_info = {
++	    "GnomeSelector",
++	    sizeof (GnomeSelector),
++	    sizeof (GnomeSelectorClass),
++	    (GtkClassInitFunc) gnome_selector_class_init,
++	    (GtkObjectInitFunc) gnome_selector_init,
++	    NULL,
++	    NULL,
++	    NULL
++	};
++
++	selector_type = gtk_type_unique (gtk_vbox_get_type (),
++					 &selector_info);
++    }
++
++    return selector_type;
++}
++
++typedef gpointer (*GtkSignal_POINTER__NONE) (GtkObject * object,
++					     gpointer user_data);
++static void
++gtk_marshal_POINTER__NONE (GtkObject * object,
++			   GtkSignalFunc func, gpointer func_data, GtkArg * args)
++{
++    GtkSignal_POINTER__NONE rfunc;
++    gpointer *return_val;
++
++    return_val = GTK_RETLOC_POINTER (args[0]);
++    rfunc = (GtkSignal_POINTER__NONE) func;
++    *return_val = (*rfunc) (object, func_data);
++}
++
++static void
++gnome_selector_class_init (GnomeSelectorClass *class)
++{
++    GtkObjectClass *object_class;
++    GObjectClass *gobject_class;
++
++    object_class = (GtkObjectClass *) class;
++    gobject_class = (GObjectClass *) class;
++
++    parent_class = gtk_type_class (gtk_vbox_get_type ());
++
++    gnome_selector_signals [BROWSE_SIGNAL] =
++	gtk_signal_new ("browse",
++			GTK_RUN_LAST,
++			GTK_CLASS_TYPE (object_class),
++			GTK_SIGNAL_OFFSET (GnomeSelectorClass,
++					   browse),
++			gtk_signal_default_marshaller,
++			GTK_TYPE_NONE,
++			0);
++    gnome_selector_signals [CLEAR_SIGNAL] =
++	gtk_signal_new ("clear",
++			GTK_RUN_LAST,
++			GTK_CLASS_TYPE (object_class),
++			GTK_SIGNAL_OFFSET (GnomeSelectorClass,
++					   clear),
++			gtk_signal_default_marshaller,
++			GTK_TYPE_NONE,
++			0);
++    gnome_selector_signals [CLEAR_DEFAULT_SIGNAL] =
++	gtk_signal_new ("clear_default",
++			GTK_RUN_LAST,
++			GTK_CLASS_TYPE (object_class),
++			GTK_SIGNAL_OFFSET (GnomeSelectorClass,
++					   clear_default),
++			gtk_signal_default_marshaller,
++			GTK_TYPE_NONE,
++			0);
++    gnome_selector_signals [FREEZE_SIGNAL] =
++	gtk_signal_new ("freeze",
++			GTK_RUN_LAST,
++			GTK_CLASS_TYPE (object_class),
++			GTK_SIGNAL_OFFSET (GnomeSelectorClass,
++					   freeze),
++			gtk_signal_default_marshaller,
++			GTK_TYPE_NONE,
++			0);
++    gnome_selector_signals [UPDATE_SIGNAL] =
++	gtk_signal_new ("update",
++			GTK_RUN_LAST,
++			GTK_CLASS_TYPE (object_class),
++			GTK_SIGNAL_OFFSET (GnomeSelectorClass,
++					   update),
++			gtk_signal_default_marshaller,
++			GTK_TYPE_NONE,
++			0);
++    gnome_selector_signals [THAW_SIGNAL] =
++	gtk_signal_new ("thaw",
++			GTK_RUN_LAST,
++			GTK_CLASS_TYPE (object_class),
++			GTK_SIGNAL_OFFSET (GnomeSelectorClass,
++					   thaw),
++			gtk_signal_default_marshaller,
++			GTK_TYPE_NONE,
++			0);
++    gnome_selector_signals [CHECK_FILENAME_SIGNAL] =
++	gtk_signal_new ("check_filename",
++			GTK_RUN_LAST,
++			GTK_CLASS_TYPE (object_class),
++			GTK_SIGNAL_OFFSET (GnomeSelectorClass,
++					   check_filename),
++			gtk_marshal_BOOL__POINTER,
++			GTK_TYPE_BOOL, 1,
++			GTK_TYPE_STRING);
++    gnome_selector_signals [SET_FILENAME_SIGNAL] =
++	gtk_signal_new ("set_filename",
++			GTK_RUN_LAST,
++			GTK_CLASS_TYPE (object_class),
++			GTK_SIGNAL_OFFSET (GnomeSelectorClass,
++					   set_filename),
++			gtk_marshal_BOOL__POINTER,
++			GTK_TYPE_BOOL, 1,
++			GTK_TYPE_STRING);
++    gnome_selector_signals [ADD_FILE_SIGNAL] =
++	gtk_signal_new ("add_file",
++			GTK_RUN_LAST,
++			GTK_CLASS_TYPE (object_class),
++			GTK_SIGNAL_OFFSET (GnomeSelectorClass,
++					   add_file),
++			gtk_marshal_NONE__POINTER,
++			GTK_TYPE_NONE, 1,
++			GTK_TYPE_STRING);
++    gnome_selector_signals [ADD_FILE_DEFAULT_SIGNAL] =
++	gtk_signal_new ("add_file_default",
++			GTK_RUN_LAST,
++			GTK_CLASS_TYPE (object_class),
++			GTK_SIGNAL_OFFSET (GnomeSelectorClass,
++					   add_file_default),
++			gtk_marshal_NONE__POINTER,
++			GTK_TYPE_NONE, 1,
++			GTK_TYPE_STRING);
++    gnome_selector_signals [CHECK_DIRECTORY_SIGNAL] =
++	gtk_signal_new ("check_directory",
++			GTK_RUN_LAST,
++			GTK_CLASS_TYPE (object_class),
++			GTK_SIGNAL_OFFSET (GnomeSelectorClass,
++					   check_directory),
++			gtk_marshal_BOOL__POINTER,
++			GTK_TYPE_BOOL, 1,
++			GTK_TYPE_STRING);
++    gnome_selector_signals [ADD_DIRECTORY_SIGNAL] =
++	gtk_signal_new ("add_directory",
++			GTK_RUN_LAST,
++			GTK_CLASS_TYPE (object_class),
++			GTK_SIGNAL_OFFSET (GnomeSelectorClass,
++					   add_directory),
++			gtk_marshal_NONE__POINTER,
++			GTK_TYPE_NONE, 1,
++			GTK_TYPE_STRING);
++    gnome_selector_signals [ADD_DIRECTORY_DEFAULT_SIGNAL] =
++	gtk_signal_new ("add_directory_default",
++			GTK_RUN_LAST,
++			GTK_CLASS_TYPE (object_class),
++			GTK_SIGNAL_OFFSET (GnomeSelectorClass,
++					   add_directory_default),
++			gtk_marshal_NONE__POINTER,
++			GTK_TYPE_NONE, 1,
++			GTK_TYPE_STRING);
++    gnome_selector_signals [UPDATE_FILE_LIST_SIGNAL] =
++	gtk_signal_new ("update_file_list",
++			GTK_RUN_LAST,
++			GTK_CLASS_TYPE (object_class),
++			GTK_SIGNAL_OFFSET (GnomeSelectorClass,
++					   update_file_list),
++			gtk_signal_default_marshaller,
++			GTK_TYPE_NONE,
++			0);
++    gnome_selector_signals [SET_SELECTION_MODE_SIGNAL] =
++	gtk_signal_new ("set_selection_mode",
++			GTK_RUN_LAST,
++			GTK_CLASS_TYPE (object_class),
++			GTK_SIGNAL_OFFSET (GnomeSelectorClass,
++					   set_selection_mode),
++			gtk_marshal_NONE__INT,
++			GTK_TYPE_NONE,
++			1, GTK_TYPE_INT);
++    gnome_selector_signals [GET_SELECTION_SIGNAL] =
++	gtk_signal_new ("get_selection",
++			GTK_RUN_LAST,
++			GTK_CLASS_TYPE (object_class),
++			GTK_SIGNAL_OFFSET (GnomeSelectorClass,
++					   get_selection),
++			gtk_marshal_POINTER__NONE,
++			GTK_TYPE_POINTER,
++			0);
++    gnome_selector_signals [SELECTION_CHANGED_SIGNAL] =
++	gtk_signal_new ("selection_changed",
++			GTK_RUN_LAST,
++			GTK_CLASS_TYPE (object_class),
++			GTK_SIGNAL_OFFSET (GnomeSelectorClass,
++					   selection_changed),
++			gtk_signal_default_marshaller,
++			GTK_TYPE_NONE,
++			0);
++    gnome_selector_signals [GET_ENTRY_TEXT_SIGNAL] =
++	gtk_signal_new ("get_entry_text",
++			GTK_RUN_LAST,
++			GTK_CLASS_TYPE (object_class),
++			GTK_SIGNAL_OFFSET (GnomeSelectorClass,
++					   get_entry_text),
++			gtk_marshal_POINTER__NONE,
++			GTK_TYPE_POINTER,
++			0);
++    gnome_selector_signals [SET_ENTRY_TEXT_SIGNAL] =
++	gtk_signal_new ("set_entry_text",
++			GTK_RUN_LAST,
++			GTK_CLASS_TYPE (object_class),
++			GTK_SIGNAL_OFFSET (GnomeSelectorClass,
++					   set_entry_text),
++			gtk_marshal_NONE__POINTER,
++			GTK_TYPE_NONE,
++			1,
++			GTK_TYPE_STRING);
++    gnome_selector_signals [ACTIVATE_ENTRY_SIGNAL] =
++	gtk_signal_new ("activate_entry",
++			GTK_RUN_LAST,
++			GTK_CLASS_TYPE (object_class),
++			GTK_SIGNAL_OFFSET (GnomeSelectorClass,
++					   activate_entry),
++			gtk_marshal_NONE__NONE,
++			GTK_TYPE_NONE,
++			0);
++    gnome_selector_signals [HISTORY_CHANGED_SIGNAL] =
++	gtk_signal_new ("history_changed",
++			GTK_RUN_LAST,
++			GTK_CLASS_TYPE (object_class),
++			GTK_SIGNAL_OFFSET (GnomeSelectorClass,
++					   history_changed),
++			gtk_marshal_NONE__NONE,
++			GTK_TYPE_NONE,
++			0);
++    gtk_object_class_add_signals (object_class,
++				  gnome_selector_signals,
++				  LAST_SIGNAL);
++
++    object_class->destroy = gnome_selector_destroy;
++    gobject_class->finalize = gnome_selector_finalize;
++    object_class->get_arg = selector_get_arg;
++    object_class->set_arg = selector_set_arg;
++
++    class->browse = browse_handler;
++    class->clear = clear_handler;
++    class->clear_default = clear_default_handler;
++    class->update = update_handler;
++
++    class->check_filename = check_filename_handler;
++    class->set_filename = set_filename_handler;
++    class->add_file = add_file_handler;
++    class->add_file_default = add_file_default_handler;
++    class->check_directory = check_directory_handler;
++    class->add_directory = add_directory_handler;
++    class->add_directory_default = add_directory_default_handler;
++    class->update_file_list = update_file_list_handler;
++}
++
++static void
++selector_set_arg (GtkObject *object, GtkArg *arg, guint arg_id)
++{
++    GnomeSelector *self;
++
++    self = GNOME_SELECTOR (object);
++
++    switch (arg_id) {
++    default:
++	break;
++    }
++}
++
++static void
++selector_get_arg (GtkObject *object, GtkArg *arg, guint arg_id)
++{
++    GnomeSelector *self;
++
++    self = GNOME_SELECTOR (object);
++
++    switch (arg_id) {
++    default:
++	break;
++    }
++}
++
++static void
++gnome_selector_init (GnomeSelector *selector)
++{
++    selector->_priv = g_new0 (GnomeSelectorPrivate, 1);
++
++    selector->_priv->changed = FALSE;
++
++    selector->_priv->selector_widget = NULL;
++    selector->_priv->browse_dialog = NULL;
++}
++
++/*
++ * Default signal handlers.
++ */
++
++static void
++update_handler (GnomeSelector *selector)
++{
++    g_return_if_fail (selector != NULL);
++    g_return_if_fail (GNOME_IS_SELECTOR (selector));
++
++    if (selector->_priv->need_rebuild)
++	gnome_selector_update_file_list (selector);
++
++    if (selector->_priv->history_changed)
++	gtk_signal_emit (GTK_OBJECT (selector),
++			 gnome_selector_signals [HISTORY_CHANGED_SIGNAL]);
++
++    selector->_priv->history_changed = FALSE;
++    selector->_priv->dirty = FALSE;
++}
++
++static void
++update_file_list_handler (GnomeSelector *selector)
++{
++    GSList *c;
++
++    g_return_if_fail (selector != NULL);
++    g_return_if_fail (GNOME_IS_SELECTOR (selector));
++
++    g_slist_foreach (selector->_priv->total_list, (GFunc) g_free, NULL);
++    g_slist_free (selector->_priv->total_list);
++    selector->_priv->total_list = NULL;
++
++    g_slist_foreach (selector->_priv->default_total_list,
++		     (GFunc) g_free, NULL);
++    g_slist_free (selector->_priv->default_total_list);
++    selector->_priv->default_total_list = NULL;
++
++    for (c = selector->_priv->dir_list; c; c = c->next)
++	gtk_signal_emit (GTK_OBJECT (selector),
++			 gnome_selector_signals [ADD_DIRECTORY_SIGNAL],
++			 c->data);
++
++    for (c = selector->_priv->default_dir_list; c; c = c->next)
++	gtk_signal_emit (GTK_OBJECT (selector),
++			 gnome_selector_signals [ADD_DIRECTORY_DEFAULT_SIGNAL],
++			 c->data);
++
++    for (c = selector->_priv->file_list; c; c = c->next)
++	gtk_signal_emit (GTK_OBJECT (selector),
++			 gnome_selector_signals [ADD_FILE_SIGNAL],
++			 c->data);
++
++    for (c = selector->_priv->default_file_list; c; c = c->next)
++	gtk_signal_emit (GTK_OBJECT (selector),
++			 gnome_selector_signals [ADD_FILE_DEFAULT_SIGNAL],
++			 c->data);
++
++    selector->_priv->total_list = g_slist_reverse
++	(selector->_priv->total_list);
++
++    selector->_priv->default_total_list = g_slist_reverse
++	(selector->_priv->default_total_list);
++
++    selector->_priv->need_rebuild = FALSE;
++}
++
++static void
++browse_handler (GnomeSelector *selector)
++{
++    GnomeSelectorPrivate *priv;
++
++    g_return_if_fail (selector != NULL);
++    g_return_if_fail (GNOME_IS_SELECTOR (selector));
++
++    priv = selector->_priv;
++
++    /*if it already exists make sure it's shown and raised*/
++    if (priv->browse_dialog) {
++	gtk_widget_show (priv->browse_dialog);
++	if (priv->browse_dialog->window)
++	    gdk_window_raise (priv->browse_dialog->window);
++    }
++}
++
++static void
++free_entry_func (gpointer data, gpointer user_data)
++{
++    g_free (data);
++}
++
++static void
++clear_handler (GnomeSelector *selector)
++{
++    g_return_if_fail (selector != NULL);
++    g_return_if_fail (GNOME_IS_SELECTOR (selector));
++
++    g_slist_foreach (selector->_priv->dir_list, free_entry_func,
++		     selector);
++    g_slist_free (selector->_priv->dir_list);
++    selector->_priv->dir_list = NULL;
++
++    g_slist_foreach (selector->_priv->file_list, free_entry_func,
++		     selector);
++    g_slist_free (selector->_priv->file_list);
++    selector->_priv->file_list = NULL;
++}
++
++static void
++clear_default_handler (GnomeSelector *selector)
++{
++    g_return_if_fail (selector != NULL);
++    g_return_if_fail (GNOME_IS_SELECTOR (selector));
++
++    g_slist_foreach (selector->_priv->default_dir_list, free_entry_func,
++		     selector);
++    g_slist_free (selector->_priv->default_dir_list);
++    selector->_priv->default_dir_list = NULL;
++
++    g_slist_foreach (selector->_priv->default_file_list, free_entry_func,
++		     selector);
++    g_slist_free (selector->_priv->default_file_list);
++    selector->_priv->default_file_list = NULL;
++}
++
++static gboolean
++check_filename_handler (GnomeSelector *selector, const gchar *filename)
++{
++    g_return_val_if_fail (selector != NULL, FALSE);
++    g_return_val_if_fail (GNOME_IS_SELECTOR (selector), FALSE);
++    g_return_val_if_fail (filename != NULL, FALSE);
++
++    g_message (G_STRLOC ": '%s'", filename);
++
++    return g_file_exists (filename);
++}
++
++static gboolean
++set_filename_handler (GnomeSelector *selector, const gchar *filename)
++{
++    g_return_val_if_fail (selector != NULL, FALSE);
++    g_return_val_if_fail (GNOME_IS_SELECTOR (selector), FALSE);
++    g_return_val_if_fail (filename != NULL, FALSE);
++
++    g_message (G_STRLOC ": '%s'", filename);
++
++    if (!gnome_selector_check_filename (selector, filename))
++	return FALSE;
++
++    gnome_selector_set_entry_text (selector, filename);
++    gnome_selector_activate_entry (selector);
++
++    return TRUE;
++}
++
++static gboolean
++check_directory_handler (GnomeSelector *selector, const gchar *directory)
++{
++    g_return_val_if_fail (selector != NULL, FALSE);
++    g_return_val_if_fail (GNOME_IS_SELECTOR (selector), FALSE);
++    g_return_val_if_fail (directory != NULL, FALSE);
++
++    g_message (G_STRLOC ": '%s'", directory);
++
++    return g_file_test (directory, G_FILE_TEST_ISDIR);
++}
++
++static void
++add_file_handler (GnomeSelector *selector, const gchar *filename)
++{
++    g_return_if_fail (selector != NULL);
++    g_return_if_fail (GNOME_IS_SELECTOR (selector));
++    g_return_if_fail (filename != NULL);
++
++    if (!g_file_test (filename, G_FILE_TEST_ISFILE)) {
++	g_warning ("GnomeSelector: '%s' is not a regular file",
++		   filename);
++	return;
++    }
++
++    selector->_priv->total_list = g_slist_prepend
++	(selector->_priv->total_list, g_strdup (filename));
++}
++
++static void
++add_file_default_handler (GnomeSelector *selector, const gchar *filename)
++{
++    g_return_if_fail (selector != NULL);
++    g_return_if_fail (GNOME_IS_SELECTOR (selector));
++    g_return_if_fail (filename != NULL);
++
++    if (!g_file_test (filename, G_FILE_TEST_ISFILE)) {
++	g_warning ("GnomeSelector: '%s' is not a regular file",
++		   filename);
++	return;
++    }
++
++    selector->_priv->default_total_list = g_slist_prepend
++	(selector->_priv->default_total_list, g_strdup (filename));
++}
++
++static void
++_add_directory_handler (GnomeSelector *selector, const gchar *directory,
++			gboolean defaultp)
++{
++    struct dirent *de;
++    DIR *dp;
++
++    g_return_if_fail (selector != NULL);
++    g_return_if_fail (GNOME_IS_SELECTOR (selector));
++    g_return_if_fail (directory != NULL);
++
++    g_message (G_STRLOC ": '%s'", directory);
++
++    if (!g_file_test (directory, G_FILE_TEST_ISDIR)) {
++	g_warning ("GnomeSelector: '%s' is not a directory",
++		   directory);
++	return;
++    }
++
++    dp = opendir (directory);
++
++    if (dp == NULL) {
++	g_warning ("GnomeSelector: couldn't open directory '%s'",
++		   directory);
++	return;
++    }
++
++    while ((de = readdir (dp)) != NULL) {
++	gchar *full_path = g_concat_dir_and_file
++	    (directory, de->d_name);
++
++	/* skip dotfiles */
++	if (*(de->d_name) == '.') {
++	    g_free (full_path);
++	    continue;
++	}
++
++	if (!g_file_test (full_path, G_FILE_TEST_ISFILE)) {
++	    g_free (full_path);
++	    continue;
++	}
++
++	if (!gnome_selector_check_filename (selector, full_path)) {
++	    g_free (full_path);
++	    continue;
++	}
++
++	if (defaultp)
++	    gtk_signal_emit (GTK_OBJECT (selector),
++			     gnome_selector_signals [ADD_FILE_DEFAULT_SIGNAL],
++			     full_path);
++	else
++	    gtk_signal_emit (GTK_OBJECT (selector),
++			     gnome_selector_signals [ADD_FILE_SIGNAL],
++			     full_path);
++
++	g_free (full_path);
++    }
++
++    closedir (dp);
++}
++
++static void
++add_directory_handler (GnomeSelector *selector, const gchar *directory)
++{
++    g_return_if_fail (selector != NULL);
++    g_return_if_fail (GNOME_IS_SELECTOR (selector));
++    g_return_if_fail (directory != NULL);
++
++    _add_directory_handler (selector, directory, FALSE);
++}
++
++static void
++add_directory_default_handler (GnomeSelector *selector,
++				const gchar *directory)
++{
++    g_return_if_fail (selector != NULL);
++    g_return_if_fail (GNOME_IS_SELECTOR (selector));
++    g_return_if_fail (directory != NULL);
++
++    _add_directory_handler (selector, directory, TRUE);
++}
++
++
++/*
++ * Misc callbacks.
++ */
++
++static void
++browse_clicked_cb (GtkWidget *widget, gpointer data)
++{
++    gtk_signal_emit (GTK_OBJECT (data),
++		     gnome_selector_signals [BROWSE_SIGNAL]);
++}
++
++static void
++default_clicked_cb (GtkWidget *widget, gpointer data)
++{
++    gnome_selector_set_to_defaults (GNOME_SELECTOR (data));
++}
++
++static void
++clear_clicked_cb (GtkWidget *widget, gpointer data)
++{
++    gnome_selector_clear (GNOME_SELECTOR (data), FALSE);
++}
++
++
++/**
++ * gnome_selector_construct:
++ * @selector: Pointer to GnomeSelector object.
++ * @history_id: If not %NULL, the text id under which history data is stored
++ * @selector_widget: Widget which should be used inside the selector box.
++ * @browse_dialog: Widget which should be used as browse dialog.
++ *
++ * Constructs a #GnomeSelector object, for language bindings or subclassing
++ * use #gnome_selector_new from C
++ *
++ * Returns: 
++ */
++void
++gnome_selector_construct (GnomeSelector *selector, 
++			  const gchar *history_id,
++			  const gchar *dialog_title,
++			  GtkWidget *entry_widget,
++			  GtkWidget *selector_widget,
++			  GtkWidget *browse_dialog,
++			  guint32 flags)
++{
++    GnomeSelectorPrivate *priv;
++
++    g_return_if_fail (selector != NULL);
++    g_return_if_fail (GNOME_IS_SELECTOR (selector));
++
++    priv = selector->_priv;
++
++    priv->entry_widget = entry_widget;
++    if (priv->entry_widget)
++	gtk_widget_ref (priv->entry_widget);
++
++    priv->history_id = g_strdup (history_id);
++    priv->dialog_title = g_strdup (dialog_title);
++
++    priv->flags = flags;
++
++    priv->client = gnome_get_gconf_client ();
++    gtk_object_ref (GTK_OBJECT (priv->client));
++
++    if (priv->history_id) {
++	priv->gconf_history_dir = gconf_concat_key_and_dir
++	    (GNOME_SELECTOR_GCONF_DIR, priv->history_id);
++	priv->gconf_history_key = gconf_concat_key_and_dir
++	    (priv->gconf_history_dir, "history");
++	priv->gconf_dir_list_key = gconf_concat_key_and_dir
++	    (priv->gconf_history_dir, "dir-list");
++	priv->gconf_file_list_key = gconf_concat_key_and_dir
++	    (priv->gconf_history_dir, "file-list");
++
++	gconf_client_add_dir (priv->client, priv->gconf_history_dir,
++			      GCONF_CLIENT_PRELOAD_NONE, NULL);
++    }
++
++    priv->selector_widget = selector_widget;
++    if (priv->selector_widget)
++	gtk_widget_ref (priv->selector_widget);
++
++    priv->browse_dialog = browse_dialog;
++    if (priv->browse_dialog)
++	gtk_widget_ref (priv->browse_dialog);
++
++    priv->box = gtk_vbox_new (FALSE, GNOME_PAD_SMALL);
++
++    priv->hbox = gtk_hbox_new (FALSE, GNOME_PAD_SMALL);
++
++    if (priv->entry_widget) {
++	gtk_box_pack_start (GTK_BOX (priv->hbox), priv->entry_widget,
++			    TRUE, TRUE, 0);
++    }
++
++    gtk_box_pack_start (GTK_BOX (priv->box), priv->hbox,
++			TRUE, FALSE, GNOME_PAD_SMALL);
++
++    if (flags & GNOME_SELECTOR_WANT_BROWSE_BUTTON) {
++	if (priv->browse_dialog == NULL) {
++	    g_warning (G_STRLOC ": It makes no sense to use "
++		       "GNOME_SELECTOR_WANT_BROWSE_BUTTON "
++		       "without having a `browse_dialog'.");
++	    return;
++	}
++
++	priv->browse_button = gtk_button_new_with_label (_("Browse..."));
++
++	gtk_signal_connect (GTK_OBJECT (priv->browse_button),
++			    "clicked", browse_clicked_cb, selector);
++
++	gtk_box_pack_start (GTK_BOX (priv->hbox),
++			    priv->browse_button, FALSE, FALSE, 0);
++    }
++
++    if (flags & GNOME_SELECTOR_WANT_DEFAULT_BUTTON) {
++	priv->default_button = gtk_button_new_with_label (_("Default..."));
++
++	gtk_signal_connect (GTK_OBJECT (priv->default_button),
++			    "clicked", default_clicked_cb, selector);
++
++	gtk_box_pack_start (GTK_BOX (priv->hbox),
++			    priv->default_button, FALSE, FALSE, 0);
++    }
++
++    if (flags & GNOME_SELECTOR_WANT_CLEAR_BUTTON) {
++	priv->clear_button = gtk_button_new_with_label (_("Clear..."));
++
++	gtk_signal_connect (GTK_OBJECT (priv->clear_button),
++			    "clicked", clear_clicked_cb, selector);
++
++	gtk_box_pack_start (GTK_BOX (priv->hbox),
++			    priv->clear_button, FALSE, FALSE, 0);
++    }
++
++    if (priv->selector_widget) {
++	gtk_box_pack_start (GTK_BOX (priv->box),
++			    priv->selector_widget, TRUE, TRUE,
++			    GNOME_PAD_SMALL);
++    }
++
++    gtk_widget_show_all (priv->box);
++
++    gtk_box_pack_start (GTK_BOX (selector), priv->box,
++			TRUE, TRUE, GNOME_PAD_SMALL);
++
++    if (priv->flags & GNOME_SELECTOR_AUTO_SAVE_HISTORY)
++	gnome_selector_load_history (selector);
++
++    if (priv->flags & GNOME_SELECTOR_AUTO_SAVE_ALL)
++	_gnome_selector_load_all (selector);
++}
++
++
++static void
++gnome_selector_destroy (GtkObject *object)
++{
++    GnomeSelector *selector;
++
++    /* remember, destroy can be run multiple times! */
++
++    g_return_if_fail (object != NULL);
++    g_return_if_fail (GNOME_IS_SELECTOR (object));
++
++    selector = GNOME_SELECTOR (object);
++
++    if (selector->_priv->client) {
++	if (selector->_priv->flags & GNOME_SELECTOR_AUTO_SAVE_ALL)
++	    _gnome_selector_save_all (selector);
++
++	if (selector->_priv->gconf_history_dir)
++	    gconf_client_remove_dir
++		(selector->_priv->client,
++		 selector->_priv->gconf_history_dir,
++		 NULL);
++
++	gtk_object_unref (GTK_OBJECT (selector->_priv->client));
++	selector->_priv->client = NULL;
++    }
++
++    if (selector->_priv->selector_widget) {
++	gtk_widget_unref (selector->_priv->selector_widget);
++	selector->_priv->selector_widget = NULL;
++    }
++
++    if (selector->_priv->browse_dialog) {
++	gtk_widget_unref (selector->_priv->browse_dialog);
++	selector->_priv->browse_dialog = NULL;
++    }
++
++    if (selector->_priv->entry_widget) {
++	gtk_widget_unref (selector->_priv->entry_widget);
++	selector->_priv->entry_widget = NULL;
++    }
++
++    if (GTK_OBJECT_CLASS (parent_class)->destroy)
++	(* GTK_OBJECT_CLASS (parent_class)->destroy) (object);
++}
++
++static void
++gnome_selector_finalize (GObject *object)
++{
++    GnomeSelector *selector;
++
++    g_return_if_fail (object != NULL);
++    g_return_if_fail (GNOME_IS_SELECTOR (object));
++
++    selector = GNOME_SELECTOR (object);
++
++    if (selector->_priv) {
++	g_slist_foreach (selector->_priv->dir_list,
++			 free_entry_func, selector);
++	g_slist_foreach (selector->_priv->file_list,
++			 free_entry_func, selector);
++	g_free (selector->_priv->dialog_title);
++	g_free (selector->_priv->history_id);
++	g_free (selector->_priv->gconf_history_dir);
++	g_free (selector->_priv->gconf_history_key);
++	g_free (selector->_priv->gconf_dir_list_key);
++	g_free (selector->_priv->gconf_file_list_key);
++    }
++
++    g_free (selector->_priv);
++    selector->_priv = NULL;
++
++    if (G_OBJECT_CLASS (parent_class)->finalize)
++	(* G_OBJECT_CLASS (parent_class)->finalize) (object);
++}
++
++
++/**
++ * gnome_selector_get_dialog_title
++ * @selector: Pointer to GnomeSelector object.
++ *
++ * Description: Returns the titel of the popup dialog.
++ *
++ * Returns: Titel of the popup dialog.
++ */
++const gchar *
++gnome_selector_get_dialog_title (GnomeSelector *selector)
++{
++    g_return_val_if_fail (selector != NULL, NULL);
++    g_return_val_if_fail (GNOME_IS_SELECTOR (selector), NULL);
++
++    return selector->_priv->dialog_title;
++}
++
++
++/**
++ * gnome_selector_set_dialog_title
++ * @selector: Pointer to GnomeSelector object.
++ * @dialog_title: New title for the popup dialog.
++ *
++ * Description: Sets the titel of the popup dialog.
++ *
++ * This is only used when the widget uses a popup dialog for
++ * the actual selector.
++ *
++ * Returns:
++ */
++void
++gnome_selector_set_dialog_title (GnomeSelector *selector,
++				 const gchar *dialog_title)
++{
++    g_return_if_fail (selector != NULL);
++    g_return_if_fail (GNOME_IS_SELECTOR (selector));
++
++    if (selector->_priv->dialog_title) {
++	g_free (selector->_priv->dialog_title);
++	selector->_priv->dialog_title = NULL;
++    }
++
++    /* this is NULL safe. */
++    selector->_priv->dialog_title = g_strdup (dialog_title);
++}
++
++
++/**
++ * gnome_selector_check_directory
++ * @selector: Pointer to GnomeSelector object.
++ * @filename: Directory to check.
++ *
++ * Description: Asks the derived class whether @directory is a
++ *    valid directory for this kind of selector.
++ *
++ * Returns: #TRUE if the directory is ok or #FALSE if not.
++ */
++gboolean
++gnome_selector_check_directory (GnomeSelector *selector,
++				const gchar *directory)
++{
++    gboolean ok;
++
++    g_return_val_if_fail (selector != NULL, FALSE);
++    g_return_val_if_fail (GNOME_IS_SELECTOR (selector), FALSE);
++    g_return_val_if_fail (directory != NULL, FALSE);
++
++    gtk_signal_emit (GTK_OBJECT (selector),
++		     gnome_selector_signals [CHECK_DIRECTORY_SIGNAL],
++		     directory, &ok);
++
++    return ok;
++}
++
++
++
++/**
++ * gnome_selector_prepend_directory
++ * @selector: Pointer to GnomeSelector object.
++ * @directory: The directory to add.
++ *
++ * Description: Prepends @directory to the directory list.
++ *
++ * Returns:
++ */
++gboolean
++gnome_selector_prepend_directory (GnomeSelector *selector,
++				  const gchar *directory,
++				  gboolean defaultp)
++{
++    g_return_val_if_fail (selector != NULL, FALSE);
++    g_return_val_if_fail (GNOME_IS_SELECTOR (selector), FALSE);
++    g_return_val_if_fail (directory != NULL, FALSE);
++
++    if (!gnome_selector_check_directory (selector, directory))
++	return FALSE;
++
++    if (defaultp)
++	selector->_priv->default_dir_list = g_slist_prepend
++	    (selector->_priv->default_dir_list, g_strdup (directory));
++    else
++	selector->_priv->dir_list = g_slist_prepend
++	    (selector->_priv->dir_list, g_strdup (directory));
++
++    selector->_priv->need_rebuild = TRUE;
++
++    if (selector->_priv->frozen)
++	selector->_priv->dirty = TRUE;
++    else
++	gnome_selector_update (selector);
++
++    return TRUE;
++}
++
++
++/**
++ * gnome_selector_append_directory
++ * @selector: Pointer to GnomeSelector object.
++ * @directory: The directory to add.
++ *
++ * Description: Append @directory to the directory list.
++ *
++ * Returns:
++ */
++gboolean
++gnome_selector_append_directory (GnomeSelector *selector,
++				 const gchar *directory,
++				 gboolean defaultp)
++{
++    g_return_val_if_fail (selector != NULL, FALSE);
++    g_return_val_if_fail (GNOME_IS_SELECTOR (selector), FALSE);
++    g_return_val_if_fail (directory != NULL, FALSE);
++
++    if (!gnome_selector_check_directory (selector, directory))
++	return FALSE;
++
++    if (defaultp)
++	selector->_priv->default_dir_list = g_slist_append
++	    (selector->_priv->default_dir_list, g_strdup (directory));
++    else
++	selector->_priv->dir_list = g_slist_append
++	    (selector->_priv->dir_list, g_strdup (directory));
++
++    selector->_priv->need_rebuild = TRUE;
++
++    if (selector->_priv->frozen)
++	selector->_priv->dirty = TRUE;
++    else
++	gnome_selector_update (selector);
++
++    return TRUE;
++}
++
++
++/**
++ * gnome_selector_prepend_file
++ * @selector: Pointer to GnomeSelector object.
++ * @directory: The file to add.
++ *
++ * Description: Prepends @filename to the file list.
++ *
++ * Returns:
++ */
++gboolean
++gnome_selector_prepend_file (GnomeSelector *selector,
++			     const gchar *filename,
++			     gboolean defaultp)
++{
++    g_return_val_if_fail (selector != NULL, FALSE);
++    g_return_val_if_fail (GNOME_IS_SELECTOR (selector), FALSE);
++    g_return_val_if_fail (filename != NULL, FALSE);
++
++    if (!gnome_selector_check_filename (selector, filename))
++	return FALSE;
++
++    if (defaultp)
++	selector->_priv->default_file_list = g_slist_prepend
++	    (selector->_priv->default_file_list, g_strdup (filename));
++    else
++	selector->_priv->file_list = g_slist_prepend
++	    (selector->_priv->file_list, g_strdup (filename));
++
++    selector->_priv->need_rebuild = TRUE;
++
++    if (selector->_priv->frozen)
++	selector->_priv->dirty = TRUE;
++    else
++	gnome_selector_update (selector);
++
++    return TRUE;
++}
++
++
++/**
++ * gnome_selector_append_file
++ * @selector: Pointer to GnomeSelector object.
++ * @directory: The file to add.
++ *
++ * Description: Appends @filename to the file list.
++ *
++ * Returns:
++ */
++gboolean
++gnome_selector_append_file (GnomeSelector *selector,
++			    const gchar *filename,
++			    gboolean defaultp)
++{
++    g_return_val_if_fail (selector != NULL, FALSE);
++    g_return_val_if_fail (GNOME_IS_SELECTOR (selector), FALSE);
++    g_return_val_if_fail (filename != NULL, FALSE);
++
++    if (!gnome_selector_check_filename (selector, filename))
++	return FALSE;
++
++    if (defaultp)
++	selector->_priv->default_file_list = g_slist_append
++	    (selector->_priv->default_file_list, g_strdup (filename));
++    else
++	selector->_priv->file_list = g_slist_append
++	    (selector->_priv->file_list, g_strdup (filename));
++
++    selector->_priv->need_rebuild = TRUE;
++
++    if (selector->_priv->frozen)
++	selector->_priv->dirty = TRUE;
++    else
++	gnome_selector_update (selector);
++
++    return TRUE;
++}
++
++GSList *
++gnome_selector_get_file_list (GnomeSelector *selector,
++			      gboolean include_dir_list,
++			      gboolean defaultp)
++{
++    g_return_val_if_fail (selector != NULL, NULL);
++    g_return_val_if_fail (GNOME_IS_SELECTOR (selector), NULL);
++
++    if (selector->_priv->need_rebuild)
++	gnome_selector_update_file_list (selector);
++
++    if (include_dir_list)
++	if (defaultp)
++	    return selector->_priv->default_total_list;
++	else
++	    return selector->_priv->total_list;
++    else
++	if (defaultp)
++	    return selector->_priv->default_file_list;
++	else
++	    return selector->_priv->file_list;
++}
++
++
++void
++gnome_selector_set_selection_mode (GnomeSelector *selector,
++				   GtkSelectionMode mode)
++{
++    g_return_if_fail (selector != NULL);
++    g_return_if_fail (GNOME_IS_SELECTOR (selector));
++
++    gtk_signal_emit (GTK_OBJECT (selector),
++		     gnome_selector_signals [SET_SELECTION_MODE_SIGNAL],
++		     (gint) mode);
++}
++
++
++GSList *
++gnome_selector_get_selection (GnomeSelector *selector)
++{
++    GSList *retval = NULL;
++
++    g_return_val_if_fail (selector != NULL, NULL);
++    g_return_val_if_fail (GNOME_IS_SELECTOR (selector), NULL);
++
++    gtk_signal_emit (GTK_OBJECT (selector),
++		     gnome_selector_signals [GET_SELECTION_SIGNAL],
++		     &retval);
++
++    return retval;
++}
++
++
++/**
++ * gnome_selector_update
++ * @selector: Pointer to GnomeSelector object.
++ *
++ * Description: Updates the file list.
++ *
++ * Returns:
++ */
++void
++gnome_selector_update (GnomeSelector *selector)
++{
++    g_return_if_fail (selector != NULL);
++    g_return_if_fail (GNOME_IS_SELECTOR (selector));
++
++    gtk_signal_emit (GTK_OBJECT (selector),
++		     gnome_selector_signals [UPDATE_SIGNAL]);
++}
++
++
++/**
++ * gnome_selector_clear
++ * @selector: Pointer to GnomeSelector object.
++ *
++ * Description: Removes all entries from the selector.
++ *
++ * Returns:
++ */
++void
++gnome_selector_clear (GnomeSelector *selector, gboolean defaultp)
++{
++    g_return_if_fail (selector != NULL);
++    g_return_if_fail (GNOME_IS_SELECTOR (selector));
++
++    gnome_selector_freeze (selector);
++    if (defaultp)
++	gtk_signal_emit (GTK_OBJECT (selector),
++			 gnome_selector_signals [CLEAR_DEFAULT_SIGNAL]);
++    else
++	gtk_signal_emit (GTK_OBJECT (selector),
++			 gnome_selector_signals [CLEAR_SIGNAL]);
++    gnome_selector_thaw (selector);
++
++    selector->_priv->need_rebuild = TRUE;
++
++    if (selector->_priv->frozen)
++	selector->_priv->dirty = TRUE;
++    else
++	gnome_selector_update (selector);
++}
++
++
++/**
++ * gnome_selector_check_filename
++ * @selector: Pointer to GnomeSelector object.
++ * @filename: Filename to check.
++ *
++ * Description: Asks the derived class whether @filename is a
++ *    valid file for this kind of selector.
++ *
++ * This can be used in derived classes to only allow certain
++ * file types, for instance images, in the selector.
++ *
++ * Returns: #TRUE if the filename is ok or #FALSE if not.
++ */
++gboolean
++gnome_selector_check_filename (GnomeSelector *selector,
++			       const gchar *filename)
++{
++    gboolean ok;
++
++    g_return_val_if_fail (selector != NULL, FALSE);
++    g_return_val_if_fail (GNOME_IS_SELECTOR (selector), FALSE);
++    g_return_val_if_fail (filename != NULL, FALSE);
++
++    gtk_signal_emit (GTK_OBJECT (selector),
++		     gnome_selector_signals [CHECK_FILENAME_SIGNAL],
++		     filename, &ok);
++
++    return ok;
++}
++
++
++/**
++ * gnome_selector_set_filename
++ * @selector: Pointer to GnomeSelector object.
++ * @filename: Filename to set.
++ *
++ * Description: Sets @filename as the currently selected filename.
++ *
++ * This calls gnome_selector_check_filename() to make sure @filename
++ * is a valid file for this kind of selector.
++ *
++ * Returns: #TRUE if @filename was ok or #FALSE if not.
++ */
++gboolean
++gnome_selector_set_filename (GnomeSelector *selector,
++			     const gchar *filename)
++{
++    gboolean ok;
++
++    g_return_val_if_fail (selector != NULL, FALSE);
++    g_return_val_if_fail (GNOME_IS_SELECTOR (selector), FALSE);
++    g_return_val_if_fail (filename != NULL, FALSE);
++
++    gnome_selector_freeze (selector);
++    gtk_signal_emit (GTK_OBJECT (selector),
++		     gnome_selector_signals [SET_FILENAME_SIGNAL],
++		     filename, &ok);
++    gnome_selector_thaw (selector);
++
++    return ok;
++}
++
++
++/**
++ * gnome_selector_update_file_list
++ * @selector: Pointer to GnomeSelector object.
++ *
++ * Description: Updates the internal file list.
++ *
++ * Returns:
++ */
++void
++gnome_selector_update_file_list (GnomeSelector *selector)
++{
++    g_return_if_fail (selector != NULL);
++    g_return_if_fail (GNOME_IS_SELECTOR (selector));
++
++    gtk_signal_emit (GTK_OBJECT (selector),
++		     gnome_selector_signals [UPDATE_FILE_LIST_SIGNAL]);
++}
++
++
++/**
++ * gnome_selector_freeze
++ * @selector: Pointer to GnomeSelector object.
++ *
++ * Description:
++ *
++ * Returns:
++ */
++void
++gnome_selector_freeze (GnomeSelector *selector)
++{
++    g_return_if_fail (selector != NULL);
++    g_return_if_fail (GNOME_IS_SELECTOR (selector));
++
++    selector->_priv->frozen++;
++
++    /* Note that we only emit the signal once. */
++    if (selector->_priv->frozen == 1)
++	gtk_signal_emit (GTK_OBJECT (selector),
++			 gnome_selector_signals [FREEZE_SIGNAL]);
++}
++
++/**
++ * gnome_selector_is_frozen
++ * @selector: Pointer to GnomeSelector object.
++ *
++ * Description:
++ *
++ * Returns:
++ */
++gboolean
++gnome_selector_is_frozen (GnomeSelector *selector)
++{
++    g_return_val_if_fail (selector != NULL, FALSE);
++    g_return_val_if_fail (GNOME_IS_SELECTOR (selector), FALSE);
++
++    return selector->_priv->frozen ? TRUE : FALSE;
++}
++
++
++/**
++ * gnome_selector_thaw
++ * @selector: Pointer to GnomeSelector object.
++ *
++ * Description:
++ *
++ * Returns:
++ */
++void
++gnome_selector_thaw (GnomeSelector *selector)
++{
++    g_return_if_fail (selector != NULL);
++    g_return_if_fail (GNOME_IS_SELECTOR (selector));
++
++    g_return_if_fail (selector->_priv->frozen > 0);
++
++    selector->_priv->frozen--;
++
++    /* Note that we only emit the signal once. */
++    if (selector->_priv->frozen == 0) {
++	gtk_signal_emit (GTK_OBJECT (selector),
++			 gnome_selector_signals [THAW_SIGNAL]);
++
++	if (selector->_priv->dirty) {
++	    selector->_priv->dirty = FALSE;
++	    gnome_selector_update (selector);
++	}
++    }
++}
++
++
++/**
++ * gnome_selector_get_entry_text
++ * @selector: Pointer to GnomeSelector object.
++ *
++ * Description:
++ *
++ * Returns:
++ */
++gchar *
++gnome_selector_get_entry_text (GnomeSelector *selector)
++{
++    gchar *retval = NULL;
++
++    g_return_val_if_fail (selector != NULL, NULL);
++    g_return_val_if_fail (GNOME_IS_SELECTOR (selector), NULL);
++
++    gtk_signal_emit (GTK_OBJECT (selector),
++		     gnome_selector_signals [GET_ENTRY_TEXT_SIGNAL],
++		     &retval);
++
++    return retval;
++}
++
++
++/**
++ * gnome_selector_set_entry_text
++ * @selector: Pointer to GnomeSelector object.
++ * @text: The text which should be set.
++ *
++ * Description:
++ *
++ * Returns:
++ */
++void
++gnome_selector_set_entry_text (GnomeSelector *selector, const gchar *text)
++{
++    g_return_if_fail (selector != NULL);
++    g_return_if_fail (GNOME_IS_SELECTOR (selector));
++
++    gtk_signal_emit (GTK_OBJECT (selector),
++		     gnome_selector_signals [SET_ENTRY_TEXT_SIGNAL],
++		     text);
++}
++
++void
++gnome_selector_activate_entry (GnomeSelector *selector)
++{
++    g_return_if_fail (selector != NULL);
++    g_return_if_fail (GNOME_IS_SELECTOR (selector));
++
++    gtk_signal_emit (GTK_OBJECT (selector),
++		     gnome_selector_signals [ACTIVATE_ENTRY_SIGNAL]);
++}
++
++guint
++gnome_selector_get_history_length (GnomeSelector *selector)
++{
++    g_return_val_if_fail (selector != NULL, 0);
++    g_return_val_if_fail (GNOME_IS_SELECTOR (selector), 0);
++
++    return selector->_priv->max_history_length;
++}
++
++static void
++free_history_item (GnomeSelectorHistoryItem *item, gpointer data)
++{
++    if (item != NULL)
++	g_free (item->text);
++    g_free (item);
++}
++
++static gint
++compare_history_items (gconstpointer a, gconstpointer b)
++{
++    GnomeSelectorHistoryItem *ia, *ib;
++
++    ia = (GnomeSelectorHistoryItem *) a;
++    ib = (GnomeSelectorHistoryItem *) b;
++
++    return strcmp (ia->text, ib->text);
++}
++
++static void
++set_history_changed (GnomeSelector *selector)
++{
++    if (selector->_priv->frozen)
++	selector->_priv->history_changed = TRUE;
++    else
++	gtk_signal_emit (GTK_OBJECT (selector),
++			 gnome_selector_signals [HISTORY_CHANGED_SIGNAL]);
++}
++
++void
++gnome_selector_set_history_length (GnomeSelector *selector,
++				   guint history_length)
++{
++    guint old_length;
++
++    g_return_if_fail (selector != NULL);
++    g_return_if_fail (GNOME_IS_SELECTOR (selector));
++
++    /* truncate history if necessary. */
++    old_length = g_slist_length (selector->_priv->history);
++
++    if (old_length < history_length) {
++	guint prev_pos = (history_length > 0) ? history_length-1 : 0;
++	GSList *c = g_slist_nth (selector->_priv->history, prev_pos);
++
++	if (c) {
++	    g_slist_foreach (c->next, (GFunc) free_history_item,
++			     selector);
++	    g_slist_free (c->next);
++	    c->next = NULL;
++
++	    set_history_changed (selector);
++	}
++    }
++
++    selector->_priv->max_history_length = history_length;
++}
++
++static void
++_gnome_selector_add_history (GnomeSelector *selector, gboolean save,
++			     const gchar *text, gboolean append)
++{
++    GnomeSelectorHistoryItem *item;
++    GSList *node;
++
++    g_return_if_fail (selector != NULL);
++    g_return_if_fail (GNOME_IS_SELECTOR (selector));
++    g_return_if_fail (text != NULL);
++
++    item = g_new0 (GnomeSelectorHistoryItem, 1);
++    item->text = g_strdup (text);
++    item->save = save;
++
++    /* if it's already in the history */
++    node = g_slist_find_custom (selector->_priv->history, item,
++				compare_history_items);
++    if (node) {
++	free_history_item (node->data, selector);
++	selector->_priv->history = g_slist_remove
++	    (selector->_priv->history, node->data);
++    }
++
++    if (append)
++	selector->_priv->history = g_slist_append
++	    (selector->_priv->history, item);
++    else
++	selector->_priv->history = g_slist_prepend
++	    (selector->_priv->history, item);
++
++    set_history_changed (selector);
++}
++
++void
++gnome_selector_prepend_history (GnomeSelector *selector, gboolean save,
++				const gchar *text)
++{
++    g_return_if_fail (selector != NULL);
++    g_return_if_fail (GNOME_IS_SELECTOR (selector));
++    g_return_if_fail (text != NULL);
++
++    _gnome_selector_add_history (selector, save, text, FALSE);
++}
++
++void
++gnome_selector_append_history (GnomeSelector *selector, gboolean save,
++			       const gchar *text)
++{
++    g_return_if_fail (selector != NULL);
++    g_return_if_fail (GNOME_IS_SELECTOR (selector));
++    g_return_if_fail (text != NULL);
++
++    _gnome_selector_add_history (selector, save, text, TRUE);
++}
++
++GSList *
++gnome_selector_get_history (GnomeSelector *selector)
++{
++    GSList *retval = NULL, *c;
++
++    g_return_val_if_fail (selector != NULL, NULL);
++    g_return_val_if_fail (GNOME_IS_SELECTOR (selector), NULL);
++
++    for (c = selector->_priv->history; c; c = c->next) {
++	GnomeSelectorHistoryItem *item = c->data;
++
++	retval = g_slist_prepend (retval, g_strdup (item->text));
++    }
++
++    return g_slist_reverse (retval);
++}
++
++void
++gnome_selector_set_history (GnomeSelector *selector, GSList *history)
++{
++    GSList *c;
++
++    g_return_if_fail (selector != NULL);
++    g_return_if_fail (GNOME_IS_SELECTOR (selector));
++
++    gnome_selector_clear_history (selector);
++
++    for (c = history; c; c = c->next)
++	gnome_selector_prepend_history (selector, TRUE, c->data);
++
++    selector->_priv->history = g_slist_reverse (selector->_priv->history);
++
++    set_history_changed (selector);
++}
++
++static GSList *
++_gnome_selector_history_to_list (GnomeSelector *selector, gboolean only_save)
++{
++    GSList *thelist = NULL, *c;
++
++    g_return_val_if_fail (selector != NULL, NULL);
++    g_return_val_if_fail (GNOME_IS_SELECTOR (selector), NULL);
++
++    for (c = selector->_priv->history; c; c = c->next) {
++	GnomeSelectorHistoryItem *item = c->data;
++
++	if (only_save && !item->save)
++	    continue;
++
++	thelist = g_slist_prepend (thelist, item->text);
++    }
++
++    thelist = g_slist_reverse (thelist);
++    return thelist;
++}
++
++void
++gnome_selector_load_history (GnomeSelector *selector)
++{
++    GSList *thelist;
++
++    g_return_if_fail (selector != NULL);
++    g_return_if_fail (GNOME_IS_SELECTOR (selector));
++
++    if (!selector->_priv->gconf_history_key)
++	return;
++
++    thelist = gconf_client_get_list (selector->_priv->client,
++				     selector->_priv->gconf_history_key,
++				     GCONF_VALUE_STRING, NULL);
++
++    gnome_selector_set_history (selector, thelist);
++
++    g_slist_foreach (thelist, (GFunc) g_free, NULL);
++    g_slist_free (thelist);
++}
++
++void
++gnome_selector_save_history (GnomeSelector *selector)
++{
++    GSList *thelist;
++    gboolean result;
++
++    g_return_if_fail (selector != NULL);
++    g_return_if_fail (GNOME_IS_SELECTOR (selector));
++
++    if (!selector->_priv->gconf_history_key)
++	return;
++
++    thelist = _gnome_selector_history_to_list (selector, TRUE);
++
++    result = gconf_client_set_list (selector->_priv->client,
++				    selector->_priv->gconf_history_key,
++				    GCONF_VALUE_STRING, thelist, NULL);
++
++    g_slist_free (thelist);
++}
++
++void
++gnome_selector_clear_history (GnomeSelector *selector)
++{
++    g_return_if_fail (selector != NULL);
++    g_return_if_fail (GNOME_IS_SELECTOR (selector));
++
++    g_slist_foreach (selector->_priv->history,
++		     (GFunc) free_history_item, selector);
++    g_slist_free (selector->_priv->history);
++    selector->_priv->history = NULL;
++
++    set_history_changed (selector);
++}
++
++static GSList *
++_gnome_selector_copy_list (GSList *thelist)
++{
++    GSList *retval = NULL, *c;
++
++    for (c = thelist; c; c = c->next)
++	retval = g_slist_prepend (retval, g_strdup (c->data));
++
++    retval = g_slist_reverse (retval);
++    return retval;
++}
++
++static void
++_gnome_selector_free_list (GSList *thelist)
++{
++    g_slist_foreach (thelist, (GFunc) g_free, NULL);
++    g_slist_free (thelist);
++}
++
++void
++gnome_selector_set_to_defaults (GnomeSelector *selector)
++{
++    g_return_if_fail (selector != NULL);
++    g_return_if_fail (GNOME_IS_SELECTOR (selector));
++
++    _gnome_selector_free_list (selector->_priv->dir_list);
++    selector->_priv->dir_list = _gnome_selector_copy_list
++	(selector->_priv->default_dir_list);
++
++    _gnome_selector_free_list (selector->_priv->file_list);
++    selector->_priv->file_list = _gnome_selector_copy_list
++	(selector->_priv->default_file_list);
++
++    _gnome_selector_free_list (selector->_priv->total_list);
++    selector->_priv->total_list = _gnome_selector_copy_list
++	(selector->_priv->default_total_list);
++
++    selector->_priv->need_rebuild = TRUE;
++
++    if (selector->_priv->frozen)
++	selector->_priv->dirty = TRUE;
++    else
++	gnome_selector_update (selector);
++}
++
++void
++_gnome_selector_save_all (GnomeSelector *selector)
++{
++    gboolean result;
++
++    g_return_if_fail (selector != NULL);
++    g_return_if_fail (GNOME_IS_SELECTOR (selector));
++
++    if (!selector->_priv->gconf_dir_list_key ||
++	!selector->_priv->gconf_file_list_key)
++	return;
++
++    result = gconf_client_set_list (selector->_priv->client,
++				    selector->_priv->gconf_dir_list_key,
++				    GCONF_VALUE_STRING,
++				    selector->_priv->dir_list,
++				    NULL);
++
++    result = gconf_client_set_list (selector->_priv->client,
++				    selector->_priv->gconf_file_list_key,
++				    GCONF_VALUE_STRING,
++				    selector->_priv->file_list,
++				    NULL);
++}
++
++void
++_gnome_selector_load_all (GnomeSelector *selector)
++{
++    g_return_if_fail (selector != NULL);
++    g_return_if_fail (GNOME_IS_SELECTOR (selector));
++
++    if (!selector->_priv->gconf_dir_list_key ||
++	!selector->_priv->gconf_file_list_key)
++	return;
++
++    selector->_priv->dir_list = gconf_client_get_list
++	(selector->_priv->client,
++	 selector->_priv->gconf_dir_list_key,
++	 GCONF_VALUE_STRING, NULL);
++
++    selector->_priv->file_list = gconf_client_get_list
++	(selector->_priv->client,
++	 selector->_priv->gconf_file_list_key,
++	 GCONF_VALUE_STRING, NULL);
++
++    selector->_priv->need_rebuild = TRUE;
++
++    if (selector->_priv->frozen)
++	selector->_priv->dirty = TRUE;
++    else
++	gnome_selector_update (selector);
++}
+diff -rNu emptydir/gnome-selector.h urlaub/gnome-selector.h
+--- emptydir/gnome-selector.h	Thu Jan  1 01:00:00 1970
++++ urlaub/gnome-selector.h	Wed Aug  9 00:41:31 2000
+@@ -0,0 +1,246 @@
++/* -*- Mode: C; c-set-style: gnu indent-tabs-mode: t; c-basic-offset: 4; tab-width: 8 -*- */
++/*
++ * Copyright (C) 2000 SuSE GmbH
++ * Author: Martin Baulig <baulig@suse.de>
++ *
++ * This file is part of the Gnome Library.
++ *
++ * The Gnome Library is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU Library General Public License as
++ * published by the Free Software Foundation; either version 2 of the
++ * License, or (at your option) any later version.
++ *
++ * The Gnome Library is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++ * Library General Public License for more details.
++ *
++ * You should have received a copy of the GNU Library General Public
++ * License along with the Gnome Library; see the file COPYING.LIB.  If not,
++ * write to the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
++ * Boston, MA 02111-1307, USA.
++ */
++/*
++  @NOTATION@
++ */
++
++/* GnomeSelector widget - pure virtual widget.
++ *
++ *   Use the Gnome{File,Icon,Pixmap}Selector subclasses.
++ *
++ * Author: Martin Baulig <baulig@suse.de>
++ */
++
++#ifndef GNOME_SELECTOR_H
++#define GNOME_SELECTOR_H
++
++
++#include <gtk/gtkhbox.h>
++#include <gtk/gtkvbox.h>
++#include <libgnome/gnome-defs.h>
++
++BEGIN_GNOME_DECLS
++
++
++#define GNOME_TYPE_SELECTOR            (gnome_selector_get_type ())
++#define GNOME_SELECTOR(obj)            (GTK_CHECK_CAST ((obj), GNOME_TYPE_SELECTOR, GnomeSelector))
++#define GNOME_SELECTOR_CLASS(klass)    (GTK_CHECK_CLASS_CAST ((klass), GNOME_TYPE_SELECTOR, GnomeSelectorClass))
++#define GNOME_IS_SELECTOR(obj)         (GTK_CHECK_TYPE ((obj), GNOME_TYPE_SELECTOR))
++#define GNOME_IS_SELECTOR_CLASS(klass) (GTK_CHECK_CLASS_TYPE ((klass), GNOME_TYPE_SELECTOR))
++#define GNOME_SELECTOR_GET_CLASS(obj)  (GTK_CHECK_GET_CLASS ((obj), GNOME_TYPE_SELECTOR, GnomeSelectorClass))
++
++
++typedef struct _GnomeSelector         GnomeSelector;
++typedef struct _GnomeSelectorPrivate  GnomeSelectorPrivate;
++typedef struct _GnomeSelectorClass    GnomeSelectorClass;
++
++enum {
++    GNOME_SELECTOR_DEFAULT_ENTRY_WIDGET    = 1 << 0,
++    GNOME_SELECTOR_DEFAULT_SELECTOR_WIDGET = 1 << 1,
++    GNOME_SELECTOR_DEFAULT_BROWSE_DIALOG   = 1 << 2,
++    GNOME_SELECTOR_WANT_BROWSE_BUTTON      = 1 << 3,
++    GNOME_SELECTOR_WANT_CLEAR_BUTTON       = 1 << 4,
++    GNOME_SELECTOR_WANT_DEFAULT_BUTTON     = 1 << 5,
++    GNOME_SELECTOR_AUTO_SAVE_HISTORY       = 1 << 16,
++    GNOME_SELECTOR_AUTO_SAVE_ALL           = 1 << 17
++};
++
++#define GNOME_SELECTOR_USER_FLAGS          (~((1 << 16)-1))
++
++struct _GnomeSelector {
++    GtkVBox vbox;
++        
++    /*< private >*/
++    GnomeSelectorPrivate *_priv;
++};
++
++struct _GnomeSelectorClass {
++    GtkVBoxClass parent_class;
++
++    void      (*changed)                   (GnomeSelector *selector);
++    void      (*browse)                    (GnomeSelector *selector);
++    void      (*clear)                     (GnomeSelector *selector);
++    void      (*clear_default)             (GnomeSelector *selector);
++
++    void      (*freeze)                    (GnomeSelector *selector);
++    void      (*update)                    (GnomeSelector *selector);
++    void      (*thaw)                      (GnomeSelector *selector);
++
++    gboolean  (*set_filename)              (GnomeSelector *selector,
++                                            const gchar   *filename);
++
++    gchar *   (*get_entry_text)            (GnomeSelector *selector);
++    void      (*set_entry_text)            (GnomeSelector *selector,
++                                            const gchar   *text);
++    void      (*activate_entry)            (GnomeSelector *selector);
++
++    gboolean  (*check_filename)            (GnomeSelector *selector,
++                                            const gchar   *filename);
++    void      (*add_file)                  (GnomeSelector *selector,
++                                            const gchar   *filename);
++    void      (*add_file_default)          (GnomeSelector *selector,
++                                            const gchar   *filename);
++
++    gboolean  (*check_directory)           (GnomeSelector *selector,
++                                            const gchar   *directory);
++    void      (*add_directory)     (GnomeSelector *selector,
++                                    const gchar   *directory);
++    void      (*add_directory_default)     (GnomeSelector *selector,
++                                            const gchar   *directory);
++
++    void      (*update_file_list)          (GnomeSelector *selector);
++
++    void      (*set_selection_mode)        (GnomeSelector *selector,
++                                            guint          mode);
++    GSList *  (*get_selection)             (GnomeSelector *selector);
++    void      (*selection_changed)         (GnomeSelector *selector);
++
++    void      (*history_changed)           (GnomeSelector *selector);
++};
++
++
++guint        gnome_selector_get_type           (void);
++
++/* This is a purely virtual class, so there is no _new method.
++ * Use gnome_{file,icon,pixmap}_selector_new instead. */
++
++void         gnome_selector_construct          (GnomeSelector *selector,
++                                                const gchar   *history_id,
++                                                const gchar   *dialog_title,
++                                                GtkWidget     *entry_widget,
++                                                GtkWidget     *selector_widget,
++                                                GtkWidget     *browse_dialog,
++                                                guint32        flags);
++
++/*only return a file if the `check_filename' method succeeded. */
++gchar       *gnome_selector_get_filename       (GnomeSelector *selector);
++
++/* checks whether this is a valid filename. */
++gboolean     gnome_selector_check_filename     (GnomeSelector *selector,
++                                                const gchar   *filename);
++
++/* Append/prepend filename to file list, return TRUE on success. */
++gboolean     gnome_selector_prepend_file       (GnomeSelector *selector,
++                                                const gchar   *filename,
++                                                gboolean       defaultp);
++gboolean     gnome_selector_append_file        (GnomeSelector *selector,
++                                                const gchar   *filename,
++                                                gboolean       defaultp);
++
++/* Get/set file list (set will replace the old file list). */
++GSList *     gnome_selector_get_file_list      (GnomeSelector *selector,
++                                                gboolean       incl_dir_list,
++                                                gboolean       defaultp);
++void         gnome_selector_set_file_list      (GnomeSelector *selector,
++                                                GSList        *file_list,
++                                                gboolean       defaultp);
++
++/* set the filename to something, returns TRUE on success. */
++gboolean     gnome_selector_set_filename       (GnomeSelector *selector,
++                                                const gchar   *filename);
++
++/* Remove all entries from the selector. */
++void         gnome_selector_clear              (GnomeSelector *selector,
++                                                gboolean       defaultp);
++
++/* Checks whether it's ok to add this directory. */
++gboolean     gnome_selector_check_directory    (GnomeSelector *selector,
++                                                const gchar   *directory);
++
++/* Append/prepend directory to directory list, return TRUE on success. */
++gboolean     gnome_selector_prepend_directory  (GnomeSelector *selector,
++                                                const gchar   *directory,
++                                                gboolean       defaultp);
++gboolean     gnome_selector_append_directory   (GnomeSelector *selector,
++                                                const gchar   *directory,
++                                                gboolean       defaultp);
++
++/* Get/set directory list (set will replace the old directory list). */
++GSList *     gnome_selector_get_directory_list (GnomeSelector *selector,
++                                                gboolean       defaultp);
++void         gnome_selector_set_directory_list (GnomeSelector *selector,
++                                                GSList        *dir_list,
++                                                gboolean       defaultp);
++
++/* Updates the internal file list. This will also read all the directories
++ * from the directory list and add the files to an internal list. */
++void         gnome_selector_update_file_list   (GnomeSelector *selector);
++
++/* Sets the selection mode. */
++void         gnome_selector_set_selection_mode (GnomeSelector *selector,
++                                                GtkSelectionMode mode);
++
++/* Returns the current selection. */
++GSList *     gnome_selector_get_selection      (GnomeSelector *selector);
++
++/* To avoid excesive recomputes during insertion/deletion */
++void         gnome_selector_freeze             (GnomeSelector *selector);
++gboolean     gnome_selector_is_frozen          (GnomeSelector *selector);
++void         gnome_selector_thaw               (GnomeSelector *selector);
++
++/* Perform an update (also works in frozen state). */
++void         gnome_selector_update             (GnomeSelector *selector);
++
++/* Get/set the dialog title. */
++const gchar *gnome_selector_get_dialog_title   (GnomeSelector *selector);
++void         gnome_selector_set_dialog_title   (GnomeSelector *selector,
++                                                const gchar   *dialog_title);
++
++/* Get/set the text in the entry widget. */
++gchar *      gnome_selector_get_entry_text     (GnomeSelector *selector);
++void         gnome_selector_set_entry_text     (GnomeSelector *selector,
++                                                const gchar   *text);
++
++/* If the entry widget is derived from GtkEditable, then we can use this
++ * function to send an "activate" signal to it. */
++void         gnome_selector_activate_entry     (GnomeSelector *selector);
++
++/* Get/set maximum number of history items we save. */
++guint        gnome_selector_get_history_length (GnomeSelector *selector);
++void         gnome_selector_set_history_length (GnomeSelector *selector,
++                                                guint          history_length);
++
++/* Append/Prepend an item to the history. */
++void         gnome_selector_prepend_history    (GnomeSelector *selector,
++                                                gboolean       save,
++                                                const gchar   *text);
++void         gnome_selector_append_history     (GnomeSelector *selector,
++                                                gboolean       save,
++                                                const gchar   *text);
++
++/* Get/set the history. */
++GSList *     gnome_selector_get_history        (GnomeSelector *selector);
++void         gnome_selector_set_history        (GnomeSelector *selector,
++                                                GSList        *history);
++
++/* Load/save/clear the history. */
++void         gnome_selector_load_history       (GnomeSelector *selector);
++void         gnome_selector_save_history       (GnomeSelector *selector);
++void         gnome_selector_clear_history      (GnomeSelector *selector);
++
++/* Set the selector contents to the default values. */
++void         gnome_selector_set_to_defaults    (GnomeSelector *selector);
++
++END_GNOME_DECLS
++
++#endif
+diff -rNu emptydir/selector_demo.c urlaub/selector_demo.c
+--- emptydir/selector_demo.c	Thu Jan  1 01:00:00 1970
++++ urlaub/selector_demo.c	Wed Aug  9 00:38:12 2000
+@@ -0,0 +1,237 @@
++/*
++ * Copyright (C) 2000 SuSE GmbH
++ * Author: Martin Baulig <baulig@suse.de>
++ *
++ * This file is part of the Gnome Library.
++ *
++ * The Gnome Library is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU Library General Public License as
++ * published by the Free Software Foundation; either version 2 of the
++ * License, or (at your option) any later version.
++ *
++ * The Gnome Library is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++ * Library General Public License for more details.
++ *
++ * You should have received a copy of the GNU Library General Public
++ * License along with the Gnome Library; see the file COPYING.LIB.  If not,
++ * write to the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
++ * Boston, MA 02111-1307, USA.
++ */
++
++#include <gnome.h>
++
++#include "gnome-file-selector.h"
++#include "gnome-icon-selector.h"
++#include "gnome-icon-entry.h"
++#include "gnome-entry.h"
++
++static GtkWidget *iselector;
++
++static void
++quit_cb (void)
++{
++    gtk_main_quit ();
++}
++
++static void
++file_list_cb (void)
++{
++    GSList *list, *c;
++
++    list = gnome_selector_get_file_list (GNOME_SELECTOR (iselector),
++					 TRUE, FALSE);
++
++    for (c = list; c; c = c->next) {
++	g_print ("FILE: `%s'\n", (gchar *) c->data);
++    }
++}
++
++static void
++selection_cb (void)
++{
++    GSList *list, *c;
++
++    list = gnome_selector_get_selection (GNOME_SELECTOR (iselector));
++
++    for (c = list; c; c = c->next) {
++	g_print ("SELECTION: `%s'\n", (gchar *) c->data);
++    }
++}
++
++static void
++load_history_cb (void)
++{
++    gnome_selector_load_history (GNOME_SELECTOR (iselector));
++}
++
++static void
++save_history_cb (void)
++{
++    gnome_selector_save_history (GNOME_SELECTOR (iselector));
++}
++
++static GnomeUIInfo file_menu[] = {
++    { GNOME_APP_UI_ITEM, "Exit", NULL, quit_cb, NULL, NULL,
++      GNOME_APP_PIXMAP_STOCK, GNOME_STOCK_MENU_EXIT, 'x',
++      GDK_CONTROL_MASK, NULL },
++    { GNOME_APP_UI_ENDOFINFO }
++};
++
++static GnomeUIInfo test_menu[] = {
++    { GNOME_APP_UI_ITEM, "Display file list", NULL, file_list_cb, NULL,
++      NULL, GNOME_APP_PIXMAP_NONE, NULL, 'f', GDK_CONTROL_MASK, NULL },
++    { GNOME_APP_UI_ITEM, "Display selection", NULL, selection_cb, NULL,
++      NULL, GNOME_APP_PIXMAP_NONE, NULL, 'l', GDK_CONTROL_MASK, NULL },
++    { GNOME_APP_UI_ITEM, "Save history", NULL, save_history_cb, NULL,
++      NULL, GNOME_APP_PIXMAP_NONE, NULL, 's', GDK_CONTROL_MASK, NULL },
++    { GNOME_APP_UI_ITEM, "Load history", NULL, load_history_cb, NULL,
++      NULL, GNOME_APP_PIXMAP_NONE, NULL, 'l', GDK_CONTROL_MASK, NULL },
++    { GNOME_APP_UI_ENDOFINFO }
++};
++
++static GnomeUIInfo main_menu[] = {
++    { GNOME_APP_UI_SUBTREE, ("File"), NULL, file_menu, NULL, NULL,
++      GNOME_APP_PIXMAP_NONE, NULL, 0, 0, NULL },
++    { GNOME_APP_UI_SUBTREE, ("Test"), NULL, test_menu, NULL, NULL,
++      GNOME_APP_PIXMAP_NONE, NULL, 0, 0, NULL },
++    { GNOME_APP_UI_ENDOFINFO }
++};
++
++
++#if 0
++
++static void
++test_cb (GtkWidget *button, gpointer data)
++{
++    GnomeCanvas *canvas = GNOME_CANVAS (data);
++
++    gnome_canvas_scroll_to (canvas, 100, 100);
++    gnome_canvas_update_now (canvas);
++}
++
++static void
++test_canvas (void)
++{
++    GtkWidget *app, *vbox, *sw, *button, *canvas;
++    GnomeCanvasGroup *root;
++    GnomeCanvasItem *item;
++
++    app = gtk_window_new (GTK_WINDOW_TOPLEVEL);
++    gtk_window_set_title (GTK_WINDOW (app), "Canvas Demo!");
++    gtk_window_set_default_size (GTK_WINDOW (app), 400, 400);
++
++    vbox = gtk_vbox_new (FALSE, GNOME_PAD);
++
++    sw = gtk_scrolled_window_new (NULL, NULL);
++
++    canvas = gnome_canvas_new ();
++
++    gnome_canvas_set_scroll_region (GNOME_CANVAS (canvas),
++				    0.0, 0.0, 1000.0, 1000.0);
++
++    gtk_container_add (GTK_CONTAINER (sw), canvas);
++
++    root = gnome_canvas_root (GNOME_CANVAS (canvas));
++
++    item = gnome_canvas_item_new (root, GNOME_TYPE_CANVAS_RECT,
++				  "x1", 50.0, "y1", 50.0, "x2", 900.0,
++				  "y2", 900.0, "fill_color", "red",
++				  "outline_color", "blue",
++				  "width_pixels", 5, NULL);
++
++    gnome_canvas_set_pixels_per_unit (GNOME_CANVAS (canvas), 0.5);
++
++    gtk_box_pack_start (GTK_BOX (vbox), sw, TRUE, TRUE, GNOME_PAD);
++
++    button = gtk_button_new_with_label ("Test!");
++
++    gtk_signal_connect (GTK_OBJECT (button), "clicked",
++			test_cb, canvas);
++
++    gtk_box_pack_start (GTK_BOX (vbox), button, FALSE, TRUE, GNOME_PAD);
++
++    gtk_container_add (GTK_CONTAINER (app), vbox);
++
++    gtk_widget_show_all (app);
++}
++
++#endif
++
++int
++main (int argc, char **argv)
++{
++    GtkWidget *app;
++    GtkWidget *vbox;
++    GtkWidget *frame1, *frame2, *frame3, *frame4;
++    GtkWidget *fselector, *entry, *ientry;
++
++    gnome_program_init ("selector_demo", "1.0", argc, argv,
++			GNOMEUI_INIT, NULL);
++
++    app = gnome_app_new ("selector-demo", "Selector Demo");
++    gtk_window_set_default_size (GTK_WINDOW (app), 400, 400);
++    gnome_app_create_menus (GNOME_APP (app), main_menu);
++
++    vbox = gtk_vbox_new (FALSE, GNOME_PAD);
++
++    frame1 = gtk_frame_new ("GnomeFileSelector");
++
++    gtk_box_pack_start (GTK_BOX (vbox), frame1, FALSE, FALSE,
++			GNOME_PAD);
++
++    fselector = gnome_file_selector_new ("test", "Albert Einstein", 0);
++
++    gtk_container_add (GTK_CONTAINER (frame1), fselector);
++
++    frame3 = gtk_frame_new ("GnomeEntry");
++
++    gtk_box_pack_start (GTK_BOX (vbox), frame3, FALSE, FALSE,
++			GNOME_PAD);
++
++    entry = gnome_entry_new ("test3");
++
++    gtk_container_add (GTK_CONTAINER (frame3), entry);
++
++    frame4 = gtk_frame_new ("GnomeIconEntry");
++
++    gtk_box_pack_start (GTK_BOX (vbox), frame4, FALSE, FALSE,
++			GNOME_PAD);
++
++    ientry = gnome_icon_entry_new ("test4", "San Francisco");
++
++    gtk_container_add (GTK_CONTAINER (frame4), ientry);
++
++    frame2 = gtk_frame_new ("GnomeIconSelector");
++
++    gtk_box_pack_start (GTK_BOX (vbox), frame2, TRUE, TRUE,
++			GNOME_PAD);
++
++    iselector = gnome_icon_selector_new ("test2", NULL,
++					 GNOME_SELECTOR_AUTO_SAVE_HISTORY |
++					 GNOME_SELECTOR_AUTO_SAVE_ALL);
++
++    gnome_icon_selector_add_defaults (GNOME_ICON_SELECTOR (iselector));
++
++    gnome_selector_set_selection_mode (GNOME_SELECTOR (iselector),
++				       GTK_SELECTION_MULTIPLE);
++
++    gtk_container_add (GTK_CONTAINER (frame2), iselector);
++
++    gnome_app_set_contents (GNOME_APP (app), vbox);
++
++    /* test_canvas (); */
++
++    gtk_widget_show_all (app);
++    gtk_main ();
++
++    gtk_widget_destroy (app);
++
++#if 0
++    g_mem_profile ();
++#endif
++
++    return 0;
++}
++
