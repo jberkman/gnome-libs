@@ -46,7 +46,7 @@ libgnorbainclude_HEADERS = 				\
 	gnorba.h 					\
 	gnome-factory.h
 
-libgnorba_la_LDFLAGS = -version-info 28:2:1 -rpath $(libdir)
+libgnorba_la_LDFLAGS = -version-info 28:3:1 -rpath $(libdir)
 libgnorba_la_LIBADD = $(ORBIT_LIBS) $(GLIB_LIBS) -lm
 
 loadshlib_SOURCES = loadshlib.c
