@@ -79,7 +79,7 @@ gnome_plugin_use(const char *plugin_id)
 				   keep a list of active plugins around
 				   and provide a way to free them - no fun */
 
-  if(!g_module_symbol(gmod, "GNOME_Plugins_list", (gpointer *)&retval))
+  if(!g_module_symbol(gmod, "GNOME_Plugin_info", (gpointer *)&retval))
     goto error;
 
   return retval;

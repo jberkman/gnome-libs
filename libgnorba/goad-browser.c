@@ -12,6 +12,7 @@ static char *activate_id = NULL, *activate_repo_id = NULL;
 
 static GdkPixmap *pm_active, *pm_inactive;
 static GdkBitmap *pm_active_mask, *pm_inactive_mask;
+static GoadServerList *servlist = NULL;
 static GoadServer *slist = NULL;
 static GtkWidget *mainwin;
 
@@ -142,7 +143,8 @@ gb_create_server_list(GtkWidget *w, GtkCList *clist)
   if(slist)
     goad_server_list_free(slist);
 
-  slist = goad_server_list_get();
+  servlist = goad_server_list_get();
+  slist = servlist->list;
 
   ns = gnome_name_service_get();
 

@@ -6,6 +6,8 @@
  */
 #include <config.h>
 #include "gnorba.h"
+#include <gmodule.h>
+#include <stdio.h>
 #include <dirent.h>
 #include <ctype.h>
 #include <sys/types.h>
@@ -44,7 +46,7 @@ static GoadServerType goad_server_typename_to_type(const char *typename);
 static CORBA_Object real_goad_server_activate(GoadServer *sinfo,
 					      GoadActivationFlags flags,
 					      const char **params,
-					      GoadServer *server_list);
+					      GoadServerList *server_list);
 static CORBA_Object goad_server_activate_shlib(GoadServer *sinfo,
 					       GoadActivationFlags flags,
 					       const char **params,
@@ -57,7 +59,7 @@ static CORBA_Object goad_server_activate_factory(GoadServer *sinfo,
 						 GoadActivationFlags flags,
 						 const char **params,
 						 CORBA_Environment *ev,
-						 GoadServer *slist);
+						 GoadServerList *slist);
 static void goad_servers_unregister_atexit(void);
 
 static int string_array_len(const char **array)
@@ -89,7 +91,7 @@ static gboolean string_in_array(const char *string, const char **array)
       Description: Returns an array listing all the servers available
                    for activation.
  */
-GoadServer *
+GoadServerList *
 goad_server_list_get(void)
 {
   GArray *servinfo;
@@ -97,7 +99,9 @@ goad_server_list_get(void)
   GString *tmpstr;
   GString *usersrvpath;
   DIR *dirh;
+  GoadServerList *newl;
 
+  newl = g_new0(GoadServerList, 1);
   servinfo = g_array_new(TRUE, FALSE, sizeof(GoadServer));
   tmpstr = g_string_new(NULL);
 
@@ -139,11 +143,11 @@ goad_server_list_get(void)
 
   goad_server_list_read(SERVER_LISTING_PATH "/", servinfo, tmpstr);
 
-  retval = (GoadServer *)servinfo->data;
+  newl->list = (GoadServer *)servinfo->data;
   g_array_free(servinfo, FALSE);
   g_string_free(tmpstr, TRUE);
 
-  return retval;
+  return newl;
 }
 
 static GoadActivationFlags
@@ -324,16 +328,21 @@ goad_server_list_read(const char *filename,
       'server_list'.
 */
 void
-goad_server_list_free (GoadServer *server_list)
+goad_server_list_free (GoadServerList *server_list)
 {
   int i;
+  GoadServer *sl;
 
-  for(i = 0; server_list[i].repo_id; i++) {
-    g_strfreev(server_list[i].repo_id);
-    g_free(server_list[i].server_id);
-    g_free(server_list[i].description);
-    g_free(server_list[i].location_info);
+  sl = server_list->list;
+
+  for(i = 0; sl[i].repo_id; i++) {
+    g_strfreev(sl[i].repo_id);
+    g_free(sl[i].server_id);
+    g_free(sl[i].description);
+    g_free(sl[i].location_info);
   }
+
+  g_free(sl);
 
   g_free(server_list);
 }
@@ -351,11 +360,12 @@ goad_server_list_free (GoadServer *server_list)
                    Picks the first one on the list that matches
  */
 CORBA_Object
-goad_server_activate_with_id(GoadServer *server_list,
+goad_server_activate_with_id(GoadServerList *server_list,
 			     const char *server_id,
 			     GoadActivationFlags flags,
 			     const char **params)
 {
+  GoadServerList *my_servlist;
   GoadServer *slist;
   CORBA_Object retval = CORBA_OBJECT_NIL;
   int i;
@@ -368,9 +378,11 @@ goad_server_activate_with_id(GoadServer *server_list,
 
   /* XXX TODO: try getting a running server from the name service first */
   if(server_list)
-    slist = server_list;
+    my_servlist = server_list;
   else
-    slist = goad_server_list_get();
+    my_servlist = goad_server_list_get();
+
+  slist = my_servlist->list;
 
   for(i = 0; slist[i].repo_id; i++) {
     if(!strcmp(slist[i].server_id, server_id))
@@ -378,10 +390,10 @@ goad_server_activate_with_id(GoadServer *server_list,
   }
 
   if(slist[i].repo_id)
-    retval = real_goad_server_activate(&slist[i], flags, params, slist);
+    retval = real_goad_server_activate(&slist[i], flags, params, my_servlist);
 
   if(!server_list)
-    goad_server_list_free(slist);
+    goad_server_list_free(my_servlist);
 
   return retval;
 }
@@ -406,11 +418,12 @@ goad_server_activate_with_id(GoadServer *server_list,
 		   service.
  */
 CORBA_Object
-goad_server_activate_with_repo_id(GoadServer *server_list,
+goad_server_activate_with_repo_id(GoadServerList *server_list,
 				  const char *repo_id,
 				  GoadActivationFlags flags,
 				  const char **params)
 {
+  GoadServerList *my_slist;
   GoadServer *slist;
   CORBA_Object retval = CORBA_OBJECT_NIL;
   int i;
@@ -423,9 +436,11 @@ goad_server_activate_with_repo_id(GoadServer *server_list,
 		   && (flags & GOAD_ACTIVATE_REMOTE)), CORBA_OBJECT_NIL);
 
   if(server_list)
-    slist = server_list;
+    my_slist = server_list;
   else
-    slist = goad_server_list_get();
+    my_slist = goad_server_list_get();
+
+  slist = my_slist->list;
   
   /* (unvalidated assumption) If we need to only activate existing objects, then
      we don't want to bother checking activation methods, because
@@ -449,7 +464,7 @@ goad_server_activate_with_repo_id(GoadServer *server_list,
 	  continue;
       }
 
-      if(!string_in_array(repo_id, slist[i].repo_id))
+      if(!string_in_array(repo_id, (const char **)slist[i].repo_id))
 	continue;
 	
       /* entry matched */
@@ -459,7 +474,7 @@ goad_server_activate_with_repo_id(GoadServer *server_list,
       }
       else {
 	retval = real_goad_server_activate(&slist[i], flags | GOAD_ACTIVATE_NEW_ONLY,
-				      params, slist);
+				      params, my_slist);
       }
       if (retval != CORBA_OBJECT_NIL)
 	break;
@@ -480,7 +495,7 @@ goad_server_activate_with_repo_id(GoadServer *server_list,
   }
 
   if(!server_list)
-    goad_server_list_free(slist);
+    goad_server_list_free(my_slist);
 
   return retval;
 }
@@ -505,7 +520,7 @@ static CORBA_Object
 real_goad_server_activate(GoadServer *sinfo,
 			  GoadActivationFlags flags,
 			  const char **params,
-			  GoadServer *server_list)
+			  GoadServerList *server_list)
 {
   CORBA_Environment       ev;
   CORBA_Object            name_service;
@@ -620,6 +635,8 @@ goad_server_activate_shlib(GoadServer *sinfo,
   CORBA_Object retval;
   ActiveServerInfo *local_server_info;
   gpointer impl_ptr;
+  GModule *gmod;
+
 #define SHLIB_DEPENDENCIES 1
 #ifdef SHLIB_DEPENDENCIES
   FILE* lafile;
@@ -669,9 +686,19 @@ normal_loading:
     sinfo->location_info[len-1] = 'o';
     sinfo->location_info[len-2] = 's';
   }
-#endif  
-  plugin = gnome_plugin_use(sinfo->location_info);
+#endif
+  gmod = g_module_open(sinfo->location_info, G_MODULE_BIND_LAZY);
+  if(!gmod && *sinfo->location_info != '/') {
+    char *ctmp;
+    ctmp = gnome_libdir_file(sinfo->location_info);
+    gmod = g_module_open(ctmp, G_MODULE_BIND_LAZY);
+    g_free(ctmp);
+  }
+
   g_return_val_if_fail(plugin, CORBA_OBJECT_NIL);
+  g_module_make_resident(gmod);
+  g_return_val_if_fail(g_module_symbol(gmod, "GNOME_Plugin_info", &plugin),
+		       CORBA_OBJECT_NIL);
 
   for(i = 0; plugin->plugin_object_list[i].repo_id; i++) {
     if(!strcmp(sinfo->server_id, plugin->plugin_object_list[i].server_id))
@@ -682,7 +709,9 @@ normal_loading:
   poa = (PortableServer_POA)CORBA_ORB_resolve_initial_references(gnome_orbit_orb,
 								 "RootPOA", ev);
 
-  retval = plugin->plugin_object_list[i].activate(poa, &impl_ptr, NULL, ev);
+  retval = plugin->plugin_object_list[i].activate(poa,
+						  plugin->plugin_object_list[i].server_id, NULL, &impl_ptr, ev);
+
   if (ev->_major != CORBA_NO_EXCEPTION) {
     g_warning("goad_server_activate_shlib: activation function raises exception");
     switch( ev->_major ) {
@@ -753,7 +782,6 @@ goad_servers_unregister_atexit(void)
   CORBA_exception_free(&ev);
 }
 
-
 static ServerCmd*
 get_cmd(gchar* line)
 {
@@ -794,7 +822,7 @@ goad_server_activate_factory(GoadServer *sinfo,
 			     GoadActivationFlags flags,
 			     const char **params,
 			     CORBA_Environment *ev,
-			     GoadServer *slist)
+			     GoadServerList *slist)
 {
   CORBA_Object factory_obj, retval;
   GNOME_stringlist sl;
@@ -929,12 +957,26 @@ goad_server_register(CORBA_Object name_server,
   CosNaming_NameComponent nc[3] = {{"GNOME", "subcontext"},
 				   {"Servers", "subcontext"}};
   CosNaming_Name          nom = {0, 3, nc, CORBA_FALSE};
-  CORBA_Object            old_server;
+  CORBA_Object            old_server, orig_ns = name_server;
+  static int did_print_ior = 0;
+
+  if(!did_print_ior) {
+    CORBA_char *strior;
+
+    strior = CORBA_ORB_object_to_string(gnome_CORBA_ORB(), server, ev);
+    printf("%s\n", strior); fflush(stdout);
+    CORBA_free(strior);
+
+    did_print_ior = 1;
+  }
 
   nc[2].id   = (char *)name;
   nc[2].kind = (char *)kind;
 
   CORBA_exception_free(ev);
+
+  if(name_server == CORBA_OBJECT_NIL)
+    name_server = gnome_name_service_get();
 
   old_server = CosNaming_NamingContext_resolve(name_server, &nom, ev);
 #if 0
@@ -963,8 +1005,10 @@ goad_server_register(CORBA_Object name_server,
 	break;
       }
     }
-  }
-  else {
+  } else {
+    if(orig_ns == CORBA_OBJECT_NIL)
+      CORBA_Object_release(name_server, ev);
+
     CORBA_Object_release(old_server, ev);
     return -2;
   }
@@ -979,8 +1023,14 @@ goad_server_register(CORBA_Object name_server,
       break;
     }
 #endif
+    if(orig_ns == CORBA_OBJECT_NIL)
+      CORBA_Object_release(name_server, ev);
+
     return -1;
   }
+
+  if(orig_ns == CORBA_OBJECT_NIL)
+    CORBA_Object_release(name_server, ev);
   return 0;
 }
 
@@ -993,6 +1043,10 @@ goad_server_unregister(CORBA_Object name_server,
   CosNaming_NameComponent nc[3] = {{"GNOME", "subcontext"},
 				   {"Servers", "subcontext"}};
   CosNaming_Name          nom = {0, 3, nc, CORBA_FALSE};
+  CORBA_Object orig_ns = name_server;
+
+  if(name_server == CORBA_OBJECT_NIL)
+    name_server = gnome_name_service_get();
 
   nc[2].id   = (char *)name;
   nc[2].kind = (char *)kind;
@@ -1008,12 +1062,18 @@ goad_server_unregister(CORBA_Object name_server,
       break;
     }
 #endif
+    if(orig_ns == CORBA_OBJECT_NIL)
+      CORBA_Object_release(name_server, ev);
     return -1;
   }
+
+  if(orig_ns == CORBA_OBJECT_NIL)
+    CORBA_Object_release(name_server, ev);
+
   return 0;
 }
 
-const char *goad_activation_id = NULL;
+static const char *goad_activation_id = NULL;
 
 const char *
 goad_server_activation_id(void)

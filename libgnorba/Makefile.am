@@ -32,7 +32,6 @@ $(gnorba_built): $(top_srcdir)/idl/gnome-factory.idl
 libgnorba_la_SOURCES = 					\
 	$(gnorba_built) 				\
 	goad.c 						\
-	gnome-plugins.c					\
 	orbitgtk.c					\
 	orbitns.c
 

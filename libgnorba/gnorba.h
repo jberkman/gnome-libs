@@ -75,10 +75,12 @@ typedef struct {
 	const char   *kind;
 	const char   *description;
 	CORBA_Object (*activate)   (PortableServer_POA poa,
-				    gpointer *impl_ptr,
+				    const char *goad_id,
 				    const char **params,
+				    gpointer *impl_ptr,
 				    CORBA_Environment *ev);
 	void         (*deactivate) (PortableServer_POA poa,
+				    const char *goad_id,
 				    gpointer impl_ptr,
 				    CORBA_Environment *ev);
 } GnomePluginObject;
@@ -87,12 +89,6 @@ typedef struct {
 	const GnomePluginObject *plugin_object_list;
 	const char *description;
 } GnomePlugin;
-
-/* Returns an array of plugin ID's */
-char **gnome_plugin_get_available_plugins (void);
-
-/* Loads the plugin and returns the GnomePlugin structure for it, */
-const GnomePlugin *gnome_plugin_use (const char *plugin_id);
 
 /**** goad module ****/
 typedef enum {
@@ -130,14 +126,18 @@ typedef struct {
 	char     *location_info;
 } GoadServer;
 
+typedef struct {
+  GoadServer *list; /* do a hash table */
+} GoadServerList;
+
 /*
  * goad_servers_list:
  *
  * Return value:
  *   An array of GoadServers. The repo_id in the last array element is NULL
  */
-GoadServer *      goad_server_list_get              (void);
-void              goad_server_list_free             (GoadServer *server_list);
+GoadServerList *      goad_server_list_get              (void);
+void              goad_server_list_free             (GoadServerList *server_list);
 
 /*
  * Passing GOAD_ACTIVATE_{REMOTE,SHLIB} flags to this routine doesn't make sense,
@@ -152,7 +152,7 @@ CORBA_Object      goad_server_activate              (GoadServer *sinfo,
  * You can pass in a NULL 'server_list' if you wish, and
  * this routine will call goad_server_list_get() internally.
  */
-CORBA_Object      goad_server_activate_with_repo_id (GoadServer *server_list,
+CORBA_Object      goad_server_activate_with_repo_id (GoadServerList *server_list,
 						     const char *repo_id,
 						     GoadActivationFlags flags,
 						     const char **params);
@@ -161,7 +161,7 @@ CORBA_Object      goad_server_activate_with_repo_id (GoadServer *server_list,
  * Activates a specific server by its GOAD ID.
  */
 CORBA_Object
-goad_server_activate_with_id(GoadServer *server_list,
+goad_server_activate_with_id(GoadServerList *server_list,
 			     const char *server_id,
 			     GoadActivationFlags flags,
 			     const char **params);
