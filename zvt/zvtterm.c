@@ -1124,7 +1124,7 @@ int zvt_term_closepty(ZvtTerm *term)
 static void
 zvt_term_scroll (ZvtTerm *term, int n)
 {
-	gfloat new_value;
+	gfloat new_value = 0;
 	
 	if (n)
 		new_value = term->adjustment->value + (n * term->adjustment->page_size);
@@ -1336,6 +1336,17 @@ static void zvt_term_child_died(ZvtTerm *term)
   /* perhaps we should do something here? */
 }
 
+static void vtx_unrender_selection (struct _vtx *vx)
+{
+  /* need to 'un-render' selected area */
+  if (vx->selected) {		/* FIXME: modularise */
+    vx->selstartx = vx->selendx;
+    vx->selstarty = vx->selendy;
+    vt_draw_selection(vx);	/* un-render selection */
+    vx->selected = 0;
+  }
+}
+
 /*
   this callback is called when data is ready on the child's file descriptor
 
@@ -1357,13 +1368,7 @@ static void zvt_term_readdata(gpointer data, gint fd, GdkInputCondition conditio
   if (term->input_id == -1) return;
   vx = term->vx;
 
-  /* need to 'un-render' selected area */
-  if (vx->selected) {		/* FIXME: modularise */
-    vx->selstartx = vx->selendx;
-    vx->selstarty = vx->selendy;
-    vt_draw_selection(vx);	/* un-render selection */
-    vx->selected = 0;
-  }
+  vtx_unrender_selection (vx);
 
   iter=0;
   saveerrno = EAGAIN;
@@ -1394,8 +1399,10 @@ static void zvt_term_readdata(gpointer data, gint fd, GdkInputCondition conditio
   /* fix scroll bar */
   if (term->scroll_on_output) zvt_term_scroll (term, 0);
 
-  /* flush all X events - this is really necessary to stop X queuing up
-     lots of screen updates and reducing interactivity on a busy terminal */
+  /*
+   * flush all X events - this is really necessary to stop X queuing up
+   * lots of screen updates and reducing interactivity on a busy terminal
+   */
   gdk_flush();
 
   /* read failed? oh well, that's life -- we handle dead children via
@@ -1403,6 +1410,39 @@ static void zvt_term_readdata(gpointer data, gint fd, GdkInputCondition conditio
 
   zvt_term_fix_scrollbar(term);
 
+}
+
+void
+zvt_term_feed (ZvtTerm *term, char *text, int len)
+{
+	g_return_if_fail (term != NULL);
+	g_return_if_fail (ZVT_IS_TERM (term));
+	g_return_if_fail (text != NULL);
+
+	
+	vt_cursor_state (term, 0);
+	vtx_unrender_selection (term->vx);
+	parse_vt(&term->vx->vt, text, len);
+	vt_update (term->vx, UPDATE_CHANGES);
+
+	/* *always* turn the cursor back on */
+	vt_cursor_state (term, 1);
+
+	/* fix scroll bar */
+	if (term->scroll_on_output) zvt_term_scroll (term, 0);
+
+	/*
+	 * flush all X events - this is really necessary to stop X queuing up
+	 * lots of screen updates and reducing interactivity on a busy terminal
+	 */
+	gdk_flush();
+
+	/*
+	 * read failed? oh well, that's life -- we handle dead children via
+	 *  SIGCHLD
+	 */
+
+	zvt_term_fix_scrollbar(term);
 }
 
 static void zvt_term_readmsg(gpointer data, gint fd, GdkInputCondition condition)

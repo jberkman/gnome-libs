@@ -1,3 +1,10 @@
+1998-09-24  Miguel de Icaza  <miguel@nuclecu.unam.mx>
+
+	* zvtterm.c (zvt_term_feed): New routine.  Used to feed
+	information to a zvtterm from the application.
+
+	* zvtterm.h: Changed the timeout it to be integer.
+
 1998-09-14  Raja R Harinath  <harinath@cs.umn.edu>
 
 	* subshell.c (close_msgfd): Change prototype to agree with

@@ -66,7 +66,7 @@ extern "C" {
     GdkCursor *cursor_bar,	/* I beam cursor */
       *cursor_dot,		/* the blank cursor */
       *cursor_current;		/* current active cursor */
-    guint timeout_id;		/* id of timeout function */
+    gint timeout_id;		/* id of timeout function */
     GdkFont *font,		/* current normal font */
       *font_bold;		/* current bold font */
     GdkGC *scroll_gc;		/* special GC used for scrolling */
@@ -87,6 +87,7 @@ extern "C" {
 
 
   GtkWidget*    zvt_term_new                    (void);
+  void          zvt_term_feed                   (ZvtTerm *term, char *text, int len);
   int		zvt_term_forkpty		(ZvtTerm *term);
   int           zvt_term_closepty               (ZvtTerm *term);
 
