@@ -1174,6 +1174,10 @@ msgid ""
 "will exit.\n"
 "Please save all your files before closing this dialog."
 msgstr ""
+"A GNOME session-kezelõ (PID: %d)\n"
+"helyrehozhatatlan hiba miatt leállt. (%s)\n"
+"Ennek az ablaknak a bezárásával mindegyik alkalmazás leáll és a session befejezõdik.\n"
+"Az ablak bezárása elõtt ments el minden file-odat."
 
 #: libgnomeui/gnome_segv.c:55
 #, c-format
@@ -1182,14 +1186,17 @@ msgid ""
 "due to a fatal error.\n"
 "(%s)"
 msgstr ""
+"A \"%s\" alkalmazás (PID: %d)\n"
+"helyrehozhatatlan hiba miatt leállt.\n"
+"(%s)"
 
 #: libgnomeui/gnome_segv.c:61
 msgid "Usage: gnome_segv appname signum\n"
-msgstr ""
+msgstr "Használata: gnome_segv alkalmazás_neve szignál_száma"
 
 #: libgnomeui/gnome_segv.c:73
 msgid "Please visit the GNOME Application Crash page for more information"
-msgstr ""
+msgstr "Látogass el a GNOME Alkalmazási Hibák oldalra további információkért"
 
 #: libgnomeui/stock_demo.c:112
 msgid "New..."
@@ -1476,7 +1483,7 @@ msgstr "Nem felismerhetõ rendszerhiba"
 #: support/getopt.c:669
 #, c-format
 msgid "%s: option `%s' is ambiguous\n"
-msgstr ""
+msgstr "%s: a `%s' kapcsoló nem egyértelmû\n"
 
 # , c-format
 # , c-format
@@ -1536,7 +1543,7 @@ msgstr ""
 #: support/getopt.c:807 support/getopt.c:937
 #, c-format
 msgid "%s: option requires an argument -- %c\n"
-msgstr ""
+msgstr "%s: a kapcsoló egy paramétert is igényel -- %c\n"
 
 # , c-format
 # , c-format
