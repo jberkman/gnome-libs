@@ -1,0 +1,82 @@
+Index: wrappers/gtk/gconf-client.c
+===================================================================
+RCS file: /cvs/gnome/gconf/wrappers/gtk/gconf-client.c,v
+retrieving revision 1.25
+diff -u -r1.25 gconf-client.c
+--- wrappers/gtk/gconf-client.c	2000/07/12 05:46:51	1.25
++++ wrappers/gtk/gconf-client.c	2000/07/24 05:17:10
+@@ -122,7 +122,7 @@
+ static void gconf_client_real_unreturned_error (GConfClient* client, GConfError* error);
+ static void gconf_client_real_error            (GConfClient* client, GConfError* error);
+ static void gconf_client_destroy               (GtkObject* object); 
+-static void gconf_client_finalize              (GtkObject* object); 
++static void gconf_client_finalize              (GObject* object); 
+ 
+ static void gconf_client_cache                 (GConfClient* client,
+                                                 const gchar* key,
+@@ -170,15 +170,17 @@
+ gconf_client_class_init (GConfClientClass *class)
+ {
+   GtkObjectClass *object_class;
++  GObjectClass *gobject_class;
+ 
+   object_class = (GtkObjectClass*) class;
++  gobject_class = (GObjectClass*) class;
+ 
+   parent_class = gtk_type_class (gtk_object_get_type ());
+   
+   client_signals[VALUE_CHANGED] =
+     gtk_signal_new ("value_changed",
+                     GTK_RUN_LAST,
+-                    object_class->type,
++                    GTK_CLASS_TYPE (object_class),
+                     GTK_SIGNAL_OFFSET (GConfClientClass, value_changed),
+                     gtk_marshal_NONE__POINTER_POINTER,
+                     GTK_TYPE_NONE, 2, GTK_TYPE_POINTER, GTK_TYPE_POINTER);
+@@ -186,7 +188,7 @@
+   client_signals[UNRETURNED_ERROR] =
+     gtk_signal_new ("unreturned_error",
+                     GTK_RUN_LAST,
+-                    object_class->type,
++                    GTK_CLASS_TYPE (object_class),
+                     GTK_SIGNAL_OFFSET (GConfClientClass, unreturned_error),
+                     gtk_marshal_NONE__POINTER,
+                     GTK_TYPE_NONE, 1, GTK_TYPE_POINTER);
+@@ -194,7 +196,7 @@
+   client_signals[ERROR] =
+     gtk_signal_new ("error",
+                     GTK_RUN_LAST,
+-                    object_class->type,
++                    GTK_CLASS_TYPE (object_class),
+                     GTK_SIGNAL_OFFSET (GConfClientClass, error),
+                     gtk_marshal_NONE__POINTER,
+                     GTK_TYPE_NONE, 1, GTK_TYPE_POINTER);
+@@ -206,7 +208,7 @@
+   class->error            = gconf_client_real_error;
+ 
+   object_class->destroy   = gconf_client_destroy;
+-  object_class->finalize  = gconf_client_finalize;
++  gobject_class->finalize  = gconf_client_finalize;
+ }
+ 
+ static void
+@@ -251,7 +253,7 @@
+ }
+ 
+ static void
+-gconf_client_finalize (GtkObject* object)
++gconf_client_finalize (GObject* object)
+ {
+   GConfClient* client = GCONF_CLIENT(object);
+   
+@@ -275,8 +277,8 @@
+       client->engine = NULL;
+     }
+ 
+-  if (parent_class->finalize)
+-    (*parent_class->finalize)(object);
++  if (G_OBJECT_CLASS (parent_class)->finalize)
++    (* G_OBJECT_CLASS (parent_class)->finalize) (object);
+ }
+ 
+ /*
