@@ -1,13 +1,13 @@
 <sect1>
-  <title>Author(s)</title>
+  <title>Authors</title>
   <para>Martin Baulig &lt;martin@home-of-linux.org&gt;</para>
+  <para>Jaka Mocnik &lt;jaka.mocnik@kiss.uni-lj.si&gt;</para>
 </sect1>
 
 <sect1>
   <title>Description</title>
   <para>
-    This is the GnomeMDI interface from Jaka Mocnik that is used in
-    GHex and GTop.
+    This is the GnomeMDI interface from Jaka Mocnik used in GHex and GTop.
   </para>
 
   <sect2 id="gnome-mdi-new">
@@ -19,12 +19,328 @@
     </funcsynopsis>
     <sect3><title>Description</title>
       <para>This function returns a new GnomeMDI object. It is normally
-	only called once in <function>main</function>.</para>
+	only called once in <function>main</function>. Mode is set to
+        the default mode (selected by the user in look-and-feel properties).</para>
     </sect3>
     <sect3><title>Usage</title>
       <programlisting>
 	GnomeMDI *mdi = gnome_mdi_new ("gtop", "GTop");
       </programlisting>
+    </sect3>
+    <sect3><title>Parameters</title>
+      <itemizedlist>
+        <listitem>
+          <para>gchar *<parameter>appname</parameter>
+          </para>
+          <para>An application name string. This string is duplicated and stored within the
+            GnomeMDI structure. The stored copy is passed as the first parameter of
+            <function>gnome_app_new</function> when the MDI creates a new toplevel window.
+          </para>
+        </listitem>
+        <listitem>
+          <para>gchar *<parameter>title</parameter>
+          </para>
+          <para>The title of the application. This string is duplicated and stored within the
+            GnomeMDI structure. The stored copy is passed as the second parameter of
+            <function>gnome_app_new</function> when the MDI creates a new toplevel window and
+            used in constructing the toplevel window title.
+          </para>
+        </listitem>
+      </itemizedlist>
+    </sect3>
+           
+  </sect2>
+
+  <sect2 id="gnome-mdi-set-mode">
+    <title>gnome_mdi_set_mode - set GnomeMDI mode</title>
+    <funcsynopsis>
+       <funcdef>void <function>gnome_mdi_set_mode</function></funcdef>
+       <paramdef>GnomeMDI *<parameter>mdi</parameter></paramdef>
+       <paramdef>GnomeMDIMode <parameter>mode</parameter></paramdef>
+    </funcsynopsis>
+    <sect3><title>Description</title>
+       <para>This function sets the MDI mode to <parameter>mode</parameter>.
+         When called without any views open, it simply opens a new toplevel window, otherwise it
+         hides all views and re-shows them in the new mode.
+       </para>
+    </sect3>
+    <sect3><title>Usage</title>
+      <programlisting>
+	gnome_mdi_set_mode (mdi, GNOME_MDI_NOTEBOOK);
+      </programlisting>
+    </sect3>
+    <sect3><title>Parameters</title>
+      <itemizedlist>
+        <listitem>
+          <para>GnomeMDI *<parameter>mdi</parameter>
+          </para>
+          <para>A pointer to a GnomeMDI object.
+          </para>
+        </listitem>
+        <listitem>
+          <para>GnomeMDIMode <parameter>mode</parameter>
+          </para>
+          <para>The mode to switch MDI to; can be one of the following:
+          </para>
+          <para>
+	    <glosslist>
+	      <glossentry>
+		<glossterm><symbol>GNOME_MDI_NOTEBOOK</symbol></glossterm>
+		<glossdef>
+		  <para>Where each view is displayed as a notebook page, giving the user
+                    ability to distribute these between multiple notebooks (by dragging the
+                    pages onto the root window or into another notebook of the same application),
+                    each in its own toplevel window.
+                  </para>
+		</glossdef>
+	      </glossentry>
+	      <glossentry>
+		<glossterm><symbol>GNOME_MDI_TOPLEVEL</symbol></glossterm>
+                <glossdef>
+                  <para>In this mode, each view is displayed in its own toplevel window.
+                  </para>
+                </glossdef>
+              </glossentry>
+              <glossentry>
+                <glossterm><symbol>GNOME_MDI_MODAL</symbol></glossterm>
+                <glossdef>
+                  <para>in the "modal" mode, only one view is displayed at a time. Other
+                    children can be selected from a menu.
+                  </para>
+                </glossdef>
+              </glossentry>
+              <glossentry>
+                <glossterm><symbol>GNOME_MDI_DEFAULT_MODE</symbol></glossterm>
+		<glossdef>
+                   <para>The mode is set to the one that was chosen by the user running the
+                     application in look-and-feel properties. This is the preferred choice
+                     for most applications.
+                   </para>
+                </glossdef>
+              </glossentry>   
+            </glosslist>
+          </para>
+        </listitem>
+      </itemizedlist>
+    </sect3>
+
+  </sect2>
+
+  <sect2 id="gnome-mdi-set-tab-pos">
+    <title>gnome_mdi_set_tab_pos - set the position of the MDI notebook tabs</title>
+    <funcsynopsis>
+      <funcdef>void <function>gnome_mdi_set_tab_pos</function></funcdef>
+      <paramdef>GnomeMDI *<parameter>mdi</parameter></paramdef>
+      <paramdef>GtkPositionType<parameter>tab_pos</parameter></paramdef>
+    </funcsynopsis>
+    <sect3><title>Description</title>
+      <para>Set the position of the tabs of the notebook shown in
+      <symbol>GNOME_MDI_NOTEBOOK</symbol> mode to tab_pos.
+      </para>
+    </sect3>
+    <sect3><title>Usage</title>
+      <programlisting>
+	gnome_mdi_set_tab_pos (mdi, GTK_POS_LEFT);
+      </programlisting>
+    </sect3>
+    <sect3><title>Parameters</title>
+      <itemizedlist>
+        <listitem>
+          <para>GnomeMDI *<parameter>mdi</parameter>
+          </para>
+          <para>A pointer to the MDI object.
+          </para>
+        </listitem>
+        <listitem>
+          <para>GtkPositionType <parameter>tab_pos</parameter>
+          </para>
+          <para>The new position of the notebook tabs for MDI notebooks in
+            <symbol>GNOME_MDI_NOTEBOOK</symbol> mode. See
+            <function>gtk_notebook_set_tab_pos</function> for more details on possible
+            tab positions.
+          </para>
+        </listitem>
+      </itemizedlist>
+    </sect3>
+  </sect2>
+
+  <sect2 id="gnome-mdi-set-menu-template">
+    <title>gnome_mdi_set_menu_template - set the template for MDI menus</title>
+    <funcsynopsis>
+      <funcdef>void <function>gnome_mdi_set_menu_template</function></funcdef>
+      <paramdef>GnomeMDI *<parameter>mdi</parameter></paramdef>
+      <paramdef>GnomeUIInfo *<parameter>menu_template</parameter></paramdef>
+    </funcsynopsis>
+    <sect3><title>Description</title>
+      <para>This function sets the template for menus that appear in each toplevel
+      window to menu_template. For each new toplevel window created by the MDI, this
+      structure is copied, the menus are created with gnome_app_create_menus_with_data()
+      function with <parameter>mdi</parameter> as the callback user data. Finally, the
+      pointer to the copy is assigned to the new toplevel window (a GnomeApp widget) as
+      data with key <symbol>GNOME_MDI_MENUBAR_INFO_KEY</symbol>.
+      </para>
+      <para>The copy of the template (and, most importantly, its widget members) can be
+      accessed through the corresponding GnomeApp widget with the gtk_object_get_data()
+      call:
+        <programlisting>
+          GnomeUIInfo *uiinfo;
+
+          uiinfo = gtk_object_get_data(GTK_OBJECT(mdi->active_window), GNOME_MDI_MENUBAR_INFO_KEY);
+          gtk_widget_set_sensitive(uiinfo[3].member, FALSE);
+        </programlisting>
+      </para>
+    </sect3>
+    <sect3><title>Usage</title>
+      <programlisting>
+	gnome_mdi_set_menu_template(mdi, mdi_menubar);
+      </programlisting>
+    </sect3>
+    <sect3><title>Parameters</title>
+      <itemizedlist>
+        <listitem>
+          <para>GnomeMDI *<parameter>mdi</parameter>
+          </para>
+          <para>A pointer to the MDI object.
+          </para>
+        </listitem>
+        <listitem>
+          <para>GnomeUIInfo *<parameter>menu_template</parameter>
+          </para>
+          <para>A pointer to an array of GnomeUIInfo entries. These should remain
+            unchanged during the life-cycle of the MDI object, since they are copied
+            each time a new toplevel window is created.
+          </para>
+        </listitem>
+      </itemizedlist>
+    </sect3>
+  </sect2>
+
+  <sect2 id="gnome-mdi-set-toolbar-template">
+    <title>gnome_mdi_set_toolbar_template - set the template for MDI toolbar</title>
+    <funcsynopsis>
+      <funcdef>void <function>gnome_mdi_set_toolbar_template</function></funcdef>
+      <paramdef>GnomeMDI *<parameter>mdi</parameter></paramdef>
+      <paramdef>GnomeUIInfo *<parameter>toolbar_template</parameter></paramdef>
+    </funcsynopsis>
+    <sect3><title>Description</title>
+      <para>This function sets the template for toolbar that appears in each toplevel
+      window to toolbar_template. For each new toplevel window created by the MDI, this
+      structure is copied, the toolbar is created with gnome_app_create_toolbar_with_data()
+      function with <parameter>mdi</parameter> as the callback user data. Finally, the
+      pointer to the copy is assigned to the new toplevel window (a GnomeApp widget) as
+      data with key <symbol>GNOME_MDI_TOOLBAR_INFO_KEY</symbol>.
+      </para>
+      <para>The copy of the template (and, most importantly, its widget members) can be
+      accessed through the corresponding GnomeApp widget with the gtk_object_get_data()
+      call:
+        <programlisting>
+          GnomeUIInfo *uiinfo;
+
+          uiinfo = gtk_object_get_data(GTK_OBJECT(mdi->active_window), GNOME_MDI_TOOLBAR_INFO_KEY);
+          gtk_widget_set_sensitive(uiinfo[3].member, FALSE);
+        </programlisting>
+      </para>
+    </sect3>
+    <sect3><title>Usage</title>
+      <programlisting>
+	gnome_mdi_set_toolbar_template(mdi, mdi_toolbar);
+      </programlisting>
+    </sect3>
+    <sect3><title>Parameters</title>
+      <itemizedlist>
+        <listitem>
+          <para>GnomeMDI *<parameter>mdi</parameter>
+          </para>
+          <para>A pointer to the MDI object.
+          </para>
+        </listitem>
+        <listitem>
+          <para>GnomeUIInfo *<parameter>toolbar_template</parameter>
+          </para>
+          <para>A pointer to an array of GnomeUIInfo entries. These should remain
+            unchanged during the life-cycle of the MDI object, since they are copied
+            each time a new toplevel window is created.
+          </para>
+        </listitem>
+      </itemizedlist>
+    </sect3>
+  </sect2>
+
+  <sect2 id="gnome-mdi-set-child-menu-path">
+    <title>gnome_mdi_set_child_menu_path - sets the path for child-specific menus</title>
+    <funcsynopsis>
+      <funcdef>void <function>gnome_mdi_set_child_menu_path</function></funcdef>
+      <paramdef>GnomeMDI *<parameter>mdi</parameter></paramdef>
+      <paramdef>gchar *<parameter>path</parameter></paramdef>
+    </funcsynopsis>
+    <sect3><title>Description</title>
+      <para>Sets the desired position of child-specific menus (which are re-added to each
+        toplevel window when a new view is activated in it). See
+        <function>gnome_app_find_menu_pos</function> for details on menu paths.
+      </para>
+    </sect3>
+    <sect3><title>Usage</title>
+      <programlisting>
+	gnome_mdi_set_child_menu_path(mdi, "File");
+      </programlisting>
+    </sect3>
+    <sect3><title>Parameters</title>
+      <itemizedlist>
+        <listitem>
+          <para>GnomeMDI *<parameter>mdi</parameter>
+          </para>
+          <para>A pointer to the MDI object.
+          </para>
+        </listitem>
+        <listitem>
+          <para>GnomeUIInfo *<parameter>path</parameter>
+          </para>
+          <para>A menu path (see <function>gnome_app_find_menu_pos</function> for details
+          on menu paths) describing the position where the child menus should be inserted.
+          </para>
+        </listitem>
+      </itemizedlist>
+    </sect3>
+  </sect2>
+
+  <sect2 id="gnome-mdi-set-child-list-path">
+    <title>gnome_mdi_set_child_list_path - sets the menu path for the list of children</title>
+    <funcsynopsis>
+      <funcdef>void <function>gnome_mdi_set_child_list_path</function></funcdef>
+      <paramdef>GnomeMDI *<parameter>mdi</parameter></paramdef>
+      <paramdef>gchar *<parameter>path</parameter></paramdef>
+    </funcsynopsis>
+    <sect3><title>Description</title>
+      <para>Sets the position for insertion of menu items used to activate the MDI children
+        that were added to the MDI. See <function>gnome_app_find_menu_pos</function> for
+        details on menu paths. If the path is not set or set to NULL, these menu items aren't
+        going to be inserted in the MDI menu structure. Note that if you want all menu items
+        to be inserted in their own submenu, you have to create that submenu (and leave it
+        empty, of course).
+      </para>
+    </sect3>
+    <sect3><title>Usage</title>
+      <programlisting>
+	gnome_mdi_set_child_list_path(mdi, "Children/");
+      </programlisting>
+    </sect3>
+    <sect3><title>Parameters</title>
+      <itemizedlist>
+        <listitem>
+          <para>GnomeMDI *<parameter>mdi</parameter>
+          </para>
+          <para>A pointer to the MDI object.
+          </para>
+        </listitem>
+        <listitem>
+          <para>GnomeUIInfo *<parameter>path</parameter>
+          </para>
+          <para>A menu path (see <function>gnome_app_find_menu_pos</function> for details
+            on menu paths) describing the position where the menu items with names of
+            children will be inserted.
+          </para>
+        </listitem>
+      </itemizedlist>
     </sect3>
   </sect2>
 
