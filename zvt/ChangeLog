@@ -1,3 +1,8 @@
+1999-06-20  Michael Zucchi  <mzucchi@zedzone.mmc.com.au>
+
+	* zvtterm.c (vt_draw_text): When we render bold, dont offset y as
+	well as x (well you can, but its kinda hard to read :)
+
 1999-06-20  Michael Zucchi  <mzucchi@denr.sa.gov.au>
 
 	* subshell-includes.h: Under Solaris at least, defining

@@ -2796,7 +2796,7 @@ vt_draw_text(void *user_data, struct vt_line *line, int row, int col, int len, i
     }
     if (overstrike)
       XDrawString(drawable_private->xdisplay, drawable_private->xwindow,
-		  gc_private->xgc, offx + x + 1, offy + y + 1, expand, len);
+		  gc_private->xgc, offx + x + 1, offy + y, expand, len);
   }
   break;
   case ZVT_FONT_2BYTE: {
@@ -2824,7 +2824,7 @@ vt_draw_text(void *user_data, struct vt_line *line, int row, int col, int len, i
     }
     if (overstrike)
       XDrawString16(drawable_private->xdisplay, drawable_private->xwindow,
-		    gc_private->xgc, offx + x + 1, offy + y + 1, expand16, len);
+		    gc_private->xgc, offx + x + 1, offy + y, expand16, len);
   }
   break;
   /* this is limited to 65535 characters! */
@@ -2846,7 +2846,7 @@ vt_draw_text(void *user_data, struct vt_line *line, int row, int col, int len, i
     }
     if (overstrike)
       XwcDrawString(drawable_private->xdisplay, drawable_private->xwindow,
-		    fontset, gc_private->xgc, offx + x + 1, offy + y + 1, expandwc, len);
+		    fontset, gc_private->xgc, offx + x + 1, offy + y, expandwc, len);
   }
   }
 
