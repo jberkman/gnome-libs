@@ -26,6 +26,7 @@ libgtkxmhtml_la_SOURCES =	\
 	readBitmap.c		\
 	readGIF.c		\
 	LZWStream.c		\
+	LZWStream.h		\
 	readGIFplc.c		\
 	readFLG.c		\
 	readPNG.c		\
@@ -63,7 +64,11 @@ htmltest_LDADD   = $(top_builddir)/gtk-xmhtml/libgtkxmhtml.la \
 
 ## These are included by XmHTML.c:
 
-EXTRA_DIST = gtk-xmhtml.c XmHTML-motif.c
+EXTRA_DIST = gtk-xmhtml.c XmHTML-motif.c 
+
+dist-hook:
+	mkdir $(distdir)/bitmaps
+	cp bitmaps/*.xpm bitmaps/*.xbm $(distdir)/bitmaps
 
 ## If I dont do this, for some wierdo reason, it tries to compile gtk-xmhtml.o
 gtk-xmhtml:
