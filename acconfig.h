@@ -27,3 +27,4 @@
 #undef USE_VFS
 #undef HAVE_ORBIT
 #undef HAVE_GTKCAL
+#undef HAVE_LIBESD
