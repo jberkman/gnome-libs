@@ -1,5 +1,9 @@
 ## Process this file with automake to produce Makefile.in.
 
+# Actually the earliest release that should be OK should be 1.2e, I think.
+# Still, 1.3 is the first "released" automake that is OK.
+AUTOMAKE_OPTIONS = 1.3
+
 built_SUBDIRS = libgnome libgnomeui gtk-xmhtml gnome-hello libgtktty zvt test-gnome test-suite
 
 bin_SCRIPTS = gnome-config
