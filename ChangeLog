@@ -1,3 +1,12 @@
+1998-08-06  Raja R Harinath  <harinath@cs.umn.edu>
+
+	* configure.in (GLIB_LIBS): Use the "sed from GTK_LIBS" approach
+	if AM_PATH_GLIB fails.
+	(AC_OUTPUT): Generate `libvfs/Makefile'.
+	* Makefile.am (libvfs): New variable, defined if FALSE.
+	(SUBDIRS): Add $(libvfs).
+	With this change, `libvfs' is not built, but it is distributed.
+
 1998-08-06  Federico Mena Quintero  <federico@nuclecu.unam.mx>
 
 	* configure.in: Bumped version number to 0.26.

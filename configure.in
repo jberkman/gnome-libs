@@ -38,7 +38,8 @@ AC_SUBST(GNOME_CANVAS_OBJS)
 GNOME_SUPPORT_CHECKS
 
 AM_PATH_GLIB(,,[
-  GLIB_LIBS=
+  dnl As a last ditch, try this
+  GLIB_LIBS=`echo $GTK_LIBS | sed -e 's/.*-lglib/-lglib/' -e 's/ .*//'`
   AC_MSG_WARN(GLIB not installed, or glib-config not in path)])
 
 dnl Utility conditional
@@ -186,9 +187,6 @@ GNOMEUI_LIBS="-lgnomeui $GDK_IMLIB_LIBS $GTK_LIBS $GNOME_LIBS"
 GTKXMHTML_LIBS="-lgtkxmhtml $LIBGTKXMHTML_LIBS"
 ZVT_LIBS="-lzvt $GTK_LIBS"
 
-AC_SUBST(GLIB_LIBS)
-GLIB_LIBS=`echo $GTK_LIBS | sed -e 's/.*-lglib/-lglib/' -e 's/ .*//'`
-
 dnl These definitions are expanded in make and gnome-config
 GNOME_LIBDIR='-L${libdir}'
 GNOME_INCLUDEDIR='-I${includedir}'
@@ -221,6 +219,7 @@ gtk-xmhtml/Makefile
 libgnome/Makefile
 libgnomeui/Makefile
 libgnomeui/pixmaps/Makefile
+libvfs/Makefile
 zvt/Makefile
 test-suite/Makefile
 gnome-hello/Makefile

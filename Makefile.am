@@ -6,9 +6,13 @@ AUTOMAKE_OPTIONS = 1.3
 
 bin_SCRIPTS = gnome-config
 
+if FALSE
+libvfs = libvfs
+endif
+
 SUBDIRS = po intl support macros \
 	libgnome libgnomeui gtk-xmhtml gnome-hello libgtktty zvt \
-	test-gnome test-suite
+	test-gnome test-suite devel-docs $(libvfs)
 
 include_HEADERS = gnome.h
 
