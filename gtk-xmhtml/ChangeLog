@@ -1,3 +1,10 @@
+Wed Jan 14 19:28:01 1998  Federico Mena  <federico@bananoid.nuclecu.unam.mx>
+
+	* colors.c (my_get_colors): Now we allocate the colors, just as
+	Motif does.  I think they should be freed sometime, but they are
+	not.  Lesstif does not free them, either.  I don't know if OSF
+	Motif ever frees these colors...
+
 Wed Jan 14 00:40:59 1998  Miguel de Icaza  <miguel@nuclecu.unam.mx>
 
 	* toolkit.h (XCCFree): Allow for empty color contexts.

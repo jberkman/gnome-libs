@@ -35,6 +35,14 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.8  1998/01/15 01:34:03  unammx
+* Wed Jan 14 19:28:01 1998  Federico Mena  <federico@bananoid.nuclecu.unam.mx>
+*
+* 	* colors.c (my_get_colors): Now we allocate the colors, just as
+* 	Motif does.  I think they should be freed sometime, but they are
+* 	not.  Lesstif does not free them, either.  I don't know if OSF
+* 	Motif ever frees these colors...
+*
 * Revision 1.7  1998/01/14 04:11:48  unammx
 * Tue Jan 13 22:04:43 1998  Federico Mena  <federico@bananoid.nuclecu.unam.mx>
 *
@@ -508,10 +516,9 @@ _XmHTMLFreeColors(XmHTMLWidget html)
 
 #ifndef WITH_MOTIF
 
-/* This color shading method is taken from gtkstyle.c - Federico */
-
-#define LIGHTNESS_MULT 1.3
-#define DARKNESS_MULT  0.7
+/* This color shading method is taken from gtkstyle.c.  Some
+ *  modifications made by me - Federico
+ */
 
 static void
 rgb_to_hls (gdouble *r, gdouble *g, gdouble *b)
@@ -659,6 +666,14 @@ shade_color(GdkColor *a, GdkColor *b, gdouble k)
 	gdouble green;
 	gdouble blue;
 
+	/* Special case for black, so that it looks pretty... */
+
+	if ((a->red == 0) && (a->green == 0) && (a->blue == 0)) {
+		a->red = 32768;
+		a->green = 32768;
+		a->blue = 32768;
+	}
+
 	red = (gdouble) a->red / 65535.0;
 	green = (gdouble) a->green / 65535.0;
 	blue = (gdouble) a->blue / 65535.0;
@@ -666,12 +681,14 @@ shade_color(GdkColor *a, GdkColor *b, gdouble k)
 	rgb_to_hls (&red, &green, &blue);
 
 	green *= k;
+
 	if (green > 1.0)
 		green = 1.0;
 	else if (green < 0.0)
 		green = 0.0;
 
 	blue *= k;
+
 	if (blue > 1.0)
 		blue = 1.0;
 	else if (blue < 0.0)
@@ -679,10 +696,14 @@ shade_color(GdkColor *a, GdkColor *b, gdouble k)
 
 	hls_to_rgb (&red, &green, &blue);
 
-	b->red = red * 65535.0;
-	b->green = green * 65535.0;
-	b->blue = blue * 65535.0;
+	b->red = (int) (red * 65535.0 + 0.5);
+	b->green = (int) (green * 65535.0 + 0.5);
+	b->blue = (int) (blue * 65535.0 + 0.5);
 }
+
+#define HIGHLIGHT_MULT 0.7
+#define LIGHT_MULT     1.5
+#define DARK_MULT      0.5
 
 static void
 my_get_colors(GdkColormap *colormap, gulong background, gulong *top, gulong *bottom, gulong *highlight)
@@ -690,21 +711,26 @@ my_get_colors(GdkColormap *colormap, gulong background, gulong *top, gulong *bot
 	GdkColor cbackground;
 	GdkColor ctop, cbottom, chighlight;
 
+	/* I think this should use a ColorContext instead of allocating colors itself... - Federico */
+
 	cbackground.pixel = background;
 	my_x_query_colors(colormap, &cbackground, 1);
 
 	if (top) {
-		shade_color(&cbackground, &ctop, LIGHTNESS_MULT * LIGHTNESS_MULT);
+		shade_color(&cbackground, &ctop, LIGHT_MULT);
+		gdk_color_alloc(colormap, &ctop);
 		*top = ctop.pixel;
 	}
 
 	if (bottom) {
-		shade_color(&cbackground, &cbottom, DARKNESS_MULT * LIGHTNESS_MULT);
+		shade_color(&cbackground, &cbottom, DARK_MULT);
+		gdk_color_alloc(colormap, &cbottom);
 		*bottom = cbottom.pixel;
 	}
 
 	if (highlight) {
-		shade_color(&cbackground, &chighlight, LIGHTNESS_MULT);
+		shade_color(&cbackground, &chighlight, HIGHLIGHT_MULT);
+		gdk_color_alloc(colormap, &chighlight);
 		*highlight = chighlight.pixel;
 	}
 }
