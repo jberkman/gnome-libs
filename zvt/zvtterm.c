@@ -1211,6 +1211,23 @@ zvt_term_fix_scrollbar (ZvtTerm *term)
   gtk_signal_emit_by_name (GTK_OBJECT (term->adjustment), "changed");
 }
 
+static void
+request_paste (GtkWidget *widget)
+{
+  GdkAtom string_atom;
+
+  /* Get the atom corresonding to the target "STRING" */
+  string_atom = gdk_atom_intern ("STRING", FALSE);
+
+  if (string_atom == GDK_NONE) {
+    g_warning("WARNING: Could not get string atom\n");
+  }
+
+  /* And request the "STRING" target for the primary selection */
+  gtk_selection_convert (widget, GDK_SELECTION_PRIMARY, string_atom,
+			 GDK_CURRENT_TIME);
+}
+
 /*
   perhaps most of the button press stuff could be shifted
   to the update file.  as for the report_button function
@@ -1224,7 +1241,6 @@ zvt_term_button_press (GtkWidget      *widget,
 {
   gint x,y;
   GdkModifierType mask;
-  GdkAtom string_atom;
   struct _vtx *vx;
   ZvtTerm *term;
 
@@ -1303,16 +1319,7 @@ zvt_term_button_press (GtkWidget      *widget,
     break;
 
   case 2:			/* middle button - paste */
-    /* Get the atom corresonding to the target "STRING" */
-    string_atom = gdk_atom_intern ("STRING", FALSE);
-
-    if (string_atom == GDK_NONE) {
-      printf("WARNING: Could not get string atom\n");
-    }
-
-    /* And request the "STRING" target for the primary selection */
-    gtk_selection_convert (widget, GDK_SELECTION_PRIMARY, string_atom,
-			   GDK_CURRENT_TIME);
+    request_paste (widget);
     break;
 
   case 3:			/* right button - select extend? */
@@ -1783,7 +1790,11 @@ zvt_term_key_press (GtkWidget *widget, GdkEventKey *event)
     break;
   case GDK_KP_Insert:
   case GDK_Insert:
-    p+=sprintf (p, "\033[2~");
+    if ((event->state & GDK_SHIFT_MASK) == GDK_SHIFT_MASK){
+        request_paste (widget);
+    } else {
+      p+=sprintf (p, "\033[2~");
+    }
     break;
   case GDK_Delete:
     if (event->state & GDK_MOD1_MASK)
