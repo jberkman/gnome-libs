@@ -273,27 +273,27 @@
 0	string		-rom1fs-\0	application/x-filesystem
 0	lelong		0x1b031336L	application/x-bootable
 0x18b	string	OS/2	application/x-bootable
-0	string		FONT		application/x-font
-0	short		0436		application/x-font
-0	short		017001		application/x-font
-0	string		%!PS-AdobeFont-1.0	application/x-postscript
-6	string		%!PS-AdobeFont-1.0	application/x-postscript
-0	belong		00000004		application/x-font
-0	lelong		00000004		application/x-font
-0	string		STARTFONT\040		application/x-font
-0	string		\001fcp			application/x-font
-0	string		D1.0\015		application/x-font
-0	string		flf		application/x-font
+0	string		FONT		font/x-vfont
+0	short		0436		font/x-vfont
+0	short		017001		font/x-vfont
+0	string		%!PS-AdobeFont-1.0	font/type1
+6	string		%!PS-AdobeFont-1.0	font/type1
+0	belong		00000004		font/x-snf
+0	lelong		00000004		font/x-snf
+0	string		STARTFONT\040		font/x-bdf
+0	string		\001fcp			font/x-pcf
+0	string		D1.0\015		font/x-speedo
+0	string		flf		font/x-figlet
 0	string		flc		application/x-font
-0	belong		0x14025919	application/x-font
-0	belong		0xff464f4e	application/x-font
-7	belong		0x00454741	application/x-font
-7	belong		0x00564944	application/x-font
-4098	string		DOSFONT		application/x-font
+0	belong		0x14025919	font/x-libgrx
+0	belong		0xff464f4e	font/x-dos
+7	belong		0x00454741	font/x-dos
+7	belong		0x00564944	font/x-dos
+4098	string		DOSFONT		font/x-dos
 0	string		\<MakerFile	application/x-framemaker
 0	string		\<MIFFile	application/x-framemaker
 0	string		\<MakerDictionary	application/x-framemaker
-0	string		\<MakerScreenFont	application/x-framemaker
+0	string		\<MakerScreenFont	font/x-framemaker
 0	string		\<MML		application/x-framemaker
 0	string		\<BookFile	application/x-framemaker
 0	string		\<Maker	application/x-framemaker
@@ -311,6 +311,7 @@
 0	string		\225\4\22\336	application/x-locale
 0	beshort		0627		application/x-executable-file
 0	beshort		0624		application/x-executable-file
+0	string		\000\001\000\000\000	font/ttf
 0       long            01203604016     application/data
 0       long            01702407010     application/data
 0       long            01003405017     application/data
@@ -350,7 +351,7 @@
 0	long		0x020cff65	application/x-library-file
 0	long		0x0208ff65	application/x-library-file
 0	long		0x015821a6	application/core
-0	long		0x4da7eee8	application/x-font
+0	long		0x4da7eee8	font/x-hp-windows
 0	string		Bitmapfile	image/unknown
 0	string		IMGfile	CIS 	image/unknown
 0	long		0x020c010c	application/x-lisp
@@ -461,7 +462,7 @@
 216	lelong		0421		Linux/i386 core file
 2	string		LILO		Linux/i386 LILO boot/chain loader
 0	string		0.9
-0	leshort		0x0436		Linux/i386 PC Screen Font data,
+0	leshort		0x0436		font/linux-psf
 4086	string		SWAP-SPACE	Linux/i386 swap file
 0	leshort		0x0183		ECOFF alpha
 514		string	HdrS		Linux kernel
@@ -498,10 +499,10 @@
 65	string		cdev			Macintosh Control Panel(rsrc + data)
 0	string		INIT			Macintosh Extension (data)
 65	string		INIT			Macintosh Extension(rsrc + data)
-0	string		FFIL			Macintosh Truetype Font (data)
-65	string		FFIL			Macintosh Truetype Font(rsrc + data)
-0	string		LWFN			Macintosh Postscript Font (data)
-65	string		LWFN			Macintosh Postscript Font(rsrc + data)
+0	string		FFIL			font/ttf
+65	string		FFIL			font/ttf
+0	string		LWFN			font/type1
+65	string		LWFN			font/type1
 0	string		PACT			Macintosh Compact Pro Archive (data)
 65	string		PACT			Macintosh Compact Pro Archive(rsrc + data)
 0	string		ttro			Macintosh TeachText File (data)
@@ -549,19 +550,19 @@
 0	leshort		0x268	MS Windows COFF Motorola 68000 object file
 0	leshort		0x1f0	MS Windows COFF PowerPC object file
 0	leshort		0x290	MS Windows COFF PA-RISC object file
-0	string	MZ		MS-DOS executable (EXE)
+0	string		MZ	application/x-ms-dos-executable
 0	string		LZ		MS-DOS executable (built-in)
 0	string		regf		Windows NT Registry file
-2080	string	Microsoft\ Word\ 6.0\ Document	%s
-2080	string	Documento\ Microsoft\ Word\ 6 Spanish Microsoft Word 6 document data
-2112	string	MSWordDoc	Microsoft Word document data
-0	belong	0x31be0000	Microsoft Word Document
-0       string  PO^Q`           Microsoft Word 6.0 Document
-2080	string	Microsoft\ Excel\ 5.0\ Worksheet	%s
-2114	string	Biff5		Microsoft Excel 5.0 Worksheet
+2080	string	Microsoft\ Word\ 6.0\ Document	text/vnd.ms-word
+2080	string	Documento\ Microsoft\ Word\ 6	text/vnd.ms-word
+2112	string	MSWordDoc	text/vnd.ms-word
+0	belong	0x31be0000	text/vnd.ms-word
+0       string  PO^Q`           text/vnd.ms-word
+2080	string	Microsoft\ Excel\ 5.0\ Worksheet	application/vnd.ms-excel
+2114	string	Biff5		application/vnd.ms-excel
 0	belong	0x00001a00	Lotus 1-2-3
 0	belong	0x00000200 	Lotus 1-2-3
-1       string          WPC             WordPerfect document
+1       string          WPC             text/vnd.wordperfect
 0	beshort		000610	Tower/XP rel 2 object
 0	beshort		000615	Tower/XP rel 2 object
 0	beshort		000620	Tower/XP rel 3 object
@@ -609,14 +610,14 @@
 0	belong&0377777777	043600410	NetBSD/arm32 pure
 0	belong&0377777777	043600407	NetBSD/arm32
 0	belong&0377777777	043600507	NetBSD/arm32 core
-0	string		StartFontMetrics	ASCII font metrics
-0	string		StartFont	ASCII font bits
-0	belong		0x137A2944	NeWS bitmap font
-0	belong		0x137A2947	NeWS font family
-0	belong		0x137A2950	scalable OpenFont binary
-0	belong		0x137A2951	encrypted scalable OpenFont binary
-8	belong		0x137A2B45	X11/NeWS bitmap font
-8	belong		0x137A2B48	X11/NeWS font family
+0	string		StartFontMetrics	font/x-sunos-news
+0	string		StartFont	font/x-sunos-news
+0	belong		0x137A2944	font/x-sunos-news
+0	belong		0x137A2947	font/x-sunos-news
+0	belong		0x137A2950	font/x-sunos-news
+0	belong		0x137A2951	font/x-sunos-news
+8	belong		0x137A2B45	font/x-sunos-news
+8	belong		0x137A2B48	font/x-sunos-news
 0	string		Octave-1-L	Octave binary data (little endian)
 0	string		Octave-1-B	Octave binary data (big endian)
 0	string		\177OLF		OLF
@@ -655,8 +656,8 @@
 0	long		0x50900107	Pyramid 90x family executable
 0	long		0x50900108	Pyramid 90x family pure executable
 0	long		0x5090010b	Pyramid 90x family demand paged pure executable
-0	beshort		0xedab    	
-0	string		{\\rtf		Rich Text Format data,
+0	beshort		0xedab    	application/x-rpm
+0	string		{\\rtf		application/rtf
 38	string		Spreadsheet	sc spreadsheet file
 8	string		\001s\ 			SCCS archive data
 0	byte	046	  Sendmail frozen configuration 
@@ -755,13 +756,13 @@
 0	short		0433		Curses screen image
 0	short		0434		Curses screen image
 0	string		\367\002	TeX DVI file
-0	string		\367\203	TeX generic font data
-0	string		\367\131	TeX packed font data
-0	string		\367\312	TeX virtual font data
+0	string		\367\203	font/x-tex
+0	string		\367\131	font/x-tex
+0	string		\367\312	font/x-tex
 0	string		This\ is\ TeX,	TeX transcript text
 0	string		This\ is\ METAFONT,	METAFONT transcript text
-2	string		\000\021	TeX font metric data
-2	string		\000\022	TeX font metric data
+2	string		\000\021	font/x-tex-tfm
+2	string		\000\022	font/x-tex-tfm
 0	string		\\input\ texinfo	Texinfo source text
 0	string		This\ is\ Info\ file	GNU Info text
 0	string		\\input		TeX document text
