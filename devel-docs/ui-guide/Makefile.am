@@ -1,1 +1,1 @@
-EXTRA_DIST = ui-guide.txt
+EXTRA_DIST = ui-guide.txt ui-guide.sgml
