@@ -1,3 +1,27 @@
+1998-04-29  Miguel de Icaza  <miguel@nuclecu.unam.mx>
+
+	* zvtterm.c (zvt_term_realize): Removed the
+	GDK_POINTER_MOTION_HINT_MASK, as this was preventing the motion
+	from being reported back to the application;  Removed the
+	GDK_POINTER_MOTION_MASK, as we are only interested in the events
+	when the button is held pressed.
+	
+	(zvt_term_button_press): If shift key is pressed, then do not try
+	to report the button operations to the application (standars
+	behaviour :-)
+
+	(zvt_term_readdata): signal_emission might have killed this
+	process, do not call zvt_term_fix_scrollbar (ie, do a return on
+	the if-part for the dead process).
+
+1998-04-28  Miguel de Icaza  <miguel@nuclecu.unam.mx>
+
+	* vt.c (vt_newline): Initialize the whole array, as it can be
+	accessed past the screen size when the whole line is selected. 
+
+	* zvtterm.c (zvt_term_readdata): Always show the cursor if
+	blinking has been disabled.
+	
 1998-04-30  Michael Zucchi  <zucchi@zzedzone.box.net.au>
 
 	* zvtterm.c (vt_draw_text): Bold now renders 'bright' colours.

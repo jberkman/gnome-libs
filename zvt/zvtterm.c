@@ -248,10 +248,8 @@ zvt_term_realize (GtkWidget *widget)
   attributes.wclass = GDK_INPUT_OUTPUT;
   attributes.window_type = GDK_WINDOW_CHILD;
   attributes.event_mask = gtk_widget_get_events (widget) | 
-    GDK_EXPOSURE_MASK | GDK_BUTTON_PRESS_MASK | 
-    GDK_BUTTON_RELEASE_MASK | GDK_POINTER_MOTION_MASK |
-    GDK_POINTER_MOTION_HINT_MASK |
-    GDK_KEY_PRESS_MASK;
+    GDK_EXPOSURE_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_MOTION_MASK |
+    GDK_BUTTON_RELEASE_MASK | GDK_KEY_PRESS_MASK;
   attributes.visual = gtk_widget_get_visual (widget);
   attributes.colormap = gtk_widget_get_colormap (widget);
 
@@ -631,9 +629,10 @@ zvt_term_button_press (GtkWidget      *widget,
   x/=term->charwidth;
   y=y/term->charheight+vx->vt.scrollbackoffset;
 
-  if (vt_report_button(&vx->vt, event->button, event->state, x, y)) {
-    return FALSE;
-  }
+  /* Shift is an overwrite key for the reporting of the buttons */
+  if (!(event->state & GDK_SHIFT_MASK))
+    if (vt_report_button(&vx->vt, event->button, event->state, x, y)) 
+      return FALSE;
     
   switch(event->button) {
   case 1:			/* left button */
@@ -815,7 +814,6 @@ zvt_term_motion_notify (GtkWidget      *widget,
   d(printf("Motion notify\n"));
 
   if (vx->selectiontype != VT_SELTYPE_NONE) {
-
     x=(((int)event->x))/term->charwidth;
     y=(((int)event->y))/term->charheight;
     
@@ -1256,6 +1254,7 @@ static void zvt_term_readdata(gpointer data, gint fd, GdkInputCondition conditio
 
     /* FIXME: raise signal to caller ... */
     /*gtk_exit(1);*/
+    return;
   }
 
   /* fix scroll bar */
