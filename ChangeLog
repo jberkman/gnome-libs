@@ -1,3 +1,10 @@
+1998-05-20  Miguel de Icaza  <miguel@nuclecu.unam.mx>
+
+	* libgnome/gnome-config.c (gnome_config_make_vector,
+	gnome_config_assemble_vector): export the routines that make a
+	vector out from a string and the routine that assembles a vector
+	into a string.  We need them outside as well.
+
 1998-05-19  Miguel de Icaza  <miguel@nuclecu.unam.mx>
 
 	* libgnome/gnome-dentry.c (gnome_desktop_entry_launch_with_args):
