@@ -1,3 +1,12 @@
+Wed Jul 22 16:47:14 1998  Tom Tromey  <tromey@cygnus.com>
+
+	* libgnome/gnome-config.c (_gnome_config_get_int_with_default): It
+	isn't an error if the key is not found.
+	(_gnome_config_get_float_with_default): Likewise.
+	(_gnome_config_get_bool_with_default): Likewise.
+	(_gnome_config_get_translated_string_with_default): Removed legacy
+	"C" locale code.
+
 Sat Jul 18 20:18:57 1998  John Ellis  <johne@bellatlantic.net>
 
         * libgnome/gnome-dentry.[ch] (gnome_desktop_entry_load_unconditional):
