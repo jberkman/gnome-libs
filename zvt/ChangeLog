@@ -2,6 +2,8 @@
 
 	* vt.c (vt_cleareos): Fix ^[J command to clear in the right
 	direction.
+	(vt_resize): When expanding lines from scrollback, fill remainder
+	of line with attributes of last character.
 
 1998-11-11  Miguel de Icaza  <miguel@nuclecu.unam.mx>
 

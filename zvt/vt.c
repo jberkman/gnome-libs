@@ -1571,8 +1571,11 @@ void vt_resize(struct vt_em *vt, int width, int height, int pixwidth, int pixhei
 
 	len = nn->width<wn->width?nn->width:wn->width;
 	memcpy(nn->data, wn->data, len*sizeof(nn->data[0]));
+	/* clear rest of screen (if it exists) with blanks of the
+	   same attributes as the last character */
+	c = nn->data[len-1]&0xffff0000;
 	for(j=wn->width;j<nn->width;j++) {
-	  nn->data[j]=wn->data[j];
+	  nn->data[j]=c;
 	}
 	vt_mem_unget(&vt->mem_list, wn);
 	vt_list_addhead(&vt->lines, (struct vt_listnode *)nn);
