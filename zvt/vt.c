@@ -48,14 +48,6 @@
 /* define to 'x' to enable copius debug of this module */
 #define d(x)
 
-void vt_update(struct vt_em *vt, int state);
-void vt_scroll_update(struct vt_em *vt, int firstline, struct vt_line *fn, int count, int offset);
-void vt_line_update(struct vt_em *vt, struct vt_line *l, int line, int always, int start, int end);
-
-/*extern void vt_draw_text(int col, int row, char *text, int len, int attr);
-extern void vt_cursor_state(struct vt_em *vt, int state);
-extern void vt_scroll_area(int firstrow, int count, int offset);*/
-
 /* draw selected text (if selected!) */
 void vt_draw_text_select(int col, int row, char *text, int len, int attr);
 
@@ -103,12 +95,12 @@ void vt_scrollback_set(struct vt_em *vt, int lines)
 {
   struct vt_line *ln;
 
-  while (vt->scrollbacklines >= lines) {
+  /* note that it is safe to call vt_mem_push() with null memory, in the
+     (erronous) event that scrollbacklines != sizeof(scrollback list) */
+  while (vt->scrollbacklines > lines) {
     ln = (struct vt_line *)vt_list_remhead(&vt->scrollback); /* remove the top of list line */
-    if (ln){
-	    vt_mem_push(&vt->mem_list, ln, sizeof(struct vt_line)+sizeof(uint32)*ln->width);
-	    vt->scrollbacklines--;
-    }
+    vt_mem_push(&vt->mem_list, ln, sizeof(struct vt_line)+sizeof(uint32)*ln->width);
+    vt->scrollbacklines--;
   }
   vt->scrollbackmax = lines;
 }
@@ -150,9 +142,12 @@ void vt_scroll_up(struct vt_em *vt, int count)
 {
   struct vt_line *wn, *nn;
   int i;
+  int blank;
 
   d(printf("vt_scroll_up(%d) (top = %d bottom=%d)\n", count, vt->scrolltop, vt->scrollbottom));
   /* FIXME: do this properly */
+
+  blank = vt->attr;
 
   while (count>0) {
     /* first, find the line to remove */
@@ -165,15 +160,18 @@ void vt_scroll_up(struct vt_em *vt, int count)
     }
 #endif /* SCROLLBACK_BUFFER */
 
-    /* clear and move the line */
-    for (i=0;i<wn->width;i++) {
-      wn->data[i] = vt->attr|VTATTR_CHANGED; /* FIXME: do attributes too */
-    }
+    for (i=0;i<wn->width;i++)
+	/*if (wn->data[i] != blank)*/
+      wn->data[i] = vt->attr|VTATTR_CHANGED;
 
     /* FIXME: this sometimes makes it do too much work, but if it
        isn't done this way, it seems to cause problems */
-    wn->modcount = wn->width;
-    wn->line=-1;		/* flag new line */
+    if (wn->line == -1) {
+      wn->modcount = wn->width;	/* make sure a wrap-scrolled line isn't marked clean */
+    } else {
+      wn->modcount = 0;		/* this speeds it up (heaps) but doesn't work :( */
+      wn->line=-1;		/* flag new line */
+    }
 
     /* insert it .. (on bottom of scroll area) */
     nn=(struct vt_line *)vt_list_index(&vt->lines, vt->scrollbottom);
@@ -200,10 +198,9 @@ void vt_scroll_down(struct vt_em *vt, int count)
     
     /* clear it */
     for (i=0;i<wn->width;i++) {
-      wn->data[i] = vt->attr|VTATTR_CHANGED; /* FIXME: do attributes too */
+      wn->data[i] = vt->attr|VTATTR_CHANGED;
     }
     wn->modcount=0;
-    /*wn->line=vt->scrolltop;*/
     wn->line = -1;		/* flag new line */
     
     /* insert it .. (on bottom of scroll area) */
@@ -1027,6 +1024,9 @@ struct vt_em *vt_init(struct vt_em *vt, int width, int height)
   int i;
 
   vt_list_new(&vt->lines);
+#ifdef DOUBLE_BUFFER
+  vt_list_new(&vt->lines_back);
+#endif
   vt_list_new(&vt->scrollback);
 
   vt->width = width;
@@ -1039,8 +1039,12 @@ struct vt_em *vt_init(struct vt_em *vt, int width, int height)
   for (i=0;i<height;i++) {
     vl = vt_newline(vt);
     vl->line = i;
-    d(vt_dump(vt));
     vt_list_addtail(&vt->lines, (struct vt_listnode *)vl);
+#ifdef DOUBLE_BUFFER
+    vl = vt_newline(vt);
+    vl->line = i;
+    vt_list_addtail(&vt->lines_back, (struct vt_listnode *)vl);
+#endif
   }
   vt->cursorx=0;
   vt->cursory=0;
@@ -1079,7 +1083,6 @@ int vt_forkpty(struct vt_em *vt)
 {
   struct winsize win;
   char ttyname[256];
-  int i;
 
   win.ws_row = 24;
   win.ws_col = 80;
@@ -1162,7 +1165,35 @@ void vt_destroy(struct vt_em *vt)
 
   /* done */
 }
-  
+
+#ifdef DOUBLE_BUFFER
+/*
+  swap 'visible'/rendering buffer
+*/
+void vt_swap_buffers(struct vt_em *vt)
+{
+  struct vt_line *lh, *lt;
+
+  /* need to swap 2 list headers.
+     tricky bit is catering for all the back pointers? */
+  lh = vt->lines.head;
+  lt = vt->lines.tailpred;
+
+  /* first, the head pointers */
+  vt->lines.head = vt->lines_back.head;
+  vt->lines.head->prev = &vt->lines.tailpred;
+
+  vt->lines_back.head = lh;
+  lh->prev = &vt->lines_back.tailpred;
+
+  /* now, the tail pointers? */
+  vt->lines.tailpred = vt->lines_back.tailpred;
+  vt->lines.tailpred->next = &vt->lines_back.tail;
+
+  vt->lines_back.tailpred = lt;
+  lt->next = &vt->lines.tail;
+}  
+#endif
 
 /*
   resize the window to a new window size
@@ -1174,6 +1205,9 @@ void vt_resize(struct vt_em *vt, int width, int height, int pixwidth, int pixhei
   int count;
   struct vt_line *wn, *nn;
   int i;
+#ifdef DOUBLE_BUFFER
+  int pass;
+#endif
   int old_width;
   struct winsize win;
 
@@ -1195,6 +1229,13 @@ void vt_resize(struct vt_em *vt, int width, int height, int pixwidth, int pixhei
       vt_list_remove((struct vt_listnode *)wn); /* remove this line */
       vt_scrollback_add(vt, wn); /* add it to scrollback buffer */
       free(wn);			/* and free it */
+
+#ifdef DOUBLE_BUFFER
+      /* repeat for backbuffer */
+      if ( (wn = (struct vt_line *)vt_list_remhead(&vt->lines_back)) )
+	free(wn);
+#endif
+
       wn = nn;
       nn = nn->next;
       count--;
@@ -1220,6 +1261,9 @@ void vt_resize(struct vt_em *vt, int width, int height, int pixwidth, int pixhei
     d(printf("adding %d lines to buffer window\n", count));
     for(i=0;i<count;i++) {
       vt_list_addtail(&vt->lines, (struct vt_listnode *)vt_newline(vt));
+#ifdef DOUBLE_BUFFER
+      vt_list_addtail(&vt->lines_back, (struct vt_listnode *)vt_newline(vt));
+#endif
     }
   } /* otherwise width may have changed? */
 
@@ -1231,27 +1275,38 @@ void vt_resize(struct vt_em *vt, int width, int height, int pixwidth, int pixhei
   }
 
   /* now, scan all lines visible, and make them the right width */
-  wn = (struct vt_line *)vt->lines.head;
-  nn = wn->next;
-  count=height;
-  while (nn) {
-    if (wn->width != width) {
-      wn = realloc(wn, sizeof(struct vt_line) + (sizeof(uint32)*width)); /* always allocates 1 more 'char' pos */
-      if (!wn) {
-	printf("WARNING: memory failure.  expect the unexpected!\n");
-	break;			/* memory failure ... quit? */
+  /* this funny for construct does first the front buffer, and then the
+     back buffer */
+#ifdef DOUBLE_BUFFER
+  for(pass=0, wn = (struct vt_line *)vt->lines.head;
+      pass<2;
+      wn = (struct vt_line *)vt->lines_back.head, pass++) {
+#else
+    wn = (struct vt_line *)vt->lines.head;
+#endif
+    nn = wn->next;
+    count=height;
+    while (nn) {
+      if (wn->width != width) {
+	wn = realloc(wn, sizeof(struct vt_line) + (sizeof(uint32)*width)); /* always allocates 1 more 'char' pos */
+	if (!wn) {
+	  printf("WARNING: memory failure.  expect the unexpected!\n");
+	  break;			/* memory failure ... quit? */
+	}
+	wn->next->prev = wn;	/* re-link line into linked list */
+	wn->prev->next = wn;
+	for(i=wn->width;i<width;i++) { /* if the line got bigger, fix it up */
+	  wn->data[i]=vt->attr | VTATTR_CHANGED;
+	  wn->modcount++;		/* FIXME: optimise? */
+	}
+	wn->width = width;
       }
-      wn->next->prev = wn;	/* re-link line into linked list */
-      wn->prev->next = wn;
-      for(i=wn->width;i<width;i++) { /* if the line got bigger, fix it up */
-	wn->data[i]=vt->attr | VTATTR_CHANGED;
-	wn->modcount++;		/* FIXME: optimise? */
-      }
-      wn->width = width;
+      wn = nn;
+      nn = nn->next;
     }
-    wn = nn;
-    nn = nn->next;
+#ifdef DOUBLE_BUFFER
   }
+#endif
 
   /* re-fix 'this line' pointer */
   vt->this = (struct vt_line *)vt_list_index(&vt->lines, vt->cursory);

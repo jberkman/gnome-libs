@@ -119,6 +119,8 @@ static void vt_line_update(struct _vtx *vx, struct vt_line *l, int line, int alw
   d(fwrite(l->data, l->width, 1, stdout));
   d(printf("\n"));
 
+  d(printf("updating line from (%d-%d) ->", start, end));
+
   /* check range conditions */
   if (end>l->width) {
     end = l->width;
@@ -129,12 +131,34 @@ static void vt_line_update(struct _vtx *vx, struct vt_line *l, int line, int alw
 
   runbuffer = alloca(vx->vt.width * sizeof(char));
 
+  /* limit update range, based on changed characters */
+  if (!always) {
+    while (start<end) {
+      if (l->data[start] & VTATTR_CHANGED)
+	break;
+      start++;
+    }
+
+    while (end>start) {
+      if (l->data[end-1] & VTATTR_CHANGED) {
+	break;
+      }
+      end--;
+    }
+    if (end<l->width)
+      end++;
+  }
+
+  d(printf("actually (%d-%d)?\n", start, end));
+
   run=0;
   attr=0;
   runstart = 0;
   p = 0;
   for(i=start;i<end;i++) {
+#if 0
     if (always || ((l->data[i] & VTATTR_CHANGED)) ) {
+#endif
       if (run==0) {
 	runstart = i;
 	p = runbuffer;
@@ -157,6 +181,7 @@ static void vt_line_update(struct _vtx *vx, struct vt_line *l, int line, int alw
       /*c=' ';*/
       *p++=c;
       run++;
+#if 0
     } else {
       if (run) {
 	d(printf("found a run of %d characters from %d: '", run, runstart));
@@ -166,6 +191,7 @@ static void vt_line_update(struct _vtx *vx, struct vt_line *l, int line, int alw
 	run=0;
       }
     }
+#endif
     l->data[i] &= ~VTATTR_CHANGED;
   }
   if (run) {
@@ -438,9 +464,9 @@ void vt_update(struct _vtx *vx, int update_state)
     line=0;
     while (nn) {
       if (wn->modcount || update_state) {
-	if (wn->line==-1)
-	  vt_line_update(vx, wn, line, UPDATE_REFRESH, 0, wn->width);
-	else
+	/*if (wn->line==-1)
+	  vt_line_update(vx, wn, line, 0, 0, wn->width);
+	  else*/
 	  vt_line_update(vx, wn, line, update_state, 0, wn->width);
       }
       wn->line = line;		/* make sure line is reset */
@@ -449,6 +475,11 @@ void vt_update(struct _vtx *vx, int update_state)
       nn=nn->next;
     }
   }
+
+#ifdef DOUBLE_BUFFER
+  /* 'save' just-rendered buffer */
+  vt_swap_buffers(&vx->vt);
+#endif
 
   d(vt_dump(&vx.vt));
 
@@ -470,6 +501,12 @@ void vt_update_rect(struct _vtx *vx, int csx, int csy, int cex, int cey)
   old_state = vt_cursor_state(vx->user_data, 0);	/* ensure cursor is really off */
 
   d(printf("updating (%d,%d) - (%d,%d)\n", csx, csy, cex, cey));
+
+  /* bounds check */
+  if (cex>vx->vt.width)
+    cex = vx->vt.width;
+  if (csx>vx->vt.width)
+    csx = vx->vt.width;
 
   lines = cey-csy;
   wn = (struct vt_line *)vt_list_index(&vx->vt.lines, csy);
@@ -697,7 +734,6 @@ char *vt_get_selection(struct _vtx *vx, int *len)
     vx->selection_size = 0;
     return 0;
   }
-
 
   /* FIXME: check 'wn' exists ... */
 

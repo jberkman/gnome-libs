@@ -1235,8 +1235,8 @@ static void zvt_term_readdata(gpointer data, gint fd, GdkInputCondition conditio
     saveerrno = errno;
   }
 
-  if (!term->blink_enabled)
-    vt_cursor_state (term, 1);
+  /* *always* turn the cursor back on */
+  vt_cursor_state (term, 1);
   
   /* flush all X events - this is really necessary to stop X queuing up
      lots of screen updates and reducing interactivity on a busy terminal */
@@ -1317,17 +1317,20 @@ void vt_draw_text(void *user_data, int col, int row, char *text, int len, int at
 
   vx = term->vx;
 
-  f=term->font;
-  if (attr&VTATTR_BOLD)
-    f=term->font_bold;
-
-  fore = 7;
+  /* leave this here until its verified no longer needed :)
+    fore = 7;
   back = 0;
-  if (attr & VTATTR_FORE_SET)
-    fore = (attr & VTATTR_FORECOLOURM) >> VTATTR_FORECOLOURB;
+  if (attr & VTATTR_FORE_SET)*/
+  fore = (attr & VTATTR_FORECOLOURM) >> VTATTR_FORECOLOURB;
 
-  if (attr & VTATTR_BACK_SET)
-    back = (attr & VTATTR_BACKCOLOURM) >> VTATTR_BACKCOLOURB;
+  /*if (attr & VTATTR_BACK_SET)*/
+  back = (attr & VTATTR_BACKCOLOURM) >> VTATTR_BACKCOLOURB;
+
+  f=term->font;
+  if (attr&VTATTR_BOLD) {
+    fore |= 8;
+    f=term->font_bold;
+  }
 
   if (attr & VTATTR_REVERSE){
     int tmp = fore;
@@ -1413,6 +1416,14 @@ void vt_scroll_area(void *user_data, int firstrow, int count, int offset)
 		       width, (-offset)*term->charheight);
   }
 
+#if 1
+  /* this seems to slow it down, maybe, but I can't tell.
+     it is also *not* necessary in this case, 'cause zvt
+     will never try and scroll the same area twice, between
+     full updates
+
+     however, leaving it in cleans up rendering a little */
+
   /* fix up the screen display after a scroll */
   while ((event = gdk_event_get_graphics_expose (widget->window)) 
 	 != NULL) {
@@ -1424,6 +1435,7 @@ void vt_scroll_area(void *user_data, int firstrow, int count, int offset)
       }
     gdk_event_free (event);
   }
+#endif
 
 }
 

@@ -1,3 +1,33 @@
+1998-04-30  Michael Zucchi  <zucchi@zzedzone.box.net.au>
+
+	* zvtterm.c (vt_draw_text): Bold now renders 'bright' colours.
+	This is really only necessary (?) to emulate the use of the linux
+	console colours.
+
+	* vt.c (vt_swap_buffers): New function.  Not used yet.  Working on
+	some very experimental update optimisation code.  Maybe it will
+	speed things up a little <maybe>.
+
+	* update.c (vt_update_rect): Added range check for cex/csx.  Could
+	be 1 character too large from expose event.
+
+	* zvtterm.c (zvt_term_readdata): *ALWAYS* turn the cursor back on
+	after an update.  This must have got lost somewhere and was the
+	cause of the "blinking cursor usually off" bug that's been giving
+	me the shits :)  Ahhhh, thats much better.
+	(vt_draw_text): Removed the need for the "VTATTR_FORE/BACK_SET"
+	flag.  All it needed was a changed VTATTR_CLEAR define :)
+	Check it works properly though Miguel?
+
+	* vt.c: Removed some unecessary prototypes/comments.
+		Oh dear, its tommorow already :(
+
+1998-04-29  Michael Zucchi  <zucchi@zzedzone.box.net.au>
+
+	* vt.c (vt_scrollback_set): Changed back to the way it was and
+	also fixed the boundary condition.  It is safe to call vt_mem_push
+	with a null location.
+
 1998-04-28  Miguel de Icaza  <miguel@nuclecu.unam.mx>
 
 	* vt.c (vt_scrollback_set): ln might be null after calling

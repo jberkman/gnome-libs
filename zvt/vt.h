@@ -55,13 +55,14 @@ struct vt_line {
 #define VTATTR_BACK_SET   0x10000000
 #define VTATTR_CHANGED    0x80000000
 
-#define VTATTR_CLEAR 0x00	/* 'clear' character and attributes */
-
 /* bitmasks for colour map information */
 #define VTATTR_FORECOLOURM 0x00f00000
 #define VTATTR_BACKCOLOURM 0x000f0000
 #define VTATTR_FORECOLOURB 20
 #define VTATTR_BACKCOLOURB 16
+
+/* 'clear' character and attributes of default clear character */
+#define VTATTR_CLEAR (7<<VTATTR_FORECOLOURB)|(0<<VTATTR_BACKCOLOURB)|0x0000
 
 struct vt_em {
   int cursorx, cursory;		/* cursor position in characters */
@@ -97,6 +98,7 @@ struct vt_em {
   struct vt_line *this;		/* the current line */
 
   struct vt_list lines;		/* double linked list of lines */
+  struct vt_list lines_back;	/* 'last rendered' buffer.  used to optimise updates */
 
   /* scroll back stuff */
   struct vt_list scrollback;	/* double linked list of scrollback lines */
@@ -117,6 +119,8 @@ struct vt_em *vt_init(struct vt_em *vt, int width, int height);
 void vt_destroy(struct vt_em *vt);
 void vt_resize(struct vt_em *vt, int width, int height, int pixwidth, int pixheight);
 void parse_vt(struct vt_em *vt, char *ptr, int length);
+
+void vt_swap_buffers(struct vt_em *vt);
 
 int vt_forkpty(struct vt_em *vt);
 int vt_readchild(struct vt_em *vt, char *buffer, int len);
