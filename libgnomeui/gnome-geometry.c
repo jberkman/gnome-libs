@@ -35,7 +35,6 @@ get_number (char **geometry)
 int
 gnome_parse_geometry (char *geometry, int *xpos, int *ypos, int *width, int *height)
 {
-	int value;
 	int substract;
 
 	g_return_val_if_fail (xpos != NULL, 0);
