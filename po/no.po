@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-libs 0.30\n"
-"POT-Creation-Date: 1998-12-03 19:50-0600\n"
-"PO-Revision-Date: 1998-11-20 00:35+0100\n"
+"POT-Creation-Date: 1998-12-06 20:41+0100\n"
+"PO-Revision-Date: 1998-12-06 20:50+0100\n"
 "Last-Translator: Kjartan Maraas <kmaraas@fib.hl.no>\n"
 "Language-Team: Norwegian <no@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -128,9 +128,8 @@ msgid "Remove Child"
 msgstr "Fjern barn"
 
 #: gnome-hello/gnome-hello-7-mdi.c:416
-#, fuzzy
 msgid "Children"
-msgstr "Barn/"
+msgstr "Barn"
 
 #: gnome-hello/gnome-hello-7-mdi.c:425
 msgid "Notebook"
@@ -284,9 +283,9 @@ msgid ""
 "Error on option %s: %s.\n"
 "Run '%s --help' to see a full list of available command line options.\n"
 msgstr ""
-"Feil ved valg %s: %s.\n"
+"Feil ved flagg %s: %s.\n"
 "Kjør '%s --help' for å få en full liste med tilgjengelige "
-"kommandolinjevalg.\n"
+"kommandolinjeflagg.\n"
 
 #: libgnomeui/gnome-about.c:186
 msgid "Author:"
@@ -300,7 +299,7 @@ msgstr "Forfattere:"
 msgid "Authors: "
 msgstr "Forfattere: "
 
-#: libgnomeui/gnome-about.c:565 libgnomeui/stock_demo.c:282
+#: libgnomeui/gnome-about.c:564 libgnomeui/stock_demo.c:282
 #: libgnomeui/winhints_demo.c:257
 msgid "About"
 msgstr "Om"
@@ -614,80 +613,80 @@ msgstr "Se på..."
 msgid "Loading Icons..."
 msgstr "Laster ikoner..."
 
-#: libgnomeui/gnome-init.c:166
+#: libgnomeui/gnome-init.c:165
 msgid "Gdk debugging flags to set"
 msgstr "Gdk avlusingsflagg som skal slås på"
 
-#: libgnomeui/gnome-init.c:166 libgnomeui/gnome-init.c:168
-#: libgnomeui/gnome-init.c:188 libgnomeui/gnome-init.c:190
+#: libgnomeui/gnome-init.c:165 libgnomeui/gnome-init.c:167
+#: libgnomeui/gnome-init.c:187 libgnomeui/gnome-init.c:189
 msgid "FLAGS"
 msgstr "FLAGG"
 
-#: libgnomeui/gnome-init.c:168
+#: libgnomeui/gnome-init.c:167
 msgid "Gdk debugging flags to unset"
 msgstr "Gdk avlusingsflagg som skal slås av"
 
-#: libgnomeui/gnome-init.c:170
+#: libgnomeui/gnome-init.c:169
 msgid "X display to use"
 msgstr "X-display som skal brukes"
 
-#: libgnomeui/gnome-init.c:170
+#: libgnomeui/gnome-init.c:169
 msgid "DISPLAY"
 msgstr "DISPLAY"
 
-#: libgnomeui/gnome-init.c:172
+#: libgnomeui/gnome-init.c:171
 msgid "Make X calls synchronous"
 msgstr "Bruk synkrone X-kall"
 
-#: libgnomeui/gnome-init.c:174
+#: libgnomeui/gnome-init.c:173
 msgid "Don't use X shared memory extension"
 msgstr "Ikke bruk X-utvidelse for delt minne"
 
-#: libgnomeui/gnome-init.c:176
+#: libgnomeui/gnome-init.c:175
 msgid "Program name as used by the window manager"
 msgstr "Programnavn som brukt av vindusbehandleren"
 
-#: libgnomeui/gnome-init.c:176
+#: libgnomeui/gnome-init.c:175
 msgid "NAME"
 msgstr "NAVN"
 
-#: libgnomeui/gnome-init.c:178
+#: libgnomeui/gnome-init.c:177
 msgid "Program class as used by the window manager"
 msgstr "Programklasse som brukt av vindusbehandleren"
 
-#: libgnomeui/gnome-init.c:178
+#: libgnomeui/gnome-init.c:177
 msgid "CLASS"
 msgstr "KLASSE"
 
-#: libgnomeui/gnome-init.c:180
+#: libgnomeui/gnome-init.c:179
 msgid "HOST"
 msgstr "VERT"
 
-#: libgnomeui/gnome-init.c:182
+#: libgnomeui/gnome-init.c:181
 msgid "PORT"
 msgstr "PORT"
 
-#: libgnomeui/gnome-init.c:184 libgnomeui/gnome-init.c:186
+#: libgnomeui/gnome-init.c:183 libgnomeui/gnome-init.c:185
 msgid "STYLE"
 msgstr "STIL"
 
-#: libgnomeui/gnome-init.c:188
+#: libgnomeui/gnome-init.c:187
 msgid "Gtk+ debugging flags to set"
 msgstr "Gtk+ avlusingsflagg som skal slås på"
 
-#: libgnomeui/gnome-init.c:190
+#: libgnomeui/gnome-init.c:189
 msgid "Gtk+ debugging flags to unset"
 msgstr "Gtk+ avlusingsflagg som skal slås av"
 
-#: libgnomeui/gnome-init.c:192
+#: libgnomeui/gnome-init.c:191
 msgid "Make all warnings fatal"
 msgstr "Gjør all advarsler til fatale"
 
-#: libgnomeui/gnome-init.c:194
+#: libgnomeui/gnome-init.c:193
 msgid "Load an additional Gtk module"
 msgstr "Last Gtk+ tilleggsmoduler"
 
-#: libgnomeui/gnome-init.c:194
+#: libgnomeui/gnome-init.c:193
 msgid "MODULE"
 msgstr "MODUL"
 
@@ -1014,34 +1013,37 @@ msgid ""
 "Couldn't open %s archive\n"
 "%s"
 msgstr ""
+"Kunne ikke åpne %s arkiv\n"
+"%s"
 
 #: libvfs/extfs.c:306 libvfs/extfs.c:326
 msgid "Inconsistent extfs archive"
-msgstr ""
+msgstr "Inkonsistent extfs-arkiv"
 
 #: libvfs/ftpfs.c:461
 #, c-format
 msgid " Could not set source routing (%s)"
-msgstr ""
+msgstr " Kunne ikke slå på kilderuting (%s)"
 
 #: libvfs/ftpfs.c:1863 libvfs/ftpfs.c:1878
 msgid ""
 "~/.netrc file has not correct mode.\n"
 "Remove password or correct mode."
 msgstr ""
+"~/.netrc filen har ikke korrekt modus.\n"
+"Fjern passordet eller korriger modus."
 
 #: libvfs/mcfs.c:155
 msgid " MCFS "
-msgstr ""
+msgstr " MCFS "
 
 #: libvfs/mcfs.c:155
 msgid " The server does not support this version "
-msgstr ""
+msgstr " Tjeneren støtter ikke denne versjonen "
 
 #: libvfs/mcfs.c:171
-#, fuzzy
 msgid " Warning "
-msgstr "Advarsel:"
+msgstr " Advarsel "
 
 #: libvfs/mcfs.c:172
 msgid ""
@@ -1049,32 +1051,33 @@ msgid ""
 " you need a password to log in, but the information may \n"
 " not be safe on the remote side.  Continue? \n"
 msgstr ""
+" Den eksterne tjeneren kjører ikke på en systemport \n"
+" Du trenger et passord for å logge inn, men det er mulig \n"
+" at informasjonen ikke er sikker på den andre siden. Fortsett? \n"
 
 #: libvfs/mcfs.c:175
-#, fuzzy
 msgid " Yes "
-msgstr "Ja"
+msgstr " Ja "
 
 #: libvfs/mcfs.c:175
-#, fuzzy
 msgid " No "
-msgstr "Nei"
+msgstr " Nei "
 
 #: libvfs/mcfs.c:177
 msgid " The remote server is running on strange port. Giving up.\n"
-msgstr ""
+msgstr " Den eksterne tjeneren kjører på en underlig port. Gir opp.\n"
 
 #: libvfs/mcfs.c:189
 msgid " MCFS Password required "
-msgstr ""
+msgstr " MCFS-passord nødvendig "
 
 #: libvfs/mcfs.c:203
 msgid " Invalid password "
-msgstr ""
+msgstr " Ugyldig passord "
 
 #: libvfs/mcfs.c:322
 msgid " Too many open connections "
-msgstr ""
+msgstr " For mange åpne forbindelser "
 
 #: libvfs/tar.c:90 libvfs/tar.c:107
 #, c-format
@@ -1082,14 +1085,16 @@ msgid ""
 "Couldn't open tar archive\n"
 "%s"
 msgstr ""
+"Kunne ikke åpne tar-arkiv\n"
+"%s"
 
 #: libvfs/tar.c:277
 msgid "Unexpected EOF on archive file"
-msgstr ""
+msgstr "Uventet EOF på arkivfilen"
 
 #: libvfs/tar.c:332 libvfs/tar.c:339
 msgid "Inconsistent tar archive"
-msgstr ""
+msgstr "Ukonsistent tar-arkiv"
 
 #. Error on first record
 #: libvfs/tar.c:398
@@ -1099,10 +1104,13 @@ msgid ""
 "%s\n"
 "doesn't look like a tar archive."
 msgstr ""
+"Hmm,...\n"
+"%s\n"
+"ser ikke ut som et tar-arkiv."
 
 #: libvfs/vfs.c:1678
 msgid "Password:"
-msgstr ""
+msgstr "Passord:"
 
 #: support/argp-parse.c:95
 msgid "Give this help list"
@@ -1265,20 +1273,4 @@ msgstr "Brukeren valgte Nei/Avbryt med data:\n"
 
 #: test-gnome/testgnome.c:925
 msgid "Weird number in reply callback"
-msgstr "Snålt nummer i tilbakeringingssvaret"
-
-#~ msgid ""
-#~ "No\n"
-#~ "icon"
-#~ msgstr ""
-#~ "Mangler\n"
-#~ "ikon"
-
-#~ msgid ""
-#~ "Couldn't\n"
-#~ "load\n"
-#~ "icon"
-#~ msgstr ""
-#~ "Kunne ikke\n"
-#~ "laste\n"
-#~ "ikonet"
+msgstr "Rart nummer i tilbakeringingssvaret"
