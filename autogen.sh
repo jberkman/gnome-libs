@@ -23,25 +23,19 @@ PKG_NAME="Gnome Libraries"
 
 DIE=0
 
-if [ -n "$GNOME2_DIR" ]; then
-  ACLOCAL_FLAGS="-I $GNOME2_DIR/share/aclocal $ACLOCAL_FLAGS"
-  PATH="$GNOME2_DIR/bin:$PATH"
-  LD_LIBRARY_PATH="$GNOME2_DIR/lib:$LD_LIBRARY_PATH"
-  export PATH
-  export LD_LIBRARY_PATH
-fi
-
 # This is a bit complicated here since we can't use gnome-config yet.
 # It'll be easier after switching to pkg-config since we can then
 # use pkg-config to find the gnome-autogen.sh script.
 
 gnome_autogen=
+gnome_datadir=
 
 ifs_save="$IFS"; IFS=":"
 for dir in $PATH ; do
   test -z "$dir" && dir=.
   if test -f $dir/gnome-autogen.sh ; then
     gnome_autogen="$dir/gnome-autogen.sh"
+    gnome_datadir=`echo $dir | sed -e 's,/bin$,/share,'`
     break
   fi
 done
@@ -53,4 +47,4 @@ if test -z "$gnome_autogen" ; then
   exit 1
 fi
 
-USE_GNOME2_MACROS=1 . $gnome_autogen
+GNOME_DATADIR="$gnome_datadir" USE_GNOME2_MACROS=1 . $gnome_autogen
