@@ -332,6 +332,17 @@ void create_file_entry()
 	gtk_widget_show(app);
 }
 
+void create_number_entry()
+{
+	GtkWidget *app;
+	GtkWidget *entry;
+
+	app = create_newwin(TRUE,"testGNOME","Number Entry");
+	entry = gnome_number_entry_new("Foo","Calculator");
+	gnome_app_set_contents(GNOME_APP(app),entry);
+	gtk_widget_show(entry);
+	gtk_widget_show(app);
+}
 void create_font_sel()
 {
 	GtkWidget *fontsel;
@@ -468,6 +479,7 @@ int main (int argc, char *argv[])
 		  { "date edit", create_date_edit },
 		  { "dialog", create_dialog },
 		  { "file entry", create_file_entry },
+		  { "number entry", create_number_entry },
 		  { "font sel", create_font_sel },
 /*	{ "icon list", create_icon_list }, */
 		  { "lamp", create_lamp },
