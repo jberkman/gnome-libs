@@ -4,6 +4,7 @@ INCLUDES =					\
 	-I$(top_builddir) -I$(top_srcdir)	\
 	$(SUPPORTINCS)				\
 	$(GDK_IMLIB_CFLAGS)			\
+	-I$(top_srcdir)/gdk-pixbuf              \
 	-I$(includedir)				\
 	@GTK_CFLAGS@
 
