@@ -1,11 +1,26 @@
 1999-06-17  Michael Zucchi  <mzucchi@zedzone.mmc.com.au>
 
+	* zvtterm.h (struct _zvtprivate): New field transpix to store the
+	transparency pixmap pointer.
+
 	* zvtterm.c (zvt_term_draw): When we are asked to draw, make sure
 	the background fill colour is still right (themes can change them!
 	the cads!)
 	(zvt_term_draw): Go back to drawing clearing the whole area before
 	rendering, if we are using a pixmap (otherwise a bit of border can
 	be left).
+	(zvt_term_draw): Well if we are going to draw the background, make
+	sure we dont draw it when we draw the text too (set fill=17).
+	(free_transpix): New function, free the foreign pixmap wrapper for
+	the transparency pixmap.
+	(zvt_term_destroy): Free the transparency pixmap wrapper if it
+	exists.
+	(zvt_term_init): Set the tranparenxy pixmap to null.
+	(load_background): Fixed up a rather embarassing oops, freeing a
+	pointer we're using 3 lines above.  The tranparency pixmap is
+	stored separately to the background pixmap, so we can free it and
+	track it properly, since we cannot unref it.  I dont know how this
+	didn't crash more often!
 
 	* zvtterm.h: Removed the zvt_term_get/set_adjusetment() ifdef'd
 	out functions, so they dont confuse developers.

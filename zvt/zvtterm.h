@@ -147,6 +147,9 @@ struct _zvtprivate
   int scroll_position;		/* offset for background pixmap when scrolling */
   GdkPixmap *bold_save;		/* when drawing bold, use this to save the
 				   maybe-overwritten line. */
+  GdkPixmap *transpix;		/* transparency pixmap.  Must be treated
+				   differently so we dont blow away the root
+				   pixmap! */
 };
 
 #define ZVT_TERM_DO_UTMP_LOG 1

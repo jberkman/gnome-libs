@@ -290,6 +290,7 @@ zvt_term_init (ZvtTerm *term)
     zp->text16len = 0;
     zp->scroll_position = 0;
     zp->bold_save = 0;
+    zp->transpix = 0;
   }
   gtk_object_set_data(GTK_OBJECT (term), "_zvtprivate", zp);
 
@@ -447,6 +448,24 @@ zvt_term_new (void)
   return GTK_WIDGET (term);
 }
 
+/* free's the tranparenxy pixmap */
+/* make special care any call to this also overrides or
+   clears the background gc to which the transparency pixmap
+   has been set as the tile */
+static void
+free_transpix(ZvtTerm *term)
+{
+  struct _zvtprivate *zp;
+  zp = gtk_object_get_data (GTK_OBJECT (term), "_zvtprivate");
+  if (zp && zp->transpix) {
+    gdk_xid_table_remove (GDK_WINDOW_XWINDOW(zp->transpix));
+    g_dataset_destroy (zp->transpix);
+    g_free (zp->transpix);
+    zp->transpix = 0;
+  }
+}
+
+
 static void
 zvt_term_destroy (GtkObject *object)
 {
@@ -493,6 +512,7 @@ zvt_term_destroy (GtkObject *object)
       g_free(zp->text16);
     if (zp->bold_save)
       gdk_pixmap_unref(zp->bold_save);
+    free_transpix(term);
     g_free(zp);
     gtk_object_set_data (GTK_OBJECT (term), "_zvtprivate", 0);
   }
@@ -971,9 +991,8 @@ zvt_term_draw (GtkWidget *widget, GdkRectangle *area)
 			  0, 0,
 			  widget->allocation.width,
 			  widget->allocation.height);
-      fill = -1;
-    }  else
-      fill=17;
+    }
+    fill=17;
 
     /* assume the screen is filled with background? */
     vt_update_rect (term->vx, fill, 0, 0,
@@ -3191,6 +3210,9 @@ load_background (ZvtTerm *widget)
     } else if (term->background.pix) {
       GdkWindowPrivate *wp = (GdkWindowPrivate *)term->background.pix;
 
+      /* free the transparency pixmap, if it exists */
+      free_transpix(term);
+
       term->background.w = wp->width;
       term->background.h = wp->height;
       term->background.x = wp->x;
@@ -3235,23 +3257,27 @@ load_background (ZvtTerm *widget)
     return;
   }
 
-  if (term->background.pix == NULL ||
-      term->background.x != x ||
-      term->background.y != y ||
-      term->background.w != width ||
-      term->background.h != height) {
+  if ((term->background.pix == NULL && term->shaded)
+      || (zp->transpix == NULL && !term->shaded)
+      || term->background.x != x
+      || term->background.y != y
+      || term->background.w != width
+      || term->background.h != height) {
 
     term->background.x = x;
     term->background.y = y;
     term->background.w = width;
     term->background.h = height;
 
+    /* free any pixmaps we already have */
+    if (term->background.pix) {
+      gdk_pixmap_unref(term->background.pix);
+      term->background.pix = 0;
+    }
+    free_transpix(term);
+
     if (term->shaded) {
-      
-      if (term->background.pix) {
-	gdk_pixmap_unref(term->background.pix);
-      }
-      
+
       term->background.pix = create_shaded_pixmap (p, x, y, width, height);
       gdk_gc_set_ts_origin (term->back_gc, 0, 0);
       gdk_gc_set_tile (bgc, term->background.pix);
@@ -3262,18 +3288,14 @@ load_background (ZvtTerm *widget)
       GdkPixmap *pp;
       
       d(printf("loading background at %d,%d\n", x, y));
-      
+
       /*non-shaded is simple?*/
       pp = gdk_pixmap_foreign_new(p);
       
       gdk_gc_set_tile (bgc, pp);
       gdk_gc_set_ts_origin(bgc,-x,-y);
-      term->background.pix = pp;
+      zp->transpix = pp;
       gdk_gc_set_fill (bgc, GDK_TILED);
-      
-      gdk_xid_table_remove (GDK_WINDOW_XWINDOW(pp));
-      g_dataset_destroy (pp);
-      g_free (pp);
     }
   } else {
     d(printf("background hasn't moved, leaving\n"));
