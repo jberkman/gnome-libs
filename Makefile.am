@@ -20,7 +20,13 @@ SUBDIRS = po intl support macros \
 	libgnorba idl $(test_gnome) devel-docs gnome-data man \
 	gnome-faq
 
-include_HEADERS = gnome.h
+if COMPILE_TEST_GNOME
+compat_headers = gnome10compat.h
+else
+compat_headers =
+endif
+
+include_HEADERS = gnome.h $(compat_headers)
 
 EXTRA_DIST =	HACKING gnomeConf.sh.in gnome-bug.in gnome-config.in \
 		gnome-libs.spec.in
