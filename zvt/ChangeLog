@@ -1,3 +1,13 @@
+1999-01-03  Jay Painter <jpaint@serv.net>
+
+	* zterm.c: made the test program work better by properly duplicating
+	and setting up the environment for the forked pty.
+
+	* vt.c: fixed a resizing behavior so that the current line will
+	not get moved up into the scrolling buffer; instead, it will
+	destroy lines from the bottom of the terminal once it hits the
+	current line when moving top lines into the scrollback area.
+
 1999-01-02  Jay Painter <jpaint@serv.net>
 
 	* vt.h, vt.c, update.c, zvtterm.c: fixed multiple buffer overruns

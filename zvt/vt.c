@@ -402,7 +402,8 @@ void vt_insert_lines(struct vt_em *vt, int count)
   struct vt_line *wn, *nn;
   int i;
 
-  d(printf("vt_insert_lines(%d) (top = %d bottom = %d cursory = %d)\n", count, vt->scrolltop, vt->scrollbottom, vt->cursory));
+  d(printf("vt_insert_lines(%d) (top = %d bottom = %d cursory = %d)\n",
+	   count, vt->scrolltop, vt->scrollbottom, vt->cursory));
 
   /* FIXME: Do this properly */
 
@@ -626,9 +627,11 @@ vt_insert_line(struct vt_em *vt)
 static void
 vt_delete_line(struct vt_em *vt)
 {
-  d(printf("delete line(s)\n"));
+  d(printf("vt_delete_line\n"));
+
   if (vt->argcnt==0) {
-    if (vt->cursory>vt->scrolltop) {	/* reverse line feed, not delete */
+    if (vt->cursory > vt->scrolltop) {	/* reverse line feed, not delete */
+      d(printf("vt_delete_line: should we try to scroll up?\n"));
       vt->cursory--;
     } else {
       vt_scroll_down(vt, 1);
@@ -636,8 +639,9 @@ vt_delete_line(struct vt_em *vt)
   } else if (vt->argcnt==1) {
     vt_delete_lines(vt, atoi(vt->args[0]));/* insert multiple characters */
   } else {
-    d(printf("delete characters got >1 parameters\n"));
+    d(printf("vt_delete_line: delete characters got >1 parameters\n"));
   }
+
   vt->this_line = (struct vt_line *)vt_list_index(&vt->lines, vt->cursory);
 }
 
@@ -968,7 +972,6 @@ vt_dsr(struct vt_em *vt)
 static void
 vt_scroll(struct vt_em *vt)
 {
-  d(printf("set scroll region called\n"));
   if (vt->argcnt==0) {
     vt->scrolltop = 0;
     vt->scrollbottom = vt->height-1;
@@ -984,7 +987,8 @@ vt_scroll(struct vt_em *vt)
   if (vt->scrollbottom >= vt->height)
     vt->scrollbottom = vt->height-1;
 
-  d(printf("new region = (%d - %d)\n", vt->scrolltop, vt->scrollbottom));
+  d(printf("vt_scroll: vt->scrolltop=%d vt->scrollbottom=%d\n",
+	   vt->scrolltop, vt->scrollbottom));
 }
 
 /*
@@ -1146,11 +1150,11 @@ vt_parse_vt (struct vt_em *vt, char *ptr, int length)
   register int state;
   register int mode;
   struct vt_jump *modes = vtjumps;
-  char *ptrend;
+  char *ptr_end;
   void (*process)(struct vt_em *vt);	/* process function */
 
   /* states:
-   *  0: normal escape mode
+   *   0: normal escape mode
    *   1: escape mode.  switch on next character.
    *   2: '[' escape mode (keep finding numbers until a command code found)
    *   3: 'O' escape mode.  switch on next character.
@@ -1159,12 +1163,16 @@ vt_parse_vt (struct vt_em *vt, char *ptr, int length)
    */
 
   state = vt->state;
-  ptrend = ptr+length;
-  while (ptr<ptrend) {
-    c=(*ptr++) & 0xff;		/* convert to unsigned byte */
+  ptr_end = ptr + length;
+  while (ptr < ptr_end) {
+
+    /* convert to unsigned byte */
+    c = (*ptr++) & 0xff;
     mode = modes[c & 0x7f].modes;
     process = modes[c & 0x7f].process;
-      switch(state) {
+
+    switch (state) {
+
       case 0:
 	if (mode & VT_LIT) {
 	  /* remap character? */
@@ -1193,7 +1201,10 @@ vt_parse_vt (struct vt_em *vt, char *ptr, int length)
 	}
 	/* else ignore */
 	break;
-      case 1:			/* received 'esc', next byte */
+
+
+	/* received 'esc', next byte */
+      case 1:
 	if (mode & VT_ESC) {	/* got a \Ex sequence */
 	  vt->argcnt = 0;
 	  process(vt);
@@ -1217,6 +1228,8 @@ vt_parse_vt (struct vt_em *vt, char *ptr, int length)
 	  state = 0;		/* dont understand input */
 	}
 	break;
+
+
       case 2:
 	if (mode & VT_ARG) {
 	  if (vt->outptr<vt->outend) /* truncate excessive args */
@@ -1241,13 +1254,19 @@ vt_parse_vt (struct vt_em *vt, char *ptr, int length)
 	  state=0;		/* unexpected escape sequence - ignore */
 	}
 	break;
-      case 3:			/* \EOx */
+
+
+	/* \EOx */
+      case 3:
 	if (mode & VT_EXO) {
 	  process(vt);
 	}	/* ignore otherwise */
 	state=0;
 	break;
-      case 4:			/* \E]..;...BEL */
+
+
+	/* \E]..;...BEL */
+      case 4:
 	if (c==0x07) {
 	  /* handle output */
 	  *(vt->outptr)=0;
@@ -1261,13 +1280,17 @@ vt_parse_vt (struct vt_em *vt, char *ptr, int length)
 	    *(vt->outptr)++=c;
 	}
 	break;
-      case 5:			/* \E?x */
+
+
+	/* \E?x */
+      case 5:
 	vt->args[0][1]=c;
 	modes[vt->args[0][0]].process(vt);
 	state=0;
 	break;
       }
   }
+
   vt->state = state;
 }
 
@@ -1542,7 +1565,7 @@ vt_resize_lines(struct vt_line *wn, int width, uint32 default_attr)
 
   nn = wn->next;  
   while (nn) {
-    d(printf("wn->line=%d wn->width=%d width=%d\n", wn->line, wn->width, width));
+    /* d(printf("wn->line=%d wn->width=%d width=%d\n", wn->line, wn->width, width)); */
     
     /* terminal width grew */
     if (wn->width < width)
@@ -1607,7 +1630,7 @@ vt_resize_lines(struct vt_line *wn, int width, uint32 default_attr)
  */
 void vt_resize(struct vt_em *vt, int width, int height, int pixwidth, int pixheight)
 {
-  int i, count, pass, old_width;
+  int i, count, pass, old_width, remove_bottom;
   uint32 c;
   struct vt_line *wn, *nn;
 
@@ -1625,26 +1648,56 @@ void vt_resize(struct vt_em *vt, int width, int height, int pixwidth, int pixhei
   if (height < vt->height) {
 
     count = vt->height - height;
+    remove_bottom = 0;
+
     d(printf("removing %d lines to smaller window\n", count));
 
     while (count > 0) {
 
-      if ( (wn = (struct vt_line *)vt_list_remhead(&vt->lines)) ) {
-	if ((vt->mode & VTMODE_ALTSCREEN)==0)
-	  vt_scrollback_add(vt, wn); /* add it to scrollback buffer */
-	g_free(wn);
-      }
+      /* never move the current line into the scrollback buffer, instead
+       * switch to a mode where we just dispose of the lines at the bottom
+       * of the terminal
+       */
+      if ((struct vt_line *)vt->lines.head == vt->this_line ||
+	  (struct vt_line *)vt->lines_alt.head == vt->this_line)
+	{
+	  remove_bottom = 1;
+	}
 
-      /* and for 'alternate' screen */
-      if ( (wn = (struct vt_line *)vt_list_remhead(&vt->lines_alt)) ) {
-	if ((vt->mode & VTMODE_ALTSCREEN)!=0)
-	  vt_scrollback_add(vt, wn); /* add it to scrollback buffer */
-	g_free(wn);
-      }
-
-      /* repeat for backbuffer */
-      if ( (wn = (struct vt_line *)vt_list_remhead(&vt->lines_back)) )
-	g_free(wn);
+      if (remove_bottom)
+	{
+	  if ( (wn = (struct vt_line *)vt_list_remtail(&vt->lines)) ) {
+	    g_free(wn);
+	  }
+	  
+	  /* and for 'alternate' screen */
+	  if ( (wn = (struct vt_line *)vt_list_remtail(&vt->lines_alt)) ) {
+	    g_free(wn);
+	  }
+	  
+	  /* repeat for backbuffer */
+	  if ( (wn = (struct vt_line *)vt_list_remtail(&vt->lines_back)) )
+	    g_free(wn);
+	}
+      else
+	{
+	  if ( (wn = (struct vt_line *)vt_list_remhead(&vt->lines)) ) {
+	    if ((vt->mode & VTMODE_ALTSCREEN)==0)
+	      vt_scrollback_add(vt, wn);
+	    g_free(wn);
+	  }
+	  
+	  /* and for 'alternate' screen */
+	  if ( (wn = (struct vt_line *)vt_list_remhead(&vt->lines_alt)) ) {
+	    if ((vt->mode & VTMODE_ALTSCREEN)!=0)
+	      vt_scrollback_add(vt, wn);
+	    g_free(wn);
+	  }
+	  
+	  /* repeat for backbuffer */
+	  if ( (wn = (struct vt_line *)vt_list_remhead(&vt->lines_back)) )
+	    g_free(wn);
+	}
 
       count--;
     }

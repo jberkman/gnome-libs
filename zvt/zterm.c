@@ -41,12 +41,18 @@
 
 #include "zvtterm.h"
 
-GtkWidget *window = NULL;
+#define FONT "-misc-fixed-medium-r-normal--12-200-75-75-c-100-iso8859-1"
+
+extern char      **environ;		
+static char      **env;
+static char      **env_copy;
+static int         winid_pos;
+static GtkWidget  *window = NULL;
 
 static void
 child_died_event (ZvtTerm *term)
 {
-  exit(0);
+  gtk_exit(0);
 }
 
 static void
@@ -103,39 +109,68 @@ size_allocate (GtkWidget *widget)
 gint 
 main (gint argc, gchar *argv[])
 {
-  int c;
-  int cmdindex;
-  int login_shell = 0;
-  int scrollbacklines;
+  int i, c, cmdindex, scrollbacklines, login_shell;
+  char buffer[60], **p;
   struct passwd *pw;
+  GtkWidget *term, *hbox, *scrollbar;
 
-  GtkWidget *term;
-  GtkWidget *hbox;
-  GtkWidget *scrollbar;
+  login_shell = 0;
+  cmdindex = 0;
+  scrollbacklines = 50;
 
+  /* set up terminal environment */
+  env = environ;
 
+  for (p = env; *p; p++);
+  i = p - env;
+  env_copy = (char **) g_malloc (sizeof (char *) * (i + 3));
+  for (i = 0, p = env; *p; p++)
+    {
+      if (strncmp (*p, "TERM=", 5) == 0)
+	{
+	  env_copy [i++] = "TERM=xterm";
+	}
+      else if ((strncmp (*p, "COLUMNS=", 8) == 0) ||
+	       (strncmp (*p, "LINES=", 6) == 0))
+	{
+	  continue;
+	} 
+      else
+	{
+	  env_copy [i++] = *p;
+	}
+    }
+
+  env_copy [i++] = "COLORTERM=zterm";
+  winid_pos = i++;
+  env_copy [winid_pos] = "TEST";
+  env_copy [i] = NULL;
+  
   gtk_init(&argc, &argv);
 
   /* process arguments */
-  cmdindex = 0;
-  scrollbacklines = 50;
-  while ( (cmdindex==0) && (c=getopt(argc, argv, "le:s:")) != EOF ) {
-    switch(c) {
-    case 'e':
-      cmdindex = optind-1;	/* index of argv array to pass to exec */
-      break;
-    case 's':
-      scrollbacklines = atoi(optarg);
-      break;
-    case 'l':
-      login_shell = 1;
-      break;
+  while ( (cmdindex==0) && (c=getopt(argc, argv, "le:s:")) != EOF )
+    {
+      switch(c) 
+	{
+	case 'e':
+	  cmdindex = optind-1;	/* index of argv array to pass to exec */
+	  break;
+
+	case 's':
+	  scrollbacklines = atoi(optarg);
+	  break;
+
+	case 'l':
+	  login_shell = 1;
+	  break;
+	}
     }
-  }
 
   /* Create widgets and set options */
   window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-  gtk_window_set_title (GTK_WINDOW (window), "ZTerm");
+  gtk_window_set_title (GTK_WINDOW (window), "zterm");
+  gtk_window_set_wmclass (GTK_WINDOW (window), "zterm", "zterm");
   gtk_widget_realize (window);
 
   /* create hbox */
@@ -149,10 +184,14 @@ main (gint argc, gchar *argv[])
   term = zvt_term_new ();
   gtk_box_pack_start (GTK_BOX (hbox), term, 1, 1, 0);
   zvt_term_set_size(ZVT_TERM (term), 80, 25);
+  zvt_term_set_font_name(ZVT_TERM (term), FONT);
+  zvt_term_set_blink (ZVT_TERM (term), FALSE);
+  zvt_term_set_bell (ZVT_TERM (term), TRUE);
   zvt_term_set_scrollback(ZVT_TERM (term), scrollbacklines);
-  zvt_term_set_font_name(ZVT_TERM (term), 
-      "-misc-fixed-medium-r-normal--12-200-75-75-c-100-iso8859-1");
-
+  zvt_term_set_scroll_on_keystroke (ZVT_TERM (term), TRUE);
+  zvt_term_set_scroll_on_output (ZVT_TERM (term), FALSE);
+  zvt_term_set_background (ZVT_TERM (term), NULL, 0, 0);
+  
   gtk_signal_connect (
       GTK_OBJECT (term),
       "child_died",
@@ -174,7 +213,8 @@ main (gint argc, gchar *argv[])
   gtk_widget_show (term);
 
   /* scrollbar */
-  scrollbar = gtk_vscrollbar_new (GTK_ADJUSTMENT (ZVT_TERM (term)->adjustment));
+  scrollbar = 
+    gtk_vscrollbar_new (GTK_ADJUSTMENT (ZVT_TERM (term)->adjustment));
   GTK_WIDGET_UNSET_FLAGS (scrollbar, GTK_CAN_FOCUS);
   gtk_box_pack_start (GTK_BOX (hbox), scrollbar, FALSE, TRUE, 0);
   gtk_widget_show (scrollbar);
@@ -182,46 +222,66 @@ main (gint argc, gchar *argv[])
   /* show them all! */
   gtk_widget_show (window);
 
+  /* fork the shell/program */
+  switch (zvt_term_forkpty(ZVT_TERM (term), TRUE))
+    {
+    case -1:
+      perror("ERROR: unable to fork:");
+      exit(1);
+      break;
 
-  switch (zvt_term_forkpty(ZVT_TERM (term), TRUE)) {
-  case -1:
-    perror("ERROR: unable to fork:");
-    exit(1);
-    break;
-  case 0:
-    if (cmdindex) {
-      execvp(argv[cmdindex], &argv[cmdindex]);
-    } else {
-      char basename [BUFSIZ];
+    case 0:
+      if (cmdindex)
+	{
+	  environ = env_copy;
+	  execvp(argv[cmdindex], &argv[cmdindex]);
+	}
+      else
+	{
+	  GString *shell, *name;
+	  
+	  /* get shell from passwd */
+	  pw = getpwuid(getuid());
+	  if (pw)
+	    {
+	      shell = g_string_new(pw->pw_shell);
+	      if (login_shell)
+		{
+		  name = g_string_new("-");
+		}
+	      else
+		{
+		  name = g_string_new("");
+		}
+	      
+	      g_string_append(name, strrchr(pw->pw_shell, '/'));
+	    }
+	  else
+	    {
+	      shell = g_string_new("/bin/sh");
+	      if (login_shell)
+		{
+		  name = g_string_new("-sh");
+		}
+	      else
+		{
+		  name = g_string_new("sh");
+		}
+	    }
 
-				/* get shell from passwd */
-      pw = getpwuid(getuid());
-      if (login_shell) {
-	if (pw) {
-	  chdir(pw->pw_dir);
-	  g_snprintf(basename, sizeof(basename), "-%s",
-	  	     rindex(pw->pw_shell, '/'));
-	  execl(pw->pw_shell, basename, NULL);
-	} else {
-	  execl("/bin/bash", "-bash", NULL);
+	  execle (shell->str, name->str, NULL, env_copy);
+	  perror ("Could not exec\n");
+	  _exit (127);
 	}
-      } else {
-	if (pw) {
-	  execl(pw->pw_shell, strrchr(pw->pw_shell, '/'), NULL);
-	} else {
-	  execl("/bin/bash", "bash", NULL);
-	}
-      }
+      perror("ERROR: Cannot exec command:");
+      exit(1);
+
+    default:
+      break;
     }
-    perror("ERROR: Cannot exec command:");
-    exit(1);
-  default:
-  }
-
+  
   /* main loop */
   gtk_main ();
-
-  /* should never be called - but just in case */
   gtk_exit(0);
   return 0;
 }
