@@ -2045,7 +2045,7 @@ void vt_draw_text(void *user_data, int col, int row, char *text, int len, int at
   }
 }
 
-void vt_scroll_area(void *user_data, int firstrow, int count, int offset)
+void vt_scroll_area(void *user_data, int firstrow, int count, int offset, int fill)
 {
   int width,height;
   ZvtTerm *term;
@@ -2088,6 +2088,14 @@ void vt_scroll_area(void *user_data, int firstrow, int count, int offset)
 
 #if 1
   /* clear the other part of the screen */
+  /* check fill colour is right */
+  if (term->back_last != fill) {
+    GdkColor pen;
+
+    pen.pixel = term->colors[fill];
+    gdk_gc_set_foreground (term->back_gc, &pen);
+    term->back_last = fill;
+  }
   if (offset>0) {
     gdk_draw_rectangle(widget->window,
 		       term->back_gc,

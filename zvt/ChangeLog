@@ -1,3 +1,15 @@
+1998-11-10  Michael Zucchi  <zucchi@zedzone.mmc.com.au>
+
+	* vtx.h (vt_scroll_area): Fix prototype for new 'fill' parameter.
+
+	* update.c (vt_scroll_update): Calculate the scroll expose colour
+	from the previous background colour on that line (or start of),
+	and pass that to vt_scroll_area.  Make sure the line is 'cleared'
+	with the same colour.  And by jove, we have it!
+
+	* zvtterm.c (vt_scroll_area): Take a new option 'fill' - specifies
+	the background colour to fill in the scrolled area.
+
 1998-11-09  Jay Cox  <jaycox@earthlink.net>
 
 	* zterm.c: replaced rindex with strrchr for portability.

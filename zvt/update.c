@@ -244,11 +244,9 @@ int vt_get_attr_at (struct _vtx *vx, int col, int row)
 static void vt_scroll_update(struct _vtx *vx, int firstline, int count, int offset)
 {
   struct vt_line *tn, *bn, *dn;	/* top/bottom of scroll area */
-  int i;
+  int i, fill;
 
   d(printf("scrolling %d lines from %d, by %d\n", count, firstline, offset));
-
-  vt_scroll_area(vx->user_data, firstline, count, offset);
 
   d({
     printf("before:\n");
@@ -299,14 +297,17 @@ static void vt_scroll_update(struct _vtx *vx, int firstline, int count, int offs
     }
   });
 
-  /* need to clear tn->bn lines */
-  /* FIXME: maybe if we didn't 'clear' this, and we dont 'clear' the screen after
-     a scroll, it will make things faster ... but we'd have to 'copy' stuff here
-     so it matches the result of a scroll */
+  /* find out what colour the backbuffer is already - make it match (use
+     first character as a guess), and perform the visual scroll */
+  fill = (tn->data[0] & VTATTR_BACKCOLOURM) >> VTATTR_BACKCOLOURB;
+  vt_scroll_area(vx->user_data, firstline, count, offset, fill);
+
+  /* need to clear tn->bn lines.  Use attributes from first character */
+  fill = tn->data[0] & 0xffff0000;
   do {
     d(printf("clearning line %d\n", tn->line));
     for(i=0;i<tn->width;i++) {
-      tn->data[i]=vx->vt.attr; /* not sure if this is the correct thing to 'clear' with */
+      tn->data[i]=fill;
     }
   } while ((tn!=bn) && (tn=tn->next));
 }

@@ -98,7 +98,7 @@ void vtx_set_fontsize    (struct _vtx *vx, int width, int height);
 			 
 /* defined by caller */	 
 void vt_draw_text        (void *user_data, int col, int row, char *text, int len, int attr);
-void vt_scroll_area      (void *user_data, int firstrow, int count, int offset);
+void vt_scroll_area      (void *user_data, int firstrow, int count, int offset, int fill);
 int  vt_cursor_state     (void *user_data, int state);
 void vt_hightlight_block (void *user_data, int col, int row, int width, int height);
 int  vt_get_attr_at      (struct _vtx *vx, int col, int row);
