@@ -48,9 +48,10 @@ DEFAULT_ORGANIZATION="net"
 
 # What mailer to use.  This must come after the config file, since it is
 # host-dependent.
+# FIXME: this should be done in configure.in, with more choices (mail, ...)
 if [ -f /usr/sbin/sendmail ]; then
   MAIL_AGENT="/usr/sbin/sendmail -t"
-elif [ -f /usr/sbin/sendmail ]; then
+elif [ -f /usr/lib/sendmail ]; then
   MAIL_AGENT="/usr/lib/sendmail -t"
 else
   MAIL_AGENT="rmail"
@@ -508,6 +509,7 @@ sed  -e "
 /^>Synopsis:/s;$SYNOPSIS_C;;
 /^Severity:/s;<.*>;;
 /^Version:/s;<.*>;;
+/^X-Gnome-CC:/s;<[ A-Za-z0-9]+>;;
 /^>Priority:/s;<.*>;;
 /^Package:/s;$CATEGORY_C;;
 /^>Class:/s;<.*>;;
