@@ -128,12 +128,14 @@ goad_server_list_get(void)
     struct dirent *dent;
     
     while((dent = readdir(dirh))) {
-	    if (!strcmp(dent->d_name, ".") || !strcmp(dent->d_name, ".."))
-		    continue;
-	    
-	    g_string_sprintf(tmpstr, "=%s/%s", usersrvpath->str, dent->d_name);
-	    
-	    goad_server_list_read(tmpstr->str, servinfo, tmpstr, newl);
+      char *p;
+
+      p = strrchr (dent->d_name, '.');
+      if (!p || (strcmp (p, ".goad") != 0 && strcmp (p, ".gnorba") != 0))
+	continue;
+
+      g_string_sprintf(tmpstr, "=%s/%s", usersrvpath->str, dent->d_name);
+      goad_server_list_read(tmpstr->str, servinfo, tmpstr, newl);
     }
     closedir(dirh);
   }
@@ -145,12 +147,13 @@ goad_server_list_get(void)
     struct dirent *dent;
 
     while((dent = readdir(dirh))) {
-	    if (!strcmp(dent->d_name, ".") || !strcmp(dent->d_name, ".."))
-		    continue;
+      char *p;
 
-      g_string_sprintf(tmpstr, "=" GNOMESYSCONFDIR SERVER_LISTING_PATH "/%s",
-		       dent->d_name);
-		       
+      p = strrchr (dent->d_name, '.');
+      if (!p || (strcmp (p, ".goad") != 0 && strcmp (p, ".gnorba") != 0))
+	continue;
+
+      g_string_sprintf(tmpstr, "=" GNOMESYSCONFDIR SERVER_LISTING_PATH "/%s", dent->d_name);
       goad_server_list_read(tmpstr->str, servinfo, tmpstr, newl);
     }
     closedir(dirh);
