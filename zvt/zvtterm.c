@@ -3079,7 +3079,8 @@ create_shaded_pixmap (Pixmap p, int x, int y, int w, int h)
 
   pp = gdk_pixmap_foreign_new(p);
   gdk_window_get_geometry(pp,NULL,NULL,&width,&height,&depth);
-  if (width<x+w || height<y+h) {
+
+  if (width<x+w || height<y+h || x<0 || y<0) {
     tgc = gdk_gc_new(pp);
     tmp = gdk_pixmap_new(pp,w,h,depth);
     
@@ -3092,9 +3093,10 @@ create_shaded_pixmap (Pixmap p, int x, int y, int w, int h)
     iim = gdk_imlib_create_image_from_drawable(tmp,
 					       NULL, 0, 0, w, h);
     gdk_pixmap_unref(tmp);
-  } else
+  } else {
     iim = gdk_imlib_create_image_from_drawable(pp,
 					       NULL, x, y, w, h);
+  }
   gdk_xid_table_remove (GDK_WINDOW_XWINDOW(pp));
   g_dataset_destroy (pp);
   g_free (pp);

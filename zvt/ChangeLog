@@ -4,6 +4,8 @@
 	version 1.10, that forces all expose events to be processed before
 	scrolling exits.  If we are rendering scrolled pixmaps, things get
 	kinda bogged down and events get processed out of order.
+	(create_shaded_pixmap): When creating a pixmap for a partially
+	off-screen window, also treat that as a "tile".
 
 	* Merged ZVT_PXIMAP branch back to head!
 
