@@ -211,6 +211,12 @@ gnome_CORBA_init_with_popt_table(const char *app_id,
   return retval;
 }
 
+CORBA_ORB
+gnome_CORBA_ORB(void)
+{
+  return gnome_orbit_orb;
+}
+
 /**** gnome_name_service_get
 
       Outputs: 'retval' - an object reference to the name service.

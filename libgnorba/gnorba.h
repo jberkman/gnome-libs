@@ -28,6 +28,7 @@ CORBA_ORB gnome_CORBA_init_with_popt_table(const char *app_id,
 					   poptContext *return_ctx,
 					   GnorbaInitFlags gnorba_flags,
 					   CORBA_Environment *ev);
+CORBA_ORB gnome_CORBA_ORB(void); /* Just returns the same value as the above */
 
 /*
   Gets the naming server from the X Propery on the root window. If
