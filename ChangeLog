@@ -1,7 +1,29 @@
+1999-01-28  Miguel de Icaza  <miguel@nuclecu.unam.mx>
+
+	* libgnome/gnome-paper.c (gnome_paper_convert_to_points): Fix
+	inline docs. 
+
 1999-01-27  Jeff Garzik  <jgarzik@pobox.com>
 
 	* ChangeLog, libgnome/ChangeLog:
 	New ChangeLog for libgnome directory.
+1999-01-27  Raja R Harinath  <harinath@cs.umn.edu>
+
+	* libgnome/Makefile.am (INCLUDES): Use a G_LOG_DOMAIN of `Gnome'.
+	Suggested by Tim Janik <timj@gtk.org>.
+
+1999-01-25  Miguel de Icaza  <miguel@nuclecu.unam.mx>
+
+	* libgnome/gnome-util.c: Make the indentation be consistent.
+
+1999-01-25  Ulrich Drepper (drepper@cygnus.com)
+
+	* libgnome/gnome-config.c, libgnome/gnome-metadata.c,
+	libgnome/gnome-mime-info.c: On systems that define getc_unlocked
+	stdio is thread safe.  With locally opened files it is not
+	necessary to use the locking.  Therefore POSIX (and gnu libc
+	includes this feature) defines some _unlocked functions and they
+	always should be used in these cases.
 
 1999-01-22  Miguel de Icaza  <miguel@nuclecu.unam.mx>
 
@@ -185,6 +207,24 @@ Sun Dec 27 22:13:53 1998  George Lebl  <jirka@5z.com>
 1998-12-14  Miguel de Icaza  <miguel@nuclecu.unam.mx>
 
 	* gnome-data/mime.types: New format for the mime.type file.
+
+	* libgnome/gnome-mime-info.c (main): Moved the query information
+	here. Renamed the gnome_mime_type_* routines to gnome_mime_*.
+
+	* libgnome/gnome-mime.c: New implementation.  We now use the GNOME
+	provided mime type information instead of the system provided one
+	(This is for several reasons, first is that the mime.types file
+	format is lame; the second one is that mismatches in the mime-type
+	database will produce mistakes; the third one is: most non GNU
+	systems lack mime.types, and if they have one, it is basically
+	old, so we would have to provide ours anyways).
+
+	This file has full API docs.
+
+1998-12-14  Federico Mena Quintero  <federico@nuclecu.unam.mx>
+
+	* libgnome/Makefile.am (EXTRA_DIST): Removed lib_date.README from
+	EXTRA_DIST.
 
 1998-12-14  Federico Mena Quintero  <federico@nuclecu.unam.mx>
 
