@@ -351,6 +351,7 @@ gnome_name_service_get(void)
       close(iopipes[0]);
       dup2(iopipes[1], 1);
       dup2(iopipes[1], 2);
+      setsid();
       execlp("orbit-naming-server", "orbit-naming-server", NULL);
       _exit(1);
     }

@@ -1,3 +1,9 @@
+1998-10-05  Michael Lausch  <mla@gams.at>
+
+	* libgnorba/orbitgtk.c (gnome_name_service_get): Added setisd()
+	call, so that the orbit-name-server runs as a daemon. Maybe this
+	isn't portable to other OSes than Linux.
+
 1998-10-03  Martin Baulig  <martin@home-of-linux.org>
 
 	* configure.in (--disable-gnome-hello, --disable-test-gnome):
