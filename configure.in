@@ -362,6 +362,8 @@ dnl
 GNOME_LIBS_DIR=`(cd $srcdir; pwd)`
 AC_SUBST(GNOME_LIBS_DIR)
 
+AM_CONDITIONAL(INSIDE_GNOME_LIBS, true)
+
 dnl
 dnl Substitutions
 dnl
