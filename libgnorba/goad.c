@@ -923,13 +923,13 @@ handle_exepipe(GIOChannel      *source,
 {
   gboolean retval = TRUE;
 
+  *data->iorbuf = '\0';
   if(!(condition & G_IO_IN)
      || !fgets(data->iorbuf, sizeof(data->iorbuf), data->fh)) {
-    *data->iorbuf = '\0';
     retval = FALSE;
   }
 
-  if(retval && !strncmp(data->iorbuf, "IOR", 4))
+  if(retval && !strncmp(data->iorbuf, "IOR:", 4))
     retval = FALSE;
 
   if(data->do_srv_output)
