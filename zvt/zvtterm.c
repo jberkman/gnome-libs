@@ -2268,7 +2268,7 @@ void vt_scroll_area(void *user_data, int firstrow, int count, int offset, int fi
   term = ZVT_TERM (widget);
 
 #ifndef ZVT_NO_TRANSPARENT
-  if(term->transparent) {
+  if(term->transparent || term->pixmap_filename) {
 	  /*FIXME: bad hack*/
 	  gtk_widget_queue_draw(widget);
 	  return;

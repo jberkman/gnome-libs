@@ -1,3 +1,9 @@
+Wed Dec 02 03:16:07 1998  George Lebl  <jirka@5z.com>
+
+	* zvtterm.c: (vt_scroll_area) check for background pixmap in
+	addition to transparency to do the cheap ass scrolling hack by
+	repainting the entire window
+
 Sun Nov 29 02:59:32 1998  George Lebl  <jirka@5z.com>
 
 	* zvterm.[ch]: added function zvt_term_get_capabilities, which
