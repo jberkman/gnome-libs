@@ -1,3 +1,16 @@
+1999-02-25  Michael Zucchi  <mzucchi@denr.sa.gov.au>
+
+	* vt.c (vt_tab): Check for cursorx=width, and dont tab (unless
+	wrap is on).  Also, after tabbing cursor, if cursox=width, then
+	dont linefeed.  Handle wrap mode properly(?)
+	(vt_clear_line_portion): Range check input.
+	(vt_restore_cursor): Allow cursorx to be width.
+
+	* update.c (vt_draw_cursor): It is possible to for the cursorx
+	value to be 'off' the right hand edge of the screen by 1 character
+	outside of internal updates.  Dont draw the cursor in this case
+	(should fix mc rh-border glitch).  Wasn't pure afterall :)
+
 1999-02-24  Timur Bakeyev <mc@bat.ru>
 
 	* gnome-utmp.c (write_logout_record): Fix for Linux systems and partly,

@@ -362,7 +362,7 @@ vt_insert_chars(struct vt_em *vt, int count)
   d(printf("vt_insert_chars(%d)\n", count));
   l=vt->this_line;
 
-  count=MIN(count,vt->width);
+  count=MIN(count,(vt->width-vt->cursorx));
 
   /* scroll data over count bytes */
   j = (l->width-count)-vt->cursorx;
@@ -388,7 +388,7 @@ vt_delete_chars(struct vt_em *vt, int count)
   l=vt->this_line;
 
   /* check input value for validity */
-  count=MIN(count,vt->width);
+  count=MIN(count,(vt->width-vt->cursorx));
 
   /* scroll data over count bytes */
   j = (l->width-count)-vt->cursorx;
@@ -502,6 +502,9 @@ void vt_clear_line_portion(struct vt_em *vt, int start_col, int end_col)
 
   d(printf("vt_clear_line_portion()\n"));
 
+  start_col = MIN(start_col, vt->width);
+  end_col = MIN(end_col, vt->width);
+
   this_line = vt->this_line;
   for(i=start_col;i<end_col;i++) {
     this_line->data[i] = blank;
@@ -562,6 +565,13 @@ static void vt_tab(struct vt_em *vt)
   d(printf("tab\n"));
 
   l = vt->this_line;
+  if (vt->cursorx>=vt->width) {
+      if (!(vt->mode & VTMODE_WRAPOFF)) {
+	  vt->cursorx = 0;
+	  vt_lf(vt);			/* goto next line */
+      } else
+	  return;
+  }
   c = l->data[vt->cursorx] & VTATTR_DATAMASK;
 
   /* dont store tab over a space - will affect attributes */
@@ -574,9 +584,13 @@ static void vt_tab(struct vt_em *vt)
 
   /* move cursor to new tab position */
   vt->cursorx = (vt->cursorx + 8) & (~7);
-  if (vt->cursorx >= vt->width) {
-    vt->cursorx = 0;
-    vt_lf(vt);			/* goto next line */
+  if (vt->cursorx > vt->width) {
+      if (vt->mode & VTMODE_WRAPOFF) {
+	  vt->cursorx=vt->width-1;
+      } else {
+	  vt->cursorx = 0;
+	  vt_lf(vt);			/* goto next line */
+      }
   }
 }
 
@@ -729,8 +743,8 @@ vt_restore_cursor(struct vt_em *vt)
   vt->remaptable = vt->saveremaptable;
 
   /* incase the save/restore was across re-sizes */
-  if (vt->cursorx >= vt->width)
-    vt->cursorx = vt->width-1;
+  if (vt->cursorx > vt->width)
+    vt->cursorx = vt->width;
   if (vt->cursory >= vt->height)
     vt->cursory = vt->height-1;
 
