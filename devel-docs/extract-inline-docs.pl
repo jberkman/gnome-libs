@@ -6,8 +6,8 @@ use strict;
 
 my $input = join '', <>;
 
-while ($input =~ m,/\*\*(.*?)\*+/,sg) {
-  my $doc = $1;
+while ($input =~ m,/\*\*(.*?)\*+/\s*(.*?)\{,sg) {
+  my ($doc, $theline) = ($1, $2);
 
   # Extract function name.
 
@@ -126,19 +126,108 @@ while ($input =~ m,/\*\*(.*?)\*+/,sg) {
     }
   }
 
+  # Parse function prototype
+
+  $theline =~ s,^\s*,,s; $theline =~ s,\s*$,,s;
+
+  unless ($theline =~ /^(.*?)\s*(\w+)\s*\((.*?)\)$/s) {
+    warn "Illegal function prototype '$theline'";
+  }
+
+  my $rettype = $1;
+  unless ($funcname eq $2) {
+    warn "Function called `$funcname' in documentation, but `$2' in declaration";
+  }
+
+  my @dparams;
+  foreach (split /,/, $3) {
+    my $param = $_;
+
+    $param =~ s,^\s*,,s;
+    $param =~ s,\s*$,,s;
+
+    unless ($param =~ /^(.*?)\b\s*\b(\w+)$/) {
+      warn "Illegal function parameter `$param'";
+    }
+
+    push @dparams, [$1, $2];
+  }
+
+  # Create output
+
   $retval =~ s,^\s*,,s; $retval =~ s,\s*$,,;
   $description =~ s,^\s*,,s; $description =~ s,\s*$,,s;
 
-  print "FUNCTION: |$funcname|\n";
-  print "RETVAL: |$retval|\n" unless $retval eq '';
+  my $secname = $funcname; $secname =~ tr/_/-/;
 
-  foreach (@paramdefs) {
-    print "PARAM: |$_->[0]|$_->[1]|\n";
+  # wherein we print out the SGML code for this funcdef
+  print <<EOF;
+<sect2 id="$secname"><title>$funcname - </title>
+<funcsynopsis><funcdef>$rettype <function>$funcname</function></funcdef>
+EOF
+  
+  foreach (@dparams) {
+    my ($type, $name) = ($_->[0], $_->[1]);
+    print qq[<paramdef>$type <parameter>$name</parameter></paramdef>\n];
   }
 
-  print "\n";
+  print qq[</funcsynopsis>\n];
 
-  print "DESCRIPTION: |$description|\n";
+  print <<EOF;
+ <sect3><title>Usage</title>
+<programlisting>
+$theline;
+</programlisting>
+</sect3>
+EOF
+
+  unless ($retval eq '') {
+    print <<EOF;
+<sect3><title>Return Value</title>
+<para>
+$retval
+</para>
+</sect3>
+EOF
+}
+
+   print <<EOF;
+<sect3><title>Description</title>
+<para>
+$description
+</para>
+</sect3>
+EOF
+
+  if(scalar(@paramdefs) > 0) {
+    print <<EOF;
+<sect3><title>Parameters</title>
+<itemizedlist>
+EOF
+    foreach (@paramdefs) {
+      printf "<listitem>\n<para>%s <parameter>%s</parameter></para>\n<para>\n</para></listitem>\n", $_->[0], $_->[1];
+    }
+    print <<EOF;
+</itemizedlist>
+</sect3>
+EOF
+  }
+
+  print <<EOF;
+</sect2>
+EOF
+    
+
+#  print "FUNCTION: |$funcname|\n";
+#  print "RETVAL: |$retval|\n" unless $retval eq '';
+
+  foreach (@paramdefs) {
+#    print "PARAM: |$_->[0]|$_->[1]|\n";
+  }
+
+#  print "\n";
+
+#  print "DESCRIPTION: |$description|\n";
   
   print "\n\n";
 }
