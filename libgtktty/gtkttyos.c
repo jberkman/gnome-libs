@@ -27,7 +27,7 @@
 #include <sys/resource.h>
 #include <unistd.h>
 
-#ifdef	__FreeBSD__
+#if defined(__FreeBSD__)
 #  include <sys/ioctl_compat.h>
 #endif	/* __FreeBSD__ */
 
