@@ -6,8 +6,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-libs-1.0.17 (G1.0.50)\n"
-"POT-Creation-Date: 1999-09-27 13:56-0500\n"
-"PO-Revision-Date: 1999-09-19 13:28+02:00\n"
+"POT-Creation-Date: 1999-09-28 09:50-0500\n"
+"PO-Revision-Date: 1999-10-02 20:33+02:00\n"
 "Last-Translator: Kenneth Christiansen <kenneth@ripen.dk>\n"
 "Language-Team: Dansk/Danish <dltp@lists.wiktor.dk>\n"
 "MIME-Version: 1.0\n"
@@ -40,8 +40,8 @@ msgid ""
 "Error on option %s: %s.\n"
 "Run '%s --help' to see a full list of available command line options.\n"
 msgstr ""
-"Fejl i option %s: %s.\n"
-"Kør '%s --help' for at se en liste over mulige kommandolinie optioner.\n"
+"Fejl i flag %s: %s.\n"
+"Kør '%s --help' for at se en liste over mulige kommandolinie flag.\n"
 
 #: libgnome/gnomelib-init.c:130
 msgid "Disable sound server usage"
@@ -178,7 +178,7 @@ msgstr "Fo_rkast"
 
 #: libgnomeui/gnome-app-helper.c:122
 msgid "Revert to a saved version of the file"
-msgstr "Gå tilbage til den sidste gemte version af filen"
+msgstr "Gå tilbage til den sidst gemte version af filen"
 
 #. Print
 #: libgnomeui/gnome-app-helper.c:127
@@ -226,7 +226,7 @@ msgstr "Klip"
 
 #: libgnomeui/gnome-app-helper.c:151
 msgid "Cut the selection"
-msgstr "Klip det markerede"
+msgstr "Udklip det markerede"
 
 #. 10
 #. Copy
@@ -399,7 +399,7 @@ msgstr "Gør det sidste træk om"
 
 #: libgnomeui/gnome-app-helper.c:264
 msgid "_Redo move"
-msgstr "Gentag træk"
+msgstr "Gentag t_ræk"
 
 #: libgnomeui/gnome-app-helper.c:265
 msgid "Redo the undone move"
@@ -641,7 +641,7 @@ msgstr "INV"
 
 #: libgnomeui/gnome-client.c:828
 msgid "Specify session management ID"
-msgstr "Specificer id for sessionskontrol"
+msgstr "Angiv id for sessionskontrol"
 
 #: libgnomeui/gnome-client.c:828 libgnorba/goad-browser.c:27
 msgid "ID"
@@ -867,8 +867,8 @@ msgstr "MODULE"
 
 #. dialog display isn't working out
 #: libgnomeui/gnome-init.c:635
-msgid "Giving up on displaying error dialog"
-msgstr "Opgiver at vise fejlmeddelelsesboks"
+msgid "Multiple segmentation faults occurred; can't display error dialog\n"
+msgstr "Indtil flere segmentationsfejl opstod; kan ikke vise fejldialogboks\n"
 
 #: libgnomeui/gnome-messagebox.c:111 libgnomeui/gnome-messagebox.c:240
 msgid "Information"
@@ -940,7 +940,7 @@ msgstr "Dato"
 #.
 #: libgnomeui/gnome-scores.c:131
 msgid "%a %b %d %T %Y"
-msgstr "%a %b %d %T %Y"
+msgstr "%a %d %b %T %Y"
 
 #: libgnomeui/gnome-spell.c:196
 msgid "Select dictionary"
@@ -1184,7 +1184,7 @@ msgid ""
 msgstr ""
 "GNOME sessionshåndteringen (proces %d) er gået ned\n"
 "pga. en fatal fejl (%s).\n"
-"Når du lukker denne dialogboks, bliver alle åbne programmer \n"
+"Når du lukker denne dialogboks, bliver alle åbne programmer\n"
 "lukket ned og din session bliver afsluttet.\n"
 "Gem venligst alle dine filer før du lukker denne dialogboks."
 
@@ -1195,7 +1195,7 @@ msgid ""
 "due to a fatal error.\n"
 "(%s)"
 msgstr ""
-"Applikationen \"%s\" (proces %d) er gået ned\n"
+"Programmet \"%s\" (proces %d) er gået ned\n"
 "pga. en fatal fejl.\n"
 "(%s)"
 
@@ -1299,7 +1299,7 @@ msgstr "Lag:"
 
 #: libgnomeui/winhints_demo.c:94
 msgid "Above Dock"
-msgstr "Over dok"
+msgstr "Over Dok"
 
 #: libgnomeui/winhints_demo.c:98
 msgid "Dock"
@@ -1347,11 +1347,11 @@ msgstr "Minimeret"
 
 #: libgnomeui/winhints_demo.c:179
 msgid "Maximized Vertical"
-msgstr "Maksimeret vertikalt"
+msgstr "Maksimeret lodret"
 
 #: libgnomeui/winhints_demo.c:183
 msgid "Maximized Horizontal"
-msgstr "Maksimeret horisontalt"
+msgstr "Maksimeret vandret"
 
 #: libgnomeui/winhints_demo.c:187
 msgid "Hidden"
@@ -1359,7 +1359,7 @@ msgstr "Skjult"
 
 #: libgnomeui/winhints_demo.c:191
 msgid "Shaded"
-msgstr "Skygget"
+msgstr "Oprullet"
 
 #: libgnomeui/winhints_demo.c:195
 msgid "Fixed Position"
@@ -1406,8 +1406,8 @@ msgid ""
 "Simple test app to check how the WIN_HINTS work.\n"
 "And to test the gnome_win_hints_* functions for errors. :)"
 msgstr ""
-"Simpelt testprogram til at checke om WIN_HINTS virker. Og til at teste "
-"gnome_win_hints_* funktioner for fejl. :)"
+"Simpelt testprogram til at checke om WIN_HINTS virker.\n"
+"Og til at teste gnome_win_hints_* funktioner for fejl. :)"
 
 #: libgnorba/gnome-name-server.c:229
 #, c-format
@@ -1417,7 +1417,7 @@ msgstr "Opretter '/GNOME' kontekst %s %d"
 #: libgnorba/gnome-name-server.c:246
 #, c-format
 msgid "Creating '/GNOME/Servers' context %s %d"
-msgstr "Opret '/GNOME/Servers' kontekst %s %d"
+msgstr "Opretter '/GNOME/Servers' kontekst %s %d"
 
 #: libgnorba/goad-browser.c:27
 msgid "GOAD ID of the server to activate"
@@ -1425,7 +1425,7 @@ msgstr "GOAD ID på server som skal aktiveres"
 
 #: libgnorba/goad-browser.c:28
 msgid "Repository ID of the server to activate"
-msgstr "Repository ID på server som skal aktiveres"
+msgstr "GemmestedsID på server som skal aktiveres"
 
 #: libgnorba/goad-browser.c:28
 msgid "REPO-ID"
@@ -1455,7 +1455,7 @@ msgstr "GOAD_ID"
 
 #: libgnorba/loadshlib.c:12
 msgid "Repository ID under which GOAD knows this server"
-msgstr "Repositorie ID som GOAD kender denne server under"
+msgstr "GemmestedsID som GOAD kender denne server under"
 
 #: libgnorba/loadshlib.c:12
 msgid "REPO_ID"
@@ -1502,71 +1502,71 @@ msgstr "Ukendt systemfejl"
 #: support/getopt.c:669
 #, c-format
 msgid "%s: option `%s' is ambiguous\n"
-msgstr "%s: alternativ '%s' er tvetydig\n"
+msgstr "%s: flaget '%s' er tvetydigt\n"
 
 # , c-format
 #: support/getopt.c:693
 #, c-format
 msgid "%s: option `--%s' doesn't allow an argument\n"
-msgstr "%s: alternativ '--%s' tillader ikke et argument\n"
+msgstr "%s: flaget '--%s' tillader ikke et argument\n"
 
 # , c-format
 #: support/getopt.c:698
 #, c-format
 msgid "%s: option `%c%s' doesn't allow an argument\n"
-msgstr "%s: alternativ '%c%s' tillader ikke et argument\n"
+msgstr "%s: flaget '%c%s' tillader ikke et argument\n"
 
 # , c-format
 #: support/getopt.c:715 support/getopt.c:888
 #, c-format
 msgid "%s: option `%s' requires an argument\n"
-msgstr "%s: alternativ '%s' behøver et argument\n"
+msgstr "%s: flaget '%s' behøver et argument\n"
 
 # , c-format
 #. --option
 #: support/getopt.c:744
 #, c-format
 msgid "%s: unrecognized option `--%s'\n"
-msgstr "%s: ukendt alternativ '--%s'\n"
+msgstr "%s: ukendt flag '--%s'\n"
 
 # , c-format
 #. +option or -option
 #: support/getopt.c:748
 #, c-format
 msgid "%s: unrecognized option `%c%s'\n"
-msgstr "%s: ukendt alternativ '%c%s'\n"
+msgstr "%s: ukendt flag '%c%s'\n"
 
 # , c-format
 #. 1003.2 specifies the format of this message.
 #: support/getopt.c:774
 #, c-format
 msgid "%s: illegal option -- %c\n"
-msgstr "%s: ulovlig alternativ -- %c\n"
+msgstr "%s: ulovligt flag -- %c\n"
 
 # , c-format
 #: support/getopt.c:777
 #, c-format
 msgid "%s: invalid option -- %c\n"
-msgstr "%s: ugyldig alternativ -- %c\n"
+msgstr "%s: ugyldigt flag -- %c\n"
 
 # , c-format
 #. 1003.2 specifies the format of this message.
 #: support/getopt.c:807 support/getopt.c:937
 #, c-format
 msgid "%s: option requires an argument -- %c\n"
-msgstr "%s: alternativ behøver et argument -- %c\n"
+msgstr "%s: flaget behøver et argument -- %c\n"
 
 # , c-format
 #: support/getopt.c:854
 #, c-format
 msgid "%s: option `-W %s' is ambiguous\n"
-msgstr "%s: alternativen '-W %s' er tvetydig\n"
+msgstr "%s: flaget '-W %s' er tvetydigt\n"
 
 # , c-format
 #: support/getopt.c:872
 #, c-format
 msgid "%s: option `-W %s' doesn't allow an argument\n"
-msgstr "%s: alternativen '-W %s' tillader ikke et argument\n"
+msgstr "%s: flaget '-W %s' tillader ikke et argument\n"
 
 #: support/popthelp.c:35
 msgid "Show this help message"
@@ -1593,7 +1593,7 @@ msgstr "Skriftinfo"
 
 #: test-gnome/testgnome.c:817
 msgid "Use Font in button with size"
-msgstr "Brug skrifttype i knap med størrelse"
+msgstr "Brug skrift i knap med størrelse"
 
 #: test-gnome/testgnome.c:824
 msgid "Show font size"
@@ -1614,3 +1614,6 @@ msgstr "Brugeren valgte Nej/Annuller med data:\n"
 #: test-gnome/testgnome.c:1087
 msgid "Weird number in reply callback"
 msgstr "Mærkeligt nummer i tilbagekald"
+
+#~ msgid "Giving up on displaying error dialog"
+#~ msgstr "Opgiver at vise fejlmeddelelsesboks"
