@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-libs 2.0\n"
-"POT-Creation-Date: 2000-10-20 10:54+0200\n"
+"POT-Creation-Date: 2000-12-05 15:12+0100\n"
 "PO-Revision-Date: 2000-10-20 11:03+02:00\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian <no@li.org>\n"
@@ -13,34 +13,34 @@ msgstr ""
 "Content-Type: text/plain; charset=iso-8859-1\n"
 "Content-Transfer-Encoding: 8-bit\n"
 
-#: libgnome/gnome-ditem.c:563 libgnome/gnome-ditem.c:921
+#: libgnome/gnome-ditem.c:564 libgnome/gnome-ditem.c:922
 #, c-format
 msgid "Unknown desktop file format %d"
 msgstr "Ukjent skrivebordsfilformat %d"
 
 #. we are not an application so just exit
 #. with an error
-#: libgnome/gnome-ditem.c:910 libgnome/gnome-ditem.c:917
+#: libgnome/gnome-ditem.c:911 libgnome/gnome-ditem.c:918
 msgid "Attempting to launch a non-application"
 msgstr "Forsøk på å starte noe som ikke var en applikasjon"
 
-#: libgnome/gnome-ditem.c:1027
+#: libgnome/gnome-ditem.c:1028
 msgid "Trying to execute an item with no 'Exec'"
 msgstr "Prøver å kjøre en oppføring uten 'Exec'"
 
-#: libgnome/gnome-ditem.c:1079 libgnome/gnome-ditem.c:1172
+#: libgnome/gnome-ditem.c:1080 libgnome/gnome-ditem.c:1173
 msgid "No exec field for this drop"
 msgstr "Ingen exec-felt for dette slippet"
 
-#: libgnome/gnome-ditem.c:1110
+#: libgnome/gnome-ditem.c:1111
 msgid "Nothing to replace with a file in the exec string"
 msgstr "Ingenting å erstatte med fil i exec-strengen"
 
-#: libgnome/gnome-ditem.c:1223
+#: libgnome/gnome-ditem.c:1224
 msgid "There was no argument to replace with dropped files"
 msgstr "Ingen argument å erstatte med filer som ble sluppet"
 
-#: libgnome/gnome-ditem.c:1323
+#: libgnome/gnome-ditem.c:1324
 msgid "Dropped URLs on an app that can only take files"
 msgstr "URLer ble sluppet på en applikasjon som kun kan motta filer"
 
@@ -103,15 +103,15 @@ msgstr "Kan ikke kjøre kommando '%s'!"
 msgid "Command '%s' did not return an ID!"
 msgstr "Kommando '%s' returnerte ikke en ID!"
 
-#: libgnome/gnomelib-init2.c:1227
+#: libgnome/gnomelib-init2.c:1228
 msgid "Dynamic modules to load"
 msgstr "Dynamiske moduler som skal lastes"
 
-#: libgnome/gnomelib-init2.c:1228
+#: libgnome/gnomelib-init2.c:1229
 msgid "MODULE1,MODULE2,..."
 msgstr "MODUL1,MODUL2,..."
 
-#: libgnomeui/gnome-appbar.c:689
+#: libgnomeui/gnome-appbar.c:685
 msgid ""
 "gnome_appbar_set_progress deprecated, use "
 "gnome_appbar_set_progress_percentage"
@@ -255,27 +255,33 @@ msgstr "Plassering:"
 msgid "Save As Type:"
 msgstr "Lagre som type:"
 
-#: libgnomeui/gnome-gconf.c:583
+#: libgnomeui/gnome-gconf.c:581
 msgid "GNOME GConf Support"
 msgstr "GNOME GConf støtte"
 
-#: libgnomeui/gnome-gconf.c:626
+#: libgnomeui/gnome-gconf.c:621
 #, c-format
 msgid ""
 "You attempted to change an aspect of your configuration that your system "
 "administrator or operating system vendor does not allow you to change. Some "
 "of the settings you have selected may not take effect, or may not be "
 "restored next time you use this application (%s)."
-msgstr "Du forsøkte å endre et aspekt ved din konfigurasjon som din systemadministrator ikke tillater deg å endre. Noen av innstillingene du har valgt vil ikke tre i kraft, eller vil ikke bli gjenopprettet neste gang du bruker denne applikasjonen (%s)."
+msgstr ""
+"Du forsøkte å endre et aspekt ved din konfigurasjon som din "
+"systemadministrator ikke tillater deg å endre. Noen av innstillingene du har "
+"valgt vil ikke tre i kraft, eller vil ikke bli gjenopprettet neste gang du "
+"bruker denne applikasjonen (%s)."
 
-#: libgnomeui/gnome-gconf.c:629
+#: libgnomeui/gnome-gconf.c:624
 #, c-format
 msgid ""
 "An error occurred while loading or saving configuration information for %s. "
 "Some of your configuration settings may not work properly."
-msgstr "En feil oppsto under lasting eller lagring av konfigurasjonsinformasjon for %s. Noen av innstillingene virker kanskje ikke riktig."
+msgstr ""
+"En feil oppsto under lasting eller lagring av konfigurasjonsinformasjon for "
+"%s. Noen av innstillingene virker kanskje ikke riktig."
 
-#: libgnomeui/gnome-gconf.c:656
+#: libgnomeui/gnome-gconf.c:645
 #, c-format
 msgid "GConf error details: %s\n"
 msgstr "Detaljer om GConf feil: %s\n"
@@ -382,7 +388,7 @@ msgstr "Teksten på knappen"
 msgid "End World Hunger"
 msgstr "End world hunger"
 
-#: libgnomeui/gnome-about.c:1160 libgnomeui/gnome-href.c:395
+#: libgnomeui/gnome-about.c:1169 libgnomeui/gnome-href.c:395
 msgid ""
 "Error occured while trying to launch the URL handler.\n"
 "Please check the settings in the Control Center if they are correct."
@@ -443,60 +449,60 @@ msgid "Page Setup"
 msgstr "Papiroppsett"
 
 #. to be kept in sync with GtkCornerType enumeration
-#: libgnomeui/gnome-pouch.c:796
+#: libgnomeui/gnome-pouch.c:783
 msgid "Top left"
 msgstr "Øverst til venstre"
 
-#: libgnomeui/gnome-pouch.c:797
+#: libgnomeui/gnome-pouch.c:784
 msgid "Bottom left"
 msgstr "Nederst til venstre"
 
-#: libgnomeui/gnome-pouch.c:798
+#: libgnomeui/gnome-pouch.c:785
 msgid "Top right"
 msgstr "Øverst til høyre"
 
-#: libgnomeui/gnome-pouch.c:799
+#: libgnomeui/gnome-pouch.c:786
 msgid "Bottom right"
 msgstr "Nederst til venstre"
 
 #. to be kept in sync with GtkOrientation enumeration
-#: libgnomeui/gnome-pouch.c:810
+#: libgnomeui/gnome-pouch.c:797
 msgid "Horizontal"
 msgstr "Horisontal"
 
-#: libgnomeui/gnome-pouch.c:811
+#: libgnomeui/gnome-pouch.c:798
 msgid "Vertical"
 msgstr "Vertikal"
 
-#: libgnomeui/gnome-pouch.c:821
+#: libgnomeui/gnome-pouch.c:808
 msgid "Icon position"
 msgstr "Ikonposisjon"
 
-#: libgnomeui/gnome-pouch.c:822
+#: libgnomeui/gnome-pouch.c:809
 msgid "Icon orientation"
 msgstr "Ikonorientering"
 
-#: libgnomeui/gnome-pouch.c:824
+#: libgnomeui/gnome-pouch.c:811
 msgid "Tile children"
 msgstr "Flislegg avkom"
 
-#: libgnomeui/gnome-pouch.c:825
+#: libgnomeui/gnome-pouch.c:812
 msgid "Cascade children"
 msgstr "Vis avkom side-ved-side"
 
-#: libgnomeui/gnome-pouch.c:827
+#: libgnomeui/gnome-pouch.c:814
 msgid "Arrange icons"
 msgstr "Plassér ikoner"
 
-#: libgnomeui/gnome-pouch.c:828
+#: libgnomeui/gnome-pouch.c:815
 msgid "Autoarrange icons"
 msgstr "Plassér ikoner automatisk"
 
-#: libgnomeui/gnome-recently-used.c:115
+#: libgnomeui/gnome-recently-used.c:113
 msgid "App Specific"
 msgstr "Applikasjonsspesifikk"
 
-#: libgnomeui/gnome-recently-used.c:116
+#: libgnomeui/gnome-recently-used.c:114
 msgid "Is this list application specific"
 msgstr "Er denne listen applikasjonsspesifikk"
 
@@ -512,15 +518,15 @@ msgstr "Ukjent"
 #. browse button ...
 #: libcompat/gnome-spell.c:620 libcompat/gnome-spell.c:637
 #: libcompat/gnome-spell.c:654 libgnomeui/gnome-file-entry.c:446
-#: libgnomeui/gnome-selector.c:863
+#: libgnomeui/gnome-selector.c:778
 msgid "Browse..."
 msgstr "Bla gjennom..."
 
-#: libgnomeui/gnome-selector.c:873
+#: libgnomeui/gnome-selector.c:788
 msgid "Default..."
 msgstr "Forvalgt..."
 
-#: libgnomeui/gnome-selector.c:883
+#: libgnomeui/gnome-selector.c:798
 msgid "Clear..."
 msgstr "Tøm..."
 
@@ -579,7 +585,7 @@ msgstr "Forfattere:"
 msgid "Authors: "
 msgstr "Forfattere: "
 
-#: libgnomeui/gnome-about.c:1066 libgnomeui/stock_demo.c:307
+#: libgnomeui/gnome-about.c:1075 libgnomeui/stock_demo.c:307
 #: libgnomeui/winhints_demo.c:256
 msgid "About"
 msgstr "Om"
@@ -982,208 +988,208 @@ msgstr "App-ID"
 msgid "The application ID string"
 msgstr "Applikasjonens ID-streng"
 
-#: libgnomeui/gnome-calculator.c:446 libgnomeui/gnome-calculator.c:1089
+#: libgnomeui/gnome-calculator.c:432 libgnomeui/gnome-calculator.c:1075
 msgid "DEG"
 msgstr "DEG"
 
-#: libgnomeui/gnome-calculator.c:448
+#: libgnomeui/gnome-calculator.c:434
 msgid "RAD"
 msgstr "RAD"
 
-#: libgnomeui/gnome-calculator.c:450
+#: libgnomeui/gnome-calculator.c:436
 msgid "GRAD"
 msgstr "GRAD"
 
-#: libgnomeui/gnome-calculator.c:1079
+#: libgnomeui/gnome-calculator.c:1065
 msgid "1/x"
 msgstr "1/x"
 
-#: libgnomeui/gnome-calculator.c:1080
+#: libgnomeui/gnome-calculator.c:1066
 msgid "x^2"
 msgstr "x^2"
 
-#: libgnomeui/gnome-calculator.c:1081
+#: libgnomeui/gnome-calculator.c:1067
 msgid "SQRT"
 msgstr "SQRT"
 
-#: libgnomeui/gnome-calculator.c:1082
+#: libgnomeui/gnome-calculator.c:1068
 msgid "CE/C"
 msgstr "CE/C"
 
-#: libgnomeui/gnome-calculator.c:1083
+#: libgnomeui/gnome-calculator.c:1069
 msgid "AC"
 msgstr "AC"
 
 #. inverse button
-#: libgnomeui/gnome-calculator.c:1086
+#: libgnomeui/gnome-calculator.c:1072
 msgid "sin"
 msgstr "sin"
 
-#: libgnomeui/gnome-calculator.c:1087
+#: libgnomeui/gnome-calculator.c:1073
 msgid "cos"
 msgstr "cos"
 
-#: libgnomeui/gnome-calculator.c:1088
+#: libgnomeui/gnome-calculator.c:1074
 msgid "tan"
 msgstr "tan"
 
-#: libgnomeui/gnome-calculator.c:1091
+#: libgnomeui/gnome-calculator.c:1077
 msgid "e"
 msgstr "e"
 
-#: libgnomeui/gnome-calculator.c:1092
+#: libgnomeui/gnome-calculator.c:1078
 msgid "EE"
 msgstr "EE"
 
-#: libgnomeui/gnome-calculator.c:1093
+#: libgnomeui/gnome-calculator.c:1079
 msgid "log"
 msgstr "log"
 
-#: libgnomeui/gnome-calculator.c:1094
+#: libgnomeui/gnome-calculator.c:1080
 msgid "ln"
 msgstr "ln"
 
-#: libgnomeui/gnome-calculator.c:1095
+#: libgnomeui/gnome-calculator.c:1081
 msgid "x^y"
 msgstr "x^y"
 
-#: libgnomeui/gnome-calculator.c:1097
+#: libgnomeui/gnome-calculator.c:1083
 msgid "PI"
 msgstr "PI"
 
-#: libgnomeui/gnome-calculator.c:1098
+#: libgnomeui/gnome-calculator.c:1084
 msgid "x!"
 msgstr "x!"
 
-#: libgnomeui/gnome-calculator.c:1099
+#: libgnomeui/gnome-calculator.c:1085
 msgid "("
 msgstr "("
 
-#: libgnomeui/gnome-calculator.c:1100
+#: libgnomeui/gnome-calculator.c:1086
 msgid ")"
 msgstr ")"
 
-#: libgnomeui/gnome-calculator.c:1101
+#: libgnomeui/gnome-calculator.c:1087
 msgid "/"
 msgstr "/"
 
-#: libgnomeui/gnome-calculator.c:1103
+#: libgnomeui/gnome-calculator.c:1089
 msgid "STO"
 msgstr "STO"
 
-#: libgnomeui/gnome-calculator.c:1104
+#: libgnomeui/gnome-calculator.c:1090
 msgid "7"
 msgstr "7"
 
-#: libgnomeui/gnome-calculator.c:1105
+#: libgnomeui/gnome-calculator.c:1091
 msgid "8"
 msgstr "8"
 
-#: libgnomeui/gnome-calculator.c:1106
+#: libgnomeui/gnome-calculator.c:1092
 msgid "9"
 msgstr "9"
 
-#: libgnomeui/gnome-calculator.c:1107
+#: libgnomeui/gnome-calculator.c:1093
 msgid "*"
 msgstr "*"
 
-#: libgnomeui/gnome-calculator.c:1109
+#: libgnomeui/gnome-calculator.c:1095
 msgid "RCL"
 msgstr "RCL"
 
-#: libgnomeui/gnome-calculator.c:1110
+#: libgnomeui/gnome-calculator.c:1096
 msgid "4"
 msgstr "4"
 
-#: libgnomeui/gnome-calculator.c:1111
+#: libgnomeui/gnome-calculator.c:1097
 msgid "5"
 msgstr "5"
 
-#: libgnomeui/gnome-calculator.c:1112
+#: libgnomeui/gnome-calculator.c:1098
 msgid "6"
 msgstr "6"
 
-#: libgnomeui/gnome-calculator.c:1113
+#: libgnomeui/gnome-calculator.c:1099
 msgid "-"
 msgstr "-"
 
-#: libgnomeui/gnome-calculator.c:1115
+#: libgnomeui/gnome-calculator.c:1101
 msgid "SUM"
 msgstr "SUM"
 
-#: libgnomeui/gnome-calculator.c:1116
+#: libgnomeui/gnome-calculator.c:1102
 msgid "1"
 msgstr "1"
 
-#: libgnomeui/gnome-calculator.c:1117
+#: libgnomeui/gnome-calculator.c:1103
 msgid "2"
 msgstr "2"
 
-#: libgnomeui/gnome-calculator.c:1118
+#: libgnomeui/gnome-calculator.c:1104
 msgid "3"
 msgstr "3"
 
-#: libgnomeui/gnome-calculator.c:1119
+#: libgnomeui/gnome-calculator.c:1105
 msgid "+"
 msgstr "+"
 
-#: libgnomeui/gnome-calculator.c:1121
+#: libgnomeui/gnome-calculator.c:1107
 msgid "EXC"
 msgstr "EXC"
 
-#: libgnomeui/gnome-calculator.c:1122
+#: libgnomeui/gnome-calculator.c:1108
 msgid "0"
 msgstr "0"
 
-#: libgnomeui/gnome-calculator.c:1123
+#: libgnomeui/gnome-calculator.c:1109
 msgid "."
 msgstr "."
 
-#: libgnomeui/gnome-calculator.c:1124
+#: libgnomeui/gnome-calculator.c:1110
 msgid "+/-"
 msgstr "+/-"
 
-#: libgnomeui/gnome-calculator.c:1125
+#: libgnomeui/gnome-calculator.c:1111
 msgid "="
 msgstr "="
 
-#: libgnomeui/gnome-calculator.c:1331
+#: libgnomeui/gnome-calculator.c:1322
 msgid "INV"
 msgstr "INV"
 
-#: libgnomeui/gnome-client.c:846
+#: libgnomeui/gnome-client.c:828
 msgid "Specify session management ID"
 msgstr "Spesifiser ID for sesjonskontroll"
 
-#: libgnomeui/gnome-client.c:846
+#: libgnomeui/gnome-client.c:828
 msgid "ID"
 msgstr "ID"
 
-#: libgnomeui/gnome-client.c:849
+#: libgnomeui/gnome-client.c:831
 msgid "Specify prefix of saved configuration"
 msgstr "Spesifiser prefiks for lagret konfigurasjon"
 
-#: libgnomeui/gnome-client.c:849
+#: libgnomeui/gnome-client.c:831
 msgid "PREFIX"
 msgstr "PREFIKS"
 
-#: libgnomeui/gnome-client.c:852
+#: libgnomeui/gnome-client.c:834
 msgid "Disable connection to session manager"
 msgstr "Fjern forbindelse til sesjonsbehandler"
 
-#: libgnomeui/gnome-client.c:864
+#: libgnomeui/gnome-client.c:846
 msgid "Session management"
 msgstr "Sesjonshåndtering"
 
-#: libgnomeui/gnome-client.c:2351
+#: libgnomeui/gnome-client.c:2334
 msgid "Cancel Logout"
 msgstr "Avbryt utlogging"
 
-#: libgnomeui/gnome-color-picker.c:413
+#: libgnomeui/gnome-color-picker.c:403
 msgid "Received invalid color data\n"
 msgstr "Mottok ugyldige fargedata\n"
 
-#: libgnomeui/gnome-color-picker.c:477
+#: libgnomeui/gnome-color-picker.c:467
 msgid "Pick a color"
 msgstr "Velg en farge"
 
@@ -1248,12 +1254,12 @@ msgstr "Fullfør"
 msgid "Select file"
 msgstr "Velg fil"
 
-#: libgnomeui/gnome-font-picker.c:877 libgnomeui/gnome-stock.c:729
+#: libgnomeui/gnome-font-picker.c:857 libgnomeui/gnome-stock.c:729
 msgid "Font"
 msgstr "Skrifttype"
 
-#: libgnomeui/gnome-icon-entry.c:198 libgnomeui/gnome-icon-entry.c:252
-#: libgnomeui/gnome-icon-entry.c:462
+#: libgnomeui/gnome-icon-entry.c:200 libgnomeui/gnome-icon-entry.c:254
+#: libgnomeui/gnome-icon-entry.c:464
 msgid "No Icon"
 msgstr "Uten ikon"
 
@@ -1349,27 +1355,27 @@ msgid "MODULE"
 msgstr "MODUL"
 
 #. dialog display isn't working out
-#: libgnomeui/gnome-init.c:464
+#: libgnomeui/gnome-init.c:471
 msgid "Multiple segmentation faults occurred; can't display error dialog\n"
 msgstr "Flere segmenteringsfeil oppstod; kan ikke vise feildialogen\n"
 
-#: libgnomeui/gnome-messagebox.c:172
+#: libgnomeui/gnome-messagebox.c:179
 msgid "Information"
 msgstr "Informasjon"
 
-#: libgnomeui/gnome-messagebox.c:181
+#: libgnomeui/gnome-messagebox.c:188
 msgid "Warning"
 msgstr "Advarsel"
 
-#: libgnomeui/gnome-messagebox.c:190
+#: libgnomeui/gnome-messagebox.c:197
 msgid "Error"
 msgstr "Feil"
 
-#: libgnomeui/gnome-messagebox.c:199
+#: libgnomeui/gnome-messagebox.c:206
 msgid "Question"
 msgstr "Spørsmål"
 
-#: libgnomeui/gnome-messagebox.c:208
+#: libgnomeui/gnome-messagebox.c:215
 msgid "Message"
 msgstr "Beskjed"
 
