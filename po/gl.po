@@ -12,8 +12,8 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: gnome-libs 1.0.50\n"
-"POT-Creation-Date: 1999-10-06 21:34-0500\n"
+"Project-Id-Version: gnome-libs 1.1.0\n"
+"POT-Creation-Date: 1999-10-24 16:14+0200\n"
 "PO-Revision-Date: 1999-10-07 23:44+0200\n"
 "Last-Translator: Jesus Bravo Alvarez <jba@pobox.com>\n"
 "Language-Team: Galician <gpul-traduccion@ceu.fi.udc.es>\n"
@@ -51,25 +51,21 @@ msgstr ""
 "Execute '%s --help' para ver unha lista de tódalas opcións de liña de "
 "comandos disponibles\n"
 
-#: libgnome/gnomelib-init.c:130
+#: libgnome/gnomelib-init.c:34
 msgid "Disable sound server usage"
 msgstr "Desactiva-lo uso do servidor de son"
 
-#: libgnome/gnomelib-init.c:132
+#: libgnome/gnomelib-init.c:37
 msgid "Enable sound server usage"
 msgstr "Activa-lo uso do servidor de son"
 
-#: libgnome/gnomelib-init.c:134
+#: libgnome/gnomelib-init.c:40
 msgid "Host:port on which the sound server to use is running"
 msgstr "Máquina:porto no que está a se executar o servidor de son a usar"
 
-#: libgnome/gnomelib-init.c:135
+#: libgnome/gnomelib-init.c:41
 msgid "HOSTNAME:PORT"
 msgstr "MÁQUINA:PORTO"
-
-#: libgnome/gnomelib-init.c:144
-msgid "GNOME Options"
-msgstr "Opcións de GNOME"
 
 #: libgnomeui/gnome-about.c:187
 msgid "Author:"
@@ -647,32 +643,31 @@ msgstr "="
 msgid "INV"
 msgstr "INV"
 
-#: libgnomeui/gnome-client.c:828
+#: libgnomeui/gnome-client.c:839
 msgid "Specify session management ID"
 msgstr "Especifica-lo identificador da sesión"
 
-#: libgnomeui/gnome-client.c:828 libgnorba/goad-browser.c:27
+#: libgnomeui/gnome-client.c:839 libgnorba/goad-browser.c:27
 msgid "ID"
 msgstr "ID"
 
-#: libgnomeui/gnome-client.c:830
+#: libgnomeui/gnome-client.c:842
 msgid "Specify prefix of saved configuration"
 msgstr "Especifica-lo prefixo da configuración gardada"
 
-#: libgnomeui/gnome-client.c:830
+#: libgnomeui/gnome-client.c:842
 msgid "PREFIX"
 msgstr "PREFIXO"
 
-#: libgnomeui/gnome-client.c:832
+#: libgnomeui/gnome-client.c:845
 msgid "Disable connection to session manager"
 msgstr "Desactiva-la conexión ó xestor de sesións"
 
-#. Register commandline options.
-#: libgnomeui/gnome-client.c:961
-msgid "Session management options"
-msgstr "Opcións do xestor de sesións"
+#: libgnomeui/gnome-client.c:857
+msgid "Session management"
+msgstr "Xestión de sesión"
 
-#: libgnomeui/gnome-client.c:2341
+#: libgnomeui/gnome-client.c:2323
 msgid "Cancel Logout"
 msgstr "Cancelar Logout"
 
@@ -681,7 +676,7 @@ msgid "Pick a color"
 msgstr "Escoller unha cor"
 
 #. Calendar label, only shown if the date editor has a time field
-#: libgnomeui/gnome-dateedit.c:454
+#: libgnomeui/gnome-dateedit.c:455
 msgid "Calendar"
 msgstr "Calendario"
 
@@ -796,85 +791,85 @@ msgstr "Previsualización"
 msgid "Loading Icons..."
 msgstr "Cargando iconos..."
 
-#: libgnomeui/gnome-init.c:160
+#: libgnomeui/gnome-init.c:50
 msgid "Gdk debugging flags to set"
 msgstr "Flags de depuración de Gdk a activar"
 
-#: libgnomeui/gnome-init.c:160 libgnomeui/gnome-init.c:162
-#: libgnomeui/gnome-init.c:182 libgnomeui/gnome-init.c:184
+#: libgnomeui/gnome-init.c:50 libgnomeui/gnome-init.c:53
+#: libgnomeui/gnome-init.c:83 libgnomeui/gnome-init.c:86
 msgid "FLAGS"
 msgstr "FLAGS"
 
-#: libgnomeui/gnome-init.c:162
+#: libgnomeui/gnome-init.c:53
 msgid "Gdk debugging flags to unset"
 msgstr "Flags de depuración de Gdk a desactivar"
 
-#: libgnomeui/gnome-init.c:164
+#: libgnomeui/gnome-init.c:56
 msgid "X display to use"
 msgstr "Display X a empregar"
 
-#: libgnomeui/gnome-init.c:164
+#: libgnomeui/gnome-init.c:56
 msgid "DISPLAY"
 msgstr "DISPLAY"
 
-#: libgnomeui/gnome-init.c:166
+#: libgnomeui/gnome-init.c:59
 msgid "Make X calls synchronous"
 msgstr "Facer as chamadas X síncronas"
 
-#: libgnomeui/gnome-init.c:168
+#: libgnomeui/gnome-init.c:62
 msgid "Don't use X shared memory extension"
 msgstr "Non usa-la extensión de memoria compartida de X"
 
-#: libgnomeui/gnome-init.c:170
+#: libgnomeui/gnome-init.c:65
 msgid "Program name as used by the window manager"
 msgstr "Nome do programa igual ó usado polo xestor de fiestras"
 
-#: libgnomeui/gnome-init.c:170
+#: libgnomeui/gnome-init.c:65
 msgid "NAME"
 msgstr "NOME"
 
-#: libgnomeui/gnome-init.c:172
+#: libgnomeui/gnome-init.c:68
 msgid "Program class as used by the window manager"
 msgstr "Clase do programa igual á usada polo xestor de fiestras"
 
-#: libgnomeui/gnome-init.c:172
+#: libgnomeui/gnome-init.c:68
 msgid "CLASS"
 msgstr "CLASE"
 
-#: libgnomeui/gnome-init.c:174
+#: libgnomeui/gnome-init.c:71
 msgid "HOST"
 msgstr "NODO"
 
-#: libgnomeui/gnome-init.c:176
+#: libgnomeui/gnome-init.c:74
 msgid "PORT"
 msgstr "PORTO"
 
-#: libgnomeui/gnome-init.c:178 libgnomeui/gnome-init.c:180
+#: libgnomeui/gnome-init.c:77 libgnomeui/gnome-init.c:80
 msgid "STYLE"
 msgstr "ESTILO"
 
-#: libgnomeui/gnome-init.c:182
+#: libgnomeui/gnome-init.c:83
 msgid "Gtk+ debugging flags to set"
 msgstr "Flags de depuración de Gtk+ a activar"
 
-#: libgnomeui/gnome-init.c:184
+#: libgnomeui/gnome-init.c:86
 msgid "Gtk+ debugging flags to unset"
 msgstr "Flags de depuración de Gtk+ a desactivar"
 
-#: libgnomeui/gnome-init.c:186
+#: libgnomeui/gnome-init.c:89
 msgid "Make all warnings fatal"
 msgstr "Facer que os avisos sexan fatais"
 
-#: libgnomeui/gnome-init.c:188
+#: libgnomeui/gnome-init.c:92
 msgid "Load an additional Gtk module"
 msgstr "Cargar un módulo Gtk adicional"
 
-#: libgnomeui/gnome-init.c:188
+#: libgnomeui/gnome-init.c:92
 msgid "MODULE"
 msgstr "MÓDULO"
 
 #. dialog display isn't working out
-#: libgnomeui/gnome-init.c:635
+#: libgnomeui/gnome-init.c:426
 msgid "Multiple segmentation faults occurred; can't display error dialog\n"
 msgstr ""
 "Ocorreron varios fallos de segmento; non se pode amosa-lo diálogo de erro\n"
@@ -1454,7 +1449,7 @@ msgstr ""
 "servicio instalado, ou non coñezo o camiño para os atopar.  En\n"
 "calquera caso verifique a súa instalación GNOME, se fai o favor."
 
-#: libgnorba/goad.c:1350
+#: libgnorba/goad.c:1341
 msgid "(Internal use only) GOAD server ID to activate"
 msgstr "(Só para uso interno) ID do servidor GOAD a activar"
 
@@ -1605,14 +1600,14 @@ msgstr "Amosar tamaño da fonte"
 msgid "This is an hbox with pixmap and text"
 msgstr "Isto é unha hbox con pixmap e texto"
 
-#: test-gnome/testgnome.c:1072
+#: test-gnome/testgnome.c:1074
 msgid "The user chose Yes/OK with data:\n"
 msgstr "O usuario escolleu Si/Aceptar cos datos:\n"
 
-#: test-gnome/testgnome.c:1076
+#: test-gnome/testgnome.c:1078
 msgid "The user chose No/Cancel with data:\n"
 msgstr "O usuario escolleu Non/Cancelar cos datos:\n"
 
-#: test-gnome/testgnome.c:1087
+#: test-gnome/testgnome.c:1089
 msgid "Weird number in reply callback"
 msgstr "Número estraño na resposta"
