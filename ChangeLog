@@ -1,3 +1,14 @@
+1998-05-18  Miguel de Icaza  <miguel@nuclecu.unam.mx>
+
+	* libgnome/gnome-config.c (_gnome_config_get_vector_with_default):
+	Fix the routine.  Simplify the parsing code with a slicker
+	routine.  This should fix the panel problems, at least it works
+	for me.
+	
+1998-04-30  Miguel de Icaza  <miguel@nuclecu.unam.mx>
+
+	* libgnome/gnome-util.c (g_copy_strings): Put back optimized and
+	non-leaking copy_strings. 
 Sat May 16 00:44:21 1998  Tom Tromey  <tromey@cygnus.com>
 
 	* libgnome/gnome-string.c: Removed dead check for delim==NULL.
