@@ -60,6 +60,9 @@ LIBS="$LIBS $GTK_LIBS $X_LIBS $x_libs"
 AC_CHECK_FUNCS(gtk_signal_handler_pending)
 LIBS="$xLIBS"
 
+dnl zvt checks
+AC_CHECK_HEADERS(sys/select.h)
+
 dnl Image handling libraries
 Z_LIBS= JPEG_LIBS= PNG_LIBS= TIFF_LIBS= GIF_LIBS= GDK_IMLIB_LIBS=
 AC_CHECK_LIB(z, inflate, [Z_LIBS="-lz";  AC_DEFINE(HAVE_LIBZ)])
