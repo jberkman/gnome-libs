@@ -52,9 +52,9 @@ static gint zvt_term_key_press (GtkWidget *widget, GdkEventKey *event);
 static gint zvt_term_focus_in(GtkWidget *widget, GdkEventFocus *event);
 static gint zvt_term_focus_out(GtkWidget *widget, GdkEventFocus *event);
 
-static void zvt_term_selection_received (GtkWidget *widget, GtkSelectionData *selection_data);
+static void zvt_term_selection_received (GtkWidget *widget, GtkSelectionData *selection_data, guint time);
 static gint zvt_term_selection_clear (GtkWidget *widget, GdkEventSelection *event);
-static void zvt_term_selection_handler (GtkWidget *widget, GtkSelectionData *selection_data_ptr, gpointer data);
+static void zvt_term_selection_get (GtkWidget *widget, GtkSelectionData *selection_data_ptr, guint info, guint time);
 
 static void zvt_term_child_died(ZvtTerm *term);
 
@@ -141,6 +141,7 @@ zvt_term_class_init (ZvtTermClass *class)
 
   widget_class->selection_clear_event = zvt_term_selection_clear;
   widget_class->selection_received = zvt_term_selection_received;
+  widget_class->selection_get = zvt_term_selection_get;
 
   term_class->child_died = zvt_term_child_died;
 }
@@ -174,9 +175,8 @@ zvt_term_init (ZvtTerm *term)
 		      GTK_SIGNAL_FUNC (zvt_term_scrollbar_moved), term);
 
   /* selection received */
-  gtk_selection_add_handler (GTK_WIDGET(term), GDK_SELECTION_PRIMARY,
-			     GDK_SELECTION_TYPE_STRING,
-			     zvt_term_selection_handler, term);
+  gtk_selection_add_target (GTK_WIDGET(term), GDK_SELECTION_PRIMARY,
+			    GDK_SELECTION_TYPE_STRING, 0);
 }
 
 void
@@ -977,8 +977,10 @@ zvt_term_selection_clear (GtkWidget *widget, GdkEventSelection *event)
 
 /* supply the current selection to the caller */
 static void
-zvt_term_selection_handler (GtkWidget *widget, 
-			    GtkSelectionData *selection_data_ptr, gpointer data)
+zvt_term_selection_get (GtkWidget        *widget, 
+			GtkSelectionData *selection_data_ptr,
+			guint             info,
+			guint             time)
 {
   struct _vtx *vx;
   ZvtTerm *term;
@@ -997,7 +999,7 @@ zvt_term_selection_handler (GtkWidget *widget,
 /* receive a selection */
 /* Signal handler called when the selections owner returns the data */
 static void
-zvt_term_selection_received (GtkWidget *widget, GtkSelectionData *selection_data)
+zvt_term_selection_received (GtkWidget *widget, GtkSelectionData *selection_data, guint time)
 {
   struct _vtx *vx;
   ZvtTerm *term;
