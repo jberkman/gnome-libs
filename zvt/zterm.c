@@ -29,6 +29,7 @@
 #include <gdk/gdkkeysyms.h>
 #include <string.h>
 #include <pwd.h>
+#include <stdlib.h>
 
 #include "zvtterm.h"
 

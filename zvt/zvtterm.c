@@ -26,6 +26,7 @@
 
 #include <errno.h>
 #include <unistd.h>
+#include <string.h>
 
 #include "zvtterm.h"
 
