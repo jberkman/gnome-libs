@@ -757,9 +757,9 @@ normal_loading:
 
   g_return_val_if_fail(gmod, CORBA_OBJECT_NIL);
   g_module_make_resident(gmod);
-  g_return_val_if_fail(g_module_symbol(gmod, "GNOME_Plugin_info",
-				       (gpointer *)&plugin),
-		       CORBA_OBJECT_NIL);
+  i = g_module_symbol(gmod, "GNOME_Plugin_info",
+		      (gpointer *)&plugin);
+  g_return_val_if_fail(i, CORBA_OBJECT_NIL);
 
   for(i = 0; plugin->plugin_object_list[i].repo_id; i++) {
     if(!strcmp(sinfo->server_id, plugin->plugin_object_list[i].server_id))
