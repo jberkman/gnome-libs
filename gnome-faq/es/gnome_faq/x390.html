@@ -1,0 +1,393 @@
+<HTML
+><HEAD
+><TITLE
+>&#13;¿Cómo pongo GNOME en algún sitio especial, como
+
+
+/opt/gnome
+
+
+?&#13;</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.40"><LINK
+REL="HOME"
+TITLE="
+GNOME, preguntas de uso frecuente, PUF (FAQ)
+"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="
+Compilando GNOME
+"
+HREF="compilinggnome.html"><LINK
+REL="PREVIOUS"
+TITLE="
+De acuerdo, ahora tengo un Makefile. ¿Cómo consigo instalar GNOME en mi sistema?
+"
+HREF="x373.html"><LINK
+REL="NEXT"
+TITLE="
+¿Cómo compilo GNOME con todos los ficheros en el lugar
+correcto para que sea Compatible con FHS?  ¿Cómo recoloco
+los directorios etc y var para conectar GNOME a una red?
+"
+HREF="fhs.html"></HEAD
+><BODY
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>GNOME, preguntas de uso frecuente, PUF (FAQ)</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x373.html"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 3. Compilando GNOME</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="fhs.html"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="AEN390"
+>¿Cómo pongo GNOME en algún sitio especial, como
+
+<TT
+CLASS="FILENAME"
+>&#13;/opt/gnome&#13;</TT
+>
+
+?</A
+></H1
+><P
+>&#13;A mucha gente le gusta poner GNOME a parte, en un directotio propio.
+Esto hace que sea más fácil de desinstalar ante una
+emergencia, más fácil de controlar quien lo usa, te permite exportar
+el directorio de gnome a otros sistemas, etc, etc. Hacer esto
+requiere una cierta preparación, y conocimiento de tu sistema.  
+En este ejemplo, pondré GNOME en el directorio
+
+<TT
+CLASS="FILENAME"
+>&#13;/opt/gnome&#13;</TT
+>
+
+.  Simplemente reemplaza
+
+<TT
+CLASS="FILENAME"
+>&#13;/opt/gnome&#13;</TT
+>
+
+por cualquier otro directorio,
+el que quieras.&#13;</P
+><P
+>&#13;La cuestión principal es asegurarse de
+que el sistema puede encontrar los binarios de GNOME en 
+
+<TT
+CLASS="FILENAME"
+>&#13;/opt/gnome/bin&#13;</TT
+>
+
+, las librerías en 
+
+<TT
+CLASS="FILENAME"
+>&#13;/opt/gnome/lib&#13;</TT
+>
+
+, y los
+archivos man en 
+
+<TT
+CLASS="FILENAME"
+>&#13;/opt/gnome/man&#13;</TT
+>
+
+.&#13;</P
+><P
+>&#13;Para decirle al sistema que busque en
+
+<TT
+CLASS="FILENAME"
+>&#13;/opt/gnome/bin&#13;</TT
+>
+
+para encontrar los binarios de GNOME,
+simplemente asegúrate de que está incluido en la
+variable de entorno 
+
+<TT
+CLASS="ENVAR"
+>&#13;PATH&#13;</TT
+>
+
+.  por ejemplo:
+
+<TT
+CLASS="USERINPUT"
+><B
+>&#13;PATH="/bin:/usr/bin:/opt/gnome/bin"&#13;</B
+></TT
+>
+
+.&#13;</P
+><P
+>&#13;Después, normalmente hay que indicar al loader
+donde se encuentran las librerías.
+En la mayoría de Unix comerciales, añade
+
+<TT
+CLASS="FILENAME"
+>&#13;/opt/gnome/lib&#13;</TT
+>
+
+a la variable de entorno
+
+<TT
+CLASS="ENVAR"
+>&#13;LD_LIBRARY_PATH&#13;</TT
+>
+
+, de la misma manera que anteriormente al
+
+<TT
+CLASS="ENVAR"
+>&#13;PATH&#13;</TT
+>
+
+.  En algunos sistemas, en vez de la anterior se usa
+
+<TT
+CLASS="ENVAR"
+>&#13;LD_RUN_PATH&#13;</TT
+>
+
+.  En los sistemas que usan binarios en formato ELF,
+como GNU/Linux o FreeBSD, añade
+el path de la librería al archivo 
+
+<TT
+CLASS="FILENAME"
+>&#13;/etc/ld.so.conf&#13;</TT
+>
+
+,
+y ejecuta 
+
+<B
+CLASS="COMMAND"
+>&#13;ldconfig&#13;</B
+>
+
+.  En sistemas estáticamente linkados,
+no tienes que preocuparte de nada de lo anterior,
+sino comprar más espacio de disco, que seguro que necesitarás.  
+Consusta la documentación de tu sistema si no estás seguro de
+como decirle al loader en que directorios buscar.&#13;</P
+><P
+>&#13;También deberías indicarle a man donde encontrar las
+páginas man instaladas por GNOME.  Simplemente inserta
+una línea en
+
+<TT
+CLASS="FILENAME"
+>&#13;/etc/man.config&#13;</TT
+>
+
+, donde ponga 
+
+<TT
+CLASS="USERINPUT"
+><B
+>&#13;MANPATH
+/opt/gnome/man&#13;</B
+></TT
+>
+
+.&#13;</P
+><P
+>&#13;La otra cuestión es que hay un par de directorios en los que
+GNOME pondrá cosas, y que estarían mejor en cualquier otro lugar.
+La manera más sencilla de resolver esto es mediante links
+simbólicos.  Escribe lo
+siguiente:&#13;</P
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><TT
+CLASS="PROMPT"
+>&#13;$&#13;</TT
+>
+<TT
+CLASS="USERINPUT"
+><B
+>&#13;mkdir /opt/gnome/share&#13;</B
+></TT
+>
+<TT
+CLASS="PROMPT"
+>&#13;$&#13;</TT
+>
+<TT
+CLASS="USERINPUT"
+><B
+>&#13;cd /opt/gnome/share&#13;</B
+></TT
+>
+<TT
+CLASS="PROMPT"
+>&#13;$&#13;</TT
+>
+<TT
+CLASS="USERINPUT"
+><B
+>&#13;ln -s /usr/share/locale locale&#13;</B
+></TT
+>
+<TT
+CLASS="PROMPT"
+>&#13;$&#13;</TT
+>
+<TT
+CLASS="USERINPUT"
+><B
+>&#13;ln -s /usr/share/aclocal aclocal&#13;</B
+></TT
+></PRE
+></TD
+></TR
+></TABLE
+><P
+>&#13;Ahora ya está todo preparado para usar 
+
+<TT
+CLASS="FILENAME"
+>&#13;/opt/gnome&#13;</TT
+>
+
+como prefijo (prefix) al compilar.  Para hacer esto,
+simplemente da en el comando
+
+<B
+CLASS="COMMAND"
+>&#13;./configure&#13;</B
+>
+
+la opción
+
+<TT
+CLASS="OPTION"
+>&#13;--prefix=/opt/gnome&#13;</TT
+>
+
+.  Por supuesto, si quieres
+algún sitio especial diferente a 
+
+<TT
+CLASS="FILENAME"
+>&#13;/opt/gnome&#13;</TT
+>
+
+,
+simplemente reemplazalo con en directorio a utilizar
+para todo lo mencionado anteriormente.&#13;</P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x373.html"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="fhs.html"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>De acuerdo, ahora tengo un Makefile. ¿Cómo consigo instalar GNOME en mi sistema?</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="compilinggnome.html"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>¿Cómo compilo GNOME con todos los ficheros en el lugar
+correcto para que sea Compatible con FHS?  ¿Cómo recoloco
+los directorios etc y var para conectar GNOME a una red?</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

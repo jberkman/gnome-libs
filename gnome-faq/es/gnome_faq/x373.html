@@ -1,0 +1,252 @@
+<HTML
+><HEAD
+><TITLE
+>&#13;De acuerdo, ahora tengo un Makefile. ¿Cómo consigo instalar GNOME en mi sistema?&#13;</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.40"><LINK
+REL="HOME"
+TITLE="
+GNOME, preguntas de uso frecuente, PUF (FAQ)
+"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="
+Compilando GNOME
+"
+HREF="compilinggnome.html"><LINK
+REL="PREVIOUS"
+TITLE="
+¿Dónde se esconde configure?
+"
+HREF="x368.html"><LINK
+REL="NEXT"
+TITLE="
+¿Cómo pongo GNOME en algún sitio especial, como
+
+
+/opt/gnome
+
+
+?
+"
+HREF="x390.html"></HEAD
+><BODY
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>GNOME, preguntas de uso frecuente, PUF (FAQ)</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x368.html"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 3. Compilando GNOME</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x390.html"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="AEN373"
+>De acuerdo, ahora tengo un Makefile. ¿Cómo consigo instalar GNOME en mi sistema?</A
+></H1
+><P
+>&#13;Desde aquí, todo es bastante sencillo.  Escribes
+
+<B
+CLASS="COMMAND"
+>&#13;make&#13;</B
+>
+
+, seguido de 
+
+<B
+CLASS="COMMAND"
+>&#13;make
+install&#13;</B
+>
+
+.  En muchos sistemas (incluido GNU/Linux), esto
+debería ser seguido de 
+
+<B
+CLASS="COMMAND"
+>&#13;ldconfig&#13;</B
+>
+
+.  Si tienes mucha prisa, a veces puedes saltar 
+
+<B
+CLASS="COMMAND"
+>&#13;make&#13;</B
+>
+
+, ya que
+
+<B
+CLASS="COMMAND"
+>&#13;make install&#13;</B
+>
+
+normalmente hará todo lo que no halla sido hecho todavía.  
+Si quieres empezar todo el proceso y olvidarte de ello, y usas
+la Bourne shell o sus derivadas (p.ej. ksh o bash), pon
+los cuatro comandos en una línea separados por 
+
+<TT
+CLASS="USERINPUT"
+><B
+>&#13;&#38;&#38;&#13;</B
+></TT
+>
+
+.  Por
+ejemplo:&#13;</P
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><TT
+CLASS="PROMPT"
+>&#13;$&#13;</TT
+>
+<TT
+CLASS="USERINPUT"
+><B
+>&#13;./configure --prefix=/usr/local &#38;&#38; make &#38;&#38; make install &#38;&#38; ldconfig&#13;</B
+></TT
+></PRE
+></TD
+></TR
+></TABLE
+><P
+>&#13;El 
+
+<TT
+CLASS="USERINPUT"
+><B
+>&#13;&#38;&#38;&#13;</B
+></TT
+>
+
+se asegura de que el primer comando ha finalizado
+correctamente antes de seguir con el siguiente.&#13;</P
+><P
+>&#13;Una vez que has hecho 
+
+<B
+CLASS="COMMAND"
+>&#13;make install&#13;</B
+>
+
+(y
+
+<B
+CLASS="COMMAND"
+>&#13;ldconfig&#13;</B
+>
+
+si fuera necesario), puedes continuar con el
+siguiente paquete.&#13;</P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x368.html"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x390.html"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>¿Dónde se esconde configure?</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="compilinggnome.html"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>¿Cómo pongo GNOME en algún sitio especial, como
+
+<TT
+CLASS="FILENAME"
+>&#13;/opt/gnome&#13;</TT
+>
+
+?</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

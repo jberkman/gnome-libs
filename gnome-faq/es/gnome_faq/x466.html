@@ -1,0 +1,237 @@
+<HTML
+><HEAD
+><TITLE
+>&#13;¿Cómo inicio GNOME?&#13;</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.40"><LINK
+REL="HOME"
+TITLE="
+GNOME, preguntas de uso frecuente, PUF (FAQ)
+"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="
+Y ahora ya tengo GNOME, ¿qué hago con él?
+"
+HREF="usinggnome.html"><LINK
+REL="PREVIOUS"
+TITLE="
+Y ahora ya tengo GNOME, ¿qué hago con él?
+"
+HREF="usinggnome.html"><LINK
+REL="NEXT"
+TITLE="
+¿Cómo ejecuto los programas?
+"
+HREF="x480.html"></HEAD
+><BODY
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>GNOME, preguntas de uso frecuente, PUF (FAQ)</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="usinggnome.html"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 4. Y ahora ya tengo GNOME, ¿qué hago con él?</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x480.html"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="AEN466"
+>¿Cómo inicio GNOME?</A
+></H1
+><P
+>&#13;La forma correcta de iniciar GNOME con todas su
+características es poner la línea 
+
+<TT
+CLASS="USERINPUT"
+><B
+>&#13;exec gnome-session&#13;</B
+></TT
+>
+
+al final
+de tu X startup script.  Este script puede llamarse
+
+<TT
+CLASS="FILENAME"
+>&#13;~/.xinitrc&#13;</TT
+>
+
+, 
+
+<TT
+CLASS="FILENAME"
+>&#13;.xsession&#13;</TT
+>
+
+o 
+
+<TT
+CLASS="FILENAME"
+>&#13;.Xclients&#13;</TT
+>
+
+, dependiendo de tu plataforma
+y configuración.  Por supuesto, asegúrate de que los binarios
+de GNOME están en tu path, y no hay ninguna línea que empieze por
+
+<TT
+CLASS="USERINPUT"
+><B
+>&#13;exec&#13;</B
+></TT
+>
+
+antes de la que acabas de añadir.
+Con las gnome-core versions 1.04 y posteriores, puedes seleccionar
+el gestor de ventanas a ejecutar poniendo la variable 
+
+<TT
+CLASS="ENVAR"
+>&#13;WINDOW_MANAGER&#13;</TT
+>
+
+en la que tu elijas.&#13;</P
+><P
+>&#13;Ejecutar 
+
+<B
+CLASS="COMMAND"
+>&#13;gnome-session&#13;</B
+>
+
+tal cual
+iniciará la sesión por defecto, la primera vez.  Esto incluye el
+gestor de ventanas de tu elección 
+(o el que sea más apropiado si no lo especificaste), el panel, GNOME
+Midnight Commander, y el visor de ayudas. A medida que uses GNOME,
+el manejador de sesiones guardará tu escritorio actual.  Si sales
+(log out), y vuelves a entrar (log back in) más tarde, tu
+último escritorio aparecerá como cuando saliste.&#13;</P
+><P
+>&#13;Si no deseas usar el manejo de sesiones, GNOME funcionará
+sin problemas sin él.  Pon la línea 
+
+<TT
+CLASS="USERINPUT"
+><B
+>&#13;exec gnome-wm&#13;</B
+></TT
+>
+
+al final de tu X startup script, como anteriormente.  El sistema
+utilizará la variable de entorno WINDOW_MANAGER para seleccionar
+tu gestor de ventanas, pero no te molestará con la gestión de sesiones.
+Ejecuta el panel, gmc, o lo que tú quieras, bien manualmente, o en el
+script de inicio antes de la linea de exec.  Por ejemplo:&#13;</P
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>&#13;panel &#38;
+gmc &#38;
+exec gnome-wm&#13;</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="usinggnome.html"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x480.html"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Y ahora ya tengo GNOME, ¿qué hago con él?</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="usinggnome.html"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>¿Cómo ejecuto los programas?</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

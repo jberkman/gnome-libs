@@ -1,0 +1,7246 @@
+
+<!doctype book PUBLIC "-//Davenport//DTD DocBook V3.0//EN" [<!entity mailweb       "webmaster@gnome.org">
+<!entity mailfaq       "gnomefaq@gnu.org">
+<!entity mailrequest   "gnome-list-request@gnome.org">
+<!entity mailbug       "submit@bugs.gnome.org">
+<!entity maildeb       "debian-gtk-gnome@lists.debian.org">
+<!entity wwwgtk        "http://www.gtk.org">
+<!entity wwwimlib      "http://www.labs.redhat.com/imlib">
+<!entity wwwgnome      "http://www.gnome.org">
+<!entity wwwgnomelist  "http://www.gnome.org/mailing-lists/index.shtml">
+<!entity wwwgnome10    "http://www.gnome.org/gnome-1.0">
+<!entity wwwgnomestart "http://www.gnome.org/start/getting.shtml">
+<!entity wwwgnomerh    "http://www.gnome.org/start/getting_rh.shtml">
+<!entity wwwgnomedeb   "http://www.gnome.org/start/getting_debian.shtml">
+<!entity wwwgnomecvs   "http://cvs.gnome.org">
+<!entity wwwgnomewicvs "http://www.gnome.org/devel/whatiscvs.shtml">
+<!entity wwwsorencvs   "http://www.cinternet.net/~soren/gnome/cvs.shtml">
+<!entity wwwgnomeftp   "http://www.gnome.org/ftpmirrors.shtml">
+<!entity wwwgnometour  "http://www.gnome.org/start/gnometour.shtml">
+<!entity wwwgnomefoo   "http://www.gnome.org/start/gnometour.shtml">
+<!entity wwwgnomeguide "http://www.gnome.org/users-guide">
+<!entity wwwgnomewmc   "http://www.gnome.org/devel/gnomewm/book1.html">
+<!entity wwwgnomemanif "http://www.gnome.org/about/manifesto.shtml">
+<!entity wwwgnomebug   "http://bugs.gnome.org">
+<!entity wwwgnomebugr  "http://bugs.gnome.org/Reporting.html">
+<!entity wwwsusebe     "http://gnome.linuxbe.org">
+<!entity wwwsusede     "http://www.tu-harburg.de/skf/Pub/ifmpc118.ifm.uni-hamburg.de/gnome.html">
+<!entity wwwbsdport    "http://www.freebsd.org/ports">
+<!entity wwwdocbook    "http://www.oasis-open.org/docbook">
+<!entity wwwdocbooktut "http://nis-www.lanl.gov/~rosalia/mydocs/docbook-intro.html">
+<!entity wwwtoddtheme  "http://www.mindspring.com/~tlewis/screen.jpg">
+<!entity wwwgettext    "http://gnu.org/manual/gettext/html_chapter/gettext_toc.html">
+<!entity wwwgimp       "http://www.gimp.org">
+<!entity wwwgimp32     "http://www.gimp.org/~tml/gimp/win32">
+<!entity wwwgnu        "http://gnu.org">
+<!entity wwwgnuphil    "http://gnu.org/philosophy">
+<!entity wwwgnufree    "http://gnu.org/philosophy/free-sw.html">
+<!entity wwwgnuaconf   "http://gnu.org/software/autoconf/autoconf.html">
+<!entity wwwgnuamake   "http://gnu.org/software/automake/automake.html">
+<!entity wwwgnulibtool "http://gnu.org/software/libtool/libtool.html">
+<!entity wwwgcc        "http://gnu.org/software/gcc/gcc.html">
+<!entity wwwguile      "http://gnu.org/software/guile/guile.html">
+<!entity wwwpng        "http://www.cdrom.com/pub/png">
+<!entity wwwftpmail    "http://www.csdl.tamu.edu/~cchung/cpsc689/ftpmail/ftpmtoc.html">
+<!entity wwwftpmlist   "http://www.cix.co.uk/~net-services/mrcool/stats.htm">
+<!entity wwwi18n       "http://www.vlsivie.tuwien.ac.at/mike/i18n.html">
+<!entity wwwxdnd       "http://www.cco.caltech.edu/~jafl/xdnd/">
+<!entity wwwjimpick    "http://jimpick.com">
+<!entity wwwdebpack    "http://www.debian.org/~jim/debian-gtk-gnome/README">
+<!entity wwwrhqt       "http://charlotte.redhat.com/redhat/qtlicense.html">
+<!entity wwwdebkde     "http://www.debian.org/News/1998/19981008">
+<!entity wwwredbean    "http://www.red-bean.com/guile">
+<!entity wwwschemerpt  "http://www-swiss.ai.mit.edu/~jaffer/r5rs_toc.html">
+<!entity wwwfhs        "http://www.pathname.com/fhs/2.0/fhs-toc.html">
+<!entity wwwgtktheme   "http://gtk.themes.org">
+<!entity ftpgnome      "ftp://ftp.gnome.org">
+<!entity ftpwgn        "ftp://gnomeftp.wgn.net/pub/gnome">
+<!entity ftpsnap       "ftp://ftp.jimpick.com/pub/gnome/snap">
+<!entity ftpdocware    "ftp://ftp.cygnus.com/pub/home/rosalia/docware">
+<!entity dcomcorba     "http://www.research.att.com/~ymwang/papers/HTML/DCOMnCORBA/S.html">
+<!entity schmidtcorba  "http://siesta.cs.wustl.edu/~schmidt/corba.html">
+<!entity gnomeorder    "<member>
+
+glib
+
+</member>
+<member>
+
+gtk+
+
+</member>
+<member>
+
+imlib
+
+</member>
+<member>
+
+orbit
+
+</member>
+<member>
+
+gtk-doc
+
+</member>
+<member>
+
+libgtop
+
+</member>
+<member>
+
+gtk-engines
+
+</member>
+<member>
+
+gnome-libs
+
+</member>
+<member>
+
+gnome-core
+
+</member>
+<member>
+
+control-center
+
+</member>
+<member>
+
+gnome-print
+
+</member>
+<member>
+
+mc
+
+</member>
+<member>
+
+gnome-guile
+
+</member>
+<member>
+
+gnome-python
+
+</member>
+<member>
+
+gnome-objc
+
+</member>
+<member>
+
+gtk--
+
+</member>
+<member>
+
+anything else, as needed, in whatever order
+
+</member>
+
+">
+]>
+
+
+<book id="Index">
+<bookinfo>
+<title>
+
+GNOME, preguntas de uso frecuente, PUF (FAQ)
+
+</title>
+<titleabbrev>
+
+GNOME-PUF
+
+</titleabbrev>
+<edition>
+
+v1.0.6a
+
+</edition>
+<authorgroup>
+<author>
+<firstname>
+
+Todd
+
+</firstname>
+<othername>
+
+Graham
+
+</othername>
+<surname>
+
+Lewis
+
+</surname>
+<authorblurb>
+<para>
+<email>
+
+tlewis@mindspring.com
+
+</email>
+</para>
+</authorblurb>
+</author>
+<author>
+<firstname>
+
+David
+
+</firstname>
+<othername>
+
+"Gleef"
+
+</othername>
+<surname>
+
+Zoll
+
+</surname>
+<authorblurb>
+<para>
+<email>
+
+gleef@capital.net
+
+</email>
+</para>
+</authorblurb>
+</author>
+</authorgroup>
+<date>
+
+1 de Marzo de 1999
+
+</date>
+<abstract>
+<para>
+
+Éstas son las PMF sobre GNOME, el entorno de trabajo en red orientado a 
+objetos GNU ('GNU Network Object Model Environment').
+
+</para>
+</abstract>
+</bookinfo>
+<chapter id="Overview">
+<title>
+
+Introducción a GNOME
+
+</title>
+<para>
+
+Esta sección abarca preguntas relacionadas con GNOME como
+concepto global.
+
+</para>
+<sect1>
+<title>
+
+¿Qué significa GNOME?
+
+</title>
+<para>
+
+GNOME es el GNU 'Network Object Model Environment', 
+entorno de trabajo en red orientado a objetos. GNU significa
+GNU no es Unix ("GNU's Not UNIX).
+
+</para>
+</sect1>
+<sect1>
+<title>
+
+¿Qué es GNOME?
+
+</title>
+<para>
+
+GNOME es el escritorio GUI del
+
+<ulink url="&wwwgnu;">
+
+proyecto GNU
+
+</ulink>
+
+.
+
+</para>
+<para>
+
+Según un extracto del anuncio original en comp.os.linux.announce, GNOME 
+pretende ser un conjunto completo y gratuito de aplicaciones y accesorios
+de escritorio intuitivos para el usuario, similar a CDE o KDE pero basado
+enteramente en software libre. 
+
+</para>
+<para>
+
+A mí, el amable responsable de las PMF, me gusta definir GNOME como todo
+aquello que se espera disponer en un entorno moderno de programación. En este
+aspecto, es aproximademente equivalente a CDE, win32, OpenStep, o KDE. La
+gran diferencia es que, a diferencia de los ejemplos mencionados anteriormente,
+cada componente individual de GNOME es 
+
+<ulink url="&wwwgnufree;">
+
+software "libre" o de "código abierto"
+
+</ulink>
+
+.
+
+</para>
+<para>
+
+Para los cartógrafos de ahí a fuera, he aquí algunas de las más altas 
+cumbres que encontrarás en la tierra de GNOME:
+
+</para>
+<itemizedlist>
+<listitem>
+<para>
+
+GNOME usa la arquitectura universal de agentes de petición de
+objetos (CORBA) del grupo de manejo de objetos (OMG) que permite
+a los componentes software interoperar `sin costuras',
+independientemente del lenguaje en el que estén implementados,
+¡e incluso de la máquina en la que se ejecuten!
+(Véase la sección 
+
+<link linkend="CORBA">
+
+CORBA
+
+</link>
+
+)
+
+</para>
+</listitem>
+<listitem>
+<para>
+
+La comunidad GNOME está trabajando duro en el desarrollo de un 
+modelo de objetos llamado `baboon'. Basado en CORBA y similar al enlazador
+y acoplador de objetos de Microsoft, v2 (OLE2), baboon permitirá a los
+programadores exportar y/o importar recursos 'componetized'. Ésto, por
+ejemplo, permitirá a los usuarios utilizar cualquier editor que deseen en su
+entorno de desarrollo, a condición de que su editor soporte a través de 
+CORBA un interfaz de editor estándar 
+(Véase la sección 
+
+<link	  linkend="BABOON">
+
+BABOON
+
+</link>
+
+)
+
+</para>
+</listitem>
+<listitem>
+<para>
+
+GNOME no está atado a ningún gestor de ventanas. Puedes escoger tu
+gestor de ventanas favorito y usarlo con GNOME.
+(Véase la sección 
+
+<link linkend="WM">
+
+Gestor de ventanas
+
+</link>
+
+)
+
+</para>
+</listitem>
+<listitem>
+<para>
+
+GNOME usa el kit de herramientas Gimp como kit gráfico para todas
+las aplicaciones gráficas. GTK tiene toneladas de ingeniosas 
+funcionalidades, pero mis tres favoritas son: (1) soporte para multiples
+lenguajes, incluyendo C, C++, objective C, scheme, perl, y otros; (2) 
+'themability', por la cual un usuario puede cambiar el aspecto de todas 
+las aplicaciones GTK en una máquina mientras las aplicaciones están
+ejecutándose, lo que es increíblemente interesante; (3) y finalmente, la
+licencia de GTK es LPGL, lo que significa que es totalmente código 
+abierto, o software "libre", al igual que el resto de GNOME.
+(Véase la seccion 
+
+
+<link linkend="GTK">
+
+GTK+
+
+</link>
+
+)
+
+</para>
+</listitem>
+<listitem>
+<para>
+
+Además de GTK, GNOME usa imlib, una biblioteca para X de
+tratamiento de imágenes que
+soporta multiples formatos de imagenes, desde XPM a PNG, y múltiples
+resoluciones, desde Color Real de 24-bit hasta B/N de 1-bit, todo de forma
+transparente al programador. (Véase la sección 
+
+<link	  linkend="IMLIB">
+
+Imlib
+
+</link>
+
+)
+
+</para>
+</listitem>
+<listitem>
+<para>
+
+Todas las aplicaciones GNOME pueden manejarse a traves de sesiones. Ésto 
+significa, p.e., que si cierras el (todavía no escrito) procesador de textos
+GNOME y lo arrancas de nuevo, abrirá el documento que tenías abierto 
+previamente y situará el cursor de nuevo en la misma posición. Ésto se 
+logra a través del sistema de gestión de sesiones X, tal y como se implementa
+en el gestor de sesiones GNOME.
+(Véase la sección 
+
+<link linkend="SM">
+
+Gestión de sesiones
+
+</link>
+
+)
+
+</para>
+</listitem>
+<listitem>
+<para>
+
+GNOME usa el estándar DocBook SGML para toda la documentación, lo que
+permite a los programadores escribir la documentación de una forma 
+sencilla.  Los documentos pueden verse con el visualizador de ayuda de 
+GNOME, o tranformarse a HTML y verse con un visualizador de web, o 
+convertirse a LaTeX o postscript e imprimirse. 
+(Véase la sección 
+
+<link	  linkend="SGML">
+
+SGML
+
+</link>
+
+)
+
+</para>
+</listitem>
+<listitem>
+<para>
+
+GNOME soporta los métodos de adaptación local e internacionalización
+estándar de Uniforum, permitiendo incorporar soporte para nuevos
+lenguajes incluso sin tener que recompilar la aplicación.
+(Véase la sección 
+
+
+<link	  linkend="I18N">
+
+Internacionalización &
+Adaptación Local
+
+</link>
+
+)
+
+</para>
+</listitem>
+<listitem>
+<para>
+
+las aplicaciones GNOME soportarán varios protocolos de "arrastar y
+soltar" (Drag & Drop) para una máxima interoperatibilidad con otras
+aplicaciones.
+(Véase la sección 
+
+<link linkend="XDND">
+
+Arrastrar y soltar
+
+</link>
+
+)
+
+</para>
+</listitem>
+<listitem>
+<para>
+
+GNOME soporta la programación 3-D usando OpenGL, permitiendo 
+a la gente usar gráficos tridimensionales correctamente con sus aplicaciones
+GNOME, ya sean éstas cientificas o juegos. GNOME usa Mesa, que es una
+implementación de código abierto del estándar OpenGL.
+(Véase la sección 
+
+<link	  linkend="OPENGL">
+
+OpenGL
+
+</link>
+
+)
+
+</para>
+</listitem>
+</itemizedlist>
+<para>
+
+Si todo ésto parece ambicioso, ¡es porque lo es! ¡Sigue leyendo para enterarte
+de más cosas!
+
+</para>
+</sect1>
+<sect1>
+<title>
+<!-- 123 sobre  -->
+
+¿Dónde puedo encontrar más información, ayuda o trucos sobre GNOME?
+
+</title>
+<para>
+<!-- 123 ¿qué pagina? la nuestra o la internacional -->
+La pagina de Gnome es, por supuesto un buen sitio para empezar:
+
+<ulink url="&wwwgnome;">
+
+&wwwgnome;
+
+</ulink>
+
+.
+
+</para>
+<para>
+
+También puedes pensar en unirte a la lista de correo gnome-list,
+es un lugar muy bueno para pedir ayuda.
+
+</para>
+</sect1>
+<sect1 id="MailingList">
+<title>
+
+¿Cómo uso esas listas de correo GNOME de las que he oido hablar?
+
+</title>
+<para>
+
+El  mejor lugar para conseguir ayuda e información actualizada
+sobre GNOME es en las listas de correo. Puedes encontrar un
+listado general en:
+
+<ulink      url="&wwwgnomelist;">
+
+&wwwgnomelist;
+
+</ulink>
+
+. La lista de propósito general para ayudas y discusiones es
+
+<ulink      url="mailto:&mailrequest;">
+
+gnome-list@gnome.org
+
+</ulink>
+
+. Para apuntarse a esta lista (o cualquier otra), envia un mensaje a la
+
+<emphasis>
+
+request
+address
+
+</emphasis>
+<!-- esto no hay que tocarlo -->
+
+, esta dirección es en general la de la lista con el prefijo
+"-request" añadido al nombre. Por ejemplo
+la request address para la gnome-list es 
+
+<ulink url="mailto:&mailrequest;">
+
+&mailrequest;
+
+</ulink>
+
+.  El subject del correo
+
+<emphasis>
+
+debe
+
+</emphasis>
+
+ser
+
+<userinput>
+
+subscribe
+
+</userinput>
+
+.
+
+</para>
+<para>
+
+En pocos minutos (posiblemente algunos más si no estás en
+Norte América), deberías obtener una respuesta automática 
+pidíendote la confirmación de la subscripción. Sigue las 
+instrucciones de este correo electrónico y estarás subscrito.
+Finalmente, el sistema te mandará dos correos con ayuda 
+sobre como usar el sistema (de listas).
+
+</para>
+</sect1>
+<sect1 id="Archives">
+<title>
+
+¿Cómo accedo a los ficheros de la lista de correo?
+
+</title>
+<para>
+
+Hay dos maneras. La más fácil es ir a la página de la lista 
+de correo en
+ 
+
+<ulink url="&wwwgnomelist;">
+
+&wwwgnomelist;
+
+</ulink>
+
+.
+Haciendo clic en cualquiera de la lista de direcciones de 
+la izquierda, podrás visualizar los archivos de la lista.
+
+</para>
+<para>
+
+Si necesitas realizar una búsqueda en los archivos, puedes 
+usar la dirección de request (request address) de esa lista. 
+Uno de los primeros correos enviados cuando te subscribes 
+detalla las instrucciones sobre como realizar esta tarea. 
+Si has perdido estas instrucciones, email a 
+
+<ulink      url="mailto:&mailrequest;">
+
+&mailrequest;
+
+</ulink>
+
+con el subject
+
+<userinput>
+
+archive help
+
+</userinput>
+
+.  Obtendrás por respuesta un archivo con 
+instrucciones sobre como usar el sistema de archivos.
+
+</para>
+</sect1>
+<sect1 id="Pronunciation">
+<title>
+
+¿Cómo pronuncio GNOME?
+
+</title>
+<para>
+
+GNOME significa 
+
+<quote>
+
+GNU Network Object Model
+Environment (Entorno de trabajo en red orientado a objetos GNU)
+
+</quote>
+
+.  GNU significa 
+
+<quote>
+
+GNU's Not
+Unix (GNU' No es Unix)
+
+</quote>
+
+, y siempre ha sido pronunciado 
+
+<quote>
+
+guh-NEW
+
+</quote>
+
+para minimizar la confusión.  Puesto que GNU es 
+el primer nombre de GNOME, GNOME se pronuncia oficialmente
+
+<quote>
+
+guh-NOME
+
+</quote>
+
+.
+
+</para>
+<para>
+
+Sin embargo, mucha gente pronuncian GNOME como
+
+<quote>
+
+NOME
+
+</quote>
+
+(como esos pequeños seres de leyenda, los gnomos),
+nadie se va a enfadar si encuentras esta pronunciación
+más fácil.
+
+</para>
+</sect1>
+<sect1 id="WhyGNOME">
+<title>
+
+¿Por qué GNOME?
+
+</title>
+<para>
+
+Primero, el sistema operativo GNU necesita un entorno de escritorio
+que sea 100% free software (software libre).  GNOME satisface esta
+necesidad.
+
+</para>
+<para>
+
+La segunda meta, por medio de la primera, es que la gente que
+use sistemas operativos libres tenga un agradable entorno de
+usuario en el que trabajar (Esto se aplica también a otros
+sistemas basados en UNIX no gratuitos).
+
+</para>
+<para>
+
+Finalmente, GNOME tiene un montón de características realmente
+bien diseñadas que seguro que los 'geeks' disfrutarán. En palabras
+de uno de los revisores internacionales de estas FAQ:
+
+</para>
+<blockquote>
+<para>
+
+
+Todd, GNOME tiene méritos tecnicos incluso más allá del "open
+source" y el "agradable entorno" y la "dominación mundial", como
+tú bien sabes... Por ejemplo, el clon de COM y el uso de CORBA
+para la interoperación gives me a woody.<!-- 123 gives me a woody -->
+
+</para>
+</blockquote>
+<para>
+
+Esto es realmente cierto (el hecho de que GNOME tenga
+un gran mérito técnico; descozco el aspecto en el woody front). 
+¡Pruébalo tu mismo y verás!
+
+</para>
+</sect1>
+<sect1 id="WhyNot">
+<title>
+
+¿Por qué no CDE o KDE o GNUStep?
+
+</title>
+<para>
+
+¡Porque GNOME es mejor!  Ya más enserio, cada uno de estos
+entornos plantean cuestiones que nos animaron a comenzar
+<!-- 123 to start fresh -->el proyecto GNOME.
+
+</para>
+<para>
+
+CDE no es Free Software, ni de lejos se le parece.  Mucha
+gente además lo encuentra carente de características
+especiales, rendimiento y funcionalidad.
+
+</para>
+<para>
+
+En el momento en el que surge GNOME, KDE tenía serios
+problemas de licencia, que todavía se están intentando solucionar. 
+KDE está basado en una librería no libre llamada Qt, que tiene
+una licencia muy liberal, pero que no es 
+
+<ulink url="&wwwgnufree;">
+
+Free
+Software
+
+</ulink>
+
+.  TrollTech (la empresa propietaria de Qt) ha prometido cambiar
+la licencia de Qt, pero todavía no lo han hecho. Además habían
+problemas de compatibilidad entre la licencia de KDE y la de Qt. 
+Más que insistir en este tema, te recomiendo leer los artículos
+
+<ulink      url="&wwwrhqt;">
+
+Posición de RedHat sobre Qt
+
+</ulink>
+
+y 
+
+<ulink      url="&wwwdebkde;">
+
+Posición de Debian sobre KDE
+
+</ulink>
+
+.  A la gente de GNOME
+nos gusta la gente de KDE, y consideramos la actual una situación
+desafortunada en proceso de arreglarse.  Con un poco de 
+suerte, esto dejará pronto de ser un tema de actualidad, y GNOME y 
+KDE podrán competir amigablemente en méritos técnicos y diseño.
+
+</para>
+<para>
+
+Este tema ha sido hashed out <!-- 123 hashed out -->una y otra vez en la lista de correo
+general de GNOME.  Plantear esta cuestión en la 'gnome-list' es
+un comportamiento totalmente desaconsejado. Si quieres ir a
+algún sitio y empezar una guerra de flames (flame war)<!-- 123 flame war --> sobre
+este asunto, entonces por favor hazlo en algún lugar muy muy
+lejano donde no tengamos que oirte.
+
+</para>
+<para>
+
+
+
+Hay importantes diferencias de diseño entre KDE y GNOME.  
+La primera de la lista es la diferencia en el widget set.  
+Encontramos a GTK+ más agradable, más adaptable, más
+amigable para los desarrolladores en varios lenguajes, y más 
+flexible que Qt; otros puede que no estén de acuerdo.  
+En conjunto, los proyectos son lo suficientemente diferentes
+como para que ambos puedan coexistir e incluso colaborar entre sí.
+
+</para>
+<para>
+
+GNUStep es otro entorno de escritorio que tiene muchas cosas
+buenas que funcionan muy bien. <!-- 123 that has a lot of good
+things going for it -->Otro cosa respecto a GNUStep es que 
+están intentando reimplementar el escritorio y API OpenStep, 
+con GNOME preferiríamos desarrollar algo nuevo y bueno más que
+simplemente rehacer algo viejo, incluso algo viejo y bueno. 
+Además, así como Qt empuja con fuerza al los desarrolladores hacia
+C++, GNUStep empuja a los desarrolladores hacia <!-- 123 objective C -->**Objective C.
+GNOME quiere permanecer agnostico frente a los lenguajes, y soportar
+desarrolo en cualquier lenguaje que desees utilizar.
+
+</para>
+</sect1>
+<sect1>
+<title>
+
+¿Qué plataformas?
+
+</title>
+<para>
+
+GNOME fue iniciado por varias personas bien conocidas en las
+comunidades Linux y GNU, pero está concebido para funcionar en
+cualquier sistema moderno y funcional basado en Unix. Su
+funcionamiento ha sido probando en los siguientes:
+
+</para>
+<simplelist>
+<member>
+
+GNU/Linux
+
+</member>
+<member>
+
+BSD (FreeBSD, NetBSD y OpenBSD)
+
+</member>
+<member>
+
+Solaris
+
+</member>
+<member>
+
+IRIX
+
+</member>
+<member>
+
+HP-UX
+
+</member>
+<member>
+
+AIX
+
+</member>
+<member>
+
+probablemente en algunos otros; a los que no sigo la pista.
+<!-- 123 I have not really kept track -->
+
+</member>
+</simplelist>
+<para>
+
+Si pruebas GNOME en otras plataformas y funciona, entonces
+por favor asegúrate de hacérmelo saber para que pueda incluirlas
+aquí. Si lo pruebas en otra plataforma y tienes problemas, entonces por
+favor envíanos las dificultade que encontraste, para que los 
+desarrolladores de GNOME puedan trabajar en el problema. (Mira en 
+
+<link      linkend="BugReport">
+
+Informando sobre Bugs
+
+</link>
+
+.)
+
+</para>
+</sect1>
+<sect1>
+<title>
+
+¿Puedo todavía ejecutar mis programs en GNOME?
+
+</title>
+<para>
+
+GNOME no reemplaza tu sistema, funciona sobre él.
+Todos los programas que funcionan sin GNOME deberían
+funcionar bien con GNOME.
+
+</para>
+</sect1>
+<sect1 id="WM">
+<title>
+
+¿Qué es un gestor de ventanas, y qué tiene que ver con GNOME?
+
+</title>
+<para>
+
+Un gestor de ventanas es un programa dentro del entorno X 
+Windows que controla la posición y apariencia de las ventanas
+en la pantalla.  Mira un xterm o algo.  La caja del terminal de
+texto es el actual xterm, el borde, barra de título, botones
+y demás estan controlados por el gestor de ventana.
+Algunos gestores de ventanas tienen aplicaciones extras, pero 
+todos se encargan de la decoración y posición de la ventana.
+
+</para>
+<para>
+
+Hay muchos gestores de ventana ahí fuera, y GNOME debería
+funcionar correctamente con todos ellos.  Hay unas cuantas
+características de GNOME (como el manejo de sesiones, y el 
+GNOME pager), que no funcionarán con todos ellos.  Para
+obtener los mejores resultados, hazte con un gestor de
+ventanas compatible con GNOME.  Los dos más compatibles
+actualmente son Enlightenment y IceWM, con FVWM, SCWM,
+Window Maker, AfterStep y QVWM dando los últimos retoques
+a la compatibilidad con GNOME mientras lees esto.
+<!-- 123 NOTA: ... que como está traducido será ahora -->
+<!-- 123 * finishing touches *****on GNOME-compliance as we speak. -->
+
+</para>
+</sect1>
+<sect1 id="FreeSoftware">
+<title>
+
+Has dicho que GNOME es Free Software.  ¿Qué significa Free Software?
+
+</title>
+<para>
+
+La mayoría de licencias de software están diseñadas para 
+limitar la libertad de los usuarios a usar, examinar, modificar
+y distribuir el software.  En el proyecto GNOME, y en la 
+comunidad del Free Software en general, creemos que esas
+restricciones no son éticas, y nos esforzamos por producir 
+software de calidad que esté libre de esas restricciones. 
+Esto es lo que llamamos Free Software.  Tradicionalmente, se ha
+referido a software que permite tres tipos de libertad:
+
+</para>
+<itemizedlist>
+<listitem>
+<para>
+
+Libertad para estudiar cómo funciona el programa y adaptarlo
+a tus necesidades.
+
+</para>
+</listitem>
+<listitem>
+<para>
+
+Libertad para redistribuir copias para que puedas compartirlo
+con tu vecino.
+
+</para>
+</listitem>
+<listitem>
+<para>
+
+Libertad para mejorar el programa, y presentar tus mejoras al
+público, para que toda la comunidad se beneficie.
+
+</para>
+</listitem>
+</itemizedlist>
+<para>
+
+Más recientemente, una cuarta libertad ha comenzado a ser
+restringida por las licencias, la libertad para usar el software.  
+Debido a que las licencias de software están basadas el la ley de
+propiedad (copyright), y esta ley sólo se dirige a la distribución,
+no al uso, asumimos que la la libertad de uso estaba implícita. 
+<!-- 123 law only addresses distribution, not use, we assumed that
+freedom of use goes without saying. -->  No hace falta decir
+<!-- 123 *****Suffice it to say --> que mientras la libertad
+de uso no es parte de la definición tradicional del Free Software,
+el concepto sí incluye esa libertad.
+
+</para>
+<note>
+<comment>
+
+<!-- 123 ¿que hacemos con esto? -->
+
+Note to translators, please translate the following
+note, including all instances of the word "free" carefully,
+except leave the 
+
+<literal>
+
+free
+
+</literal>
+
+in English.
+
+</comment>
+<para>
+
+Si el siguiente párrafo es difícil de entender en la traducción,
+perdonadme.  A diferencia de muchos idiomas, en inglés la palabra
+usada en 
+
+<quote>
+
+free beer (cerveza gratuita)
+
+</quote>
+
+y 
+
+<quote>
+
+free
+speech (libertad de expresión<!-- 123 ¿que es free speech? -->)
+
+</quote>
+
+es 
+
+<literal>
+
+free
+
+</literal>
+
+.  Esto causa alguna confusión cuando se está hablando de 
+Free Software.
+
+</para>
+</note>
+<para>
+
+El Free Software es un asunto de libertad, no de precio.  Para
+entender el concepto, piensa en "Free Speech" y no en "Free Beer".
+La comunidad Free Software no está de ningún modo en contra del 
+concepto de vender copias del software, o de que los programadores 
+se ganen la vida.  No estamos en contra del software comercial,
+estamos en contra del software propietario.  Para más información, 
+mira los artículos en 
+
+<ulink url="&wwwgnuphil;">
+
+&wwwgnuphil;
+
+</ulink>
+
+.
+
+</para>
+<para>
+
+En el proyecto GNOME, protegemos la libertad del usuario
+usando la GNU General Public License (GPL) y la GNU Lesser
+General Public License (LGPL, anteriormente conocida como la GNU Library
+GPL).  Estas licencias son cuidadosamente diseñadas con el legal advice
+para producir un <!-- 123 REVISAR LA FRASE ANTERIOR -->
+
+<quote>
+
+copyleft
+
+</quote>
+
+.  Que es un trabajo con copyright
+que garantiza que será siempre redistribuible libremente.
+Esto se consigue asegurándonos que las modificaciones y 
+trabajos derivados están también cubiertos bajo la GPL.
+
+</para>
+<para>
+
+Las principales aplicaciones de GNOME (y unas pocas librerías)
+están cubiertas bajo la GPL.  La mayoría de las librerías core de GNOME usan
+la LGPL, para permitir que puedan ser utilizadas otras licencias de 
+software libres (y propietarias) cuando se realize software para GNOME, 
+aunque siempre protegiendo las librerías de ser restringidas.
+
+</para>
+</sect1>
+<sect1 id="OpenSource">
+<title>
+
+¿Es GNOME Open Source(tm) Software?
+
+</title>
+<para>
+
+En primer término se puede decir que sí.  La GPL y LGPL usadas para GNOME
+están explicitamente listadas como ejemplos de la definición de 
+"Open Source".  Sin embargo, intentamos evitar usar el término Open Source
+para describir a GNOME, ya que no sólo esconde este término deliberadamente 
+la libertad inherente en el Free Software, sino que además el término está 
+siendo utilizado para describir software que no es Free (Software).
+
+</para>
+<para>
+
+El término fue creado para intentar acercar el Free Software a
+los negocios que no querían oir hablar de Libertad (Freedom).  
+Personalmente, he descubierto que a la mayoría de negocios les 
+gusta oir hablar sobre libertad.  La libertad para personalizar 
+su software a sus necesidades, la libertad para cambiar a los 
+desalloradores de software sin cambiar su software, la libertad 
+para dar copias de su software a sus clientes y subcontratistas, 
+son todas estas libertades que el Free Software ofrece, y el
+propietario normalmente no, las que hacen un
+
+<emphasis>
+
+<!-- 123 ¿Y AQUI? buen sentido para los negocios -->
+good business sense
+
+</emphasis>
+
+.  Para saber más sobre
+la distinción entre Open Source y Free Software, le el
+artículo de Richard M. Stallman en 
+
+<ulink      url="&wwwgnuphil;/free-software-for-freedom.html">
+
+&wwwgnuphil;/free-software-for-freedom.html
+
+</ulink>
+
+.
+
+</para>
+</sect1>
+</chapter>
+<chapter id="GettingGNOME">
+<title>
+
+Consiguiendo GNOME
+
+</title>
+<para>
+
+Hay muchas maneras de introducir GNOME en tu sistema.  Esta
+sección cubre las preguntas más comunes que implica el proceso.
+
+</para>
+<sect1 id="SystemRequirements">
+<title>
+
+¿Cuáles son los requisitos de sistema para GNOME?
+
+</title>
+<para>
+
+Actualmente, necesitas una máquina con un sistema operativo Unix (o 
+basado en Unix) instalado, con el Sistema X Window (X11R5 o
+superior).  Necesitas al menos 16MB de RAM, aunque supongo que 
+serás más feliz con 32MB o más.  Si sólo estás instalando los binarios, 
+necesitarás cerca de 30MB de espacio en el disco, no esperes necesitar 
+menos 200MB de espacio de disco si vas a compilarlo desde los fuentes.
+
+</para>
+</sect1>
+<sect1>
+<title>
+
+¿Cuál es el mejor formato para conseguir GNOME en mi máquina?
+
+</title>
+<para>
+
+Depende de la clase de ordenador que tengas, y lo que quieras hacer 
+con GNOME.  Si tienes dudas, el método oficial y con soporte para 
+instalar GNOME es desde el último paquete de tarballs (los ficheros
+acabados en 
+<!-- 123 ****the officially supported
+way to install GNOME is from the latest set of tarballs (the
+files ending in ***** -->
+
+<quote>
+
+.tar.gz
+
+</quote>
+
+) desde 
+
+<ulink      url="&ftpgnome;">
+
+&ftpgnome;
+
+</ulink>
+
+o sus servidores réplica (mirrors). Busca en el directorio
+/pub/GNOME/sources para comprobar los diversos paquetes existentes.  La
+lista completa de sitios FTP réplica está en 
+
+<ulink      url="&wwwgnomeftp;">
+
+&wwwgnomeftp;
+
+</ulink>
+
+, en cso de emergencia, prueba con
+
+<ulink url="&ftpwgn;">
+
+&ftpwgn;
+
+</ulink>
+
+.
+
+</para>
+<para>
+
+<!-- 123 ****If you want the up to the minute, bleeding edge
+development version of GNOME, CVS is the way to go. -->
+
+Si quieres la ultimísima versión en desarrollo de GNOME, CVS
+es lo que necesitas.  No hay garantías de que la versión CVS
+pueda como mínimo ser compilada, ni mucho menos que funcione,
+pero los bug reports son muy apreciados.  Si crees que esto
+es para tí, puedes encontrar mas información sobre como
+obtener la versión CVS en 
+
+<ulink url="&wwwgnomewicvs;">
+
+&wwwgnomewicvs;
+
+</ulink>
+
+y 
+
+<ulink url="&wwwsorencvs;">
+
+&wwwsorencvs;
+
+</ulink>
+
+.
+
+</para>
+<para>
+
+Si no quieres ocuparte de compilar GNOME, y estás en un
+sistema común, deberían haber paquetes binarios precompilados 
+disponibles para tí.  Actualmente hay paquetes para sistemas
+RedHat, SuSE 6.0, Debian y LinuxPPC.  Hasta hace poco
+habían paquetes para Solaris también, tan pronto como 
+tengamos unos buenos ofreceremos estos también.  Más sobre 
+las diversas distribuciones en 
+
+<ulink      url="&wwwgnomestart;">
+
+&wwwgnomestart;
+
+</ulink>
+
+.
+
+</para>
+</sect1>
+<sect1>
+<title>
+
+¿Qué necesito en mi ordenador antes de instalar GNOME?
+
+</title>
+<para>
+
+Hay unas pocas cosas que GNOME presupone que tienes, 
+si no las tienes, o tienes una versión más antigua,
+instala o actualiza los siguientes paquetes antes de 
+comenzar el proceso de instalación de GNOME.
+
+</para>
+<simplelist>
+<member>
+
+libjpeg (6b o superior)
+
+</member>
+<member>
+
+libpng (1.0.1, 1.0.3 o superior 
+
+<emphasis>
+
+no
+1.0.2
+
+</emphasis>
+</member>
+<member>
+
+libungif (3.0 o superior)
+
+</member>
+<member>
+
+libtiff (3.4 o superior)
+
+</member>
+<member>
+
+libgr (2.0 o superior)
+
+</member>
+<member>
+
+ImageMagick (4.0.5 o superior)
+
+</member>
+<member>
+
+zlib (1.1.2 o superior)
+
+</member>
+<member>
+
+guile (1.2 o superior)
+
+</member>
+<member>
+
+Berkeley DB (1.85 o superior)
+
+</member>
+</simplelist>
+<para>
+
+Además, hay unas pocas librerías que, aun no siendo 
+tecnicamente una parte de GNOME, son habitualmente 
+distribuidas con él.  Asegúrate de que tienes:
+
+</para>
+<simplelist>
+<member>
+
+glib (1.2 o superior)
+
+</member>
+<member>
+
+gtk+ (1.2 o superior)
+
+</member>
+<member>
+
+ORBit (0.4.0 o superior)
+
+</member>
+<member>
+
+Imlib (1.9.3 o superior)
+
+</member>
+</simplelist>
+<para>
+
+Algunos de los <!-- 123 bells and whistles -->timbres y sonidos
+requieren un gestor de ventanas compatible con GNOME para
+funcionar.  Actualmente estos son Enlightenment, IceWM, y Window
+Maker.  Además tanto FVWM como SCWM están dando sus últimos
+retoques a su soporte para GNOME.  GNOME no incluye un gestor
+de ventanas, y funcionará correctamente con cualquier gestor de
+ventanas, estos simplemente aportan unos pocos extras.
+
+</para>
+<para>
+
+Últimamente, hay algunas librerías que son necesarias para unos pocos,
+programas no críticos en GNOME.  Si te estas quedando si espacio o
+tiempo, puedes saltar esto sin ningún riesgo.  Si quieres que
+suenen todas los timbres y sonidos <!-- 123 bells and whistles -->,
+querás también lo siguiente:
+
+</para>
+<simplelist>
+<member>
+
+libgtop (0.99 o superior)
+
+</member>
+<member>
+
+esound (0.2.8 o superior)
+
+</member>
+<member>
+
+gtk-engines
+
+</member>
+</simplelist>
+</sect1>
+<sect1 id="Order">
+<title>
+
+¿En qué orden me ocupo de los paquetes de GNOME?
+
+</title>
+<para>
+
+No hay una única respuesta para esta cuestión, pero
+hay un orden que debería funcionar bien:
+
+</para>
+<simplelist>
+
+&gnomeorder;
+
+</simplelist>
+</sect1>
+<sect1>
+<title>
+
+¿Como consigo los Tarballs de GNOME?
+
+</title>
+<para>
+
+Las nuevas versiones de los Tarball (p.e. archivos comprimidos del código usando
+tar y gzip) de GNOME aparecen en 
+
+<ulink      url="&ftpgnome;">
+
+&ftpgnome;
+
+</ulink>
+
+bajo el directorio 
+
+<ulink      url="&ftpgnome;/pub/GNOME">
+
+/pub/GNOME/
+
+</ulink>
+
+. Estos
+archivos son entonces copiados en los servidores FTP réplica, listados en
+
+<ulink url="&wwwgnomeftp;">
+
+&wwwgnomeftp;
+
+</ulink>
+
+. Si tanto el sitio ftp y web están caídos,
+un mirror relativamente seguro está en 
+
+<ulink      url="&ftpwgn;">
+
+&ftpwgn;
+
+</ulink>
+
+.
+
+</para>
+<para>
+
+Estos tarballs son las únicas versiones oficiales de GNOME,
+y la única versión de la que los desarrolladores tienen
+garantizado un control directo. <!-- 123 ***and the only
+version that the developers can be guaranteed to have
+direct control over. -->  Actualmente, las versiones más recientes
+de cada paquete pueden encontrarse en 
+
+<ulink      url="&ftpgnome;/pub/GNOME/sources/latest">
+
+sources/latest
+
+</ulink>
+
+, el actual grupo de tarballs para la
+version GNOME-1.0 están en 
+
+<ulink      url="&ftpgnome/pub/GNOME/gnome-1.0/sources">
+
+gnome-1.0/sources
+
+</ulink>
+
+.
+
+</para>
+<para>
+
+Si quieres los últimos tarballs en desarrollo de GNOME,
+
+<ulink url="&wwwjimpick;">
+
+Jim Pick Software
+
+</ulink>
+
+envía
+<!-- 123 ¿snapshots? -->snapshots diarias del árbol de
+desarrollo en formato tarball <!-- 123 ***of the
+development tree in tarball form -->. Puedes 
+conseguirlos en 
+
+<ulink url="&ftpsnap;">
+
+&ftpsnap;
+
+</ulink>
+
+. Generalmente
+<!-- 123 ****he keeps a few key days of each package on file,
+and diff files so that you can recreate the snapshots of any
+other day.  Note that these are not releases, they are unstable
+snapshots, and should not be used in a production system unless
+you know exactly what you are doing. -->
+conserva unos dias cada paquete en un archivo, y archivo diff
+para quepuedas disponer de los snapshots de cualquier otro dia.
+Ten en cuenta que estas no son versiones oficiales, son snapshots
+inestables, y no deberían usarse en un sistema en producción a
+menos que sepas exactamente lo que estás haciendo.
+
+</para>
+</sect1>
+<sect1>
+<title>
+
+¿Cómo consigo GNOME desde el CVS?
+
+</title>
+<para>
+
+El CVS es una herramienta muy útil, no solo para los desarrolladores, 
+sino también para los usuarios que quieran tener acceso a lo último de
+lo último <!-- 123 ***up-to-the-second*** -->del árbol del desarrollo.  
+<!-- 123 ***However, using CVS is a little involved for
+this section of the FAQ. -->Sin embargo, el uso del CVS no
+es un tema  para ser tratado en esta sección de de las FAQ.  Dos buenos
+sitios para empezar son la sección
+
+<quote>
+
+What is CVS? (¿Qué es el CVS?)
+
+</quote>
+
+del sitio web de GNOME en
+
+<ulink      url="&wwwgnomewicvs;">
+
+&wwwgnomewicvs;
+
+</ulink>
+
+, y la siguiente sección
+
+<link      linkend="GNOMEr">
+
+Cómo hacerse un GNOMEr
+
+</link>
+.
+
+</para>
+</sect1>
+<sect1 id="FTPMail">
+<title>
+
+Mi único acceso a internet es el correo electrónico.  ¿Cómo
+consigo GNOME?
+
+</title>
+<para>
+
+Si estás tan desconectado de internet que sólo tienes acceso al correo, 
+existen remailers en la red que te permiten usar el FTP via correo e.  
+Envía un mensaje escribiendo en el body
+
+<command>
+
+help
+
+</command>
+
+, sin comillas o signos de puntuación a
+bitftp@pucc.princeton.edu o webmail.ucc.ie.  Puede ser lento,
+pero te permitirá bajarte los tarballs de GNOME via email.
+Visita 
+
+<ulink url="&wwwftpmail;">
+
+&wwwftpmail;
+
+</ulink>
+
+o
+
+<ulink url="&wwwftpmlist;">
+
+&wwwftpmlist;
+
+</ulink>
+
+para conseguir una lista
+actualizada de los sitios FTPMail disponibles.
+
+</para>
+<para>
+
+Los sitios FTP a los que tendrías que acceder están 
+detallados más arriba, en 
+
+<quote>
+
+¿Como consigo los Tarballs de GNOME?
+
+</quote>
+
+,
+simplemente tendrías que utilizar la interfaz de FTPMail más que
+hacer un FTP directamente al sitio.
+<!-- 123 ***** Aquí no se si lo que quiere hacer es resumir la
+diferencia entre lo que seria usar un FTP y un FTPMail you
+would just use the FTPMail interface rather than directly
+FTPing to the site. -->
+
+</para>
+</sect1>
+<sect1 id="GetttingRH">
+<title>
+
+Yo utilizo RedHat Linux, ¿dónde consigo los RPMs?
+
+</title>
+<para>
+
+De forma periódica, RedHat Labs produce los RPMs de las versiones 
+de GNOME para RedHat Linux, y los ponen en su web. La última
+versión está actualmente en 
+
+<ulink      url="&ftpgnome;pub/GNOME/gnome-1.0/redhat">
+
+gnome-1.0/redhat
+
+</ulink>
+
+.  Estos se crean para plataformas alpha, sparc y
+i386.  Asegúrate también que consigues los RPMs del 
+directorio noarch, sea cual sea la plataforma en la que estás. 
+Puedes encontrar instrucciones paso a paso para estos RPMs en 
+
+<ulink      url="&wwwgnomerh;">
+
+&wwwgnomerh;
+
+</ulink>
+
+.
+
+</para>
+<para>
+
+Estos RPMs deberían funcionar correctamente en Mandrake Linux, 
+y también en las distribuciones MacMillian y CheapBytes.
+Es muy posible que estos RPMs tengan problemas con Caldera, S.u.S.E.,
+y otras distribuciones basadas en RPM; sigue leyendo para obtener más
+ayuda para estos sistemas.
+
+</para>
+<para>
+
+Estos RPMs están compilados con soporte para sonido, lo que es 
+fantástico a menos que no tengas tarjeta de sonido en tu sistema.  
+Si alguien quiere mantener una distribución de RedHat Linux
+compilada
+
+<emphasis>
+
+sin
+
+</emphasis>
+
+soporte para sonido, con mucho gusto lo
+pondremos en el FTP también.
+
+</para>
+</sect1>
+<sect1 id="GettingDebian">
+<title>
+
+Yo utilizo Debian GNU/Linux, ¿cómo consigo los paquetes .deb?
+
+</title>
+<comment>
+
+¡Gracias Havoc! :-)
+
+</comment>
+<para>
+
+Los paquetes Debian más actulizados son distribuidos 
+en los sitos Debian (y mirrors) en 
+
+<ulink      url="http://www.debian.org/Packages/unstable/x11/">
+
+debian-unstable
+
+</ulink>
+
+.  Instrucciones paso a paso en
+
+<ulink url="&wwwgnomedeb;">
+
+&wwwgnomedeb;
+
+</ulink>
+
+.
+
+</para>
+<para>
+
+Para obtener los paquetes Debian, haz lo siguiente:
+
+</para>
+<screen>
+<prompt>
+
+$
+
+</prompt>
+<userinput>
+
+apt-get update
+
+</userinput>
+<prompt>
+
+$
+
+</prompt>
+<userinput>
+
+apt-get install gnome-control-center gnome-panel gnome-session gnome-games gnome-terminal gnome-utils
+
+</userinput>
+</screen>
+<para>
+
+Los <!-- 123 mantainers -->encargados de los paquetes Debian son
+voluntarios, y siempre prueban las cosas a fondo antes de lanzar
+una versión, por lo que si no ves la última versión en formato deb
+en seguida, por favor se paciente.  Mejor aún, si quieres ayudar
+a preparar los paquetes Debian para su distribución, hay una lista
+de correo en 
+
+<ulink      url="mailto:&maildeb;">
+
+&maildeb;
+
+</ulink>
+
+, e instrucciones sobre cómo acceder a la staging area en
+<!-- 123 ¿que es staging area? --> 
+
+<ulink      url="&wwwdebpack;">
+
+&wwwdebpack;
+
+</ulink>
+
+.
+
+</para>
+<para>
+
+Debido a que los paquetes Debian de GNOME ya están siendo 
+distribuidos con Debian, actualmente no los replicamos aquí.
+No parece haber necesidad de ello.  Si hubiera una necesidad
+real de replicar estos paquetes, simplemente comunicanoslo y lo haremos.
+
+</para>
+</sect1>
+<sect1 id="GettingSuSE">
+<title>
+
+Yo utilizo S.u.S.E. Linux, ¿cómo consigo los paquetes RPM?
+
+</title>
+<para>
+
+Hay una excelente página de GNOME para SuSE en
+
+<ulink url="&wwwsusebe;">
+
+&wwwsusebe;
+
+</ulink>
+
+(Bélgica) y
+
+<ulink url="&wwwsusede;">
+
+&wwwsusede;
+
+</ulink>
+
+(Alemania).  Actualmente
+tienen las instrucciones y los RPMs para SuSE v6.0, con
+la v5.3 de los RPMs en camino.  Visítala para más información.
+
+</para>
+</sect1>
+<sect1 id="GettingOtherRPM">
+<title>
+
+Yo uso Caldera OpenLinux, u otras distribuciones
+de Linux basadas en RPM, ¿cómo consigo los paquetes RPM?
+
+</title>
+<para>
+
+Sólo porque dos distribuciones usen RPM no quiere
+decir que puedan usar los mismos RPMs, por ejemplo, RedHat
+y Caldera usan distintas versiones de libc, por lo que probablemente
+los binarios RPM de RedHat no funcionarán en Caldera.  
+Un truco que puede funcionar es coger los SRPMS de la distribución
+de RedHat, y usar 
+
+<command>
+
+rpm
+--rebuild
+
+</command>
+
+en ellos, y entonces instalar los RPMs binarios resultantes.  
+De otra manera, probablemente tengas que seguir las
+instrucciones de los tarballs.
+
+</para>
+</sect1>
+<sect1 id="GettingFreeBSD">
+<title>
+
+Yo utilizo FreeBSD, ¿cómo puedo conseguir GNOME via Ports?
+
+</title>
+<comment>
+
+¡Gracias Stanislav Shalunov! :-)
+
+</comment>
+<para>
+
+FreeBSD tiene portes y paquetes para varias aplicaciones
+de GNOME (incluyendo Gnumeric) así como un porte para el 
+proyecto GNOME entero que instalará todos los programas 
+específicos de GNOME via dependencias. Si tienes el CDROM
+montado bajo
+
+<filename>
+
+/cdrom
+
+</filename>
+
+(el nombre del punto de montaje
+
+<emphasis>
+
+es
+
+</emphasis>
+
+importante) o tienes una conexión de internet en marcha y el
+tiempo para bajar durante un rato, puedes instalar GNOME en
+tu FreeBSD box (3.1 o superior, posiblemente
+inferior también) escribiendo:
+
+</para>
+<screen>
+<prompt>
+
+$
+
+</prompt>
+<userinput>
+
+cd /usr/ports/x11/gnome && make install
+
+</userinput>
+</screen>
+<para>
+
+Para más información sobre la Colección de Portes de FreeBSD
+puedes visitar 
+
+<ulink url="&wwwbsdport;">
+
+&wwwbsdport;
+
+</ulink>
+
+.  Si no
+tienes conexión a internet, pero sí una distribución de docs
+<!-- 123 ***but do have a docs
+distribution -->, puedes también encontrar más información en
+
+<filename>
+
+/usr/share/doc/handbook23.html
+
+</filename>
+
+.  Este
+documento también te explicará como instalar GNOME con paquetes pre-built (binarios) usando 
+
+<command>
+
+pkg_add
+
+</command>
+
+, si tienes
+el CDROM.  Actualmente (para la 3.1-RELEASE), necesitarás instalar
+los siguientes paquetes: 
+
+<filename>
+
+gnomelibs
+
+</filename>
+
+,
+
+<filename>
+
+gnomeaudio
+
+</filename>
+
+, 
+
+<filename>
+
+gnomecore
+
+</filename>
+
+,
+
+<filename>
+
+gnomegames
+
+</filename>
+
+,
+
+<filename>
+
+gnomeprint
+
+</filename>
+
+, 
+
+<filename>
+
+gnumeric
+
+</filename>
+
+,
+y 
+
+<filename>
+
+libgtop
+
+</filename>
+
+.  Un listado de las últimas versiones disponibles
+se encuentra en 
+
+<ulink      url="&wwwbsdport;/gnome.html">
+
+&wwwbsdport;/gnome.html
+
+</ulink>
+
+.
+
+</para>
+</sect1>
+<sect1 id="GettingOtherUnix">
+<title>
+
+Yo uso Solaris, AIX, HP-UX, BSDI, SCO, IRIX, u otros
+sitemas Unix o similares, ¿puede conseguir los paquetes binarios?
+
+</title>
+<para>
+
+Existían unos paquetes binarios para Solaris que alguien hizo,
+pero los paquetes parece que han desaparecido (de todas formas era
+una versión atigua de GNOME).  Si aparece un buen conjunto de paquetes
+binarios para alguno de estos sistemas, probablemente los podamos
+poner en el sitio FTP.
+
+</para>
+<para>
+
+En ausencia de una versión binaria, vas a necesitar usar los tarballs.  
+Si tu sistema no tiene un compilador, el
+
+<ulink url="&wwwgnu;">
+
+GNU Project 
+
+</ulink>
+
+ofrece el GNU C
+Compiler (gcc) libremente para casi todas las prataformas
+de ahí fuera.<!-- 123 ****on pretty much every platform out there. -->
+Ve a 
+
+<ulink url="&wwwgcc;">
+
+&wwwgcc;
+
+</ulink>
+
+para más información.
+
+</para>
+</sect1>
+<sect1 id="GettingWindows">
+<title>
+
+Yo utilizo Microsoft Windows, ¿puedo conseguir GNOME?
+
+</title>
+<comment>
+
+¡Gracias David Wheeler!
+
+</comment>
+<para>
+
+Actualmente la respuesta es no, GNOME no ha sido portado a la
+la plataforma Windows, hay ya mucho trabajo como para hacer ese
+porte posible.
+<!-- 123 REVISAR -->
+<!-- 123 ****there is an effort going on to make such a port possible. -->
+Si realmente necesitas una versión para Windows, cuenta con tener que
+hacer mucho trabajo y esfuerzo realionado.
+<!-- 123 ***count on doing lots of work and coordinating 
+with related efforts. -->
+
+</para>
+<para>
+
+Tor Lillqvist ha estado portando varias librerías gráficas
+usadas por GNOME a la plataforma Win32 (Microsoft Windows 95/98/NT).  
+Puedes encontrar más información sobre sus esfuerzos en 
+
+<ulink      url="&wwwgimp32;">
+
+&wwwgimp32;
+
+</ulink>
+
+.  Ya ha portado
+glib, gtk+, gdk_imlib, y unas pocas otras librerías relacionadas con
+la generación de gráficos a Win32.
+
+</para>
+<para>
+
+Su meta es hacer funcionar Gimp totalmente en la plataforma (ya
+funciona parcialmente), pero su trabajo acerca a GNOME a la
+posibilidad de ser portable a Windows.  Varias aplicaciones de GNOME
+necesitan sus librerías (posiblemente con un poco más de debugging),
+libpng, gnome-libs y ORBit.  Si alguien portara lo anterior, 
+<!-- 123 ****If someone were to port these, --> muchas aplicaciones de 
+GNOME podrían ser compiladas y ejecutadas en Windows.
+
+</para>
+<para>
+
+Si estás interesado en trabajar en dicho proyecto, asegúrate
+de leer cuidadosamente la documentación de 
+
+<ulink      url="&wwwgnuaconf;">
+
+Autoconf
+
+</ulink>
+
+, ya que así es como
+diferenciamos entre diferentes capacidades de sistema en GNOME.
+También, presta atención a las librerías y utilidades de Cygnus Solution's 
+
+<ulink      url="http://sourceware.cygnus.com/cygwin/">
+
+CygWin32
+
+</ulink>
+
+.  Harán esta tarea mucho más sencilla.
+<!-- 123 ****They will make such a task much easier -->
+
+</para>
+</sect1>
+</chapter>
+<chapter id="CompilingGNOME">
+<title>
+
+Compilando GNOME
+
+</title>
+<sect1>
+<title>
+
+¿En qué orden compilo los paquetes?
+
+</title>
+<para>
+
+Es importante que compiles e instales los paquetes de GNOME en
+los ordenes correctos.  Hay algunas dependencias muy importantes
+dentro del árbol de GNOME.  Este es el orden que sugiero,
+en el que deberías compilar e instalar cada paquete antes de
+continuar con el siguiente.  En sistemas basados en ELF
+(como GNU/Linux y FreeBSD),
+deberías ejecutar también 
+
+<command>
+
+ldconfig
+
+</command>
+
+después de
+cada paquete, simplemente para asegurarte de que
+todas las nuevas librerías son detectadas.
+
+</para>
+<simplelist>
+
+&gnomeorder;
+
+</simplelist>
+</sect1>
+<sect1>
+<title>
+
+¿Como configuro el código fuente para mi sistema?
+(o... ¿Dónde se esconden los Makefiles?)
+
+</title>
+<para>
+
+GNOME usa configure (generado por Autoconf) para configurar
+el código fuente para ser compilado correctamente en tu sistema
+<!-- 123 ***to set up the source code to compiler properly on
+your system. -->Configure investigará como está configurado tu
+sistema, y definirá constantes de compilación para añadir o
+quitar diversos trozos de código según sea necesario. 
+<!-- 123 ****Configure will investigate how your system is set
+up, and define compiler constants to add or remove various
+pieces of code as needed. -->
+
+</para>
+<para>
+
+Configure acepta varias opciones, escribe
+
+<command>
+
+./configure --help
+
+</command>
+
+para una lista completa.  La
+más importante es 
+
+<userinput>
+
+--prefix
+
+</userinput>
+
+, que le
+dice al sistema donde se va a instalar GNOME.  Si omites
+el prefix, configure asume que lo harás en
+
+<filename>
+
+/usr/local
+
+</filename>
+
+.  La mayoría de RPMs usan el prefix
+
+<filename>
+
+/usr
+
+</filename>
+
+.  Muchos usuarios prefieren usar el prefix
+
+<userinput>
+
+/opt/gnome
+
+</userinput>
+
+, lo que requiere unos retoques previos,
+<!-- 123 ***which requires a little advance preparation, -->
+descritos más abajo.
+
+</para>
+<para>
+
+Configure también chequea ciertas variables de entorno. Pon
+tus 
+
+<envar>
+
+CFLAGS
+
+</envar>
+
+a igual sean cuales sean las opciones de compilación que deseas
+para asegurarte que las pasas, por ejemplo
+<!-- 123 ***to equal whatever compiler options
+you want to make sure get passed, for example -->
+
+<userinput>
+
+-O6
+
+</userinput>
+
+maximizará la optimización,
+
+<userinput>
+
+-g
+
+</userinput>
+
+incluirá signos de debugging,
+etc.
+
+</para>
+</sect1>
+<sect1>
+<title>
+
+¿Dónde se esconde configure?
+
+</title>
+<para>
+
+Has obtenido el código del CVS, ¿verdad?
+<!-- 123 ****You're getting your code from CVS, aren't you? -->  Lee la sección
+
+<link linkend="GNOMER">
+
+Convirtiéndose en un GNOMEr
+
+</link>
+
+que se encuentra un poco más abajo. Si conseguiste un tarball,
+configure debería estar en el directorio superior del fuente.  
+Si no está ahí, eso es un bug.  Mira la pregunta 
+
+<link linkend="BUGREPORT">
+
+¿Cómo informo de un bug?
+
+</link>
+
+.
+
+</para>
+</sect1>
+<sect1>
+<title>
+
+De acuerdo, ahora tengo un Makefile. ¿Cómo consigo instalar GNOME en mi sistema?
+
+</title>
+<para>
+
+Desde aquí, todo es bastante sencillo.  Escribes
+
+<command>
+
+make
+
+</command>
+
+, seguido de 
+
+<command>
+
+make
+install
+
+</command>
+
+.  En muchos sistemas (incluido GNU/Linux), esto
+debería ser seguido de 
+
+<command>
+
+ldconfig
+
+</command>
+
+.  Si tienes mucha prisa, a veces puedes saltar 
+
+<command>
+
+make
+
+</command>
+
+, ya que
+
+<command>
+
+make install
+
+</command>
+
+normalmente hará todo lo que no halla sido hecho todavía.  
+Si quieres empezar todo el proceso y olvidarte de ello, y usas
+la Bourne shell o sus derivadas (p.ej. ksh o bash), pon
+los cuatro comandos en una línea separados por 
+
+<userinput>
+
+&&
+
+</userinput>
+
+.  Por
+ejemplo:
+
+</para>
+<screen>
+<prompt>
+
+$
+
+</prompt>
+<userinput>
+
+./configure --prefix=/usr/local && make && make install && ldconfig
+
+</userinput>
+</screen>
+<para>
+
+El 
+
+<userinput>
+
+&&
+
+</userinput>
+
+se asegura de que el primer comando ha finalizado
+correctamente antes de seguir con el siguiente.
+
+</para>
+<para>
+
+Una vez que has hecho 
+
+<command>
+
+make install
+
+</command>
+
+(y
+
+<command>
+
+ldconfig
+
+</command>
+
+si fuera necesario), puedes continuar con el
+siguiente paquete.
+
+</para>
+</sect1>
+<sect1>
+<title>
+
+¿Cómo pongo GNOME en algún sitio especial, como
+
+<filename>
+
+/opt/gnome
+
+</filename>
+
+?
+
+</title>
+<para>
+
+A mucha gente le gusta poner GNOME a parte, en un directotio propio.
+<!-- 123 ****Many people like to put GNOME off by itself, in its own
+directory. -->Esto hace que sea más fácil de desinstalar ante una
+emergencia, más fácil de controlar quien lo usa, te permite exportar
+el directorio de gnome a otros sistemas, etc, etc. Hacer esto
+requiere una cierta preparación, y conocimiento de tu sistema.  
+En este ejemplo, pondré GNOME en el directorio
+
+<filename>
+
+/opt/gnome
+
+</filename>
+
+.  Simplemente reemplaza
+
+<filename>
+
+/opt/gnome
+
+</filename>
+
+por cualquier otro directorio,
+el que quieras.
+
+</para>
+<para>
+
+La cuestión principal <!-- 123 the biggest issue -->es asegurarse de
+que el sistema puede encontrar los binarios de GNOME en 
+
+<filename>
+
+/opt/gnome/bin
+
+</filename>
+
+, las librerías en 
+
+<filename>
+
+/opt/gnome/lib
+
+</filename>
+
+, y los
+archivos man en 
+
+<filename>
+
+/opt/gnome/man
+
+</filename>
+
+.
+
+</para>
+<para>
+
+Para decirle al sistema que busque en
+
+<filename>
+
+/opt/gnome/bin
+
+</filename>
+
+para encontrar los binarios de GNOME,
+simplemente asegúrate de que está incluido en la
+variable de entorno 
+
+<envar>
+
+PATH
+
+</envar>
+
+.  por ejemplo:
+
+<userinput>
+
+PATH="/bin:/usr/bin:/opt/gnome/bin"
+
+</userinput>
+
+.
+
+</para>
+<para>
+
+Después, normalmente hay que indicar al loader
+<!-- 123 ¿LOADER? -->donde se encuentran las librerías.
+En la mayoría de Unix comerciales, añade
+
+<filename>
+
+/opt/gnome/lib
+
+</filename>
+
+a la variable de entorno
+
+<envar>
+
+LD_LIBRARY_PATH
+
+</envar>
+
+, de la misma manera que anteriormente al
+
+<envar>
+
+PATH
+
+</envar>
+
+.  En algunos sistemas, en vez de la anterior se usa
+
+<envar>
+
+LD_RUN_PATH
+
+</envar>
+
+.  En los sistemas que usan binarios en formato ELF,
+<!-- 123 ***ELF format binaries, -->como GNU/Linux o FreeBSD, añade
+el path de la librería al archivo 
+
+<filename>
+
+/etc/ld.so.conf
+
+</filename>
+
+,
+y ejecuta 
+
+<command>
+
+ldconfig
+
+</command>
+
+.  En sistemas estáticamente linkados,
+<!-- 123 ****On statically linked
+systems, -->no tienes que preocuparte de nada de lo anterior,
+sino comprar más espacio de disco, que seguro que necesitarás.  
+Consusta la documentación de tu sistema si no estás seguro de
+como decirle al <!-- 123 ¿LOADER? -->loader en que directorios buscar.
+
+</para>
+<para>
+
+También deberías indicarle a man donde encontrar las
+páginas man instaladas por GNOME.  Simplemente inserta
+una línea en
+
+<filename>
+
+/etc/man.config
+
+</filename>
+
+, donde ponga 
+
+<userinput>
+
+MANPATH
+/opt/gnome/man
+
+</userinput>
+
+.
+
+</para>
+<para>
+
+La otra cuestión es que hay un par de directorios en los que
+GNOME pondrá cosas, y que estarían mejor en cualquier otro lugar.
+<!-- 123 ***The other issue is there are a couple of
+directories which GNOME will put things in, which would be better
+put elsewhere. -->
+La manera más sencilla de resolver esto es mediante links
+simbólicos.  Escribe lo
+siguiente:
+
+</para>
+<screen>
+<prompt>
+
+$
+
+</prompt>
+<userinput>
+
+mkdir /opt/gnome/share
+
+</userinput>
+<prompt>
+
+$
+
+</prompt>
+<userinput>
+
+cd /opt/gnome/share
+
+</userinput>
+<prompt>
+
+$
+
+</prompt>
+<userinput>
+
+ln -s /usr/share/locale locale
+
+</userinput>
+<prompt>
+
+$
+
+</prompt>
+<userinput>
+
+ln -s /usr/share/aclocal aclocal
+
+</userinput>
+</screen>
+<para>
+
+Ahora ya está todo preparado para usar 
+
+<filename>
+
+/opt/gnome
+
+</filename>
+
+como <!-- 123 prefix -->prefijo (prefix) al compilar.  Para hacer esto,
+simplemente da en el comando
+
+<command>
+
+./configure
+
+</command>
+
+la opción
+
+<option>
+
+--prefix=/opt/gnome
+
+</option>
+
+.  Por supuesto, si quieres
+algún sitio especial diferente a 
+
+<filename>
+
+/opt/gnome
+
+</filename>
+
+,
+simplemente reemplazalo con en directorio a utilizar
+para todo lo mencionado anteriormente.
+
+</para>
+</sect1>
+<sect1 id="FHS">
+<title>
+
+¿Cómo compilo GNOME con todos los ficheros en el lugar
+correcto para que sea Compatible con FHS?  ¿Cómo recoloco
+los directorios etc y var para conectar GNOME a una red?
+<!-- 123 to easily network GNOME -->
+
+</title>
+<comment>
+
+¡Gracias Raja R. Harinath!
+
+</comment>
+<para>
+
+Por defecto, GNOME pone todos sus archivos bajo su prefix
+directory.  Aunque que esto hace que GNOME sea fácil de aislar, 
+no es necesariamente el mejor lugar para ciertos archivos en algunas
+situaciones. En particular, si buscas conectar GNOME, o para una
+estricta compabilidad con 
+<!-- 123 ***if you are looking to network GNOME, or for
+strict -->
+
+<ulink url="&wwwfhs;">
+
+FHS
+
+</ulink>
+
+, puede que quieras
+recolocar algunos directorios.  Para recolocar el directorio etc
+de GNOME, usa la opción 
+
+<option>
+
+--sysconfdir
+
+</option>
+
+.  Para
+recolocar el directorio var, usa la opción
+
+<option>
+
+--localstatedir
+
+</option>
+
+.
+
+</para>
+<para>
+
+Por ejemplo, una instalacion de GNOME con FHS
+podría tener el prefix 
+
+<filename>
+
+/opt/gnome
+
+</filename>
+
+.  Sin embargo, sus archivos etc
+deberían estar en 
+
+<filename>
+
+/etc/opt/gnome
+
+</filename>
+
+, e
+igualmente, sus archivos var deberían estar en
+
+<filename>
+
+/var/opt/gnome
+
+</filename>
+
+.  Esto tiene la ventaja de
+permitirte conectar<!-- 123 ***allowing you to network --> el directorio 
+
+<filename>
+
+/opt/gnome
+
+</filename>
+
+, mantenerlo como sólo lectura (read-only), y permitir a unas
+máquinas tener configuración local e información sin
+preocuparse de otras máquinas.  Para hacer esto, el
+comando de configuración sería el siguiente: 
+
+<userinput>
+
+./configure --prefix=/opt/gnome
+--sysconfdir=/etc/opt/gnome
+--localstatedir=/var/opt/gnome
+
+</userinput>
+
+.
+
+</para>
+</sect1>
+<sect1>
+<title>
+
+Ya tengo este módulo, ¿cómo me deshago de todos los
+ficheros object y otras "cruft" del árbol del fuente?
+<!-- 123 REVISAR -->
+<!-- 123 ****how do I get rid of all the object files
+and other cruft from the source tree? -->
+
+
+
+</title>
+<para>
+
+Tienes tres opciones, 
+
+<command>
+
+make clean
+
+</command>
+
+,
+
+<command>
+
+make distclean
+
+</command>
+
+o borrar el
+directorio. Usar 
+
+<command>
+
+make clean
+
+</command>
+
+borrará todos los
+<!-- 123 REVISAR -->object files, built executables, y miscellaneous cruft,
+es sencillo y seguro.  La siguiente opción, 
+
+<command>
+
+make
+distclean
+
+</command>
+
+debería borrar todo lo que no estubiera en el tarball original. 
+Si haces esto, no podrás 
+
+<link      linkend="UNINSTALL">
+
+desinstalar el módulo
+
+</link>
+
+.  Y lo mismo
+para borrar el source directory.  Basicamente, 
+
+<command>
+
+make
+clean
+
+</command>
+
+es bueno para un uso general, las otros deberían
+ser consideradas medidas drásticas.
+
+</para>
+</sect1>
+<sect1 id="Uninstall">
+<title>
+
+¿Cómo desinstalo un módulo?
+
+</title>
+<para>
+
+Si estás usando un sistema de manejo de paquetes (como
+RPM), simplemente sigue su documentación para desinstalarlo.
+
+</para>
+<para>
+
+Si has instalado un módulo desde el código fuente, y piensas
+que quizás quieras desinstalarlo, 
+
+<emphasis>
+
+asegúrate que mantienes tu
+source tree
+
+</emphasis>
+
+.  Simplemente ve al fuente del módulo y
+<!-- 123 ***go to the module's source and -->
+ejecuta 
+
+<command>
+
+make uninstall
+
+</command>
+
+.  Debería funcionar sin problemas y
+borrar todos los archivos que instaló.
+
+</para>
+</sect1>
+</chapter>
+<chapter id="UsingGNOME">
+<title>
+
+Y ahora ya tengo GNOME, ¿qué hago con él?
+
+</title>
+<para>
+
+Ahora vamos a hablar de dar los primeros pasos
+con GNOME, y las cosas que puedes hacer con él.
+
+</para>
+<sect1>
+<title>
+
+¿Dónde miro primero?
+
+</title>
+<para>
+
+Hay un tour ligeramente anticuado pero todavía útil en 
+
+<ulink url="&wwwgnometour;">
+
+&wwwgnometour;
+
+</ulink>
+
+.  Realmente vale
+la pena echarle un vistazo.
+
+</para>
+<para>
+
+También, asegúrate que visitas la Guía de Usuario GNOME en
+<ulink url="&wwwgnomeguide;">
+
+&wwwgnomeguide;
+
+</ulink>
+
+<!-- 123 **************************** Y en GNOME-es ***************************** -->
+
+.
+
+</para>
+</sect1>
+<sect1>
+<title>
+
+¿Cómo inicio GNOME?
+
+</title>
+<para>
+
+La forma correcta de iniciar GNOME con todas su
+características es poner la línea 
+
+<userinput>
+
+exec gnome-session
+
+</userinput>
+
+al final
+de tu X startup script.  Este script puede llamarse
+
+<filename>
+
+~/.xinitrc
+
+</filename>
+
+, 
+
+<filename>
+
+.xsession
+
+</filename>
+
+o 
+
+<filename>
+
+.Xclients
+
+</filename>
+
+, dependiendo de tu plataforma
+y configuración.  Por supuesto, asegúrate de que los binarios
+de GNOME están en tu path, y no hay ninguna línea que empieze por
+
+<userinput>
+
+exec
+
+</userinput>
+
+antes de la que acabas de añadir.
+Con las gnome-core versions 1.04 y posteriores, puedes seleccionar
+el gestor de ventanas a ejecutar poniendo la variable 
+
+<envar>
+
+WINDOW_MANAGER
+
+</envar>
+
+en la que tu elijas.
+
+</para>
+<para>
+
+Ejecutar 
+
+<command>
+
+gnome-session
+
+</command>
+
+tal cual
+iniciará la sesión por defecto, la primera vez.  Esto incluye el
+gestor de ventanas de tu elección <!-- 123 or a good guess if  -->
+(o el que sea más apropiado si no lo especificaste), el panel, GNOME
+Midnight Commander, y el visor de ayudas. A medida que uses GNOME,
+el manejador de sesiones guardará tu escritorio actual.  Si sales
+(log out), y vuelves a entrar (log back in) más tarde, tu
+último escritorio aparecerá como cuando saliste.
+<!-- 123 *****your most recent desktop will be restored. -->
+
+</para>
+<para>
+
+Si no deseas usar el manejo de sesiones, GNOME funcionará
+sin problemas sin él.  Pon la línea 
+
+<userinput>
+
+exec gnome-wm
+
+</userinput>
+
+al final de tu X startup script, como anteriormente.  El sistema
+utilizará la variable de entorno WINDOW_MANAGER para seleccionar
+tu gestor de ventanas, pero no te molestará con la gestión de sesiones.
+Ejecuta el panel, gmc, o lo que tú quieras, bien manualmente, o en el
+script de inicio antes de la linea de exec.  Por ejemplo:
+
+</para>
+<screen>
+
+panel &
+gmc &
+exec gnome-wm
+
+</screen>
+</sect1>
+<sect1>
+<title>
+
+¿Cómo ejecuto los programas?
+
+</title>
+<para>
+
+Primero de todo, los programas de GNOME pueden ser ejecutados
+como cualquier otro programa.  Vas a la linea de comandos,
+escribes su nombre, y el programa se inicia.
+
+</para>
+<para>
+
+Lo segundo, puedes ejecutar programas desde el menu del panel.
+La mayoría de programas GNOME (y algunos no GNOME también) se
+instalan en el <!-- 123 foot menu -->menú principal del panel
+de GNOME.  Algunos programas a destacar de este menú; el Gestor
+de Archivos ejecuta la versión para GNOME del Midnight Commander,
+Settings->Editor de Menues te permitirá añadir o quitar cosas
+del Principal (y otros menus),Settings->Centro de Control GNOME
+mostrará el programa para configurar la mayoría de GNOME (y
+algunas cosas como Enlightenment), Juegos->Gnobots es un juego
+muy adictivo.
+
+</para>
+</sect1>
+<sect1>
+<title>
+
+¿Cómo ejecuto el Panel de GNOME?
+
+</title>
+<para>
+
+El panel de GNOME arranca normalmente desde
+
+<command>
+
+gnome-session
+
+</command>
+
+, si no ocurre esto, simplemente teclea 
+
+<command>
+
+panel
+
+</command>
+
+en cualquier linea de comandos para iniciar
+el panel.
+
+</para>
+<para>
+
+Añade cosas al panel mediante el menu principal del panel,
+<!-- 123 by either the Foot's Panel menu, -->
+o mediante el menu que aparece haciendo clic con el
+botón derecho en el panel.  La
+
+<ulink url="&wwwgnomeguide;">
+
+Guía de Usuario GNOME
+
+</ulink>
+
+tiene un 
+
+<ulink url="&wwwgnomeguide;/paneluse.html">
+
+Capítulo
+</ulink>
+
+entero sobre como usar el Panel.
+
+</para>
+</sect1>
+</chapter>
+<chapter id="Help">
+<title>
+
+¡¡¡¡¡¡¡¡ Ayuda !!!!!!!!
+
+</title>
+<para>
+
+Incluso aunque hayas seguido todas las instrucciones al pie de la
+letra, algunas veces surgen problemas imprevisibles.  Cualquier
+cosa puede ir mal, desde un malentendido en las instrucciones,
+<!-- 123 *** ¿debido a la traduccion ... }:D ? comentario
+personal de javi *** -->a un bug en el software, o un bug en el
+software de otra persona.  Aquí, intentamos hacer frente a
+problemas que han tenido con GNOME algunas personas.
+
+</para>
+<sect1>
+<title>
+
+Ayuda General.
+
+</title>
+<para>
+
+Aquí se recogen las cuestiones más generales que surgen a menudo.
+Los problemas específicos se tratarán más adelante, en este capítulo.
+
+</para>
+<sect2>
+<title>
+
+Algo no funciona, estoy confundido, ¿qué hago?
+
+</title>
+<para>
+
+Bueno, lo primero que debes hacer es una pausa, relájate,
+y respira profundamente.  Seguidamente, revisa estas FAQ, la
+Guía de Usuario, y cualquier otra documentación que tengas a mano
+y mira a ver si alguna se aproxima a la resolución de tu problema.  
+Lo siguiente es mirar en los archivos de la lista de correo 
+(las instrucciones se dieron 
+
+<link	linkend="Archives">
+
+anteriormente
+
+</link>
+
+) para ver si alguien más ha comentado
+algo sobre tu problema.  Después prueba a ver, sea lo que sea lo que
+estabas haciendo
+
+<emphasis>
+
+una vez más
+
+</emphasis>
+
+, si la solución de repente aparece por si misma.  
+Si nada de eso funciona, es hora de preguntar en la lista.
+
+</para>
+<para>
+
+Antes de nada, estás suscrito a la gnome-list, ¿verdad?
+Si no lo estás, las instrucciones sobre como suscribirte
+se dieron
+<link linkend="MAILINGLIST">
+
+anteriormente
+
+</link>
+
+.  Ahora, cuando pidas
+ayuda en la GNOME-list, 
+
+<emphasis>
+
+da muchos
+detalles
+
+</emphasis>
+
+.  Escribir<!-- 123 ***Posting --> 
+
+<quote>
+
+El panel no funciona,
+¡esto es una mierda!
+<!-- 123 The panel doesn't work, this sucks! -->
+
+</quote>
+
+no nos ayuda ni a tí ni a nosotros.  Aun tendrás el
+mismo problema, y nosotros tendremos un posible bug
+del cual no tendremos información.  Es más útil (pero
+todavía insuficiente) decir 
+
+<quote>
+
+Cada vez que selecciono el lo-que-sea del menu principal, el panel
+entero desaparece de repente;
+<!-- 123 ****Whenever I select the foo item from
+the Foot menu, the entire panel disappears suddenly; --> 
+por cierto, ¿qué es este fichero que GNOME no deja de
+poner en mi directorio personal, y que se llama 
+
+<link	linkend="Core">
+
+core
+
+</link>
+
+?.
+
+</quote>
+</para>
+<para>
+
+Lo ideal, es que tengamos cierta información necesaria sobre tí. 
+Lo primero, exactamente ¿que tipo de sistema operativo usas?
+No, no todo el mundo tiene el mismo sistema que tú.
+Necesitamos el tipo de procesador: Sparc, MIPS, i386 (esto incluye
+Pentiums, AMD, Cyrix, etc), PPC, Alpha, ARM, 680x0, et al; 
+<!-- 123 ***¿que es el "et al" anterior?*** -->
+necesitamos el sistema operativo: distribución Linux, FreeBSD, HURD,
+OpenBSD, Solaris, IRIX, CrayOS, OS/400, o lo que sea.  También
+incluye la versión del sistema operativo. Por ejemplo, la
+máquina en la que estoy ahora mismo es una GNU/Linux RedHat/i386 Rawhide
+machine, un amigo mio usa una máquina Solaris Sparc 2.6.
+
+</para>
+<para>
+
+Seguidamente, necesitamos algunas vitales y relevantes estadísticas
+de que hay en tu sistema.
+<!-- 123 *****we need some relevant vital statistics of what is
+on your system. -->En un sistema GNU/Linux, el número de versión del
+kernel y de libc son casi siempre importantes.  En la mayoría
+de problemas de GNOME necesitamos las versiones de glib, gtk+,
+Imlib, ORBit y gnome-libs.  Si no estás seguro si necesitas algunas de
+las anteriores, inclúyelas de todas formas.  Otras cosas que a veces
+son importantes son las versiones de Perl, X11, Python, Guile
+y libpng, a menos que veas un mensaje de error que mencione alguna,
+puedes no incluirlas.  Otra cosa importante es cómo instalaste GNOME.  
+¿Usaste binarios?, si es así ¿cuáles?  ¿Usaste tarballs?  ¿Usaste el CVS?,
+si es así que fechas y/o tags?  Si usaste una mezcla de los anteriores,
+menciónalo también.
+
+</para>
+<para>
+
+Por último, necesitamos el problema en sí.  Necesitamos saber exactamente
+qué hiciste para que apareciese el problema.  Necesitamos saber si
+el problema es permanente o intermitente.  Necesitamos saber si el
+programa mostró algo con altelación al problema.  Necesitamos saber
+exactamente que sucede cuando ocurre el problema.  Si quieres ser
+ambicioso, prueba con algunas herramienta de diagnostico de las que
+hablo más adelante, como backtrace, e incluye esa información
+en el mail.
+
+</para>
+<para>
+
+Ahora antes de te prepares para mandar el correo, necesitamos
+encontrar un buen subject.  La Gnome-list suele puede tener
+muchos mensajes, y tú quieres que el tuyo resalte que necesitas
+ayuda, y que pase desapercibido entre la gente que no pueda ayudar.
+<!-- 123 **** messages on it, you want yours to stand out to the people you
+need help from, and be safely passed over by people who can't
+help. -->Un subject como "GNOME no funciona" es candidato a ser ignorado;
+uno como "GSM es una mierda (sucks)" pondrá a la gente de malas, y con
+pocas ganas de ayudar; algo como "La mayoría de los iconos del panel
+en HP-UX son sólo cuadros negros" es más probable que tenga la clase
+de atención que necesita.
+
+</para>
+<para>
+
+Pon todo esto junto en un correo electrónico largo y envíalo a
+la lista.  Si seguiste mi consejo, es muy probable que obtengas
+una rápida, y meditada respuesta.
+<!-- 123 *** se refiere a "atenta" o a "meditada"*** thoughtful
+response. -->Si por algún motivo no obtienes una rápida respuesta,
+no te lo tomes como algo personal, probablemente el mail se perdió
+entre la masa.
+<!-- 123 ***the mail probably just got lost in the volume. -->
+Espera un par de 
+días, mira a ver si puedes añadir algún detalle, o una quizás una
+cabecera más descriptiva, y envíalo otra vez.
+
+</para>
+</sect2>
+<sect2 id="BugReport">
+<title>
+
+¿Cómo informo de un bug?
+
+</title>
+<para>
+
+Si encuentras un bug, queremos conocerlo, queremos
+seguirlo, y queremos arreglarlo.  Para hacer este proceso
+lo más eficiente posible, hemos tomado prestado de Debian
+su excelente sistema de seguimiento de bugs.  Instrucciones
+completas sobre como utilizarlo en 
+
+<ulink url="&wwwgnomebugr;">
+
+&wwwgnomebugr;
+
+</ulink>
+
+.
+
+</para>
+<para>
+
+Hay unas pocas cosas que hay que tener en cuenta antes de
+enviar bugs al sistema. Primero asegúrate de comprobar la
+página
+<!-- 123 ****to check the web front end at -->
+
+<ulink url="&wwwgnomebug;">
+
+&wwwgnomebug;
+
+</ulink>
+
+para asegurarte
+de que tu bug no se conoce todavía en el sistema.  Si es un nuevo
+bug, envíalo a 
+
+<ulink url="&mailbug;">
+
+&mailbug;
+
+</ulink>
+
+.
+Asegúrate de que incluyes las cabeceras <!-- 123 ***headings*** -->
+del Paquete y Version como se describe en las instrucciones, esto
+asegura que será dirigido rápida y automaticamente a la persona adecuada.  
+Asegúrate que incluyes todos los detalles.  Mira la cuestión previa
+para tener una idea de lo que es útil incluir.  Si un backtrace
+o strace es apropiado, desde luego que lo has de incluir.
+Las instrucciones sobre como hacer esto se dan más adelante.
+
+</para>
+<para>
+
+Después de que envies el bug al sitema.  Obtendrás
+comentarios sobre el bug via email.  También puedes seguir la
+evolución del bug mediante el sistema de seguimiento de bugs
+en formato web.
+<!-- 123 ****You also can track the status
+of the bug through the bug tracking system's web front
+end. -->
+
+</para>
+</sect2>
+<sect2>
+<title>
+
+<!-- 123 COMENTARIO PERSONAL -->
+<!-- 123 **** Esta pregunta deberia ser contentada antes de la seccion
+de compilacion ya que alli aparece y yo no sabia lo que era*** -->
+
+¿Qué es un prefix (o un $prefix, ${PREFIX}, o
+&lt;prefix&gt;)?
+
+</title>
+<para>
+
+Cuando compilas GNOME, necesitas especificar donde se situará
+en el sistema de archivos.  La opción específica para usar esta
+característica se llama 
+
+<option>
+
+--prefix
+
+</option>
+
+, por lo que la llamamos el prefijo de GNOME
+, o prefijo (prefix) para abreviar.  La localización de
+los archivos de GNOME debería ser la misma de un
+sistema a otro, excepto por el prefijo, por lo que
+un archivo en 
+
+<filename>
+
+/usr/share/gnome/pixmaps
+
+</filename>
+
+en un
+sistema podría estar en
+
+<filename>
+
+/opt/gnome/share/gnome/pixmaps
+
+</filename>
+
+en
+otro, y nos referiríamos a la localización como
+
+<filename>
+
+$prefix/share/gnome/pixmaps
+
+</filename>
+
+.
+
+</para>
+<para>
+
+Si instalaste desde tarballs (o CVS), pero nunca les
+pasaste a <!-- 123 ****but never gave -->
+
+<command>
+
+configure
+
+</command>
+
+(o a
+
+<command>
+
+autogen.sh
+
+</command>
+
+) un prefijo, por defecto es
+
+<filename>
+
+/usr/local
+
+</filename>
+
+.  Si instalaste los RPMS
+de RedHat, estos usan el prefijo 
+
+<filename>
+
+/usr
+
+</filename>
+
+.  Si todavía no
+estás seguro, escribe 
+
+<command>
+
+which panel
+
+</command>
+
+, y
+quita 
+
+<computeroutput>
+
+/bin/panel
+
+</computeroutput>
+
+del
+final.  Lo que queda es tu prefix. 
+
+</para>
+</sect2>
+<sect2>
+<title>
+
+¿Qué significa 
+
+<computeroutput>
+
+<!-- 123 Segmentation Fault -->
+Fallo de Segmentación
+
+</computeroutput>
+
+?
+
+</title>
+<para>
+
+La mayoría de sistemas Unix y similares tienen una característica
+llamada protección de memoria.  Esto significa que un programa puede
+acceder a algunas partes de la memoria (a menudo llamadas segmentos),
+<!-- 123 *****(often called segments), -->pero
+no a otras.  Si el programa intenta acceder a una zona fuera de los
+segmentos que tiene permitidos, el sistema detecta el problema y
+muestra un error.  Este error se denomina un
+Segmentation Fault (abreviado 
+
+<quote>
+
+segv
+
+</quote>
+
+en algunos
+sistemas), y generalmente, el programa se cerrará de repente, normalmente
+dejando tras de sí un core dump (ver bajo).
+
+</para>
+<para>
+
+Todo esto se reduce a la existencia de un bug sea cual sea
+el programa que estabas ejecutando.
+<!-- 123 ****What it all boils down to is there is a bug in whatever
+program you were running. -->El bug podría estar en el código
+fuente de GNOME, podría estar en las librerías compartidas que
+usa tu programa, o podría estas en el modo en que se compiló
+el programa.  Si no estás seguro si es un bug en GNOME o en
+otra parte, pregúntalo en la lista.  Si estás seguro que el
+bug recae en GNOME, por favor asegúrate de que está en el
+sistema de seguimiento de bugs.
+
+</para>
+</sect2>
+<sect2 id="Core">
+<title>
+
+¿Qué es un core dump?  ¿Qué es este fichero llamado core
+que no paro de encontrarme?
+<!-- 123 ***What is this file named core that
+I keep running into? -->
+
+</title>
+<para>
+
+En los primeros días de los ordenadores electrónicos, la
+memoria de los ordenadores era un manojo de aros magnéticos
+llamados cores, montados sobre cables.  Este tipo de memoria
+se llamaba memoria core.  Cuando un programador quería ver
+lo que estaba pasando en su programa, extraía una copia de
+lo que había en la memoria core para así analizarla.  Esta
+copia se llamaba un core dump, y el término ha permanecido
+hasta mucho después de que las memorias core se quedaran
+obsoletas.
+
+<!-- 123 *****In the early days of electronic computers, computer
+memory was a bunch of magnetic rings called cores, mounted on
+wires.  This type of memory was called core memory.  When a
+programmer wanted to see what was going on in their program,
+they would output a copy of what was in their core memory so
+they could analyze it.  This output was called a core dump,
+and the term has remained long after core memory became
+obsolete. -->
+
+</para>
+<para>
+
+En muchos sistemas Unix y similares, el sistema producirá
+automaticamente un core dump cuando un programa falle
+catastroficamente, por ejemplo cuando se produce un
+Segmentation Fault (ver arriba).  Generalmente pone el
+core dump en un fichero
+llamado 
+
+<filename>
+
+core
+
+</filename>
+
+en el directorio donde estuvieras cuando ejecutaste el
+programa.  Este fichero es muy útil para hacer un debugging y
+saber por qué fallo el programa, y puede ser usadoo para
+producir un backtrace (ver abajo).
+<!-- 123 ***This file is very useful for
+debugging why the program failed, and can be used to produce a
+backtrace (see below). -->Por otra parte, este fichero puede
+ser bastante grande, particularmente si no lo usas para el
+debugging.
+<!-- 123 ***this file can be
+quite large, particularly if you aren't using it for
+debugging. -->Su no puedes permitirte tener core dumps, consulta
+la documentación de tu sistema para averiguar como desabilitar
+esta característica.
+
+</para>
+</sect2>
+<sect2 id="Backtrace">
+<title>
+
+¿Qué es un backtrace?  Alguien me pidió que le enviara uno,
+¿cómo lo hago?
+
+</title>
+<para>
+
+Una herramienta de debugging incleiblemente útil es el backtrace.
+En esencia es una toma de donde estas exactamente en el
+programa.<!-- 123 is a snapshot of exactly where in the program
+you are. -->Se realiza normalmente cuando un programa "crashes"
+<!-- 123 ¿CRASHES? --> (cierra inesperadamente, a menudo con un
+segmentation fault u otro error) o se cuelga (deja de funcionar
+pero no se cierra).  En esta respuesta, voy a tener que asumir
+que estás usando el debugger GDB del proyecto GNU, ya que ese
+es el más común incluido con GNOME, y el que yo he usado.  Si
+usas otro debugger, consulta tu documentación.
+
+</para>
+<para>
+
+Hay dos maneras de hacer un backtrace. Puedes usar un archivo
+core que dejó un programa cuando se cerró,<!-- 123 crashed -->
+o puedes ejecutar el programa desde el debugger.  La experiencia
+me demuestra que ejecutar el programa desde el debugger es más
+seguro, pero también comentaré como usar los archivos core.
+<!-- 123 ***I have found that running
+the program within the debugger is more reliable, but I will
+discuss using core files as well. -->
+
+</para>
+<para>
+
+Para ejecutar un programa dentro de GDB, ve a un xterm (o
+equivalente), y teclea 
+
+<userinput>
+
+gdb &lt;nombre completo y
+localización del programa&gt;
+
+</userinput>
+
+, por ejemplo, para hacer un debug sobre
+gtalk, deberías hacer
+***to debug
+gtalk, you might do 
+
+<userinput>
+
+gdb
+/usr/local/bin/gtalk
+
+</userinput>
+
+.  GDB no busca el
+path, por lo que tienes que especificarle donde está el progama.  
+Si quieres ejecutar el programa con argumentos, 
+
+<emphasis>
+
+no los
+pongas aquí
+
+</emphasis>
+
+.  Puedes especificar argumentos de linea de comando
+después.
+<!-- 123 ***You can specify command like arguments
+later. -->
+
+</para>
+<para>
+
+GDB se identificará, y mostrará un prompt
+
+<prompt>
+
+(gdb)
+
+</prompt>
+
+.  Desde aquí, escribe
+
+<userinput>
+
+run
+
+</userinput>
+
+para arrancar el programa.  Si quieres ejecutar el
+programa con argumentos, ponlos aquí.  Por ejemplo,
+para hacer un debug sobre gtalk con el sonido desactivado,
+deberías escribir
+<!-- 123 ****to debug gtalk with sound disabled, you would type -->
+
+<userinput>
+
+run --disable-sound
+
+</userinput>
+
+.  Entonces el programa
+arrancará.  Ten presente que el programa irá más
+lento de lo normal, y usará mucha memoria.
+
+</para>
+<para>
+
+Ahora intenta recrear el problema que tuviste.  Haz
+lo que fuera que hicieres para causar el problema anterior.
+<!-- 123 ***Do whatever it is that caused the problem before. -->
+Una vez que el programa cierre (por crash), deberías ver
+inmediatamente algo en la sesión de debug, y un prompt
+<!-- 123 ***Once the program crashes, you should immediately
+see stuff in the debug session, and a --> 
+
+<prompt>
+
+(gdb)
+
+</prompt>
+
+.  Si el programa
+se cuelga, espera hasta estar seguro de que se colgó en el lugar correcto,
+y entonces aprieta Control-C en la sesión de debug.  Tambíen aquí debería
+aparecer algo de debugging, seguido de un prompt
+<!-- 123 ***It too should
+reply with a bunch of stuff, followed by a -->
+
+<prompt>
+
+(gdb)
+
+</prompt>
+
+.  En este prompt (sea cual sea la forma
+en que llegaste), escribe 
+
+<userinput>
+
+bt
+
+</userinput>
+
+.  Entonces respoderá
+con el backtrace propiamente dicho.
+<!-- 123 Then it will
+reply with the actual backtrace. -->
+
+</para>
+<para>
+
+Aquí tienes un ejemplo de una sesión de debug.  Si te
+piden un backtrace, deberías enviarlo
+todo:
+
+</para>
+<screen>
+<prompt>
+
+$
+
+</prompt>
+<userinput>
+
+gdb /usr/local/bin/gtalk
+
+</userinput>
+<computeroutput>
+
+GNU gdb 4.17
+Copyright 1998 Free Software Foundation, Inc.
+GDB is free software, covered by the GNU General Public License, and you are
+welcome to change it and/or distribute copies of it under certain conditions.
+Type "show copying" to see the conditions.
+There is absolutely no warranty for GDB.  Type "show warranty" for details.
+This GDB was configured as "i386-redhat-linux"...
+
+</computeroutput>
+<prompt>
+
+(gdb)
+
+</prompt>
+<userinput>
+
+run --disable-sound
+
+</userinput>
+<computeroutput>
+
+Starting program: /usr/local/bin/gtalk --disable-sound
+Program received signal SIGINT, Interrupt.
+0x4049290d in __poll (fds=0x808c110, nfds=3, timeout=-1)
+at ../sysdeps/unix/sysv/linux/poll.c:45
+../sysdeps/unix/sysv/linux/poll.c:45: No such file or directory.
+
+</computeroutput>
+<prompt>
+
+(gdb)
+
+</prompt>
+<userinput>
+
+bt
+
+</userinput>
+<computeroutput>
+
+#0  0x4049290d in __poll (fds=0x808c110, nfds=3, timeout=-1)
+at ../sysdeps/unix/sysv/linux/poll.c:45
+#1  0x403c54e9 in g_main_poll (timeout=-1, use_priority=0, priority=0)
+at gmain.c:991
+#2  0x403c516e in g_main_iterate (block=1, dispatch=1) at gmain.c:789
+#3  0x403c58a1 in g_main_run (loop=0x80882e8) at gmain.c:912
+#4  0x401cbf1d in gtk_main () at gtkmain.c:475
+#5  0x804a629 in main (argc=2, argv=0xbffffaa4) at main.c:54
+#6  0x40407c77 in __libc_start_main (main=0x804a570 &lt;main&gt;, argc=2, 
+argv=0xbffffaa4, init=0x8049e10 &lt;_init&gt;, fini=0x804c7dc &lt;_fini&gt;, 
+rtld_fini=0x40009c10 &lt;_dl_fini&gt;, stack_end=0xbffffa9c)
+at ../sysdeps/generic/libc-start.c:78
+
+</computeroutput>
+<prompt>
+
+(gdb)
+
+</prompt>
+</screen>
+<para>
+
+Hacer un backtrace con un core dump es muy parecido.
+Ve al directorio donde está el core dump, y
+entonces ejecuta 
+
+<userinput>
+
+gdb -c core &lt;nombre completo y localización del
+programa&gt;
+
+</userinput>
+
+.  De nuevo, GDB no mira en tu
+path, tienes que especificarle donde encontrar el programa.  Todo
+lo que tienes que hacer es escribir 
+
+<userinput>
+
+bt
+
+</userinput>
+
+en el
+prompt, y enviar la sesión entera.
+
+</para>
+</sect2>
+<sect2>
+<title>
+
+¿Qué es una strace?  Alguien me pidió que le enviara una,
+¿cómo lo hago?
+
+</title>
+<para>
+
+El comando 
+
+<command>
+
+strace
+
+</command>
+
+realiza una
+"Signal Trace".  Usarlo te permitirá ejecutar un programa
+mientras obtienes las señales y llamadas del sistema.
+Esta es una herramienta mucho más de debugging tipo "verbose"
+que el backtrace, pero algunas veces necesitas información
+extra que un strace puede darte.  
+<!-- 123 ******Using it will allow you to run a program while
+outputting system calls and signals.  This is a much more
+verbose debugging tool than the backtrace, but sometimes you
+need the extra information an strace can give you. -->
+Obtener un
+strace es fácil, simplemente escribe 
+
+<userinput>
+
+strace -o &lt;archivo de
+salida&gt; &lt;comando con argumentos&gt;
+
+</userinput>
+
+en un xterm.
+Por ejemplo, para hacer un strace al programa gtalk
+con el sonido deshabilitado, yo haría 
+<!-- 123 ***to do an strace on the gtalk program with sound
+disabled, I might do -->
+
+<userinput>
+
+strace -o /tmp/gtalk.strace
+gtalk --disable-sound
+
+</userinput>
+
+.  Esto guardaría la salida del strace
+en 
+
+<filename>
+
+/tmp/gtalk.strace
+
+</filename>
+
+.  Strace sí
+que usa el path, y acepta argumentos de programa
+en la linea de comandos.
+
+</para>
+<para>
+
+Una advertencia. Strace produce una gran salida (con el anterior
+ejemplo de strace se obtuvieron 5.498 lineas en cinco segundos).
+No envies straces a las listas de correo, y solamente envíaselas
+a los desarrolladores si te las piden especificamente
+<!-- 123 *****Warning, strace produces lots of output (the above
+strace example came up with 5,498 lines in five seconds).
+Don't send straces to the mailing lists, and only send them to
+the developers if they specifically request it. -->
+
+</para>
+<para>
+
+En sistemas Solaris, el comando 
+
+<command>
+
+strace
+
+</command>
+
+hace algo diferente.  El comando
+
+<command>
+
+truss
+
+</command>
+
+es probablemente lo que espere la persona
+que te pidió el strace.
+
+</para>
+</sect2>
+</sect1>
+<sect1 id="CompileHelp">
+<title>
+
+Problemas Específicos de Compilación
+
+</title>
+<sect2 id="zlib">
+<title>
+
+¿Qué significa 
+
+<computeroutput>
+
+undefined reference to
+'compress'
+
+</computeroutput>
+
+?
+
+</title>
+<para>
+
+En general, significa que se estan teniendo problemas para
+encontrar o linkar la librería de compresión (libz).
+<!-- 123 ***In general, it means that it is having trouble finding
+or linking to the compression library (libz). -->
+Primero, 
+asegúrate de que está instalada. Si no es así, entonces
+encuentrala e instálala.  Debería ir incluida en todas
+las distribuciones más importantes de sistemas Unix y
+similares.
+
+</para>
+<para>
+
+Si está instalada correctamente, y todavía aparece el error,
+entonces comprueba si existe alguna otra copia de libz
+danzando por ahí.  Un lugar donde se esconde a menudo cuando
+la gente tiene problemas es en
+
+<filename>
+
+/usr/X11R6/lib
+
+</filename>
+
+, ya que XFree86 pone una copia
+allí.  Es seguro simplemente borrarla, pero si
+no estás seguro, renómbrala como algo parecido a
+
+<filename>
+
+libz.so.renamed
+
+</filename>
+
+, de esa forma el linker
+no la encontrará, y si tienes problemas en otra parte
+por haberla renombrado, siempre puedes volverla a renombrar.
+
+</para>
+</sect2>
+<sect2>
+<title>
+
+¿Qué es 
+
+<computeroutput>
+
+AC_TRY_RUN
+
+</computeroutput>
+
+,
+y por qué está mi máquina advirtiendome de ello?
+
+</title>
+<para>
+
+Algunas veces, cuando ejecutamos aclocal, autogen o make,
+aparecerán lineas parecidas a: 
+
+<computeroutput>
+
+configure.in:171:
+warning: AC_TRY_RUN called without default to allow cross
+compiling
+
+</computeroutput>
+
+.  No es algo para estar preocupado, y puedes
+ignorarlo sin riesgos (a menos que estés cross compiling).
+<!-- 123 ****This is nothing to be alarmed
+about, you can safely ignore it (unless you are cross
+compiling). -->
+
+</para>
+<para>
+
+Si todavía sientes curiosidad, un cross compiler es un
+compilador basado en una plataforma que puedes usar para
+crear código para ser ejecutado en una plataforma diferente.
+Por ejemplo, alguna gente tiene una versión de GCC instalada
+en una box GNU/Linux con procesadores Intel que crean
+binarios para boxes SGI con procesadores MIPS.  En este
+caso estaríamos hablando de un cross compiler.
+
+<!-- 123 ****If you're still curious, a cross compiler is a compiler
+based on one platform that you can use to create code to run
+on a different platform.  For example, some people have a
+version of GCC installed on GNU/Linux boxes with Intel
+processors which makes binaries for SGI boxes with MIPS
+processors.  This would be a cross compiler. -->
+
+</para>
+<para>
+
+La macro AC_TRY_RUN se llama para intentar compilar y ejecutar
+un fragmento de código.  Se usa para comprobar si un determinado
+trozo de código tiene la posibilidad de funcionar en otra
+máquina o no, y ajustar la configuración consecuentemente.  Sin
+embargo, si estás cross compiling, no puedes ejecutar el fragmento
+de código, ya que es de una máquina diferente a la que estás.
+La macro AC_TRY_RUN incluye un parámetro para que diga que hacer
+en ente caso, pero no hemos probado a cross-compiling GNOME
+todavía, por lo que sería prematuro configurar este valor. Debido
+a la ausencia de este valor, aparece un warning.
+
+<!-- 123 *****The AC_TRY_RUN macro is called to attempt to compile and
+run a code fragment.  It is used to test to see whether a
+particular piece of code is likely to work on your machine or
+not, and adjust the configuration accordingly.  If you are
+cross-compiling, however, you can't run the code fragment,
+since it's on a different machine than the one you are on.
+The AC_TRY_RUN macro includes a parameter to tell it what to
+do in this case, but we haven't tested cross-compiling GNOME
+yet, so it would be premature to configure this value.
+Because the value is absent, it gives the warning. -->
+
+</para>
+</sect2>
+</sect1>
+<sect1 id="RuntimeHelp">
+<title>
+
+Problemas con el Runtime
+
+</title>
+<sect2 id="ResetSM">
+<title>
+
+¿Cómo reseteo las propiedades del manejo de sesiones?
+
+</title>
+<para>
+
+Mucha gente encuentra el manejo de sesiones muy útil.
+Sin embargo, algunas veces el manejo de sesiones puede
+despistarse, y hacer cosas indeseadas como recordar tus
+propiedades después de que tu hermano pequeño atacara tu
+ordenador.
+<!-- 123 ****However, sometimes session management can go astray, and do
+undesired things like remember your settings after your kid
+brother attacked your computer. -->
+Si GNOME está correctamente
+instalado, volver tus propiedades a las por defecto es
+fácil.
+
+</para>
+<para>
+
+Primero, sal completamente de X.  Si estás usando
+el manejo de sesiones, deberías ser capaz de usar
+la opción
+
+<guimenuitem>
+
+Terminar sesión
+
+</guimenuitem>
+
+del menú principal para salir.  Si eso no funciona, aprieta las
+teclas control y alt, y presiona retroceder (borrar).  Si eso
+tampoco ha funcionado, y ahora aparece un login prompt tipo  XDM
+o GDM, <!-- 123 PODRIAN EXPLICAR QUE ES UN XDM -->
+cambia a un login modo texto (control-alt-F1 en muchos sistemas,
+consulta la documentación si no estás seguro, loguea como un usuario
+diferente y usa 
+<!-- 123 ****If that still doesn't work, and you
+are now looking at an XDM or GDM login prompt, switch to a
+text login (control-alt-F1 on many systems, consult your
+system documentation if you aren't sure, log in as a different
+user and use -->
+
+<command>
+
+su
+
+</command>
+
+en un xterm si estás
+realmente en un apuro.
+<!-- 123 ***in an xterm if you are
+really in a bind). -->
+
+</para>
+<para>
+
+Después, para quitar tus propiedades, estando fuera de X,
+quita el archivo 
+
+<filename>
+
+~/.gnome/session
+
+</filename>
+
+.  La
+próxima vez que arranques las X, o la próxima vez que loguees
+desde GDM, deberías empezar con el gestor de ventanas, panel
+por defecto, el gmc y visor de ayuda.
+
+</para>
+</sect2>
+<sect2>
+<title>
+
+Inicié GNOME con manejo de sesiones, ¿por qué me aparece esta
+pantalla gris (ni panel, ni nada)?
+
+</title>
+<para>
+
+Si usas el manejo de sesiones, y no se puede encontrar una
+sesión, esto es lo que aparece.  Primero, ¿has probado a
+resetear las propiedades del manejo de sesiones (Ver 
+
+<link	linkend="ResetSM">
+
+arriba
+
+</link>
+
+)?  Si esto no lo arregla, entonces la
+
+<command>
+
+gnome-session
+
+</command>
+
+tiene un problema para encontrar el archivo
+
+<filename>
+
+default.session
+
+</filename>
+
+.  En las versiones gnome-core
+1.03 y posteriores el archivo debería estar en
+
+<filename>
+
+$prefix/share/gnome
+
+</filename>
+
+<!-- 123 REVISAR -->
+.  Antes de eso debería estar
+en 
+<!-- 123 Prior to that it
+should be in  -->
+
+
+<filename>
+
+$prefix/share
+
+</filename>
+
+.  Si el fichero
+no está, probablemente deberías instalar el gnome-core.
+
+</para>
+</sect2>
+<sect2>
+<title>
+
+¿Cómo le indico al manejo de sesiones qué gestor de
+ventanas usar?
+
+</title>
+<para>
+
+Esta es una pregunta más difícil de lo que parece, ya que la
+respuesta depende de que versión de GNOME estés utilizando.  La
+respuesta más fácil es que uses las propiedades del apartado
+Window Manager en
+
+<command>
+
+control-center
+
+</command>
+
+.  Si por alguna razón no te
+funciona, aquí tienes como hacerlo.
+
+</para>
+<para>
+
+En la versión 1.03 del gnome-core y anteriores, el gestor de
+ventanas se selecciona poniéndolo en un archivo llamado
+
+<filename>
+
+default.wm
+
+</filename>
+
+.  El archivo que crea el
+sistema por defecto debería estar en el directorio
+<!-- 123 ****The system default for this
+file should be in either the -->
+
+<filename>
+
+$prefix/share/gnome
+
+</filename>
+
+o en el
+
+<filename>
+
+$prefix/share
+
+</filename>
+
+, sea cual sea el
+que contiene al directorio
+<!-- 123 ****whichever one
+has the file -->
+
+<filename>
+
+default.session
+
+</filename>
+
+.<!-- 123 ****** esta frase anterior no me queda nada clara ****. -->
+
+</para>
+<para>
+
+El usuario puede poner una versión específica de
+
+<filename>
+
+default.wm
+
+</filename>
+
+en el directorio
+
+<filename>
+
+~/.gnome
+
+</filename>
+
+.  El archivo
+
+<filename>
+
+default.wm
+
+</filename>
+
+debería parecese a:
+
+</para>
+<screen>
+
+[Default]
+WM=pera
+
+</screen>
+<para>
+
+Donde 
+
+<userinput>
+
+pera
+
+</userinput>
+
+debería ser remplazada por
+el gestor de ventanas que quieras.  Si quieres cambiar
+el gestor de ventanas por defecto del sistema, también
+tendrás que cambiar el archivo
+
+<filename>
+
+default.session
+
+</filename>
+
+.
+
+</para>
+<para>
+
+En las versiones 1.04 y posteriores de gnome-core, es mucho
+más fácil.  Pon la variable de entorno
+
+<envar>
+
+WINDOW_MANAGER
+
+</envar>
+
+con el gestor de ventanas que quieras,
+entonces arranca X.  Si la variable no está establecida, GNOME
+ejecutará un script para tratar de encontrar con acierto
+un buen gestor de ventanas.  Puedes editar tambier el archivo 
+
+<filename>
+
+~/.gnome/default.wm
+
+</filename>
+
+como en las versiones antiguas.
+
+</para>
+</sect2>
+<sect2 id="BlackIcon">
+<title>
+
+Todo parece funcionar, pero la mayoría de mis iconos
+son simplemente cuadrados negros, o manchas.<!-- 123 or random spots -->
+¿Cómo hago aparecer mis iconos?
+
+</title>
+<para>
+
+La mayoría de iconos de GNOME son imágenes de formato gráfico 
+
+<ulink url="&wwwpng;">
+
+PNG
+
+</ulink>
+
+, mostradas via libpng y la librería de graficos Imlib.
+<!-- 123 *****displayed via libpng and
+the Imlib graphics library. -->El problema es, que esta parte
+de Imlib parece ser muy melindrosa<!-- 123 finicky -->,
+<!-- 123 segun el diccionario de ingles tocho que tengo -->
+<!-- 123 The trouble is, this part of
+Imlib seems to be very finicky,  -->
+y expresa su malestar
+mostrando basura (los cuadrados negros son basura más limpia).
+<!-- 123 ****and it shows its displeasure
+by displaying garbage (the black squares are just cleaner
+garbage). -->
+
+</para>
+<para>
+
+Hay unas cuantas cosas que pueden ser la causa de que esto ocurra.
+El problema más común es una libpng erronea, confundida o inexistente.
+<!-- 123 ****The most common problem is a bad, missing or confused
+libpng. -->
+Si tienes libpng versión 1.0.2, asume que no es la correcta.
+Usa sólo las versiones 1.0.1, 1.0.3 o posteriores. Que no esté es
+fácil, si no existe ningún archivo llamdo "libpng.so" o 
+"libpng.so.2", y estás en un sistema con librerías dinámicas,
+entonces te falta, consigue una copia e instálala. Para ver si está
+confundida, mira a ver si tienes más de una copia de "libpng.so" o 
+"libpng.so.2", si es así, borra las dos y reinstala la correcta.
+
+</para>
+<para>
+
+Otra posibilidad es la que tengo yo en una de mis máquinas
+(Una box RedHat con un procesador AMD5x86 y egcs). Si uso
+alguna optimización cuando compilo glib o imlib, aparece el
+problema descrito (imlib usa el gmodule portion de glib para
+cargar el código PNG). Compilar esos dos paquetes sin ninguna
+optimización funciona bien<!-- 123 switches on -->
+Eso lo arregla. Por lo que yo puedo decir, esto es un bug en
+mi compilador, no en GNOME.
+<!-- 123 ***Another possibility is one I have on one of my machines
+(A RedHat box with an AMD5x86 processor and egcs).  If I
+use any optimization when I compile glib or imlib, I get the
+problem described (imlib uses the gmodule portion of glib to
+load the PNG code).  Try compiling those two packages with no
+optimization switches on.  That might fix it.  As far as I can
+tell, this is a bug in my compiler, not in GNOME. -->
+
+</para>
+<para>
+
+También he recibido un informe donde se comenta que el problema
+podría ocurrir por interferencias de versiones de ImageMagick. Si
+estás desorientado, quizá quieras intentar quitar o actualizarla.
+<!-- 123 ***I have also received a report that the problem could
+occur from interference from some versions of ImageMagick.  If
+you are at a loss, you might want to try removing or upgrading
+it. -->
+
+</para>
+</sect2>
+</sect1>
+</chapter>
+<chapter id="Architecture">
+<title>
+
+Componentes de la Arquitectura
+
+</title>
+<para>
+
+Esta sección trata las diversas piezas que componen GNOME, y qué hacen.
+<!-- 123 ***This section discusses the various pieces of GNOME, and what
+they do. -->
+
+</para>
+<sect1 id="ArchLibraries">
+<title>
+
+Librerías
+
+</title>
+<sect2>
+<title>
+
+¿Por qué necesito tantas librerías para GNOME?
+
+</title>
+<para>
+
+GNOME requiere las librerías que requiere por dos grandes
+razones.  Queríamos que GNOME tuviera muchas características
+útiles, y no queríamos empezar desde cero. Usar librerías
+comunes para muchas de las características de GNOME le permite
+a GNOME funcionar mejor y más consistentemente con otras
+aplicaciones no GNOME.
+<!-- 123 ***GNOME requires the libraries it does for two big
+reasons.  We wanted GNOME to have lots of useful features, and
+we didn't want to write everything from scratch.  By using
+common libraries for many of GNOME's features it allows GNOME
+to work better and more consistently with other non-GNOME
+applications. -->
+
+</para>
+</sect2>
+</sect1>
+<sect1 ID="CORBA">
+<title>
+
+CORBA, ORBit y Baboon
+
+</title>
+<para>
+
+Network Objects (en red orientado a objetos) es el nombre
+intermedio de GNOME.  Aquí te mostramos como funcionan.
+<!-- 123 Network Objects is GNOME's middle name.  This is how they
+work. -->
+
+</para>
+<sect2>
+<title>
+
+¿Qué es CORBA?
+
+</title>
+<para>
+<ulink	url="http://www.omg.org/news/begin.htm">
+
+CORBA
+
+</ulink>
+
+es el
+Common Object Request Broker Architecture
+
+<!-- 123 (*-* en-castellano-aqui *-*). -->
+
+Del documento del Open
+Management Group (OMG, el grupo de estándares que controla CORBA) 
+<!-- 123 ***the standards body which controls
+CORBA)  -->
+
+<ulink	url="http://www.omg.org/about/wicorba.htm">
+
+¿Qué es
+CORBA?
+
+</ulink>
+
+recibe la siguiente respuesta:
+
+</para>
+<blockquote>
+<para>
+
+La Common Object Request Broker Architecture (CORBA),
+<!-- 123 (*-* en-castellano-aqui *-*) -->
+es la respuesta del Object Mangement Group a la necesidad
+de interoperatividad entre la rápida proliferación de
+numeroso hardware y software disponible hoy en dia.  Llamado
+simplemente CORBA, este permite a las aplicaciones comunicarse
+unas con otras independientemente de donde esten localizadas
+o quien las halla diseñado(...)
+<!-- 123 ***is the Object Management Group's answer to the need for
+inter-operability among the rapidly proliferating number of
+hardware and software products available today. Simply
+stated, CORBA allows applications to communicate with one
+another no matter where they are located or who has designed
+them(...) -->
+
+</para>
+<para>
+
+El (ORB) es el middleware<!-- 123 ¿?¿??¿ --> que establece las relaciones
+cliente-servidor entre objetos. Usando un ORB, un cliente
+puede invocar transparentemente un metodo en un objeto
+servidor, que puede estar en la misma máquina o en una
+red. El ORB intercepta la llamada y es responsable de
+encontar un objeto que implemente la petición, pase los
+parámetros, invoque su método, y devuelva los resultados.
+El cliente no tiene que saber donde se encuentra el
+objeto, su lenguaje de programación, su sistema operativo
+o interfaz. Haciendo esto, el ORB proporciona
+interoperativilidad  entre aplicaciones en diferentes
+máquinas en entornos distribuidos heterogeneamente y
+conecta "sin costuras" multiples sistemas de objetos.
+
+<!-- 123 *-* te recuerdo que de programación se manejar strings y 
+poco mas, asi que mejor revisar toda esta parte *-* -->
+
+<!-- 123 *****The (ORB) is the middleware that establishes the
+client-server relationships between objects. Using an ORB, a
+client can transparently invoke a method on a server object,
+which can be on the same machine or across a network. The
+ORB intercepts the call and is responsible for finding an
+object that can implement the request, pass it the
+parameters, invoke its method, and return the results. The
+client does not have to be aware of where the object is
+located, its programming language, its operating system, or
+any other system aspects that are not part of an object's
+interface. In so doing, the ORB provides inter-operability
+between applications on different machines in heterogeneous
+distributed environments and seamlessly interconnects
+multiple object systems. -->
+
+</para>
+<para>
+
+<!-- 123 In fielding typical -->
+En el terreno de las aplicaciones típicas cliente/servidor,
+los desarrolladores usan sus diseños propios o
+estándares reconocidos para definir el protocolo que se
+va a usar entre los dispositivos. Las definiciones del
+protocolo dependen de el lenguaje de implementación,
+transporte en red y una docena de factores. ORB
+simplifica este proceso. Con ORB, el protocolo se define
+<!-- 123 ¿?¿?¿ -->a través de interfaces de aplicación por
+medio de una especificación independiente del lenguaje de
+implementación, el IDL (Ed. Interface Description Languaje).
+Y los ORBs proporcionan flexibilidad. Dejan a los programadores
+elegir el sistema operativo más apropiado, entorno de ejecución
+e incluso el lenguaje de programación a usar para cada
+componente de un sistema en construcción. Más importante,
+permiten la integración de componentes existentes. En una
+solución basada en ORB, los desarrolladores simplemente
+modelan la <!-- 123 Inventado ¿?¿ -->herencia del componente
+usando el mismo IDL que usan para crear nuevos objetos, después
+escriben el código "wrapper" que traduce entre el bus
+estandarizado y los interfaces heredados.
+
+<!-- 123 ****In fielding typical client/server applications,
+developers use their own design or a recognized standard to
+define the protocol to be used between the devices. Protocol
+definition depends on the implementation language, network
+transport and a dozen other factors. ORBs simplify this
+process. With an ORB, the protocol is defined through the
+application interfaces via a single implementation
+language-independent specification, the IDL (Ed. Interface
+Description Language).  And ORBs provide flexibility. They
+let programmers choose the most appropriate operating
+system, execution environment and even programming language
+to use for each component of a system under
+construction. More importantly, they allow the integration
+of existing components. In an ORB-based solution, developers
+simply model the legacy component using the same IDL they
+use for creating new objects, then write "wrapper" code that
+translates between the standardized bus and the legacy
+interfaces. -->
+
+</para>
+</blockquote>
+<para>
+
+Vale, ya es suficente. Aquí está la
+explicación de Todd.:
+<!-- 123 OK, enough of that stuff. Here's Todd's
+explanation: -->
+
+</para>
+<blockquote>
+<para>
+
+¿Recuerdas la RPC? Ya sabes, las Remote Procedure Calls
+(llamadas a procedimiento remoto) <!-- 123 *-*traduccion que
+realiza Microsoft de este término*-* -->. Sun las usó como la
+base para el NFS y el NIS. Microsoft usó el estándar
+Distributed Computing Environment como la base para su
+DCOM.
+<!-- 123 ***Do you remember RPC? You know, Remote Procedure Calls?
+Sun used them as the basis for NFS and NIS. Microsoft used
+the Distributed Computing Environment's RPC standard as the
+basis for DCOM. -->
+
+</para>
+<para>
+
+Bien, una llamada a procedimiento remoto es realmente
+bastante simple. Primeto, defines el procedimiento en
+algún formato estándar. <!-- 123 ?¿? -->What is there to a procedure
+definition?  Bien, tienes el nombre del procedimiento,
+los argumentos que van dentro, y los resultados que
+produce. Entonces produces el lado cliente, que le
+dice a los clientes como introducir argumentos y obtener
+resultados, y después creas <!-- 123 ¿?¿ -->el lado del servidor, que
+toma los argumentos y devuelve los resultados.
+
+<!-- 123 ****Well, a remote procedure call is really pretty
+simple. First, you define the procedure in some standard
+format. What is there to a procedure definition?  Well,
+you've got the name of the procedure, the arguments which go
+into it, and the results which come out of it. Then you
+produce the client side, which tells clients how to feed in
+arguments and get back results, and then you build the
+server side, which takes in arguments and gives back
+results. -->
+
+</para>
+<para>
+
+Puedes usar este modelo para crear sistemas bastante
+poderosos. Simplemente coje el interfaz estándar del
+sistema de archivos Unix, conviértelo en RPC, y b**ammo,
+ya tienes NFS. Ten en cuenta que siempre y cuando las
+entradas y salidas are thrown around de un modo estándar,
+los clientes que llaman al procedimiento y los servidores
+que lo atienden no tienen que estar escritos en el mismo
+lenguaje, ejecutarse en la misma máquina, o incluso
+funcionar con el mismo sistema operativo o hardware.
+<!-- 123 TRADUCIR -->**This is, truth be told, the killer feature of RPC.
+
+<!-- 123 ***You can use this model to build pretty powerful
+systems. Just take the standard Unix file system interface,
+convert it to RPC, and bammo, you've got NFS. Note that as
+long as the inputs and outputs are thrown around in a
+standard way, the clients calling the procedure and the
+server servicing the procedure don't have to be written in
+the same language, running on the same machine, or even
+running on the same operating system or hardware. This is,
+truth be told, the killer feature of RPC. -->
+
+</para>
+<para>
+
+Sin embargo, a medida que la <!-- 123 ¿? -->procedural programming (C, Perl)
+ha sido sustituida por la programación orientada a
+objetos (Objective C, Java, C++), necesitas algo más que
+procedimientos en RPC. Necesitas algo que soporte objetos:
+creando objetos, accediento a los datos del objeto,
+accediendo a los métodos del objeto, destruyendo objetos.
+Aquí es donde CORBA aparece: piensa en CORBA como un
+RPC de próxima generación, simplemente extendido para
+soportar la programación orientada a objetos. En vez de
+tener bajo RPC lo siguiente:
+
+<!-- 123 ***However, as procedural programming (C, Perl) has been
+superseded by object-oriented programming (Objective C,
+Java, C++), you really need something more the procedures in
+RPC. You need something which supports objects: creating
+objects, accessing object data, accessing object methods,
+destroying objects. This is where CORBA comes in: think of
+CORBA as next-generation RPC, just extended to support
+object-oriented programming. Instead of having under RPC the
+following: -->
+
+</para>
+<programlisting>
+
+void foo(int bar); void baz(){return(-1);}
+
+</programlisting>
+<para>
+
+tienes bajo CORBA lo siguiente:
+<!-- 123 you instead have under CORBA the following: -->
+
+</para>
+<programlisting>
+
+interface bubba{ void foo(in int bar); void baz() raises (InValidContext); } 
+
+</programlisting>
+<para>
+
+¿La lección con todo esto? CORBA permite un programa
+independiente del lenguaje, interfaces transparentes
+a la localización y orientadas a objetos entre
+componentes de software. Mola... <!-- 123 *-* Cool *-* -->
+
+<!-- 123 *-* Cool?*-****The lesson of all of this? CORBA lets one program
+language-independent, location-transparent object-oriented
+interfaces between software components. It' s cool. -->
+
+</para>
+</blockquote>
+</sect2>
+<sect2>
+<title>
+
+¿Cuáles son algunos de los componentes de COBA?
+What are some CORBA components?
+
+</title>
+<para>
+
+Me gustaría incluir aquí definiciones de algunos de los
+términos más extraños de CORBA, para qeu la gente pueda
+captar la esencia de lo que es CORBA y tener una idea
+general de los componentes que lo componen.  Cuando me
+refiera a un término no obvio de CORBA, intentaré definirlo
+aquí.
+<!-- 123 *-* ESTE PARRAFO HAY QUE REVISARLO OBLIGATORIAMENTE *-* -->
+
+<!-- 123 I would like to include here definitions of some of the
+more strange CORBA terminology, so that people can easily get
+into the groove of what CORBA is and have a good
+"beck-of-the-envelope" understanding of the components
+involved.  Whenever I refer to a non-obvious CORBA term, I
+intend to define it here. -->
+
+</para>
+<itemizedlist>
+<listitem>
+<para>
+<firstterm>
+
+Object Request Broker
+(agente de petición de objetos)
+
+</firstterm>
+
+- (u
+ORB) un ORB es una pieza de <!-- 123 ¿? -->"middleware", como se le
+llama, a lo que se situa en medio de los clientes y
+servidores y hace posible la fácil comunicación entre
+ellos. El ORB es un ente conceptual, que algunas
+veces toma la forma de una librería compartida y otras
+toma la forma de un programa externo.  El ORB es el
+responsable de establecer y destruir las sesiones entre
+clientes y servidores y dirigir (o no), y transportar
+mensajes entre ellos durante una sesión.
+
+<!-- 123 ****- (or
+ORB) an ORB is a piece of "middleware", as it's called,
+which sits between clients and servers and makes easy
+communication between them possible. The ORB is a
+conceptual entity, which sometimes takes the form of a
+shared library and sometimes takes the form of an external
+program.  the ORB is responsible for establishing and
+destroying sessions between clients and servers and
+marshaling, unmarshaling, and transporting messages
+between them during a session. -->
+
+</para>
+</listitem>
+<listitem>
+<para>
+<firstterm>
+
+Object Adaptor
+(adaptador de objetos)
+
+</firstterm>
+
+- (u OA) un
+Object Adaptor proporciona el canal por el cual un
+object server (como el panel gnome) se comunica con el
+Object Request Broker (ORBit).
+
+<!-- 123 ***- (or OA) an
+Object Adaptor provides the channel through which an
+object server (like the gnome panel) communicates with the
+Object Request Broker (ORBit). -->
+
+</para>
+</listitem>
+<listitem>
+<para>
+<firstterm>
+
+GIOP/IIOP
+
+</firstterm>
+
+- CORBA toma todos
+estos <!-- 123 ¿? -->language-isms and handles orientados a objetos
+llevándolos entre componentes software orientados a
+objetos (marshaling, transporte, y demarshaling). Si las
+dos piezas de software están en diferentes lugares,
+entonces se usará el protocolo GIOP para mover la
+información entre ellos. IIOP es una especificación de
+GIOP para el conjunto de protocolos de Internet;
+teoricamente se podría hacer funcionar GIOP sobre otra
+cosa distinta al IP, y en este caso se le llamaría de otra
+manera distinta. <!-- 123 ¿? -->
+I for one can't figure out why you would want to. 8^) 
+Si alguna versión de GIOP a parte de IIOP alguna vez
+se volviera importante, entonces estoy seguro de que
+ORBit la soportaría, también. (IIOP es a GIOP lo que el
+HTML es al SGML)
+<!-- 123 (Piensa en IIOP como el
+HTML y en GIOP como el SGML) -->
+
+
+<!-- 123 - CORBA takes all
+of these object-oriented language-isms and handles
+carrying them between object-oriented software components
+(marshaling, transporting, and demarshaling). If the two
+pieces of software are in different locations, then it
+will use the GIOP protocol to move information between
+them. IIOP is a specification of GIOP for the Internet
+protocol suite; theoretically you could run GIOP over
+something other than IP, in which case it would be called
+something else. I for one can't figure out why you would
+want to. 8^) If any version of GIOP other than IIOP ever
+became important, then I'm sure that ORBit would support
+it, too. (Think of IIOP as HTML to GIOP's SGML.) -->
+
+</para>
+</listitem>
+</itemizedlist>
+</sect2>
+<sect2>
+<title>
+
+¿Cuáles son los servicios de CORBA?
+
+</title>
+<para>
+
+Adicionalmente, hay dos partes realmente en CORBA. Está la
+parte que ya he descrito, que te dice como hacer el RPC
+objetivizado, como <!-- 123 to marshal -->manejar argumentos,
+como escribir ficheros IDL, como funciona GIOP, etc. y después están los
+"Servicios de CORBA". Estos son unos servicios <!-- 123 ¿? -->built on
+top de la insfraestructura básica de CORBA que facilitan la
+programación de objetos distribuidos.
+
+<!-- 123 ****Additionally, there are really two parts to CORBA. There
+is the part which I've already described, which tells you how
+to do objectified RPC, how to marshal arguments, how to write
+IDL files, how GIOP works, etc. and then there are the "CORBA
+Services". These are services built on top of the basic CORBA
+infrastructure which make distributed object programming
+easier. -->
+
+</para>
+<para>
+
+Quizá el más importante de todos estos es el servicio de
+nombres. 
+<!-- 123 (????????naming service *-*que es en realidad ?*-*).  -->
+P.e., digamos que tenemos un
+programa que por alguna razón necesitase servicios de
+corrección ortográfica (spell-checking services). Algo
+realmente limpio que puedes hacer (si tu implementación de
+CORBA es lo suficientemente elegante) es llamar a tu ORB y
+decir ¡Oye! Necesito un servicio de corrección ortográfica
+Vé y buscamelo". Entonces el ORB usa el servicio de nombres
+para ver que objetos están registrados que proporcionen un
+servicio de corrección ortográfica. Puede despertar al
+programa que ha realizado la llamada y decir "Puedes encontrar
+un servicio de corrección ortográfica en el &num;867-5309".
+Entonces llamas al 867-5309 y, ¡mirad!, ahi un servicio de
+corrección ortográfica allí. Ahora, esta puede ser una librería
+compartida que <!-- 123 ¿? -->got mapped into your address space and
+y ahora estás haciendo llamadas directas de funciones a ella,
+o podría ser un servicio comunitacio de corrección ortográfica
+ofrecido como servicio público por el grupo de usuarios de BSD
+en Mongolia gracia a internet via IIOP. No lo sabes y, excepto
+por un posible pequeño retardo inducido por el viaje a Mongolia,
+realmente no te preocupas. Mola, ¿no? 
+
+<!-- 123 Perhaps the most important of these is the naming
+service. E.g., say that you were a program which for some
+reason needed spell-checking services. One really neat thing
+that you can do (if your CORBA implementation is nifty enough)
+is to call up your ORB and say "Hey! I need spell-check
+service. Go find it for me." The ORB then uses the naming
+service to see what objects are registered which provide
+spell-check service. It can then wake up the calling program
+and say "You can find the spell- check service at
+&num;867-5309." You then call up 867-5309 and, lo and behold,
+there's a spell check service there. Now, that might be a
+shared library which got mapped into your address space and
+you are now doing straight function calls into it, or it might
+be a community spell-check service in Mongolia offered as a
+public service by the Mongolian FreeBSD users' group over the
+internet via IIOP. You don't know and, except for maybe a
+little lag induced by the round-trip to Mongolia, you really
+don't care. Cool, non? -->
+
+</para>
+<para>
+
+El servicio de nombres, entonces, permite a los objetos
+registrarse para un uso futuro. Hay otros servicios CORBA,
+que incluyen un servicio de transacciones, un servicio de
+seguridad, un servicio horario, un "servicio de relaciones",
+que puede o no ser lo que crees que es, y mucho más. Mi
+copia del documento de ServiciosCORBA de marzo del 1997
+lista 14 servicios.
+
+<!-- 123 ****The naming service, then, allows objects to register
+themselves for future use. There are other CORBA services,
+including a transaction service, a security service, a time
+service, a "relationship service", which might or might not be
+what you think it is, and more. My copy of the CORBAservices
+document from March 1997 lists 14 of them.
+ -->
+
+</para>
+<para>
+
+Puedes encontra una copia de la especificación de ServiciosCORBA
+en la página de la OMG en 
+
+<ulink	url="http://www.omg.org/corba/csindx.htm">
+
+http://www.omg.org/corba/csindx.htm
+
+</ulink>
+
+.
+Si estás interesado en implementar alguno de ellos, entonces
+estoy seguro de que a los desarrolladores de ORBit les
+encantaría hablar contigo.
+(Ver 
+
+<link linkend="ORBIT">
+
+ORBit
+
+</link>
+
+)
+
+</para>
+</sect2>
+<sect2>
+<title>
+
+¿Qué versión de CORBA usa GNOME?
+
+</title>
+<para>
+
+El trabajo está actualmente <!-- 123 ¿? -->underway debido a que la
+OMG está desarrollando la versión 3.0, pero por ahora
+GNOME usa la versión 2.2 de CORBA, que es el estándar
+actual. No he oido lo que GNOME hará cuando aparezca la 3.0.
+
+<!-- 123 *-* REVISAR, traduccion MUY LIBRE *-* -->
+
+<!-- 123 ****Work is presently underway within the OMG to develop
+version 3.0, but for now GNOME is using CORBA version 2.2,
+which is the present standard. I have not heard what GNOME
+will do when 3.0 comes out. -->
+
+</para>
+</sect2>
+<sect2>
+<title>
+
+¿Dónde puedo encontrar más información sobre CORBA?
+
+</title>
+<para>
+
+Una buena página <!-- 123 ¿? -->jumping-off es la página de CORBA
+de Linas Vepstas en
+<!-- 123 ***A good jumping-off page is Linas Vepstas's CORBA page at -->
+
+<ulink url="http://linas.org/linux/corba.html">
+
+http://linas.org/linux/corba.html
+
+</ulink>
+
+.
+
+</para>
+<para>
+
+Debido a que parece haber mucho interés en la diferencia entre
+CORBA y COM, mencionaré este otro documento: 
+<!-- 123 ****Since there seems to be a lot of interest in the
+difference between CORBA and COM, I'll just mention this one
+other paper:  -->
+
+<ulink url="&dcomcorba;">
+
+&dcomcorba;
+
+</ulink>
+
+,
+DCOM y CORBA Lado a Lado, Paso a Paso, y Capa a Capa
+(Side by Side, Step by Step, and Layer by Layer).
+
+</para>
+<para>
+
+Finalmente, el proyecto TAO en la Universidad de Washington en
+St. Louis tiene su propio ORB, TAO. Ese grupo está dirigido por
+Dr, Douglas Schmidt. Puedes encontrar un montón de información
+útil en su página sobre CORBA: 
+<!-- 123 ***Finally, the TAO project at Washington University in
+St. Louis has their own ORB, TAO. That group is led by
+Dr. Douglas Schmidt. You can find a lot of good information on
+his CORBA page:  -->
+
+<ulink	url="&schmidtcorba;">
+
+&schmidtcorba;
+
+</ulink>
+
+.  Asegúrate de echarles
+un vistazo a las página de ACE y TAO mientras estás allí;
+son muy buenas.
+<!-- 123 ***Be sure to look
+around at the ACE and TAO pages while you're there; they are
+very good. -->
+
+</para>
+</sect2>
+<sect2>
+<title>
+
+¿Qué papel juega CORBA en GNOME?
+
+</title>
+<para>
+
+CORBA permite la arquitectura de componentes de GNOME.
+Realiza un papel similar al de COM/DCOM bajo win32.
+<!-- 123 ***CORBA enables the component architecture of GNOME. It
+serves a role similar to that of COM/DCOM under win32. -->
+
+</para>
+</sect2>
+<sect2>
+<title>
+
+¿Qué implementación de CORBA está usando GNOME?
+
+</title>
+<para>
+
+Al principio, el plan era usar
+
+
+<ulink	url="ftp://parcftp.parc.xerox.com/pub/ilu/ilu.html">
+
+ILU
+
+</ulink>
+
+.  ILU tenia varias características beneficiosas, y sobre todas
+el soporte multilenguaje.  Mientras que ILU era (y es)
+terriblemente limpio, la actitud de Xerox hacia él no era nada
+clara, y los términos de licencia resultaron ser fatales: ILU
+no es free software, y el equipo GNOME resultó incapaz de
+conseguir que Xerox modificase la licencia. El proyecto GNOME
+no adoptará tecnología que no sea software libre, y ahí
+acabó todo.
+
+<!-- 123 ***.  ILU had a number of benefits, foremost among
+them that it supports several languages.  While ILU was (and
+is) awfully neat, Xerox's attitude towards it was unclear, and
+the licensing terms proved to be fatal: ILU is not free
+software, and the GNOME team proved unable to get Xerox to
+modify the license. The GNOME project won't adopt technology
+which is not free software, and that was the end of
+that. -->
+
+</para>
+<para>
+
+Entonces el proyecto se estableció sobre
+<!-- 123 ***The project then settled upon  -->
+
+<ulink	url="http://diamant-atm.vsb.cs.uni-frankfurt.de/~mico/">
+
+MICO
+
+</ulink>
+
+.  Los principales atractivos de MICO son que tiene un
+Adaptador de Objetos, es compatible con IIOP, y su licencia
+se acoge a los términos de la GPL. Sin embargo, actualmente
+no soporta más lenguaje que C++, y usaba una incleible
+cantidad de memoria.
+<!-- 123 ***The main attractions of MICO are that it has an
+Object Adaptor, it is IIOP-compliant, and it is licensed under
+the terms of the GPL. However, it does not presently support
+languages other than C++, and it used just an unbelievably
+amount of memory. -->
+
+</para>
+<para>
+
+Todavia insatisfechos, los GNOMErs comenzaron a trabajar
+en nuestro popio ORB, llamado ORBit.
+<!-- 123 ***Still dissatisfied, the GNOMErs began work on our own
+ORB, called ORBit. -->
+
+</para>
+</sect2>
+<sect2 id="ORBit">
+<title>
+
+¿Qué es orbit?
+
+</title>
+<para>
+
+ORBit está diseñado  <!-- 123 *-* concebido *-* -->para ser
+multilingual; ILU es una prueba de que esto es posible. Ahora
+mismo sólo soporta C, pero en el futuro soportará otros
+lenguajes.  (Realmente, ¡lo decimos en serio! Es un proyecto
+muy muy nuevo, y este es el único motivo por el que está sólo
+en C). También soporta GIOP/IIOP, el protocolo CORBA
+de la OMG que permite a diferentes ORBs ser capaces de hablar
+entre sí.
+<!-- 123 ***ORBit is intended to be multilingual; ILU proves that
+this is possible.  Right now it only supports C, but in the
+future it will support other languages.  (Really, we mean it!
+It is a very, very new project right now, which is the only
+reason it is C only.) It also supports GIOP/IIOP, the OMG's
+CORBA protocol which allows different ORBs to be able to talk
+to each other. -->
+
+</para>
+<para>
+
+Finalmente, ORBit está concebido para ser de alto rendimiento.
+Eso significa poca memoria y alta velocidad. Aquí, ORBit
+está siguiendo el ejemplo de 
+<!-- 123 ***Finally, ORBit is intended to be high performance. That
+means low-memory and high-speed. Here, ORBit is taking a lot
+of cues from  -->
+
+<ulink	url="http://www.cs.utah.edu/projects/flux/flick/">
+
+Flick
+
+</ulink>
+
+.  Elliot Lee, el instigador del proyecto ORBit, piensa que
+puede, si violar el <!-- 123 ¿? -->spec de CORBA, acercar el
+coste de una <!-- 123 ¿? -->CORBA call darn close al de una
+llamada a librería estandar, donde una implementación local
+de un servicio pedido está disponible. Ya veremos.
+<!-- 123 ****the instigator of the ORBit
+project, thinks that he can, without violating the CORBA spec,
+get the cost of a CORBA call darn close to that of a standard
+library call, where a local implementation of the requested
+service is available. We'll see. -->
+
+</para>
+</sect2>
+<sect2>
+<title>
+
+¿Por qué no ha hecho GNOME un mayor uso de CORBA?
+
+</title>
+<para>
+
+La razón más importante es que con MICO no se podía trabajar.
+Consumía demasiada memoria, era sólo C++, etc. <!-- 123 ¿?¿? -->ad naus.
+Con la reciente versión del GNOME ORBit, podemos empezar a
+desplegar CORBA en el GNOME.
+<!-- 123 ***The big reason is that MICO was just unworkable. it took
+too much memory, it was C++ only, etc. ad naus. With the
+recent release of the GNOME ORBit, we can start deploying
+CORBA in the GNOME. -->
+
+</para>
+</sect2>
+<sect2 id="BABOON">
+<title>
+
+¿Cómo se usará CORBA en GNOME? o ¿qué es BABOON?
+
+</title>
+<para>
+
+(Esta sección es casi literal de Miguel de Icaza, Jefe de
+los GNOMErs).
+
+</para>
+<para>
+
+CORBA será usado en varios contextos. Un conjunto de
+interfaces y librerías de rutinas llamadas "Baboon"
+serán usadas para simplificar e integrar aplicaciones:
+<!-- 123 ***CORBA will be used in various contexts. A set of
+interfaces and library routines called "Baboon" are used to
+simplify and integrate applications: -->
+
+</para>
+<itemizedlist>
+<listitem>
+<para>
+
+Componentes: Hay sevidores/librerias pre empaquetados
+que proporcionan algunas funcionalidades que pueden
+ser usadas por cualquier aplicación como los servidores
+de corrección ortográfica, servicios de calendario o otros
+servicios no gráficos.<!-- 123 **non-GUI services. -->
+
+<!-- 123 Components: There are pre-packaged libraries/servers
+that do provide some functionality that can be used by any
+application like spelling servers, calendaring services
+and other non-GUI services. -->
+
+</para>
+</listitem>
+<listitem>
+<para>
+
+<!-- 123 ¿? -->Application embedding and in-place activation:
+Baboon es un conjunto de interfaces para proporcionar
+<!-- 123 ¿? -->**application embedding y in-place activation
+que están siendo definidos. Los interfaces Baboon e interacciones
+están modelados depués de los interfaces OLE2 y OpenDoc.
+
+<!-- 123 ***Application embedding and in-place activation:
+Baboon is a set of interfaces for providing application
+embedding and in-place activation which are being defined.
+The Baboon interfaces and interactions are modeled after
+the OLE2 and OpenDoc interfaces. -->
+
+</para>
+</listitem>
+<listitem>
+<para>
+
+Aplicaciones GNOME como provedoras de servicio: las
+aplicaciones GNOME exportarán sus funcionalidades
+internas a través de CORBA para permitir a cualquiera
+reusar su funcionalidad.  Esto permite el scripting del
+escritorio GNOME como en cualquier aplicación que
+use CORBA o lenguaje de script pueda invocar métodos
+en un servidor GNOME (por ejemplo, que un script en Perl
+pueda controlar remotamente para invocar una hoja de
+cálculo para hacer un gráfico o para hacer un informe
+de ventas). Alguna gente llama a lo anterior "Automation".
+A diferencia del mundo COM, el uso de CORBA hace esto
+de forma transparente a la implementación de un
+servidor.
+
+<!-- 123 ***GNOME Applications as service providers: GNOME
+applications will export their inner workings through
+CORBA to allow anyone to reuse their functionality.  This
+allows scripting of the GNOME desktop as any CORBA-aware
+application or scripting language can invoke methods in a
+GNOME server (for example, a script in Perl can control
+remotely invoke a spreadsheet to make a graph or to make a
+sales report). Some people call this "Automation".  Unlike
+the COM world, the use of CORBA makes this transparent to
+the implementor of a server. -->
+
+</para>
+</listitem>
+<listitem>
+<para>
+
+Controles Reutilizables: Otro conjunto de interfaces de Baboon
+se ocupan de los controles rehutilizables. Esto es similar
+a los JavaBeans de Sun y las Active-X de Microsoft.
+<!-- 123 ***Reusable controls: Another set of Baboon interfaces
+deal with reusable controls. This is similar to Sun's
+JavaBeans and Microsoft Active-X. -->
+
+</para>
+</listitem>
+</itemizedlist>
+<para>
+<firstterm>
+
+BABOON
+
+</firstterm>
+
+significa: Baboon Allows
+Baboon Objects Over Networks
+(Baboon permite objetos baboon sobre redes).
+
+</para>
+</sect2>
+</sect1>
+<sect1 id="Graphics">
+<title>
+
+Gráficos en GNOME
+
+</title>
+<sect2 id="GTK">
+<title>
+
+¿Qué es GTK+?
+
+</title>
+<para>
+
+GTK+ es el Gimp Toolkit.  Fue escrito originalmente como
+parte del proyecto Gimp, pero se ha convertido en un excelente
+<!-- 123 ¿se traduce? -->widget set de propósito general.  Más información en 
+<!-- 123 ****GTK+ is the Gimp Toolkit.  It was originally written as
+part of the Gimp project, but it has grown into an excellent
+general purpose widget set.  Find out more at  -->
+
+<ulink	url="&wwwgtk;">
+
+&wwwgtk;
+
+</ulink>
+</para>
+</sect2>
+<sect2>
+<title>
+
+¿Qué papel juega GTK+ en GNOME?
+
+</title>
+<para>
+
+GTK+ es la interfaz que las aplicaciones de GNOME usan
+para interactuar con el usuario. Es similar al papel de
+Motif en CDE, Qt en KDE o el-widget-set-que-no-tiene-nombre
+en Win32.
+<!-- 123 ***GTK+ is the interface which GNOME applications use to
+interact with the user. It is similar to the role of Motif in
+CDE, Qt in KDE or the-widget-set-which-has-no-name in
+Win32. -->
+
+</para>
+</sect2>
+<sect2>
+<title>
+
+¿Qué lenguajes soporta GTK+?
+
+</title>
+<para>
+
+¡Puedes escribir programas GTK+ en millones de lenguajes!
+El humilde autor de estas FAQ conoce los siguientes <!-- 123 ¿? -->bindings:
+<!-- 123 ****You can write GTK+ programs in tons of languages! Your
+humble FAQ author knows of the following bindings: -->
+
+</para>
+<simplelist>
+<member>
+
+C (original)
+
+</member>
+<member>
+
+C++
+
+</member>
+<member>
+
+***Objective C
+
+</member>
+<member>
+
+Python
+
+</member>
+<member>
+
+Perl 5
+
+</member>
+<member>
+
+Scheme (Guile)
+
+</member>
+<member>
+
+TOM
+
+</member>
+<member>
+
+Gwydion Dylan
+
+</member>
+<member>
+
+Ada95
+
+</member>
+</simplelist>
+<para>
+
+Si hay otros, entonces por favor haznos saber cuáles
+son.  (Ver 
+<!-- 123 If there are others, then please let us know about
+them. (See  -->
+
+<link linkend="ContactFAQ">
+
+Contactar con el
+<!-- 123 Maintainer ? -->Encargado de las FAQ
+<!-- 123 ****Contact the FAQ
+Maintainer -->
+
+</link>
+
+)
+
+</para>
+<para>
+
+Te animamos a añadir bindings a otros lenguajes que te apetezca.
+<!-- 123 N.b. ??? -->N.b., que los bindings de
+Scheme ya tienen una representación formal en el API, y
+por lo tanto si quieres empezar a trabajar con nuevos
+bindings, quizá te gustaría empezar por aquí.
+
+<!-- 123 REVISAR -->
+
+<!-- 123 ****You are encouraged to add bindings to other languages
+should the fancy strike you. N.b., that the Scheme bindings
+already have a formalized representation of the API, so if you
+want to start working on new bindings, then you might want to
+start from here. -->
+
+</para>
+<para>
+
+Habiendo escrito lo anterior, me tengo que preguntar si no podríamos
+de alguna manera usar CORBA para cortar este nudo gordiano. Si
+los desarrolladores de ORBit pudieran igualar el coste de una
+llamada local CORBA al de una librería compartida normal
+<!-- 123 can get the cost of a local CORBA call down to that
+of a normal shared-library call, --> entonces
+<!-- 123 ¿?¿?¿?¿? get something down to ? a call down ? ¿:X? -->
+¿por qué no CORBificar GTK y trabajar para añadir <!-- 123 ¿?¿ -->bindings de
+nuevos lenguajes a ORBit? Sé, que la sabiduría popular dice que
+CORBA es demasiado pesado para cosas de mucho volumen como las
+llamadas a X.  Oye, no me culpes por lanzar ideas locas: ¡la
+razón por la que mantengo las FAQ es que no puedo programar!
+
+<!-- 123 ****Having written that, I have to wonder if we can't
+somehow use CORBA to cut this Gordian knot. If the ORBit
+developers can get the cost of a local CORBA call down to that
+of a normal shared-library call, then why not CORBify GTK and
+work on adding bindings for new languages to ORBit? I know,
+the conventional wisdom is that CORBA is too heavyweight for
+high-volume stuff like X calls.  Hey, don't blame me for
+throwing out crazy ideas: the reason I maintain the FAQ is
+that I can't program! -->
+
+</para>
+</sect2>
+<sect2 id="Imlib">
+<title>
+
+¿Qué es imlib?
+
+</title>
+<para>
+
+Junto con GTK, GNOME usa imlib, una <!-- 123 ***image library -->
+librería de imágenes para X
+que soporta múltiples formatos de imagen de forma transparente
+para el programador.  Imlib puede incluso usar programas
+convertidores externos como ImageMagick o pmbplus para
+convertir formatos de imagen desconocidos a conocidos,
+por lo que si existe un convertidor para un tipo de imagen,
+¡puedes usar casi con toda seguridad ese tipo de imagen en tu
+aplicación! Imlib también soporta múltiples profundidades de bit,
+desde de 24 bits hasta 1 bit en monocromo, otra vez de forma
+transparente al programador, y realiza localización inteligente
+de mapa de colores y <!-- 123 ?¿?¿ -->dithering automático para conseguir el
+mejor rendimiento de tu pantalla. Cualquiera que halla intentado
+alguna vez hacer esto con sus apps X, o quien halla tenido que
+soportar el destello de la pantalla cundo sus apps tienen que
+<!-- 123 ?¿?¿¿? -->allocate a private color map, seguro que os gustará esta
+característica.
+
+<!-- 123 *****Along with GTK, GNOME uses imlib, an image library for X
+which supports multiple image formats transparently to the
+programmer. Imlib can even use external converter programs
+like ImageMagick or pmbplus to convert unknown image formats
+to known formats, so if a converter exists for an image type,
+you can almost certainly use that image type in your
+application! Imlib also supports multiple bit-depths, from
+24-bit down to 1-bit monochrome, again transparently to the
+programmer, and does intelligent color map allocation and
+automatic dithering to get the best possible performance out
+of your display. Anyone who has ever tried to do this in their
+X apps, or who has had to endure their screen flashing when
+apps have to allocate a private color map, you will especially
+like this feature. -->
+
+</para>
+<para>
+
+Puedes encontrar más información sobre imlib en 
+
+<ulink        url="&wwwimlib;">
+
+&wwwimlib;
+
+</ulink>
+
+.
+
+</para>
+</sect2>
+<sect2 id="Themes">
+<title>
+
+¿Qué es eso de los temas (themes)?
+<!-- 123 ***What's the deal with themes? -->
+
+</title>
+<para>
+
+Los themes te permiten cambiar <!-- 123 REVISAR -->el aspecto y sensación de
+las aplicaciones GTK+ sin recompilarlas.  Con los themes,
+eres capaz de cambiar el theme de todos los apps GTK+ en un
+<!-- 123 ¿?¿?¿ -->display dado a la vez.
+
+<!-- 123 Themes let you change the look and feel of GTK+
+applications without recompiling them.  With themes, you are
+able to change the theme of all GTK+ apps on a given display
+at the same time. -->
+
+</para>
+<para>
+
+En realidad existen dos partes en un theme en GTK+, el motor
+y la configuración.  El motor es una librería compartida
+especialmente construida con instrucciones sobre la manera en
+que los themes deben dibujar los widgets (los controles de una
+ventana, como los botones, barras de desplazamiento y menús).
+La configuración incluye información sobre fuentes, colores, que
+motor usar, y algunas veces imágenes gráficas que incorporar en
+el theme.  Juntos, los dos constituyen el Theme, y le dan a
+GTK+ su flexible aparaciencia.
+
+<!-- 123 ****There are actually two parts of a theme in GTK+, the
+engine and the configuration.  The engine is a specially
+constructed shared library with instructions on the themes way
+to draw the widgets (the controls of a window, like the
+buttons, scrollbars and menus).  The configuration includes
+information like fonts, colors, which engine to use, and
+sometimes graphic images to incorporate into the theme.
+Together, the two make the Theme, and give GTK+ its flexible
+appearance. -->
+
+</para>
+<para>
+
+Para ver algunos ejemplos de cómo es un app GTK+ tematizado,
+échale un vistazo a: 
+<!-- 123 ***To see some examples of what themed GTK+ apps look like,
+take a look at:  -->
+
+<ulink url="&wwwgtktheme;">
+
+&wwwgtktheme;
+
+</ulink>
+
+.
+
+</para>
+</sect2>
+<sect2>
+<title>
+
+¿Cómo hago para que funcionen los themes?
+<!-- 123 ***How do I get themes working? -->
+
+</title>
+<para>
+
+Primero, necesitas una versión reciente de GTK+, yo recomiendo
+actualmente la versión 1.2.1, pero la 1.2.0 funciona bien
+también. Después consigue los themes que quieras.  Una buena
+selección de themes está disponible en el módulo de motores
+gtk.  Incluso hay más disponibles en 
+
+<!-- 123 ***First, you need a recent version of GTK+, I recommend
+version 1.2.1 at the moment, but 1.2.0 works fine as well.
+You then get the themes you want.  A good selection of themes
+is available in the gtk-engines module.  Even more are
+available at  -->
+
+<ulink url="&wwwgtktheme;">
+
+&wwwgtktheme;
+
+</ulink>
+
+.
+
+</para>
+<para>
+
+Muchos de los módulos incluyen un motor.  Necesitas compilar
+el motor, e instalarlo.  Con los motores gtk, esto se realiza
+de igual manera que con cualquier otro módulo GNOME.  Los
+themes de la website pueden tener distintas instrucciones,
+consulta su documentación.  Algunos de los themes de la
+website son meras configuraciones alternativas de otro motor,
+muchos de ellos son para el motor pixmap en los motores gtk.
+
+<!-- 123 ****Many of the themes include an engine.  You need to
+compile the engine, and install it.  In gtk-engines, this is
+done the same way as any GNOME module.  The themes from the
+website might have different instructions, check their
+documentation.  Some of the themes on the website are merely
+alternate configurations for another engine, many of them are
+for the pixmap engine in gtk-engines. -->
+
+</para>
+<para>
+
+Una vez que el tema está instalado, puedes elegirlo
+a través del Centro de Control GNOME, bajo Escritorio-> Selector
+de Temas.  El selector te permitirá elegir entre todos los temas
+instalados automaticamente<!-- 123 ***on the fly REVISAR-->,
+previsualizar la apariencia del tema, y
+en la versión 1.04 o posterior incluso permitirte la elección
+de fuente. 
+
+<!-- 123 *****Once the theme is installed, you can select them through
+the GNOME Control Center, under Desktop->Theme Selector.  The
+selector will allow you to choose between all the themes
+installed on the fly, preview what the the theme will look
+like, and in version 1.04 or later even let you select the
+font. -->
+
+</para>
+<comment>
+
+Puedes ver el estilo de los apps GTK temificados por el autor
+de las FAQ en: 
+<!-- 123 ***You can see what the FAQ author's themefied GTK apps
+look like at:  -->
+
+<ulink url="&wwwtoddtheme;">
+
+&wwwtoddtheme;
+
+</ulink>
+
+. Comentado debido a un
+enlace muerto.
+<!-- 123 ****Commented out due to dead link. -->
+
+</comment>
+</sect2>
+<sect2 id="OpenGL">
+<title>
+
+¿Qué es OpenGL?
+
+</title>
+<para>
+
+OpenGL es un API de renderización de 2D y 3D desarrollado
+por Sillicon Graphics que se ha convertido en el estándar
+de facto de la industria. Basicamente es una herramienta
+para tomar una imagen en 3D, y producir una imagen 2D adecuada
+para dibujarla en pantalla. Copiando el FAQ de SGI:
+
+<!-- 123 LIMITE -->
+
+<!-- 123 ***is a 2D and 3D rendering API developed by Silicon
+Graphics that has become a de facto industry standard.
+Basically, it is a tool to take a viewpoint of 3D space, and
+produce a 2D image of it suitable for drawing on a screen. To
+quote SGI's FAQ: -->
+
+</para>
+<blockquote>
+<para>
+
+<!-- 123 TRADUCIR -->OpenGL is a rendering only, vendor neutral API
+providing 2D and 3D graphics functions, including modeling,
+transformations, color, lighting, smooth shading, as well as
+advanced features like texture mapping, NURBS, fog, alpha
+blending and motion blur. OpenGL works in both immediate and
+retained (display list) graphics modes.
+
+</para>
+</blockquote>
+<para>
+
+GNOME usa una implementación del API OpenGL llamado Mesa.
+Mesa no es OpenGL per se, ya que es un proyecto Free
+Software que no ha realizado el proceso de obtención de
+licencia de marca registrada OpenGL, pero es una fiel
+representación del API OpenGL.  Mesa no es OpenGL(tm) de
+identica forma que GNU/Linux y FreeBSD no son Unix(tm).
+
+<!-- 123 uses an implementation of the OpenGL API called
+Mesa.  Mesa is not OpenGL per se, since it is a Free Software
+project that has not gone through the OpenGL trademark
+licensing process, but it is a faithful representation of the
+OpenGL API.  Mesa is not OpenGL(tm) in precisely the same way
+that GNU/Linux and FreeBSD are not Unix(tm). -->
+
+</para>
+</sect2>
+<sect2 id="XDND">
+<title>
+
+¿Y qué me dices del soporte Drag and Drop - Arrastrar y Soltar?
+<!-- 123 What about Drag and Drop support? -->
+
+</title>
+<para>
+
+GNOME usa actualmente el protocolo Xde de Drag and Drop. XDE
+está siendo remplazado con una implementación del Protocolo
+Drag-And-Drop de las X Windows para interoperar con otros
+toolkits.
+Más información en 
+
+<ulink url="&wwwxdnd;">
+
+&wwwxdnd;
+
+</ulink>
+
+.
+
+</para>
+</sect2>
+</sect1>
+<sect1 id="SM">
+<title>
+
+Manejo de Sesiones
+
+</title>
+<sect2>
+<title>
+
+¿Qué es el manejo de sesiones?
+
+</title>
+<para>
+
+El manejo de sesiones es una extensión del sistema X Window
+que permite a las aplicaciones guardar y restablecer su estado.
+Esto permite al usuario que su escritorio quede como lo
+dejó, y no que se encuentren con un escritorio limpio cada vez
+que reentra en la GNOMesfera.
+<!-- 123 ***Session Management is an extension to the X Window
+system which allows applications to save and restore their
+state. This allows users to have their desktop look like they
+left it, rather than having a clean desktop every time they
+re-enter the GNOMosphere. -->
+
+</para>
+</sect2>
+<sect2>
+<title>
+
+¿Cómo uso el manejo de sesiones en mi aplicación
+GNOME?
+
+</title>
+<para>
+
+Dr. Mike de RedHat ha escrito un tutorial sobre este tema:
+
+<ulink url="http://www.gnome.org/devel/start/sm.shtml">
+
+http://www.gnome.org/devel/start/sm.shtml
+
+</ulink>
+
+.
+
+</para>
+</sect2>
+</sect1>
+<sect1 id="Docbook">
+<title>
+
+DocBook
+
+</title>
+<sect2>
+<title>
+
+¿Qué es DocBook?
+
+</title>
+<para>
+
+DocBook es un DTD SGML (un conjunto de etiquetas -tags- para un archivo
+de texto) que es muy útil para escribir documentación.  La
+mayoría de la documentación de GNOME está escrita en
+DocBook.  Para más información, mira en las páginas de Oasis's
+DocBook en
+<!-- 123 ***is a SGML DTD (a set of tags for a text file)
+that is very useful for writing documentation.  Most of the
+GNOME documentation is written in DocBook.  To find out more,
+look at Oasis's DocBook pages at  -->
+
+<ulink	url="&wwwdocbook;">
+
+&wwwdocbook;
+
+</ulink>
+
+.  También hay un buen tutorial
+para DocBook en
+<!-- 123 ***There is also a good
+tutorial for DocBook at  -->
+
+<ulink	url="&wwwdocbooktut;">
+
+&wwwdocbooktut;
+
+</ulink>
+
+.
+
+</para>
+<para>
+
+La versión de DocBook, y herramientas relacionadas, como
+las usadas por GNOME se pueden encontrar en 
+<!-- 123 ***The version of DocBook, and related tools, as used by
+GNOME can be found at  -->
+
+<ulink	url="&ftpdocware;">
+
+&ftpdocware;
+
+</ulink>
+
+.  Tanto los tarballs como
+los RPMs binarios están disponibles allí.
+<!-- 123 ***Tarballs and binary
+RPMs are both available there. -->
+
+</para>
+</sect2>
+<sect2 id="SGML">
+<title>
+
+¿Qué es SGML?
+
+</title>
+<para>
+
+Por rellenar.
+<!-- 123 ***To be filled in. -->
+
+</para>
+</sect2>
+</sect1>
+<sect1 id="I18N">
+<title>
+
+Internacionalización y Adapatación Local (I18N & L10N)
+<!-- 123 ***Internationalization & Localization (I18N & L10N) -->
+
+</title>
+<sect2>
+<title>
+
+¿Que son la Internacionalización(I18N) y la Adaptación
+Local(L10N)?
+<!-- 123 ***What are Internationalization(I18N) and
+Localization(L10N)? -->
+
+</title>
+<para>
+
+De la página info del GNU gettext:
+<!-- 123 ***From the GNU gettext info page: -->
+
+</para>
+<para>
+
+Por 
+
+<firstterm>
+
+internacionalización
+
+</firstterm>
+
+, nos
+referimos al la operación por la cual un programa, o un
+conjunto de programas metidos en un paquete, es
+consciente y capaz de soportar multiples lenguajes. Este
+es un proceso de generalización, por la que los programas
+son liberados del uso único de cadenas inglesas u otros
+hábitos específicos del inglés, y conectados a formas
+genéricas de hacer lo mismo. Los desarrolladores de
+programas usan varias técnicas para internacionalizar sus
+programas, algunos de ellos han sido estandarizados.  GNU
+gettext ofrece uno de estos estandars.
+
+<!-- 123 ******refers to the operation by which a program, or a set of
+programs turned into a package, is made aware and able to
+support multiple languages. This is a generalization process,
+by which the programs are untied from using only English
+strings or other English specific habits, and connected to
+generic ways of doing the same, instead. Program developers
+may use various techniques to internationalize their programs,
+some of them have been standardized. GNU gettext offers one of
+these standards. -->
+
+</para>
+<para>
+
+Por 
+
+<firstterm>
+
+adaptación local (localization)
+
+</firstterm>
+
+, nos referimos a la
+operación por la cual, en un conjunto de programas ya
+internacionalizados, se le suministra al programa toda
+la información necesaria para que pueda valerse para
+manejar su objetivo de la manera adecuada para el lenguaje
+nativo y sus hábitos culturales. Este es un proceso de
+particularización, por el cual los métodos genéricos ya
+implementados en un programa internacionalizado se usan
+de manera específica. El entorno de programación pone
+varias funciones a disposición de los programadores
+que ayunda a esta **configuración runtime. La descripción
+formal de un conjunto específico de hábitos culturales
+para un país, junto con todas las traducciones asociadas
+orientadas al mismo lenguaje nativo, se conoce como el
+locale para este lenguaje o país. Los usuarios consiguen
+la adaptación local de los programas configurando los
+valores correctos para variables de entorno especiales,
+más que ejecutando esos programas, identificando que
+locale se devería usar.
+
+<!-- 123 *** las primeras frases son algo dudosas *** -->
+<!-- 123 ***one means the
+operation by which, in a set of programs already
+internationalized, one gives the program all needed
+information so that it can bend itself to handle its input and
+output in a fashion which is correct for some native language
+and cultural habits. This is a particularisation process, by
+which generic methods already implemented in an
+internationalized program are used in specific ways. The
+programming environment puts several functions to the
+programmers disposal which allow this runtime
+configuration. The formal description of specific set of
+cultural habits for some country, together with all associated
+translations targeted to the same native language, is called
+the locale for this language or country. Users achieve
+localization of programs by setting proper values to special
+environment variables, prior to executing those programs,
+identifying which locale should be used. -->
+
+</para>
+</sect2>
+<sect2>
+<title>
+
+¿Que API de I8N y L10N usa GNOME?
+
+</title>
+<para>
+
+GNOME usa el estándar de internacionalización de Uniforum.
+Este es el "estándar" inventado por Sun Microsystems y adoptado
+por el proyecto GNU en su paquete "gettext". ***N.b., this is
+different from the competing X/Open standard.
+<!-- 123 TRADUCIR -->
+
+</para>
+</sect2>
+<sect2>
+<title>
+
+¿Cómo programo usando I18N L10N, o dónde puedo encontrar
+más información sobre estos temas?
+<!-- 123 ***How do I program using I18N and L10N, or Where do I
+find out more info on these topics? -->
+
+</title>
+<para>
+
+Échale un vistazo al manual online del paquete GNU gettext en
+<!-- 123  ****Take a look at the GNU gettext package's online manual
+at -->
+
+<ulink url="&wwwgettext;">
+
+&wwwgettext;
+
+</ulink>
+
+.
+
+</para>
+<para>
+
+De manera adicional, puedes encontrar informativo el FAQ
+sobre I18N:
+<!-- 123 ***Additionally, you may find the I18N FAQ informative: -->
+
+<ulink url="&wwwi18n;">
+
+&wwwi18n;
+
+</ulink>
+
+.
+
+</para>
+</sect2>
+</sect1>
+<sect1 id="Guile">
+<title>
+
+Guile
+
+</title>
+<sect2>
+<title>
+
+¿Qué es Guile?
+
+</title>
+<para>
+
+Guile es la implementación realizada por el
+proyecto GNU de Scheme, un dialecto Common Lisp. Más
+info en 
+<!-- 123 ***Guile is the GNU project's implementation of Scheme, a
+Common Lisp dialect.  Find out more at  -->
+
+<ulink	url="&wwwguile;">
+
+&wwwguile;
+
+</ulink>
+
+.  Hay también una
+excelente información en 
+
+<ulink url="&wwwredbean;">
+
+&wwwredbean;
+
+</ulink>
+</para>
+<para>
+
+Los documentos de Guile son bastante buenos, pero el
+estándar Scheme (el maravillosamente, oscuramente llamado
+R5RS) se puede encontrar en:
+<!-- 123 ***The Guile docs are pretty good, but the Scheme standard
+(the wonderfully, obscurely named R5RS) can be found at: -->
+
+<ulink url="&wwwschemerpt;">
+
+&wwwschemerpt;
+
+</ulink>
+
+.
+
+</para>
+</sect2>
+<sect2>
+<title>
+
+¿Qué papel juega Guile en GNOME?
+
+</title>
+<para>
+
+Guile es el lenguaje de scripting o "pegamento"
+para el proyecto GNOME. Del anuncion original:
+<!-- 123 ****Guile is the scripting or "glue" language for the GNOME
+project. From the original announcement: -->
+
+</para>
+<blockquote>
+<para>
+
+Planeamos usar las ***bindings de GTK/Scheme para escribir
+pequeñas utilidades y aplicaciones. Cuando estas *bindings
+estén más maduras, debería ser posible escribir aplicaciones
+completas en Scheme.
+
+<!-- 123 ***We plan to use GTK/Scheme bindings for coding small
+utilities and applications. When these bindings are more
+mature, it should be possible to write complete applications
+in Scheme. -->
+
+</para>
+</blockquote>
+</sect2>
+</sect1>
+</chapter>
+<chapter id="DevelopingGNOME">
+<title>
+
+Asuntos de desarrolladores
+<!-- 123 ***Developer Issues -->
+
+</title>
+<sect1 id="WMCompliance">
+<title>
+
+Qué tiene que hacer un gestor de ventanas para ser
+compatible-GNOME
+<!-- 123 ***What does a window manager have to do to be
+GNOME-compliant -->
+
+</title>
+<para>
+
+Hay tres grandes cosas:
+
+</para>
+<itemizedlist>
+<listitem>
+<para>
+
+Debe ser completamente compatible con ICCCM,
+especialmente con un apropiado soporte para el
+Manejo de Sesiones X.
+<!-- 123 ***It must be fully ICCCM compliant, especially with
+proper X Session Management support. -->
+
+</para>
+</listitem>
+<listitem>
+<para>
+
+Debe soportar *hints MWM
+<!-- 123 ***It must support MWM hints. -->
+
+</para>
+</listitem>
+<listitem>
+<para>
+
+Debe soportar hints GNOME.
+<!-- 123 ***It must support GNOME hints. -->
+
+</para>
+</listitem>
+</itemizedlist>
+<para>
+
+Para obtener una información más detallada, visita
+la página Compatibilidad de Gestores de Ventana para
+GNOME en 
+
+<!-- 123 ****For more detailed information, see the GNOME Window
+Manager Compliance page at -->
+
+<ulink url="&wwwgnomewmc;">
+
+&wwwgnomewmc;
+
+</ulink>
+</para>
+</sect1>
+<sect1 id="Autoconf">
+<title>
+
+¿Qué es Autoconf? ¿Qué tiene que ver con GNOME?
+
+</title>
+<para>
+
+Autoconf es una herramienta para producir *shell scripts que
+automáticamente configuran el código fuente para adaptarse
+al sistema que estés usando. Autoconf es de<!-- 123 ****invaluable -->
+valor incalculabre, ya
+que hace el desarrollo de esos ***configure scripts
+drásticamente fácil. GNOME lo usa junto a la herramienta
+relacionada, Automake, que permite a Autoconf producir
+Makefiles personalizados para tu sistema. Autoconf usa
+m4 para operar. M4 es un poderoso (pero arcano) macro
+lenguaje usado por muchas utilidades GNU. La mayoría de
+las macros usadas para generar estos ficheros se encuentran
+o en
+
+<filename>
+
+/usr/share/aclocal
+
+</filename>
+
+o en el subdirectorio
+
+<filename>
+
+macros
+
+</filename>
+
+del arbol fuente.<!-- 123 source tree -->
+
+</para>
+<para>
+
+Si estás usando los tarballs, Autoconf y Automake ya
+has sido ejecutadas por ti, por lo que no las necesitas
+en tu sistema. Si usas el CVS, no llegarás muy lejos sin
+tener versiones recientes de estas herramientas. Puedes
+encontrar más información sobre Autoconf en 
+
+<ulink url="&wwwgnuaconf;">
+
+&wwwgnuaconf;
+
+</ulink>
+
+,
+y Automake en 
+
+<ulink url="&wwwgnuamake;">
+
+&wwwgnuamake;
+
+</ulink>
+
+.
+
+</para>
+<para>
+
+Ten en cuenta, que 
+
+<filename>
+
+configure
+
+</filename>
+
+,
+
+<filename>
+
+config.h
+
+</filename>
+
+, 
+
+<filename>
+
+Makefile
+
+</filename>
+
+,
+e incluso 
+
+<filename>
+
+Makefile.in
+
+</filename>
+
+son todos archivos
+construidos.<!-- 123 ***are all constructed
+files. -->
+Si necesitas cambiarlos, no deberías parchearlos
+directamente, si no mejor modificar los ficheros usados
+para crearlos:
+<!-- 123 ***If you need to change them, you shouldn't patch them
+directly, but rather modify the files used to create them: -->
+
+<filename>
+
+configure.in
+
+</filename>
+
+,
+
+<filename>
+
+config.h.in
+
+</filename>
+
+, y
+
+<filename>
+
+Makefile.am
+
+</filename>
+
+.
+
+</para>
+</sect1>
+<sect1 id="Libtool">
+<title>
+
+¿Qué es Libtool? ¿Qué tiene que ver con GNOME?
+
+</title>
+<para>
+
+Libtool es una importante utilidad de portabilidad.  Porporciona
+una interfaz común para el mecanismo de *building, debugging
+y mantenimiento de librerías estáticas y dinamicas en la mayoría
+de sistemas en uso.  Funciona en tres fases, el comando
+<!-- 123 ***Libtool is an important portability utility.  It gives a
+common interface to the mechanics of building, debugging and
+maintaining static and dynamic libraries on most computer
+systems in use.  It works in three phases, the -->
+
+<command>
+
+libtoolize
+
+</command>
+
+añade soporte libtool al source tree añadiendo el script 
+
+<command>
+
+ltconfig
+
+</command>
+
+.  Este<!-- 123 REVISAR -->
+script, ***in turn, genera un script específico del tipo de
+sistema en el source tree llamado
+<!-- 123 ****generates a system-specific script called -->
+
+<command>
+
+libtool
+
+</command>
+
+.  El script
+
+<command>
+
+libtool
+
+</command>
+
+es la parte que en realidad realiza todo el trabajo.
+<!-- 123 ***is the part that actually gets
+all the work done. -->
+
+</para>
+<para>
+
+Como con Autoconf y Automake, si usas el CVS, necesitas
+tener Libtool instalada en tu sistema.  Si usas los tarballs,
+
+<command>
+
+libtoolize
+
+</command>
+
+ya ha sido ejecutada, y
+
+<command>
+
+ltconfig
+
+</command>
+
+<!-- 123 REVISAR -->*is self-contained, por lo que no
+necesitas tener Libtool instalada.  Puedes encontrar más
+información sobre libtool en 
+
+<ulink url="&wwwgnulibtool;">
+
+&wwwgnulibtool;
+
+</ulink>
+</para>
+</sect1>
+</chapter>
+<chapter id="GNOMEr">
+<title>
+
+Convirtiéndose en un GNOMEr
+
+</title>
+<para>
+
+Información general sobre como introducirse más en el proyecto GNOME.
+<!-- 123 ***General information on getting more involved with the GNOME
+Project. -->
+
+</para>
+<sect1>
+<title>
+
+¿Cómo me uno al movimiento GNOME?
+
+</title>
+<para>
+
+Si quieres introducirte seriamente en GNOME, realmente
+tienes que unirte a la lista de correo gnome-list (Ver 
+
+<link      linkend="MailingList">
+
+Listas de correo
+
+</link>
+
+, anterior).  Comprueba la
+lista de listas de correo para ver que otras listas te interesan.
+También, asegúrate de que lees el Manifesto GNOME en 
+
+<ulink      url="&wwwgnomemanif;">
+
+&wwwgnomemanif;
+
+</ulink>
+
+y los artículos sobre la Filosofía del
+Proyecto GNU en 
+
+<ulink      url="&wwwgnuphil;">
+
+&wwwgnuphil;
+
+</ulink>
+
+para asegurarte de que sabes en qué
+clase de proyecto te estás metiendo.  No tienes que estar
+de acuerdo con toda la filosofía para contribuir con GNOME,
+pero al menos respetar que algunos de nosotros estemos
+entregados a las ideas mostradas en estos documentos.
+
+</para>
+<para>
+
+Debido a que GNOME es un proyecto de software, es obvio que
+siempre podemos necesitar a más programadores, pero no tienes
+que ser un programador para hechar una mano en GNOME.  Siempre
+podemos necesitar a más gente que envie claros informes de
+bugs.  Siempre hay más documentación que escribir.  Si hablas
+más de un idioma, siempre podemos necesitar traductores, tanto
+con la documentación como con las pestañas, botones y entradas
+de menú en las aplicaciones.  La gente dispuesta a hacer
+paquetes binarios para sus sistemas serán acogidos con gusto,
+particularmente si nadie más esta realizando todavía los
+binarios para ese sistema.  Animamos con entusiasmo a la
+gente dispuesta y capaz de replicar nuestros servidores WWW,
+FTP y/o CVS a que lo hagan.
+
+<!-- 123 **** realmente ¿como traduzco el verbo USE?******
+****Since GNOME is a software project, we obviously can always
+use more programmers, but you don't have to be a programmer to
+help out with GNOME.  We also can always use more people sending
+in clear bug reports.  There is always more documentation to be
+written.  If you speak more than one language, we can always use
+translators, both of the documentation and of the labels,
+buttons and menu entries within the applications.  People
+willing to make binary packages for their system are quite
+welcome, particularly if nobody else is making binaries yet for
+that system.  People willing and able to mirror our WWW, FTP
+and/or CVS servers are enthusiastically encouraged to do
+so. -->
+
+</para>
+</sect1>
+<sect1>
+<title>
+
+¿Cómo consigo las ultimísimas versiones CVS de GNOME?
+<!-- 123 ***How do I get the bleeding edge, CVS versions of
+GNOME? -->
+
+</title>
+<para>
+
+Si desarrollas para GNOME, o si quieres simplemente mantenerte
+más al día que con la última versión, deberías tener en cuenta
+usar nuestro sistema CVS.  Hay un servidor principal CVS,
+para el que necesitas una cuenta, y una red de servidores
+réplicas de este, a los que cualquiera puede acceder.  Esta
+red de mirrors se llama en conjunto CVS Anónimo (Anonymous
+CVS), y puedes acceder a ellos mediante anonscvs.gnome.org
+(con un round-robin DNS incorporado para compensar la sobrecarga).
+<!-- 123 ***they are set up with round-robin DNS to balance out the load -->
+Si pretendes colaborar con código fuente para el proyecto GNOME,
+al final querrás una cuenta en el servidor CVS principal, pero
+primero acostumbrate al sistema de CVS Anónimo, para
+familiarizarte con el uso que hace GNOME del CVS.
+
+<!-- 123 *****If you are developing for GNOME, or if you just want to
+keep more up-to-date than the latest release, you should
+consider using our CVS system.  There is the main CVS server,
+which you need an account for, and a network of mirrors of the
+server, which anyone can read from.  This network of mirrors is
+collectively called Anonymous CVS, and they all can be accessed
+at anoncvs.gnome.org (they are set up with round-robin DNS to
+balance out the load).  If you are looking to contribute source
+code to the GNOME project, you will eventually want an account
+on the main CVS server, but get used to the Anonymous CVS system
+first, so you are familiar with how GNOME makes use of
+CVS. -->
+
+</para>
+<para>
+
+Las direcciones sobre como acceder al sistema CVS Anónimo están en
+<!-- 123 ***Directions on how to access the Anonymous CVS system are at -->
+
+<ulink url="&wwwgnomewicvs;">
+
+&wwwgnomewicvs;
+
+</ulink>
+
+.  Hay también
+una muy útil guia en 
+
+<ulink      url="&wwwsorencvs;">
+
+&wwwsorencvs;
+
+</ulink>
+
+.  Los servidores CVS
+anómimos deberían actualizarse solos
+<!-- 123 *****The anonymous CVS
+servers should be updating themselves  -->
+
+</para>
+<para>
+
+Para usar la versión CVS, necesitas tener GNU tools instalado en
+tu sistema.  Necesistas por lo menos GNU Autoconf, Automake,
+Libtool y m4.  Si tu sistema no las incluye, puedes conseguirlas
+del sitio web GNU en 
+
+<ulink      url="&wwwgnu;">
+
+&wwwgnu;
+
+</ulink>
+
+.
+
+</para>
+</sect1>
+<sect1>
+<title>
+
+Quiero el ultimísimo GNOME, pero no puedo usar CVS.  ¿Cómo
+lo consigo?
+<!-- 123 ***I want bleeding edge GNOME, but I can't use CVS.  How do
+I get it? -->
+
+</title>
+<para>
+
+Hay algunas ocasiones en las que CVS no es factible.
+Quizá quieres asegurarte de que GNOME funciona usando simplemente
+la herramientas nativas de tu sistema en vez de las GNU
+tools.  Quizá estés al otro lado de un cortafuegos que bloquea el
+puerto CVS.  Sea cual sea tu razón, Jim Pick Software ofrece
+*snapshots diarios de la versión CVS, en formato tarball, disponibles
+via FTP en 
+
+<!-- 123 There are some occasions where CVS just isn't feasible.
+Perhaps you want to make sure GNOME works using just the native
+tools for your system instead of the GNU tools.  Perhaps you are
+sitting on the other side of a firewall that blocks the CVS
+port.  Whatever your reason, Jim Pick Software offers daily
+snapshots of the CVS version, in tarball form, available via FTP
+at  -->
+
+<ulink url="&ftpsnap;">
+
+&ftpsnap;
+
+</ulink>
+
+.  La conversión a
+formato tarball evita la necesidad de las GNU tools también.
+<!-- 123 ****The conversion to
+tarball form bypasses *** bonito verbo **** the need for GNU tools as well. -->
+
+</para>
+</sect1>
+<sect1>
+<title>
+
+¿Cómo consigo una cuenta que me permita contribuir con la versión
+CVS de GNOME?
+<!-- 123 ****How do I get an account to let me contribute to the CVS
+version of GNOME? -->
+
+</title>
+<para>
+
+Si planeas contribuir con código al proyecto, entonces necesitarás
+una cuenta en el servidor CVS. Miguel de Icaza (
+<!-- 123 ****If you plan on contributing code to the project, then you
+will need an account on the CVS server. Miguel de Icaza ( -->
+
+<ulink      url="mailto:miguel@nuclecu.unam.mx">
+
+miguel@nuclecu.unam.mx
+
+</ulink>
+
+) determina quien consigue una cuenta en el servidor CVS; si
+quieres una, entonces envíale un mensaje detallando que código
+planeas escribir, junto con un password encriptado. Puedes
+conseguirlo haciendo
+lo siguiente:
+<!-- 123   determines who gets accounts on
+the CVS server; if you would like one, then send him a message
+detailing what code you plan on writing, along with with a
+crypted password. You can get that by doing the
+following: -->
+
+</para>
+<para>
+<userinput>
+
+perl -e 'print crypt ("YourPassword",
+"salt");'
+
+</userinput>
+</para>
+<para>
+
+Donde la cadena "salt" preferiblemente debería ser una cadena aleatoria
+de dos caracteres.  
+<!-- 123 *** dudosa traduccion ***
+****Where the "salt" string preferably should be a random
+2-char string. -->
+
+</para>
+</sect1>
+<sect1>
+<title>
+
+¿Por qué faltan directorios algunas veces cuando actualizo un
+módulo desde el CVS?
+<!-- 123 ****Why are directories sometimes missing when I update a
+module from CVS? -->
+
+</title>
+<para>
+
+El CVS posee una excelente característica que tiene un molesto
+capricho.  El CVS permite a un módulo incluir otro módulo, una
+característica que GNOME usa para organizar mejor las cosas y
+reducir la duplicidad de código.  Desafortunadamente, el comando
+
+<!-- 123 ****CVS has an excellent feature with an annoying quirk about
+it.  CVS allows a module to include other modules, a feature
+which GNOME uses to better organize things and to reduce
+duplication of code.  Unfortunately, the  -->
+
+<command>
+
+cvs
+update
+
+</command>
+
+no se preocupa de comprobar y ver si
+se han incluido algún nuevo módulo aparte del principal.  Si
+crees que falta alguna pieza, usa 
+<!-- 123 ***command doesn't bother to check to see if any
+new modules are included off of the main module.  If you think
+there is a missing piece, use  -->
+
+<command>
+
+cvs get
+
+</command>
+
+en vez del anterior, ya que comprobará la existencia de nuevos
+módulos incluidos.  No te preocupes, siempre y cuando el source
+tree esté ahí, no intentará hacer un nuevo y total chequeo, si no
+que actuará al igual que 
+
+<!-- 123 ***instead, it will check for new included modules.  Don't worry,
+as long as the source tree is there, it won't try to do a brand
+new checkout, it will act the same as  -->
+
+<command>
+
+cvs
+update
+
+</command>
+
+así pues descargando lo que sea nuevo o esté actualizado.
+<!-- 123 ****as far as only downloading what is new or
+updated. -->
+
+</para>
+</sect1>
+</chapter>
+<chapter id="FAQIssues">
+<title>
+
+Sobre las FAQ
+<!-- 123 ***FAQ Issues -->
+
+</title>
+<sect1>
+<title>
+
+¿Dónde está la copia oficial de estas FAQ?
+
+</title>
+<para>
+
+La copia oficial y formal de estas FAQ se encuentra en
+foramto DocBook (SGML) en el servidor CVS en
+<!-- 123 ***The formal and official copy of this FAQ is kept in
+DocBook (SGML) format on the CVS server at -->
+
+<filename>
+
+cvs.gnome.org:/cvs/gnome
+
+</filename>
+
+, el archivo en sí
+se encuentra en el módulo
+<!-- 123 ***the file itself
+is located in the  -->
+
+<filename>
+
+gnome-libs
+
+</filename>
+
+en el fichero
+<!-- 123 ***module in the
+file  -->
+
+<filename>
+
+devel-docs/gnome-faq.sgml
+
+</filename>
+
+.  Todas las demás
+versiones son copias, portes, reformas, etc.
+<!-- 123 ***All other
+versions are copies, ports, reformatings, etc. -->
+
+</para>
+</sect1>
+<sect1 id="ContactFAQ">
+<title>
+
+¿Cómo añado una pregunta y/o respuesta a estas FAQ?
+<!-- 123 ****How do I add a question and/or an answer to this
+FAQ? -->
+
+</title>
+<para>
+
+La manera más fácil es enviar un correo al coordinador<!-- 123 maintainer -->
+de las FAQ, en 
+<!-- 123 The easiest way is to email the FAQ maintainer, at  -->
+
+<ulink      url="mailto:&mailfaq;">
+
+&mailfaq;
+
+</ulink>
+
+.  Si la sugerencia es
+apropiada, editaremos tu información, y la incorporaremos en
+el lugar apropiado.
+
+<!-- 123 ****If the suggestion is
+appropriate, we will edit your information, and incorporate it in
+at the appropriate place. -->
+
+</para>
+<para>
+
+Si tienes acceso al CVS, puedes modificar las FAQ por ti
+mismo, pero preferiría que limitases las modificaciones
+directas a rápidos cambios de errores evidentes, más que a
+cambios importantes o incorporaciones.
+
+<!-- 123 ****If you have CVS access, you can modify the FAQ on your
+own, but I would prefer if you limit direct modification to
+quick fixes of glaring errors, rather than major changes or
+additions. -->
+
+</para>
+</sect1>
+</chapter>
+<chapter id="Credits">
+<title>
+
+Créditos
+
+</title>
+<sect1 id="Copyright">
+<title>
+
+Copyright y Disclaimer
+
+</title>
+<para>
+
+Este trabajo es propiedad de Todd Lewis y Gleef (David Zoll)
+1998.  Esta documentación es free software; puedes redistribuirla
+y/o moficarlo bajo los términos de la GNU General Public License
+publicados por la Free Software Foundation; tanto la versión 2 de
+la licencia, como (a tu elección) cualquier versión posterior.
+
+<!-- 123 ****This work is copyright 1998 by Todd Lewis and Gleef (David
+Zoll).  This documentation is free software; you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License as published by the Free Software
+Foundation; either version 2 of the License, or (at your option)
+any later version. -->
+
+</para>
+<para>
+
+Este artículo se proporciona como es sin ninguna garantía expresa
+o implícita. Aunque se ha realizado todo el esfuerzo posible para
+asegurar la exactitud de la información contenida en este artículo,
+el autor/mantenidor/contribuidores no asume(n)n responsabilidad
+alguna por los errores u omisiones, o por daños resultantes del
+uso de la información aquí contenida.
+
+<!-- 123 ***This article is provided as is without any express or
+implied warranties. While every effort has been taken to ensure
+the accuracy of the information contained in this article, the
+author/maintainer/contributors assume(s) no responsibility for
+errors or omissions, or for damages resulting from the use of
+the information contained herein. -->
+
+</para>
+</sect1>
+<sect1 id="Trademark">
+<title>
+
+Trademarks and Naming Credits
+
+</title>
+<para>
+
+Aquí están algunas de las trademarks menos obvias
+usadas en este documento.
+
+<!-- 123 ***Here are some of the less obvious trademarks used in this
+document. -->
+
+</para>
+<simplelist>
+<member>
+<firstterm>
+
+Linux
+
+</firstterm>
+
+es una trademark de Linus
+Torvalds.
+<!-- 123 ****is a trademark of Linus
+Torvalds. -->
+
+</member>
+<member>
+<firstterm>
+
+Debian
+
+</firstterm>
+
+es una trademark de
+Software in the Public Interest
+
+</member>
+<member>
+<firstterm>
+
+Copyleft
+
+</firstterm>
+
+y 
+
+<firstterm>
+
+Free
+Software
+
+</firstterm>
+
+no son trademarks de nadie, pero son
+importantes términos en la comunidad Free Software, y para
+la Free Software Foundation.
+
+<!-- 123 ****are not trademarks of anyone, but they
+are important terms in the Free Software community, and for
+the Free Software Foundation. -->
+
+</member>
+<member>
+<firstterm>
+
+Open Source
+
+</firstterm>
+
+es una service mark
+de Software in the Public Interest o de la Open Source
+Initiative o Bruce Perens, nadie está totalmente seguro.
+
+<!-- 123 is a service mark
+of either Software in the Public Interest or the Open Source
+Initiative or Bruce Perens, nobody's quite sure. -->
+
+</member>
+<member>
+<firstterm>
+
+Unix
+
+</firstterm>
+
+, y 
+
+<firstterm>
+
+The X
+Window System
+
+</firstterm>
+
+son trademarks del Open
+Group.
+
+</member>
+<member>
+<firstterm>
+
+OpenGL
+
+</firstterm>
+
+es una trademark de
+Silicon Graphics, Inc.
+
+</member>
+<member>
+
+Todas las demás trademarks son propiedad de sus
+respectivos dueños.
+
+<!-- 123 ****All other trademarks are the property of their
+respective owners. -->
+
+</member>
+</simplelist>
+<para>
+
+Si hay alguna trademark que necesita ser listada formalmente
+en las anteriores, háganolo saber por todos los medios para
+que pueda ser añadida.
+
+<!-- 123 ****If there is a trademark here that needs to be listed
+formally above, by all means let us know so it can be
+added. -->
+
+NOTA PERSONAL DEL TRADUCTOR REVISOR (version 0.1):
+Dios mio, despues de mucho trabajo y una agotadora sesion bajo
+los efectos del alcohol (dicho sea de paso), he terminado la
+revisión de estas  FAQ de GNOME...  28 - oct - 1999
+
+¡Viva LINUX!
+¡Viva GNOME!
+¡Vivan los traductores del GDP-es!
+¡Viva Barreiro! (por su paciente saber estar...)
+
+Oh Dios mio no lo he guardado...
+
+</para>
+</sect1>
+</chapter>
+</book>
+
+

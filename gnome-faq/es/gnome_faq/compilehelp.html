@@ -1,0 +1,236 @@
+<HTML
+><HEAD
+><TITLE
+>&#13;Problemas Específicos de Compilación&#13;</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.40"><LINK
+REL="HOME"
+TITLE="
+GNOME, preguntas de uso frecuente, PUF (FAQ)
+"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="
+¡¡¡¡¡¡¡¡ Ayuda !!!!!!!!
+"
+HREF="help.html"><LINK
+REL="PREVIOUS"
+TITLE="
+¡¡¡¡¡¡¡¡ Ayuda !!!!!!!!
+"
+HREF="help.html"><LINK
+REL="NEXT"
+TITLE="
+Problemas con el Runtime
+"
+HREF="runtimehelp.html"></HEAD
+><BODY
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>GNOME, preguntas de uso frecuente, PUF (FAQ)</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="help.html"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 5. ¡¡¡¡¡¡¡¡ Ayuda !!!!!!!!</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="runtimehelp.html"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="COMPILEHELP"
+>Problemas Específicos de Compilación</A
+></H1
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="ZLIB"
+>¿Qué significa 
+
+<TT
+CLASS="COMPUTEROUTPUT"
+>&#13;undefined reference to
+'compress'&#13;</TT
+>
+
+?</A
+></H2
+><P
+>&#13;En general, significa que se estan teniendo problemas para
+encontrar o linkar la librería de compresión (libz).
+Primero, 
+asegúrate de que está instalada. Si no es así, entonces
+encuentrala e instálala.  Debería ir incluida en todas
+las distribuciones más importantes de sistemas Unix y
+similares.&#13;</P
+><P
+>&#13;Si está instalada correctamente, y todavía aparece el error,
+entonces comprueba si existe alguna otra copia de libz
+danzando por ahí.  Un lugar donde se esconde a menudo cuando
+la gente tiene problemas es en
+
+<TT
+CLASS="FILENAME"
+>&#13;/usr/X11R6/lib&#13;</TT
+>
+
+, ya que XFree86 pone una copia
+allí.  Es seguro simplemente borrarla, pero si
+no estás seguro, renómbrala como algo parecido a
+
+<TT
+CLASS="FILENAME"
+>&#13;libz.so.renamed&#13;</TT
+>
+
+, de esa forma el linker
+no la encontrará, y si tienes problemas en otra parte
+por haberla renombrado, siempre puedes volverla a renombrar.&#13;</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN598"
+>¿Qué es 
+
+<TT
+CLASS="COMPUTEROUTPUT"
+>&#13;AC_TRY_RUN&#13;</TT
+>
+
+,
+y por qué está mi máquina advirtiendome de ello?</A
+></H2
+><P
+>&#13;Algunas veces, cuando ejecutamos aclocal, autogen o make,
+aparecerán lineas parecidas a: 
+
+<TT
+CLASS="COMPUTEROUTPUT"
+>&#13;configure.in:171:
+warning: AC_TRY_RUN called without default to allow cross
+compiling&#13;</TT
+>
+
+.  No es algo para estar preocupado, y puedes
+ignorarlo sin riesgos (a menos que estés cross compiling).&#13;</P
+><P
+>&#13;Si todavía sientes curiosidad, un cross compiler es un
+compilador basado en una plataforma que puedes usar para
+crear código para ser ejecutado en una plataforma diferente.
+Por ejemplo, alguna gente tiene una versión de GCC instalada
+en una box GNU/Linux con procesadores Intel que crean
+binarios para boxes SGI con procesadores MIPS.  En este
+caso estaríamos hablando de un cross compiler.
+&#13;</P
+><P
+>&#13;La macro AC_TRY_RUN se llama para intentar compilar y ejecutar
+un fragmento de código.  Se usa para comprobar si un determinado
+trozo de código tiene la posibilidad de funcionar en otra
+máquina o no, y ajustar la configuración consecuentemente.  Sin
+embargo, si estás cross compiling, no puedes ejecutar el fragmento
+de código, ya que es de una máquina diferente a la que estás.
+La macro AC_TRY_RUN incluye un parámetro para que diga que hacer
+en ente caso, pero no hemos probado a cross-compiling GNOME
+todavía, por lo que sería prematuro configurar este valor. Debido
+a la ausencia de este valor, aparece un warning.
+&#13;</P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="help.html"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="runtimehelp.html"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>¡¡¡¡¡¡¡¡ Ayuda !!!!!!!!</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="help.html"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Problemas con el Runtime</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

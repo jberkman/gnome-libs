@@ -1,0 +1,176 @@
+<HTML
+><HEAD
+><TITLE
+>&#13;¿Por qué faltan directorios algunas veces cuando actualizo un
+módulo desde el CVS?&#13;</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.40"><LINK
+REL="HOME"
+TITLE="
+GNOME, preguntas de uso frecuente, PUF (FAQ)
+"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="
+Convirtiéndose en un GNOMEr
+"
+HREF="gnomer.html"><LINK
+REL="PREVIOUS"
+TITLE="
+¿Cómo consigo una cuenta que me permita contribuir con la versión
+CVS de GNOME?
+"
+HREF="x916.html"><LINK
+REL="NEXT"
+TITLE="
+Sobre las FAQ
+"
+HREF="faqissues.html"></HEAD
+><BODY
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>GNOME, preguntas de uso frecuente, PUF (FAQ)</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x916.html"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 8. Convirtiéndose en un GNOMEr</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="faqissues.html"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="AEN923"
+>¿Por qué faltan directorios algunas veces cuando actualizo un
+módulo desde el CVS?</A
+></H1
+><P
+>&#13;El CVS posee una excelente característica que tiene un molesto
+capricho.  El CVS permite a un módulo incluir otro módulo, una
+característica que GNOME usa para organizar mejor las cosas y
+reducir la duplicidad de código.  Desafortunadamente, el comando
+
+
+<B
+CLASS="COMMAND"
+>&#13;cvs
+update&#13;</B
+>
+
+no se preocupa de comprobar y ver si
+se han incluido algún nuevo módulo aparte del principal.  Si
+crees que falta alguna pieza, usa 
+
+<B
+CLASS="COMMAND"
+>&#13;cvs get&#13;</B
+>
+
+en vez del anterior, ya que comprobará la existencia de nuevos
+módulos incluidos.  No te preocupes, siempre y cuando el source
+tree esté ahí, no intentará hacer un nuevo y total chequeo, si no
+que actuará al igual que 
+
+
+<B
+CLASS="COMMAND"
+>&#13;cvs
+update&#13;</B
+>
+
+así pues descargando lo que sea nuevo o esté actualizado.&#13;</P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x916.html"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="faqissues.html"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>¿Cómo consigo una cuenta que me permita contribuir con la versión
+CVS de GNOME?</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="gnomer.html"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Sobre las FAQ</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

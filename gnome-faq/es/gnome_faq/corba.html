@@ -1,0 +1,691 @@
+<HTML
+><HEAD
+><TITLE
+>&#13;CORBA, ORBit y Baboon&#13;</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.40"><LINK
+REL="HOME"
+TITLE="
+GNOME, preguntas de uso frecuente, PUF (FAQ)
+"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="
+Componentes de la Arquitectura
+"
+HREF="architecture.html"><LINK
+REL="PREVIOUS"
+TITLE="
+Componentes de la Arquitectura
+"
+HREF="architecture.html"><LINK
+REL="NEXT"
+TITLE="
+Gráficos en GNOME
+"
+HREF="graphics.html"></HEAD
+><BODY
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>GNOME, preguntas de uso frecuente, PUF (FAQ)</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="architecture.html"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 6. Componentes de la Arquitectura</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="graphics.html"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="CORBA"
+>CORBA, ORBit y Baboon</A
+></H1
+><P
+>&#13;Network Objects (en red orientado a objetos) es el nombre
+intermedio de GNOME.  Aquí te mostramos como funcionan.&#13;</P
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN661"
+>¿Qué es CORBA?</A
+></H2
+><P
+><A
+HREF="http://www.omg.org/news/begin.htm"
+TARGET="_top"
+>&#13;CORBA&#13;</A
+>
+
+es el
+Common Object Request Broker Architecture
+
+
+Del documento del Open
+Management Group (OMG, el grupo de estándares que controla CORBA) 
+
+<A
+HREF="http://www.omg.org/about/wicorba.htm"
+TARGET="_top"
+>&#13;¿Qué es
+CORBA?&#13;</A
+>
+
+recibe la siguiente respuesta:&#13;</P
+><BLOCKQUOTE
+><P
+>&#13;La Common Object Request Broker Architecture (CORBA),
+es la respuesta del Object Mangement Group a la necesidad
+de interoperatividad entre la rápida proliferación de
+numeroso hardware y software disponible hoy en dia.  Llamado
+simplemente CORBA, este permite a las aplicaciones comunicarse
+unas con otras independientemente de donde esten localizadas
+o quien las halla diseñado(...)&#13;</P
+><P
+>&#13;El (ORB) es el middleware que establece las relaciones
+cliente-servidor entre objetos. Usando un ORB, un cliente
+puede invocar transparentemente un metodo en un objeto
+servidor, que puede estar en la misma máquina o en una
+red. El ORB intercepta la llamada y es responsable de
+encontar un objeto que implemente la petición, pase los
+parámetros, invoque su método, y devuelva los resultados.
+El cliente no tiene que saber donde se encuentra el
+objeto, su lenguaje de programación, su sistema operativo
+o interfaz. Haciendo esto, el ORB proporciona
+interoperativilidad  entre aplicaciones en diferentes
+máquinas en entornos distribuidos heterogeneamente y
+conecta "sin costuras" multiples sistemas de objetos.
+
+&#13;</P
+><P
+>&#13;En el terreno de las aplicaciones típicas cliente/servidor,
+los desarrolladores usan sus diseños propios o
+estándares reconocidos para definir el protocolo que se
+va a usar entre los dispositivos. Las definiciones del
+protocolo dependen de el lenguaje de implementación,
+transporte en red y una docena de factores. ORB
+simplifica este proceso. Con ORB, el protocolo se define
+a través de interfaces de aplicación por
+medio de una especificación independiente del lenguaje de
+implementación, el IDL (Ed. Interface Description Languaje).
+Y los ORBs proporcionan flexibilidad. Dejan a los programadores
+elegir el sistema operativo más apropiado, entorno de ejecución
+e incluso el lenguaje de programación a usar para cada
+componente de un sistema en construcción. Más importante,
+permiten la integración de componentes existentes. En una
+solución basada en ORB, los desarrolladores simplemente
+modelan la herencia del componente
+usando el mismo IDL que usan para crear nuevos objetos, después
+escriben el código "wrapper" que traduce entre el bus
+estandarizado y los interfaces heredados.
+&#13;</P
+></BLOCKQUOTE
+><P
+>&#13;Vale, ya es suficente. Aquí está la
+explicación de Todd.:&#13;</P
+><BLOCKQUOTE
+><P
+>&#13;¿Recuerdas la RPC? Ya sabes, las Remote Procedure Calls
+(llamadas a procedimiento remoto) . Sun las usó como la
+base para el NFS y el NIS. Microsoft usó el estándar
+Distributed Computing Environment como la base para su
+DCOM.&#13;</P
+><P
+>&#13;Bien, una llamada a procedimiento remoto es realmente
+bastante simple. Primeto, defines el procedimiento en
+algún formato estándar. What is there to a procedure
+definition?  Bien, tienes el nombre del procedimiento,
+los argumentos que van dentro, y los resultados que
+produce. Entonces produces el lado cliente, que le
+dice a los clientes como introducir argumentos y obtener
+resultados, y después creas el lado del servidor, que
+toma los argumentos y devuelve los resultados.
+&#13;</P
+><P
+>&#13;Puedes usar este modelo para crear sistemas bastante
+poderosos. Simplemente coje el interfaz estándar del
+sistema de archivos Unix, conviértelo en RPC, y b**ammo,
+ya tienes NFS. Ten en cuenta que siempre y cuando las
+entradas y salidas are thrown around de un modo estándar,
+los clientes que llaman al procedimiento y los servidores
+que lo atienden no tienen que estar escritos en el mismo
+lenguaje, ejecutarse en la misma máquina, o incluso
+funcionar con el mismo sistema operativo o hardware.
+**This is, truth be told, the killer feature of RPC.
+&#13;</P
+><P
+>&#13;Sin embargo, a medida que la procedural programming (C, Perl)
+ha sido sustituida por la programación orientada a
+objetos (Objective C, Java, C++), necesitas algo más que
+procedimientos en RPC. Necesitas algo que soporte objetos:
+creando objetos, accediento a los datos del objeto,
+accediendo a los métodos del objeto, destruyendo objetos.
+Aquí es donde CORBA aparece: piensa en CORBA como un
+RPC de próxima generación, simplemente extendido para
+soportar la programación orientada a objetos. En vez de
+tener bajo RPC lo siguiente:
+&#13;</P
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>&#13;void foo(int bar); void baz(){return(-1);}&#13;</PRE
+></TD
+></TR
+></TABLE
+><P
+>&#13;tienes bajo CORBA lo siguiente:&#13;</P
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>&#13;interface bubba{ void foo(in int bar); void baz() raises (InValidContext); } &#13;</PRE
+></TD
+></TR
+></TABLE
+><P
+>&#13;¿La lección con todo esto? CORBA permite un programa
+independiente del lenguaje, interfaces transparentes
+a la localización y orientadas a objetos entre
+componentes de software. Mola... 
+&#13;</P
+></BLOCKQUOTE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN680"
+>¿Cuáles son algunos de los componentes de COBA?
+What are some CORBA components?</A
+></H2
+><P
+>&#13;Me gustaría incluir aquí definiciones de algunos de los
+términos más extraños de CORBA, para qeu la gente pueda
+captar la esencia de lo que es CORBA y tener una idea
+general de los componentes que lo componen.  Cuando me
+refiera a un término no obvio de CORBA, intentaré definirlo
+aquí.
+&#13;</P
+><P
+></P
+><UL
+><LI
+><P
+><I
+CLASS="FIRSTTERM"
+>&#13;Object Request Broker
+(agente de petición de objetos)&#13;</I
+>
+
+- (u
+ORB) un ORB es una pieza de "middleware", como se le
+llama, a lo que se situa en medio de los clientes y
+servidores y hace posible la fácil comunicación entre
+ellos. El ORB es un ente conceptual, que algunas
+veces toma la forma de una librería compartida y otras
+toma la forma de un programa externo.  El ORB es el
+responsable de establecer y destruir las sesiones entre
+clientes y servidores y dirigir (o no), y transportar
+mensajes entre ellos durante una sesión.
+&#13;</P
+></LI
+><LI
+><P
+><I
+CLASS="FIRSTTERM"
+>&#13;Object Adaptor
+(adaptador de objetos)&#13;</I
+>
+
+- (u OA) un
+Object Adaptor proporciona el canal por el cual un
+object server (como el panel gnome) se comunica con el
+Object Request Broker (ORBit).
+&#13;</P
+></LI
+><LI
+><P
+><I
+CLASS="FIRSTTERM"
+>&#13;GIOP/IIOP&#13;</I
+>
+
+- CORBA toma todos
+estos language-isms and handles orientados a objetos
+llevándolos entre componentes software orientados a
+objetos (marshaling, transporte, y demarshaling). Si las
+dos piezas de software están en diferentes lugares,
+entonces se usará el protocolo GIOP para mover la
+información entre ellos. IIOP es una especificación de
+GIOP para el conjunto de protocolos de Internet;
+teoricamente se podría hacer funcionar GIOP sobre otra
+cosa distinta al IP, y en este caso se le llamaría de otra
+manera distinta. 
+I for one can't figure out why you would want to. 8^) 
+Si alguna versión de GIOP a parte de IIOP alguna vez
+se volviera importante, entonces estoy seguro de que
+ORBit la soportaría, también. (IIOP es a GIOP lo que el
+HTML es al SGML)
+
+&#13;</P
+></LI
+></UL
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN693"
+>¿Cuáles son los servicios de CORBA?</A
+></H2
+><P
+>&#13;Adicionalmente, hay dos partes realmente en CORBA. Está la
+parte que ya he descrito, que te dice como hacer el RPC
+objetivizado, como manejar argumentos,
+como escribir ficheros IDL, como funciona GIOP, etc. y después están los
+"Servicios de CORBA". Estos son unos servicios built on
+top de la insfraestructura básica de CORBA que facilitan la
+programación de objetos distribuidos.
+&#13;</P
+><P
+>&#13;Quizá el más importante de todos estos es el servicio de
+nombres. 
+P.e., digamos que tenemos un
+programa que por alguna razón necesitase servicios de
+corrección ortográfica (spell-checking services). Algo
+realmente limpio que puedes hacer (si tu implementación de
+CORBA es lo suficientemente elegante) es llamar a tu ORB y
+decir ¡Oye! Necesito un servicio de corrección ortográfica
+Vé y buscamelo". Entonces el ORB usa el servicio de nombres
+para ver que objetos están registrados que proporcionen un
+servicio de corrección ortográfica. Puede despertar al
+programa que ha realizado la llamada y decir "Puedes encontrar
+un servicio de corrección ortográfica en el #867-5309".
+Entonces llamas al 867-5309 y, ¡mirad!, ahi un servicio de
+corrección ortográfica allí. Ahora, esta puede ser una librería
+compartida que got mapped into your address space and
+y ahora estás haciendo llamadas directas de funciones a ella,
+o podría ser un servicio comunitacio de corrección ortográfica
+ofrecido como servicio público por el grupo de usuarios de BSD
+en Mongolia gracia a internet via IIOP. No lo sabes y, excepto
+por un posible pequeño retardo inducido por el viaje a Mongolia,
+realmente no te preocupas. Mola, ¿no? 
+&#13;</P
+><P
+>&#13;El servicio de nombres, entonces, permite a los objetos
+registrarse para un uso futuro. Hay otros servicios CORBA,
+que incluyen un servicio de transacciones, un servicio de
+seguridad, un servicio horario, un "servicio de relaciones",
+que puede o no ser lo que crees que es, y mucho más. Mi
+copia del documento de ServiciosCORBA de marzo del 1997
+lista 14 servicios.
+&#13;</P
+><P
+>&#13;Puedes encontra una copia de la especificación de ServiciosCORBA
+en la página de la OMG en 
+
+<A
+HREF="http://www.omg.org/corba/csindx.htm"
+TARGET="_top"
+>&#13;http://www.omg.org/corba/csindx.htm&#13;</A
+>
+
+.
+Si estás interesado en implementar alguno de ellos, entonces
+estoy seguro de que a los desarrolladores de ORBit les
+encantaría hablar contigo.
+(Ver 
+
+<A
+HREF="corba.html#ORBIT"
+>&#13;ORBit&#13;</A
+>
+
+)&#13;</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN701"
+>¿Qué versión de CORBA usa GNOME?</A
+></H2
+><P
+>&#13;El trabajo está actualmente underway debido a que la
+OMG está desarrollando la versión 3.0, pero por ahora
+GNOME usa la versión 2.2 de CORBA, que es el estándar
+actual. No he oido lo que GNOME hará cuando aparezca la 3.0.
+
+&#13;</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN704"
+>¿Dónde puedo encontrar más información sobre CORBA?</A
+></H2
+><P
+>&#13;Una buena página jumping-off es la página de CORBA
+de Linas Vepstas en
+
+<A
+HREF="http://linas.org/linux/corba.html"
+TARGET="_top"
+>&#13;http://linas.org/linux/corba.html&#13;</A
+>
+
+.&#13;</P
+><P
+>&#13;Debido a que parece haber mucho interés en la diferencia entre
+CORBA y COM, mencionaré este otro documento: 
+
+<A
+HREF="http://www.research.att.com/~ymwang/papers/HTML/DCOMnCORBA/S.html"
+TARGET="_top"
+>&#13;http://www.research.att.com/~ymwang/papers/HTML/DCOMnCORBA/S.html&#13;</A
+>
+
+,
+DCOM y CORBA Lado a Lado, Paso a Paso, y Capa a Capa
+(Side by Side, Step by Step, and Layer by Layer).&#13;</P
+><P
+>&#13;Finalmente, el proyecto TAO en la Universidad de Washington en
+St. Louis tiene su propio ORB, TAO. Ese grupo está dirigido por
+Dr, Douglas Schmidt. Puedes encontrar un montón de información
+útil en su página sobre CORBA: 
+
+<A
+HREF="http://siesta.cs.wustl.edu/~schmidt/corba.html"
+TARGET="_top"
+>&#13;http://siesta.cs.wustl.edu/~schmidt/corba.html&#13;</A
+>
+
+.  Asegúrate de echarles
+un vistazo a las página de ACE y TAO mientras estás allí;
+son muy buenas.&#13;</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN712"
+>¿Qué papel juega CORBA en GNOME?</A
+></H2
+><P
+>&#13;CORBA permite la arquitectura de componentes de GNOME.
+Realiza un papel similar al de COM/DCOM bajo win32.&#13;</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN715"
+>¿Qué implementación de CORBA está usando GNOME?</A
+></H2
+><P
+>&#13;Al principio, el plan era usar
+
+
+<A
+HREF="ftp://parcftp.parc.xerox.com/pub/ilu/ilu.html"
+TARGET="_top"
+>&#13;ILU&#13;</A
+>
+
+.  ILU tenia varias características beneficiosas, y sobre todas
+el soporte multilenguaje.  Mientras que ILU era (y es)
+terriblemente limpio, la actitud de Xerox hacia él no era nada
+clara, y los términos de licencia resultaron ser fatales: ILU
+no es free software, y el equipo GNOME resultó incapaz de
+conseguir que Xerox modificase la licencia. El proyecto GNOME
+no adoptará tecnología que no sea software libre, y ahí
+acabó todo.
+&#13;</P
+><P
+>&#13;Entonces el proyecto se estableció sobre
+
+<A
+HREF="http://diamant-atm.vsb.cs.uni-frankfurt.de/~mico/"
+TARGET="_top"
+>&#13;MICO&#13;</A
+>
+
+.  Los principales atractivos de MICO son que tiene un
+Adaptador de Objetos, es compatible con IIOP, y su licencia
+se acoge a los términos de la GPL. Sin embargo, actualmente
+no soporta más lenguaje que C++, y usaba una incleible
+cantidad de memoria.&#13;</P
+><P
+>&#13;Todavia insatisfechos, los GNOMErs comenzaron a trabajar
+en nuestro popio ORB, llamado ORBit.&#13;</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="ORBIT"
+>¿Qué es orbit?</A
+></H2
+><P
+>&#13;ORBit está diseñado  para ser
+multilingual; ILU es una prueba de que esto es posible. Ahora
+mismo sólo soporta C, pero en el futuro soportará otros
+lenguajes.  (Realmente, ¡lo decimos en serio! Es un proyecto
+muy muy nuevo, y este es el único motivo por el que está sólo
+en C). También soporta GIOP/IIOP, el protocolo CORBA
+de la OMG que permite a diferentes ORBs ser capaces de hablar
+entre sí.&#13;</P
+><P
+>&#13;Finalmente, ORBit está concebido para ser de alto rendimiento.
+Eso significa poca memoria y alta velocidad. Aquí, ORBit
+está siguiendo el ejemplo de 
+
+<A
+HREF="http://www.cs.utah.edu/projects/flux/flick/"
+TARGET="_top"
+>&#13;Flick&#13;</A
+>
+
+.  Elliot Lee, el instigador del proyecto ORBit, piensa que
+puede, si violar el spec de CORBA, acercar el
+coste de una CORBA call darn close al de una
+llamada a librería estandar, donde una implementación local
+de un servicio pedido está disponible. Ya veremos.&#13;</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN727"
+>¿Por qué no ha hecho GNOME un mayor uso de CORBA?</A
+></H2
+><P
+>&#13;La razón más importante es que con MICO no se podía trabajar.
+Consumía demasiada memoria, era sólo C++, etc. ad naus.
+Con la reciente versión del GNOME ORBit, podemos empezar a
+desplegar CORBA en el GNOME.&#13;</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="BABOON"
+>¿Cómo se usará CORBA en GNOME? o ¿qué es BABOON?</A
+></H2
+><P
+>&#13;(Esta sección es casi literal de Miguel de Icaza, Jefe de
+los GNOMErs).&#13;</P
+><P
+>&#13;CORBA será usado en varios contextos. Un conjunto de
+interfaces y librerías de rutinas llamadas "Baboon"
+serán usadas para simplificar e integrar aplicaciones:&#13;</P
+><P
+></P
+><UL
+><LI
+><P
+>&#13;Componentes: Hay sevidores/librerias pre empaquetados
+que proporcionan algunas funcionalidades que pueden
+ser usadas por cualquier aplicación como los servidores
+de corrección ortográfica, servicios de calendario o otros
+servicios no gráficos.
+&#13;</P
+></LI
+><LI
+><P
+>&#13;Application embedding and in-place activation:
+Baboon es un conjunto de interfaces para proporcionar
+**application embedding y in-place activation
+que están siendo definidos. Los interfaces Baboon e interacciones
+están modelados depués de los interfaces OLE2 y OpenDoc.
+&#13;</P
+></LI
+><LI
+><P
+>&#13;Aplicaciones GNOME como provedoras de servicio: las
+aplicaciones GNOME exportarán sus funcionalidades
+internas a través de CORBA para permitir a cualquiera
+reusar su funcionalidad.  Esto permite el scripting del
+escritorio GNOME como en cualquier aplicación que
+use CORBA o lenguaje de script pueda invocar métodos
+en un servidor GNOME (por ejemplo, que un script en Perl
+pueda controlar remotamente para invocar una hoja de
+cálculo para hacer un gráfico o para hacer un informe
+de ventas). Alguna gente llama a lo anterior "Automation".
+A diferencia del mundo COM, el uso de CORBA hace esto
+de forma transparente a la implementación de un
+servidor.
+&#13;</P
+></LI
+><LI
+><P
+>&#13;Controles Reutilizables: Otro conjunto de interfaces de Baboon
+se ocupan de los controles rehutilizables. Esto es similar
+a los JavaBeans de Sun y las Active-X de Microsoft.&#13;</P
+></LI
+></UL
+><P
+><I
+CLASS="FIRSTTERM"
+>&#13;BABOON&#13;</I
+>
+
+significa: Baboon Allows
+Baboon Objects Over Networks
+(Baboon permite objetos baboon sobre redes).&#13;</P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="architecture.html"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="graphics.html"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Componentes de la Arquitectura</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="architecture.html"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Gráficos en GNOME</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,0 +1,237 @@
+<HTML
+><HEAD
+><TITLE
+>&#13;¿Cómo compilo GNOME con todos los ficheros en el lugar
+correcto para que sea Compatible con FHS?  ¿Cómo recoloco
+los directorios etc y var para conectar GNOME a una red?&#13;</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.40"><LINK
+REL="HOME"
+TITLE="
+GNOME, preguntas de uso frecuente, PUF (FAQ)
+"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="
+Compilando GNOME
+"
+HREF="compilinggnome.html"><LINK
+REL="PREVIOUS"
+TITLE="
+¿Cómo pongo GNOME en algún sitio especial, como
+
+
+/opt/gnome
+
+
+?
+"
+HREF="x390.html"><LINK
+REL="NEXT"
+TITLE='
+Ya tengo este módulo, ¿cómo me deshago de todos los
+ficheros object y otras "cruft" del árbol del fuente?
+
+
+'
+HREF="x442.html"></HEAD
+><BODY
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>GNOME, preguntas de uso frecuente, PUF (FAQ)</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x390.html"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 3. Compilando GNOME</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x442.html"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="FHS"
+>¿Cómo compilo GNOME con todos los ficheros en el lugar
+correcto para que sea Compatible con FHS?  ¿Cómo recoloco
+los directorios etc y var para conectar GNOME a una red?</A
+></H1
+><P
+>&#13;Por defecto, GNOME pone todos sus archivos bajo su prefix
+directory.  Aunque que esto hace que GNOME sea fácil de aislar, 
+no es necesariamente el mejor lugar para ciertos archivos en algunas
+situaciones. En particular, si buscas conectar GNOME, o para una
+estricta compabilidad con 
+
+<A
+HREF="http://www.pathname.com/fhs/2.0/fhs-toc.html"
+TARGET="_top"
+>&#13;FHS&#13;</A
+>
+
+, puede que quieras
+recolocar algunos directorios.  Para recolocar el directorio etc
+de GNOME, usa la opción 
+
+<TT
+CLASS="OPTION"
+>&#13;--sysconfdir&#13;</TT
+>
+
+.  Para
+recolocar el directorio var, usa la opción
+
+<TT
+CLASS="OPTION"
+>&#13;--localstatedir&#13;</TT
+>
+
+.&#13;</P
+><P
+>&#13;Por ejemplo, una instalacion de GNOME con FHS
+podría tener el prefix 
+
+<TT
+CLASS="FILENAME"
+>&#13;/opt/gnome&#13;</TT
+>
+
+.  Sin embargo, sus archivos etc
+deberían estar en 
+
+<TT
+CLASS="FILENAME"
+>&#13;/etc/opt/gnome&#13;</TT
+>
+
+, e
+igualmente, sus archivos var deberían estar en
+
+<TT
+CLASS="FILENAME"
+>&#13;/var/opt/gnome&#13;</TT
+>
+
+.  Esto tiene la ventaja de
+permitirte conectar el directorio 
+
+<TT
+CLASS="FILENAME"
+>&#13;/opt/gnome&#13;</TT
+>
+
+, mantenerlo como sólo lectura (read-only), y permitir a unas
+máquinas tener configuración local e información sin
+preocuparse de otras máquinas.  Para hacer esto, el
+comando de configuración sería el siguiente: 
+
+<TT
+CLASS="USERINPUT"
+><B
+>&#13;./configure --prefix=/opt/gnome
+--sysconfdir=/etc/opt/gnome
+--localstatedir=/var/opt/gnome&#13;</B
+></TT
+>
+
+.&#13;</P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x390.html"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x442.html"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>¿Cómo pongo GNOME en algún sitio especial, como
+
+<TT
+CLASS="FILENAME"
+>&#13;/opt/gnome&#13;</TT
+>
+
+?</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="compilinggnome.html"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Ya tengo este módulo, ¿cómo me deshago de todos los
+ficheros object y otras "cruft" del árbol del fuente?</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

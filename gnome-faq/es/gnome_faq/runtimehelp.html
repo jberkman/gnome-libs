@@ -1,0 +1,427 @@
+<HTML
+><HEAD
+><TITLE
+>&#13;Problemas con el Runtime&#13;</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.40"><LINK
+REL="HOME"
+TITLE="
+GNOME, preguntas de uso frecuente, PUF (FAQ)
+"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="
+¡¡¡¡¡¡¡¡ Ayuda !!!!!!!!
+"
+HREF="help.html"><LINK
+REL="PREVIOUS"
+TITLE="
+Problemas Específicos de Compilación
+"
+HREF="compilehelp.html"><LINK
+REL="NEXT"
+TITLE="
+Componentes de la Arquitectura
+"
+HREF="architecture.html"></HEAD
+><BODY
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>GNOME, preguntas de uso frecuente, PUF (FAQ)</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="compilehelp.html"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 5. ¡¡¡¡¡¡¡¡ Ayuda !!!!!!!!</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="architecture.html"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="RUNTIMEHELP"
+>Problemas con el Runtime</A
+></H1
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="RESETSM"
+>¿Cómo reseteo las propiedades del manejo de sesiones?</A
+></H2
+><P
+>&#13;Mucha gente encuentra el manejo de sesiones muy útil.
+Sin embargo, algunas veces el manejo de sesiones puede
+despistarse, y hacer cosas indeseadas como recordar tus
+propiedades después de que tu hermano pequeño atacara tu
+ordenador.
+Si GNOME está correctamente
+instalado, volver tus propiedades a las por defecto es
+fácil.&#13;</P
+><P
+>&#13;Primero, sal completamente de X.  Si estás usando
+el manejo de sesiones, deberías ser capaz de usar
+la opción
+
+<SPAN
+CLASS="GUIMENUITEM"
+>&#13;Terminar sesión&#13;</SPAN
+>
+
+del menú principal para salir.  Si eso no funciona, aprieta las
+teclas control y alt, y presiona retroceder (borrar).  Si eso
+tampoco ha funcionado, y ahora aparece un login prompt tipo  XDM
+o GDM, 
+cambia a un login modo texto (control-alt-F1 en muchos sistemas,
+consulta la documentación si no estás seguro, loguea como un usuario
+diferente y usa 
+
+<B
+CLASS="COMMAND"
+>&#13;su&#13;</B
+>
+
+en un xterm si estás
+realmente en un apuro.&#13;</P
+><P
+>&#13;Después, para quitar tus propiedades, estando fuera de X,
+quita el archivo 
+
+<TT
+CLASS="FILENAME"
+>&#13;~/.gnome/session&#13;</TT
+>
+
+.  La
+próxima vez que arranques las X, o la próxima vez que loguees
+desde GDM, deberías empezar con el gestor de ventanas, panel
+por defecto, el gmc y visor de ayuda.&#13;</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN615"
+>Inicié GNOME con manejo de sesiones, ¿por qué me aparece esta
+pantalla gris (ni panel, ni nada)?</A
+></H2
+><P
+>&#13;Si usas el manejo de sesiones, y no se puede encontrar una
+sesión, esto es lo que aparece.  Primero, ¿has probado a
+resetear las propiedades del manejo de sesiones (Ver 
+
+<A
+HREF="runtimehelp.html#RESETSM"
+>&#13;arriba&#13;</A
+>
+
+)?  Si esto no lo arregla, entonces la
+
+<B
+CLASS="COMMAND"
+>&#13;gnome-session&#13;</B
+>
+
+tiene un problema para encontrar el archivo
+
+<TT
+CLASS="FILENAME"
+>&#13;default.session&#13;</TT
+>
+
+.  En las versiones gnome-core
+1.03 y posteriores el archivo debería estar en
+
+<TT
+CLASS="FILENAME"
+>&#13;$prefix/share/gnome&#13;</TT
+>
+
+.  Antes de eso debería estar
+en 
+
+
+<TT
+CLASS="FILENAME"
+>&#13;$prefix/share&#13;</TT
+>
+
+.  Si el fichero
+no está, probablemente deberías instalar el gnome-core.&#13;</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN623"
+>¿Cómo le indico al manejo de sesiones qué gestor de
+ventanas usar?</A
+></H2
+><P
+>&#13;Esta es una pregunta más difícil de lo que parece, ya que la
+respuesta depende de que versión de GNOME estés utilizando.  La
+respuesta más fácil es que uses las propiedades del apartado
+Window Manager en
+
+<B
+CLASS="COMMAND"
+>&#13;control-center&#13;</B
+>
+
+.  Si por alguna razón no te
+funciona, aquí tienes como hacerlo.&#13;</P
+><P
+>&#13;En la versión 1.03 del gnome-core y anteriores, el gestor de
+ventanas se selecciona poniéndolo en un archivo llamado
+
+<TT
+CLASS="FILENAME"
+>&#13;default.wm&#13;</TT
+>
+
+.  El archivo que crea el
+sistema por defecto debería estar en el directorio
+
+<TT
+CLASS="FILENAME"
+>&#13;$prefix/share/gnome&#13;</TT
+>
+
+o en el
+
+<TT
+CLASS="FILENAME"
+>&#13;$prefix/share&#13;</TT
+>
+
+, sea cual sea el
+que contiene al directorio
+
+<TT
+CLASS="FILENAME"
+>&#13;default.session&#13;</TT
+>
+
+.&#13;</P
+><P
+>&#13;El usuario puede poner una versión específica de
+
+<TT
+CLASS="FILENAME"
+>&#13;default.wm&#13;</TT
+>
+
+en el directorio
+
+<TT
+CLASS="FILENAME"
+>&#13;~/.gnome&#13;</TT
+>
+
+.  El archivo
+
+<TT
+CLASS="FILENAME"
+>&#13;default.wm&#13;</TT
+>
+
+debería parecese a:&#13;</P
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>&#13;[Default]
+WM=pera&#13;</PRE
+></TD
+></TR
+></TABLE
+><P
+>&#13;Donde 
+
+<TT
+CLASS="USERINPUT"
+><B
+>&#13;pera&#13;</B
+></TT
+>
+
+debería ser remplazada por
+el gestor de ventanas que quieras.  Si quieres cambiar
+el gestor de ventanas por defecto del sistema, también
+tendrás que cambiar el archivo
+
+<TT
+CLASS="FILENAME"
+>&#13;default.session&#13;</TT
+>
+
+.&#13;</P
+><P
+>&#13;En las versiones 1.04 y posteriores de gnome-core, es mucho
+más fácil.  Pon la variable de entorno
+
+<TT
+CLASS="ENVAR"
+>&#13;WINDOW_MANAGER&#13;</TT
+>
+
+con el gestor de ventanas que quieras,
+entonces arranca X.  Si la variable no está establecida, GNOME
+ejecutará un script para tratar de encontrar con acierto
+un buen gestor de ventanas.  Puedes editar tambier el archivo 
+
+<TT
+CLASS="FILENAME"
+>&#13;~/.gnome/default.wm&#13;</TT
+>
+
+como en las versiones antiguas.&#13;</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="BLACKICON"
+>Todo parece funcionar, pero la mayoría de mis iconos
+son simplemente cuadrados negros, o manchas.
+¿Cómo hago aparecer mis iconos?</A
+></H2
+><P
+>&#13;La mayoría de iconos de GNOME son imágenes de formato gráfico 
+
+<A
+HREF="http://www.cdrom.com/pub/png"
+TARGET="_top"
+>&#13;PNG&#13;</A
+>
+
+, mostradas via libpng y la librería de graficos Imlib.
+El problema es, que esta parte
+de Imlib parece ser muy melindrosa,
+y expresa su malestar
+mostrando basura (los cuadrados negros son basura más limpia).&#13;</P
+><P
+>&#13;Hay unas cuantas cosas que pueden ser la causa de que esto ocurra.
+El problema más común es una libpng erronea, confundida o inexistente.
+Si tienes libpng versión 1.0.2, asume que no es la correcta.
+Usa sólo las versiones 1.0.1, 1.0.3 o posteriores. Que no esté es
+fácil, si no existe ningún archivo llamdo "libpng.so" o 
+"libpng.so.2", y estás en un sistema con librerías dinámicas,
+entonces te falta, consigue una copia e instálala. Para ver si está
+confundida, mira a ver si tienes más de una copia de "libpng.so" o 
+"libpng.so.2", si es así, borra las dos y reinstala la correcta.&#13;</P
+><P
+>&#13;Otra posibilidad es la que tengo yo en una de mis máquinas
+(Una box RedHat con un procesador AMD5x86 y egcs). Si uso
+alguna optimización cuando compilo glib o imlib, aparece el
+problema descrito (imlib usa el gmodule portion de glib para
+cargar el código PNG). Compilar esos dos paquetes sin ninguna
+optimización funciona bien
+Eso lo arregla. Por lo que yo puedo decir, esto es un bug en
+mi compilador, no en GNOME.&#13;</P
+><P
+>&#13;También he recibido un informe donde se comenta que el problema
+podría ocurrir por interferencias de versiones de ImageMagick. Si
+estás desorientado, quizá quieras intentar quitar o actualizarla.&#13;</P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="compilehelp.html"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="architecture.html"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Problemas Específicos de Compilación</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="help.html"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Componentes de la Arquitectura</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,0 +1,242 @@
+<HTML
+><HEAD
+><TITLE
+>&#13;Internacionalización y Adapatación Local (I18N &#38; L10N)&#13;</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.40"><LINK
+REL="HOME"
+TITLE="
+GNOME, preguntas de uso frecuente, PUF (FAQ)
+"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="
+Componentes de la Arquitectura
+"
+HREF="architecture.html"><LINK
+REL="PREVIOUS"
+TITLE="
+DocBook
+"
+HREF="docbook.html"><LINK
+REL="NEXT"
+TITLE="
+Guile
+"
+HREF="guile.html"></HEAD
+><BODY
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>GNOME, preguntas de uso frecuente, PUF (FAQ)</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="docbook.html"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 6. Componentes de la Arquitectura</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="guile.html"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="I18N"
+>Internacionalización y Adapatación Local (I18N &#38; L10N)</A
+></H1
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN823"
+>¿Que son la Internacionalización(I18N) y la Adaptación
+Local(L10N)?</A
+></H2
+><P
+>&#13;De la página info del GNU gettext:&#13;</P
+><P
+>&#13;Por 
+
+<I
+CLASS="FIRSTTERM"
+>&#13;internacionalización&#13;</I
+>
+
+, nos
+referimos al la operación por la cual un programa, o un
+conjunto de programas metidos en un paquete, es
+consciente y capaz de soportar multiples lenguajes. Este
+es un proceso de generalización, por la que los programas
+son liberados del uso único de cadenas inglesas u otros
+hábitos específicos del inglés, y conectados a formas
+genéricas de hacer lo mismo. Los desarrolladores de
+programas usan varias técnicas para internacionalizar sus
+programas, algunos de ellos han sido estandarizados.  GNU
+gettext ofrece uno de estos estandars.
+&#13;</P
+><P
+>&#13;Por 
+
+<I
+CLASS="FIRSTTERM"
+>&#13;adaptación local (localization)&#13;</I
+>
+
+, nos referimos a la
+operación por la cual, en un conjunto de programas ya
+internacionalizados, se le suministra al programa toda
+la información necesaria para que pueda valerse para
+manejar su objetivo de la manera adecuada para el lenguaje
+nativo y sus hábitos culturales. Este es un proceso de
+particularización, por el cual los métodos genéricos ya
+implementados en un programa internacionalizado se usan
+de manera específica. El entorno de programación pone
+varias funciones a disposición de los programadores
+que ayunda a esta **configuración runtime. La descripción
+formal de un conjunto específico de hábitos culturales
+para un país, junto con todas las traducciones asociadas
+orientadas al mismo lenguaje nativo, se conoce como el
+locale para este lenguaje o país. Los usuarios consiguen
+la adaptación local de los programas configurando los
+valores correctos para variables de entorno especiales,
+más que ejecutando esos programas, identificando que
+locale se devería usar.
+&#13;</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN830"
+>¿Que API de I8N y L10N usa GNOME?</A
+></H2
+><P
+>&#13;GNOME usa el estándar de internacionalización de Uniforum.
+Este es el "estándar" inventado por Sun Microsystems y adoptado
+por el proyecto GNU en su paquete "gettext". ***N.b., this is
+different from the competing X/Open standard.&#13;</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN833"
+>¿Cómo programo usando I18N L10N, o dónde puedo encontrar
+más información sobre estos temas?</A
+></H2
+><P
+>&#13;Échale un vistazo al manual online del paquete GNU gettext en
+
+<A
+HREF="http://gnu.org/manual/gettext/html_chapter/gettext_toc.html"
+TARGET="_top"
+>&#13;http://gnu.org/manual/gettext/html_chapter/gettext_toc.html&#13;</A
+>
+
+.&#13;</P
+><P
+>&#13;De manera adicional, puedes encontrar informativo el FAQ
+sobre I18N:
+
+<A
+HREF="http://www.vlsivie.tuwien.ac.at/mike/i18n.html"
+TARGET="_top"
+>&#13;http://www.vlsivie.tuwien.ac.at/mike/i18n.html&#13;</A
+>
+
+.&#13;</P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="docbook.html"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="guile.html"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>DocBook</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="architecture.html"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Guile</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

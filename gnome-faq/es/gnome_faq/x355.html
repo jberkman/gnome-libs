@@ -1,0 +1,220 @@
+<HTML
+><HEAD
+><TITLE
+>&#13;¿Como configuro el código fuente para mi sistema?
+(o... ¿Dónde se esconden los Makefiles?)&#13;</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.40"><LINK
+REL="HOME"
+TITLE="
+GNOME, preguntas de uso frecuente, PUF (FAQ)
+"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="
+Compilando GNOME
+"
+HREF="compilinggnome.html"><LINK
+REL="PREVIOUS"
+TITLE="
+Compilando GNOME
+"
+HREF="compilinggnome.html"><LINK
+REL="NEXT"
+TITLE="
+¿Dónde se esconde configure?
+"
+HREF="x368.html"></HEAD
+><BODY
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>GNOME, preguntas de uso frecuente, PUF (FAQ)</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="compilinggnome.html"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 3. Compilando GNOME</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x368.html"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="AEN355"
+>¿Como configuro el código fuente para mi sistema?
+(o... ¿Dónde se esconden los Makefiles?)</A
+></H1
+><P
+>&#13;GNOME usa configure (generado por Autoconf) para configurar
+el código fuente para ser compilado correctamente en tu sistema
+Configure investigará como está configurado tu
+sistema, y definirá constantes de compilación para añadir o
+quitar diversos trozos de código según sea necesario. &#13;</P
+><P
+>&#13;Configure acepta varias opciones, escribe
+
+<B
+CLASS="COMMAND"
+>&#13;./configure --help&#13;</B
+>
+
+para una lista completa.  La
+más importante es 
+
+<TT
+CLASS="USERINPUT"
+><B
+>&#13;--prefix&#13;</B
+></TT
+>
+
+, que le
+dice al sistema donde se va a instalar GNOME.  Si omites
+el prefix, configure asume que lo harás en
+
+<TT
+CLASS="FILENAME"
+>&#13;/usr/local&#13;</TT
+>
+
+.  La mayoría de RPMs usan el prefix
+
+<TT
+CLASS="FILENAME"
+>&#13;/usr&#13;</TT
+>
+
+.  Muchos usuarios prefieren usar el prefix
+
+<TT
+CLASS="USERINPUT"
+><B
+>&#13;/opt/gnome&#13;</B
+></TT
+>
+
+, lo que requiere unos retoques previos,
+descritos más abajo.&#13;</P
+><P
+>&#13;Configure también chequea ciertas variables de entorno. Pon
+tus 
+
+<TT
+CLASS="ENVAR"
+>&#13;CFLAGS&#13;</TT
+>
+
+a igual sean cuales sean las opciones de compilación que deseas
+para asegurarte que las pasas, por ejemplo
+
+<TT
+CLASS="USERINPUT"
+><B
+>&#13;-O6&#13;</B
+></TT
+>
+
+maximizará la optimización,
+
+<TT
+CLASS="USERINPUT"
+><B
+>&#13;-g&#13;</B
+></TT
+>
+
+incluirá signos de debugging,
+etc.&#13;</P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="compilinggnome.html"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x368.html"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Compilando GNOME</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="compilinggnome.html"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>¿Dónde se esconde configure?</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

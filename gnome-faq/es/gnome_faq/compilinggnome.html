@@ -1,0 +1,292 @@
+<HTML
+><HEAD
+><TITLE
+>&#13;Compilando GNOME&#13;</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.40"><LINK
+REL="HOME"
+TITLE="
+GNOME, preguntas de uso frecuente, PUF (FAQ)
+"
+HREF="index.html"><LINK
+REL="PREVIOUS"
+TITLE="
+Yo utilizo Microsoft Windows, ¿puedo conseguir GNOME?
+"
+HREF="gettingwindows.html"><LINK
+REL="NEXT"
+TITLE="
+¿Como configuro el código fuente para mi sistema?
+(o... ¿Dónde se esconden los Makefiles?)
+"
+HREF="x355.html"></HEAD
+><BODY
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>GNOME, preguntas de uso frecuente, PUF (FAQ)</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="gettingwindows.html"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x355.html"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="CHAPTER"
+><H1
+><A
+NAME="COMPILINGGNOME"
+>Chapter 3. 
+Compilando GNOME&#13;</A
+></H1
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+><A
+HREF="compilinggnome.html#AEN333"
+>¿En qué orden compilo los paquetes?</A
+></DT
+><DT
+><A
+HREF="x355.html"
+>¿Como configuro el código fuente para mi sistema?
+(o... ¿Dónde se esconden los Makefiles?)</A
+></DT
+><DT
+><A
+HREF="x368.html"
+>¿Dónde se esconde configure?</A
+></DT
+><DT
+><A
+HREF="x373.html"
+>De acuerdo, ahora tengo un Makefile. ¿Cómo consigo instalar GNOME en mi sistema?</A
+></DT
+><DT
+><A
+HREF="x390.html"
+>¿Cómo pongo GNOME en algún sitio especial, como
+
+<TT
+CLASS="FILENAME"
+>&#13;/opt/gnome&#13;</TT
+>
+
+?</A
+></DT
+><DT
+><A
+HREF="fhs.html"
+>¿Cómo compilo GNOME con todos los ficheros en el lugar
+correcto para que sea Compatible con FHS?  ¿Cómo recoloco
+los directorios etc y var para conectar GNOME a una red?</A
+></DT
+><DT
+><A
+HREF="x442.html"
+>Ya tengo este módulo, ¿cómo me deshago de todos los
+ficheros object y otras "cruft" del árbol del fuente?</A
+></DT
+><DT
+><A
+HREF="uninstall.html"
+>¿Cómo desinstalo un módulo?</A
+></DT
+></DL
+></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="AEN333"
+>¿En qué orden compilo los paquetes?</A
+></H1
+><P
+>&#13;Es importante que compiles e instales los paquetes de GNOME en
+los ordenes correctos.  Hay algunas dependencias muy importantes
+dentro del árbol de GNOME.  Este es el orden que sugiero,
+en el que deberías compilar e instalar cada paquete antes de
+continuar con el siguiente.  En sistemas basados en ELF
+(como GNU/Linux y FreeBSD),
+deberías ejecutar también 
+
+<B
+CLASS="COMMAND"
+>&#13;ldconfig&#13;</B
+>
+
+después de
+cada paquete, simplemente para asegurarte de que
+todas las nuevas librerías son detectadas.&#13;</P
+><P
+></P
+><TABLE
+BORDER="0"
+><TR
+><TD
+>&#13;glib&#13;</TD
+></TR
+><TR
+><TD
+>&#13;gtk+&#13;</TD
+></TR
+><TR
+><TD
+>&#13;imlib&#13;</TD
+></TR
+><TR
+><TD
+>&#13;orbit&#13;</TD
+></TR
+><TR
+><TD
+>&#13;gtk-doc&#13;</TD
+></TR
+><TR
+><TD
+>&#13;libgtop&#13;</TD
+></TR
+><TR
+><TD
+>&#13;gtk-engines&#13;</TD
+></TR
+><TR
+><TD
+>&#13;gnome-libs&#13;</TD
+></TR
+><TR
+><TD
+>&#13;gnome-core&#13;</TD
+></TR
+><TR
+><TD
+>&#13;control-center&#13;</TD
+></TR
+><TR
+><TD
+>&#13;gnome-print&#13;</TD
+></TR
+><TR
+><TD
+>&#13;mc&#13;</TD
+></TR
+><TR
+><TD
+>&#13;gnome-guile&#13;</TD
+></TR
+><TR
+><TD
+>&#13;gnome-python&#13;</TD
+></TR
+><TR
+><TD
+>&#13;gnome-objc&#13;</TD
+></TR
+><TR
+><TD
+>&#13;gtk--&#13;</TD
+></TR
+><TR
+><TD
+>&#13;anything else, as needed, in whatever order&#13;</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="gettingwindows.html"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x355.html"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Yo utilizo Microsoft Windows, ¿puedo conseguir GNOME?</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>¿Como configuro el código fuente para mi sistema?
+(o... ¿Dónde se esconden los Makefiles?)</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

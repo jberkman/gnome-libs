@@ -1,0 +1,197 @@
+<HTML
+><HEAD
+><TITLE
+>&#13;¿Qué es Libtool? ¿Qué tiene que ver con GNOME?&#13;</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.40"><LINK
+REL="HOME"
+TITLE="
+GNOME, preguntas de uso frecuente, PUF (FAQ)
+"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="
+Asuntos de desarrolladores
+"
+HREF="developinggnome.html"><LINK
+REL="PREVIOUS"
+TITLE="
+¿Qué es Autoconf? ¿Qué tiene que ver con GNOME?
+"
+HREF="autoconf.html"><LINK
+REL="NEXT"
+TITLE="
+Convirtiéndose en un GNOMEr
+"
+HREF="gnomer.html"></HEAD
+><BODY
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>GNOME, preguntas de uso frecuente, PUF (FAQ)</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="autoconf.html"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 7. Asuntos de desarrolladores</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="gnomer.html"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="LIBTOOL"
+>¿Qué es Libtool? ¿Qué tiene que ver con GNOME?</A
+></H1
+><P
+>&#13;Libtool es una importante utilidad de portabilidad.  Porporciona
+una interfaz común para el mecanismo de *building, debugging
+y mantenimiento de librerías estáticas y dinamicas en la mayoría
+de sistemas en uso.  Funciona en tres fases, el comando
+
+<B
+CLASS="COMMAND"
+>&#13;libtoolize&#13;</B
+>
+
+añade soporte libtool al source tree añadiendo el script 
+
+<B
+CLASS="COMMAND"
+>&#13;ltconfig&#13;</B
+>
+
+.  Este
+script, ***in turn, genera un script específico del tipo de
+sistema en el source tree llamado
+
+<B
+CLASS="COMMAND"
+>&#13;libtool&#13;</B
+>
+
+.  El script
+
+<B
+CLASS="COMMAND"
+>&#13;libtool&#13;</B
+>
+
+es la parte que en realidad realiza todo el trabajo.&#13;</P
+><P
+>&#13;Como con Autoconf y Automake, si usas el CVS, necesitas
+tener Libtool instalada en tu sistema.  Si usas los tarballs,
+
+<B
+CLASS="COMMAND"
+>&#13;libtoolize&#13;</B
+>
+
+ya ha sido ejecutada, y
+
+<B
+CLASS="COMMAND"
+>&#13;ltconfig&#13;</B
+>
+
+*is self-contained, por lo que no
+necesitas tener Libtool instalada.  Puedes encontrar más
+información sobre libtool en 
+
+<A
+HREF="http://gnu.org/software/libtool/libtool.html"
+TARGET="_top"
+>&#13;http://gnu.org/software/libtool/libtool.html&#13;</A
+></P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="autoconf.html"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="gnomer.html"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>¿Qué es Autoconf? ¿Qué tiene que ver con GNOME?</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="developinggnome.html"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Convirtiéndose en un GNOMEr</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,0 +1,197 @@
+<HTML
+><HEAD
+><TITLE
+>&#13;Ya tengo este módulo, ¿cómo me deshago de todos los
+ficheros object y otras "cruft" del árbol del fuente?
+
+&#13;</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.40"><LINK
+REL="HOME"
+TITLE="
+GNOME, preguntas de uso frecuente, PUF (FAQ)
+"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="
+Compilando GNOME
+"
+HREF="compilinggnome.html"><LINK
+REL="PREVIOUS"
+TITLE="
+¿Cómo compilo GNOME con todos los ficheros en el lugar
+correcto para que sea Compatible con FHS?  ¿Cómo recoloco
+los directorios etc y var para conectar GNOME a una red?
+"
+HREF="fhs.html"><LINK
+REL="NEXT"
+TITLE="
+¿Cómo desinstalo un módulo?
+"
+HREF="uninstall.html"></HEAD
+><BODY
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>GNOME, preguntas de uso frecuente, PUF (FAQ)</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="fhs.html"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 3. Compilando GNOME</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="uninstall.html"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="AEN442"
+>Ya tengo este módulo, ¿cómo me deshago de todos los
+ficheros object y otras "cruft" del árbol del fuente?</A
+></H1
+><P
+>&#13;Tienes tres opciones, 
+
+<B
+CLASS="COMMAND"
+>&#13;make clean&#13;</B
+>
+
+,
+
+<B
+CLASS="COMMAND"
+>&#13;make distclean&#13;</B
+>
+
+o borrar el
+directorio. Usar 
+
+<B
+CLASS="COMMAND"
+>&#13;make clean&#13;</B
+>
+
+borrará todos los
+object files, built executables, y miscellaneous cruft,
+es sencillo y seguro.  La siguiente opción, 
+
+<B
+CLASS="COMMAND"
+>&#13;make
+distclean&#13;</B
+>
+
+debería borrar todo lo que no estubiera en el tarball original. 
+Si haces esto, no podrás 
+
+<A
+HREF="uninstall.html"
+>&#13;desinstalar el módulo&#13;</A
+>
+
+.  Y lo mismo
+para borrar el source directory.  Basicamente, 
+
+<B
+CLASS="COMMAND"
+>&#13;make
+clean&#13;</B
+>
+
+es bueno para un uso general, las otros deberían
+ser consideradas medidas drásticas.&#13;</P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="fhs.html"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="uninstall.html"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>¿Cómo compilo GNOME con todos los ficheros en el lugar
+correcto para que sea Compatible con FHS?  ¿Cómo recoloco
+los directorios etc y var para conectar GNOME a una red?</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="compilinggnome.html"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>¿Cómo desinstalo un módulo?</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

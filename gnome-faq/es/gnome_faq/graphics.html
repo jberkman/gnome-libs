@@ -1,0 +1,430 @@
+<HTML
+><HEAD
+><TITLE
+>&#13;Gráficos en GNOME&#13;</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.40"><LINK
+REL="HOME"
+TITLE="
+GNOME, preguntas de uso frecuente, PUF (FAQ)
+"
+HREF="index.html"><LINK
+REL="UP"
+TITLE="
+Componentes de la Arquitectura
+"
+HREF="architecture.html"><LINK
+REL="PREVIOUS"
+TITLE="
+CORBA, ORBit y Baboon
+"
+HREF="corba.html"><LINK
+REL="NEXT"
+TITLE="
+Manejo de Sesiones
+"
+HREF="sm.html"></HEAD
+><BODY
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>GNOME, preguntas de uso frecuente, PUF (FAQ)</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="corba.html"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 6. Componentes de la Arquitectura</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="sm.html"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="GRAPHICS"
+>Gráficos en GNOME</A
+></H1
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="GTK"
+>¿Qué es GTK+?</A
+></H2
+><P
+>&#13;GTK+ es el Gimp Toolkit.  Fue escrito originalmente como
+parte del proyecto Gimp, pero se ha convertido en un excelente
+widget set de propósito general.  Más información en 
+
+<A
+HREF="http://www.gtk.org"
+TARGET="_top"
+>&#13;http://www.gtk.org&#13;</A
+></P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN751"
+>¿Qué papel juega GTK+ en GNOME?</A
+></H2
+><P
+>&#13;GTK+ es la interfaz que las aplicaciones de GNOME usan
+para interactuar con el usuario. Es similar al papel de
+Motif en CDE, Qt en KDE o el-widget-set-que-no-tiene-nombre
+en Win32.&#13;</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN754"
+>¿Qué lenguajes soporta GTK+?</A
+></H2
+><P
+>&#13;¡Puedes escribir programas GTK+ en millones de lenguajes!
+El humilde autor de estas FAQ conoce los siguientes bindings:&#13;</P
+><P
+></P
+><TABLE
+BORDER="0"
+><TR
+><TD
+>&#13;C (original)&#13;</TD
+></TR
+><TR
+><TD
+>&#13;C++&#13;</TD
+></TR
+><TR
+><TD
+>&#13;***Objective C&#13;</TD
+></TR
+><TR
+><TD
+>&#13;Python&#13;</TD
+></TR
+><TR
+><TD
+>&#13;Perl 5&#13;</TD
+></TR
+><TR
+><TD
+>&#13;Scheme (Guile)&#13;</TD
+></TR
+><TR
+><TD
+>&#13;TOM&#13;</TD
+></TR
+><TR
+><TD
+>&#13;Gwydion Dylan&#13;</TD
+></TR
+><TR
+><TD
+>&#13;Ada95&#13;</TD
+></TR
+></TABLE
+><P
+></P
+><P
+>&#13;Si hay otros, entonces por favor haznos saber cuáles
+son.  (Ver 
+
+<A
+HREF="contactfaq.html"
+>&#13;Contactar con el
+Encargado de las FAQ&#13;</A
+>
+
+)&#13;</P
+><P
+>&#13;Te animamos a añadir bindings a otros lenguajes que te apetezca.
+N.b., que los bindings de
+Scheme ya tienen una representación formal en el API, y
+por lo tanto si quieres empezar a trabajar con nuevos
+bindings, quizá te gustaría empezar por aquí.
+
+&#13;</P
+><P
+>&#13;Habiendo escrito lo anterior, me tengo que preguntar si no podríamos
+de alguna manera usar CORBA para cortar este nudo gordiano. Si
+los desarrolladores de ORBit pudieran igualar el coste de una
+llamada local CORBA al de una librería compartida normal
+ entonces
+¿por qué no CORBificar GTK y trabajar para añadir bindings de
+nuevos lenguajes a ORBit? Sé, que la sabiduría popular dice que
+CORBA es demasiado pesado para cosas de mucho volumen como las
+llamadas a X.  Oye, no me culpes por lanzar ideas locas: ¡la
+razón por la que mantengo las FAQ es que no puedo programar!
+&#13;</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="IMLIB"
+>¿Qué es imlib?</A
+></H2
+><P
+>&#13;Junto con GTK, GNOME usa imlib, una 
+librería de imágenes para X
+que soporta múltiples formatos de imagen de forma transparente
+para el programador.  Imlib puede incluso usar programas
+convertidores externos como ImageMagick o pmbplus para
+convertir formatos de imagen desconocidos a conocidos,
+por lo que si existe un convertidor para un tipo de imagen,
+¡puedes usar casi con toda seguridad ese tipo de imagen en tu
+aplicación! Imlib también soporta múltiples profundidades de bit,
+desde de 24 bits hasta 1 bit en monocromo, otra vez de forma
+transparente al programador, y realiza localización inteligente
+de mapa de colores y dithering automático para conseguir el
+mejor rendimiento de tu pantalla. Cualquiera que halla intentado
+alguna vez hacer esto con sus apps X, o quien halla tenido que
+soportar el destello de la pantalla cundo sus apps tienen que
+allocate a private color map, seguro que os gustará esta
+característica.
+&#13;</P
+><P
+>&#13;Puedes encontrar más información sobre imlib en 
+
+<A
+HREF="http://www.labs.redhat.com/imlib"
+TARGET="_top"
+>&#13;http://www.labs.redhat.com/imlib&#13;</A
+>
+
+.&#13;</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="THEMES"
+>¿Qué es eso de los temas (themes)?</A
+></H2
+><P
+>&#13;Los themes te permiten cambiar el aspecto y sensación de
+las aplicaciones GTK+ sin recompilarlas.  Con los themes,
+eres capaz de cambiar el theme de todos los apps GTK+ en un
+display dado a la vez.
+&#13;</P
+><P
+>&#13;En realidad existen dos partes en un theme en GTK+, el motor
+y la configuración.  El motor es una librería compartida
+especialmente construida con instrucciones sobre la manera en
+que los themes deben dibujar los widgets (los controles de una
+ventana, como los botones, barras de desplazamiento y menús).
+La configuración incluye información sobre fuentes, colores, que
+motor usar, y algunas veces imágenes gráficas que incorporar en
+el theme.  Juntos, los dos constituyen el Theme, y le dan a
+GTK+ su flexible aparaciencia.
+&#13;</P
+><P
+>&#13;Para ver algunos ejemplos de cómo es un app GTK+ tematizado,
+échale un vistazo a: 
+
+<A
+HREF="http://gtk.themes.org"
+TARGET="_top"
+>&#13;http://gtk.themes.org&#13;</A
+>
+
+.&#13;</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN782"
+>¿Cómo hago para que funcionen los themes?</A
+></H2
+><P
+>&#13;Primero, necesitas una versión reciente de GTK+, yo recomiendo
+actualmente la versión 1.2.1, pero la 1.2.0 funciona bien
+también. Después consigue los themes que quieras.  Una buena
+selección de themes está disponible en el módulo de motores
+gtk.  Incluso hay más disponibles en 
+
+
+<A
+HREF="http://gtk.themes.org"
+TARGET="_top"
+>&#13;http://gtk.themes.org&#13;</A
+>
+
+.&#13;</P
+><P
+>&#13;Muchos de los módulos incluyen un motor.  Necesitas compilar
+el motor, e instalarlo.  Con los motores gtk, esto se realiza
+de igual manera que con cualquier otro módulo GNOME.  Los
+themes de la website pueden tener distintas instrucciones,
+consulta su documentación.  Algunos de los themes de la
+website son meras configuraciones alternativas de otro motor,
+muchos de ellos son para el motor pixmap en los motores gtk.
+&#13;</P
+><P
+>&#13;Una vez que el tema está instalado, puedes elegirlo
+a través del Centro de Control GNOME, bajo Escritorio-&#62; Selector
+de Temas.  El selector te permitirá elegir entre todos los temas
+instalados automaticamente,
+previsualizar la apariencia del tema, y
+en la versión 1.04 o posterior incluso permitirte la elección
+de fuente. 
+&#13;</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="OPENGL"
+>¿Qué es OpenGL?</A
+></H2
+><P
+>&#13;OpenGL es un API de renderización de 2D y 3D desarrollado
+por Sillicon Graphics que se ha convertido en el estándar
+de facto de la industria. Basicamente es una herramienta
+para tomar una imagen en 3D, y producir una imagen 2D adecuada
+para dibujarla en pantalla. Copiando el FAQ de SGI:
+
+&#13;</P
+><BLOCKQUOTE
+><P
+>&#13;OpenGL is a rendering only, vendor neutral API
+providing 2D and 3D graphics functions, including modeling,
+transformations, color, lighting, smooth shading, as well as
+advanced features like texture mapping, NURBS, fog, alpha
+blending and motion blur. OpenGL works in both immediate and
+retained (display list) graphics modes.&#13;</P
+></BLOCKQUOTE
+><P
+>&#13;GNOME usa una implementación del API OpenGL llamado Mesa.
+Mesa no es OpenGL per se, ya que es un proyecto Free
+Software que no ha realizado el proceso de obtención de
+licencia de marca registrada OpenGL, pero es una fiel
+representación del API OpenGL.  Mesa no es OpenGL(tm) de
+identica forma que GNU/Linux y FreeBSD no son Unix(tm).
+&#13;</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="XDND"
+>¿Y qué me dices del soporte Drag and Drop - Arrastrar y Soltar?</A
+></H2
+><P
+>&#13;GNOME usa actualmente el protocolo Xde de Drag and Drop. XDE
+está siendo remplazado con una implementación del Protocolo
+Drag-And-Drop de las X Windows para interoperar con otros
+toolkits.
+Más información en 
+
+<A
+HREF="http://www.cco.caltech.edu/~jafl/xdnd/"
+TARGET="_top"
+>&#13;http://www.cco.caltech.edu/~jafl/xdnd/&#13;</A
+>
+
+.&#13;</P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="corba.html"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sm.html"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>CORBA, ORBit y Baboon</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="architecture.html"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Manejo de Sesiones</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>
