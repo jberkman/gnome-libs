@@ -17,7 +17,7 @@ Menus:
    - The prescribed order of standard menu items in the "File" menu is
      the following:
 
-          New window, SEPARATOR, New, Open, Save, Save As, Revert,
+          New Window, SEPARATOR, New, Open, Save, Save As, Revert,
           SEPARATOR, Print, Print Setup, SEPARATOR, Close, Exit
 
      The first menu must always be the "File" menu, and it must always
@@ -33,12 +33,12 @@ Menus:
    - The prescribed order of standard menu items in the "Edit" menu is
      the following:
 
-          Undo, Redo, SEPARATOR, Cut, Copy, Paste, Clear, SEPARATOR,
-	  New, SEPARATOR, Find, Find Again, Replace
+          Undo, Redo, SEPARATOR, Cut, Copy, Paste, Clear, Select All,
+          SEPARATOR, Add, SEPARATOR, Find, Find Again, Replace
 
-     The "New" item should be used to insert new editable items,
+     The "Add" item should be used to insert new editable items,
      e.g. a new card in a rolodex app.  If there is more than one type
-     of insertable editable item, "New" should be a menu subtree.
+     of insertable editable item, "Add" should be a menu subtree.
 
    - The View
 
@@ -57,7 +57,9 @@ Menus:
      It is ok if the only item in Settings is "Preferences".
 
    - The 'Windows' menu should be used by MDI applications to contain
-     a list of the document windows.
+   a list of the document windows.  It should be structured like this:
+ 
+		MDI window list
 
    - For standard menu items (Save, Save As, Close, Quit, etc), use
      the macros defined in gnome-app-helper.h, e.g.
@@ -94,7 +96,8 @@ Menus:
      with "...".  For example, "Print setup..." but "Print".
 
    - Your menu hints should not have a trailing period.  They should be
-     phrased like commands, e.g. "Open a new file"
+     phrased like commands, e.g. "Open a new file".  Do NOT phrase them
+     like a description, e.g. "Opens a new file".
 
    - All menu text should be internationalized.  Use the N_() macro, e.g.
      N_("Open new mailbox")
