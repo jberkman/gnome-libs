@@ -752,6 +752,207 @@
 	GnomeAppHelper.
       </para>
 
+      <sect2 id="gnome-app-find-menu-pos">
+      <title>gnome_app_find_menu_pos - return position of a menu item</title>
+      <funcsynopsis>
+        <funcdef>GtkWidget *<function>gnome_app_find_menu_pos</function></funcdef>
+        <paramdef>GtkWidget *<parameter>root</parameter></paramdef>
+        <paramdef>gchar *<parameter>path</parameter></paramdef>
+        <paramdef>gint *<parameter>pos</parameter></paramdef>
+      </funcsynopsis>
+      <sect3><title>Description</title>
+        <para>For a menu item specified by <parameter>path</parameter>, returns item's parent
+        GtkMenuShell and sets *pos to item's position in it if the item is found in the
+        menu tree starting in GtkMenuShell root and NULL otherwise. New menus can later be
+        inserted after the menu-item with a call to:
+        <programlisting>
+          gtk_menu_shell_insert(GTK_MENU_SHELL(parent), new_item, pos);
+        </programlisting>
+        </para>
+      </sect3>
+      <sect3><title>Usage</title>
+        <programlisting>
+	  GnomeApp *app;
+          GtkWidget *shell;
+          gint pos;
+
+          shell = gnome_app_find_menu_pos(app->menubar, "Edit/Sort/Ascending", &#38;pos);
+        </programlisting>
+      </sect3>
+      <sect3><title>Parameters</title>
+        <itemizedlist>
+          <listitem>
+            <para>GtkWidget *<parameter>root</parameter>
+            </para>
+            <para>The menu shell at the root of the menu subtree that is to be searched.
+            </para>
+          </listitem>
+          <listitem>
+            <para>gchar *<parameter>path</parameter>
+            </para>
+            <para>Menu path describing the searched-for item.
+              <itemizedlist>
+                <listitem>
+                  <para>the path argument should be in the form "File/.../.../ItemName".
+                  </para>
+                </listitem>
+                <listitem>
+                  <para> "" will return position before the first item
+                    in <parameter>root</parameter>.
+                  </para>
+                </listitem>
+                <listitem>
+                  <para>"File/" will return position before the first
+                    item of the File submenu.
+                  </para>
+                </listitem>
+                <listitem>
+                  <para>
+                    "File/Settings" will return position after the
+                    Settings item in the File submenu.
+                  </para>
+                </listitem>
+                <listitem>
+                  <para>use of  "File/&lt;Separator&gt;" should be obvious. However this stops
+                     after the first separator.
+                  </para>
+                </listitem>
+              </itemizedlist>
+            </para>
+          </listitem>
+          <listitem>
+            <para>gint *<parameter>pos</parameter>
+            </para>
+            <para>The integer pointed to by this parameter is set to the position of the
+              menu item described by <parameter>path</parameter> in its parent menu shell.
+            </para>
+          </listitem>
+        </itemizedlist>
+      </sect3>
+           
+    </sect2>
+
+      <sect2 id="gnome-app-remove-menus">
+        <title>gnome_app_remove_menus - remove a number of menu items</title>
+        <funcsynopsis>
+          <funcdef>void <function>gnome_app_remove_menus</function></funcdef>
+          <paramdef>GnomeApp *<parameter>app</parameter></paramdef>
+          <paramdef>gchar *<parameter>path</parameter></paramdef>
+          <paramdef>gint <parameter>item_count</parameter></paramdef>
+        </funcsynopsis>
+        <sect3><title>Description</title>
+          <para>This function removes <parameter>item_count</parameter> items
+          from GnomeApp's menu structure, beginning with item described by
+          <parameter>path</parameter>.
+          </para>
+        </sect3>
+        <sect3><title>Usage</title>
+          <programlisting>
+            gnome_app_remove_menus(app, "Edit/Sort/Ascending", 2);
+          </programlisting>
+        </sect3>
+        <sect3><title>Parameters</title>
+          <itemizedlist>
+            <listitem>
+              <para>GnomeApp *<parameter>app</parameter>
+              </para>
+              <para>The GnomeApp widget with the menubar containing the items to be removed.
+              </para>
+            </listitem>
+            <listitem>
+              <para>gchar *<parameter>path</parameter>
+              </para>
+              <para>Path describing the first item to be removed. See
+                <function>gnome_app_find_menu_pos</function> for more information on menu paths.
+              </para>
+            </listitem>
+            <listitem>
+              <para>gint <parameter>item_count</parameter>
+              </para>
+              <para>Number of subsequent items to remove.
+              </para>
+            </listitem>
+
+          </itemizedlist>
+        </sect3>
+           
+      </sect2>
+
+      <sect2 id="gnome-app-insert-menus">
+        <title>gnome_app_insert_menus - insert menu structure in a GnomeApp's menubar</title>
+        <funcsynopsis>
+          <funcdef>void <function>gnome_app_insert_menus</function></funcdef>
+          <paramdef>GnomeApp *<parameter>app</parameter></paramdef>
+          <paramdef>gchar *<parameter>path</parameter></paramdef>
+          <paramdef>GnomeUIInfo *<parameter>uiinfo</parameter></paramdef>
+        </funcsynopsis>
+        <sect3><title>Description</title>
+          <para>Inserts menu structure described by <parameter>uiinfo</parameter> at position
+            described by <parameter>path</parameter>.
+          </para>
+        </sect3>
+        <sect3><title>Usage</title>
+          <programlisting>
+	    static GnomeUIInfo edit_menu[] = {
+	    { GNOME_APP_UI_ITEM, N_("_Copy"), N_("Copy text"), copy_callback, NULL, NULL,
+	      GNOME_APP_PIXMAP_STOCK, GNOME_STOCK_MENU_COPY, 'c', GDK_CONTROL_MASK, NULL },
+	    { GNOME_APP_UI_ITEM, N_("C_ut..."), N_("Cut text"), cut_callback, NULL, NULL,
+	      GNOME_APP_PIXMAP_STOCK, GNOME_STOCK_MENU_CUT, 'x', GDK_CONTROL_MASK, NULL },
+	    { GNOME_APP_UI_ITEM, N_("_Paste"), N_("Paste clipboard contents"), paste_callback, NULL, NULL,
+	      GNOME_APP_PIXMAP_STOCK, GNOME_STOCK_MENU_PASTE, 'v', GDK_CONTROL_MASK, NULL },
+	    GNOMEUIINFO_END
+	    };
+
+	    static GnomeUIInfo more_menus[] = {
+	    { GNOME_APP_UI_ITEM, N_("_Search..."), N_("Search for text"), search_callback, NULL, NULL,
+	      GNOME_APP_PIXMAP_NONE, NULL, 's', GDK_CONTROL_MASK, NULL },
+	    { GNOME_APP_UI_ITEM, N_("_Replace..."), N_("Replace text"), replace_callback, NULL, NULL,
+	      GNOME_APP_PIXMAP_NONE, NULL, 'r', GDK_CONTROL_MASK, NULL },
+	    GNOMEUIINFO_END
+	    };
+
+	    static GnomeUIInfo main_menu[] = {
+	    GNOMEUIINFO_SUBTREE (N_("_Edit"), edit_menu),
+	    GNOMEUIINFO_END
+	    };
+
+            app = gnome_app_new("app", "App");
+            gnome_app_create_menus(app, main_menu);
+
+            /* do something */
+
+            /* insert Search and Replace items after Paste */
+            gnome_app_insert_menus(app, "Edit/Paste", sort_menu);
+          </programlisting>
+        </sect3>
+        <sect3><title>Parameters</title>
+          <itemizedlist>
+            <listitem>
+              <para>GnomeApp *<parameter>app</parameter>
+              </para>
+              <para>The GnomeApp containing the menubar in which the new items will
+                be inserted.
+              </para>
+            </listitem>
+            <listitem>
+              <para>gchar *<parameter>path</parameter>
+              </para>
+              <para>Path describing the position where the new items will be insterted. See
+                <function>gnome_app_find_menu_pos</function> for more information on menu paths.
+              </para>
+            </listitem>
+            <listitem>
+              <para>GnomeUIInfo *<parameter>uiinfo</parameter>
+              </para>
+              <para>A pointer to an array of GnomeUIInfo entries describing the menu items
+                to insert.
+              </para>
+             </listitem>
+          </itemizedlist>
+        </sect3>
+           
+      </sect2>
+
     </sect1>
 
   </chapter>
