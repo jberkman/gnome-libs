@@ -24,12 +24,12 @@ static int is_file(char *s)
    return 0;
 }
 
-static void convert(char *file)
+static void convert(char *real_file)
 {
 	FILE *f, *sf;
 	char outfile[4096];
 	char data_var[4096];
-	char *ptr;
+	char *ptr, *file;
 	int x, y;
 	int col = 0;
 	unsigned char *d;
@@ -37,6 +37,8 @@ static void convert(char *file)
 
 	t = 0;
 
+	ptr = strrchr (real_file, '/');
+	file = ptr ? ptr+1 : real_file;
 
 	if (file_for_output)
 		{
@@ -70,33 +72,33 @@ static void convert(char *file)
 		return;
 		}
 
-	sf = fopen(file, "rb");
+	sf = fopen(real_file, "rb");
 	if (!sf) return;
 
-	if (gisxpm(file) && 0) /* imlib needs display to load xpms, so use convert */
-		d = g_LoadXPM(file, &w, &h, &t);
+	if (gisxpm(real_file) && 0) /* imlib needs display to load xpms, so use convert */
+		d = g_LoadXPM(real_file, &w, &h, &t);
 #ifdef HAVE_LIBPNG
-	else if (gispng(file))
+	else if (gispng(real_file))
 		d = g_LoadPNG(sf, &w, &h, &t);
 #endif
 #ifdef HAVE_LIBJPEG
-	else if (gisjpeg(file))
+	else if (gisjpeg(real_file))
 		d = g_LoadJPEG(sf, &w, &h);
 #endif
 #ifdef HAVE_LIBTIFF
-	else if (gistiff(file))
-		d = g_LoadTIFF(file, &w, &h, &t);
+	else if (gistiff(real_file))
+		d = g_LoadTIFF(real_file, &w, &h, &t);
 #endif
 #ifdef HAVE_LIBGIF
-	else if (gisgif(file))
-		d = g_LoadGIF(file, &w, &h, &t);
+	else if (gisgif(real_file))
+		d = g_LoadGIF(real_file, &w, &h, &t);
 #endif
-	else if (gisbmp(file))
-		d = g_LoadBMP(file, &w, &h, &t);
+	else if (gisbmp(real_file))
+		d = g_LoadBMP(real_file, &w, &h, &t);
 	else
 		{
 		fclose(sf);
-		sf = open_helper("%C/convert %s pnm:-", file, "rb");
+		sf = open_helper("%C/convert %s pnm:-", real_file, "rb");
 		d = g_LoadPPM(sf, &w, &h);
 		}
 
