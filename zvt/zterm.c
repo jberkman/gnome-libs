@@ -47,6 +47,7 @@ gint main (gint argc, gchar *argv[])
 {
   int c;
   int cmdindex;
+  int login_shell = 0;
   int scrollbacklines;
   struct passwd *pw;
   GtkWindow *window;
@@ -59,13 +60,16 @@ gint main (gint argc, gchar *argv[])
   /* process arguments */
   cmdindex = 0;
   scrollbacklines = 50;
-  while ( (cmdindex==0) && (c=getopt(argc, argv, "e:s:")) != EOF ) {
+  while ( (cmdindex==0) && (c=getopt(argc, argv, "le:s:")) != EOF ) {
     switch(c) {
     case 'e':
       cmdindex = optind-1;	/* index of argv array to pass to exec */
       break;
     case 's':
       scrollbacklines = atoi(optarg);
+      break;
+    case 'l':
+      login_shell = 1;
       break;
     }
   }
@@ -113,12 +117,24 @@ gint main (gint argc, gchar *argv[])
     if (cmdindex) {
       execvp(argv[cmdindex], &argv[cmdindex]);
     } else {
+      char basename [BUFSIZ];
+
 				/* get shell from passwd */
       pw = getpwuid(getuid());
-      if (pw) {
-	execl(pw->pw_shell, strrchr(pw->pw_shell, '/'), 0);
+      if (login_shell) {
+	if (pw) {
+	  chdir(pw->pw_dir);
+	  snprintf(basename, BUFSIZ, "-%s", rindex(pw->pw_shell, '/'));
+	  execl(pw->pw_shell, basename, NULL);
+	} else {
+	  execl("/bin/bash", "-bash", NULL);
+	}
       } else {
-	execl("/bin/bash", "bash", 0);
+	if (pw) {
+	  execl(pw->pw_shell, rindex(pw->pw_shell, '/'), NULL);
+	} else {
+	  execl("/bin/bash", "bash", NULL);
+	}
       }
     }
     perror("ERROR: Cannot exec command:");

@@ -5,8 +5,12 @@
 # ifdef HAVE_PTY_H
 #    include <pty.h>
 # else
-#    ifdef HAVE_UTIL_H
+#    ifdef HAVE_UTIL_H /* OpenBSD */
 #      include <util.h>
+#    else
+#      ifdef HAVE_LIBUTIL_H /* FreeBSD */
+#        include <libutil.h>
+#      endif
 #    endif
 # endif
 #else

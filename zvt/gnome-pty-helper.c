@@ -39,6 +39,7 @@ static char *login_name, *display_name;
 struct pty_info {
 	struct pty_info *next;
 	int    master_fd, slave_fd;
+	char   line [256];
 };
 
 typedef struct pty_info pty_info;
@@ -138,6 +139,11 @@ pty_remove (pty_info *pi)
 static void
 shutdown_pty (pty_info *pi)
 {
+#ifdef __FreeBSD__
+	logwtmp (pi->line, "", "");
+	logout (pi->line);
+#endif
+
 	close (pi->master_fd);
 	close (pi->slave_fd);
 
@@ -154,7 +160,7 @@ shutdown_helper (void)
 }
 
 static pty_info *
-pty_add (int master_fd, int slave_fd)
+pty_add (int master_fd, int slave_fd, char *line)
 {
 	pty_info *pi = malloc (sizeof (pty_info));
 
@@ -163,6 +169,9 @@ pty_add (int master_fd, int slave_fd)
 		exit (1);
 	}
 
+	strncpy (pi->line, strncmp (line, "/dev/", 5) ? line : line+5, 255);
+	pi->line [255] = 0;
+	
 	pi->master_fd = master_fd;
 	pi->slave_fd  = slave_fd;
 	pi->next = pty_list;
@@ -187,7 +196,7 @@ open_ptys (int update_db)
 		return 0;
 	}
 
-	p = pty_add (master_pty, slave_pty);
+	p = pty_add (master_pty, slave_pty, term_name);
 	result = 1;
 
 	write (STDOUT_FILENO, &result, sizeof (result));
@@ -196,7 +205,20 @@ open_ptys (int update_db)
 	pass_fd (STDOUT_FILENO, slave_pty);
 
 	if (update_db){
+#ifdef __FreeBSD__
+		/* We have to fork and make the slave_pty our
+		 * controlling pty if we don't want to clobber the
+		 * parent's one ... */
+		if (fork () == 0) {
+			setsid ();
+			dup2 (slave_pty, 0);
+			update_dbs (login_name, display_name, term_name);
+			exit (0);
+		}
+		return 1;
+#else
 		update_dbs (login_name, display_name, term_name);
+#endif
 	}
 	
 	return 1;
@@ -232,6 +254,11 @@ main (int argc, char *argv [])
 			if (errno == EINTR)
 				continue;
 
+			shutdown_helper ();
+			return 1;
+		}
+
+		if (res == 0) {
 			shutdown_helper ();
 			return 1;
 		}

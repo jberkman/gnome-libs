@@ -1,3 +1,21 @@
+1998-11-09  Martin Baulig  <martin@home-of-linux.org>
+
+	* gnome-pty-helper.c (struct pty_info): Added `line' field.
+	(shutdown_pty): Added logout code for FreeBSD.
+	(open_ptys): Added some code for FreeBSD.
+
+	* zterm.c: Added new `-l' command line parameter to make
+	the shell a login shell.
+
+	* gnome-login-support.h: Include <libutil.h> on FreeBSD.
+
+	* gnome-pty.h (GnomePtyOps): Make it explicitly start with 1.
+
+	* gnome-utmp.c (_HAVE_UT_USER, _HAVE_UT_TIME): Use this #ifdefs.
+	(WTMP_FILENAME): Define if not already defined.
+	(HAVE_LOGIN): If we have the login () function, call it - otherwise
+	use the pututline () ... code.
+
 1998-11-09  Michael Zucchi  <zucchi@zzedzone.fsi.com.au>
 
 	* gnome-login-support.h: Include pty.h only if it exists, or
