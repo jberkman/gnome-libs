@@ -1,3 +1,8 @@
+1999-05-24  Miguel de Icaza  <miguel@nuclecu.unam.mx>
+
+	* gnome-login-support.c: Do not use ifdef (HAVE_STROPTS) but ifdef
+	HAVE_STROPTS.  Thanks for Brandon for pointing this out.
+
 1999-05-24  David KAELBLING <drk@sgi.com>
 
 	* vt.c (vt_func): Do not use un-initialized variable.

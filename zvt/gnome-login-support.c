@@ -136,7 +136,7 @@ pty_open_slave_bsd (const char *pty_name)
 /* SystemVish pty opening */
 #if defined (HAVE_GRANTPT)
 
-#ifdef (HAVE_STROPTS_H)
+#ifdef HAVE_STROPTS_H
 #    include <stropts.h>
 #endif
 
