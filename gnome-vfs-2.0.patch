@@ -1,0 +1,511 @@
+Index: .cvsignore
+===================================================================
+RCS file: /cvs/gnome/gnome-vfs/.cvsignore,v
+retrieving revision 1.3
+diff -u -u -r1.3 .cvsignore
+--- .cvsignore	2000/04/13 18:08:32	1.3
++++ .cvsignore	2000/08/30 19:49:07
+@@ -27,3 +27,4 @@
+ vfsConf.sh
+ vfscorbaConf.sh
+ vfspthreadConf.sh
++gnome-vfs-config
+Index: Makefile.am
+===================================================================
+RCS file: /cvs/gnome/gnome-vfs/Makefile.am,v
+retrieving revision 1.9
+diff -u -u -r1.9 Makefile.am
+--- Makefile.am	2000/06/26 11:20:16	1.9
++++ Makefile.am	2000/08/30 19:49:08
+@@ -4,11 +4,7 @@
+ SUBDIRS_OAF=
+ endif
+ 
+-if HAVE_GCONF
+-SUBDIRS_GCONF=mime-type-capplet
+-else
+ SUBDIRS_GCONF=
+-endif
+ 
+ SUBDIRS =					\
+ 	libgnomevfs				\
+@@ -20,7 +16,6 @@
+ 	man					\
+ 	devel-docs				\
+ 	$(SUBDIRS_GCONF)			\
+-	test					\
+ 	po
+ 
+ 
+@@ -31,8 +26,11 @@
+ 	gnome-vfs.spec				\
+ 	vfsConf.sh.in				\
+ 	vfscorbaConf.sh.in			\
+-	vfspthreadConf.sh.in
++	vfspthreadConf.sh.in			\
++	gnome-vfs-config.in
+ 
++bin_SCRIPTS = $(top_builddir)/gnome-vfs-config
++
+ confexecdir=$(libdir)
+ confexec_DATA =					\
+ 	vfsConf.sh				\
+@@ -69,3 +67,15 @@
+ 	    -e 's?\@VFSPTHREAD_LIBS\@?$(VFSPTHREAD_LIBS)?g' \
+ 	      < $(srcdir)/vfspthreadConf.sh.in > vfspthreadConf.tmp \
+ 	  && mv vfspthreadConf.tmp vfspthreadConf.sh
++
++gnome-vfs-config: gnome-vfs-config.in Makefile
++	sed -e 's?\@LIBDIR\@?$(libdir)?g' \
++	    -e 's?\@VFS_LIBDIR\@?$(VFS_LIBDIR)?g' \
++	    -e 's?\@VFS_INCLUDEDIR\@?$(VFS_INCLUDEDIR)?g' \
++	    -e 's?\@VERSION\@?$(VERSION)?g' \
++	    -e 's?\@VFS_LIBS\@?$(VFS_LIBS)?g' \
++	      < $(srcdir)/gnome-vfs-config.in > gnome-vfs-config.tmp \
++	  && mv gnome-vfs-config.tmp gnome-vfs-config && \
++		chmod 755 gnome-vfs-config
++
++
+Index: configure.in
+===================================================================
+RCS file: /cvs/gnome/gnome-vfs/configure.in,v
+retrieving revision 1.62
+diff -u -u -r1.62 configure.in
+--- configure.in	2000/08/27 15:06:34	1.62
++++ configure.in	2000/08/30 19:49:09
+@@ -5,8 +5,6 @@
+ 
+ AM_MAINTAINER_MODE
+ 
+-GNOME_INIT
+-
+ AC_ISC_POSIX
+ AC_PROG_CC
+ AC_PROG_AWK
+@@ -38,14 +36,14 @@
+ 	      [  --with-default-backend=(corba|pthread)		    ],
+ 	      default_backend="$withval")
+ 
+-AM_PATH_GLIB(1.2.0,,
++AM_PATH_GLIB_2_0(1.3.0,,
+   AC_MSG_ERROR([
+ *** GLIB 1.2.0 or better is required. The latest version of GLIB
+ *** is always available from ftp://ftp.gtk.org/.]),
+     gmodule gthread)
+ 
+ GNOME_COMPILE_WARNINGS
+-GNOME_SUPPORT_CHECKS
++dnl GNOME_SUPPORT_CHECKS
+ GNOME_PTHREAD_CHECK
+ 
+ ALL_LINGUAS="ca da de el fr ga gl hu it ja ko lt nl no pl pt_BR ru sl sv tr uk"
+@@ -180,8 +178,8 @@
+ dnl CORBA backend.
+ VFSCORBA_LIBDIR='-L${libdir}'
+ VFSCORBA_INCLUDEDIR='-I${includedir} -I${libdir}/vfs/include'
+-VFSCORBA_INCLUDEDIR="$VFSCORBA_INCLUDEDIR `gnome-config --cflags gnome gnomeui` `orbit-config --cflags server`"
+-VFSCORBA_LIBS="-lgnomevfs -lgnomevfs-corba `gnome-config --libs gnome gnomeui` `orbit-config --libs server`"
++VFSCORBA_INCLUDEDIR="$VFSCORBA_INCLUDEDIR `orbit-config --cflags server`"
++VFSCORBA_LIBS="-lgnomevfs -lgnomevfs-corba `orbit-config --libs server`"
+ AC_SUBST(VFSCORBA_LIBDIR)
+ AC_SUBST(VFSCORBA_INCLUDEDIR)
+ AC_SUBST(VFSCORBA_LIBS)
+@@ -189,8 +187,8 @@
+ dnl Pthread backend.
+ VFSPTHREAD_LIBDIR='-L${libdir}'
+ VFSPTHREAD_INCLUDEDIR='-I${includedir} -I${libdir}/vfs/include'
+-VFSPTHREAD_INCLUDEDIR="$VFSPTHREAD_INCLUDEDIR `gnome-config --cflags gnome`"
+-VFSPTHREAD_LIBS="-lgnomevfs -lgnomevfs-pthread `gnome-config --libs gnome` `glib-config --libs gthread`"
++VFSPTHREAD_INCLUDEDIR="$VFSPTHREAD_INCLUDEDIR"
++VFSPTHREAD_LIBS="-lgnomevfs -lgnomevfs-pthread `glib-config --libs gthread`"
+ AC_SUBST(VFSPTHREAD_LIBDIR)
+ AC_SUBST(VFSPTHREAD_INCLUDEDIR)
+ AC_SUBST(VFSPTHREAD_LIBS)
+@@ -211,13 +209,13 @@
+ dnl
+ dnl Flags needed to build the mime-type capplet
+ dnl
+-CAPPLET_LIBDIR='-L${libdir}'
+-CAPPLET_INCLUDEDIR='-I${includedir} -I${libdir}/vfs/include'
+-CAPPLET_INCLUDEDIR="$CAPPLET_INCLUDEDIR `gnome-config --cflags gnome gnomeui capplet`"
+-CAPPLET_LIBS="`gnome-config --libs gnome gnomeui capplet`"
+-AC_SUBST(CAPPLET_LIBDIR)
+-AC_SUBST(CAPPLET_INCLUDEDIR)
+-AC_SUBST(CAPPLET_LIBS)
++dnl CAPPLET_LIBDIR='-L${libdir}'
++dnl CAPPLET_INCLUDEDIR='-I${includedir} -I${libdir}/vfs/include'
++dnl CAPPLET_INCLUDEDIR="$CAPPLET_INCLUDEDIR `gnome-config --cflags gnome gnomeui capplet`"
++dnl CAPPLET_LIBS="`gnome-config --libs gnome gnomeui capplet`"
++dnl AC_SUBST(CAPPLET_LIBDIR)
++dnl AC_SUBST(CAPPLET_INCLUDEDIR)
++dnl AC_SUBST(CAPPLET_LIBS)
+ 
+ dnl
+ dnl gnome-xml libraries - for WebDAV support in modules/http-method.c
+Index: gnome-vfs-config.in
+===================================================================
+RCS file: gnome-vfs-config.in
+diff -N gnome-vfs-config.in
+--- /dev/null	Tue May  5 16:32:27 1998
++++ gnome-vfs-config.in	Wed Aug 30 15:49:09 2000
+@@ -0,0 +1,38 @@
++#!/bin/sh
++
++usage="\
++    Usage: gnome-vfs-config [--version] [--config] [--cflags] [--libs]"
++
++config_file="@LIBDIR@/vfsConf.sh"
++. $config_file
++
++if test $# -eq 0; then
++      echo "${usage}" 1>&2
++      exit 1
++fi
++
++while test $# -gt 0; do
++  case "$1" in
++  -*=*) optarg=`echo "$1" | sed 's/[-_a-zA-Z0-9]*=//'` ;;
++  *) optarg= ;;
++  esac
++
++  case $1 in
++    --version)
++      echo $MODULE_VERSION
++      ;;
++    --config)
++      echo $config_file
++      ;;
++    --cflags)
++      echo $VFS_INCLUDEDIR
++      ;;
++    --libs)
++      echo "$VFS_LIBDIR $VFS_LIBS"
++      ;;
++    *)
++      echo "${usage}" 1>&2
++      exit 1
++  esac
++  shift
++done
+Index: libgnomevfs/Makefile.am
+===================================================================
+RCS file: /cvs/gnome/gnome-vfs/libgnomevfs/Makefile.am,v
+retrieving revision 1.45
+diff -u -u -r1.45 Makefile.am
+--- libgnomevfs/Makefile.am	2000/08/09 06:23:46	1.45
++++ libgnomevfs/Makefile.am	2000/08/30 19:49:09
+@@ -7,8 +7,8 @@
+ 	-I$(top_builddir)			\
+ 	-I$(top_builddir)/intl			\
+ 	-I$(top_builddir)/libgnomevfs		\
++	$(GLIB_CFLAGS)				\
+ 	$(OAF_CFLAGS)				\
+-	$(GNOME_INCLUDEDIR)			\
+ 	$(NULL)
+ 
+ CPPFLAGS =					\
+@@ -26,15 +26,12 @@
+ 	getdelim.c
+ 
+ libgnomevfs_la_LIBADD =				\
+-	$(GNOME_LIBDIR)				\
+-	$(GNOME_LIBS)				\
+ 	$(OAF_LIBS)	                        \
+ 	$(GCONF_LIBS)	                        \
+ 	$(GLIB_LIBS)				\
+ 	$(NULL)
+ 
+ libgnomevfs_la_CFLAGS =				\
+-	$(GNOME_CFLAGS)				\
+ 	$(OAF_CFLAGS)	                        \
+ 	$(GCONF_CFLAGS)	                        \
+ 	$(GLIB_CFLAGS)				\
+Index: libgnomevfs/gnome-vfs-application-registry.c
+===================================================================
+RCS file: /cvs/gnome/gnome-vfs/libgnomevfs/gnome-vfs-application-registry.c,v
+retrieving revision 1.2
+diff -u -u -r1.2 gnome-vfs-application-registry.c
+--- libgnomevfs/gnome-vfs-application-registry.c	2000/08/10 06:30:55	1.2
++++ libgnomevfs/gnome-vfs-application-registry.c	2000/08/30 19:49:10
+@@ -41,12 +41,6 @@
+ #include <dirent.h>
+ #include <glib.h>
+ 
+-/* FIXME: We need to get rid of this for gnome 2.0 or perhaps even before
+- * that.  The problem is gnome_i18n_get_language_list.  We may have to
+- * duplicate it in gnome-vfs but that's not a very nice solution */
+-#include <libgnome/gnome-defs.h>
+-#include <libgnome/gnome-i18n.h>
+-
+ #include "gnome-vfs-types.h"
+ #include "gnome-vfs-result.h"
+ #include "gnome-vfs-mime-handlers.h"
+@@ -806,6 +800,8 @@
+ static void
+ gnome_vfs_application_registry_init (void)
+ {
++	const GList *language_list;
++
+ 	if (gnome_vfs_application_registry_initialized)
+ 		return;
+ 
+@@ -816,9 +812,9 @@
+ 	generic_mime_types  = g_hash_table_new (g_str_hash, g_str_equal);
+ 	specific_mime_types  = g_hash_table_new (g_str_hash, g_str_equal);
+ 	
+-	current_lang = gnome_i18n_get_language_list ("LC_MESSAGES");
+-	if(current_lang)
+-		current_lang = g_list_reverse(g_list_copy(current_lang));
++	language_list = g_i18n_get_language_list ("LC_MESSAGES");
++	if(language_list)
++		current_lang = g_list_reverse(g_list_copy((GList*)language_list));
+ 
+ 	/*
+ 	 * Setup the descriptors for the information loading
+Index: libgnomevfs/gnome-vfs-mime-info.c
+===================================================================
+RCS file: /cvs/gnome/gnome-vfs/libgnomevfs/gnome-vfs-mime-info.c,v
+retrieving revision 1.22
+diff -u -u -r1.22 gnome-vfs-mime-info.c
+--- libgnomevfs/gnome-vfs-mime-info.c	2000/08/10 06:30:56	1.22
++++ libgnomevfs/gnome-vfs-mime-info.c	2000/08/30 19:49:11
+@@ -23,12 +23,6 @@
+ #include <config.h>
+ #include "gnome-vfs-mime-info.h"
+ 
+-/* FIXME: We need to get rid of this for gnome 2.0 or perhaps even before
+- * that.  The problem is gnome_i18n_get_language_list.  We may have to
+- * duplicate it in gnome-vfs but that's not a very nice solution */
+-#include <libgnome/gnome-defs.h>
+-#include <libgnome/gnome-i18n.h>
+-
+ #include "gnome-vfs-mime.h"
+ #include "gnome-vfs-mime-private.h"
+ #include "gnome-vfs-result.h"
+@@ -741,6 +735,8 @@
+ static void
+ gnome_vfs_mime_init (void)
+ {
++	const GList *language_list;
++
+ 	/*
+ 	 * The hash tables that store the mime keys.
+ 	 */
+@@ -748,9 +744,9 @@
+ 	generic_types  = g_hash_table_new (g_str_hash, g_str_equal);
+ 	registered_types  = g_hash_table_new (g_str_hash, g_str_equal);
+ 	
+-	current_lang = gnome_i18n_get_language_list ("LC_MESSAGES");
+-	if(current_lang)
+-		current_lang = g_list_reverse(g_list_copy(current_lang));
++	language_list = g_i18n_get_language_list ("LC_MESSAGES");
++	if(language_list)
++		current_lang = g_list_reverse(g_list_copy((GList*)language_list));
+ 
+ 	/*
+ 	 * Setup the descriptors for the information loading
+Index: libgnomevfs-pthread/Makefile.am
+===================================================================
+RCS file: /cvs/gnome/gnome-vfs/libgnomevfs-pthread/Makefile.am,v
+retrieving revision 1.7
+diff -u -u -r1.7 Makefile.am
+--- libgnomevfs-pthread/Makefile.am	2000/07/03 23:24:59	1.7
++++ libgnomevfs-pthread/Makefile.am	2000/08/30 19:49:11
+@@ -5,7 +5,7 @@
+ 	-I$(top_builddir)/intl			\
+ 	-I$(top_srcdir)/libgnomevfs		\
+ 	-I$(top_builddir)/libgnomevfs		\
+-	$(GNOME_INCLUDEDIR)
++	$(GLIB_CFLAGS)
+ 
+ CPPFLAGS =					\
+ 	-D_GNU_SOURCE				\
+Index: libgnomevfs-pthread/gnome-vfs-job-slave.c
+===================================================================
+RCS file: /cvs/gnome/gnome-vfs/libgnomevfs-pthread/gnome-vfs-job-slave.c,v
+retrieving revision 1.10
+diff -u -u -r1.10 gnome-vfs-job-slave.c
+--- libgnomevfs-pthread/gnome-vfs-job-slave.c	2000/08/12 16:03:06	1.10
++++ libgnomevfs-pthread/gnome-vfs-job-slave.c	2000/08/30 19:49:11
+@@ -191,7 +191,7 @@
+ 		/* Some threads are still trying to quit, wait a bit until they
+ 		 * are done.
+ 		 */
+-		gtk_main_iteration_do (FALSE);
++		g_main_iteration (FALSE);
+ 		usleep (20000);		
+ 	}
+ }
+Index: mime-type-capplet/Makefile.am
+===================================================================
+RCS file: /cvs/gnome/gnome-vfs/mime-type-capplet/Makefile.am,v
+retrieving revision 1.17
+diff -u -u -r1.17 Makefile.am
+--- mime-type-capplet/Makefile.am	2000/08/08 21:34:56	1.17
++++ mime-type-capplet/Makefile.am	2000/08/30 19:49:11
+@@ -1,9 +1,7 @@
+ INCLUDES = -I. -I$(srcdir) 				\
+ 	-I$(top_srcdir)/intl -I$(top_builddir)/intl	\
+ 	-I$(top_srcdir)/libgnomevfs			\
+-	$(CAPPLET_INCLUDEDIR)				\
+ 	$(OAF_CFLAGS)					\
+-	$(GNOME_INCLUDEDIR)				\
+ 	-DGNOMELOCALEDIR=\""$(datadir)/locale"\"	\
+ 	-I$(includedir)
+ 
+@@ -18,9 +16,6 @@
+ 	nautilus-mime-type-icon-entry.c
+ 
+ nautilus_mime_type_capplet_LDADD =					\
+-			$(CAPPLET_LIBDIR) 				\
+-			$(CAPPLET_LIBS) 				\
+-			$(ORBIT_LIBS) 					\
+ 			$(OAF_LIBS)					\
+ 			$(INTLLIBS) 					\
+ 			$(top_builddir)/libgnomevfs/libgnomevfs.la 	\
+Index: modules/Makefile.am
+===================================================================
+RCS file: /cvs/gnome/gnome-vfs/modules/Makefile.am,v
+retrieving revision 1.39
+diff -u -u -r1.39 Makefile.am
+--- modules/Makefile.am	2000/08/25 21:03:43	1.39
++++ modules/Makefile.am	2000/08/30 19:49:12
+@@ -5,6 +5,7 @@
+ 	-I$(top_builddir)/libgnomevfs		\
+ 	-I$(top_srcdir)/intl			\
+ 	-I$(top_builddir)/intl			\
++	$(GLIB_CFLAGS)				\
+ 	$(XML_CFLAGS)	 			\
+ 	$(LIBEFS_CFLAGS)			\
+ 	$(GCONF_CFLAGS)
+Index: po/Makefile.in.in
+===================================================================
+RCS file: /cvs/gnome/gnome-vfs/po/Makefile.in.in,v
+retrieving revision 1.1.1.1
+diff -u -u -r1.1.1.1 Makefile.in.in
+--- po/Makefile.in.in	1999/08/25 00:16:59	1.1.1.1
++++ po/Makefile.in.in	2000/08/30 19:49:12
+@@ -62,7 +62,7 @@
+ 	$(COMPILE) $<
+ 
+ .po.pox:
+-	$(MAKE) $(PACKAGE).pot
++	$(MAKE) $(srcdir)/$(PACKAGE).pot
+ 	$(MSGMERGE) $< $(srcdir)/$(PACKAGE).pot -o $*.pox
+ 
+ .po.mo:
+@@ -79,7 +79,7 @@
+ 
+ all: all-@USE_NLS@
+ 
+-all-yes: cat-id-tbl.c $(CATALOGS)
++all-yes: $(srcdir)/cat-id-tbl.c $(CATALOGS)
+ all-no:
+ 
+ $(srcdir)/$(PACKAGE).pot: $(POTFILES)
+@@ -90,8 +90,8 @@
+ 	   || ( rm -f $(srcdir)/$(PACKAGE).pot \
+ 		&& mv $(PACKAGE).po $(srcdir)/$(PACKAGE).pot )
+ 
+-$(srcdir)/cat-id-tbl.c: stamp-cat-id; @:
+-$(srcdir)/stamp-cat-id: $(PACKAGE).pot
++$(srcdir)/cat-id-tbl.c: $(srcdir)/stamp-cat-id; @:
++$(srcdir)/stamp-cat-id: $(srcdir)/$(PACKAGE).pot
+ 	rm -f cat-id-tbl.tmp
+ 	sed -f ../intl/po2tbl.sed $(srcdir)/$(PACKAGE).pot \
+ 		| sed -e "s/@PACKAGE NAME@/$(PACKAGE)/" > cat-id-tbl.tmp
+@@ -180,7 +180,8 @@
+ 
+ check: all
+ 
+-cat-id-tbl.o: ../intl/libgettext.h
++cat-id-tbl.o: $(srcdir)/cat-id-tbl.c $(top_srcdir)/intl/libgettext.h
++	$(COMPILE) $(srcdir)/cat-id-tbl.c
+ 
+ dvi info tags TAGS ID:
+ 
+@@ -196,7 +197,7 @@
+ maintainer-clean: distclean
+ 	@echo "This command is intended for maintainers to use;"
+ 	@echo "it deletes files that may require special tools to rebuild."
+-	rm -f $(GMOFILES)
++	rm -f $(GMOFILES) cat-id-tbl.c stamp-cat-id
+ 
+ distdir = ../$(PACKAGE)-$(VERSION)/$(subdir)
+ dist distdir: update-po $(DISTFILES)
+@@ -207,7 +208,7 @@
+ 	done
+ 
+ update-po: Makefile
+-	$(MAKE) $(PACKAGE).pot
++	$(MAKE) $(srcdir)/$(PACKAGE).pot
+ 	PATH=`pwd`/../src:$$PATH; \
+ 	cd $(srcdir); \
+ 	catalogs='$(CATALOGS)'; \
+Index: test/Makefile.am
+===================================================================
+RCS file: /cvs/gnome/gnome-vfs/test/Makefile.am,v
+retrieving revision 1.27
+diff -u -u -r1.27 Makefile.am
+--- test/Makefile.am	2000/08/29 14:38:54	1.27
++++ test/Makefile.am	2000/08/30 19:49:12
+@@ -10,8 +10,7 @@
+ 	-I$(top_srcdir)/intl			\
+ 	-I$(top_builddir)/intl			\
+ 	-I$(top_srcdir)/libgnomevfs		\
+-	$(OAF_CFLAGS)				\
+-	$(GNOME_INCLUDEDIR)
++	$(OAF_CFLAGS)
+ 
+ noinst_PROGRAMS =				\
+ 	test-async-cancel                       \
+@@ -51,9 +50,6 @@
+ 
+ libraries =						\
+ 	$(top_builddir)/libgnomevfs/libgnomevfs.la	\
+-	$(GNOME_LIBDIR)					\
+-	$(GNOMEUI_LIBS)					\
+-	$(GNOMEGNORBA_LIBS)                             \
+ 	$(GCONF_LIBS)					\
+ 	$(LIBEFS_LIBS)
+ 
+Index: test/gnome-file-selection/Makefile.am
+===================================================================
+RCS file: /cvs/gnome/gnome-vfs/test/gnome-file-selection/Makefile.am,v
+retrieving revision 1.9
+diff -u -u -r1.9 Makefile.am
+--- test/gnome-file-selection/Makefile.am	2000/06/27 15:54:01	1.9
++++ test/gnome-file-selection/Makefile.am	2000/08/30 19:49:12
+@@ -12,9 +12,9 @@
+ 	-I$(top_srcdir)/intl			\
+ 	-I$(top_builddir)/intl			\
+ 	-I$(top_srcdir)/libgnomevfs		\
+-	$(GNOME_INCLUDEDIR)			\
+ 	-I$(top_srcdir)				\
+-	-DICONDIR=\"$(datadir)/pixmaps/mc\"
++	-DICONDIR=\"$(datadir)/pixmaps/mc\"	\
++	$(GLIB_CFLAGS)
+ 
+ common_sources =				\
+ 	gicon.c					\
+@@ -39,9 +39,6 @@
+ 	main_corba.o						\
+ 	$(top_builddir)/libgnomevfs/libgnomevfs.la		\
+ 	$(top_builddir)/libgnomevfs-corba/libgnomevfs-corba.la	\
+-	$(GNOME_LIBDIR)						\
+-	$(GNOMEUI_LIBS)						\
+-	$(GNOMEGNORBA_LIBS)                                     \
+         $(GCONF_LIBS)
+ 
+ main_pthread.o: main.c
+@@ -50,9 +47,7 @@
+ gnome_file_selection_test_pthread_LDADD =				\
+ 	main_pthread.o							\
+ 	$(top_builddir)/libgnomevfs/libgnomevfs.la			\
+-	$(top_builddir)/libgnomevfs-pthread/libgnomevfs-pthread.la	\
+-	$(GNOME_LIBDIR)							\
+-	$(GNOMEUI_LIBS)
++	$(top_builddir)/libgnomevfs-pthread/libgnomevfs-pthread.la
+ 
+ noinst_HEADERS =				\
+ 	gicon.h					\

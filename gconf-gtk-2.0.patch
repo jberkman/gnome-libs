@@ -1,16 +1,16 @@
 ? gconf.m4
 ? gconf.spec
-? gconf/gconfd-0.6
-? gconf/gconftool-0.6
+? gconf/gconfd-1
 ? gconf/gconfd.oafinfo
+? gconf/gconftool-1
 Index: configure.in
 ===================================================================
 RCS file: /cvs/gnome/gconf/configure.in,v
-retrieving revision 1.49
-diff -u -u -r1.49 configure.in
---- configure.in	2000/07/24 07:53:27	1.49
-+++ configure.in	2000/07/24 19:48:41
-@@ -109,9 +109,9 @@
+retrieving revision 1.53
+diff -u -u -r1.53 configure.in
+--- configure.in	2000/08/10 05:26:51	1.53
++++ configure.in	2000/08/30 19:47:10
+@@ -111,9 +111,9 @@
          AC_FYI("Only building documentation")
  else
  
@@ -22,65 +22,77 @@ diff -u -u -r1.49 configure.in
  
  AM_CONDITIONAL(GTK, test x$HAVE_GTK != xno)
  
-Index: examples/Makefile.am
+Index: po/Makefile.in.in
 ===================================================================
-RCS file: /cvs/gnome/gconf/examples/Makefile.am,v
-retrieving revision 1.5
-diff -u -u -r1.5 Makefile.am
---- examples/Makefile.am	2000/07/19 03:40:27	1.5
-+++ examples/Makefile.am	2000/07/24 19:48:42
-@@ -1,6 +1,6 @@
- INCLUDES=-I$(top_srcdir) -I$(top_srcdir)/gconf -I$(top_builddir)/gconf \
- 	-I$(top_srcdir)/wrappers/gtk -I$(top_builddir)/wrappers/gtk \
--	$(GLIB_CFLAGS) $(OAF_CFLAGS) $(GMODULE_CFLAGS) $(ORBIT_CFLAGS) $(GTK_CFLAGS) \
-+	$(GLIB_CFLAGS) $(GTK_CFLAGS) $(OAF_CFLAGS) $(GMODULE_CFLAGS) $(ORBIT_CFLAGS) \
-         -DGCONF_SRCDIR=\""$(absolute_top_srcdir)"\" -DGCONF_SYSCONFDIR=\""$(sysconfdir)"\"
+RCS file: /cvs/gnome/gconf/po/Makefile.in.in,v
+retrieving revision 1.1
+diff -u -u -r1.1 Makefile.in.in
+--- po/Makefile.in.in	1999/07/22 20:20:02	1.1
++++ po/Makefile.in.in	2000/08/30 19:47:10
+@@ -62,7 +62,7 @@
+ 	$(COMPILE) $<
  
- EFENCE=
-@@ -13,7 +13,7 @@
+ .po.pox:
+-	$(MAKE) $(PACKAGE).pot
++	$(MAKE) $(srcdir)/$(PACKAGE).pot
+ 	$(MSGMERGE) $< $(srcdir)/$(PACKAGE).pot -o $*.pox
  
- noinst_PROGRAMS=$(GTK_EXAMPLES)
+ .po.mo:
+@@ -79,7 +79,7 @@
  
--GTK_EXAMPLES_LINK= $(EFENCE) $(ORBIT_LIBS) $(GTK_LIBS) $(top_builddir)/gconf/libgconf-$(MAJOR_VERSION).la $(top_builddir)/wrappers/gtk/libgconf-gtk-$(MAJOR_VERSION).la $(EFENCE)
-+GTK_EXAMPLES_LINK= $(EFENCE) $(GTK_LIBS) $(ORBIT_LIBS) $(top_builddir)/gconf/libgconf-$(MAJOR_VERSION).la $(top_builddir)/wrappers/gtk/libgconf-gtk-$(MAJOR_VERSION).la $(EFENCE)
+ all: all-@USE_NLS@
  
- basic_gconf_app_SOURCES = basic-gconf-app.c
+-all-yes: cat-id-tbl.c $(CATALOGS)
++all-yes: $(srcdir)/cat-id-tbl.c $(CATALOGS)
+ all-no:
  
-Index: wrappers/gtk/Makefile.am
-===================================================================
-RCS file: /cvs/gnome/gconf/wrappers/gtk/Makefile.am,v
-retrieving revision 1.13
-diff -u -u -r1.13 Makefile.am
---- wrappers/gtk/Makefile.am	2000/07/19 03:40:29	1.13
-+++ wrappers/gtk/Makefile.am	2000/07/24 19:48:42
-@@ -1,5 +1,5 @@
- INCLUDES=-I$(top_srcdir) -I$(top_builddir) -I$(top_builddir)/gconf \
--	$(GLIB_CFLAGS) $(OAF_CFLAGS) $(GMODULE_CFLAGS) $(ORBIT_CFLAGS) $(GTK_CFLAGS) \
-+	$(GLIB_CFLAGS) $(GTK_CFLAGS) $(OAF_CFLAGS) $(GMODULE_CFLAGS) $(ORBIT_CFLAGS) \
- 	-DGCONF_SRCDIR=\""$(absolute_top_srcdir)"\" -DGCONF_SYSCONFDIR=\""$(sysconfdir)/$(MAJOR_VERSION)"\" -DGCONF_BACKEND_DIR=\""$(pkglibdir)/$(MAJOR_VERSION)"\"  -DGCONF_ENABLE_INTERNALS=1 -DG_LOG_DOMAIN=\"GConfClient\"
+ $(srcdir)/$(PACKAGE).pot: $(POTFILES)
+@@ -90,8 +90,8 @@
+ 	   || ( rm -f $(srcdir)/$(PACKAGE).pot \
+ 		&& mv $(PACKAGE).po $(srcdir)/$(PACKAGE).pot )
  
- lib_LTLIBRARIES = libgconf-gtk-0.6.la
-@@ -13,11 +13,11 @@
+-$(srcdir)/cat-id-tbl.c: stamp-cat-id; @:
+-$(srcdir)/stamp-cat-id: $(PACKAGE).pot
++$(srcdir)/cat-id-tbl.c: $(srcdir)/stamp-cat-id; @:
++$(srcdir)/stamp-cat-id: $(srcdir)/$(PACKAGE).pot
+ 	rm -f cat-id-tbl.tmp
+ 	sed -f ../intl/po2tbl.sed $(srcdir)/$(PACKAGE).pot \
+ 		| sed -e "s/@PACKAGE NAME@/$(PACKAGE)/" > cat-id-tbl.tmp
+@@ -180,7 +180,8 @@
  
- libgconf_gtk_0_6_la_LDFLAGS=-version-info $(GCONFGTK_CURRENT):$(GCONFGTK_REVISION):$(GCONFGTK_AGE)
+ check: all
  
--libgconf_gtk_0_6_la_LIBADD=$(OAF_LIBS) $(GTK_LIBS)
-+libgconf_gtk_0_6_la_LIBADD=$(GTK_LIBS) $(OAF_LIBS)
+-cat-id-tbl.o: ../intl/libgettext.h
++cat-id-tbl.o: $(srcdir)/cat-id-tbl.c $(top_srcdir)/intl/libgettext.h
++	$(COMPILE) $(srcdir)/cat-id-tbl.c
  
- noinst_PROGRAMS= testgconfclient
+ dvi info tags TAGS ID:
  
- testgconfclient_SOURCES = testgconfclient.c
+@@ -196,7 +197,7 @@
+ maintainer-clean: distclean
+ 	@echo "This command is intended for maintainers to use;"
+ 	@echo "it deletes files that may require special tools to rebuild."
+-	rm -f $(GMOFILES)
++	rm -f $(GMOFILES) cat-id-tbl.c stamp-cat-id
  
- testgconfclient_DEPS=$(top_builddir)/gconf/libgconf-$(MAJOR_VERSION).la libgconf-gtk-$(MAJOR_VERSION).la
--testgconfclient_LDADD = $(ORBIT_LIBS) $(GTK_LIBS) $(top_builddir)/gconf/libgconf-$(MAJOR_VERSION).la $(top_builddir)/wrappers/gtk/libgconf-gtk-$(MAJOR_VERSION).la
-+testgconfclient_LDADD = $(GTK_LIBS) $(ORBIT_LIBS) $(top_builddir)/gconf/libgconf-$(MAJOR_VERSION).la $(top_builddir)/wrappers/gtk/libgconf-gtk-$(MAJOR_VERSION).la
+ distdir = ../$(PACKAGE)-$(VERSION)/$(subdir)
+ dist distdir: update-po $(DISTFILES)
+@@ -207,7 +208,7 @@
+ 	done
+ 
+ update-po: Makefile
+-	$(MAKE) $(PACKAGE).pot
++	$(MAKE) $(srcdir)/$(PACKAGE).pot
+ 	PATH=`pwd`/../src:$$PATH; \
+ 	cd $(srcdir); \
+ 	catalogs='$(CATALOGS)'; \
 Index: wrappers/gtk/gconf-client.c
 ===================================================================
 RCS file: /cvs/gnome/gconf/wrappers/gtk/gconf-client.c,v
-retrieving revision 1.25
-diff -u -u -r1.25 gconf-client.c
---- wrappers/gtk/gconf-client.c	2000/07/12 05:46:51	1.25
-+++ wrappers/gtk/gconf-client.c	2000/07/24 19:48:43
+retrieving revision 1.27
+diff -u -u -r1.27 gconf-client.c
+--- wrappers/gtk/gconf-client.c	2000/07/26 06:52:52	1.27
++++ wrappers/gtk/gconf-client.c	2000/08/30 19:47:12
 @@ -122,7 +122,7 @@
  static void gconf_client_real_unreturned_error (GConfClient* client, GConfError* error);
  static void gconf_client_real_error            (GConfClient* client, GConfError* error);
@@ -90,7 +102,7 @@ diff -u -u -r1.25 gconf-client.c
  
  static void gconf_client_cache                 (GConfClient* client,
                                                  const gchar* key,
-@@ -170,15 +170,17 @@
+@@ -171,15 +171,17 @@
  gconf_client_class_init (GConfClientClass *class)
  {
    GtkObjectClass *object_class;
@@ -109,7 +121,7 @@ diff -u -u -r1.25 gconf-client.c
                      GTK_SIGNAL_OFFSET (GConfClientClass, value_changed),
                      gtk_marshal_NONE__POINTER_POINTER,
                      GTK_TYPE_NONE, 2, GTK_TYPE_POINTER, GTK_TYPE_POINTER);
-@@ -186,7 +188,7 @@
+@@ -187,7 +189,7 @@
    client_signals[UNRETURNED_ERROR] =
      gtk_signal_new ("unreturned_error",
                      GTK_RUN_LAST,
@@ -118,7 +130,7 @@ diff -u -u -r1.25 gconf-client.c
                      GTK_SIGNAL_OFFSET (GConfClientClass, unreturned_error),
                      gtk_marshal_NONE__POINTER,
                      GTK_TYPE_NONE, 1, GTK_TYPE_POINTER);
-@@ -194,7 +196,7 @@
+@@ -195,7 +197,7 @@
    client_signals[ERROR] =
      gtk_signal_new ("error",
                      GTK_RUN_LAST,
@@ -127,7 +139,7 @@ diff -u -u -r1.25 gconf-client.c
                      GTK_SIGNAL_OFFSET (GConfClientClass, error),
                      gtk_marshal_NONE__POINTER,
                      GTK_TYPE_NONE, 1, GTK_TYPE_POINTER);
-@@ -206,7 +208,7 @@
+@@ -207,7 +209,7 @@
    class->error            = gconf_client_real_error;
  
    object_class->destroy   = gconf_client_destroy;
@@ -136,7 +148,7 @@ diff -u -u -r1.25 gconf-client.c
  }
  
  static void
-@@ -251,7 +253,7 @@
+@@ -253,7 +255,7 @@
  }
  
  static void
@@ -145,7 +157,7 @@ diff -u -u -r1.25 gconf-client.c
  {
    GConfClient* client = GCONF_CLIENT(object);
    
-@@ -275,8 +277,8 @@
+@@ -277,8 +279,8 @@
        client->engine = NULL;
      }
  
