@@ -19,7 +19,8 @@ noinst_PROGRAMS =  \
 	gnome-hello-4-SM		\
 	gnome-hello-5-dnd		\
 	gnome-hello-6-dynamic-menus     \
-	gnome-hello-7-mdi	
+	gnome-hello-7-mdi		\
+	gnome-hello-8-mdi-SM
 
 # automake does not yet dig .sgml files, so for now the DocBook files
 # must be extra_dist.  Also, in the future we should distribute the
