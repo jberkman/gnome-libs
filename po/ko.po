@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-libs 1.0.11\n"
-"POT-Creation-Date: 1999-08-01 17:58-0400\n"
+"POT-Creation-Date: 1999-08-16 14:38-0500\n"
 "PO-Revision-Date: 1999-07-20 04:01+0900\n"
 "Last-Translator: Changwoo Ryu <cwryu@debian.org>\n"
 "Language-Team: Korean <ko@li.org>\n"
@@ -61,7 +61,7 @@ msgstr "파일"
 
 #: gnome-hello/gnome-hello-2-i18n.c:85
 #: gnome-hello/gnome-hello-3-parse-args.c:85 gnome-hello/gnome-hello-4-SM.c:77
-#: gnome-hello/gnome-hello-7-mdi.c:483 libgnomeui/gnome-stock.c:833
+#: gnome-hello/gnome-hello-7-mdi.c:483 libgnomeui/gnome-stock.c:840
 #: libgnomeui/stock_demo.c:290
 msgid "Help"
 msgstr "도움말"
@@ -845,14 +845,6 @@ msgstr "세션 관리 선택사항"
 msgid "Cancel Logout"
 msgstr "로그아웃 취소"
 
-#: libgnomeui/gnome-client.c:2608
-msgid "Really log out?"
-msgstr "정말로 로그아웃할까요?"
-
-#: libgnomeui/gnome-client.c:2617
-msgid "Ask next time"
-msgstr "다음번에 물어보기"
-
 #: libgnomeui/gnome-color-picker.c:313
 msgid "Pick a color"
 msgstr "색상 선택"
@@ -920,7 +912,7 @@ msgstr "찾아보기..."
 msgid "Pick a Font"
 msgstr "글꼴 선택"
 
-#: libgnomeui/gnome-font-picker.c:705 libgnomeui/gnome-stock.c:838
+#: libgnomeui/gnome-font-picker.c:705 libgnomeui/gnome-stock.c:845
 msgid "Font"
 msgstr "글꼴"
 
@@ -1077,6 +1069,18 @@ msgstr "점수"
 msgid "Date"
 msgstr "날짜"
 
+#. the localized string should fit (after replacing the %a %b
+#. etc) in ~18 chars; so drop some if needed; after all this
+#. is for games scores, there is no need for extra precision.
+#. %a is abbreviated weekday, %A is full weekday,
+#. %b %B are abbreviated and full monthname, %Y is year,
+#. %d is day of month, %m is month number, %T full hour,
+#. %H hours, %M minutes, %S seconds
+#.
+#: libgnomeui/gnome-scores.c:119
+msgid "%a %b %d %T %Y"
+msgstr ""
+
 #: libgnomeui/gnome-spell.c:196
 msgid "Select dictionary"
 msgstr "사전 선택"
@@ -1096,11 +1100,11 @@ msgstr ""
 msgid "Confirm"
 msgstr "확인"
 
-#: libgnomeui/gnome-spell.c:256 libgnomeui/gnome-stock.c:827
+#: libgnomeui/gnome-spell.c:256 libgnomeui/gnome-stock.c:834
 msgid "OK"
 msgstr "확인"
 
-#: libgnomeui/gnome-spell.c:263 libgnomeui/gnome-stock.c:829
+#: libgnomeui/gnome-spell.c:263 libgnomeui/gnome-stock.c:836
 msgid "Cancel"
 msgstr "취소"
 
@@ -1220,91 +1224,91 @@ msgstr "Spell"
 msgid "Configure"
 msgstr "설정"
 
-#: libgnomeui/gnome-stock.c:815
+#: libgnomeui/gnome-stock.c:822
 msgid "Add"
 msgstr "추가"
 
-#: libgnomeui/gnome-stock.c:816
+#: libgnomeui/gnome-stock.c:823
 msgid "Clear"
 msgstr "지우기"
 
-#: libgnomeui/gnome-stock.c:817
+#: libgnomeui/gnome-stock.c:824
 msgid "Select Color"
 msgstr "색깔 고르기"
 
-#: libgnomeui/gnome-stock.c:818
+#: libgnomeui/gnome-stock.c:825
 msgid "Remove"
 msgstr "삭제"
 
-#: libgnomeui/gnome-stock.c:819
+#: libgnomeui/gnome-stock.c:826
 msgid "Table Borders"
 msgstr "표 둘레"
 
-#: libgnomeui/gnome-stock.c:820
+#: libgnomeui/gnome-stock.c:827
 msgid "Table Fill"
 msgstr "표 채움"
 
-#: libgnomeui/gnome-stock.c:821
+#: libgnomeui/gnome-stock.c:828
 msgid "Bulleted List"
 msgstr "번호없는 리스트"
 
-#: libgnomeui/gnome-stock.c:822
+#: libgnomeui/gnome-stock.c:829
 msgid "Numbered List"
 msgstr "번호붙인 리스트"
 
-#: libgnomeui/gnome-stock.c:823
+#: libgnomeui/gnome-stock.c:830
 msgid "Indent"
 msgstr "들이기"
 
-#: libgnomeui/gnome-stock.c:824
+#: libgnomeui/gnome-stock.c:831
 msgid "Un-Indent"
 msgstr "들이기-취소"
 
-#: libgnomeui/gnome-stock.c:828
+#: libgnomeui/gnome-stock.c:835
 msgid "Apply"
 msgstr "적용"
 
-#: libgnomeui/gnome-stock.c:830 libgnomeui/stock_demo.c:144
+#: libgnomeui/gnome-stock.c:837 libgnomeui/stock_demo.c:144
 msgid "Close"
 msgstr "닫기"
 
-#: libgnomeui/gnome-stock.c:831
+#: libgnomeui/gnome-stock.c:838
 msgid "Yes"
 msgstr "예"
 
-#: libgnomeui/gnome-stock.c:832
+#: libgnomeui/gnome-stock.c:839
 msgid "No"
 msgstr "아니오"
 
-#: libgnomeui/gnome-stock.c:834
+#: libgnomeui/gnome-stock.c:841
 msgid "Next"
 msgstr "다음"
 
-#: libgnomeui/gnome-stock.c:835
+#: libgnomeui/gnome-stock.c:842
 msgid "Prev"
 msgstr "이전"
 
-#: libgnomeui/gnome-stock.c:836
+#: libgnomeui/gnome-stock.c:843
 msgid "Up"
 msgstr "위로"
 
-#: libgnomeui/gnome-stock.c:837
+#: libgnomeui/gnome-stock.c:844
 msgid "Down"
 msgstr "아래로"
 
-#: libgnomeui/gnome-stock.c:1881
+#: libgnomeui/gnome-stock.c:1888
 msgid "Menu Accelerator Keys"
 msgstr "메뉴 단축키"
 
-#: libgnomeui/gnome-stock.c:1883
+#: libgnomeui/gnome-stock.c:1890
 msgid "Global"
 msgstr "전체 설정"
 
-#: libgnomeui/gnome-stock.c:1885
+#: libgnomeui/gnome-stock.c:1892
 msgid "Menu Item"
 msgstr "메뉴 항목"
 
-#: libgnomeui/gnome-stock.c:1886
+#: libgnomeui/gnome-stock.c:1893
 msgid "Accelerator"
 msgstr "단축키"
 
@@ -1677,3 +1681,9 @@ msgstr "The user chose No/Cancel with data:\n"
 #: test-gnome/testgnome.c:1087
 msgid "Weird number in reply callback"
 msgstr "Weird number in reply callback"
+
+#~ msgid "Really log out?"
+#~ msgstr "정말로 로그아웃할까요?"
+
+#~ msgid "Ask next time"
+#~ msgstr "다음번에 물어보기"

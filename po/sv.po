@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-libs 1.0.12\n"
-"POT-Creation-Date: 1999-08-07 11:18+0200\n"
+"POT-Creation-Date: 1999-08-16 14:38-0500\n"
 "PO-Revision-Date: 1999-08-07 11:18+0200\n"
 "Last-Translator: Richard Hult <rhult@hem2.passagen.se>\n"
 "Language-Team: Swedish <sv@li.org>\n"
@@ -1070,6 +1070,18 @@ msgstr "Resultat"
 msgid "Date"
 msgstr "Datum"
 
+#. the localized string should fit (after replacing the %a %b
+#. etc) in ~18 chars; so drop some if needed; after all this
+#. is for games scores, there is no need for extra precision.
+#. %a is abbreviated weekday, %A is full weekday,
+#. %b %B are abbreviated and full monthname, %Y is year,
+#. %d is day of month, %m is month number, %T full hour,
+#. %H hours, %M minutes, %S seconds
+#.
+#: libgnomeui/gnome-scores.c:119
+msgid "%a %b %d %T %Y"
+msgstr ""
+
 #: libgnomeui/gnome-spell.c:196
 msgid "Select dictionary"
 msgstr "Välj ordlista"
@@ -1669,4 +1681,3 @@ msgstr "Användaren valde Nej/Avbryt med data:\n"
 #: test-gnome/testgnome.c:1087
 msgid "Weird number in reply callback"
 msgstr "Konstigt nummer i svars-callbacken"
-

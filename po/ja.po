@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-libs 1.0.12\n"
-"POT-Creation-Date: 1999-08-01 17:58-0400\n"
+"POT-Creation-Date: 1999-08-16 14:38-0500\n"
 "PO-Revision-Date: 1999-06-23 06:04+09:00\n"
 "Last-Translator: Eiichiro ITANI <emu@ceres.dti.ne.jp>\n"
 "Language-Team: <gnome@lists.hypercore.co.jp>\n"
@@ -62,7 +62,7 @@ msgstr "ファイル"
 
 #: gnome-hello/gnome-hello-2-i18n.c:85
 #: gnome-hello/gnome-hello-3-parse-args.c:85 gnome-hello/gnome-hello-4-SM.c:77
-#: gnome-hello/gnome-hello-7-mdi.c:483 libgnomeui/gnome-stock.c:833
+#: gnome-hello/gnome-hello-7-mdi.c:483 libgnomeui/gnome-stock.c:840
 #: libgnomeui/stock_demo.c:290
 msgid "Help"
 msgstr "ヘルプ"
@@ -846,14 +846,6 @@ msgstr "セッションマネージャオプション"
 msgid "Cancel Logout"
 msgstr "ログアウトをキャンセル"
 
-#: libgnomeui/gnome-client.c:2608
-msgid "Really log out?"
-msgstr "本当にログアウトしますか?"
-
-#: libgnomeui/gnome-client.c:2617
-msgid "Ask next time"
-msgstr "次回も尋ねる"
-
 #: libgnomeui/gnome-color-picker.c:313
 msgid "Pick a color"
 msgstr "色の選択"
@@ -921,7 +913,7 @@ msgstr "参照..."
 msgid "Pick a Font"
 msgstr "フォントの選択"
 
-#: libgnomeui/gnome-font-picker.c:705 libgnomeui/gnome-stock.c:838
+#: libgnomeui/gnome-font-picker.c:705 libgnomeui/gnome-stock.c:845
 msgid "Font"
 msgstr "フォント"
 
@@ -1062,9 +1054,6 @@ msgstr "切取り(_T)"
 msgid "Select"
 msgstr "選択"
 
-msgid "%a %b %d %T %Y"
-msgstr "%Y年%b%d日%a %T"
-
 #: libgnomeui/gnome-scores.c:76
 msgid "Top Ten"
 msgstr "トップ10"
@@ -1080,6 +1069,18 @@ msgstr "スコア"
 #: libgnomeui/gnome-scores.c:93
 msgid "Date"
 msgstr "日付"
+
+#. the localized string should fit (after replacing the %a %b
+#. etc) in ~18 chars; so drop some if needed; after all this
+#. is for games scores, there is no need for extra precision.
+#. %a is abbreviated weekday, %A is full weekday,
+#. %b %B are abbreviated and full monthname, %Y is year,
+#. %d is day of month, %m is month number, %T full hour,
+#. %H hours, %M minutes, %S seconds
+#.
+#: libgnomeui/gnome-scores.c:119
+msgid "%a %b %d %T %Y"
+msgstr "%Y年%b%d日%a %T"
 
 #: libgnomeui/gnome-spell.c:196
 msgid "Select dictionary"
@@ -1100,11 +1101,11 @@ msgstr ""
 msgid "Confirm"
 msgstr "確認"
 
-#: libgnomeui/gnome-spell.c:256 libgnomeui/gnome-stock.c:827
+#: libgnomeui/gnome-spell.c:256 libgnomeui/gnome-stock.c:834
 msgid "OK"
 msgstr "OK"
 
-#: libgnomeui/gnome-spell.c:263 libgnomeui/gnome-stock.c:829
+#: libgnomeui/gnome-spell.c:263 libgnomeui/gnome-stock.c:836
 msgid "Cancel"
 msgstr "キャンセル"
 
@@ -1224,91 +1225,91 @@ msgstr "スペル"
 msgid "Configure"
 msgstr "設定"
 
-#: libgnomeui/gnome-stock.c:815
+#: libgnomeui/gnome-stock.c:822
 msgid "Add"
 msgstr "追加"
 
-#: libgnomeui/gnome-stock.c:816
+#: libgnomeui/gnome-stock.c:823
 msgid "Clear"
 msgstr "消去"
 
-#: libgnomeui/gnome-stock.c:817
+#: libgnomeui/gnome-stock.c:824
 msgid "Select Color"
 msgstr "色の選択"
 
-#: libgnomeui/gnome-stock.c:818
+#: libgnomeui/gnome-stock.c:825
 msgid "Remove"
 msgstr "削除"
 
-#: libgnomeui/gnome-stock.c:819
+#: libgnomeui/gnome-stock.c:826
 msgid "Table Borders"
 msgstr "表の枠"
 
-#: libgnomeui/gnome-stock.c:820
+#: libgnomeui/gnome-stock.c:827
 msgid "Table Fill"
 msgstr ""
 
-#: libgnomeui/gnome-stock.c:821
+#: libgnomeui/gnome-stock.c:828
 msgid "Bulleted List"
 msgstr "`・'で一覧"
 
-#: libgnomeui/gnome-stock.c:822
+#: libgnomeui/gnome-stock.c:829
 msgid "Numbered List"
 msgstr "数字で一覧"
 
-#: libgnomeui/gnome-stock.c:823
+#: libgnomeui/gnome-stock.c:830
 msgid "Indent"
 msgstr "字下げ"
 
-#: libgnomeui/gnome-stock.c:824
+#: libgnomeui/gnome-stock.c:831
 msgid "Un-Indent"
 msgstr "字下げしない"
 
-#: libgnomeui/gnome-stock.c:828
+#: libgnomeui/gnome-stock.c:835
 msgid "Apply"
 msgstr "適用"
 
-#: libgnomeui/gnome-stock.c:830 libgnomeui/stock_demo.c:144
+#: libgnomeui/gnome-stock.c:837 libgnomeui/stock_demo.c:144
 msgid "Close"
 msgstr "閉じる"
 
-#: libgnomeui/gnome-stock.c:831
+#: libgnomeui/gnome-stock.c:838
 msgid "Yes"
 msgstr "はい"
 
-#: libgnomeui/gnome-stock.c:832
+#: libgnomeui/gnome-stock.c:839
 msgid "No"
 msgstr "いいえ"
 
-#: libgnomeui/gnome-stock.c:834
+#: libgnomeui/gnome-stock.c:841
 msgid "Next"
 msgstr "次"
 
-#: libgnomeui/gnome-stock.c:835
+#: libgnomeui/gnome-stock.c:842
 msgid "Prev"
 msgstr "前"
 
-#: libgnomeui/gnome-stock.c:836
+#: libgnomeui/gnome-stock.c:843
 msgid "Up"
 msgstr "上"
 
-#: libgnomeui/gnome-stock.c:837
+#: libgnomeui/gnome-stock.c:844
 msgid "Down"
 msgstr "下"
 
-#: libgnomeui/gnome-stock.c:1881
+#: libgnomeui/gnome-stock.c:1888
 msgid "Menu Accelerator Keys"
 msgstr "メニューアクセラレータキー"
 
-#: libgnomeui/gnome-stock.c:1883
+#: libgnomeui/gnome-stock.c:1890
 msgid "Global"
 msgstr "グローバル"
 
-#: libgnomeui/gnome-stock.c:1885
+#: libgnomeui/gnome-stock.c:1892
 msgid "Menu Item"
 msgstr "メニューアイテム"
 
-#: libgnomeui/gnome-stock.c:1886
+#: libgnomeui/gnome-stock.c:1893
 msgid "Accelerator"
 msgstr "アクセラレータ"
 
@@ -1677,6 +1678,12 @@ msgstr "以下のデータでユーザはいいえ/キャンセルを選択:\n"
 #: test-gnome/testgnome.c:1087
 msgid "Weird number in reply callback"
 msgstr "リプライコールバックに変な番号"
+
+#~ msgid "Really log out?"
+#~ msgstr "本当にログアウトしますか?"
+
+#~ msgid "Ask next time"
+#~ msgstr "次回も尋ねる"
 
 #~ msgid ""
 #~ "No, and ignore\n"

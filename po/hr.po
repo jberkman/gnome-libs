@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-libs 1.0.8\n"
-"POT-Creation-Date: 1999-08-01 17:58-0400\n"
+"POT-Creation-Date: 1999-08-16 14:38-0500\n"
 "PO-Revision-Date: 1999-04-13 15:02+02:00\n"
 "Last-Translator: Tomislav Vujec <tvujec@carnet.hr>\n"
 "Language-Team: Croatian <hr@li.org>\n"
@@ -62,7 +62,7 @@ msgstr "Datoteka"
 
 #: gnome-hello/gnome-hello-2-i18n.c:85
 #: gnome-hello/gnome-hello-3-parse-args.c:85 gnome-hello/gnome-hello-4-SM.c:77
-#: gnome-hello/gnome-hello-7-mdi.c:483 libgnomeui/gnome-stock.c:833
+#: gnome-hello/gnome-hello-7-mdi.c:483 libgnomeui/gnome-stock.c:840
 #: libgnomeui/stock_demo.c:290
 msgid "Help"
 msgstr "Pomoæ"
@@ -846,14 +846,6 @@ msgstr "Opcije session managementa"
 msgid "Cancel Logout"
 msgstr "Poni¹ti Logout"
 
-#: libgnomeui/gnome-client.c:2608
-msgid "Really log out?"
-msgstr "Zaista ¾elite log out?"
-
-#: libgnomeui/gnome-client.c:2617
-msgid "Ask next time"
-msgstr "Pitaj slijedeæi put"
-
 #: libgnomeui/gnome-color-picker.c:313
 msgid "Pick a color"
 msgstr "Odaberi boju"
@@ -921,7 +913,7 @@ msgstr "Izbor..."
 msgid "Pick a Font"
 msgstr "Odaberi pismo"
 
-#: libgnomeui/gnome-font-picker.c:705 libgnomeui/gnome-stock.c:838
+#: libgnomeui/gnome-font-picker.c:705 libgnomeui/gnome-stock.c:845
 msgid "Font"
 msgstr "Pismo"
 
@@ -1078,6 +1070,18 @@ msgstr "Bodovi"
 msgid "Date"
 msgstr "Datum"
 
+#. the localized string should fit (after replacing the %a %b
+#. etc) in ~18 chars; so drop some if needed; after all this
+#. is for games scores, there is no need for extra precision.
+#. %a is abbreviated weekday, %A is full weekday,
+#. %b %B are abbreviated and full monthname, %Y is year,
+#. %d is day of month, %m is month number, %T full hour,
+#. %H hours, %M minutes, %S seconds
+#.
+#: libgnomeui/gnome-scores.c:119
+msgid "%a %b %d %T %Y"
+msgstr ""
+
 #: libgnomeui/gnome-spell.c:196
 msgid "Select dictionary"
 msgstr "Odaberi rijeènik"
@@ -1097,11 +1101,11 @@ msgstr ""
 msgid "Confirm"
 msgstr "Potvrdi"
 
-#: libgnomeui/gnome-spell.c:256 libgnomeui/gnome-stock.c:827
+#: libgnomeui/gnome-spell.c:256 libgnomeui/gnome-stock.c:834
 msgid "OK"
 msgstr "OK"
 
-#: libgnomeui/gnome-spell.c:263 libgnomeui/gnome-stock.c:829
+#: libgnomeui/gnome-spell.c:263 libgnomeui/gnome-stock.c:836
 msgid "Cancel"
 msgstr "Poni¹ti"
 
@@ -1221,91 +1225,91 @@ msgstr "Pravopis"
 msgid "Configure"
 msgstr "Konfiguracija"
 
-#: libgnomeui/gnome-stock.c:815
+#: libgnomeui/gnome-stock.c:822
 msgid "Add"
 msgstr "Dodaj"
 
-#: libgnomeui/gnome-stock.c:816
+#: libgnomeui/gnome-stock.c:823
 msgid "Clear"
 msgstr "Obri¹i"
 
-#: libgnomeui/gnome-stock.c:817
+#: libgnomeui/gnome-stock.c:824
 msgid "Select Color"
 msgstr "Izaberi boju"
 
-#: libgnomeui/gnome-stock.c:818
+#: libgnomeui/gnome-stock.c:825
 msgid "Remove"
 msgstr "Makni"
 
-#: libgnomeui/gnome-stock.c:819
+#: libgnomeui/gnome-stock.c:826
 msgid "Table Borders"
 msgstr "Rubovi tabele"
 
-#: libgnomeui/gnome-stock.c:820
+#: libgnomeui/gnome-stock.c:827
 msgid "Table Fill"
 msgstr "Punjenje tabele"
 
-#: libgnomeui/gnome-stock.c:821
+#: libgnomeui/gnome-stock.c:828
 msgid "Bulleted List"
 msgstr "Lista s toèkama"
 
-#: libgnomeui/gnome-stock.c:822
+#: libgnomeui/gnome-stock.c:829
 msgid "Numbered List"
 msgstr "Pobrojana lista"
 
-#: libgnomeui/gnome-stock.c:823
+#: libgnomeui/gnome-stock.c:830
 msgid "Indent"
 msgstr "Indent"
 
-#: libgnomeui/gnome-stock.c:824
+#: libgnomeui/gnome-stock.c:831
 msgid "Un-Indent"
 msgstr "Un-Indent"
 
-#: libgnomeui/gnome-stock.c:828
+#: libgnomeui/gnome-stock.c:835
 msgid "Apply"
 msgstr "Primijeni"
 
-#: libgnomeui/gnome-stock.c:830 libgnomeui/stock_demo.c:144
+#: libgnomeui/gnome-stock.c:837 libgnomeui/stock_demo.c:144
 msgid "Close"
 msgstr "Zatvori"
 
-#: libgnomeui/gnome-stock.c:831
+#: libgnomeui/gnome-stock.c:838
 msgid "Yes"
 msgstr "Da"
 
-#: libgnomeui/gnome-stock.c:832
+#: libgnomeui/gnome-stock.c:839
 msgid "No"
 msgstr "Ne"
 
-#: libgnomeui/gnome-stock.c:834
+#: libgnomeui/gnome-stock.c:841
 msgid "Next"
 msgstr "Slijedeæi"
 
-#: libgnomeui/gnome-stock.c:835
+#: libgnomeui/gnome-stock.c:842
 msgid "Prev"
 msgstr "Prethodni"
 
-#: libgnomeui/gnome-stock.c:836
+#: libgnomeui/gnome-stock.c:843
 msgid "Up"
 msgstr "Gore"
 
-#: libgnomeui/gnome-stock.c:837
+#: libgnomeui/gnome-stock.c:844
 msgid "Down"
 msgstr "Dolje"
 
-#: libgnomeui/gnome-stock.c:1881
+#: libgnomeui/gnome-stock.c:1888
 msgid "Menu Accelerator Keys"
 msgstr "Akceleratorske tipke izbornika"
 
-#: libgnomeui/gnome-stock.c:1883
+#: libgnomeui/gnome-stock.c:1890
 msgid "Global"
 msgstr "Global"
 
-#: libgnomeui/gnome-stock.c:1885
+#: libgnomeui/gnome-stock.c:1892
 msgid "Menu Item"
 msgstr "Opcija izbornika"
 
-#: libgnomeui/gnome-stock.c:1886
+#: libgnomeui/gnome-stock.c:1893
 msgid "Accelerator"
 msgstr "Akcelerator"
 
@@ -1674,6 +1678,12 @@ msgstr "Korisnik je izabrao Ne/Poni¹ti sa podacima:\n"
 #: test-gnome/testgnome.c:1087
 msgid "Weird number in reply callback"
 msgstr "Èudan broj u povratnom pozivu odgovora"
+
+#~ msgid "Really log out?"
+#~ msgstr "Zaista ¾elite log out?"
+
+#~ msgid "Ask next time"
+#~ msgstr "Pitaj slijedeæi put"
 
 #~ msgid ""
 #~ "No, and ignore\n"

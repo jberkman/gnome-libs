@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-libs\n"
-"POT-Creation-Date: 1999-08-01 17:58-0400\n"
+"POT-Creation-Date: 1999-08-16 14:38-0500\n"
 "PO-Revision-Date: 1999-08-13 14:20+0300\n"
 "Last-Translator: Mikko Rauhala <mjr@iki.fi>\n"
 "Language-Team: Finnish <fi@li.org>\n"
@@ -61,7 +61,7 @@ msgstr "Tiedosto"
 
 #: gnome-hello/gnome-hello-2-i18n.c:85
 #: gnome-hello/gnome-hello-3-parse-args.c:85 gnome-hello/gnome-hello-4-SM.c:77
-#: gnome-hello/gnome-hello-7-mdi.c:483 libgnomeui/gnome-stock.c:833
+#: gnome-hello/gnome-hello-7-mdi.c:483 libgnomeui/gnome-stock.c:840
 #: libgnomeui/stock_demo.c:290
 msgid "Help"
 msgstr "Ohje"
@@ -848,14 +848,6 @@ msgstr "Istunnonhallinnan valinnat"
 msgid "Cancel Logout"
 msgstr "Peruuta uloskirjoittautuminen"
 
-#: libgnomeui/gnome-client.c:2608
-msgid "Really log out?"
-msgstr "Haluatko todella kirjoittautua ulos?"
-
-#: libgnomeui/gnome-client.c:2617
-msgid "Ask next time"
-msgstr "Kysy ensi kerralla"
-
 #: libgnomeui/gnome-color-picker.c:313
 msgid "Pick a color"
 msgstr "Valitse väri"
@@ -923,7 +915,7 @@ msgstr "Selaa..."
 msgid "Pick a Font"
 msgstr "Valitse kirjasinlaji"
 
-#: libgnomeui/gnome-font-picker.c:705 libgnomeui/gnome-stock.c:838
+#: libgnomeui/gnome-font-picker.c:705 libgnomeui/gnome-stock.c:845
 msgid "Font"
 msgstr "Kirjasinlaji"
 
@@ -1080,6 +1072,18 @@ msgstr "Tulos"
 msgid "Date"
 msgstr "Päivämäärä"
 
+#. the localized string should fit (after replacing the %a %b
+#. etc) in ~18 chars; so drop some if needed; after all this
+#. is for games scores, there is no need for extra precision.
+#. %a is abbreviated weekday, %A is full weekday,
+#. %b %B are abbreviated and full monthname, %Y is year,
+#. %d is day of month, %m is month number, %T full hour,
+#. %H hours, %M minutes, %S seconds
+#.
+#: libgnomeui/gnome-scores.c:119
+msgid "%a %b %d %T %Y"
+msgstr ""
+
 #: libgnomeui/gnome-spell.c:196
 msgid "Select dictionary"
 msgstr "Valitse sanakirja"
@@ -1100,11 +1104,11 @@ msgstr ""
 msgid "Confirm"
 msgstr "Vahvista"
 
-#: libgnomeui/gnome-spell.c:256 libgnomeui/gnome-stock.c:827
+#: libgnomeui/gnome-spell.c:256 libgnomeui/gnome-stock.c:834
 msgid "OK"
 msgstr "OK"
 
-#: libgnomeui/gnome-spell.c:263 libgnomeui/gnome-stock.c:829
+#: libgnomeui/gnome-spell.c:263 libgnomeui/gnome-stock.c:836
 msgid "Cancel"
 msgstr "Peruuta"
 
@@ -1224,91 +1228,91 @@ msgstr "Tarkistus"
 msgid "Configure"
 msgstr "Asetukset"
 
-#: libgnomeui/gnome-stock.c:815
+#: libgnomeui/gnome-stock.c:822
 msgid "Add"
 msgstr "Lisää"
 
-#: libgnomeui/gnome-stock.c:816
+#: libgnomeui/gnome-stock.c:823
 msgid "Clear"
 msgstr "Tyhjennä"
 
-#: libgnomeui/gnome-stock.c:817
+#: libgnomeui/gnome-stock.c:824
 msgid "Select Color"
 msgstr "Valitse väri"
 
-#: libgnomeui/gnome-stock.c:818
+#: libgnomeui/gnome-stock.c:825
 msgid "Remove"
 msgstr "Poista"
 
-#: libgnomeui/gnome-stock.c:819
+#: libgnomeui/gnome-stock.c:826
 msgid "Table Borders"
 msgstr "Taulukon reunat"
 
-#: libgnomeui/gnome-stock.c:820
+#: libgnomeui/gnome-stock.c:827
 msgid "Table Fill"
 msgstr "Taulukon täyttö"
 
-#: libgnomeui/gnome-stock.c:821
+#: libgnomeui/gnome-stock.c:828
 msgid "Bulleted List"
 msgstr "Numeroimaton lista"
 
-#: libgnomeui/gnome-stock.c:822
+#: libgnomeui/gnome-stock.c:829
 msgid "Numbered List"
 msgstr "Numeroitu lista"
 
-#: libgnomeui/gnome-stock.c:823
+#: libgnomeui/gnome-stock.c:830
 msgid "Indent"
 msgstr "Sisennä"
 
-#: libgnomeui/gnome-stock.c:824
+#: libgnomeui/gnome-stock.c:831
 msgid "Un-Indent"
 msgstr "Poista sisennys"
 
-#: libgnomeui/gnome-stock.c:828
+#: libgnomeui/gnome-stock.c:835
 msgid "Apply"
 msgstr "Toteuta"
 
-#: libgnomeui/gnome-stock.c:830 libgnomeui/stock_demo.c:144
+#: libgnomeui/gnome-stock.c:837 libgnomeui/stock_demo.c:144
 msgid "Close"
 msgstr "Sulje"
 
-#: libgnomeui/gnome-stock.c:831
+#: libgnomeui/gnome-stock.c:838
 msgid "Yes"
 msgstr "Kyllä"
 
-#: libgnomeui/gnome-stock.c:832
+#: libgnomeui/gnome-stock.c:839
 msgid "No"
 msgstr "Ei"
 
-#: libgnomeui/gnome-stock.c:834
+#: libgnomeui/gnome-stock.c:841
 msgid "Next"
 msgstr "Seuraava"
 
-#: libgnomeui/gnome-stock.c:835
+#: libgnomeui/gnome-stock.c:842
 msgid "Prev"
 msgstr "Edellinen"
 
-#: libgnomeui/gnome-stock.c:836
+#: libgnomeui/gnome-stock.c:843
 msgid "Up"
 msgstr "Ylös"
 
-#: libgnomeui/gnome-stock.c:837
+#: libgnomeui/gnome-stock.c:844
 msgid "Down"
 msgstr "Alas"
 
-#: libgnomeui/gnome-stock.c:1881
+#: libgnomeui/gnome-stock.c:1888
 msgid "Menu Accelerator Keys"
 msgstr "Valikon pikavalintanäppäimet"
 
-#: libgnomeui/gnome-stock.c:1883
+#: libgnomeui/gnome-stock.c:1890
 msgid "Global"
 msgstr "Yleinen"
 
-#: libgnomeui/gnome-stock.c:1885
+#: libgnomeui/gnome-stock.c:1892
 msgid "Menu Item"
 msgstr "Valikon kohta"
 
-#: libgnomeui/gnome-stock.c:1886
+#: libgnomeui/gnome-stock.c:1893
 msgid "Accelerator"
 msgstr "Pikavalinta"
 
@@ -1321,7 +1325,8 @@ msgid ""
 msgstr ""
 "Sovellus \"%s\" (prosessi %d) on kaatunut ohjelmistovirheen vuoksi.\n"
 "(%s)\n"
-"Lisätietoja on saatavilla osoitteessa http://www.gnome.org/application_crashed.shtml"
+"Lisätietoja on saatavilla osoitteessa "
+"http://www.gnome.org/application_crashed.shtml"
 
 #: libgnomeui/stock_demo.c:112
 msgid "New..."
@@ -1691,3 +1696,9 @@ msgstr "Käyttäjä valitsi Ei/Peruuta datalla:\n"
 #: test-gnome/testgnome.c:1087
 msgid "Weird number in reply callback"
 msgstr "Outo numero takaisinkutsurutiinissa"
+
+#~ msgid "Really log out?"
+#~ msgstr "Haluatko todella kirjoittautua ulos?"
+
+#~ msgid "Ask next time"
+#~ msgstr "Kysy ensi kerralla"

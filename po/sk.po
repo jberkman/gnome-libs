@@ -1,10 +1,10 @@
 msgid ""
 msgstr ""
-"POT-Creation-Date: 1999-08-01 17:58-0400\n"
-"Date: 1999-05-03 12:40:14+0000\n"
-"From: Bobo Rajec,BSP Consulting,<bobo@bspc.sk>\n"
+"POT-Creation-Date: 1999-08-16 14:38-0500\n"
 "Last-Translator: Bobo Rajec,BSP Consulting,<bobo@bspc.sk>\n"
 "Content-Type: text/plain; charset=iso-8859-2\n"
+"Date: 1999-05-03 12:40:14+0000\n"
+"From: Bobo Rajec,BSP Consulting,<bobo@bspc.sk>\n"
 
 #: gnome-hello/gnome-hello-2-i18n.c:36
 #: gnome-hello/gnome-hello-3-parse-args.c:36
@@ -53,7 +53,7 @@ msgstr "Súbor"
 
 #: gnome-hello/gnome-hello-2-i18n.c:85
 #: gnome-hello/gnome-hello-3-parse-args.c:85 gnome-hello/gnome-hello-4-SM.c:77
-#: gnome-hello/gnome-hello-7-mdi.c:483 libgnomeui/gnome-stock.c:833
+#: gnome-hello/gnome-hello-7-mdi.c:483 libgnomeui/gnome-stock.c:840
 #: libgnomeui/stock_demo.c:290
 msgid "Help"
 msgstr "Nápoveda"
@@ -838,14 +838,6 @@ msgstr "Mo¾nosti session mana¾mentu"
 msgid "Cancel Logout"
 msgstr "Storno odhlásenie"
 
-#: libgnomeui/gnome-client.c:2608
-msgid "Really log out?"
-msgstr "Skutoène sa chcete odhlási»?"
-
-#: libgnomeui/gnome-client.c:2617
-msgid "Ask next time"
-msgstr "Opýtaj sa aj nabudúce"
-
 #: libgnomeui/gnome-color-picker.c:313
 msgid "Pick a color"
 msgstr "Vyber farbu"
@@ -913,7 +905,7 @@ msgstr "Prehµadaj..."
 msgid "Pick a Font"
 msgstr "Vyber písmo"
 
-#: libgnomeui/gnome-font-picker.c:705 libgnomeui/gnome-stock.c:838
+#: libgnomeui/gnome-font-picker.c:705 libgnomeui/gnome-stock.c:845
 msgid "Font"
 msgstr "Písmo"
 
@@ -1070,6 +1062,18 @@ msgstr "Skóre"
 msgid "Date"
 msgstr "Dátum"
 
+#. the localized string should fit (after replacing the %a %b
+#. etc) in ~18 chars; so drop some if needed; after all this
+#. is for games scores, there is no need for extra precision.
+#. %a is abbreviated weekday, %A is full weekday,
+#. %b %B are abbreviated and full monthname, %Y is year,
+#. %d is day of month, %m is month number, %T full hour,
+#. %H hours, %M minutes, %S seconds
+#.
+#: libgnomeui/gnome-scores.c:119
+msgid "%a %b %d %T %Y"
+msgstr ""
+
 #: libgnomeui/gnome-spell.c:196
 msgid "Select dictionary"
 msgstr "Vyber slovník"
@@ -1089,11 +1093,11 @@ msgstr ""
 msgid "Confirm"
 msgstr "Potvrï"
 
-#: libgnomeui/gnome-spell.c:256 libgnomeui/gnome-stock.c:827
+#: libgnomeui/gnome-spell.c:256 libgnomeui/gnome-stock.c:834
 msgid "OK"
 msgstr "OK"
 
-#: libgnomeui/gnome-spell.c:263 libgnomeui/gnome-stock.c:829
+#: libgnomeui/gnome-spell.c:263 libgnomeui/gnome-stock.c:836
 msgid "Cancel"
 msgstr "Storno"
 
@@ -1209,91 +1213,91 @@ msgstr "Pravopis"
 msgid "Configure"
 msgstr "Nastavenia"
 
-#: libgnomeui/gnome-stock.c:815
+#: libgnomeui/gnome-stock.c:822
 msgid "Add"
 msgstr "Pridaj"
 
-#: libgnomeui/gnome-stock.c:816
+#: libgnomeui/gnome-stock.c:823
 msgid "Clear"
 msgstr "Vyma¾"
 
-#: libgnomeui/gnome-stock.c:817
+#: libgnomeui/gnome-stock.c:824
 msgid "Select Color"
 msgstr "Vyber farbu"
 
-#: libgnomeui/gnome-stock.c:818
+#: libgnomeui/gnome-stock.c:825
 msgid "Remove"
 msgstr "Odstráò"
 
-#: libgnomeui/gnome-stock.c:819
+#: libgnomeui/gnome-stock.c:826
 msgid "Table Borders"
 msgstr "Okraje tabuµky"
 
-#: libgnomeui/gnome-stock.c:820
+#: libgnomeui/gnome-stock.c:827
 msgid "Table Fill"
 msgstr "Výplò tabuµky"
 
-#: libgnomeui/gnome-stock.c:821
+#: libgnomeui/gnome-stock.c:828
 msgid "Bulleted List"
 msgstr "Zoznam s odrá¾kami"
 
-#: libgnomeui/gnome-stock.c:822
+#: libgnomeui/gnome-stock.c:829
 msgid "Numbered List"
 msgstr "Èíslovaný zoznam"
 
-#: libgnomeui/gnome-stock.c:823
+#: libgnomeui/gnome-stock.c:830
 msgid "Indent"
 msgstr "Odsadenie"
 
-#: libgnomeui/gnome-stock.c:824
+#: libgnomeui/gnome-stock.c:831
 msgid "Un-Indent"
 msgstr "Neodsadzuj"
 
-#: libgnomeui/gnome-stock.c:828
+#: libgnomeui/gnome-stock.c:835
 msgid "Apply"
 msgstr "Aplikuj"
 
-#: libgnomeui/gnome-stock.c:830 libgnomeui/stock_demo.c:144
+#: libgnomeui/gnome-stock.c:837 libgnomeui/stock_demo.c:144
 msgid "Close"
 msgstr "Zavri"
 
-#: libgnomeui/gnome-stock.c:831
+#: libgnomeui/gnome-stock.c:838
 msgid "Yes"
 msgstr "Áno"
 
-#: libgnomeui/gnome-stock.c:832
+#: libgnomeui/gnome-stock.c:839
 msgid "No"
 msgstr "Nie"
 
-#: libgnomeui/gnome-stock.c:834
+#: libgnomeui/gnome-stock.c:841
 msgid "Next"
 msgstr "Ïal¹í"
 
-#: libgnomeui/gnome-stock.c:835
+#: libgnomeui/gnome-stock.c:842
 msgid "Prev"
 msgstr "Predchádzajúci"
 
-#: libgnomeui/gnome-stock.c:836
+#: libgnomeui/gnome-stock.c:843
 msgid "Up"
 msgstr "Hore"
 
-#: libgnomeui/gnome-stock.c:837
+#: libgnomeui/gnome-stock.c:844
 msgid "Down"
 msgstr "Dolu"
 
-#: libgnomeui/gnome-stock.c:1881
+#: libgnomeui/gnome-stock.c:1888
 msgid "Menu Accelerator Keys"
 msgstr "Klávesové skratky v menu"
 
-#: libgnomeui/gnome-stock.c:1883
+#: libgnomeui/gnome-stock.c:1890
 msgid "Global"
 msgstr "Globálne"
 
-#: libgnomeui/gnome-stock.c:1885
+#: libgnomeui/gnome-stock.c:1892
 msgid "Menu Item"
 msgstr "Polo¾ka menu"
 
-#: libgnomeui/gnome-stock.c:1886
+#: libgnomeui/gnome-stock.c:1893
 msgid "Accelerator"
 msgstr "Klávesová skratka"
 
@@ -1660,6 +1664,12 @@ msgstr "Pou¾ívateµ zvolil Nie/Storno s dátami:\n"
 #: test-gnome/testgnome.c:1087
 msgid "Weird number in reply callback"
 msgstr "Divné èíslo v spätnom volaní s odpoveïou"
+
+#~ msgid "Really log out?"
+#~ msgstr "Skutoène sa chcete odhlási»?"
+
+#~ msgid "Ask next time"
+#~ msgstr "Opýtaj sa aj nabudúce"
 
 #~ msgid ""
 #~ "No, and ignore\n"
