@@ -735,14 +735,16 @@ normal_loading:
     return CORBA_OBJECT_NIL;
   }
 
+#if 0  
   local_server_info = g_new(ActiveServerInfo, 1);
   local_server_info->impl_ptr = impl_ptr;
   local_server_info->id = g_strdup(sinfo->server_id);
-  
+
   if(!our_active_servers)
     g_atexit(goad_servers_unregister_atexit);
   
   our_active_servers = g_slist_prepend(our_active_servers, local_server_info);
+#endif
   return retval;
 }
 
@@ -838,7 +840,7 @@ goad_server_activate_factory(GoadServer *sinfo,
   GNOME_stringlist sl;
 
   factory_obj = goad_server_activate_with_id(slist, sinfo->location_info,
-					     flags & ~(GOAD_ACTIVATE_ASYNC), NULL);
+					     flags & ~(GOAD_ACTIVATE_ASYNC|GOAD_ACTIVATE_NEW_ONLY), NULL);
 
   if(factory_obj == CORBA_OBJECT_NIL)
     return CORBA_OBJECT_NIL;
