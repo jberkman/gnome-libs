@@ -700,7 +700,6 @@ create_pixmap_entry(void)
 	gtk_widget_show(app);
 }
 
-#if 0
 static void
 create_icon_entry(void)
 {
@@ -713,7 +712,6 @@ create_icon_entry(void)
 	gtk_widget_show(entry);
 	gtk_widget_show(app);
 }
-#endif
 
 static void
 create_number_entry(void)
@@ -874,7 +872,6 @@ create_font_picker (void)
 
 }
 
-#ifdef HAVE_ICON_LIST
 static void
 select_icon (GnomeIconList *gil, gint n, GdkEvent *event, gpointer data)
 {
@@ -903,7 +900,7 @@ create_icon_list(void)
 	GtkWidget *app;
 	GtkWidget *sw;
 	GtkWidget *iconlist;
-	GdkImlibImage *pix;
+	GdkPixbuf *pix;
 	int i;
 
 	app = create_newwin(TRUE,"testGNOME","Icon List");
@@ -926,17 +923,16 @@ create_icon_list(void)
 			    NULL);
 
 	GTK_WIDGET_SET_FLAGS(iconlist, GTK_CAN_FOCUS);
-	pix = gdk_imlib_create_image_from_xpm_data((gchar **)bomb_xpm);
-	gdk_imlib_render (pix, pix->rgb_width, pix->rgb_height);
+	pix = gdk_pixbuf_new_from_xpm_data((const char **)bomb_xpm);
 
 	gtk_widget_grab_focus (iconlist);
 
 	gnome_icon_list_freeze (GNOME_ICON_LIST (iconlist));
 
 	for (i = 0; i < 30; i++) {
-		gnome_icon_list_append_imlib(GNOME_ICON_LIST(iconlist), pix, "Foo");
-		gnome_icon_list_append_imlib(GNOME_ICON_LIST(iconlist), pix, "Bar");
-		gnome_icon_list_append_imlib(GNOME_ICON_LIST(iconlist), pix, "LaLa");
+		gnome_icon_list_append_pixbuf(GNOME_ICON_LIST(iconlist), pix, "Foo");
+		gnome_icon_list_append_pixbuf(GNOME_ICON_LIST(iconlist), pix, "Bar");
+		gnome_icon_list_append_pixbuf(GNOME_ICON_LIST(iconlist), pix, "LaLa");
 	}
 
 	gnome_icon_list_set_selection_mode (GNOME_ICON_LIST (iconlist), GTK_SELECTION_EXTENDED);
@@ -944,7 +940,6 @@ create_icon_list(void)
 	gtk_widget_show (iconlist);
 	gtk_widget_show(app);
 }
-#endif
 
 static void
 create_less(void)
@@ -969,7 +964,7 @@ create_pixmap(void)
 	GtkWidget *app;
 	GtkWidget *pixmap;
 	app = create_newwin(TRUE,"testGNOME","Pixmap");
-	pixmap = gnome_pixmap_new_from_xpm_d (bomb_xpm);
+	pixmap = gnome_pixmap_new_from_xpm_d ((const gchar **)bomb_xpm);
 
 	gnome_app_set_contents(GNOME_APP(app),pixmap);
 	gtk_widget_show(pixmap);
@@ -1915,14 +1910,10 @@ main (int argc, char *argv[])
 		  { "dialog", create_dialog },
 		  { "file entry", create_file_entry },
                   { "pixmap entry", create_pixmap_entry },
-#ifdef HAVE_ICON_LIST
                   { "icon entry", create_icon_entry },
-#endif
                   { "number entry", create_number_entry },
                   { "font picker", create_font_picker },
-#ifdef HAVE_ICON_LIST
 		  { "icon list", create_icon_list },
-#endif
 		  { "less", create_less },
 		  { "pixmap", create_pixmap },
 #if 0
