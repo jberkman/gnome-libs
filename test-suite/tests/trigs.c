@@ -24,7 +24,7 @@ int main(int argc, char *argv[])
 	trig.u.function = sample_trigger_function;
 	trig.level = NULL;
 
-	gnomelib_init("trigs", "0.0");
+	gnome_program_init("trigs", "0.0", argc, argv, LIBGNOME_INIT, NULL);
 	fn = g_strconcat(getenv("srcdir"), "/tests/trigs.in", NULL);
 	gnome_triggers_init();
 	gnome_triggers_add_trigger(&trig, "test", "one", NULL);

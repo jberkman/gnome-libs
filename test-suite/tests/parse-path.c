@@ -94,7 +94,7 @@ run_tests_with_prefix (const char *pfx)
 int
 main (int argc, char *argv[])
 {
-	gnomelib_init("parse-path", "0.0");
+	gnome_program_init("parse-path", "0.0", argc, argv, LIBGNOME_INIT, NULL);
 
 	gnome_user_dir = "/tmp/.gnome";
 	gnome_user_private_dir = "/tmp/.gnome_private";

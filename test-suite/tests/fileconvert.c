@@ -19,7 +19,7 @@ int main(int argc, char *argv[])
 	gchar abuf[128];
 	gchar *fn;
 	
-	gnomelib_init("fileconvert", "0.0");
+	gnome_program_init("fileconvert", "0.0", argc, argv, LIBGNOME_INIT, NULL);
 	fn = g_strconcat(getenv("srcdir"), "/tests", NULL);
 	chdir(fn);
 	chmod("lynxdump.sh", S_IXGRP|S_IXOTH|S_IXUSR|S_IRGRP|S_IROTH|S_IRUSR|S_IWUSR);

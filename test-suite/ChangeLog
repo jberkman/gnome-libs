@@ -1,3 +1,13 @@
+1999-11-17  Iain Holmes <ih@csd.abdn.ac.uk>
+
+	* tests/fileconvert.c (main): Changed gnomelib_init to 
+	gnome_program_init so that the tests compile without gnome10compat
+	stuff.
+	* tests/parse-path.c (main): Likewise.
+	* tests/skel.c (main): Likewise.
+	* tests/split.c (main): Likewise.
+	* tests/trigs.c: (main): Likewise.
+
 1999-08-18  Havoc Pennington  <hp@pobox.com>
 
 	* tests/Makefile.am: Add includes for Imlib, fixes bug 1535

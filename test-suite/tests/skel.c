@@ -11,7 +11,7 @@
 
 int main(int argc, char *argv[])
 {
-	gnomelib_init("skel", "0.0");
+	gnome_program_init("skel", "0.0", argc, argv, LIBGNOME_INIT, NULL);
 	fflush(stdout); /* Make sure to fflush things after you do
 			   any output, so what you see on your terminal
 			   is the same as what goes into the output file */

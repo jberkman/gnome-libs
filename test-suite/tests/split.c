@@ -14,7 +14,7 @@ int main(int argc, char *argv[])
 {
 	char **output;
 	int i;
-	gnomelib_init("split", "0.0");
+	gnome_program_init("split", "0.0", argc, argv, LIBGNOME_INIT, NULL);
 	output = g_strsplit("foo:bar:baz:qaz", ":", -1);
 	for(i = 0; output[i]; i++) {
 		g_print("%s ", output[i]);
