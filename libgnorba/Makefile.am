@@ -71,7 +71,7 @@ libgnorbainclude_HEADERS = 				\
 	GnomeObject.h					\
 	Table.h
 
-libgnorba_la_LDFLAGS = -version-info 28:5:1 -rpath $(libdir)
+libgnorba_la_LDFLAGS = -version-info 28:6:1 -rpath $(libdir)
 libgnorba_la_LIBADD = $(ORBIT_LIBS) $(GLIB_LIBS) -lm
 
 loadshlib_SOURCES = loadshlib.c

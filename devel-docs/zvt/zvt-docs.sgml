@@ -44,7 +44,7 @@
     <para>The ZVT Terminal Widget (zvtterm) provides high level access
       to a xterm-compliant terminal emulator which can be used for
       terminal emulation or as a high performance text output engine
-      with scrollback and selection facilities.</para>
+      with scroll-back and selection facilities.</para>
     
     <para><xref linkend="zvtterm-reference"> contains the detailed
       function call descriptions of all publically callable functions.</para>
@@ -52,7 +52,7 @@
     <para><xref linkend="zvtterm-notes"> covers some
       implementation ideas and issues that will guide the implementor.</para>
 
-    <para>A few breif notes on future plans are include in <xref
+    <para>A few brief notes on future plans are include in <xref
       linkend="zvtterm-future">.</para>
     
     <sect1>
@@ -111,13 +111,13 @@
 	      endterm="zvtterm-zvt-term-set-wordclass"> - set characters which
 	    match words in selections</para></listitem>
 	<listitem><para><xref linkend="zvtterm-zvt-term-set-color-scheme"
-	      endterm="zvtterm-zvt-term-set-color-scheme"> - set the colour
+	      endterm="zvtterm-zvt-term-set-color-scheme"> - set the color
 	    palette</para></listitem>
 	<listitem><para><xref linkend="zvtterm-zvt-term-set-default-color-scheme"
 	      endterm="zvtterm-zvt-term-set-default-color-scheme"> - restore
-	    default colour palette.</para></listitem>
+	    default color palette.</para></listitem>
 	<listitem><para><xref linkend="zvtterm-zvt-term-set-scrollback"
-	      endterm="zvtterm-zvt-term-set-scrollback"> - set scrollback buffer
+	      endterm="zvtterm-zvt-term-set-scrollback"> - set scroll-back buffer
 	    size.</para></listitem>
 	<listitem><para><xref linkend="zvtterm-zvt-term-set-fonts"
 	      endterm="zvtterm-zvt-term-set-fonts"> - set fonts.</para></listitem>
@@ -131,7 +131,7 @@
 	      endterm="zvtterm-zvt-term-get-capabilities"> - query compiled
 	    capabilities.</para></listitem>
       </itemizedlist>
-      <para>These commands change the behaviour at runtime.</para>
+      <para>These commands change the behavior at runtime.</para>
       <itemizedlist>
 	<listitem><para><xref linkend="zvtterm-zvt-term-show-pointer"
 	      endterm="zvtterm-zvt-term-show-pointer"> - Make the mouse pointer
@@ -178,13 +178,13 @@
       <itemizedlist>
 	<listitem><para><xref linkend="zvtterm-zvt-term-get-buffer"
 	      endterm="zvtterm-zvt-term-get-buffer"> - Retrieve the raw
-	    screen/scrollback text.</para></listitem>
+	    screen/scroll-back text.</para></listitem>
       </itemizedlist>
     </sect1>
   </chapter>
   <chapter id="zvtterm-reference">
     <title>API Reference</title>
-    <para>The following pages contain the complete api reference.
+    <para>The following pages contain the complete API reference.
     </para>
     <sect1>
     <title>Terminal functions</title>
@@ -207,11 +207,11 @@
 	    to simplify your job.</para>
 	</listitem>
 	<listitem><para>When you wish to provide a graphical front-end
-	    to an exsiting terminal-based application, including
-	    integrated cut-and-paste, scrollback, and ANSI colour support.</para>
+	    to an exiting terminal-based application, including
+	    integrated cut-and-paste, scroll-back, and ANSI color support.</para>
 	</listitem>
-	<listitem><para>When you want to generate coloured output
-	    and display it in a scrollable window.  ZvtTerm includes an
+	<listitem><para>When you want to generate colored output
+	    and display it in a scroll-able window.  ZvtTerm includes an
 	    efficient and fast display and rendering engine - even
 	    when transparency or pixmaps are used.
 	    </para>
@@ -260,7 +260,7 @@
 	  80x24 terminal.</para>
 	<para>You may also need to force the application window not to
 	  be resized, if the embedded application cannot handle it.
-	  This can be done using the normal gdk/gtk window hints
+	  This can be done using the normal GDK/GTK+ window hints
 	  mechanism.</para>
       </sect2>
       <sect2>
@@ -274,9 +274,9 @@
 	  subordinate program, and register the login session if required.
 	  ZvtTerm uses a secure set-uid helper application to register
 	  the session, so applications need not (and should not!) be run
-	  as a priviledged user to register login sessions.</para>
+	  as a privileged user to register login sessions.</para>
 	<para>The environment must also be setup appropriately if any
-	  curses/ncurses or similar application is to be run within the
+	  curses/nurses or similar application is to be run within the
 	  terminal.  The following environmental variables should be modified/set
 	  as shown:</para>
 	<variablelist>
@@ -294,8 +294,8 @@
 	    <listitem>
 	      <para>Can be set to anything, including the name of the
 		application.  Although it may be appropriate to set it
-		to the value "zterm".  This will enable colour rendering
-		in a modern colour-capable curses, like ncurses.
+		to the value "zterm".  This will enable color rendering
+		in a modern color-capable curses, like ncurses.
               </para>
 	    </listitem>
 	  </varlistentry>
@@ -304,7 +304,7 @@
 	    <listitem>
 	      <para>These variables should be removed from the
 		environment passed to the child process.  However it may
-		be necessary to initialise it to the size of the
+		be necessary to initialize it to the size of the
 		terminal, if it will not change.  The terminal size is
 		always set properly on the pseudo-tty.
               </para>
@@ -328,11 +328,11 @@
     </sect1>
 
     <sect1>
-      <title>As a colour output device</title>
+      <title>As a color output device</title>
       <para>Another way to use the terminal emulator is as an output
-	device with full colour and xterm emulation support.  This will
+	device with full color and xterm emulation support.  This will
 	let your application gain the benefits of an automatic
-	scrollback capability and a cursor-addressable display, if
+	scroll-back capability and a cursor-addressable display, if
 	required.  Text may also be selected from any part of the
 	display into the clipboard.
       </para>
@@ -346,7 +346,7 @@
 	  endterm="zvtterm-zvt-term-feed"> once the terminal has
 	been created, and it will write directly to the display.</para>
       <para>All of
-	the usual colour and style-setting attributes can be encoded as
+	the usual color and style-setting attributes can be encoded as
 	simple strings fed into the terminal display engine.
       </para>
     </sect1>
@@ -448,7 +448,7 @@
     <sect1 id="zvtterm-window-hints">
       <title>Window Hints</title>
       <para>
-	Currently it is upto the calling application to appropriately
+	Currently it is up to the calling application to appropriately
 	setup the window hints for the application so the terminal will
 	size properly (i.e. to the nearest character cell position).
 	This can be set using the gtk function
@@ -497,7 +497,7 @@ set_hints (GtkWidget *widget)
 	manager will force resizes to the nearest character, and report
 	the character dimensions if it provides that
 	functionality.</para>
-      <para>It should be attatched to the terminal instance using
+      <para>It should be attached to the terminal instance using
 	gtk_signal_connect_after() so that the hints are set after the
 	window is realized.
 	</para>
@@ -513,7 +513,7 @@ set_hints (GtkWidget *widget)
         </programlisting>
       </example>
        <para>It must also be called whenever the font is changed, to
-      get the correct behaviour.  Only do this if the terminal is
+      get the correct behavior.  Only do this if the terminal is
       realized.  Simply call this set_hints() function immediately
       after calling one of the zvt_term_set_font*() functions, after
       checking that the given terminal is actually realized
@@ -526,7 +526,7 @@ set_hints (GtkWidget *widget)
       <sect2>
 	<title>Adding a scrollbar</title>
 	<para>Often a scrollbar will be added to the ZvtTerm widget to
-	  allow its scrollback buffer to be controlled via a mouse (see
+	  allow its scroll-back buffer to be controlled via a mouse (see
 	  <xref linkend="zvtterm-zvt-term-set-scrollback"
 	    endterm="zvtterm-zvt-term-set-scrollback">).  Each ZvtTerm
 	  provides this via an adjustment defined in the object structure
@@ -550,7 +550,7 @@ set_hints (GtkWidget *widget)
       <sect2>
 	<title>Reading data from the screen</title>
 	<para>There are no helper functions for this, but the same may
-	  be achived simply using the following code fragment.</para>
+	  be achieved simply using the following code fragment.</para>
 	<example>
 	  <title>Converting window coordinates to character
 	    coordinates.</title>
@@ -936,8 +936,8 @@ main (gint argc, gchar *argv[])
 	  provides a much richer set of features.  It exercises all
 	  configurable options of the terminal emulator as well.</para>
 	<para>Crescendo and xchat are two other examples that use the
-	  widget in different ways.  Crescendo runs a subordinate tinyfuge
-	  mud client, and xchat uses it as a colour output device.</para>
+	  widget in different ways.  Crescendo runs a subordinate TinyFuge
+	  mud client, and xchat uses it as a color output device.</para>
       </sect2>
     </sect1>
     
@@ -964,11 +964,11 @@ main (gint argc, gchar *argv[])
 
     <para>Future extensions to the real xterm should be tracked as
       well, hopefully this will involve a low work load.  Currently
-      the codebase is very stable and easy to maintain in this area.
+      the code base is very stable and easy to maintain in this area.
       There are no plans to provide an absolutely complete
       implementation of a VT220 or other terminal - curses
       implementations just don't use some features so there is little
-      payback for implementing every esoteric feature.
+      pay-back for implementing every esoteric feature.
     </para>
 
     <para>There are some minor portability issues, primarily in the
