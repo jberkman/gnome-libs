@@ -48,7 +48,7 @@
 <!entity ftpdocware    "ftp://ftp.cygnus.com/pub/home/rosalia/docware">
 <!entity dcomcorba     "http://www.research.att.com/~ymwang/papers/HTML/DCOMnCORBA/S.html">
 <!entity schmidtcorba  "http://siesta.cs.wustl.edu/~schmidt/corba.html">
-<!entity gnomeorder    "<member>glib</member><member>gtk+</member><member>imlib</member><member>orbit</member><member>libgtop</member><member>gtk-engines</member><member>gnome-libs</member><member>gnome-core</member><member>control-center</member><member>gnome-print</member><member>mc</member><member>gnome-guile</member><member>gnome-python</member><member>gnome-objc</member><member>gtk--</member><member>anything else, as needed, in whatever order</member>">
+<!entity gnomeorder    "<member>glib</member><member>gtk+</member><member>imlib</member><member>orbit</member><member>gtk-doc</member><member>libgtop</member><member>gtk-engines</member><member>gnome-libs</member><member>gnome-core</member><member>control-center</member><member>gnome-print</member><member>mc</member><member>gnome-guile</member><member>gnome-python</member><member>gnome-objc</member><member>gtk--</member><member>anything else, as needed, in whatever order</member>">
 ]>
 
 <book id="Index">
@@ -509,7 +509,11 @@
       the freedom to give copies of their software to their clients
       and subcontractors, these are all freedoms that Free Software
       offers, and proprietary software usually doesn't, that make
-      <emphasis>good business sense</emphasis>.</para>
+      <emphasis>good business sense</emphasis>.  For more on the
+      distinction between Open Source and Free Software, see the
+      article by Richard M. Stallman at <ulink
+      url="&wwwgnuphil;/free-software-for-freedom.html">
+      &wwwgnuphil;/free-software-for-freedom.html</ulink>.</para>
     </sect1>
   </chapter>
 
@@ -1019,12 +1023,38 @@
     <sect1>
       <title>How do I start GNOME?</title>
 
-      <para>There are many ways to start GNOME.  You can use gdm to
-      replace the login prompt, you can start GNOME with
-      gnome-session, or you can just start X normally, and run the
-      pieces of GNOME as desired.  I'm not going to go into detail on
-      the methods right now, someone should really write a
-      Starting-GNOME-HOWTO.</para>
+      <para>The proper way to start GNOME with all its features is to
+      put the line <userinput>exec gnome-session</userinput> at the
+      end of your X startup script.  This script can be called
+      <filename>~/.xinitrc</filename>, <filename>.xsession</filename>
+      or <filename>.Xclients</filename>, depending on your platform
+      and configuration.  Of course, make sure that the GNOME binaries
+      are in your path, and there are no lines starting with
+      <userinput>exec</userinput> prior to the one you just added.
+      With versions of GNOME after 1.03, you can select the window
+      manager run by setting the <envar>WINDOW_MANAGER</envar>
+      variable to the one you want.</para>
+
+      <para>Running <command>gnome-session</command> like this will
+      run the default session, the first time in.  This includes your
+      window manager of choice (or a good guess if you didn't specify
+      it), the panel, GNOME Midnight Commander, and the help browser.
+      As you use GNOME, session management will save your current
+      desktop.  If you log out, and log back in later, your most
+      recent desktop will be restored.</para>
+
+      <para>If you don't want session management, GNOME will work fine
+      without it.  Put the line <userinput>exec gnome-wm</userinput>
+      at the end of your X startup script, as described above.  It
+      will still use the WINDOW_MANAGER environment variable to select
+      your window manager, but not bother with session management.
+      Run panel, gmc, or whatever as desired, either manually, or in
+      the startup script before the exec line.  For example:</para>
+
+      <screen>
+panel &
+gmc &
+exec gnome-wm</screen>
     </sect1>
 
     <sect1>
@@ -1064,8 +1094,17 @@
   <chapter id="Help">
     <title>Help!!!!!!!!</title>
 
+    <para>Even if you have followed every instruction to the letter,
+    sometimes unforeseen problems arise.  Anything can go wrong, from a
+    misreading of the instructions, to a bug in the software, to a bug
+    in someone else's software.  Here, we try to address problems that
+    people have run into with GNOME.</para>
+
     <sect1>
       <title>General Help.</title>
+
+      <para>Here are some more general questions that arise often.
+      Specific problems are later in this chapter.</para>
 
       <sect2>
 	<title>Something is not working, I'm confused, what do I
@@ -1268,7 +1307,7 @@
       </sect2>
     </sect1>
 
-    <sect1>
+    <sect1 id="CompileHelp">
       <title>Specific Compile Problems</title>
 
       <sect2 id="zlib">
@@ -1291,6 +1330,89 @@
 	<filename>libz.so.renamed</filename>, that way it won't be
 	found by the linker, and if you run into problems elsewhere
 	because of the renaming, you can just rename it back.</para>
+      </sect2>
+    </sect1>
+
+    <sect1 id="RuntimeHelp">
+      <title>Runtime Problems</title>
+
+      <sect2 id="ResetSM">
+	<title>How do I reset my session management settings?</title>
+
+	<para>Many people find session management very useful.
+	However, sometimes session management can go astray, and do
+	undesired things like remember your settings after your kid
+	brother attacked your computer.  If GNOME is properly
+	installed, returning your settings to the default is
+	easy.</para>
+
+	<para>First, exit completely out of X.  If you are using
+	session management, you should be able to use the
+	<guimenuitem>Log out</guimenuitem> item of the Foot menu to
+	exit.  If that doesn't work, hold down the control and alt
+	keys, and hit backspace.  That should dump you out of the X
+	Window System regardless of what's going on.</para>
+
+	<para>Then, to remove your settings, just remove the
+	<filename>~/.gnome/session</filename> file.  The next time you
+	start X, it should start with the default window manager,
+	panel, gmc and the help browser.</para>
+      </sect2>
+
+      <sect2>
+	<title>I started GNOME with session management, why am I just
+	getting this grey screen (no panel, nothing)?</title>
+
+	<para>If you use session management, and it can't find a
+	session, this is what it gets.  First, have you tried
+	resetting your session management settings (See <link
+	linkend="ResetSM">above</link>)?  If this doesn't fix it, than
+	<command>gnome-session</command> is having trouble finding the
+	<filename>default.session</filename> file.  In GNOME version
+	1.03 and later the file should be in
+	<filename>$prefix/share/gnome</filename>.  Prior to that it
+	should be in <filename>$prefix/share</filename>.  If the file
+	is missing, you should probably reinstall GNOME-core.</para>
+      </sect2>
+
+      <sect2>
+	<title>How do I tell session management what window manager to
+	use?</title>
+
+	<para>This is a tougher question than it sounds, since the
+	answer depends on which version of GNOME you are running.  The
+	easy answer is to use the Window Manager settings in
+	<command>control-center</command>.  If that doesn't work for
+	you for some reason, here's how to do it.</para>
+
+	<para>Up to version 1.03, the window manager is selected by
+	placing it in a file called <filename>default.wm</filename>.
+	The system default for this file should be in either the
+	<filename>$prefix/share/gnome</filename> or
+	<filename>$prefix/share</filename> directories, whichever one
+	has the file <filename>default.session</filename>.</para>
+	
+	<para>A user-specific version of
+	<filename>default.wm</filename> can be put in the
+	<filename>~/.gnome</filename> directory.  The
+	<filename>default.wm</filename> file should look like:</para>
+
+	<screen>
+[Default]
+WM=foo</screen>
+
+	<para>Where <userinput>foo</userinput> should be replaced by
+	the window manager you want.  If you want to change the system
+	default, you might also have to change the
+	<filename>default.session</filename> file.</para>
+
+	<para>On a version of GNOME after 1.03 it is much easier.  Set
+	the environment variable <envar>WINDOW_MANAGER</envar> to the
+	window manager you want, then start X.  If that variable is
+	not set, GNOME will run a script to make a good guess as to
+	your window manager.  You can also edit the
+	<filename>~/.gnome/default.wm</filename> file as in older
+	versions.</para>
       </sect2>
     </sect1>
   </chapter>
@@ -2276,14 +2398,12 @@ ls -l /opt/gnome/share/gtkrc
     <sect1 id="Copyright">
       <title>Copyright and Disclaimer</title>
 
-      <para>This work is copyright 1998 by Todd Lewis. Unmodified
-      copies of this work can be retransmitted electronically without
-      additional permission from me.  If you would like to make a
-      derivative work, whether it be a modified version or a
-      translation, then please contact me. Also, if you would like to
-      distribute a printed version of this work, then please contact
-      me for permission. I plan on making this license more liberal in
-      the future, but for now don't worry; I'm easy.</para>
+      <para>This work is copyright 1998 by Todd Lewis and Gleef (David
+      Zoll).  This documentation is free software; you can
+      redistribute it and/or modify it under the terms of the GNU
+      General Public License as published by the Free Software
+      Foundation; either version 2 of the License, or (at your option)
+      any later version.</para>
 
       <para>This article is provided as is without any express or
       implied warranties. While every effort has been taken to ensure
