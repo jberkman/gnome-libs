@@ -102,6 +102,7 @@ gint main (gint argc, gchar *argv[])
   gtk_widget_show (table);
   gtk_widget_show (GTK_WIDGET(window));
 
+  gdk_window_set_hints (((GtkWidget *)window)->window, 0, 0, 50, 50, 0, 0, GDK_HINT_MIN_SIZE);
 
   switch (zvt_term_forkpty(term)) {
   case -1:

@@ -1,5 +1,11 @@
 1998-10-21  Michael Zucchi  <zucchi@zzedzone.fsi.com.au>
 
+	* zterm.c (main): Set window hints/minimum size.  Now the terminal
+	can be resized smaller!  (should this be done to gnome-terminal?)
+
+	* vt.c (vt_resize): Make sure widened lines are cleared with a
+	blank character.
+
 	* lists.c (vt_list_remtail): This would never have worked.  Just
 	lucky I never used it!  Changed tail to tailpred.
 	(vt_list_addhead): This would never have worked either.  Changed

@@ -1350,6 +1350,7 @@ void vt_resize(struct vt_em *vt, int width, int height, int pixwidth, int pixhei
   int count;
   struct vt_line *wn, *nn;
   int i;
+  uint32 c;
 #ifdef DOUBLE_BUFFER
   int pass;
 #endif
@@ -1471,8 +1472,12 @@ void vt_resize(struct vt_em *vt, int width, int height, int pixwidth, int pixhei
 	}
 	wn->next->prev = wn;	/* re-link line into linked list */
 	wn->prev->next = wn;
+	if (wn->width)
+	  c = wn->data[wn->width-1]&0xffff0000;
+	else
+	  c = vt->attr;
 	for(i=wn->width;i<width;i++) { /* if the line got bigger, fix it up */
-	  wn->data[i]=vt->attr | VTATTR_CHANGED;
+	  wn->data[i]=c;
 	  wn->modcount++;		/* FIXME: optimise? */
 	}
 	wn->width = width;
