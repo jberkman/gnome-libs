@@ -766,6 +766,7 @@ create_icon_list(void)
 
 	gtk_widget_grab_focus (iconlist);
 	
+	gnome_icon_list_freeze (GNOME_ICON_LIST (iconlist));
 	for (i = 0; i < 30; i++) {
 		gnome_icon_list_append_imlib(GNOME_ICON_LIST(iconlist), pix, "Foo");
 		gnome_icon_list_append_imlib(GNOME_ICON_LIST(iconlist), pix, "Bar");
