@@ -383,7 +383,7 @@ create_lamp(void)
 	gtk_widget_show(w);
 	gtk_box_pack_start_defaults(GTK_BOX(hbox), w);
 	w = gnome_lamp_new();
-	gnome_lamp_set_sequence(GNOME_LAMP(w), "RRRBBBRYGABPRRRBBB");
+	gnome_lamp_set_sequence(GNOME_LAMP(w), "RRRYYY");
 	gtk_widget_show(w);
 	gtk_box_pack_start_defaults(GTK_BOX(hbox), w);
 	adj = (GtkAdjustment *)gtk_adjustment_new(0.0, 0.0, 110.0,
