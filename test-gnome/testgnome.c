@@ -763,7 +763,7 @@ create_icon_list(void)
 	gtk_widget_show (sw);
 
 	iconlist = gnome_icon_list_new (80, NULL, TRUE);
-	gtk_scrolled_window_add_with_viewport (GTK_SCROLLED_WINDOW (sw), iconlist);
+	gtk_container_add (GTK_CONTAINER (sw), iconlist);
 	
 	GTK_WIDGET_SET_FLAGS(iconlist, GTK_CAN_FOCUS);
 	pix = gdk_imlib_create_image_from_xpm_data((gchar **)bomb_xpm);

@@ -1,3 +1,9 @@
+1999-02-10  James Henstridge  <james@daa.com.au>
+
+	* testgnome.c(create_icon_list): do not add a viewport for the icon
+	list when adding it to the scrolled window -- it exports its own
+	scrolling behaviour.
+
 1999-01-21  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* Makefile.am (INCLUDES): s%$(datadir)/locale%$(gnomelocaledir)%
