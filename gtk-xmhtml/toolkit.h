@@ -69,7 +69,7 @@ typedef XVisualInfo TVisualInfo;
 #define Toolkit_HTML_Widget(widget,field) GTK_HTML((widget))->(field)
 #define Toolkit_Screen_Width(w) gdk_screen_width ()
 #define Toolkit_Display(w) GDK_DISPLAY ()
-#define Toolkit_Free_Font(dpy,font) gdk_font_free ((font))
+#define Toolkit_Free_Font(dpy,font) gdk_font_unref ((font))
 #define Toolkit_Free_Cursor(dpy,cursor) gdk_cursor_destroy ((cursor));
 
 #define Toolkit_Widget_Name(w) "SomeWidget"

@@ -35,6 +35,9 @@
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.2  1997/12/19 00:03:49  unammx
+* gtk/xmhtml updates
+*
 * Revision 1.1  1997/11/28 03:38:56  gnomecvs
 * Work in progress port of XmHTML;  No, it does not compile, don't even try -mig
 *
@@ -194,7 +197,7 @@ extern Byte bitmap_bits[];
 #ifdef WITH_MOTIF
 #    define FreePixmap(DPY,PIX) if((PIX)!= None) XFreePixmap((DPY),(PIX))
 #else
-#    define FreePixmap(DPY,PIX) if((PIX)!= TNone) gdk_pixmap_destroy((PIX))
+#    define FreePixmap(DPY,PIX) if((PIX)!= TNone) gdk_pixmap_unref((PIX))
 #endif
 
 /* check whether the body image is fully loaded */
