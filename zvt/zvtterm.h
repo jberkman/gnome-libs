@@ -101,6 +101,7 @@ extern "C" {
     GtkWidgetClass parent_class;
 
     void (* child_died) (ZvtTerm *term);    
+    void (* title_changed) (ZvtTerm *term, VTTITLE_TYPE type, char *newtitle);
   };
 
 
@@ -112,7 +113,7 @@ extern "C" {
 
   int           zvt_term_killchild                (ZvtTerm *term, int signal);
 
-  void		zvt_term_bell			  (void);
+  void		zvt_term_bell			  (ZvtTerm *term);
 
   guint         zvt_term_get_type                 (void);
 

@@ -1,3 +1,42 @@
+1998-11-21  Michael Zucchi  <zucchi@zzedzone.fsi.com.au>
+
+	* zterm.c: Made window global.
+
+	* zvtterm.c (zvt_term_get_bell): Fixed return if fail to be return
+	val if fail.  Personally I can't imagine where you would ever need
+	this function.
+	(zvt_term_title_changed_raise): Function to actually raise the
+	signal, when we get called by the terminal.
+
+	* zvtterm.h: Fix zvt_term_bell prototype.
+
+	* vt.c (vt_bell): Changed to call callback with user_data.
+	vt.c: include <string.h> for strchr prototype.
+
+	* zvtterm.c (zvt_term_bell): Changed prototype/callback to supply
+	user-data (i.e. the widget pointer).
+
+	* zterm.c (main): Add support for title_changed event callback.
+	(title_changed_event): Set titles based on title_changed event.
+
+	* vt.c (vt_init): Init change_my_name and user_data to NULL.
+	(vt_set_text): Handle callbacks for setting titles.
+
+	* update.c: Fixed vx->user_data references.
+
+	* vtx.h: Removed user_data from struct _vtx.  Avoid duplication.
+	Fixed all references.
+
+	* vt.h: Added change_my_name callback, for title changes.  Added
+	user_data field (to be removed from vtx).
+
+	* zvtterm.c (zvt_term_title_changed): Dummy handler for
+	title_changed signal.
+	
+	* zvtterm.h (struct _ZvtTermClass): Added title_changed callback.
+
+	* zvtterm.c (zvt_term_class_init): Added "title_changed" signal.
+
 1998-11-20  Manish Vachharajani <mvachhar@vger.rutgers.edu>
 
 	* zvtterm.h: 

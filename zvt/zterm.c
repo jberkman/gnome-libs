@@ -33,9 +33,23 @@
 
 #include "zvtterm.h"
 
+GtkWindow *window;
+
 static void child_died_event(ZvtTerm *term)
 {
   exit(0);
+}
+
+static void title_changed_event(ZvtTerm *term, VTTITLE_TYPE type, char *newtitle)
+{
+  switch(type) {
+  case VTTITLE_WINDOW:
+  case VTTITLE_WINDOWICON:
+    gtk_window_set_title(window, newtitle);
+    break;
+  default:
+    break;
+  }
 }
 
 /*
@@ -50,7 +64,6 @@ gint main (gint argc, gchar *argv[])
   int login_shell = 0;
   int scrollbacklines;
   struct passwd *pw;
-  GtkWindow *window;
   ZvtTerm *term;
   GtkWidget *table;
   GtkWidget *scrollbar;
@@ -87,6 +100,9 @@ gint main (gint argc, gchar *argv[])
 
   gtk_signal_connect (GTK_OBJECT (term), "child_died",
                       (GtkSignalFunc) child_died_event, NULL);
+
+  gtk_signal_connect (GTK_OBJECT (term), "title_changed",
+                      (GtkSignalFunc) title_changed_event, NULL);
 
   scrollbar = gtk_vscrollbar_new (GTK_ADJUSTMENT (term->adjustment));
   GTK_WIDGET_UNSET_FLAGS (scrollbar, GTK_CAN_FOCUS);

@@ -46,6 +46,13 @@ struct vt_line {
   uint32 data[1];		/* the line data follows this structure */
 };
 
+/* type of title to set with callback */
+typedef enum {
+  VTTITLE_WINDOWICON=0,
+  VTTITLE_ICON,
+  VTTITLE_WINDOW
+} VTTITLE_TYPE;
+
 /* note: bit 0x80000000 is free for another attribute */
 #define VTATTR_BOLD       0x40000000
 #define VTATTR_UNDERLINE  0x20000000
@@ -116,8 +123,10 @@ struct vt_em {
   int scrollbackold;		/* old scrollback offset */
   int scrollbackmax;		/* maximum scrollbacklines, after this total is reached,
 				   old lines are discarded */
-  void (*ring_my_bell)(void);	/* ring my bell ... */
+  void (*ring_my_bell)(void *user_data);	/* ring my bell ... */
+  void (*change_my_name)(void *user_data, VTTITLE_TYPE type, char *name);	/* ring my bell ... */
 
+  void *user_data;		/* opaque external data handle for callbacks */
 };
 
 #define VTMODE_INSERT 0x00000001 /* insert mode active */

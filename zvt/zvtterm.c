@@ -74,6 +74,8 @@ static gint zvt_term_selection_clear (GtkWidget *widget, GdkEventSelection *even
 static void zvt_term_selection_get (GtkWidget *widget, GtkSelectionData *selection_data_ptr, guint info, guint time);
 
 static void zvt_term_child_died(ZvtTerm *term);
+static void zvt_term_title_changed(ZvtTerm *term, VTTITLE_TYPE type, char *str);
+static void zvt_term_title_changed_raise(ZvtTerm *term, VTTITLE_TYPE type, char *str);
 
 static gint zvt_term_cursor_blink(gpointer data);
 static void zvt_term_scrollbar_moved (GtkAdjustment *adj, GtkWidget *widget);
@@ -245,6 +247,7 @@ create_shaded_pixmap(Pixmap p, int x, int y, int w, int h)
 
 enum {
   CHILD_DIED,
+  TITLE_CHANGED,
   LAST_SIGNAL
 };
 
@@ -298,6 +301,16 @@ zvt_term_class_init (ZvtTermClass *class)
                     gtk_signal_default_marshaller,
                     GTK_TYPE_NONE, 0);
 
+  term_signals[TITLE_CHANGED] =
+    gtk_signal_new ("title_changed",
+                    GTK_RUN_FIRST,
+                    object_class->type,
+                    GTK_SIGNAL_OFFSET (ZvtTermClass, child_died),
+                    gtk_marshal_NONE__INT_POINTER,
+                    GTK_TYPE_NONE, 2,
+		    GTK_TYPE_INT,
+		    GTK_TYPE_STRING);
+
   gtk_object_class_add_signals (object_class, term_signals, LAST_SIGNAL);
 
   object_class->destroy = zvt_term_destroy;
@@ -320,6 +333,7 @@ zvt_term_class_init (ZvtTermClass *class)
   widget_class->selection_get = zvt_term_selection_get;
 
   term_class->child_died = zvt_term_child_died;
+  term_class->title_changed = zvt_term_title_changed;
 }
 
 static void
@@ -349,8 +363,9 @@ zvt_term_init (ZvtTerm *term)
   term->input_id = -1;
   term->msg_id = -1;
 
-  /* set bell callback  */
+  /* set bell and title callback  */
   term->vx->vt.ring_my_bell = zvt_term_bell;
+  term->vx->vt.change_my_name = zvt_term_title_changed_raise;
 
   zvt_term_set_font_name(term, "-misc-fixed-medium-r-semicondensed--13-120-75-75-c-60-iso8859-1");
 
@@ -1742,6 +1757,27 @@ static void zvt_term_child_died(ZvtTerm *term)
 
   /* perhaps we should do something here? */
 }
+/*
+ * dummy default signal handler for title_changed
+ */
+static void zvt_term_title_changed(ZvtTerm *term, VTTITLE_TYPE type, char *str)
+{
+  g_return_if_fail (term != NULL);
+  g_return_if_fail (ZVT_IS_TERM (term));
+
+  /* perhaps we should do something here? */
+}
+
+/*
+  raise the title_changed signal
+*/
+static void zvt_term_title_changed_raise(ZvtTerm *term, VTTITLE_TYPE type, char *str)
+{
+  g_return_if_fail (term != NULL);
+  g_return_if_fail (ZVT_IS_TERM (term));
+
+  gtk_signal_emit(GTK_OBJECT(term), term_signals[TITLE_CHANGED], type, str);
+}
 
 static void vtx_unrender_selection (struct _vtx *vx)
 {
@@ -2165,11 +2201,12 @@ zvt_term_set_del_key_swap (ZvtTerm *term, int state)
 
 /**
  * zvt_term_bell:
- * 
+ * @term: Terminal.
+ *
  * Generate a terminal bell.  Currently this is just a beep.
  **/
 void
-zvt_term_bell(void)
+zvt_term_bell(ZvtTerm *term)
 {
   gdk_beep();
 }
@@ -2205,8 +2242,8 @@ zvt_term_set_bell(ZvtTerm *term, int state)
 gboolean
 zvt_term_get_bell(ZvtTerm *term)
 {
-  g_return_if_fail (term != NULL);
-  g_return_if_fail (ZVT_IS_TERM (term));
+  g_return_val_if_fail (term != NULL, 0);
+  g_return_val_if_fail (ZVT_IS_TERM (term), 0);
 
   return (term->vx->vt.ring_my_bell)?TRUE:FALSE;
 }

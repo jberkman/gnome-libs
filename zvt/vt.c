@@ -31,6 +31,7 @@
 #include <unistd.h>
 #include <signal.h>
 #include <errno.h>
+#include <string.h>
 
 #include <termios.h>
 #include <sys/ioctl.h>
@@ -497,7 +498,7 @@ void vt_clear_line_portion(struct vt_em *vt, int start_col, int end_col)
 static void vt_bell(struct vt_em *vt)
 {
   if (vt->ring_my_bell)
-    vt->ring_my_bell();
+    vt->ring_my_bell(vt->user_data);
   d(printf("bell\n"));
 }
 
@@ -1024,6 +1025,45 @@ vt_func(struct vt_em *vt)
   }
 }
 
+/*
+  'set text' called, call a callback if we have one
+
+  The callback is called with VTTTILE_* constants and the string
+  to set.
+*/
+static void
+vt_set_text(struct vt_em *vt)
+{
+  char *p;
+  int i;
+
+  if (vt->change_my_name) {
+    p = strchr(vt->argptr[0], ';');
+    if (p) {
+      *p=0;
+      p++;
+      i = atoi(vt->argptr[0]);
+      switch(i) {
+      case 0:
+	i = VTTITLE_WINDOWICON;
+	break;
+      case 1:
+	i = VTTITLE_ICON;
+	break;
+      case 2:
+	i = VTTITLE_WINDOW;
+	break;
+      case 46:			/* log file .. disabled */
+      case 50:			/* set font .. disabled too */
+	return;
+      default:			/* dont care, piss off */
+	return;
+      }
+      vt->change_my_name(vt->user_data, i, p);
+    }
+  }
+}
+
 struct vt_jump {
   void (*process)(struct vt_em *vt);	/* process function */
   int modes;			/* modes appropriate */
@@ -1198,6 +1238,7 @@ vt_parse_vt (struct vt_em *vt, char *ptr, int length)
 	if (c==0x07) {
 	  /* handle output */
 	  *(vt->outptr)=0;
+	  vt_set_text(vt);
 	  d(printf("received text mode: %s\n", vt->argptr[0]));
 	  state = 0;
 	} else if (c==0x0a) {
@@ -1320,7 +1361,9 @@ vt_init(struct vt_em *vt, int width, int height)
   vt_mem_init(&vt->mem_list);
 
   vt->ring_my_bell = 0L;
+  vt->change_my_name = 0L;
 
+  vt->user_data = 0;
   return vt;
 }
 

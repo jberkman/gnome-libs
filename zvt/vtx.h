@@ -64,9 +64,6 @@ struct _vtx {
   int selstartxold, selstartyold;
   int selendxold, selendyold;
 
-  /* needed to pass args to render functions */
-  void *user_data;
-
 #ifdef STAND_ALONE
   /* all tool-kit specific data goes here ... */
   GtkWidget *drawingarea;	/* rendering area */

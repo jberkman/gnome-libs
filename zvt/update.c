@@ -208,7 +208,7 @@ static void vt_line_update(struct _vtx *vx, struct vt_line *l, int line, int alw
       if (attr != newattr) { /* check run of same type ... */
 	d(printf("found a run of %d characters from %d: '", run, runstart));
 	d(fwrite(runbuffer, run, 1, stdout));
-	vt_draw_text(vx->user_data, runstart, line, runbuffer, run, attr);
+	vt_draw_text(vx->vt.user_data, runstart, line, runbuffer, run, attr);
 	runstart = i;
 	p = runbuffer;
 	run=0;
@@ -226,7 +226,7 @@ static void vt_line_update(struct _vtx *vx, struct vt_line *l, int line, int alw
   if (run) {
     d(printf("found a run of %d characters from %d: '", run, runstart));
     d(fwrite(runbuffer, run, 1, stdout));
-    vt_draw_text(vx->user_data, runstart, line, runbuffer, run, attr);
+    vt_draw_text(vx->vt.user_data, runstart, line, runbuffer, run, attr);
     d(printf("'\n"));
   }
   l->modcount = 0;
@@ -305,7 +305,7 @@ static void vt_scroll_update(struct _vtx *vx, int firstline, int count, int offs
   /* find out what colour the new lines is - make it match (use
      first character as a guess), and perform the visual scroll */
   fill = (nn->data[0] & VTATTR_BACKCOLOURM) >> VTATTR_BACKCOLOURB;
-  vt_scroll_area(vx->user_data, firstline, count, offset, fill);
+  vt_scroll_area(vx->vt.user_data, firstline, count, offset, fill);
 
   /* need to clear tn->bn lines.  Use attributes from first character of corresponding new line */
   fill = nn->data[0] & VTATTR_MASK;
@@ -340,7 +340,7 @@ void vt_update(struct _vtx *vx, int update_state)
 
   d(printf("updating screen\n"));
 
-  old_state = vt_cursor_state(vx->user_data, 0);
+  old_state = vt_cursor_state(vx->vt.user_data, 0);
 
   /* find first line of visible screen, take into account scrollback */
   offset = vx->vt.scrollbackoffset;
@@ -562,7 +562,7 @@ void vt_update(struct _vtx *vx, int update_state)
   }
 #endif
 
-  vt_cursor_state(vx->user_data, old_state);
+  vt_cursor_state(vx->vt.user_data, old_state);
 }
 
 /*
@@ -577,7 +577,7 @@ void vt_update_rect(struct _vtx *vx, int csx, int csy, int cex, int cey)
   struct vt_line *wn, *nn;
   int old_state;
 
-  old_state = vt_cursor_state(vx->user_data, 0);	/* ensure cursor is really off */
+  old_state = vt_cursor_state(vx->vt.user_data, 0);	/* ensure cursor is really off */
 
   d(printf("updating (%d,%d) - (%d,%d)\n", csx, csy, cex, cey));
 
@@ -618,7 +618,7 @@ void vt_update_rect(struct _vtx *vx, int csx, int csy, int cex, int cey)
     }
   }
 
-  vt_cursor_state(vx->user_data, old_state);
+  vt_cursor_state(vx->vt.user_data, old_state);
 }
 
 /*
@@ -982,7 +982,7 @@ void vt_draw_cursor(struct _vtx *vx, int state)
       | ( attr & ~(VTATTR_FORECOLOURM|VTATTR_BACKCOLOURM));
     }
     vx->back_match=0;		/* forces re-draw? */
-    vt_draw_text(vx->user_data, vx->vt.cursorx, vx->vt.cursory, &c, 1, attr);
+    vt_draw_text(vx->vt.user_data, vx->vt.cursorx, vx->vt.cursory, &c, 1, attr);
   }
 }
 
@@ -1002,7 +1002,7 @@ struct _vtx *vtx_new(void *user_data)
 
   /* other parameters initialised to 0 by calloc */
 
-  vx->user_data = user_data;
+  vx->vt.user_data = user_data;
 
   return vx;
 }
