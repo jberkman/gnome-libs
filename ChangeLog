@@ -1,3 +1,59 @@
+Wed Sep  9 00:01:56 1998  Tom Tromey  <tromey@cygnus.com>
+
+	* libgnome/gnome-metadata.c (LIST): New macro.
+	(LISTLEN): Use it.
+	(metadata_set): Use new macros.  Compute special key length
+	correctly.
+	(metadata_remove): Likewise.
+	(metadata_get_list): Likewise.
+	(metadata_remove): Correctly handle error when deleting record.
+
+Tue Sep  8 14:09:22 1998  Tom Tromey  <tromey@cygnus.com>
+
+	* libgnome/Makefile.am (bin_PROGRAMS): Added gnome-dump-metadata.
+	(gnome_dump_metadata_SOURCES): New macro
+	(gnome_dump_metadata_LDADD): New macro.
+
+	* libgnome/gnome-dump.c: New file.
+
+	* libgnome/gnome-metadata.c (init): Changed return value and all
+	callers.
+	(lock): New function.
+	(unlock): Likewise.
+	(lock_count): New global.
+	(worker): Lock and unlock database.
+	(gnome_metadata_get): Likewise.
+	(gnome_metadata_get_fast): Likewise.
+	(metadata_get_list): Likewise.
+	(metadata_remove): Likewise.
+	(metadata_set): Likewise.
+	(metadata_get_no_dup): Likewise.
+
+	* configure.in: Add -ldb to GNOME_LIBS and LIBGNOME_LIBS.  If db
+	checks fail, then configure fails.
+
+	* libgnome/gnome-metadata.h (GnomeMetadataError_t): New enum.
+	* libgnome/gnome-metadata.c (init): Wrote.
+	(gnome_metadata_db_file_name): New global.
+
+	* libgnome/gnome-score.c (log_score): Removed unused variable.
+	Don't use `%as', as that is not ANSI C.
+
+	* libgnome/libgnomeP.h: Added gnome-regex.h, gnome-metadata.h,
+	gnome-help.h.
+	* libgnome/libgnome.h: Added gnome-regex.h, gnome-metadata.h.
+	* libgnome/Makefile.am (libgnome_la_SOURCES): Added gnome-regex.c,
+	gnome-metadata.c.
+	(libgnomeinclude_HEADERS): Added gnome-regex.h, gnome-metadata.h.
+	* libgnome/gnome-regex.c: New file.
+	* libgnome/gnome-regex.h: New file.
+
+Sat Sep  5 19:37:17 1998  Tom Tromey  <tromey@cygnus.com>
+
+	* libgnome/gnome-metadata.c (metadata_set): Finished.
+	(try_regexps): Wrote.
+	(metadata_remove): Finished.
+
 1998-09-07  Raja R Harinath  <harinath@cs.umn.edu>
 
 	* libgnome/Makefile.am (install-data-local): Setgid $(scoredir)
