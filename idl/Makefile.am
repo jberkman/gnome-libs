@@ -1,1 +1,1 @@
-EXTRA_DIST = name-service.idl
+EXTRA_DIST = name-service.idl factory.idl

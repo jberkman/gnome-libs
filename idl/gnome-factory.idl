@@ -1,0 +1,8 @@
+/*
+ * factory.idl:  Basic object factory interface.
+ */
+module GNOME {
+	interface Factory {
+		Object new_instance ();
+	};
+};
