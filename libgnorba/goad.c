@@ -15,6 +15,8 @@
 #include <sys/stat.h>
 #include <signal.h>
 #include <fcntl.h>
+#include <signal.h>
+
 #define SHLIB_DEPENDENCIES 1
 #ifdef SHLIB_DEPENDENCIES
 #include <dlfcn.h>
@@ -958,10 +960,23 @@ goad_server_register(CORBA_Object name_server,
 
   if(!did_print_ior) {
     CORBA_char *strior;
+    int stdoutfd;
+    struct sigaction oldaction, myaction;
+    int fl;
 
+    if(fcntl(1, F_GETFL, &fl) < 0) {
+      stdoutfd = open("/dev/null", O_RDWR);
+      dup2(stdoutfd, 1); close(stdoutfd);
+    }
+
+    memset(&myaction, '\0', sizeof(myaction));
+    myaction.sa_handler = SIG_IGN;
+
+    sigaction(SIGPIPE, &myaction, &oldaction);
     strior = CORBA_ORB_object_to_string(gnome_CORBA_ORB(), server, ev);
     printf("%s\n", strior); fflush(stdout);
     CORBA_free(strior);
+    sigaction(SIGPIPE, &oldaction, NULL);
 
     did_print_ior = 1;
   }

@@ -181,7 +181,7 @@ main (int argc, char *argv [])
 	sigemptyset (&empty_mask);
 
 	CORBA_exception_init (&ev);
-	orb = gnome_CORBA_init ("gnome-name-service", "1.0", &argc, argv, 0, &ev);
+	orb = gnome_CORBA_init ("gnome-name-service", "1.0", &argc, argv, GNORBA_INIT_DISABLE_COOKIES, &ev);
 
 	root_poa = (PortableServer_POA)
 		CORBA_ORB_resolve_initial_references (orb, "RootPOA", &ev);
