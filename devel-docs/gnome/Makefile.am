@@ -95,7 +95,7 @@ install-data-local:
 	  echo '-- Installing $(srcdir)/html/index.sgml' ; \
 	  $(INSTALL_DATA) $(srcdir)/html/index.sgml $(TARGET_DIR); \
 	  echo '-- Fixing Crossreferences' ; \
-	  gtkdoc-fixxref --module=$(DOC_MODULE) --html-dir=$(HTML_DIR); \
+	  gtkdoc-fixxref --module=$(DOC_MODULE) --html-dir=$(HTML_DIR) || true; \
 	fi)
 
 dist-hook:

@@ -1,3 +1,13 @@
+1999-04-07  Miguel de Icaza  <miguel@nuclecu.unam.mx>
+
+	* Makefile.am (SUBDIRS): Always process the gnome and gnomeui
+	directories. 
+
+	* gnome/Makefile.am (install-data-local): Ignore error if
+	gtkdoc-fixxref is not found
+	
+	* gnomeui/Makefile.am: ditto
+
 1999-04-05  Miguel de Icaza  <miguel@nuclecu.unam.mx>
 
 	* gnome/tmpl/gnome-help.sgml (this): Described.
