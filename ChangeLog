@@ -1,3 +1,12 @@
+Fri May 22 18:24:09 1998  Tom Tromey  <tromey@cygnus.com>
+
+	* libgnome/gnome-dentry.c (gnome_desktop_entry_launch_with_args):
+	Use `SHELL -c' to execute command.
+
+	* libgnome/gnome-util.c (gnome_util_user_shell): New function;
+	modified from gnome-terminal.
+	* libgnome/gnome-util.h: Declare gnome_util_user_shell.
+
 1998-05-20  Federico Mena Quintero  <federico@nuclecu.unam.mx>
 
 	* libgnome/gnome-dentry.h: Added prototype for gnome_desktop_entry_launch_with_args().
