@@ -97,6 +97,8 @@ extern "C" {
   void          zvt_term_show_pointer           (ZvtTerm *term);
 
   void          zvt_term_set_blink              (ZvtTerm *term, int state);
+  void          zvt_term_set_color_scheme       (ZvtTerm *term, gushort *red, gushort *grn, gushort *blu);
+  void          zvt_term_set_default_color_scheme (ZvtTerm *term);
 	
   /*GtkAdjustment* zvt_term_get_adjustment         (ZvtTerm      *terminal);
     void           zvk_term_set_adjustment         (ZvtTerm      *dial,

@@ -225,7 +225,33 @@ static gushort default_grn[] = {0x0000,0x0000,0xaaaa,0x5555,0x0000,0x0000,0xaaaa
 				0x5555,0x5555,0xffff,0xffff,0x5555,0x5555,0xffff,0xffff};
 static gushort default_blu[] = {0x0000,0x0000,0x0000,0x0000,0xaaaa,0xaaaa,0xaaaa,0xaaaa,
 				0x5555,0x5555,0x5555,0x5555,0xffff,0xffff,0xffff,0xffff};
-	
+
+void
+zvt_term_set_color_scheme (ZvtTerm *term, gushort *red, gushort *grn, gushort *blu)
+{
+  int  nallocated;
+
+  g_return_if_fail (term != NULL);
+  g_return_if_fail (ZVT_IS_TERM (term));
+  g_return_if_fail (red != NULL);
+  g_return_if_fail (grn != NULL);
+  g_return_if_fail (blu != NULL);
+  
+  memset (term->colors, 0, sizeof (term->colors));
+  nallocated = 0;
+  gdk_color_context_get_pixels (term->color_ctx, red, grn, blu,
+				16, term->colors, &nallocated);
+}
+
+void
+zvt_term_set_default_color_scheme (ZvtTerm *term)
+{
+  g_return_if_fail (term != NULL);
+  g_return_if_fail (ZVT_IS_TERM (term));
+  
+  zvt_term_set_color_scheme (term, default_red, default_grn, default_blu);
+}
+
 static void
 zvt_term_realize (GtkWidget *widget)
 {
@@ -233,7 +259,6 @@ zvt_term_realize (GtkWidget *widget)
   GdkWindowAttr attributes;
   GdkPixmap *cursor_dot_pm;
   gint attributes_mask;
-  int  nallocated;
 
   g_return_if_fail (widget != NULL);
   g_return_if_fail (ZVT_IS_TERM (widget));
@@ -293,11 +318,8 @@ zvt_term_realize (GtkWidget *widget)
   term->color_ctx = gdk_color_context_new (gtk_widget_get_visual (GTK_WIDGET (term)),
 					   gtk_widget_get_colormap (GTK_WIDGET (term)));
   /* Allocate default color set */
-  memset (term->colors, 0, sizeof (term->colors));
-  nallocated = 0;
-  gdk_color_context_get_pixels (term->color_ctx, default_red, default_grn, default_blu,
-				16, term->colors, &nallocated);
-
+  zvt_term_set_default_color_scheme (term);
+  
   /* set the initial colours */
   term->back_last = -1;
   term->fore_last = -1;
