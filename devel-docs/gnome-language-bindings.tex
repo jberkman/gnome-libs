@@ -178,12 +178,12 @@ on, then\dots
 I'd like to bring up two points and illustrate them with some sample
 code.
 \begin{itemize}
-\item Making reference counting and a tracing GC cooperate,
 \item The importance of destroy notification,
+\item Making reference counting and a tracing GC cooperate.
 \end{itemize}
 
 The sample code will implement a simple struct that is reference
-counted and can initiate a callback.  Here is the first version of it:
+counted and can initiate a callback.  Here it is:
 \begin{quote}
 \begin{verbatim}
 typedef struct _foo foo;
@@ -312,7 +312,62 @@ callback\_notify function with the value.
 
 This is all fairly traditional stuff and is useful not only for
 language bindings but also makes for generally nice library
-interfaces.  The next point is a little bit more involved [and so I
-delegate it to the next session.]
+interfaces.  The next point is a little bit more involved.  It has to
+do with the foo\_trace\_refs function.
+
+It has todo with a memory management technique that your average C
+program is not likely to use, but every self-respecting high-level
+language has it.  Of course, I'm talking about a `tracing grabage
+collector'.  Such a thing is able to detect which objects of your
+running program are in use, and which are garbage.  The garbage is
+collected and reused for new objects.  This is much like the reference
+counting mechanism, but the keyword here is `tracing'.  A tracing GC
+is not fooled by cycles of objects like reference counting is.  For
+example, when you have two foo structs that each point to one another
+with their peer field but are not referenced from other parts of the
+program, the are not collected by the reference counting scheme
+although they are garbage.
+
+A tracing GC would be able to detect that they are able because it
+would actually look into the objects and `trace' the reference each
+has to other objects.
+
+The goal here is not to teach the old reference counting dog new
+tricks.  The foo structs with their ref counts were not designed to
+form cycles of garbage and it would do little good to try to detects
+these cycles when using them from a high level language.  Afterall,
+this would subtly change the semantics of the foo code and might
+actually cause problems for code can't deal with this change.
+
+The goal is to prevent the `cycles of garbage' from leaking into the
+domain of the high-level language and ruin \textbf{its} memory
+management.
+
+These things can indeed happen.  Remember that callback\_data?  It is
+a generic piece of data that the foo struct stores on behalf of the
+binding code.  While it is being stored in that object (that is, until
+the callback\_notify is called), the binding code has to protect the
+value from being collected by its own tracing GC.  But chances are
+that the callback\_data value contains references to other values from
+the high-level language, so they need to be protected, too.  The next
+step is that these referenced values contain references to foo
+structs, and these foo structs in turn contain a reference (in a peer
+field) to the original foo structs whose callback\_data we are talking
+about.  That is, we have formed a cycle that goes halfway thru objects
+from the high-level language, and halfway thru foo structs.  The foo
+structs are only reference counted, and therefore the binding code is
+not able to follow it.  Thus we have a cycle that is potential garbage
+but we can't figure that out.
+
+This is not an unlikely situation with guile-gtk.  The callback\_data
+would be a `closure', that is, a procedure together with its dynamic
+environment.  The environment is very likely to contain all sorts of
+references to other stuff including the very objects that the
+procedure is connected to as a callback.
+
+The existence of the foo\_trace\_refs function allows the binding code
+to find the cycle and collect the objects if necessary.  So please
+provide one.  If you don't (and nobody does right now), you will only
+produce memory leaks and not core dumps, but still.
 
 \end{document}
