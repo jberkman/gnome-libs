@@ -18,14 +18,14 @@ directory, any files in that directory whose extension is
 <filename>~/.gnome/type.convert</filename> file.</para>
 
     <para>The file format used to define a filter is very
-    simple:
+    simple:</para>
 
       <example>
 	<title>Sample MIME type file conversion definition</title>
 	<programlisting>
 image/gif image/x-portable-pixmap giftopnm
 	</programlisting>
-
+    <para>
 	This sample file conversion file defines a conversion rule
 	from the image/gif MIME type to the image/x-portable-pixmap
 	MIME type.  The program used for the conversion is
