@@ -32,7 +32,7 @@
 #endif
 #include <ctype.h>
 
-#define SERVER_LISTING_PATH "/CORBA/servers"
+#define SERVER_LISTING_PATH "CORBA/servers"
 
 typedef struct {
   int refcount;
@@ -94,6 +94,68 @@ static gboolean string_in_array(const char *string, const char **array)
   return FALSE;
 }
 
+/*
+ * Loads the goad files in @dir_path
+ */
+static void
+load_servers_from (const char *dir_path, GoadServerList *newl, GArray *servinfo)
+{
+	DIR *dirh;
+	struct dirent *dent;
+	GString *tmpstr;
+	
+	dirh = opendir (dir_path);
+
+	if (!dirh)
+		return;
+	
+	tmpstr = g_string_new(NULL);
+	while ((dent = readdir (dirh))) {
+		char *p;
+
+		p = strrchr (dent->d_name, '.');
+		if (!p || (strcmp (p, ".goad") != 0 && strcmp (p, ".gnorba") != 0))
+			continue;
+
+		g_string_sprintf (tmpstr, "=%s/%s", dir_path, dent->d_name);
+		goad_server_list_read (tmpstr->str, servinfo, tmpstr, newl);
+	}
+	closedir (dirh);
+	g_string_free (tmpstr, TRUE);
+}
+
+/*
+ * Loads any servers that might be in the environment variable @env
+ */
+static void
+load_from_env (const char *env_name, GoadServerList *newl, GArray *servinfo, gboolean append_postfix)
+{
+	char *env_copy, *s, *path, *tokp, *env;
+
+	env = getenv (env_name);
+
+	if (!env)
+		return;
+	
+	env_copy = g_strdup (env);
+	s = env_copy;
+	
+	while ((path = strtok_r (s, ":", &tokp)) != NULL){
+		char *full;
+
+		s = NULL;
+		
+		if (append_postfix)
+			full = g_concat_dir_and_file (path, "etc/" SERVER_LISTING_PATH);
+		else
+			full = g_strdup (path);
+
+		load_servers_from (full, newl, servinfo);
+		g_free (full);
+	}
+	g_free (env_copy);
+}
+
 /**
  * goad_server_list_get:
  *
@@ -105,75 +167,40 @@ static gboolean string_in_array(const char *string, const char **array)
 GoadServerList *
 goad_server_list_get(void)
 {
-  GArray *servinfo;
-  GString *tmpstr;
-  GString *usersrvpath;
-  DIR *dirh;
-  GoadServerList *newl;
-  GHashTable *by_goad_id;
-  int i;
-  char *ctmp;
-
-  newl = g_new0(GoadServerList, 1);
-  servinfo = g_array_new(TRUE, FALSE, sizeof(GoadServer));
-  by_goad_id = g_hash_table_new(g_str_hash, g_str_equal);
-  newl->by_goad_id = by_goad_id;
-  tmpstr = g_string_new(NULL);
-
-  /* User servers (preferred over system) */
-  usersrvpath = g_string_new(NULL);
-  g_string_sprintf(usersrvpath, "%s" SERVER_LISTING_PATH, gnome_user_dir);
-  dirh = opendir(usersrvpath->str);
-  if(dirh) {
-    struct dirent *dent;
-    
-    while((dent = readdir(dirh))) {
-      char *p;
-
-      p = strrchr (dent->d_name, '.');
-      if (!p || (strcmp (p, ".goad") != 0 && strcmp (p, ".gnorba") != 0))
-	continue;
-
-      g_string_sprintf(tmpstr, "=%s/%s", usersrvpath->str, dent->d_name);
-      goad_server_list_read(tmpstr->str, servinfo, tmpstr, newl);
-    }
-    closedir(dirh);
-  }
-  g_string_free(usersrvpath, TRUE);
-  
-  /* System servers */
-  ctmp = gnome_unconditional_config_file(SERVER_LISTING_PATH);
-  dirh = opendir(ctmp);
-  if(dirh) {
-    struct dirent *dent;
-
-    while((dent = readdir(dirh))) {
-      char *p;
-
-      p = strrchr (dent->d_name, '.');
-      if (!p || (strcmp (p, ".goad") != 0 && strcmp (p, ".gnorba") != 0))
-	continue;
-
-      g_string_sprintf(tmpstr, "=" GNOMESYSCONFDIR SERVER_LISTING_PATH "/%s", dent->d_name);
-      goad_server_list_read(tmpstr->str, servinfo, tmpstr, newl);
-    }
-    closedir(dirh);
-  }
-  g_free(ctmp);
-
-  goad_server_list_read(SERVER_LISTING_PATH "/", servinfo, tmpstr, newl);
-
-  newl->list = (GoadServer *)servinfo->data;
-  if(newl->list) {
-    for(i = 0; newl->list[i].repo_id; i++)
-      g_hash_table_insert(newl->by_goad_id,
-			  newl->list[i].server_id, &newl->list[i]);
-  }
-
-  g_array_free(servinfo, FALSE);
-  g_string_free(tmpstr, TRUE);
-
-  return newl;
+	GArray *servinfo;
+	GoadServerList *newl;
+	GHashTable *by_goad_id;
+	int i;
+	char *system_dir, *user_dir;
+	
+	newl = g_new0(GoadServerList, 1);
+	servinfo = g_array_new(TRUE, FALSE, sizeof(GoadServer));
+	by_goad_id = g_hash_table_new(g_str_hash, g_str_equal);
+	newl->by_goad_id = by_goad_id;
+	
+	/* User servers (preferred over system) */
+	user_dir = g_concat_dir_and_file (gnome_user_dir, SERVER_LISTING_PATH);
+	load_servers_from (user_dir, newl, servinfo);
+	g_free (user_dir);
+	
+	/* System servers */
+	system_dir = gnome_unconditional_config_file (SERVER_LISTING_PATH);
+	load_servers_from (system_dir, newl, servinfo);
+	g_free (system_dir);
+	
+	/* Now, user defined locations */
+	load_from_env ("GNOME_PATH", newl, servinfo, TRUE);
+	load_from_env ("GNOME_GNORBA_PATH", newl, servinfo, FALSE);
+	
+	newl->list = (GoadServer *)servinfo->data;
+	if (newl->list) {
+		for (i = 0; newl->list[i].repo_id; i++)
+			g_hash_table_insert (newl->by_goad_id, newl->list[i].server_id, &newl->list[i]);
+	}
+	
+	g_array_free (servinfo, FALSE);
+	
+	return newl;
 }
 
 static GoadActivationFlags

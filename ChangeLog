@@ -1,3 +1,15 @@
+1999-08-27  Miguel de Icaza  <miguel@nuclecu.unam.mx>
+
+	* man/gnome.1 (http): Updated the GNOME manual page. 
+
+	* gnome-config.in (Usage): Add support for GNOME_PATH and list the
+	existing modules separated by commas and format the resulting output.
+
+	* libgnorba/goad.c (goad_server_list_get): Use correct string
+	format.  Otherwise we could have never loaded user-defined GOAD services.
+	(goad_server_list_get): Add support for loading servers from
+	$GNOME_PATH/CORBA/servers and from $GNOME_GNORBA_PATH.
+
 1999-08-26  Karl Eichwalder  <ke@suse.de>
 
 	* README: Fix typos.

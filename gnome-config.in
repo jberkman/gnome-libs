@@ -21,6 +21,10 @@ pkgincludedir=${includedir}/@PACKAGE@
 MODULE_VERSION=@PACKAGE@-@VERSION@
 module_dirs="$libdir:$GNOME_LIBCONFIG_PATH"
 
+for extra in `echo $GNOME_PATH  | sed 's/:/ /'`; do
+    module_dirs="$module_dirs:$extra/lib"
+done
+
 usage()
 {
     exit_code=$1
@@ -78,11 +82,11 @@ EOF
 		case "$i" in
 		# ignore either placebo or installed file
 		gnomeConf.sh) ;;
-		*Conf.sh) echo "    $i" | sed -e 's/Conf\.sh$//' ;;
+		*Conf.sh) echo -n "$i" | sed -e 's/Conf\.sh$/, /' ;;
 		# should not happen
 		*) exit_code=2 ; echo "*** ERROR: What is this? $i" 1>&2 ;;
 		esac
-	    done
+	    done | fmt
 	fi
     done
 

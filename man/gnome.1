@@ -81,13 +81,27 @@ http://gtk.themes.org for a collection of readily-available themes.
 .SS Imlib
 The graphics library used to load, save, manipulate and render images
 in GNOME applications.  It includes routines to do fast drawing and
-use a limited set of colors from low-end displays.
+use a limited set of colors from low-end displays.  We expect this
+library to be replaced soon with the more modern libart.
+.SS libart_lgpl
+An imaging library used for implementing various high-quality imaging
+components in GNOME.
 .SS gnome-libs
 These libraries are the core libraries that provide the uniformity of
 the applications.  They are divided in five: libgnome (for non-GUI
 dependant code), libgnomeui (for GUI dependant code), zvt (the
 xterm terminal emulator), gtk-xmhtml (an HTML rendering engine) and
 libgnorba that implements the CORBA object activation and registry.
+.SS libglade
+This library enables programmers to create their interfaces using the
+Glade GUI desginer and loading at runtime the user interfaces.
+.SS gnome-print
+The GNOME printing architecture implements a Postscript imaging model
+with two extensions: alpha transparency and anti-aliasing (all of this
+is done by using the libart_lgpl imaging library.  
+.SS gnome-xml
+This library provides GNOME application with an API to load, parse and
+walk an XML file.  
 .SS Docbook
 GNOME documentation is written in the Docbook SGML DTD.  You can find
 more about this at
@@ -170,6 +184,9 @@ General discussion of the GNOME system.
 .SS gnome-devel-list@gnome.org
 Discussions on the development of the GNOME system and on writing
 GNOME applications.
+.PP
+.SS gnome-gui-list@gnome.org
+Discussion about user interface improvements for the GNOME system. 
 .PP
 There are many other lists that discuss specific parts of the project,
 for a complete list, check http://www.gnome.org/mailing-lists

@@ -130,7 +130,8 @@ The basic set of libraries you can link with are:
 library author needs to install an xxxxConf.sh file in the directory
 returned by "gnome-config --libdir" or in any directory listed in the 
 .B GNOME_LIBCONFIG_PATH
-environment variable.
+environment variable or in the directory pointed by
+.B GNOME_PATH/lib
 .PP
 The prefix "xxxx" should be substituted with the module name, for
 example, the applets library installs the appletConf.sh file.
@@ -202,6 +203,16 @@ fooConf.sh: fooConf.sh.in Makefile
 .fi
 .PP
 This file is then copied into a system accessible location.
+.SH ENVIRONMENT
+The \fIgnome-config\fP program uses the directories listed in the
+.B GNOME_LIBCONFIG_PATH
+to locate library definition files (Conf.sh) installed on the system.
+The variable
+.B GNOME_PATH 
+is used as a list of directories where GNOME applications and
+libraries have been installed.  \fIgnome-config\fP looks in the
+\fIlib\fP subdirectory of each directory listed here for library
+definition files (Conf.sh) installed.
 .SH AUTHOR
 gnome-config was written by Miguel de Icaza, Raja Harinath and various
 hackers in the GNOME team.  It was inspired by Owen Taylor's
