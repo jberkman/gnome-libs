@@ -1,3 +1,9 @@
+1999-03-16  Michael Zucchi  <mzucchi@denr.sa.gov.au>
+
+	* zvtterm.c (zvt_term_key_press): Changed all cursor keys to send
+	\E[x, rather than \EOx.  Hell I dont know how this ever worked
+	really.
+
 1999-03-12  Richard Hult <rhult@hem2.passagen.se>
 
 	* zvtterm.c (zvt_term_scroll_by_lines): New internal function. 

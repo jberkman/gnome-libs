@@ -1803,19 +1803,19 @@ zvt_term_key_press (GtkWidget *widget, GdkEventKey *event)
     break;
   case GDK_KP_Right:
   case GDK_Right:
-    p+=sprintf(p, "\033OC");
+    p+=sprintf(p, "\033[C");
     break;
   case GDK_KP_Left:
   case GDK_Left:
-    p+=sprintf (p, "\033OD");
+    p+=sprintf (p, "\033[D");
     break;
   case GDK_KP_Up:
   case GDK_Up:
-    p+=sprintf (p, "\033OA");
+    p+=sprintf (p, "\033[A");
     break;
   case GDK_KP_Down:
   case GDK_Down:
-    p+=sprintf (p, "\033OB");
+    p+=sprintf (p, "\033[B");
     break;
   case GDK_KP_Insert:
   case GDK_Insert:
