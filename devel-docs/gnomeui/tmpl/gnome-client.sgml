@@ -15,7 +15,18 @@ handling of messages sent by a session manager.</para>
 new GnomeClient object: gnome_client_new() and
 gnome_client_new_without_connection().  As one may guess from the
 functions names: The first function tries to connect to a session
-manager automatically, while the second one does not. </para>
+manager automatically, while the second one does not.  However, you
+probably don't need to create your own client;
+<function>gnome_init()</function> automatically creates a client for
+you. To obtain this client, call
+<function>gnome_master_client().</function>
+ </para>
+
+<para>
+Two useful sources of information on session management are the
+gnome-client header file and the SMlib.PS.Z document that comes with
+X.
+</para>
 
 <!-- ##### SECTION See_Also ##### -->
 <para>
