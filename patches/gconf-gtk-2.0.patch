@@ -1,11 +1,12 @@
+? GConf-0.11.tar.gz
 Index: .cvsignore
 ===================================================================
 RCS file: /cvs/gnome/gconf/.cvsignore,v
 retrieving revision 1.6
-diff -u -u -d -p -b -B -r1.6 .cvsignore
+diff -u -u -r1.6 .cvsignore
 --- .cvsignore	2000/08/29 21:16:59	1.6
-+++ .cvsignore	2000/12/05 14:56:45
-@@ -18,5 +18,7 @@ ABOUT-NLS
++++ .cvsignore	2000/12/13 11:18:54
+@@ -18,5 +18,7 @@
  intl
  config.h.in
  gconf-config
@@ -17,9 +18,9 @@ Index: Makefile.am
 ===================================================================
 RCS file: /cvs/gnome/gconf/Makefile.am,v
 retrieving revision 1.19
-diff -u -u -d -p -b -B -r1.19 Makefile.am
+diff -u -u -r1.19 Makefile.am
 --- Makefile.am	2000/10/03 19:14:23	1.19
-+++ Makefile.am	2000/12/05 14:56:46
++++ Makefile.am	2000/12/13 11:18:55
 @@ -2,7 +2,8 @@
  SUBDIRS = gconf backends wrappers po doc examples standard-schemas
  DIST_SUBDIRS=tests $(SUBDIRS)
@@ -30,7 +31,7 @@ diff -u -u -d -p -b -B -r1.19 Makefile.am
  
  WARNING_MESSAGE="If this is your first install of GConf, you may need to move $(prefix)/etc/gconf/$(MAJOR_VERSION)/path.example to $(prefix)/etc/gconf/$(MAJOR_VERSION)/path, so that the default configuration is sane. If you are already using GConf, you may need to move your old configuration into place if $(MAJOR_VERSION) is not the same as your old version."
  
-@@ -24,6 +25,9 @@ install-data-local:
+@@ -24,6 +25,9 @@
  	echo "**** NOTE ****" && \
  	echo $(WARNING_MESSAGE) && \
  	echo "**************"
@@ -44,9 +45,9 @@ Index: autogen.sh
 ===================================================================
 RCS file: /cvs/gnome/gconf/autogen.sh,v
 retrieving revision 1.5
-diff -u -u -d -p -b -B -r1.5 autogen.sh
+diff -u -u -r1.5 autogen.sh
 --- autogen.sh	1999/11/19 17:38:12	1.5
-+++ autogen.sh	2000/12/05 14:56:46
++++ autogen.sh	2000/12/13 11:18:55
 @@ -4,132 +4,11 @@
  srcdir=`dirname $0`
  test -z "$srcdir" && srcdir=.
@@ -56,7 +57,7 @@ diff -u -u -d -p -b -B -r1.5 autogen.sh
  PROJECT=GConf
 -TEST_TYPE=-f
 -FILE=gconf/gconf.h
--
+ 
 -DIE=0
 -
 -(autoconf --version) < /dev/null > /dev/null 2>&1 || {
@@ -84,7 +85,7 @@ diff -u -u -d -p -b -B -r1.5 autogen.sh
 -    DIE=1
 -  }
 -}
- 
+-
 -grep "^AM_GNU_GETTEXT" configure.in >/dev/null && {
 -  grep "sed.*POTFILES" $srcdir/configure.in >/dev/null || \
 -  (gettext --version) < /dev/null > /dev/null 2>&1 || {
@@ -110,7 +111,7 @@ diff -u -u -d -p -b -B -r1.5 autogen.sh
 -	echo "I am going to run ./configure with no arguments - if you wish "
 -        echo "to pass any to it, please specify them on the $0 command line."
 -fi
- 
+-
 -case $CC in
 -*xlc | *xlc\ * | *lcc | *lcc\ *) am_opt=--include-deps;;
 -esac
@@ -173,7 +174,7 @@ diff -u -u -d -p -b -B -r1.5 autogen.sh
 -conf_flags="--enable-maintainer-mode --enable-compile-warnings" #--enable-iso-c
 -
 -cd "$ORIGDIR"
--
+ 
 -if test x$NOCONFIGURE = x; then
 -  echo Running $srcdir/configure $conf_flags "$@" ...
 -  $srcdir/configure $conf_flags "$@" \
@@ -186,21 +187,21 @@ Index: configure.in
 ===================================================================
 RCS file: /cvs/gnome/gconf/configure.in,v
 retrieving revision 1.63
-diff -u -u -d -p -b -B -r1.63 configure.in
+diff -u -u -r1.63 configure.in
 --- configure.in	2000/10/31 19:15:39	1.63
-+++ configure.in	2000/12/05 14:56:46
-@@ -137,24 +137,34 @@ if test "x$docs_only" = "xyes"; then
++++ configure.in	2000/12/13 11:18:55
+@@ -137,24 +137,34 @@
          AC_FYI("Only building documentation")
  else
  
 -AM_PATH_GLIB(1.2.0,,AC_MSG_ERROR(glib not found or too old),gmodule)
 -AM_PATH_OAF(0.2.0,,AC_MSG_ERROR([OAF not found or too old]))
 -AM_PATH_GTK(1.2.0,,HAVE_GTK=no)
--
--AM_CONDITIONAL(GTK, test x$HAVE_GTK != xno)
 +GNOME_COMMON_INIT
 +GNOME_PLATFORM_GNOME_2(no)
  
+-AM_CONDITIONAL(GTK, test x$HAVE_GTK != xno)
+-
 -AC_PATH_PROG(XML_CONFIG,xml-config,no)
 -if test x$XML_CONFIG = xno; then
 -  AC_MSG_ERROR(Couldn't find xml-config need to install libxml)
@@ -209,6 +210,7 @@ diff -u -u -d -p -b -B -r1.63 configure.in
 -XML_CFLAGS=`$XML_CONFIG --cflags`
 -if test "x$XML_LIBS" = x; then
 -  AC_MSG_ERROR(Failed to get link flags for libxml)
+-fi
 +if test $platform_gnome_2 = yes ; then
 +  GNOME_PKGCONFIG_CHECK_MODULES(GLIB, gmodule-2.0:1.3.1)
 +  GNOME_PKGCONFIG_CHECK_MODULES(OAF, oaf-2.0)
@@ -219,7 +221,7 @@ diff -u -u -d -p -b -B -r1.63 configure.in
 +  GNOME_PKGCONFIG_CHECK_MODULES(OAF, oaf:0.2.0)
 +  GNOME_PKGCONFIG_CHECK_OPTIONAL_MODULES(GTK, gtk+:1.2.6)
 +  GNOME_PKGCONFIG_CHECK_MODULES(XML, libxml:1.8.8)
- fi
++fi
 +AC_PATH_PROG(OAF_CONFIG, oaf-config)
 +AC_SUBST(OAF_CONFIG)
 +AC_SUBST(GLIB_LIBS)
@@ -237,7 +239,7 @@ diff -u -u -d -p -b -B -r1.63 configure.in
  BDB_LIBS=
  BDB_CFLAGS=
  
-@@ -212,7 +222,7 @@ fi # docs_only
+@@ -212,7 +222,7 @@
  
  ALL_LINGUAS="ca cs da de el fi fr ga ja ko nl no pt_BR ru sv tr uk"
  
@@ -246,7 +248,7 @@ diff -u -u -d -p -b -B -r1.63 configure.in
  
  # AM_GNU_GETTEXT above substs $DATADIRNAME
  # this is the directory where the *.{mo,gmo} files are installed
-@@ -244,6 +254,8 @@ doc/gconf/Makefile
+@@ -244,6 +254,8 @@
  examples/Makefile
  tests/Makefile
  standard-schemas/Makefile
@@ -260,7 +262,7 @@ Index: gconf-2.0.pc.in
 RCS file: gconf-2.0.pc.in
 diff -N gconf-2.0.pc.in
 --- /dev/null	Tue May  5 16:32:27 1998
-+++ gconf-2.0.pc.in	Tue Dec  5 09:56:46 2000
++++ gconf-2.0.pc.in	Wed Dec 13 06:18:55 2000
 @@ -0,0 +1,12 @@
 +prefix=@prefix@
 +exec_prefix=@exec_prefix@
@@ -279,7 +281,7 @@ Index: gconfgtk-2.0.pc.in
 RCS file: gconfgtk-2.0.pc.in
 diff -N gconfgtk-2.0.pc.in
 --- /dev/null	Tue May  5 16:32:27 1998
-+++ gconfgtk-2.0.pc.in	Tue Dec  5 09:56:46 2000
++++ gconfgtk-2.0.pc.in	Wed Dec 13 06:18:55 2000
 @@ -0,0 +1,12 @@
 +prefix=@prefix@
 +exec_prefix=@exec_prefix@
@@ -297,7 +299,7 @@ Index: backends/gthreadpool.c
 ===================================================================
 RCS file: gthreadpool.c
 diff -N gthreadpool.c
---- backends/gthreadpool.c	Tue Dec  5 09:56:57 2000
+--- backends/gthreadpool.c	Wed Dec 13 06:19:06 2000
 +++ /dev/null	Tue May  5 16:32:27 1998
 @@ -1,435 +0,0 @@
 -/* GConf
@@ -739,7 +741,7 @@ Index: backends/gthreadpool.h
 ===================================================================
 RCS file: gthreadpool.h
 diff -N gthreadpool.h
---- backends/gthreadpool.h	Tue Dec  5 09:56:57 2000
+--- backends/gthreadpool.h	Wed Dec 13 06:19:06 2000
 +++ /dev/null	Tue May  5 16:32:27 1998
 @@ -1,66 +0,0 @@
 -/* GConf
@@ -812,9 +814,9 @@ Index: backends/xml-backend.c
 ===================================================================
 RCS file: /cvs/gnome/gconf/backends/xml-backend.c,v
 retrieving revision 1.73
-diff -u -u -d -p -b -B -r1.73 xml-backend.c
+diff -u -u -r1.73 xml-backend.c
 --- backends/xml-backend.c	2000/09/25 03:10:15	1.73
-+++ backends/xml-backend.c	2000/12/05 14:56:49
++++ backends/xml-backend.c	2000/12/13 11:18:56
 @@ -26,8 +26,8 @@
  #include "xml-cache.h"
  
@@ -826,7 +828,7 @@ diff -u -u -d -p -b -B -r1.73 xml-backend.c
  
  #include <stdio.h>
  #include <time.h>
-@@ -678,6 +678,9 @@ G_MODULE_EXPORT const gchar*
+@@ -678,6 +678,9 @@
  g_module_check_init (GModule *module)
  {
    gconf_log(GCL_INFO, _("Initializing XML backend module"));
@@ -840,9 +842,9 @@ Index: backends/xml-cache.h
 ===================================================================
 RCS file: /cvs/gnome/gconf/backends/xml-cache.h,v
 retrieving revision 1.5
-diff -u -u -d -p -b -B -r1.5 xml-cache.h
+diff -u -u -r1.5 xml-cache.h
 --- backends/xml-cache.h	2000/08/31 21:25:04	1.5
-+++ backends/xml-cache.h	2000/12/05 14:56:49
++++ backends/xml-cache.h	2000/12/13 11:18:56
 @@ -21,7 +21,7 @@
  #define GCONF_XML_CACHE_H
  
@@ -856,9 +858,9 @@ Index: backends/xml-dir.c
 ===================================================================
 RCS file: /cvs/gnome/gconf/backends/xml-dir.c,v
 retrieving revision 1.17
-diff -u -u -d -p -b -B -r1.17 xml-dir.c
+diff -u -u -r1.17 xml-dir.c
 --- backends/xml-dir.c	2000/09/25 03:10:15	1.17
-+++ backends/xml-dir.c	2000/12/05 14:56:50
++++ backends/xml-dir.c	2000/12/13 11:18:57
 @@ -20,7 +20,7 @@
  #include "xml-dir.h"
  #include "xml-entry.h"
@@ -868,7 +870,7 @@ diff -u -u -d -p -b -B -r1.17 xml-dir.c
  
  #include <stdio.h>
  #include <time.h>
-@@ -822,16 +822,16 @@ dir_load_doc(Dir* d, GError** err)
+@@ -822,16 +822,16 @@
        d->doc = xmlNewDoc("1.0");
      }
    
@@ -889,7 +891,7 @@ diff -u -u -d -p -b -B -r1.17 xml-dir.c
        need_backup = TRUE; /* save broken stuff */
      }
    else
-@@ -864,7 +864,7 @@ dir_load_doc(Dir* d, GError** err)
+@@ -864,7 +864,7 @@
      }
    
    g_assert(d->doc != NULL);
@@ -898,7 +900,7 @@ diff -u -u -d -p -b -B -r1.17 xml-dir.c
  }
  
  static Entry*
-@@ -873,11 +873,11 @@ dir_make_new_entry(Dir* d, const gchar* 
+@@ -873,11 +873,11 @@
    Entry* e;
  
    g_return_val_if_fail(d->doc != NULL, NULL);
@@ -912,7 +914,7 @@ diff -u -u -d -p -b -B -r1.17 xml-dir.c
    
    safe_g_hash_table_insert(d->entry_cache, (gchar*)entry_get_name(e), e);
    
-@@ -910,14 +910,14 @@ dir_fill_cache_from_doc(Dir* d)
+@@ -910,14 +910,14 @@
    xmlNodePtr node;
    
    if (d->doc == NULL ||
@@ -934,9 +936,9 @@ Index: backends/xml-dir.h
 ===================================================================
 RCS file: /cvs/gnome/gconf/backends/xml-dir.h,v
 retrieving revision 1.6
-diff -u -u -d -p -b -B -r1.6 xml-dir.h
+diff -u -u -r1.6 xml-dir.h
 --- backends/xml-dir.h	2000/08/31 21:25:04	1.6
-+++ backends/xml-dir.h	2000/12/05 14:56:50
++++ backends/xml-dir.h	2000/12/13 11:18:57
 @@ -21,7 +21,7 @@
  #define GCONF_XML_DIR_H
  
@@ -950,9 +952,9 @@ Index: backends/xml-entry.c
 ===================================================================
 RCS file: /cvs/gnome/gconf/backends/xml-entry.c,v
 retrieving revision 1.19
-diff -u -u -d -p -b -B -r1.19 xml-entry.c
+diff -u -u -r1.19 xml-entry.c
 --- backends/xml-entry.c	2000/09/13 17:49:40	1.19
-+++ backends/xml-entry.c	2000/12/05 14:56:51
++++ backends/xml-entry.c	2000/12/13 11:18:58
 @@ -20,7 +20,7 @@
  #include "xml-entry.h"
  #include <gconf/gconf-internals.h>
@@ -962,7 +964,7 @@ diff -u -u -d -p -b -B -r1.19 xml-entry.c
  
  static void
  entry_sync_if_needed(Entry* e, GConfValue* val);
-@@ -383,9 +383,9 @@ free_childs(xmlNodePtr node)
+@@ -383,9 +383,9 @@
  {
    g_return_if_fail(node != NULL);
    
@@ -975,7 +977,7 @@ diff -u -u -d -p -b -B -r1.19 xml-entry.c
    node->last = NULL;
  }
  
-@@ -604,7 +604,7 @@ find_schema_subnode_by_locale(xmlNodePtr
+@@ -604,7 +604,7 @@
    xmlNodePtr iter;
    xmlNodePtr found = NULL;
      
@@ -984,7 +986,7 @@ diff -u -u -d -p -b -B -r1.19 xml-entry.c
        
    while (iter != NULL)
      {
-@@ -698,12 +698,12 @@ schema_subnode_extract_data(xmlNodePtr n
+@@ -698,12 +698,12 @@
    else
      gconf_log(GCL_WARNING, _("found <local_schema> with no locale setting"));
    
@@ -999,7 +1001,7 @@ diff -u -u -d -p -b -B -r1.19 xml-entry.c
  
        while (iter != NULL)
          {
-@@ -841,7 +841,7 @@ schema_node_extract_value(xmlNodePtr nod
+@@ -841,7 +841,7 @@
        localized_nodes = g_new0(xmlNodePtr, i+2);
        
        /* Find the node for each possible locale */
@@ -1008,7 +1010,7 @@ diff -u -u -d -p -b -B -r1.19 xml-entry.c
        
        while (iter != NULL)
          {
-@@ -892,7 +892,7 @@ schema_node_extract_value(xmlNodePtr nod
+@@ -892,7 +892,7 @@
  
    /* If no locale matched, try picking the first node */
    if (best == NULL)
@@ -1017,7 +1019,7 @@ diff -u -u -d -p -b -B -r1.19 xml-entry.c
    
    /* Extract info from the best locale node */
    if (best != NULL)
-@@ -976,7 +976,7 @@ node_extract_value(xmlNodePtr node, cons
+@@ -976,7 +976,7 @@
        {
          xmlNodePtr iter;
          
@@ -1026,7 +1028,7 @@ diff -u -u -d -p -b -B -r1.19 xml-entry.c
  
          while (iter != NULL)
            {
-@@ -1045,7 +1045,7 @@ node_extract_value(xmlNodePtr node, cons
+@@ -1045,7 +1045,7 @@
              break;
            }
          
@@ -1035,7 +1037,7 @@ diff -u -u -d -p -b -B -r1.19 xml-entry.c
  
          while (iter != NULL)
            {
-@@ -1107,7 +1107,7 @@ node_extract_value(xmlNodePtr node, cons
+@@ -1107,7 +1107,7 @@
          GConfValue* cdr = NULL;
          xmlNodePtr iter;
          
@@ -1048,9 +1050,9 @@ Index: backends/xml-entry.h
 ===================================================================
 RCS file: /cvs/gnome/gconf/backends/xml-entry.h,v
 retrieving revision 1.5
-diff -u -u -d -p -b -B -r1.5 xml-entry.h
+diff -u -u -r1.5 xml-entry.h
 --- backends/xml-entry.h	2000/08/31 21:25:04	1.5
-+++ backends/xml-entry.h	2000/12/05 14:56:51
++++ backends/xml-entry.h	2000/12/13 11:18:58
 @@ -21,7 +21,7 @@
  #define GCONF_XML_ENTRY_H
  
@@ -1063,11 +1065,11 @@ diff -u -u -d -p -b -B -r1.5 xml-entry.h
 Index: gconf/Makefile.am
 ===================================================================
 RCS file: /cvs/gnome/gconf/gconf/Makefile.am,v
-retrieving revision 1.52
-diff -u -u -d -p -b -B -r1.52 Makefile.am
---- gconf/Makefile.am	2000/09/11 21:58:47	1.52
-+++ gconf/Makefile.am	2000/12/05 14:56:51
-@@ -31,7 +31,6 @@ gconfincludedir = $(includedir)/gconf/$(
+retrieving revision 1.53
+diff -u -u -r1.53 Makefile.am
+--- gconf/Makefile.am	2000/12/12 16:52:45	1.53
++++ gconf/Makefile.am	2000/12/13 11:18:58
+@@ -31,7 +31,6 @@
  gconfinclude_HEADERS =     \
  	gconf.h            \
  	gconf-changeset.h	\
@@ -1075,7 +1077,7 @@ diff -u -u -d -p -b -B -r1.52 Makefile.am
  	gconf-listeners.h  \
  	gconf-schema.h 	   \
  	gconf-value.h	   \
-@@ -69,8 +68,6 @@ libgconf_1_la_SOURCES = \
+@@ -69,8 +68,6 @@
  	gconf-backend.c		\
  	gconf-changeset.c	\
  	gconf-error.c		\
@@ -1088,10 +1090,10 @@ Index: gconf/gconf-database.h
 ===================================================================
 RCS file: /cvs/gnome/gconf/gconf/gconf-database.h,v
 retrieving revision 1.6
-diff -u -u -d -p -b -B -r1.6 gconf-database.h
+diff -u -u -r1.6 gconf-database.h
 --- gconf/gconf-database.h	2000/10/08 19:51:32	1.6
-+++ gconf/gconf-database.h	2000/12/05 14:56:52
-@@ -31,7 +31,6 @@ extern "C" {
++++ gconf/gconf-database.h	2000/12/13 11:18:58
+@@ -31,7 +31,6 @@
  #include "gconf-listeners.h"
  #include "gconf-sources.h"
  #include "gconf-internals.h"
@@ -1103,9 +1105,9 @@ Index: gconf/gconf-error.h
 ===================================================================
 RCS file: /cvs/gnome/gconf/gconf/gconf-error.h,v
 retrieving revision 1.15
-diff -u -u -d -p -b -B -r1.15 gconf-error.h
+diff -u -u -r1.15 gconf-error.h
 --- gconf/gconf-error.h	2000/10/07 01:31:18	1.15
-+++ gconf/gconf-error.h	2000/12/05 14:56:52
++++ gconf/gconf-error.h	2000/12/13 11:18:58
 @@ -22,8 +22,6 @@
  
  #include <glib.h>
@@ -1118,10 +1120,10 @@ diff -u -u -d -p -b -B -r1.15 gconf-error.h
 Index: gconf/gconfd.c
 ===================================================================
 RCS file: /cvs/gnome/gconf/gconf/gconfd.c,v
-retrieving revision 1.95
-diff -u -u -d -p -b -B -r1.95 gconfd.c
---- gconf/gconfd.c	2000/11/05 18:09:48	1.95
-+++ gconf/gconfd.c	2000/12/05 14:56:53
+retrieving revision 1.96
+diff -u -u -r1.96 gconfd.c
+--- gconf/gconfd.c	2000/12/12 16:52:45	1.96
++++ gconf/gconfd.c	2000/12/13 11:19:00
 @@ -32,7 +32,6 @@
  #include "gconf-listeners.h"
  #include "gconf-locale.h"
@@ -1134,9 +1136,9 @@ Index: gconf/gconftool.c
 ===================================================================
 RCS file: /cvs/gnome/gconf/gconf/gconftool.c,v
 retrieving revision 1.51
-diff -u -u -d -p -b -B -r1.51 gconftool.c
+diff -u -u -r1.51 gconftool.c
 --- gconf/gconftool.c	2000/10/10 04:30:18	1.51
-+++ gconf/gconftool.c	2000/12/05 14:56:55
++++ gconf/gconftool.c	2000/12/13 11:19:01
 @@ -22,8 +22,8 @@
  #include <stdio.h>
  #include <unistd.h>
@@ -1148,17 +1150,17 @@ diff -u -u -d -p -b -B -r1.51 gconftool.c
  #include <stdlib.h>
  #include <errno.h>
  
-@@ -314,6 +314,9 @@ main (int argc, char** argv)
+@@ -313,6 +313,9 @@
+   poptContext ctx;
    gint nextopt;
    GError* err = NULL;
-   
++
 +  LIBXML_TEST_VERSION;
 +  xmlKeepBlanksDefault(1);
-+  
+   
    ctx = poptGetContext("gconftool", argc, argv, options, 0);
  
-   poptReadDefaultConfig(ctx, TRUE);
-@@ -1460,7 +1463,7 @@ extract_global_info(xmlNodePtr node,
+@@ -1460,7 +1463,7 @@
    xmlNodePtr iter;
    char* default_value = NULL;
        
@@ -1167,7 +1169,7 @@ diff -u -u -d -p -b -B -r1.51 gconftool.c
  
    while (iter != NULL)
      {
-@@ -1665,7 +1668,7 @@ process_locale_info(xmlNodePtr node, Sch
+@@ -1665,7 +1668,7 @@
  
  
    /* Locale-specific info */
@@ -1176,7 +1178,7 @@ diff -u -u -d -p -b -B -r1.51 gconftool.c
    
    while (iter != NULL)
      {
-@@ -1819,7 +1822,7 @@ process_schema(GConfEngine* conf, xmlNod
+@@ -1819,7 +1822,7 @@
        return 1;
      }
    
@@ -1185,7 +1187,7 @@ diff -u -u -d -p -b -B -r1.51 gconftool.c
  
    while (iter != NULL)
      {
-@@ -1881,7 +1884,7 @@ process_schema_list(GConfEngine* conf, x
+@@ -1881,7 +1884,7 @@
  {
    xmlNodePtr iter;
  
@@ -1194,7 +1196,7 @@ diff -u -u -d -p -b -B -r1.51 gconftool.c
  
    while (iter != NULL)
      {
-@@ -1915,14 +1918,14 @@ do_load_schema_file(GConfEngine* conf, c
+@@ -1915,14 +1918,14 @@
        return 1;
      }
  
@@ -1211,7 +1213,7 @@ diff -u -u -d -p -b -B -r1.51 gconftool.c
    while (iter != NULL) 
      {
        if (iter->type == XML_ELEMENT_NODE)
-@@ -1947,7 +1950,7 @@ do_load_schema_file(GConfEngine* conf, c
+@@ -1947,7 +1950,7 @@
        return 1;
      }
  
@@ -1224,10 +1226,10 @@ Index: wrappers/gtk/gconf-client.c
 ===================================================================
 RCS file: /cvs/gnome/gconf/wrappers/gtk/gconf-client.c,v
 retrieving revision 1.38
-diff -u -u -d -p -b -B -r1.38 gconf-client.c
+diff -u -u -r1.38 gconf-client.c
 --- wrappers/gtk/gconf-client.c	2000/10/26 02:03:03	1.38
-+++ wrappers/gtk/gconf-client.c	2000/12/05 14:56:57
-@@ -110,7 +110,8 @@ static void gconf_client_class_init (GCo
++++ wrappers/gtk/gconf-client.c	2000/12/13 11:19:04
+@@ -110,7 +110,8 @@
  static void gconf_client_init       (GConfClient      *client);
  static void gconf_client_real_unreturned_error (GConfClient* client, GError* error);
  static void gconf_client_real_error            (GConfClient* client, GError* error);
@@ -1237,7 +1239,7 @@ diff -u -u -d -p -b -B -r1.38 gconf-client.c
  
  static void gconf_client_cache                 (GConfClient* client,
                                                  const gchar* key,
-@@ -159,7 +160,7 @@ gconf_client_get_type (void)
+@@ -159,7 +160,7 @@
          (GtkClassInitFunc) NULL,
        };
  
@@ -1246,7 +1248,7 @@ diff -u -u -d -p -b -B -r1.38 gconf-client.c
      }
  
    return client_type;
-@@ -169,15 +170,17 @@ static void
+@@ -169,15 +170,17 @@
  gconf_client_class_init (GConfClientClass *class)
  {
    GtkObjectClass *object_class;
@@ -1265,7 +1267,7 @@ diff -u -u -d -p -b -B -r1.38 gconf-client.c
                      GTK_SIGNAL_OFFSET (GConfClientClass, value_changed),
                      gtk_marshal_NONE__POINTER_POINTER,
                      GTK_TYPE_NONE, 2, GTK_TYPE_POINTER, GTK_TYPE_POINTER);
-@@ -185,7 +188,7 @@ gconf_client_class_init (GConfClientClas
+@@ -185,7 +188,7 @@
    client_signals[UNRETURNED_ERROR] =
      gtk_signal_new ("unreturned_error",
                      GTK_RUN_LAST,
@@ -1274,7 +1276,7 @@ diff -u -u -d -p -b -B -r1.38 gconf-client.c
                      GTK_SIGNAL_OFFSET (GConfClientClass, unreturned_error),
                      gtk_marshal_NONE__POINTER,
                      GTK_TYPE_NONE, 1, GTK_TYPE_POINTER);
-@@ -193,7 +196,7 @@ gconf_client_class_init (GConfClientClas
+@@ -193,18 +196,17 @@
    client_signals[ERROR] =
      gtk_signal_new ("error",
                      GTK_RUN_LAST,
@@ -1283,17 +1285,21 @@ diff -u -u -d -p -b -B -r1.38 gconf-client.c
                      GTK_SIGNAL_OFFSET (GConfClientClass, error),
                      gtk_marshal_NONE__POINTER,
                      GTK_TYPE_NONE, 1, GTK_TYPE_POINTER);
-@@ -204,7 +207,8 @@ gconf_client_class_init (GConfClientClas
+   
+-  gtk_object_class_add_signals (object_class, client_signals, LAST_SIGNAL);
+-
+   class->value_changed    = NULL;
    class->unreturned_error = gconf_client_real_unreturned_error;
    class->error            = gconf_client_real_error;
-   
+-  
 -  object_class->finalize  = gconf_client_finalize;
++
 +  object_class->destroy   = gconf_client_destroy;
 +  gobject_class->finalize  = gconf_client_finalize;
  }
  
  static void
-@@ -236,7 +240,7 @@ destroy_dir_foreach_remove(gpointer key,
+@@ -236,7 +238,7 @@
  }
  
  static void
@@ -1302,7 +1308,7 @@ diff -u -u -d -p -b -B -r1.38 gconf-client.c
  {
    GConfClient* client = GCONF_CLIENT(object);
  
-@@ -245,6 +249,15 @@ gconf_client_finalize (GtkObject* object
+@@ -245,6 +247,15 @@
    
    gconf_client_clear_cache(client);
    
@@ -1318,7 +1324,7 @@ diff -u -u -d -p -b -B -r1.38 gconf-client.c
    if (client->listeners != NULL)
      {
        gconf_listeners_free(client->listeners);
-@@ -265,8 +278,8 @@ gconf_client_finalize (GtkObject* object
+@@ -265,8 +276,8 @@
        client->engine = NULL;
      }
  
