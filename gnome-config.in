@@ -31,6 +31,9 @@ interface_version_installed() {
 	for extra in `echo $GNOME_LIBCONFIG_PATH  | sed 's/:/ /g'`; do
 	    tmp_module_dirs="$extra:$module_dirs"
 	done
+	if [ -z "${GNOME_PATH}${GNOME_LIBCONFIG_PATH}" ]; then
+	    tmp_module_dirs="${libdir}"
+	fi
     else
 	tmp_module_dirs="${datadir}/gnome/conf/$1"
 	for extra in `echo $GNOME_PATH  | sed 's/:/ /g'`; do
@@ -131,18 +134,17 @@ If LIBRARY is none of these,
 
     ${datadir}/gnome/conf/<INTERFACE_VERSION>/<LIBRARY>Conf.sh
 
-is looked at for the necessary information.  Those currently installed 
-appear to be:
+is looked at for the necessary information (${libdir} for interface
+version 1.0).  Those currently installed appear to be:
 
 EOF
-
     for dir in `echo $module_dirs | sed 's/:/ /g'`; do
 	conf_shs=`cd $dir; echo *Conf.sh`
 	if test "x$conf_shs" = x || test "x$conf_shs" = 'x*Conf.sh'; then :
 	else
 	    set gnomeConf.sh $conf_shs
 
-	    for i
+	    for i in $conf_shs;
 	    do
 		case "$i" in
 		gnomeConf.sh) ;;
@@ -199,7 +201,7 @@ while test $# -gt 0; do
 	exit 0
 	;;
     --help)
-	usage 0
+	do_help=yes
 	;;
     --cflags)
        	cflags=true
@@ -296,6 +298,10 @@ else
     for extra in `echo $GNOME_LIBCONFIG_PATH  | sed 's/:/ /g'`; do
 	module_dirs="$extra:$module_dirs"
     done
+fi
+
+if [ -n "$do_help" ]; then
+    usage 0
 fi
 
 if [ "$show_chosen_iver" = "yes" ]; then

@@ -1,3 +1,12 @@
+2000-02-18  Elliot Lee  <sopwith@redhat.com>
+
+	* configure.in: Check for newer popt, and include it in the needed libs.
+	* gnome-compat-1.0.h: Give correct paths to compat headers.
+	* gnome-config.in: Fixes to make help output correct.
+	* gnome.m4: Reorg so it doesn't do any path searching itself, just uses gnome-config.
+	* libgnome/gnome-popt.h: Include popt.h not popt-gnome.h
+	* support/Makefile.am: No popt built-in.
+
 2000-02-10  Lauris Kaplinski <lauris@ariman.ee>
 
 	* gnome-data/gnome.mime, mime.magic: Added vrml 1.0, 2.0 types

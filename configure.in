@@ -56,8 +56,6 @@ AC_SUBST(GNOME_HAVE_ALLOCA_H)
 dnl Evil stuff to extract GLIB stuff from gtk-config output
 dnl (we want to make sure it matches with the gtk we're using)
 
-#GLIB_CFLAGS=`echo $GTK_CFLAGS | sed 's/^.*\(-I[^ ]*glib[^ ]*  *-I[^ ]*\).*$/\1/'`
-#GLIB_LIBS="$GLIB_LDFLAGS `echo $GTK_LIBS | sed 's/^.*\(-lglib[^ ]*\).*$/\1/'`"
 AM_PATH_GLIB(1.2.0,,
 AC_MSG_ERROR([
 *** GLIB 1.2.0 or better is required. The latest version of GLIB
@@ -128,8 +126,8 @@ AC_SUBST(gnomelocaledir)
 
 AC_CHECK_LIB(m, floor)
 
-AC_CHECK_LIB(popt, poptGetContext,, [AC_MSG_ERROR(The popt library is required to build gnome-libs. You can download the latest version from ftp://ftp.redhat.com/pub/redhat/code/popt/)
-])
+AC_CHECK_LIB(popt, poptStrippedArgv,, AC_MSG_ERROR([popt 1.5 or newer is required to build
+gnome-libs. You can download the latest version from ftp://people.redhat.com/sopwith/popt/]))
 
 AC_CHECK_HEADERS(dlfcn.h dl.h utmp.h locale.h mcheck.h unistd.h)
 
@@ -353,7 +351,7 @@ AC_PATH_XTRA
 dnl
 dnl These are for building the appropriate lib*
 dnl
-LIBGNOME_LIBS="$DB_LIB $GLIB_LIBS $DL_LIB"
+LIBGNOME_LIBS="$DB_LIB $GLIB_LIBS $DL_LIB -lpopt"
 LIBGNOMEUI_LIBS="$LIBGNOME_LIBS $OAF_LIBS $GTK_LIBS"
 LIBGTKXMHTML_LIBS="$XPM_LIBS $JPEG_LIBS $PNG_LIBS $Z_LIBS $GTK_LIBS"
 SUPPORTINCS='-DNEED_GNOMESUPPORT_H -I$(top_builddir)/support -I$(top_srcdir)/support'
