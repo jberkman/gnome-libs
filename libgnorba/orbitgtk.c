@@ -20,7 +20,7 @@
 CORBA_ORB _gnorba_gnome_orbit_orb;
 CORBA_Principal _gnorba_request_cookie;
 
-char *_gnorba_get_cookie_reliably(const char *setme);
+static char *_gnorba_get_cookie_reliably(const char *setme);
 void _gnome_gnorba_cookie_setup(Display *disp, Window rootwin);
 extern void goad_register_arguments(void);
 
@@ -57,7 +57,7 @@ orb_add_connection(GIOPConnection *cnx)
 			       cnx, NULL);
   g_io_channel_unref (channel);
 
-  cnx->user_data = GINT_TO_POINTER (tag);
+  cnx->user_data = GUINT_TO_POINTER (tag);
 }
 
 static void
@@ -113,7 +113,7 @@ release_lock (int fd)
  * We assume that if we could get this far, then /tmp/orbit-$username is
  * secured (because of CORBA_ORB_init).
  */
-char *
+static char *
 _gnorba_get_cookie_reliably (const char *setme)
 {
   struct passwd *pwent;
@@ -183,10 +183,7 @@ _gnorba_get_cookie_reliably (const char *setme)
   return random_string;
 }
 
-/* placate gcc */
-const char* _gnorba_cookie_setup(const char *setme);
-
-const char *
+static const char *
 _gnorba_cookie_setup(const char *setme)
 {
   _gnorba_request_cookie._buffer = _gnorba_get_cookie_reliably (setme);
@@ -268,6 +265,8 @@ _gnome_gnorba_cookie_setup(Display *disp, Window rootwin)
  * Calls gnome_init and CORBA_ORB_init with the specified params.
  *
  * Sets up a cookie for requests.
+ *
+ * Returns the CORBA_ORB initialized by the GNORBA libraries.
  */
 CORBA_ORB
 gnorba_CORBA_init(int *argc, char **argv,

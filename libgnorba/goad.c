@@ -361,7 +361,7 @@ goad_server_list_read(const char *filename,
 
 /**
  * goad_server_list_free:
- * @server_list: an array of GoadServer structures.
+ * @server_list: a GoadServerList structure.
  *
  * Frees up all the memory associated with @server_list
  * (which should have been received from goad_server_list_get ())
@@ -394,15 +394,18 @@ goad_server_list_free (GoadServerList *server_list)
 }
 
 /**
- * goad_server_list_activate_with_id:
+ * goad_server_activate_with_id:
  * @server_list: a server listing returned by goad_server_list_get.
- * If NULL, we will call the function ourself and use that.
- * @id: the goad ID of the server that we want to activate.
+ * If NULL, we will call that function ourself and use that.
+ * @server_id: the GOAD ID of the server that we want to activate.
  * @flags: information on how the application wants the server to be activated.
+ * @params: NULL for now.
  *
  * Activates a CORBA server specified by 'repo_id', using
  * the 'flags' hints on how to activate that server.
  * Picks the first one on the list that matches.
+ *
+ * Returns the newly activated object.
  */
 CORBA_Object
 goad_server_activate_with_id (GoadServerList *server_list,
@@ -451,6 +454,7 @@ goad_server_activate_with_id (GoadServerList *server_list,
  *               If NULL, we will call the function ourself and use that.
  * @repo_id: the repository ID of the interface that we want to activate a server for.
  * @flags: information on how the application wants the server to be activated.
+ * @params: NULL for normal applications.
  *
  * Activates a CORBA server specified by 'repo_id', using the 'flags'
  * hints on how to activate that server.  Picks the first one on the
@@ -460,6 +464,8 @@ goad_server_activate_with_id (GoadServerList *server_list,
  * first pass checking for existing objects only, the second pass
  * taking into account any activation method preferences, and the last
  * pass just doing "best we can get" service.
+ *
+ * Returns the activated object.
  */
 CORBA_Object
 goad_server_activate_with_repo_id(GoadServerList *server_list,
@@ -521,7 +527,7 @@ goad_server_activate_with_repo_id(GoadServerList *server_list,
       }
       else {
 	retval = real_goad_server_activate(&slist[i], flags | GOAD_ACTIVATE_NEW_ONLY,
-				      params, my_slist);
+					   params, my_slist);
       }
       if (retval != CORBA_OBJECT_NIL)
 	break;
@@ -552,6 +558,7 @@ goad_server_activate_with_repo_id(GoadServerList *server_list,
  * goad_server_activate:
  * @sinfo: information on the server to be "activated"
  * @flags: information on how the application wants the server to be activated.
+ * @params: Pass NULL here for normal applications.
  *
  * Activates a CORBA server specified by 'sinfo', using the 'flags'
  * hints on how to activate that server.
@@ -974,12 +981,11 @@ static void print_exit_status(int status)
   }
 }
 
-/**
- * goad_server_activate_exe:
- * @sinfo: information on the program to be run.
- * @flags: information about how the program should be run, etc.
+/**** goad_server_activate_exe
+ * sinfo: information on the program to be run.
+ * flags: information about how the program should be run, etc.
  * (no flags applicable at the present time)
- * @ev: exception information (passed in to save us creating another one)
+ * ev: exception information (passed in to save us creating another one)
  *
  * Pre-conditions: Assumes sinfo->type == GOAD_SERVER_EXE
  *
@@ -990,7 +996,7 @@ static void print_exit_status(int status)
  *
  * Returns an objref to the newly-started server.
  */
-CORBA_Object
+static CORBA_Object
 goad_server_activate_exe(GoadServer *sinfo,
 			 GoadActivationFlags flags,
 			 const char **params,
@@ -1084,10 +1090,12 @@ out:
  * @name_server: points to a running name_server
  * @server: the server object we want to register.
  * @name: The GOAD id of the server that is being registered
- * @kind: "server" for now.
+ * @kind: "object" for now.
  * @ev: CORBA_Environment to return errors
  *
  * Registers @server in the @name_server with @name.
+ *
+ * Returns zero upon success, non-zero if registration failed or another registration for this name already exists.
  */
 int
 goad_server_register(CORBA_Object name_server,
@@ -1189,12 +1197,13 @@ goad_server_register(CORBA_Object name_server,
 /**
  * goad_server_unregister:
  * @name_server: points to a running name_server
- * @server: the server we wnat to remove from the name server registration.
- * @name:
- * @kind:
+ * @name: The GOAD ID of the server we want to remove from the name server registration.
+ * @kind: "object" for normal use.
  * @ev: CORBA_Environment to return errors
  *
- * Removes the registration of  @server in the @name_server.
+ * Removes the registration of @server in the @name_server.
+ *
+ * Returns zero upon success, non-zero on error.
  */
 int
 goad_server_unregister(CORBA_Object name_server,
@@ -1248,7 +1257,11 @@ goad_server_unregister(CORBA_Object name_server,
 /**
  * goad_server_activation_id:
  *
- * Returns the activation_id for GOAD
+ * When an application that implements a GOAD-registered object is
+ * started, it should call this function to check if it was started to create one of those
+ * objects.
+ *
+ * Returns the GOAD ID that the program was executed to make available.
  */
 const char *
 goad_server_activation_id(void)
@@ -1259,8 +1272,8 @@ goad_server_activation_id(void)
 /**
  * goad_register_arguments:
  *
- * Internal gnome function.  Used to register the arguments for
- * the popt parser
+ * Internal gnome function.  Used to register the arguments for the
+ * popt parser.
  */
 void
 goad_register_arguments(void)

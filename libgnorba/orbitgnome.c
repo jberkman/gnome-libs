@@ -20,7 +20,7 @@ extern void _gnome_gnorba_cookie_setup(Display *disp, Window rootwin);
  * @app_id: Application id.
  * @app_version: Application version.
  * @argc: pointer to argc (for example, as received by main)
- * @argv: pointer to argc (for example, as received by main)
+ * @argv: pointer to argv (for example, as received by main)
  * @gnorba_flags: GNORBA initialization flags.
  * @ev: CORBA Environment to return CORBA errors.
  *
@@ -54,7 +54,7 @@ gnome_CORBA_init (const char *app_id,
 }
 
 /**
- * gnome_CORBA_init:
+ * gnome_CORBA_init_with_popt_table:
  * @app_id: Application id.
  * @app_version: Application version.
  * @argc: pointer to argc (for example, as received by main)
@@ -77,6 +77,7 @@ gnome_CORBA_init (const char *app_id,
  * routine where you are done.
  *
  * Returns the CORBA_ORB for this application.
+ *
  */
 CORBA_ORB
 gnome_CORBA_init_with_popt_table (const char *app_id,
