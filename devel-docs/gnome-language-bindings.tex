@@ -1,7 +1,8 @@
 \documentclass{article}
 \begin{document}
 \title{Design Guidelines to make Gnome language bindings friendly}
-\author{Andreas Kostyrka, andreas@ag.or.at\\Marius Vollmer, mvo@zagadka.ping.de}
+\author{Andreas Kostyrka, andreas@ag.or.at\\
+        Marius Vollmer, mvo@zagadka.ping.de}
 \maketitle
 \tableofcontents
 \section{Rationale for this document}
@@ -264,6 +265,54 @@ foo_trace_refs (foo *f, void (*tracer)(void *, void *), void *data)
 \end{verbatim}
 \end{quote}
 
-[Need more explanations.]
+This is a lot of code but there are reasons for it.  Most of them are
+already included in Andreas' text above but I like to repeat them
+anyway.
+
+The first thing you might notice is that you need to support the
+callback\_data argument for the callback functions.  This allows the
+user of your code the ability to pass additional data to the callback
+function.  Generally this is used to somehow specify the `environment'
+in which the callback function should run.  Using global variables for
+this is not suitable for this because there might be any number of
+callbacks waiting to be activated and they all need their own private
+piece of state.  In general, using global state makes your program
+`non-reentrant', which is to be avoided.
+
+Actually, providing this callback\_data mechanism is not only useful to
+language binding writers, but also to any other user of your code.  It
+is a standard practice, and for good reasons, too.
+
+It might be instructive to study how a typical binding for a
+interpreted language would make use of callback\_data.  The functions
+in that interpreted language are generally not represented by pointers
+to C functions, of course, so they can't be used as the callback\_func
+directly.  The language binding will provide a `helper' function that
+invokes the interpreted function in the appropriate manner.  The
+callback\_data will carry all information that the helper functions
+needs to do this, including the interpreted function itself.  If it
+were not for the callback\_data `backdoor' the binding would have to
+provide a different helper function for every interpreted function.
+This is not possible.
+
+What's more, the information that the helper function needs to do its
+job might sit in dynamically allocated memory.  The binding code needs
+to know when this memory can be freed.  It could try to `second-guess'
+your code and free it when it connects a new callback or when a foo
+structure is finally freed.  This is impossible to get right for the
+general case, however, because the binding code has no guarantee that
+it is the only one using the structs.  The only safe way is for the
+foo code itself to provide precise notifications when a callback\_data
+value goes out of business.  That is what the callback\_notify
+function is for.  A particular callback\_notify function is always
+associated with a particular callback\_data value.  Whenever the foo
+code can guarantee that it will never use this particular
+callback\_data value again, it will call its associated
+callback\_notify function with the value.
+
+This is all fairly traditional stuff and is useful not only for
+language bindings but also makes for generally nice library
+interfaces.  The next point is a little bit more involved [and so I
+delegate it to the next session.]
 
 \end{document}
