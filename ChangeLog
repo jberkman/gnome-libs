@@ -1,3 +1,12 @@
+1998-09-28  Martin Baulig  <martin@home-of-linux.org>
+
+	* libgnome/gnome-unused.h: New file. This defines `__unused__'
+	to be `__attribute__ ((unused))' if we are using GNU C and
+ 	the empty string otherwise.
+
+	* libgnome/libgnome.h: Include gnome-unused.h.
+	* libgnome/libgnomeP.h: Include gnome-unused.h.
+
 Sun Sep 27 19:26:43 1998  Tom Tromey  <tromey@cygnus.com>
 
 	* libgnome/gnome-exec.c: Use LGPL.
