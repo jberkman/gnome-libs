@@ -1,3 +1,11 @@
+1998-07-15  Raja R Harinath  <harinath@cs.umn.edu>
+
+	* acconfig.h (NEED_DECLARATION_GETHOSTNAME): New tag.
+
+	* configure.in (jpeglib.h): Undef a few more symbols to prevent
+	preprocessor symbol clashes.  In this case, jpeglib.h defines
+	HAVE_STDDEF_H and HAVE_STDLIB_H.
+
 1998-07-14  Raja R Harinath  <harinath@cs.umn.edu>
 
 	* configure.in (AM_PATH_GLIB): New test.

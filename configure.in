@@ -102,11 +102,14 @@ AC_CHECK_LIB(jpeg, jpeg_destroy_decompress,
   jpeg_ok=yes,
   jpeg_ok=no)
 if test "$jpeg_ok" = yes; then
-  AC_MSG_CHECKING([for jpeg.h])
+  AC_MSG_CHECKING([for jpeglib.h])
   AC_TRY_CPP(
 [#include <stdio.h>
 #undef PACKAGE
 #undef VERSION
+/* AAARGH!!! jpeglib.h defines HAVE_STDLIB_H.  */
+#undef HAVE_STDDEF_H
+#undef HAVE_STDLIB_H
 #include <jpeglib.h>],
     jpeg_ok=yes,
     jpeg_ok=no)
