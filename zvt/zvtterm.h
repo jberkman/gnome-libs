@@ -49,6 +49,8 @@ extern "C" {
     unsigned int cursor_filled:1;	/* is the cursor filled? */
     unsigned int cursor_blink_state:1;	/* cursor blink state */
     unsigned int blink_enabled:1;        /* Set to on if we do blinking */
+    unsigned int in_expose:1;	/* updating from within expose events */
+
     int charwidth;		/* size of characters */
     int charheight;
 

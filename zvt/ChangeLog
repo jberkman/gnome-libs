@@ -1,3 +1,21 @@
+1998-07-19  Michael Zucchi  <zucchi@zzedzone.box.net.au>
+
+	* zvtterm.c (zvt_term_init): Initialise in_expose variable at
+	startup.
+
+	* update.c (vt_draw_cursor): Force back_match==0 when drawing
+	cursor - forces screen update.
+
+	* zvtterm.c (vt_draw_text): Dont clear the background, if the
+	screen already has the right colour [cleared], or we're in expose
+	events.
+	(zvt_term_expose): Set in_expose around expose events.  Optimises
+	text drawing.
+
+	* update.c (vt_line_update): Cleaned up logic a little.  Also, now
+	scans back buffer to find out if it is already clear, set
+	vx->back_match if it is.
+
 1998-07-05  Nuno Ferreira  <nmrf@rnl.ist.utl.pt>
 
 	* zvtterm.c (zvt_term_scroll): Check bounds when scrolling. You

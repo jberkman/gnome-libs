@@ -155,7 +155,8 @@ zvt_term_init (ZvtTerm *term)
   term->cursor_blink_state = 0;
   term->blink_enabled = 1;
   term->ic = NULL;
-  
+  term->in_expose = 0;
+
   /* input handler */
   term->input_id = -1;
 
@@ -506,11 +507,13 @@ zvt_term_expose (GtkWidget      *widget,
   d(printf("exposed!\n"));
 
   /* FIXME: may update 1 more line/char than needed */
+  term->in_expose = 1;
   vt_update_rect(term->vx,
 		 event->area.x/term->charwidth,
 		 event->area.y/term->charheight,
 		 (event->area.x+event->area.width)/term->charwidth+1,
 		 (event->area.y+event->area.height)/term->charheight+1);
+  term->in_expose = 0;
 
   return FALSE;
 }
@@ -1457,16 +1460,24 @@ void vt_draw_text(void *user_data, int col, int row, char *text, int len, int at
   /* for reverse, swap gc's */
   if (attr & VTATTR_REVERSE){
     GdkGC *tmp = fgc;
+    int tmp2 = fore;
 
     fgc = bgc;
     bgc = tmp;
+
+    fore = back;
+    back = tmp2;
   }
 
-  gdk_draw_rectangle(widget->window,
-		     bgc,
-		     1,
-		     col*term->charwidth, row*term->charheight,
-		     len*term->charwidth, term->charheight);
+  /* optimise: dont 'clear' background if in expose, and background colour == window colour */
+  if ((term->in_expose==0 && vx->back_match==0)
+      || back!=17) {
+    gdk_draw_rectangle(widget->window,
+		       bgc,
+		       1,
+		       col*term->charwidth, row*term->charheight,
+		       len*term->charwidth, term->charheight);
+  }
 
   gdk_draw_text(widget->window,
 		f,

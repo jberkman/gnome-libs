@@ -124,6 +124,7 @@ static void vt_line_update(struct _vtx *vx, struct vt_line *l, int line, int alw
   int attr;
   uint32 c;
   struct vt_line *bl;
+  int noclear;			/* clear before writing text? */
 
   d(printf("updating line %d: ", line));
   d(fwrite(l->data, l->width, 1, stdout));
@@ -162,21 +163,22 @@ static void vt_line_update(struct _vtx *vx, struct vt_line *l, int line, int alw
 	break;
       end--;
     }
-    
-    /* copy changed section of line to destination line */
-    for(i=start;i<end;i++) {
-      bl->data[i]=l->data[i];
-    }
-    bl->line = line;
-  } else {
+  }  /* else, update everything */
 
-    /* always update everything, so always update the whole 'offscreen' buffer */
-    for(i=start;i<end;i++) {
-      bl->data[i]=l->data[i];
+  /* see if on-screen is all background ... */
+  vx->back_match=1;
+  for(i=start;i<end;i++) {
+    if ((bl->data[i] & ~VTATTR_CHANGED) != (vx->vt.attr&~VTATTR_CHANGED)) {
+      vx->back_match=0;
+      break;
     }
-    bl->line = line;
-
   }
+
+  /* copy changed section of line to destination line */
+  for(i=start;i<end;i++) {
+    bl->data[i]=l->data[i];
+  }
+  bl->line = line;
 
   d(printf("actually (%d-%d)?\n", start, end));
 
@@ -996,6 +998,7 @@ void vt_draw_cursor(struct _vtx *vx, int state)
 	| (((attr & VTATTR_BACKCOLOURM) >> VTATTR_BACKCOLOURB) << VTATTR_FORECOLOURB)
       | ( attr & ~(VTATTR_FORECOLOURM|VTATTR_BACKCOLOURM));
     }
+    vx->back_match=0;		/* forces re-draw? */
     vt_draw_text(vx->user_data, vx->vt.cursorx, vx->vt.cursory, &c, 1, attr);
   }
 }

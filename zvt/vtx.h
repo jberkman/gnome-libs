@@ -48,6 +48,8 @@ typedef enum {
 struct _vtx {
   struct vt_em vt;
 
+  unsigned int back_match:1;	/* when updating, background colour matches for whole contents of line */
+
   /* selection stuff */
   char *selection_data;		/* actual selection */
   int selection_size;
