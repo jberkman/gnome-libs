@@ -1,3 +1,11 @@
+Wed Feb 11 19:22:32 1998  Changwoo Ryu  <cwryu@adam.kaist.ac.kr>
+
+	* gtk-xmhtml.c (gtk_xmhtml_focus): Use gtk_signal_handler_pending
+	instead of gtk_signal_get_handlers which doesn't exist anymore.
+	* toolkit.h (CHECK_CALLBACK): Likewise.
+
+	* XmHTML.c (TPROTO): Remove a comparison warning.
+
 Tue Feb 10 18:02:19 1998  Miguel de Icaza  <miguel@nuclecu.unam.mx>
 
 	* XmHTMLP.h: Debugging fields on the structure are always

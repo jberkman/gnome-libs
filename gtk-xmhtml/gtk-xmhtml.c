@@ -198,6 +198,8 @@ gtk_xmhtml_reset_pending_flags (GtkXmHTML *html)
 	html->layout_needed = 0;
 }
 
+static void gtk_xmhtml_create_widgets (GtkXmHTML *html);
+
 static void
 gtk_xmhtml_init (GtkXmHTML *html)
 {
@@ -225,8 +227,6 @@ gtk_xmhtml_init (GtkXmHTML *html)
 	html->frozen = 1;
 
 }
-
-static void gtk_xmhtml_create_widgets (GtkXmHTML *html);
 
 GtkWidget *
 gtk_xmhtml_new (void)
@@ -738,7 +738,7 @@ gtk_xmhtml_focus (GtkWidget *widget, GdkEvent *event, gpointer closure)
 		*     }
 	        */
 	/* invalidate current selection if there is one */
-	if (gtk_signal_get_handlers (html, gtk_xmhtml_signals [GTK_XMHTML_ANCHOR_TRACK])
+	if (gtk_signal_handler_pending (GTK_OBJECT(html), gtk_xmhtml_signals [GTK_XMHTML_ANCHOR_TRACK], TRUE)
 		&& html->html.anchor_current_cursor_element)
 		_XmHTMLTrackCallback (html, event, NULL);
 
