@@ -367,16 +367,16 @@ zvt_shutdown_subshell (struct vt_em *vt)
 
 	/* shutdown pty through helper */
 	if (vt->pty_tag) {
-	  op = GNOME_PTY_CLOSE_PTY;
-	  write (helper_socket_protocol [0], &op, sizeof (op));
-	  write (helper_socket_protocol [0], &vt->pty_tag, sizeof (vt->pty_tag));
-	  vt->pty_tag == NULL;
+		op = GNOME_PTY_CLOSE_PTY;
+		write (helper_socket_protocol [0], &op, sizeof (op));
+		write (helper_socket_protocol [0], &vt->pty_tag, sizeof (vt->pty_tag));
+		vt->pty_tag = NULL;
 	}
 
 	/* close the child comms link(s) */
 	close(vt->childfd);
 	if (vt->keyfd != vt->childfd)
-	  close(vt->keyfd);
+		close(vt->keyfd);
 	vt->msgfd = vt->childfd = -1;
 
 	/* remove the child node */

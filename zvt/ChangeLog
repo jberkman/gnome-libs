@@ -1,3 +1,13 @@
+1999-05-24  David KAELBLING <drk@sgi.com>
+
+	* vt.c (vt_func): Do not use un-initialized variable.
+
+	* gnome-login-support.c (pty_open_slave): Remove compilation
+	warning.  Use ifdef XXX, not ifdef (XXX)
+	
+	* subshell.c (zvt_shutdown_subshell): Assign NULL to vt->pty_tag,
+	do not compare it (it was a no-op).
+
 1999-05-24  Raja R Harinath  <harinath@cs.umn.edu>
 
 	* Makefile.am (install-exec-local): Uses separate `chown root' and

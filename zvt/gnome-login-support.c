@@ -148,7 +148,7 @@ pty_open_slave (const char *pty_name)
 	if (pty_slave == -1)
 		return -1;
 
-#ifdef (HAVE_STROPTS_H)
+#ifdef HAVE_STROPTS_H
 #if !defined(__osf__)
 	if (!ioctl (pty_slave, I_FIND, "ptem"))
 		if (ioctl (pty_slave, I_PUSH, "ptem") == -1){

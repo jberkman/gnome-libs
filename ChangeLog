@@ -1,5 +1,10 @@
-1999-05-24  Miguel de Icaza  <miguel@nuclecu.unam.mx>
+1999-05-24  David KAELBLING <drk@sgi.com>
 
+	* libgnorba/orbitns.c (get_name_server_ior_from_root_window):
+	Compare nitems to 1, do not assing to it.  Typo fix.
+
+1999-05-24  Miguel de Icaza  <miguel@nuclecu.unam.mx>
+	
 	* man/gnome-config.1 (program): Added man page for gnome-config
 
 	* gnome-config.in (modversion): Add support for outputing a module

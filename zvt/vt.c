@@ -1289,6 +1289,7 @@ vt_func(struct vt_em *vt)
       d(printf("page down pressed\n"));
       break;
     default:
+      i = vt->arg.num.intargs[0];
       if (i>=11 && i <=20) {
 	d(printf("function key %d pressed\n", i-10));
       } else {

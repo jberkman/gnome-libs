@@ -64,7 +64,7 @@ get_name_server_ior_from_root_window (void)
 		goto error;
 
 	if (type != None){
-		if ((format == 32) && (nitems = 1))
+		if ((format == 32) && (nitems == 1))
 			proxy = *proxy_data;
 
 		XFree (proxy_data);
