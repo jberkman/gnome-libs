@@ -212,9 +212,9 @@ void toggle_boolean(GtkWidget * toggle, gboolean * setme)
 void block_until_clicked(GtkWidget *ignore)
 {
   gint button;
-  GnomeDialog *dlg_modal;
+  GtkWidget *dlg_modal;
   dlg_modal = gnome_dialog_new("Test run_modal", "OK", "Cancel", NULL);
-  button = gnome_dialog_run_modal(dlg_modal);
+  button = gnome_dialog_run_modal(GNOME_DIALOG(dlg_modal));
   gtk_widget_destroy(GTK_WIDGET(dlg_modal));
   g_print("Modal run ended, button %d clicked\n", button);
 }
@@ -428,8 +428,7 @@ void create_pixmap()
 	GtkWidget *pixmap;
 
 	app = create_newwin(TRUE,"testGNOME","Pixmap");
-	pixmap = gnome_pixmap_new_from_file("bomb.xpm"); /* Change to xpm data
-							    later */
+	pixmap = gnome_pixmap_new_from_xpm_d(bomb);
 	gnome_app_set_contents(GNOME_APP(app),pixmap);
 	gtk_widget_show(pixmap);
 	gtk_widget_show(app);
