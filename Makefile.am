@@ -15,18 +15,21 @@ endif
 gnome_vfs_SUBDIRS=
 gconf_SUBDIRS=
 
-SUBDIRS = po intl support \
-	tools \
-	images \
-	libgnome \
-	libart_lgpl \
-	libgnomeui \
-	gtk-xmhtml \
-	zvt \
-	oaf liboafgnome idl \
-	$(gconf_SUBDIRS) \
-	$(gnome_vfs_SUBDIRS) \
-	$(test_gnome) devel-docs gnome-data man \
+SUBDIRS = po intl support	\
+	tools			\
+	images			\
+	libgnome		\
+	libart_lgpl		\
+	oaf			\
+	libgnomeui		\
+	gtk-xmhtml		\
+	zvt			\
+	idl			\
+	$(gconf_SUBDIRS)	\
+	$(gnome_vfs_SUBDIRS)	\
+	$(test_gnome)		\
+	devel-docs		\
+	gnome-data man		\
 	gnome-faq
 
 if COMPILE_TEST_GNOME

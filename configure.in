@@ -324,6 +324,11 @@ else
 fi
 
 dnl
+dnl ORBit check
+dnl
+AM_PATH_ORBIT(0.5.1, , AC_MSG_ERROR([You must have ORBit installed.]))
+
+dnl
 dnl This is needed for the gnome-moz-remote program.  It doesn't use GDK,
 dnl since some of the code in it was written before GDK existed.
 dnl
@@ -351,7 +356,7 @@ SUPPORTINCS='-DNEED_GNOMESUPPORT_H -I$(top_builddir)/support -I$(top_srcdir)/sup
 dnl These are for using lib*
 ART_LIBS="-lart_lgpl"
 GNOME_LIBS="-lgnome $LIBGNOME_LIBS"
-GNOMEUI_LIBS="-lgnomeui $ART_LIBS $GDK_IMLIB_LIBS $GTK_LIBS $GNOME_LIBS"
+GNOMEUI_LIBS="-lgnomeui $ORBIT_LIBS $ART_LIBS $GDK_IMLIB_LIBS $GTK_LIBS $GNOME_LIBS"
 GTKXMHTML_LIBS="-lgtkxmhtml $LIBGTKXMHTML_LIBS"
 ZVT_LIBS="-lzvt $UTIL_LIBS $GTK_LIBS"
 
@@ -359,11 +364,6 @@ dnl These definitions are expanded in make and gnome-config
 GNOME_LIBDIR='-L${libdir}'
 GNOME_INCLUDEDIR='-I${includedir} -DNEED_GNOMESUPPORT_H -I${pkglibdir}/include'
 GNOME_IDLDIR='-I${datadir}/idl'
-
-dnl
-dnl ORBit check
-dnl
-AM_PATH_ORBIT(0.5.1, , AC_MSG_ERROR([You must have ORBit installed.]))
 
 dnl
 dnl test-gnome
