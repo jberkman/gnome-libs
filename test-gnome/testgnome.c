@@ -397,6 +397,7 @@ create_lamp(void)
 	gtk_widget_show(scale);
 	gtk_widget_show(vbox);
 	gnome_app_set_contents(GNOME_APP(app), vbox);
+	gnome_lamp_set_window_type(GTK_WINDOW(app), GNOME_LAMP_INPUT);
 	gtk_widget_show(app);
 }
 
