@@ -554,8 +554,10 @@ zvt_term_set_color_scheme (ZvtTerm *term, gushort *red, gushort *grn, gushort *b
   gdk_color_context_get_pixels (term->color_ctx, red, grn, blu, 18, 
 				term->colors, &nallocated);
   c.pixel = term->colors [17];
+#if 1
   gdk_window_set_background (GTK_WIDGET (term)->window, &c);
   gdk_window_clear (GTK_WIDGET (term)->window);
+#endif
 }
 
 /**
@@ -632,7 +634,11 @@ zvt_term_realize (GtkWidget *widget)
 				   &attributes, attributes_mask);
   widget->style = gtk_style_attach (widget->style, widget->window);
   gdk_window_set_user_data (widget->window, widget);
+#if 1
   gtk_style_set_background (widget->style, widget->window, GTK_STATE_ACTIVE);
+#else
+  gdk_window_set_back_pixmap(widget->window, 0, 1);
+#endif
 
   /* this should never have been created *sigh* */
   /* keep for compatability */
@@ -931,7 +937,8 @@ zvt_term_draw (GtkWidget *widget, GdkRectangle *area)
 {
   gint width, height;
   ZvtTerm *term;
-  
+  int fill;
+
   g_return_if_fail (widget != NULL);
   g_return_if_fail (ZVT_IS_TERM (widget));
   g_return_if_fail (area != NULL);
@@ -951,15 +958,13 @@ zvt_term_draw (GtkWidget *widget, GdkRectangle *area)
     /* always load the background */
     load_background(term);
 
-    /* FIXME: only clear within text area */
-    if (term->transparent || term->pixmap_filename) {
-      gdk_draw_rectangle (widget->window,
-			  term->back_gc, 1,
-			  0, 0, width, height);
-    }
+    if (term->transparent || term->pixmap_filename)
+      fill = -1;
+    else
+      fill=17;
 
     /* assume the screen is filled with background? */
-    vt_update_rect (term->vx, 17, 0, 0,
+    vt_update_rect (term->vx, fill, 0, 0,
 		    width / term->charwidth,
 		    height / term->charheight);
     
@@ -981,6 +986,7 @@ zvt_term_expose (GtkWidget      *widget,
 {
   ZvtTerm *term;
   int offx, offy;
+  int fill;
 
   g_return_val_if_fail (widget != NULL, FALSE);
   g_return_val_if_fail (ZVT_IS_TERM (widget), FALSE);
@@ -1001,20 +1007,20 @@ zvt_term_expose (GtkWidget      *widget,
     /* FIXME: may update 1 more line/char than needed */
     term->in_expose = 1;
 
+    /*
+      this could probably do what draw does, but it looks a bit slower if you do.
+     */
     if(term->transparent || term->pixmap_filename) {
-      /* rectangle contents is taken from fill of back_gc */
       gdk_draw_rectangle (widget->window,
 			  term->back_gc, 1,
 			  event->area.x, 
 			  event->area.y,
 			  event->area.width, 
 			  event->area.height);
-      d(printf("updating rect!\n"));
-      /*gdk_flush();
-	sleep(1);*/
     }
+    fill = 17;
 
-    vt_update_rect (term->vx, 17,
+    vt_update_rect (term->vx, fill,
 		    (event->area.x-offx) / term->charwidth,
 		    (event->area.y-offy) / term->charheight,
 		    (event->area.x + event->area.width) / term->charwidth+1,

@@ -1,5 +1,8 @@
 1999-06-02  Michael Zucchi  <mzucchi@zedzone.mmc.com.au>
 
+	* zvtterm.c (zvt_term_draw): Use a forced fill to draw the
+	background, rather than a big rectangle.  Makes it smoother.
+
 	* update.c (vt_scroll_update): When we request an update, use
 	bl->width (the actual window width), not l->width (the stored line
 	width, which may not match).
