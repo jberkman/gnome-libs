@@ -15,7 +15,12 @@ while ($input =~ m,/\*\*(.*?)\*+/\s*(.*?)\{,sg) {
   next unless $doc =~ s/^(\w+)\b//;
   my $funcname = $1;
 
-  $doc =~ s/^://; $doc =~ s/^\s*//;
+  $doc =~ s/^://;
+
+  $doc =~ s/^[^\n]*\n//;
+  my $funcdescript = $&;
+
+  $doc =~ s/^\s*//;
 
   # Split remaining text into lines.
 
@@ -130,6 +135,19 @@ while ($input =~ m,/\*\*(.*?)\*+/\s*(.*?)\{,sg) {
 
   $theline =~ s,^\s*,,s; $theline =~ s,\s*$,,s;
 
+  {
+    my $tmp = $theline; $tmp =~ s,^[^\(]*\n,,s;
+    my $start = $&;
+
+    my $length = index $tmp, '(';
+    my $space = ' ' x ($length+1);
+
+    $tmp =~ s,\n\s*,\1\n$space,sg;
+    $tmp =~ s,\s*$,,s;
+
+    $theline = $start.$tmp;
+  }
+
   unless ($theline =~ /^(.*?)\s*(\w+)\s*\((.*?)\)$/s) {
     warn "Illegal function prototype '$theline'";
   }
@@ -139,31 +157,42 @@ while ($input =~ m,/\*\*(.*?)\*+/\s*(.*?)\{,sg) {
     warn "Function called `$funcname' in documentation, but `$2' in declaration";
   }
 
-  my @dparams;
+  my (@dparams, %dparams);
   foreach (split /,/, $3) {
     my $param = $_;
 
     $param =~ s,^\s*,,s;
     $param =~ s,\s*$,,s;
 
-    unless ($param =~ /^(.*?)\b\s*\b(\w+)$/) {
+    unless ($param =~ /^(.*?[\s\*])\s*(\w+.*)$/s) {
       warn "Illegal function parameter `$param'";
     }
 
-    push @dparams, [$1, $2];
+    my ($type, $name, $full) = ($1, $2, $2);
+    $full =~ s/^(\w+).*$/\1/;
+
+    push @dparams, [$type, $full];
+    $dparams{$name} = $type;
   }
 
   # Create output
 
   $retval =~ s,^\s*,,s; $retval =~ s,\s*$,,;
   $description =~ s,^\s*,,s; $description =~ s,\s*$,,s;
+  $funcdescript =~ s,^\s*,,s; $funcdescript =~ s,\s*$,,s;
 
   my $secname = $funcname; $secname =~ tr/_/-/;
 
+  $funcdescript = ' - '.$funcdescript unless
+    $funcdescript eq '';
+
   # wherein we print out the SGML code for this funcdef
   print <<EOF;
-<sect2 id="$secname"><title>$funcname - </title>
-<funcsynopsis><funcdef>$rettype <function>$funcname</function></funcdef>
+<sect2 id="$secname"><title><function>$funcname</function>$funcdescript</title>
+<funcsynopsis>
+<funcdef>$rettype
+<function>$funcname</function>
+</funcdef>
 EOF
   
   foreach (@dparams) {
@@ -191,24 +220,49 @@ $retval
 EOF
 }
 
-   print <<EOF;
+  unless ($description eq '') {
+    print <<EOF;
 <sect3><title>Description</title>
 <para>
 $description
 </para>
 </sect3>
 EOF
+}
 
-  if(scalar(@paramdefs) > 0) {
+  my @realparamdefs;
+
+  foreach (@paramdefs) {
+    next if $_->[1] eq '';
+
+    push @realparamdefs, $_;
+  }
+
+  if(scalar(@realparamdefs) > 0) {
     print <<EOF;
 <sect3><title>Parameters</title>
-<itemizedlist>
+<variablelist>
 EOF
-    foreach (@paramdefs) {
-      printf "<listitem>\n<para>%s <parameter>%s</parameter></para>\n<para>\n</para></listitem>\n", $_->[0], $_->[1];
-    }
+    foreach (@realparamdefs) {
+      my ($name, $descr) = ($_->[0], $_->[1]);
+      my $type = $dparams{$name};
+
+      print <<EOF;
+<varlistentry>
+<term>
+$type <parameter>$name</parameter>
+</term>
+
+<listitem>
+<para>
+$descr
+</para>
+</listitem>
+</varlistentry>
+EOF
+}
     print <<EOF;
-</itemizedlist>
+</variablelist>
 </sect3>
 EOF
   }
