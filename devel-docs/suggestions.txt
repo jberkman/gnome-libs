@@ -76,6 +76,9 @@ Menus:
 
    - In general, if your menu item pops up a dialog, it should end
      with "...".  For example, "Print setup..." but "Print".
+
+   - Your menu hints should not have a trailing period.  They should be
+     phrased like commands, e.g. "Open a new file"
  
 Dialogs
 -------
@@ -105,6 +108,9 @@ Dialogs
    - For text-input that might benefit from a history, use the
      GnomeEntry widget (this will provide automatic history for you).
 
+   - Use the GnomeAbout dialog.  Be sure to include an email address
+     for reporting bugs and the copyright notice.
+
 General Widget Use
 ------------------
 
@@ -124,4 +130,3 @@ Miscellaneous
 
    - GNOME uses Imlib, try to provide your images in PNG format.  Do
      not care about the color usage, Imlib will dither to a nice
-
