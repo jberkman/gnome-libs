@@ -84,16 +84,19 @@ typedef struct {
 				    const char **params,
 				    gpointer *impl_ptr,
 				    CORBA_Environment *ev);
+
 	void         (*deactivate) (PortableServer_POA poa,
 				    const char *goad_id,
 				    gpointer impl_ptr,
-				    CORBA_Environment *ev);
+				    CORBA_Environment *ev); /* Not used - make it NULL */
 } GnomePluginObject;
 
 typedef struct {
 	const GnomePluginObject *plugin_object_list;
 	const char *description;
 } GnomePlugin;
+
+void gnome_plugin_unuse(gpointer impl_ptr);
 
 /**** goad module ****/
 typedef enum {

@@ -35,20 +35,22 @@
 #define SERVER_LISTING_PATH "/CORBA/servers"
 
 typedef struct {
-	gpointer impl_ptr;
-	char     *id;
-} ActiveServerInfo;
-
-
-typedef struct {
 	gchar*   cmd;
 	gchar**  argv;
 } ServerCmd;
 
+typedef struct {
+  int refcount;
+  char *filename;
+  GModule *loaded;
+  int mainloop_level_load;
+  guint unload_id;
+  gboolean unload_is_quit;
+} ActivePluginInfo;
 
 extern CORBA_ORB _gnorba_gnome_orbit_orb; /* In orbitgtk.c */
 
-static GSList *our_active_servers = NULL;
+static GHashTable *living_shlib_servers = NULL, *living_by_filename = NULL;
 static const char *goad_activation_id = NULL;
 
 static void goad_server_list_read(const char *filename,
@@ -698,9 +700,10 @@ goad_server_activate_shlib(GoadServer *sinfo,
   int i;
   PortableServer_POA poa;
   CORBA_Object retval;
-  ActiveServerInfo *local_server_info;
+  ActivePluginInfo *local_plugin_info = NULL;
   gpointer impl_ptr;
   GModule *gmod;
+  char *filename = NULL;
 
 #ifdef SHLIB_DEPENDENCIES
   FILE* lafile;
@@ -757,16 +760,28 @@ normal_loading:
     sinfo->location_info[len-2] = 's';
   }
 #endif
-  gmod = g_module_open(sinfo->location_info, G_MODULE_BIND_LAZY);
-  if(!gmod && *sinfo->location_info != '/') {
-    char *ctmp;
-    ctmp = gnome_libdir_file(sinfo->location_info);
-    gmod = g_module_open(ctmp, G_MODULE_BIND_LAZY);
-    g_free(ctmp);
+
+  local_plugin_info = g_hash_table_lookup(living_by_filename, sinfo->location_info);
+  if(local_plugin_info)
+    gmod = local_plugin_info->loaded;
+  else {
+    gmod = g_module_open(sinfo->location_info, G_MODULE_BIND_LAZY);
+    if(!gmod && *sinfo->location_info != '/') {
+      char *ctmp;
+      ctmp = gnome_libdir_file(sinfo->location_info);
+      local_plugin_info = g_hash_table_lookup(living_by_filename, ctmp);
+      if(local_plugin_info) {
+	g_free(ctmp);
+	gmod = local_plugin_info->loaded;
+      } else {
+	gmod = g_module_open(ctmp, G_MODULE_BIND_LAZY);
+	filename = ctmp;
+      }
+    } else
+      filename = g_strdup(sinfo->location_info);
   }
 
   g_return_val_if_fail(gmod, CORBA_OBJECT_NIL);
-  g_module_make_resident(gmod);
   i = g_module_symbol(gmod, "GNOME_Plugin_info",
 		      (gpointer *)&plugin);
   g_return_val_if_fail(i, CORBA_OBJECT_NIL);
@@ -780,8 +795,8 @@ normal_loading:
   poa = (PortableServer_POA)CORBA_ORB_resolve_initial_references(_gnorba_gnome_orbit_orb,
 								 "RootPOA", ev);
 
-  retval = plugin->plugin_object_list[i].activate(poa,
-						  plugin->plugin_object_list[i].server_id, NULL, &impl_ptr, ev);
+  retval = plugin->plugin_object_list[i].activate(poa, plugin->plugin_object_list[i].server_id, NULL, &impl_ptr, ev);
+
 
   if (ev->_major != CORBA_NO_EXCEPTION) {
     g_warning("goad_server_activate_shlib: activation function raises exception");
@@ -796,106 +811,85 @@ normal_loading:
     return CORBA_OBJECT_NIL;
   }
 
-#if 0  
-  local_server_info = g_new(ActiveServerInfo, 1);
-  local_server_info->impl_ptr = impl_ptr;
-  local_server_info->id = g_strdup(sinfo->server_id);
+  if(!living_shlib_servers) {
+    living_shlib_servers = g_hash_table_new(g_direct_hash, g_direct_equal);
+    living_by_filename = g_hash_table_new(g_str_hash, g_str_equal);
+  }
 
-  if(!our_active_servers)
-    g_atexit(goad_servers_unregister_atexit);
-  
-  our_active_servers = g_slist_prepend(our_active_servers, local_server_info);
-#endif
+  if(!local_plugin_info) {
+    local_plugin_info = g_new0(ActivePluginInfo, 1);
+    local_plugin_info->filename = filename;
+    local_plugin_info->loaded = gmod;
+    local_plugin_info->mainloop_level_load = gtk_main_level();
+    local_plugin_info->unload_id = -1;
+
+    g_hash_table_insert(living_by_filename, filename, local_plugin_info);
+  }
+
+  g_hash_table_insert(living_shlib_servers, impl_ptr, local_plugin_info);
+
+  local_plugin_info->refcount++;
+
+  if(local_plugin_info->unload_id != -1) {
+    if(local_plugin_info->unload_is_quit)
+      gtk_quit_remove(local_plugin_info->unload_id);
+    else
+      gtk_idle_remove(local_plugin_info->unload_id);
+    local_plugin_info->unload_id = -1;
+  }
+
   return retval;
 }
 
+static gboolean
+gnome_plugin_unload(ActivePluginInfo *api)
+{
+  g_return_val_if_fail(api->refcount > 0, FALSE);
 
-/**** goad_servers_unregister_atexit
+  g_module_close(api->loaded);
+  g_hash_table_remove(living_by_filename, api->filename);
+  g_free(api->filename);
+  g_free(api);
 
-      Description: For each shlib server that we had started, try to
-                   unregister it from the name service.
+  return FALSE;
+}
 
+/**
+ * gnome_plugin_unuse:
+ * @impl_ptr: The impl_ptr that was returned when the
+ *
+ * Side effects: May arrange for shared library that the implementation is in to be unloaded.
+ *
+ * When a shlib plugin for a CORBA object is destroying an
+ * implementation, it should call this function to make sure that the
+ * shared library is unloaded as needed.
  */
-static void
-goad_server_unregister_atexit(ActiveServerInfo *ai, CORBA_Environment *ev)
+void
+gnome_plugin_unuse(gpointer impl_ptr)
 {
-  CosNaming_NameComponent nc[3] = {{"GNOME", "subcontext"},
-				   {"Servers", "subcontext"}};
-  CosNaming_Name nom;
+  ActivePluginInfo *api;
 
-  CORBA_Object name_service;
-  PortableServer_ObjectId *oid;
-  PortableServer_POA poa;
+  api = g_hash_table_lookup(living_shlib_servers, impl_ptr);
 
-  nom._maximum = 0;
-  nom._length = 3;
-  nom._buffer = nc;
-  nom._release = CORBA_FALSE;
+  g_return_if_fail(api);
 
-  CORBA_exception_free(ev); /* Clear previous exceptions */
+  g_hash_table_remove(living_shlib_servers, impl_ptr);
 
-  name_service = gnome_name_service_get();
-  g_assert(name_service != CORBA_OBJECT_NIL);
+  api->refcount--;
 
-  poa = (PortableServer_POA)CORBA_ORB_resolve_initial_references(_gnorba_gnome_orbit_orb,
-								 "RootPOA", ev);
-  oid = PortableServer_POA_servant_to_id(poa, ai->impl_ptr, ev);
+  if(api->refcount <= 0) {
+    if(api->unload_id != -1)
+      g_warning("Plugin %s already queued for unload!", api->filename);
 
-  /* Check if the object is still active. If so, then deactivate it. */
-  if(oid && !ev->_major) {
-    nc[2].id = ai->id;
-    nc[2].kind = "object";
-    CosNaming_NamingContext_unbind(name_service, &nom, ev);
-
-    CORBA_free(oid);
-  }
-
-  CORBA_Object_release(name_service, ev);
-}
-
-static void
-goad_servers_unregister_atexit(void)
-{
-  CORBA_Environment ev;
-  CORBA_exception_init(&ev);
-  g_slist_foreach(our_active_servers, (GFunc)goad_server_unregister_atexit, &ev);
-  CORBA_exception_free(&ev);
-}
-
-static ServerCmd*
-get_cmd(gchar* line)
-{
-  static ServerCmd retval;
-  gchar* ptr;
-  gint   argc = 1;
-  gchar* tok;
-  gchar* tokp;
-  
-  retval.argv = (gchar**)malloc(sizeof(char*) * 2);
-  retval.argv[1] = 0;
-
-  ptr = line;
-
-  while (ptr && isspace(*ptr))
-    ptr++;
-
-  if (!*ptr)
-    return &retval;
-
-  retval.cmd = strtok_r(ptr, " \t", &tokp);
-  retval.argv[0] = retval.cmd;
-  while (1)
-    {
-      tok = strtok_r(0, " \t", &tokp);
-      if (!tok)
-	return &retval;
-      argc++;
-      retval.argv = (char**)realloc(retval.argv, argc+1 * sizeof(char*));
-      retval.argv[argc-1] = tok;
-      retval.argv[argc] = 0;
+    if(gtk_main_level() <= api->mainloop_level_load) {
+      api->unload_is_quit = FALSE;
+      api->unload_id = gtk_idle_add_priority(G_PRIORITY_LOW, gnome_plugin_unload, api);
+    } else {
+      api->unload_is_quit = TRUE;
+      api->unload_id = gtk_quit_add(api->mainloop_level_load + 1, gnome_plugin_unload, api);
     }
+  }
 }
-
 
 /* Talks to the factory and asks it for info */
 static CORBA_Object
