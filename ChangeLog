@@ -1,3 +1,13 @@
+1998-12-10  James Henstridge  <james@daa.com.au>
+
+	* gnome-libs.spec: took %{prefix}/share/mime-magic* out of the %files
+	list.  Those files are installed in %{prefix}/etc, which is already
+	included in the %files list.
+
+	* gnome-data/Makefile.am: added an EXTRA_DIST section that contains
+	all the data files.  Data files are not automatically distributed,
+	since they may be generated.
+
 1998-12-09  Andrew T. Veliath  <andrewtv@usa.net>
 
 	* libgnorba/goad.c (goad_server_list_get): Load user CORBA servers

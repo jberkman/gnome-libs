@@ -98,8 +98,6 @@ fi
 %{prefix}/share/locale/*/*/*
 %{prefix}/share/idl/*
 %{prefix}/share/pixmaps/*
-%{prefix}/share/mime-magic
-%{prefix}/share/mime-magic.dat
 %config %{prefix}/share/gtkrc
 %config %{prefix}/etc/*
 
