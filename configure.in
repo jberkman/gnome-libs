@@ -93,7 +93,7 @@ LIBS="$xLIBS"
 dnl
 dnl zvt checks
 dnl
-AC_CHECK_HEADERS(sys/select.h paths.h)
+AC_CHECK_HEADERS(sys/select.h sys/un.h paths.h)
 
 dnl
 dnl gnome-pty-support checks
