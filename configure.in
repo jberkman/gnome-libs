@@ -47,7 +47,7 @@ like panel, will not run properly.))
 AC_CHECK_FUNCS(dlerror,,)
 AC_SUBST(DL_LIB)
 
-AC_CHECK_FUNCS(strerror gethostbyname setfsgid)
+AC_CHECK_FUNCS(strerror gethostbyname setfsgid setenv putenv)
 NSL_LIBS=""
 if test $ac_cv_func_gethostbyname = no; then
   AC_CHECK_LIB(nsl,gethostbyname,NSL_LIBS=-lnsl)
