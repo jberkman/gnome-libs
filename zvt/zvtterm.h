@@ -34,7 +34,7 @@ extern "C" {
 #endif /* __cplusplus */
 
 /* if one doesn't want to compile in transparency one would define this */
-#define ZVT_NO_TRANSPARENT 1
+/* #define ZVT_NO_TRANSPARENT 1 */
 
 #define ZVT_TERM(obj)          GTK_CHECK_CAST (obj, zvt_term_get_type (), ZvtTerm)
 #define ZVT_TERM_CLASS(klass)  GTK_CHECK_CLASS_CAST (klass, zvt_term_get_type (), ZvtTermClass)
