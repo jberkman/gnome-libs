@@ -83,7 +83,7 @@ AC_CHECK_LIB(jpeg, jpeg_abort, [JPEG_LIBS="-ljpeg"])
 AC_CHECK_LIB(png, png_read_image, [PNG_LIBS="-lpng"])
 xLIBS="$LIBS"
 LIBS="$LIBS $GTK_LIBS $X_LIBS $x_libs"
-AC_CHECK_FUNC(gtk_signal_handler_pending)
+AC_CHECK_FUNCS(gtk_signal_handler_pending)
 LIBS="$xLIBS"
 AC_SUBST(Z_LIBS)
 AC_SUBST(JPEG_LIBS)

@@ -155,7 +155,6 @@ void gtk_xmhtml_set_alpha_processing              (GtkXmHTML *html, int flag);
 void gtk_xmhtml_set_rgb_conv_mode                 (GtkXmHTML *html, int val);
 
 /* These ones are used internally: */
-void *gtk_xmhtml_signal_get_handlers (GtkXmHTML *html, int type);
 void  gtk_xmhtml_set_geometry (GtkWidget *widget, int x, int y, int width, int height);
 guint gtk_xmhtml_get_type (void);
 void  gtk_xmhtml_manage (GtkContainer *container, GtkWidget *widget);

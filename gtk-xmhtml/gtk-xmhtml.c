@@ -2179,7 +2179,7 @@ wrap_gdk_cc_get_pixels (int              incremental,
 }
 
 #ifndef HAVE_GTK_SIGNAL_HANDLER_PENDING
-int
+guint
 gtk_signal_handler_pending (GtkObject *object, gint signal_type, gboolean may_be_blocked)
 {
 	static int warning_printed;
