@@ -3,6 +3,7 @@
 <!entity mailfaq       "gnomefaq@gnu.org">
 <!entity mailrequest   "gnome-list-request@gnome.org">
 <!entity mailbug       "submit@bugs.gnome.org">
+<!entity maildeb       "debian-gtk-gnome@lists.debian.org">
 <!entity wwwgtk        "http://www.gtk.org">
 <!entity wwwimlib      "http://www.labs.redhat.com/imlib">
 <!entity wwwgnome      "http://www.gnome.org">
@@ -24,7 +25,7 @@
 <!entity wwwgnomebugr  "http://bugs.gnome.org/Reporting.html">
 <!entity wwwsuseus     "http://gnome.linuxbe.org">
 <!entity wwwsusede     "http://www.tu-harburg.de/skf/Pub/ifmpc118.ifm.uni-hamburg.de/gnome.html">
-<!entity wwwbsdport    "http://www.freebsd.org/handbook/handbook23.html">
+<!entity wwwbsdport    "http://www.freebsd.org/ports">
 <!entity wwwdocbook    "http://www.oasis-open.org/docbook">
 <!entity wwwdocbooktut "http://nis-www.lanl.gov/~rosalia/mydocs/docbook-intro.html">
 <!entity wwwtoddtheme  "http://www.mindspring.com/~tlewis/screen.jpg">
@@ -40,6 +41,7 @@
 <!entity wwwi18n       "http://www.vlsivie.tuwien.ac.at/mike/i18n.html">
 <!entity wwwxdnd       "http://www.cco.caltech.edu/~jafl/xdnd/">
 <!entity wwwjimpick    "http://jimpick.com">
+<!entity wwwdebpack    "http://www.debian.org/~jim/debian-gtk-gnome/README">
 <!entity ftpgnome      "ftp://ftp.gnome.org">
 <!entity ftpwgn        "ftp://gnomeftp.wgn.net/pub/gnome">
 <!entity ftpsnap       "ftp://ftp.jimpick.com/pub/gnome/snap">
@@ -624,30 +626,32 @@
       <title>I'm running Debian GNU/Linux, how do I get .deb
       packages?</title>
 
+      <comment>Thank you Havoc! :-)</comment>
+
       <para>The most up-to-date Debian packages are distributed on the
       Debian sites (and mirrors) in <ulink
       url="http://www.debian.org/Packages/unstable/x11/">
-      debian-unstable</ulink>.  As far as I know, accessing them is
-      just a matter of configuring <command>dpkg</command> or
-      <command>apt</command> to access the unstable distribution. If
-      anyone has better instructions, email the gnomefaq address above
-      and let us know.  Step-by-step instructions should be at <ulink
-      url="&wwwgnomedeb;">&wwwgnomedeb;</ulink>, but they are out of
-      date (last updated September 19. 1998).  Anyone familiar with
-      the Debian installation process, please update this for us and
-      send it to <ulink url="mailto:&mailweb;">
-      &mailweb;</ulink>.</para>
+      debian-unstable</ulink>.  Step-by-step instructions are at
+      <ulink url="&wwwgnomedeb;">&wwwgnomedeb;</ulink>.</para>
+
+      <para>To get the Debian packages, you just do the following:</para><screen>
+<prompt>$</prompt> <userinput>apt-get update</userinput>
+<prompt>$</prompt> <userinput>apt-get install gnome-control-center gnome-panel gnome-session gnome-games gnome-terminal gnome-utils</userinput></screen>
 
       <para>The Debian package maintainers are volunteers, and they
       try to test things thoroughly before releasing, so if you don't
       see the latest release in deb format right away, please be
-      patient.  Better yet, contact the package maintainers to help
-      them out.</para>
+      patient.  Better yet, if you want to help prepare the Debian
+      packages for distribution, there is a mailing list at <ulink
+      url="mailto:&maildeb;">&maildeb;</ulink>, and instructions on
+      how to access the staging area at <ulink
+      url="&wwwdebpack;">&wwwdebpack;</ulink>.</para>
 
       <para>Since the Debian GNOME packages are already being
-      distributed with Debian, we don't currently mirror them here,
-      since there is no clear use to.  If there is a real need for us
-      to mirror these packages, just let us know and we will.</para>
+      distributed with Debian, we don't currently mirror them here.
+      There doesn't appear to be any need to.  If there is a real need
+      for us to mirror these packages, just let us know and we
+      will.</para>
     </sect1>
 
     <sect1 id="GettingSuSE">
@@ -675,15 +679,36 @@
     </sect1>
 
     <sect1 id="GettingFreeBSD">
-      <title>I'm running FreeBSD, can I get GNOME via ports?</title>
+      <title>I'm running FreeBSD, how can I get GNOME via Ports?</title>
 
-      <para>From what I understand, yes.  However, I don't use
-      FreeBSD, so I don't know how it is done.  If someone can send
-      instructions for FreeBSD, NetBSD, OpenBSD, or anything else, I
-      would be very grateful.</para>
+      <comment>Thank you Stanislav Shalunov! :-)</comment>
 
-      <para>General instructions for using the ports system can be
-      found at <ulink url="&wwwbsdport;">&wwwbsdport;</ulink>.</para>
+      <para>FreeBSD has ports and packages for various GNOME
+      applications (including Gnumeric) as well as a port for the
+      entire GNOME project that will install all GNOME-specific
+      programs via dependencies.  If you have the CDROM mounted under
+      <filename>/cdrom</filename> (the name of the mountpoint
+      <emphasis>is</emphasis> important) or you have a working
+      internet connection and the time to download for a while, you
+      can install GNOME on your FreeBSD box (3.1 or later, possibly
+      early as well) by typing:</para><screen>
+<prompt>$</prompt> <userinput>cd /usr/ports/x11/gnome && make install</userinput></screen>
+
+      <para>To learn more about the FreeBSD Ports Collection you can
+      visit <ulink url="&wwwbsdport;">&wwwbsdport;</ulink>.  If you
+      don't have an internet connection, but do have a docs
+      distribution, you can also find more information at
+      <filename>/usr/share/doc/handbook23.html</filename>.  This
+      document will also tell you how to install GNOME as pre-built
+      packages (binaries) using <command>pkg_add</command>, if you
+      have the CDROM.  Currently (for 3.1-RELEASE), you will need to
+      install the following packages: <filename>gnomelibs</filename>,
+      <filename>gnomeaudio</filename>, <filename>gnomecore</filename>,
+      <filename>gnomegames</filename>,
+      <filename>gnomeprint</filename>, <filename>gnumeric</filename>,
+      and <filename>libgtop</filename>.  A listing of the latest
+      versions available can be found at <ulink
+      url="&wwwbsdport;/gnome.html">&wwwbsdport;/gnome.html</ulink>.</para>
     </sect1>
 
     <sect1 id="GettingOtherUnix">
@@ -1061,6 +1086,31 @@
       </sect2>
 
       <sect2>
+	<title>What is a prefix (or a $prefix, ${PREFIX}, or
+	&lt;prefix&gt;)?</title>
+
+	<para>When GNOME is compiled, you need to specify where it is
+	located in the filesystem.  The option used to specify this is
+	called <option>--prefix</option>, so we call it the GNOME
+	Prefix, or prefix for short.  GNOME's file locations should be
+	the same from system to system, except for the prefix, so a
+	file in <filename>/usr/share/gnome/pixmaps</filename> on one
+	system may be in
+	<filename>/opt/gnome/share/gnome/pixmaps</filename> on
+	another, and we would refer to the location as
+	<filename>$prefix/share/gnome/pixmaps</filename>.</para>
+
+	<para>If you installed from tarballs (or CVS), but never gave
+	<command>configure</command> (or
+	<command>autogen.sh</command>) a prefix, the default is
+	<filename>/usr/local</filename>.  If you installed the RedHat
+	RPMS, they use a prefix of <filename>/usr</filename>.  If you
+	still aren't sure, type <command>which panel</command>, and
+	remove the <computeroutput>/bin/panel</computeroutput> from
+	the end.  What's left is your prefix. </para>
+      </sect2>
+
+      <sect2>
 	<title>What does <computeroutput>Segmentation
 	Fault</computeroutput> mean?</title>
 
@@ -1111,7 +1161,7 @@
 	feature.</para>
       </sect2>
 
-      <sect2>
+      <sect2 id="Backtrace">
 	<title>What is a backtrace?  Someone just asked me to send
 	them a backtrace, how do I do this?</title>
 
