@@ -87,4 +87,4 @@ gbpixmapdir = $(datadir)/pixmaps
 gbpixmap_DATA = yes.xpm no.xpm
 
 install-data-hook:
-	ln -sf goad-browser ($DESTDIR)$(bindir)/new-object
+	ln -sf goad-browser $(DESTDIR)$(bindir)/new-object
