@@ -1,7 +1,7 @@
 /* {{{ Copyright notice */
 
 /* Concurrent shell support for the Midnight Commander
-   Copyright (C) 1994, 1995 Dugan Porter
+   Copyright (C) 1994, 1995, 1998 Dugan Porter
 
    This program is free software; you can redistribute it and/or
    modify it under the terms of Version 2 of the GNU General Public
@@ -19,7 +19,7 @@
 
 /* }}} */
 
-/*#include <config.h>*/
+#include <config.h>
 
 /* {{{ Declarations */
 
@@ -46,9 +46,9 @@
 #   include <unistd.h>	/* For pipe, fork, setsid, access etc */
 /*#endif*/
 
-/*#ifdef HAVE_SYS_SELECT_H*/
+#ifdef HAVE_SYS_SELECT_H
 #   include <sys/select.h>
-/*#endif*/
+#endif
 
 /*#ifdef HAVE_SYS_WAIT_H*/
 #   include <sys/wait.h> /* For waitpid() */
