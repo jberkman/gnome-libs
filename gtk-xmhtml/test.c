@@ -30,12 +30,9 @@ main (int argc, char *argv [])
 		GTK_SIGNAL_FUNC(gtk_true), NULL);
 	gtk_signal_connect(GTK_OBJECT(window), "destroy",
 		GTK_SIGNAL_FUNC(gtk_main_quit), NULL);
-	html = gtk_xmhtml_new (200, 200, file_contents->str);
-	scr = gtk_scrolled_window_new(GTK_XMHTML(html)->hsba, GTK_XMHTML(html)->vsba);
-	gtk_container_add (GTK_CONTAINER (scr), html);
+	html = gtk_xmhtml_new (file_contents->str);
 	gtk_widget_show (html);
-	gtk_container_add (GTK_CONTAINER (window), scr);
-	gtk_widget_show (scr);
+	gtk_container_add (GTK_CONTAINER (window), html);
 	gtk_main ();
 
 }

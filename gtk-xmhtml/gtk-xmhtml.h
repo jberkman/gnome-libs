@@ -38,7 +38,7 @@ struct _GtkXmHTMLClass
 	void (* testsignal) (GtkXmHTML *xmhtml);
 };
 
-GtkWidget *gtk_xmhtml_new (int width, int height, char *html_source);
+GtkWidget *gtk_xmhtml_new (char *html_source);
 
 #define XmCR_ACTIVATE 0
 

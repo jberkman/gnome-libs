@@ -146,7 +146,7 @@ gtk_xmhtml_init (GtkXmHTML *html)
 }
 
 GtkWidget *
-gtk_xmhtml_new (int width, int height, char *html_source)
+gtk_xmhtml_new (char *html_source)
 {
 	GtkXmHTML *html;
 	
