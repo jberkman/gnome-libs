@@ -48,10 +48,10 @@ static void mode_book_cb(GtkWidget *w);
 static void mode_modal_cb(GtkWidget *w);
 static void inc_counter_cb(GtkWidget *w, gpointer user_data);
 
-static gchar         *my_child_get_config_string(GnomeMDIChild *);
+static gchar         *my_child_get_config_string(GnomeMDIChild *, gpointer);
 static GnomeMDIChild *my_child_new_from_config (const gchar *);
-static GtkWidget     *my_child_set_label(GnomeMDIChild *, GtkWidget *);
-static GtkWidget     *my_child_create_view(GnomeMDIChild *child);
+static GtkWidget     *my_child_set_label(GnomeMDIChild *, GtkWidget *, gpointer);
+static GtkWidget     *my_child_create_view(GnomeMDIChild *, gpointer);
 
 #ifdef USE_TEMPLATES
 /* the template for MDI menus */
@@ -128,13 +128,13 @@ GnomeUIInfo main_child_menu[] = {
  * create_view signal handler: creates any GtkWidget to be used as a view
  * of the child
  */
-static GtkWidget *my_child_create_view(GnomeMDIChild *child) {
+static GtkWidget *my_child_create_view(GnomeMDIChild *child, gpointer data) {
 	GtkWidget *new_view;
 	gchar label[256];
 	gint counter;
 
 	sprintf(label, "Hello! Child %d reporting...",
-			(gint)gnome_mdi_generic_child_get_data(GNOME_MDI_GENERIC_CHILD(child)));
+			(gint)gtk_object_get_user_data(GTK_OBJECT(child)));
 
 	new_view = gtk_label_new(label);
 
@@ -144,12 +144,13 @@ static GtkWidget *my_child_create_view(GnomeMDIChild *child) {
 /*
  * create config string for this child
  */
-static gchar *my_child_get_config_string(GnomeMDIChild *child) {
-	return g_strdup_printf ("%d", (gint)gnome_mdi_generic_child_get_data(GNOME_MDI_GENERIC_CHILD(child)));
+static gchar *my_child_get_config_string(GnomeMDIChild *child, gpointer data) {
+	return g_strdup_printf ("%d", (gint)gtk_object_get_user_data(GTK_OBJECT(child)));
 }
 
 static GtkWidget *my_child_set_label(GnomeMDIChild *child,
-										  GtkWidget *old_label) {
+									 GtkWidget *old_label,
+									 gpointer data) {
 	GtkWidget *hbox, *pixmap, *label;
 	if(old_label == NULL) {
 		/* if old_label is NULL, we have to create a new label */
@@ -174,7 +175,7 @@ static GtkWidget *my_child_set_label(GnomeMDIChild *child,
 
 #ifndef USE_TEMPLATES
 /* if we want to use custom-built menus for our child */
-static GList *my_child_create_menus(GnomeMDIChild *child, GtkWidget *view) {
+static GList *my_child_create_menus(GnomeMDIChild *child, GtkWidget *view, gpointer data) {
 	GList *menu_list;
 	GtkWidget *menu, *w;
 
@@ -213,21 +214,18 @@ static GnomeMDIChild *my_child_new_from_config (const gchar *string) {
 	
 	name = g_strdup_printf("Child %d", c);
 
-	child = gnome_mdi_generic_child_new(name,
-										my_child_create_view,
+	if((child = gnome_mdi_generic_child_new(name)) != NULL) {
+		gnome_mdi_generic_child_set_view_creator(child, my_child_create_view, NULL);
 #ifdef USE_TEMPLATES
-										NULL,
+		gnome_mdi_child_set_menu_template(GNOME_MDI_CHILD(child), main_child_menu);
 #else
-										my_child_create_menus,
+		gnome_mdi_generic_child_set_menu_creator(child, my_child_create_menus, NULL);
 #endif /* USE_TEMPLATES */
-										my_child_get_config_string,
-										my_child_set_label,
-										(gpointer)c);
+		gnome_mdi_generic_child_set_config_func(child, my_child_get_config_string, NULL);
+		gnome_mdi_generic_child_set_label_func(child, my_child_set_label, NULL);
 
-#ifdef USE_TEMPLATES
-	gnome_mdi_child_set_menu_template(GNOME_MDI_CHILD(child),
-										 main_child_menu);
-#endif
+		gtk_object_set_user_data(GTK_OBJECT(child), GINT_TO_POINTER(c));
+	}
 
 	return GNOME_MDI_CHILD (child);
 }
@@ -285,20 +283,17 @@ static void add_cb(GtkWidget *w) {
 
 	sprintf(name, "Child %d", counter);
 	
-	if((child = gnome_mdi_generic_child_new(name,
-											my_child_create_view,
+	if((child = gnome_mdi_generic_child_new(name)) != NULL) {
+		gnome_mdi_generic_child_set_view_creator(child, my_child_create_view, NULL);
 #ifdef USE_TEMPLATES
-											NULL,
+		gnome_mdi_child_set_menu_template(GNOME_MDI_CHILD(child), main_child_menu);
 #else
-											my_child_create_menus,
+		gnome_mdi_generic_child_set_menu_creator(child, my_child_create_menus, NULL);
 #endif /* USE_TEMPLATES */
-											my_child_get_config_string,
-											my_child_set_label,
-											(gpointer)counter)) != NULL) {
-#ifdef USE_TEMPLATES
-		gnome_mdi_child_set_menu_template(GNOME_MDI_CHILD(child),
-											 main_child_menu);
-#endif										  
+		gnome_mdi_generic_child_set_config_func(child, my_child_get_config_string, NULL);
+		gnome_mdi_generic_child_set_label_func(child, my_child_set_label, NULL);
+
+		gtk_object_set_user_data(GTK_OBJECT(child), GINT_TO_POINTER(counter));
 
 		/* add the child to MDI */
 		gnome_mdi_add_child(mdi, GNOME_MDI_CHILD(child));
@@ -315,9 +310,9 @@ static void inc_counter_cb(GtkWidget *w, gpointer user_data) {
 	gchar name[32];
 	gint counter;
 
-	counter = (gint)gnome_mdi_generic_child_get_data(child);
+	counter = (gint)gtk_object_get_user_data(GTK_OBJECT(child));
 	counter++;
-	gnome_mdi_generic_child_set_data(child, (gpointer)counter);
+	gtk_object_set_user_data(GTK_OBJECT(child), (gpointer)counter);
 
 	sprintf(name, "Child %d", counter);
 	gnome_mdi_child_set_name(GNOME_MDI_CHILD(child), name);
@@ -365,7 +360,7 @@ static gint remove_child_handler(GnomeMDI *mdi, GnomeMDIChild *child) {
 	gint reply;
 
 	sprintf(question, "Do you really want to remove child %d\n",
-			(gint)gnome_mdi_generic_child_get_data(GNOME_MDI_GENERIC_CHILD(child)));
+			(gint)gtk_object_get_user_data(GTK_OBJECT(child)));
 
 	gnome_app_question_modal(gnome_mdi_active_window(mdi), question,
 							 reply_handler, &reply);
