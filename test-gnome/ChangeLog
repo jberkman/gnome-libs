@@ -1,3 +1,14 @@
+1998-07-19  Federico Mena Quintero  <federico@nuclecu.unam.mx>
+
+	* canvas.c (item_event): Use gnome_canvas_item_raise_to_top() and
+	gnome_canvas_item_lower_to_bottom().
+
+1998-07-17  Federico Mena Quintero  <federico@nuclecu.unam.mx>
+
+	* canvas.c (create_fifteen create_primitives): Removed the canvas
+	parameter from calls to gnome_canvas_item_new().
+	(create_primitives): Added a test for the line item.
+
 1998-07-15  Federico Mena Quintero  <federico@nuclecu.unam.mx>
 
 	* canvas.c (item_event): Grab/ungrab the item on button
