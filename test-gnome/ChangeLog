@@ -1,3 +1,9 @@
+1998-07-06  Federico Mena Quintero  <federico@nuclecu.unam.mx>
+
+	* canvas.c (scramble): Don't flush the X queue now that
+	gnome_canvas_update_now() does it for us.
+	(create_primitives): Added a test for all the canvas primitives.
+
 1998-07-05  Federico Mena Quintero  <federico@nuclecu.unam.mx>
 
 	* canvas.c: Added text to the fifteen game.  The text items change
