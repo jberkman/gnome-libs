@@ -61,4 +61,5 @@
 
 /* define if deprecated stuff should be excluded in header files */
 #undef GNOME_EXCLUDE_DEPRECATED
+#undef GNOME_EXCLUDE_DEPRECATED_SOURCE
 
