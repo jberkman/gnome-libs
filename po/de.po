@@ -2,7 +2,7 @@
 # Copyright (C) 1998 Free Software Foundation, Inc.
 # Carsten Schaar <nhadcasc@fs-maphy.uni-hannover.de>, 1998
 #
-#, fuzzy
+# , fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-libs VERSION\n"
@@ -14,45 +14,65 @@ msgstr ""
 "Content-Type: text/plain; charset=iso-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: libgnomeui/gnome-about.c:231
+#: libgnomeui/gnome-about.c:233
 msgid "Author:"
 msgstr "Autor:"
 
-#: libgnomeui/gnome-about.c:233 libgnomeui/gnome-about.c:235
+#: libgnomeui/gnome-about.c:235 libgnomeui/gnome-about.c:237
 msgid "Authors:"
 msgstr "Autoren:"
 
-#: libgnomeui/gnome-about.c:410
+#: libgnomeui/gnome-about.c:406
 msgid "Authors: "
 msgstr "Autoren:"
 
-#: libgnomeui/gnome-about.c:635
+#: libgnomeui/gnome-about.c:631
 msgid "About"
-msgstr "Über"
+msgstr "\334ber"
 
-#: libgnomeui/gnome-about.c:704 libgnomeui/gnome-scores.c:131
-msgid "OK"
-msgstr "OK"
-
-#: libgnomeui/gnome-scores.c:99
+#: libgnomeui/gnome-scores.c:82
 msgid "User"
 msgstr "Benutzer"
 
-#: libgnomeui/gnome-scores.c:102
+#: libgnomeui/gnome-scores.c:85
 msgid "Score"
 msgstr "Punkte"
 
-#: libgnomeui/gnome-scores.c:105
+#: libgnomeui/gnome-scores.c:88
 msgid "Date"
 msgstr "Datum"
 
-#: libgnomeui/gnome-scores.c:141
+#: libgnomeui/gnome-scores.c:124
 msgid "Clear"
-msgstr "Löschen"
+msgstr "L\366schen"
 
-#: libgnomeui/gnome-scores.c:158
+#: libgnomeui/gnome-scores.c:141
 msgid "Top Ten"
-msgstr "Bestenliste"
+msgstr ""
+
+#: libgnomeui/gnome-stock.h:267
+msgid "Ok"
+msgstr "OK"
+
+#: libgnomeui/gnome-stock.h:267
+msgid "Cancel"
+msgstr "Abbruch"
+
+#: libgnomeui/gnome-stock.h:267
+msgid "Yes"
+msgstr "Ja"
+
+#: libgnomeui/gnome-stock.h:267
+msgid "No"
+msgstr "Nein"
+
+#: libgnomeui/gnome-stock.h:268
+msgid "Close"
+msgstr "Schlie\337en"
+
+#: libgnomeui/gnome-stock.h:268
+msgid "Apply"
+msgstr "\334bernehmen"
 
 #: libgnomeui/gnome-messagebox.c:165
 msgid "Information"
@@ -70,89 +90,56 @@ msgstr "Fehler"
 msgid "Question"
 msgstr "Frage"
 
-#: gnome-hello/gnome-hello-2-i18n.c:31
-#: gnome-hello/gnome-hello-3-parse-args.c:39 gnome-hello/gnome-hello-4-SM.c:60
+#: gnome-hello/gnome-hello-2-i18n.c:31 gnome-hello/gnome-hello-3-parse-args.c:33 gnome-hello/gnome-hello-4-SM.c:54
 msgid "File/Exit"
 msgstr "Datei/Beenden"
 
-#: gnome-hello/gnome-hello-2-i18n.c:31
-#: gnome-hello/gnome-hello-3-parse-args.c:39 gnome-hello/gnome-hello-4-SM.c:60
+#: gnome-hello/gnome-hello-2-i18n.c:31 gnome-hello/gnome-hello-3-parse-args.c:33 gnome-hello/gnome-hello-4-SM.c:54
 msgid "<control>E"
 msgstr "<control>E"
 
 #. The '...' end indicate that the options open a dialog
-#: gnome-hello/gnome-hello-2-i18n.c:33
-#: gnome-hello/gnome-hello-3-parse-args.c:41 gnome-hello/gnome-hello-4-SM.c:62
+#: gnome-hello/gnome-hello-2-i18n.c:33 gnome-hello/gnome-hello-3-parse-args.c:35 gnome-hello/gnome-hello-4-SM.c:56
 msgid "Help/About..."
-msgstr "Hilfe/Über..."
+msgstr "Hilfe/\334ber..."
 
-#: gnome-hello/gnome-hello-2-i18n.c:33
-#: gnome-hello/gnome-hello-3-parse-args.c:41 gnome-hello/gnome-hello-4-SM.c:62
+#: gnome-hello/gnome-hello-2-i18n.c:33 gnome-hello/gnome-hello-3-parse-args.c:35 gnome-hello/gnome-hello-4-SM.c:56
 msgid "<control>A"
 msgstr "<control>A"
 
 #. Make the main window and binds the delete event so you can close
 #. the program from your WM
-#: gnome-hello/gnome-hello-2-i18n.c:65
-#: gnome-hello/gnome-hello-3-parse-args.c:79
-#: gnome-hello/gnome-hello-4-SM.c:103
+#: gnome-hello/gnome-hello-2-i18n.c:69 gnome-hello/gnome-hello-3-parse-args.c:99 gnome-hello/gnome-hello-4-SM.c:139
 msgid "Hello World Gnomified"
 msgstr "\"Hallo Welt\" gnomifiziert"
 
 #. We make a button, bind the 'clicked' signal to hello and setting it
 #. to be the content of the main window
-#: gnome-hello/gnome-hello-2-i18n.c:79
-#: gnome-hello/gnome-hello-3-parse-args.c:93
-#: gnome-hello/gnome-hello-4-SM.c:122
+#: gnome-hello/gnome-hello-2-i18n.c:83 gnome-hello/gnome-hello-3-parse-args.c:113 gnome-hello/gnome-hello-4-SM.c:158
 msgid "Hello GNOME"
 msgstr "Hallo GNOME"
 
-#: gnome-hello/gnome-hello-2-i18n.c:98
-#: gnome-hello/gnome-hello-3-parse-args.c:112
-#: gnome-hello/gnome-hello-4-SM.c:141
+#: gnome-hello/gnome-hello-2-i18n.c:102 gnome-hello/gnome-hello-3-parse-args.c:132 gnome-hello/gnome-hello-4-SM.c:177
 msgid "Hello GNOME\n"
 msgstr "Hallo GNOME\n"
 
-#: gnome-hello/gnome-hello-2-i18n.c:121
-#: gnome-hello/gnome-hello-3-parse-args.c:135
-#: gnome-hello/gnome-hello-4-SM.c:164
+#: gnome-hello/gnome-hello-2-i18n.c:125 gnome-hello/gnome-hello-3-parse-args.c:155 gnome-hello/gnome-hello-4-SM.c:200
 msgid "The Hello World Gnomified"
 msgstr "\"Hallo Welt\" gnomifiziert"
 
 #. another comments
-#: gnome-hello/gnome-hello-2-i18n.c:126
-#: gnome-hello/gnome-hello-3-parse-args.c:140
-#: gnome-hello/gnome-hello-4-SM.c:169
+#: gnome-hello/gnome-hello-2-i18n.c:130 gnome-hello/gnome-hello-3-parse-args.c:160 gnome-hello/gnome-hello-4-SM.c:205
 msgid "GNOME is a civilized software system so we've a \"hello world\" program"
 msgstr "GNOME ist ein modernes Softwaresystem, deshalb gibt es ein \"Hallo Welt\" Programm"
 
-#: gnome-hello/gnome-hello-3-parse-args.c:193
-#: gnome-hello/gnome-hello-4-SM.c:228
-#, c-format
-msgid ""
-"%s: A gnomified 'Hello World' program\n"
-"\n"
-"Usage: %s [--help] [--version]\n"
-"\n"
-"Options:\n"
-"        --help     display this help and exit\n"
-"        --version  output version information and exit\n"
+#: gnome-hello/gnome-hello-3-parse-args.c:43
+msgid "Run silently"
 msgstr ""
-"%s: Ein gnomifiziertes \"Hallo Welt\" Programm\n"
-"\n"
-"Benutzung: %s [--help] [--version]\n"
-"\n"
-"Optionen:\n"
-"        --help     zeigt diese Hilfe an und beendet sich\n"
-"        --version  ziegt Informationen zu Programmversion und beendet sich\n"
 
-#: gnome-hello/gnome-hello-3-parse-args.c:202
-#: gnome-hello/gnome-hello-4-SM.c:237
-#, c-format
-msgid "Gnome Hello %s.\n"
-msgstr "Gnome hallo %s.\n"
+#: gnome-hello/gnome-hello-4-SM.c:67
+msgid "ID"
+msgstr ""
 
-#: gnome-hello/gnome-hello-3-parse-args.c:207
-#: gnome-hello/gnome-hello-4-SM.c:254
-msgid "Options error\n"
-msgstr "Falsche Option(en)\n"
+#: gnome-hello/gnome-hello-4-SM.c:67
+msgid "Discard session"
+msgstr ""
