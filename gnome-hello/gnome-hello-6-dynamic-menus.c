@@ -25,19 +25,44 @@ void add_cb (GtkWidget *widget, void *data);
 void remove_cb (GtkWidget *widget, void *data);
 
 void prepare_app();
-GtkMenuFactory *create_menu ();
 
 GtkWidget *app;
 
+GnomeUIInfo file_menu[] = {
+  { GNOME_APP_UI_ITEM, "Add", NULL, add_cb, NULL, NULL,
+    GNOME_APP_PIXMAP_NONE, NULL, 0,
+    0, NULL },
+  { GNOME_APP_UI_ITEM, "Remove", NULL, remove_cb, NULL, NULL,
+    GNOME_APP_PIXMAP_NONE, NULL, 0, 0, NULL },
+  { GNOME_APP_UI_SEPARATOR, NULL, NULL, NULL, NULL, NULL,
+    GNOME_APP_PIXMAP_NONE, NULL, 0, 0, NULL },
+  { GNOME_APP_UI_ITEM, "Exit", NULL, quit_cb, NULL, NULL,
+    GNOME_APP_PIXMAP_STOCK, GNOME_STOCK_MENU_EXIT, 'X',
+    GDK_CONTROL_MASK, NULL },
+  { GNOME_APP_UI_ENDOFINFO }
+};
+
+GnomeUIInfo empty_menu[] = {
+  { GNOME_APP_UI_ENDOFINFO }
+};
+
+GnomeUIInfo help_menu[] = {
+  { GNOME_APP_UI_ITEM, "About...", NULL, about_cb, NULL, NULL,
+    GNOME_APP_PIXMAP_STOCK, GNOME_STOCK_MENU_ABOUT, 0, 0, NULL },
+  { GNOME_APP_UI_ENDOFINFO }
+};
+
 /* The menu definitions: File/Exit and Help/About are mandatory */
-GtkMenuEntry hello_menu [] =
-{
-  { "File/Add", NULL, (GtkMenuCallback) add_cb,  NULL },
-  { "File/Remove", NULL, (GtkMenuCallback) remove_cb,  NULL },
-  { "File/Exit", "<control>E", (GtkMenuCallback) quit_cb,  NULL },
-  { "Changes/", NULL, NULL,  NULL },
-	/* The '...' end indicate that the options open a dialog */
-  { "Help/About...", "<control>A", (GtkMenuCallback) about_cb, NULL },
+GnomeUIInfo main_menu[] = {
+  { GNOME_APP_UI_SUBTREE, ("File"), NULL, file_menu, NULL, NULL,
+    GNOME_APP_PIXMAP_NONE, NULL, 0, 0, NULL },
+  { GNOME_APP_UI_SUBTREE, ("Changes"), NULL, empty_menu, NULL, NULL,
+    GNOME_APP_PIXMAP_NONE, NULL, 0, 0, NULL },
+  { GNOME_APP_UI_JUSTIFY_RIGHT, NULL, NULL, NULL, NULL, NULL,
+    GNOME_APP_PIXMAP_NONE, NULL, 0, 0, NULL },
+  { GNOME_APP_UI_SUBTREE, ("Help"), NULL, help_menu, NULL, NULL,
+    GNOME_APP_PIXMAP_NONE, NULL, 0, 0, NULL },
+  { GNOME_APP_UI_ENDOFINFO }
 };
 
 int
@@ -48,7 +73,7 @@ main(int argc, char *argv[])
   /* gnome_init() is always called at the beginning of a program.  it
      takes care of initializing both Gtk and GNOME.  It also parses
      the command-line arguments.  */
-  gnome_init ("gnome-hello-1-menus", NULL, argc, argv,
+  gnome_init ("gnome-hello-6-dynamic-menus", NULL, argc, argv,
 	      0, NULL);
 
   /* prepare_app() makes all the gtk calls necessary to set up a
@@ -76,10 +101,7 @@ prepare_app()
                       NULL);
 
   /* Now that we've the main window we'll make the menues */
-  /* I'm using GtkMenuFactory, i've asked to the gnome-list if i should
-     use gnome_app_create_menu instead and i'm waiting the answer */
-  mf = create_menu ();
-  gnome_app_set_menus ( GNOME_APP (app), GTK_MENU_BAR (mf->widget));
+  gnome_app_create_menus ( GNOME_APP (app), main_menu);
 
   /* We make a button, bind the 'clicked' signal to hello and setting it
      to be the content of the main window */
@@ -128,8 +150,9 @@ add_cb (GtkWidget *widget, void *data)
   static int counter = 0;
   char buf[200];
   GnomeUIInfo entry[2];
+  int pos = 0;
 
-  sprintf (buf, "menu item %d\n", counter);
+  sprintf (buf, "menu item %d", counter);
 
   entry[0].type = GNOME_APP_UI_ITEM;
   entry[0].label = buf;
@@ -146,9 +169,9 @@ add_cb (GtkWidget *widget, void *data)
 
   printf ("add\n");
 
-  gnome_app_insert_menus_with_data (GNOME_APP (app),
+  gnome_app_insert_menus (GNOME_APP (app),
 				    "Changes/",
-				    entry, NULL);
+				    entry);
 
   return;
 }
@@ -186,20 +209,4 @@ about_cb (GtkWidget *widget, void *data)
   gtk_widget_show (about);
 
   return;
-}
-
-/* Menu creation */
-
-#define ELEMENTS(x) (sizeof (x) / sizeof (x [0]))
-
-GtkMenuFactory *
-create_menu () 
-{
-  GtkMenuFactory *subfactory;
-  int i;
-
-  subfactory = gtk_menu_factory_new  (GTK_MENU_FACTORY_MENU_BAR);
-  gtk_menu_factory_add_entries (subfactory, hello_menu, ELEMENTS(hello_menu));
-
-  return subfactory;
 }
