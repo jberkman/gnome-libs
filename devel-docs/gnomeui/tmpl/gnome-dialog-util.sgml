@@ -3,10 +3,14 @@ gnome-dialog-util
 
 <!-- ##### SECTION Short_Description ##### -->
 
+Convenience functions for making dialogs.
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-
+These functions create common dialogs for you. In all cases, you
+should prefer the _parented() variants, because they will properly
+call gnome_dialog_set_parent() prior to showing the dialog. All of
+these functions automatically show the dialog before they return.
 </para>
 
 <!-- ##### SECTION See_Also ##### -->
