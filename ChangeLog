@@ -1,3 +1,10 @@
+Mon Jun  1 13:23:26 1998  Havoc Pennington  <hp@pobox.com>
+
+	* libgnome/gnome-exec.h, gnome-exec.c (gnome_execute_async):
+ 	 Change arg 3 to char * const argv[] to match execvp	
+	(gnome_execute_shell): New function. Like system(), but
+ 	backgrounds the process and uses the user's shell.
+
 1998-05-25  Marc Ewing  <marc@germ.labs.redhat.com>
 
 	* libgnome/gnome-help.c (gnome_help_goto): make sure
