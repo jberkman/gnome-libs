@@ -1,3 +1,8 @@
+1998-12-01  Raja R Harinath  <harinath@cs.umn.edu>
+
+	* XmHTMLfuncs.h: Avoid ordering problems by including stdlib.h and
+	string.h.  #undef before #define to avoid warnings.
+
 1998-11-28  Ronald de Man <deman@win.tue.nl>
 
 	* XmHTML.c (_XmHTMLMoveToPos): Fix to the repaint.
@@ -226,5 +231,3 @@ Wed Dec 24 12:05:31 1997  Miguel de Icaza  <miguel@nuclecu.unam.mx>
 
 	* Lots of events are now handled, only missing are the keybaord
 	events. 
-	
-

@@ -35,6 +35,10 @@
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.6  1998/12/01 21:10:06  harinath
+* * XmHTMLfuncs.h: Avoid ordering problems by including stdlib.h and
+* string.h.  #undef before #define to avoid warnings.
+*
 * Revision 1.5  1998/02/12 03:08:28  unammx
 * Merge to Koen's XmHTML 1.1.2 + following fixes:
 *
@@ -130,6 +134,12 @@
 #define _XmHTMLfuncs_h_
 
 #include <errno.h>
+
+/* Since we override some of the symbols in the following headers,
+   include them first, to prevent include ordering problems.  */
+#include <stdlib.h>
+#include <string.h>
+
 #ifdef WITH_MOTIF
 #include <X11/IntrinsicP.h>		/* for Widget definition & fast macros */
 #endif
@@ -302,8 +312,16 @@ typedef unsigned char Byte;
 * Fix 10/27/97-01, shl.
 *****/
 #ifndef DMALLOC
+
+/* These may be #defined.  */
+#undef malloc
+#undef calloc
+#undef realloc
+#undef free
+#undef strdup
+
 #ifndef DEBUG
- 
+
 /* Normal builds use Xt memory functions */
 
 #    ifdef WITH_MOTIF
