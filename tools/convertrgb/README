@@ -1,9 +1,13 @@
 ###################################################################*/
-##                        imlib raw rgb converter                ##*/
+##                 Image to Imlib raw rgb data Converter         ##*/
 ##                                                               ##*/
 ## This software falls under the GNU Public License. Please read ##*/
 ##              the COPYING file for more information            ##*/
 ###################################################################*/
+
+Requires ImageMagick's convert command.
+
+Currently the -n flag has no effect, dimensions do not work anyway.
 
 Sorry, but for now this is just a copy of the output with no options.
 
@@ -12,7 +16,7 @@ Command line params:
       convertrgb [-e] [-o=fn|-a=fn|-s=sn] [-v=vn] inputfile [inputfile] ...
 
    -e, --efficient      Use smallest format possible to save space
-   -n, --nodim          Suppress output of dimensions and transparency
+   -n, --nodim          Suppress output of dimensions
    -o=[fn]              Output to file named fn , default is .c extension
                           to replace extension of inputfile
    -a=[fn]              Like -o, but appends to file named fn
