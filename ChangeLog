@@ -1,3 +1,23 @@
+1999-01-18  Jeff Garzik  <jgarzik@pobox.com>
+
+	* configure.in:
+	Remove redundant AC_SUBST calls for CFLAGS, CPPFLAGS, LDFLAGS
+
+	* gnome-exec.c:
+	Include string.h for string prototypes
+
+	* gnome-help.c:
+	Include gnome-url.h for gnome_url_show() proto
+
+	* gnome-metadata.c:
+	Eliminated const-ness warnings.
+
+	* gnome-mime.[ch]:
+	Made several functions const-correct.
+
+	* gnome-score.c:
+	s/strdup/g_strdup/ to eliminate ANSI warnings.
+
 1999-01-18  Miguel de Icaza  <miguel@nuclecu.unam.mx>
 
 	* libgnome/gnome-score.c: Include sys/fsuid.h only if present.

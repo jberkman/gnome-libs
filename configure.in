@@ -69,10 +69,6 @@ AM_CONDITIONAL(FALSE, test x = y)
 
 AC_ARG_ENABLE(debug, [  --enable-debug turn on debugging [default=no]],AC_DEFINE(GNOME_ENABLE_DEBUG),)
 
-AC_SUBST(CFLAGS)
-AC_SUBST(CPPFLAGS)
-AC_SUBST(LDFLAGS)
-
 ALL_LINGUAS="ca cs da de es fi fr ga it ja ko no pt sv ru pl hu nl"
 
 AM_GNOME_GETTEXT
