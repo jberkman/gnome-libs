@@ -29,18 +29,20 @@
 #include "testgnome.h"
 #include "bomb.xpm"
 
-gchar *authors[] = {
+static const gchar *authors[] = {
 	"Richard Hestilow",
 	"Federico Mena",
 	NULL
 };
 
-void delete_event (GtkWidget *widget, gpointer data)
+static void
+delete_event (GtkWidget *widget, gpointer data)
 {
 	gtk_widget_destroy(data);
 }
 
-void create_about (GtkWidget *widget, gpointer data)
+static void
+create_about (void)
 {
         GtkWidget *about;
         about = gnome_about_new("GNOME Test Program", VERSION ,
@@ -51,7 +53,8 @@ void create_about (GtkWidget *widget, gpointer data)
         gtk_widget_show (about);
 }
 
-void create_date_edit ()
+static void
+create_date_edit (void)
 {
 	GtkWidget *datedit;
 	GtkWidget *win;
@@ -64,17 +67,19 @@ void create_date_edit ()
 	gtk_widget_show(win);
 }
 
-void quit_test (GtkWidget *widget, gpointer data)
+static void
+quit_test (void)
 {
         gtk_main_quit ();
 }
 
-void window_close (GtkWidget *widget, gpointer data)
+static void
+window_close (GtkWidget *widget, gpointer data)
 {
         gtk_widget_destroy (GTK_WIDGET(data));
 }
 
-GnomeUIInfo file_menu[] = {
+static GnomeUIInfo file_menu[] = {
         { GNOME_APP_UI_ITEM, "Test", NULL, gtk_main_quit, NULL, NULL,
 	  GNOME_APP_PIXMAP_STOCK, GNOME_STOCK_MENU_EXIT, 'A',
 	  GDK_SHIFT_MASK, NULL },
@@ -86,7 +91,8 @@ GnomeUIInfo file_menu[] = {
 	  GDK_CONTROL_MASK, NULL },
         { GNOME_APP_UI_ENDOFINFO }
 };
-GnomeUIInfo help_menu[] = {
+
+static GnomeUIInfo help_menu[] = {
         { GNOME_APP_UI_HELP, NULL, NULL, NULL, NULL, NULL,
 	  GNOME_APP_PIXMAP_NONE, NULL, 0, 0, NULL },
         { GNOME_APP_UI_ITEM, "About...", NULL, create_about, NULL, NULL,
@@ -94,7 +100,8 @@ GnomeUIInfo help_menu[] = {
 	  NULL },
         { GNOME_APP_UI_ENDOFINFO }
 };
-GnomeUIInfo main_menu[] = {
+
+static GnomeUIInfo main_menu[] = {
         { GNOME_APP_UI_SUBTREE, ("File"), NULL, file_menu, NULL, NULL,
 	  GNOME_APP_PIXMAP_NONE, NULL, 0, 0, NULL },
         { GNOME_APP_UI_SUBTREE, ("Help"), NULL, help_menu, NULL, NULL,
@@ -102,7 +109,143 @@ GnomeUIInfo main_menu[] = {
         { GNOME_APP_UI_ENDOFINFO }
 };
 
-void color_changed_cb( GnomeColorSelector *widget, gchar **color )
+GtkWidget *
+create_newwin(gboolean normal, gchar *appname, gchar *title)
+{
+	GtkWidget *app;
+
+	app = gnome_app_new (appname,title);
+	if (!normal)
+        {
+                gtk_signal_connect(GTK_OBJECT(app), "delete_event",
+				   GTK_SIGNAL_FUNC(quit_test), NULL);
+        };
+
+	gnome_app_create_menus_with_data (GNOME_APP(app), main_menu, app);
+	gtk_menu_item_right_justify(GTK_MENU_ITEM(main_menu[1].widget));
+	return GTK_WIDGET(app);
+}
+
+static void
+create_calendar(void)
+{
+	GtkWidget *app;
+	GtkWidget *cal;
+	app=create_newwin(TRUE,"testGNOME","calendar");
+	cal=gtk_calendar_new();
+	gnome_app_set_contents(GNOME_APP(app),cal);
+	gtk_widget_show(cal);
+	gtk_widget_show(app);
+}
+
+static void
+create_calc(void)
+{
+	GtkWidget *app,*calc;
+	app = create_newwin(TRUE,"testGNOME","Calculator");
+	calc = gnome_calculator_new();
+	gnome_app_set_contents(GNOME_APP(app),calc);
+	gtk_widget_show(calc);
+	gtk_widget_show(app);
+}
+
+static void
+create_clock(void)
+{
+	GtkWidget *app;
+	GtkWidget *clock;
+
+	app=create_newwin(TRUE,"testGNOME","Clock");
+	clock=gtk_clock_new(0);
+	gnome_app_set_contents(GNOME_APP(app),clock);
+	gtk_clock_set_seconds(GTK_CLOCK(clock),0);
+/* If I start the clock, and then close the window, it will sigsegv.
+   FIXME
+   gtk_clock_start(GTK_CLOCK(clock));
+*/
+	gtk_widget_show(clock);
+	gtk_widget_show(app);
+}
+
+/* Creates a color picker with the specified parameters */
+static void
+create_cp (GtkWidget *table, int dither, int use_alpha, int left, int right, int top, int bottom)
+{
+	GtkWidget *cp;
+
+	cp = gnome_color_picker_new ();
+	gnome_color_picker_set_dither (GNOME_COLOR_PICKER (cp), dither);
+	gnome_color_picker_set_use_alpha (GNOME_COLOR_PICKER (cp), use_alpha);
+	gnome_color_picker_set_d (GNOME_COLOR_PICKER (cp), 1.0, 0.0, 1.0, 0.5);
+
+	gtk_table_attach (GTK_TABLE (table), cp,
+			  left, right, top, bottom,
+			  0, 0, 0, 0);
+	gtk_widget_show (cp);
+}
+
+static void
+create_color_picker (void)
+{
+	GtkWidget *app;
+	GtkWidget *table;
+	GtkWidget *w;
+
+	app = create_newwin (TRUE, "testGNOME", "Color Picker");
+
+	table = gtk_table_new (3, 3, FALSE);
+	gtk_container_border_width (GTK_CONTAINER (table), GNOME_PAD_SMALL);
+	gtk_table_set_row_spacings (GTK_TABLE (table), GNOME_PAD_SMALL);
+	gtk_table_set_col_spacings (GTK_TABLE (table), GNOME_PAD_SMALL);
+	gnome_app_set_contents (GNOME_APP (app), table);
+	gtk_widget_show (table);
+
+	/* Labels */
+
+	w = gtk_label_new ("Dither");
+	gtk_table_attach (GTK_TABLE (table), w,
+			  1, 2, 0, 1,
+			  GTK_FILL,
+			  GTK_FILL,
+			  0, 0);
+	gtk_widget_show (w);
+
+	w = gtk_label_new ("No dither");
+	gtk_table_attach (GTK_TABLE (table), w,
+			  2, 3, 0, 1,
+			  GTK_FILL,
+			  GTK_FILL,
+			  0, 0);
+	gtk_widget_show (w);
+
+	w = gtk_label_new ("No alpha");
+	gtk_table_attach (GTK_TABLE (table), w,
+			  0, 1, 1, 2,
+			  GTK_FILL,
+			  GTK_FILL,
+			  0, 0);
+	gtk_widget_show (w);
+
+	w = gtk_label_new ("Alpha");
+	gtk_table_attach (GTK_TABLE (table), w,
+			  0, 1, 2, 3,
+			  GTK_FILL,
+			  GTK_FILL,
+			  0, 0);
+	gtk_widget_show (w);
+
+	/* Color pickers */
+
+	create_cp (table, TRUE,  FALSE, 1, 2, 1, 2);
+	create_cp (table, FALSE, FALSE, 2, 3, 1, 2);
+	create_cp (table, TRUE,  TRUE,  1, 2, 2, 3);
+	create_cp (table, FALSE, TRUE,  2, 3, 2, 3);
+
+	gtk_widget_show (app);
+}
+
+static void
+color_changed_cb( GnomeColorSelector *widget, gchar **color )
 {
         char *tmp;
         int r,g,b;
@@ -120,61 +263,8 @@ void color_changed_cb( GnomeColorSelector *widget, gchar **color )
         *color = tmp;
 }
 
-GtkWidget *create_newwin(gboolean normal, gchar *appname, gchar *title)
-{
-	GtkWidget *app;
-
-	app = gnome_app_new (appname,title);
-	if (!normal)
-        {
-                gtk_signal_connect(GTK_OBJECT(app), "delete_event",
-				   GTK_SIGNAL_FUNC(quit_test), NULL);
-        };
-
-	gnome_app_create_menus_with_data (GNOME_APP(app), main_menu, app);
-	gtk_menu_item_right_justify(GTK_MENU_ITEM(main_menu[1].widget));
-	return GTK_WIDGET(app);
-}
-
-void create_calendar()
-{
-	GtkWidget *app;
-	GtkWidget *cal;
-	app=create_newwin(TRUE,"testGNOME","calendar");
-	cal=gtk_calendar_new();
-	gnome_app_set_contents(GNOME_APP(app),cal);
-	gtk_widget_show(cal);
-	gtk_widget_show(app);
-}
-
-void create_calc()
-{
-	GtkWidget *app,*calc;
-	app = create_newwin(TRUE,"testGNOME","Calculator");
-	calc = gnome_calculator_new();
-	gnome_app_set_contents(GNOME_APP(app),calc);
-	gtk_widget_show(calc);
-	gtk_widget_show(app);
-}
-
-void create_clock()
-{
-	GtkWidget *app;
-	GtkWidget *clock;
-
-	app=create_newwin(TRUE,"testGNOME","Clock");
-	clock=gtk_clock_new(0);
-	gnome_app_set_contents(GNOME_APP(app),clock);
-	gtk_clock_set_seconds(GTK_CLOCK(clock),0);
-/* If I start the clock, and then close the window, it will sigsegv.
-   FIXME
-   gtk_clock_start(GTK_CLOCK(clock));
-*/
-	gtk_widget_show(clock);
-	gtk_widget_show(app);
-}
-
-void create_colorsel(GtkWidget *widget, gpointer data)
+static void
+create_colorsel(void)
 {
 	GnomeColorSelector *colorsel;
 	GtkWidget *colbutton;
@@ -200,25 +290,29 @@ enum {
   editable_enters
 };
 
-void toggle_boolean(GtkWidget * toggle, gboolean * setme)
+static void
+toggle_boolean(GtkWidget * toggle, gboolean * setme)
 {
   gboolean current = *setme;
   *setme = !current;
 }
 
-void block_until_clicked(GtkWidget *widget, GtkWidget *dialog)
+static void
+block_until_clicked(GtkWidget *widget, GtkWidget *dialog)
 {
   gint button;
   button = gnome_dialog_run(GNOME_DIALOG(dialog));
   g_print("Modal run ended, button %d clicked\n", button);
 }
 
-void set_to_null(GtkWidget * ignore, GnomeDialog ** d)
+static void
+set_to_null(GtkWidget * ignore, GnomeDialog ** d)
 {
   *d = NULL;
 }
 
-void create_test_dialog (GtkWidget * ignored, gboolean * settings)
+static void
+create_test_dialog (GtkWidget * ignored, gboolean * settings)
 {
   static GnomeDialog * dialog = NULL;
   GtkWidget * entry;
@@ -270,7 +364,8 @@ void create_test_dialog (GtkWidget * ignored, gboolean * settings)
   gtk_widget_show_all(GTK_WIDGET(dialog));
 }
 
-void create_dialog()
+static void
+create_dialog(void)
 {
   GtkWidget * app;
   GtkWidget * vbox;
@@ -321,7 +416,8 @@ void create_dialog()
   gtk_widget_show_all(app);
 }
 
-void create_file_entry()
+static void
+create_file_entry(void)
 {
 	GtkWidget *app;
 	GtkWidget *entry;
@@ -333,7 +429,8 @@ void create_file_entry()
 	gtk_widget_show(app);
 }
 
-void create_number_entry()
+static void
+create_number_entry(void)
 {
 	GtkWidget *app;
 	GtkWidget *entry;
@@ -344,7 +441,9 @@ void create_number_entry()
 	gtk_widget_show(entry);
 	gtk_widget_show(app);
 }
-void create_font_sel()
+
+static void
+create_font_sel(void)
 {
 	GtkWidget *fontsel;
 
@@ -352,25 +451,26 @@ void create_font_sel()
 	gtk_widget_show(fontsel);
 }
 
-void create_icon_list()
+static void
+create_icon_list(void)
 {
-GtkWidget *app;
-GtkWidget *iconlist;
-GdkImlibImage *pix;
-app = create_newwin(TRUE,"testGNOME","Icon List");
+	GtkWidget *app;
+	GtkWidget *iconlist;
+	GdkImlibImage *pix;
+	app = create_newwin(TRUE,"testGNOME","Icon List");
 
-iconlist = gnome_icon_list_new();
+	iconlist = gnome_icon_list_new();
 
-pix = gdk_imlib_create_image_from_xpm_data((gchar **)bomb_xpm);
-gdk_imlib_render (pix, pix->rgb_width, pix->rgb_height);
+	pix = gdk_imlib_create_image_from_xpm_data((gchar **)bomb_xpm);
+	gdk_imlib_render (pix, pix->rgb_width, pix->rgb_height);
 
-gnome_icon_list_append_imlib(GNOME_ICON_LIST(iconlist), pix, "Foo");
-gnome_icon_list_append_imlib(GNOME_ICON_LIST(iconlist), pix, "Bar");
-gnome_icon_list_append_imlib(GNOME_ICON_LIST(iconlist), pix, "LaLa");
+	gnome_icon_list_append_imlib(GNOME_ICON_LIST(iconlist), pix, "Foo");
+	gnome_icon_list_append_imlib(GNOME_ICON_LIST(iconlist), pix, "Bar");
+	gnome_icon_list_append_imlib(GNOME_ICON_LIST(iconlist), pix, "LaLa");
 
-gnome_app_set_contents(GNOME_APP(app),iconlist);
-gtk_widget_show(iconlist);
-gtk_widget_show(app);
+	gnome_app_set_contents(GNOME_APP(app),iconlist);
+	gtk_widget_show(iconlist);
+	gtk_widget_show(app);
 }
 
 
@@ -421,7 +521,8 @@ create_lamp(void)
 	gtk_widget_show(app);
 }
 
-void create_less()
+static void
+create_less(void)
 {
 	GtkWidget *app;
 	GtkWidget *less;
@@ -435,7 +536,8 @@ void create_less()
 	gnome_less_show_command(GNOME_LESS(less),"fortune");
 }
 
-void create_pixmap()
+static void
+create_pixmap(void)
 {
 	GtkWidget *app;
 	GdkImlibImage *pix;
@@ -450,9 +552,9 @@ void create_pixmap()
 	gtk_widget_show(app);
 }
 
-void create_property_box()
+static void
+create_property_box(void)
 {
-
 /* this is broken, I dunno why. FIXME 
    GtkWidget *vbox;
    GtkWidget *label;
@@ -475,7 +577,7 @@ void create_property_box()
 
 /* gnome-app-util */
 
-void
+static void
 make_entry_hbox(GtkBox * box,
 		gchar * buttontext, gchar * entrydefault, 
 		GtkSignalFunc callback, gpointer entrydata)
@@ -497,7 +599,7 @@ make_entry_hbox(GtkBox * box,
   gtk_box_pack_start(box, hbox, TRUE, TRUE, GNOME_PAD);
 }
 
-void
+static void
 make_button_hbox(GtkBox * box, gchar * buttontext,
 		 GtkSignalFunc callback, gpointer data)
 {
@@ -514,35 +616,35 @@ make_button_hbox(GtkBox * box, gchar * buttontext,
   gtk_box_pack_start(box, hbox, TRUE, TRUE, GNOME_PAD);
 }
 
-void
+static void
 message_cb(GtkWidget * button, GtkEntry * e)
 {
   GnomeApp * app = gtk_object_get_user_data(GTK_OBJECT(e));
   gnome_app_message(app, gtk_entry_get_text(e));
 }
 
-void 
+static void 
 flash_cb(GtkWidget * b, GtkEntry * e)
 {
   GnomeApp * app = gtk_object_get_user_data(GTK_OBJECT(e));
   gnome_app_flash(app, gtk_entry_get_text(e));
 }
 
-void 
+static void 
 error_cb(GtkWidget * b, GtkEntry * e)
 {
   GnomeApp * app = gtk_object_get_user_data(GTK_OBJECT(e));
   gnome_app_error(app, gtk_entry_get_text(e));
 }
 
-void 
+static void 
 warning_cb(GtkWidget * b, GtkEntry * e)
 {
   GnomeApp * app = gtk_object_get_user_data(GTK_OBJECT(e));
   gnome_app_warning(app, gtk_entry_get_text(e));
 }
 
-void
+static void
 reply_cb(gint reply, gpointer thedata)
 {
   gchar * data = (gchar *)thedata;
@@ -569,7 +671,7 @@ reply_cb(gint reply, gpointer thedata)
 
 static gchar * data_string = "A test data string";
 
-void
+static void
 question_cb(GtkWidget * b, GtkEntry * e)
 {
   GnomeApp * app = gtk_object_get_user_data(GTK_OBJECT(e));
@@ -577,7 +679,7 @@ question_cb(GtkWidget * b, GtkEntry * e)
 		     reply_cb, data_string);
 }
 
-void
+static void
 question_modal_cb(GtkWidget * b, GtkEntry * e)
 {
   GnomeApp * app = gtk_object_get_user_data(GTK_OBJECT(e));
@@ -585,7 +687,7 @@ question_modal_cb(GtkWidget * b, GtkEntry * e)
 			   reply_cb, data_string);
 }
  
-void
+static void
 ok_cancel_cb(GtkWidget * b, GtkEntry * e)
 {
   GnomeApp * app = gtk_object_get_user_data(GTK_OBJECT(e));
@@ -593,7 +695,7 @@ ok_cancel_cb(GtkWidget * b, GtkEntry * e)
 		      reply_cb, data_string);
 }
 
-void
+static void
 ok_cancel_modal_cb(GtkWidget * b, GtkEntry * e)
 {
   GnomeApp * app = gtk_object_get_user_data(GTK_OBJECT(e));
@@ -614,7 +716,7 @@ string_cb(gchar * string, gpointer data)
   g_free(s);
 }
 
-void
+static void
 request_string_cb(GtkWidget * b, GtkEntry * e)
 {
   GnomeApp * app = gtk_object_get_user_data(GTK_OBJECT(e));
@@ -622,7 +724,7 @@ request_string_cb(GtkWidget * b, GtkEntry * e)
 			   string_cb, data_string);
 }
 
-gdouble 
+static gdouble 
 percent_cb(gpointer ignore) 
 {
   static gdouble progress = 0.0;
@@ -631,19 +733,19 @@ percent_cb(gpointer ignore)
   return progress;
 }
 
-void
+static void
 cancel_cb(gpointer ignore)
 {
   gnome_ok_dialog("Progress cancelled!");
 }
 
-void 
+static void 
 stop_progress_cb(GnomeDialog * d, gint button, GnomeAppProgressKey key)
 {
   gnome_app_progress_done(key);
 }
 
-void
+static void
 progress_timeout_cb(GtkWidget * b, GnomeApp * app)
 {
   GtkWidget * dialog;
@@ -666,7 +768,7 @@ progress_timeout_cb(GtkWidget * b, GnomeApp * app)
   gtk_widget_show(dialog);
 }
 
-void
+static void
 bar_push_cb(GtkWidget * b, GtkEntry * e)
 {
   GnomeApp * app = gtk_object_get_user_data(GTK_OBJECT(e));
@@ -674,7 +776,7 @@ bar_push_cb(GtkWidget * b, GtkEntry * e)
 		    gtk_entry_get_text(e));
 }
 
-void
+static void
 bar_set_status_cb(GtkWidget * b, GtkEntry * e)
 {
   GnomeApp * app = gtk_object_get_user_data(GTK_OBJECT(e));
@@ -682,7 +784,7 @@ bar_set_status_cb(GtkWidget * b, GtkEntry * e)
 			  gtk_entry_get_text(e));
 }
 
-void
+static void
 bar_set_default_cb(GtkWidget * b, GtkEntry * e)
 {
   GnomeApp * app = gtk_object_get_user_data(GTK_OBJECT(e));
@@ -690,7 +792,7 @@ bar_set_default_cb(GtkWidget * b, GtkEntry * e)
 			   gtk_entry_get_text(e));
 }
 
-void
+static void
 bar_set_prompt_cb(GtkWidget * b, GtkEntry * e)
 {
   GnomeApp * app = gtk_object_get_user_data(GTK_OBJECT(e));
@@ -698,7 +800,7 @@ bar_set_prompt_cb(GtkWidget * b, GtkEntry * e)
 			  gtk_entry_get_text(e), FALSE);
 }
 
-void
+static void
 bar_set_prompt_modal_cb(GtkWidget * b, GtkEntry * e)
 {
   GnomeApp * app = gtk_object_get_user_data(GTK_OBJECT(e));
@@ -706,31 +808,31 @@ bar_set_prompt_modal_cb(GtkWidget * b, GtkEntry * e)
 			  gtk_entry_get_text(e), TRUE);
 }
 
-void
+static void
 bar_pop_cb(GtkWidget * b, GnomeApp * app)
 {
   gnome_appbar_pop(GNOME_APPBAR(app->statusbar));
 }
 
-void
+static void
 bar_clear_stack_cb(GtkWidget * b, GnomeApp * app)
 {
   gnome_appbar_clear_stack(GNOME_APPBAR(app->statusbar));
 }
 
-void
+static void
 bar_refresh_cb(GtkWidget * b, GnomeApp * app)
 {
   gnome_appbar_refresh(GNOME_APPBAR(app->statusbar));
 }
 
-void
+static void
 bar_clear_prompt_cb(GtkWidget * b, GnomeApp * app)
 {
   gnome_appbar_clear_prompt(GNOME_APPBAR(app->statusbar));
 }
 
-void
+static void
 bar_progress_cb(GtkWidget * b, GtkSpinButton * sb)
 {
   GnomeApp * app = gtk_object_get_user_data(GTK_OBJECT(sb));
@@ -739,68 +841,68 @@ bar_progress_cb(GtkWidget * b, GtkSpinButton * sb)
   gnome_appbar_set_progress(GNOME_APPBAR(app->statusbar), value);
 }
 
-void
+static void
 dialog_ok_cb(GtkWidget * b, GtkEntry * e)
 {
   gnome_ok_dialog (gtk_entry_get_text(e));
 }
 
-void
+static void
 dialog_error_cb(GtkWidget * b, GtkEntry * e)
 {
   gnome_error_dialog (gtk_entry_get_text(e));
 }
 
-void
+static void
 dialog_warning_cb(GtkWidget * b, GtkEntry * e)
 {
   gnome_warning_dialog (gtk_entry_get_text(e));
 }
 
-void
+static void
 dialog_question_cb(GtkWidget * b, GtkEntry * e)
 {
   gnome_question_dialog (gtk_entry_get_text(e),
 			 reply_cb, data_string);
 }
 
-
-void
+static void
 dialog_question_modal_cb(GtkWidget * b, GtkEntry * e)
 {
   gnome_question_dialog_modal (gtk_entry_get_text(e),
 			       reply_cb, data_string);
 }
 
-void
+static void
 dialog_ok_cancel_cb(GtkWidget * b, GtkEntry * e)
 {
   gnome_ok_cancel_dialog (gtk_entry_get_text(e),
 			  reply_cb, data_string);
 }
 
-void
+static void
 dialog_ok_cancel_modal_cb(GtkWidget * b, GtkEntry * e)
 {
   gnome_ok_cancel_dialog_modal (gtk_entry_get_text(e),
 				reply_cb, data_string);
 }
 
-void
+static void
 dialog_request_string_cb(GtkWidget * b, GtkEntry * e)
 {
   gnome_request_string_dialog (gtk_entry_get_text(e),
 			       string_cb, data_string);
 }
 
-void
+static void
 dialog_request_password_cb(GtkWidget * b, GtkEntry * e)
 {
   gnome_request_password_dialog (gtk_entry_get_text(e),
 				 string_cb, data_string);
 }
 
-void create_app_util()
+static void
+create_app_util(void)
 {
   GnomeApp * app;
   GnomeAppBar * bar;
@@ -918,7 +1020,8 @@ void create_app_util()
   gtk_widget_show_all(GTK_WIDGET(app));
 }
 
-int main (int argc, char *argv[])
+int
+main (int argc, char *argv[])
 {
 	struct {
 		char *label;
@@ -932,6 +1035,7 @@ int main (int argc, char *argv[])
 		  { "canvas", create_canvas },
 #endif
 		  { "clock",	create_clock },
+		  { "color picker", create_color_picker },
 		  { "color-sel", create_colorsel },
 		  { "date edit", create_date_edit },
 		  { "dialog", create_dialog },
@@ -992,5 +1096,3 @@ int main (int argc, char *argv[])
 	gtk_main();
 	return 0;
 }
-
-
