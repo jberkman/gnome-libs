@@ -36,7 +36,7 @@ clean-local:
 maintainer-clean-local: clean
 	rm -rf sgml html $(DOC_MODULE)-decl-list.txt $(DOC_MODULE)-decl.txt 
 
-install-data-local:
+install-data-local: html
 	install -d -m 0755 $(TARGET_DIR)
 	install -m 0644 html/*.html $(TARGET_DIR)
 	install -m 0644 html/index.sgml $(TARGET_DIR)
