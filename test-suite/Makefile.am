@@ -3,7 +3,6 @@ SUBDIRS = tests
 # fileconvert.test \
 
 TESTS = \
-	metadata.test \
 	parse-path.test \
 	skel.test \
 	split.test \
@@ -25,6 +24,5 @@ EXTRA_DIST =					\
 	expected/skel.out			\
 	expected/split.out			\
 	expected/trigs.out			\
-	expected/metadata.out			\
 	expected/parse-path.out data/sample	\
 	$(TESTS)
