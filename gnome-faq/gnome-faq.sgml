@@ -13,8 +13,8 @@
 <!entity wwwgnomelist  "http://www.gnome.org/mailing-lists/index.shtml">
 <!entity wwwgnome10    "http://www.gnome.org/gnome-1.0">
 <!entity wwwgnomestart "http://www.gnome.org/start/getting.shtml">
-<!entity wwwgnomerh    "http://www.gnome.org/start/getting_rh.shtml">
-<!entity wwwgnomedeb   "http://www.gnome.org/start/getting_debian.shtml">
+<!entity wwwgnomerh    "http://www.gnome.org/start/getting.shtml">
+<!entity wwwgnomedeb   "http://www.gnome.org/start/getting.shtml">
 <!entity wwwgnomecvs   "http://cvs.gnome.org">
 <!entity wwwgnomewicvs "http://www.gnome.org/devel/whatiscvs.shtml">
 <!entity wwwsorencvs   "http://www.cinternet.net/~soren/gnome/cvs.shtml">
@@ -66,14 +66,14 @@
 <!entity ftpdocware    "ftp://ftp.cygnus.com/pub/home/rosalia/docware">
 <!entity dcomcorba     "http://www.research.att.com/~ymwang/papers/HTML/DCOMnCORBA/S.html">
 <!entity schmidtcorba  "http://siesta.cs.wustl.edu/~schmidt/corba.html">
-<!entity gnomeorder    "<member>glib</member><member>gtk+</member><member>imlib</member><member>orbit</member><member>gtk-doc</member><member>libgtop</member><member>gtk-engines</member><member>gnome-libs</member><member>gnome-core</member><member>control-center</member><member>gnome-print</member><member>mc</member><member>gnome-guile</member><member>gnome-python</member><member>gnome-objc</member><member>gtk--</member><member>anything else, as needed, in whatever order</member>">
+<!entity gnomeorder    "<member>audiofile</member><member>esound</member><member>glib</member><member>libxml</member><member>ORBit</member><member>GTK+</member><member>imlib</member><member>gnome-libs</member><member>libgtop</member><member>libghttp</member><member>gnome-core</member><member>mc (gmc, mc, mcserv)</member><member>control-center (gnomecc)</member><member>libglade</member><member>gnome-print</member><member>And then anything else</member>">
 ]>
 
 <book id="Index">
   <bookinfo>
     <title>GNOME Frequently Asked Questions</title>
     <titleabbrev>GNOME-FAQ</titleabbrev>
-    <edition>v1.0.6a</edition>
+    <edition>v1.0.7</edition>
     <authorgroup>
       <author>
 	<firstname>Todd</firstname>
@@ -643,16 +643,6 @@
 	<member>Berkeley DB (1.85 or higher)</member>
       </simplelist>
 
-      <para>In addition, there are a few libraries that, while not
-      technically a part of GNOME, are often distributed with it. Make
-      sure you have:</para>
-      <simplelist>
-	<member>glib (1.2 or higher)</member>
-	<member>gtk+ (1.2 or higher)</member>
-	<member>ORBit (0.4.0 or higher)</member>
-	<member>Imlib (1.9.3 or higher)</member>
-      </simplelist>
-
       <para>Some of the bells and whistles require a GNOME-compliant
       window manager to work.  Currently these are Enlightenment,
       IceWM, Sawmill, and Window Maker.  In addition both FVWM and SCWM are
@@ -660,14 +650,61 @@
       does not include a window manager, and will work well with any
       window manager, these just give you a few extras.</para>
 
-      <para>Lastly, there are some libraries that are needed by a few,
+      <para>The GNOME libraries require some packages, which are:</para>
+      <simplelist>
+        <member>audiofile - Audio file format library</member>
+	<member>esound - Sound server</member>
+	<member>glib - Utility routines</member>
+	<member>libxml - XML library</member>
+	<member>ORBit - CORBA implementation</member>
+	<member>GTK+ - Widget set</member>
+	<member>imlib - Image loading and manipulation library</member>
+      </simplelist>
+
+      <para>The main GNOME modules require:</para>
+      <simplelist>
+        <member>gnome-libs - The main GNOME libraries</member>
+	<member>libgtop - Portable system status access library</member>
+	<member>libghttp - HTTP access library</member>
+      </simplelist>
+
+      <para>And now we have reached the main GNOME modules. You'll 
+      probably want these:</para>
+      <simplelist>
+        <member>gnome-core - Panel, help browser, session manager</member>
+	<member>mc (gmc, mc, mcserv) - File manager, desktop icons</member>
+	<member>control-center (gnomecc) - Graphical configuration for user 
+	settings</member>
+      </simplelist>
+
+      <para>There are also some packages that are needed by a few,
       non-critical programs within GNOME.  If you are running short on
       space or time, you can safely skip these.  If you want all the
       bells and whistles to work, you will want these:</para>
       <simplelist>
-	<member>libgtop (0.99 or higher)</member>
-	<member>esound (0.2.8 or higher)</member>
-	<member>gtk-engines</member>
+         <member>libglade - needed for some apps</member>
+	 <member>gnome-print - needed for some apps</member>
+         <member>ee - Image viewer</member>
+	 <member>gtop - CPU & memory usage monitoring</member>
+	 <member>gnome-media - CD player, volume control, etc</member>
+	 <member>gnome-pim - Calendar, address book</member>
+	 <member>gnome-utils - Hex editor, system info, file finder</member>
+	 <member>gtk-engines - GTK+ themes</member>
+	 <member>xchat - IRC client</member>
+	 <member>gnumeric - Spreadsheet</member>
+	 <member>gnome-audio - Sound files</member>
+	 <member>gnome-games - assorted games</member>
+	 <member>users-guide - GNOME User's Guide</member>
+      </simplelist>
+
+      <para>Lastly, there are several packages of development tools. Note 
+      that these are different from -devel RPMs, which you DO need if you 
+      plan on compiling GNOME applications at all. If you plan on doing 
+      development with these tools/libraries, download them:</para>
+      <simplelist>
+         <member>glade - A GUI builder</member>
+	 <member>gnome-python - Python language bindings for GNOME</member>
+	 <member>Gtk-- - C++ language bindings for GNOME</member>
       </simplelist>
     </sect1>
 
@@ -752,7 +789,7 @@
       <para>Periodically, RedHat Labs produces RPMs of the GNOME
       releases for RedHat Linux, and they get put on the website. The
       latest version is currently in <ulink
-      url="&ftpgnome;/pub/GNOME/gnome-1.0/redhat">
+      url="&ftpgnome;/pub/GNOME/gnome-1.0.53/redhat">
       gnome-1.0/redhat</ulink>.  They are built for alpha, sparc and
       i386 platforms.  Make sure you get the RPMs from the noarch
       directory as well, whichever platform you are on. Step-by-step
@@ -761,7 +798,7 @@
 
       <para>These RPMs should also work fine for Mandrake Linux, and
       the MacMillian and CheapBytes RedHat distributions as well.
-      These RPMs are likely to have problems with Caldera, S.u.S.E.,
+      These RPMs are likely to have problems with Caldera, SuSE,
       and other RPM-based distributions; read below for more help for
       these systems.</para>
 
