@@ -1,3 +1,4 @@
+http://developer.apple.com/techpubs/mac/HIGuidelines/HIGuidelines-84.html#HEADING84-0
 
 Suggestions for enhancing the user experience in your application:
 
@@ -6,13 +7,14 @@ Menus:
 
    - The order of the toplevel menus should be: 
 
-	  File, <any mdi child menus>, Edit, View, CUSTOM MENUS,
+	  File, <any mdi child menus>, Edit, View, Game, CUSTOM MENUS,
 	  Settings, Windows, Help
 
      The Help menu should not be right-justified.
 
      CUSTOM MENUS is where you should put your application-specific
-     top-level menus, such as gnumeric's "Insert" menu.
+     top-level menus, such as gnumeric's "Insert" menu.  These are all
+     optional except File and Help.
 
    - The prescribed order of standard menu items in the "File" menu is
      the following:
@@ -99,8 +101,9 @@ Menus:
      all of your menu items, including submenus.  See balsa and
      gnumeric for examples.
 
-   - In general, if your menu item pops up a dialog, it should end
-     with "...".  For example, "Print setup..." but "Print".
+   - In general, if your menu item pops up a dialog which will request
+   the user for information, it should end with "...".  For example,
+   "Print setup..." but "Print".
 
    - Your menu hints should not have a trailing period.  They should be
      phrased like commands, e.g. "Open a new file".  Do NOT phrase them
@@ -116,10 +119,10 @@ Menus:
      menu which contains the game-related menu items.  The contents of
      the Game menu are as follows:
 
-	 New Game, Restart Game, SEPARATOR, Undo Move, Hint,
-	 SEPARATOR, Scores, Quit game
+	 New Game, Pause Game, Restart Game, SEPARATOR, Undo Move,
+	 Redo Move, Hint, SEPARATOR, Scores, End game
 
-     Quit game should just end the current game -- it shouldn't close
+     End game should just end the current game -- it shouldn't close
      the application.  That's the job of File/Exit.
  
 Dialogs 
