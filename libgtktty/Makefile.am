@@ -1,11 +1,7 @@
 
 LINK     = $(LIBTOOL) --mode=link $(CC) $(CFLAGS) $(LDFLAGS) $(X_LIBS) -o $@
 
-INCLUDES = 			\
-	-I../.. 		\
-	-I$(srcdir)/../.. 	\
-	-I$(includedir)		\
-	$(X_CFLAGS)
+INCLUDE_always = -I$(includedir) $(X_CFLAGS)
 
 bin_PROGRAMS = gemvt
 
@@ -16,17 +12,19 @@ bin_PROGRAMS = gemvt
 	
 if	BUILD_LIBGEMVT
 
+INCLUDES = -I../.. -I$(srcdir)/../.. $(INCLUDE_always)
+gemvt_SOURCES = main.c
+gemvt_LDADD = $(top_builddir)/libgemvt.la -lgnomeui -lgnome
+
 lib_LTLIBRARIES = libgemvt.la
 libgemvtincludedir = $(includedir)/gemvt
 libgemvtinclude_HEADERS = libgemvt.h $(libgemvt_h_files)
 libgemvt_la_SOURCES = libgemvt.c $(libgemvt_c_files)
 libgemvt_la_LDFLAGS = -version-info $(LIBGEMVT_MAJOR):$(LIBGEMVT_REVISION):$(LIBGEMVT_AGE)
 
-gemvt_SOURCES = main.c
-gemvt_LDADD = $(top_builddir)/libgemvt.la -lgnomeui -lgnome
-
 else	# not BUILD_LIBGEMVT
 
+INCLUDES = $(INCLUDE_always)
 gemvt_SOURCES = $(libgemvt_h_files) $(libgemvt_c_files) main.c
 gemvt_LDADD =
 
@@ -51,6 +49,8 @@ EXTRA_DIST = \
 	gtkterm_internal.c \
 	gtkvt102.c \
 	gtkttyos.c \
+	libgemvt.h \
+	libgemvt.c \
 	gemvt.xpm \
 	gem-r.xpm \
 	gem-g.xpm \

@@ -23,6 +23,7 @@
 #define __LIBGEMVT_H__
 
 
+#include "gtk/gtk.h"
 
 #ifndef __LIBGEMVT_OMIT_INCLUDES__
 #define	__LIBGEMVT_OMIT_INCLUDES__
