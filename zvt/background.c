@@ -309,11 +309,13 @@ zvt_term_background_new(ZvtTerm *t)
 void
 zvt_term_background_unref(struct zvt_background *b)
 {
-  if (b->refcount==1) {
-    zvt_term_background_set_pixmap(b, 0);
-    g_free(b);
-  } else {
-    b->refcount--;
+  if (b) {
+    if (b->refcount==1) {
+      zvt_term_background_set_pixmap(b, 0);
+      g_free(b);
+    } else {
+      b->refcount--;
+    }
   }
 }
 
@@ -326,7 +328,8 @@ zvt_term_background_unref(struct zvt_background *b)
 void
 zvt_term_background_ref(struct zvt_background *b)
 {
-  b->refcount++;
+  if (b)
+    b->refcount++;
 }
 
 /**

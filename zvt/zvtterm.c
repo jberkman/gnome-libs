@@ -2798,8 +2798,7 @@ zvt_term_set_background (ZvtTerm *terminal, char *pixmap_file,
   /* load it, if we can ... */
   if (GTK_WIDGET_REALIZED (terminal)) {
     zvt_term_background_load(terminal, b);
-    if (b)
-      zvt_term_background_unref(b);
+    zvt_term_background_unref(b);
   } else {
     zvt_term_background_ref(b);
     zp->background_queue = b;

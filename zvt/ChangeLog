@@ -2,6 +2,9 @@
 
 	* background.c (zvt_term_background_load): Always unload the
 	background first.
+	(zvt_term_background_ref): If the background is NULL, ignore this
+	call.
+	(zvt_term_background_unref): Similarly.
 
 	* zvtterm.c (zvt_term_set_background): If we are not realised,
 	then queue the background setting until we are.
