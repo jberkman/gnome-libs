@@ -25,7 +25,6 @@ msgstr "Hello GNOME\n"
 msgid "The Hello World Gnomified"
 msgstr "Hello World Gnomifisert"
 
-#. copyright notice
 #: gnome-hello/gnome-hello-2-i18n.c:61
 #: gnome-hello/gnome-hello-3-parse-args.c:61
 msgid "(C) 1998 the Free Software Foundation"
@@ -164,7 +163,6 @@ msgid "<control>A"
 msgstr "<ctrl>A"
 
 #: gnome-hello/gnome-hello.c:208
-#, c-format
 msgid ""
 "%s: A gnomified 'Hello World' program\n"
 "\n"
@@ -183,7 +181,6 @@ msgstr ""
 "        --version  viser versjonsinformasjon og avslutter\n"
 
 #: gnome-hello/gnome-hello.c:217
-#, c-format
 msgid "Gnome Hello %s.\n"
 msgstr "Gnome Hello %s.\n"
 
@@ -212,7 +209,6 @@ msgid "Set config entry"
 msgstr "Sett konfigurasjonsoppføring"
 
 #: libgnome/gnome-popt.c:75
-#, c-format
 msgid ""
 "Error on option %s: %s.\n"
 "Run '%s --help' to see a full list of available command line options.\n"
@@ -547,12 +543,12 @@ msgstr "Lett"
 msgid "Advanced"
 msgstr "Avansert"
 
-#: libgnomeui/gnome-file-entry.c:141
+#: libgnomeui/gnome-file-entry.c:143
 msgid "Select file"
 msgstr "Velg fil"
 
 #. browse button ...
-#: libgnomeui/gnome-file-entry.c:219 libgnomeui/gnome-spell.c:607
+#: libgnomeui/gnome-file-entry.c:238 libgnomeui/gnome-spell.c:607
 #: libgnomeui/gnome-spell.c:624 libgnomeui/gnome-spell.c:641
 msgid "Browse..."
 msgstr "Se på..."
@@ -577,7 +573,7 @@ msgstr "Kan ikke finne en hboks, bruker vanlig filvalg"
 msgid "Preview"
 msgstr "Forhåndsvisning"
 
-#: libgnomeui/gnome-icon-sel.c:310
+#: libgnomeui/gnome-icon-sel.c:314
 msgid "Loading Icons..."
 msgstr "Laster ikoner..."
 
@@ -731,7 +727,6 @@ msgid "Select dictionary"
 msgstr "Velg ordbok"
 
 #: libgnomeui/gnome-spell.c:233
-#, c-format
 msgid ""
 "The word `%s'\n"
 "is not in the dictionary.\n"
@@ -928,7 +923,6 @@ msgstr ""
 # , c-format
 # , c-format
 #: libgnomeui/gnome_segv.c:79
-#, c-format
 msgid ""
 "Application \"%s\" has a bug.\n"
 "SIGSEGV received at PC %#lx in PID %d.\n"
@@ -1135,12 +1129,10 @@ msgstr ""
 "gnome_win_hints_*-funksjonene for feil. :)"
 
 #: libgnorba/gnome-name-server.c:175
-#, c-format
 msgid "Creating '/GNOME' context %s %d"
 msgstr "Oppretter '/GNOME' kontekst %s %d"
 
 #: libgnorba/gnome-name-server.c:192
-#, c-format
 msgid "Creating '/GNOME/Servers' context %s %d"
 msgstr "Oppretter 'GNOME/Servers' kontekst %s %d"
 
@@ -1201,7 +1193,6 @@ msgid "Could not get name service!"
 msgstr "Fikk ikke kontakt med navnetjenesten!"
 
 #: libvfs/extfs.c:274
-#, c-format
 msgid ""
 "Couldn't open %s archive\n"
 "%s"
@@ -1222,7 +1213,6 @@ msgid "Sorry, we can not do password authenticated connections for now."
 msgstr "Beklager, vi støtter ikke passordautentiserte forbindelser ennå."
 
 #: libvfs/ftpfs.c:461
-#, c-format
 msgid " Could not set source routing (%s)"
 msgstr " Kunne ikke slå på kilderuting (%s)"
 
@@ -1281,7 +1271,6 @@ msgid " Too many open connections "
 msgstr " For mange åpne forbindelser "
 
 #: libvfs/tar.c:83 libvfs/tar.c:100
-#, c-format
 msgid ""
 "Couldn't open tar archive\n"
 "%s"
@@ -1299,7 +1288,6 @@ msgstr "Ukonsistent tar-arkiv"
 
 #. Error on first record
 #: libvfs/tar.c:393
-#, c-format
 msgid ""
 "Hmm,...\n"
 "%s\n"
@@ -1320,28 +1308,25 @@ msgstr "Ukjent systemfeil"
 # , c-format
 # , c-format
 #: support/getopt.c:669
-#, c-format
 msgid "%s: option `%s' is ambiguous\n"
 msgstr "%s: flagget `%s' er flertydig\n"
 
 # , c-format
 # , c-format
+#. --option
 #: support/getopt.c:693
-#, c-format
 msgid "%s: option `--%s' doesn't allow an argument\n"
 msgstr "%s: flagget `--%s' tillater ikke argumenter\n"
 
 # , c-format
 # , c-format
 #: support/getopt.c:698
-#, c-format
 msgid "%s: option `%c%s' doesn't allow an argument\n"
 msgstr "%s: flagget `%c%s' tillater ikke argumenter\n"
 
 # , c-format
 # , c-format
 #: support/getopt.c:715 support/getopt.c:888
-#, c-format
 msgid "%s: option `%s' requires an argument\n"
 msgstr "%s: flagget `%s' krever et argument\n"
 
@@ -1349,15 +1334,12 @@ msgstr "%s: flagget `%s' krever et argument\n"
 # , c-format
 #. --option
 #: support/getopt.c:744
-#, c-format
 msgid "%s: unrecognized option `--%s'\n"
 msgstr "%s: ukjent flagg `--%s'\n"
 
 # , c-format
 # , c-format
-#. +option or -option
 #: support/getopt.c:748
-#, c-format
 msgid "%s: unrecognized option `%c%s'\n"
 msgstr "%s: ukjent flagg `%c%s'\n"
 
@@ -1365,14 +1347,12 @@ msgstr "%s: ukjent flagg `%c%s'\n"
 # , c-format
 #. 1003.2 specifies the format of this message.
 #: support/getopt.c:774
-#, c-format
 msgid "%s: illegal option -- %c\n"
 msgstr "%s: ulovlig flagg -- %c\n"
 
 # , c-format
 # , c-format
 #: support/getopt.c:777
-#, c-format
 msgid "%s: invalid option -- %c\n"
 msgstr "%s: ugyldig flagg -- %c\n"
 
@@ -1380,21 +1360,18 @@ msgstr "%s: ugyldig flagg -- %c\n"
 # , c-format
 #. 1003.2 specifies the format of this message.
 #: support/getopt.c:807 support/getopt.c:937
-#, c-format
 msgid "%s: option requires an argument -- %c\n"
 msgstr "%s: flagget krever et argument -- %c\n"
 
 # , c-format
 # , c-format
 #: support/getopt.c:854
-#, c-format
 msgid "%s: option `-W %s' is ambiguous\n"
 msgstr "%s: flagget `-W %s' er flertydig\n"
 
 # , c-format
 # , c-format
 #: support/getopt.c:872
-#, c-format
 msgid "%s: option `-W %s' doesn't allow an argument\n"
 msgstr "%s: flagget `-W %s' tillater ikke argumenter\n"
 
@@ -1448,4 +1425,3 @@ msgstr "Brukeren valgte Nei/Avbryt med data:\n"
 #: test-gnome/testgnome.c:935
 msgid "Weird number in reply callback"
 msgstr "Rart nummer i tilbakeringingssvaret"
-
