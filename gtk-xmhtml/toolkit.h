@@ -67,6 +67,22 @@ typedef XVisualInfo TVisualInfo;
 #define TMSBFirst GDK_MSB_FIRST
 #define XmAnyCallbackStruct gtk_xmhtml_callback_info
 
+/* These two functions can be removed when XmHTML is converted to use
+ * 16-bit color information.  The corresponding XCCGetPixels() and
+ * XCCGetPixelsIncremental() macros below should be changed to use the
+ * un-wrapped Gdk functions.
+ */
+
+extern void wrap_gdk_cc_get_pixels (int              incremental,
+				    GdkColorContext *cc,
+				    gushort         *reds,
+				    gushort         *greens,
+				    gushort         *blues,
+				    gint             ncolors,
+				    gint            *used,
+				    gulong          *colors,
+				    gint            *nallocated);
+
 #define CHECK_CALLBACK(w,f,g) (gtk_xmhtml_signal_get_handlers (w, gtk_xmhtml_signals [GTK_XMHTML_##g]))
 #define XtCallCallbackList(a,b,c) fprintf (stderr, "Warning callback being invoked\n");
 #define TPROTO(f,a,b,c,d) f (a, b)
@@ -146,15 +162,15 @@ typedef XVisualInfo TVisualInfo;
 #define XCCFree(c)         if ((c)) gdk_color_context_free ((c))
 #define XCCGetDepth(c)     (c)->visual->depth
 #define XCCGetParentVisual(w) gtk_widget_get_visual(w)
-#define XCCGetPixels(cc,r,g,b,n,co,a) gdk_color_context_get_pixels (cc,r,g,b,n,co,a)
-#define XCCGetPixelsIncremental(cc,r,g,b,n,u,co,na) \
-		do{gdk_color_context_get_pixels_incremental (cc,r,g,b,n,u,co,na);}while (0)
+#define XCCGetPixels(cc,r,g,b,n,co,a) wrap_gdk_cc_get_pixels (0,cc,r,g,b,n,0,co,a)
+#define XCCGetPixelsIncremental(cc,r,g,b,n,u,co,na) wrap_gdk_cc_get_pixels (1,cc,r,g,b,n,u,co,na)
 #define XCCAddPalette(c,p,n) gdk_color_context_add_palette (c,p,n)
 #define XCCInitDither(cc) gdk_color_context_init_dither (cc)
 #define XCCGetIndexFromPalette(cc,r,g,b,f) gdk_color_context_get_index_from_palette(cc,r,g,b,f)
 #define XCCFreeDither(cc) gdk_color_context_free_dither (cc)
 typedef GdkColorContextDither XCCDither;
-#else
+
+#else /* motif */
 
 #define TNone        None
 #define TPointer     XtPointer

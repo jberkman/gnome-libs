@@ -2161,3 +2161,44 @@ gtk_xmhtml_set_rgb_conv_mode (GtkXmHTML *html, int val)
 	html->html.rgb_conv_mode = val;
 }
 
+/* These two functions can be removed when XmHTML is converted to use
+ * 16-bit color information.  The corresponding XCCGetPixels() and
+ * XCCGetPixelsIncremental() macros in toolkit.h should be changed to
+ * use the un-wrapped Gdk functions.
+ */
+
+#define UPSCALE(c) (((c) << 8) | (c))
+
+void
+wrap_gdk_cc_get_pixels (int              incremental,
+			GdkColorContext *cc,
+			gushort         *reds,
+			gushort         *greens,
+			gushort         *blues,
+			gint             ncolors,
+			gint            *used,
+			gulong          *colors,
+			gint            *nallocated)
+{
+	gushort *wreds, *wgreens, *wblues;
+	int i;
+
+	wreds   = g_new (gushort, ncolors);
+        wgreens = g_new (gushort, ncolors);
+	wblues  = g_new (gushort, ncolors);
+
+	for (i = 0; i < ncolors; i++) {
+		wreds[i]   = UPSCALE (reds[i]);
+		wgreens[i] = UPSCALE (greens[i]);
+		wblues[i]  = UPSCALE (blues[i]);
+	}
+
+	if (incremental)
+		gdk_color_context_get_pixels_incremental (cc, wreds, wgreens, wblues, ncolors, used, colors, nallocated);
+	else
+		gdk_color_context_get_pixels (cc, wreds, wgreens, wblues, ncolors, colors, nallocated);
+
+	g_free (wreds);
+	g_free (wgreens);
+	g_free (wblues);
+}

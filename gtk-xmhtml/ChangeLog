@@ -1,3 +1,29 @@
+Thu Jan 29 12:17:07 1998  Federico Mena  <federico@bananoid.nuclecu.unam.mx>
+
+	* gtk-xmhtml.c (wrap_gdk_cc_get_pixels): Added wrapper function
+	for gdk_color_context_get_pixels{_incremental}().  This function
+	will first upscale the color information to 16 bits.  This
+	function can be removed as described next.
+
+	* XCC.c: I defined a USE_EIGHT_BIT_CHANNELS macro that makes the
+	GetPixel functions expect color data to be in [0, 255].  Two
+	macros, UPSCALE() and DOWNSCALE(), are used in those functions.
+	When XmHTML is modified to use 16-bit color information, these
+	macros and the #ifdef parts can be safely removed, as the
+	functions already operate with 16-bit colors internally.
+
+	* colors.c (XmHTMLAllocColor): Made this function use 16-bit
+ 	values for color matching.
+
+	* toolkit.h (XCCGetPixelsIncremental): Removed un-needed do{}while(0)
+
+	* XCC.c (XCCGetPixel): _red/_green/_blue parameters are now
+	expected to be in [0, 65535].  This is to be friendlier to the Gdk
+	port of the XCC.
+	(XCCGetPixels): Made it use 16-bit color values as well.  Fixed
+	mdist=1000000 buglet (it should start with at least 0x1000000).
+	(XCCGetPixelsIncremental): Same as for XCCGetPixels().
+
 1998-01-28  Raja R Harinath  <harinath@cs.umn.edu>
 
 	* gtk-xmhtml.h (WITH_GTK): #define only #ifndef.  Prevent GCC

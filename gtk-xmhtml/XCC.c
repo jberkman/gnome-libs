@@ -73,6 +73,33 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.3  1998/01/31 00:12:05  unammx
+* Thu Jan 29 12:17:07 1998  Federico Mena  <federico@bananoid.nuclecu.unam.mx>
+*
+* 	* gtk-xmhtml.c (wrap_gdk_cc_get_pixels): Added wrapper function
+* 	for gdk_color_context_get_pixels{_incremental}().  This function
+* 	will first upscale the color information to 16 bits.  This
+* 	function can be removed as described next.
+*
+* 	* XCC.c: I defined a USE_EIGHT_BIT_CHANNELS macro that makes the
+* 	GetPixel functions expect color data to be in [0, 255].  Two
+* 	macros, UPSCALE() and DOWNSCALE(), are used in those functions.
+* 	When XmHTML is modified to use 16-bit color information, these
+* 	macros and the #ifdef parts can be safely removed, as the
+* 	functions already operate with 16-bit colors internally.
+*
+* 	* colors.c (XmHTMLAllocColor): Made this function use 16-bit
+*  	values for color matching.
+*
+* 	* toolkit.h (XCCGetPixelsIncremental): Removed un-needed do{}while(0)
+*
+* 	* XCC.c (XCCGetPixel): _red/_green/_blue parameters are now
+* 	expected to be in [0, 65535].  This is to be friendlier to the Gdk
+* 	port of the XCC.
+* 	(XCCGetPixels): Made it use 16-bit color values as well.  Fixed
+* 	mdist=1000000 buglet (it should start with at least 0x1000000).
+* 	(XCCGetPixelsIncremental): Same as for XCCGetPixels().
+*
 * Revision 1.2  1998/01/07 01:45:34  unammx
 * Gtk/XmHTML is ready to be used by the Gnome hackers now!
 * Weeeeeee!
@@ -142,6 +169,17 @@ static char rcsId[]="$Header$";
 #include "XmHTMLP.h"
 #include "XmHTMLfuncs.h"
 #include "XCCP.h"
+
+/* FIXME: this should go away when XmHTML is switched to 16-bit color handling.
+ * If this is defined, the GetPixel functions will convert the data they receive
+ * into 16-bit colors for internal operation.  When XmHTML is switched to using
+ * 16-bit color values, all occurrences of #ifdef USE_EIGHT_BIT_CHANNELS and the
+ * UPSCALE() and DOWNSCALE() macros can be safely removed from this file.
+ */
+
+#define USE_EIGHT_BIT_CHANNELS
+#define UPSCALE(c) (((c) << 8) | (c))
+#define DOWNSCALE(c) ((c) >> 8)
 
 /*** External Function Prototype Declarations ***/
 
@@ -1201,18 +1239,21 @@ XCCGetPixel(XCC _xcc, unsigned short _red, unsigned short _green,
 {
 	*failed = False;
 
+#ifdef USE_EIGHT_BIT_CHANNELS
+	_red   = UPSCALE (_red);
+	_green = UPSCALE (_green);
+	_blue  = UPSCALE (_blue);
+#endif
+
 	switch(_xcc->mode)
 	{
 		case MODE_BW:
 		{
 			double value;
-			_red   <<= 8;
-			_green <<= 8;
-			_blue  <<= 8;
 
 			value = (double)_red/65535.0 * 0.3 + 
-					(double)_green/65535.0 * 0.59 + 
-					(double)_blue/65535.0 * 0.11;
+				(double)_green/65535.0 * 0.59 + 
+				(double)_blue/65535.0 * 0.11;
 			if (value > 0.5)
 				return _xcc->whitePixel;
 			return _xcc->blackPixel;
@@ -1220,9 +1261,7 @@ XCCGetPixel(XCC _xcc, unsigned short _red, unsigned short _green,
 		case MODE_MY_GRAY:
 		{
 			unsigned long ired, igreen, iblue;
-			_red   <<= 8;
-			_green <<= 8;
-			_blue  <<= 8;
+
 			_red = _red * 0.3 + _green * 0.59 + _blue * 0.1;
 			_green = 0;
 			_blue = 0;
@@ -1254,9 +1293,7 @@ XCCGetPixel(XCC _xcc, unsigned short _red, unsigned short _green,
 		case MODE_TRUE:
 		{
 			unsigned long ired, igreen, iblue;
-			_red   <<= 8;
-			_green <<= 8;
-			_blue  <<= 8;
+
 			if (_xcc->CLUT == NULL)
 			{
 				_red >>= 16 - _xcc->bits.red;
@@ -1284,9 +1321,6 @@ XCCGetPixel(XCC _xcc, unsigned short _red, unsigned short _green,
 		default:
 		{
 			unsigned long key, pixel = 0;
-			_red   <<= 8;
-			_green <<= 8;
-			_blue  <<= 8;
 
 			/* try hashtable */
 			key = hashpixel(_red,_green,_blue);
@@ -1396,6 +1430,12 @@ XCCGetPixels(XCC _xcc, unsigned short *reds, unsigned short *greens,
 			}
 			else
 				failed[nopen++] = i;
+#ifdef USE_EIGHT_BIT_CHANNELS
+			/* from here on, use 16-bit information */
+			defs[i].red   = UPSCALE (defs[i].red);
+			defs[i].green = UPSCALE (defs[i].green);
+			defs[i].blue  = UPSCALE (defs[i].blue);
+#endif
 		}
 	}
 	*nallocated = ncols;
@@ -1441,14 +1481,6 @@ XCCGetPixels(XCC _xcc, unsigned short *reds, unsigned short *greens,
 	/* read the colormap */
 	XQueryColors(_xcc->dpy, _xcc->colormap, cmap, cmapsize);
 
-	/* speedup: downscale here instead of in the matching code */
-	for(i = 0; i < cmapsize; i++)
-	{
-		cmap[i].red   >>= 8;
-		cmap[i].green >>= 8;
-		cmap[i].blue  >>= 8;
-	}
-
 	/* get a close match for any unallocated colors */
 	counter = nopen;
 	nopen = 0;
@@ -1460,16 +1492,30 @@ XCCGetPixels(XCC _xcc, unsigned short *reds, unsigned short *greens,
 
 		i = failed[idx];
 
-		mdist = 1000000;
+		/*****
+		* We will be doing a least-squares lookup for the closest 
+		* match.  We have 16-bit color values.  So, we can't just take 
+		* their differences and add the squares of those, because that 
+		* won't fit in a 32-bit integer.  So we take the differences, 
+		* divide them by a constant, add, and then compare.
+		*****/
+
+		mdist = 0x1000000;
 		close = -1;
 
 		/*****
 		* Store these vals. Small performance increase as this skips three
 		* indexing operations in the loop code.
 		*****/
+#ifdef USE_EIGHT_BIT_CHANNELS
+		ri = UPSCALE (reds[i]);
+		gi = UPSCALE (greens[i]);
+		bi = UPSCALE (blues[i]);
+#else
 		ri = reds[i];
 		gi = greens[i];
 		bi = blues[i];
+#endif
 
 		/***** 
 		* walk all colors in the colormap and see which one is the 
@@ -1477,9 +1523,11 @@ XCCGetPixels(XCC _xcc, unsigned short *reds, unsigned short *greens,
 		*****/
 		for(j = 0; j < cmapsize && mdist != 0; j++)
 		{
-			rd = ri - cmap[j].red;
-			gd = gi - cmap[j].green;
-			bd = bi - cmap[j].blue;
+			/* Don't replace these by shifts; the sign may get clobbered */
+
+			rd = (ri - cmap[j].red) / 256;
+			gd = (gi - cmap[j].green) / 256;
+			bd = (bi - cmap[j].blue) / 256;
 
 			if((d = (rd*rd) + (gd*gd) + (bd*bd)) < mdist)
 			{
@@ -1489,9 +1537,15 @@ XCCGetPixels(XCC _xcc, unsigned short *reds, unsigned short *greens,
 		}
 		if(close != -1)
 		{
+#ifdef USE_EIGHT_BIT_CHANNELS
+			rd = DOWNSCALE (cmap[close].red);
+			gd = DOWNSCALE (cmap[close].green);
+			bd = DOWNSCALE (cmap[close].blue);
+#else
 			rd = cmap[close].red;
 			gd = cmap[close].green;
 			bd = cmap[close].blue;
+#endif
 			/* allocate */
 			colors[i] = XCCGetPixel(_xcc, (unsigned short)rd,
 				(unsigned short)gd, (unsigned short)bd, &bad_alloc);
@@ -1540,22 +1594,31 @@ XCCGetPixels(XCC _xcc, unsigned short *reds, unsigned short *greens,
 
 		i = failed[idx];
 
-		mdist = 1000000;
+		mdist = 0x1000000;
 		close = -1;
 
 		/* store */
+#ifdef USE_EIGHT_BIT_CHANNELS
+		ri = UPSCALE (reds[i]);
+		gi = UPSCALE (greens[i]);
+		bi = UPSCALE (blues[i]);
+#else
 		ri = reds[i];
 		gi = greens[i];
 		bi = blues[i];
+#endif
 
 		/* search allocated colors */
 		for(j = 0; j < ncols && mdist != 0; j++)
 		{
 			k = allocated[j];
 
-			rd = ri - defs[k].red;
-			gd = gi - defs[k].green;
-			bd = bi - defs[k].blue;
+			/* Don't replace these by shifts; the sign may get clobbered */
+
+			rd = (ri - defs[k].red) / 256;
+			gd = (gi - defs[k].green) / 256;
+			bd = (bi - defs[k].blue) / 256;
+			
 			if((d = (rd*rd) + (gd*gd) + (bd*bd)) < mdist)
 			{
 				close = k;
@@ -1652,6 +1715,12 @@ XCCGetPixelsIncremental(XCC _xcc, unsigned short *reds, unsigned short *greens,
 				}
 				else
 					failed[nopen++] = i;
+#ifdef USE_EIGHT_BIT_CHANNELS
+				/* from here on, use 16-bit information */
+				defs[i].red   = UPSCALE (defs[i].red);
+				defs[i].green = UPSCALE (defs[i].green);
+				defs[i].blue  = UPSCALE (defs[i].blue);
+#endif
 			}
 #ifdef DEBUG
 			else
@@ -1687,14 +1756,8 @@ XCCGetPixelsIncremental(XCC _xcc, unsigned short *reds, unsigned short *greens,
 		cmap[i].pixel = (Pixel)i;
 		cmap[i].red = cmap[i].green = cmap[i].blue = 0;
 	}
-	/* read & downscale */
+	/* read */
 	XQueryColors(_xcc->dpy, _xcc->colormap, cmap, cmapsize);
-	for(i = 0; i < cmapsize; i++)
-	{
-		cmap[i].red   >>= 8;
-		cmap[i].green >>= 8;
-		cmap[i].blue  >>= 8;
-	}
 
 	/* now match any unallocated colors */
 	counter = nopen;
@@ -1707,19 +1770,27 @@ XCCGetPixelsIncremental(XCC _xcc, unsigned short *reds, unsigned short *greens,
 
 		i = failed[idx];
 
-		mdist = 1000000;
+		mdist = 0x1000000;
 		close = -1;
 
 		/* store */
+#ifdef USE_EIGHT_BIT_CHANNELS
+		ri = UPSCALE (reds[i]);
+		gi = UPSCALE (greens[i]);
+		bi = UPSCALE (blues[i]);
+#else
 		ri = reds[i];
 		gi = greens[i];
 		bi = blues[i];
+#endif
 
 		for(j = 0; j < cmapsize && mdist != 0; j++)
 		{
-			rd = ri - cmap[j].red;
-			gd = gi - cmap[j].green;
-			bd = bi - cmap[j].blue;
+			/* Don't replace these by shifts; the sign may get clobbered */
+
+			rd = (ri - cmap[j].red) / 256;
+			gd = (gi - cmap[j].green) / 256;
+			bd = (bi - cmap[j].blue) / 256;
 
 			if((d = (rd*rd) + (gd*gd) + (bd*bd)) < mdist)
 			{
@@ -1729,9 +1800,15 @@ XCCGetPixelsIncremental(XCC _xcc, unsigned short *reds, unsigned short *greens,
 		}
 		if(close != -1)
 		{
+#ifdef USE_EIGHT_BIT_CHANNELS
+			rd = DOWNSCALE (cmap[close].red);
+			gd = DOWNSCALE (cmap[close].green);
+			bd = DOWNSCALE (cmap[close].blue);
+#else
 			rd = cmap[close].red;
 			gd = cmap[close].green;
 			bd = cmap[close].blue;
+#endif
 
 			/* allocate */
 			colors[i] = XCCGetPixel(_xcc, (unsigned short)rd,
@@ -1777,12 +1854,18 @@ XCCGetPixelsIncremental(XCC _xcc, unsigned short *reds, unsigned short *greens,
 
 		i = failed[idx];
 
-		mdist = 1000000;
+		mdist = 0x1000000;
 		close = -1;
 
+#ifdef USE_EIGHT_BIT_CHANNELS
 		ri = reds[i];
 		gi = greens[i];
 		bi = blues[i];
+#else
+		ri = reds[i];
+		gi = greens[i];
+		bi = blues[i];
+#endif
 
 		/* search allocated colors */
 		for(j = 0; j < ncols && mdist != 0; j++)
@@ -1790,9 +1873,11 @@ XCCGetPixelsIncremental(XCC _xcc, unsigned short *reds, unsigned short *greens,
 			k = allocated[j];
 
 			/* downscale */
-			rd = ri - defs[k].red;
-			gd = gi - defs[k].green;
-			bd = bi - defs[k].blue;
+			/* Don't replace these by shifts; the sign may get clobbered */
+
+			rd = (ri - defs[k].red) / 256;
+			gd = (gi - defs[k].green) / 256;
+			bd = (bi - defs[k].blue) / 256;
 			if((d = (rd*rd) + (gd*gd) + (bd*bd)) < mdist)
 			{
 				close = k;

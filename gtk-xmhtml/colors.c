@@ -35,6 +35,33 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.10  1998/01/31 00:12:06  unammx
+* Thu Jan 29 12:17:07 1998  Federico Mena  <federico@bananoid.nuclecu.unam.mx>
+*
+* 	* gtk-xmhtml.c (wrap_gdk_cc_get_pixels): Added wrapper function
+* 	for gdk_color_context_get_pixels{_incremental}().  This function
+* 	will first upscale the color information to 16 bits.  This
+* 	function can be removed as described next.
+*
+* 	* XCC.c: I defined a USE_EIGHT_BIT_CHANNELS macro that makes the
+* 	GetPixel functions expect color data to be in [0, 255].  Two
+* 	macros, UPSCALE() and DOWNSCALE(), are used in those functions.
+* 	When XmHTML is modified to use 16-bit color information, these
+* 	macros and the #ifdef parts can be safely removed, as the
+* 	functions already operate with 16-bit colors internally.
+*
+* 	* colors.c (XmHTMLAllocColor): Made this function use 16-bit
+*  	values for color matching.
+*
+* 	* toolkit.h (XCCGetPixelsIncremental): Removed un-needed do{}while(0)
+*
+* 	* XCC.c (XCCGetPixel): _red/_green/_blue parameters are now
+* 	expected to be in [0, 65535].  This is to be friendlier to the Gdk
+* 	port of the XCC.
+* 	(XCCGetPixels): Made it use 16-bit color values as well.  Fixed
+* 	mdist=1000000 buglet (it should start with at least 0x1000000).
+* 	(XCCGetPixelsIncremental): Same as for XCCGetPixels().
+*
 * Revision 1.9  1998/01/15 01:40:58  unammx
 * Comment fixes - Federico
 *
@@ -395,7 +422,7 @@ _XmHTMLGetPixelByName(XmHTMLWidget html, String color, Pixel def_pixel)
 		}
 	}
 
-	r[0] = def.red   >> 8;	/* downscale */
+	r[0] = def.red   >> 8;  /* downscale */
 	g[0] = def.green >> 8;
 	b[0] = def.blue  >> 8;
 	pixel[0] = None;		/* REQUIRED! */
@@ -936,21 +963,12 @@ XmHTMLAllocColor(TWidget w, String color, Pixel def_pixel)
 		my_x_query_colors(colormap, cmap, cmapsize);
 #endif
 
-		/* speedup: downscale here instead of in the matching code */
-		for(i = 0; i < cmapsize; i++)
-		{
-			cmap[i].red   >>= 8;
-			cmap[i].green >>= 8;
-			cmap[i].blue  >>= 8;
-		}
-
-		mdist = 1000000;
+		mdist = 0x1000000;
 		close = -1;
 
-		/* downscale */
-		ri = (def.red   >> 8);
-		gi = (def.green >> 8);
-		bi = (def.blue  >> 8);
+		ri = def.red;
+		gi = def.green;
+		bi = def.blue;
 
 		/* 
 		* walk all colors in the colormap and see which one is the 
@@ -958,9 +976,11 @@ XmHTMLAllocColor(TWidget w, String color, Pixel def_pixel)
 		*/
 		for(i = 0; i < cmapsize && mdist != 0; i++)
 		{
-			rd = ri - cmap[i].red;
-			gd = gi - cmap[i].green;
-			bd = bi - cmap[i].blue;
+			/* Don't replace these by shifts; the sign may get clobbered */
+
+			rd = (ri - cmap[i].red) / 256;
+			gd = (gi - cmap[i].green) / 256;
+			bd = (bi - cmap[i].blue) / 256;
 
 			if((d = (rd*rd) + (gd*gd) + (bd*bd)) < mdist)
 			{
@@ -971,9 +991,9 @@ XmHTMLAllocColor(TWidget w, String color, Pixel def_pixel)
 		if(close != -1)
 		{
 			/* we got a match, try to allocate this color */
-			def.red   = (cmap[close].red   << 8);
-			def.green = (cmap[close].green << 8);
-			def.blue  = (cmap[close].blue  << 8);
+			def.red   = cmap[close].red;
+			def.green = cmap[close].green;
+			def.blue  = cmap[close].blue;
 #ifdef WITH_MOTIF
 			def.flags = DoRed|DoGreen|DoBlue;
 #endif
