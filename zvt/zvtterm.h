@@ -22,7 +22,6 @@
 #define __ZVT_TERM_H__
 
 #include <gdk/gdk.h>
-#include <gdk_imlib.h>
 #include <gtk/gtkadjustment.h>
 #include <gtk/gtkwidget.h>
 #include <zvt/vtx.h>

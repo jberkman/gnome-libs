@@ -7,7 +7,6 @@ libzvtincludedir = $(includedir)/zvt
 INCLUDES = -I.. -I$(srcdir)/.. $(SUPPORTINCS)		\
 	-I$(top_srcdir)/intl -I$(top_builddir)/intl	\
 	-I$(includedir) $(GTK_CFLAGS)  			\
-	$(GDK_IMLIB_CFLAGS)				\
 	-DGNOMESBINDIR=\""$(sbindir)"\"
 
 libzvt_la_SOURCES =		\
@@ -19,6 +18,7 @@ libzvt_la_SOURCES =		\
 	subshell-includes.h	\
 	update.c		\
 	vt.c			\
+	background.c		\
 	zvtterm.c
 
 libzvt_la_LDFLAGS = -version-info 5:0:0 -rpath $(libdir)
@@ -27,6 +27,7 @@ libzvtinclude_HEADERS =		\
 	lists.h			\
 	vt.h			\
 	vtx.h			\
+	background.h		\
 	zvtterm.h
 
 #gnome_pty_helper_SOURCES = 	\
@@ -53,7 +54,7 @@ zterm_LDADD	= 			\
 	libzvt.la			\
 	$(UTIL_LIBS)			\
 	$(GTK_LIBS) 			\
-	$(GDK_IMLIB_LIBS)		\
+	-lgdk_pixbuf -lart_lgpl -lgnomeui -lgnome	\
 	$(INTLLIBS)
 
 test_utmp_SOURCES =			\

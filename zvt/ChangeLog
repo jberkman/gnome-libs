@@ -1,3 +1,30 @@
+1999-12-04  Michael Zucchi  <zucchi@zedzone.mmc.com.au>
+
+	* Makefile.am (zterm_LDADD): Add the gdk pixbuf libraries.
+	THIS NEEDS FIXING, as it requires them to be installed first (but
+	i can't get gnome-libs to build).
+
+	* zvtterm.[ch]: Removed gdk_imib.h header.
+
+	* background.c: Fixed license header, and api doc headers, and
+	fixed a few bugs/cleanups.
+
+	* zvtterm.c (zvt_term_get_capabilities): Always say we have
+	ZVT_TERM_PIXMAP_SUPPORT, removed imlib function ...
+	(get_desktop_window): Killed.
+	(get_pixmap_prop): Killed.
+	(load_pixmap_back): Killed.
+	(create_shaded_pixmap): Killed.
+	(load_background): Killed!
+	(safe_strcmp): Killed too!  Imlib dead!
+	(zvt_term_draw): No longer call load_background().
+	(zvt_term_set_background): Call the new image loader functions to
+	set the background, and configure all options available.
+	(zvt_term_realize): Force-load the background, to make sure we
+	have pens to render with.
+
+	* Makefile.am: Added background.[ch]
+
 1999-12-04  Michael Zucchi  <mzucchi@denr.sa.gov.au>
 
 	* background.c: New background loading/handling code.  Not

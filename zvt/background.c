@@ -1,6 +1,22 @@
-/*
-  pixmap processing for gnome-terminal
-*/
+/*  zvtterm.c - Zed's Virtual Terminal
+ *  Copyright (C) 1999  Michael Zucchi
+ *
+ *  GdkPixbuf image loaders and manupulations for zvt.
+ *
+ *  This program is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU Library General Public License
+ *  as published by the Free Software Foundation; either version 2 of
+ *  the License, or (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Library General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Library General Public
+ *  License along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ */
 
 #include <gdk/gdk.h>
 #include <gnome.h>
@@ -19,8 +35,10 @@
 #include "zvtterm.h"
 
 static void zvt_background_set(ZvtTerm *term);
-static void zvt_configure_window(GtkWidget *w, ZvtTerm *term);
+static void zvt_configure_window(GtkWidget *widget, GdkEventConfigure *event, ZvtTerm *term);
 static void zvt_background_set_translate(ZvtTerm *term);
+
+#define d(x)
 
 /**
  * Utility functions
@@ -41,17 +59,15 @@ pixmap_from_atom(GdkWindow *win, GdkAtom pmap)
   GdkAtom type;
   GdkPixmap *pm = 0;
 
-  printf("getting property off root window ...\n");
+  d(printf("getting property off root window ...\n"));
 
   if (gdk_property_get(win, pmap, 0, 0, 10, FALSE, &type, NULL, NULL, &data)) {
     if (type == GDK_TARGET_PIXMAP) {
-      printf("converting to pixmap\n");
+      d(printf("converting to pixmap\n"));
       pm = gdk_pixmap_foreign_new(*((Pixmap *)data));
     }
     g_free(data);
   }
-
-  printf("could not get property\n");
 
   return pm;
 }
@@ -114,15 +130,15 @@ pixbuf_shade(GdkPixbuf *pb, int r, int g, int b, int a)
   int i,j;
   int offset;
   
-  printf("applying shading\n");
+  d(printf("applying shading\n"));
 
   if (gdk_pixbuf_get_has_alpha(pb))
     offset=4;
   else
     offset=3;
 
-  printf("offset = %d\n", offset);
-  printf("(r,g,b,a) = (%d, %d, %d, %d)\n", r, g, b, a);
+  d(printf("offset = %d\n", offset));
+  d(printf("(r,g,b,a) = (%d, %d, %d, %d)\n", r, g, b, a));
   
   for (i=0;i<pbheight;i++) {
     p = buf;
@@ -163,13 +179,13 @@ zvt_filter_prop_change(XEvent *xevent, GdkEvent *event, void *data)
   struct _watchwin *w = data;
   struct _watchatom *a;
 
-  printf("got window event ... %d\n", xevent->type);
+  d(printf("got window event ... %d\n", xevent->type));
   if (xevent->type == PropertyNotify) {
 
     a = (struct _watchatom *)w->watchlist.head;
     while (a->next) {
       if (a->atom == xevent->xproperty.atom) {
-	printf("atom %ld has changed\n", a->atom);
+	d(printf("atom %ld has changed\n", a->atom));
 	a->atom_changed(a->atom, xevent->xproperty.state, a->data);
       }
       a = a->next;
@@ -240,16 +256,26 @@ del_winwatch(GdkWindow *win, void *data)
 static void
 zvt_watch_move(ZvtTerm *term)
 {
-  gtk_signal_connect (
-      GTK_OBJECT (gtk_widget_get_toplevel(GTK_WIDGET(term))),
-      "configure_event",
-      GTK_SIGNAL_FUNC (zvt_configure_window),
-      term);
+  gtk_signal_connect(GTK_OBJECT (gtk_widget_get_toplevel(GTK_WIDGET(term))),
+		     "configure_event",
+		     GTK_SIGNAL_FUNC(zvt_configure_window),
+		     GTK_OBJECT(term));
 }
 
-/**
+/*
  * Main (xternal) functions
  */
+/**
+ * zvt_term_background_new:
+ * @t: Terminal.
+ * 
+ * Create a new background data structure.  This structure can be
+ * manipulated by various calls, and then loaded into the terminal
+ * with zvt_term_background_load().  Background structures are
+ * refcounted.
+ * 
+ * Return value: A new &zvt_background data structure.
+ **/
 struct zvt_background *
 zvt_term_background_new(ZvtTerm *t)
 {
@@ -258,6 +284,13 @@ zvt_term_background_new(ZvtTerm *t)
   return b;
 }
 
+/**
+ * zvt_term_background_unref:
+ * @b: A background.
+ * 
+ * Unreference this background @b.  If there are no more referees
+ * then the structure is freed.
+ **/
 void
 zvt_term_background_unref(struct zvt_background *b)
 {
@@ -269,12 +302,25 @@ zvt_term_background_unref(struct zvt_background *b)
   }
 }
 
+/**
+ * zvt_term_background_ref:
+ * @b: A background.
+ * 
+ * Add a new reference to the background.
+ **/
 void
 zvt_term_background_ref(struct zvt_background *b)
 {
   b->refcount++;
 }
 
+/**
+ * zvt_term_background_set_pixmap:
+ * @b: Background.
+ * @p: A Pixmap.
+ * 
+ * Set a pixmap as the base image for the background.
+ **/
 void
 zvt_term_background_set_pixmap(struct zvt_background *b, GdkPixmap *p)
 {
@@ -299,6 +345,16 @@ zvt_term_background_set_pixmap(struct zvt_background *b, GdkPixmap *p)
   b->type = ZVT_BGTYPE_PIXMAP;
 }
 
+/**
+ * zvt_term_background_set_pixmap_atom:
+ * @b: Background.
+ * @win: Window for which the pixmap property is available.
+ * @atom: The property containing the pixmap id.
+ * 
+ * Set a pixmap, who's id is stored in a window property @atom
+ * of the window @win.  This atom will be tracked, and changes
+ * to it will be picked up as required.
+ **/
 void
 zvt_term_background_set_pixmap_atom(struct zvt_background *b, GdkWindow *win, GdkAtom atom)
 {
@@ -309,6 +365,14 @@ zvt_term_background_set_pixmap_atom(struct zvt_background *b, GdkWindow *win, Gd
   b->type = ZVT_BGTYPE_ATOM;
 }
 
+/**
+ * zvt_term_background_set_pixmap_file:
+ * @b: Background.
+ * @filename: Name of image file.
+ * 
+ * Set the base image to come from a file.  The file
+ * must be loadable by gdk-pixbuf.
+ **/
 void
 zvt_term_background_set_pixmap_file(struct zvt_background *b, char *filename)
 {
@@ -317,6 +381,13 @@ zvt_term_background_set_pixmap_file(struct zvt_background *b, char *filename)
   b->type = ZVT_BGTYPE_FILE;
 }
 
+/**
+ * zvt_term_background_set_pixbuf:
+ * @b: Background.
+ * @pb: An initialised GdkPixbuf.
+ * 
+ * Set the base image to be a pixbuf image @pb.
+ **/
 void
 zvt_term_background_set_pixbuf(struct zvt_background *b, GdkPixbuf *pb)
 {
@@ -326,6 +397,21 @@ zvt_term_background_set_pixbuf(struct zvt_background *b, GdkPixbuf *pb)
   b->type = ZVT_BGTYPE_PIXBUF;
 }
 
+/**
+ * zvt_term_background_set_shade:
+ * @bg: Background.
+ * @r: Red colour.
+ * @g: Green colour.
+ * @b: Blue colour.
+ * @a: Colour intensity.
+ * 
+ * Set the shading value for this background.  This is a processing
+ * option which applies the colour (@r, @g, @b) with opacity
+ * @a to the image.  A 0 @a results in no change, a full @a results
+ * in a solid colour.
+ *
+ * The range of each value is 0-65535.
+ **/
 void
 zvt_term_background_set_shade(struct zvt_background *bg, int r, int g, int b, int a)
 {
@@ -335,6 +421,25 @@ zvt_term_background_set_shade(struct zvt_background *bg, int r, int g, int b, in
   bg->shade.a = a>>8;
 }
 
+/**
+ * zvt_term_background_set_scale:
+ * @b: Background.
+ * @type: zvt_background_scale_t of scaling operation to apply.
+ * @x: When required, the x or width scale value.
+ * @y: When required, the y or height scale value.
+ * 
+ * Set scaling options to be applied to the base image.  Scaling
+ * options can be set for any image.
+ *
+ * The following scaling options are available:
+ * ZVT_BGSCALE_NONE: No scaling is applied.
+ * ZVT_BGSCALE_WINDOW: The image is always scaled to fit exactly
+ * into the window.
+ * ZVT_BGSCALE_FIXED: The image is always scaled to a fixed ratio.
+ * In this case @x and @y are fixed-point values, where 16384 is 1.0.
+ * ZVT_BGSCALE_ABSOLUTE: The image is scaled to an absolute size.
+ * In this case @x and @y are the new image size.
+ **/
 void
 zvt_term_background_set_scale(struct zvt_background *b, zvt_background_scale_t type, int x, int y)
 {
@@ -343,6 +448,27 @@ zvt_term_background_set_scale(struct zvt_background *b, zvt_background_scale_t t
   b->scale.type = type;
 }
 
+/**
+ * zvt_term_background_set_translate:
+ * @b: Background.
+ * @type: A zvt_background_translate_t type, controling the background
+ * translations applied.
+ * @x: X offset.
+ * @y: Y offset.
+ * 
+ * Set translation options on the image.  This controls how the image
+ * sits inside the background window.
+ *
+ * The following options are available:
+ *
+ * ZVT_BGTRANSLATE_NONE: No special translation is applied.  @x and @y
+ * are still used to offset the image.
+ * ZVT_BGTRANSLATE_SCROLL: The image scrolls as text does.  @x and @y
+ * provide a fixed offset as well.
+ * ZVT_BGTRANSLATE_ROOT: The image stays in the same location in absolute
+ * coordinates (i.e. the window becomes a viewport onto a larger image).
+ * @x and @y provide additional fixed offsets.
+ **/
 void
 zvt_term_background_set_translate(struct zvt_background *b, zvt_background_translate_t type, int x, int y)
 {
@@ -363,6 +489,12 @@ zvt_root_atom_changed(GdkAtom atom, int state, ZvtTerm *term)
      from terminal */
 }
 
+/**
+ * zvt_term_background_unload:
+ * @term: Terminal for which a background may have been loaded.
+ * 
+ * Unload the current background settings from the @term.
+ **/
 void
 zvt_term_background_unload(ZvtTerm *term)
 {
@@ -390,6 +522,20 @@ zvt_term_background_unload(ZvtTerm *term)
   gtk_widget_queue_draw(GTK_WIDGET(term));
 }
 
+/**
+ * zvt_term_background_load:
+ * @term: A terminal.
+ * @b: Background to set.  This will be referenced by
+ * the terminal, and should be unref'd by the caller
+ * when finished with.
+ * 
+ * Load the background settings into the terminal window.
+ * 
+ * Return value: Returns 0 on success, or non-zero for 
+ * a loader failure.  The reason for the load failure
+ * may depend on the image file not existing, or the image
+ * pixmap not existing, etc.
+ **/
 int
 zvt_term_background_load(ZvtTerm *term, struct zvt_background *b)
 {
@@ -397,10 +543,25 @@ zvt_term_background_load(ZvtTerm *term, struct zvt_background *b)
   int watchatom=0;
   int watchmove=0;
 
-  if (zp->background)
+  if (zp->background) {
+    if (b) {
+      /* compare them to see if they're the same ... if so, dont change display */
+
+      /* FIXME: this should compare the contents :) */
+      if (b==zp->background) {
+	/* but somehow we have to do this only if it was realised when called before? */
+      }
+    }
     zvt_term_background_unref(zp->background);
+  }
   zp->background = b;
+
+  /* assume no background is being set */
+  term->vx->scroll_type=VT_SCROLL_ALWAYS;
+
   if (b) {
+    zvt_term_background_ref(b);
+
     if (b->type == ZVT_BGTYPE_ATOM)
       watchatom = 1;
     if (b->scale.type == ZVT_BGSCALE_WINDOW
@@ -415,9 +576,20 @@ zvt_term_background_load(ZvtTerm *term, struct zvt_background *b)
     if (watchmove) {
       zvt_watch_move(term);
     }
+
+    switch (b->offset.type) {
+    case ZVT_BGTRANSLATE_NONE:	/* normal view, pixmap in window */
+    case ZVT_BGTRANSLATE_ROOT:	/* relative to root ('viewport') */
+      term->vx->scroll_type=VT_SCROLL_NEVER;
+      break;
+    case ZVT_BGTRANSLATE_SCROLL: /* background scrolls with scrolling */
+      term->vx->scroll_type=VT_SCROLL_SOMETIMES;
+      break;
+    }
   }
   zvt_background_set(term);
-  gtk_widget_queue_draw(GTK_WIDGET(term));
+  if (b)
+    gtk_widget_queue_draw(GTK_WIDGET(term));
   return 0;
 }
 
@@ -432,11 +604,14 @@ zvt_background_set(ZvtTerm *term)
   int process = 0;
 
   /* if we have no 'background image', use a solid colour */
-  if (b == NULL) {
+  if (b == NULL
+      || b->type == ZVT_BGTYPE_NONE) {
     GdkColor pen;
-    gdk_gc_set_fill (term->back_gc, GDK_SOLID);
-    pen.pixel = term->colors[17];
-    gdk_gc_set_foreground (term->back_gc, &pen);
+    if (term->back_gc) {
+      gdk_gc_set_fill (term->back_gc, GDK_SOLID);
+      pen.pixel = term->colors[17];
+      gdk_gc_set_foreground (term->back_gc, &pen);
+    }
     return;
   }
 
@@ -489,8 +664,8 @@ zvt_background_set(ZvtTerm *term)
       height = wheight;
       break;
     case ZVT_BGSCALE_FIXED:		/* scale fixed amount */
-      width = (width * b->scale.x) >> 16;
-      height = (height * b->scale.y) >> 16;
+      width = (width * b->scale.x) >> 14;
+      height = (height * b->scale.y) >> 14;
       break;
     case ZVT_BGSCALE_ABSOLUTE:		/* scale absolute coords */
       width = b->scale.x;
@@ -504,6 +679,13 @@ zvt_background_set(ZvtTerm *term)
   /* if we have a pixbuf, then we need to convert it to a pixmap to actually
      use it ... */
   if (pixbuf!=NULL) {
+    static init=0;
+
+    if (!init) {
+      gdk_rgb_init();
+      init=1;
+    }
+
     pixmap = gdk_pixmap_new(GTK_WIDGET(term)->window,
 			    gdk_pixbuf_get_width(pixbuf),
 			    gdk_pixbuf_get_height(pixbuf), wdepth);
@@ -520,8 +702,10 @@ zvt_background_set(ZvtTerm *term)
 
   zp->background_pixmap = pixmap;
 
-  gdk_gc_set_tile (term->back_gc, pixmap);
-  gdk_gc_set_fill (term->back_gc, GDK_TILED);
+  if (term->back_gc) {
+    gdk_gc_set_tile (term->back_gc, pixmap);
+    gdk_gc_set_fill (term->back_gc, GDK_TILED);
+  }
 
   zvt_background_set_translate(term);
 }
@@ -552,7 +736,8 @@ zvt_background_set_translate(ZvtTerm *term)
     offy -= y;
     break;
   }
-  gdk_gc_set_ts_origin(term->back_gc, offx, offy);
+  if (term->back_gc)
+    gdk_gc_set_ts_origin(term->back_gc, offx, offy);
 }
 
 /*
@@ -560,7 +745,7 @@ zvt_background_set_translate(ZvtTerm *term)
  * image, etc.
  */
 static void
-zvt_configure_window(GtkWidget *w, ZvtTerm *term)
+zvt_configure_window(GtkWidget *widget, GdkEventConfigure *event, ZvtTerm *term)
 {
   struct _zvtprivate *zp = _ZVT_PRIVATE(term);
   Window childret;
@@ -575,6 +760,11 @@ zvt_configure_window(GtkWidget *w, ZvtTerm *term)
 			 &x, &y,
 			 &childret);
   gdk_window_get_size(GTK_WIDGET(term)->window, &width, &height);
+
+  d(printf("configure event, pos %d,%d size %d-%d\n", x, y, width, height));
+  d(printf("last was at %d,%d %d-%d\n", b->pos.x, b->pos.y, b->pos.w, b->pos.h));
+
+  d(printf("new size?  %d,%d %d-%d\n", event->x, event->y, event->width, event->height));
 
   /* see if we need to reload (scale) the image */
   if (b->scale.type == ZVT_BGSCALE_WINDOW
@@ -599,5 +789,7 @@ zvt_configure_window(GtkWidget *w, ZvtTerm *term)
   if (forcedraw) {
     gtk_widget_queue_draw(GTK_WIDGET(term));
   }
+
+  d(printf("we moved/sized\n"));
 }
 
