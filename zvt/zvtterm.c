@@ -727,13 +727,8 @@ zvt_term_size_request (GtkWidget      *widget,
   requisition->height = (grid_height * term->charheight) + 
     (widget->style->klass->ythickness * 2);
 
-<<<<<<< zvtterm.c
-  /* debug ouput */
-  printf("zvt_term_size_request x=%d y=%d\n", grid_width, grid_height);
-=======
   /* debug ouput */
   d( printf("zvt_term_size_request x=%d y=%d\n", grid_width, grid_height) );
->>>>>>> 1.69.2.5
 }
 
 
