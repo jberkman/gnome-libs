@@ -1,3 +1,18 @@
+Tue Apr 21 14:30:25 1998  George Lebl  <jirka@5z.com>
+
+	* libgnome/gnomelib-init.c: create .gnome_private and
+	  set mode to 0700 on every initialization, added
+	  gnome_user_private_dir constant
+
+	* libgnome/libgnome.c: add gnome_user_private_dir extern
+	  declaration
+
+	* libgnome/gnome-config.[ch]: made parse_path use either
+	  private or normal path, and made defines for source
+	  compatibility to new functions which have one more
+	  argument which is gint priv, added gnome_config_private
+	  defines to these functions that use the private directory
+
 Mon Apr 20 23:38:55 1998  George Lebl  <jirka@5z.com>
 
 	* libgnome/gnome-config.c: made it check for the entire
