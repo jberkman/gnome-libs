@@ -39,7 +39,8 @@ table_built=\
 	Table-common.c
 
 gnorba_built = $(gnome_factory_built) \
-	$(table_built)
+	$(table_built) \
+	$(gnome_unknown_built)
 
 ORBIT_IDL=orbit-idl
 
