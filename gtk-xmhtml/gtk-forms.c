@@ -372,7 +372,7 @@ _XmHTMLFormActivate(XmHTMLWidget html, TEvent *event, XmHTMLForm *entry)
 	cbs.ncomponents = nComponents;
 	cbs.components  = components;
 
-	Toolkit_Call_Callback((Widget)html, html->html.form_callback, FORM, &cbs);
+	Toolkit_Call_Callback((TWidget)html, html->html.form_callback, FORM, &cbs);
 
 	/* free all */
 	for(i = 0; i < j; i++)
@@ -412,22 +412,222 @@ _XmHTMLFormAddTextArea(XmHTMLWidget html, String attributes, String text)
 void
 _XmHTMLFormSelectClose(XmHTMLWidget html, XmHTMLForm *entry)
 {
-	fprintf (stderr, "Fatal: function %s called\n", __FUNCTION__);
-	printf ("forms: Select Close\n");
+	/* option menu */
+	if(!entry->multiple && entry->size == 1)
+	{
+		GtkWidget *option_menu = entry->w;
+		GtkWidget *menu = gtk_object_get_user_data (GTK_OBJECT (entry->w));
+		
+		gtk_container_add (GTK_CONTAINER (html), entry->w);
+		gtk_option_menu_set_menu (GTK_OPTION_MENU (option_menu), menu);
+
+		/* store menupane id as child id */
+		entry->child = menu;
+
+		/* safety */
+		entry->next = NULL;
+
+		/* do final stuff for this entry */
+		finalizeEntry(html, entry, True);
+	}
+	else
+	{
+		/* safety */
+		entry->next = NULL;
+
+		gtk_container_add (GTK_CONTAINER (html), entry->w);
+		
+		/* do final stuff for this entry */
+		finalizeEntry(html, entry, True);
+	}
+}
+
+static void
+option_menu_cb (GtkWidget *widget, XmHTMLForm *entry)
+{
+	XmHTMLForm *tmp;
+	int i = 0;
+
+	/*****
+	* walk all childs of the parent entry, unselecting all childs that
+	* don't match the selected item and selecting the one that was.
+	*****/
+	for(tmp = entry->options; tmp != NULL; tmp = tmp->next, i++)
+	{
+		if(tmp->w == widget)
+			tmp->checked = True;
+		else
+			tmp->checked = False;
+	}
 }
 
 void
 _XmHTMLFormSelectAddOption(XmHTMLWidget html, XmHTMLForm *entry,
 	String attributes, String label)
 {
-	fprintf (stderr, "Fatal: function %s called\n", __FUNCTION__);
+	XmHTMLForm *item;
+
+	/* Create and initialise a new entry */
+	item = (XmHTMLForm*)malloc(sizeof(XmHTMLForm));
+	memset(item, 0, sizeof(XmHTMLForm));
+
+	/* form type */
+	item->type = FORM_OPTION;
+
+	/* value. Use id if none given */
+	if((item->value = _XmHTMLTagGetValue(attributes, "value")) == NULL)
+	{
+		char dummy[32];	/* 2^32 possible entries...*/
+		sprintf(dummy, "%i", entry->maxlength);
+		item->value = strdup(dummy);
+	}
+
+	/* initial state */
+	item->selected = (int)_XmHTMLTagCheck(attributes, "selected");
+	item->checked  = (Boolean)item->selected;
+
+	/* list box selection */
+	if(entry->multiple || entry->size > 1)
+	{
+		GtkWidget *listitem;
+		
+		/* append item to bottom of list */
+		listitem = gtk_list_item_new_with_label (label);
+		gtk_container_add (GTK_CONTAINER (entry->w), listitem);
+		gtk_widget_show (listitem);
+
+		/* add this item to the list of selected items */
+		if(item->checked)
+		{
+			/* single selection always takes the last inserted item */
+			entry->selected = entry->maxlength;
+
+			/*
+			* Since we are always inserting items at the end of the list
+			* we can simple select it by using 0 as the position arg
+			*/
+			gtk_list_select_item (GTK_LIST (entry->w),
+					      g_list_length (GTK_LIST (entry->w)->children));
+		}
+	}
+	else
+	{
+		GtkWidget *menu_entry, *menu;
+		
+		/* FIXME: use document colors if allowed */
+
+		menu = gtk_object_get_user_data (GTK_OBJECT (entry->w));
+		menu_entry = gtk_menu_item_new_with_label (label);
+		gtk_widget_show (menu_entry);
+		printf ("Añadiendo: %s\n", label);
+		gtk_menu_append (GTK_MENU (menu), menu_entry);
+		item->w = menu_entry;
+
+		/* save as default menu item if initially selected */
+		if(item->checked)
+			entry->selected = entry->maxlength;
+
+		gtk_signal_connect (GTK_OBJECT (item->w), "activate",
+				    (GtkSignalFunc) option_menu_cb, entry);
+	}
+
+	/* insert item, entry->next contains ptr to last inserted option */
+	if(entry->next)
+	{
+		entry->next->next = item;
+		entry->next = item;
+	}
+	else
+	{
+		entry->options = entry->next = item;
+	}
+
+	/* no of options inserted so far */
+	entry->maxlength++;
 }
 
 XmHTMLForm*
 _XmHTMLFormAddSelect(XmHTMLWidget html, String attributes)
 {
-	fprintf (stderr, "Fatal: function %s called\n", __FUNCTION__);
-	return 0;
+	static XmHTMLForm *entry;
+	TWidget parent;
+
+	/*****
+	* HTML form child widgets are childs of the workarea.
+	* Making them a direct child of the widget itself messes up scrolling.
+	*****/
+	parent = html->html.work_area;
+
+	if(attributes == NULL)
+		return(NULL);
+
+	if(current_form == NULL)
+	{
+		/* too bad, ignore */
+		_XmHTMLWarning(__WFUNC__(html, "_XmHTMLFormAddSelect"),
+			"Bad HTML form: <SELECT> not within form.");
+		return(NULL);
+	}
+
+	/* Create and initialise a new entry */
+	entry = (XmHTMLForm*)malloc(sizeof(XmHTMLForm));
+	(void)memset(entry, 0, sizeof(XmHTMLForm));
+
+	/* set parent form */
+	entry->parent = current_form;
+
+	/* form type */
+	entry->type = FORM_SELECT;
+
+	/* get name */
+	if((entry->name = _XmHTMLTagGetValue(attributes, "name")) == NULL)
+		entry->name = strdup("Select");
+
+	/* no of visible items in list */
+	entry->size = _XmHTMLTagGetNumber(attributes, "size", 1);
+
+	/* multiple select? */
+	entry->multiple = _XmHTMLTagCheck(attributes, "multiple");
+
+	/* FIXME: use document colors if allowed: if(html->html.allow_form_coloring) */
+
+	/* multiple select or more than one item visible: it's a listbox */
+	if(entry->multiple || entry->size > 1)
+	{
+		GtkWidget *list;
+		
+		parent = html->html.work_area;
+
+		entry->w = list = gtk_list_new ();
+		
+		/* FIXME: at least two items required for list boxes */
+		/* XtSetArg(args[argc], XmNvisibleItemCount,
+		   (entry->size == 1 ? 2 : entry->size)); argc++; */
+
+		/* multiple selection possible */
+		if(entry->multiple)
+			gtk_list_set_selection_mode (GTK_LIST (list), GTK_SELECTION_MULTIPLE);
+		
+		gtk_container_add (GTK_CONTAINER (html), entry->w);
+	}
+	else	/* an option menu */
+	{
+		/* the menu that will contain the menu items */
+		GtkWidget *option_menu, *menu;
+
+		option_menu = gtk_option_menu_new ();
+		menu = gtk_menu_new ();
+		entry->w = option_menu;
+		gtk_container_add (GTK_CONTAINER (html), entry->w);
+		gtk_object_set_user_data (GTK_OBJECT (entry->w), menu);
+	}
+	/* set fg, bg and font to use, don't insert (yet) in parent form list */
+	finalizeEntry(html, entry, False);
+
+	/* this will be used to keep track of inserted menu items */
+	entry->next = NULL;
+
+	return(entry);
 }
 
 static void
@@ -501,10 +701,65 @@ button_clicked (GtkWidget *widget, XmHTMLForm *entry)
 	
 }
 
+static void
+destroy_window (GtkWidget  *widget, GtkWidget **window)
+{
+	*window = NULL;
+}
+
+static void
+file_selection_ok (GtkWidget *w, GtkFileSelection *fs)
+{
+	GtkEntry *entry = gtk_object_get_data (GTK_OBJECT (fs), "my_entry");
+
+	if (entry)
+		gtk_entry_set_text (entry,
+				    gtk_file_selection_get_filename (GTK_FILE_SELECTION (fs)));
+	gtk_widget_destroy (GTK_WIDGET (fs));
+}
+
+static void
+create_file_selection (GtkEntry *entry)
+{
+	static GtkWidget *window = NULL;
+	
+	if (!window){
+		window = gtk_file_selection_new ("file selection dialog");
+		gtk_window_position (GTK_WINDOW (window), GTK_WIN_POS_MOUSE);
+		
+		gtk_signal_connect (GTK_OBJECT (window), "destroy",
+				    GTK_SIGNAL_FUNC(destroy_window),
+				    &window);
+		gtk_signal_connect (GTK_OBJECT (window), "delete_event",
+				    GTK_SIGNAL_FUNC(destroy_window),
+				    &window);
+		
+		gtk_signal_connect (GTK_OBJECT (GTK_FILE_SELECTION (window)->ok_button),
+				    "clicked", GTK_SIGNAL_FUNC(file_selection_ok),
+				    window);
+		gtk_object_set_data (GTK_OBJECT (window), "my_entry", entry);
+		gtk_signal_connect_object (GTK_OBJECT (GTK_FILE_SELECTION (window)->cancel_button),
+					   "clicked", GTK_SIGNAL_FUNC(gtk_widget_destroy),
+					   GTK_OBJECT (window));
+	}
+	
+	if (!GTK_WIDGET_VISIBLE (window))
+		gtk_widget_show (window);
+	else
+		gtk_widget_destroy (window);
+}
+
+static void
+file_button_click (GtkWidget *widget, GtkEntry *entry)
+{
+	create_file_selection (entry);
+}
+
 XmHTMLForm*
 _XmHTMLFormAddInput(XmHTMLWidget html, String attributes)
 {
 	static XmHTMLForm *entry;
+	GtkWidget *hbox;
 	char   *chPtr;
 
 	if(attributes == NULL)
@@ -605,6 +860,9 @@ _XmHTMLFormAddInput(XmHTMLWidget html, String attributes)
 	* As image buttons are promoted to image words we don't deal with the
 	* FORM_IMAGE case. For hidden form fields nothing needs to be done.
 	*****/
+	/*
+	 * FIXME: Handle default colors for the forms (allow_form_colors)
+	 */
 	if(entry->type != FORM_IMAGE && entry->type != FORM_HIDDEN)
 	{
 		switch(entry->type)
@@ -612,11 +870,21 @@ _XmHTMLFormAddInput(XmHTMLWidget html, String attributes)
 			/* text field, set args and create it */
 			case FORM_TEXT:
 			case FORM_PASSWD:
-				entry->w = gtk_entry_new_with_max_length (entry->size);
-				gtk_entry_set_text (GTK_ENTRY (entry->w), entry->value);
+				if (entry->maxlength != -1)
+					entry->w = gtk_entry_new_with_max_length (entry->size);
+				else
+					entry->w = gtk_entry_new ();
+				if (entry->value)
+					gtk_entry_set_text (GTK_ENTRY (entry->w), entry->value);
+
+				/* bug workaround: if I dont pack it then it does not redraw */
+				gtk_widget_show (entry->w);
+				hbox = gtk_hbox_new (0, 0);
+				gtk_box_pack_start (GTK_BOX (hbox), entry->w, 0, 0, 0);
+				entry->w = hbox;
+				
 				/* FIXME:
 				 *    set columns,
-				 *    set maxlenght
 				 *    handle passwords
 				 */
 				break;
@@ -641,8 +909,30 @@ _XmHTMLFormAddInput(XmHTMLWidget html, String attributes)
 			* button.
 			*****/
 			case FORM_FILE:
-				fprintf (stderr, "FORM_FILE not handled\n");
+			{
+				GtkWidget *hbox, *input, *button;
+
+				hbox = gtk_hbox_new (0, 0);
+				entry->w = hbox;
+				
+				/* The input line */
+				if (entry->maxlength != -1)
+					input = gtk_entry_new_with_max_length (entry->size);
+				else
+					input = gtk_entry_new ();
+				gtk_widget_show (GTK_WIDGET (input));
+
+				/* The button */
+				button = gtk_button_new_with_label (entry->value?entry->value:"Browse...");
+				gtk_widget_show (GTK_WIDGET (button));
+				
+				/* Pack and connect stuff */
+				gtk_box_pack_start (GTK_BOX (hbox), input, 0, 0, 0);
+				gtk_box_pack_start (GTK_BOX (hbox), button, 0, 0, 0);
+				gtk_signal_connect (GTK_OBJECT(button), "clicked",
+						    (GtkSignalFunc) file_button_click, input);
 				break;
+			}
 				
 			case FORM_RESET:
 			case FORM_SUBMIT:
@@ -654,22 +944,7 @@ _XmHTMLFormAddInput(XmHTMLWidget html, String attributes)
 				break;
 		}
 	}
-#if 0
-		/* defaults for all widgets */
-		argc = 0;
-		XtSetArg(args[argc], XmNmappedWhenManaged, False); argc++;
-		XtSetArg(args[argc], XmNborderWidth, 0); argc++;
 
-		/*****
-		* Check if we may use the document colors for the form components.
-		*****/
-		if(html->html.allow_form_coloring)
-		{
-			XtSetArg(args[argc], XmNbackground, html->html.body_bg); argc++;
-			XtSetArg(args[argc], XmNforeground, html->html.body_fg); argc++;
-		}
-		XtSetArg(args[argc], XmNfontList, my_fontList); argc++;
-#endif
 	/* manage it */
 	if(entry->w)
 		gtk_container_add (GTK_CONTAINER (html), entry->w);

@@ -36,6 +36,21 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.13  1998/01/06 04:48:39  unammx
+* More forms work, today we got:
+*
+* 	Input file selectors.
+* 	Listboxes.
+* 	Option menus.
+* 	Working input lines.
+*
+* Missing:
+*
+* 	Text entries (really, really, really trivial).
+*
+* Enjoy,
+* Miguel.
+*
 * Revision 1.12  1997/12/31 20:22:31  unammx
 * Frames work.
 *
@@ -1389,11 +1404,6 @@ _XmHTMLReconfigureFrames(XmHTMLWidget html)
 			frame->width - frame->border,
 			frame->height - frame->border, frame->border);
 #else
-	printf ("PONIENDO: %d %d %d %d\n", 
-				 frame->x,
-				 frame->y,
-				 frame->width,
-				 frame->height);
 	gtk_xmhtml_set_geometry (frame->frame,
 				 frame->x, frame->y,
 				 frame->width,

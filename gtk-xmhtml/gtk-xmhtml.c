@@ -467,7 +467,7 @@ FormScroll (XmHTMLWidget html)
 	Boolean did_anything = False;
 
 	_XmHTMLDebug(1, ("XmHTML.c: FormScroll, Start\n"));
-	
+
 	for(form = html->html.form_data; form != NULL; form = form->next)
 	{
 		for(entry = form->components; entry != NULL; entry = entry->next)
@@ -629,7 +629,6 @@ gtk_xmhtml_expose_event (GtkWidget *widget, GdkEvent *event, gpointer closure)
 		return FALSE;
 
 	/* FIXME: The code in the Motif port does event coalescing */
-	
 	Refresh(html, e->area.x, e->area.y, e->area.width, e->area.height);
 	return FALSE;
 }
@@ -1153,6 +1152,10 @@ CheckScrollBars(XmHTMLWidget html)
 		dy += hsb_height;
 	if(html->html.needs_vsb && vsb_on_left == FALSE)
 		dx += vsb_width;
+
+	printf ("Poniendo: %d %d %d %d\n", sx+nx, sy+ny,
+					      Toolkit_Widget_Dim (html).width - dx,
+			      Toolkit_Widget_Dim (html).height - dy);
 
 	gtk_xmhtml_set_geometry (html->html.work_area, sx+nx, sy+ny,
 			      Toolkit_Widget_Dim (html).width - dx,
