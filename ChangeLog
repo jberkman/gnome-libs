@@ -1,3 +1,13 @@
+1998-12-10  Miguel de Icaza  <miguel@nuclecu.unam.mx>
+
+	* libgnome/gnome-gen-mimedb.c (main): 
+
+1998-12-08  Miguel de Icaza  <miguel@nuclecu.unam.mx>
+
+	* libgnome/gnome-gen-mimedb.c (main): Use stdio for I/O, as we
+	were not checking proper usage of write.  Improved the error
+	messages. 
+
 1998-12-10  James Henstridge  <james@daa.com.au>
 
 	* gnome-libs.spec: took %{prefix}/share/mime-magic* out of the %files
