@@ -59,6 +59,7 @@ extern "C" {
     unsigned int scroll_on_output:1;
     unsigned int transparent:1;		/*transparent background*/
     unsigned int shaded:1;		/*transparent background with shade*/
+    unsigned int swap_del_key:1;        /* swap the del and backspace keys */
     char *pixmap_filename;		/*file name of a pixmap, if NULL, none is loaded
 					  and normal mode is used*/
 
@@ -132,13 +133,15 @@ extern "C" {
 						   gushort *blu);
   void          zvt_term_set_default_color_scheme (ZvtTerm *term);
 
+  void          zvt_term_set_del_key_swap         (ZvtTerm *term, int state);
+	
   /*
    * transparency stuff, it's left in even if we don't compile
    * transparency/backround pixmaps, if we don't, it will just be ignored,
    * setting pixmap_file to NULL disables the background pixmap
    */
-  void		zvt_term_set_background		  (ZvtTerm      *terminal,
-						   char	 *pixmap_file,
+  void		zvt_term_set_background		  (ZvtTerm       *terminal,
+						   char   	 *pixmap_file,
 						   int		  transparent,
 						   int		  shaded);
 	

@@ -1559,10 +1559,13 @@ zvt_term_key_press (GtkWidget *widget, GdkEventKey *event)
   handled = TRUE;
   switch (event->keyval) {
   case GDK_BackSpace:
-    if (event->state & GDK_MOD1_MASK){
+    if (event->state & GDK_MOD1_MASK)
       *p++ = '\033';
-    }
-    *p++ = 8;
+
+    if (term->swap_del_key)
+      *p++ = '\177';
+    else
+      *p++ = 8;
     break;
   case GDK_KP_Right:
   case GDK_Right:
@@ -1585,10 +1588,12 @@ zvt_term_key_press (GtkWidget *widget, GdkEventKey *event)
     p+=sprintf (p, "\033[2~");
     break;
   case GDK_Delete:
-    if (event->state & GDK_MOD1_MASK){
+    if (event->state & GDK_MOD1_MASK)
       *p++ = '\033';
-    }
-    *p++ = '\177';
+    if (term->swap_del_key)
+      *p++ = 8;
+    else
+      *p++ = '\177';
     break;
   case GDK_KP_Delete:
     p+=sprintf (p, "\033[3~");
@@ -2161,3 +2166,16 @@ void vt_hightlight_block(void *user_data, int col, int row, int width, int heigh
   
   gdk_gc_set_function(widget->style->fg_gc[GTK_WIDGET_STATE (widget)], GDK_COPY);  
 }  
+
+/**
+ * zvt_term_set_del_key_swap:
+ * @term:   A &ZvtTerm widget.
+ * @state:  If true it swaps the del/backspace definitions
+ * 
+ * Sets the mode for interpreting the DEL and Backspace keys.
+ **/
+void
+zvt_term_set_del_key_swap (ZvtTerm *term, int state)
+{
+	
+}
