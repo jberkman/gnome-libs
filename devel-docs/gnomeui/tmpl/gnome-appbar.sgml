@@ -2,16 +2,18 @@
 GnomeAppBar
 
 <!-- ##### SECTION Short_Description ##### -->
-
+Statusbar/Progress/Minibuffer widget
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-
+  A bar that GNOME applications put on the bottom of the windows to display
+  status, progress, hints for menu items and a minibuffer for getting some
+  sort of response. It has a stack for status messages
 </para>
 
 <!-- ##### SECTION See_Also ##### -->
 <para>
-
+  #GnomeApp
 </para>
 
 <!-- ##### STRUCT GnomeAppBar ##### -->
@@ -168,14 +170,14 @@ For internal use. Don't use.
 
 <!-- ##### SIGNAL GnomeAppBar::user-response ##### -->
 <para>
-
+  Emitted when the user hits enter after a prompt
 </para>
 
 @appbar: the object which received the signal.
 
 <!-- ##### SIGNAL GnomeAppBar::clear-prompt ##### -->
 <para>
-
+  Emitted when the prompt is cleared
 </para>
 
 @appbar: the object which received the signal.
