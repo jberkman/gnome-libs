@@ -1,0 +1,145 @@
+Source: gnome-libs@SUFFIX@
+Section: devel
+Priority: optional
+Maintainer: Jim Pick <jim@jimpick.com>
+Standards-Version: 2.4.0.0
+
+Package: libgnome0@SUFFIX@
+Architecture: any
+Depends: ${shlibs:Depends}
+Conflicts: gnome@SUFFIX@
+Replaces: gnome@SUFFIX@, gnome-dev@SUFFIX@
+Provides: gnome@SUFFIX@
+Description: The Gnome libraries
+ Gnome is the "GNU Network Object Model Environment"
+ .
+ It is a project to build a complete, user-friendly desktop based
+ entirely on free software.
+ .
+ This package contains the shared library for the base Gnome
+ library functions.
+
+Package: libgnome-dev@SUFFIX@
+Architecture: any
+Depends: libgnome0@SUFFIX@
+Conflicts: gnome-dev@SUFFIX@, libgnome-dev@SUFFIX@
+Replaces: gnome-dev@SUFFIX@, gnome@SUFFIX@
+Provides: gnome-dev@SUFFIX@
+Suggests: gnome-hello@SUFFIX@
+Description: The Gnome libraries -- development package
+ Gnome is the "GNU Network Object Model Environment"
+ .
+ It is a project to build a complete, user-friendly desktop based
+ entirely on free software.
+ .
+ This package contains the include files and static library for the
+ base Gnome library functions.
+
+Package: libgtktty0@SUFFIX@
+Architecture: any
+Depends: ${shlibs:Depends}
+Replaces: gnome@SUFFIX@, gnome-dev@SUFFIX@
+Description: The Gnome gtktty (Terminal) widget
+ Gnome is the "GNU Network Object Model Environment"
+ .
+ It is a project to build a complete, user-friendly desktop based
+ entirely on free software.
+ .
+ This package contains the shared library for the gtktty widget, which
+ is used by GemVT.
+
+Package: libgtktty-dev@SUFFIX@
+Architecture: any
+Depends: libgnome0@SUFFIX@, libgtktty0@SUFFIX@, libgnome-dev@SUFFIX@
+Conflicts: libgtktty-dev@SUFFIX@
+Replaces: libgtktty-dev@SUFFIX@, gnome@SUFFIX@, gnome-dev@SUFFIX@
+Provides: libgtktty-dev@SUFFIX@
+Description: The Gnome gtktty (Terminal) widget -- development package
+ Gnome is the "GNU Network Object Model Environment"
+ .
+ It is a project to build a complete, user-friendly desktop based
+ entirely on free software.
+ .
+ This package contains the include files and static library for the
+ gtktty widget, which is used by GemVT.
+
+Package: libzvt0@SUFFIX@
+Architecture: any
+Depends: ${shlibs:Depends}
+Replaces: gnome@SUFFIX@, gnome-dev@SUFFIX@
+Description: The Gnome zvt (zterm) widget
+ Gnome is the "GNU Network Object Model Environment"
+ .
+ It is a project to build a complete, user-friendly desktop based
+ entirely on free software.
+ .
+ This package contains the shared library for the zterm widget, which
+ is used by zterm (an xterm type program).
+
+Package: libzvt-dev@SUFFIX@
+Architecture: any
+Depends: libgnome0@SUFFIX@, libzvt0@SUFFIX@, libgnome-dev@SUFFIX@
+Conflicts: libzvt-dev@SUFFIX@
+Replaces: libzvt-dev@SUFFIX@, gnome@SUFFIX@, gnome-dev@SUFFIX@
+Provides: libzvt-dev@SUFFIX@
+Description: The Gnome zvt (zterm) widget -- development package
+ Gnome is the "GNU Network Object Model Environment"
+ .
+ It is a project to build a complete, user-friendly desktop based
+ entirely on free software.
+ .
+ This package contains the include files and static library for the
+ zterm widget, which is used by zterm (an xterm type program).
+
+Package: zterm@SUFFIX@
+Architecture: any
+Depends: ${shlibs:Depends}
+Replaces: gnome@SUFFIX@, gnome-dev@SUFFIX@
+Description: The Gnome zterm terminal emulator
+ Gnome is the "GNU Network Object Model Environment"
+ .
+ It is a project to build a complete, user-friendly desktop based
+ entirely on free software.
+ .
+ This package contains the the zterm widget program (an xterm type
+ program).
+
+Package: libgtkxmhtml0@SUFFIX@
+Architecture: any
+Depends: ${shlibs:Depends}
+Replaces: gnome@SUFFIX@, gnome-dev@SUFFIX@
+Description: The Gnome gtkxmhtml (HTML) widget
+ Gnome is the "GNU Network Object Model Environment"
+ .
+ It is a project to build a complete, user-friendly desktop based
+ entirely on free software.
+ .
+ This package contains the shared library for the gtkxmhtml widget,
+ which is used to render HTML pages.
+
+Package: libgtkxmhtml-dev@SUFFIX@
+Architecture: any
+Depends: libgnome0@SUFFIX@, libgtkxmhtml0@SUFFIX@, libgnome-dev@SUFFIX@
+Conflicts: libgtkxmhtml-dev@SUFFIX@
+Replaces: libgtkxmhtml-dev@SUFFIX@, gnome@SUFFIX@, gnome-dev@SUFFIX@
+Provides: libgtkxmhtml-dev@SUFFIX@
+Description: The Gnome gtkxmhtml (HTML) widget -- development package
+ Gnome is the "GNU Network Object Model Environment"
+ .
+ It is a project to build a complete, user-friendly desktop based
+ entirely on free software.
+ .
+ This package contains the include files and static library for the
+ gtkxmhtml widget, which is used to render HTML pages.
+
+Package: gnome-hello@SUFFIX@
+Architecture: any
+Depends: libgnome0@SUFFIX@, libgtktty0@SUFFIX@, libgtkxmhtml0@SUFFIX@
+Description: The Gnome "Hello World" examples
+ Gnome is the "GNU Network Object Model Environment"
+ .
+ It is a project to build a complete, user-friendly desktop based
+ entirely on free software.
+ .
+ This package contains some sample programs which demonstrate how
+ to program with the gnome libraries (plus source code).

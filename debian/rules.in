@@ -1,0 +1,312 @@
+#!/usr/bin/make -f
+
+i=$(shell pwd)/debian/tmp
+b=$(shell pwd)/debian/build
+
+configure:
+	@echo "--- Making configure script and configuring"
+	./autogen.sh --prefix=/@PREFIX@ --with-gtk-prefix=/@GTKPREFIX@
+
+Makefile:
+	@echo "--- Configuring"
+	./configure --prefix=/@PREFIX@ --with-gtk-prefix=/@GTKPREFIX@
+
+build: configure Makefile build-debstamp
+build-debstamp:
+	@echo "--- Compiling"
+	dh_testdir
+	$(MAKE) all
+	touch build-debstamp
+
+clean:
+	@echo "--- Cleaning"
+	dh_testdir
+	-rm -rf static shared
+	-rm -f build-debstamp install-debstamp
+	-make distclean
+	-rm -f `find . -name "*~"`
+	-rm -rf `find . -name "\.deps"`
+	-rm -rf `find . -name "\.libs"`
+	-rm -rf debian/tmp `find debian/* -type d ! -name CVS` debian/files* core
+	-rm -f debian/*substvars
+
+install: install-debstamp build
+install-debstamp:
+	@echo "--- Installing"
+	dh_testdir
+	dh_testroot
+	dh_clean
+	$(MAKE) install prefix=$(i)/@PREFIX@ exec_prefix=$(i)/@PREFIX@
+	touch install-debstamp
+
+install-save: install
+	rm -rf $(i).saved
+	cp -a $(i) $(i).saved
+
+install-saved:
+	rm -rf $(i)
+	cp -a $(i).saved $(i)
+	rm -rf $(b)
+	touch install-debstamp
+
+binary-indep: build install
+
+binary-arch: build install \
+		libgnome0@SUFFIX@ \
+		libgnome-dev@SUFFIX@ \
+		libgtktty0@SUFFIX@ \
+		libgtktty-dev@SUFFIX@ \
+		libzvt0@SUFFIX@ \
+		libzvt-dev@SUFFIX@ \
+		libgtkxmhtml0@SUFFIX@ \
+		libgtkxmhtml-dev@SUFFIX@ \
+		gnome-hello@SUFFIX@
+
+#
+# libgnome0@SUFFIX@
+#
+
+libgnome0@SUFFIX@: install
+	@echo "--- Building: $@"
+	dh_installdocs       -p$@ -P$(b)/$@ README NEWS AUTHORS
+	dh_installchangelogs -p$@ -P$(b)/$@ ChangeLog
+	dh_movefiles         -p$@ -P$(b)/$@
+	mkdir -p $(b)/$@/@PREFIX@/share/gnome
+	mv $(b)/$@/@PREFIX@/share/gtkrc $(b)/$@/@PREFIX@/share/gnome
+	dh_strip             -p$@ -P$(b)/$@ 
+	dh_compress          -p$@ -P$(b)/$@ 
+	dh_fixperms          -p$@ -P$(b)/$@ 
+	dh_installdeb        -p$@ -P$(b)/$@
+	dh_shlibdeps         -p$@ -P$(b)/$@
+	dh_gencontrol        -p$@ -P$(b)/$@
+	dh_makeshlibs        -p$@ -P$(b)/$@
+	dh_undocumented      -p$@ -P$(b)/$@ \
+				dns-helper.1x gnome_segv.1x
+	dh_md5sums           -p$@ -P$(b)/$@
+	dh_builddeb          -p$@ -P$(b)/$@
+ 
+#
+# libgnome-dev
+#
+
+libgnome-dev@SUFFIX@: install
+	@echo "--- Building: $@"
+	dh_installdocs       -p$@ -P$(b)/$@ \
+				 README NEWS AUTHORS
+	dh_installchangelogs -p$@ -P$(b)/$@ ChangeLog
+	dh_movefiles         -p$@ -P$(b)/$@
+	dh_strip             -p$@ -P$(b)/$@ 
+	dh_compress          -p$@ -P$(b)/$@ 
+	dh_fixperms          -p$@ -P$(b)/$@ 
+	dh_installdeb        -p$@ -P$(b)/$@
+	dh_shlibdeps         -p$@ -P$(b)/$@
+	dh_gencontrol        -p$@ -P$(b)/$@
+	dh_makeshlibs        -p$@ -P$(b)/$@
+	dh_md5sums           -p$@ -P$(b)/$@
+	dh_builddeb          -p$@ -P$(b)/$@
+
+#
+# libgtktty0
+#
+
+libgtktty0@SUFFIX@: install
+	@echo "--- Building: $@"
+	dh_installdocs       -p$@ -P$(b)/$@ README NEWS AUTHORS
+	dh_installchangelogs -p$@ -P$(b)/$@ ChangeLog
+	dh_movefiles         -p$@ -P$(b)/$@
+	dh_strip             -p$@ -P$(b)/$@ 
+	dh_compress          -p$@ -P$(b)/$@ 
+	dh_fixperms          -p$@ -P$(b)/$@ 
+	dh_installdeb        -p$@ -P$(b)/$@
+	dh_shlibdeps         -p$@ -P$(b)/$@
+	dh_gencontrol        -p$@ -P$(b)/$@
+	dh_makeshlibs        -p$@ -P$(b)/$@
+	dh_md5sums           -p$@ -P$(b)/$@
+	dh_builddeb          -p$@ -P$(b)/$@
+
+ 
+#
+# libgtktty-dev
+#
+
+libgtktty-dev@SUFFIX@: install
+	@echo "--- Building: $@"
+	dh_installdocs       -p$@ -P$(b)/$@ \
+				 README NEWS AUTHORS
+	dh_installchangelogs -p$@ -P$(b)/$@ ChangeLog
+	dh_movefiles         -p$@ -P$(b)/$@
+	dh_strip             -p$@ -P$(b)/$@ 
+	dh_compress          -p$@ -P$(b)/$@ 
+	dh_fixperms          -p$@ -P$(b)/$@ 
+	dh_installdeb        -p$@ -P$(b)/$@
+	dh_shlibdeps         -p$@ -P$(b)/$@
+	dh_gencontrol        -p$@ -P$(b)/$@
+	dh_makeshlibs        -p$@ -P$(b)/$@
+	dh_md5sums           -p$@ -P$(b)/$@
+	dh_builddeb          -p$@ -P$(b)/$@
+
+
+#
+# libzvt0
+#
+
+libzvt0@SUFFIX@: install
+	@echo "--- Building: $@"
+	dh_installdocs       -p$@ -P$(b)/$@ \
+				zvt/README zvt/AUTHORS zvt/BUGS zvt/TODO
+	dh_installchangelogs -p$@ -P$(b)/$@ zvt/ChangeLog
+	dh_movefiles         -p$@ -P$(b)/$@
+	dh_strip             -p$@ -P$(b)/$@ 
+	dh_compress          -p$@ -P$(b)/$@ 
+	dh_fixperms          -p$@ -P$(b)/$@ 
+	dh_installdeb        -p$@ -P$(b)/$@
+	dh_shlibdeps         -p$@ -P$(b)/$@
+	dh_gencontrol        -p$@ -P$(b)/$@
+	dh_makeshlibs        -p$@ -P$(b)/$@
+	dh_md5sums           -p$@ -P$(b)/$@
+	dh_builddeb          -p$@ -P$(b)/$@
+
+ 
+#
+# libzvt-dev
+#
+
+libzvt-dev@SUFFIX@: install
+	@echo "--- Building: $@"
+	dh_installdocs       -p$@ -P$(b)/$@ \
+				zvt/README zvt/AUTHORS zvt/BUGS zvt/TODO
+	dh_installchangelogs -p$@ -P$(b)/$@ zvt/ChangeLog
+	dh_movefiles         -p$@ -P$(b)/$@
+	dh_strip             -p$@ -P$(b)/$@ 
+	dh_compress          -p$@ -P$(b)/$@ 
+	dh_fixperms          -p$@ -P$(b)/$@ 
+	dh_installdeb        -p$@ -P$(b)/$@
+	dh_shlibdeps         -p$@ -P$(b)/$@
+	dh_gencontrol        -p$@ -P$(b)/$@
+	dh_makeshlibs        -p$@ -P$(b)/$@
+	dh_md5sums           -p$@ -P$(b)/$@
+	dh_builddeb          -p$@ -P$(b)/$@
+
+
+#
+# zterm
+#
+
+#zterm@SUFFIX@: install
+#	@echo "--- Building: $@"
+#	dh_installdocs       -p$@ -P$(b)/$@ \
+#				zvt/README zvt/AUTHORS zvt/BUGS zvt/TODO
+#	dh_installchangelogs -p$@ -P$(b)/$@ zvt/ChangeLog
+#	mkdir -p $(b)/$@/@PREFIX@/bin
+#	./libtool --mode=install /usr/bin/install \
+#		zvt/zterm $(b)/$@/@PREFIX@/bin
+#	dh_strip             -p$@ -P$(b)/$@ 
+#	dh_compress          -p$@ -P$(b)/$@ 
+#	dh_fixperms          -p$@ -P$(b)/$@ 
+#	dh_installdeb        -p$@ -P$(b)/$@
+#	dh_shlibdeps         -p$@ -P$(b)/$@
+#	dh_gencontrol        -p$@ -P$(b)/$@
+#	dh_makeshlibs        -p$@ -P$(b)/$@
+#	dh_undocumented      -p$@ -P$(b)/$@ \
+#				zterm.1x
+#	dh_md5sums           -p$@ -P$(b)/$@
+#	dh_builddeb          -p$@ -P$(b)/$@
+
+
+
+#
+# libgtkxmhtml0
+#
+
+libgtkxmhtml0@SUFFIX@: install
+	@echo "--- Building: $@"
+	dh_installdocs       -p$@ -P$(b)/$@ \
+				README NEWS AUTHORS
+	dh_installchangelogs -p$@ -P$(b)/$@ ChangeLog
+	dh_movefiles         -p$@ -P$(b)/$@
+	dh_strip             -p$@ -P$(b)/$@ 
+	dh_compress          -p$@ -P$(b)/$@ 
+	dh_fixperms          -p$@ -P$(b)/$@ 
+	dh_installdeb        -p$@ -P$(b)/$@
+	dh_shlibdeps         -p$@ -P$(b)/$@
+	dh_gencontrol        -p$@ -P$(b)/$@
+	dh_makeshlibs        -p$@ -P$(b)/$@
+	dh_md5sums           -p$@ -P$(b)/$@
+	dh_builddeb          -p$@ -P$(b)/$@
+
+ 
+#
+# libgtkxmhtml-dev
+#
+
+libgtkxmhtml-dev@SUFFIX@: install
+	@echo "--- Building: $@"
+	dh_installdocs       -p$@ -P$(b)/$@ \
+				README NEWS AUTHORS
+	dh_installchangelogs -p$@ -P$(b)/$@ \
+				ChangeLog
+	dh_movefiles         -p$@ -P$(b)/$@
+	dh_strip             -p$@ -P$(b)/$@ 
+	dh_compress          -p$@ -P$(b)/$@ 
+	dh_fixperms          -p$@ -P$(b)/$@ 
+	dh_installdeb        -p$@ -P$(b)/$@
+	dh_shlibdeps         -p$@ -P$(b)/$@
+	dh_gencontrol        -p$@ -P$(b)/$@
+	dh_makeshlibs        -p$@ -P$(b)/$@
+	dh_undocumented      -p$@ -P$(b)/$@ \
+				htmltest.1x
+	dh_md5sums           -p$@ -P$(b)/$@
+	dh_builddeb          -p$@ -P$(b)/$@
+
+#
+# gnome-hello
+#
+
+gnome-hello@SUFFIX@: install
+	@echo "--- Building: $@"
+	dh_installdocs       -p$@ -P$(b)/$@ \
+				README gnome-hello/AUTHORS \
+				gnome-hello/gnome-hello.sgml
+	dh_installchangelogs -p$@ -P$(b)/$@ \
+				gnome-hello/ChangeLog
+	mkdir -p $(b)/$@/@PREFIX@/bin
+	./libtool --mode=install /usr/bin/install \
+		gnome-hello/gnome-hello-0-basic $(b)/$@/@PREFIX@/bin
+	./libtool --mode=install /usr/bin/install \
+		gnome-hello/gnome-hello-1-menus $(b)/$@/@PREFIX@/bin 
+	./libtool --mode=install /usr/bin/install \
+		gnome-hello/gnome-hello-2-i18n $(b)/$@/@PREFIX@/bin 
+	./libtool --mode=install /usr/bin/install \
+		gnome-hello/gnome-hello-3-parse-args $(b)/$@/@PREFIX@/bin 
+	./libtool --mode=install /usr/bin/install \
+		gnome-hello/gnome-hello-4-SM $(b)/$@/@PREFIX@/bin 
+	./libtool --mode=install /usr/bin/install \
+		gnome-hello/gnome-hello-5-dnd $(b)/$@/@PREFIX@/bin 
+	./libtool --mode=install /usr/bin/install \
+		gnome-hello/gnome-hello-6-dynamic-menus $(b)/$@/@PREFIX@/bin 
+	dh_installexamples   -p$@ -P$(b)/$@ \
+		gnome-hello/Makefile gnome-hello/*.c
+	dh_installmenu       -p$@ -P$(b)/$@
+	dh_strip             -p$@ -P$(b)/$@ 
+	dh_compress          -p$@ -P$(b)/$@ 
+	dh_fixperms          -p$@ -P$(b)/$@ 
+	dh_installdeb        -p$@ -P$(b)/$@
+	dh_shlibdeps         -p$@ -P$(b)/$@
+	dh_gencontrol        -p$@ -P$(b)/$@
+	dh_makeshlibs        -p$@ -P$(b)/$@
+	dh_undocumented      -p$@ -P$(b)/$@ \
+				gnome-hello-0-basic.1x \
+				gnome-hello-1-menus.1x \
+				gnome-hello-2-i18n.1x \
+				gnome-hello-3-parse-args.1x \
+				gnome-hello-4-SM.1x \
+				gnome-hello-5-dnd.1x \
+				gnome-hello-6-dynamic-menus.1x
+	dh_md5sums           -p$@ -P$(b)/$@
+	dh_builddeb          -p$@ -P$(b)/$@
+
+binary: binary-indep binary-arch
+
+.PHONY: binary clean binary-indep binary-arch build install install-save install-saved
+
+
