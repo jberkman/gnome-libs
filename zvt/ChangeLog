@@ -1,3 +1,9 @@
+1999-04-15  Michael Zucchi  <zucchi@zzedzone.mmc.com.au>
+
+	* vt.c (vt_scroll_up): Make sure vt->this_line is correct still
+	after the scroll!
+	(vt_scroll_down): And the same here.
+
 1999-04-13  Michael Zucchi  <zucchi@zzedzone.mmc.com.au>
 
 	* zvtterm.c (vt_draw_text): When drawing underline, dont go beyond

@@ -45,6 +45,12 @@
 /* define to 'x' to enable copius debug of this module */
 #define d(x)
 
+/* this one will check nodes aren't 'past' the end of list */
+#define n(x)
+/*
+#define n(x) { if ((x)->next == 0) printf("Bad node, points beyond list: " #x "in %s: line %d\n", __PRETTY_FUNCTION__, __LINE__); }
+*/
+
 /* draw selected text (if selected!) */
 void vt_draw_text_select(int col, int row, char *text, int len, int attr);
 
@@ -166,6 +172,7 @@ static void vt_set_screen(struct vt_em *vt, int screen)
     });
 
     vt->this_line = (struct vt_line *)vt_list_index(&vt->lines, vt->cursory);
+    n(vt->this_line);
     if (screen)
       vt->mode |= VTMODE_ALTSCREEN;
     else
@@ -301,6 +308,8 @@ vt_scroll_up(struct vt_em *vt, int count)
     count--;
   }
 
+  vt->this_line = (struct vt_line *)vt_list_index(&vt->lines, vt->cursory);
+
   d(printf("vt_scroll_up() done\n"));
 }
 
@@ -344,6 +353,8 @@ vt_scroll_down(struct vt_em *vt, int count)
 
     count--;
   }
+
+  vt->this_line = (struct vt_line *)vt_list_index(&vt->lines, vt->cursory);
 }
 
 /**
@@ -453,6 +464,7 @@ void vt_insert_lines(struct vt_em *vt, int count)
   }
 
   vt->this_line = (struct vt_line *)vt_list_index(&vt->lines, vt->cursory);
+  n(vt->this_line);
 }
 
 void vt_delete_lines(struct vt_em *vt, int count)
@@ -484,6 +496,7 @@ void vt_delete_lines(struct vt_em *vt, int count)
     count--;
   }
   vt->this_line = (struct vt_line *)vt_list_index(&vt->lines, vt->cursory);
+  n(vt->this_line);
 }
 
 void vt_clear_lines(struct vt_em *vt, int top, int count)
@@ -581,6 +594,7 @@ static void vt_lf(struct vt_em *vt)
     d(printf("new ypos = %d\n", vt->cursory));
     vt->this_line = vt->this_line->next;
   }
+  n(vt->this_line);
 }
 
 /* next-line */
@@ -788,6 +802,7 @@ vt_delete_line(struct vt_em *vt)
   }
 
   vt->this_line = (struct vt_line *)vt_list_index(&vt->lines, vt->cursory);
+  n(vt->this_line);
 }
 
 /* clear from current cursor position to end of screen */
@@ -859,6 +874,7 @@ vt_restore_cursor(struct vt_em *vt)
     vt->cursory = vt->height-1;
 
   vt->this_line = (struct vt_line *)vt_list_index(&vt->lines, vt->cursory);
+  n(vt->this_line);
   d(printf("found line %d, %p\n", vt->cursory, vt->this_line));
 }
 
@@ -886,6 +902,7 @@ vt_up(struct vt_em *vt)
     }
     
     vt->this_line = (struct vt_line *)vt_list_index(&vt->lines, vt->cursory);
+    n(vt->this_line);
   }
 }
 
@@ -903,6 +920,7 @@ vt_down(struct vt_em *vt)
     vt->cursory=vt->scrollbottom;
 
   vt->this_line = (struct vt_line *)vt_list_index(&vt->lines, vt->cursory);
+  n(vt->this_line);
 }
 
 static void
@@ -973,6 +991,7 @@ vt_gotoxy(struct vt_em *vt, int x, int y)
   d(printf("pos = %d %d\n", vt->cursory, vt->cursorx));
 
   vt->this_line = (struct vt_line *)vt_list_index(&vt->lines, vt->cursory);
+  n(vt->this_line);
 }
 
 /* jump to a cursor position */
@@ -2031,6 +2050,7 @@ void vt_resize(struct vt_em *vt, int width, int height, int pixwidth, int pixhei
 
   /* re-fix 'this line' pointer */
   vt->this_line = (struct vt_line *) vt_list_index(&vt->lines, vt->cursory);
+  n(vt->this_line);
   zvt_resize_subshell(vt->childfd, width, height, pixwidth, pixheight);
 
   d(printf("resized to %d,%d, this = %p\n", vt->width, vt->height, vt->this_line));
