@@ -506,6 +506,9 @@ freeForm(XmHTMLForm *entry)
 {
 	XmHTMLForm *tmp;
 
+	fprintf (stderr, "FIXME: freeForm is not releasing created widgets\n");
+	return;
+	
 	while(entry != NULL)
 	{
 		tmp = entry->next;
@@ -513,6 +516,7 @@ freeForm(XmHTMLForm *entry)
 		{
 			/* destroy */
 			gtk_container_remove (GTK_CONTAINER (entry->w->parent), entry->w);
+			entry->w = NULL;
 		}
 
 		if(entry->name)
