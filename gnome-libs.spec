@@ -34,6 +34,9 @@ Libraries, include files, etc you can use to develop GNOME applications.
 
 %changelog
 
+* Mon Apr 13 1998 Marc Ewing <marc@redhat.com>
+- Added %{prefix}/lib/gnome-libs
+
 * Fri Mar 13 1998 Marc Ewing <marc@redhat.com>
 
 - Integrate into gnome-libs source tree
@@ -86,4 +89,5 @@ fi
 %{prefix}/lib/lib*.so
 %{prefix}/lib/*a
 %{prefix}/lib/*.sh
+%{prefix}/lib/gnome-libs
 %{prefix}/include/*
