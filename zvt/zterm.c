@@ -72,7 +72,7 @@ gint main (gint argc, gchar *argv[])
   /* Create widgets and set options */
   window = GTK_WINDOW(gtk_window_new (GTK_WINDOW_TOPLEVEL));
   gtk_window_set_title (GTK_WINDOW(window), "ZTerm");
-
+  gtk_window_set_policy (GTK_WINDOW(window), FALSE, TRUE, TRUE);
   table = gtk_table_new (1, 2, FALSE);
 
   term = ZVT_TERM(zvt_term_new ());

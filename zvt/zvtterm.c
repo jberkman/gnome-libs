@@ -1046,6 +1046,13 @@ int zvt_term_closepty(ZvtTerm *term)
   return vt_closepty(&term->vx->vt);
 }
 
+static void
+zvt_term_scroll (ZvtTerm *term, int n)
+{
+  gtk_adjustment_set_value (term->adjustment,
+			    term->adjustment->value + (n * term->adjustment->page_size));
+}
+
 /*
   Keyboard input callback
 */
@@ -1107,11 +1114,17 @@ zvt_term_key_press (GtkWidget *widget, GdkEventKey *event)
     break;
   case GDK_KP_Page_Up:
   case GDK_Page_Up:
-    p+=sprintf (p, "\033[5~");
+    if (event->state & GDK_SHIFT_MASK){
+      zvt_term_scroll (term, -1);
+    } else
+      p+=sprintf (p, "\033[5~");
     break;
   case GDK_KP_Page_Down:
   case GDK_Page_Down:
-    p+=sprintf (p, "\033[6~");
+    if (event->state & GDK_SHIFT_MASK){
+      zvt_term_scroll (term, 1);
+    } else
+      p+=sprintf (p, "\033[6~");
     break;
 
     /*
