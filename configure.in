@@ -188,17 +188,7 @@ AM_PATH_GDK_IMLIB(1.8, ,
 dnl
 dnl Check for esound library
 dnl
-ESD_LIBS="$NSL_LIBS"
-AC_CHECK_FUNC(connect,,[
-  AC_CHECK_LIB(socket,connect,ESD_LIBS="-lsocket $ESD_LIBS",,$ESD_LIBS)])
-AC_CHECK_FUNC(inet_aton,,[
-  AC_CHECK_LIB(resolv,inet_aton,ESD_LIBS="-lresolv $ESD_LIBS",,$ESD_LIBS)])
-AC_CHECK_FUNC(nanosleep,,[
-  AC_CHECK_LIB(posix4,nanosleep,ESD_LIBS="-lposix4 $ESD_LIBS",,$ESD_LIBS)])
-AC_CHECK_LIB(esd, esd_open_sound,
-  [AC_DEFINE(HAVE_LIBESD, 1)
-  ESD_LIBS="-lesd $ESD_LIBS"],[ESD_LIBS=""],
-  $ESD_LIBS $GTK_LIBS $DB_LIB $GLIB_LIBS $DL_LIB)
+AM_PATH_ESD(0.2.5)
 
 dnl
 dnl These are for building the appropriate lib*
