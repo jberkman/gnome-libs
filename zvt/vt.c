@@ -1106,7 +1106,10 @@ vt_setmode(struct vt_em *vt, int on)
 	break;
       case 25:			/* cursor invisible/normal */
 	break;
-      case 1047:
+      case 1047:		/* clear the screen if coming from the alt screen */
+	if (on==0 && (vt->mode&&VTMODE_ALTSCREEN))
+	  vt_clear_lines(vt, 0, vt->height);
+	/* falls through */
       case 47:
 	vt_set_screen(vt, on?1:0);
 	break;

@@ -1,3 +1,8 @@
+1999-09-28  Michael Zucchi  <zucchi@zedzone.mmc.com.au>
+
+	* vt.c (vt_setmode): Ahh .. if we switch from alt screen using
+	1047, we must clear the screen.  How obvious.
+
 1999-09-26  Martin Baulig  <martin@home-of-linux.org>
 
 	* update.c (vt_match_clear): You must use g_free() to free a
