@@ -1,6 +1,6 @@
 /* metadata.c - Test of metadata functions.
 
-   Copyright (C) 1998 Tom Tromey
+   Copyright (C) 1998, 1999 Tom Tromey
 
    The Gnome Library is free software; you can redistribute it and/or
    modify it under the terms of the GNU Library General Public License as
@@ -32,6 +32,15 @@ extern char *gnome_metadata_app_dir;
 
 #define PLAIN "text/plain"
 #define FANCY "text/fancy"
+
+struct {
+        char *key;
+        char *data;
+} keys [] = {
+        { "icon-filename", "/gnome/share/pixmaps/blabla.png" },
+        { "icon-position", "/gnome/share/yadayuadayada" },
+        { NULL, NULL }
+};
 
 int
 main (int argc, char *argv[])
@@ -111,6 +120,15 @@ main (int argc, char *argv[])
 	gnome_metadata_get ("foo.spud", "dogname", &len, &buffer);
 	printf ("foo.spud has dog name %s\n", buffer);
 	free (buffer);
+
+        for (i = 0; keys [i].key || keys [i].data; i++){
+                gnome_metadata_set (
+                        "/tmp/a",
+                        keys [i].key,
+                        strlen (keys [i].data)+1,
+                        keys [i].data);
+        }
+        gnome_metadata_rename ("/tmp/a", "/tmp/b");
 
 	return 0;
 }
