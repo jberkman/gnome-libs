@@ -35,6 +35,13 @@ Libraries, include files, etc you can use to develop GNOME applications.
 
 %changelog
 
+* Fri Nov 20 1998 Pablo Saratxaga <srtxg@chanae.alphanet.ch>
+
+- use --localstatedir=/var/lib in config state (score files for games
+  for exemple will go there).
+- added several more files to %files section, in particular language
+  files and corba IDLs
+
 * Wed Sep 23 1998 Michael Fulbright <msf@redhat.com>
 
 - Updated to version 0.30
@@ -52,9 +59,9 @@ Libraries, include files, etc you can use to develop GNOME applications.
 %build
 # Needed for snapshot releases.
 if [ ! -f configure ]; then
-  CFLAGS="$RPM_OPT_FLAGS" ./autogen.sh --prefix=%prefix
+  CFLAGS="$RPM_OPT_FLAGS" ./autogen.sh --prefix=%prefix --localstatedir=/var/lib
 else
-  CFLAGS="$RPM_OPT_FLAGS" ./configure --prefix=%prefix
+  CFLAGS="$RPM_OPT_FLAGS" ./configure --prefix=%prefix --localstatedir=/var/lib
 fi
 
 if [ "$SMP" != "" ]; then
@@ -87,17 +94,20 @@ fi
 %doc AUTHORS COPYING ChangeLog NEWS README
 %{prefix}/lib/lib*.so.*
 %{prefix}/bin/*
+%{prefix}/sbin/*
+%{prefix}/share/locale/*/*/*
+%{prefix}/share/idl/*
 %{prefix}/share/pixmaps/*
 %config %{prefix}/share/gtkrc
-%config %{prefix}/etc/paper.config
+%config %{prefix}/etc/*
 
 %files devel
 %defattr(-, root, root)
 
 %{prefix}/lib/lib*.so
-%{prefix}/lib/*a
+%{prefix}/lib/*.a
 %{prefix}/lib/*.sh
 %{prefix}/lib/gnome-libs
 %{prefix}/include/*
-
+%{prefix}/share/aclocal/*
 
