@@ -3,13 +3,13 @@
 
 #if defined(__ORBIT_IDL__)
 %{
-#pragma include_defs libgnorba/GnomeObject.h
+#pragma include_defs libgnorba/gnome-unknown.h
 #pragma include_defs libgnorba/gnome-factory.h
 %}
 #pragma inhibit push
 #endif
 
-#include "GnomeObject.idl"
+#include "gnome-unknown.idl"
 #include "gnome-factory.idl"
 
 #if defined(__ORBIT_IDL__)
