@@ -14,7 +14,7 @@ if	BUILD_LIBGEMVT
 
 INCLUDES = -I../.. -I$(srcdir)/../.. $(INCLUDE_always)
 gemvt_SOURCES = main.c
-gemvt_LDADD = $(top_builddir)/libgemvt.la $(GNOMELIBS)
+gemvt_LDADD = $(top_builddir)/libgemvt.la $(GNOMELIBS) $(INTLLIBS)
 
 lib_LTLIBRARIES = libgemvt.la
 libgemvtincludedir = $(includedir)/gemvt

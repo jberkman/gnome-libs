@@ -252,6 +252,9 @@ MC_IF_VAR_EQ(USE_GNOME, yes,
 )
 AM_CONDITIONAL(BUILD_LIBGEMVT, test do_$USE_GNOME = do_yes)
 
+dnl Test for -lintl, I hope this works
+nb_GNU_GETTEXT
+
 dnl Automake @VARIABLE@ exports.
 AC_SUBST(CFLAGS)
 AC_SUBST(CPPFLAGS)

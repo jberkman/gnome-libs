@@ -1,5 +1,5 @@
 # Generated automatically from Makefile.in by configure.
-# Makefile.in generated automatically by automake 1.2c from Makefile.am
+# Makefile.in generated automatically by automake 1.2d from Makefile.am
 
 # Copyright (C) 1994, 1995, 1996, 1997 Free Software Foundation, Inc.
 # This Makefile.in is free software; the Free Software Foundation
@@ -16,7 +16,7 @@ SHELL = /bin/sh
 
 srcdir = .
 top_srcdir = ..
-prefix = /da/share/gnome-install
+prefix = /usr/local
 exec_prefix = ${prefix}
 
 bindir = ${exec_prefix}/bin
@@ -49,18 +49,18 @@ INSTALL_DATA = ${INSTALL} -m 644
 INSTALL_SCRIPT = ${INSTALL_PROGRAM}
 transform = s,x,x,
 
-NORMAL_INSTALL = true
-PRE_INSTALL = true
-POST_INSTALL = true
-NORMAL_UNINSTALL = true
-PRE_UNINSTALL = true
-POST_UNINSTALL = true
-host_alias = alpha-unknown-linux-gnu
-host_triplet = alpha-unknown-linux-gnu
+NORMAL_INSTALL = :
+PRE_INSTALL = :
+POST_INSTALL = :
+NORMAL_UNINSTALL = :
+PRE_UNINSTALL = :
+POST_UNINSTALL = :
+host_alias = i686-pc-linux-gnu
+host_triplet = i686-pc-linux-gnu
 CATALOGS = 
 CATOBJEXT = .mo
 CC = gcc
-CFLAGS = -Wall -O2 -g
+CFLAGS = -g -O2
 CPPFLAGS = 
 CXX = c++
 DATADIRNAME = lib
@@ -74,14 +74,14 @@ GTK_LIBS = -lgtk -lgdk -lglib -lm
 GUILE_LIBS = -lguile
 INSTOBJEXT = .mo
 INTLDEPS = 
-INTLLIBS = 
+INTLLIBS = -lintl
 INTLOBJS = 
 INTLSUB = intl
 JPEG_LIBS = -ljpeg
 LD = /usr/bin/ld
 LDFLAGS = 
 LEX = flex
-LIBTOOL = $(top_builddir)/libtool
+LIBTOOL = $(SHELL) $(top_builddir)/libtool
 LISPDIR = @LISPDIR@
 LN_S = ln -s
 MAKEINFO = makeinfo
@@ -216,7 +216,7 @@ OBJECTS = $(libgtkxmhtml_la_OBJECTS) $(htmltest_OBJECTS)
 default: all
 
 .SUFFIXES:
-.SUFFIXES: .c .lo .o
+.SUFFIXES: .S .c .lo .o .s
 $(srcdir)/Makefile.in: Makefile.am $(top_srcdir)/configure.in $(ACLOCAL_M4) 
 	cd $(top_srcdir) && $(AUTOMAKE) --gnu gtk-xmhtml/Makefile
 
@@ -239,8 +239,8 @@ install-libLTLIBRARIES: $(lib_LTLIBRARIES)
 	$(mkinstalldirs) $(libdir)
 	@list='$(lib_LTLIBRARIES)'; for p in $$list; do \
 	  if test -f $$p; then \
-	    echo "$(LIBTOOL)  --mode=install $(INSTALL_PROGRAM) $$p $(libdir)/$$p"; \
-	    $(LIBTOOL)  --mode=install $(INSTALL_PROGRAM) $$p $(libdir)/$$p; \
+	    echo "$(LIBTOOL)  --mode=install $(INSTALL_DATA) $$p $(libdir)/$$p"; \
+	    $(LIBTOOL)  --mode=install $(INSTALL_DATA) $$p $(libdir)/$$p; \
 	  else :; fi; \
 	done
 
@@ -251,6 +251,12 @@ uninstall-libLTLIBRARIES:
 	done
 
 .c.o:
+	$(COMPILE) -c $<
+
+.s.o:
+	$(COMPILE) -c $<
+
+.S.o:
 	$(COMPILE) -c $<
 
 mostlyclean-compile:
@@ -266,11 +272,17 @@ maintainer-clean-compile:
 .c.lo:
 	$(LIBTOOL) --mode=compile $(COMPILE) -c $<
 
+.s.lo:
+	$(LIBTOOL) --mode=compile $(COMPILE) -c $<
+
+.S.lo:
+	$(LIBTOOL) --mode=compile $(COMPILE) -c $<
+
 mostlyclean-libtool:
 	-rm -f *.lo
 
 clean-libtool:
-	-rm -rf .libs
+	-rm -rf .libs _libs
 
 distclean-libtool:
 
@@ -324,14 +336,15 @@ uninstall-libgtkxmhtmlincludeHEADERS:
 
 tags: TAGS
 
-ID: $(HEADERS) $(SOURCES)
-	here=`pwd` && cd $(srcdir) && mkid -f$$here/ID $(SOURCES) $(HEADERS)
+ID: $(HEADERS) $(SOURCES) $(LISP)
+	here=`pwd` && cd $(srcdir) \
+	  && mkid -f$$here/ID $(SOURCES) $(HEADERS) $(LISP)
 
-TAGS:  $(HEADERS) $(SOURCES)  $(TAGS_DEPENDENCIES)
+TAGS:  $(HEADERS) $(SOURCES)  $(TAGS_DEPENDENCIES) $(LISP)
 	tags=; \
 	here=`pwd`; \
-	test -z "$(ETAGS_ARGS)$(SOURCES)$(HEADERS)$$tags" \
-	  || (cd $(srcdir) && etags $(ETAGS_ARGS) $$tags  $(SOURCES) $(HEADERS) -o $$here/TAGS)
+	test -z "$(ETAGS_ARGS)$(SOURCES)$(HEADERS)$(LISP)$$tags" \
+	  || (cd $(srcdir) && etags $(ETAGS_ARGS) $$tags  $(SOURCES) $(HEADERS) $(LISP) -o $$here/TAGS)
 
 mostlyclean-tags:
 
