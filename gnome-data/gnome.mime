@@ -1,0 +1,253 @@
+#
+# (C) The Free Software Foundation, 1998
+#
+# Mime types as provided by the GNOME libraries for GNOME.
+#
+# Applications can provide more mime types by installing other
+# .mime files in the $share/mime-info directory.
+#
+# The format of this file is:
+#
+# mime-type
+#         ext[,prio]:   list of extensions for this mime-type
+#         regex[,prio]: a regular expression that matches the filename
+# 
+# more than one ext: and regex: fields can be present.
+# 
+# prio is the priority for the match, the default is 1.  This is required 
+# to distinguish composed filenames, for example .gz has a priority of 1
+# and .tar.gz has a priority of 2 (thus a file having the filename
+# something.tar.gz will match the mime-type for tar.gz before the mime-type
+# for .gz
+#
+
+application/x-gnome-app-info 	
+	ext: desktop
+
+text/c				
+	ext: c h
+
+text/C++			
+	ext: cc C cpp
+
+application/x-bzip		
+	ext: bz2 bz
+
+audio/x-wav:
+	ext: wav
+
+audio/x-mp3			
+	ext: mp3
+
+audio/x-aiff			
+	ext: aif aifc aiff
+
+audio/ulaw			
+	ext: au
+
+audio/basic			
+	ext: snd
+
+audio/x-voc			
+	ext: voc
+
+application/vcard		
+	ext: vcf
+
+applicacion/x-troff-man		
+	ext: ms me
+	regex: (([^0-9]|^[^\.]*)\.([1-9][A-Za-z]*|n)|\.man)$
+
+image/x-bmp			
+	ext: bmp
+
+image/x-png			
+	ext: png
+
+image/x-tga			
+	ext: tga
+
+application/x-object-file	
+	ext: o
+
+application/postscript
+	ext: ps eps
+
+application/pgp
+	ext: pgp
+audio/x-aiff
+	ext: aif aifc aiff
+
+text/plain
+	ext: asc txt
+
+audio/ulaw
+	ext: au
+
+video/x-msvideo
+	ext: avi
+
+application/x-bcpio
+	ext: bcpio
+
+application/octet-stream
+	ext: bin
+
+application/x-netcdf
+	ext: cdf nc
+
+application/x-cpio
+	ext: cpio
+
+application/x-csh
+	ext: csh
+
+application/x-dvi
+	ext: dvi
+
+text/x-setext
+	ext: etx
+
+application/andrew-inset
+	ext: ez
+
+image/gif
+	ext: gif
+
+application/x-gtar
+	ext: gtar
+
+application/x-gunzip
+	ext: gz
+
+application/x-hdf
+	ext: hdf
+
+text/html
+	ext: html
+
+image/ief
+	ext: ief
+
+image/jpeg
+	ext: jpe jpeg jpg
+
+application/x-latex
+	ext: latex
+
+application/x-troff-man
+	ext: man
+
+application/x-troff-me
+	ext: me
+
+application/x-mif
+	ext: mif
+
+video/quicktime
+	ext: mov qt
+
+video/x-sgi-movie
+	ext: movie
+
+video/mpeg
+	ext: mp2 mpe mpeg mpg
+
+application/x-troff-ms
+	ext: ms
+
+application/oda
+	ext: oda
+
+image/x-portable-bitmap
+	ext: pbm
+
+application/pdf
+	ext: pdf
+
+image/x-portable-graymap
+	ext: pgm
+
+application/x-chess-pgn
+	ext: pgn
+
+image/x-portable-anymap
+	ext: pnm
+
+image/x-portable-pixmap
+	ext: ppm
+
+image/x-cmu-raster
+	ext: ras
+
+image/x-rgb
+	ext: rgb
+
+application/x-troff
+	ext: roff t tr
+
+application/rtf
+	ext: rtf
+
+text/richtext
+	ext: rtx
+
+application/x-sh
+	ext: sh
+
+application/x-shar
+	ext: shar
+
+audio/basic
+	ext: snd
+
+application/x-wais-source
+	ext: src
+
+application/x-sv4cpio
+	ext: sv4cpio
+
+application/x-sv4crc
+	ext: sv4crc
+
+application/x-tar
+	ext: tar
+
+application/x-compressed-tar
+	regex,2: tar\.gz$
+
+application/x-tcl
+	ext: tcl
+
+application/x-tex
+	ext: tex
+
+application/x-texinfo
+	ext: texi texinfo
+
+image/tiff
+	ext: tif tiff
+
+text/tab-separated-values
+	ext: tsv
+
+application/x-ustar
+	ext: ustar
+
+audio/x-wav
+	ext: wav
+
+image/x-xbitmap
+	ext: xbm
+
+image/x-xpixmap
+	ext: xpm
+
+image/x-xwindowdump
+	ext: xwd
+
+application/zip
+	ext: zip
+
+audio/x-pn-realaudio      
+	ext: rm ra ram
