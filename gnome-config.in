@@ -261,6 +261,7 @@ while test $# -gt 0; do
 	;;
     idl)
         the_flags="@GNOME_IDLDIR@"
+	idl_def=yes
 	;;
     oaf)
 	the_libs="$the_libs `oaf-config --libs`"
@@ -325,8 +326,8 @@ fi
 if [ "$need_gnome_conf" = "true" ]; then
     source_conf_file gnome
 fi
-the_flags="$the_flags -DGNOME_INTERFACE_VERSION=$INTERFACE_VERSION"
 if [ "$get_gnome" != "false" ]; then
+    flags_need_def=
     the_flags="$the_flags $GNOME_INCLUDEDIR"
     the_libs="$the_libs $GNOME_LIBDIR $GNOME_LIBS"
 fi
@@ -354,6 +355,11 @@ for I in $get_modules; do
 done
 
 if $cflags; then
+    if [ -n "$idl_def" ]; then
+	the_flags="$the_flags --define GNOME_INTERFACE_VERSION=$INTERFACE_VERSION"
+    else
+	the_flags="$the_flags -DGNOME_INTERFACE_VERSION=$INTERFACE_VERSION"
+    fi
     all_flags="$the_flags"
 fi
 
