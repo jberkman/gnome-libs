@@ -3,16 +3,7 @@ HELLO_HELP_DIR = $(datadir)/gnome-hello
 
 # DEFS += -ggdb -Wall -DDEBUG
 
-#INCLUDES = 			\
-#	-I../.. 		\
-#	-I$(srcdir)/../.. 	\
-#	-I$(includedir)		\
-#	-DHAS_GNOME=1		\
-#	-DHELP_PATH=\"$(GTT_HELP_DIR)\" \
-#	-DLOCALEDIR=\"$(datadir)/locale\" \
-#	$(X_CFLAGS)
-
-INCLUDES=-I../.. -I$(srcdir)/../.. -I$(includedir) \
+INCLUDES = -I../.. -I$(srcdir)/../.. -I$(includedir) \
 	 -DLOCALEDIR=\"$(datadir)/locale\"
 
 bin_PROGRAMS = gnome-hello
@@ -24,6 +15,7 @@ gnome_hello_LDADD = \
 	$(top_builddir)/libgnome/libgnome.la		\
 	$(top_builddir)/intl/libintl.a			\
 	$(top_builddir)/gtk-xmhtml/libgtkxmhtml.la	\
+	$(top_builddir)/support/libsupport.a		\
 	$(XPM_LIBS)					\
 	$(GTK_LIBS)					\
 	$(DL_LIB)					\
