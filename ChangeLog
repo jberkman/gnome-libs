@@ -1,3 +1,17 @@
+1998-12-17  Christopher Blizzard  <blizzard@appliedtheory.com>
+
+	* libgnorba/goad-browser.c (gb_create_server_list): If the browser
+ 	can't find any installed services ( gnome-core isn't installed -
+ 	it could happen ) pop up a pleasant dialog saying that it's a good
+ 	idea to check your installation and, more importantly, don't
+ 	crash.  Also, before refreshing the services list make sure that
+ 	the servlist and the servlist->list aren't null.
+
+1998-12-17  Ettore Perazzoli  <ettore@comm2000.it>
+
+	* libgnorba/goad-browser.c (gb_create_main_window): Show the main
+	window *after* setting up the dock.
+
 1998-12-16  Sven Neumanns  <sven@gimp.org>
 
 	* replaced all occurences of gtk_label_set() with

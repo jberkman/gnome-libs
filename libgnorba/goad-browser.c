@@ -15,6 +15,7 @@ static GdkBitmap *pm_active_mask, *pm_inactive_mask;
 static GoadServerList *servlist = NULL;
 static GoadServer *slist = NULL;
 static GtkWidget *mainwin;
+static GtkWidget *no_server_warning;
 
 static guint status_ctx = -1;
 
@@ -108,11 +109,11 @@ gb_create_main_window(CORBA_ORB orb, CORBA_Environment *ev)
 
   gnome_app_set_contents(GNOME_APP(mainwin), wtmp);
 
-  gtk_widget_show_all(mainwin);
-
   gnome_app_create_menus_with_data(GNOME_APP(mainwin), mainmenu, clist);
   gnome_app_create_toolbar_with_data(GNOME_APP(mainwin), toolbar, clist);
   gnome_app_set_statusbar(GNOME_APP(mainwin), gtk_statusbar_new());
+
+  gtk_widget_show_all(mainwin);
 
   status_ctx =
     gtk_statusbar_get_context_id(GTK_STATUSBAR(GNOME_APP(mainwin)->statusbar),
@@ -140,7 +141,7 @@ gb_create_server_list(GtkWidget *w, GtkCList *clist)
   gtk_clist_freeze(clist);
   gtk_clist_clear(clist);
 
-  if(servlist)
+  if(servlist && servlist->list)
     goad_server_list_free(servlist);
 
   servlist = goad_server_list_get();
@@ -153,35 +154,42 @@ gb_create_server_list(GtkWidget *w, GtkCList *clist)
   columns[1] = NULL;
   memset(maxw, 0, sizeof(maxw));
 
-  for(i = 0; slist[i].repo_id; i++) {
-
-    columns[0] = slist[i].server_id;
-    columns[2] = slist[i].description;
-    columns[3] = g_strjoinv(",",slist[i].repo_id);
-
-    switch(slist[i].type) {
-    case GOAD_SERVER_SHLIB: columns[4] = "shlib"; break;
-    case GOAD_SERVER_EXE: columns[4] = "exe"; break;
-    case GOAD_SERVER_RELAY: columns[4] = "relay"; break;
-    default:
-      columns[4] = NULL;
-    }
-
-    columns[5] = slist[i].location_info;
-
-    currow = gtk_clist_append(clist, columns);
-    g_free(columns[3]);
-
-    gtk_clist_set_row_data(clist, currow, &slist[i]);
-
-    if(gb_is_server_active_p(ns, &slist[i], &ev))
-      gtk_clist_set_pixmap(clist, currow, 1, pm_active, pm_active_mask);
-    else
-      gtk_clist_set_pixmap(clist, currow, 1, pm_inactive, pm_inactive_mask);
-
-    for(j = 0; j < 6; j++) {
-      if(columns[j])
-	maxw[j] = MAX(gdk_string_width(font, columns[j]), maxw[j]);
+  if (slist == NULL) {
+    no_server_warning = gnome_warning_dialog("I couldn't find any installed services.  Either you don't have\nany services installed or I don't know the patch to find them.\nIn either case, please check your GNOME installation.");
+    gtk_signal_connect(GTK_OBJECT(no_server_warning), "destroy",
+		       gtk_widget_destroy, no_server_warning);
+  }
+  else {
+    for(i = 0; slist[i].repo_id; i++) {
+      
+      columns[0] = slist[i].server_id;
+      columns[2] = slist[i].description;
+      columns[3] = g_strjoinv(",",slist[i].repo_id);
+      
+      switch(slist[i].type) {
+      case GOAD_SERVER_SHLIB: columns[4] = "shlib"; break;
+      case GOAD_SERVER_EXE: columns[4] = "exe"; break;
+      case GOAD_SERVER_RELAY: columns[4] = "relay"; break;
+      default:
+	columns[4] = NULL;
+      }
+      
+      columns[5] = slist[i].location_info;
+      
+      currow = gtk_clist_append(clist, columns);
+      g_free(columns[3]);
+      
+      gtk_clist_set_row_data(clist, currow, &slist[i]);
+      
+      if(gb_is_server_active_p(ns, &slist[i], &ev))
+	gtk_clist_set_pixmap(clist, currow, 1, pm_active, pm_active_mask);
+      else
+	gtk_clist_set_pixmap(clist, currow, 1, pm_inactive, pm_inactive_mask);
+      
+      for(j = 0; j < 6; j++) {
+	if(columns[j])
+	  maxw[j] = MAX(gdk_string_width(font, columns[j]), maxw[j]);
+      }
     }
   }
 
