@@ -1,3 +1,19 @@
+1998-12-03  Raja R Harinath  <harinath@cs.umn.edu>
+
+	* tests/parse-path.c (prefix): New variable -- standin for a
+	#define of the same name in `gnome-config.c'.
+	(parse-path.cP): Include this file.  It contains the internal
+	algorithm we desire to test. 
+	(test_parse_path): New function.  Moved from `gnome-config.c' and
+	renamed from _test_suite_check_parse_path.
+	(my_parse_path): Rename from `parse_path' to avoid conflict with
+	`parse-path.cP'. 
+	(run_tests_with_prefix): Simulate `gnome_config_{push,pop}_prefix'. 
+	(main): Pass a placebo version string to `gnomelib_init'.	
+
+	* Makefile.am (INCLUDES): Change -I../.. to -I..
+	(EXTRA_DISTS): Distribute `parse-path.c' and `parse-path.out'.
+
 1998-11-25  Raja R Harinath  <harinath@cs.umn.edu>
 
 	* tests/fileconvert.c (main): Pass an additional version parameter

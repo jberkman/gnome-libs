@@ -1,8 +1,8 @@
-INCLUDES = 			\
-	-I../.. 		\
-	-I$(srcdir)/../.. 	\
-	$(SUPPORTINCS)		\
-	-I$(includedir)		\
+INCLUDES =					\
+	-I..					\
+	-I$(srcdir)/..				\
+	$(SUPPORTINCS)				\
+	-I$(includedir)				\
 	@GTK_CFLAGS@
 
 LDADD = $(top_builddir)/libgnomeui/libgnomeui.la \
@@ -34,5 +34,5 @@ EXTRA_DIST = $(TESTS)							\
 	tests/skel.c expected/skel.out					\
 	tests/split.c expected/split.out				\
 	tests/trigs.c tests/trigs.in expected/trigs.out			\
-	tests/metadata.c expected/metadata.out
-
+	tests/metadata.c expected/metadata.out				\
+	tests/parse-path.c expected/parse-path.out
