@@ -17,6 +17,8 @@
 #include <fcntl.h>
 #include <signal.h>
 
+#define GOAD_MAGIC_FD 123
+
 #define SHLIB_DEPENDENCIES 1
 #ifdef SHLIB_DEPENDENCIES
 #include <dlfcn.h>
@@ -928,7 +930,10 @@ goad_server_activate_exe(GoadServer *sinfo,
     struct sigaction sa;
 
     close(0);
-    dup2(iopipes[1], 1);
+    if(iopipes[1] != GOAD_MAGIC_FD) {
+      dup2(iopipes[1], GOAD_MAGIC_FD);
+      close(iopipes[1]);
+    }
     
     setsid();
     memset(&sa, 0, sizeof(sa));
@@ -962,25 +967,26 @@ goad_server_register(CORBA_Object name_server,
   CORBA_Object            old_server, orig_ns = name_server;
   static int did_print_ior = 0;
 
+  CORBA_exception_free(ev);
+
   if(!did_print_ior && goad_activation_id) {
     CORBA_char *strior;
-    int stdoutfd;
+    FILE *iorout;
     struct sigaction oldaction, myaction;
     int fl;
 
-    if(fcntl(1, F_GETFL, &fl) < 0) {
-      stdoutfd = open("/dev/null", O_RDWR);
-      dup2(stdoutfd, 1); close(stdoutfd);
+    iorout = fdopen(GOAD_MAGIC_FD, "a");
+    if(iorout) {
+      memset(&myaction, '\0', sizeof(myaction));
+      myaction.sa_handler = SIG_IGN;
+      
+      sigaction(SIGPIPE, &myaction, &oldaction);
+      strior = CORBA_ORB_object_to_string(gnome_CORBA_ORB(), server, ev);
+      fprintf(iorout, "%s\n", strior); fflush(iorout);
+      fclose(iorout);
+      CORBA_free(strior);
+      sigaction(SIGPIPE, &oldaction, NULL);
     }
-
-    memset(&myaction, '\0', sizeof(myaction));
-    myaction.sa_handler = SIG_IGN;
-
-    sigaction(SIGPIPE, &myaction, &oldaction);
-    strior = CORBA_ORB_object_to_string(gnome_CORBA_ORB(), server, ev);
-    printf("%s\n", strior); fflush(stdout);
-    CORBA_free(strior);
-    sigaction(SIGPIPE, &oldaction, NULL);
 
     did_print_ior = 1;
   }
@@ -1009,6 +1015,7 @@ goad_server_register(CORBA_Object name_server,
 
   if (ev->_major == CORBA_USER_EXCEPTION &&
       !strcmp(CORBA_exception_id(ev),ex_CosNaming_NamingContext_NotFound)) {
+
     CosNaming_NamingContext_bind(name_server, &nom, server, ev);
     if (ev->_major != CORBA_NO_EXCEPTION) {
       switch( ev->_major ) {
@@ -1020,6 +1027,7 @@ goad_server_register(CORBA_Object name_server,
 	break;
       }
     }
+
   } else {
     if(orig_ns == CORBA_OBJECT_NIL)
       CORBA_Object_release(name_server, ev);
@@ -1046,6 +1054,9 @@ goad_server_register(CORBA_Object name_server,
 
   if(orig_ns == CORBA_OBJECT_NIL)
     CORBA_Object_release(name_server, ev);
+
+  CORBA_exception_free(ev);
+
   return 0;
 }
 
@@ -1065,6 +1076,7 @@ goad_server_unregister(CORBA_Object name_server,
 
   nc[2].id   = (char *)name;
   nc[2].kind = (char *)kind;
+
   CosNaming_NamingContext_unbind(name_server, &nom, ev);
   if (ev->_major != CORBA_NO_EXCEPTION) {
 #if 0
@@ -1079,12 +1091,14 @@ goad_server_unregister(CORBA_Object name_server,
 #endif
     if(orig_ns == CORBA_OBJECT_NIL)
       CORBA_Object_release(name_server, ev);
+
     return -1;
   }
 
   if(orig_ns == CORBA_OBJECT_NIL)
     CORBA_Object_release(name_server, ev);
 
+  CORBA_exception_free(ev);
   return 0;
 }
 
