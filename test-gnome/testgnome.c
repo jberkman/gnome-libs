@@ -32,6 +32,9 @@
 static const gchar *authors[] = {
 	"Richard Hestilow",
 	"Federico Mena",
+	"Eckehard Berns",
+	"Havoc Pennington",
+	"Miguel de Icaza",
 	NULL
 };
 
@@ -288,7 +291,7 @@ create_papersel(void)
 {
 	GtkWidget *papersel;
 	GtkWidget *app;
-	gchar *dummy;
+
 	app = create_newwin(TRUE,"testGNOME","Paper Selection");
 	papersel = gnome_paper_selector_new( );
 	gnome_app_set_contents(GNOME_APP(app),papersel);
@@ -472,22 +475,41 @@ static void
 create_icon_list(void)
 {
 	GtkWidget *app;
-	GtkWidget *iconlist;
+	GtkWidget *iconlist, *hbox, *scroll;
 	GdkImlibImage *pix;
+	int i;
+	
 	app = create_newwin(TRUE,"testGNOME","Icon List");
 
-	iconlist = gnome_icon_list_new();
-
+	gtk_widget_push_visual (gdk_imlib_get_visual ());
+	gtk_widget_push_colormap (gdk_imlib_get_colormap ());
+	iconlist = gnome_icon_list_new (80, NULL, TRUE);
+	hbox = gtk_hbox_new (0, 0);
+	scroll = gtk_vscrollbar_new (GNOME_ICON_LIST (iconlist)->adj);
+	gtk_box_pack_start (GTK_BOX (hbox), iconlist, 1, 1, 0);
+	gtk_box_pack_start (GTK_BOX (hbox), scroll, 0, 0, 0);
+	
+	GTK_WIDGET_SET_FLAGS(iconlist, GTK_CAN_FOCUS);
 	pix = gdk_imlib_create_image_from_xpm_data((gchar **)bomb_xpm);
 	gdk_imlib_render (pix, pix->rgb_width, pix->rgb_height);
 
-	gnome_icon_list_append_imlib(GNOME_ICON_LIST(iconlist), pix, "Foo");
-	gnome_icon_list_append_imlib(GNOME_ICON_LIST(iconlist), pix, "Bar");
-	gnome_icon_list_append_imlib(GNOME_ICON_LIST(iconlist), pix, "LaLa");
+	gtk_widget_grab_focus (iconlist);
+	
+	for (i = 0; i < 30; i++){
+		gnome_icon_list_append_imlib(GNOME_ICON_LIST(iconlist), pix, "Foo");
+		gnome_icon_list_append_imlib(GNOME_ICON_LIST(iconlist), pix, "Bar");
+		gnome_icon_list_append_imlib(GNOME_ICON_LIST(iconlist), pix, "LaLa");
+	}
+	
+	gnome_app_set_contents(GNOME_APP(app),hbox);
+	gnome_icon_list_set_selection_mode (GNOME_ICON_LIST (iconlist), GTK_SELECTION_MULTIPLE);
+	gnome_icon_list_thaw (GNOME_ICON_LIST (iconlist));
 
-	gnome_app_set_contents(GNOME_APP(app),iconlist);
+	gtk_widget_set_usize (iconlist, 200, 200);
 	gtk_widget_show(iconlist);
 	gtk_widget_show(app);
+	gtk_widget_pop_visual ();
+	gtk_widget_pop_colormap ();
 }
 
 
@@ -621,7 +643,6 @@ make_button_hbox(GtkBox * box, gchar * buttontext,
 		 GtkSignalFunc callback, gpointer data)
 {
   GtkWidget * hbox;
-  GtkWidget * entry;
   GtkWidget * button;
 
   hbox = gtk_hbox_new(TRUE, GNOME_PAD);

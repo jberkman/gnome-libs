@@ -5,9 +5,9 @@ INCLUDES = -I.. -I$(srcdir)/.. -I$(includedir) $(GDK_IMLIB_CFLAGS) $(SUPPORTINCS
 	-DGNOMELOCALEDIR=\""$(datadir)/locale"\" \
 	-DLOCALEDIR=\"$(datadir)/locale\"
 
-noinst_PROGRAMS = testgnome
+noinst_PROGRAMS = test-gnome
 
-testgnome_SOURCES =		\
+test_gnome_SOURCES =		\
 	canvas.c		\
 	canvas-primitives.c	\
 	canvas-arrowhead.c	\
@@ -21,7 +21,7 @@ EXTRA_DIST = 		\
 	flower.png	\
 	toroid.png
 
-testgnome_LDADD = \
+test_gnome_LDADD = \
 	$(top_builddir)/libgnomeui/libgnomeui.la 	\
 	$(top_builddir)/libgnome/libgnome.la		\
 	@LIBSUPPORT@					\
