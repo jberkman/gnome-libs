@@ -1,3 +1,9 @@
+1999-09-10  Michael Zucchi  <mzucchi@denr.sa.gov.au>
+
+	* vt.h (VTMODE_SEND_MOUSE): Put this flag back in.  Make the other
+	mouse flags use this bit always, when they are active.  Bit of an
+	annoying hack for backward compatability.
+
 1999-09-09  Michael Zucchi  <mzucchi@denr.sa.gov.au>
 
 	* vt.c (vt_report_button): Propertly report the 2 different mouse

@@ -173,14 +173,15 @@ struct vt_em {
 #endif
 
 #define VTMODE_INSERT 0x00000001 /* insert mode active */
-
+#define VTMODE_SEND_MOUSE 0x02	/* compatability flag, so apps can check for send-mouse mode,
+				   new apps should check VTMODE_SEND_MOUSE_MASK */
 #define VTMODE_WRAPOFF 0x04	/* wrap screenmode? (default = on) */
 #define VTMODE_APP_CURSOR 0x00000008 /* application cursor keys */
 #define VTMODE_RELATIVE 0x10	/* relative origin mode */
 #define VTMODE_APP_KEYPAD 0x20	/* application keypad on */
-#define VTMODE_SEND_MOUSE_PRESS 0x40 /* send mouse press */
-#define VTMODE_SEND_MOUSE_BOTH 0x80 /* send mouse press & release */
-#define VTMODE_SEND_MOUSE_MASK 0xc0 /* mask of options for mouse reports */
+#define VTMODE_SEND_MOUSE_PRESS 0x42 /* send mouse press, include bit 1 for compatability */
+#define VTMODE_SEND_MOUSE_BOTH 0x82 /* send mouse press & release */
+#define VTMODE_SEND_MOUSE_MASK 0xc2 /* mask of options for mouse reports, bit 1 is used for compatability */
 
 #define VTMODE_ALTSCREEN 0x80000000 /* on alternate screen? */
 
