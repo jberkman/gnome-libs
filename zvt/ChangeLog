@@ -1,3 +1,10 @@
+Thu Feb 25 03:47:44 1999  Timur Bakeyev <mc@bat.ru>
+
+	* gnome-pty.h, gnome-utmp.c: Added function write_login_record as
+	opposit to write_logout_record.
+
+	Design rewritten. Supposed, should work on all platforms.
+
 1999-02-24  Miguel de Icaza  <miguel@nuclecu.unam.mx>
 
 	* vt.c (vt_set_screen): Removed call to vt_clear_lines here, as

@@ -3,9 +3,12 @@
  *
  * Author:
  *    Miguel de Icaza (miguel@gnu.org).
+ *    Timur I. Bakeyev (timur@gnu.org).
  *
  * FIXME: Do we want to register the PID of the process running *under* the subshell
  * or the PID of the parent process? (we are doing the latter now).
+ *
+ * FIXME: Solaris (utmpx) stuff need to be checked.
  */
  
 #include <config.h>
@@ -32,36 +35,45 @@
 #    include <utmpx.h>
 #endif
 
-#if !defined(UTMP_FILENAME)
+#if defined(HAVE_TTYENT_H)
+#    include <ttyent.h>
+#endif
+
+#if !defined(UTMP_OUTPUT_FILENAME)
 #    if defined(UTMP_FILE)
-#        define UTMP_FILENAME UTMP_FILE
+#        define UTMP_OUTPUT_FILENAME UTMP_FILE
 #    elif defined(_PATH_UTMP) /* BSD systems */
-#        define UTMP_FILENAME _PATH_UTMP
+#        define UTMP_OUTPUT_FILENAME _PATH_UTMP
 #    else
-#        define UTMP_FILENAME "/etc/utmp"
+#        define UTMP_OUTPUT_FILENAME "/etc/utmp"
 #    endif
 #endif
 
-#if !defined(WTMP_FILENAME)
-#    if defined(WTMP_FILE)
-#        define WTMP_FILENAME WTMP_FILE
+#if !defined(WTMP_OUTPUT_FILENAME)
+#    if defined(WTMPX_FILE)
+#        define WTMP_OUTPUT_FILENAME WTMPX_FILE
+#    elif defined(_PATH_WTMPX)
+#        define WTMP_OUTPUT_FILENAME _PATH_WTMPX
+#    elif defined(WTMPX_FILENAME)
+#        define WTMP_OUTPUT_FILENAME WTMPX_FILENAME
+#    elif defined(WTMP_FILE)
+#        define WTMP_OUTPUT_FILENAME WTMP_FILE
 #    elif defined(_PATH_WTMP) /* BSD systems */
-#        define WTMP_FILENAME _PATH_WTMP
+#        define WTMP_OUTPUT_FILENAME _PATH_WTMP
 #    else
-#        define WTMP_FILENAME "/etc/wtmp"
+#        define WTMP_OUTPUT_FILENAME "/etc/wtmp"
 #    endif
 #endif
 
-#if defined(HAVE_GETUTMPX)
-#undef  WTMP_FILENAME
-#define WTMP_FILENAME WTMPX_FILE
+#if defined(HAVE_UPDWTMPX)
 #define update_wtmp updwtmpx
-#else /* !HAVE_GETUTMPX */
-
+#elif defined(HAVE_UPDWTMP)
+#define update_wtmp updwtmp
+#else /* !HAVE_UPDWTMPX && !HAVE_UPDWTMP */
 static void
-update_wtmp (char *file, struct utmp *putmp)
+update_wtmp (char *file, UTMP *putmp)
 {
-	int fd, times = 10;
+	int fd, times = 3;
 #if defined(HAVE_FCNTL)
 	struct flock lck;
 
@@ -74,25 +86,27 @@ update_wtmp (char *file, struct utmp *putmp)
 	if ((fd = open (file, O_WRONLY|O_APPEND, 0)) < 0)
 		return;
 
+#if defined(HAVE_FCNTL) || defined(HAVE_FLOCK)
 	while (times--)
-#if defined(HAVE_FCNTL)
+#    if defined(HAVE_FCNTL)
 	    if ((fcntl (fd, F_SETLK, &lck) < 0)){
 		if (errno != EAGAIN && errno != EACCES){
-#elif defined(HAVE_FLOCK)
+#    elif defined(HAVE_FLOCK)
 	    if (flock(fd, LOCK_EX | LOCK_NB) < 0){
 		if (errno != EWOULDBLOCK){
-#endif
+#    endif
 		    close (fd);
 		    return;
 		    }
 		sleep (1); /*?!*/
 		} else
 			break;
+#endif /* HAVE_FCNTL || HAVE_FLOCK */
 
 	lseek (fd, 0, SEEK_END);
-	write (fd, putmp, sizeof(struct utmp));
+	write (fd, putmp, sizeof(UTMP));
 
-	/* unlocking the file */
+	/* unlock the file */
 #if defined(HAVE_FCNTL)	
 	lck.l_type = F_UNLCK;
 	fcntl (fd, F_SETLK, &lck);
@@ -103,105 +117,96 @@ update_wtmp (char *file, struct utmp *putmp)
 }
 #endif /* !HAVE_GETUTMPX */
 
-#if !defined(HAVE_GETUTENT)
+#if !defined(HAVE_GETUTENT) && defined(HAVE_GETTTYENT)
 static void
-update_utmp (char *file, struct utmp *putmp)
+pututline (UTMP *ut)
 {
-    int fd, tty;
+    struct ttyent *ty;
+    int fd, pos = 0;
 
-    tty = ttyslot();
-    if (tty > 0 && (fd = open(file, O_WRONLY|O_CREAT, 0644)) < 0)
+    if((fd=open(UTMP_OUTPUT_FILENAME, O_RDWR|O_CREAT, 0644)) < 0) 
 	return;
-	
-    lseek(fd, (off_t)(tty * sizeof(struct utmp)), SEEK_SET);
-    write(fd, putmp, sizeof(struct utmp));
+
+    setttyent ();
+    while ((ty = getttyent()) != NULL)
+	{
+	++pos;
+	if (strncmp(ty->ty_name, ut->ut_line, sizeof(ut->ut_line)) == NULL)
+	    {
+	    lseek (fd, (off_t)(pos * sizeof(UTMP)), SEEK_SET);
+	    write(fd, ut, sizeof(UTMP));
+	    }
+	}
+    endttyent ();
+
     close(fd);
 }
-#endif /* !HAVE_GETUTENT */
+#endif /* !HAVE_GETUTENT && HAVE_GETTTYENT */
 
 void 
 write_logout_record (void *data, int utmp, int wtmp)
 {
-	UTMP *ut = data;
-	struct utmp *wut;
+	UTMP put, *ut = data;
+	struct utmp ut_aux;
 
-#if defined(HAVE_GETUTENT)
-	utmpname (UTMP_FILENAME);
-	setutent ();
-
-	if((wut = getutline(ut)) == NULL)
-	    return;
-
-#else
-	if((wut = malloc(sizeof(UTMP))) == NULL)
-	    return;
-
-	memset (wut, 0, sizeof(UTMP));
-
-	strncpy (wut->ut_line, ut->ut_line, sizeof (ut->ut_line));
-#endif /* !HAVE_GETUTENT */
+	memset (&put, 0, sizeof(UTMP));
 
 #if defined(HAVE_UT_UT_TYPE)
-	wut->ut_type = DEAD_PROCESS;
+	put.ut_type = DEAD_PROCESS;
 #endif
-#if defined(HAVE_UT_UT_PID)
-	wut->ut_pid  = 0;
+#if defined(HAVE_UT_UT_ID)
+	strncpy (put.ut_id, ut->ut_id, sizeof (put.ut_id));
 #endif
-#if defined(HAVE_UT_UT_USER)
-	memset (wut->ut_user, 0, sizeof (wut->ut_user));
+
+	strncpy (put.ut_line, ut->ut_line, sizeof (put.ut_line));
+
+#if defined(HAVE_UT_UT_TIME) && !defined(HAVE_GETUTENT)
+	time (&put.ut_time);
 #endif
-#if defined(HAVE_UT_UT_TIME)
-	wut->ut_time = time (NULL);
+
+	if (utmp)
+#if defined(HAVE_GETUTMPX)
+		{
+		pututxline (&put);
+		getutmp (&put, &ut_aux);
+		pututline (&ut_aux);
+		}
+#else
+		pututline (&put);
 #endif
 
 	if (wtmp)
-	    update_wtmp (WTMP_FILENAME, wut);
+		update_wtmp (WTMP_OUTPUT_FILENAME, &put);
 
-#if defined(HAVE_GETUTENT)
-	if (utmp)
-	    pututline (wut);
-
-#if defined(HAVE_GETUTMPX)
-	getutmpx (ut, wut);
-#endif
-	endutent ();
-#else
-	if (utmp)
-	    update_utmp (UTMP_FILENAME, wut);
-	    
-	free (wut);
-#endif /* !HAVE_GETUTENT */
-	free (data); /* ?! */
+	free (ut);
 }
 
 void *
-update_dbs (int utmp, int wtmp, char *login_name, char *display_name, char *term_name)
+write_login_record (char *login_name, char *display_name, char *term_name, int utmp, int wtmp)
 {
 	UTMP *ut;
 	struct utmp ut_aux;
-	struct timeval tv;
-	char *pty = term_name;
-
-	ut = (UTMP *) malloc (sizeof (UTMP));
-	if (!ut)
-		return;
+	char *p, *pty = term_name;
+	
+	if((ut=(UTMP *) malloc (sizeof (UTMP))) == NULL)
+		return NULL;
 	
 	memset (ut, 0, sizeof (UTMP));
 
-#if defined(HAVE_GETUTENT)
-	utmpname (UTMP_FILENAME);
-	setutent();
+#if defined(HAVE_UT_UT_NAME)
+	strncpy (ut->ut_name, login_name, sizeof (ut->ut_name));
+#elif defined(HAVE_UT_UT_USER)
+	strncpy (ut->ut_user, login_name, sizeof (ut->ut_user));
 #endif
-#if defined(HAVE_UT_UT_PID)
-	ut->ut_pid  = getppid ();
-#endif
-	if (strncmp (pty, "/dev/", 5) == 0)
-		pty += 5;
 
+	/* This shouldn't happen */
+	if (strncmp (pty, "/dev/", 5) == NULL)
+	    pty += 5;
+	    
 #if defined(HAVE_UT_UT_ID)
 	/* BSD-like terminal name */
-	if (strncmp (pty, "pty", 3) == 0 ||
-	    strncmp (pty, "tty", 3) == 0)
+	if (strncmp (pty, "pty", 3) == NULL ||
+	    strncmp (pty, "tty", 3) == NULL)
 		strncpy (ut->ut_id, pty+3, sizeof (ut->ut_id));
 	else {
 		if (strncmp (pty, "pts/", 4) == 0)
@@ -209,52 +214,51 @@ update_dbs (int utmp, int wtmp, char *login_name, char *display_name, char *term
 		else
 			ut->ut_id [0] = 0;
 	}
-#endif
-#if defined(HAVE_UT_UT_TYPE)
-	ut->ut_type = DEAD_PROCESS;
-#endif
-#if defined(HAVE_GETUTMPX)
-	getutmp (ut, &ut_aux);
-	getutid (&ut_aux);
-#elif defined(HAVE_GETUTENT)
-	getutid (ut);
-#endif
-#if defined(HAVE_UT_UT_TYPE)
-	ut->ut_type = USER_PROCESS;
+#elif defined(HAVE_STRRCHR)
+	if ((p=strrchr (pty, '/')) != NULL) 
+	    pty = p + 1;
 #endif
 
 	strncpy (ut->ut_line, pty, sizeof (ut->ut_line));
 
-#if defined(HAVE_UT_UT_NAME)
-	strncpy (ut->ut_name, login_name, sizeof (ut->ut_name));
+#if defined(HAVE_UT_UT_PID)
+	ut->ut_pid  = getppid ();
 #endif
-#if defined(HAVE_UT_UT_USER)
-	strncpy (ut->ut_user, login_name, sizeof (ut->ut_user));
+#if defined(HAVE_UT_UT_TYPE)
+	ut->ut_type = USER_PROCESS;
+#endif
+#if defined(HAVE_UT_UT_TV)
+	gettimeofday ((struct timeval*) &(ut->ut_tv), NULL);
+#elif defined(HAVE_UT_UT_TIME)
+	time (&ut->ut_time);
 #endif
 #if defined(HAVE_UT_UT_HOST)
 	strncpy (ut->ut_host, display_name, sizeof (ut->ut_host));
-	ut->ut_host [sizeof (ut->ut_host)-1] = 0;
+#    if defined(HAVE_UT_UT_SYSLEN)
+	ut->ut_host [sizeof (ut->ut_host)-1] = '\0';
+	ut->ut_syslen = strlen (ut->ut_host) + 1;
+#    endif
 #endif
-#if defined(HAVE_UT_UT_TV)
-	gettimeofday (&tv, NULL);
-	ut->ut_tv = tv;
-#endif
-#if defined(HAVE_UT_UT_TIME)
-	time (&ut->ut_time);
+
+	if (utmp)
+#if defined(HAVE_GETUTMPX)
+		{
+		pututxline (ut);
+		getutmp (ut, &ut_aux);
+		pututline (&ut_aux);
+		}
+#else
+		pututline (ut);
 #endif
 
 	if (wtmp)
-		update_wtmp (WTMP_FILENAME, ut);
-
-#if defined(HAVE_GETUTENT)
-	if (utmp)
-		pututline (ut);
-
-	endutent ();
-#else
-	if (utmp)
-		update_utmp (UTMP_FILENAME, ut);
-#endif
+		update_wtmp (WTMP_OUTPUT_FILENAME, ut);
 
 	return ut;
+}
+
+void *
+update_dbs (int utmp, int wtmp, char *login_name, char *display_name, char *term_name)
+{
+    return write_login_record (login_name, display_name, term_name, utmp, wtmp);
 }

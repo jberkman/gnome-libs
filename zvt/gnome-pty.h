@@ -10,6 +10,7 @@ typedef enum {
 } GnomePtyOps;
 
 void *update_dbs         (int utmp, int wtmp, char *login_name, char *display_name, char *term_name);
+void *write_login_record (char *login_name, char *display_name, char *term_name, int utmp, int wtmp);
 void write_logout_record (void *data, int utmp, int wtmp);
 
 #endif
