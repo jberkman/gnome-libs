@@ -2,7 +2,7 @@
 ]>
 <book>
   <bookinfo>
-    <title>Gnome Dev's Tutorial..</title>
+    <title>Gnome Developers' Information</title>
     <authorgroup>
       <author>
 	<firstname>Horacio</firstname>
@@ -14,7 +14,6 @@
 	</affiliation>
       </author>
     </authorgroup>
-    <!-- <version>last modified: <date></version> -->
     <copyright>
       <year>1998</year>
       <holder>The GNOME Project - Horacio J. Peña (n.)</holder>
@@ -75,7 +74,7 @@
         code wins. :-)
         </para>
       <para>
-        I'm a new GNOME developer and i've had some trouble finding info about
+        As a new GNOME developer i've had some trouble finding info about
         how to do some things (and the people on the list were being a bit
         annoyed with my questions.) So i'm trying to do it easy for you,
         the developers that come after me.
@@ -87,8 +86,7 @@
         the website and the style guide.
         </para>
       <para>
-        If you add some functionality/widget to libgnome or libgnomeui please
-        document it here so it doesn't get outdated.
+        If you add or change some API please document it here.
         </para>
       </sect1>
 
@@ -144,13 +142,9 @@
         If you want to dirt your hands with GNOME, i've some advice for you:
 	</para>
       <itemizedlist>
-        <listitem><para>Start simple. Do little things and familiarize
-	    yourself with GNOME. You'll have time to do great things
-	    after.</para>
-	</listitem>
-        <listitem><para>Read the TODO. You'll find some interesting
-	    things to work in.</para>
-	</listitem>
+        <listitem>Start simple. Do little things and familiarize yourself with
+          GNOME. You'll have time to do great things after.
+        <listitem>Read the TODO. You'll find some interesting things to work in.
         </itemizedlist>
       </sect1>
 
@@ -198,28 +192,23 @@
     <sect1 id="codstd">
       <title>Coding Standards.</title>
       <para>
-        Err, i'm waiting answers to some questions that i've posted to
-        gnome-hackers... But here are some tips.
-	</para>
       <itemizedlist>
-        <listitem><para>When you change things, edit the ChangeLog, so
-	    the  other people can know what you've did.</para>
-	</listitem>
-        <listitem><para>When you're writing code that should be
-	    written better add FIXME comments so it's easy to
-	    recognize.</para>
-	</listitem>
-        <listitem><para>Document your programs.</para>
-	</listitem>
-        <listitem><para>If you do changes to the APIs documented here
-	    or add new  please update the documentation.</para>
-	</listitem>
-        <listitem><para>Add translations for your native tongue. We
-	    would like have a full internationalized GNOME. (so if you
-	    know more than one language do translations for all them)
-	    (we would like all the idioms, from francais to old greek
-	    :-) )</para>
-	</listitem>
+        <listitem> Code that goes into Gnome uses the Linux kernel coding 
+          style (which is basically the GNU coding style but indentation is 
+          8 spaces, and braces are on the same line as the statements that 
+          open the block).
+        <listitem> Please, please, please, be in the 80 columns...
+        <listitem> When you change things, edit the ChangeLog, so the 
+          other people can know what you've did.
+        <listitem> When you're writing code that should be written better add
+          FIXME comments so it's easy to recognize.
+        <listitem> Document your programs.
+        <listitem> If you do changes to the APIs documented here or add new 
+          please update the documentation.
+        <listitem> Add translations for your native tongue. We would like
+          have a full internationalized GNOME. (so if you know more than
+          one language do translations for all them) (we would like all
+          the idioms, from francais to old greek :-) )
         </itemizedlist>
       </sect1>
 
@@ -440,8 +429,9 @@
         <para>
           <emphasis>Authors</emphasis>: Elliot Lee, Horacio Peña.
           </para>
-        <warning><para>It's broken now.</para></warning>
-        <para>missing para
+        <warning> It's broken now. </warning>
+        <para>
+          
           </para>
         </sect1>
       <sect1 id="gnome-string">
