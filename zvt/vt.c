@@ -65,12 +65,6 @@ void vt_clear_lines(struct vt_em *vt, int top, int count);
 void vt_clear_eol(struct vt_em *vt);
 
 
-/* globals */
-char *args[3];			/* arguments to vt callbacks */
-int argcnt;
-
-extern struct vt_em *vt;
-
 void vt_dump(struct vt_em *vt)
 {
   struct vt_line *wn, *nn;
@@ -225,7 +219,7 @@ void vt_insert_chars(struct vt_em *vt, int count)
 void vt_delete_chars(struct vt_em *vt, int count)
 {
   int i, j;
-  struct vt_line *l;		/* FIXME: kludge */
+  struct vt_line *l;
 
   d(printf("vt_delete_chars(%d)\n", count));
   l=vt->this;
@@ -241,6 +235,7 @@ void vt_delete_chars(struct vt_em *vt, int count)
     l->data[i] = vt->attr|VTATTR_CHANGED;
   }
   l->modcount+=count;
+
 }
 
 void vt_insert_lines(struct vt_em *vt, int count)
@@ -469,7 +464,7 @@ static void vt_delete_char(struct vt_em *vt)
   } else if (vt->argcnt==1) {
     vt_delete_chars(vt, atoi(vt->args[0]));/* insert multiple characters */
   } else {
-    d(printf("delete characters got >1 parameters\n"));
+    d(printf("delete characters got %d parameters\n", vt->argcnt));
   }
 }
 
@@ -923,7 +918,7 @@ void parse_vt(struct vt_em *vt, char *ptr, int length)
 	if (vt->outptr<vt->outend) /* truncate excessive args */
 	  *(vt->outptr)++=c;
       } else if (c==';') {	/* looking for 'arg;arg;...' */
-	if (argcnt<VTPARAM_MAXARGS) { /* goto next argument */
+	if (vt->argcnt<VTPARAM_MAXARGS) { /* goto next argument */
 	  *(vt->outptr)=0;
 	  vt->argptr++;
 	  vt->outptr = vt->argptr[0];
