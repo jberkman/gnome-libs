@@ -8,6 +8,7 @@ idl_DATA = \
 	desktop-textviewer.idl	\
 	gnome-unknown.idl	\
 	GnomeObject.idl		\
-	HistoryDB.idl
+	HistoryDB.idl		\
+	gnome-corba-rexec.idl
 
 EXTRA_DIST = $(idl_DATA)
