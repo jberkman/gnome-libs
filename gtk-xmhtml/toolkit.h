@@ -126,7 +126,7 @@ typedef XVisualInfo TVisualInfo;
 			gdk_window_clear_area_e ((w),(xs),(ys),(wi),(h)); \
                 else \
 			gdk_window_clear_area ((w),(xs),(ys),(wi),(h)); \
-		} while (0);
+		} while (0)
 #define Toolkit_Widget_Destroy(w) gtk_widget_destroy (w)
 #define Toolkit_Widget_Colormap(w) gtk_widget_get_colormap (GTK_WIDGET (w))
 #define Toolkit_Parse_Color(dpy,cm,c,d) gdk_color_parse (c, d)
