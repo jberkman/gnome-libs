@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-libs 1.0.12\n"
-"POT-Creation-Date: 1999-09-28 09:50-0500\n"
-"PO-Revision-Date: 1999-07-21 21:54 EST\n"
+"POT-Creation-Date: 1999-10-05 18:21-0400\n"
+"PO-Revision-Date: 1999-10-05 18:58-0400\n"
 "Last-Translator: Sergey Panov <sipan@mit.edu>\n"
 "Language-Team: Russian <ru@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -714,26 +714,23 @@ msgstr "Документация:"
 
 #: libgnomeui/gnome-dentry-edit.c:383
 msgid "Name/Comment translations:"
-msgstr ""
+msgstr "Перевод имени/комментария:"
 
 #: libgnomeui/gnome-dentry-edit.c:386
 msgid "Language"
-msgstr ""
+msgstr "Язык"
 
 #: libgnomeui/gnome-dentry-edit.c:387
-#, fuzzy
 msgid "Name"
-msgstr "Имя:"
+msgstr "Имя"
 
 #: libgnomeui/gnome-dentry-edit.c:388
-#, fuzzy
 msgid "Comment"
-msgstr "Комментарий:"
+msgstr "Комментарий"
 
 #: libgnomeui/gnome-dentry-edit.c:416
-#, fuzzy
 msgid "Add/Set"
-msgstr "Добавить"
+msgstr "Добавить/Установить"
 
 #: libgnomeui/gnome-dentry-edit.c:421 libgnomeui/gnome-stock.c:825
 msgid "Remove"
@@ -748,13 +745,12 @@ msgid "Advanced"
 msgstr "Дополнительные"
 
 #: libgnomeui/gnome-druid.c:129
-#, fuzzy
 msgid "Back"
-msgstr "Общие"
+msgstr "Вернуться"
 
 #: libgnomeui/gnome-druid.c:136
 msgid "Finish"
-msgstr ""
+msgstr "Закончить"
 
 #: libgnomeui/gnome-file-entry.c:151
 msgid "Select file"
@@ -870,7 +866,7 @@ msgstr "MODULE"
 #. dialog display isn't working out
 #: libgnomeui/gnome-init.c:635
 msgid "Multiple segmentation faults occurred; can't display error dialog\n"
-msgstr ""
+msgstr "Множественные системные ошибки; невозможно показать диалог с ошибками\n"
 
 #: libgnomeui/gnome-messagebox.c:111 libgnomeui/gnome-messagebox.c:240
 msgid "Information"
@@ -1184,6 +1180,11 @@ msgid ""
 "will exit.\n"
 "Please save all your files before closing this dialog."
 msgstr ""
+"Диспетчер сеанса работы GNOME (процесс %d) рухнул\n"
+"из за фатальной ошибки (%s).\n"
+"С закрытием этого диалога будут закрыты все приложения и закончен сеанс "
+"работы.\n"
+"Пожалуйста, сохраните ваши файлы до закрытия этого диалога."
 
 #: libgnomeui/gnome_segv.c:55
 #, c-format
@@ -1192,20 +1193,24 @@ msgid ""
 "due to a fatal error.\n"
 "(%s)"
 msgstr ""
+"Приложение \"%s\" (процесс %d) рухнуло\n"
+"из за фатальной ошибки .\n"
+"(%s)"
 
 #: libgnomeui/gnome_segv.c:61
 msgid "Usage: gnome_segv appname signum\n"
-msgstr ""
+msgstr "Использование: gnome_segv appname signum\n"
 
 #. Please download http://www.gnome.org/application_crashed-shtml.txt,
 #. * translate the plain text, and send the file to webmaster@gnome.org.
 #: libgnomeui/gnome_segv.c:74
 msgid "http://www.gnome.org/application_crashed.shtml"
-msgstr ""
+msgstr "http://www.gnome.org/application_crashed.shtml"
 
 #: libgnomeui/gnome_segv.c:75
 msgid "Please visit the GNOME Application Crash page for more information"
-msgstr ""
+msgstr "Посетите пожалуйста страницу \"GNOME Application Crash\" для получения "
+"более подробной информации"
 
 #: libgnomeui/stock_demo.c:112
 msgid "New..."
@@ -1392,18 +1397,16 @@ msgid "WIN_HINTS Test"
 msgstr "Проверка WIN_HINTS"
 
 #: libgnomeui/winhints_demo.c:411
-#, fuzzy
 msgid "Copyright (C) 1998"
 msgstr "Авторские права (C)1998"
 
 #: libgnomeui/winhints_demo.c:413
-#, fuzzy
 msgid ""
 "Simple test app to check how the WIN_HINTS work.\n"
 "And to test the gnome_win_hints_* functions for errors. :)"
 msgstr ""
-"Простое проверочное приложение для проверки работы WIN_HINTS и для поиска "
-"ошибок в функциях gnome_win_hints_*."
+"Простое проверочное приложение для проверки работы WIN_HINTS\n"
+"и для поиска ошибок в функциях gnome_win_hints_*."
 
 #: libgnorba/gnome-name-server.c:229
 #, c-format
@@ -1460,31 +1463,31 @@ msgstr "REPO_ID"
 #: libgnorba/orbitgtk.c:138
 #, c-format
 msgid "Failed to open CORBA cookie file (%s) for writing: %s\n"
-msgstr ""
+msgstr "Не удалось открыть CORBA cookie файл (%s) для записи: %s\n"
 
 #: libgnorba/orbitgtk.c:145
 #, c-format
 msgid "Failed to write CORBA cookie file (%s): %s\n"
-msgstr ""
+msgstr "Не удалось записать CORBA cookie файл (%s): %s\n"
 
 #: libgnorba/orbitgtk.c:171
 #, c-format
 msgid "Failed to write CORBA cookie to `%s': %s\n"
-msgstr ""
+msgstr "Не удалось записать CORBA cookie в `%s': %s\n"
 
 #: libgnorba/orbitgtk.c:181
 #, c-format
 msgid "Failed to open CORBA cookie file `%s': %s\n"
-msgstr ""
+msgstr "Не удалось открыть CORBA cookie файл `%s': %s\n"
 
 #: libgnorba/orbitgtk.c:187
 #, c-format
 msgid "Failed to read CORBA cookie file `%s': %s\n"
-msgstr ""
+msgstr "Не удалось открыть CORBA cookie файл `%s': %s\n"
 
 #: libgnorba/orbitgtk.c:213
 msgid "Failed to obtain CORBA authentication cookie, exiting\n"
-msgstr ""
+msgstr "Не удалось получить аутентификационное CORBA cookie, окончание работы\n"
 
 #: libgnorba/orbitns.c:295
 msgid "Could not get name service!"
@@ -1599,126 +1602,3 @@ msgstr "Пользователь выбрал Нет/Отменить с данными:\n"
 #: test-gnome/testgnome.c:1087
 msgid "Weird number in reply callback"
 msgstr "Странный номер в отклике обратного вызова"
-
-#~ msgid "Ask next time"
-#~ msgstr "Спрашивать в следующий раз"
-
-#~ msgid "Really log out?"
-#~ msgstr "Действительно окончить работу?"
-
-#~ msgid ""
-#~ "Application \"%s\" (process %d) has crashed due to a bug in the software.\n"
-#~ "(%s)\n"
-#~ "For more information, see http://www.gnome.org/application_crashed.shtml"
-#~ msgstr ""
-#~ "Аварийная остановка приложения \"%s\" (процесс %d) вызвана внутренней "
-#~ "ошибкой.\n"
-#~ "(%s)\n"
-#~ "Более подробная информация в http://www.gnome.org/application_crashed.shtml"
-
-#~ msgid "Options error\n"
-#~ msgstr "Ошибка в ключах\n"
-
-#~ msgid "Gnome Hello %s.\n"
-#~ msgstr "\"Gnome Hello\" %s.\n"
-
-#~ msgid ""
-#~ "%s: A gnomified 'Hello World' program\n"
-#~ "\n"
-#~ "Usage: %s [--help] [--version]\n"
-#~ "\n"
-#~ "Options:\n"
-#~ "        --help     display this help and exit\n"
-#~ "        --version  output version information and exit\n"
-#~ msgstr ""
-#~ "%s: Гномофицированная 'Hello World' программа\n"
-#~ "\n"
-#~ "Запуск: %s [--help] [--version]\n"
-#~ "\n"
-#~ "Ключи:\n"
-#~ "        --help     напечатать это сообщение и выйти\n"
-#~ "        --version  сообщить версию и выйти\n"
-
-#~ msgid "<control>A"
-#~ msgstr "<control>A"
-
-#~ msgid "Help/About..."
-#~ msgstr "Справка/О программе..."
-
-#~ msgid "<control>E"
-#~ msgstr "<control>E"
-
-#~ msgid "File/Exit"
-#~ msgstr "Файл/Выход"
-
-#~ msgid "Children/"
-#~ msgstr "Дочерние окна/"
-
-#~ msgid "MDI Mode"
-#~ msgstr "MDI режим"
-
-#~ msgid "Modal"
-#~ msgstr "Модальный"
-
-#~ msgid "Toplevel"
-#~ msgstr "Верхний уровень"
-
-#~ msgid "Notebook"
-#~ msgstr "Блокнот"
-
-#~ msgid "Children"
-#~ msgstr "Дочерние окна"
-
-#~ msgid "Remove Child"
-#~ msgstr "Убрать дочернее окно"
-
-#~ msgid "Add Child"
-#~ msgstr "Добавить дочернее окно"
-
-#~ msgid "Child"
-#~ msgstr "Дочернее окно"
-
-#~ msgid "Increase Counter"
-#~ msgstr "Увеличить счетчик"
-
-#~ msgid "Remove View"
-#~ msgstr "Убрать вид"
-
-#~ msgid "Add View"
-#~ msgstr "Добавить вид"
-
-#~ msgid "Info about GNOME hello"
-#~ msgstr "Информация о Hello GNOME"
-
-#~ msgid "About..."
-#~ msgstr "О программе..."
-
-#~ msgid "Exit GNOME hello"
-#~ msgstr "Выйти из Hello GNOME"
-
-#~ msgid "Hello GNOME"
-#~ msgstr "Hello GNOME"
-
-#~ msgid "Hello World Gnomified"
-#~ msgstr "Hello World, гномофицированная"
-
-#~ msgid "Exit"
-#~ msgstr "Выход"
-
-#~ msgid "About GnomeHello..."
-#~ msgstr "О программе GnomeHello..."
-
-#~ msgid ""
-#~ "GNOME is a civilized software system so we've a \"hello world\" program"
-#~ msgstr ""
-#~ "GNOME - это цивилизованное программное обеспечение, и у нас есть программа "
-#~ "\"hello world\""
-
-#~ msgid "(C) 1998 the Free Software Foundation"
-#~ msgstr "(C) 1998 Фонд Свободного Программного Обеспечения"
-
-#~ msgid "The Hello World Gnomified"
-#~ msgstr "Hello World, Гномофицированная"
-
-#~ msgid "Hello GNOME\n"
-#~ msgstr "Hello GNOME\n"
