@@ -705,7 +705,8 @@ goad_server_register(CORBA_Object name_server,
   nc[2].id   = name;
   nc[2].kind = kind;
 
-  ev->_major = CORBA_NO_EXCEPTION;
+  CORBA_exception_free(ev);
+
   old_server = CosNaming_NamingContext_resolve(name_server, &nom, ev);
   if (ev->_major != CORBA_NO_EXCEPTION) {
     switch( ev->_major ) {
