@@ -127,6 +127,14 @@ scan:
 		 gtkdoc-scanobj --module=$(DOC_MODULE) \
 	&& gtkdoc-scan --module=$(DOC_MODULE) --source-dir=$(DOC_SOURCE_DIR) )
 
+tags: sgml
+	rm -f gnome-tags\
+	&& cd $(srcdir)/sgml\
+	&& for file in *sgml; do\
+		grep "^<title><anchor" $$file |sed -e 's/<title><anchor id=\"\(.*\)\">\(.*\)<\/title>.*/\2:gnomeui\/'$$file'\.html#\1/g' -e 's/\.sgml//g' -e 's/^enum //g' -e 's/^struct //g' -e 's/ \?():/:/g' >> ../gnome-tags;\
+	done
+
+
 templates: scan
 	cd $(srcdir) && gtkdoc-mktmpl --module=$(DOC_MODULE)
 
