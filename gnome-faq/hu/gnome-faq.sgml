@@ -1,0 +1,1923 @@
+<!doctype book PUBLIC "-//Davenport//DTD DocBook V3.0//EN" [
+<!entity mailweb       "webmaster@gnome.org">
+<!entity mailfaq       "gnomefaq@gnu.org">
+<!entity mailrequest   "gnome-list-request@gnome.org">
+<!entity gnomedevelreq "gnome-devel-list-request@gnome.org">
+<!entity majorunam     "majordomo@nuclecu.unam.mx">
+<!entity gnomeguireq   "gnome-gui-list-request@gnome.org">
+<!entity mailbug       "submit@bugs.gnome.org">
+<!entity maildeb       "debian-gtk-gnome@lists.debian.org">
+<!entity wwwgtk        "http://www.gtk.org">
+<!entity wwwimlib      "http://www.labs.redhat.com/imlib">
+<!entity wwwgnome      "http://www.gnome.org">
+<!entity wwwgnomehu    "http://www.gnome.hu">
+<!entity wwwgnomelist  "http://www.gnome.org/mailing-lists/index.shtml">
+<!entity wwwgnome10    "http://www.gnome.org/gnome-1.0">
+<!entity wwwgnomestart "http://www.gnome.org/start/getting.shtml">
+<!entity wwwgnomerh    "http://www.gnome.org/start/getting.shtml">
+<!entity wwwgnomedeb   "http://www.gnome.org/start/getting.shtml">
+<!entity wwwgnomecvs   "http://cvs.gnome.org">
+<!entity wwwgnomewicvs "http://www.gnome.org/devel/whatiscvs.shtml">
+<!entity wwwsorencvs   "http://www.cinternet.net/~soren/gnome/cvs.shtml">
+<!entity wwwgnomeftp   "http://www.gnome.org/ftpmirrors.shtml">
+<!entity wwwgnometour  "http://www.gnome.org/start/gnometour.shtml">
+<!entity wwwgnomefoo   "http://www.gnome.org/start/gnometour.shtml">
+<!entity wwwgnomeguide "http://www.gnome.org/users-guide">
+<!entity wwwgnomewmc   "http://www.gnome.org/devel/gnomewm/book1.html">
+<!entity wwwgnomemanif "http://www.gnome.org/about/manifesto.shtml">
+<!entity wwwgnomebug   "http://bugs.gnome.org">
+<!entity wwwgnomebugr  "http://bugs.gnome.org/Reporting.html">
+<!entity wwwsusebe     "http://gnome.linuxbe.org">
+<!entity wwwsusede     "http://www.tu-harburg.de/skf/Pub/ifmpc118.ifm.uni-hamburg.de/gnome.html">
+<!entity wwwbsdport    "http://www.freebsd.org/ports">
+<!entity wwwdocbook    "http://www.oasis-open.org/docbook">
+<!entity wwwdocbooktut "http://nis-www.lanl.gov/~rosalia/mydocs/docbook-intro.html">
+<!entity wwwtoddtheme  "http://www.mindspring.com/~tlewis/screen.jpg">
+<!entity wwwgettext    "http://www.gnu.org/manual/gettext/html_chapter/gettext_toc.html">
+<!entity wwwgimp       "http://www.gimp.org">
+<!entity wwwgimp32     "http://www.gimp.org/~tml/gimp/win32">
+<!entity wwwgnu        "http://www.gnu.org">
+<!entity wwwgnuphil    "http://www.gnu.org/philosophy">
+<!entity wwwgnufree    "http://www.gnu.org/philosophy/free-sw.html">
+<!entity wwwgnuaconf   "http://www.gnu.org/software/autoconf/autoconf.html">
+<!entity wwwgnuamake   "http://www.gnu.org/software/automake/automake.html">
+<!entity wwwgnulibtool "http://www.gnu.org/software/libtool/libtool.html">
+<!entity wwwgcc        "http://www.gnu.org/software/gcc/gcc.html">
+<!entity wwwguile      "http://www.gnu.org/software/guile/guile.html">
+<!entity wwwpng        "http://www.cdrom.com/pub/png">
+<!entity wwwftpmail    "http://www.csdl.tamu.edu/~cchung/cpsc689/ftpmail/ftpmtoc.html">
+<!entity wwwftpmlist   "http://www.cix.co.uk/~net-services/mrcool/stats.htm">
+<!entity wwwi18n       "http://www.vlsivie.tuwien.ac.at/mike/i18n.html">
+<!entity gwwwi18n      "http://www.gnome.org/i18n">
+<!entity wwwxdnd       "http://www.cco.caltech.edu/~jafl/xdnd/">
+<!entity wwwjimpick    "http://jimpick.com">
+<!entity wwwdebpack    "http://www.debian.org/~jim/debian-gtk-gnome/README">
+<!entity wwwrhqt       "http://charlotte.redhat.com/redhat/qtlicense.html">
+<!entity wwwdebkde     "http://www.debian.org/News/1998/19981008">
+<!entity wwwredbean    "http://www.red-bean.com/guile">
+<!entity wwwschemerpt  "http://www-swiss.ai.mit.edu/~jaffer/r5rs_toc.html">
+<!entity wwwfhs        "http://www.pathname.com/fhs/2.0/fhs-toc.html">
+<!entity wwwgtktheme   "http://gtk.themes.org">
+<!entity wwwlj         "http://www.linuxjournal.com">
+<!entity wwwicodes     "http://www.twics.com/~craig/writings/linux-nihongo/node93.html">
+<!entity wwwgui        "http://www.jcinteractive.com/gnome-ui/">
+<!entity ftpgnome      "ftp://ftp.gnome.org">
+<!entity ftpwgn        "ftp://gnomeftp.wgn.net/pub/gnome">
+<!entity ftpsnap       "ftp://ftp.jimpick.com/pub/gnome/snap">
+<!entity ftpdocware    "ftp://ftp.cygnus.com/pub/home/rosalia/docware">
+<!entity dcomcorba     "http://www.research.att.com/~ymwang/papers/HTML/DCOMnCORBA/S.html">
+<!entity schmidtcorba  "http://siesta.cs.wustl.edu/~schmidt/corba.html">
+<!entity gnomeorder    "<member>audiofile</member><member>esound</member><member>glib</member><member>libxml</member><member>ORBit</member><member>GTK+</member><member>imlib</member><member>gnome-libs</member><member>libgtop</member><member>libghttp</member><member>gnome-core</member><member>mc (gmc, mc, mcserv)</member><member>control-center
+(gnomecc)</member><member>libglade</member><member>gnome-print</member><member>és utána minden mást</member>">
+]>
+
+<book id="Index" LANG="hu">
+  <bookinfo>
+    <title>Gyakran ismételt GNOME-os kérdések</title>
+    <titleabbrev>GNOME-GyIK</titleabbrev>
+    <edition>v1.0.7</edition>
+    <authorgroup>
+      <author>
+	<firstname>Todd</firstname>
+	<othername>Graham</othername>
+	<surname>Lewis</surname>
+	<authorblurb>
+	  <para><email>tlewis@mindspring.com</email></para>
+	</authorblurb>
+      </author>
+      <author>
+	<firstname>David</firstname>
+	<othername>"Gleef"</othername>
+	<surname>Zoll</surname>
+	<authorblurb>
+	  <para><email>gleef@capital.net</email></para>
+	</authorblurb>
+      </author>
+      <author>
+        <firstname>Julian</firstname>
+	<othername>"X-ViRGE"</othername>
+	<surname>Missig</surname>
+	<authorblurb>
+	  <para><email>julian@linuxpower.org</email></para>
+	</authorblurb>
+      </author>
+    </authorgroup>
+    <date>17 October, 1999</date>
+    <abstract>
+      <para>Ez a GNOME, azaz a GNU Network Object Model Environnement 
+	(GNU Hálózati Objektum Modell Környezet) GyIK listája
+    </para>
+     <para> 
+          A magyar fordítást Kovács Emese
+          (emese@gnome.hu) készítette,
+          köszönet Tímár Andrásnak (atimar@itp.hu) a lektorálásért, 
+          az utómunkálatokat Bán Szabolcs (shooby@gnome.hu) végezte.
+     </para>
+    </abstract>
+  </bookinfo>
+
+  <chapter id="Overview">
+    <title>GNOME Áttekintés</title>
+      
+    <para>Ez a rész a GNOME egészére vonatkozó általános kérdésekkel 
+foglakozik.</para>
+
+    <sect1>
+      <title>Mit jelent a GNOME rövidítés?</title>
+
+      <para>A GNOME a "GNU Network Object Model
+      Environment", azaz a "GNU Hálózati Objektum-modell Környezet" kifejezés 
+rövidítése. A GNU jelentése "GNU's Not Unix", azaz a "GNU Nem Unix".</para>
+    </sect1>
+
+    <sect1>
+      <title>Mi az a GNOME?</title>
+
+      <para>A GNOME a <ulink url="&wwwgnu;">GNU
+      Projekt</ulink> grafikus felülete.</para>
+	
+      <para>Idézet a comp.os.linux.announce-on közzétett eredeti bejelentésbõl:
+      a GNOME szándéka szerint "egy szabad és teljes, felhasználóbarát alkalmazásgyûjtemény
+	lesz, hasonlóan a CDE-hez vagy a KDE-hez, de szigorúan szabad szoftveren alapulva."
+      </para>
+
+      <para>Én, ennek a GyIK-nek a karbantartója, szeretem a dolgot úgy magyarázni, hogy 
+      a GNOME mindaz, amit egy modern programozási környezettõl elvárhatunk.
+      Ebbõl a szempontból, körülbelül megegyezik a CDE-vel, a Win32-vel, a NextStep-el 
+	vagy  a KDE-vel.
+	A nagy különbség abban rejlik, hogy a fent említett példákkal ellentétben, a GNOME minden
+	egyes alkotóeleme <ulink url="&wwwgnufree;">Szabad Szoftver</ulink>. 
+	Nem ez azonban az egyetlen elõnye. A GNOME a végsõkig testreszabható, a legtöbb grafikus 
+	környezettel ellentétben. 
+      </para>
+
+      <para>A projektet felderíteni szándékozóknak, 
+	a GNOME projekt fõbb részei:</para>
+      <itemizedlist>
+	<listitem>
+	  <para>a GNOME az Object Management Group által fejlesztett "Common Object
+	  Request Broker Architecture"-t (CORBA-t) használja, ennek segítségével kommunikálnak
+	  a különbözõ szoftverkomponensek, függetlenül a nyelvtõl, amiben írták õket,
+	  vagy akár a géptõl, amin futnak! (Lásd <link linkend="CORBA">CORBA</link>)</para>
+	</listitem>
+
+	<listitem>
+	  <para>A GNOME-os közösség keményen dolgozik a Bonobo nevû objektum modell fejlesztésén.
+	  Ez a CORBA-ra alapul és nagyon hasonlít a Microsoft "Object Linking and Embedding v2" 
+	  (OLE2) technológiájára. A Bonobo segítségével a programozók exportálhatnak és/vagy 
+	  importálhatnak komponensek formájában erõforrásokat. Ez azt jelenti, hogy a 
+	  felhasználók használhatják a kedvenc szövegszerkesztõjüket a fejlesztõi 
+	  környezetükben, feltéve, hogy az editoruk támogatja CORBA-n keresztül a szabványos 
+	  szövegszerkesztõ interfészt. 
+	  (Lásd <link
+	  linkend="Bonobo">Bonobo</link>)</para>
+	</listitem>
+
+	<listitem>
+	  <para>A GNOME nem kötõdik egy meghatározott ablakkezelõhöz. Használhatod továbbra is 
+	  a kedvenc ablakkezelõdet.
+	  (Lásd <link linkend="WM">Ablakkezelõ</link>)</para>
+	</listitem>
+
+	<listitem>
+	  <para>A GNOME a "Gimp Tool Kit"-et (GTK+) használja minden grafikus alkalmazáshoz.
+	  A GTK+-nak rengeteg csúcs tulajdonsága van, de ez a három kedvencem: (1) több nyelv 
+	  támogatása, beleértve a C-t, a C++-t, az Objective-C-t, a Scheme-et, a Perl-t 
+	  és másokat;(2) témázhatóság, a felhasználó megváltoztathatja a GTK+-os alkalmazások
+	  kinézetét miközben az alkalmazások futnak, ez hihetetlenül király; (3) végül a GTK+ 
+	  LGPL licenccel használható, ami azt jelenti, hogy teljesen szabad szoftver, mint 
+	  a GNOME többi része.
+        (Lásd <link linkend="GTK">GTK+</link>)</para>
+	</listitem>
+
+	<listitem>
+	  <para>A GTK+ mellett, a GNOME az Imlib-et használja, ami egy képkezelõ programkönyvtár
+	  az X Window System-hez. Támogatja a legkülönbözõbb képformátumokat az XPM-tõl a PNG-ig,
+	  valamint különbözõ színmélységeket a 24-bites True Color-tól az 1 bites Fekete-Fehérig,
+	  mindezt a programozó számára teljesen transzparens módon.
+	  (Lásd <link
+	  linkend="IMLIB">Imlib</link>)</para>
+	</listitem>
+
+	<listitem>
+	  <para>Minden GNOME-os program támogatja a session-öket. Ez azt jelenti, hogy
+	  pl., ha leállítod a GNOME-os szövegszerkesztõt, majd újra megnyitod, az automatikusan 
+	  megnyitja a legutóbb szerkesztett dokumentumot, a kurzor helyét is megjegyzi a 
+	  dokumentumban. Ez az X Session Management rendszernek köszönhetõ, amit a GNOME Session 
+	  Management implementál.
+	  (Lásd <link linkend="SM">Session
+	  Management</link>)</para>
+	</listitem>
+
+	<listitem>
+	  <para>A GNOME a programok dokumentációjához a DocBook SGML szabványt használja
+	  Ez egyszerûsíti a programozók számára a dokumentáció írását. A dokumentáció 
+	  olvasható a GNOME Súgó-böngészõvel, vagy konvertálható HTML
+formátumba, és 
+	  olvasható webböngészõbõl, esetleg konvertálható LaTeX vagy PostScript
+formátumba, és
+	  kinyomtatható.
+	  (Lásd <link
+	  linkend="SGML">SGML</link>)</para>
+	</listitem>
+
+	<listitem>
+	  <para>A GNOME támogatja a Uniforum szabványos nemzetköziesítési és lokalizációs 
+	  módszereit, melyek segítségével az alkalmazás támogathat új nyelveket és ehhez még
+	  újra sem kell fordítani.
+	  (Lásd <link
+	  linkend="I18N"> I18n &
+	  Lokalizáció</link>)</para>
+	</listitem>
+
+	<listitem>
+	  <para>A GNOME alkalmazások támogatni fognak több "Drag and Drop" protokollt, 
+	  így biztosítva az együttmûködést más alkalmazásokkal.
+	  (Lásd <link linkend="XDND">Drag and
+	  Drop</link>)</para>
+	</listitem>
+
+	<listitem>
+	  <para>A GNOME támogatni fogja az OpenGL-es 3D-s programozást, ezzel a programozók
+	  használhatnak háromdimenziós grafikát az alkalmazásaikban, legyenek ezek 
+	  tudományos alkalmazások vagy játékok.
+	  A GNOME a Mesa-t használja, ami az OpenGL szabvány szabad szoftveres implementációja.	  
+        (Lásd <link
+	  linkend="OPENGL">OpenGL</link>)</para>
+	</listitem>
+      </itemizedlist>
+
+      <para>Ha mindezt ambiciózusnak találod... az azért van, mert tényleg az! Ha többre is 
+	kíváncsi vagy, olvass tovább!</para>
+    </sect1>
+
+    <sect1>
+      <title>Hol találok több információt, segítséget vagy tippeket a GNOME-al kapcsolatban?
+	</title>
+
+      <para>A GNOME weblapja például jó kiindulópont:
+      <ulink url="&wwwgnome;">&wwwgnome;</ulink> vagy a Magyar GNOME lap:
+      <ulink url="&wwwgnomehu;">&wwwgnomehu;</ulink>.</para>
+
+      <para>Csatlakozhatsz esetleg a gnome-list levelezõlistához, ez az a hely, ahol 
+	segítséget kérhetsz.</para>
+    </sect1>
+
+    <sect1 id="MailingList">
+      <title>Hogyan használjam ezeket a GNOME-os levelezõlistákat, amikrõl itt szó van?</title>
+
+      <para>A legjobb helyek, ahol napra kész információt és segítséget találsz, a GNOME levelezõlisták. A listák felsorolását megtalálod a következõ weblapon: <ulink
+      url="&wwwgnomelist;">&wwwgnomelist;</ulink>. Az általános lista, segítség kérésre-nyújtásra és vitatkozásra a <ulink
+      url="mailto:&mailrequest;">gnome-list@gnome.org</ulink>.  Ha fel akarsz jelentkezni erre a listára, küldj egy levelet a <emphasis>"request" címre</emphasis>, ez általában "a_lista_neve-request". Például a "request" cím a gnome-list listához a
+következõ: <ulink url="mailto:&mailrequest;">&mailrequest;</ulink>. A levél tárgya <userinput>subscribe</userinput> <emphasis>kell</emphasis> legyen.</para>
+
+      <para>
+        Ha kérdéseid vannak GNOME alkalmazások vagy maga a GNOME fejlesztésével kapcsolatban, iratkozz fel a <ulink
+        url="mailto:&gnomedevelreq;">gnome-devel-list@gnome.org</ulink>
+        levelezõlistára. 
+      </para>
+
+      <para>
+        Ha van valami jó ötleted vagy koncepciód, hogy hogyan lehetne a GNOME grafikus felületét jobbá és szebbé tenni, iratkozz fel a <ulink
+        url="mailto:&gnomeguireq;">gnome-gui-list@gnome.org</ulink> listára.
+        A grafikus felületet tervezõ csoportot Jim Cape vezeti, a weblapján megtalálható a javaslatok gyûjteménye (<ulink
+        url="&wwwgui;">&wwwgui;</ulink>).
+      </para>
+
+      <para>
+        Néhány percen belül (kicsit tovább is tarthat, ha nem Észak-Amerikában vagy) kapsz egy automatikus választ a listaszervertõl, melyben a feliratkozási szándék megerõsítését kéri. 
+        Kövesd a levélben kapott információkat, és fejezd be a feliratkozási folyamatot. A végén a rendszer küld Neked két e-mailt, amikben megtalálod a használati utasításokat.
+      </para>
+    </sect1>
+
+    <sect1 id="Archives">
+      <title>Hol érhetem el a lista archívumait?</title>
+
+      <para>Ennek két módja van. Webböngészõben nyisd meg a levelezõlisták oldalát:
+      <ulink url="&wwwgnomelist;">&wwwgnomelist;</ulink>.
+      Kattints bármelyik listacímre a bal oldalon, böngészheted a kiválasztott lista
+archívumát.
+      </para>
+
+      <para>Ha keresni szeretnél valamelyik archívumban, használd az adott lista "request" címét. 
+A feliratkozáskor kapott egyik levél részletesen tárgyalja, hogy mit kell tenned. Ha ez a levél már nem lenne meg, küldj egy levelet a <ulink
+      url="mailto:&mailrequest;">&mailrequest;</ulink> címre, a tárgy legyen <userinput>archive help</userinput>.  A válaszban megtalálod a leírást, hogy hogyan használd az archív rendszert.</para>
+    </sect1>
+
+    <sect1 id="Pronunciation">
+      <title>Hogyan kell kiejteni, azt hogy "GNOME"?</title>
+
+      <para>A GNOME a <quote>GNU Network Object Model
+      Environment</quote> rövidítése. A GNU a <quote>GNU's Not
+      Unix</quote> rövidítése, és hivatalosan mindig <quote>g-n(y)ú</quote>-nak ejtették. Mivel a GNU a GNOME vezetékneve, a GNOME-ot hivatalosan <quote>gnom</quote>-nak kell ejteni.</para>
+
+      <para>Ennek ellenére, sokan ejtik a GNOME-ot <quote>gnóm</quote>-nak (mint azok a fura legendabéli alacsony emberek), senki sem fog megkövezni, ha így egyszerûbbnek találod a kiejtést.</para>
+    </sect1>
+
+    <sect1 id="WhyGNOME">
+      <title>Miért kell a GNOME?</title>
+
+      <para>Elõször, a GNU operációs rendszerének szüksége van egy grafikus környezetre, ami 100%-osan szabad szoftverbõl áll. A GNOME kielégíti ezt az igényt. </para>
+
+      <para>A második cél, ami az elsõbõl következik, hogy a szabad operációs rendszerek felhasználói szeretnének szebb felhasználói felületen dolgozni (ez igaz lehet persze a nem-szabad UNIX-ot használó felhasználókra is.</para>
+
+      <para>Végül, a GNOME-nak van rengeteg igazán csinos tulajdonsága, amit a "geek"-ek biztosan élvezni fognak. A GyIK egyik kritikusa ezt mondta:</para>
+      <blockquote>
+	<para>
+         Todd, mint bizonyára tudod, a GNOME jelentõsége túlmutat a "nyílt
+        forráskód", a "szép környezet" és a "világuralom" fogalmakon.
+        Például egyszerûen megõrülök a COM implementációért és CORBA használatáért!
+        </para>
+        </blockquote>
+        <para>Ez való igaz (mármint hogy a GNOME érdemei számodak, az õrületrõl
+        nem tudok nyilatkozni.) Próbáld ki magad, meglátod!
+        </para>
+    </sect1>
+
+    <sect1 id="WhyNot">
+      <title>Miért nem CDE? vagy KDE? vagy GNUStep?</title>
+
+      <para>Mert a GNOME jobb! Na, de komolyan, a felsorolt grafikus környezeteknek vannak bajaik, amik arra késztettek minket, hogy kezdjük nulláról a GNOME Projekttel.</para>
+
+      <para>A CDE nem Szabad Szoftver, még csak meg sem közelíti azt. Sokan úgy találják, hiányos mind teljesítmény, mind funkcionalitás szempontjából.</para>
+
+      <para>A GNOME megjelenése idején a KDE komoly licenc gondokkal küszködött, ezeket a mai napig próbálják megoldani.
+      Elõször, a KDE a Qt nevû programkönyvtárra épül, ami eredetileg nem volt szabad szoftver. Ezzel szemben, a TrollTech új 2.0-s Qt-ja már QPL
+licenccel jön, tehát Szabad Szoftvernek minõsül. A KDE fejlesztõi változatai a Qt QPL-es verziójára épülnek.</para>
+
+      <para>A másik gond, hogy a KDE programokat eredetileg GPL alatt
+publikálták. A GPL-t olyan szellemben fogalmazták, hogy ösztönözze újabb GNU
+szoftver írását, ezért a programok nem mûködnek jól, ha más licenc alatt
+terjesztett szoftverekhez linkelik õket. Ez az inkompatíbilitás nem gátol
+meg senkit abban, hogy KDE-t használjon, de a KDE terjesztését már bajossá
+teszi. További részleteket találsz a Debian weblapján: <ulink
+      url="&wwwdebkde;">A Debian álláspontja a KDE-rõl</ulink>. A KDE most próbál áttérni az "Artistic license"
+licencre, ami kiküszöböli ezt a problémát. El fog tartani nekik egy ideig, mert a
+licencelés megváltoztatása egy olyan nagy és sok szerzõt foglalkoztató projekten, mint  a KDE nehéz és
+hosszadalmas folyamat.</para>
+
+      <para>Mi, GNOME-osok, bírjuk a KDE-seket, és úgy tartjuk, hogy ez egy szerencsétlen helyzet, ami javítás alatt áll. Reméljük, hogy a nehézségeket minél elõbb áthidalják, és a GNOME és a KDE barátságban versenyezhetnek ami a technikai megoldásokat és a felépítést illeti.
+Az ezzel kapcsolatos dolgokat már számtalanszor kiveséztük a gnome-list listán. Ebben a témában kérdéseket feltenni a listán nem javasolt. Ha valahol errõl a témáról flame háborút akarsz indítani, legyél szíves és ezt valahol máshol, nagyon-nagyon messze tedd, hogy ne kelljen hallanunk.      
+</para>
+
+      <para>Jelentõs felépítésbeli különbségek vannak a KDE és a GNOME között.
+A lista élén szerepel a widget-ek közötti eltérés.
+Mi úgy gondoljuk, hogy a GTK+ szebb, jobban testreszabható, könnyebben lehetõvé teszi a fejlesztést különbözõ nyelveken, flexibilisebb mint a Qt; mások lehet, hogy máshogy látják. A lista elején található még az az érv, hogy a GNOME nem kötõdik egy ablakkezelõhöz sem. Nem muszáj Enlightenment-et használnod, használhatsz bármilyen GNOME-ismerõ ablakkezelõt. Minden összevetve, a projektek különböznek eléggé ahhoz, hogy meglegyen a létjogosultságuk, sõt
+együtt tudjanak mûködni.
+</para>
+
+      <para>A GNUStep egy másik grafikus környezet, amelyikrõl sok jót lehet mondani.
+A GNUStep-el az az egyik gond, hogy megpróbálj újraimplementálni a régi OpenStep felületet és API-t, a GNOME-al mi inkább valami újat és jót akartunk
+létrehozni, és nem valami régit megismételni, még ha az a régi jó is. E mellett, ahogyan a Qt ráerõlteti a KDE fejlesztõkre a C++-t, a GNUStep ráerõlteti a fejlesztõire az
+Objective C-t. A GNOME szeretne
+nyelv-független maradni és támogatni a fejlesztõket, bármilyen nyelvet használjanak.
+</para>
+    </sect1>
+
+    <sect1>
+      <title>Milyen platformokra?</title>
+
+      <para>A GNOME-ot a GNU és Linux közösségek által jól ismert emberek indították útjára, de a fejlesztõk szándéka szerint bármilyen UNIX jellegû platformon futhat. A GNOME-ot látták mûködni a következõ platformokon:</para>
+      <simplelist>
+	<member>GNU/Linux</member>
+	<member>BSD (FreeBSD, NetBSD és OpenBSD)</member>
+	<member>Solaris</member>
+	<member>IRIX</member>
+	<member>HP-UX</member>
+	<member>AIX</member>
+	<member>valószínûleg más platformokon is, nem igazán követtem figyelemmel...</member>
+      </simplelist>
+
+      <para>Ha a fent nem említett platformok egyikén sikerül mûködésre bírnod a GNOME-ot, kérlek írj, hogy fel tudjam venni ebbe a listába. Ha kipróbálod és nem mûködik, jelezd ezt a GNOME fejlesztõk felé, hogy tudjanak dolgozni a problémán. (Lásd <link
+      linkend="BugReport">Hibabejelentés</link>.)</para>
+    </sect1>
+
+    <sect1>
+      <title>Futtathatom továbbra is a régi programjaimat GNOME alatt?</title>
+
+      <para>A GNOME nem helyettesíti a régi rendszeredet, hanem arra "ül rá".
+      Minden program, amit tudsz futtatni GNOME nélkül, el kell fusson a GNOME alatt is (vagy mellette).</para>
+    </sect1>
+
+    <sect1 id="WM">
+      <title>Mi az az ablakkezelõ, és mi köze van a GNOME-hoz?</title>
+
+      <para>Az ablakkezelõ az X Window System része, ez a program határozza meg, az ablakok elhelyezkedését és kinézetét. Nézz rá egy xterm-re, vagy bármilyen programra. Az ablak azon része, amiben a terminál szövegét
+olvashatod, az igazi xterm, a keret, a címsor, a gombok, stb... mind az ablakkezelõ részei. Egyes ablakkezelõknek vannak további szolgáltatásaik, de minden ablakkezelõ biztosan felel az ablakok elhelyezéséért és a dekorációért. 
+</para>
+
+      <para>Rengeteg ablakkezelõ létezik és a GNOME-nak jól kell mûködnie bármelyikkel. Van a GNOME-nak néhány szolgáltatása (pl. a
+session-kezelés, vagy a GNOME lapkezelõvel való együttmûködés) amit csak az erre felkészített un. GNOME-kompatíbilis vagy GNOME-compliant ablakkezelõk tudnak kihasználni. Az ablakkezelõk, amelyek a GNOME-ot a "legjobban" ismerik a következõk: Enlightenment, Sawmill, WindowMaker és
+IceWM. Az FVWM, SCWM, AfterStep és QVWM ablakkezelõk is hamarosan GNOME kompatíbilisek lesznek.</para>
+    </sect1>
+
+    <sect1 id="FreeSoftware">
+      <title>Azt mondtad, hogy a GNOME Szabad Szoftver. Mit jelent az, hogy Szabad Szoftver?</title>
+
+      <para>A legtöbb szoftver licencet azért találják ki, hogy korlátozzák a felhasználók arra vonatkozó szabadságát, hogy használják, vizsgálják, módosítsák vagy továbbadják a szóban forgó szoftvert. Mi, a GNOME projekt keretein belül és a Szabad Szoftveres közösségekben általában, úgy gondoljuk, hogy ezek a korlátozások
+etikátlanok, és azt tûztük ki célul, hogy olyan szoftvereket írunk, amik mentesek ezektõl a korlátozásoktól.
+Ezt hívjuk Szabad Szoftvernek. Hagyományosan ezzel a következõ három szabadságra gondolunk:
+</para>
+      <itemizedlist>
+	<listitem>
+	  <para>Szabad a program mûködését tanulmányozni, elemezni, és azt a saját elképzeléseidnek és igényeid szerint megváltoztatni.</para>
+	</listitem>
+	<listitem>
+	  <para>Szabad a programot továbbadni, nyugodtan lemásolhatja a szomszédod.</para>
+	</listitem>
+	<listitem>
+	  <para>Szabad a programot továbbfejlesztened, majd a módosított változatot közzétenned, hogy az egész közösség hasznára legyen.</para>
+	</listitem>
+      </itemizedlist>
+
+      <para>A közelmúltban, a szoftver licencekben elkezdtek korlátozni egy negyedik szabadságot is, a szoftver használatának szabadságát.
+Mivel a szoftver licencek a szerzõi jogokon alapulnak, és a szerzõi jogokat szabályozó törvények csak a terjesztésre és nem a használatra vonatkoznak, úgy vesszük, hogy a használat joga (szabadsága) mindenkit megillet, külön említés nélkül. Röviden arról van szó, annak ellenére, hogy a Szabad Szoftver definíciója nem tér ki a használat jogára, természetesen lefedi azt.
+  </para>
+
+      <note>
+	<comment>Megjegyzés a fordítóknak: vigyázzatok arra, hogy hogyan fordítjátok a következõ megjegyzést, különös figyelmet fordítva a "free" szó jelentéseire, vagy hagyjátok a  <literal>free</literal> szót angolul.</comment>
+
+	<para>Ha a következõ bekezdés kicsit nehezen érthetõ az idegennyelvû (pl. magyar) fordításban, akkor elnézéseteket kérem. A legtöbb nyelvtõl eltérõen, angolban a <quote>free beer</quote> és a <quote>free
+	speech</quote> kifejezésekben ugyanaz a <literal>free</literal> szó szerepel. Ez félreértésekre adhat okot amikor "Free Software"-rõl beszélünk.</para>
+      </note>
+      <para>A "Free Software" a szabadságra utal és nem az árra. Hogy érezd a különbséget, gondolj a "Free Speech" (Szabad Beszéd) értelemben a "free" szóra és ne úgy, mint ahogyan az a "Free Beer" (Ingyenes Sör) kifejezésben használatos.
+A "Free Software"-t (Szabad szoftvert) írók közössége nem ellenzi azt, hogy a szoftvereket pénzért terjesszék, azt sem, hogy a programozók megéljenek munkájukból. Nem ellenezzük a szoftverekkel való kereskedelmet, a "proprietary" szoftvert ítéljük el. 
+Ha több információt szeretnél, olvasd el a cikkeket a       
+<ulink url="&wwwgnuphil;">&wwwgnuphil;</ulink> oldalon.</para>
+
+      <para>Mi, a GNOME projektben a felhasználók szabadságát a GPL (GNU General Public License) és az LGPL (GNU Lesser General Public License, korábban GNU Library GPL)
+licencekkel védjük. Ezek a licencek gondosan meg vannak tervezve, eredményük a "copyleft", ez azt jelenti, hogy a szoftvert szerzõi jogok védik, amelyek biztosítják, hogy a szoftver mindig szabadon terjeszthetõ marad, az által, hogy a módosított változatokra is mindig kötelezõen a GPL vonatkozik.</para>
+
+      <para>A fõbb GNOME alkalmazások (valamint néhány programkönyvtár) GPL
+alá tartoznak. A GNOME programkönyvtárainak nagyobb része LGPL alá tartozik, ez lehetõvé teszi, hogy más szabad (vagy nem szabad) szoftver
+licencekkel is lehessen GNOME alkalmazásokat írni, a könyvtárak azonban
+korlátozásoktól mentesek maradnak.</para>
+    </sect1>
+
+    <sect1 id="OpenSource">
+      <title>A GNOME Open Source(tm) (Nyílt forráskódú) Szoftver?</title>
+
+      <para>A rövid válasz az, hogy igen. A GNOME projektben használatos GPL és LGPL
+licencek  szerepelnek a példákban, amiket az "Open Source" definíciójánál adnak.
+Ennek ellenére megpróbáljuk elkerülni az "Open Source" kifejezés használatát amikor a GNOME-ról beszélünk, mert nem csak hogy a kifejezés szándékosan
+elhallgatja a "Szabadság" elgondolását ami a "Free" szoftver lényege, hanem használatos olyan szoftverre is, ami nem "Szabad". 
+</para>
+
+      <para>Az "Open Source" kifejezést olyanok találták ki, akik el akarták rejteni üzleti okokból a "Szabad" szót, hogy szélesebb köröket érjenek el. Személy szerint úgy tapasztaltam, hogy az üzleti vállalkozásokat nem riasztja el a "Szabadság" fogalma. Megváltoztathatják a szoftvert igényeik szerint, lecserélhetik a szoftver fejlesztõit a szoftver lecserélése nélkül, adhatnak a szoftverbõl az ügyfeleiknek és
+partnereiknek, ezek mind olyan lehetõségek, amikkel a Szabad Szoftver rendelkezik, míg a "proprietary" általában nem. Ennek üzleti szempontból <emphasis>igenis van értelme</emphasis>.  Többet az Open Source és a Free Szoftver különbségeirõl megtudhatsz Richard M. Stallman cikkjébõl a <ulink
+      url="&wwwgnuphil;/free-software-for-freedom.html">
+      &wwwgnuphil;/free-software-for-freedom.html</ulink> weblapon.</para>
+    </sect1>
+  </chapter>
+
+  <chapter id="GettingGNOME">
+    <title>A GNOME beszerzése</title>
+
+    <para>Sokféleképpen juthatsz el odáig, hogy a GNOME mûködjön a rendszereden. Ebben a részben ezzel a folyamattal kapcsolatos kérdéseket gyûjtöttem össze.</para>
+
+    <sect1 id="SystemRequirements">
+      <title>Mik a rendszerrel szemben támasztott minimális követelmények? (system requirements)</title>
+
+      <para>Jelenleg szükséged van egy számítógépre, Unix vagy Unix-jellegû operációs rendszerrel, "X Window System"-el (X11R5 vagy késõbbi). Kell a gépben legyen legalább 16 MB memória (RAM, de
+valószínûleg elégedettebb leszel 32 megával vagy többel. Ha csak a binárisokat telepíted fel, kb. 30MB lemezterületre lesz szükséged, ha forrásból fordítasz, akkor számolj minimum 200
+megával.</para>
+    </sect1>
+
+    <sect1>
+      <title>Milyen formátumból a legegyszerûbb felrakni a GNOME-ot?</title>
+
+      <para>Ez attól függ, hogy milyen számítógéped van, és hogy mihez szeretnél a GNOME-mal kezdeni. Ha nincs meghatározott célod, a
+hivatalosan támogatott módszer az, hogy ha letöltöd a legfrissebb tar csomagot (azok a fájlok, amik <quote>.tar.gz</quote>-re végzõdnek) a <ulink
+      url="&ftpgnome;">&ftpgnome;</ulink>-ról vagy valamelyik tükrözésrõl. Nézd meg a /pub/GNOME/sources könyvtárat, ebben találod a különbözõ csomagokat. Az FTP tükrözések teljes listáját megtalálod a <ulink
+      url="&wwwgnomeftp;">&wwwgnomeftp;</ulink> site-on, ha minden kötél szakad, próbáld meg a 
+      <ulink url="&ftpwgn;">&ftpwgn;</ulink>-ot.</para>
+
+      <para>Ha a leges-legfrissebb, fejlesztõi GNOME verzióval szeretnél kísérletezni, a CVS-t kell használnod.
+Semmi garancia nincs arra, hogy a CVS verzió akár csak lefordítható, azt meg végképp nem állítja senki, hogy még ha le is fordul, mûködni fog, de az
+észrevételeket és hibajelentéseket
+mindig szívesen fogadjuk.
+Ha ezek alapján úgy gondolod, hogy ez neked való, további információt a CVS verzióról találsz a   <ulink url="&wwwgnomewicvs;">&wwwgnomewicvs;</ulink>
+      és a  <ulink url="&wwwsorencvs;">&wwwsorencvs;</ulink> címeken.</para>
+
+      <para>Ha nem akarsz vacakolni a GNOME fordításával, és valamilyen elterjedt rendszert használsz, elõfordulhat, hogy találsz elõre lefordított bináris csomagokat. Jelenleg tudunk csomagokról RedHat, SuSE 6.0, Debian és LinuxPPC rendszerekhez. Nem túl régen voltak még bináris csomagok Solaris-hoz is, amint a kezünkben lesznek ismét jó csomagok, ezeket is elérhetõvé tesszük. A különbözõ disztribúciókról megtudhatsz többet a <ulink
+      url="&wwwgnomestart;">&wwwgnomestart;</ulink> címen.</para>
+    </sect1>
+
+    <sect1>
+      <title>Mire van még szükségem, mielõtt a GNOME-ot telepítem?</title>
+
+      <para>Van néhány dolog, amire a GNOME számít, ha ezek nincsenek feltelepítve, vagy csak egy régebbi verzió van fent a rendszeren, telepítened vagy frissítened kell a következõ csomagokat:</para>
+      <simplelist>
+	<member>libjpeg (6b vagy újabb)</member> 
+	<member>libpng (1.0.1, 1.0.3 vagy újabb <emphasis>nem az
+	1.0.2)</emphasis></member>
+	<member>libungif (3.0 vagy újabb)</member>
+	<member>libtiff (3.4 vagy újabb)</member>
+	<member>libgr (2.0 vagy újabb)</member>
+	<member>ImageMagick (4.0.5 vagy újabb)</member>
+	<member>zlib (1.1.2 vagy újabb)</member>
+	<member>guile (1.2 vagy újabb)</member>
+	<member>Berkeley DB (1.85 vagy újabb)</member>
+      </simplelist>
+
+      <para>Néhány csingi-linginek szüksége van GNOME-kompatíbilis ablakkezelõre a mûködéshez. Ezek jelenleg az Enlightenment,
+     az IceWM, a Sawmill, és a Window Maker. Az FVWM és az SCWM fejlesztõi jelenleg fejezik be a GNOME támogatás integrálását. A GNOME-ban nincs ablakkezelõ, jól együttmûködik bármelyikkel, a GNOME-kompatíbilisekkel néhány plusz szolgáltatást is használhatsz.</para>
+
+      <para>A GNOME könyvtáraknak szükségük van bizonyos csomagokra:</para>
+      <simplelist>
+        <member>audiofile - Audio fájl formátum könyvtár</member>
+	<member>esound - Hang szerver</member>
+	<member>glib - Segéd rutinok</member>
+	<member>libxml - XML könyvtár</member>
+	<member>ORBit - CORBA implementáció</member>
+	<member>GTK+ - Widgetek</member>
+	<member>imlib - Képbetöltõ és -kezelõ könyvtár</member>
+      </simplelist>
+
+      <para>A fõbb GNOME moduloknak szükségük vannak a következõkre:</para>
+      <simplelist>
+        <member>gnome-libs - A fõbb GNOME könyvtárak</member>
+	<member>libgtop - Hordozható rendszerállapot-kijelzõ könyvtár</member>
+	<member>libghttp - HTTP könyvtár</member>
+      </simplelist>
+
+      <para>Itt vannak végül a fõbb GNOME modulok. Ezekre valószínûleg szükséged lesz:</para>
+      <simplelist>
+        <member>gnome-core - Panel, Súgó-böngészõ, session-kezelõ</member>
+	<member>mc (gmc, mc, mcserv) - Fájlkezelõ, munkaasztal ikonok</member>
+	<member>control-center (gnomecc) - Grafikus beállító eszköz</member>
+      </simplelist>
+
+      <para>Van néhány csomag, amire csak kevés nem kritikus alkalmazásnak van szüksége. Ha nincs elég idõd, vagy helyed a merevlemezen, ezeket nyugodtan kihagyhatod. Ha minden csingi-lingit használni akarsz, akkor ezekre is szükséged lesz:</para>
+      <simplelist>
+         <member>libglade - egyes alkalmazásoknak kell</member>
+	 <member>gnome-print - egyes alkalmazásoknak kell</member>
+         <member>ee - Képnézegetõ</member>
+	 <member>gtop - Processzor és memória kihasználtság monitorozása</member>
+	 <member>gnome-media - CD lejátszó, hangerõ-szabályozó, stb...</member>
+	 <member>gnome-pim - Naptár, címjegyzék</member>
+	 <member>gnome-utils - Hexa editor, rendszer info, fájlkeresõ</member>
+	 <member>gtk-engines - GTK+ témák</member>
+	 <member>xchat - IRC kliens</member>
+	 <member>gnumeric - táblázatkezelõ</member>
+	 <member>gnome-audio - Hang fájlok</member>
+	 <member>gnome-games - játékválogatás</member>
+	 <member>users-guide - GNOME Felhasználói Kézikönyv</member>
+      </simplelist>
+
+      <para>Végül itt van néhány fejlesztõi eszköz, megjegyezném, hogy ezek nincsenek benne a "-devel" rpm csomagokban, azokra SZÜKSÉGED lesz, ha GNOME-os alkalmazást akarsz fordítani. Szóval ezekre
+szoftverfejlesztéshez lehet szükséged:</para>
+      <simplelist>
+         <member>glade - GUI építõ</member>
+	 <member>gnome-python - Python modul a GNOME-hoz</member>
+	 <member>Gtk-- - C++ modul a GNOME-hoz</member>
+      </simplelist>
+    </sect1>
+
+    <sect1 id="Order">
+      <title>Milyen sorrendben telepítsem a GNOME csomagokat?</title>
+
+      <para>Erre a kérdésre nincs egy meghatározott válasz, viszont az alábbi sorrendnek mûködnie kell:</para>
+      <simplelist>
+	&gnomeorder;
+      </simplelist>
+    </sect1>
+
+    <sect1>
+      <title>Hogyan szerezzem meg a GMONE tar csomagokat?</title>
+
+      <para>A tar csomagokat (a forráskód tömörített archívját) megtalálod a <ulink
+      url="&ftpgnome;">&ftpgnome;</ulink> szerveren a <ulink
+      url="&ftpgnome;/pub/GNOME">/pub/GNOME/</ulink> könyvtárban. Ezeket a fájlokat átmásoljuk a GMONE FTP tükörszerverekre, amelyeknek a listáját megtalálod a 
+      <ulink url="&wwwgnomeftp;">&wwwgnomeftp;</ulink> lapon. Ha nem tudod elérni a web és az ftp kiszolgálót sem, egy elég biztos helynek bizonyul a <ulink
+      url="&ftpwgn;">&ftpwgn;</ulink>.</para>
+
+      <para>Ezek a tar csomagok az egyedüli hivatalos kiadások, ezeket egyenesen a fejlesztõk készítik, javítják. Jelenleg a legfrissebb változatot megtalálhatod a <ulink
+      url="&ftpgnome;/pub/GNOME/sources/latest">
+      sources/latest</ulink> könyvtárban, a GNOME-1.0 kiadáshoz a tar csomagok
+megtalálhatók a ,<ulink
+      url="&ftpgnome/pub/GNOME/gnome-1.0/sources">
+      gnome-1.0/sources</ulink> könyvtárban.</para>
+
+      <para>Ha egészen friss fejlesztõi tar csomagokra van szükséged, a 
+      <ulink url="&wwwjimpick;">Jim Pick Software</ulink> közzéteszi a fejlesztõi ág tartalmát napi frissítéssel tar csomag formájában. Letöltheted ezeket a következõ címrõl: <ulink url="&ftpsnap;">&ftpsnap;</ulink>. Általában megtartanak néhány kulcsfontosságú napot minden  csomagból, valamint készítenek diff fájlokat is (ezekben csak a különbözet van), tehát nem kell minden nap az egészet letöltened. Megjegyezném, hogy ezek nem hivatalos kiadások, hanem "unstable"
+(instabil, bizonytalan) pillanatképek, mindenapi környezetben nem javasolt a használatuk (hacsak nem tudod biztosan, hogy mit akarsz)</para>
+    </sect1>
+
+    <sect1>
+      <title>Hogyan töltsem le a GNOME-ot a cvs-rõl?</title>
+
+      <para>A CVS nagyon hasznos eszköz, nem csak a fejlesztõk számára, hanem azoknak a felhasználóknak is, akik a létezõ
+legfrissebb fejlesztés alatt álló GNOME forrásfából szeretnének GNOME-ot használni. Ennek ellenére, a CVS használatának leírása nem igazán tarozik ebbe a részbe. Jó választás, ha a <quote>Mi az a CVS?</quote> címû
+írást elolvasod a <ulink
+      url="&wwwgnomewicvs;">&wwwgnomewicvs;</ulink> weblapon, valamint hasznos, ha megnézed ennek a dokumentumnak a <link
+      linkend="GNOMEr">Hogyan lehetek GNOME-os</link> címû részét.</para>
+    </sect1>
+
+    <sect1 id="FTPMail">
+      <title>Az internetet csak levelezésre használhatom. Hogyan szerezzem meg akkor a GNOME-ot?</title> 
+
+      <para>Ha annyira le vagy választva az Internetrõl, hogy csak elektronikus leveleket tudsz küldeni és fogadni, vannak odakint olyan levelezõk, amiken keresztül használhatod az FTP-t. Küldj egy levelet a bitftp@pucc.princeton.edu vagy a webmail.ucc.ie címek egyikére, a levél törzsében szerepeljen a <command>help</command> parancs idézõjelek nélkül.
+Kicsit lassú lesz, de letöltheted vele a GNOME tar csomagokat levélben. Nézd meg a <ulink url="&wwwftpmail;">&wwwftpmail;</ulink> vagy a 
+      <ulink url="&wwwftpmlist;">&wwwftpmlist;</ulink> webhelyeket, naprakész információért az FTPMail szerverek listájáról.</para>
+
+      <para>Az FTP kiszolgálók listáját megtalálod a <quote>Hogyan szerezzem meg a GNOME tar csomagokat</quote> c. részben. A különbség csak annyi, hogy nem egyenesen a szerverre
+FTP-zel, hanem a leveles felületet használod.</para>
+    </sect1>
+
+    <sect1 id="GetttingRH">
+      <title>RedHat Linux-om van, honnan szerezzek RPM-eket?</title>
+
+      <para>Idõnként a RedHat közzétesz GNOME RPM csomagokat a weblapján. A
+legfrissebbeket megtalálod a <ulink
+      url="&ftpgnome;/pub/GNOME/gnome-1.0.53/redhat">
+      gnome-1.0/redhat</ulink> könyvtárban. Léteznek alpha, sparc és i386 platformokra.
+Ügyelj arra, hogy letöltsd a platform független RPM csomagokat is, a noarch könyvtárból.
+Részletes használati utasítást találsz ezekhez az Rpm-ekhez a  <ulink
+      url="&wwwgnomerh;">&wwwgnomerh;</ulink> oldalon.</para>
+
+      <para>Ezeknek az RPM csomagoknak mûködniük kell a Mandrake Linux és a MacMillian és CheapBytes RedHat
+disztribúciókkal is. Ezek az Rpm-ek
+valószínûleg nem használhatók a Caldera, SuSE és más RPM alapú disztribúciókkal. Olvasd el a következõ fejezetet, ha ilyen disztribúciót használsz.</para>
+
+      <para>Ezek az Rpm-ek támogatják a hangkártyákat, ami nagyon szuper, egészen addig, amíg meg nem próbálod õket egy hangkártya nélküli gépre felrakni. Ha valaki karban szeretne tartani egy hangkártya támogatás <emphasis>nélküli</emphasis> RPM csomagot, szívesen biztosítunk a számára FTP tárhelyet.</para>
+    </sect1>
+
+    <sect1 id="GettingDebian">
+      <title>Debian GNU/Linux-ot futtatok a gépemen, hogyan szerezhetek .deb csomagokat?</title>
+
+      <comment>Köszi Havoc! :-)</comment>
+
+      <para>A legfrissebb Debian csomagokat a Debian szervereirõl (vagy azok tükrözéseirõl) töltheted le a <ulink
+      url="http://www.debian.org/Packages/unstable/x11/">
+      debian-unstable</ulink> címrõl. Részletes használati utasítást olvashatsz a <ulink url="&wwwgnomedeb;">&wwwgnomedeb;</ulink> weblapon.</para>
+
+      <para>A Debian csomagok letöltéséhez a következõt kell csinálni:</para><screen>
+<prompt>$</prompt> <userinput>apt-get update</userinput>
+<prompt>$</prompt> <userinput>apt-get install gnome-control-center gnome-panel gnome-session gnome-games gnome-terminal gnome-utils</userinput></screen>
+
+      <para>A Debian csomagokat önkéntesek tartják karban és különös gondot fordítanak a tesztelésre, ezért ha nem látod a legfrissebb kiadást deb csomagban, kicsit legyél türelmes, biztosan dolgoznak rajta. Még jobb, ha segíteni akarsz a csomagok elõkészítésében, iratkozz fel a <ulink
+      url="mailto:&maildeb;">&maildeb;</ulink> levelezõlistára, bõvebben lásd a <ulink
+      url="&wwwdebpack;">&wwwdebpack;</ulink> címen.</para>
+
+      <para>Mivel a Debianos GNOME csomagok megtalálhatók a Debian disztribúcióban, nem tükrözzük õket a GNOME FTP szerverére. Úgy tûnik erre nincs is igény. Ha mégis szükséges lenne, szóljatok és megoldjuk.</para>
+    </sect1>
+
+    <sect1 id="GettingSuSE">
+      <title>SuSE Linuxot futtatok, honnan tölthetem le az RPM csomagokat?</title>
+ 
+      <para>Remek SuSE-s GNOME található a <ulink url="&wwwsusebe;">&wwwsusebe;</ulink> címen (Belgiumban) és a
+      <ulink url="&wwwsusede;">&wwwsusede;</ulink> címen (Németországban). Jelenleg van telepítési
+útmutatójuk, és vannak RPM csomagjaik is a 6.0-ás SuSE-hoz, az 5.3-as RPM-ek nemsokára elérhetõek lesznek. Nézd meg a weblapot.</para>
+    </sect1>
+
+    <sect1 id="GettingOtherRPM">
+      <title>Caldera OpenLinux-om van, vagy más RPM alapú Linux disztribúcióm, hogyan szerezzek RPM csomagokat?</title>
+
+      <para>Az, hogy két disztribúció RPM-et használ, még nem jelenti azt, hogy ugyanazt az RPM csomagot fel tudod telepíteni rájuk. Pl. a
+RedHat és a Caldera más libc verziókat használ, ezért igen valószínûtlen, hogy a RedHat bináris RPM-jei fussanak Calderán. Ravasz trükk, ha veszed a RedHat SRPM csomagjait és a Caldera linuxon kiadod a <command>rpm
+      --rebuild</command> parancsot mindegyikükre, majd feltelepíted az így létrejött bináris Rpm-eket. Ha így nem mûködik, akkor marad a tar csomagból fordítás.</para>
+    </sect1>
+
+    <sect1 id="GettingFreeBSD">
+      <title>FreeBSD-m van, hogyan szerezhetek rá GNOME-ot?</title>
+
+      <comment>Köszi Stanislav Shalunov! :-)</comment>
+
+      <para>FreeBSD-re portolták a GNOME-ot és a kiegészítõ alkalmazás csomagok nagy részét (beleértve a Gnumeric-et). Ha a CDROM-ot a <filename>/cdrom</filename> alá csatolod fel (a csatolási pont neve <emphasis>fontos</emphasis>) vagy van mûködõ Internet kacsolatod és idõd a letöltésre, telepítheted a GNOME-ot a FreeBSD-s dobozra (ha 3.1-es vagy újabb, de régebbivel is mûködhet) a következõ beírásával:</para><screen>
+<prompt>$</prompt> <userinput>cd /usr/ports/x11/gnome && make install</userinput></screen>
+
+      <para>Ha többet akarsz tudni a "FreeBSD Ports Collection"-ról (FreeBSD Átültetések Gyûjteménye)látogasd meg a <ulink url="&wwwbsdport;">&wwwbsdport;</ulink> weblapot. Ha nincs
+Internet-hozzáférésed, de fenn van a  dokumentáció, megnézheted a <filename>/usr/share/doc/handbook23.html</filename> fájlt. Ez a doksi leírja, hogy hogyan telepítsd az elõre fordított csomagokat (binárisokat) a <command>pkg_add</command> parancs segítségével, ha megvan a CDROM-od. Jelenleg (a 3.1-es kiadáshoz) fel kell telepítened a következõ csomagokat:
+	<filename>gnomelibs</filename>,
+      <filename>gnomeaudio</filename>, 
+	<filename>gnomecore</filename>,
+      <filename>gnomegames</filename>,
+      <filename>gnomeprint</filename>, 
+	<filename>gnumeric</filename>,
+      <filename>libgtop</filename>. A legfrissebb verziólistáját megtalálod a <ulink
+      url="&wwwbsdport;/gnome.html">&wwwbsdport;/gnome.html</ulink> weblapon.</para>
+    </sect1>
+
+    <sect1 id="GettingOtherUnix">
+      <title>Solaris-t, AIX-et, HP-UX-et, BSDI-t, SCO-t, IRIX-et, vagy valamilyen más egzotikus Unixot vagy
+Unix-jellegû rendszert futtatok, léteznek ilyen bináris csomagok is?</title>
+
+      <para>Régebben voltak bináris csomagok Solaris-hoz, de ezek eltûntek (nem baj, amúgy is régi GNOME volt...)
+	  Ha valahol feltûnnek az említett rendszerekhez bináris csomagok,
+	  valószínûleg fel tudjuk õket tenni az FTP szerverünkre.
+      </para>
+
+      <para>Addig is, a tar csomagokból kell fordítanod a GNOME-ot. Ha nincs a
+	  rendszereden fordító, a <ulink url="&wwwgnu;">GNU Projekt </ulink> 
+	  honlapján megtalálod a GNU C Fordítót. Ez általában minden platformra
+	  létezik és ingyen van.
+      Nézd meg a <ulink url="&wwwgcc;">&wwwgcc;</ulink> linket további
+	  információért.
+      </para>
+    </sect1>
+
+    <sect1 id="GettingWindows">
+      <title>Microsoft Windows-t futtatok, én is használhatok GNOME-ot?</title>
+
+      <comment>Köszi David Wheeler!</comment>
+
+      <para>Pillanatnyilag a válasz: nem, a GNOME-ot még nem portolták Windows-os platformra, de a munkálatok folyamatban vannak. Ha tényleg szükséged van a Windows-os verzióra, készülj fel sok munkára.
+      </para>
+
+      <para>Tor Lillqvist portolt több a GNOME által használt grafikus programkönyvtárat a Win32 (Microsoft Windows 95/98/NT) platform alá.
+	  Az erõfeszítéseirõl többet olvashatsz a <ulink
+      url="&wwwgimp32;">&wwwgimp32;</ulink> weblapon. Portolta már többek
+	  között a glib,
+	  gtk+, gdk_imlib könyvtárakat.
+      </para>
+
+      <para>Tor célja, hogy a Gimp teljes pompájában mûködjön a Windows-os platformon (részlegesen már most is mûködik), de munkája nagyon sokban elõsegíti a GNOME portolását is. A GNOME alkalmazások egy részének szüksége van az Õ könyvtáraira (kicsit több hibakereséssel), valamint a libpng, gnome-libs könyvtárakra és az ORBit-ra. Ha valaki ezek is portolná, sok GNOME
+alkalmazást le lehetne fordítani és futtatni Windows alatt is.</para>
+
+      <para>Ha érdekel ez a projekt, olvasd jól át az <ulink
+      url="&wwwgnuaconf;"> Autoconf</ulink>, dokumentációját, mert ennek
+	  segítségével teszünk különbséget a különbözõ rendszerek között a GNOME
+	  fejlesztése során.
+      Megnézheted még a Cygnus Solution <ulink
+      url="http://sourceware.cygnus.com/cygwin/">CygWin32</ulink> könyvtárait
+	  és segédprogramjait. Megkönnyíthetik az életedet.
+      </para>
+    </sect1>
+  </chapter>
+
+  <chapter id="CompilingGNOME">
+    <title>A GNOME fordítása</title>
+
+    <sect1>
+      <title>Milyen sorrendben fordítsam a csomagokat?</title>
+
+      <para>Fontos, hogy a megfelelõ sorrendben fordítsd a csomagokat. A GNOME
+	  csomagjai között fontos függõségi viszonyok vannak.
+	  Itt van az én ajánlatom, minden egyes csomagot fordíts le és telepítsd,
+	  mielõtt a következõvel folytatnád. Az ELF alapú rendszereken (mint a GNU/Linux és a FreeBSD), le kell futtatnod minden csomag telepítése után az 
+      <command>ldconfig</command> parancsot is, hogy a programok biztosan
+	  megtaláljanak minden új könyvtárat.
+      </para>
+      <simplelist>
+	&gnomeorder;
+      </simplelist>
+    </sect1>
+
+    <sect1>
+      <title>Hogyan konfiguráljam a forráskódot, hogy illeszkedjen a
+	  rendszeremhez? 
+      (vagy... Hol vannak a Makefile-ok?)</title>
+
+      <para>A GNOME configure szkripteket használ (ezeket az Autoconf generálja) a forráskód rendszerhez illesztéséhez. A Configure kinyomozza, hogy hogyan van a rendszered beállítva, definiálja a megfelelõ konstansokat a fordító
+számára, és hozzáad vagy kivesz részleteket a kódból.
+      </para>
+
+      <para>A Configure ismer egy csomó opciót, írd be, hogy 
+      <command>./configure --help</command> és végigböngészheted a teljes
+	  listát. A legfontosabb a 
+      <userinput>--prefix</userinput> opció, ez mondja meg, hogy a GNOME hova
+	  kerüljön. Ha nem adod meg a prefix opciót, a GNOME fájljai
+	  alapértelmezésben a 
+      <filename>/usr/local</filename> könyvtárba kerülnek. 
+	  A legtöbb RPM csomag a 
+      <filename>/usr</filename> prefixet használja. Sok felhasználó szereti 
+      <userinput>/opt/gnome</userinput> elõtagot, ehhez a lejjebb részletezett
+	  elõkészületekre van szükség.
+      </para>
+
+      <para>A Configure ellenõriz még néhány környezeti változót, pl.
+	  beállíthatod a 
+      <envar>CFLAGS</envar> változót, hogy tartalmazza a C fordító azon
+	  opcióit, amiket mindenképpen szeretnél átadni neki. Ilyen lehet a 
+      <userinput>-O6</userinput>, ami maximalizálja az optimalizációt,
+      vagy a <userinput>-g</userinput>, ami beleilleszti a hibakeresõ
+	   szimbólumokat.
+      </para>
+    </sect1>
+
+    <sect1>
+      <title>Hová lett a configure?</title>
+
+      <para>A CVS-rõl töltötted le a kódot, igaz? Olvasd el a
+      <link linkend="GNOMER">Hogyan lehetek GNOME-os</link> részt lejjebb.
+	  Ha tar csomagból próbálod a GNOME-ot fordítani, a configure fájlnak ott
+	  kell lennie a forráskönyvtár-hierarchia legtetején. Ha mégsincs ott,
+	  akkor az hiba. Nézd meg a 
+      <link linkend="BUGREPORT">Hogyan jelentsek be hibát?</link> kérdést.
+      </para>
+    </sect1>
+
+    <sect1>
+      <title>OK, megvan a Makefile, hogyan lesz ebbõl GNOME?
+      </title>
+
+      <para>Innen már nagyon egyszerû. Írd be, hogy
+      <command>make</command>, majd azt, hogy <command>make
+      install</command>.  A legtöbb rendszeren (a GNU Linuxon is) ezek után még szükség van az
+      <command>ldconfig</command> parancsra. Ha sietsz, néha kihagyhatod a
+      <command>make</command> parancsot, a 
+      <command>make install</command> általában úgyis mindent létrehoz, ami
+	  még nincs meg.
+	  Ha úgy akarod elindítani az egész folyamatot, hogy egy darabig ne kelljen
+	  ránézni, és Bourne shell-t (vagy az egyik változatát, pl. ksh vagy bash)
+	  használsz, beírhatod mind a négy parancsot egy sorra, ha elválasztod
+	  õket a 
+      <userinput>&&</userinput> jellel.  Például:
+      </para><screen>
+<prompt>$</prompt> <userinput>./configure --prefix=/usr/local && make && make install && ldconfig</userinput></screen>
+	
+      <para>A <userinput>&&</userinput> jel gondoskodik róla, hogy a
+következõ
+parancs csak akkor kerül végrehajtásra, ha az elõzõ sikeresen befejezõdött.
+      </para>
+
+      <para>Ha készen vagy a <command>make install</command> paranccsal (és az
+      <command>ldconfig</command>-al, ha szükséges), folytathatod a következõ
+	  csomaggal.
+      </para>
+    </sect1>
+
+    <sect1>
+      <title>Hogyan telepíthetem a GNOME-ot valami általam meghatározott helyre, mint pl. <filename>/opt/gnome</filename>?</title>
+
+      <para>Sokan szeretik, ha a GNOME-ot külön könyvtárba telepíthetik, mert így gond esetén könnyebb eltávolítani, vagy könnyebb
+beállítani és nyomon követni, hogy kinek van jogosultsága a használatára, valamint könnyebb más gépek számára kiexportálni. Ehhez egynéhány elõkészületre, valamint a rendszered ismeretére van szükség. A következõ leírásban a
+GNOME-ot a <filename>/opt/gnome</filename> könyvtárba telepítem, szóval kövesd az
+útmutatót, és a <filename>/opt/gnome</filename>-ot helyettesítsd be annak a könyvtárnak a nevével, amit Te szeretnél használni.</para>
+
+      <para>A legfontosabb, hogy a rendszer megtalálja a GNOME binárisait a <filename>/opt/gnome/bin</filename> könyvtárban, a programkönyvtárakat a <filename>/opt/gnome/lib</filename> könyvtárban és a kéziköny oldalak fájljait a <filename>/opt/gnome/man</filename> könyvtárban.</para>
+
+      <para> Ezt úgy érheted el, hogy a 
+      <filename>/opt/gnome/bin</filename> könyvtárat beírod a <envar>PATH</envar> környezeti változóba. Például:
+      <userinput>PATH="/bin:/usr/bin:/opt/gnome/bin"</userinput>.</para>
+
+      <para>Ezek után, meg kell mondanod a "loader"-nek, hogy hol találja a programkönyvtárakat. A legtöbb UNIX rendszernél ezt
+úgy érheted el, hogy hozzáadod a <filename>/opt/gnome/lib</filename> útvonalat az <envar>LD_LIBRARY_PATH</envar> környezeti változóhoz, mint az elõbb a <envar>PATH</envar>-nál. Vannak
+rendszerek, ahol a <envar>LD_RUN_PATH</envar> változót kell használni. Azokon a rendszereken, amelyek ELF formátumú binárisokat használnak, mint pl. a GNU/Linux vagy a FreeBSD, a programkönyvtár elérési útvonalát a <filename>/etc/ld.so.conf</filename>, fájlban kell megadni, majd
+futtatni kell az <command>ldconfig</command> parancsot. A statikusan linkelt rendszereken nem kell mindezekkel foglalkoznod, de vehetsz még merevlemezt, mert biztosan szükséged lesz a helyre.
+Olvasd el a rendszered dokumentációját, ha nem vagy benne biztos, hogy hogyan kell megmondanod a "loader"-nek, hogy melyik könyvtárakat nézze meg.
+</para>
+
+      <para>Meg kell még mondanod a man programnak, hogy hol találja a GNOME által telepített
+kézikönyv oldalakat. Egyszerûen szúrj be egy sort a <filename>/etc/man.config</filename> fájlba. A sornak a következõt kell tartalmaznia: <userinput>MANPATH
+      /opt/gnome/man</userinput>.</para>
+
+      <para>A következõ probléma az, hogy van néhány könyvtár, amibe a GNOME írni fog, azonban jobb lenne, ha máshova írna. Erre egy egyszerû megoldás, ha
+szimbolikus kötéseket használsz. Írd be a következõket:
+</para><screen>
+<prompt>$</prompt> <userinput>mkdir /opt/gnome/share</userinput>
+<prompt>$</prompt> <userinput>cd /opt/gnome/share</userinput>
+<prompt>$</prompt> <userinput>ln -s /usr/share/locale locale</userinput>
+<prompt>$</prompt> <userinput>ln -s /usr/share/aclocal aclocal</userinput></screen>
+
+      <para>Most már minden elõ van készítve arra, hogy a <filename>/opt/gnome</filename>-ot használd elõtagként a fordításnál. Ehhez egyszerûen add meg a <command>./configure</command> parancsnak a <option>--prefix=/opt/gnome</option> kapcsolót. Persze, ha nem a <filename>/opt/gnome</filename> könyvtárba, hanem valahova máshova szeretnéd telepíteni a GNOME-ot, a fenti leírásban egyszerûen cseréld ki az összes hivatkozást a megfelelõ könyvtárnévre.</para>
+    </sect1>
+
+    <sect1 id="FHS">
+      <title>Hogyan fordítsam a GNOME-ot, hogy a fájljait FHS kompatíbilisen helyezze el? Hogyan helyezzem át a GNOME etc és var könyvtárait, hogy egyszerûen tudjam használni hálózaton keresztül?</title>
+
+      <comment>Thank you Raja R. Harinath!</comment>
+
+      <para>Alapértelmezésben a GNOME minden fájlját az elõtagként megadott könyvtárba teszi.
+Így könnyû a GNOME-ot elkülöníteni, de mégis vannak olyan helyzetek, ahol nem ez a legjobb megoldás.
+Különösen igaz ez akkor, ha a GNOME-ot hálózaton keresztül szeretnéd megosztani, vagy szigorú <ulink url="&wwwfhs;">FHS</ulink> kompatíbilitásra törekszel. Ilyen esetben egyes
+könyvtárakat máshol szeretnél látni. A GNOME etc könyvtárát áthelyezheted a <option>--sysconfdir</option> kapcsolóval. Hasonlóképpen a var könyvtár helyét
+megváltoztathatod a <option>--localstatedir</option> kapcsolóval.</para>
+
+      <para>Például egy FHS kompatíbilis GNOME rendszer elõtagja fordításkor lehet a <filename>/opt/gnome</filename>, azonban az etc fájljai a <filename>/etc/opt/gnome</filename>-ban kell legyenek , valamint a var fájljai a <filename>/var/opt/gnome</filename> könyvtárba tartoznak. Ennek megvan az az elõnye, hogy kiajánlhatod csak olvasásra a <filename>/opt/gnome</filename> könyvtárat, e mellett a gépeknek lehet lokális konfigurációjuk. Ehhez a következõ configure opciókat kell megadnod: <userinput>./configure --prefix=/opt/gnome
+      --sysconfdir=/etc/opt/gnome
+      --localstatedir=/var/opt/gnome</userinput>.</para>
+    </sect1>
+
+    <sect1>
+      <title>Sikerült lefordítanom egy modult, hogyan szabadulhatok meg a forráskönyvtár-struktúrában maradt tárgyfájloktól és egyéb felesleges
+dolgoktól?</title>
+
+      <para>Három lehetõséged van: a <command>make clean</command>,
+    a <command>make distclean</command> vagy a forráskönyvtár törlése. A <command>make clean</command> töröl minden végrehajtható és tárgyfájlt, valamint egyéb feleslegessé vált fájlokat, elegáns és biztonságos megoldás. A következõ lehetõség, a <command>make distclean</command> elméletileg mindent töröl ami nem volt az eredeti tar csomagban. Ha ezt választod, nem tudod majd <link linkend="UNINSTALL">eltávolítani a modult</link>. Ugyanez érvényes a forráskönyvtár eltávolítására.  A <command>make clean</command> parancs az ajánlott általában, a másik kettõ drasztikus lépésnek számít.</para>
+    </sect1>
+
+    <sect1 id="Uninstall">
+      <title>Hogyan távolíthatok el egy modult?</title>
+
+      <para>Ha valamilyen csomagkezelõ rendszert használsz, (mint pl. az RPM), kövesd a csomagkezelõ dokumentációjában leírtakat.</para>
+
+      <para>Ha a forráskódból fordítottál és telepítettél egy modult, és úgy gondolod, hogy szeretnéd eltávolítani, <emphasis>figyelj arra, hogy meg kell tartanod a forráskönyvtárat</emphasis>.  Egyszerûen keresd meg a modul forrását, és futtasd abból a könyvtárból a <command>make uninstall</command> parancsot. Ez a modul minden telepített fájlját törli.</para>
+    </sect1>
+  </chapter>
+
+  <chapter id="UsingGNOME">
+    <title>Na, akkor most már van GNOME-om, mit csináljak vele?</title>
+
+    <para>Most arról lesz szó, hogy hogyan indulj el az új GNOME-oddal, és hogy mire tudod használni.</para>
+
+    <sect1>
+      <title>Mit nézzek meg elõször?</title>
+
+      <para>Van egy csöppet elavult, de nagyon hasznos bemutató a GNOME-ról a <ulink url="&wwwgnometour;">&wwwgnometour;</ulink> weblapon. Mindenképpen érdemes megnézni.</para>
+
+      <para>Szintén ajánlom a GNOME felhasználók kézikönyvét a <ulink url="&wwwgnomeguide;">&wwwgnomeguide;</ulink> weblapon.</para>
+    </sect1>
+
+    <sect1>
+      <title>Hogyan indítsam el a GNOME-ot?</title>
+
+      <para>A GNOME indításának a legjobb módja az <userinput>exec gnome-session</userinput> beírása az X indító szkriptjébe. Ez a szkript lehet a <filename>~/.xinitrc</filename>, a <filename>.xsession</filename> vagy a <filename>.Xclients</filename> fájlok egyike, a platformtól és a konfigurációtól függõen.
+Természetesen ellenõrizd, hogy a GNOME binárisai az elérési útvonalban benne vannak és, hogy nincsen <userinput>exec</userinput>-el kezdõdõ sor a fájlban) persze azt leszámítva amit éppen hozzáadtál).
+Az 1.04-es verziójú gnome-core-tól, megadhatod, hogy melyik ablakkezelõ induljon el a <envar>WINDOW_MANAGER</envar> változó beállításával.</para>
+
+      <para>Ha így futtatod a <command>gnome-session</command>-t, az elindítja az alapértelmezett "session"-t. Ebben benne foglaltatik a kedvenc ablakkezelõd (ha nem adsz meg ablakkezelõt, a GNOME keres egyet, lehetõleg
+kompatíbilist és elindítja azt), a panelt, a GNOME Midnight Commandert és a
+Súgó-böngészõt. Ahogyan használod a GNOME-ot, a session-kezelés mindig a munkaasztal legfrissebb beállításait menti el. Ha kilépsz, majd ismét belépsz késõbb, a program a legutolsó munkaasztalt állítja vissza.</para>
+
+      <para>Ha inkább eltekintenél a session-kezeléstõl, a GNOME ezt is lehetõvé teszi. Írd be az <userinput>exec gnome-wm</userinput> sort az X indító szkriptedbe, mint azt feljebb már leírtam. Így a GNOME még mindig a WINDOW_MANAGER változóból fogja venni az ablakkezelõt, de nem zargat a
+session-kezeléssel. Ilyenkor a panelt, a gmc-t vagy bármi mást kézzel vagy az indítószkriptbõl kell futtatnod. Például:</para>
+
+      <screen>
+panel &
+gmc &
+exec gnome-wm</screen>
+    </sect1>
+
+    <sect1>
+      <title>Hogyan futtassak GNOME programokat?</title>
+
+      <para>Elõször is, a GNOME programokat ugyanúgy futtathatod, mint bármilyen másik programot. Nyiss egy terminált, a prompthoz írd be a program
+nevét, és nyomd meg az
+ENTER-t: a program máris fut.</para>
+
+      <para>Másodszor, futtathatod a programokat a panel menüjébõl. A legtöbb GNOME program (néhány nem-GNOME programmal együtt) megtalálható a Tappancs menüben, a GNOME panelen. Néhány figyelemre méltó program a menübõl: a Fájlkezelõ a Midnight Commander GNOME-os változatát indítja el, a Beállítások->Menüszerkesztõ programmal törölhetsz vagy adhatsz hozzá dolgokat a Tappancs (vagy bármelyik másik) menühöz, a Beállítások->GNOME Control Center-el beállíthatod a GNOME (meg néhány más dolog, mint pl. az Enlightenment) legtöbb tulajdonságát, 
+a Játékok->Gnobots egy játék, ami könnyen szenvedéllyé válhat.</para>
+    </sect1>
+
+    <sect1>
+      <title>Hogyan futtassam a GNOME Panelt?</title>
+
+      <para>A GNOME panelt általában a <command>gnome-session</command> indítja el, ha mégsem, akkor gépeld be, hogy <command>panel</command> a parancssorba, ez elindítja a programot.</para>
+
+      <para>Hozzáadhatsz dolgokat a panelhoz, vagy a panel Tappancs menüjén keresztül, vagy abból a menübõl, ami akkor jön elõ, ha jobb gombbal kattintasz a panelre. A <ulink url="&wwwgnomeguide;">GNOME Felhasználói kézikönyv</ulink> egy egész <ulink url="&wwwgnomeguide;/paneluse.html"> fejezetet</ulink> szentel a panelnek.</para>
+    </sect1>
+
+    <sect1>
+      <title>Hogyan használhatom a WindowMaker-t a GNOME-mal?</title>
+
+      <para>
+        Ahhoz, hogy a gmc és a panel menüi jól mûködjenek a "root window"-ban, meg kell változtasd a WindowMaker menü beállításait, mert szerencsétlen módon, alapértelmezésben mind a két menü a jobb egérgombra van beállítva.
+      </para>
+      <para>
+        Hogy ezt a problémát áthidald, indítsd el a WindowMaker Configuration Tool, a Control Panel-bõl válaszd ki a Window Manager alrészt a Desktop-ból, kattints a "Run Configuration Tool For WindowMaker" gombra. Amikor elindul a program, válaszd ki az egér ikont, majd a "Workspace Mouse Actions" alatt állítsd át az "Applications Menu"-t a középsõ egérgombra, a "Select windows"-t a bal gombra és ikszeld ki a "Window List Menu" opciót (úgyis használhatod a GNOME Pager-t, ami ugyanazt a célt szolgálja). Mentsd el az új beállítást. A következõ alkalommal, amikor a jobb gombot megnyomod a munkafelületen, a gmc és a panel menüi jelennek meg. Onnan frissítheted a munkaasztalt vagy hozhatsz létre ikonokat, stb... 
+      </para>
+    </sect1>
+
+  </chapter>
+
+  <chapter id="Help">
+    <title>Segítséééég!!!!!!!!</title>
+
+    <para>Akkor is, ha betûre pontosan követed a fenti leírást, elõfordulhatnak elõre nem látható problémák.
+Bármivel lehet gond, a félreolvasott utasításoktól kezdve, a szoftver hibáján át, a más szoftverében található hibákig bármi elképzelhetõ. Ebben a fejezetben megpróbáljuk leírni, hogy mások milyen problémákkal találkoztak a GNOME telepítése vagy használata során.</para>
+
+    <sect1>
+      <title>Általános segítség</title>
+
+      <para>Itt néhány általános, gyakran felmerülõ kérdést tárgyalunk, a specifikus problémákat lásd késõbb, ebben a fejezetben.
+      </para>
+
+      <sect2>
+	<title>Valami nem mûködik, nem értem, mit csináljak?</title>
+
+	<para>OK, az elsõ tanácsom, lazíts egy kicsit és végy egy nagy
+levegõt... Ezek után olvasd át ezt a GyIK-et, a GNOME Felhasználói Kézikönyvet és bármilyen más a kezed ügyébe kerülõ doksit, keresvén a megoldást. A következõ lépésben olvasd át a levelezõlista
+archívumát (errõl olvashatsz <link
+	linkend="Archives">feljebb</link>) abból kiderül, hogy van-e más, akinek ugyanaz a problémája. Nagyon fontos: próbáld meg <emphasis>még egyszer</emphasis> azt, ami úgy tûnik, hogy nem sikerül, hátha a megoldás adja magát.
+Ha semmi sem segít, elérkezett az idõ, hogy kérdezz a listán.
+</para>
+
+	<para>Elõször is, fel vagy iratkozva a gnome-list listára, igaz?
+Ha nem vagy, a feliratkozáshoz szükséges tudnivalókat megtalálod <link linkend="MAILINGLIST">feljebb</link>. Na most, amikor segítséget kérsz a listán, <emphasis>részletesen írd le a problémád</emphasis>.  Ha csak annyit mondasz, hogy <quote>A panel nem mûxik</quote> ez sem rajtad, sem rajtunk nem segít.
+Neked még mindig ott lesz a problémád, nekünk meg egy lehetséges programhibánk, amirõl semmit sem tudunk. Hasznosabb (de még mindig nem elég), ha valami ilyet írsz: <quote>Mindig, amikor kiválasztom az "akármilyen" menüpontot a Tappancs menübõl, az egész panel hirtelen eltûnik. Ja, ha már itt tartunk, mi az a <link
+	linkend="Core">core</link> nevû fájl amit a GNOME állandóan a "home" könyvtáramba rak?</quote></para>
+
+	<para>Ideális esetben többféle információra van szükségünk. Elõször, pontosan milyen rendszered van? Nem, nem mindenki ugyanazt az
+operációs rendszert használja. Meg kell adnod a processzor típusát: Sparc, MIPS, i386 (ebbe beletartozik a Pentium, az AMD, a Cyrix stb...), PPC, Alpha, ARM, 680x0... Tudnunk kell az operációs rendszeredet pontosan: Linux disztribúció, FreeBSD, HURD, OpenBSD, Solaris, IRIX, CrayOS, OS/400, meg ilyenek. Add meg ezen kívül az operációs rendszer pontos verzióját. Például, az a gép, ami elõtt most ülök egy GNU/Linux RedHat/i386 Rawhide gép, az egyik barátom pedig egy Solaris Sparc 2.6-os gépet használ.</para>
+
+	<para>Ezek után szükségünk van egyéb információkra is, azzal kapcsolatban, hogy mit használsz a gépen. A GNU/Linux rendszereken a kernel száma és a libc verziója szinte biztos, hogy kell. Majdnem minden GNOME problémához szükségünk van a glib, gtk+, Imlib, ORBit és gnome-libs verzióira. Ha nem vagy biztos benne, hogy szükségünk van ezekre az adatokra, inkább írd csak le õket.
+Más dolgok, amik néha összefüggésben lehetnek a problémáddal, a Perl, X11, Python, Guile és libpng verziói, ám ha nem látsz az egyikükre utaló hibaüzenetet, nem kell megadnod õket. Szintén fontos, hogy hogyan telepítetted a GNOME-ot. Binárisokat használtál? Ha igen, melyik verziót? CVS-bõl telepítetted a GNOME-ot? Ha igen milyen dátummal? Ha a fenti módszereket kombináltad, írd le azt is.
+</para>
+
+	<para>Végül, tudnunk kell pontosan, hogy mi a problémád. Tudnunk kell, hogy a probléma mindig jelentkezik, vagy csak néha. Tudnunk kell, hogy a program ad-e valamilyen hibaüzenetet mielõtt elszáll. Tudnunk kell, hogy pontosan mi történik, amikor találkozol a hibával. Ha
+ambiciózus vagy, próbálkozhatsz valamelyik diagnosztizáló eszközzel, amelyekrõl mindjárt írok, csinálhatsz pl. egy "backtrace"-t, ezt az információt is beleveheted a levélbe.</para>
+
+	<para>Most, hogy készen állsz arra, hogy feladd a levelet, kell egy jó, frappáns tárgy (subject). A GNOME-list-nek nagy forgalma lehet, azt akarod tehát, hogy a Te leveledre felfigyeljenek azok az emberek, akik segíteni tudnak, akik nem, azok pedig rögtön át tudják ugrani. Ha tehát azt írod a subject mezõbe, hogy "A GNOME nem mûködik", mindenki át fogja ugrani a leveledet, ha azt írod, hogy "GSM suxx", csak dühíteni fogod azokat, akiktõl a segítséget várnád; ha valami olyasmit írsz, hogy "HP-UX alatt, a GNOME-panel ikonjai helyett csak fekete négyzetek jelennek meg",
+valószínûleg a megfelelõ emberek érdeklõdését kelted fel.</para>
+
+	<para>Szóval minden fent említett részletet összegezz egy hosszú
+e-mail-ben, és küldd el azt a listára. Ha követted a tanácsaimat, jó esélyed van arra, hogy gyorsan és átgondoltan válaszolni fognak. Ha valamilyen okból mégsem jön válasz, ne vedd személyes sértésnek, a leveled
+valószínûleg elkallódott a hatalmas levéltömegben. Várj néhány napot, majd gondold át, hogy tudsz-e még valami hasznos információt hozzátenni, vagy egy többet mondó fejlécet, és küldd el a levelet újra.</para>
+      </sect2>
+
+      <sect2 id="BugReport">
+	<title>Hogyan jelentsek be hibát?</title>
+
+	<para>Ha találsz egy hibát (bug), mi tudni akarunk róla, meg akarjuk keresni és ki akarjuk javítani. Hogy minél hatékonyabbá tegyük ezt a folyamatot, kölcsön vettük a Debian kiváló hibakövetõ rendszerét. A rendszer használatáról olvashatsz a következõ oldalon: <ulink url="&wwwgnomebugr;">
+	&wwwgnomebugr;</ulink>.</para>
+
+	<para>Néhány dologra oda kell figyelni a hibakövetõ rendszer használatakor. Elõször nézd át a webes felületet a <ulink url="&wwwgnomebug;">&wwwgnomebug;</ulink>-on, itt láthatod, hogy a hibát más bejelentette-e. Ha új hibáról van szó, küld el a <ulink url="&mailbug;">&mailbug;</ulink> címre. Vigyázz arra, hogy megadd a Csomag és Verzió fejléceket, ahogyan az a használati utasításban le van írva, ezzel biztosítod, hogy a hibabejelentés gyorsan és automatikusan a megfelelõ emberekhez kerül. Nézd át, hogy minden részletet megadtál-e. Lásd az elõzõ kérdésnél leírtakat. Ha a backtrace vagy az strace kimenete releváns, mindenképpen csatold. Arról, hogy mik ezek, lejjebb olvashatsz.
+</para>
+
+	<para>Miután bejelentetted a rendszeren keresztül a hibát, kapsz egy levelet róla. A hibakövetõ rendszer webes felületén figyelemmel kísérheted a hiba státuszát.</para>
+      </sect2>
+
+      <sect2>
+	<title>Mi az a prefix (vagy a $prefix, ${PREFIX}, vagy
+	&lt;prefix&gt;) /elõtag/ ?</title>
+
+	<para>Amikor a GNOME-ot lefordítják, meg kell adni azt a helyet, ahol a GNOME fájljai találhatók a fájlrendszerben. Az opció, amivel ezt állíthatod, a  <option>--prefix</option>, ezért ezt a helyet GNOME Prefix-nek, vagy röviden prefix-nek vagy elõtagnak hívjuk. A GNOME fájljainak az elhelyezkedése megegyezik rendszerrõl rendszerre, a prefix kivételével, tehát lehet, hogy egy fájl a <filename>/usr/share/gnome/pixmaps</filename> könyvtárban az egyik gépen a <filename>/opt/gnome/share/gnome/pixmaps</filename> könyvtárban van a másikon, ezért erre a helyre úgy hivatkozunk, hogy: <filename>$prefix/share/gnome/pixmaps</filename>.</para>
+
+	<para>Ha tar csomagból (vagy CVS-bõl) telepítetted a GNOME-ot, de nem adtad ki a <command>configure</command> (vagy az <command>autogen.sh</command>) parancsokat a megfelelõ
+prefix-szel, az alapértelmezett hely a <filename>/usr/local</filename>. Ha RedHat
+RPM-ekbõl telepítetted a GNOME-ot, akkor a prefix beállítása a <filename>/usr</filename>. Ha még mindig nem vagy biztos, írd be, hogy <command>which panel</command>, és vond ki az eredménybõl a <computeroutput>/bin/panel</computeroutput>-t. Ami maradt, az a GNOME prefix. </para>
+      </sect2>
+
+      <sect2>
+	<title>Mit jelent az, hogy <computeroutput>Segmentation
+	Fault</computeroutput>?</title>
+
+	<para>A legtöbb UNIX és UNIX jellegû rendszernek van egy memóriavédõ mechanizmusa. Ez azt jelenti, hogy a program elérhet bizonyos memória területeket (ezeket gyakran memóriaszegmenseknek hívjuk), másokat viszont nem. Ha a program a megengedett memóriaszegmensen kívül próbál a memóriához hozzáférni, az operációs rendszer ezt
+észleli, és hibát jelez. Ezt a hibát hívják "Segmentation Fault"-nak, azaz szegmentációs hibának, vagy röviden <quote>segv</quote>-nek, egyes rendszereken. Ez általában úgy néz ki, hogy a program hirtelen befejezõdik, gyakran "core dump"-ot hagy maga után (lásd lejjebb).</para>
+
+	<para>Leegyszerûsítve, ez azt jelenti, hogy a GNOME forrásában, vagy a program által használt osztott programkönyvtárban hiba van, de az is lehet, hogy a GNOME fordításakor sikerült valami rosszul. Ha nem vagy benne biztos, hogy a hiba a GNOME-ban van, kérdezd meg a listán. Ha a hiba a GNOME-ban van, jelentsd be azt a hibakövetõ rendszeren keresztül.</para>
+      </sect2>
+
+      <sect2 id="Core">
+	<title>Mi az a "core dump"?  Mi ez a core nevû fájl, amibe mindig belefutok?</title>
+
+	<para>Az elektronikus számítógépek gyermekkorában, a memória néhány drótra felfüggesztett mágneses gyûrûbõl állt. Ezt a fajta memóriát hívták "core memory"-nak. Amikor egy programozó látni akarta, hogy mit csinál pontosan a programja, készített egy másolatot a memória tartalmáról, hogy késõbb elemezze azt. Ezt hívták "core dump"-nak és a kifejezés megmaradt, jóval a "core" memóriák elavulása után.</para>
+
+	<para>Sok Unix és Unix-jellegû rendszer automatikusan létrehoz egy "core dump"-ot, ha egy program erõszakos halált hal :), pl. a fent említett szegmetációs hiba miatt.
+Általában ezt a <filename>core</filename> nevû fájlban találjuk, abban a könyvtárban, ahonnan a programot indítottuk. Ez a fájl nagyon hasznos, ha meg akarjuk állapítani, hogy miért szállt el a program, ezt lehet felhasználni backtrace készítéséhez (lásd lejjebb). Meg kell jegyeznünk, hogy a core fájl elég nagy lehet, ha nem használod fel hibakeresésre, akkor fõleg
+feleslegesen foglalja a helyet. Ha nincs elég helyed, vagy nem látod értelmét annak, hogy core dump-okkal teljen meg a merevlemezed, nézz utána az operációs rendszered dokumentációjában, hogy hogyan tudod kikapcsolni ezt a "feature"-t.</para>
+      </sect2>
+
+      <sect2 id="Backtrace">
+	<title>Mi az a backtrace? Valaki az elõbb azt kérte, hogy küldjek egy backtrace-t, hogyan fogjak hozzá?</title>
+
+	<para>A backtrace hihetetlenül hasznos, ha hibakeresésrõl van szó. Lényegében egy pillanatfelvételrõl van szó, ami azt mutatja, hogy hol tart a program a futásban. Backtrace-t (visszakövetést) akkor alkalmazunk, ha egy program elszáll (szegmentációs vagy más hiba miatt) vagy megfagy (megáll, nem mûködik, de nem száll el). Ebben a válaszban, abból indulok ki, hogy a GNU projekt GDB debugger-ét (hibakeresõ programját) használod, mert ez a legelterjedtebb program amit a GNOME hibáinak keresésekor használnak, és ezt a programot használom én is. Ha valamilyen más debugger-t használsz, olvasd el a megfelelõ dokumentációt. 
+</para>
+
+	<para>Két módszerrel lehet backtrace-t csinálni. Használhatod a core fájlt, amit a program generált amikor hibásan lépett ki, vagy futtathatod a programot a debugger-bõl. Személyes véleményem, hogy a program debuggerben való futtatása megbízhatóbb eredménnyel szolgál, de szó lesz a core fájlos megoldásról is.</para>
+
+	<para>Ahhoz, hogy egy programot GDB-ben futtass, nyiss egy xterm-et (vagy valamilyen más terminált) és írd be, hogy <userinput>gdb &lt;a program teljes elérési útvonala és neve&gt;</userinput>, tehát, ha a gtalk-ban keresel hibát, beírhatod a következõt: <userinput>gdb /usr/local/bin/gtalk</userinput>. A GDB nem nézi végig a PATH változóban megadott útvonalakat, ezért kell megadnod a program helyét. Ha argumentumokkal vagy kapcsolókkal akarod futtatni a programot, <emphasis>ne írd be õket ide</emphasis>.  A
+parancssorban megadandó argumentumokat késõbb kell megadni.</para>
+
+	<para>Ekkor megjelenik a GDB, "bemutatkozik", majd kapsz egy 
+	<prompt>(gdb)</prompt> promptot.  Ide kell annyit beírnod, hogy 
+	<userinput>run</userinput> és elindul a program. Ha argumentumokkal, vagy kapcsolókkal szeretnéd futtatni a programot, ide kell ezeket beírni. Pl.:
+	<userinput>run --disable-sound</userinput>.  Ekkor elindul a program. Meg kell jegyeznünk, hogy a program lassabban fog
+futni, és sokkal több memóriát fog használni, mint általában.</para>
+
+	<para>Most próbáld meg újra elõidézni azokat a körülményeket, amelyek között a program elszáll. Csináld megint ugyanazt, ami már korábban is a problémát okozta. Amikor a program elszáll, a debugger ablakában azonnal meg kell jelenjen egy csomó minden, majd a <prompt>(gdb)</prompt> prompt. Ha a program megfagy, várj egy kicsit, gyõzõdj meg arról, hogy tényleg nem reagál, majd nyomjál egy "Control-C"-t a debugger ablakában. Ekkor is egy csomó dolog kell megjelenjen, végül a <prompt>(gdb)</prompt> prompt. Ennél a promptnál írd be, hogy: <userinput>bt</userinput>. Ez lesz a tényleges backtrace.</para>
+
+	<para>Itt van egy példa, a hibakeresõ kimenetére. Ha valaki backtrace-t kér tõled, az egészet be kell küldened:</para>
+<screen> 
+<prompt>$</prompt> <userinput>gdb /usr/local/bin/gtalk</userinput>
+<computeroutput>GNU gdb 4.17
+Copyright 1998 Free Software Foundation, Inc.
+GDB is free software, covered by the GNU General Public License, and you are
+welcome to change it and/or distribute copies of it under certain conditions.
+Type "show copying" to see the conditions.
+There is absolutely no warranty for GDB.  Type "show warranty" for details.
+This GDB was configured as "i386-redhat-linux"...</computeroutput>
+<prompt>(gdb)</prompt> <userinput>run --disable-sound</userinput>
+<computeroutput>Starting program: /usr/local/bin/gtalk --disable-sound
+
+Program received signal SIGINT, Interrupt.
+0x4049290d in __poll (fds=0x808c110, nfds=3, timeout=-1)
+    at ../sysdeps/unix/sysv/linux/poll.c:45
+../sysdeps/unix/sysv/linux/poll.c:45: No such file or directory.</computeroutput>
+<prompt>(gdb)</prompt> <userinput>bt</userinput>
+<computeroutput>#0  0x4049290d in __poll (fds=0x808c110, nfds=3, timeout=-1)
+    at ../sysdeps/unix/sysv/linux/poll.c:45
+#1  0x403c54e9 in g_main_poll (timeout=-1, use_priority=0, priority=0)
+    at gmain.c:991
+#2  0x403c516e in g_main_iterate (block=1, dispatch=1) at gmain.c:789
+#3  0x403c58a1 in g_main_run (loop=0x80882e8) at gmain.c:912
+#4  0x401cbf1d in gtk_main () at gtkmain.c:475
+#5  0x804a629 in main (argc=2, argv=0xbffffaa4) at main.c:54
+#6  0x40407c77 in __libc_start_main (main=0x804a570 &lt;main&gt;, argc=2, 
+    argv=0xbffffaa4, init=0x8049e10 &lt;_init&gt;, fini=0x804c7dc &lt;_fini&gt;, 
+    rtld_fini=0x40009c10 &lt;_dl_fini&gt;, stack_end=0xbffffa9c)
+    at ../sysdeps/generic/libc-start.c:78</computeroutput>
+<prompt>(gdb)</prompt></screen>
+
+	<para>A backtrace készítése core dump alapján nagyon hasonlít az elõbb tárgyaltakhoz. Lépj be abba a könyvtárba, amelyik a core fájlt tartalmazza, és futtasd a GDB-t a következõképpen: <userinput>gdb -c core &lt;a program teljes elérési útvonala és neve&gt;</userinput>. Ismételten felhívom a figyelmedet arra, hogy a GDB nem keresi a programot a PATH változóban megadott helyeken. Ezek után csak be kell írnod a promptnál, hogy <userinput>bt</userinput> és az egészet (mindent amit a gdb a program indítása óta kiírt) elküldened.</para>
+      </sect2>
+
+      <sect2>
+	<title>Mi az az strace?  Valaki kérte, hogy küldjek egy ilyet, hogyan csináljam?</title>
+
+	<para>A <command>strace</command> parancs "Signal Trace"-t, azaz "Jelzés követést" valósít meg. Használatával, úgy futtathatod a programot, hogy közben látod a rendszer hívásokat és jelzéseket. Ez sokkal bõbeszédûbb mint a backtrace, néha szükség van az strace-re is. Strace-elni nagyon egyszerû, írd be egy xterm-be, hogy <userinput>strace -o &lt;kimeneti fájl&gt; &lt;parancs argumentumokkal&gt;</userinput>. Például, ha a gtalk programot szeretnéd strace-elni, úgy, hogy a hang ki legyen kapcsolva, a következõt kell megadni: <userinput>strace -o /tmp/gtalk.strace gtalk --disable-sound</userinput>. Ez a strace kimenetét a <filename>/tmp/gtalk.strace</filename> fájlba menti. Az strace használja a PATH változót és elfogadja a program-argumentumokat a parancssorban.</para>
+
+	<para>Vigyázz, az strace kimenete nagyon bõbeszédû, a fenti példa nálam 5498 sort produkált
+öt másodperc alatt. Ne küldj strace kimenetet a levelezõlistára, csak a fejlesztõknek, ha õk ezt kimondottan kérik.</para>
+
+	<para>A Solaris rendszereken van ugyan <command>strace</command> parancs, de az valami egészen mást csinál. Solaris alatt használd a <command>truss</command> parancsot, ha strace kimenetet szeretnél kapni.</para>
+      </sect2>
+    </sect1>
+
+    <sect1 id="CompileHelp">
+      <title>Specifikusan a fordítás során jelentkezõ problémák</title>
+
+      <sect2 id="zlib">
+	<title>Mit jelent az, hogy <computeroutput>undefined reference to
+	'compress'</computeroutput>?</title>
+
+	<para>Ez általában azt jelenti, hogy a tömörítésért felelõs programkönyvtár (libz) nem található, vagy nem mûködik.
+Elõször nézd meg, hogy fel van-e telepítve. Ha nincs, keress egyet, és telepítsd fel. A könyvtár része minden nagyobb Unix és Unix-jellegû rendszernek.</para>
+
+	<para>Ha fel van telepítve, de továbbra is kapod a hibaüzenetet, nézd meg, hogy nincs-e több példányban fent a libz. Tipikusan problémát szokott okozni a <filename>/usr/X11R6/lib</filename>-ben megbúvó példány, ezt az XFree86 telepíti. Valószínûleg nyugodtan törölheted, de ha nem mered, az is jó, ha csak átnevezed mondjuk <filename>libz.so.átnevezve</filename>, így nem fogja a linker megtalálni, és ha máshol libz-vel kapcsolatos problémák adódnak, még mindig visszanevezheted.</para>
+      </sect2>
+
+      <sect2>
+	<title>Mi az az <computeroutput>AC_TRY_RUN</computeroutput>, és miért kapok ezzel kapcsolatos figyelmeztetéseket (warning-okat)?</title>
+
+	<para>Néha, amikor az aclocal-t, autogen.sh-t vagy a make-et futtatod ilyen üzeneteket kaphatsz: <computeroutput>configure.in:171:
+	warning: AC_TRY_RUN called without default to allow cross
+	compiling</computeroutput>. Ettõl nem kell kétségbe esni, nyugodtan figyelmen kívül hagyhatod, hacsak nem keresztfordítasz (cross compile).</para>
+
+	<para>Ha még mindig kíváncsi vagy, a keresztfordító, vagy cross compiler egy adott platformon mûködõ fordító, amit használhatsz arra is, hogy egy másik platformra generáljon futtatható kódot. Például valakinek van egy Intel processzoros GNU/Linux-ra telepített GCC-je, és ezzel a fordítóval készít binárisokat, amelyek egy MIPS processzoros SGI dobozon fognak futni. Ez a keresztfordító.</para>
+
+	<para>Az AC_TRY_RUN makró megpróbál lefordítani és futtatni egy kódrészletet. Ezt arra használjuk, hogy eldöntsük, egy adott kódrészlet mûködni fog-e a gépeden, vagy nem, és ez alapján változtatunk a beállításokon. Ha keresztfordítassz, nem tudod futtatni a kód részletet, mert azt nem ugyanarra az architektúrára szánod, mint amin fordítod. Az AC_TRY_RUN makrónak van egy paramétere, amivel meg lehet neki mondani, hogy mit csináljon ilyen esetben, de még nem teszteltük a GNOME keresztfordítását, tehát még korai lenne ezt az értéket beállítani. E paraméter hiánya miatt kapod a szóban forgó figyelmeztetést.</para>
+      </sect2>
+
+      <sect2 id="db185">
+	<title>A program fordítása közben a
+	<filename>gnome-gen-mimedb</filename> szegmentációs hibával leáll</title>
+
+	<para>Ez azt jelenti, hogy nem jó a db 1.85 csomagod, frissítsd újabb verzióra a db programkönyvtáradat</para>
+      </sect2>
+    </sect1>
+
+    <sect1 id="RuntimeHelp">
+      <title>Futásidõben jelentkezõ problémák</title>
+
+      <sect2 id="ResetSM">
+	<title>Hogyan állítsam vissza a session-kezelés beállításait az alapértelmezett értékekre?</title>
+
+	<para>Sokan nagyon hasznosnak tartják a session-kezelést. Ennek ellenére, elõfordulhat hogy a
+session-kezelés visszafelé sül el, és nem azt az eredményt kapod, amit vártál, pl. amikor azokat a beállításokat kapod vissza, amiket a kisöcséd rendezett be neked lelkesen. Ha a GNOME-ot rendesen telepítetted, az alapértelmezett értékek visszaállítása nagyon egyszerû.</para>
+
+	<para>Elõször is lépjél teljesen ki az X-bõl. Ha session-kezelést használsz, kattints a Tappancs menüben lévõ <guimenuitem>Kilépés</guimenuitem> menüpontra. Ha ez nem mûködik, nyomd le a
+Control és az Alt gombokat, majd a "backspace"-t is. Ha még ez sem mûködik és most egy XDM vagy GDM üdvözlõ képernyõ néz vissza rád, válts át szöveges módba
+(control-alt-F1 sok rendszernél, olvasd el a rendszer dokumentációját, ha nem vagy benne biztos, lépjél be egy másik felhasználó
+nevében, és használd a <command>su</command> parancsot egy xtermben, ha minden kötél szakad).</para>
+
+	<para>Ezek után, a beállítások törléséhez, persze ha éppen nem használsz X-et, töröld a <filename>~/.gnome/session</filename> fájlt. A következõ alkalommal, hogy elindítod az X-et, vagy a GDM felületérõl jelentkezel be, el kell induljon az alapértelmezett ablakkezelõ, a panel, a gmc és a
+Súgó-böngészõ.</para>
+      </sect2>
+
+      <sect2>
+	<title>Elindítottam a GNOME-ot session-kezeléssel, miért csak a szürke képernyõ bámul vissza rám (nincs panel, meg semmi...)?</title>
+
+	<para>Ha session-kezelést használsz és a GNOME nem talál egy session-t sem, ez történik. Elõször is, próbáltad már visszaállítani a
+session-kezelés alapértelmezett beállításait (lásd <link linkend="ResetSM">feljebb</link>)? Ha ez nem segít, akkor a <command>gnome-session</command> nem találja a <filename>default.session</filename> fájlt.  Az 1.03-as és újabb verziójú gnome-core csomagban a kérdéses fájl a <filename>$prefix/share/gnome</filename> könyvtárban kell legyen. A régebbi változatoknál pedig a <filename>$prefix/share</filename> könyvtárban. Ha ez a fájl hiányzik, telepítsd újra a gnome-core csomagot.</para>
+      </sect2>
+
+      <sect2>
+	<title>Hogyan mondjam meg a session-kezelésnek, hogy milyen ablakkezelõt használjon?</title>
+
+	<para>Ez keményebb dió mint gondolnád, mert a válasz attól függ, hogy a GNOME melyik verzióját használod. A legegyszerûbb megoldás, ha az Ablakkezelõ beállításait használod a <command>control-center</command>-ben. Ha ez valamilyen oknál fogva nem mûködik, így kell csinálni:</para>
+
+	<para>A gnome-core 1.03-as vagy régebbi változatánál, az ablakkezelõ nevét egy <filename>default.wm</filename> fájlba kell írni. A rendszer alapértelmezett beállítását tartalmazó fájl vagy a <filename>$prefix/share/gnome</filename> vagy a <filename>$prefix/share</filename> könyvtárban kell legyen, abban, amelyik a <filename>default.session</filename> fájlt tartalmazza.</para>
+	
+	<para>A <filename>default.wm</filename> fájlból minden felhasználó tarthat egy saját példányt, ha nem a rendszer alapbeállításában megadott ablakkezelõt akarja használni, a <filename>~/.gnome</filename> könyvtárban. A <filename>default.wm</filename> fájlnak így kell kinéznie:</para>
+
+	<screen>
+[Default]
+WM=akarmi</screen>
+
+	<para>ahol az <userinput>akarmi</userinput>-t a megfelelõ ablakkezelõ nevével kell helyettesíteni. Ha a rendszer alapértelmezett ablakkezelõjét akarod megváltoztatni, lehet hogy módosítanod kell a <filename>default.session</filename> fájl tartalmát is.</para>
+
+	<para>A gnome-core 1.04-es vagy késõbbi változataiban, mindez sokkal egyszerûbb. Állítsd be a <envar>WINDOW_MANAGER</envar> környezeti változót a kedvenc
+ablakkezelõdre, és indítsd el az X-et. Ha ez a változó nincs beállítva, a GNOME indulásakor lefuttat egy szkriptet, ami felderíti, hogy milyen ablakkezelõk vannak
+telepítve, és kiválasztja a legjobbat ezek közül. Továbbra is használhatod a <filename>~/.gnome/default.wm</filename> fájlt, ha az a megoldás szimpatikusabb.</para>
+      </sect2>
+
+      <sect2 id="BlackIcon">
+	<title>Úgy tûnik, hogy minden mûködik, de az ikonok nagy része helyett fekete négyzeteket vagy véletlenszerû ábrákat látok. Hogyan csalogathatom elõ az ikonokat?</title>
+
+	<para>A GNOME által használt ikonok nagy része <ulink url="&wwwpng;">
+	PNG</ulink> formátumú képfájl, ezeket a rendszer a libpng és az Imlib könyvtárak segítségével jeleníti meg. A gond az, hogy az Imlib egyes részei szeretnek kényeskedni, rossz kedvüket azzal mutatják ki, hogy szemetet jelenítenek meg a képernyõn (a fekete négyzet csak tisztább szemét).</para>
+
+	<para>Van néhány dolog, ami ezt eredményezheti. Általában egy rossz, hiányzó vagy összezavarodott libpng a bûnös. Ha a libpng-nek az 1.0.2-es verziója van telepítve, már meg is találtad a hibát, ez a verzió ugyanis használhatatlan. Használd az 1.0.1-est vagy az 1.0.3-ast vagy annál újabbat. Ha nincs feltelepítve libpng, az könnyen kiderül: ha nincs a rendszereden "libpng.so" vagy "libpng.so.2" fájl, és egyébként osztott programkönyvtárakat használsz, akkor szerezz egyet és telepítsd fel. Hogy azt megállapítsd, hogy megzavarodott-e a libpng-d, nézd meg, hogy nincs-e több példányban fent a "libpng.so" és a "libpng.so.2. Ha ez a helyzet, töröld le
+mindet, és telepítsd a megfelelõ verziót.</para>
+
+	<para>Egy másik lehetséges gond, amit tapasztaltam az egyik gépemen (RedHat, AMD5x86 processzorral és egcs fordítóval), az optimalizálásból ered. Ha az Imlib-et vagy  a glib-et bármilyen optimalizálással fordítom, a fent leírt problémával találom magam szemben (az Imlib a glib gmodule részét használja a PNG kód betöltéséhez). A két említett csomagot fordítsd le újra optimalizálás nélkül. Ez segíthet a problémán. Amennyire meg tudom ítélni, ez a fordító hibája, nem a GNOME-é.</para>
+
+	<para>Hallottam olyat is, hogy a fent leírt problémát okozhatják az
+ImageMagick régebbi változatai. Ha nincs jobb ötleted, próbáld meg törölni, vagy frissíteni az
+ImageMagick-et.</para>
+      </sect2>
+    </sect1>
+  </chapter>
+
+  <chapter id="Architecture">
+    <title>A GNOME architektúrája, komponensei</title>
+
+    <para>Ez a rész a GNOME egyes részeirõl és azok szerepérõl szól.</para>
+
+    <sect1 id="ArchLibraries">
+      <title>Programkönyvtárak</title>
+      <sect2>
+	<title>Miért kell ennyi programkönyvtár a GNOME-hoz?</title>
+
+	<para>A GNOME-nak két nyomós okból van ennyi programkönyvtárra szüksége. Azt akartuk, hogy a GNOME-nak sok hasznos "feature"-e legyen és nem akartuk ehhez az egészet elõrõl megírni. Mivel sok széles körben elterjedt programkönyvtárat használunk, ez lehetõvé teszi, hogy a GNOME stabilan és konzisztensen együtt tudjon mûködni más, nem GNOME-os alkalmazásokkal.</para>
+      </sect2>
+    </sect1>
+
+    <sect1 ID="CORBA">
+      <title>CORBA, ORBit és Bonobo</title>
+
+      <para>A "Network Objects" a GNOME középsõ neve. Hát így mûködnek.</para>
+
+      <sect2>
+	<title>Mi az a CORBA?</title>
+
+	<para>A <ulink
+	url="http://www.omg.org/news/begin.htm">CORBA</ulink> a "Common Object Request Broker Architecture" rövidítése.  Idézet az Open Management Group (OMG, ez a testület tartja karban a CORBA szabványát) <ulink
+	url="http://www.omg.org/about/wicorba.htm"> Mi az a CORBA?</ulink> címû dokumentumából:</para>
+
+        <blockquote>
+	  <para>A "Common Object Request Broker Architecture", röviden CORBA, az Object Management Group válasza a ma elérhetõ, gyorsan szaporodó hardver- és szoftvertermékek közötti interoperabilitás iránt felmerülõ igényre. Egyszerûbben megfogalmazva, a CORBA segítségével az alkalmazások kommunikálni tudnak egymással függetlenül attól, hogy hol találhatók helyileg, vagy hogy ki tervezte õket(...)</para>
+
+	  <para> Az (ORB) az a középsõ réteg, ami létrehozza a kliens-szerver viszonyokat az objektumok között. Az ORB segítségével a kliens számára teljesen transzparens módon meghívhatja a szerver objektum egy metódusát, annak tudta nélkül, hogy a szerver a kliens gépén vagy a hálózaton van. A hívást az ORB kezeli, az õ felelõssége találni egy olyan objektumot, ami eleget tud tenni a kérésnek, átadni neki a paramétereket, meghívni a metódust, majd visszaadni a kliensnek az eredményt. A kliensnek nem kell törõdnie az objektum helyével, a
+programozási nyelvvel, amiben azt megírták, az operációs renszerrel, amin fut, vagy bármi mással, ami nem része az objektum interfészének. Ezzel a mechanizmussal, az ORB különbözõ gépeken, heterogén elosztott környezetben futó
+alkalmazások interoperabilitását teszi lehetõvé, és zökkenõmentesen összeköt több különbözõ objektumból álló rendszert.</para>
+
+	  <para>A kliens-szerver alkalmazások írása tipikusan az a terület, ahol a programozók vagy a saját elképzelésük
+szerint, vagy valamilyen elfogadott szabványos protokollt felhasználva valósítják meg a kommunikációt az eszközök között. A protokoll definíciója függ a felhasznált nyelvtõl, a hálózati átviteli közegtõl és egy tucat más dologtól. Az ORB-ok leegyszerûsítik ezt a folyamatot. Egy ORB felhasználásával, a protokollt az alkalmazás interfészen keresztül, egy egyszer megvalósított
+nyelv-független specifikáció, az IDL (Interface Description Language), segítségével definiálod. Mitöbb, az ORB-ok flexibilisebbek. Lehetõvé teszik, hogy a programozó minden az épülõ rendszert alkotó komponens számára a legmegfelelõbb operációs rendszert, futási környezetet, sõt, programozási nyelvet válassza. Ennél fontosabb, hogy az ORB-ok lehetõvé teszik a már meglévõ komponensek felhasználását. Egy ORB alapú megoldásban, a fejlesztõk egyszerûen lemodellezik a saját gyártmányú komponenst, ugyanannak az IDL-nek a segítségével, amivel új objektumokat írnak, utána írnak egy "wrappert", ami fordítja a hívásokat a szabványos felület és a saját interfész között.</para>
+	</blockquote>
+
+	<para>OK, elég a rizsából. Itt van Todd magyarázata:</para>
+
+	<blockquote>
+	  <para>Emlékszel az RPC-re? Tudod, a Remote Procedure Call-okra? A Sun használta ezeket az NFS és a NIS alapjául. A Microsoft a Distributed Computing Environement RPC szabványát használta fel, amikor megalkotta a DCOM-ot.</para>
+
+	  <para>Szóval, a remote procedure call (távoli eljárás hívás) igazából nagyon egyszerû. Elõször is valamilyen szabványos módon definiálnod kell az eljárást. Hogy mibõl áll egy eljárás definíciója? Benne kell legyen az eljárás neve, az argumentumok, amiket elfogad és az eredmények, amiket visszaad. Ezek után megcsinálod a kliens oldalt, ez mondja meg a klienseknek, hogy hogyan adják át az argumentumokat és milyen formában kapják vissza az eredményeket, majd felépíted a szerver oldalt, ami elfogadja az argumentumokat és visszaadja az eredményeket.</para>
+
+	  <para>Ezzel a modellel egészen komoly rendszereket építhetsz fel. Vedd pl. a szabványos UNIX fájlrendszer interfészét, konvertáld át RPC-vé, és tessék, megkapod az NFS-t. Felhívom a figyelmedet, hogy amíg a ki- és bemenetekkel szabványos formában dobálózunk, addig a kliens ami meghívja az eljárást és a szerver oldal, ami kiszolgálja
+azt, lehetnek különbözõ nyelven írva, futhatnak más gépen, más operációs rendszer alatt, vagy más hardveren. Ettõl király az RPC.</para>
+
+	  <para>Azonban, ahogyan az eljárás alapú programozás ideje lejárni látszik (C, Perl) és helyet ad az
+objektum-orientált programozásnak (Objective C, Java, C++), igazán valami többre van szükséged, mint az RPC eljárásai. Valami olyan kell, ami támogatja az objektumokat: objektumok létrehozását, objektumok adat részeinek elérését, objektumok metódusainak futtatását, objektumok megsemmisítését. Itt lép színre a CORBA: gondolhatsz úgy a
+CORBA-ra mint a következõ generációs RPC-re, amelyet kibõvítettek, hogy támogassa az
+objektum-orientált programozást. RPC-vel a következõt használnád:</para>
+
+	  <programlisting>void foo(int bar); void baz(){return(-1);}</programlisting>
+
+	  <para>e helyett CORBA-val a következõ a felállás:</para>
+
+	  <programlisting>interface bubba{ void foo(in int bar); void baz() raises (InValidContext); } </programlisting>
+
+	  <para>Mi ebbõl a tanulság? A CORBA segítségével nyelv- és helyfüggetlenül
+objektum-orientált interfészeket írhatsz a szoftverkomponensek közé. Egyszerûen tök jó!</para>
+
+	</blockquote>
+      </sect2>
+
+      <sect2>
+	<title>Milyen CORBA komponensek vannak?</title>
+
+	<para>Itt meg szeretném határozni a CORBA elsõ pillantásra kicsit furcsa terminológiáját, hogy mindenki érthesse, legalább felületesen, hogy mik is ezek a CORBA komponensek. Tehát itt jönnek a nem egyértelmû CORBA szakkifejezések:</para>
+	<itemizedlist>
+	  <listitem>
+	    <para><firstterm>Object Request Broker</firstterm> - (vagy ORB). Az ORB az a középsõ réteg, ami a kliens és a szerver között
+csücsül, és lehetõvé teszi közöttük az egyszerû kommunikációt. Az ORB igazából egy fogalom, testet ölthet osztott programkönyvtár vagy külsõ futtatható állomány képében. Az ORB a felelõs a kliens és a szerver közötti párbeszéd felépítéséért, lebontásáért, a "marshaling" és az "unmarshaling-ért", és a párbeszéd alatt forgalmazott üzenetek átviteléért.</para>
+	  </listitem>
+	  <listitem>
+	    <para><firstterm>Object Adaptor</firstterm> - (vagy OA) Az Object Adaptor adja a csatornát, amin keresztül egy objektum szerver (pl. a gnome panel) az Object Request
+Broker-rel (ORBit) kommunikál.</para>
+	  </listitem>
+	  <listitem>
+	    <para><firstterm>GIOP/IIOP</firstterm> - CORBA takes all
+	    of these object-oriented language-isms and handles
+	    carrying them between object-oriented software components
+	    (marshaling, transporting, and demarshaling). Ha a két szoftverkomponens két külön helyen van, akkor az adatátvitel a GIOP protokol segítségével valósul meg. Az IIOP a GIOP Internetre alkalmazott változata, elméletileg futtathatnád a GIOP-ot más protokoll fölött, mint az IP, akkor valami másnak hívnák. Én nem tudom elképzelni, miért akarna valaki ilyet. 8^) Ha valaha bármilyen más változata a GIOP-nak fontos szerephez jutna, biztos vagyok benne, hogy az ORBit támogatná. (jó analógia, ha az IIOP-ra ugy gondolsz, mint a HTML-re, a GIOP-re meg úgy, mint az SGML-re.)</para>
+	  </listitem>
+	</itemizedlist>
+      </sect2>
+
+      <sect2>
+	<title>Mik a CORBA Szolgáltatásai?</title>
+
+	<para>Valójában a CORBA-nak két része van. Az a rész, amirõl már írtam, ami arról szól, hogy hogyan csinálj objektumosított RPC-t, hogyan "marshal"-ozd az argumentumokat, hogyan írjál IDL fájlokat, hogyan mûködik a GIOP, stb... és a "CORBA Szolgáltatások". A CORBA-ra épülnek bizonyos szolgáltatások, amik megkönnyítik az osztott
+objektum-orientált programozást.</para>
+
+	<para>Valószínûleg ezek közül a "naming service", azaz a névfeloldás, a legfontosabb. Pl. mondjuk, hogy egy
+helyesírás-ellenõrzõ szolgáltatásra vágyó program vagy. Egy igazán aranyos dolog, amit megtehetsz (ha elég jó CORBA implementációt használsz) az, hogy szólsz az ORB-nak: "Hé! Helyesírás ellenõrzõ szolgáltatásra van szükségem. Keress nekem ilyet!". Az ORB ezek után a "naming service"-t hívja segítségül, és megnézi, hogy milyen helyesírást szolgáltató objektumok vannak beregisztrálva. Amikor talált egyet, akkor visszaszól a hívó programnak, hogy "A
+helyesírás-ellenõrzõ szolgáltatás a &num;867-5309 számon található." Erre felhívod a 867-5309-at és csiribí-csiribá, ott a
+helyesírás-ellenõrzõ szolgáltatás. Lehet, hogy egy osztott könyvtárat töltött be és küldhetsz egyenes függvényhívásokat, de az is lehet, hogy a
+mongol nyilvános helyesírás-ellenõrzõ szolgáltatást használod, amit a Mongol FreeBSD felhasználók csoportja oszt meg az Interneten IIOP-n keresztül. Nem tudod, és leszámítva a kis késleltetést, amit a
+mongol körút okozhat, nem is érdekel. Király, nem?</para>
+
+	<para>A "naming service" lehetõvé teszi, hogy az objektumok késõbbi használatra beregisztrálják magukat. Vannak más CORBA szolgáltatások is, többek között tranzakció szolgáltatás, biztonsági szolgáltatás, idõ szolgáltatás és "viszony szolgáltatás" ami vagy az, amire gondolsz, vagy nem. Az én 1997 márciusi CORBA szolgáltatásokat leíró (CORBAservices) dokumentumomban 14 darab van.</para>
+
+	<para>A CORBAservices specifikációjának egy példányát megtalálod az
+OMG weblapján a <ulink
+	url="http://www.omg.org/corba/csindx.htm">http://www.omg.org/corba/csindx.htm</ulink> címen.
+Ha úgy érzed, hogy neked ezek közül bármelyiket implementálnod kell, vedd fel a kapcsolatot az ORBit fejlesztõivel, biztosan örülni fognak a segítségednek.
+	(Lásd <link linkend="ORBIT">ORBit</link>)</para>
+      </sect2>
+
+      <sect2>
+	<title>A GNOME melyik CORBA változatot használja?</title>
+
+	<para>Az OMG most fejleszti a CORBA 3.0-ás verzióját. Jelenleg a GNOME a 2.2-es
+CORBA-t használja, fogalmam sincs, hogy mi lesz, ha kijön a 3.0-ás.</para>
+      </sect2>
+
+      <sect2>
+	<title>Hol találok több infót a CORBA-ról?</title>
+
+	<para>Jó kiindulópont Linas Vepstas CORBA oldala a <ulink url="http://linas.org/linux/corba.html">
+        http://linas.org/linux/corba.html</ulink> oldalon.</para>
+
+	<para>Mivel úgy tûnik, sokakat érdekelnek a CORBA és a COM közötti különbségek, megemlítem a következõ oldalt is: <ulink url="&dcomcorba;">&dcomcorba;</ulink>,
+	"DCOM and CORBA Side by Side, Step by Step, and Layer by
+	Layer".</para>
+
+	<para>Végül, a St. Louis-i Washington University TAO projektjérõl is ejtsünk pár szót. Az ottani csoport Dr. Douglas Schmidt vezetésével kifejlesztett egy saját ORB-ot, a TAO-t. Sok hasznos információt találhatsz a
+CORBA-ról az õ weblapjukon is: <ulink
+	url="&schmidtcorba;">&schmidtcorba;</ulink>.  Ha már úgyis arra jársz, nézd meg az ACE és a TAO lapokat is, mert nagyon jók.</para>
+      </sect2>
+
+      <sect2>
+	<title>Milyen szerepet játszik a CORBA a GNOME-ban?</title>
+
+	<para>A CORBA adja a GNOME komponens alapú architektúráját. Hasonló szerepet játszik a GNOME-ban mint a COM/DCOM a win32-es rendszerekben.</para>
+      </sect2>
+
+      <sect2>
+	<title>A GNOME melyik CORBA implementációt használja?</title>
+
+	<para>A kezdetek kezdetén, a GNOME-os fejlesztõk az <ulink
+	url="ftp://parcftp.parc.xerox.com/pub/ilu/ilu.html">
+	ILU</ulink>-t szerették volna használni. Az ILU-nak sok elõnye volt, például több nyelvet támogatott, de a Xerox hozzáállása miatt nem lehetett felhasználni a GNOME-ban: az ILU nem szabad
+szoftver, és a GNOME csapatnak nem sikerült a Xerox-ot meggyõzni arról, hogy változtasson a
+licencelésen. Mivel a GNOME nem használhat nem szabad szoftvert, az ILU-hoz fûzõdõ terveket végleg el kellett vetni.</para>
+
+	<para>A GNOME fejlesztõk ekkor a <ulink
+	url="http://diamant-atm.vsb.cs.uni-frankfurt.de/~mico/">
+	MICO</ulink>-t vették szemügyre. A MICO azért volt vonzó, mert van "Object Adaptor"-a, IIOP
+kompatíbilis és GPL-es. Hátránya, hogy nem támogat a C++-on kívül más nyelvet és egyszerûen hihetetlen mennyiségû memóriát használ.</para>
+
+	<para>Mivel még mindig elégedetlenek voltak, a fejlesztõk elhatározták, hogy megvalósítják a saját ORB-jukat, így született az ORBit.</para>
+      </sect2>
+
+      <sect2 id="ORBit">
+	<title>Mi az az ORBit?</title>
+
+	<para>Az ORBit-ot többnyelvûre tervezték, az ILU példája bizonyítja, hogy ez megvalósítható. Jelenleg ugyan csak a C-t támogatja, de ez a jövõben változni fog (De komolyan! Ez még egy nagyon, nagyon új projekt,
+ezért támogatja csak a C-t). Támogatja még a GIOP/IIOP-ot is, azt az OMG CORBA protokollt, ami lehetõvé teszi a különbözõ ORB-ok kommunikációját.</para>
+
+	<para>Végül, az ORBit-ot magas teljesítményûre tervezték. Ez azt jelenti, hogy kevés memóriát
+használ, és e mellett gyors is. Erre vonatkozóan az ORBit sok ötletet merít a <ulink
+	url="http://www.cs.utah.edu/projects/flux/flick/">
+	Flick</ulink>-bõl.  Elliot Lee, az ORBit projekt szülõatyja elgondolása szerint, a CORBA specifikációk betartása mellett, a CORBA függvényhívás idejét közelíteni lehet a szokványos osztott programkönyvtáras függvényhívás idejéhez, persze amennyiben a CORBA szolgáltatás helyben megtalálható. Hát meglátjuk.</para>
+      </sect2>
+
+      <sect2>
+	<title>Miért nem támaszkodik a GNOME jobban a CORBA-ra?</title>
+
+	<para>A nagy igazság az, hogy a MICO használhatatlan volt, túl sok memóriát foglalt, csak C++-t támogatott stb. Csak a GNOME ORBit megjelenésével kezdhettük el igazán használni a GNOME-ban a CORBA-t.</para>
+      </sect2>
+
+      <sect2 id="Bonobo">
+	<title>Hogyan használja a GNOME a CORBA-t, vagy mi az a Bonobo?</title>
+
+	<para>(Ez a rész szó szerint Miguel de Icaza-tól származik, a fõ-GNOME-ostól.)</para>
+
+	<para>A CORBA-t különbözõ környezetekben fogjuk használni. A Bonobo nevû interfész és programkönyvtár-rutingyûjtemény segítségével egyszerûsödnek és integrálódnak az alkalmazások:</para>
+
+	<itemizedlist>
+	  <listitem>
+	    <para>Komponensek: Vannak elõre megírt programkönyvtárak/kiszolgálók, amik bármelyik alkalmazás által használható szolgáltatásokat nyújtanak, ilyen a helyesírás-ellenõrzés, a naptár szolgáltatás és más nem grafikus szolgáltatások.</para>
+	  </listitem>
+
+	  <listitem>
+	    <para>Alkalmazás-beágyazás és helybeni aktiválás:
+	    A Bonobo egy interfész-gyûjtemény, ami a jelenleg meghatározás alatt álló alkalmazás-beágyazást és helybeni aktiválást szolgáltatja. A Bonobo interfészek az OLE2 és OpenDoc interfészeket mintázzák.</para>
+	  </listitem>
+
+	  <listitem>
+	    <para>GNOME-os Alkalmazások mint szolgáltatók: A GNOME-os alkalmazások exportálni fogják CORBA-n keresztül a funkcióikat, így bárki felhasználhatja ezeket. Ez lehetõvé teszi a GNOME-os munkafelület szkriptelését, mivel bármilyen CORBA-t használó alkalmazás vagy szkript nyelv meghívhatja a GNOME kiszolgáló metódusait (pl. egy PERL szkript segítségével távolról elindíthatsz egy táblázatkezelõt és rajzolhatsz bele grafikont vagy készíthetsz "sales report"-ot). Vannak akik ezt "Automatizálás"-nak hívják. A COM-tól eltérõen a CORBA-s megoldásnál ez teljesen transzparens a szerver írója számára.</para>
+	  </listitem>
+
+	  <listitem>
+	    <para>Újrafelhasználható kontrollok: A Bonobo interfészek egy másik része az újrafelhasználható kontrollokkal foglalkozik. Ezek hasonlítanak a Sun JavaBeans-hez vagy a Microsoft Active-X-hez.</para>
+	  </listitem>
+
+	</itemizedlist>
+
+	<para>A Bonobo nem rövidítés. A bonobók a csimpánzok kevésbé mogorva rokonai.</para>
+      </sect2>
+    </sect1>
+
+    <sect1 id="Graphics">
+      <title>Grafika a GNOME-ban</title>
+
+      <sect2 id="GTK">
+	<title>Mi az a GTK+?</title>
+
+	<para>A GTK+ a "Gimp Toolkit". Eredetileg a GTK+ a Gimp
+	projekt része volt, de kinõtte azt, és remek általános widget
+	készletté fejlõdött. Többet a GTK+ weblapján olvashatsz: 
+        <ulink url="&wwwgtk;">&wwwgtk;</ulink>.</para>
+      </sect2>
+
+      <sect2>
+	<title>Milyen szerepet játszik a GTK+ a GNOME-ban?</title>
+
+	<para>A GTK+ az a felület, amin keresztül a felhasználók az
+	alkalmazásokat használják. A GTK+ olyan a GNOME-nak, mint a
+	Motif a CDE-nek, a Qt a KDE-nek vagy a névtelen-widget-készlet
+	a Win32-nek.</para>
+      </sect2>
+
+      <sect2>
+	<title>Milyen nyelveket támogat a GTK+?</title>
+
+	<para>Kismillió nyelven írhatsz GTK+-os alkalmazásokat. A
+	kedvenc GyIK íród a következõ nyelvekrõl tud:</para>
+	<simplelist>
+	  <member>C (eredeti)</member>
+	  <member>C++</member>
+	  <member>Objective C</member>
+	  <member>Python</member>
+	  <member>Perl 5</member>
+	  <member>Scheme (Guile)</member>
+	  <member>TOM</member>
+	  <member>Gwydion Dylan</member>
+	  <member>Ada95</member>
+	  <member>Pike</member>
+	  <member>Pascal (Free Pascal Compiler)</member>
+	</simplelist>
+
+	<para>Ha más nyelvek is vannak, szólj és felvesszük azokat is
+	erre a listára. (lásd <link linkend="ContactFAQ">Hogyan érem
+	el a FAQ karbantartóját.</link>)</para>
+
+	<para>Természetesen, ha nagyon lelkes vagy, írhatsz támogatást
+	új nyelvekhez is. Megjegyezném, hogy a Scheme csatolásban az
+	API-nak egy formális reprezentációja található, tehát ha új
+	csatolásokon szeretnél dolgozni, érdemes itt kezdeni.</para>
+
+	<para>Ha már ezt így leírtam, elgondolkodtam azon, hogy nem
+	tudnánk-e esetleg a CORBA segítségével elvágni ezt a gordiuszi
+	csomót. Ha az ORBit fejlesztõi a lokális CORBA
+	függvény-hívásokat olyan gyorsakká tudják tenni, mint az
+	osztott programkönyvtárak függvény-hívásait, akkor a GTK-t is
+	lehetne CORBA-sítani, és az új nyelvi csatolásokat az
+	ORBit-hoz megírni, nem? Tudom, hogy hagyományosan azt mondják,
+	hogy a CORBA túl nehézkes az olyan nagy volumenû cuccokhoz,
+	mint az X függvényhívások. Hé, ne kövezzetek meg, ha
+	hülyeségeket írok: azért tartom én karban ezt a FAQ-t, mert
+	nem tudok programozni!</para>
+      </sect2>
+
+      <sect2 id="Imlib">
+	<title>Mi az az imlib?</title>
+
+	<para>A GTK mellett a GNOME az imlib-et használja. A imlib egy
+	X-es képkezelõ programkönyvtár, amely a programozók számára
+	transzparens módon támogat számos képformátumot. Az imlib
+	használhat külsõ konvertáló programokat is, mint pl. az
+	ImageMagick vagy a pmbplus, tehát ha létezik konvertáló
+	program egy adott képformátumhoz, akkor szinte biztos, hogy
+	használhatsz ilyet az alkalmazásodban! Az imlib támogat még
+	ezen felül több színmélységet, a 24 bitestõl az 1 bites
+	monokrómig, mindezt szintén a programozó számára teljesen
+	átlátszó módon, valamint intelligensen allokálja a színeket és
+	automatikus színszórással (dithering) hozza ki a lehetõ
+	legtöbbet a számítógépe, grafikájából. Mindenki, aki próbált már
+	X alatt ilyen alkalmazást írni, vagy csak el kellett viselnie
+	a privát színtérképek miatt furcsa színekben villogó
+	alkalmazásokat, szeretni fogja ezt a funkciót.</para>
+
+	<para>Az imlib iránt érdeklõdõk vethetnek egy pillantást a <ulink
+        url="&wwwimlib;">&wwwimlib;</ulink> weblapra.</para>
+      </sect2>
+
+      <sect2 id="Themes">
+	<title>Mi a helyzet a témákkal?</title>
+
+	<para>A témákkal megváltoztathatod a GTK+-os alkalmazásaid
+	kinézetét, újrafordításuk nélkül. A használatukkal egy csapásra
+	megváltoztathatod az adott "display"-en futó összes GTK+-os
+	alkalmazás kinézetét.</para>
+
+	<para>A GTK+-os témának igazából két része van, az engine és a konfiguráció. Az engine egy speciálisan a témákhoz írt osztott programkönyvtár, ez határozza meg, hogy az X hogyan jelenítse meg a különbözõ widget-eket (az ablakokon vagy ablakokban található gombokat, gördülõsávokat, menüket). A konfigurációban vannak a színek, betûtípusok, a használt engine neve, esetleg a képek, amiket a téma használ. A kettõ együtt alkotja a témát, ez adja a GTK+-nak a kaméleon jellegét.
+	</para>
+
+	<para>Ha kíváncsi vagy néhány GTK+-os témázott alkalmazás kinézetére, vess egy pillantást a: <ulink url="&wwwgtktheme;">
+	&wwwgtktheme;</ulink> lapra.</para>
+      </sect2>
+
+      <sect2>
+	<title>Hogyan bírom mûködésre a témákat?</title>
+
+	<para>Elõször kell egy friss GTK+. Az 1.2.6-os verzió most az új, azt ajánlanám, de jó már az 1.2.0-ás is. Ez után kellenek a témák. Sok témát találhatsz a gtk-emgine modulban. Még több érhetõ el a <ulink url="&wwwgtktheme;">
+	&wwwgtktheme;</ulink> weblapon.</para>
+
+	<para>Sok téma tartalmaz engine-t. Az engine-t le kell fordítani és telepíteni. A gtk-engine-el ugyanúgy kell eljárni mint bármely más csomaggal. Ha a webkiszolgálóról töltöd le a témát, nézd meg a dokumentációját. Sok a weben található téma csupán a konfigurációban tér el egymástól és ugyanazt az engine-t használja, gyakran a pixmap engine-t a gtk-engine modulból. </para>
+
+	<para>Ha sikerül feltelepíteni a témát, elérheted és megváltoztathatod a GNOME Vezérlõpulján keresztül a Munkaasztal -> Témaválasztónál. A témaválasztóval válogathatsz a feltelepített témák közül, láthatsz egy
+elõnézetet, és ha 1.04-esnél újabb verziód van, kiválaszthatod a használt betûtípust is.</para>
+
+	<comment> Megnézheted a FAQ írójának a témázott GTK alkalmazásait a <ulink url="&wwwtoddtheme;">
+        &wwwtoddtheme;</ulink>. Commented out due to dead
+        link.</comment>
+      </sect2>
+
+      <sect2 id="OpenGL">
+	<title>Mi az az OpenGL?</title>
+
+	<para>Az OpenGL a Silicon Graphics 2D és 3D megjelenítõ API-ja, ez lett az idõ során az elfogadott szabvány. Arról van lényegében szó, hogy veszel egy nézõpontot a 3D-s térben és csinálsz egy 2D-s képet, amit meg tudsz jeleníteni a képernyõn. Idézet az SGI GyIK-jébõl:</para>
+
+	<blockquote>
+	  <para>Az OpenGL egy kizárólag megjelenítésre szolgáló, gyártó-független API, ami 2- és 3D-s grafikus funkciókat nyújt mint a modellezés, a transzformációk, színek, megvilágítás, árnyéksimítás, valamint összetettebb funkciókat, mint a mintafelhúzás, NURBS, köd, alfa keverés és a mozgás elmosása. Az OpenGL mûködik azonnali (immediate) és visszatartott (retained - display list) grafikus módban is.</para>
+	</blockquote>
+
+	<para>A GNOME az OpenGL Mesa nevû implementációját használja. A Mesa nem maga az OpenGL, hanem egy Free Software projekt, ami nem esett át az OpenGL márkanév
+licencelési procedúrája alatt, de hûen tükrözi az OpenGL API-t. A Mesa nem OpenGL, ahogyan a GNU/Linux és a FreeBSD sem Unix(tm).</para>
+      </sect2>
+
+      <sect2 id="XDND">
+	<title>Mi van a "Drag and Drop" támogatással?</title>
+
+	<para>A GNOME jelenleg az Xde "Drag and Drop" protokollt használja. A XDE-t lassan helyettesíti az X Window "Drag and Drop" Protokoll, ez a különbözõ alkalmazások együttmûködését hivatott elõsegíteni. Többet a következõ címen tudhatsz meg: <ulink url="&wwwxdnd;">
+	&wwwxdnd;</ulink>.</para>
+      </sect2>
+    </sect1>
+
+    <sect1 id="SM">
+      <title>Session Menedzsment</title>
+
+      <sect2>
+	<title>Mi az a session-kezelés?</title>
+
+	<para>A Session Management az X Window rendszer egy kiterjesztése, ami lehetõvé teszi, hogy az alkalmazások elmentsék majd visszaállítsák az állapotukat. Ennek segítségével a felhasználók elmenthetik a munkafelületük beállításait, majd ugyanazokat a beállításokat kaphatják
+vissza, amikor a következõ alkalommal merülnek el a GNOMoszférában.</para>
+      </sect2>
+
+      <sect2>
+	<title>Hogyan használjam a session-kezelést a GNOME-os alkalmazásomban?</title>
+
+	<para>Dr. Mike a RedHat-tól, írt errõl egy tanmesét:
+	<ulink url="http://www.gnome.org/devel/start/sm.shtml">
+        http://www.gnome.org/devel/start/sm.shtml</ulink>.</para>
+      </sect2>
+    </sect1>
+
+    <sect1 id="Docbook">
+      <title>DocBook</title>
+      <sect2>
+	<title>Mi az a DocBook?</title>
+
+	<para>A DocBook egy SGML DTD (címkék halmaza szöveges fájlokhoz), nagyon hasznos dokumentáció íráshoz. A legtöbb GNOME-os doksi DocBook-ban van. Ha többet akarsz errõl tudni, nézd meg az Oasis DocBook oldalait a <ulink
+	url="&wwwdocbook;">&wwwdocbook;</ulink> link mentén.  Találsz egy jó tanmesét a DocBook-ról a <ulink
+	url="&wwwdocbooktut;">&wwwdocbooktut;</ulink> oldalon.</para>
+
+	<para>A GNOME által használt DocBook és a segédprogramok verzióit megtalálhatod a <ulink
+	url="&ftpdocware;">&ftpdocware;</ulink> lapon. Találhatók még ott tar csomagok és bináris RPM-ek is.</para>
+      </sect2>
+
+      <sect2 id="SGML">
+	<title>Mi az az SGML?</title>
+
+	<para>Ez a rész még kitöltésre vár.</para>
+      </sect2>
+    </sect1>
+
+    <sect1 id="I18N">
+      <title>Internacionalizáció és lokalizáció (I18N és L10N)</title>
+      <sect2>
+	<title>Mi az az internacionalizáció (i18n) és a lokalizáció (L10N)?
+	</title>
+
+	<para>A GNU gettext info oldalából:</para>
+
+	<para><firstterm>Internacionalizáció</firstterm> alatt azt értjük, amikor egy program, vagy egy csomagot alkotó programok összessége tudja, hogy a világon több nyelvet
+beszélnek, és támogatja is ezen nyelvek egy részét. Ez egy általánosításra visszavezethetõ folyamat, melynek során a programnak el kell vonatkoztatnia az eredeti angol nyelvtõl és az ezzel járó
+jelölésektõl, és meg kell birkóznia a feladattal általános, nyelvtõl független módon is. A program fejlesztõinek több módszer is rendelkezésükre áll ahhoz, hogy ezt a célt elérjék, létrejöttek erre vonatkozó szabványok. A GNU gettext egyike ezen szabványoknak.</para>
+
+	<para><firstterm>Lokalizáció</firstterm> alatt azt a mûveletet értjük, amikor a már nemzetköziesített programokat feltöltjük olyan adatokkal, amik lehetõvé teszik, hogy a program egy adott nyelvnek vagy
+kulturális egységnek megfelelõen kezelje a ki- és bemenetét. Ezen folyamat során az általánosított módszereket használó program ezeket specifikusan alkalmazza. A fejlesztõi környezet több lehetõséget nyújt a futásidejû konfigurációra. Valamely országhoz tartozó, jellemzõ
+kulturális szokások formális leírása és az adott országban beszélt nyelvre fordított karakterláncok halmaza határozza meg az országban vagy nyelvre  használandó "locale"-t. A felhasználók lokalizálhatják a programokat, ha a program indítása elõtt, a megfelelõ változó beállításával, kiválasztják a megfelelõ "locale"-t.</para>
+      </sect2>
+
+      <sect2>
+	<title>Milyen I18N és L10N API-kat használ a GNOME?</title>
+
+	<para>A GNOME a Uniforum internacionalizációs szabványát használja.
+Ezt a "szabványt" a Sun Microsystem hozta létre és a GNU projekt átvette ezt a "gettext" csomagban. Megjegyzés, itt nem az X/Open szabványról van szó.</para>
+      </sect2>
+
+      <sect2>
+	<title>Hogyan írjak programot az I18N és L10N támogatás kihasználásával, vagy hol találok bõvebb információt ebben a témában?</title>
+
+	<para>Olvass bele a GNU gettext csomag webes kézikönyvébe a <ulink url="&wwwgettext;">&wwwgettext;</ulink> címen.  Találhatsz még egy nagyon hasznos cikket a Linux Journal-ban az internacionalizációról a <ulink
+        url="&wwwlj;/issue59/3286.html">
+        &wwwlj;/issue59/3286.html</ulink> lapon. Érdekesnek találhatod még az I18N GyIK-et a <ulink
+    url="&wwwi18n;">&wwwi18n;</ulink> lapon.</para>
+      </sect2>
+
+      <sect2>
+	<title>Hogyan változtathatom meg a GNOME-os programjaim nyelvét?</title>
+
+	<para>Ha meg akarod változtatni a GNOME-os programok által használt nyelvet, egyszerûen meg kell változtatnod a <envar>LANG</envar> környezeti változót a megfelelõ ISO 639 nyelvkódra. Ettõl kezdve minden újonnan induló GNOME-os program ezt a nyelvet próbálja majd használni.</para>
+
+	<para>Mondjuk, hogy magyarul szeretnéd használni a GNOME-ot. A Bourne Shell-ben és a leszármazottaiban (bash) használd a <command>set LANG="hu"</command> parancsot. Ha C shell-t (vagy tcsh-t) használsz, írd be, hogy <command>setenv LANG
+	"hu"</command>.  Ezeket a parancsokat szokás a <filename>.profile</filename> vagy a <filename>.login</filename> fájlba
+tenni, így a környezet minden belépésnél automatikusan végrehajtja ezeket.</para>
+
+	<para>Vannak nyelvek, mint pl. a spanyol, vagy az angol, amik további specializálásra szorulnak, a földrajzi hely függvényében. Ezekben az esetekben, megadhatod a nyelv ISO kódját, majd aláhúzásjel után az ország ISO 3166 kódját, valahogy így: "en_GB" ha Brit angolról van szó és "es_MX" ha mexikói spanyolról.</para>
+
+	<para>Ne felejtsd el, hogy a futó GNOME alkalmazások nyelve nem fog megváltozni a <envar>LANG</envar> változó átírásakor, be kell zárd és újra kell indítanod ezeket. Felhívom a figyelmedet arra, hogy nem minden alkalmazás támogat minden nyelvet, ezért ha beállítasz egy nyelvet, egyes alkalmazások használni fogják azt, mások angolul jelennek majd meg.</para>
+
+	<para>Találhatsz egy listát az összes ISO nyelv- és országkódról a <ulink
+	url="&wwwicodes;">&wwwicodes;</ulink> lapon.  Itt olvasható a GNOME-core által támogatott nyelvek listája a megfelelõ kódokkal:</para>
+	<simplelist>
+	  <member>Katalán(ca)</member>
+	  <member>Csehország (cs)</member>
+	  <member>Dánia (da)</member>
+	  <member>Németország (de)</member>
+	  <member>Angol [USA] (en) [ja, az élet nem fair]</member>
+	  <member>Angol [Nagy Britannia] (en_GB)</member>
+	  <member>Spanyol [Spanyolország] (es)</member>
+	  <member>Spanyol [Dominikai Köztársaság] (es_DO)</member>
+	  <member>Spanyol [Guatemala] (es_GT)</member>
+	  <member>Spanyol [Honduras] (es_HN)</member>
+	  <member>Spanyol [Mexikó] (es_MX)</member>
+	  <member>Spanyol [Panama] (es_PA)</member>
+	  <member>Spanyol [Peru] (es_PE)</member>
+	  <member>Spanyol [Svédország?] (es_SV) [es_SE kellene legyen ha Svédországról lenne szó]</member>
+	  <member>Baszk (eu)</member>
+	  <member>Finn (fi)</member>
+	  <member>Francia (fr)</member>
+	  <member>Ír (ga)</member>
+	  <member>Magyar (hu)</member>
+	  <member>Olasz (it)</member>
+	  <member>Japán (ja)</member>
+	  <member>Koreai (ko)</member>
+	  <member>Holland (nl)</member>
+	  <member>Norvég (no)</member>
+	  <member>Lengyel (pl)</member>
+	  <member>Portugál (pt)</member>
+	  <member>Orosz (ru)</member>
+	  <member>Szlovák (sk)</member>
+	  <member>Svéd (sv)</member>
+	  <member>Waloon (wa)</member>
+	</simplelist>
+      </sect2>
+    </sect1>
+
+    <sect1 id="Guile">
+      <title>Guile</title>
+
+      <sect2>
+	<title>Mi az a Guile?</title>
+
+	<para>A Guile a Scheme, egy Lisp dialektus, GNU-projektbéli implemetációja. Megtudhatsz róla többet a <ulink
+	url="&wwwguile;">&wwwguile;</ulink> lapon.  Kiváló kiindulópont még a <ulink url="&wwwredbean;">
+	&wwwredbean;</ulink> weblap is.</para>
+
+	<para>A Guile doksik elég jók, de a Scheme szabványt (azt a csodálatosan
+obskúrus R5RS nevût) is megtalálod a:
+	<ulink url="&wwwschemerpt;">&wwwschemerpt;</ulink> lapon.</para>
+      </sect2>
+
+      <sect2>
+	<title>Milyen szerepet játszik a Guile a GNOME-ban?</title>
+
+	<para>A Guile a GNOME projekt szkriptelõ vagy "ragasztó" nyelve. Az eredeti bejelentésbõl:</para>
+
+	<blockquote>
+	  <para>Azt tervezzük, hogy a GTK/Scheme binding-okat kis segédprogramok és alkalmazások írására lehet majd használni. Késõbb, ha ezek a binding-ok tovább fejlõdnek, lehet majd komoly alkalmazásokat is írni Scheme-ben.</para>
+	</blockquote>
+      </sect2>
+    </sect1>
+  </chapter>
+
+  <chapter id="DevelopingGNOME">
+    <title>Fejlesztõknek</title>
+
+    <sect1 id="WMCompliance">
+      <title>Mit kell tudnia egy ablakkezelõnek ahhoz, hogy GNOME kompatíbilis legyen?</title>
+
+      <para>Három fontos dolog van:</para>
+      <itemizedlist>
+	<listitem>
+	  <para>Teljesen ICCCM kompatíbilis kell legyen, fontos, hogy rendesen támogassa az X
+session-kezelést.</para>
+	</listitem>
+	<listitem>
+	  <para>Támogatnia kell az MWM hint-eket.</para>
+	</listitem>
+	<listitem>
+	  <para>Támogatnia kell a GNOME hint-eket.</para>
+	</listitem>
+      </itemizedlist>
+      <para>További részletekért böngészd át a GNOME Ablakkezelõ Kompatíbilitás oldalt a <ulink url="&wwwgnomewmc;">
+      &wwwgnomewmc;</ulink> címen.</para>
+    </sect1>
+
+    <sect1 id="Autoconf">
+      <title>Mi az az Autoconf? Mi köze van a GNOME-hoz?</title>
+
+      <para>Az autoconf egy program ami segít a fejlesztõnek a forrás konfigurálásában. Segítségével szkripteket lehet elõállítani, amik lehetõvé teszik, hogy a programod forrása a célrendszerhez idomuljon. A GNOME használja ezt a programot, a párjával, az Automake-el együtt. A két program lehetõvé teszi, hogy rendszerre szabott Makefile-okat gyártsál. Az Autoconf, sok más GNU programmal egyetemben, m4-et, egy nagyon hatékony (de misztikus) makrónyelvet használ. A fájlok generálására használt makrók többsége megtalálható a 
+      <filename>/usr/share/aclocal</filename> könyvtárban, vagy a forrás 
+      <filename>macros</filename> alkönyvtárában.</para>
+
+      <para>Ha tar csomagokat használsz, az automake-et és autoconf-ot már lefuttatták neked, nincs szükséged rájuk a rendszereden. Ha CVS-t használsz, nem fogsz túl messzire jutni ezen programok
+relatíve friss verziója nélkül. Az Autoconf-ról megtudhatsz többet a <ulink url="&wwwgnuaconf;"> &wwwgnuaconf;</ulink> lapon, az Autoconf-ról pedig a <ulink url="&wwwgnuamake;">
+      &wwwgnuamake;</ulink> címen.</para>
+
+      <para>Tartsd észben, hogy a <filename>configure</filename>,
+      <filename>config.h</filename>, <filename>Makefile</filename> fájlok,
+      sõt még a <filename>Makefile.in</filename> is generált fájlok. Ha foltozni akarod valamelyiket, a változtatásokat a következõ fájlokon eszközöld:
+      <filename>configure.in</filename>,
+      <filename>config.h.in</filename> és
+      <filename>Makefile.am</filename>.</para>
+    </sect1>
+
+    <sect1 id="Libtool">
+      <title>Mi az a Libtool?  Mi köze van a GNOME-hoz?</title>
+
+      <para>A libtool egy fontos segédprogram, ami a forrás hordozhatóságát segíti elõ. Rendelkezésünkre bocsát egy egységes interfészt a statikus és dinamikus  programkönyvtárak létrehozásához, javításához és karbantartásához a legtöbb használatos számítógépes rendszerhez. Három lépcsõje van: a 
+      <command>libtoolize</command> parancs az <command>ltconfig</command> szkript segítségével hozzáadja a forrás-könyvtárstruktúrához a libtool támogatást. Ez a szkript generál egy rendszerspecifikus
+szkriptet, amelynek a neve 
+      <command>libtool</command>. A  <command>libtool</command> szkript fogja az igazi munkát elvégezni.</para>
+
+      <para>Mint az Autoconf és az Automake esetén, ha CVS-t használsz, szükséged lesz a Libtool-ra. Ha a tar csomagokat használod, a 
+      <command>libtoolize</command> parancsot már lefuttatták, és az 
+      <command>ltconfig</command> önállóan is tud mûködni, nincs már szüksége a Libtool-ra. Többet tudhatsz meg a libtool-ról, ha átrágod magad a <ulink url="&wwwgnulibtool;">
+      &wwwgnulibtool;</ulink> oldalain.</para>
+    </sect1>
+  </chapter>
+
+  <chapter id="GNOMEr">
+    <title>GNOME-os szeretnék lenni...</title>
+
+    <para>Általános információ arról, hogy hogyan vehetsz Te is részt a GNOME Projektben.</para>
+
+    <sect1>
+      <title>Hogyan csatlakozhatok a GNOME mozgalomhoz?</title>
+
+      <para>Ha komolyan részt szeretnél venni a GNOME Projektben, feltétlenül csatlakoznod kell a gnome-list levelezési listához. (Lásd <link
+      linkend="MailingList">Levelezési listák</link>, feljebb).  Böngészd át a létezõ listák listáját, döntsd el, hogy melyikek érdekelnek. Olvasd el a GNOME
+Manifesto-t a <ulink
+      url="&wwwgnomemanif;">&wwwgnomemanif;</ulink> oldalon és a cikkeket a GNU Projekt Filozófiájáról a <ulink
+      url="&wwwgnuphil;">&wwwgnuphil;</ulink> lapon, így biztosan tudni fogod, hogy miben veszel részt. Nem kell mindennel egyetértened ahhoz, hogy hozzájárulj a Projekthez, de legalább tiszteletben kell tartanod, hogy néhányunknak fontosak ezek az eszmék.</para>
+
+      <para>Mivel a GNOME egy szoftver projekt, nyilván programozóknak mindig hasznukat
+látjuk, de nem kell feltétlenül programoznod, hogy segíteni tudjál.
+Mindig hasznosak az olyan emberek, akik világosan le tudják írni a szoftverek hibáit,
+jó "bug report"-okat tudnak írni. Mindig és egyre több dokumentációt kell írni. Fordítókra is mindig szükségünk van, hiszen le kell fordítani mind a dokumentációt, mind a programok felhasználói felületét (feliratok, menük, gombokon lévõ szövegek); tehát ha több mint egy nyelvet beszélsz, van feladat a számodra. Olyan embereket is szívesen látunk, akik hajlandóak bináris csomagokat készíteni a rendszerükhöz, fõleg ha még nincsenek csomagok az adott rendszerhez. Ha valaki tükrözni akarja a WWW, FTP és vagy a CVS szerverünket, mi benne vagyunk.</para>
+    </sect1>
+
+    <sect1>
+      <title>Programozó vagyok, segíteni szeretnék, mit tehetek?</title>
+
+      <para>Sok projekten dolgozunk a GNOME keretein belül, megnézheted például a <filename>gnome-status</filename> modult a CVS kiszolgálón, ebben megtalálod, hogy melyik projektekben van szükség munkaerõre.</para>
+
+      <para>Alapszabály az, hogy a kód szilárdságán mindig javíthatsz, javíthatod a felhasználói felületét a programnak, egyszerûsítheted a kódot, ellenõrizheted, hogy az alkalmazások rendesen internacionalizáltak és lokalizáltak. </para>
+    </sect1>
+
+    <sect1>
+      <title>Hogyan szerezzek vadi új GNOME verziót a CVS kiszolgálóról?</title>
+
+      <para>Ha GNOME alá fejlesztesz, vagy csak frissebb GNOME-ot szeretnél mint a legfrissebb tar csomagok, elgondolkodhatsz a CVS kiszolgáló használatán. Van egy fõ-CVS kiszolgáló, amihez témaszám kell, azonban létezik számos tükrözés róla, amit bárki olvashat. Ez a tükörszerver-hálózat az Anonymus CVS, ezt lehet az anoncvs.gnome.org címen keresztül elérni (a cím terheléstõl függõen
+mindig más és más gépre mutat. Ha a GNOME forrásán szeretnél változtatni, elõbb-utóbb szükséged lesz egy témaszámra a fõkiszolgálón, de elõször tanuld meg a CVS használatát az anoncvs segítségével.</para>
+
+      <para>Útmutatót az Anonymus CVS kiszolgáló használatához találsz a 
+      <ulink url="&wwwgnomewicvs;">&wwwgnomewicvs;</ulink> oldalon. Van egy nagyon hasznos leírás a <ulink
+      url="&wwwsorencvs;">&wwwsorencvs;</ulink> lapon. Az anonymous kiszolgálók automatikusan frissülnek.</para>
+
+      <para>Ha a CVS-es GNOME-ot akarod használni, fel kell telepítsd a GNU segédprogramokat. Legalább kell a GNU Autoconf, Automake, Libtool és az m4. Ha ezek nem találhatók meg a rendszereden, letöltheted õket a GNU webkiszolgálójáról: <ulink url="&wwwgnu;">&wwwgnu;</ulink>.</para>
+    </sect1>
+
+    <sect1>
+      <title>Szükségem volna vadi új GNOME-ra, de nem használhatok CVS-t. hogyan szerezzem akkor meg?</title>
+
+      <para>Vannak esetek, amikor a CVS nem alternatíva. Lehet, hogy a rendszered saját programjaival szeretnéd fordítani a GNOME-ot és nem a GNU programokkal. Lehet, hogy egy tûzfal mögött csücsülsz, ami lezárja a CVS portját. Mindegy, hogy mi az ok, a Jim Pick Software elérhetõvé teszi a CVS tartalmát FTP-n, napi frissítéssel, tar csomagok formájában, az <ulink url="&ftpsnap;">&ftpsnap;</ulink> kiszolgálón.  A tar csomaggá alakítás szükségtelenné teszi a GNU programokat.</para>
+    </sect1>
+
+    <sect1>
+      <title>Hogyan kaphatok témaszámot a CVS kiszolgálóra, hogy
+hozzájáruljak a CVS-es GNOME fejlesztéséhez?</title>
+
+      <para>Ha kóddal szeretnél a GNOME projekthez hozzájárulni, szükséged lesz egy témaszámra. Miguel de Icaza (<ulink
+      url="mailto:miguel@nuclecu.unam.mx">
+      miguel@nuclecu.unam.mx</ulink>) dönti el, hogy ki kap témaszámot, ha szeretnél egyet, írj Neki egy levelet, amiben leírod, hogy milyen programot szeretnél írni és egy titkosított jelszót. Ezt a következõ
+paranccsal nyerheted:</para>
+
+      <para><userinput>perl -e 'print crypt ("aJelszavad",
+      "salt");'</userinput></para>
+
+      <para>ahol a "salt" karakterlánc lehetõleg egy véletlenszerûen generált 2 karakteres string.</para>
+    </sect1>
+
+    <sect1>
+      <title>Miért hiányoznak néha könyvtárak, amikor egy CVS modult frissítek?</title>
+
+      <para>A CVS-nek van egy kiváló funkciója, ami egyben probléma forrása is. A CVS lehetõvé teszi, hogy egy modul más modulokat tartalmazzon, ezt a funkcióját a GNOME ki is használja, így rendezettebb az egész és csökken a duplikált kód mennyisége. Sajnos a <command>cvs
+      update</command> parancs nem veszi a fáradtságot, és nem nézi meg, hogy kerültek-e új modulok a modulokba, a fõmodul kivételével. Ha úgy gondolod, hogy hiányzik egy darab, add ki a <command>cvs get</command> parancsot. Ne aggódj, ha van egy forrásstruktúrád, nem fog a CVS az egész újra letöltésével próbálkozni, ugyanazt fogja
+csinálni, mint a <command>cvs
+      update</command>, tehát csak az új vagy módosított fájlokat fogja letölteni.</para>
+    </sect1>
+
+    <sect1>
+      <title>Nem vagyok programozó, hogyan segíthetek?</title>
+      <para>
+        Sok módja van annak, hogy hozzájárulj a GNOME-ot övezõ erõfeszítésekhez, akkor is, ha nem vagy programozó. Írhatsz dokumentációt (vedd fel a kapcsolatot a docs@gnome.org címen a dokumentátorokkal) átolvashatod a létezõ doksikat, javíthatod bennük a helyesírási hibákat, a formázás
+hibáit, világosabbá teheted a tartalmat vagy jobb példákat írhatsz.
+      </para>
+      <para>
+  	Ha nem angol anyanyelvû vagy, és értessz angolul, csatlakozhatsz a fordítókhoz. Arról van szó, hogy le kell fordítani az alkalmazásokban elõforduló üzeneteket. Ha ebben akarsz segíteni, iratkozz fel a gnome-i18n@nuclecu.unam.mx levelezési listára. A feliratkozáshoz küldj egy levelet a &majorunam; címre, a levél
+törzsében legyen a következõ:   "subscribe gnome-i18n".  Megnézheted az anyanyelvedre elkészült fordítások állapotát a <ulink
+  	url="&gwwwi18n;">&gwwwi18n;</ulink> weblapon.
+      </para>
+      <para>
+        Ha vannak jó ötleteid a GNOME felhasználói felületének fejlesztésével kapcsolatban, iratkozz fel a <ulink
+        url="mailto:&gnomeguireq;">gnome-gui-list@gnome.org</ulink> listára. A felhasználói interfésszel foglalkozó
+csapatot Jim Cape vezeti, õ tartja karban az UI-vel kapcsolatos javaslatokat szemléltetõ
+webhelyet a <ulink
+        url="&wwwgui;">&wwwgui;</ulink> címen.
+      </para>
+    </sect1>
+  </chapter>
+
+  <chapter id="FAQIssues">
+    <title>Ezen GyIK-el kapcsolatos dolgok</title>
+
+    <sect1>
+      <title>Hol található ennek a GyIK-nek a hivatalos változata?</title>
+
+      <para>A formális és hivatalos változata ezen írásnak a DocBook formátumban található a CVS kiszolgálón <filename>cvs.gnome.org:/cvs/gnome</filename>, a fájl maga a <filename>gnome-libs</filename> modulban a <filename>devel-docs/gnome-faq.sgml</filename> fájlban lelhetõ fel.  Minden más változat másolat, adaptáció, újraformázás stb.</para>
+    </sect1>
+
+    <sect1 id="ContactFAQ">
+      <title>Hogyan adhatok ehhez a GyIK-hez kérdéseket vagy válaszokat?</title>
+
+      <para>Ennek a legegyszerûbb módja, ha írsz egy levelet a GyIK karbantartójának erre a címre: <ulink
+      url="mailto:&mailfaq;">&mailfaq;</ulink>.  Ha jó a hozzászólás, beleszerkesztjük az információt a doksiba a megfelelõ helyre.</para>
+
+      <para>Ha van CVS hozzáférésed, módosíthatod a GyIK-et egyenesen az sgml fájlban, de arra kérnélek, hogy ezek a módosítások ne legyenek komolyabbak gyors javításoknál, vagy helyesírási hibák javításánál.</para>
+    </sect1>
+  </chapter>
+
+  <chapter id="Credits">
+    <title>Köszönetnyilvánítás</title>
+
+    <sect1 id="Copyright">
+      <title>Copyright és Nyilatkozat</title>
+
+      <para>Ez a munka Todd Lewis, Gleef (David Zoll) és Miguel de Icaza copyright-ja (1998) Egyes részek (C) Rasaki Bidem Bolante Temidire. Ez a dokumentáció szabad szoftver; továbbadhatod vagy módosíthatod a Free Software Foundation GNU General Public License 2. (vagy késõbbi) verziójában  foglaltak alapján.</para>
+
+      <para>Ezt a cikket minden kifejezett vagy implikált garancia nélkül bocsátjuk a rendelkezésedre. Mi ugyan mindent megtettünk azért, hogy a dokumentumban található információk pontosak legyenek, a szerzõk/karbantartók/társszerzõk nem vállalnak semmilyen felelõsséget az esetlegesen elõforduló hibákért, hiányosságokért, vagy az itt leírtak alkalmazásából származó károkért.</para>
+    </sect1>
+
+    <sect1 id="Trademark">
+      <title>Védjegyek és megemlítendõ nevek</title>
+
+      <para>Itt vannak a dokumentumban elõforduló kevésbé egyértelmû kereskedelmi védjegyek.</para>
+      <simplelist>
+	<member>A <firstterm>Linux</firstterm> Linus Torvalds védjegye.</member> 
+
+	<member>A <firstterm>Debian</firstterm> a Software in the Public Interest márkaneve.</member>
+
+	<member>A <firstterm>Copyleft</firstterm> és <firstterm>Free
+	Software</firstterm> kifejezések senkinek sem a márkanevei, de fontosak a Szabad Szoftver közösségnek és a Free Software Foundation-nek.</member>
+	
+	<member>Az <firstterm>Open Source</firstterm> kifejezés a Software in the Public Interest "service mark"-ja, de az is lehet, hogy az Open Source Initiative vagy Bruce Perens tulajdona, senki sem tudja egészen biztosan.</member>
+	
+	<member>A <firstterm>Unix</firstterm> és a <firstterm>The X
+	Window System</firstterm> az Open Group kereskedelmi-márkanevei.</member>
+
+	<member>Az <firstterm>OpenGL</firstterm> a Silicon Graphics, Inc. márkaneve.</member>
+
+	<member>Minden más márkanév a megfelelõ tulajdonosé.</member>
+      </simplelist>
+
+      <para>Ha van még olyan márkanév, amit itt fel kellene sorolni, akárhogyan, de
+értesítsetek, és felvesszük a listára.</para>
+    </sect1>
+
+  </chapter>
+</book>
+
+
+
