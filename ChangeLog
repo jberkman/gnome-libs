@@ -1,3 +1,9 @@
+1998-09-18  Miguel de Icaza  <miguel@nuclecu.unam.mx>
+
+	* libgnorba/orbitgtk.c (get_cookie_reliably): A new method to get
+	a cookie reliably (using locking and the /tmp/orbit-$username
+	directory to store the cookie).
+
 Thu Sep 17 00:24:19 1998  Tom Tromey  <tromey@cygnus.com>
 
 	* libgnome/gnome-metadata.c (try_app_regexs): Return

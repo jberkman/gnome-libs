@@ -4,6 +4,11 @@
 #include <stdio.h>
 #include <limits.h>
 #include <ctype.h>
+#include <pwd.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <sys/file.h>
+#include <fcntl.h>
 #include <gdk/gdkx.h>
 #include <gtk/gtk.h>
 #include "gnorba.h"
@@ -42,7 +47,7 @@ static void orb_remove_connection(GIOPConnection *cnx)
   cnx->user_data = (gpointer)-1;
 }
 
-CORBA_boolean
+static CORBA_boolean
 gnome_ORBit_request_validate(CORBA_unsigned_long request_id,
 			     CORBA_Principal *principal,
 			     CORBA_char *operation)
@@ -55,6 +60,70 @@ gnome_ORBit_request_validate(CORBA_unsigned_long request_id,
     return CORBA_FALSE;
 }
 
+/*
+ * I bet these will require porting sooner or later
+ */
+static void
+get_exclusive_lock (int fd)
+{
+	flock (fd, LOCK_EX);
+}
+
+static void
+release_lock (int fd)
+{
+	flock (fd, LOCK_UN);
+}
+
+/*
+ * We assume that if we could get this far, then /tmp/orbit-$username is secured
+ * (because of CORBA_ORB_init).
+ */
+static char *
+get_cookie_reliably (void)
+{
+	char random_string [64];
+	struct passwd *pwent;
+	char *name;
+	int fd;
+
+	pwent = getpwuid(getuid());
+	g_assert(pwent);
+	
+	name = g_copy_strings ("/tmp/orbit-", pwent->pw_name, "/cookie", NULL);
+
+	/*
+	 * Create the file exclusively with permissions rw for the
+	 * user.  if this fails, it means the file already existed
+	 */
+	fd = open (name, O_CREAT|O_EXCL|O_WRONLY, S_IRUSR | S_IWUSR );
+	if (fd >= 0){
+		unsigned int i;
+
+		get_exclusive_lock (fd);
+		srandom (time (NULL));
+		for (i = 0; i < sizeof (random_string)-2; i++)
+			random_string [i] = (random () % (126-33)) + 33;
+		
+		random_string [sizeof(random_string)-1] = 0;
+
+		write (fd, random_string, sizeof (random_string)-1);
+		close (fd);
+		release_lock (fd);
+	} else {
+		fd = open (name, O_RDONLY);
+		if (fd == -1)
+			g_error ("Could not open the cookie file");
+		get_exclusive_lock (fd);
+		memset (random_string, 0, sizeof (random_string));
+		read (fd, random_string, sizeof (random_string)-1);
+		release_lock (fd);
+		close (fd);
+	}
+	g_free (name);
+	return g_strdup (random_string);
+}
+
 CORBA_ORB
 gnome_CORBA_init(char *app_id,
 		 struct argp *app_parser,
@@ -64,8 +133,7 @@ gnome_CORBA_init(char *app_id,
 		 CORBA_Environment *ev)
 {
   CORBA_ORB retval;
-  GString *tmpstr;
-
+  
   IIOPAddConnectionHandler = orb_add_connection;
   IIOPRemoveConnectionHandler = orb_remove_connection;
 
@@ -73,18 +141,11 @@ gnome_CORBA_init(char *app_id,
 
   gnome_orbit_orb = retval = CORBA_ORB_init(argc, argv, "orbit-local-orb", ev);
 
-  tmpstr = g_string_new(NULL);
-
-  g_string_sprintf(tmpstr, "/panel/Secret/cookie-DISPLAY-%s=",
-		   getenv("DISPLAY"));
-
-  request_cookie._buffer = gnome_config_private_get_string(tmpstr->str);
+  request_cookie._buffer = get_cookie_reliably ();
 
   g_assert(request_cookie._buffer && *request_cookie._buffer);
 
   request_cookie._length = strlen(request_cookie._buffer) + 1;
-
-  g_string_free(tmpstr, TRUE);
 
   ORBit_set_request_validation_handler(&gnome_ORBit_request_validate);
   ORBit_set_default_principal(&request_cookie);
@@ -97,11 +158,10 @@ CORBA_Object
 gnome_get_name_service(void)
 {
   static CORBA_Object name_service = CORBA_OBJECT_NIL;
-  CORBA_Object retval;
+  CORBA_Object retval = NULL;
   char *ior;
   GdkAtom propname, proptype;
   CORBA_Environment ev;
-  gint len;
 
   g_return_val_if_fail(gnome_orbit_orb, CORBA_OBJECT_NIL);
 
