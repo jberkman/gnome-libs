@@ -27,7 +27,6 @@
 #undef PACKAGE
 #undef VERSION
 #undef USE_POPT
-#undef TEST_INTERNALS
 #undef HAVE_LIBAUDIOFILE
 #undef umode_t
 #undef HAVE_OPENPTY

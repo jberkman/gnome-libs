@@ -291,15 +291,6 @@ AM_CONDITIONAL(COMPILE_GNOME_HELLO, test x$compile_gnome_hello = xyes)
 AC_ARG_ENABLE(test-gnome, [  --enable-test-gnome     compile the test-gnome examples [default=yes]],[compile_test_gnome="$enableval"],[compile_test_gnome=yes])
 AM_CONDITIONAL(COMPILE_TEST_GNOME, test x$compile_test_gnome = xyes)
 
-dnl
-dnl Internal Test Suite
-dnl
-AC_ARG_ENABLE(test-internals, [  --enable-test-internals add support to test internal functions [default=no]],[test_internals="$enableval"],[test_internals=no])
-AM_CONDITIONAL(TEST_INTERNALS, test x$test_internals = xyes)
-if test x$test_internals = xyes ; then
-  AC_DEFINE(TEST_INTERNALS)
-fi
-
 dnl AC_CONFIG_SUBDIRS(libgtktty)
 
 AC_CONFIG_SUBDIRS(libart_lgpl)
