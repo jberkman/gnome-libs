@@ -37,6 +37,12 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.8  1998/09/25 01:09:12  unammx
+* 1998-09-24  Miguel de Icaza  <miguel@nuclecu.unam.mx>
+*
+* 	* readPNG.c (_XmHTMLReadPNG): I am the one to blame.  Fix PNG file
+* 	loading.  I do not know how I ever commited this.
+*
 * Revision 1.7  1998/06/29 06:32:14  tromey
 * added gnome-config to .cvsignore
 *
@@ -313,10 +319,9 @@ _XmHTMLReadPNG(TWidget html, ImageBuffer *ib)
 
 	/* by now we already know this is a png */
 	ib->next = 8;
-#if 0
-	/* FIXME:  Upgrade my png instaed of this -- mig */
+
 	png_set_sig_bytes(png_ptr, 8);
-#endif
+
 	/* get png info */
 	png_read_info(png_ptr, info_ptr);
 
