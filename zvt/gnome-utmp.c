@@ -31,11 +31,6 @@
 
 #ifdef HAVE_UTMPX_H
 #    include <utmpx.h>
-#    define USE_SYSV_UTMP
-#else
-#    ifdef HAVE_SETUTENT
-#        define USE_SYSV_UTMP
-#    endif
 #endif
 
 #ifndef UTMP_FILENAME

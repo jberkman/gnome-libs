@@ -1,5 +1,8 @@
 1998-11-23  Miguel de Icaza  <miguel@nuclecu.unam.mx>
 
+	* gnome-pty.h (USE_SYSV_UTMP): Define USE_SYSV_UTMP in the shared
+	header file
+
 	* subshell.c (zvt_shutdown_subshell): Duh, I was missing the tag
 	write.  Protocol fixed.  This should fix gnome-terminal for everyone.
 

@@ -11,4 +11,14 @@ extern char *login_name;
 
 void *update_dbs         (char *login_name, char *display_name, char *term_name);
 void write_logout_record (void *data);
+
+
+#ifdef HAVE_UTMPX_H
+#    define USE_SYSV_UTMP
+#else
+#    ifdef HAVE_SETUTENT
+#        define USE_SYSV_UTMP
+#    endif
+#endif
+
 #endif
