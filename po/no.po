@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-libs 0.30\n"
-"POT-Creation-Date: 1998-12-06 20:41+0100\n"
-"PO-Revision-Date: 1998-12-06 20:50+0100\n"
+"POT-Creation-Date: 1998-12-11 23:57+0100\n"
+"PO-Revision-Date: 1998-12-12 11:40+0100\n"
 "Last-Translator: Kjartan Maraas <kmaraas@fib.hl.no>\n"
 "Language-Team: Norwegian <no@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -46,7 +46,7 @@ msgstr "Om GnomeHello..."
 
 #: gnome-hello/gnome-hello-2-i18n.c:78
 #: gnome-hello/gnome-hello-3-parse-args.c:78 gnome-hello/gnome-hello-4-SM.c:53
-#: gnome-hello/gnome-hello-7-mdi.c:403
+#: gnome-hello/gnome-hello-7-mdi.c:433
 msgid "Exit"
 msgstr "Avslutt"
 
@@ -54,14 +54,14 @@ msgstr "Avslutt"
 #. insertion routines for details)
 #: gnome-hello/gnome-hello-2-i18n.c:84
 #: gnome-hello/gnome-hello-3-parse-args.c:84 gnome-hello/gnome-hello-4-SM.c:77
-#: gnome-hello/gnome-hello-7-mdi.c:409 gnome-hello/gnome-hello-7-mdi.c:505
+#: gnome-hello/gnome-hello-7-mdi.c:439 gnome-hello/gnome-hello-7-mdi.c:545
 #: libgnomeui/stock_demo.c:184
 msgid "File"
 msgstr "Fil"
 
 #: gnome-hello/gnome-hello-2-i18n.c:85
 #: gnome-hello/gnome-hello-3-parse-args.c:85 gnome-hello/gnome-hello-4-SM.c:78
-#: gnome-hello/gnome-hello-7-mdi.c:458 libgnomeui/gnome-stock.c:775
+#: gnome-hello/gnome-hello-7-mdi.c:488 libgnomeui/gnome-stock.c:775
 #: libgnomeui/stock_demo.c:290
 msgid "Help"
 msgstr "Hjelp"
@@ -90,7 +90,7 @@ msgstr "Hello GNOME"
 msgid "Exit GNOME hello"
 msgstr "Avslutt GNOME hello"
 
-#: gnome-hello/gnome-hello-4-SM.c:65 gnome-hello/gnome-hello-7-mdi.c:452
+#: gnome-hello/gnome-hello-4-SM.c:65 gnome-hello/gnome-hello-7-mdi.c:482
 msgid "About..."
 msgstr "Om..."
 
@@ -102,52 +102,56 @@ msgstr "Informasjon om GNOME hello"
 msgid "Discard session"
 msgstr "Avbryt sesjon"
 
-#: gnome-hello/gnome-hello-4-SM.c:89 libgnomeui/gnome-client.c:651
-#: libgnomeui/gnome-client.c:653
+#: gnome-hello/gnome-hello-4-SM.c:89 libgnomeui/gnome-client.c:668
+#: libgnomeui/gnome-client.c:670
 msgid "ID"
 msgstr "ID"
 
-#: gnome-hello/gnome-hello-7-mdi.c:187
+#: gnome-hello/gnome-hello-7-mdi.c:201
 msgid "Add View"
 msgstr "Legg til visning"
 
-#: gnome-hello/gnome-hello-7-mdi.c:192
+#: gnome-hello/gnome-hello-7-mdi.c:206
 msgid "Remove View"
 msgstr "Fjern visning"
 
-#: gnome-hello/gnome-hello-7-mdi.c:198
+#: gnome-hello/gnome-hello-7-mdi.c:214
+msgid "Increase Counter"
+msgstr "Øk teller"
+
+#: gnome-hello/gnome-hello-7-mdi.c:220
 msgid "Child"
 msgstr "Barn"
 
-#: gnome-hello/gnome-hello-7-mdi.c:387
+#: gnome-hello/gnome-hello-7-mdi.c:417
 msgid "Add Child"
 msgstr "Legg til barn"
 
-#: gnome-hello/gnome-hello-7-mdi.c:393
+#: gnome-hello/gnome-hello-7-mdi.c:423
 msgid "Remove Child"
 msgstr "Fjern barn"
 
-#: gnome-hello/gnome-hello-7-mdi.c:416
+#: gnome-hello/gnome-hello-7-mdi.c:446
 msgid "Children"
 msgstr "Barn"
 
-#: gnome-hello/gnome-hello-7-mdi.c:425
+#: gnome-hello/gnome-hello-7-mdi.c:455
 msgid "Notebook"
 msgstr "Notisblokk"
 
-#: gnome-hello/gnome-hello-7-mdi.c:431
+#: gnome-hello/gnome-hello-7-mdi.c:461
 msgid "Toplevel"
 msgstr "Toppnivå"
 
-#: gnome-hello/gnome-hello-7-mdi.c:437
+#: gnome-hello/gnome-hello-7-mdi.c:467
 msgid "Modal"
 msgstr "Modulær"
 
-#: gnome-hello/gnome-hello-7-mdi.c:443
+#: gnome-hello/gnome-hello-7-mdi.c:473
 msgid "MDI Mode"
 msgstr "MDI modus"
 
-#: gnome-hello/gnome-hello-7-mdi.c:506
+#: gnome-hello/gnome-hello-7-mdi.c:546
 msgid "Children/"
 msgstr "Barn/"
 
@@ -344,23 +348,23 @@ msgstr "  - OK? (ja eller nei)"
 msgid "Progress"
 msgstr "Fremgang"
 
-#: libgnomeui/gnome-app.c:411 libgnomeui/gnome-app.c:437
+#: libgnomeui/gnome-app.c:414 libgnomeui/gnome-app.c:440
 msgid "Top"
 msgstr "Øverst"
 
-#: libgnomeui/gnome-app.c:412 libgnomeui/gnome-app.c:438
+#: libgnomeui/gnome-app.c:415 libgnomeui/gnome-app.c:441
 msgid "Bottom"
 msgstr "Nederst"
 
-#: libgnomeui/gnome-app.c:439
+#: libgnomeui/gnome-app.c:442
 msgid "Left"
 msgstr "Venstre"
 
-#: libgnomeui/gnome-app.c:440
+#: libgnomeui/gnome-app.c:443
 msgid "Right"
 msgstr "Høyre"
 
-#: libgnomeui/gnome-app.c:441
+#: libgnomeui/gnome-app.c:444
 msgid "Configure toolbar"
 msgstr "Konfigurer verktøyslinje"
 
@@ -533,20 +537,20 @@ msgstr "="
 msgid "INV"
 msgstr "INV"
 
-#: libgnomeui/gnome-client.c:651
+#: libgnomeui/gnome-client.c:668
 msgid "Specify session management ID"
 msgstr "Spesifiser ID for sesjonskontroll"
 
-#: libgnomeui/gnome-client.c:653
+#: libgnomeui/gnome-client.c:670
 msgid "Specify ID of cloned client"
 msgstr "Spesifiser ID for klonet klient"
 
-#: libgnomeui/gnome-client.c:655
+#: libgnomeui/gnome-client.c:672
 msgid "Disable connection to session manager"
 msgstr "Fjern forbindelse til sesjonsbehandler"
 
 #. Register commandline options.
-#: libgnomeui/gnome-client.c:781
+#: libgnomeui/gnome-client.c:798
 msgid "Session management options"
 msgstr "Alternativer for sesjonskontroll"
 
@@ -557,7 +561,7 @@ msgstr "Velg en farge"
 #. Only add the label if all the children are to be shown.  Otherwise
 #. * things look too wide; in that case just show the arrow.
 #.
-#: libgnomeui/gnome-dateedit.c:395
+#: libgnomeui/gnome-dateedit.c:426
 msgid "Calendar"
 msgstr "Kalender"
 
@@ -613,80 +617,80 @@ msgstr "Se på..."
 msgid "Loading Icons..."
 msgstr "Laster ikoner..."
 
-#: libgnomeui/gnome-init.c:165
+#: libgnomeui/gnome-init.c:171
 msgid "Gdk debugging flags to set"
 msgstr "Gdk avlusingsflagg som skal slås på"
 
-#: libgnomeui/gnome-init.c:165 libgnomeui/gnome-init.c:167
-#: libgnomeui/gnome-init.c:187 libgnomeui/gnome-init.c:189
+#: libgnomeui/gnome-init.c:171 libgnomeui/gnome-init.c:173
+#: libgnomeui/gnome-init.c:193 libgnomeui/gnome-init.c:195
 msgid "FLAGS"
 msgstr "FLAGG"
 
-#: libgnomeui/gnome-init.c:167
+#: libgnomeui/gnome-init.c:173
 msgid "Gdk debugging flags to unset"
 msgstr "Gdk avlusingsflagg som skal slås av"
 
-#: libgnomeui/gnome-init.c:169
+#: libgnomeui/gnome-init.c:175
 msgid "X display to use"
 msgstr "X-display som skal brukes"
 
-#: libgnomeui/gnome-init.c:169
+#: libgnomeui/gnome-init.c:175
 msgid "DISPLAY"
 msgstr "DISPLAY"
 
-#: libgnomeui/gnome-init.c:171
+#: libgnomeui/gnome-init.c:177
 msgid "Make X calls synchronous"
 msgstr "Bruk synkrone X-kall"
 
-#: libgnomeui/gnome-init.c:173
+#: libgnomeui/gnome-init.c:179
 msgid "Don't use X shared memory extension"
 msgstr "Ikke bruk X-utvidelse for delt minne"
 
-#: libgnomeui/gnome-init.c:175
+#: libgnomeui/gnome-init.c:181
 msgid "Program name as used by the window manager"
 msgstr "Programnavn som brukt av vindusbehandleren"
 
-#: libgnomeui/gnome-init.c:175
+#: libgnomeui/gnome-init.c:181
 msgid "NAME"
 msgstr "NAVN"
 
-#: libgnomeui/gnome-init.c:177
+#: libgnomeui/gnome-init.c:183
 msgid "Program class as used by the window manager"
 msgstr "Programklasse som brukt av vindusbehandleren"
 
-#: libgnomeui/gnome-init.c:177
+#: libgnomeui/gnome-init.c:183
 msgid "CLASS"
 msgstr "KLASSE"
 
-#: libgnomeui/gnome-init.c:179
+#: libgnomeui/gnome-init.c:185
 msgid "HOST"
 msgstr "VERT"
 
-#: libgnomeui/gnome-init.c:181
+#: libgnomeui/gnome-init.c:187
 msgid "PORT"
 msgstr "PORT"
 
-#: libgnomeui/gnome-init.c:183 libgnomeui/gnome-init.c:185
+#: libgnomeui/gnome-init.c:189 libgnomeui/gnome-init.c:191
 msgid "STYLE"
 msgstr "STIL"
 
-#: libgnomeui/gnome-init.c:187
+#: libgnomeui/gnome-init.c:193
 msgid "Gtk+ debugging flags to set"
 msgstr "Gtk+ avlusingsflagg som skal slås på"
 
-#: libgnomeui/gnome-init.c:189
+#: libgnomeui/gnome-init.c:195
 msgid "Gtk+ debugging flags to unset"
 msgstr "Gtk+ avlusingsflagg som skal slås av"
 
-#: libgnomeui/gnome-init.c:191
+#: libgnomeui/gnome-init.c:197
 msgid "Make all warnings fatal"
 msgstr "Gjør all advarsler til fatale"
 
-#: libgnomeui/gnome-init.c:193
+#: libgnomeui/gnome-init.c:199
 msgid "Load an additional Gtk module"
 msgstr "Last Gtk+ tilleggsmoduler"
 
-#: libgnomeui/gnome-init.c:193
+#: libgnomeui/gnome-init.c:199
 msgid "MODULE"
 msgstr "MODUL"
 
@@ -714,19 +718,19 @@ msgstr "Kalkulator"
 msgid "Calculator..."
 msgstr "Kalkulator..."
 
-#: libgnomeui/gnome-scores.c:71
+#: libgnomeui/gnome-scores.c:76
 msgid "Top Ten"
 msgstr "Topp ti"
 
-#: libgnomeui/gnome-scores.c:82
+#: libgnomeui/gnome-scores.c:87
 msgid "User"
 msgstr "Bruker"
 
-#: libgnomeui/gnome-scores.c:85
+#: libgnomeui/gnome-scores.c:90
 msgid "Score"
 msgstr "Poengsum"
 
-#: libgnomeui/gnome-scores.c:88
+#: libgnomeui/gnome-scores.c:93
 msgid "Date"
 msgstr "Dato"
 
@@ -1108,7 +1112,7 @@ msgstr ""
 "%s\n"
 "ser ikke ut som et tar-arkiv."
 
-#: libvfs/vfs.c:1678
+#: libvfs/vfs.c:1675
 msgid "Password:"
 msgstr "Passord:"
 
@@ -1237,40 +1241,40 @@ msgid "Guru-in-a-dialog test"
 msgstr "Guru-i-en-dialog test"
 
 #. Pixmap
-#: test-gnome/testgnome.c:657
+#: test-gnome/testgnome.c:667
 msgid "Default Pixmap"
 msgstr "Forvalgt bilde"
 
-#: test-gnome/testgnome.c:665 test-gnome/testgnome.c:706
-#: test-gnome/testgnome.c:731
+#: test-gnome/testgnome.c:675 test-gnome/testgnome.c:716
+#: test-gnome/testgnome.c:741
 msgid "If you choose a font it will appear here"
 msgstr "Hvis du velger en skrifttype vil den vises her"
 
 #. Font_Info
-#: test-gnome/testgnome.c:672
+#: test-gnome/testgnome.c:682
 msgid "Font Info"
 msgstr "Info om skrifttye"
 
-#: test-gnome/testgnome.c:682
+#: test-gnome/testgnome.c:692
 msgid "Use Font in button with size"
 msgstr "Bruk skrifttype på knapp med størrelse"
 
-#: test-gnome/testgnome.c:689
+#: test-gnome/testgnome.c:699
 msgid "Show font size"
 msgstr "Vis skrifttypens størrelse"
 
-#: test-gnome/testgnome.c:725
+#: test-gnome/testgnome.c:735
 msgid "This is an hbox with pixmap and text"
 msgstr "Dette er en hboks med bilde og tekst"
 
-#: test-gnome/testgnome.c:910
+#: test-gnome/testgnome.c:920
 msgid "The user chose Yes/OK with data:\n"
 msgstr "Brukeren valgte Ja/OK med data:\n"
 
-#: test-gnome/testgnome.c:914
+#: test-gnome/testgnome.c:924
 msgid "The user chose No/Cancel with data:\n"
 msgstr "Brukeren valgte Nei/Avbryt med data:\n"
 
-#: test-gnome/testgnome.c:925
+#: test-gnome/testgnome.c:935
 msgid "Weird number in reply callback"
 msgstr "Rart nummer i tilbakeringingssvaret"
