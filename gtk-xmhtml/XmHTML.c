@@ -35,6 +35,29 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.18  1998/01/14 04:11:44  unammx
+* Tue Jan 13 22:04:43 1998  Federico Mena  <federico@bananoid.nuclecu.unam.mx>
+*
+* 	* Lots of changes all over the place to fix colors.  Things are
+* 	*almost* working right now.  I think I'm only missing setting the
+* 	window backgrounds appropriately.  Several things were done:
+*
+* 		- Motif's color and gc fields from Core and XmManager were
+* 		  replicated inside the GtkXmHTML widget structure.
+*
+* 		- Macros were created in toolkit.h to use these fields.
+*
+* 		- Instead of the old kludgy set_{fore,back}ground_internal
+* 		  functions, we now set the window background directly.
+* 		  This does not work perfectly; I'll look into it.
+*
+* 		- I created a shade_color() function in colors.c (ok, ok,
+* 		  I stole it from gtkstyle.c) which mimics XmGetColors()
+* 		  -- it calculates shaded colors for the 3D look.
+*
+* 	I hope to fix the remaining problems with window backgrounds real
+* 	soon now.
+*
 * Revision 1.17  1998/01/09 06:10:22  unammx
 * Fixed (?) background colors of the HTML widget.  I'm not 100% sure I did it
 * the right way, but it seems to work.
@@ -2376,7 +2399,16 @@ XmHTMLTextSetString(TWidget w, String text)
 	XtVaSetValues(html->html.work_area, 
 		XmNbackground, html->html.body_bg, NULL);
 #else
-	gtk_xmhtml_set_background_internal (html);
+	{
+		/* FIXME: is setting the window background the same as setting
+		 * the XmNbackground resource on the work_area?
+		 */
+
+		GdkColor c;
+		c.pixel = html->html.body_bg;
+		printf("1\n");
+		gdk_window_set_background(html->html.work_area->window, &c);
+	}
 #endif
 	/* get new values for top, bottom & highlight */
 	_XmHTMLRecomputeColors(html);

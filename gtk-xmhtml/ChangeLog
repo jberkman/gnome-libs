@@ -1,3 +1,25 @@
+Tue Jan 13 22:04:43 1998  Federico Mena  <federico@bananoid.nuclecu.unam.mx>
+
+	* Lots of changes all over the place to fix colors.  Things are
+	*almost* working right now.  I think I'm only missing setting the
+	window backgrounds appropriately.  Several things were done:
+
+		- Motif's color and gc fields from Core and XmManager were
+		  replicated inside the GtkXmHTML widget structure.
+
+		- Macros were created in toolkit.h to use these fields.
+
+		- Instead of the old kludgy set_{fore,back}ground_internal
+		  functions, we now set the window background directly.
+		  This does not work perfectly; I'll look into it.
+
+		- I created a shade_color() function in colors.c (ok, ok,
+		  I stole it from gtkstyle.c) which mimics XmGetColors()
+		  -- it calculates shaded colors for the 3D look.
+
+	I hope to fix the remaining problems with window backgrounds real
+	soon now.
+	
 Thu Jan  8 20:57:16 1998  Federico Mena  <federico@bananoid.nuclecu.unam.mx>
 
 	* images.c (_XmHTMLFillXImage): Created a my_gtk_image_new()

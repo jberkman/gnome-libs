@@ -207,6 +207,13 @@ gtk_xmhtml_init (GtkXmHTML *html)
 	/* Gtk port bits */
 	html->frozen = 0;
 	html->children = NULL;
+
+	html->background_pixel = 0;
+	html->foreground_pixel = 0;
+	html->bottom_shadow_gc = NULL;
+	html->top_shadow_gc    = NULL;
+	html->highlight_gc     = NULL;
+	html->highlight_color  = 0;
 }
 
 GtkWidget *
@@ -602,8 +609,8 @@ CheckGC(XmHTMLWidget html)
 		GdkGCValues xgc;
 
 		xgc.function = GDK_COPY;
-		xgc.foreground = GTK_WIDGET(html)->style->fg[GTK_STATE_NORMAL];
-		xgc.background = GTK_WIDGET(html)->style->bg[GTK_STATE_NORMAL];
+		xgc.foreground.pixel = Toolkit_StyleColor_Foreground(html);
+		xgc.background.pixel = Toolkit_StyleColor_Background(html);
 		html->html.gc = gdk_gc_new_with_values (GTK_WIDGET (html)->window, &xgc,
 							GDK_GC_FOREGROUND | GDK_GC_BACKGROUND |
 							GDK_GC_FUNCTION);
@@ -790,6 +797,27 @@ vertical_scroll (GtkAdjustment *adj, gpointer user_data)
 	_XmHTMLMoveToPos (html->html.vsb, html, adj->value);
 }
 
+static void
+drawing_area_realized (GtkWidget *widget, gpointer data)
+{
+	GtkXmHTML *html = data;
+
+	html->background_pixel = widget->style->bg[GTK_STATE_NORMAL].pixel;
+	html->foreground_pixel = widget->style->fg[GTK_STATE_NORMAL].pixel;
+
+	html->bottom_shadow_gc = gdk_gc_new (widget->window);
+	gdk_gc_copy (html->bottom_shadow_gc, widget->style->dark_gc[GTK_STATE_NORMAL]);
+
+	html->top_shadow_gc = gdk_gc_new (widget->window);
+	gdk_gc_copy (html->top_shadow_gc, widget->style->light_gc[GTK_STATE_NORMAL]);
+
+	html->highlight_gc = gdk_gc_new (widget->window);
+	gdk_gc_copy (html->highlight_gc, widget->style->bg_gc[GTK_STATE_PRELIGHT]);
+	html->highlight_color = widget->style->bg[GTK_STATE_PRELIGHT].pixel;
+
+	/* FIXME: remember to destroy the GCs later */
+}
+
 /*****
  * Name: 		CreateHTMLWidget
  * Return Type: 	void
@@ -816,6 +844,9 @@ CreateHTMLWidget(XmHTMLWidget html)
 		gtk_drawing_area_size (GTK_DRAWING_AREA (draw_area), 40, 40);
 		
 		gtk_xmhtml_manage (GTK_CONTAINER (html), draw_area);
+
+		gtk_signal_connect (GTK_OBJECT (draw_area), "realize",
+				    (GtkSignalFunc) drawing_area_realized, html);
 		
 		gtk_signal_connect (GTK_OBJECT (draw_area), "expose_event",
 				    (GtkSignalFunc) gtk_xmhtml_expose_event, html);
@@ -1509,7 +1540,16 @@ gtk_xmhtml_sync_reformat (GtkXmHTML *html)
 	/* reset some important vars */
 	ResetWidget(html, html->free_images_needed);
 
-	gtk_xmhtml_set_background_internal (html);
+	{
+		/* FIXME: is setting the window background semantically equivalent
+		 * to setting the XmNbackground resource on the work_area?
+		 */
+
+		GdkColor c;
+		c.pixel = html->html.body_bg;
+		printf("4\n");
+		gdk_window_set_background(html->html.work_area->window, &c);
+	}
 
 	/* get new values for top, bottom & highlight */
 	_XmHTMLRecomputeColors(html);
@@ -1645,37 +1685,6 @@ gtk_xmhtml_source (GtkXmHTML *html, char *html_source)
 	html->html.value = html->html.source;
 	html->parse_needed = parse;
 	gtk_xmhtml_try_sync (html);
-}
-
-void
-gtk_xmhtml_set_foreground_internal (GtkXmHTML *html)
-{
-	GtkWidget *widget;
-
-	/* FIXME: I'm not sure if this is the correct way to change the foreground of the widget.
-	 * Should we do this on the widget->style, or on the html->html.work_area->style?
-	 */
-
-	widget = GTK_WIDGET(html);
-
-	widget->style->fg[GTK_STATE_NORMAL].pixel = html->html.body_fg;
-	/* gtk_widget_queue_draw(widget); */
-}
-
-void
-gtk_xmhtml_set_background_internal (GtkXmHTML *html)
-{
-	GtkWidget *widget;
-
-	/* FIXME: I'm not sure if this is the correct way to change the background of the widget.
-	 * Should we do this on the widget->style, or on the html->html.work_area->style?
-	 */
-
-	widget = GTK_WIDGET(html);
-
-	widget->style->bg[GTK_STATE_NORMAL].pixel = html->html.body_bg;
-	gtk_style_set_background(widget->style, html->html.work_area->window, GTK_STATE_NORMAL);
-	gtk_widget_queue_draw(widget);
 }
 
 /* XXX: This function does an XQueryColors() the hard way, because there is

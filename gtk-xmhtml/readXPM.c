@@ -36,6 +36,29 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.4  1998/01/14 04:12:11  unammx
+* Tue Jan 13 22:04:43 1998  Federico Mena  <federico@bananoid.nuclecu.unam.mx>
+*
+* 	* Lots of changes all over the place to fix colors.  Things are
+* 	*almost* working right now.  I think I'm only missing setting the
+* 	window backgrounds appropriately.  Several things were done:
+*
+* 		- Motif's color and gc fields from Core and XmManager were
+* 		  replicated inside the GtkXmHTML widget structure.
+*
+* 		- Macros were created in toolkit.h to use these fields.
+*
+* 		- Instead of the old kludgy set_{fore,back}ground_internal
+* 		  functions, we now set the window background directly.
+* 		  This does not work perfectly; I'll look into it.
+*
+* 		- I created a shade_color() function in colors.c (ok, ok,
+* 		  I stole it from gtkstyle.c) which mimics XmGetColors()
+* 		  -- it calculates shaded colors for the 3D look.
+*
+* 	I hope to fix the remaining problems with window backgrounds real
+* 	soon now.
+*
 * Revision 1.3  1998/01/10 03:26:24  unammx
 * fix
 *
@@ -186,13 +209,10 @@ doXpm(TWidget html, ImageBuffer *ib, XpmImage *xpm_image)
 				else
 					XtVaGetValues(html, XtNbackground, &bg_pixel, NULL);
 #else
-				{
-					int state = GTK_WIDGET_STATE (html);
-					TColor bg_color;
-					
-					bg_color = html->style->fg [state];
-					bg_pixel = bg_color.pixel;
-				}
+				/* FIXME: I don't know if getting the color from macro is
+				 * the same as getting it from the Xt resource.
+				 */
+				bg_pixel = Toolkit_StyleColor_Background(html);
 #endif
 			}
 

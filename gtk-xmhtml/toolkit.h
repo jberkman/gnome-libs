@@ -113,11 +113,12 @@ typedef XVisualInfo TVisualInfo;
 #define Toolkit_Widget_Force_Repaint(w) do { \
 	Toolkit_Widget_Repaint(w); \
 		gtk_widget_draw (GTK_WIDGET (w), NULL);gdk_flush();}while (0)
-#define TOolkit_Widget_Repaint(w) gtk_widget_draw (GTK_WIDGET (w), NULL)
-#define Toolkit_StyleGC_BottomShadow(w) (GTK_WIDGET(w))->style->dark_gc [GTK_STATE_NORMAL]
-#define Toolkit_StyleGC_TopShadow(w)    (GTK_WIDGET(w))->style->light_gc [GTK_STATE_NORMAL]
-#define Toolkit_StyleGC_Highlight(w)    (GTK_WIDGET(w))->style->bg_gc [GTK_STATE_PRELIGHT]
-#define Toolkit_StyleColor_Highlight(w)    (GTK_WIDGET(w))->style->bg [GTK_STATE_PRELIGHT].pixel
+#define Toolkit_StyleColor_Background(w)   (GTK_XMHTML(w))->background_pixel
+#define Toolkit_StyleColor_Foreground(w)   (GTK_XMHTML(w))->foreground_pixel
+#define Toolkit_StyleGC_BottomShadow(w)    (GTK_XMHTML(w))->bottom_shadow_gc
+#define Toolkit_StyleGC_TopShadow(w)       (GTK_XMHTML(w))->top_shadow_gc
+#define Toolkit_StyleGC_Highlight(w)       (GTK_XMHTML(w))->highlight_gc
+#define Toolkit_StyleColor_Highlight(w)    (GTK_XMHTML(w))->highlight_color
 #define Toolkit_Widget_Dim(h) (GTK_WIDGET(h)->allocation)
 #define Toolkit_Screen_Height(w) gdk_screen_height ()
 #define Toolkit_Widget_Is_Realized(w) GTK_WIDGET_REALIZED (w)
@@ -230,9 +231,11 @@ typedef GdkColorContextDither XCCDither;
 	do { _XmHTMLClearArea((w), 0, 0, (w)->core.width, (w)->core.height); \
 	XSync(XtDisplay((TWidget)(w)), True); } while (0)
 #define Toolkit_Flush(d,de) XSync (d,de)
-#define Toolkit_StyleGC_BottomShadow(w) (w)->manager.bottom_shadow_GC
-#define Toolkit_StyleGC_TopShadow(w) (w)->manager.top_shadow_GC
-#define Toolkit_StyleGC_Highlight(w) (w)->manager.highlight_GC
+#define Toolkit_StyleColor_Background(w)   (w)->core.background_pixel
+#define Toolkit_StyleColor_Foreground(w)   (w)->manager.foreground
+#define Toolkit_StyleGC_BottomShadow(w)    (w)->manager.bottom_shadow_GC
+#define Toolkit_StyleGC_TopShadow(w)       (w)->manager.top_shadow_GC
+#define Toolkit_StyleGC_Highlight(w)       (w)->manager.highlight_GC
 #define Toolkit_StyleColor_Highlight(w)    (w)->manager.highlight_color
 #define Toolkit_Widget_Dim(h) ((h)->core)
 #define Toolkit_Screen_Height(w) HeightOfScreen(w)

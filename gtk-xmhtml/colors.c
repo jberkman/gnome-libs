@@ -35,6 +35,29 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.7  1998/01/14 04:11:48  unammx
+* Tue Jan 13 22:04:43 1998  Federico Mena  <federico@bananoid.nuclecu.unam.mx>
+*
+* 	* Lots of changes all over the place to fix colors.  Things are
+* 	*almost* working right now.  I think I'm only missing setting the
+* 	window backgrounds appropriately.  Several things were done:
+*
+* 		- Motif's color and gc fields from Core and XmManager were
+* 		  replicated inside the GtkXmHTML widget structure.
+*
+* 		- Macros were created in toolkit.h to use these fields.
+*
+* 		- Instead of the old kludgy set_{fore,back}ground_internal
+* 		  functions, we now set the window background directly.
+* 		  This does not work perfectly; I'll look into it.
+*
+* 		- I created a shade_color() function in colors.c (ok, ok,
+* 		  I stole it from gtkstyle.c) which mimics XmGetColors()
+* 		  -- it calculates shaded colors for the 3D look.
+*
+* 	I hope to fix the remaining problems with window backgrounds real
+* 	soon now.
+*
 * Revision 1.6  1998/01/10 02:27:02  unammx
 * First attempt at fixing the RecomputeColors functions.  They are still
 * not perfect, as scrollbar colors are affected, too. - Federico
@@ -687,27 +710,24 @@ my_get_colors(GdkColormap *colormap, gulong background, gulong *top, gulong *bot
 }
 
 static void
-set_widget_colors(GtkWidget *widget, gulong *top, gulong *bottom, gulong *highlight)
+set_widget_colors(GtkXmHTML *html, gulong *top, gulong *bottom, gulong *highlight)
 {
-	/* FIXME: do we have to do all states, or only GTK_STATE_NORMAL? */
+	GdkColor c;
 	
 	if (top) {
-		widget->style->light[GTK_STATE_NORMAL].pixel = *top;
-		gdk_gc_set_foreground(widget->style->light_gc[GTK_STATE_NORMAL],
-				      &widget->style->light[GTK_STATE_NORMAL]);
+		c.pixel = *top;
+		gdk_gc_set_foreground(html->top_shadow_gc, &c);
 	}
 
 	if (bottom) {
-		widget->style->dark[GTK_STATE_NORMAL].pixel = *bottom;
-		gdk_gc_set_foreground(widget->style->dark_gc[GTK_STATE_NORMAL],
-				      &widget->style->dark[GTK_STATE_NORMAL]);
+		c.pixel = *bottom;
+		gdk_gc_set_foreground(html->bottom_shadow_gc, &c);
 	}
 
 	if (highlight) {
-		/* It *is* bg, right? */
-		widget->style->bg[GTK_STATE_NORMAL].pixel = *highlight;
-		gdk_gc_set_foreground(widget->style->bg_gc[GTK_STATE_NORMAL],
-				      &widget->style->bg[GTK_STATE_NORMAL]);
+		c.pixel = *highlight;
+		gdk_gc_set_foreground(html->highlight_gc, &c);
+		html->highlight_color = *highlight;
 	}
 }
 
@@ -747,7 +767,7 @@ _XmHTMLRecomputeColors(XmHTMLWidget html)
 		gulong top, bottom, highlight;
 		
 		my_get_colors(gtk_widget_get_colormap(GTK_WIDGET(html)), html->html.body_bg, &top, &bottom, &highlight);
-		set_widget_colors(GTK_WIDGET(html), &top, &bottom, &highlight);
+		set_widget_colors(html, &top, &bottom, &highlight);
 #endif
 	}
 }
@@ -783,7 +803,7 @@ _XmHTMLRecomputeHighlightColor(XmHTMLWidget html, Pixel bg_color)
 		gulong highlight;
 
 		my_get_colors(gtk_widget_get_colormap(GTK_WIDGET(html)), html->html.body_bg, NULL, NULL, &highlight);
-		set_widget_colors(GTK_WIDGET(html), NULL, NULL, &highlight);
+		set_widget_colors(html, NULL, NULL, &highlight);
 #endif
 	}
 }

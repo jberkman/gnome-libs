@@ -46,6 +46,15 @@ struct _GtkXmHTML
 
 	int initialized;
 	GList *children;
+
+	/* These replace Motif's fields */
+
+	gulong  background_pixel;
+	gulong  foreground_pixel;
+	GdkGC  *bottom_shadow_gc;
+	GdkGC  *top_shadow_gc;
+	GdkGC  *highlight_gc;
+	gulong  highlight_color;
 };
 
 struct _GtkXmHTMLClass

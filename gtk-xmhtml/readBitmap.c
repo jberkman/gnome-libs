@@ -37,6 +37,29 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.4  1998/01/14 04:12:10  unammx
+* Tue Jan 13 22:04:43 1998  Federico Mena  <federico@bananoid.nuclecu.unam.mx>
+*
+* 	* Lots of changes all over the place to fix colors.  Things are
+* 	*almost* working right now.  I think I'm only missing setting the
+* 	window backgrounds appropriately.  Several things were done:
+*
+* 		- Motif's color and gc fields from Core and XmManager were
+* 		  replicated inside the GtkXmHTML widget structure.
+*
+* 		- Macros were created in toolkit.h to use these fields.
+*
+* 		- Instead of the old kludgy set_{fore,back}ground_internal
+* 		  functions, we now set the window background directly.
+* 		  This does not work perfectly; I'll look into it.
+*
+* 		- I created a shade_color() function in colors.c (ok, ok,
+* 		  I stole it from gtkstyle.c) which mimics XmGetColors()
+* 		  -- it calculates shaded colors for the 3D look.
+*
+* 	I hope to fix the remaining problems with window backgrounds real
+* 	soon now.
+*
 * Revision 1.3  1998/01/07 01:45:40  unammx
 * Gtk/XmHTML is ready to be used by the Gnome hackers now!
 * Weeeeeee!
@@ -268,15 +291,21 @@ _XmHTMLReadBitmap(TWidget html, ImageBuffer *ib)
 	XQueryColor(XtDisplay(area), cmap, &fg_color);
 	XQueryColor(XtDisplay(area), cmap, &bg_color);
 #else
+	/* FIXME: I don't know if getting the colors from the macros
+	 * will be quite the same as getting them from the Xt
+	 * resources as above.
+	 */
+	
+	fg_pixel = Toolkit_StyleColor_Foreground (html);
+	bg_pixel = Toolkit_StyleColor_Background (html);
+
+	fg_color.pixel = fg_pixel;
+	bg_color.pixel = bg_pixel;
+
 	cmap = gtk_widget_get_colormap (html);
-	{
-		int state = GTK_WIDGET_STATE (area);
-		
-		fg_color = area->style->fg [state];
-		bg_color = area->style->bg [state];
-	}
-	fg_color = cmap->colors [fg_color.pixel];
-	bg_color = cmap->colors [bg_color.pixel];
+
+	my_x_query_colors (cmap, &fg_color, 1);
+	my_x_query_colors (cmap, &bg_color, 1);
 #endif
 
 	blackbit = 0; /* fg_color.pixel; */
@@ -526,15 +555,21 @@ _PLC_XBM_Init(PLC *plc)
 	XQueryColor(XtDisplay(area), cmap, &fg_color);
 	XQueryColor(XtDisplay(area), cmap, &bg_color);
 #else
-	cmap = gtk_widget_get_colormap (area);
-	{
-		int state = GTK_WIDGET_STATE (area);
-		
-		fg_color = area->style->fg [state];
-		bg_color = area->style->bg [state];
-	}
-	fg_color = cmap->colors [fg_color.pixel];
-	bg_color = cmap->colors [bg_color.pixel];
+	/* FIXME: I don't know if getting the colors from the macros
+	 * will be quite the same as getting them from the Xt
+	 * resources as above.
+	 */
+	
+	fg_pixel = Toolkit_StyleColor_Foreground (xbm->owner);
+	bg_pixel = Toolkit_StyleColor_Background (xbm->owner);
+
+	fg_color.pixel = fg_pixel;
+	bg_color.pixel = bg_pixel;
+	
+	cmap = gtk_widget_get_colormap (GTK_WIDGET (xbm->owner));
+
+	my_x_query_colors (cmap, &fg_color, 1);
+	my_x_query_colors (cmap, &bg_color, 1);
 #endif
 	xbm->cmap[0].red   = fg_color.red;
 	xbm->cmap[0].green = fg_color.green;

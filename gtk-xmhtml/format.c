@@ -36,6 +36,29 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.8  1998/01/14 04:11:52  unammx
+* Tue Jan 13 22:04:43 1998  Federico Mena  <federico@bananoid.nuclecu.unam.mx>
+*
+* 	* Lots of changes all over the place to fix colors.  Things are
+* 	*almost* working right now.  I think I'm only missing setting the
+* 	window backgrounds appropriately.  Several things were done:
+*
+* 		- Motif's color and gc fields from Core and XmManager were
+* 		  replicated inside the GtkXmHTML widget structure.
+*
+* 		- Macros were created in toolkit.h to use these fields.
+*
+* 		- Instead of the old kludgy set_{fore,back}ground_internal
+* 		  functions, we now set the window background directly.
+* 		  This does not work perfectly; I'll look into it.
+*
+* 		- I created a shade_color() function in colors.c (ok, ok,
+* 		  I stole it from gtkstyle.c) which mimics XmGetColors()
+* 		  -- it calculates shaded colors for the 3D look.
+*
+* 	I hope to fix the remaining problems with window backgrounds real
+* 	soon now.
+*
 * Revision 1.7  1998/01/09 06:10:23  unammx
 * Fixed (?) background colors of the HTML widget.  I'm not 100% sure I did it
 * the right way, but it seems to work.
@@ -1676,11 +1699,7 @@ ParseBodyTags(XmHTMLWidget html, XmHTMLObject *data)
 					html->html.body_fg_save);
 			free(chPtr);
 
-#ifdef WITH_MOTIF
-			html->manager.foreground = html->html.body_fg;
-#else
-			gtk_xmhtml_set_foreground_internal (html);
-#endif
+			Toolkit_StyleColor_Foreground(html) = html->html.body_fg;
 		}
 
 		if(doit && (chPtr = _XmHTMLTagGetValue(data->attributes, "bgcolor")))
@@ -1697,12 +1716,19 @@ ParseBodyTags(XmHTMLWidget html, XmHTMLObject *data)
 					html->html.body_bg_save);
 
 				/* also set as background for the entire TWidget */
+
+				Toolkit_StyleColor_Background(html) = html->html.body_bg;
 #ifdef WITH_MOTIF
-				html->core.background_pixel = html->html.body_bg;
 				XtVaSetValues(html->html.work_area,
 					XmNbackground, html->html.body_bg, NULL);
 #else
-				gtk_xmhtml_set_background_internal (html);
+				{
+					/* FIXME: I don't know if this is what we want */
+					GdkColor c;
+					c.pixel = html->html.body_bg;
+					printf("2\n");
+					gdk_window_set_background(html->html.work_area->window, &c);
+				}
 #endif
 				/* get new values for top, bottom & highlight */
 				_XmHTMLRecomputeColors(html);
@@ -1748,40 +1774,37 @@ ParseBodyTags(XmHTMLWidget html, XmHTMLObject *data)
 		if(doit == False)
 		{
 			/* first check if we changed the background color */
-#ifdef WITH_MOTIF
-			if(html->core.background_pixel != html->html.body_bg_save)
-			{
-				html->html.body_fg          = html->html.body_fg_save;
-				html->html.body_bg          = html->html.body_bg_save;
-				html->manager.foreground    = html->html.body_fg;
-				html->core.background_pixel = html->html.body_bg;
-				XtVaSetValues(html->html.work_area,
-					XmNbackground, html->html.body_bg, NULL);
-
-				/* restore values for top, bottom & highlight */
-				_XmHTMLRecomputeColors(html);
-			}
-#else
-			if (GTK_WIDGET(html)->style->bg[GTK_STATE_NORMAL].pixel != html->html.body_bg_save)
+			if (Toolkit_StyleColor_Background(html) != html->html.body_bg_save)
 			{
 				html->html.body_fg = html->html.body_fg_save;
 				html->html.body_bg = html->html.body_bg_save;
-				gtk_xmhtml_set_foreground_internal (html);
-				gtk_xmhtml_set_background_internal (html);
+				Toolkit_StyleColor_Foreground(html) = html->html.body_fg;
+				Toolkit_StyleColor_Background(html) = html->html.body_bg;
+
+#ifdef WITH_MOTIF
+				XtVaSetValues(html->html.work_area,
+					XmNbackground, html->html.body_bg, NULL);
+#else
+				{
+					/* FIXME: I don't know if this is what we want */
+					GdkColor c;
+					c.pixel = html->html.body_bg;
+					printf("3\n");
+					gdk_window_set_background(html->html.work_area->window, &c);
+				}
+#endif
+				
+				/* restore values for top, bottom & highlight */
 				_XmHTMLRecomputeColors(html);
 			}
-					
-#endif
-			html->html.body_fg            = html->html.body_fg_save;
-			html->html.body_bg            = html->html.body_bg_save;
-			html->html.anchor_fg          = html->html.anchor_fg_save;
-			html->html.anchor_visited_fg  = html->html.anchor_visited_fg_save;
-			html->html.anchor_activated_fg=html->html.anchor_activated_fg_save;
-#ifdef WITH_MOTIF
-			html->manager.foreground      = html->html.body_fg;
-#else
-			gtk_xmhtml_set_foreground_internal (html);
-#endif
+			
+			html->html.body_fg             = html->html.body_fg_save;
+			html->html.body_bg             = html->html.body_bg_save;
+			html->html.anchor_fg           = html->html.anchor_fg_save;
+			html->html.anchor_visited_fg   = html->html.anchor_visited_fg_save;
+			html->html.anchor_activated_fg = html->html.anchor_activated_fg_save;
+			Toolkit_StyleColor_Foreground(html) = html->html.body_fg;
+
 			bg_color_set = False;
 		}
 	}
@@ -1939,7 +1962,7 @@ CheckLineFeed(int this, Boolean force)
 			}
 			if(prev_state == CLEAR_HARD)
 			{
-+				/* unchanged */
+				/* unchanged */
 				ret_val = CLEAR_NONE;
 				break;
 			}
