@@ -1,0 +1,391 @@
+<!DOCTYPE Article PUBLIC "-//OASIS//DTD DocBook V3.1//EN"[
+]>
+
+<!-- =============Document Header ============================= -->
+
+<article class=faq id="index"> <!-- please do not change the id -->
+
+ <artheader>
+  <title>GNOME Foundation FAQ</title>
+  <copyright>
+   <year>2000</year>
+   <holder>Dan Mueth and Havoc Pennington</holder>
+  </copyright>
+
+  <!-- do not put authorname in the header except in copyright - use
+  section "authors" below -->
+
+  <legalnotice>
+   <para>
+<!-- don't use FDL; this is not a technical document and we don't want people to write their own foundation questions and answers -->
+        Permission is granted to redistribute this document verbatim in any medium.
+   </para>
+   <para>
+    Many of the names used by companies to distinguish their products and
+    services are claimed as trademarks. Where those names appear in any
+    GNOME documentation, and those trademarks are made aware to the members
+    of the GNOME Documentation Project, the names have been printed in caps
+    or initial caps.
+   </para>
+  </legalnotice>
+
+  <!-- this is the version of manual, not application --> 
+  <releaseinfo>
+   This is version 1.0 of the GNOME Foundation FAQ.
+  </releaseinfo>
+
+ </artheader>
+
+ <!-- ============= Document Body ============================= -->
+
+ <para>
+  This is a list of the most frequently asked questions about the
+  GNOME Foundation.
+ </para>
+
+ <qandaset>
+
+  <!-- ============= General ========================= -->
+  <qandadiv>
+   <title>General</title>
+
+   <qandaentry>
+    <question>
+     <para>
+      What is the GNOME Foundation?
+     </para>
+    </question>
+    <answer>
+     <para>
+       The GNOME Foundation is a nonprofit organization dedicated to 
+       advancing the GNOME Project. The GNOME Project is a free
+       software development effort, intended to create an open source
+       platform for home, office, and appliance desktops.
+     </para>
+    </answer>
+   </qandaentry>
+
+   <qandaentry>
+    <question>
+     <para>
+      Why does GNOME need the GNOME Foundation?
+     </para>
+    </question>
+    <answer>
+     <para>
+      The GNOME Foundation serves several important roles:
+      <orderedlist>
+       <listitem>
+        <para>
+         GNOME has grown to a point where we have hundreds of developers as well
+         as a fair number of companies working together to improve GNOME.
+         GNOME's previous, completely informal method for making decisions does
+         not scale well to its current size.  The GNOME Foundation will provide
+         a forum where all of the members of the GNOME community can have a
+         voice and help decide the direction that GNOME moves in.
+        </para>
+       </listitem>
+       <listitem>
+        <para>
+         GNOME needs a voice.  The GNOME Foundation will be 
+         responsible for communicating information about GNOME to 
+         the media and corporations.
+        </para>
+       </listitem>
+       <listitem>
+        <para>
+         The GNOME Foundation will make GNOME more open.  All of the important
+         "political" decisions which used to be made behind the scenes by the
+         top GNOME hackers will now be made in public by the GNOME Foundation.
+         Technical decisions will still be made by package maintainers.
+        </para>
+       </listitem>
+       <listitem>
+        <para>
+          The GNOME Foundation is a legal entity that can accept donations and 
+           make purchases to benefit GNOME.
+        </para>
+       </listitem>
+      </orderedlist>
+     </para>
+    </answer>
+   </qandaentry>
+
+   <qandaentry>
+    <question>
+     <para>
+      Is there a web page for the GNOME Foundation?
+     </para>
+    </question>
+    <answer>
+     <para>
+       For now, there is no dedicated GNOME Foundation page, only 
+       the GNOME Project page.
+     </para>
+    </answer>
+   </qandaentry>
+
+   <qandaentry>
+    <question>
+     <para>
+      Where can I read the current draft of the GNOME Foundation charter?
+     </para>
+    </question>
+    <answer>
+     <para>
+      The current draft of the charter is at 
+      http://www.decrem.com/gnomefdn.html. This is an informal document, 
+      which will guide the lawyers as they write the formal paperwork
+      required for incorporation (such as the foundation bylaws).
+     </para>
+    </answer>
+   </qandaentry>
+
+   <qandaentry>
+    <question>
+     <para>
+            Who are the members of the GNOME Foundation?
+     </para>
+    </question>
+    <answer>
+     <para>
+        Anyone who has contributed to the GNOME Project may become a member of
+  the GNOME Foundation. The primary benefit of membership is the ability to vote
+  for the Foundation's board of directors. If you have CVS access, become a
+  member by adding your information to gnome-foundation/membership.txt in
+  CVS. Otherwise, mail your full real name, your email address, and a sentence
+  or so describing your contribution to GNOME to membership@gnome.org, and they
+  will add you. Contributions need not be code - documentation, webmastering, etc.
+are also considered GNOME contributions.
+     </para>
+    </answer>
+   </qandaentry>
+
+   <qandaentry>
+    <question>
+     <para>
+         Is the GNOME Foundation an industry consortium?
+     </para>
+    </question>
+    <answer>
+     <para>
+      No.  In the current draft of the charter, corporations are represented on
+      an advisory board, which has no decision-making power.  Individuals
+      working for a corporation may be elected to the board of directors by a
+      popular vote of the GNOME Foundation membership (i.e. GNOME developers and
+      contributors). Also, the GNOME Foundation charter specifies that the
+      board of directors cannot have a majority of individuals affiliated with
+      any single company.
+     </para>       
+    </answer>
+   </qandaentry>
+
+   <qandaentry>
+    <question>
+     <para>
+      Why did so many large companies join the GNOME Foundation?
+     </para>
+    </question>
+    <answer>
+     <para>
+       These companies wanted to see the Linux and UNIX desktop move forward
+       decisively, so put their support behind GNOME.
+     </para>
+    </answer>
+   </qandaentry>
+
+
+   <qandaentry>
+    <question>
+     <para>
+      Will GNOME continue to work with KDE to develop compatibility
+      and desktop standards?
+     </para>
+    </question>
+    <answer>
+     <para>
+       Yes. The GNOME Foundation is simply a response to the increasingly
+       difficult task of managing a project as large as the GNOME Project. It
+       does not represent a significant change in technical direction or overall
+       goals. It is not intended to be an attack on anyone else, simply a positive
+       step for GNOME.
+     </para>
+    </answer>
+   </qandaentry>
+
+   <qandaentry>
+    <question>
+     <para>
+      Who can I contact with questions about the GNOME Foundation?
+     </para>
+    </question>
+
+    <answer>
+     <para>
+      If you're a contributor or community member, you might mail
+      foundation-list@gnome.org, where discussion of the foundation is
+      ongoing. It's probably a good idea to read the current draft of the
+      charter first, to avoid repeating issues we've already covered.  If you're
+            a member of the press, you might mail gnome-press-contact@gnome.org.
+     </para>
+    </answer>
+
+   </qandaentry>
+
+
+  </qandadiv>
+
+  <!-- ============= GNOME Foundation Structure ========================= -->
+  <qandadiv>
+   <title>GNOME Foundation Structure</title>
+
+   <qandaentry>
+    <question>
+     <para>
+      What does the advisory board do and who is on it?
+     </para>
+    </question>
+    <answer>
+     <para>
+      The advisory board is comprised of companies and organizations which want
+      to further the progress of GNOME.  This is a forum for them to communicate
+      with each other and the GNOME Foundation membership.  They have no power
+      to make decisions about GNOME. We've invited the Debian Project and the
+      Free Software Foundation to join the advisory board in addition to the
+      companies who announced their support at LinuxWorld this year.
+     </para>
+    </answer>
+   </qandaentry>
+
+   <qandaentry>
+    <question>
+     <para>
+      What is the board of directors and what does it do?
+     </para>
+    </question>
+    <answer>
+     <para>
+      The board of directors is a group of GNOME contributors who are elected by
+      the membership (i.e. every person who contributes to GNOME). This group
+      oversees the GNOME Project and does its best to keep things running
+      smoothly, making decisions that need to be made. Typical activities of the
+      board might include approving the purchase of a new server, talking to
+      companies about getting involved with GNOME, making sure we have a release
+      roadmap and release coordinators, and so on.
+     </para>
+    </answer>
+   </qandaentry>
+
+   <qandaentry>
+    <question>
+     <para>
+      What is the membership and what does it do?
+     </para>
+    </question>
+    <answer>
+     <para>
+      The GNOME Foundation membership is comprised of everybody who contributes
+      to the GNOME project.  Thus, it it primarily comprised of volunteer GNOME
+      contributors (even with all the corporate contributions to GNOME,
+      volunteers still make up the majority of contributors - GNOME is a huge
+      project).  The membership's primary role is to elect the board of
+      directors.
+     </para>
+    </answer>
+   </qandaentry>
+
+  </qandadiv>
+
+  <!-- ============= Joining the GNOME Foundation ================== -->
+  <qandadiv>
+   <title>Joining the GNOME Foundation</title>
+
+   <qandaentry>
+    <question>
+     <para>
+      Who can join the Membership?
+     </para>
+    </question>
+    <answer>
+     <para>
+      Anybody who contributes to GNOME can become a member.
+     </para>
+    </answer>
+   </qandaentry>
+
+   <qandaentry>
+    <question>
+     <para>
+      How can I join the GNOME Foundation as a member?
+     </para>
+    </question>
+    <answer>
+     <para>
+      Send an email to membership@gnome.org with your name, email address,
+      and a description of how you have contributed to GNOME.
+     </para>
+    </answer>
+   </qandaentry>
+
+   <qandaentry>
+    <question>
+     <para>
+      Who can join the advisory board?
+     </para>
+    </question>
+    <answer>
+     <para>
+      Any company or organization with an interest in GNOME can join the
+     advisory board.
+     </para>
+    </answer>
+   </qandaentry>
+
+   <qandaentry>
+    <question>
+     <para>
+      Should my company join the GNOME Foundation?
+     </para>
+    </question>
+    <answer>
+     <para>
+     The advisory board is a forum where your company can discuss GNOME with
+     other companies and key figures from the GNOME community. Joining the
+     advisory board also allows you to show your support for the GNOME Project.
+     </para>
+    </answer>
+   </qandaentry>
+
+   <qandaentry>
+    <question>
+     <para>
+      How can my company join the advisory board?
+     </para>
+    </question>
+    <answer>
+     <para>
+      In the current charter (which is not yet official, because we have not yet
+      legally incorporated the foundation), there is an annual fee of $10,000 to
+      join the advisory board. This money is used to support the GNOME Project,
+      by purchasing servers, attending conferences, etc. The companies that
+      announced their participation at LinuxWorld were expressing their intent
+      to join the foundation once it is formally incorporated. The primary benefit of 
+            joining the advisory board is the opportunity to discuss GNOME issues
+            with the other companies on the board, and the opportunity to show your
+            support for the GNOME Project.
+     </para>
+     <para>
+       If you're interested in discussing membership in the advisory board,
+       mail Miguel de Icaza (miguel@helixcode.com) and he'll put you in touch 
+       with the interim steering committee we've established to handle 
+       Foundation details until formal incorporation is complete.
+          </para>
+    </answer>
+   </qandaentry>
+
+  </qandadiv>
+ </qandaset>
+
+
+</article>
+
