@@ -1,3 +1,15 @@
+2000-12-09  Martin Baulig  <baulig@suse.de>
+
+	* patches/glib-2.0.patch: Removed; use the native, unpatched
+	glib HEAD.
+
+	* patches/gnome-vfs-2.0.patch: Moved gi18n.c here, but don't
+	expose its API. This stuff is only used in gnome-vfs, so we
+	should fix it there.
+
+	* patches/gtk+-2.0.patch: Removed. This was already obsolete
+	for a longer time.
+
 2000-12-08  Pablo Saratxaga <pablo@mandrakesoft.com>
 
 	* configure.in,po/az.po: Added Azeri file
