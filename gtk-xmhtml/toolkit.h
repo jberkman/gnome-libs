@@ -83,7 +83,7 @@ extern void wrap_gdk_cc_get_pixels (int              incremental,
 				    gulong          *colors,
 				    gint            *nallocated);
 
-#define CHECK_CALLBACK(w,f,g) (gtk_xmhtml_signal_get_handlers (w, gtk_xmhtml_signals [GTK_XMHTML_##g]))
+#define CHECK_CALLBACK(w,f,g) (gtk_signal_get_handlers (w, gtk_xmhtml_signals [GTK_XMHTML_##g]))
 #define XtCallCallbackList(a,b,c) fprintf (stderr, "Warning callback being invoked\n");
 #define TPROTO(f,a,b,c,d) f (a, b)
 #define Toolkit_Widget_Parent(w) GTK_WIDGET(w)->parent

@@ -1,3 +1,10 @@
+Mon Feb  9 16:49:00 1998  Miguel de Icaza  <miguel@nuclecu.unam.mx>
+
+	* toolkit.h (CHECK_CALLBACK), gtk-xmhtml.c: Get rid of the copy of
+	the GtkHandler structure; the gtk_xmhtml_signal_get_handlers
+	routine and use the exported routines and structures from the just
+	modified Gtk.
+
 Thu Jan 29 12:17:07 1998  Federico Mena  <federico@bananoid.nuclecu.unam.mx>
 
 	* gtk-xmhtml.c (wrap_gdk_cc_get_pixels): Added wrapper function

@@ -691,35 +691,6 @@ gtk_xmhtml_motion_event (GtkWidget *widget, GdkEvent *event, gpointer closure)
 	return TRUE;
 }
 
-/* Stolen from GtkSignal.c */
-typedef struct _GtkHandler GtkHandler;
-struct _GtkHandler
-{
-  guint16 id;
-  guint signal_type : 13;
-  guint object_signal : 1;
-  guint blocked : 1;
-  guint after : 1;
-  guint no_marshal : 1;
-  GtkSignalFunc func;
-  gpointer func_data;
-  GtkSignalDestroy destroy_func;
-  GtkHandler *next;
-};
-
-void *
-gtk_xmhtml_signal_get_handlers (GtkXmHTML *obj, int type)
-{
-	GtkHandler *handlers = gtk_object_get_data (GTK_OBJECT (obj), "signal_handlers");
-
-	while (handlers){
-		if (handlers->signal_type == type)
-			return handlers;
-		handlers = handlers->next;
-	}
-	return NULL;
-}
-
 /*
  * Handles focus_in, focus_out, leave_notify, enter_notify
  */
@@ -767,7 +738,7 @@ gtk_xmhtml_focus (GtkWidget *widget, GdkEvent *event, gpointer closure)
 		*     }
 	        */
 	/* invalidate current selection if there is one */
-	if (gtk_xmhtml_signal_get_handlers (html, gtk_xmhtml_signals [GTK_XMHTML_ANCHOR_TRACK])
+	if (gtk_signal_get_handlers (html, gtk_xmhtml_signals [GTK_XMHTML_ANCHOR_TRACK])
 		&& html->html.anchor_current_cursor_element)
 		_XmHTMLTrackCallback (html, event, NULL);
 
