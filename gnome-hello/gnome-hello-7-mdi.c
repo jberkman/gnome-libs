@@ -257,7 +257,7 @@ void add_view_cb(GtkWidget *w) {
   GnomeMDIChild *child;
 
   if(mdi->active_view) {
-    child = VIEW_GET_CHILD(mdi->active_view);
+    child = gnome_mdi_get_child_from_view(mdi->active_view);
     gnome_mdi_add_view(mdi, child);
   }
 }
@@ -273,7 +273,9 @@ void remove_cb(GtkWidget *w) {
   /* mdi->active_child holds the pointer to the child that this action
      applies to */
   if(mdi->active_view)
-    gnome_mdi_remove_child(mdi, VIEW_GET_CHILD(mdi->active_view), FALSE);
+    gnome_mdi_remove_child(mdi, 
+                           gnome_mdi_get_child_from_view(mdi->active_view),
+                           FALSE);
 }
 
 void add_cb(GtkWidget *w) {
