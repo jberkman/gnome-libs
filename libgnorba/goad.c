@@ -566,9 +566,14 @@ real_goad_server_activate(GoadServer *sinfo,
   CORBA_Object            name_service;
   CosNaming_NameComponent nc[3] = {{"GNOME", "subcontext"},
 				   {"Servers", "subcontext"}};
-  CosNaming_Name          nom = {0, 3, nc, CORBA_FALSE};
+  CosNaming_Name          nom;
 
   CORBA_Object retval = CORBA_OBJECT_NIL;
+
+  nom._maximum = 0;
+  nom._length = 3;
+  nom._buffer = nc;
+  nom._release = CORBA_FALSE;
 
   g_return_val_if_fail(sinfo, CORBA_OBJECT_NIL);
 
@@ -798,11 +803,16 @@ goad_server_unregister_atexit(ActiveServerInfo *ai, CORBA_Environment *ev)
 {
   CosNaming_NameComponent nc[3] = {{"GNOME", "subcontext"},
 				   {"Servers", "subcontext"}};
-  CosNaming_Name nom = {0, 3, nc, CORBA_FALSE};
+  CosNaming_Name nom;
 
   CORBA_Object name_service;
   PortableServer_ObjectId *oid;
   PortableServer_POA poa;
+
+  nom._maximum = 0;
+  nom._length = 3;
+  nom._buffer = nc;
+  nom._release = CORBA_FALSE;
 
   CORBA_exception_free(ev); /* Clear previous exceptions */
 
@@ -1011,9 +1021,14 @@ goad_server_register(CORBA_Object name_server,
 {
   CosNaming_NameComponent nc[3] = {{"GNOME", "subcontext"},
 				   {"Servers", "subcontext"}};
-  CosNaming_Name          nom = {0, 3, nc, CORBA_FALSE};
+  CosNaming_Name          nom;
   CORBA_Object            old_server, orig_ns = name_server;
   static int did_print_ior = 0;
+
+  nom._maximum = 0;
+  nom._length = 3;
+  nom._buffer = nc;
+  nom._release = CORBA_FALSE;
 
   CORBA_exception_free(ev);
 
@@ -1104,8 +1119,13 @@ goad_server_unregister(CORBA_Object name_server,
 {
   CosNaming_NameComponent nc[3] = {{"GNOME", "subcontext"},
 				   {"Servers", "subcontext"}};
-  CosNaming_Name          nom = {0, 3, nc, CORBA_FALSE};
+  CosNaming_Name          nom;
   CORBA_Object orig_ns = name_server;
+
+  nom._maximum = 0;
+  nom._length = 3;
+  nom._buffer = nc;
+  nom._release = CORBA_FALSE;
 
   if(name_server == CORBA_OBJECT_NIL)
     name_server = gnome_name_service_get();

@@ -188,8 +188,12 @@ setup_name_server (CORBA_Object name_service, CORBA_Environment *ev)
 	CosNaming_NameComponent nc [2] =
 	{ {"GNOME","subcontext"},
 	  {"Servers", "subcontext"} };
-	CosNaming_Name context_name = { 2, 2,
-					(CosNaming_NameComponent *)&nc, FALSE };
+	CosNaming_Name context_name;
+
+	context_name._maximum = 2;
+	context_name._length = 2;
+	context_name._buffer = (CosNaming_NameComponent *)&nc;
+	context_name._release = FALSE;
 
 	context_name._length = 1;
 	/*
