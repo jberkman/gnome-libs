@@ -91,3 +91,4 @@ fi
 %{prefix}/lib/*.sh
 %{prefix}/lib/gnome-libs
 %{prefix}/include/*
+%{prefix}/share/pixmaps/*
