@@ -26,8 +26,10 @@
 /* app points to our toplevel window */
 GtkWidget *app;
 
+static void prepare_app (void);
+
 /* Callbacks functions */
-void
+static void
 hello_cb (GtkWidget *widget, void *data)
 {
 	g_print ("Hello GNOME\n");
@@ -35,18 +37,18 @@ hello_cb (GtkWidget *widget, void *data)
 	return;
 }
 
-void
+static void
 quit_cb (GtkWidget *widget, void *data)
 {
 	gtk_main_quit ();
 	return;
 }
 
-void
+static void
 about_cb (GtkWidget *widget, void *data)
 {
 	GtkWidget *about;
-	gchar *authors[] = {
+	const gchar *authors[] = {
 /* Here should be your names */
 		"Mark Galassi",
 		"Horacio J. Peña",
@@ -107,8 +109,8 @@ main (int argc, char *argv[])
 	return 0;
 }
 
-void
-prepare_app()
+static void
+prepare_app(void)
 {
 	GtkWidget *button;
 
@@ -122,7 +124,7 @@ prepare_app()
 			    NULL);
 	
 	/* Now that we've the main window we'll make the menues */
-	gnome_app_create_menus (GNOME_APP (app), &main_menu);
+	gnome_app_create_menus (GNOME_APP (app), main_menu);
 
 	/*
 	 * We make a button, bind the 'clicked' signal to hello and setting it

@@ -132,7 +132,7 @@ GnomeUIInfo main_child_menu[] = {
 static void my_child_class_init(MyChildClass *);
 static void my_child_init(MyChild *);
 
-guint my_child_get_type () {
+static guint my_child_get_type () {
   static guint my_type = 0;
 
   if (!my_type) {
@@ -222,11 +222,11 @@ static void my_child_init (MyChild *child) {
 #endif
 }
 
-MyChild *my_child_new(gint c) {
+static MyChild *my_child_new(gint c) {
   MyChild *child;
   gchar name[256];
 
-  if(child = gtk_type_new (my_child_get_type ())) {
+  if((child = gtk_type_new (my_child_get_type ()))) {
     child->counter = c;
 
     /* it is ESSENTIAL that we set the GnomeMDIChild's name, otherwise some
@@ -238,7 +238,7 @@ MyChild *my_child_new(gint c) {
   return child;
 }
 
-void quit_cb (GtkWidget *widget) {
+static void quit_cb (GtkWidget *widget) {
   /* when the user wants to quit we try to remove all children and if we succeed
      destroy the MDI. if TRUE was passed as the second (force) argument, remove_child
      signal wouldn't be emmited. */
@@ -246,12 +246,12 @@ void quit_cb (GtkWidget *widget) {
     gtk_object_destroy(GTK_OBJECT(mdi));
 }
 
-void cleanup_cb(GnomeMDI *mdi) {
+static void cleanup_cb(GnomeMDI *mdi) {
   /* on destruction of GnomeMDI we call gtk_main_quit(), since our GUI is gone */
   gtk_main_quit();
 }
 
-void add_view_cb(GtkWidget *w) {
+static void add_view_cb(GtkWidget *w) {
   /* our child-menu-item activate signal handler also gets the pointer to
      the child that this menu item belongs to as the second argument */
   GnomeMDIChild *child;
@@ -262,14 +262,14 @@ void add_view_cb(GtkWidget *w) {
   }
 }
 
-void remove_view_cb(GtkWidget *w) {
+static void remove_view_cb(GtkWidget *w) {
   /* mdi->active_view holds the pointer to the view that this action
      applies to */
   if(mdi->active_view)
     gnome_mdi_remove_view(mdi, mdi->active_view, FALSE);
 }
 
-void remove_cb(GtkWidget *w) {
+static void remove_cb(GtkWidget *w) {
   /* mdi->active_child holds the pointer to the child that this action
      applies to */
   if(mdi->active_view)
@@ -278,7 +278,7 @@ void remove_cb(GtkWidget *w) {
                            FALSE);
 }
 
-void add_cb(GtkWidget *w) {
+static void add_cb(GtkWidget *w) {
   MyChild *my_child;
   static gint counter = 1;
 
@@ -295,21 +295,21 @@ void add_cb(GtkWidget *w) {
   }
 }
 
-void mode_top_cb(GtkWidget *w) {
+static void mode_top_cb(GtkWidget *w) {
   gnome_mdi_set_mode(mdi, GNOME_MDI_TOPLEVEL);
 }
 
-void mode_book_cb(GtkWidget *w) {
+static void mode_book_cb(GtkWidget *w) {
   gnome_mdi_set_mode(mdi, GNOME_MDI_NOTEBOOK);
 }
 
-void mode_modal_cb(GtkWidget *w) {
+static void mode_modal_cb(GtkWidget *w) {
   gnome_mdi_set_mode(mdi, GNOME_MDI_MODAL);
 }
 
-void about_cb (GtkWidget *w) {
+static void about_cb (GtkWidget *w) {
   GtkWidget *about;
-  gchar *authors[] = {
+  const gchar *authors[] = {
     /* Here should be your names */
     "Jaka Mocnik",
     NULL

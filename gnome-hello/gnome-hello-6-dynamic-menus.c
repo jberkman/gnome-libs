@@ -18,13 +18,13 @@
 #include <config.h>
 #include <gnome.h>
 
-void hello_cb (GtkWidget *widget, void *data);
-void about_cb (GtkWidget *widget, void *data);
-void quit_cb (GtkWidget *widget, void *data);
-void add_cb (GtkWidget *widget, void *data);
-void remove_cb (GtkWidget *widget, void *data);
+static void hello_cb (GtkWidget *widget, void *data);
+static void about_cb (GtkWidget *widget, void *data);
+static void quit_cb (GtkWidget *widget, void *data);
+static void add_cb (GtkWidget *widget, void *data);
+static void remove_cb (GtkWidget *widget, void *data);
 
-void prepare_app();
+static void prepare_app(void);
 
 GtkWidget *app;
 
@@ -86,8 +86,8 @@ main(int argc, char *argv[])
   return 0;
 }
 
-void
-prepare_app()
+static void
+prepare_app(void)
 {
   GtkWidget *button;
   GtkMenuFactory *mf;
@@ -121,7 +121,7 @@ prepare_app()
 
 /* Callbacks functions */
 
-void
+static void
 hello_cb (GtkWidget *widget, void *data)
 {
   g_print ("Hello GNOME\n");
@@ -129,14 +129,14 @@ hello_cb (GtkWidget *widget, void *data)
   return;
 }
 
-void
+static void
 quit_cb (GtkWidget *widget, void *data)
 {
   gtk_main_quit ();
   return;
 }
 
-void
+static void
 added_item_callback (GtkWidget *widget, gpointer data)
 {
   int num = (int) data;
@@ -144,7 +144,7 @@ added_item_callback (GtkWidget *widget, gpointer data)
 }
 
 
-void
+static void
 add_cb (GtkWidget *widget, void *data)
 {
   static int counter = 0;
@@ -176,7 +176,7 @@ add_cb (GtkWidget *widget, void *data)
   return;
 }
 
-void
+static void
 remove_cb (GtkWidget *widget, void *data)
 {
   printf ("remove\n");
@@ -187,11 +187,11 @@ remove_cb (GtkWidget *widget, void *data)
 }
 
 
-void
+static void
 about_cb (GtkWidget *widget, void *data)
 {
   GtkWidget *about;
-  gchar *authors[] = {
+  const gchar *authors[] = {
 /* Here should be your names */
 	  "Mark Galassi",
 	  "Horacio J. Peña",

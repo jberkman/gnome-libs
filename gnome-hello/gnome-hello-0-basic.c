@@ -26,7 +26,7 @@ GtkWidget *app;
 
 /* Callbacks functions */
 
-void
+static void
 hello_cb (GtkWidget *widget, void *data)
 {
 	g_print ("Hello GNOME\n");
@@ -35,7 +35,7 @@ hello_cb (GtkWidget *widget, void *data)
 	return;
 }
 
-void
+static void
 quit_cb (GtkWidget *widget, void *data)
 {
 	gtk_main_quit ();
@@ -43,7 +43,7 @@ quit_cb (GtkWidget *widget, void *data)
 	return;
 }
 
-void
+static void
 prepare_app()
 {
 	GtkWidget *button;

@@ -10,13 +10,13 @@
 #include <config.h>
 #include <gnome.h>
 
-void hello_cb (GtkWidget *widget, void *data);
-void quit_cb (GtkWidget *widget, void *data);
-void drag_cb (GtkWidget *widget, GdkEventDragRequest *event);
-void drop_highlight_cb(GtkWidget *widget, GdkEvent *event);
-void drop_cb(GtkWidget *widget, GdkEventDropDataAvailable *event);
+static void hello_cb (GtkWidget *widget, void *data);
+static void quit_cb (GtkWidget *widget, void *data);
+static void drag_cb (GtkWidget *widget, GdkEventDragRequest *event);
+static void drop_highlight_cb(GtkWidget *widget, GdkEvent *event);
+static void drop_cb(GtkWidget *widget, GdkEventDropDataAvailable *event);
 
-void prepare_app();
+static void prepare_app(void);
 
 GtkWidget *app;
 
@@ -38,8 +38,8 @@ main(int argc, char *argv[])
   return 0;
 }
 
-void
-prepare_app()
+static void
+prepare_app(void)
 {
   GtkWidget *source, *drop_target, *vbox;
 
@@ -107,14 +107,14 @@ prepare_app()
 
 /* Callbacks functions */
 
-void
+static void
 quit_cb (GtkWidget *widget, void *data)
 {
   gtk_main_quit ();
   return;
 }
 
-void
+static void
 drag_cb (GtkWidget *widget, GdkEventDragRequest *event)
 {
   char *html_data = "<HTML><HEAD><TITLE>Hi there</TITLE></HEAD><BODY>I am the HTML drag data.</BODY></HTML>";
@@ -124,21 +124,21 @@ drag_cb (GtkWidget *widget, GdkEventDragRequest *event)
   g_print("drag_cb\n");
   if(!strcmp(event->data_type, "text/html"))
     {
-      gtk_widget_dnd_data_set(widget, event, html_data,
+      gtk_widget_dnd_data_set(widget, (GdkEvent*)event, html_data,
 			      strlen(html_data) + 1);
     }
   else if(!strcmp(event->data_type, "text/plain"))
     {
-      gtk_widget_dnd_data_set(widget, event, ascii_data,
+      gtk_widget_dnd_data_set(widget, (GdkEvent*)event, ascii_data,
 			      strlen(ascii_data) + 1);
     } else if (!strcmp (event->data_type, "url:ALL"))
     {
-      gtk_widget_dnd_data_set (widget, event, url_data, 
+      gtk_widget_dnd_data_set (widget, (GdkEvent*)event, url_data, 
 			      strlen(url_data) + 1);
     }
 }
 
-void
+static void
 drop_highlight_cb(GtkWidget *widget, GdkEvent *event)
 {
   g_print("drop_highlight_cb\n");
@@ -152,7 +152,7 @@ drop_highlight_cb(GtkWidget *widget, GdkEvent *event)
     }
 }
 
-void
+static void
 drop_cb(GtkWidget *widget, GdkEventDropDataAvailable *event)
 {
   g_print("drop_cb\n");
@@ -161,7 +161,7 @@ drop_cb(GtkWidget *widget, GdkEventDropDataAvailable *event)
     {
       if(!strcmp(event->data_type, "text/plain"))
 	{
-	  printf ("Numbytes: %d\n", event->data_numbytes);
+	  printf ("Numbytes: %ld\n", event->data_numbytes);
 	  gtk_label_set(GTK_LABEL(GTK_BUTTON(widget)->child), event->data);
 	}
       /* We could also handle drops of images here by creating

@@ -18,13 +18,13 @@
 #include <config.h>
 #include <gnome.h>
 
-void hello_cb (GtkWidget *widget, void *data);
-void about_cb (GtkWidget *widget, void *data);
-void quit_cb (GtkWidget *widget, void *data);
+static void hello_cb (GtkWidget *widget, void *data);
+static void about_cb (GtkWidget *widget, void *data);
+static void quit_cb (GtkWidget *widget, void *data);
 
-void prepare_app();
-void parse_args (int argc, char *argv[]);
-GtkMenuFactory *create_menu ();
+static void prepare_app(void);
+static void parse_args (int argc, char *argv[]);
+static GtkMenuFactory *create_menu ();
 
 static gint save_state      (GnomeClient        *client,
 			     gint                phase,
@@ -187,8 +187,8 @@ main(int argc, char *argv[])
   return 0;
 }
 
-void
-prepare_app()
+static void
+prepare_app(void)
 {
   GtkWidget *button;
 
@@ -226,7 +226,7 @@ prepare_app()
 
 /* Callbacks functions */
 
-void
+static void
 hello_cb (GtkWidget *widget, void *data)
 {
   g_print (_("Hello GNOME\n"));
@@ -234,18 +234,18 @@ hello_cb (GtkWidget *widget, void *data)
   return;
 }
 
-void
+static void
 quit_cb (GtkWidget *widget, void *data)
 {
   gtk_main_quit ();
   return;
 }
 
-void
+static void
 about_cb (GtkWidget *widget, void *data)
 {
   GtkWidget *about;
-  gchar *authors[] = {
+  const gchar *authors[] = {
 /* Here should be your names */
 	  "Mark Galassi",
 	  "Horacio J. Peña",
