@@ -168,7 +168,12 @@ static void vt_line_update(struct _vtx *vx, struct vt_line *l, int line, int alw
   /* see if on-screen is all background ... */
   vx->back_match=1;
   for(i=start;i<end;i++) {
-    if ((bl->data[i] & ~VTATTR_CHANGED) != (vx->vt.attr&~VTATTR_CHANGED)) {
+    /* check for clear of the same background colour */
+    c = bl->data[i]&0xffff;
+    if ((c!=0 && c!=9 && c!=' ')
+	|| ((bl->data[i] & (0x7c000000|VTATTR_BACKCOLOURM))
+	    != (l->data[i] & (0x7c000000|VTATTR_BACKCOLOURM)))) {
+      d(printf("bl->data[i] = %08x != %08x, c=%d (back now=%d not %d)\n", bl->data[i], l->data[i], c, (l->data[i]&VTATTR_BACKCOLOURM)>>VTATTR_BACKCOLOURB, (bl->data[i]&VTATTR_BACKCOLOURM)>>VTATTR_BACKCOLOURB));
       vx->back_match=0;
       break;
     }
@@ -248,7 +253,7 @@ int vt_get_attr_at (struct _vtx *vx, int col, int row)
 
   FIXME: check this
 */
-void vt_scroll_update(struct _vtx *vx, int firstline, struct vt_line *fn, int count, int offset)
+void vt_scroll_update(struct _vtx *vx, int firstline, int count, int offset)
 {
   struct vt_line *tn, *bn, *dn;	/* top/bottom of scroll area */
   int i;
@@ -377,217 +382,188 @@ void vt_update(struct _vtx *vx, int update_state)
   int firstline;
   int count;
   int old_state;
+  int update_start=-1;	/* where to start/stop update */
+  int update_end=-1;
 
   d(printf("updating screen\n"));
 
   old_state = vt_cursor_state(vx->user_data, 0);
 
-  if (vx->vt.scrollbackoffset != 0) {
-    if (vx->vt.scrollbackoffset != vx->vt.scrollbackold ||
-	update_state&UPDATE_SCROLLBACK) {
-
-      /* still experimental */
-#ifdef OPT_SCROLLBACK
-      /* FIXME: this could be optimised, based on vt->scrollbackold! */
-      if (!(update_state&UPDATE_SCROLLBACK)) {
-	/*
-	  offset>0 -> scroll down
-	    scroll from line offset, (total-offset) lines, by offset lines
-	  offset<0 -> scroll up
-	    scroll from line total-offset
-	*/
-	offset = vt->scrollbackold-vt->scrollbackoffset;
-	if (offset>0) {		/* scrolled .. down */
-	  if (offset < vt->height-8) { /* otherwise just do all of it */
-	    (printf("scrolling down\n"));	/* need to add on top */
-	    vt_scroll_area(0, vt->height, -offset);
-	  }
-	} else {		/* scrolled .. up */
-	  if ((-offset) < vt->height-8) {
-	    printf("scrolling up\n"); /* need to add on bottom */
-	    vt_scroll_area(0, vt->height, -offset);
-	    if ( (-vt->scrollbackoffset) < vt->height) {
-	      printf("*** scrolls into normal screen (%d %d)\n", vt->scrollbackoffset, vt->height+vt->scrollbackoffset);
-	      count = vt->scrollbackoffset+vt->height;
-	      firstline=0;
-	      /*line=vt->height+offset;*/ /* FIXME: must also specify the number of lines to skip ... */
-	      line=-vt->scrollbackoffset;
-	    } else {
-	      count = -offset;	/* how many lines to add */
-	      firstline= (- vt->scrollbackoffset); /* how many lines to go back ... */
-	      line=0;
-	    }
-
-	    printf("updating: count=%d, firstline=%d, line=%d\n", count, firstline, line);
-
-	    goto skip_countset;
-	  }
-	}
-      }
-
-#endif
-      /* we are in scroll back mode ... */
-      /* must first print any scroll-back buffer lines that need to be displayed */
-      /* find the scrollback lines visible, and display them .. */
-      count=vx->vt.height;		/* lines left to draw */
-      firstline= (- vx->vt.scrollbackoffset); /* how many lines to go back ... */
-      line=0;
-#ifdef OPT_SCROLLBACK
-	skip_countset:
-#endif
-
-      wn = (struct vt_line *)vx->vt.scrollback.tailpred;
-      nn = wn->prev;
-      while (nn && count>0 && firstline>0) {
-	if (firstline <= vx->vt.height) { /* are we on the screen yet? */
-	  vt_line_update(vx, wn, firstline-1, 1, 0, wn->width);
-	  count--;
-	  line++;
-	}
-	firstline--;
-	wn=nn;
-	nn=nn->prev;
-      }
-      /* now, find working buffer lines visible, and display them */
-      wn = (struct vt_line *)vx->vt.lines.head;
-      nn = wn->next;
-      while (nn && count>0) {
-	vt_line_update(vx, wn, line, 1, 0, wn->width);
-	wn=nn;
-	nn=nn->next;
-	line++;
-	count--;
-      }
-      vx->vt.scrollbackold = vx->vt.scrollbackoffset;
+  /* find first line of visible screen, take into account scrollback */
+  offset = vx->vt.scrollbackoffset;
+  if (offset<0) {
+    wn = vt_list_index(&vx->vt.scrollback, offset);
+    if (wn==0) {
+      /* check for error condition */
+      printf("LINE UNDERFLOW!\n");
+      wn = vx->vt.scrollback.head;
     }
   } else {
-    if (update_state==0) {
-				/* perform simple whole-screen update? */
-				/* perform optimised update */
-      wn = (struct vt_line *)vx->vt.lines.head;
-      nn = wn->next;
-      firstline = 0;		/* this isn't really necessary */
-      fn = wn;
-      while (nn) {
-	d(printf("scanning line %d, offset=%d : ", line, (wn->line-line)));
-	d(printf("(%d - %d)\n", line, wn->line));
-	if ((wn->line!=-1) && ((offset = wn->line-line) >0)) {
-	  wn->line = line;
-#ifdef CHANGE_CHECK
-	  if (wn->modcount > (wn->width>>4)) { /* simple update metric, not much changed? */
-	    if (oldoffset != 0) {
-	      d(printf("scrolling (1.0)\n"));
-	      vt_scroll_update(vx, firstline, fn, line-firstline, oldoffset); /* scroll/update a line */
-	    }
-	    offset=0;
-	  } else {
-#endif
-	    if (offset == oldoffset) {
-	      /* accumulate "update" lines */
-	    } else {
-	      if (oldoffset != 0) {
-		d(printf("scrolling (1.1)\n"));
-		vt_scroll_update(vx, firstline, fn, line-firstline, oldoffset); /* scroll/update a line */
-	      }
-	      d(printf("found a scrolled line\n"));
-	      firstline = line;	/* first line to scroll */
-	      fn = wn;
-	    }
-#ifdef CHANGE_CHECK
-	  }
-#endif
-	} else {
-	  if (oldoffset != 0) {
-	    d(printf("scrolling (1.2)\n"));
-	    vt_scroll_update(vx, firstline, fn, line-firstline, oldoffset); /* scroll/update a line */
-	  }
-	  offset=0;
-	}
-
-	oldoffset = offset;
-	line ++;
-	wn = nn;
-	nn = nn->next;
-      }
-      if (oldoffset != 0) {
-	d(printf("scrolling (1.3)\n"));
-	d(printf("oldoffset = %d, must scroll\n", oldoffset));
-	vt_scroll_update(vx, firstline, fn, line-firstline, oldoffset); /* scroll/update a line */
-      }
-
-      /* now scan backwards ! */
-      wn = wn->prev;
-      nn = wn->prev;
-      line = vx->vt.height;
-      oldoffset = 0;
-      while (nn) {
-	line--;
-	d(printf("scanning line %d, offset=%d : ", line, (wn->line-line)));
-	if ((wn->line !=-1) && ((offset = wn->line-line) < 0)) {
-	  wn->line = line;
-#ifdef CHANGE_CHECK
-	  if (wn->modcount > (wn->width>>4)) { /* simple update metric, not much changed? */
-	    d(printf("changed too much - ignoring\n"));
-	    if (oldoffset != 0) {
-	      d(printf("scrolling (2.0)\n"));
-	      vt_scroll_update(vx, line, wn->next, firstline-line+1, oldoffset); /* scroll/update a line, from this line *down* */
-	    }
-	    offset=0;
-	  } else {
-#endif
-	    if (offset == oldoffset) {
-	      /* accumulate "update" lines */
-	    } else {
-	      if (oldoffset != 0) {
-		d(printf("scrolling (2.1)\n"));
-		vt_scroll_update(vx, line, wn->next, firstline-line+1, oldoffset); /* scroll/update a line */
-	      }
-	      d(printf("found a scrolled line\n"));
-	      firstline = line;	/* first line to scroll */
-	      fn = wn;
-	    }
-#ifdef CHANGE_CHECK
-	  }
-#endif
-	} else {
-	  if (oldoffset != 0) {
-	    d(printf("scrolling (2.2)\n"));
-	    vt_scroll_update(vx, line+1, wn->next, firstline-line, oldoffset); /* scroll/update a line */
-	  }
-	  offset=0;
-	}
-
-	oldoffset = offset;
-	wn = nn;
-	nn = nn->prev;
-      }
-      if (oldoffset != 0) {
-	d(printf("scrolling (2.3)\n"));
-	d(printf("oldoffset = %d, must scroll 2\n", oldoffset));
-	vt_scroll_update(vx, 0, wn, firstline-line+1, oldoffset); /* scroll/update a line */
-      }
-    }
-
-    /* now, re-scan, since all lines should be at the right position now,
-     and update as required */
-
-    wn = (struct vt_line *)vx->vt.lines.head;
-    nn = wn->next;
-    firstline = 0;		/* this isn't really necessary */
-    fn = wn;
-    line=0;
-    while (nn) {
-      if (wn->line==-1) {
-	vt_line_update(vx, wn, line, 0, 0, wn->width);
-      } else if (wn->modcount || update_state) {
-	vt_line_update(vx, wn, line, update_state, 0, wn->width);
-      }
-      wn->line = line;		/* make sure line is reset */
-      line++;
-      wn=nn;
-      nn=nn->next;
-    }
+    wn=vx->vt.lines.head;
   }
+  
+  /* updated scrollback if we can ... otherwise dont */
+  if (!(update_state&UPDATE_REFRESH)) {
+
+    /* if scrollback happening, then force update of newly exposed areas - calculate here */
+    offset = vx->vt.scrollbackoffset-vx->vt.scrollbackold;
+    if (offset>0) {
+      d(printf("scrolling up, by %d\n", offset));
+      update_start = vx->vt.height-offset-1;
+      update_end = vx->vt.height;
+    } else {
+      d(printf("scrolling down, by %d\n", -offset));
+      update_start = -1;
+      update_end = -offset;
+    }
+    d(printf("forced updated from %d - %d\n", update_start, update_end));
+    
+    nn = wn->next;
+    firstline = 0;		/* this isn't really necessary (quietens compiler) */
+    fn = wn;
+    while (nn && line<vx->vt.height) {
+
+      /* enforce full update for 'scrollback' areas */
+      if (line>update_start && line<update_end) {
+	d(printf("forcing scroll update refresh (line %d)\n", line));
+	wn->line = -1;
+      }
+
+      d(printf("%p: scanning line %d, offset=%d : line = %d\n ", wn, line, (wn->line-line), wn->line));
+      d(printf("(%d - %d)\n", line, wn->line));
+      if ((wn->line!=-1) && ((offset = wn->line-line) >0)) {
+	wn->line = line;
+	if (offset == oldoffset) {
+	  /* accumulate "update" lines */
+	} else {
+	  if (oldoffset != 0) {
+	    d(printf("scrolling (1.1)\n"));
+	    vt_scroll_update(vx, firstline, line-firstline, oldoffset); /* scroll/update a line */
+	  }
+	  d(printf("found a scrolled line\n"));
+	  firstline = line;	/* first line to scroll */
+	  fn = wn;
+	}
+      } else {
+	if (oldoffset != 0) {
+	  d(printf("scrolling (1.2)\n"));
+	  vt_scroll_update(vx, firstline, line-firstline, oldoffset); /* scroll/update a line */
+	}
+	offset=0;
+      }
+
+      /* goto next logical line */
+      if (wn==vx->vt.scrollback.tailpred) {
+	d(printf("skipping to real lines at line %d\n", line));
+	wn = vx->vt.lines.head;
+      } else {
+	d(printf("going to next line ...\n"));
+	wn = nn;
+      }
+
+      oldoffset = offset;
+      line ++;
+      nn = wn->next;
+    }
+    if (oldoffset != 0) {
+      d(printf("scrolling (1.3)\n"));
+      d(printf("oldoffset = %d, must scroll\n", oldoffset));
+      vt_scroll_update(vx, firstline, line-firstline, oldoffset); /* scroll/update a line */
+    }
+
+    /* now scan backwards ! */
+    d(printf("scanning backwards now\n"));
+    
+      /* does this need checking for overflow? */
+    wn = wn->prev;
+    nn = wn->prev;
+    line = vx->vt.height;
+    oldoffset = 0;
+    while (nn && line) {
+      line--;
+      d(printf("%p: scanning line %d, offset=%d : line = %d, oldoffset=%d\n ", wn, line, (wn->line-line), wn->line, oldoffset));
+      if ((wn->line !=-1) && ((offset = wn->line-line) < 0)) {
+	wn->line = line;
+	if (offset == oldoffset) {
+	  /* accumulate "update" lines */
+	} else {
+	  if (oldoffset != 0) {
+	    d(printf("scrolling (2.1)\n"));
+	    vt_scroll_update(vx, line, firstline-line+1, oldoffset); /* scroll/update a line */
+	  }
+	  d(printf("found a scrolled line\n"));
+	  firstline = line;	/* first line to scroll */
+	  fn = wn;
+	}
+      } else {
+	if (oldoffset != 0) {
+	  d(printf("scrolling (2.2)\n"));
+	  vt_scroll_update(vx, line+1, firstline-line, oldoffset); /* scroll/update a line */
+	}
+	offset=0;
+      }
+
+      /* goto previous logical line */
+      if (wn==vx->vt.lines.head) {
+	wn = vx->vt.scrollback.tailpred;
+	d(printf("going to scrollback buffer line ...\n"));
+      } else {
+	d(printf("going to prev line ...\n"));
+	wn = nn;
+      }
+
+      nn = wn->prev;
+      oldoffset = offset;
+      d(printf("nn = %p\n", nn));
+    }
+    if (oldoffset != 0) {
+      d(printf("scrolling (2.3)\n"));
+      d(printf("oldoffset = %d, must scroll 2\n", oldoffset));
+      vt_scroll_update(vx, 0, firstline-line+1, oldoffset); /* scroll/update a line */
+    }
+
+    /* have to align the pointer properly for the last pass */
+    if (wn==vx->vt.scrollback.tailpred) {
+      d(printf("++ skipping to real lines at line %d\n", line));
+      wn = vx->vt.lines.head;
+    } else {
+      d(printf("++ going to next line ...\n"));
+      wn = wn->next;
+    }
+
+  }
+
+  /* now, re-scan, since all lines should be at the right position now,
+     and update as required */
+  d(printf("scanning from top again\n"));
+
+  nn = wn->next;
+  firstline = 0;		/* this isn't really necessary */
+  fn = wn;
+  line=0;
+  while (nn && line<vx->vt.height) {
+    d(printf("%p: scanning line %d, was %d\n", wn, line, wn->line));
+    if (wn->line==-1) {
+      vt_line_update(vx, wn, line, 0, 0, wn->width);
+    } else if (wn->modcount || update_state&UPDATE_REFRESH) {
+      vt_line_update(vx, wn, line, update_state, 0, wn->width);
+    }
+    wn->line = line;		/* make sure line is reset */
+    line++;
+
+    /* goto next logical line */
+    if (wn==vx->vt.scrollback.tailpred) {
+      d(printf("skipping to real lines at line %d\n", line));
+      wn = vx->vt.lines.head;
+    } else {
+      wn = nn;
+    }
+    
+    nn = wn->next;
+    d(printf("  -- wn = %p, wn->next = %p\n", wn, wn->next));
+  }
+
+  vx->vt.scrollbackold = vx->vt.scrollbackoffset;
 
   /* some debug */
 #if 0
@@ -636,14 +612,28 @@ void vt_update_rect(struct _vtx *vx, int csx, int csy, int cex, int cey)
     csx = vx->vt.width;
 
   lines = cey-csy;
-  wn = (struct vt_line *)vt_list_index(&vx->vt.lines, csy);
+
+  /* check scrollback for current line */
+  if ((vx->vt.scrollbackoffset+csy)<0) {
+    wn = (struct vt_line *)vt_list_index(&vx->vt.scrollback, vx->vt.scrollbackoffset+csy);
+  } else {
+    wn = (struct vt_line *)vt_list_index(&vx->vt.lines, vx->vt.scrollbackoffset+csy);
+  }
   if (wn) {
     nn = wn->next;
     while ((csy<=cey) && nn) {
       d(printf("updating line %d\n", csy));
       vt_line_update(vx, wn, csy, 1, csx, cex);
       csy++;
-      wn = nn;
+
+      /* skip out of scrollback buffer if need be */
+      if (wn==vx->vt.scrollback.tailpred) {
+	d(printf("skipping to real lines at line %d\n", line));
+	wn = vx->vt.lines.head;
+      } else {
+	wn = nn;
+      }
+
       nn = nn->next;
     }
   }
@@ -988,7 +978,7 @@ void vt_draw_cursor(struct _vtx *vx, int state)
   unsigned char c;
   uint32 attr;
 
-  if (vx->vt.scrollbackoffset == 0) {
+  if (vx->vt.scrollbackold == 0) {
     attr = vx->vt.this->data[vx->vt.cursorx];
     c = attr & 0xff;
     if (c==9 || c==0)			/* remap tab */

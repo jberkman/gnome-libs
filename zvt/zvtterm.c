@@ -64,6 +64,7 @@ static void zvt_term_readdata(gpointer data, gint fd, GdkInputCondition conditio
 static void zvt_term_readmsg(gpointer data, gint fd, GdkInputCondition condition);
 
 static void zvt_term_fix_scrollbar(ZvtTerm *term);
+static void vtx_unrender_selection (struct _vtx *vx);
 
 /* Local data */
 
@@ -955,14 +956,7 @@ zvt_term_selection_clear (GtkWidget *widget, GdkEventSelection *event)
   term = ZVT_TERM (widget);
   vx = term->vx;
 
-				/* FIXME: this is used elsewhere - modularise! */
-  if (vx->selected) {
-    vx->selstartx = vx->selendx;
-    vx->selstarty = vx->selendy;
-    vt_draw_selection(vx);
-    vx->selected = 0;
-  }
-
+  vtx_unrender_selection(vx);
   vt_clear_selection(vx);
   return TRUE;
 }
@@ -1064,7 +1058,7 @@ static void zvt_term_scrollbar_moved (GtkAdjustment *adj, GtkWidget *widget)
 
   term->vx->vt.scrollbackoffset = -line;
 
-  vt_update(term->vx, UPDATE_REFRESH); /* will redraw if scrollbar moved */
+  vt_update(term->vx, UPDATE_SCROLLBACK); /* will redraw if scrollbar moved */
 }
 
 
@@ -1133,7 +1127,6 @@ zvt_term_scroll (ZvtTerm *term, int n)
 	else
 		new_value = term->adjustment->upper - term->adjustment->page_size;
 
-	term->vx->vt.scrollbackold = -1;
 	gtk_adjustment_set_value (term->adjustment,
 				  n > 0 ? MIN(new_value, term->adjustment->upper
 					      - term->adjustment->page_size)
@@ -1339,7 +1332,7 @@ static void zvt_term_child_died(ZvtTerm *term)
 static void vtx_unrender_selection (struct _vtx *vx)
 {
   /* need to 'un-render' selected area */
-  if (vx->selected) {		/* FIXME: modularise */
+  if (vx->selected) {
     vx->selstartx = vx->selendx;
     vx->selstarty = vx->selendy;
     vt_draw_selection(vx);	/* un-render selection */
@@ -1552,13 +1545,15 @@ void vt_draw_text(void *user_data, int col, int row, char *text, int len, int at
   }
 
   /* optimise: dont 'clear' background if in expose, and background colour == window colour */
-
-  if ((term->in_expose==0) || back!=17) {
+  /* this may look a bit weird, it really does need to be this way - so dont touch!*/
+  if (term->in_expose==0 && vx->back_match==0) {
     gdk_draw_rectangle(widget->window,
 		       bgc,
 		       1,
 		       col*term->charwidth, row*term->charheight,
 		       len*term->charwidth, term->charheight);
+  } else {
+    d(printf("not clearing background\n"));
   }
 
   gdk_draw_text(widget->window,

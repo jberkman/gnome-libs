@@ -468,23 +468,26 @@ static void vt_lf(struct vt_em *vt)
 static void vt_tab(struct vt_em *vt)
 {
   int nx;
+  unsigned char c;
+  struct vt_line *l;
+  int i;
 
   d(printf("tab\n"));
-  {				/* FIXME: neaten this */
-    unsigned char c;
-    struct vt_line *l;
-    int i;
 
-    l = vt->this;
-    if (((c=l->data[vt->cursorx]&0xff)==0) || (c==' ')) {
-      l->data[vt->cursorx] = 9|vt->attr|VTATTR_CHANGED; /* store 'tab' if we can ... helps cut/paste */
-    }
-				/* expand data after tab to be 'empty' */
-    nx = (vt->cursorx+8) & ~7;
-    for(i=vt->cursorx+1;i<nx;i++) {
-      if ( ((c=l->data[i]&0xff)==' ')) {
-	l->data[i] = vt->attr|VTATTR_CHANGED;
-      }
+  l = vt->this;
+  c=l->data[vt->cursorx]&0xff;
+  /* dont store tab over a space - will affect attributes */
+  if (c==0) {
+    l->data[vt->cursorx] = 9|vt->attr|VTATTR_CHANGED; /* store 'tab' if we can ... helps cut/paste */
+  }
+  
+  /* expand data after tab to be 'empty', but dont change attributes */
+  nx = (vt->cursorx+8) & ~7;
+  for(i=vt->cursorx+1;i<nx;i++) {
+    if ( ((c=l->data[i]&0xff)==' ')) {
+      l->data[i] = (l->data[i]&0xffff0000)|VTATTR_CHANGED;
+    } else {
+      break;
     }
   }
 

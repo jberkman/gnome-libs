@@ -1,3 +1,45 @@
+1998-10-15  Michael Zucchi  <zucchi@zzedzone.fsi.com.au>
+
+	* zvtterm.c (zvt_term_scroll): Some code here broke the new update
+	stuff. scrollbackold should *never* be set outside of the update
+	routine.
+	(zvt_term_selection_clear): Modularised what had been, removed the
+	fixme (calls vtx_unrender_selection()).
+	(vtx_unrender_selection): Killed FIXME.
+
+1998-10-14  Michael Zucchi  <zucchi@zzedzone.fsi.com.au>
+
+	* update.c (vt_line_update): Fix back_match determination.  Only
+	match on all attributes for any blank rendering characters.  When
+	this is the case the area behind text will not be cleared (often
+	twice-cleared otherwise).
+
+	* zvtterm.c (vt_draw_text): Hopefully properly fixed the 'dont
+	clear the background if we've already cleared the background
+	optimisation' bugs.
+
+	* update.c (vt_scroll_update): Removed 'fn' - first node of update
+	scroll area.  No longer reliable or useful - due to scrollback
+	changes.
+	(vt_update): Integrated scrollback update within the same main
+	loop(s).  Now scrollback should have the same performance as
+	normal scrolling.  Has a (messier) problem with using scrollback
+	and screen update, which should be addressed with the scrollback
+	counter/bar elsewhere.
+
+	* vt.c (vt_tab): Change tab behaviour somewhat.  Dont overwrite
+	attributes of existing characters.  Dont blank beyond the first
+	space encountered [also, dont affect attributes].  Cleaned up code
+	a little bit.
+
+	* update.c (vt_update_rect): Make this take into account
+	vx->vt.scrollbackoffset when rendering the rectangle.
+	(vt_draw_cursor): Make sure the cursor is turned off when
+	scrolling (using scrollbackold rather than scrollbackoffset).
+
+	* zvtterm.c (zvt_term_scrollbar_moved): Only update 'scrollback'
+	mode, rather then refresh.
+
 1998-09-24  Miguel de Icaza  <miguel@nuclecu.unam.mx>
 
 	* zvtterm.c (zvt_term_feed): New routine.  Used to feed
