@@ -1,4 +1,29 @@
+1999-12-05  Michael Zucchi  <zucchi@zedzone.mmc.com.au>
+
+	* background.c (zvt_term_background_load): Always unload the
+	background first.
+
+	* zvtterm.c (zvt_term_set_background): If we are not realised,
+	then queue the background setting until we are.
+	(zvt_term_realize): Actually load the queued background settings
+	here.
+
 1999-12-04  Michael Zucchi  <zucchi@zedzone.mmc.com.au>
+
+	* background.c (zvt_background_set): If we have no pixmap after
+	trying to get one, then just set solid colour as the background.
+	(add_winwatch): Duh, actually add the watch node to the watch list
+	...
+	(del_winwatch): Double duh, actually remove the watch and atom
+	nodes from the watch lists ...
+	(zvt_watch_move): Store the signal connection id ...
+	(zvt_unwatch_move): ... so that it can be removed when no longer
+	needed.
+	(zvt_term_background_unload): If we have a config signal to watch,
+	remove it.
+
+	* zvtterm.c (zvt_term_set_background): Transparent pixmap should
+	be relative to root origin.
 
 	* Makefile.am (zterm_LDADD): Add the gdk pixbuf libraries.
 	THIS NEEDS FIXING, as it requires them to be installed first (but

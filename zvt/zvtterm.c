@@ -252,14 +252,6 @@ zvt_term_init (ZvtTerm *term)
   term->color_ctx = 0;
   term->ic = NULL;
 
-  /* background pixmap */
-  term->pixmap_filename = NULL;
-  term->background.pix = NULL;
-  term->background.x = 0;
-  term->background.y = 0;
-  term->background.w = 0;
-  term->background.h = 0;
-
   /* grid sizing */
   term->set_grid_size_pending = TRUE;
   term->grid_width = term->vx->vt.width;
@@ -295,6 +287,10 @@ zvt_term_init (ZvtTerm *term)
     zp->transpix = 0;
     zp->paste_id = -1;
     zp->paste = 0;
+
+    /* background stuff */
+    zp->background = 0;
+    zp->background_queue = 0;
   }
   gtk_object_set_data(GTK_OBJECT (term), "_zvtprivate", zp);
 
@@ -724,12 +720,6 @@ zvt_term_realize (GtkWidget *widget)
   term->back_last = -1;
   term->fore_last = -1;
 
-  /* load background.  If there is actually one there we also increment
-     the refcount, so make sure we fix that up ... */
-  zvt_term_background_load(term, zp->background);
-  if (zp->background)
-    zvt_term_background_unref(zp->background);
-
   /* input context */
   if (gdk_im_ready () && !term->ic) {
     GdkICAttr attr;
@@ -742,6 +732,13 @@ zvt_term_realize (GtkWidget *widget)
     if (!term->ic) {
       g_warning("Can't create input context.");
     }
+  }
+
+  /* if we have a delayed background set, set it here? */
+  if (zp->background_queue) {
+    zvt_term_background_load(term, zp->background_queue);
+    zvt_term_background_unref(zp->background_queue);
+    zp->background_queue = 0;
   }
 }
 
@@ -800,7 +797,7 @@ zvt_term_map (GtkWidget *widget)
     GTK_WIDGET_SET_FLAGS (widget, GTK_MAPPED);
     
     gdk_window_show (widget->window);
-    
+
     /* XXX: is this right? --JMP */
     if (!GTK_WIDGET_HAS_FOCUS (widget))
       gtk_widget_grab_focus (widget);
@@ -1012,7 +1009,6 @@ zvt_term_draw (GtkWidget *widget, GdkRectangle *area)
     d( printf("zvt_term_draw is drawable\n") );
 
     /* make sure we've got the right background, incase some stupid style changed it */
-    /*    if (term->transparent==0 && term->pixmap_filename==0) {*/
     if (zp->background==0) {
       GdkColor c;
       c.pixel = term->colors [17];
@@ -1023,7 +1019,6 @@ zvt_term_draw (GtkWidget *widget, GdkRectangle *area)
     
     gdk_window_get_size (widget->window, &width, &height);
 
-    /*if(term->transparent || term->pixmap_filename) {*/
     if(zp->background) {
       gdk_draw_rectangle (widget->window,
 			  term->back_gc, 1,
@@ -1082,7 +1077,6 @@ zvt_term_expose (GtkWidget      *widget,
     /*
       this could probably do what draw does, but it looks a bit slower if you do.
      */
-    /*    if(term->transparent || term->pixmap_filename) {*/
     if(zp->background) {
       gdk_draw_rectangle (widget->window,
 			  term->back_gc, 1,
@@ -2776,6 +2770,7 @@ zvt_term_set_background (ZvtTerm *terminal, char *pixmap_file,
 			 int transparent, int flags)
 {
   struct zvt_background *b = 0;
+  struct _zvtprivate *zp = _ZVT_PRIVATE(terminal);
 
   if (!(zvt_term_get_capabilities (terminal) & ZVT_TERM_PIXMAP_SUPPORT))  
     return; 
@@ -2788,6 +2783,7 @@ zvt_term_set_background (ZvtTerm *terminal, char *pixmap_file,
     b = zvt_term_background_new(terminal);  
     zvt_term_background_set_pixmap_atom(b, GDK_ROOT_PARENT(),
 					gdk_atom_intern("_XROOTPMAP_ID", TRUE));
+    zvt_term_background_set_translate(b, ZVT_BGTRANSLATE_ROOT, 0, 0);
   }
 
   /* set modifiers */
@@ -2799,14 +2795,17 @@ zvt_term_set_background (ZvtTerm *terminal, char *pixmap_file,
       zvt_term_background_set_translate(b, ZVT_BGTRANSLATE_SCROLL, 0, 0);  
   }
 
-  /* load it */
-  zvt_term_background_load(terminal, b);
-
-  if (b) {
-    zvt_term_background_unref(b);
+  /* load it, if we can ... */
+  if (GTK_WIDGET_REALIZED (terminal)) {
+    zvt_term_background_load(terminal, b);
+    if (b)
+      zvt_term_background_unref(b);
+  } else {
+    zvt_term_background_ref(b);
+    zp->background_queue = b;
   }
 
-  /* FIXME: hacks to make the rest of the code still work */
+  /* FIXME: required to make gnome-terminal's prefs to work properly *sigh* */
   terminal->transparent = transparent;
   terminal->shaded = (flags & ZVT_BACKGROUND_SHADED) != 0;
   g_free (terminal->pixmap_filename);
@@ -2972,7 +2971,6 @@ vt_draw_text(void *user_data, struct vt_line *line, int row, int col, int len, i
 #else
 
   if (term->in_expose || vx->back_match == 0) {
-    /*    if ((term->transparent || term->pixmap_filename)*/
     if (zp->background
 	&& ( term->in_expose==0 && !vx->back_match )) {
       /*	&& !term->in_expose && back >= 17) {*/
@@ -3164,7 +3162,6 @@ vt_scroll_area(void *user_data, int firstrow, int count, int offset, int fill)
   }
 
   /* this does a 'scrolling' pixmap */
-  /*  if (term->transparent || term->pixmap_filename) {*/
   if (zp->background) {
     /* FIXME: scrolling with pixbuf */
     zp->scroll_position = (zp->scroll_position + offset*term->charheight);/* % term->background.h;*/
@@ -3189,7 +3186,7 @@ vt_scroll_area(void *user_data, int firstrow, int count, int offset, int fill)
   /* fix up the screen display after a scroll - ensures all expose events handled
      before continuing.
      This only seems to be needed if we have a pixmap scrolled */
-  if (zp->background) { /* term->transparent || term->pixmap_filename) {*/
+  if (zp->background) {
     while ((event = gdk_event_get_graphics_expose (widget->window)) != NULL) {
       gtk_widget_event (widget, event);
       if (event->expose.count == 0) {

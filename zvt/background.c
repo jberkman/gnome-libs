@@ -171,7 +171,7 @@ struct _watchatom {
 
 static struct vt_list watchlist = { (struct vt_listnode *)&watchlist.tail,
 				    0,
-				    (struct vt_listnode *)&watchlist.tailpred };
+				    (struct vt_listnode *)&watchlist.head };
 
 static int
 zvt_filter_prop_change(XEvent *xevent, GdkEvent *event, void *data)
@@ -215,6 +215,7 @@ add_winwatch(GdkWindow *win, GdkAtom atom, void *callback, void *data)
   w->propmask = gdk_window_get_events(win);
   gdk_window_add_filter(win, zvt_filter_prop_change, w);
   gdk_window_set_events(win, w->propmask | GDK_PROPERTY_CHANGE_MASK);
+  vt_list_addtail(&watchlist, (struct vt_listnode *)w);
 
  got_win:
   a = g_malloc0(sizeof(*a));
@@ -233,19 +234,23 @@ del_winwatch(GdkWindow *win, void *data)
   w = (struct _watchwin *)watchlist.head;
   wn = w->next;
   while (wn) {
-    a = (struct _watchatom *)w->watchlist.head;
-    an = a->next;
-    while (an) {
-      if (a->data == data) {
-	g_free(a);
+    if (w->win == win) {
+      a = (struct _watchatom *)w->watchlist.head;
+      an = a->next;
+      while (an) {
+	if (a->data == data) {
+	  vt_list_remove((struct vt_list *)a);
+	  g_free(a);
+	}
+	a = an;
+	an = an->next;
       }
-      a = an;
-      an = an->next;
     }
     if (vt_list_empty(&w->watchlist)) {
       gdk_window_set_events(w->win, w->propmask);
       gdk_window_remove_filter(w->win, zvt_filter_prop_change, w);
       gdk_window_unref(w->win);
+      vt_list_remove((struct vt_list *)w);
       g_free(w);
     }
     w = wn;
@@ -256,10 +261,20 @@ del_winwatch(GdkWindow *win, void *data)
 static void
 zvt_watch_move(ZvtTerm *term)
 {
-  gtk_signal_connect(GTK_OBJECT (gtk_widget_get_toplevel(GTK_WIDGET(term))),
-		     "configure_event",
-		     GTK_SIGNAL_FUNC(zvt_configure_window),
-		     GTK_OBJECT(term));
+  struct _zvtprivate *zp = _ZVT_PRIVATE(term);
+
+  zp->background_watchsig =
+    gtk_signal_connect(GTK_OBJECT (gtk_widget_get_toplevel(GTK_WIDGET(term))),
+		       "configure_event",
+		       GTK_SIGNAL_FUNC(zvt_configure_window),
+		       GTK_OBJECT(term));
+}
+
+static void
+zvt_unwatch_move(ZvtTerm *term)
+{
+  struct _zvtprivate *zp = _ZVT_PRIVATE(term);
+  gtk_signal_disconnect(GTK_OBJECT (gtk_widget_get_toplevel(GTK_WIDGET(term))), zp->background_watchsig);
 }
 
 /*
@@ -512,6 +527,11 @@ zvt_term_background_unload(ZvtTerm *term)
     case ZVT_BGTYPE_PIXBUF:
       break;
     }
+
+    if (b->scale.type == ZVT_BGSCALE_WINDOW
+	|| b->offset.type == ZVT_BGTRANSLATE_ROOT)
+      zvt_unwatch_move(term);
+
     zvt_term_background_unref(b);
     zp->background = 0;
   }
@@ -543,6 +563,8 @@ zvt_term_background_load(ZvtTerm *term, struct zvt_background *b)
   int watchatom=0;
   int watchmove=0;
 
+  zvt_term_background_unload(term);
+#if 0
   if (zp->background) {
     if (b) {
       /* compare them to see if they're the same ... if so, dont change display */
@@ -554,6 +576,7 @@ zvt_term_background_load(ZvtTerm *term, struct zvt_background *b)
     }
     zvt_term_background_unref(zp->background);
   }
+#endif
   zp->background = b;
 
   /* assume no background is being set */
@@ -602,11 +625,11 @@ zvt_background_set(ZvtTerm *term)
   GdkPixbuf *pixbuf = NULL;
   int wwidth, wheight, wdepth;
   int process = 0;
+  GdkColor pen;
 
   /* if we have no 'background image', use a solid colour */
   if (b == NULL
       || b->type == ZVT_BGTYPE_NONE) {
-    GdkColor pen;
     if (term->back_gc) {
       gdk_gc_set_fill (term->back_gc, GDK_SOLID);
       pen.pixel = term->colors[17];
@@ -703,11 +726,12 @@ zvt_background_set(ZvtTerm *term)
   zp->background_pixmap = pixmap;
 
   if (term->back_gc) {
-    gdk_gc_set_tile (term->back_gc, pixmap);
-    gdk_gc_set_fill (term->back_gc, GDK_TILED);
+    if (pixmap) {
+      gdk_gc_set_tile (term->back_gc, pixmap);
+      gdk_gc_set_fill (term->back_gc, GDK_TILED);
+      zvt_background_set_translate(term);
+    }
   }
-
-  zvt_background_set_translate(term);
 }
 
 static void

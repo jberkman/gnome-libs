@@ -103,6 +103,7 @@ struct _ZvtTerm
   */
   char *pixmap_filename;
 
+  /* now removed ... */
   /* transparency stuff, it's left in even if we don't compile
    * transparency/background pixmaps, if we don't, it will just be ignored
    */
@@ -112,7 +113,7 @@ struct _ZvtTerm
     int x,y,w,h;    /* these are used to know if the position changed
 		     * and we need to get new shaded transparent pixmap
 		     */
-  } background;
+  } background__dummy;
 
   /* bitfield flags -- keep at end of structure */
   unsigned int cursor_on:1;	      /* on/off cursor */
@@ -171,7 +172,9 @@ struct _zvtprivate
   GdkCursor *cursor_hand;	/* hand cursor */
 
   struct zvt_background *background; /* background settings */
+  struct zvt_background *background_queue; /* if set before realised */
   GdkPixmap *background_pixmap;	/* actual pixmap used to pre-draw background */
+  int background_watchsig;	/* signal to watch window movement */
 };
 
 /* *** DO NOT USE THIS IN APPS! *** */
