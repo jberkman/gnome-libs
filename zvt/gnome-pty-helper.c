@@ -329,6 +329,7 @@ open_ptys (int utmp, int wtmp)
 	pid_t savedUid;
 	gid_t savedGid;
 	struct group *group_info;
+	struct termios term;
 	
 	term_name = ((char *)alloca (path_max())) + 1;
 
@@ -346,7 +347,60 @@ open_ptys (int utmp, int wtmp)
 	setgid (pwent->pw_gid);
 	setuid (pwent->pw_uid);
 #endif
-	status = openpty (&master_pty, &slave_pty, term_name, NULL, NULL);
+
+	/*
+	 *	openpty assumes POSIX termios so this should be portable.
+	 *	Don't change this to a structure init - POSIX doesn't say
+	 *	anything about field order.
+	 */
+	 
+	term.c_iflag = ICRNL|IXON;
+	term.c_oflag = OPOST|ONLCR|NL0|CR0|TAB0|BS0|VT0|FF0;
+	/* B38400 isnt portable EXTB is .. */
+	term.c_cflag = EXTB|CS8|CREAD|HUPCL;
+	term.c_lflag = ISIG|ICANON|IEXTEN|ECHO|ECHOE|ECHOK|ECHOCTL|ECHOKE;
+	term.c_line = N_TTY;
+
+	/* These two may overlap so set them first */
+	term.c_cc[VTIME] =  0;
+	term.c_cc[VMIN] = 0;
+	
+	/* Now set the characters. This is of course a religious matter
+	   but we use the defaults, with erase bound to the key gnome-terminal
+	   maps */
+	   
+	term.c_cc[VINTR] = 'C'-64;
+	term.c_cc[VQUIT] = '\\'-64;
+	term.c_cc[VERASE] = 'H'-64;
+	term.c_cc[VKILL] =  'U'-64;
+	term.c_cc[VEOF] =  'D'-64;
+	term.c_cc[VSWTC] = 0;
+	term.c_cc[VSTART] = 'Q'-64;
+	term.c_cc[VSTOP] = 'S'-64;
+	term.c_cc[VSUSP] =  'Z'-64;
+	term.c_cc[VEOL] = 0;
+	
+	/*
+	 *	Extended stuff.
+	 */
+	 
+#ifdef VREPRINT	
+	term.c_cc[VREPRINT] = 'R'-64;
+#endif
+#ifdef VDISCARD	
+	term.c_cc[VDISCARD] = 'U'-64;
+#endif
+#ifdef VWERASE
+	term.c_cc[VWERASE] = 'W'-64;
+#endif	
+#ifdef VLNEXT
+	term.c_cc[VLNEXT] =  'V'-64;
+#endif
+#ifdef VEOL2	
+	term.c_cc[VEOL2] = 0;
+#endif
+
+	status = openpty (&master_pty, &slave_pty, term_name, &term, NULL);
 	setuid(savedUid);
 	setgid(savedGid);
 
