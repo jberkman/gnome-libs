@@ -63,6 +63,7 @@
 #ifdef HAVE_SENDMSG
 #include <sys/socket.h>
 #include <sys/uio.h>
+#endif
 
 #ifdef HAVE_SYS_UN_H /* Linux libc5 */
 #include <sys/un.h>

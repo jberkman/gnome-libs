@@ -248,10 +248,11 @@ path_max (void)
 #ifdef _PC_PATH_MAX
 	return pathconf ("/", _PC_PATH_MAX);
 #else
-#ifdef PATH_MAX
+#  ifdef PATH_MAX
 	return PATH_MAX;
-#else
+#  else
 	return 1024;
+#  endif
 #endif
 }
 
