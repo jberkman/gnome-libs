@@ -103,13 +103,14 @@ main (int argc, char *argv [])
 	gtk_signal_connect(GTK_OBJECT(window), "destroy",
 		GTK_SIGNAL_FUNC(gtk_main_quit), NULL);
 	html = gtk_xmhtml_new ();
+	gtk_container_add (GTK_CONTAINER (window), html);
 
 	gtk_signal_connect (GTK_OBJECT(html), "activate", (GtkSignalFunc) click, html);
 	gtk_signal_connect (GTK_OBJECT(html), "frame", (GtkSignalFunc) frame, html);
 
 	gtk_xmhtml_source (GTK_XMHTML (html), file_contents->str);
+	
 	gtk_widget_show (html);
-	gtk_container_add (GTK_CONTAINER (window), html);
 	gtk_main ();
 	return 0;
 }

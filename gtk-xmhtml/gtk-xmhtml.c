@@ -31,6 +31,7 @@ static void gtk_xmhtml_map (GtkWidget *widget);
 static void gtk_xmhtml_draw (GtkWidget *widget, GdkRectangle *area);
 static gint gtk_xmhtml_expose (GtkWidget *widget, GdkEventExpose *event);
 static void gtk_xmhtml_add (GtkContainer *container, GtkWidget *widget);
+static void gtk_xmhtml_remove (GtkContainer *container, GtkWidget *widget);
 static void gtk_xmhtml_size_allocate (GtkWidget *widget, GtkAllocation *allocation);
 static void gtk_xmhtml_size_request (GtkWidget *widget, GtkRequisition *requisition);
 
@@ -217,6 +218,7 @@ gtk_xmhtml_new (void)
 	GTK_WIDGET(html)->allocation.width  = 200;
 	GTK_WIDGET(html)->allocation.height = 200;
 	html->initialized = 0;
+	gtk_xmhtml_source (html, "<body></body>");
 	return GTK_WIDGET (html);
 }
 
@@ -333,6 +335,7 @@ gtk_xmhtml_class_init (GtkXmHTMLClass *class)
 	widget_class->expose_event  = gtk_xmhtml_expose;
 	
 	container_class->add = gtk_xmhtml_add;
+	container_class->remove = gtk_xmhtml_remove;
 }
 
 static void
@@ -810,9 +813,9 @@ CreateHTMLWidget(XmHTMLWidget html)
 	/* Check if user provided a work area */
 	if(html->html.work_area == NULL)
 	{
-		html->html.work_area = draw_area = gtk_drawing_area_new ();
-		gtk_drawing_area_size (GTK_DRAWING_AREA (draw_area),
-				       40, 40);
+		draw_area = html->html.work_area = gtk_drawing_area_new ();
+		gtk_drawing_area_size (GTK_DRAWING_AREA (draw_area), 40, 40);
+		
 		gtk_xmhtml_manage (GTK_CONTAINER (html), draw_area);
 		
 		gtk_signal_connect (GTK_OBJECT (draw_area), "expose_event",
@@ -966,6 +969,35 @@ gtk_xmhtml_add (GtkContainer *container, GtkWidget *widget)
 	html->children = g_list_append (html->children, widget);
 }
 
+/*
+ * Remove a widget to this container, used by the forms code
+ */
+static void
+gtk_xmhtml_remove (GtkContainer *container, GtkWidget *widget)
+{
+	GtkXmHTML *html = GTK_XMHTML (container);
+	GList *children;
+	GtkWidget *child;
+	
+	children = html->children;
+	while (children){
+		child = children->data;
+		if (child == widget){
+			gtk_widget_unparent (widget);
+			html->children = g_list_remove_link (html->children, children);
+			g_list_free (children);
+			g_free (child);
+
+			if (GTK_WIDGET_VISIBLE (widget) && GTK_WIDGET_VISIBLE (container))
+				gtk_widget_queue_resize (GTK_WIDGET (container));
+			break;
+		}
+		children = children->next;
+	}
+	gtk_xmhtml_manage (container, widget);
+	html->children = g_list_append (html->children, widget);
+}
+
 static void
 gtk_map_item (GtkWidget *w)
 {
@@ -982,6 +1014,7 @@ gtk_xmhtml_map (GtkWidget *widget)
 	int i;
 	
 	g_return_if_fail (widget != NULL);
+
 	GTK_WIDGET_SET_FLAGS(widget, GTK_MAPPED);
 	
 	if (GTK_WIDGET_CLASS (parent_class)->map)
@@ -1152,10 +1185,6 @@ CheckScrollBars(XmHTMLWidget html)
 		dy += hsb_height;
 	if(html->html.needs_vsb && vsb_on_left == FALSE)
 		dx += vsb_width;
-
-	printf ("Poniendo: %d %d %d %d\n", sx+nx, sy+ny,
-					      Toolkit_Widget_Dim (html).width - dx,
-			      Toolkit_Widget_Dim (html).height - dy);
 
 	gtk_xmhtml_set_geometry (html->html.work_area, sx+nx, sy+ny,
 			      Toolkit_Widget_Dim (html).width - dx,
@@ -1622,8 +1651,6 @@ gtk_xmhtml_source (GtkXmHTML *html, char *html_source)
 	html->html.value = html->html.source;
 	html->parse_needed = parse;
 	gtk_xmhtml_try_sync (html);
-	if (!html->frozen && parse)
-		gtk_xmhtml_sync_parse (html);
 }
 
 void

@@ -1,3 +1,13 @@
+/*
+ * Gtk/XmHTML form support.  Koen/Miguel.
+ * 
+ * FIXME:
+ *   - Add support for configuring the background colors (allow_form_coloring)
+ *   - Add support for setting the sizes of the listboxes (gtk_list) and the
+ *     input lines (gtk_entry).
+ *   - Some reset routines are not finished
+ *   - The Text entry is not editable, do not know why.
+ */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -90,7 +100,84 @@ getInputType(String attributes)
 
 void _XmHTMLFormReset(XmHTMLWidget html, XmHTMLForm *entry)
 {
-	fprintf (stderr, "Fatal: function %s called\n", __FUNCTION__);
+	XmHTMLFormData *form = entry->parent;
+	XmHTMLForm *tmp, *option;
+	int i;
+
+	_XmHTMLDebug(12, ("forms.c: _XmHTMLFormReset start\n"));
+	for(tmp = form->components; tmp != NULL; tmp = tmp->next)
+	{
+		_XmHTMLDebug(12, ("\tchecking %s\n", tmp->name));
+
+		switch(tmp->type)
+		{
+			/* passwd doesn't have a default value, clear it */
+			case FORM_PASSWD:
+				_XmHTMLDebug(12, ("\t\temptying current password\n"));
+				gtk_entry_set_text (GTK_ENTRY (tmp->child), "");
+				if(tmp->content)
+				{
+					free(tmp->content);
+					tmp->content = NULL;
+				}
+				break;
+				
+			case FORM_TEXT:
+				_XmHTMLDebug(12, ("\t\tsetting XmNvalue to: %s\n", tmp->value));
+				gtk_entry_set_text (GTK_ENTRY (tmp->child), tmp->value);
+				break;
+
+			case FORM_TEXTAREA:
+				_XmHTMLDebug(12, ("\t\tsetting XmNvalue to: %s\n", tmp->value));
+				fprintf (stderr, "FIXME: form reset: we need to reset gtk_text\n");
+				break;
+
+			case FORM_CHECK:
+			case FORM_RADIO:
+				/* checkbuttons, set default state */
+				_XmHTMLDebug(12, ("\t\tsetting state to %s\n", 
+					tmp->selected ? "on" : "off"));
+				gtk_toggle_button_set_state (GTK_TOGGLE_BUTTON (tmp->w), tmp->selected);
+				/* store default selection state */
+				tmp->checked = (Boolean)tmp->selected;
+				break;
+
+			/* clear selection */
+			case FORM_FILE:
+				_XmHTMLDebug(12, ("\t\temptying current selection\n"));
+				gtk_entry_set_text (GTK_ENTRY (tmp->child), "");
+				break;
+
+			case FORM_SELECT:
+				if(tmp->multiple || tmp->size > 1)
+				{
+					GList *children;
+					GtkList *list = GTK_LIST (tmp->child);
+					
+					children = list->children;
+
+					for (i = 0; children; children = children->next)
+						gtk_list_unselect_item (list, i++);
+					
+					/* now see what options should be selected */
+					for(i = 0, option = tmp->options; option != NULL; option = option->next, i++)
+					{
+						if(option->selected)
+							gtk_list_select_item (list, i+1);
+					}
+				}
+				else
+				{
+					/* FIXME: reset option menu default settng */
+					fprintf (stderr, "FIXME: form-reset: should reset option menu\n");
+				}
+				break;
+			default:
+				break;
+		}
+	}
+	_XmHTMLDebug(12, ("forms.c: _XmHTMLFormReset end.\n"));
+
 }
 
 /*****
@@ -260,8 +347,8 @@ _XmHTMLFormActivate(XmHTMLWidget html, TEvent *event, XmHTMLForm *entry)
 						!opt->checked; opt = opt->next);
 
 					if(opt)
-					{
-						components[j].name  = current_entry->name;
+					{	
+					components[j].name  = current_entry->name;
 						components[j].type  = FORM_OPTION;	/* override */
 						components[j].value = opt->value; 
 						j++;
@@ -396,17 +483,168 @@ _XmHTMLFormActivate(XmHTMLWidget html, TEvent *event, XmHTMLForm *entry)
 	free(cbs.enctype);
 }
 
-void 
-_XmHTMLFreeForm(XmHTMLWidget html, XmHTMLFormData *form)
+/*****
+* Name: 		freeForm
+* Return Type: 	void
+* Description: 	releases all memory occupied by the given form component.
+* In: 
+*	entry:		form component to be released;
+*	being_de..: True if the parent HTML widget is being destroyed, in 
+*				which case don't destroy the widgets as they've already been
+*				destroyed by the time this is called via the
+*				DestroyCallback -- fix 15/12/97-01, offer
+* Returns:
+*	nothing.
+* Background:
+*	when the parent HTML widget is being destroyed, the call to XtMoveWidget
+*	triggers a call to XtConfigureWidget which in turn triggers a call to
+*	XConfigureWindow resulting in a BadWindow as the Window ID already
+*	has become invalid.
+*****/
+static void
+freeForm(XmHTMLForm *entry)
 {
-	fprintf (stderr, "Fatal: function %s called\n", __FUNCTION__);
+	XmHTMLForm *tmp;
+
+	while(entry != NULL)
+	{
+		tmp = entry->next;
+		if(entry->w)
+		{
+			/* destroy */
+			gtk_container_remove (GTK_CONTAINER (entry->w->parent), entry->w);
+			gtk_widget_destroy (entry->w);
+		}
+
+		if(entry->name)
+			free(entry->name);
+		if(entry->value)
+			free(entry->value);
+		if(entry->content)
+			free(entry->content);
+
+		/* call ourselves recursively to destroy all option members */
+		if(entry->options)
+			freeForm(entry->options);
+
+		free(entry);
+		entry = tmp;
+	}
 }
 
+void
+_XmHTMLFreeForm(XmHTMLWidget html, XmHTMLFormData *form)
+{
+	XmHTMLFormData *tmp;
+
+	while(form != NULL)
+	{
+		tmp = form->next;
+		freeForm(form->components);
+		if(form->action)
+			free(form->action);
+		if(form->enctype)
+			free(form->enctype);
+		free(form);
+		form = tmp;
+	}
+}
+
+/*****
+* Name:			_XmHTMLFormAddTextArea
+* Return Type: 	XmHTMLForm*
+* Description: 	creates a form <textarea> entry.
+* In: 
+*	html:		XmHTMLWidget id;
+*	attrib..:	attributes for this textarea;
+*	text:		default text for this entry.
+* Returns:
+*	a newly created entry.
+*****/
 XmHTMLForm*
 _XmHTMLFormAddTextArea(XmHTMLWidget html, String attributes, String text)
 {
-	fprintf (stderr, "Fatal: function %s called\n", __FUNCTION__);
-	return NULL;
+	static XmHTMLForm *entry;
+	int rows = 0, cols = 0;
+	TWidget parent;
+	GtkWidget *textw;
+	char *name;
+
+	/*****
+	* HTML form child widgets are childs of the workarea.
+	* Making them a direct child of the widget itself messes up scrolling.
+	*****/
+	parent = html->html.work_area;
+
+	/* these are *required* */
+	if(attributes == NULL)
+		return(NULL);
+
+	/* sanity, we must have a parent form */
+	if(current_form == NULL)
+	{
+		_XmHTMLWarning(__WFUNC__(html, "_XmHTMLFormAddTextArea"),
+			"Bad HTML form: <TEXTAREA> not within form.");
+	}
+
+	/* get form name. Mandatory so spit out an error if not found */
+	if((name = _XmHTMLTagGetValue(attributes, "name")) == NULL)
+	{
+		_XmHTMLWarning(__WFUNC__(html, "_XmHTMLFormAddTextArea"),
+			"Bad <TEXTAREA>: missing name attribute.");
+		return(NULL);
+	}
+
+	/* get form dimensions. Mandatory so spit out an error if not found. */
+	rows = _XmHTMLTagGetNumber(attributes, "rows", 0);
+	cols = _XmHTMLTagGetNumber(attributes, "cols", 0);
+	if(rows <= 0 || cols <= 0)
+	{
+		_XmHTMLWarning(__WFUNC__(html, "_XmHTMLFormAddTextArea"),
+			"Bad <TEXTAREA>: invalid or missing ROWS and/or COLS attribute.");
+	}
+
+	/* Create and initialise a new entry */
+	entry = (XmHTMLForm*)malloc(sizeof(XmHTMLForm));
+	(void)memset(entry, 0, sizeof(XmHTMLForm));
+
+	/* fill in appropriate fields */
+	entry->name      = name;
+	entry->parent    = current_form;
+	entry->type      = FORM_TEXTAREA;
+	entry->size      = cols;
+	entry->maxlength = rows;
+
+	/* FIXME: use document colors if allowed 
+	 *  if(html->html.allow_form_coloring)
+	 *  {
+	 *      XtSetArg(args[argc], XmNbackground, html->html.body_bg); argc++;
+	 *      XtSetArg(args[argc], XmNforeground, html->html.body_fg); argc++;
+	 * }
+	 */
+	textw = gtk_text_new (NULL, NULL);
+ 	gtk_container_add (GTK_CONTAINER (html), textw);
+	
+	gtk_text_freeze (GTK_TEXT (textw));
+	gtk_text_set_editable (GTK_TEXT (textw), TRUE);
+	
+	gtk_widget_realize (textw);
+	if (entry->value)
+		gtk_text_insert (GTK_TEXT (textw), NULL, &textw->style->white, NULL, entry->value, -1);
+	gtk_text_thaw (GTK_TEXT (textw));
+	
+	/* FIXME: get the height of a character and use that for the row/cols */
+	gtk_widget_set_usize (textw, 16 * cols, 20 * rows);
+	entry->w = textw;
+
+	/* safety */
+	entry->next = NULL;
+
+	/* do final stuff for this entry */
+	finalizeEntry(html, entry, True);
+
+	/* all done! */
+	return(entry);
 }
 
 void
@@ -490,10 +728,11 @@ _XmHTMLFormSelectAddOption(XmHTMLWidget html, XmHTMLForm *entry,
 	if(entry->multiple || entry->size > 1)
 	{
 		GtkWidget *listitem;
-		
+		GtkList *list = GTK_LIST (entry->child);
+
 		/* append item to bottom of list */
 		listitem = gtk_list_item_new_with_label (label);
-		gtk_container_add (GTK_CONTAINER (entry->w), listitem);
+		gtk_container_add (GTK_CONTAINER (list), listitem);
 		gtk_widget_show (listitem);
 
 		/* add this item to the list of selected items */
@@ -506,8 +745,7 @@ _XmHTMLFormSelectAddOption(XmHTMLWidget html, XmHTMLForm *entry,
 			* Since we are always inserting items at the end of the list
 			* we can simple select it by using 0 as the position arg
 			*/
-			gtk_list_select_item (GTK_LIST (entry->w),
-					      g_list_length (GTK_LIST (entry->w)->children));
+			gtk_list_select_item (GTK_LIST (list), g_list_length (GTK_LIST (list)->children));
 		}
 	}
 	else
@@ -519,7 +757,6 @@ _XmHTMLFormSelectAddOption(XmHTMLWidget html, XmHTMLForm *entry,
 		menu = gtk_object_get_user_data (GTK_OBJECT (entry->w));
 		menu_entry = gtk_menu_item_new_with_label (label);
 		gtk_widget_show (menu_entry);
-		printf ("Añadiendo: %s\n", label);
 		gtk_menu_append (GTK_MENU (menu), menu_entry);
 		item->w = menu_entry;
 
@@ -594,11 +831,19 @@ _XmHTMLFormAddSelect(XmHTMLWidget html, String attributes)
 	/* multiple select or more than one item visible: it's a listbox */
 	if(entry->multiple || entry->size > 1)
 	{
-		GtkWidget *list;
+		GtkWidget *list, *scrolled_win;
 		
 		parent = html->html.work_area;
 
-		entry->w = list = gtk_list_new ();
+		scrolled_win = gtk_scrolled_window_new (NULL, NULL);
+		gtk_widget_set_usize (scrolled_win, 80, 80);
+		list = gtk_list_new ();
+		gtk_container_add (GTK_CONTAINER (scrolled_win), list);
+		gtk_widget_show (list);
+		gtk_object_set_user_data (GTK_OBJECT (scrolled_win), list);
+		
+		entry->w = scrolled_win;
+		entry->child = list;
 		
 		/* FIXME: at least two items required for list boxes */
 		/* XtSetArg(args[argc], XmNvisibleItemCount,
@@ -871,17 +1116,16 @@ _XmHTMLFormAddInput(XmHTMLWidget html, String attributes)
 			case FORM_TEXT:
 			case FORM_PASSWD:
 				if (entry->maxlength != -1)
-					entry->w = gtk_entry_new_with_max_length (entry->size);
+					entry->child = gtk_entry_new_with_max_length (entry->size);
 				else
-					entry->w = gtk_entry_new ();
+					entry->child = gtk_entry_new ();
 				if (entry->value)
-					gtk_entry_set_text (GTK_ENTRY (entry->w), entry->value);
+					gtk_entry_set_text (GTK_ENTRY (entry->child), entry->value);
 
 				/* bug workaround: if I dont pack it then it does not redraw */
-				gtk_widget_show (entry->w);
-				hbox = gtk_hbox_new (0, 0);
-				gtk_box_pack_start (GTK_BOX (hbox), entry->w, 0, 0, 0);
-				entry->w = hbox;
+				gtk_widget_show (entry->child);
+				entry->w = gtk_hbox_new (0, 0);
+				gtk_box_pack_start (GTK_BOX (entry->w), entry->child, 0, 0, 0);
 				
 				/* FIXME:
 				 *    set columns,
@@ -921,6 +1165,7 @@ _XmHTMLFormAddInput(XmHTMLWidget html, String attributes)
 				else
 					input = gtk_entry_new ();
 				gtk_widget_show (GTK_WIDGET (input));
+				entry->child = input;
 
 				/* The button */
 				button = gtk_button_new_with_label (entry->value?entry->value:"Browse...");
@@ -956,10 +1201,30 @@ _XmHTMLFormAddInput(XmHTMLWidget html, String attributes)
 	return(entry);
 }
 
+/*****
+* Name:			_XmHTMLEndForm
+* Return Type: 	void
+* Description: 	invalidates the current parent form.
+* In: 
+*	html:		XmHTMLWidget id.
+* Returns:
+*	nothing.
+*****/
 void
 _XmHTMLEndForm(XmHTMLWidget html)
 {
-	fprintf (stderr, "Fatal: function %s called\n", __FUNCTION__);
+	current_entry = NULL;
+#ifdef DEBUG
+	_XmHTMLDebug(12, ("forms.c: _XmHTMLEndForm, listing for form %s.\n",
+		current_form->action));
+	for(current_entry = current_form->components; current_entry != NULL;
+		current_entry = current_entry->next)
+	{
+		_XmHTMLDebug(12, ("\tname = %s, type = %i\n", current_entry->name,
+			current_entry->type));
+	}
+#endif
+
 }
 
 void
