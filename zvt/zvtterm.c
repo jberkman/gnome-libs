@@ -927,6 +927,7 @@ zvt_term_size_allocate (GtkWidget     *widget,
 		grid_height) );
 
       /* is this right? Seems we have to update this... */
+      term->set_grid_size_pending = TRUE;
       term->grid_height = grid_height;
       term->grid_width = grid_width;
       
