@@ -5,14 +5,14 @@ CFLAGS = -I. -I$(GTK) -DVERSION=1 -g
 all: Parser.o LZWStream.o StringUtil.o parse.o plc.o \
 	readBitmap.o readFLG.o readXPM.o fonts.o paint.o \
 	format.o map.o quantize.o  XmHTML.o frames.o numbers.o \
-	readGIF.o readGIFplc.o colors.o gtk-error.o gtk-forms.o callbacks.o \
+	readGIF.o readGIFplc.o readFLG.o colors.o gtk-error.o gtk-forms.o callbacks.o \
 	images.o
 
 XmImage.o:
 
 HTMLOBJS = XmHTML.o gtk-error.o frames.o parse.o StringUtil.o fonts.o paint.o \
 	map.o gtk-forms.o callbacks.o format.o plc.o numbers.o readXPM.o \
-	readBitmap.o readGIF.o LZWStream.o readGIFplc.o colors.o images.o quantize.o
+	readBitmap.o readGIF.o LZWStream.o readGIFplc.o readFLG.o colors.o images.o quantize.o
 
 test: test.o
 	gcc -g -o xtest test.o $(HTMLOBJS)  -lXpm -lgtk -lgdk -lglib -lX11 -L/usr/X11R6/lib -lm

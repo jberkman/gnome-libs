@@ -36,8 +36,8 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
-* Revision 1.1  1997/11/28 03:38:59  gnomecvs
-* Work in progress port of XmHTML;  No, it does not compile, don't even try -mig
+* Revision 1.2  1997/12/18 22:13:20  unammx
+* Internal image format now compiles.
 *
 * Revision 1.1  1997/10/23 00:23:22  newt
 * Initial Revision
