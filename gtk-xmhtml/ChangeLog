@@ -1,3 +1,11 @@
+Fri Feb 20 18:14:15 1998  Miguel de Icaza  <miguel@nuclecu.unam.mx>
+
+	* XmHTML.c (_XmHTMLMoveToPos): Implement missing Gtk functionality
+	for updating the scrollbar position.
+
+	* gtk-xmhtml.c (AdjustVerticalScrollValue): Implement Gtk version
+	of this routine.
+
 Thu Feb 19 13:49:32 1998  Miguel de Icaza  <miguel@nuclecu.unam.mx>
 
 	* gtk-xmhtml.c (gtk_xmhtml_foreach): Add container foreach method

@@ -35,6 +35,15 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.22  1998/02/21 00:13:13  unammx
+* Fri Feb 20 18:14:15 1998  Miguel de Icaza  <miguel@nuclecu.unam.mx>
+*
+* 	* XmHTML.c (_XmHTMLMoveToPos): Implement missing Gtk functionality
+* 	for updating the scrollbar position.
+*
+* 	* gtk-xmhtml.c (AdjustVerticalScrollValue): Implement Gtk version
+* 	of this routine.
+*
 * Revision 1.21  1998/02/12 03:08:09  unammx
 * Merge to Koen's XmHTML 1.1.2 + following fixes:
 *
@@ -2796,6 +2805,22 @@ _XmHTMLMoveToPos(TWidget w, XmHTMLWidget html, int value)
 	* the scrollbar callback handler.
 	*/
 	XtVaSetValues(w, XmNvalue, value, NULL);
+#else
+	{
+		GtkAdjustment *wa;
+
+		if (w == html->html.vsb)
+			wa = GTK_ADJUSTMENT (html->vsba);
+		else if (w == html->html.hsb)
+			wa = GTK_ADJUSTMENT (html->hsba);
+		else
+			wa = 0;
+
+		if (wa){
+			wa->value = value;
+			gtk_range_slider_update (GTK_RANGE (w));
+		}
+	}
 #endif
 	
 	/* vertical scrolling */

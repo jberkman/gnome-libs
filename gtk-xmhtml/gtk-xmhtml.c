@@ -9,8 +9,15 @@
  *     bogus, they should be calls to ClearArea()
  */
 #define SetScrollBars(HTML)
-#define AdjustVerticalScrollValue(VSB,VAL)
 
+#define AdjustVerticalScrollValue(VSB,VAL) do { \
+	int max = 0, size = 0; \
+        max  = (int) (GTK_RANGE (VSB)->adjustment->upper); \
+        size = (int) (GTK_RANGE (VSB)->adjustment->page_size);\
+	if (VAL > (max - size)) \
+            VAL = (max - size); \
+        } while (0)
+		
 gint gtk_xmhtml_signals [GTK_XMHTML_LAST_SIGNAL] = { 0, };
 
 /*
@@ -762,22 +769,24 @@ gtk_xmhtml_focus (GtkWidget *widget, GdkEvent *event, gpointer closure)
 	return TRUE;
 }
 		
-static void
+static int
 horizontal_scroll (GtkAdjustment *adj, gpointer user_data)
 {
 	GtkXmHTML *html = GTK_XMHTML (user_data);
 
 	_XmHTMLDebug(1, ("XmHTML.c: ScrollCB, calling _XmHTMLMoveToPos\n"));
 	_XmHTMLMoveToPos (html->html.hsb, html, adj->value);
+	return 0;
 }
 
-static void
+static int
 vertical_scroll (GtkAdjustment *adj, gpointer user_data)
 {
 	GtkXmHTML *html = GTK_XMHTML (user_data);
 	
 	_XmHTMLDebug(1, ("XmHTML.c: ScrollCB, calling _XmHTMLMoveToPos\n"));
 	_XmHTMLMoveToPos (html->html.vsb, html, adj->value);
+	return 0;
 }
 
 static void
