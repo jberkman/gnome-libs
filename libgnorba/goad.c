@@ -398,7 +398,6 @@ goad_server_activate_with_id (GoadServerList *server_list,
   GoadServerList *my_servlist;
   GoadServer *slist;
   CORBA_Object retval = CORBA_OBJECT_NIL;
-  int i;
 
   g_return_val_if_fail(server_id, CORBA_OBJECT_NIL);
   g_return_val_if_fail(!((flags & GOAD_ACTIVATE_EXISTING_ONLY)
@@ -422,7 +421,7 @@ goad_server_activate_with_id (GoadServerList *server_list,
   slist = g_hash_table_lookup(my_servlist->by_goad_id, server_id);
 
   if(slist)
-    retval = real_goad_server_activate(&slist[i], flags, params, my_servlist);
+    retval = real_goad_server_activate(slist, flags, params, my_servlist);
 
  errout:
   if(!server_list)
