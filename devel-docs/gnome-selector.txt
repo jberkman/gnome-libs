@@ -1,0 +1,119 @@
+[The whole GnomeSelector API is still in alpha stage; any comments,
+ suggestions, whatever are very welcome.]
+
+The GnomeSelector has four lists:
+
+- the file list
+- the default file list
+- the directory list
+- the default directory list
+
+Normally, everything which is in the file list will be displayed
+in the selector.
+
+* Async handles
+
+The GnomeSelectorAsyncHandle is an opaque object which can be used
+to control async operations.
+
+Whenever you start an async operation, this will create such a
+GnomeSelectorAsyncHandle for you; you can use this async handle to
+cancel the operation by calling gnome_selector_cancel_async_operation().
+
+Internally, a new async handler is created by
+
+    typedef void (*GnomeSelectorAsyncFunc)
+            (GnomeSelector            *selector,
+             GnomeSelectorAsyncHandle *async_handle,
+             GnomeSelectorAsyncType    async_type,
+             const char               *uri,
+             GError                   *error,
+             gboolean                  success,
+             gpointer                  user_data);
+
+    GnomeSelectorAsyncHandle *
+    _gnome_selector_async_handle_get
+            (GnomeSelector            *selector,
+             GnomeSelectorAsyncType    async_type,
+             const char               *uri,
+             GnomeSelectorAsyncFunc    async_func,
+             gpointer                  user_data);
+
+The `uri', `async_type' and `user_data' parameters are passed
+to the callback function which is invoked when the async operation
+is completed. You may use GNOME_SELECTOR_ASYNC_TYPE_UNSPECIFIED for
+the `async_type' and pass NULL as `uri', they just exist to make it
+more convenient and easier to write a callback function.
+
+The callback function is guaranteed to be called exactly once and
+it must free the `user_data'.
+
+* Async internals - inside your async handler function (in GnomeSelector
+                    or a derived class)
+
+When you successfully finished your async operation, you should call
+
+    GnomeSelectorAsyncHandle *
+    _gnome_selector_async_handle_completed
+            (GnomeSelectorAsyncHandle *async_handle,
+             gboolean                  success);
+
+which will store `success' (if the async handle isn't completed yet), mark
+the async handle as completed and call _gnome_selector_async_handle_destroy()
+if there are no pending sub-operations (see below).
+
+If there was an error, you should use
+
+    GnomeSelectorAsyncHandle *
+    _gnome_selector_async_handle_set_error
+            (GnomeSelector            *selector,
+             GError                   *error);
+
+This'll store the error message (but don't override any previously set one) and
+set the success field to FALSE.
+
+Destruction of the async handle takes place in
+
+    GnomeSelectorAsyncHandle *
+    _gnome_selector_async_handle_destroy
+            (GnomeSelectorAsyncHandle *async_handle);
+
+* Async internal - async sub-operations
+
+Sometimes you may want to start one ore more async operations inside your
+async handler (for instance if your async handler is for reading a directory
+and you want to asynchronously read all the files in that dir).
+
+This is done with
+
+    GnomeSelectorAsyncHandle *
+    _gnome_selector_async_handle_add
+            (GnomeSelectorAsyncHandle *async_handle,
+             gpointer                  async_data,
+             GDestroyNotify            async_data_destroy);
+
+This function does two things:
+
+* it makes sure that the `async_data_destroy' function is called when
+  the async handler is destroyed.
+
+* it adds a sub-operation to the async handle.
+
+When you call _gnome_selector_async_handle_completed() and there are any
+such sub-operations running, this will only mark the async handle as completed,
+but it won't destroy it.
+
+You must call
+
+    GnomeSelectorAsyncHandle *
+    _gnome_selector_async_handle_remove
+            (GnomeSelectorAsyncHandle *async_handle,
+             gpointer                  async_data);
+
+when your sub-operation is completed to remove it from the async handle again;
+this'll automatically destroy the async handle if it was the last one and it
+has been marked as completed.
+
+
+December 5, 2000
+Martin Baulig <baulig@suse.de>
