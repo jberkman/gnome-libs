@@ -455,6 +455,9 @@ zvt_term_destroy (GtkObject *object)
   term = ZVT_TERM (object);
   zp = gtk_object_get_data (GTK_OBJECT (term), "_zvtprivate");
 
+  if (term->timeout_id != -1)
+    gtk_timeout_remove(term->timeout_id);
+
   zvt_term_closepty (term);
   vtx_destroy (term->vx);
 

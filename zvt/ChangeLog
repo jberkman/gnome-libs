@@ -1,3 +1,9 @@
+1999-05-10  Michael Zucchi  <zucchi@zzedzone.mmc.com.au>
+
+	* zvtterm.c (zvt_term_destroy): Patch to clean up the timeout
+	handler if it is still running, from Timo Sirainen
+	<cras@fun157.kivikko.hoas.fi>.
+
 1999-05-07  Michael Zucchi  <zucchi@zzedzone.mmc.com.au>
 
 	* zvtterm.c (zvt_term_button_press): Use a better extend-select
