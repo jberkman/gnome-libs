@@ -932,7 +932,7 @@ zvt_term_key_press (GtkWidget *widget, GdkEventKey *event)
   d(printf("keyval = %04x state = %x\n", event->keyval, event->state));
   switch (event->keyval) {
   case GDK_BackSpace:
-    *p++ = '\177';
+    *p++ = 8;
     break;
   case GDK_KP_Right:
   case GDK_Right:
@@ -954,8 +954,10 @@ zvt_term_key_press (GtkWidget *widget, GdkEventKey *event)
   case GDK_Insert:
     p+=sprintf (p, "\033[2~");
     break;
-  case GDK_KP_Delete:
   case GDK_Delete:
+    *p++ = '\177';
+    break;
+  case GDK_KP_Delete:
     p+=sprintf (p, "\033[3~");
     break;
   case GDK_KP_Home:
