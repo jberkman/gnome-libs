@@ -4,9 +4,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: gnome-libs 0.30\n"
-"POT-Creation-Date: 1998-12-13 11:39+0100\n"
-"PO-Revision-Date: 1998-12-13 11:45+0100\n"
+"Project-Id-Version: gnome-libs 0.99\n"
+"POT-Creation-Date: 1998-12-14 21:43+0100\n"
+"PO-Revision-Date: 1998-12-14 21:55+0100\n"
 "Last-Translator: Kjartan Maraas <kmaraas@fib.hl.no>\n"
 "Language-Team: Norwegian <no@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -102,8 +102,7 @@ msgstr "Informasjon om GNOME hello"
 msgid "Discard session"
 msgstr "Avbryt sesjon"
 
-#: gnome-hello/gnome-hello-4-SM.c:89 libgnomeui/gnome-client.c:680
-#: libgnomeui/gnome-client.c:682
+#: gnome-hello/gnome-hello-4-SM.c:89 libgnomeui/gnome-client.c:745
 msgid "ID"
 msgstr "ID"
 
@@ -227,65 +226,45 @@ msgstr "Forfattere: "
 msgid "About"
 msgstr "Om"
 
-#: libgnomeui/gnome-app-util.c:86
+#: libgnomeui/gnome-app-util.c:93
 msgid " (press return)"
 msgstr " (trykk linjeskift)"
 
-#: libgnomeui/gnome-app-util.c:128
+#: libgnomeui/gnome-app-util.c:136
 msgid "ERROR: "
 msgstr "FEIL: "
 
-#: libgnomeui/gnome-app-util.c:165
+#: libgnomeui/gnome-app-util.c:173
 msgid "Warning: "
 msgstr "Advarsel:"
 
-#: libgnomeui/gnome-app-util.c:297
+#: libgnomeui/gnome-app-util.c:305
 msgid "y"
 msgstr "y"
 
-#: libgnomeui/gnome-app-util.c:298
+#: libgnomeui/gnome-app-util.c:306
 msgid "yes"
 msgstr "ja"
 
-#: libgnomeui/gnome-app-util.c:301
+#: libgnomeui/gnome-app-util.c:309
 msgid "n"
 msgstr "n"
 
-#: libgnomeui/gnome-app-util.c:302
+#: libgnomeui/gnome-app-util.c:310
 msgid "no"
 msgstr "nei"
 
-#: libgnomeui/gnome-app-util.c:341
+#: libgnomeui/gnome-app-util.c:349
 msgid " (yes or no)"
 msgstr " (ja eller nei)"
 
-#: libgnomeui/gnome-app-util.c:342
+#: libgnomeui/gnome-app-util.c:350
 msgid "  - OK? (yes or no)"
 msgstr "  - OK? (ja eller nei)"
 
-#: libgnomeui/gnome-app-util.c:667
+#: libgnomeui/gnome-app-util.c:676
 msgid "Progress"
 msgstr "Fremgang"
-
-#: libgnomeui/gnome-app.c:414 libgnomeui/gnome-app.c:440
-msgid "Top"
-msgstr "Øverst"
-
-#: libgnomeui/gnome-app.c:415 libgnomeui/gnome-app.c:441
-msgid "Bottom"
-msgstr "Nederst"
-
-#: libgnomeui/gnome-app.c:442
-msgid "Left"
-msgstr "Venstre"
-
-#: libgnomeui/gnome-app.c:443
-msgid "Right"
-msgstr "Høyre"
-
-#: libgnomeui/gnome-app.c:444
-msgid "Configure toolbar"
-msgstr "Konfigurer verktøyslinje"
 
 #: libgnomeui/gnome-calculator.c:932 libgnomeui/gnome-calculator.c:1087
 msgid "DEG"
@@ -456,24 +435,28 @@ msgstr "="
 msgid "INV"
 msgstr "INV"
 
-#: libgnomeui/gnome-client.c:680
+#: libgnomeui/gnome-client.c:745
 msgid "Specify session management ID"
 msgstr "Spesifiser ID for sesjonskontroll"
 
-#: libgnomeui/gnome-client.c:682
-msgid "Specify ID of cloned client"
-msgstr "Spesifiser ID for klonet klient"
+#: libgnomeui/gnome-client.c:747
+msgid "Specify prefix of saved configuration"
+msgstr "Spesifiser prefiks for lagret konfigurasjon"
 
-#: libgnomeui/gnome-client.c:684
+#: libgnomeui/gnome-client.c:747
+msgid "PREFIX"
+msgstr "PREFIKS"
+
+#: libgnomeui/gnome-client.c:749
 msgid "Disable connection to session manager"
 msgstr "Fjern forbindelse til sesjonsbehandler"
 
 #. Register commandline options.
-#: libgnomeui/gnome-client.c:812
+#: libgnomeui/gnome-client.c:870
 msgid "Session management options"
 msgstr "Alternativer for sesjonskontroll"
 
-#: libgnomeui/gnome-client.c:2118
+#: libgnomeui/gnome-client.c:2121
 msgid "Cancel Logout"
 msgstr "Avbryt utlogging"
 
@@ -617,19 +600,23 @@ msgstr "Last Gtk+ tilleggsmoduler"
 msgid "MODULE"
 msgstr "MODUL"
 
-#: libgnomeui/gnome-messagebox.c:99
+#: libgnomeui/gnome-messagebox.c:99 libgnomeui/gnome-messagebox.c:206
 msgid "Information"
 msgstr "Informasjon"
 
-#: libgnomeui/gnome-messagebox.c:108
+#: libgnomeui/gnome-messagebox.c:108 libgnomeui/gnome-messagebox.c:215
 msgid "Warning"
 msgstr "Advarsel"
 
-#: libgnomeui/gnome-messagebox.c:126
+#: libgnomeui/gnome-messagebox.c:117 libgnomeui/gnome-messagebox.c:224
+msgid "Error"
+msgstr "Feil"
+
+#: libgnomeui/gnome-messagebox.c:126 libgnomeui/gnome-messagebox.c:233
 msgid "Question"
 msgstr "Spørsmål"
 
-#: libgnomeui/gnome-messagebox.c:135
+#: libgnomeui/gnome-messagebox.c:135 libgnomeui/gnome-messagebox.c:242
 msgid "Message"
 msgstr "Beskjed"
 
