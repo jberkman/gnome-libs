@@ -37,3 +37,26 @@ kinds of contributions are accepted. If at all possible, please use
 CVS to get the latest development version of gnome; the README file
 has the CVSROOT information.
 
+===========================================================================
+				 FAQ
+
+Q1. `aclocal' complains that there is no AM_ACLOCAL_INCLUDES?
+
+A1. You invoked `aclocal' without `-I macros'.  The `macros' subdir
+contains other macros that are used for `gnome' configure.in files.
+By omitting the `-I macros' you will not pick up those definitions.
+
+The definition of AM_ACLOCAL_INCLUDES is also in the `macros' subdir,
+and this macro is named such that `aclocal' will complain if its
+definition is not found.
+
+If you use the `autogen.sh' script, all this is taken care of for you.
+
+Q2. What is AM_ACLOCAL_INCLUDES
+
+A2. This macro ensures that aclocal is invoked with `-I macros'.
+
+    - One way it does that is it sets the $(ACLOCAL) Makefile variable
+    to included `-I macros'.
+
+    - The other way is to cause Q1 ;-).
