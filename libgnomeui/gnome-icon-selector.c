@@ -521,23 +521,26 @@ get_selection_handler (GnomeSelector *selector)
 	GnomeIconSelector *iselector;
 	GnomeIconList *gil;
 	GSList *selection = NULL;
-	GList *c;
+	GList *list, *c;
 
 	g_return_val_if_fail (selector != NULL, NULL);
 	g_return_val_if_fail (GNOME_IS_ICON_SELECTOR (selector), NULL);
 
 	iselector = GNOME_ICON_SELECTOR (selector);
 	gil = GNOME_ICON_LIST (iselector->_priv->icon_list);
+	list = gnome_icon_list_get_selection (gil);
 
 	g_message (G_STRLOC);
 
-	for (c = gil->selection; c; c = c->next) {
-		GSList *total_list, *item;
+	for (c = list; c; c = c->next) {
+		guint pos = GPOINTER_TO_INT (c->data);
+		GSList *total_list;
+		gchar *filename;
 
 		total_list = gnome_selector_get_file_list (selector, TRUE);
-		item = g_slist_nth (total_list, GPOINTER_TO_INT (c->data));
+		filename = gnome_icon_list_get_icon_data (gil, pos);
 
-		selection = g_slist_prepend (selection, item->data);
+		selection = g_slist_prepend (selection, filename);
 	}
 
 	return g_slist_reverse (selection);
