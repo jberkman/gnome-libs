@@ -54,13 +54,19 @@ AC_LINK_FILES($nls_cv_header_libgt, $nls_cv_header_intl)
 AC_CHECK_LIB(m, main)
 
 AC_CHECK_HEADERS(dlfcn.h dl.h)
+
+DL_LIB=
+AC_CHECK_FUNCS(dlopen,,[
 AC_CHECK_LIB(dl, dlopen, DL_LIB="-ldl",[
 AC_CHECK_LIB(dld, shl_load, DL_LIB="-ldld",[
 AC_CHECK_FUNCS(dlopen, DL_LIB="",
 AC_MSG_ERROR(Dynamic linking is not available on this platform.  Some apps,
 like panel, will not run properly.))
-])])
+])])])
+oLIBS="$LIBS"
+LIBS="$LIBS $DL_LIB"
 AC_CHECK_FUNCS(dlerror,,)
+LIBS="$oLIBS"
 AC_SUBST(DL_LIB)
 
 AC_CHECK_FUNCS(strerror gethostbyname setfsgid setenv putenv)
