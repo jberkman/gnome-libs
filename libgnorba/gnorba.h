@@ -109,6 +109,7 @@ typedef enum {
 					       * version.
 					       */
 	GOAD_ACTIVATE_NEW_ONLY = 1 << 3,      /* No lookup in name service. */
+	GOAD_ACTIVATE_ASYNC = 1 << 4 /* Just make sure that the object is running */
 } GoadActivationFlags;
 
 typedef struct {

@@ -828,7 +828,7 @@ goad_server_activate_factory(GoadServer *sinfo,
   GNOME_stringlist sl;
 
   factory_obj = goad_server_activate_with_id(slist, sinfo->location_info,
-					     flags, NULL);
+					     flags & ~(GOAD_ACTIVATE_ASYNC), NULL);
 
   if(factory_obj == CORBA_OBJECT_NIL)
     return CORBA_OBJECT_NIL;
@@ -882,9 +882,12 @@ goad_server_activate_exe(GoadServer *sinfo,
     int     status;
     FILE*   iorfh;
     char *do_srv_output;
-    
+
     close(iopipes[1]);
     iorfh = fdopen(iopipes[0], "r");
+
+    if(flags & GOAD_ACTIVATE_ASYNC)
+      goto no_wait;
 
     do_srv_output = getenv("GOAD_DEBUG_EXERUN");
     while (fgets(iorbuf, sizeof(iorbuf), iorfh) && strncmp(iorbuf, "IOR:", 4)) {
@@ -901,20 +904,8 @@ goad_server_activate_exe(GoadServer *sinfo,
     if (iorbuf[strlen(iorbuf)-1] == '\n')
       iorbuf[strlen(iorbuf)-1] = '\0';
     retval = CORBA_ORB_string_to_object(gnome_orbit_orb, iorbuf, ev);
-#if 0
-    if (ev->_major != CORBA_NO_EXCEPTION) {
-      g_warning("goad_server_activate_exe: %s %d:", __FILE__, __LINE__);
-      switch( ev->_major ) {
-      case CORBA_SYSTEM_EXCEPTION:
-	g_warning("syse	x: %s.\n", CORBA_exception_id(ev));
-      case CORBA_USER_EXCEPTION:
-	g_warning("usrex: %s.\n", CORBA_exception_id( ev ) );
-      default:
-	break;
-      }
-      retval = CORBA_OBJECT_NIL;
-    }
-#endif
+
+  no_wait:
     fclose(iorfh);
     waitpid(childpid, &status, 0);
   } else if(fork()) {
