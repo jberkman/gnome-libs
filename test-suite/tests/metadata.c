@@ -21,8 +21,9 @@
 #include <unistd.h>
 #include <string.h>
 
-/* This variable is used for testing purposes only.  */
+/* These variable are used for testing purposes only.  */
 extern char *gnome_metadata_db_file_name;
+extern char *gnome_metadata_app_dir;
 
 #define Z "zardoz"
 #define Y "yadda"
@@ -41,6 +42,8 @@ main (int argc, char *argv[])
 
 	gnome_metadata_db_file_name = "test.db";
 	unlink (gnome_metadata_db_file_name);
+
+	gnome_metadata_app_dir = "./data";
 
 	/* Populate the database.  */
 	gnome_metadata_type_add (PLAIN, "frob-key", strlen (W) + 1, W);
@@ -96,6 +99,16 @@ main (int argc, char *argv[])
 	gnome_metadata_rename ("foo.txt", "delta");
 	gnome_metadata_get ("foo.txt", "frob-key", &len, &buffer);
 	printf ("now foo.txt has %s\n", buffer);
+	free (buffer);
+
+	/* The following results should be pulled out of the metadata
+	   files.  */
+	gnome_metadata_get ("foo.spud", "pigname", &len, &buffer);
+	printf ("foo.spud has pig name %s\n", buffer);
+	free (buffer);
+
+	gnome_metadata_get ("foo.spud", "dogname", &len, &buffer);
+	printf ("foo.spud has dog name %s\n", buffer);
 	free (buffer);
 
 	return 0;
