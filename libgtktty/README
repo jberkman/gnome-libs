@@ -7,8 +7,10 @@ This document includes:
 
 * General information
 
-GemVt is the GNU Emulator of a Virtual Terminal for the X Window System
-written on top of the Gtk+ toolkit.
+Libgtktty is an additional library for the Gtk+ toolkit. The
+first intention for writing this library was to provide a
+basic framework for tty like displays in a Gtk+ widget for
+the GemVt program (GNU Emulator of a Virtual Terminal).
 
 This is beta software.
 
@@ -19,13 +21,9 @@ The Gtk+ widgets GtkTerm, GtkTty (together with GtkEmuVt) and GtkLed are
 released under the terms of the GNU LGPL (GNU LIBRARY GENERAL PUBLIC LICENSE).
 Read the file COPYING.LIB for more information.
 
-The rest of the code is released under the terms of the GNU GPL (GNU GENERAL
-PUBLIC LICENSE).
-Read the file COPYING for more information.
-
 * Requirements
 
-The GemVt program along with it's widgets depends on a couple of extra packages
+The widgets of libgtktty depend on a couple of extra packages
 for working properly:
 
 	- The latest Gtk+: This is the release of the Gtk+ toolkit.
@@ -34,9 +32,10 @@ for working properly:
 	  ftp://ftp.gimp.org/pub/gtk/
 
 
-* Getting GemVt
+* Getting GemVt/Libgtktty
 
-GemVt has it's own web page from which you can get the latest release:
+GemVt has it's own web page from which you can also get the latest release
+of libgtktty:
 
 http://www.SoftHome.net/pub/users/timj/gemvt/index.htm
 

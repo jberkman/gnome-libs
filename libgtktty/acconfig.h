@@ -10,26 +10,15 @@
  */
 #undef	HAVE_TERMCAP_LINUX
 
-#undef	HAVE_LIBGLE
-
-/* build for the GNOME desktop project ?
- */
-#undef	HAVE_GNOME
-
 #undef	PACKAGE
-#undef	GEMVT_MAJOR
-#undef	GEMVT_REVISION
-#undef	GEMVT_PATCHLEVEL
-#undef	GEMVT_VERSION
-#undef	LIBGEMVT_MAJOR
-#undef	LIBGEMVT_REVISION
-#undef	LIBGEMVT_AGE
-#undef	LIBGEMVT_VERSION
+#undef	LIBGTKTTY_MAJOR
+#undef	LIBGTKTTY_REVISION
+#undef	LIBGTKTTY_AGE
+#undef	LIBGTKTTY_VERSION
 #undef	VERSION
 
 @BOTTOM@
 
 /* general defines
  */
-#define	PRGNAME		"GemVT"
-#define	PRGNAME_LONG 	PRGNAME " - GNU Emulator of a Virtual Terminal"
+#define	LIBNAME		"LibGtkTty"

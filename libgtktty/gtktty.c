@@ -741,7 +741,7 @@ gtk_tty_destroy (GtkObject *object)
     update_led = list->data;
     list = list->next;
     
-    gtk_object_unref (GTK_OBJECT (update_led->led));
+    gtk_widget_unref (GTK_WIDGET (update_led->led));
     g_free (update_led);
   }
   g_list_free (tty->update_leds);
@@ -824,7 +824,7 @@ gtk_tty_add_update_led (GtkTty		   *tty,
   update_led->led = led;
   update_led->mask = mask;
   
-  gtk_object_ref (GTK_OBJECT (update_led->led));
+  gtk_widget_ref (GTK_WIDGET (update_led->led));
   
   tty->update_leds = g_list_append (tty->update_leds, update_led);
   

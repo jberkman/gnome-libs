@@ -1,8 +1,3 @@
-rename gtk_menu_position_func
-
-configure:
-*	HAVE_TERMCAP_LINUX
-
 GtkVtEmu:
 *	have gtk_vtemu_set_cursor or the like...
 
@@ -12,6 +7,7 @@ GtkTty:
 *	make '\e' adding on <ALT> keys configurable...
 *	save the keystates within the class
 *	implement leds change and report function...
+*	kill child -9 if GtkObject::destroy is invoked
 
 GtkTerm:
 *	area copying relies on expose events, but they appear asyncronous

@@ -25,7 +25,7 @@
 #include <gtk/gtkselection.h>
 #include <gdk/gdkkeysyms.h>
 #include <string.h>
-#include <stdio.h>
+
 
 
 /* --- limits & defaults --- */

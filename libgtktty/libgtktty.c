@@ -1,8 +1,7 @@
 /* GTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
- * libGemVt: include file for GtkLed GtkTerm GtkTty and GtkVtEmu which
- * are distributed apart from Gtk+ for the moment.
+ * LibGtkTty: Terminal emulation widgets
  * Copyright (C) 1997 Tim Janik
  *
  * This library is free software; you can redistribute it and/or
@@ -19,45 +18,13 @@
  * License along with this library; if not, write to the Free
  * Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
-#ifndef __LIBGEMVT_H__
-#define __LIBGEMVT_H__
+#include	"config.h"
+
+#define	__LIBGTKTTY_OMIT_INCLUDES__
+#include	"libgtktty.h"
 
 
-#include "gtk/gtk.h"
-
-#ifndef __LIBGEMVT_OMIT_INCLUDES__
-#define	__LIBGEMVT_OMIT_INCLUDES__
-
-#include "gemvt/gtkled.h"
-#include "gemvt/gtkterm.h"
-#include "gemvt/gtktty.h"
-#include "gemvt/gtkvtemu.h"
-
-#endif	/* __LIBGEMVT_OMIT_INCLUDES__ */
-
-
-#ifdef __cplusplus
-extern "C" {
-#pragma }
-#endif /* __cplusplus */
-
-
-
-
-extern	const guint	gvt_libversion_major;
-extern	const guint	gvt_libversion_revision;
-extern	const guint	gvt_libversion_age;
-extern	const gchar	*gvt_libversion;
-
-
-
-
-
-
-#ifdef __cplusplus
-#pragma {
-}
-#endif /* __cplusplus */
-
-
-#endif	/* __LIBGEMVT_H__ */
+const guint     gtktty_libversion_major = LIBGTKTTY_MAJOR;
+const guint     gtktty_libversion_revision = LIBGTKTTY_REVISION;
+const guint     gtktty_libversion_age = LIBGTKTTY_AGE;
+const gchar     *gtktty_libversion = LIBGTKTTY_VERSION;
