@@ -84,6 +84,7 @@ appear to be:
 EOF
 
     for dir in `echo $module_dirs | sed 's/:/ /g'`; do
+	echo "trying dir $dir"
 	conf_shs=`cd $dir; echo *Conf.sh`
 	if test "x$conf_shs" = x || test "x$conf_shs" = 'x*Conf.sh'; then :
 	else
@@ -191,7 +192,7 @@ while test $# -gt 0; do
 	;;
     *)
         error=true
-        for dir in `echo $module_dirs | sed 's/:/ /'`; do
+        for dir in `echo $module_dirs | sed 's/:/ /g'`; do
    	    cnf_sh=${dir}/${1}Conf.sh
 	    if test -f ${cnf_sh}; then
     		. ${cnf_sh}
