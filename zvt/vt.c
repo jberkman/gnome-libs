@@ -635,13 +635,13 @@ vt_cleareos(struct vt_em *vt)
     arg = atoi(vt->args[0]);
 
   switch(arg) {
-  case 0:			/* clear top of screen to here */
-    vt_clear_line_portion(vt, 0, vt->cursorx);
-    vt_clear_lines(vt, 0, vt->cursory);
-    break;
-  case 1:			/* clear here to end of screen */
+  case 0:			/* clear here to end of screen */
     vt_clear_line_portion(vt, vt->cursorx, vt->this->width);
     vt_clear_lines(vt, vt->cursory+1, vt->height);
+    break;
+  case 1:			/* clear top of screen to here */
+    vt_clear_line_portion(vt, 0, vt->cursorx);
+    vt_clear_lines(vt, 0, vt->cursory);
     break;
   case 2:			/* clear the whole damn thing */
     vt_clear_lines(vt, 0, vt->height);
