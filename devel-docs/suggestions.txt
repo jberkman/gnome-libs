@@ -4,28 +4,6 @@ Suggestions for enhancing the user experience in your application:
 Menus:
 ------
 
-   - For standard menu items (Save, Save As, Close, Quit, etc), use
-     the macros defined in gnome-app-helper.h, e.g.
-
-	     GNOMEUIINFO_MENU_EXIT_ITEM(CB, DATA)
-
-     except for New where the define is:
-
-	     GNOMEUIINFO_MENU_NEW_ITEM(LABEL,TIP,CB,DATA)
-
-     Where LABEL is the the text which appears in the menu for this
-     menu item.  You should put LABEL in the form of N_("_New
-     Document"), or whatever's appropriate for your application.  TIP
-     should be the description of this menu item's function,
-     e.g. N_("Create a new document").
-
-     The standard print menu item should immediately print the
-     document without popping up a dialog.  If the user wants a
-     dialog, he will use the print_setup menu item.
-
-   - For some standard toplevel menus (File, Edit, Help, etc), you
-     should use the macros GNOMEUIINFO_*_MENU(tree).
-
    - The order of the toplevel menus should be: 
 
 	  File, <any mdi child menus>, Edit, View, Options, Windows,
@@ -49,10 +27,36 @@ Menus:
      user's preferences should be configurable via the File/Preferences
      menu item.
 
+   - For standard menu items (Save, Save As, Close, Quit, etc), use
+     the macros defined in gnome-app-helper.h, e.g.
+
+	     GNOMEUIINFO_MENU_EXIT_ITEM(CB, DATA)
+
+     except for New where the define is:
+
+	     GNOMEUIINFO_MENU_NEW_ITEM(LABEL,TIP,CB,DATA)
+
+     Where LABEL is the the text which appears in the menu for this
+     menu item.  You should put LABEL in the form of N_("_New
+     Document"), or whatever's appropriate for your application.  TIP
+     should be the description of this menu item's function,
+     e.g. N_("Create a new document").
+
+     The standard print menu item should immediately print the
+     document without popping up a dialog.  If the user wants a
+     dialog, he will use the print_setup menu item.
+
+   - For some standard toplevel menus (File, Edit, Help, etc), you
+     should use the macros GNOMEUIINFO_*_MENU(tree).
+
    - For the help menu, you should have this:
      GNOMEUIINFO_HELP(app_name),
      GNOMEUIINFO_MENU_ABOUT_ITEM(cb, data),
      GNOMEUIINFO_END
+
+   - Use the GnomeAppBar in your application, and provide hints for
+     all of your menu items, including submenus.  See balsa and
+     gnumeric for examples.
 
 Dialogs
 -------
