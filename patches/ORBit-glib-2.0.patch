@@ -1,24 +1,64 @@
-diff -U2 -r ORBit/configure.in ../HEAD/ORBit/configure.in
---- ORBit/configure.in	Mon Aug 28 12:53:19 2000
-+++ ../HEAD/ORBit/configure.in	Thu Aug 31 00:46:01 2000
-@@ -100,5 +100,5 @@
+Index: configure.in
+===================================================================
+RCS file: /cvs/gnome/ORBit/configure.in,v
+retrieving revision 1.98.4.4
+diff -u -p -r1.98.4.4 configure.in
+--- configure.in	2000/07/25 22:41:59	1.98.4.4
++++ configure.in	2000/09/01 01:55:13
+@@ -99,14 +99,14 @@ AC_DEFINE_UNQUOTED(INDENT_COMMAND,"$INDE
+ dnl Checks for libraries.
  
  # Make sure that we have glib>=1.1.16
 -AM_PATH_GLIB(1.2.1,,
 +AM_PATH_GLIB_2_0(1.3.1,,
  AC_MSG_ERROR([
  *** GLIB 1.2.1 or better is required. The latest version of GLIB
-diff -U2 -r ORBit/libIDL/configure.in ../HEAD/ORBit/libIDL/configure.in
---- ORBit/libIDL/configure.in	Mon Aug 28 12:53:23 2000
-+++ ../HEAD/ORBit/libIDL/configure.in	Mon Aug 28 13:22:30 2000
-@@ -20,5 +20,5 @@
+ *** is always available from ftp://ftp.gtk.org/.]))
+ 
+-GMODULE_CFLAGS=`glib-config --cflags gmodule`
++GMODULE_CFLAGS=`glib-config-2.0 --cflags gmodule`
+ AC_SUBST(GMODULE_CFLAGS)
+-GMODULE_LIBS=`glib-config --libs gmodule`
++GMODULE_LIBS=`glib-config-2.0 --libs gmodule`
+ AC_SUBST(GMODULE_LIBS)
+ 
+ AC_PROG_YACC
+Index: orbit-config.in
+===================================================================
+RCS file: /cvs/gnome/ORBit/orbit-config.in,v
+retrieving revision 1.7
+diff -u -p -r1.7 orbit-config.in
+--- orbit-config.in	1999/10/08 04:49:07	1.7
++++ orbit-config.in	2000/09/01 01:55:13
+@@ -87,8 +87,8 @@ while test $# -gt 0; do
+        	;;
+ 
+     client|server)
+-	the_libs="$the_libs -L$libdir -lORBit -lIIOP -lORBitutil `glib-config --libs` @LIBS@ -lm"
+-	the_flags="$the_flags `glib-config --cflags` -I$includedir "
++	the_libs="$the_libs -L$libdir -lORBit -lIIOP -lORBitutil `glib-config-2.0 --libs` @LIBS@ -lm"
++	the_flags="$the_flags `glib-config-2.0 --cflags` -I$includedir "
+ 	;;
+ 
+    --use-service=*)
+Index: libIDL/configure.in
+===================================================================
+RCS file: /cvs/gnome/libIDL/configure.in,v
+retrieving revision 1.54
+diff -u -p -r1.54 configure.in
+--- libIDL/configure.in	1999/10/01 21:58:10	1.54
++++ libIDL/configure.in	2000/09/01 01:55:13
+@@ -19,7 +19,7 @@ LIBIDL_MICRO_VERSION=8
+ LIBIDL_INTERFACE_AGE=4
  LIBIDL_BINARY_AGE=8
  LIBIDL_LIBRARY_VERSION=$LIBIDL_MAJOR_VERSION.$LIBIDL_MINOR_VERSION.$LIBIDL_MICRO_VERSION
 -GLIB_VERSION_REQUIRED=1.2.0
 +GLIB_VERSION_REQUIRED=1.3.1
  AC_DIVERT_POP()dnl
  
-@@ -80,8 +80,8 @@
+ AC_SUBST(LIBIDL_MAJOR_VERSION)
+@@ -79,10 +79,10 @@ AM_PROG_LIBTOOL
+ AM_MAINTAINER_MODE
  
  dnl Checks for libraries.
 -AC_CHECK_PROG(HAVE_GLIB_CONFIG, glib-config, yes, no)
@@ -29,10 +69,16 @@ diff -U2 -r ORBit/libIDL/configure.in ../HEAD/ORBit/libIDL/configure.in
 +AM_PATH_GLIB_2_0($GLIB_VERSION_REQUIRED)
  
  AC_STDC_HEADERS
-diff -U2 -r ORBit/libIDL/util.c ../HEAD/ORBit/libIDL/util.c
---- ORBit/libIDL/util.c	Mon Aug 28 12:53:23 2000
-+++ ../HEAD/ORBit/libIDL/util.c	Tue Aug 29 14:31:03 2000
-@@ -504,7 +504,7 @@
+ AC_CHECK_HEADERS(stddef.h)
+Index: libIDL/util.c
+===================================================================
+RCS file: /cvs/gnome/libIDL/util.c,v
+retrieving revision 1.113
+diff -u -p -r1.113 util.c
+--- libIDL/util.c	1999/10/01 21:58:10	1.113
++++ libIDL/util.c	2000/09/01 01:55:14
+@@ -503,9 +503,9 @@ void yyerrorl (const char *s, int ofs)
+ 
  	if (__IDL_cur_filename) {
  #ifdef HAVE_CPP_PIPE_STDIN
 -		filename = __IDL_cur_filename;
@@ -42,14 +88,18 @@ diff -U2 -r ORBit/libIDL/util.c ../HEAD/ORBit/libIDL/util.c
 +		filename = g_path_get_basename (__IDL_cur_filename);
  #endif
  	} else
-@@ -526,4 +526,6 @@
+ 		line = -1;
+@@ -525,6 +525,8 @@ void yyerrorl (const char *s, int ofs)
+ 		else
  			fprintf (stderr, "Error: %s\n", s);
  	}
 +
 +	g_free (filename);
  }
  
-@@ -539,7 +541,7 @@
+ void yywarningl (int level, const char *s, int ofs)
+@@ -538,9 +540,9 @@ void yywarningl (int level, const char *
+ 
  	if (__IDL_cur_filename) {
  #ifdef HAVE_CPP_PIPE_STDIN
 -		filename = __IDL_cur_filename;
@@ -59,69 +109,101 @@ diff -U2 -r ORBit/libIDL/util.c ../HEAD/ORBit/libIDL/util.c
 +		filename = g_path_get_basename (__IDL_cur_filename);
  #endif
  	} else
-@@ -556,4 +558,6 @@
+ 		line = -1;
+@@ -555,6 +557,8 @@ void yywarningl (int level, const char *
+ 		else
  			fprintf (stderr, "Warning: %s\n", s);
  	}
 +
 +	g_free (filename);
  }
  
-diff -U2 -r ORBit/orbit-config.in ../HEAD/ORBit/orbit-config.in
---- ORBit/orbit-config.in	Mon Aug 28 12:53:19 2000
-+++ ../HEAD/ORBit/orbit-config.in	Mon Aug 28 13:23:07 2000
-@@ -88,6 +88,6 @@
- 
-     client|server)
--	the_libs="$the_libs -L$libdir -lORBit -lIIOP -lORBitutil `glib-config --libs` @LIBS@ -lm"
--	the_flags="$the_flags `glib-config --cflags` -I$includedir "
-+	the_libs="$the_libs -L$libdir -lORBit -lIIOP -lORBitutil `glib-config-2.0 --libs` @LIBS@ -lm"
-+	the_flags="$the_flags `glib-config-2.0 --cflags` -I$includedir "
- 	;;
- 
-diff -U2 -r ORBit/src/IIOP/connection.c ../HEAD/ORBit/src/IIOP/connection.c
---- ORBit/src/IIOP/connection.c	Mon Aug 28 12:53:20 2000
-+++ ../HEAD/ORBit/src/IIOP/connection.c	Thu Aug 31 01:25:53 2000
-@@ -106,5 +106,5 @@
+ void yyerror (const char *s)
+Index: src/IIOP/connection.c
+===================================================================
+RCS file: /cvs/gnome/ORBit/src/IIOP/connection.c,v
+retrieving revision 1.97
+diff -u -p -r1.97 connection.c
+--- src/IIOP/connection.c	2000/02/18 13:55:30	1.97
++++ src/IIOP/connection.c	2000/09/01 01:55:14
+@@ -105,7 +105,7 @@ void giop_init(const char *argv0)
+   g_assert(sizeof(GIOPMessageHeader) == 12);
  
  #if defined(HAVE_HOSTS_ACCESS) && defined (HAVE_TCPD_H)
 -  argv0_val = g_strdup(g_basename(argv0)); /* For TCP wrappers */
 +  argv0_val = g_path_get_basename(argv0); /* For TCP wrappers */
  #endif
  
-diff -U2 -r ORBit/src/idl-compiler/orbit-c-backend.c ../HEAD/ORBit/src/idl-compiler/orbit-c-backend.c
---- ORBit/src/idl-compiler/orbit-c-backend.c	Mon Aug 28 12:53:20 2000
-+++ ../HEAD/ORBit/src/idl-compiler/orbit-c-backend.c	Thu Aug 31 01:26:34 2000
-@@ -31,5 +31,5 @@
+   memset(&mypipe, '\0', sizeof(mypipe));
+Index: src/idl-compiler/orbit-c-backend.c
+===================================================================
+RCS file: /cvs/gnome/ORBit/src/idl-compiler/orbit-c-backend.c,v
+retrieving revision 1.84
+diff -u -p -r1.84 orbit-c-backend.c
+--- src/idl-compiler/orbit-c-backend.c	1999/05/28 03:32:32	1.84
++++ src/idl-compiler/orbit-c-backend.c	2000/09/01 01:55:15
+@@ -30,7 +30,7 @@ orbit_IDL_tree_to_c(const char *base_fil
+       orbit_cbe_print_node(tree, 0);
    }
    
 -  base_filename = g_basename(base_filename);
 +  base_filename = g_path_get_basename(base_filename);
  
    if(!disable_headers) {
-@@ -48,5 +48,5 @@
+     g_string_sprintf(curfile_name, "%s > %s.h",
+@@ -47,7 +47,7 @@ orbit_IDL_tree_to_c(const char *base_fil
+     fclose(curfile);
    }
    g_string_sprintf(curfile_name, "%s.h", base_filename);
 -  hdrname = g_strdup(g_basename(curfile_name->str));
 +  hdrname = g_path_get_basename(curfile_name->str);
  
    if(!disable_common) {
-@@ -112,4 +112,5 @@
+     g_string_sprintf(curfile_name, "%s > %s-common.c",
+@@ -111,6 +111,7 @@ orbit_IDL_tree_to_c(const char *base_fil
+ 
    g_string_free(curfile_name, TRUE);
    g_free(hdrname);
 +  g_free(base_filename);
  }
  
-diff -U2 -r ORBit/src/orbit-idl-compiler/backends/c/orbit-idl-c-backend.c ../HEAD/ORBit/src/orbit-idl-compiler/backends/c/orbit-idl-c-backend.c
---- ORBit/src/orbit-idl-compiler/backends/c/orbit-idl-c-backend.c	Mon Aug 28 12:53:20 2000
-+++ ../HEAD/ORBit/src/orbit-idl-compiler/backends/c/orbit-idl-c-backend.c	Thu Aug 31 01:27:07 2000
-@@ -16,5 +16,5 @@
+ void indent(int level) {
+Index: src/orbit-idl-compiler/orbit-idl-main.c
+===================================================================
+RCS file: /cvs/gnome/ORBit/src/orbit-idl-compiler/orbit-idl-main.c,v
+retrieving revision 1.4.4.1
+diff -u -p -r1.4.4.1 orbit-idl-main.c
+--- src/orbit-idl-compiler/orbit-idl-main.c	2000/03/09 17:16:49	1.4.4.1
++++ src/orbit-idl-compiler/orbit-idl-main.c	2000/09/01 01:55:15
+@@ -155,7 +155,9 @@ int main(int argc, char *argv[])
+ 
+   /* Do it */
+   while((arg=poptGetArg(pcon))!=NULL) {
+-    rinfo.input_filename = g_basename(arg);
++
++    /* Possible memory leak */
++    rinfo.input_filename = g_path_get_basename(arg);
+     if (!orbit_idl_to_backend(arg, &rinfo)) {
+       g_warning("%s compilation failed", arg);
+     }
+Index: src/orbit-idl-compiler/backends/c/orbit-idl-c-backend.c
+===================================================================
+RCS file: /cvs/gnome/ORBit/src/orbit-idl-compiler/backends/c/orbit-idl-c-backend.c,v
+retrieving revision 1.5
+diff -u -p -r1.5 orbit-idl-c-backend.c
+--- src/orbit-idl-compiler/backends/c/orbit-idl-c-backend.c	1999/06/25 14:34:22	1.5
++++ src/orbit-idl-compiler/backends/c/orbit-idl-c-backend.c	2000/09/01 01:55:15
+@@ -15,7 +15,7 @@ orbit_idl_output_c(OIDL_Output_Tree *tre
+   char *ctmp;
    OIDL_C_Info ci;
  
 -  ci.base_name = g_strdup(g_basename(rinfo->input_filename));
 +  ci.base_name = g_path_get_basename(rinfo->input_filename);
    ctmp = strrchr(ci.base_name, '.');
    g_assert(ctmp);
-@@ -61,7 +61,11 @@
+   *ctmp = '\0';
+@@ -60,9 +60,13 @@ out_for_pass(const char *input_filename,
+   char *basein;
    char *ctmp;
    char *cmdline;
 +  char *tmpbasename;
@@ -134,15 +216,4 @@ diff -U2 -r ORBit/src/orbit-idl-compiler/backends/c/orbit-idl-c-backend.c ../HEA
 +  g_free (tmpbasename);
  
    ctmp = strrchr(basein, '.');
-diff -U2 -r ORBit/src/orbit-idl-compiler/orbit-idl-main.c ../HEAD/ORBit/src/orbit-idl-compiler/orbit-idl-main.c
---- ORBit/src/orbit-idl-compiler/orbit-idl-main.c	Mon Aug 28 12:53:21 2000
-+++ ../HEAD/ORBit/src/orbit-idl-compiler/orbit-idl-main.c	Thu Aug 31 00:46:01 2000
-@@ -156,5 +156,7 @@
-   /* Do it */
-   while((arg=poptGetArg(pcon))!=NULL) {
--    rinfo.input_filename = g_basename(arg);
-+
-+    /* Possible memory leak */
-+    rinfo.input_filename = g_path_get_basename(arg);
-     if (!orbit_idl_to_backend(arg, &rinfo)) {
-       g_warning("%s compilation failed", arg);
+ 
