@@ -24,13 +24,13 @@ scrolling and other functions, so it actually runs
 very fast.  It reads as much data as the terminal client
 wants to send, processes it all in the off screen buffer, and
 then renders this onto the screen.  It also uses some of the
-characteristics of the off-screen buffer to try to optimise
+characteristics of the off-screen buffer to try to optimize
 the on-screen update as well (using scrolling where possible
 for example).  It has also been completely written from
 scratch, so does not have any hang-overs from old code
 (although no doubt it has its own plethora of bugs).
 
-Sometimes it seems to over-generate X traffic (by trying to optimise
+Sometimes it seems to over-generate X traffic (by trying to optimize
 line updates to small segments), but on the whole it seems to work
 pretty well.
 
@@ -78,7 +78,7 @@ binary file to it, but most of the core vt100 escape sequences are
 implemented.  (all the curses programs I have seem to work as
 expected - emacs/vi/mc).
 
- Mouse blanking.  The Amiga has a neat little Commodity (hmm, perhaps
+ Mouse blanking.  The Amiga has a neat little commodity (hmm, perhaps
 a Gnome window manager or Panel could include something like
 commodities? ...) which would blank the mouse when a key was pressed,
 and un-blank it when the mouse was moved.  Anyway, zvt does this
@@ -86,15 +86,15 @@ too because I think its neat.
 
  Blinking cursor.  Yeah kinda wanky, but it is nice to have.
 
- Selection, Pasting.  These work as expected.  The selection
+ Selection and pasting.  These work as expected.  The selection
 works almost, but not quite like the Xterm selection algorithm.
 Actually it tries to be a little smarter - tabs should be able
-to be select/pasted too.  Still a few bugs with selection end-points
+to be selected/pasted too.  Still a few bugs with selection end-points
 and the rendering of selections.  The widget doesn't follow the
 pointer for one.
 
  Scroll-back buffer.  Again, works as you'd expect.  Currently
-no optimisation is done on the re-rendering of a scroll-back
+no optimization is done on the re-rendering of a scroll-back
 'scroll', but it works OK on fast machines.  The zterm example
 program doesn't set one up, but the widget keeps track of
 scrolled lines.
@@ -103,7 +103,7 @@ scrolled lines.
 "this needs jump scroll", but I didn't see how it could be done
 with the code as it stood (being based on the Linux VC code it
 was designed to work directly on the display medium).  So I began
-to experiment with a vt emulator based on optimised off-screen
+to experiment with a vt emulator based on optimized off-screen
 buffer -> on-screen display update - and this is what I came up with.
 Anyway, the result is a very fast, very responsive terminal that
 will still generate an accurate screen and scroll-back buffer.
