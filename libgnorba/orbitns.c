@@ -1,4 +1,3 @@
-/* needed for sigaction under 'gcc -ansi -pedantic' on GNU/Linux */
 #include <sys/types.h>
 
 #include <unistd.h>
