@@ -4,7 +4,7 @@ CFLAGS = -I. -I$(GTK) -DVERSION=1 -g -Wall -DHAVE_JPEG -DHAVE_PNG -DHAVE_ZLIB
 
 all: xmhtml test
 
-xmhtml: Parser.o LZWStream.o StringUtil.o parse.o plc.o \
+xmhtml: LZWStream.o StringUtil.o parse.o plc.o \
 	readBitmap.o readFLG.o readXPM.o fonts.o paint.o \
 	format.o map.o quantize.o  XmHTML.o frames.o numbers.o \
 	readGIF.o readGIFplc.o readFLG.o colors.o gtk-error.o gtk-forms.o \
