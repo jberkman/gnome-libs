@@ -1,3 +1,18 @@
+Thu Nov 19 01:27:34 1998  George Lebl  <jirka@5z.com>
+
+	* libgnome/gnome-config.[ch]: changed the behaviour of
+	  gnome_config_clean_file to be consistent with the functionality
+	  of the other _clean_ function, which fixes a whole bunch of apps
+	  which expected that exact behaviour. Renamed the old _clean_file
+	  to gnome_config_drop_file, which is consistent with the drop_all
+	  function, but only for one file. Also added a whole bunch of
+	  performance tweaks that even show panel improvement with menu
+	  reading on my machine, so this should be more significant on
+	  slower machines.
+
+	* libgnome/gnome-dentry.[ch]: replaced the only usage of clean_file
+	  that was expecting the broken behaviour with drop_file
+
 Thu Nov 19 11:09:15 1998  Raph Levien  <raph@gimp.org>
 
 	* libgnorba/Makefile.am (LDADD): added libart_lgpl
