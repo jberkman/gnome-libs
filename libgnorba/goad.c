@@ -909,6 +909,38 @@ goad_server_activate_factory(GoadServer *sinfo,
   return retval;
 }
 
+typedef struct {
+  GMainLoop *mloop;
+  char iorbuf[2048];
+  char *do_srv_output;
+  FILE *fh;
+} EXEActivateInfo;
+
+static gboolean
+handle_exepipe(GIOChannel      *source,
+	       GIOCondition     condition,
+	       EXEActivateInfo *data)
+{
+  gboolean retval = TRUE;
+
+  if(!(condition & G_IO_IN)
+     || !fgets(data->iorbuf, sizeof(data->iorbuf), data->fh)) {
+    *data->iorbuf = '\0';
+    retval = FALSE;
+  }
+
+  if(retval && !strncmp(data->iorbuf, "IOR", 4))
+    retval = FALSE;
+
+  if(data->do_srv_output)
+    g_message("srv output: '%s' (cond", data->iorbuf);
+
+  if(!retval)
+    g_main_quit(data->mloop);
+
+  return retval;
+}
+
 
 /**
  * goad_server_activate_exe:
@@ -933,7 +965,6 @@ goad_server_activate_exe(GoadServer *sinfo,
 			 CORBA_Environment *ev)
 {
   gint                    iopipes[2];
-  gchar                   iorbuf[2048] = "";
   CORBA_Object            retval = CORBA_OBJECT_NIL;
   int childpid;
 
@@ -944,32 +975,40 @@ goad_server_activate_exe(GoadServer *sinfo,
     int     status;
     FILE*   iorfh;
     char *do_srv_output;
+    EXEActivateInfo ai;
+    guint watchid;
+    GIOChannel *gioc;
+
+    waitpid(childpid, &status, 0); /* de-zombify */
 
     close(iopipes[1]);
-    iorfh = fdopen(iopipes[0], "r");
+    ai.fh = iorfh = fdopen(iopipes[0], "r");
 
     if(flags & GOAD_ACTIVATE_ASYNC)
       goto no_wait;
 
-    do_srv_output = getenv("GOAD_DEBUG_EXERUN");
-    while (fgets(iorbuf, sizeof(iorbuf), iorfh) && strncmp(iorbuf, "IOR:", 4)) {
-      if(do_srv_output)
-	g_message("srv output: '%s'", iorbuf);
-    }
-    if(do_srv_output)
-      g_message("srv output EOF.");
+    ai.do_srv_output = getenv("GOAD_DEBUG_EXERUN");
 
-    if (strncmp(iorbuf, "IOR:", 4)) {
+    ai.mloop = g_main_new(FALSE);
+    gioc = g_io_channel_unix_new(iopipes[0]);
+    watchid = g_io_add_watch(gioc, G_IO_IN|G_IO_HUP|G_IO_NVAL|G_IO_ERR,
+			     (GIOFunc)&handle_exepipe, &ai);
+    g_io_channel_unref(gioc);
+    g_main_run(ai.mloop);
+    g_main_destroy(ai.mloop);
+
+    g_strstrip(ai.iorbuf);
+    if (strncmp(ai.iorbuf, "IOR:", 4)) {
       retval = CORBA_OBJECT_NIL;
       goto out;
     }
-    if (iorbuf[strlen(iorbuf)-1] == '\n')
-      iorbuf[strlen(iorbuf)-1] = '\0';
-    retval = CORBA_ORB_string_to_object(_gnorba_gnome_orbit_orb, iorbuf, ev);
+    if (ai.iorbuf[strlen(ai.iorbuf)-1] == '\n')
+      ai.iorbuf[strlen(ai.iorbuf)-1] = '\0';
+    retval = CORBA_ORB_string_to_object(_gnorba_gnome_orbit_orb,
+					ai.iorbuf, ev);
 
   no_wait:
     fclose(iorfh);
-    waitpid(childpid, &status, 0);
   } else if(fork()) {
     _exit(0); /* de-zombifier process, just exit */
   } else {

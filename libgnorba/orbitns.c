@@ -141,14 +141,17 @@ name_server_by_forking (CORBA_Environment *ev)
 	if (pid) {
 		FILE *iorfh;
 		char *ret;
-		
+		int status;
+
 		/* Parent */
+		waitpid(pid, &status, 0); /* de-zombify */
+
 		close(iopipes[1]);
 		
 		iorfh = fdopen(iopipes[0], "r");
 		
-		while ((ret = fgets(iorbuf, sizeof(iorbuf), iorfh)) != NULL){
-			if (strncmp(iorbuf, "IOR:", 4) == 0){
+		while ((ret = fgets(iorbuf, sizeof(iorbuf), iorfh)) != NULL) {
+			if (strncmp(iorbuf, "IOR:", 4) == 0) {
 				break;
 			}
 		}
@@ -163,6 +166,7 @@ name_server_by_forking (CORBA_Environment *ev)
 			iorbuf[strlen(iorbuf)-1] = '\0';
 		
 		name_service = CORBA_ORB_string_to_object((CORBA_ORB)_gnorba_gnome_orbit_orb, iorbuf, ev);
+
 	} else if (fork ()) {
 		/* de-zombifier process, just exit */
 		_exit(0);
