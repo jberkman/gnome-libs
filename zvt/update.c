@@ -920,19 +920,18 @@ void vt_fix_selection(struct _vtx *vx)
     if (ex==sx && ex<e->width && sy==ey)
       ex++;
 
-    if ((s->data[sx]&0xff)==0) {
+    if ((s->data[sx]&0xff)==0 || (s->data[sx]&0xff)==9) {
       while ((sx>0) && ((s->data[sx]&0xff) == 0))
 	sx--;
       if (sx &&
-	  (( ((s->data[sx])&0xff)!=0x09))) /* 'compress' tabs */
+	  ((s->data[sx])&0xff)!=0x09) /* 'compress' tabs */
 	sx++;
     } else {
       while ((sx>0) &&
 	     (( (vt_in_wordclass(vx, s->data[sx])))))
 	sx--;
-
-      if ((s->data[sx]&0xff)
-	  && (!vt_in_wordclass(vx, s->data[sx]&0xff)) )
+      if ((s->data[sx]&0xff)==0
+	  || (s->data[sx]&0xff)==9)
 	sx++;
     }
     d(printf("%d\n", sx));

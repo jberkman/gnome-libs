@@ -6,6 +6,8 @@
 	(vt_update): When checking to see if we update the line, always
 	update if the scrollbar moved.  vt_line_update() will optimise
 	rendering anyway.
+	(vt_fix_selection): Cleaner implementation of select-by-word.  No
+	longer flickers/funny over selecting tabbed text.
 
 	* zterm.c (set_hints): Renamed size_allocate to set_hints.
 	Changed to use gtk_window_set_geometry_hints() instead of the X
