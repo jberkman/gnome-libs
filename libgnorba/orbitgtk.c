@@ -150,6 +150,7 @@ get_cookie_reliably (void)
  */
 static CORBA_ORB
 do_CORBA_init(int *argc, char **argv,
+	      GnorbaInitFlags flags,
 	      CORBA_Environment *ev)
 {
   CORBA_ORB retval;
@@ -159,14 +160,16 @@ do_CORBA_init(int *argc, char **argv,
 
   gnome_orbit_orb = retval = CORBA_ORB_init(argc, argv, "orbit-local-orb", ev);
 
-  request_cookie._buffer = get_cookie_reliably ();
-
-  g_assert(request_cookie._buffer && *request_cookie._buffer);
-
-  request_cookie._length = strlen(request_cookie._buffer) + 1;
-
-  ORBit_set_request_validation_handler(&gnome_ORBit_request_validate);
-  ORBit_set_default_principal(&request_cookie);
+  if(!(flags & GNORBA_INIT_DISABLE_COOKIES)) {
+    request_cookie._buffer = get_cookie_reliably ();
+    
+    g_assert(request_cookie._buffer && *request_cookie._buffer);
+    
+    request_cookie._length = strlen(request_cookie._buffer) + 1;
+    
+    ORBit_set_request_validation_handler(&gnome_ORBit_request_validate);
+    ORBit_set_default_principal(&request_cookie);
+  }
 
   return retval;
 }
@@ -175,13 +178,14 @@ CORBA_ORB
 gnome_CORBA_init(char *app_id,
 		 char *app_version,
 		 int *argc, char **argv,
+		 GnorbaInitFlags gnorba_flags,
 		 CORBA_Environment *ev)
 {
   CORBA_ORB retval;
 
   goad_register_arguments();
 
-  retval = do_CORBA_init(argc, argv, ev);
+  retval = do_CORBA_init(argc, argv, gnorba_flags, ev);
   gnome_init(app_id, app_version, *argc, argv);
 
   return retval;
@@ -194,13 +198,14 @@ gnome_CORBA_init_with_popt_table(char *app_id,
 				 const struct poptOption *options,
 				 int popt_flags,
 				 poptContext *return_ctx,
+				 GnorbaInitFlags gnorba_flags,
 				 CORBA_Environment *ev)
 {
   CORBA_ORB retval;
 
   goad_register_arguments();
 
-  retval = do_CORBA_init(argc, argv, ev);
+  retval = do_CORBA_init(argc, argv, gnorba_flags, ev);
   gnome_init_with_popt_table(app_id, app_version, *argc, argv, options,
 			     popt_flags, return_ctx);
 

@@ -37,7 +37,8 @@ int main(int argc, char *argv[])
   CORBA_exception_init(&ev);
 
   orb = gnome_CORBA_init_with_popt_table("goad-browser", VERSION,
-					 &argc, argv, options, 0, NULL, &ev);
+					 &argc, argv, options, 0, NULL,
+					 0, &ev);
 
   if(activate_id) {
     obj = goad_server_activate_with_id(NULL, activate_id, 0);

@@ -6,6 +6,11 @@
 #include <gnome.h>
 
 /**** orbitgtk module ****/
+
+typedef enum {
+  GNORBA_INIT_SERVER_FUNC = 1 << 0,
+  GNORBA_INIT_DISABLE_COOKIES = 1 << 1
+} GnorbaInitFlags;
 /* 
  * Almost the same as gnome_init, except it initializes ORBit for use
  * with gtk+ too 
@@ -13,6 +18,7 @@
 CORBA_ORB gnome_CORBA_init          (char *app_id,
 				     char *app_version,
 				     int *argc, char **argv,
+				     GnorbaInitFlags gnorba_flags,
 				     CORBA_Environment *ev);
 CORBA_ORB gnome_CORBA_init_with_popt_table(char *app_id,
 					   char *app_version,
@@ -20,6 +26,7 @@ CORBA_ORB gnome_CORBA_init_with_popt_table(char *app_id,
 					   const struct poptOption *options,
 					   int popt_flags,
 					   poptContext *return_ctx,
+					   GnorbaInitFlags gnorba_flags,
 					   CORBA_Environment *ev);
 
 /*
