@@ -686,6 +686,11 @@ char *vt_get_selection(struct _vtx *vx, int *len)
 
   if (wn)
     nn = wn->next;
+  else {
+    vx->selection_size = 0;
+    return 0;
+  }
+
 
   /* FIXME: check 'wn' exists ... */
 
