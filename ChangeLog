@@ -1,5 +1,14 @@
 1998-10-14  Martin Baulig  <martin@home-of-linux.org>
 
+	* libgnome/gnome-config.c (parse_path): If the pushed config prefix
+	does not already end with a slash, we need to insert one when
+	constructing the resulting absolute pathname.
+
+	* libgnorba/goad.c (goad_server_list_read): Do not append a slash
+ 	to the filename in call to gnome_config_push_prefix.
+
+1998-10-14  Martin Baulig  <martin@home-of-linux.org>
+
 	* libgnome/gnome-config.c (parse_path): Spent some hours debugging
 	this, should now be working. Especially fixed some problems with
 	absolute filenames. Look at the comments in the file for details.

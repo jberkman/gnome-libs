@@ -118,15 +118,13 @@ goad_server_list_read(const char *filename,
 		      GString *tmpstr)
 {
   gpointer iter;
-  char *prefix;
   char *typename;
   GoadServer newval;
   GString*   dummy;
 
   dummy = g_string_new("");
 
-  prefix = g_strconcat(filename, "/", NULL);
-  gnome_config_push_prefix(prefix);
+  gnome_config_push_prefix(filename);
   iter = gnome_config_init_iterator_sections(filename);
 
   while((iter = gnome_config_iterator_next(iter, &newval.id, NULL))) {
@@ -151,7 +149,6 @@ goad_server_list_read(const char *filename,
     g_array_append_val(servinfo, newval);
   }
   gnome_config_pop_prefix();
-  g_free (prefix);
 }
 
 /**** goad_server_list_free
