@@ -157,7 +157,6 @@ name_server_by_forking (CORBA_Environment *ev)
 {
 	CORBA_Object name_service = CORBA_OBJECT_NIL;
 	int iopipes[2];
-	char iorbuf[2048];
 	pid_t pid;
 	
 	/*
@@ -202,11 +201,7 @@ name_server_by_forking (CORBA_Environment *ev)
 		if (strncmp(ai.iorbuf, "IOR:", 4))
 		  goto out;
 		
-		/* strip newline if it's there */
-		if (iorbuf[strlen(iorbuf)-1] == '\n')
-			iorbuf[strlen(iorbuf)-1] = '\0';
-		
-		name_service = CORBA_ORB_string_to_object((CORBA_ORB)_gnorba_gnome_orbit_orb, iorbuf, ev);
+		name_service = CORBA_ORB_string_to_object((CORBA_ORB)_gnorba_gnome_orbit_orb, ai.iorbuf, ev);
 	out:
 		fclose(iorfh);
 
