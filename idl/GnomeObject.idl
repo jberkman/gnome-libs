@@ -12,13 +12,13 @@ module GNOME {
 		 *
 		 * increments the reference count
 		 */
-		oneway void ref ();
+		void ref ();
 		/**
 		 * unref:
 		 * 
 		 * decrements the reference count
 		 */
-		oneway void unref ();
+		void unref ();
 		
 		Object query_interface (in string repoid);
 	};
