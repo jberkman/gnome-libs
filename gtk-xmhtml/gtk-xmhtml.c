@@ -416,7 +416,8 @@ gtk_xmhtml_get_type (void)
 			sizeof (GtkXmHTMLClass),
 			(GtkClassInitFunc) gtk_xmhtml_class_init,
 			(GtkObjectInitFunc) gtk_xmhtml_init,
-			(GtkArgFunc) NULL
+			(GtkArgSetFunc) NULL,
+			(GtkArgGetFunc) NULL,
 		};
 
 		gtk_xmhtml_type = gtk_type_unique (gtk_container_get_type (), &gtk_xmhtml_info);

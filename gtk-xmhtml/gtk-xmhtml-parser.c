@@ -85,7 +85,8 @@ gtk_xmthml_parser_get_type ()
 			sizeof (GtkXmHTMLParserClass),
 			(GtkClassInitFunc) gtk_xmhtml_parser_class_init,
 			(GtkObjectInitFunc) gtk_xmhtml_parser_init,
-			(GtkArgFunc) NULL,
+			(GtkArgSetFunc) NULL,
+			(GtkArgGetFunc) NULL,
 		};
 		data_type = gtk_type_unique (gtk_object_get_type (), &data_info);
 	}
