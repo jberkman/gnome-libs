@@ -50,4 +50,6 @@ gnome-faq/index.html: gnome-faq.sgml
 dist-hook:
 	tar cvf - gnome-faq | (cd $(distdir); tar xf -)
 
+distclean-local:
+
 endif
