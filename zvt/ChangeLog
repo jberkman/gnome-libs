@@ -1,3 +1,14 @@
+1998-06-15  Michael Zucchi  <zucchi@zzedzone.box.net.au>
+
+	* vt.c (vt_gx_set): New function, sets the current font remappings
+	for G0 to G3 font.
+	(vt_init): Initialise vt->Gx, and vt->G[x]
+	(vt_init): Initialise vt_remap_dec[]
+	(vt_alt_start): Removed old redundant code.  Now sets G[1] charset
+	as current.
+	(vt_alt_end): Changed to reset to G[0] charset.
+	(vt_reset): Reset Gx and G[x]
+
 Sun Jun 14 14:07:34 1998  Tom Tromey  <tromey@cygnus.com>
 
 	* Makefile.am (INCLUDES): Look in intl build directory.  Don't

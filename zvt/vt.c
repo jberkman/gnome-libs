@@ -60,6 +60,7 @@ void vt_delete_lines(struct vt_em *vt, int count);
 void vt_clear_lines(struct vt_em *vt, int top, int count);
 void vt_clear_eol(struct vt_em *vt);
 
+static unsigned char vt_remap_dec[256];
 
 void vt_dump(struct vt_em *vt)
 {
@@ -504,27 +505,16 @@ static void vt_backspace(struct vt_em *vt)
 
 static void vt_alt_start(struct vt_em *vt)
 {
-  /* FIXME: this is a quick hack to test */
-  static unsigned char remap_alt[256];
-
-  {
-    int i;
-
-    for(i=0;i<256;i++) {
-      remap_alt[i]=(i>95)&&(i<128)?(i-95):i;
-    }
-  }
-  
   d(printf("alternate charset on\n"));
   /* swap in a 'new' charset mapping */
-  vt->remaptable = remap_alt;		/* no character remapping */
+  vt->remaptable = vt->G[1];		/* no character remapping */
 }
 
 static void vt_alt_end(struct vt_em *vt)
 {
   d(printf("alternate charset off\n"));
   /* restore 'old' charset mapping */
-  vt->remaptable = 0;		/* no character remapping */
+  vt->remaptable = vt->G[0];		/* no character remapping */
 }
 
 /* line editing */
@@ -742,9 +732,10 @@ static void vt_modeh(struct vt_em *vt)
   }
 }
 
+
 static void vt_model(struct vt_em *vt)
 {
-  d(printf("mode l set\n"));
+d(printf("mode l set\n"));
   if (vt->argcnt==1) {
     switch(*(vt->args[0])) {
     case '4':
@@ -813,6 +804,34 @@ static void vt_mode(struct vt_em *vt)
 }
 
 /*
+  set g0-g3 charset
+*/
+static void vt_gx_set(struct vt_em *vt)
+{
+  int index;
+  unsigned char *table;
+
+  index = vt->args[0][0]-'(';
+  if (index<=3 && index>=0) {
+    switch (vt->args[0][1]) {
+    case '0':
+      table = vt_remap_dec;
+      break;
+    case 'A':			/* turn mapping off for uk or us */
+    case 'B':			/* not strictly correct, but easy to fix */
+      table = 0;
+      break;
+    default:			/* unknown char mapping - turn off*/
+      table = 0;
+    }
+    vt->G[index] = table;
+    if (index==vt->Gx) {
+      vt->remaptable = table;
+    }
+  } /* else ignore */
+}
+
+/*
   device status report
 */
 static void vt_dsr(struct vt_em *vt)
@@ -868,6 +887,12 @@ static void vt_reset(struct vt_em *vt)
   vt_set_screen(vt, 0);
   vt->mode = 0;
   vt_cleareos(vt);
+
+  vt->Gx=0;			/* reset all fonts */
+  vt->G[0]=0;
+  vt->G[1]=vt_remap_dec;
+  vt->G[2]=0;
+  vt->G[3]=0;
 }
 
 /* function keys */
@@ -909,6 +934,7 @@ struct vt_jump {
 #define VT_EXO 0x08		/* escape O sequence */
 #define VT_ESC 0x10		/* escape "x" sequence */
 #define VT_ARG 0x20		/* character is a possible argument to function */
+#define VT_EXA 0x40		/* escape x "x" sequence */
 
 #define VT_EBL (VT_EXB|VT_LIT)	/* escape [ or literal */
 #define VT_EXL (VT_ESC|VT_LIT)	/* escape "x" or literal */
@@ -925,7 +951,7 @@ struct vt_jump vtjumps[] = {
   {0,0}, {0,0}, {0,0}, {0,0},	/* 1c: ^\ ^] ^^ ^_  */
   {0,VT_LIT}, {0,VT_LIT}, {0,VT_LIT}, {0,VT_LIT},	/*  !"# */
   {0,VT_LIT}, {0,VT_LIT}, {0,VT_LIT}, {0,VT_LIT},	/* $%&' */
-  {0,VT_LIT}, {0,VT_LIT}, {0,VT_LIT}, {0,VT_LIT},	/* ()*+ */
+  {vt_gx_set,VT_LIT|VT_EXA}, {vt_gx_set,VT_LIT|VT_EXA}, {vt_gx_set,VT_LIT|VT_EXA}, {vt_gx_set,VT_LIT|VT_EXA},	/* ()*+ */
   {0,VT_LIT}, {0,VT_LIT}, {0,VT_LIT}, {0,VT_LIT},	/* ,-./ */
   {0,VT_LIT|VT_ARG}, {0,VT_LIT|VT_ARG}, {0,VT_LIT|VT_ARG}, {0,VT_LIT|VT_ARG},	/* 0123 */
   {0,VT_LIT|VT_ARG}, {0,VT_LIT|VT_ARG}, {0,VT_LIT|VT_ARG}, {vt_save_cursor,VT_EXL|VT_ARG},	/* 4567 */
@@ -1019,6 +1045,9 @@ void parse_vt(struct vt_em *vt, char *ptr, int length)
 	vt->argptr = vt->args;
 	vt->outptr = vt->argptr[0];
 	vt->outend = vt->outptr+VTPARAM_ARGMAX*VTPARAM_MAXARGS-1;
+      } else if (mode & VT_EXA) {
+	vt->args[0][0]=c;
+	state = 5;
       } else {
 	state = 0;		/* dont understand input */
       }
@@ -1065,6 +1094,15 @@ void parse_vt(struct vt_em *vt, char *ptr, int length)
 	if (vt->outptr<vt->outend) /* truncate excessive args */
 	  *(vt->outptr)++=c;
       }
+      break;
+    case 5:			/* \E?x */
+      vt->args[0][1]=c;
+      process = modes[vt->args[0][0]].process;
+      if (process) {		/* check, if doesn't exist, then ignore and lose */
+	process(vt);
+      }
+      state=0;
+      break;
     }
   }
   vt->state = state;
@@ -1146,6 +1184,16 @@ struct vt_em *vt_init(struct vt_em *vt, int width, int height)
   vt->scrollbackoffset=0;
   vt->scrollbackold=0;
   vt->scrollbackmax=50;		/* maximum scrollback lines */
+
+  for(i=0;i<256;i++) {		/* initialise dec special char remapping */
+    vt_remap_dec[i]=(i>95)&&(i<128)?(i-95):i;
+  }
+
+  vt->Gx=0;			/* reset all fonts */
+  vt->G[0]=0;
+  vt->G[1]=vt_remap_dec;
+  vt->G[2]=0;
+  vt->G[3]=0;
 
   vt_mem_init(&vt->mem_list);
 

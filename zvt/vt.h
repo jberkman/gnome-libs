@@ -81,6 +81,9 @@ struct vt_em {
 
   unsigned char *remaptable;	/* chracter remapping table. 0 = dont remap */
 
+  int Gx;			/* current character set mapping */
+  unsigned char *G[4];		/* Gx character set mappings */
+
   uint32 attr;			/* current char attributes.  This
 				 is a bitfield.  bottom 16 bits = ' ' */
 
