@@ -1,3 +1,8 @@
+1999-02-22  Elliot Lee  <sopwith@redhat.com>
+
+	* zvtterm.c: Translate \n -> \r when pasting (fixes
+	pastes with newlines in them).
+
 1999-02-21  Nuno Ferreira  <nmrf@rnl.ist.utl.pt>
 
 	* Makefile.am (zterm_LDADD): Use libzvt.la without the path from

@@ -1560,6 +1560,12 @@ zvt_term_selection_received (GtkWidget *widget, GtkSelectionData *selection_data
   /* paste selection into window! */
   if (selection_data->length)
     {
+      int i;
+      char *ctmp = selection_data->data;
+
+      for(i = 0; i < selection_data->length; i++)
+	if(ctmp[i] == '\n') ctmp[i] = '\r';
+
       if (term->scroll_on_keystroke)
 	zvt_term_scroll (term, 0);
       vt_writechild(&vx->vt, selection_data->data, selection_data->length);
