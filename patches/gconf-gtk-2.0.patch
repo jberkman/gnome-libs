@@ -262,10 +262,10 @@ diff -N gconf-2.0.pc.in
 --- /dev/null	Tue May  5 16:32:27 1998
 +++ gconf-2.0.pc.in	Tue Dec  5 09:56:46 2000
 @@ -0,0 +1,12 @@
-+prefix=/gnome/head/INSTALL
-+exec_prefix=${prefix}
-+libdir=${exec_prefix}/lib
-+includedir=${prefix}/include
++prefix=@prefix@
++exec_prefix=@exec_prefix@
++libdir=@libdir@
++includedir=@includedir@
 +
 +
 +Name: gconf
@@ -281,10 +281,10 @@ diff -N gconfgtk-2.0.pc.in
 --- /dev/null	Tue May  5 16:32:27 1998
 +++ gconfgtk-2.0.pc.in	Tue Dec  5 09:56:46 2000
 @@ -0,0 +1,12 @@
-+prefix=/gnome/head/INSTALL
-+exec_prefix=${prefix}
-+libdir=${exec_prefix}/lib
-+includedir=${prefix}/include
++prefix=@prefix@
++exec_prefix=@exec_prefix@
++libdir=@libdir@
++includedir=@includedir@
 +
 +
 +Name: gconfgtk
