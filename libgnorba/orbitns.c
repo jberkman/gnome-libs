@@ -214,7 +214,7 @@ name_server_by_forking (CORBA_Environment *ev)
 
 		open_max = sysconf(_SC_OPEN_MAX);
 		for (i = 3; i < open_max; i++)
-			fcntl(i, F_SETFD, 1);
+			fcntl(i, F_SETFD, FD_CLOEXEC);
 
 		sa.sa_handler = SIG_IGN;
 		sigaction(SIGPIPE, &sa, 0);
