@@ -1,3 +1,24 @@
+1999-05-18  Michael Zucchi  <zucchi@zzedzone.mmc.com.au>
+
+	* zvtterm.c (zvt_term_scroll): More indenting repair.
+	(zvt_term_set_font_name): Ditto (etc for everything else i spot).
+	Please use K&R style indenting if you make changes!
+
+	* TODO: Updated a bit.
+
+	* zvtterm.c (vt_draw_text): If a font is a 2-byte font, first
+	expand it to an XChar2b array.  This will need to be changed so
+	it accepts 16 bit characters by default (but is a bigger task!).
+	Setting a -iso10464- (unicode) font should now at least render ok.
+	(zvt_term_readdata): Repair the Jay-ded indenting.
+	(zvt_term_readmsg): Ditto.
+	(zvt_term_set_background): Ditto.
+	(vt_draw_text): Ditto.
+	(vt_scroll_area): Ditto.
+
+	* zvtterm.h (struct _zvtprivate): Added text16/text16len to
+	zvtprivate - buffer for expanding 2-byte fonts.
+
 1999-05-15  Michael Zucchi  <zucchi@zzedzone.mmc.com.au>
 
 	* update.c (vt_line_update): Because some mental fonts use every

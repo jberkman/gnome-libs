@@ -28,6 +28,7 @@
 #include <zvt/vtx.h>
 
 #include <X11/X.h>
+#include <X11/Xlib.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -131,6 +132,8 @@ struct _zvtprivate
 {
   gint scrollselect_id;
   int scrollselect_dir;		/* scrolling selection direction/step */  
+  XChar2b *text16;		/* 2-byte text expansion area */
+  int text16len;		/* how much space here */
 };
 
 #define ZVT_TERM_DO_UTMP_LOG 1

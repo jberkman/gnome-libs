@@ -19,6 +19,9 @@
  */
 #include <config.h>
 
+/* please use K&R style indenting if you make changes.
+   2, 4, or 8 character tabs are fine - MPZ */
+
 /* need for 'gcc -ansi -pedantic' under GNU/Linux */
 #ifndef _POSIX_SOURCE
 #  define _POSIX_SOURCE 1
@@ -143,10 +146,8 @@ zvt_term_get_type (void)
 {
   static guint term_type = 0;
   
-  if (!term_type)
-    {
-      GtkTypeInfo term_info =
-      {
+  if (!term_type) {
+      GtkTypeInfo term_info = {
 	"ZvtTerm",
 	sizeof (ZvtTerm),
 	sizeof (ZvtTermClass),
@@ -155,7 +156,7 @@ zvt_term_get_type (void)
 	(GtkArgSetFunc) NULL,
 	(GtkArgGetFunc) NULL,
       };
-
+      
       term_type = gtk_type_unique (gtk_widget_get_type (), &term_info);
     }
 
@@ -305,6 +306,8 @@ zvt_term_init (ZvtTerm *term)
   zp = g_malloc(sizeof(*zp));
   if (zp) {
     zp->scrollselect_id = -1;
+    zp->text16 = 0;
+    zp->text16len = 0;
   }
   gtk_object_set_data(GTK_OBJECT (term), "_zvtprivate", zp);
 }
@@ -325,23 +328,20 @@ zvt_term_set_blink (ZvtTerm *term, int state)
   if (!(term->blink_enabled ^ (state?1:0)))
     return;
 
-  if (term->blink_enabled)
-    {
-      if (term->timeout_id != -1){
-	gtk_timeout_remove (term->timeout_id);
-	term->timeout_id = -1;
-      }
-
-      if (GTK_WIDGET_REALIZED (term))
-	vt_cursor_state (GTK_WIDGET (term), 1);
-    
-      term->blink_enabled = 0;
-    } 
-  else 
-    {
-      term->timeout_id = gtk_timeout_add (500, zvt_term_cursor_blink, term);
-      term->blink_enabled = 1;
+  if (term->blink_enabled) {
+    if (term->timeout_id != -1){
+      gtk_timeout_remove (term->timeout_id);
+      term->timeout_id = -1;
     }
+    
+    if (GTK_WIDGET_REALIZED (term))
+      vt_cursor_state (GTK_WIDGET (term), 1);
+    
+    term->blink_enabled = 0;
+  } else {
+    term->timeout_id = gtk_timeout_add (500, zvt_term_cursor_blink, term);
+    term->blink_enabled = 1;
+  }
 }
 
 /**
@@ -461,34 +461,32 @@ zvt_term_destroy (GtkObject *object)
   zvt_term_closepty (term);
   vtx_destroy (term->vx);
 
-  if (term->font)
-    {
-      gdk_font_unref (term->font);
-      term->font = NULL;
-    }
+  if (term->font) {
+    gdk_font_unref (term->font);
+    term->font = NULL;
+  }
 
-  if (term->font_bold)
-    {
-      gdk_font_unref (term->font_bold);
-      term->font_bold = NULL;
-    }
+  if (term->font_bold) {
+    gdk_font_unref (term->font_bold);
+    term->font_bold = NULL;
+  }
 
   /* release the adjustment */
-  if (term->adjustment)
-    {
-      gtk_signal_disconnect_by_data (GTK_OBJECT (term->adjustment), term);
-      gtk_object_unref (GTK_OBJECT (term->adjustment));
-      term->adjustment = NULL;
-    }
+  if (term->adjustment) {
+    gtk_signal_disconnect_by_data (GTK_OBJECT (term->adjustment), term);
+    gtk_object_unref (GTK_OBJECT (term->adjustment));
+    term->adjustment = NULL;
+  }
 
-  if (term->ic) 
-    {
-      gdk_ic_destroy(term->ic);
-      term->ic = NULL;
-    }
+  if (term->ic) {
+    gdk_ic_destroy(term->ic);
+    term->ic = NULL;
+  }
 
   /* release private data */
   if (zp) {
+    if (zp->text16)
+      g_free(zp->text16);
     g_free(zp);
     gtk_object_set_data (GTK_OBJECT (term), "_zvtprivate", 0);
   }
@@ -683,20 +681,18 @@ zvt_term_realize (GtkWidget *widget)
   term->fore_last = -1;
 
   /* input context */
-  if (gdk_im_ready () && !term->ic)
-    {
-      GdkICAttr attr;
-      
-      /* FIXME: do we have any window yet? */
-      attr.style = GDK_IM_PREEDIT_NOTHING | GDK_IM_STATUS_NOTHING;
-      attr.client_window = attr.focus_window = term->term_window;
-      term->ic = gdk_ic_new(&attr, GDK_IC_ALL_REQ);
-      
-      if (!term->ic) 
-	{
-	  g_warning("Can't create input context.");
-	}
+  if (gdk_im_ready () && !term->ic) {
+    GdkICAttr attr;
+    
+    /* FIXME: do we have any window yet? */
+    attr.style = GDK_IM_PREEDIT_NOTHING | GDK_IM_STATUS_NOTHING;
+    attr.client_window = attr.focus_window = term->term_window;
+    term->ic = gdk_ic_new(&attr, GDK_IC_ALL_REQ);
+    
+    if (!term->ic) {
+      g_warning("Can't create input context.");
     }
+  }
 }
 
 static void
@@ -750,17 +746,16 @@ zvt_term_map (GtkWidget *widget)
 
   term = ZVT_TERM (widget);
 
-  if (!GTK_WIDGET_MAPPED (widget))
-    {
-      GTK_WIDGET_SET_FLAGS (widget, GTK_MAPPED);
-
-      gdk_window_show (widget->window);
-      gdk_window_show (term->term_window);
-
-      /* XXX: is this right? --JMP */
-      if (!GTK_WIDGET_HAS_FOCUS (widget))
-	gtk_widget_grab_focus (widget);
-    }
+  if (!GTK_WIDGET_MAPPED (widget)) {
+    GTK_WIDGET_SET_FLAGS (widget, GTK_MAPPED);
+    
+    gdk_window_show (widget->window);
+    gdk_window_show (term->term_window);
+    
+    /* XXX: is this right? --JMP */
+    if (!GTK_WIDGET_HAS_FOCUS (widget))
+      gtk_widget_grab_focus (widget);
+  }
 }
 
 
@@ -774,13 +769,12 @@ zvt_term_unmap (GtkWidget *widget)
 
   term = ZVT_TERM (widget);
 
-  if (GTK_WIDGET_MAPPED (widget))
-    {
-      GTK_WIDGET_UNSET_FLAGS (widget, GTK_MAPPED);
-
-      gdk_window_hide (term->term_window);
-      gdk_window_hide (widget->window);
-    }
+  if (GTK_WIDGET_MAPPED (widget)) {
+    GTK_WIDGET_UNSET_FLAGS (widget, GTK_MAPPED);
+    
+    gdk_window_hide (term->term_window);
+    gdk_window_hide (widget->window);
+  }
 }
 
 
@@ -828,12 +822,11 @@ zvt_term_focus_out(GtkWidget *widget, GdkEventFocus *event)
   vt_cursor_state(term, 1);
 
   /* setup blinking cursor */
-  if (term->blink_enabled && term->timeout_id != -1)
-    {
-      gtk_timeout_remove(term->timeout_id);
-      term->timeout_id = -1;
-    }
-
+  if (term->blink_enabled && term->timeout_id != -1) {
+    gtk_timeout_remove(term->timeout_id);
+    term->timeout_id = -1;
+  }
+  
   if (term->ic)
     gdk_im_end ();
 
@@ -854,23 +847,20 @@ zvt_term_size_request (GtkWidget      *widget,
 
   term = ZVT_TERM (widget);
 
-  if (term->set_grid_size_pending)
-    {
-      grid_width = term->grid_width;
-      grid_height = term->grid_height;
-      
-      if (grid_width <= 0)
-	grid_width = 8;
-      
-      if (grid_height <= 0)
-	grid_height = 2;
-      term->set_grid_size_pending = FALSE;
-    }
-  else
-    {
-      grid_width = term->grid_width;
-      grid_height = term->grid_height;
-    }
+  if (term->set_grid_size_pending) {
+    grid_width = term->grid_width;
+    grid_height = term->grid_height;
+    
+    if (grid_width <= 0)
+      grid_width = 8;
+    
+    if (grid_height <= 0)
+      grid_height = 2;
+    term->set_grid_size_pending = FALSE;
+  } else {
+    grid_width = term->grid_width;
+    grid_height = term->grid_height;
+  }
 
   requisition->width = (grid_width * term->charwidth) + 
     (widget->style->klass->xthickness * 2) + PADDING;
@@ -896,8 +886,7 @@ zvt_term_size_allocate (GtkWidget     *widget,
 
   widget->allocation = *allocation;
 
-  if (GTK_WIDGET_REALIZED (widget))
-    {
+  if (GTK_WIDGET_REALIZED (widget)) {
       term = ZVT_TERM (widget);
 
       d( printf("zvt_term_size_allocate old grid x=%d y=%d\n", 
@@ -963,37 +952,32 @@ zvt_term_draw (GtkWidget *widget, GdkRectangle *area)
 	    term->vx->vt.width,
 	    term->vx->vt.height) );
 
-  if (GTK_WIDGET_DRAWABLE (widget))
-    {
-      d( printf("zvt_term_draw is drawable\n") );
-
-      term->in_expose = 1;
-
-      /* draw shadow/border */
-      if (term->shadow_type != GTK_SHADOW_NONE)
-	      gtk_draw_shadow (
-		      widget->style, widget->window,
-		      GTK_STATE_NORMAL, term->shadow_type, 0, 0, 
-		      widget->allocation.width,
-		      widget->allocation.height);
-
-      gdk_window_get_size (term->term_window, &width, &height);
-
-      if (term->transparent || term->pixmap_filename)
-	{
-	  draw_back_pixmap(widget, 0, 0, width, height);
-	}
-      else
-	{
-	  gdk_window_clear_area (term->term_window, 0, 0, width, height);
-	}
-
-      vt_update_rect (term->vx, 0, 0,
-		      width / term->charwidth,
-		      height / term->charheight);
-
-      term->in_expose = 0;
-    }	  
+  if (GTK_WIDGET_DRAWABLE (widget)) {
+    d( printf("zvt_term_draw is drawable\n") );
+    
+    term->in_expose = 1;
+    
+    /* draw shadow/border */
+    if (term->shadow_type != GTK_SHADOW_NONE)
+      gtk_draw_shadow (widget->style, widget->window,
+		       GTK_STATE_NORMAL, term->shadow_type, 0, 0, 
+		       widget->allocation.width,
+		       widget->allocation.height);
+    
+    gdk_window_get_size (term->term_window, &width, &height);
+    
+    if (term->transparent || term->pixmap_filename) {
+      draw_back_pixmap(widget, 0, 0, width, height);
+    } else {
+      gdk_window_clear_area (term->term_window, 0, 0, width, height);
+    }
+    
+    vt_update_rect (term->vx, 0, 0,
+		    width / term->charwidth,
+		    height / term->charheight);
+    
+    term->in_expose = 0;
+  }	  
 }
 
 
@@ -1013,39 +997,37 @@ zvt_term_expose (GtkWidget      *widget,
 	   event->area.width, 
 	   event->area.height));
 
-  if (GTK_WIDGET_DRAWABLE (widget))
-    {
-      term = ZVT_TERM (widget);
-
-      /* FIXME: may update 1 more line/char than needed */
-      term->in_expose = 1;
-
-      if (event->window == widget->window && term->shadow_type != GTK_SHADOW_NONE)
-	gtk_draw_shadow (
-	    widget->style, widget->window,
-	    GTK_STATE_NORMAL, term->shadow_type, 0, 0, 
-	    widget->allocation.width,
-	    widget->allocation.height);
-
-      if (event->window == term->term_window) {
-
-	  if(term->transparent || term->pixmap_filename)
-	    draw_back_pixmap(widget,
-			     event->area.x, 
-			     event->area.y,
-			     event->area.width, 
-			     event->area.height);
-
-	  vt_update_rect (term->vx,
-	      event->area.x / term->charwidth,
-	      event->area.y / term->charheight,
-	      (event->area.x + event->area.width) / term->charwidth+1,
-	      (event->area.y + event->area.height) / term->charheight+1);
-	}
-
-      term->in_expose = 0;
+  if (GTK_WIDGET_DRAWABLE (widget)) {
+    term = ZVT_TERM (widget);
+    
+    /* FIXME: may update 1 more line/char than needed */
+    term->in_expose = 1;
+    
+    if (event->window == widget->window && term->shadow_type != GTK_SHADOW_NONE)
+      gtk_draw_shadow (widget->style, widget->window,
+		       GTK_STATE_NORMAL, term->shadow_type, 0, 0, 
+		       widget->allocation.width,
+		       widget->allocation.height);
+    
+    if (event->window == term->term_window) {
+      
+      if(term->transparent || term->pixmap_filename)
+	draw_back_pixmap(widget,
+			 event->area.x, 
+			 event->area.y,
+			 event->area.width, 
+			 event->area.height);
+      
+      vt_update_rect (term->vx,
+		      event->area.x / term->charwidth,
+		      event->area.y / term->charheight,
+		      (event->area.x + event->area.width) / term->charwidth+1,
+		      (event->area.y + event->area.height) / term->charheight+1);
     }
-
+    
+    term->in_expose = 0;
+  }
+  
   return FALSE;
 }
 
@@ -1061,11 +1043,10 @@ zvt_term_show_pointer (ZvtTerm *term)
 {
   g_return_if_fail (term != NULL);
 
-  if (term->cursor_current != term->cursor_bar)
-    {
-      gdk_window_set_cursor(term->term_window, term->cursor_bar);
-      term->cursor_current = term->cursor_bar;
-    }
+  if (term->cursor_current != term->cursor_bar) {
+    gdk_window_set_cursor(term->term_window, term->cursor_bar);
+    term->cursor_current = term->cursor_bar;
+  }
 }
 
 /**
@@ -1080,11 +1061,10 @@ zvt_term_hide_pointer (ZvtTerm *term)
 {
   g_return_if_fail (term != NULL);
 
-  if (term->cursor_current != term->cursor_dot)
-    {
-      gdk_window_set_cursor(term->term_window, term->cursor_dot);
-      term->cursor_current = term->cursor_dot;
-    }
+  if (term->cursor_current != term->cursor_dot) {
+    gdk_window_set_cursor(term->term_window, term->cursor_dot);
+    term->cursor_current = term->cursor_dot;
+  }
 }
 
 /**
@@ -1201,45 +1181,39 @@ zvt_term_set_font_name (ZvtTerm *term, char *name)
   rest = 0;
   ptr = newname->str;
 
-  for (count = 0; (c = *ptr++);)
-    {
-      if (c == '-')
-	{
-	  count++;
-
-	  d(printf("scanning (%c) (%d)\n", c, count));
-	  d(printf("newname = %s ptr = %s\n", newname->str, ptr));
-
-	  switch (count) 
-	    {
-	    case 3:
-	      ptr[-1] = 0;
-	      break;
-
-	    case 5:
-	      rest = ptr - 1;
-	      break;
-	    }
-	}
-    }
-
-  if (rest)
-    {
-      g_string_sprintf (outname, "%s-medium-r%s", newname->str, rest);
-      font = gdk_font_load (outname->str);
-      d( printf("loading normal font %s\n", outname->str) );
-     
-      g_string_sprintf (outname, "%s-bold-r%s", newname->str, rest); 
-      font_bold = gdk_font_load (outname->str);
-      d( printf("loading bold font %s\n", outname->str) );
+  for (count = 0; (c = *ptr++);) {
+    if (c == '-') {
+      count++;
       
-      zvt_term_set_fonts_internal (term, font, font_bold);
-    } 
-  else
-    {
-      font = gdk_font_load (name);
-      zvt_term_set_fonts_internal (term, font, 0);
+      d(printf("scanning (%c) (%d)\n", c, count));
+      d(printf("newname = %s ptr = %s\n", newname->str, ptr));
+      
+      switch (count) {
+      case 3:
+	ptr[-1] = 0;
+	break;
+	
+      case 5:
+	rest = ptr - 1;
+	break;
+      }
     }
+  }
+
+  if (rest) {
+    g_string_sprintf (outname, "%s-medium-r%s", newname->str, rest);
+    font = gdk_font_load (outname->str);
+    d( printf("loading normal font %s\n", outname->str) );
+    
+    g_string_sprintf (outname, "%s-bold-r%s", newname->str, rest); 
+    font_bold = gdk_font_load (outname->str);
+    d( printf("loading bold font %s\n", outname->str) );
+    
+    zvt_term_set_fonts_internal (term, font, font_bold);
+  } else {
+    font = gdk_font_load (name);
+    zvt_term_set_fonts_internal (term, font, 0);
+  }
 
   g_string_free (newname, TRUE);
   g_string_free (outname, TRUE);
@@ -1707,18 +1681,16 @@ zvt_term_selection_received (GtkWidget *widget, GtkSelectionData *selection_data
   d(printf("got selection from system\n"));
 
   /* **** IMPORTANT **** Check to see if retrieval succeeded  */
-  if (selection_data->length < 0)
-    {
-      g_print ("Selection retrieval failed\n");
-      return;
-    }
+  if (selection_data->length < 0) {
+    g_print ("Selection retrieval failed\n");
+    return;
+  }
 
   /* Make sure we got the data in the expected form */
-  if (selection_data->type != GDK_SELECTION_TYPE_STRING)
-    {
-      g_print ("Selection \"STRING\" was not returned as strings!\n");
-      return;
-    }
+  if (selection_data->type != GDK_SELECTION_TYPE_STRING) {
+    g_print ("Selection \"STRING\" was not returned as strings!\n");
+    return;
+  }
 
   /* paste selection into window! */
   if (selection_data->length)
@@ -1830,18 +1802,15 @@ zvt_term_forkpty (ZvtTerm *term, int do_uwtmp_log)
 
   /* cannot fork twice! */
   if (term->input_id != -1)
-    {
-      return -1;
-    }
+    return -1;
 
   pid = vt_forkpty (&term->vx->vt, do_uwtmp_log);
-  if (pid > 0) 
-    {
-      term->input_id = 
-	gdk_input_add(term->vx->vt.childfd, GDK_INPUT_READ, zvt_term_readdata, term);
-      term->msg_id =
-	gdk_input_add(term->vx->vt.msgfd, GDK_INPUT_READ, zvt_term_readmsg, term);
-    }
+  if (pid > 0) {
+    term->input_id = 
+      gdk_input_add(term->vx->vt.childfd, GDK_INPUT_READ, zvt_term_readdata, term);
+    term->msg_id =
+      gdk_input_add(term->vx->vt.msgfd, GDK_INPUT_READ, zvt_term_readmsg, term);
+  }
 
   return pid;
 }
@@ -1884,17 +1853,15 @@ zvt_term_closepty (ZvtTerm *term)
   g_return_val_if_fail (term != NULL, -1);
   g_return_val_if_fail (ZVT_IS_TERM (term), -1);
 
-  if (term->input_id != -1)
-    {
-      gdk_input_remove (term->input_id);
-      term->input_id = -1;
-    }
+  if (term->input_id != -1) {
+    gdk_input_remove (term->input_id);
+    term->input_id = -1;
+  }
 
-  if (term->msg_id != -1) 
-    {
-      gdk_input_remove (term->msg_id);
-      term->msg_id = -1;
-    }
+  if (term->msg_id != -1) {
+    gdk_input_remove (term->msg_id);
+    term->msg_id = -1;
+  }
 
   return vt_closepty (&term->vx->vt);
 }
@@ -1904,18 +1871,13 @@ zvt_term_scroll (ZvtTerm *term, int n)
 {
   gfloat new_value = 0;
   
-  if (n)
-    {
-      new_value = term->adjustment->value + (n * term->adjustment->page_size);
-    }
-  else if (new_value == (term->adjustment->upper - term->adjustment->page_size))
-    {
-      return;
-    }
-  else
-    {
-      new_value = term->adjustment->upper - term->adjustment->page_size;
-    }
+  if (n) {
+    new_value = term->adjustment->value + (n * term->adjustment->page_size);
+  } else if (new_value == (term->adjustment->upper - term->adjustment->page_size)) {
+    return;
+  } else {
+    new_value = term->adjustment->upper - term->adjustment->page_size;
+  }
 
   gtk_adjustment_set_value (
       term->adjustment,
@@ -2245,38 +2207,30 @@ zvt_term_readdata (gpointer data, gint fd, GdkInputCondition condition)
   saveerrno = EAGAIN;
 
   vt_cursor_state (term, 0);
-  while ( (saveerrno == EAGAIN) && (count = read (fd, buffer, 4096)) > 0) 
-    {
-      update = TRUE;
-      saveerrno = errno;
-      vt_parse_vt (&vx->vt, buffer, count);
-    }
+  while ( (saveerrno == EAGAIN) && (count = read (fd, buffer, 4096)) > 0)  {
+    update = TRUE;
+    saveerrno = errno;
+    vt_parse_vt (&vx->vt, buffer, count);
+  }
 
-  if (update)
-    {
-      if (GTK_WIDGET_DRAWABLE (term))
-	{
-	  d( printf("zvt_term_readdata: update from read\n") );
-	  vt_update (vx, UPDATE_CHANGES);
-	}
-      else
-	{
-	  d( printf("zvt_term_readdata: suspending update -- not drawable\n") );
-	}
-    } 
-  else 
-    {
-      saveerrno = errno;
+  if (update) {
+    if (GTK_WIDGET_DRAWABLE (term)) {
+      d( printf("zvt_term_readdata: update from read\n") );
+      vt_update (vx, UPDATE_CHANGES);
+    } else {
+      d( printf("zvt_term_readdata: suspending update -- not drawable\n") );
     }
+  } else {
+    saveerrno = errno;
+  }
 
   /* *always* turn the cursor back on */
   vt_cursor_state (term, 1);
   
   /* fix scroll bar */
-  if (term->scroll_on_output)
-    {
+  if (term->scroll_on_output) {
       zvt_term_scroll (term, 0);
-    }
+  }
 
   /* flush all X events - this is really necessary to stop X queuing up
    * lots of screen updates and reducing interactivity on a busy terminal
@@ -2341,11 +2295,10 @@ zvt_term_readmsg (gpointer data, gint fd, GdkInputCondition condition)
   /* I suppose I should bother reading the message from the fd, but
    * it doesn't seem worth the trouble <shrug>
    */
-  if (term->input_id != -1)
-    {
-      gdk_input_remove (term->input_id);
-      term->input_id=-1;
-    }
+  if (term->input_id != -1) {
+    gdk_input_remove (term->input_id);
+    term->input_id=-1;
+  }
 
   zvt_term_closepty (term);
 
@@ -2373,11 +2326,10 @@ zvt_term_set_background (ZvtTerm *terminal, char *pixmap_file,
      transparent == terminal->transparent)
     return;
   
-  if (terminal->background.pix)
-    {
-      gdk_pixmap_unref(terminal->background.pix);
-      terminal->background.pix = NULL;
-    }
+  if (terminal->background.pix) {
+    gdk_pixmap_unref(terminal->background.pix);
+    terminal->background.pix = NULL;
+  }
 
   terminal->transparent = transparent;
   terminal->shaded = shaded;
@@ -2410,14 +2362,12 @@ vt_cursor_state(void *user_data, int state)
   old_state = term->cursor_on;
 
   /* only call vt_draw_cursor if the state has changed */
-  if (old_state ^ state)
-    {
-      if (GTK_WIDGET_DRAWABLE (widget))
-	{
-	  vt_draw_cursor(term->vx, state);
-	  term->cursor_on = state;
-	}
+  if (old_state ^ state) {
+    if (GTK_WIDGET_DRAWABLE (widget))	{
+      vt_draw_cursor(term->vx, state);
+      term->cursor_on = state;
     }
+  }
   return old_state;
 }
 
@@ -2499,57 +2449,84 @@ vt_draw_text(void *user_data, int col, int row, char *text, int len, int attr)
    * if the terminal is transparent we must redraw 
    * all the time as we can't optimize in that case
    */
-  if (term->in_expose || vx->back_match == 0)
-    {
-      if ((term->transparent || term->pixmap_filename)
-	  && !term->in_expose && back >= 17) 
-	{
-	  draw_back_pixmap (
-              widget,
-	      col * term->charwidth,
-	      row * term->charheight,
-	      len * term->charwidth,
-	      term->charheight);
-	}
-      else if ( (term->in_expose && back < 17)
-	       || ( term->in_expose==0 && !vx->back_match ))
-	{
-	  gdk_draw_rectangle (
-              term->term_window,
-	      bgc, 1,
-	      col * term->charwidth,
-	      row * term->charheight,
-	      len * term->charwidth,
-	      term->charheight);
-	}
-    } 
-  else 
-    {
-      d(printf("not clearing background in_expose = %d, back_match=%d\n", 
-	       term->in_expose, vx->back_match));
-      d(printf("txt = '%.*s'\n", len, text));
+  if (term->in_expose || vx->back_match == 0) {
+    if ((term->transparent || term->pixmap_filename)
+	&& !term->in_expose && back >= 17) {
+      draw_back_pixmap (widget,
+			col * term->charwidth,
+			row * term->charheight,
+			len * term->charwidth,
+			term->charheight);
+    } else if ( (term->in_expose && back < 17)
+		|| ( term->in_expose==0 && !vx->back_match )) {
+      gdk_draw_rectangle (term->term_window,
+			  bgc, 1,
+			  col * term->charwidth,
+			  row * term->charheight,
+			  len * term->charwidth,
+			  term->charheight);
     }
-  
-  gdk_draw_text(term->term_window, f, fgc, col * term->charwidth,
-		row * term->charheight + term->font->ascent,
-		text, len);
+  } else {
+    d(printf("not clearing background in_expose = %d, back_match=%d\n", 
+	     term->in_expose, vx->back_match));
+    d(printf("txt = '%.*s'\n", len, text));
+  }
 
-  if (overstrike)
-    gdk_draw_text(term->term_window, f, fgc, (col * term->charwidth) + 1,
-		  row * term->charheight + term->font->ascent,
-		  text, len);
-  
+  /* check to see if we have a 2-byte font.
+     This should really be checked at font-setting time so it isn't done
+     every render, but its fairly cheap ... */
+  {
+    GdkFontPrivate *font_private;
+    XFontStruct *xfont;
+    struct _zvtprivate *zp;
+
+    font_private = (GdkFontPrivate*) f;
+    xfont = (XFontStruct *) font_private->xfont;
+    if (((xfont->min_byte1 == 0) && (xfont->max_byte1 == 0))
+	|| (zp = gtk_object_get_data (GTK_OBJECT (term), "_zvtprivate")) == 0) {
+      /* single-byte fonts */
+      gdk_draw_text(term->term_window, f, fgc, col * term->charwidth,
+		    row * term->charheight + term->font->ascent,
+		    text, len);
+      if (overstrike)
+	gdk_draw_text(term->term_window, f, fgc, (col * term->charwidth) + 1,
+		      row * term->charheight + term->font->ascent,
+		      text, len);
+    } else {
+      XChar2b *text16 = zp->text16;
+      int i;
+    
+      /* double-byte fonts ... expand first */
+      if (zp->text16len<len || text16==0) {
+	zp->text16len = len;
+	zp->text16 = g_realloc(zp->text16, len*sizeof(zp->text16[0]));
+	text16 = zp->text16;
+      }
+
+      for (i=0;i<len;i++) {
+	text16[i].byte2=text[i];
+	text16[i].byte1=0;
+      }
+
+      gdk_draw_text(term->term_window, f, fgc, col * term->charwidth,
+		    row * term->charheight + term->font->ascent,
+		    (char *)text16, len*sizeof(text16[0]));
+
+      if (overstrike)
+	gdk_draw_text(term->term_window, f, fgc, (col * term->charwidth) + 1,
+		      row * term->charheight + term->font->ascent,
+		      (char *)text16, len*sizeof(text16[0]));
+    }
+  }
 
   /* check for underline */
-  if (attr&VTATTR_UNDERLINE)
-    {
-      gdk_draw_line(
-          term->term_window, fgc,
-	  col * term->charwidth,
-	  row * term->charheight + term->font->ascent + 1,
-	  (col + len) * term->charwidth - 1,
-	  row * term->charheight + term->font->ascent + 1);
-    }
+  if (attr&VTATTR_UNDERLINE) {
+    gdk_draw_line(term->term_window, fgc,
+		  col * term->charwidth,
+		  row * term->charheight + term->font->ascent + 1,
+		  (col + len) * term->charwidth - 1,
+		  row * term->charheight + term->font->ascent + 1);
+  }
 }
 
 
@@ -2568,20 +2545,18 @@ vt_scroll_area(void *user_data, int firstrow, int count, int offset, int fill)
   g_return_if_fail (widget != NULL);
   g_return_if_fail (ZVT_IS_TERM (widget));
 
-  if (!GTK_WIDGET_DRAWABLE (widget))
-    {
-      return;
-    }
+  if (!GTK_WIDGET_DRAWABLE (widget)) {
+    return;
+  }
 
   term = ZVT_TERM (widget);
 
-  if(term->transparent || term->pixmap_filename)
-    {
-      /* FIXME: bad hack */ /* tell me about it... --JMP */
-      gtk_widget_queue_draw(widget);
-      return;
-    }
-
+  if(term->transparent || term->pixmap_filename) {
+    /* FIXME: bad hack */ /* tell me about it... --JMP */
+    gtk_widget_queue_draw(widget);
+    return;
+  }
+  
   /* FIXME: check args */
   d(printf("scrolling %d rows from %d, by %d lines\n", count,firstrow,offset));
 
@@ -2598,31 +2573,27 @@ vt_scroll_area(void *user_data, int firstrow, int count, int offset, int fill)
 
   /* clear the other part of the screen */
   /* check fill colour is right */
-  if (term->back_last != fill) 
-    {
-      GdkColor pen;
+  if (term->back_last != fill) {
+    GdkColor pen;
+    
+    pen.pixel = term->colors[fill];
+    gdk_gc_set_foreground (term->back_gc, &pen);
+    term->back_last = fill;
+  }
 
-      pen.pixel = term->colors[fill];
-      gdk_gc_set_foreground (term->back_gc, &pen);
-      term->back_last = fill;
-    }
-
-  if (offset > 0) 
-    {
-      gdk_draw_rectangle(term->term_window,
-  		         term->back_gc,
-		         1,
-		         0, (firstrow+count)*term->charheight,
-		         width, offset*term->charheight);
-    } 
-  else 
-    {
-      gdk_draw_rectangle(term->term_window,
-		         term->back_gc,
-		         1,
-		         0, (firstrow+offset)*term->charheight,
-		         width, (-offset)*term->charheight);
-    }
+  if (offset > 0) {
+    gdk_draw_rectangle(term->term_window,
+		       term->back_gc,
+		       1,
+		       0, (firstrow+count)*term->charheight,
+		       width, offset*term->charheight);
+  } else {
+    gdk_draw_rectangle(term->term_window,
+		       term->back_gc,
+		       1,
+		       0, (firstrow+offset)*term->charheight,
+		       width, (-offset)*term->charheight);
+  }
 }
 
 /**
