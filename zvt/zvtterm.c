@@ -1266,7 +1266,7 @@ zvt_term_button_press (GtkWidget      *widget,
       vx->selectiontype = VT_SELTYPE_WORD|VT_SELTYPE_BYSTART|VT_SELTYPE_MOVED;
       break;
     case GDK_3BUTTON_PRESS:
-      vx->selectiontype = VT_SELTYPE_LINE|VT_SELTYPE_BYSTART;
+      vx->selectiontype = VT_SELTYPE_LINE|VT_SELTYPE_BYSTART|VT_SELTYPE_MOVED;
       break;
     default:
       break;
