@@ -8,7 +8,8 @@ INCLUDES = -I.. -I$(srcdir)/.. -I$(includedir) $(SUPPORTINCS) \
         $(GNOME_INCLUDES)  \
 	$(ORBIT_CFLAGS) \
 	$(GLIB_INCLUDES) \
-	-DGNOMEBINDIR=$(bindir)
+	-DGNOMEBINDIR=$(bindir) \
+	-DGNOMESYSCONFDIR=\"$(sysconfdir)\"
 
 BUILT_SOURCES=\
 	$(name_IDL_SOURCES)
@@ -18,7 +19,7 @@ name_IDL_SOURCES=\
 
 libgnorba_la_SOURCES = \
 	name-service-skels.c name-service-stubs.c name-service-common.c \
-	orbitgtk.c
+	orbitgtk.c goad.c gnome-plugins.c
 
 libgnorbainclude_HEADERS = \
 	name-service.h \

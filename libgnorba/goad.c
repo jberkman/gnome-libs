@@ -17,68 +17,49 @@ typedef struct {
 
 extern CORBA_ORB gnome_orbit_orb; /* In orbitgtk.c */
 
-static GSList   *our_active_servers = NULL;
+static GSList *our_active_servers = NULL;
 
-static GoadServerType goad_server_typename_to_type (const char *typename);
-static CORBA_Object   goad_server_activate_shlib   (GoadServer *sinfo,
-						    GoadActivationFlags flags,
-						    CORBA_Environment *ev);
-static CORBA_Object   goad_server_activate_exe     (GoadServer *sinfo,
-						    GoadActivationFlags flags,
-						    CORBA_Environment *ev);
+static void goad_server_list_read(const char *filename,
+				  GArray *servinfo,
+				  GString *tmpstr);
+static GoadServerType goad_server_typename_to_type(const char *typename);
+static CORBA_Object goad_server_activate_shlib(GoadServer *sinfo,
+					       GoadActivationFlags flags,
+					       CORBA_Environment *ev);
+static CORBA_Object goad_server_activate_exe(GoadServer *sinfo,
+					     GoadActivationFlags flags,
+					     CORBA_Environment *ev);
+static void goad_servers_unregister_atexit(void);
 
-static void goad_servers_unregister_atexit         (void);
-
-/*
- * goad_server_list_get
- *
- * Description: Returns an array listing all the servers available
- * for activation.
+/**** goad_server_list_get
+      Description: Returns an array listing all the servers available
+                   for activation.
  */
 GoadServer *
 goad_server_list_get(void)
 {
   GArray *servinfo;
-  GoadServer newval, *retval;
-  gpointer iter;
-  char *typename;
+  GoadServer *retval;
   GString *tmpstr;
+  DIR *dirh;
 
   servinfo = g_array_new(TRUE, FALSE, sizeof(GoadServer));
   tmpstr = g_string_new(NULL);
 
-  /*
-   * XXX TODO: In the future we should probably check both system-wide
-   * and per-user listings
-   */
-  iter = gnome_config_init_iterator_sections(SERVER_LISTING_PATH);
-  while((iter = gnome_config_iterator_next(iter, NULL, &newval.id))) {
+  dirh = opendir(GNOMESYSCONFDIR "/CORBA/servers");
+  if(dirh) {
+    struct dirent *dent;
 
-    g_string_sprintf(tmpstr, SERVER_LISTING_PATH "/%s/type",
-		     newval.id);
-    typename = gnome_config_get_string(tmpstr->str);
-    newval.type = goad_server_typename_to_type(typename);
-    g_free(typename);
-    if(!newval.type) {
-      g_warning("Server %s has invalid activation method.", newval.id);
-      g_free(newval.id);
-      continue;
+    while((dent = readdir(dirh))) {
+      g_string_sprintf(tmpstr, "=" GNOMESYSCONFDIR "/%s",
+		       dent->d_name);
+		       
+      goad_server_list_read(tmpstr->str, servinfo, tmpstr);
     }
-
-    g_string_sprintf(tmpstr, SERVER_LISTING_PATH "/%s/repo_id",
-		     newval.id);
-    newval.repo_id = gnome_config_get_string(tmpstr->str);
-    
-    g_string_sprintf(tmpstr, SERVER_LISTING_PATH "/%s/description",
-		     newval.description);
-    newval.description = gnome_config_get_string(tmpstr->str);
-
-    g_string_sprintf(tmpstr, SERVER_LISTING_PATH "/%s/location_info",
-		     newval.description);
-    newval.location_info = gnome_config_get_string(tmpstr->str);
-    
-    g_array_append_val(servinfo, newval);
+    closedir(dirh);
   }
+
+  goad_server_list_read("/CORBA/servers", servinfo, tmpstr);
 
   retval = (GoadServer *)servinfo->data;
   g_array_free(servinfo, FALSE);
@@ -98,6 +79,58 @@ goad_server_typename_to_type(const char *typename)
     return GOAD_SERVER_RELAY;
   else
     return 0; /* Invalid */
+}
+
+/**** goad_server_list_read
+      Inputs: 'filename' - file to read entries from.
+              'servinfo' - array to append entries onto.
+	      'tmpstr' - GString for scratchpad use.
+
+      Called by goad_server_list_get() only.
+
+      Description: Adds GoadServer entries from 'filename' onto the
+      array 'servinfo'
+
+ */
+static void
+goad_server_list_read(const char *filename,
+		      GArray *servinfo,
+		      GString *tmpstr)
+{
+  gpointer iter;
+  char *typename;
+  GoadServer newval;
+
+  gnome_config_push_prefix(filename);
+  iter = gnome_config_init_iterator_sections("");
+
+  while((iter = gnome_config_iterator_next(iter, NULL, &newval.id))) {
+    g_string_sprintf(tmpstr, "%s/type",
+		     newval.id);
+    typename = gnome_config_get_string(tmpstr->str);
+    newval.type = goad_server_typename_to_type(typename);
+    g_free(typename);
+    if(!newval.type) {
+      g_warning("Server %s has invalid activation method.", newval.id);
+      g_free(newval.id);
+      continue;
+    }
+
+    g_string_sprintf(tmpstr, "%s/repo_id",
+		     newval.id);
+    newval.repo_id = gnome_config_get_string(tmpstr->str);
+    
+    g_string_sprintf(tmpstr, "%s/description",
+		     newval.description);
+    newval.description = gnome_config_get_string(tmpstr->str);
+
+    g_string_sprintf(tmpstr, "%s/location_info",
+		     newval.description);
+    newval.location_info = gnome_config_get_string(tmpstr->str);
+    
+    g_array_append_val(servinfo, newval);
+  }
+  gnome_config_pop_prefix();
 }
 
 /*
@@ -125,17 +158,91 @@ goad_server_list_free (GoadServer *server_list)
   g_free(server_list);
 }
 
-/*
- * Picks the first one on the list that meets criteria
+/**** goad_server_activate_with_repo_id
+      Inputs: 'server_list' - a server listing
+                              returned by goad_server_list_get.
+			      If NULL, we will call the function ourself
+			      and use that.
+	      'repo_id' - the repository ID of the interface that we want
+	                  to activate a server for.
+              'flags' - information on how the application wants
+	                the server to be activated.
+      Description: Activates a CORBA server specified by 'repo_id', using
+                   the 'flags' hints on how to activate that server.
+                   Picks the first one on the list that meets criteria.
+
+		   This is done by possibly making two passes through the list,
+		   the first pass taking into account any activation method
+		   preferences, and the second pass just doing "best we can get"
+		   service.
  */
 CORBA_Object
 goad_server_activate_with_repo_id(GoadServer *server_list,
 				  const char *repo_id,
 				  GoadActivationFlags flags)
 {
-  g_assert(!"NYI");
+  GoadServer *slist;
+  CORBA_Object retval = CORBA_OBJECT_NIL;
+  int i;
+  enum { PASS_PREFER, PASS_FALLBACK, PASS_DONE } passnum;
 
-  return CORBA_OBJECT_NIL;
+  g_return_val_if_fail(repo_id, CORBA_OBJECT_NIL);
+  g_return_val_if_fail(!((flags & GOAD_ACTIVATE_EXISTING_ONLY)
+		   && (flags & GOAD_ACTIVATE_NEW_ONLY)), CORBA_OBJECT_NIL);
+  g_return_val_if_fail(!((flags & GOAD_ACTIVATE_SHLIB)
+		   && (flags & GOAD_ACTIVATE_REMOTE)), CORBA_OBJECT_NIL);
+
+  if(server_list)
+    slist = server_list;
+  else
+    slist = goad_server_list_get();
+
+  /* (unvalidated assumption) If we need to only activate existing objects, then
+     we don't want to bother checking activation methods, because
+     we won't be activating anything. :)
+                       OR
+     if the app has not specified any activation method preferences,
+     then we obviously don't need to bother with that pass through the list.
+  */
+  if((flags & GOAD_ACTIVATE_EXISTING_ONLY)
+     || !(flags & (GOAD_ACTIVATE_SHLIB|GOAD_ACTIVATE_REMOTE)))
+    passnum = PASS_FALLBACK;
+  else
+    passnum = PASS_PREFER;
+
+  for(; passnum < PASS_DONE; passnum++) {
+
+    for(i = 0; slist[i].repo_id; i++) {
+
+      if(passnum == PASS_PREFER) {
+	/* Check the type */
+	if(((flags & GOAD_ACTIVATE_SHLIB)
+	    && slist[i].type != GOAD_SERVER_SHLIB))
+	  continue;
+
+	if((flags & GOAD_ACTIVATE_REMOTE)
+	   && slist[i].type != GOAD_SERVER_EXE)
+	  continue;
+      }
+
+      if(strcmp(repo_id, slist[i].repo_id))
+	continue;
+
+      /* entry matched */
+      retval = goad_server_activate(&slist[i], flags);
+
+      if(retval != CORBA_OBJECT_NIL)
+	break;
+    }
+
+    if(retval != CORBA_OBJECT_NIL)
+      break;
+  }
+
+  if(!server_list)
+    goad_server_list_free(slist);
+
+  return retval;
 }
 
 /*
@@ -331,12 +438,69 @@ goad_servers_unregister_atexit(void)
   CORBA_exception_free(&ev);
 }
 
+/**** goad_server_activate_exe
+      Description: 
+      Inputs: 'sinfo' - information on the program to be run.
+              'flags' - information about how the program should be run, etc.
+	                (no flags applicable at the present time)
+	      'ev' - exception information (passed in to save us
+	      creating another one)
+      Outputs: 'retval' - an objref to the newly-started server.
+      Pre-conditions: Assumes sinfo->type == GOAD_SERVER_EXE
+
+      Description: Runs the program specified in 'sinfo', and
+                   reads an IOR string from the stdout of the program.
+		   Uses CORBA_ORB_string_to_object to turn the string
+		   into an object reference.
+ */
 static CORBA_Object
 goad_server_activate_exe(GoadServer *sinfo,
 			 GoadActivationFlags flags,
 			 CORBA_Environment *ev)
 {
-  g_assert(!"NYI");
+  CORBA_Object retval;
+  int iopipes[2];
+  char iorbuf[2048];
 
-  return CORBA_OBJECT_NIL;
+  /* fork & get the ior from stdout */
+  pipe(iopipes);
+
+  if(fork()) {
+    FILE *iorfh;
+
+    /* Parent */
+    close(iopipes[1]);
+
+    iorfh = fdopen(iopipes[0], "r");
+
+    iorbuf[0] = '\0';
+    while(fgets(iorbuf, sizeof(iorbuf), iorfh) && strncmp(iorbuf, "IOR:", 4))
+      /* Just read lines until we get what we're looking for */ ;
+
+    if(strncmp(iorbuf, "IOR:", 4)) {
+      retval = CORBA_OBJECT_NIL;
+      goto out;
+    }
+
+    fclose(iorfh);
+
+    retval = CORBA_ORB_string_to_object(gnome_orbit_orb, iorbuf, ev);
+      
+    if(ev->_major != CORBA_NO_EXCEPTION)
+      retval = CORBA_OBJECT_NIL;
+
+  } else if(fork()) {
+    _exit(0); /* de-zombifier process, just exit */
+  } else {
+    /* Child of a child. We run the naming service */
+    close(0);
+    close(iopipes[0]);
+    dup2(iopipes[1], 1);
+    dup2(iopipes[1], 2);
+    execlp(sinfo->location_info, sinfo->location_info, NULL);
+    _exit(1);
+  }
+
+ out:
+  return retval;
 }

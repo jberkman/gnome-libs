@@ -173,7 +173,13 @@ gnome_CORBA_init(char *app_id,
   return retval;
 }
 
-/* This routine bootstraps CORBA connectivity for a GNOME desktop session... */
+/**** gnome_name_service_get
+
+      Outputs: 'retval' - an object reference to the name service.
+
+      Description: This routine bootstraps CORBA connectivity for a
+      GNOME desktop session...
+ */
 CORBA_Object
 gnome_name_service_get(void)
 {
@@ -191,19 +197,63 @@ gnome_name_service_get(void)
   proptype = gdk_atom_intern("STRING", FALSE);
 
   if(CORBA_Object_is_nil(name_service, &ev)) {
+    int iopipes[2];
+    char iorbuf[2048];
 
     /* First, try and see if another application has started the name service
        (and indicated its presence by setting a root window property */
     gdk_property_get(GDK_ROOT_PARENT(), propname, proptype,
 		     0, 9999, FALSE, NULL,
 		     NULL, NULL, (guchar **)&ior);
-    if(!ior)
+
+    if(ior)
+      name_service = CORBA_ORB_string_to_object(gnome_orbit_orb, ior, &ev);
+
+    if(!CORBA_Object_is_nil(name_service, &ev)
+       && ev._major == CORBA_NO_EXCEPTION)
       goto out;
 
-    name_service = CORBA_ORB_string_to_object(gnome_orbit_orb, ior, &ev);
+    /* Since we're pretty sure no name server is running, we start it ourself
+       and tell the (GNOME session) world about it */
+    /* fork & get the ior from orbit-name-service stdout */
+    pipe(iopipes);
 
-    if(ev._major != CORBA_NO_EXCEPTION)
-      name_service = CORBA_OBJECT_NIL;
+    if(fork()) {
+      FILE *iorfh;
+
+      /* Parent */
+      close(iopipes[1]);
+
+      iorfh = fdopen(iopipes[0], "r");
+
+      while(fgets(iorbuf, sizeof(iorbuf), iorfh) && strncmp(iorbuf, "IOR:", 4))
+	/* Just read lines until we get what we're looking for */ ;
+
+      if(strncmp(iorbuf, "IOR:", 4)) {
+	name_service = CORBA_OBJECT_NIL;
+	goto out;
+      }
+
+      fclose(iorfh);
+
+      gdk_property_change(GDK_ROOT_PARENT(), propname, proptype, 8,
+			  GDK_PROP_MODE_REPLACE, iorbuf, strlen(iorbuf));
+      name_service = CORBA_ORB_string_to_object(gnome_orbit_orb, iorbuf, &ev);
+      
+      if(ev._major != CORBA_NO_EXCEPTION)
+	name_service = CORBA_OBJECT_NIL;
+
+    } else if(fork()) {
+      _exit(0); /* de-zombifier process, just exit */
+    } else {
+      /* Child of a child. We run the naming service */
+      close(0);
+      close(iopipes[0]);
+      dup2(iopipes[1], 1);
+      dup2(iopipes[1], 2);
+      execlp("orbit-naming-server", "orbit-naming-server", NULL);
+      _exit(1);
+    }
   }
 
  out:
