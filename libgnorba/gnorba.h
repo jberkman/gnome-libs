@@ -66,11 +66,11 @@ typedef enum {
 	GOAD_ACTIVATE_REMOTE = 1 << 1, 	/* prefer remote activation */
 
 	/* these two are mutually exclusive */
-	GOAD_ACTIVATE_EXISTING_ONLY = 1 << 2 /* Only do lookup in name
-					      * service for currently running
-					      * version.
-					      */
-	GOAD_ACTIVATE_NEW_ONLY = 1 << 3      /* No lookup in name service. */
+	GOAD_ACTIVATE_EXISTING_ONLY = 1 << 2, /* Only do lookup in name
+					       * service for currently running
+					       * version.
+					       */
+	GOAD_ACTIVATE_NEW_ONLY = 1 << 3       /* No lookup in name service. */
 } GoadActivationFlags;
 
 /*
