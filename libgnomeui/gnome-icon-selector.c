@@ -223,6 +223,18 @@ do_construct_handler (GnomeSelector *selector)
 
     iselector = GNOME_ICON_SELECTOR (selector);
 
+    if (get_value_boolean (iselector, "want_default_behaviour")) {
+	g_object_set (G_OBJECT (iselector),
+		      "want_default_behaviour", FALSE,
+		      "use_default_entry_widget", TRUE,
+		      "use_default_selector_widget", TRUE,
+		      "use_default_browse_dialog", TRUE,
+		      "want_browse_button", TRUE,
+		      "want_clear_button", TRUE,
+		      "want_default_button", TRUE,
+		      NULL);
+    }
+
     if (get_value_boolean (iselector, "use_default_selector_widget")) {
 	GtkWidget *box, *sb, *frame, *list;
 	GtkAdjustment *vadj;
