@@ -12,6 +12,7 @@ Copyright: LGPL
 Group: System Environment/Libraries
 Source: ftp://ftp.gnome.org/pub/GNOME/sources/gnome-libs/%name-%{ver}.tar.gz
 URL: http://www.gnome.org/
+BuildRoot: /var/tmp/%{name}-root
 Requires: gtk+ >= 1.2
 Docdir: %{prefix}/doc
 
