@@ -1,3 +1,21 @@
+1999-09-12  Michael Zucchi  <zucchi@zedzone.mmc.com.au>
+
+	* zterm.c (button_press_event): Changed to perform the lookup
+	manually, instead of relying on the signal - pity, the code was
+	cleaner before, but this isn't too much of a price to pay for bin
+	compat.
+
+	* update.c (vt_match_clear): Changed my totally stupid use of the
+	double-linked list (treating it as a single-linked list), to a
+	more sane and accurate version.
+
+	* zvtterm.c (zvt_term_class_init): Remove the match_clicked
+	signal.
+	(zvt_term_class_init): Ditto.
+	(zvt_term_button_press): No longer check/emit a match_clicked
+	signal.
+	(zvt_term_match_clicked): Removed dummy callback fn.
+
 1999-09-12  Michael Zucchi  <mzucchi@denr.sa.gov.au>
 
 	* zvtterm.c (zvt_term_match_check): New function, api call to get

@@ -1547,24 +1547,22 @@ void vt_getmatches(struct _vtx *vx)
 void
 vt_match_clear(struct _vtx *vx, char *regex)
 {
-  struct vt_magic_match *m, *p;
+  struct vt_magic_match *m, *n;
 
   /* make sure there are no dangling references to this match type */
   vt_free_match_blocks(vx);
 
   m = (struct vt_magic_match *)vx->magic_list.head;
-  /* we can do this magic because all next pointers are at offset 0! */
-  p = (struct vt_magic_match *)&vx->magic_list.head;
-  while (m) {
+  n = m->next;
+  while (n) {
     if (regex==0 || strcmp(m->regex, regex)==0) {
-      p->next = m->next;
+      vt_list_remove((struct vt_listnode *)m);
       free(m->regex);
       regfree(&m->preg);
       free(m);
-      m = p->next;
     }
-    p = m;
-    m = m->next;
+    m = n;
+    n = n->next;
   }
 }
 

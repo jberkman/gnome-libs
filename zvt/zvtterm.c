@@ -142,7 +142,6 @@ enum
 {
   CHILD_DIED,
   TITLE_CHANGED,
-  MATCH_CLICKED,
   LAST_SIGNAL
 };
 static guint term_signals[LAST_SIGNAL] = { 0 };
@@ -206,17 +205,6 @@ zvt_term_class_init (ZvtTermClass *class)
 		    GTK_TYPE_INT,
 		    GTK_TYPE_STRING);
 
-  term_signals[MATCH_CLICKED] =
-    gtk_signal_new ("match_clicked",
-                    GTK_RUN_FIRST,
-                    object_class->type,
-                    GTK_SIGNAL_OFFSET (ZvtTermClass, match_clicked),
-                    gtk_marshal_NONE__POINTER_POINTER_POINTER,
-                    GTK_TYPE_NONE, 3,
-		    GTK_TYPE_POINTER,
-		    GTK_TYPE_STRING,
-		    GTK_TYPE_POINTER);
-
   gtk_object_class_add_signals (object_class, term_signals, LAST_SIGNAL);
 
   object_class->destroy = zvt_term_destroy;
@@ -242,7 +230,6 @@ zvt_term_class_init (ZvtTermClass *class)
 
   term_class->child_died = zvt_term_child_died;
   term_class->title_changed = zvt_term_title_changed;
-  term_class->match_clicked = zvt_term_match_clicked;
 }
 
 
@@ -1438,7 +1425,6 @@ zvt_term_button_press (GtkWidget      *widget,
   struct _vtx *vx;
   ZvtTerm *term;
   struct _zvtprivate *zp;
-  struct vt_match *m;
 
   d(printf("button pressed\n"));
 
@@ -1534,12 +1520,7 @@ zvt_term_button_press (GtkWidget      *widget,
 
   case 3:			/* right button - select extend? */
 
-    /* check for a 'magic match' block */
-    m = vt_match_check(vx, x, y-vx->vt.scrollbackoffset);
-    if (m) {
-      gtk_signal_emit(GTK_OBJECT(term), term_signals[MATCH_CLICKED], event,
-		      m->matchstr, m->match->user_data);
-    } else if (vx->selected) {
+    if (vx->selected) {
       int midpos;
       int mypos;
 
@@ -2526,16 +2507,6 @@ zvt_term_title_changed (ZvtTerm *term, VTTITLE_TYPE type, char *str)
   /* perhaps we should do something here? */
 }
 
-/* dummy default signal handler for match_clicked */
-static void
-zvt_term_match_clicked (ZvtTerm *term, GdkEventButton *event, char *match, void *data)
-{
-  g_return_if_fail (term != NULL);
-  g_return_if_fail (ZVT_IS_TERM (term));
-
-  /* perhaps we should do something here? */
-}
-
 /**
  * zvt_term_match_add:
  * @term: An initialised &ZvtTerm.
@@ -2545,8 +2516,9 @@ zvt_term_match_clicked (ZvtTerm *term, GdkEventButton *event, char *match, void 
  * as the mouse moves over it.
  * @data: User data.
  * 
- * Add a new auto-match regular expression.  When a matching text
- * is clicked on, a match_clicked signal will be raised.
+ * Add a new auto-match regular expression.  The
+ * zvt_term_match_check() function can be used to check for matches
+ * using screen coordinates.
  * 
  * Each regular expression @regex will be matched against each
  * line in the visible buffer.

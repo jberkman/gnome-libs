@@ -69,9 +69,21 @@ title_changed_event (ZvtTerm *term, VTTITLE_TYPE type, char *newtitle)
 }
 
 static void
-match_clicked_event (ZvtTerm *term, GdkEventButton *e, char *str, char *type)
+button_press_event (ZvtTerm *term, GdkEventButton *e)
 {
-  printf("User clicked on type '%s' -> '%s'\n", type, str);
+  int x,y;
+  GdkModifierType mask;
+  char *data, *str;
+
+  gdk_window_get_pointer(GTK_WIDGET(term)->window, &x, &y, &mask);
+
+  str = zvt_term_match_check(term, x/term->charwidth, y/term->charheight, &data);
+  if (str) {
+    gtk_signal_emit_stop_by_name (GTK_OBJECT (term), "button_press_event");
+    printf("User clicked on type '%s' -> '%s'\n", data, str);
+    return TRUE;
+  }
+  return FALSE;
 }
 
 static void
@@ -205,8 +217,8 @@ main (gint argc, gchar *argv[])
 
   gtk_signal_connect (
       GTK_OBJECT (term),
-      "match_clicked",
-      GTK_SIGNAL_FUNC (match_clicked_event),
+      "button_press_event",
+      GTK_SIGNAL_FUNC (button_press_event),
       NULL);
   
   gtk_signal_connect (
