@@ -588,7 +588,7 @@ static void vt_clear_lineportion(struct vt_em *vt)
   d(printf("Clear part of line\n"));
   if (vt->argcnt>1) {
     /* eat the command */
-  } else if (vt->argcnt==0 && *vt->args[0] == '0') {
+  } else if (vt->argcnt==0 || *vt->args[0] == '0') {
     vt_clear_line_portion(vt, vt->cursorx, vt->this->width);
   } else if (*vt->args[0] == '1') {
     vt_clear_line_portion(vt, 0, vt->cursorx + 1);
