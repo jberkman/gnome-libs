@@ -101,7 +101,7 @@ gchar * gnome_geometry_string (GdkWindow * window)
   gdk_window_get_root_origin (window, &x, &y);
   gdk_window_get_size (window, &w, &h);
 
-  g_snprintf (buffer, BUFSIZE, "%dx%d+%d+%d", w, h, x, y);
+  g_snprintf (buffer, BUFSIZE + 1, "%dx%d+%d+%d", w, h, x, y);
   
 #ifdef GNOME_ENABLE_DEBUG
   g_print("Geometry string: %s\n", buffer);
