@@ -27,9 +27,9 @@
 #include <sys/resource.h>
 #include <unistd.h>
 
-#ifdef	__FreeBSD__
+#if defined (__FreeBSD__) || defined (__NetBSD__) || defined (__OpenBSD__)
 #  include <sys/ioctl_compat.h>
-#endif	/* __FreeBSD__ */
+#endif	/* __*BSD__ */
 
 #if HAVE_SYS_WAIT_H
 # include <sys/wait.h>
