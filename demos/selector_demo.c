@@ -182,7 +182,7 @@ main (int argc, char **argv)
     GtkWidget *fselector, *entry, *ientry, *pentry;
 
     gnome_program_init ("selector_demo", "1.0", argc, argv,
-			GNOMEUI_INIT, NULL);
+			LIBGNOMEUI_INIT, NULL);
 
     app = gnome_app_new ("selector-demo", "Selector Demo");
     gtk_window_set_default_size (GTK_WINDOW (app), 400, 400);
