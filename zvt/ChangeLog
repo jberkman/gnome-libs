@@ -1,3 +1,12 @@
+1998-04-28  Miguel de Icaza  <miguel@nuclecu.unam.mx>
+
+	* vt.c (vt_scrollback_set): ln might be null after calling
+	vt_list_remhead, only execute vt_mem_push if ln is not null.
+	Michael, I do not know if this is the correct fix, could you check this?
+
+	* zvtterm.c (zvt_term_forkpty): set term->input_id to the file
+	descriptor of the chid.
+
 1998-04-28  Michael Zucchi  <zucchi@zzedzone.box.net.au>
 
 	* zterm.c (child_died_event): New function, exits.  This is the

@@ -100,8 +100,10 @@ void vt_scrollback_set(struct vt_em *vt, int lines)
 
   while (vt->scrollbacklines >= lines) {
     ln = (struct vt_line *)vt_list_remhead(&vt->scrollback); /* remove the top of list line */
-    vt_mem_push(&vt->mem_list, ln, sizeof(struct vt_line)+sizeof(uint32)*ln->width);
-    vt->scrollbacklines--;
+    if (ln){
+	    vt_mem_push(&vt->mem_list, ln, sizeof(struct vt_line)+sizeof(uint32)*ln->width);
+	    vt->scrollbacklines--;
+    }
   }
   vt->scrollbackmax = lines;
 }
@@ -1072,6 +1074,7 @@ int vt_forkpty(struct vt_em *vt)
 {
   struct winsize win;
   char ttyname[256];
+  int i;
 
   win.ws_row = 24;
   win.ws_col = 80;
@@ -1079,6 +1082,11 @@ int vt_forkpty(struct vt_em *vt)
   win.ws_ypixel = 480;
   vt->childpid = forkpty(&vt->childfd, ttyname, 0, &win);
 
+  if (vt->childpid == 0){
+	  for (i = 3; i < 1024; i++)
+		  if (i != vt->childfd)
+			  close (i);
+  }
   if (vt->childpid>0) {
     fcntl(vt->childfd, F_SETFL, O_NONBLOCK);
   }
@@ -1123,8 +1131,11 @@ int vt_closepty(struct vt_em *vt)
 
   d(printf("vt_closepty called\n"));
 
-  ret = close(vt->childfd);
-  vt->childfd = -1;
+  if (vt->childfd != -1){
+	  ret = close(vt->childfd);
+	  vt->childfd = -1;
+  } else
+	  ret = 0;
   return ret;
 }
 

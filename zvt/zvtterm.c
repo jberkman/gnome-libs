@@ -964,7 +964,7 @@ int zvt_term_forkpty(ZvtTerm *term)
   pid = vt_forkpty(&term->vx->vt);
   if (pid>0) {
     if (term->input_id==-1) {
-      gdk_input_add(term->vx->vt.childfd, GDK_INPUT_READ, zvt_term_readdata, term);
+      term->input_id = gdk_input_add(term->vx->vt.childfd, GDK_INPUT_READ, zvt_term_readdata, term);
     }
   }
   return pid;
