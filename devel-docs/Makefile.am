@@ -1,4 +1,5 @@
-SUBDIRS = gnome gnome-dev-info gnomeui zvt templates ui-guide gnorba
+SUBDIRS = gnome gnome-dev-info gnome-libs-tutorial gnomeui zvt \
+	templates ui-guide gnorba
 
 TEXT_FILES =					\
 	README.gtkcauldron			\
