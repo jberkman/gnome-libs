@@ -1,14 +1,14 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: gnome-libs 0.99.0\n"
-"POT-Creation-Date: 1999-01-12 18:43-0600\n"
-"PO-Revision-Date: 1999-01-04 17:37+0100\n"
+"Project-Id-Version: gnome-libs 0.99.2\n"
+"POT-Creation-Date: 1998-12-16 02:52-0500\n"
+"PO-Revision-Date: 1999-01-10 17:37+0100\n"
 "Last-Translator: Pablo Saratxaga <srtxg@chanae.alphanet.ch>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=iso-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Date: 1991-01-04 13:01:00+0100\n"
+"Date: 1991-01-10 13:01:00+0100\n"
 "From: Miguel de Icaza,computo,622-4680 <miguel@metropolis.nuclecu.unam.mx>\n"
 "Xgettext-Options: --default-domain=gnome-libs --directory=.. --add-comments "
 "--keyword=_ --keyword=N_ --files-from=./POTFILES.in\n"
@@ -157,21 +157,21 @@ msgid "Children/"
 msgstr "Hijos/"
 
 #: gnome-hello/gnome-hello.c:40
+msgid "<control>E"
+msgstr "<control>E"
+
+#: gnome-hello/gnome-hello.c:40
 msgid "File/Exit"
 msgstr "Archivo/Salir"
 
-#: gnome-hello/gnome-hello.c:40
-msgid "<control>E"
-msgstr "<control>E"
+#: gnome-hello/gnome-hello.c:42
+msgid "<control>A"
+msgstr "<control>A"
 
 #. The '...' end indicate that the options open a dialog
 #: gnome-hello/gnome-hello.c:42
 msgid "Help/About..."
 msgstr "Ayuda/Acerca..."
-
-#: gnome-hello/gnome-hello.c:42
-msgid "<control>A"
-msgstr "<control>A"
 
 #: gnome-hello/gnome-hello.c:208
 #, c-format
@@ -201,26 +201,25 @@ msgstr "Gnome Hello %s.\n"
 msgid "Options error\n"
 msgstr "Error en las opciones\n"
 
-#: libgnome/gconfigger.c:32
-msgid "get"
+#: libgnome/gconfigger.c:32 libgnome/gconfigger.c:33
+msgid "CONFIG-PATH"
 msgstr ""
 
 #: libgnome/gconfigger.c:32
 msgid "Get config entry"
-msgstr "Recupera una entrada de configuración"
+msgstr ""
 
-#: libgnome/gconfigger.c:32 libgnome/gconfigger.c:33
-msgid "CONFIG-PATH"
-msgstr "RUTA-DE-CONFIGURACIóN"
-
-#: libgnome/gconfigger.c:33
-#, fuzzy
-msgid "set"
-msgstr "Insertar"
+#: libgnome/gconfigger.c:32
+msgid "get"
+msgstr ""
 
 #: libgnome/gconfigger.c:33
 msgid "Set config entry"
-msgstr "Pone una opción de configuración"
+msgstr ""
+
+#: libgnome/gconfigger.c:33
+msgid "set"
+msgstr ""
 
 #: libgnome/gnome-popt.c:92
 #, c-format
@@ -231,23 +230,23 @@ msgstr ""
 "Error en la opción %s: %s.\n"
 "Lance '%s --help' para ver la lista completa de las opciones disponibles.\n"
 
-#: libgnome/gnomelib-init.c:114
+#: libgnome/gnomelib-init.c:113
 msgid "Disable sound server usage"
-msgstr "Desactiva el uso del servidor de sonido"
+msgstr "Desactivar el uso del servidor de sonido"
 
-#: libgnome/gnomelib-init.c:116
+#: libgnome/gnomelib-init.c:115
 msgid "Enable sound server usage"
-msgstr "Activa el uso del servidor de sonido"
+msgstr "Activar el uso del servidor de sonido"
+
+#: libgnome/gnomelib-init.c:117
+msgid "Host:port on which the sound server to use is running"
+msgstr "Hostal:puerto en el cual está corriendo el servidor de sonido a usar"
 
 #: libgnome/gnomelib-init.c:118
-msgid "Host:port on which the sound server to use is running"
-msgstr "máquina:puerto en el cual el servidor de sonido está corriendo"
-
-#: libgnome/gnomelib-init.c:119
 msgid "HOSTNAME:PORT"
-msgstr "MáQUINA:PUERTO"
+msgstr "HOSTAL:PUERTO"
 
-#: libgnome/gnomelib-init.c:127
+#: libgnome/gnomelib-init.c:126
 msgid "GNOME Options"
 msgstr "Opciones de GNOME"
 
@@ -477,21 +476,21 @@ msgstr "="
 msgid "INV"
 msgstr "INV"
 
-#: libgnomeui/gnome-client.c:757
-msgid "Specify session management ID"
-msgstr "Especifica el identificador del controlador de sesiones"
-
 #: libgnomeui/gnome-client.c:757 libgnorba/goad-browser.c:23
 msgid "ID"
 msgstr "ID"
 
-#: libgnomeui/gnome-client.c:759
-msgid "Specify prefix of saved configuration"
-msgstr "Especificar el prefijo de la configuración previamente guardada"
+#: libgnomeui/gnome-client.c:757
+msgid "Specify session management ID"
+msgstr "Especifica el identificador del controlador de sesiones"
 
 #: libgnomeui/gnome-client.c:759
 msgid "PREFIX"
 msgstr "PREFIJO"
+
+#: libgnomeui/gnome-client.c:759
+msgid "Specify prefix of saved configuration"
+msgstr "Especificar el prefijo de la configuración previamente guardada"
 
 #: libgnomeui/gnome-client.c:761
 msgid "Disable connection to session manager"
@@ -513,7 +512,7 @@ msgstr "Elija un color"
 #. Only add the label if all the children are to be shown.  Otherwise
 #. * things look too wide; in that case just show the arrow.
 #.
-#: libgnomeui/gnome-dateedit.c:430
+#: libgnomeui/gnome-dateedit.c:426
 msgid "Calendar"
 msgstr "Calendario"
 
@@ -551,7 +550,7 @@ msgstr "Documentación:"
 
 #: libgnomeui/gnome-dentry-edit.c:310
 msgid "Basic"
-msgstr ""
+msgstr "Básico"
 
 #: libgnomeui/gnome-dentry-edit.c:314
 msgid "Advanced"
@@ -568,52 +567,49 @@ msgid "Browse..."
 msgstr "Buscar..."
 
 #: libgnomeui/gnome-font-picker.c:159
-#, fuzzy
 msgid "Pick a Font"
-msgstr "Elija un color"
+msgstr "Elija una Fuente"
 
 #: libgnomeui/gnome-font-picker.c:542 libgnomeui/gnome-stock.c:778
 msgid "Font"
 msgstr "Fuente"
 
-#: libgnomeui/gnome-icon-entry.c:88 libgnomeui/gnome-icon-entry.c:375
+#: libgnomeui/gnome-icon-entry.c:87 libgnomeui/gnome-icon-entry.c:374
 msgid "No Icon"
-msgstr "Sin ícono"
+msgstr "sin ícono"
 
-#: libgnomeui/gnome-icon-entry.c:200 libgnomeui/gnome-pixmap-entry.c:177
+#: libgnomeui/gnome-icon-entry.c:199 libgnomeui/gnome-pixmap-entry.c:176
 msgid "Can't find an hbox, using a normal file selection"
-msgstr ""
-"No puedo encontrar el hbox, usando el dialogo de selección convencional"
+msgstr "Imposible encontrar una hbox, usando una selección de archivos normal"
 
-#: libgnomeui/gnome-icon-entry.c:206 libgnomeui/gnome-pixmap-entry.c:183
-#, fuzzy
+#: libgnomeui/gnome-icon-entry.c:205 libgnomeui/gnome-pixmap-entry.c:182
 msgid "Preview"
-msgstr "Anterior"
+msgstr "Previsualización"
 
 #: libgnomeui/gnome-icon-sel.c:314
 msgid "Loading Icons..."
 msgstr "Cargando íconos..."
-
-#: libgnomeui/gnome-init.c:130
-msgid "Gdk debugging flags to set"
-msgstr "Flags de epuración de Gdk a activar"
 
 #: libgnomeui/gnome-init.c:130 libgnomeui/gnome-init.c:132
 #: libgnomeui/gnome-init.c:152 libgnomeui/gnome-init.c:154
 msgid "FLAGS"
 msgstr "FLAGS"
 
+#: libgnomeui/gnome-init.c:130
+msgid "Gdk debugging flags to set"
+msgstr "Flags de epuración de Gdk a activar"
+
 #: libgnomeui/gnome-init.c:132
 msgid "Gdk debugging flags to unset"
 msgstr "Flags de epuración de Gdk a desactivar"
 
 #: libgnomeui/gnome-init.c:134
-msgid "X display to use"
-msgstr "Pantalla X donde se despliega"
-
-#: libgnomeui/gnome-init.c:134
 msgid "DISPLAY"
 msgstr "DISPLAY"
+
+#: libgnomeui/gnome-init.c:134
+msgid "X display to use"
+msgstr "Pantalla X donde se despliega"
 
 #: libgnomeui/gnome-init.c:136
 msgid "Make X calls synchronous"
@@ -624,20 +620,20 @@ msgid "Don't use X shared memory extension"
 msgstr "No puedo emplear la extensión de memoria compartida de X"
 
 #: libgnomeui/gnome-init.c:140
-msgid "Program name as used by the window manager"
-msgstr "Nombre del programa usado por el gestor de ventanas"
-
-#: libgnomeui/gnome-init.c:140
 msgid "NAME"
 msgstr "NOMBRE"
 
-#: libgnomeui/gnome-init.c:142
-msgid "Program class as used by the window manager"
-msgstr "Clase del programa usada por el gestor de ventanas"
+#: libgnomeui/gnome-init.c:140
+msgid "Program name as used by the window manager"
+msgstr "Nombre del programa usado por el gestor de ventanas"
 
 #: libgnomeui/gnome-init.c:142
 msgid "CLASS"
 msgstr "CLASE"
+
+#: libgnomeui/gnome-init.c:142
+msgid "Program class as used by the window manager"
+msgstr "Clase del programa usada por el gestor de ventanas"
 
 #: libgnomeui/gnome-init.c:144
 msgid "HOST"
@@ -699,33 +695,29 @@ msgstr "Calculadora"
 msgid "Calculator..."
 msgstr "Calculadora..."
 
-#: libgnomeui/gnome-pixmap-entry.c:80 libgnomeui/gnome-pixmap-entry.c:253
+#: libgnomeui/gnome-pixmap-entry.c:79 libgnomeui/gnome-pixmap-entry.c:252
 msgid "No Image"
-msgstr "Sin imágen"
+msgstr "Ninguna imágen"
 
 #: libgnomeui/gnome-popup-help.c:51
 msgid "_Help with this"
-msgstr "_Ayuda con esto"
+msgstr "A_yuda con esto"
 
 #: libgnomeui/gnome-popup-help.c:57
-#, fuzzy
 msgid "Cu_t"
-msgstr "Cortar"
+msgstr "Cor_tar"
 
 #: libgnomeui/gnome-popup-help.c:59
-#, fuzzy
 msgid "_Copy"
-msgstr "Copiar"
+msgstr "_Copiar"
 
 #: libgnomeui/gnome-popup-help.c:61
-#, fuzzy
 msgid "_Paste"
-msgstr "Pegar"
+msgstr "_Pegar"
 
 #: libgnomeui/gnome-property-entries.c:249
-#, fuzzy
 msgid "Select"
-msgstr "Selecciona archivo"
+msgstr "Seleccionar"
 
 #: libgnomeui/gnome-scores.c:76
 msgid "Top Ten"
@@ -863,11 +855,11 @@ msgstr "Ordenar por exactitud"
 
 #: libgnomeui/gnome-spell.c:682
 msgid "Accept run-together words"
-msgstr "Acepta palabras pegadas"
+msgstr ""
 
 #: libgnomeui/gnome-spell.c:692
 msgid "Discard accepted words on kill"
-msgstr "Descarta palabras aceptadas con \"kill\""
+msgstr ""
 
 #: libgnomeui/gnome-spell.c:700
 msgid "Enable tooltips"
@@ -1025,12 +1017,12 @@ msgid "Edit"
 msgstr "Editar"
 
 #: libgnomeui/winhints_demo.c:47
-msgid "wmhints-test"
-msgstr "wmhints-test"
-
-#: libgnomeui/winhints_demo.c:47
 msgid "winhints-test"
 msgstr "winhints-test"
+
+#: libgnomeui/winhints_demo.c:47
+msgid "wmhints-test"
+msgstr "wmhints-test"
 
 #: libgnomeui/winhints_demo.c:72
 msgid "Layer:"
@@ -1070,7 +1062,7 @@ msgstr "Espacios de trabajo:"
 
 #: libgnomeui/winhints_demo.c:152
 msgid "Sticky"
-msgstr "Modo pegajoso"
+msgstr ""
 
 #: libgnomeui/winhints_demo.c:156
 msgid "Set Workspace"
@@ -1152,72 +1144,182 @@ msgstr ""
 #: libgnorba/gnome-name-server.c:199
 #, c-format
 msgid "Creating '/GNOME' context %s %d"
-msgstr "Creando el contexto %s %d en '/GNOME'"
+msgstr "Creando '/GNOME' contexto %s %d"
 
 #: libgnorba/gnome-name-server.c:216
 #, c-format
 msgid "Creating '/GNOME/Servers' context %s %d"
-msgstr "Creando contexto %s %d en '/GNOME/Servers'"
+msgstr "Creando '/GNOME/Servers' contexto %s %d"
 
 #: libgnorba/goad-browser.c:23
 msgid "GOAD ID of the server to activate"
-msgstr "Identificación GOAD del servidor que se quiere activar"
-
-#: libgnorba/goad-browser.c:24
-msgid "Repository ID of the server to activate"
-msgstr "Identificación del depósito del servidor que se quiere activar"
+msgstr "GOAD ID del servidor a activar"
 
 #: libgnorba/goad-browser.c:24
 msgid "REPO-ID"
 msgstr ""
 
+#: libgnorba/goad-browser.c:24
+msgid "Repository ID of the server to activate"
+msgstr "ID de Repositorio del servidor a activar"
+
 #: libgnorba/goad.c:1153
 msgid "(Internal use only) GOAD server ID to activate"
-msgstr ""
-"(Solamente para uso interno) identificación GOAD del servidor a activar"
-
-#: libgnorba/loadshlib.c:18
-msgid "ID under which GOAD knows this server"
-msgstr "Identificación con la cual GOAD conoce a este servidor"
+msgstr "ID del servidor GOAD (de uso unicamente interno) a activar"
 
 #: libgnorba/loadshlib.c:18
 msgid "GOAD_ID"
 msgstr ""
 
-#: libgnorba/loadshlib.c:19
-msgid "Repository ID under which GOAD knows this server"
-msgstr "Identificación del depósito bajo la cual GOAD conoce a este servidor"
+#: libgnorba/loadshlib.c:18
+msgid "ID under which GOAD knows this server"
+msgstr "ID bajo el cual GOAD conoce a este servidor"
 
 #: libgnorba/loadshlib.c:19
 msgid "REPO_ID"
 msgstr ""
 
+#: libgnorba/loadshlib.c:19
+msgid "Repository ID under which GOAD knows this server"
+msgstr "ID de Repositorio bajo el cual GOAD conoce a este servidor"
+
 #: libgnorba/orbitgtk.c:146
 msgid "Can not write to the cookie file"
-msgstr "No puedo escribir el archivo con la llave mágica (cookie)"
+msgstr "No puedo escribir en el archivo de cookie"
 
 #: libgnorba/orbitgtk.c:148
 msgid "Unknown error while writing cookie file"
-msgstr "Error desconocido al escribir la llave mágica (cookie)"
+msgstr "Error desconocido al escribir en el archivo de cookie"
 
 #: libgnorba/orbitgtk.c:159
-#, fuzzy
 msgid "Could not open the cookie file"
+msgstr "Imposible de abrir el archivo de cookie"
+
+#: libgnorba/orbitgtk.c:167
+msgid "Can not read the cookie file\n"
+msgstr "Lectura del archivo de cookie imposible\n"
+
+#: libgnorba/orbitgtk.c:169
+msgid "While reading the cookie file\n"
+msgstr "Al leer el archivo de cookie\n"
+
+#: libgnorba/orbitns.c:251
+msgid "Could not get name service!"
+msgstr "¡Imposible de obtener el servicio de nombres!"
+
+#: libvfs/extfs.c:274
+#, c-format
+msgid ""
+"Couldn't open %s archive\n"
+"%s"
+msgstr ""
+"Imposible de abrir el archivo %s\n"
+"%s"
+
+#: libvfs/extfs.c:306 libvfs/extfs.c:326
+msgid "Inconsistent extfs archive"
+msgstr "Archivo extfs inconsistente"
+
+#: libvfs/fish.c:226
+msgid " Error "
+msgstr " Error "
+
+#: libvfs/fish.c:226
+msgid "Sorry, we can not do password authenticated connections for now."
+msgstr "Disculpe, pero no es posible hacer autentificaciones con contraseña actualmente."
+
+#: libvfs/ftpfs.c:461
+#, c-format
+msgid " Could not set source routing (%s)"
+msgstr " Imposible de definir un ruteo fuente (%s)"
+
+#: libvfs/ftpfs.c:1863 libvfs/ftpfs.c:1878
+msgid ""
+"~/.netrc file has not correct mode.\n"
+"Remove password or correct mode."
+msgstr ""
+"El archivo ~/.netrc tiene un modo incorrecto.\n"
+"Quite la contraseña o corrija el modo."
+
+#: libvfs/mcfs.c:155
+msgid " MCFS "
+msgstr " MCFS "
+
+#: libvfs/mcfs.c:155
+msgid " The server does not support this version "
+msgstr " El servidor no soporta esta versión "
+
+#: libvfs/mcfs.c:171
+msgid " Warning "
+msgstr " Cuidado "
+
+#: libvfs/mcfs.c:172
+msgid ""
+" The remote server is not running on a system port \n"
+" you need a password to log in, but the information may \n"
+" not be safe on the remote side.  Continue? \n"
+msgstr ""
+" El servidor remoto no está corriendo en un puerto sistema \n"
+" Vd. necesita una contraseña para conectarse, pero la información \n"
+" puede no ser segura del otro lado. ¿Desea continuar? \n"
+
+#: libvfs/mcfs.c:175
+msgid " No "
+msgstr " No "
+
+#: libvfs/mcfs.c:175
+msgid " Yes "
+msgstr " Sí "
+
+#: libvfs/mcfs.c:177
+msgid " The remote server is running on strange port. Giving up.\n"
+msgstr ""
+" El servidor remoto está corriendo en un puerto inabitual. Abandonando.\n"
+
+#: libvfs/mcfs.c:189
+msgid " MCFS Password required "
+msgstr " Contraseña MCFS necesaria "
+
+#: libvfs/mcfs.c:203
+msgid " Invalid password "
+msgstr " Contraseña inválida "
+
+#: libvfs/mcfs.c:322
+msgid " Too many open connections "
+msgstr " Demasiadas conexiones abiertas "
+
+#: libvfs/tar.c:83 libvfs/tar.c:100
+#, c-format
+msgid ""
+"Couldn't open tar archive\n"
+"%s"
 msgstr ""
 "Imposible de abrir el archivo tar\n"
 "%s"
 
-#: libgnorba/orbitgtk.c:167
-msgid "Can not read the cookie file\n"
-msgstr "No puedo leer la llave mágica (cookie)\n"
+#: libvfs/tar.c:272
+msgid "Unexpected EOF on archive file"
+msgstr "Fin de archivo no esperado en el archivo"
 
-#: libgnorba/orbitgtk.c:169
-msgid "While reading the cookie file\n"
-msgstr "Al leer la llave mágica\n"
+#: libvfs/tar.c:327 libvfs/tar.c:334
+msgid "Inconsistent tar archive"
+msgstr "Archivo tar inconsistente"
 
-#: libgnorba/orbitns.c:251
-msgid "Could not get name service!"
-msgstr "No puedo acceder al servidor de nombres CORBA"
+#. Error on first record
+#: libvfs/tar.c:393
+#, c-format
+msgid ""
+"Hmm,...\n"
+"%s\n"
+"doesn't look like a tar archive."
+msgstr ""
+"Mmmh,...\n"
+"%s\n"
+"no se parece a un archivo tar."
+
+#: libvfs/vfs.c:1724
+msgid "Password:"
+msgstr "Contraseña:"
 
 #: support/error.c:109
 msgid "Unknown system error"
@@ -1287,9 +1389,8 @@ msgid "Show this help message"
 msgstr "Muestra este mensaje de ayuda"
 
 #: support/popthelp.c:36
-#, fuzzy
 msgid "Display brief usage message"
-msgstr "Muestra una pequeña ayuda"
+msgstr "Muestra una breve descripción del uso"
 
 #: test-gnome/testgnome.c:290
 msgid "Guru-in-a-dialog test"
@@ -1334,130 +1435,69 @@ msgstr "El usuario eligió No/Anular con los datos:\n"
 msgid "Weird number in reply callback"
 msgstr "Número raro en la respuesta"
 
-#~ msgid "Easy"
-#~ msgstr "Fácil"
-
-#~ msgid ""
-#~ "Couldn't open %s archive\n"
-#~ "%s"
-#~ msgstr ""
-#~ "Imposible de abrir el archivo %s\n"
-#~ "%s"
-
-#~ msgid "Inconsistent extfs archive"
-#~ msgstr "Archivo extfs inconsistente"
-
-#, fuzzy
-#~ msgid " Error "
-#~ msgstr "Error"
-
-#~ msgid " Could not set source routing (%s)"
-#~ msgstr " Imposible de definir un ruteo fuente (%s)"
-
-#~ msgid ""
-#~ "~/.netrc file has not correct mode.\n"
-#~ "Remove password or correct mode."
-#~ msgstr ""
-#~ "El archivo ~/.netrc tiene un modo incorrecto.\n"
-#~ "Quite la contraseña o corrija el modo."
-
-#~ msgid " MCFS "
-#~ msgstr " MCFS "
-
-#~ msgid " The server does not support this version "
-#~ msgstr " El servidor no soporta esta versión "
-
-#~ msgid " Warning "
-#~ msgstr " Cuidado "
-
-#~ msgid ""
-#~ " The remote server is not running on a system port \n"
-#~ " you need a password to log in, but the information may \n"
-#~ " not be safe on the remote side.  Continue? \n"
-#~ msgstr ""
-#~ " El servidor remoto no está corriendo en un puerto sistema \n"
-#~ " Vd. necesita una contraseña para conectarse, pero la información \n"
-#~ " puede no ser segura del otro lado. ¿Desea continuar? \n"
-
-#~ msgid " Yes "
-#~ msgstr " Sí "
-
-#~ msgid " No "
-#~ msgstr " No "
-
-#~ msgid " The remote server is running on strange port. Giving up.\n"
-#~ msgstr ""
-#~ " El servidor remoto está corriendo en un puerto inabitual. Abandonando.\n"
-
-#~ msgid " MCFS Password required "
-#~ msgstr " Contraseña MCFS necesaria "
-
-#~ msgid " Invalid password "
-#~ msgstr " Contraseña inválida "
-
-#~ msgid " Too many open connections "
-#~ msgstr " Demasiadas conexiones abiertas "
-
-#~ msgid ""
-#~ "Couldn't open tar archive\n"
-#~ "%s"
-#~ msgstr ""
-#~ "Imposible de abrir el archivo tar\n"
-#~ "%s"
-
-#~ msgid "Unexpected EOF on archive file"
-#~ msgstr "Fin de archivo no esperado en el archivo"
-
-#~ msgid "Inconsistent tar archive"
-#~ msgstr "Archivo tar inconsistente"
-
-#~ msgid ""
-#~ "Hmm,...\n"
-#~ "%s\n"
-#~ "doesn't look like a tar archive."
-#~ msgstr ""
-#~ "Mmmh,...\n"
-#~ "%s\n"
-#~ "no se parece a un archivo tar."
-
-#~ msgid "Password:"
-#~ msgstr "Contraseña:"
-
-#~ msgid "Discard session"
-#~ msgstr "Descartar sesión"
-
-#~ msgid "Top"
-#~ msgstr "Arriba"
-
-#~ msgid "Bottom"
-#~ msgstr "Abajo"
-
-#~ msgid "Left"
-#~ msgstr "Izquierda"
-
-#~ msgid "Right"
-#~ msgstr "Derecha"
-
-#~ msgid "Specify ID of cloned client"
-#~ msgstr "Especifica el identificador del cliente clonado"
-
-#~ msgid "Give this help list"
-#~ msgstr "Muestra esta lista de ayuda"
-
-#~ msgid "Set the program name"
-#~ msgstr "Establece el nombre del programa"
-
-#~ msgid "Hang for SECS seconds (default 3600)"
-#~ msgstr "Espera durante SEGS segundos (por omisión 3600)"
-
-#~ msgid "Print program version"
-#~ msgstr "Imprime la versión del programa"
-
-#~ msgid "(PROGRAM ERROR) No version known!?"
-#~ msgstr "Error del programa (no se conoce la versión)"
+#~ msgid "(PROGRAM ERROR) Option should have been recognized!?"
+#~ msgstr "(ERROR DEL PROGRAMA) ¿¡La opción deberá haber sido reconocida?!"
 
 #~ msgid "%s: Too many arguments\n"
 #~ msgstr "%s: Demasiados argumentos\n"
 
-#~ msgid "(PROGRAM ERROR) Option should have been recognized!?"
-#~ msgstr "(ERROR DEL PROGRAMA) ¿¡La opción deberá haber sido reconocida?!"
+#~ msgid "(PROGRAM ERROR) No version known!?"
+#~ msgstr "Error del programa (no se conoce la versión)"
+
+#~ msgid "Print program version"
+#~ msgstr "Imprime la versión del programa"
+
+#~ msgid "Hang for SECS seconds (default 3600)"
+#~ msgstr "Espera durante SEGS segundos (por omisión 3600)"
+
+#~ msgid "Set the program name"
+#~ msgstr "Establece el nombre del programa"
+
+#~ msgid "Give this help list"
+#~ msgstr "Muestra esta lista de ayuda"
+
+#~ msgid "Specify ID of cloned client"
+#~ msgstr "Especifica el identificador del cliente clonado"
+
+#~ msgid "Right"
+#~ msgstr "Derecha"
+
+#~ msgid "Left"
+#~ msgstr "Izquierda"
+
+#~ msgid "Bottom"
+#~ msgstr "Abajo"
+
+#~ msgid "Top"
+#~ msgstr "Arriba"
+
+#~ msgid "Discard session"
+#~ msgstr "Descartar sesión"
+
+#~ msgid "Easy"
+#~ msgstr "Fácil"
+
+msgid "_File"
+msgstr "_Archivo"
+
+msgid "E_xit"
+msgstr "_Salir"
+
+msgid "Activate"
+msgstr "Activar"
+
+msgid "Start this server"
+msgstr "Iniciar este servidor"
+
+msgid "Refresh" 
+msgstr "Refrescar"
+
+msgid "Refresh the server list"
+msgstr "Refrescar la lista de servidores"
+
+msgid "I couldn't find any installed services.  Either you don't have\n"
+"any services installed or I don't know the path to find them.\n"
+"In either case, please check your GNOME installation."
+msgstr "No puedo encontrar ningún servicio instalado. O no tiene ningún\n"
+"servicio instalado, o no conzco la ruta para encontrarlos.\n"
+"En cualquier caso verifique la instalación de GNOME por favor." 

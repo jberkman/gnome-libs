@@ -1,3 +1,7 @@
+#ifndef GNOMELOCALEDIR
+#define GNOMELOCALEDIR "/usr/share/locale"
+#endif
+#include <config.h>
 #include <gnome.h>
 #include "libgnorba/gnorba.h"
 
@@ -35,6 +39,9 @@ int main(int argc, char *argv[])
   char *strior;
   CORBA_Object obj = CORBA_OBJECT_NIL;
   CORBA_Environment ev;
+
+  bindtextdomain(PACKAGE, GNOMELOCALEDIR);
+  textdomain(PACKAGE);
 
   CORBA_exception_init(&ev);
 
@@ -160,7 +167,7 @@ gb_create_server_list(GtkWidget *w, GtkCList *clist)
   memset(maxw, 0, sizeof(maxw));
 
   if (slist == NULL) {
-    no_server_warning = gnome_warning_dialog("I couldn't find any installed services.  Either you don't have\nany services installed or I don't know the path to find them.\nIn either case, please check your GNOME installation.");
+    no_server_warning = gnome_warning_dialog(_("I couldn't find any installed services.  Either you don't have\nany services installed or I don't know the path to find them.\nIn either case, please check your GNOME installation."));
     gtk_signal_connect(GTK_OBJECT(no_server_warning), "destroy",
 		       gtk_widget_destroy, no_server_warning);
   }
