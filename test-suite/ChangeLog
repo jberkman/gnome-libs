@@ -1,3 +1,15 @@
+1998-06-11  Raja R Harinath  <harinath@cs.umn.edu>
+
+	Improve test harness.
+	* Makefile.am (INCLUDES): Add GTK_CFLAGS.
+	(dummy.c): Hack to force `automake' to define $COMPILE and $LINK.
+	(TESTS_ENVIRONMENT): Pass $COMPILE and $LINK in environment to
+	runtest.sh.
+
+	* runtest.sh: Reorganized.  Makes better use of automake/libtool
+	machinery to build and execute the tests.  Should work for
+	builddir != srcdir.
+
 Fri Jan  2 00:15:32 1998  Tom Tromey  <tromey@cygnus.com>
 
 	* Makefile.am (bin_PROGRAMS): Removed.
