@@ -206,7 +206,7 @@ void toggle_boolean(GtkWidget * toggle, gboolean * setme)
   *setme = !current;
 }
 
-void block_until_clicked(GtkWidget *dialog)
+void block_until_clicked(GtkWidget *widget, GtkWidget *dialog)
 {
   gint button;
   button = gnome_dialog_run(GNOME_DIALOG(dialog));
