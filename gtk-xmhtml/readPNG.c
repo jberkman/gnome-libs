@@ -37,6 +37,14 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.6  1998/04/29 23:23:13  unammx
+* 1998-04-29  Miguel de Icaza  <miguel@nuclecu.unam.mx>
+*
+* 	* readPNG.c (_XmHTMLReadPNG): Small fix to accomodate the newer
+* 	PNG library requirement.
+*
+* 1998-04-23  Federico Mena Quintero  <federico@nuclecu.unam.mx>
+*
 * Revision 1.5  1998/02/12 03:09:47  unammx
 * Merge to Koen's XmHTML 1.1.2 + following fixes:
 *
@@ -273,7 +281,7 @@ _XmHTMLReadPNG(TWidget html, ImageBuffer *ib)
 		NULL, NULL, NULL);
 
 	/* Create and initialize the info structure */
-	if((info_ptr = png_create_info_struct(NULL)) == NULL)
+	if((info_ptr = png_create_info_struct(png_ptr)) == NULL)
 	{
 		/* failed, too bad */
 		png_destroy_read_struct(&png_ptr, NULL, NULL);
