@@ -2,26 +2,31 @@
 GnomeIconTextItem
 
 <!-- ##### SECTION Short_Description ##### -->
-Editable text canvas-item for icons.
+Canvas item for editable text captions in icon lists.
 
 <!-- ##### SECTION Long_Description ##### -->
-<para>
-Provides a specialized canvas item for displaying icon captions which
-can be interactively changed by the user.</para>
-
-<para>This Canvas item is used by the <type>GnomeIconList</type> and
-by the desktop icons provided by the GNOME file manager.</para>
+  <para>
+    The <structname>GnomeIconTextItem</structname> canvas item
+    provides a specialzed, editable text item to be used for the text
+    captions of icons.  This item is used by the
+    <structname>GnomeIconList</structname> widget and by the GNOME
+    file manager.
+  </para>
 
 <!-- ##### SECTION See_Also ##### -->
-<para>
-
-</para>
+  <para>
+    #GnomeIconList, #GnomeCanvas. #GnomeIconTextInfo.
+  </para>
 
 
 <!-- ##### STRUCT GnomeIconTextItem ##### -->
-<para>
-
-</para>
+  <para>
+    All the fields in the <structname>GnomeIconTextItem</structname>
+    structure should be considered private.  When the application
+    needs to know the size and bounds of an icon text item, it should
+    use the <function>gnome_canvas_item_get_bounds()</function>
+    function.
+  </para>
 
 
 <!-- ##### FUNCTION gnome_icon_text_item_configure ##### -->
@@ -77,65 +82,92 @@ by the desktop icons provided by the GNOME file manager.</para>
 
 
 <!-- ##### SIGNAL GnomeIconTextItem::text-changed ##### -->
-<para>
-This signal is emited when the text has been changed by the user.  The
-signal handler should return %FALSE if it does not accept the changes
-made to the text (for example, if it was unable to change the actual
-backing store name that this text represents).</para>
+  <para>
+    This signal is emitted when the user has finished editing the text
+    in an icon text item.  Typically this happens when the user
+    presses <keycap>Enter</keycap>.  The application has to decide
+    whether the entered text is valid or not; for example, a file
+    manager may want to test whether it is legal to rename a file to
+    the proposed name or not.
+  </para>
 
-<para>
-If the signal handler returns %FALSE, then the text is reset to its
-previous value. 
-</para>
+  <para>
+    Upon receiving this signal, the application should use
+    <function>gnome_icon_text_item_get_text()</function> to get the
+    text for validation.  The return value of this signal indicates
+    whether the proposed text is accepted by the application.  If the
+    proposed text is valid, then a signal handler should return
+    <symbol>TRUE</symbol>, otherwise it should return
+    <symbol>FALSE</symbol>.  If the change is not accepted, the text
+    is automatically reset to its original state.
+  </para>
 
-@icontextitem: the object which received the signal.
+@icontextitem: Icon text item which emitted the signal.
 @Returns: %TRUE if the change is accepted, %FALSE otherwise.
 
 <!-- ##### SIGNAL GnomeIconTextItem::height-changed ##### -->
-<para>
-This signals is emited when the height of this item has changed (due
-to the user changing the name).
-</para>
+  <para>
+    This signal is emitted when the height of an icon text item
+    changes, usually due to the user changing the text or the
+    application selecting a different font.  Applications can change
+    their layout accordingly.
+  </para>
 
-@icontextitem: the object which received the signal.
+@icontextitem: Icon text item which emitted the signal.
 
 <!-- ##### SIGNAL GnomeIconTextItem::width-changed ##### -->
-<para>
-This signals is emited when the width of this item has changed (due
-to the user changing the name).
-</para>
+  <para>
+    This signal is emitted when the width of an icon text item
+    changes, usually due to the user changing the text or the
+    application selecting a different font.  Applications can change
+    their layout accordingly.
+  </para>
 
-@icontextitem: the object which received the signal.
+@icontextitem: Icon text item which emitted the signal.
 
 <!-- ##### SIGNAL GnomeIconTextItem::editing-started ##### -->
-<para>
-This signals is emited when the user has started editing the text on
-the item.
-</para>
+  <para>
+    This signal is emitted when the user begins editing the text in an
+    icon text item, usually by clicking on it while it is selected.
+    Applications can use this information to disable drag and drop
+    signals and update their state accordingly.
+  </para>
 
-@icontextitem: the object which received the signal.
+@icontextitem: Icon text item which emitted the signal.
 
 <!-- ##### SIGNAL GnomeIconTextItem::editing-stopped ##### -->
-<para>
-This signals is emited when the user has stopped editing the text on
-the item.
-</para>
+  <para>
+    This signal is emitted when the user terminates editing the text
+    in an icon text item, usually by pressing <keycap>Enter</keycap>
+    or <keycap>Esc</keycap>.  Applications can use this information to
+    enable drag and drop signals and update their state accordingly.
+  </para>
 
-@icontextitem: the object which received the signal.
+@icontextitem: Icon text item which emitted the signal.
 
 <!-- ##### SIGNAL GnomeIconTextItem::selection-started ##### -->
-<para>
-This signals is emited when the user has started selecting a region of
-the text.
-</para>
+  <para>
+    This signal is emitted when the user begins a rubberband selection
+    of text with the mouse in an icon text item.  Applications can use
+    this information to disable drag and drop signals and update their
+    state accordingly.
+  </para>
 
-@icontextitem: the object which received the signal.
+@icontextitem: Icon text item which emitted the signal.
 
 <!-- ##### SIGNAL GnomeIconTextItem::selection-stopped ##### -->
-<para>
-This signals is emited when the user has stopped selecting a region of
-the text.
-</para>
+  <para>
+    This signal is emitted when the user terminates a rubberband
+    selection of text with the mouse in an icon text item.
+    Applications can use this information to disable drag and drop
+    signals and update their state accordingly.
+  </para>
 
-@icontextitem: the object which received the signal.
+@icontextitem: Icon text item which emitted the signal.
 
+<!--
+Local variables:
+mode: sgml
+sgml-parent-document: ("../gnomeui-docs.sgml" "book" "sect1" "")
+End:
+-->
