@@ -2,11 +2,13 @@
 
 built_SUBDIRS = libgnome libgnomeui gtk-xmhtml gnome-hello libgtktty zvt test-gnome
 
+bin_SCRIPTS = gnome-config
+
 SUBDIRS = po intl support macros $(built_SUBDIRS) 
 
 include_HEADERS = gnome.h
 
-EXTRA_DIST = HACKING gnomeConf.sh.in
+EXTRA_DIST = HACKING gnomeConf.sh.in gnome-config.in
 
 release:
 	$(MAKE) dist distdir=$(PACKAGE)$(VERSION)
@@ -38,6 +40,15 @@ gnomeConf.sh: gnomeConf.sh.in Makefile
 	      < $(srcdir)/gnomeConf.sh.in > gnomeConf.tmp \
 	  && mv gnomeConf.tmp gnomeConf.sh
 
-
-
-
+gnome-config: gnome-config.in Makefile
+## Use sed and then mv to avoid problems if the user interrupts.
+	sed -e 's,\@GNOME_LIBDIR\@,$(GNOME_LIBDIR),g' \
+	    -e 's,\@GNOME_INCLUDEDIR\@,$(GNOME_INCLUDEDIR),g' \
+	    -e 's,\@GNOME_LIBS\@,$(GNOME_LIBS),g' \
+	    -e 's,\@GNOMEUI_LIBS\@,$(GNOMEUI_LIBS),g' \
+	    -e 's,\@GTKXMHTML_LIBS\@,$(GTKXMHTML_LIBS),g' \
+            -e 's,\@GTK_CFLAGS\@,$(GTK_CFLAGS),g' \
+	    -e 's,\@need_gnome_support\@,$(need_gnome_support),g' \
+	      < $(srcdir)/gnome-config.in > gnome-config.tmp \
+	  && mv gnome-config.tmp gnome-config
+	chmod +x gnome-config
