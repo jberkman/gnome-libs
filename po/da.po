@@ -6,13 +6,459 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-libs 1.95.0\n"
-"POT-Creation-Date: 2000-07-18 13:04+0200\n"
+"POT-Creation-Date: 2000-07-27 14:18+0200\n"
 "PO-Revision-Date: 2000-03-08 17:43+01:00\n"
 "Last-Translator: Birger Langkjer <birger.langkjer@image.dk>\n"
 "Language-Team: Dansk/Danish <sslug-locale@sslug.dk>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=ISO-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
+
+#: libgnome/gnome-ditem.c:559 libgnome/gnome-ditem.c:918
+#, c-format
+msgid "Unknown desktop file format %d"
+msgstr ""
+
+#. we are not an application so just exit
+#. with an error
+#: libgnome/gnome-ditem.c:907 libgnome/gnome-ditem.c:914
+msgid "Attempting to launch a non-application"
+msgstr ""
+
+#: libgnome/gnome-ditem.c:1031
+msgid "Trying to execute an item with no 'Exec'"
+msgstr ""
+
+#: libgnome/gnome-ditem.c:1073 libgnome/gnome-ditem.c:1166
+msgid "No exec field for this drop"
+msgstr ""
+
+#: libgnome/gnome-ditem.c:1104
+msgid "Nothing to replace with a file in the exec string"
+msgstr ""
+
+#: libgnome/gnome-ditem.c:1217
+msgid "There was no argument to replace with dropped files"
+msgstr ""
+
+#: libgnome/gnome-ditem.c:1309
+msgid "Dropped URLs on an app that can only take files"
+msgstr ""
+
+#: libgnome/gnome-moz-remote2.c:111
+#, fuzzy
+msgid "Specify X display to use."
+msgstr "X-skærm som skal bruges"
+
+#: libgnome/gnome-moz-remote2.c:112
+msgid "Put the X connection in synchronous mode."
+msgstr ""
+
+#: libgnome/gnome-moz-remote2.c:113
+msgid "Specify the X window ID of Netscape."
+msgstr ""
+
+#: libgnome/gnome-moz-remote2.c:115
+#, fuzzy
+msgid "Don't raise the Netscape window."
+msgstr "Luk det aktuelle vindue"
+
+#: libgnome/gnome-moz-remote2.c:116
+msgid "Show the given URL in a new window"
+msgstr ""
+
+#: libgnome/gnome-moz-remote2.c:117
+#, fuzzy
+msgid "Close the specified window"
+msgstr "Luk det aktuelle vindue"
+
+#: libgnome/gnome-moz-remote2.c:118
+msgid "Print the X window ID of the utilized window"
+msgstr ""
+
+#: libgnome/gnome-url.c:280
+#, c-format
+msgid "Cannot open a pipe: %s"
+msgstr ""
+
+#: libgnome/gnome-url.c:290 libgnome/gnome-url.c:340
+#, c-format
+msgid "Cannot parse handler template: %s"
+msgstr ""
+
+#: libgnome/gnome-url.c:300 libgnome/gnome-url.c:346
+#, c-format
+msgid "Cannot execute command '%s'!"
+msgstr ""
+
+#: libgnome/gnomelib-init2.c:1227
+msgid "Dynamic modules to load"
+msgstr ""
+
+#: libgnome/gnomelib-init2.c:1228
+msgid "MODULE1,MODULE2,..."
+msgstr ""
+
+#: libgnomeui/gnome-appbar.c:689
+msgid ""
+"gnome_appbar_set_progress deprecated, use "
+"gnome_appbar_set_progress_percentage"
+msgstr ""
+
+#: libgnomeui/gnome-dentry-edit.c:183 libgnomeui/gnome-ditem-edit.c:237
+msgid "Name:"
+msgstr "Navn:"
+
+#: libgnomeui/gnome-dentry-edit.c:196 libgnomeui/gnome-ditem-edit.c:250
+msgid "Comment:"
+msgstr "Kommentar:"
+
+#: libgnomeui/gnome-dentry-edit.c:206 libgnomeui/gnome-ditem-edit.c:260
+msgid "Command:"
+msgstr "Kommando:"
+
+#: libgnomeui/gnome-dentry-edit.c:216 libgnomeui/gnome-ditem-edit.c:270
+msgid "Type:"
+msgstr "Type:"
+
+#: libgnomeui/gnome-dentry-edit.c:232 libgnomeui/gnome-ditem-edit.c:288
+msgid "Icon:"
+msgstr "Ikon:"
+
+#: libgnomeui/gnome-dentry-edit.c:242 libgnomeui/gnome-ditem-edit.c:298
+msgid "Choose an icon"
+msgstr "Vælg en ikon"
+
+#: libgnomeui/gnome-dentry-edit.c:255 libgnomeui/gnome-ditem-edit.c:311
+msgid "Run in Terminal"
+msgstr "Kør i terminal"
+
+#: libgnomeui/gnome-ditem-edit.c:337
+msgid "Simple drag and drop"
+msgstr ""
+
+#: libgnomeui/gnome-ditem-edit.c:359
+#, c-format
+msgid ""
+"In the following commands you should use %s in the spot where the\n"
+"filename/url should be substituted.  If you leave the field blank\n"
+"drops will not be accepted.  If this appcan just accept\n"
+"multiple files or urls after it's command check the above box."
+msgstr ""
+
+#: libgnomeui/gnome-ditem-edit.c:371
+msgid "Command for file drops:"
+msgstr ""
+
+#: libgnomeui/gnome-ditem-edit.c:381
+msgid "Drop one file at a time only."
+msgstr ""
+
+#: libgnomeui/gnome-ditem-edit.c:393
+msgid "Command for URL drops:"
+msgstr ""
+
+#: libgnomeui/gnome-ditem-edit.c:403
+msgid "Drop one URL at a time only."
+msgstr ""
+
+#: libgnomeui/gnome-dentry-edit.c:366 libgnomeui/gnome-ditem-edit.c:519
+msgid "Try this before using:"
+msgstr "Prøv dette før brug:"
+
+#: libgnomeui/gnome-dentry-edit.c:376 libgnomeui/gnome-ditem-edit.c:529
+msgid "Documentation:"
+msgstr "Dokumentation:"
+
+#: libgnomeui/gnome-ditem-edit.c:539
+msgid "Window titles to wait for (comma separated):"
+msgstr ""
+
+#: libgnomeui/gnome-dentry-edit.c:386 libgnomeui/gnome-ditem-edit.c:549
+msgid "Name/Comment translations:"
+msgstr "Navn/Kommentar-oversættelser:"
+
+#: libgnomeui/gnome-dentry-edit.c:389 libgnomeui/gnome-ditem-edit.c:552
+msgid "Language"
+msgstr "Sprog"
+
+#: libgnomeui/gnome-dentry-edit.c:390 libgnomeui/gnome-ditem-edit.c:553
+msgid "Name"
+msgstr "Navn"
+
+#: libgnomeui/gnome-dentry-edit.c:391 libgnomeui/gnome-ditem-edit.c:554
+msgid "Comment"
+msgstr "Kommentar"
+
+#: libgnomeui/gnome-dentry-edit.c:419 libgnomeui/gnome-ditem-edit.c:582
+msgid "Add/Set"
+msgstr "Tilføj/Sæt"
+
+#: libgnomeui/gnome-dentry-edit.c:424 libgnomeui/gnome-ditem-edit.c:587
+#: libgnomeui/gnome-stock.c:709
+msgid "Remove"
+msgstr "Fjern"
+
+#: libgnomeui/gnome-dentry-edit.c:506 libgnomeui/gnome-ditem-edit.c:734
+msgid "Basic"
+msgstr "Basal"
+
+#: libgnomeui/gnome-ditem-edit.c:738
+msgid "Drag and Drop"
+msgstr ""
+
+#: libgnomeui/gnome-dentry-edit.c:510 libgnomeui/gnome-ditem-edit.c:742
+msgid "Advanced"
+msgstr "Avanceret"
+
+#: libgnomeui/gnome-druid-page-edge.c:273
+#: libgnomeui/gnome-druid-page-finish.c:244
+#: libgnomeui/gnome-druid-page-standard.c:254
+#: libgnomeui/gnome-druid-page-start.c:271
+msgid "-adobe-helvetica-bold-r-normal-*-*-180-*-*-p-*-*-*"
+msgstr ""
+
+#: libgnomeui/gnome-druid-page-edge.c:274
+#: libgnomeui/gnome-druid-page-finish.c:245
+#: libgnomeui/gnome-druid-page-standard.c:255
+#: libgnomeui/gnome-druid-page-start.c:272
+msgid "-adobe-helvetica-bold-r-normal-*-*-180-*-*-p-*-*-*,*-r-*"
+msgstr ""
+
+#: libgnomeui/gnome-druid-page-edge.c:283
+#: libgnomeui/gnome-druid-page-finish.c:252
+#: libgnomeui/gnome-druid-page-start.c:281
+msgid "-adobe-helvetica-medium-r-normal-*-*-120-*-*-p-*-*-*"
+msgstr ""
+
+#: libgnomeui/gnome-druid-page-edge.c:284
+#: libgnomeui/gnome-druid-page-finish.c:253
+#: libgnomeui/gnome-druid-page-start.c:282
+msgid "-adobe-helvetica-medium-r-normal-*-*-120-*-*-p-*-*-*,*-r-*"
+msgstr ""
+
+#: libgnomeui/gnome-file-saver.c:191
+#, fuzzy
+msgid "File Name:"
+msgstr "Navn:"
+
+#: libgnomeui/gnome-file-saver.c:199
+#, fuzzy
+msgid "Location:"
+msgstr "Dokumentation:"
+
+#: libgnomeui/gnome-file-saver.c:207
+msgid "Save As Type:"
+msgstr ""
+
+#: libgnomeui/gnome-gconf.c:577
+msgid "GNOME GConf Support"
+msgstr ""
+
+#: libgnomeui/gnome-gconf.c:621
+#, c-format
+msgid ""
+"You attempted to change an aspect of your configuration that your system "
+"administrator or operating system vendor does not allow you to change. Some "
+"of the settings you have selected may not take effect, or may not be "
+"restored next time you use this application (%s)."
+msgstr ""
+
+#: libgnomeui/gnome-gconf.c:624
+#, c-format
+msgid ""
+"An error occurred while loading or saving configuration information for %s. "
+"Some of your configuration settings may not work properly."
+msgstr ""
+
+#: libgnomeui/gnome-gconf.c:651
+#, c-format
+msgid "GConf error details: %s\n"
+msgstr ""
+
+#: libgnomeui/gnome-helpsys.c:159 libgnomeui/gnome-stock.c:724
+#: libgnomeui/stock_demo.c:315
+msgid "Help"
+msgstr "Hjælp"
+
+#: libgnomeui/gnome-helpsys.c:160
+msgid "Show help for a specific region of the application"
+msgstr ""
+
+#: libgnomeui/gnome-helpsys.c:164
+msgid "Style"
+msgstr ""
+
+#: libgnomeui/gnome-helpsys.c:165
+msgid "Change the way help is displayed"
+msgstr ""
+
+#: libgnomeui/gnome-helpsys.c:767 libgnomeui/gnome-helpsys.c:862
+msgid "No help is available for the selected portion of the application."
+msgstr ""
+
+#: libgnomeui/gnome-about.c:1168 libgnomeui/gnome-href.c:386
+msgid ""
+"Error occured while trying to launch the URL handler.\n"
+"Please check the settings in the Control Center if they are correct."
+msgstr ""
+
+#: libgnomeui/gnome-icon-sel.c:375 libgnomeui/gnome-icon-selector.c:419
+msgid "Loading Icons..."
+msgstr "Henter ikoner..."
+
+#. paper size
+#: libgnomeui/gnome-paper-selector.c:160
+msgid "Paper Size"
+msgstr "Papirstørrelse"
+
+#. orientation
+#: libgnomeui/gnome-paper-selector.c:192
+msgid "Orientation"
+msgstr "Orientering:"
+
+#: libgnomeui/gnome-paper-selector.c:214
+msgid "Portrait"
+msgstr "Portræt"
+
+#: libgnomeui/gnome-paper-selector.c:234
+msgid "Landscape"
+msgstr "Landskab"
+
+#. margins
+#: libgnomeui/gnome-paper-selector.c:242
+msgid "Margins"
+msgstr ""
+
+#: libgnomeui/gnome-paper-selector.c:254
+#, fuzzy
+msgid "Top:"
+msgstr "Type:"
+
+#: libgnomeui/gnome-paper-selector.c:267
+msgid "Bottom:"
+msgstr ""
+
+#: libgnomeui/gnome-paper-selector.c:280
+msgid "Left:"
+msgstr ""
+
+#: libgnomeui/gnome-paper-selector.c:293
+msgid "Right:"
+msgstr ""
+
+#. Scaling
+#: libgnomeui/gnome-paper-selector.c:307
+msgid "Scaling"
+msgstr ""
+
+#: libgnomeui/gnome-paper-selector.c:322
+msgid "Fit to Page"
+msgstr ""
+
+#: libgnomeui/gnome-paper-selector.c:811
+#, c-format
+msgid "%0.3g%s x %0.3g%s"
+msgstr ""
+
+#: libgnomeui/gnome-paper-selector.c:1041
+msgid "Page Setup"
+msgstr ""
+
+#. to be kept in sync with GtkCornerType enumeration
+#: libgnomeui/gnome-pouch.c:796
+#, fuzzy
+msgid "Top left"
+msgstr "Top 10"
+
+#: libgnomeui/gnome-pouch.c:797
+msgid "Bottom left"
+msgstr ""
+
+#: libgnomeui/gnome-pouch.c:798
+msgid "Top right"
+msgstr ""
+
+#: libgnomeui/gnome-pouch.c:799
+msgid "Bottom right"
+msgstr ""
+
+#. to be kept in sync with GtkOrientation enumeration
+#: libgnomeui/gnome-pouch.c:810
+#, fuzzy
+msgid "Horizontal"
+msgstr "Vandret maksimeret"
+
+#: libgnomeui/gnome-pouch.c:811
+#, fuzzy
+msgid "Vertical"
+msgstr "Lodret maksimeret"
+
+#: libgnomeui/gnome-pouch.c:821
+msgid "Icon position"
+msgstr ""
+
+#: libgnomeui/gnome-pouch.c:822
+#, fuzzy
+msgid "Icon orientation"
+msgstr "Information"
+
+#: libgnomeui/gnome-pouch.c:824
+msgid "Tile children"
+msgstr ""
+
+#: libgnomeui/gnome-pouch.c:825
+msgid "Cascade children"
+msgstr ""
+
+#: libgnomeui/gnome-pouch.c:827
+msgid "Arrange icons"
+msgstr ""
+
+#: libgnomeui/gnome-pouch.c:828
+msgid "Autoarrange icons"
+msgstr ""
+
+#: libgnomeui/gnome-recently-used.c:988
+msgid "Unknown"
+msgstr ""
+
+#. browse button ...
+#: libgnomeui/gnome-file-entry.c:445 libgnomeui/gnome-selector.c:462
+#: libgnomeui/gnome-spell.c:620 libgnomeui/gnome-spell.c:637
+#: libgnomeui/gnome-spell.c:654
+msgid "Browse..."
+msgstr "Gennemse..."
+
+#: libgnomeui/gnome-selector.c:473
+#, fuzzy
+msgid "Clear..."
+msgstr "Ryd"
+
+#: libgnomeui/mdi_demo.c:116
+msgid "Child Item 1"
+msgstr ""
+
+#: libgnomeui/mdi_demo.c:117
+msgid "Hint for item 1"
+msgstr ""
+
+#: libgnomeui/mdi_demo.c:119
+msgid "Child Item 2"
+msgstr ""
+
+#: libgnomeui/mdi_demo.c:120
+msgid "Hint for item 2"
+msgstr ""
+
+#: libgnomeui/oafgnome.c:242
+#, fuzzy
+msgid "Username:"
+msgstr "Bruger"
+
+#: libgnomeui/oafgnome.c:256
+msgid "Password:"
+msgstr ""
 
 #: libgnome/gnomelib-init.c:176 libgnome/gnomelib-init.c:190
 #, c-format
@@ -49,12 +495,6 @@ msgstr "Forfattere: "
 #: libgnomeui/winhints_demo.c:256
 msgid "About"
 msgstr "Om..."
-
-#: libgnomeui/gnome-about.c:1168
-msgid ""
-"Error occured while trying to launch the URL handler.\n"
-"Please check the settings in the Control Center if they are correct."
-msgstr ""
 
 #: libgnomeui/gnome-app-helper.c:74
 msgid "_File"
@@ -660,74 +1100,6 @@ msgstr "Kalender"
 msgid "gnome_date_edit_get_date deprecated, use gnome_date_edit_get_time"
 msgstr ""
 
-#: libgnomeui/gnome-dentry-edit.c:183
-msgid "Name:"
-msgstr "Navn:"
-
-#: libgnomeui/gnome-dentry-edit.c:196
-msgid "Comment:"
-msgstr "Kommentar:"
-
-#: libgnomeui/gnome-dentry-edit.c:206
-msgid "Command:"
-msgstr "Kommando:"
-
-#: libgnomeui/gnome-dentry-edit.c:216
-msgid "Type:"
-msgstr "Type:"
-
-#: libgnomeui/gnome-dentry-edit.c:232
-msgid "Icon:"
-msgstr "Ikon:"
-
-#: libgnomeui/gnome-dentry-edit.c:242
-msgid "Choose an icon"
-msgstr "Vælg en ikon"
-
-#: libgnomeui/gnome-dentry-edit.c:255
-msgid "Run in Terminal"
-msgstr "Kør i terminal"
-
-#: libgnomeui/gnome-dentry-edit.c:366
-msgid "Try this before using:"
-msgstr "Prøv dette før brug:"
-
-#: libgnomeui/gnome-dentry-edit.c:376
-msgid "Documentation:"
-msgstr "Dokumentation:"
-
-#: libgnomeui/gnome-dentry-edit.c:386
-msgid "Name/Comment translations:"
-msgstr "Navn/Kommentar-oversættelser:"
-
-#: libgnomeui/gnome-dentry-edit.c:389
-msgid "Language"
-msgstr "Sprog"
-
-#: libgnomeui/gnome-dentry-edit.c:390
-msgid "Name"
-msgstr "Navn"
-
-#: libgnomeui/gnome-dentry-edit.c:391
-msgid "Comment"
-msgstr "Kommentar"
-
-#: libgnomeui/gnome-dentry-edit.c:419
-msgid "Add/Set"
-msgstr "Tilføj/Sæt"
-
-#: libgnomeui/gnome-dentry-edit.c:424 libgnomeui/gnome-stock.c:709
-msgid "Remove"
-msgstr "Fjern"
-
-#: libgnomeui/gnome-dentry-edit.c:506
-msgid "Basic"
-msgstr "Basal"
-
-#: libgnomeui/gnome-dentry-edit.c:510
-msgid "Advanced"
-msgstr "Avanceret"
-
 #: libgnomeui/gnome-druid.c:149
 msgid "Back"
 msgstr "Tilbage"
@@ -739,12 +1111,6 @@ msgstr "Færdig"
 #: libgnomeui/gnome-file-entry.c:314
 msgid "Select file"
 msgstr "Vælg fil"
-
-#. browse button ...
-#: libgnomeui/gnome-file-entry.c:445 libgnomeui/gnome-spell.c:620
-#: libgnomeui/gnome-spell.c:637 libgnomeui/gnome-spell.c:654
-msgid "Browse..."
-msgstr "Gennemse..."
 
 #: libgnomeui/gnome-font-picker.c:877 libgnomeui/gnome-stock.c:729
 msgid "Font"
@@ -766,10 +1132,6 @@ msgstr "Eksempel"
 #: libgnomeui/gnome-icon-entry.c:829
 msgid "Browse"
 msgstr "Gennemse"
-
-#: libgnomeui/gnome-icon-sel.c:375
-msgid "Loading Icons..."
-msgstr "Henter ikoner..."
 
 #: libgnomeui/gnome-init.c:81
 msgid "Gdk debugging flags to set"
@@ -1122,10 +1484,6 @@ msgstr "Ja"
 #: libgnomeui/gnome-stock.c:723
 msgid "No"
 msgstr "Nej"
-
-#: libgnomeui/gnome-stock.c:724 libgnomeui/stock_demo.c:315
-msgid "Help"
-msgstr "Hjælp"
 
 #: libgnomeui/gnome-stock.c:725
 msgid "Next"
@@ -1512,7 +1870,7 @@ msgstr "Dette er en hbox med billede og tekst"
 
 #: test-gnome/testgnome.c:1096
 msgid "The user chose Yes/OK with data:\n"
-msgstr "Brugeren valgte Ja/OK med data:\n"
+msgstr "Brugeren valgte Ja/Ok med data:\n"
 
 #: test-gnome/testgnome.c:1100
 msgid "The user chose No/Cancel with data:\n"
@@ -1524,104 +1882,5 @@ msgstr "Mærkeligt nummer i tilbagekald"
 
 #: test-gnome/testgnome.c:1965
 msgid "Test GNOME"
-msgstr "Test GNOME"
+msgstr "Test Gnome"
 
-#~ msgid "Pick a Font"
-#~ msgstr "Vælg en skrifttype"
-
-#~ msgid "get"
-#~ msgstr "hent"
-
-#~ msgid "Get config entry"
-#~ msgstr "Skaf konfig-element"
-
-#~ msgid "CONFIG-PATH"
-#~ msgstr "CONFIG-PATH"
-
-#~ msgid "set"
-#~ msgstr "indstil"
-
-#~ msgid "Set config entry"
-#~ msgstr "Indstil config-element"
-
-#~ msgid ""
-#~ "Error on option %s: %s.\n"
-#~ "Run '%s --help' to see a full list of available command line options.\n"
-#~ msgstr ""
-#~ "Fejl i flag %s: %s.\n"
-#~ "Kør '%s --help' for at se en liste over mulige kommandolinieflag.\n"
-
-#~ msgid "Disable sound server usage"
-#~ msgstr "Deaktivér brug af lydserver"
-
-#~ msgid "Enable sound server usage"
-#~ msgstr "Aktivér brug af lydserver"
-
-#~ msgid "Host:port on which the sound server to use is running"
-#~ msgstr "Vært:port som den anvendte lydserver kører på"
-
-#~ msgid "HOSTNAME:PORT"
-#~ msgstr "HOSTNAME:PORT"
-
-#~ msgid "_About..."
-#~ msgstr "_Om..."
-
-#~ msgid "Creating '/GNOME' context %s %d"
-#~ msgstr "Opretter '/GNOME' kontekst %s %d"
-
-#~ msgid "Creating '/GNOME/Servers' context %s %d"
-#~ msgstr "Opretter '/GNOME/Servers' kontekst %s %d"
-
-#~ msgid "GOAD ID of the server to activate"
-#~ msgstr "GOAD ID på server som skal aktiveres"
-
-#~ msgid "Repository ID of the server to activate"
-#~ msgstr "GemmestedsID på server som skal aktiveres"
-
-#~ msgid "REPO-ID"
-#~ msgstr "REPO-ID"
-
-#~ msgid ""
-#~ "I couldn't find any installed services.  Either you don't have\n"
-#~ "any services installed or I don't know the path to find them.\n"
-#~ "In either case, please check your GNOME installation."
-#~ msgstr ""
-#~ "jeg kunne ikke finde nogen installerede tjenester. Enten har du\n"
-#~ "ingen tjenester installeret, eller jeg kender ikke stien til dem.\n"
-#~ "I alle tilfælde bør du tjekke din GNOME installation."
-
-#~ msgid "(Internal use only) GOAD server ID to activate"
-#~ msgstr "(Kun til internt brug) GOAD server ID at aktivere"
-
-#~ msgid "ID under which GOAD knows this server"
-#~ msgstr "ID som GOAD kender denne server under"
-
-#~ msgid "GOAD_ID"
-#~ msgstr "GOAD_ID"
-
-#~ msgid "Repository ID under which GOAD knows this server"
-#~ msgstr "GemmestedsID som GOAD kender denne server under"
-
-#~ msgid "REPO_ID"
-#~ msgstr "REPO_ID"
-
-#~ msgid "Failed to open CORBA cookie file (%s) for writing: %s\n"
-#~ msgstr "Kunne ikke åbne CORBA infokagefil (%s) til læsning: %s\n"
-
-#~ msgid "Failed to write CORBA cookie file (%s): %s\n"
-#~ msgstr "Kunne ikke skrive CORBA infokagefil (%s): %s\n"
-
-#~ msgid "Failed to write CORBA cookie to `%s': %s\n"
-#~ msgstr "Kunne ikke skrive CORBA infokage til '%s': %s\n"
-
-#~ msgid "Failed to open CORBA cookie file `%s': %s\n"
-#~ msgstr "Kunne ikke åbne CORBA infokagefil '%s': %s\n"
-
-#~ msgid "Failed to read CORBA cookie file `%s': %s\n"
-#~ msgstr "Kunne ikke læse CORBA infokagefil '%s': %s\n"
-
-#~ msgid "Failed to obtain CORBA authentication cookie, exiting\n"
-#~ msgstr "Kunne ikke skaffe CORBA godkendelsesinfokage, afslutter\n"
-
-#~ msgid "Could not get name service!"
-#~ msgstr "Kunne ikke få navneservice!"
