@@ -593,14 +593,15 @@ static void vt_cr(struct vt_em *vt)
 static void vt_lf(struct vt_em *vt)
 {
   d(printf("lf \n"));
-  if (vt->cursory >= vt->scrollbottom) {
-    d(printf("must scroll\n"));
-    vt_scroll_up(vt, 1);
-    vt->this_line = (struct vt_line *)vt_list_index(&vt->lines, vt->cursory);
-  } else {
+
+  if (vt->cursory > vt->scrollbottom
+      || vt->cursory < vt->scrollbottom) {
     vt->cursory++;
     d(printf("new ypos = %d\n", vt->cursory));
     vt->this_line = vt->this_line->next;
+  } else {
+    vt_scroll_up(vt, 1);
+    vt->this_line = (struct vt_line *)vt_list_index(&vt->lines, vt->cursory);
   }
   n(vt->this_line);
 }

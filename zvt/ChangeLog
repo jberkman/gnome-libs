@@ -1,3 +1,8 @@
+1999-09-14  Michael Zucchi  <zucchi@zedzone.mmc.com.au>
+
+	* vt.c (vt_lf): Fixed line-feed implementation, for when the
+	scroll-range has been set.  It was quite broken.
+
 1999-09-14  Michael Zucchi  <mzucchi@denr.sa.gov.au>
 
 	* vt.c (vt_setmode): Properly handle 1047 (==47) and 1048
