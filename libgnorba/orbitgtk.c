@@ -14,7 +14,6 @@
 #include <gdk/gdkx.h>
 #include <gtk/gtk.h>
 #include "gnorba.h"
-#include "name-service.h"
 
 CORBA_ORB gnome_orbit_orb;
 CORBA_Principal request_cookie;

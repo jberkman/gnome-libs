@@ -2,7 +2,7 @@
 #define GNORBA_H 1
 
 #include <orb/orbit.h>
-#include <libgnorba/name-service.h>
+#include <ORBitservices/CosNaming.h>
 #include <gnome.h>
 
 /**** orbitgtk module ****/
