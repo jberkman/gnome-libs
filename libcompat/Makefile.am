@@ -1,0 +1,62 @@
+## Process this file with automake to produce Makefile.in
+
+LIB_VERSION=0:0:0
+LIB_VERSION_NUM=0.0.0
+
+lib_LIBRARIES = libgnomeui-1-compat-2.a
+
+#
+# Install location for header files
+#
+libgnomeuiincludedir = $(includedir)/gnome/$(GNOME_INTERFACE_VERSION)/libgnomeui
+
+INCLUDES = -I.. -I$(srcdir)/.. -I$(srcdir)/../libgnomeui \
+	$(SUPPORTINCS) -I$(top_srcdir)/intl -I$(top_builddir)/intl \
+	-I$(includedir) $(GDK_IMLIB_CFLAGS) \
+	$(AUDIOFILE_CFLAGS) $(ESD_CFLAGS) \
+        -DGNOMELIBDIR=\""$(libdir)"\" \
+        -DGNOMEDATADIR=\""$(datadir)"\" \
+        -DGNOMEBINDIR=\""$(bindir)"\" \
+        -DGNOMELOCALSTATEDIR=\""$(localstatedir)"\" \
+        -DGNOMELOCALEDIR=\""$(gnomelocaledir)"\" \
+	-DG_LOG_DOMAIN=\"GnomeUI\"
+
+libgnomeui10compatincludedir = $(libgnomeuiincludedir)/compat/1
+
+libgnomeui_1_compat_2_a_SOURCES =\
+	gnome-font-selector.c 		\
+	gnome-guru.c			\
+	gnome-spell.c			\
+	gnome-startup.c			\
+	gtkcauldron.c			\
+	gnomeui10-compat.c		\
+	gnome-dns.c			\
+	gnome-dentry-edit.c		\
+	gnome-druid-page-start.c	\
+	gnome-druid-page-finish.c	\
+	gnome-procbar.c			\
+	gnome-properties.c		\
+	gnome-property-entries.c
+
+# This probably won't work right
+#	gnome-canvas-image.c
+
+libgnomeui10compatinclude_HEADERS = \
+	libgnomeui-compat-1.0.h		\
+	gnome-font-selector.h 		\
+	gnome-guru.h			\
+	gnome-spell.h			\
+	gnome-startup.h			\
+	gtkcauldron.h			\
+	gnome-dentry-edit.h		\
+	gnomeui10-compat.h		\
+	gnome-dns.h			\
+	gnome-druid-page-start.h	\
+	gnome-druid-page-finish.h	\
+	gnome-procbar.h			\
+	gnome-properties.h		\
+	gnome-property-entries.h
+
+# This probably won't work right
+#	gnome-canvas-image.h
+
