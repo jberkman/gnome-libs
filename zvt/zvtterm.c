@@ -1227,6 +1227,9 @@ zvt_term_key_press (GtkWidget *widget, GdkEventKey *event)
   case GDK_Meta_L:
   case GDK_Meta_R:
     break;
+  case GDK_Mode_switch:
+  case GDK_Multi_key:
+    break;
   default:
     if (event->length > 0) {
       if (event->state & GDK_MOD1_MASK){
