@@ -594,8 +594,9 @@ static void vt_lf(struct vt_em *vt)
 {
   d(printf("lf \n"));
 
-  if (vt->cursory > vt->scrollbottom
-      || vt->cursory < vt->scrollbottom) {
+  if ((vt->cursory > vt->scrollbottom
+      || vt->cursory < vt->scrollbottom)
+      && (vt->cursory < vt->height-1)) {
     vt->cursory++;
     d(printf("new ypos = %d\n", vt->cursory));
     vt->this_line = vt->this_line->next;

@@ -1,3 +1,9 @@
+1999-10-19  Michael Zucchi  <mzucchi@denr.sa.gov.au>
+
+	* vt.c (vt_lf): Make sure we dont linefeed off the end of the
+	screen, bug #2885 (and probably most other segfaults).  This may
+	cause problems elsewhere, but probably not.
+
 1999-09-28  Elliot Lee <sopwith@redhat.com>
 	* zvtterm.c (zvt_term_key_press): Catch GDK_Tab _and_ GDK_ISO_Left_Tab
 	and use them appropriately. I don't think GDK_Tab really needed to be caught,
