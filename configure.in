@@ -98,6 +98,7 @@ GNOME_INCLUDEDIR='-I$(includedir)'
 if test "$need_gnome_support" = yes; then
    GNOME_INCLUDEDIR="$GNOME_INCLUDEDIR -DNEED_GNOMESUPPORT_H -I\$(pkglibdir)/include"
 fi
+AC_SUBST(GTK_LIBS)
 AC_SUBST(GNOME_LIBS)
 AC_SUBST(GNOMEUI_LIBS)
 AC_SUBST(GTKXMHTML_LIBS)
@@ -121,6 +122,7 @@ gtk-xmhtml/Makefile
 libgnome/Makefile
 libgnomeui/Makefile
 libgnomeui/pixmaps/Makefile
+zvt/Makefile
 test-suite/Makefile
 gnome-hello/Makefile
 devel-docs/Makefile

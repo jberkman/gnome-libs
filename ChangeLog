@@ -1,3 +1,10 @@
+1998-04-21  Miguel de Icaza  <miguel@nuclecu.unam.mx>
+
+	* libgnome/gnome-config.c (gnome_config_get_string_with_default):
+	Added ultra-nasty binary compatibility hack for those hackers
+	without dual-p2 machines so that they dont have to recompile
+	everything.  This will be gone soon.
+
 Thu Apr 23 01:53:44 1998  George Lebl  <jirka@5z.com>
 
 	* libgnome/gnome-config.c: added some missing compatibility
