@@ -134,11 +134,100 @@ GLib's typedefs for common types are just prefixed with a <emphasis>g</emphasis>
 <title>Typedefs</title>
 
 <para>
-GLib provides some portability typedefs, such as <emphasis>gint32</emphasis>, <emphasis>gint8</emphasis>, or
-just simplification typedefs such as <emphasis>guint</emphasis> (for <emphasis>unsigned int</emphasis>) and
-some typedefs which are present just to keep everything looking consistent,
-such as <emphasis>gint</emphasis> which just typedefs to <emphasis>int</emphasis>, or <emphasis>gpointer</emphasis> which
-is a typedef of <emphasis>void *</emphasis>.</para></sect2>
+GLib provides some typedefs for portability, simlification of code,
+clarity of code and yet others just to keep consistent. The
+following table lists these typedefs. If the
+<emphasis>Equivalent</emphasis>, field is blank, there is no platform
+independent equivalent.
+
+<table>
+<title>
+GLib typedefs
+</title>
+
+<tgroup cols=3>
+<thead>
+<row>
+<entry>Name</entry>
+<entry>Equivalent</entry>
+<entry>Description</entry>
+</row>
+</thead>
+<tbody>
+
+<row><entry>gint8</entry><entry></entry>
+<entry>8bit wide signed integer</entry></row>
+<row><entry>guint8</entry><entry></entry>
+<entry>8bit wide unsigned integer</entry></row>
+
+<row><entry>gint16</entry><entry></entry>
+<entry>16bit wide signed integer</entry></row>
+<row><entry>guint16</entry><entry></entry>
+<entry>16bit wide unsigned integer</entry></row>
+
+<row><entry>gint32</entry><entry></entry>
+<entry>32bit wide signed integer</entry></row>
+<row><entry>guint32</entry><entry></entry>
+<entry>32bit wide unsigned integer</entry></row>
+
+<row><entry>gint64</entry><entry></entry>
+<entry>64bit wide signed integer (see note below)</entry></row>
+<row><entry>guint64</entry><entry></entry>
+<entry>64bit wide unsigned integer (see note below)</entry></row>
+
+<row><entry>gchar</entry><entry>char</entry>
+<entry>Standard character value</entry></row>
+<row><entry>guchar</entry><entry>unsigned char</entry>
+<entry>Standard unsigned character value</entry></row>
+<row><entry>gshort</entry><entry>short</entry>
+<entry>Standard short integer</entry></row>
+<row><entry>gushort</entry><entry>unsigned short</entry>
+<entry>Standard unsigned short integer</entry></row>
+<row><entry>glong</entry><entry>long</entry>
+<entry>Standard long integer</entry></row>
+<row><entry>gulong</entry><entry>unsigned long</entry>
+<entry>Standard unsigned long integer</entry></row>
+<row><entry>gint</entry><entry>int</entry>
+<entry>Standard integer</entry></row>
+<row><entry>guint</entry><entry>unsigned int</entry>
+<entry>Standard unsigned integer</entry></row>
+
+<row><entry>gfloat</entry><entry>float</entry>
+<entry>Standard float number type</entry></row>
+
+<row><entry>gdouble</entry><entry>double</entry>
+<entry>Standard float number type</entry></row>
+
+<row><entry>gboolean</entry><entry>int</entry>
+<entry>Type for storing TRUE/FALSE values</entry></row>
+
+<row><entry>gpointer</entry><entry>void *</entry>
+<entry>Type for storing pointers to arbitrary objects</entry></row>
+
+<row><entry>gconstpointer</entry><entry>const void *</entry>
+<entry>Type for storing pointers to arbitrary immutable objects</entry></row>
+</tbody>
+</tgroup>
+</table>
+</para>
+
+<para>It should be noted that <emphasis>gint64</emphasis> and
+<emphasis>guint64</emphasis> might not be available on all platforms. You can
+check for this in your code by checking to see if the macro
+<emphasis>G_HAVE_GINT64</emphasis> is defined.
+</para>
+
+<para>As you can see, some of the typedefs such as <emphasis>gint</emphasis>
+seem to have no other meaning in life then that of having a 'g' prefix and
+looking the same as the other typedefs. The logic behind this is to make the
+code look more consistent and clear. While it is no crime not to use these
+tpedefs, you should really be consistent in your code. Some of the typedefs
+such as <emphasis>gboolean</emphasis> are only for improving code clarity
+and you could just as well use <emphasis>int</emphasis> to do exactly the
+same thing, but the former method clearly indicates that you are talking
+about a value that can only take TRUE or FALSE.
+</para>
+</sect2>
 
 <sect2>
 <title>Portability and Utility Functions</title>
@@ -147,13 +236,106 @@ is a typedef of <emphasis>void *</emphasis>.</para></sect2>
 There are some functions that have different implementations across
 different systems or are not extremely safe, or don't exist at all on some
 systems, so GLib provides it's own implementations or wrappers that have a
-constant behavior and usually check their arguments. Examples of such
-functions are <emphasis>g_strdup</emphasis>, <emphasis>g_snprintf</emphasis> or <emphasis>g_malloc</emphasis> and
-<emphasis>g_free</emphasis> and more.</para>
+constant behavior and usually check their arguments.</para>
+
+<para>Here are some of the more useful functions that fit this category.
+Note that the prototype is more of an informative one, as some of these
+might be macros in reality.
+
+<table>
+<title>
+Few GLib Portability Functions
+</title>
+
+<tgroup cols=3>
+<thead>
+<row>
+<entry>Prototype</entry>
+<entry>Description</entry>
+</row>
+</thead>
+<tbody>
+
+<row><entry>gchar * g_strdup(const gchar *)</entry>
+<entry>Returns a newly allocated string which is a copy of the argument,
+if the argument is NULL, NULL is returned</entry></row>
+<row><entry>gpointer g_malloc(int size)</entry>
+<entry>Returns a newly region of memory with 'size' bytes</entry></row>
+<row><entry>void g_free(gpointer p)</entry>
+<entry>Free's memory pointed to by 'p', and only returns if 'p' is
+NULL</entry></row>
+<row><entry>gint g_snprintf(gchar *string, gulong n, gchar const *format, ...)
+</entry>
+<entry>Works just like sprintf by printing the arguments according to the
+'format' into string, however it will only use 'n' bytes of the string and
+will thus truncate the result if it needed more. It returns the number
+of bytes actually printed into 'string'</entry></row>
+
+<row><entry>void g_usleep(gulong count)</entry>
+<entry>Suspend execution for at least 'count' microseconds</entry></row>
+
+</tbody>
+</tgroup>
+</table>
+
+</para>
+
+<para>And there are also some utility functions and macros that are not
+really found in the normal c library. Here is a very short list of some
+of the more important and useful ones.
+
+<table>
+<title>
+Few GLib Utility Functions
+</title>
+
+<tgroup cols=3>
+<thead>
+<row>
+<entry>Prototype</entry>
+<entry>Description</entry>
+</row>
+</thead>
+<tbody>
+
+<row><entry>g_new(type,count)</entry>
+<entry>A macro which will allocate new memory for 'count' items
+of type 'type' and cast the result to 'type'. It is equivalent to
+'(type) g_malloc(count * sizeof(type))'</entry></row>
+
+<row><entry>g_new0(type,count)</entry>
+<entry>Same semantics as g_new, except that the returned memory will
+be set to all zeros. Note that you should not assume that setting the
+memory to zeros will zero out floating point types</entry></row>
+
+<row><entry>gchar * g_strconcat(const gchar *str, ...)</entry>
+<entry>When passed any number of arguments of the type (const char *) and
+a NULL after the last argument, it will return a newly allocated string
+that results by concatenation of all the arguments.</entry></row>
+
+<row><entry>gchar * g_strdup_printf(const gchar *format, ...)</entry>
+<entry>A printf like function that will return a newly allocated string
+with the result of the printf operation</entry></row>
+
+<row><entry>gchar * g_strstrip(gchar *string)</entry>
+<entry>Will strip leading and trailing whitespace from the string. It will
+not allocate new memory, but will modify the original string and return
+a pointer to it. If you wish to allocate new memory use a construction such as:
+'string2 = g_strstrip(g_strdup(string1));'</entry></row>
+
+
+</tbody>
+</tgroup>
+</table>
+
+</para>
 
 <para>
-GLib also includes a lot of utility functions such as <emphasis>g_strconcat</emphasis> or
-<emphasis>g_strdup_printf</emphasis> and others, that are just plain useful.</para></sect2>
+There are many other useful methods in GLib, and I urge you to study GLib
+documentation and the GLib header file (<emphasis>glib.h</emphasis>), and
+you may be able to save a lot of time by not reimplementing some basic
+functionality.</para>
+</sect2>
 
 <sect2>
 <title>Containers</title>
