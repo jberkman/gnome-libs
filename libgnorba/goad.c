@@ -665,9 +665,9 @@ goad_server_activate_exe(GoadServer *sinfo,
       default:
 	break;
       }
-#endif
       retval = CORBA_OBJECT_NIL;
     }
+#endif
     fclose(iorfh);
     wait(&status);
   } else if(fork()) {
