@@ -60,17 +60,17 @@ EXTRA_DIST = \
 
 
 dist-hook:
-	-tar cvf - gnome-dev-info | (cd $(distdir); tar xf -)
+	tar cvf - gnome-dev-info | (cd $(distdir); tar xf -)
 
 install-data-local: gnome-dev-info/gnome-dev-info.html
 	$(mkinstalldirs) $(DESTDIR)$(htmldir)
 	-for file in $(srcdir)/gnome-dev-info/*.html $(srcdir)/gnome-dev-info/*.css; do \
           basefile=`echo $$file | sed -e 's,^.*/,,'`; \
-          -$(INSTALL_DATA) $$file $(DESTDIR)$(htmldir)/$$basefile; \
+          $(INSTALL_DATA) $$file $(DESTDIR)$(htmldir)/$$basefile; \
 	done
 	-for file in $(srcdir)/*.jpg; do \
           basefile=`echo $$file | sed -e 's,^.*/,,'`; \
-          -$(INSTALL_DATA) $$file $(DESTDIR)$(htmldir)/$$basefile; \
+          $(INSTALL_DATA) $$file $(DESTDIR)$(htmldir)/$$basefile; \
         done
 
 # devel-docs/gnome-dev-info/Makefile.am ends here

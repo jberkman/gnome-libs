@@ -1,4 +1,4 @@
-SUBDIRS = gnome gnomeui zvt \
+SUBDIRS = gnome gnome-dev-info gnomeui zvt \
 	templates ui-guide gnorba
 
 TEXT_FILES =					\
