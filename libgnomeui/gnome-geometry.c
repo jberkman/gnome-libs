@@ -98,7 +98,7 @@ gchar * gnome_geometry_string (GdkWindow * window)
   gint x, y, w, h;
   gchar *buffer = g_malloc (BUFSIZE + 1);
   
-  gdk_window_get_origin (window, &x, &y);
+  gdk_window_get_root_origin (window, &x, &y);
   gdk_window_get_size (window, &w, &h);
 
   g_snprintf (buffer, BUFSIZE, "%dx%d+%d+%d", w, h, x, y);
