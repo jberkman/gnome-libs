@@ -3,8 +3,8 @@
 INCLUDES = -I.. -I$(srcdir)/.. $(SUPPORTINCS) \
 	-I$(top_srcdir)/intl -I$(top_builddir)/intl \
 	-I$(includedir) $(GDK_IMLIB_CFLAGS) \
-	-DGNOMELOCALEDIR=\""$(datadir)/locale"\" \
-	-DLOCALEDIR=\"$(datadir)/locale\"
+	-DGNOMELOCALEDIR=\""$(gnomelocaledir)"\" \
+	-DLOCALEDIR=\""$(gnomelocaledir)"\"
 
 LDADD = \
 	$(top_builddir)/libgnomeui/libgnomeui.la 	\
