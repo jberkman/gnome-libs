@@ -369,11 +369,12 @@ set_to_null(GtkWidget * ignore, GnomeDialog ** d)
 }
 
 static void
-create_test_dialog (GtkWidget * ignored, gboolean * settings)
+create_test_dialog (GtkWidget * button, gboolean * settings)
 {
   static GnomeDialog * dialog = NULL;
   GtkWidget * entry;
   GtkWidget * button;
+  GtkWidget * app;
 
   if (dialog) {
     g_print("Previous dialog was not destroyed, destroying...\n");
@@ -381,10 +382,14 @@ create_test_dialog (GtkWidget * ignored, gboolean * settings)
     dialog = NULL;
   }
 
+  app = gtk_object_get_user_data(GTK_OBJECT(button));
+
   dialog = GNOME_DIALOG(gnome_dialog_new( "A Test Dialog", 
 					  GNOME_STOCK_BUTTON_OK,
 					  "Not a stock button",
 					  GNOME_STOCK_BUTTON_CANCEL, NULL ));
+
+  gnome_dialog_set_parent(dialog,GTK_WINDOW(app));
   
   entry = gtk_entry_new();
   button = gtk_button_new_with_label("gnome_dialog_run");
@@ -464,6 +469,9 @@ create_dialog(void)
   gtk_box_pack_start(GTK_BOX(hbox), toggle, FALSE, FALSE, GNOME_PAD);
 
   button = gtk_button_new_with_label("Create the dialog");
+
+  gtk_object_set_user_data(GTK_OBJECT(button),app);
+
   gtk_signal_connect(GTK_OBJECT(button), "clicked", 
 		     GTK_SIGNAL_FUNC(create_test_dialog), 
 		     &settings[0]);
