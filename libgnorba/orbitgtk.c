@@ -393,6 +393,7 @@ gnome_name_service_get(void)
       
       setsid();
       
+      execlp("gnome-name-server", "gnome-name-server", NULL);
       execlp("orbit-name-server", "orbit-name-server", NULL);
       _exit(1);
     }
