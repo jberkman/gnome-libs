@@ -4,9 +4,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: gnome-libs 1.0.11\n"
+"Project-Id-Version: gnome-libs 1.0.15\n"
 "POT-Creation-Date: 1999-08-30 15:26-0500\n"
-"PO-Revision-Date: 1999-07-20 04:01+0900\n"
+"PO-Revision-Date: 1999-08-31 07:40+0900\n"
 "Last-Translator: Changwoo Ryu <cwryu@debian.org>\n"
 "Language-Team: Korean <ko@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -60,7 +60,7 @@ msgstr "호스트이름:포트"
 
 #: libgnome/gnomelib-init.c:144
 msgid "GNOME Options"
-msgstr "GNOME 옵션"
+msgstr "그놈 옵션"
 
 #: libgnomeui/gnome-about.c:187
 msgid "Author:"
@@ -435,7 +435,7 @@ msgstr " (리턴을 누르세요) "
 
 #: libgnomeui/gnome-app-util.c:136
 msgid "ERROR: "
-msgstr "에러: "
+msgstr "오류: "
 
 #: libgnomeui/gnome-app-util.c:173
 msgid "Warning: "
@@ -714,26 +714,23 @@ msgstr "문서:"
 
 #: libgnomeui/gnome-dentry-edit.c:383
 msgid "Name/Comment translations:"
-msgstr ""
+msgstr "이름/설명 번역문:"
 
 #: libgnomeui/gnome-dentry-edit.c:386
 msgid "Language"
-msgstr ""
+msgstr "언어"
 
 #: libgnomeui/gnome-dentry-edit.c:387
-#, fuzzy
 msgid "Name"
 msgstr "이름"
 
 #: libgnomeui/gnome-dentry-edit.c:388
-#, fuzzy
 msgid "Comment"
 msgstr "설명"
 
 #: libgnomeui/gnome-dentry-edit.c:416
-#, fuzzy
 msgid "Add/Set"
-msgstr "추가"
+msgstr "추가/수정"
 
 #: libgnomeui/gnome-dentry-edit.c:421 libgnomeui/gnome-stock.c:825
 msgid "Remove"
@@ -861,7 +858,7 @@ msgstr "MODULE"
 #. dialog display isn't working out
 #: libgnomeui/gnome-init.c:606
 msgid "Giving up on displaying error dialog"
-msgstr ""
+msgstr "오류 대화창을 표시하는 것을 포기합니다"
 
 #: libgnomeui/gnome-messagebox.c:111 libgnomeui/gnome-messagebox.c:240
 msgid "Information"
@@ -1173,14 +1170,17 @@ msgid ""
 "due to a fatal error.\n"
 "(%s)"
 msgstr ""
+"프로그램 \"%s\"(프로세스 번호 %d)가 치명적인\n"
+"오류로 인해 비정상적으로 종료되었습니다.\n"
+"(%s)"
 
 #: libgnomeui/gnome_segv.c:49
 msgid "Usage: gnome_segv appname signum\n"
-msgstr ""
+msgstr "사용법: gnome_segv 프로그램명 시그널번호\n"
 
 #: libgnomeui/gnome_segv.c:61
 msgid "Please visit the GNOME Application Crash page for more information"
-msgstr ""
+msgstr "자세한 정보는 그놈 응용프로그램의 비정상 종료 안내 웹페이지에 있습니다."
 
 #: libgnomeui/stock_demo.c:112
 msgid "New..."
@@ -1367,18 +1367,14 @@ msgid "WIN_HINTS Test"
 msgstr "WIN_HINTS Test"
 
 #: libgnomeui/winhints_demo.c:411
-#, fuzzy
 msgid "Copyright (C) 1998"
-msgstr "Copyright (C)1998"
+msgstr "Copyright (C) 1998"
 
 #: libgnomeui/winhints_demo.c:413
-#, fuzzy
 msgid ""
 "Simple test app to check how the WIN_HINTS work.  And to test the "
 "gnome_win_hints_* functions for errors. :)"
-msgstr ""
-"Simple test app to check how the WIN_HINTS work. And to test the "
-"gnome_win_hints_* functions for errors. :)"
+msgstr "Simple test app to check how the WIN_HINTS work.  And to test the gnome_win_hints_* functions for errors. :)"
 
 #: libgnorba/gnome-name-server.c:229
 #, c-format
@@ -1507,6 +1503,12 @@ msgstr "이 도움말 메세지를 보여줌"
 msgid "Display brief usage message"
 msgstr "간단한 사용법 메세지를 표시"
 
+# 테스트 프로그램의 번역?
+#
+# 테스트 프로그램은 번역할 필요가 없다.  왜냐하면 설치되지 않으니까.
+# 시간이 남아돌면서 번역할 메세지가 이거밖에 없다면 몰라도, 쓸데없는 일에
+# 시간을 낭비하고 싶지는 않다.
+#
 #. Pixmap
 #: test-gnome/testgnome.c:792
 msgid "Default Pixmap"
@@ -1545,119 +1547,3 @@ msgstr "The user chose No/Cancel with data:\n"
 #: test-gnome/testgnome.c:1087
 msgid "Weird number in reply callback"
 msgstr "Weird number in reply callback"
-
-#~ msgid "Hello GNOME\n"
-#~ msgstr "안녕하세요 그놈입니다\n"
-
-#~ msgid "The Hello World Gnomified"
-#~ msgstr "그놈식 Hello World"
-
-#~ msgid "(C) 1998 the Free Software Foundation"
-#~ msgstr "(C) 1998 the Free Software Foundation"
-
-#~ msgid ""
-#~ "GNOME is a civilized software system so we've a \"hello world\" program"
-#~ msgstr ""
-#~ "GNOME is a civilized software system so we've a \"hello world\" program"
-
-#~ msgid "About GnomeHello..."
-#~ msgstr "GnomeHello은..."
-
-#~ msgid "Exit"
-#~ msgstr "끝내기"
-
-#~ msgid "Hello World Gnomified"
-#~ msgstr "그놈식 Hello World"
-
-#~ msgid "Hello GNOME"
-#~ msgstr "안녕하세요 그놈입니다"
-
-#~ msgid "Exit GNOME hello"
-#~ msgstr "그놈 hello 종료"
-
-#~ msgid "About..."
-#~ msgstr "이 프로그램은..."
-
-#~ msgid "Info about GNOME hello"
-#~ msgstr "그놈 hello에 대한 정보"
-
-#~ msgid "Add View"
-#~ msgstr "보기 추가"
-
-#~ msgid "Remove View"
-#~ msgstr "보기 삭제"
-
-#~ msgid "Increase Counter"
-#~ msgstr "카운터 증가"
-
-#~ msgid "Child"
-#~ msgstr "자식"
-
-#~ msgid "Add Child"
-#~ msgstr "자식 추가"
-
-#~ msgid "Remove Child"
-#~ msgstr "자식 삭제"
-
-#~ msgid "Children"
-#~ msgstr "자식"
-
-#~ msgid "Notebook"
-#~ msgstr "노트북"
-
-#~ msgid "Toplevel"
-#~ msgstr "최상위"
-
-#~ msgid "Modal"
-#~ msgstr "모달"
-
-#~ msgid "MDI Mode"
-#~ msgstr "MDI 모드"
-
-#~ msgid "Children/"
-#~ msgstr "자식/"
-
-#~ msgid "File/Exit"
-#~ msgstr "파일/끝내기"
-
-#~ msgid "<control>E"
-#~ msgstr "<control>E"
-
-#~ msgid "Help/About..."
-#~ msgstr "도움말/이 프로그램은..."
-
-#~ msgid "<control>A"
-#~ msgstr "<control>A"
-
-#~ msgid ""
-#~ "%s: A gnomified 'Hello World' program\n"
-#~ "\n"
-#~ "Usage: %s [--help] [--version]\n"
-#~ "\n"
-#~ "Options:\n"
-#~ "        --help     display this help and exit\n"
-#~ "        --version  output version information and exit\n"
-#~ msgstr ""
-#~ "%s: 그놈식 'Hello World' 프로그램\n"
-#~ "\n"
-#~ "사용법: %s [--help] [--version]\n"
-#~ "\n"
-#~ "옵션:\n"
-#~ "        --help     이 도움말을 출력하고 끝냅니다\n"
-#~ "        --version  버전 정보를 표시하고 끝냅니다\n"
-
-#~ msgid "Gnome Hello %s.\n"
-#~ msgstr "그놈 Hello %s.\n"
-
-#~ msgid "Options error\n"
-#~ msgstr "옵션 오류\n"
-
-#~ msgid ""
-#~ "Application \"%s\" (process %d) has crashed due to a bug in the software.\n"
-#~ "(%s)\n"
-#~ "For more information, see http://www.gnome.org/application_crashed.shtml"
-#~ msgstr ""
-#~ "응용 프로그램 \"%s\" (프로세스 %d) 가(이) 이 소프트웨어의 버그로 인해\n"
-#~ "비정상 종료되었습니다.  (%s)\n"
-#~ "더 자세한 정보는, http://www.gnome.org/application_crashed.shtml 을 "
-#~ "참고하세요"
