@@ -83,8 +83,6 @@ struct _vtx {
 };
 
 
-void vt_draw_text_select(struct _vtx *vx, int col, int row, char *text, int len, int attr);
-
 /* from update.c */
 char *vt_get_selection   (struct _vtx *vx, int *len);
 void vt_clear_selection  (struct _vtx *vx);

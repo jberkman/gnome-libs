@@ -41,74 +41,6 @@
 #define d(x)
 
 /*
-  invert the reverse attribute if the text is selected
-  and then draw as usual.
-
-  this is unecessarily complicated by the fact selstarty not guaranteed
-  to be < selendy (and same for selstartx/selendx)
-*/
-void vt_draw_text_select(struct _vtx *vx, int col, int row, char *text, int len, int attr)
-{
-  int newattr;
-  int startlen,midlen,endlen;	/* start/mid/end sections */
-  int sx, ex;
-
-  if (vx->selected &&
-      (((row >= (vx->selstarty - vx->vt.scrollbackoffset)) && /* normal order select */
-      (row <= (vx->selendy - vx->vt.scrollbackoffset))) ||
-      ((row <= (vx->selstarty - vx->vt.scrollbackoffset)) && /* start<end */
-      (row >= (vx->selendy - vx->vt.scrollbackoffset)))) ) {
-
-    d(printf("drawing text from %d for %d\n", col, len));
-
-    newattr = attr ^ VTATTR_REVERSE;
-    sx = 0;
-    ex = col+len;
-
-    if (vx->selstarty<=vx->selendy) {
-      if (row == (vx->selstarty-vx->vt.scrollbackoffset))
-	sx = vx->selstartx;
-      if (row == (vx->selendy-vx->vt.scrollbackoffset))
-	ex = vx->selendx;
-    } else {
-      if (row == (vx->selendy-vx->vt.scrollbackoffset))
-	sx = vx->selendx;
-      if (row == (vx->selstarty-vx->vt.scrollbackoffset)) {
-	ex = vx->selstartx;
-      }
-    }
-
-    /* check startx<endx, if on the same line */
-    if ( (sx>ex) &&
-	 (row == vx->selstarty-vx->vt.scrollbackoffset) &&
-	 (row == vx->selendy-vx->vt.scrollbackoffset) ) {
-      startlen=sx; sx=ex; ex=startlen; /* use startlen as a temp */
-    }
-
-    /* now calculate which bits of the line are selected/otherwise */
-    startlen = (sx-col)<0?0:(sx-col);
-    endlen = (col+len-ex)<0?0:(col+len-ex);
-    if (startlen>len)
-      startlen = len;
-    if (endlen>len)
-      endlen = len;
-    midlen = (len-startlen-endlen);
-
-    d(printf("startx = %d, endx = %d\n", sx, ex));
-    d(printf("drawing text <%d> normal <%d> selected <%d> normal\n", startlen, midlen, endlen));
-
-    if (startlen)
-      vt_draw_text(vx->user_data, col, row, text, startlen, attr);
-    if (midlen)
-      vt_draw_text(vx->user_data, col+startlen, row, text+startlen, midlen, newattr);
-    if (endlen)
-      vt_draw_text(vx->user_data, col+startlen+midlen, row, text+startlen+midlen, endlen, attr);
-  } else {
-    vt_draw_text(vx->user_data, col, row, text, len, attr);
-  }
-}
-
-/*
   update line 'line' (node 'l') of the vt
 
   always==1  assumes all line data is stale
@@ -121,10 +53,11 @@ static void vt_line_update(struct _vtx *vx, struct vt_line *l, int line, int alw
   int run;
   int runstart;
   char *runbuffer, *p;
-  int attr;
+  uint32 attr, newattr;
   uint32 c;
+  int ch;
   struct vt_line *bl;
-  int noclear;			/* clear before writing text? */
+  int sx, ex;			/* start/end selection */
 
   d(printf("updating line %d: ", line));
   d(fwrite(l->data, l->width, 1, stdout));
@@ -149,41 +82,82 @@ static void vt_line_update(struct _vtx *vx, struct vt_line *l, int line, int alw
   g_return_if_fail (runbuffer != NULL);
   g_return_if_fail (bl->width == l->width);
 
+  /* work out if selections are being rendered */
+  if (vx->selected &&
+      (((line >= (vx->selstarty - vx->vt.scrollbackoffset)) && /* normal order select */
+      (line <= (vx->selendy - vx->vt.scrollbackoffset))) ||
+      ((line <= (vx->selstarty - vx->vt.scrollbackoffset)) && /* start<end */
+      (line >= (vx->selendy - vx->vt.scrollbackoffset)))) ) {
+    
+    /* work out range of selections */
+    sx = 0;
+    ex = l->width;
+    
+    if (vx->selstarty<=vx->selendy) {
+      if (line == (vx->selstarty-vx->vt.scrollbackoffset))
+	sx = vx->selstartx;
+      if (line == (vx->selendy-vx->vt.scrollbackoffset))
+	ex = vx->selendx;
+    } else {
+      if (line == (vx->selendy-vx->vt.scrollbackoffset))
+	sx = vx->selendx;
+      if (line == (vx->selstarty-vx->vt.scrollbackoffset)) {
+	ex = vx->selstartx;
+      }
+    }
+
+    /* check startx<endx, if on the same line, swap if so */
+    if ( (sx>ex) &&
+	 (line == vx->selstarty-vx->vt.scrollbackoffset) &&
+	 (line == vx->selendy-vx->vt.scrollbackoffset) ) {
+      int tmp;
+      tmp=sx; sx=ex; ex=tmp;
+    }
+  } else {
+    sx = -1;
+    ex = -1;
+  }
+  /* ^^ at this point sx -- ex needs to be inverted (it is selected) */
+
   /* work out the minimum range of change */
   if (!always) {
     
     while (start<end) {
-      if ((l->data[start]&0x7fffffff) != (bl->data[start]&0x7fffffff))
+      c = l->data[start]&0x7fffffff;
+      if (start>=sx && start<ex)
+	c ^= VTATTR_REVERSE;
+      if (c != (bl->data[start]&0x7fffffff))
 	break;
       start++;
     }
     
     while (end>start) {
-      if ((l->data[end-1]&0x7fffffff) != (bl->data[end-1]&0x7fffffff))
+      c = l->data[end-1]&0x7fffffff;
+      if (end>=sx && end<ex)
+	c ^= VTATTR_REVERSE;
+      if (c != (bl->data[end-1]&0x7fffffff))
 	break;
       end--;
     }
   }  /* else, update everything */
 
   /* see if on-screen is all background ... */
+  /* (this is messy, and probably slow?) */
   vx->back_match=1;
   for(i=start;i<end;i++) {
     /* check for clear of the same background colour */
-    c = bl->data[i]&0xffff;
-    if ((c!=0 && c!=9 && c!=' ')
-	|| ((bl->data[i] & (0x7c000000|VTATTR_BACKCOLOURM))
+    c = bl->data[i]&0x7fffffff;
+    ch = c & 0xffff;
+    if (i>=sx && i<ex)
+      c ^= VTATTR_REVERSE;
+    if ((ch!=0 && ch!=9 && ch!=' ')
+	|| ((c & (0x7c000000|VTATTR_BACKCOLOURM))
 	    != (l->data[i] & (0x7c000000|VTATTR_BACKCOLOURM)))) {
       d(printf("bl->data[i] = %08x != %08x, c=%d (back now=%d not %d)\n", bl->data[i], l->data[i], c, (l->data[i]&VTATTR_BACKCOLOURM)>>VTATTR_BACKCOLOURB, (bl->data[i]&VTATTR_BACKCOLOURM)>>VTATTR_BACKCOLOURB));
       vx->back_match=0;
       break;
     }
   }
-
-  /* copy changed section of line to destination line */
-  for(i=start;i<end;i++) {
-    bl->data[i]=l->data[i];
-  }
-  bl->line = line;
 
   d(printf("actually (%d-%d)?\n", start, end));
 
@@ -192,51 +166,44 @@ static void vt_line_update(struct _vtx *vx, struct vt_line *l, int line, int alw
   runstart = 0;
   p = 0;
   for(i=start;i<end;i++) {
-#if 0
-    if (always || ((l->data[i] & VTATTR_CHANGED)) ) {
-#endif
-      if (run==0) {
+    /* map on 'selected' areas, and copy to screen buffer */
+    newattr = l->data[i] & 0x7fff000;
+    if (i>=sx && i<ex) {
+      newattr ^= VTATTR_REVERSE;
+      bl->data[i]=l->data[i]|VTATTR_REVERSE;
+    } else {
+      bl->data[i]=l->data[i];
+    }
+
+    if (run==0) {
+      runstart = i;
+      p = runbuffer;
+      attr = newattr;
+    } else {
+      if (attr != newattr) { /* check run of same type ... */
+	vt_draw_text(vx->user_data, runstart, line, runbuffer, run, attr);
 	runstart = i;
 	p = runbuffer;
-	attr = l->data[i] & 0x7fff0000;
-      } else {
-	if (attr != (l->data[i] & 0x7fff0000)) { /* check run of same type ... */
-	  vt_draw_text_select(vx, runstart, line, runbuffer, run, attr);
-	  runstart = i;
-	  p = runbuffer;
-	  run=0;
-	  attr = l->data[i] & 0x7fff0000;
-	}
-      }
-      c = l->data[i] & 0xff;
-      /* FIXME: this is needed for alternate charsets
-	 will need to do something else to mark empty-space and tabs? */
-      if ((c==0) || (c==9))
-	c=' ';
-      /*if (c<32)*/			/* all control chars ->space */
-      /*c=' ';*/
-      *p++=c;
-      run++;
-#if 0
-    } else {
-      if (run) {
-	d(printf("found a run of %d characters from %d: '", run, runstart));
-	d(fwrite(runbuffer, run, 1, stdout));
-	vt_draw_text_select(vx, runstart, line, runbuffer, run, attr);
-	d(printf("'\n"));
 	run=0;
+	attr = newattr;
       }
     }
-#endif
-    l->data[i] &= ~VTATTR_CHANGED;
+    c = l->data[i] & 0xff;
+    /* FIXME: this is needed for alternate charsets
+       will need to do something else to mark empty-space and tabs? */
+    if ((c==0) || (c==9))
+      c=' ';
+    *p++=c;
+    run++;
   }
   if (run) {
     d(printf("found a run of %d characters from %d: '", run, runstart));
     d(fwrite(runbuffer, run, 1, stdout));
-    vt_draw_text_select(vx, runstart, line, runbuffer, run, attr);
+    vt_draw_text(vx->user_data, runstart, line, runbuffer, run, attr);
     d(printf("'\n"));
   }
   l->modcount = 0;
+  bl->line = line;
 }
 
 int vt_get_attr_at (struct _vtx *vx, int col, int row)
@@ -250,10 +217,8 @@ int vt_get_attr_at (struct _vtx *vx, int col, int row)
 /*
   scroll/update a section of lines
   from firstline (fn), scroll count lines 'offset' lines
-
-  FIXME: check this
 */
-void vt_scroll_update(struct _vtx *vx, int firstline, int count, int offset)
+static void vt_scroll_update(struct _vtx *vx, int firstline, int count, int offset)
 {
   struct vt_line *tn, *bn, *dn;	/* top/bottom of scroll area */
   int i;
@@ -286,15 +251,11 @@ void vt_scroll_update(struct _vtx *vx, int firstline, int count, int offset)
     dn = (struct vt_line *)vt_list_index(&vx->vt.lines_back, firstline+offset);
   }
 
-  /*
-    
+  /*    
     0->dn->4->tn->1->2->bn->5
-    
     0->dn->4->5
-    
     0->tn->1->2->bn->dn->4->5
   */
-
 
   /* remove the scroll segment */
   tn->prev->next = bn->next;
@@ -325,42 +286,6 @@ void vt_scroll_update(struct _vtx *vx, int firstline, int count, int offset)
       tn->data[i]=vx->vt.attr; /* not sure if this is the correct thing to 'clear' with */
     }
   } while ((tn!=bn) && (tn=tn->next));
-
-    /*
-1
-2
-3
-4
-5
-6
-7
-8
-9
-
-scroll(3, 4, 1);
-
-1
-2
--7
-3
-4
-5
-6
-8
-9
-
-scroll(3, 4, -1);
- 
-
-1
-3
-4
-5
-6
--2
-7
-8
-    */
 }
 
 /*
@@ -380,7 +305,6 @@ void vt_update(struct _vtx *vx, int update_state)
   int oldoffset=0;
   struct vt_line *wn, *nn, *fn;
   int firstline;
-  int count;
   int old_state;
   int update_start=-1;	/* where to start/stop update */
   int update_end=-1;
@@ -392,14 +316,14 @@ void vt_update(struct _vtx *vx, int update_state)
   /* find first line of visible screen, take into account scrollback */
   offset = vx->vt.scrollbackoffset;
   if (offset<0) {
-    wn = vt_list_index(&vx->vt.scrollback, offset);
+    wn = (struct vt_line *)vt_list_index(&vx->vt.scrollback, offset);
     if (wn==0) {
       /* check for error condition */
       printf("LINE UNDERFLOW!\n");
-      wn = vx->vt.scrollback.head;
+      wn = (struct vt_line *)vx->vt.scrollback.head;
     }
   } else {
-    wn=vx->vt.lines.head;
+    wn=(struct vt_line *)vx->vt.lines.head;
   }
   
   /* updated scrollback if we can ... otherwise dont */
@@ -453,9 +377,9 @@ void vt_update(struct _vtx *vx, int update_state)
       }
 
       /* goto next logical line */
-      if (wn==vx->vt.scrollback.tailpred) {
+      if (wn==(struct vt_line *)vx->vt.scrollback.tailpred) {
 	d(printf("skipping to real lines at line %d\n", line));
-	wn = vx->vt.lines.head;
+	wn = (struct vt_line *)vx->vt.lines.head;
       } else {
 	d(printf("going to next line ...\n"));
 	wn = nn;
@@ -504,8 +428,8 @@ void vt_update(struct _vtx *vx, int update_state)
       }
 
       /* goto previous logical line */
-      if (wn==vx->vt.lines.head) {
-	wn = vx->vt.scrollback.tailpred;
+      if (wn==(struct vt_line *)vx->vt.lines.head) {
+	wn = (struct vt_line *)vx->vt.scrollback.tailpred;
 	d(printf("going to scrollback buffer line ...\n"));
       } else {
 	d(printf("going to prev line ...\n"));
@@ -523,9 +447,9 @@ void vt_update(struct _vtx *vx, int update_state)
     }
 
     /* have to align the pointer properly for the last pass */
-    if (wn==vx->vt.scrollback.tailpred) {
+    if (wn==(struct vt_line *)vx->vt.scrollback.tailpred) {
       d(printf("++ skipping to real lines at line %d\n", line));
-      wn = vx->vt.lines.head;
+      wn = (struct vt_line *)vx->vt.lines.head;
     } else {
       d(printf("++ going to next line ...\n"));
       wn = wn->next;
@@ -552,9 +476,9 @@ void vt_update(struct _vtx *vx, int update_state)
     line++;
 
     /* goto next logical line */
-    if (wn==vx->vt.scrollback.tailpred) {
+    if (wn==(struct vt_line *)vx->vt.scrollback.tailpred) {
       d(printf("skipping to real lines at line %d\n", line));
-      wn = vx->vt.lines.head;
+      wn = (struct vt_line *)vx->vt.lines.head;
     } else {
       wn = nn;
     }
@@ -627,9 +551,8 @@ void vt_update_rect(struct _vtx *vx, int csx, int csy, int cex, int cey)
       csy++;
 
       /* skip out of scrollback buffer if need be */
-      if (wn==vx->vt.scrollback.tailpred) {
-	d(printf("skipping to real lines at line %d\n", line));
-	wn = vx->vt.lines.head;
+      if (wn==(struct vt_line *)vx->vt.scrollback.tailpred) {
+	wn = (struct vt_line *)vx->vt.lines.head;
       } else {
 	wn = nn;
       }
@@ -644,7 +567,7 @@ void vt_update_rect(struct _vtx *vx, int csx, int csy, int cex, int cey)
 /*
   returns true if 'c' is in a 'wordclass' (for selections)
 */
-int vt_in_wordclass(uint32 c)
+static int vt_in_wordclass(uint32 c)
 {
   int ch;
 
@@ -706,6 +629,10 @@ void vt_fix_selection(struct _vtx *vx)
     d(printf("selecting by word\n"));
     /* scan back over word chars */
     d(printf("startx = %d %p-> \n", sx, s->data));
+
+    if (ex==sx && ex<e->width)
+      ex++;
+
     if ((s->data[sx]&0xff)==0) {
       while ((sx>0) && ((s->data[sx]&0xff) == 0))
 	sx--;
@@ -737,8 +664,17 @@ void vt_fix_selection(struct _vtx *vx)
   case VT_SELTYPE_CHAR:
   default:
     d(printf("selecting by char\n"));
-    while ((sx>0) && ((s->data[sx]&0xff) == 0))
-      sx--;
+
+    if (ex==sx && ex<e->width)
+      ex++;
+
+    if ((s->data[sx]&0xff)==0) {
+      while ((sx>0) && ((s->data[sx]&0xff) == 0))
+	sx--;
+      if (sx &&
+	  (( ((s->data[sx])&0xff)!=0x09))) /* 'compress' tabs */
+	sx++;
+    }
 
     /* special cases for tabs and 'blank' character select */
     if ( !((ex >0) && ((e->data[ex-1]&0xff) != 0)) )
@@ -760,7 +696,7 @@ void vt_fix_selection(struct _vtx *vx)
 
 /* convert columns start to column end of line l, into
    a byte array, and store into out */
-char *vt_expand_line(struct vt_line *l, int start, int end, char *out)
+static char *vt_expand_line(struct vt_line *l, int start, int end, char *out)
 {
   int i;
   char *o;
@@ -911,7 +847,7 @@ void vt_clear_selection(struct _vtx *vx)
 
   Called by vt_draw_selection
 */
-void vt_draw_selection_part(struct _vtx *vx, int sx, int sy, int ex, int ey)
+static void vt_draw_selection_part(struct _vtx *vx, int sx, int sy, int ex, int ey)
 {
   int tmp;
   struct vt_line *l;

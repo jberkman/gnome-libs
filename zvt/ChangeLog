@@ -1,5 +1,37 @@
 1998-10-18  Michael Zucchi  <zucchi@zzedzone.fsi.com.au>
 
+	* update.c (vt_fix_selection): When selecting by character, use
+	the same start-of-selection criteria as used with selection-by
+	word (stops the last character on a line from always being
+	selected).
+	(vt_scroll_update): Removed some bulky comments.
+
+	* vtx.h: Removed vt_draw_text_select prototype.
+
+	* update.c (vt_fix_selection): When selecting by word or
+	character, force the initial selection to contain at least 1
+	character.
+	(vt_line_update): Removed warnings: Removed noclear, unused variable.
+	(vt_scroll_update): Changed to static.
+	(vt_update): Typecast list references to struct vt_line *'s.
+	(vt_update): Removed un-used 'count'.
+	(vt_in_wordclass): Changed to static.
+	(vt_expand_line): Changed to static.
+	(vt_draw_selection_part): Changed to static.
+	(vt_draw_text_select): Force re-render of selected block's
+	background, when rendering the selection.
+	(vt_line_update): Integrated 'selection' rendering into here.  Now
+	the code can properly determine exactly the screen rendering
+	attributes before they are rendered.
+	(vt_draw_text_select): Removed.  Functionality integrated into the
+	vt_line_update routine.
+
+	* zvtterm.c (zvt_term_button_press): Ignore button presses when
+	CTRL is activated.  This interferes with the pop-up menu in
+	gnome-terminal (semantically it makes no sense to support
+	selection with any qualifiers anyway).
+	(zvt_term_button_release): Likewise for button up.
+
 	* TODO: Cleaned out some done todo's.
 
 	* zvtterm.c (vt_draw_text): Doh!  Forgot to remove some debug.

@@ -729,6 +729,11 @@ zvt_term_button_press (GtkWidget      *widget,
   if (!(event->state & GDK_SHIFT_MASK))
     if (vt_report_button(&vx->vt, event->button, event->state, x, y)) 
       return FALSE;
+
+  /* ignore all control-clicks' at this level */
+  if (event->state&GDK_CONTROL_MASK) {
+    return FALSE;
+  }
     
   switch(event->button) {
   case 1:			/* left button */
@@ -855,9 +860,16 @@ zvt_term_button_release (GtkWidget      *widget,
   x = x/term->charwidth;
   y = y/term->charheight + vx->vt.scrollbackoffset;
 
+  /* report mouse to terminal */
   if (!(event->state & GDK_SHIFT_MASK))
     if (vt_report_button(&vx->vt, 0, event->state, x, y))
       return FALSE;
+
+  /* ignore all control-clicks' at this level */
+  if (event->state&GDK_CONTROL_MASK) {
+    return FALSE;
+  }
+
 
   if (vx->selectiontype & VT_SELTYPE_BYSTART) {
     vx->selendx = x;
