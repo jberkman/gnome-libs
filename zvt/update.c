@@ -864,7 +864,7 @@ static char *vt_expand_line(struct vt_line *l, int start, int end, char *out)
 {
   int i;
   char *o;
-  char c;
+  unsigned char c;
   int state=0;
   int dataend=0;
   int lf=0;
