@@ -1,15 +1,54 @@
-? gconf.m4
 ? gconf.spec
+? gconf.m4
 ? gconf/gconfd-1
-? gconf/gconfd.oafinfo
 ? gconf/gconftool-1
+? gconf/gconfd.oafinfo
+Index: .cvsignore
+===================================================================
+RCS file: /cvs/gnome/gconf/.cvsignore,v
+retrieving revision 1.5
+diff -u -u -r1.5 .cvsignore
+--- .cvsignore	2000/01/25 10:16:38	1.5
++++ .cvsignore	2000/09/30 00:03:16
+@@ -18,3 +18,5 @@
+ intl
+ config.h.in
+ gconf-config
++gconf-2.0.pc
++gconfgtk-2.0.pc
+Index: Makefile.am
+===================================================================
+RCS file: /cvs/gnome/gconf/Makefile.am,v
+retrieving revision 1.16
+diff -u -u -r1.16 Makefile.am
+--- Makefile.am	2000/08/10 05:26:51	1.16
++++ Makefile.am	2000/09/30 00:03:16
+@@ -2,7 +2,8 @@
+ SUBDIRS = gconf backends wrappers po intl doc examples standard-schemas
+ DIST_SUBDIRS=tests $(SUBDIRS)
+ 
+-EXTRA_DIST=gconf-config.in gconf.m4.in gconf.spec.in gconf.spec
++EXTRA_DIST=gconf-config.in gconf.m4.in gconf.spec.in gconf.spec \
++	   gconf-2.0.pc.in gconfgtk-2.0.pc.in
+ 
+ WARNING_MESSAGE="If this is your first install of GConf, you may need to move $(prefix)/etc/gconf/$(MAJOR_VERSION)/path.example to $(prefix)/etc/gconf/$(MAJOR_VERSION)/path, so that the default configuration is sane. If you are already using GConf, you may need to move your old configuration into place if $(MAJOR_VERSION) is not the same as your old version."
+ 
+@@ -24,4 +25,8 @@
+ 	echo "**** NOTE ****" && \
+ 	echo $(WARNING_MESSAGE) && \
+ 	echo "**************"
++
++pkgconfigdir = $(libexecdir)/pkgconfig
++pkgconfig_DATA = gconf-2.0.pc gconfgtk-2.0.pc
++
+ 
 Index: configure.in
 ===================================================================
 RCS file: /cvs/gnome/gconf/configure.in,v
 retrieving revision 1.53
 diff -u -u -r1.53 configure.in
 --- configure.in	2000/08/10 05:26:51	1.53
-+++ configure.in	2000/08/30 19:47:10
++++ configure.in	2000/09/30 00:03:17
 @@ -111,9 +111,9 @@
          AC_FYI("Only building documentation")
  else
@@ -22,13 +61,66 @@ diff -u -u -r1.53 configure.in
  
  AM_CONDITIONAL(GTK, test x$HAVE_GTK != xno)
  
+@@ -200,6 +200,8 @@
+ examples/Makefile
+ tests/Makefile
+ standard-schemas/Makefile
++gconf-2.0.pc
++gconfgtk-2.0.pc
+ ],
+ chmod +x gconf-config)
+ 
+Index: gconf-2.0.pc.in
+===================================================================
+RCS file: gconf-2.0.pc.in
+diff -N gconf-2.0.pc.in
+--- /dev/null	Tue May  5 16:32:27 1998
++++ gconf-2.0.pc.in	Fri Sep 29 20:03:17 2000
+@@ -0,0 +1,15 @@
++prefix=/gnome/head/INSTALL
++exec_prefix=${prefix}
++libdir=${exec_prefix}/lib
++includedir=${prefix}/include
++
++VERSION="@VERSION@"
++REQUIRES="oaf-2.0"
++CFLAGS="-I${includedir}/gconf/@MAJOR_VERSION@ $CFLAGS"
++LIBS_PATH="-L${libdir} $LIBS_PATH"
++LIBS_LINK_SELF="-lgconf-@MAJOR_VERSION@ $LIBS_LINK_SELF"
++LIBS_LINK_SYSTEM="$LIBS_LINK_SYSTEM"
++
++
++#Name: gconf
++#Description: GNOME Config System.
+Index: gconfgtk-2.0.pc.in
+===================================================================
+RCS file: gconfgtk-2.0.pc.in
+diff -N gconfgtk-2.0.pc.in
+--- /dev/null	Tue May  5 16:32:27 1998
++++ gconfgtk-2.0.pc.in	Fri Sep 29 20:03:17 2000
+@@ -0,0 +1,15 @@
++prefix=/gnome/head/INSTALL
++exec_prefix=${prefix}
++libdir=${exec_prefix}/lib
++includedir=${prefix}/include
++
++VERSION="@VERSION@"
++REQUIRES="gconf-2.0 gtk+-2.0"
++CFLAGS="$CFLAGS"
++LIBS_PATH="$LIBS_PATH"
++LIBS_LINK_SELF="-lgconf-gtk-@MAJOR_VERSION@ $LIBS_LINK_SELF"
++LIBS_LINK_SYSTEM="$LIBS_LINK_SYSTEM"
++
++
++#Name: gconfgtk
++#Description: GTK+ wrappers for the GNOME Config System.
 Index: po/Makefile.in.in
 ===================================================================
 RCS file: /cvs/gnome/gconf/po/Makefile.in.in,v
 retrieving revision 1.1
 diff -u -u -r1.1 Makefile.in.in
 --- po/Makefile.in.in	1999/07/22 20:20:02	1.1
-+++ po/Makefile.in.in	2000/08/30 19:47:10
++++ po/Makefile.in.in	2000/09/30 00:03:17
 @@ -62,7 +62,7 @@
  	$(COMPILE) $<
  
@@ -92,7 +184,7 @@ RCS file: /cvs/gnome/gconf/wrappers/gtk/gconf-client.c,v
 retrieving revision 1.27
 diff -u -u -r1.27 gconf-client.c
 --- wrappers/gtk/gconf-client.c	2000/07/26 06:52:52	1.27
-+++ wrappers/gtk/gconf-client.c	2000/08/30 19:47:12
++++ wrappers/gtk/gconf-client.c	2000/09/30 00:03:20
 @@ -122,7 +122,7 @@
  static void gconf_client_real_unreturned_error (GConfClient* client, GConfError* error);
  static void gconf_client_real_error            (GConfClient* client, GConfError* error);
