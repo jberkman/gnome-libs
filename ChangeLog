@@ -1,3 +1,9 @@
+Sat May  9 20:25:49 1998  Szekeres István  <szekeres@cyberspace.mht.bme.hu>
+
+	* libgnome/gnome-string.c (gnome_string_join):
+	Pass terminator NULL to gnome_string_joinv so it will not sigsegv
+
+
 Wed May  6 13:16:14 1998  Tom Tromey  <tromey@cygnus.com>
 
 	* configure.in: Check for sys/select.h.
