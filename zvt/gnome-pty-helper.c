@@ -38,6 +38,7 @@
 #include <sys/resource.h>
 #include <limits.h>
 #include <unistd.h>
+#include <string.h>
 #include <signal.h>
 #include <fcntl.h>
 #include <termios.h>
@@ -181,7 +182,7 @@ pty_remove (pty_info *pi)
 
 	last = (void *) 0;
 	
-	for (l = pty_list; l; l = pi->next){
+	for (l = pty_list; l; l = l->next){
 		if (l == pi){
 			if (last == (void *) 0)
 				pty_list = pi->next;
@@ -189,8 +190,9 @@ pty_remove (pty_info *pi)
 				last->next = pi->next;
 			free (pi->line);
 			pty_free (pi);
-			break;
+			return;
 		}
+		last = l;
 	}
 
 	exit (1);
