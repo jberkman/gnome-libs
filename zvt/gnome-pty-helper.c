@@ -287,7 +287,6 @@ main (int argc, char *argv [])
 	if (init_msg_pass () == -1)
 		exit (1);
 
-	setsid ();
 	for (;;){
 		res = read (STDIN_FILENO, &op, sizeof (op));
 		
