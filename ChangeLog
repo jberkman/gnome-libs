@@ -1,5 +1,14 @@
 Thu Sep 17 00:24:19 1998  Tom Tromey  <tromey@cygnus.com>
 
+	* libgnome/gnome-metadata.c (try_app_regexs): Return
+	GNOME_METADATA_NOT_FOUND.
+	(app_get_by_type): Likewise.
+	(try_regexs): Likewise.
+	(get_worker): Special-case lookups for `type'.
+	(type_desired): New global.
+	(try_one_app_regex): Possibly exit quickly if looking for `type'.
+	(try_app_regexs): Set type_desired.
+
 	* libgnome/gnome-metadata.c (gnome_metadata_app_dir): Renamed from
 	app_dir.
 	(maybe_scan_app_dir): Only free list if scandir succeeds.
