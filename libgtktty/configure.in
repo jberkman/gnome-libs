@@ -14,7 +14,7 @@ LIBGEMVT_VERSION="$LIBGEMVT_MAJOR.$LIBGEMVT_REVISION.$LIBGEMVT_AGE"
 VERSION="$GEMVT_MAJOR.$GEMVT_REVISION.$GEMVT_PATCHLEVEL"
 AM_INIT_AUTOMAKE(gemvt, [$VERSION])
 
-dnl Support porgram name conversion.
+dnl Support program name conversion.
 AC_ARG_PROGRAM
 
 dnl Disable automatic maintainer mode.
@@ -73,6 +73,11 @@ AC_DEFUN(AC_GEMVT_REQUIREMENTS,
 	
 	dnl Check for functions.
 	AC_CHECK_FUNC(putenv,,[AC_MSG_ERROR(Can not set environment variables)])
+
+	AC_CHECK_FUNC(getopt_long,
+		      GETOPT_OBJS="",
+		      GETOPT_OBJS="getopt.o getopt1.o")
+	AC_SUBST(GETOPT_OBJS)
 
 	CFLAGS="$saved_cflags"
 	LDFLAGS="$saved_ldflags"
@@ -212,18 +217,18 @@ AC_DEFINE_UNQUOTED(LIBGEMVT_VERSION, "$LIBGEMVT_VERSION")
 
 dnl Check for Gnome target
 AC_MSG_CHECKING(for target GNOME (wether to build libgemvt))
-MC_IF_VAR_EQ(USE_GNOME, yes,
+MC_IF_VAR_EQ(gnome_cv_use_gnome, yes,
 	AC_DEFINE(HAVE_GNOME)
 	AC_MSG_RESULT(yes)
 ,
 	AC_MSG_RESULT(no)
 )
-MC_IF_VAR_EQ(USE_GNOME, yes,
+MC_IF_VAR_EQ(gnome_cv_use_gnome, yes,
 	GEMVT_LDADD="-lgnomeui -lgnome"
 ,
 	GEMVT_LDADD=""
 )
-AM_CONDITIONAL(BUILD_LIBGEMVT, test do_$USE_GNOME = do_yes)
+AM_CONDITIONAL(BUILD_LIBGEMVT, test do_$gnome_cv_use_gnome = do_yes)
 
 dnl Feature GLE?
 AC_CHECK_LIB(gle, gle_init)

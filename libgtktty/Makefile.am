@@ -1,18 +1,16 @@
 bin_PROGRAMS = gemvt
 
-
 LINK     = $(LIBTOOL) --mode=link $(CC) $(CFLAGS) $(LDFLAGS) $(X_LIBS) -o $@
 INCLUDE_always = -I$(includedir) $(X_CFLAGS)
 GNOMELIBS = \
-	$(srcdir)/../../libgnomeui/libgnomeui.la \
-	$(srcdir)/../../libgnome/libgnome.la
-
+	../../libgnomeui/libgnomeui.la \
+	../../libgnome/libgnome.la
 
 if	BUILD_LIBGEMVT
 
 INCLUDES = -I../.. -I$(srcdir)/../.. $(INCLUDE_always)
-gemvt_SOURCES = $(gmevt_c_files)
-gemvt_LDADD = $(top_builddir)/libgemvt.la $(GNOMELIBS)
+gemvt_SOURCES = $(gmevt_c_files) 
+gemvt_LDADD = $(top_builddir)/libgemvt.la $(GNOMELIBS) $(GETOPT_OBJS)
 
 lib_LTLIBRARIES = libgemvt.la
 libgemvtincludedir = $(includedir)/gemvt
@@ -23,12 +21,12 @@ libgemvt_la_LDFLAGS = -version-info $(LIBGEMVT_MAJOR):$(LIBGEMVT_REVISION):$(LIB
 else	# ! BUILD_LIBGEMVT
 
 INCLUDES = $(INCLUDE_always)
-gemvt_SOURCES = $(libgemvt_c_files) $(gmevt_c_files)
-gemvt_LDADD =
+gemvt_SOURCES = $(libgemvt_c_files) $(gmevt_c_files) 
+gemvt_LDADD = $(GETOPT_OBJS)
 
 endif	# ! BUILD_LIBGEMVT
 
-
+gemvt_DEPENDENCIES = $(GETOPT_OBJS)
 
 
 gmevt_h_files = \
@@ -72,6 +70,7 @@ EXTRA_DIST = \
 	$(libgemvt_h_files_extra) \
 	$(libgemvt_c_files) \
 	$(libgemvt_c_files_extra) \
+	getopt.h getopt.c getopt1.c \
 	gemvt.xpm \
 	gem-r.xpm \
 	gem-g.xpm \

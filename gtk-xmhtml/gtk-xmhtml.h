@@ -5,7 +5,9 @@
 #include <gtk/gtkobject.h>
 
 #ifndef GTK_XMHTML_LIBRARY
-#define WITH_GTK
+#ifndef WITH_GTK
+# define WITH_GTK
+#endif
 #include <gtk-xmhtml/toolkit.h>
 #include <gtk-xmhtml/XmHTML.h>
 #include <gtk-xmhtml/XmHTMLP.h>

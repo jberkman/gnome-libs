@@ -12,7 +12,8 @@ HELLO_HELP_DIR = $(datadir)/gnome-hello
 #	-DLOCALEDIR=\"$(datadir)/locale\" \
 #	$(X_CFLAGS)
 
-INCLUDES = -DLOCALEDIR=\"$(datadir)/locale\"
+INCLUDES=-I../.. -I$(srcdir)/../.. -I$(includedir) \
+	 -DLOCALEDIR=\"$(datadir)/locale\"
 
 bin_PROGRAMS = gnome-hello
 

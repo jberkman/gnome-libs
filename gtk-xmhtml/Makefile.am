@@ -4,7 +4,6 @@ libgtkxmhtmlincludedir = $(includedir)/gtk-xmhtml
 
 INCLUDES = -I.. -I$(srcdir)/.. -I$(includedir) -DWITH_GTK -DDEBUG -DGNOME_LIB
 
-
 lib_LTLIBRARIES = libgtkxmhtml.la
 
 libgtkxmhtml_la_SOURCES =	\
@@ -59,6 +58,7 @@ libgtkxmhtml_la_LIBADD = $(XPM_LIBS) $(GTK_LIBS) $(X_LIBS) $(x_libs) $(Z_LIBS) $
 bin_PROGRAMS = htmltest
 
 htmltest_SOURCES = test.c
+
 htmltest_LDADD   = $(top_builddir)/gtk-xmhtml/libgtkxmhtml.la \
 	$(GTK_LIBS) $(X_LIBS) $(x_libs) $(XPM_LIBS)
 
@@ -68,8 +68,8 @@ EXTRA_DIST = gtk-xmhtml.c XmHTML-motif.c
 
 dist-hook:
 	mkdir $(distdir)/bitmaps
-	cp bitmaps/*.xpm bitmaps/*.xbm $(distdir)/bitmaps
+	cp $(srcdir)/bitmaps/*.xpm $(srcdir)/bitmaps/*.xbm $(distdir)/bitmaps
 
 ## If I dont do this, for some wierdo reason, it tries to compile gtk-xmhtml.o
-gtk-xmhtml:
-	echo
+#gtk-xmhtml:
+#	echo
