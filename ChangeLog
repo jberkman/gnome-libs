@@ -1,3 +1,20 @@
+1998-12-14  Miguel de Icaza  <miguel@nuclecu.unam.mx>
+
+	* gnome-data/mime.types: New format for the mime.type file.
+
+	* libgnome/gnome-mime-info.c (main): Moved the query information
+	here. Renamed the gnome_mime_type_* routines to gnome_mime_*.
+
+	* libgnome/gnome-mime.c: New implementation.  We now use the GNOME
+	provided mime type information instead of the system provided one
+	(This is for several reasons, first is that the mime.types file
+	format is lame; the second one is that mismatches in the mime-type
+	database will produce mistakes; the third one is: most non GNU
+	systems lack mime.types, and if they have one, it is basically
+	old, so we would have to provide ours anyways).
+
+	This file has full API docs.
+
 1998-12-14  Federico Mena Quintero  <federico@nuclecu.unam.mx>
 
 	* libgnome/Makefile.am (EXTRA_DIST): Removed lib_date.README from
