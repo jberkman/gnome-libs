@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-libs 1.1\n"
-"POT-Creation-Date: 2000-02-21 18:12-0500\n"
+"POT-Creation-Date: 2000-04-25 12:29+0300\n"
 "PO-Revision-Date: 1999-09-21 10:59 GMT+0300\n"
 "Last-Translator: Yuri Syrota <yuri@renome.rovno.ua>\n"
 "Language-Team: Ukrainian <ua@li.org>\n"
@@ -31,19 +31,19 @@ msgstr ""
 msgid "Could not create gnome accelerators directory `%s': %s\n"
 msgstr "Не вдалося створити каталог прискорювач╕в для GNOME \"%s\": %s\n"
 
-#: libgnomeui/gnome-about.c:320
+#: libgnomeui/gnome-about.c:332
 msgid "Author:"
 msgstr "Автор:"
 
-#: libgnomeui/gnome-about.c:323 libgnomeui/gnome-about.c:325
+#: libgnomeui/gnome-about.c:335 libgnomeui/gnome-about.c:337
 msgid "Authors:"
 msgstr "Автори:"
 
-#: libgnomeui/gnome-about.c:630
+#: libgnomeui/gnome-about.c:643
 msgid "Authors: "
 msgstr "Автори: "
 
-#: libgnomeui/gnome-about.c:971 libgnomeui/stock_demo.c:307
+#: libgnomeui/gnome-about.c:1020 libgnomeui/stock_demo.c:307
 #: libgnomeui/winhints_demo.c:256
 msgid "About"
 msgstr "Про"
@@ -700,7 +700,7 @@ msgstr "Коментар╕й"
 msgid "Add/Set"
 msgstr "Додати/Встановити"
 
-#: libgnomeui/gnome-dentry-edit.c:424 libgnomeui/gnome-stock.c:644
+#: libgnomeui/gnome-dentry-edit.c:424 libgnomeui/gnome-stock.c:645
 msgid "Remove"
 msgstr "Видалити"
 
@@ -720,12 +720,12 @@ msgstr "Назад"
 msgid "Finish"
 msgstr "Завершити"
 
-#: libgnomeui/gnome-file-entry.c:175
+#: libgnomeui/gnome-file-entry.c:298
 msgid "Select file"
 msgstr "Вибрати файл"
 
 #. browse button ...
-#: libgnomeui/gnome-file-entry.c:304 libgnomeui/gnome-spell.c:620
+#: libgnomeui/gnome-file-entry.c:427 libgnomeui/gnome-spell.c:620
 #: libgnomeui/gnome-spell.c:637 libgnomeui/gnome-spell.c:654
 msgid "Browse..."
 msgstr "Перегляд..."
@@ -734,21 +734,25 @@ msgstr "Перегляд..."
 msgid "Pick a Font"
 msgstr "Виберить шрифт"
 
-#: libgnomeui/gnome-font-picker.c:719 libgnomeui/gnome-stock.c:664
+#: libgnomeui/gnome-font-picker.c:719 libgnomeui/gnome-stock.c:665
 msgid "Font"
 msgstr "Шрифт"
 
-#: libgnomeui/gnome-icon-entry.c:157 libgnomeui/gnome-icon-entry.c:612
+#: libgnomeui/gnome-icon-entry.c:273 libgnomeui/gnome-icon-entry.c:770
 msgid "No Icon"
 msgstr "Нема╓"
 
-#: libgnomeui/gnome-icon-entry.c:321 libgnomeui/gnome-pixmap-entry.c:296
+#: libgnomeui/gnome-icon-entry.c:447 libgnomeui/gnome-pixmap-entry.c:429
 msgid "Can't find an hbox, using a normal file selection"
 msgstr "hbox не знайдено, використову╓ться звичайний виб╕р файл╕в"
 
-#: libgnomeui/gnome-icon-entry.c:327 libgnomeui/gnome-pixmap-entry.c:302
+#: libgnomeui/gnome-icon-entry.c:453 libgnomeui/gnome-pixmap-entry.c:435
 msgid "Preview"
 msgstr "Вигляд"
+
+#: libgnomeui/gnome-icon-entry.c:791
+msgid "Browse"
+msgstr "Перегляд"
 
 #: libgnomeui/gnome-icon-sel.c:338
 msgid "Loading Icons..."
@@ -834,7 +838,8 @@ msgstr "МОДУЛЬ"
 #. dialog display isn't working out
 #: libgnomeui/gnome-init.c:464
 msgid "Multiple segmentation faults occurred; can't display error dialog\n"
-msgstr "Сталося багато порушень сегментац╕╖; неможливо показати в╕кно помилки\n"
+msgstr ""
+"Сталося багато порушень сегментац╕╖; неможливо показати в╕кно помилки\n"
 
 #: libgnomeui/gnome-messagebox.c:137
 msgid "Information"
@@ -856,15 +861,15 @@ msgstr "Питання"
 msgid "Message"
 msgstr "Пов╕домлення"
 
-#: libgnomeui/gnome-number-entry.c:177
+#: libgnomeui/gnome-number-entry.c:200
 msgid "Calculator"
 msgstr "Калькулятор"
 
-#: libgnomeui/gnome-number-entry.c:233
+#: libgnomeui/gnome-number-entry.c:256
 msgid "Calculator..."
 msgstr "Калькулятор..."
 
-#: libgnomeui/gnome-pixmap-entry.c:128 libgnomeui/gnome-pixmap-entry.c:399
+#: libgnomeui/gnome-pixmap-entry.c:251 libgnomeui/gnome-pixmap-entry.c:532
 msgid "No Image"
 msgstr "Нема╓ малюнка"
 
@@ -908,6 +913,10 @@ msgstr "Дата"
 msgid "%a %b %d %T %Y"
 msgstr "%H:%M %a %d %b %Y"
 
+#: libgnomeui/gnome-scores.c:319
+msgid "-freefont-garamond-*-*-*-*-30-170-*-*-*-*-*-*"
+msgstr "-*-times-*-*-*-*-18-180-*-*-*-*-*-*"
+
 #: libgnomeui/gnome-spell.c:199
 msgid "Select dictionary"
 msgstr "Вибрати словник"
@@ -927,11 +936,11 @@ msgstr ""
 msgid "Confirm"
 msgstr "П╕дтвердити"
 
-#: libgnomeui/gnome-spell.c:259 libgnomeui/gnome-stock.c:653
+#: libgnomeui/gnome-spell.c:259 libgnomeui/gnome-stock.c:654
 msgid "OK"
 msgstr "Гаразд"
 
-#: libgnomeui/gnome-spell.c:266 libgnomeui/gnome-stock.c:655
+#: libgnomeui/gnome-spell.c:266 libgnomeui/gnome-stock.c:656
 msgid "Cancel"
 msgstr "В╕дм╕на"
 
@@ -1051,91 +1060,91 @@ msgstr "Правопис"
 msgid "Configure"
 msgstr "Зм╕нити конф╕гурацию"
 
-#: libgnomeui/gnome-stock.c:641
+#: libgnomeui/gnome-stock.c:642
 msgid "Add"
 msgstr "Додати"
 
-#: libgnomeui/gnome-stock.c:642
+#: libgnomeui/gnome-stock.c:643
 msgid "Clear"
 msgstr "Очистити"
 
-#: libgnomeui/gnome-stock.c:643
+#: libgnomeui/gnome-stock.c:644
 msgid "Select Color"
 msgstr "Вибрати кол╕р"
 
-#: libgnomeui/gnome-stock.c:645
+#: libgnomeui/gnome-stock.c:646
 msgid "Table Borders"
 msgstr "Поля таблиц╕"
 
-#: libgnomeui/gnome-stock.c:646
+#: libgnomeui/gnome-stock.c:647
 msgid "Table Fill"
 msgstr "Заповнення таблиц╕"
 
-#: libgnomeui/gnome-stock.c:647
+#: libgnomeui/gnome-stock.c:648
 msgid "Bulleted List"
 msgstr "Непронумерований список"
 
-#: libgnomeui/gnome-stock.c:648
+#: libgnomeui/gnome-stock.c:649
 msgid "Numbered List"
 msgstr "Пронумерований список"
 
-#: libgnomeui/gnome-stock.c:649
+#: libgnomeui/gnome-stock.c:650
 msgid "Indent"
 msgstr "З в╕дступом"
 
-#: libgnomeui/gnome-stock.c:650
+#: libgnomeui/gnome-stock.c:651
 msgid "Un-Indent"
 msgstr "Без в╕дступу"
 
-#: libgnomeui/gnome-stock.c:654
+#: libgnomeui/gnome-stock.c:655
 msgid "Apply"
 msgstr "Застосувати"
 
-#: libgnomeui/gnome-stock.c:656 libgnomeui/stock_demo.c:169
+#: libgnomeui/gnome-stock.c:657 libgnomeui/stock_demo.c:169
 msgid "Close"
 msgstr "Закрити"
 
-#: libgnomeui/gnome-stock.c:657
+#: libgnomeui/gnome-stock.c:658
 msgid "Yes"
 msgstr "Так"
 
-#: libgnomeui/gnome-stock.c:658
+#: libgnomeui/gnome-stock.c:659
 msgid "No"
 msgstr "Н╕"
 
-#: libgnomeui/gnome-stock.c:659 libgnomeui/stock_demo.c:315
+#: libgnomeui/gnome-stock.c:660 libgnomeui/stock_demo.c:315
 msgid "Help"
 msgstr "Дов╕дка"
 
-#: libgnomeui/gnome-stock.c:660
+#: libgnomeui/gnome-stock.c:661
 msgid "Next"
 msgstr "Дал╕"
 
-#: libgnomeui/gnome-stock.c:661
+#: libgnomeui/gnome-stock.c:662
 msgid "Prev"
 msgstr "Назад"
 
-#: libgnomeui/gnome-stock.c:662
+#: libgnomeui/gnome-stock.c:663
 msgid "Up"
 msgstr "Вверх"
 
-#: libgnomeui/gnome-stock.c:663
+#: libgnomeui/gnome-stock.c:664
 msgid "Down"
 msgstr "Вниз"
 
-#: libgnomeui/gnome-stock.c:1426
+#: libgnomeui/gnome-stock.c:1423
 msgid "Menu Accelerator Keys"
 msgstr "Клав╕атурн╕ скоречення в меню"
 
-#: libgnomeui/gnome-stock.c:1428
+#: libgnomeui/gnome-stock.c:1425
 msgid "Global"
 msgstr "Загальний"
 
-#: libgnomeui/gnome-stock.c:1430
+#: libgnomeui/gnome-stock.c:1427
 msgid "Menu Item"
 msgstr "Пункт меню"
 
-#: libgnomeui/gnome-stock.c:1431
+#: libgnomeui/gnome-stock.c:1428
 msgid "Accelerator"
 msgstr "Клав╕атурне скорочення"
 
@@ -1490,106 +1499,3 @@ msgstr "Дивний номер у в╕дпов╕д╕ зворотнього виклику"
 #: test-gnome/testgnome.c:1963
 msgid "Test GNOME"
 msgstr "Тест GNOME"
-
-#~ msgid "get"
-#~ msgstr "взяти"
-
-#~ msgid "Get config entry"
-#~ msgstr "Взяти елемент настройки"
-
-#~ msgid "CONFIG-PATH"
-#~ msgstr "CONFIG-PATH"
-
-#~ msgid "set"
-#~ msgstr "встановити"
-
-#~ msgid "Set config entry"
-#~ msgstr "Встановити елемент настройки"
-
-#~ msgid ""
-#~ "Error on option %s: %s.\n"
-#~ "Run '%s --help' to see a full list of available command line options.\n"
-#~ msgstr ""
-#~ "Помилка в параметрах %s: %s.\n"
-#~ "Запуст╕ть '%s --help' щоб побачити повний список доступних параметр╕в.\n"
-
-#~ msgid "Disable sound server usage"
-#~ msgstr "Заборонити використання сервера звуку"
-
-#~ msgid "Enable sound server usage"
-#~ msgstr "Дозволити використання сервера звуку"
-
-#~ msgid "Host:port on which the sound server to use is running"
-#~ msgstr "Хост:порт де запущений сервер звуку"
-
-#~ msgid "HOSTNAME:PORT"
-#~ msgstr "НАЗВАХОСТА:ПОРТ"
-
-#~ msgid "GNOME Options"
-#~ msgstr "Параметри GNOME"
-
-#~ msgid "_About..."
-#~ msgstr "_Про..."
-
-#~ msgid "Giving up on displaying error dialog"
-#~ msgstr "Авар╕йне завершення на помилц╕ показу д╕алога помилки"
-
-#~ msgid "Creating '/GNOME' context %s %d"
-#~ msgstr "Створення контексту '/GNOME' %s %d"
-
-#~ msgid "Creating '/GNOME/Servers' context %s %d"
-#~ msgstr "Створення контексту '/GNOME/Servers' %s %d"
-
-#~ msgid "GOAD ID of the server to activate"
-#~ msgstr "GOAD ID сервера для активаци╖"
-
-#~ msgid "Repository ID of the server to activate"
-#~ msgstr "Арх╕вний ID сервера що активу╓ться"
-
-#~ msgid "REPO-ID"
-#~ msgstr "REPO-ID"
-
-#~ msgid ""
-#~ "I couldn't find any installed services.  Either you don't have\n"
-#~ "any services installed or I don't know the path to find them.\n"
-#~ "In either case, please check your GNOME installation."
-#~ msgstr ""
-#~ "Не знайдено жодно╖ встановлено╖ служби. Або ви не ма╓те жодно╖ встановлено╖\n"
-#~ "служби, або не заданий шлях для ╖х знаходження. В обох випадках, необх╕дно\n"
-#~ "перев╕рити правильн╕сть ╕нсталяц╕╖ GNOME."
-
-#~ msgid "(Internal use only) GOAD server ID to activate"
-#~ msgstr "(Лише для внутр╕шнього використання) GOAD ID сервера для активац╕╖"
-
-#~ msgid "ID under which GOAD knows this server"
-#~ msgstr "ID п╕д яким цей сервер в╕домий GOAD"
-
-#~ msgid "GOAD_ID"
-#~ msgstr "GOAD_ID"
-
-#~ msgid "Repository ID under which GOAD knows this server"
-#~ msgstr "Арх╕вний ID п╕д яким цей сервер в╕домий GOAD"
-
-#~ msgid "REPO_ID"
-#~ msgstr "REPO_ID"
-
-#~ msgid "Failed to open CORBA cookie file (%s) for writing: %s\n"
-#~ msgstr "Неможливо в╕дкрити файл CORBA cookie (%s) для записування: %s\n"
-
-#~ msgid "Failed to write CORBA cookie file (%s): %s\n"
-#~ msgstr "Неможливо записати у файл CORBA cookie (%s): %s\n"
-
-#~ msgid "Failed to write CORBA cookie to `%s': %s\n"
-#~ msgstr "Неможливо записати CORBA cookie у `%s': %s\n"
-
-#~ msgid "Failed to open CORBA cookie file `%s': %s\n"
-#~ msgstr "Неможливо в╕дкрити файл CORBA cookie `%s': %s\n"
-
-#~ msgid "Failed to read CORBA cookie file `%s': %s\n"
-#~ msgstr "Неможливо зчитати файл CORBA cookie `%s': %s\n"
-
-#~ msgid "Failed to obtain CORBA authentication cookie, exiting\n"
-#~ msgstr "Неможливо отримати CORBA authentication cookie, завершення\n"
-
-#~ msgid "Could not get name service!"
-#~ msgstr "Неможливо отримати назву серв╕су!"
