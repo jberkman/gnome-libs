@@ -80,19 +80,19 @@ main (int argc, char *argv[])
 
 	gnome_metadata_get ("alpha.txt", "frob-key", &len, &buffer);
 	printf ("alpha.txt has %s\n", buffer);
-	free (buffer);
+	g_free (buffer);
 
 	gnome_metadata_get ("foo.txt", "frob-key", &len, &buffer);
 	printf ("foo.txt has %s\n", buffer);
-	free (buffer);
+	g_free (buffer);
 
 	gnome_metadata_get ("foo.joe", "frob-key", &len, &buffer);
 	printf ("foo.joe has %s\n", buffer);
-	free (buffer);
+	g_free (buffer);
 
 	gnome_metadata_get ("zoe.joe", "frob-key", &len, &buffer);
 	printf ("zoe.joe has %s\n", buffer);
-	free (buffer);
+	g_free (buffer);
 
 	gnome_metadata_remove ("foo.txt", "slob-key");
 	vec = gnome_metadata_list ("foo.txt");
@@ -104,22 +104,22 @@ main (int argc, char *argv[])
 	gnome_metadata_copy ("foo.txt", "bar");
 	gnome_metadata_get ("bar", "frob-key", &len, &buffer);
 	printf ("bar has %s\n", buffer);
-	free (buffer);
+	g_free (buffer);
 
 	gnome_metadata_rename ("foo.txt", "delta");
 	gnome_metadata_get ("foo.txt", "frob-key", &len, &buffer);
 	printf ("now foo.txt has %s\n", buffer);
-	free (buffer);
+	g_free (buffer);
 
 	/* The following results should be pulled out of the metadata
 	   files.  */
 	gnome_metadata_get ("foo.spud", "pigname", &len, &buffer);
 	printf ("foo.spud has pig name %s\n", buffer);
-	free (buffer);
+	g_free (buffer);
 
 	gnome_metadata_get ("foo.spud", "dogname", &len, &buffer);
 	printf ("foo.spud has dog name %s\n", buffer);
-	free (buffer);
+	g_free (buffer);
 
         for (i = 0; keys [i].key || keys [i].data; i++){
                 gnome_metadata_set (
