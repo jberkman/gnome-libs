@@ -131,17 +131,6 @@ create_newwin(gboolean normal, gchar *appname, gchar *title)
 }
 
 static void
-create_calc(void)
-{
-	GtkWidget *app,*calc;
-	app = create_newwin(TRUE,"testGNOME","Calculator");
-	calc = gnome_calculator_new();
-	gnome_app_set_contents(GNOME_APP(app),calc);
-	gtk_widget_show(calc);
-	gtk_widget_show(app);
-}
-
-static void
 create_clock(void)
 {
 	GtkWidget *app;
@@ -645,99 +634,6 @@ create_message_box(void)
 }
 
 static void
-file_entry_update_files(GtkWidget *w, GnomeFileEntry *fentry)
-{
-	char *p;
-	char *pp;
-
-	GtkLabel *l1 = gtk_object_get_data(GTK_OBJECT(w),"l1");
-	GtkLabel *l2 = gtk_object_get_data(GTK_OBJECT(w),"l2");
-
-	p = gnome_file_entry_get_full_path(fentry,FALSE);
-	pp = g_strconcat("File name: ",p,NULL);
-	gtk_label_set_text(l1,pp);
-	g_free(pp);
-	if(p) g_free(p);
-
-	p = gnome_file_entry_get_full_path(fentry,TRUE);
-	pp = g_strconcat("File name(if exists only): ",p,NULL);
-	gtk_label_set_text(l2,pp);
-	g_free(pp);
-	if(p) g_free(p);
-}
-
-static void
-file_entry_modal_toggle(GtkWidget *w, GnomeFileEntry *fentry)
-{
-	gnome_file_entry_set_modal(fentry, GTK_TOGGLE_BUTTON(w)->active);
-}
-
-static void
-file_entry_directory_toggle(GtkWidget *w, GnomeFileEntry *fentry)
-{
-	gnome_file_entry_set_directory_entry(fentry, GTK_TOGGLE_BUTTON(w)->active);
-}
-
-static void
-create_file_entry(void)
-{
-	GtkWidget *app;
-	GtkWidget *entry;
-	GtkWidget *l1,*l2;
-	GtkWidget *but;
-	GtkWidget *box;
-
-	app = create_newwin(TRUE,"testGNOME","File Entry");
-
-	box = gtk_vbox_new(FALSE,5);
-
-	entry = gnome_file_entry_new("Foo","Bar");
-	gtk_box_pack_start(GTK_BOX(box),entry,FALSE,FALSE,0);
-
-	l1 = gtk_label_new("File name: ");
-	gtk_box_pack_start(GTK_BOX(box),l1,FALSE,FALSE,0);
-
-	l2 = gtk_label_new("File name(if exists only): ");
-	gtk_box_pack_start(GTK_BOX(box),l2,FALSE,FALSE,0);
-
-	but = gtk_button_new_with_label("Update file labels");
-	gtk_object_set_data(GTK_OBJECT(but),"l1",l1);
-	gtk_object_set_data(GTK_OBJECT(but),"l2",l2);
-	gtk_signal_connect(GTK_OBJECT(but),"clicked",
-			   GTK_SIGNAL_FUNC(file_entry_update_files),
-			   entry);
-	gtk_box_pack_start(GTK_BOX(box),but,FALSE,FALSE,0);
-
-	but = gtk_toggle_button_new_with_label("Make browse dialog modal");
-	gtk_signal_connect(GTK_OBJECT(but),"toggled",
-			   GTK_SIGNAL_FUNC(file_entry_modal_toggle),
-			   entry);
-	gtk_box_pack_start(GTK_BOX(box),but,FALSE,FALSE,0);
-
-	but = gtk_toggle_button_new_with_label("Directory only picker");
-	gtk_signal_connect(GTK_OBJECT(but),"toggled",
-			   GTK_SIGNAL_FUNC(file_entry_directory_toggle),
-			   entry);
-	gtk_box_pack_start(GTK_BOX(box),but,FALSE,FALSE,0);
-
-	gnome_app_set_contents(GNOME_APP(app),box);
-	gtk_widget_show_all(app);
-}
-
-static void
-create_pixmap_entry(void)
-{
-	GtkWidget *app;
-	GtkWidget *entry;
-
-	app = create_newwin(TRUE,"testGNOME","Pixmap Entry");
-	entry = gnome_pixmap_entry_new("Foo","Pixmap",TRUE);
-	gnome_app_set_contents(GNOME_APP(app),entry);
-	gtk_widget_show(entry);
-	gtk_widget_show(app);
-}
-
-static void
 create_icon_entry(void)
 {
 	GtkWidget *app;
@@ -745,19 +641,6 @@ create_icon_entry(void)
 
 	app = create_newwin(TRUE,"testGNOME","Icon Entry");
 	entry = gnome_icon_entry_new("Foo","Icon");
-	gnome_app_set_contents(GNOME_APP(app),entry);
-	gtk_widget_show(entry);
-	gtk_widget_show(app);
-}
-
-static void
-create_number_entry(void)
-{
-	GtkWidget *app;
-	GtkWidget *entry;
-
-	app = create_newwin(TRUE,"testGNOME","Number Entry");
-	entry = gnome_number_entry_new("Foo","Calculator");
 	gnome_app_set_contents(GNOME_APP(app),entry);
 	gtk_widget_show(entry);
 	gtk_widget_show(app);
@@ -1881,7 +1764,7 @@ href_cb(GtkObject *button)
 	GtkWidget *href = gtk_object_get_data(button, "href");
 	GtkWidget *url_ent = gtk_object_get_data(button, "url");
 	GtkWidget *label_ent = gtk_object_get_data(button, "label");
-	gchar *url, *label;
+	const char *url, *label;
 
 	url = gtk_entry_get_text(GTK_ENTRY(url_ent));
 	label = gtk_entry_get_text(GTK_ENTRY(label_ent));
@@ -1940,7 +1823,6 @@ main (int argc, char *argv[])
 	  {
 		  { "app-util/appbar/dialog-util", create_app_util },
 		  { "app-helper", create_app_helper },
-		  { "calculator", create_calc },
 		  { "canvas", create_canvas },
 		  { "clock",	create_clock },
 		  { "color picker", create_color_picker },
@@ -1950,10 +1832,7 @@ main (int argc, char *argv[])
 		  { "date edit", create_date_edit },
 		  { "dialog", create_dialog },
                   { "message box", create_message_box },
-		  { "file entry", create_file_entry },
-                  { "pixmap entry", create_pixmap_entry },
                   { "icon entry", create_icon_entry },
-                  { "number entry", create_number_entry },
                   { "font picker", create_font_picker },
 		  { "icon list", create_icon_list },
 		  { "less", create_less },
