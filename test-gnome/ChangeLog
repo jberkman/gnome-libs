@@ -1,3 +1,15 @@
+1998-08-04  Federico Mena Quintero  <federico@nuclecu.unam.mx>
+
+	* canvas-primitives.c (setup_widgets): Initial test of the widget
+	item type.
+
+	* canvas-fifteen.c (create_canvas_fifteen): Set the canvas
+	scrolling region correctly.
+	* canvas-arrowhead.c (create_canvas_arrowhead): Likewise.
+
+	* canvas-primitives.c (item_event): Drag the right way, not the
+	easy way.  Keep a flag that says whether we are dragging or not.
+
 1998-08-03  Richard Hestilow  <hestgray@ionet.net>
 
 	* testgnome.c (about_cb): Set the version to reflect what the current
