@@ -38,7 +38,7 @@ enable_pedantic_ansi=no)
 dnl Define package requirements.
 AC_DEFUN(AC_LIBGTKTTY_REQUIREMENTS,
 [
-	AM_PATH_GTK(,,AC_MSG_ERROR(Cannot find GTK: is gtk-config in path?))
+	AM_PATH_GTK(1.0.0,,AC_MSG_ERROR(Cannot find GTK: is gtk-config in path?))
 ])
 AC_DEFUN(AC_GTKTERM_REQUIREMENTS,
 [

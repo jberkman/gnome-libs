@@ -1,3 +1,14 @@
+Tue Jun  9 22:55:20 EDT 1998 Gregory McLean <gregm@comstar.net>
+
+	* macros/gnome-x-checks.m4: quick and dirty check for devel gtk and
+	  define HAVE_DEVGTK if its found. This should save us a bunch of
+	  work next time we go to do a release we won't have to chase
+	  around code that only works on the devel version of gtk.
+	* libgnomeui/* bracketed all code that requires the devel branch of
+	  gtk.. I think I got it all.
+	* acconfig.h : new tag HAVE_DEVGTK, use this to mark your changes that
+	  require the dev branch of gtk.
+
 1998-06-09  Federico Mena Quintero  <federico@nuclecu.unam.mx>
 
 	* Makefile.am (built_SUBDIRS): Added test-gnome to the list of directories.
