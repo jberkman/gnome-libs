@@ -43,7 +43,9 @@ libzvtinclude_HEADERS =		\
 gnome-pty-helper: gnome-pty-helper.o gnome-login-support.o gnome-utmp.o
 	$(CC) -o $@ $^ $(UTIL_LIBS)
 
-EXTRA_DIST = TODO BUGS README 
+# Since we do gnome-pty-helper manually, include the relevant sources here
+EXTRA_DIST = TODO BUGS README	\
+	gnome-pty.h gnome-pty-helper.c gnome-utmp.c
 
 zterm_SOURCES	= zterm.c
 

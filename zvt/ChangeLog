@@ -1,5 +1,8 @@
 1999-09-10  Michael Zucchi  <mzucchi@denr.sa.gov.au>
 
+	* Makefile.am (EXTRA_DIST): Include the gnome-pty-helper sources
+	here, since we build it manually.  Yuck.  Blame Solaris' ld.
+
 	* vt.h (VTMODE_SEND_MOUSE): Put this flag back in.  Make the other
 	mouse flags use this bit always, when they are active.  Bit of an
 	annoying hack for backward compatability.
