@@ -143,6 +143,9 @@ static void vt_set_screen(struct vt_em *vt, int screen)
       }
     });
 
+    if (screen)
+      vt_clear_lines(vt, 0, vt->height);
+
     vt->this = (struct vt_line *)vt_list_index(&vt->lines, vt->cursory);
     vt->mode = (vt->mode&~VTMODE_ALTSCREEN) | (screen?VTMODE_ALTSCREEN:0);
   }

@@ -1,3 +1,16 @@
+1998-06-10  Michael Zucchi  <zucchi@zzedzone.box.net.au>
+
+	* zvtterm.c (zvt_term_set_color_scheme): Changed background to
+	colour index 17 - colour index 18 doesn't exist!
+	(zvt_term_readdata): Removed the 'read failed' message.
+
+	* vt.c (vt_set_screen): Clear alternate screen on a switch.
+
+	* update.c (vt_draw_selection_part): Check the line is on-screen
+	before trying to re-render it.  Fixes a nasty segfault.
+	(vt_line_update): Added some sanity checks to ensure segfaults are
+	banished.
+
 1998-06-07  Michael Zucchi  <zucchi@zzedzone.box.net.au>
 
 	* zvtterm.c (zvt_term_key_press): Added debug macro around the key

@@ -255,7 +255,7 @@ zvt_term_set_color_scheme (ZvtTerm *term, gushort *red, gushort *grn, gushort *b
   nallocated = 0;
   gdk_color_context_get_pixels (term->color_ctx, red, grn, blu,
 				18, term->colors, &nallocated);
-  c.pixel = term->colors [18];
+  c.pixel = term->colors [17];
   gdk_window_set_background (GTK_WIDGET (term)->window, &c);
 }
 
@@ -1354,17 +1354,12 @@ static void zvt_term_readdata(gpointer data, gint fd, GdkInputCondition conditio
   /* read failed?
       assume pipe cut - just quit */
   if (count<0 && saveerrno!=EAGAIN) {
-    printf("errno = %d, saverrno = %d\n", errno, saveerrno);
-    printf("out of data on read\n");
-
     /* close this fd, just to make sure (removes input handler too) */
     zvt_term_closepty(term);
 
-    /* signal application */
+    /* signal application FIXME: include error/non error code */
     gtk_signal_emit(GTK_OBJECT(term), term_signals[CHILD_DIED]);
 
-    /* FIXME: raise signal to caller ... */
-    /*gtk_exit(1);*/
     return;
   }
 

@@ -142,10 +142,11 @@ static void vt_line_update(struct _vtx *vx, struct vt_line *l, int line, int alw
   runbuffer = alloca(vx->vt.width * sizeof(char));
 
   bl = (struct vt_line *)vt_list_index(&vx->vt.lines_back, line);
-  if (bl->width != l->width) {
-    /* this should *always* be true */
-    printf("ASSERTION FAILED: line width mismatch %d != %d\n", bl->width, l->width);
-  }
+
+  /* some sanity checks */
+  g_return_if_fail (bl != NULL);
+  g_return_if_fail (runbuffer != NULL);
+  g_return_if_fail (bl->width == l->width);
 
   /* work out the minimum range of change */
   if (!always) {
@@ -944,7 +945,8 @@ void vt_draw_selection_part(struct _vtx *vx, int sx, int sy, int ex, int ey)
   d(printf("selecting from (%d,%d) to (%d,%d)\n", sx, sy-vx->vt.scrollbackoffset, ex, ey-vx->vt.scrollbackoffset));
   while ((line<=ey) && (l->next) && ((line-vx->vt.scrollbackoffset)<vx->vt.height)) {
     d(printf("line %d = %p ->next = %p\n", line, l, l->next));
-    vt_line_update(vx, l, line-vx->vt.scrollbackoffset, 1, 0, l->width);
+    if ((line-vx->vt.scrollbackoffset)>=0)
+      vt_line_update(vx, l, line-vx->vt.scrollbackoffset, 1, 0, l->width);
     line++;
     if (line==0) {
       l = (struct vt_line *)vt_list_index(&vx->vt.lines, 0);
