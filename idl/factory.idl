@@ -4,5 +4,6 @@
 module GNOME {
 	interface Factory {
 		Object new_instance ();
+		Object new_instance_argument (in string argument);
 	};
 };
