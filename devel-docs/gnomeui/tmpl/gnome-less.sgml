@@ -13,6 +13,29 @@ Simple file content browser widget.
     stream or from the output of a Unix command or from a Unix file
     descriptor. 
   </para>
+  <para>
+    The following is a simple example of its use. The code creates a
+    GnomeLess widget, sets a custom font, and fills the widget with
+    the contents of a file.
+  </para>	
+
+<informalexample>
+  <programlisting>
+GtkWidget *gl;
+GdkFont *font;
+
+/* create a new widget */
+gl = gnome_less_new();
+
+/* set our custom font */
+font = gdk_font_load("-adobe-helvetica-bold-o-normal-*-*-140-*-*-p-*-iso8859-1");
+#gnome_less_set_font(GNOME_LESS(gl), font);
+
+/* display some text */
+#gnome_less_show_file(GNOME_LESS(gl), "/home/user/file.txt");
+  </programlisting>
+</informalexample>
+
 
 <!-- ##### SECTION See_Also ##### -->
 <para>
@@ -148,5 +171,3 @@ mode: sgml
 sgml-parent-document: ("../gnomeui-docs.sgml" "book" "sect1" "")
 End:
 -->
-
-
