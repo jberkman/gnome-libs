@@ -1810,6 +1810,36 @@ WM=foo</screen>
 	you are at a loss, you might want to try removing or upgrading
 	it.</para>
       </sect2>
+
+      <sect2>
+        <title>When I run gnome-terminal it complains about an 
+        error logging in and something about configuring ptys. How 
+        do I do that?</title>
+
+        <para>If you have compiled your kernel yourself, one way to do this
+        is to begin by making sure you have a 2.2.x kernel (Or greater). 
+        You then need to <command>make xconfig</command> or however you 
+        normally configure your kernel. Go under <command>Character 
+        Devices</command> and select "Y" for "Unix98 ptys." Recompile 
+        your kernel as usual and install it.</para>
+
+        <para>After enabling Unix98 ptys, you need to set up the devices by
+        doing the following as root: <screen>
+<command>mknod /dev/ptmx c 5 2</command>
+<command>chmod 666 /dev/ptmx</command>
+<command>mkdir /dev/pts</command></screen></para>
+
+        <para>You must then edit the file <filename>/etc/fstab</filename> 
+        and add this line: <userinput>none    /dev/pts    devpts    gid=5,mode=620    0 0</userinput> Please note that if you are not using a Red Hat-like 
+        distribution, the group "tty" may not be gid 5, so it would be 
+        better to just remove the <userinput>gid=5,</userinput> part and 
+        change <userinput>mode=620</userinput> to 
+        <userinput>mode=600</userinput></para>
+
+        <para>After that, you should be able to 
+        <command>mount /dev/pts</command> and have everything work 
+        properly.</para>
+      </sect2>
     </sect1>
   </chapter>
 
