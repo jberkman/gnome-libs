@@ -2349,7 +2349,7 @@ vt_draw_text(void *user_data, int col, int row, char *text, int len, int attr)
 void
 vt_scroll_area(void *user_data, int firstrow, int count, int offset, int fill)
 {
-  int width,height;
+  int width, off;
   ZvtTerm *term;
   GtkWidget *widget;
   
@@ -2375,15 +2375,15 @@ vt_scroll_area(void *user_data, int firstrow, int count, int offset, int fill)
   /* FIXME: check args */
   d(printf("scrolling %d rows from %d, by %d lines\n", count,firstrow,offset));
 
-  width = widget->allocation.width - (2 * widget->style->klass->xthickness) - PADDING;
-  height = widget->allocation.height - (2 * widget->style->klass->ythickness);
+  width = term->charwidth * term->vx->vt.width;
+  off = widget->style->klass->xthickness - PADDING;
 
   /* "scroll" area */
   gdk_draw_pixmap(term->term_window,
 		  term->scroll_gc, /* must use this to generate expose events */
 		  term->term_window,
-		  0, (firstrow+offset)*term->charheight,
-		  0, firstrow*term->charheight,
+		  off, (firstrow+offset)*term->charheight,
+		  off, firstrow*term->charheight,
 		  width, count*term->charheight);
 
   /* clear the other part of the screen */

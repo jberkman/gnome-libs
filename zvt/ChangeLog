@@ -3,6 +3,9 @@
 	* zvtterm.c (zvt_term_key_press): Changed all cursor keys to send
 	\E[x, rather than \EOx.  Hell I dont know how this ever worked
 	really.
+	(vt_scroll_area): Scroll based on terminal width (as terminal
+	height is done), rather than on size of border window - border
+	width.  Also properly handle PADDING setting and border width.
 
 1999-03-12  Richard Hult <rhult@hem2.passagen.se>
 
