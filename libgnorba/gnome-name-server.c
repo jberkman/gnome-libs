@@ -68,7 +68,8 @@ handle_x_connection (GIOChannel *source, GIOCondition cond, Display *disp)
 {
 	XEvent ev;
 	
-	if(cond & (G_IO_ERR|G_IO_HUP|G_IO_NVAL)) {
+	if (cond & (G_IO_ERR|G_IO_HUP|G_IO_NVAL)){
+		syslog (LOG_INFO, "input condition is: %d, exiting", cond);
 		XCloseDisplay (disp);
 		g_main_quit (ml);
 		return TRUE;
@@ -133,50 +134,49 @@ setup_atomically_name_server_ior (CORBA_char *ior)
 				    1, False, AnyPropertyType,
 				    &type, &format, &nitems, &after,
 				    (guchar **) &proxy_data);
-
+		
 		if (!x_error_code && type != None){
-		  if ((format == 32) && (nitems == 1))
-		    if (*proxy_data != proxy)
-		      proxy = None;
-		  if(proxy != None) {
-		    CosNaming_NameComponent nc[1] = {{"GNOME", "subcontext"}};
-		    CosNaming_Name          nom;
-		    CORBA_Object tmp, name_service;
-			  
-		    nom._length = 1; nom._buffer = nc;
-			  
-		    name_service = CORBA_ORB_string_to_object(orb, ior, &ev);
-		    if (!CORBA_Object_is_nil (name_service, &ev)) {
-		      tmp = CosNaming_NamingContext_resolve(name_service, &nom, &ev);
-			  
-		      if(ev._major == CORBA_NO_EXCEPTION)
-			CORBA_Object_release(tmp, &ev);
-		      else
-			proxy = None;
-		    } else
-		      proxy = None;
-		  }
-		  XFree (proxy_data);
+			if ((format == 32) && (nitems == 1))
+				if (*proxy_data != proxy)
+					proxy = None;
+			if (proxy != None) {
+				CosNaming_NameComponent nc[1] = {{"GNOME", "subcontext"}};
+				CosNaming_Name          nom;
+				CORBA_Object tmp, name_service;
+				
+				nom._length = 1; nom._buffer = nc;
+				
+				name_service = CORBA_ORB_string_to_object(orb, ior, &ev);
+				if (!CORBA_Object_is_nil (name_service, &ev)) {
+					tmp = CosNaming_NamingContext_resolve(name_service, &nom, &ev);
+					
+					if(ev._major == CORBA_NO_EXCEPTION)
+						CORBA_Object_release(tmp, &ev);
+					else
+						proxy = None;
+				} else
+					proxy = None;
+			}
+			XFree (proxy_data);
 		} else
-		  proxy = None;
+			proxy = None;
+
+		if (!proxy)
+			syslog (LOG_INFO, "Stale reference to the GNOME name server");
 	}
 
 	/*
 	 * If the window was invalid, set the property to point to us
 	 */
 	if (!proxy){
-		syslog (LOG_INFO, "Stale reference to the GNOME name server");
-		XChangeProperty (display, rootwin, name_server_atom,
-				 window_atom,
-				 32, PropModeReplace, (guchar *) &proxy_xid, 1);
-	}
-
-	if (!proxy){
+		XChangeProperty (
+			display, rootwin,
+			name_server_atom, window_atom,
+			32, PropModeReplace, (guchar *) &proxy_xid, 1);
 		XChangeProperty (
 			display, proxy_xid,
 			name_server_atom, window_atom,
 			32, PropModeReplace, (guchar *) &proxy_xid, 1);
-
 		XChangeProperty (
 			display, proxy_xid,
 			name_server_ior_atom, string_atom,
@@ -240,7 +240,7 @@ setup_name_server (CORBA_Object name_service, CORBA_Environment *ev)
 		return FALSE;
 	}
 	CORBA_Object_release(gnome_context, ev);
-
+	
 	context_name._length = 2;
 	server_context = CosNaming_NamingContext_bind_new_context(name_service, &context_name, ev);
 	if (ev->_major != CORBA_NO_EXCEPTION) {
@@ -275,10 +275,11 @@ main (int argc, char *argv [])
 	CORBA_char *ior;
 	gboolean v;
 	GIOChannel *channel;
-
-	if(getenv("GNOME_NAME_SERVER_DEBUG")) {
+	
+	if (getenv("GNOME_NAME_SERVER_DEBUG")){
 		volatile int spinme = 1;
-		while(spinme);
+		while (spinme)
+			;
 	}
 
 	/* Logs */
@@ -301,9 +302,9 @@ main (int argc, char *argv [])
 	sigemptyset (&empty_mask);
 
 	CORBA_exception_init (&ev);
-	display = XOpenDisplay(getenv("DISPLAY"));
-	g_return_val_if_fail(display, 1);
-	XSetErrorHandler(x_error_handler);
+	display = XOpenDisplay (getenv ("DISPLAY"));
+	g_return_val_if_fail (display, 1);
+	XSetErrorHandler (x_error_handler);
 
 	channel = g_io_channel_unix_new(ConnectionNumber(display));
 	g_io_add_watch_full(channel, G_PRIORITY_DEFAULT,
@@ -334,7 +335,8 @@ main (int argc, char *argv [])
 		syslog (LOG_INFO, "name server was running on display, exiting");
 		CORBA_Object_release (name_server, &ev);
 		return 1;
-	} 
+	} else
+		syslog (LOG_INFO, "name server starting");
 
 	printf ("%s\n", ior);
 	fflush (stdout);
@@ -343,7 +345,7 @@ main (int argc, char *argv [])
 	pm = PortableServer_POA__get_the_POAManager (root_poa, &ev);
 	PortableServer_POAManager_activate (pm, &ev);
 	
-	g_main_run(ml);
+	g_main_run (ml);
 
 	syslog (LOG_INFO, "exiting");
 
