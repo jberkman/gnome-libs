@@ -45,10 +45,10 @@ extern "C" {
 
     struct _vtx *vx;		/* zvt emulator */
 
-    int cursor_on:1;		/* on/off cursor */
-    int cursor_filled:1;	/* is the cursor filled? */
-    int cursor_blink_state:1;	/* cursor blink state */
-    int blink_enabled:1;        /* Set to on if we do blinking */
+    unsigned int cursor_on:1;		/* on/off cursor */
+    unsigned int cursor_filled:1;	/* is the cursor filled? */
+    unsigned int cursor_blink_state:1;	/* cursor blink state */
+    unsigned int blink_enabled:1;        /* Set to on if we do blinking */
     int charwidth;		/* size of characters */
     int charheight;
 

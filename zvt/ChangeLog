@@ -1,3 +1,9 @@
+1998-04-30  Miguel de Icaza  <miguel@nuclecu.unam.mx>
+
+	* zvtterm.h: Use unsigned ints for the flags.
+
+	* zvtterm.c (vt_cursor_state): Test for drawability.
+
 1998-04-30  Michael Zucchi  <zucchi@zzedzone.box.net.au>
 
 	* zvtterm.c (zvt_term_realize): Put GDK_POINTER_MOTION_MASK back

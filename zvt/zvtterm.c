@@ -1278,24 +1278,25 @@ int vt_cursor_state(void *user_data, int state)
   g_return_val_if_fail (ZVT_IS_TERM (widget), 0);
 
   term = ZVT_TERM (widget);
-
-  gdk_gc_set_function(widget->style->fg_gc[GTK_WIDGET_STATE (widget)], GDK_INVERT);
-
   old_state = term->cursor_on;
-  if ((state && !term->cursor_on) ||	/* turn it on, or*/
-      (!state && term->cursor_on)) {	/* turn it off - then toggle it */
-    gdk_draw_rectangle(widget->window,
-		       widget->style->fg_gc[GTK_WIDGET_STATE (widget)],
-		       term->cursor_filled,
-		       term->vx->vt.cursorx*
-		       term->charwidth,
-		       (term->vx->vt.cursory-term->vx->vt.scrollbackoffset)*term->charheight,
-		       term->charwidth, term->charheight);
-    term->cursor_on ^= 1;
+  
+  if (GTK_WIDGET_DRAWABLE (widget)){
+    gdk_gc_set_function(widget->style->fg_gc[GTK_WIDGET_STATE (widget)], GDK_INVERT);
+    
+    if ((state && !term->cursor_on) ||	/* turn it on, or*/
+	(!state && term->cursor_on)) {	/* turn it off - then toggle it */
+      gdk_draw_rectangle(widget->window,
+			 widget->style->fg_gc[GTK_WIDGET_STATE (widget)],
+			 term->cursor_filled,
+			 term->vx->vt.cursorx*
+			 term->charwidth,
+			 (term->vx->vt.cursory-term->vx->vt.scrollbackoffset)*term->charheight,
+			 term->charwidth, term->charheight);
+      term->cursor_on ^= 1;
+    }
+    
+    gdk_gc_set_function(widget->style->fg_gc[GTK_WIDGET_STATE (widget)], GDK_COPY);
   }
-
-  gdk_gc_set_function(widget->style->fg_gc[GTK_WIDGET_STATE (widget)], GDK_COPY);
-
   return old_state;
 }
 
