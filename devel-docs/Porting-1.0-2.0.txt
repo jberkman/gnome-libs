@@ -35,6 +35,11 @@ Notation
 
   The file/widget/feature is completely new in GNOME 2.0.
 
+* UNKNOWN
+
+  I don't know what's up with this.
+
+
 How to prepare your GNOME 1.0 Applications for GNOME 2.0
 ========================================================
 
@@ -139,6 +144,30 @@ doing this.
 
   - this was only used in GTop and some applets; it is totally obsolete due
     to GConf.
+
+* GnomeAbout - ADDED FUNCTIONALITY
+
+  - some things have been added; it doesn't look finished to me.
+
+* GnomeAnimator - UNKNOWN
+
+  - I think this should be removed from libgnomeui.
+
+* GnomeAppBar - MODIFIED
+
+  The following functions are deprecated:
+
+  - gnome_appbar_set_progress() - use gnome_appbar_set_progress_percentage().
+
+  The following new functions have been added:
+
+  - gnome_appbar_set_progress_percentage()
+  - gnome_appbar_get_status()
+
+  Other source incompatible changes:
+
+  - all fields have been removed from the GnomeAppBar instance struct.
+
 
 Last changed Feb 25, 2001.
 Martin Baulig <baulig@suse.de>
