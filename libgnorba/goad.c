@@ -151,6 +151,8 @@ goad_server_flagstring_to_flags(char *flstr)
   GoadActivationFlags retval = 0;
   int i;
 
+  if(!flstr) return retval;
+
   g_strstrip(flstr);
 
   if(!*flstr) return retval;
