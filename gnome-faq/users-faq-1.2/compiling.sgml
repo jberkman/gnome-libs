@@ -1,13 +1,14 @@
 <sect1 id="compiling">
  <title>Compilation issues</title>
- <qandaset defaultlabel="qanda">
 
-  <para>
-    You really shouldn't need this section, because ideally you should
-    be able to get everything in tidy packages for your system. There are
-    always some who want to do it themselves, though. This is a representative
-    list of the questions that come up the most commonly.
-  </para>
+ <para>
+   You really shouldn't need this section, because ideally you should
+   be able to get everything in tidy packages for your system. There are
+   always some who want to do it themselves, though. This is a representative
+   list of the questions that come up the most commonly.
+ </para>
+
+ <qandaset defaultlabel="qanda">
 
   <qandaentry id="compile-order"> 
    <question>
@@ -63,7 +64,7 @@
      </step>
      <step>
       <para>
-        Compile <application>gdk-pixbuf</application>
+        Compile <application>gdk-pixbuf</application>.
       </para>
      </step>
      <step>
@@ -127,7 +128,7 @@
     <para>
       If you have an rpm-based system, skip this question and go to
       the section about generating rpms from tarballs. It saves a lot
-      of trouble to do with putting files into the right places for you
+      of trouble to do with putting files into the right places for your
       system. If not, the standard way to compile gnome tarballs 
       is to issue the following commands as a normal user:
     </para>
@@ -240,7 +241,8 @@
       <command>./configure --prefix=/usr --sysconfdir=/etc</command>. You
       can even show off by making use of backticks and doing
       <command>./configure --prefix=`gnome-config --prefix` --sysconfdir `gnome-config --sysconfdir`</command>
-      all in one line. 
+      all in one line. You can get a complete list of all the arguments
+      you can give to configure by typing <command>./configure --help</command>.
     </para>
     <para>
       If you must do this, these are the combinations you are
@@ -318,7 +320,64 @@
    </question>
    <answer>
     <para>
-      This is commonly asked. Foolproof answers are eagerly solicited.
+      Yes, you can. The most sensible approach is to compile it yourself
+      into an area in your own home directory. Doing this as your normal
+      user rather than root means that you're not going to overwrite
+      working system binaries. 
+      <!-- Thanks to Eric Baudais for the instructions -->
+    </para>
+    <procedure>
+     <title>Installing GNOME into your home directory</title>
+     <step>
+      <para>
+        <command>cd</command> (go to home directory)
+      </para>
+     </step>
+     <step>
+      <para>
+        <command>tar xvfz gnome-package.tar.gz</command> (unpack a package)
+      </para>
+     </step>
+     <step>
+      <para>
+        <command>cd gnome-package</command> (into that directory)
+      </para>
+     </step>
+     <step>
+      <para>
+        <command>./configure --prefix=~/gnome --sysconfdir=~/gnome/etc</command>
+        (note the <keycap>~</keycap> sign in each prefix. Don't miss this out!)
+      </para>
+     </step>
+     <step>
+      <para>
+        <command>make</command> (compile it. This is the longest stage)
+      </para>
+     </step>
+     <step>
+      <para>
+        <command>make install</command> (put it where the next programs will
+        see it)
+      </para>
+     </step>
+     <step>
+      <para>
+        <command>cd ~/gnome/bin</command> (this is where it should have ended
+        up)
+      </para>
+     </step>
+     <step>
+      <para>
+        <command>./gnome-app</command> (try it out)
+      </para>
+     </step>
+    </procedure>
+    <para>
+       The above will work for most things but you may have problems 
+       with applets, which expect to see a file called
+       <filename>/etc/CORBA/servers</filename>. You can probably create a
+       symlink from your home directory to this, but your writer 
+       hasn't tried.
     </para>
    </answer>
   </qandaentry>
@@ -449,7 +508,8 @@
       <para>
         Change the DTD (the line in angle-brackets). Alter
         <replaceable>"-//GNOME//DTD DocBook PNG Variant V1.1//EN"</replaceable>
-        to read <replaceable>"-//OASIS//DTD DocBook V3.1//EN"</replaceable>.
+        to read <replaceable>"-//OASIS//DTD DocBook V3.1//EN"</replaceable>
+        in all files that have the suffix <quote>.sgml</quote>.
         If you want to, remove all the sections which appear to look like
         graphics (easily identified by being surrounded by the
         <sgmltag>&lt;figure&gt;</sgmltag> and
@@ -460,7 +520,7 @@
      <listitem>
       <para>
         Get the GNOME DTD and stylesheets and install them. They are
-        available as a tarball, an rpm, or the individual components
+        available as a tarball, a deb or an rpm, or the individual components
         from
         <ulink type="http" url="http://people.redhat.com/dcm/software.html">Dave
         Mason's page</ulink>. Then it should build.
@@ -519,7 +579,7 @@
     <itemizedlist>
      <listitem>
       <para>
-        <command>dpkg --purge package</command>
+        <command>dpkg --remove package</command>
       </para>
      </listitem>
      <listitem>
@@ -529,9 +589,24 @@
      </listitem>
     </itemizedlist>
     <para>
+      Or
+    </para>
+    <itemizedlist>
+     <listitem>
+      <para>
+        <command>dpkg --purge package</command>
+      </para>
+     </listitem>
+     <listitem>
+      <para>
+        <command>apt-get remove --purge package</command>
+      </para>
+     </listitem>
+    </itemizedlist>
+    <para>
       You should probably use <command>apt-get</command> because it will
-      automatically figure out dependencies. If you use <command>dpkg</command>
-      it will also remove configuration files.
+      automatically figure out dependencies. The <option>--purge</option>
+      for each command will remove configuration files as well.
     </para>
     <para>
       With tarballs: you must previously have kept the source tree.

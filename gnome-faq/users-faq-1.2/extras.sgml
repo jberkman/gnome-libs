@@ -111,9 +111,9 @@
        </listitem>
        <listitem>
         <para>
-          GNOME needs to be able to understand files which use XML (a format
-          for describing information contained in something). libxml lets
-          it do that.
+          libxml: GNOME needs to be able to understand files which use XML 
+          (a format for describing information contained in something). 
+          libxml lets it do that.
         </para>
         <para>
           libxml is sometimes referred to as gnome-xml.  This is because 
@@ -122,14 +122,13 @@
        </listitem>
        <listitem>
         <para>
-          Many GNOME programs need libglade. This is a library which reads
-          XML files using libxml (see above) and turns them into a user
-          interface. 
+          libglade is a library which reads XML files using libxml (see 
+          above) and turns them into a user interface. 
         </para>
        </listitem>
        <listitem>
         <para>
-          GNOME wants to be able to get information about filesystem
+          libgtop: GNOME wants to be able to get information about filesystem
           organisation and how the system controls what runs when. This
           varies on different forms of UNIX. The details of how to do it
           go in here, so programmers can just call this, whatever platform
@@ -139,8 +138,8 @@
        </listitem>
        <listitem>
         <para>
-          Many GNOME programs need to be able to use HTTP. The library
-          with all the details for that is libghttp.
+          libghttp: Many GNOME programs need to be able to use HTTP. The 
+          library with all the details for that is libghttp.
         </para>
 	<para>
           libghttp is sometimes referred to as gnome-http.  This is because
@@ -158,14 +157,15 @@
        </listitem>
        <listitem>
         <para>
-          Writing programs which involve printing is hard: it has to
-          take into account everything from what language the printer
+          gnome-print: writing programs which involve printing is hard. It
+          has to take into account everything from what language the printer
           understands to how to parcel up the information that is going
           from the program to the various parts of the printing system.
           A new library is trying to put all of this into one place so
-          that programs can use the library and not have to do all the
+          that programs can just use that library and not have to do all the
           complicated stuff themselves. This is gnome-print, which is
-          now a requirement if you want to use <application>Gnumeric</application>.
+          now a requirement if you want to use 
+          <application>Gnumeric</application>.
         </para>
        </listitem>
       </itemizedlist>

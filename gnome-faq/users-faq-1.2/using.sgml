@@ -178,14 +178,21 @@
       X has long assumed that mice have many buttons (it can cope with 
       at least five). You don't normally need more than three, although
       <application>Quake</application> players may disagree. To simulate
-      a middle-click on your two-button mouse, try "chording": click both
-      buttons simultaneously. This should work. If it does not, you may
-      have to edit your XF86Config file (make a backup copy of it first!)
-      to ensure there are uncommented lines which say "Emulate3Buttons" 
-      and "Emulate3Timeout 50". A commented line has a hash (<keycap>#</keycap>) 
+      a middle-click on your two-button mouse with XFree86, try "chording": 
+      click both buttons simultaneously. This should work. If it does not, 
+      you may have to edit your XF86Config file (make a backup copy of it 
+      first. This is not a file to make mistakes in). to ensure there are 
+      uncommented lines which say "Emulate3Buttons" and 
+      "Emulate3Timeout 50". A commented line has a hash (<keycap>#</keycap>) 
       symbol at the start of either line. To uncomment the line, remove the
       hash sign from the start of the line. You will need to restart X for 
       this to take effect.
+    </para>
+    <para>
+      Commercial and proprietary versions of X may differ: an example
+      is that this is set in the Exceed version of X by selecting
+      <guibutton>middle button emulation</guibutton> in the
+      <guilabel>input configuration</guilabel> dialog box. 
     </para>
    </answer>
   </qandaentry>
@@ -253,10 +260,9 @@
     </para>
     <para>
       Note that you can run <command>helix-update</command> without
-      being root if you are using a very recent version of it on
-      Red Hat, Linux Mandrake, TurboLinux, or LinuxPPC.
-      <!-- "very recent" means after 23rd May 2000. This should be
-      changed as this FAQ ages.. --> 
+      being root if you are using a recent (post-May 2000) version of it on
+      Red Hat, Linux Mandrake, TurboLinux, or LinuxPPC. Run it as a
+      user, and it will prompt you for the root password.
     </para>
    </answer>
   </qandaentry>

@@ -12,7 +12,8 @@
    <answer>
     <para>
       GNOME can be probably be persuaded to run on any platform that
-      is UNIX-like and supports X, the X-Windowing System. 
+      is UNIX-like, supports X (specifically, this means the X run-time 
+      libraries must be on the machine), and which has GTK+ on it. 
     </para>
     <para>
       GNOME will certainly run on almost any recent distribution of
@@ -21,6 +22,12 @@
       able to find information on this relatively easily. It has also
       been reported to run on OpenBSD, IRIX, HP-UX and AIX. More
       esoterically, it's rumoured that it runs on Linux on the S/390.. 
+    </para>
+    <para>
+      There is a partial port of 
+      <ulink type="http" url="http://pluto.spaceports.com/~os2/n_gnome_about.html">GNOME
+      to OS/2</ulink>, but it's not yet complete.
+      <!-- The alleged page is birdy.hpage.net but that's often down -->
     </para>
    </answer>
   </qandaentry>
@@ -33,10 +40,12 @@
    </question>
    <answer>
     <para>
-      GNOME does not run on any form of Microsoft Windows. It doesn't
+      GNOME does not run on any form of Microsoft Windows. It may run
+      on another machine and be displayed on Microsoft Windows, but this
+      is not quite the same thing; and you will still need to have access
+      to a machine which is running it. GNOME does not 
       run on BeOS or MacOS. It doesn't run on eCos, the embedded 
-      operating system. A port to OS/2 was begun, but the status of
-      this is unknown. (Updates welcomed.)
+      operating system.
     </para>
    </answer>
   </qandaentry>

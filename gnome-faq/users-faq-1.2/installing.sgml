@@ -21,7 +21,8 @@
       Software you want on there already: <application>X</application>:
       most people use <application>XFree86</application> but some go
       for the commercial versions instead. You will also need: GTK+, glib,
-      esound, ORBit, gdk-pixbuf, imlib, audiofile and libxml.
+      esound, ORBit, gdk-pixbuf, imlib, audiofile and libxml. All of
+      these come with GNOME. 
     </para>
    </answer>
   </qandaentry>
@@ -51,7 +52,7 @@
       <ulink type="http" url="http://www.helixcode.com">Helix Code</ulink> 
       attempts to provide up-to-date packages of 
       <application>GNOME</application> for almost every common platform able 
-      to run it: as of July 2000 they were providing 
+      to run it: as of August 2000 they were providing 
       <application>GNOME</application> for:
      <simplelist>
       <member>Red Hat Linux 6.0, 6.1 and 6.2</member>
@@ -60,14 +61,10 @@
       <member>Caldera OpenLinux 2.4</member>
       <member>LinuxPPC 2000</member>
       <member>TurboLinux 6.0</member>
-      <member>Debian GNU/Linux: Woody. (Also believed to run on Potato)</member>
+      <member>Debian GNU/Linux: Woody (runs on Potato too)</member>
       <member>Yellow Dog Linux Champion Server 1.2</member>
       <member>Solaris 2.7 on UltraSparc</member>
      </simplelist>
-    </para>
-    <para>
-      Slackware 7.1 comes with GNOME 1.2 as standard: it went in in early
-      June.
     </para>
     <para>
       For those with good internet connections, the fastest and simplest
@@ -78,7 +75,7 @@
       any of the above except Debian.
     </para>
     <para>
-      Debian (woody) users will want to do this instead:
+      Debian users will want to do this instead:
     </para>
     <procedure>
      <step>
@@ -128,6 +125,13 @@ Apparently /debian is the "official" one to give out. -->
       <ulink type="http" url="http://www.gnome.org/ftpmirrors.shtml">mirrors</ulink>.
       <emphasis>Please</emphasis> use the mirrors: that's why they're there.
       Or there is the packaging from your distributor. 
+    </para>
+    <para>
+      GNOME is available for BSD users through the ports system.
+      Solaris does not (yet!) ship GNOME, but binaries and source-building
+      instructions are both available on Paul Barnfather's excellent
+      <ulink type="http" url="http://www.clanger9.demon.co.uk/computer/gnome/">Building
+      GNOME on Solaris</ulink> page.      
     </para>
     <para>
       If the problem is the net connection, the size of the download or the

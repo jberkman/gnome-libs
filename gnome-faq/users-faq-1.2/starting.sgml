@@ -109,6 +109,28 @@
       Foolproof answers to this question which work for different
       flavours of Linux are solicited eagerly. 
     </para> 
+    <para>
+      For those systems which come with <application>linuxconf</application>,
+      Brett Castleberry suggests, 
+      <quote>
+       Assuming that Gnome already starts 
+       properly when you <command>startx</command>, you can do it with
+       <application>linuxconf</application>. As root in an xterm type 
+       <command>linuxconf</command>". When it comes up go to 
+       <menuchoice>
+        <guimenu>Config</guimenu>
+        <guisubmenu>boot mode</guisubmenu>
+        <guisubmenu>Mode</guisubmenu>
+        <guimenuitem>default boot mode</guimenuitem>
+       </menuchoice>
+       and click on it. Select the <guibutton>Graphic &amp; Network</guibutton>
+       button and <guibutton>Accept</guibutton>.
+      </quote>
+      This certainly works on Red Hat 6.2, as does the reverse (selecting
+      <guibutton>Text mode &amp; Network</guibutton> to stop booting into
+      GNOME). There is probably a preferred way to do this with SuSE which
+      involves <application>YAST</application>. (Details, anyone?)
+    </para>
    </answer>  
   </qandaentry>
 

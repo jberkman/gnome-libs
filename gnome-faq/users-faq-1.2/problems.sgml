@@ -19,6 +19,8 @@
     </question>
     <answer>
      <para>
+       This is commonly met by people who are used to Macintosh or
+       MS Windows systems and are now using XFree86 on a GNU/Linux box.
        <application>X</application> can run at different resolutions.
        When it is first configured, the various programs to configure
        X (<application>Xconfigurator</application>, 
@@ -44,7 +46,10 @@
        what you're doing</emphasis> you can attempt to edit the 
        <filename>XF86Config</filename> which holds the relevant values 
        yourself. Editing this is not the recommended first tactic: if you 
-       must try it, take a backup copy of the file first.
+       must try it, take a backup copy of the file first. Don't be tempted
+       to change things when you're not sure: this is one of the few
+       ways you can actually damage hardware. (Far less true than it
+       used to be, but it's worth being aware of this before trying it.)
      </para>
      <para>
        If you are still stuck with 640x480 or 800x600 and one of the 
@@ -103,6 +108,106 @@
   </qandadiv>
 
   <qandadiv>
+   <title>Kernel-related problems</title>
+
+   <qandaentry id="shmget-error">
+   <!-- from Dan Mueth --> 
+    <question>
+     <para>
+       Why do I get <errorname>Gdk-WARNING **: shmget failed!</errorname>
+       when I try to run some programs?
+     </para>
+    </question>
+    <answer>
+     <para>
+      This error indicates that the application is not able to get
+      a shared memory segment.  There are a number of reasons why
+      this could happen, including:
+     </para>
+     <orderedlist>
+      <listitem>
+       <para>
+        shared memory is not set up (properly) on the system
+       </para>
+      </listitem>
+      <listitem>
+       <para>
+        all shared memory segments are being used
+       </para>
+      </listitem>
+     </orderedlist>
+     <para>
+      GNOME and Gdk applications use a lot of shared memory
+      segments (typically 6 segments per process that uses
+      shared memory), so it is possible your system was not
+      configured with enough segments to support GNOME with a
+      lot of applications running.  (Note that many GNOME applications
+      can be run without using shared memory by starting them with
+      the flag <option>--no-xshm</option>.)
+     </para>
+     <para>
+      The following instructions apply for the Linux kernel. 
+      <!-- Does this problem arise on other kernels? --> 
+      First, find out the maximum number of shared memory segments
+      your kernel is configured for by typing <command>ipcs -l</command>.
+      Look for the line starting with <quote>max number of
+      segments = </quote>.  If it is 128 or less, it is likely that
+      this is not enough.  Depending on how many applications and applets
+      you use, you made need quite a few more.
+     </para>
+     <para>
+      To increase the number of shared segments with kernel 2.2, you have
+      to increase the <varname>_SHM_ID_BITS</varname> variable in
+      <filename class="headerfile">/usr/src/linux/include/asm/shmparam.h</filename>.
+      The number of shared memory segments is 2 raised to the power of
+      <varname>_SHM_ID_BITS</varname>.  Thus, 7 corresponds to 128,
+      8 to 256, 9 to 512, and 10 to 1024.  You will then need to
+      rebuild your kernel and reboot for the change to become active.
+     </para>
+    </answer>
+   </qandaentry>
+
+   <qandaentry id="unix98ptys">
+    <question>
+     <para>
+       Everything else works, but I get a message about Unix98 ptys when
+       trying to start gnome-terminal.
+     </para>
+    </question>
+    <answer>
+     <para>
+       Two possible answers here, both applicable to Linux kernel issues.
+     </para>
+     <itemizedlist>
+      <listitem>
+       <para>
+         It is (remotely) possible that you are trying to install 
+         binaries for a newer version of your distribution on an old 
+         machine, where "old" means "running a 2.0 Linux kernel and 
+         a similarly old glibc". This won't work. If you have Red Hat 
+         5.2, for example, you need to find or build rpms for that and 
+         not to try to install rpms for 6.2. This applies similarly to 
+         SuSE.
+       </para>
+      </listitem>
+      <listitem>
+       <para>
+         It is more likely to be problems with the permissions of the
+         files which involve ptys. In particular, check the permissions
+         of <filename>/dev/ptmx</filename>. They <emphasis>should</emphasis>
+         be 666 (or crw-rw-rw when you do <command>ls -l /dev/ptmx</command>).
+         If they aren't, change it with 
+         <command>chmod 666 /dev/ptmx</command> (as root). You will find
+         more about this in
+         <filename>/usr/src/linux/Documentation/general/Changes</filename>.
+       </para>
+      </listitem>
+     </itemizedlist>
+    </answer>
+   </qandaentry>
+  </qandadiv>
+
+  <qandadiv>
    <title>GNOME problems</title>
 
    <qandaentry id="eightbit-icon-probs">
@@ -157,6 +262,25 @@
        you will find a checkbox for <guibutton>Ignore program-specified
        window placements.</guibutton>. This needs to be unchecked.
      </para>
+     <para>
+       If this doesn't work, take the longer route provided by 
+       Robert Soros on gnome-list:
+       <quote>
+        I ended up logging out and switching to console to edit my
+        <filename>~/sawfish/window-history</filename> file... which
+        contained the line
+       </quote>
+       <literallayout>
+("panel
+ (type . unframed)
+ (position 0 . 23))
+       </literallayout>
+       <quote>
+        Editing the file (with 0, 0 coordinates) during the gnome session 
+        then logging out was useless as it would just resave the file as 
+        upon exiting..
+       </quote>
+     </para>        
     </answer>
    </qandaentry>
 
@@ -204,6 +328,11 @@
        stop using the soundcard. So nothing happens. Tell xmms to use esound 
        in the Output Plugin box, and your music should happen again.
      </para>
+     <para>
+       Problems with sound in general are sometimes due to the sound
+       card driver being used. This is well outside the scope of this FAQ,
+       alas.
+     </para>
     </answer>
    </qandaentry>
 
@@ -228,45 +357,6 @@
        If you have tried to put your machine's name into this line,
        this may be the problem. <!-- FIXME: can someone confirm this? -->
      </para>
-    </answer>
-   </qandaentry>
-
-   <qandaentry id="unix98ptys">
-    <question>
-     <para>
-       Everything else works, but I get a message about Unix98 ptys when
-       trying to start gnome-terminal.
-     </para>
-    </question>
-    <answer>
-     <para>
-       Two possible answers here, both applicable to Linux. 
-     </para>
-     <itemizedlist>
-      <listitem>
-       <para>
-         It is (remotely) possible that you are trying to install 
-         binaries for a newer version of your distribution on an old 
-         machine, where "old" means "running a 2.0 Linux kernel and 
-         a similarly old glibc". This won't work. If you have Red Hat 
-         5.2, for example, you need to find or build rpms for that and 
-         not to try to install rpms for 6.2. This applies similarly to 
-         SuSE.
-       </para>
-      </listitem>
-      <listitem>
-       <para>
-         It is more likely to be problems with the permissions of the
-         files which involve ptys. In particular, check the permissions
-         of <filename>/dev/ptmx</filename>. They <emphasis>should</emphasis>
-         be 666 (or crw-rw-rw when you do <command>ls -l /dev/ptmx</command>).
-         If they aren't, change it with 
-         <command>chmod 666 /dev/ptmx</command> (as root). You will find
-         more about this in
-         <filename>/usr/src/linux/Documentation/general/Changes</filename>.
-       </para>
-      </listitem>
-     </itemizedlist>
     </answer>
    </qandaentry>
 
