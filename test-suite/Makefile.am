@@ -6,6 +6,7 @@ INCLUDES = 			\
 
 LDADD = $(top_builddir)/libgnomeui/libgnomeui.la \
 	$(top_builddir)/libgnome/libgnome.la \
+	$(top_builddir)/libart_lgpl/libart_lgpl.la	\
 	@LIBSUPPORT@ $(LIBGNOMEUI_LIBS) $(INTLLIBS)
 
 # Hacky way of forcing `automake' to define $(COMPILE) and $(LINK)

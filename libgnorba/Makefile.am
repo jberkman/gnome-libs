@@ -29,6 +29,7 @@ loadshlib_LDADD = \
 	$(ORBIT_LIBS) \
         $(top_builddir)/libgnome/libgnome.la		\
         $(top_builddir)/libgnomeui/libgnomeui.la	\
+	$(top_builddir)/libart_lgpl/libart_lgpl.la	\
         @LIBSUPPORT@					\
         $(LIBGNOME_LIBS) $(LIBGNOMEUI_LIBS)		\
 	$(top_builddir)/libgnorba/libgnorba.la		\
@@ -40,6 +41,7 @@ goad_browser_LDADD = \
 	$(ORBIT_LIBS) \
         $(top_builddir)/libgnome/libgnome.la		\
         $(top_builddir)/libgnomeui/libgnomeui.la	\
+	$(top_builddir)/libart_lgpl/libart_lgpl.la	\
         @LIBSUPPORT@					\
         $(LIBGNOME_LIBS) $(LIBGNOMEUI_LIBS)		\
 	$(top_builddir)/libgnorba/libgnorba.la		\

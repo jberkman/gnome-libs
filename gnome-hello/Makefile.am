@@ -9,6 +9,7 @@ INCLUDES = -I.. -I$(srcdir)/.. $(SUPPORTINCS) \
 LDADD = \
 	$(top_builddir)/libgnomeui/libgnomeui.la 	\
 	$(top_builddir)/libgnome/libgnome.la		\
+	$(top_builddir)/libart_lgpl/libart_lgpl.la	\
 	@LIBSUPPORT@					\
 	$(LIBGTKXMHTML_LIBS) $(LIBGNOME_LIBS) $(LIBGNOMEUI_LIBS) $(INTLLIBS)
 
