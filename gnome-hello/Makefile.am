@@ -13,7 +13,6 @@ gnome_hello_SOURCES = gnome-hello.c
 gnome_hello_LDADD = \
 	$(top_builddir)/libgnomeui/libgnomeui.la 	\
 	$(top_builddir)/libgnome/libgnome.la		\
-	$(top_builddir)/intl/libintl.a			\
 	$(top_builddir)/gtk-xmhtml/libgtkxmhtml.la	\
 	$(XPM_LIBS)					\
 	$(GTK_LIBS)					\

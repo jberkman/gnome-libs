@@ -1,3 +1,8 @@
+Mon Feb  2 03:34:17 1998  Changwoo Ryu  <cwryu@adam.kaist.ac.kr>
+
+	* Makefile.am (gnome_hello_LDADD): Remove entry
+	$(top_builddir)/intl/libintl.a, which might not exist.
+
 1998-01-30  Raja R Harinath  <harinath@cs.umn.edu>
 
 	* Makefile.am (gnome_hello_LDADD): Remove duplicated
