@@ -39,7 +39,21 @@ login_tty (int fd)
 #ifdef TIOCSCTTY
 	if (ioctl (fd, TIOCSCTTY, 0) == -1)
 		return -1;
-#endif
+#elsif /* TIOCSTTY */
+        /* Hackery to set controlling tty on SVR4 -
+           on SVR4 the first terminal we open after sesid()
+           becomes our controlling terminal, thus we must
+           find the name of, open, and re-close the tty
+           since we already have it open at this point. */
+        {
+                char *ctty;
+                int ct_fdes;
+
+                ctty = ttyname(fd);
+                ct_fdes = open(ctty, O_RDWR);
+                close(ct_fdes);
+        }
+#endif /* TIOCSTTY */
 
 #if defined (_POSIX_VERSION) || defined (__svr4__)
 	tcsetpgrp (0, pid);
