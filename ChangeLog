@@ -1,3 +1,13 @@
+1998-10-08  James Henstridge  <james@daa.com.au>
+
+	* libgnome/gnome-url.[ch]: Added gnome-url code.  It currently
+	defaults to using netscape (If you don't edit ~/.gnome/Gnome).
+	* libgnome/gnome-moz-remote.c libgnome/vroot.h:  Added a wrapper
+	that can be used for starting netscape.  If netscape it will
+	tell that copy to display the given URL, optionally in a new
+	window.  It also contains the 'netscape -remote' functionality
+	using the --remote argument.
+
 1998-10-05  Michael Lausch  <mla@gams.at>
 
 	* libgnorba/orbitgtk.c (gnome_name_service_get): Added setisd()
