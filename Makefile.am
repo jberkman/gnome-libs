@@ -17,6 +17,7 @@ GNORBA =
 endif
 
 SUBDIRS = po intl support macros \
+	tools	\
 	libgnome libgnomeui gtk-xmhtml gnome-hello zvt \
 	$(GNORBA) test-gnome test-suite devel-docs $(libvfs)
 
