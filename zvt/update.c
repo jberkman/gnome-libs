@@ -629,7 +629,7 @@ static int vt_in_wordclass(uint32 c)
   int ch;
 
   ch = c&0xff;
-  return (isalnum(ch) || ispunct(ch));
+  return (isalnum(ch));
 }
 
 /*
@@ -826,8 +826,7 @@ char *vt_select_block(struct _vtx *vx, int sx, int sy, int ex, int ey, int *len)
 
   /* makes a rough assumption about the buffer size needed */
   if ( (data = malloc((ey-sy+1)*(vx->vt.width+20))) == 0 ) {
-    if (len)
-      *len = 0;
+    *len = 0;
     printf("ERROR: Cannot malloc selection buffer\n");
     return 0;
   }
@@ -840,8 +839,7 @@ char *vt_select_block(struct _vtx *vx, int sx, int sy, int ex, int ey, int *len)
   if (wn)
     nn = wn->next;
   else {
-    if (len)
-      *len = 0;
+    *len = 0;
     strcpy(data, "");
     return data;
   }
@@ -875,8 +873,7 @@ char *vt_select_block(struct _vtx *vx, int sx, int sy, int ex, int ey, int *len)
       out = vt_expand_line(wn, 0, ex, out);
   }
 
-  if (len)
-    *len = out-data;
+  *len = out-data;
 
   d(printf("selected text = \n");
     fwrite(data, out-data, 1, stdout);
@@ -895,7 +892,7 @@ char *vt_get_selection(struct _vtx *vx, int *len)
 
   vx->selection_data = vt_select_block(vx, vx->selstartx, vx->selstarty,
 				      vx->selendx, vx->selendy, len);
-
+  vx->selection_size = *len;
   return vx->selection_data;
 }
 

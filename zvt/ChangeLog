@@ -1,3 +1,9 @@
+1998-12-09  Miguel de Icaza  <miguel@nuclecu.unam.mx>
+
+	* update.c (vt_get_selection): Fixed the paste problems.  We need
+	to set the selection_size when we set the selection
+	(vt_in_wordclass): Punctuation characters are not in wordclass
+
 Wed Dec  9 05:39:05 PST 1998 Manish Singh <yosh@gimp.org>
 
 	* zvtterm.[ch]: fix for IC changes in new gtk. It compiles,

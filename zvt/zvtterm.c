@@ -1375,7 +1375,8 @@ zvt_term_button_release (GtkWidget      *widget,
   gint x, y;
   GdkModifierType mask;
   struct _vtx *vx;
-
+  int len;
+  
   d(printf("button released\n"));
 
   g_return_val_if_fail (widget != NULL, FALSE);
@@ -1423,7 +1424,7 @@ zvt_term_button_release (GtkWidget      *widget,
 
     vx->selectiontype = VT_SELTYPE_NONE; /* 'turn off' selecting */
     
-    vt_get_selection(vx, 0);
+    vt_get_selection(vx, &len);
 
     gtk_selection_owner_set (widget,
 			     GDK_SELECTION_PRIMARY,
@@ -2491,7 +2492,7 @@ char *
 zvt_term_get_buffer(ZvtTerm *term, int *len, int type, int sx, int sy, int ex, int ey)
 {
   struct _vtx *vx;
-  int ssx, ssy, sex, sey, stype;
+  int ssx, ssy, sex, sey, stype, llen;
   char *sdata;
   char *data;
 
@@ -2522,8 +2523,11 @@ zvt_term_get_buffer(ZvtTerm *term, int *len, int type, int sx, int sy, int ex, i
 
   vt_fix_selection(vx);
 
-  data = vt_get_selection(vx, len);
-
+  data = vt_get_selection(vx, &llen);
+  if (len)
+    *len = llen;
+  vx->selection_size = llen;
+  
   vx->selstartx = ssx;
   vx->selstarty = ssy;
   vx->selendx = sex;
@@ -2533,3 +2537,4 @@ zvt_term_get_buffer(ZvtTerm *term, int *len, int type, int sx, int sy, int ex, i
 
   return data;
 }
+
