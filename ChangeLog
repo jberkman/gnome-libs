@@ -1,3 +1,10 @@
+1998-04-16  Miguel de Icaza  <miguel@nuclecu.unam.mx>
+
+	* libgnome/gnome-dentry.c (gnome_is_program_in_path): Return the
+	full pathname for the program if it is found on the path. 
+	(gnome_desktop_entry_load_flags): Free the pathname according to
+	the new convention.
+
 Sun Apr 19 09:38:36 EDT 1998 Gregory McLean <gregm@comstar.net>
 
         * rasterapi/.cvsignore: added to ignore generated files.
