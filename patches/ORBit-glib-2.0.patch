@@ -1,12 +1,13 @@
+? ORBit-0.5.5.tar.gz
 ? test/test-dynany
 Index: .cvsignore
 ===================================================================
 RCS file: /cvs/gnome/ORBit/.cvsignore,v
 retrieving revision 1.6.4.1
-diff -u -u -p -r1.6.4.1 .cvsignore
+diff -u -u -r1.6.4.1 .cvsignore
 --- .cvsignore	2000/09/29 23:34:02	1.6.4.1
-+++ .cvsignore	2000/11/22 12:13:43
-@@ -20,4 +20,6 @@ missing
++++ .cvsignore	2000/12/09 16:56:55
+@@ -20,4 +20,6 @@
  install-sh
  mkinstalldirs
  ORBit.spec
@@ -17,10 +18,10 @@ Index: Makefile.am
 ===================================================================
 RCS file: /cvs/gnome/ORBit/Makefile.am,v
 retrieving revision 1.13.4.3
-diff -u -u -p -r1.13.4.3 Makefile.am
+diff -u -u -r1.13.4.3 Makefile.am
 --- Makefile.am	2000/09/30 02:09:43	1.13.4.3
-+++ Makefile.am	2000/11/22 12:13:43
-@@ -4,7 +4,7 @@ SUBDIRS=popt libIDL src test
++++ Makefile.am	2000/12/09 16:56:55
+@@ -4,7 +4,7 @@
  
  bin_SCRIPTS=orbit-config
  
@@ -29,7 +30,7 @@ diff -u -u -p -r1.13.4.3 Makefile.am
  
  dist-hook: ORBit.spec
  	mkdir $(distdir)/docs
-@@ -18,4 +18,5 @@ m4datadir=$(datadir)/aclocal
+@@ -18,4 +18,5 @@
  m4data_DATA=ORBit.m4
  
  pkgconfigdir = $(libdir)/pkgconfig
@@ -41,7 +42,7 @@ Index: ORBit-2.0.pc.in
 RCS file: ORBit-2.0.pc.in
 diff -N ORBit-2.0.pc.in
 --- /dev/null	Tue May  5 16:32:27 1998
-+++ ORBit-2.0.pc.in	Wed Nov 22 07:13:43 2000
++++ ORBit-2.0.pc.in	Sat Dec  9 11:56:55 2000
 @@ -0,0 +1,12 @@
 +prefix=@prefix@
 +exec_prefix=@exec_prefix@
@@ -59,9 +60,9 @@ Index: autogen.sh
 ===================================================================
 RCS file: /cvs/gnome/ORBit/autogen.sh,v
 retrieving revision 1.26.4.1
-diff -u -u -p -r1.26.4.1 autogen.sh
+diff -u -u -r1.26.4.1 autogen.sh
 --- autogen.sh	2000/02/22 00:52:22	1.26.4.1
-+++ autogen.sh	2000/11/22 12:13:44
++++ autogen.sh	2000/12/09 16:56:55
 @@ -4,78 +4,11 @@
  srcdir=`dirname $0`
  test -z "$srcdir" && srcdir=.
@@ -146,11 +147,39 @@ diff -u -u -p -r1.26.4.1 autogen.sh
 Index: configure.in
 ===================================================================
 RCS file: /cvs/gnome/ORBit/configure.in,v
-retrieving revision 1.98.4.6
-diff -u -u -p -r1.98.4.6 configure.in
---- configure.in	2000/09/29 23:34:02	1.98.4.6
-+++ configure.in	2000/11/22 12:13:44
-@@ -96,18 +96,23 @@ done
+retrieving revision 1.98.4.7
+diff -u -u -r1.98.4.7 configure.in
+--- configure.in	2000/11/30 18:12:40	1.98.4.7
++++ configure.in	2000/12/09 16:56:56
+@@ -18,7 +18,7 @@
+ # sonames we'll start using that for binary compat, but until then
+ # caveat user :)
+ 
+-ORBIT_MAJOR_VERSION=0
++ORBIT_MAJOR_VERSION=2
+ ORBIT_MINOR_VERSION=5
+ ORBIT_MICRO_VERSION=5
+ ORBIT_INTERFACE_AGE=0
+@@ -30,14 +30,10 @@
+ AC_SUBST(ORBIT_VERSION)
+ 
+ # libtool versioning
+-#LT_RELEASE=$ORBIT_MAJOR_VERSION.$ORBIT_MINOR_VERSION
+-#LT_CURRENT=`expr $ORBIT_MICRO_VERSION - $ORBIT_INTERFACE_AGE`
+-#LT_REVISION=$ORBIT_INTERFACE_AGE
+-#LT_AGE=`expr $ORBIT_BINARY_AGE - $ORBIT_INTERFACE_AGE`
+-LT_RELEASE=$ORBIT_VERSION
+-LT_CURRENT=$ORBIT_MINOR_VERSION
+-LT_REVISION=$ORBIT_MICRO_VERSION
+-LT_AGE=$ORBIT_MINOR_VERSION
++LT_RELEASE=$ORBIT_MAJOR_VERSION.$ORBIT_MINOR_VERSION
++LT_CURRENT=`expr $ORBIT_MICRO_VERSION - $ORBIT_INTERFACE_AGE`
++LT_REVISION=$ORBIT_INTERFACE_AGE
++LT_AGE=`expr $ORBIT_BINARY_AGE - $ORBIT_INTERFACE_AGE`
+ AC_SUBST(LT_RELEASE)
+ AC_SUBST(LT_CURRENT)
+ AC_SUBST(LT_REVISION)
+@@ -96,18 +92,23 @@
  AC_MSG_RESULT($INDENT_COMMAND)
  AC_DEFINE_UNQUOTED(INDENT_COMMAND,"$INDENT_COMMAND")
  
@@ -182,7 +211,7 @@ diff -u -u -p -r1.98.4.6 configure.in
  
  AC_PROG_YACC
  AM_PROG_LEX
-@@ -347,5 +352,6 @@ src/daemons/interface_repository/Makefil
+@@ -347,5 +348,6 @@
  test/Makefile
  test/idl/Makefile
  test/test-poa/Makefile
@@ -193,10 +222,10 @@ Index: orbit-config.in
 ===================================================================
 RCS file: /cvs/gnome/ORBit/orbit-config.in,v
 retrieving revision 1.7
-diff -u -u -p -r1.7 orbit-config.in
+diff -u -u -r1.7 orbit-config.in
 --- orbit-config.in	1999/10/08 04:49:07	1.7
-+++ orbit-config.in	2000/11/22 12:13:44
-@@ -87,8 +87,8 @@ while test $# -gt 0; do
++++ orbit-config.in	2000/12/09 16:56:56
+@@ -87,8 +87,8 @@
         	;;
  
      client|server)
@@ -211,10 +240,10 @@ Index: libIDL/.cvsignore
 ===================================================================
 RCS file: /cvs/gnome/libIDL/.cvsignore,v
 retrieving revision 1.8.4.1
-diff -u -u -p -r1.8.4.1 .cvsignore
+diff -u -u -r1.8.4.1 .cvsignore
 --- libIDL/.cvsignore	2000/09/29 23:35:50	1.8.4.1
-+++ libIDL/.cvsignore	2000/11/22 12:13:44
-@@ -29,3 +29,4 @@ libIDL.m4
++++ libIDL/.cvsignore	2000/12/09 16:56:56
+@@ -29,3 +29,4 @@
  Makefile.msc
  libIDL.spec
  libIDL.pc
@@ -223,10 +252,10 @@ Index: libIDL/Makefile.am
 ===================================================================
 RCS file: /cvs/gnome/libIDL/Makefile.am,v
 retrieving revision 1.65.4.3
-diff -u -u -p -r1.65.4.3 Makefile.am
+diff -u -u -r1.65.4.3 Makefile.am
 --- libIDL/Makefile.am	2000/09/30 02:09:43	1.65.4.3
-+++ libIDL/Makefile.am	2000/11/22 12:13:44
-@@ -33,7 +33,7 @@ EXTRA_DIST		= BUGS parser.y lexer.l \
++++ libIDL/Makefile.am	2000/12/09 16:56:56
+@@ -33,7 +33,7 @@
  			  Makefile.msc README.win32 \
  			  libIDL.def libIDLConf.sh.in \
  			  stamp-parser lexer.c parser.c parser.h \
@@ -235,7 +264,7 @@ diff -u -u -p -r1.65.4.3 Makefile.am
  
  info_TEXINFOS		= libIDL.texi
  pkginclude_HEADERS	= IDL.h
-@@ -73,5 +73,5 @@ libIDLConf.sh: libIDLConf.sh.in Makefile
+@@ -73,5 +73,5 @@
  		&& mv libIDLConf.tmp libIDLConf.sh
  
  pkgconfigdir = $(libdir)/pkgconfig
@@ -246,18 +275,27 @@ Index: libIDL/configure.in
 ===================================================================
 RCS file: /cvs/gnome/libIDL/configure.in,v
 retrieving revision 1.54.4.1
-diff -u -u -p -r1.54.4.1 configure.in
+diff -u -u -r1.54.4.1 configure.in
 --- libIDL/configure.in	2000/09/29 23:35:50	1.54.4.1
-+++ libIDL/configure.in	2000/11/22 12:13:44
-@@ -19,7 +19,6 @@ LIBIDL_MICRO_VERSION=8
- LIBIDL_INTERFACE_AGE=4
- LIBIDL_BINARY_AGE=8
++++ libIDL/configure.in	2000/12/09 16:56:56
+@@ -13,13 +13,12 @@
+ # if backwards compatibility has been broken,
+ # set LIBIDL_BINARY_AGE and LIBIDL_INTERFACE_AGE to 0.
+ #
+-LIBIDL_MAJOR_VERSION=0
++LIBIDL_MAJOR_VERSION=2
+ LIBIDL_MINOR_VERSION=6
+ LIBIDL_MICRO_VERSION=8
+-LIBIDL_INTERFACE_AGE=4
+-LIBIDL_BINARY_AGE=8
++LIBIDL_INTERFACE_AGE=0
++LIBIDL_BINARY_AGE=0
  LIBIDL_LIBRARY_VERSION=$LIBIDL_MAJOR_VERSION.$LIBIDL_MINOR_VERSION.$LIBIDL_MICRO_VERSION
 -GLIB_VERSION_REQUIRED=1.2.0
  AC_DIVERT_POP()dnl
  
  AC_SUBST(LIBIDL_MAJOR_VERSION)
-@@ -79,10 +78,15 @@ AM_PROG_LIBTOOL
+@@ -79,10 +78,15 @@
  AM_MAINTAINER_MODE
  
  dnl Checks for libraries.
@@ -276,7 +314,7 @@ diff -u -u -p -r1.54.4.1 configure.in
  
  AC_STDC_HEADERS
  AC_CHECK_HEADERS(stddef.h)
-@@ -104,6 +108,7 @@ libIDL-config
+@@ -104,6 +108,7 @@
  libIDL.m4
  libIDL.spec
  libIDL.pc
@@ -289,7 +327,7 @@ Index: libIDL/libIDL-2.0.pc.in
 RCS file: libIDL-2.0.pc.in
 diff -N libIDL-2.0.pc.in
 --- /dev/null	Tue May  5 16:32:27 1998
-+++ libIDL-2.0.pc.in	Wed Nov 22 07:13:44 2000
++++ libIDL-2.0.pc.in	Sat Dec  9 11:56:56 2000
 @@ -0,0 +1,12 @@
 +prefix=@prefix@
 +exec_prefix=@exec_prefix@
