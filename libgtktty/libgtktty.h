@@ -38,7 +38,6 @@
 
 #ifdef __cplusplus
 extern "C" {
-#pragma }
 #endif /* __cplusplus */
 
 
@@ -55,7 +54,6 @@ extern	const gchar	*gtktty_libversion;
 
 
 #ifdef __cplusplus
-#pragma {
 }
 #endif /* __cplusplus */
 

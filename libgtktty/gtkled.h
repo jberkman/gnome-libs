@@ -28,7 +28,6 @@
 
 #ifdef __cplusplus
 extern "C" {
-#pragma }
 #endif /* __cplusplus */
 
 
@@ -68,7 +67,6 @@ gboolean   gtk_led_is_on       (GtkLed			*led);
 
 
 #ifdef __cplusplus
-#pragma {
 }
 #endif /* __cplusplus */
 

@@ -28,7 +28,6 @@
 
 #ifdef __cplusplus
 extern "C" {
-#pragma }
 #endif /* __cplusplus */
 
 
@@ -284,7 +283,6 @@ gboolean	gtk_term_putc		(GtkTerm	*term,
 
 
 #ifdef __cplusplus
-#pragma {
 }
 #endif /* __cplusplus */
 

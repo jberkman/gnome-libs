@@ -27,7 +27,6 @@
 
 #ifdef __cplusplus
 extern "C" {
-#pragma }
 #endif /* __cplusplus */
 
 
@@ -68,7 +67,6 @@ struct  _GtkVtEmuTermEntry
 
 
 #ifdef __cplusplus
-#pragma {
 }
 #endif /* __cplusplus */
 

@@ -28,7 +28,6 @@
 
 #ifdef __cplusplus
 extern "C" {
-#pragma }
 #endif /* __cplusplus */
 
 
@@ -46,7 +45,6 @@ void	gtk_vt102_reset		(GtkVtEmu       *base_emu,
 
 
 #ifdef __cplusplus
-#pragma {
 }
 #endif /* __cplusplus */
 
