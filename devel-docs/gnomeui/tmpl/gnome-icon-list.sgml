@@ -2,26 +2,26 @@
 GnomeIconList
 
 <!-- ##### SECTION Short_Description ##### -->
-An list of icons with captions, with optional caption editing.
+A list of icons with captions, with optional caption editing.
 
 <!-- ##### SECTION Long_Description ##### -->
   <para>
     The GNOME icon list widget can hold a number of icons with
-    captions.  You can make the icon captions be editable; this is
-    configured when you create the icon list.
+    captions.  The icons on the list can be selected (various
+    selection methods are supported).  The programmer can enable
+    caption-editing for the icons.  This parameters is configured when
+    you create the icon list widget.
   </para>
 
   <para>
     You can control the type of selection mode you desire by using the
-    <function>gnome_icon_list_set_selection_mode()</function>
-    function.
+    gnome_icon_list_set_selection_mode() function.
   </para>
 
 <!-- ##### SECTION See_Also ##### -->
 <para>
 
 </para>
-
 
 <!-- ##### STRUCT GnomeIconList ##### -->
   <para>
@@ -404,8 +404,10 @@ print_selected_icons (GnomeIconList *gil)
   </para>
 
 @iconlist: Icon list which emitted the signal
-@num: Index of the icon that became selected
+@arg1: 
 @event: Event that triggered the selection, or NULL if none
+<!-- # Unused Parameters # -->
+@num: Index of the icon that became selected
 
 <!-- ##### SIGNAL GnomeIconList::unselect-icon ##### -->
   <para>
@@ -415,8 +417,10 @@ print_selected_icons (GnomeIconList *gil)
   </para>
 
 @iconlist: Icon list which emitted the signal
-@num: Index of the icon that became unselected
+@arg1: 
 @event: Event that triggered the unselection, or NULL if none
+<!-- # Unused Parameters # -->
+@num: Index of the icon that became unselected
 
 <!-- ##### SIGNAL GnomeIconList::text-changed ##### -->
   <para>
@@ -437,9 +441,12 @@ print_selected_icons (GnomeIconList *gil)
   </para>
 
 @iconlist: Icon list which emitted the signal
+@arg1: 
+@arg2: 
+@Returns: Whether the change is accepted by the application or not
+<!-- # Unused Parameters # -->
 @num: Index of the icon whose text was edited
 @new_text: Text entered by the user, which must be validated
-@Returns: Whether the change is accepted by the application or not
 
 <!-- ##### ARG GnomeIconList:hadjustment ##### -->
   <para>

@@ -2,18 +2,63 @@
 GnomeStock
 
 <!-- ##### SECTION Short_Description ##### -->
-
+50% finished, API-docs not done; Default icons for toolbars, menus and buttons.
 
 <!-- ##### SECTION Long_Description ##### -->
-<para>
+  <para>
+    These functions provide an applications programmer with default
+    icons for toolbars, menu pixmaps and buttons. 
+  </para>
 
-</para>
+  <para>
+    To support themability, we use (char *) to call those functions. A
+    new theme might register new icons by calling
+    gnome_stock_pixmap_register(), or may change existing icons by
+    calling gnome_stock_pixmap_change(). An application should check (by
+    calling gnome_stock_pixmap_checkfor)(), if the current theme
+    supports an uncommon icon, before using it. The only icons an app
+    can rely on, are those defined in this header file.
+  </para>
 
+  <para>
+    We have stock buttons too. To use them, use the
+    gnome_stock_button() function with a GNOME_STOCK constant.  This
+    function returns a #GtkButton with a gettexted default text and an
+    icon.
+  </para>
+
+  <para>
+    There is an additional feature, which might be interesting. If an
+    application calls gnome_stock_pixmap_register() and uses it by
+    calling gnome_stock_pixmap_widget(), it doesn't have to care about
+    the state_changed signal to display the appropriate pixmap
+    itself. Additionally gnome-stock generates a disabled version of a
+    pixmap automatically, when no pixmap for a disabled state is
+    provided.
+  </para>
+
+  <refsect2>
+    <title>GNOME_STOCK icons internals</title>
+    <para>
+      One such `icon' should have at least three pixmaps to reflect it's
+      state. There is a `regular' pixmap, a `disabled' pixmap and a
+      `focused' pixmap. You can get either each of these pixmaps by
+      calling gnome_stock_pixmap or you can get a widget by calling
+      gnome_stock_pixmap_widget. This widget is a container which
+      gtk_widget_shows the pixmap, that is reflecting the current state
+      of the widget. If for example you gtk_container_add this widget to
+    a button, which is currently not sensitive, the widget will just
+      show the `disabled' pixmap. If the state of the button changes to
+      sensitive, the widget will change to the `regular' pixmap. The
+      `focused' pixmap will be shown, when the mouse pointer enters the
+      widget.
+    </para>
+  </refsect2>
+  
 <!-- ##### SECTION See_Also ##### -->
 <para>
-
+#GtkButton, #GnomePixmap
 </para>
-
 
 <!-- ##### STRUCT GnomeStock ##### -->
 <para>
@@ -23,133 +68,133 @@ GnomeStock
 
 <!-- ##### MACRO GNOME_STOCK_PIXMAP_NEW ##### -->
 <para>
-
+    Image for representing "New".
 </para>
 
 
 
 <!-- ##### MACRO GNOME_STOCK_PIXMAP_OPEN ##### -->
 <para>
-
+    Image for representing "Open".
 </para>
 
 
 
 <!-- ##### MACRO GNOME_STOCK_PIXMAP_CLOSE ##### -->
 <para>
-
+    Image for representing "Close".
 </para>
 
 
 
 <!-- ##### MACRO GNOME_STOCK_PIXMAP_REVERT ##### -->
 <para>
-
+    Image for representing "Revert".
 </para>
 
 
 
 <!-- ##### MACRO GNOME_STOCK_PIXMAP_SAVE ##### -->
 <para>
-
+    Image for representing "Save".
 </para>
 
 
 
 <!-- ##### MACRO GNOME_STOCK_PIXMAP_SAVE_AS ##### -->
 <para>
-
+    Image for representing "Save as".
 </para>
 
 
 
 <!-- ##### MACRO GNOME_STOCK_PIXMAP_CUT ##### -->
 <para>
-
+    Image for representing "Cut".
 </para>
 
 
 
 <!-- ##### MACRO GNOME_STOCK_PIXMAP_COPY ##### -->
 <para>
-
+    Image for representing "Copy".
 </para>
 
 
 
 <!-- ##### MACRO GNOME_STOCK_PIXMAP_PASTE ##### -->
 <para>
-
+    Image for representing "Paste".
 </para>
 
 
 
 <!-- ##### MACRO GNOME_STOCK_PIXMAP_CLEAR ##### -->
 <para>
-
+    Image for representing "Clear".
 </para>
 
 
 
 <!-- ##### MACRO GNOME_STOCK_PIXMAP_PROPERTIES ##### -->
 <para>
-
+    Image for representing "Properties".
 </para>
 
 
 
 <!-- ##### MACRO GNOME_STOCK_PIXMAP_PREFERENCES ##### -->
 <para>
-
+    Image for representing "Preferences".
 </para>
 
 
 
 <!-- ##### MACRO GNOME_STOCK_PIXMAP_HELP ##### -->
 <para>
-
+    Image for representing "Help".
 </para>
 
 
 
 <!-- ##### MACRO GNOME_STOCK_PIXMAP_SCORES ##### -->
 <para>
-
+    Image for representing "Scores".
 </para>
 
 
 
 <!-- ##### MACRO GNOME_STOCK_PIXMAP_PRINT ##### -->
 <para>
-
+    Image for representing "Print".
 </para>
 
 
 
 <!-- ##### MACRO GNOME_STOCK_PIXMAP_SEARCH ##### -->
 <para>
-
+    Image for representing "Search".
 </para>
 
 
 
 <!-- ##### MACRO GNOME_STOCK_PIXMAP_SRCHRPL ##### -->
 <para>
-
+    Image for representing "Search and replace".
 </para>
 
 
 
 <!-- ##### MACRO GNOME_STOCK_PIXMAP_BACK ##### -->
 <para>
-
+    Image for representing "Back".
 </para>
 
 
 
 <!-- ##### MACRO GNOME_STOCK_PIXMAP_FORWARD ##### -->
 <para>
-
+    Image for representing "Forward".
 </para>
 
 
@@ -170,196 +215,196 @@ GnomeStock
 
 <!-- ##### MACRO GNOME_STOCK_PIXMAP_HOME ##### -->
 <para>
-
+    Image for representing "Home".
 </para>
 
 
 
 <!-- ##### MACRO GNOME_STOCK_PIXMAP_STOP ##### -->
 <para>
-
+    Image for representing "Stop".
 </para>
 
 
 
 <!-- ##### MACRO GNOME_STOCK_PIXMAP_REFRESH ##### -->
 <para>
-
+    Image for representing "Refresh".
 </para>
 
 
 
 <!-- ##### MACRO GNOME_STOCK_PIXMAP_UNDO ##### -->
 <para>
-
+    Image for representing "Undo".
 </para>
 
 
 
 <!-- ##### MACRO GNOME_STOCK_PIXMAP_REDO ##### -->
 <para>
-
+    Image for representing "Redo".
 </para>
 
 
 
 <!-- ##### MACRO GNOME_STOCK_PIXMAP_TIMER ##### -->
 <para>
-
+    Image for representing "Timer".
 </para>
 
 
 
 <!-- ##### MACRO GNOME_STOCK_PIXMAP_TIMER_STOP ##### -->
 <para>
-
+    Image for representing "Timer stop".
 </para>
 
 
 
 <!-- ##### MACRO GNOME_STOCK_PIXMAP_MAIL ##### -->
 <para>
-
+    Image for representing "Mail".
 </para>
 
 
 
 <!-- ##### MACRO GNOME_STOCK_PIXMAP_MAIL_RCV ##### -->
 <para>
-
+    Image for representing "Mail get".
 </para>
 
 
 
 <!-- ##### MACRO GNOME_STOCK_PIXMAP_MAIL_SND ##### -->
 <para>
-
+    Image for representing "Mail send".
 </para>
 
 
 
 <!-- ##### MACRO GNOME_STOCK_PIXMAP_MAIL_RPL ##### -->
 <para>
-
+    Image for representing "Mail reply".
 </para>
 
 
 
 <!-- ##### MACRO GNOME_STOCK_PIXMAP_MAIL_FWD ##### -->
 <para>
-
+    Image for representing "Timer".
 </para>
 
 
 
 <!-- ##### MACRO GNOME_STOCK_PIXMAP_MAIL_NEW ##### -->
 <para>
-
+    Image for representing "Mail new".
 </para>
 
 
 
 <!-- ##### MACRO GNOME_STOCK_PIXMAP_TRASH ##### -->
 <para>
-
+    Image for representing "Trashcan".
 </para>
 
 
 
 <!-- ##### MACRO GNOME_STOCK_PIXMAP_TRASH_FULL ##### -->
 <para>
-
+    Image for representing "Trashcan is full".
 </para>
 
 
 
 <!-- ##### MACRO GNOME_STOCK_PIXMAP_UNDELETE ##### -->
 <para>
-
+    Image for representing "Undelete".
 </para>
 
 
 
 <!-- ##### MACRO GNOME_STOCK_PIXMAP_SPELLCHECK ##### -->
 <para>
-
+    Image for representing "Spellcheck".
 </para>
 
 
 
 <!-- ##### MACRO GNOME_STOCK_PIXMAP_MIC ##### -->
 <para>
-
+    Image for representing "Microphone".
 </para>
 
 
 
 <!-- ##### MACRO GNOME_STOCK_PIXMAP_LINE_IN ##### -->
 <para>
-
+    Image for representing "Line in".
 </para>
 
 
 
 <!-- ##### MACRO GNOME_STOCK_PIXMAP_CDROM ##### -->
 <para>
-
+    Image for representing "CD-ROM".
 </para>
 
 
 
 <!-- ##### MACRO GNOME_STOCK_PIXMAP_VOLUME ##### -->
 <para>
-
+    Image for representing "Volume".
 </para>
 
 
 
 <!-- ##### MACRO GNOME_STOCK_PIXMAP_BOOK_RED ##### -->
 <para>
-
+    Image for representing "A red book".
 </para>
 
 
 
 <!-- ##### MACRO GNOME_STOCK_PIXMAP_BOOK_GREEN ##### -->
 <para>
-
+    Image for representing "A green book".
 </para>
 
 
 
 <!-- ##### MACRO GNOME_STOCK_PIXMAP_BOOK_BLUE ##### -->
 <para>
-
+    Image for representing "A blue book".
 </para>
 
 
 
 <!-- ##### MACRO GNOME_STOCK_PIXMAP_BOOK_YELLOW ##### -->
 <para>
-
+    Image for representing "A yellow book".
 </para>
 
 
 
 <!-- ##### MACRO GNOME_STOCK_PIXMAP_BOOK_OPEN ##### -->
 <para>
-
+    Image for representing "An open book".
 </para>
 
 
 
 <!-- ##### MACRO GNOME_STOCK_PIXMAP_ABOUT ##### -->
 <para>
-
+    Image for representing "About".
 </para>
 
 
 
 <!-- ##### MACRO GNOME_STOCK_PIXMAP_QUIT ##### -->
 <para>
-
+    Image for representing "Quit".
 </para>
 
 
@@ -1396,3 +1441,9 @@ GnomeStock
 @mask: 
 
 
+<!--
+Local variables:
+mode: sgml
+sgml-parent-document: ("../gnomeui-docs.sgml" "book" "sect1" "")
+End:
+-->

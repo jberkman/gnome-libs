@@ -154,28 +154,28 @@
 </MACRO>
 <MACRO>
 <NAME>gnome_config_private_set_string</NAME>
-#define gnome_config_private_set_string(path,val) \
-	(_gnome_config_set_string((path),(value),TRUE))
+#define gnome_config_private_set_string(path,new_value) \
+	(_gnome_config_set_string((path),(new_value),TRUE))
 </MACRO>
 <MACRO>
 <NAME>gnome_config_private_set_translated_string</NAME>
-#define gnome_config_private_set_translated_string(path,val) \
-	(_gnome_config_set_translated_string((path),(value),TRUE))
+#define gnome_config_private_set_translated_string(path,new_value) \
+	(_gnome_config_set_translated_string((path),(new_value),TRUE))
 </MACRO>
 <MACRO>
 <NAME>gnome_config_private_set_int</NAME>
-#define gnome_config_private_set_int(path,value) \
-	(_gnome_config_set_int((path),(value),TRUE))
+#define gnome_config_private_set_int(path,new_value) \
+	(_gnome_config_set_int((path),(new_value),TRUE))
 </MACRO>
 <MACRO>
 <NAME>gnome_config_private_set_float</NAME>
-#define gnome_config_private_set_float(path,value) \
-	(_gnome_config_set_float((path),(value),TRUE))
+#define gnome_config_private_set_float(path,new_value) \
+	(_gnome_config_set_float((path),(new_value),TRUE))
 </MACRO>
 <MACRO>
 <NAME>gnome_config_private_set_bool</NAME>
-#define gnome_config_private_set_bool(path,value) \
-	(_gnome_config_set_bool((path),(value),TRUE))
+#define gnome_config_private_set_bool(path,new_value) \
+	(_gnome_config_set_bool((path),(new_value),TRUE))
 </MACRO>
 <MACRO>
 <NAME>gnome_config_private_set_vector</NAME>
@@ -189,7 +189,7 @@
 </MACRO>
 <MACRO>
 <NAME>gnome_config_private_has_section</NAME>
-#define gnome_config_private_has_section(Path) \
+#define gnome_config_private_has_section(path) \
 	(_gnome_config_has_section((path),TRUE))
 </MACRO>
 <MACRO>
@@ -264,7 +264,7 @@ void
 </MACRO>
 <MACRO>
 <NAME>gnome_config_private_clean_section</NAME>
-#define gnome_config_private_clean_section(Path) \
+#define gnome_config_private_clean_section(path) \
 	(_gnome_config_clean_section((path),TRUE))
 </MACRO>
 <MACRO>
@@ -350,8 +350,8 @@ typedef struct {
 	char *location;		/* path of this dentry */
 	char *geometry;		/* geometry for this icon */
 	
-	/* These are computed from icon_base */
 	unsigned int multiple_args:1;
+	unsigned int is_kde:1;  /* If this is a .kdelink file */
 } GnomeDesktopEntry;
 </STRUCT>
 <FUNCTION>
@@ -442,7 +442,7 @@ gint fd, gchar *fromtype, gchar *totype
 <FUNCTION>
 <NAME>gnome_file_convert</NAME>
 <RETURNS>gint</RETURNS>
-gchar *filename, gchar *fromtype, gchar *totype
+const char *filename, const char *fromtype, const char *totype
 </FUNCTION>
 <STRUCT>
 <NAME>GnomeHelpMenuEntry</NAME>
@@ -623,11 +623,6 @@ const gchar * gamename
 <NAME>gnome_score_log</NAME>
 <RETURNS>gint</RETURNS>
 gfloat score,gchar *level,gboolean higher_to_lower_score_order
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_score_get_notable</NAME>
-<RETURNS>gint</RETURNS>
-gchar *gamename,gchar *level,gchar ***names,gfloat **scores,time_t **scoretimes
 </FUNCTION>
 <ENUM>
 <NAME>GnomeTriggerType</NAME>
@@ -826,6 +821,26 @@ void
 <RETURNS>gboolean  </RETURNS>
 const char * path
 </FUNCTION>
+<VARIABLE>
+<NAME>gnome_user_home_dir</NAME>
+extern char *gnome_user_home_dir;
+</VARIABLE>
+<VARIABLE>
+<NAME>gnome_user_dir</NAME>
+extern char *gnome_user_dir;
+</VARIABLE>
+<VARIABLE>
+<NAME>gnome_user_private_dir</NAME>
+extern char *gnome_user_private_dir;
+</VARIABLE>
+<VARIABLE>
+<NAME>gnome_user_accels_dir</NAME>
+extern char *gnome_user_accels_dir;
+</VARIABLE>
+<VARIABLE>
+<NAME>gnome_do_not_create_directories</NAME>
+extern char gnome_do_not_create_directories;
+</VARIABLE>
 <FUNCTION>
 <NAME>gnomelib_init</NAME>
 <RETURNS>void  </RETURNS>
@@ -833,48 +848,48 @@ const char *app_id, const char *app_version
 </FUNCTION>
 <FUNCTION>
 <NAME>gnome_mime_get_value</NAME>
-<RETURNS>char       *</RETURNS>
+<RETURNS>const char  *</RETURNS>
 const char *mime_type, char *key
 </FUNCTION>
 <FUNCTION>
 <NAME>gnome_mime_get_keys</NAME>
-<RETURNS>GList      *</RETURNS>
+<RETURNS>GList       *</RETURNS>
 const char *mime_type
 </FUNCTION>
 <FUNCTION>
 <NAME>gnome_mime_program</NAME>
-<RETURNS>gchar      *</RETURNS>
-gchar* mime_type
+<RETURNS>const char  *</RETURNS>
+const char* mime_type
 </FUNCTION>
 <FUNCTION>
 <NAME>gnome_mime_description</NAME>
-<RETURNS>gchar      *</RETURNS>
-gchar* mime_type
+<RETURNS>const char  *</RETURNS>
+const char* mime_type
 </FUNCTION>
 <FUNCTION>
 <NAME>gnome_mime_nametemplate</NAME>
-<RETURNS>gchar      *</RETURNS>
-gchar* mime_type
+<RETURNS>const char  *</RETURNS>
+const char* mime_type
 </FUNCTION>
 <FUNCTION>
 <NAME>gnome_mime_test</NAME>
-<RETURNS>gchar      *</RETURNS>
-gchar* mime_type
+<RETURNS>const char  *</RETURNS>
+const char* mime_type
 </FUNCTION>
 <FUNCTION>
 <NAME>gnome_mime_composetyped</NAME>
-<RETURNS>gchar      *</RETURNS>
-gchar* mime_type
+<RETURNS>const char  *</RETURNS>
+const char* mime_type
 </FUNCTION>
 <FUNCTION>
 <NAME>gnome_mime_copiousoutput</NAME>
 <RETURNS>gboolean  </RETURNS>
-gchar* mime_type, char *key
+const char* mime_type, char *key
 </FUNCTION>
 <FUNCTION>
 <NAME>gnome_mime_needsterminal</NAME>
 <RETURNS>gboolean  </RETURNS>
-gchar* mime_type, char *key
+const char* mime_type, char *key
 </FUNCTION>
 <FUNCTION>
 <NAME>gnome_remote_get_command</NAME>
@@ -1001,6 +1016,10 @@ GnomeRegexCache *rxc, int new_size
 <RETURNS>regex_t  *</RETURNS>
 GnomeRegexCache *rxc, const char *pattern,int flags
 </FUNCTION>
+<VARIABLE>
+<NAME>gnome_sound_connection</NAME>
+extern int gnome_sound_connection;
+</VARIABLE>
 <FUNCTION>
 <NAME>gnome_sound_init</NAME>
 <RETURNS>void  </RETURNS>
@@ -1022,11 +1041,19 @@ const char *sample_name, const char *filename
 const char * filename
 </FUNCTION>
 <STRUCT>
-<NAME>Paper</NAME>
+<NAME>GnomePaper</NAME>
 </STRUCT>
 <STRUCT>
-<NAME>Unit</NAME>
+<NAME>GnomeUnit</NAME>
 </STRUCT>
+<TYPEDEF>
+<NAME>Paper</NAME>
+typedef GnomePaper Paper;
+</TYPEDEF>
+<TYPEDEF>
+<NAME>Unit</NAME>
+typedef GnomeUnit Unit;
+</TYPEDEF>
 <FUNCTION>
 <NAME>gnome_paper_name_list</NAME>
 <RETURNS>GList *</RETURNS>
@@ -1034,52 +1061,52 @@ void
 </FUNCTION>
 <FUNCTION>
 <NAME>gnome_paper_with_name</NAME>
-<RETURNS>const Paper 	*</RETURNS>
+<RETURNS>const GnomePaper  *</RETURNS>
 const gchar *papername
 </FUNCTION>
 <FUNCTION>
 <NAME>gnome_paper_with_size</NAME>
-<RETURNS>const Paper 	*</RETURNS>
+<RETURNS>const GnomePaper  *</RETURNS>
 double pswidth, double psheight
 </FUNCTION>
 <FUNCTION>
 <NAME>gnome_paper_name</NAME>
-<RETURNS>const gchar 	*</RETURNS>
-const Paper *paper
+<RETURNS>const gchar 	 *</RETURNS>
+const GnomePaper *paper
 </FUNCTION>
 <FUNCTION>
 <NAME>gnome_paper_pswidth</NAME>
 <RETURNS>gdouble 	</RETURNS>
-const Paper *paper
+const GnomePaper *paper
 </FUNCTION>
 <FUNCTION>
 <NAME>gnome_paper_psheight</NAME>
 <RETURNS>gdouble 	</RETURNS>
-const Paper *paper
+const GnomePaper *paper
 </FUNCTION>
 <FUNCTION>
 <NAME>gnome_paper_lmargin</NAME>
 <RETURNS>gdouble 	</RETURNS>
-const Paper *paper
+const GnomePaper *paper
 </FUNCTION>
 <FUNCTION>
 <NAME>gnome_paper_tmargin</NAME>
 <RETURNS>gdouble 	</RETURNS>
-const Paper *paper
+const GnomePaper *paper
 </FUNCTION>
 <FUNCTION>
 <NAME>gnome_paper_rmargin</NAME>
 <RETURNS>gdouble 	</RETURNS>
-const Paper *paper
+const GnomePaper *paper
 </FUNCTION>
 <FUNCTION>
 <NAME>gnome_paper_bmargin</NAME>
 <RETURNS>gdouble 	</RETURNS>
-const Paper *paper
+const GnomePaper *paper
 </FUNCTION>
 <FUNCTION>
 <NAME>gnome_paper_name_default</NAME>
-<RETURNS>const gchar 	*</RETURNS>
+<RETURNS>const gchar 	 *</RETURNS>
 void
 </FUNCTION>
 <FUNCTION>
@@ -1089,18 +1116,18 @@ void
 </FUNCTION>
 <FUNCTION>
 <NAME>gnome_unit_with_name</NAME>
-<RETURNS>const Unit 	*</RETURNS>
+<RETURNS>const GnomeUnit 	 *</RETURNS>
 const gchar *unitname
 </FUNCTION>
 <FUNCTION>
 <NAME>gnome_paper_convert</NAME>
 <RETURNS>gdouble 	</RETURNS>
-double psvalue, const Unit *unit
+double psvalue, const GnomeUnit *unit
 </FUNCTION>
 <FUNCTION>
 <NAME>gnome_paper_convert_to_points</NAME>
 <RETURNS>double  </RETURNS>
-double othervalue, const Unit *unit
+double othervalue, const GnomeUnit *unit
 </FUNCTION>
 <FUNCTION>
 <NAME>gnome_url_show</NAME>
@@ -1117,3 +1144,11 @@ const struct poptOption *options,const char *description
 <RETURNS>poptContext  </RETURNS>
 int argc, char *argv[],int popt_flags
 </FUNCTION>
+<VARIABLE>
+<NAME>program_invocation_short_name</NAME>
+extern char *program_invocation_short_name;
+</VARIABLE>
+<VARIABLE>
+<NAME>program_invocation_name</NAME>
+extern char *program_invocation_name;
+</VARIABLE>

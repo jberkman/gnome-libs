@@ -70,8 +70,13 @@ dist-hook:
 	tar cvf - gnome-dev-info | (cd $(distdir); tar xf -)
 
 install-data-local: gnome-dev-info.html
+<<<<<<< Makefile.am
+	for file in gnome-dev-info/*.html gnome-dev-info/*.css; do \
+          basefile=`echo $$file | sed -e 's,^.*/,,'`; \
+=======
 	-for file in $(srcdir)/gnome-dev-info/*.html $(srcdir)/gnome-dev-info/*.css; do \
           basefile=`echo $$file | sed -e 's,^.*/,,'`; \
+>>>>>>> 1.28
           $(INSTALL_DATA) $$file $(DESTDIR)$(htmldir)/$$basefile; \
         done
 

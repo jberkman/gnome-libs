@@ -6,38 +6,47 @@ GnomePropertyBox
 Standarized dialog box for handling configuration
 
 <!-- ##### SECTION Long_Description ##### -->
-<para>
-The <type>GnomePropertyBox</type> widget simplifies coding a
-consistent dialog box for configuring properties of any kind.</para>
+  <para>
+    The <type>GnomePropertyBox</type> widget simplifies coding a
+    consistent dialog box for configuring properties of any kind.
+  </para>
+  
+  <para>
+    The <type>GnomePropertyBox</type> is a toplevel widget (it will
+    create its own window), inside it contains a <type>GtkNotebook</type>
+    which is used to hold the various property pages.
+  </para>
+  
+  <para>
+    The box will include ok, cancel, apply and help buttons (the
+    actual buttons depends on the settings the user has, for example,
+    apply can be hidden).  The ok and apply buttons will start up in
+    non-sensitive state, the programmer needs to configure the widgets
+    inserted into the property box to inform the widget of any state
+    changes to enable the ok and apply buttons.  This is done by
+    calling the gnome_property_box_changed() function.
+  </para>
 
-<para>The <type>GnomePropertyBox</type> is a toplevel widget (it will
-create its own window), inside it contains a <type>GtkNotebook</type>
-which is used to hold the various property pages.</para>
+  <para>
+    To use this widget, you create the widget using
+    gnome_property_box_new() and then you call
+    gnome_property_box_append_page() for each property page you want
+    in the property box.
+  </para>
 
-<para>The box will include ok, cancel, apply and help buttons (the
-actual buttons depends on the settings the user has, for example,
-apply can be hidden).  The ok and apply buttons will start up in
-non-sensitive state, the programmer needs to configure the widgets
-inserted into the property box to inform the widget of any state
-changes to enable the ok and apply buttons.  This is done by calling
-the gnome_property_box_changed() function.</para>
+  <para>
+    The widget emits two signals: "apply" and "help".  To make a
+    functional dialog box you will want to connect to at least the
+    "apply" signal. Your function will be invoked once for each page
+    and one more time at the end, passing a special value of -1 for
+    the page number.
+  </para>
 
-<para>To use this widget, you create the widget using
-gnome_property_box_new() and then you call
-gnome_property_box_append_page() for each property page you want in
-the property box.</para>
+  <para>Here is a sample callback routine layout
 
-<para>The widget emits two signals: "apply" and "help".  To make a
-functional dialog box you will want to connect to at least the "apply"
-signal. Your function will be invoked once for each page and one more
-time at the end, passing a special value of -1 for the page
-number.</para> 
-
-<para>Here is a sample callback routine layout
-
-<example>
-  <title>Sample callback for the "apply" signal</title>
-  <programlisting>
+    <example>
+      <title>Sample callback for the "apply" signal</title>
+      <programlisting>
 void
 dialog_apply_callback (GnomePropertyBox *property_box, gint page_num)
 {
@@ -51,14 +60,14 @@ dialog_apply_callback (GnomePropertyBox *property_box, gint page_num)
 	default:
 	}
 }
-  </programlisting>
-</example>
-</para>
+      </programlisting>
+    </example>
+  </para>
 
-<para>Some people just check for the last condition like this:
-<example>
-  <title>Sample callback for the "apply" signal</title>
-  <programlisting>
+  <para>Some people just check for the last condition like this:
+    <example>
+      <title>Sample callback for the "apply" signal</title>
+      <programlisting>
 void
 dialog_apply_callback (GnomePropertyBox *property_box, gint page_num)
 {
@@ -67,23 +76,26 @@ dialog_apply_callback (GnomePropertyBox *property_box, gint page_num)
 
         apply_all_changes (property_box);
 }
-  </programlisting>
-</example>
-</para>
+      </programlisting>
+    </example>
+  </para>
+  
+  <para>
+    A fully finished program should also hook up to the "help" signal
+    to provide context sensitive help in the dialog box.  This signal
+    also receives the page number in which the help is invoked, so you
+    can provide different help nodes for each page if you desire to do
+    so.
+  </para>
 
-<para>A fully finished program should also hook up to the "help"
-signal to provide context sensitive help in the dialog box.  This
-signal also receives the page number in which the help is invoked, so
-you can provide different help nodes for each page if you desire to do
-so.</para>
+  <para>
+    The GNOME libraries include a number of helper routines that will
+    help you provide help in your application.  Here is a sample piece
+    of code:
 
-<para>The GNOME libraries include a number of helper routines that
-will help you provide help in your application.  Here is a sample
-piece of code:
-
-<example>
-  <title>Sample callback for the "help" signal</title>
-  <programlisting>
+    <example>
+      <title>Sample callback for the "help" signal</title>
+      <programlisting>
 void
 dialog_help_callback (GnomePropertyBox *property_box, gint page_num)
 {
@@ -100,24 +112,25 @@ dialog_help_callback (GnomePropertyBox *property_box, gint page_num)
 	       break;
         }
 }
-  </programlisting>
-</example>
+      </programlisting>
+    </example>
 
-   The value "0" in the example above is ignored by the
-gnome_help_display routines.  This is done so that you can use a hack
-to connect to help in simpler situations without having to provide a
-full callback (like in this example).
-</para>
+    The value "0" in the example above is ignored by the
+    gnome_help_display routines.  This is done so that you can use a
+    hack to connect to help in simpler situations without having to
+    provide a full callback (like in this example).
+  </para>
 
-<para>You can actually save some time if you use the
-gnome_help_pbox_display() routine.  This routine is designed to work
-side-by-side with the <type>GnomePropertyBox</type> object.  It works
-like this:
+  <para>
+    You can actually save some time if you use the
+    gnome_help_pbox_display() routine.  This routine is designed to
+    work side-by-side with the <type>GnomePropertyBox</type> object.
+    It works like this:
 
-<example>
-  <title>Connecting the "help" signal using the
-  gnome_help_pbox_display() routine</title>
-  <programlisting>
+    <example>
+      <title>Connecting the "help" signal using the
+	gnome_help_pbox_display() routine</title>
+      <programlisting>
 void
 property_dialog_do_connections (GnomePropertyBox *property_box)
 {
@@ -126,26 +139,26 @@ property_dialog_do_connections (GnomePropertyBox *property_box)
 	gtk_signal_connect (GTK_OBJECT (property_box), "help",
 	                    GTK_SIGNAL_FUNC(gnome_help_pbox_display), &help_entry);
 }
-  </programlisting>
-</example>
+      </programlisting>
+    </example>
 
-   This will use the "base-name" as a template to create the
-fully-qualified name of the help file using the page number as part of
-the filename component (the result is in the form
-"base-name-$pagenum.html", where $pagenum is substituted with the page
-number).</para>
+    This will use the "base-name" as a template to create the
+    fully-qualified name of the help file using the page number as
+    part of the filename component (the result is in the form
+    "base-name-$pagenum.html", where $pagenum is substituted with the
+    page number).
+  </para>
 
-<para>
-   See the documentation for gnome_help_pbox_display() for more information
-</para>
+  <para>
+    See the documentation for gnome_help_pbox_display() for more information
+  </para>
 
 <!-- Documentation author, Miguel de Icaza -->
 
 <!-- ##### SECTION See_Also ##### -->
 <para>
-
+gnome_help_pbox_display(), gnome_help_display(), #GnomeDialog
 </para>
-
 
 <!-- ##### STRUCT GnomePropertyBox ##### -->
 <para>
@@ -221,3 +234,9 @@ help into this signal.
 @propertybox: the object which received the signal.
 @arg1: 
 
+<!--
+Local variables:
+mode: sgml
+sgml-parent-document: ("../gnomeui-docs.sgml" "book" "sect1" "")
+End:
+-->

@@ -5,20 +5,19 @@ gnome-mdi-session
 Routines providing <type>GnomeMDI</type> state saving and restoration
 
 <!-- ##### SECTION Long_Description ##### -->
-<para>
-In order to simplify saving the state of MDI and its children, the
-GnomeMDI interface provides a function that saves its layout and
-the state of its children (provided by each child through get_config_string
-virtual function defined in <type>GnomeMDIChild</type> subclasses) and a
-function that restores a previously saved state, recreating the children
-from their configuration strings using a function provided by the programmer.
-</para>
+  <para>
+    In order to simplify saving the state of MDI and its children, the
+    GnomeMDI interface provides a function that saves its layout and
+    the state of its children (provided by each child through get_config_string
+    virtual function defined in <type>GnomeMDIChild</type> subclasses) and a
+    function that restores a previously saved state, recreating the children
+    from their configuration strings using a function provided by the programmer.
+  </para>
 
 <!-- ##### SECTION See_Also ##### -->
 <para>
 
 </para>
-
 
 <!-- ##### USER_FUNCTION GnomeMDIChildCreator ##### -->
 <para>
@@ -56,3 +55,9 @@ from their configuration strings using a function provided by the programmer.
 @Param2: 
 
 
+<!--
+Local variables:
+mode: sgml
+sgml-parent-document: ("../gnomeui-docs.sgml" "book" "sect1" "")
+End:
+-->
