@@ -18,7 +18,7 @@ libzvt_la_SOURCES =					\
 	lists.c						\
 	memory.c					\
 	memory.h					\
-	subshell.h					\			
+	subshell.h					\
 	subshell.c					\
 	subshell-includes.h				\
 	update.c					\
