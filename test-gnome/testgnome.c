@@ -20,6 +20,7 @@
  * 02111-1307, USA.
  */
 
+#include <config.h>
 #include <time.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -459,7 +460,9 @@ int main (int argc, char *argv[])
 	  {
 		  { "calendar", create_calendar },
 		  { "calculator", create_calc },
+#ifdef HAVE_DEVGTK
 		  { "canvas", create_canvas },
+#endif
 		  { "clock",	create_clock },
 		  { "color-sel", create_colorsel },
 		  { "date edit", create_date_edit },
