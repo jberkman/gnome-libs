@@ -1292,6 +1292,8 @@ goad_server_unregister(CORBA_Object name_server,
   g_assert(name_server != CORBA_OBJECT_NIL);
 
   nc[2].id   = (char *)name;
+  if (!kind)
+    kind = "object";
   nc[2].kind = (char *)kind;
 
   CosNaming_NamingContext_unbind(name_server, &nom, ev);
