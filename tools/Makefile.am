@@ -1,3 +1,3 @@
-SUBDIRS = convertrgb gnome-doc
+SUBDIRS = gnome-doc
 
 EXTRA_DIST=gen-helpidlist.pl

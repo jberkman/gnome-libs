@@ -1,3 +1,17 @@
+2000-09-30  Martin Baulig  <baulig@suse.de>
+
+	* configure.in: The big migration to pkg-config.
+	- use pkg-config to check for everything: glib-2.0, ORBit-2.0,
+	oaf-2.0, gconfgtk-2.0, libart-2.0 and gnomevfs-2.0
+	- use the new GNOME_GTKDOC_CHECK and GNOME_ENABLE_DEBUG macros
+	- remove all checks for the image libraries including -lz since
+	they're now obsoleted by gdk-pixbuf.
+
+	* tools/convertdb: Disable this from being build.
+
+	* acconfig.h (HAVE_LIBJPEG, HAVE_LIBGIF, HAVE_LIBTIFF): Removed.
+	(HAVE_LIBZ, HAVE_LIBPNG): Removed.
+
 2000-09-27  Darin Adler  <darin@eazel.com>
 
 	* .cvsignore: Added a generated file.
