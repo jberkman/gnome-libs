@@ -93,6 +93,12 @@ pass_fd (int client_fd, int fd)
 }
 #else
 #include <stropts.h>
+static int
+init_msg_pass ()
+{
+	/* nothing */
+}
+
 int
 pass_fd (int client_fd, int fd)
 {

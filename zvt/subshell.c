@@ -119,11 +119,11 @@ receive_fd (int helper_fd)
 	return *(int *) CMSG_DATA (cmptr);
 }
 #else
-static mint
+static int
 receive_fd (int helper_fd)
 {
 	int flag;
-	struct buf [128];
+	char buf [128];
 	struct strbuf dat;
 	struct strrecvfd recvfd;
 	
@@ -137,7 +137,7 @@ receive_fd (int helper_fd)
 	if (dat.len == 0)
 		return -1;
 
-	if (ioctl (helper_fd, I_RECVFD, &fd) < 0)
+	if (ioctl (helper_fd, I_RECVFD, &recvfd) < 0)
 		return -1;
 
 	return recvfd.fd;

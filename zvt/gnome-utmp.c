@@ -16,13 +16,23 @@
 #include <errno.h>
 #include "gnome-pty.h"
 
-#include <paths.h>
+#ifdef HAVE_PATHS_H
+#    include <paths.h>
+#endif
 #ifdef HAVE_UTMPX_H
 #    include <utmpx.h>
 #    define USE_SYSV_UTMP
 #else
 #    ifdef HAVE_SETUTENT
 #        define USE_SYSV_UTMP
+#    endif
+#endif
+
+#ifndef UTMP_FILENAME
+#    ifdef UTMP_FILE
+#        define UTMP_FILENAME UTMP_FILE
+#    else
+#        define UTMP_FILENAME "/etc/utmp"
 #    endif
 #endif
 

@@ -106,7 +106,7 @@ pty_open_slave_bsd (const char *pty_name)
 
 /* SystemVish pty opening */
 #ifdef HAVE_GRANTPT
-
+#include <stropts.h>
 static int
 pty_open_slave (const char *pty_name)
 {
@@ -146,6 +146,7 @@ static int
 pty_open_master (char *pty_name, int *used_bsd)
 {
 	int pty_master;
+	char *slave_name;
 	
 	strcpy (pty_name, "/dev/ptmx");
 
@@ -158,7 +159,7 @@ pty_open_master (char *pty_name, int *used_bsd)
 	 */
 	if (pty_master == -1){
 		*used_bsd = 1;
-		return pty_open_master_bsd (pty_name);
+		return pty_open_master_bsd (pty_name, used_bsd);
 	}
 	*used_bsd = 0;
 
