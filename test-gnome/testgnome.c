@@ -746,6 +746,28 @@ create_font_picker (void)
 }
 
 static void
+select_icon (GnomeIconList *gil, gint n, GdkEvent *event, gpointer data)
+{
+	printf ("Icon %d selected", n);
+
+	if (event)
+		printf (" with event type %d\n", (int) event->type);
+	else
+		printf ("\n");
+}
+
+static void
+unselect_icon (GnomeIconList *gil, gint n, GdkEvent *event, gpointer data)
+{
+	printf ("Icon %d unselected", n);
+
+	if (event)
+		printf (" with event type %d\n", (int) event->type);
+	else
+		printf ("\n");
+}
+
+static void
 create_icon_list(void)
 {
 	GtkWidget *app;
@@ -759,11 +781,17 @@ create_icon_list(void)
 	sw = gtk_scrolled_window_new (NULL, NULL);
 	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (sw), GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
 	gnome_app_set_contents (GNOME_APP (app), sw);
-	gtk_widget_set_usize (sw, 200, 200);
+	gtk_widget_set_usize (sw, 430, 300);
 	gtk_widget_show (sw);
 
 	iconlist = gnome_icon_list_new (80, NULL, TRUE);
 	gtk_container_add (GTK_CONTAINER (sw), iconlist);
+	gtk_signal_connect (GTK_OBJECT (iconlist), "select_icon",
+			    GTK_SIGNAL_FUNC (select_icon),
+			    NULL);
+	gtk_signal_connect (GTK_OBJECT (iconlist), "unselect_icon",
+			    GTK_SIGNAL_FUNC (unselect_icon),
+			    NULL);
 
 	GTK_WIDGET_SET_FLAGS(iconlist, GTK_CAN_FOCUS);
 	pix = gdk_imlib_create_image_from_xpm_data((gchar **)bomb_xpm);
@@ -779,7 +807,7 @@ create_icon_list(void)
 		gnome_icon_list_append_imlib(GNOME_ICON_LIST(iconlist), pix, "LaLa");
 	}
 
-	gnome_icon_list_set_selection_mode (GNOME_ICON_LIST (iconlist), GTK_SELECTION_MULTIPLE);
+	gnome_icon_list_set_selection_mode (GNOME_ICON_LIST (iconlist), GTK_SELECTION_EXTENDED);
 	gnome_icon_list_thaw (GNOME_ICON_LIST (iconlist));
 	gtk_widget_show (iconlist);
 	gtk_widget_show(app);
@@ -996,7 +1024,7 @@ percent_cb(gpointer ignore)
 }
 
 static void
-cancel_cb(gpointer ignore, GtkWidget *widget)
+cancel_cb(gpointer ignore)
 {
   gnome_ok_dialog("Progress cancelled!");
 }
