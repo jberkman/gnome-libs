@@ -1,3 +1,14 @@
+1998-06-07  Michael Zucchi  <zucchi@zzedzone.box.net.au>
+
+	* zvtterm.c (zvt_term_key_press): Added debug macro around the key
+	press printf.
+	(zvt_term_key_press): Changed the ctrl-space handling code, so the
+	default case doesn't grow into another switch statement to handle
+	all possible cases [which is what the existing switch is for].
+
+	* vt.c (vt_delete_line): For reverse scroll, compare to
+	vt->scrolltop, and not 0 - fixes reverse scroll in pine.
+
 1998-06-01  Miguel de Icaza  <miguel@nuclecu.unam.mx>
 
 	* zvtterm.c (zvt_term_key_press): Handle control-space.

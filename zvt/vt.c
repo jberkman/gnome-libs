@@ -567,7 +567,7 @@ static void vt_delete_line(struct vt_em *vt)
 {
   d(printf("delete line(s)\n"));
   if (vt->argcnt==0) {
-    if (vt->cursory>0) {	/* reverse line feed, not delete */
+    if (vt->cursory>vt->scrolltop) {	/* reverse line feed, not delete */
       vt->cursory--;
     } else {
       vt_scroll_down(vt, 1);

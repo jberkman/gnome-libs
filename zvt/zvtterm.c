@@ -1255,6 +1255,15 @@ zvt_term_key_press (GtkWidget *widget, GdkEventKey *event)
   case GDK_Mode_switch:
   case GDK_Multi_key:
     break;
+  case ' ':
+    /* maps single characters to correct control and alt versions */
+    if (event->state & GDK_CONTROL_MASK)
+      *p++=event->keyval & 0x1f;
+    else if (event->state & GDK_MOD1_MASK)
+      *p++=event->keyval + 0x80; /* this works for space at least */
+    else
+      *p++=event->keyval;
+    break;
   default:
       if (event->length > 0){
 	if (event->state & GDK_MOD1_MASK){
@@ -1263,12 +1272,9 @@ zvt_term_key_press (GtkWidget *widget, GdkEventKey *event)
 	memcpy(p, event->string, event->length*sizeof(char));
 	p += event->length;
       } else {
-        if ((event->keyval == 0x20) && (event->state & GDK_CONTROL_MASK)){
-          *p++ = 0;
-	} else   
-	  handled = FALSE;
+	handled = FALSE;
       }
-      printf ("[%s,%d,%d]\n", event->string, event->length, handled);
+      d(printf ("[%s,%d,%d]\n", event->string, event->length, handled));
   }
   if (handled && p>buffer)
     vt_writechild(&vx->vt, buffer, (p-buffer));
