@@ -1,3 +1,11 @@
+1999-08-17  Havoc Pennington  <hp@pobox.com>
+
+	* gtk-xmhtml.h: Exclude this header #ifdef
+	GNOME_EXCLUDE_DEPRECATED. We may still have an HTML widget
+	in 2.0, but it will probably be different and people who
+	want to be on the safe side and use only stable interfaces 
+	should probably avoid it.
+
 1999-06-01  Akira Higuchi <a-higuti@math.sci.hokudai.ac.jp>
 
 	* gtk-xmhtml/XmHTMLP.h: Add three members lbearing, rbearing,

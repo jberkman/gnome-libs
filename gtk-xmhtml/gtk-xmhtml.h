@@ -1,3 +1,4 @@
+#ifndef GNOME_EXCLUDE_DEPRECATED
 #ifndef __GTK_XMHTML_H__
 #define __GTK_XMHTML_H__
 
@@ -183,3 +184,4 @@ typedef struct {
 } gtk_xmhtml_callback_info;
 
 #endif
+#endif /* GNOME_EXCLUDE_DEPRECATED */
