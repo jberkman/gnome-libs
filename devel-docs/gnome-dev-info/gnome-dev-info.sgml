@@ -49,7 +49,7 @@
     <title>Introduction..</title>
     <sect1 id="feedback">
       <title>Feedback..</title>
-      <para>Well, my native tongue is spanish, so you're probably going
+      <para>Well, my native language is spanish, so you're probably going
         to find a lot of grammatical and spelling errors. Please tell me
         about them.</para>
       </sect1>
@@ -76,15 +76,15 @@
         code wins. :-)
         </para>
       <para>
-        As a new GNOME developer i've had some trouble finding info about
+        As a new GNOME developer I've had some trouble finding info about
         how to do some things (and the people on the list were being a bit
-        annoyed with my questions.) So i'm trying to do it easy for you,
+        annoyed with my questions). So i'm trying to make it easy for you,
         the developers that come after me.
         </para>
       <para>
-        This document is intended to be not only a tutorial, but a reference
-        too. I hope it growing to be the ultimate guide to the GNOME internals.
-        I would like including here the architecture notes that now are in
+        This document is intended not only to be a tutorial, but also a reference.
+        I hope it'll grow to be the ultimate guide to the GNOME internals.
+        I would like to include here the architecture notes that are now in
         the website and the style guide.
         </para>
       <para>
@@ -104,12 +104,12 @@
     <sect1 id="proglang">
       <title>Programming languages that can be used in GNOME.</title>
       <para>
-        GNOME is intendeed to support any languages. But you need to have
-        GTK+ and GNOME bindings for your particular language. Our prefereed
+        GNOME is intended to support any languages. But you need to have
+        GTK+ and GNOME bindings for your particular language. Our prefered
         languages are C and scheme (using guile.) There are bindings too
         for Objective C. There are GTK bindings for C++ (Gtk--) and for
-        Perl, but afaik there aren't very good and still there aren't bindings
-        for gnome stuff for these languages.
+        Perl, but as far as I know, they aren't very good and still there aren't bindings
+        for GNOME stuff for these languages.
         </para>
       </sect1>
 
@@ -117,10 +117,11 @@
       <title>How to start hacking GNOME.</title>
       <para>
         Read the README and HACKING files to know how to download the latest
-        gnome from CVS.
+        GNOME from CVS.
 	</para>
       <para>
-        You will need know the Gtk+ toolkit. If you don't know it read the
+        You will need know the Gtk+ toolkit. If you are not familiar with it,
+	you may consider reading the
         <ulink URL="http://www.levien.com/~slow/gtk/">Gtk+ Tutorial</ulink>.
         </para>
       <para>
@@ -129,9 +130,9 @@
         <literallayout>
         <prompt>$ </prompt><userinput>cvs diff -u > diffs</userinput>
         </literallayout>
-        [FIXME: Does it work with anonimous CVS?]
+        [FIXME: Does it work with anonymous CVS?]
         After it send the diffs file to <email>gnome-list@gnome.org</email>.
-	In a short time someone of the core hackers will answer you and he
+	In a short time one of the core hackers will answer you and he
 	is going to be your "GNOME godfather". Then, and until you have a
 	CVS account send your patches to him.
         [FIXME: What think, you GNOME core hackers, about the godfather idea?]
@@ -141,7 +142,7 @@
     <sect1 id="what">
       <title>What to hack.</title>
       <para>
-        If you want to dirt your hands with GNOME, i've some advice for you:
+        If you want to dirt your hands with GNOME, I've some advice for you:
 	</para>
       <itemizedlist>
         <listitem><para>Start simple. Do little things and familiarize yourself 
@@ -176,20 +177,20 @@
       <title>When adding yourself to AUTHORS file.</title>
       <para>
         We know it. You're working in the GNOME to impress girls saying them:
-        "Hey, I'm a GNOME developer" :-), so you're wanting to add yourself to
+        "Hey, I'm a GNOME developer" :-), so you want to add yourself to
         the AUTHORS file as quickly as you can...
 	</para>
       <para>
         To know when you can add yourself only think :-), if you've only
         fixed some typos don't do it. If you've added a great bunch of
-        (good) code, then do it.
+        (good) code, then go ahead.
         </para>
       <para>
         (<emphasis>Very personal opinion:</emphasis>) I suggest you don't 
-        adding yourself to the root AUTHORS file. I think you should
-        wait some of the core hackers recognize your work and add you.
+        add yourself to the root AUTHORS file. I think you should
+        wait for some of the core hackers recognize your work and add you.
         (i believe it would be very much more satisfying to know that the
-        "real" hackers value your work, probably this belief is why i amn't
+        "real" hackers value your work, probably this belief is why I am not
         there yet... :-) )
         </para>
       </sect1>
@@ -210,11 +211,13 @@
           add FIXME comments so it's easy to recognize.</para></listitem>
         <listitem><para> Document your programs.</para></listitem>
         <listitem><para> If you do changes to the APIs documented here or add
-          new please update the documentation.</para></listitem>
-        <listitem><para> Add translations for your native tongue. We would like
+          some new ones please update the documentation.</para></listitem>
+        <listitem><para> Add translations for your native language. We would like
           have a full internationalized GNOME. (so if you know more than
           one language do translations for all them) (we would like all
-          the idioms, from francais to old greek :-) )</para></listitem>
+          the idioms, from francais to old greek :-) )
+	[FIXME: Add a list of currently supported languages, and a list of wanted languages ?]
+	</para></listitem>
         </itemizedlist>
       </sect1>
 
@@ -236,19 +239,19 @@
 	  </para>
       <para>
         In this chapter we're going to use it to explain the basics features 
-        that a application must have to be considered gnome-complaint.
+        that an application must have to be considered gnome-compliant.
         </para>
 
       <sect1 id="tut-basics">
       	<title>Starting with GNOME</title>
 	<screenshot>
-	  <screeninfo>A basic GNOME App: a window with only a button
+	  <screeninfo>A basic GNOME App: A window with only a button
 	    </screeninfo>
 	  <graphic fileref="gnome-hello-0-basic.jpg"></graphic>
 	  </screenshot>
       	<para>
       	  We'll start with a very basic application. It's only a window
-      	  with a button that, when clicked close the window and prints
+      	  with a button which when clicked, close the window and prints
       	  "Hello GNOME". The code source for it is in <filename>
       	  programs/gnome-hello/gnome-hello-0-basic.c</filename>. [FIXME:
       	  Should i include the full code here?]
@@ -258,7 +261,7 @@
 	  #include &lt;gnome.h&gt;
 	  </programlisting>
 	<para>
-	  All the programs have to include <filename>gnome.h</filename>, that 
+	  All the programs have to include <filename>gnome.h</filename> which
 	  gives all you need to use the Gtk+ and GNOME libraries.
 	  </para>
 	<programlisting>
@@ -296,7 +299,7 @@
 	  <function>gnome_app_new</function> and connect the signal 
 	  <function>delete_event</function> to the callback 
 	  <function>quit_cb</function>, so the user can close the app via the 
-	  WM:
+	  window manager:
 	  </para>
 	<programlisting>
 	  app = gnome_app_new ("hello", "Hello World Gnomified");
@@ -360,12 +363,12 @@
 Menus and MenuBars
         Menubars should be present in every App.
             All apps should have a "Help" entry in the Menubar.
-            All menu items need at least one item.
-            An about Menu should be available in under the Help Menu and
+            All menus need at least one entry.
+            An About Menu should be available in under the Help Menu and
             should open a small dialog telling at least app name, author,
             version, and date.
-            A "File" menu should be in every app, and contain at least
-            quit.
+            A "File" menu should be in every application, and contain at least
+            Quit.
             Menu items that open dialogs should indicate it with an "..."
             Menu items that lead to submenus should indicate it with an
             arrow. The Help Menu should be right justified in the
@@ -428,19 +431,16 @@ about_cb (GtkWidget *widget, void *data)
       	  </para>
       	<para>
       	  You will need add your file to po/POTFILES.in. Then you can do
-      	  <literal>make gnome.pot;make update-po</literal>, edit the .po file
-      	  corresponding to you tongue and do <literal>make install</literal>.
+      	  <literal>make gnome-modulename.pot;make update-po</literal>, edit the .po file
+      	  corresponding to your language and do <literal>make install</literal>.
       	  Now try your program... Wow! It's speaking in Spanish/Finnish/Latin...
       	  </para>
       	<para>
       	  <emphasis>Warning</emphasis>: _() is a macro for the function gettext.
-      	  So it won't work when initializing arrays of strings or structs. Then
-      	  you need use the N_() macro around the strings and when you use
-      	  them do the _() stuff. If you want know more about it read the info
+      	  So it won't work when initializing arrays of strings or structs.
+      	  You'll need use the N_() macro around the strings instead.
+      	  If you want know more about it read the info
       	  documentation of GNU gettext.
-      	  [FIXME: is my explanation correct? I haven't read a C book in the
-      	  last 5 years so i don't remember when/why you can't call functions
-      	  in init's]
       	  </para>
 	</sect1>
 	
