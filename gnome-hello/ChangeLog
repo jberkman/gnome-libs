@@ -1,3 +1,12 @@
+Thu Jan 29 02:15:44 ART 1998  Horacio J. Peña  <horape@compendium.com.ar>
+
+	* gnome-hello.c: #include getopt.h. Reorder. Added SM-aware code.
+	(main): Use textdomain.
+	(parse_args): New function.
+	(save_state): New function.
+	(discard_session): New function.
+	(restart_session): New function.
+
 1998-01-29  Raja R Harinath  <harinath@cs.umn.edu>
 
 	* Makefile.am (gnome_hello_LDADD): Add libsupport.a (for 
@@ -12,6 +21,12 @@ Thu Jan 29 07:22:03 1998  Changwoo Ryu  <cwryu@adam.kaist.ac.kr>
 	* gnome-hello.c: Include <config.h> first.
 	(main): Added bindtextdomain(), textdomain().
 
+Tue Jan 27 21:03:01 ART 1998  Horacio J. Peña  <horape@compendium.com.ar>
+
+	* Makefile.am: added a dash before db2{html|dvi|ps} to ignore
+	errors.  
+	* gnome-hello.c: Gnomified.
+	
 1998-01-26  Mark Galassi  <rosalia@cygnus.com>
 
 	* gnome-hello.sgml: documentation template for GNOME.  It also

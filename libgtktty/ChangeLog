@@ -9,6 +9,15 @@
 
 	* {getopt.h,getopt.c,getopt1.c}: New files.  GNU getopt.
 
+1998-01-26  Mark Galassi  <rosalia@cygnus.com>
+
+	* Makefile.am (LDADD): added $(DL_LIB) since these are now
+	required for any user of libgnome.a.
+
+Sun Jan 25 23:38:30 1998  Miguel de Icaza  <miguel@nuclecu.unam.mx>
+
+	* gvtmain.c: Replace "Quit" with "Exit".
+	
 Thu Jan 22 00:05:03 1998  Tim Janik  <timj@gimp.org>
 
 	* released gemvt-0.2.4.tar.gz
@@ -34,6 +43,11 @@ Sun Jan 18 18:21:48 1998  Tim Janik  <timj@psynet.net>
 	  affects GtkArg{Set|Get}Func, gtk_widget_get_parent_window() and
 	  some else stuff...
 
+Wed Jan 14 15:10:25 EST 1998  Nathan Bryant <nbryan71@maine.edu>
+
+	configure.in: Detect -lintl for libc5 systems.
+	acinclude.m4: New file.
+	
 Mon Jan 12 03:35:59 1998  Tim Janik  <timj@psynet.net>
 
 	* gtkttyos.c: Added a couple of ifdefs so it would build
