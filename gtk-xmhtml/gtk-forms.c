@@ -137,7 +137,7 @@ void _XmHTMLFormReset(XmHTMLWidget html, XmHTMLForm *entry)
 				/* checkbuttons, set default state */
 				_XmHTMLDebug(12, ("\t\tsetting state to %s\n", 
 					tmp->selected ? "on" : "off"));
-				gtk_toggle_button_set_state (GTK_TOGGLE_BUTTON (tmp->w), tmp->selected);
+				gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (tmp->w), tmp->selected);
 				/* store default selection state */
 				tmp->checked = (Boolean)tmp->selected;
 				break;
@@ -909,7 +909,7 @@ radio_changed (GtkWidget *w, void *data)
 				/* same group, unset it */
 				if(!(strcasecmp(tmp->name, entry->name)))
 				{
-					gtk_toggle_button_set_state(GTK_TOGGLE_BUTTON (tmp->w), 0);
+					gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON (tmp->w), 0);
 					tmp->checked = False;
 				}
 				/*****
@@ -923,7 +923,7 @@ radio_changed (GtkWidget *w, void *data)
 	}
 	else /* current toggle can't be unset */
 	{
-		gtk_toggle_button_set_state (GTK_TOGGLE_BUTTON (entry->w), 1);
+		gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (entry->w), 1);
 		entry->checked = True;
 	}
 }
@@ -1135,14 +1135,14 @@ _XmHTMLFormAddInput(XmHTMLWidget html, String attributes)
 			/* toggle buttons, set args and create */
 			case FORM_CHECK:
 				entry->w = gtk_check_button_new_with_label ("");
-				gtk_toggle_button_set_state (GTK_TOGGLE_BUTTON (entry->w), entry->checked);
+				gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (entry->w), entry->checked);
 				gtk_signal_connect (GTK_OBJECT (entry->w), "toggled", (GtkSignalFunc)
 						    checkbox_changed, entry);
 				break;
 				
 			case FORM_RADIO:
 				entry->w = gtk_radio_button_new_with_label (NULL, "");
-				gtk_toggle_button_set_state (GTK_TOGGLE_BUTTON (entry->w), entry->checked);
+				gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (entry->w), entry->checked);
 				gtk_signal_connect (GTK_OBJECT (entry->w), "toggled", (GtkSignalFunc)
 						    radio_changed, entry);
 				break;

@@ -447,25 +447,25 @@ create_dialog(void)
   gtk_box_pack_start(GTK_BOX(vbox), hbox, TRUE, TRUE, GNOME_PAD);
 
   toggle = gtk_toggle_button_new_with_label("Modal");
-  gtk_toggle_button_set_state(GTK_TOGGLE_BUTTON(toggle), settings[modal]);
+  gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(toggle), settings[modal]);
   gtk_signal_connect(GTK_OBJECT(toggle), "toggled", 
 		     GTK_SIGNAL_FUNC(toggle_boolean), &settings[modal]);
   gtk_box_pack_start(GTK_BOX(hbox), toggle, FALSE, FALSE, GNOME_PAD);
 
   toggle = gtk_toggle_button_new_with_label("Hide don't destroy");
-  gtk_toggle_button_set_state(GTK_TOGGLE_BUTTON(toggle), settings[just_hide]);
+  gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(toggle), settings[just_hide]);
   gtk_signal_connect(GTK_OBJECT(toggle), "toggled", 
 		     GTK_SIGNAL_FUNC(toggle_boolean), &settings[just_hide]);
   gtk_box_pack_start(GTK_BOX(hbox), toggle, FALSE, FALSE, GNOME_PAD);
 
   toggle = gtk_toggle_button_new_with_label("Close on click");
-  gtk_toggle_button_set_state(GTK_TOGGLE_BUTTON(toggle), settings[click_closes]);
+  gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(toggle), settings[click_closes]);
   gtk_signal_connect(GTK_OBJECT(toggle), "toggled", 
 		     GTK_SIGNAL_FUNC(toggle_boolean), &settings[click_closes]);
   gtk_box_pack_start(GTK_BOX(hbox), toggle, FALSE, FALSE, GNOME_PAD);
 
   toggle = gtk_toggle_button_new_with_label("Editable enters");
-  gtk_toggle_button_set_state(GTK_TOGGLE_BUTTON(toggle), settings[editable_enters]);
+  gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(toggle), settings[editable_enters]);
   gtk_signal_connect(GTK_OBJECT(toggle), "toggled", 
 		     GTK_SIGNAL_FUNC(toggle_boolean), &settings[editable_enters]);
   gtk_box_pack_start(GTK_BOX(hbox), toggle, FALSE, FALSE, GNOME_PAD);
@@ -697,7 +697,7 @@ create_font_picker (void)
         gtk_box_pack_start(GTK_BOX(hbox1),spUseFont,FALSE,FALSE,0);
 
         ckShowSize=gtk_check_button_new_with_label(_("Show font size"));
-        gtk_toggle_button_set_state(GTK_TOGGLE_BUTTON(ckShowSize),TRUE);
+        gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(ckShowSize),TRUE);
         gtk_box_pack_start(GTK_BOX(vbox2),ckShowSize,FALSE,FALSE,5);
         
         fontpicker2 = gnome_font_picker_new();
