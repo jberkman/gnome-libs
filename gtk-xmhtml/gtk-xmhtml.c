@@ -70,11 +70,12 @@ static void
 gtk_xmthml_marshall_2 (GtkObject *object, GtkSignalFunc func, gpointer data, GtkArg *args)
 {
 	GtkXmHTMLSignal2 rfunc;
-	gint *return_val = GTK_RETLOC_INT(args[3]);
+	gint *return_val = GTK_RETLOC_INT(args[2]);
 	
 	rfunc = (GtkXmHTMLSignal2) func;
 
-	*return_val = (* rfunc) (object, GTK_VALUE_POINTER (args[1]), GTK_VALUE_POINTER (args [2]), data);
+	*return_val = (* rfunc) (object, GTK_VALUE_STRING (args[0]),
+				 GTK_VALUE_POINTER (args [1]), data);
 }
 
 static Pixel
@@ -335,11 +336,11 @@ gtk_xmhtml_class_init (GtkXmHTMLClass *class)
 				GTK_SIGNAL_OFFSET (GtkXmHTMLClass, document),
 				gtk_xmthml_marshall_1, GTK_TYPE_NONE, 1, GTK_TYPE_POINTER);
 	gtk_xmhtml_signals [GTK_XMHTML_FOCUS] =
-		gtk_signal_new ("focus",
+		gtk_signal_new ("_focus", /* there is already a focus signal */
 				GTK_RUN_FIRST,
 				object_class->type,
 				GTK_SIGNAL_OFFSET (GtkXmHTMLClass, focus),
-				gtk_xmthml_marshall_1, GTK_TYPE_INT, 1, GTK_TYPE_POINTER);
+				gtk_xmthml_marshall_1, GTK_TYPE_NONE, 1, GTK_TYPE_POINTER);
 	gtk_xmhtml_signals [GTK_XMHTML_LOSING_FOCUS] =
 		gtk_signal_new ("losing_focus",
 				GTK_RUN_FIRST,
@@ -360,10 +361,11 @@ gtk_xmhtml_class_init (GtkXmHTMLClass *class)
 				gtk_xmthml_marshall_1, GTK_TYPE_NONE, 1, GTK_TYPE_POINTER);
 	gtk_xmhtml_signals [GTK_XMHTML_ANCHOR_VISITED] =
 		gtk_signal_new ("anchor_visited",
-				GTK_RUN_FIRST,
+				GTK_RUN_LAST,
 				object_class->type,
 				GTK_SIGNAL_OFFSET (GtkXmHTMLClass, anchor_visited),
-				gtk_xmthml_marshall_2, GTK_TYPE_INT, 1, GTK_TYPE_POINTER);
+				gtk_xmthml_marshall_2, GTK_TYPE_INT, 2,
+				GTK_TYPE_STRING, GTK_TYPE_POINTER);
 	gtk_object_class_add_signals (object_class, gtk_xmhtml_signals, GTK_XMHTML_LAST_SIGNAL);
 
 	object_class->destroy       = gtk_xmhtml_destroy;

@@ -36,6 +36,9 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.11  1998/06/23 18:45:55  unammx
+* James Henstridge's signal fixes to GtkXmHTML
+*
 * Revision 1.10  1998/02/12 03:08:39  unammx
 * Merge to Koen's XmHTML 1.1.2 + following fixes:
 *
@@ -2963,8 +2966,10 @@ _XmHTMLNewAnchor(XmHTMLWidget html, XmHTMLObject *object)
  		anchor->visited = html->html.anchor_visited_proc((TWidget)html, 
  				anchor->href, html->html.client_data);
 #else
-	gtk_signal_emit (GTK_OBJECT (html), gtk_xmhtml_signals [GTK_XMHTML_ANCHOR_VISITED],
-			 anchor->href, html->html.client_data);
+	gtk_signal_emit (GTK_OBJECT (html),
+			 gtk_xmhtml_signals[GTK_XMHTML_ANCHOR_VISITED],
+			 anchor->href, html->html.client_data,
+			 &(anchor->visited));
 #endif
 	/* insert in the anchor list */
 	if(list_data.anchor_head)

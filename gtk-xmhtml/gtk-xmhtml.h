@@ -77,7 +77,7 @@ struct _GtkXmHTMLClass
 	void (*losing_focus)    (GtkXmHTML *, void *);
 	void (*motion_track)    (GtkXmHTML *, void *);
 	void (*html_event)      (GtkXmHTML *, void *); /* HTML 4.0 event */
-	void (*anchor_visited)  (GtkXmHTML *, char *, void *);
+	int  (*anchor_visited)  (GtkXmHTML *, char *, void *);
 };
 
 GtkWidget *gtk_xmhtml_new         	   	  (void);
