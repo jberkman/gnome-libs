@@ -1020,6 +1020,112 @@ create_app_util(void)
   gtk_widget_show_all(GTK_WIDGET(app));
 }
 
+/* Used as a callback for menu items in the GnomeAppHelper test; just prints the string contents of
+ * the data pointer.
+ */
+static void
+item_activated (GtkWidget *widget, gpointer data)
+{
+	printf ("%s activated\n", (char *) data);
+}
+
+/* Menu definitions for the GnomeAppHelper test */
+
+static GnomeUIInfo helper_file_menu[] = {
+	{ GNOME_APP_UI_ITEM, "_New", "Create a new file", item_activated, "file/new", NULL,
+	  GNOME_APP_PIXMAP_STOCK, GNOME_STOCK_MENU_NEW, 'n', GDK_CONTROL_MASK, NULL },
+	{ GNOME_APP_UI_ITEM, "_Open...", "Open an existing file", item_activated, "file/open", NULL,
+	  GNOME_APP_PIXMAP_STOCK, GNOME_STOCK_MENU_OPEN, 'o', GDK_CONTROL_MASK, NULL },
+	{ GNOME_APP_UI_ITEM, "_Save", "Save the current file", item_activated, "file/save", NULL,
+	  GNOME_APP_PIXMAP_STOCK, GNOME_STOCK_MENU_SAVE, 's', GDK_CONTROL_MASK, NULL },
+	{ GNOME_APP_UI_ITEM, "Save _as...", "Save the current file with a new name", item_activated, "file/save as", NULL,
+	  GNOME_APP_PIXMAP_STOCK, GNOME_STOCK_MENU_SAVE_AS, 0, 0, NULL },
+	
+	GNOMEUIINFO_SEPARATOR,
+
+	{ GNOME_APP_UI_ITEM, "_Print...", "Print the current file", item_activated, "file/print", NULL,
+	  GNOME_APP_PIXMAP_STOCK, GNOME_STOCK_MENU_PRINT, 'p', GDK_CONTROL_MASK, NULL },
+
+	GNOMEUIINFO_SEPARATOR,
+
+	{ GNOME_APP_UI_ITEM, "_Close", "Close the current file", item_activated, "file/close", NULL,
+	  GNOME_APP_PIXMAP_STOCK, GNOME_STOCK_MENU_CLOSE, 0, 0, NULL },
+	{ GNOME_APP_UI_ITEM, "E_xit", "Exit the program", item_activated, "file/exit", NULL,
+	  GNOME_APP_PIXMAP_STOCK, GNOME_STOCK_MENU_EXIT, 'q', GDK_CONTROL_MASK, NULL },
+	GNOMEUIINFO_END
+};
+
+static GnomeUIInfo helper_edit_menu[] = {
+	{ GNOME_APP_UI_ITEM, "_Undo", "Undo the last operation", item_activated, "edit/undo", NULL,
+	  GNOME_APP_PIXMAP_STOCK, GNOME_STOCK_MENU_UNDO, 'z', GDK_CONTROL_MASK, NULL },
+	{ GNOME_APP_UI_ITEM, "_Redo", "Redo the last undo-ed operation", item_activated, "edit/redo", NULL,
+	  GNOME_APP_PIXMAP_STOCK, GNOME_STOCK_MENU_REDO, 0, 0, NULL },
+
+	GNOMEUIINFO_SEPARATOR,
+
+	{ GNOME_APP_UI_ITEM, "Cu_t", "Cut the selection to the clipboard", item_activated, "edit/cut", NULL,
+	  GNOME_APP_PIXMAP_STOCK, GNOME_STOCK_MENU_CUT, 'x', GDK_CONTROL_MASK, NULL },
+	{ GNOME_APP_UI_ITEM, "_Copy", "Copy the selection to the clipboard", item_activated, "edit/copy", NULL,
+	  GNOME_APP_PIXMAP_STOCK, GNOME_STOCK_MENU_COPY, 'c', GDK_CONTROL_MASK, NULL },
+	{ GNOME_APP_UI_ITEM, "_Paste", "Paste the contents of the clipboard", item_activated, "edit/paste", NULL,
+	  GNOME_APP_PIXMAP_STOCK, GNOME_STOCK_MENU_CUT, 'v', GDK_CONTROL_MASK, NULL },
+	GNOMEUIINFO_END
+};
+
+static GnomeUIInfo helper_style_radio_items[] = {
+	{ GNOME_APP_UI_ITEM, "_10 points", NULL, item_activated, "style/10 points", NULL,
+	  GNOME_APP_PIXMAP_NONE, NULL, 0, 0, NULL },
+	{ GNOME_APP_UI_ITEM, "_20 points", NULL, item_activated, "style/20 points", NULL,
+	  GNOME_APP_PIXMAP_NONE, NULL, 0, 0, NULL },
+	{ GNOME_APP_UI_ITEM, "_30 points", NULL, item_activated, "style/30 points", NULL,
+	  GNOME_APP_PIXMAP_NONE, NULL, 0, 0, NULL },
+	{ GNOME_APP_UI_ITEM, "_40 points", NULL, item_activated, "style/40 points", NULL,
+	  GNOME_APP_PIXMAP_NONE, NULL, 0, 0, NULL },
+	GNOMEUIINFO_END
+};
+
+static GnomeUIInfo helper_style_menu[] = {
+	{ GNOME_APP_UI_TOGGLEITEM, "_Bold", "Make the selection bold", item_activated, "style/bold", NULL,
+	  GNOME_APP_PIXMAP_NONE, NULL, 0, 0, NULL },
+	{ GNOME_APP_UI_TOGGLEITEM, "_Italic", "Make the selection italic", item_activated, "style/bold", NULL,
+	  GNOME_APP_PIXMAP_NONE, NULL, 0, 0, NULL },
+
+	GNOMEUIINFO_SEPARATOR,
+
+	GNOMEUIINFO_RADIOLIST (helper_style_radio_items),
+	GNOMEUIINFO_END
+};
+
+static GnomeUIInfo helper_help_menu[] = {
+	{ GNOME_APP_UI_ITEM, "_About...", "Displays information about the program", item_activated, "help/about", NULL,
+	  GNOME_APP_PIXMAP_STOCK, GNOME_STOCK_MENU_ABOUT, 0, 0, NULL },
+	GNOMEUIINFO_END
+};
+
+static GnomeUIInfo helper_main_menu[] = {
+	{ GNOME_APP_UI_SUBTREE, "_File", "File operations", helper_file_menu, NULL, NULL,
+	  GNOME_APP_PIXMAP_NONE, NULL, 0, 0, NULL },
+	{ GNOME_APP_UI_SUBTREE, "_Edit", "Editing commands", helper_edit_menu, NULL, NULL,
+	  GNOME_APP_PIXMAP_NONE, NULL, 0, 0, NULL },
+	{ GNOME_APP_UI_SUBTREE, "_Style", "Style settings", helper_style_menu, NULL, NULL,
+	  GNOME_APP_PIXMAP_NONE, NULL, 0, 0, NULL },
+	GNOMEUIINFO_SEPARATOR,
+	{ GNOME_APP_UI_SUBTREE, "_Help", "Help on the program", helper_help_menu, NULL, NULL,
+	  GNOME_APP_PIXMAP_NONE, NULL, 0, 0, NULL },
+	GNOMEUIINFO_END
+};
+
+/* Test the GnomeAppHelper module */
+static void
+create_app_helper (GtkWidget *widget, gpointer data)
+{
+	GtkWidget *app;
+
+	app = gnome_app_new ("testGNOME", "GnomeAppHelper test");
+	gnome_app_create_menus (GNOME_APP (app), helper_main_menu);
+	gtk_widget_show (app);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -1029,6 +1135,7 @@ main (int argc, char *argv[])
 	} buttons[] =
 	  {
 		  { "app-util/appbar/dialog-util", create_app_util },
+		  { "app-helper", create_app_helper },
 		  { "calendar", create_calendar },
 		  { "calculator", create_calc },
 #ifdef GTK_HAVE_FEATURES_1_1_0
