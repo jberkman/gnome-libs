@@ -1,5 +1,17 @@
 2000-07-24  Martin Baulig  <baulig@suse.de>
 
+	* gconf-gtk-2.0.patch: Added patch for configure.in
+	check for GTK+ 2.0.
+	* oaf-gtk-2.0.patch: New patch; just makes it's configure.in
+	check for GTK+ 2.0.
+	* ORBit-glib-2.0.patch: New patch; just makes it's configure.in
+	check for GLib 2.0.
+
+	* configure.in (LIBGNOMEUI_LIBS): Put $(GTK_CFLAGS) first.
+	* configure.in: Check for GLIB 2.0.
+
+2000-07-24  Martin Baulig  <baulig@suse.de>
+
 	Use the new gnome-common module instead of having the .m4
 	files in gnome-data.
 

@@ -1,10 +1,86 @@
+? gconf.m4
+? gconf.spec
+? gconf/gconfd-0.6
+? gconf/gconftool-0.6
+? gconf/gconfd.oafinfo
+Index: configure.in
+===================================================================
+RCS file: /cvs/gnome/gconf/configure.in,v
+retrieving revision 1.49
+diff -u -u -r1.49 configure.in
+--- configure.in	2000/07/24 07:53:27	1.49
++++ configure.in	2000/07/24 19:48:41
+@@ -109,9 +109,9 @@
+         AC_FYI("Only building documentation")
+ else
+ 
+-AM_PATH_GLIB(1.2.0,,AC_MSG_ERROR(glib not found or too old),gmodule)
++AM_PATH_GLIB_2_0(1.3.0,,AC_MSG_ERROR(glib not found or too old),gmodule)
+ AM_PATH_OAF(0.2.0,,AC_MSG_ERROR([OAF not found or too old]))
+-AM_PATH_GTK(1.2.0,,HAVE_GTK=no)
++AM_PATH_GTK_2_0(1.3.0,,HAVE_GTK=no)
+ 
+ AM_CONDITIONAL(GTK, test x$HAVE_GTK != xno)
+ 
+Index: examples/Makefile.am
+===================================================================
+RCS file: /cvs/gnome/gconf/examples/Makefile.am,v
+retrieving revision 1.5
+diff -u -u -r1.5 Makefile.am
+--- examples/Makefile.am	2000/07/19 03:40:27	1.5
++++ examples/Makefile.am	2000/07/24 19:48:42
+@@ -1,6 +1,6 @@
+ INCLUDES=-I$(top_srcdir) -I$(top_srcdir)/gconf -I$(top_builddir)/gconf \
+ 	-I$(top_srcdir)/wrappers/gtk -I$(top_builddir)/wrappers/gtk \
+-	$(GLIB_CFLAGS) $(OAF_CFLAGS) $(GMODULE_CFLAGS) $(ORBIT_CFLAGS) $(GTK_CFLAGS) \
++	$(GLIB_CFLAGS) $(GTK_CFLAGS) $(OAF_CFLAGS) $(GMODULE_CFLAGS) $(ORBIT_CFLAGS) \
+         -DGCONF_SRCDIR=\""$(absolute_top_srcdir)"\" -DGCONF_SYSCONFDIR=\""$(sysconfdir)"\"
+ 
+ EFENCE=
+@@ -13,7 +13,7 @@
+ 
+ noinst_PROGRAMS=$(GTK_EXAMPLES)
+ 
+-GTK_EXAMPLES_LINK= $(EFENCE) $(ORBIT_LIBS) $(GTK_LIBS) $(top_builddir)/gconf/libgconf-$(MAJOR_VERSION).la $(top_builddir)/wrappers/gtk/libgconf-gtk-$(MAJOR_VERSION).la $(EFENCE)
++GTK_EXAMPLES_LINK= $(EFENCE) $(GTK_LIBS) $(ORBIT_LIBS) $(top_builddir)/gconf/libgconf-$(MAJOR_VERSION).la $(top_builddir)/wrappers/gtk/libgconf-gtk-$(MAJOR_VERSION).la $(EFENCE)
+ 
+ basic_gconf_app_SOURCES = basic-gconf-app.c
+ 
+Index: wrappers/gtk/Makefile.am
+===================================================================
+RCS file: /cvs/gnome/gconf/wrappers/gtk/Makefile.am,v
+retrieving revision 1.13
+diff -u -u -r1.13 Makefile.am
+--- wrappers/gtk/Makefile.am	2000/07/19 03:40:29	1.13
++++ wrappers/gtk/Makefile.am	2000/07/24 19:48:42
+@@ -1,5 +1,5 @@
+ INCLUDES=-I$(top_srcdir) -I$(top_builddir) -I$(top_builddir)/gconf \
+-	$(GLIB_CFLAGS) $(OAF_CFLAGS) $(GMODULE_CFLAGS) $(ORBIT_CFLAGS) $(GTK_CFLAGS) \
++	$(GLIB_CFLAGS) $(GTK_CFLAGS) $(OAF_CFLAGS) $(GMODULE_CFLAGS) $(ORBIT_CFLAGS) \
+ 	-DGCONF_SRCDIR=\""$(absolute_top_srcdir)"\" -DGCONF_SYSCONFDIR=\""$(sysconfdir)/$(MAJOR_VERSION)"\" -DGCONF_BACKEND_DIR=\""$(pkglibdir)/$(MAJOR_VERSION)"\"  -DGCONF_ENABLE_INTERNALS=1 -DG_LOG_DOMAIN=\"GConfClient\"
+ 
+ lib_LTLIBRARIES = libgconf-gtk-0.6.la
+@@ -13,11 +13,11 @@
+ 
+ libgconf_gtk_0_6_la_LDFLAGS=-version-info $(GCONFGTK_CURRENT):$(GCONFGTK_REVISION):$(GCONFGTK_AGE)
+ 
+-libgconf_gtk_0_6_la_LIBADD=$(OAF_LIBS) $(GTK_LIBS)
++libgconf_gtk_0_6_la_LIBADD=$(GTK_LIBS) $(OAF_LIBS)
+ 
+ noinst_PROGRAMS= testgconfclient
+ 
+ testgconfclient_SOURCES = testgconfclient.c
+ 
+ testgconfclient_DEPS=$(top_builddir)/gconf/libgconf-$(MAJOR_VERSION).la libgconf-gtk-$(MAJOR_VERSION).la
+-testgconfclient_LDADD = $(ORBIT_LIBS) $(GTK_LIBS) $(top_builddir)/gconf/libgconf-$(MAJOR_VERSION).la $(top_builddir)/wrappers/gtk/libgconf-gtk-$(MAJOR_VERSION).la
++testgconfclient_LDADD = $(GTK_LIBS) $(ORBIT_LIBS) $(top_builddir)/gconf/libgconf-$(MAJOR_VERSION).la $(top_builddir)/wrappers/gtk/libgconf-gtk-$(MAJOR_VERSION).la
 Index: wrappers/gtk/gconf-client.c
 ===================================================================
 RCS file: /cvs/gnome/gconf/wrappers/gtk/gconf-client.c,v
 retrieving revision 1.25
-diff -u -r1.25 gconf-client.c
+diff -u -u -r1.25 gconf-client.c
 --- wrappers/gtk/gconf-client.c	2000/07/12 05:46:51	1.25
-+++ wrappers/gtk/gconf-client.c	2000/07/24 05:17:10
++++ wrappers/gtk/gconf-client.c	2000/07/24 19:48:43
 @@ -122,7 +122,7 @@
  static void gconf_client_real_unreturned_error (GConfClient* client, GConfError* error);
  static void gconf_client_real_error            (GConfClient* client, GConfError* error);

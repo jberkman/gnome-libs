@@ -1,0 +1,50 @@
+Index: configure.in
+===================================================================
+RCS file: /cvs/gnome/ORBit/configure.in,v
+retrieving revision 1.98.4.2
+diff -u -u -r1.98.4.2 configure.in
+--- configure.in	2000/04/05 19:14:44	1.98.4.2
++++ configure.in	2000/07/24 19:49:04
+@@ -99,7 +99,7 @@
+ dnl Checks for libraries.
+ 
+ # Make sure that we have glib>=1.1.16
+-AM_PATH_GLIB(1.2.1,,
++AM_PATH_GLIB_2_0(1.2.1,,
+ AC_MSG_ERROR([
+ *** GLIB 1.2.1 or better is required. The latest version of GLIB
+ *** is always available from ftp://ftp.gtk.org/.]))
+Index: orbit-config.in
+===================================================================
+RCS file: /cvs/gnome/ORBit/orbit-config.in,v
+retrieving revision 1.7
+diff -u -u -r1.7 orbit-config.in
+--- orbit-config.in	1999/10/08 04:49:07	1.7
++++ orbit-config.in	2000/07/24 19:49:04
+@@ -87,8 +87,8 @@
+        	;;
+ 
+     client|server)
+-	the_libs="$the_libs -L$libdir -lORBit -lIIOP -lORBitutil `glib-config --libs` @LIBS@ -lm"
+-	the_flags="$the_flags `glib-config --cflags` -I$includedir "
++	the_libs="$the_libs -L$libdir -lORBit -lIIOP -lORBitutil `glib-config-2.0 --libs` @LIBS@ -lm"
++	the_flags="$the_flags `glib-config-2.0 --cflags` -I$includedir "
+ 	;;
+ 
+    --use-service=*)
+Index: libIDL/configure.in
+===================================================================
+RCS file: /cvs/gnome/libIDL/configure.in,v
+retrieving revision 1.54
+diff -u -u -r1.54 configure.in
+--- libIDL/configure.in	1999/10/01 21:58:10	1.54
++++ libIDL/configure.in	2000/07/24 19:49:04
+@@ -82,7 +82,7 @@
+ AC_CHECK_PROG(HAVE_GLIB_CONFIG, glib-config, yes, no)
+ 
+ AC_SUBST(GLIB_VERSION_REQUIRED)
+-AM_PATH_GLIB($GLIB_VERSION_REQUIRED)
++AM_PATH_GLIB_2_0($GLIB_VERSION_REQUIRED)
+ 
+ AC_STDC_HEADERS
+ AC_CHECK_HEADERS(stddef.h)

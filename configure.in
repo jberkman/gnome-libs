@@ -63,7 +63,7 @@ AC_SUBST(GNOME_HAVE_ALLOCA_H)
 dnl Evil stuff to extract GLIB stuff from gtk-config output
 dnl (we want to make sure it matches with the gtk we're using)
 
-AM_PATH_GLIB(1.2.0,,
+AM_PATH_GLIB_2_0(1.3.0,,
 AC_MSG_ERROR([
 *** GLIB 1.2.0 or better is required. The latest version of GLIB
 *** is always available from ftp://ftp.gtk.org/.]), gmodule)
@@ -366,7 +366,7 @@ dnl
 dnl These are for building the appropriate lib*
 dnl
 LIBGNOME_LIBS="$DB_LIB $GLIB_LIBS $DL_LIB -lpopt"
-LIBGNOMEUI_LIBS="$LIBGNOME_LIBS $OAF_LIBS $GTK_LIBS"
+LIBGNOMEUI_LIBS="$LIBGNOME_LIBS $GTK_LIBS $OAF_LIBS"
 LIBGTKXMHTML_LIBS="$XPM_LIBS $JPEG_LIBS $PNG_LIBS $Z_LIBS $GTK_LIBS"
 SUPPORTINCS='-DNEED_GNOMESUPPORT_H -I$(top_builddir)/support -I$(top_srcdir)/support'
 
