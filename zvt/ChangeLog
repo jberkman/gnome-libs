@@ -3,6 +3,8 @@
 	* zvtterm.c (vt_draw_text): Bold now renders 'bright' colours.
 	This is really only necessary (?) to emulate the use of the linux
 	console colours.
+	(vt_scroll_area): Does not clear the scrolled area exited space
+	anymore.  Doesn't seem to be needed and cleans up scrolling.
 
 	* vt.c (vt_swap_buffers): New function.  Not used yet.  Working on
 	some very experimental update optimisation code.  Maybe it will

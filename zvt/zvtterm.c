@@ -1401,6 +1401,7 @@ void vt_scroll_area(void *user_data, int firstrow, int count, int offset)
 		  width, count*term->charheight);
 
 
+#if 0
   /* clear the other part of the screen */
   if (offset>0) {
     gdk_draw_rectangle(widget->window,
@@ -1415,6 +1416,7 @@ void vt_scroll_area(void *user_data, int firstrow, int count, int offset)
 		       0, (firstrow+offset)*term->charheight,
 		       width, (-offset)*term->charheight);
   }
+#endif
 
 #if 1
   /* this seems to slow it down, maybe, but I can't tell.
