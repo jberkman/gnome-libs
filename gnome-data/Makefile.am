@@ -1,5 +1,9 @@
-EXTRA_DIST = paper.config mime.types mime-magic \
-	gnome.soundlist gtk-events.soundlist
+EXTRA_DIST = 			\
+	gnome.soundlist 	\
+	gtk-events.soundlist	\
+	mime-magic 		\
+	mime.types 		\
+	paper.config
 
 scoredir=$(localstatedir)/games
 sysconf_DATA=paper.config mime.types mime-magic
