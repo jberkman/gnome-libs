@@ -143,7 +143,7 @@ typedef XVisualInfo TVisualInfo;
 #define Toolkit_Define_Cursor(d,w,c) gdk_window_set_cursor ((w),(c))
 
 #define XCCCreate(w,v,c)   gdk_color_context_new (v, c)
-#define XCCFree(c)         gdk_color_context_free (c)
+#define XCCFree(c)         if ((c)) gdk_color_context_free ((c))
 #define XCCGetDepth(c)     (c)->visual->depth
 #define XCCGetParentVisual(w) gtk_widget_get_visual(w)
 #define XCCGetPixels(cc,r,g,b,n,co,a) gdk_color_context_get_pixels (cc,r,g,b,n,co,a)

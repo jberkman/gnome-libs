@@ -215,6 +215,8 @@ gtk_xmhtml_init (GtkXmHTML *html)
 	html->highlight_color  = 0;
 }
 
+static void gtk_xmhtml_create_widgets (GtkXmHTML *html);
+
 GtkWidget *
 gtk_xmhtml_new (void)
 {
@@ -224,8 +226,10 @@ gtk_xmhtml_new (void)
 	GTK_WIDGET(html)->allocation.width  = 200;
 	GTK_WIDGET(html)->allocation.height = 200;
 	html->initialized = 0;
-	html->frozen = 1;
+	html->frozen = 0;
+	gtk_xmhtml_create_widgets (html);
 	gtk_xmhtml_source (html, "<body></body>");
+	html->frozen = 1;
 	return GTK_WIDGET (html);
 }
 
@@ -821,24 +825,11 @@ drawing_area_realized (GtkWidget *widget, gpointer data)
 	/* FIXME: remember to destroy the GCs later */
 }
 
-/*****
- * Name: 		CreateHTMLWidget
- * Return Type: 	void
- * Description: 	creates the HTML TWidget
- *			The actual area we use to draw into is a drawingAreaWidget.
- * In: 
- *	html:		TWidget to be created.
- * Returns:
- *	nothing
- *****/
 static void
-CreateHTMLWidget(XmHTMLWidget html)
+gtk_xmhtml_create_widgets (GtkXmHTML *html)
 {
 	GtkWidget *draw_area;
 	int events;
-	int vsb_width, hsb_height;
-
-	_XmHTMLDebug(1, ("XmHTML.c: CreateHTMLWidget Start\n"));
 
 	/* Check if user provided a work area */
 	if(html->html.work_area == NULL)
@@ -911,6 +902,25 @@ CreateHTMLWidget(XmHTMLWidget html)
 		gtk_signal_connect (GTK_OBJECT(html->vsba), "value_changed",
 				    (GtkSignalFunc) vertical_scroll, html);
 	}
+
+}
+
+/*****
+ * Name: 		CreateHTMLWidget
+ * Return Type: 	void
+ * Description: 	creates the HTML TWidget
+ *			The actual area we use to draw into is a drawingAreaWidget.
+ * In: 
+ *	html:		TWidget to be created.
+ * Returns:
+ *	nothing
+ *****/
+static void
+CreateHTMLWidget(XmHTMLWidget html)
+{
+	int vsb_width, hsb_height;
+
+	_XmHTMLDebug(1, ("XmHTML.c: CreateHTMLWidget Start\n"));
 
 	/* 
 	* subtract margin_width once to minimize number of calcs in
@@ -1612,6 +1622,10 @@ gtk_xmhtml_sync_redraw (GtkXmHTML *html)
 static void
 gtk_xmhtml_sync (GtkXmHTML *html)
 {
+	if (!html->initialized){
+		html->initialized = 1;
+		XmHTML_Initialize (html, html, html->html.source);
+	}
 	if (html->parse_needed)
 		gtk_xmhtml_sync_parse (html);
 	if (html->reformat_needed)
@@ -1660,10 +1674,6 @@ gtk_xmhtml_source (GtkXmHTML *html, char *html_source)
 {
 	int parse = FALSE;
 
-	if (!html->initialized){
-		html->initialized = 1;
-		XmHTML_Initialize (html, html, html_source);
-	}
 	/* If we already have some HTML source code */
 	if (html->html.source){
 		if (html_source){	/* new text supplied */
@@ -1687,7 +1697,9 @@ gtk_xmhtml_source (GtkXmHTML *html, char *html_source)
 	}
 	html->html.value = html->html.source;
 	html->parse_needed = parse;
-	gtk_xmhtml_try_sync (html);
+	
+	if (html->initialized)
+		gtk_xmhtml_try_sync (html);
 }
 
 /* XXX: This function does an XQueryColors() the hard way, because there is

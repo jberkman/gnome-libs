@@ -34,6 +34,12 @@ char *test_string =
 "</body>"
 "</html>";
 
+char *test_string3 =
+"<html><head><title>h</title></head>"
+"<body>I love you world"
+"</body>"
+"</html>";
+
 void
 click (GtkWidget *widget, gpointer data)
 {
@@ -49,7 +55,7 @@ click (GtkWidget *widget, gpointer data)
 	printf ("title:   %s\n", cbs->title);
 	printf ("doit:    %d\n", cbs->doit);
 	printf ("visited: %s\n", cbs->visited);
-	gtk_xmhtml_source (GTK_XMHTML (widget), test_string2);
+	gtk_xmhtml_source (GTK_XMHTML (widget), test_string3);
 }
 
 void

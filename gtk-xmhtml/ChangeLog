@@ -1,3 +1,13 @@
+Wed Jan 14 00:40:59 1998  Miguel de Icaza  <miguel@nuclecu.unam.mx>
+
+	* toolkit.h (XCCFree): Allow for empty color contexts.
+
+	* gtk-xmhtml.c: Massive changes to allow proper initialization of
+	widget (basically, we now create the widgets that make up the HTML
+	widget first instead of waiting for the source routine to be
+	invoked).
+	
+
 Tue Jan 13 22:04:43 1998  Federico Mena  <federico@bananoid.nuclecu.unam.mx>
 
 	* gtk-xmhtml.c (gtk_xmhtml_new): The widget starts up frozen and
