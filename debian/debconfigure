@@ -13,8 +13,9 @@ if [ ! -r rules.in ]; then
 fi
 
 debtype='official'
-prefix='/usr/X11R6'
+prefix='/usr'
 gtkprefix='/usr'
+localstatedir='/var/lib'
 pkgsuffix=''
 
 for dc_option
@@ -33,6 +34,9 @@ do
 	--prefix=*)
 	    prefix="$dc_optarg" ;;
 
+        --localstatedir=*)
+	    prefix="$dc_optarg" ;;
+
 	--pkgsuffix=*)
 	    pkgsuffix="$dc_optarg" ;;
 
@@ -46,6 +50,7 @@ Options: [defaults in brackets after descriptions]
   --help                  print this message
   --clean		  remove generated files
   --prefix=PREFIX         install files under under PREFIX dir [/usr]
+  --localstatedir=DIR     directory for things like game scores [/var/lib]
   --pkgsuffix=SUFFIX      append SUFFIX onto package names []
   --debtype=DEBTYPE       enable macros with the name of DEBTYPE [official]
 EOF
@@ -57,6 +62,7 @@ done
 # Strip leading slash
 prefix=`expr $prefix : '/\(.*\)'`
 gtkprefix=`expr $gtkprefix : '/\(.*\)'`
+localstatedir=`expr $localstatedir : '/\(.*\)'`
 
 for infile in `ls control.in rules.in`
 do
@@ -65,6 +71,7 @@ do
        sed "s,@SUFFIX@,$pkgsuffix,g" | \
        sed "s,@PREFIX@,$prefix,g" | \
        sed "s,@GTKPREFIX@,$gtkprefix,g" | \
+       sed "s,@LOCALSTATEDIR@,$localstatedir,g" | \
        sed "s,%$debtype>,," | sed '/^%/d' > $tofile
 done
 chmod +x rules
@@ -77,6 +84,7 @@ do
        sed "s,@SUFFIX@,$pkgsuffix,g" | \
        sed "s,@PREFIX@,$prefix,g" | \
        sed "s,@GTKPREFIX@,$gtkprefix,g" | \
+       sed "s,@LOCALSTATEDIR@,$localstatedir,g" | \
        sed "s,%$debtype>,," | sed '/^%/d' > $tofile
 done
 
@@ -88,6 +96,7 @@ do
        sed "s,@SUFFIX@,$pkgsuffix,g" | \
        sed "s,@PREFIX@,$prefix,g" | \
        sed "s,@GTKPREFIX@,$gtkprefix,g" | \
+       sed "s,@LOCALSTATEDIR@,$localstatedir,g" | \
        sed "s,%$debtype>,," | sed '/^%/d' > $tofile
 done
 
@@ -104,3 +113,4 @@ ldconfig
 EOF
 
 done
+
