@@ -30,7 +30,6 @@ AC_SUBST(LDFLAGS)
 
 ALL_LINGUAS="de fr it ko"
 AM_GNU_GETTEXT
-
 AC_LINK_FILES($nls_cv_header_libgt, $nls_cv_header_intl)
 
 AC_CHECK_LIB(m, main)
@@ -44,9 +43,6 @@ like panel, will not run properly.))
 ])])
 AC_SUBST(DL_LIB)
 
-dnl
-dnl The libgnome specific checks
-dnl
 AC_CHECK_FUNCS(strerror gethostbyname setfsgid)
 NSL_LIBS=""
 if test $ac_cv_func_gethostbyname = no; then
@@ -54,31 +50,31 @@ if test $ac_cv_func_gethostbyname = no; then
 fi
 AC_SUBST(NSL_LIBS)
 
-dnl
-dnl The libgnomeui specific checks
-dnl
+dnl libgtkxmhtml enables a workaround if this isn't present
+xLIBS="$LIBS"
+LIBS="$LIBS $GTK_LIBS $X_LIBS $x_libs"
+AC_CHECK_FUNCS(gtk_signal_handler_pending)
+LIBS="$xLIBS"
 
-dnl gdk_imlib depends on these; checks copied from imlib/configure.in
-IM_Z_LIBS=""
-TIFF_LIBS=""
-GIF_LIBS=""
-IM_JPEG_LIBS=""
-IM_PNG_LIBS=""
-AC_CHECK_LIB(z, main, [IM_Z_LIBS="-lz"])
+dnl Image handling libraries
+Z_LIBS= JPEG_LIBS= PNG_LIBS= TIFF_LIBS= GIF_LIBS= GDK_IMLIB_LIBS=
+AC_CHECK_LIB(z, inflate, [Z_LIBS="-lz"])
+AC_CHECK_LIB(jpeg, jpeg_abort, [JPEG_LIBS="-ljpeg"])
+AC_CHECK_LIB(png, png_get_valid, [PNG_LIBS="-lpng"], , $Z_LIBS)
 AC_CHECK_LIB(tiff, main, [TIFF_LIBS="-ltiff"])
 AC_CHECK_LIB(gif, main, [GIF_LIBS="-lgif"])
-AC_CHECK_LIB(jpeg, main, [IM_JPEG_LIBS="-ljpeg"])
-AC_CHECK_LIB(png, png_get_valid, [IM_PNG_LIBS="-lpng"])
+AC_CHECK_LIB(gdk_imlib, main, [
+ GDK_IMLIB_LIBS="-lgdk_imlib $TIFF_LIBS $GIF_LIBS $JPEG_LIBS $PNG_LIBS $Z_LIBS"
+],,$TIFF_LIBS $GIF_LIBS $JPEG_LIBS $PNG_LIBS $Z_LIBS $GTK_LIBS $X_LIBS $x_libs)
 
-GDK_IMLIB_LIBS="-lgdk_imlib $IM_Z_LIBS $TIFF_LIBS $GIF_LIBS $IM_JPEG_LIBS $IM_PNG_LIBS"
-
+dnl These are for building the apporpriate lib*
 LIBGNOME_LIBS="$DL_LIB"
-GNOME_LIBS="-lgnome $LIBGNOME_LIBS"
-
-LIBGNOMEUI_LIBS="$LIBGNOME_LIBS $GDK_IMLIB_LIBS $GTK_LIBS $X_LIBS $x_libs $Z_LIBS"
-GNOMEUI_LIBS="-lgnomeui $GDK_IMLIB_LIBS $GNOME_LIBS $GTK_LIBS $X_LIBS $x_libs $Z_LIBS"
-
+LIBGNOMEUI_LIBS="$LIBGNOME_LIBS $GDK_IMLIB_LIBS $GTK_LIBS $X_LIBS $x_libs"
 LIBGTKXMHTML_LIBS="$GTK_LIBS $XPM_LIBS $JPEG_LIBS $PNG_LIBS $Z_LIBS $X_LIBS $x_libs"
+
+dnl These are for using lib*
+GNOME_LIBS="-lgnome $LIBGNOME_LIBS"
+GNOMEUI_LIBS="-lgnomeui $GNOME_LIBS $GDK_IMLIB_LIBS $GTK_LIBS $X_LIBS $x_libs"
 GTKXMHTML_LIBS="-lgtkxmhtml $LIBGTKXMHTML_LIBS"
 
 dnl These definitions are expanded in make.
@@ -93,23 +89,6 @@ AC_SUBST(GNOME_INCLUDEDIR)
 AC_SUBST(LIBGNOME_LIBS)
 AC_SUBST(LIBGNOMEUI_LIBS)
 AC_SUBST(LIBGTKXMHTML_LIBS)
-
-dnl
-dnl The Gtk/XmHTML code
-dnl
-Z_LIBS=""
-JPEG_LIBS=""
-PNG_LIBS=""
-AC_CHECK_LIB(z, inflate, [Z_LIBS="-lz"])
-AC_CHECK_LIB(jpeg, jpeg_abort, [JPEG_LIBS="-ljpeg"])
-AC_CHECK_LIB(png, png_read_image, [PNG_LIBS="-lpng"])
-xLIBS="$LIBS"
-LIBS="$LIBS $GTK_LIBS $X_LIBS $x_libs"
-AC_CHECK_FUNCS(gtk_signal_handler_pending)
-LIBS="$xLIBS"
-AC_SUBST(Z_LIBS)
-AC_SUBST(JPEG_LIBS)
-AC_SUBST(PNG_LIBS)
 
 AC_CONFIG_SUBDIRS(libgtktty)
 

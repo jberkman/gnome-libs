@@ -1,3 +1,9 @@
+1998-02-25  Raja R Harinath  <harinath@cs.umn.edu>
+
+	* configure.in: Clean up the handling of {Z,PNG,JPEG,TIFF,GIF}_LIBS,
+	and their interaction with {GDK_IMLIB,GNOMEUI,GTKXMHTML}_LIBS.
+	(AC_SUBST): Remove {Z,PNG,JPEG}_LIBS.
+
 Tue Feb 24 20:01:42 1998  Maciej Stachowiak  <mstachow@mit.edu>
 
 	* configure.in: Added checks for libraries that gdk_imlib depends
