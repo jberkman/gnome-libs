@@ -18,9 +18,9 @@ doing this.
 
 * GnomeEntry
 
-  - this won't be a GtkCombo any longer, but a GnomeSelector.
+  - this is isn't a GtkCombo any longer, but a GnomeSelector.
 
-  The following functions will be removed:
+  The following functions have been removed:
 
   - gnome_entry_gtk_entry()
 
@@ -28,7 +28,7 @@ doing this.
     gnome_entry_get_text() and gnome_entry_set_text() to access
     the entry text.
 
-  The following functions will be deprecated:
+  The following functions are deprecated:
 
   - gnome_entry_get_history_id, gnome_entry_set_history_id
     gnome_entry_get_history_id, gnome_entry_set_max_saved
@@ -50,6 +50,43 @@ doing this.
   - try not to access any of the 'changed', 'history_id', 'items' and
     'max_saved' fields in the GnomeEntry directly, they will be private
     in GNOME 2.0.
+
+* GnomeFileEntry
+
+  - this has been replaced by GnomeFileSelector.
+
+* GnomeIconEntry
+
+  - this is now derived from GnomeFileSelector instead of GtkVBox.
+  - previously, the difference between GnomeIconEntry and GnomePixmapEntry
+    was that you could specify the size of the preview in a GnomePixmapEntry;
+    this functionality has been moved into GnomeIconEntry so that
+    GnomePixmapEntry is now obsolete.
+
+  The following functions have been removed:
+
+  - gnome_icon_entry_gnome_file_entry(): use parent class
+  - gnome_icon_entry_gnome_entry (): use parent class
+  - gnome_icon_entry_gtk_entry (): don't suck things out of this directly
+
+  The following functions are deprecated:
+
+  - gnome_icon_entry_set_pixmap_subdir(): Fixme, Fixme.
+  - gnome_icon_entry_set_icon(): use gnome_selector_set_uri().
+
+  The following new functions have been added:
+
+  - gnome_icon_entry_get_icon_selector ()
+  - gnome_icon_entry_set_preview_size (): formerly in GnomePixmapEntry.
+
+  Other source incompatible changes:
+
+  - `fentry', `pickbutton', `pick_dialog', `pick_dialog_dir' have been
+    removed from the GnomeIconEntry instance struct.
+
+* GnomePixmapEntry
+
+  - this has been obsoleted by GnomeIconEntry.
 
 
 
