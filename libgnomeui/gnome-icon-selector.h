@@ -64,7 +64,7 @@ struct _GnomeIconSelectorClass {
 };
 
 
-guint        gnome_icon_selector_get_type     (void);
+guint        gnome_icon_selector_get_type     (void) G_GNUC_CONST;
 
 GtkWidget   *gnome_icon_selector_new          (const gchar *history_id,
                                                const gchar *dialog_title,
