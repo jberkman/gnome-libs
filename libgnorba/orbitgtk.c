@@ -129,10 +129,8 @@ _gnorba_get_cookie_reliably (const char *setme)
 
   if(setme) {
 
-    creat(name, S_IRUSR|S_IWUSR); /* let it fail, who cares */
-
     /* Just write it into the file for reference purposes */
-    fd = open (name, O_EXCL|O_WRONLY, S_IRUSR | S_IWUSR);
+    fd = open (name, O_CREAT|O_EXCL|O_WRONLY, S_IRUSR | S_IWUSR);
 
     if (fd < 0)
       goto out;
