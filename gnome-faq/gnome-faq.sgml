@@ -49,6 +49,7 @@
 <!entity wwwdebkde     "http://www.debian.org/News/1998/19981008">
 <!entity wwwredbean    "http://www.red-bean.com/guile">
 <!entity wwwschemerpt  "http://www-swiss.ai.mit.edu/~jaffer/r5rs_toc.html">
+<!entity wwwfhs        "http://www.pathname.com/fhs/2.0/fhs-toc.html">
 <!entity ftpgnome      "ftp://ftp.gnome.org">
 <!entity ftpwgn        "ftp://gnomeftp.wgn.net/pub/gnome">
 <!entity ftpsnap       "ftp://ftp.jimpick.com/pub/gnome/snap">
@@ -991,6 +992,37 @@
       instances above.</para>
     </sect1>
 
+    <sect1 id="FHS">
+      <title>How do I compile GNOME with all the files in the right
+      place for FHS Compliance?  How do I relocate GNOME's etc and var
+      directories to easily network GNOME?</title>
+
+      <comment>Thank you Raja R. Harinath!</comment>
+
+      <para>By default, GNOME puts all of its files under its prefix
+      directory.  While this makes GNOME easy to isolate, it's not
+      necessarily the best place for certain files in some situations.
+      In particular, if you are looking to network GNOME, or for
+      strict <ulink url="&wwwfhs;">FHS</ulink> compliance, you might
+      want to relocate some directories.  To relocate GNOME's etc
+      directory, use the <option>--sysconfdir</option> option.  To
+      relocate the var directory, use the
+      <option>--localstatedir</option> option.</para>
+
+      <para>For example, an FHS installation of GNOME might have a
+      prefix of <filename>/opt/gnome</filename>.  However, it's etc
+      files should be in <filename>/etc/opt/gnome</filename>, and
+      similarly, its var files should be in
+      <filename>/var/opt/gnome</filename>.  This has the advantage of
+      allowing you to network the <filename>/opt/gnome</filename>
+      directory, keep it read-only, and allow machines to have local
+      configuration and information without worrying about other
+      machines.  To do this, the configure command would be as
+      follows: <userinput>./configure --prefix=/opt/gnome
+      --sysconfdir=/etc/opt/gnome
+      --localstatedir=/var/opt/gnome</userinput>.</para>
+    </sect1>
+
     <sect1>
       <title>I'm done with this module, how do I get rid of all the
       object files and other cruft from the source tree?</title>
@@ -1408,24 +1440,29 @@ Program received signal SIGINT, Interrupt.
 	<title>What is an strace?  Someone asked me to send them one,
 	how do I do this?</title>
 
-	<para>The <command>strace</command> command will run a
-	program, outputting system calls and signals as the program
-	runs.  This is a much more verbose debugging tool than the
-	backtrace, but sometimes you need the extra information an
-	strace can give you.  Getting an strace is easy, just type
-	<userinput>strace -o &lt;output file&gt; &lt;command with
-	args&gt;</userinput> into an xterm.  For example, to do an
-	strace on the gtalk program with sound disabled, I might do
-	<userinput>strace -o /tmp/gtalk.strace gtalk
-	--disable-sound</userinput>.  This will save the strace output
-	in <filename>/tmp/gtalk.strace</filename>.  Strace does make
-	use of the path, and does accept program arguments on the
+	<para>The <command>strace</command> command performs a
+	"Signal Trace".  Using it will allow you to run a program while
+	outputting system calls and signals.  This is a much more
+	verbose debugging tool than the backtrace, but sometimes you
+	need the extra information an strace can give you.  Getting an
+	strace is easy, just type <userinput>strace -o &lt;output
+	file&gt; &lt;command with args&gt;</userinput> into an xterm.
+	For example, to do an strace on the gtalk program with sound
+	disabled, I might do <userinput>strace -o /tmp/gtalk.strace
+	gtalk --disable-sound</userinput>.  This will save the strace
+	output in <filename>/tmp/gtalk.strace</filename>.  Strace does
+	make use of the path, and does accept program arguments on the
 	command line.</para>
 
 	<para>Warning, strace produces lots of output (the above
 	strace example came up with 5,498 lines in five seconds).
 	Don't send straces to the mailing lists, and only send them to
 	the developers if they specifically request it.</para>
+
+	<para>On Solaris systems, the <command>strace</command>
+	command does something different.  The
+	<command>truss</command> command is probably what the person
+	who asked for the strace is looking for.</para>
       </sect2>
     </sect1>
 
@@ -1602,6 +1639,11 @@ WM=foo</screen>
 	load the PNG code).  Try compiling those two packages with no
 	optimization switches on.  That might fix it.  As far as I can
 	tell, this is a bug in my compiler, not in GNOME.</para>
+
+	<para>I have also received a report that the problem could
+	occur from interference from some versions of ImageMagick.  If
+	you are at a loss, you might want to try removing or upgrading
+	it.</para>
       </sect2>
     </sect1>
   </chapter>
