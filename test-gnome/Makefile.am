@@ -11,6 +11,7 @@ testgnome_SOURCES =		\
 	canvas.c		\
 	canvas-primitives.c	\
 	canvas-arrowhead.c	\
+	canvas-features.c	\
 	canvas-fifteen.c	\
 	testgnome.c		\
 	testgnome.h
