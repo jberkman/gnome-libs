@@ -1,3 +1,21 @@
+1998-10-11  Michael Lausch  <mla@gams.at>
+
+	* libgnorba/orbitgtk.c (gnome_name_service_get): Detect a dead
+	orbit-name-server and restart it. 
+	(gnome_register_corba_server): new function. Used by the server to 
+	register with the orbit-naming-server.
+	(gnome_unregister_corba_server): new function. Used by the server
+	to deregister from the orbit-naming-server.
+
+	* libgnorba/goad.c (goad_server_activate): The server has to pass
+	it's IOR string to us, so that we can pass an object reference
+	back to the caller. don't loop here, polling the naming server.
+	(goad_server_activate_shlib): Disable the flag
+	GOAD_ACTIVATE_NO_NS_REGISTER. It's not used any more.
+	(goad_server_activate_exe): Daemonize the server using
+	setsid. Wait until the server is ready and printed it's IOR
+	string. 
+
 1998-10-10  Carsten Schaar  <nhadcasc@fs-maphy.uni-hannover.de>
 
 	* libgnome/Makefile.am (gnome_moz_remote_LDADD): Added '$(INTLLIBS)'.

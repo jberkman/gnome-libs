@@ -16,7 +16,34 @@ CORBA_ORB gnome_CORBA_init          (char *app_id,
 				     unsigned int flags,
 				     int *arg_index,
 				     CORBA_Environment *ev);
-CORBA_Object gnome_name_service_get(void);
+
+/*
+  Gets the naming server from the X Propery on the root window. If
+  this property does not exist, or the name server which has been
+  registered has died, a new name server is started and a naming
+  context object is returned.
+*/
+CORBA_Object gnome_name_service_get       (void);
+
+/* register an object with the name server. name_server is the object
+   returned by a call to gnome_name_service_get, and server is your
+   CORBA server.
+
+   Return -1 on error,
+          -2 if another server with the same NAME and
+	     KIND is already active and running,
+	   0 otherwise;
+   You might check ev for more error information.
+*/
+int          gnome_register_corba_server  (CORBA_Object name_server, CORBA_Object server,
+					   gchar* name, gchar* kind, CORBA_Environment* ev);
+/*
+  Deregister name from the name server.
+*/
+int          gnome_unregister_corba_server  (CORBA_Object name_server,
+					     gchar* name, gchar* kind, CORBA_Environment* ev);
+
+
 
 /**** gnome-plugins module ****/
 typedef struct {
@@ -75,9 +102,16 @@ typedef enum {
 					       */
 	GOAD_ACTIVATE_NEW_ONLY = 1 << 3,      /* No lookup in name service. */
 
+	/*
+	  Since name server registration now happens in the server,
+	  this is not necessary and the server doesn't know about it 
+	  either.
+	*/
+#if 0	
 	GOAD_ACTIVATE_NO_NS_REGISTER = 1 << 4 /* DON'T register this new
 					       * server with the name service
 					       */
+#endif
 } GoadActivationFlags;
 
 /*

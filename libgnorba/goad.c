@@ -7,8 +7,11 @@
 #include <config.h>
 #include "gnorba.h"
 #include <dirent.h>
-#include <sys/resource.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <sys/stat.h>
 #include <signal.h>
+#include <fcntl.h>
 
 #define SERVER_LISTING_PATH "/CORBA/Servers"
 
@@ -211,7 +214,7 @@ goad_server_activate_with_repo_id(GoadServer *server_list,
   GoadServer *slist;
   CORBA_Object retval = CORBA_OBJECT_NIL;
   int i;
-  enum { PASS_CHECK_EXISTING, PASS_PREFER, PASS_FALLBACK, PASS_DONE } passnum;
+  enum { PASS_CHECK_EXISTING = 0, PASS_PREFER, PASS_FALLBACK, PASS_DONE } passnum;
 
   g_return_val_if_fail(repo_id, CORBA_OBJECT_NIL);
   g_return_val_if_fail(!((flags & GOAD_ACTIVATE_EXISTING_ONLY)
@@ -233,38 +236,46 @@ goad_server_activate_with_repo_id(GoadServer *server_list,
   */
 
   for(passnum = PASS_CHECK_EXISTING; passnum < PASS_DONE; passnum++) {
-
+    
     for(i = 0; slist[i].repo_id; i++) {
       if(passnum == PASS_PREFER) {
 	/* Check the type */
 	if(((flags & GOAD_ACTIVATE_SHLIB)
 	    && slist[i].type != GOAD_SERVER_SHLIB))
 	  continue;
-
+	    
 	if((flags & GOAD_ACTIVATE_REMOTE)
 	   && slist[i].type != GOAD_SERVER_EXE)
 	  continue;
       }
-
+	
       if(strcmp(repo_id, slist[i].repo_id))
 	continue;
-
+	
       /* entry matched */
-      if(passnum == PASS_CHECK_EXISTING)
-	retval = goad_server_activate(&slist[i],
-				      flags | GOAD_ACTIVATE_EXISTING_ONLY);
-      else
+      if(passnum == PASS_CHECK_EXISTING) {
+	g_message("goad_server_activate_with_repo_id: Calling goad_server_activate:  passnum %d", passnum);
+	retval = goad_server_activate(&slist[i], flags | GOAD_ACTIVATE_EXISTING_ONLY);
+	g_message("goad_server_activate_with_repo_id: goad_server_activate with EXISTING_ONLY returned");
+      }
+      else {
+	g_message("goad_server_activate_with_repo_id: Calling goad_server_activate:  passnum %d", passnum);
 	retval = goad_server_activate(&slist[i], flags | GOAD_ACTIVATE_NEW_ONLY);
-
-      if(retval != CORBA_OBJECT_NIL)
+	g_message("goad_server_activate_with_repo_id: goad_server_activate with NEW_ONLY returned");
+      }
+      g_warning("goad_server_activate: retval = %p", retval);
+      if (retval != CORBA_OBJECT_NIL)
 	break;
     }
-
-    /* If we got something, out of here.
-       If we were asked to check existing servers and we are done that,
-       out of here.
-       If we were not asked to do any special activation method checking,
-       then we've done all the needed passes, out of here. */
+    g_message("goad_server_activate: repo_id list finished");
+    
+    /* If we got something, out of here.	
+       If we were asked to check existing servers and we are done that,	
+       out of here.	
+       If we were not asked to do any special activation method checking,	
+       then we've done all the needed passes, out of here.
+    */
+      
     if(retval != CORBA_OBJECT_NIL
        || ((passnum == PASS_CHECK_EXISTING)
 	   && (flags & GOAD_ACTIVATE_EXISTING_ONLY))
@@ -290,13 +301,14 @@ CORBA_Object
 goad_server_activate(GoadServer *sinfo,
 		     GoadActivationFlags flags)
 {
-  CORBA_Object retval = CORBA_OBJECT_NIL;
-  CORBA_Environment ev;
-
+  CORBA_Environment       ev;
+  CORBA_Object            name_service;
   CosNaming_NameComponent nc[3] = {{"GNOME", "subcontext"},
 				   {"Servers", "subcontext"}};
-  CosNaming_Name nom = {0, 3, nc, CORBA_FALSE};
-  
+  CosNaming_Name          nom = {0, 3, nc, CORBA_FALSE};
+
+  CORBA_Object retval = CORBA_OBJECT_NIL;
+
   g_return_val_if_fail(sinfo, CORBA_OBJECT_NIL);
   /* make sure they passed in a sane 'flags' */
   g_return_val_if_fail(!((flags & GOAD_ACTIVATE_SHLIB)
@@ -316,35 +328,35 @@ goad_server_activate(GoadServer *sinfo,
     nc[2].id = sinfo->id;
     nc[2].kind = "object";
 
-    retval = CosNaming_NamingContext_resolve(name_service, &nom, &ev);
-    g_warning("Looking if server is registered with orbit-naming-server\n");
+    g_warning("goad_server_activate: Testing if server '%s' is already running", sinfo->id);
     
-    if(ev._major != CORBA_NO_EXCEPTION)
-      {
-	g_warning("goad_server_activate: %s:%d", __FILE__, __LINE__);
-	switch( ev._major )
-	  {
-	  case CORBA_SYSTEM_EXCEPTION:
-	    g_warning(" sysex: :  %s.\n", CORBA_exception_id(&ev));
-	  case CORBA_USER_EXCEPTION:
-	    g_warning(" usrex: %s.\n", CORBA_exception_id(&ev ) );
-	  default:
-	    break;
-	  }
-	retval = CORBA_OBJECT_NIL;
-      }
+    retval = CosNaming_NamingContext_resolve(name_service, &nom, &ev);
 
+    if (ev._major == CORBA_USER_EXCEPTION
+	&& strcmp(CORBA_exception_id(&ev), ex_CosNaming_NamingContext_NotFound) == 0) {
+      retval = CORBA_OBJECT_NIL;
+    }
+    else if (ev._major != CORBA_NO_EXCEPTION) {
+      g_warning("goad_server_activate: %s %d: unexpected exception:", __FILE__, __LINE__);
+      switch( ev._major ) {
+	case CORBA_SYSTEM_EXCEPTION:
+	  g_warning("sysex: %s.\n", CORBA_exception_id(&ev));
+	case CORBA_USER_EXCEPTION:
+	  g_warning( "usr	ex: %s.\n", CORBA_exception_id( &ev ) );
+	default:
+	  break;
+	}
+    }
     ev._major = CORBA_NO_EXCEPTION;
     CORBA_Object_release(name_service, &ev);
-    if (ev._major != CORBA_NO_EXCEPTION)
-      {
+    if (ev._major != CORBA_NO_EXCEPTION) {
 	retval = CORBA_OBJECT_NIL;
       }
     
-    if(!CORBA_Object_is_nil(retval, &ev))
+    if(!CORBA_Object_is_nil(retval, &ev) || (flags & GOAD_ACTIVATE_EXISTING_ONLY))
       goto out;
   }
-
+  
   switch(sinfo->type) {
   case GOAD_SERVER_SHLIB:
     retval = goad_server_activate_shlib(sinfo, flags, &ev);
@@ -356,47 +368,38 @@ goad_server_activate(GoadServer *sinfo,
     g_warning("Relay interface not yet defined (write an RFC :). Relay objects NYI");
     break;
   }
+  g_message("goad_server_activate: Server started\n");
 
+#if 0 
   /*
    * This goes _before_ "out:" - don't want to reregister
    * the object with the name service if we got it from there ;-)
    */
-  if(!CORBA_Object_is_nil(retval, &ev)
-     && !(flags & GOAD_ACTIVATE_NO_NS_REGISTER)) {
-    /* Register this object with the name service */
-    CORBA_Object name_service;
-    int found  = 0;
+
+  if(!CORBA_Object_is_nil(retval, &ev) && !(flags & GOAD_ACTIVATE_NO_NS_REGISTER)) {
     
     name_service = gnome_name_service_get();
     nc[2].id = sinfo->id;
     nc[2].kind = "object";
-    
-    while (!found)
+    g_message("goad_server_activate: Registering server with orbit-naming-server");
+    CosNaming_NamingContext_bind(name_service, &nom, retval, &ev);
+    if (ev._major != CORBA_NO_EXCEPTION)
       {
-	retval = CosNaming_NamingContext_resolve(name_service, &nom, &ev);
-	if (ev._major != CORBA_NO_EXCEPTION)
+	g_warning("goad_server_activate: Registering server");
+	switch( ev._major )
 	  {
-	    g_warning("goad_server_activate: %s %d:", __FILE__, __LINE__);
-	    switch( ev._major )
-	      {
-	      case CORBA_SYSTEM_EXCEPTION:
-		g_warning("sysex: %s.\n", CORBA_exception_id(&ev));
-	      case CORBA_USER_EXCEPTION:
-		g_warning( "usr	ex: %s.\n", CORBA_exception_id( &ev ) );
-	      default:
-		break;
-	      }
-	    sleep(1);
+	  case CORBA_SYSTEM_EXCEPTION:
+	    g_warning("sysex: %s.\n", CORBA_exception_id(&ev));
+	  case CORBA_USER_EXCEPTION:
+	    g_warning( "usr	ex: %s.\n", CORBA_exception_id(&ev));
+	  default:
+	    break;
 	  }
-	else
-	  found = 1;
       }
-    CORBA_Object_release(name_service, &ev);
   }
-
+#endif    
  out:
   CORBA_exception_free(&ev);
-
   return retval;
 }
 
@@ -444,6 +447,7 @@ goad_server_activate_shlib(GoadServer *sinfo,
   g_return_val_if_fail(retval && ev->_major != CORBA_NO_EXCEPTION,
 		       CORBA_OBJECT_NIL);
 
+#if 0
   if(!(flags & GOAD_ACTIVATE_NO_NS_REGISTER)) {
     local_server_info = g_new(ActiveServerInfo, 1);
     local_server_info->impl_ptr = impl_ptr;
@@ -454,7 +458,7 @@ goad_server_activate_shlib(GoadServer *sinfo,
 
     our_active_servers = g_slist_prepend(our_active_servers, local_server_info);
   }
-
+#endif
   return retval;
 }
 
@@ -514,35 +518,73 @@ goad_servers_unregister_atexit(void)
       Outputs: 'retval' - an objref to the newly-started server.
       Pre-conditions: Assumes sinfo->type == GOAD_SERVER_EXE
 
-      Description: Calls setsid to daemonize the server. Expects the server
-		   to register itself with the nameing
-		   service. Ignores SIGPIPE in the child, so that the
-		   server doesn't die if it writes to a closed fd.
- */
+      Description: Calls setsid to daemonize the server. Expects the
+		   server to register itself with the nameing
+		   service. Returns after the server printed it's IOR
+		   string.  Ignores SIGPIPE in the child, so that the
+		   server doesn't die if it writes to a closed fd.  */
 
-static CORBA_Object
+CORBA_Object
 goad_server_activate_exe(GoadServer *sinfo,
 			 GoadActivationFlags flags,
 			 CORBA_Environment *ev)
 {
-  CORBA_Object retval;
-  /* fork & get the ior from stdout */
+  gint                    iopipes[2];
+  gchar                   iorbuf[2048];
+  CORBA_Object            retval = CORBA_OBJECT_NIL;
 
+  pipe(iopipes);
+  /* fork & get the ior from stdout */
+  
   if(fork()) {
-    int status;
+    int     status;
+    FILE*   iorfh;
+    
+    close(iopipes[1]);
+    iorfh = fdopen(iopipes[0], "r");
+
+    while (fgets(iorbuf, sizeof(iorbuf), iorfh) && strncmp(iorbuf, "IOR:", 4))
+      ;
+    if (strncmp(iorbuf, "IOR:", 4)) {
+      retval = CORBA_OBJECT_NIL;
+      goto out;
+    }
+    if (iorbuf[strlen(iorbuf)-1] == '\n')
+      iorbuf[strlen(iorbuf)-1] = '\0';
+    retval = CORBA_ORB_string_to_object(gnome_orbit_orb, iorbuf, ev);
+    if (ev->_major != CORBA_NO_EXCEPTION) {
+      g_warning("goad_server_activate_e	xe: %s %d:", __FILE__, __LINE__);
+      switch( ev->_major ) {
+      case CORBA_SYSTEM_EXCEPTION:
+	g_warning("syse	x: %s.\n", CORBA_exception_id(ev));
+      case CORBA_USER_EXCEPTION:
+	g_warning("u	srex: %s.\n", CORBA_exception_id( ev ) );
+      default:
+	break;
+      }
+      retval = CORBA_OBJECT_NIL;
+    }
+    fclose(iorfh);
     wait(&status);
+    g_message("goad_server_activate_exe: server running, everything okay");
   } else if(fork()) {
     _exit(0); /* de-zombifier process, just exit */
   } else {
     struct sigaction sa;
     
+    close(0);
+    close(iopipes[0]);
+    dup2(iopipes[1], 1);
+    dup2(iopipes[1], 2);
+    
+    setsid();
+
     sa.sa_handler = SIG_IGN;
     sigaction(SIGPIPE, &sa, 0);
-    setsid();
     execlp(sinfo->location_info, sinfo->location_info, NULL);
     _exit(1);
   }
-
- out:
+out:
+  g_message("goad_server_activate_exe: returning %p\n", retval);
   return retval;
 }

@@ -14,6 +14,7 @@
 #include <gdk/gdkx.h>
 #include <gtk/gtk.h>
 #include "gnorba.h"
+#include "name-service.h"
 
 CORBA_ORB gnome_orbit_orb;
 CORBA_Principal request_cookie;
@@ -187,12 +188,11 @@ gnome_name_service_get(void)
 {
   static CORBA_Object name_service = CORBA_OBJECT_NIL;
   CORBA_Object gnome_context       = CORBA_OBJECT_NIL;
-  CORBA_Object server_context     = CORBA_OBJECT_NIL;
+  CORBA_Object server_context      = CORBA_OBJECT_NIL;
   CORBA_Object retval = NULL;
   char *ior;
   GdkAtom propname, proptype;
   CORBA_Environment ev;
-  gint name_pid;
   CosNaming_NameComponent nc;
   CosNaming_Name          context_name;
   
@@ -215,36 +215,43 @@ gnome_name_service_get(void)
 		     0, 9999, FALSE, NULL,
 		     NULL, NULL, (guchar **)&ior);
     
-    if (ior)
-      {
+    if (ior) {
 	name_service = CORBA_ORB_string_to_object(gnome_orbit_orb, ior, &ev);
+    }
+    if (!CORBA_Object_is_nil(name_service, &ev)) {
+      CosNaming_NameComponent nc = {"GNOME", "	subcontext"};
+      CosNaming_Name          nom = {0, 1, &nc, CORBA_FALSE};
+      CORBA_Object            gnome_context;
+      
+      gnome_context = CosNaming_NamingContext_resolve(name_service, &nom, &ev);
+      
+      if (gnome_context != CORBA_OBJECT_NIL && ev._major == CORBA_NO_EXCEPTION)
+	/* Everything is well, the orbit-name server found is working */
+	goto out;
+      
+      if (ev._major == CORBA_SYSTEM_EXCEPTION && !CORBA_exception_id(&ev)) {
+	/*
+	  The property is set, but the name server is not running.
+	  Maybe we should use the same trick here, as we are using in the name server code
+	  to detect dead servers
+	*/
+	g_warning("X Property CORBA_NAMING_SERVER is invalid: perhaps the orbit-name-server died");
+      } else if (ev._major != CORBA_NO_EXCEPTION) {
+	/*
+	  An error occured. Inform the user, and start a fresh name server.
+	*/
+	switch (ev._major) {
+	case CORBA_USER_EXCEPTION:
+	  g_warning("Unexpected USER exception '%s', during orbit-name-server detection\n",
+		    CORBA_exception_id(&ev));
+	  break;
+	case CORBA_SYSTEM_EXCEPTION:
+	  g_warning("Unexpected SYSTEM exception '%s', during orbit-name-server detection\n",
+		    CORBA_exception_id(&ev));
+	}
       }
-    if (!CORBA_Object_is_nil(name_service, &ev))
-      {
-	CosNaming_NameComponent nc = {"GNOME", "subcontext"};
-	CosNaming_Name          nom = {0, 1, &nc, CORBA_FALSE};
-	CORBA_Object            gnome_context;
-	
-	gnome_context = CosNaming_NamingContext_resolve(name_service, &nom, &ev);
-	if (ev._major != CORBA_NO_EXCEPTION)
-	  {
-	    g_warning("Resolving '/GNOME' context on running orbit name server:");
-	    switch( ev._major )
-	      {
-	      case CORBA_SYSTEM_EXCEPTION:
-		g_warning("sysex: %s.\n", CORBA_exception_id(&ev));
-		break;
-	      case CORBA_USER_EXCEPTION:
-		g_warning("usrex: %s.\n", CORBA_exception_id( &ev ) );
-	      default:
-		break;
-	      }
-	  }
-	else
-	  {
-	    goto out;
-	  }
-      }
+      
+    }
     /* Since we're pretty sure no name server is running, we start it ourself
        and tell the (GNOME session) world about it */
     /* fork & get the ior from orbit-name-service stdout */
@@ -284,67 +291,57 @@ gnome_name_service_get(void)
       */
       XFlush(GDK_DISPLAY());
       name_service = CORBA_ORB_string_to_object(gnome_orbit_orb, iorbuf, &ev);
-      if (name_service != CORBA_OBJECT_NIL)
-	{
+      if (name_service != CORBA_OBJECT_NIL) {
 	  /*
 	    Create the default context "/GNOME/servers"
 	  */
-	  context_name._maximum = 0;
-	  context_name._length  = 1;
-	  context_name._buffer = &nc;
-	  context_name._release = CORBA_FALSE;
-	  nc.id = "GNOME";
-	  nc.kind = "subcontext";
-	  gnome_context = CosNaming_NamingContext_bind_new_context(name_service, &context_name, &ev);
-	  if (ev._major != CORBA_NO_EXCEPTION)
-	    {
-	      g_warning("Creating '/GNOME' context %s %d", __FILE__, __LINE__);
-	      
-	      switch( ev._major )
-		{
-		case CORBA_SYSTEM_EXCEPTION:
-		  g_warning("sysex: %s.\n", CORBA_exception_id(&ev));
-		  break;
-		case CORBA_USER_EXCEPTION:
-		  g_warning("usrex: %s.\n", CORBA_exception_id( &ev ) );
-		default:
-		  break;
-		}
-	    }
-	  ev._major = CORBA_NO_EXCEPTION;
-	  if (CORBA_Object_is_nil(gnome_context, &ev))
-	    {
-	      g_warning("gnome_name_server_get: '/GNOME' context is nil\n");
-	      return CORBA_OBJECT_NIL;
-	    }
-
-	  nc.id="Servers";
-	  nc.kind = "subcontext";
-	  server_context = CosNaming_NamingContext_bind_new_context(gnome_context, &context_name, &ev);
-	  if (ev._major != CORBA_NO_EXCEPTION)
-	    {
-	      g_warning("Creating '/GNOME/servers' context %s %d", __FILE__, __LINE__);
-	      switch( ev._major )
-		{
-		case CORBA_SYSTEM_EXCEPTION:
-		  g_warning("	sysex: %s.\n", CORBA_exception_id(&ev));
-		  break;
-		case CORBA_USER_EXCEPTION:
-		  g_warning("usr	ex: %s.\n", CORBA_exception_id( &ev ) );
-		default:
-		  break;
-		}
-	    }
-	  if (CORBA_Object_is_nil(server_context, &ev))
-	    {
-	      g_warning("gnome_name_server_get: '/GNOME/servers context is nil\n");
-	      return CORBA_OBJECT_NIL;
-	    }
+	context_name._maximum = 0;
+	context_name._length  = 1;
+	context_name._buffer = &nc;
+	context_name._release = CORBA_FALSE;
+	nc.id = "GNOME";
+	nc.kind = "subcontext";
+	gnome_context = CosNaming_NamingContext_bind_new_context(name_service, &context_name, &ev);
+	if (ev._major != CORBA_NO_EXCEPTION) {
+	  g_warning("Creating '/GNOME' context %s %d", __FILE__, __LINE__);
+	  switch( ev._major ) {
+	  case CORBA_SYSTEM_EXCEPTION:
+	    g_warning("sysex: %s.\n", CORBA_exception_id(&ev));
+	    break;
+	  case CORBA_USER_EXCEPTION:
+	    g_warning("usrex: %s.\n", CORBA_exception_id( &ev ) );
+	  default:
+	    break;
+	  }
 	}
-      else
-	{
+	ev._major = CORBA_NO_EXCEPTION;
+	if (CORBA_Object_is_nil(gnome_context, &ev)) {
+	  g_warning("gnome_name_server_get: '/GNOME' context is nil\n");
 	  return CORBA_OBJECT_NIL;
 	}
+
+	nc.id="Servers";
+	nc.kind = "subcontext";
+	server_context = CosNaming_NamingContext_bind_new_context(gnome_context, &context_name, &ev);
+	if (ev._major != CORBA_NO_EXCEPTION) {
+	  g_warning("Creating '/GNOME/servers' context %s %d", __FILE__, __LINE__);
+	  switch( ev._major ) {
+	  case CORBA_SYSTEM_EXCEPTION:
+	    g_warning("	sysex: %s.\n", CORBA_exception_id(&ev));
+	    break;
+	  case CORBA_USER_EXCEPTION:
+	    g_warning("usr	ex: %s.\n", CORBA_exception_id( &ev ) );
+	  default:
+	    break;
+	  }
+	}
+	if (CORBA_Object_is_nil(server_context, &ev)) {
+	  g_warning("gnome_name_server_get: '/GNOME/servers context is nil\n");
+	  return CORBA_OBJECT_NIL;
+	}
+      } else {
+	return CORBA_OBJECT_NIL;
+      }
     } else if(fork()) {
       _exit(0); /* de-zombifier process, just exit */
     } else {
@@ -363,11 +360,10 @@ gnome_name_service_get(void)
       dup2(iopipes[1], 1);
       dup2(iopipes[1], 2);
       /* close all file descriptors */
-      while (i > 2)
-	{
-	  close(i);
-	  i--;
-	}
+      while (i > 2) {
+	close(i);
+	i--;
+      }
       
       setsid();
       
@@ -375,7 +371,7 @@ gnome_name_service_get(void)
       _exit(1);
     }
   }
-
+  
  out:
   if(!CORBA_Object_is_nil(name_service, &ev))
     retval = CORBA_Object_duplicate(name_service, &ev);
@@ -384,4 +380,86 @@ gnome_name_service_get(void)
 
   CORBA_exception_free(&ev);
   return retval;
+}
+
+
+int
+gnome_register_corba_server(CORBA_Object name_server, CORBA_Object server,
+			    gchar* name, gchar* kind, CORBA_Environment* ev)
+{
+  CosNaming_NameComponent nc[3] = {{"GNOME", "subcontext"},
+				   {"Servers", "subcontext"}};
+  CosNaming_Name          nom = {0, 3, nc, CORBA_FALSE};
+  CORBA_Object            old_server;
+
+  nc[2].id   = name;
+  nc[2].kind = kind;
+
+  ev->_major = CORBA_NO_EXCEPTION;
+  old_server = CosNaming_NamingContext_resolve(name_server, &nom, ev);
+  if (ev->_major != CORBA_NO_EXCEPTION) {
+    switch( ev->_major ) {
+    case CORBA_SYSTEM_EXCEPTION:
+      g_warning("s	ysex: %s.\n", CORBA_exception_id(ev));
+    case CORBA_USER_EXCEPTION:
+      g_warning( "usr	ex: %s.\n", CORBA_exception_id(ev));
+    default:
+      break;
+    }
+  }
+  if (ev->_major == CORBA_USER_EXCEPTION &&
+      !strcmp(CORBA_exception_id(ev),ex_CosNaming_NamingContext_NotFound)) {
+    CosNaming_NamingContext_bind(name_server, &nom, server, ev);
+    if (ev->_major != CORBA_NO_EXCEPTION) {
+      switch( ev->_major ) {
+      case CORBA_SYSTEM_EXCEPTION:
+	g_warning("sysex: %s.\n", CORBA_exception_id(ev));
+      case CORBA_USER_EXCEPTION:
+	g_warning( "usr		ex: %s.\n", CORBA_exception_id(ev));
+      default:
+	break;
+      }
+    }
+  }
+  else {
+    CORBA_Object_release(old_server, ev);
+    return -2;
+  }
+  if (ev->_major != CORBA_NO_EXCEPTION) {
+    switch( ev->_major ) {
+    case CORBA_SYSTEM_EXCEPTION:
+      g_warning("s	ysex: %s.\n", CORBA_exception_id(ev));
+    case CORBA_USER_EXCEPTION:
+      g_warning( "usr	ex: %s.\n", CORBA_exception_id(ev));
+    default:
+      break;
+    }
+    return -1;
+  }
+  return 0;
+}
+
+int
+gnome_unregister_corba_server(CORBA_Object name_server,
+			      gchar* name, gchar* kind, CORBA_Environment* ev)
+{
+  CosNaming_NameComponent nc[3] = {{"GNOME", "subcontext"},
+				   {"Servers", "subcontext"}};
+  CosNaming_Name          nom = {0, 3, nc, CORBA_FALSE};
+
+  nc[2].id   = name;
+  nc[2].kind = kind;
+  CosNaming_NamingContext_unbind(name_server, &nom, ev);
+  if (ev->_major != CORBA_NO_EXCEPTION) {
+    switch( ev->_major ) {
+    case CORBA_SYSTEM_EXCEPTION:
+      g_warning("sysex: %s.\n", CORBA_exception_id(ev));
+    case CORBA_USER_EXCEPTION:
+      g_warning( "usr	ex: %s.\n", CORBA_exception_id(ev));
+    default:
+      break;
+    }
+    return -1;
+  }
+  return 0;
 }
