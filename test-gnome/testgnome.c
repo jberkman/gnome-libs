@@ -282,6 +282,93 @@ create_colorsel(void)
 	gtk_widget_show(app);
 }
 
+static void guru_finish(GnomeGuru* guru, GtkWidget* destroyme)
+{
+  gnome_ok_dialog("Guru successfully completed, emitted 'finished'");
+  gtk_widget_destroy(destroyme);
+}
+
+static void guru_cancel(GnomeGuru* guru, GtkWidget* destroyme)
+{
+  gnome_ok_dialog("Guru cancelled");
+  gtk_widget_destroy(destroyme);
+}
+
+static void 
+create_guru(void)
+{
+  /* We want to test both in a dialog, and without a dialog. */
+  GtkWidget* guru;
+  GtkWidget* page;
+  GtkWidget* dialog;
+  GtkWidget* graphic;
+  GtkWidget* window;
+  gchar* pix;
+
+  pix = gnome_pixmap_file("gnome-logo-large.png");
+  graphic = gnome_pixmap_new_from_file_at_size(pix, 100, 300);
+  g_free(pix);
+
+  guru = gnome_guru_new("Test Gnome Guru (without dialog)",
+			graphic,
+			NULL);
+  
+  window = create_newwin(TRUE, "testGNOME", "Gnome Guru Test Window");
+  
+  gnome_app_set_contents(GNOME_APP(window), guru);
+
+  page = gtk_label_new("Page one");
+  gnome_guru_append_page(GNOME_GURU(guru), "First page", page);
+  page = gtk_label_new("Page two");
+  gnome_guru_append_page(GNOME_GURU(guru), "Second page", page);
+  page = gtk_label_new("Page three");
+  gnome_guru_append_page(GNOME_GURU(guru), "Third page", page);  
+  page = gtk_label_new("Page four");
+  gnome_guru_append_page(GNOME_GURU(guru), "Fourth page", page);  
+
+  gtk_signal_connect(GTK_OBJECT(guru), "finished", 
+		     GTK_SIGNAL_FUNC(guru_finish),
+		     window);
+
+  gtk_signal_connect(GTK_OBJECT(guru), "cancelled", 
+		     GTK_SIGNAL_FUNC(guru_cancel),
+		     window);
+
+  gtk_widget_show(guru);
+  gtk_widget_show(window);
+
+  dialog = gnome_dialog_new(_("Guru-in-a-dialog test"),
+			    NULL);
+ 
+  pix = gnome_pixmap_file("gnome-logo-large.png");
+  graphic = gnome_pixmap_new_from_file_at_size(pix, 100, 300);
+  g_free(pix);
+
+  guru = gnome_guru_new("Test Gnome Guru (without dialog)",
+			graphic,
+			GNOME_DIALOG(dialog));
+
+  page = gtk_label_new("Page one");
+  gnome_guru_append_page(GNOME_GURU(guru), "First page", page);
+  page = gtk_label_new("Page two");
+  gnome_guru_append_page(GNOME_GURU(guru), "Second page", page);
+  page = gtk_label_new("Page three");
+  gnome_guru_append_page(GNOME_GURU(guru), "Third page", page);  
+  page = gtk_label_new("Page four");
+  gnome_guru_append_page(GNOME_GURU(guru), "Fourth page", page);  
+
+  gtk_signal_connect(GTK_OBJECT(guru), "finished", 
+		     GTK_SIGNAL_FUNC(guru_finish),
+		     dialog);
+
+  gtk_signal_connect(GTK_OBJECT(guru), "cancelled", 
+		     GTK_SIGNAL_FUNC(guru_cancel),
+		     dialog);
+  
+  gtk_widget_show(guru);
+  gtk_widget_show(dialog); 
+}
+
 /* 
  * GnomePaperSelector
  */
@@ -651,6 +738,7 @@ create_icon_list(void)
 	gnome_icon_list_thaw (GNOME_ICON_LIST (iconlist));
 
 	gtk_widget_set_usize (iconlist, 200, 200);
+	gtk_widget_show(scroll);
 	gtk_widget_show(iconlist);
 	gtk_widget_show(app);
 }
@@ -1560,6 +1648,7 @@ main (int argc, char *argv[])
 		  { "clock",	create_clock },
 		  { "color picker", create_color_picker },
 		  { "color-sel", create_colorsel },
+		  { "guru", create_guru },
 		  { "paper-sel", create_papersel },
 		  { "date edit", create_date_edit },
 		  { "dialog", create_dialog },
