@@ -73,6 +73,7 @@ static CORBA_Object goad_server_activate_factory(GoadServer *sinfo,
 						 CORBA_Environment *ev,
 						 GoadServerList *slist);
 static void goad_servers_unregister_atexit(void);
+void goad_register_arguments(void);
 
 static int string_array_len(const char **array)
 {
@@ -738,7 +739,8 @@ normal_loading:
 
   g_return_val_if_fail(gmod, CORBA_OBJECT_NIL);
   g_module_make_resident(gmod);
-  g_return_val_if_fail(g_module_symbol(gmod, "GNOME_Plugin_info", &plugin),
+  g_return_val_if_fail(g_module_symbol(gmod, "GNOME_Plugin_info",
+				       (gpointer *)&plugin),
 		       CORBA_OBJECT_NIL);
 
   for(i = 0; plugin->plugin_object_list[i].repo_id; i++) {
@@ -1047,7 +1049,7 @@ goad_server_register(CORBA_Object name_server,
   if(ev->_major == CORBA_NO_EXCEPTION) {
     CORBA_Object_release(old_server, ev);
     CosNaming_NamingContext_unbind(name_server, &nom, ev);
-    g_return_val_if_fail(ev->_major == CORBA_NO_EXCEPTION, CORBA_OBJECT_NIL);
+    g_return_val_if_fail(ev->_major == CORBA_NO_EXCEPTION, -3);
   } else if (ev->_major != CORBA_USER_EXCEPTION 
 	     || strcmp(CORBA_exception_id(ev),
 		       ex_CosNaming_NamingContext_NotFound)) {

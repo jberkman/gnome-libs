@@ -252,7 +252,7 @@ open_ptys (int update_db)
 	pty_info *p;
 	int result;
 
-	term_name = alloca (PATH_MAX) + 1;
+	term_name = ((char *)alloca (PATH_MAX)) + 1;
 	
 	status = openpty (&master_pty, &slave_pty, term_name, NULL, NULL);
 	if (status == -1){

@@ -166,7 +166,7 @@ name_server_by_forking (CORBA_Environment *ev)
 		if (iorbuf[strlen(iorbuf)-1] == '\n')
 			iorbuf[strlen(iorbuf)-1] = '\0';
 		
-		name_service = CORBA_ORB_string_to_object((CORBA_ORB)gnome_orbit_orb, iorbuf, &ev);
+		name_service = CORBA_ORB_string_to_object((CORBA_ORB)gnome_orbit_orb, iorbuf, ev);
 	} else if (fork ()) {
 		/* de-zombifier process, just exit */
 		_exit(0);

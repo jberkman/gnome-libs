@@ -51,7 +51,7 @@ orb_add_connection(GIOPConnection *cnx)
   channel = g_io_channel_unix_new(GIOP_CONNECTION_GET_FD(cnx));
   tag = g_io_add_watch_full   (channel, G_PRIORITY_DEFAULT,
 			       G_IO_IN|G_IO_ERR|G_IO_HUP|G_IO_NVAL, 
-			       orb_handle_connection,
+			       (GIOFunc)orb_handle_connection,
 			       cnx, NULL);
   g_io_channel_unref (channel);
 
