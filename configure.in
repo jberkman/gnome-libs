@@ -208,11 +208,25 @@ AM_PATH_ESD(0.2.5)
 dnl
 dnl Check for popt library
 dnl
+_old_exec_prefix="$exec_prefix"
+# hack around autoconf brokenness
+if test -z "$exec_prefix" || test "$exec_prefix" = "NONE"; then
+	exec_prefix=$prefix
+fi
+if test -z "$libdir"; then
+	popt_libdir=`eval echo $prefix/lib`
+else
+	popt_libdir=`eval echo $libdir`
+fi
+_LDFLAGS="$LDFLAGS"
+LDFLAGS="$LDFLAGS -L$popt_libdir"
 AC_CHECK_LIB(popt, poptGetInvocationName,[POPT_LIB=-lpopt
 	AC_DEFINE(USE_POPT)
 ],
 [AC_MSG_ERROR([*** popt >= 1.2.1 is not installed - please install first ***])
-exit 1],-L$prefix/lib)
+exit 1])
+LDFLAGS="$_LDFLAGS"
+exec_prefix="$_old_exec_prefix"
 
 dnl
 dnl Check for audiofile library
