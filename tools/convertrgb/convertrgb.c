@@ -73,31 +73,31 @@ static void convert(char *file)
 	sf = fopen(file, "rb");
 	if (!sf) return;
 
-	if (isxpm(file) && 0) /* imlib needs display to load xpms, so use convert */
-		d = _LoadXPM(NULL, file, &w, &h, &t);
+	if (gisxpm(file) && 0) /* imlib needs display to load xpms, so use convert */
+		d = g_LoadXPM(file, &w, &h, &t);
 #ifdef HAVE_LIBPNG
-	else if (ispng(file))
-		d = _LoadPNG(NULL, sf, &w, &h, &t);
+	else if (gispng(file))
+		d = g_LoadPNG(sf, &w, &h, &t);
 #endif
 #ifdef HAVE_LIBJPEG
-	else if (isjpeg(file))
-		d = _LoadJPEG(NULL, sf, &w, &h);
+	else if (gisjpeg(file))
+		d = g_LoadJPEG(sf, &w, &h);
 #endif
 #ifdef HAVE_LIBTIFF
-	else if (istiff(file))
-		d = _LoadTIFF(NULL, file, &w, &h, &t);
+	else if (gistiff(file))
+		d = g_LoadTIFF(file, &w, &h, &t);
 #endif
 #ifdef HAVE_LIBGIF
-	else if (isgif(file))
-		d = _LoadGIF(NULL, file, &w, &h, &t);
+	else if (gisgif(file))
+		d = g_LoadGIF(file, &w, &h, &t);
 #endif
-	else if (isbmp(file))
-		d = _LoadBMP(NULL, file, &w, &h, &t);
+	else if (gisbmp(file))
+		d = g_LoadBMP(file, &w, &h, &t);
 	else
 		{
 		fclose(sf);
 		sf = open_helper("%C/convert %s pnm:-", file, "rb");
-		d = _LoadPPM(NULL, sf, &w, &h);
+		d = g_LoadPPM(sf, &w, &h);
 		}
 
 	fclose (sf);

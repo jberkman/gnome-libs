@@ -1,5 +1,5 @@
 INCLUDES =                      \
-        -I$(includedir) $(IMLIB_CFLAGS)
+        -I$(includedir) $(GDK_IMLIB_CFLAGS)
 
 bin_PROGRAMS = convertrgb
 
@@ -8,7 +8,7 @@ convertrgb_SOURCES = \
         convertrgb.h
 
 convertrgb_LDADD = \
-        $(IMLIB_LIBS)
+	$(GDK_IMLIB_LIBS)
 
 EXTRA_DIST = README
 
