@@ -165,11 +165,11 @@ static void vt_set_screen(struct vt_em *vt, int screen)
       }
     });
 
-    if (screen)
-      vt_clear_lines(vt, 0, vt->height);
-
     vt->this_line = (struct vt_line *)vt_list_index(&vt->lines, vt->cursory);
-    vt->mode = (vt->mode&~VTMODE_ALTSCREEN) | (screen?VTMODE_ALTSCREEN:0);
+    if (screen)
+      vt->mode |= VTMODE_ALTSCREEN;
+    else
+      vt->mode &= ~VTMODE_ALTSCREEN;
   }
 }  
 
@@ -720,7 +720,7 @@ vt_restore_cursor(struct vt_em *vt)
   d(printf("restore cursor\n"));
   vt->cursorx = vt->savex;
   vt->cursory = vt->savey;
-  vt->mode = (vt->savemode & (VTMODE_INSERT | VTMODE_WRAPOFF | VTMODE_APP_CURSOR | VTMODE_RELATIVE | VTMODE_ALTSCREEN));
+  vt->mode = (vt->savemode & (VTMODE_INSERT | VTMODE_WRAPOFF | VTMODE_APP_CURSOR | VTMODE_RELATIVE));
   vt->attr = vt->saveattr;
   vt->remaptable = vt->saveremaptable;
 

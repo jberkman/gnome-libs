@@ -1,3 +1,11 @@
+1999-02-24  Miguel de Icaza  <miguel@nuclecu.unam.mx>
+
+	* vt.c (vt_set_screen): Removed call to vt_clear_lines here, as
+	the page flipping should not clear the screen.
+	(vt_restore_cursor): Do not restore the alternate screen when
+	issueing this command.
+	(vt_set_screen): Made the code clearer in the screen switching part.
+
 1999-02-24  Michael Zucchi  <mzucchi@denr.sa.gov.au>
 
 	* zvtterm.c (zvt_term_button_press): Same as below fix for
