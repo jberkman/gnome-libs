@@ -60,6 +60,8 @@ noinst_PROGRAMS = htmltest
 
 htmltest_SOURCES = test.c
 
+htmltest: $(top_builddir)/gtk-xmhtml/libgtkxmhtml.la 
+
 htmltest_LDADD   = $(top_builddir)/gtk-xmhtml/libgtkxmhtml.la \
 	$(LIBGTKXMHTML_LIBS) $(INTLLIBS)
 
