@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-libs 0.99.5\n"
-"POT-Creation-Date: 1999-02-07 22:07-0500\n"
+"POT-Creation-Date: 1999-02-11 21:55-0500\n"
 "PO-Revision-Date: 1999-02-04 19:56+0100\n"
 "Last-Translator: Kjartan Maraas <kmaraas@fib.hl.no>\n"
 "Language-Team: Norwegian <no@li.org>\n"
@@ -809,32 +809,32 @@ msgstr "="
 msgid "INV"
 msgstr "INV"
 
-#: libgnomeui/gnome-client.c:807
+#: libgnomeui/gnome-client.c:812
 msgid "Specify session management ID"
 msgstr "Spesifiser ID for sesjonskontroll"
 
-#: libgnomeui/gnome-client.c:807 libgnorba/goad-browser.c:27
+#: libgnomeui/gnome-client.c:812 libgnorba/goad-browser.c:27
 msgid "ID"
 msgstr "ID"
 
-#: libgnomeui/gnome-client.c:809
+#: libgnomeui/gnome-client.c:814
 msgid "Specify prefix of saved configuration"
 msgstr "Spesifiser prefiks for lagret konfigurasjon"
 
-#: libgnomeui/gnome-client.c:809
+#: libgnomeui/gnome-client.c:814
 msgid "PREFIX"
 msgstr "PREFIKS"
 
-#: libgnomeui/gnome-client.c:811
+#: libgnomeui/gnome-client.c:816
 msgid "Disable connection to session manager"
 msgstr "Fjern forbindelse til sesjonsbehandler"
 
 #. Register commandline options.
-#: libgnomeui/gnome-client.c:939
+#: libgnomeui/gnome-client.c:944
 msgid "Session management options"
 msgstr "Alternativer for sesjonskontroll"
 
-#: libgnomeui/gnome-client.c:2230
+#: libgnomeui/gnome-client.c:2235
 msgid "Cancel Logout"
 msgstr "Avbryt utlogging"
 
@@ -909,11 +909,11 @@ msgstr "Skrifttype"
 msgid "No Icon"
 msgstr "Ikke noe ikon"
 
-#: libgnomeui/gnome-icon-entry.c:228 libgnomeui/gnome-pixmap-entry.c:166
+#: libgnomeui/gnome-icon-entry.c:228 libgnomeui/gnome-pixmap-entry.c:201
 msgid "Can't find an hbox, using a normal file selection"
 msgstr "Kan ikke finne en hboks, bruker vanlig filvalg"
 
-#: libgnomeui/gnome-icon-entry.c:234 libgnomeui/gnome-pixmap-entry.c:172
+#: libgnomeui/gnome-icon-entry.c:234 libgnomeui/gnome-pixmap-entry.c:207
 msgid "Preview"
 msgstr "Forhåndsvisning"
 
@@ -1026,7 +1026,7 @@ msgstr "Kalkulator"
 msgid "Calculator..."
 msgstr "Kalkulator..."
 
-#: libgnomeui/gnome-pixmap-entry.c:78 libgnomeui/gnome-pixmap-entry.c:242
+#: libgnomeui/gnome-pixmap-entry.c:80 libgnomeui/gnome-pixmap-entry.c:277
 msgid "No Image"
 msgstr "Ikke noe bile"
 
@@ -1273,19 +1273,19 @@ msgstr "Opp"
 msgid "Down"
 msgstr "Ned"
 
-#: libgnomeui/gnome-stock.c:1800
+#: libgnomeui/gnome-stock.c:1812
 msgid "Menu Accelerator Keys"
 msgstr "Taster for meny-akselleratorer"
 
-#: libgnomeui/gnome-stock.c:1802
+#: libgnomeui/gnome-stock.c:1814
 msgid "Global"
 msgstr "Global"
 
-#: libgnomeui/gnome-stock.c:1804
+#: libgnomeui/gnome-stock.c:1816
 msgid "Menu Item"
 msgstr "Menyvalg"
 
-#: libgnomeui/gnome-stock.c:1805
+#: libgnomeui/gnome-stock.c:1817
 msgid "Accelerator"
 msgstr "Aksellerator"
 
@@ -1506,12 +1506,12 @@ msgstr ""
 "Enkel testapplikasjon for å sjekke hvordan WIN_HINTS virker, og for å teste "
 "gnome_win_hints_*-funksjonene for feil. :)"
 
-#: libgnorba/gnome-name-server.c:209
+#: libgnorba/gnome-name-server.c:230
 #, c-format
 msgid "Creating '/GNOME' context %s %d"
 msgstr "Oppretter '/GNOME' kontekst %s %d"
 
-#: libgnorba/gnome-name-server.c:226
+#: libgnorba/gnome-name-server.c:247
 #, c-format
 msgid "Creating '/GNOME/Servers' context %s %d"
 msgstr "Oppretter '/GNOME/Servers' kontekst %s %d"
@@ -1538,7 +1538,7 @@ msgstr ""
 "noen tjenester installert eller så kjenner jeg ikke stien til dem.\n"
 "Uansett, vær snill å sjekke GNOME installasjonen."
 
-#: libgnorba/goad.c:1220
+#: libgnorba/goad.c:1223
 msgid "(Internal use only) GOAD server ID to activate"
 msgstr "(Kun for intern bruk) GOAD-tjener ID som skal aktiveres"
 
@@ -1558,7 +1558,7 @@ msgstr "Lager-ID som GOAD kjenner denne tjeneren som"
 msgid "REPO_ID"
 msgstr "REPO_ID"
 
-#: libgnorba/orbitns.c:289
+#: libgnorba/orbitns.c:301
 msgid "Could not get name service!"
 msgstr "Fikk ikke kontakt med navnetjenesten!"
 
@@ -1686,14 +1686,14 @@ msgstr "Vis skrifttypens størrelse"
 msgid "This is an hbox with pixmap and text"
 msgstr "Dette er en hboks med bilde og tekst"
 
-#: test-gnome/testgnome.c:917
+#: test-gnome/testgnome.c:915
 msgid "The user chose Yes/OK with data:\n"
 msgstr "Brukeren valgte Ja/OK med data:\n"
 
-#: test-gnome/testgnome.c:921
+#: test-gnome/testgnome.c:919
 msgid "The user chose No/Cancel with data:\n"
 msgstr "Brukeren valgte Nei/Avbryt med data:\n"
 
-#: test-gnome/testgnome.c:932
+#: test-gnome/testgnome.c:930
 msgid "Weird number in reply callback"
 msgstr "Rart nummer i tilbakeringingssvaret"
