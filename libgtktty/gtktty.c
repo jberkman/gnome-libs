@@ -85,6 +85,12 @@ static	gint	gtk_tty_key_press_event		(GtkWidget		*widget,
 						 GdkEventKey		*event);
 static	gint	gtk_tty_key_release_event	(GtkWidget		*widget,
 						 GdkEventKey		*event);
+static  gint	gtk_tty_focus_in_event		(GtkWidget		*widget,
+						 GdkEventFocus		*event);
+static  gint	gtk_tty_focus_out_event		(GtkWidget		*widget,
+						 GdkEventFocus		*event);
+static  void	gtk_tty_query_keystate		(GtkTty			*tty);
+     
 static	void	gtk_tty_input_func		(gpointer		data,
 						 gint			source,
 						 GdkInputCondition	condition);
@@ -193,6 +199,8 @@ gtk_tty_class_init (GtkTtyClass *class)
   
   widget_class->key_press_event = gtk_tty_key_press_event;
   widget_class->key_release_event = gtk_tty_key_release_event;
+  /*  widget_class->focus_in_event = gtk_tty_focus_in_event; */
+  /*  widget_class->focus_out_event = gtk_tty_focus_out_event; */
   
   term_class->text_resize = gtk_tty_text_resize;
   
@@ -686,6 +694,59 @@ gtk_tty_key_release_event (GtkWidget	  *widget,
     gtk_tty_leds_changed (tty);
   
   return TRUE;
+}
+
+static void
+gtk_tty_query_keystate (GtkTty *tty)
+{
+  guint old_key_states;
+  GdkModifierType mods;
+
+  mods = 0;
+  gdk_window_get_pointer (NULL, NULL, NULL, &mods);
+
+  old_key_states = tty->key_states;
+  tty->key_states &= ~(GTK_TTY_STATE_SHIFT      |
+		       GTK_TTY_STATE_CAPS_LOCK  |
+		       GTK_TTY_STATE_CONTROL    |
+		       GTK_TTY_STATE_ALT        |
+		       GTK_TTY_STATE_NUM_LOCK);
+  tty->key_states |= ((mods & GDK_SHIFT_MASK   ? GTK_TTY_STATE_SHIFT    : 0) |
+		      (mods & GDK_LOCK_MASK    ? GTK_TTY_STATE_CAPS_LOCK : 0) |
+		      (mods & GDK_CONTROL_MASK ? GTK_TTY_STATE_CONTROL  : 0) |
+		      (mods & GDK_MOD1_MASK    ? GTK_TTY_STATE_ALT      : 0) |
+		      (mods & GDK_MOD2_MASK    ? GTK_TTY_STATE_NUM_LOCK : 0));
+
+  if (old_key_states != tty->key_states && !tty->freeze_leds)
+    gtk_tty_leds_changed (tty);
+}
+
+static gint
+gtk_tty_focus_in_event (GtkWidget          *widget,
+			GdkEventFocus      *event)
+{
+  g_return_val_if_fail (widget != NULL, FALSE);
+  g_return_val_if_fail (GTK_IS_TTY (widget), FALSE);
+
+  gtk_tty_query_keystate (GTK_TTY (widget));
+
+  if (GTK_WIDGET_CLASS (parent_class)->focus_in_event)
+    return GTK_WIDGET_CLASS (parent_class)->focus_in_event (widget, event);
+  return FALSE;
+}
+
+static gint
+gtk_tty_focus_out_event (GtkWidget          *widget,
+			 GdkEventFocus      *event)
+{
+  g_return_val_if_fail (widget != NULL, FALSE);
+  g_return_val_if_fail (GTK_IS_TTY (widget), FALSE);
+
+  gtk_tty_query_keystate (GTK_TTY (widget));
+
+  if (GTK_WIDGET_CLASS (parent_class)->focus_out_event)
+    return GTK_WIDGET_CLASS (parent_class)->focus_out_event (widget, event);
+  return FALSE;
 }
 
 static void
