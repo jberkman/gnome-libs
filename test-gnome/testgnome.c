@@ -125,7 +125,6 @@ create_newwin(gboolean normal, gchar *appname, gchar *title)
         };
 
 	gnome_app_create_menus_with_data (GNOME_APP(app), main_menu, app);
-	gtk_menu_item_right_justify(GTK_MENU_ITEM(main_menu[1].widget));
 	return GTK_WIDGET(app);
 }
 
