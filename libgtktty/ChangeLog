@@ -1,0 +1,69 @@
+Mon Nov 17 23:24:30 1997  Tom Tromey  <tromey@cygnus.com>
+
+	* gtkterm.c: Include <stdio.h>.
+
+Sun Nov 16 06:07:15 1997  Tim Janik  <timj@psynet.net>
+
+	* gtktty.h:
+	* gtktty.c: adaptions to use GtkVtEmu.
+
+Sat Nov 15 05:31:17 1997  Tim Janik  <timj@psynet.net>
+	
+	* gtkvt102.c: vt102 emulation added. this reacts on HAVE_TERMCAP_LINUX
+	now.
+
+Fri Nov 14 03:17:23 1997  Tim Janik  <timj@psynet.net>
+
+	* gtkvtemu.h: 
+	* gtkvtemu.c: new files for a basic framework for multiple
+	virtual terminal emulations.
+
+	* main.c: added basic functionality to have a colored gem as
+	status indicator.
+
+Mon Nov 10 00:54:36 1997  Tim Janik  <timj@psynet.net>
+
+	* gtkttyos.c (gtk_tty_os_open_pty): on finding a free pty
+	do additional checks to asure access to the corresponding tty.
+
+Sun Nov  9 12:57:22 1997  Tim Janik  <timj@psynet.net>
+
+	* gtktty.c (gtk_tty_key_press_event): use <SHIFT> + <PgUp> or
+ 	<SHIFT> + <PgDn> to adjust the scroll offset of GtkTerm.
+
+	* gtkterm.c (gtk_term_set_scroll_offset): new function
+	to adjust window for scrollback.
+
+	* gtktty.h:
+	* gtktty.c: new signal GtkTtySignalKeyPress.
+
+	* main.c (gvt_tty_key_press): new signal handler to prevent
+	direct user input if there is no child running (just for
+	demonstration purposes).
+
+	* gtkterm.c:
+	* gtkterm_internal.c: fixes to the naming scheme of the draw and
+	update functions. 
+
+Sun Nov  8 16:27:34 1997  Tim Janik  <timj@psynet.net>
+
+	* gtkttyos.c: #ifdef stuff for HAVE_SYS_WAIT_H and HAVE_GETRLIMIT,
+	added defualt value for closing of all file descriptors.  
+
+	* main.c: (gvt_signal_handler): return type is of RETSIGTYPE now.
+
+Fri Nov  7 07:59:43 1997  Tim Janik  <timj@psynet.net>
+
+	* gtktty.c: added page up/down keys.
+	added function keys F1 - F12.
+
+	 * autoconfigured gemvt-0.0.1 package based on patches from
+	 Tristan Tarrant.
+
+Fri Oct 29 14:09:27 1997  Tim Janik  <timj@psynet.net>
+
+	* gtkttyos.c: fixed pty allocation bug found by Ian Main, in worst
+	scenario this could have caused unneccessary allocation of up to
+	15! ptys.
+
+	* started ChangeLog.
