@@ -1,3 +1,32 @@
+1999-01-05  Miguel de Icaza  <miguel@nuclecu.unam.mx>
+
+	* libgnome/gnome-magic.c: Added documentation.  Made an internal
+	function static.
+
+	* libgnome/gnome-dentry.c (gnome_desktop_entry_load_flags): Added
+	in-line documentation to this file as well.
+
+	* libgnorba/orbitgnome.c: Added documentation to the entry points.
+	New file.  Move the GNOME specific code here.
+
+	* libgnorba/goad.c: Complete the documentation and convert it to
+	the gnome-inline doc format.
+
+	* libgnorba/Makefile.am (gnome_name_service_SOURCES): Make the
+	gnome name server link only against the libgnorbagtk library.
+
+	* libgnorba/orbitgtk.c: Added in-line documentation for the entry
+	points. 
+
+	* libgnorba/gnome-name-server.c (main): Why are we disabling
+	cookies, this is a huge problem.  If someone needs to disable
+	cookies they need to invent a method for making this secure, not
+	by weakening the code.
+
+	The gnome-name-server no longer links with the gnome libraries, it
+	only uses the GTK+ libraries.  And if we can go X-only it would be
+	so much better.
+
 1999-01-04  Miguel de Icaza  <miguel@nuclecu.unam.mx>
 
 	* libgnome/gnome-mime.c (gnome_mime_type_of_file,

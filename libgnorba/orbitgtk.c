@@ -21,35 +21,44 @@ CORBA_Principal request_cookie;
 
 extern void goad_register_arguments(void);
 
+CORBA_ORB gnome_orbit_orb;
+CORBA_Principal request_cookie;
+
 static void
 orb_handle_connection(GIOPConnection *cnx, gint source, GdkInputCondition cond)
 {
 
-  /* The best way to know about an fd exception is if select()/poll()
-     tells you about it, so we just relay that information on to ORBit
-     if possible */
-
-  switch(cond) {
-  case GDK_INPUT_EXCEPTION:
-    giop_main_handle_connection_exception(cnx);
-    break;
-  default:
-    giop_main_handle_connection(cnx);
-  }
+	/* The best way to know about an fd exception is if select()/poll()
+	 * tells you about it, so we just relay that information on to ORBit
+	 * if possible
+	 */
+	
+	switch(cond) {
+	case GDK_INPUT_EXCEPTION:
+		giop_main_handle_connection_exception(cnx);
+		break;
+	default:
+		giop_main_handle_connection(cnx);
+	}
 }
 
-static void orb_add_connection(GIOPConnection *cnx)
+static void
+orb_add_connection(GIOPConnection *cnx)
 {
-  cnx->user_data = GINT_TO_POINTER (gtk_input_add_full(GIOP_CONNECTION_GET_FD(cnx),
-						GDK_INPUT_READ|GDK_INPUT_EXCEPTION,
-						(GdkInputFunction)orb_handle_connection,
-						NULL, cnx, NULL));
+	int tag;
+
+	tag = gtk_input_add_full(GIOP_CONNECTION_GET_FD(cnx),
+				 GDK_INPUT_READ|GDK_INPUT_EXCEPTION,
+				 (GdkInputFunction)orb_handle_connection,
+				 NULL, cnx, NULL);
+	cnx->user_data = GINT_TO_POINTER (tag);
 }
 
-static void orb_remove_connection(GIOPConnection *cnx)
+static void
+orb_remove_connection(GIOPConnection *cnx)
 {
-  gtk_input_remove(GPOINTER_TO_UINT (cnx->user_data));
-  cnx->user_data = GINT_TO_POINTER (-1);
+	gtk_input_remove (GPOINTER_TO_UINT (cnx->user_data));
+	cnx->user_data = GINT_TO_POINTER (-1);
 }
 
 static CORBA_boolean
@@ -57,12 +66,12 @@ gnome_ORBit_request_validate(CORBA_unsigned_long request_id,
 			     CORBA_Principal *principal,
 			     CORBA_char *operation)
 {
-  if(principal->_length == request_cookie._length
-     && !(principal->_buffer[principal->_length - 1])
-     && !strcmp(principal->_buffer, request_cookie._buffer))
-    return CORBA_TRUE;
-  else
-    return CORBA_FALSE;
+	if (principal->_length == request_cookie._length
+	    && !(principal->_buffer[principal->_length - 1])
+	    && !strcmp(principal->_buffer, request_cookie._buffer))
+		return CORBA_TRUE;
+	else
+		return CORBA_FALSE;
 }
 
 /*
@@ -165,84 +174,55 @@ get_cookie_reliably (void)
 	return g_strdup (random_string);
 }
 
-/*** do_CORBA_init
-     Description: Sets up the ORBit connection add/remove function pointers
-                  to our routines, which inform the gtk main loop about
-		  the CORBA connection fd's.
-
-		  Calls gnome_init and CORBA_ORB_init with the specified params.
-
-		  Sets up a cookie for requests.
+/**
+ * gnorba_CORBA_init:
+ * @argc: argc pointer from the application
+ * @argv: argv from the application
+ * @flags: GnorbaInitFlags that control the way we startup
+ * @ev: A CORBA_Environment for catching CORBA errors
+ *
+ * Sets up the ORBit connection add/remove function pointers
+ * to our routines, which inform the gtk main loop about
+ * the CORBA connection fd's.
+ * 
+ * Calls gnome_init and CORBA_ORB_init with the specified params.
+ *
+ * Sets up a cookie for requests.
  */
-static CORBA_ORB
-do_CORBA_init(int *argc, char **argv,
+CORBA_ORB
+gnorba_CORBA_init(int *argc, char **argv,
 	      GnorbaInitFlags flags,
 	      CORBA_Environment *ev)
 {
-  CORBA_ORB retval;
+	CORBA_ORB retval;
 
-  IIOPAddConnectionHandler = orb_add_connection;
-  IIOPRemoveConnectionHandler = orb_remove_connection;
-
-  gnome_orbit_orb = retval = CORBA_ORB_init(argc, argv, "orbit-local-orb", ev);
-
-  if(!(flags & GNORBA_INIT_DISABLE_COOKIES)) {
-    request_cookie._buffer = get_cookie_reliably ();
-    
-    g_assert(request_cookie._buffer && *request_cookie._buffer);
-    
-    request_cookie._length = strlen(request_cookie._buffer) + 1;
-    
-    ORBit_set_request_validation_handler(&gnome_ORBit_request_validate);
-    ORBit_set_default_principal(&request_cookie);
-  }
-
-  return retval;
+	IIOPAddConnectionHandler = orb_add_connection;
+	IIOPRemoveConnectionHandler = orb_remove_connection;
+	
+	gnome_orbit_orb = retval = CORBA_ORB_init(argc, argv, "orbit-local-orb", ev);
+	
+	if(!(flags & GNORBA_INIT_DISABLE_COOKIES)) {
+		request_cookie._buffer = get_cookie_reliably ();
+		
+		g_assert(request_cookie._buffer && *request_cookie._buffer);
+		
+		request_cookie._length = strlen(request_cookie._buffer) + 1;
+		
+		ORBit_set_request_validation_handler(&gnome_ORBit_request_validate);
+		ORBit_set_default_principal(&request_cookie);
+	}
+	
+	return retval;
 }
 
-CORBA_ORB
-gnome_CORBA_init(const char *app_id,
-		 const char *app_version,
-		 int *argc, char **argv,
-		 GnorbaInitFlags gnorba_flags,
-		 CORBA_Environment *ev)
-{
-  CORBA_ORB retval;
-
-  if(gnorba_flags & GNORBA_INIT_SERVER_FUNC)
-    goad_register_arguments();
-
-  gnome_init(app_id, app_version, *argc, argv);
-  retval = do_CORBA_init(argc, argv, gnorba_flags, ev);
-
-  return retval;
-}
-
-CORBA_ORB
-gnome_CORBA_init_with_popt_table(const char *app_id,
-				 const char *app_version,
-				 int *argc, char **argv,
-				 const struct poptOption *options,
-				 int popt_flags,
-				 poptContext *return_ctx,
-				 GnorbaInitFlags gnorba_flags,
-				 CORBA_Environment *ev)
-{
-  CORBA_ORB retval;
-
-  if(gnorba_flags & GNORBA_INIT_SERVER_FUNC)
-    goad_register_arguments();
-
-  gnome_init_with_popt_table(app_id, app_version, *argc, argv, options,
-			     popt_flags, return_ctx);
-  retval = do_CORBA_init(argc, argv, gnorba_flags, ev);
-
-  return retval;
-}
-
+/**
+ * gnome_CORBA_ORB:
+ *
+ * Returns the CORBA_ORB initialized by the GNORBA libraries.
+ */
 CORBA_ORB
 gnome_CORBA_ORB(void)
 {
-  return gnome_orbit_orb;
+	return gnome_orbit_orb;
 }
 

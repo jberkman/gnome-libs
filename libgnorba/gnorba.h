@@ -21,6 +21,7 @@ CORBA_ORB gnome_CORBA_init          (const char *app_id,
 				     int *argc, char **argv,
 				     GnorbaInitFlags gnorba_flags,
 				     CORBA_Environment *ev);
+
 CORBA_ORB gnome_CORBA_init_with_popt_table(const char *app_id,
 					   const char *app_version,
 					   int *argc, char **argv,
@@ -31,6 +32,10 @@ CORBA_ORB gnome_CORBA_init_with_popt_table(const char *app_id,
 					   CORBA_Environment *ev);
 CORBA_ORB gnome_CORBA_ORB(void); /* Just returns the same value as the above */
 
+/* This only initializes CORBA */
+CORBA_ORB gnorba_CORBA_init (int *argc, char **argv,
+			     GnorbaInitFlags flags,
+			     CORBA_Environment *ev);
 /*
   Gets the naming server from the X Propery on the root window. If
   this property does not exist, or the name server which has been

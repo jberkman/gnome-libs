@@ -33,7 +33,7 @@
 #endif
 #include <sys/types.h>
 
-#include <gnome.h>
+#include <gtk/gtk.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -162,14 +162,15 @@ setup_name_server (CORBA_Object name_service, CORBA_Environment *ev)
 {
 	CORBA_Object gnome_context  = CORBA_OBJECT_NIL;
 	CORBA_Object server_context = CORBA_OBJECT_NIL;
-	CosNaming_NameComponent nc[2] = {{"GNOME","subcontext"},
-				 {"Servers", "subcontext"}};
-	CosNaming_Name context_name = {2, 2, &nc, FALSE};
+	CosNaming_NameComponent nc [2] =
+	{ {"GNOME","subcontext"},
+	  {"Servers", "subcontext"} };
+	CosNaming_Name context_name = { 2, 2, &nc, FALSE };
 
 	context_name._length = 1;
 	/*
-	  Create the default context "/GNOME/Servers"
-	*/
+	 * Create the default context "/GNOME/Servers"
+	 */
 	gnome_context = CosNaming_NamingContext_bind_new_context(name_service, &context_name, ev);
 	if (ev->_major != CORBA_NO_EXCEPTION) {
 		g_warning(_("Creating '/GNOME' context %s %d"), __FILE__, __LINE__);
@@ -240,7 +241,8 @@ main (int argc, char *argv [])
 	sigemptyset (&empty_mask);
 
 	CORBA_exception_init (&ev);
-	orb = gnome_CORBA_init ("gnome-name-service", "1.0", &argc, argv, GNORBA_INIT_DISABLE_COOKIES, &ev);
+	gtk_init (&argc, &argv);
+	orb = gnorba_CORBA_init (&argc, argv, 0, &ev);
 
 	root_poa = (PortableServer_POA)
 		CORBA_ORB_resolve_initial_references (orb, "RootPOA", &ev);

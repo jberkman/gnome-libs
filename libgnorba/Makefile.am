@@ -1,6 +1,6 @@
 bin_PROGRAMS = loadshlib goad-browser gnome-name-service
 
-lib_LTLIBRARIES = libgnorba.la
+lib_LTLIBRARIES = libgnorba.la libgnorbagtk.la
 
 LINK = $(LIBTOOL) --mode=link $(CC) $(CFLAGS) $(LDFLAGS) -o $@
 
@@ -35,7 +35,12 @@ libgnorba_la_SOURCES = 					\
 	$(gnorba_built) 				\
 	goad.c 						\
 	orbitgtk.c					\
+	orbitgnome.c					\
 	orbitns.c
+
+libgnorbagtk_la_SOURCES = 				\
+	$(gnorba_built) 				\
+	orbitgtk.c
 
 libgnorbainclude_HEADERS = 				\
 	gnorba.h 					\
@@ -73,13 +78,9 @@ gnome_name_service_SOURCES =				\
 	gnome-name-server.c
 
 gnome_name_service_LDADD = 				\
-	$(top_builddir)/libgnorba/libgnorba.la		\
+	$(top_builddir)/libgnorba/libgnorbagtk.la	\
 	$(ORBIT_LIBS) 					\
-        $(top_builddir)/libgnomeui/libgnomeui.la	\
-        $(top_builddir)/libgnome/libgnome.la		\
-	$(top_builddir)/libart_lgpl/libart_lgpl.la	\
-        @LIBSUPPORT@					\
-        $(LIBGNOME_LIBS) $(LIBGNOMEUI_LIBS)		\
+	$(GTK_LIBS)					\
 	-lname-server					\
 	$(INTLLIBS)
 
