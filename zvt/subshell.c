@@ -258,6 +258,13 @@ zvt_init_subshell (struct vt_em *vt, char *pty_name, int log)
 
 	g_return_val_if_fail (vt != NULL, -1);
 	
+	if (!sigchld_inited){
+		memset(&sa, 0, sizeof(sa));
+		sa.sa_handler = sigchld_handler;
+		sigaction (SIGCHLD, &sa, &old_sigchld_handler);
+		sigchld_inited = 1;
+	}
+
 	if ((vt->pty_tag = get_ptys (&master_pty, &slave_pty, log)) == NULL)
 		return -1;
 
@@ -274,15 +281,6 @@ zvt_init_subshell (struct vt_em *vt, char *pty_name, int log)
 		login_tty (slave_pty);
 	} else {
 		close (slave_pty);
-	}
-	
-	if (!children){
-		if (!sigchld_inited){
-			memset(&sa, 0, sizeof(sa));
-			sa.sa_handler = sigchld_handler;
-			sigaction (SIGCHLD, &sa, &old_sigchld_handler);
-			sigchld_inited = 1;
-		}
 	}
 	
 	pipe(p);
