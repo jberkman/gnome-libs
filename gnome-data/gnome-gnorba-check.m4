@@ -1,12 +1,12 @@
 dnl
-dnl GNOME_GNORBA_HOOK (script-if-gnorba-found, failflag)
+dnl GNOME_OAF_HOOK (script-if-oaf-found, failflag)
 dnl
 dnl if failflag is "failure" it aborts if gnorba is not found.
 dnl
 
-AC_DEFUN([GNOME_GNORBA_HOOK],[
+AC_DEFUN([GNOME_OAF_HOOK],[
 	GNOME_ORBIT_HOOK([],$2)
-	AC_CACHE_CHECK([for gnorba libraries],gnome_cv_gnorba_found,[
+	AC_CACHE_CHECK([for oaf libraries],gnome_cv_gnorba_found,[
 		gnome_cv_gnorba_found=no
 		if test x$gnome_cv_orbit_found = xyes; then
 			GNORBA_CFLAGS="`gnome-config --cflags gnorba gnomeui`"

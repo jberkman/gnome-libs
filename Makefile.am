@@ -20,7 +20,6 @@ SUBDIRS = po intl support	\
 	images			\
 	libgnome		\
 	libart_lgpl		\
-	oaf			\
 	libgnomeui		\
 	gtk-xmhtml		\
 	zvt			\
@@ -89,3 +88,6 @@ compatConf.sh: compatConf.sh.in Makefile
 	  && mv compatConf.tmp compatConf.sh
 
 CLEANFILES=gnomeConf.sh
+
+m4datadir=$(datadir)/aclocal
+m4data_DATA=gnome.m4

@@ -328,6 +328,8 @@ dnl ORBit check
 dnl
 AM_PATH_ORBIT(0.5.1, , AC_MSG_ERROR([You must have ORBit installed.]))
 
+AM_PATH_OAF(0.1, , AC_MSG_ERROR([You must have OAF installed.]))
+
 dnl
 dnl This is needed for the gnome-moz-remote program.  It doesn't use GDK,
 dnl since some of the code in it was written before GDK existed.
@@ -349,14 +351,14 @@ dnl
 dnl These are for building the appropriate lib*
 dnl
 LIBGNOME_LIBS="$DB_LIB $GLIB_LIBS $DL_LIB"
-LIBGNOMEUI_LIBS="$LIBGNOME_LIBS $GDK_IMLIB_LIBS $GTK_LIBS"
+LIBGNOMEUI_LIBS="$LIBGNOME_LIBS $OAF_LIBS $GDK_IMLIB_LIBS $GTK_LIBS"
 LIBGTKXMHTML_LIBS="$XPM_LIBS $JPEG_LIBS $PNG_LIBS $Z_LIBS $GTK_LIBS"
 SUPPORTINCS='-DNEED_GNOMESUPPORT_H -I$(top_builddir)/support -I$(top_srcdir)/support'
 
 dnl These are for using lib*
 ART_LIBS="-lart_lgpl"
 GNOME_LIBS="-lgnome $LIBGNOME_LIBS"
-GNOMEUI_LIBS="-lgnomeui $ORBIT_LIBS $ART_LIBS $GDK_IMLIB_LIBS $GTK_LIBS $GNOME_LIBS"
+GNOMEUI_LIBS="-lgnomeui $OAF_LIBS $ORBIT_LIBS $ART_LIBS $GDK_IMLIB_LIBS $GTK_LIBS $GNOME_LIBS"
 GTKXMHTML_LIBS="-lgtkxmhtml $LIBGTKXMHTML_LIBS"
 ZVT_LIBS="-lzvt $UTIL_LIBS $GTK_LIBS"
 

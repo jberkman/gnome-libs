@@ -69,7 +69,7 @@ Known values for LIBRARY are:
     idl         (to be used with orbit-idl)
     gnome
     gnomeui
-    gnorba
+    oaf         (calls oaf-config)
     gtk		(calls gtk-config)
     gtkxmhtml	(only --libs)
     zvt		(only --libs)
@@ -179,12 +179,12 @@ while test $# -gt 0; do
     gtkxmhtml)
 	the_libs="$the_libs @GNOME_LIBDIR@ @GTKXMHTML_LIBS@"
 	;;
-    gnorba)
-        the_libs="$the_libs @GNOME_LIBDIR@ -lgnorba @ORBIT_LIBS@"
-	the_flags="$the_flags @GNOME_INCLUDEDIR@ @ORBIT_CFLAGS@"
-        ;;
     idl)
         the_flags="@GNOME_IDLDIR@"
+	;;
+    oaf)
+	the_libs="$the_libs `oaf-config --libs`"
+	the_flags="$the_flags `oaf-config --cflags`"
 	;;
     zvt)
 	the_libs="$the_libs @GNOME_LIBDIR@ @ZVT_LIBS@"
