@@ -43,8 +43,7 @@ void delete_event (GtkWidget *widget, gpointer data)
 void create_about (GtkWidget *widget, gpointer data)
 {
         GtkWidget *about;
-
-        about = gnome_about_new("GNOME Test Program", "0.01",
+        about = gnome_about_new("GNOME Test Program", VERSION ,
                                 "(C) 1998 The Free Software Foundation",
                                 authors,
                                 "Program to display GNOME functions.",
@@ -953,7 +952,7 @@ int main (int argc, char *argv[])
 	GtkWidget *button;
 	GtkWidget *scrolled_window;
 	int i;
-
+	
 	gnome_init ("testGNOME", NULL, argc, argv, 0, NULL);
 
 	app = create_newwin(FALSE,"testGNOME", "testGNOME");
