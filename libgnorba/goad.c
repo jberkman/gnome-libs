@@ -12,6 +12,7 @@
 #include <sys/stat.h>
 #include <signal.h>
 #include <fcntl.h>
+#include <ctype.h>
 
 #define SERVER_LISTING_PATH "/CORBA/Servers"
 
