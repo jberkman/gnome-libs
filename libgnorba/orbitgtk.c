@@ -24,6 +24,8 @@ extern void goad_register_arguments(void);
 CORBA_ORB gnome_orbit_orb;
 CORBA_Principal request_cookie;
 
+#ifndef ORBIT_USES_GLIB_MAIN_LOOP
+
 static gboolean
 orb_handle_connection(GIOChannel *source, GIOCondition cond,
 		      GIOPConnection *cnx)
@@ -64,6 +66,8 @@ orb_remove_connection(GIOPConnection *cnx)
   g_source_remove(GPOINTER_TO_UINT (cnx->user_data));
   cnx->user_data = GINT_TO_POINTER (-1);
 }
+
+#endif /* !ORBIT_USES_GLIB_MAIN_LOOP */
 
 static CORBA_boolean
 gnome_ORBit_request_validate(CORBA_unsigned_long request_id,
@@ -200,9 +204,11 @@ gnorba_CORBA_init(int *argc, char **argv,
 {
 	CORBA_ORB retval;
 
+#ifndef ORBIT_USES_GLIB_MAIN_LOOP
 	IIOPAddConnectionHandler = orb_add_connection;
 	IIOPRemoveConnectionHandler = orb_remove_connection;
-	
+#endif /* !ORBIT_USES_GLIB_MAIN_LOOP */
+
 	gnome_orbit_orb = retval = CORBA_ORB_init(argc, argv, "orbit-local-orb", ev);
 	
 	if(!(flags & GNORBA_INIT_DISABLE_COOKIES)) {
