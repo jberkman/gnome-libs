@@ -1,0 +1,335 @@
+<sect1 id="extras">
+ <title><emphasis>저게</emphasis> 뭐하는 겁니까?</title>
+ <qandaset defaultlabel="qanda">
+
+  <qandaentry id="billion-packages"> 
+   <question>
+    <para>
+	  <acronym>그놈</acronym> 패키지 목록이 어마어마하네요.
+	  저게 다 필요한가요?
+    </para>
+   </question>
+   <answer>
+    <para>
+	  물론 대다수가 필요합니다. 패키지가 많은 이유가 몇 개 있습니다:
+    </para>
+    <itemizedlist>
+     <listitem>
+      <para>
+		작업을 세분화합니다. 작은 컴포넌트는 여러 프로그램에서 여러번
+		재사용될 수 있습니다.
+      </para>
+     </listitem>
+     <listitem>
+      <para>
+		느린 네트웍이나 컴퓨터를 쓰는 사람들에게 좋습니다. 무얼 받아서
+		설치할 건지 확실하게 고를 수 있습니다. gnome-libs가 필수인 반면,
+		예를 들면, gnome-pilot은 사람들이 별로 많이 쓰질 않습니다, 그래서
+		사람들이 가뿐하게 그걸 무시할 수 있을 것입니다.
+      </para>
+     </listitem>
+     <listitem>
+      <para>
+		버그를 고치고 보안을 강화할 때 패키지가 작고 잘 나뉘어 있다면
+		정말 쉽습니다: 무진장 커다란 패키지 대신에 자그마한 녀석 하나만
+		골라내면 되니까요.
+      </para>
+     </listitem>
+     <listitem>
+      <para>
+		 부하를 분산시킵니다. 작은 패키지들을 관리하는 것도 어렵습니다.
+		 큰 것들을 다루는 건 진짜 어려운 일입니다.
+      </para>
+     </listitem>
+    </itemizedlist>
+   </answer>
+  </qandaentry>
+
+  <qandaentry id="package-jobs">
+   <question>
+    <para>
+	  이게 다 뭐하는 것들이죠? 어떻게 압니까?
+    </para>
+   </question>
+   <answer>
+    <para>
+	  좋아요, 여기서 별나게 이상한 이름이 붙은 그놈 컴포넌트들을 대충
+	  훑어보겠습니다. 기술적으로 복잡하진 않을 것입니다: 그럴려면,i
+	  개발자 FAQ를 봐야죠. 하지만 얻는 건 있을 것입니다.
+    </para>
+    <variablelist>
+     <varlistentry>
+      <term>기반 구조를 이루는 라이브러리들</term>
+      <listitem>
+       <para>
+		많은 패키지는 프로그래머가, 크고 복잡한 괴물같은
+		<application>X</application> 프로그램을 만들 때 간단하게 해주는
+		라이브러리입니다. 그래서 프로그램이 어떤 라이브러리를 쓴다면,
+		설치해야 됩니다. 이 패키지에 들어가는 건:
+       </para>
+       <itemizedlist>
+        <listitem>
+         <para>
+		   ORBit은 CORBA를 제공하는데, CORBA는 그놈의 여러 부분들이 서로
+		   같은 일관된 정보를 통해 대화할 수 있도록 해줍니다.
+        </para>
+       </listitem>
+       <listitem>
+        <para>
+		   GTK는 Gimp ToolKit입니다. 이건 <application>GIMP</application>쪽
+		   사람들이 만들었고 그놈이 가져다 쓰는 라이브러리입니다. 엑스
+		   프로그램을 짤 때 일정한 방식으로 단추와, 스크롤바, 메뉴, 여러
+		   기본적인 "widgets"을 만들 수 있게 해줍니다.
+        </para>
+       </listitem>
+       <listitem>
+        <para>
+		  Imlib은 렌더링 라이브러리입니다. X에다가 어떻게 화면을 그리고
+		  그림을 읽을 지 알려주는 일을 합니다. 많은 그놈 프로그램이 이것을
+		  씁니다만, 어떤 건 같은 기능을 하는 새 라이브러리인 gdk-pixbuf를
+		  대신 쓰고, 심지어는 요구합니다.
+        </para>
+       </listitem>
+       <listitem>
+        <para>
+		  gnome-libs는 모든 그놈 어플리케이션이 필요로 하는 핵심적인
+		  라이브러리를 담고 있습니다.
+        </para>
+       </listitem>
+       <listitem>
+        <para>
+		  glib는 거의 모든 그놈 프로그램이 쓰는 코딩 루틴을 담고 있습니다.
+		  어떻게 다른 플랫폼에서 같은 작업을 수행할 수 있는지에 대한
+		  세부사항을 담고 있어서, 코더가 그놈 어플 하나마다 따로 그런 걸
+		  넣는 수고를 덜어줍니다.
+        </para>
+       </listitem>
+       <listitem>
+        <para>
+		  libxml: 그놈은 XML(어딘가에 담긴 정보를 설명하는 양식)을 알아들을 수
+		  있어야 합니다. libxml이 그렇게 해줍니다.
+        </para>
+        <para>
+		  libxml은 때로 gnome-xml이라고 불립니다. 이건 libxml 패키지가
+		  그놈 CVS 서버에서 gnome-xml로 저장되기 때문입니다.
+        </para>
+       </listitem>
+       <listitem>
+        <para>
+		  libglade는 많은 그놈 프로그램이 필요로 합니다. 이건 libxml
+		  (위에 있어요)을 사용해서  XML 파일을 읽어 사용자 인터페이스로
+		  돌려주는 라이브러리입니다.
+        </para>
+       </listitem>
+       <listitem>
+        <para>
+		  libgtop: 그놈은 파일시스템 구성에 대한 정보를 얻고 시스템이
+		  언제 무엇이 돌아가도록 제어하는지 알아야 합니다. 이건 여러
+		  다른 UNIX마다 다양한데, 그걸 어떻게 할 지에 대한 세부사항이
+		  여기 있고, 프로그래머는 그냥 이걸 불러내면 되죠, 어떤 플랫폼에서
+		  프로그램을 돌리건 간에요. 이건 이런 정보를 화면에 나타내는
+		  전통적인 방식: 'top' 프로그램을 따라해서 libgtop이라고 부릅니다.
+        </para>
+       </listitem>
+       <listitem>
+        <para>
+		  libghttp: 많은 그놈 프로그램은 HTTP를 사용할 수 있어야 합니다.
+		  그런 것에 대한 모든 세부사항이 libghttp 라이브러리에 있습니다.
+        </para>
+		<para>
+		  libghttp는 때로 gnome-http로 불립니다. 이건 libghttp 패키지가
+		  그놈 CVS 서버에서 gnome-http로 저장되기 때문입니다.
+        </para>
+          <!-- FIXME: is libghttp getting replaced or rewritten? -->
+       </listitem>
+       <listitem>
+        <para>
+		  esound 서버는 그놈이 만드는 "소리를 내는" 요청을 받아서, 한번에
+		  두개의 소리를 낼 때 이것을 합친 것처럼 사운드카드에 보내주는
+		  것입니다.
+        </para>
+       </listitem>
+       <listitem>
+        <para>
+		  gnome-print: 인쇄를 포함하는 프로그램을 짜는 건 어렵죠:
+		  인쇄기가 어떤 언어를 이해하는지부터 시작해서 프로그램이 프린터
+		  여러 부분에 보내는 정보를 분배하는 것까지 고려해야 하니까
+		  말이예요. 새 라이브러리가 이 모든 것을 한 군데에 넣어서
+		  프로그램이 저 복잡한 작업을 혼자 하지 않도록 해줍니다. 이게
+		  gnome-print이고, 지금 <application>Gnumeric</application>을
+		  쓴다면 필요한 것입니다.
+        </para>
+       </listitem>
+      </itemizedlist>
+     </listitem>
+    </varlistentry>
+    <varlistentry>
+     <term>라이브러리를 사용하는 모듈</term>
+     <listitem>
+      <para>
+		라이브러리 상위에 있는 건 실제로 사용하는 프로그램의 코드를
+		담고 있는 모듈입니다:
+      </para>
+      <itemizedlist>
+       <listitem>
+        <para>
+		  gnome-core는 패널과, 그놈 터미널, 지금 이 도움말 브라우저,
+		  세션 관리자를 담고 있습니다.
+        </para>
+       </listitem>
+       <listitem>
+        <para>
+		  현재 파일 관리자인, <application>gmc</application>, 그리고
+		  데스크탑 아이콘은 mc, gmc, mcserv로 배포됩니다.
+        </para>
+       </listitem>
+       <listitem>
+        <para>
+		  그래픽한 환경설정 도구인, <application>gnomecc</application>는,
+		  control-center로부터 옵니다.
+        </para>
+       </listitem>
+      </itemizedlist>
+     </listitem>
+    </varlistentry>               
+   </variablelist>
+         
+    <para>
+	  쓰고 있는 패키지 관리자를 통해 더 자세한 정보를 얻을 수 있습니다.
+	  <application>rpm</application>을 쓴다면
+      <menuchoice>
+       <guimenu>프로그램</guimenu>
+       <guisubmenu>시스템</guisubmenu>
+       <guimenuitem>GnoRPM</guimenuitem>
+      </menuchoice>로
+	  <application>GnoRPM</application>을 시작해서, 패키지(그놈 패키지는
+	  User Interface/Desktops나 Development/Libraries에 많습니다)를i
+	  두루 살펴보며, 패키지를 고르고, <guibutton>Query</guibutton>를
+	  누르거나 <command>rpm -qi 패키지이름</command>이라고 명령줄에서 치세요.
+	  데비안을 사용하면 패키지가 현재 설치되어 있는지 아닌지
+	  <command>dpkg -p 패키지</command> 명령을 사용할 수 있습니다.
+    </para>
+   </answer>
+  </qandaentry>
+
+  <qandaentry id="evolution-and-nautilus">
+   <question> 
+    <para>                        
+	  <application>Evolution</application>과
+	  <application>Nautilus</application>에 대해 자꾸 들리는데i
+	  제 컴퓨터에서는 못 찾겠습니다.
+    </para>   
+   </question>
+   <answer>   
+    <para>      
+	  그것들--또는 다른 어느 <application>그놈</application>이라도--
+	  패키지는 표준적으로 받는다면 준비될 때까지는 볼 수가 없을 것입니다.
+	  이번 (2000년 7월) 업데이트까지, 저 녀석들은 아직 힘든 개발과정을
+	  거치고 있고 확실히 안정된 상태가 아닙니다. 둘 다 CVS에 있고,
+	  자유롭게 받아서 혼자 컴파일해보거나 주기적으로 나오는 스냅샷을
+	  받아볼 수도 있습니다. 하지만 그것들은 아직 완전히 쓸 수 있는 상태도
+	  아니고 여전히 많은 사람들이 갖고 싶어하지 않을 "재미있는" 버그를
+	  가지고 있습니다. 2000년 늦은 여름까지는 될 거라고 생각하지 마세요.
+    </para> 
+   </answer>  
+  </qandaentry>
+
+  <qandaentry id="other-unstable">
+   <question>
+    <para>
+	  오래된 그놈을 갖고 있는데 새 패키지가 많이 나와 걱정이네요.
+	  뭐하는 겁니까?
+    </para>
+   </question>
+   <answer>
+    <para>
+	  October GNOME(시월 그놈) 이후에 나온 안정 패키지들:
+    </para>
+    <variablelist>
+     <varlistentry>
+      <term>bug-buddy</term>
+      <listitem>
+       <para>
+		 이건 벌레를 보고하는 동안 도와주는 독립적인 작은 프로그램입니다.
+		 관련된 시스템 정보를 모으고, 코어 덤프에서 쓸만한 정보를
+		 만들어내어서, 그 결과를 보내야 할 적당한 위치의 주소를 알려줍니다.
+       </para>
+      </listitem>
+     </varlistentry>
+     <varlistentry>
+      <term>gdk-pixbuf</term>
+      <listitem>
+       <para>
+		 그림을 읽고, 그리고, 간단한 움직이는 그림도 읽을 수 있습니다.
+		 이제 그놈 1.2에서 요구합니다.
+       </para>
+      </listitem>
+     </varlistentry>
+    </variablelist>
+
+    <para>
+	  Obtober GNOME(시월 그놈) 이후 나온 개발중이거나 별로 안정적이지
+	  않은 패키지들:
+    </para>
+
+    <variablelist>
+     <varlistentry>
+      <term>eog</term>
+      <listitem>
+       <para>
+		 <application>Eye of GNOME</application>은 작고 빠른, 그림을 보는
+		 프로그램입니다.
+       </para>
+      </listitem>
+     </varlistentry>
+     <varlistentry>
+      <term>gnome-print</term>
+      <listitem>
+       <para>
+		 에, 이건 October GNOME(시월 그놈)과 비슷한 때 나왔지만,
+		 지속적이고 힘든 개발과정에 있으며, 새 버전이 정말 자주 나옵니다.
+		 <application>Gnumeric</application>을 쓰신다면, 이게 요구됩니다.
+       </para>
+      </listitem>
+     </varlistentry>
+     <varlistentry>
+      <term>bonobo</term>
+      <listitem>
+       <para>
+		 <application>bonobo</application>는 그놈에 점차 많이 쓰일 것입니다.
+		 이건 한 프로그램에서 다른 것으로 내용을 <quote>포함할</quote> 수
+		 있게 해줍니다. 예를 들면, 스프레드쉬트에 그림을 넣거나 (쓸만하죠)
+		 스프레드쉬트 안에서 지뢰찾기를 즐길 수 있습니다 (별로 쓸만하진
+		 않지만요). 그놈 1.2에는 요구사항이 아닙니다만, 그래도 쓸 수
+		 있는 프로그램이 있긴 합니다.
+      </para>
+      </listitem>
+     </varlistentry>
+     <varlistentry>
+      <term>oaf</term>
+      <listitem>
+       <para>
+         <application>OAF</application> (Object Activation Framework를
+		 뜻합니다) 는 새로운 그놈 어플리케이션에서 코바 객체(이런 객체가
+		 GNOME에서 O를 뜻합니다)를 찾고 시작하기 위해 쓰입니다. 보노보처럼,
+		 그놈 1.2에서 요구사항은 아니지만, 나중에 나올 (Evolution이나
+		 Nautilus같은) 어플리케이션에서 쓰일 것입니다.
+       </para>
+      </listitem>
+     </varlistentry>
+     <varlistentry>
+      <term>gconf</term>
+      <listitem>
+       <para>
+		 <application>GConf</application>는 환경설정 옵션의 틀을 유지해주고,
+		 그놈을 유지하기 쉽게 해주며, 시스템 관리자가 단순하게 다중 사용자를
+		 위하여 시스템을 구축하고 조율할 수 있도록 만들어주는
+		 어플리케이션입니다.
+       </para>
+      </listitem>
+     </varlistentry>
+    </variablelist>
+   </answer>     
+  </qandaentry>
+ </qandaset>
+</sect1>

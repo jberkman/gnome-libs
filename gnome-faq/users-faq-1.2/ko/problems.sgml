@@ -1,0 +1,369 @@
+<sect1 id="problems">
+ <title>문제</title>
+ <para>
+   <acronym>그놈</acronym>을 만나면서 격는 중요한 문제중 많은 부분은 사실
+   <application>X</application>의 문제일 가능성이 큽니다. 그것은 그 문제를
+   고치기 위해 그놈 도구를 사용하는 것보다 텍스트 파일을 편집하는 것이
+   필요할 때가 있다는 것을 말합니다. 적어도 지금은 그렇습니다.
+ </para>
+
+ <qandaset defaultlabel="qanda">
+  <qandadiv>   
+   <title>X 문제</title>
+
+   <qandaentry id="x-resolution"> 
+    <question>
+     <para>
+	   모든 것이 큽니다!
+     </para>
+    </question>
+    <answer>
+     <para>
+       <application>X</application>는 여러가지 해상도에서 실행될 수 있습니다.
+	   X를 설정하는 많은 프로그램(<application>Xconfigurator</application>,
+	   <application>XF86Setup</application>, <application>SaX</application>
+	   등)이 처음 설정할 때, 비디오카드를 살펴보고 "안전한" 해상도를
+	   선택합니다. 즉, 보통 낮은 해상도를 선택합니다. 때로는 여러가지
+	   해상도를 선택하기도 합니다. 해상도가 낮다면 시범적으로
+	   <keycombo>
+	    <keycap>control</keycap>
+        <keycap>alt</keycap>
+        <keycap>+</keycap>
+       </keycombo> and
+       <keycombo>
+        <keycap>control</keycap>
+        <keycap>alt</keycap>
+        <keycap>-</keycap>
+       </keycombo>
+	   (주의: 키보드의 숫자패드에 있는 <keycap>+</keycap>와 <keycap>-</keycap>를
+	   말합니다) 를 눌러서 이용할 수 있는 다른 해상도를 선택할 수 있습니다.
+	   만약 잘 되지 않으면, 모니터와 비디오 카드에 대해 알아보고, X 설정 도구를
+	   다시 실행시켜서 적절한 다른 해상도를 선택해 보세요. <emphasis>무엇을
+	   어떻게 해야 할 지 알고 있다면</emphasis> 해상도에 관련된 값을 가지고 있는
+	   <filename>XF86Config</filename>를 직접 편집할 수도 있습니다. 이것을
+	   처음 시도하는 것이라면 권장하지 않습니다. 꼭 해야 한다면 먼저 그
+	   파일의 복사본을 만들어 놓기 바랍니다. 확실하지 않은데 그걸 바꾸려고
+	   시도하지 마세요: 이것은 정말로 하드웨어를 망가뜨리는 몇 안되는 방법중에
+	   하나입니다. (실제로 그러는 일은 많지 않지만, 시도하기 전에 주의를 하는
+	   것이 좋습니다.)
+     </para>
+     <para>
+	   만약 640x480이나 800x600의 해상도 때문에 계속 시달리고 있고,
+	   특히 패널의 크기가 너무 크다면, 패널의 크기를 줄일 수 있는 두 가지 방법이
+	   있습니다. 먼저, 패널의 양쪽 끝에 있는 화살표를 이용해서 패널이
+	   필요없을 때 깨끗하게 만들 수 있습니다. 또는 자동 숨기기 기능을
+	   이용해서 마우스가 그 위로 지나가지 않는 동안 패널의 대부분을 화면
+	   밖으로 숨겨놓을 수 있습니다. 만약 gnome-core-1.1.x 또는
+	   gnome-core-1.2.x를 사용하고 있다면 패널이 줄어드는 폭을 정할 수 
+	   있습니다. 그 방법은 먼저 패널 위에서 오른쪽 클릭을 하고
+       <menuchoice>
+        <guimenu>패널</guimenu>
+        <guisubmenu>속성</guisubmenu>
+        <guisubmenu>크기</guisubmenu>
+       </menuchoice>
+	   에서 <guimenuitem>조그맣게</guimenuitem>나
+	   <guimenuitem>작게</guimenuitem>를 선택하면 됩니다.
+     </para>
+     <para>
+	   만약 어플리케이션이 너무 크게 열려서 화면의 가장자리를 넘어버린다면,
+	   그것을 닫기 전에 윈도우 매니저를 이용해여 크기를 줄일 수 있습니다.
+	   그러면 다시 열때 그놈 세션의 관리를 받는 어플리케이션은 새로운 크기로
+	   열릴 것입니다. 만약 어플리케이션의 크기를 줄일 수 있는 부분을 선택할 수
+	   없더라도 윈도우 매니저는 보통 제목표시줄을 이용하지 않고 윈도우를 움직일
+	   수 있는 방법을 제공합니다. <application>WindowMaker</application>와
+	   <application>Enlightenment</application>는 기본적으로
+	   <keycap>alt</keycap>키을 누른 상태로
+	   <mousebutton>마우스 버튼 2</mousebutton> (가운데 버튼)으로 움직이면
+	   되고, <application>Sawfish</application>의 경우에는 같은 상태로
+	   <mousebutton>마우스 버튼 1</mousebutton> (왼쪽 버튼)을 이용하면 됩니다.
+     </para>
+    </answer>
+   </qandaentry>
+
+   <qandaentry id="x-icon-probs">
+    <question> 
+     <para>                        
+	   Netscape의 아이콘이 흑백으로 나타납니다.
+     </para>   
+    </question>
+    <answer>   
+     <para>      
+	   이것은 특별한 해상도와 bit depth에서 나타나는
+	   <application>Netscape</application>만의 문제입니다. 이것은
+	   <application>GNOME</application>의 문제이기 보다는
+	   <application>Netscape</application>와 <application>X</application>의
+	   문제입니다. <application>Netscape</application>은 bit depth를 이해하지
+	   못하면 기본적으로 1-bit (흑백)로 표시합니다.
+     </para> 
+     <para>
+	   그놈에 관련된 아이콘에 대한 문제는 아래에 있습니다.
+     </para>
+    </answer>  
+   </qandaentry>
+  </qandadiv>
+
+  <qandadiv>
+   <title>Kernel-related problems</title>
+
+   <qandaentry id="shmget-error">
+   <!-- from Dan Mueth --> 
+    <question>
+     <para>
+	   왜 어떤 프로그램을 실행할 때 마다 <errorname>Gdk-WARNING **: shmget
+	   failed!</errorname>가 뜨나요?
+     </para>
+    </question>
+    <answer>
+     <para>
+	  이 에러는 어플리케이션이 공유 메모리 세그먼트를 얻을 수 없다는
+	  것입니다. 이것이 일어난 이유는 여러가지가 있는데, 다음과 같습니다:
+     </para>
+     <orderedlist>
+      <listitem>
+       <para>
+		시스템에서 공유 메모리가 (확실하게) 설정되자 않았습니다.
+       </para>
+      </listitem>
+      <listitem>
+       <para>
+		모든 공유 메모리 세그먼트를 사용하고 있습니다.
+       </para>
+      </listitem>
+     </orderedlist>
+     <para>
+	  그놈과 Gdk 어플리케이션은 많은 양의 공유 메모리 세그먼트(보통
+	  프로세스당 6개의 세그먼트를 사용합니다)를 사용합니다. 그래서 시스템이
+	  많은 세그먼트를 지원하도록 설정되지 않으면 많은 어플리케이션을
+	  실행할 수 없습니다. (그놈 어플리케이션은 <option>--no-xshm</option>
+	  옵션을 통해서 공유 메모리 없이도 실행할 수 있다는 것에 주의하세요.)
+     </para>
+     <para>
+	  다음의 방법을 리눅스 커널에 적용할 수 있습니다.
+      <!-- Does this problem arise on other kernels? --> 
+	  먼저, <command>ipcs -l</command>를 쳐서 공유 메모리 세그먼트의
+	  최대 갯수를 알아냅니다. <quote>max number of segments = </quote>로
+	  시작되는 줄을 보면 됩니다. 만약 128보다 작거나 같다면, 충분하지
+	  않은 것입니다. 얼마나 많은 어플리케이션과 애플릿이 실행될 수 있는지는
+	  이것에 따릅니다.
+     </para>
+     <para>
+	  커널 2.2에서 공유 메모리 세그먼트의 수를 늘리려면
+	  <filename class="headerfile">/usr/src/linux/include/asm/shmparam.h</filename>에서
+	  <varname>_SHM_ID_BITS</varname> 변수의 값을 증가시켜야 합니다.
+	  공유 메모리 세그먼트의 수는 2의 <varname>_SHM_ID_BITS</varname>제곱입니다.
+	  예를 들어, 7은 128과, 8은 256고, 9는 912, 10은 1024와 일치합니다.
+	  그런 다음 커널을 다시 빌드하고 변화가 적용되도록 재부팅하면 됩니다.
+     </para>
+    </answer>
+   </qandaentry>
+
+   <qandaentry id="unix98ptys">
+    <question>
+     <para>
+	   다른 것은 모두 잘 동작하는데 gnome-terminal만 실행하려고 하면
+	   Unix98 ptys에 관한 메시지가 나옵니다.
+     </para>
+    </question>
+    <answer>
+     <para>
+	   두가지 답변이 있는데 모두 리눅스에 관한 것입니다.
+     </para>
+     <itemizedlist>
+      <listitem>
+       <para>
+		 이것은 새로운 버전의 배포판용 이진 파일을 옛날 기계에 인스톨했을 때
+		 일어날 수 있습니다. "옛날"이란 것은 "2.0 리눅스 커널과 비슷하게
+		 오래된 glibc"를 말합니다. 예를 들어 래드햇 5.2를 가지고 있으면
+		 그것을 위한 rpm을 찾거나 만들어야지 6.2용을 인스톨하려 하면 안됩니다.
+		 SuSE도 비슷하게 적용할 수 있습니다.
+       </para>
+      </listitem>
+      <listitem>
+       <para>
+		 이것은 ptys에 관련된 파일의 권한에 대한 문제일 가능성도 큽니다.
+		 <filename>/dev/ptmx</filename>의 권한을 살펴보세요. 이것은 666
+		 (<command>ls -l /dev/ptmx</command>를 했을 때 crw-rw-rw)이어야 합니다.
+		 그렇지 않다면 <command>chmod 666 /dev/ptmx</command>를 해서 (root로)
+		 바꿔야 합니다.
+		 <filename>/usr/src/linux/Documentation/general/Changes</filename>를
+		 살펴보면 좀더 자세한 것을 알 수 있습니다.
+       </para>
+      </listitem>
+     </itemizedlist>
+    </answer>
+   </qandaentry>
+  </qandadiv>
+
+  <qandadiv>
+   <title>그놈 문제</title>
+
+   <qandaentry id="eightbit-icon-probs">
+    <question>
+     <para>
+	   아이콘이 모두 8-bit 색으로 표시됩니다.
+     </para>
+    </question>
+    <answer>
+     <para>
+       <application>Netscape</application>, <application>imlib</application>
+       와 <application>gdk-pixbuf</application>는 색을 차지하기 위해 경쟁하고
+	   있습니다. 어플리케이션을 고유한 colormap으로 시작하게 해보세요. 그리고
+       <menuchoice>
+        <guimenu>프로그램</guimenu>
+        <guisubmenu>설정</guisubmenu>
+        <guimenuitem>Imlib 설정 옵션</guimenuitem>
+       </menuchoice>의 설정도 조정해보시기 바랍니다.
+     </para>
+    </answer>
+   </qandaentry>       
+       
+   <qandaentry id="black-icon-probs">
+    <question>
+     <para>
+	   아이콘의 바탕이 까맣습니다.
+     </para>
+    </question>
+    <answer>
+     <para>
+	   어떤 이유에 의해서 아이콘을 잘못 불러오는 것입니다. 이것은 보통
+	   libpng를 잘못 설치해서 일어납니다. libpng 패키지의 설치상태를
+	   확인해보고 업그레이드하세요.
+     </para>
+    </answer>
+   </qandaentry>
+
+   <qandaentry id="wandering-menu-bar">
+    <question>
+     <para>
+	   그놈을 시작할 때 <interface>메뉴 패널</interface> (화면 위쪽의 얇은 것)이
+	   화면의 가운데에 위치합니다.
+     </para>
+    </question>
+    <answer>
+     <para>
+	   이것은 <application>sawfish</application>만의 문제입니다.
+	   <application>sawfish</application>를 사용하고 있다면,
+	   우선 <application>그놈 조종판</application>를 열어서
+	   <application>sawfish</application> 설정을 위한 옵션을 찾으세요.
+	   그 중 <guilabel>배치</guilabel>의 <guibutton>Ignore program-specified
+	   window placements.</guibutton> 항목을 체크하지 마시기 바랍니다.
+     </para>
+     <para>
+	   이것이 잘 안되면, gnome-list에서 Robert Soros가 제공한
+	   다른 방법을 따르세요.
+       <quote>
+		나는 로그아웃을 끝낸 후 콘솔로 바꿔서 다음의 줄을 가지고 있는
+		<filename>~/sawfish/window-history</filename> 파일을 편집했습니다.
+       </quote>
+       <literallayout>
+("panel
+ (type . unframed)
+ (position 0 . 23))
+       </literallayout>
+       <quote>
+		그놈 세션 중간에 파일을 (0, 0 좌표로) 편집하게 되면, 끝낼 때
+		다시 저장해서 로그아웃을 하면 쓸모없게 됩니다..
+       </quote>
+     </para>        
+    </answer>
+   </qandaentry>
+
+   <qandaentry id="panel-detected-error">
+    <question> 
+     <para>                        
+	   패널이 사라졌습니다. 재시작할 때마다 "패널이 검색되었습니다. 정말로
+	   다른 것을 시작하시겠습니까?"는 대화상자가 나옵니다. 그런데 말했듯이,
+	   패널은 없습니다.
+     </para>   
+    </question>
+    <answer>   
+     <para>      
+	   이것은 패널이 비정상적인 방법으로 죽으면서, 자기가 죽는다고 말하지
+	   않는 바람에 패널이 존재한다고 하는 성가신 버그입니다. 이것을
+	   고치기 위해서는 최근의 gnome-core로 업그레이드하시기 바랍니다.
+	   그래도 이것이 고쳐지지 않는다면, 안좋은 방법이지만
+	   <filename class=directory>~/.gnome/</filename> 디렉토리를 지우면
+	   해결됩니다. 이 방법은 문제의 원인은 고치지 않고, 단지 증상만 고치는
+	   것으로 좋은 방법은 아니며, 그놈 데스크탑에서 만든 모든 설정과
+	   변화를 잃게 됩니다.
+     </para> 
+    </answer>  
+   </qandaentry>
+
+   <qandaentry id="esound-and-xmms">
+    <question>
+     <para>
+	   <application>esound</application>가 이상합니다: 삑소리나 메뉴를
+	   선택할 때 나는 소리같은 그놈의 소리들은 들을 수 있는데
+	   <application>xmms</application>는 동작하질 않습니다.
+     </para>
+    </question>
+    <answer>
+     <para>
+	   그놈은 사운드카드를 직접 제어하는 <application>esound</application>가
+	   모든 소리들을 재생하기를 기대합니다. <application>xmms</application>는
+	   소리의 외부출력에 대한 여러가지 플러그인을 가지고 있습니다.
+	   <application>xmms</application> 위에서 오른쪽 클릭을 하고
+	   <guimenu>Options</guimenu>을 선택하면 <guilabel>Preferences</guilabel>
+	   대화상자가 뜹니다. <guilabel>Output Plugin</guilabel>이라는 곳을 보고
+	   만약 OSS Driver가 선택되어있다면, 이미 사용중인
+	   (<application>esound</application>때문에) 사운드카드를 직접 제어하려고
+	   할 것입니다. 그래서 XMMS는 esound가 사운드카드를 그만 사용하기를 기다릴
+	   것이고, 결국 아무것도 안하는 것입니다. xmms에게 Output Plugin으로
+	   esound를 사용하라고 하면 음악을 다시 들을 수 있을 것입니다.
+     </para>
+     <para>
+	   사운드에 관한 문제는 보통 사용하고 있는 사운드카드의 드라이버와
+	   관련이 있습니다. 이것은 이 FAQ의 범위를 벗어나는 것입니다.
+     </para>
+    </answer>
+   </qandaentry>
+
+   <qandaentry id="network-lookup">
+    <question>
+     <para>
+	   그놈이 시작할 때 너무 많은 시간이 걸리고, "인터넷 주소를 찾을 수
+	   없습니다"라는 메시지가 나옵니다.
+     </para>
+    </question>
+    <answer>
+     <para>
+	   그놈이 시작할 때 컴퓨터의 넷트워크 주소를 알려고 합니다. 만약
+	   찾을 수 없다면 얼마동안 찾느라고 시간을 보낼 것입니다. 이것을
+	   경험했다면 <filename>/etc/hosts</filename>파일을 한번 보세요.
+	   IP 주소 127.0.0.1에 관련된 줄이 있어야 하고, <literallayout>
+127.0.0.1   localhost   localhost.localdomain
+	   </literallayout> 와 같은 줄이 있어야 합니다. 이곳에 잘못된
+	   기계의 이름과 IP주소에 관한 줄이 있다면 문제가 발생하게 됩니다.
+       <!-- FIXME: can someone confirm this? -->
+     </para>
+    </answer>
+   </qandaentry>
+
+   <qandaentry id="bug-reporting">
+    <question>
+     <para>
+	   버그를 발견했습니다! 어떻게할까요?
+     </para>
+    </question>
+    <answer>
+     <para>
+	   좋습니다! 조금만 더 조사해보고 보내주세요. 만약 오된 패키지를 가지고
+	   있다면, 이미 고쳐진 새로운 패키지가 있을 수 있습니다. 아직 고쳐지지
+	   않았고 언급되지도 않았으면서
+	   <ulink type="http" url="http://bugs.gnome.org">bug tracker</ulink>
+	   에서도 찾을 수 없었다면 메인 메뉴에서
+	   <menuchoice>
+	    <guimenu>프로그램</guimenu>
+		<guisubmenu>도구들</guisubmenu>
+		<guimenuitem>Bug report tool</guimenuitem>
+	   </menuchoice>
+	   를 선택하거나 명령줄에서 <command>bug-buddy</command>를 쳐서
+	   <application>bug-buddy</application>를 실행하세요. 다음엔 그것의
+	   지시대로 하시기 바랍니다.
+     </para>
+    </answer>
+   </qandaentry>
+  </qandadiv>
+ </qandaset>
+</sect1>

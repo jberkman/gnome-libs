@@ -1,0 +1,296 @@
+<sect1 id="using">
+<title>날마다 그놈 사용하기</title>
+ <qandaset defaultlabel="qanda">
+
+  <qandaentry id="foo-on-menu"> 
+   <question>
+    <para>
+	  메뉴의 &lt;어플리케이션&gt;과 같은 기능의 명령줄(command line)은
+	  무엇인가요?
+    </para>
+   </question>
+   <answer>
+    <para>
+	 프로그램의 <guilabel>이 프로그램은</guilabel>에서 보통은 프로그램
+	 이름을 찾을 수 있습니다. 여기서 찾지 못했다면,
+	 <menuchoice>
+      <guimenu>프로그램</guimenu>
+      <guisubmenu>설정</guisubmenu>
+      <guimenuitem>메뉴 편집기</guimenuitem>
+     </menuchoice>에서 찾을 수 있습니다. <guilabel>명령어</guilabel>
+	 상자에 있는 것이 바로 명령줄과 같은 것입니다.
+    </para>
+   </answer>
+  </qandaentry>
+
+  <qandaentry id="foo-on-panel">
+   <question> 
+    <para>                        
+	  패널의 &lt;어플리케이션&gt;과 같은 기능의 명령줄은 무엇인가요?
+    </para>   
+   </question>
+   <answer>   
+    <para>      
+	  패널의 어플리케이션에서 오른쪽 클릭을 하면 나오는 메뉴에서
+	  <guimenuitem>속성</guimenuitem>을 선택하세요. <guilabel>명령어</guilabel>
+	  부분에 있는 것이 터미널로부터 시작할 때 쓰이는 명령줄입니다.
+    </para> 
+   </answer>  
+  </qandaentry>
+
+  <qandaentry id="speedy-gnome">
+   <question> 
+    <para>                        
+	  내 머신은 느립니다. 어떻게 그놈을 빠르게 할 수 있을까요?
+    </para>   
+   </question>
+   <answer>   
+    <para>      
+	  그놈을 빠르게 할 수 있는 여러가지 방법이 있습니다.
+    </para> 
+    <itemizedlist>
+     <listitem>
+      <para>
+		그놈을 시작할 때 자동으로 실행하는 애플릿이나 어플리케이션 (deskguide,
+		시계, 도움말 시스템, 파일 관리자) 중에서 자주 사용하지 않는게 있다면
+		제거하세요. 그놈 조종판에서 <guilabel>시작 프로그램</guilabel>이란
+		부분에서 찾을 수 있을 것입니다.
+		<guibutton>현재 실행중인 프로그램 보기</guibutton>의 목록에서 원하지
+		않는 것을 선택하고 <guibutton>삭제</guibutton>를 클릭해도 됩니다.
+		gnome-smproxy나 panel, gmc가 뭘 하는지 알지 못한다면 이것은 삭제하지
+		마세요. 위의 과정이 너무 복잡하다면 그냥 필요없는 어플리케이션을
+		종료하고, 애플릿에는 오른쪽 클릭을 해서
+		<guimenuitem>패널에서 삭제</guimenuitem>를 선택하세요. 그다음
+		로그아웃할 때 현재 설정 저장을 선택하여 세션을 저장하면 됩니다.
+      </para>
+     </listitem>
+     <listitem>
+      <para>
+		테마를 사용하고 있다면 그림테마를 사용하지 마세요. 그림테마는 
+		좀 더 세밀한 표현을 하고, 여러가지 색의 그림자가 있는 배경이 있고,
+		많은 그림을 사용합니다. 이것은 그리는 것이 복잡하기 때문에 느린
+		기계에서는 매우 무거울 수 있습니다. 엔진 테마(그림이 아닌)에는
+		gtkstep (기본값), metal, notif, redmond95, thinice, clean, xenophelia
+		등이 있습니다.
+      </para>
+     </listitem>
+     <listitem>
+      <para>
+		여러가지 <link linkend="windowmanagers">윈도우 매니저</link>를
+		조사해보세요. 꾸미는 옵션을 모두 끈다면, Sawfish나 WindowMaker는 보통
+		Enlightenment보다 가볍고 빠르다고 생각됩니다. 윈도우 매니저를 바꾸고
+		싶지 않다면 윈도우 매니저 자체의 옵션을 살펴보고, 디시 그리는 작업이
+		많이 필요한 옵션을 끄세요: 복잡한 그림, 동영상, 투명 이동 등과 같은
+		것이 있습니다. 윈도우 매니저의 테마를 이용하고 있다면, 간단한 것을
+		고르세요. 윈도우를 움직이고 크기를 바꾸는데 가벼운 옵션은 "boxed"입니다.
+      </para>
+     </listitem>
+     <listitem>
+      <para>
+		메뉴를 메모리에 가지고 있으세요. 이것을 하려면 패널의 빈 공간에
+		오른쪽 클릭을 하고
+        <menuchoice>
+         <guimenu>패널</guimenu>
+         <guimenuitem>전체 속성</guimenuitem>
+        </menuchoice>(그놈 조종판에서 <guilabel>Panel</guilabel>을 선택한
+		것과 같습니다.)을 선택한 다음, 메뉴를 기억장치에 가지고 있기를
+		선택하시기 바랍니다.
+      </para>
+     </listitem>
+     <listitem>
+      <para>
+		그놈 조종판을 이용해서 메뉴에 아이콘 사용 기능을 꺼놓기 바랍니다.
+		이것을 완전히 적용하려면 그놈을 재시작해야 합니다.
+      </para>
+     </listitem>
+     <listitem>
+      <para>
+		그놈 조종판을 이용해서 패널의 애니메이션 사용을 꺼놓기 바랍니다.
+      </para>
+     </listitem>
+     <listitem>
+      <para>
+        <application>그놈 터미널</application>을 사용하고 있다면,
+		그림이나 투명배경을 옵셕은 피하는 것도 생각해보세요.
+		배경에 그늘이 지도록 하는 것은 더욱 느리게 하는 옵션입니다.
+      </para>
+     </listitem>
+    </itemizedlist> 
+   </answer>  
+  </qandaentry>
+
+  <qandaentry id="memory-use">
+   <question>
+    <para>
+	  <application>그놈</application>이 쓰는 메모리를 살펴봤습니다. 그런데
+	  부하가 있을 뿐더러, 죽은 다음에도 회수되지 않습니다.
+    </para>
+   </question>
+   <answer>
+    <para>
+	  이것은 버그가 아니고 표준적인 UNIX의 특성입니다. 모니터링 애플릿이나
+	  <application>gtop</application>를 사용해보았군요, 맞죠? "Mem"이나
+	  비슷한 제목을 가진 부분을 보았죠? 그건 상관이 없습니다. 처음에
+	  대부분의 합게는 공유 라이브러리가 사용하는 양입니다. UNIX는 프로그램이
+	  죽은 후에도, 다른 요구에 대비해서 얼마간 그 정보를 유지하고 있습니다.
+	  다른 프로그램이 시작해서 그 공간을 요구할 때 제거하는 것입니다. 추가로
+	  아마 당신은 메모리에 관해서 정렬을 하지 않고 봤을 것입니다 :)
+    </para>
+    <para>
+	  그놈과 UNIX에서 공유 라이브러리의 메모리 사용과 그 이용, 프로그램이 언제
+	  얼마나 많은 메모리를 <emphasis>정말로</emphasis> 사용하는지 알아내는
+	  방법에 관한 훌륭한 문서가 그놈 CVS 안에 있습니다. <ulink type="http"
+	  url="http://cvs.gnome.org/lxr/source/white-papers/MemoryUsage/MemoryUsage.txt">http://cvs.gnome.org/lxr/source/white-papers/MemoryUsage/MemoryUsage.txt</ulink>에서 볼 수 있습니다.
+    </para>
+    <para>
+	  아마도 엄청나게 메모리를 먹어대는 한두개의 어플리케이션이 있는 것이
+	  의미가 있을 것입니다. 그것이 그놈의 것이든 아니든. 좋은 예가 있습니다.
+	  <application>Netscape</application>를 열어놓은 채로 오래 있어보세요.
+	  시계 애플릿의 테마를 여러번 바꾸고는 것도 비슷한 효과가 있다고 알려져
+	  있습니다. 해결방법: 테마를 미친듯이 바꾸지 마세요. 만약 메모리가 샌다는
+	  것을 확실히 재현할 수 있다면, 버그보고를 부탁합니다.
+     </para>
+   </answer>
+  </qandaentry>
+
+  <qandaentry id="middle-clicking">
+   <question>
+    <para>
+	  나는 버튼이 두개인 마우스를 가지고 있습니다. 이 "가운데-클릭"이 뭐죠?
+    </para>
+   </question>
+   <answer>
+    <para>
+	  X는 오래전부터 마우스가 많은 버튼을 가지고 있다고 가정해왔습니다
+	  (적어도 다섯개까지 처리할 수 있습니다). <application>Quake</application>
+	  사용자는 의견이 다를지도 모르지만, 보통 세개 이상은 필요하지 않습니다.
+	  버튼이 두개인 마우스에서 가운데-클릭을 흉내내려면, "chording"
+	  (역주: 화음 맞추기)을 시도하세요: 동시에 두 버튼을 클릭합니다.
+	  잘 될 것입니다. 되지 않으면 XF86Config 파일을 편집해서 (먼저 복사본을
+	  만드세요!) 주석이 아닌 "Emulate3Buttons", "Emulate3Timeout 50"이라는
+	  줄이 있는 것을 확실히 해야 합니다. 주석 줄은 처음에 해쉬
+	  (<keycap>#</keycap>)로 시작합니다. 주석을 없애기 위해서는 줄의 처음에
+	  있는 해쉬 기호를 지우면 됩니다. X를 다시 시작해야 효력이 있습니다.
+    </para>
+	<para>
+	  상업직이고 독점적인 버전의 X는 다를 수 있습니다: 예를 들어 Exceed 버전의
+	  X를 예로 들자면 <guilabel>input configuration</guilabel> 대화상자의
+	   <guibutton>middle button emulation</guibutton>에서 설정합니다.
+   </answer>
+  </qandaentry>
+
+  <qandaentry id="pgup-pgdn">
+   <question>
+    <para>
+	  <application>gnome-terminal</application>에서 <keycap>PgUp</keycap>과
+	  <keycap>PgDn</keycap>이 되지 않습니다.
+    </para>
+   </question>
+   <answer>
+    <para>
+	  예, 원래 그렇습니다. <keycap>Shift</keycap>를 누른 채로 하면 잘 될
+	  것입니다.
+    </para>
+   </answer>
+  </qandaentry>
+
+  <qandaentry id="disable-root-warning">
+   <question>
+    <para>
+	  짜증나는 "주의! root로 실행하고 있습니다" 메시지를 없애려면
+	  어떻게 해야 합니까?
+    </para>
+   </question>
+   <answer>
+    <para>
+	  단지 최근의 코드를 가지고 온 다음 어느곳에서 메시지를 만드는지
+	  사하고 그것을 제거해서 변경한 다음에 재컴파일하면 됩니다.
+    </para>
+    <para>
+	  이것이 별로 도움될거 같지 않다면, 그렇게 하지 말라는 뜻이기 때문입니다.
+	  이 주의 메시지는 이유가 있는 것입니다. Root로는 시스템 관리 작업만
+	  해야 합니다. Jpg들을 정리하는 것, IRC에서 이야기하는 것, Napster로
+	  노는 것은 그런것이 아닙니다. 그것은 보안을 위태롭게하며 의도하지 않은
+	  것을 지우는 등의 사고를 내기가 매우 쉽습니다. 보통의 사용자로 하는 것이
+	  더 안전하고 더 현명한 것입니다. 이 메시지를 없앨 수 있는 사람이라면
+	  보통 처음부터 root로 실행하지 않을 것입니다.
+    </para>
+   </answer>
+  </qandaentry>
+
+  <qandaentry id="running-root-progs">
+   <question>
+    <para>
+	  그러면 보통의 사용자는 못하고 root만 할 수 있는
+	  <command>helix-update</command>, <command>gnome-linuxconf</command>,
+	  메뉴 편집기, 또는 로그파일을 모니터하는 프로그램같은 것은 어떻게
+	  실행할 수 있나요?
+    </para>
+   </question>
+   <answer>
+    <para>
+	  보통 사용자로서 그놈 터미널을 여세요. <command>su -</command>를 치고
+	  비밀번호를 넣으세요. 그러면 이제 바로 위와 같은 명령을 명령줄에서
+	  쳐서 실행할 수 있는 루트쉘(root shell)이 됩니다.
+    </para>
+    <para>
+	  이런 일을 많이 해야 한다면 <application>sudo</application>라는
+	  패키지를 설치해보세요. 이것은 빈틈없는 관리 아래에서 root가 아닌
+	  사용자가 root의 일을 할 수 있도록 해줍니다.
+    </para>
+    <para>
+	  또, 최근(2000년 5월 23일 이후)의 Red Hat, Linux Mandrake, TurboLinux,
+	  or LinuxPPC에서는 root가 되지 않고 <command>helix-update</command>를
+	  실행할 수 있습니다. 보통 사용자로 실행하면 root의 비밀번호를 물어볼
+	  것입니다.
+    </para>
+   </answer>
+  </qandaentry>
+
+  <qandaentry id="gmc-nonroot-troubles">
+   <question>
+    <para>
+	  파일 관리자를 root로 실행하면 MIME 형식이 깨지는 것 같습니다.
+    </para>
+   </question>
+   <answer>
+    <para>
+	  답변을 구합니다.
+    </para>
+   </answer>
+  </qandaentry>  
+
+  <qandaentry id="changing-wms">
+   <question>
+    <para>
+	  Red Hat Linux 6.1인데 그놈 조종판을 이용해서 윈도우 매니저를
+	  <application>Enlightenment</application>에서
+	  <application>WindowMaker</application>로 바꿀 수 없습니다.
+    </para>
+   </question>
+   <answer>
+    <para>
+	  이것은 버그입니다. 다른 것으로 먼저 바꿨다가 다시 바꾸거나,
+	  <guilabel>시도</guilabel>과 <guilabel>확인</guilabel> 버튼을 이용해서
+	  시험해보세요. 여러 사람들이 이것들의 여러가지 조합으로 성공했다는 보고가
+	  있습니다.
+    </para>
+   </answer>
+  </qandaentry>
+
+  <qandaentry id="gmc-font-changing">
+   <question>
+    <para>
+	  GMC (파일 관리자)의 글꼴은 어떻게 바꾸나요?
+    </para>
+   </question>
+   <answer>
+    <para>
+	  죄송합니다. 현재 이것은 할 수 없습니다. GMC는 결국 Nautilus로 바뀔
+	  것이고, GMC에 새로운 기능은 추가되고 있지 않습니다. 버그만 고쳐지고
+	  있습니다.
+    </para>
+   </answer>
+  </qandaentry>
+ </qandaset>
+</sect1>

@@ -1,0 +1,192 @@
+<sect1 id="installing">
+ <title>그놈 설치하기</title>
+ <qandaset defaultlabel="qanda">
+  <qandaentry id="sysreq"> 
+   <question>
+    <para>
+	  그놈을 사용하려고 하는데 기본적으로 어떠한 사양이 필요한가요?
+    </para>
+   </question>
+   <answer>
+    <para>
+	  UNIX중의 하나, 리눅스, *BSD 또는 위에서 나열한 것들을 사용할 수 있고,
+	  X 윈도우 시스템을 사용할 수 있는 컴퓨터가 필요합니다. 16Mb의 램에서도
+	  <emphasis>가능</emphasis>하기는 하지만 32Mb의 램이 있어야 좀 더 괜찮고
+	  대부분의 사람들이 최소량으로 생각하고 있습니다. 많은 사람들은 좀 더
+	  많은 것을 좋아합니다. 하드 드라이버의 공간: 핵심적인 바이너리 파일을
+	  설치하기 위해서는 30Mb정도가 필요합니다. 자신만의 소스를 컴파일하기
+	  위해서는 200Mb정도가 필요합니다.
+    </para>
+    <para>
+	  이미 있어야 할 소프트웨어: <application>X</application>: 많은 사람들은
+	  <application>XFree86</application>를 사용하지만 몇몇 사람들은 이것
+	  대신 상용 버전을 사용하고 있습니다. 더 필요한 것: GTK+과 glib, esound,
+	  ORBit, gdk_pixbuf, imlib, audiofile, libxml. 이것은 모두 그놈과
+	  같이 구할 수 있습니다.
+    </para>
+   </answer>
+  </qandaentry>
+
+  <qandaentry id="getting-helix">
+   <question> 
+    <para>                        
+	  그럼 어디에서 그놈을 얻나요?
+    </para>   
+   </question>
+   <answer>
+    <para>
+	  대부분의 리눅스 배포판들은 최근 또는 약간 전 버전의
+	  <application>그놈</application>을 CD에 포함하고 있습니다. 리눅스를
+	  사용하고 있다면 아마도 이미 가지고 있을 것입니다. Caldera OpenLinux
+	  (칼데라 오픈리눅스)는 그놈을 포함하지 않고 있습니다. 그러나 그놈 rpm이
+	  칼데라의 contrib 사이트에 존재한다는 말이 있습니다.
+	  <!-- I can't find them. Where are they? -->
+    </para>
+    <para>
+	  <application>그놈</application>은 계속 변하고 있으며, 심지어
+	  3개월동안 큰 변화가 있기도 합니다. 각각의 패키지에 대한
+	  패키지 업데이트는 거의 매일 발표가 있습니다. 이것에 대한 tarball은
+	  그놈 사이트나 그것의 미러에서 찾을 수 있습니다. 밴더(Vendor) 역시
+	  주기적으로 <application>그놈</application> 패키지를 주기적으로
+	  업데이트하고 있지만, 그들은 그 외에 매우 많은 여러가지 패키지 역시
+	  관리하고 업데이트합니다.
+	  <ulink type="http" url="http://www.helixcode.com">헬릭스 코드</ulink>는
+	  최신의 <application>그놈</application> 패키지를 거의 모든 보통의
+	  플랫폼에서 사용할 수 있도록 제공하고 있습니다. 2000년 7월 현재 다음의
+	  <application>그놈</application>을 제공합니다:
+     <simplelist>
+      <member>Red Hat Linux 6.0, 6.1 and 6.2</member>
+      <member>Linux Mandrake 6.1 and 7.0</member>
+      <member>SuSE Linux 6.3 and 6.4</member>
+      <member>Caldera OpenLinux 2.4</member>
+      <member>LinuxPPC 2000</member>
+      <member>TurboLinux 6.0</member>
+      <member>Debian GNU/Linux: Woody. (Potato에서도 실행됩니다)</member>
+      <member>Yellow Dog Linux Champion Server 1.2</member>
+      <member>Solaris 2.7 on UltraSparc</member>
+     </simplelist>
+    </para>
+    <para>
+	  괜찮은 인터넷 접속환경이라면 <application>그놈</application>을 설치하는
+	  가장 빠르고 간단한 방법은 
+	  <ulink type="http" url="http://www.helixcode.com/desktop/download.php3">헬릭스
+	  코드의 다운로드 페이지</ulink>에 가서 그곳의 지시를 따르는 것입니다.
+	  그러면 자동으로 설치가 될 것입니다. 이것은 Debian(데비안)을 제외한
+	  것을 운영하는 사람들에게 적용됩니다.
+    </para>
+    <para>
+	  데비안 사용자는 대신 다음과 같이 하면 됩니다:
+    </para>
+    <procedure>
+     <step>
+      <para>
+        <filename>/etc/apt/sources.list</filename>를 편집하여 다음을 추가합니다:
+        <literallayout>
+deb http://spidermonkey.helixcode.com/distributions/debian unstable main
+        </literallayout>
+
+<!-- Yes, I know /debian is a symlink and /Debian is the actual directory.
+Apparently /debian is the "official" one to give out. -->
+
+      </para>
+     </step>
+     <step>
+      <para>
+        <command>apt-get update</command>를 실행합니다.
+      </para>
+     </step>
+     <step>
+      <para>
+		새로운 그놈 사용자라면 핵심 부분만 설치하기 위해서는
+        <command>apt-get install task-helix-core</command>를 실행하고,
+		모든 어플리케이션을 설치하기 위해서는
+        <command>apt-get install task-helix-gnome</command>를 실행하세요.
+		현재 그놈을 사용하고 있고 업그레이드를 하려고 한다면,
+        <command>apt-get dist-upgrade</command>를 실행하세요.
+      </para>    
+     </step>
+    </procedure>
+   </answer>
+  </qandaentry>
+
+  <qandaentry id="get-not-helix">
+   <question>
+    <para>
+	  헬릭스를 인터넷으로 설치할 수 없거나, 하고싶지 않습니다. 어떻게 할까요?
+    </para>
+   </question>
+   <answer>
+    <para>
+	  인터넷으로 헬릭스를 설치할 수 없거나 설치하고싶지 않다면
+	  <ulink type="ftp" url="ftp://ftp.gnome.org/pub/GNOME/">그놈
+	  FTP 사이트</ulink>나
+	  <ulink type="http" url="ftp://ftp.gnome.org/pub/GNOME/MIRRORS.html">미러(mirrors)</ulink>중의
+	  하나에서 tarball를 대신 받을 수 있습니다. <emphasis>제발</emphasis>
+	  미러를 사용해주세요: 그게 미러가 있는 이유입니다. 당신의 배포판의 패키지가
+	  있을 수 있습니다.
+    </para>
+    <para>
+	  BSD 사용자들은 포트(port) 시스템을 통해서 그놈을 얻을 수 있습니다.
+	  Solaris(솔라리스)는 (아직!) 그놈을 탑재하지 않았지만, Paul Barnfather가
+	  바이너리나 소스를 빌드하는 방법에 대해서 훌륭하게 쓴
+	  <ulink type="http" url="http://www.clanger9.demon.co.uk/computer/gnome/">솔라리스에서
+	  그놈 빌드하기</ulink>페이지가 있습니다.
+    </para>
+    <para>
+	  다운로드할 크기가 너무 크거나 오랫동안 연결하는 것이 너무 비싸서 인터넷
+	  연결이 문제일 수 있습니다. 저도 동감합니다. 그놈의 사람들이 리눅스 쇼에
+	  나오는 일이 증가하고 있습니다. 그들이 최근의
+	  <application>그놈</application> 발표 CD를 가지고 있을 수 있습니다.
+	  만약 인터넷 연결 상태가 좋고 CD 레코다가 있는 친구가 있다면: 이것은
+	  모두 자유 소프트웨어입니다. 그러므로 사람들에게 CD를 만들어줄 자유가
+	  있습니다. 주위에게 부탁할 수 있다면 누군가를 찾아서 하나 부쳐달라고
+	  할 수도 있습니다, 그런데 저는 모릅니다.
+    </para>
+   </answer>
+  </qandaentry>
+
+  <qandaentry id="dont-get-cvs">
+   <question>
+    <para>
+	  "마지막 CVS"로 돌린다는 말을 하는 사람을 보고, 들었습니다.
+	  무슨말인가요?
+    </para>
+   </question>
+   <answer>
+    <para>
+      CVS(<application>Concurrent Versioning System</application>)는
+	  살아있는 그놈의 모든 소스 코드가 있는 곳입니다. 누구나 확인하고
+	  자기의 기계로 가져올 수 있으며, 그놈 해커들은 새로운 코드를 추가할
+	  수 있습니다. 수백명의 사람들이 주기적으로 코드를 확인합니다.
+	  (하루에 십여가지의 변경이 있습니다) 그 코드는 위험하며 때때로(자주라고도
+	  주장합니다) 약간의(역시 나쁘다고도 주장합니다) 문제를 가지고
+	  있을 수 있습니다.
+    </para>
+    <para>
+	  CVS는 분리된 <quote>모듈</quote>이 있습니다. gnome-core, gnome-libs,
+	  gnome-games와 같은 모듈이 있습니다. 한 모듈의 코드가 잘 돌아가고
+	  안정되면 모듈 패키지의 관리자는 그것을 tarball로 묶어서 FTP로
+	  내놓습니다. 때때로 rpm이나 deb로 묶기도 하고, 다른 사람이 그 일을
+	  하기도 합니다. 그러면 이것은 새로운 tarball로 발표됩니다.
+    </para>
+    <para>
+	  CVS는 끊임없이 변화하는 상태이며, 그 곳의 코드는 심지어 컴파일이
+	  되리라는 보장도 없습니다. (모두 소스입니다: 그곳에 바이너리는 없습니다.)
+	  따라서 CVS코드를 가지고 그놈을 시작하는 것은 권장되지 않습니다:
+	  컴파일 방법이 다르고, 컴파일이 되지 않을 수도 있으며, 된다 해도
+	  당신의 그놈 설정을 파괴할 수도 있습니다. tarball은 실질적인 변화를
+	  겪고, 버그를 고치자마자 만들어집니다: 만약 패키지가 완벽하다면 변경이
+	  필요없고, 많은 발표가 있을 필요도 없습니다. 만약 중요한 것이 많이
+	  고쳐졌다면, 일주일 안에 세개의 성공적인 tarball이 나올 지도 모를
+	  일입니다. 대체로 비록 많은 사람이 코드를 확인했다 하더라도 개발자
+	  (또는 문서작업자, 번역자)가 아니면 얻을 수 있는 것은 그리 많지 않습니다.
+	  많은 사람은 단지 보려고 하기도 합니다.
+    </para>
+    <para>
+	  모든 것을 말했습니다. 만약 CVS 코드를 컴파일해서 시도해보고 싶다면
+	  정말 환영입니다. 단지 앞서서 경고한 것을 생각해보세요 :)
+    </para>
+   </answer>
+  </qandaentry>
+ </qandaset>
+</sect1>

@@ -1,0 +1,129 @@
+<sect1 id="x11">
+<title>X 윈도우 시스템</title>
+ <qandaset defaultlabel="qanda">
+  <title>X 윈도우 시스템</title>
+
+  <qandaentry id="x11-intro"> 
+   <question>
+    <para>
+	  X라는 것이 무엇입니까?
+    </para>
+   </question>
+   <answer>
+    <para>
+	  X, X 윈도우 시스템(X Window System), X11 (매뉴얼 페이지는 이것을
+	  <quote>X-Windows</quote>라고 부르지 말라고 합니다)은 그놈이 상위에
+	  위치하는 것입니다. <quote>Window</quote>라는 이름은 MS Windows
+	  운영체제와 관련이 없는 것입니다: 이것에 혼란되지 마세요!
+    </para>
+    <para>
+	  <!-- This paragraph is from John Kodis. -->
+	  X 윈도우 시스템은 많은 운영체제에게 인정받은 열린 표준입니다.
+	  이것은 컴퓨터에 그래픽컬하게 화면을 그리는데 사용됩니다. X는 모든
+	  버전의 UNIX와 VMS의 본래의 윈도우 시스템입니다. 비록 운영체제가 자신의
+	  독점적인 윈도우 시스템을 가지고 있지만, Microsoft Windows와 OS/2용
+	  X 서버 역시 존재합니다. X는 한 컴퓨터에서 실행되는 어플리케이션을 원격
+	  컴퓨터에서 표시할 수 있게도 할 수 있습니다. 때때로 X를 그림을 그리는
+	  일을 위한 네트뭐킹 툴로 생각하는 것이 쉬울 수도 있습니다.
+    </para>
+    <para>
+	  GNOME FAQ에서 이런 문제가 나오는 이유는 그놈이 X 위에 위치하기
+	  때문입니다. 당신의 컴퓨터에서 그놈을 완벽하게 실행시키려면
+	  X가 필요합니다. 때때로 당신이 그놈과 관계있다고 생각하는 것이
+	  사실은 X와 관계있는 것입니다. 예를 들어 몇몇의 (모두는 아님)
+	  폰트 문제가 X와 관련있습니다. 화면의 해상도도 X가 조절합니다;
+	  이것은 X의 설정파일 안에 있는 것이며 그놈에게 어떻게 시작할 것인지
+	  알려줍니다.
+    </para>
+   </answer>
+  </qandaentry>
+
+  <qandaentry id="x11-net">
+   <question> 
+    <para>                        
+	  네트워킹? 왜 이런 문제가 나오나요?
+    </para>   
+   </question>
+   <answer>   
+    <para>      
+	  X에 네트워킹 문제가 나타나는 것은 바로 X가 네트워크상에서 운영되도록
+	  디자인되어있기 때문입니다. 만약 당신이 두대의 연결된 머신을 가지고
+	  있다면, (매우 간단히) 한 머신 앞에 앉아서 (화면을 처리하는) X 서버를
+	  그 머신에 실행시키고, 다른 머신으로부터 X 클라이언트 (실제로 보이는
+	  프로그램)을 실행시킬 수 있습니다. 옆방에 있을 수도 있고 몇 마일
+	  떨어져 있을 수도 있는 다른 머신으로 움직이지 않고서도 프로그램을
+	  실행할 수 있습니다. 예, 이것은 바로 그놈도 그렇게 할 수 있다는 것을
+	  의미합니다. 그놈을 사용하고 싶다면, 당신은 다른 머신에 연결하고
+	  접근해서 그놈 프로그램을 실행시키고, 그 결과가 당신의 머신에 보이도록
+	  할 수 있습니다.
+    </para> 
+   </answer>  
+  </qandaentry>
+
+  <qandaentry id="windowmanagers">
+   <question> 
+    <para>                        
+	  윈도우 매니저는 모두 어디서 얻나요? "그놈-호환" 윈도우
+	  매니저라는게 무엇이며, 내가 필요한 것인가요?
+    </para>   
+   </question>
+   <answer>   
+    <para>      
+	  윈도우 매니저는 윈도우들이 어떻게 표시되고, 움직일 것인가를 결정하는
+	  것입니다. X는 당신의 화면에 윈도우를 가질 능력을 주는데, 윈도우 매니저는
+	  그 윈도우가 어떻게 나타날 것인가, 어떻게 움직일 것인가, 가장자리는
+	  어떻게 보이게 할 것인가 등을 제어하는 것입니다. 윈도우 매니저는
+	  여러가지가 있습니다.
+    </para> 
+    <para>
+	  그놈은 특별히 하나의 윈도우 매니저를 요구하지 않으며, 특별히 "공식적인"
+	  윈도우 매니저가 없습니다. 그러나 그놈의 기능을 대부분 사용하기 위해서는
+	  그놈-호환의 윈도우 매니저를 사용해야 합니다. 그놈-호환 윈도우 매니저는
+	  그놈과 같이 작동을 하며, 그놈이 윈도우 매니저에게 보내는 것을 이해할
+	  수 있습니다. 이것들이 완벽하거나 괜찮은 그놈-호환 윈도우 매니저들 중
+	  하나입니다.
+     <simplelist>
+      <member>
+       <ulink type="http" url="http://sawmill.sourceforge.net">Sawfish</ulink> 
+       (최근까지 Sawmill로 알려졌으며 현재도 많은 사람들이 그렇게 부릅니다.)
+      </member>
+      <member>
+       <ulink type="http" url="http://www.enlightenment.org">Enlightenment</ulink>
+      </member>
+      <member>
+       <ulink type="http" url="http://www.windowmaker.org">Window Maker</ulink>
+      </member>
+      <member>
+       <ulink type="http" url="http://www.icewm.org">IceWM</ulink>
+      </member>
+      <member>
+       <ulink type="http" url="http://scwm.mit.edu">Scwm</ulink>
+      </member>
+      <member>
+       <ulink type="http" url="http://www.fwvm.org">FVWM</ulink> (버전 2.3)
+      </member>
+     </simplelist>
+    </para>
+    <para>
+	  예전 버전의 이 FAQ에서는 몇몇의 그놈-호환의 것을 조금 더 다루었습니다.
+	  이것중에 <ulink type="http" url="http://www-masuda.is.s.u-tokyo.ac.jp/~kourai/qvwm/qvwm-e.html">Qvwm</ulink>의 FAQ는 그놈을 언급하지 않고 있으며
+	  <ulink type="http" url="http://www.afterstep.org">AfterStep</ulink>
+	  FAQ에서는 그놈-호환이라고는 하지만 그놈이 제공한 페이저보다는
+	  AfterStep의 페이저를 쓰는 것을 권장하고 있습니다. (이것에 대한
+	  사용자의 설명을 환영합니다.)
+    </para>
+    <para>
+	  실질적인 관점에서 명확한 그놈-호환 윈도우 매니저를 고르는 것은
+	  많은 그놈 사용자와 개발자들이 그것을 사용하고 있어서 그 친근함
+	  덕분에 신속한 대답을 얻기가 쉽다는 것 자체만으로도 좋은 생각입니다.
+	  현재 인기있는 윈도우 매니저는 특별히 그놈과 같이 실행되도록 디자인된
+	  <application>Sawfish</application>과, 처음으로 호환이 되도록 디자인되어
+	  많이 쓰이는 <application>Enlightenment</application>입니다.
+	  불굴의 소수는 좀 오래됐지만
+	  여전히 인기있는 <application>Window Maker</application>와
+	  <application>FVWM</application>을 선호합니다.
+    </para>
+   </answer>  
+  </qandaentry>
+ </qandaset>
+</sect1>

@@ -1,0 +1,593 @@
+<sect1 id="compiling">
+ <title>컴파일 관련 문제점</title>
+
+ <para>
+	이 부분을 꼭 읽을 필요는 없습니다. 왜냐하면 이상적으로는 당신의 시스템에
+	맞는 모든 것을 깨끗한 패키지로 얻을 수 있기 때문입니다. 그렇지만 항상
+	자기 스스로 하고 싶은 사람은 있습니다. 이것은 일반적으로 그러한 과정에서
+	발생하는 대부분의 질문들에 대한 대표적인 목록입니다.
+ </para>
+
+ <qandaset defaultlabel="qanda">
+
+  <qandaentry id="compile-order"> 
+   <question>
+    <para>
+	  어떤 순서로 패키지를 컴파일해야 하나요?
+    </para>
+   </question>
+   <answer>
+    <para>
+	  이 순서가 잘 된다고 알려져 있습니다:
+    </para>
+    <procedure>
+     <title>그놈의 컴파일 순서</title>
+     <step>
+      <para>
+        <application>glib</application> 컴파일.
+      </para>
+     </step>
+     <step>
+      <para>
+        <application>gtk+</application> 컴파일.
+      </para>
+     </step>
+     <step>
+      <para>
+        <application>imlib</application> 컴파일.
+      </para>
+     </step>
+     <step>
+      <para>
+        <application>ORBit</application> 컴파일.
+      </para>
+     </step>
+     <step>
+      <para>
+        <application>audiofile</application> 컴파일.
+      </para>
+     </step>
+     <step>
+      <para>
+        <application>esound</application> 컴파일.
+      </para>
+     </step>
+     <step>
+      <para>
+        <application>libxml</application> 컴파일.
+      </para>
+     </step>
+     <step>
+      <para>
+        <application>gnome-libs</application> 컴파일.
+      </para>
+     </step>
+     <step>
+      <para>
+        <application>gdk-pixbuf</application> 컴파일.
+      </para>
+     </step>
+     <step>
+      <para>
+        <application>libghttp</application> 컴파일.
+      </para>
+     </step>
+     <step>
+      <para>
+        <application>libglade</application> 컴파일.
+      </para>
+     </step>
+     <step>
+      <para>
+        <application>libgtop</application> 컴파일.
+      </para>
+     </step>
+     <step>
+      <para>
+        <application>gnome-print</application> 컴파일.
+      </para>
+     </step>
+     <step>
+      <para>
+        <application>control-center</application> 컴파일.
+      </para>
+     </step>
+     <step>
+      <para>
+        <application>gnome-core</application> 컴파일.
+      </para>
+     </step>
+    </procedure>
+    <para>
+	  이 다음에는 순서가 별로 중요하지 않습니다. 남은 그놈 어플리케이션은
+	  순서에 관계없이 컴파일할 수 있을 것입니다.
+     <note>
+      <title>Nautilus와 Evolution을 위해 특별히 할 것</title>
+      <para>
+		<application>Evolution</application>이나
+		<application>Nautilus</application>는 표준적인 그놈 배포판에 들어가지
+		않으므로 컴파일하기 위해서는 <application>gconf</application>와
+		<application>oaf</application>, <application>popt</application>,
+		<application>bonobo</application>를 받아서 컴파일해야 합니다. 이것들은
+		모두 결국엔 그놈의 일부분이 될 것입니다. 그러나 지금은 그렇지 않습니다.
+      </para>
+     </note>
+    </para>
+   </answer>
+  </qandaentry>
+
+  <qandaentry id="compile-howto">
+   <question>
+    <para>
+	  다 좋은데 tarball는 어떻게 컴파일을 하나요?
+    </para>
+   </question>
+   <answer>
+    <para>
+	  만약 rpm 기반의 시스템을 쓰고 있다면 이 질문을 건너뛰고 tarball을
+	  rpm으로 만드는 방법에 관한 것을 보세요. 이것은 파일을 알맞은 시스템의
+	  알맞은 곳에 놓는 일에 대한 상당한 양의 문제점을 감소시켜줍니다. 그렇지
+	  않다면 보통의 사용자에게 그놈 tarball을 컴파일하는 표준적인 방법은
+	  다음과 같습니다.
+    </para>
+    <procedure>
+     <title>tarball 컴파일하기</title>
+     <step>
+      <para>
+		tarball의 압축을 풀고 tarball 디렉토리의 최 상위로
+		<command>cd</command> 합니다.
+      </para>
+     </step>
+     <step>
+      <para>
+        <command>./configure</command>
+      </para>
+     </step>
+     <step>
+      <para>
+        <command>make</command>
+      </para>
+     </step>
+     <step>
+      <para>
+		여기가 다음 단계로 가기 전에 프로그램이 잘 도는지 확인할 수 있는
+		좋은 시간입니다.
+      </para>
+     </step>
+     <step>
+      <para>
+        <command>su</command> 
+      </para>
+     </step>
+     <step>
+      <para>
+        <command>make install</command>      
+       </para>
+     </step>
+     <step performance="optional">
+      <para>
+		나중에 프로그램을 깔끔하게 제거하고 싶다면 이 디렉토리에 있는 모든
+		파일을 지우지 마세요. <command>make uninstall</command>을 함으로써
+		제거할 수 있습니다. 자세한 것은 <link linkend="uninstalling">프로그램
+		삭제에 대한 질문</link>을 확인하세요.
+      </para>
+     </step>
+    </procedure>
+
+    <para>    
+	  이 작업들은 tarball을 <filename class="directory">/usr/local/</filename>에
+	  설치할 것입니다. 이곳은 개인적으로 컴파일하여 설치하는 프로그램이
+	  있는 곳입니다. 만약 다른 곳에다가 설치하고 싶으면 당신이 쓰고 있는
+	  패키지 관리 시스템과 호환되는 것을 구하거나,
+	  <command>./configure</command>에 몇가지 인자를 주어서 어디에
+	  설치할 것인지 정할 수 있습니다. 이 인자는 대체로
+	  <option>--prefix</option>와 <option>--sysconfdir</option>입니다.
+	  몇몇 사람들은 <option>--localstatedir</option>와
+	  <option>--datadir</option>도 씁니다.
+     <note>
+      <title>좀 더 알아두세요</title>
+      <para>
+		이전 문단의 첫번째 문장을 보세요. 당신이 직접 컴파일한 프로그램은
+		<filename class="directory">/usr/local/</filename>로
+		<emphasis>가야만</emphasis> 합니다. 패키지 관리 시스템(rpm, dpkg)이
+		제공한 바이너리(binaries)와 직접 컴파일한 바이너리가
+		<filename class="directory">/usr/</filename>와 같이 같은 디렉토리에
+		들어가는 것은 일반적으로 추천하지 않습니다.
+      </para>
+     </note>
+    </para>
+   </answer>
+  </qandaentry>
+
+  <qandaentry id="compile-prefixes">
+   <question> 
+    <para>                        
+	  나의 시스템에는 이미 파일시스템의 한 부분에 그놈이 있습니다. 어떻게
+	  해야 새로 컴파일 한 패키지를 같은 장소에 놓을 수 있을 까요?
+    </para>   
+   </question>
+   <answer>   
+    <para>      
+	  기본적으로 직접 빌드하고 컴파일한 tarball은
+	  <filename class="directory">/usr/local/</filename>에 들어갑니다.
+	  이 곳에 들어가는 것을 항상 원하지는 않겠지만, 이 곳은 rpm이나 deb같은
+	  패키지 관리자가 <filename class="directory">/usr/local/</filename>
+	  안에 있는 프로그램들을 건들지 않기 때문입니다.
+    </para> 
+    <para>
+	  패키지를 통해 설치하는 것과 다른 방법으로 설치하는 것이 같은
+	  디렉토리로 섞이지 않아야 한다는 것은 정말 권장되는 생각입니다.
+	  매우 혼란시키기 때문입니다. 만약 당신이 rpm을 사용한다면 대부분
+	  <link linkend="tarball-to-rpm">아래에 설명된 것</link>을 보고
+	  tarball로부터 rpm을 만들 수 있습니다.
+    </para>
+    <para>
+	  다른 배포판은 다른 조합의 prefix를 사용합니다.
+	  <command>gnome-config --prefix</command>와
+	  <command>gnome-config --sysconfdir</command> 명령을 씀으로서 자신의
+	  시스템에서 <application>그놈</application>이 어떤 것을 쓰는 지
+	  알아낼 수 있습니다. 그리고 그 결과를 <command>./configure</command>의
+	  인자로 줌으로써 이용할 수 있습니다. 예를 들면,
+      <command>./configure --prefix=/usr --sysconfdir=/etc</command>.
+      <command>./configure --prefix=`gnome-config --prefix` --sysconfdir `gnome-config --sysconfdir`</command>와 같이 백틱을 이용해서 사용할 수도 있습니다.
+	  모든 것은 한 줄에 써야 합니다. <command>./configure --help</command>를
+	  쳐서 모든 인수에 대한 완벽한 목록을 얻을 수 있습니다.
+    </para>
+    <para>
+	  꼭 해야 한다면, 이것은 당신이 찾는 조합입니다.
+    </para>
+    <table>
+     <title>여러가지 플랫폼에서의 prefix</title>
+
+     <tgroup cols=4 align=left>
+      <thead>
+       <row>
+        <entry>운영체제</entry>
+        <entry>--prefix</entry>
+        <entry>--sysconfdir</entry>
+        <entry>주의</entry>
+       </row>
+      </thead>
+
+      <tbody>
+       <row>
+        <entry>Red Hat Linux</entry>
+        <entry>/usr</entry>
+        <entry>/etc</entry>
+        <entry></entry>
+       </row>
+
+       <row>
+        <entry>Debian GNU/Linux</entry>
+        <entry>/usr</entry>
+        <entry>/etc</entry>
+        <entry></entry>
+       </row>
+
+       <row>
+        <entry>Caldera OpenLinux</entry>
+        <entry>/opt/gnome</entry>
+        <entry>/etc/opt/gnome</entry>
+        <entry>Helix GNOME은 sysconfdir로 /opt/gnome/etc를 씁니다</entry>
+       </row>
+
+       <row>
+        <entry>SuSE Linux</entry>
+        <entry>/opt/gnome</entry>
+        <entry>/etc/opt/gnome</entry>
+        <entry></entry>
+       </row>
+
+       <row>
+        <entry>Linux Mandrake</entry>
+        <entry>/usr</entry>
+        <entry>/etc</entry>
+        <entry></entry>
+       </row>
+
+       <row>
+        <entry>Solaris</entry>
+        <entry></entry>
+        <entry></entry>
+        <entry>아는 사람?</entry>
+       </row>
+      </tbody>
+     </tgroup>
+    </table>
+   </answer>  
+  </qandaentry>
+
+  <qandaentry id="double-gnome">
+   <question>
+    <para>
+	  그놈을 완벽하게 설치했습니다. 그런데 내가 일하는 설정들을 날리지 않고
+	  새로운 패키지를 깔고 싶습니다. 특별한 공간에서 새로운 그놈 패키지를
+	  컴파일할 수 있나요? 어떻게 해야 하나요?
+    </para>
+   </question>
+   <answer>
+    <para>
+	  예, 할 수 있습니다. 가장 괜찮은 방법은 자기 자신의 홈 디렉토리에서
+	  직접 컴파일하는 것입니다. 이렇게 root가 아닌 알반 사용자로서 하는
+	  것은 시스템의 파일을 덮어씌우지 않는다는 것을 의미합니다.
+      <!-- Thanks to Eric Baudais for the instructions -->
+    </para>
+    <procedure>
+     <title>그놈을 당신의 홈 디렉토리에 설치하기</title>
+     <step>
+      <para>
+        <command>cd</command> (홈 디렉토리로 가기)
+      </para>
+     </step>
+     <step>
+      <para>
+        <command>tar xvfz gnome-package.tar.gz</command> (패키지 압축 풀기)
+      </para>
+     </step>
+     <step>
+      <para>
+        <command>cd gnome-package</command> (이 디렉토리로)
+      </para>
+     </step>
+     <step>
+      <para>
+        <command>./configure --prefix=~/gnome --sysconfdir=~/gnome/etc</command>
+        (<keycap>~</keycap> 표시가 각각의 prefix에 들어가는 겟에 주의하세요.
+		빼먹으면 안됩니다!)
+      </para>
+     </step>
+     <step>
+      <para>
+        <command>make</command> (컴파일합니다. 가장 오래 걸리는 부분입니다.)
+      </para>
+     </step>
+     <step>
+      <para>
+        <command>make install</command> (다음의 장소에 프로그램이 설치)
+      </para>
+     </step>
+     <step>
+      <para>
+        <command>cd ~/gnome/bin</command> (이 곳이 프로그램이 설치되는 곳임)
+      </para>
+     </step>
+     <step>
+      <para>
+        <command>./gnome-app</command> (실행해보기)
+      </para>
+     </step>
+    </procedure>
+    <para>
+	   위의 것은 대부분이 잘 될 것이지만, 아마 애플릿에서는 문제가 생길것입니다.
+	   <filename>/etc/CORBA/servers</filename> 안에 파일이 있을 것으로 기대하기
+	   때문이죠. 아마도 홈 디렉토리에 있는 것으로 심볼릭 링크를 만들면 될
+	   것입니다. 해보진 않았습니다.
+    </para>
+   </answer>
+  </qandaentry>
+
+  <qandaentry id="tarball-to-rpm">
+   <question>
+    <para>
+	  나의 시스템은 rpm 기반입니다. Tarball을 어떻게 해야 하나요?
+    </para>
+   </question>
+   <answer>
+    <para>
+	  Tarball 안에 올바른 spec파일이 존재하다면 tarball로부터 rpm을 만들
+	  수 있습니다. 많은 그놈 패키지들이 그렇습니다. root로서 바이너리
+	  rpm을 만들기 위해서는 <command>rpm -tb &lt;tarballname&gt;</command>를
+	  실행하고 소스 rpm을 만들기 위해서는
+	  <command>rpm -ta &lt;tarballname&gt;</command>을 실행하세요
+    </para>
+    <para>
+	  만약 tarball 안에 spec파일이 없다면,
+	  <ulink type="http" url="http://mail.gnome.org/mailman/listinfo/gnome-list/">gnome-list
+	  메일링 리스트</ulink> 또는
+	  <ulink type="http" url="http://news.gnome.org/gnome-news/">Gnotices</ulink>에서
+	  직접 만든 spec파일을 찾을 수 있을 수도 있습니다.
+	  이렇게 spec파일을 찾으면 둘 중의 하나의 방법을 사용할 수 있습니다:
+    </para>
+    <para>
+      첫번째 방법: root로써 foo라는 패키지의 tarball을
+	  <filename class="directory">/usr/src/redhat/</filename> 밑의 SOURCES
+	  디렉토리에, spec파일을 SPECS 이렉토리오 옮겨놓습니다. 그 다음
+	  <command>rpm -ba foo.spec</command>를 실행시킵니다. 아마
+	  <filename class="directory">redhat</filename>이라는 것을 각자의 배포판에
+	  맞게 적절히 고쳐야 할 것입니다. 어떤 디렉토리도 될 수 있지만
+	  <filename class="directory">linux</filename>라는 디렉토리는 아닙니다.
+    </para>
+    <para>
+	  두번째 방법: <command>tar xvfz foo.tar.gz</command>로 tarball를 풀고
+	  spec파일을 결과의 디렉토리 안에 넣습니다. 그리고
+	  <command>tar cvfz foo.tar.gz foo/*</command>로 다시 묶은 다음
+	  <command>rpm -ta</command>를 실행해서 새로운 tarball을 만듭니다.
+    </para>
+   </answer>
+  </qandaentry>
+
+  <qandaentry id="rh-locale-fix">
+   <question>
+    <para>
+	  정확한 locale을 찾을 수 없다면서 tarball로부터 rpm을 만드는데
+	  문제가 생깁니다.
+    </para>
+   </question>
+   <answer>
+    <para>
+	  rpm을 만들기 전에 이 명령을 실행하세요:
+	  <command>unset LINGUAS</command>. 이제 잘 될 것입니다. 대신에
+	  이 것을 spec파일의 $build section에 넣어도 됩니다. 몇몇 사람들은
+	  <envar>LANGUAGE</envar>과 <envar>LANG</envar>, <envar>LC_ALL</envar>도
+	  unset하는 것을 권장합니다.
+      <!-- FIXME: unset LANGUAGE, LC_ALL and LANG 하는 것이 정말 필요한가요? -->
+    </para>
+   </answer>
+  </qandaentry>
+
+  <qandaentry id="db2html">
+   <question>
+    <para>
+	  몇몇 도움말 파일을 만들기 위해서 <quote>db2html</quote>가 필요합니다.
+	  이게 무엇이고, 어디서 얻을 수 있나요?
+    </para>
+   </question>
+   <answer>
+    <para>
+	  <application>db2html</application>은 패키지
+	  <application>stylesheets</application> 안에 있는 스크립트입니다.
+	  그리고 DocBook으로부터 HTML로 파일을 변환하는데 필요합니다.
+	  stylesheets외에도 다음의 패키지가 필요합니다: sgml-common과
+	  jade, docbook. 만약 .ps 문서를 만들고 싶다면 jadetex도 필요합니다.
+	  이 도구들의 공식적인 소스는 Cygnus(지금은 래드햇의 한 부분입니다.)
+	  <ulink type="ftp"
+	  url="ftp://sourceware.cygnus.com:/pub/docbook-tools/">sourceware</ulink>
+	  사이트에 있습니다. 그러나 대부분의 리눅스와 BSD배포판이 이를 제공하고
+	  있습니다. 한번 벤더(vendor)의 FTP 사이트를 확인해 보세요. 그놈은 많은
+	  문서화 작업을 위해 DocBook를 사용하고 있으며,
+	  <ulink type="http" url="http://www.gnome.org/gdp/">그놈
+	  문서작업 프로젝트</ulink> 페이지에서 많은 정보를 찾을 수 있습니다.
+    </para>
+    <para>
+	  이것은 매우 일반적인 질문이었는데 최근 몇달동안은 보이지 않았습니다.
+	  아마 이 질문은 없어질 지도 모릅니다.
+    </para>
+   </answer>
+  </qandaentry>
+
+  <qandaentry id="gnome-stylesheets">
+   <question>
+    <para>
+	  DocBook를 올바르게 설치했는데 패키지를 빌드하려 하면
+	  문서 작업 부분에서 오류가 납니다.
+    </para>
+   </question>
+
+   <answer>
+    <para>
+	  그놈은 그래픽을 사용하는 특별한 stylesheet와 DTD를 가지고 있습니다.
+	  이것들은 GIF 대신에 PNG 그래픽을 사용할 수 있게 해줍니다. 큰 패키지의
+	  발표에는 이미 빌드되어있는 문서를 사용하지만, 몇몇의 tarball은
+	  그렇지 않을 때도 있습니다. 이것은 그 tarball이 안정된 <quote>제품</quote>
+	  발표가 아니라는 것을 의미하고, 사람들이 이 메시지에 대처할 수 있을
+	  것이라고 기대합니다. 당신은 두가지 선택이 있습니다.
+    </para>
+    <itemizedlist>
+     <listitem>
+      <para>
+		<command>./configure</command>후 <command>make</command>를 하기 전에
+		<filename>Makefile.am</filename>를 편집하여 "SUBDIRS"로 시작하는
+		줄에서 "docs"를 제거합니다. 이것은 문서를 빌드하지 않겠다는 것을
+		의미합니다.
+      </para>
+     </listitem>
+     <listitem>
+      <para>
+		DTD(꺽쇠괄호로 둘러쌓인 줄)를 바꿉니다.
+		<replaceable>"-//GNOME//DTD DocBook PNG Variant V1.1//EN"</replaceable>를
+		<replaceable>"-//OASIS//DTD DocBook V3.1//EN"</replaceable>로 바꿉니다.
+		그리고 원한다면 그래픽같이 보이는 모든 부분을 제거힙니다.
+		(<sgmltag>&lt;figure&gt;</sgmltag>와
+		<sgmltag>&lt;/figure&gt;</sgmltag>태그로 둘러쌓인 것으로 쉽게 알 수
+		있습니다.) 이것은 문서를 그래픽 없이(또는 링크가 깨진 채로) 빌드할
+		것입니다.
+      </para>
+     </listitem>
+     <listitem>
+      <para>
+		그놈 DTD와 stylesheets을 받아서 설치합니다. 그것은 tarball과
+		rpm, 각각의 부분으로 이루어져 있으며
+		<ulink type="http" url="http://people.redhat.com/dcm/software.html">Dave
+		Mason의 페이지</ulink>에서 얻을 수 있습니다. 빌드해야 할 것입니다.
+      </para>
+     </listitem>
+    </itemizedlist>
+   </answer>
+  </qandaentry>
+
+  <qandaentry id="package-devel">
+   <question>
+    <para>
+	  모든 base 패키지를 ftp 사이트를 통해서 설치했습니다. 그런데 어떤 것을
+	  컴파일하려고 하면 헤더파일이 없다는 메시지와 다음과 같은 메시지를
+	  볼 수 있습니다: <quote>gnome-libs 를 찾을 수 없습니다.</quote> 또는
+	  <quote>somefile.h: 찾을 수 없음</quote>.
+    </para>
+   </question>
+   <answer>
+    <para>
+	  이것은 바이너리 rpm이나 deb로 설치한 사람에게만 영향을 끼칩니다.
+	  tarball, 소스 rpm 또는 소스와 함께 deb를 사용한 사람에게는
+	  영향을 끼치지 않습니다.
+    </para>
+    <para>
+	  바이너리 패키지는 두가지로 분류할 수 있습니다. 한나는
+	  &lt;package&gt;.suffix 형식의 이름을 가지고 있고, 하나는
+	  &lt;package-dev&gt;.suffix 또는 &lt;package-devel&gt;.suffix 형식의
+	  이름을 가지고 있습니다. (SuSE의 경우 여덟글자의 패키지 이름을 써서
+	  &lt;pkgdev&gt;.suffix, 심지어 &lt;pkgd&gt;.suffix 형식의 이름을 가지고
+	  있습니다.) 첫번째 것은 패키지에서 프로그램을 실행하는데 필요한 것으로
+	  보통 <quote>base</quote> 패키지로 ftp 사이트에 있습니다. 두번째 것은
+	  컴파일하거나 다른 프로그램의 코드에 의지하는 추가적인 것입니다.
+	  그것은 새로운 프로그램을 컴파일할 때 쓰이는 헤더파일이 포함되어 있습니다.
+	  만약 대때로 tarball(또는 tarball로부터 rpm을 만들 때) 을 컴파일하려고
+	  한다면, gnome-core-devel, gnome-libs-devel 등과 같은 것을 추가로 받아서
+	  설치해야 합니다.
+    </para>
+   </answer>
+  </qandaentry>
+   
+  <qandaentry id="uninstalling">
+   <question> 
+    <para>                        
+	  설치한 것을 제거하려면 어떻게 해야 하나요?
+    </para>   
+   </question>
+   <answer>   
+    <para>      
+      rpm일 경우: <command>rpm --erase package</command>.
+    </para> 
+    <para>
+      dpkg일 경우:
+    </para>
+    <itemizedlist>
+     <listitem>
+      <para>
+        <command>dpkg --remove package</command>
+      </para>
+     </listitem>
+     <listitem>
+      <para>
+        <command>apt-get remove package</command>
+      </para>
+     </listitem>
+    </itemizedlist>
+    <para>
+	  또는
+    </para>
+    <itemizedlist>
+     <listitem>
+      <para>
+        <command>dpkg --purge package</command>
+      </para>
+     </listitem>
+     <listitem>
+      <para>
+        <command>apt-get remove --purge package</command>
+      </para>
+     </listitem>
+    </itemizedlist>
+    <para>
+	  아마 <command>apt-get</command>를 사용하는 것이 좋을 것입니다.
+	  이것은 의존관계를 자동으로 알아내기 때문입니다. 만약
+	  <command>dpkg</command>를 사용한다면 설정파일도 지워야 할 것입니다.
+    </para>
+    <para>
+	  tarball일 경우: 전에 설치했던 파일들을 가지고 있어야 합니다.
+	  그 디렉토리로 이동한 다음에 <command>make uninstall</command>를
+	  실행하세요 누군가 당신을 위해 이것을 만들어두었을 것입니다.
+    </para>
+   </answer>  
+  </qandaentry>
+ </qandaset>
+</sect1>
