@@ -44,10 +44,13 @@
 #include <gtk/gtksignal.h>
 #include "libgnome/libgnomeP.h"
 #include "gnome-selectorP.h"
+#include "gnome-vfs-util.h"
 #include "gnome-file-selector.h"
 #include "gnome-icon-selector.h"
 #include "gnome-icon-list.h"
 #include "gnome-entry.h"
+
+#include <libgnomevfs/gnome-vfs-mime.h>
 
 #define ICON_SIZE 48
 
@@ -332,10 +335,8 @@ check_filename_handler (GnomeSelector *selector, const gchar *filename)
     g_return_val_if_fail (GNOME_IS_ICON_SELECTOR (selector), FALSE);
     g_return_val_if_fail (filename != NULL, FALSE);
 
-    if (g_file_test (filename, G_FILE_TEST_ISDIR))
-	return TRUE;
+    mimetype = gnome_vfs_mime_type_from_name (filename);
 
-    mimetype = gnome_mime_type_from_magic (filename);
     if (!mimetype || strncmp (mimetype, "image", sizeof("image")-1))
 	return FALSE;
     else
@@ -353,7 +354,7 @@ append_an_icon (GnomeIconSelector *gis, const gchar *path)
     int pos;
     int w,h;
 
-    iml = gdk_pixbuf_new_from_file (path);
+    iml = gnome_gdk_pixbuf_new_from_uri (path);
     /*if I can't load it, ignore it*/
     if(!iml)
 	return;
