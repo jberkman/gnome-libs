@@ -28,6 +28,6 @@ postscript.convert: gnome-make-postscript-mimes
 	$(SHELL) $(srcdir)/gnome-make-postscript-mimes > postscript.convert
 
 install-data-local:
-	$(mkinstalldirs) $(scoredir)
-	-chgrp $(GAMES_GROUP) $(scoredir) && chmod g=rwXs $(scoredir)
+	$(mkinstalldirs) $(DESTDIR)$(scoredir)
+	-chgrp $(GAMES_GROUP) $(scoredir) && chmod g=rwXs $(DESTDIR)$(scoredir)
 	$(top_builddir)/libgnome/gnome-gen-mimedb $(DESTDIR)$(sysconfdir)/mime-magic

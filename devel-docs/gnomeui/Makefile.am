@@ -140,17 +140,17 @@ maintainer-clean-local: clean
 	cd $(srcdir) && rm -rf sgml html $(DOC_MODULE)-decl-list.txt $(DOC_MODULE)-decl.txt 
 
 install-data-local: 
-	$(mkinstalldirs) $(TARGET_DIR)
+	$(mkinstalldirs) $(DESTDIR)$(TARGET_DIR)
 	(installfiles=`echo $(srcdir)/html/*.html`; \
 	if test "$$installfiles" = '$(srcdir)/html/*.html'; \
 	then echo '-- Nothing to install' ; \
 	else \
 	  for i in $$installfiles; do \
 	    echo '-- Installing '$$i ; \
-	    $(INSTALL_DATA) $$i $(TARGET_DIR); \
+	    $(INSTALL_DATA) $$i $(DESTDIR)$(TARGET_DIR); \
 	  done; \
 	  echo '-- Installing $(srcdir)/html/index.sgml' ; \
-	  $(INSTALL_DATA) $(srcdir)/html/index.sgml $(TARGET_DIR); \
+	  $(INSTALL_DATA) $(srcdir)/html/index.sgml $(DESTDIR)$(TARGET_DIR); \
 	  echo '-- Fixing Crossreferences' ; \
 	  gtkdoc-fixxref --module=$(DOC_MODULE) --html-dir=$(HTML_DIR)|| true; \
 	fi)
