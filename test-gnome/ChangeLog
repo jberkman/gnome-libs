@@ -1,3 +1,9 @@
+1999-03-27  Raja R Harinath  <harinath@cs.umn.edu>
+
+	* Makefile.am (test): New target.  Use this to run `test-gnome' in
+	$srcdir.  This should be better than Miguel's fix below.
+	(test-debug): Similar, but runs gdb on the test-gnome binary.
+
 1999-03-25  Miguel de Icaza  <miguel@nuclecu.unam.mx>
 
 	* canvas-primitives.c: Do not make me look like a dofus on a

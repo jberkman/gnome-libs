@@ -28,3 +28,13 @@ test_gnome_LDADD = \
 	$(top_builddir)/libart_lgpl/libart_lgpl.la	\
 	@LIBSUPPORT@					\
 	$(LIBGTKXMHTML_LIBS) $(LIBGNOME_LIBS) $(LIBGNOMEUI_LIBS) $(INTLLIBS)
+
+# the program has to be run from $srcdir to find its image files
+test: test-gnome
+	blddir=`pwd`; top_blddir=`cd $(top_builddir) && pwd`; cd $(srcdir); \
+	$(SHELL) $$top_blddir/libtool --mode=execute $$blddir/test-gnome
+
+test-debug: test-gnome
+	blddir=`pwd`; top_blddir=`cd $(top_builddir) && pwd`; cd $(srcdir); \
+	$(SHELL) $$top_blddir/libtool --mode=execute gdb $$blddir/test-gnome
+
