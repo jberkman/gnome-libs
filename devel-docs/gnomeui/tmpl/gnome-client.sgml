@@ -2,19 +2,25 @@
 GnomeClient
 
 <!-- ##### SECTION Short_Description ##### -->
-
+Routines to provide session management support in your application
 
 <!-- ##### SECTION Long_Description ##### -->
-<para>
 
-</para>
+<para>The GNOME project uses a special object - the GnomeClient object
+- to implement session management.  This object handles the connection
+to a session manager, the setting and removing of properties and the
+handling of messages sent by a session manager.</para>
 
+<para>There are two functions in the GNOME libraries, that create a
+new GnomeClient object: gnome_client_new() and
+gnome_client_new_without_connection().  As one may guess from the
+functions names: The first function tries to connect to a session
+manager automatically, while the second one does not. </para>
 
 <!-- ##### SECTION See_Also ##### -->
 <para>
 
 </para>
-
 
 <!-- ##### STRUCT GnomeClient ##### -->
 <para>
@@ -397,7 +403,9 @@ GnomeClient
 
 <!-- ##### SIGNAL GnomeClient::save-yourself ##### -->
 <para>
-
+This signal is probably the most important one, because it causes the
+clients to save the programs state.  Clients should connect to this
+signal and save their state.
 </para>
 
 @client: the object which received the signal.

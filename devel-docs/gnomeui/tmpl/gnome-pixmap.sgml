@@ -2,19 +2,33 @@
 GnomePixmap
 
 <!-- ##### SECTION Short_Description ##### -->
-
+A widget to display and load images (pixmaps)
 
 <!-- ##### SECTION Long_Description ##### -->
-<para>
+  <para>
+    This widget can display an image created or provided by a number
+    of sources (a file from various supported file formats, memory,
+    in-memory-xpm, Imlib handle, RGB buffer) and it can scale the
+    image during the load process.
+  </para>
 
-</para>
+  <para>
+    The #GnomePixmap widget is particularly useful, as it load an
+    image and provides it as a #GtkWidget.  While doing this, it does
+    also make sure that the visuals and colormaps are correctly set so
+    that the application will work properly on multi-depth display
+    machines. 
+  </para>
 
+  <para>
+    You should use this widget instead of the less powerful and more
+    error-prone GtkPixmap widget.
+  </para>
 
 <!-- ##### SECTION See_Also ##### -->
 <para>
-
+    GdkImlib
 </para>
-
 
 <!-- ##### STRUCT GnomePixmap ##### -->
 <para>
@@ -257,5 +271,11 @@ GnomePixmap
 @im: 
 @width: 
 @height: 
+<!--
+Local variables:
+mode: sgml
+sgml-parent-document: ("../gnomeui-docs.sgml" "book" "sect1" "")
+End:
+-->
 
 

@@ -2,19 +2,24 @@
 GnomeColorPicker
 
 <!-- ##### SECTION Short_Description ##### -->
-
+Widget for selecting colors.
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
+This widget provides color selection facilities to your application.
+It is a button that renders its current color and when pressed
+presents the user with a color selector from which he can choose a
+color. </para>
 
-</para>
-
+<para>You can select the color to be displayed in a number of ways:
+floating point values for the red, green and blue channels, or
+integers in the range 0 to 65,535 or intergers in the range 0 to 255
+depending on your needs.</para>
 
 <!-- ##### SECTION See_Also ##### -->
 <para>
 
 </para>
-
 
 <!-- ##### STRUCT GnomeColorPicker ##### -->
 <para>
@@ -131,7 +136,9 @@ GnomeColorPicker
 
 <!-- ##### SIGNAL GnomeColorPicker::color-set ##### -->
 <para>
-
+This signal is emitted when the user changes the color on the color
+selector.  The values passed to this signal are the red, green, blue
+and alpha channels selected in integer form in the range 0 to 65535.
 </para>
 
 @colorpicker: the object which received the signal.

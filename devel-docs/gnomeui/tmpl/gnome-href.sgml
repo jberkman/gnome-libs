@@ -2,19 +2,31 @@
 GnomeHRef
 
 <!-- ##### SECTION Short_Description ##### -->
-
+A link button.
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
+   This widget is a #GtkButton button that contains a url.  When
+   clicked it invokes the configured url browser for the url you provided.
 
 </para>
 
+<para>
+   This sample program creates a button whose label is "GNOME Web
+   site" and when clicked launches a browser to view the site at
+   <filename>http://www.gnome.org</filename>.
+
+<programlisting>
+   GtkWidget *button;
+
+   button = gnome_href_new ("http://www.gnome.org", "GNOME Web site");
+</programlisting>
+</para>
 
 <!-- ##### SECTION See_Also ##### -->
 <para>
-
+gnome_url_show(), #GtkButton,
 </para>
-
 
 <!-- ##### STRUCT GnomeHRef ##### -->
 <para>
