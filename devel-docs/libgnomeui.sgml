@@ -48,7 +48,7 @@ gchar *authors[] =
 {"author1", "author2",..., NULL};
 
 GtkWidget *about = gnome_about_new (_ ("GnoApp"), "1.2b",
-				    _ ("Copyrigth FSF (C) 1998"),
+				    _ ("Copyright FSF (C) 1998"),
 				    authors,
 				    "Comment line 1\nLine 2",
 				"/usr/local/share/pixmaps/gnoapp-logo.xpm");
@@ -931,7 +931,7 @@ just fetch a GnomeStockPixmapWidget</para>
 </sect3>
 </sect2>
 <sect2 id="gnome-stock-pixmap-register">
-  <title>gnome_stock_pixmap_register - register a pixmap. returns non-zero, if successfull</title>
+  <title>gnome_stock_pixmap_register - register a pixmap. returns non-zero, if successful</title>
 <funcsynopsis><funcdef> gint <function>gnome_stock_pixmap_register</function>
 </funcdef>
 <paramdef>
@@ -946,7 +946,7 @@ GnomeStockPixmapEntry *<parameter>entry</parameter>
 </funcsynopsis>
 <sect3><title>Description</title>
 <para>
-register a pixmap. returns non-zero, if successfull</para>
+register a pixmap. returns non-zero, if successful</para>
 </sect3>
 
 <sect3><title>Parameters</title>
@@ -1015,7 +1015,7 @@ char *<parameter>subtype</parameter>
 </funcsynopsis>
 <sect3><title>Description</title>
 <para>
-check for the existance of an entry. returns the entry if it
+check for the existence of an entry. returns the entry if it
 exists, or NULL otherwise
 </para>
 </sect3>

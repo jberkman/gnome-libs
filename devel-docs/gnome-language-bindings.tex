@@ -6,7 +6,7 @@
 \maketitle
 \tableofcontents
 \section{Rationale for this document}
-The author of this document has been writting the TOM bindings of
+The author of this document has been writing the TOM bindings of
 Gnome/Gtk.
 
 In doing so, I've noticed that there are certain constructs and
@@ -53,7 +53,7 @@ For example, TOM has the following memory management scheme:
       This means that it is not possible to declare a static struct array to
       describe things in TOM, instead such an array has to build
       dynamically. Again this is probably true for many languages:
-      struct array parameters like GnomeUIInfo that are a convienence
+      struct array parameters like GnomeUIInfo that are a convenience
       in C, require quite a lot of work to get working with any other language.
 \end{itemize}
 
@@ -77,8 +77,8 @@ such function in a general fashion in C. Witness, that in C, there are
 special versions of printf that take an va\_arg as an argument,
 instead of using the standard printf.
 
-The proposed solution is to provide primarly array arguments, and if
-doomed important enough to provide convienence functions taking a
+The proposed solution is to provide primarily array arguments, and if
+doomed important enough to provide convenience functions taking a
 variable number of arguments. Example for a current problem in Gnome:
 {\tt gnome\_dialog\_new()}.
 
@@ -106,7 +106,7 @@ problematic.
 
 If you have to use non-OO structs, follow one usage pattern: Either
 copy the struct, or store the pointer. Catering for two different
-usages makes the bindings only more difficult than neccessary.
+usages makes the bindings only more difficult than necessary.
 An example for correct usage is {\tt GdkColor}, which seems always to
 be copied. Try if at all to provide functions to copy the objects, and
 do other basic functionality: Some language could want to create
@@ -120,7 +120,7 @@ argument. Callbacks should also have a DestroyNotify.
 This requirements come from the fact that it is not acceptable to
 expect
 the user to create a new function for every menu item, as it may be
-completly impossible to do so in some languages.
+completely impossible to do so in some languages.
 
 Usually language bindings map all callbacks (at least of one kind) to a
     given function, and this function uses the pointer argument to
@@ -146,7 +146,7 @@ At the moment I believe there is
     force the user of your widget to subclass some object to use your
     code. You can make it easier by subclassing but always leave a
     possibility to do it without full blown subclassing. To explain
-    what is probably managable from all languages: 
+    what is probably manageable from all languages: 
 \begin{verbatim}
 C: GnomeMDIChild                    TOM: GnomeMDIChild 
                                     \- MyChild 
@@ -317,7 +317,7 @@ do with the foo\_trace\_refs function.
 
 It has todo with a memory management technique that your average C
 program is not likely to use, but every self-respecting high-level
-language has it.  Of course, I'm talking about a `tracing grabage
+language has it.  Of course, I'm talking about a `tracing garbage
 collector'.  Such a thing is able to detect which objects of your
 running program are in use, and which are garbage.  The garbage is
 collected and reused for new objects.  This is much like the reference
