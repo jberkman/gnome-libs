@@ -35,6 +35,17 @@
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.5  1998/02/12 03:08:19  unammx
+* Merge to Koen's XmHTML 1.1.2 + following fixes:
+*
+* Wed Feb 11 20:27:19 1998  Miguel de Icaza  <miguel@nuclecu.unam.mx>
+*
+* 	* gtk-forms.c (freeForm): gtk_destroy_widget is no longer needed
+* 	with the refcounting changes.
+*
+* 	* gtk-xmhtml.c (gtk_xmhtml_remove): Only god knows why I was
+* 	adding the just removed widget.
+*
 * Revision 1.4  1998/01/07 01:45:35  unammx
 * Gtk/XmHTML is ready to be used by the Gnome hackers now!
 * Weeeeeee!
@@ -156,7 +167,7 @@
 #ifndef _LIBRARY
 
 #define XmHTMLVERSION_STRING \
-	"XmHTML Pre-Beta Version 1.1.2c (C)Ripley Software Development"
+	"XmHTML Beta Version 1.1.2 (C)Ripley Software Development"
 
 /* Required includes */
 #ifdef WITH_MOTIF
@@ -325,6 +336,14 @@ extern void XmHTMLTextScrollToLine(TWidget w, int line);
 
 /* set text into a html TWidget */
 extern void XmHTMLTextSetString(TWidget w, String text);
+
+/*****
+* same as XmHTMLTextSetString with one fundamental difference: text doesn't
+* have to be NULL terminated. The size of the input string is instead
+* given by len. If text is NULL or len is 0, the current contents are
+* cleared.
+*****/
+extern void XmHTMLTextSetStringWithLength(TWidget w, String text, size_t len);
 
 /* return a *pointer* to the original text */
 extern String XmHTMLTextGetSource(TWidget w);

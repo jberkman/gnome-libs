@@ -41,6 +41,17 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.4  1998/02/12 03:07:55  unammx
+* Merge to Koen's XmHTML 1.1.2 + following fixes:
+*
+* Wed Feb 11 20:27:19 1998  Miguel de Icaza  <miguel@nuclecu.unam.mx>
+*
+* 	* gtk-forms.c (freeForm): gtk_destroy_widget is no longer needed
+* 	with the refcounting changes.
+*
+* 	* gtk-xmhtml.c (gtk_xmhtml_remove): Only god knows why I was
+* 	adding the just removed widget.
+*
 * Revision 1.3  1998/01/07 01:45:34  unammx
 * Gtk/XmHTML is ready to be used by the Gnome hackers now!
 * Weeeeeee!
@@ -103,7 +114,11 @@ static char rcsId[]="$Header$";
 * Initial Revision. 
 * Originally comes from ForUtil-0.52, but has been adapted for Newt.
 *
-*****/ 
+*****/
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -848,7 +863,8 @@ _XmHTMLTagCheckNumber(char *attributes, char *tag, int def)
 	if((chPtr = _XmHTMLTagGetValue(attributes, tag)) != NULL)
 	{
 		/* when len is negative, a percentage has been used */
-		if((strpbrk(chPtr, "%")) != NULL)
+		if((strpbrk(chPtr, "%")) != NULL ||
+			(strpbrk (chPtr, "*")) != NULL)
 			ret_val = -1*atoi(chPtr);
 		else
 			ret_val = atoi(chPtr);

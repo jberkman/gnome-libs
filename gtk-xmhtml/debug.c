@@ -35,6 +35,17 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.3  1998/02/12 03:08:34  unammx
+* Merge to Koen's XmHTML 1.1.2 + following fixes:
+*
+* Wed Feb 11 20:27:19 1998  Miguel de Icaza  <miguel@nuclecu.unam.mx>
+*
+* 	* gtk-forms.c (freeForm): gtk_destroy_widget is no longer needed
+* 	with the refcounting changes.
+*
+* 	* gtk-xmhtml.c (gtk_xmhtml_remove): Only god knows why I was
+* 	adding the just removed widget.
+*
 * Revision 1.2  1998/01/07 01:45:36  unammx
 * Gtk/XmHTML is ready to be used by the Gnome hackers now!
 * Weeeeeee!
@@ -76,6 +87,10 @@ static char rcsId[]="$Header$";
 * Initial Revision
 *
 *****/ 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
+
 #ifndef NO_DEBUG
 #include <stdlib.h>
 #ifdef __STDC__

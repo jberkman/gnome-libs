@@ -35,6 +35,17 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.5  1998/02/12 03:09:42  unammx
+* Merge to Koen's XmHTML 1.1.2 + following fixes:
+*
+* Wed Feb 11 20:27:19 1998  Miguel de Icaza  <miguel@nuclecu.unam.mx>
+*
+* 	* gtk-forms.c (freeForm): gtk_destroy_widget is no longer needed
+* 	with the refcounting changes.
+*
+* 	* gtk-xmhtml.c (gtk_xmhtml_remove): Only god knows why I was
+* 	adding the just removed widget.
+*
 * Revision 1.4  1998/01/07 01:45:38  unammx
 * Gtk/XmHTML is ready to be used by the Gnome hackers now!
 * Weeeeeee!
@@ -143,6 +154,10 @@ static char rcsId[]="$Header$";
 * Initial Revision
 *
 *****/ 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -307,10 +322,6 @@ _ParserTokenToId(Parser *parser, String token, Boolean warn)
 	*/
 	if(warn)
 		parserCallback(parser, HT_ZTEXT, HT_ZTEXT, HTML_UNKNOWN_ELEMENT);
-#if 0
-		_XmHTMLWarning(__WFUNC__(parser->widget, "_ParserTokenToId"),
-			"Unknown element %s at line %i of input", token, parser->num_lines);
-#endif
 	return(-1);
 }
 
@@ -1301,7 +1312,10 @@ _ParserCreate(TWidget w)
 	if(XmIsHTML(w))
 		parser->warn = ((XmHTMLWidget)w)->html.bad_html_warnings;
 #else
-	parser->warn = parser_strict_checking;
+	if(parser_warnings)
+		parser->warn = XmHTML_ALL;
+	else
+		parser->warn = XmHTML_NONE;
 #endif
 
 	return(parser);
@@ -2945,8 +2959,11 @@ parseHTML(Parser *parser)
 	if(html->html.string_direction == TSTRING_DIRECTION_R_TO_L)
 		store_text_func = _ParserStoreTextElementRtoL;
 	else
-#endif
 		store_text_func = _ParserStoreTextElement;
+#else
+	parser->strict_checking = parser_strict_checking;
+	store_text_func = _ParserStoreTextElement;
+#endif
 
 	/* start scanning */
 	start = text_start = NULL;
@@ -3392,7 +3409,7 @@ parsePLAIN(Parser *parser)
 	parser->line_len = (line_len > 80 ? 80 : line_len);
 }
 
-static char *content_image = "<html><body><img src=\"%s\"></body></html>";
+static const char *content_image = "<html><body><img src=\"%s\"></body></html>";
 
 /*****
 * Name: 		parseImage

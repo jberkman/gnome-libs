@@ -35,6 +35,17 @@
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.5  1998/02/12 03:08:28  unammx
+* Merge to Koen's XmHTML 1.1.2 + following fixes:
+*
+* Wed Feb 11 20:27:19 1998  Miguel de Icaza  <miguel@nuclecu.unam.mx>
+*
+* 	* gtk-forms.c (freeForm): gtk_destroy_widget is no longer needed
+* 	with the refcounting changes.
+*
+* 	* gtk-xmhtml.c (gtk_xmhtml_remove): Only god knows why I was
+* 	adding the just removed widget.
+*
 * Revision 1.4  1997/12/29 22:16:23  unammx
 * This version does:
 *
@@ -173,8 +184,9 @@ typedef unsigned char Byte;
 #define XmHTML_DEFAULT_FONT_FIXED_SIZES		"12,8"
 
 /*****
-* Default Table cell & row spacing.
+* Default Table boder width, cell & row spacing.
 *****/
+#define XmHTML_DEFAULT_TABLE_BORDERWIDTH		1
 #define XmHTML_DEFAULT_CELLSPACING			2
 #define XmHTML_DEFAULT_ROWSPACING			2
 
@@ -267,6 +279,16 @@ typedef unsigned char Byte;
 #define MEMBER_NEW		new
 #define MEMBER_DELETE	delete
 #endif
+
+/*****
+* None can be undefined if we aren't compiled for Xt/Motif.
+*****/
+#ifndef None
+#define None		0
+#endif
+#define IdleKeep					False
+#define IdleRemove					True
+#define NullTimeout					None
 
 /****
 * debug.c

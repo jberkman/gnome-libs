@@ -513,7 +513,6 @@ freeForm(XmHTMLForm *entry)
 		{
 			/* destroy */
 			gtk_container_remove (GTK_CONTAINER (entry->w->parent), entry->w);
-			gtk_widget_destroy (entry->w);
 		}
 
 		if(entry->name)

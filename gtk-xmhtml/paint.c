@@ -35,6 +35,17 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.8  1998/02/12 03:09:38  unammx
+* Merge to Koen's XmHTML 1.1.2 + following fixes:
+*
+* Wed Feb 11 20:27:19 1998  Miguel de Icaza  <miguel@nuclecu.unam.mx>
+*
+* 	* gtk-forms.c (freeForm): gtk_destroy_widget is no longer needed
+* 	with the refcounting changes.
+*
+* 	* gtk-xmhtml.c (gtk_xmhtml_remove): Only god knows why I was
+* 	adding the just removed widget.
+*
 * Revision 1.7  1998/01/06 02:56:35  unammx
 * Fixed bogus call to gtk_timeout_add() that caused animated images to be
 * repainted incorrectly - Federico
@@ -138,7 +149,11 @@ static char rcsId[]="$Header$";
 * Revision 1.1  1996/12/19 02:17:12  newt
 * Initial Revision
 *
-*****/ 
+*****/
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
+
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -165,7 +180,10 @@ static XmHTMLObjectTableElement DrawTable(XmHTMLWidget html,
 static void DrawAnchorButton(XmHTMLWidget html, int x, int y, Dimension width,
 	Dimension height, TGC top, TGC bottom);
 static void DrawFrame(XmHTMLWidget html, XmHTMLImage *image, int xs, int ys);
-static void DrawTableFrame(XmHTMLWidget html, XmHTMLObjectTableElement data);
+static void DrawTableBorder(XmHTMLWidget html, XmHTMLTable *table);
+static void DrawCellFrame(XmHTMLWidget html, TableCell *cell);
+static void DrawCellContent(XmHTMLWidget html, XmHTMLObjectTableElement start,
+	XmHTMLObjectTableElement end);
 
 #ifdef WITH_MOTIF
 static void
@@ -176,6 +194,12 @@ TimerCB(gpointer data);
 #endif
 
 /*** Private Variable Declarations ***/
+#define DRAW_TOP		(1<<1)
+#define DRAW_BOTTOM		(1<<2)
+#define DRAW_LEFT		(1<<3)
+#define DRAW_RIGHT		(1<<4)
+#define DRAW_BOX		(DRAW_TOP|DRAW_BOTTOM|DRAW_LEFT|DRAW_RIGHT)
+#define DRAW_NONE		~(DRAW_BOX)
 
 /*****
 * Name: 		_XmHTMLPaint
@@ -195,14 +219,16 @@ _XmHTMLPaint(XmHTMLWidget html, XmHTMLObjectTable *start,
 	XmHTMLObjectTableElement temp;
 
 	_XmHTMLDebug(16, ("paint.c: _XmHTMLPaint Start, paint_start: x = %i, "
-		"y = %i\n", start->x, start->y));
+		"y = %i, paint_end: x = %i, y = %i\n", start->x, start->y,
+		 end ? end->x : -1, end ? end->y : -1));
 
 	temp = start;
 
-	while(temp != end)
+	while(temp && temp != end)
 	{
 		_XmHTMLDebug(16, ("paint.c: _XmHTMLPaint, painting object %s\n",
-			temp->object->element));
+			temp->object ? temp->object->element : "<dummy element>"));
+
 		switch(temp->object_type)
 		{
 			case OBJ_TEXT:
@@ -322,6 +348,7 @@ DrawText(XmHTMLWidget html, XmHTMLObjectTableElement data)
 	if(!nwords)
 		return;
 
+#if 0
 	/* check for background color */
 	if(data->bg != html->html.body_bg)
 	{
@@ -331,6 +358,7 @@ DrawText(XmHTMLWidget html, XmHTMLObjectTableElement data)
 		Toolkit_Fill_Rectangle(dpy, win, gc, xs, ys - words[0].font->xfont->ascent,
 			data->width, data->height);
 	}
+#endif
 
 	/* only need to set this once */
 	Toolkit_Set_Font (dpy, gc, words [0].font->xfont);
@@ -1629,14 +1657,19 @@ DrawAnchorButton(XmHTMLWidget html, int x, int y, Dimension width,
 }
 
 static XmHTMLObjectTableElement
-DrawTable(XmHTMLWidget html, XmHTMLObjectTableElement data,
+DrawTable(XmHTMLWidget html, XmHTMLObjectTableElement start, 
 	XmHTMLObjectTableElement data_end)
 {
 	XmHTMLTable *table;
-	XmHTMLObjectTableElement temp, start, end;
+	TableRow *row = NULL;
+	TableCell *cell = NULL;
+	int nrows, ncols, i, j;
 
 	/* pick up table data */
-	table = data->table;
+	table = start->table;
+
+	if(table == NULL)
+		return(start);
 
 	/*****
 	* The first table in a stack of tables contains all data for all
@@ -1648,16 +1681,64 @@ DrawTable(XmHTMLWidget html, XmHTMLObjectTableElement data,
 	if(table->childs)
 		table = &(table->childs[0]);
 
-	temp = start = table->start;
-	end = table->end;
+	/* only render table border if we have to */
+	if(table->properties->framing != TFRAME_VOID)
+		DrawTableBorder(html, table);
 
-	_XmHTMLDebug(16, ("paint.c: DrawTable, table_start: x = %i, "
+	nrows = table->nrows;
+	ncols = table->ncols;
+
+	for(i = 0; i < nrows; i++)
+	{
+		row = &(table->rows[i]);
+
+		for(j = 0; j < row->ncells; j++)
+		{
+			cell = &(row->cells[j]);
+
+			/* only draw something if it falls in the exposure area */
+			if((html->html.paint_y > cell->owner->y + cell->owner->height ||
+				html->html.paint_height < cell->owner->y) ||
+				(html->html.paint_x > cell->owner->x + cell->owner->width ||
+				html->html.paint_width < cell->owner->x))
+				continue;
+
+			/*****
+			* Render the cell if it has a background color/image or when
+			* we have to draw borders.
+			*****/
+			/* check if we have to draw a border */
+			if(cell->properties->bg != html->html.body_bg ||
+				cell->properties->bg_image != NULL ||
+				cell->properties->ruling != TRULE_NONE)
+				DrawCellFrame(html, cell);
+
+			DrawCellContent(html, cell->start, cell->end);
+		}
+	}
+
+	/* sanity */
+	if(table->end && data_end)
+		return(table->end->y < data_end->y ? table->end->prev : data_end->prev);
+	return(table->end ? table->end->prev : data_end);
+}
+
+static void
+DrawCellContent(XmHTMLWidget html, XmHTMLObjectTableElement start,
+	XmHTMLObjectTableElement end)
+{
+	XmHTMLObjectTableElement temp;
+
+	temp = start;
+
+	_XmHTMLDebug(16, ("paint.c: DrawCellContent, table_start: x = %i, "
 		"y = %i\n", start->x, start->y));
 
-	while(temp != end)
+	while(temp && temp != end)
 	{
-		_XmHTMLDebug(16, ("paint.c: DrawTable, checking object %s\n",
-			temp->object->element));
+		_XmHTMLDebug(16, ("paint.c: DrawCellContent, checking object %s\n",
+			temp->object ? temp->object->element : "<dummy element>"));
+
 		switch(temp->object_type)
 		{
 			case OBJ_TEXT:
@@ -1690,13 +1771,9 @@ DrawTable(XmHTMLWidget html, XmHTMLObjectTableElement data,
 				break;
 			case OBJ_TABLE:
 				/* nested tables, hehehe */
-				temp = DrawTable(html, temp, data_end);
+				(void)DrawTable(html, temp, end);
 				break;
 			case OBJ_TABLE_FRAME:
-#if 0
-				DrawTableFrame(html, temp);
-#endif
-				break;
 			case OBJ_IMG:
 			case OBJ_APPLET:
 			case OBJ_BLOCK:
@@ -1710,47 +1787,247 @@ DrawTable(XmHTMLWidget html, XmHTMLObjectTableElement data,
 		}
 		temp = temp->next;
 	}
-	_XmHTMLDebug(16, ("paint.c: DrawTable End\n"));
-
-	/* sanity */
-	if(end && data_end)
-		return(end->y < data_end->y ? end->prev : data_end->prev);
-	return(end ? end->prev : data_end);
+	_XmHTMLDebug(16, ("paint.c: DrawCellContent End\n"));
 }
 
+/*****
+* Name:			DrawCellFrame
+* Return Type: 	void
+* Description: 	renders a frame around a table cell. Optionally fills it
+*				with a background color or image.
+* In: 
+*	html:		XmHTMLWidget id;
+*	cell:		cell to be framed;
+* Returns:
+*	nothing.
+*****/
 static void
-DrawTableFrame(XmHTMLWidget html, XmHTMLObjectTableElement data)
+DrawCellFrame(XmHTMLWidget html, TableCell *cell)
 {
-	int ys, xs;
+	XmHTMLObjectTableElement data = cell->owner;
 	Display *dpy = Toolkit_Display(html->html.work_area);
 	TWindow win = Toolkit_Widget_Window(html->html.work_area);
-	TGC gc = html->html.gc;
+ 	TGC gc;
+ 	int xs, ys, xoff, yoff, width, height;
+ 	Byte rule = DRAW_BOX;
 
-	_XmHTMLDebug(16, ("paint.c: DrawTableFrame, x = %i, y = %i, wxh = %ix%i\n",
-			  data->x, data->y, data->width, data->height));
-	
-	/*
-	 * Don't draw anything if the background color equals the body
-	 * background.
-	 */
-	if(data->bg == html->html.body_bg)
+	/* which sides do we have to render? */
+	switch(cell->properties->ruling)
+	{
+		case TRULE_NONE:	/* no rules, only bg color/image will be done */
+			rule = DRAW_NONE;
+			break;
+		case TRULE_GROUPS:	/* only horizontal rules */
+		case TRULE_ROWS:	/* only horizontal rules */
+			rule = DRAW_LEFT|DRAW_RIGHT;
+			break;
+		case TRULE_COLS:	/* only vertical rules */
+			rule = DRAW_TOP|DRAW_BOTTOM;
+			break;
+		case TRULE_ALL:		/* all rules */
+			break;
+	}
+	xoff   = cell->parent->parent->hmargin;
+	width  = data->width - xoff;
+	yoff   = data->font->xfont->ascent;
+	height = data->height - cell->parent->parent->vmargin;
+
+	/* initial, absolute, positions */
+	xs = data->x + xoff;
+	ys = data->y - yoff;
+
+	/* Correct absolute positions so only the exposed region is updated */
+
+	if(xs < html->html.paint_x)
+	{
+		/* origin too far left */
+		width -= (html->html.paint_x - xs);
+		xs = html->html.paint_x;
+		rule &= ~DRAW_LEFT;
+	}
+
+	if(xs + width > html->html.paint_width)
+	{
+		/* width too far right */
+		width = html->html.paint_width - xs;
+		rule &= ~DRAW_RIGHT;
+	}
+
+	if(ys < html->html.paint_y)
+	{
+		/* origin too high */
+		height -= (html->html.paint_y - ys);
+		ys = html->html.paint_y;
+		rule &= ~DRAW_TOP;
+	}
+
+	if(ys + height > html->html.paint_height)
+	{
+		/* height too low */
+		height = html->html.paint_height - ys;
+		rule &= ~DRAW_BOTTOM;
+	}
+
+	if(height <= 0)
 		return;
 	
-	/* 
-	 * When any of the two cases below is true, the object at the current
-	 * position is outside the exposed area. Not doing this check would 
-	 * cause a visible flicker of the screen when scrolling: the entire 
-	 * object would be repainted, even the invisible ones.
-	 */
-	if((html->html.paint_y > data->y + data->height ||
-	    html->html.paint_height < data->y) ||
-	   (html->html.paint_x > data->x + data->width ||
-	    html->html.paint_width < data->x))
+	/*****
+	* Translate absolute coordinates to relative ones by substracting
+	* the region that has been scrolled.
+	*****/
+	xs -= html->html.scroll_x;
+	ys -= html->html.scroll_y;
+
+	/* Do we have a unique background color? */
+	if(cell->owner->bg != html->html.body_bg)
+	{
+		Toolkit_Set_Foreground(dpy, html->html.gc, data->bg);
+		Toolkit_Fill_Rectangle(dpy, win, html->html.gc, xs, ys, width, height);
+	}
+
+	/* Do we have a background image? */
+	if(cell->properties->bg_image != NULL)
+	{
+		unsigned long valuemask;
+		XGCValues values;
+		int tile_width, tile_height, x_dist, y_dist;
+		int ntiles_x, ntiles_y, tsx, tsy;
+		int x_offset, y_offset;
+		XmHTMLImage *bg_image = cell->properties->bg_image;
+
+		tile_width  = bg_image->width;
+		tile_height = bg_image->height;
+
+		/* total distance covered so far */
+		x_dist = html->html.scroll_x + xs;
+		y_dist = html->html.scroll_y + ys;
+
+		/* no of horizontal tiles */
+		ntiles_x = (int)(x_dist/tile_width);
+		ntiles_y = (int)(y_dist/tile_height);
+		x_offset = x_dist - (ntiles_x * tile_width);
+		y_offset = y_dist - (ntiles_y * tile_height);
+		tsx = xs - x_offset;
+		tsy = ys - y_offset;
+
+#if WITH_MOTIF
+		values.fill_style = FillTiled;
+		values.tile = bg_image->pixmap;
+		values.ts_x_origin = tsx - xs;
+		values.ts_y_origin = tsy - ys;
+
+		/* set gc values */
+		valuemask = GCTile | GCTileStipXOrigin | GCTileStipYOrigin |
+			GCFillStyle ;
+		XChangeGC(dpy, html->html.bg_gc, valuemask, &values);
+#else
+		gdk_gc_set_fill (html->html.bg_gc, GDK_TILED);
+		gdk_gc_set_tile (html->html.bg_gc, bg_image->pixmap);
+		gdk_gc_set_ts_origin (html->html.bg_gc, tsx -xs, tsy - ys);
+#endif
+		/* paint it. */
+		Toolkit_Fill_Rectangle(dpy, win, html->html.bg_gc, xs, ys, width, height);
+	}
+
+	/* no border drawing if we don't have to */
+	if(cell->properties->border == 0)
 		return;
+	
+ 	/* top & left border */
+	gc = Toolkit_StyleGC_BottomShadow (html);
+	/* top & left border */
+	if(rule & DRAW_TOP)
+		Toolkit_Fill_Rectangle(dpy, win, gc, xs, ys, width, 1);
+	if(rule & DRAW_LEFT)
+		Toolkit_Fill_Rectangle(dpy, win, gc, xs, ys, 1, height - 1);
+ 
+	/* bottom & right border */
+	gc = Toolkit_StyleGC_TopShadow (html);
+	if(rule & DRAW_BOTTOM)
+		Toolkit_Fill_Rectangle(dpy, win, gc, xs + 1, ys + height - 1, width - 1, 1);
+	if(rule & DRAW_RIGHT)
+		Toolkit_Fill_Rectangle(dpy, win, gc, xs + width - 1, ys + 1, 1, height - 2);
+}
+
+/*****
+* Name:			DrawTableBorder
+* Return Type: 	void
+* Description: 	renders a frame around a table.
+* In: 
+*	html:		XmHTMLWidget id;
+*	table:		table for which a frame must be rendered;
+* Returns:
+*	nothing.
+*****/
+static void
+DrawTableBorder(XmHTMLWidget html, XmHTMLTable *table)
+{
+	Display *dpy = Toolkit_Display(html->html.work_area);
+	TWindow win = Toolkit_Widget_Window(html->html.work_area);
+	TGC gc;
+	int xs, ys;
+	XmHTMLObjectTableElement data = table->owner;
+	int bwidth, xoff, yoff, width, height;
+	Byte rule = DRAW_BOX;
+
+	bwidth = table->properties->border;
+	xoff   = bwidth + table->hmargin;
+	width  = data->width + 2 * xoff;
+	yoff   = bwidth + table->vmargin + data->font->xfont->ascent - 1;
+	height = data->height + bwidth + table->vmargin;
+
+	/* horizontal offset, taking scrolling into account */
 	
 	xs = data->x - html->html.scroll_x;
-	ys = data->y - html->html.scroll_y;
-	
-	Toolkit_Set_Foreground(dpy, gc, data->bg);
-	Toolkit_Fill_Rectangle(dpy, win, gc, xs, ys, data->width, data->height);
+
+	/* vertical offset, taking scrolling into account */
+	ys = data->y - html->html.scroll_y - yoff;
+
+	_XmHTMLDebug(16, ("Drawing table border: x = %i, y = %i, width = %i, "
+		"height = %i\n", xs, ys, width, height));
+
+	/* which sides do we have to render? */
+	switch(table->properties->framing)
+	{
+		case TFRAME_VOID:
+			return;
+			break;
+		case TFRAME_ABOVE:
+			rule = DRAW_TOP;
+			break;
+		case TFRAME_BELOW:
+			rule = DRAW_BOTTOM;
+			break;
+		case TFRAME_LEFT:
+			rule = DRAW_LEFT;
+			break;
+		case TFRAME_RIGHT:
+			rule = DRAW_RIGHT;
+			break;
+		case TFRAME_HSIDES:
+			rule = DRAW_LEFT|DRAW_RIGHT;
+			break;
+		case TFRAME_VSIDES:
+			rule = DRAW_TOP|DRAW_BOTTOM;
+			break;
+		case TFRAME_BOX:
+		case TFRAME_BORDER:
+			break;
+	}
+
+	/* top & left border */
+	gc = Toolkit_StyleGC_TopShadow (html);
+	/* top & left border */
+	if(rule & DRAW_TOP)
+		Toolkit_Fill_Rectangle(dpy, win, gc, xs, ys, width, 1);
+	if(rule & DRAW_LEFT)
+		Toolkit_Fill_Rectangle(dpy, win, gc, xs, ys, 1, height-1);
+
+	/* bottom & right border */
+	gc = Toolkit_StyleGC_BottomShadow(html);
+	if(rule & DRAW_BOTTOM)
+		Toolkit_Fill_Rectangle(dpy, win, gc, xs + 1, ys + height - 1, width - 1, 1);
+	if(rule & DRAW_RIGHT)
+		Toolkit_Fill_Rectangle(dpy, win, gc, xs + width - 1, ys + 1, 1, height-2);
 }
+

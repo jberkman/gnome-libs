@@ -1,3 +1,6 @@
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
 #include <stdlib.h>
 #ifdef __STDC__
 #include <stdarg.h>
@@ -67,9 +70,9 @@ __XmHTMLWarning(TWidget w, String fmt, ...)
 #else /* ! __STDC__ */
 #ifdef DEBUG
 __XmHTMLWarning(TWidget w, String module, int line, String routine,
-	String fmt, va_list)
+	String fmt, va_alist)
 #else
-__XmHTMLWarning(TWidget w, String fmt, va_list)
+__XmHTMLWarning(TWidget w, String fmt, va_alist)
 #endif
     TWidget w;
 #ifdef DEBUG

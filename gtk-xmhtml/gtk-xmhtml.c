@@ -1004,18 +1004,18 @@ gtk_xmhtml_remove (GtkContainer *container, GtkWidget *widget)
 		child = children->data;
 		if (child == widget){
 			gtk_widget_unparent (widget);
+			
 			html->children = g_list_remove_link (html->children, children);
 			g_list_free (children);
 			g_free (child);
 
-			if (GTK_WIDGET_VISIBLE (widget) && GTK_WIDGET_VISIBLE (container))
+			if (GTK_WIDGET_VISIBLE (container))
 				gtk_widget_queue_resize (GTK_WIDGET (container));
+			
 			break;
 		}
 		children = children->next;
 	}
-	gtk_xmhtml_manage (container, widget);
-	html->children = g_list_append (html->children, widget);
 }
 
 static void

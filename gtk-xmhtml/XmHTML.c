@@ -35,6 +35,17 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.21  1998/02/12 03:08:09  unammx
+* Merge to Koen's XmHTML 1.1.2 + following fixes:
+*
+* Wed Feb 11 20:27:19 1998  Miguel de Icaza  <miguel@nuclecu.unam.mx>
+*
+* 	* gtk-forms.c (freeForm): gtk_destroy_widget is no longer needed
+* 	with the refcounting changes.
+*
+* 	* gtk-xmhtml.c (gtk_xmhtml_remove): Only god knows why I was
+* 	adding the just removed widget.
+*
 * Revision 1.20  1998/02/11 10:47:00  cwryu
 * Wed Feb 11 19:22:32 1998  Changwoo Ryu  <cwryu@adam.kaist.ac.kr>
 *
@@ -273,12 +284,15 @@ static char rcsId[]="$Header$";
 * Revision 1.1  1996/12/19 02:17:03  newt
 * Initial Revision
 *
-*****/ 
+****/
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
-#include <config.h>
 
 #ifdef WITH_MOTIF
 #   include <X11/IntrinsicP.h>	/* Fast macros */
@@ -1333,19 +1347,17 @@ FreeExpendableResources(XmHTMLWidget html, Boolean free_img)
 }
 
 /*****
-* Name: 		XmHTML_Destroy
+* Name: 		DestroyPhaseZero
 * Return Type: 	void
-* Description: 	Frontend indepentent destroy routine.
+* Description: 	discard all toolkit independent resources
 * In: 
-*	w:			TWidget to destroy
+*	html:			XmHTMLWidget id being destroyed
 * Returns:
 *	nothing
 *****/
 static void 
-XmHTML_Destroy(XmHTMLWidget html)
+DestroyPhaseZero(XmHTMLWidget html)
 {
-	_XmHTMLDebug(1, ("XmHTML.c: XmHTML_Destroy Start\n"));
-
 	/* First kill any outstanding PLC's */
 	_XmHTMLKillPLCCycler(html);
 
@@ -2333,16 +2345,40 @@ XmHTMLRedisplay(TWidget w)
 void
 XmHTMLTextSetString(TWidget w, String text)
 {
-	XmHTMLWidget html;
-
 	/* sanity check */
 	if(!w || !XmIsHTML(w))
 	{
 		_XmHTMLBadParent(w, "XmHTMLTextSetString");
 		return;
 	}
+	XmHTMLTextSetStringWithLength(w, text, text ? strlen (text) : 0);
+}
 
-	_XmHTMLDebug(1, ("XmHTML.c: XmHTMLSetTextString, start\n"));
+/*****
+* Name: 		XmHTMLTextSetStringWithLength
+* Return Type: 	void
+* Description: 	sets the given text into the given HTML widget
+* In: 
+*	w:			XmHTMLWidget in question
+*	value:		text to set. Doesn't have to be NULL terminated
+*	len:		size of input string.
+* Returns:
+*	clears any previous text and sets the new text.
+*****/
+void
+XmHTMLTextSetStringWithLength(TWidget w, String text, size_t len)
+{
+ 	XmHTMLWidget html;
+ 	Boolean had_hsb, had_vsb;
+ 
+ 	/* sanity check */
+ 	if(!w || !XmIsHTML(w))
+ 	{
+		_XmHTMLBadParent(w, "XmHTMLTextSetStringWithLength");
+ 		return;
+ 	}
+ 
+	_XmHTMLDebug(1, ("XmHTML.c: XmHTMLTextSetStringWithLength, start\n"));
 
 	html = XmHTML (w);
 
@@ -2351,7 +2387,8 @@ XmHTMLTextSetString(TWidget w, String text)
 		return;
 
 	/* check if the new value is different from the current source */
-	if(text && html->html.source && !(strcmp(html->html.source, text)))
+	if(text && html->html.source && len &&
+	   !(strncmp(html->html.source, text, len)))
 		return;
 
 	/* First kill any outstanding PLC's */
@@ -2382,9 +2419,10 @@ XmHTMLTextSetString(TWidget w, String text)
 	}
 
 	/* set new source text */
-	if(text)
+	if(text && len)
 	{
-		html->html.source = strdup(text);
+		/* strndup returns a NULL terminated string */
+		html->html.source = my_strndup(text, len);
 		html->html.value = html->html.source;
 	}
 

@@ -43,6 +43,17 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.10  1998/02/12 03:09:11  unammx
+* Merge to Koen's XmHTML 1.1.2 + following fixes:
+*
+* Wed Feb 11 20:27:19 1998  Miguel de Icaza  <miguel@nuclecu.unam.mx>
+*
+* 	* gtk-forms.c (freeForm): gtk_destroy_widget is no longer needed
+* 	with the refcounting changes.
+*
+* 	* gtk-xmhtml.c (gtk_xmhtml_remove): Only god knows why I was
+* 	adding the just removed widget.
+*
 * Revision 1.9  1998/01/10 02:27:02  unammx
 * First attempt at fixing the RecomputeColors functions.  They are still
 * not perfect, as scrollbar colors are affected, too. - Federico
@@ -210,11 +221,14 @@ static char rcsId[]="$Header$";
 * Initial Revision
 *
 *****/ 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include <sys/param.h>
-#include <config.h>
 
 /* prevent Byte re-declaration */
 #if defined(HAVE_LIBPNG) || defined(HAVE_LIBZ)

@@ -1,3 +1,11 @@
+Wed Feb 11 20:27:19 1998  Miguel de Icaza  <miguel@nuclecu.unam.mx>
+
+	* gtk-forms.c (freeForm): gtk_destroy_widget is no longer needed
+	with the refcounting changes. 
+	
+	* gtk-xmhtml.c (gtk_xmhtml_remove): Only god knows why I was
+	adding the just removed widget.
+
 Wed Feb 11 19:22:32 1998  Changwoo Ryu  <cwryu@adam.kaist.ac.kr>
 
 	* gtk-xmhtml.c (gtk_xmhtml_focus): Use gtk_signal_handler_pending

@@ -36,6 +36,17 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.10  1998/02/12 03:08:39  unammx
+* Merge to Koen's XmHTML 1.1.2 + following fixes:
+*
+* Wed Feb 11 20:27:19 1998  Miguel de Icaza  <miguel@nuclecu.unam.mx>
+*
+* 	* gtk-forms.c (freeForm): gtk_destroy_widget is no longer needed
+* 	with the refcounting changes.
+*
+* 	* gtk-xmhtml.c (gtk_xmhtml_remove): Only god knows why I was
+* 	adding the just removed widget.
+*
 * Revision 1.9  1998/01/14 05:49:51  unammx
 * Tue Jan 13 22:04:43 1998  Federico Mena  <federico@bananoid.nuclecu.unam.mx>
 *
@@ -186,6 +197,9 @@ static char rcsId[]="$Header$";
 * Initial Revision
 *
 *****/ 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -2026,14 +2040,15 @@ tableCheckProperties(XmHTMLWidget html, String attributes,
 		memcpy(&prop, parent, sizeof(TableProperties));
 	else
 	{
-		/* defaults */
-		prop.border = 0;
-		prop.halign = halign;		 	/* unused */
-		prop.valign = XmVALIGN_TOP;		/* contents on top */
-		prop.bg = bg;					/* propagate */
+		/* defaults assume a table without any borders */
+		prop.border   = -1;
+		prop.halign   = halign;		 	/* unused */
+		prop.valign   = XmVALIGN_TOP;		/* contents on top */
+		prop.bg       = bg;			/* propagate */
 		prop.bg_image = NULL;
-		prop.framing  = TFRAME_VOID;	/* no border */
+		prop.framing  = TFRAME_VOID;		/* no border */
 		prop.ruling   = TRULE_NONE;		/* no ruling */
+		prop.nowrap   = False;			/* wrap long lines */
 	}
 
 	/*****
@@ -2042,11 +2057,40 @@ tableCheckProperties(XmHTMLWidget html, String attributes,
 	* not to any of it's members.
 	*****/
 	prop_ret->halign   = _XmHTMLGetHorizontalAlignment(attributes, halign);
-	prop_ret->border   = _XmHTMLTagGetNumber(attributes, "border", prop.border);
 	prop_ret->valign   = _XmHTMLGetVerticalAlignment(attributes, prop.valign);
-	prop_ret->framing  = _XmHTMLGetFraming(attributes, prop.framing);
-	prop_ret->ruling   = _XmHTMLGetRuling(attributes, prop.ruling);
-	
+	prop_ret->nowrap   = _XmHTMLTagCheck(attributes, "nowrap");
+
+	/*****
+	* Border value. If -1 is returned, check for the presence of the word
+	* ``border'' in the attributes. If it exists, we assume a non-zero
+	* border width.
+	*****/
+	prop_ret->border   = _XmHTMLTagGetNumber(attributes, "border", prop.border);
+	/* if the word ``border'' is present, use default border width */
+	if(prop_ret->border == -1 && _XmHTMLTagCheck(attributes, "border"))
+		prop_ret->border = XmHTML_DEFAULT_TABLE_BORDERWIDTH;
+
+	/*****
+	* Framing applies per-table. If border is non-zero, the default is
+	* to render a fully framed table.
+	* If a TFRAME_VOID is returned, discard the border width.
+	*****/
+	prop_ret->framing  = _XmHTMLGetFraming(attributes,
+							prop_ret->border > 0 ? TFRAME_BOX : prop.framing);
+	if(prop_ret->framing == TFRAME_VOID)
+		prop_ret->border = 0;
+
+	/*****
+	* Ruling applies per-cell. If border is non-zero, the default is to
+	* render full borders around this cell.
+	* If a TRULE_NONE is returned, discard the border width.
+	*****/
+	prop_ret->ruling   = _XmHTMLGetRuling(attributes,
+							prop_ret->border ? TRULE_ALL : prop.ruling);
+
+	if(prop_ret->ruling == TRULE_NONE)
+		prop_ret->border = 0;
+
 	/* only pick up background color if we are allowed to honor this attrib */
 	if(html->html.allow_color_switching &&
 		(chPtr = _XmHTMLTagGetValue(attributes, "bgcolor")) != NULL)
@@ -2086,6 +2130,8 @@ tableCheckProperties(XmHTMLWidget html, String attributes,
 		free(buf);
 		free(chPtr);
 	}
+	else
+		prop_ret->bg_image = prop.bg_image;
 	return(prop_ret);
 }
 
@@ -2277,18 +2323,32 @@ tableClose(XmHTMLWidget html, XmHTMLTable *parent,
 	XmHTMLObjectTableElement end)
 {
 	/* current table */
-	XmHTMLTable *table = parent;
+	XmHTMLTable *real_table, *table = parent;
 	int i, ncols = 0;
 
 	/* sanity */
 	if(parent == NULL)
 		return(NULL);
 
+	/* bad hack */
+	real_table = parent->owner->table;
+	real_table->start = parent->owner->next;
+	real_table->end   = end;
+
+	/* pick up correct ptr */
 	if(table->parent == NULL)
 		table = &(parent->childs[0]);
 
 	table->start = table->owner->next;
 	table->end   = end;
+
+	/*****
+	* Sanity Check: check all cells in search of a rowspan attribute. If
+	* we detect a rowspan in the *last* cell of a row, we must add a bogus
+	* cell to this row. If we don't do this, any cells falling in this row
+	* will be skipped, causing text to disappear (at the least, in the worst
+	* case it will cause a crash).
+	*****/
 
 	/* See how many columns we have (if not already set by the COLS attr.) */
 	for(i = 0; i < table->nrows; i++)
@@ -2338,9 +2398,14 @@ tableOpenCaption(XmHTMLWidget html, XmHTMLTable *parent,
 	if(caption->lastcell)
 		return;
 
-	/* get properties for this caption */
+	/*****
+	* Get properties for this caption.
+	* The global table properties are *never* propagated since, officially,
+	* a Caption doesn't have any attributes...
+	*****/
 	caption->properties = tableCheckProperties(html, obj->attributes,
-						table->properties, html->html.default_halign, *bg);
+						NULL, html->html.default_halign, *bg);
+
 	/* starting object */
 	caption->start = start;
 	caption->owner = start;
@@ -2364,14 +2429,15 @@ tableOpenCaption(XmHTMLWidget html, XmHTMLTable *parent,
 
 	/* get properties for this cell */
 	cell->properties = tableCheckProperties(html, obj->attributes,
-						table->properties, caption->properties->halign,
+						NULL, caption->properties->halign,
 						caption->properties->bg);
 	/* set return background */
 	*bg = caption->properties->bg;
 
 	/* starting object */
 	cell->start = start;
-
+	cell->owner = start;
+	
 	/* ending object unknown */
 	cell->end = NULL;
 
@@ -2595,7 +2661,7 @@ tableOpenCell(XmHTMLWidget html, XmHTMLTable *parent,
 	/* get cell-specific properties */
 	cell->header = (obj->id == HT_TH ? True : False);
 	cell->width = _XmHTMLTagCheckNumber(obj->attributes, "width", 0);
-	cell->height = _XmHTMLTagCheckNumber(obj->attributes, "width", 0);
+	cell->height = _XmHTMLTagCheckNumber(obj->attributes, "height", 0);
 	cell->rowspan = _XmHTMLTagGetNumber(obj->attributes, "rowspan", 1);
 	cell->colspan = _XmHTMLTagGetNumber(obj->attributes, "colspan", 1);
 
@@ -3012,9 +3078,49 @@ _XmHTMLformatObjects(XmHTMLWidget old, XmHTMLWidget html)
 	*/
 	if(temp == NULL)
 	{
-		_XmHTMLWarning(__WFUNC__(html, func), "Nothing to display: no "
-			"<BODY> tag found (HTML parser failure)!");
-		return;
+		/*****
+		* The only exception is a document only containing plain text and no
+		* BODY tag was present in the input. In this case, check the input and
+		* start outputting at the end of the first text element not belonging
+		* to the head of a document.
+		* Fix 01/04/98-01, kdh
+		*****/
+		XmHTMLObject *last_obj = NULL;
+
+		for(temp = html->html.elements; temp != NULL; temp = temp->next)
+		{
+			switch(temp->id)
+			{
+				case HT_DOCTYPE:
+				case HT_BASE:
+					/* these two have no ending tag */
+					last_obj = temp;
+					break;
+				case HT_HTML:
+					/* don't use the closing tag for this, it's the end... */
+					if(!temp->is_end)
+						last_obj = temp;
+					break;
+				case HT_HEAD:
+				case HT_TITLE:
+				case HT_SCRIPT:
+				case HT_STYLE:
+					/* pick up the last closing tag */
+					if(temp->is_end)
+						last_obj = temp;
+				default:
+					break;
+			}
+		}
+
+		if(last_obj == NULL || last_obj->next == NULL)
+		{
+			_XmHTMLWarning(__WFUNC__(html, func), "Nothing to display: no "
+				"<BODY> tag found (HTML parser failure)!");
+			return;
+		}
+		/* we move to the correct object a bit further down */
+		temp = last_obj;
 	}
 
 	/* initialize font stack */
@@ -4381,9 +4487,19 @@ _XmHTMLformatObjects(XmHTMLWidget old, XmHTMLWidget html)
 	if(table)
 		tableClose(html, table, element);
 
-	/* free the last element if it should have been ignored */
+	/*****
+	* Insert a dummy element at the end of the list, saves some NULL tests
+	* in the layout routines.
+	*****/
 	if(ignore)
-		free(element);
+	{
+		/* reuse ignored element */
+		memset(element, 0, sizeof(XmHTMLObjectTable));
+		element->object_type = OBJ_NONE;
+	}
+	else
+		element = NewTableElement(NULL);
+	InsertTableElement(html, element, False);
 
 	/*
 	* Some sucker forget to terminate a list and parser failed to repair it.
@@ -4470,6 +4586,8 @@ _XmHTMLformatObjects(XmHTMLWidget old, XmHTMLWidget html)
 
 	_XmHTMLDebug(2,("_XmHTMLFormatObjects: formatted %li elements of which %li"
 		" anchors.\n", list_data.num_elements, list_data.num_anchors));
+	_XmHTMLDebug(2,("_XmHTMLFormatObjects: found %i named anchors.\n",
+		named_anchors));
 	_XmHTMLDebug(2, ("_XmHTMLformatObjects, allocated %i elements and "
 		"ignored %i objects.\n", allocated, num_ignore));
 

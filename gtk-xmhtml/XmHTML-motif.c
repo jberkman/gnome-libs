@@ -1155,7 +1155,7 @@ Destroy(TWidget w)
 
 	_XmHTMLDebug(1, ("XmHTML.c: Destroy Start\n"));
 	
-	XmHTML_Destroy (html);
+	DestroyPhaseZero (html);
 
 	/* remove all callbacks */
 	XtRemoveAllCallbacks(w, XmNactivateCallback);
