@@ -454,7 +454,7 @@ open_ptys (int utmp, int wtmp)
 	   
 	term.c_cc[VINTR] = 'C'-64;
 	term.c_cc[VQUIT] = '\\'-64;
-	term.c_cc[VERASE] = 'H'-64;
+	term.c_cc[VERASE] = 127;
 	term.c_cc[VKILL] =  'U'-64;
 	term.c_cc[VEOF] =  'D'-64;
 #ifdef VSWTC
