@@ -1087,6 +1087,14 @@ void vt_draw_selection(struct _vtx *vx)
      difference between old start and new start
      difference between old end and new end
   */
+
+  /* dont draw nothin if we dont have to! */
+  if (vx->selendxold == vx->selstartxold
+      && vx->selendx == vx->selstartx
+      && vx->selendyold == vx->selstartyold
+      &&  vx->selendy == vx->selstarty)
+    return;
+
   d(printf("start ... \n"));
   vt_draw_selection_part(vx,
 			 vx->selstartx, vx->selstarty,

@@ -4,6 +4,8 @@
 	pixel position we need to clear the next character pos after a
 	bold font.  Just render this last blank character always to make
 	sure.
+	(vt_draw_selection): Dont draw anything if the selected area
+	amounts to nothing, and it hasn't moved.
 
 1999-05-10  Michael Zucchi  <zucchi@zzedzone.mmc.com.au>
 
