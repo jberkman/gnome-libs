@@ -236,7 +236,17 @@ fi
 ##   echo "$COMMAND: could not read $DATADIR/gnats/$GNATS_SITE for categories list."
 ##   exit 1
 ## fi
-CATEGORIES="control-center desktop-docs gnome-libs gnome-core gnome-applets gnometalk gnome-ppp panel mc orbit gnomecal gnomecard gnumeric ee gnome-games gnome-db gnome-print gwp"
+
+CATEGORIES="audiofile balsa bonobo bugs.gnome.org control-center crescendo desktop-docs \
+ee enlightenment esound evolution ezpaint form-maker gdk-pixbuf gdm gdm2 gedit general \
+genius ggv gimp glade glademm glib gmenu gnome-admin gnome-applets gnome-apt \
+gnome-chess gnome-core gnome-db gnome-dom gnome-games gnome-guile gnome-idl gnome-libs \
+gnome-linuxconf gnome-mailer gnome-media gnome-network gnome-objc gnome-perl \
+gnome-pilot gnome-pim gnome-print gnome-python gnome-terminal gnome-utils gnome-xml \
+gnomeicu gnometris gnorpm gnumeric go goose goose2 gphoto granite gtcd gtk+ gtk--addons \
+gtk-themes gtkicq gtop guile-gtk guile-server guppi guppi2 gwp gxsnmp imlib libglade \
+libgtop libgtop-bindings libgtop-docu libidl mc nethack orbit panel www.gnome.org xchat \
+xmhtml gnome-ppp gnomecal popt g-print gbatnav gftp gicq gkb"
 
 if [ -z "$CATEGORIES" ]; then
   echo "$COMMAND: the categories list for $GNATS_SITE was empty!"
