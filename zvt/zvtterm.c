@@ -58,6 +58,8 @@ GtkWidget* zvt_term_new (void);
 static void zvt_term_destroy (GtkObject *object);
 static void zvt_term_realize (GtkWidget *widget);
 static void zvt_term_unrealize (GtkWidget *widget);
+static void zvt_term_map (GtkWidget *widget);
+static void zvt_term_unmap (GtkWidget *widget);
 static void zvt_term_size_request (GtkWidget *widget, GtkRequisition *requisition);
 static void zvt_term_size_allocate (GtkWidget *widget, GtkAllocation *allocation);
 static gint zvt_term_expose (GtkWidget *widget, GdkEventExpose *event);
@@ -317,6 +319,8 @@ zvt_term_class_init (ZvtTermClass *class)
 
   widget_class->realize = zvt_term_realize;
   widget_class->unrealize = zvt_term_unrealize;
+  widget_class->map = zvt_term_map;
+  widget_class->unmap = zvt_term_unmap;
   widget_class->draw = zvt_term_draw;
   widget_class->expose_event = zvt_term_expose;
   widget_class->focus_in_event = zvt_term_focus_in;
@@ -559,13 +563,7 @@ zvt_term_realize (GtkWidget *widget)
   attributes.height = widget->allocation.height;
   attributes.wclass = GDK_INPUT_OUTPUT;
   attributes.window_type = GDK_WINDOW_CHILD;
-  attributes.event_mask = gtk_widget_get_events (widget) |
-    GDK_EXPOSURE_MASK | 
-    GDK_BUTTON_PRESS_MASK | 
-    GDK_BUTTON_MOTION_MASK |
-    GDK_POINTER_MOTION_MASK | 
-    GDK_BUTTON_RELEASE_MASK | 
-    GDK_KEY_PRESS_MASK;
+  attributes.event_mask = gtk_widget_get_events (widget) | GDK_EXPOSURE_MASK;
   attributes.visual = gtk_widget_get_visual (widget);
   attributes.colormap = gtk_widget_get_colormap (widget);
 
@@ -583,11 +581,17 @@ zvt_term_realize (GtkWidget *widget)
   attributes.y = widget->style->klass->ythickness;
   attributes.width = widget->allocation.width - (2 * widget->style->klass->xthickness);
   attributes.height = widget->allocation.height - (2 * widget->style->klass->ythickness);
+  attributes.event_mask = gtk_widget_get_events (widget) |
+    GDK_EXPOSURE_MASK | 
+    GDK_BUTTON_PRESS_MASK | 
+    GDK_BUTTON_MOTION_MASK |
+    GDK_POINTER_MOTION_MASK | 
+    GDK_BUTTON_RELEASE_MASK | 
+    GDK_KEY_PRESS_MASK;
 
   term->term_window = gdk_window_new (widget->window, &attributes, attributes_mask);
   gdk_window_set_user_data (term->term_window, term);
   gtk_style_set_background (widget->style, term->term_window, GTK_STATE_ACTIVE);
-  gdk_window_show (term->term_window);
 
   /* create pixmaps for this window */
   cursor_dot_pm = 
@@ -681,6 +685,44 @@ zvt_term_unrealize (GtkWidget *widget)
 
   if (GTK_WIDGET_CLASS (parent_class)->unrealize)
     (*GTK_WIDGET_CLASS (parent_class)->unrealize) (widget);
+}
+
+static void
+zvt_term_map (GtkWidget *widget)
+{
+  ZvtTerm *term;
+
+  g_return_if_fail (widget != NULL);
+  g_return_if_fail (ZVT_IS_TERM (widget));
+
+  term = ZVT_TERM (widget);
+
+  if (!GTK_WIDGET_MAPPED (widget))
+    {
+      GTK_WIDGET_SET_FLAGS (widget, GTK_MAPPED);
+
+      gdk_window_show (widget->window);
+      gdk_window_show (term->term_window);
+    }
+}
+
+static void
+zvt_term_unmap (GtkWidget *widget)
+{
+  ZvtTerm *term;
+
+  g_return_if_fail (widget != NULL);
+  g_return_if_fail (ZVT_IS_TERM (widget));
+
+  term = ZVT_TERM (widget);
+
+  if (GTK_WIDGET_MAPPED (widget))
+    {
+      GTK_WIDGET_UNSET_FLAGS (widget, GTK_MAPPED);
+
+      gdk_window_hide (term->term_window);
+      gdk_window_hide (widget->window);
+    }
 }
 
 static gint
