@@ -1,3 +1,8 @@
+1999-01-21  Havoc Pennington  <hp@pobox.com>
+
+	* libgnome/gnome-triggers.c (gnome_triggers_play_sound): Don't 
+	spew warnings if esound is not compiled in.
+
 1999-01-20  Miguel de Icaza  <miguel@nuclecu.unam.mx>
 
 	* libgnome/type.convert: Add files to do file convertions.
@@ -17,6 +22,7 @@
 	* libgnome/gnomelib-init.c: Added translation domain to table of
  	options.
 
+>>>>>>> 1.347
 1999-01-19  Miguel de Icaza  <miguel@nuclecu.unam.mx>
 
 	* gnome-data/gnome.mime: Add x-url/* mime types for url
