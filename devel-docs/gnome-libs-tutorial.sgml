@@ -1,5 +1,5 @@
 <!doctype book PUBLIC "-//Davenport//DTD DocBook V3.0//EN">
-<book>
+<book id="index">
 <bookinfo>
 <title>Application Programming Using the GNOME Libraries</title>
 <authorgroup>
@@ -30,11 +30,7 @@ toolkit.</para>
 </abstract>
 </bookinfo>
 
-<chapter>
-<title>Application Programming Using the GNOME Libraries</title>
-
-
-<sect1>
+<preface>
 <title>Credits, Copyrights and Other Such Informations</title>
 
 <para>
@@ -45,9 +41,9 @@ was written by me or the rest of the Gnome core team.</para>
 <para>
 Also I would like to apologize if some of my English is not
 correct, as English is not my first language. I hope that
-my C is better then my English.</para></sect1>
+my C is better then my English.</para></preface>
 
-<sect1>
+<chapter>
 <title>GNOME Libraries Overview</title>
 
 <para>
@@ -96,7 +92,7 @@ that are present in the gnome-libs package:
 <para>
 We will not cover gtk-xmhtml,
 zvt, libvfs, libart_lgpl and libgnorba as they are mostly specialty
-libraries and we won't have the time.</para>
+libraries.</para>
 
 <para>
 We can see a clear division between the <emphasis>libgnome</emphasis> and <emphasis>libgnomeui</emphasis>
@@ -106,11 +102,11 @@ the library which supplies the standard widgets and an application framework
 for applications written using <emphasis>GTK+</emphasis>. It is conceivable to write
 applications with other toolkits, but nobody as of yet has written a
 <emphasis>libgnomeui</emphasis> with a different toolkit, and I doubt it will happen
-soon, as GTK+ is a really great toolkit.</para></sect1>
+soon, as GTK+ is a really great toolkit.</para></chapter>
 
-<sect1>
+<chapter>
 <title>GTK+ Programming</title>
-<sect2>
+<sect1>
 <title>Overview</title>
 
 <para>
@@ -120,11 +116,11 @@ languages, such as C++, Objective C, Perl, TOM, Guile, Python, etc ...
 GTK+ also uses GLib, which is a very useful C library, and includes
 things to help porting to different architectures, and containers
 such as a linked list or a hash.  If you are already familiar with GTK+,
-you are now free to get bored.</para></sect2>
+you are now free to get bored.</para></sect1>
 
-<sect2>
+<sect1>
 <title>GLib</title>
-<sect3>
+<sect2>
 <title>Naming Conventions</title>
 
 <para>
@@ -132,9 +128,9 @@ GLib is a utility library which is heavily used in GTK+ and most of GNOME.
 GLib's functions are named starting with <emphasis>g_</emphasis> (such as <emphasis>g_strdup</emphasis>),
 GLib's typedefs for common types are just prefixed with a <emphasis>g</emphasis> (such as
 <emphasis>gint32</emphasis>), and GLib's structures are capitalized and start with <emphasis>G</emphasis>
-(such as <emphasis>GHashTable</emphasis>).</para></sect3>
+(such as <emphasis>GHashTable</emphasis>).</para></sect2>
 
-<sect3>
+<sect2>
 <title>Typedefs</title>
 
 <para>
@@ -142,9 +138,9 @@ GLib provides some portability typedefs, such as <emphasis>gint32</emphasis>, <e
 just simplification typedefs such as <emphasis>guint</emphasis> (for <emphasis>unsigned int</emphasis>) and
 some typedefs which are present just to keep everything looking consistent,
 such as <emphasis>gint</emphasis> which just typedefs to <emphasis>int</emphasis>, or <emphasis>gpointer</emphasis> which
-is a typedef of <emphasis>void *</emphasis>.</para></sect3>
+is a typedef of <emphasis>void *</emphasis>.</para></sect2>
 
-<sect3>
+<sect2>
 <title>Portability and Utility Functions</title>
 
 <para>
@@ -157,9 +153,9 @@ functions are <emphasis>g_strdup</emphasis>, <emphasis>g_snprintf</emphasis> or 
 
 <para>
 GLib also includes a lot of utility functions such as <emphasis>g_strconcat</emphasis> or
-<emphasis>g_strdup_printf</emphasis> and others, that are just plain useful.</para></sect3>
+<emphasis>g_strdup_printf</emphasis> and others, that are just plain useful.</para></sect2>
 
-<sect3>
+<sect2>
 <title>Containers</title>
 
 <para>
@@ -185,7 +181,7 @@ list = g_list_append(list,g_strdup("String 2"));
 /*here we loop though the list, freeing all the strings and then
   we free the list itself*/
 for(li = list; li!= NULL; li = g_list_next(li)) {
-	char *string = li-&amp;gt;data;
+	char *string = li-&gt;data;
 	g_free(string);
 }
 g_list_free(list);
@@ -193,11 +189,11 @@ g_list_free(list);
 
 <para>
 For more information look at the <emphasis>glib.h</emphasis> header file and at the
-documentation on the <emphasis>www.gtk.org</emphasis> web site.</para></sect3></sect2>
+documentation on the <ulink url="http://www.gtk.org/">www.gtk.org</ulink> web site.</para></sect2></sect1>
 
-<sect2>
+<sect1>
 <title>GTK+</title>
-<sect3>
+<sect2>
 <title>GUI Basics</title>
 
 <para>
@@ -225,12 +221,14 @@ length is the length of all widgets combined. Vertical box behaves exactly
 the same, except that it's vertical instead of horizontal. A table
 can take in widgets at different rows and columns.
 
-.DS
-.PS &lt; figure1.pic
-.FG "Example window hierarchy"
-.DE</para></sect3>
+<figure>
+<title>Example window hierarchy</title>
+<graphic fileref="gtkhierarchy.gif" format="GIF"></graphic>
+</figure>
 
-<sect3>
+</para></sect2>
+
+<sect2>
 <title>GTK+ Object Model</title>
 
 <para>
@@ -242,9 +240,9 @@ like Java, it does have many advantages. GTK+ is an object model which
 doesn't require inheritance for most things you do with objects. For one,
 since methods are just functions that take the pointer to the object
 as the first argument, it's easy to write more methods in your own code,
-which are missing in the original object.</para></sect3>
+which are missing in the original object.</para></sect2>
 
-<sect3>
+<sect2>
 <title>Data on Objects</title>
 
 <para>
@@ -265,9 +263,9 @@ gtk_object_set_data(obj,"some_data",some_pointer);
   some_pointer*/
 some_pointer = gtk_object_get_data(obj,"some_data");
 </programlisting></informalexample>
-The pointer can be a pointer to anything since it's manipulated as a (void *).</para></sect3>
+The pointer can be a pointer to anything since it's manipulated as a (void *).</para></sect2>
 
-<sect3>
+<sect2>
 <title>GTK+/GNOME Naming Conventions</title>
 
 <para>
@@ -282,9 +280,9 @@ associated with objects use the same naming convention as functions, but
 are all capitalized. For example a macro that casts an object to a
 <emphasis>GtkButton</emphasis> is called <emphasis>GTK_BUTTON</emphasis>. There are exceptions, notably
 the type checking macro, which is called <emphasis>GTK_IS_BUTTON</emphasis> for
-<emphasis>GtkButton</emphasis>.</para></sect3>
+<emphasis>GtkButton</emphasis>.</para></sect2>
 
-<sect3>
+<sect2>
 <title>Using GTK+ Methods</title>
 
 <para>
@@ -316,9 +314,9 @@ gtk_box_pack_start(GTK_BOX(vbox), ...);
 
 <para>
 GNOME uses the exact same form so anything you learn about GTK+ can be used
-for GNOME widgets, you just replace the GTK prefix with GNOME.</para></sect3>
+for GNOME widgets, you just replace the GTK prefix with GNOME.</para></sect2>
 
-<sect3>
+<sect2>
 <title>Example Hello World Program</title>
 
 <para>
@@ -331,7 +329,7 @@ it's mostly comments.
 <informalexample><programlisting>
 /* example-start helloworld helloworld.c */
 
-#include &amp;lt;gtk/gtk.h&amp;gt;
+#include &lt;gtk/gtk.h&gt;
 
 /* this is a callback function. the data arguments are ignored in
  * this example.. More on callbacks below. */
@@ -438,15 +436,16 @@ main (int argc, char *argv[])
 </programlisting></informalexample></para>
 
 <para>
-For more information look at the header files in &lt;prefix&gt;/include/gtk/ and
-&lt;prefix&gt;/include/gdk/ and at the documentation on the <emphasis>www.gtk.org</emphasis>
-web site.</para></sect3></sect2></sect1>
+For more information look at the header files in &lt;prefix&gt;/include/gtk/
+and &lt;prefix&gt;/include/gdk/ and at the documentation on the
+<ulink url="http://www.gtk.org/">www.gtk.org</ulink> web site.
+</para></sect2></sect1></chapter>
 
-<sect1>
+<chapter>
 <title>GNOME Programming</title>
-<sect2>
+<sect1>
 <title>Introduction</title>
-<sect3>
+<sect2>
 <title>What Is a GNOME Program</title>
 
 <para>
@@ -454,9 +453,9 @@ A GNOME program is a GTK+ GUI application, which makes use of the
 GNOME libraries. The GNOME libraries make it possible to have similar
 look and feel among applications, and to make simple things, simple
 to program. Plus the GNOME libraries add a whole bunch of widgets that
-simply don't fit into GTK+.</para></sect3>
+simply don't fit into GTK+.</para></sect2>
 
-<sect3>
+<sect2>
 <title>Very Basic GNOME Program</title>
 
 <para>
@@ -470,7 +469,7 @@ onto the stdout of the terminal you started the application from.
  * buttons.c
  */
 /* the very basic gnome include */
-#include &amp;lt;gnome.h&amp;gt;
+#include &lt;gnome.h&gt;
 
 /* a callback for the buttons */
 static void
@@ -540,9 +539,9 @@ main(int argc, char *argv[])
 
 <para>
 Please note the use of gnome_init instead of gtk_init, and GnomeApp widget
-instead of just a regular GtkWindow. We will go into detail of these later.</para></sect3></sect2>
+instead of just a regular GtkWindow. We will go into detail of these later.</para></sect2></sect1>
 
-<sect2>
+<sect1>
 <title>Overview</title>
 
 <para>
@@ -551,9 +550,9 @@ do. First we look at the <emphasis>libgnome</emphasis> library and it's function
 then we'll cover <emphasis>libgnomeui</emphasis> to complete all the basic functionality
 of a gnome program. We will take a look at the <emphasis>gnome-canvas</emphasis> in detail,
 as it is extremely powerful and useful widget. We'll also say a few
-things about drag and drop.</para></sect2>
+things about drag and drop.</para></sect1>
 
-<sect2>
+<sect1>
 <title>Using the libgnome Library</title>
 
 <para>
@@ -567,7 +566,7 @@ in say motif, but you want your app to be more GNOME friendly. Then you
 could use this library to make your application work well with other
 GNOME programs.</para>
 
-<sect3>
+<sect2>
 <title>Configuration Files</title>
 
 <para>
@@ -582,7 +581,7 @@ root is set to the <emphasis>~/.gnome/</emphasis> directory. So
 <emphasis>~/.gnome/some/config/path/file</emphasis>, and inside the file
 using section <emphasis>sectionA</emphasis> and key <emphasis>keyB</emphasis>.</para>
 
-<sect4>
+<sect3>
 <title>Reading Configuration Info</title>
 
 <para>
@@ -614,9 +613,9 @@ g_free(text);
 </programlisting></informalexample>
 Note that the string returned by <emphasis>gnome_config_get_string</emphasis> should be
 freed with <emphasis>g_free</emphasis>, the vector from <emphasis>gnome_config_get_vector</emphasis>
-should also be freed with <emphasis>g_free</emphasis>.</para></sect4>
+should also be freed with <emphasis>g_free</emphasis>.</para></sect3>
 
-<sect4>
+<sect3>
 <title>Writing Configuration Info</title>
 
 <para>
@@ -639,9 +638,9 @@ int counter;
 gnome_config_set_int("/example/section/counter",counter);
 gnome_config_set_string("/example/section/text",text);
 gnome_config_sync();
-</programlisting></informalexample></para></sect4>
+</programlisting></informalexample></para></sect3>
 
-<sect4>
+<sect3>
 <title>Privacy Functions</title>
 
 <para>
@@ -652,9 +651,9 @@ same behavior as the above functions, with the exception of
 equivalent since it works for both. The difference is that these functions
 write to a directory called <emphasis>~/.gnome_private</emphasis> on which 0700 permissions
 are enforced. This is not extremely secure, but because of the highly
-brain-dead US export restrictions, we can't really use encryption.</para></sect4>
+brain-dead US export restrictions, we can't really use encryption.</para></sect3>
 
-<sect4>
+<sect3>
 <title>Using gnome-config for Arbitrary Files</title>
 
 <para>
@@ -673,9 +672,9 @@ gnome_config_sync();
 </programlisting></informalexample>
 Note that it doesn't really make sense to use the private versions when
 using an arbitrary absolute path, as there will be absolutely no difference
-between the two.</para></sect4>
+between the two.</para></sect3>
 
-<sect4>
+<sect3>
 <title>Automatic Prefixes</title>
 
 <para>
@@ -693,9 +692,9 @@ gnome_config_set_int("key1",1);
 gnome_config_set_int("key2",2);
 gnome_config_set_int("key3",-88);
 gnome_config_pop_prefix();
-</programlisting></informalexample></para></sect4>
+</programlisting></informalexample></para></sect3>
 
-<sect4>
+<sect3>
 <title>Misc gnome-config Stuff</title>
 
 <para>
@@ -710,9 +709,9 @@ If you have written to a file or read from a file and want <emphasis>gnome-confi
 to drop it from memory, use <emphasis>gnome_config_drop_file</emphasis>. This is used
 if you want to forget changes done to that file, or to simply conserve
 memory, since <emphasis>gnome-config</emphasis> will otherwise keep a copy of the
-data in memory for faster access.</para></sect4></sect3>
+data in memory for faster access.</para></sect3></sect2>
 
-<sect3>
+<sect2>
 <title>.desktop Files</title>
 
 <para>
@@ -755,11 +754,11 @@ it is usually located somewhere under <emphasis>&lt;prefix&gt;/share/apps/</emph
 contains the hierarchy of the system menus. For the system to find
 your icon, your icon should be placed inside the
 <emphasis>&lt;prefix&gt;/share/pixmaps</emphasis> directory. Note that the prefix refers
-to the location where GNOME was installed.</para></sect3>
+to the location where GNOME was installed.</para></sect2>
 
-<sect3>
+<sect2>
 <title>Utility and Files</title>
-<sect4>
+<sect3>
 <title>Files</title>
 
 <para>
@@ -811,9 +810,9 @@ prepended to the file. So for example if you pass it say
 <emphasis>someconfigfile</emphasis>, it would return <emphasis>/home/jirka/.gnome/someconfigfile</emphasis>.
 Similar is the <emphasis>gnome_util_user_home</emphasis>, it takes one argument and
 returns the file with just the home directory added. So if you pass it
-<emphasis>.dotfile</emphasis>, it would return <emphasis>/home/jirka/.dotfile</emphasis>.</para></sect4>
+<emphasis>.dotfile</emphasis>, it would return <emphasis>/home/jirka/.dotfile</emphasis>.</para></sect3>
 
-<sect4>
+<sect3>
 <title>Utility</title>
 
 <para>
@@ -825,9 +824,9 @@ name, and takes care of the <emphasis>'/'</emphasis> issue, this is useful when
 working with strings where you don't want to check for the '/', you
 just want to append a directory to some file, or another directory. Note
 that you should <emphasis>g_free</emphasis> the string you get as usual. For more utility
-functions, look into <emphasis>libgnome/gnome-util.h</emphasis>, it is well commented.</para></sect4></sect3>
+functions, look into <emphasis>libgnome/gnome-util.h</emphasis>, it is well commented.</para></sect3></sect2>
 
-<sect3>
+<sect2>
 <title>Mime Types</title>
 
 <para>
@@ -875,12 +874,12 @@ dnd_drop_internal (GtkWidget        *widget,
 	GList *files, *li;
 
 	/*here we extract the filenames from the URI-list we received*/
-	files = gnome_uri_list_extract_filenames(selection_data-&amp;gt;data);
+	files = gnome_uri_list_extract_filenames(selection_data-&gt;data);
 
 	/*here we loop though the files and get their mime-type*/
 	for(li = files; li!=NULL ; li = g_list_next(li)) {
 		  char *mimetype;
-		  char *filename = li-&amp;gt;data;
+		  char *filename = li-&gt;data;
 
 		  /*guess the mime type of the file*/
 		  mimetype = gnome_mime_type(filename);
@@ -900,9 +899,9 @@ dnd_drop_internal (GtkWidget        *widget,
 Note how easy it is to find out what files you got, and what type
 they are. You would just need to add some code instead of the three
 dots that actually compares the mime strings you got to some you have
-to figure out what you can do with the files.</para></sect3>
+to figure out what you can do with the files.</para></sect2>
 
-<sect3>
+<sect2>
 <title>Meta Data</title>
 
 <para>
@@ -960,9 +959,9 @@ gnome_metadata_set("/some/file/name","bogus",5,"BLAH");
 ...
 /*retrieve the data back*/
 gnome_metadata_get("/some/file/name","bogus",&amp;size,&amp;data);
-</programlisting></informalexample></para></sect3></sect2>
+</programlisting></informalexample></para></sect2></sect1>
 
-<sect2>
+<sect1>
 <title>Using the libgnomeui Library</title>
 
 <para>
@@ -976,9 +975,9 @@ the wheel every time, but this library takes care of the UI setup for
 you and still allows the user to configure that behavior and have it
 be consistent over different applications.</para>
 
-<sect3>
+<sect2>
 <title>GnomeApp Widget Basics</title>
-<sect4>
+<sect3>
 <title>Overview</title>
 
 <para>
@@ -986,9 +985,9 @@ be consistent over different applications.</para>
 the application, containing the document being worked on and the applications
 menus, tool-bars and status bars. It also remembers the docked positions
 of menu bars and tool-bars and such for you so that the user gets the window
-the way he left it when he left the application last time.</para></sect4>
+the way he left it when he left the application last time.</para></sect3>
 
-<sect4>
+<sect3>
 <title>Creating</title>
 
 <para>
@@ -1005,13 +1004,16 @@ Adding menu-bars, tool-bars and status-bars is equally easy, you call
 <emphasis>gnome_app_set_statusbar</emphasis>. <emphasis>gnome_app_set_toolbar</emphasis> is for simple
 applications that have only one tool-bar, for more complicated applications
 you need to use <emphasis>gnome_app_add_toolbar</emphasis>, which allows you to add as
-many docked tool-bars as you need.</para></sect4>
+many docked tool-bars as you need.</para></sect3>
 
-<sect4>
+<sect3>
 <title>Menu and Tool-bar Creation</title>
 
+<sect4>
+<title>Automatic Menu and Tool-bar Creation</title>
+
 <para>
-Most of the time however, you don't really want to create your menu-bars
+Most of the time, you don't really want to create your menu-bars
 and tool-bars by yourself. You can use functions from
 <emphasis>libgnomeui/gnome-app-helper.h</emphasis> to construct menus and tool-bars for you.
 All you need is to fill in a couple of structures with the your
@@ -1021,13 +1023,19 @@ your application has menus and tool-bars. Sometimes you wish to pass
 a data pointer to all the callbacks from those structures to work with,
 then you'd use the <emphasis>gnome_app_create_toolbar_with_data</emphasis> and
 <emphasis>gnome_app_create_menus_with_data</emphasis>, and pass an extra parameter which
-will be passed in the data field of the callbacks. Here is the definition of
+will be passed in the data field of the callbacks.</para></sect4>
+
+
+<sect4>
+<title>GnomeUIInfo Structure Definition</title>
+
+<para>
+Here is the definition of
 the structure you need to fill (actually you fill in an array of
 such structures). Also note I included the enums that you will need
 to fill that structure.
 
 <informalexample><programlisting>
-know what it does, you don't need it
 /* These values identify the type of pixmap used in an item */
 typedef enum {
 	GNOME_APP_PIXMAP_NONE,		/* No pixmap specified */
@@ -1099,10 +1107,13 @@ Don't worry if you don't know all the items or what they mean. If you don't
 know what it is, just leave it NULL or 0. Most of the time, it's easiest
 to copy the menu's from another app and just modify them for your
 needs, that way you will also know much better what does what then
-by just looking at the structure.</para>
+by just looking at the structure.</para></sect4>
+
+<sect4>
+<title>Helper Macros</title>
 
 <para>
-Sometimes some entries would be very simple, so one can just use one
+Most of the time, menu entries are very simple, so one can just use one
 of the simple macros provided. For example, for the end of a menu,
 one would use the <emphasis>GNOMEUIINFO_END</emphasis> macro, for a separator one uses the
 <emphasis>GNOMEUIINFO_SEPARATOR</emphasis> macro. Now for the actual items there
@@ -1127,6 +1138,237 @@ tree is the array of <emphasis>GnomeUIInfo</emphasis> structures that you want t
 that sub-menu. There are a few other macros, but most of the time you will
 get by with just these macros, so you don't need to learn the entire
 structure of the <emphasis>GnomeUIInfo</emphasis>.
+</para></sect4>
+
+<sect4>
+<title>Standard Menu Item Macros</title>
+
+<para>
+Just about all application contain a couple of standard menu items, so to
+keep things more consistent there are a bunch of macros that fill in
+everything for you except for the callback function and the data. The
+advantage of using the macros is consistency across applications, user
+customization, and translation.</para>
+
+<sect5>
+<title>Menu Items</title>
+
+<para>
+Most of these macros have the form:
+<emphasis>GNOMEUIINFO_MENU_&lt;name&gt;_ITEM (callback, data)</emphasis>.
+However, there is an exception, the "New xxx" item. The GNOME styleguide
+Requires that you put what the "New" thing is into the item name. Not to
+mention that it will have a different hint as well. So the "New xxx" item
+has the structure of:
+<emphasis>GNOMEUIINFO_MENU_NEW_ITEM(label, hint, callback, data)</emphasis>.
+The "label" should start with "New ". Also note that if you have more new
+items, you need to use the "New" subtree macro, which is explained later.
+</para>
+
+<para>
+<variablelist>
+<title>the File menu</title>
+<varlistentry>
+<term>GNOMEUIINFO_MENU_NEW_ITEM(label, hint, cb, data)</term>
+<listitem><para>"New" menu item (you need to provide label and hint
+yourself here)</para></listitem></varlistentry>
+<varlistentry>
+<term>GNOMEUIINFO_MENU_OPEN_ITEM(cb, data)</term>
+<listitem><para>"Open" menu item</para></listitem></varlistentry>
+<varlistentry>
+<term>GNOMEUIINFO_MENU_SAVE_ITEM(cb, data)</term>
+<listitem><para>"Save" menu item</para></listitem></varlistentry>
+<varlistentry>
+<term>GNOMEUIINFO_MENU_SAVE_AS_ITEM(cb, data)</term>
+<listitem><para>"Save as..." menu item</para></listitem></varlistentry>
+<varlistentry>
+<term>GNOMEUIINFO_MENU_REVERT_ITEM(cb, data)</term>
+<listitem><para>"Revert" menu item</para></listitem></varlistentry>
+<varlistentry>
+<term>GNOMEUIINFO_MENU_PRINT_ITEM(cb, data)</term>
+<listitem><para>"Print" menu item</para></listitem></varlistentry>
+<varlistentry>
+<term>GNOMEUIINFO_MENU_PRINT_SETUP_ITEM(cb, data)</term>
+<listitem><para>"Print Setup" menu item</para></listitem></varlistentry>
+<varlistentry>
+<term>GNOMEUIINFO_MENU_CLOSE_ITEM(cb, data)</term>
+<listitem><para>"Close" menu item</para></listitem></varlistentry>
+<varlistentry>
+<term>GNOMEUIINFO_MENU_EXIT_ITEM(cb, data)</term>
+<listitem><para>"Exit" menu item</para></listitem></varlistentry>
+</variablelist></para>
+
+
+<para>
+<variablelist>
+<title>the Edit menu</title>
+<varlistentry>
+<term>GNOMEUIINFO_MENU_CUT_ITEM(cb, data)</term>
+<listitem><para>"Cut" menu item</para></listitem></varlistentry>
+<varlistentry>
+<term>GNOMEUIINFO_MENU_COPY_ITEM(cb, data)</term>
+<listitem><para>"Copy" menu item</para></listitem></varlistentry>
+<varlistentry>
+<term>GNOMEUIINFO_MENU_PASTE_ITEM(cb, data)</term>
+<listitem><para>"Paste" menu item</para></listitem></varlistentry>
+<varlistentry>
+<term>GNOMEUIINFO_MENU_SELECT_ALL_ITEM(cb, data)</term>
+<listitem><para>"Select" menu item</para></listitem></varlistentry>
+<varlistentry>
+<term>GNOMEUIINFO_MENU_CLEAR_ITEM(cb, data)</term>
+<listitem><para>"Clear" menu item</para></listitem></varlistentry>
+<varlistentry>
+<term>GNOMEUIINFO_MENU_UNDO_ITEM(cb, data)</term>
+<listitem><para>"Undo" menu item</para></listitem></varlistentry>
+<varlistentry>
+<term>GNOMEUIINFO_MENU_REDO_ITEM(cb, data)</term>
+<listitem><para>"Redo" menu item</para></listitem></varlistentry>
+<varlistentry>
+<term>GNOMEUIINFO_MENU_FIND_ITEM(cb, data)</term>
+<listitem><para>"Find" menu item</para></listitem></varlistentry>
+<varlistentry>
+<term>GNOMEUIINFO_MENU_FIND_AGAIN_ITEM(cb, data)</term>
+<listitem><para>"Find Again" menu item</para></listitem></varlistentry>
+<varlistentry>
+<term>GNOMEUIINFO_MENU_REPLACE_ITEM(cb, data)</term>
+<listitem><para>"Replace" menu item</para></listitem></varlistentry>
+<varlistentry>
+<term>GNOMEUIINFO_MENU_PROPERTIES_ITEM(cb, data)</term>
+<listitem><para>"Properties" menu item</para></listitem></varlistentry>
+</variablelist></para>
+
+<para>
+<variablelist>
+<title>the Settings menu</title>
+<varlistentry>
+<term>GNOMEUIINFO_MENU_PREFERENCES_ITEM(cb, data)</term>
+<listitem><para>"Preferences" menu item</para></listitem></varlistentry>
+</variablelist></para>
+
+<para>
+<variablelist>
+<title>the Windows menu</title>
+<varlistentry>
+<term>GNOMEUIINFO_MENU_NEW_WINDOW_ITEM(cb, data)</term>
+<listitem><para>"New window" menu item</para></listitem></varlistentry>
+<varlistentry>
+<term>GNOMEUIINFO_MENU_CLOSE_WINDOW_ITEM(cb, data)</term>
+<listitem><para>"Close window" menu item</para></listitem></varlistentry>
+</variablelist></para>
+
+<para>
+<variablelist>
+<title>the Help menu</title>
+<varlistentry>
+<term>GNOMEUIINFO_MENU_ABOUT_ITEM(cb, data)</term>
+<listitem><para>"About" menu item</para></listitem></varlistentry>
+</variablelist></para>
+
+<para>
+<variablelist>
+<title>the Game menu</title>
+<varlistentry>
+<term>GNOMEUIINFO_MENU_NEW_GAME_ITEM(cb, data)</term>
+<listitem><para>"New game" menu item</para></listitem></varlistentry>
+<varlistentry>
+<term>GNOMEUIINFO_MENU_PAUSE_GAME_ITEM(cb, data)</term>
+<listitem><para>"Pause game" menu item</para></listitem></varlistentry>
+<varlistentry>
+<term>GNOMEUIINFO_MENU_RESTART_GAME_ITEM(cb, data)</term>
+<listitem><para>"Restart game" menu item</para></listitem></varlistentry>
+<varlistentry>
+<term>GNOMEUIINFO_MENU_UNDO_MOVE_ITEM(cb, data)</term>
+<listitem><para>"Undo move" menu item</para></listitem></varlistentry>
+<varlistentry>
+<term>GNOMEUIINFO_MENU_REDO_MOVE_ITEM(cb, data)</term>
+<listitem><para>"Redo move" menu item</para></listitem></varlistentry>
+<varlistentry>
+<term>GNOMEUIINFO_MENU_HINT_ITEM(cb, data)</term>
+<listitem><para>"Hint" menu item</para></listitem></varlistentry>
+<varlistentry>
+<term>GNOMEUIINFO_MENU_SCORES_ITEM(cb, data)</term>
+<listitem><para>"Scores" menu item</para></listitem></varlistentry>
+<varlistentry>
+<term>GNOMEUIINFO_MENU_END_GAME_ITEM(cb, data)</term>
+<listitem><para>"End game" menu item</para></listitem></varlistentry>
+</variablelist></para></sect5>
+
+<sect5>
+<title>Menu trees and subtrees</title>
+
+<para>
+We have already entioned a "New" subtree. For this you should use the
+<emphasis>GNOMEUIINFO_MENU_NEW_SUBTREE (tree)</emphasis> macro, where
+the tree argument is another GnomeUIInfo structure array of the different
+new items.</para>
+
+<para>
+There are also the standard top level menus. Again you pass the array of
+GnomeUIInfo structures to the macro.
+
+<variablelist>
+<varlistentry>
+<term>GNOMEUIINFO_MENU_FILE_TREE (tree)</term>
+<listitem><para>"File" menu</para></listitem></varlistentry>
+<varlistentry>
+<term>GNOMEUIINFO_MENU_EDIT_TREE (tree)</term>
+<listitem><para>"Edit" menu</para></listitem></varlistentry>
+<varlistentry>
+<term>GNOMEUIINFO_MENU_VIEW_TREE (tree)</term>
+<listitem><para>"View" menu</para></listitem></varlistentry>
+<varlistentry>
+<term>GNOMEUIINFO_MENU_SETTINGS_TREE (tree)</term>
+<listitem><para>"Settings" menu</para></listitem></varlistentry>
+<varlistentry>
+<term>GNOMEUIINFO_MENU_FILES_TREE (tree)</term>
+<listitem><para>"Files" menu</para></listitem></varlistentry>
+<varlistentry>
+<term>GNOMEUIINFO_MENU_WINDOWS_TREE (tree)</term>
+<listitem><para>"Windows" menu</para></listitem></varlistentry>
+<varlistentry>
+<term>GNOMEUIINFO_MENU_HELP_TREE (tree)</term>
+<listitem><para>"Help" menu</para></listitem></varlistentry>
+<varlistentry>
+<term>GNOMEUIINFO_MENU_GAME_TREE (tree)</term>
+<listitem><para>"Game" menu</para></listitem></varlistentry>
+</variablelist></para>
+
+<para>
+Sometimes you may want to refer to menu path of these menus, such as
+for adding items to a "Windows" menu. For this you should use the macros
+of the form <emphasis>GNOME_MENU_&lt;name&gt;_STRING</emphasis> and
+<emphasis>GNOME_MENU_&lt;name&gt;_PATH</emphasis>. These will expand to the
+appropriate string. The macro ending with <emphasis>_STRING</emphasis>
+will expand to just the menu name, and the macro ending with
+<emphasis>_PATH</emphasis> to the menu name followed by a "/". The 
+&lt;name&gt; can be one of the following: FILE, EDIT, VIEW, SETTINGS,
+NEW, FILES or WINDOWS.
+</para></sect5></sect4>
+
+<sect4>
+<title>Help menu</title>
+
+<para>
+Your application should contain a help menu, the help menu can be defined
+as:
+
+<informalexample><programlisting>
+     GNOMEUIINFO_HELP("app_name"),
+     GNOMEUIINFO_MENU_ABOUT_ITEM(callback, data),
+     GNOMEUIINFO_END
+</programlisting></informalexample>
+
+The GNOMEUIINFO_HELP macro takes the name of your application and expects
+the help files to be installed as per normal gnome procedures.
+<emphasis>FIXME: we need to add some section on help files and stuff
+</emphasis>
+</para>
+</sect4>
+
+<sect4>
+<title>Example</title>
+
+<para>
 Here is a very simple application that makes use of these:
 
 <informalexample><programlisting>
@@ -1135,7 +1377,7 @@ Here is a very simple application that makes use of these:
  * uiinfo.c
  */
 /* the very basic gnome include */
-#include &amp;lt;gnome.h&amp;gt;
+#include &lt;gnome.h&gt;
 
 /* a callback for the buttons */
 static void
@@ -1146,19 +1388,22 @@ a_callback(GtkWidget *button, gpointer data)
 }
 
 GnomeUIInfo file_menu[] = {
+	GNOMEUIINFO_MENU_EXIT_ITEM(gtk_main_quit,NULL),
+	GNOMEUIINFO_END
+};
+
+GnomeUIInfo some_menu[] = {
 	GNOMEUIINFO_ITEM_NONE("_Menuitem","Just a menuitem",
 			      a_callback),
+	GNOMEUIINFO_SEPARATOR,
 	GNOMEUIINFO_ITEM_NONE("M_enuitem2","Just a menuitem",
 			      a_callback),
-	GNOMEUIINFO_SEPARATOR,
-	GNOMEUIINFO_ITEM_STOCK("E_xit","Exit the application",
-			       gtk_main_quit,
-			       GNOME_STOCK_MENU_EXIT),
 	GNOMEUIINFO_END
 };
 
 GnomeUIInfo menubar[] = {
-	GNOMEUIINFO_SUBTREE("_File",file_menu),
+	GNOMEUIINFO_MENU_FILE_TREE(file_menu),
+	GNOMEUIINFO_SUBTREE("_Some menu",some_menu),
 	GNOMEUIINFO_END
 };
 
@@ -1218,9 +1463,9 @@ main(int argc, char *argv[])
 </programlisting></informalexample>
 Voila, an application with a menu and a tool-bar. As you see, adding
 extra menu items is just adding extra definitions to the GnomeUIInfo
-structure array.</para></sect4>
+structure array.</para></sect4></sect3>
 
-<sect4>
+<sect3>
 <title>Accelerator keys</title>
 
 <para>
@@ -1229,9 +1474,9 @@ these specify the accelerators for that menu. That's really all you need
 to do to add accelerators for menu items. The way accelerators work
 is very similar to the other windowing systems out there, <emphasis>alt-&lt;key&gt;</emphasis>
 if you are not browsing the menus or just the <emphasis>&lt;key&gt;</emphasis> if you have the
-menu open.</para></sect4></sect3>
+menu open.</para></sect3></sect2>
 
-<sect3>
+<sect2>
 <title>Stock Icons</title>
 
 <para>
@@ -1441,11 +1686,11 @@ stock or ordinary buttons, what you can do is call the
 <emphasis>gnome_stock_or_ordinary_button</emphasis> function with either the type of
 a stock button or just a text for the button label. The function checks
 if it is one of the above strings, and if it's not it creates an
-ordinary button widget with the text as the label.</para></sect3>
+ordinary button widget with the text as the label.</para></sect2>
 
-<sect3>
+<sect2>
 <title>Dialogs</title>
-<sect4>
+<sect3 id="testtest">
 <title>Generic Dialogs</title>
 
 <para>
@@ -1508,7 +1753,7 @@ for(;;) {
 		  user pressed */
 		gnome_dialog_close(GNOME_DIALOG(dlg));
 		break;
-	} else if(i &amp;lt; 0) {
+	} else if(i &lt; 0) {
 		/*the user closed the dialog from the window
 		  manager*/
 		break;
@@ -1576,9 +1821,9 @@ gtk_signal_connect(GTK_OBJECT(dlg),"clicked",
   so the program doesn't block here, but continues*/
 gtk_widget_show(dlg);
 </programlisting></informalexample>
-This implements the same dialog as the modal example above, only non modal.</para></sect4>
+This implements the same dialog as the modal example above, only non modal.</para></sect3>
 
-<sect4>
+<sect3>
 <title>Message Box</title>
 
 <para>
@@ -1599,9 +1844,9 @@ To create a message box, you use the function <emphasis>gnome_message_box_new</e
 with the first argument being the message text, the second argument being the
 type of the message box (one of the defines above), and then any number
 of buttons terminated by a NULL exactly as in the <emphasis>GnomeDialog</emphasis>'s case.
-After created it is again used exactly the same as <emphasis>GnomeDialog</emphasis>.</para></sect4>
+After created it is again used exactly the same as <emphasis>GnomeDialog</emphasis>.</para></sect3>
 
-<sect4>
+<sect3>
 <title>Property Dialogs</title>
 
 <para>
@@ -1670,9 +1915,9 @@ gnome_property_box_append_page(GNOME_PROPERTY_BOX(pbox),
 ...
 /*we show the dialog box*/
 gtk_widget_show_all(pbox);
-</programlisting></informalexample></para></sect4>
+</programlisting></informalexample></para></sect3>
 
-<sect4>
+<sect3>
 <title>File Picking Dialog</title>
 
 <para>
@@ -1700,20 +1945,20 @@ presentation_save_as (AchtungPresentation *p)
 	GtkFileSelection *fsel;
 	
 	g_return_if_fail (p != NULL);
-	g_return_if_fail (p-&amp;gt;doc != NULL);
+	g_return_if_fail (p-&gt;doc != NULL);
 
 	fsel = (GtkFileSelection *)
 		gtk_file_selection_new (_("Save presentation as"));
-	if (p-&amp;gt;real_file &amp;&amp; p-&amp;gt;filename)
-		gtk_file_selection_set_filename (fsel, p-&amp;gt;filename);
+	if (p-&gt;real_file &amp;&amp; p-&gt;filename)
+		gtk_file_selection_set_filename (fsel, p-&gt;filename);
 
 	gtk_object_set_data(GTK_OBJECT(fsel),"p",p);
 	
 	/* Connect the signals for Ok and Cancel */
-	gtk_signal_connect (GTK_OBJECT (fsel-&amp;gt;ok_button), "clicked",
+	gtk_signal_connect (GTK_OBJECT (fsel-&gt;ok_button), "clicked",
 			    GTK_SIGNAL_FUNC (save_ok), fsel);
 	gtk_signal_connect_object
-		(GTK_OBJECT (fsel-&amp;gt;cancel_button), "clicked",
+		(GTK_OBJECT (fsel-&gt;cancel_button), "clicked",
 		 GTK_SIGNAL_FUNC (gtk_widget_destroy), 
 		 GTK_OBJECT(fsel));
 
@@ -1760,9 +2005,9 @@ the presentation itself is, then when the presentation is destroyed itself,
 it would try to destroy an already non-existent file selection dialog and
 most likely cause a segmentation fault and crash. This way it is safe and
 if the file selection dialog is still around when the presentation is
-destroyed, it is destroyed with it.</para></sect4></sect3>
+destroyed, it is destroyed with it.</para></sect3></sect2>
 
-<sect3>
+<sect2>
 <title>Entries</title>
 
 <para>
@@ -1770,7 +2015,7 @@ Sometimes, especially in properties dialogs, you want fields for entering
 text, files, pixmaps, icons or double precision numbers. This is what the
 <emphasis>gnome-*entry</emphasis> widgets do.</para>
 
-<sect4>
+<sect3>
 <title>GnomeEntry</title>
 
 <para>
@@ -1795,9 +2040,9 @@ gnome_entry_new("text1");
 gtk_e = gnome_entry_gtk_entry(GNOME_ENTRY(gnome_e));
 gtk_signal_connect(GTK_OBJECT(gtk_e),"changed",
 		   GTK_SIGNAL_FUNC(entry_changed), NULL);
-</programlisting></informalexample></para></sect4>
+</programlisting></informalexample></para></sect3>
 
-<sect4>
+<sect3>
 <title>GnomeFileEntry</title>
 
 <para>
@@ -1816,9 +2061,9 @@ To finally get the filename, you can get the exact text from the
 <emphasis>file_must_exist</emphasis> as it's second argument. If this flag is set,
 the function returns NULL if the file doesn't exists. If the flag
 is not set or the file does exist, the function returns the full
-path to the file.</para></sect4>
+path to the file.</para></sect3>
 
-<sect4>
+<sect3>
 <title>GnomePixmapEntry</title>
 
 <para>
@@ -1836,9 +2081,9 @@ the preview, it just saves space. Again you use a
 To get a filename of the the pixmap, if it could be loaded as an image
 for the preview (using imlib), you can use
 <emphasis>gnome_pixmap_entry_get_filename</emphasis>, which returns NULL if the pixmap
-files doesn't exist or could not be loaded, and the full filename otherwise.</para></sect4>
+files doesn't exist or could not be loaded, and the full filename otherwise.</para></sect3>
 
-<sect4>
+<sect3>
 <title>GnomeIconEntry</title>
 
 <para>
@@ -1851,9 +2096,9 @@ with <emphasis>history_id</emphasis> and <emphasis>browse_dialog_title</emphasis
 you need an existing icon that is a real image, you use
 <emphasis>gnome_icon_entry_get_filename</emphasis> which works just like
 <emphasis>gnome_pixmap_entry_get_filename</emphasis>. You can also get the <emphasis>GtkEntry</emphasis>
-by using <emphasis>gnome_icon_entry_gtk_entry</emphasis>.</para></sect4>
+by using <emphasis>gnome_icon_entry_gtk_entry</emphasis>.</para></sect3>
 
-<sect4>
+<sect3>
 <title>GnomeNumberEntry</title>
 
 <para>
@@ -1870,9 +2115,9 @@ calculator. To create a number entry widget, just use
 first argument and the title of the calculator dialog as the second
 argument. To get the <emphasis>GtkEntry</emphasis> widget just use 
 <emphasis>gnome_number_entry_gtk_entry</emphasis>. To get the number as a
-<emphasis>double</emphasis> value, use <emphasis>gnome_number_entry_get_number</emphasis> method.</para></sect4></sect3>
+<emphasis>double</emphasis> value, use <emphasis>gnome_number_entry_get_number</emphasis> method.</para></sect3></sect2>
 
-<sect3>
+<sect2>
 <title>Using Images</title>
 
 <para>
@@ -1911,9 +2156,9 @@ pix = gnome_pixmap_new_from_file_at_size("somefile.png",48,48);
 /*now we want to change the files to otherfile.png and do no
   scaling*/
 gnome_pixmap_load_file(GNOME_PIXMAP(pix),"otherfile.png");
-</programlisting></informalexample></para></sect3>
+</programlisting></informalexample></para></sect2>
 
-<sect3>
+<sect2>
 <title>Session Management</title>
 
 <para>
@@ -2021,11 +2266,11 @@ if (GNOME_CLIENT_CONNECTED (client)) {
 </programlisting></informalexample>
 This is a very simple session management which will be enough for most
 programs, for more information on session management, you should consult
-the gnome developer documentation which should be available by now.</para></sect3>
+the gnome developer documentation which should be available by now.</para></sect2>
 
-<sect3>
+<sect2>
 <title>Multiple Document Interface</title>
-<sect4>
+<sect3>
 <title>The Main MDI Window</title>
 
 <para>
@@ -2097,9 +2342,9 @@ all the data correctly.</para>
 
 <para>
 You should also bind the <emphasis>destroy</emphasis> signal of the mdi object to do
-<emphasis>gtk_main_quit</emphasis> when the mdi is destroyed.</para></sect4>
+<emphasis>gtk_main_quit</emphasis> when the mdi is destroyed.</para></sect3>
 
-<sect4>
+<sect3>
 <title>The MDI Children</title>
 
 <para>
@@ -2134,7 +2379,7 @@ the old label widget pointer as the second argument, which would be null
 if no label widget was yet set, and a data argument. This function can either
 create a new label and destroy the old one, or just set the label if the
 label exists. The label can be any widget, for example the
-<emphasis>gnome-hello-7mdi</emphasis> example code uses a horizontal box widget into which
+<emphasis>gnome-hello-7-mdi</emphasis> example code uses a horizontal box widget into which
 it adds a pixmap and a gtk label. After this if you need to add the child
 to the mdi yourself, if you are loading a new file for example, you use
 <emphasis>gnome_mdi_add_child</emphasis> and <emphasis>gnome_mdi_add_view</emphasis>, to add a new child
@@ -2146,7 +2391,8 @@ time to store your data with the object.</para>
 
 <para>
 Here's a short example of creating a new child, for a more complete example
-you should look at the <emphasis>gnome-hello-7-mdi</emphasis> included with this tutorial.
+you should look at the <emphasis>gnome-hello-7-mdi</emphasis> included with
+the gnome-libs distribution.
 
 <informalexample><programlisting>
 GnomeMDI *mdi;
@@ -2174,9 +2420,9 @@ if((child = gnome_mdi_generic_child_new(name)) != NULL) {
 	/* and add a new view of the child */
 	gnome_mdi_add_view(mdi, GNOME_MDI_CHILD(child));
 }
-</programlisting></informalexample></para></sect4></sect3></sect2>
+</programlisting></informalexample></para></sect3></sect2></sect1>
 
-<sect2>
+<sect1>
 <title>GnomeCanvas Widget</title>
 
 <para>
@@ -2186,7 +2432,7 @@ graphics drawing widget and on top of that it's easy to use. It includes
 support for both Xlib drawn graphics, which is faster especially over the
 network, and anti-aliased drawing for better looking results.</para>
 
-<sect3>
+<sect2>
 <title>Creating a Canvas Widget</title>
 
 <para>
@@ -2217,9 +2463,9 @@ GnomeCanvas *canvas;
 /*already created a canvas, now set it up*/
 gnome_canvas_set_pixels_per_unit(canvas,10);
 gnome_canvas_set_scroll_region(canvas,0.0,0.0,50.0,50.0);
-</programlisting></informalexample></para></sect3>
+</programlisting></informalexample></para></sect2>
 
-<sect3>
+<sect2>
 <title>Groups and Items</title>
 
 <para>
@@ -2228,9 +2474,9 @@ and groups, which are just groupings of items. A group is actually derived
 from a base <emphasis>GnomeCanvasItem</emphasis> object, this is useful to applying
 functions to all the items inside the group. Such as moving or hiding
 the entire group. There is also one default group, the root group.
-You can get this group by calling <emphasis>gnome_canvas_root</emphasis>.</para></sect3>
+You can get this group by calling <emphasis>gnome_canvas_root</emphasis>.</para></sect2>
 
-<sect3>
+<sect2>
 <title>Creating Items</title>
 
 <para>
@@ -2264,79 +2510,145 @@ To find out the arguments that each item takes, consult the gnome
 documentation or look into the <emphasis>libgnomeui/gnome-canvas*.h</emphasis> header files.
 They contain a table at the top of the file just like the one
 that follows (which was taken from
-<emphasis>libgnomeui/gnome-canvas-rect-ellipse.h</emphasis>).
-
-.DS
-.fi</para>
+<emphasis>libgnomeui/gnome-canvas-rect-ellipse.h</emphasis>).</para>
 
 <para>
 For example here are arguments for rectangle (GNOME_TYPE_CANVAS_RECT) and
 ellipse (GNOME_TYPE_CANVAS_ELLIPSE):
 
-.TS H
-center;
-lb | lb | lb | lbw(2.5i).
-Name	Type	Read/Write	Description
-_
-.TH
-.T&
-l | l | l | l.
-x1	double	RW	T{
-.fi
+<table>
+<title>
+Arguments for rectangle and ellipse canvas items
+</title>
+
+<tgroup cols=4>
+<thead>
+<row>
+<entry>Name</entry>
+<entry>Type</entry>
+<entry>Read/Write</entry>
+<entry>Description</entry>
+</row>
+</thead>
+<tbody>
+
+<row>
+<entry>x1</entry>
+<entry>double</entry>
+<entry>RW</entry>
+<entry>
 Leftmost coordinate of rectangle or ellipse
-T}
-y1	double	RW	T{
-.fi
+</entry>
+</row>
+
+<row>
+<entry>y1</entry>
+<entry>double</entry>
+<entry>RW</entry>
+<entry>
 Topmost coordinate of rectangle or ellipse
-T}
-x2	double	RW	T{
-.fi
+</entry>
+</row>
+
+<row>
+<entry>x2</entry>
+<entry>double</entry>
+<entry>RW</entry>
+<entry>
 Rightmost coordinate of rectangle or ellipse
-T}
-y2	double	RW	T{
-.fi
+</entry>
+</row>
+
+<row>
+<entry>y2</entry>
+<entry>double</entry>
+<entry>RW</entry>
+<entry>
 Bottommost coordinate of rectangle or ellipse
-T}
-fill_color	string	W	T{
-.fi
+</entry>
+</row>
+
+<row>
+<entry>fill_color</entry>
+<entry>string</entry>
+<entry>W</entry>
+<entry>
 X color specification for fill color, or NULL pointer for
 no color (transparent)
-T}
-fill_color_gdk	GdkColor*	RW	T{
-.fi
+</entry>
+</row>
+
+<row>
+<entry>fill_color_gdk</entry>
+<entry>GdkColor*</entry>
+<entry>RW</entry>
+<entry>
 Allocated GdkColor for fill
-T}
-outline_color	string	W	T{
-.fi
+</entry>
+</row>
+
+<row>
+<entry>outline_color</entry>
+<entry>string</entry>
+<entry>W</entry>
+<entry>
 X color specification for outline color, or NULL pointer for
 no color (transparent)
-T}
-outline_color_gdk	GdkColor*	RW	T{
-.fi
+</entry>
+</row>
+
+<row>
+<entry>outline_color_gdk</entry>
+<entry>GdkColor*</entry>
+<entry>RW</entry>
+<entry>
 Allocated GdkColor for outline
-T}
-fill_stipple	GdkBitmap*	RW	T{
-.fi
+</entry>
+</row>
+
+<row>
+<entry>fill_stipple</entry>
+<entry>GdkBitmap*</entry>
+<entry>RW</entry>
+<entry>
 Stipple pattern for fill
-T}
-outline_stipple	GdkBitmap*	RW	T{
-.fi
+</entry>
+</row>
+
+<row>
+<entry>outline_stipple</entry>
+<entry>GdkBitmap*</entry>
+<entry>RW</entry>
+<entry>
 Stipple pattern for outline
-T}	
-width_pixels	uint	RW	T{
-.fi
+</entry>
+</row>
+
+<row>
+<entry>width_pixels</entry>
+<entry>uint</entry>
+<entry>RW</entry>
+<entry>
 Width of the outline in pixels.  The outline will not be scaled
 when the canvas zoom factor is changed.
-T}	
-width_units	double	RW	T{
-.fi
+</entry>
+</row>
+
+<row>
+<entry>width_units</entry>
+<entry>double</entry>
+<entry>RW</entry>
+<entry>
 Width of the outline in canvas units.  The outline will be scaled
 when the canvas zoom factor is changed.
-T}	
-.TE
-.TB "Arguments for rectangle and ellipse canvas items"
-.DE</para>
+</entry>
+</row>
 
+</tbody>
+</tgroup>
+</table>
+
+</para>
 
 <para>
 Now suppose we want to change some of these properties. This is done with
@@ -2368,9 +2680,9 @@ item to the top or bottom of it's parent group's z order. To have finer
 control over z order you can use the <emphasis>gnome_canvas_item_raise</emphasis> and
 <emphasis>gnome_canvas_item_lower</emphasis> methods which take an extra integer 
 argument which is 1 or larger, and specifies the number of levels
-the item should move in the z order.</para></sect3>
+the item should move in the z order.</para></sect2>
 
-<sect3>
+<sect2>
 <title>Anti-aliasing canvas</title>
 
 <para>
@@ -2396,16 +2708,16 @@ canvas.</para>
 Anti-aliased canvas items can generally do more then normal canvas items.
 This is because of limitations of Xlib as a graphics library. It can for
 example do any kind of affine transformation on it's objects, where on
-and Xlib canvas you can only do affine transformations on some objects.</para></sect3></sect2>
+and Xlib canvas you can only do affine transformations on some objects.</para></sect2></sect1>
 
-<sect2>
+<sect1>
 <title>Drag and Drop</title>
 
 <para>
 While drag and drop belongs into GTK+ itself, I thought it would be better
 to cover it after some parts of GNOME were discussed.</para>
 
-<sect3>
+<sect2>
 <title>Accepting Drops</title>
 
 <para>
@@ -2469,7 +2781,7 @@ target_drag_data_received  (GtkWidget          *widget,
 			    guint               info,
 			    guint               time)
 {
-	g_print("Got: %s\\n",data-&amp;gt;data);
+	g_print("Got: %s\\n",data-&gt;data);
 }
 ...
 static GtkTargetEntry target_table[] = {
@@ -2487,9 +2799,10 @@ gtk_signal_connect (GTK_OBJECT (widget), "drag_data_received",
 
 <para>
 For more information about drag and drop, you should see <emphasis>GTK+</emphasis>
-documentation at <emphasis>www.gtk.org</emphasis>.</para></sect3>
+documentation at <ulink url="http://www.gtk.org/">www.gtk.org</ulink>.
+</para></sect2>
 
-<sect3>
+<sect2>
 <title>Allowing Drags</title>
 
 <para>
@@ -2513,7 +2826,7 @@ source_drag_data_get  (GtkWidget          *widget,
 {
 	char string[] = "Some String!"
 	gtk_selection_data_set (selection_data,
-				selection_data-&amp;gt;target,
+				selection_data-&gt;target,
 				8, string, sizeof(string));
 }
 ...
@@ -2530,22 +2843,27 @@ gtk_signal_connect (GTK_OBJECT (widget), "drag_data_get",
 		    NULL);
 </programlisting></informalexample>
 The <emphasis>gtk_selection_data_set</emphasis> function copies the data into the selection
-data, which is used for the transfer.</para></sect3></sect2></sect1>
+data, which is used for the transfer.</para></sect2></sect1></chapter>
 
-<sect1>
+<chapter>
 <title>Conclusion</title>
-<sect2>
+<sect1>
 <title>Getting Further Help</title>
 
 <para>
 One of the best ways to get help with programming in gnome is probably
-to first read the available documentation at <emphasis>www.gnome.org</emphasis>. You
-should also subscribe to the <emphasis>gnome-list@gnome.org</emphasis>, to subscribe,
-send a message with <emphasis>subscribe</emphasis> in the subject line to
-<emphasis>gnome-list-request@gnome.org</emphasis>. To reduce the traffic on the
+to first read the available documentation at
+<ulink url="http://www.gnome.org/">www.gnome.org</ulink>, or the developer
+web site at <ulink url="http://developer.gnome.org/">developer.gnome.org
+</ulink>. You should also subscribe to the
+<ulink url="mailto:gnome-deve-list@gnome.org">gnome-devel-list@gnome.org
+</ulink>, to subscribe, send a message with <emphasis>subscribe</emphasis>
+in the subject line to <ulink url="mailto:gnome-devel-list-request@gnome.org">
+gnome-devel-list-request@gnome.org</ulink>. To reduce the traffic on the
 list you should first consult the documentation before asking a question.
-Also look at <emphasis>http://www.gnome.org/mailing-lists/</emphasis> for a list of
-all GNOME relevant mailing lists, including the <emphasis>GTK+</emphasis> list.</para>
+Also look at <ulink url="http://www.gnome.org/mailing-lists/">
+www.gnome.org/mailing-lists/</ulink> for a list of all GNOME relevant
+mailing lists, including the <emphasis>GTK+</emphasis> list.</para>
 
 <para>
 However I still consider the header files for the libraries most helpful.
@@ -2560,15 +2878,20 @@ usually have to know what header file to look at, which is not all
 that hard, given that the header files are named by the objects or modules
 they represent. For example the header file for <emphasis>gnome-config</emphasis> is
 <emphasis>libgnome/gnome-config.h</emphasis>. The header file for <emphasis>GnomeCanvas</emphasis>
-is <emphasis>libgnomeui/gnome-canvas.h</emphasis>.</para></sect2>
+is <emphasis>libgnomeui/gnome-canvas.h</emphasis>.</para></sect1>
 
-<sect2>
+<sect1>
 <title>Future GNOME Library Developments</title>
 
 <para>
 This tutorial covers programming with version 1.0 of the gnome libraries.
 But of course there is life after 1.0. There are many things still planned
-for the libraries. Here's a short list of things that will be worked on.
+for the libraries. But don't worry, we will try to keep as much compatibility
+with the 1.0 version as humanely possible.</para>
+
+<para>
+Here's a short list of things that will be or currently is worked on.
+
 
 <variablelist>
 <varlistentry><term></term>
@@ -2588,6 +2911,6 @@ Rewrite of the configuration setup.</para></listitem></varlistentry>
 <varlistentry><term></term>
 <listitem><para>
 Much much more! ... Stuff we haven't even thought of yet!</para></listitem></varlistentry>
-</variablelist></para></sect2></sect1></chapter>
+</variablelist></para></sect1></chapter>
 
 </book>
