@@ -890,6 +890,11 @@ gtk_term_button_press (GtkWidget      *widget,
   term = GTK_TERM (widget);
   x = event->x / term->char_width;
   y = event->y / term->char_height;
+
+  if (x < 0) x = 0;
+  if (y < 0) y = 0;
+  if (x >= term->term_width) x = term->term_width - 1;
+  if (y >= term->term_height) y = term->term_height - 1;
   
   
   gtk_term_selection_clear (widget, NULL);

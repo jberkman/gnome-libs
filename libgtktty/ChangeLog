@@ -1,3 +1,8 @@
+Sat Mar 28 00:25:24 CET 1998  Eckehard Berns  <eb@berns.prima.de>
+
+	* gtkterm.c (gtk_term_button_press): adjust x and y to avoid out of
+	bounds segfaults.
+
 Sun Mar 15 15:37:10 1998  Owen Taylor  <owt1@cornell.edu>
 
 	*  configure.in: Replaced checks for X and GTK with AM_PATH_GTK
