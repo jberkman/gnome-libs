@@ -1,3 +1,10 @@
+1999-12-14  Maciej Stachowiak  <mjs@eazel.com>
+
+	* libgnome/gnome-metadata.c (get_worker): Fixed a logic error
+	which would cause metadata_get to be called with an uninitialized
+	parameter when gnome_mime_type_or_default fails, and is_fast is
+	true.
+
 1999-12-07  Martin Baulig  <martin@home-of-linux.org>
 
 	* Makefile.am (SUBDIRS): Take zvt out until it is finished.
