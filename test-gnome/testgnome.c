@@ -234,13 +234,57 @@ create_color_picker (void)
  * GnomeDruid
  */
 
+
+typedef struct druid_data
+{
+	GtkWidget *radio_button; /* if set, goto A, else goto b */
+	GtkWidget *target_a;
+	GtkWidget *target_b;
+} druid_data;
+
+static gboolean
+simple_druid_next_callback (GnomeDruidPage *page, GnomeDruid *druid, GnomeDruidPage *next)
+{
+	gtk_object_set_data (GTK_OBJECT (next), "back", page);
+	gnome_druid_set_page (druid,
+			      next);
+	return TRUE;
+}
+static gboolean
+complex_druid_next_callback (GnomeDruidPage *page, GnomeDruid *druid, druid_data *data)
+{
+	if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (data->radio_button))) {
+		gtk_object_set_data (GTK_OBJECT (data->target_a), "back", page);
+		gnome_druid_set_page (druid,
+				      GNOME_DRUID_PAGE (data->target_a));
+	} else {
+		gtk_object_set_data (GTK_OBJECT (data->target_b), "back", page);
+		gnome_druid_set_page (druid,
+				      GNOME_DRUID_PAGE (data->target_b));
+	}
+	return TRUE;
+}
+static gboolean
+druid_back_callback (GnomeDruidPage *page, GnomeDruid *druid, gpointer data)
+{
+	GtkWidget *back_page = NULL;
+	back_page = gtk_object_get_data (GTK_OBJECT (page), "back");
+	if (back_page) {
+		gtk_object_set_data (GTK_OBJECT (page), "back", NULL);
+		gnome_druid_set_page (druid,
+				      GNOME_DRUID_PAGE (back_page));
+		return TRUE;
+	}
+	return FALSE;
+}
+
 /*
  * The Druid's control flow looks something like this:
  *
  * page_start -> page_a -> page_b -> page_d -> page_f -> page_finish
  *                      |          \                  /
- *                      |            page_e -> page_g 
- *                       \                  /  
+ *                      |            page_e -> page_g
+ *                       \                  /
  *                         page_c ----------
  */
 static void
@@ -253,6 +297,9 @@ create_druid(void)
   GtkWidget *page_a, *page_b, *page_c, *page_d, *page_e, *page_f, *page_g;
   GdkImlibImage *logo = NULL;
   GdkImlibImage *watermark = NULL;
+  GtkWidget *check_a, *check_b;
+  GSList *radio_group;
+  druid_data *data;
 
   /* load the images */
   fname = gnome_pixmap_file ("gnome-logo-icon.png");
@@ -260,24 +307,130 @@ create_druid(void)
     logo = gdk_imlib_load_image (fname);
   g_free (fname);
 
+#if 0
+  /* We really need a better image for this.  For now, it'll do */
   fname = gnome_pixmap_file ("gnome-logo-large.png");
   if (fname)
     watermark = gdk_imlib_load_image (fname);
   g_free (fname);
+#endif
 
-  /* The initial stuff */ 
+  /* The initial stuff */
   window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
   druid = gnome_druid_new ();
-  page_start = gnome_druid_page_start_new_with_vals 
+
+  /* The druid pages. */
+  page_start = gnome_druid_page_start_new_with_vals
     ("Beginning of the DRUID",
-     "This is a Sample DRUID\n\nIt will walk you through absolutely nothing. (-:",
+     "This is a Sample DRUID\nIt will walk you through absolutely nothing. (-:\n\nIt would be nice to have a watermark on the left.",
+     logo,
+     watermark);
+  page_a = gnome_druid_page_standard_new_with_vals ("Page A", logo);
+  page_b = gnome_druid_page_standard_new_with_vals ("Page B", logo);
+  page_c = gnome_druid_page_standard_new_with_vals ("Page C", logo);
+  page_d = gnome_druid_page_standard_new_with_vals ("Page D", logo);
+  page_e = gnome_druid_page_standard_new_with_vals ("Page E", logo);
+  page_f = gnome_druid_page_standard_new_with_vals ("Page F", logo);
+  page_g = gnome_druid_page_standard_new_with_vals ("Page G", logo);
+  page_finish = gnome_druid_page_finish_new_with_vals
+    ("End of the DRUID",
+     "I hope you found this demo informative.  You would\nnormally put a message here letting someone know\nthat they'd successfully installed something.",
      logo,
      watermark);
 
-  /* The middle druid pages. */
+  /* set each one up. */
+  /* page_a */
+  data = g_new (druid_data, 1);
+  radio_group = NULL;
+  check_a = gtk_radio_button_new_with_label (NULL, "Go to page B");
+  radio_group = gtk_radio_button_group (GTK_RADIO_BUTTON (check_a));
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (check_a), TRUE);
+  check_b = gtk_radio_button_new_with_label (radio_group, "Go to page C");
+  gtk_box_pack_start (GTK_BOX (GNOME_DRUID_PAGE_STANDARD (page_a)->vbox),
+		      check_a, FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (GNOME_DRUID_PAGE_STANDARD (page_a)->vbox),
+		      check_b, FALSE, FALSE, 0);
+  data->radio_button = check_a;
+  data->target_a = page_b;
+  data->target_b = page_c;
+  gtk_signal_connect (GTK_OBJECT (page_a), "next", (GtkSignalFunc) complex_druid_next_callback, (gpointer) data);
+  gtk_signal_connect (GTK_OBJECT (page_a), "back", (GtkSignalFunc) druid_back_callback, (gpointer) NULL);
+
+  /* page_b */
+  data = g_new (druid_data, 1);
+  radio_group = NULL;
+  check_a = gtk_radio_button_new_with_label (NULL, "Go to page D");
+  radio_group = gtk_radio_button_group (GTK_RADIO_BUTTON (check_a));
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (check_a), TRUE);
+  check_b = gtk_radio_button_new_with_label (radio_group, "Go to page E");
+  gtk_box_pack_start (GTK_BOX (GNOME_DRUID_PAGE_STANDARD (page_b)->vbox),
+		      check_a, FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (GNOME_DRUID_PAGE_STANDARD (page_b)->vbox),
+		      check_b, FALSE, FALSE, 0);
+  data->radio_button = check_a;
+  data->target_a = page_d;
+  data->target_b = page_e;
+  gtk_signal_connect (GTK_OBJECT (page_b), "next", (GtkSignalFunc) complex_druid_next_callback, (gpointer) data);
+  gtk_signal_connect (GTK_OBJECT (page_b), "back", (GtkSignalFunc) druid_back_callback, (gpointer) NULL);
+
+  /* page_c */
+  gtk_box_pack_start (GTK_BOX (GNOME_DRUID_PAGE_STANDARD (page_c)->vbox),
+		      gtk_label_new ("This page will take you to page G\nYou don't have any say in the matter. (-:"),
+		      FALSE, FALSE, 0);
+  gtk_signal_connect (GTK_OBJECT (page_c), "next", (GtkSignalFunc) simple_druid_next_callback, (gpointer) page_g);
+  gtk_signal_connect (GTK_OBJECT (page_c), "back", (GtkSignalFunc) druid_back_callback, (gpointer) NULL);
+
+  /* page_d */
+  gtk_box_pack_start (GTK_BOX (GNOME_DRUID_PAGE_STANDARD (page_d)->vbox),
+		      gtk_label_new ("This page will take you to page F"),
+		      FALSE, FALSE, 0);
+  gtk_signal_connect (GTK_OBJECT (page_d), "next", (GtkSignalFunc) simple_druid_next_callback, (gpointer) page_f);
+    gtk_signal_connect (GTK_OBJECT (page_d), "back", (GtkSignalFunc) druid_back_callback, (gpointer) NULL);
+
+  /* page_e */
+  gtk_box_pack_start (GTK_BOX (GNOME_DRUID_PAGE_STANDARD (page_e)->vbox),
+		      gtk_label_new ("This page will take you to page G\n\nShe sells sea shells by the sea shore."),
+		      FALSE, FALSE, 0);
+  gtk_signal_connect (GTK_OBJECT (page_e), "next", (GtkSignalFunc) simple_druid_next_callback, (gpointer) page_g);
+  gtk_signal_connect (GTK_OBJECT (page_e), "back", (GtkSignalFunc) druid_back_callback, (gpointer) NULL);
+
+  /* page_f */
+  gtk_box_pack_start (GTK_BOX (GNOME_DRUID_PAGE_STANDARD (page_f)->vbox),
+		      gtk_label_new ("This is a second to last page.\nIt isn't as nice as page G.\n\nClick Next to go to the last page\n"),
+		      FALSE, FALSE, 0);
+  gtk_signal_connect (GTK_OBJECT (page_f), "next", (GtkSignalFunc) simple_druid_next_callback, (gpointer) page_finish);
+  gtk_signal_connect (GTK_OBJECT (page_f), "back", (GtkSignalFunc) druid_back_callback, (gpointer) NULL);
+
+  /* page_g */
+  gtk_box_pack_start (GTK_BOX (GNOME_DRUID_PAGE_STANDARD (page_g)->vbox),
+		      gtk_label_new ("This is page G!!!!\n\nyay!!!!!!!"),
+		      FALSE, FALSE, 0);
+  gtk_signal_connect (GTK_OBJECT (page_g), "back", (GtkSignalFunc) druid_back_callback, (gpointer) NULL);
+
+
+  /* page_finish */
+  gtk_signal_connect (GTK_OBJECT (page_finish), "back", (GtkSignalFunc) druid_back_callback, (gpointer) NULL);
+
+  /*Tie it together */
   gtk_container_add (GTK_CONTAINER (window), druid);
   gnome_druid_append_page (GNOME_DRUID (druid),
 			   GNOME_DRUID_PAGE (page_start));
+  gnome_druid_append_page (GNOME_DRUID (druid),
+			   GNOME_DRUID_PAGE (page_a));
+  gnome_druid_append_page (GNOME_DRUID (druid),
+			   GNOME_DRUID_PAGE (page_b));
+  gnome_druid_append_page (GNOME_DRUID (druid),
+			   GNOME_DRUID_PAGE (page_c));
+  gnome_druid_append_page (GNOME_DRUID (druid),
+			   GNOME_DRUID_PAGE (page_d));
+  gnome_druid_append_page (GNOME_DRUID (druid),
+			   GNOME_DRUID_PAGE (page_e));
+  gnome_druid_append_page (GNOME_DRUID (druid),
+			   GNOME_DRUID_PAGE (page_f));
+  gnome_druid_append_page (GNOME_DRUID (druid),
+			   GNOME_DRUID_PAGE (page_g));
+  gnome_druid_append_page (GNOME_DRUID (druid),
+			   GNOME_DRUID_PAGE (page_finish));
   gnome_druid_set_page (GNOME_DRUID (druid), GNOME_DRUID_PAGE (page_start));
   gtk_widget_show_all (window);
 }
@@ -808,7 +961,6 @@ static void
 create_pixmap(void)
 {
 	GtkWidget *app;
-	GdkImlibImage *pix;
 	GtkWidget *pixmap;
 	app = create_newwin(TRUE,"testGNOME","Pixmap");
 	pixmap = gnome_pixmap_new_from_xpm_d (bomb_xpm);
