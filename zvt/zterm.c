@@ -45,29 +45,53 @@ gint main (gint argc, gchar *argv[])
   struct passwd *pw;
   GtkWindow *window;
   ZvtTerm *term;
+  GtkWidget *table;
+  GtkWidget *scrollbar;
 
   gtk_init(&argc, &argv);
 
   /* process arguments */
   cmdindex = 0;
+  scrollbacklines = 50;
   while ( (cmdindex==0) && (c=getopt(argc, argv, "e:s:")) != EOF ) {
     switch(c) {
     case 'e':
       cmdindex = optind-1;	/* index of argv array to pass to exec */
       break;
+    case 's':
+      scrollbacklines = atoi(optarg);
+      break;
     }
   }
 
-
-  /* Create toplevel window, set title and policies */
-  window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+  /* Create widgets and set options */
+  window = GTK_WINDOW(gtk_window_new (GTK_WINDOW_TOPLEVEL));
   gtk_window_set_title (GTK_WINDOW(window), "ZTerm");
 
-  term = zvt_term_new ();
-  gtk_container_add (GTK_CONTAINER (window), term);
+  table = gtk_table_new (1, 2, FALSE);
 
-  gtk_widget_show (term);
-  gtk_widget_show (window);
+  term = ZVT_TERM(zvt_term_new ());
+
+  zvt_term_set_scrollback(term, scrollbacklines);
+  zvt_term_set_font_name(term, "-misc-fixed-medium-r-normal--20-200-75-75-c-100-iso8859-1");
+
+  scrollbar = gtk_vscrollbar_new (GTK_ADJUSTMENT (term->adjustment));
+  GTK_WIDGET_UNSET_FLAGS (scrollbar, GTK_CAN_FOCUS);
+
+  /* layout the widgets */
+  gtk_container_add (GTK_CONTAINER (window), table);
+  gtk_table_attach (GTK_TABLE (table), scrollbar, 0, 1, 0, 1,
+		    GTK_FILL, GTK_EXPAND | GTK_SHRINK | GTK_FILL, 0, 0);
+
+  gtk_table_attach (GTK_TABLE (table), GTK_WIDGET(term), 1, 2, 0, 1,
+		    GTK_EXPAND | GTK_SHRINK | GTK_FILL,
+		    GTK_EXPAND | GTK_SHRINK | GTK_FILL, 0, 0);
+
+
+  gtk_widget_show (GTK_WIDGET(term));
+  gtk_widget_show (scrollbar);
+  gtk_widget_show (table);
+  gtk_widget_show (GTK_WIDGET(window));
 
 
   switch (zvt_term_forkpty(term)) {

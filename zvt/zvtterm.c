@@ -29,6 +29,7 @@
 
 #include "zvtterm.h"
 
+/* define to 'x' to enable copious debug output */
 #define d(x)
 
 /* Forward declararations */
@@ -51,18 +52,20 @@ static gint zvt_term_focus_out(GtkWidget *widget, GdkEventFocus *event);
 
 static void zvt_term_selection_received (GtkWidget *widget, GtkSelectionData *selection_data);
 static gint zvt_term_selection_clear (GtkWidget *widget, GdkEventSelection *event);
-static gint zvt_term_selection_handler (GtkWidget *widget, GtkSelectionData *selection_data_ptr, gpointer *data);
+static void zvt_term_selection_handler (GtkWidget *widget, GtkSelectionData *selection_data_ptr, gpointer data);
 
 static gint zvt_term_cursor_blink(gpointer data);
 void zvt_term_scrollbar_moved (GtkAdjustment *adj, GtkWidget *widget);
 void zvt_term_readdata(gpointer data, gint fd, GdkInputCondition condition);
+
+static void zvt_term_fix_scrollbar(ZvtTerm *term);
 
 /* Local data */
 
 static GtkWidgetClass *parent_class = NULL;
 
 guint
-zvt_term_get_type ()
+zvt_term_get_type (void )
 {
   static guint term_type = 0;
   
@@ -128,6 +131,9 @@ zvt_term_init (ZvtTerm *term)
   /* input handler */
   term->input_id = 0;
 
+  zvt_term_set_font_name(term, "-misc-fixed-medium-r-semicondensed--13-120-75-75-c-60-iso8859-1");
+
+#if 0
   /* load fonts */
   term->font = gdk_font_load("-misc-fixed-medium-r-semicondensed--13-120-75-75-c-60-iso8859-1");
   term->font_bold = gdk_font_load("-misc-fixed-bold-r-semicondensed--13-120-75-75-c-60-iso8859-1");
@@ -138,12 +144,13 @@ zvt_term_init (ZvtTerm *term)
 
   term->charwidth = gdk_string_width(term->font, "M");
   term->charheight = term->font->ascent+term->font->descent;
+#endif
 
   /* scrollback position adjustment */
-  term->adjustment = gtk_adjustment_new(0.0, 0.0, 24.0, 1.0, 24.0, 24.0);
+  term->adjustment = GTK_ADJUSTMENT(gtk_adjustment_new(0.0, 0.0, 24.0, 1.0, 24.0, 24.0));
 
   gtk_signal_connect (GTK_OBJECT (term->adjustment), "value_changed",
-		      GTK_SIGNAL_FUNC (zvt_term_scrollbar_moved), NULL);
+		      GTK_SIGNAL_FUNC (zvt_term_scrollbar_moved), term);
 
   /* selection received */
   gtk_selection_add_handler (GTK_WIDGET(term), GDK_SELECTION_PRIMARY,
@@ -287,7 +294,11 @@ zvt_term_size_request (GtkWidget      *widget,
 {
   ZvtTerm *term;
 
-  term = widget;
+  g_return_if_fail (widget != NULL);
+  g_return_if_fail (ZVT_IS_TERM (widget));
+  g_return_if_fail (requisition != NULL);
+
+  term = ZVT_TERM (widget);
   requisition->width = term->vx->vt.width * term->charwidth;	/* FIXME: base size on terminal size */
   requisition->height = term->vx->vt.height * term->charheight;
 }
@@ -320,12 +331,7 @@ zvt_term_size_allocate (GtkWidget     *widget,
       vt_update(term->vx, UPDATE_REFRESH|UPDATE_SCROLLBACK);/* redraw everything, unconditionally */
       
       /* resize the scrollbar */
-      GTK_ADJUSTMENT(term->adjustment)->upper = term->vx->vt.scrollbacklines + term->vx->vt.height-1;
-      GTK_ADJUSTMENT(term->adjustment)->value = term->vx->vt.scrollbackoffset + term->vx->vt.scrollbacklines;
-      GTK_ADJUSTMENT(term->adjustment)->page_increment = term->vx->vt.height-1;
-      GTK_ADJUSTMENT(term->adjustment)->page_size = term->vx->vt.height-1;
-
-      /* FIXME: notify? */
+      zvt_term_fix_scrollbar(term);
     }
 }
 
@@ -377,6 +383,142 @@ void zvt_term_hide_pointer(ZvtTerm *term)
   }
 }
 
+/*
+  set the number of scollback lines
+*/
+void zvt_term_set_scrollback(ZvtTerm *term, int lines)
+{
+  vt_scrollback_set(&term->vx->vt, lines);
+  zvt_term_fix_scrollbar(term);
+}
+
+/*
+  Load a set of fonts into the terminal.
+
+  These fonts should be the same size, otherwise it could get messy ...
+
+  FIXME: This should trigger a re-size
+*/
+static void zvt_term_set_fonts_internal(ZvtTerm *term, GdkFont *font, GdkFont *font_bold)
+{
+  if (font) {
+    if (term->font)
+      gdk_font_unref(term->font);
+    term->font = font;
+  }
+  if (font_bold) {
+    if (term->font_bold)
+      gdk_font_unref(term->font_bold);
+    term->font_bold = font_bold;
+  }
+
+  /* re-size window etc */
+  term->charwidth = gdk_string_width(term->font, "M");
+  term->charheight = term->font->ascent+term->font->descent;
+
+#if 0
+  gdk_window_resize(GTK_WIDGET(term)->window,
+		    term->charwidth * term->vx->vt.width,
+		    term->charheight * term->vx->vt.height);
+#endif
+
+#if 0
+  /* force a re-draw */
+  vt_update(term->vx, UPDATE_REFRESH|UPDATE_SCROLLBACK);/* redraw everything, unconditionally */
+#endif
+
+}
+
+/*
+  Load a set of fonts into the terminal.
+
+  These fonts should be the same size, otherwise it could get messy ...
+*/
+
+void zvt_term_set_fonts(ZvtTerm *term, GdkFont *font, GdkFont *font_bold)
+{
+  g_return_if_fail (term != NULL);
+  g_return_if_fail (ZVT_IS_TERM (term));
+  g_return_if_fail (font != NULL);
+  g_return_if_fail (font_bold != NULL);
+
+  zvt_term_set_fonts_internal(term, font, font_bold);
+
+  gdk_font_ref(font);
+  gdk_font_ref(font_bold);
+}
+
+/*
+  set a font by name
+
+  Tries to calculate bold fonts from the base name.
+  This only seems to sort of work in practice :-/.
+*/
+void zvt_term_set_font_name(ZvtTerm *term, char *name)
+{
+  char *newname, *rest, *outname;
+  int count;
+  char c, *ptr;
+  GdkFont *font;
+  GdkFont *font_bold;
+
+  g_return_if_fail (term != NULL);
+  g_return_if_fail (ZVT_IS_TERM (term));
+  g_return_if_fail (name != NULL);
+
+  newname = alloca(strlen(name)+1);
+  outname = alloca(strlen(name)+16);
+
+  strcpy(newname, name);
+  rest = 0;
+  ptr = newname;
+  for(count=0;(c=*ptr++);) {
+    if (c=='-') {
+      count++;
+      d(printf("scanning (%c) (%d)\n", c, count));
+      d(printf("newname = %s ptr = %s\n", newname, ptr));
+      switch (count) {
+	/* e.g. "-schumacher-clean-medium-r-normal--10-100-75-75-c-80-iso646.1991-irv"*/
+      case 3:
+	ptr[-1]=0;
+	break;
+      case 5:
+	rest = ptr-1;
+	break;
+      }
+    }
+  }
+  if (rest) {
+    sprintf(outname, "%s-medium-r%s", newname, rest);
+    printf("loading normal font %s\n", outname);
+    font = gdk_font_load(outname);
+
+    sprintf(outname, "%s-bold-r%s", newname, rest);
+    printf("loading bold font %s\n", outname);
+    font_bold = gdk_font_load(outname);
+
+    zvt_term_set_fonts_internal(term, font, font_bold);
+  } else {
+    font = gdk_font_load(name);
+    font_bold = gdk_font_load(name);
+    zvt_term_set_fonts_internal(term, font, font_bold);
+  }
+}
+
+/*
+  Called when something has changed, size of window or scrollback.
+
+  Fixes the adjustment and notifies the system.
+*/
+static void zvt_term_fix_scrollbar(ZvtTerm *term)
+{
+  GTK_ADJUSTMENT(term->adjustment)->upper = term->vx->vt.scrollbacklines + term->vx->vt.height-1;
+  GTK_ADJUSTMENT(term->adjustment)->value = term->vx->vt.scrollbackoffset + term->vx->vt.scrollbacklines;
+  GTK_ADJUSTMENT(term->adjustment)->page_increment = term->vx->vt.height-1;
+  GTK_ADJUSTMENT(term->adjustment)->page_size = term->vx->vt.height-1;
+
+  gtk_signal_emit_by_name (GTK_OBJECT (term->adjustment), "changed");
+}
 
 /*
   perhaps most of the button press stuff could be shifted
@@ -569,6 +711,10 @@ zvt_term_button_release (GtkWidget      *widget,
   return FALSE;
 }
 
+/*
+  mouse motion notify.
+  only gets called for the first motion?  why?
+*/
 static gint
 zvt_term_motion_notify (GtkWidget      *widget,
 			GdkEventMotion *event)
@@ -584,7 +730,7 @@ zvt_term_motion_notify (GtkWidget      *widget,
   term = ZVT_TERM (widget);
   vx = term->vx;
 
-  printf("Motion notify\n");
+  d(printf("Motion notify\n"));
 
   if (vx->selectiontype != VT_SELTYPE_NONE) {
 
@@ -640,23 +786,22 @@ zvt_term_selection_clear (GtkWidget *widget, GdkEventSelection *event)
 }
 
 /* supply the current selection to the caller */
-static gint
+static void
 zvt_term_selection_handler (GtkWidget *widget, 
-			    GtkSelectionData *selection_data_ptr, gpointer *data)
+			    GtkSelectionData *selection_data_ptr, gpointer data)
 {
   struct _vtx *vx;
   ZvtTerm *term;
   
-  g_return_val_if_fail (widget != NULL, FALSE);
-  g_return_val_if_fail (ZVT_IS_TERM (widget), FALSE);
-  g_return_val_if_fail (selection_data_ptr != NULL, FALSE);
+  g_return_if_fail (widget != NULL);
+  g_return_if_fail (ZVT_IS_TERM (widget));
+  g_return_if_fail (selection_data_ptr != NULL);
 
   term = ZVT_TERM (widget);
   vx = term->vx;
 
   gtk_selection_data_set (selection_data_ptr, GDK_SELECTION_TYPE_STRING,
 			  8, vx->selection_data, vx->selection_size);
-  return FALSE;
 }
 
 /* receive a selection */
@@ -714,9 +859,30 @@ static gint zvt_term_cursor_blink(gpointer data)
   return TRUE;
 }
 
+/*
+  Callback for when the adjustment changes - i.e., the scrollbar
+  moves.
+*/
 void zvt_term_scrollbar_moved (GtkAdjustment *adj, GtkWidget *widget)
 {
-  printf("Scrollbar moved\n");
+  int line;
+  ZvtTerm *term;
+
+  g_return_if_fail (widget != NULL);
+  g_return_if_fail (ZVT_IS_TERM (widget));
+
+  term = ZVT_TERM (widget);
+
+  line = term->vx->vt.scrollbacklines - (int)adj->value;
+  if (line<0)			/* needed for floating point errors in slider code */
+    line=0;
+
+  d(printf("scrollbar moved to: %f\n\n", adj->value);
+  printf("scroll offset is %d\n", line));
+
+  term->vx->vt.scrollbackoffset = -line;
+
+  vt_update(term->vx, UPDATE_REFRESH); /* will redraw if scrollbar moved */
 }
 
 
@@ -738,8 +904,6 @@ int zvt_term_forkpty(ZvtTerm *term)
 
 /*
   Keyboard input callback
-
-  How do i stop the scrollback getting a look in on characters?
 */
 static gint
 zvt_term_key_press (GtkWidget *widget, GdkEventKey *event)
@@ -779,24 +943,6 @@ zvt_term_key_press (GtkWidget *widget, GdkEventKey *event)
   case GDK_Down:
     p+=sprintf (p, "\033OB");
     break;
-#if 0
-  case GDK_KP_Right:
-  case GDK_Right:
-    p+=sprintf(p, "\033[C");
-    break;
-  case GDK_KP_Left:
-  case GDK_Left:
-    p+=sprintf (p, "\033[D");
-    break;
-  case GDK_KP_Up:
-  case GDK_Up:
-    p+=sprintf (p, "\033[A");
-    break;
-  case GDK_KP_Down:
-  case GDK_Down:
-    p+=sprintf (p, "\033[B");
-    break;
-#endif
   case GDK_KP_Insert:
   case GDK_Insert:
     p+=sprintf (p, "\033[2~");
@@ -976,13 +1122,8 @@ void zvt_term_readdata(gpointer data, gint fd, GdkInputCondition condition)
   }
 
   /* fix scroll bar */
-  GTK_ADJUSTMENT(term->adjustment)->upper = vx->vt.scrollbacklines + vx->vt.height-1;
-  GTK_ADJUSTMENT(term->adjustment)->value = vx->vt.scrollbackoffset + vx->vt.scrollbacklines;
-
-  /* raise signal? */
+  zvt_term_fix_scrollbar(term);
 }
-
-
 
 
 /*
@@ -1021,13 +1162,18 @@ void vt_draw_text(void *user_data, int col, int row, char *text, int len, int at
 {
   GdkFont *f;
   GdkGC *gc1, *gc2;
-  ZvtTerm *term;
   struct _vtx *vx;
+  ZvtTerm *term;
   GtkWidget *widget;
 
-  term = user_data;
+  widget = user_data;
+
+  g_return_if_fail (widget != NULL);
+  g_return_if_fail (ZVT_IS_TERM (widget));
+
+  term = ZVT_TERM (widget);
+
   vx = term->vx;
-  widget = term;
 
   f=term->font;
   if (attr&VTATTR_BOLD)
@@ -1051,16 +1197,28 @@ void vt_draw_text(void *user_data, int col, int row, char *text, int len, int at
 		gc2,
 		col*term->charwidth, row*term->charheight+term->font->ascent,
 		text, len);
+
+  /* check for underline */
+  if (attr&VTATTR_UNDERLINE) {
+    gdk_draw_line(widget->window,
+		  gc2,
+		  col*term->charwidth, row*term->charheight+term->font->ascent+1,
+		  (col+len)*term->charwidth, row*term->charheight+term->font->ascent+1);
+  }
 }
 
 void vt_scroll_area(void *user_data, int firstrow, int count, int offset)
 {
   int width,height;
-  GtkWidget *widget;
   ZvtTerm *term;
+  GtkWidget *widget;
 
-  term = user_data;
-  widget = term;
+  widget = user_data;
+
+  g_return_if_fail (widget != NULL);
+  g_return_if_fail (ZVT_IS_TERM (widget));
+
+  term = ZVT_TERM (widget);
 
   /* FIXME: check args */
 

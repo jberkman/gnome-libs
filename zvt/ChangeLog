@@ -1,0 +1,39 @@
+1998-04-26  ZED  <zucchi@zzedzone.box.net.au>
+
+	* memory.c: renamed mem_* functions to vt_mem_* functions.
+
+	* update.c (vt_get_selection): Added a sanity check to
+		ensure the selection lines exist.
+
+	* zterm.c (main): Added scrollbar.
+		Added -s <number> scrollback size option.
+		Added call to zvt_term_set_font_name().
+
+	* vt.c (vt_delete_char): Fixed typo in if test.
+	(vt.c): Removed globals inadvertantly left in the code.
+		Renamed mem_* functions to vt_mem_* functions.
+	(vt_scrollback_set): New function.
+	(parse_vt): Now reads \E] command - set text options, although
+		does not process it.
+		Multiple arguments were being passed to \EM command
+		- reverse scroll, wrongly.
+	(vt_modeh/l): Detects/removes application cursor key mode.
+	
+	* zvtterm.c (zvt_term_fix_scrollbar): Added new function.
+		Signals adjustemnt when a change occurs.
+	(zvt_term_size_allocate): Added call to zvt_term_fix_scrollbar.
+	(zvt_term_readdata): Added call to zvt_term_fix_scrollbar.
+	(zvt_term_init): Fixed signal connect to point to the term widget.
+	(zvt_term_scrollbar_moved): Implemented adjustment change callback.
+	(zvt_term_selection_handler): Changed to void.  Fixed g_return() macros.
+	(zvt_term_size_request): Added input validation.
+	(vt_draw_text): Added input validation.
+	(vt_scroll_area): Added input validation.
+	(zvt_term_init): Added cast to gtk_adjustment_new().
+	(zvt_term_set_scrollback): New function.  Calls vt_scrollback_set
+		and fixes the scrollbar too.
+	(zvt_term_set_fonts): New function.  Sets fonts.
+	(zvt_term_set_font_name): New function, sets fonts by name.
+	(vt_draw_text): Added underline rendering support.
+
+

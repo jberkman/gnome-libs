@@ -39,10 +39,8 @@ struct _mem {
   char mem[MEM_BLOCK_SIZE];
 };
 
-/*static struct _mem *current=0;*/	/* FIXME: must move into state variables */
-/*static struct vt_list mem_list;*/
-
-int mem_init(struct vt_list *mem_list)
+/* setup the memory list */
+int vt_mem_init(struct vt_list *mem_list)
 {
   d(printf("mem_init called (%s)\n", __FILE__));
   vt_list_new(mem_list);
@@ -50,7 +48,7 @@ int mem_init(struct vt_list *mem_list)
 }
 
 /* get a memory block from the current pool */
-void *mem_get(struct vt_list *mem_list, int size)
+void *vt_mem_get(struct vt_list *mem_list, int size)
 {
   char *out;
   struct _mem *block;
@@ -79,7 +77,7 @@ void *mem_get(struct vt_list *mem_list, int size)
    order it was allocated ... (and all intermediate
    memory segments must also be free'd)
 */
-void mem_push(struct vt_list *mem_list, void *mem, int size)
+void vt_mem_push(struct vt_list *mem_list, void *mem, int size)
 {
   struct _mem *wn, *nn;
   char *mem_ptr;

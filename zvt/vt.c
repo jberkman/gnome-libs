@@ -91,6 +91,21 @@ void vt_dump(struct vt_em *vt)
 #ifdef SCROLLBACK_BUFFER
 
 /*
+  set the scrollback buffer size
+*/
+void vt_scrollback_set(struct vt_em *vt, int lines)
+{
+  struct vt_line *ln;
+
+  while (vt->scrollbacklines >= lines) {
+    ln = (struct vt_line *)vt_list_remhead(&vt->scrollback); /* remove the top of list line */
+    vt_mem_push(&vt->mem_list, ln, sizeof(struct vt_line)+sizeof(uint32)*ln->width);
+    vt->scrollbacklines--;
+  }
+  vt->scrollbackmax = lines;
+}
+
+/*
   clone the line 'line' and add it to the bottom of
   the scrollback buffer.
 
@@ -103,7 +118,7 @@ void vt_scrollback_add(struct vt_em *vt, struct vt_line *wn)
   struct vt_line *ln;
 
   /* create a new scroll-back line */
-  ln = mem_get(&vt->mem_list, sizeof(struct vt_line) + sizeof(uint32)*wn->width);/* always allocates 1 more 'char' */
+  ln = vt_mem_get(&vt->mem_list, sizeof(struct vt_line) + sizeof(uint32)*wn->width);/* always allocates 1 more 'char' */
   ln->width = wn->width;
   memcpy(ln->data, wn->data, wn->width*sizeof(uint32));
   /* add it to the scrollback buffer */
@@ -114,7 +129,7 @@ void vt_scrollback_add(struct vt_em *vt, struct vt_line *wn)
   /* limit the total number of lines in scrollback */
   if (vt->scrollbacklines >= vt->scrollbackmax) {
     ln = (struct vt_line *)vt_list_remhead(&vt->scrollback); /* remove the top of list line */
-    mem_push(&vt->mem_list, ln, sizeof(struct vt_line)+sizeof(uint32)*ln->width);
+    vt_mem_push(&vt->mem_list, ln, sizeof(struct vt_line)+sizeof(uint32)*ln->width);
   } else {
     vt->scrollbacklines++;
   }
@@ -540,6 +555,7 @@ static void vt_restore_cursor(struct vt_em *vt)
 }
 
 /* cursor movement */
+/* in app-cursor mode, this will cause the screen to scroll ? */
 static void vt_up(struct vt_em *vt)
 {
   int count=1;
@@ -548,9 +564,12 @@ static void vt_up(struct vt_em *vt)
   if (vt->argcnt==1)
     count=atoi(vt->args[0]);
 
+  d(printf("cursor up %d, from %d\n", count, vt->cursory));
+
   vt->cursory-=count;
-  if (vt->cursory<vt->scrolltop)
+  if (vt->cursory<vt->scrolltop) {
     vt->cursory=vt->scrolltop;
+  }
 
   vt->this = (struct vt_line *)vt_list_index(&vt->lines, vt->cursory);
 }
@@ -636,6 +655,9 @@ static void vt_modeh(struct vt_em *vt)
       break;
     case '?':
       switch(atoi(vt->args[0]+1)) {
+      case 1:			/* turn on application cursor keys */
+	vt->mode |= VTMODE_APP_CURSOR;
+	break;
       case 1000:
 	d(printf("sending mouse events\n"));
 	vt->mode |= VTMODE_SEND_MOUSE;
@@ -658,6 +680,9 @@ static void vt_model(struct vt_em *vt)
       break;
     case '?':
       switch(atoi(vt->args[0]+1)) {
+      case 1:
+	vt->mode &= ~VTMODE_APP_CURSOR;
+	break;
       case 1000:
 	vt->mode &= ~VTMODE_SEND_MOUSE;
 	break;
@@ -852,7 +877,7 @@ struct vt_jump vtjumps[] = {
      1: escape mode.  switch on next character.
      2: '[' escape mode (keep finding numbers until a command code found)
      3: 'O' escape mode.  switch on next character.
-
+     4: ']' escape mode.  swallows until following bell (or newline).
      needs a little work on '[' mode (with parameter grabbing)
   */
 void parse_vt(struct vt_em *vt, char *ptr, int length)
@@ -900,6 +925,7 @@ void parse_vt(struct vt_em *vt, char *ptr, int length)
       break;
     case 1:			/* received 'esc', next byte */
       if (mode & VT_ESC) {	/* got a \Ex sequence */
+	vt->argcnt = 0;
 	modes[c].process(vt);
 	state=0;
       } else if (c=='[') {
@@ -909,6 +935,11 @@ void parse_vt(struct vt_em *vt, char *ptr, int length)
 	state = 2;
       } else if (c=='O') {
 	state = 3;
+      } else if (c==']') {	/* set text parameters, read parameters */
+	state = 4;
+	vt->argptr = vt->args;
+	vt->outptr = vt->argptr[0];
+	vt->outend = vt->outptr+VTPARAM_ARGMAX*VTPARAM_MAXARGS-1;
       } else {
 	state = 0;		/* dont understand input */
       }
@@ -943,6 +974,18 @@ void parse_vt(struct vt_em *vt, char *ptr, int length)
       }	/* ignore otherwise */
       state=0;
       break;
+    case 4:			/* \E]..;...BEL */
+      if (c==0x07) {
+	/* handle output */
+	*(vt->outptr)=0;
+	printf("received text mode: %s\n", vt->argptr[0]);
+	state = 0;
+      } else if (c==0x0a) {
+	state = 0;		/* abort command */
+      } else {
+	if (vt->outptr<vt->outend) /* truncate excessive args */
+	  *(vt->outptr)++=c;
+      }
     }
   }
   vt->state = state;
@@ -1010,7 +1053,7 @@ struct vt_em *vt_init(struct vt_em *vt, int width, int height)
   vt->scrollbackold=0;
   vt->scrollbackmax=50;		/* maximum scrollback lines */
 
-  mem_init(&vt->mem_list);
+  vt_mem_init(&vt->mem_list);
 
   return vt;
 }

@@ -32,9 +32,9 @@
 typedef unsigned int uint32;	/* 32 bit unsigned int */
 /* perhaps should be a bitfield ? */
 
-/* defines for VT argument processing */
+/* defines for VT argument processing, also used for textual arguments */
 #define VTPARAM_MAXARGS 5	/* maximum number of arguments */
-#define VTPARAM_ARGMAX 5	/* number of characters in each arg maximum */
+#define VTPARAM_ARGMAX 20	/* number of characters in each arg maximum */
 
 
 struct vt_line {
@@ -109,6 +109,7 @@ struct vt_em {
 
 #define VTMODE_INSERT 0x00000001 /* insert mode active */
 #define VTMODE_SEND_MOUSE 0x00000002 /* send mouse clicks */
+#define VTMODE_APP_CURSOR 0x00000008 /* application cursor keys */
 
 struct vt_em *vt_init(struct vt_em *vt, int width, int height);
 void vt_resize(struct vt_em *vt, int width, int height, int pixwidth, int pixheight);
@@ -118,5 +119,6 @@ int vt_forkpty(struct vt_em *vt);
 int vt_readchild(struct vt_em *vt, char *buffer, int len);
 int vt_writechild(struct vt_em *vt, char *buffer, int len);
 int vt_report_button(struct vt_em *vt, int button, int qual, int x, int y);
+void vt_scrollback_set(struct vt_em *vt, int lines);
 
 #endif

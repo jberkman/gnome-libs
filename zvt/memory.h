@@ -23,8 +23,8 @@
 #include "lists.h"
 
 /* fast memory handling */
-int mem_init(struct vt_list *memlist);
-void *mem_get(struct vt_list *memlist, int size);
-void mem_push(struct vt_list *memlist, void *mem, int size);
+int vt_mem_init(struct vt_list *memlist);
+void *vt_mem_get(struct vt_list *memlist, int size);
+void vt_mem_push(struct vt_list *memlist, void *mem, int size);
 
 #endif /* _MEMORY_H */

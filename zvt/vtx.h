@@ -87,6 +87,7 @@ void vt_draw_text_select(struct _vtx *vx, int col, int row, char *text, int len,
 char *vt_get_selection(struct _vtx *vx, int *len);
 void vt_clear_selection(struct _vtx *vx);
 void vt_fix_selection(struct _vtx *vx);
+void vt_draw_selection(struct _vtx *vx);
 void vt_update_rect(struct _vtx *vx, int sx, int sy, int ex, int ey);
 void vt_update(struct _vtx *vt, int state);
 

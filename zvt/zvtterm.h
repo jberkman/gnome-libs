@@ -64,8 +64,7 @@ extern "C" {
     GdkPixmap *cursor_dot_pm;	/* 'dot' pixmap, for dot cursor (invisible) */
     guint timeout_id;		/* id of timeout function */
     GdkFont *font,		/* current normal font */
-      *font_bold;			/* current bold font */
-				/* (add italic font?) */
+      *font_bold;		/* current bold font */
   };
 
   struct _ZvtTermClass
@@ -77,8 +76,16 @@ extern "C" {
   GtkWidget*    zvt_term_new                    (void);
   int		zvt_term_forkpty		(ZvtTerm *term);
 
-  void zvt_term_hide_pointer(ZvtTerm *term);
-  void zvt_term_show_pointer(ZvtTerm *term);
+  guint         zvt_term_get_type               (void);
+
+  void          zvt_term_set_scrollback         (ZvtTerm *term, int lines);
+
+  void          zvt_term_set_font_name          (ZvtTerm *term, char *name);
+  void          zvt_term_set_fonts              (ZvtTerm *term,
+						 GdkFont *font, GdkFont *font_bold);
+
+  void          zvt_term_hide_pointer           (ZvtTerm *term);
+  void          zvt_term_show_pointer           (ZvtTerm *term);
 
   /*GtkAdjustment* zvt_term_get_adjustment         (ZvtTerm      *terminal);
     void           zvk_term_set_adjustment         (ZvtTerm      *dial,
