@@ -250,7 +250,30 @@ the value for item iterators, or to the section name for section
 iterators.</para>
 </listitem>
 </itemizedlist>
+</sect3>
 </sect2>
+<sect2 id="gnome-config-drop-all"><title>gnome_config_drop_all - drops all the cached config data from the in-memory cache</title>
+<funcsynopsis><funcdef>void <function>gnome_config_drop_all</function></funcdef></funcsynopsis>
+<sect3><title>Description</title>
+<para>
+The gnome_config routines cache the configuration entries in memory to
+increase speed. Calling gnome_config_drop_all() causes the cache to be
+cleared. <!-- XXX verify this information with Miguel -->
+</para></sect3>
+</sect2>
+<sect2 id="gnome-config-sync"><title>gnome_config_sync - writes all
+unwritten config entries to the config database</title>
+<funcsynopsis><funcdef>void <function>gnome_config_sync</function></funcdef></funcsynopsis>
+<sect3><title>Description</title>
+<para>
+As previously stated, the gnome_config routines cache configuration
+entries in memory to increase speed. This routine flushes the cache to
+disk - you would ordinarily use it after a number of
+gnome_config_set_* operations.
+</para></sect3>
+</sect2>
+<sect2 id="gnome-config-clean"><title>gnome_*clean_* - routines for removing a configuration database entry or subtree altogether</title>
+<
 </sect1>
 
 <sect1 id="gnome-defs">
