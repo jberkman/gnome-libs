@@ -53,12 +53,59 @@ struct _ZvtTerm
 {
   GtkWidget widget;
 
+  /* scrollback position adjustement */
+  GtkAdjustment *adjustment;
+
   GtkShadowType shadow_type;
   GdkWindow *term_window;
 
   /* zvt emulator */
   struct _vtx *vx;
 
+  /* size of characters */
+  int charwidth;
+  int charheight;
+
+  /* input handler, message handler, cursor blink timeout */
+  gint input_id;
+  gint msg_id;
+  gint timeout_id;
+
+  /* resizing */
+  gboolean set_grid_size_pending;
+  guint grid_width;
+  guint grid_height;
+
+  /* internal data */
+  GdkCursor *cursor_bar;	/* I beam cursor */
+  GdkCursor *cursor_dot;       	/* the blank cursor */
+  GdkCursor *cursor_current;	/* current active cursor */
+  GdkFont *font;		/* current normal font */
+  GdkFont *font_bold;		/* current bold font */
+  GdkGC *scroll_gc;		/* special GC used for scrolling */
+  GdkGC *fore_gc, *back_gc;	/* GCs for the foreground and background colors */
+  int fore_last, back_last;	/* last colour for foreground/background gc's */
+  GdkColorContext *color_ctx;	/* Color context in use, where we allocate our colors */
+  gulong colors [18];		/* Our colors, pixel values. */
+  GdkIC *ic;			/* input context */
+
+ /* file name of a pixmap, if NULL, none is loaded
+  * and normal mode is used
+  */
+  char *pixmap_filename;
+
+  /* transparency stuff, it's left in even if we don't compile
+   * transparency/background pixmaps, if we don't, it will just be ignored
+   */
+  struct
+  {
+    GdkPixmap *pix; /* background pixmap */
+    int x,y,w,h;    /* these are used to know if the position changed
+		     * and we need to get new shaded transparent pixmap
+		     */
+  } background;
+
+  /* bitfield flags -- keep at end of structure */
   unsigned int cursor_on:1;	      /* on/off cursor */
   unsigned int cursor_filled:1;	      /* is the cursor filled? */
   unsigned int cursor_blink_state:1;  /* cursor blink state */
@@ -69,47 +116,6 @@ struct _ZvtTerm
   unsigned int transparent:1;	      /*transparent background*/
   unsigned int shaded:1;	      /*transparent background with shade*/
   unsigned int swap_del_key:1;        /* swap the del and backspace keys */
-  char *pixmap_filename;	      /* file name of a pixmap, if NULL, none is loaded
-				       * and normal mode is used
-				       */
-
-  int charwidth;		/* size of characters */
-  int charheight;
-
-  gint input_id;		/* input handler id */
-  gint msg_id;		        /* message handler id */
-
-  /* sub-objects required */
-  GtkAdjustment *adjustment;	/* scrollback position adjustement */
-
-  /* internal data */
-  GdkCursor *cursor_bar,	/* I beam cursor */
-    *cursor_dot,		/* the blank cursor */
-    *cursor_current;		/* current active cursor */
-  gint timeout_id;		/* id of timeout function */
-  GdkFont *font,		/* current normal font */
-    *font_bold;		        /* current bold font */
-  GdkGC *scroll_gc;		/* special GC used for scrolling */
-  GdkGC *fore_gc, *back_gc;	/* GCs for the foreground and background colors */
-  int fore_last, back_last;	/* last colour for foreground/background gc's */
-  GdkColorContext *color_ctx;	/* Color context in use, where we allocate our colors */
-  gulong colors [18];		/* Our colors, pixel values. */
-  GdkIC *ic;			/* input context */
-
-  /* transparency stuff, it's left in even if we don't compile
-   * transparency/background pixmaps, if we don't, it will just be ignored*/
-  struct
-  {
-    GdkPixmap *pix; /* background pixmap */
-    int x,y,w,h;    /* these are used to know if the position changed
-		     * and we need to get new shaded transparent pixmap
-		     */
-  } background;
-
-  /* resizing */
-  gboolean set_grid_size_pending;
-  guint grid_width;
-  guint grid_height;
 };
 
 struct _ZvtTermClass

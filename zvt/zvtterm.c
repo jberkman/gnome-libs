@@ -51,6 +51,9 @@
 /* define to 'x' to enable copious debug output */
 #define d(x)
 
+/* default font */
+#define DEFAULT_FONT "-misc-fixed-medium-r-semicondensed--13-120-75-75-c-60-iso8859-1"
+
 
 /* forward declararations */
 static void zvt_term_init (ZvtTerm *term);
@@ -224,17 +227,47 @@ zvt_term_class_init (ZvtTermClass *class)
 static void
 zvt_term_init (ZvtTerm *term)
 {
-  /* create and configure callbacks for the teminal
-   * back-end
-   */
+  GTK_WIDGET_SET_FLAGS (term, GTK_CAN_FOCUS);
+
+  /* create and configure callbacks for the teminal back-end */
   term->vx = vtx_new (1, 1, term);
   term->vx->vt.ring_my_bell = zvt_term_bell;
   term->vx->vt.change_my_name = zvt_term_title_changed_raise;
 
-  /* widget initalization */
-  GTK_WIDGET_SET_FLAGS (term, GTK_CAN_FOCUS);
   term->shadow_type = GTK_SHADOW_IN;
   term->term_window = NULL;
+  term->cursor_bar = NULL;
+  term->cursor_dot = NULL;
+  term->cursor_current = NULL;
+  term->font = NULL;
+  term->font_bold = NULL;
+  term->scroll_gc = NULL;
+  term->fore_gc = NULL;
+  term->back_gc = NULL;
+  term->fore_last = 0;
+  term->back_last = 0;
+  term->color_ctx = 0;
+  term->ic = NULL;
+
+  /* background pixmap */
+  term->pixmap_filename = NULL;
+  term->background.pix = NULL;
+  term->background.x = 0;
+  term->background.y = 0;
+  term->background.w = 0;
+  term->background.h = 0;
+
+  /* grid sizing */
+  term->set_grid_size_pending = TRUE;
+  term->grid_width = term->vx->vt.width;
+  term->grid_height = term->vx->vt.height;
+
+  /* input handlers */
+  term->input_id = -1;
+  term->msg_id = -1;
+  term->timeout_id = -1;
+
+  /* bitfield flags */
   term->cursor_on = 0;
   term->cursor_filled = 1;
   term->cursor_blink_state = 0;
@@ -245,23 +278,15 @@ zvt_term_init (ZvtTerm *term)
   term->in_expose = 0;
   term->transparent = 0;
   term->shaded = 0;
-  term->pixmap_filename = NULL;
-  term->background.pix = NULL;
-  term->background.x = term->background.y =
-    term->background.w = term->background.h = 0;
-  
-  /* input handlers */
-  term->input_id = -1;
-  term->msg_id = -1;
-  term->timeout_id = -1;
 
-  zvt_term_set_font_name(
-      term, 
-      "-misc-fixed-medium-r-semicondensed--13-120-75-75-c-60-iso8859-1");
+  /* charwidth, charheight set here */
+  zvt_term_set_font_name (term, DEFAULT_FONT);
 
   /* scrollback position adjustment */
-  term->adjustment = 
-    GTK_ADJUSTMENT(gtk_adjustment_new(0.0, 0.0, 24.0, 1.0, 24.0, 24.0));
+  term->adjustment =
+    GTK_ADJUSTMENT (gtk_adjustment_new (0.0, 0.0, 1.0, 1.0, 1.0, 1.0));
+  gtk_object_ref (GTK_OBJECT (term->adjustment));
+  gtk_object_sink (GTK_OBJECT (term->adjustment));
 
   gtk_signal_connect (
       GTK_OBJECT (term->adjustment),
@@ -275,11 +300,6 @@ zvt_term_init (ZvtTerm *term)
       GDK_SELECTION_PRIMARY,
       GDK_SELECTION_TYPE_STRING, 
       0);
-
-  /* resizing */
-  term->set_grid_size_pending = TRUE;
-  term->grid_width = term->vx->vt.width;
-  term->grid_height = term->vx->vt.height;
 }
 
 /**
@@ -376,8 +396,28 @@ zvt_term_destroy (GtkObject *object)
 
   term = ZVT_TERM (object);
 
-  zvt_term_closepty(term);
-  vtx_destroy(term->vx);
+  zvt_term_closepty (term);
+  vtx_destroy (term->vx);
+
+  if (term->font)
+    {
+      gdk_font_unref (term->font);
+      term->font = NULL;
+    }
+
+  if (term->font_bold)
+    {
+      gdk_font_unref (term->font_bold);
+      term->font_bold = NULL;
+    }
+
+  /* release the adjustment */
+  if (term->adjustment)
+    {
+      gtk_signal_disconnect_by_data (GTK_OBJECT (term->adjustment), term);
+      gtk_object_unref (GTK_OBJECT (term->adjustment));
+      term->adjustment = NULL;
+    }
 
   if (term->ic) 
     {
@@ -532,8 +572,10 @@ zvt_term_realize (GtkWidget *widget)
   /* Colors */
   term->fore_gc = gdk_gc_new (term->term_window);
   term->back_gc = gdk_gc_new (term->term_window);
-  term->color_ctx = gdk_color_context_new (gtk_widget_get_visual (GTK_WIDGET (term)),
-					   gtk_widget_get_colormap (GTK_WIDGET (term)));
+  term->color_ctx = 
+      gdk_color_context_new (gtk_widget_get_visual (GTK_WIDGET (term)),
+			     gtk_widget_get_colormap (GTK_WIDGET (term)));
+
   /* Allocate default color set */
   zvt_term_set_default_color_scheme (term);
   
@@ -542,7 +584,7 @@ zvt_term_realize (GtkWidget *widget)
   term->fore_last = -1;
 
   /* input context */
-  if (gdk_im_ready() && !term->ic)
+  if (gdk_im_ready () && !term->ic)
     {
       GdkICAttr attr;
       
@@ -556,10 +598,6 @@ zvt_term_realize (GtkWidget *widget)
 	  g_warning("Can't create input context.");
 	}
     }
-
-  /* FIXME: not sure if this is right or not? */
-  if (!GTK_WIDGET_HAS_FOCUS (widget))
-    gtk_widget_grab_focus (widget);
 }
 
 static void
@@ -619,6 +657,10 @@ zvt_term_map (GtkWidget *widget)
 
       gdk_window_show (widget->window);
       gdk_window_show (term->term_window);
+
+      /* XXX: is this right? --JMP */
+      if (!GTK_WIDGET_HAS_FOCUS (widget))
+	gtk_widget_grab_focus (widget);
     }
 }
 
@@ -661,7 +703,7 @@ zvt_term_focus_in(GtkWidget *widget, GdkEventFocus *event)
 
   /* setup blinking cursor */
   if (term->blink_enabled && term->timeout_id == -1)
-    term->timeout_id = gtk_timeout_add(500, zvt_term_cursor_blink, term);
+    term->timeout_id = gtk_timeout_add (500, zvt_term_cursor_blink, term);
 
   if (term->ic)
     gdk_im_begin (term->ic, term->term_window);
@@ -1046,7 +1088,7 @@ zvt_term_set_font_name (ZvtTerm *term, char *name)
   g_return_if_fail (name != NULL);
 
   newname = g_string_new (name);
-  outname = g_string_new (NULL);
+  outname = g_string_new ("");
 
   rest = 0;
   ptr = newname->str;
@@ -1056,15 +1098,16 @@ zvt_term_set_font_name (ZvtTerm *term, char *name)
       if (c == '-')
 	{
 	  count++;
-	  d( printf("scanning (%c) (%d)\n", c, count) );
-	  d( printf("newname = %s ptr = %s\n", newname->str, ptr) );
+
+	  d(printf("scanning (%c) (%d)\n", c, count));
+	  d(printf("newname = %s ptr = %s\n", newname->str, ptr));
 
 	  switch (count) 
 	    {
-/* e.g. "-schumacher-clean-medium-r-normal--10-100-75-75-c-80-iso646.1991-irv"*/
 	    case 3:
 	      ptr[-1] = 0;
 	      break;
+
 	    case 5:
 	      rest = ptr - 1;
 	      break;

@@ -1,5 +1,12 @@
 1999-01-03  Jay Painter <jpaint@serv.net>
 
+	* zvtterm.c, zvtterm.h: more widget cleanup, rearranged structure
+	to take up less memory by putting all the bitfields at the end of
+	the zvtterm structure (and breaking binary compatibility); fixed
+	a bunch of memory leads caused by not unref(ing) fonts, objects.
+
+1999-01-03  Jay Painter <jpaint@serv.net>
+
 	* zterm.c: made the test program work better by properly duplicating
 	and setting up the environment for the forked pty.
 
