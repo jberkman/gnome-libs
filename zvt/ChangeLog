@@ -1,3 +1,9 @@
+Fri Jun 16 12:17:53 2000  George Lebl <jirka@5z.com>
+
+	* zvtterm.c (vt_cursor_state): Draw the no-focus cursor as an
+	  unfilled rectangle.  This makes figuring out which terminal is
+	  focused much easier and is consistent with the xterm behaviour
+
 Fri May 05 19:22:11 2000  George Lebl <jirka@5z.com>
 
 	* background.c: fix for new gdk-pixbuf interface and fix a warning
