@@ -2,13 +2,15 @@
 #define GNOME_PTY_H
 
 typedef enum {
-	GNOME_PTY_OPEN_PTY = 1,
+	GNOME_PTY_OPEN_PTY_UTMP = 1,
+	GNOME_PTY_OPEN_PTY_UWTMP,
+	GNOME_PTY_OPEN_PTY_WTMP,
 	GNOME_PTY_OPEN_NO_DB_UPDATE,
 	GNOME_PTY_CLOSE_PTY
 } GnomePtyOps;
 
-void *update_dbs         (char *login_name, char *display_name, char *term_name);
-void write_logout_record (void *data);
+void *update_dbs         (int utmp, int wtmp, char *login_name, char *display_name, char *term_name);
+void write_logout_record (void *data, int utmp, int wtmp);
 
 
 #ifdef HAVE_UTMPX_H

@@ -87,6 +87,8 @@ struct pty_info {
 	struct pty_info *next;
 	int    master_fd, slave_fd;
 	char   *line;
+	void   *data;
+	char   utmp, wtmp;
 };
 
 typedef struct pty_info pty_info;
@@ -201,10 +203,10 @@ pty_remove (pty_info *pi)
 static void
 shutdown_pty (pty_info *pi)
 {
-#ifdef HAVE_LOGIN
-	logwtmp (pi->line, "", "");
-	logout (pi->line);
-#endif
+	if (pi->utmp || pi->wtmp)
+		if (pi->data)
+			write_logout_record (pi->data, pi->utmp, pi->wtmp);
+	
 	close (pi->master_fd);
 	close (pi->slave_fd);
 
@@ -221,10 +223,12 @@ shutdown_helper (void)
 }
 
 static pty_info *
-pty_add (int master_fd, int slave_fd, char *line)
+pty_add (int utmp, int wtmp, int master_fd, int slave_fd, char *line)
 {
 	pty_info *pi = malloc (sizeof (pty_info));
 
+	memset (pi, 0, sizeof (pty_info));
+	
 	if (pi == NULL){
 		shutdown_helper ();
 		exit (1);
@@ -238,6 +242,8 @@ pty_add (int master_fd, int slave_fd, char *line)
 	pi->master_fd = master_fd;
 	pi->slave_fd  = slave_fd;
 	pi->next = pty_list;
+	pi->utmp = utmp;
+	pi->wtmp = wtmp;
 
 	pty_list = pi;
 
@@ -259,7 +265,7 @@ path_max (void)
 }
 
 static int
-open_ptys (int update_db)
+open_ptys (int utmp, int wtmp)
 {
 	char *term_name;
 	int status, master_pty, slave_pty;
@@ -276,7 +282,7 @@ open_ptys (int update_db)
 		return 0;
 	}
 
-	p = pty_add (master_pty, slave_pty, term_name);
+	p = pty_add (utmp, wtmp, master_pty, slave_pty, term_name);
 	result = 1;
 
 	if (write (STDIN_FILENO, &result, sizeof (result)) == -1 ||
@@ -286,39 +292,8 @@ open_ptys (int update_db)
 		exit (0);
 	}
 
-	if (update_db){
-#ifdef HAVE_LOGIN
-		/* We have to fork and make the slave_pty our
-		 * controlling pty if we don't want to clobber the
-		 * parent's one ...
-		 */
-		pid_t pid;
-		
-		pid = fork ();
-		if (pid == 0) {
-			setsid ();
-			while (dup2 (slave_pty, 0) == -1 && errno == EINTR)
-				;
-#ifdef USE_SYSV_UTMP
-			/* [FIXME]: This is only a hack since we
-			 * declared `update_dbs' conditionally to
-			 * the same #ifdef in gnome-utmp.c.
-			 */
-			update_dbs (login_name, display_name, term_name);
-#endif
-			exit (0);
-		}
-		
-		return 1;
-#else
-#ifdef USE_SYSV_UTMP
-		/* [FIXME]: This is only a hack since we declared
-		 * `update_dbs' conditionally to the same #ifdef
-		 * in gnome-utmp.c.
-		 */
-		update_dbs (login_name, display_name, term_name);
-#endif
-#endif
+	if (utmp || wtmp){
+		p->data = update_dbs (utmp, wtmp, login_name, display_name, term_name);
 	}
 	
 	return 1;
@@ -464,12 +439,20 @@ main (int argc, char *argv [])
 		}
 
 		switch (op){
-		case GNOME_PTY_OPEN_PTY:
-			open_ptys (1);
+		case GNOME_PTY_OPEN_PTY_UTMP:
+			open_ptys (1, 0);
+			break;
+			
+		case GNOME_PTY_OPEN_PTY_UWTMP:
+			open_ptys (1, 1);
+			break;
+			
+		case GNOME_PTY_OPEN_PTY_WTMP:
+			open_ptys (0, 1);
 			break;
 			
 		case GNOME_PTY_OPEN_NO_DB_UPDATE:
-			open_ptys (0);
+			open_ptys (0, 0);
 			break;
 			
 		case GNOME_PTY_CLOSE_PTY:

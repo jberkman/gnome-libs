@@ -126,6 +126,8 @@ struct _ZvtTermClass
   void (* title_changed) (ZvtTerm *term, VTTITLE_TYPE type, char *newtitle);
 };
 
+#define ZVT_TERM_DO_UTMP_LOG 1
+#define ZVT_TERM_DO_WTMP_LOG 2
 
 GtkWidget*   zvt_term_new                      (void);
 GtkWidget*   zvt_term_new_with_size            (int cols, int rows);

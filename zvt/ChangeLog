@@ -1,3 +1,12 @@
+1999-02-09  Miguel de Icaza  <miguel@nuclecu.unam.mx>
+
+	* gnome-pty-helper.c (shutdown_pty): record logout.  Keep track of
+	the utmp/wtmp updating.
+
+	* subshell.c: Add support for split utmp/wtmp recording.
+
+	* zterm.c: log everything by default.
+
 1999-02-09  Michael Zucchi  <zucchi@zzedzone.mmc.com.au>
 
 	* zvtterm.c (zvt_term_set_blink): Remap true state to 1, false to

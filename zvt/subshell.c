@@ -23,6 +23,8 @@
 #include <sys/types.h>
 
 #include "subshell-includes.h"
+#define ZVT_TERM_DO_UTMP_LOG 1
+#define ZVT_TERM_DO_WTMP_LOG 2
 
 /* Pid of the helper SUID process */
 static pid_t helper_pid;
@@ -145,7 +147,7 @@ receive_fd (int helper_fd)
 	return *(int *) CMSG_DATA (cmptr);
 }
 
-int
+static int
 s_pipe (int fd [2])
 {
 	return socketpair (AF_UNIX, SOCK_STREAM, 0, fd);
@@ -163,7 +165,7 @@ receive_fd (int helper_fd)
 	return recvfd.fd;
 }
 
-int
+static int
 s_pipe (int fd [2])
 {
 	return pipe (fd);
@@ -219,10 +221,17 @@ get_ptys (int *master, int *slave, int update_wutmp)
 			close (helper_socket_protocol  [1]);
 		}
 	}
-	if (update_wutmp)
-		op = GNOME_PTY_OPEN_PTY;
-	else
-		op = GNOME_PTY_OPEN_NO_DB_UPDATE;
+	op = GNOME_PTY_OPEN_NO_DB_UPDATE;
+	
+	if (update_wutmp & ZVT_TERM_DO_UTMP_LOG){
+		if (update_wutmp & ZVT_TERM_DO_WTMP_LOG)
+			op = GNOME_PTY_OPEN_PTY_UWTMP;
+		else
+			op = GNOME_PTY_OPEN_PTY_UTMP;
+	} else {
+		if (update_wutmp & ZVT_TERM_DO_WTMP_LOG)
+			op = GNOME_PTY_OPEN_PTY_WTMP;
+	}
 	
 	if (write (helper_socket_protocol [0], &op, sizeof (op)) < 0)
 		return NULL;

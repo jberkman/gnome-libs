@@ -223,7 +223,7 @@ main (gint argc, gchar *argv[])
   gtk_widget_show (window);
 
   /* fork the shell/program */
-  switch (zvt_term_forkpty(ZVT_TERM (term), TRUE))
+  switch (zvt_term_forkpty(ZVT_TERM (term), ZVT_TERM_DO_UTMP_LOG | ZVT_TERM_DO_WTMP_LOG))
     {
     case -1:
       perror("ERROR: unable to fork:");

@@ -44,18 +44,18 @@
 #endif
 
 #if defined(__FreeBSD__) || defined(__OpenBSD__) || defined(__NetBSD__)
-#define _HAVE_UT_HOST 1
-#define _HAVE_UT_TIME 1
+#    define _HAVE_UT_HOST 1
+#    define _HAVE_UT_TIME 1
 #endif
 
 #ifdef USE_SYSV_UTMP
-#ifdef HAVE_GETUTMPX
-#    define UTMP struct utmpx
-#    undef WTMP_FILENAME
-#    define WTMP_FILENAME WTMPX_FILE
-#    define update_wtmp updwtmpx
+#    ifdef HAVE_GETUTMPX
+#        define UTMP struct utmpx
+#        undef WTMP_FILENAME
+#        define WTMP_FILENAME WTMPX_FILE
+#        define update_wtmp updwtmpx
 #else
-#    define UTMP struct utmp
+#        define UTMP struct utmp
 
 static void
 update_wtmp (char *file, struct utmp *putmp)
@@ -101,7 +101,7 @@ update_wtmp (char *file, struct utmp *putmp)
 #endif
 
 void *
-update_dbs (char *login_name, char *display_name, char *term_name)
+update_dbs (int utmp, int wtmp, char *login_name, char *display_name, char *term_name)
 {
 	UTMP *ut;
 	struct utmp ut_aux;
@@ -162,8 +162,11 @@ update_dbs (char *login_name, char *display_name, char *term_name)
 	login (ut);
 #else
 	utmpname (UTMP_FILENAME);
-	pututline (ut);
-	update_wtmp (WTMP_FILENAME, ut);
+	if (utmp)
+		pututline (ut);
+
+	if (wtmp)
+		update_wtmp (WTMP_FILENAME, ut);
 	endutent ();
 #endif
 
@@ -172,7 +175,7 @@ update_dbs (char *login_name, char *display_name, char *term_name)
 
 #ifdef HAVE_GETUTMPX
 void
-write_logout_record (void *data)
+write_logout_record (void *data, int utmp, int wtmp)
 {
 	struct utmp utmp_aux;
 	struct utmpx ut;
@@ -185,16 +188,19 @@ write_logout_record (void *data)
 #ifdef _HAVE_UT_TIME
 	ut.ut_time = time (NULL);
 #endif
-	pututline (&ut);
+	if (utmp)
+		pututline (&ut);
 	getutmpx (&ut, &utmp_aux);
-	update_wtmp (WTMP_FILENAME, &ut);
+
+	if (wtmp)
+		update_wtmp (WTMP_FILENAME, &ut);
 	endutent ();
 	
 	free (data);
 }
 #else /* not HAVE_GETUTMPX */
 void 
-write_logout_record (void *data)
+write_logout_record (void *data, int utmp, int wtmp)
 {
 	struct utmp *ut = data;
 	struct utmp *wut;
@@ -215,8 +221,10 @@ write_logout_record (void *data)
 			wut->ut_time = time (NULL);
 			
 #endif
-			pututline (wut);
-			update_wtmp (WTMP_FILENAME, wut);
+			if (utmp)
+				pututline (wut);
+			if (wtmp)
+				update_wtmp (WTMP_FILENAME, wut);
 			break;
 		}
 	}
