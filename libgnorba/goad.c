@@ -923,17 +923,11 @@ goad_server_activate_exe(GoadServer *sinfo,
   } else {
     char **args, **real_args;
     int i;
-    long one = 1;
     struct sigaction sa;
 
     close(0);
-    close(iopipes[0]);
     dup2(iopipes[1], 1);
-    dup2(iopipes[1], 2);
     
-    /* make sure that the descriptors aren't closed over the exec */
-    fcntl(1, F_SETFD, one);
-    fcntl(2, F_SETFD, one);
     setsid();
     memset(&sa, 0, sizeof(sa));
     sa.sa_handler = SIG_IGN;
