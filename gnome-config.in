@@ -214,13 +214,13 @@ if $libs_L || $libs_l; then
     all_flags="$all_flags $the_libs"
 fi
 
-if test -z "$all_flags" || test "x$all_flags" = "x "; then
-    exit 1
-fi
-
 if $modversion; then
     echo $MODULE_VERSION
     exit 0
+fi
+
+if test -z "$all_flags" || test "x$all_flags" = "x "; then
+    exit 1
 fi
 
 # Straight out any possible duplicates, but be careful to
