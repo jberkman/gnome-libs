@@ -169,7 +169,7 @@ static void vt_set_screen(struct vt_em *vt, int screen)
     if (screen)
       vt_clear_lines(vt, 0, vt->height);
 
-    vt->this = (struct vt_line *)vt_list_index(&vt->lines, vt->cursory);
+    vt->this_line = (struct vt_line *)vt_list_index(&vt->lines, vt->cursory);
     vt->mode = (vt->mode&~VTMODE_ALTSCREEN) | (screen?VTMODE_ALTSCREEN:0);
   }
 }  
@@ -353,7 +353,7 @@ vt_insert_chars(struct vt_em *vt, int count)
   struct vt_line *l;		/* FIXME: kludge */
 
   d(printf("vt_insert_chars(%d)\n", count));
-  l=vt->this;
+  l=vt->this_line;
 
   /* scroll data over count bytes */
   j = (l->width-count)-vt->cursorx;
@@ -375,7 +375,7 @@ vt_delete_chars(struct vt_em *vt, int count)
   struct vt_line *l;
 
   d(printf("vt_delete_chars(%d)\n", count));
-  l=vt->this;
+  l=vt->this_line;
 
   /* scroll data over count bytes */
   j = (l->width-count)-vt->cursorx;
@@ -424,7 +424,7 @@ void vt_insert_lines(struct vt_em *vt, int count)
     count--;
   }
 
-  vt->this = (struct vt_line *)vt_list_index(&vt->lines, vt->cursory);
+  vt->this_line = (struct vt_line *)vt_list_index(&vt->lines, vt->cursory);
 }
 
 void vt_delete_lines(struct vt_em *vt, int count)
@@ -454,7 +454,7 @@ void vt_delete_lines(struct vt_em *vt, int count)
     
     count--;
   }
-  vt->this = (struct vt_line *)vt_list_index(&vt->lines, vt->cursory);
+  vt->this_line = (struct vt_line *)vt_list_index(&vt->lines, vt->cursory);
 }
 
 void vt_clear_lines(struct vt_em *vt, int top, int count)
@@ -479,16 +479,16 @@ void vt_clear_lines(struct vt_em *vt, int top, int count)
 
 void vt_clear_line_portion(struct vt_em *vt, int start_col, int end_col)
 {
-  struct vt_line *this;
+  struct vt_line *this_line;
   int i;
 
   d(printf("vt_clear_line_portion()\n"));
 
-  this = vt->this;
+  this_line = vt->this_line;
   for(i=start_col;i<end_col;i++) {
-    this->data[i] = vt->attr;
+    this_line->data[i] = vt->attr;
   }
-  this->modcount+=(this->width-vt->cursorx);
+  this_line->modcount+=(this_line->width-vt->cursorx);
 }
 
 
@@ -518,11 +518,11 @@ static void vt_lf(struct vt_em *vt)
   if (vt->cursory >= vt->scrollbottom) {
     d(printf("must scroll\n"));
     vt_scroll_up(vt, 1);
-    vt->this = (struct vt_line *)vt_list_index(&vt->lines, vt->cursory);
+    vt->this_line = (struct vt_line *)vt_list_index(&vt->lines, vt->cursory);
   } else {
     vt->cursory++;
     d(printf("new ypos = %d\n", vt->cursory));
-    vt->this = vt->this->next;
+    vt->this_line = vt->this_line->next;
   }
 }
 
@@ -536,7 +536,7 @@ static void vt_tab(struct vt_em *vt)
 
   d(printf("tab\n"));
 
-  l = vt->this;
+  l = vt->this_line;
   c=l->data[vt->cursorx]&VTATTR_DATAMASK;
   /* dont store tab over a space - will affect attributes */
   if (c==0) {
@@ -628,7 +628,7 @@ vt_delete_line(struct vt_em *vt)
   } else {
     d(printf("delete characters got >1 parameters\n"));
   }
-  vt->this = (struct vt_line *)vt_list_index(&vt->lines, vt->cursory);
+  vt->this_line = (struct vt_line *)vt_list_index(&vt->lines, vt->cursory);
 }
 
 /* clear from current cursor position to end of screen */
@@ -644,7 +644,7 @@ vt_cleareos(struct vt_em *vt)
 
   switch(arg) {
   case 0:			/* clear here to end of screen */
-    vt_clear_line_portion(vt, vt->cursorx, vt->this->width);
+    vt_clear_line_portion(vt, vt->cursorx, vt->this_line->width);
     vt_clear_lines(vt, vt->cursory+1, vt->height);
     break;
   case 1:			/* clear top of screen to here */
@@ -664,11 +664,11 @@ vt_clear_lineportion(struct vt_em *vt)
   if (vt->argcnt>1) {
     /* eat the command */
   } else if (vt->argcnt==0 || *vt->args[0] == '0') {
-    vt_clear_line_portion(vt, vt->cursorx, vt->this->width);
+    vt_clear_line_portion(vt, vt->cursorx, vt->this_line->width);
   } else if (*vt->args[0] == '1') {
     vt_clear_line_portion(vt, 0, vt->cursorx + 1);
   } else if (*vt->args[0] == '2') {
-    vt_clear_line_portion(vt, 0, vt->this->width);
+    vt_clear_line_portion(vt, 0, vt->this_line->width);
   }
   /* eat bad parameters */
 }
@@ -696,8 +696,8 @@ vt_restore_cursor(struct vt_em *vt)
   if (vt->cursory >= vt->height)
     vt->cursory = vt->height-1;
 
-  vt->this = (struct vt_line *)vt_list_index(&vt->lines, vt->cursory);
-  d(printf("found line %d, %p\n", vt->cursory, vt->this));
+  vt->this_line = (struct vt_line *)vt_list_index(&vt->lines, vt->cursory);
+  d(printf("found line %d, %p\n", vt->cursory, vt->this_line));
 }
 
 /* cursor movement */
@@ -718,7 +718,7 @@ vt_up(struct vt_em *vt)
     vt->cursory=vt->scrolltop;
   }
 
-  vt->this = (struct vt_line *)vt_list_index(&vt->lines, vt->cursory);
+  vt->this_line = (struct vt_line *)vt_list_index(&vt->lines, vt->cursory);
 }
 
 static void
@@ -734,7 +734,7 @@ vt_down(struct vt_em *vt)
   if (vt->cursory>vt->scrollbottom)
     vt->cursory=vt->scrollbottom;
 
-  vt->this = (struct vt_line *)vt_list_index(&vt->lines, vt->cursory);
+  vt->this_line = (struct vt_line *)vt_list_index(&vt->lines, vt->cursory);
 }
 
 static void
@@ -773,15 +773,15 @@ vt_goto(struct vt_em *vt)
   if (vt->argcnt==0) {
     vt->cursorx=0;
     vt->cursory=0;
-    /*vt->this = vt->first;*/
+    /*vt->this_line = vt->first;*/
   } else if (vt->argcnt==1) {
     vt->cursory = atoi(vt->args[0])-1;
     vt->cursorx=0;
-    /*vt->this = vt_list_index(&vt->first, vt->cursory);*/
+    /*vt->this_line = vt_list_index(&vt->first, vt->cursory);*/
   } else if (vt->argcnt==2) {
     vt->cursory = atoi(vt->args[0])-1;
     vt->cursorx = atoi(vt->args[1])-1;
-    /*vt->this = vt_list_index(&vt->first, vt->cursory);*/
+    /*vt->this_line = vt_list_index(&vt->first, vt->cursory);*/
   } else {
     d(printf("position had too many parameters\n"));
   }
@@ -795,7 +795,7 @@ vt_goto(struct vt_em *vt)
     vt->cursory = vt->height-1;
   d(printf("pos = %d %d\n", vt->cursory, vt->cursorx));
 
-  vt->this = (struct vt_line *)vt_list_index(&vt->lines, vt->cursory);
+  vt->this_line = (struct vt_line *)vt_list_index(&vt->lines, vt->cursory);
 }
 
 /* various mode stuff */
@@ -985,7 +985,7 @@ vt_reset(struct vt_em *vt)
 {
   vt->cursorx=0;
   vt->cursory=0;
-  vt->this = (struct vt_line *)vt->lines.head;
+  vt->this_line = (struct vt_line *)vt->lines.head;
   vt->attr=VTATTR_CLEAR;	/* reset attributes */
   vt->remaptable = 0;		/* no character remapping */
   vt_set_screen(vt, 0);
@@ -1172,8 +1172,8 @@ vt_parse_vt (struct vt_em *vt, char *ptr, int length)
 	  }
 
 	  /* output character */
-	  vt->this->data[vt->cursorx] = ((vt->attr) & VTATTR_MASK) | c;
-	  vt->this->modcount++;
+	  vt->this_line->data[vt->cursorx] = ((vt->attr) & VTATTR_MASK) | c;
+	  vt->this_line->modcount++;
 	  d(printf("literal %c\n", c));
 	  vt->cursorx++;
 	} else if (mode & VT_CON) {
@@ -1344,7 +1344,7 @@ vt_init(struct vt_em *vt, int width, int height)
     vt->args[i]=&vt->args_mem[i*VTPARAM_ARGMAX];
   }
 
-  vt->this = (struct vt_line *)vt->lines.head;
+  vt->this_line = (struct vt_line *)vt->lines.head;
 
   vt->scrollbacklines=0;
   vt->scrollbackoffset=0;
@@ -1690,11 +1690,11 @@ void vt_resize(struct vt_em *vt, int width, int height, int pixwidth, int pixhei
 #endif
 
   /* re-fix 'this line' pointer */
-  vt->this = (struct vt_line *)vt_list_index(&vt->lines, vt->cursory);
+  vt->this_line = (struct vt_line *)vt_list_index(&vt->lines, vt->cursory);
 
   zvt_resize_subshell(vt->childfd, width, height, pixwidth, pixheight);
 
-  d(printf("resized to %d,%d, this = %p\n", vt->width, vt->height, vt->this));
+  d(printf("resized to %d,%d, this = %p\n", vt->width, vt->height, vt->this_line));
 }
 
 /**

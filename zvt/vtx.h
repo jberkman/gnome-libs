@@ -27,6 +27,10 @@
 /* include the toolkit */
 #include <gtk/gtk.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
+
 /* defines for screen update routine */
 #define UPDATE_CHANGES 0x00	/* only update changed areas */
 #define UPDATE_REFRESH 0x01	/* just refersh all */
@@ -99,6 +103,12 @@ void vt_scroll_area      (void *user_data, int firstrow, int count, int offset, 
 int  vt_cursor_state     (void *user_data, int state);
 void vt_hightlight_block (void *user_data, int col, int row, int width, int height);
 int  vt_get_attr_at      (struct _vtx *vx, int col, int row);
+
+
+#ifdef __cplusplus
+	   }
+#endif /* __cplusplus */
+
 
 #endif
 

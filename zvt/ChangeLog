@@ -1,3 +1,11 @@
+1998-12-05  Havoc Pennington  <hp@pobox.com>
+
+	* vt.h: Change name of "this" member to "this_line," so C++
+	doesn't puke. Add extern "C" stuff.
+	* vt.c: reflect change throughout
+	* update.c: same
+	* vtx.h: extern "C"
+	
 1998-12-05  Michael Zucchi  <zucchi@zedzone.mmc.com.au>
 
 	* zvtterm.c (zvt_term_get_buffer): New api function.  Returns a
@@ -13,6 +21,7 @@ Fri Dec  4 16:45:11 1998  Manish Vachharajani <mvachhar@vger.rutgers.edu>
 	* gnome-pty-helper.c: Don't bail out if we can't open /dev/tty.
 	Seems to cause problems.
 	
+>>>>>>> 1.108
 Wed Dec 02 03:16:07 1998  George Lebl  <jirka@5z.com>
 
 	* zvtterm.c: (vt_scroll_area) check for background pixmap in

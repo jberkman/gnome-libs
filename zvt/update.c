@@ -982,7 +982,7 @@ void vt_draw_cursor(struct _vtx *vx, int state)
   uint32 attr;
 
   if (vx->vt.scrollbackold == 0) {
-    attr = vx->vt.this->data[vx->vt.cursorx];
+    attr = vx->vt.this_line->data[vx->vt.cursorx];
     c = attr & 0xff;
     if (c==9 || c==0)			/* remap tab */
       c=' ';

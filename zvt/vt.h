@@ -23,6 +23,10 @@
 
 #include "lists.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
+
 /* defines for screen update routine */
 #define UPDATE_CHANGES    0x00	/* only update changed areas */
 #define UPDATE_REFRESH    0x01	/* just refersh all */
@@ -109,7 +113,7 @@ struct vt_em {
 
   int state;			/* current parse state */
 
-  struct vt_line *this;		/* the current line */
+  struct vt_line *this_line;	/* the current line */
 
   struct vt_list lines;		/* double linked list of lines */
   struct vt_list lines_back;	/* 'last rendered' buffer.  used to optimise updates */
@@ -149,5 +153,11 @@ int   	      vt_report_button  (struct vt_em *vt, int button, int qual,
 void  	      vt_scrollback_set (struct vt_em *vt, int lines);
 int   	      vt_killchild      (struct vt_em *vt, int signal);
 int   	      vt_closepty       (struct vt_em *vt);
+
+
+#ifdef __cplusplus
+	   }
+#endif /* __cplusplus */
+
 
 #endif /* _ZVT_VT_H_ */
