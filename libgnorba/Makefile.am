@@ -26,12 +26,6 @@ gnome_factory_built=\
 	gnome-factory-stubs.c 				\
 	gnome-factory-common.c
 
-gnome_object_built=\
-	GnomeObject.h					\
-	GnomeObject-skels.c				\
-	GnomeObject-stubs.c				\
-	GnomeObject-common.c
-
 gnome_unknown_built = \
 	gnome-unknown.h					\
 	gnome-unknown-skels.c				\
@@ -44,7 +38,7 @@ table_built=\
 	Table-stubs.c					\
 	Table-common.c
 
-gnorba_built = $(gnome_factory_built) $(gnome_object_built) \
+gnorba_built = $(gnome_factory_built) \
 	$(table_built)
 
 ORBIT_IDL=orbit-idl
@@ -53,9 +47,6 @@ IDL_FLAGS=-D__LIBGNORBA_COMPILATION
 
 $(gnome_factory_built): $(top_srcdir)/idl/gnome-factory.idl
 	$(ORBIT_IDL) $(IDL_FLAGS) $(top_srcdir)/idl/gnome-factory.idl
-
-$(gnome_object_built): $(top_srcdir)/idl/GnomeObject.idl
-	$(ORBIT_IDL) $(IDL_FLAGS) $(top_srcdir)/idl/GnomeObject.idl
 
 $(gnome_unknown_built): $(top_srcdir)/idl/gnome-unknown.idl
 	$(ORBIT_IDL) $(IDL_FLAGS) $(top_srcdir)/idl/gnome-unknown.idl
@@ -77,7 +68,6 @@ libgnorbagtk_la_SOURCES = 				\
 libgnorbainclude_HEADERS = 				\
 	gnorba.h 					\
 	gnome-factory.h					\
-	GnomeObject.h					\
 	gnome-unknown.h					\
 	Table.h
 
