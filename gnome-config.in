@@ -21,6 +21,8 @@ pkgincludedir=${includedir}/@PACKAGE@
 
 usage()
 {
+    exit_code=$1
+
     cat <<EOF
 Usage: gnome-config [OPTION]... [LIBRARY]...
 
@@ -54,10 +56,40 @@ If LIBRARY is none of these,
     
     ${libdir}/<LIBRARY>Conf.sh
 
-is looked in for the necessary information. 
+is looked in for the necessary information.  Those currently installed 
+appear to be:
+
 EOF
 
-    exit $1
+    conf_shs=`cd ${libdir}; echo *Conf.sh`
+
+    if test "x$conf_shs" = x || test "x$conf_shs" = 'x*Conf.sh'; then
+	echo "    <NONE>"
+    else
+	# gnomeConf.sh is a placebo, in case the `echo' turns up some nasties
+	set gnomeConf.sh $conf_shs
+
+	for i
+	do
+	    case "$i" in
+	    gnomeConf.sh) 
+		# either the placebo or installed file, it doesn't matter
+		# `gnome' is handled as a special case already
+		;;
+	    *Conf.sh) 
+		# strip out the trailing Conf.sh
+		echo "    $i" | sed -e 's/Conf\.sh$//'
+		;;
+	    *)
+		# should not happen
+		echo "*** ERROR: What is this? $i"
+		exit_code=2
+		;;
+	    esac
+	done
+    fi
+
+    exit $exit_code
 }
 
 if test $# -eq 0; then
