@@ -264,8 +264,15 @@ sub output_sgml {
     my %args = %{$_[0]};
     my ($parameter, $section);
     my $count;
+    my $id;
+
+    $id = $args{'module'}."-".$args{'function'};
+    $id =~ s/[^A-Za-z0-9]/-/g;
 
     print "<refentry>\n";
+    print "<refmeta>\n";
+    print "<refentrytitle><phrase id=\"$id\">".$args{'function'}."</phrase></refentrytitle>\n";
+    print "</refmeta>\n";
     print "<refnamediv>\n";
     print " <refname>".$args{'function'}."</refname>\n";
     print " <refpurpose>\n";
@@ -323,10 +330,17 @@ sub output_sgml {
     foreach $section (@{$args{'sectionlist'}}) {
 	print "<refsect1>\n <title>$section</title>\n <para>\n";
 #	print "<para>\n$section\n";
+	if ($section =~ m/EXAMPLE/i) {
+	    print "<example><para>\n";
+	}
 	output_highlight($args{'sections'}{$section});
 #	print "</para>";
+	if ($section =~ m/EXAMPLE/i) {
+	    print "</para></example>\n";
+	}
 	print " </para>\n</refsect1>\n";
     }
+
     print "\n\n";
 }
 
