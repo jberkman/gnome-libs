@@ -107,29 +107,6 @@ diff -u -u -r1.63 gtkrc.c
    
    done = FALSE;
    while (!done)
-Index: gdk-pixbuf//Makefile.am
-===================================================================
-RCS file: /cvs/gnome/gtk+/gdk-pixbuf/Makefile.am,v
-retrieving revision 1.75
-diff -u -u -r1.75 Makefile.am
---- gdk-pixbuf//Makefile.am	2000/08/11 02:58:59	1.75
-+++ gdk-pixbuf//Makefile.am	2000/09/06 00:46:00
-@@ -161,6 +161,7 @@
- 	gdk-pixbuf-animation.c	\
- 	gdk-pixbuf-data.c	\
- 	gdk-pixbuf-io.c		\
-+	gdk-pixbuf-loader.c	\
- 	gdk-pixbuf-scale.c	\
- 	gdk-pixbuf-util.c	\
- 	$(extra_sources)
-@@ -172,6 +173,7 @@
- 
- libgdk_pixbufinclude_HEADERS =	\
- 	gdk-pixbuf.h		\
-+	gdk-pixbuf-loader.h	\
- 	gdk-pixbuf-features.h
- 
- noinst_HEADERS = 		\
 Index: gdk-pixbuf//gdk-pixbuf-loader.c
 ===================================================================
 RCS file: gdk-pixbuf-loader.c
