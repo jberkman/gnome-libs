@@ -275,6 +275,7 @@ gnorba_CORBA_init(int *argc, char **argv,
 		  CORBA_Environment *ev)
 {
 	CORBA_ORB retval;
+	gchar *cookie;
 
 #ifndef ORBIT_USES_GLIB_MAIN_LOOP
 	IIOPAddConnectionHandler = orb_add_connection;
@@ -283,8 +284,10 @@ gnorba_CORBA_init(int *argc, char **argv,
 
 	_gnorba_gnome_orbit_orb = retval = CORBA_ORB_init(argc, argv, "orbit-local-orb", ev);
 	
-	if(!(flags & GNORBA_INIT_DISABLE_COOKIES))
-	  _gnorba_cookie_setup(NULL);
+	if(!(flags & GNORBA_INIT_DISABLE_COOKIES)) {
+	  char *cookie = _gnorba_cookie_setup(NULL);
+	  g_free (cookie);
+	}
 	
 	return retval;
 }
