@@ -1,5 +1,5 @@
 /*###################################################################*/
-/*##                Image to Imlib raw rgb data Converter          ##*/
+/*##              Image to Imlib raw rgb data Converter            ##*/
 /*##                                                               ##*/
 /*## This software falls under the GNU Public License. Please read ##*/
 /*##              the COPYING file for more information            ##*/
@@ -7,7 +7,7 @@
 
 #include "convertrgb.h"
 
-#define CRGB_VERSION "0.2.0"
+#define CRGB_VERSION "0.2.1"
 
 static int efficient;
 static int dimensions;
@@ -175,7 +175,7 @@ static void convert(char *real_file)
 
 		fprintf(f, "* Imlib raw rgb data created by convertrgb %s */\n\n", CRGB_VERSION);
 
-		/* FIXME dimensions are broke
+		/* FIXME dimensions are broken here:
 		if (dimensions)
 			{
 			fprintf(f, "static const int %s_width  = %d;\n", data_var, w);
