@@ -1,4 +1,4 @@
-# SOME DESCRIPTIVE TITLE.
+# gnome-libs de.po.
 # Copyright (C) 1998 Free Software Foundation, Inc.
 # Carsten Schaar <nhadcasc@fs-maphy.uni-hannover.de>, 1998
 #
@@ -6,10 +6,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-libs VERSION\n"
-"POT-Creation-Date: 1998-02-19 10:14+0100\n"
+"POT-Creation-Date: 1998-03-26 20:40+0100\n"
 "PO-Revision-Date: 1998-02-20 17:05+0100\n"
 "Last-Translator: Carsten Schaar@fs-maphy.uni-hannover.de>\n"
-"Language-Team: German <de@li.org>\n"
+"Language-Team: Carsten Schaar@fs-maphy.uni-hannover.de>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=iso-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -24,11 +24,186 @@ msgstr "Autoren:"
 
 #: libgnomeui/gnome-about.c:406
 msgid "Authors: "
-msgstr "Autoren:"
+msgstr "Autoren: "
 
 #: libgnomeui/gnome-about.c:631
 msgid "About"
-msgstr "\334ber"
+msgstr "Über"
+
+#: libgnomeui/gnome-file-entry.c:92
+msgid "Select file"
+msgstr "Dateiauswahl"
+
+#: libgnomeui/gnome-file-entry.c:149
+msgid "Browse..."
+msgstr "Suchen..."
+
+#: libgnomeui/gnome-messagebox.c:173
+msgid "Information"
+msgstr "Information"
+
+#: libgnomeui/gnome-messagebox.c:179
+msgid "Warning"
+msgstr "Warnung"
+
+#: libgnomeui/gnome-messagebox.c:185
+msgid "Error"
+msgstr "Fehler"
+
+#: libgnomeui/gnome-messagebox.c:191
+msgid "Question"
+msgstr "Frage"
+
+#: libgnomeui/gnome-messagebox.c:197
+msgid "Message"
+msgstr "Mitteilung"
+
+#: libgnomeui/gnome-init.c:34
+msgid "DISPLAY"
+msgstr "DISPLAY"
+
+#: libgnomeui/gnome-init.c:34
+msgid "X display to use"
+msgstr "Zu benutzendes X-Display"
+
+#: libgnomeui/gnome-init.c:36
+msgid "Don't use X shared memory extension"
+msgstr "'X shared memory' Erweiterung nicht benutzen"
+
+#: libgnomeui/gnome-init.c:37
+msgid "NAME"
+msgstr "NAME"
+
+#: libgnomeui/gnome-init.c:37 libgnomeui/gnome-init.c:38
+#: libgnomeui/gnome-init.c:39 libgnomeui/gnome-init.c:40
+#: libgnomeui/gnome-init.c:41 libgnomeui/gnome-init.c:42
+msgid "FIXME"
+msgstr ""
+
+#: libgnomeui/gnome-init.c:38
+msgid "CLASS"
+msgstr "KLASSE"
+
+#: libgnomeui/gnome-init.c:39
+msgid "HOST"
+msgstr "RECHNER"
+
+#: libgnomeui/gnome-init.c:40
+msgid "PORT"
+msgstr ""
+
+#: libgnomeui/gnome-init.c:41 libgnomeui/gnome-init.c:42
+msgid "STYLE"
+msgstr "STIL"
+
+#: gnome-hello/gnome-hello-4-SM.c:67 libgnomeui/gnome-client.c:145
+msgid "ID"
+msgstr ""
+
+#: libgnomeui/gnome-client.c:146
+msgid "Specify session management id"
+msgstr "Session Management Kennung"
+
+#: libgnomeui/gnome_segv.c:54
+msgid ""
+"No, and ignore\n"
+"future SIGSEGV's"
+msgstr ""
+"Nein und ignoriere\n"
+"weitere SIGSEGVs"
+
+#: libgnomeui/gnome_segv.c:64
+#, c-format
+msgid ""
+"Application \"%s\" has a bug.\n"
+"SIGSEGV received at PC %#lx in PID %d.\n"
+"\n"
+"\n"
+"Do you want to exit this program?"
+msgstr ""
+"Anwendung \"%s\" ist noch fehlerhaft.\n"
+"Signal SIGSEGV an Adresse %#lx in Programm %d empfangen.\n"
+"\n"
+"\n"
+"Soll diese Anwendung beendet werden?"
+
+#: support/argp-parse.c:93
+msgid "Give this help list"
+msgstr "Zeigt diese Hilfe"
+
+#: support/argp-parse.c:94
+msgid "Give a short usage message"
+msgstr "Gibt eine Kurzanleitung aus"
+
+#: support/argp-parse.c:95
+msgid "Set the program name"
+msgstr "Setzt den Programmnamen"
+
+#: support/argp-parse.c:97
+msgid "Hang for SECS seconds (default 3600)"
+msgstr "Wartet SECS Sekunden (standardmäßig 3600)"
+
+#: support/argp-parse.c:154
+msgid "Print program version"
+msgstr "Gibt die Programmversion aus"
+
+#: support/argp-parse.c:170
+msgid "(PROGRAM ERROR) No version known!?"
+msgstr "(PROGRAMM FEHLER) Version unbekannt!?"
+
+#: support/argp-parse.c:644
+#, c-format
+msgid "%s: Too many arguments\n"
+msgstr "%s: Zu viele Argumente\n"
+
+#: support/argp-parse.c:783
+msgid "(PROGRAM ERROR) Option should have been recognized!?"
+msgstr "(PROGRAMM FEHLER) Option sollte erkannt worden sein!?"
+
+#: support/argp-help.c:189
+#, c-format
+msgid "%.*s: ARGP_HELP_FMT parameter requires a value"
+msgstr "%.*s: ARGP_HELP_FMT Parameter benötigt einen Wert"
+
+#: support/argp-help.c:198
+#, c-format
+msgid "%.*s: Unknown ARGP_HELP_FMT parameter"
+msgstr "%.*s: Unbekannter ARGP_HELP_FMT Parameter"
+
+#: support/argp-help.c:210
+#, c-format
+msgid "Garbage in ARGP_HELP_FMT: %s"
+msgstr "Unsinn in ARGP_HELP_FMT: %s"
+
+#: support/argp-help.c:1150
+msgid ""
+"Mandatory or optional arguments to long options are also mandatory or "
+"optional for any corresponding short options."
+msgstr ""
+"Zwingende bzw. optionale Argumente zu langen Optionen sind ebenso zwingend "
+"bzw. optional zu den dazugehörigen kurzen Optionen."
+
+#: support/argp-help.c:1526
+msgid "Usage:"
+msgstr "Benutzung:"
+
+#: support/argp-help.c:1530
+msgid "  or: "
+msgstr "  oder: "
+
+#: support/argp-help.c:1542
+msgid " [OPTION...]"
+msgstr " [OPTIONEN...]"
+
+#: support/argp-help.c:1569
+#, c-format
+msgid "Try `%s --help' or `%s --usage' for more information.\n"
+msgstr "Versuchen Sie `%s --help' oder `%s --usage' für mehr Information.\n"
+
+#: support/argp-help.c:1597
+#, c-format
+msgid "Report bugs to %s.\n"
+msgstr "Melden Sie Fehler an %s.\n"
 
 #: libgnomeui/gnome-scores.c:82
 msgid "User"
@@ -44,102 +219,118 @@ msgstr "Datum"
 
 #: libgnomeui/gnome-scores.c:124
 msgid "Clear"
-msgstr "L\366schen"
+msgstr "Löschen"
 
 #: libgnomeui/gnome-scores.c:141
 msgid "Top Ten"
-msgstr ""
+msgstr "Bestenliste"
 
-#: libgnomeui/gnome-stock.h:267
-msgid "Ok"
+#: libgnomeui/gnome-stock.c:457
+msgid "OK"
 msgstr "OK"
 
-#: libgnomeui/gnome-stock.h:267
+#: libgnomeui/gnome-stock.c:458
+msgid "Apply"
+msgstr "Übernehmen"
+
+#: libgnomeui/gnome-stock.c:459
 msgid "Cancel"
 msgstr "Abbruch"
 
-#: libgnomeui/gnome-stock.h:267
+#: libgnomeui/gnome-stock.c:460
+msgid "Close"
+msgstr "Schließen"
+
+#: libgnomeui/gnome-stock.c:461
 msgid "Yes"
 msgstr "Ja"
 
-#: libgnomeui/gnome-stock.h:267
+#: libgnomeui/gnome-stock.c:462
 msgid "No"
 msgstr "Nein"
 
-#: libgnomeui/gnome-stock.h:268
-msgid "Close"
-msgstr "Schlie\337en"
+#: libgnomeui/gnome-stock.c:463
+msgid "Help"
+msgstr "Hilfe"
 
-#: libgnomeui/gnome-stock.h:268
-msgid "Apply"
-msgstr "\334bernehmen"
+#: libgnomeui/gnome-stock.c:1256
+msgid "Menu Accelerator Keys"
+msgstr "Tastaturkürzel für Menüs"
 
-#: libgnomeui/gnome-messagebox.c:165
-msgid "Information"
-msgstr "Information"
+#: libgnomeui/gnome-stock.c:1258
+msgid "Global"
+msgstr "Global"
 
-#: libgnomeui/gnome-messagebox.c:173
-msgid "Warning"
-msgstr "Warnung"
+#: libgnomeui/gnome-stock.c:1260
+msgid "Menu Item"
+msgstr "Menüeintrag"
 
-#: libgnomeui/gnome-messagebox.c:181
-msgid "Error"
-msgstr "Fehler"
+#: libgnomeui/gnome-stock.c:1261
+msgid "Accelerator"
+msgstr "Tastaturkürzel"
 
-#: libgnomeui/gnome-messagebox.c:189
-msgid "Question"
-msgstr "Frage"
-
-#: gnome-hello/gnome-hello-2-i18n.c:31 gnome-hello/gnome-hello-3-parse-args.c:33 gnome-hello/gnome-hello-4-SM.c:54
+#: gnome-hello/gnome-hello-2-i18n.c:31
+#: gnome-hello/gnome-hello-3-parse-args.c:33 gnome-hello/gnome-hello-4-SM.c:54
 msgid "File/Exit"
 msgstr "Datei/Beenden"
 
-#: gnome-hello/gnome-hello-2-i18n.c:31 gnome-hello/gnome-hello-3-parse-args.c:33 gnome-hello/gnome-hello-4-SM.c:54
+#: gnome-hello/gnome-hello-2-i18n.c:31
+#: gnome-hello/gnome-hello-3-parse-args.c:33 gnome-hello/gnome-hello-4-SM.c:54
 msgid "<control>E"
 msgstr "<control>E"
 
 #. The '...' end indicate that the options open a dialog
-#: gnome-hello/gnome-hello-2-i18n.c:33 gnome-hello/gnome-hello-3-parse-args.c:35 gnome-hello/gnome-hello-4-SM.c:56
+#: gnome-hello/gnome-hello-2-i18n.c:33
+#: gnome-hello/gnome-hello-3-parse-args.c:35 gnome-hello/gnome-hello-4-SM.c:56
 msgid "Help/About..."
-msgstr "Hilfe/\334ber..."
+msgstr "Hilfe/Über..."
 
-#: gnome-hello/gnome-hello-2-i18n.c:33 gnome-hello/gnome-hello-3-parse-args.c:35 gnome-hello/gnome-hello-4-SM.c:56
+#: gnome-hello/gnome-hello-2-i18n.c:33
+#: gnome-hello/gnome-hello-3-parse-args.c:35 gnome-hello/gnome-hello-4-SM.c:56
 msgid "<control>A"
 msgstr "<control>A"
 
 #. Make the main window and binds the delete event so you can close
 #. the program from your WM
-#: gnome-hello/gnome-hello-2-i18n.c:69 gnome-hello/gnome-hello-3-parse-args.c:99 gnome-hello/gnome-hello-4-SM.c:139
+#: gnome-hello/gnome-hello-2-i18n.c:69
+#: gnome-hello/gnome-hello-3-parse-args.c:99
+#: gnome-hello/gnome-hello-4-SM.c:139
 msgid "Hello World Gnomified"
 msgstr "\"Hallo Welt\" gnomifiziert"
 
 #. We make a button, bind the 'clicked' signal to hello and setting it
 #. to be the content of the main window
-#: gnome-hello/gnome-hello-2-i18n.c:83 gnome-hello/gnome-hello-3-parse-args.c:113 gnome-hello/gnome-hello-4-SM.c:158
+#: gnome-hello/gnome-hello-2-i18n.c:83
+#: gnome-hello/gnome-hello-3-parse-args.c:113
+#: gnome-hello/gnome-hello-4-SM.c:158
 msgid "Hello GNOME"
 msgstr "Hallo GNOME"
 
-#: gnome-hello/gnome-hello-2-i18n.c:102 gnome-hello/gnome-hello-3-parse-args.c:132 gnome-hello/gnome-hello-4-SM.c:177
+#: gnome-hello/gnome-hello-2-i18n.c:102
+#: gnome-hello/gnome-hello-3-parse-args.c:132
+#: gnome-hello/gnome-hello-4-SM.c:177
 msgid "Hello GNOME\n"
 msgstr "Hallo GNOME\n"
 
-#: gnome-hello/gnome-hello-2-i18n.c:125 gnome-hello/gnome-hello-3-parse-args.c:155 gnome-hello/gnome-hello-4-SM.c:200
+#: gnome-hello/gnome-hello-2-i18n.c:125
+#: gnome-hello/gnome-hello-3-parse-args.c:155
+#: gnome-hello/gnome-hello-4-SM.c:200
 msgid "The Hello World Gnomified"
 msgstr "\"Hallo Welt\" gnomifiziert"
 
 #. another comments
-#: gnome-hello/gnome-hello-2-i18n.c:130 gnome-hello/gnome-hello-3-parse-args.c:160 gnome-hello/gnome-hello-4-SM.c:205
+#: gnome-hello/gnome-hello-2-i18n.c:130
+#: gnome-hello/gnome-hello-3-parse-args.c:160
+#: gnome-hello/gnome-hello-4-SM.c:205
 msgid "GNOME is a civilized software system so we've a \"hello world\" program"
-msgstr "GNOME ist ein modernes Softwaresystem, deshalb gibt es ein \"Hallo Welt\" Programm"
+msgstr ""
+"GNOME ist ein modernes Softwaresystem, deshalb gibt es ein \"Hallo Welt\" "
+"Programm"
 
 #: gnome-hello/gnome-hello-3-parse-args.c:43
 msgid "Run silently"
-msgstr ""
-
-#: gnome-hello/gnome-hello-4-SM.c:67
-msgid "ID"
-msgstr ""
+msgstr "Keine Textausgaben"
 
 #: gnome-hello/gnome-hello-4-SM.c:67
 msgid "Discard session"
-msgstr ""
+msgstr "Sitzung verwerfen"
