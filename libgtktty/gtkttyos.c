@@ -26,6 +26,9 @@
 #include <sys/stat.h>
 #include <sys/resource.h>
 #include <unistd.h>
+#ifdef __FreeBSD__
+# include <sys/ioctl_compat.h>
+#endif
 
 #if HAVE_SYS_WAIT_H
 # include <sys/wait.h>
@@ -66,7 +69,13 @@ gtk_tty_os_get_hintp (void)
     g_warning ("tcgetattr(stdin,) failed: %s", g_strerror (errno));
     
     osdat->tty_termios.c_iflag = BRKINT | ICRNL | IMAXBEL;
-    osdat->tty_termios.c_oflag = CREAD | OPOST | ONLCR | NL0  | CR0 | TAB0 | BS0 | VT0 | FF0;
+    osdat->tty_termios.c_oflag =
+      CREAD | OPOST | ONLCR |
+      NL0  | CR0 | TAB0 | BS0 |
+#     ifdef VT0  /* FreeBSD doesn't have it? */
+      VT0 |
+#     endif
+      FF0;
     osdat->tty_termios.c_cflag = CS8;
     osdat->tty_termios.c_lflag = ISIG | ICANON | IEXTEN | ECHO | ECHOE | ECHOK | ECHOCTL | ECHOKE;
     osdat->tty_termios.c_cc[VERASE] = '\b';
