@@ -1,6 +1,7 @@
 #Utilitiesdir = $(datadir)/apps/Utilities
 
-INCLUDES = -I.. -I$(srcdir)/.. -I$(includedir) @SUPPORTINCS@ \
+INCLUDES = -I.. -I$(srcdir)/.. -I$(includedir) $(GTK_CFLAGS) $(SUPPORTINCS) \
+	-I$(top_srcdir)/intl -I$(top_builddir)/intl \
 	-DGNOMELOCALEDIR=\""$(datadir)/locale"\" \
 	-DLOCALEDIR=\"$(datadir)/locale\"
 
