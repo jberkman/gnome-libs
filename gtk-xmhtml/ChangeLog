@@ -1,3 +1,10 @@
+Mon Jan 19 10:52:26 1998  Miguel de Icaza  <miguel@nuclecu.unam.mx>
+
+	* Makefile.am (libgtkxmhtml_la_LIBADD): Add the Z_LIBS, JPEG_LIBS,
+	PNG_LIBS and PNG_LIBS to the libgtkxmhtml_la_LIBADD, so that
+	applications using this library do not need to autodetect which
+	libraries this was linked with.
+
 Wed Jan 14 19:28:01 1998  Federico Mena  <federico@bananoid.nuclecu.unam.mx>
 
 	* colors.c (my_get_colors): Now we allocate the colors, just as

@@ -54,13 +54,13 @@ libgtkxmhtmlinclude_HEADERS =	\
 	toolkit.h
 
 libgtkxmhtml_la_LDFLAGS = -version-info 0:0:0 -rpath $(libdir)
-libgtkxmhtml_la_LIBADD = $(GTK_LIBS) $(X_LIBS) $(x_libs)
+libgtkxmhtml_la_LIBADD = $(GTK_LIBS) $(X_LIBS) $(x_libs) $(Z_LIBS) $(JPEG_LIBS) $(PNG_LIBS) $(XPM_LIBS)
 
 bin_PROGRAMS = htmltest
 
 htmltest_SOURCES = test.c
 htmltest_LDADD   = $(top_builddir)/gtk-xmhtml/libgtkxmhtml.la \
-	$(GTK_LIBS) $(X_LIBS) $(x_libs) $(Z_LIBS) $(JPEG_LIBS) $(PNG_LIBS) $(XPM_LIBS)
+	$(GTK_LIBS) $(X_LIBS) $(x_libs) 
 
 ## These are included by XmHTML.c:
 
