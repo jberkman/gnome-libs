@@ -169,8 +169,7 @@ gtk_term_class_init (GtkTermClass *class)
   object_class = (GtkObjectClass*) class;
   widget_class = (GtkWidgetClass*) class;
   
-  if (!parent_class)
-    parent_class = gtk_type_class (gtk_widget_get_type ());
+  parent_class = gtk_type_class (gtk_widget_get_type ());
   
   term_signals[0] = gtk_signal_new ("text_resize",
 				    GTK_RUN_LAST,
@@ -499,11 +498,11 @@ gtk_term_set_fonts (GtkTerm        *term,
 }
 
 void
-gtk_term_setup (GtkTerm	      *term,
-		guint	       width,
-		guint	       height,
-		guint	       max_width,
-		guint	       scrollback)
+gtk_term_construct (GtkTerm	      *term,
+		    guint	       width,
+		    guint	       height,
+		    guint	       max_width,
+		    guint	       scrollback)
 {
   guint i;
   

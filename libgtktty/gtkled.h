@@ -32,9 +32,9 @@ extern "C" {
 #endif /* __cplusplus */
 
 
-#define GTK_LED(obj)	      GTK_CHECK_CAST (obj, gtk_led_get_type (), GtkLed)
-#define GTK_LED_CLASS(klass)  GTK_CHECK_CLASS_CAST (klass, gtk_led_get_type (), GtkLedClass)
-#define GTK_IS_LED(obj)	      GTK_CHECK_TYPE (obj, gtk_led_get_type ())
+#define GTK_LED(obj)	      (GTK_CHECK_CAST (obj, gtk_led_get_type (), GtkLed))
+#define GTK_LED_CLASS(klass)  (GTK_CHECK_CLASS_CAST (klass, gtk_led_get_type (), GtkLedClass))
+#define GTK_IS_LED(obj)	      (GTK_CHECK_TYPE (obj, gtk_led_get_type ()))
 
 
 typedef struct _GtkLed	     GtkLed;
@@ -53,7 +53,7 @@ struct _GtkLedClass
 };
 
 
-guint	   gtk_led_get_type    (void);
+GtkType	   gtk_led_get_type    (void);
 GtkWidget* gtk_led_new	       (void);
 void	   gtk_led_set_state   (GtkLed			*led,
 				GtkStateType		widget_state,

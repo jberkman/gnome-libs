@@ -127,10 +127,10 @@ extern char **environ;
 static GtkTermClass	*parent_class = NULL;
 static gint		 tty_signals[LAST_SIGNAL] = { 0 };
 
-guint
-gtk_tty_get_type ()
+GtkType
+gtk_tty_get_type (void)
 {
-  static guint tty_type = 0;
+  static GtkType tty_type = 0;
   
   if (!tty_type)
   {
@@ -162,8 +162,7 @@ gtk_tty_class_init (GtkTtyClass *class)
   widget_class = (GtkWidgetClass*) class;
   term_class = (GtkTermClass*) class;
   
-  if (!parent_class)
-    parent_class = gtk_type_class (gtk_term_get_type ());
+  parent_class = gtk_type_class (gtk_term_get_type ());
   
   tty_signals[KEY_PRESS] = gtk_signal_new ("key_press",
 					   GTK_RUN_LAST,
@@ -222,12 +221,12 @@ gtk_tty_init (GtkTty *tty)
 {
   tty->key_states = GTK_TTY_STATE_NONE;
 
+  tty->leds = tty->key_states;
+  tty->update_leds = NULL;
   tty->ignore_scroll_lock = FALSE;
   tty->ignore_num_lock = FALSE;
   tty->ignore_caps_lock = FALSE;
   tty->freeze_leds = FALSE;
-  tty->leds = tty->key_states;
-  tty->update_leds = NULL;
   
   tty->key_pad_enter = FALSE;
   tty->key_pad_char = 0;
@@ -259,7 +258,7 @@ gtk_tty_new (guint width,
   
   tty = gtk_type_new (gtk_tty_get_type ());
   scrollback = MIN (scrollback, MAX_SCROLL_BACK);
-  gtk_term_setup (GTK_TERM (tty), width, height, width, scrollback);
+  gtk_term_construct (GTK_TERM (tty), width, height, width, scrollback);
 
   list = gtk_vtemu_create_type_list ();
   tty->vtemu = gtk_vtemu_new (GTK_TERM (tty), list->data);

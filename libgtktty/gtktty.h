@@ -34,9 +34,9 @@ extern "C" {
 #endif /* __cplusplus */
 
 
-#define GTK_TTY(obj)		GTK_CHECK_CAST (obj, gtk_tty_get_type (), GtkTty)
-#define GTK_TTY_CLASS(klass)	GTK_CHECK_CLASS_CAST (klass, gtk_tty_get_type (), GtkTtyClass)
-#define GTK_IS_TTY(obj)		GTK_CHECK_TYPE (obj, gtk_tty_get_type ())
+#define GTK_TTY(obj)		(GTK_CHECK_CAST (obj, gtk_tty_get_type (), GtkTty))
+#define GTK_TTY_CLASS(klass)	(GTK_CHECK_CLASS_CAST (klass, gtk_tty_get_type (), GtkTtyClass))
+#define GTK_IS_TTY(obj)		(GTK_CHECK_TYPE (obj, gtk_tty_get_type ()))
 
 
 typedef	struct	_GtkTty			GtkTty;
@@ -56,6 +56,120 @@ typedef	enum
   GTK_TTY_STATE_HYPER		= 128,
 } GtkTtyKeyStateBits;
 
+typedef enum
+{
+  /* direct conversion
+   */
+  GTK_TKA_DC_MASK		= 0x000000ff,
+
+  /* vt-emu sequence insertion
+   */
+  GTK_TKA_SEQ_0			=  0 << 8,
+  GTK_TKA_SEQ_ESCAPE		=  1 << 8,
+  GTK_TKA_SEQ_RETURN		=  2 << 8,
+  GTK_TKA_SEQ_ENTER /* SEND */	=  3 << 8,
+  GTK_TKA_SEQ_LINE_FEED		=  4 << 8,
+  GTK_TKA_SEQ_LEFT		=  5 << 8,
+  GTK_TKA_SEQ_RIGHT		=  6 << 8,
+  GTK_TKA_SEQ_UP		=  7 << 8,
+  GTK_TKA_SEQ_DOWN		=  8 << 8,
+  GTK_TKA_SEQ_SCROLL_FORWARD	=  9 << 8,
+  GTK_TKA_SEQ_SCROLL_BACKWARD	= 10 << 8,
+  GTK_TKA_SEQ_PAGE_UP		= 11 << 8,
+  GTK_TKA_SEQ_PAGE_DOWN		= 12 << 8,
+  GTK_TKA_SEQ_BEGIN		= 13 << 8,
+  GTK_TKA_SEQ_END		= 14 << 8,
+  GTK_TKA_SEQ_EXIT		= 15 << 8,
+  GTK_TKA_SEQ_F1		= 16 << 8,
+  GTK_TKA_SEQ_F2		= 17 << 8,
+  GTK_TKA_SEQ_F3		= 18 << 8,
+  GTK_TKA_SEQ_F4		= 19 << 8,
+  GTK_TKA_SEQ_F5		= 20 << 8,
+  GTK_TKA_SEQ_F6		= 21 << 8,
+  GTK_TKA_SEQ_F7		= 22 << 8,
+  GTK_TKA_SEQ_F8		= 23 << 8,
+  GTK_TKA_SEQ_F9		= 24 << 8,
+  GTK_TKA_SEQ_F10		= 25 << 8,
+  GTK_TKA_SEQ_F11		= 26 << 8,
+  GTK_TKA_SEQ_F12		= 27 << 8,
+  GTK_TKA_SEQ_SET_TAB		= 28 << 8,
+  GTK_TKA_SEQ_CLEAR_TAB		= 29 << 8,
+  GTK_TKA_SEQ_CLEAR_TABS	= 30 << 8,
+  GTK_TKA_SEQ_BACK_TAB_STOP	= 31 << 8,
+  GTK_TKA_SEQ_NEXT_TAB_STOP	= 32 << 8,
+  GTK_TKA_SEQ_INSERT		= 33 << 8,
+  GTK_TKA_SEQ_EXIT_INSERT	= 34 << 8,
+  GTK_TKA_SEQ_BACKSPACE		= 35 << 8,
+  GTK_TKA_SEQ_DELETE		= 36 << 8,
+  GTK_TKA_SEQ_INSERT_LINE	= 37 << 8,
+  GTK_TKA_SEQ_CLEAR_BOL		= 38 << 8,
+  GTK_TKA_SEQ_CLEAR_LINE	= 39 << 8,
+  GTK_TKA_SEQ_CLEAR_EOL		= 40 << 8,
+  GTK_TKA_SEQ_CLEAR_BOS		= 41 << 8,
+  GTK_TKA_SEQ_CLEAR_SCREEN	= 42 << 8,
+  GTK_TKA_SEQ_CLEAR_EOS		= 43 << 8,
+  GTK_TKA_SEQ_KP_ON		= 44 << 8,
+  GTK_TKA_SEQ_KP_UPPER_LEFT	= 45 << 8,
+  GTK_TKA_SEQ_KP_CENTER_KEY	= 46 << 8,
+  GTK_TKA_SEQ_KP_UPPER_RIGHT	= 47 << 8,
+  GTK_TKA_SEQ_KP_BOTTOM_LEFT	= 48 << 8,
+  GTK_TKA_SEQ_KP_BOTTOM_RIGHT	= 49 << 8,
+  GTK_TKA_SEQ_KP_OFF		= 50 << 8,
+  GTK_TKA_SEQ_SELECT		= 51 << 8,
+  GTK_TKA_SEQ_FIND		= 52 << 8,
+  GTK_TKA_SEQ_UNDO		= 53 << 8,
+  GTK_TKA_SEQ_REDO		= 54 << 8,
+  GTK_TKA_SEQ_HELP		= 55 << 8,
+  GTK_TKA_SEQ_MARK		= 56 << 8,
+  GTK_TKA_SEQ_MESSAGE		= 57 << 8,
+  GTK_TKA_SEQ_MOVE		= 58 << 8,
+  GTK_TKA_SEQ_PREV_OBJECT	= 59 << 8,
+  GTK_TKA_SEQ_NEXT_OBJECT	= 60 << 8,
+  GTK_TKA_SEQ_OPEN		= 61 << 8,
+  GTK_TKA_SEQ_SAVE		= 62 << 8,
+  GTK_TKA_SEQ_CANCEL		= 63 << 8,
+  GTK_TKA_SEQ_CREATE		= 64 << 8,
+  GTK_TKA_SEQ_CLOSE		= 65 << 8,
+  GTK_TKA_SEQ_COPY		= 66 << 8,
+  GTK_TKA_SEQ_COMMAND		= 67 << 8,
+  GTK_TKA_SEQ_OPTIONS		= 68 << 8,
+  GTK_TKA_SEQ_PRINT		= 69 << 8,
+  GTK_TKA_SEQ_REFRESH		= 70 << 8,
+  GTK_TKA_SEQ_REFERENCE		= 71 << 8,
+  GTK_TKA_SEQ_REPLACE		= 72 << 8,
+  GTK_TKA_SEQ_RESTART		= 73 << 8,
+  GTK_TKA_SEQ_SUSPEND		= 74 << 8,
+  GTK_TKA_SEQ_RESUME		= 75 << 8,
+  GTK_TKA_SEQ_MASK		= 0x0000ff00,
+
+  /* primary action
+   */
+  GTK_TKA_P_0			=  0 << 16,
+  GTK_TKA_P_SCROLL_UP		=  1 << 16,
+  GTK_TKA_P_SCROLL_DOWN		=  2 << 16,
+  GTK_TKA_P_LITERAL_INSERT	=  3 << 16,
+  GTK_TKA_P_NUMERICAL_COMPOSE	=  4 << 16,
+  GTK_TKA_P_KILL_PROGRAM	=  5 << 16,
+  GTK_TKA_P_MAIN_QUIT		=  5 << 16,
+  GTK_TKA_P_MASK		= 0x000f0000,
+
+  /* action flags
+   */
+  GTK_TKA_DIRECT_CONVERSION	=  1 << 24,
+  GTK_TKA_AT_SUBTRACT		=  1 << 25,
+  GTK_TKA_ADD_META_ESCAPE	=  1 << 26,
+
+  /* internal tag
+   */
+  GTK_TKA_TAG			=  1 << 31
+} GtkTtyKeyActionType;
+
+#define GTK_TKA(dc_char,vt_seq,p_action,zero,flags)      ( \
+  GTK_TKA_SEQ_ ## vt_seq | \
+  (dc_char) | \
+  GTK_TKA_P_ ## p_action | \
+  (flags))
+
 
 struct	_GtkTty
 {
@@ -66,17 +180,17 @@ struct	_GtkTty
    */
   guchar		key_states;
   
-  gboolean		ignore_scroll_lock;
-  gboolean		ignore_num_lock;
-  gboolean		ignore_caps_lock;
-  gboolean		freeze_leds;
   guchar		leds;
   GList			*update_leds;
+  guint			ignore_scroll_lock : 1;
+  guint			ignore_num_lock : 1;
+  guint			ignore_caps_lock : 1;
+  guint			freeze_leds : 1;
   
   /* hehe, for the ones reading the source:
    * this supports <ALT>+keypad_ascii_code_entering if NumLock is on
    */
-  gboolean		key_pad_enter;
+  guint			key_pad_enter : 1;
   guchar		key_pad_char;
   
   gint			pty_fd;
@@ -132,7 +246,7 @@ struct	_GtkTtyUpdateLed
   GtkTtyKeyStateBits	mask;
 };
 
-guint		gtk_tty_get_type	(void);
+GtkType		gtk_tty_get_type	(void);
 GtkWidget	*gtk_tty_new		(guint		width,
 					 guint		height,
 					 guint		scrollback);

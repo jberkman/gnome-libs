@@ -32,9 +32,9 @@ extern "C" {
 #endif /* __cplusplus */
 
 
-#define GTK_TERM(obj)	       GTK_CHECK_CAST (obj, gtk_term_get_type (), GtkTerm)
-#define GTK_TERM_CLASS(klass)  GTK_CHECK_CLASS_CAST (klass, gtk_term_get_type (), GtkTermClass)
-#define GTK_IS_TERM(obj)       GTK_CHECK_TYPE (obj, gtk_term_get_type ())
+#define GTK_TERM(obj)	       (GTK_CHECK_CAST (obj, gtk_term_get_type (), GtkTerm))
+#define GTK_TERM_CLASS(klass)  (GTK_CHECK_CLASS_CAST (klass, gtk_term_get_type (), GtkTermClass))
+#define GTK_IS_TERM(obj)       (GTK_CHECK_TYPE (obj, gtk_term_get_type ()))
 
 #define GTK_TERM_MAX_COLORS    (8)
 
@@ -79,17 +79,17 @@ struct	_GtkTerm
   
   /* current text mode
    */
-  gboolean	dim;
-  gboolean	bold;
-  gboolean	underline;
-  gboolean	reverse;
+  guint		dim : 1;
+  guint		bold : 1;
+  guint 	underline : 1;
+  guint		reverse : 1;
   guint		i_fore;
   guint		i_back;
   
   /* cursor position (absolute into buffer!)
    */
   GtkCursorMode	cursor_mode;
-  gboolean	cursor_blinking;
+  guint		cursor_blinking : 1;
   guint		cur_x;
   guint		cur_y;
   guint		top;
@@ -105,7 +105,7 @@ struct	_GtkTerm
   
   /* selections
    */
-  gboolean	sel_valid;
+  guint		sel_valid : 1;
   guint		sel_b_x;
   guint		sel_b_y;
   guint		sel_e_x;
@@ -125,9 +125,9 @@ struct	_GtkTerm
   GdkFont	*font_bold;
   GdkFont	*font_underline;
   GdkFont	*font_reverse;
-  gboolean	overstrike_bold;
-  gboolean	draw_underline;
-  gboolean	colors_reversed;
+  guint		overstrike_bold : 1;
+  guint		draw_underline : 1;
+  guint		colors_reversed : 1;
   
   /* character pixel dimensions
    */
@@ -141,7 +141,7 @@ struct	_GtkTerm
   gchar		**char_buffer;
   GtkTermAttrib	**attrib_buffer;
 
-  gboolean	flags_dirty;
+  guint		flags_dirty : 1;
   gint		refresh_handler;
 };
 
@@ -151,7 +151,7 @@ struct _GtkTermClass
   
   gint				blink_handler;
   GList				*term_widgets;
-  gboolean			blink_state;
+  guint				blink_state : 1;
   
   void (* text_resize)		(GtkTerm	*term,
 				 guint		*new_width,
@@ -161,7 +161,7 @@ struct _GtkTermClass
 
 
 GtkType		gtk_term_get_type	(void);
-void		gtk_term_setup		(GtkTerm	*term,
+void		gtk_term_construct	(GtkTerm	*term,
 					 guint		width,
 					 guint		height,
 					 guint		max_width,

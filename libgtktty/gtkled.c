@@ -37,10 +37,10 @@ static gint gtk_led_expose	 (GtkWidget	 *widget,
 static GtkMiscClass *parent_class = NULL;
 
 
-guint
+GtkType
 gtk_led_get_type ()
 {
-  static guint led_type = 0;
+  static GtkType led_type = 0;
   
   if (!led_type)
   {
@@ -70,8 +70,7 @@ gtk_led_class_init (GtkLedClass *class)
   object_class = (GtkObjectClass*) class;
   widget_class = (GtkWidgetClass*) class;
   
-  if (!parent_class)
-    parent_class = gtk_type_class (gtk_misc_get_type ());
+  parent_class = gtk_type_class (gtk_misc_get_type ());
   
   object_class->destroy = gtk_led_destroy;
   

@@ -1,3 +1,11 @@
+Fri Apr 17 04:32:42 1998  Tim Janik  <timj@gtk.org>
+
+	* minor cleanups.
+
+	* gtkterm.h (struct _GtkTerm): use real bitfield flags instead of
+	gbooleans.
+	(gtk_term_construct): new function name (previously gtk_term_setup).
+
 Sat Mar 28 01:03:00 CET 1998  Eckehard Berns  <eb@berns.prima.de>
 
 	* gtkterm.c (gtk_term_button_press): hmm, didn't know about
