@@ -1,3 +1,12 @@
+1998-11-04  Raja R Harinath  <harinath@cs.umn.edu>
+
+	* configure.in: Don't check $need_gnome_support.  Always use
+	gnomesupport.
+	(popt): Remove check.  It is in `gnomesupport' now.
+	* gnome.h: Include `gnomesupport.h' unconditionally.
+	* libgnome/libgnome.h: Reorder headers.
+	* libgnome/libgnomeP.h: Sync to libgnome.h.
+
 1998-10-30  Seth Alves  <alves@hungry.com>
 
 	* libgnome/gnome-paper.c: attempt to fix scaling ps values
