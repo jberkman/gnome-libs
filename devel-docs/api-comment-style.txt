@@ -1,9 +1,19 @@
 
 
-I suggest we use the following to documenting API entry points in the
-GNOME libraries.  I have written a simple Perl script that can extract
-these comments into a file.  I will need to make my Perl script
-generate DocBook output.
+  I suggest we use the following to documenting API entry points in
+the GNOME libraries.  A sample Perl script written by Michael Zucchi
+is included in this package to pull this information and generate a
+HTML, man and Docbook output (see gnome-libs/tools/gnome-doc).
+
+   The gtk-doc system (which is what the GNOME project is using to
+document its API and the user manuals) has support for these comments
+and can generate DocBook output by using this setup.
+
+   The gnome-libs/tools/gnome-doc directory contains a sample Emacs
+lisp function that you can load to simplify entering these special
+comment.  This utility tool is bound to the "C-x 4 h" key sequence.
+
+Format:
 
 /**
  * function_name:
@@ -60,3 +70,4 @@ on the beginning:
    %name:   reference to a constant.
    name():   function reference.
 
+Miguel de Icaza (miguel@gnu.org)
