@@ -1,3 +1,9 @@
+1999-02-25  Michael Zucchi  <mzucchi@denr.sa.gov.au>
+
+	* vt.c (vt_delete_chars): Make sure delete character is blank.
+	(vt_delete_chars): Range check input value to width of line.
+	(vt_insert_chars): Ditto.
+
 Thu Feb 25 03:47:44 1999  Timur Bakeyev <mc@bat.ru>
 
 	* gnome-pty.h, gnome-utmp.c: Added function write_login_record as

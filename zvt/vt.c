@@ -362,6 +362,8 @@ vt_insert_chars(struct vt_em *vt, int count)
   d(printf("vt_insert_chars(%d)\n", count));
   l=vt->this_line;
 
+  count=MIN(count,vt->width);
+
   /* scroll data over count bytes */
   j = (l->width-count)-vt->cursorx;
   for (i=l->width-1;j>0;i--,j--) {
@@ -385,6 +387,9 @@ vt_delete_chars(struct vt_em *vt, int count)
   d(printf("vt_delete_chars(%d)\n", count));
   l=vt->this_line;
 
+  /* check input value for validity */
+  count=MIN(count,vt->width);
+
   /* scroll data over count bytes */
   j = (l->width-count)-vt->cursorx;
   for (i=vt->cursorx;j>0;i++,j--) {
@@ -392,12 +397,11 @@ vt_delete_chars(struct vt_em *vt, int count)
   }
 
   /* clear the rest of the line */
-  blank = l->data[l->width-1];
+  blank = l->data[l->width-1] & VTATTR_CLEARMASK & VTATTR_MASK;
   for (i=l->width-count;i<l->width;i++) {
     l->data[i] = blank;
   }
   l->modcount+=count;
-
 }
 
 void vt_insert_lines(struct vt_em *vt, int count)
