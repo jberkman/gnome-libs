@@ -120,6 +120,11 @@ LIBS="$oLIBS"
 AC_SUBST(DL_LIB)
 
 AC_CHECK_FUNCS(strerror gethostbyname setfsgid setenv putenv strdup)
+oLIBS="$LIBS"
+LIBS="-lm"
+AC_CHECK_FUNCS(hypot)
+LIBS="$oLIBS"
+
 NSL_LIBS=""
 if test $ac_cv_func_gethostbyname = no; then
   AC_CHECK_LIB(nsl,gethostbyname,NSL_LIBS=-lnsl)

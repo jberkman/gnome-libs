@@ -69,7 +69,7 @@ handle_x_connection (GIOChannel *source, GIOCondition cond, Display *disp)
 	XEvent ev;
 	
 	if (cond & (G_IO_ERR|G_IO_HUP|G_IO_NVAL)){
-		syslog (LOG_INFO, "input condition is: %d, exiting", cond);
+		syslog (LOG_INFO, "input condition is: %#x, exiting", cond);
 		XCloseDisplay (disp);
 		g_main_quit (ml);
 		return TRUE;
