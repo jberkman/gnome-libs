@@ -642,7 +642,7 @@ goad_server_activate_exe(GoadServer *sinfo,
     iorfh = fdopen(iopipes[0], "r");
 
     while (fgets(iorbuf, sizeof(iorbuf), iorfh) && strncmp(iorbuf, "IOR:", 4))
-#if 1
+#if 0
       g_message("srv output: '%s'", iorbuf)
 #endif
 	;
@@ -654,6 +654,7 @@ goad_server_activate_exe(GoadServer *sinfo,
     if (iorbuf[strlen(iorbuf)-1] == '\n')
       iorbuf[strlen(iorbuf)-1] = '\0';
     retval = CORBA_ORB_string_to_object(gnome_orbit_orb, iorbuf, ev);
+#if 0
     if (ev->_major != CORBA_NO_EXCEPTION) {
       g_warning("goad_server_activate_exe: %s %d:", __FILE__, __LINE__);
       switch( ev->_major ) {
@@ -664,6 +665,7 @@ goad_server_activate_exe(GoadServer *sinfo,
       default:
 	break;
       }
+#endif
       retval = CORBA_OBJECT_NIL;
     }
     fclose(iorfh);
@@ -708,6 +710,7 @@ goad_server_register(CORBA_Object name_server,
   CORBA_exception_free(ev);
 
   old_server = CosNaming_NamingContext_resolve(name_server, &nom, ev);
+#if 0
   if (ev->_major != CORBA_NO_EXCEPTION) {
     switch( ev->_major ) {
     case CORBA_SYSTEM_EXCEPTION:
@@ -718,6 +721,8 @@ goad_server_register(CORBA_Object name_server,
       break;
     }
   }
+#endif
+
   if (ev->_major == CORBA_USER_EXCEPTION &&
       !strcmp(CORBA_exception_id(ev),ex_CosNaming_NamingContext_NotFound)) {
     CosNaming_NamingContext_bind(name_server, &nom, server, ev);
@@ -737,6 +742,7 @@ goad_server_register(CORBA_Object name_server,
     return -2;
   }
   if (ev->_major != CORBA_NO_EXCEPTION) {
+#if 0
     switch( ev->_major ) {
     case CORBA_SYSTEM_EXCEPTION:
       g_warning("sysex: %s.\n", CORBA_exception_id(ev));
@@ -745,6 +751,7 @@ goad_server_register(CORBA_Object name_server,
     default:
       break;
     }
+#endif
     return -1;
   }
   return 0;
@@ -764,6 +771,7 @@ goad_server_unregister(CORBA_Object name_server,
   nc[2].kind = kind;
   CosNaming_NamingContext_unbind(name_server, &nom, ev);
   if (ev->_major != CORBA_NO_EXCEPTION) {
+#if 0
     switch( ev->_major ) {
     case CORBA_SYSTEM_EXCEPTION:
       g_warning("sysex: %s.\n", CORBA_exception_id(ev));
@@ -772,6 +780,7 @@ goad_server_unregister(CORBA_Object name_server,
     default:
       break;
     }
+#endif
     return -1;
   }
   return 0;
