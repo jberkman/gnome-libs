@@ -6,8 +6,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-libs-1.0.17 (G1.0.50)\n"
-"POT-Creation-Date: 1999-10-06 21:34-0500\n"
-"PO-Revision-Date: 1999-10-02 20:33+02:00\n"
+"POT-Creation-Date: 1999-10-25 01:10+0200\n"
+"PO-Revision-Date: 1999-10-24 19:07+02:00\n"
 "Last-Translator: Kenneth Christiansen <kenneth@ripen.dk>\n"
 "Language-Team: Dansk/Danish <dltp@lists.wiktor.dk>\n"
 "MIME-Version: 1.0\n"
@@ -16,7 +16,7 @@ msgstr ""
 
 #: libgnome/gconfigger.c:32
 msgid "get"
-msgstr "skaf"
+msgstr "hent"
 
 #: libgnome/gconfigger.c:32
 msgid "Get config entry"
@@ -43,25 +43,21 @@ msgstr ""
 "Fejl i flag %s: %s.\n"
 "Kør '%s --help' for at se en liste over mulige kommandolinie flag.\n"
 
-#: libgnome/gnomelib-init.c:130
+#: libgnome/gnomelib-init.c:34
 msgid "Disable sound server usage"
-msgstr "Deaktiver brug af lydserver"
+msgstr "Deaktivér brug af lydserver"
 
-#: libgnome/gnomelib-init.c:132
+#: libgnome/gnomelib-init.c:37
 msgid "Enable sound server usage"
-msgstr "Aktiver brug af lydserver"
+msgstr "Aktivér brug af lydserver"
 
-#: libgnome/gnomelib-init.c:134
+#: libgnome/gnomelib-init.c:40
 msgid "Host:port on which the sound server to use is running"
 msgstr "Vært:port som den anvendte lydserver kører på"
 
-#: libgnome/gnomelib-init.c:135
+#: libgnome/gnomelib-init.c:41
 msgid "HOSTNAME:PORT"
 msgstr "HOSTNAME:PORT"
-
-#: libgnome/gnomelib-init.c:144
-msgid "GNOME Options"
-msgstr "GNOME alternativer"
 
 #: libgnomeui/gnome-about.c:187
 msgid "Author:"
@@ -98,11 +94,11 @@ msgstr "R_edigér/"
 
 #: libgnomeui/gnome-app-helper.c:82
 msgid "_View"
-msgstr "_Visning"
+msgstr "_Vis"
 
 #: libgnomeui/gnome-app-helper.c:83
 msgid "_View/"
-msgstr "_Visning/"
+msgstr "_Vis/"
 
 #: libgnomeui/gnome-app-helper.c:84
 msgid "_Settings"
@@ -134,7 +130,7 @@ msgstr "_Vinduer"
 
 #: libgnomeui/gnome-app-helper.c:91
 msgid "_Game"
-msgstr "Spil"
+msgstr "_Spil"
 
 #: libgnomeui/gnome-app-helper.c:92
 msgid "_Help"
@@ -222,7 +218,7 @@ msgstr "Afslut programmet"
 #. Cut
 #: libgnomeui/gnome-app-helper.c:151
 msgid "C_ut"
-msgstr "Klip"
+msgstr "K_lip"
 
 #: libgnomeui/gnome-app-helper.c:151
 msgid "Cut the selection"
@@ -232,7 +228,7 @@ msgstr "Udklip det markerede"
 #. Copy
 #: libgnomeui/gnome-app-helper.c:157 libgnomeui/gnome-popup-help.c:59
 msgid "_Copy"
-msgstr "Kopiér"
+msgstr "_Kopiér"
 
 #: libgnomeui/gnome-app-helper.c:157
 msgid "Copy the selection"
@@ -241,7 +237,7 @@ msgstr "Kopiér det markerede"
 #. Paste
 #: libgnomeui/gnome-app-helper.c:162 libgnomeui/gnome-popup-help.c:61
 msgid "_Paste"
-msgstr "Indsæt"
+msgstr "_Indsæt"
 
 #: libgnomeui/gnome-app-helper.c:162
 msgid "Paste the clipboard"
@@ -250,7 +246,7 @@ msgstr "Indsæt fra klippebordet"
 #. Clear
 #: libgnomeui/gnome-app-helper.c:167
 msgid "C_lear"
-msgstr "Ryd"
+msgstr "Ry_d"
 
 #: libgnomeui/gnome-app-helper.c:167
 msgid "Clear the selection"
@@ -268,7 +264,7 @@ msgstr "Fortryd sidste handling"
 #. Redo
 #: libgnomeui/gnome-app-helper.c:177
 msgid "_Redo"
-msgstr "Gentag"
+msgstr "_Gentag"
 
 #: libgnomeui/gnome-app-helper.c:177
 msgid "Redo the undone action"
@@ -286,7 +282,7 @@ msgstr "Søg efter en tekststreng"
 #. Find Again
 #: libgnomeui/gnome-app-helper.c:187
 msgid "Find _Again"
-msgstr "Find igen"
+msgstr "Find _igen"
 
 #: libgnomeui/gnome-app-helper.c:188
 msgid "Search again for the same string"
@@ -304,7 +300,7 @@ msgstr "Erstat en tekststreng"
 #. Properties
 #: libgnomeui/gnome-app-helper.c:198
 msgid "_Properties..."
-msgstr "Egenskaber..."
+msgstr "_Egenskaber..."
 
 #: libgnomeui/gnome-app-helper.c:199
 msgid "Modify the file's properties"
@@ -391,7 +387,7 @@ msgstr "Start spillet forfra"
 
 #: libgnomeui/gnome-app-helper.c:259
 msgid "_Undo move"
-msgstr "Fortryd træk"
+msgstr "Fortr_yd træk"
 
 #: libgnomeui/gnome-app-helper.c:260
 msgid "Undo the last move"
@@ -407,7 +403,7 @@ msgstr "Gentag det fortrudte træk"
 
 #: libgnomeui/gnome-app-helper.c:269
 msgid "_Hint"
-msgstr "Tip"
+msgstr "_Tip"
 
 #: libgnomeui/gnome-app-helper.c:270
 msgid "Get a hint for your next move"
@@ -639,32 +635,31 @@ msgstr "="
 msgid "INV"
 msgstr "INV"
 
-#: libgnomeui/gnome-client.c:828
+#: libgnomeui/gnome-client.c:839
 msgid "Specify session management ID"
 msgstr "Angiv id for sessionskontrol"
 
-#: libgnomeui/gnome-client.c:828 libgnorba/goad-browser.c:27
+#: libgnomeui/gnome-client.c:839 libgnorba/goad-browser.c:27
 msgid "ID"
 msgstr "ID"
 
-#: libgnomeui/gnome-client.c:830
+#: libgnomeui/gnome-client.c:842
 msgid "Specify prefix of saved configuration"
 msgstr "Angiv præfiks på gemt konfiguration"
 
-#: libgnomeui/gnome-client.c:830
+#: libgnomeui/gnome-client.c:842
 msgid "PREFIX"
 msgstr "PREFIX"
 
-#: libgnomeui/gnome-client.c:832
+#: libgnomeui/gnome-client.c:845
 msgid "Disable connection to session manager"
 msgstr "Afbryd forbindelse til sessionhåndteringen"
 
-#. Register commandline options.
-#: libgnomeui/gnome-client.c:961
-msgid "Session management options"
-msgstr "Indstillinger for sessionshåndtering"
+#: libgnomeui/gnome-client.c:857
+msgid "Session management"
+msgstr "Sessionshåndtering"
 
-#: libgnomeui/gnome-client.c:2341
+#: libgnomeui/gnome-client.c:2323
 msgid "Cancel Logout"
 msgstr "Annullér logud"
 
@@ -673,7 +668,7 @@ msgid "Pick a color"
 msgstr "Vælg en farve"
 
 #. Calendar label, only shown if the date editor has a time field
-#: libgnomeui/gnome-dateedit.c:454
+#: libgnomeui/gnome-dateedit.c:455
 msgid "Calendar"
 msgstr "Kalender"
 
@@ -699,7 +694,7 @@ msgstr "Ikon:"
 
 #: libgnomeui/gnome-dentry-edit.c:239
 msgid "Choose an icon"
-msgstr "Vælg et ikon"
+msgstr "Vælg en ikon"
 
 #: libgnomeui/gnome-dentry-edit.c:252
 msgid "Run in Terminal"
@@ -788,85 +783,85 @@ msgstr "Forhåndsvis"
 msgid "Loading Icons..."
 msgstr "Henter ikoner..."
 
-#: libgnomeui/gnome-init.c:160
+#: libgnomeui/gnome-init.c:50
 msgid "Gdk debugging flags to set"
-msgstr "GDK aflusningsflag at sætte"
+msgstr "Gdk aflusningsflag at sætte"
 
-#: libgnomeui/gnome-init.c:160 libgnomeui/gnome-init.c:162
-#: libgnomeui/gnome-init.c:182 libgnomeui/gnome-init.c:184
+#: libgnomeui/gnome-init.c:50 libgnomeui/gnome-init.c:53
+#: libgnomeui/gnome-init.c:83 libgnomeui/gnome-init.c:86
 msgid "FLAGS"
 msgstr "FLAGS"
 
-#: libgnomeui/gnome-init.c:162
+#: libgnomeui/gnome-init.c:53
 msgid "Gdk debugging flags to unset"
 msgstr "Gdk aflusningsflag at fjerne"
 
-#: libgnomeui/gnome-init.c:164
+#: libgnomeui/gnome-init.c:56
 msgid "X display to use"
 msgstr "X-skærm som skal bruges"
 
-#: libgnomeui/gnome-init.c:164
+#: libgnomeui/gnome-init.c:56
 msgid "DISPLAY"
 msgstr "DISPLAY"
 
-#: libgnomeui/gnome-init.c:166
+#: libgnomeui/gnome-init.c:59
 msgid "Make X calls synchronous"
 msgstr "Gør X-kald synkrone"
 
-#: libgnomeui/gnome-init.c:168
+#: libgnomeui/gnome-init.c:62
 msgid "Don't use X shared memory extension"
 msgstr "Brug ikke X-udvidelse for delt hukommelse"
 
-#: libgnomeui/gnome-init.c:170
+#: libgnomeui/gnome-init.c:65
 msgid "Program name as used by the window manager"
 msgstr "Programnavn som brugt af vindueshåndteringen"
 
-#: libgnomeui/gnome-init.c:170
+#: libgnomeui/gnome-init.c:65
 msgid "NAME"
 msgstr "NAME"
 
-#: libgnomeui/gnome-init.c:172
+#: libgnomeui/gnome-init.c:68
 msgid "Program class as used by the window manager"
 msgstr "Programklasse som brugt af vindueshåndteringen"
 
-#: libgnomeui/gnome-init.c:172
+#: libgnomeui/gnome-init.c:68
 msgid "CLASS"
 msgstr "CLASS"
 
-#: libgnomeui/gnome-init.c:174
+#: libgnomeui/gnome-init.c:71
 msgid "HOST"
 msgstr "HOST"
 
-#: libgnomeui/gnome-init.c:176
+#: libgnomeui/gnome-init.c:74
 msgid "PORT"
 msgstr "PORT"
 
-#: libgnomeui/gnome-init.c:178 libgnomeui/gnome-init.c:180
+#: libgnomeui/gnome-init.c:77 libgnomeui/gnome-init.c:80
 msgid "STYLE"
 msgstr "STYLE"
 
-#: libgnomeui/gnome-init.c:182
+#: libgnomeui/gnome-init.c:83
 msgid "Gtk+ debugging flags to set"
-msgstr "GTK+ aflusningsflag at sætte"
+msgstr "Gtk+ aflusningsflag at sætte"
 
-#: libgnomeui/gnome-init.c:184
+#: libgnomeui/gnome-init.c:86
 msgid "Gtk+ debugging flags to unset"
-msgstr "GTK+ aflusningsflag at fjerne"
+msgstr "Gtk+ aflusningsflag at fjerne"
 
-#: libgnomeui/gnome-init.c:186
+#: libgnomeui/gnome-init.c:89
 msgid "Make all warnings fatal"
 msgstr "Gør alle advarsler fatale"
 
-#: libgnomeui/gnome-init.c:188
+#: libgnomeui/gnome-init.c:92
 msgid "Load an additional Gtk module"
-msgstr "Indlæs et ekstra GTK modul"
+msgstr "Indlæs et ekstra Gtk modul"
 
-#: libgnomeui/gnome-init.c:188
+#: libgnomeui/gnome-init.c:92
 msgid "MODULE"
 msgstr "MODULE"
 
 #. dialog display isn't working out
-#: libgnomeui/gnome-init.c:635
+#: libgnomeui/gnome-init.c:426
 msgid "Multiple segmentation faults occurred; can't display error dialog\n"
 msgstr "Indtil flere segmentationsfejl opstod; kan ikke vise fejldialogboks\n"
 
@@ -979,7 +974,7 @@ msgstr "Alternativer:"
 
 #: libgnomeui/gnome-spell.c:561
 msgid "Accept"
-msgstr "Accepter"
+msgstr "Acceptér"
 
 #: libgnomeui/gnome-spell.c:566
 msgid ""
@@ -998,7 +993,7 @@ msgid ""
 "Ignore this word\n"
 "this time only"
 msgstr ""
-"Ignorer kun ordet\n"
+"Ignorér kun ordet\n"
 "for denne gang"
 
 #: libgnomeui/gnome-spell.c:575
@@ -1205,7 +1200,7 @@ msgstr "Brug: gnome_segv appnavn signum\n"
 
 #: libgnomeui/gnome_segv.c:87
 msgid "Submit a bug report"
-msgstr ""
+msgstr "Indsend en fejlrapport"
 
 #: libgnomeui/gnome_segv.c:93
 msgid "http://www.gnome.org/application_crashed.shtml"
@@ -1213,7 +1208,7 @@ msgstr "http://www.gnome.org/application_crashed.shtml"
 
 #: libgnomeui/gnome_segv.c:99
 msgid "Please visit the GNOME Application Crash page for more information"
-msgstr "Besøg venligst GNOME applikations crash siden for mere information"
+msgstr "Besøg venligst GNOME applikationscrash siden for mere information"
 
 #: libgnomeui/stock_demo.c:112
 msgid "New..."
@@ -1443,7 +1438,7 @@ msgstr ""
 "ingen tjenester installeret, eller jeg kender ikke stien til dem.\n"
 "I alle tilfælde bør du tjekke din GNOME installation."
 
-#: libgnorba/goad.c:1350
+#: libgnorba/goad.c:1341
 msgid "(Internal use only) GOAD server ID to activate"
 msgstr "(Kun til internt brug) GOAD server ID at aktivere"
 
@@ -1522,7 +1517,7 @@ msgstr "%s: flaget '%c%s' tillader ikke et argument\n"
 #: support/getopt.c:715 support/getopt.c:888
 #, c-format
 msgid "%s: option `%s' requires an argument\n"
-msgstr "%s: flaget '%s' behøver et argument\n"
+msgstr "%s: flaget '%s' kræver et argument\n"
 
 # , c-format
 #. --option
@@ -1556,7 +1551,7 @@ msgstr "%s: ugyldigt flag -- %c\n"
 #: support/getopt.c:807 support/getopt.c:937
 #, c-format
 msgid "%s: option requires an argument -- %c\n"
-msgstr "%s: flaget behøver et argument -- %c\n"
+msgstr "%s: flaget kræver et argument -- %c\n"
 
 # , c-format
 #: support/getopt.c:854
@@ -1605,17 +1600,20 @@ msgstr "Vis skriftstørrelse"
 msgid "This is an hbox with pixmap and text"
 msgstr "Dette er en hbox med billede og tekst"
 
-#: test-gnome/testgnome.c:1072
+#: test-gnome/testgnome.c:1074
 msgid "The user chose Yes/OK with data:\n"
 msgstr "Brugeren valgte Ja/OK med data:\n"
 
-#: test-gnome/testgnome.c:1076
+#: test-gnome/testgnome.c:1078
 msgid "The user chose No/Cancel with data:\n"
-msgstr "Brugeren valgte Nej/Annuller med data:\n"
+msgstr "Brugeren valgte Nej/Annullér med data:\n"
 
-#: test-gnome/testgnome.c:1087
+#: test-gnome/testgnome.c:1089
 msgid "Weird number in reply callback"
 msgstr "Mærkeligt nummer i tilbagekald"
+
+#~ msgid "GNOME Options"
+#~ msgstr "GNOME alternativer"
 
 #~ msgid "Giving up on displaying error dialog"
 #~ msgstr "Opgiver at vise fejlmeddelelsesboks"
