@@ -184,11 +184,16 @@ CORBA_Object
 gnome_name_service_get(void)
 {
   static CORBA_Object name_service = CORBA_OBJECT_NIL;
+  CORBA_Object gnome_context       = CORBA_OBJECT_NIL;
+  CORBA_Object server_context     = CORBA_OBJECT_NIL;
   CORBA_Object retval = NULL;
   char *ior;
   GdkAtom propname, proptype;
   CORBA_Environment ev;
-
+  gint name_pid;
+  CosNaming_NameComponent nc;
+  CosNaming_Name          context_name;
+  
   g_return_val_if_fail(gnome_orbit_orb, CORBA_OBJECT_NIL);
 
   CORBA_exception_init(&ev);
@@ -200,19 +205,44 @@ gnome_name_service_get(void)
     int iopipes[2];
     char iorbuf[2048];
 
+    ior = 0;
+    
     /* First, try and see if another application has started the name service
        (and indicated its presence by setting a root window property */
     gdk_property_get(GDK_ROOT_PARENT(), propname, proptype,
 		     0, 9999, FALSE, NULL,
 		     NULL, NULL, (guchar **)&ior);
-
-    if(ior)
-      name_service = CORBA_ORB_string_to_object(gnome_orbit_orb, ior, &ev);
-
-    if(!CORBA_Object_is_nil(name_service, &ev)
-       && ev._major == CORBA_NO_EXCEPTION)
-      goto out;
-
+    
+    if (ior)
+      {
+	name_service = CORBA_ORB_string_to_object(gnome_orbit_orb, ior, &ev);
+      }
+    if (!CORBA_Object_is_nil(name_service, &ev))
+      {
+	CosNaming_NameComponent nc = {"GNOME", "subcontext"};
+	CosNaming_Name          nom = {0, 1, &nc, CORBA_FALSE};
+	CORBA_Object            gnome_context;
+	
+	gnome_context = CosNaming_NamingContext_resolve(name_service, &nom, &ev);
+	if (ev._major != CORBA_NO_EXCEPTION)
+	  {
+	    g_warning("Resolving '/GNOME' context on running orbit name server:");
+	    switch( ev._major )
+	      {
+	      case CORBA_SYSTEM_EXCEPTION:
+		g_warning("sysex: %s.\n", CORBA_exception_id(&ev));
+		break;
+	      case CORBA_USER_EXCEPTION:
+		g_warning("usrex: %s.\n", CORBA_exception_id( &ev ) );
+	      default:
+		break;
+	      }
+	  }
+	else
+	  {
+	    goto out;
+	  }
+      }
     /* Since we're pretty sure no name server is running, we start it ourself
        and tell the (GNOME session) world about it */
     /* fork & get the ior from orbit-name-service stdout */
@@ -235,14 +265,84 @@ gnome_name_service_get(void)
       }
 
       fclose(iorfh);
+      /* strip newline if it's there */
+      if (iorbuf[strlen(iorbuf)-1] == '\n')
+	iorbuf[strlen(iorbuf)-1] = '\0';
 
+      /*
+	we have to save the strlen+1 to get the terminating '\0' in
+	the property
+      */
       gdk_property_change(GDK_ROOT_PARENT(), propname, proptype, 8,
-			  GDK_PROP_MODE_REPLACE, iorbuf, strlen(iorbuf));
+			  GDK_PROP_MODE_REPLACE, iorbuf, strlen(iorbuf)+1);
+      /*
+	without flush, we won't set the property now. If the client
+	dosn't read anything from the X server, the  property will
+	never be set. 
+      */
+      XFlush(GDK_DISPLAY());
       name_service = CORBA_ORB_string_to_object(gnome_orbit_orb, iorbuf, &ev);
-      
-      if(ev._major != CORBA_NO_EXCEPTION)
-	name_service = CORBA_OBJECT_NIL;
+      if (name_service != CORBA_OBJECT_NIL)
+	{
+	  /*
+	    Create the default context "/GNOME/servers"
+	  */
+	  context_name._maximum = 0;
+	  context_name._length  = 1;
+	  context_name._buffer = &nc;
+	  context_name._release = CORBA_FALSE;
+	  nc.id = "GNOME";
+	  nc.kind = "subcontext";
+	  gnome_context = CosNaming_NamingContext_bind_new_context(name_service, &context_name, &ev);
+	  if (ev._major != CORBA_NO_EXCEPTION)
+	    {
+	      g_warning("Creating '/GNOME' context %s %d", __FILE__, __LINE__);
+	      
+	      switch( ev._major )
+		{
+		case CORBA_SYSTEM_EXCEPTION:
+		  g_warning("sysex: %s.\n", CORBA_exception_id(&ev));
+		  break;
+		case CORBA_USER_EXCEPTION:
+		  g_warning("usrex: %s.\n", CORBA_exception_id( &ev ) );
+		default:
+		  break;
+		}
+	    }
+	  ev._major = CORBA_NO_EXCEPTION;
+	  if (CORBA_Object_is_nil(gnome_context, &ev))
+	    {
+	      g_warning("gnome_name_server_get: '/GNOME' context is nil\n");
+	      return CORBA_OBJECT_NIL;
+	    }
 
+	  nc.id="Servers";
+	  nc.kind = "subcontext";
+	  server_context = CosNaming_NamingContext_bind_new_context(gnome_context, &context_name, &ev);
+	  if (ev._major != CORBA_NO_EXCEPTION)
+	    {
+	      g_warning("Creating '/GNOME/servers' context %s %d", __FILE__, __LINE__);
+	      switch( ev._major )
+		{
+		case CORBA_SYSTEM_EXCEPTION:
+		  g_warning("	sysex: %s.\n", CORBA_exception_id(&ev));
+		  break;
+		case CORBA_USER_EXCEPTION:
+		  g_warning("usr	ex: %s.\n", CORBA_exception_id( &ev ) );
+		default:
+		  break;
+		}
+	    }
+	  if (CORBA_Object_is_nil(server_context, &ev))
+	    {
+	      g_warning("gnome_name_server_get: '/GNOME/servers context is nil\n");
+	      return CORBA_OBJECT_NIL;
+	    }
+	}
+      else
+	{
+	  return CORBA_OBJECT_NIL;
+	}
     } else if(fork()) {
       _exit(0); /* de-zombifier process, just exit */
     } else {

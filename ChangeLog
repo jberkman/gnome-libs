@@ -1,3 +1,29 @@
+1998-10-02  Michael Lausch  <mla@gams.at>
+
+	* libgnorba/orbitgtk.c (gnome_name_service_get): If the
+	CORBA_NAME_SERVICE property is set, do a lookup for id='/GNOME',
+	kind='subcontext' to check that the naming-server is still running 
+	and it is correctly configured.
+	Strip newline from the string we get back from the naming-server.
+	Also store the terminating '\0' character in the X property.
+	XFlush() the display after changing the X property.
+	Create the '/GNOME' and '/GNOME/Servers' contexts in the newly
+	created naming server.
+
+	* libgnorba/goad.c Added verbose exception handling all over the
+	file. Useful for debugging. 
+	(goad_server_list_get): append "/CORBA/servers"
+ 	to GNOMESYSCONFDIR. Use terminating '/' for parameter to
+ 	goad_server_list_read. Otherwise the config file stuff doesn't
+ 	work correctly.
+	(goad_server_list_read): Pass the filename to
+	gnome_config_init_iterator_sections. [I'm not sure this is the
+	right thing to do, but if you pass only "", the config files
+	aren't found].
+	Use '=' for section and key string in config file iteration, if
+	FILENAME starts with '=', so that we use absolute pathnames. 
+		
+
 1998-10-01  Miguel de Icaza  <miguel@nuclecu.unam.mx>
 
 	(free_keys): I am a dork.  Revert last change.

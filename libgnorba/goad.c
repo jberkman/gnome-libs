@@ -51,7 +51,7 @@ goad_server_list_get(void)
     struct dirent *dent;
 
     while((dent = readdir(dirh))) {
-      g_string_sprintf(tmpstr, "=" GNOMESYSCONFDIR "/%s",
+      g_string_sprintf(tmpstr, "=" GNOMESYSCONFDIR "/CORBA/servers/" "%s/",
 		       dent->d_name);
 		       
       goad_server_list_read(tmpstr->str, servinfo, tmpstr);
@@ -59,7 +59,7 @@ goad_server_list_get(void)
     closedir(dirh);
   }
 
-  goad_server_list_read("/CORBA/servers", servinfo, tmpstr);
+  goad_server_list_read("/CORBA/servers/", servinfo, tmpstr);
 
   retval = (GoadServer *)servinfo->data;
   g_array_free(servinfo, FALSE);
@@ -102,11 +102,15 @@ goad_server_list_read(const char *filename,
   GoadServer newval;
 
   gnome_config_push_prefix(filename);
-  iter = gnome_config_init_iterator_sections("");
+  iter = gnome_config_init_iterator_sections(filename);
 
-  while((iter = gnome_config_iterator_next(iter, NULL, &newval.id))) {
-    g_string_sprintf(tmpstr, "%s/type",
-		     newval.id);
+  while((iter = gnome_config_iterator_next(iter, &newval.id, NULL))) {
+    if (*filename == '=')
+      g_string_sprintf(tmpstr, "=%s/=type",
+		       newval.id);
+    else
+      g_string_sprintf(tmpstr, "%s/type",
+		       newval.id);
     typename = gnome_config_get_string(tmpstr->str);
     newval.type = goad_server_typename_to_type(typename);
     g_free(typename);
@@ -116,16 +120,28 @@ goad_server_list_read(const char *filename,
       continue;
     }
 
-    g_string_sprintf(tmpstr, "%s/repo_id",
-		     newval.id);
+    if (*filename == '=')
+      g_string_sprintf(tmpstr, "=%s/=repo_id",
+		       newval.id);
+    else
+      g_string_sprintf(tmpstr, "%s/repo_id",
+		       newval.id);
     newval.repo_id = gnome_config_get_string(tmpstr->str);
     
-    g_string_sprintf(tmpstr, "%s/description",
-		     newval.description);
+    if (*filename == '=')
+      g_string_sprintf(tmpstr, "=%s/=description",
+		       newval.description);
+    else
+      g_string_sprintf(tmpstr, "%s/description",
+		       newval.description);
     newval.description = gnome_config_get_string(tmpstr->str);
 
-    g_string_sprintf(tmpstr, "%s/location_info",
-		     newval.description);
+    if (*filename == '=')
+      g_string_sprintf(tmpstr, "=%s/=location_info",
+		       newval.id);
+    else
+      g_string_sprintf(tmpstr, "%s/location_info",
+		       newval.description);
     newval.location_info = gnome_config_get_string(tmpstr->str);
     
     g_array_append_val(servinfo, newval);
@@ -285,12 +301,43 @@ goad_server_activate(GoadServer *sinfo,
     nc[2].kind = "object";
 
     retval = CosNaming_NamingContext_resolve(name_service, &nom, &ev);
+
+    if(ev._major != CORBA_NO_EXCEPTION)
+      {
+	g_warning("goad_server_activate: %s:%d", __FILE__, __LINE__);
+	switch( ev._major )
+	  {
+	    
+	  case CORBA_SYSTEM_EXCEPTION:
+	    g_warning(" sysex: :  %s.\n", CORBA_exception_id(&ev));
+	  case CORBA_USER_EXCEPTION:
+	    g_warning(" usrex: %s.\n", CORBA_exception_id(&ev ) );
+	  default:
+	    break;
+	  }
+	
+	retval = CORBA_OBJECT_NIL;
+      }
+
+    ev._major = CORBA_NO_EXCEPTION;
     CORBA_Object_release(name_service, &ev);
 
-    if(ev._major != CORBA_NO_EXCEPTION) {
-      retval = CORBA_OBJECT_NIL;
-      goto out;
-    }
+    if(ev._major != CORBA_NO_EXCEPTION)
+      {
+	g_warning("goad_server_activate: %s:%d", __FILE__, __LINE__);
+	switch( ev._major )
+	  {
+	    
+	  case CORBA_SYSTEM_EXCEPTION:
+	    g_warning(" sysex: :  %s.\n", CORBA_exception_id(&ev));
+	  case CORBA_USER_EXCEPTION:
+	    g_warning(" usrex: %s.\n", CORBA_exception_id(&ev ) );
+	  default:
+	    break;
+	  }
+	
+	retval = CORBA_OBJECT_NIL;
+      }
 
     if(!CORBA_Object_is_nil(retval, &ev))
       goto out;
@@ -315,15 +362,25 @@ goad_server_activate(GoadServer *sinfo,
   if(!CORBA_Object_is_nil(retval, &ev)
      && !(flags & GOAD_ACTIVATE_NO_NS_REGISTER)) {
     /* Register this object with the name service */
-
     CORBA_Object name_service;
-
+    
     name_service = gnome_name_service_get();
-
     nc[2].id = sinfo->id;
     nc[2].kind = "object";
     CosNaming_NamingContext_bind(name_service, &nom, retval, &ev);
-
+    if (ev._major != CORBA_NO_EXCEPTION)
+      {
+	g_warning("goad_server_activate: %s %d:", __FILE__, __LINE__);
+	switch( ev._major )
+	  {
+	  case CORBA_SYSTEM_EXCEPTION:
+	    g_warning("sysex: %s.\n", CORBA_exception_id(&ev));
+	  case CORBA_USER_EXCEPTION:
+	    g_warning( "usrex: %s.\n", CORBA_exception_id( &ev ) );
+	  default:
+	    break;
+	  }
+      }
     CORBA_Object_release(name_service, &ev);
   }
 
@@ -406,6 +463,7 @@ goad_server_unregister_atexit(ActiveServerInfo *ai, CORBA_Environment *ev)
   CosNaming_NameComponent nc[3] = {{"GNOME", "subcontext"},
 				   {"Servers", "subcontext"}};
   CosNaming_Name nom = {0, 3, nc, CORBA_FALSE};
+
   CORBA_Object name_service;
   PortableServer_ObjectId *oid;
   PortableServer_POA poa;
@@ -475,20 +533,34 @@ goad_server_activate_exe(GoadServer *sinfo,
 
     iorbuf[0] = '\0';
     while(fgets(iorbuf, sizeof(iorbuf), iorfh) && strncmp(iorbuf, "IOR:", 4))
-      /* Just read lines until we get what we're looking for */ ;
-
+      {
+	/* Just read lines until we get what we're looking for */ ;
+      }
+    
     if(strncmp(iorbuf, "IOR:", 4)) {
       retval = CORBA_OBJECT_NIL;
       goto out;
     }
-
+    
     fclose(iorfh);
-
+    if (iorbuf[strlen(iorbuf)-1] == '\n')
+      iorbuf[strlen(iorbuf)-1] = '\0';
+    ev->_major = CORBA_NO_EXCEPTION;
     retval = CORBA_ORB_string_to_object(gnome_orbit_orb, iorbuf, ev);
-      
-    if(ev->_major != CORBA_NO_EXCEPTION)
-      retval = CORBA_OBJECT_NIL;
-
+    if (ev->_major != CORBA_NO_EXCEPTION)
+      {
+	g_warning("goad_server_activate_exe: %s %d:", __FILE__, __LINE__);
+	switch( ev->_major )
+	  {
+	  case CORBA_SYSTEM_EXCEPTION:
+	    g_warning("sysex: %s.\n", CORBA_exception_id(ev));
+	  case CORBA_USER_EXCEPTION:
+	    g_warning("usrex: %s.\n", CORBA_exception_id( ev ) );
+	  default:
+	    break;
+	  }
+	retval = CORBA_OBJECT_NIL;
+      }
   } else if(fork()) {
     _exit(0); /* de-zombifier process, just exit */
   } else {
