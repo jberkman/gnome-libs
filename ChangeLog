@@ -1,3 +1,8 @@
+1998-05-14  Raja R Harinath  <harinath@cs.umn.edu>
+
+	* libgnome/gnome-i18n.c (gnome_i18n_init): It is not safe to pass
+	an `auto' variable to `putenv'.
+
 1998-05-13  Jaka Mocnik  <jaka.mocnik@kiss.uni-lj.si>
 
 	* configure.in: When checking for libtiff link conftest against
