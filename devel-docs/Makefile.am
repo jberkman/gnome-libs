@@ -38,6 +38,7 @@ TEXT_FILES =					\
 	api-comment-style.txt			\
 	gtk_dialog_cauldron.3			\
 	suggestions.txt				\
+	session-management.txt			\
 	mime-type-handling.txt
 
 # automake does not yet dig .sgml files, so for now the DocBook
