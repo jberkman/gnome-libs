@@ -20,24 +20,39 @@ INCLUDES = 						\
 	-DGNOMESYSCONFDIR=\"$(sysconfdir)\" 		\
 	-DVERSION=\""$(VERSION)"\"
 
-gnorba_built = 						\
+gnome_factory_built=\
 	gnome-factory.h 				\
 	gnome-factory-skels.c 				\
 	gnome-factory-stubs.c 				\
-	gnome-factory-common.c				\
+	gnome-factory-common.c
+
+gnome_object_built=\
 	GnomeObject.h					\
 	GnomeObject-skels.c				\
 	GnomeObject-stubs.c				\
 	GnomeObject-common.c
 
+table_built=\
+	Table.h						\
+	Table-skels.c					\
+	Table-stubs.c					\
+	Table-common.c
+
+gnorba_built = $(gnome_factory_built) $(gnome_object_built) \
+	$(table_built)
+
 ORBIT_IDL=orbit-idl
 
 IDL_FLAGS=-D__LIBGNORBA_COMPILATION
 
-$(gnorba_built): $(top_srcdir)/idl/gnome-factory.idl \
-	$(top_srcdir)/idl/GnomeObject.idl
+$(gnome_factory_built): $(top_srcdir)/idl/gnome-factory.idl
 	$(ORBIT_IDL) $(IDL_FLAGS) $(top_srcdir)/idl/gnome-factory.idl
+
+$(gnome_object_built): $(top_srcdir)/idl/GnomeObject.idl
 	$(ORBIT_IDL) $(IDL_FLAGS) $(top_srcdir)/idl/GnomeObject.idl
+
+$(table_built): $(top_srcdir)/idl/Table.idl
+	$(ORBIT_IDL) $(IDL_FLAGS) $(top_srcdir)/idl/Table.idl
 
 libgnorba_la_SOURCES = 					\
 	$(gnorba_built) 				\
@@ -53,7 +68,8 @@ libgnorbagtk_la_SOURCES = 				\
 libgnorbainclude_HEADERS = 				\
 	gnorba.h 					\
 	gnome-factory.h					\
-	GnomeObject.h
+	GnomeObject.h					\
+	Table.h
 
 libgnorba_la_LDFLAGS = -version-info 28:4:1 -rpath $(libdir)
 libgnorba_la_LIBADD = $(ORBIT_LIBS) $(GLIB_LIBS) -lm
