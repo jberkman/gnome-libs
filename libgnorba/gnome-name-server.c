@@ -52,6 +52,9 @@ Display *display;
 int x_error_code = 0;
 GMainLoop *ml;
 
+CORBA_ORB orb;
+CORBA_Environment ev;
+
 static int
 x_error_handler (Display *disp, XErrorEvent *ev)
 {
@@ -132,12 +135,30 @@ setup_atomically_name_server_ior (CORBA_char *ior)
 				    (guchar **) &proxy_data);
 
 		if (!x_error_code && type != None){
-			if ((format == 32) && (nitems == 1))
-				if (*proxy_data != proxy)
-					proxy = None;
-			XFree (proxy_data);
-		} else
+		  if ((format == 32) && (nitems == 1))
+		    if (*proxy_data != proxy)
+		      proxy = None;
+		  if(proxy != None) {
+		    CosNaming_NameComponent nc[1] = {{"GNOME", "subcontext"}};
+		    CosNaming_Name          nom;
+		    CORBA_Object tmp, name_service;
+			  
+		    nom._length = 1; nom._buffer = nc;
+			  
+		    name_service = CORBA_ORB_string_to_object(orb, ior, &ev);
+		    if (!CORBA_Object_is_nil (name_service, &ev)) {
+		      tmp = CosNaming_NamingContext_resolve(name_service, &nom, &ev);
+			  
+		      if(ev._major == CORBA_NO_EXCEPTION)
+			CORBA_Object_release(tmp, &ev);
+		      else
 			proxy = None;
+		    } else
+		      proxy = None;
+		  }
+		  XFree (proxy_data);
+		} else
+		  proxy = None;
 	}
 
 	/*
@@ -247,8 +268,6 @@ int
 main (int argc, char *argv [])
 {
 	CORBA_Object name_server;
-	CORBA_ORB orb;
-	CORBA_Environment ev;
 	PortableServer_POA root_poa;
 	PortableServer_POAManager pm;
 	struct sigaction act;

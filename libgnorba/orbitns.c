@@ -273,11 +273,23 @@ gnome_name_service_get(void)
 		ior = get_name_server_ior_from_root_window ();
 
 		if (ior) {
+			CosNaming_NameComponent nc[1] = {{"GNOME", "subcontext"}};
+		        CosNaming_Name          nom;
+			CORBA_Object tmp;
+
+			nom._length = 1; nom._buffer = nc;
+
 			name_service = CORBA_ORB_string_to_object(_gnorba_gnome_orbit_orb, ior, &ev);
 			g_free (ior);
 
-			if (!CORBA_Object_is_nil (name_service, &ev))
-				goto out;
+			if (!CORBA_Object_is_nil (name_service, &ev)) {
+				tmp = CosNaming_NamingContext_resolve(name_service, &nom, &ev);
+
+				if(ev._major == CORBA_NO_EXCEPTION) {
+					CORBA_Object_release(tmp, &ev);
+					goto out;
+				}
+			}
 		}
 
 		name_service = name_server_by_forking (&ev);
