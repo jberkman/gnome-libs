@@ -19,7 +19,7 @@ EXTRA_DIST = 			\
 	gnome-make-postscript-mimes \
 	$(noinst_DATA)
 
-scoredir=$(DESTDIR)$(localstatedir)/games
+scoredir=$(localstatedir)/games
 sysconf_DATA=paper.config mime-magic
 
 soundlistdir = $(sysconfdir)/sound/events
