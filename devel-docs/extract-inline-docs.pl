@@ -1,10 +1,48 @@
 #!/usr/bin/perl
+#
+# THIS SCRIPT IS STILL EXPERIMENTAL !
+#
+# Extracts inline documentation from C source files and creates docbook
+# output.
+#
+# Usage:  extract-inline-docs.pl filename
+#
+# where `filename' is the full pathname of the C source file; it will
+# create a .sgml file with the same name in the current directory.
+#
+# Jan 8, 1999
+# Martin Baulig
+#
+
 
 require 5.004;
 use Carp;
 use strict;
 
-my $input = join '', <>;
+unless ($#ARGV == 0) {
+  print STDERR "Usage: $0 filename\n";
+  exit 1;
+}
+
+my $filename = $ARGV[0];
+
+open INPUT, $filename or croak "open ($filename): $!";
+my $input = join '', <INPUT>;
+close INPUT;
+
+my $basename = $filename;
+$basename =~ s,^.*/([^/]+)$,\1,;
+$basename =~ s,\.\w+$,,;
+
+my $output_file = $basename.".sgml";
+
+open OUTPUT, "> $output_file" or croak "open ($output_file): $!";
+select OUTPUT;
+
+print <<EOF;
+<sect1 id="$basename">
+<title>$basename</title>
+EOF
 
 while ($input =~ m,/\*\*(.*?)\*+/\s*(.*?)\{,sg) {
   my ($doc, $theline) = ($1, $2);
@@ -285,3 +323,9 @@ EOF
   
   print "\n\n";
 }
+
+print <<EOF;
+</sect>
+EOF
+
+close OUTPUT;
