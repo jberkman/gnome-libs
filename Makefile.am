@@ -4,7 +4,7 @@
 # Still, 1.3 is the first "released" automake that is OK.
 AUTOMAKE_OPTIONS = 1.3
 
-bin_SCRIPTS = gnome-config
+bin_SCRIPTS = gnome-config gnome-bug
 
 if COMPILE_GNOME_HELLO
 gnome_hello = gnome-hello
@@ -32,7 +32,8 @@ SUBDIRS = po intl support macros \
 
 include_HEADERS = gnome.h
 
-EXTRA_DIST = HACKING gnomeConf.sh.in gnome-config.in gnome-libs.spec
+EXTRA_DIST =	HACKING gnomeConf.sh.in gnome-bug.in gnome-config.in \
+		gnome-libs.spec
 
 release:
 	$(MAKE) dist distdir=$(PACKAGE)$(VERSION)
