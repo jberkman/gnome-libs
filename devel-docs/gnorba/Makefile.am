@@ -25,7 +25,7 @@ gnorba_doc_DATA = 			\
 
 EXTRA_DIST = $(gnorba_doc_DATA)
 
-if HAVE_GTK_DOC
+if ENABLE_GTK_DOC
 html/index.html: html/book1.html
 	-cd $(srcdir) && mv html/book1.html html/index.html
 else

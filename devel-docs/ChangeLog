@@ -1,3 +1,11 @@
+1999-07-10  Martin Baulig  <martin@home-of-linux.org>
+
+	* gnome/Makefile.am: Use `ENABLE_GTK_DOC', not `HAVE_GTK_DOC' as
+	automake conditional to make the new `--disable-gtk-doc' configure
+	parameter work even if we have gtk-doc.
+	* gnomeui/Makefile.am: Likewise.
+	* gnorba/Makefile.am: Likewise.
+
 1999-07-07  Miguel de Icaza  <miguel@gnu.org>
 
 	* gnomeui/gnomeui-sections.txt: Updated so that we get templates for

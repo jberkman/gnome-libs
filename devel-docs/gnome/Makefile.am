@@ -44,7 +44,7 @@ gnome_doc_DATA = 			\
 
 EXTRA_DIST = $(gnome_doc_DATA)
 
-if HAVE_GTK_DOC
+if ENABLE_GTK_DOC
 gnome.html: html/book1.html
 	-cd $(srcdir) && cp html/book1.html gnome.html
 else

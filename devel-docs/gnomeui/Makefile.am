@@ -103,7 +103,7 @@ gnomeui_doc_DATA =				\
 
 EXTRA_DIST = $(gnomeui_doc_DATA)
 
-if HAVE_GTK_DOC
+if ENABLE_GTK_DOC
 gnomeui.html: html/book1.html
 	-cd $(srcdir) && cp html/book1.html gnomeui.html
 else
