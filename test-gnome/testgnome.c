@@ -76,6 +76,9 @@ void window_close (GtkWidget *widget, gpointer data)
 }
 
 GnomeUIInfo file_menu[] = {
+        { GNOME_APP_UI_ITEM, "Test", NULL, gtk_main_quit, NULL, NULL,
+	  GNOME_APP_PIXMAP_STOCK, GNOME_STOCK_MENU_EXIT, 'A',
+	  GDK_SHIFT_MASK, NULL },
         { GNOME_APP_UI_ITEM, "Exit", NULL, quit_test, NULL, NULL,
 	  GNOME_APP_PIXMAP_STOCK, GNOME_STOCK_MENU_EXIT, 'X',
 	  GDK_CONTROL_MASK, NULL },
