@@ -1,5 +1,5 @@
 
-LINK     = $(LIBTOOL) --mode=link $(CC) $(CFLAGS) $(LDFLAGS) $(X_LIBS) -o $@
+LINK     = $(LIBTOOL) --mode=link $(CC) $(CFLAGS) $(LDFLAGS) $(X_LIBS) $(x_libs) -o $@
 
 INCLUDE_always = -I$(includedir) $(X_CFLAGS)
 
