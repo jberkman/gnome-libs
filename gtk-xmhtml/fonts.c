@@ -36,6 +36,12 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.7  1998/05/11 07:54:07  kmaraas
+* 1998-05-11  Kjartan Maraas  <kmaraas@fib.hl.no>
+*
+* 	* Removed two compiler warnings in gnome-libs/gtk-xmhtml/
+* 	fonts.c and gtk-forms.c.
+*
 * Revision 1.6  1998/02/12 03:08:37  unammx
 * Merge to Koen's XmHTML 1.1.2 + following fixes:
 *
@@ -1524,7 +1530,7 @@ XmHTMLGetFontCacheInfo(TWidget w)
 	info->hits      = cache->hits;			/* no of hits */
 	info->misses    = cache->misses;		/* no of font cache misses */
 	info->nwidgets  = cache->nwidgets;		/* no of widgets using this cache */
-	info->widgets   = cache->widgets;
+	info->widgets   = (WidgetList)cache->widgets;
 	info->fonts     = (String*)calloc(info->nentries, sizeof(String));
 	info->mapping   = (String*)calloc(info->nentries, sizeof(String));
 

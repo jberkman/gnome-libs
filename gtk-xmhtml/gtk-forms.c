@@ -1244,7 +1244,7 @@ _XmHTMLStartForm(XmHTMLWidget html, String attributes)
 	current_entry = NULL;
 
 	/* set form owner */
-	form->html = html;
+	form->html = (Widget)html;
 
 	/* pick up action */
 	if((form->action = _XmHTMLTagGetValue(attributes, "action")) == NULL)
