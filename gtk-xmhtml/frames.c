@@ -36,6 +36,18 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.6  1997/12/27 20:58:18  unammx
+* More access functions to the widget internals.  I missed these
+* yesterday (ie, those that did not require SetValues validation
+* now have an explicit routine to change the values).
+*
+* Frame support depends on the client of the widget, we should catch
+* that signal and do something with it, I have not figured out exacly
+* how it works, but example_2 in the XmHTML-1.1.1 distribution has an
+* example of this working.
+*
+* Miguel.
+*
 * Revision 1.5  1997/12/26 21:03:32  sopwith
 * A few miscellaneous XmHTML bug fixes, including a note to miguel so he can fix frames ;-)
 *
@@ -1082,17 +1094,15 @@ _XmHTMLCheckForFrames(XmHTMLWidget html, XmHTMLObject *objects)
 	XmHTMLObject *tmp;
 	int nframes = 0;
 
-	printf("Checking for frames\n");
-
+#ifdef WITH_MOTIF
 	/* we only support frames if user has attached a frame callback */
 	if(!html->html.frame_callback) {
-	        printf("No frame callback, so no frames.\
-The comment says:\n\
-/* we only support frames if user has attached a frame callback */\n\
-That means you, Miguel :)\n\n");
 		return(0);
 	}
-
+#else
+	if (!gtk_xmhtml_signal_get_handlers (GTK_WIDGET(html), gtk_xmhtml_signals [GTK_XMHTML_FRAME]))
+		return 0;
+#endif
 	/*
 	* frames are not allowed to appear inside the BODY tag.
 	* So we never have to walk the entire contents of the current document

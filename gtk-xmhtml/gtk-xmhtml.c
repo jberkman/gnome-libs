@@ -46,6 +46,11 @@ typedef gint (*GtkXmHTMLSignal1) (GtkObject *object,
                                   gpointer   arg1,
                                   gpointer   data);
 
+typedef gint (*GtkXmHTMLSignal2) (GtkObject *object,
+                                  gpointer   arg1,
+				  gpointer   arg2,
+                                  gpointer   data);
+
 static void
 gtk_xmthml_marshall_1 (GtkObject *object, GtkSignalFunc func, gpointer data, GtkArg *args)
 {
@@ -54,6 +59,17 @@ gtk_xmthml_marshall_1 (GtkObject *object, GtkSignalFunc func, gpointer data, Gtk
 	rfunc = (GtkXmHTMLSignal1) func;
 
 	(* rfunc) (object, GTK_VALUE_POINTER (args[0]), data);
+}
+
+static void
+gtk_xmthml_marshall_2 (GtkObject *object, GtkSignalFunc func, gpointer data, GtkArg *args)
+{
+	GtkXmHTMLSignal2 rfunc;
+	gint *return_val = GTK_RETLOC_INT(args[3]);
+	
+	rfunc = (GtkXmHTMLSignal2) func;
+
+	*return_val = (* rfunc) (object, GTK_VALUE_POINTER (args[1]), GTK_VALUE_POINTER (args [2]), data);
 }
 
 static Pixel
@@ -289,20 +305,24 @@ gtk_xmhtml_class_init (GtkXmHTMLClass *class)
 				object_class->type,
 				GTK_SIGNAL_OFFSET (GtkXmHTMLClass, losing_focus),
 				gtk_xmthml_marshall_1, GTK_TYPE_NONE, 1, GTK_TYPE_POINTER);
-
 	gtk_xmhtml_signals [GTK_XMHTML_MOTION_TRACK] =
 		gtk_signal_new ("motion_track",
 				GTK_RUN_FIRST,
 				object_class->type,
 				GTK_SIGNAL_OFFSET (GtkXmHTMLClass, motion_track),
-				gtk_xmthml_marshall_1, GTK_TYPE_NONE, 0);
-
+				gtk_xmthml_marshall_1, GTK_TYPE_NONE, 1, GTK_TYPE_POINTER);
 	gtk_xmhtml_signals [GTK_XMHTML_HTML_EVENT] =
 		gtk_signal_new ("html_event",
 				GTK_RUN_FIRST,
 				object_class->type,
 				GTK_SIGNAL_OFFSET (GtkXmHTMLClass, motion_track),
-				gtk_xmthml_marshall_1, GTK_TYPE_NONE, 0);
+				gtk_xmthml_marshall_1, GTK_TYPE_NONE, 1, GTK_TYPE_POINTER);
+	gtk_xmhtml_signals [GTK_XMHTML_HTML_EVENT] =
+		gtk_signal_new ("anchor_visited",
+				GTK_RUN_FIRST,
+				object_class->type,
+				GTK_SIGNAL_OFFSET (GtkXmHTMLClass, anchor_visited),
+				gtk_xmthml_marshall_2, GTK_TYPE_INT, 1, GTK_TYPE_POINTER);
 	gtk_object_class_add_signals (object_class, gtk_xmhtml_signals, GTK_XMHTML_LAST_SIGNAL);
 
 	widget_class->map           = gtk_xmhtml_map;
@@ -566,10 +586,10 @@ gtk_xmhtml_motion_event (GtkWidget *widget, GdkEvent *event, gpointer closure)
 	return TRUE;
 }
 
-static void *
-gtk_signal_get_handlers (GtkObject *obj, int type)
+void *
+gtk_xmhtml_signal_get_handlers (GtkXmHTML *obj, int type)
 {
-	void *handlers = gtk_object_get_data (obj, "signal_handlers");
+	void *handlers = gtk_object_get_data (GTK_OBJECT (obj), "signal_handlers");
 
 	return handlers;
 }
@@ -621,7 +641,7 @@ gtk_xmhtml_focus (GtkWidget *widget, GdkEvent *event, gpointer closure)
 		*     }
 	        */
 	/* invalidate current selection if there is one */
-	if (gtk_signal_get_handlers (htmlo, gtk_xmhtml_signals [GTK_XMHTML_ANCHOR_TRACK])
+	if (gtk_xmhtml_signal_get_handlers (html, gtk_xmhtml_signals [GTK_XMHTML_ANCHOR_TRACK])
 		&& html->html.anchor_current_cursor_element)
 		_XmHTMLTrackCallback (html, event, NULL);
 
@@ -1820,8 +1840,88 @@ gtk_xmhtml_set_freeze_animations (GtkXmHTML *html, int flag)
 	_XmHTMLRestartAnimations (html);
 }
 
-char *
-gtk_xmhtml_get_source (GtkXmHTML *html)
+void
+gtk_xmhtml_set_screen_gamma (GtkXmHTML *html, float screen_gamma)
 {
-	return XmHTMLTextGetSource (GTK_WIDGET (html));
+	html->html.screen_gamma = screen_gamma;
 }
+
+/* Use for progressive image loading */
+void
+gtk_xmhtml_set_image_procs (GtkXmHTML         *html,
+			    XmImageProc       image_proc,
+			    XmImageGifProc    gif_proc,
+			    XmHTMLGetDataProc get_data,
+			    XmHTMLEndDataProc end_data)
+{
+	html->html.image_proc = image_proc;
+	html->html.gif_proc   = gif_proc;
+	html->html.get_data = get_data;
+	html->html.end_data = end_data;
+}
+
+void
+gtk_xmhtml_set_event_proc (GtkXmHTML *html, XmHTMLEventProc event_proc)
+{
+	html->html.event_proc = event_proc;
+}
+
+void
+gtk_xmhtml_set_perfect_colors (GtkXmHTML *html, int flag)
+{
+	html->html.perfect_colors = flag;
+}
+
+void
+gtk_xmhtml_set_uncompress_command (GtkXmHTML *html, char *cmd)
+{
+	g_free (html->html.zCmd);
+	html->html.zCmd = g_strdup (cmd);
+}
+
+void
+gtk_xmhtml_set_strict_checking (GtkXmHTML *html, int flag)
+{
+	html->html.strict_checking = flag;
+}
+
+void
+gtk_xmhtml_set_bad_html_warnings (GtkXmHTML *html, int flag)
+{
+	html->html.bad_html_warnings = flag;
+}
+
+void
+gtk_xmhtml_set_allow_form_coloring (GtkXmHTML *html, int flag)
+{
+	html->html.allow_form_coloring = flag;
+}
+
+void
+gtk_xmhtml_set_imagemap_draw (GtkXmHTML *html, int flag)
+{
+	html->html.imagemap_draw = flag;
+}
+
+void
+gtk_xmhtml_set_mime_type (GtkXmHTML *html, char *mime_type)
+{
+	g_free (html->html.mime_type);
+	html->html.mime_type = g_strdup (mime_type);
+}
+
+void
+gtk_xmhtml_set_alpha_processing (GtkXmHTML *html, int flag)
+{
+	html->html.alpha_processing = flag;
+}
+
+void
+gtk_xmhtml_set_rgb_conv_mode (GtkXmHTML *html, int val)
+{
+	html->html.rgb_conv_mode = val;
+}
+
+
+
+

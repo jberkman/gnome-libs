@@ -36,6 +36,18 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.5  1997/12/27 20:58:17  unammx
+* More access functions to the widget internals.  I missed these
+* yesterday (ie, those that did not require SetValues validation
+* now have an explicit routine to change the values).
+*
+* Frame support depends on the client of the widget, we should catch
+* that signal and do something with it, I have not figured out exacly
+* how it works, but example_2 in the XmHTML-1.1.1 distribution has an
+* example of this working.
+*
+* Miguel.
+*
 * Revision 1.4  1997/12/25 01:34:11  unammx
 * Good news for the day:
 *
@@ -2790,10 +2802,14 @@ _XmHTMLNewAnchor(XmHTMLWidget html, XmHTMLObject *object)
 	* If we have a proc available for anchor testing, call it and 
 	* set the visited field.
 	*/
+#ifdef WITH_MOTIF
 	if(html->html.anchor_visited_proc)
  		anchor->visited = html->html.anchor_visited_proc((TWidget)html, 
  				anchor->href, html->html.client_data);
- 
+#else
+	gtk_signal_emit (GTK_OBJECT (html), gtk_xmhtml_signals [GTK_XMHTML_ANCHOR_VISITED],
+			 anchor->href, html->html.client_data);
+#endif
 	/* insert in the anchor list */
 	if(list_data.anchor_head)
 	{

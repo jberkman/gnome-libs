@@ -64,7 +64,7 @@ main (int argc, char *argv [])
 		}
 	}
 	if(strlen(file_contents->str) <= 0)
-		file_contents = g_string_append(file_contents, test_string);
+		file_contents = g_string_append(file_contents, test_string2);
 	gtk_signal_connect(GTK_OBJECT(window), "delete_event",
 		GTK_SIGNAL_FUNC(gtk_true), NULL);
 	gtk_signal_connect(GTK_OBJECT(window), "destroy",

@@ -45,20 +45,21 @@ struct _GtkXmHTMLClass
 {
 	GtkContainerClass parent_class;
 
-	void (*activate)     (GtkXmHTML *, void *);
-	void (*arm)          (GtkXmHTML *, void *);
-	void (*anchor_track) (GtkXmHTML *, void *);
-	void (*frame)        (GtkXmHTML *, void *);
-	void (*form)         (GtkXmHTML *, void *);
-	void (*input)        (GtkXmHTML *, void *);
-	void (*link)         (GtkXmHTML *, void *);
-	void (*motion)       (GtkXmHTML *, void *);
-	void (*imagemap)     (GtkXmHTML *, void *);
-	void (*document)     (GtkXmHTML *, void *);
-	void (*focus)        (GtkXmHTML *, void *);
-	void (*losing_focus) (GtkXmHTML *, void *);
-	void (*motion_track) (GtkXmHTML *, void *);
-	void (*html_event)   (GtkXmHTML *, void *); /* HTML 4.0 event */
+	void (*activate)        (GtkXmHTML *, void *);
+	void (*arm)             (GtkXmHTML *, void *);
+	void (*anchor_track)    (GtkXmHTML *, void *);
+	void (*frame)           (GtkXmHTML *, void *);
+	void (*form)            (GtkXmHTML *, void *);
+	void (*input)           (GtkXmHTML *, void *);
+	void (*link)            (GtkXmHTML *, void *);
+	void (*motion)          (GtkXmHTML *, void *);
+	void (*imagemap)        (GtkXmHTML *, void *);
+	void (*document)        (GtkXmHTML *, void *);
+	void (*focus)           (GtkXmHTML *, void *);
+	void (*losing_focus)    (GtkXmHTML *, void *);
+	void (*motion_track)    (GtkXmHTML *, void *);
+	void (*html_event)      (GtkXmHTML *, void *); /* HTML 4.0 event */
+	void (*anchor_visited)  (GtkXmHTML *, char *, void *);
 };
 
 GtkWidget *gtk_xmhtml_new         	   	  (char *html_source);
@@ -116,8 +117,27 @@ void gtk_xmhtml_set_topline                       (GtkXmHTML *html,
 void gtk_xmhtml_set_freeze_animations             (GtkXmHTML *html,
 						   int flag);
 char *gtk_xmhtml_get_source                       (GtkXmHTML *html);
- 
+void gtk_xmhtml_set_screen_gamma                  (GtkXmHTML *html,
+						   float     gamma);
+void gtk_xmhtml_set_image_procs                   (GtkXmHTML         *html,
+						   XmImageProc       image_proc,
+						   XmImageGifProc    gif_proc,
+						   XmHTMLGetDataProc get_data,
+						   XmHTMLEndDataProc end_data);
+void gtk_xmhtml_set_event_proc                    (GtkXmHTML         *html,
+						   XmHTMLEventProc   event_proc);
+void gtk_xmhtml_set_perfect_colors                (GtkXmHTML *html, int flag);
+void gtk_xmhtml_set_uncompress_command            (GtkXmHTML *html, char *cmd);
+void gtk_xmhtml_set_strict_checking               (GtkXmHTML *html, int flag);
+void gtk_xmhtml_set_bad_html_warnings             (GtkXmHTML *html, int flag);
+void gtk_xmhtml_set_allow_form_coloring           (GtkXmHTML *html, int flag);
+void gtk_xmhtml_set_imagemap_draw                 (GtkXmHTML *html, int flag);
+void gtk_xmhtml_set_mime_type                     (GtkXmHTML *html, char *mime_type);
+void gtk_xmhtml_set_alpha_processing              (GtkXmHTML *html, int flag);
+void gtk_xmhtml_set_rgb_conv_mode                 (GtkXmHTML *html, int val);
 
+/* This one is used internally: */
+void *gtk_xmhtml_signal_get_handlers (GtkXmHTML *html, int type);
 
 enum {
 	GTK_ANCHOR_NOLINE,
