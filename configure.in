@@ -5,6 +5,33 @@ dnl
 AC_INIT(gnome.h)
 AM_CONFIG_HEADER(config.h)
 
+AC_MSG_ERROR([
+ ***                    ***** IMPORTANT *****
+ ***
+ *** This is a development version of gnome-libs.  You should be using a stable
+ *** version, which is available at ftp://ftp.gnome.org/pub/GNOME/sources/gnome-libs/
+ *** The version you just configured is meant for developers of gnome-libs only:
+ ***
+ ***   * You should not base ANY software on this version of gnome-libs.
+ ***
+ *** If you are using this source tree from CVS, please run:
+ ***     cvs update -r gnome-libs-1-0
+ *** now.
+ ***
+ ******************************************************************************
+ ***
+ *** If you really want to use gnome-libs HEAD, please look at the new
+ *** libgnome-2, libgnomecanvas-2 and libgnomeui-2 modules in CVS.
+ ***
+ *** There will be more documentation about this very soon. In the meantime,
+ *** if you want to hack on gnome-libs HEAD and need help, just talk to me in
+ *** IRC or drop me a short mail.
+ ***
+ *** March 21, 2001
+ *** Martin Baulig <martin@gnome.org>
+ ***
+])
+
 AC_CANONICAL_SYSTEM
 
 AM_INIT_AUTOMAKE(gnome-libs, 1.95.0)
