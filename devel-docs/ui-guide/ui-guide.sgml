@@ -1,4 +1,5 @@
 <!doctype book PUBLIC "-//Davenport//DTD DocBook V3.0//EN" [
+  <!ENTITY introduction SYSTEM "intro.sgml">
   <!ENTITY fundamentals SYSTEM "fundamentals.sgml">
   <!ENTITY components SYSTEM "components.sgml">
   <!ENTITY develinfo SYSTEM "develinfo.sgml">
@@ -27,7 +28,7 @@
       </author>
 
       <author>
-        <firstname>J&ouml;rg</firstname>
+        <firstname>Jörg</firstname>
         <surname>Rathlev</surname>
         <authorblurb>
           <simpara><email>joerg@jrsoftware.de</email></simpara>
@@ -119,8 +120,6 @@
     
   </bookinfo>
 
-  <toc></toc>
-
   <!-- Here's a first draft of how the future structure of this
        document might look like:
 
@@ -150,14 +149,85 @@
        Index
   -->
 
-  <!-- Fundamentals of the GNOME user interface -->
-  &fundamentals;
+  <part id="introduction">
 
-  <!-- User interface components -->
-  &components;
+    <title>Introduction</title>
 
-  <!-- General development information -->
-  &develinfo;
+    &introduction;
+
+  </part>
+
+
+  <part id="fundamentals">
+
+    <title>Fundamentals of User Interface Design</title>
+
+    <partintro>
+      <abstract>
+	<para>
+	  This part of the GNOME User Interface Guidelines explains
+	  basic methods used to create an effective user interface.
+	  You will learn about the different ways in which users
+	  interact with their computer and find out how you can best
+	  support the user in accomplishing his tasks.
+	</para>
+	<para>
+	  The information found in this part is not GNOME specific
+	  can easily be transferred to other operating systems and
+	  desktop environments.
+	</para>
+      </abstract>
+    </partintro>
+
+    &fundamentals;
+
+  </part>
+
+
+  <part id="components">
+
+    <title>GNOME User Interface Components</title>
+
+    <partintro>
+      <abstract>
+	<para>
+	  This part presents GNOME's user interface elements and
+	  their behavior. It explains for which tasks the different
+	  controls are suitable and how to use them.
+	</para>
+      </abstract>
+    </partintro>
+
+    &components;
+
+  </part>
+
+
+  <part id="implementation">
+
+    <title>Implementation</title>
+
+    <partintro>
+      <abstract>
+	<para>
+	  This part contains some help on how to apply the guidelines.
+	  It explains useful features of the GNOME libraries and
+	  gives you some code examples. This part does not belong to
+	  the actual guidelines and it is not required that you
+	  implement your application as suggested here.
+	</para>
+      </abstract>
+    </partintro>
+
+    &develinfo;
+
+  </part>
+
+  <part id="appendixes">
+
+    <title>Appendixes</title>
+
+  </part>
 
   <!-- Bibilography -->
   &references;
