@@ -7,7 +7,6 @@
  *   - Check all widget repaints against original source, many are
  *     bogus, they should be calls to ClearArea()
  */
-
 #define SetScrollBars(HTML)
 
 #define AdjustVerticalScrollValue(VSB,VAL) do { \
@@ -27,7 +26,7 @@ gint gtk_xmhtml_signals [GTK_XMHTML_LAST_SIGNAL] = { 0, };
 #   define GDK_VISIBILITY_MASK 0
 #endif
 
-#define SCROLLBAR_SPACING(w) (GTK_XMHTML_CLASS (GTK_OBJECT (w)->klass)->scrollbar_spacing)
+#define SCROLLBAR_SPACING 0
 
 static GtkContainer *parent_class = NULL;
 
@@ -45,8 +44,8 @@ static void gtk_xmhtml_size_request (GtkWidget *widget, GtkRequisition *requisit
 
 static void CheckScrollBars(XmHTMLWidget html);
 static void GetScrollDim(XmHTMLWidget html, int *hsb_height, int *vsb_width);
-static void ExtendStart(TWidget w, TEvent *event);
-static void ExtendEnd  (TWidget w, TEvent *event);
+static void	ExtendStart(TWidget w, TEvent *event);
+static void	ExtendEnd  (TWidget w, TEvent *event);
 
 typedef gint (*GtkXmHTMLSignal1) (GtkObject *object,
                                   gpointer   arg1,
@@ -64,9 +63,7 @@ gtk_xmthml_marshall_1 (GtkObject *object, GtkSignalFunc func, gpointer data, Gtk
 
 	rfunc = (GtkXmHTMLSignal1) func;
 
-	(* rfunc) (object, 
-		   GTK_VALUE_POINTER (args[0]), 
-		   data);
+	(* rfunc) (object, GTK_VALUE_POINTER (args[0]), data);
 }
 
 static void
@@ -77,10 +74,7 @@ gtk_xmthml_marshall_2 (GtkObject *object, GtkSignalFunc func, gpointer data, Gtk
 	
 	rfunc = (GtkXmHTMLSignal2) func;
 
-	*return_val = (* rfunc) (object, 
-				 GTK_VALUE_POINTER (args[1]),
-				 GTK_VALUE_POINTER (args [2]), 
-				 data);
+	*return_val = (* rfunc) (object, GTK_VALUE_POINTER (args[1]), GTK_VALUE_POINTER (args [2]), data);
 }
 
 static Pixel
@@ -216,7 +210,7 @@ static void gtk_xmhtml_create_widgets (GtkXmHTML *html);
 static void
 gtk_xmhtml_init (GtkXmHTML *html)
 {
-	GTK_WIDGET_UNSET_FLAGS (html, GTK_NO_WINDOW);
+	GTK_WIDGET_SET_FLAGS (html, GTK_NO_WINDOW);
 	
 	gtk_xmhtml_resource_init (html);
 	gtk_xmhtml_reset_pending_flags (html);
@@ -233,23 +227,8 @@ gtk_xmhtml_init (GtkXmHTML *html)
 
 	/* moved here from gtk_xmhtml_new() so one can subclass */
 	/* GtkXmHTML widget properly                            */
-	html->html_allocation.x = 0;
-	html->html_allocation.y = 0;
-	html->html_allocation.width = 200;
-	html->html_allocation.height = 200;
-
-	html->internal_allocation.x = 0;
-	html->internal_allocation.y = 0;
-	html->internal_allocation.width = 200;
-	html->internal_allocation.height = 200;
-
 	GTK_WIDGET(html)->allocation.width  = 200;
 	GTK_WIDGET(html)->allocation.height = 200;
-
-	html->shadow_type = GTK_SHADOW_IN;
-	html->hscrollbar_policy = GTK_POLICY_AUTOMATIC;
-	html->vscrollbar_policy = GTK_POLICY_AUTOMATIC;
-
 	html->initialized = 0;
 	html->frozen = 0;
 	gtk_xmhtml_create_widgets (html);
@@ -381,8 +360,7 @@ gtk_xmhtml_class_init (GtkXmHTMLClass *class)
 
 	object_class->destroy       = gtk_xmhtml_destroy;
 	widget_class->map           = gtk_xmhtml_map;
-	widget_class->realize       = gtk_xmhtml_realize;
-	widget_class->unrealize     = gtk_xmhtml_unrealize;
+/*	widget_class->unmap         = gtk_xmhtml_unmap; */
 	widget_class->draw          = gtk_xmhtml_draw;
 	widget_class->size_request  = gtk_xmhtml_size_request;
 	widget_class->size_allocate = gtk_xmhtml_size_allocate;
@@ -391,50 +369,38 @@ gtk_xmhtml_class_init (GtkXmHTMLClass *class)
 	container_class->add = gtk_xmhtml_add;
 	container_class->remove = gtk_xmhtml_remove;
 	container_class->foreach = gtk_xmhtml_foreach;
-
-        class->scrollbar_spacing = 5;
 }
 
 static void
 gtk_xmhtml_size_request (GtkWidget *widget, GtkRequisition *requisition)
 {
-	GtkXmHTML *html;
+	GtkXmHTML *html = GTK_XMHTML (widget);
 	int extra_width, extra_height;
 	
 	g_return_if_fail (widget != NULL);
-	g_return_if_fail (GTK_IS_XMHTML (widget));
 	g_return_if_fail (requisition != NULL);
 	
-	html = GTK_XMHTML (widget);
+	requisition->width  = 0;
+	requisition->height = 0;
 
-	/* add in the width for the border around the drawing area */
-	requisition->width  = widget->style->klass->xthickness * 2;
-	requisition->height = widget->style->klass->ythickness * 2;
+	if (GTK_WIDGET_VISIBLE (html->html.work_area)){
+		gtk_widget_size_request (html->html.work_area, &widget->requisition);
 
-	/* add the width of the drawing area */
-	gtk_widget_size_request (html->html.work_area, &widget->requisition);
-	requisition->width  += widget->requisition.width;
-	requisition->height += widget->requisition.height;
+		requisition->width  += widget->requisition.width;
+		requisition->height += widget->requisition.height;
+	}
 
 	extra_width = extra_height = 0;
 
-	/* verticle scrollbar */
-	if (html->vscrollbar_policy == GTK_POLICY_AUTOMATIC ||
-	    GTK_WIDGET_VISIBLE (html->html.vsb)){
-	        gtk_widget_size_request (html->html.vsb, &html->html.vsb->requisition);
-
-                extra_width += html->html.vsb->requisition.width + SCROLLBAR_SPACING (html);
-		requisition->height = MAX (requisition->height, html->html.vsb->requisition.height);
-        }
-
-	/* horizontal scrollbar */
-        if (html->hscrollbar_policy == GTK_POLICY_AUTOMATIC ||
-	    GTK_WIDGET_VISIBLE (html->html.hsb)){
-	        gtk_widget_size_request (html->html.hsb, &html->html.hsb->requisition);
-
-                extra_height += html->html.hsb->requisition.height + SCROLLBAR_SPACING (html);
-                requisition->width = MAX (requisition->width, html->html.hsb->requisition.width);
-        }
+	/* Horizontal scroll bar */
+	gtk_widget_size_request (html->html.hsb, &html->html.hsb->requisition);
+	requisition->width = MAX (requisition->width, html->html.hsb->requisition.width);
+	extra_height = SCROLLBAR_SPACING + html->html.hsb->requisition.height;
+		
+	/* Vertical scrollbarl */
+	gtk_widget_size_request (html->html.vsb, &html->html.vsb->requisition);
+	requisition->height = MAX (requisition->height, html->html.vsb->requisition.height);
+	extra_width = SCROLLBAR_SPACING + html->html.vsb->requisition.width;
 
 	requisition->width  += GTK_CONTAINER (widget)->border_width * 2 + extra_width;
 	requisition->height += GTK_CONTAINER (widget)->border_width * 2 + extra_height;
@@ -443,39 +409,18 @@ gtk_xmhtml_size_request (GtkWidget *widget, GtkRequisition *requisition)
 static void
 gtk_xmhtml_size_allocate (GtkWidget *widget, GtkAllocation *allocation)
 {
-	GtkXmHTML *html;
-
-	g_return_if_fail (widget != NULL);
-	g_return_if_fail (GTK_IS_XMHTML (widget));
-	g_return_if_fail (allocation != NULL);
-
-	html = GTK_XMHTML (widget);
+	GtkXmHTML *html = GTK_XMHTML (widget);
+	
 	widget->allocation = *allocation;
-
-	if (!GTK_WIDGET_REALIZED (widget))
-	        return;
-
-
-	/* place the main window */
-	gdk_window_move_resize (widget->window,
-				allocation->x + GTK_CONTAINER (widget)->border_width,
-				allocation->y + GTK_CONTAINER (widget)->border_width,
-				allocation->width - GTK_CONTAINER (widget)->border_width * 2,
-				allocation->height - GTK_CONTAINER (widget)->border_width * 2);
-
-
-	/* use internal allocation structure for all the math
-	 * because it's easier than always subtracting the container
-	 * border width */
-	html->internal_allocation.x = 0;
-	html->internal_allocation.y = 0;
-	html->internal_allocation.width = allocation->width - 
-	  GTK_CONTAINER (widget)->border_width * 2;
-	html->internal_allocation.height = allocation->height -
-	  GTK_CONTAINER (widget)->border_width * 2;
-
-
 	gtk_container_disable_resize (GTK_CONTAINER (html));
+
+	
+/*	printf ("Size Allocate: (%d,%d) %d %d\n",
+		allocation->x,
+		allocation->y,
+		allocation->height,
+		allocation->width);
+*/
 	Resize (widget);
 	gtk_container_enable_resize (GTK_CONTAINER (html));
 }
@@ -628,36 +573,13 @@ FormScroll (XmHTMLWidget html)
 static void
 gtk_xmhtml_draw (GtkWidget *widget, GdkRectangle *area)
 {
-	GtkXmHTML    *html;
+	GtkXmHTML    *html = GTK_XMHTML (widget);
 	GdkRectangle na;
 	GList        *children;
 	int i;
 
-	g_return_if_fail (widget != NULL);      
-	g_return_if_fail (GTK_IS_XMHTML (widget));            
-	g_return_if_fail (area != NULL);
-
-	html = GTK_XMHTML (widget);
-
 	if (!GTK_WIDGET_DRAWABLE (widget))
 		return;
-
-	/* clear the window */
-	gdk_window_clear_area (widget->window,
-			       area->x, 
-			       area->y,
-			       area->width, 
-			       area->height);
-
-	/* draw list shadow/border */
-	gtk_draw_shadow (widget->style, widget->window,          
-			 GTK_STATE_NORMAL, html->shadow_type,
-			 html->html_allocation.x - widget->style->klass->xthickness,
-			 html->html_allocation.y - widget->style->klass->ythickness,
-			 html->html_allocation.width + 
-			 (2 * widget->style->klass->xthickness),
-			 html->html_allocation.height + 
-			 (2 * widget->style->klass->ythickness));
 
 	if (gtk_widget_intersect (html->html.vsb, area, &na))
 		gtk_widget_draw (html->html.vsb, &na);
@@ -685,28 +607,6 @@ gtk_xmhtml_draw (GtkWidget *widget, GdkRectangle *area)
 static gint
 gtk_xmhtml_expose (GtkWidget *widget, GdkEventExpose *event)
 {
-        GtkXmHTML *html;
-	
-	g_return_val_if_fail (widget != NULL, FALSE);
-	g_return_val_if_fail (GTK_IS_XMHTML (widget), FALSE);
-	g_return_val_if_fail (event != NULL, FALSE);
-
-	html = GTK_XMHTML (widget);
-
-	if (!GTK_WIDGET_DRAWABLE (widget))
-	        return;
-
-        /* draw border */
-        if (event->window == widget->window)
-	        gtk_draw_shadow (widget->style, widget->window,          
-				 GTK_STATE_NORMAL, html->shadow_type,
-				 html->html_allocation.x - widget->style->klass->xthickness,
-				 html->html_allocation.y - widget->style->klass->ythickness,
-				 html->html_allocation.width +
-				 (2 * widget->style->klass->xthickness),
-				 html->html_allocation.height + 
-				 (2 * widget->style->klass->ythickness));
-
 	return FALSE;
 }
 
@@ -761,9 +661,6 @@ gtk_xmhtml_expose_event (GtkWidget *widget, GdkEvent *event, gpointer closure)
 	GtkXmHTML *html = closure;
 	GdkEventExpose *e = (GdkEventExpose *) event;
 	
-	if (!GTK_WIDGET_DRAWABLE (widget))
-	        return;
-
 	if (html->html.formatted == NULL || html->html.nframes)
 		return FALSE;
 
@@ -1055,16 +952,15 @@ gtk_xmhtml_realize (GtkWidget *widget)
 	attributes.visual = gtk_widget_get_visual (widget);
 	attributes.colormap = gtk_widget_get_colormap (widget);
 	attributes.event_mask = gtk_widget_get_events (widget);
-	attributes.event_mask |= (GDK_EXPOSURE_MASK | GDK_BUTTON_PRESS_MASK);
+	attributes.event_mask |= GDK_EXPOSURE_MASK | GDK_BUTTON_PRESS_MASK;
 	
 	attributes_mask = GDK_WA_X | GDK_WA_Y | GDK_WA_VISUAL | GDK_WA_COLORMAP;
 	
-	widget->window = gdk_window_new (gtk_widget_get_parent_window (widget), 
-					 &attributes, 
+	widget->window = gdk_window_new (gtk_widget_get_parent_window (widget), &attributes, 
 					 attributes_mask);
-
 	gdk_window_set_user_data (widget->window, widget);
-      	widget->style = gtk_style_attach (widget->style, widget->window);
+	
+	widget->style = gtk_style_attach (widget->style, widget->window);
 	gtk_style_set_background (widget->style, widget->window, GTK_STATE_NORMAL);
 }
 
@@ -1181,11 +1077,10 @@ gtk_xmhtml_map (GtkWidget *widget)
 	
 	g_return_if_fail (widget != NULL);
 
-	if (GTK_WIDGET_MAPPED (widget))
-	        return;
-
-	GTK_WIDGET_SET_FLAGS (widget, GTK_MAPPED);
-	gdk_window_show (widget->window);
+	GTK_WIDGET_SET_FLAGS(widget, GTK_MAPPED);
+	
+	if (GTK_WIDGET_CLASS (parent_class)->map)
+		(*GTK_WIDGET_CLASS (parent_class)->map)(widget);
 
 	gtk_map_item (html->html.work_area);
 	_XmHTMLDebug(1, ("XmHTML.c: Mapped start\n"));
@@ -1246,7 +1141,6 @@ gtk_xmhtml_set_geometry (GtkWidget *widget, int x, int y, int width, int height)
 static void
 CheckScrollBars(XmHTMLWidget html)
 {
-        GtkWidget *widget;
 	XmHTMLfont *f = html->html.default_font ? html->html.default_font : NULL;
 	XFontStruct *xf;
 	int dx, dy, hsb_height, vsb_width, st, nx, ny, sx, sy;
@@ -1256,8 +1150,6 @@ CheckScrollBars(XmHTMLWidget html)
 	GtkAdjustment *hsba = GTK_ADJUSTMENT (html->hsba);
 	GtkAdjustment *vsba = GTK_ADJUSTMENT (html->vsba);
 
-	widget = GTK_WIDGET (html);
-
 	xf = f ? (XFontStruct *) ((GdkFontPrivate *) f)->xfont : NULL;
 
 	/* don't do a thing if we aren't managed yet */
@@ -1265,7 +1157,9 @@ CheckScrollBars(XmHTMLWidget html)
 		return;
 
 	/* Initial work area offset */
-	sx = sy = st = dx = dy = 0;
+	st = dx = dy = 0;
+	sx = Toolkit_Widget_Dim (html).x;
+	sy = Toolkit_Widget_Dim (html).y;
 	GetScrollDim (html, &hsb_height, &vsb_width);
 
 	/* 1. Vertical scrollbar */
@@ -1298,7 +1192,6 @@ CheckScrollBars(XmHTMLWidget html)
 	} else
 		html->html.needs_hsb = TRUE;
 
-
 	/*     FIXME: same.  Should we support scrollbar policies? */
 
 	/* if this is a frame, check what type of scrolling is requested */
@@ -1328,27 +1221,11 @@ CheckScrollBars(XmHTMLWidget html)
 	{
 		_XmHTMLDebug(1, ("XmHTML.c: CheckScrollBars, end, no bars needed.\n"));
 
-		html->html_allocation.x = html->internal_allocation.x +
-		  widget->style->klass->xthickness;
-
-		html->html_allocation.y = html->internal_allocation.y + 
-		  widget->style->klass->ythickness;
-
-		html->html_allocation.width = html->internal_allocation.width -
-		  (2 * widget->style->klass->xthickness);
-
-		html->html_allocation.height = html->internal_allocation.height -
-		  (2 * widget->style->klass->xthickness);
-
-		gtk_xmhtml_set_geometry (html->html.work_area, 
-					 html->html_allocation.x,
-					 html->html_allocation.y,
-					 html->html_allocation.width,
-					 html->html_allocation.height);
-
+		gtk_xmhtml_set_geometry (html->html.work_area, sx+dx, sy+dy,
+					 Toolkit_Widget_Dim (html).width,
+					 Toolkit_Widget_Dim (html).height);
 		return;
 	}
-
 
 	/* For now: we dont support this */
 	hsb_on_top = 0;
@@ -1356,39 +1233,24 @@ CheckScrollBars(XmHTMLWidget html)
 
 	/* horizontal sb on top */
 	if(html->html.needs_hsb && hsb_on_top)
-		dy += hsb_height + SCROLLBAR_SPACING (html);
+		dy += hsb_height;
 
 	/* vertical sb on left */
 	if(html->html.needs_vsb && vsb_on_left)
-		dx += vsb_width + SCROLLBAR_SPACING (html);
+		dx += vsb_width;
 
 	nx = dx;
 	ny = dy;
 
 	/* See what space we have to reserve for the scrollbars */
 	if(html->html.needs_hsb && hsb_on_top == FALSE)
-		dy += hsb_height + SCROLLBAR_SPACING (html);
+		dy += hsb_height;
 	if(html->html.needs_vsb && vsb_on_left == FALSE)
-		dx += vsb_width + SCROLLBAR_SPACING (html);
+		dx += vsb_width;
 
-	/* set the html_allocation */
-	html->html_allocation.x = html->internal_allocation.x + nx +
-	  widget->style->klass->xthickness;
-	
-	html->html_allocation.y = html->internal_allocation.y + ny +
-	  widget->style->klass->ythickness;
-	
-	html->html_allocation.width = html->internal_allocation.width -
-	  (2 * widget->style->klass->xthickness) - dx;
-	
-	html->html_allocation.height = html->internal_allocation.height -
-	  (2 * widget->style->klass->xthickness) - dy;
-
-	gtk_xmhtml_set_geometry (html->html.work_area,
-				 html->html_allocation.x,
-				 html->html_allocation.y,
-				 html->html_allocation.width,
-				 html->html_allocation.height);
+	gtk_xmhtml_set_geometry (html->html.work_area, sx+nx, sy+ny,
+			      Toolkit_Widget_Dim (html).width - dx,
+			      Toolkit_Widget_Dim (html).height - dy);
 
 	if(html->html.needs_hsb == TRUE)
 	{
@@ -1400,12 +1262,11 @@ CheckScrollBars(XmHTMLWidget html)
 		/* Set hsb size; adjust x-position if we have a vsb */
 		dx = (html->html.needs_vsb ? vsb_width : 0);
 		
-		sb_width  = html->internal_allocation.width - dx - 2*st;
+		sb_width  = Toolkit_Widget_Dim (html).width - dx - 2*st;
 		sb_height = html->html.hsb->requisition.height;
 
 		/* pageIncrement == sliderSize */
-		pinc = html->html.work_width - 
-		  2 *(f ? xf->max_bounds.width : XmHTML_HORIZONTAL_SCROLL_INCREMENT);
+		pinc = html->html.work_width - 2*(f ? xf->max_bounds.width : XmHTML_HORIZONTAL_SCROLL_INCREMENT);
 		
 		/* sanity check */
 		if(pinc < 1)
@@ -1436,17 +1297,11 @@ CheckScrollBars(XmHTMLWidget html)
  		dx = (html->html.needs_vsb && vsb_on_left ? vsb_width : 0);
 
 		/* place it */
-		gtk_xmhtml_set_geometry (html->html.hsb,
-					 html->internal_allocation.x,
-					 html->internal_allocation.y + 
-					 (hsb_on_top ? 0 : html->internal_allocation.height - 
-					  hsb_height),
-					 sb_width,
-					 sb_height);
-
+		gtk_xmhtml_set_geometry (html->html.hsb, sx+dx,
+					 sy+ (hsb_on_top ? 0 : Toolkit_Widget_Dim(html).height - hsb_height),
+					 sb_width, sb_height);
 		gtk_widget_show (html->html.hsb);
 	}
-
 	if(html->html.needs_vsb == TRUE)
 	{
 		int pinc;
@@ -1457,7 +1312,7 @@ CheckScrollBars(XmHTMLWidget html)
 		/* Set vsb size; adjust y-position if we have a hsb */
 		dy = (html->html.needs_hsb ? hsb_height : 0);
 		sb_width  = html->html.vsb->requisition.width;
-		sb_height = html->internal_allocation.height - dy - 2*st;
+		sb_height = Toolkit_Widget_Dim (html).height - dy - 2*st;
 
 		/* pageIncrement == sliderSize */
 		pinc = html->html.work_height - 2*(html->html.default_font ? 
@@ -1492,14 +1347,9 @@ CheckScrollBars(XmHTMLWidget html)
 		/* adjust y-position if hsb is on top */
  		dy = (html->html.needs_hsb && hsb_on_top ? hsb_height : 0);
 
-		gtk_xmhtml_set_geometry (html->html.vsb, 
-					 html->internal_allocation.x + 
-					 (vsb_on_left ? 0 : html->internal_allocation.width - 
-					  vsb_width),
-					 html->internal_allocation.y,
-					 sb_width,
-					 sb_height);
-
+		gtk_xmhtml_set_geometry (html->html.vsb, sx + 
+					 (vsb_on_left ? 0 : Toolkit_Widget_Dim(html).width - vsb_width),
+					 sy, sb_width, sb_height);
 		gtk_widget_show (html->html.vsb);
 	}
 	_XmHTMLDebug(1, ("XmHTML.c: CheckScrollBars, end\n"));
@@ -1541,7 +1391,7 @@ GetScrollDim(XmHTMLWidget html, int *hsb_height, int *vsb_width)
 	 * Not doing this would lead to X Protocol errors whenever text is set
 	 * into the TWidget: the size of the workArea will be less than or equal
 	 * to zero when scrollbars are required.
-	 * We always need to do this check since it's possible that some
+	 * We need always need to do this check since it's possible that some
 	 * user has been playing with the dimensions of the scrollbars.
 	 */
 	if(height >= GTK_WIDGET (html)->allocation.height){
@@ -1550,8 +1400,8 @@ GetScrollDim(XmHTMLWidget html, int *hsb_height, int *vsb_width)
 			       "TWidget (%i).\n    Reset to 15.", height,
 			       GTK_WIDGET(html)->allocation.height);
 		height = 15;
-		fprintf (stderr, "Horizontal boy boy die\n");
-		/* exit (1); */
+		fprintf (stderr, "Die boy boy die\n");
+		exit (1);
 	}
 	
 	if(html->html.vsb){
@@ -1563,7 +1413,7 @@ GetScrollDim(XmHTMLWidget html, int *hsb_height, int *vsb_width)
 				       GTK_WIDGET (html)->allocation.width);
 			width  = 15;
 			fprintf (stderr, "Die vertical boy boy die!\n");
-			/* exit (1); */
+			exit (1);
 		}
 	}
 
