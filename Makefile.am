@@ -18,11 +18,16 @@ else
 test_gnome =
 endif
 
+if FALSE
+# just distribute it, since we can 
+libvfs = libvfs
+endif
+
 SUBDIRS = po intl support macros \
 	tools \
 	libart_lgpl \
 	libgnome libgnomeui gtk-xmhtml $(gnome_hello) zvt \
-	libgnorba idl $(test_gnome) devel-docs gnome-data
+	libgnorba idl $(test_gnome) devel-docs gnome-data $(libvfs)
 
 include_HEADERS = gnome.h
 
