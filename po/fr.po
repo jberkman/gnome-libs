@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-libs VERSION\n"
-"POT-Creation-Date: 1998-07-16 13:49+0200\n"
+"POT-Creation-Date: 1998-07-29 18:56+0200\n"
 "Last-Translator: Vincent Renardias <vincent@waw.com>\n"
 "Language-Team: Vincent Renardias <vincent@waw.com>\n"
 "MIME-Version: 1.0\n"
@@ -34,123 +34,9 @@ msgstr "Auteurs:"
 msgid "Authors: "
 msgstr "Auteurs: "
 
-#: libgnomeui/gnome-about.c:550
+#: libgnomeui/gnome-about.c:567
 msgid "About"
 msgstr "A Propos"
-
-#: libgnomeui/gnome-file-entry.c:90
-msgid "Select file"
-msgstr "Sélectionnez un fichier"
-
-#: libgnomeui/gnome-file-entry.c:147
-msgid "Browse..."
-msgstr "Parcourir..."
-
-#: libgnomeui/gnome-messagebox.c:95
-msgid "Information"
-msgstr "Information"
-
-#: libgnomeui/gnome-messagebox.c:101
-msgid "Warning"
-msgstr "Avertissement"
-
-#: libgnomeui/gnome-messagebox.c:107
-msgid "Error"
-msgstr "Erreur"
-
-#: libgnomeui/gnome-messagebox.c:113
-msgid "Question"
-msgstr "Question"
-
-#: libgnomeui/gnome-messagebox.c:119
-msgid "Message"
-msgstr "Message"
-
-#: libgnomeui/gnome-init.c:42
-msgid ""
-"\n"
-"Gtk toolkit options"
-msgstr ""
-"\n"
-"Options de Gtk"
-
-#: libgnomeui/gnome-init.c:45
-msgid "DISPLAY"
-msgstr "DISPLAY"
-
-#: libgnomeui/gnome-init.c:45
-msgid "X display to use"
-msgstr "Display X a utiliser"
-
-#: libgnomeui/gnome-init.c:47
-msgid "Don't use X shared memory extension"
-msgstr "Ne pas utiliser l'entention mémoire partagée X11"
-
-#: libgnomeui/gnome-init.c:48
-msgid "NAME"
-msgstr "NAME"
-
-#: libgnomeui/gnome-init.c:48 libgnomeui/gnome-init.c:49
-#: libgnomeui/gnome-init.c:50 libgnomeui/gnome-init.c:51
-#: libgnomeui/gnome-init.c:52 libgnomeui/gnome-init.c:53
-msgid "FIXME"
-msgstr "FIXME"
-
-#: libgnomeui/gnome-init.c:49
-msgid "CLASS"
-msgstr "CLASS"
-
-#: libgnomeui/gnome-init.c:50
-msgid "HOST"
-msgstr "HOTE"
-
-#: libgnomeui/gnome-init.c:51
-msgid "PORT"
-msgstr "PORT"
-
-#: libgnomeui/gnome-init.c:52 libgnomeui/gnome-init.c:53
-msgid "STYLE"
-msgstr "STYLE"
-
-#: gnome-hello/gnome-hello-4-SM.c:91 libgnomeui/gnome-client.c:170
-#: libgnomeui/gnome-client.c:172
-msgid "ID"
-msgstr "ID"
-
-#: libgnomeui/gnome-client.c:171
-msgid "Specify session management id"
-msgstr "Spécifiez l'ID de gestion de session"
-
-#: libgnomeui/gnome-client.c:173
-msgid "Specify id of cloned client"
-msgstr "Spécifiez l'ID du client cloné"
-
-#: libgnomeui/gnome-client.c:175
-msgid "Disable connection to session manager"
-msgstr "Désactive la connexion avec le gestionnaire de session"
-
-#: libgnomeui/gnome_segv.c:58
-msgid ""
-"No, and ignore\n"
-"future SIGSEGV's"
-msgstr ""
-"Non, et ignorer\n"
-"les signaux SIGSEGV ultérieurs"
-
-#: libgnomeui/gnome_segv.c:68
-#, c-format
-msgid ""
-"Application \"%s\" has a bug.\n"
-"SIGSEGV received at PC %#lx in PID %d.\n"
-"\n"
-"\n"
-"Do you want to exit this program?"
-msgstr ""
-"L'application \"%s\" est buggée.\n"
-"Le signal SIGSEGV a été recu à %#lx par le PID %d.\n"
-"\n"
-"\n"
-"Voulez-vous quitter ce programme?"
 
 #: libgnomeui/gnome-calculator.c:908 libgnomeui/gnome-calculator.c:1068
 msgid "DEG"
@@ -321,6 +207,233 @@ msgstr "="
 msgid "INV"
 msgstr "INV"
 
+#: gnome-hello/gnome-hello-4-SM.c:91 libgnomeui/gnome-client.c:171
+#: libgnomeui/gnome-client.c:173
+msgid "ID"
+msgstr "ID"
+
+#: libgnomeui/gnome-client.c:172
+msgid "Specify session management id"
+msgstr "Spécifiez l'ID de gestion de session"
+
+#: libgnomeui/gnome-client.c:174
+msgid "Specify id of cloned client"
+msgstr "Spécifiez l'ID du client cloné"
+
+#: libgnomeui/gnome-client.c:176
+msgid "Disable connection to session manager"
+msgstr "Désactive la connexion avec le gestionnaire de session"
+
+#: libgnomeui/gnome-dentry-edit.c:164
+msgid "Name:"
+msgstr "Nom:"
+
+#: libgnomeui/gnome-dentry-edit.c:177
+msgid "Comment:"
+msgstr "Commentaire:"
+
+#: libgnomeui/gnome-dentry-edit.c:187
+msgid "Command:"
+msgstr "Commande:"
+
+#: libgnomeui/gnome-dentry-edit.c:197
+msgid "Type:"
+msgstr "Type:"
+
+#: libgnomeui/gnome-dentry-edit.c:231
+msgid "Run in Terminal"
+msgstr "Lancer dans un terminal"
+
+#: libgnomeui/gnome-dentry-edit.c:245
+msgid "Try this before using:"
+msgstr ""
+
+#: libgnomeui/gnome-dentry-edit.c:255
+msgid "Documentation:"
+msgstr "Documentation:"
+
+#: libgnomeui/gnome-dentry-edit.c:305
+msgid "Easy"
+msgstr "Facile"
+
+#: libgnomeui/gnome-dentry-edit.c:309
+msgid "Advanced"
+msgstr "Avancée"
+
+#: libgnomeui/gnome-dentry-edit.c:542
+msgid ""
+"No\n"
+"icon"
+msgstr ""
+
+#: libgnomeui/gnome-dentry-edit.c:557
+msgid ""
+"Couldn't\n"
+"load\n"
+"icon"
+msgstr ""
+
+#: libgnomeui/gnome-dentry-edit.c:603
+msgid "Choose an icon"
+msgstr "Choisissez une icone"
+
+#: libgnomeui/gnome-file-entry.c:90
+msgid "Select file"
+msgstr "Sélectionnez un fichier"
+
+#: libgnomeui/gnome-file-entry.c:147
+msgid "Browse..."
+msgstr "Parcourir..."
+
+#: libgnomeui/gnome-init.c:48
+msgid ""
+"\n"
+"Gtk toolkit options"
+msgstr ""
+"\n"
+"Options de Gtk"
+
+#: libgnomeui/gnome-init.c:51
+msgid "DISPLAY"
+msgstr "DISPLAY"
+
+#: libgnomeui/gnome-init.c:51
+msgid "X display to use"
+msgstr "Display X a utiliser"
+
+#: libgnomeui/gnome-init.c:53
+msgid "Don't use X shared memory extension"
+msgstr "Ne pas utiliser l'entention mémoire partagée X11"
+
+#: libgnomeui/gnome-init.c:54
+msgid "NAME"
+msgstr "NAME"
+
+#: libgnomeui/gnome-init.c:54 libgnomeui/gnome-init.c:55
+#: libgnomeui/gnome-init.c:56 libgnomeui/gnome-init.c:57
+#: libgnomeui/gnome-init.c:58 libgnomeui/gnome-init.c:59
+msgid "FIXME"
+msgstr "FIXME"
+
+#: libgnomeui/gnome-init.c:55
+msgid "CLASS"
+msgstr "CLASS"
+
+#: libgnomeui/gnome-init.c:56
+msgid "HOST"
+msgstr "HOTE"
+
+#: libgnomeui/gnome-init.c:57
+msgid "PORT"
+msgstr "PORT"
+
+#: libgnomeui/gnome-init.c:58 libgnomeui/gnome-init.c:59
+msgid "STYLE"
+msgstr "STYLE"
+
+#: libgnomeui/gnome-messagebox.c:95
+msgid "Information"
+msgstr "Information"
+
+#: libgnomeui/gnome-messagebox.c:101
+msgid "Warning"
+msgstr "Avertissement"
+
+#: libgnomeui/gnome-messagebox.c:107
+msgid "Error"
+msgstr "Erreur"
+
+#: libgnomeui/gnome-messagebox.c:113
+msgid "Question"
+msgstr "Question"
+
+#: libgnomeui/gnome-messagebox.c:119
+msgid "Message"
+msgstr "Message"
+
+#: libgnomeui/gnome-scores.c:72
+msgid "Top Ten"
+msgstr "Top 10"
+
+#: libgnomeui/gnome-scores.c:83
+msgid "User"
+msgstr "Utilisateur"
+
+#: libgnomeui/gnome-scores.c:86
+msgid "Score"
+msgstr "Score"
+
+#: libgnomeui/gnome-scores.c:89
+msgid "Date"
+msgstr "Date"
+
+#: libgnomeui/gnome_segv.c:58
+msgid ""
+"No, and ignore\n"
+"future SIGSEGV's"
+msgstr ""
+"Non, et ignorer\n"
+"les signaux SIGSEGV ultérieurs"
+
+#: libgnomeui/gnome_segv.c:68
+#, c-format
+msgid ""
+"Application \"%s\" has a bug.\n"
+"SIGSEGV received at PC %#lx in PID %d.\n"
+"\n"
+"\n"
+"Do you want to exit this program?"
+msgstr ""
+"L'application \"%s\" est buggée.\n"
+"Le signal SIGSEGV a été recu à %#lx par le PID %d.\n"
+"\n"
+"\n"
+"Voulez-vous quitter ce programme?"
+
+#: libgnomeui/gnome-stock.c:487
+msgid "OK"
+msgstr "OK"
+
+#: libgnomeui/gnome-stock.c:488
+msgid "Apply"
+msgstr "Appliquer"
+
+#: libgnomeui/gnome-stock.c:489
+msgid "Cancel"
+msgstr "Annuler"
+
+#: libgnomeui/gnome-stock.c:490
+msgid "Close"
+msgstr "Fermer"
+
+#: libgnomeui/gnome-stock.c:491
+msgid "Yes"
+msgstr "Oui"
+
+#: libgnomeui/gnome-stock.c:492
+msgid "No"
+msgstr "Non"
+
+#: gnome-hello/gnome-hello-4-SM.c:79 libgnomeui/gnome-stock.c:493
+msgid "Help"
+msgstr "Aide"
+
+#: libgnomeui/gnome-stock.c:1411
+msgid "Menu Accelerator Keys"
+msgstr "Touches Acceleratrices du Menu"
+
+#: libgnomeui/gnome-stock.c:1413
+msgid "Global"
+msgstr "Global"
+
+#: libgnomeui/gnome-stock.c:1415
+msgid "Menu Item"
+msgstr "Elément de Menu"
+
+#: libgnomeui/gnome-stock.c:1416
+msgid "Accelerator"
+msgstr "Accélérateur"
+
 #: support/argp-parse.c:90
 msgid "Give this help list"
 msgstr "Affiche ce message d'aide"
@@ -399,69 +512,9 @@ msgstr "Essayez `%s --help' ou `%s --usage' pour plus d'informations.\n"
 msgid "Report bugs to %s.\n"
 msgstr "Rapportez les bugs éventuels à %s.\n"
 
-#: libgnomeui/gnome-scores.c:82
-msgid "User"
-msgstr "Utilisateur"
-
-#: libgnomeui/gnome-scores.c:85
-msgid "Score"
-msgstr "Score"
-
-#: libgnomeui/gnome-scores.c:88
-msgid "Date"
-msgstr "Date"
-
-#: libgnomeui/gnome-scores.c:124
-msgid "Clear"
-msgstr "Effacer"
-
-#: libgnomeui/gnome-scores.c:141
-msgid "Top Ten"
-msgstr "Top 10"
-
-#: libgnomeui/gnome-stock.c:485
-msgid "OK"
-msgstr "OK"
-
-#: libgnomeui/gnome-stock.c:486
-msgid "Apply"
-msgstr "Appliquer"
-
-#: libgnomeui/gnome-stock.c:487
-msgid "Cancel"
-msgstr "Annuler"
-
-#: libgnomeui/gnome-stock.c:488
-msgid "Close"
-msgstr "Fermer"
-
-#: libgnomeui/gnome-stock.c:489
-msgid "Yes"
-msgstr "Oui"
-
-#: libgnomeui/gnome-stock.c:490
-msgid "No"
-msgstr "Non"
-
-#: gnome-hello/gnome-hello-4-SM.c:79 libgnomeui/gnome-stock.c:491
-msgid "Help"
-msgstr "Aide"
-
-#: libgnomeui/gnome-stock.c:1407
-msgid "Menu Accelerator Keys"
-msgstr "Touches Acceleratrices du Menu"
-
-#: libgnomeui/gnome-stock.c:1409
-msgid "Global"
-msgstr "Global"
-
-#: libgnomeui/gnome-stock.c:1411
-msgid "Menu Item"
-msgstr "Elément de Menu"
-
-#: libgnomeui/gnome-stock.c:1412
-msgid "Accelerator"
-msgstr "Accélérateur"
+#: support/error.c:102
+msgid "Unknown system error"
+msgstr "Erreur système inconnue"
 
 #: gnome-hello/gnome-hello-2-i18n.c:31
 #: gnome-hello/gnome-hello-3-parse-args.c:33
@@ -547,3 +600,6 @@ msgstr "Fichier"
 #: gnome-hello/gnome-hello-4-SM.c:91
 msgid "Discard session"
 msgstr "Ne pas sauver la session"
+
+#~ msgid "Clear"
+#~ msgstr "Effacer"
