@@ -33,7 +33,33 @@
 
 #ifndef GNOME_DISABLE_COMPAT_H
 
+#include <gnome-entry.h>
+
 #  define GNOME_IS_MDI_MDI_CHILD(obj)     GNOME_IS_MDI_GENERIC_CHILD(obj)
+
+/*
+ * GnomeEntry
+ */
+
+const gchar *gnome_entry_get_history_id   (GnomeEntry  *gentry);
+
+void         gnome_entry_set_history_id   (GnomeEntry  *gentry,
+					   const gchar *history_id);
+const gchar *gnome_entry_get_history_id   (GnomeEntry  *gentry);
+
+void         gnome_entry_set_max_saved    (GnomeEntry  *gentry,
+					   guint        max_saved);
+guint        gnome_entry_get_max_saved    (GnomeEntry  *gentry);
+
+void         gnome_entry_prepend_history  (GnomeEntry  *gentry,
+					   gboolean    save,
+					   const gchar *text);
+void         gnome_entry_append_history   (GnomeEntry  *gentry,
+					   gboolean     save,
+					   const gchar *text);
+void         gnome_entry_load_history     (GnomeEntry  *gentry);
+void         gnome_entry_save_history     (GnomeEntry  *gentry);
+void         gnome_entry_clear_history    (GnomeEntry  *gentry);
 
 #endif /* GNOME_DISABLE_COMPAT_H */
 #endif
