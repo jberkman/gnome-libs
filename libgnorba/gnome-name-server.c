@@ -161,7 +161,7 @@ setup_name_server (CORBA_Object name_service, CORBA_Environment *ev)
 
 	context_name._length = 1;
 	/*
-	  Create the default context "/GNOME/servers"
+	  Create the default context "/GNOME/Servers"
 	*/
 	gnome_context = CosNaming_NamingContext_bind_new_context(name_service, &context_name, ev);
 	if (ev->_major != CORBA_NO_EXCEPTION) {
@@ -182,7 +182,7 @@ setup_name_server (CORBA_Object name_service, CORBA_Environment *ev)
 	context_name._length = 2;
 	server_context = CosNaming_NamingContext_bind_new_context(name_service, &context_name, ev);
 	if (ev->_major != CORBA_NO_EXCEPTION) {
-		g_warning(_("Creating '/GNOME/servers' context %s %d"), __FILE__, __LINE__);
+		g_warning(_("Creating '/GNOME/Servers' context %s %d"), __FILE__, __LINE__);
 		switch( ev->_major ) {
 		case CORBA_SYSTEM_EXCEPTION:
 			g_warning("	sysex: %s.\n", CORBA_exception_id(ev));
