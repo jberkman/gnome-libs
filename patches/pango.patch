@@ -1,0 +1,82 @@
+? pango-0.13.tar.gz
+? pango-build.patch
+? pango-0.13-martin.tar.gz
+? pango/module-defs.c
+Index: pango/Makefile.am
+===================================================================
+RCS file: /cvs/gnome/pango/pango/Makefile.am,v
+retrieving revision 1.42
+diff -u -u -r1.42 Makefile.am
+--- pango/Makefile.am	2001/02/12 17:46:17	1.42
++++ pango/Makefile.am	2001/03/14 11:19:34
+@@ -80,20 +80,21 @@
+ # down at which point we'll either use the GTK+ versioning
+ # scheme or the standard libtool scheme.
+ #
+-libpango_la_LDFLAGS = -release $(VERSION) $(GLIB_LIBS)
++libpango_la_LDFLAGS = -release $(VERSION)
+ if HAVE_FRIBIDI
++libpango_la_LIBADD = $(GLIB_LIBS)
+ else
+-libpango_la_LIBADD = mini-fribidi/libmini-fribidi.la
++libpango_la_LIBADD = $(GLIB_LIBS) mini-fribidi/libmini-fribidi.la
+ endif
+ 
+ libpangox_la_LDFLAGS = -release $(VERSION)
+-libpangox_la_LIBADD =  $(X_LIBS) $(INCLUDED_X_MODULES)
++libpangox_la_LIBADD =  $(GLIB_LIBS) $(X_LIBS) $(INCLUDED_X_MODULES)
+ libpangoxft_la_SOURCES =   	\
+ 	pangoxft-font.c		\
+ 	pangoxft-fontmap.c      \
+ 	module-defs-xft.c
+ 
+-libpangoxft_la_LIBADD = $(INCLUDED_XFT_MODULES) $(XFT_LIBS) opentype/libpango-ot.la
++libpangoxft_la_LIBADD = $(GLIB_LIBS) $(INCLUDED_XFT_MODULES) $(XFT_LIBS) opentype/libpango-ot.la
+ libpangoxft_la_LDFLAGS = -release $(VERSION)
+ 
+ libpangoft2_la_SOURCES =   	\
+@@ -104,7 +105,7 @@
+ 	pangoft2-fontmap.c	\
+ 	module-defs-ft2.c
+ 
+-libpangoft2_la_LIBADD = $(INCLUDED_FT2_MODULES) $(FREETYPE_LIBS)
++libpangoft2_la_LIBADD = $(GLIB_LIBS) $(INCLUDED_FT2_MODULES) $(FREETYPE_LIBS)
+ libpangoft2_la_LDFLAGS = -release $(VERSION)
+ 
+ pangoincludedir=$(includedir)/pango-1.0/pango
+@@ -174,7 +175,8 @@
+ 	pangoft2.rc		\
+ 	pangoft2.rc.in		\
+ 	pangowin32.rc		\
+-	pangowin32.rc.in
++	pangowin32.rc.in	\
++	pango-ot.h
+ 
+ 
+ install-data-local:
+Index: pango/opentype/Makefile.am
+===================================================================
+RCS file: /cvs/gnome/pango/pango/opentype/Makefile.am,v
+retrieving revision 1.2
+diff -u -u -r1.2 Makefile.am
+--- pango/opentype/Makefile.am	2000/12/21 19:55:23	1.2
++++ pango/opentype/Makefile.am	2001/03/14 11:19:34
+@@ -18,11 +18,17 @@
+ 
+ libpango_ot_la_SOURCES =  	\
+ 	ftxopen.c	 	\
++	ftxopen.h		\
++	ftxopenf.h		\
+ 	ftxgdef.c		\
++	ftxgdef.h		\
+ 	ftxgpos.c 		\
++	ftxgpos.h		\
++	pango-ot-private.h	\
+ 	pango-ot-info.c		\
+ 	pango-ot-ruleset.c	\
+-	ftxgsub.c
++	ftxgsub.c		\
++	ftxgsub.h
+ 
+ noinst_PROGRAMS = ottest
+ 
