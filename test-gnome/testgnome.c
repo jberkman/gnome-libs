@@ -462,6 +462,154 @@ create_number_entry(void)
 	gtk_widget_show(app);
 }
 
+/* CREATE FONT PICKER
+ */
+void cfp_ck_UseFont(GtkWidget *widget,GnomeFontPicker *gfp)
+{
+    gboolean show;
+    gint size;
+    
+    show=!gfp->use_font_in_label;
+    size=gfp->use_font_in_label_size;
+    
+    gnome_font_picker_fi_set_use_font_in_label(gfp,show,size);
+
+}
+void cfp_sp_value_changed(GtkAdjustment *adj,GnomeFontPicker *gfp)
+{
+    gboolean show;
+    gint size;
+    
+    show=gfp->use_font_in_label;
+    size=(gint)adj->value;
+    
+    gnome_font_picker_fi_set_use_font_in_label(gfp,show,size);
+
+}
+
+void cfp_ck_ShowSize(GtkWidget *widget,GnomeFontPicker *gfp)
+{
+    GtkToggleButton *tb;
+
+    tb=GTK_TOGGLE_BUTTON(widget);
+
+    gnome_font_picker_fi_set_show_size(gfp,tb->active);
+}
+
+void cfp_set_font(GnomeFontPicker *gfp, gchar *font_name, GtkLabel *label)
+{
+    g_print("Font name: %s\n",font_name);
+    gtk_label_set(label,font_name);
+}
+
+
+static void
+create_font_picker (void)
+{
+        GtkWidget *fontpicker1,*fontpicker2,*fontpicker3;
+        
+        GtkWidget *app;
+        GtkWidget *vbox,*vbox1,*vbox2,*vbox3;
+        GtkWidget *hbox1,*hbox3;
+        GtkWidget *frPixmap,*frFontInfo,*frUser;
+        GtkWidget *lbPixmap,*lbFontInfo,*lbUser;
+        GtkWidget *ckUseFont,*spUseFont,*ckShowSize;
+        GtkAdjustment *adj;
+
+        app = create_newwin(TRUE,"testGNOME","Font Picker");
+
+
+        vbox=gtk_vbox_new(FALSE,5);
+        gtk_container_border_width(GTK_CONTAINER(vbox),5);
+        gnome_app_set_contents(GNOME_APP(app),vbox);
+
+        /* Pixmap */
+        frPixmap=gtk_frame_new(_("Default Pixmap"));
+        gtk_box_pack_start(GTK_BOX(vbox),frPixmap,TRUE,TRUE,0);        
+        vbox1=gtk_vbox_new(FALSE,FALSE);
+        gtk_container_add(GTK_CONTAINER(frPixmap),vbox1);
+        /* GnomeFontPicker with pixmap */
+        fontpicker1 = gnome_font_picker_new();
+        gtk_container_border_width(GTK_CONTAINER(fontpicker1),5);
+        gtk_box_pack_start(GTK_BOX(vbox1),fontpicker1,TRUE,TRUE,0);
+        lbPixmap=gtk_label_new(_("If you choose a font it will appear here"));
+        gtk_box_pack_start(GTK_BOX(vbox1),lbPixmap,TRUE,TRUE,5);
+
+        gtk_signal_connect(GTK_OBJECT(fontpicker1),"font_set",
+                           GTK_SIGNAL_FUNC(cfp_set_font),lbPixmap);
+        
+        /* Font_Info */
+        frFontInfo=gtk_frame_new(_("Font Info"));
+        gtk_box_pack_start(GTK_BOX(vbox),frFontInfo,TRUE,TRUE,0);
+        vbox2=gtk_vbox_new(FALSE,FALSE);
+        gtk_container_border_width(GTK_CONTAINER(vbox2),5);        
+        gtk_container_add(GTK_CONTAINER(frFontInfo),vbox2);
+        
+        /* GnomeFontPicker with fontinfo */
+        hbox1=gtk_hbox_new(FALSE,5);
+        gtk_box_pack_start(GTK_BOX(vbox2),hbox1,FALSE,FALSE,0);
+        
+        ckUseFont=gtk_check_button_new_with_label(_("Use Font in button with size"));
+        gtk_box_pack_start(GTK_BOX(hbox1),ckUseFont,TRUE,TRUE,0);
+
+        adj=GTK_ADJUSTMENT(gtk_adjustment_new(14,5,150,1,1,1));
+        spUseFont=gtk_spin_button_new(adj,1,0);
+        gtk_box_pack_start(GTK_BOX(hbox1),spUseFont,FALSE,FALSE,0);
+
+        ckShowSize=gtk_check_button_new_with_label(_("Show font size"));
+        gtk_toggle_button_set_state(GTK_TOGGLE_BUTTON(ckShowSize),TRUE);
+        gtk_box_pack_start(GTK_BOX(vbox2),ckShowSize,FALSE,FALSE,5);
+        
+        fontpicker2 = gnome_font_picker_new();
+        gnome_font_picker_set_mode(GNOME_FONT_PICKER(fontpicker2),GNOME_FONT_PICKER_MODE_FONT_INFO);
+        gtk_box_pack_start(GTK_BOX(vbox2),fontpicker2,TRUE,TRUE,0);
+
+        gtk_signal_connect(GTK_OBJECT(ckUseFont),"toggled",
+                           (GtkSignalFunc)cfp_ck_UseFont,fontpicker2);
+
+        gtk_signal_connect(GTK_OBJECT(ckShowSize),"toggled",
+                           (GtkSignalFunc)cfp_ck_ShowSize,fontpicker2);
+        
+        gtk_signal_connect(GTK_OBJECT(adj),"value_changed",
+                           (GtkSignalFunc)cfp_sp_value_changed,fontpicker2);
+        
+        lbFontInfo=gtk_label_new(_("If you choose a font it will appear here"));
+        gtk_box_pack_start(GTK_BOX(vbox2),lbFontInfo,TRUE,TRUE,5);
+
+        gtk_signal_connect(GTK_OBJECT(fontpicker2),"font_set",
+                           GTK_SIGNAL_FUNC(cfp_set_font),lbFontInfo);
+        
+        
+        /* User Widget */
+        frUser=gtk_frame_new("User Widget");
+        gtk_box_pack_start(GTK_BOX(vbox),frUser,TRUE,TRUE,0);
+        vbox3=gtk_vbox_new(FALSE,FALSE);
+        gtk_container_add(GTK_CONTAINER(frUser),vbox3);
+        /* GnomeFontPicker with User Widget */
+        fontpicker3 = gnome_font_picker_new();
+        gnome_font_picker_set_mode(GNOME_FONT_PICKER(fontpicker3),GNOME_FONT_PICKER_MODE_USER_WIDGET);
+
+        hbox3=gtk_hbox_new(FALSE,0);
+        gtk_box_pack_start(GTK_BOX(hbox3),gnome_stock_pixmap_widget_new(app,
+                                                                        GNOME_STOCK_PIXMAP_SPELLCHECK),
+                           FALSE,FALSE,5);
+        gtk_box_pack_start(GTK_BOX(hbox3),gtk_label_new(_("This is an hbox with pixmap and text")),
+            FALSE,FALSE,5);
+        gnome_font_picker_uw_set_widget(GNOME_FONT_PICKER(fontpicker3),hbox3);
+        gtk_container_border_width(GTK_CONTAINER(fontpicker3),5);
+        gtk_box_pack_start(GTK_BOX(vbox3),fontpicker3,TRUE,TRUE,0);
+
+        lbUser=gtk_label_new(_("If you choose a font it will appear here"));
+        gtk_box_pack_start(GTK_BOX(vbox3),lbUser,TRUE,TRUE,5);
+
+        gtk_signal_connect(GTK_OBJECT(fontpicker3),"font_set",
+                           GTK_SIGNAL_FUNC(cfp_set_font),lbUser);
+        
+        gtk_widget_show_all(app);
+    
+}
+
+
 static void
 create_font_sel(void)
 {
@@ -1417,7 +1565,8 @@ main (int argc, char *argv[])
 		  { "date edit", create_date_edit },
 		  { "dialog", create_dialog },
 		  { "file entry", create_file_entry },
-		  { "number entry", create_number_entry },
+                  { "number entry", create_number_entry },
+                  { "font picker", create_font_picker },                  
 		  { "font sel", create_font_sel },
 		  { "icon list", create_icon_list }, 
 		  { "lamp", create_lamp },
