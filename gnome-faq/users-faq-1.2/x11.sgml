@@ -1,0 +1,115 @@
+<sect1 id="x11">
+<title>The X Window System</title>
+ <qandaset defaultlabel="qanda">
+  <title>The X Window System</title>
+
+  <qandaentry id="x11-intro"> 
+   <question>
+    <para>
+      What's this X thing then? 
+    </para>
+   </question>
+   <answer>
+    <para>
+      X, the X-Window System, X11 (but never <quote>X-Windows</quote>)
+      is what GNOME sits on top of. It has absolutely nothing to do with
+      Microsoft Windows, and if you try to think of it as a version of
+      that, then you will get confused.
+    </para>
+    <para>
+      X is a open standard understood by many operating systems. It is
+      available on all versions of UNIX, on OS/2, and on VMS (but not on
+      Microsoft Windows.) It is used for drawing a graphical display on 
+      your computer; and it is used for networking. Sometimes it's easier 
+      to think of it as a networking tool which happens to draw pictures.
+    </para>
+    <para>
+      The reason this matters in a GNOME FAQ is that GNOME sits on
+      top of X. You need X on your computer and working properly for
+      GNOME to work. Sometimes things you may think are related to
+      GNOME are in fact related to X: for example, some (but not all)
+      font issues are related to X; the resolution of your screen is
+      handled by X; and it's the contents of your X configuration file
+      which tells X how to start GNOME.
+    </para>
+   </answer>
+  </qandaentry>
+
+  <qandaentry id="x11-net">
+   <question> 
+    <para>                        
+      Networking? Why does this matter?
+    </para>   
+   </question>
+   <answer>   
+    <para>      
+      Networking matters in X because it's part of what it was designed
+      to do. If you have two connected machines, it's possible (and
+      extremely simple) to sit at one machine and tell it to run the
+      X server on the other machine but display it where you're sitting.
+      Yes, this means that GNOME can do this too. Whilst you are using
+      GNOME, you can also connect to other machines you have access to,
+      and start GNOME programs there, and the results will be displayed
+      on your machine.
+    </para> 
+   </answer>  
+  </qandaentry>
+
+  <qandaentry id="windowmanagers">
+   <question> 
+    <para>                        
+      Where do window managers come into all this? What is a 
+      "GNOME-compliant" window manager and do I need one?
+    </para>   
+   </question>
+   <answer>   
+    <para>      
+      The window manager is what decides how to display and move
+      windows about. X gives you the ability to have windows on your
+      screen. The window manager is what controls how they appear, how
+      how move them about, and what the borders of the window look like.
+      There are many many window managers out there.
+    </para> 
+    <para>
+      GNOME doesn't require you to use any one particular window manager
+      and has no one "official" window manager. But you will get the most 
+      out of GNOME if you use a GNOME-compliant one.
+      A GNOME-compliant window manager is one which co-operates with
+      GNOME and understands information that GNOME sends the window
+      manager. Fully or largely GNOME-compliant window managers include
+      <ulink type="http" url="http://sawmill.sourceforge.net">Sawfish</ulink> 
+      (until recently known as Sawmill; many people still call it that),
+      <ulink type="http" url="http://www.enlightenment.org">Enlightenment</ulink>,
+      <ulink type="http" url="http://www.windowmaker.org">Window Maker</ulink>,
+      <ulink type="http" url="http://www.icewm.org">IceWM</ulink> and
+      <ulink type="http" url="http://scwm.mit.edu">Scwm</ulink>. 
+    </para>
+    <para>
+      Previous versions of this FAQ also referred to a few more as
+      putting the finishing touches to GNOME-compliancy: of these, the FAQs for
+      <ulink type="http" url="http://www.fvwm.org">FVWM</ulink> and 
+      <ulink type="http" url="http://www-masuda.is.s.u-tokyo.ac.jp/~kourai/qvwm/qvwm-e.html">Qvwm</ulink>
+      do not mention GNOME (comments from users of these with GNOME welcome!),
+      and the 
+      <ulink type="http" url="http://www.afterstep.org">AfterStep</ulink>
+      FAQ refers to being as GNOME-compliant as possible but prefers the
+      AfterStep pager to those offered by GNOME.
+    </para>
+    <para>
+      From a practical point of view, picking one of the definitely
+      GNOME-compliant window managers is a good idea simply because
+      most GNOME users and developers use them and you are more likely
+      to get rapid answers from them due to familiarity. The currently
+      in-vogue window managers appear to be 
+      <application>Enlightenment</application>, which was the first to
+      be designed to be compliant, and 
+      <application>Sawfish</application>, which is designed specifically
+      to be light-weight and to work with GNOME. A resolute minority prefer 
+      the older but still popular
+      <application>Window Maker</application> and
+      <application>FVWM</application>. 
+    </para>
+   </answer>  
+  </qandaentry>
+ </qandaset>
+</sect1>

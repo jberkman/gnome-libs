@@ -1,0 +1,265 @@
+<sect1 id="whatis">
+ <title>What is GNOME?</title>
+ <qandaset defaultlabel="qanda">
+
+  <qandaentry id="what-gnome"> 
+   <question>
+    <para>
+      So what is <acronym>GNOME</acronym>?
+    </para>
+   </question>
+   <answer>
+    <para>
+      The initials stand for GNU Networked Object Model Environment.
+      This doesn't really help explain what it does, though.
+      <acronym>GNOME</acronym> is a part of the 
+      <ulink type="http" url="http://www.gnu.org">GNU Project</ulink> and 
+      an attempt to make a desktop environment which is 
+      <ulink type="http" url="http://www.gnu.org/philosophy/free-sw.html">free 
+      software</ulink>,
+      which:
+    </para>
+    <orderedlist>
+     <listitem>
+      <para>
+        runs on lots of platforms;
+      </para>
+     </listitem>
+     <listitem>
+      <para>
+        is consistent so that you use the same approach to do the same tasks 
+        in different programs;
+      </para>
+     </listitem>
+     <listitem>
+      <para> 
+       can be used by developers to develop software easily;
+      </para>
+     </listitem>
+     <listitem>
+      <para>
+        is fun to use.
+      </para>
+     </listitem>
+    </orderedlist>
+   </answer>
+  </qandaentry>
+
+  <qandaentry id="pronunciation">
+   <question> 
+    <para>                        
+      GNOME: <quote>nome</quote> or <quote>guh-nome</quote>?
+    </para>   
+   </question>
+   <answer>   
+    <para>      
+      In English, the word "gnome" is pronounced with a silent "g".
+      However, <acronym>GNOME</acronym> itself is generally pronounced
+      as "guh-nome", just as <acronym>GNU</acronym> is pronounced
+      "guh-noo" when referring to the <ulink url="http://www.gnu.org"
+      type="http">GNU Project</ulink>.
+    </para> 
+   </answer>  
+  </qandaentry>
+   <qandaentry id="firstpost">
+   <question> 
+    <para>                        
+      When did <acronym>GNOME</acronym> start?
+    </para>   
+   </question>
+   <answer>   
+    <para>      
+      The official announcement of the project was in August 1997
+      and was posted to comp.os.linux.announce under the subject
+      heading <quote>The GNOME Desktop project</quote>. It doesn't
+      seem to be in <ulink type="http" url="http://www.deja.com">Deja</ulink>
+      but copies exist in various archives of the newsgroup.
+      <!-- Get the deja.com url to the posting? -->
+    </para> 
+   </answer>  
+  </qandaentry>
+
+  <qandaentry id="historytable">
+   <question> 
+    <para>                        
+      That's a bit brief. Is there a more detailed history?
+    </para>   
+   </question>
+   <answer>   
+    <para>      
+      Probably, but your writer <!-- telsa --> couldn't find an authoritative
+      one. A very rough guide:
+    </para> 
+    <table>
+     <title>Rough GNOME timeline</title>
+      <tgroup cols=3 align=left>
+      <thead>
+      <row>
+       <entry>Date</entry>
+       <entry>Event</entry>
+       <entry>Rough version number</entry>
+      </row>
+     </thead>
+      <tbody>
+      <row>
+       <entry>August 1997</entry>
+       <entry>Miguel de Icaza posts the initial GNOME announcement</entry>
+       <entry></entry>
+      </row>
+      <row>
+       <entry>December 1997</entry>
+       <entry>The "GNOME tarball"</entry>
+       <entry>gnome-0.10 or so</entry>
+      </row>
+      <row>
+       <entry>January 1998</entry>
+       <entry></entry>
+       <entry>gnome-0.12</entry>
+      </row>
+      <row>
+       <entry>September 1998</entry>
+       <entry>The tarball splits and becomes more than one package. 
+       "Bouncing Baboon" release.</entry>
+       <entry>gnome-core/media 0.30 or so.</entry>
+      </row>
+      <row>
+       <entry>December 1998</entry>
+       <entry>Ramping up to initial release</entry>
+       <entry>gnome-core 0.99.1</entry>
+      </row>
+      <row>
+       <entry>March 1999</entry>
+       <entry>GNOME 1.0 released to the world at large. This shipped 
+       on several distributions.</entry>
+       <entry>gnome-core/libs 1.0.4 or so.</entry>
+      </row>
+      <row>
+       <entry>October 1999</entry>
+       <entry>October GNOME released</entry>
+       <entry>gnome-core/libs 1.0.50 or so.</entry>
+      </row>
+      <row>
+       <entry>January 2000</entry>
+       <entry>Start of test releases for next big upgrade</entry>
+       <entry>gnome-core-1.1.x and gnome-applets-1.1.x</entry>
+      </row>
+      <row>
+       <entry>May 2000</entry>
+       <entry>GNOME 1.2 planned: update of many but not all packages</entry>
+       <entry>gnome-core-1.2.x, gnome-applets-1.2.x, gnome-libs-1.0.60 or so.
+       </entry>
+      </row>
+     </tbody>
+    </tgroup>
+   </table>
+   </answer>  
+  </qandaentry>
+   <qandaentry id="versioning">
+   <question> 
+    <para>                        
+      The version numbers are hard! Help!
+    </para>   
+   </question>
+   <answer>   
+    <para>      
+      If you're not used to them, they're hard, yes. It doesn't help that
+      people familiar with different releases will also use names for the
+      releases as well as or instead of the version numbers.
+    </para> 
+    <para>
+      <acronym>GNOME</acronym> uses a version number system that is very
+      common on the net now: it's also used by the Linux kernel, the mutt
+      mailer, and several other large applications. It's three numbers
+      separated by dots, in an x.y.z format. Start with the first number.
+      If it is 0, the app is probably still in development: it may be
+      stable, but it may not have all the features planned yet. If it's
+      1 then look at the second number. Odd numbers mean it's unstable,
+      at least nominally, or a development version. Even numbers (or zero) 
+      mean it's stable. So the gnome-core-1.1.z packages are unstable
+      and when they are stable, they will be released as gnome-core-1.2.z.
+      The third number is simply a minor increment. It is not a decimal 
+      number. When you get to 1.1.9 in a package, the next number is quite 
+      likely to be 1.1.10. 
+    </para>
+    <para>
+      Most GNOME packages seem to come out with memorable names: 
+      the October GNOME release, "Beantown" for gnome-core-1.1.1 and so
+      on. The reason why so many releases of GNOME packages have inventive
+      names may be related either to making the numbering system more
+      interesting or merely to the minds of the developers.
+    </para>
+   </answer>  
+  </qandaentry>
+
+  <qandaentry id="moreinfo-q">
+   <question> 
+    <para>                        
+      Where can I find more information on <acronym>GNOME</acronym>?
+    </para>   
+   </question>
+   <answer>   
+    <para>      
+      All over the place. A partial list is in the
+      <link linkend="resources">Resources</link> section of this FAQ.
+    </para>
+   </answer>  
+  </qandaentry>
+
+  <qandaentry id="makemoneyfast">
+   <question>
+    <para>
+      How do I invest in <acronym>GNOME</acronym>? When is it going to 
+      <acronym>IPO</acronym>?
+    </para>
+   </question>
+   <answer>
+    <para>
+      <acronym>GNOME</acronym> is under the control of no one company.
+      There are hundreds of people working on it all over the world. Some
+      are doing it for free, some are doing it in addition to their day job,
+      and some are doing it as their day job, funded by their company. So
+      <acronym>GNOME</acronym> itself isn't an entity which is going to 
+      have an <acronym>IPO</acronym>. Several companies are making
+      significant contributions to the Gnome project, and we wish them
+      well. 
+    </para>
+   </answer>
+  </qandaentry>
+
+  <qandaentry id="kde">
+   <question> 
+    <para>                        
+      There's GNOME and KDE. Why two environments? Why not merge them?
+    </para>   
+   </question>
+   <answer>   
+    <para>      
+      There are several answers to this. First, there is the issue of 
+      licensing. This is a big issue in the world of free software and 
+      can lead to equally big arguments. The
+      <ulink type="http" url="http://www.kde.org">KDE Project</ulink>
+      came first, and used a set of libraries called Qt. These had a
+      non-free licence. Some people didn't like this licence and wanted
+      to work on something with a different licence, so looked about, 
+      found none, and wrote their own, which are under the GPL and the
+      LGPL. Qt's licence has changed since then and is now more free, 
+      but by the time this happened, the projects had diverged greatly
+      in look, focus, organisation, and how the code underneath worked.
+    </para> 
+    <para>
+      Second, although they look very similar on top, the way each works
+      underneath is very different. You couldn't just take code from one
+      project and plug it into the other. It's not that simple. You can
+      run some KDE programs from within GNOME and vice versa, but making
+      them work any more closely is hard.
+    </para>
+    <para>
+      Finally, it's worth pointing out that whilst the code in the two
+      projects can't work together, this is not necessarily true of the 
+      developers. GNOME developers and KDE developers do actually talk to 
+      each other. It's even rumoured that some of them get on quite well.
+    </para>       
+   </answer>  
+  </qandaentry>
+ </qandaset>
+</sect1>

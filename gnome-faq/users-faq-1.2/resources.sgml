@@ -1,0 +1,174 @@
+<sect1 id="resources">
+ <title>Further resources</title>
+ <qandaset defaultlabel="qanda">
+  <qandadiv>   
+   <title>On your own machine</title>
+
+   <qandaentry id="info-local"> 
+    <question>
+     <para>
+       Where can I find information located on my machine?
+     </para>
+    </question>
+    <answer>
+     <para>
+       Information is scattered all over the place. You can use the
+       GNOME help browser (<command>gnome-help-browser</command> at
+       the command line or select <menuchoice><guimenu>Programs</guimenu>
+       <guimenuitem>Help system</guimenuitem></menuchoice> from the main
+       GNOME menu) to browse most of these sources. A brief listing on a
+       UNIX box would include the manual pages (<command>man gnome</command>),
+       the info pages (<command>info gnome</command>), the documentation
+       directory (usually <filename class="directory">/usr/doc/</filename>
+       but it may be <filename class="directory">/usr/share/doc/</filename>
+       on some systems) for packages, and the 
+       <application>GNOME</application>-specific documentation for the
+       GNOME help browser. You can also use your package management 
+       tool as described earlier.
+     </para>
+    </answer>
+   </qandaentry>
+  </qandadiv>
+
+  <qandadiv>
+   <title>On the net</title>
+   <qandaentry id="info-net"> 
+    <question>
+     <para>
+       What about information on the net?
+     </para>
+    </question>
+    <answer>
+     <para>
+       All over the place. A representative listing would include:
+     </para>
+     <itemizedlist>
+      <listitem>
+       <para>
+         The obvious place to start is the <ulink url="http://www.gnome.org"
+         type="http">GNOME website</ulink>. Note that more detailed and
+         technical information is at its sister site:
+         <ulink type="http" url="http://developer.gnome.org">developer.gnome.org</ulink>.
+       </para>
+      </listitem>
+      <listitem>
+       <para>
+         <ulink type="http" url="http://news.gnome.org/gnome-news/">Gnotices</ulink>
+         is the website where much news is posted.
+       </para> 
+      </listitem>
+      <listitem>
+       <para>
+         There are a variety of mailing lists for different purposes. The
+         main mailing list page is at <ulink type="http"
+         url="http://mail.gnome.org/mailman/listinfo/">
+         http://mail.gnome.org/mailman/listinfo/</ulink>. Some lists
+         are hosted elsewhere. If the list you are looking for is not
+         at the above link, check out the old list of mailing lists at
+         <ulink type="http" url="http://www.gnome.org/mailing-lists/">
+         http://www.gnome.org/mailing-lists/</ulink> -- but be aware
+         if something is listed on the first page (the 
+         <application>mailman</application>-run one) then you want to
+         use that link. The second one is purely provided as a way to
+         find the lists which weren't moved onto 
+         <application>mailman</application>.
+       </para>
+       <note>
+        <title>gnome-list and on-topicness</title>
+        <para>
+          The gnome-list mailing list in particular gets a lot of traffic,
+          because people often aren't sure where to ask questions or simply
+          don't know where to ask. It's really not the best place for
+          X-related problems, distribution-related problems, questions on 
+          how to mount a filesystem, perform backups, or what people's
+          favourite mailers are.
+        </para>
+       </note>
+       <para>
+          For these and other non-GNOME questions, there are other mailing
+          lists. Here's a partial list of where to look:
+       </para>
+       <itemizedlist>
+        <listitem>
+         <para>
+           There has to be a Red Hat users list somewhere. Where is it?
+         </para>
+        </listitem>
+        <listitem>
+         <para>
+           Debian users can head for several 
+           <ulink type="http" url="http://www.debian.org/MailingLists/">Debian
+           mailing lists</ulink> on the
+           <ulink type="http" url="http://www.debian.org">Debian 
+           website</ulink>.
+         </para>
+        </listitem>
+        <listitem>
+         <para>
+            Mandrake users can head for several
+            <ulink type="http" url="http://www.linux-mandrake.com/en/flists.php3">Mandrake
+            mailing lists</ulink> on the
+            <ulink type="http" url="http://www.linux-mandrake.com/en/">Mandrake
+            website</ulink>.
+         </para>
+        </listitem>
+        <listitem>
+         <para>
+           Caldera users can head for several
+           <ulink type="http" url="http://www.caldera.com/support/forums/">Caldera
+           mailing lists</ulink> on the 
+           <ulink type="http" url="http://www.caldera.com">Caldera
+           website</ulink>.
+         </para>
+        </listitem>
+        <listitem>
+         <para>
+           FreeBSD users can head for several
+           <ulink type="http" url="http://www.freebsd.org/handbook/eresources.html#ERESOURCES-MAIL">FreeBSD
+           mailing lists</ulink> at the
+           <ulink type="http" url="http://www.freebsd.org">FreeBSD website</ulink>.
+           Note that few of these appear to have a charter involving questions
+           from newbies. If one of those (or none) is the appropriate place,
+           please let me know.
+         </para>
+        </listitem>
+       </itemizedlist>
+       <para>
+         Further contributions welcomed.
+       </para>
+      </listitem>
+
+      <listitem>
+       <para>
+         The Users Guide can be a source of useful information.
+         <!-- where will the users guide live officially? Need url -->
+       </para>
+      </listitem>
+      <listitem>
+       <para>
+         People who want to dig deeper may want to look at the
+         <ulink type="http" url="http://cvs.gnome.org">CVS browser</ulink>
+         which lets you see who's done what recently and what's currently
+         in there. This is where all the central code for GNOME lives.
+       </para>
+      </listitem>
+      <listitem>
+       <para>
+         Some applications are covered in more detail on other
+         websites: the
+         <ulink type="http" url="http://www.helixcode.com">Helix Code</ulink>, 
+         <ulink type="http" url="http://www.eazel.com">Eazel</ulink> and
+         <ulink type="http" url="http://www.labs.redhat.com/news.shtml">RHAD 
+         Labs Rumor Mill</ulink>
+         sites often have information; and many GNOME applications have
+         homepages at the
+         <ulink type="http" url="http://www.sourceforge.net">SourceForge</ulink>
+         site: just search for the word <quote>gnome</quote> in the box.
+       </para>
+      </listitem>
+     </itemizedlist>
+    </answer>
+   </qandaentry>
+  </qandadiv>
+ </qandaset>
+</sect1>

@@ -1,0 +1,200 @@
+<sect1 id="installing">
+ <title>Installing GNOME</title>
+ <qandaset defaultlabel="qanda">
+  <qandaentry id="sysreq"> 
+   <question>
+    <para>
+      What are the basic system requirements if I want to use GNOME?
+    </para>
+   </question>
+   <answer>
+    <para>
+      A computer running one of the flavours of UNIX, Linux, *BSD and
+      so on listed above, which is also capable of running the X Window
+      System. You <emphasis>can</emphasis> get by with 16Mb of RAM, but 
+      32Mb is much much nicer and probably what most people would consider
+      a minimum now. Many people like more.  As for space on the hard drive: 
+      you will certainly need at least 30Mb to install core binaries. If you
+      want to compile the sources yourself, you're looking at 200Mb.
+    </para>
+    <para>
+      Software you want on there already: <application>X</application>:
+      most people use <application>XFree86</application> but some go
+      for the commercial versions instead. You will also need: GTK+, glib,
+      esound, ORBit, gdk-pixbuf, imlib, audiofile and gnome-xml.
+    </para>
+   </answer>
+  </qandaentry>
+
+  <qandaentry id="getting-helix">
+   <question> 
+    <para>                        
+      So where do I get GNOME?
+    </para>   
+   </question>
+   <answer>
+    <para>
+      Most Linux distributions ship with more or less current versions
+      of <application>GNOME</application> on the CDs. If you are running
+      Linux, you probably have it already. Note that Caldera OpenLinux
+      does not ship GNOME: but there are rumoured to exist GNOME rpms on 
+      Caldera's contrib site. <!-- I can't find them. Where are they? -->
+    </para>
+    <para>
+      <application>GNOME</application> is constantly moving ahead, and
+      even three months can see huge changes in it. Announcements of
+      individual package updates are posted almost daily. You will find
+      the tarballs for these on the GNOME site and its mirrors. Vendors
+      also periodically update their packaging of 
+      <application>GNOME</application>, but they have a great many other
+      packages to maintain and update too.
+      <ulink type="http" url="http://www.helixcode.com">Helix Code</ulink> 
+      attempts to provide up-to-date packages of 
+      <application>GNOME</application> for almost every common platform able 
+      to run it: as of May 2000 they were providing 
+      <application>GNOME</application> for:
+    </para>
+    <itemizedlist>
+     <listitem>
+      <para>Red Hat Linux 6.0, 6.1 and 6.2</para>
+     </listitem>
+     <listitem>
+      <para> Linux Mandrake 6.1 and 7.0</para>
+     </listitem>
+     <listitem>
+      <para>SuSE Linux 6.3</para>
+     </listitem>
+     <listitem>
+      <para>Caldera OpenLinux 2.4</para>
+     </listitem>
+     <listitem>
+      <para>LinuxPPC 2000</para>
+     </listitem>
+     <listitem>
+      <para>TurboLinux 6.0</para>
+     </listitem>
+     <listitem>
+      <para>Debian GNU/Linux: Woody. (Also believed to run on Potato)</para>
+     </listitem>
+    </itemizedlist>
+
+    <para>
+      For those with good internet connections, the fastest and simplest
+      way to acquire <application>GNOME</application> can be to visit
+      <ulink type="http" url="http://www.helixcode.com/desktop/download.php3">Helix
+      Code's download page</ulink> and follow the directions there, which
+      involves an automatic installation. This applies to people running 
+      any of the above except Debian.
+    </para>
+    <para>
+      Debian (woody) users will want to do this instead:
+    </para>
+    <procedure>
+     <step>
+      <para>
+        Edit <filename>/etc/apt/sources.list</filename> to include:
+        <literallayout>
+deb http://spidermonkey.helixcode.com/distributions/debian unstable main
+        </literallayout>
+
+<!-- Yes, I know /debian is a symlink and /Debian is the actual directory.
+Apparently /debian is the "official" one to give out. -->
+
+      </para>
+     </step>
+     <step>
+      <para>
+        Run <command>apt-get update</command>.
+      </para>
+     </step>
+     <step>
+      <para>
+        If you are a new GNOME user, run
+        <command>apt-get install task-helix-core</command> to get the
+        core parts of it, or 
+        <command>apt-get install task-helix-gnome</command> to get all
+        the applications.
+        If you are upgrading a current GNOME system, use
+        <command>apt-get dist-upgrade</command>.
+      </para>    
+     </step>
+    </procedure>
+   </answer>
+  </qandaentry>
+
+  <qandaentry id="get-not-helix">
+   <question>
+    <para>
+      I can't or don't want to get Helix off the net. Now what?
+    </para>
+   </question>
+   <answer>
+    <para>
+      If you can't or don't want to get Helix from the net, then the obvious
+      fallback is the tarballs which you can collect from the 
+      <ulink type="ftp" url="ftp://ftp.gnome.org/pub/GNOME/">GNOME
+      FTP site</ulink> or any of its
+      <ulink type="http" url="http://www.gnome.org/ftpmirrors.shtml">mirrors</ulink>.
+      <emphasis>Please</emphasis> use the mirrors: that's why they're there.
+      Or there is the packaging from your distributor. 
+    </para>
+    <para>
+      If the problem is the net connection, the size of the download or the
+      cost of being online that long, then I sympathise. Increasingly,
+      when GNOME people are at Linux shows, they try to have CDs of recent
+      <application>GNOME</application> releases available. If you have
+      friends with net connections and CD burners: well, it's all free
+      software so you are at liberty to get someone to make you a CD.
+      You may be able to ask around and find someone who will post you
+      one, but I don't know.
+    </para>
+   </answer>
+  </qandaentry>
+
+  <qandaentry id="dont-get-cvs">
+   <question>
+    <para>
+      I hear and see people talk about running "the latest CVS"? What's
+      this?
+    </para>
+   </question>
+   <answer>
+    <para>
+      CVS (<application>Concurrent Versioning System</application>)
+      is where all the source code for GNOME lives. Anyone can check it
+      out and put it on their local machine, and gnome hackers can
+      add new code in. With some hundred-odd people checking code in
+      constantly (dozens of changes daily), there's the risk that
+      occasionally (some might claim, commonly) things get slightly 
+      (again some might say, badly) broken.
+    </para>
+    <para>
+      CVS has separate <quote>modules</quote>: there's gnome-core, 
+      gnome-libs, gnome-games and so on. When the code in a module is 
+      working and stable, the maintainer of that module packages it up 
+      neatly into a tarball and puts it up for FTP. Sometime s/he makes 
+      rpms and debs, too. Sometimes that's done by other people who feel 
+      like being helpful. It then gets announced as a new tarball. 
+    </para>
+    <para>
+      CVS is in a constant state of flux, and code from it is not even
+      guaranteed to compile. (It's all source: there's no binaries in
+      there.) Consequently, it is not at all recommended that you
+      start with GNOME by playing with CVS code: the compilation method 
+      is different, it probably won't compile, and if it does, it may eat 
+      your favourite GNOME settings. The tarballs are made as soon as there 
+      are substantial changes and bug fixes in: if a package is perfect and 
+      needs no changes then there won't be many releases. If lots of cool 
+      things have been fixed, it's not unknown for three successive tarballs 
+      to come out in a week. All in all, there's not a lot to gain from 
+      running CVS code unless you're a developer, (or documenter, or 
+      translator) although a lot of people check out the code just to read it.
+    </para>
+    <para>
+      All that said, if you want to try and compile and run CVS code,
+      you're more than welcome. But consider yourself warned in advance :)
+    </para>
+   </answer>
+  </qandaentry>
+ </qandaset>
+</sect1>

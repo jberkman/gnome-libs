@@ -1,0 +1,484 @@
+<sect1 id="compiling">
+ <title>Compilation issues</title>
+ <qandaset defaultlabel="qanda">
+
+  <para>
+    You really shouldn't need this section, because ideally you should
+    be able to get everything in tidy packages for your system. There are
+    always some who want to do it themselves, though. This is a representative
+    list of the questions that come up the most commonly.
+  </para>
+
+  <qandaentry id="compile-order"> 
+   <question>
+    <para>
+      In what order do I compile the packages?
+    </para>
+   </question>
+   <answer>
+    <para>
+      This order has been reported to work well:
+    </para>
+    <procedure>
+     <title>Compilation order for GNOME</title>
+     <step>
+      <para>
+        Compile <application>glib</application>.
+      </para>
+     </step>
+     <step>
+      <para>
+        Compile <application>gtk+</application>.
+      </para>
+     </step>
+     <step>
+      <para>
+        Compile <application>imlib</application>.
+      </para>
+     </step>
+     <step>
+      <para>
+        Compile <application>ORBit</application>.
+      </para>
+     </step>
+     <step>
+      <para>
+        Compile <application>audiofile</application>.
+      </para>
+     </step>
+     <step>
+      <para>
+        Compile <application>esound</application>.
+      </para>
+     </step>
+     <step>
+      <para>
+        Compile <application>gnome-xml</application>.
+      </para>
+     </step>
+     <step>
+      <para>
+        Compile <application>gnome-libs</application>.
+      </para>
+     </step>
+     <step>
+      <para>
+        Compile <application>gdk-pixbuf</application>
+      </para>
+     </step>
+     <step>
+      <para>
+        Compile <application>gnome-http</application>.
+      </para>
+     </step>
+     <step>
+      <para>
+        Compile <application>libglade</application>.
+      </para>
+     </step>
+     <step>
+      <para>
+        Compile <application>libgtop</application>.
+      </para>
+     </step>
+     <step>
+      <para>
+        Compile <application>gnome-print</application>.
+      </para>
+     </step>
+     <step>
+      <para>
+        Compile <application>control-center</application>.
+      </para>
+     </step>
+     <step>
+      <para>
+        Compile <application>gnome-core</application>.
+      </para>
+     </step>
+    </procedure>
+    <para>
+      After this, the order is less important. You should be able to 
+      compile the remaining GNOME applications in any order.
+     <note>
+      <title>Extras for Nautilus and Evolution</title>
+      <para>
+        If you want to experiment with <application>Evolution</application> 
+        and/or <application>Nautilus</application>, two applications which 
+        are not yet part of the standard GNOME distribution, you will need
+        to download and compile
+        <application>gconf</application>, <application>oaf</application>,
+        <application>popt</application> and <application>bonobo</application>
+        as well. All of these will eventually be part of GNOME, but they are
+        not part of it yet.
+      </para>
+     </note>
+    </para>
+   </answer>
+  </qandaentry>
+
+  <qandaentry id="compile-howto">
+   <question>
+    <para>
+      That's all very well but how do I compile a tarball?
+    </para>
+   </question>
+   <answer>
+    <para>
+      If you have an rpm-based system, skip this question and go to
+      the section about generating rpms from tarballs. It saves a lot
+      of trouble to do with putting files into the right places for you
+      system. If not, the standard way to compile gnome tarballs 
+      is to issue the following commands as a normal user:
+    </para>
+    <procedure>
+     <title>Compiling tarballs</title>
+     <step>
+      <para>
+        Unpack the tarball and <command>cd</command> into the top of the
+        tarball directory.
+      </para>
+     </step>
+     <step>
+      <para>
+        <command>./configure</command>
+      </para>
+     </step>
+     <step>
+      <para>
+        <command>make</command>
+      </para>
+     </step>
+     <step>
+      <para>
+        This is a good time to test the program to check it's working before
+        doing the next stage. 
+      </para>
+     </step>
+     <step>
+      <para>
+        <command>su</command> 
+      </para>
+     </step>
+     <step>
+      <para>
+        <command>make install</command>      
+       </para>
+     </step>
+     <step performance="optional">
+      <para>
+        If you want to be able to remove the program neatly later, do
+        not delete all the files in that directory. This will allow you
+        to do <command>make uninstall</command> at a later date. See
+        <link linkend="uninstalling">the question about uninstalling</link>
+        for details.
+      </para>
+     </step>
+    </procedure>
+
+    <para>    
+      That will put your tarball into 
+      <filename class="directory">/usr/local/</filename>, which is
+      where programs you compile locally should go. If you want it
+      somewhere different, then you should either get the 
+      package in the same format that the rest of your package
+      management system uses, so that it can go with the rest; or 
+      you need to pass the <command>./configure</command> some extra 
+      arguments telling it where it should go. These arguments are 
+      generally
+      <option>--prefix</option> and <option>--sysconfdir</option>.
+      Some people also advocate 
+      <option>--localstatedir</option> and <option>--datadir</option>.
+      
+     <note>
+      <title>Just so you know in advance</title>
+      <para>
+        Please re-read the first sentence of the previous paragraph.
+        Programs you compile locally <emphasis>should</emphasis> go
+        in <filename class="directory">/usr/local/</filename>. Mixing
+        binaries provided by a package management system (rpm, dpkg)
+        with binaries from locally-compiled source into the same
+        directory such as <filename class="directory">/usr/</filename>
+        is not universally recommended.
+      </para>
+     </note>
+    </para>
+   </answer>
+  </qandaentry>
+
+  <qandaentry id="compile-prefixes">
+   <question> 
+    <para>                        
+      My system has GNOME in one part of the filesystem. How do I make
+      sure my newly-compiled packages end up in the same place?
+    </para>   
+   </question>
+   <answer>   
+    <para>      
+      By default, tarballs you build and compile yourself will be placed
+      in <filename class="directory">/usr/local</filename>. This is not
+      always where you want them, because then if you use package management
+      then later RPMs or debs may not see the programs in 
+      <filename class="directory">/usr/local/</filename>. 
+    </para> 
+    <para>
+      There is a very strong school of thought which says that you
+      should not be muddling up packages installed from different
+      methods into the same directories because it will confuse things
+      badly. If you use rpms you can create rpms from tarballs of
+      most GNOME packages as 
+      <link linkend="tarball-to-rpm">described below</link>.
+    </para>
+    <para>
+      That said, different distributions use different combinations of
+      prefixes. The way to find out what <application>GNOME</application>
+      is expecting on your machine is to type
+      <command>gnome-config --prefix</command> and 
+      <command>gnome-config --sysconfdir</command>. You can then use
+      the results when you do <command>./configure</command> by giving
+      it arguments: for example,
+      <command>./configure --prefix=/usr --sysconfdir=/etc</command>. You
+      can even show off by making use of backticks and doing
+      <command>./configure --prefix=`gnome-config --prefix` --sysconfdir `gnome-config --sysconfdir`</command>
+      all in one line. 
+    </para>
+    <para>
+      If you must do this, these are the combinations you are
+      probably looking for:
+    </para>
+    <table>
+     <title>Prefixes for different platforms</title>
+
+     <tgroup cols=4 align=left>
+      <thead>
+       <row>
+        <entry>OS</entry>
+        <entry>--prefix</entry>
+        <entry>--sysconfdir</entry>
+        <entry>Notes</entry>
+       </row>
+      </thead>
+
+      <tbody>
+       <row>
+        <entry>RH Linux</entry>
+        <entry>/usr</entry>
+        <entry>/etc</entry>
+        <entry></entry>
+       </row>
+
+       <row>
+        <entry>Debian GNU/Linux</entry>
+        <entry>/usr</entry>
+        <entry>/etc</entry>
+        <entry></entry>
+       </row>
+
+       <row>
+        <entry>Caldera OpenLinux</entry>
+        <entry>/opt/gnome</entry>
+        <entry>/etc/opt/gnome</entry>
+        <entry>Helix GNOME uses /opt/gnome/etc for sysconfdir</entry>
+       </row>
+
+       <row>
+        <entry>SuSE Linux</entry>
+        <entry>/opt/gnome</entry>
+        <entry>/etc/opt/gnome</entry>
+        <entry></entry>
+       </row>
+
+       <row>
+        <entry>Linux Mandrake</entry>
+        <entry>/usr</entry>
+        <entry>/etc</entry>
+        <entry></entry>
+       </row>
+
+       <row>
+        <entry>Solaris</entry>
+        <entry></entry>
+        <entry></entry>
+        <entry>Anyone know?</entry>
+       </row>
+      </tbody>
+     </tgroup>
+    </table>
+   </answer>  
+  </qandaentry>
+
+  <qandaentry id="double-gnome">
+   <question>
+    <para>
+      I have a perfectly fine GNOME installation, but I want to try some of
+      the newer packages without blowing away my working set-up. Can I
+      compile a newer set of GNOME packages into a particular area? How do I
+      do this?
+    </para>
+   </question>
+   <answer>
+    <para>
+      This answer really needs filling in.
+    </para>
+   </answer>
+  </qandaentry>
+
+  <qandaentry id="tarball-to-rpm">
+   <question>
+    <para>
+      My system is RPM-based. What do I do with tarballs?
+    </para>
+   </question>
+   <answer>
+    <para>
+      You can create an RPM from a tarball if the tarball contains a
+      valid specfile. Most GNOME packages do. As root, run
+      <command>rpm -tb &lt;tarballname&gt;</command> to create a 
+      binary rpm, or <command>rpm -ta &lt;tarballname&gt;</command>
+      to create both a binary and a source rpm.
+    </para>
+    <para>
+      If there is no specfile in the tarball, it is not unknown for people 
+      to post their homemade specfiles to the
+      <ulink type="http" url="http://mail.gnome.org/mailman/listinfo/gnome-list/">
+      gnome-list mailing list</ulink> or to
+      <ulink type="http" url="http://news.gnome.org/gnome-news/">Gnotices</ulink>.
+      You can take a separate specfile and do one of two things with it:
+    </para>
+    <para>
+      Option one: as root, place the tarball of package foo in the SOURCES 
+      directory and the specfile in the SPECS directory of
+      <filename class="directory">/usr/src/redhat/</filename>,
+      change to the SPECS directory, and run
+      <command>rpm -ba foo.spec</command>. You may need to replace
+      <filename class="directory">redhat</filename> with the appropriate
+      directory name for your distribution. This will be whatever sub-directory
+      there is <emphasis>besides</emphasis> the one called 
+      <filename class="directory">linux</filename>.
+    </para>
+    <para>
+      Option two: untar your tarball with <command>tar xvfz foo.tar.gz</command>,
+      place the specfile into the resulting directory, and retar it up with
+      <command>tar cvfz foo.tar.gz foo/*</command>. Then become root, and
+      run <command>rpm -ta</command> on the resulting new tarball.
+    </para>
+   </answer>
+  </qandaentry>
+
+  <qandaentry id="rh-locale-fix">
+   <question>
+    <para>
+      I have problems building RPMs from tarballs because it can't
+      find locales correctly.
+    </para>
+   </question>
+   <answer>
+    <para>
+      Run this command before building the rpm: 
+      <command>unset LINGUAS</command>. It should work now. You may
+      want to add this to the %build section of the specfile instead.
+      <!-- FIXME: as well as LINGUAS, what else? LANGUAGE, LC_ALL and LANG? -->
+    </para>
+   </answer>
+  </qandaentry>
+
+  <qandaentry id="db2html">
+   <question>
+    <para>
+      I need <quote>db2html</quote> to build some of the help files.
+      What is it and where can I get it?
+    </para>
+   </question>
+   <answer>
+    <para>
+      <application>db2html</application> is a script from a package
+      called <application>stylesheets</application> and is needed for
+      converting files from DocBook to HTML. As well as stylesheets,
+      you will also need the packages: sgml-common, jade and docbook.
+      These are increasingly being provided by the major Linux and
+      BSD distributions. Check your vendor's FTP site. Much more 
+      information about DocBook and its tools is available from the pages 
+      of the
+      <ulink type="http" url="http://www.gnome.org/gdp">Gnome
+      Documentation Project</ulink>.
+    </para>
+    <para>
+      This used to be a very common question but has not appeared for
+      a few months. Perhaps this question can be removed.
+    </para>
+   </answer>
+  </qandaentry>
+
+  <qandaentry id="package-devel">
+   <question>
+    <para>
+      I have installed all the base packages from the ftp site, but when 
+      I start to compile something else, I am told I am missing a headerfile 
+      with a message like this: <quote>Cannot find gnome-libs</quote> or 
+      <quote>somefile.h: not found</quote>. 
+    </para>
+   </question>
+   <answer>
+    <para>
+      This affects people who install binary rpms or debs. It does not
+      affect people using tarballs or source rpms. (Are there source debs?)
+    </para>
+    <para>
+      Binary packages come in two sorts. There are the ones which come
+      with names of the form &lt;package&gt;.suffix, and there are the
+      ones with the form &lt;package-dev&gt;.suffix or 
+      &lt;package-devel&gt;.suffix. (SuSE, using eight-letter package
+      names, often abbreviates them further to such forms as 
+      &lt;pkgdev&gt;.suffix or even &lt;pkgd&gt;.suffix.) The first sort 
+      are what you need to run the programs in the package and are generally 
+      called the base packages on ftp sites. The second sort are what you 
+      need in addition if you want to compile and install new programs that 
+      rely on other programs' code. They contain header files which the
+      new programs you want to compile will look for. If you expect to be 
+      compiling the occasional tarball (or generating rpms from tarballs), 
+      collect gnome-core-devel, gnome-libs-devel and so on binaries and 
+      install them in addition to the base packages.
+    </para>
+   </answer>
+  </qandaentry>
+   
+  <qandaentry id="uninstalling">
+   <question> 
+    <para>                        
+      How do I uninstall something I installed?
+    </para>   
+   </question>
+   <answer>   
+    <para>      
+      With rpm: <command>rpm --erase package</command>.
+    </para> 
+    <para>
+      With dpkg: either
+    </para>
+    <itemizedlist>
+     <listitem>
+      <para>
+        <command>dpkg --purge package</command>
+      </para>
+     </listitem>
+     <listitem>
+      <para>
+        <command>apt-get remove package</command>
+      </para>
+     </listitem>
+    </itemizedlist>
+    <para>
+      You should probably use <command>apt-get</command> because it will
+      automatically figure out dependencies. If you use <command>dpkg</command>
+      it will also remove configuration files.
+    </para>
+    <para>
+      With tarballs: you must previously have kept the source tree.
+      Change to the directory containing it, run 
+      <command>make uninstall</command> and hope someone wrote the
+      rule which will do this for you.
+    </para>
+   </answer>  
+  </qandaentry>
+ </qandaset>
+</sect1>

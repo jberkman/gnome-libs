@@ -1,0 +1,263 @@
+<sect1 id="problems">
+ <title>Problems</title>
+ <para>
+   Many of the trickier problems you may meet in <acronym>GNOME</acronym>
+   are in fact <application>X</application>. This often means that fixing
+   them will involve editing text files instead of using the GNOME tools.
+   For now, at least.
+ </para>
+
+ <qandaset defaultlabel="qanda">
+  <qandadiv>   
+   <title>X Problems</title>
+
+   <qandaentry id="x-resolution"> 
+    <question>
+     <para>
+       Everything is HUGE!
+     </para>
+    </question>
+    <answer>
+     <para>
+       <application>X</application> can run at different resolutions.
+       When it is first configured, the various programs to configure
+       X (<application>Xconfigurator</application>, 
+       <application>XF86Setup</application>, <application>SaX</application>
+       and so on) will look at video card details and pick "safe" 
+       resolutions, which are generally low. Often they will pick a 
+       variety. If you have a low resolution, you can try experimenting with
+       <keycombo>
+        <keycap>control</keycap>
+        <keycap>alt</keycap>
+        <keycap>+</keycap>
+       </keycombo> and
+       <keycombo>
+        <keycap>control</keycap>
+        <keycap>alt</keycap>
+        <keycap>-</keycap>
+       </keycombo>
+       (NB: these refer to <keycap>+</keycap> and <keycap>-</keycap> on the
+       numberpad pad of the keyboard) to cycle through other available 
+       resolutions. If not a lot happens, and you are confident that your 
+       monitor and card can handle it, you can re-run the setup tool of your 
+       choice for X and feed it different values, or <emphasis>if you know 
+       what you're doing</emphasis> you can attempt to edit the 
+       <filename>XF86Config</filename> which holds the relevant values 
+       yourself. Editing this is not the recommended first tactic: if you 
+       must try it, take a backup copy of the file first.
+     </para>
+     <para>
+       If you are still stuck with 640x480 or 800x600 and one of the 
+       huge things is the panel, you have a couple of options. First,
+       you can use the arrows at the end of it and tidy it away when 
+       you don't need it. Or you can use the autohide feature so that
+       it hides mostly offscreen until you move the mouse over it. If
+       you are using gnome-core-1.1.x or gnome-core-1.2.x, then there is
+       also an option to shrink the width of the panel, available by
+       right-clicking on the panel and following
+       <menuchoice>
+        <guimenu>Panel</guimenu>
+        <guisubmenu>Properties</guisubmenu>
+        <guisubmenu>Size</guisubmenu>
+       </menuchoice>
+       and picking <guimenuitem>Small</guimenuitem> or
+       <guimenuitem>Tiny</guimenuitem>.
+     </para>
+     <para>
+       If applications habitually open so large that they go off the
+       edge of the screen, you should be able to resize them with your
+       window manager before closing. On re-opening, applications which
+       are session-managed by GNOME should re-open at the new size. If you
+       can't get to parts of the application, your window manager probably
+       has a way to move the window about without using the titlebar of
+       the window. For <application>WindowMaker</application> and
+       <application>Enlightenment</application>, the default way to do
+       this is to hold the <keycap>alt</keycap> button down, and then
+       move it with <mousebutton>mouse button 2</mousebutton> (the middle
+       button). For <application>Sawfish</application>, it's the same
+       but <mousebutton>mouse button 1</mousebutton> (the left button).
+     </para>
+    </answer>
+   </qandaentry>
+
+   <qandaentry id="x-icon-probs">
+    <question> 
+     <para>                        
+       Netscape icons get displayed in black and white. 
+     </para>   
+    </question>
+    <answer>   
+     <para>      
+       There is a specific problem with <application>Netscape</application>
+       and particular resolutions and bit depths. This is a problem with 
+       <application>Netscape</application> and <application>X</application>
+       rather than <application>GNOME</application>. <application>Netscape</application>
+       defaults to 1-bit (mono: ie black and white) if it doesn't recognise
+       the bit depth.
+     </para> 
+     <para>
+       GNOME-specific icon problems are covered below.
+     </para>
+    </answer>  
+   </qandaentry>
+  </qandadiv>
+
+  <qandadiv>
+   <title>GNOME problems</title>
+
+   <qandaentry id="eightbit-icon-probs">
+    <question>
+     <para>
+       Icons get displayed all funny in 8-bit colour.
+     </para>
+    </question>
+    <answer>
+     <para>
+       <application>Netscape</application>, <application>imlib</application>
+       and/or <application>gdk-pixbuf</application> are fighting over
+       colours. Try starting applications with private colormaps. Also
+       try adjusting settings in
+       <menuchoice>
+        <guimenu>Programs</guimenu>
+        <guisubmenu>Settings</guisubmenu>
+        <guimenuitem>Imlib Configuration options</guimenuitem>
+       </menuchoice>.
+     </para>
+    </answer>
+   </qandaentry>       
+       
+   <qandaentry id="black-icon-probs">
+    <question>
+     <para>
+       Icons have black backgrounds.
+     </para>
+    </question>
+    <answer>
+     <para>
+       Icon loading is broken in some way. This is usually due to a
+       misinstalled libpng, so check your installation and/or upgrade
+       the libpng package.
+     </para>
+    </answer>
+   </qandaentry>
+
+   <qandaentry id="panel-detected-error">
+    <question> 
+     <para>                        
+       My panel vanished. When I try to restart it, I get a dialogue
+       box saying "Panel detected. Do you really want to start another?"
+       Whatever I say, I get no panel.
+     </para>   
+    </question>
+    <answer>   
+     <para>      
+       This is an annoying bug that results from panels announcing they
+       exist, and dying in unusual ways that stop them saying they are
+       dying. The fix is to upgrade to a recent gnome-core. If this does
+       not work, a quick and dirty fix is to delete your 
+       <filename class=directory>~/.gnome/</filename> directory. This is
+       a nasty hack which fixes only the symptoms and not the cause of the
+       problem, and it will lose any and all settings and changes to those
+       settings which you have made to your GNOME desktop.
+     </para> 
+    </answer>  
+   </qandaentry>
+
+   <qandaentry id="esound-and-xmms">
+    <question>
+     <para>
+       <application>esound</application> is weird: I can get sound out of
+       GNOME: beeps and bings in menu selection and so on. But 
+       <application>xmms</application> won't play.
+     </para>
+    </question>
+    <answer>
+     <para>
+       GNOME expects all noises to go through <application>esound</application>,
+       which talks directly to your sound card. <application>xmms</application>
+       has different plugins for outputting sound. Right-click on 
+       <application>xmms</application> and then on <guimenu>Options</guimenu>
+       to bring up the <guilabel>Preferences</guilabel> dialogue box. Where
+       it says <guilabel>Output Plugin</guilabel>, look at what is selected.
+       If OSS Driver is selected, xmms is trying to talk directly to the
+       soundcard, seeing that it is in use (because <application>esound</application>
+       is talking to the soundcard), and xmms is waiting politely for esound to 
+       stop using the soundcard. So nothing happens. Tell xmms to use esound 
+       in the Output Plugin box, and your music should happen again.
+     </para>
+    </answer>
+   </qandaentry>
+
+   <qandaentry id="network-lookup">
+    <question>
+     <para>
+       GNOME takes ages to start and I get a message about "Could not
+       look up internet address".
+     </para>
+    </question>
+    <answer>
+     <para>
+       When GNOME starts, it wants to know the network address of the
+       computer it's starting on. If it can't find out, it will keep
+       asking until it times out after a minute or so. If you are
+       experiencing this problem, look at the file called
+       <filename>/etc/hosts</filename>. There should be a line about
+       the IP address 127.0.0.1 and it should say this:
+       <literallayout>
+127.0.0.1	localhost	localhost.localdomain
+       </literallayout>
+       If you have tried to put your machine's name into this line,
+       this may be the problem. <!-- FIXME: can someone confirm this? -->
+     </para>
+    </answer>
+   </qandaentry>
+
+   <qandaentry id="unix98ptys">
+    <question>
+     <para>
+       Everything else works, but I get a message about Unix98 ptys when
+       trying to start gnome-terminal.
+     </para>
+    </question>
+    <answer>
+     <para>
+       This refers to an option when compiling a Linux kernel. The 2.0
+       series do not have it on. The 2.2 series does. If you have recompiled
+       your kernel yourself, check you did enable the Unix98 ptys option in
+       the process. If you haven't touched your kernel, it is possible that
+       you are trying to install binaries for a newer version of your
+       distribution on an old machine. This won't work. If you have 
+       Red Hat 5.2, for example, you need to find rpms for that and not
+       to try to install rpms for 6.2. This applies similarly to SuSE.
+     </para>
+    </answer>
+   </qandaentry>
+
+   <qandaentry id="bug-reporting">
+    <question>
+     <para>
+       I found a bug! Now what?
+     </para>
+    </question>
+    <answer>
+     <para>
+       Cool! Please take a few minutes to investigate and then send it in.
+       If you have an oldish package, it is worth checking the announcements
+       for newer packages to see whether it's been fixed. If it hasn't been
+       fixed or mentioned and you can't find it by searching the 
+       <ulink type="http" url="http://bugs.gnome.org">bug tracker</ulink>,
+       then start off <application>bug-buddy</application> from the main menu
+       with
+       <menuchoice>
+        <guimenu>Programs</guimenu>
+        <guisubmenu>Utilities</guisubmenu>
+        <guimenuitem>Bug report tool</guimenuitem>
+       </menuchoice> 
+       or type <command>bug-buddy</command> at the command-line. Follow the
+       directions from there.
+     </para>
+    </answer>
+   </qandaentry>
+  </qandadiv>
+ </qandaset>
+</sect1>

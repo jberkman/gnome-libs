@@ -1,0 +1,137 @@
+<sect1 id="starting">
+ <title>Starting GNOME up</title>
+
+ <para>
+   Before going any further: <emphasis>don't habitually run 
+   <acronym>GNOME</acronym> as root</emphasis>. 
+ </para>
+
+ <qandaset defaultlabel="qanda">
+
+  <qandaentry id="start-from-console"> 
+   <question>
+    <para>
+      When I boot Linux up, I start at a text prompt. How do I start
+      GNOME?
+    </para>
+   </question>
+   <answer>
+    <para>
+      With luck, you should be able to type <command>startx</command> to
+      start <application>X</application> and <application>GNOME</application>
+      will start up. If you're looking here, though, it probably means
+      this didn't work. The solution will depend on the exact problem and
+      on the distribution you are using. 
+    </para>
+    <para>
+      If the problem is that <application>X</application> starts but
+      you get something other than <application>GNOME</application>
+      on top of it, some distributions have tools that let you avoid
+      editing text files yourself:
+    </para>
+    <variablelist>
+     <varlistentry>
+      <term>Red Hat and Mandrake</term>
+      <listitem>
+       <para>
+         Red Hat Linux and Linux Mandrake both come with an application
+         called <application>switchdesk</application>. This can be 
+         started within <application>X</application> and lets you alter
+         your desktop between <application>GNOME</application>,
+         <application>KDE</application> and (on Red Hat)
+         <application>AfterStep</application>. Nice and simple.
+       </para>
+      </listitem>
+     </varlistentry>
+     <varlistentry>
+      <term>SuSE</term>
+      <listitem>
+       <para>
+         SuSE Linux uses <application>YaST</application> to configure
+         <application>X</application> and what happens when you
+         start it. You should be able to tell it to start
+         <application>GNOME</application> as the <quote>window manager</quote>
+         when you start <application>X</application>. (Yes, confusing
+         terminology.) 
+       </para>
+       <para>
+         On SuSE, you should also simply be able to type
+         <command>startx gnome</command> to start <application>GNOME</application>
+         up.
+       </para>
+      </listitem>
+     </varlistentry>
+    </variablelist>
+    <para>
+      If you have one of the above Linux distributions, use the method
+      listed above. If not, then you will need to look at the following:
+    </para>
+    <para>
+      If the problem is that <application>X</application> starts up but
+      either <application>KDE</application> starts or neither 
+      <application>KDE</application> nor <application>GNOME</application>
+      start, then look for a file called <filename>.xinitrc</filename> or
+      (possibly) <filename>.Xclients</filename> in your home directory. Edit 
+      it with a text editor. If you don't have a favourite editor yet, 
+      friendly editors for new users are <application>pico</application> 
+      (comes with a help screen switched on) and <application>joe</application>
+      (if you like the old Wordstar keys, you'll like this). You want to 
+      remove everything from it and end up with just this in it: 
+      <command>exec gnome-session</command>.
+      Save this file, and then retry <command>startx</command>. 
+    </para>
+    <para>
+      If the problem is that either you see a great mass of scrolling
+      messages and then you get your prompt back with an error message,
+      or that the screen clears and then nothing more happens, then you
+      have problems with your X configuration. This is beyond the scope of
+      this FAQ, but first steps to fixing it are to become root and
+      re-run your X configuration tool.     
+    </para>
+   </answer>
+  </qandaentry>
+
+  <qandaentry id="start-from-x">
+   <question> 
+    <para>                        
+      I want GNOME to start when I boot Linux up. How do I do this?
+    </para>   
+   </question>
+   <answer>   
+    <para>      
+      The old answer to this used to be to edit the file called
+      <filename>/etc/inittab</filename>, which contains the list of
+      what to start when as the machine boots. However, this has
+      become more complicated because it involves setting up the
+      correct display manager (of <application>xdm</application>,
+      <application>kdm</application> and <application>gdm</application>).
+      Foolproof answers to this question which work for different
+      flavours of Linux are solicited eagerly. 
+    </para> 
+   </answer>  
+  </qandaentry>
+
+  <qandaentry id="now-what">
+   <question> 
+    <para>                        
+      It starts. Now what?
+    </para>   
+   </question>
+   <answer>   
+    <para>      
+      Well, what do you want to do? You will find almost everything
+      by clicking on the <guimenu>GNOME menu</guimenu> which generally
+      appears as a G-shaped footprint with a small arrow next to it to
+      indicate that it's a menu. Clicking on some of the other things on
+      the panel will also make things happen. If you run out of things
+      to click, you can poke around further by right-clicking on the
+      panel, too. 
+    </para> 
+    <para>
+      This author <!-- Telsa --> recommends investigating the games
+      early on.
+    </para>
+   </answer>  
+  </qandaentry>
+ </qandaset>
+</sect1>

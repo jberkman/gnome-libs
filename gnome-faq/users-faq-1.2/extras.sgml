@@ -1,0 +1,335 @@
+<sect1 id="extras">
+ <title>What does <emphasis>that</emphasis> do?</title>
+ <qandaset defaultlabel="qanda">
+
+  <qandaentry id="billion-packages"> 
+   <question>
+    <para>
+      The list of <acronym>GNOME</acronym> packages is colossal. Do
+      I need them all?
+    </para>
+   </question>
+   <answer>
+    <para>
+      You certainly need a lot of them. The idea of having many packages
+      is for several reasons:
+    </para>
+    <itemizedlist>
+     <listitem>
+      <para>
+        It keeps things modular. Small components can be reused by
+        multiple programs over and over again.      
+      </para>
+     </listitem>
+     <listitem>
+      <para>
+        It is a big help to those on slow connections or with slow
+        machines. They can be extremely selective about what they 
+        download or install. Whilst gnome-libs is an essential, for
+        example, not that many people need gnome-pilot, and they can
+        omit it happily.
+      </para>
+     </listitem>
+     <listitem>
+      <para>
+        It's a lot easier to issue bugfixes and security fixes when
+        packages are small and split up: you only need to reissue one
+        smallish package instead of one very large one. 
+      </para>
+     </listitem>
+     <listitem>
+      <para>
+         It spreads the load. Maintaining small packages is hard enough.
+         Maintaining large ones is very hard work.
+      </para>
+     </listitem>
+    </itemizedlist>
+   </answer>
+  </qandaentry>
+
+  <qandaentry id="package-jobs">
+   <question>
+    <para>
+      What are they all for? How do I find out?
+    </para>
+   </question>
+   <answer>
+    <para>
+      Okay, here's a quick run-down of GNOME components with particularly 
+      mystifying names. It is not intended to be technical: for that, you'll 
+      need to look at the developer FAQ. But it might help.
+    </para>
+    <variablelist>
+     <varlistentry>
+      <term>Libraries for the underlying structure</term>
+      <listitem>
+       <para>
+        Lots of the packages are libraries which make it simpler for
+        programmers to program things for <application>X</application>,
+        which is a big and complicated beast. So if a program uses one
+        of the libraries, you need the library installed. These packages
+        include:
+       </para>
+       <itemizedlist>
+        <listitem>
+         <para>
+           ORBit is what provides CORBA, and CORBA is what lets different
+           parts of GNOME talk to each other using the same consistent
+           pieces of information. 
+        </para>
+       </listitem>
+       <listitem>
+        <para>
+           GTK is the Gimp ToolKit. It is a library which the 
+          <application>GIMP</application> people made and which GNOME 
+          borrowed. It lets people create buttons, scrollbars, menus and 
+          other basic "widgets" in a consistent way when writing an 
+          application for X. 
+        </para>
+       </listitem>
+       <listitem>
+        <para>
+          Imlib is a rendering library. It's responsible for telling X how
+          to draw things and how to load images. Many GNOME programs require
+          this, but some can use, or even require, gdk-pixbuf instead, which 
+          is a newer library performing the same function.  
+        </para>
+       </listitem>
+       <listitem>
+        <para>
+          gnome-libs contains the core libraries which all GNOME applications
+          need. 
+        </para>
+       </listitem>
+       <listitem>
+        <para>
+          glib contains coding routines which are used by almost all GNOME
+          programs. It contains the details of how to do the same jobs on
+          different platforms, thus saving coders from having to put those
+          into every single GNOME app separately. 
+        </para>
+       </listitem>
+       <listitem>
+        <para>
+          GNOME needs to be able to understand files which use XML (a format
+          for describing information contained in something). libxml lets
+          it do that.
+        </para>
+       </listitem>
+       <listitem>
+        <para>
+          Many GNOME programs need libglade. This is a library which reads
+          XML files using libxml (see above) and turns them into a user
+          interface. 
+        </para>
+       </listitem>
+       <listitem>
+        <para>
+          GNOME wants to be able to get information about filesystem
+          organisation and how the system controls what runs when. This
+          varies on different forms of UNIX. The details of how to do it
+          go in here, so programmers can just call this, whatever platform
+          the program runs on. It is called libgtop after the traditional
+          way to display this information: the 'top' program.
+        </para>
+       </listitem>
+       <listitem>
+        <para>
+          Many GNOME programs need to be able to use HTTP. The library
+          with all the details for that is libghttp.
+          <!-- FIXME: is libghttp getting replaced or rewritten? -->
+        </para>
+       </listitem>
+       <listitem>
+        <para>
+          The esound server is something which takes all the requests
+          for "Make a noise" that GNOME produces and feeds them to the
+          soundcard as well as sharing it when two things want to beep
+          at the same time. 
+        </para>
+       </listitem>
+       <listitem>
+        <para>
+          Writing programs which involve printing is hard: it has to
+          take into account everything from what language the printer
+          understands to how to parcel up the information that is going
+          from the program to the various parts of the printing system.
+          A new library is trying to put all of this into one place so
+          that programs can use the library and not have to do all the
+          complicated stuff themselves. This is gnome-print, which is
+          now a requirement if you want to use <application>Gnumeric</application>.
+        </para>
+       </listitem>
+      </itemizedlist>
+     </listitem>
+    </varlistentry>
+    <varlistentry>
+     <term>Modules that make use of the libraries</term>
+     <listitem>
+      <para>
+        Sitting on top of the libraries are all the modules which 
+        contain the code for the programs you actually use:
+      </para>
+      <itemizedlist>
+       <listitem>
+        <para>
+          gnome-core contains the panel, gnome-terminal, the current
+          help browser, and the session management.
+        </para>
+       </listitem>
+       <listitem>
+        <para>
+          The current file manager, <application>gmc</application>, and 
+          the desktop icons are distributed between mc, gmc, and mcserv.
+        </para>
+       </listitem>
+       <listitem>
+        <para>
+          The graphical configuration tool, <application>gnomecc</application>,
+          comes from control-center.
+        </para>
+       </listitem>
+      </itemizedlist>
+     </listitem>
+    </varlistentry>               
+   </variablelist>
+         
+    <para>
+      You can get more
+      detailed information with the package manager of your choice. If you
+      use <application>rpm</application> then either use
+      <menuchoice>
+       <guimenu>Programs</guimenu>
+       <guisubmenu>System</guisubmenu>
+       <guimenuitem>GnoRPM</guimenuitem>
+      </menuchoice>
+      to start <application>GnoRPM</application>, browse through the
+      packages (GNOME packages are largely in User Interface/Desktops
+      or Development/Libraries), select a package, and hit 
+      <guibutton>Query</guibutton>, or type
+      <command>rpm -qi packagename</command> at the command line.
+      Debian users can use the command <command>dpkg -p package</command>,
+      which will return information whether or not the package is 
+      currently installed.
+    </para>
+   </answer>
+  </qandaentry>
+
+  <qandaentry id="evolution-and-nautilus">
+   <question> 
+    <para>                        
+      I keep hearing about <application>Evolution</application> and 
+      <application>Nautilus</application> but I don't see them anywhere 
+      on my machine.
+    </para>   
+   </question>
+   <answer>   
+    <para>      
+      You won't see them -- or any other <application>GNOME</application>
+      -- packages shipping as standard until they're ready. As of this
+      writing (May 2000), they are still under heavy development and not
+      in a stable state. They are both in CVS, and you are at liberty
+      to collect them and try to compile them yourself, but they're not
+      ready for use. Don't expect them to be so before late summer of 2000.
+    </para> 
+   </answer>  
+  </qandaentry>
+
+  <qandaentry id="other-unstable">
+   <question>
+    <para>
+      I have an old GNOME and there's a load of new packages. What are
+      they for?
+    </para>
+   </question>
+   <answer>
+    <para>
+      Stable packages which are new since October GNOME:
+    </para>
+    <variablelist>
+     <varlistentry>
+      <term>bug-buddy</term>
+      <listitem>
+       <para>
+         This is a self-contained little program which guides you 
+         through reporting a bug. It will grab relevant system information,
+         generate useable information from core dumps, and give you the
+         addresses for the right place to send the result.
+       </para>
+      </listitem>
+     </varlistentry>
+     <varlistentry>
+      <term>gdk-pixbuf</term>
+      <listitem>
+       <para>
+         This is a library which loads images, draws things, and can
+         load simple animations. It is now required for GNOME 1.2.
+       </para>
+      </listitem>
+     </varlistentry>
+    </variablelist>
+
+    <para>
+      Development or not-so-stable packages which are new since October
+      GNOME:
+    </para>
+
+    <variablelist>
+     <varlistentry>
+      <term>eog</term>
+      <listitem>
+       <para>
+         <application>Eye of GNOME</application> is a small and fast 
+         image viewer.
+       </para>
+      </listitem>
+     </varlistentry>
+     <varlistentry>
+      <term>gnome-print</term>
+      <listitem>
+       <para>
+         Okay, this was around at the time of October GNOME. But it's
+         under constant and heavy development, and new releases are
+         very frequent. If you use <application>Gnumeric</application>, 
+         this is a requirement.
+       </para>
+      </listitem>
+     </varlistentry>
+     <varlistentry>
+      <term>bonobo</term>
+      <listitem>
+       <para>
+         <application>bonobo</application> will be increasingly used
+         in GNOME. It allows you to <quote>embed</quote>contents from
+         one program inside another. For example, you can embed a picture
+         into a spreadsheet (useful) or play minesweeper inside a 
+         spreadsheet (possibly not so useful). It is not a requirement
+         for GNOME 1.2, although there are programs around which can make
+         use of it. 
+      </para>
+      </listitem>
+     </varlistentry>
+     <varlistentry>
+      <term>oaf</term>
+      <listitem>
+       <para>
+         FIXME: What _is_ oaf?
+       </para>
+      </listitem>
+     </varlistentry>
+     <varlistentry>
+      <term>gconf</term>
+      <listitem>
+       <para>
+         <application>GConf</application> is an application which will
+         keep track of configuration options, make it easier for GNOME
+         to keep track of itself, and make it simple for system administrators
+         to set up and tweak systems for multiple users.
+       </para>
+      </listitem>
+     </varlistentry>
+    </variablelist>
+   </answer>     
+  </qandaentry>
+ </qandaset>
+</sect1>

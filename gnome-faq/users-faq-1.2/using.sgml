@@ -1,0 +1,306 @@
+<sect1 id="using">
+<title>Using GNOME day to day</title>
+ <qandaset defaultlabel="qanda">
+
+  <qandaentry id="foo-on-menu"> 
+   <question>
+    <para>
+      What is the command line equivalent to &lt;application&gt; on the menu?
+    </para>
+   </question>
+   <answer>
+    <para>
+     You will often find the name of the program in the 
+     <guilabel>About box</guilabel> of the program. If not, use the
+     menu editor, available from
+     <menuchoice>
+      <guimenu>Programs</guimenu>
+      <guisubmenu>Settings</guisubmenu>
+      <guimenuitem>Menu editor</guimenuitem>
+     </menuchoice>. The command line equivalent is that contained in
+     the <guilabel>Command</guilabel> box.
+    </para>
+   </answer>
+  </qandaentry>
+
+  <qandaentry id="foo-on-panel">
+   <question> 
+    <para>                        
+      What is the command line equivalent to &lt;application&gt; on the panel?
+    </para>   
+   </question>
+   <answer>   
+    <para>      
+      Right-clicking on the application in question will give you an option
+      of <guimenuitem>Properties</guimenuitem> in the menu which appears.
+      Looking at that will tell you the command to start it from a terminal.
+      It's the line prefaced by <guilabel>Command</guilabel>.
+    </para> 
+   </answer>  
+  </qandaentry>
+
+  <qandaentry id="speedy-gnome">
+   <question> 
+    <para>                        
+      I have a slow machine. How can I speed GNOME up?
+    </para>   
+   </question>
+   <answer>   
+    <para>      
+      There are a number of things you can do to speed up GNOME:
+    </para> 
+    <itemizedlist>
+     <listitem>
+      <para>
+        If you don't usually use the applets or applications which
+        start automatically when you start GNOME (deskguide, clock,
+        help browser, file manager), then get rid of them. In the
+        control center you will find a section called 
+        <guilabel>Startup Programs</guilabel>. You can attempt to 
+        identify the ones you don't need by picking them from the list
+        of <guibutton>Browse running sessions</guibutton> and clicking
+        on <guibutton>Remove</guibutton>. Don't remove gnome-smproxy,
+        panel, or gmc, unless you know what you're doing. If this is too
+        complicated, you can also simply press the "kill button" on the
+        apps which started (typically the help browser and the file
+        manager), or right-click on applets and select 
+        <guimenuitem>Remove</guimenuitem>, and then remember to save the
+        session when you log out.
+      </para>
+     </listitem>
+     <listitem>
+      <para>
+        If you use themes, don't use pixmap themes. Pixmap themes are the
+        ones which have a lot more detail, background which is shaded in
+        varying colours, or lots of pictures in them. Some of them can
+        be very heavy on a slow machine because they are more complicated
+        to draw. Engine themes (non-pixmap) themes include, gtkstep (the
+        default), metal, notif, redmond95, thinice, clean and xenophelia.
+      </para>
+     </listitem>
+     <listitem>
+      <para>
+        Investigate different <link linkend="windowmanagers">window 
+        managers</link>. Sawfish and WindowMaker are both thought by their 
+        users to be generally very light and zippy, as is Enlightenment if
+        you turn all the fancy options off. If you don't want to change
+        your window manager, have a look at the options for
+        the window manager itself, and turn off anything that needs a lot
+        of effort to redraw: complicated pictures, animations, transparent
+        window moving. If you use window manager themes, again, pick a
+        simple one. For moving and resizing, a light option is "boxed". 
+      </para>
+     </listitem>
+     <listitem>
+      <para>
+        Keep menu images in memory. To achieve this, right-click on an
+        empty part of the panel and select
+        <menuchoice>
+         <guimenu>Panel</guimenu>
+         <guimenuitem>Global preferences</guimenuitem>
+        </menuchoice>.
+        (This is the same as starting the control center and selecting
+        the <guilabel>Panel</guilabel> section.) Then select the
+        <guilabel>Menu</guilabel> section and find the <guibutton>Keep
+        menus in memory</guibutton> checkbox and ensure it is selected.
+      </para>
+     </listitem>
+     <listitem>
+      <para>
+        Turn off menu icons with the control-center. You'll need to 
+        restart GNOME for this to take complete effect.
+      </para>
+     </listitem>
+     <listitem>
+      <para>
+        Turn off panel animations with the control-center.
+      </para>
+     </listitem>
+     <listitem>
+      <para>
+        If you use <application>gnome-terminal</application>, consider
+        avoiding the pixmap and transparent background options. The
+        shaded transparent background option in particular can slow things
+        down.
+      </para>
+     </listitem>
+    </itemizedlist> 
+   </answer>  
+  </qandaentry>
+
+  <qandaentry id="memory-use">
+   <question>
+    <para>
+      I looked at the memory used by <application>GNOME</application>. It
+      uses loads, and even killing things off doesn't free it up! Help!
+    </para>
+   </question>
+   <answer>
+    <para>
+      This is not a bug. This is standard UNIX behaviour. You have been
+      using the monitor applets or <application>gtop</application>, right?
+      And looking at "Mem" or some similar title? You don't want that. For
+      a start, most of that total is from shared libraries. Further to that,
+      UNIX keeps information from programs in memory for a while after
+      they have been killed, in case they are needed again. If 
+      something else is started and needs that space, that's when it gets
+      rid of it. In addition, you are probably looking at the wrong sort
+      of memory :) 
+    </para>
+    <para>
+      There is an excellent document on memory use in GNOME
+      and in UNIX which explains about shared libraries and their uses and
+      how to work out how much memory something is <emphasis>really</emphasis>
+      using which lives in GNOME CVS. You can browse it at <ulink type="http"
+      url="http://cvs.gnome.org/lxr/source/white-papers/MemoryUsage/MemoryUsage.txt">
+      http://cvs.gnome.org/lxr/source/white-papers/MemoryUsage/MemoryUsage.txt</ulink>.
+    </para>
+    <para>
+      It's probably worth mentioning that there are one or two applications
+      notorious for eating memory, both within and without GNOME. One common
+      example is leaving <application>Netscape</application> open for a
+      long time. Changing themes over and over again in the clock applets 
+      has been known to have a similar effect. Solution: don't cycle 
+      through the themes madly, and if you can reliably reproduce a
+      memory leak, please submit a bug report.
+     </para>
+   </answer>
+  </qandaentry>
+
+  <qandaentry id="middle-clicking">
+   <question>
+    <para>
+      I have a two-button mouse. What's this "middle-click"? 
+    </para>
+   </question>
+   <answer>
+    <para>
+      X has long assumed that mice have many buttons (it can cope with 
+      at least five). You don't normally need more than three, although
+      <application>Quake</application> players may disagree. To simulate
+      a middle-click on your two-button mouse, try "chording": click both
+      buttons simultaneously. This should work. If it does not, you may
+      have to edit your XF86Config file (make a backup copy of it first!)
+      to ensure there is are uncommented lines which say "Emulate3Buttons" 
+      and "Emulate3Timeout 50". If there is a hash (<keycap>#</keycap>) 
+      symbol at the start of either line, remove it. (This what
+      uncommenting means.) You will need to restart X for this to take effect.
+    </para>
+   </answer>
+  </qandaentry>
+
+  <qandaentry id="pgup-pgdn">
+   <question>
+    <para>
+      <keycap>PgUp</keycap> and <keycap>PgDn</keycap> don't work in 
+      <application>gnome-terminal</application>.
+    </para>
+   </question>
+   <answer>
+    <para>
+      Yes, they do. You need to hold down the <keycap>Shift</keycap> key
+      as well for them to work, that's all.
+    </para>
+   </answer>
+  </qandaentry>
+
+  <qandaentry id="disable-root-warning">
+   <question>
+    <para>
+      How do I disable that annoying "Warning! You are running as root!"
+      message? 
+    </para>
+   </question>
+   <answer>
+    <para>
+      Just get an up-to-date copy of the code in question, investigate
+      what generates the message, tweak the code to remove it, recompile it, 
+      and you're done.
+    </para>
+    <para>
+      If that doesn't look helpful, then it's because it's not meant to
+      be. That warning is there for a reason. Running as root should be
+      reserved for system administration tasks only, and this does not
+      include recataloguing your jpgs, chatting on IRC, or playing with
+      Napster. It's a security risk, and it's very easy to have accidents
+      as root and remove things you didn't mean to. Running as a normal
+      user is safer and more sensible. It is assumed that people who can
+      remove the message are the people who won't normally be running as
+      root in the first place. 
+    </para>
+   </answer>
+  </qandaentry>
+
+  <qandaentry id="running-root-progs">
+   <question>
+    <para>
+      But then how can I run <command>helix-update</command>,
+      <command>gnome-linuxconf</command>, the menu-editor, or programs which
+      monitor logfiles that root can read and my normal user can't?
+    </para>
+   </question>
+   <answer>
+    <para>
+      As your normal user, open a gnome-terminal. Type <command>su -</command>
+      and give the password. That is now a root shell where you can run
+      such commands by typing them at the command line.
+    </para>
+    <para>
+      If you make a lot of use of this, you should consider installing
+      the package called <application>sudo</application>, which allows 
+      you to let non-root users do root things under tight controls. 
+    </para>
+    <para>
+      Note that you can run <command>helix-update</command> without
+      being root if you are using a very recent version of it on
+      Red Hat, Linux Mandrake, TurboLinux, or LinuxPPC.
+      <!-- "very recent" means after 23rd May 2000. This should be
+      changed as this FAQ ages.. --> 
+    </para>
+   </answer>
+  </qandaentry>
+
+  <qandaentry id="gmc-nonroot-troubles">
+   <question>
+    <para>
+      MIME types seem to be broken unless I run the file manager as root.
+    </para>
+   </question>
+   <answer>
+    <para>
+      This question needs an answer.
+    </para>
+   </answer>
+  </qandaentry>  
+
+  <qandaentry id="rh61-bug">
+   <question>
+    <para>
+      I can't change window manager from <application>Enlightenment</application>
+      to <application>WindowMaker</application> using the control-center in
+      Red Hat Linux 6.1.
+    </para>
+   </question>
+   <answer>
+    <para>
+      It's a bug. Upgrade to Red Hat Linux 6.2.
+    </para>
+   </answer>
+  </qandaentry>
+
+  <qandaentry id="gmc-font-changing">
+   <question>
+    <para>
+      How do I change the font in GMC (the file manager)?
+    </para>
+   </question>
+   <answer>
+    <para>
+      Sorry. You can't do this currently. GMC will eventually be replaced
+      by Nautilus, and so new features are not being added to GMC. Bug-fixes
+      only.
+    </para>
+   </answer>
+  </qandaentry>
+ </qandaset>
+</sect1>
