@@ -1,3 +1,10 @@
+1999-02-23  Michael Zucchi  <zucchi@zzedzone.mmc.com.au>
+
+	* vt.c (vt_parse_vt): Dont process more than VTPARAM_MAXARGS
+	parameters for all cases.
+	(vt_parse_vt): Make sure vt->argcnt is set on invocation of
+	callbacks.
+
 1999-02-22  Elliot Lee  <sopwith@redhat.com>
 
 	* zvtterm.c: Translate \n -> \r when pasting (fixes

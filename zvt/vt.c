@@ -1290,6 +1290,7 @@ vt_parse_vt (struct vt_em *vt, char *ptr, int length)
 	  /* d(printf("literal %c\n", c)); */
 	  vt->cursorx++;
 	} else if (mode & VT_CON) {
+	  vt->argcnt=0;
 	  process(vt);
 	} else if (c==27) {
 	  state=1;
@@ -1326,11 +1327,13 @@ vt_parse_vt (struct vt_em *vt, char *ptr, int length)
 
 
       case 2:
+	d(printf("state 2: %d '%c'\n",vt->argcnt, c));
 	if (mode & VT_ARG) {
-	  if (vt->outptr<vt->outend) /* truncate excessive args */
+	  if (vt->argptr < &vt->args[VTPARAM_MAXARGS]
+	      && vt->outptr<vt->outend) /* truncate excessive args */
 	    *(vt->outptr)++=c;
 	} else if (c==';' || c==':') {	/* looking for 'arg;arg;...' */
-	  if (vt->argcnt<VTPARAM_MAXARGS) { /* goto next argument */
+	  if (vt->argptr < &vt->args[VTPARAM_MAXARGS]) { /* goto next argument */
 	    *(vt->outptr)=0;
 	    vt->argptr++;
 	    vt->outptr = vt->argptr[0];
@@ -1345,6 +1348,8 @@ vt_parse_vt (struct vt_em *vt, char *ptr, int length)
 	  process(vt);
 	  state=0;
 	} else if (mode & VT_CON) {
+	  d(printf("control'%c'\n", c));
+	  vt->argcnt=0;
 	  process(vt);
 	} else {
 	  d(printf("unknown option '%c'\n", c));
@@ -1356,6 +1361,7 @@ vt_parse_vt (struct vt_em *vt, char *ptr, int length)
 	/* \EOx */
       case 3:
 	if (mode & VT_EXO) {
+	  vt->argcnt=0;
 	  process(vt);
 	}	/* ignore otherwise */
 	state=0;
@@ -1382,6 +1388,7 @@ vt_parse_vt (struct vt_em *vt, char *ptr, int length)
 	/* \E?x */
       case 5:
 	vt->args[0][1]=c;
+	vt->argcnt=0;
 	modes[vt->args[0][0]].process(vt);
 	state=0;
 	break;
