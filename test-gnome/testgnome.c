@@ -20,20 +20,17 @@
  * 02111-1307, USA.
  */
 
-#include <gnome.h>
-#include <gtk/gtk.h>
-#include <glib.h>
 #include <time.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include "testgnome.h"
 #include "bomb.xpm"
 
 gchar *authors[] = {
 	"Richard Hestilow",
+	"Federico Mena",
 	NULL
 };
-
-GtkWidget *create_newwin(gboolean normal, gchar *appname, gchar *title);
 
 void delete_event (GtkWidget *widget, gpointer data)
 {
@@ -466,6 +463,7 @@ int main (int argc, char *argv[])
 	  {
 		  { "calendar", create_calendar },
 		  { "calculator", create_calc },
+		  { "canvas", create_canvas },
 		  { "clock",	create_clock },
 		  { "color-sel", create_colorsel },
 		  { "date edit", create_date_edit },
