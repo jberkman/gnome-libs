@@ -40,7 +40,7 @@ dnl let applications configure for gnome
 dnl
 gnome_cv_use_gnome=yes
 
-GNOME_COMPILE_WARNINGS
+GNOME_COMPILE_WARNINGS(maximum)
 
 GNOME2_X_CHECKS
 
@@ -83,8 +83,19 @@ AC_CHECK_PROGS(PERL, perl5 perl)
 # We would like indent, but don't require it.
 AC_CHECK_PROG(INDENT, indent, indent)
 
-REBUILD=\#
+_found_perl=0
 if test -n "$PERL" && $PERL -v | grep 'version 5.' > /dev/null ; then
+  _found_perl=1
+else
+  # The version string for perl changed for 'version 5' to 'v5' in
+  # perl 5.6 or therabouts
+  if test -n "$PERL" && $PERL -v | grep 'v5.' > /dev/null ; then
+    _found_perl=1
+  fi
+fi
+
+REBUILD=\#
+if test $_found_perl -eq 1; then
   if test -n "$AWK" ; then 
     REBUILD=
   fi
@@ -299,6 +310,7 @@ dnl
 dnl Check for gnome-vfs
 dnl
 GNOME_PKGCONFIG_CHECK_MODULES(GNOME_VFS, gnomevfs-2.0)
+GNOME_VFS_VERSION=`$PKG_CONFIG --modversion gnomevfs-2.0`
 AC_SUBST(GNOME_VFS_VERSION)
 AC_SUBST(GNOME_VFS_CFLAGS)
 AC_SUBST(GNOME_VFS_LIBS)
