@@ -1,3 +1,10 @@
+Sun Nov 29 02:59:32 1998  George Lebl  <jirka@5z.com>
+
+	* zvterm.[ch]: added function zvt_term_get_capabilities, which
+	  returns the bitmask of capabilities supported by the zvt widget
+	  right now, this is only the pixmap support, which is
+	  ZVT_TERM_PIXMAP_SUPPORT
+
 1998-11-26  Miguel de Icaza  <miguel@nuclecu.unam.mx>
 
 	* subshell.c (get_ptys): Use n_read, just like gnome-pty-helper. 

@@ -39,6 +39,11 @@ extern "C" {
 #define ZVT_TERM(obj)          GTK_CHECK_CAST (obj, zvt_term_get_type (), ZvtTerm)
 #define ZVT_TERM_CLASS(klass)  GTK_CHECK_CLASS_CAST (klass, zvt_term_get_type (), ZvtTermClass)
 #define ZVT_IS_TERM(obj)       GTK_CHECK_TYPE (obj, zvt_term_get_type ())
+	
+  /*capabilities, it's for the pixmap/transparency stuff only for now*/
+  enum {
+	  ZVT_TERM_PIXMAP_SUPPORT=1<<0
+  };
 
 
   typedef struct _ZvtTerm        ZvtTerm;
@@ -160,6 +165,9 @@ extern "C" {
 
   void          zvt_term_set_shadow_type           (ZvtTerm       *term,
 						    GtkShadowType  type);
+  
+  /*returns an bitmask of the capabilities compiled into ZvtTerm*/
+  guint32	zvt_term_get_capabilities	   (ZvtTerm	  *term);
 
 #ifdef __cplusplus
 	   }

@@ -2416,3 +2416,24 @@ zvt_term_set_shadow_type(ZvtTerm  *term, GtkShadowType type)
   if (GTK_WIDGET_VISIBLE (term))
     gtk_widget_queue_resize (GTK_WIDGET (term));
 }
+
+/**
+ * zvt_term_get_capabilities:
+ * @term: A &ZvtTerm widget.
+ * 
+ * Description: Gets the compiled in capabilities of the terminal widget, for
+ * now this is only pixmap support which %ZVT_TERM_PIXMAP_SUPPORT
+ *
+ * Returns: a bitmask of the capabilities
+ **/
+guint32
+zvt_term_get_capabilities(ZvtTerm *term)
+{
+	guint32 out = 0;
+/*pixmap and transparency support*/
+#ifndef ZVT_NO_TRANSPARENT
+	out |= ZVT_TERM_PIXMAP_SUPPORT;
+#endif
+	return out;
+}
+
