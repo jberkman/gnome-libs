@@ -4,6 +4,7 @@ dnl
 
 AC_INIT(gnome.h)
 AM_CONFIG_HEADER(config.h)
+AM_ACLOCAL_INCLUDE(macros)
 
 AM_INIT_AUTOMAKE(gnome-libs, 0.13)
 
@@ -54,21 +55,6 @@ dnl
 dnl The libgnomeui specific checks
 dnl
 
-dnl
-dnl The Gtk/XmHTML code
-dnl
-Z_LIBS=""
-JPEG_LIBS=""
-PNG_LIBS=""
-AC_CHECK_LIB(z, inflate, [Z_LIBS="-lz"])
-AC_CHECK_LIB(jpeg, jpeg_abort, [JPEG_LIBS="-ljpeg"])
-AC_CHECK_LIB(png, png_read_image, [PNG_LIBS="-lpng"])
-AC_SUBST(Z_LIBS)
-AC_SUBST(JPEG_LIBS)
-AC_SUBST(PNG_LIBS)
-
-AC_CONFIG_SUBDIRS(libgtktty)
-
 LIBGNOME_LIBS="$INTLLIBS $DL_LIBS"
 GNOME_LIBS="-lgnome $LIBGNOME_LIBS"
 
@@ -85,6 +71,25 @@ AC_SUBST(GTKXMHTML_LIBS)
 AC_SUBST(LIBGNOME_LIBS)
 AC_SUBST(LIBGNOMEUI_LIBS)
 AC_SUBST(LIBGTKXMHTML_LIBS)
+
+dnl
+dnl The Gtk/XmHTML code
+dnl
+Z_LIBS=""
+JPEG_LIBS=""
+PNG_LIBS=""
+AC_CHECK_LIB(z, inflate, [Z_LIBS="-lz"])
+AC_CHECK_LIB(jpeg, jpeg_abort, [JPEG_LIBS="-ljpeg"])
+AC_CHECK_LIB(png, png_read_image, [PNG_LIBS="-lpng"])
+xLIBS="$LIBS"
+LIBS="$LIBS $GTK_LIBS $X_LIBS $x_libs"
+AC_CHECK_FUNC(gtk_signal_handler_pending)
+LIBS="$xLIBS"
+AC_SUBST(Z_LIBS)
+AC_SUBST(JPEG_LIBS)
+AC_SUBST(PNG_LIBS)
+
+AC_CONFIG_SUBDIRS(libgtktty)
 
 AC_OUTPUT([
 gnomeConf.sh

@@ -2177,3 +2177,17 @@ wrap_gdk_cc_get_pixels (int              incremental,
 	g_free (wgreens);
 	g_free (wblues);
 }
+
+#ifndef HAVE_GTK_SIGNAL_HANDLER_PENDING
+int
+gtk_signal_handler_pending (GtkObject *object, gint signal_type, gboolean may_be_blocked)
+{
+	static int warning_printed;
+	/* On old Gtks, we return 1 and force all of the signals to do the full processing */
+	if (!warning_printed){
+		warning_printed = 1;
+		fprintf (stderr, "GtkXmHTML widget running in slow mode due to old Gtk version\n");
+	}
+	return 1;
+}
+#endif

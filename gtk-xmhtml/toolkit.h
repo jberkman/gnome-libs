@@ -83,7 +83,7 @@ extern void wrap_gdk_cc_get_pixels (int              incremental,
 				    gulong          *colors,
 				    gint            *nallocated);
 
-#define CHECK_CALLBACK(w,f,g) (gtk_signal_handler_pending (w, gtk_xmhtml_signals [GTK_XMHTML_##g], TRUE))
+#define CHECK_CALLBACK(w,f,g) (gtk_signal_handler_pending (w, gtk_xmhtml_signals [GTK_XMHTML_##g], FALSE))
 #define XtCallCallbackList(a,b,c) fprintf (stderr, "Warning callback being invoked\n");
 #define TPROTO(f,a,b,c,d) f (a, b)
 #define Toolkit_Widget_Parent(w) GTK_WIDGET(w)->parent
@@ -158,7 +158,7 @@ extern void wrap_gdk_cc_get_pixels (int              incremental,
 #define Toolkit_Undefine_Cursor(d,w) gdk_window_set_cursor ((w), NULL)
 #define Toolkit_Define_Cursor(d,w,c) gdk_window_set_cursor ((w),(c))
 
-#define XCCCreate(w,v,c)   gdk_color_context_new (v, c)
+i#define XCCCreate(w,v,c)   gdk_color_context_new (v, c)
 #define XCCFree(c)         if ((c)) gdk_color_context_free ((c))
 #define XCCGetDepth(c)     (c)->visual->depth
 #define XCCGetParentVisual(w) gtk_widget_get_visual(w)
