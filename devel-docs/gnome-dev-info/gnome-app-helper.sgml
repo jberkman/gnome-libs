@@ -1,237 +1,241 @@
-  <!-- Author: Federico Mena Quintero <federico@nuclecu.unam.mx> -->
+  <chapter id="gnome-app-helper-docs">
 
-  <sect1 id="gnome-app-helper-introduction">
+    <title>Automatic menu and toolbar creation with GnomeAppHelper</title>
 
-    <title>Introduction</title>
+    <!-- Author: Federico Mena Quintero <federico@nuclecu.unam.mx> -->
 
-    <para>
-      The GnomeAppHelper module lets you easily create menus and tool
-      bars for your application.  Instead of having to create all the
-      required widgets by hand, GnomeAppHelper lets you simply create
-      an array of definitions for the items you want in your menu or
-      tool bar.  You can then call functions that will turn this array
-      into all the required widgets automatically.  The widgets will
-      have all the keyboard accelerators and shortcuts set up
-      correctly for you.
-    </para>
+    <sect1 id="gnome-app-helper-introduction">
 
-    <para>
-      In addition to creating normal menu and tool bar items,
-      GnomeAppHelper lets you quickly create toggle items that work
-      like check boxes, radio items, and lists of help menu entries.
-    </para>
-
-    <para>
-      You should use GnomeAppHelper when you want to create menu bars,
-      toolbars, or pop-up menus in your application.  GnomeAppHelper
-      makes use of the stock icon mechanism to give these widgets a
-      consistent look.
-    </para>
-
-  </sect1>
-
-  <sect1 id="a-quick-example">
-
-    <title>A quick example of using GnomeAppHelper</title>
-
-    <para>
-      This section presents a simple example of creating a menu bar
-      for an application window.  The menu bar would serve for a
-      hypotetical text editing application.  The purpose of this
-      example is to give you a general idea of how GnomeAppHelper
-      works.
-    </para>
-
-    <para>
-      GnomeAppHelper uses a hierarchy of arrays to define menus and
-      tool bars.  Here we will define a simple menu bar with three
-      submenus, called File, Edit, and Help.  We will use the stock
-      icon mechanism to provide standard icons for the menu items, and
-      we will provide hot keys for the most common functions.
-    </para>
-
-    <example>
-      <title>Creating a simple menu bar</title>
+      <title>Introduction</title>
 
       <para>
-	Here we define a simple menu bar for Edit-o-matic, our text
-	editing application.
+	The GnomeAppHelper module lets you easily create menus and
+	tool bars for your application.  Instead of having to create
+	all the required widgets by hand, GnomeAppHelper lets you
+	simply create an array of definitions for the items you want
+	in your menu or tool bar.  You can then call functions that
+	will turn this array into all the required widgets
+	automatically.  The widgets will have all the keyboard
+	accelerators and shortcuts set up correctly for you.
       </para>
 
-      <programlisting role="C">
-#include &lt;gnome.h&gt;
+      <para>
+	In addition to creating normal menu and tool bar items,
+	GnomeAppHelper lets you quickly create toggle items that work
+	like check boxes, radio items, and lists of help menu entries.
+      </para>
 
-/* Definition of the File menu */
+      <para>
+	You should use GnomeAppHelper when you want to create menu bars,
+	toolbars, or pop-up menus in your application.  GnomeAppHelper
+	makes use of the stock icon mechanism to give these widgets a
+	consistent look.
+      </para>
 
-static GnomeUIInfo file_menu[] = {
-	{ GNOME_APP_UI_ITEM, N_("_New document"), N_("Create a new blank document"), file_new_callback, NULL, NULL,
+    </sect1>
+
+    <sect1 id="a-quick-example">
+
+      <title>A quick example of using GnomeAppHelper</title>
+
+      <para>
+	This section presents a simple example of creating a menu bar
+	for an application window.  The menu bar would serve for a
+	hypotetical text editing application.  The purpose of this
+	example is to give you a general idea of how GnomeAppHelper
+	works.
+      </para>
+
+      <para>
+	GnomeAppHelper uses a hierarchy of arrays to define menus and
+	tool bars.  Here we will define a simple menu bar with three
+	submenus, called File, Edit, and Help.  We will use the stock
+	icon mechanism to provide standard icons for the menu items, and
+	we will provide hot keys for the most common functions.
+      </para>
+
+      <example>
+	<title>Creating a simple menu bar</title>
+
+	<para>
+	  Here we define a simple menu bar for Edit-o-matic, our text
+	  editing application.
+	</para>
+
+	<programlisting role="C">
+	  #include &lt;gnome.h&gt;
+
+	  /* Definition of the File menu */
+
+	  static GnomeUIInfo file_menu[] = {
+	  { GNOME_APP_UI_ITEM, N_("_New document"), N_("Create a new blank document"), file_new_callback, NULL, NULL,
 	  GNOME_APP_PIXMAP_STOCK, GNOME_STOCK_MENU_NEW, 'n', GDK_CONTROL_MASK, NULL },
-	{ GNOME_APP_UI_ITEM, N_("_Open document..."), N_("Open an existing document"), file_open_callback, NULL, NULL,
+	  { GNOME_APP_UI_ITEM, N_("_Open document..."), N_("Open an existing document"), file_open_callback, NULL, NULL,
 	  GNOME_APP_PIXMAP_STOCK, GNOME_STOCK_MENU_OPEN, 'o', GDK_CONTROL_MASK, NULL },
-	{ GNOME_APP_UI_ITEM, N_("_Save document"), N_("Save the current document"), file_save_callback, NULL, NULL,
+	  { GNOME_APP_UI_ITEM, N_("_Save document"), N_("Save the current document"), file_save_callback, NULL, NULL,
 	  GNOME_APP_PIXMAP_STOCK, GNOME_STOCK_MENU_SAVE, 's', GDK_CONTROL_MASK, NULL },
-	{ GNOME_APP_UI_ITEM, N_("Save document _as..."), N_("Save the current document with a new name"),
+	  { GNOME_APP_UI_ITEM, N_("Save document _as..."), N_("Save the current document with a new name"),
 	  file_save_as_callback, NULL, NULL,
 	  GNOME_APP_PIXMAP_STOCK, GNOME_STOCK_MENU_SAVE_AS, 0, 0, NULL },
 
-	GNOMEUIINFO_SEPARATOR,
+	  GNOMEUIINFO_SEPARATOR,
 
-	{ GNOME_APP_UI_ITEM, N_("_Print document..."), N_("Print the current document"), file_print_callback, NULL, NULL,
+	  { GNOME_APP_UI_ITEM, N_("_Print document..."), N_("Print the current document"), file_print_callback, NULL, NULL,
 	  GNOME_APP_PIXMAP_STOCK, GNOME_STOCK_MENU_NEW, 'p', GDK_CONTROL_MASK, NULL },
 
-	GNOMEUIINFO_SEPARATOR,
+	  GNOMEUIINFO_SEPARATOR,
 
-	{ GNOME_APP_UI_ITEM, N_("_Close this document"), N_("Close the current document"), file_close_callback, NULL, NULL,
+	  { GNOME_APP_UI_ITEM, N_("_Close this document"), N_("Close the current document"), file_close_callback, NULL, NULL,
 	  GNOME_APP_PIXMAP_STOCK, GNOME_STOCK_MENU_NEW, 'w', GDK_CONTROL_MASK, NULL },
-	{ GNOME_APP_UI_ITEM, N_("E_xit"), N_("Exit the program"), file_exit_callback, NULL, NULL,
+	  { GNOME_APP_UI_ITEM, N_("E_xit"), N_("Exit the program"), file_exit_callback, NULL, NULL,
 	  GNOME_APP_PIXMAP_STOCK, GNOME_STOCK_MENU_NEW, 'q', GDK_CONTROL_MASK, NULL }
 
-	GNOMEUIINFO_END
-};
+	  GNOMEUIINFO_END
+	  };
 
-/* Definition of the Edit menu */
+	  /* Definition of the Edit menu */
 
-static GnomeUIInfo edit_menu[] = {
-	{ GNOME_APP_UI_ITEM, N_("_Undo"), N_("Undo the last operation"), edit_undo_callback, NULL, NULL,
+	  static GnomeUIInfo edit_menu[] = {
+	  { GNOME_APP_UI_ITEM, N_("_Undo"), N_("Undo the last operation"), edit_undo_callback, NULL, NULL,
 	  GNOME_APP_PIXMAP_STOCK, GNOME_STOCK_MENU_UNDO, 'z', GDK_CONTROL_MASK, NULL },
 
-	GNOMEUIINFO_SEPARATOR,
+	  GNOMEUIINFO_SEPARATOR,
 
-	{ GNOME_APP_UI_ITEM, N_("Cu_t"), N_("Cut the selection to the clipboard"), edit_cut_callback, NULL, NULL,
+	  { GNOME_APP_UI_ITEM, N_("Cu_t"), N_("Cut the selection to the clipboard"), edit_cut_callback, NULL, NULL,
 	  GNOME_APP_PIXMAP_STOCK, GNOME_STOCK_MENU_UNDO, 'x', GDK_CONTROL_MASK, NULL },
-	{ GNOME_APP_UI_ITEM, N_("_Copy"), N_("Copy the selection to the clipboard"), edit_copy_callback, NULL, NULL,
+	  { GNOME_APP_UI_ITEM, N_("_Copy"), N_("Copy the selection to the clipboard"), edit_copy_callback, NULL, NULL,
 	  GNOME_APP_PIXMAP_STOCK, GNOME_STOCK_MENU_UNDO, 'c', GDK_CONTROL_MASK, NULL },
-	{ GNOME_APP_UI_ITEM, N_("_Paste"), N_("Paste the contents from the clipboard"), edit_paste_callback, NULL, NULL,
+	  { GNOME_APP_UI_ITEM, N_("_Paste"), N_("Paste the contents from the clipboard"), edit_paste_callback, NULL, NULL,
 	  GNOME_APP_PIXMAP_STOCK, GNOME_STOCK_MENU_UNDO, 'v', GDK_CONTROL_MASK, NULL },
 
-	GNOMEUIINFO_END
-};
+	  GNOMEUIINFO_END
+	  };
 
-/* Definition of the Help menu */
+	  /* Definition of the Help menu */
 
-static GnomeUIInfo help_menu[] = {
-	{ GNOME_APP_UI_ITEM, N_("_About Edit-o-matic"), N_("Information about Edit-o-matic"),
+	  static GnomeUIInfo help_menu[] = {
+	  { GNOME_APP_UI_ITEM, N_("_About Edit-o-matic"), N_("Information about Edit-o-matic"),
 	  help_about_callback, NULL, NULL,
 	  GNOME_APP_PIXMAP_STOCK, GNOME_STOCK_MENU_ABOUT, 0, 0, NULL },
 
-	GNOMEUIINFO_SEPARATOR,
+	  GNOMEUIINFO_SEPARATOR,
 
-	GNOMEUIINFO_HELP ("edit-o-matic"),
+	  GNOMEUIINFO_HELP ("edit-o-matic"),
 
-	GNOMEUIINFO_END
-};
+	  GNOMEUIINFO_END
+	  };
 
-/* Definition of the main menu */
+	  /* Definition of the main menu */
 
-static GnomeUIInfo main_menu[] = {
-	GNOMEUIINFO_SUBTREE (N_("_File"), file_menu),
-	GNOMEUIINFO_SUBTREE (N_("_Edit"), edit_menu),
-	GNOMEUIINFO_SUBTREE (N_("_Help"), help_menu),
-	GNOMEUIINFO_END
-};
-      </programlisting>
+	  static GnomeUIInfo main_menu[] = {
+	  GNOMEUIINFO_SUBTREE (N_("_File"), file_menu),
+	  GNOMEUIINFO_SUBTREE (N_("_Edit"), edit_menu),
+	  GNOMEUIINFO_SUBTREE (N_("_Help"), help_menu),
+	  GNOMEUIINFO_END
+	  };
+	</programlisting>
 
-    </example>
-
-    <para>
-      In the example above, you can see the most general form of
-      defining arrays of GnomeUIInfo structures to construct a menu
-      hierarchy.  Each structure in the array contains information
-      about the type of item to be created, its label, hint, and
-      pixmap, its associated callback, and keyboard accelerators.
-    </para>
-
-    <para>
-      You can see that text labels are marked with the N_() macro.
-      This macro is used by the internationalization programs to
-      detech which strings to mark for translation.
-    </para>
-
-    <para>
-      The last item in GnomeUIInfo arrays marks termination of the
-      array.  Finally, the <symbol>main_menu</symbol> array ties all
-      the submenus together to form the main menu bar.
-    </para>
-
-    <para>
-      The following sections explain GnomeUIInfo structures in
-      detail.  You do not need to remember all the details to use
-      GnomeAppHelper; it also provides convenient macros to make
-      creating simple items easier, as we shall see.
-    </para>
-
-    <example>
-      <title>Inserting the menu bar in an application window</title>
+      </example>
 
       <para>
-	Now that we have the <structname>GnomeUIInfo</structname>
-	arrays that define the menus in the application, we need to
-	call one of the GnomeAppHelper functions that take in such an
-	array and create the actual widgets for the menus.
+	In the example above, you can see the most general form of
+	defining arrays of GnomeUIInfo structures to construct a menu
+	hierarchy.  Each structure in the array contains information
+	about the type of item to be created, its label, hint, and
+	pixmap, its associated callback, and keyboard accelerators.
       </para>
 
       <para>
-	Here, we create a new application window and create its menu
-	bar from the information defined in the
-	<symbol>main_menu</symbol> array we described above.
+	You can see that text labels are marked with the N_() macro.
+	This macro is used by the internationalization programs to
+	detech which strings to mark for translation.
+      </para>
+
+      <para>
+	The last item in GnomeUIInfo arrays marks termination of the
+	array.  Finally, the <symbol>main_menu</symbol> array ties all
+	the submenus together to form the main menu bar.
+      </para>
+
+      <para>
+	The following sections explain GnomeUIInfo structures in
+	detail.  You do not need to remember all the details to use
+	GnomeAppHelper; it also provides convenient macros to make
+	creating simple items easier, as we shall see.
+      </para>
+
+      <example>
+	<title>Inserting the menu bar in an application window</title>
+
+	<para>
+	  Now that we have the <structname>GnomeUIInfo</structname>
+	  arrays that define the menus in the application, we need to
+	  call one of the GnomeAppHelper functions that take in such an
+	  array and create the actual widgets for the menus.
+	</para>
+
+	<para>
+	  Here, we create a new application window and create its menu
+	  bar from the information defined in the
+	  <symbol>main_menu</symbol> array we described above.
+	</para>
+
+	<programlisting role="C">
+	  /* This function creates an application window for our hypotetical
+	  * text editor and creates a menu bar for it.  The window's title is
+	  * set to the specified string.
+	  */
+	  
+	  GtkWidget *
+	  create_editor_main_window (char *window_title)
+	  {
+	  GtkWidget *app;
+
+	  /* Create the application window */
+
+	  app = gnome_app_new ("edit-o-matic", title);
+
+	  /* Create the menus and insert them in the application window */
+
+	  gnome_app_create_menus (GNOME_APP (app), main_menu);
+
+	  return app;
+	  }
+	</programlisting>
+
+      </example>
+
+      <para>
+	The <function>gnome_app_create_menus()</function> function is
+	the simplest way to create a menu bar's widgets out of a
+	<structname>GnomeUIInfo</structname> array.  There are other
+	functions to create menus and toolbars, as we will see below.
+      </para>
+      
+    </sect1>
+
+    <sect1 id="GnomeUIInfo">
+
+      <title>The <structname>GnomeUIInfo</structname> structure</title>
+
+      <para>
+	GnomeAppHelper uses arrays of
+	<structname>GnomeUIInfo</structname> structures to define the
+	items that compose a menu bar or toolbar.  Each item contains an
+	optional icon and a text label.  Each item has a callback
+	function attached to it that gets invoked when the item is
+	activated.  Also, items may have a hotkey defined for them.
+	Items may have a check-box or be grouped inside a radio group.
+	Also, menu items may specify a subtree which they spawn.
+      </para>
+
+      <para>
+	The <structname>GnomeUIInfo</structname> structure is defined as
+	follows.
       </para>
 
       <programlisting role="C">
-/* This function creates an application window for our hypotetical
- * text editor and creates a menu bar for it.  The window's title is
- * set to the specified string.
- */
-	
-GtkWidget *
-create_editor_main_window (char *window_title)
-{
-	GtkWidget *app;
-
-	/* Create the application window */
-
-	app = gnome_app_new ("edit-o-matic", title);
-
-	/* Create the menus and insert them in the application window */
-
-	gnome_app_create_menus (GNOME_APP (app), main_menu);
-
-	return app;
-}
-      </programlisting>
-
-    </example>
-
-    <para>
-      The <function>gnome_app_create_menus()</function> function is
-      the simplest way to create a menu bar's widgets out of a
-      <structname>GnomeUIInfo</structname> array.  There are other
-      functions to create menus and toolbars, as we will see below.
-    </para>
-	
-  </sect1>
-
-  <sect1 id="GnomeUIInfo">
-
-    <title>The <structname>GnomeUIInfo</structname> structure</title>
-
-    <para>
-      GnomeAppHelper uses arrays of
-      <structname>GnomeUIInfo</structname> structures to define the
-      items that compose a menu bar or toolbar.  Each item contains an
-      optional icon and a text label.  Each item has a callback
-      function attached to it that gets invoked when the item is
-      activated.  Also, items may have a hotkey defined for them.
-      Items may have a check-box or be grouped inside a radio group.
-      Also, menu items may specify a subtree which they spawn.
-    </para>
-
-    <para>
-      The <structname>GnomeUIInfo</structname> structure is defined as
-      follows.
-    </para>
-
-    <programlisting role="C">
-typedef struct {
+	typedef struct {
 	GnomeUIInfoType <structfield>type</structfield> ;
 	gchar *<structfield>label</structfield>;
 	gchar *<structfield>hint</structfield>;
@@ -243,496 +247,498 @@ typedef struct {
 	guint <structfield>accelerator_key</structfield>;
 	GdkModifierType <structfield>ac_mods</structfield>;
 	GtkWidget *<structfield>widget</structfield>;
-} <structname>GnomeUIInfo</structname>;
-    </programlisting>
+	} <structname>GnomeUIInfo</structname>;
+      </programlisting>
 
-    <para>
-      These are the fields in the <structname>GnomeUIInfo</structname>
-      structure.
-    </para>
+      <para>
+	These are the fields in the <structname>GnomeUIInfo</structname>
+	structure.
+      </para>
 
-    <glosslist>
-      <glossentry>
-	<glossterm><structfield>type</structfield></glossterm>
-	<glossdef>
-	  <para>
-	    This field is used to specify the type of item that should
-	    be created.  The rest of the fields in the structure
-	    define the item's attributes.  The
-	    <structfield>type</structfield> field can have the
-	    following values:
-	  </para>
+      <glosslist>
+	<glossentry>
+	  <glossterm><structfield>type</structfield></glossterm>
+	  <glossdef>
+	    <para>
+	      This field is used to specify the type of item that should
+	      be created.  The rest of the fields in the structure
+	      define the item's attributes.  The
+	      <structfield>type</structfield> field can have the
+	      following values:
+	    </para>
 
-	  <glosslist>
-	    <glossentry>
-	      <glossterm><symbol>GNOME_APP_UI_ITEM</symbol></glossterm>
-	      <glossdef>
-		<para>
-		  This indicates that a normal item should be
-		  created.  If the item is inside a radio group (see
-		  below), then a radio item will be created, by
-		  default in its inactive state.
-		</para>
-	      </glossdef>
-	    </glossentry>
-
-	    <glossentry>
-	      <glossterm><symbol>GNOME_APP_UI_TOGGLEITEM</symbol></glossterm>
-	      <glossdef>
-		<para>
-		  This indicates that a a toggle item should be
-		  created.  By default it starts in the inactive
-		  state.
-		</para>
-	      </glossdef>
-	    </glossentry>
-
-	    <glossentry>
-	      <glossterm><symbol>GNOME_APP_UI_RADIOITEMS</symbol></glossterm>
-	      <glossdef>
-		<para>
-		  This indicates that a group of radio items should be
-		  created.  The <structfield>moreinfo</structfield>
-		  field must point to an array of items that will be
-		  created as the radio items in the group.  By default
-		  the first item will be the active item in the radio
-		  group.
-		</para>
-	      </glossdef>
-	    </glossentry>
-
-	    <glossentry>
-	      <glossterm><symbol>GNOME_APP_UI_SUBTREE</symbol></glossterm>
-	      <glossdef>
-		<para>
-		  This indicates that the created item should have a
-		  submenu attached to it.  The
-		  <structfield>moreinfo</structfield> field must point
-		  to an array of items that will be put in the
-		  submenu.  This item type is not supported in
-		  toolbars.
-		</para>
-	      </glossdef>
-	    </glossentry>
-
-	    <glossentry>
-	      <glossterm><symbol>GNOME_APP_UI_SEPARATOR</symbol></glossterm>
-	      <glossdef>
-		<para>
-		  This indicates that a separator should be created.
-		  For menus this is a separator line, and for toolbars
-		  it is a blank space.
-		</para>
-	      </glossdef>
-	    </glossentry>
-
-	    <glossentry>
-	      <glossterm><symbol>GNOME_APP_UI_HELP</symbol></glossterm>
-	      <glossdef>
-		<para>
-		  This indicates that help entries should be created.
-		  The <structfield>moreinfo</structfield> field must
-		  point to a string with the application's ID string.
-		  See below for additional information on creating the
-		  help entries.
-		</para>
-	      </glossdef>
-	    </glossentry>
-
-	    <glossentry>
-	      <glossterm><symbol>GNOME_APP_UI_JUSTIFY_RIGHT</symbol></glossterm>
-	      <glossdef>
-		<para>
-		  This indicates that all subsequent items should be
-		  aligned on the right side of the menu they are on.
-		  This only works for menus and only makes sense for
-		  menu bars.
-		</para>
-	      </glossdef>
-	    </glossentry>
-
-	    <glossentry>
-	      <glossterm><symbol>GNOME_APP_UI_BUILDER_DATA</symbol></glossterm>
-	      <glossdef>
-		<para>
-		  This is intended for language bindings and GUI
-		  builders &mdash; it is not needed for normal
-		  programs.  It specifies that all subsequent items
-		  should use a different GnomeUIBuilderData structure
-		  from the one that was in use then the item was
-		  inserted.  The <structfield>moreinfo</structfield>
-		  field should point to the desired GnomeUIBuilderData
-		  structure.
-		</para>
-	      </glossdef>
-	    </glossentry>
-
-	    <glossentry>
-	      <glossterm><symbol>GNOME_APP_UI_ENDOFINFO</symbol></glossterm>
-	      <glossdef>
-		<para>
-		  This is used to indicate the end of an array of
-		  items.  It is very important to include an element
-		  of this type as the last entry in
-		  <structname>GnomeUIInfo</structname> arrays.
-		</para>
-	      </glossdef>
-	    </glossentry>
-
-	  </glosslist>
-
-	  <para>
-	    The other fields in the <structname>GnomeUIInfo</structname>
-	    structure are used to specify the attributes of the item
-	    being defined.
-	  </para>
-
-	</glossdef>
-      </glossentry>
-
-      <glossentry>
-	<glossterm><structfield>label</structfield></glossterm>
-	<glossdef>
-	  <para>
-	    This field is used to specify the text label for the item
-	    being created.  The un-translated version of the label
-	    should be specified; GnomeAppHelper calls the translation
-	    routines itself.
-	  </para>
-
-	  <para>
-	    For menu items it is desirable to have an underlined
-	    letter in the label, so that the user knows that he can
-	    press that letter on the keyboard and activate the
-	    corresponding menu item.  To specify an underlined letter,
-	    put an underscore (_) before it in the label's string.
-	    Examples are, "_File", "_Edit", and "_Copy".
-	  </para>
-	</glossdef>
-      </glossentry>
-
-      <glossentry>
-	<glossterm><structfield>hint</structfield></glossterm>
-	<glossdef>
-	  <para>
-	    This field specifies an optional string that should be
-	    used for the tooltip in toolbar items or for the status
-	    bar hint in menu items.  The un-translated version of the
-	    hint should be specified.  If no hint string is desired,
-	    specify NULL.
-	</glossdef>
-      </glossentry>
-
-      <glossentry>
-	<glossterm><structfield>moreinfo</structfield></glossterm>
-	<glossdef>
-	  <para>
-	    This field is used to specify different things according
-	    to the type of item that is being defined.
-	  </para>
-
-	  <itemizedlist>
-	    <listitem>
-	      <para>
-		For normal, radio, and toggle items
-		(GNOME_APP_UI_ITEM, GNOME_APP_UI_ITEM, and
-		GNOME_APP_UI_TOGGLEITEM, respectively), this field
-		should point to the function that should be called
-		when the item is activated.  The general prototype of
-		this function is as follows:
-
-		<funcsynopsis>
-		  <funcdef>void <function>callback</function></funcdef>
-		  <paramdef>GtkWidget *<parameter>item</parameter></paramdef>
-		  <paramdef>gpointer <parameter>user_data</parameter></paramdef>
-		</funcsynopsis>
-
-		The <parameter>item</parameter> argument is the menu item
-		or button in the toolbar that was selected, and the
-		<parameter>>user_data</parameter> argument is the normal
-		callback's user data.
-	      </para>
-	    </listitem>
-
-	    <listitem>
-	      <para>
-		For submenus (subtrees, type
-		<symbol>GNOME_APP_UI_SUBTREE</symbol>), this field
-		should point to another array of
-		<structname>GnomeUIInfo</structname> structures.  This
-		array defines the subtree.
-	      </para>
-	    </listitem>
-
-	    <listitem>
-	      <para>
-		For items of type
-		<symbol>GNOME_APP_UI_RADIOITEMS</symbol>, this field
-		should point to an array of
-		<structname>GnomeUIInfo</structname> structures which
-		defines the items that are to be put in the radio
-		group.  Within this array, only items of type
-		<symbol>GNOME_APP_UI_ITEM</symbol> and
-		<symbol>GNOME_APP_UI_BUILDER_DATA</symbol> are
-		supported.
-	      </para>
-	    </listitem>
-
-	    <listitem>
-	      <para>
-		For items of type <symbol>GNOME_APP_UI_HELP</symbol>,
-		this item should point to a string that is the
-		application's ID name.  GnomeAppHelper will look for
-		the topic.dat file in the help directory defined by
-		the application's ID string, read it, and include the
-		appropriate help topics in the menu.  This type is not
-		valid for toolbars.
-	      </para>
-	    </listitem>
-
-	    <listitem>
-	      <para>
-		For items of type
-		<symbol>GNOME_APP_UI_BUILDER_DATA</symbol>, this field
-		should point to a
-		<structname>GnomeUIBuilderData</structname> structure.
-		The information in this structure will be used for all
-		subsequent items in the array.  This is normally only
-		needed by language bindings and GUI builders.
-	      </para>
-	    </listitem>
-
-	    <listitem>
-	      <para>
-		For all other item types, this field is ignored.  You
-		should set it to NULL, however, for compatibility with
-		future extensions to GnomeAppHelper.
-	      </para>
-	    </listitem>
-	  </itemizedlist>
-
-	</glossdef>
-      </glossentry>
-
-      <glossentry>
-	<glossterm><structfield>user_data</structfield></glossterm>
-	<glossdef>
-	  <para>
-	    This should point to the data you want to pass to the
-	    callback that will be activated when the menu or toolbar
-	    item is selected.  Frequently you will leave this as NULL
-	    and pass a specific data pointer to all callbacks using
-	    the functions defined below.
-	  </para>
-	</glossdef>
-      </glossentry>
-
-      <glossentry>
-	<glossterm><structfield>unused_data</structfield></glossterm>
-	<glossdef>
-	  <para>
-	    This field is reserved for future expansion, and should be
-	    set to NULL.
-	  </para>
-	</glossdef>
-      </glossentry>
-
-      <glossentry>
-	<glossterm><structfield>pixmap_type</structfield></glossterm>
-	<glossdef>
-	  <para>
-	    This should be one of the following values.
-	  </para>
-
-	  <glosslist>
-	    <glossentry>
-	      <glossterm><symbol>GNOME_APP_PIXMAP_NONE</symbol></glossterm>
-	      <glossdef>
-		<para>
-		  Specifies that no icon should be used for this
-		  item.
+	    <glosslist>
+	      <glossentry>
+		<glossterm><symbol>GNOME_APP_UI_ITEM</symbol></glossterm>
+		<glossdef>
+		  <para>
+		    This indicates that a normal item should be
+		    created.  If the item is inside a radio group (see
+		    below), then a radio item will be created, by
+		    default in its inactive state.
 		  </para>
-	      </glossdef>
-	    </glossentry>
+		</glossdef>
+	      </glossentry>
 
-	    <glossentry>
-	      <glossterm><symbol>GNOME_APP_PIXMAP_STOCK</symbol></glossterm>
-	      <glossdef>
+	      <glossentry>
+		<glossterm><symbol>GNOME_APP_UI_TOGGLEITEM</symbol></glossterm>
+		<glossdef>
+		  <para>
+		    This indicates that a a toggle item should be
+		    created.  By default it starts in the inactive
+		    state.
+		  </para>
+		</glossdef>
+	      </glossentry>
+
+	      <glossentry>
+		<glossterm><symbol>GNOME_APP_UI_RADIOITEMS</symbol></glossterm>
+		<glossdef>
+		  <para>
+		    This indicates that a group of radio items should be
+		    created.  The <structfield>moreinfo</structfield>
+		    field must point to an array of items that will be
+		    created as the radio items in the group.  By default
+		    the first item will be the active item in the radio
+		    group.
+		  </para>
+		</glossdef>
+	      </glossentry>
+
+	      <glossentry>
+		<glossterm><symbol>GNOME_APP_UI_SUBTREE</symbol></glossterm>
+		<glossdef>
+		  <para>
+		    This indicates that the created item should have a
+		    submenu attached to it.  The
+		    <structfield>moreinfo</structfield> field must point
+		    to an array of items that will be put in the
+		    submenu.  This item type is not supported in
+		    toolbars.
+		  </para>
+		</glossdef>
+	      </glossentry>
+
+	      <glossentry>
+		<glossterm><symbol>GNOME_APP_UI_SEPARATOR</symbol></glossterm>
+		<glossdef>
+		  <para>
+		    This indicates that a separator should be created.
+		    For menus this is a separator line, and for toolbars
+		    it is a blank space.
+		  </para>
+		</glossdef>
+	      </glossentry>
+
+	      <glossentry>
+		<glossterm><symbol>GNOME_APP_UI_HELP</symbol></glossterm>
+		<glossdef>
+		  <para>
+		    This indicates that help entries should be created.
+		    The <structfield>moreinfo</structfield> field must
+		    point to a string with the application's ID string.
+		    See below for additional information on creating the
+		    help entries.
+		  </para>
+		</glossdef>
+	      </glossentry>
+
+	      <glossentry>
+		<glossterm><symbol>GNOME_APP_UI_JUSTIFY_RIGHT</symbol></glossterm>
+		<glossdef>
+		  <para>
+		    This indicates that all subsequent items should be
+		    aligned on the right side of the menu they are on.
+		    This only works for menus and only makes sense for
+		    menu bars.
+		  </para>
+		</glossdef>
+	      </glossentry>
+
+	      <glossentry>
+		<glossterm><symbol>GNOME_APP_UI_BUILDER_DATA</symbol></glossterm>
+		<glossdef>
+		  <para>
+		    This is intended for language bindings and GUI
+		    builders &mdash; it is not needed for normal
+		    programs.  It specifies that all subsequent items
+		    should use a different GnomeUIBuilderData structure
+		    from the one that was in use then the item was
+		    inserted.  The <structfield>moreinfo</structfield>
+		    field should point to the desired GnomeUIBuilderData
+		    structure.
+		  </para>
+		</glossdef>
+	      </glossentry>
+
+	      <glossentry>
+		<glossterm><symbol>GNOME_APP_UI_ENDOFINFO</symbol></glossterm>
+		<glossdef>
+		  <para>
+		    This is used to indicate the end of an array of
+		    items.  It is very important to include an element
+		    of this type as the last entry in
+		    <structname>GnomeUIInfo</structname> arrays.
+		  </para>
+		</glossdef>
+	      </glossentry>
+
+	    </glosslist>
+
+	    <para>
+	      The other fields in the <structname>GnomeUIInfo</structname>
+	      structure are used to specify the attributes of the item
+	      being defined.
+	    </para>
+
+	  </glossdef>
+	</glossentry>
+
+	<glossentry>
+	  <glossterm><structfield>label</structfield></glossterm>
+	  <glossdef>
+	    <para>
+	      This field is used to specify the text label for the item
+	      being created.  The un-translated version of the label
+	      should be specified; GnomeAppHelper calls the translation
+	      routines itself.
+	    </para>
+
+	    <para>
+	      For menu items it is desirable to have an underlined
+	      letter in the label, so that the user knows that he can
+	      press that letter on the keyboard and activate the
+	      corresponding menu item.  To specify an underlined letter,
+	      put an underscore (_) before it in the label's string.
+	      Examples are, "_File", "_Edit", and "_Copy".
+	    </para>
+	  </glossdef>
+	</glossentry>
+
+	<glossentry>
+	  <glossterm><structfield>hint</structfield></glossterm>
+	  <glossdef>
+	    <para>
+	      This field specifies an optional string that should be
+	      used for the tooltip in toolbar items or for the status
+	      bar hint in menu items.  The un-translated version of the
+	      hint should be specified.  If no hint string is desired,
+	      specify NULL.
+	  </glossdef>
+	</glossentry>
+
+	<glossentry>
+	  <glossterm><structfield>moreinfo</structfield></glossterm>
+	  <glossdef>
+	    <para>
+	      This field is used to specify different things according
+	      to the type of item that is being defined.
+	    </para>
+
+	    <itemizedlist>
+	      <listitem>
 		<para>
-		  Specifies that a stock icon should be used.  The
-		  name or identifier of the icon should be specified
-		  in the <structfield>pixmap_info</structfield> field.
-		</para>
-	      </glossdef>
-	    </glossentry>
+		  For normal, radio, and toggle items
+		  (GNOME_APP_UI_ITEM, GNOME_APP_UI_ITEM, and
+		  GNOME_APP_UI_TOGGLEITEM, respectively), this field
+		  should point to the function that should be called
+		  when the item is activated.  The general prototype of
+		  this function is as follows:
 
-	    <glossentry>
-	      <glossterm><symbol>GNOME_APP_PIXMAP_DATA</symbol></glossterm>
-	      <glossdef>
+		  <funcsynopsis>
+		    <funcdef>void <function>callback</function></funcdef>
+		    <paramdef>GtkWidget *<parameter>item</parameter></paramdef>
+		    <paramdef>gpointer <parameter>user_data</parameter></paramdef>
+		  </funcsynopsis>
+
+		  The <parameter>item</parameter> argument is the menu item
+		  or button in the toolbar that was selected, and the
+		  <parameter>>user_data</parameter> argument is the normal
+		  callback's user data.
+		</para>
+	      </listitem>
+
+	      <listitem>
 		<para>
-		  Specifies that an icon created from inline XPM data
-		  should be used.  A pointer to the XPM data must be
-		  specified in the
-		  <structfield>pixmap_info</structfield> field.
+		  For submenus (subtrees, type
+		  <symbol>GNOME_APP_UI_SUBTREE</symbol>), this field
+		  should point to another array of
+		  <structname>GnomeUIInfo</structname> structures.  This
+		  array defines the subtree.
 		</para>
-	      </glossdef>
-	    </glossentry>
+	      </listitem>
 
-	    <glossentry>
-	      <glossterm><symbol>GNOME_APP_PIXMAP_FILENAME</symbol></glossterm>
-	      <glossdef>
+	      <listitem>
 		<para>
-		  Specifies that an image file should be loaded and
-		  used as an icon.  The file name must be specified in
-		  the <structfield>pixmap_info</structfield> field.
+		  For items of type
+		  <symbol>GNOME_APP_UI_RADIOITEMS</symbol>, this field
+		  should point to an array of
+		  <structname>GnomeUIInfo</structname> structures which
+		  defines the items that are to be put in the radio
+		  group.  Within this array, only items of type
+		  <symbol>GNOME_APP_UI_ITEM</symbol> and
+		  <symbol>GNOME_APP_UI_BUILDER_DATA</symbol> are
+		  supported.
 		</para>
-	      </glossdef>
-	    </glossentry>
-	  </glosslist>
-	</glossdef>
-      </glossentry>
+	      </listitem>
 
-      <glossentry>
-	<glossterm><structfield>pixmap_info</structfield></glossterm>
-	<glossdef>
-	  <para>
-	    This field specifies the information used to create the
-	    pixmap for the item's icon.
-	  </para>
+	      <listitem>
+		<para>
+		  For items of type <symbol>GNOME_APP_UI_HELP</symbol>,
+		  this item should point to a string that is the
+		  application's ID name.  GnomeAppHelper will look for
+		  the topic.dat file in the help directory defined by
+		  the application's ID string, read it, and include the
+		  appropriate help topics in the menu.  This type is not
+		  valid for toolbars.
+		</para>
+	      </listitem>
 
-	  <itemizedlist>
-	    <listitem>
-	      <para>
-		For icons of type
-		<symbol>GNOME_APP_PIXMAP_NONE</symbol>, this field can
-		be set to NULL.
-	      </para>
-	    </listitem>
+	      <listitem>
+		<para>
+		  For items of type
+		  <symbol>GNOME_APP_UI_BUILDER_DATA</symbol>, this field
+		  should point to a
+		  <structname>GnomeUIBuilderData</structname> structure.
+		  The information in this structure will be used for all
+		  subsequent items in the array.  This is normally only
+		  needed by language bindings and GUI builders.
+		</para>
+	      </listitem>
 
-	    <listitem>
-	      <para>
-		For icons of type
-		<symbol>GNOME_APP_PIXMAP_STOCK</symbol>, this field
-		should point to a string with the stock icon's
-		identifier.  For menu items it is suggested that you
-		use the <symbol>GNOME_STOCK_MENU_*</symbol> symbols.
-		For toolbars, you should use the
-		<symbol>GNOME_STOCK_PIXMAP_*</symbol> symbols.
-	      </para>
-	    </listitem>
+	      <listitem>
+		<para>
+		  For all other item types, this field is ignored.  You
+		  should set it to NULL, however, for compatibility with
+		  future extensions to GnomeAppHelper.
+		</para>
+	      </listitem>
+	    </itemizedlist>
 
-	    <listitem>
-	      <para>
-		For icons of type
-		<symbol>GNOME_APP_PIXMAP_DATA</symbol>, this field
-		should point to the inline XPM data from which the
-		icon will be created.
-	      </para>
-	    </listitem>
+	  </glossdef>
+	</glossentry>
 
-	    <listitem>
-	      <para>
-		For icons of type
-		<symbol>GNOME_APP_PIXMAP_FILENAME</symbol>, this field
-		should point to a string with the name of the image
-		file to load.  This image will be used as an icon.
-	      </para>
-	    </listitem>
-	  </itemizedlist>
-	</glossdef>
-      </glossentry>
+	<glossentry>
+	  <glossterm><structfield>user_data</structfield></glossterm>
+	  <glossdef>
+	    <para>
+	      This should point to the data you want to pass to the
+	      callback that will be activated when the menu or toolbar
+	      item is selected.  Frequently you will leave this as NULL
+	      and pass a specific data pointer to all callbacks using
+	      the functions defined below.
+	    </para>
+	  </glossdef>
+	</glossentry>
 
-      <glossentry>
-	<glossterm><structfield>accelerator_key</structfield></glossterm>
-	<glossdef>
-	  <para>
-	    This field is used to specify an optional accelerator key
-	    for the item.  Applications should use the standard
-	    accelerator keys defined in the GNOME User Interface
-	    Guidelines.
-	  </para>
+	<glossentry>
+	  <glossterm><structfield>unused_data</structfield></glossterm>
+	  <glossdef>
+	    <para>
+	      This field is reserved for future expansion, and should be
+	      set to NULL.
+	    </para>
+	  </glossdef>
+	</glossentry>
 
-	  <para>
-	    You should specify the key code of the key you want to use
-	    as an accelerator.  Key codes are listed in the
-	    gdkkeysyms.h include file.
-	  </para>
-	</glossdef>
-      </glossentry>
+	<glossentry>
+	  <glossterm><structfield>pixmap_type</structfield></glossterm>
+	  <glossdef>
+	    <para>
+	      This should be one of the following values.
+	    </para>
 
-      <glossentry>
-	<glossterm><structfield>ac_mods</structfield></glossterm>
-	<glossdef>
-	  <para>
-	    This field is used to specify the modifier keys that
-	    should be used in conjunction with the key specified in
-	    the <structfield>accelerator_key</structfield> field for
-	    the item's accelerator.  Applications should use the
-	    standard accelerator keys defined in the GNOME User
-	    Interface Guidelines.
-	  </para>
+	    <glosslist>
+	      <glossentry>
+		<glossterm><symbol>GNOME_APP_PIXMAP_NONE</symbol></glossterm>
+		<glossdef>
+		  <para>
+		    Specifies that no icon should be used for this
+		    item.
+		  </para>
+		</glossdef>
+	      </glossentry>
 
-	  <para>
-	    The value in this field is a bit mask composed of the
-	    values in the <type>GdkModifierType</type> enumeration.
-	  </para>
-	</glossdef>
-      </glossentry>
+	      <glossentry>
+		<glossterm><symbol>GNOME_APP_PIXMAP_STOCK</symbol></glossterm>
+		<glossdef>
+		  <para>
+		    Specifies that a stock icon should be used.  The
+		    name or identifier of the icon should be specified
+		    in the <structfield>pixmap_info</structfield> field.
+		  </para>
+		</glossdef>
+	      </glossentry>
 
-      <glossentry>
-	<glossterm><structfield>widget</structfield></glossterm>
-	<glossdef>
-	  <para>
-	    This field is filled in by the GnomeAppHelper functions.
-	    Once you have called one of the functions that take an
-	    array of <structname>GnomeUIInfo</structname> structures
-	    and turn it into a widget tree, the
-	    <structfield>widget</structfield> fields of the structures
-	    in the array will have pointers to the created widgets.
-	    You can use these pointers to do several operations like
-	    hide and show the items, and make them insensitive.
-	  </para>
-	</glossdef>
-      </glossentry>
-    </glosslist>
+	      <glossentry>
+		<glossterm><symbol>GNOME_APP_PIXMAP_DATA</symbol></glossterm>
+		<glossdef>
+		  <para>
+		    Specifies that an icon created from inline XPM data
+		    should be used.  A pointer to the XPM data must be
+		    specified in the
+		    <structfield>pixmap_info</structfield> field.
+		  </para>
+		</glossdef>
+	      </glossentry>
 
-    <para>
-      In addition to the plain <structname>GnomeUIInfo</structname>
-      structures, GnomeAppHelper provides some macros to make filling
-      these structures easier.  These are most useful for items that
-      require a few parameters and for toolbars, which do not have as
-      many options as menus.
-    </para>
+	      <glossentry>
+		<glossterm><symbol>GNOME_APP_PIXMAP_FILENAME</symbol></glossterm>
+		<glossdef>
+		  <para>
+		    Specifies that an image file should be loaded and
+		    used as an icon.  The file name must be specified in
+		    the <structfield>pixmap_info</structfield> field.
+		  </para>
+		</glossdef>
+	      </glossentry>
+	    </glosslist>
+	  </glossdef>
+	</glossentry>
 
-  </sect1>
+	<glossentry>
+	  <glossterm><structfield>pixmap_info</structfield></glossterm>
+	  <glossdef>
+	    <para>
+	      This field specifies the information used to create the
+	      pixmap for the item's icon.
+	    </para>
 
-  <sect1 id="convenience-macros">
+	    <itemizedlist>
+	      <listitem>
+		<para>
+		  For icons of type
+		  <symbol>GNOME_APP_PIXMAP_NONE</symbol>, this field can
+		  be set to NULL.
+		</para>
+	      </listitem>
 
-    <title>Convenience macros to fill <structname>GnomeUIInfo</structname> structures</title>
+	      <listitem>
+		<para>
+		  For icons of type
+		  <symbol>GNOME_APP_PIXMAP_STOCK</symbol>, this field
+		  should point to a string with the stock icon's
+		  identifier.  For menu items it is suggested that you
+		  use the <symbol>GNOME_STOCK_MENU_*</symbol> symbols.
+		  For toolbars, you should use the
+		  <symbol>GNOME_STOCK_PIXMAP_*</symbol> symbols.
+		</para>
+	      </listitem>
 
-    <para>
-      GnomeAppHelper also provides some convenience macros to let you
-      fill <structname>GnomeUIInfo</structname> structures easily.
-      You can use these macros wherever you would fill out the fields
-      in the <structname>GnomeUIInfo</structname> structur by hand.
-    </para>
+	      <listitem>
+		<para>
+		  For icons of type
+		  <symbol>GNOME_APP_PIXMAP_DATA</symbol>, this field
+		  should point to the inline XPM data from which the
+		  icon will be created.
+		</para>
+	      </listitem>
 
-    <para>
-      The following macros are available:
-    </para>
+	      <listitem>
+		<para>
+		  For icons of type
+		  <symbol>GNOME_APP_PIXMAP_FILENAME</symbol>, this field
+		  should point to a string with the name of the image
+		  file to load.  This image will be used as an icon.
+		</para>
+	      </listitem>
+	    </itemizedlist>
+	  </glossdef>
+	</glossentry>
 
-  </sect1>
+	<glossentry>
+	  <glossterm><structfield>accelerator_key</structfield></glossterm>
+	  <glossdef>
+	    <para>
+	      This field is used to specify an optional accelerator key
+	      for the item.  Applications should use the standard
+	      accelerator keys defined in the GNOME User Interface
+	      Guidelines.
+	    </para>
 
-  <sect1 id="functions">
+	    <para>
+	      You should specify the key code of the key you want to use
+	      as an accelerator.  Key codes are listed in the
+	      gdkkeysyms.h include file.
+	    </para>
+	  </glossdef>
+	</glossentry>
 
-    <title>Functions provided by GnomeAppHelper</title>
+	<glossentry>
+	  <glossterm><structfield>ac_mods</structfield></glossterm>
+	  <glossdef>
+	    <para>
+	      This field is used to specify the modifier keys that
+	      should be used in conjunction with the key specified in
+	      the <structfield>accelerator_key</structfield> field for
+	      the item's accelerator.  Applications should use the
+	      standard accelerator keys defined in the GNOME User
+	      Interface Guidelines.
+	    </para>
 
-    <para>
-      The following is a list of the functions provided by
-      GnomeAppHelper.
-    </para>
+	    <para>
+	      The value in this field is a bit mask composed of the
+	      values in the <type>GdkModifierType</type> enumeration.
+	    </para>
+	  </glossdef>
+	</glossentry>
 
-  </sect1>
+	<glossentry>
+	  <glossterm><structfield>widget</structfield></glossterm>
+	  <glossdef>
+	    <para>
+	      This field is filled in by the GnomeAppHelper functions.
+	      Once you have called one of the functions that take an
+	      array of <structname>GnomeUIInfo</structname> structures
+	      and turn it into a widget tree, the
+	      <structfield>widget</structfield> fields of the structures
+	      in the array will have pointers to the created widgets.
+	      You can use these pointers to do several operations like
+	      hide and show the items, and make them insensitive.
+	    </para>
+	  </glossdef>
+	</glossentry>
+      </glosslist>
+
+      <para>
+	In addition to the plain <structname>GnomeUIInfo</structname>
+	structures, GnomeAppHelper provides some macros to make filling
+	these structures easier.  These are most useful for items that
+	require a few parameters and for toolbars, which do not have as
+	many options as menus.
+      </para>
+
+    </sect1>
+
+    <sect1 id="convenience-macros">
+
+      <title>Convenience macros to fill <structname>GnomeUIInfo</structname> structures</title>
+
+      <para>
+	GnomeAppHelper also provides some convenience macros to let you
+	fill <structname>GnomeUIInfo</structname> structures easily.
+	You can use these macros wherever you would fill out the fields
+	in the <structname>GnomeUIInfo</structname> structur by hand.
+      </para>
+
+      <para>
+	The following macros are available:
+      </para>
+
+    </sect1>
+
+    <sect1 id="functions">
+
+      <title>Functions provided by GnomeAppHelper</title>
+
+      <para>
+	The following is a list of the functions provided by
+	GnomeAppHelper.
+      </para>
+
+    </sect1>
+
+  </chapter>
 
 <!-- Keep this comment at the end of the file
 Local variables:
