@@ -36,6 +36,9 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.5  1997/12/26 21:03:32  sopwith
+* A few miscellaneous XmHTML bug fixes, including a note to miguel so he can fix frames ;-)
+*
 * Revision 1.4  1997/12/25 01:34:11  unammx
 * Good news for the day:
 *
@@ -1079,9 +1082,16 @@ _XmHTMLCheckForFrames(XmHTMLWidget html, XmHTMLObject *objects)
 	XmHTMLObject *tmp;
 	int nframes = 0;
 
+	printf("Checking for frames\n");
+
 	/* we only support frames if user has attached a frame callback */
-	if(!html->html.frame_callback)
+	if(!html->html.frame_callback) {
+	        printf("No frame callback, so no frames.\
+The comment says:\n\
+/* we only support frames if user has attached a frame callback */\n\
+That means you, Miguel :)\n\n");
 		return(0);
+	}
 
 	/*
 	* frames are not allowed to appear inside the BODY tag.

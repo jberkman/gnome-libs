@@ -26,6 +26,7 @@ click (GtkWidget *widget, gpointer data)
 	printf ("visited: %s\n", cbs->visited);
 }
 
+int
 main (int argc, char *argv [])
 {
 	GtkWidget *window, *html, *scr;
@@ -38,13 +39,15 @@ main (int argc, char *argv [])
 	window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
 	gtk_widget_show (window);
 	file_contents = g_string_new(NULL);
-	afile = fopen(argv[1], "r");
-	if(afile != NULL) {
-	  while(fgets(aline, sizeof(aline), afile))
-		file_contents = g_string_append(file_contents, aline);
-	  fclose(afile);
+	if(argc == 2) {
+		afile = fopen(argv[1], "r");
+		if(afile != NULL) {
+		  while(fgets(aline, sizeof(aline), afile))
+			file_contents = g_string_append(file_contents, aline);
+		  fclose(afile);
+		}
 	}
-	if(argc < 2 || afile == NULL)
+	if(strlen(file_contents->str) <= 0)
 		file_contents = g_string_append(file_contents, "<html>\n"
 			       "<head><title>Hola</title></head>\n"
 			       "<b>Bold</b><p>Nuevo parrafo<p><a href=\"xxx\">test</a>.<p>"
@@ -61,6 +64,6 @@ main (int argc, char *argv [])
 	
 	gtk_container_add (GTK_CONTAINER (window), html);
 	gtk_main ();
-
+	return 0;
 }
 

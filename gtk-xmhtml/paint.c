@@ -35,6 +35,9 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.5  1997/12/26 21:03:34  sopwith
+* A few miscellaneous XmHTML bug fixes, including a note to miguel so he can fix frames ;-)
+*
 * Revision 1.4  1997/12/25 01:38:29  unammx
 * Small bug fixes
 *
@@ -682,7 +685,7 @@ DrawAnchor(XmHTMLWidget html, XmHTMLObjectTableElement data)
 			{
 				for(j = start; j < i+1; j++)
 				{
-					TFontStruct *my_font = words [j].font->xfont;
+					TFontStruct *my_font = all_words [j]->font->xfont;
 					
 					Toolkit_Set_Font (dpy, gc, all_words[j]->font->xfont);
 					Toolkit_Draw_String(dpy, win, gc,

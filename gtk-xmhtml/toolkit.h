@@ -72,7 +72,7 @@ typedef XVisualInfo TVisualInfo;
 #define Toolkit_Widget_Parent(w) GTK_WIDGET(w)->parent
 #define Toolkit_Is_Realized(w) GTK_WIDGET_REALIZED(w)
 #define Toolkit_Widget_Window(x) (x)->window
-#define Toolkit_Default_Root_Window(dpy) ((GdkWindow*) &gdk_root_parent)
+#define Toolkit_Default_Root_Window(dpy) GDK_ROOT_PARENT()
 #define Toolkit_Pointer_Ungrab(display,time) gdk_pointer_ungrab(time)
 #define Toolkit_CurrentTime GDK_CURRENT_TIME
 #define Toolkit_HTML_Widget(widget,field) GTK_HTML((widget))->(field)

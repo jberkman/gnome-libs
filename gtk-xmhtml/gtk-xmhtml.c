@@ -64,6 +64,8 @@ pixel_color (char *color_name)
 	return c.pixel;
 }
 
+void donothing(void) {}
+
 /* These are initialized in the Motif sources with the resources */
 void
 gtk_xmhtml_resource_init (GtkXmHTML *html)
@@ -109,7 +111,7 @@ gtk_xmhtml_resource_init (GtkXmHTML *html)
 	html->html.anchor_track_callback = NULL;
 	html->html.activate_callback     = NULL;
 	html->html.arm_callback          = NULL;
-	html->html.frame_callback        = NULL;
+	html->html.frame_callback        = g_list_append(NULL, donothing);
 	html->html.form_callback         = NULL;
 	html->html.focus_callback        = NULL;
 	html->html.losing_focus_callback = NULL;
