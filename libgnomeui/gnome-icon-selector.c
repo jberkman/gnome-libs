@@ -53,6 +53,8 @@
 struct _GnomeIconSelectorPrivate {
 	GnomeIconList *icon_list;
 
+	GSList *file_list;
+
 	/* a flag set to stop the loading of images in midprocess */
 	gboolean stop_loading;
 };
@@ -66,8 +68,12 @@ static void gnome_icon_selector_finalize   (GObject         *object);
 static void      clear_handler             (GnomeSelector   *selector);
 static gboolean  check_filename_handler    (GnomeSelector   *selector,
                                             const gchar     *filename);
-static void      update_filelist_handler   (GnomeSelector   *selector);
+static void      freeze_handler            (GnomeSelector   *selector);
+static void      update_handler            (GnomeSelector   *selector);
+static void      thaw_handler              (GnomeSelector   *selector);
 
+static void      free_entry_func           (gpointer         data,
+					    gpointer         user_data);
 
 static GnomeSelectorClass *parent_class;
 
@@ -115,7 +121,9 @@ gnome_icon_selector_class_init (GnomeIconSelectorClass *class)
 
 	selector_class->clear = clear_handler;
 	selector_class->check_filename = check_filename_handler;
-	selector_class->update_filelist = update_filelist_handler;
+	selector_class->freeze = freeze_handler;
+	selector_class->update = update_handler;
+	selector_class->thaw = thaw_handler;
 }
 
 static void
@@ -155,8 +163,6 @@ browse_dialog_ok (GtkWidget *widget, gpointer data)
 		gdk_beep ();
 		return;
 	}
-
-	gnome_selector_update_file_list (selector);
 
 	if (GTK_WIDGET (fs)->window)
 		gdk_window_lower (GTK_WIDGET (fs)->window);
@@ -245,6 +251,8 @@ gnome_icon_selector_new (const gchar *history_id,
 				       dialog_title, box,
 				       GTK_WIDGET (filesel));
 
+	gtk_widget_unref (GTK_WIDGET (filesel));
+
 	return GTK_WIDGET (iselector);
 }
 
@@ -277,6 +285,18 @@ gnome_icon_selector_destroy (GtkObject *object)
 	g_return_if_fail (GNOME_IS_ICON_SELECTOR (object));
 
 	iselector = GNOME_ICON_SELECTOR (object);
+
+	if (iselector->_priv) {
+#if 0
+		if (iselector->_priv->icon_list)
+			gtk_widget_unref (iselector->_priv->icon_list);
+#endif
+		iselector->_priv->icon_list = NULL;
+
+		g_slist_foreach (iselector->_priv->file_list,
+				 free_entry_func, iselector);
+		iselector->_priv->file_list = NULL;
+	}
 
 	if (GTK_OBJECT_CLASS (parent_class)->destroy)
 		(* GTK_OBJECT_CLASS (parent_class)->destroy) (object);
@@ -324,7 +344,7 @@ check_filename_handler (GnomeSelector *selector, const gchar *filename)
 	if (g_file_test (filename, G_FILE_TEST_ISDIR))
 		return TRUE;
 
-	mimetype = gnome_mime_type (filename);
+	mimetype = gnome_mime_type_from_magic (filename);
 	if (!mimetype || strncmp (mimetype, "image", sizeof("image")-1))
 		return FALSE;
 	else
@@ -389,7 +409,39 @@ set_flag (GtkWidget *w, int *flag)
 }
 
 static void
-update_filelist_handler (GnomeSelector *gs)
+freeze_handler (GnomeSelector *selector)
+{
+	GnomeIconSelector *iselector;
+
+	g_return_if_fail (selector != NULL);
+	g_return_if_fail (GNOME_IS_ICON_SELECTOR (selector));
+
+	iselector = GNOME_ICON_SELECTOR (iselector);
+
+	gnome_icon_list_freeze (iselector->_priv->icon_list);
+}
+
+static void
+thaw_handler (GnomeSelector *selector)
+{
+	GnomeIconSelector *iselector;
+
+	g_return_if_fail (selector != NULL);
+	g_return_if_fail (GNOME_IS_ICON_SELECTOR (selector));
+
+	iselector = GNOME_ICON_SELECTOR (iselector);
+
+	gnome_icon_list_thaw (iselector->_priv->icon_list);
+}
+
+static void
+free_entry_func (gpointer data, gpointer user_data)
+{
+	g_free (data);
+}
+
+static void
+update_handler (GnomeSelector *gs)
 {
 	GtkWidget *label;
 	GtkWidget *progressbar;
@@ -401,11 +453,12 @@ update_filelist_handler (GnomeSelector *gs)
 	g_return_if_fail (gs != NULL);
 	g_return_if_fail (GNOME_IS_ICON_SELECTOR (gs));
 
-	/* if (!gs->_priv->file_list) return; */
-
 	gis = GNOME_ICON_SELECTOR (gs);
 
-	file_count = g_slist_length (gs->_priv->file_list);
+	g_slist_foreach (gis->_priv->file_list, free_entry_func, gis);
+	gis->_priv->file_list = g_slist_copy (gs->_priv->file_list);
+
+	file_count = g_slist_length (gis->_priv->file_list);
 	i = 0;
 
 	/* Locate previous progressbar/label,
@@ -436,6 +489,7 @@ update_filelist_handler (GnomeSelector *gs)
 	}
          
 	gnome_icon_list_freeze (gis->_priv->icon_list);
+	gnome_icon_list_clear (gis->_priv->icon_list);
 
 	/* this can be set with the stop_loading method to stop the
 	   display in the middle */
@@ -447,12 +501,11 @@ update_filelist_handler (GnomeSelector *gs)
 					 GTK_SIGNAL_FUNC (set_flag),
 					 &was_destroyed);
 
-	while (gs->_priv->file_list) {
-		GSList * list = gs->_priv->file_list;
+	while (gis->_priv->file_list) {
+		GSList * list = gis->_priv->file_list;
 		append_an_icon (gis, list->data);
-		g_free (list->data);
-		gs->_priv->file_list = g_slist_remove_link
-			(gs->_priv->file_list, list);
+		gis->_priv->file_list = g_slist_remove_link
+			(gis->_priv->file_list, list);
 		g_slist_free_1 (list);
 
 		gtk_progress_bar_update (GTK_PROGRESS_BAR (progressbar),
