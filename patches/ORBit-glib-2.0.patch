@@ -1,3 +1,5 @@
+? ORBit-2.5.7-martin.tar.gz
+? libIDL/libIDL-2.6.8.tar.gz
 ? test/everything/everything-stubs.c
 ? test/everything/everything-skels.c
 ? test/everything/everything-common.c
@@ -10,7 +12,7 @@ RCS file: /cvs/gnome/ORBit/.cvsignore,v
 retrieving revision 1.6.4.1
 diff -u -u -r1.6.4.1 .cvsignore
 --- .cvsignore	2000/09/29 23:34:02	1.6.4.1
-+++ .cvsignore	2001/02/23 00:32:27
++++ .cvsignore	2001/03/06 20:52:06
 @@ -20,4 +20,6 @@
  install-sh
  mkinstalldirs
@@ -24,7 +26,7 @@ RCS file: /cvs/gnome/ORBit/Makefile.am,v
 retrieving revision 1.13.4.3
 diff -u -u -r1.13.4.3 Makefile.am
 --- Makefile.am	2000/09/30 02:09:43	1.13.4.3
-+++ Makefile.am	2001/02/23 00:32:27
++++ Makefile.am	2001/03/06 20:52:06
 @@ -4,7 +4,7 @@
  
  bin_SCRIPTS=orbit-config
@@ -46,7 +48,7 @@ Index: ORBit-2.0.pc.in
 RCS file: ORBit-2.0.pc.in
 diff -N ORBit-2.0.pc.in
 --- /dev/null	Tue May  5 16:32:27 1998
-+++ ORBit-2.0.pc.in	Thu Feb 22 19:32:27 2001
++++ ORBit-2.0.pc.in	Tue Mar  6 15:52:06 2001
 @@ -0,0 +1,12 @@
 +prefix=@prefix@
 +exec_prefix=@exec_prefix@
@@ -58,7 +60,7 @@ diff -N ORBit-2.0.pc.in
 +Description: High-performance CORBA Object Request Broker.
 +Version: @VERSION@
 +Requires: glib-2.0
-+Libs: -L${libdir} -lORBit -lIIOP -lORBitutil @LIBS@ -lm
++Libs: -L${libdir} -lORBit-2 -lIIOP-2 -lORBitutil-2 @LIBS@ -lm
 +Cflags: -I${includedir}
 Index: autogen.sh
 ===================================================================
@@ -66,7 +68,7 @@ RCS file: /cvs/gnome/ORBit/autogen.sh,v
 retrieving revision 1.26.4.1
 diff -u -u -r1.26.4.1 autogen.sh
 --- autogen.sh	2000/02/22 00:52:22	1.26.4.1
-+++ autogen.sh	2001/02/23 00:32:27
++++ autogen.sh	2001/03/06 20:52:06
 @@ -4,78 +4,11 @@
  srcdir=`dirname $0`
  test -z "$srcdir" && srcdir=.
@@ -154,17 +156,49 @@ RCS file: /cvs/gnome/ORBit/configure.in,v
 retrieving revision 1.98.4.10
 diff -u -u -r1.98.4.10 configure.in
 --- configure.in	2001/01/18 20:16:42	1.98.4.10
-+++ configure.in	2001/02/23 00:32:28
-@@ -18,7 +18,7 @@
- # sonames we'll start using that for binary compat, but until then
- # caveat user :)
++++ configure.in	2001/03/06 20:52:07
+@@ -3,6 +3,19 @@
+ 
+ AC_PREREQ(2.12) # required version of autoconf
+ 
++GNOME_COMMON_INIT
++
++dnl Checks for libraries.
++
++GNOME_PLATFORM_GNOME_2(yes, force)
++
++GNOME_PKGCONFIG_CHECK_MODULES(GLIB, glib-2.0:1.3.1)
++GNOME_PKGCONFIG_CHECK_MODULES(GMODULE, gmodule-2.0:1.3.1)
++AC_SUBST(GLIB_LIBS)
++AC_SUBST(GLIB_CFLAGS)
++AC_SUBST(GMODULE_LIBS)
++AC_SUBST(GMODULE_CFLAGS)
++
+ # (From GTK+)
+ # Making releases:
+ #   ORBIT_MICRO_VERSION += 1;
+@@ -11,37 +24,29 @@
+ # if any functions have been added, set ORBIT_INTERFACE_AGE to 0.
+ # if backwards compatibility has been broken,
+ # set ORBIT_BINARY_AGE and ORBIT_INTERFACE_AGE to 0.
+-#
+-##########
+-# Screw the above, just play with the numbers until they match the
+-# package version number. As soon as libtool lets us specify
+-# sonames we'll start using that for binary compat, but until then
+-# caveat user :)
  
 -ORBIT_MAJOR_VERSION=0
 +ORBIT_MAJOR_VERSION=2
  ORBIT_MINOR_VERSION=5
  ORBIT_MICRO_VERSION=7
  ORBIT_INTERFACE_AGE=0
-@@ -30,14 +30,10 @@
+ ORBIT_BINARY_AGE=0
+-ORBIT_VERSION=$ORBIT_MAJOR_VERSION.$ORBIT_MINOR_VERSION.$ORBIT_MICRO_VERSION
++ORBIT_VERSION=$ORBIT_MAJOR_VERSION.$ORBIT_MINOR_VERSION.$ORBIT_MICRO_VERSION-martin
+ AC_SUBST(ORBIT_MAJOR_VERSION)
+ AC_SUBST(ORBIT_MINOR_VERSION)
+ AC_SUBST(ORBIT_MICRO_VERSION)
  AC_SUBST(ORBIT_VERSION)
  
  # libtool versioning
@@ -180,42 +214,36 @@ diff -u -u -r1.98.4.10 configure.in
 +LT_CURRENT=`expr $ORBIT_MICRO_VERSION - $ORBIT_INTERFACE_AGE`
 +LT_REVISION=$ORBIT_INTERFACE_AGE
 +LT_AGE=`expr $ORBIT_BINARY_AGE - $ORBIT_INTERFACE_AGE`
++LT_VERSION_INFO='-version-info ${LT_CURRENT}:${LT_REVISION}:${LT_AGE}'
  AC_SUBST(LT_RELEASE)
  AC_SUBST(LT_CURRENT)
  AC_SUBST(LT_REVISION)
-@@ -96,18 +92,23 @@
+ AC_SUBST(LT_AGE)
++AC_SUBST(LT_VERSION_INFO)
+ 
+ # Increment this every time a feature is added in the .idl compiler
+ # that needs help from the main libraries.
+@@ -96,19 +101,6 @@
  AC_MSG_RESULT($INDENT_COMMAND)
  AC_DEFINE_UNQUOTED(INDENT_COMMAND,"$INDENT_COMMAND")
  
-+GNOME_COMMON_INIT
-+
- dnl Checks for libraries.
- 
+-dnl Checks for libraries.
+-
 -# Make sure that we have glib>=1.1.16
 -AM_PATH_GLIB(1.2.1,,
 -AC_MSG_ERROR([
 -*** GLIB 1.2.1 or better is required. The latest version of GLIB
 -*** is always available from ftp://ftp.gtk.org/.]))
-+GNOME_PLATFORM_GNOME_2
- 
+-
 -GMODULE_CFLAGS=`glib-config --cflags gmodule`
 -AC_SUBST(GMODULE_CFLAGS)
 -GMODULE_LIBS=`glib-config --libs gmodule`
-+if test $platform_gnome_2 = yes ; then
-+  GNOME_PKGCONFIG_CHECK_MODULES(GLIB, glib-2.0:1.3.1)
-+  GNOME_PKGCONFIG_CHECK_MODULES(GMODULE, gmodule-2.0:1.3.1)
-+else
-+  GNOME_PKGCONFIG_CHECK_MODULES(GLIB, glib:1.2.6)
-+  GNOME_PKGCONFIG_CHECK_MODULES(GMODULE, gmodule:1.2.6)
-+fi
-+AC_SUBST(GLIB_LIBS)
-+AC_SUBST(GLIB_CFLAGS)
- AC_SUBST(GMODULE_LIBS)
-+AC_SUBST(GMODULE_CFLAGS)
- 
+-AC_SUBST(GMODULE_LIBS)
+-
  AC_PROG_YACC
  AM_PROG_LEX
-@@ -348,5 +349,6 @@
+ AC_PROG_AWK
+@@ -348,5 +340,6 @@
  test/idl/Makefile
  test/test-poa/Makefile
  test/everything/Makefile
@@ -228,7 +256,7 @@ RCS file: /cvs/gnome/ORBit/orbit-config.in,v
 retrieving revision 1.7
 diff -u -u -r1.7 orbit-config.in
 --- orbit-config.in	1999/10/08 04:49:07	1.7
-+++ orbit-config.in	2001/02/23 00:32:28
++++ orbit-config.in	2001/03/06 20:52:07
 @@ -87,8 +87,8 @@
         	;;
  
@@ -246,7 +274,7 @@ RCS file: /cvs/gnome/libIDL/.cvsignore,v
 retrieving revision 1.8.4.1
 diff -u -u -r1.8.4.1 .cvsignore
 --- libIDL/.cvsignore	2000/09/29 23:35:50	1.8.4.1
-+++ libIDL/.cvsignore	2001/02/23 00:32:28
++++ libIDL/.cvsignore	2001/03/06 20:52:07
 @@ -29,3 +29,4 @@
  Makefile.msc
  libIDL.spec
@@ -258,22 +286,46 @@ RCS file: /cvs/gnome/libIDL/Makefile.am,v
 retrieving revision 1.65.4.3
 diff -u -u -r1.65.4.3 Makefile.am
 --- libIDL/Makefile.am	2000/09/30 02:09:43	1.65.4.3
-+++ libIDL/Makefile.am	2001/02/23 00:32:28
-@@ -33,7 +33,7 @@
++++ libIDL/Makefile.am	2001/03/06 20:52:08
+@@ -33,27 +33,26 @@
  			  Makefile.msc README.win32 \
  			  libIDL.def libIDLConf.sh.in \
  			  stamp-parser lexer.c parser.c parser.h \
 -			  libIDL.pc.in
-+			  libIDL.pc.in libIDL-2.0.pc.in
++			  libIDL-2.0.pc.in
  
  info_TEXINFOS		= libIDL.texi
  pkginclude_HEADERS	= IDL.h
-@@ -73,5 +73,5 @@
+-lib_LTLIBRARIES		= libIDL.la
+ noinst_PROGRAMS		= tstidl
++lib_LTLIBRARIES		= libIDL-2.la
+ 
+ bin_SCRIPTS		= libIDL-config
+ 
+ BUILT_SOURCES		= lexer.c parser.c parser.h IDL.h stamp-parser
+ 
+-libIDL_la_SOURCES	= parser.c parser.h lexer.c \
++libIDL_2_la_SOURCES	= parser.c parser.h lexer.c \
+ 			  ns.c util.c util.h rename.h
+-libIDL_la_LDFLAGS	= -version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE)	\
+-			  -release $(LT_RELEASE)
++libIDL_2_la_LDFLAGS	= $(LT_VERSION_INFO)
+ 
+ m4datadir		= $(datadir)/aclocal
+ m4data_DATA		= libIDL.m4
+ 
+ tstidl_SOURCES		= tstidl.c
+-tstidl_LDADD		= libIDL.la
++tstidl_LDADD		= libIDL-2.la
+ 
+ confexecdir		= $(libdir)
+ confexec_DATA		= libIDLConf.sh
+@@ -73,5 +72,5 @@
  		&& mv libIDLConf.tmp libIDLConf.sh
  
  pkgconfigdir = $(libdir)/pkgconfig
 -pkgconfig_DATA= libIDL.pc
-+pkgconfig_DATA= libIDL.pc libIDL-2.0.pc
++pkgconfig_DATA= libIDL-2.0.pc
  
 Index: libIDL/configure.in
 ===================================================================
@@ -281,7 +333,7 @@ RCS file: /cvs/gnome/libIDL/configure.in,v
 retrieving revision 1.54.4.1
 diff -u -u -r1.54.4.1 configure.in
 --- libIDL/configure.in	2000/09/29 23:35:50	1.54.4.1
-+++ libIDL/configure.in	2001/02/23 00:32:29
++++ libIDL/configure.in	2001/03/06 20:52:08
 @@ -13,13 +13,12 @@
  # if backwards compatibility has been broken,
  # set LIBIDL_BINARY_AGE and LIBIDL_INTERFACE_AGE to 0.
@@ -299,26 +351,47 @@ diff -u -u -r1.54.4.1 configure.in
  AC_DIVERT_POP()dnl
  
  AC_SUBST(LIBIDL_MAJOR_VERSION)
-@@ -79,10 +78,15 @@
+@@ -31,12 +30,14 @@
+ LT_CURRENT=`expr $LIBIDL_MICRO_VERSION - $LIBIDL_INTERFACE_AGE`
+ LT_REVISION=$LIBIDL_INTERFACE_AGE
+ LT_AGE=`expr $LIBIDL_BINARY_AGE - $LIBIDL_INTERFACE_AGE`
++LT_VERSION_INFO='-version-info ${LT_CURRENT}:${LT_REVISION}:${LT_AGE}'
+ AC_SUBST(LT_RELEASE)
+ AC_SUBST(LT_CURRENT)
+ AC_SUBST(LT_REVISION)
+ AC_SUBST(LT_AGE)
++AC_SUBST(LT_VERSION_INFO)
+ 
+-VERSION=$LIBIDL_LIBRARY_VERSION
++VERSION=$LIBIDL_LIBRARY_VERSION-martin
+ PACKAGE=libIDL
+ 
+ AM_INIT_AUTOMAKE($PACKAGE, $VERSION, no-define)
+@@ -47,7 +48,7 @@
+ 
+ LIBIDL_INCLUDEDIR='@GLIB_CFLAGS@ -I${includedir}'
+ LIBIDL_LIBDIR='-L${libdir}'
+-LIBIDL_LIBS="-lIDL @GLIB_LIBS@"
++LIBIDL_LIBS="-lIDL-2 @GLIB_LIBS@"
+ AC_SUBST(LIBIDL_LIBDIR)
+ AC_SUBST(LIBIDL_LIBS)
+ AC_SUBST(LIBIDL_INCLUDEDIR)
+@@ -79,10 +80,11 @@
  AM_MAINTAINER_MODE
  
  dnl Checks for libraries.
 -AC_CHECK_PROG(HAVE_GLIB_CONFIG, glib-config, yes, no)
-+GNOME_PLATFORM_GNOME_2
++GNOME_PLATFORM_GNOME_2(yes, force)
  
 -AC_SUBST(GLIB_VERSION_REQUIRED)
 -AM_PATH_GLIB($GLIB_VERSION_REQUIRED)
-+if test $platform_gnome_2 = yes ; then
-+  GNOME_PKGCONFIG_CHECK_MODULES(GLIB, glib-2.0:1.3.1)
-+else
-+  GNOME_PKGCONFIG_CHECK_MODULES(GLIB, glib:1.2.6)
-+fi
++GNOME_PKGCONFIG_CHECK_MODULES(GLIB, glib-2.0:1.3.1)
 +AC_SUBST(GLIB_LIBS)
 +AC_SUBST(GLIB_CFLAGS)
  
  AC_STDC_HEADERS
  AC_CHECK_HEADERS(stddef.h)
-@@ -104,6 +108,7 @@
+@@ -104,6 +106,7 @@
  libIDL.m4
  libIDL.spec
  libIDL.pc
@@ -331,7 +404,7 @@ Index: libIDL/libIDL-2.0.pc.in
 RCS file: libIDL-2.0.pc.in
 diff -N libIDL-2.0.pc.in
 --- /dev/null	Tue May  5 16:32:27 1998
-+++ libIDL-2.0.pc.in	Thu Feb 22 19:32:29 2001
++++ libIDL-2.0.pc.in	Tue Mar  6 15:52:08 2001
 @@ -0,0 +1,12 @@
 +prefix=@prefix@
 +exec_prefix=@exec_prefix@
@@ -343,5 +416,358 @@ diff -N libIDL-2.0.pc.in
 +Description: IDL parsing library
 +Version: @VERSION@
 +Requires: glib-2.0
-+Libs: -L${libdir} -lIDL
++Libs: -L${libdir} -lIDL-2
 +Cflags: -I${includedir}
+Index: libIDL/libIDLConf.sh.in
+===================================================================
+RCS file: /cvs/gnome/libIDL/libIDLConf.sh.in,v
+retrieving revision 1.2
+diff -u -u -r1.2 libIDLConf.sh.in
+--- libIDL/libIDLConf.sh.in	1999/09/18 22:31:11	1.2
++++ libIDL/libIDLConf.sh.in	2001/03/06 20:52:08
+@@ -4,4 +4,4 @@
+ LIBIDL_INCLUDEDIR="@LIBIDL_INCLUDEDIR@"
+ LIBIDL_LIBDIR="@LIBIDL_LIBDIR@"
+ LIBIDL_LIBS="@LIBIDL_LIBS@"
+-MODULE_VERSION="libIDL-@VERSION@"
+\ No newline at end of file
++MODULE_VERSION="libIDL-@VERSION@"
+Index: src/IIOP/Makefile.am
+===================================================================
+RCS file: /cvs/gnome/ORBit/src/IIOP/Makefile.am,v
+retrieving revision 1.21.4.1
+diff -u -u -r1.21.4.1 Makefile.am
+--- src/IIOP/Makefile.am	2000/04/05 19:14:44	1.21.4.1
++++ src/IIOP/Makefile.am	2001/03/06 20:52:08
+@@ -12,11 +12,11 @@
+ 
+ INCLUDES=-I.. -I$(top_srcdir)/src @GLIB_CFLAGS@ -I$(top_builddir)/src/ORBitutil
+ 
+-lib_LTLIBRARIES=libIIOP.la
++lib_LTLIBRARIES = libIIOP-2.la
+ 
+ libIIOPincludedir = $(includedir)/IIOP
+ 
+-libIIOP_la_SOURCES= \
++libIIOP_2_la_SOURCES = \
+ 	connection.c \
+ 	encoders.c \
+ 	giop-msg-buffer.c \
+@@ -38,8 +38,6 @@
+ 	iiop-encoders.h \
+ 	iiop-endian.h
+ 
+-libIIOP_la_LIBADD=$(libwrap_files) $(libwrap_deps)
+-
+ $(libwrap_files): make_libwrap_files
+ 
+ make_libwrap_files: $(LIBWRAP_PATH)
+@@ -50,7 +48,8 @@
+ 
+ BUILT_SOURCES=$(libwrap_files)
+ 
+-libIIOP_la_LDFLAGS = -version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE)
++libIIOP_2_la_LDFLAGS = $(LT_VERSION_INFO)
++libIIOP_2_la_LIBADD = $(libwrap_files) $(libwrap_deps)
+ 
+ EXTRA_DIST = IIOP-design.txt
+ 
+Index: src/ORBitutil/Makefile.am
+===================================================================
+RCS file: /cvs/gnome/ORBit/src/ORBitutil/Makefile.am,v
+retrieving revision 1.16
+diff -u -u -r1.16 Makefile.am
+--- src/ORBitutil/Makefile.am	1999/11/13 17:09:59	1.16
++++ src/ORBitutil/Makefile.am	2001/03/06 20:52:08
+@@ -1,10 +1,10 @@
+ INCLUDES=-I$(top_builddir)/src -I$(top_srcdir)/src @GLIB_CFLAGS@
+ 
+-lib_LTLIBRARIES=libORBitutil.la
++lib_LTLIBRARIES=libORBitutil-2.la
+ 
+ libORBitutilincludedir = $(includedir)/ORBitutil
+ 
+-libORBitutil_la_SOURCES = \
++libORBitutil_2_la_SOURCES = \
+ 	trace.c \
+ 	trace.h \
+ 	basic_types.h \
+@@ -25,4 +25,5 @@
+ BUILT_SOURCES=orbit-os-config.h
+ EXTRA_DIST=orbit-os-config.h.in
+ 
+-libORBitutil_la_LDFLAGS = -version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE)
++libORBitutil_2_la_LDFLAGS = $(LT_VERSION_INFO)
++
+Index: src/daemons/interface_repository/Makefile.am
+===================================================================
+RCS file: /cvs/gnome/ORBit/src/daemons/interface_repository/Makefile.am,v
+retrieving revision 1.11
+diff -u -u -r1.11 Makefile.am
+--- src/daemons/interface_repository/Makefile.am	2000/01/24 20:05:50	1.11
++++ src/daemons/interface_repository/Makefile.am	2001/03/06 20:52:08
+@@ -3,15 +3,15 @@
+ INCLUDES=-I$(top_builddir) -I$(top_builddir)/src -I$(top_builddir)/src/ORBitutil -I$(top_builddir)/src/orb \
+ 	 -I$(top_srcdir) -I$(top_srcdir)/src @GLIB_CFLAGS@
+ 
+-orbit_ird_DEPENDENCIES = $(top_builddir)/src/orb/libORBit.la \
+-			 $(top_builddir)/src/IIOP/libIIOP.la \
+-			 $(top_builddir)/src/ORBitutil/libORBitutil.la
++orbit_ird_DEPENDENCIES = $(top_builddir)/src/orb/libORBit-2.la \
++			 $(top_builddir)/src/IIOP/libIIOP-2.la \
++			 $(top_builddir)/src/ORBitutil/libORBitutil-2.la
+ 
+ orbit_ird_LDFLAGS = -static
+ orbit_ird_LDADD = \
+-	$(top_builddir)/src/orb/libORBit.la \
+-	$(top_builddir)/src/IIOP/libIIOP.la \
+-	$(top_builddir)/src/ORBitutil/libORBitutil.la \
++	$(top_builddir)/src/orb/libORBit-2.la \
++	$(top_builddir)/src/IIOP/libIIOP-2.la \
++	$(top_builddir)/src/ORBitutil/libORBitutil-2.la \
+ 	@GLIB_LIBS@ \
+ 	-lm
+ 
+Index: src/idl-compiler/Makefile.am
+===================================================================
+RCS file: /cvs/gnome/ORBit/src/idl-compiler/Makefile.am,v
+retrieving revision 1.19
+diff -u -u -r1.19 Makefile.am
+--- src/idl-compiler/Makefile.am	2000/02/08 23:26:44	1.19
++++ src/idl-compiler/Makefile.am	2001/03/06 20:52:08
+@@ -2,7 +2,7 @@
+ 
+ INCLUDES=-I$(top_builddir) -I$(top_builddir)/src \
+ 	 -I$(top_srcdir) -I$(top_srcdir)/src @GLIB_CFLAGS@
+-orbit_idl1_DEPENDENCIES = $(top_builddir)/libIDL/libIDL.la
++orbit_idl1_DEPENDENCIES = $(top_builddir)/libIDL/libIDL-2.la
+ 
+ orbit_idl1_LDFLAGS = -static
+ orbit_idl1_LDADD = \
+Index: src/orb/Makefile.am
+===================================================================
+RCS file: /cvs/gnome/ORBit/src/orb/Makefile.am,v
+retrieving revision 1.49.4.2
+diff -u -u -r1.49.4.2 Makefile.am
+--- src/orb/Makefile.am	2001/01/28 22:17:50	1.49.4.2
++++ src/orb/Makefile.am	2001/03/06 20:52:08
+@@ -11,13 +11,13 @@
+ 	-DORBIT_VERSION=\"@ORBIT_VERSION@\" \
+ 	-DG_LOG_DOMAIN=\"ORBit\"
+ 
+-lib_LTLIBRARIES = libORBit.la
++lib_LTLIBRARIES = libORBit-2.la
+ 
+ libORBitincludedir = $(includedir)/orb
+ 
+ EXTRA_DIST=orbit.h.in
+ 
+-libORBit_la_SOURCES = \
++libORBit_2_la_SOURCES = \
+ 	interface_repository-common.c \
+ 	interface_repository-stubs.c \
+ 	interface_repository.h \
+@@ -99,8 +99,8 @@
+ $(IDL):
+ 	$(MAKE) -C $(top_builddir)/src/orbit-idl-compiler
+ 
+-libORBit_la_LDFLAGS = -version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE)
+-libORBit_la_LIBADD = $(GLIB_LIBS) -lm
++libORBit_2_la_LDFLAGS = $(LT_VERSION_INFO)
++libORBit_2_la_LIBADD = $(GLIB_LIBS) -lm
+ 
+ BUILT_SOURCES = \
+ 	orbit.h	\
+Index: src/orbit-idl-compiler/Makefile.am
+===================================================================
+RCS file: /cvs/gnome/ORBit/src/orbit-idl-compiler/Makefile.am,v
+retrieving revision 1.13.4.2
+diff -u -u -r1.13.4.2 Makefile.am
+--- src/orbit-idl-compiler/Makefile.am	2000/07/14 14:38:35	1.13.4.2
++++ src/orbit-idl-compiler/Makefile.am	2001/03/06 20:52:08
+@@ -10,13 +10,13 @@
+ 	-DORBITLIBDIR="\"$(orbitlibdir)\"" \
+ 	-DDEBUG
+ 
+-orbit_idl_DEPENDENCIES = $(top_builddir)/libIDL/libIDL.la \
++orbit_idl_DEPENDENCIES = $(top_builddir)/libIDL/libIDL-2.la \
+ 			 backends/c/liborbit-c-backend.a \
+ 			 $(top_builddir)/popt/libpopt.la
+ orbit_idl_LDFLAGS =
+ orbit_idl_LDADD = \
+ 	backends/c/liborbit-c-backend.a \
+-	$(top_builddir)/libIDL/libIDL.la \
++	$(top_builddir)/libIDL/libIDL-2.la \
+ 	$(top_builddir)/popt/libpopt.la \
+ 	@GLIB_LIBS@ @GMODULE_LIBS@ \
+ 	-lm
+@@ -30,8 +30,8 @@
+ 		   orbit-idl2.h
+ include_DATA=orbit-idl2.h
+ 
+-$(top_builddir)/libIDL/libIDL.la:
+-	$(MAKE) -C $(top_builddir)/libIDL libIDL.la
++$(top_builddir)/libIDL/libIDL-2.la:
++	$(MAKE) -C $(top_builddir)/libIDL libIDL-2.la
+ 
+ $(top_builddir)/popt/libpopt.la:
+ 	$(MAKE) -C $(top_builddir)/popt libpopt.la
+Index: src/services/event/Makefile.am
+===================================================================
+RCS file: /cvs/gnome/ORBit/src/services/event/Makefile.am,v
+retrieving revision 1.15
+diff -u -u -r1.15 Makefile.am
+--- src/services/event/Makefile.am	2000/01/24 20:05:51	1.15
++++ src/services/event/Makefile.am	2001/03/06 20:52:08
+@@ -34,14 +34,14 @@
+ bin_PROGRAMS=orbit-event-server
+ noinst_PROGRAMS=event-consumer #event-supplier
+ 
+-DEPS = 	$(top_builddir)/src/orb/libORBit.la				\
+-	$(top_builddir)/src/ORBitutil/libORBitutil.la			\
+-	$(top_builddir)/src/IIOP/libIIOP.la
++DEPS = 	$(top_builddir)/src/orb/libORBit-2.la				\
++	$(top_builddir)/src/ORBitutil/libORBitutil-2.la			\
++	$(top_builddir)/src/IIOP/libIIOP-2.la
+ 
+ LDADDS = \
+-	$(top_builddir)/src/orb/libORBit.la				\
+-	$(top_builddir)/src/IIOP/libIIOP.la				\
+-	$(top_builddir)/src/ORBitutil/libORBitutil.la			\
++	$(top_builddir)/src/orb/libORBit-2.la				\
++	$(top_builddir)/src/IIOP/libIIOP-2.la				\
++	$(top_builddir)/src/ORBitutil/libORBitutil-2.la			\
+ 	@GLIB_LIBS@ 							\
+ 	-lm
+ 
+Index: src/services/name/Makefile.am
+===================================================================
+RCS file: /cvs/gnome/ORBit/src/services/name/Makefile.am,v
+retrieving revision 1.29
+diff -u -u -r1.29 Makefile.am
+--- src/services/name/Makefile.am	2000/01/24 20:05:51	1.29
++++ src/services/name/Makefile.am	2001/03/06 20:52:08
+@@ -1,12 +1,12 @@
+ libORBitservicesincludedir = $(includedir)/ORBitservices
+ 
+-lib_LTLIBRARIES=libORBitCosNaming.la
++lib_LTLIBRARIES = libORBitCosNaming-2.la
+ 
+ bin_PROGRAMS = name-client orbit-name-server old-name-server
+ 
+ lib_LIBRARIES = libname-server.a
+ 
+-libORBitCosNaming_la_SOURCES = 						\
++libORBitCosNaming_2_la_SOURCES = 						\
+ 	CosNaming-common.c 						\
+ 	CosNaming-stubs.c						\
+ 	LName.c	
+@@ -17,8 +17,7 @@
+ 	CosNaming.idl							\
+ 	LName.pidl
+ 
+-libORBitCosNaming_la_LDFLAGS = \
+-	-version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE)
++libORBitCosNaming_2_la_LDFLAGS = $(LT_VERSION_INFO)
+ 
+ INCLUDES = -I. -I$(top_builddir)/src -I$(top_builddir)/src/ORBitutil -I$(top_srcdir)/src @GLIB_CFLAGS@
+ 
+@@ -41,16 +40,16 @@
+ 
+ CLEANFILES=my_cosnaming_built
+ 
+-DEPS = 	$(top_builddir)/src/orb/libORBit.la			\
+-	$(top_builddir)/src/ORBitutil/libORBitutil.la 		\
+-	$(top_builddir)/src/IIOP/libIIOP.la			\
+-	libORBitCosNaming.la
++DEPS = 	$(top_builddir)/src/orb/libORBit-2.la			\
++	$(top_builddir)/src/ORBitutil/libORBitutil-2.la 		\
++	$(top_builddir)/src/IIOP/libIIOP-2.la			\
++	libORBitCosNaming-2.la
+ 
+ LDADDS = \
+-	$(top_builddir)/src/orb/libORBit.la			\
+-	$(top_builddir)/src/IIOP/libIIOP.la			\
+-	$(top_builddir)/src/ORBitutil/libORBitutil.la 		\
+-	libORBitCosNaming.la					\
++	$(top_builddir)/src/orb/libORBit-2.la			\
++	$(top_builddir)/src/IIOP/libIIOP-2.la			\
++	$(top_builddir)/src/ORBitutil/libORBitutil-2.la 		\
++	libORBitCosNaming-2.la					\
+ 	@GLIB_LIBS@ 						\
+ 	-lm
+ 
+Index: test/Makefile.am
+===================================================================
+RCS file: /cvs/gnome/ORBit/test/Makefile.am,v
+retrieving revision 1.46.4.4
+diff -u -u -r1.46.4.4 Makefile.am
+--- test/Makefile.am	2001/01/30 21:11:43	1.46.4.4
++++ test/Makefile.am	2001/03/06 20:52:08
+@@ -13,13 +13,13 @@
+ INCLUDES=-I$(top_builddir)/src/orb -I$(top_builddir)/src -I$(top_builddir)/src/ORBitutil \
+ 	 -I$(top_srcdir)/src/orb -I$(top_srcdir)/src @GLIB_CFLAGS@
+ #FLAGS =
+-DEPS = $(top_builddir)/src/orb/libORBit.la \
+-	$(top_builddir)/src/ORBitutil/libORBitutil.la \
+-	$(top_builddir)/src/IIOP/libIIOP.la
++DEPS = $(top_builddir)/src/orb/libORBit-2.la \
++	$(top_builddir)/src/ORBitutil/libORBitutil-2.la \
++	$(top_builddir)/src/IIOP/libIIOP-2.la
+ LDADDS = \
+-	$(top_builddir)/src/orb/libORBit.la \
+-	$(top_builddir)/src/IIOP/libIIOP.la \
+-	$(top_builddir)/src/ORBitutil/libORBitutil.la \
++	$(top_builddir)/src/orb/libORBit-2.la \
++	$(top_builddir)/src/IIOP/libIIOP-2.la \
++	$(top_builddir)/src/ORBitutil/libORBitutil-2.la \
+ 	@GLIB_LIBS@ \
+ 	-lm
+ 
+Index: test/everything/Makefile.am
+===================================================================
+RCS file: /cvs/gnome/ORBit/test/everything/Attic/Makefile.am,v
+retrieving revision 1.1.2.2
+diff -u -u -r1.1.2.2 Makefile.am
+--- test/everything/Makefile.am	2001/01/21 00:53:55	1.1.2.2
++++ test/everything/Makefile.am	2001/03/06 20:52:08
+@@ -10,9 +10,9 @@
+               -I$(top_srcdir)/src \
+               ${GLIB_CFLAGS}
+ 
+-LDADDS=$(top_builddir)/src/orb/libORBit.la \
+-             $(top_builddir)/src/IIOP/libIIOP.la \
+-             $(top_builddir)/src/ORBitutil/libORBitutil.la \
++LDADDS=$(top_builddir)/src/orb/libORBit-2.la \
++             $(top_builddir)/src/IIOP/libIIOP-2.la \
++             $(top_builddir)/src/ORBitutil/libORBitutil-2.la \
+              ${GLIB_LIBS}
+ 
+ 
+Index: test/test-poa/Makefile.am
+===================================================================
+RCS file: /cvs/gnome/ORBit/test/test-poa/Makefile.am,v
+retrieving revision 1.11
+diff -u -u -r1.11 Makefile.am
+--- test/test-poa/Makefile.am	2000/01/24 20:05:52	1.11
++++ test/test-poa/Makefile.am	2001/03/06 20:52:09
+@@ -3,13 +3,13 @@
+ INCLUDES=-I$(top_builddir)/src/orb -I$(top_builddir)/src -I$(top_builddir)/src/ORBitutil \
+ 	-I$(top_srcdir)/src/orb -I$(top_srcdir)/src @GLIB_CFLAGS@
+ FLAGS = -static
+-DEPS = $(top_builddir)/src/orb/libORBit.la \
+-	$(top_builddir)/src/ORBitutil/libORBitutil.la \
+-	$(top_builddir)/src/IIOP/libIIOP.la
++DEPS = $(top_builddir)/src/orb/libORBit-2.la \
++	$(top_builddir)/src/ORBitutil/libORBitutil-2.la \
++	$(top_builddir)/src/IIOP/libIIOP-2.la
+ LDADDS = \
+-	$(top_builddir)/src/orb/libORBit.la \
+-	$(top_builddir)/src/IIOP/libIIOP.la \
+-	$(top_builddir)/src/ORBitutil/libORBitutil.la \
++	$(top_builddir)/src/orb/libORBit-2.la \
++	$(top_builddir)/src/IIOP/libIIOP-2.la \
++	$(top_builddir)/src/ORBitutil/libORBitutil-2.la \
+ 	@GLIB_LIBS@ \
+ 	-lm
+ 
