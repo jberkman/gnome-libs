@@ -120,10 +120,6 @@ LIBS="$oLIBS"
 AC_SUBST(DL_LIB)
 
 AC_CHECK_FUNCS(strerror gethostbyname setfsgid setenv putenv strdup)
-oLIBS="$LIBS"
-LIBS="-lm"
-AC_CHECK_FUNCS(hypot)
-LIBS="$oLIBS"
 
 NSL_LIBS=""
 if test $ac_cv_func_gethostbyname = no; then
@@ -276,14 +272,14 @@ dnl Check for db stuff (gnome-metadata)
 dnl
 DB_LIB=
 AC_CHECK_FUNC(dbopen, [],
- AC_CHECK_LIB(db1, dbopen, DB_LIB="-ldb1",
  AC_CHECK_LIB(db, dbopen, DB_LIB="-ldb",
+ AC_CHECK_LIB(db1, dbopen, DB_LIB="-ldb1",
   AC_MSG_ERROR([Your db library is missing db 1.85 compatibility mode]))))
 
-dnl look for db1 headers
-AC_CHECK_HEADERS(db_185.h db1/db.h db.h)
+dnl look for db headers
+AC_CHECK_HEADERS(db.h db_185.h db1/db.h)
 
-if test "$ac_cv_header_db_185_h$ac_cv_header_db1_db_h$ac_cv_header_db_h" = nonono; then
+if test "$ac_cv_header_db_h$ac_cv_header_db_185_h$ac_cv_header_db1_db_h" = nonono; then
   AC_MSG_ERROR([Berkeley db library required for Gnome])
 fi
 
