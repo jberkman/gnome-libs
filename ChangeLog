@@ -1,3 +1,9 @@
+Sun Jan 10 14:03:00 1999  Manish Vachharajani <mvachhar@vger.rutgers.edu>
+
+	* libgnome/gnome-exec.c: add _with_fds version of all
+	gnome_execute functions for people who don't want the fd's close on
+	calls to gnome_execute_async
+
 Sat Jan 09 13:43:01 1999  Manish Vachharajani <mvachhar@vger.rutgers.edu>
 
 	* libgnome/gnome-exec.c: make all the gnome_exec functions close
