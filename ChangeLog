@@ -1,3 +1,12 @@
+1998-10-01  Miguel de Icaza  <miguel@nuclecu.unam.mx>
+
+	* libgnome/gnome-config.c (free_keys): Fixed the memory leaks
+	introduced by the "private" handling.
+	(parse_path): Same.
+
+	* Makefile.am: Use '?' to separate the sed
+	commands as ',' is used when people pass -Wl,something.
+
 Wed Sep 30 21:55:30 PDT 1998 Manish Singh <yosh@gimp.org>
 
 	* acinclude.m4
