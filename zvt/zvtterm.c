@@ -72,7 +72,6 @@ static void zvt_term_unmap (GtkWidget *widget);
 static void zvt_term_size_request (GtkWidget *widget, GtkRequisition *requisition);
 static void zvt_term_size_allocate (GtkWidget *widget, GtkAllocation *allocation);
 static gint zvt_term_expose (GtkWidget *widget, GdkEventExpose *event);
-static void zvt_term_draw (GtkWidget *widget, GdkRectangle *area);
 static gint zvt_term_button_press (GtkWidget *widget, GdkEventButton *event);
 static gint zvt_term_button_release (GtkWidget *widget, GdkEventButton *event);
 static gint zvt_term_motion_notify (GtkWidget *widget, GdkEventMotion *event);
@@ -249,7 +248,6 @@ zvt_term_class_init (ZvtTermClass *class)
   widget_class->unrealize = zvt_term_unrealize;
   widget_class->map = zvt_term_map;
   widget_class->unmap = zvt_term_unmap;
-  widget_class->draw = zvt_term_draw;
   widget_class->expose_event = zvt_term_expose;
   widget_class->focus_in_event = zvt_term_focus_in;
   widget_class->focus_out_event = zvt_term_focus_out;
@@ -1144,92 +1142,6 @@ zvt_term_size_allocate (GtkWidget     *widget,
 		term->vx->vt.height) );
   }
 }
-
-
-static void 
-zvt_term_draw (GtkWidget *widget, GdkRectangle *area)
-{
-  gint width, height;
-  ZvtTerm *term;
-  int fill;
-  struct _zvtprivate *zp;
-
-  g_return_if_fail (widget != NULL);
-  g_return_if_fail (ZVT_IS_TERM (widget));
-  g_return_if_fail (area != NULL);
-
-  term = ZVT_TERM (widget);
-  zp = _ZVT_PRIVATE(widget);
-
-  d( printf("zvt_term_draw xx=%d y=%d, w=%d, h=%d\n", 
-	   area->x, area->y, area->width, area->height));
-
-  if (GTK_WIDGET_DRAWABLE (widget)) {
-    d( printf("zvt_term_draw is drawable\n") );
-
-    /* make sure we've got the right background, incase some stupid style changed it */
-    if (zp->background==0) {
-      GdkColor c;
-      c.pixel = term->colors [17];
-      gdk_window_set_background (GTK_WIDGET (term)->window, &c);
-    } else {
-      gdk_window_set_back_pixmap (GTK_WIDGET (term)->window, 0, 0);
-    }
-
-    term->in_expose = 1;
-    
-    gdk_window_get_size (widget->window, &width, &height);
-
-    if(zp->background) {
-      /* draw the border area - left edge */
-      gdk_draw_rectangle (widget->window,
-			  term->back_gc, 1,
-			  0,
-			  widget->style->ythickness,
-			  widget->style->xthickness + PADDING,
-			  height - (widget->style->ythickness*2));
-      /* right edge */
-      gdk_draw_rectangle (widget->window,
-			  term->back_gc, 1,
-			  width - widget->style->xthickness,
-			  widget->style->ythickness,
-			  widget->style->xthickness,
-			  height - (widget->style->ythickness*2));
-      /* top */
-      gdk_draw_rectangle (widget->window,
-			  term->back_gc, 1,
-			  0,
-			  0,
-			  width,
-			  widget->style->ythickness);
-      /* bottom */
-      gdk_draw_rectangle (widget->window,
-			  term->back_gc, 1,
-			  0,
-			  height - widget->style->ythickness,
-			  width,
-			  widget->style->ythickness);
-      /* force a full redraw of everything else */
-      fill = -1;
-    } else
-      fill=17;
-
-    /* assume the screen is filled with background? */
-    vt_update_rect (term->vx, fill, 0, 0,
-		    width / term->charwidth,
-		    height / term->charheight);
-    
-    term->in_expose = 0;
-
-    /* draw shadow/border */
-    if (term->shadow_type != GTK_SHADOW_NONE)
-      gtk_draw_shadow (widget->style, widget->window,
-		       GTK_STATE_NORMAL, term->shadow_type, 0, 0, 
-		       widget->allocation.width,
-		       widget->allocation.height);
-  }	  
-}
-
 
 static gint
 zvt_term_expose (GtkWidget      *widget,
