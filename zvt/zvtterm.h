@@ -27,9 +27,6 @@
 #include <gtk/gtkwidget.h>
 #include <zvt/vtx.h>
 
-#include <X11/X.h>
-#include <X11/Xlib.h>
-
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
