@@ -30,7 +30,6 @@ EXTRA_DIST = 		\
 test_gnome_LDADD = \
 	$(top_builddir)/libgnomeui/libgnomeui-$(GNOME_INTERFACE_VERSION).la 	\
 	$(top_builddir)/libgnome/libgnome-$(GNOME_INTERFACE_VERSION).la		\
-	$(GDK_PIXBUF_LIBS) \
 	$(LIBGNOME_LIBS) $(LIBGNOMEUI_LIBS) @LIBART_LIBS@ $(INTLLIBS)
 
 # the program has to be run from $srcdir to find its image files
