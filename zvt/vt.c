@@ -178,7 +178,8 @@ static void vt_set_screen(struct vt_em *vt, int screen)
  * @vt: the vt
  * @lines: number of lines to set the scrollback to
  *
- * sets the scrollback buffer size (in lines).
+ * Sets the scrollback buffer size to @lines lines.  This will
+ * truncate the scrollback buffer if necessary.
  */
 void
 vt_scrollback_set(struct vt_em *vt, int lines)
@@ -232,10 +233,11 @@ vt_scrollback_add(struct vt_em *vt, struct vt_line *wn)
 
 /**
  * vt_scroll_up:
- * @vt: the vt to scroll
- * @count: number of lines
+ * @vt: An initialised &vt_em.
+ * @count: Number of lines to scroll.
  *
- * scrolls the vt count lines up.
+ * Scrolls the emulator @vt up by @count lines.  The scrolling
+ * window is honoured.
  */
 void
 vt_scroll_up(struct vt_em *vt, int count)
@@ -285,10 +287,11 @@ vt_scroll_up(struct vt_em *vt, int count)
 
 /**
  * vt_scroll_down:
- * @vt: the vt to scroll
- * @count: number of lines
+ * @vt: An initialised &vt_em.
+ * @count: Number of lines to scroll.
  *
- * scrolls the vt count lines down (reverse).
+ * Scrolls the emulator @vt down by @count lines.  The scrolling
+ * window is honoured.
  */
 void
 vt_scroll_down(struct vt_em *vt, int count)
@@ -322,8 +325,10 @@ vt_scroll_down(struct vt_em *vt, int count)
 
 /**
  * vt_insert_chars:
- * @vt: the vt
- * @count: Number of character to insert
+ * @vt: An initialised &vt_em.
+ * @count: Number of character to insert.
+ *
+ * Inserts @count blank characters at the current cursor position.
  */
 void
 vt_insert_chars(struct vt_em *vt, int count)
@@ -1061,18 +1066,13 @@ struct vt_jump vtjumps[] = {
 
 /**
  * vt_parse_vt:
- * @vt: the vt
- * @ptr: points to the text we got
- * @lenght: lenght of the text.
+ * @vt: An initialised &vt_em.
+ * @ptr: Text to parse.
+ * @length: Length of text available at @ptr
  *
- * Parses a vt command. 
- * states:
- *  0: normal escape mode
- *   1: escape mode.  switch on next character.
- *   2: '[' escape mode (keep finding numbers until a command code found)
- *   3: 'O' escape mode.  switch on next character.
- *   4: ']' escape mode.  swallows until following bell (or newline).
- *   needs a little work on '[' mode (with parameter grabbing)
+ * Parses a sequence of characters using an xterm compatible
+ * terminal state machine.  All state and terminal output is
+ * stored in @vt.
  */
 void
 vt_parse_vt (struct vt_em *vt, char *ptr, int length)
@@ -1084,6 +1084,15 @@ vt_parse_vt (struct vt_em *vt, char *ptr, int length)
   struct vt_jump *modes = vtjumps;
   char *ptrend;
   void (*process)(struct vt_em *vt);	/* process function */
+
+  /* states:
+   *  0: normal escape mode
+   *   1: escape mode.  switch on next character.
+   *   2: '[' escape mode (keep finding numbers until a command code found)
+   *   3: 'O' escape mode.  switch on next character.
+   *   4: ']' escape mode.  swallows until following bell (or newline).
+   *   needs a little work on '[' mode (with parameter grabbing)
+   */
 
   state = vt->state;
   ptrend = ptr+length;
@@ -1209,11 +1218,12 @@ vt_parse_vt (struct vt_em *vt, char *ptr, int length)
 
 /**
  * vt_newline:
- * @vt: vt where allocation will take place
+ * @vt: An initialised &vt_em.
  *
- * Allocates a new line.
+ * Allocates a new line using malloc().  The line matches the
+ * current terminal size stored in @vt.
  *
- * Returns the new line.
+ * Return value: A pointer to the newly allocated &vt_line structure.
  */
 struct vt_line *vt_newline(struct vt_em *vt)
 {
@@ -1236,13 +1246,14 @@ struct vt_line *vt_newline(struct vt_em *vt)
 
 /**
  * vt_init:
- * @vt: The vt to initialize
- * @width: desired width in chars
- * @height: desired height in chars
+ * @vt: Pointer to an uninitialised &vt_em structure.
+ * @width: Desired width of the terminal, in characters.
+ * @height: Desired height of the terminal, in characters.
  *
- * Setup a new VT terminal
+ * Initialise a new terminal emulator.
  *
- * Returns the vt passed.
+ * Return value: Returns a pointer to the intialised terminal.
+ * This will be the same as the value of @vt, passed in.
  */
 struct vt_em *
 vt_init(struct vt_em *vt, int width, int height)
@@ -1312,14 +1323,14 @@ vt_init(struct vt_em *vt, int width, int height)
 
 /**
  * vt_forkpty:
- * @vt:           the vt descriptor
- * @do_uwtmp_log: if TRUE, updates utmp/wtmp records.
+ * @vt: An initialised &vt_em.
+ * @do_uwtmp_log: If %TRUE, updates utmp/wtmp records.
  *
- * start a child process running in the VT emulator
+ * Start a child process running in the VT emulator using fork, and
+ * giving it a pty to communicate through.
  *
- * fork the child process
- *
- * Retunrs the PID of the child process.
+ * Return value: The process id of the child process, or -1 on error.
+ * See Also: fork(2)
  */
 pid_t
 vt_forkpty (struct vt_em *vt, int do_uwtmp_log)
@@ -1342,13 +1353,14 @@ vt_forkpty (struct vt_em *vt, int do_uwtmp_log)
 
 /**
  * vt_writechild:
- * @vt:     the vt to write to.
- * @buffer: a buffer of LEN bytes
- * @len:    length of the buffer that is going to be written to the child.
+ * @vt: An initialised &vt_em, which has had a subprocess started using vt_forkpty().
+ * @buffer: Data to write.
+ * @len: Length of valid data pointed to by @buffer.
  *
- * write to the child process
+ * Write characters to the child process started using vt_forkpty().
  *
- * Returns the number of bytes written to.
+ * Return value: The number of characters successfully written.
+ * See Also: write(2)
  */
 int
 vt_writechild(struct vt_em *vt, char *buffer, int len)
@@ -1358,13 +1370,14 @@ vt_writechild(struct vt_em *vt, char *buffer, int len)
 
 /**
  * vt_readchild:
- * @vt:     the vt to read from
- * @buffer: buffer where we read the information into
- * @len:    number of bytes to read from the child
+ * @vt: An initialised &vt_em, which has had a subprocess started using vt_forkpty().
+ * @buffer: Buffer to store data.
+ * @len: Maximum number of characters to store in @buffer.
  *
- * read from the child process
+ * Read upto @len characters from the child process into @buffer.
  *
- * Returns the number of bytes read.
+ * Return value: The number of characters read into @buffer, or -1 on error.
+ * See Also: read(2).
  */
 int
 vt_readchild(struct vt_em *vt, char *buffer, int len)
@@ -1374,13 +1387,14 @@ vt_readchild(struct vt_em *vt, char *buffer, int len)
 
 /**
  * vt_killchild:
- * @vt:  the vt to which we will send the signal
- * @signal: signal number to send to child process
+ * @vt: An initialised &vt_em, which has had a subprocess started using vt_forkpty().
+ * @signal: Signal number to send to child process.
  *
- * signal the child process
+ * Send a signal to the child proccess created using vt_forkpty().
  *
- * Returns zero if successful, otherwise returns -1 and
- * errno is set.
+ * Return value: Zero if successful, otherwise returns -1 and
+ * sets errno.
+ * See Also: kill(2), signal(5).
  */
 int
 vt_killchild(struct vt_em *vt, int signal)
@@ -1394,12 +1408,13 @@ vt_killchild(struct vt_em *vt, int signal)
 
 /**
  * vt_closepty:
- * @vt: the virtual terminal to close.
+ * @vt: An initialised &vt_em, which has had a subprocess started using vt_forkpty().
  *
- * close the child connection pty, and invalidates it.
+ * Close the child connection pty, and invalidates it.  After calling this
+ * function, do not call functions which operate on the child process.
  *
- * Returns the value returned from the close system call on the
- * child descriptor.
+ * Return value: Returns zero on success, or -1 on error, and sets errno.
+ * See Also: close(2)
  */
 int
 vt_closepty(struct vt_em *vt)
@@ -1419,9 +1434,15 @@ vt_closepty(struct vt_em *vt)
 
 /**
  * vt_destroy:
- * @vt: the vt
+ * @vt: An initialised &vt_em.
  *
- * destroy all data associated with a given 'vt' structure
+ * Destroy all data associated with a given &vt_em structure.
+ *
+ * It is safe to call this function if a child process has been created
+ * using vt_forkpty().
+ *
+ * After this function returns, @vt is no longer a valid emulator structure
+ * and may only be passed to vt_init() for re-initialisation.
  */
 void
 vt_destroy(struct vt_em *vt)
@@ -1455,11 +1476,18 @@ vt_destroy(struct vt_em *vt)
   /* done */
 }
 
-/*
-  resize the window to a new window size
-
-  handles tty re-size too.
-*/
+/**
+ * vt_resize:
+ * @vt: An initalised &vt_em.
+ * @width: New terminal width, in characters.
+ * @height: New terminal height, in characters.
+ * @pixwidth: New terminal width, in pixels.
+ * @pixheight: New terminal height, in pixels.
+ *
+ * Resize the emulator pages to the new size.  The pty is resized too.
+ * The scrollback buffer takes part in the resize, but scrollback lines
+ * are NOT resized.
+ */
 void vt_resize(struct vt_em *vt, int width, int height, int pixwidth, int pixheight)
 {
   int count;
@@ -1616,18 +1644,20 @@ void vt_resize(struct vt_em *vt, int width, int height, int pixwidth, int pixhei
   d(printf("resized to %d,%d, this = %p\n", vt->width, vt->height, vt->this));
 }
 
-/*
-  reports a button click to the terminal, (if it is asking
-  for them at the moment).
-
-  button = 1, 2, 3.  If button=0, then signifies button up
-  qual = qualifiers (shift/control/etc)
-      bit 
-
-  returns true if the button event should be swallowed
-
-  FIXME: handle qualifiers
-*/
+/**
+ * vt_report_button:
+ * @vt: An initialised &vt_em.
+ * @button: Mouse button, from 1 to 3.  0 signifies button-up.
+ * @qual: Button event qualifiers.  Currently unused.
+ * @x: The horizontal character position of the mouse event.
+ * @y: The vertical character position of the mouse event.
+ *
+ * Reports a button click to the terminal, if it has requested
+ * them to be sent.  The terminal coordinates begin at 0, starting
+ * from the top-left corner of the terminal.
+ *
+ * Return value: Returns %TRUE if the button event was sent.
+ */
 int vt_report_button(struct vt_em *vt, int button, int qual, int x, int y)
 {
   char mouse_info[16];
