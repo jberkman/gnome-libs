@@ -2147,34 +2147,6 @@ void vt_scroll_area(void *user_data, int firstrow, int count, int offset, int fi
 
 }
 
-/*
-  high-light a block of text
-*/
-void vt_hightlight_block(void *user_data, int col, int row, int width, int height)
-{
-  ZvtTerm *term;
-  GtkWidget *widget;
-
-  widget = user_data;
-
-  g_return_if_fail (widget != NULL);
-  g_return_if_fail (ZVT_IS_TERM (widget));
-
-  term = ZVT_TERM (widget);
-
-  gdk_gc_set_function(widget->style->fg_gc[GTK_WIDGET_STATE (widget)], GDK_INVERT);
-
-  gdk_draw_rectangle(widget->window,
-		     widget->style->fg_gc[GTK_WIDGET_STATE (widget)],
-		     1,
-		     col*term->charwidth,
-		     row*term->charheight,
-		     width*term->charwidth,
-		     height*term->charheight);
-  
-  gdk_gc_set_function(widget->style->fg_gc[GTK_WIDGET_STATE (widget)], GDK_COPY);  
-}  
-
 /**
  * zvt_term_set_del_key_swap:
  * @term:   A &ZvtTerm widget.
