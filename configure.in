@@ -357,6 +357,12 @@ dnl
 AC_ARG_ENABLE(gnome-compat, [  --enable-gnome-compat     compile the compatability library for gnome-1.0 [default=no]],[compile_gnome_compat="$enableval"],[compile_gnome_compat=no])
 AM_CONDITIONAL(COMPILE_GNOME_COMPAT, test x$compile_gnome_compat = xyes)
 
+AC_ARG_ENABLE(deprecated, [  --disable-deprecated    Disable deprecated stuff in header files],[enable_deprecated="$enableval"],[enable_deprecated=no])
+if test x$enable_deprecated != xyes ; then
+  AC_DEFINE(GNOME_EXCLUDE_DEPRECATED)
+fi
+
+
 
 dnl (now unused) hack to let people use lclint
 dnl if test -f $srcdir/.lclintrc.in; then

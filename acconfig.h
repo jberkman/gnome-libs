@@ -58,3 +58,7 @@
 
 /* define if needed to include sa_len member in struct sockaddr */
 #undef _SOCKADDR_LEN
+
+/* define if deprecated stuff should be excluded in header files */
+#undef GNOME_EXCLUDE_DEPRECATED
+

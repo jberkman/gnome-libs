@@ -1,5 +1,12 @@
 2001-02-23  Martin Baulig  <baulig@suse.de>
 
+	* configure.in (--disable-deprecated): New configure command
+	line argument.
+
+	* acconfig.h (GNOME_EXCLUDE_DEPRECATED): #define if appropriate.
+
+2001-02-23  Martin Baulig  <baulig@suse.de>
+
 	* Makefile.am (SUBDIRS): Comment out zvt for the moment;
 	sorry, but no time to hack on this :-(
 
