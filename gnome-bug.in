@@ -60,7 +60,7 @@ MAILER=`echo $MAIL_AGENT | sed -e 's, .*,,'`
 if [ ! -f "$MAILER" ] ; then
 	echo "$COMMAND: Cannot file mail program \"$MAILER\"."
 	echo "$COMMAND: Please fix the MAIL_AGENT entry in the $COMMAND file."
-	exit 1
+	doexit 1
 fi
 
 if test "`echo -n foo`" = foo ; then
@@ -87,18 +87,22 @@ fi
 [ -z "$TMPDIR" ] && TMPDIR=$HOME
 [ -z "$TMPDIR" ] && TMPDIR=/tmp
 
-TEMP=`mktemp -q $TMPDIR/.pXXXXXX`
-if [ $? != 0 ]; then
+if mkdir $TMPDIR/.gnome-bug-$$; then
+	:
+else
+	echo "$TMPDIR/.gnome-bug-$$ already exists - what's up?"
 	exit 1
 fi
-BAD=`mktemp $TMPDIR/.pbadXXXXXX`
-if [ $? != 0 ]; then
-	exit 1
-fi
-REF=`mktemp -q $TMPDIR/.pfXXXXXX`
-if [ $? != 0 ]; then
-	exit 1
-fi
+
+TMPFILEDIR=$TMPDIR/.gnome-bug-$$
+TEMP=$TMPFILEDIR/p
+BAD=$TMPFILEDIR/pbad
+REF=$TMPFILEDIR/pf
+
+doexit() {
+	[ -z "$TMPFILEDIR" ] || rm -rf $TMPFILEDIR
+	exit $1
+}
 
 if [ -z "$LOGNAME" -a -n "$USER" ]; then
   LOGNAME=$USER
@@ -200,10 +204,10 @@ while [ $# -gt 0 ]; do
     -L | --list) FORMAT=norm ;;
     -l | -CL | --lisp) FORMAT=lisp ;;
 ##     --request-id) REQUEST_ID=true ;;
-    -h | --help) echo "$USAGE"; exit 0 ;;
-    -V | --version) echo "$VERSION"; exit 0 ;;
-    -*) echo "$USAGE" ; exit 1 ;;
-    *) echo "$USAGE" ; exit 1
+    -h | --help) echo "$USAGE"; doexit 0 ;;
+    -V | --version) echo "$VERSION"; doexit 0 ;;
+    -*) echo "$USAGE" ; doexit 1 ;;
+    *) echo "$USAGE" ; doexit 1
 ##        if [ -z "$USER_GNATS_SITE" ]; then
 ## 	 if [ ! -r "$DATADIR/gnats/$1" ]; then
 ## 	   echo "$COMMAND: the GNATS site $1 does not have a categories list."
@@ -236,7 +240,7 @@ CATEGORIES="control-center desktop-docs gnome-libs gnome-core gnome-applets gnom
 
 if [ -z "$CATEGORIES" ]; then
   echo "$COMMAND: the categories list for $GNATS_SITE was empty!"
-  exit 1
+  doexit 1
 fi
 
 case "$FORMAT" in
@@ -244,7 +248,7 @@ case "$FORMAT" in
         awk 'BEGIN {printf "( "}
 	     {printf "(\"%s\") ",$0}
 	     END {printf ")\n"}'
-        exit 0
+        doexit 0
         ;;
   norm) l=`echo "$CATEGORIES" | \
 	awk 'BEGIN {max = 0; }
@@ -256,7 +260,7 @@ case "$FORMAT" in
         awk 'BEGIN {print "Known categories:"; i = 0 }
           { printf ("%-'$l'.'$l's", $0); if ((++i % '$c') == 0) { print "" } }
             END { print ""; }'
-        exit 0
+        doexit 0
         ;;
 esac
 
@@ -276,8 +280,8 @@ FIX_C='<how to correct or work around the problem, if known (multiple lines)>'
 
 # Catch some signals. ($xs kludge needed by Sun /bin/sh)
 xs=0
-trap 'rm -f $REF $TEMP; exit $xs' 0
-trap 'echo "$COMMAND: Aborting ..."; rm -f $REF $TEMP; xs=1; exit' 1 2 3 13 15
+trap 'rm -f $REF $TEMP; doexit $xs' 0
+trap 'echo "$COMMAND: Aborting ..."; rm -f $REF $TEMP; xs=1; doexit' 1 2 3 13 15
 
 # If they told us to use a specific file, then do so.
 if [ -n "$IN_FILE" ]; then
@@ -384,7 +388,7 @@ __EOF__
 
   if [ "$PRINT" = true -o "$PRINT_INTERN" = true ]; then
     cat $TEMP
-    xs=0; exit
+    xs=0; doexit
   fi
 
   chmod u+w $TEMP
@@ -401,7 +405,7 @@ __EOF__
 
   if cmp -s $REF $TEMP ; then
     echo "$COMMAND: problem report not filled out, therefore not sent"
-    xs=1; exit
+    xs=1; doexit
   fi
 fi
 
@@ -502,7 +506,7 @@ while [ -z "$REQUEST_ID" ]; do
         else
 	  echo "$COMMAND: the problem report is not sent."
 	fi
-	xs=1; exit
+	xs=1; doexit
 	;;
       e*)
         eval $EDIT $TEMP
@@ -539,7 +543,7 @@ sed  -e "
 
 if $MAIL_AGENT < $REF; then
   echo "$COMMAND: problem report sent"
-  xs=0; exit
+  xs=0; doexit
 else
   echo "$COMMAND: mysterious mail failure."
   if [ -z "$BATCH" ]; then
@@ -548,5 +552,5 @@ else
   else
     echo "$COMMAND: the problem report is not sent."
   fi
-  xs=1; exit
+  xs=1; doexit
 fi
