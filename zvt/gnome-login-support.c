@@ -207,8 +207,8 @@ openpty (int *master_fd, int *slave_fd, char *name, struct termios *termp, struc
 	}
 	else
 	{
-		chown (pty_name, getuid (), -1);
-		chmod (pty_name, S_IRUSR | S_IWUSR | S_IWGRP);
+		chown (line, getuid (), -1);
+		chmod (line, S_IRUSR | S_IWUSR | S_IWGRP);
 	}
 
 #ifdef HAVE_REVOKE
