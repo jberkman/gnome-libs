@@ -59,7 +59,7 @@
       </para>
 
       <programlisting>
-#include <gnome.h>
+#include &lt;gnome.h&gt;
 
 /* Definition of the File menu */
 
@@ -139,6 +139,15 @@ static GnomeUIInfo main_menu[] = {
       hierarchy.  Each structure in the array contains information
       about the type of item to be created, its label, hint, and
       pixmap, its associated callback, and keyboard accelerators.
+    </para>
+
+    <para>
+      You can see that text labels are marked with the N_() macro.
+      This macro is used by the internationalization programs to
+      detech which strings to mark for translation.
+    </para>
+
+    <para>
       The last item in GnomeUIInfo arrays marks termination of the
       array.  Finally, the <symbol>main_menu</symbol> array ties all
       the submenus together to form the main menu bar.
@@ -190,7 +199,8 @@ typedef struct {
     </programlisting>
 
     <para>
-      These are the fields in the <structname>GnomeUIInfo</structname>.
+      These are the fields in the <structname>GnomeUIInfo</structname>
+      structure.
     </para>
 
     <glosslist>
@@ -649,7 +659,7 @@ typedef struct {
 
   </sect1>
 
-  <sect1 id="gnome-app-helper functions">
+  <sect1 id="GnomeAppHelper-functions">
 
     <title>Functions provided by GnomeAppHelper</title>
 
@@ -659,15 +669,6 @@ typedef struct {
     </para>
 
   </sect1>
-
-	
-      
-
-  </sect1>
-  
-    
-
-    
 
 </chapter>
 
