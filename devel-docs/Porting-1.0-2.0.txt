@@ -65,6 +65,8 @@ doing this.
     gnome_entry_get_text() and gnome_entry_set_text() to access
     the entry text.
 
+  - gnome_entry_construct() - you can now use g_object_new() etc.
+
   The following functions are deprecated:
 
   - gnome_entry_get_history_id, gnome_entry_set_history_id
@@ -102,6 +104,7 @@ doing this.
 
   The following functions have been removed:
 
+  - gnome_icon_entry_construct() - you can now use g_object_new() etc.
   - gnome_icon_entry_gnome_file_entry(): use parent class
   - gnome_icon_entry_gnome_entry (): use parent class
   - gnome_icon_entry_gtk_entry (): don't suck things out of this directly
