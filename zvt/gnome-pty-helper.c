@@ -50,6 +50,19 @@ static pty_info *pty_list;
 #include <sys/socket.h>
 #include <sys/uio.h>
 
+#ifdef HAVE_SYS_UN_H /* Linux libc5 */
+#include <sys/un.h>
+#endif
+
+#ifndef CMSG_DATA /* Linux libc5 */
+/* Ancillary data object manipulation macros.  */
+#if !defined __STRICT_ANSI__ && defined __GNUC__ && __GNUC__ >= 2
+# define CMSG_DATA(cmsg) ((cmsg)->cmsg_data)
+#else
+# define CMSG_DATA(cmsg) ((unsigned char *) ((struct cmsghdr *) (cmsg) + 1))
+#endif
+#endif /* CMSG_DATA */
+
 #define CONTROLLEN (sizeof (struct cmsghdr)  + sizeof (int))
 
 static struct cmsghdr *cmptr;
