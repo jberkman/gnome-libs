@@ -2,11 +2,15 @@
 gnome-regex
 
 <!-- ##### SECTION Short_Description ##### -->
-
+Regular expression cache implementation
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-
+Provides a cache for regular expressions.  Applications first allocate
+a cache with gnome_regex_cache_new() and access the regular
+expressions trought the gnome_regex_cache_compile() function (this
+will fetch the compiled value from the cache or will re-compile it if
+required).
 </para>
 
 

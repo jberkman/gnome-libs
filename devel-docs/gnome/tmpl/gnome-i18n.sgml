@@ -2,17 +2,31 @@
 gnome-i18n
 
 <!-- ##### SECTION Short_Description ##### -->
-
+Support for localization and internationalization.
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-
+This module allows the programmer to internationalize his application
+by providing a number macros that can be used to tag his texts and
+some functions that control the internationalization of the
+application or library.
 </para>
+
+<para>
+All of the function in this module do either map to an empty action if
+the <emphasis>ENABLE_NLS</emphasis> macro is not defined or to actual
+functions if it is defined.
+</para>
+
+<para>See the <link linkend="info:gettext">Info gettext</link> for
+more information on internationalization issues.</para>
 
 
 <!-- ##### MACRO _ ##### -->
 <para>
-
+Use this to tag strings in an executable path, this macro expands to
+gettext() or dgettext() if the application supports
+internationalization. 
 </para>
 
 @String: 
@@ -20,7 +34,10 @@ gnome-i18n
 
 <!-- ##### MACRO N_ ##### -->
 <para>
-
+This macro is just an identity macro, the only purpose of this macros
+is to allow <filename>gettext</filename> to identify the string as a
+translatable message.  This macro can be used in static initializers,
+while the _() macros can not be used.
 </para>
 
 @String: 

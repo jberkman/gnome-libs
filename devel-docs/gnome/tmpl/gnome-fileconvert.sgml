@@ -2,12 +2,20 @@
 gnome-fileconvert
 
 <!-- ##### SECTION Short_Description ##### -->
-
+File format conversion functions.
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
+These routines provide conversion of information based on a source and
+target mime type.  They return -1 on failure, or an opened file
+descriptor with the data on success</para>
 
-</para>
+<para>
+The rules for converting from a mime-type to another mime-type are
+loaded from the <filename>$gnome-prefix/share/type-convert</filename>
+directory, any files in that directory whose extension is
+<filename>.convert</filename> is loaded as well as the per-user
+<filename>~/.gnome/type.convert</filename> file.</para>
 
 
 <!-- ##### FUNCTION gnome_file_convert_fd ##### -->

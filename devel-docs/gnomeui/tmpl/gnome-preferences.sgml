@@ -2,11 +2,13 @@
 gnome-preferences
 
 <!-- ##### SECTION Short_Description ##### -->
-
+Fetching and setting GNOME preferences
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-
+Routines used for loading and saving the preferences for the user
+interface parts of GNOME.  gnome_init() calls gnome_preferences_load()
+at startup.  
 </para>
 
 
