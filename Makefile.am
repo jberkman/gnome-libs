@@ -15,7 +15,7 @@ endif
 SUBDIRS = po intl support macros \
 	tools	\
 	libgnome libgnomeui gtk-xmhtml gnome-hello zvt \
-	$(GNORBA) test-gnome test-suite devel-docs
+	$(GNORBA) idl test-gnome test-suite devel-docs
 
 include_HEADERS = gnome.h
 
