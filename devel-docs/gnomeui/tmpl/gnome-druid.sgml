@@ -50,12 +50,13 @@ GnomeDruid
     <para>
       The control-flow in a DRUID is managed at the #GnomeDruidPage
       level, and is a little complex.  The signals available are "back",
-      "next", "finish", "cancel" and "prepare".  When any of the buttons
-      are pressed, the current page emits an appropriate signal.
+      "next", "finish", "cancel" and "prepare", and all but the last are
+      triggered when any of their respective buttons are pressed.  The
+      current page will emit the appropriate signal in this case.  It is
+      up to the DRUID author to trap this signal in the 
     </para>
     <para>
-      The #GnomeDruid emits the "Cancel" signal, which is emitted when
-      the
+      
     </para>
   </refsect2>
 <!-- ##### SECTION See_Also ##### -->
