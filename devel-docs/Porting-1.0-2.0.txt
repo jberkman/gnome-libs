@@ -1,6 +1,57 @@
 		Porting GNOME 1.0 Applications to GNOME 2.0
 
 
+[this document is still work-in-progress.]
+
+How to prepare your GNOME 1.0 Applications for GNOME 2.0
+========================================================
+
+There are some things which you can do in your GNOME 1.0 Application
+to make it easier to port them to GNOME 2.0 while still keeping
+compatible with the GNOME 1.x platform.
+
+We will add some new functions to the stable version of gnome-libs
+after GNOME 1.4 which will help you to archive this. The most important
+thing is to use accessor functions rather than accessing widget data
+directly whereever it's possible. These new functions will help you
+doing this.
+
+* GnomeEntry
+
+  - this won't be a GtkCombo any longer, but a GnomeSelector.
+
+  The following functions will be removed:
+
+  - gnome_entry_gtk_entry()
+
+    GnomeEntry isn't a GtkCombo/GtkEntry anymore; use
+    gnome_entry_get_text() and gnome_entry_set_text() to access
+    the entry text.
+
+  The following functions will be deprecated:
+
+  - gnome_entry_get_history_id, gnome_entry_set_history_id
+    gnome_entry_get_history_id, gnome_entry_set_max_saved
+    gnome_entry_get_max_saved, gnome_entry_prepend_history
+    gnome_entry_append_history, gnome_entry_load_history
+    gnome_entry_save_history, gnome_entry_clear_history
+
+    Use the corresponding functions in GnomeSelector.
+
+  The following new functions have been added:
+
+  - gnome_entry_get_text(), gnome_entry_set_text()
+
+  These functions will be added to the stable gnome-libs after GNOME 1.4;
+  in all existing code. To prepare things in GNOME 1.x:
+
+  - use gnome_entry_get/set_text() rather than gnome_entry_gtk_entry()
+
+  - try not to access any of the 'changed', 'history_id', 'items' and
+    'max_saved' fields in the GnomeEntry directly, they will be private
+    in GNOME 2.0.
+
+
 
 -------------------------------------------------------------------------
 Everything below this line is old (Feb 23 2001, Martin):
