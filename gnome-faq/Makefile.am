@@ -40,13 +40,15 @@ else
 
 htmldir = $(prefix)/html
 #html_DATA = gnome-faq.html
+html_stamps	= .gnome-faq.html.stamp
 
-all-local: gnome-faq/book1.html
+all-local: $(html_stamps)
 
-gnome-faq/book1.html: gnome-faq.sgml
-	-(cd $(srcdir); db2html gnome-faq.sgml) > /dev/null
+.%.html.stamp: %.sgml
+	-(cd $(srcdir); db2html $<) > /dev/null
+	touch $@
 
-install-data-local: gnome-faq/book1.html
+install-data-local: $(html_stamps)
 	$(mkinstalldirs) $(DESTDIR)$(htmldir)
 	installfiles=`echo $(srcdir)/gnome-faq/*.html`;			\
 	if test "$$installfiles" != '$(srcdir)/gnome-faq/*.html'; then	\
