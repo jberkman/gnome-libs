@@ -35,6 +35,16 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.23  1998/03/23 17:59:36  jpaint
+* Okay, these are the beginning of some changes to the xmhtml widget.
+* The widget is now a window widget, and does borders like other
+* GTK scrolling widgets.  The work is incomplete, and probably breaks
+* frames.  I'm committed to get it working right, and will hopefully
+* have all the remaining issues worked out by the end of the week,
+* or at least next weekend.  It's also missing a few methods required
+* for mapping/unmapping and unrealizing, so it won't work in a notebook
+* widget.
+*
 * Revision 1.22  1998/02/21 00:13:13  unammx
 * Fri Feb 20 18:14:15 1998  Miguel de Icaza  <miguel@nuclecu.unam.mx>
 *
@@ -2796,8 +2806,8 @@ _XmHTMLMoveToPos(TWidget w, XmHTMLWidget html, int value)
 
 	/* default exposure region */
 	x = y = 0;
-	width  = Toolkit_Widget_Dim (html).width;
-	height = Toolkit_Widget_Dim (html).height;
+	width  = Toolkit_Widget_Dim (html->html.work_area).width;
+	height = Toolkit_Widget_Dim (html->html.work_area).height;
 
 #ifdef WITH_MOTIF
 	/* 
@@ -2827,10 +2837,10 @@ _XmHTMLMoveToPos(TWidget w, XmHTMLWidget html, int value)
 	if(w == html->html.vsb)
 	{
 		/* 
-		* clicking on the slider causes activation of the scrollbar
-		* callbacks. Since there is no real movement, just return.
-		* Not doing this will cause an entire redraw of the window.
-		*/
+		 * clicking on the slider causes activation of the scrollbar
+		 * callbacks. Since there is no real movement, just return.
+		 * Not doing this will cause an entire redraw of the window.
+		 */
 		if(value == html->html.scroll_y)
 			return;		/* fix 01/20/97-01 kdh */
 
@@ -2851,26 +2861,18 @@ _XmHTMLMoveToPos(TWidget w, XmHTMLWidget html, int value)
 			/* small increment */
 			if(inc < html->html.work_height)
 			{
-				/*****
-				* See if we have a hsb. If we have one, we need to add
-				* the height of the hsb to the region requiring updating.
-				*****/
-				if(html->html.needs_hsb)
-#ifdef NO_XLIB_ILLEGAL_ACCESS
-					GetScrollDim(html, &hsb_height, &vsb_width);
-#else
-					hsb_height = Toolkit_Widget_Dim (html->html.hsb).height;
-#endif
 				/* copy visible part upward */
-				Toolkit_Copy_Area (dpy, win, win, gc, 0, inc,
-						   html->html.work_width + html->html.margin_width, 
-						   html->html.work_height - inc - hsb_height, 0, 0);
+				Toolkit_Copy_Area (dpy, win, win, gc, 
+				        0, inc,
+					Toolkit_Widget_Dim (html->html.work_area).width, 
+				        Toolkit_Widget_Dim (html->html.work_area).height - inc,
+					0, 0);
 
 				/* clear area below */
 				x = 0;
-				y = html->html.work_height - inc - hsb_height;
-				width = Toolkit_Widget_Dim (html).width;
-				height = inc + hsb_height;
+				y = Toolkit_Widget_Dim (html->html.work_area).height - inc;
+				width = Toolkit_Widget_Dim (html->html.work_area).width;
+				height = inc;
 			}
 			/* large increment, use default area */
 		}
@@ -2895,7 +2897,7 @@ _XmHTMLMoveToPos(TWidget w, XmHTMLWidget html, int value)
 
 				/* clear area above */
 				x = y = 0;
-				width = Toolkit_Widget_Dim (html).width;
+				width = Toolkit_Widget_Dim (html->html.work_area).width;
 				height = inc;
 			}
 			/* large increment, use default area */
@@ -2923,18 +2925,6 @@ _XmHTMLMoveToPos(TWidget w, XmHTMLWidget html, int value)
 			/* small increment */
 			if(inc < html->html.work_width)
 			{
-				/*
-				* See if we have a vsb. If we have, no additional offset
-				* required, otherwise we also have to clear the space that
-				* has been reserved for it.
-				*/
-				if(!html->html.needs_vsb)
-#ifdef NO_XLIB_ILLEGAL_ACCESS
-					GetScrollDim(html, &hsb_height, &vsb_width);
-#else
-					vsb_width = Toolkit_Widget_Dim (html->html.vsb).width;
-#endif
-
 				/* copy area to the left */
 				Toolkit_Copy_Area(dpy, win, win, gc, inc, 0, 
 						  html->html.work_width - inc,
@@ -2943,7 +2933,7 @@ _XmHTMLMoveToPos(TWidget w, XmHTMLWidget html, int value)
 				/* clear area on right */
 				x = html->html.work_width - inc;
 				y = 0;
-				width = inc + html->html.margin_width + vsb_width;
+				width = inc + html->html.margin_width;
 				height = html->html.work_height;
 			}
 			/* large increment, use default area */
@@ -2959,18 +2949,12 @@ _XmHTMLMoveToPos(TWidget w, XmHTMLWidget html, int value)
 			/* small increment */
 			if(inc < html->html.work_width)
 			{
-				if(!html->html.needs_vsb)
-#ifdef NO_XLIB_ILLEGAL_ACCESS
-					GetScrollDim(html, &hsb_height, &vsb_width);
-#else
-					vsb_width = Toolkit_Widget_Dim (html->html.vsb).width;
-#endif
-
 				/* copy area to the right */
 				/* fix 01/24/97-01, kdh */
 				Toolkit_Copy_Area (dpy, win, win, gc, 0, 0, 
-						   html->html.work_width - inc + html->html.margin_width +
-						   vsb_width, html->html.work_height, inc, 0); 
+						   html->html.work_width -  inc + 
+						   html->html.margin_width, 
+						   html->html.work_height, inc, 0); 
 
 				/* clear area on left */
 				x = y = 0;

@@ -32,11 +32,26 @@ struct _GtkXmHTML
 {
 	GtkContainer widget;
 
+        /* From the widget engine */
 	XmHTMLPart html;
+
+        /* allocation in HTML window after the container border
+	 * width has been subtracted out */
+        GtkAllocation internal_allocation;
+
+        /* allocation of HTML internals */
+        GtkAllocation html_allocation;
 
 	/* Scrollbar adjustements */
 	GtkObject *vsba;
 	GtkObject *hsba;
+
+        /* Scrollbar Policy */
+        guint8 hscrollbar_policy;                                         
+        guint8 vscrollbar_policy;
+
+        /* The shadow type around the html window */
+        gint shadow_type;
 
 	/* managing our code */
 	int frozen;
@@ -45,12 +60,12 @@ struct _GtkXmHTML
 	int redraw_needed;
 	int free_images_needed;
 	int layout_needed;
-
 	int initialized;
+
+        /* child widgets */
 	GList *children;
 
 	/* These replace Motif's fields */
-
 	gulong  background_pixel;
 	gulong  foreground_pixel;
 	GdkGC  *bottom_shadow_gc;
@@ -78,6 +93,8 @@ struct _GtkXmHTMLClass
 	void (*motion_track)    (GtkXmHTML *, void *);
 	void (*html_event)      (GtkXmHTML *, void *); /* HTML 4.0 event */
 	void (*anchor_visited)  (GtkXmHTML *, char *, void *);
+
+        gint scrollbar_spacing;
 };
 
 GtkWidget *gtk_xmhtml_new         	   	  (void);
