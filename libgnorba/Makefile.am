@@ -55,7 +55,8 @@ $(table_built): $(top_srcdir)/idl/Table.idl
 	$(ORBIT_IDL) $(IDL_FLAGS) $(top_srcdir)/idl/Table.idl
 
 libgnorba_la_SOURCES = 					\
-	$(gnorba_built) 				\
+	gnome-factory-stubs.c				\
+	gnome-factory-common.c				\
 	goad.c 						\
 	orbitgtk.c					\
 	orbitgnome.c					\

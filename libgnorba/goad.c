@@ -19,6 +19,7 @@
 #include <signal.h>
 #include <fcntl.h>
 #include <signal.h>
+#include "gnome-factory.h"
 
 #define GOAD_MAGIC_FD 123
 

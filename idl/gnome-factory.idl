@@ -3,7 +3,7 @@
  * LifeCycle version
  */
 
-#if !defined(__LIBGNORBA_COMPILATION) && defined(__ORBIT_IDL__)
+#if !defined(__LIBGNORBA_COMPILATION) && defined(__ORBIT_IDL__NOWAY)
 %{
 #pragma include_defs libgnorba/gnome-factory.h
 %}
@@ -22,6 +22,6 @@ module GNOME {
 	};
 };
 
-#if !defined(__LIBGNORBA_COMPILATION) && defined(__ORBIT_IDL__)
+#if !defined(__LIBGNORBA_COMPILATION) && defined(__ORBIT_IDL__NOWAY)
 #pragma inhibit pop
 #endif

@@ -1,4 +1,4 @@
-#if !defined(__LIBGNORBA_COMPILATION) && defined(__ORBIT_IDL)
+#if !defined(__LIBGNORBA_COMPILATION) && defined(__ORBIT_IDL__NOWAY)
 %{
 #pragma include_defs libgnorba/Table.h
 %}
@@ -27,6 +27,6 @@ module GNOME {
 	};
 };
 
-#if !defined(__LIBGNORBA_COMPILATION) && defined(__ORBIT_IDL__)
+#if !defined(__LIBGNORBA_COMPILATION) && defined(__ORBIT_IDL__NOWAY)
 #pragma inhibit pop
 #endif
