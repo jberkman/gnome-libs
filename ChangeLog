@@ -1,3 +1,18 @@
+1999-01-25  Ulrich Drepper (drepper@cygnus.com)
+
+	* libgnome/gnome-config.c, libgnome/gnome-metadata.c,
+	libgnome/gnome-mime-info.c: On systems that define getc_unlocked
+	stdio is thread safe.  With locally opened files it is not
+	necessary to use the locking.  Therefore POSIX (and gnu libc
+	includes this feature) defines some _unlocked functions and they
+	always should be used in these cases.
+
+1999-01-22  Miguel de Icaza  <miguel@nuclecu.unam.mx>
+
+	* libgnorba/Makefile.am (gnome_name_service_LDADD): Change the
+	link order.  -lname-server uses the definitions from
+	$(ORBIT_LIBS). 
+
 1999-01-21  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
 	* libgnome/Makefile.am (INCLUDES):
