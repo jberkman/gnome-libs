@@ -223,11 +223,7 @@ open_ptys (int update_db)
 	pty_info *p;
 	int result;
 
-#ifdef _SC_TTY_NAME_MAX
-	term_name = alloca (sysconf (_SC_TTY_NAME_MAX) + 1);
-#else
 	term_name = alloca (PATH_MAX) + 1;
-#endif
 	
 	status = openpty (&master_pty, &slave_pty, term_name, NULL, NULL);
 	if (status == -1){
