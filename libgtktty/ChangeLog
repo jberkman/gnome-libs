@@ -1,3 +1,10 @@
+1998-11-27  Jeff Garzik  <jgarzik@pobox.com>
+
+	* gtktty.c, gtkvt102.c:
+	Replaced sprintf calls with g_snprintf.
+	Renamed string to tmp_string in one case, to reduce chances
+	of a naming conflict.
+
 1998-10-08  Raja R Harinath  <harinath@cs.umn.edu>
 
 	* libgtktty.h: Remove `#pragma }'.

@@ -485,13 +485,13 @@ gtk_vt102_input (GtkVtEmu	*base_emu,
 	    gtk_vtemu_report (base_emu, VT_OK, strlen (VT_OK));
 	  else if (vtemu->param[0] == 6)
 	  {
-	    guchar string[40];
+	    guchar tmp_string[40];
 	    
-	    sprintf (string,
+	    g_snprintf (tmp_string, sizeof(tmp_string),
 		     "\033[%d;%dR",
 		     base_emu->cur_y + (vtemu->relative_origin ? term->top + 1 : 1),
 		     base_emu->cur_x + 1);
-	    gtk_vtemu_report (base_emu, string, strlen (string));
+	    gtk_vtemu_report (base_emu, tmp_string, strlen (tmp_string));
 	  }
 	continue;
       }

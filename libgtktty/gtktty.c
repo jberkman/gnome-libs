@@ -423,42 +423,42 @@ gtk_tty_key_press_event (GtkWidget	*widget,
     
   case	GDK_KP_Right:
   case	GDK_Right:
-    count = sprintf (buffer, "\033[C");
+    count = g_snprintf (buffer, sizeof(buffer), "\033[C");
     break;
     
   case	GDK_KP_Left:
   case	GDK_Left:
-    count = sprintf (buffer, "\033[D");
+    count = g_snprintf (buffer, sizeof(buffer), "\033[D");
     break;
     
   case	GDK_KP_Up:
   case	GDK_Up:
-    count = sprintf (buffer, "\033[A");
+    count = g_snprintf (buffer, sizeof(buffer), "\033[A");
     break;
     
   case	GDK_KP_Down:
   case	GDK_Down:
-    count = sprintf (buffer, "\033[B");
+    count = g_snprintf (buffer, sizeof(buffer), "\033[B");
     break;
     
   case	GDK_KP_Insert:
   case	GDK_Insert:
-    count = sprintf (buffer, "\033[2~");
+    count = g_snprintf (buffer, sizeof(buffer), "\033[2~");
     break;
     
   case	GDK_KP_Delete:
   case	GDK_Delete:
-    count = sprintf (buffer, "\033[3~");
+    count = g_snprintf (buffer, sizeof(buffer), "\033[3~");
     break;
     
   case	GDK_KP_Home:
   case	GDK_Home:
-    count = sprintf (buffer, "\033[1~");
+    count = g_snprintf (buffer, sizeof(buffer), "\033[1~");
     break;
     
   case	GDK_KP_End:
   case	GDK_End:
-    count = sprintf (buffer, "\033[4~");
+    count = g_snprintf (buffer, sizeof(buffer), "\033[4~");
     break;
     
   case	GDK_KP_Page_Up:		/* GDK_KP_Prior */
@@ -468,7 +468,7 @@ gtk_tty_key_press_event (GtkWidget	*widget,
 				  GTK_TERM (tty)->scroll_offset -
 				  GTK_TERM (tty)->term_height / 2);
     else
-      count = sprintf (buffer, "\033[5~");
+      count = g_snprintf (buffer, sizeof(buffer), "\033[5~");
     break;
     
   case	GDK_KP_Page_Down:	/* GDK_KP_Next */
@@ -478,59 +478,59 @@ gtk_tty_key_press_event (GtkWidget	*widget,
 				  GTK_TERM (tty)->scroll_offset +
 				  GTK_TERM (tty)->term_height / 2);
     else
-      count = sprintf (buffer, "\033[6~");
+      count = g_snprintf (buffer, sizeof(buffer), "\033[6~");
     break;
     
   case	GDK_KP_F1:
   case	GDK_F1:
-    count = sprintf (buffer, "\033[[A");
+    count = g_snprintf (buffer, sizeof(buffer), "\033[[A");
     break;
     
   case	GDK_KP_F2:
   case	GDK_F2:
-    count = sprintf (buffer, "\033[[B");
+    count = g_snprintf (buffer, sizeof(buffer), "\033[[B");
     break;
     
   case	GDK_KP_F3:
   case	GDK_F3:
-    count = sprintf (buffer, "\033[[C");
+    count = g_snprintf (buffer, sizeof(buffer), "\033[[C");
     break;
     
   case	GDK_KP_F4:
   case	GDK_F4:
-    count = sprintf (buffer, "\033[[D");
+    count = g_snprintf (buffer, sizeof(buffer), "\033[[D");
     break;
     
   case	GDK_F5:
-    count = sprintf (buffer, "\033[[E");
+    count = g_snprintf (buffer, sizeof(buffer), "\033[[E");
     break;
     
   case	GDK_F6:
-    count = sprintf (buffer, "\033[17~");
+    count = g_snprintf (buffer, sizeof(buffer), "\033[17~");
     break;
     
   case	GDK_F7:
-    count = sprintf (buffer, "\033[18~");
+    count = g_snprintf (buffer, sizeof(buffer), "\033[18~");
     break;
     
   case	GDK_F8:
-    count = sprintf (buffer, "\033[19~");
+    count = g_snprintf (buffer, sizeof(buffer), "\033[19~");
     break;
     
   case	GDK_F9:
-    count = sprintf (buffer, "\033[20~");
+    count = g_snprintf (buffer, sizeof(buffer), "\033[20~");
     break;
     
   case	GDK_F10:
-    count = sprintf (buffer, "\033[21~");
+    count = g_snprintf (buffer, sizeof(buffer), "\033[21~");
     break;
     
   case	GDK_F11:
-    count = sprintf (buffer, "\033[23~");
+    count = g_snprintf (buffer, sizeof(buffer), "\033[23~");
     break;
     
   case	GDK_F12:
-    count = sprintf (buffer, "\033[24~");
+    count = g_snprintf (buffer, sizeof(buffer), "\033[24~");
     break;
     
   case	GDK_Num_Lock:
@@ -584,7 +584,8 @@ gtk_tty_key_press_event (GtkWidget	*widget,
     break;
     
   default:
-    count = sprintf (buffer, "[%p]", (gpointer) event->keyval);
+    count = g_snprintf (buffer, sizeof(buffer), "[%p]",
+    			(gpointer) event->keyval);
     break;
   }
   
