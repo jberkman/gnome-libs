@@ -66,5 +66,5 @@ for I in $TESTS; do
     fi
 done
 
-if test "yes" = "$failed"; then exit 0; fi
+test "yes" = "$failed" && exit 1
 exit 0

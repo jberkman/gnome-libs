@@ -1,3 +1,10 @@
+1999-01-15  Raja R Harinath  <harinath@cs.umn.edu>
+
+	* runtest.sh (failed): `exit 1' if failed, not `exit 0'.
+
+	* expected/trigs.out: Update to new results, now that tests/trig.c
+	doesn't use gnome_triggers_readfile().
+
 1998-12-16  Federico Mena Quintero  <federico@nuclecu.unam.mx>
 
 	* Makefile.am (EXTRA_DIST): Added data/sample.
