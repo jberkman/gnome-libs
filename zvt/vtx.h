@@ -24,8 +24,10 @@
 #include <zvt/lists.h>
 #include <zvt/vt.h>
 
-/* include the toolkit */
-#include <gtk/gtk.h>
+/* DO NOT include the toolkit */
+/*#include <gtk/gtk.h> */
+
+#include <regex.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -93,9 +95,42 @@ struct _vtx
 
   /* added in gnome-libs 1.0.10
      ... this shouldn't break bin compatibility? */
+  struct vt_list magic_list;	/* a list of magic select structs */
+  struct vt_match *matches;	/* blocks on the current screen */
+  int magic_matched;		/* have we tried to match? */
+  struct vt_match *match_shown; /* currently highlighted match */
+
   unsigned char scroll_type;	/* how we scroll (see VT_SCROLLTYPE enum) */
+
 };
 
+  /* an application-defined match function, storage */
+struct vt_magic_match {
+  struct vt_magic_match *next;
+  struct vt_magic_match *prev;
+
+  char *regex;			/* actual regex string */
+  regex_t preg;			/* compiled regex string, for speed */
+  uint32 highlight_mask;	/* masked used to highlight this match visually */
+  void *user_data;		/* user data for this match */
+};
+
+  /* a match */
+struct vt_match {
+  struct vt_match *next;	/* in single-linked list of matches */
+  struct vt_magic_match *match;	/* which match it matches */
+  char *matchstr;		/* which string it matches */
+  struct vt_match_block *blocks; /* the actual blocks in this match */
+};
+
+  /* an actual block of text which matches */
+struct vt_match_block {
+  struct vt_match_block *next;	/* in single-linked list of blocks */
+  struct vt_line *line;		/* line of this block */
+  unsigned int lineno;		/* line number of this block */
+  unsigned int start;		/* start/end of block, in characters */
+  unsigned int end;
+};
 
 /* from update.c */
 char *vt_get_selection   (struct _vtx *vx, int size, int *len);
@@ -107,6 +142,13 @@ void vt_update           (struct _vtx *vt, int state);
 void vt_draw_cursor      (struct _vtx *vx, int state);
 void vt_set_wordclass    (struct _vtx *vx, unsigned char *s);
 int  vt_get_attr_at      (struct _vtx *vx, int col, int row);
+
+  /* the match routines */
+void vt_free_match_blocks(struct _vtx *vx);
+void vt_getmatches	 (struct _vtx *vx);
+void vt_match_clear	 (struct _vtx *vx, char *regex);
+struct vt_match *vt_match_check(struct _vtx *vx, int x, int y);
+void vt_match_highlight	 (struct _vtx *vx, struct vt_match *m);
 			 
 struct _vtx *vtx_new     (int width, int height, void *user_data);
 void vtx_destroy         (struct _vtx *vx);

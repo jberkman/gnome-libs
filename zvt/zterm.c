@@ -69,6 +69,12 @@ title_changed_event (ZvtTerm *term, VTTITLE_TYPE type, char *newtitle)
 }
 
 static void
+match_clicked_event (ZvtTerm *term, GdkEventButton *e, char *str, char *type)
+{
+  printf("User clicked on type '%s' -> '%s'\n", type, str);
+}
+
+static void
 set_hints (GtkWidget *widget)
 {
         ZvtTerm *term;
@@ -192,6 +198,16 @@ main (gint argc, gchar *argv[])
   zvt_term_set_scroll_on_output (ZVT_TERM (term), FALSE);
   zvt_term_set_background (ZVT_TERM (term), NULL, 0, 0);
   zvt_term_set_wordclass (ZVT_TERM (term), "-A-Za-z0-9/_:.,?+%=");
+
+  zvt_term_match_add (ZVT_TERM (term), "http://[^ ]*[^\\.]", VTATTR_UNDERLINE, "http");
+  zvt_term_match_add (ZVT_TERM (term), "ftp://[^ ]*[^\\.]", VTATTR_BOLD, "ftp");
+  zvt_term_match_add (ZVT_TERM (term), "file://[^ ]*[^\\.]", VTATTR_REVERSE, "file");
+
+  gtk_signal_connect (
+      GTK_OBJECT (term),
+      "match_clicked",
+      GTK_SIGNAL_FUNC (match_clicked_event),
+      NULL);
   
   gtk_signal_connect (
       GTK_OBJECT (term),

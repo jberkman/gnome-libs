@@ -71,11 +71,6 @@ static void vt_line_update(struct _vtx *vx, struct vt_line *l, struct vt_line *b
 
   u(printf("updating line from (%d-%d) ->", start, end));
 
-  /* for 'scrollback' where the window has changed size -
-     create a proper-length line (this is easier than special case code below */
-
-  /*  bl = (struct vt_line *)vt_list_index(&vx->vt.lines_back, line); */
-
   /* some sanity checks */
   g_return_if_fail (bl != NULL);
   g_return_if_fail (bl->next != NULL);
@@ -475,6 +470,8 @@ void vt_update(struct _vtx *vx, int update_state)
   fn = NULL;
 
   old_state = vx->cursor_state(vx->vt.user_data, 0);
+  /* turn off any highlighted matches */
+  vt_match_highlight(vx, 0);
 
   /* find first line of visible screen, take into account scrollback */
   offset = vx->vt.scrollbackoffset;
@@ -1309,6 +1306,291 @@ dummy_cursor_state(void *user_data, int state)
   return 0;
 }
 
+static void vt_highlight(struct _vtx *vx, struct vt_match *m)
+{
+  struct vt_line *l;
+  struct vt_match_block *b;
+  int i;
+  uint32 mask;
+
+  mask = m->match->highlight_mask;
+  b = m->blocks;
+  while (b) {
+    l = b->line;
+    d(printf("updating %d; %d-%d: ", b->lineno, b->start, b->end));
+    for (i=b->start; i<b->end; i++) {
+      l->data[i] ^= mask;
+      d(printf("%c", l->data[i]&0xff));
+    }
+    d(printf("\n"));
+    vt_update_rect(vx, -1, b->start, b->lineno, b->end, b->lineno);
+    b = b->next;
+  }
+
+}
+
+
+/*
+ * if m is null, clear the highlight
+ */
+void vt_match_highlight(struct _vtx *vx, struct vt_match *m)
+{
+  if (m!=vx->match_shown) {
+    if (vx->match_shown) {
+      d(printf("unhilighting match '%s'\n", vx->match_shown->matchstr));
+      vt_highlight(vx, vx->match_shown);
+    }
+    vx->match_shown = m;
+    if (m) {
+      d(printf("hilighting match '%s'\n", vx->match_shown->matchstr));
+      vt_highlight(vx, vx->match_shown);
+    }
+  }
+}
+
+void vt_free_match_blocks(struct _vtx *vx)
+{
+  struct vt_match_block *b, *n;
+  struct vt_match *m, *mn;
+
+  /* make sure we have nothing highlighted either */
+  vt_match_highlight(vx, 0);
+
+  /* blow away the old matches */
+  m = vx->matches;
+  while (m) {
+    b = m->blocks;
+    while (b) {
+      n = b->next;
+      free(b);
+      b=n;
+    }
+    mn = m->next;
+    free(m->matchstr);
+    m = mn;
+  }
+  vx->matches = 0;
+  vx->magic_matched = 0;
+}
+
+/*
+  regex matching for the current screen
+*/
+void vt_getmatches(struct _vtx *vx)
+{
+  char *line, *out, *outend;
+  uint32 *in, *inend;
+  struct vt_line *wn, *nn, *sol, *ssol;
+  int lineno=0, lineskip=0, solineno;
+  int c;
+  int matchoffset, smatchoffset;		/* for lines which span multiple lines */
+  struct vt_magic_match *mw, *mn;
+
+  /* blow away the current 'magic blocks' */
+  vt_free_match_blocks(vx);
+
+  /* needs to account for changed line widths *sigh* */
+  line = g_malloc((vx->vt.width+1) * vx->vt.height);
+  out = line;
+
+  /* start from the top */
+  if (vx->vt.scrollbackoffset<0) {
+    wn = (struct vt_line *)vt_list_index(&vx->vt.scrollback, vx->vt.scrollbackoffset);
+    if (!wn) {
+      /* check for error condition */
+      printf("LINE UNDERFLOW!\n");
+      wn = (struct vt_line *)vx->vt.scrollback.head;
+    }
+  } else {
+    wn = (struct vt_line *)vx->vt.lines.head;
+  }
+
+  nn = wn->next;
+  ssol = wn;
+  matchoffset = 0;
+  while (nn && (lineno+lineskip)<vx->vt.height) {
+
+    if (ssol==0)
+      ssol = wn;
+
+    in = wn->data;
+    inend = wn->data + wn->width;
+    /* scan backwards for end of line */
+    while (inend > in
+	   && (inend[0] & VTATTR_DATAMASK)==0)
+      inend--;
+    /* scan forwards, converting data to char string, tabs to spaces, etc */
+    while (in <= inend) {
+      c = *in++ & VTATTR_DATAMASK;
+      if (c<32)
+	c=' ';
+      else if (c>0xff)
+	c='.';
+      *out++ = c;
+    }
+    /* check for end of line(s) */
+    if (inend != wn->data + wn->width - 1 || lineno+lineskip==vx->vt.height-1) {
+      *out = 0;
+      outend = out;
+
+      /* we can now do the regex scanning for this line */
+      mw = (struct vt_magic_match *)vx->magic_list.head;
+      mn = mw->next;
+      while (mn) {
+	regmatch_t pmatch[2];
+
+	d(printf("checking regex '%s' against '%.*s'\n", mw->regex, outend-line, line));
+
+	/* get the current positions of everything */
+	solineno = lineno;
+	matchoffset = 0;
+	sol = ssol;
+
+	/* check this regex, for multiple matches ... */
+	out = line;
+	while ((out<outend) && regexec(&mw->preg, out, 1, pmatch, 0)==0) {
+	  int start = pmatch[0].rm_so;
+	  int end = pmatch[0].rm_eo;
+	  struct vt_match_block *b;
+	  struct vt_match *m;
+
+	  /* find the line on which this block starts */
+	  while ((start-matchoffset)>sol->width) {
+	    matchoffset += sol->width;
+
+	    if (sol==(struct vt_line *)vx->vt.scrollback.tailpred)
+	      sol = (struct vt_line *)vx->vt.lines.head;
+	    else
+	      sol = sol->next;
+
+	    solineno++;
+	  }
+
+	  /* add a match, and the first block */
+	  m = g_malloc(sizeof(*m));
+	  m->next = vx->matches;
+	  vx->matches = m;
+	  m->match = mw;
+	  m->matchstr = g_malloc(end-start+1);
+	  sprintf(m->matchstr, "%.*s", end-start, line+start);
+
+	  /* add a block */
+	  b = g_malloc(sizeof(*b));
+	  b->line = sol;
+	  b->lineno = solineno;
+	  b->start = start-matchoffset;
+	  b->end = (end-matchoffset)>sol->width?sol->width:end-matchoffset;
+	  m->blocks = b;
+	  b->next = 0;
+
+	  d(printf("block on line %d from %d to %d\n",
+		   b->lineno, b->start, b->end));
+
+	  /* for all following line(segments) this match spans ... add them too */
+	  while ((end-matchoffset) > sol->width) {
+	    matchoffset += sol->width;
+
+	    if (sol==(struct vt_line *)vx->vt.scrollback.tailpred)
+	      sol = (struct vt_line *)vx->vt.lines.head;
+	    else
+	      sol = sol->next;
+
+	    solineno++;
+
+	    b = g_malloc(sizeof(*b));
+	    b->line = sol;
+	    b->lineno = solineno;
+	    b->start = 0;
+	    b->end = (end-matchoffset)>sol->width?sol->width:end-matchoffset;
+	    b->next = m->blocks;
+	    m->blocks = b;
+
+	    d(printf("and block on line %d from %d to %d\n",
+		     b->lineno, b->start, b->end));
+	  }
+
+	  d(printf("found match from %d to %d\n", out-line+pmatch[0].rm_so,
+		   out-line+pmatch[0].rm_eo));
+	  d(printf(" is '%.*s'\n", pmatch[0].rm_eo - pmatch[0].rm_so,
+		   out + pmatch[0].rm_so));
+
+	  /* check to see if this match goes across line boundaries ... */
+
+	  out += pmatch[0].rm_eo; /* skip to next sub-string */
+	}
+
+	mw = mn;
+	mn = mn->next;
+      }
+     
+      /* go back to the start, and get the next start-of-line */
+      out = line;
+      lineno += lineskip + 1;
+      lineskip = 0;
+      ssol = 0;
+    } else {
+      lineskip++;
+    }
+
+    /* next logical line */
+    if (wn==(struct vt_line *)vx->vt.scrollback.tailpred)
+      wn = (struct vt_line *)vx->vt.lines.head;
+    else
+      wn = nn;
+    nn = wn->next;
+  }
+
+  g_free(line);
+  vx->magic_matched = 1;
+}
+
+void
+vt_match_clear(struct _vtx *vx, char *regex)
+{
+  struct vt_magic_match *m, *p;
+
+  /* make sure there are no dangling references to this match type */
+  vt_free_match_blocks(vx);
+
+  m = (struct vt_magic_match *)vx->magic_list.head;
+  /* we can do this magic because all next pointers are at offset 0! */
+  p = (struct vt_magic_match *)&vx->magic_list.head;
+  while (m) {
+    if (regex==0 || strcmp(m->regex, regex)==0) {
+      p->next = m->next;
+      free(m->regex);
+      regfree(&m->preg);
+      free(m);
+      m = p->next;
+    }
+    p = m;
+    m = m->next;
+  }
+}
+
+/* return the match descriptor if this cursor position matches
+   one */
+struct vt_match *vt_match_check(struct _vtx *vx, int x, int y)
+{
+  struct vt_match_block *b;
+  struct vt_match *m;
+
+  m = vx->matches;
+  while (m) {
+    b = m->blocks;
+    while (b) {
+      d(printf("checking '%s' %d,%d-%d against %d,%d\n",
+	       b->matchstr, b->lineno, b->start, b->end, x, y));
+      if (b->lineno == y && x>=b->start && x<b->end)
+	return m;
+      b = b->next;
+    }
+    m = m->next;
+  }
+  return m;
+}
+
+
 struct _vtx *vtx_new(int width, int height, void *user_data)
 {
   struct _vtx *vx;
@@ -1338,9 +1620,12 @@ struct _vtx *vtx_new(int width, int height, void *user_data)
     if (isalnum(i) || i=='_')
       vx->wordclass[i>>3] |= 1<<(i&7);
 
+  vt_list_new(&vx->magic_list);
+  vx->magic_matched = 0;
+  vx->matches = 0;
+
   return vx;
 }
-
 
 void vtx_destroy(struct _vtx *vx)
 {
@@ -1348,6 +1633,8 @@ void vtx_destroy(struct _vtx *vx)
     vt_destroy(&vx->vt);
     if (vx->selection_data)
       g_free(vx->selection_data);
+    vt_free_match_blocks(vx);
+    vt_match_clear(vx, 0);
     g_free(vx);
   }
 }

@@ -1,3 +1,7 @@
+1999-09-11  Michael Zucchi  <zucchi@zedzone.mmc.com.au>
+
+	* Merge of ZVT_MATCH into HEAD.
+
 1999-09-10  Michael Zucchi  <mzucchi@denr.sa.gov.au>
 
 	* Makefile.am (EXTRA_DIST): Include the gnome-pty-helper sources
@@ -21,6 +25,91 @@
 	* Makefile.am (gnome-pty-helper): Added manual build target for
 	gnome-pty-helper.  Because of some broken linkers we need to limit
 	what gets put on the link line (see bug #1246/#1576).
+
+1999-09-11  Michael Zucchi  <zucchi@zedzone.mmc.com.au>
+
+	* zvtterm.c (zvt_term_get_capabilities): Added the new capability,
+	and updated the documentation to match.
+
+	* zvtterm.h (ZVT_TERM_MATCH_SUPPORT): New capability to indicate
+	the match functions exist/work.
+
+	* update.c (vt_match_clear): Free and match blocks (some of which
+	may point to this match type).
+
+	* zvtterm.c: Added missing gtk/gtkselection.h include.
+
+	* update.c (vt_update): Force highlighted matches to be cleared.
+	(vt_free_match_blocks): Ditto, after this the pointers are no
+	longer valid.
+
+	* zterm.c (main): Fixed invocations of zvt_term_match_add().
+
+	* zvtterm.c (zvt_term_feed): Turn off any match before reading any
+	data.
+	(zvt_term_readdata): Same.
+	(zvt_term_motion_notify): If we move the mouse over a match,
+	change the pointer to a hand, and highlight the match
+	appropriately.
+	(zvt_term_match_add): Added new parameter to specify the type of
+	highlighting to use - taken from vt attributes currently.
+	(zvt_term_set_pointer): New internal funtion to set the mouse
+	pointer and the reference to what it is currently, but only if it
+	has changed.
+
+	* update.c (vt_getmatches): Have each match include a number of
+	match blocks, rather than each match block indicating its parent
+	match.
+	(vt_free_match_blocks): Fixed for above change.
+	(vt_match_highlight): Highlight toggle, or clear a highlight match.
+	(vt_highlight): Implement toggling the highlight.  Currently
+	it has to be somehting reversible, e.g. toggle bold/underline/etc,
+	or invert colours.
+
+	* zvtterm.c (zvt_term_show_pointer): Changed to check if we are
+	currently the dot cursor.
+	(zvt_term_unrealize): Free the zp->cursor_hand.
+	(zvt_term_realize): Allocate a zp->cursor_hand.
+
+1999-09-07  Michael Zucchi  <zucchi@zedzone.mmc.com.au>
+
+	* zvtterm.c (zvt_term_motion_notify): Check for matches if we
+	haven't before, and the screen has changed.
+
+	* zvtterm.h (struct _ZvtTermClass): Added the new match_clicked
+	signal.
+
+	* zvtterm.c (zvt_term_button_press): Emit a match_clicked signal
+	when we get a right mouse button event over a match string.  Hmm,
+	I can't see how we can do this for the other buttons without
+	interfering with normal operation :(
+
+	* update.c (vt_match_check): Check for a match given screen char
+	coordinates.
+
+	* zvtterm.c (zvt_term_match_clear): User function - to clear one
+	or all of the match strings.
+	(zvt_term_match_add): User function - adds a new match string.
+	(zvt_term_match_clicked): Dummy signal handler for the (new)
+	match_clicked signal.
+	(zvt_term_class_init): Add the new match_clicked signal.
+
+	* vtx.h: Added new 'magic match' data structures.
+
+	* update.c (vt_free_magic_blocks): New function - free's the list
+	of matched blocks (if there are any) and indicates that no match
+	attempt has been tried on the current display.
+	(vt_getmatches): New function - scans the _currently displayed_
+	screen for matches against the match regular expressiones.  If any
+	are found they are stored as 'match blocks' which map to
+	rectangles on the screen.
+	(vtx_new): Initialise the new match functions.
+	(vtx_destroy): Free new match resources.
+	(vt_match_clear): Remove one or all the match regular expressions.
+
+1999-09-05  Michael Zucchi  <zucchi@zedzone.mmc.com.au>
+
+	* update.c (vt_line_update): Removed a dead comment.
 
 1999-08-26  Michael Zucchi  <mzucchi@denr.sa.gov.au>
 

@@ -52,6 +52,8 @@ extern "C" {
 #define ZVT_TERM_TRANSPARENCY_SUPPORT	0x04
 /* zvt can scroll pixmap data, if it isn't a transparency pixmap */
 #define ZVT_TERM_PIXMAPSCROLL_SUPPORT	0x08
+/* zvt can match regular expressions and return signals when they're clicked on */
+#define ZVT_TERM_MATCH_SUPPORT		0x10
 
 typedef struct _ZvtTerm        ZvtTerm;
 typedef struct _ZvtTermClass   ZvtTermClass;
@@ -131,6 +133,7 @@ struct _ZvtTermClass
 
   void (* child_died) (ZvtTerm *term);    
   void (* title_changed) (ZvtTerm *term, VTTITLE_TYPE type, char *newtitle);
+  void (* match_clicked) (ZvtTerm *term, GdkEventButton *event, char *match, void *data);
 };
 
 typedef enum {
@@ -164,6 +167,8 @@ struct _zvtprivate
   int paste_len;		/* how much left to write */
   int paste_offset;		/* how much written so far */
   int paste_id;			/* for the paste write handler */
+
+  GdkCursor *cursor_hand;	/* hand cursor */
 };
 
 /* *** DO NOT USE THIS IN APPS! *** */
@@ -211,6 +216,11 @@ void         zvt_term_set_color_scheme         (ZvtTerm *term,
 void         zvt_term_set_default_color_scheme (ZvtTerm *term);
 void         zvt_term_set_del_key_swap         (ZvtTerm *term, int state);
 void	     zvt_term_set_wordclass	       (ZvtTerm *term, unsigned char *klass);
+
+/* regular expression matching - automagically! */
+int	     zvt_term_match_add		       (ZvtTerm *term, char *regex,
+						uint32 highlight_mask, void *data);
+void	     zvt_term_match_clear	       (ZvtTerm *term, char *regex);
 
 /* transparency stuff, it's left in even if we don't compile
  * transparency/backround pixmaps, if we don't, it will just be ignored,

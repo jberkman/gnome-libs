@@ -38,6 +38,7 @@
 #include <gdk/gdkkeysyms.h>
 #include <gtk/gtkmain.h>
 #include <gtk/gtksignal.h>
+#include <gtk/gtkselection.h>
 
 #include "zvtterm.h"
 
@@ -97,6 +98,8 @@ static void zvt_term_scroll (ZvtTerm *term, int n);
 static void zvt_term_scroll_by_lines (ZvtTerm *term, int n);
 static int vt_cursor_state(void *user_data, int state);
 static void zvt_term_writemore (gpointer data, gint fd, GdkInputCondition condition);
+static void zvt_term_updated(ZvtTerm *term, int mode);
+static void zvt_term_match_clicked (ZvtTerm *term, GdkEventButton *event, char *match, void *data);
 
 /* callbacks from update layer */
 void vt_draw_text(void *user_data, struct vt_line *line, int row, int col, int len, int attr);
@@ -139,6 +142,7 @@ enum
 {
   CHILD_DIED,
   TITLE_CHANGED,
+  MATCH_CLICKED,
   LAST_SIGNAL
 };
 static guint term_signals[LAST_SIGNAL] = { 0 };
@@ -202,6 +206,17 @@ zvt_term_class_init (ZvtTermClass *class)
 		    GTK_TYPE_INT,
 		    GTK_TYPE_STRING);
 
+  term_signals[MATCH_CLICKED] =
+    gtk_signal_new ("match_clicked",
+                    GTK_RUN_FIRST,
+                    object_class->type,
+                    GTK_SIGNAL_OFFSET (ZvtTermClass, match_clicked),
+                    gtk_marshal_NONE__POINTER_POINTER_POINTER,
+                    GTK_TYPE_NONE, 3,
+		    GTK_TYPE_POINTER,
+		    GTK_TYPE_STRING,
+		    GTK_TYPE_POINTER);
+
   gtk_object_class_add_signals (object_class, term_signals, LAST_SIGNAL);
 
   object_class->destroy = zvt_term_destroy;
@@ -227,6 +242,7 @@ zvt_term_class_init (ZvtTermClass *class)
 
   term_class->child_died = zvt_term_child_died;
   term_class->title_changed = zvt_term_title_changed;
+  term_class->match_clicked = zvt_term_match_clicked;
 }
 
 
@@ -565,6 +581,7 @@ zvt_term_reset (ZvtTerm *term, int hard)
   vt_reset_terminal(&term->vx->vt, hard);
   vt_update (term->vx, UPDATE_CHANGES);
   vt_cursor_state (term, 1);
+  zvt_term_updated(term, 2);
 }
 
 
@@ -650,12 +667,14 @@ zvt_term_realize (GtkWidget *widget)
   GdkWindowAttr attributes;
   GdkPixmap *cursor_dot_pm;
   gint attributes_mask;
+  struct _zvtprivate *zp;
 
   g_return_if_fail (widget != NULL);
   g_return_if_fail (ZVT_IS_TERM (widget));
 
   GTK_WIDGET_SET_FLAGS (widget, GTK_REALIZED);
   term = ZVT_TERM (widget);
+  zp = gtk_object_get_data (GTK_OBJECT (term), "_zvtprivate");
 
   attributes.x = widget->allocation.x;
   attributes.y = widget->allocation.y;
@@ -706,6 +725,7 @@ zvt_term_realize (GtkWidget *widget)
 			       0, 0);
   gdk_window_set_cursor(widget->window, term->cursor_bar);
   gdk_pixmap_unref (cursor_dot_pm);
+  zp->cursor_hand = gdk_cursor_new(GDK_HAND2);
   term->cursor_current = term->cursor_bar;
 
   /* setup blinking cursor */
@@ -749,11 +769,13 @@ static void
 zvt_term_unrealize (GtkWidget *widget)
 {
   ZvtTerm *term;
+  struct _zvtprivate *zp;
 
   g_return_if_fail (widget != NULL);
   g_return_if_fail (ZVT_IS_TERM (widget));
 
   term = ZVT_TERM (widget);
+  zp = gtk_object_get_data (GTK_OBJECT (term), "_zvtprivate");
 
   /* free resources */
   gdk_cursor_destroy (term->cursor_bar);
@@ -761,6 +783,9 @@ zvt_term_unrealize (GtkWidget *widget)
 
   gdk_cursor_destroy (term->cursor_dot);
   term->cursor_dot = NULL;
+
+  gdk_cursor_destroy (zp->cursor_hand);
+  zp->cursor_hand = NULL;
 
   term->cursor_current = NULL;
 
@@ -975,6 +1000,7 @@ zvt_term_size_allocate (GtkWidget     *widget,
 
       /* resize the scrollbar */
       zvt_term_fix_scrollbar (term);
+      zvt_term_updated(term, 2);
 
       d( printf("zvt_term_size_allocate new grid x=%d y=%d\n", 
 		term->vx->vt.width,
@@ -1113,9 +1139,17 @@ zvt_term_show_pointer (ZvtTerm *term)
 {
   g_return_if_fail (term != NULL);
 
-  if (term->cursor_current != term->cursor_bar) {
+  if (term->cursor_current == term->cursor_dot) {
     gdk_window_set_cursor(GTK_WIDGET(term)->window, term->cursor_bar);
     term->cursor_current = term->cursor_bar;
+  }
+}
+
+static void zvt_term_set_pointer(ZvtTerm *term, GdkCursor *c)
+{
+  if (term->cursor_current != c) {
+    gdk_window_set_cursor(GTK_WIDGET(term)->window, c);
+    term->cursor_current = c;
   }
 }
 
@@ -1404,6 +1438,7 @@ zvt_term_button_press (GtkWidget      *widget,
   struct _vtx *vx;
   ZvtTerm *term;
   struct _zvtprivate *zp;
+  struct vt_match *m;
 
   d(printf("button pressed\n"));
 
@@ -1498,7 +1533,13 @@ zvt_term_button_press (GtkWidget      *widget,
     break;
 
   case 3:			/* right button - select extend? */
-    if (vx->selected) {
+
+    /* check for a 'magic match' block */
+    m = vt_match_check(vx, x, y-vx->vt.scrollbackoffset);
+    if (m) {
+      gtk_signal_emit(GTK_OBJECT(term), term_signals[MATCH_CLICKED], event,
+		      m->matchstr, m->match->user_data);
+    } else if (vx->selected) {
       int midpos;
       int mypos;
 
@@ -1690,6 +1731,7 @@ zvt_term_motion_notify (GtkWidget      *widget,
   gint x, y;
   ZvtTerm *term;
   struct _zvtprivate *zp;
+  struct vt_match *m;
   
   g_return_val_if_fail (widget != NULL, FALSE);
   g_return_val_if_fail (ZVT_IS_TERM (widget), FALSE);
@@ -1699,9 +1741,10 @@ zvt_term_motion_notify (GtkWidget      *widget,
   vx = term->vx;
   zp = gtk_object_get_data (GTK_OBJECT (term), "_zvtprivate");
 
+  x=(((int)event->x))/term->charwidth;
+  y=(((int)event->y))/term->charheight;
+
   if (vx->selectiontype != VT_SELTYPE_NONE){
-    x=(((int)event->x))/term->charwidth;
-    y=(((int)event->y))/term->charheight;
     
     /* move end of selection, and draw it ... */
     if (vx->selectiontype & VT_SELTYPE_BYSTART) {
@@ -1730,6 +1773,19 @@ zvt_term_motion_notify (GtkWidget      *widget,
 	  zp->scrollselect_dir = 1;
 	zp->scrollselect_id = gtk_timeout_add(100, zvt_selectscroll, term);
       }
+    }
+  } else {
+    /* check for magic matches, if we havent already for this lot of output ... */
+    if (term->vx->magic_matched==0)
+      vt_getmatches(term->vx);
+
+    /* check for actual matches? */
+    m = vt_match_check(vx, x, y);
+    vt_match_highlight(vx, m);
+    if (m) {
+      zvt_term_set_pointer(term, zp->cursor_hand);
+    } else {
+      zvt_term_set_pointer(term, term->cursor_bar);
     }
   }
   /* otherwise, just a mouse event */
@@ -2050,6 +2106,19 @@ zvt_term_cursor_blink(gpointer data)
   return TRUE;
 }
 
+/* called by everything when the screen display
+   might have updated.
+   if mode=1, then the data updated
+   if mode=2, then the display updated (scrollbar moved)
+*/
+static void
+zvt_term_updated(ZvtTerm *term, int mode)
+{
+  /* whenever we update, clear the match table and indicator */
+  if (term->vx->magic_matched)
+    vt_free_match_blocks(term->vx);
+}
+
 /*
  * Callback for when the adjustment changes - i.e., the scrollbar
  * moves.
@@ -2105,6 +2174,8 @@ zvt_term_scrollbar_moved (GtkAdjustment *adj, GtkWidget *widget)
     vt_fix_selection(vx);
     vt_draw_selection(vx);
   }
+
+  zvt_term_updated(term, 2);
 }
 
 
@@ -2455,6 +2526,74 @@ zvt_term_title_changed (ZvtTerm *term, VTTITLE_TYPE type, char *str)
   /* perhaps we should do something here? */
 }
 
+/* dummy default signal handler for match_clicked */
+static void
+zvt_term_match_clicked (ZvtTerm *term, GdkEventButton *event, char *match, void *data)
+{
+  g_return_if_fail (term != NULL);
+  g_return_if_fail (ZVT_IS_TERM (term));
+
+  /* perhaps we should do something here? */
+}
+
+/**
+ * zvt_term_match_add:
+ * @term: An initialised &ZvtTerm.
+ * @regex: A regular expression to match.  It should be concise
+ * enough so that it doesn't match whole lines.
+ * @highlight_mask: Mask of bits used to highlight the text
+ * as the mouse moves over it.
+ * @data: User data.
+ * 
+ * Add a new auto-match regular expression.  When a matching text
+ * is clicked on, a match_clicked signal will be raised.
+ * 
+ * Each regular expression @regex will be matched against each
+ * line in the visible buffer.
+ *
+ * The @highlight_mask is taken from the VTATTR_* bits, as defined
+ * in vt.h.  These include VTATTR_BOLD, VTATTR_UNDERLINE, etc, but
+ * not the colours.
+ *
+ * Return value: Returns -1 when the regular expression is invalid
+ * and cannot be compiled (see regcomp(3c)).  Otherwise returns 0.
+ **/
+int
+zvt_term_match_add(ZvtTerm *term, char *regex, uint32 highlight_mask, void *data)
+{
+  struct vt_magic_match *m;
+  struct _vtx *vx = term->vx;
+
+  m = g_malloc0(sizeof(*m));
+  if (regcomp(&m->preg, regex, REG_EXTENDED)==0) {
+    m->regex = g_strdup(regex);
+    vt_list_addtail(&vx->magic_list, (struct vt_listnode *)m);
+    m->user_data = data;
+    m->highlight_mask = highlight_mask
+      & (VTATTR_MASK & ~(VTATTR_FORECOLOURM|VTATTR_BACKCOLOURM));
+  } else {
+    g_free(m);
+    return -1;
+  }
+  return 0;
+}
+
+
+/**
+ * zvt_term_match_clear:
+ * @term: An initialised &ZvtTerm.
+ * @regex: A regular expression to remove, or %NULL to remove
+ * all match strings.
+ * 
+ * Remove a specific match string, or all match strings
+ * from the terminal @term.
+ **/
+void
+zvt_term_match_clear(ZvtTerm *term, char *regex)
+{
+  vt_match_clear(term->vx, regex);
+}
+
 /* raise the title_changed signal */
 static void
 zvt_term_title_changed_raise (void *user_data, VTTITLE_TYPE type, char *str)
@@ -2510,6 +2649,7 @@ zvt_term_readdata (gpointer data, gint fd, GdkInputCondition condition)
   saveerrno = EAGAIN;
 
   vt_cursor_state (term, 0);
+  vt_match_highlight(term->vx, 0);
   while ( (saveerrno == EAGAIN) && (count = read (fd, buffer, 4096)) > 0)  {
     update = TRUE;
     saveerrno = errno;
@@ -2544,6 +2684,8 @@ zvt_term_readdata (gpointer data, gint fd, GdkInputCondition condition)
    * SIGCHLD
    */
   zvt_term_fix_scrollbar (term);
+
+  zvt_term_updated(term, 2);
 }
 
 /**
@@ -2568,6 +2710,7 @@ zvt_term_feed (ZvtTerm *term, char *text, int len)
   g_return_if_fail (text != NULL);
   
   vt_cursor_state (term, 0);
+  vt_match_highlight(term->vx, 0);
   vtx_unrender_selection (term->vx);
   vt_parse_vt (&term->vx->vt, text, len);
   vt_update (term->vx, UPDATE_CHANGES);
@@ -2588,6 +2731,8 @@ zvt_term_feed (ZvtTerm *term, char *text, int len)
    *  SIGCHLD
    */
   zvt_term_fix_scrollbar (term);
+
+  zvt_term_updated(term, 1);
 }
 
 static void
@@ -3128,8 +3273,24 @@ zvt_term_set_shadow_type(ZvtTerm  *term, GtkShadowType type)
  * zvt_term_get_capabilities:
  * @term: A &ZvtTerm widget.
  * 
- * Description: Gets the compiled in capabilities of the terminal widget, for
- * now this is only pixmap support which %ZVT_TERM_PIXMAP_SUPPORT
+ * Description: Gets the compiled in capabilities of the terminal widget.
+ *
+ * %ZVT_TERM_PIXMAP_SUPPORT; Pixmaps can be loaded into the background
+ * using the background setting function.
+ *
+ * %ZVT_TERM_PIXMAPSCROLL_SUPPORT; The background scrolling flag of the
+ * background setting function is honoured.
+ *
+ * %ZVT_TERM_EMBOLDEN_SUPPORT; Bold fonts are autogenerated, and can
+ * be requested by setting the bold_font of the font setting function
+ * to NULL.
+ *
+ * %ZVT_TERM_MATCH_SUPPORT; The zvt_term_add_match() functions exist,
+ * and can be used to receive the match_clicked signal when the user
+ * clicks on matching text.
+ *
+ * %ZVT_TERM_TRANSPARENCY_SUPPORT; A transparent background can be
+ * requested on the current display.
  *
  * Returns: a bitmask of the capabilities
  **/
@@ -3137,7 +3298,8 @@ guint32
 zvt_term_get_capabilities (ZvtTerm *term)
 {
   Atom prop, prop2;
-  guint32 out = ZVT_TERM_EMBOLDEN_SUPPORT|ZVT_TERM_PIXMAPSCROLL_SUPPORT;
+  guint32 out = ZVT_TERM_EMBOLDEN_SUPPORT|ZVT_TERM_PIXMAPSCROLL_SUPPORT|
+    ZVT_TERM_MATCH_SUPPORT;
 
   /* pixmap and transparency support */
   if (gdk_imlib_get_visual () == gtk_widget_get_default_visual ())
