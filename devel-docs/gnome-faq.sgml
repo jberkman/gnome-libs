@@ -30,6 +30,8 @@
 <!entity wwwdocbooktut "http://nis-www.lanl.gov/~rosalia/mydocs/docbook-intro.html">
 <!entity wwwtoddtheme  "http://www.mindspring.com/~tlewis/screen.jpg">
 <!entity wwwgettext    "http://gnu.org/manual/gettext/html_chapter/gettext_toc.html">
+<!entity wwwgimp       "http://www.gimp.org">
+<!entity wwwgimp32     "http://www.gimp.org/~tml/gimp/win32">
 <!entity wwwgnu        "http://gnu.org">
 <!entity wwwgnuphil    "http://gnu.org/philosophy">
 <!entity wwwgnufree    "http://gnu.org/philosophy/free-sw.html">
@@ -185,7 +187,7 @@
 	</listitem>
 
 	<listitem>
-	  <para>GNOME uses of the DocBook SGML standard for all
+	  <para>GNOME uses the DocBook SGML standard for all
 	  documentation, which allows programmers to write
 	  documentation in a straightforward way. Documentation can
 	  then be viewed with the GNOME help browser, or rendered into
@@ -835,14 +837,33 @@
     <sect1 id="GettingWindows">
       <title>I'm running Microsoft Windows, can I get GNOME?</title>
 
-      <para>Currently the answer is no.  GNOME hasn't been ported to
-      the Windows platform, and there are currently no plans to do so.
-      If you really really need a version for Windows, count on doing
-      all the work yourself.  Make sure to carefully read the
-      documentation of <ulink url="&wwwgnuaconf;"> Autoconf</ulink>,
-      since that's how we differentiate between different system
-      capabilities in GNOME.  Also, take a close look at Cygnus
-      Solution's <ulink
+      <comment>Thank you David Wheeler!</comment>
+
+      <para>Currently the answer is no, GNOME hasn't been ported to
+      the Windows platform, there is an effort going on to make such a
+      port possible.  If you really really need a version for Windows,
+      count on doing lots of work and coordinating with related efforts.</para>
+
+      <para>Tor Lillqvist has been porting several graphical libraries
+      used by GNOME to the Win32 (Microsoft Windows 95/98/NT)
+      platform.  More info on his efforts can be found at <ulink
+      url="&wwwgimp32;">&wwwgimp32;</ulink>.  He's already ported
+      glib, gtk+, gdk_imlib, and a few other libraries involved in
+      generating graphics to Win32.</para>
+
+      <para>His goal is to get Gimp working fully on the platform (it
+      already works partially), but his work brings GNOME much closer
+      to being portable to Windows.  A number of GNOME applications
+      need just his libraries (possibly with some more debugging),
+      libpng, gnome-libs and ORBit.  If someone were to port these,
+      many GNOME applications could be compiled and run on
+      Windows.</para>
+
+      <para>If you are interested in working on such a project, make
+      sure to carefully read the documentation of <ulink
+      url="&wwwgnuaconf;"> Autoconf</ulink>, since that's how we
+      differentiate between different system capabilities in GNOME.
+      Also, take a close look at Cygnus Solution's <ulink
       url="http://sourceware.cygnus.com/cygwin/">CygWin32</ulink>
       libraries and utilities.  They will make such a task much
       easier.</para>
