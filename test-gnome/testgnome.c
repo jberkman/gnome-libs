@@ -254,6 +254,7 @@ simple_druid_next_callback (GnomeDruidPage *page, GnomeDruid *druid, GnomeDruidP
 			      next);
 	return TRUE;
 }
+
 static gboolean
 complex_druid_next_callback (GnomeDruidPage *page, GnomeDruid *druid, druid_data *data)
 {
@@ -268,6 +269,7 @@ complex_druid_next_callback (GnomeDruidPage *page, GnomeDruid *druid, druid_data
 	}
 	return TRUE;
 }
+
 static gboolean
 druid_back_callback (GnomeDruidPage *page, GnomeDruid *druid, gpointer data)
 {
@@ -569,9 +571,13 @@ create_dialog(void)
 
   app = create_newwin(TRUE,"testGNOME","Dialog Boxes");
   vbox = gtk_vbox_new(FALSE, GNOME_PAD);
-  hbox = gtk_hbox_new(FALSE, GNOME_PAD);
 
+  hbox = gtk_hbox_new(FALSE, GNOME_PAD);
   gnome_app_set_contents(GNOME_APP(app),vbox);
+
+  toggle = gtk_hscale_new(gtk_adjustment_new(0, 0, 100, 1, 1, 10));
+  gtk_container_add(vbox, toggle);
+  gnome_widget_add_help(toggle, "Boobah woobahb!");
 
   gtk_box_pack_start(GTK_BOX(vbox), hbox, TRUE, TRUE, GNOME_PAD);
 
