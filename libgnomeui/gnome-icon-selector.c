@@ -94,8 +94,8 @@ static void      free_entry_func            (gpointer           data,
 					     gpointer           user_data);
 
 static void      do_add_handler             (GnomeSelector     *selector,
-                                             gint               position,
-                                             const gchar       *uri);
+                                             const gchar       *uri,
+                                             gint               position);
 static void      stop_loading_handler       (GnomeSelector     *selector);
 
 
@@ -461,7 +461,7 @@ do_add_async_done_cb (GnomeGdkPixbufAsyncHandle *handle,
 }
 
 static void
-do_add_handler (GnomeSelector *selector, gint position, const gchar *uri)
+do_add_handler (GnomeSelector *selector, const gchar *uri, gint position)
 {
     GnomeIconSelectorAsyncData *async_data;
     GnomeIconSelector *iselector;
