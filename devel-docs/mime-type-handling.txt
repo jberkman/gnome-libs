@@ -28,6 +28,14 @@ To make the GNOME desktop aware of a new MIME type it is necessary to
 install a file with the extension .mime in the $gnome/share/mime-info
 directory or from the ~/.gnome/mime-info directory.
 
+The file $gnome/share/mime-info/gnome.mime is special, as it contains
+the defaults for gnome, and is read first.  In addition, the file
+~/.gnome/mime-info/user.mime is read last.  This will guarantee that
+there is a way to set system defaults, and there is a way for the user
+to override them.  There is currently no way to tell anything about the
+order of the other files in those directories, nor is there anyway to
+override system defaults yet.
+
 The format is the following:
 
 mime-type-name
@@ -68,6 +76,11 @@ To add keys to a mime-type, it is necessary to install a file with the
 extension .keys in the $gnome/share/mime-info directory or from the
 ~/.gnome/mime-info directory.
 
+Similar to the .mime files, there is a provision for a
+$gnome/share/mime-info/gnome.keys file and a
+~/.gnome/mime-info/user.keys file.  This, as above, allows for both
+defaults and user preferences.
+
 The file has the following format:
 
 mime-type-match:
@@ -81,7 +94,7 @@ keys to apply to all of the images.
 The [LANG] part is optional, and it used to provide internationalized
 versions of any strings appearing in the value.
 
-key is the key (a number of keys are standarized) and value is the
+key is the key (a number of keys are standardized) and value is the
 value bound to it.
 
 For example, the GIMP could ship with this file:
@@ -125,7 +138,7 @@ The following keys are recognized in the GNOME desktop:
 
     ascii-view          A command that should be used to do
 			an ascii-rendering of the file.   Used as 
-			a fallback by the filemanager if a "view"
+			a fall-back by the filemanager if a "view"
 			action does not exist.
 
     fm-open             file-manager open.  If present, the file
@@ -135,11 +148,11 @@ The following keys are recognized in the GNOME desktop:
 			as if they were directories by using the VFS).
 
     fm-view		file-manager view.  If present, invoking the
-			view opertion on the file manager will use the
+			view operation on the file manager will use the
 			value defined here instead of the value in
 			"view".
 
-    fm-ascii-view	Fallback operation for the file manager as
+    fm-ascii-view	Fall-back operation for the file manager as
 			well.
 
 Those keys are also queried on the metadata (except in the cases where
@@ -148,7 +161,7 @@ the lookup would be too expensive).
 5. Defining multiple actions
 ----------------------------
 
-Somtimes it is important to provide more than one "open" action.  To
+Sometimes it is important to provide more than one "open" action.  To
 do this, the keys should be specified in the following fashion (The
 same applies to any other key that might need more than one option):
 
@@ -158,7 +171,7 @@ text/plain:
 	open.tag2.Gzip it=gzip %f
 	open.tag3.Mail it=mail %{Recipient} < %f
 
-This will define a default action (which woudl invoke "command %f"),
+This will define a default action (which would invoke "command %f"),
 and three extra open commands:
    
    "Do this and that"	-> this-and-that %f
@@ -172,7 +185,7 @@ Please notice that you have to add a "tag" to every "open" key.
 
 The reason for using the tags, is that they are required to
 distinguish the correct value for internationalization purposes, here
-is how the above example would be translated to spanish:
+is how the above example would be translated to Spanish:
 
 text/plain:
 	open=command %f
@@ -182,7 +195,7 @@ text/plain:
 	[es]open.tag2.Comprimir con gzip=gzip %f
 	open.tag3.Mail it=mail %{Recipient} < %f
 	[es]open.tag3.Enviarlo por correo=mail %{Recipient} < %f
-	open.tag4.Example=exampl %f
+	open.tag4.Example=example %f
 
 To the application programmer, if the code is running with LANG=es, he
 will get the following keys: "open", "open.tag1.Hacer esto y aquello",

@@ -25,12 +25,23 @@ The routines that classify a file by its name, use the contents of all
 of the files with the extension <filename>.mime</filename> from the
 <filename>$gnome_prefix/share/mime-info</filename> directory and the
 <filename>~/.gnome/mime-info</directory> to build the database for
-filename matching.  The later is supported to enable users to provide
+filename matching.  The latter is supported to enable users to provide
 their mime types to extend the system defaults.</para>
 
 <para>Application that wish to install their own MIME types only need
-to install a file in this directory
+to install a file in this directory.
 </para>
+
+<para>
+The file <filename>$gnome/share/mime-info/gnome.mime</filename> is
+special, as it contains the defaults for gnome, and is read first.  In
+addition, the file <filename>~/.gnome/mime-info/user.mime</filename> is
+read last.  This will guarantee that there is a way to set system
+defaults, and there is a way for the user to override them.  There is
+currently no way to tell anything about the order of the other files in
+those directories, nor is there anyway to override system defaults yet.
+</para>
+
 
 <para>
 The <function>gnome_mime_type_from_magic</function> Uses the contents

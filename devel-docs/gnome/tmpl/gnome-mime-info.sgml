@@ -16,8 +16,18 @@ To add keys to a mime-type, it is necessary to install a file with the
 extension <filename>.keys</filename> in the
 <filename>$gnome/share/mime-info</filename> directory or in the
 <filename>~/.gnome/mime-info directory<filename> directory.  The
-former is for system-provided mime-information and the later is to
+former is for system-provided mime-information and the latter is to
 enable the user to extend the actions as provided by the system.
+</para>
+
+<para>
+The file <filename>$gnome/share/mime-info/gnome.keys</filename> is
+special, as it contains the defaults for gnome, and is read first.  In
+addition, the file <filename>~/.gnome/mime-info/user.keys</filename> is
+read last.  This will guarantee that there is a way to set system
+defaults, and there is a way for the user to override them.  There is
+currently no way to tell anything about the order of the other files in
+those directories, nor is there anyway to override system defaults yet.
 </para>
 
 <para>
