@@ -158,9 +158,11 @@ MACHINE=`[ -f /bin/machine ] && /bin/machine`
 
 # FIXME: Add detection code for the other distro.
 DISTRO=`( [ -f /etc/debian_version ] && echo "Debian") || \
-        ( [ -f /etc/redhat-release ] && echo "Red Hat") || echo ""`
+        ( [ -f /etc/redhat-release ] && echo "Red Hat") || \
+		( [ -f /etc/SuSE-release ] && echo "SuSE") || echo ""`
 DISTROVERSION=`( [ -f /etc/debian_version ] && cat /etc/debian_version) || \
-        ( [ -f /etc/redhat-release ] && cat /etc/redhat-release) || echo ""`
+        ( [ -f /etc/redhat-release ] && cat /etc/redhat-release) || \
+        ( [ -f /etc/SuSE-release ] && head -1 /etc/SuSE-release) || echo ""`
 
 COMMAND=`echo $0 | sed -e 's,.*/,,'`
 ## USAGE="Usage: $COMMAND [-PVL] [-t address] [-f filename] [--request-id] 
