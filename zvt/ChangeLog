@@ -1,3 +1,7 @@
+1999-07-02  Michael Zucchi  <mzucchi@denr.sa.gov.au>
+
+	* zvtterm.c (request_paste): Fix an out-by-1 array bounds check.
+
 1999-06-26  Michael Zucchi  <mzucchi@zedzone.mmc.com.au>
 
 	* update.c (vt_line_update): When reverse video set, then force

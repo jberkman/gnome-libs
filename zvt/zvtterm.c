@@ -1351,7 +1351,7 @@ request_paste (GtkWidget *widget, int type)
   else
     index = type;
 
-  if (index>sizeof(types)/sizeof(types[0])) {
+  if (index>=sizeof(types)/sizeof(types[0])) {
     zp->lastselectiontype = -1;
     return 0;
   }
