@@ -7,8 +7,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-libs HEAD\n"
-"POT-Creation-Date: 2000-08-05 19:18+0200\n"
-"PO-Revision-Date: 2000-08-05 20:11+02:00\n"
+"POT-Creation-Date: 2000-08-19 07:57+0200\n"
+"PO-Revision-Date: 2000-08-19 08:04+02:00\n"
 "Last-Translator: Karl Eichwalder <ke@suse.de>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -141,9 +141,10 @@ msgstr ""
 #, c-format
 msgid ""
 "In the following commands you should use %s in the spot where the\n"
-"filename/url should be substituted.  If you leave the field blank\n"
-"drops will not be accepted.  If this appcan just accept\n"
-"multiple files or urls after it's command check the above box."
+"filename/URL should be substituted.  If you leave the field blank\n"
+"drops will not be accepted.  If this application can accept\n"
+"multiple files or URLs as arguments after its command name check the box "
+"above."
 msgstr ""
 
 #: libgnomeui/gnome-ditem-edit.c:371
@@ -263,7 +264,8 @@ msgid ""
 msgstr ""
 "Sie haben versucht, einen Aspekt der Systemkonfiguration zu ändern, den der\n"
 "Systemadminstrator oder der Hersteller des Betriebssystems untersagt hat\n"
-"zu ändern.  Einige Einstellungen, die Sie gewählt haben, werden entweder nicht\n"
+"zu ändern.  Einige Einstellungen, die Sie gewählt haben, werden entweder "
+"nicht\n"
 "wirksam werden oder werden beim nächsten Mal nicht wiederhergestellt werden\n"
 "können, wenn Sie diese Anwendung (%s) erneut verwenden."
 
@@ -273,8 +275,10 @@ msgid ""
 "An error occurred while loading or saving configuration information for %s. "
 "Some of your configuration settings may not work properly."
 msgstr ""
-"Ein Fehler ist beim Laden oder Speichern der Konfigurationsinformationen von %s\n"
-"aufgetreten.  Einige der Konfigurationseinstellungen werden vielleicht nicht\n"
+"Ein Fehler ist beim Laden oder Speichern der Konfigurationsinformationen von "
+"%s\n"
+"aufgetreten.  Einige der Konfigurationseinstellungen werden vielleicht "
+"nicht\n"
 "ordnungsgemäß sein."
 
 #: libgnomeui/gnome-gconf.c:651
@@ -323,7 +327,7 @@ msgstr "Art"
 msgid "Change the way help is displayed"
 msgstr ""
 
-#: libgnomeui/gnome-helpsys.c:868 libgnomeui/gnome-helpsys.c:963
+#: libgnomeui/gnome-helpsys.c:869 libgnomeui/gnome-helpsys.c:964
 msgid "No help is available for the selected portion of the application."
 msgstr "Es gibt keine Hilfe für den gewählten Bereich der Anwendung."
 
@@ -336,7 +340,7 @@ msgstr ""
 "Bitte schauen Sie im Kontrollzentrum nach, ob die Einstellungen\n"
 "richtig sind."
 
-#: libgnomeui/gnome-icon-sel.c:373 libgnomeui/gnome-icon-selector.c:522
+#: libgnomeui/gnome-icon-sel.c:373 libgnomeui/gnome-icon-selector.c:524
 msgid "Loading Icons..."
 msgstr "Lade Icons..."
 
@@ -447,18 +451,22 @@ msgstr "Icons anordnen"
 msgid "Autoarrange icons"
 msgstr "Icons automatisch anordnen"
 
-#: libgnomeui/gnome-recently-used.c:988
+#: libgnomeui/gnome-recently-used.c:989
 msgid "Unknown"
 msgstr "Unbekannt"
 
 #. browse button ...
 #: libcompat/gnome-spell.c:620 libcompat/gnome-spell.c:637
-#: libcompat/gnome-spell.c:654 libgnomeui/gnome-file-entry.c:445
-#: libgnomeui/gnome-selector.c:662
+#: libcompat/gnome-spell.c:654 libgnomeui/gnome-file-entry.c:446
+#: libgnomeui/gnome-selector.c:803
 msgid "Browse..."
 msgstr "Suchen..."
 
-#: libgnomeui/gnome-selector.c:673
+#: libgnomeui/gnome-selector.c:813
+msgid "Default..."
+msgstr "Vorgabe..."
+
+#: libgnomeui/gnome-selector.c:823
 msgid "Clear..."
 msgstr "Löschen..."
 
@@ -1141,7 +1149,7 @@ msgstr "Zurück"
 msgid "Finish"
 msgstr "Beenden"
 
-#: libgnomeui/gnome-file-entry.c:314
+#: libgnomeui/gnome-file-entry.c:315
 msgid "Select file"
 msgstr "Dateiauswahl"
 
@@ -1149,19 +1157,19 @@ msgstr "Dateiauswahl"
 msgid "Font"
 msgstr "Schrift"
 
-#: libgnomeui/gnome-icon-entry.c:284 libgnomeui/gnome-icon-entry.c:808
+#: libgnomeui/gnome-icon-entry.c:285 libgnomeui/gnome-icon-entry.c:809
 msgid "No Icon"
 msgstr "Kein Icon"
 
-#: libgnomeui/gnome-icon-entry.c:485 libgnomeui/gnome-pixmap-entry.c:458
+#: libgnomeui/gnome-icon-entry.c:486 libgnomeui/gnome-pixmap-entry.c:459
 msgid "Can't find an hbox, using a normal file selection"
 msgstr "Kann keine hbox finden, benutze normalen Dateiselektor"
 
-#: libgnomeui/gnome-icon-entry.c:491 libgnomeui/gnome-pixmap-entry.c:464
+#: libgnomeui/gnome-icon-entry.c:492 libgnomeui/gnome-pixmap-entry.c:465
 msgid "Preview"
 msgstr "Vorschau"
 
-#: libgnomeui/gnome-icon-entry.c:829
+#: libgnomeui/gnome-icon-entry.c:830
 msgid "Browse"
 msgstr "Suchen"
 
@@ -1192,7 +1200,7 @@ msgstr "Die X-Aufrufe synchron machen"
 
 #: libgnomeui/gnome-init.c:95
 msgid "Don't use X shared memory extension"
-msgstr "Die 'X shared memory'-Erweiterung nicht benutzen"
+msgstr "Die »X shared memory«-Erweiterung nicht benutzen"
 
 #: libgnomeui/gnome-init.c:98
 msgid "Program name as used by the window manager"
@@ -1246,7 +1254,7 @@ msgstr "MODUL"
 #: libgnomeui/gnome-init.c:468
 msgid "Multiple segmentation faults occurred; can't display error dialog\n"
 msgstr ""
-"Mehrere `Segmentation-Faults' sind vorgefallen; es ist nicht möglich,\n"
+"Mehrere »Segmentation-Faults« sind vorgefallen; es ist nicht möglich,\n"
 "einen Fehlerdialog anzuzeigen.\n"
 
 #: libgnomeui/gnome-messagebox.c:172
@@ -1269,15 +1277,15 @@ msgstr "Frage"
 msgid "Message"
 msgstr "Mitteilung"
 
-#: libgnomeui/gnome-number-entry.c:216
+#: libgnomeui/gnome-number-entry.c:217
 msgid "Calculator"
 msgstr "Rechner"
 
-#: libgnomeui/gnome-number-entry.c:274
+#: libgnomeui/gnome-number-entry.c:275
 msgid "Calculator..."
 msgstr "Rechner..."
 
-#: libgnomeui/gnome-pixmap-entry.c:255 libgnomeui/gnome-pixmap-entry.c:562
+#: libgnomeui/gnome-pixmap-entry.c:256 libgnomeui/gnome-pixmap-entry.c:563
 msgid "No Image"
 msgstr "Kein Bild"
 
@@ -1655,7 +1663,7 @@ msgid ""
 "And to test the gnome_win_hints_* functions for errors. :)"
 msgstr ""
 "Einfache Testanwendung, um zu prüfen, ob die WIN_HINTS funktionieren.\n"
-"Und um die gnome_win_hints_*-Funktionen auf Fehler abzuklopfen. :)"
+"Und um die »gnome_win_hints_*«-Funktionen auf Fehler abzuklopfen  :)"
 
 #: support/error.c:109
 msgid "Unknown system error"
@@ -1736,7 +1744,7 @@ msgstr "Standard-Pixmap"
 #: test-gnome/testgnome.c:824 test-gnome/testgnome.c:865
 #: test-gnome/testgnome.c:890
 msgid "If you choose a font it will appear here"
-msgstr "Wenn Sie eine Schrift wählen, wird diese hier erscheinen"
+msgstr "Wenn Sie eine Schrift wählen, wird diese hier erscheinen."
 
 #. Font_Info
 #: test-gnome/testgnome.c:831
@@ -1745,7 +1753,7 @@ msgstr "Schrift-Information"
 
 #: test-gnome/testgnome.c:841
 msgid "Use Font in button with size"
-msgstr "Verwende Schrift im Knopf mit Größe"
+msgstr "Größe der Schrift im Knopf (Button):"
 
 #: test-gnome/testgnome.c:848
 msgid "Show font size"
