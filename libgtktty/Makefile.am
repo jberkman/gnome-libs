@@ -6,7 +6,7 @@ INCLUDE_always = -I$(includedir) $(X_CFLAGS)
 GNOMELIBS = \
 	$(srcdir)/../../libgnomeui/libgnomeui.la \
 	$(srcdir)/../../libgnome/libgnome.la \
-	-lintl
+	-lintl -ldl
 
 
 

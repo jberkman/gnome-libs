@@ -1,0 +1,71 @@
+<!doctype chapter PUBLIC "-//Davenport//DTD DocBook V3.0//EN" [
+  <!ENTITY GNOME "GNOME">
+  <!ENTITY GNOME-FULL "GNU Network Object Model Environment">
+]>
+
+<chapter id="gnome-hello-world-program">
+  <title>GNOME's Hello World program</title>
+  <para>
+    GNOME, like all other civilized software systems, comes with a
+    <emphasis>hello, world</emphasis> &mdash; type of program.</para>
+  <para>
+    <application>gnome-hello</application> is a &GNOME; application which
+    contains all the essential and common features of GNOME programs,
+    such as initialization, event loops, configuration file parsing,
+    internationalization and so forth.</para>
+  <para>
+    <application>gnome-hello</application> is intended to be an example of the
+    GNOME coding standards, as well as a fun and useless little
+    program.</para>
+  <para>
+    Similarly, <application>gnome-hello</application> is documented (you are
+    reading it now) in the manner typical of &GNOME; applications. You
+    can take this manual as a skeleton and adapt it to your own
+    program.</para>
+  <sect1>
+    <title>Invoking <application>gnome-hello</application></title>
+    <para>
+      You can invoke <application>gnome-hello</application> from the shell by
+      typing:</para>
+    <example>
+      <title>Invoking <application>gnome-hello</application></title>
+      <literallayout><prompt>$ </prompt><userinput>gnome-hello</userinput></literallayout>
+    </example>
+    <para>
+      Or you can invoke <application>gnome-hello</application> from the
+      &GNOME; panel via the menu.  [FIXME: this is a good place to
+      play around with documenting the panel GUI.]</para>
+  </sect1>
+  <sect1>
+    <title>The <application>gnome-hello</application> screen</title>
+    <para>&GNOME; applications have a few requirements, all documented
+      in the GNOME style guide (available at <ulink
+	URL="http://www.gnome.org/devel/writing.shtml">this
+	location</ulink>).</para>
+    <sect2>
+      <title>The menu bar</title> <para>The menu bar for a GNOME
+	application must always contain at least
+	<guimenu>File</guimenu> and <guimenu>Help</guimenu> menus.
+	The <guimenu>File</guimenu> menu must have at least a
+	<guimenuitem>Quit</guimenuitem> item, and the
+	<guimenu>Help</guimenu> menu should have at least an
+	<guimenuitem>About ...</guimenuitem> item.</para>
+    </sect2>
+  </sect1>
+</chapter>
+<!-- Keep this comment at the end of the file
+Local variables:
+mode: sgml
+sgml-omittag:t
+sgml-shorttag:t
+sgml-minimize-attributes:nil
+sgml-always-quote-attributes:t
+sgml-indent-step:2
+sgml-indent-data:t
+sgml-parent-document:nil
+sgml-default-dtd-file:"gnome-hello.ced"
+sgml-exposed-tags:nil
+sgml-local-catalogs:nil
+sgml-local-ecat-files:nil
+End:
+-->
