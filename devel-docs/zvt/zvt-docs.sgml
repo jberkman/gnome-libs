@@ -446,53 +446,46 @@
 	Currently it is upto the calling application to appropriately
 	setup the window hints for the application so the terminal will
 	size properly (i.e. to the nearest character cell position).
-	Unfortunately, gdk does not provide the required functionality
-	in its hint functions, and so
-	the application must use the corresponding X calls where
-	required.
+	This can be set using the gtk function
+	gtk_window_set_geometry_hints().
       </para>
       <para>If the application's main window area is not the terminal
 	then it may not make sense to set these hints - the terminal
 	will still operate and resize correctly, but may be resized to
 	fractions of a character cell, which will leave a blank space
-	along the right or bottom edges.
+	along the right and/or bottom edges.
       </para>
       <example>
-	<title>A size_allocate signal handler which sets the proper
+	<title>A realize signal handler which sets the
 	  window hints for character-accurate window resizing.</title>
 	<programlisting>
-	  static void
-	  size_allocate (GtkWidget *widget)
-	  {
-	  ZvtTerm *term;
-	  XSizeHints sizehints;
-	  
-	  g_assert (widget != NULL);
-	  term = ZVT_TERM (widget);
+static void
+set_hints (GtkWidget *widget)
+{
+        ZvtTerm *term;
+	GdkGeometry hints;
+	GtkWidget *app;
 
-	  #define PADDING 2  
-	  sizehints.base_width = 
-	  (GTK_WIDGET (window)-&gt;allocation.width) +
-	  (GTK_WIDGET (term)->style-&gt;klass-&gt;xthickness * 2) -
-	  (GTK_WIDGET (term)-&gt;allocation.width) + PADDING;
-	  
-	  sizehints.base_height =
-	  (GTK_WIDGET (window)-&gt;allocation.height) +
-	  (GTK_WIDGET (term)-&gt;style-&gt;klass-&gt;ythickness * 2) -
-	  (GTK_WIDGET (term)-&gt;allocation.height);
-	  
-	  sizehints.width_inc = term-&gt;charwidth;
-	  sizehints.height_inc = term-&gt;charheight;
-	  sizehints.min_width = sizehints.base_width + sizehints.width_inc;
-	  sizehints.min_height = sizehints.base_height + sizehints.height_inc;
-	  
-	  sizehints.flags = (PBaseSize|PMinSize|PResizeInc);
-	  
-	  XSetWMNormalHints (GDK_DISPLAY(),
-	  GDK_WINDOW_XWINDOW (GTK_WIDGET (window)-&gt;window),
-	  &amp;sizehints);
-	  gdk_flush ();
-	  }
+	g_assert (widget != NULL);
+	term = ZVT_TERM (widget);
+
+	app = gtk_widget_get_toplevel(widget);
+	g_assert (app != NULL);
+
+#define PADDING 2
+	hints.base_width = (GTK_WIDGET (term)->style->klass->xthickness * 2) + PADDING;
+	hints.base_height =  (GTK_WIDGET (term)->style->klass->ythickness * 2);
+
+	hints.width_inc = term->charwidth;
+	hints.height_inc = term->charheight;
+	hints.min_width = hints.base_width + hints.width_inc;
+	hints.min_height = hints.base_height + hints.height_inc;
+
+	gtk_window_set_geometry_hints(GTK_WINDOW(app),
+				      GTK_WIDGET(term),
+				      &amp;hints,
+				      GDK_HINT_RESIZE_INC|GDK_HINT_MIN_SIZE|GDK_HINT_BASE_SIZE);
+}
 	</programlisting>
       </example>
       <para>The example above sets the window hints so that the window
@@ -500,21 +493,28 @@
 	the character dimensions if it provides that
 	functionality.</para>
       <para>It should be attatched to the terminal instance using
-	gtk_signal_attach_after, because gtk/gdk will set its own
-	(incomplete) window
-	hints every time the window is resized and we must over-ride
-	that.</para>
+	gtk_signal_connect_after() so that the hints are set after the
+	window is realized.
+	</para>
       <example>
-	<title>Attaching the signal resize handler to the
+	<title>Attaching the realize handler to the
 	  terminal</title>
 	<programlisting>
-	  gtk_signal_connect_after (
-	  GTK_OBJECT (term),
-	  "size_allocate",
-	  GTK_SIGNAL_FUNC (size_allocate),
-	  term);
-	</programlisting></example>
-    </sect1>
+  gtk_signal_connect_after (
+      GTK_OBJECT (term),
+      "realize",
+      GTK_SIGNAL_FUNC (set_hints),
+      term);
+        </programlisting>
+      </example>
+       <para>It must also be called whenever the font is changed, to
+      get the correct behaviour.  Only do this if the terminal is
+      realized.  Simply call this set_hints() function immediately
+      after calling one of the zvt_term_set_font*() functions, after
+      checking that the given terminal is actually realized
+      (using GTK_WIDGET_IS_REALIZED()).
+      </para>
+   </sect1>
 
     <sect1>
       <title>Other ideas</title>
@@ -550,11 +550,11 @@
 	  <title>Converting window coordinates to character
 	    coordinates.</title>
 	  <programlisting>
-	    void mouse_to_char(ZvtTerm *term, int mousex, int mousey, int *x, int *y)
-	    {
-	    *x = mousex/term-&gt;charwidth;
-	    *y = mousey/term-&gt;charheight;
-	    }
+void mouse_to_char(ZvtTerm *term, int mousex, int mousey, int *x, int *y)
+{
+	*x = mousex/term-&gt;charwidth;
+	*y = mousey/term-&gt;charheight;
+}
 	  </programlisting>
 	</example>
 	<para>These values are then suitable for using with
@@ -574,86 +574,86 @@
 
 	<para>First, the pre-amble and headers</para>
 	<programlisting>
-	  /*  zterm.c - Zed's Virtual Terminal
-	  *  Copyright (C) 1998  Michael Zucchi
-	  *
-	  *  A simple terminal program, based on ZTerm.
-	  *
-	  *  This program is free software; you can redistribute it and/or modify
-	  *  it under the terms of the GNU General Public License as published by
-	  *  the Free Software Foundation; either version 2 of the License, or
-	  *  (at your option) any later version.
-	  *
-	  *  This program is distributed in the hope that it will be useful,
-	  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-	  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-	  *  GNU General Public License for more details.
-	  *
-	  *  You should have received a copy of the GNU General Public License
-	  *  along with this program; if not, write to the Free Software
-	  *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-	  */
+/*  zterm.c - Zed's Virtual Terminal
+ *  Copyright (C) 1998  Michael Zucchi
+ *
+ *  A simple terminal program, based on ZTerm.
+ *
+ *  This program is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ */
 
-	  #include &lt;stdio.h&gt;
-	  #include &lt;unistd.h&gt;
-	  #include &lt;fcntl.h&gt;
-	  #include &lt;sys/time.h&gt;
-	  #include &lt;sys/types.h&gt;
-	  #include &lt;unistd.h&gt;
-	  #include &lt;errno.h&gt;
-	  #include &lt;string.h&gt;
-	  #include &lt;pwd.h&gt;
-	  #include &lt;stdlib.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;unistd.h&gt;
+#include &lt;fcntl.h&gt;
+#include &lt;sys/time.h&gt;
+#include &lt;sys/types.h&gt;
+#include &lt;unistd.h&gt;
+#include &lt;errno.h&gt;
+#include &lt;string.h&gt;
+#include &lt;pwd.h&gt;
+#include &lt;stdlib.h&gt;
 
-	  #include &lt;gtk/gtk.h&gt;
-	  #include &lt;gdk/gdkx.h&gt;
-	  #include &lt;gdk/gdkprivate.h&gt;
-	  #include &lt;gdk/gdkkeysyms.h&gt;
+#include &lt;gtk/gtk.h&gt;
+#include &lt;gdk/gdkx.h&gt;
+#include &lt;gdk/gdkprivate.h&gt;
+#include &lt;gdk/gdkkeysyms.h&gt;
 
-	  #include &lt;zvt/zvtterm.h&gt;
+#include &lt;zvt/zvtterm.h&gt;
 	</programlisting>
 
 	<para>Yes, you should always remember the license!  Of course,
 	  i'm rather fond of GNU's version ...</para>
 	<programlisting>
-	  #define FONT "-misc-fixed-medium-r-normal--12-200-75-75-c-100-iso8859-1"
+#define FONT "-misc-fixed-medium-r-normal--12-200-75-75-c-100-iso8859-1"
 	</programlisting>
 	<para>Here we have the font we're using.  This is the full name
 	  of "fixed".  A nice readable fixed-width, and small font.</para>
 
 	<programlisting>
-	  extern char      **environ;		
-	  static char      **env;
-	  static char      **env_copy;
-	  static int         winid_pos;
-	  static GtkWidget  *window = NULL;
+extern char      **environ;		
+static char      **env;
+static char      **env_copy;
+static int         winid_pos;
+static GtkWidget  *window = NULL;
 	</programlisting>
 	<para>A few globals needed elsewhere.  Including the environment
 	  setup.</para>
 	<programlisting>
-	  static void
-	  child_died_event (ZvtTerm *term)
-	  {
-	  gtk_exit(0);
-	  }
+static void
+child_died_event (ZvtTerm *term)
+{
+	gtk_exit(0);
+}
 	</programlisting>
 	<para>This is later setup as the child_died signal handler.  In
 	  the case of a terminal we just terminate the whole application
 	  when this happens.</para>
 	<programlisting>
-	  static void
-	  title_changed_event (ZvtTerm *term, VTTITLE_TYPE type, char *newtitle)
-	  {
-	  switch(type) 
-	  {
-	  case VTTITLE_WINDOW:
-	  case VTTITLE_WINDOWICON:
-	  gtk_window_set_title (GTK_WINDOW (window), newtitle);
-	  break;
-	  default:
-	  break;
-	  }
-	  }
+static void
+title_changed_event (ZvtTerm *term, VTTITLE_TYPE type, char *newtitle)
+{
+  switch(type) 
+    {
+    case VTTITLE_WINDOW:
+    case VTTITLE_WINDOWICON:
+      gtk_window_set_title (GTK_WINDOW (window), newtitle);
+      break;
+    default:
+      break;
+    }
+}
 	</programlisting>
 	<para>Another signal that may be generated by the widget is the
 	  title_changed signal.  This signal is generated when the xterm
@@ -661,56 +661,51 @@
 	  simple handler that will change the window title when this
 	  sequence is caught.  By default no action is taken.</para>
 	<programlisting>
-	  static void
-	  size_allocate (GtkWidget *widget)
-	  {
-	  ZvtTerm *term;
-	  XSizeHints sizehints;
-	  
-	  g_assert (widget != NULL);
-	  term = ZVT_TERM (widget);
+static void
+set_hints (GtkWidget *widget)
+{
+        ZvtTerm *term;
+	GdkGeometry hints;
+	GtkWidget *app;
 
-	  #define PADDING 2  
-	  sizehints.base_width = 
-	  (GTK_WIDGET (window)-&gt;allocation.width) +
-	  (GTK_WIDGET (term)-&gt;style-&gt;klass-&gt;xthickness * 2) -
-	  (GTK_WIDGET (term)-&gt;allocation.width) + PADDING;
-	  
-	  sizehints.base_height =
-	  (GTK_WIDGET (window)-&gt;allocation.height) +
-	  (GTK_WIDGET (term)-&gt;style-&gt;klass-&gt;ythickness * 2) -
-	  (GTK_WIDGET (term)-&gt;allocation.height);
-	  
-	  sizehints.width_inc = term-&gt;charwidth;
-	  sizehints.height_inc = term-&gt;charheight;
-	  sizehints.min_width = sizehints.base_width + sizehints.width_inc;
-	  sizehints.min_height = sizehints.base_height + sizehints.height_inc;
-	  
-	  sizehints.flags = (PBaseSize|PMinSize|PResizeInc);
-	  
-	  XSetWMNormalHints (GDK_DISPLAY(),
-	  GDK_WINDOW_XWINDOW (GTK_WIDGET (window)-&gt;window),
-	  &amp;sizehints);
-	  gdk_flush ();
-	  }
+	g_assert (widget != NULL);
+	term = ZVT_TERM (widget);
+
+	app = gtk_widget_get_toplevel(widget);
+	g_assert (app != NULL);
+
+#define PADDING 2
+	hints.base_width = (GTK_WIDGET (term)->style->klass->xthickness * 2) + PADDING;
+	hints.base_height =  (GTK_WIDGET (term)->style->klass->ythickness * 2);
+
+	hints.width_inc = term->charwidth;
+	hints.height_inc = term->charheight;
+	hints.min_width = hints.base_width + hints.width_inc;
+	hints.min_height = hints.base_height + hints.height_inc;
+
+	gtk_window_set_geometry_hints(GTK_WINDOW(app),
+				      GTK_WIDGET(term),
+				      &amp;hints,
+				      GDK_HINT_RESIZE_INC|GDK_HINT_MIN_SIZE|GDK_HINT_BASE_SIZE);
+}
 	</programlisting>
 	<para>Here we have the same code as explained in <xref
 	    linkend="zvtterm-window-hints">, for setting appropriate
 	  window-resize hints.</para>
 	<para>The main program follows:</para>
 	<programlisting>
-	  gint 
-	  main (gint argc, gchar *argv[])
-	  {
-	  int i, c, cmdindex, scrollbacklines, login_shell;
-	  char buffer[60], **p;
-	  struct passwd *pw;
-	  GtkWidget *term, *hbox, *scrollbar;
-	  enum { RIGHT, LEFT } scrollpos = LEFT;
-
-	  login_shell = 0;
-	  cmdindex = 0;
-	  scrollbacklines = 50;
+gint 
+main (gint argc, gchar *argv[])
+{
+  int i, c, cmdindex, scrollbacklines, login_shell;
+  char buffer[60], **p;
+  struct passwd *pw;
+  GtkWidget *term, *hbox, *scrollbar;
+  enum { RIGHT, LEFT } scrollpos = LEFT;
+  
+  login_shell = 0;
+  cmdindex = 0;
+  scrollbacklines = 50;
 	</programlisting>
 	<para>The next section sets up the environment as explained
 	  elsewhere.  We setup the TERM environment and drop the terminal
@@ -720,78 +715,78 @@
 	  when it is known later on.  This is used by some X-aware
 	  terminal applications to manipulate the terminal window.</para>
 	<programlisting>
-	  /* set up terminal environment */
-	  env = environ;
+  /* set up terminal environment */
+  env = environ;
 
-	  for (p = env; *p; p++);
-	  i = p - env;
-	  env_copy = (char **) g_malloc (sizeof (char *) * (i + 3));
-	  for (i = 0, p = env; *p; p++) {
-	  if (strncmp (*p, "TERM=", 5) == 0) {
-	  env_copy [i++] = "TERM=xterm";
-	  } else if ((strncmp (*p, "COLUMNS=", 8) == 0) ||
-	  (strncmp (*p, "LINES=", 6) == 0)) {
-	  continue;
-	  } else {
-	  env_copy [i++] = *p;
-	  }
-	  }
+  for (p = env; *p; p++);
+    i = p - env;
+  env_copy = (char **) g_malloc (sizeof (char *) * (i + 3));
+  for (i = 0, p = env; *p; p++) {
+    if (strncmp (*p, "TERM=", 5) == 0) {
+      env_copy [i++] = "TERM=xterm";
+    } else if ((strncmp (*p, "COLUMNS=", 8) == 0) ||
+	       (strncmp (*p, "LINES=", 6) == 0)) {
+      continue;
+    } else {
+      env_copy [i++] = *p;
+    }
+  }
 
-	  env_copy [i++] = "COLORTERM=zterm";
-	  winid_pos = i++;
-	  env_copy [winid_pos] = "TEST";
-	  env_copy [i] = NULL;
+  env_copy [i++] = "COLORTERM=zterm";
+  winid_pos = i++;
+  env_copy [winid_pos] = "TEST";
+  env_copy [i] = NULL;
 	  
-	  gtk_init(&amp;argc, &amp;argv);
+  gtk_init(&amp;argc, &amp;argv);
 	</programlisting>
 	<para>Process the command line options.  Note the saving of the
 	  position of the '-e' option and the termination of processing
 	  once it has been found.  This is a compatability with the
 	  'xterm' '-e' command line option.</para>
 	<programlisting>
-	  /* process arguments */
-	  while ( (cmdindex==0) &amp;&amp; (c=getopt(argc, argv, "le:s:rh")) != EOF ) {
-	  switch(c)  {
-	  case 'e':
-	  cmdindex = optind-1;	/* index of argv array to pass to exec */
-	  break;
-
-	  case 's':
-	  scrollbacklines = atoi(optarg);
-	  break;
-
-	  case 'l':
-	  login_shell = 1;
-	  break;
-
-	  case 'r':
-	  scrollpos = RIGHT;
-	  break;
-
-	  case '?':
-	  case 'h':
-	  default:
-	  fprintf(stderr, "Usage: zterm [-sNN] [-l] [-r] [-e command args]\n");
-	  exit(1);
-	  break;
-	  }
-	  }
+  /* process arguments */
+  while ( (cmdindex==0) &amp;&amp; (c=getopt(argc, argv, "le:s:rh")) != EOF ) {
+    switch(c)  {
+      case 'e':
+      cmdindex = optind-1;	/* index of argv array to pass to exec */
+      break;
+      
+      case 's':
+      scrollbacklines = atoi(optarg);
+      break;
+      
+      case 'l':
+      login_shell = 1;
+      break;
+      
+      case 'r':
+      scrollpos = RIGHT;
+      break;
+      
+      case '?':
+      case 'h':
+      default:
+      fprintf(stderr, "Usage: zterm [-sNN] [-l] [-r] [-e command args]\n");
+      exit(1);
+      break;
+    }
+  }
 	</programlisting>
 	<para>Now we are ready to create our application widgets
 	  ...</para>
 	<programlisting>
-	  /* Create widgets and set options */
-	  window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-	  gtk_window_set_title (GTK_WINDOW (window), "zterm");
-	  gtk_window_set_wmclass (GTK_WINDOW (window), "zterm", "zterm");
-	  gtk_widget_realize (window);
-
-	  /* create hbox */
-	  hbox = gtk_hbox_new (FALSE, 0);
-	  gtk_box_set_spacing (GTK_BOX (hbox), 2);
-	  gtk_container_set_border_width (GTK_CONTAINER (hbox), 2);
-	  gtk_container_add (GTK_CONTAINER (window), hbox);
-	  gtk_widget_show (hbox);
+  /* Create widgets and set options */
+  window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+  gtk_window_set_title (GTK_WINDOW (window), "zterm");
+  gtk_window_set_wmclass (GTK_WINDOW (window), "zterm", "zterm");
+  gtk_widget_realize (window);
+  
+  /* create hbox */
+  hbox = gtk_hbox_new (FALSE, 0);
+  gtk_box_set_spacing (GTK_BOX (hbox), 2);
+  gtk_container_set_border_width (GTK_CONTAINER (hbox), 2);
+  gtk_container_add (GTK_CONTAINER (window), hbox);
+  gtk_widget_show (hbox);
 
 	</programlisting>
 	<para>Here we create the terminal widget, and setup a number of
@@ -799,16 +794,16 @@
 	  setup a basic set of options which are much the same as the
 	  defaults (but i also like a blinking cursor!).</para>
 	<programlisting>
-	  /* create terminal */
-	  term = zvt_term_new_with_size(80,24);
-	  zvt_term_set_font_name(ZVT_TERM (term), FONT);
-	  zvt_term_set_blink (ZVT_TERM (term), TRUE);
-	  zvt_term_set_bell (ZVT_TERM (term), TRUE);
-	  zvt_term_set_scrollback(ZVT_TERM (term), scrollbacklines);
-	  zvt_term_set_scroll_on_keystroke (ZVT_TERM (term), TRUE);
-	  zvt_term_set_scroll_on_output (ZVT_TERM (term), FALSE);
-	  zvt_term_set_background (ZVT_TERM (term), NULL, 0, 0);
-	  zvt_term_set_wordclass (ZVT_TERM (term), "-A-Za-z0-9/_:.,?+%=");
+  /* create terminal */
+  term = zvt_term_new_with_size(80,24);
+  zvt_term_set_font_name(ZVT_TERM (term), FONT);
+  zvt_term_set_blink (ZVT_TERM (term), TRUE);
+  zvt_term_set_bell (ZVT_TERM (term), TRUE);
+  zvt_term_set_scrollback(ZVT_TERM (term), scrollbacklines);
+  zvt_term_set_scroll_on_keystroke (ZVT_TERM (term), TRUE);
+  zvt_term_set_scroll_on_output (ZVT_TERM (term), FALSE);
+  zvt_term_set_background (ZVT_TERM (term), NULL, 0, 0);
+  zvt_term_set_wordclass (ZVT_TERM (term), "-A-Za-z0-9/_:.,?+%=");
 
 	</programlisting>
 	<para>Attatch the signal handlers we defined above.  We also
@@ -816,32 +811,27 @@
 	  window is closed by the window manager then this catches that
 	  event.  Otherwise the close button doesn't work!</para>
 	<programlisting>
+  gtk_signal_connect (GTK_OBJECT (term),
+		      "child_died",
+		      GTK_SIGNAL_FUNC (child_died_event),
+		      NULL);
+  
+  gtk_signal_connect (GTK_OBJECT (term),
+		      "destroy",
+		      GTK_SIGNAL_FUNC (child_died_event),
+		      NULL);
+
+  gtk_signal_connect (GTK_OBJECT (term),
+		      "title_changed",
+		      GTK_SIGNAL_FUNC (title_changed_event),
+		      NULL);
 	  
-	  gtk_signal_connect (
-	  GTK_OBJECT (term),
-	  "child_died",
-	  GTK_SIGNAL_FUNC (child_died_event),
-	  NULL);
+  gtk_signal_connect_after (GTK_OBJECT (term),
+			    "realize",
+			    GTK_SIGNAL_FUNC (set_hints),
+			    term);
 
-	  gtk_signal_connect (
-	  GTK_OBJECT (term),
-	  "destroy",
-	  GTK_SIGNAL_FUNC (child_died_event),
-	  NULL);
-
-	  gtk_signal_connect (
-	  GTK_OBJECT (term),
-	  "title_changed",
-	  GTK_SIGNAL_FUNC (title_changed_event),
-	  NULL);
-	  
-	  gtk_signal_connect_after (
-	  GTK_OBJECT (term),
-	  "size_allocate",
-	  GTK_SIGNAL_FUNC (size_allocate),
-	  term);
-
-	  gtk_widget_show (term);
+  gtk_widget_show (term);
 
 	</programlisting>
 	<para>And here we show how the scrollbar is attached to the term
@@ -853,22 +843,21 @@
 	  more practical position to have it in.  Particularly if there
 	  are overlapping windows, or windows partly off-screen.</para>
 	<programlisting>
-
-	  /* scrollbar */
-	  scrollbar = 
-	  gtk_vscrollbar_new (GTK_ADJUSTMENT (ZVT_TERM (term)-&gt;adjustment));
-	  GTK_WIDGET_UNSET_FLAGS (scrollbar, GTK_CAN_FOCUS);
-	  if (scrollpos == LEFT) {
-	  gtk_box_pack_start (GTK_BOX (hbox), scrollbar, FALSE, TRUE, 0);
-	  gtk_box_pack_start (GTK_BOX (hbox), term, 1, 1, 0);
-	  } else {
-	  gtk_box_pack_start (GTK_BOX (hbox), term, 1, 1, 0);
-	  gtk_box_pack_start (GTK_BOX (hbox), scrollbar, FALSE, TRUE, 0);
-	  }
-	  gtk_widget_show (scrollbar);
-
-	  /* show them all! */
-	  gtk_widget_show (window);
+  /* scrollbar */
+  scrollbar = 
+    gtk_vscrollbar_new (GTK_ADJUSTMENT (ZVT_TERM (term)-&gt;adjustment));
+  GTK_WIDGET_UNSET_FLAGS (scrollbar, GTK_CAN_FOCUS);
+  if (scrollpos == LEFT) {
+    gtk_box_pack_start (GTK_BOX (hbox), scrollbar, FALSE, TRUE, 0);
+    gtk_box_pack_start (GTK_BOX (hbox), term, 1, 1, 0);
+  } else {
+    gtk_box_pack_start (GTK_BOX (hbox), term, 1, 1, 0);
+    gtk_box_pack_start (GTK_BOX (hbox), scrollbar, FALSE, TRUE, 0);
+  }
+  gtk_widget_show (scrollbar);
+  
+  /* show them all! */
+  gtk_widget_show (window);
 
 	</programlisting>
 	<para>Here we show how the sub-shell is created using
@@ -880,57 +869,57 @@
 	  login shell arguments are processed.  Again this is not normally
 	  required for a non-shell application.</para>
 	<programlisting>
-	  /* fork the shell/program */
-	  switch (zvt_term_forkpty(ZVT_TERM (term), ZVT_TERM_DO_UTMP_LOG |  ZVT_TERM_DO_WTMP_LOG)) {
-	  case -1:
-	  perror("ERROR: unable to fork:");
-	  exit(1);
-	  break;
-
-	  case 0:
-	  if (cmdindex) {
-	  environ = env_copy;
-	  execvp(argv[cmdindex], &amp;argv[cmdindex]);
-	  } else {
-	  GString *shell, *name;
-	  
-	  /* get shell from passwd */
-	  pw = getpwuid(getuid());
-	  if (pw) {
-	  shell = g_string_new(pw-&gt;pw_shell);
-	  if (login_shell)
+  /* fork the shell/program */
+  switch (zvt_term_forkpty(ZVT_TERM (term), ZVT_TERM_DO_UTMP_LOG |  ZVT_TERM_DO_WTMP_LOG)) {
+    case -1:
+    perror("ERROR: unable to fork:");
+    exit(1);
+    break;
+    
+    case 0:
+    if (cmdindex) {
+      environ = env_copy;
+      execvp(argv[cmdindex], &amp;argv[cmdindex]);
+    } else {
+      GString *shell, *name;
+      
+      /* get shell from passwd */
+      pw = getpwuid(getuid());
+      if (pw) {
+	shell = g_string_new(pw-&gt;pw_shell);
+	if (login_shell)
 	  name = g_string_new("-");
-	  else
+	else
 	  name = g_string_new("");
-	  
-	  g_string_append(name, strrchr(pw-&gt;pw_shell, '/'));
-	  } else {
-	  shell = g_string_new("/bin/sh");
-	  if (login_shell)
+	
+	g_string_append(name, strrchr(pw-&gt;pw_shell, '/'));
+      } else {
+	shell = g_string_new("/bin/sh");
+	if (login_shell)
 	  name = g_string_new("-sh");
-	  else
+	else
 	  name = g_string_new("sh");
-	  }
+      }
 
-	  execle (shell-&gt;str, name-&gt;str, NULL, env_copy);
-	  perror ("Could not exec\n");
-	  _exit (127);
-	  }
-	  perror("ERROR: Cannot exec command:");
-	  exit(1);
+      execle (shell-&gt;str, name-&gt;str, NULL, env_copy);
+      perror ("Could not exec\n");
+      _exit (127);
+    }
+    perror("ERROR: Cannot exec command:");
+    exit(1);
 
-	  default:
-	  break;
-	  }
+    default:
+    break;
+  }
 	</programlisting>
 	<para>And thats it!  We're ready to go into the main processing
 	  loop!</para>
 	<programlisting>
-	  /* main loop */
-	  gtk_main ();
-	  gtk_exit(0);
-	  return 0;
-	  }
+  /* main loop */
+  gtk_main ();
+  gtk_exit(0);
+  return 0;
+}
 	</programlisting>
       </sect2>
       <sect2>
