@@ -1,5 +1,4 @@
-INCLUDES =                      \
-        -I$(includedir) @GLIB_CFLAGS@
+INCLUDES = $(GLIB_CFLAGS)
 
 noinst_PROGRAMS = convertrgb
 
@@ -9,7 +8,7 @@ convertrgb_SOURCES = \
 	loadpng.c
 
 convertrgb_LDADD = \
-	$(PNG_LIBS) @GLIB_LIBS@
+	$(PNG_LIBS) $(GLIB_LIBS)
 
 EXTRA_DIST = README
 

@@ -2,7 +2,7 @@
 
 INCLUDES = -I$(top_srcdir)/gdk-pixbuf -I.. -I$(srcdir)/.. $(SUPPORTINCS) \
 	-I$(top_srcdir)/intl -I$(top_builddir)/intl \
-	$(GTK_CFLAGS) -I$(includedir) \
+	$(GTK_CFLAGS) \
 	-DGNOMELOCALEDIR=\""$(gnomelocaledir)"\" \
 	-DLOCALEDIR=\""$(gnomelocaledir)"\"
 
