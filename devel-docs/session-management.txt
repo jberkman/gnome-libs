@@ -1,12 +1,187 @@
 Gnome Session Management
 ========================
 
+Quick Introduction To Using GnomeClient
+---------------------------------------
+ 
+These are the key steps to doing SM with gnome-client.c:
+
+static gint
+save_yourself (GnomeClient *client, gint phase, GnomeSaveStyle save_style,
+               gint is_shutdown, GnomeInteractStyle interact_style,
+               gint is_fast, gpointer client_data)
+{
+        gchar* args[4] = { "rm", "-r", NULL, NULL };
+
+        gnome_config_push_prefix (gnome_client_get_config_prefix (client));
+
+        gnome_config_set... (..)
+        gnome_config_set... (..)
+        gnome_config_set... (..)
+
+        gnome_config_pop_prefix ();
+
+        args[2] = gnome_config_get_real_path
+                    (gnome_client_get_config_prefix (client));
+        gnome_client_set_discard_command (client, 3, args);
+
+        return TRUE;
+}
+
+int
+main (int argc, char** argv)
+{
+        GnomeClient* client;
+
+        ...
+
+        gnome_init.. (...);
+
+        ...
+
+        client = gnome_master_client ();
+        gtk_signal_connect (GTK_OBJECT (client), "save_yourself",
+                            GTK_SIGNAL_FUNC (save_yourself), NULL);
+        gtk_signal_connect (GTK_OBJECT (client), "die",
+                            GTK_SIGNAL_FUNC (gtk_main_quit), NULL);
+
+        gnome_config_push_prefix (gnome_client_get_config_prefix (client));
+
+        ... = gnome_config_get... (..)
+        ... = gnome_config_get... (..)
+        ... = gnome_config_get... (..)
+
+        gnome_config_pop_prefix ();
+
+        ...
+
+        gtk_main()
+
+        ...
+
+}
+
+Variations are possible but the above framework is where apps 
+should start. Some details on interacting with the user during
+a save_yourself are given below.
+
+Note that the value returned by gnome_client_get_config_prefix
+will change over time. You should not write config information
+to this prefix outside the save_yourself handler. The config
+which the above code will load for copies of the program which
+have NOT been restarted by the SM is located under the prefix
+gnome_client_get_global_config_prefix() and may be written safely
+at any time.
+
+The save_yourself stuff should write out enough information about
+your state to enable you to remap all your windows (excluding
+any transients that no one will miss). You should set a different
+value for the WM_WINDOW_ROLE on each window using gdk_window_set_role
+(preferably before you map the window but definitely before you
+leave save_yourself).
+
+When restoring the information (in main() above) you should put
+the same WM_WINDOW_ROLE on each window which you map on start up
+that the equivalent window had when you saved it. This probably
+means that you have to save the role values. You should not save
+or restore information that the WM normally maintains (such as
+geometry, desktop, etc.)
+
+see gnome-client.h for further details.
+
+NB:  Do not destroy the gnome master client as this breaks the 
+     operation of the protocol and in certain circumstances can 
+     crash libSM. If you wish to avoid being restarted by the
+     session manager then call gnome_client_set_restart_hint. 
+
+User Interaction During A Session Save
+--------------------------------------
+
+There may be several apps which all want to interact with the user
+during the course of a session save. In order to avoid conflicts,
+these apps have to wait until the session manager grants them 
+permission before they contact the user. 
+
+The key steps to interacting with the user using gnome-client.c are 
+illustrated in this toy example:
+
+void save_more (gint reply, gpointer data)
+{
+	/* This will be the gnome_master_client for all normal apps: */
+	GnomeClient* client  = (GnomeClient*)data;
+
+	if (reply != GNOME_YES)
+		return;
+
+        gnome_config_push_prefix (gnome_client_get_config_prefix (client));
+
+        gnome_config_set... (..)
+        gnome_config_set... (..)
+        gnome_config_set... (..)
+
+        gnome_config_pop_prefix ();
+
+	if (... something went wrong ...) {
+		GtkWidget *error_dialog;
+
+		error_dialog = gnome_error_dialog (_("Could not save!"));
+		gnome_client_save_error_dialog (client, 
+						GNOME_DIALOG (error_dialog));
+	}
+}
+
+static gint
+save_yourself (GnomeClient *client, gint phase, GnomeSaveStyle save_style,
+               gint is_shutdown, GnomeInteractStyle interact_style,
+               gint is_fast, gpointer client_data)
+{
+        gchar* args[4] = { "rm", "-r", NULL, NULL };
+	GtkWidget *save_more_dialog;
+	
+        gnome_config_push_prefix (gnome_client_get_config_prefix (client));
+
+        gnome_config_set... (..)
+        gnome_config_set... (..)
+        gnome_config_set... (..)
+
+        gnome_config_pop_prefix ();
+
+        args[2] = gnome_config_get_real_path
+                    (gnome_client_get_config_prefix (client));
+        gnome_client_set_discard_command (client, 3, args);
+
+	save_more_dialog = gnome_question_dialog_new (_("Save more detail ?"),
+						      save_more, client);
+
+	gnome_client_save_any_dialog (client, GNOME_DIALOG (save_more_dialog));
+
+        return TRUE;
+}
+
+The value of the interact_style parameter passed to save_yourself determines
+whether these dialogs will actually be shown to the user. This allows the
+user to request session saves which do not require interaction. You should
+use gnome_client_save_error_dialog for dialogs which report errors and
+gnome_client_save_any_dialog for other dialogs. The dialogs will be shown
+to the user in the order that you call these functions.
+
+Note that the dialog is always modal but is not shown until the session
+manager grants permission. Therefore, you must use callbacks to interpret
+the users input into the dialog. You can use any GnomeDialog and add extra 
+widgets or buttons into it in the usual way.
+
+If the dialog is shown as part of a session logout then an extra button
+will automatically be appended which allows the user to cancel the logout.
+
+The Gnome Session Manager
+-------------------------
+
 The gnome-session manager implements the SM protocol for X11R6. (specified 
 in xc/docs/specs/SM.txt from xc-3.tar.gz in the X distribution). Additional 
 details of the support for the SM protocol are given in Appendix A.
 
-This document describes any extensions to the SM protocol which are 
-implemented by gnome-session.
+This remainder of this document describes any extensions to the SM protocol 
+which are implemented by gnome-session.
 
 Avoiding Race Conditions During Session Start Up
 ------------------------------------------------
@@ -70,7 +245,7 @@ a) Details of app compliance.
 	gnome_client_set_priority (gnome_master_client (), priority);
 
    Apps which do not use libgnomeui may send the suggestion by
-   including a SMProp with name "Priority" and type SmCARD8
+   including a SMProp with name "_GSM_Priority" and type SmCARD8
    among the properties in a call to SmcSetProperties().
 
 4) If the app is included among the apps that are started up for every
@@ -110,7 +285,7 @@ session.c:
 #ifdef HAVE_X11_SM_SMLIB_H
 #include <X11/SM/SMlib.h>
 #include <pwd.h>
-#define GnomePriority "Priority"
+#define GnomePriority "_GSM_Priority"
 #endif
 
 /* imported stuff: esd options */
@@ -479,3 +654,5 @@ xsm does not send a SaveComplete message in response to the initial
 SaveYourself message sent on registration (section 7.2 of the specs).
 gnome-session does not reproduce this violation of the protocol as
 it might leave properly compliant clients in a frozen state.
+
+xsm does not support the SmcSaveYourselfRequest call. gnome-session does.
