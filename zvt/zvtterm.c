@@ -99,7 +99,6 @@ static void zvt_term_scroll_by_lines (ZvtTerm *term, int n);
 static int vt_cursor_state(void *user_data, int state);
 static void zvt_term_writemore (gpointer data, gint fd, GdkInputCondition condition);
 static void zvt_term_updated(ZvtTerm *term, int mode);
-static void zvt_term_match_clicked (ZvtTerm *term, GdkEventButton *event, char *match, void *data);
 
 /* callbacks from update layer */
 void vt_draw_text(void *user_data, struct vt_line *line, int row, int col, int len, int attr);

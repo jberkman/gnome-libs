@@ -318,6 +318,28 @@ path_max (void)
 #endif
 }
 
+/*
+  Use ttydefault definitions, if they exist, otherwise
+  make something up ...
+*/
+#ifndef TTYDEF_IFLAG
+	/*ICRNL|IXON;*/
+#define TTYDEF_IFLAG (BRKINT | ICRNL | IMAXBEL | IXON | IXANY)
+#endif
+#ifndef TTYDEF_OFLAG
+	/*OPOST|ONLCR|NL0|CR0|TAB0|BS0|VT0|FF0;*/
+#define TTYDEF_OFLAG (OPOST | ONLCR)
+#endif
+#ifndef TTYDEF_LFLAG
+	/*ISIG|ICANON|IEXTEN|ECHO|ECHOE|ECHOK|ECHOCTL|ECHOKE;*/
+#define TTYDEF_LFLAG (ECHO | ICANON | ISIG | IEXTEN | ECHOE | ECHOKE | ECHOCTL)
+#endif
+#ifndef TTYDEF_CFLAG
+	/*EXTB|CS8|CREAD|HUPCL;*/
+	/* B38400 isnt portable EXTB isn't really either, B9600 though  .. */
+#define TTYDEF_CFLAG (B9600 | CREAD | CS8 | HUPCL)
+#endif
+
 static int
 open_ptys (int utmp, int wtmp)
 {
@@ -353,12 +375,11 @@ open_ptys (int utmp, int wtmp)
 	 *	anything about field order.
 	 */
 	memset(&term, 0, sizeof(term));
- 
-	term.c_iflag = ICRNL|IXON;
-	term.c_oflag = OPOST|ONLCR|NL0|CR0|TAB0|BS0|VT0|FF0;
-	/* B38400 isnt portable EXTB is .. */
-	term.c_cflag = EXTB|CS8|CREAD|HUPCL;
-	term.c_lflag = ISIG|ICANON|IEXTEN|ECHO|ECHOE|ECHOK|ECHOCTL|ECHOKE;
+
+	term.c_iflag = TTYDEF_IFLAG;
+	term.c_oflag = TTYDEF_OFLAG;
+	term.c_cflag = TTYDEF_CFLAG;
+	term.c_lflag = TTYDEF_LFLAG;
 #ifdef N_TTY
 	/* should really be a check for c_line, but maybe this is good enough */
 	term.c_line = N_TTY;
