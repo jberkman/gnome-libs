@@ -1,3 +1,15 @@
+1999-01-02  Jeff Garzik  <jgarzik@pobox.com>
+
+	* gnome-pty-helper.c, subshell.c,
+	  zterm.c, zvtterm.c:
+	Include _xxx_SOURCE defines for 'gcc -ansi -pedantic'
+
+	* gnome-pty.h:
+	removed global var login_name not referenced anywhere.
+	removed unnecessary comma.
+
+	* gnome-pty-helper.c: include autoconf alloca incantation
+	
 1998-12-31  Jay Painter <jpaint@serv.net>
 
 	* zvtterm.c, vtx.h, update.c: changed the way the zvtterm

@@ -18,6 +18,11 @@
  *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
+/* needed for getopt under 'gcc -ansi -pedantic' on GNU/Linux */
+#ifndef _GNU_SOURCE
+#  define _GNU_SOURCE 1
+#endif
+
 #include <gtk/gtk.h>
 #include <stdio.h>
 #include <unistd.h>

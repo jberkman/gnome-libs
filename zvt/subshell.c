@@ -19,6 +19,13 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 #include <config.h>
+
+/* needed for sigaction stuff under 'gcc -ansi -pedantic' */
+#ifndef _POSIX_SOURCE
+#  define _POSIX_SOURCE 1
+#endif
+#include <sys/types.h>
+
 #include "subshell-includes.h"
 
 /* Pid of the helper SUID process */

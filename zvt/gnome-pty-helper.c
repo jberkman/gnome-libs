@@ -27,6 +27,12 @@
  * We use as little as possible external libraries.  
  */
 #include <config.h>
+
+/* needed for sigaction under 'gcc -ansi -pedantic' on GNU/Linux */
+#ifndef _POSIX_SOURCE
+#  define _POSIX_SOURCE 1
+#endif
+
 #include <sys/types.h>
 #include <sys/time.h>
 #include <sys/resource.h>
@@ -45,6 +51,27 @@
 #include <utmp.h>
 #include "gnome-pty.h"
 #include "gnome-login-support.h"
+
+
+/* GNU autoconf alloca incantation */
+/* AIX requires this to be the first thing in the file.  */
+#ifdef __GNUC__
+# ifndef alloca
+#  define alloca __builtin_alloca
+# endif
+#else
+# if HAVE_ALLOCA_H
+#  include <alloca.h>
+# else
+#  ifdef _AIX
+ #pragma alloca
+#  else
+#   ifndef alloca /* predefined by HP cc +Olibcalls */
+char *alloca ();
+#   endif
+#  endif
+# endif
+#endif
 
 /* For PATH_MAX on FreeBSD. */
 #ifdef HAVE_SYS_SYSLIMITS_H

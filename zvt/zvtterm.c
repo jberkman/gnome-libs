@@ -18,6 +18,13 @@
  *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 #include <config.h>
+
+/* need for 'gcc -ansi -pedantic' under GNU/Linux */
+#ifndef _POSIX_SOURCE
+#  define _POSIX_SOURCE 1
+#endif
+#include <sys/types.h>
+
 #include <stdio.h>
 #include <errno.h>
 #include <unistd.h>
