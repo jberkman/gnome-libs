@@ -80,6 +80,7 @@ static void gnome_icon_selector_finalize    (GObject                *object);
 
 static void      freeze_handler             (GnomeSelector     *selector);
 static void      thaw_handler               (GnomeSelector     *selector);
+static GtkSelectionMode get_selection_mode_handler (GnomeSelector *selector);
 static void      set_selection_mode_handler (GnomeSelector     *selector,
                                              guint              mode);
 static GSList *  get_selection_handler      (GnomeSelector     *selector);
@@ -143,6 +144,7 @@ gnome_icon_selector_class_init (GnomeIconSelectorClass *class)
     selector_class->clear = clear_handler;
     selector_class->freeze = freeze_handler;
     selector_class->thaw = thaw_handler;
+    selector_class->get_selection_mode = get_selection_mode_handler;
     selector_class->set_selection_mode = set_selection_mode_handler;
     selector_class->get_selection = get_selection_handler;
 
@@ -558,6 +560,19 @@ thaw_handler (GnomeSelector *selector)
 
     if (GNOME_SELECTOR_CLASS (parent_class)->thaw)
 	(* GNOME_SELECTOR_CLASS (parent_class)->thaw) (selector);
+}
+
+static GtkSelectionMode
+get_selection_mode_handler (GnomeSelector *selector)
+{
+    GnomeIconSelector *iselector;
+
+    g_return_val_if_fail (selector != NULL, 0);
+    g_return_val_if_fail (GNOME_IS_ICON_SELECTOR (selector), 0);
+
+    iselector = GNOME_ICON_SELECTOR (selector);
+
+    return gnome_icon_list_get_selection_mode (iselector->_priv->icon_list);
 }
 
 static void
