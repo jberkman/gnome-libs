@@ -1,20 +1,18 @@
 # Note that this is NOT a relocatable package
+%define name     gnome-libs
 %define ver      @VERSION@
 %define rel      1
 %define prefix   /usr
 
+Name: %name
 Summary: The libraries needed by the GNOME GUI desktop environment.
-Name: gnome-libs
 Version: %ver
 Release: %rel
 Copyright: LGPL
 Group: System Environment/Libraries
-Source: ftp://ftp.gnome.org/pub/GNOME/sources/gnome-libs/gnome-libs-%{ver}.tar.gz
-BuildRoot: /var/tmp/gnome-libs-root
-Obsoletes: gnome
-
+Source: ftp://ftp.gnome.org/pub/GNOME/sources/gnome-libs/%name-%{ver}.tar.gz
 URL: http://www.gnome.org/
-Requires: gtk+ >= 1.1
+Requires: gtk+ >= 1.2
 Docdir: %{prefix}/doc
 
 %description
@@ -32,8 +30,8 @@ need to install gnome-libs-devel.
 %package devel
 Summary: Libraries and include files for developing GNOME applications.
 Group: Development/Libraries
-Requires: gnome-libs = %{PACKAGE_VERSION}
-Obsoletes: gnome
+Requires: %name = %{PACKAGE_VERSION}
+Obsoletes: %name
 
 %description devel
 GNOME (GNU Network Object Model Environment) is a user-friendly set of
@@ -51,6 +49,11 @@ environment, you'll also need to install the gnome-core and gnome-libs
 packages.
 
 %changelog
+* Tue Mar 2  1999 Gregory McLean <gregm@comstar.net>
+
+- Added some hackage in for the brain dead libtool on the alpha
+- Cleaned up the spec file abit to be more consistant.
+
 * Wed Feb 17 1999 Elliot Lee <sopwith@redhat.com>
 
 - Add debugging disabling flags to $CFLAGS
@@ -77,14 +80,17 @@ packages.
 %setup
 
 %build
+%ifarch alpha
+ MYARCH_FLAGS="--host=alpha-redhat-linux"
+%endif
 # Needed for snapshot releases.
 
 MYCFLAGS="$RPM_OPT_FLAGS"
 
 if [ ! -f configure ]; then
-  CFLAGS="$MYCFLAGS" ./autogen.sh --prefix=%prefix --localstatedir=/var/lib
+  CFLAGS="$MYCFLAGS" ./autogen.sh $MYARCH_FLAGS --prefix=%prefix --localstatedir=/var/lib
 else
-  CFLAGS="$MYCFLAGS" ./configure --prefix=%prefix --localstatedir=/var/lib
+  CFLAGS="$MYCFLAGS" ./configure $MYARCH_FLAGS --prefix=%prefix --localstatedir=/var/lib
 fi
 
 if [ "$SMP" != "" ]; then
