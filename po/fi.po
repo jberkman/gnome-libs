@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-libs\n"
 "POT-Creation-Date: 1999-08-01 17:58-0400\n"
-"PO-Revision-Date: 1999-03-15 14:20+0300\n"
+"PO-Revision-Date: 1999-08-13 14:20+0300\n"
 "Last-Translator: Mikko Rauhala <mjr@iki.fi>\n"
 "Language-Team: Finnish <fi@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -29,7 +29,7 @@ msgstr "Hei, maailma GNOME:lla"
 #: gnome-hello/gnome-hello-2-i18n.c:61
 #: gnome-hello/gnome-hello-3-parse-args.c:61
 msgid "(C) 1998 the Free Software Foundation"
-msgstr ""
+msgstr "(C) 1998 Free Software Foundation"
 
 #. another comments
 #: gnome-hello/gnome-hello-2-i18n.c:64
@@ -152,7 +152,7 @@ msgstr "Tiedosto/Lopeta"
 
 #: gnome-hello/gnome-hello.c:40
 msgid "<control>E"
-msgstr ""
+msgstr "<control>E"
 
 #. The '...' end indicate that the options open a dialog
 #: gnome-hello/gnome-hello.c:42
@@ -161,7 +161,7 @@ msgstr "Ohje/Tietoja..."
 
 #: gnome-hello/gnome-hello.c:42
 msgid "<control>A"
-msgstr ""
+msgstr "<control>A"
 
 # , c-format
 #: gnome-hello/gnome-hello.c:208
@@ -1319,6 +1319,9 @@ msgid ""
 "(%s)\n"
 "For more information, see http://www.gnome.org/application_crashed.shtml"
 msgstr ""
+"Sovellus \"%s\" (prosessi %d) on kaatunut ohjelmistovirheen vuoksi.\n"
+"(%s)\n"
+"Lisätietoja on saatavilla osoitteessa http://www.gnome.org/application_crashed.shtml"
 
 #: libgnomeui/stock_demo.c:112
 msgid "New..."
@@ -1502,7 +1505,7 @@ msgstr "WIN_HINTS-testi"
 
 #: libgnomeui/winhints_demo.c:411
 msgid "Copyright (C)1998"
-msgstr ""
+msgstr "Copyright (C)1998"
 
 #: libgnomeui/winhints_demo.c:413
 msgid ""
@@ -1524,11 +1527,11 @@ msgstr "Luodaan '/GNOME/Servers'-kontekstia %s %d"
 
 #: libgnorba/goad-browser.c:27
 msgid "GOAD ID of the server to activate"
-msgstr "Aktivoitavan palvelimen GOAD ID"
+msgstr "Aktivoitavan palvelimen GOAD-tunnus"
 
 #: libgnorba/goad-browser.c:28
 msgid "Repository ID of the server to activate"
-msgstr "Aktivoitavan palvelimen varasto-ID"
+msgstr "Aktivoitavan palvelimen varastotunnus"
 
 #: libgnorba/goad-browser.c:28
 msgid "REPO-ID"
@@ -1546,19 +1549,19 @@ msgstr ""
 
 #: libgnorba/goad.c:1294
 msgid "(Internal use only) GOAD server ID to activate"
-msgstr "(Sisäiseen käyttöön) aktivoitavan GOAD-palvelimen ID"
+msgstr "(Sisäiseen käyttöön) aktivoitavan GOAD-palvelimen tunnus"
 
 #: libgnorba/loadshlib.c:11
 msgid "ID under which GOAD knows this server"
-msgstr "ID, jolla GOAD tunnistaa tämän palvelimen"
+msgstr "Tunnus, jolla GOAD tunnistaa tämän palvelimen"
 
 #: libgnorba/loadshlib.c:11
 msgid "GOAD_ID"
-msgstr ""
+msgstr "GOAD_ID"
 
 #: libgnorba/loadshlib.c:12
 msgid "Repository ID under which GOAD knows this server"
-msgstr "Varasto-ID, jolla GOAD tunnistaa tämän palvelimen"
+msgstr "Varastotunnus, jolla GOAD tunnistaa tämän palvelimen"
 
 #: libgnorba/loadshlib.c:12
 msgid "REPO_ID"
@@ -1688,27 +1691,3 @@ msgstr "Käyttäjä valitsi Ei/Peruuta datalla:\n"
 #: test-gnome/testgnome.c:1087
 msgid "Weird number in reply callback"
 msgstr "Outo numero takaisinkutsurutiinissa"
-
-#~ msgid ""
-#~ "No, and ignore\n"
-#~ "future SIGSEGV's"
-#~ msgstr ""
-#~ "Ei, ja ohita\n"
-#~ "tulevat SIGSEGV:t"
-
-# , c-format
-#~ msgid ""
-#~ "Application \"%s\" has a bug.\n"
-#~ "SIGSEGV received at PC %#lx in PID %d.\n"
-#~ "\n"
-#~ "\n"
-#~ "Do you want to exit this program?"
-#~ msgstr ""
-#~ "Ohjelmassa \"%s\" on virhe.\n"
-#~ "SIGSEGV havaittu, PC %#lx, PID %d.\n"
-#~ "\n"
-#~ "\n"
-#~ "Haluatko poistua tästä ohjelmasta?"
-
-#~ msgid "Guru-in-a-dialog test"
-#~ msgstr "Guru dialogissa -testi"
