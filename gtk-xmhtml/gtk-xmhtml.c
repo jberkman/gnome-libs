@@ -213,6 +213,17 @@ gtk_xmhtml_init (GtkXmHTML *html)
 	html->top_shadow_gc    = NULL;
 	html->highlight_gc     = NULL;
 	html->highlight_color  = 0;
+
+	/* moved here from gtk_xmhtml_new() so one can subclass */
+	/* GtkXmHTML widget properly                            */
+	GTK_WIDGET(html)->allocation.width  = 200;
+	GTK_WIDGET(html)->allocation.height = 200;
+	html->initialized = 0;
+	html->frozen = 0;
+	gtk_xmhtml_create_widgets (html);
+	gtk_xmhtml_source (html, "<body></body>");
+	html->frozen = 1;
+
 }
 
 static void gtk_xmhtml_create_widgets (GtkXmHTML *html);
@@ -223,13 +234,6 @@ gtk_xmhtml_new (void)
 	GtkXmHTML *html;
 
 	html = gtk_type_new (gtk_xmhtml_get_type ());
-	GTK_WIDGET(html)->allocation.width  = 200;
-	GTK_WIDGET(html)->allocation.height = 200;
-	html->initialized = 0;
-	html->frozen = 0;
-	gtk_xmhtml_create_widgets (html);
-	gtk_xmhtml_source (html, "<body></body>");
-	html->frozen = 1;
 	return GTK_WIDGET (html);
 }
 
