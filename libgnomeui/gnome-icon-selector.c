@@ -93,7 +93,7 @@ static GSList *  get_selection_handler      (GnomeSelector     *selector);
 static void      free_entry_func            (gpointer           data,
 					     gpointer           user_data);
 
-static void      do_add_handler             (GnomeSelector     *selector,
+static void      do_add_file_handler        (GnomeSelector     *selector,
                                              const gchar       *uri,
                                              gint               position);
 static void      stop_loading_handler       (GnomeSelector     *selector);
@@ -149,7 +149,7 @@ gnome_icon_selector_class_init (GnomeIconSelectorClass *class)
     selector_class->set_selection_mode = set_selection_mode_handler;
     selector_class->get_selection = get_selection_handler;
 
-    selector_class->do_add = do_add_handler;
+    selector_class->do_add_file = do_add_file_handler;
     selector_class->stop_loading = stop_loading_handler;
 }
 
@@ -390,9 +390,9 @@ clear_handler (GnomeSelector *selector)
 }
 
 static void
-do_add_async_cb (GnomeGdkPixbufAsyncHandle *handle,
-		 GnomeVFSResult error, GdkPixbuf *pixbuf,
-		 gpointer callback_data)
+do_add_file_async_cb (GnomeGdkPixbufAsyncHandle *handle,
+		      GnomeVFSResult error, GdkPixbuf *pixbuf,
+		      gpointer callback_data)
 {
     GnomeIconSelectorAsyncData *async_data;
     const gchar *basename;
@@ -432,17 +432,26 @@ do_add_async_cb (GnomeGdkPixbufAsyncHandle *handle,
 
     basename = gnome_vfs_uri_get_basename (async_data->uri);
     path = gnome_vfs_uri_to_string (async_data->uri, GNOME_VFS_URI_HIDE_NONE);
-    
-    gnome_icon_list_append_pixbuf (async_data->iselector->_priv->icon_list,
-				   scaled, path, basename);
+
+    if (async_data->position == -1)
+	gnome_icon_list_append_pixbuf (async_data->iselector->_priv->icon_list,
+				       scaled, path, basename);
+    else
+	gnome_icon_list_insert_pixbuf (async_data->iselector->_priv->icon_list,
+				       async_data->position, scaled, path,
+				       basename);
+
+    GNOME_CALL_PARENT_HANDLER (GNOME_SELECTOR_CLASS, do_add_file,
+			       (GNOME_SELECTOR (async_data->iselector),
+				path, async_data->position));
 
     gdk_pixbuf_unref (scaled);
     g_free (path);
 }
 
 static void
-do_add_async_done_cb (GnomeGdkPixbufAsyncHandle *handle,
-		      gpointer callback_data)
+do_add_file_async_done_cb (GnomeGdkPixbufAsyncHandle *handle,
+			   gpointer callback_data)
 {
     GnomeIconSelectorAsyncData *async_data;
 
@@ -461,7 +470,7 @@ do_add_async_done_cb (GnomeGdkPixbufAsyncHandle *handle,
 }
 
 static void
-do_add_handler (GnomeSelector *selector, const gchar *uri, gint position)
+do_add_file_handler (GnomeSelector *selector, const gchar *uri, gint position)
 {
     GnomeIconSelectorAsyncData *async_data;
     GnomeIconSelector *iselector;
@@ -483,7 +492,7 @@ do_add_handler (GnomeSelector *selector, const gchar *uri, gint position)
 	(iselector->_priv->async_ops, async_data);
 
     async_data->handle = gnome_gdk_pixbuf_new_from_uri_async
-	(uri, do_add_async_cb, do_add_async_done_cb, async_data);
+	(uri, do_add_file_async_cb, do_add_file_async_done_cb, async_data);
 }
 
 static void
