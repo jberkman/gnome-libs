@@ -1,3 +1,15 @@
+Wed May 13 13:34:10 1998  Tom Tromey  <tromey@cygnus.com>
+
+	* libgnome/gnome-i18n.h: Declare new functions.
+	* libgnome/gnome-i18n.c (LANGKEY): New macro.
+	(gnome_i18n_set_preferred_language): New function.
+	(gnome_i18n_init): Likewise.
+	(gnome_i18n_get_preferred_language): Likewise.
+	(guess_category_value): Return NULL as default domain.
+	(gnome_i18n_get_language_list): Handle NULL return from
+	guess_category_value.
+	* libgnome/gnomelib-init.c (gnomelib_init): Call gnome_i18n_init().
+
 Sat May  9 20:25:49 1998  Szekeres István  <szekeres@cyberspace.mht.bme.hu>
 
 	* libgnome/gnome-string.c (gnome_string_join):
