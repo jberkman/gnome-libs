@@ -6,7 +6,7 @@
 %define  prefix  /usr
 %define  sysconfdir /etc
 
-Summary: The libraries needed by the GNOME GUI desktop environment.
+Summary: The libraries needed to run the GNOME GUI desktop environment.
 Name: %name
 Version: %ver
 Release: %rel
@@ -135,7 +135,6 @@ rm -rf $RPM_BUILD_ROOT
 %{prefix}/share/mime-info/gnome.mime
 %{prefix}/share/type-convert/type.convert
 %config %{sysconfdir}/*
-%config /etc/*
 
 %files devel
 %defattr(-, root, root)

@@ -1,3 +1,8 @@
+1999-09-01 Elliot Lee <sopwith@redhat.com>
+	* libgnome/gnome-exec.c: Open stdin to be /dev/null if close_fd's
+	  is specified - we don't want programs reading from our tty and
+	  hanging all the programs in the process group.
+
 1999-09-01  Havoc Pennington  <hp@pobox.com>
 
 	* configure.in: Apparently some old libpng's exist, and they don't 
