@@ -1,5 +1,8 @@
 1999-09-23  Michael Zucchi  <mzucchi@denr.sa.gov.au>
 
+	* update.c (vt_getmatches): Keep track of the position of the
+	current match for multiple match scans on the same line.
+
 	* gnome-pty-helper.c (open_ptys): Another attempt ... this time
 	conditionally check every bloody flag before we try and use it.
 

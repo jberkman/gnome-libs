@@ -1449,8 +1449,8 @@ void vt_getmatches(struct _vtx *vx)
 	/* check this regex, for multiple matches ... */
 	out = line;
 	while ((out<outend) && regexec(&mw->preg, out, 1, pmatch, 0)==0) {
-	  int start = pmatch[0].rm_so;
-	  int end = pmatch[0].rm_eo;
+	  int start = pmatch[0].rm_so + (out-line);
+	  int end = pmatch[0].rm_eo + (out-line);
 	  struct vt_match_block *b;
 	  struct vt_match *m;
 
@@ -1515,7 +1515,6 @@ void vt_getmatches(struct _vtx *vx)
 		   out + pmatch[0].rm_so));
 
 	  /* check to see if this match goes across line boundaries ... */
-
 	  out += pmatch[0].rm_eo; /* skip to next sub-string */
 	}
 
