@@ -9,7 +9,7 @@ Version: %ver
 Release: %rel
 Copyright: LGPL
 Group: X11/gnome
-Source: ftp://ftp.gnome.org/pub/GNOME/sources/gnome-libs-%{ver}.tar.gz
+Source: ftp://ftp.gnome.org/pub/GNOME/sources/gnome-libs/gnome-libs-%{ver}.tar.gz
 BuildRoot: /var/tmp/gnome-libs-root
 Obsoletes: gnome
 Packager: Marc Ewing <marc@redhat.com>
