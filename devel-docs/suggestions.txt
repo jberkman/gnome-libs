@@ -6,35 +6,48 @@ Menus:
 
    - For standard menu items (Save, Save As, Close, Quit, etc), use
      the macros defined in gnome-app-helper.h, e.g.
-     GNOMEUIINFO_MENU_EXIT_ITEM(cb, data)
+
+	     GNOMEUIINFO_MENU_EXIT_ITEM(CB, DATA)
+
      except for New where the define is:
-     GNOMEUIINFO_MENU_NEW_ITEM(label,cb,data)
-     you should put the label in the form of N_("_New Document"),
-     replacing Document with whatever new thing you are adding
-     Print should do an immediate printing, Print Setup will take
-     care of all the setup
 
-   - For some standard toplevel menus (File, Edit,Help,etc),
-     you should use the macros GNOMEUIINFO_*_MENU(tree)
+	     GNOMEUIINFO_MENU_NEW_ITEM(LABEL,TIP,CB,DATA)
 
-   - The order of the toplevel menus should be:
-     File, <any mdi child menus>, Edit, View, Windows, Help
-     Help should NOT be right aligned
+     Where LABEL is the the text which appears in the menu for this
+     menu item.  You should put LABEL in the form of N_("_New
+     Document"), or whatever's appropriate for your application.  TIP
+     should be the description of this menu item's function,
+     e.g. N_("Create a new document").
+
+     The standard print menu item should immediately print the
+     document without popping up a dialog.  If the user wants a
+     dialog, he will use the print_setup menu item.
+
+   - For some standard toplevel menus (File, Edit, Help, etc), you
+     should use the macros GNOMEUIINFO_*_MENU(tree).
+
+   - The order of the toplevel menus should be: 
+
+	  File, <any mdi child menus>, Edit, View, Windows, Help
+
+     The Help menu should not be right-justified.
 
    - The prescribed order of standard menu items in the "File" menu is
      the following:
-     New, Open, Save, Save As, Revert, separator, Print, Print Setup,
-     separator, Preferences, separator, Close, Exit
+
+          New, Open, Save, Save As, Revert, SEPARATOR, Print, Print
+          Setup, SEPARATOR, Preferences, SEPARATOR, Close, Exit
 
    - The prescribed order of standard menu items in the "Edit" menu is
      the following:
-     Undo, Redo, separator, Cut, Copy, Paste, Clear, separator, Properties
 
-   - For help menu, you should have this:
+          Undo, Redo, separator, Cut, Copy, Paste, Clear, SEPARATOR,
+          Properties
+
+   - For the help menu, you should have this:
      GNOMEUIINFO_HELP(app_name),
      GNOMEUIINFO_MENU_ABOUT_ITEM(cb, data),
      GNOMEUIINFO_END
-     
 
 Dialogs
 -------
