@@ -43,6 +43,7 @@
 #include <gtk/gtkscrolledwindow.h>
 #include <gtk/gtksignal.h>
 #include "libgnome/libgnomeP.h"
+#include "gnome-macros.h"
 #include "gnome-selectorP.h"
 #include "gnome-vfs-util.h"
 #include "gnome-file-selector.h"
@@ -50,9 +51,18 @@
 #include "gnome-icon-list.h"
 #include "gnome-entry.h"
 
-#include <libgnomevfs/gnome-vfs-mime.h>
+#include <libgnomevfs/gnome-vfs.h>
 
 #define ICON_SIZE 48
+
+typedef struct _GnomeIconSelectorAsyncData      GnomeIconSelectorAsyncData;
+
+struct _GnomeIconSelectorAsyncData {
+    GnomeIconSelector *iselector;
+    GnomeGdkPixbufAsyncHandle *handle;
+    GnomeVFSURI *uri;
+    gint position;
+};
 
 struct _GnomeIconSelectorPrivate {
     GnomeIconList *icon_list;
@@ -61,6 +71,8 @@ struct _GnomeIconSelectorPrivate {
 
     GSList *file_list;
 
+    GSList *async_ops;
+
     /* a flag set to stop the loading of images in midprocess */
     gboolean stop_loading;
 };
@@ -68,21 +80,24 @@ struct _GnomeIconSelectorPrivate {
 
 static void gnome_icon_selector_class_init  (GnomeIconSelectorClass *class);
 static void gnome_icon_selector_init        (GnomeIconSelector      *iselector);
-static void gnome_icon_selector_destroy     (GtkObject       *object);
-static void gnome_icon_selector_finalize    (GObject         *object);
+static void gnome_icon_selector_destroy     (GtkObject              *object);
+static void gnome_icon_selector_finalize    (GObject                *object);
 
-static void      clear_handler              (GnomeSelector   *selector);
-static gboolean  check_filename_handler     (GnomeSelector   *selector,
-                                             const gchar     *filename);
-static void      freeze_handler             (GnomeSelector   *selector);
-static void      update_file_list_handler   (GnomeSelector   *selector);
-static void      thaw_handler               (GnomeSelector   *selector);
-static void      set_selection_mode_handler (GnomeSelector   *selector,
-                                             guint            mode);
-static GSList *  get_selection_handler      (GnomeSelector   *selector);
+static void      clear_handler              (GnomeSelector     *selector);
+static void      freeze_handler             (GnomeSelector     *selector);
+static void      thaw_handler               (GnomeSelector     *selector);
+static void      set_selection_mode_handler (GnomeSelector     *selector,
+                                             guint              mode);
+static GSList *  get_selection_handler      (GnomeSelector     *selector);
 
-static void      free_entry_func            (gpointer         data,
-					     gpointer         user_data);
+static void      free_entry_func            (gpointer           data,
+					     gpointer           user_data);
+
+static void      do_add_handler             (GnomeSelector     *selector,
+                                             gint               position,
+                                             const gchar       *uri);
+static void      stop_loading_handler       (GnomeSelector     *selector);
+
 
 static GnomeFileSelectorClass *parent_class;
 
@@ -129,12 +144,13 @@ gnome_icon_selector_class_init (GnomeIconSelectorClass *class)
     gobject_class->finalize = gnome_icon_selector_finalize;
 
     selector_class->clear = clear_handler;
-    selector_class->check_filename = check_filename_handler;
     selector_class->freeze = freeze_handler;
-    selector_class->update_file_list = update_file_list_handler;
     selector_class->thaw = thaw_handler;
     selector_class->set_selection_mode = set_selection_mode_handler;
     selector_class->get_selection = get_selection_handler;
+
+    selector_class->do_add = do_add_handler;
+    selector_class->stop_loading = stop_loading_handler;
 }
 
 static void
@@ -152,6 +168,25 @@ icon_selected_cb (GnomeIconList *gil, gint num, GdkEvent *event,
 
 	gtk_signal_emit_by_name (GTK_OBJECT (iselector),
 				 "selection_changed");
+}
+
+static gboolean
+iselector_directory_filter_func (const GnomeVFSFileInfo *info, gpointer data)
+{
+    GnomeIconSelector *iselector;
+    const gchar *mimetype;
+
+    g_return_val_if_fail (data != NULL, FALSE);
+    g_return_val_if_fail (GNOME_IS_ICON_SELECTOR (data), FALSE);
+
+    iselector = GNOME_ICON_SELECTOR (data);
+
+    mimetype = gnome_vfs_file_info_get_mime_type ((GnomeVFSFileInfo *) info);
+
+    if (!mimetype || strncmp (mimetype, "image", sizeof("image")-1))
+	return FALSE;
+    else
+	return TRUE;
 }
 
 
@@ -174,6 +209,8 @@ gnome_icon_selector_construct (GnomeIconSelector *iselector,
 			       GtkWidget *browse_dialog,
 			       guint32 flags)
 {
+    GnomeVFSDirectoryFilter *filter;
+
     g_return_if_fail (iselector != NULL);
     g_return_if_fail (GNOME_IS_ICON_SELECTOR (iselector));
 
@@ -228,6 +265,15 @@ gnome_icon_selector_construct (GnomeIconSelector *iselector,
 				   history_id, dialog_title,
 				   entry_widget, selector_widget,
 				   browse_dialog, flags);
+
+    filter = gnome_vfs_directory_filter_new_custom
+	(iselector_directory_filter_func,
+	 GNOME_VFS_DIRECTORY_FILTER_NEEDS_NAME |
+	 GNOME_VFS_DIRECTORY_FILTER_NEEDS_TYPE |
+	 GNOME_VFS_DIRECTORY_FILTER_NEEDS_MIMETYPE,
+	 iselector);
+
+    gnome_file_selector_set_filter (GNOME_FILE_SELECTOR (iselector), filter);
 }
 
 /**
@@ -298,7 +344,7 @@ gnome_icon_selector_destroy (GtkObject *object)
 
     if (iselector->_priv) {
 	if (iselector->_priv->icon_list)
-	    gtk_widget_unref (iselector->_priv->icon_list);
+	    gtk_object_unref (GTK_OBJECT (iselector->_priv->icon_list));
 	iselector->_priv->icon_list = NULL;
 
 	g_slist_foreach (iselector->_priv->file_list,
@@ -343,75 +389,125 @@ clear_handler (GnomeSelector *selector)
 	(* GNOME_SELECTOR_CLASS (parent_class)->clear) (selector);
 }
 
-static gboolean
-check_filename_handler (GnomeSelector *selector, const gchar *filename)
+static void
+do_add_async_cb (GnomeGdkPixbufAsyncHandle *handle,
+		 GnomeVFSResult error, GdkPixbuf *pixbuf,
+		 gpointer callback_data)
 {
-    const char *mimetype;
+    GnomeIconSelectorAsyncData *async_data;
+    const gchar *basename;
+    GdkPixbuf *scaled;
+    gchar *path;
+    guint w, h;
 
-    g_return_val_if_fail (selector != NULL, FALSE);
-    g_return_val_if_fail (GNOME_IS_ICON_SELECTOR (selector), FALSE);
-    g_return_val_if_fail (filename != NULL, FALSE);
+    g_return_if_fail (callback_data != NULL);
 
-    mimetype = gnome_vfs_mime_type_from_name (filename);
+    async_data = callback_data;
+    g_assert (async_data->handle == handle);
+    g_assert (GNOME_IS_ICON_SELECTOR (async_data->iselector));
 
-    if (!mimetype || strncmp (mimetype, "image", sizeof("image")-1))
-	return FALSE;
-    else
-	return TRUE;
-
-    return TRUE;
-}
-
-static void 
-append_an_icon (GnomeIconSelector *gis, const gchar *path)
-{
-    GdkPixbuf *iml;
-    GdkPixbuf *im;
-    gchar *basename;
-    int pos;
-    int w,h;
-
-    iml = gnome_gdk_pixbuf_new_from_uri (path);
-    /*if I can't load it, ignore it*/
-    if(!iml)
+    if ((error != GNOME_VFS_OK) || ((pixbuf == NULL)))
 	return;
 	
-    w = gdk_pixbuf_get_width (iml);
-    h = gdk_pixbuf_get_height (iml);
+    w = gdk_pixbuf_get_width (pixbuf);
+    h = gdk_pixbuf_get_height (pixbuf);
 
-    if(w>h) {
-	if(w>ICON_SIZE) {
-	    h = h*((double)ICON_SIZE/w);
+    if(w > h) {
+	if(w > ICON_SIZE) {
+	    h = h * ((double) ICON_SIZE / w);
 	    w = ICON_SIZE;
 	}
     } else {
-	if(h>ICON_SIZE) {
-	    w = w*((double)ICON_SIZE/h);
+	if(h > ICON_SIZE) {
+	    w = w * ((double) ICON_SIZE / h);
 	    h = ICON_SIZE;
 	}
     }
-    w = w>0?w:1;
-    h = h>0?h:1;
+    w = w > 0 ? w : 1;
+    h = h > 0 ? h : 1;
 
-    im = gdk_pixbuf_scale_simple (iml, w, h, GDK_INTERP_BILINEAR);
-    gdk_pixbuf_unref (iml);
-    if(!im)
+    scaled = gdk_pixbuf_scale_simple (pixbuf, w, h, GDK_INTERP_BILINEAR);
+    if (!scaled)
 	return;
 
-    basename = g_path_get_basename (path);
-	
-    pos = gnome_icon_list_append_pixbuf (gis->_priv->icon_list, im,
-					 path, basename);
-    gdk_pixbuf_unref (im);
+    basename = gnome_vfs_uri_get_basename (async_data->uri);
+    path = gnome_vfs_uri_to_string (async_data->uri, GNOME_VFS_URI_HIDE_NONE);
+    
+    gnome_icon_list_append_pixbuf (async_data->iselector->_priv->icon_list,
+				   scaled, path, basename);
 
-    g_free (basename);
+    gdk_pixbuf_unref (scaled);
+    g_free (path);
 }
 
+static void
+do_add_async_done_cb (GnomeGdkPixbufAsyncHandle *handle,
+		      gpointer callback_data)
+{
+    GnomeIconSelectorAsyncData *async_data;
+
+    g_return_if_fail (callback_data != NULL);
+
+    async_data = callback_data;
+    g_assert (async_data->handle == handle);
+    g_assert (GNOME_IS_ICON_SELECTOR (async_data->iselector));
+
+    gtk_object_unref (GTK_OBJECT (async_data->iselector));
+    gnome_vfs_uri_unref (async_data->uri);
+
+    async_data->iselector->_priv->async_ops =
+	g_slist_remove (async_data->iselector->_priv->async_ops,
+			async_data);
+}
 
 static void
-set_flag (GtkWidget *w, int *flag)
+do_add_handler (GnomeSelector *selector, gint position, const gchar *uri)
 {
-    *flag = TRUE;
+    GnomeIconSelectorAsyncData *async_data;
+    GnomeIconSelector *iselector;
+
+    g_return_if_fail (selector != NULL);
+    g_return_if_fail (GNOME_IS_SELECTOR (selector));
+    g_return_if_fail (uri != NULL);
+
+    iselector = GNOME_ICON_SELECTOR (selector);
+
+    async_data = g_new0 (GnomeIconSelectorAsyncData, 1);
+    async_data->uri = gnome_vfs_uri_new (uri);
+    async_data->position = position;
+
+    async_data->iselector = iselector;
+    gtk_object_ref (GTK_OBJECT (async_data->iselector));
+
+    iselector->_priv->async_ops = g_slist_prepend
+	(iselector->_priv->async_ops, async_data);
+
+    async_data->handle = gnome_gdk_pixbuf_new_from_uri_async
+	(uri, do_add_async_cb, do_add_async_done_cb, async_data);
+}
+
+static void
+stop_loading_handler (GnomeSelector *selector)
+{
+    GnomeIconSelector *iselector;
+
+    g_return_if_fail (selector != NULL);
+    g_return_if_fail (GNOME_IS_SELECTOR (selector));
+
+    iselector = GNOME_ICON_SELECTOR (selector);
+
+    while (iselector->_priv->async_ops != NULL) {
+	GnomeIconSelectorAsyncData *async_data =
+	    iselector->_priv->async_ops->data;
+
+	g_message (G_STRLOC ": cancelling async handler %p",
+		   async_data->handle);
+	gnome_gdk_pixbuf_new_from_uri_cancel (async_data->handle);
+    }
+
+    /* it's important to always call the parent handler of this signal
+     * since the parent class may have pending async operations as well. */
+    GNOME_CALL_PARENT_HANDLER (GNOME_SELECTOR_CLASS, stop_loading, (selector));
 }
 
 static void
@@ -501,115 +597,6 @@ static void
 free_entry_func (gpointer data, gpointer user_data)
 {
     g_free (data);
-}
-
-static void
-update_file_list_handler (GnomeSelector *gs)
-{
-    GtkWidget *label;
-    GtkWidget *progressbar;
-    int file_count, i;
-    int local_dest;
-    int was_destroyed = FALSE;
-    GnomeIconSelector *gis;
-
-    g_return_if_fail (gs != NULL);
-    g_return_if_fail (GNOME_IS_ICON_SELECTOR (gs));
-
-    if (GNOME_SELECTOR_CLASS (parent_class)->update_file_list)
-	(* GNOME_SELECTOR_CLASS (parent_class)->update_file_list) (gs);
-
-    gis = GNOME_ICON_SELECTOR (gs);
-
-    g_slist_foreach (gis->_priv->file_list, free_entry_func, gis);
-    gis->_priv->file_list = g_slist_copy (gs->_priv->total_list);
-
-    file_count = g_slist_length (gis->_priv->file_list);
-    i = 0;
-
-    g_message (G_STRLOC ": %d", file_count);
-
-    /* Locate previous progressbar/label,
-     * if previously called. */
-    progressbar = label = NULL;
-    progressbar = gtk_object_get_user_data (GTK_OBJECT (gis));
-    if (progressbar)
-	label = gtk_object_get_user_data (GTK_OBJECT (progressbar));
-
-    if (!label && !progressbar) {
-	label = gtk_label_new (_("Loading Icons..."));
-	gtk_box_pack_end (GTK_BOX (gs->_priv->box), label,
-			  FALSE, FALSE, 0);
-	gtk_widget_show (label);
-
-	progressbar = gtk_progress_bar_new ();
-	gtk_box_pack_end (GTK_BOX (gs->_priv->box),
-			  progressbar, FALSE, FALSE, 0);
-	gtk_widget_show (progressbar);
-
-	/* attach label to progressbar, progressbar to gs 
-	 * for recovery if show_icons() called again */
-	gtk_object_set_user_data (GTK_OBJECT (progressbar), label);
-	gtk_object_set_user_data (GTK_OBJECT (gis), progressbar);
-    } else {
-	if (!label && progressbar) g_assert_not_reached();
-	if (label && !progressbar) g_assert_not_reached();
-    }
-         
-    gnome_icon_list_freeze (gis->_priv->icon_list);
-    gnome_icon_list_clear (gis->_priv->icon_list);
-
-    /* this can be set with the stop_loading method to stop the
-       display in the middle */
-    gis->_priv->stop_loading = FALSE;
-  
-    /*bind destroy so that we can bail out of this function if the
-      whole thing was destroyed while doing the main_iteration*/
-    local_dest = gtk_signal_connect (GTK_OBJECT (gis), "destroy",
-				     GTK_SIGNAL_FUNC (set_flag),
-				     &was_destroyed);
-
-    while (gis->_priv->file_list) {
-	GSList * list = gis->_priv->file_list;
-	append_an_icon (gis, list->data);
-	gis->_priv->file_list = g_slist_remove_link
-	    (gis->_priv->file_list, list);
-	g_slist_free_1 (list);
-
-	gtk_progress_bar_update (GTK_PROGRESS_BAR (progressbar),
-				 (float)i / file_count);
-	while (gtk_events_pending()) {
-	    gtk_main_iteration ();
-
-	    /*if the gs was destroyed from underneath us ...
-	     * bail out*/
-	    if (was_destroyed) 
-		return;
-                  
-	    if (gis->_priv->stop_loading)
-		goto out;
-	}
-
-	i++;
-    }
-
- out:
-  
-    gtk_signal_disconnect (GTK_OBJECT (gis), local_dest);
-
-    gnome_icon_list_thaw (gis->_priv->icon_list);
-
-    progressbar = label = NULL;
-    progressbar = gtk_object_get_user_data (GTK_OBJECT (gis));
-    if (progressbar)
-	label = gtk_object_get_user_data (GTK_OBJECT (progressbar));
-    if (progressbar) gtk_widget_destroy (progressbar);
-    if (label) gtk_widget_destroy (label);
-
-    /* cleanse gs of evil progressbar/label ptrs */
-    /* also let previous calls to show_icons() know that rendering
-     * is done. */
-    gtk_object_set_user_data (GTK_OBJECT(gis), NULL);
 }
 
 
