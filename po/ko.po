@@ -5,191 +5,13 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-libs 1.0.11\n"
-"POT-Creation-Date: 1999-08-22 19:00+0900\n"
+"POT-Creation-Date: 1999-08-27 14:46-0500\n"
 "PO-Revision-Date: 1999-07-20 04:01+0900\n"
 "Last-Translator: Changwoo Ryu <cwryu@debian.org>\n"
 "Language-Team: Korean <ko@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=euc-kr\n"
 "Content-Transfer-Encoding: 8bit\n"
-
-#: gnome-hello/gnome-hello-2-i18n.c:36
-#: gnome-hello/gnome-hello-3-parse-args.c:36
-#: gnome-hello/gnome-hello-4-SM.c:173 gnome-hello/gnome-hello.c:122
-msgid "Hello GNOME\n"
-msgstr "안녕하세요 그놈입니다\n"
-
-#: gnome-hello/gnome-hello-2-i18n.c:59
-#: gnome-hello/gnome-hello-3-parse-args.c:59
-#: gnome-hello/gnome-hello-4-SM.c:196 gnome-hello/gnome-hello.c:145
-msgid "The Hello World Gnomified"
-msgstr "그놈식 Hello World"
-
-#. copyright notice
-#: gnome-hello/gnome-hello-2-i18n.c:61
-#: gnome-hello/gnome-hello-3-parse-args.c:61
-msgid "(C) 1998 the Free Software Foundation"
-msgstr "(C) 1998 the Free Software Foundation"
-
-#. another comments
-#: gnome-hello/gnome-hello-2-i18n.c:64
-#: gnome-hello/gnome-hello-3-parse-args.c:64
-#: gnome-hello/gnome-hello-4-SM.c:201 gnome-hello/gnome-hello.c:150
-msgid "GNOME is a civilized software system so we've a \"hello world\" program"
-msgstr ""
-"GNOME is a civilized software system so we've a \"hello world\" program"
-
-#: gnome-hello/gnome-hello-2-i18n.c:73
-#: gnome-hello/gnome-hello-3-parse-args.c:73
-msgid "About GnomeHello..."
-msgstr "GnomeHello은..."
-
-#: gnome-hello/gnome-hello-2-i18n.c:78
-#: gnome-hello/gnome-hello-3-parse-args.c:78 gnome-hello/gnome-hello-4-SM.c:52
-#: gnome-hello/gnome-hello-7-mdi.c:428
-msgid "Exit"
-msgstr "끝내기"
-
-#. and document menu and document list paths (see gnome-app-helper menu
-#. insertion routines for details)
-#: gnome-hello/gnome-hello-2-i18n.c:84
-#: gnome-hello/gnome-hello-3-parse-args.c:84 gnome-hello/gnome-hello-4-SM.c:76
-#: gnome-hello/gnome-hello-7-mdi.c:434 gnome-hello/gnome-hello-7-mdi.c:535
-#: libgnomeui/stock_demo.c:184
-msgid "File"
-msgstr "파일"
-
-#: gnome-hello/gnome-hello-2-i18n.c:85
-#: gnome-hello/gnome-hello-3-parse-args.c:85 gnome-hello/gnome-hello-4-SM.c:77
-#: gnome-hello/gnome-hello-7-mdi.c:483 libgnomeui/gnome-stock.c:840
-#: libgnomeui/stock_demo.c:290
-msgid "Help"
-msgstr "도움말"
-
-#.
-#. * Make the main window and binds the delete event so you can close
-#. * the program from your WM
-#.
-#: gnome-hello/gnome-hello-2-i18n.c:124
-#: gnome-hello/gnome-hello-3-parse-args.c:136
-#: gnome-hello/gnome-hello-4-SM.c:138
-msgid "Hello World Gnomified"
-msgstr "그놈식 Hello World"
-
-#.
-#. * We make a button, bind the 'clicked' signal to hello and setting it
-#. * to be the content of the main window
-#.
-#: gnome-hello/gnome-hello-2-i18n.c:136
-#: gnome-hello/gnome-hello-3-parse-args.c:148
-#: gnome-hello/gnome-hello-4-SM.c:154 gnome-hello/gnome-hello.c:103
-msgid "Hello GNOME"
-msgstr "안녕하세요 그놈입니다"
-
-#: gnome-hello/gnome-hello-4-SM.c:52
-msgid "Exit GNOME hello"
-msgstr "그놈 hello 종료"
-
-#: gnome-hello/gnome-hello-4-SM.c:64 gnome-hello/gnome-hello-7-mdi.c:477
-msgid "About..."
-msgstr "이 프로그램은..."
-
-#: gnome-hello/gnome-hello-4-SM.c:64
-msgid "Info about GNOME hello"
-msgstr "그놈 hello에 대한 정보"
-
-#: gnome-hello/gnome-hello-7-mdi.c:196
-msgid "Add View"
-msgstr "보기 추가"
-
-#: gnome-hello/gnome-hello-7-mdi.c:201
-msgid "Remove View"
-msgstr "보기 삭제"
-
-#: gnome-hello/gnome-hello-7-mdi.c:209
-msgid "Increase Counter"
-msgstr "카운터 증가"
-
-#: gnome-hello/gnome-hello-7-mdi.c:215
-msgid "Child"
-msgstr "자식"
-
-#: gnome-hello/gnome-hello-7-mdi.c:412
-msgid "Add Child"
-msgstr "자식 추가"
-
-#: gnome-hello/gnome-hello-7-mdi.c:418
-msgid "Remove Child"
-msgstr "자식 삭제"
-
-#: gnome-hello/gnome-hello-7-mdi.c:441
-msgid "Children"
-msgstr "자식"
-
-#: gnome-hello/gnome-hello-7-mdi.c:450
-msgid "Notebook"
-msgstr "노트북"
-
-#: gnome-hello/gnome-hello-7-mdi.c:456
-msgid "Toplevel"
-msgstr "최상위"
-
-#: gnome-hello/gnome-hello-7-mdi.c:462
-msgid "Modal"
-msgstr "모달"
-
-#: gnome-hello/gnome-hello-7-mdi.c:468
-msgid "MDI Mode"
-msgstr "MDI 모드"
-
-#: gnome-hello/gnome-hello-7-mdi.c:536
-msgid "Children/"
-msgstr "자식/"
-
-#: gnome-hello/gnome-hello.c:40
-msgid "File/Exit"
-msgstr "파일/끝내기"
-
-#: gnome-hello/gnome-hello.c:40
-msgid "<control>E"
-msgstr "<control>E"
-
-#. The '...' end indicate that the options open a dialog
-#: gnome-hello/gnome-hello.c:42
-msgid "Help/About..."
-msgstr "도움말/이 프로그램은..."
-
-#: gnome-hello/gnome-hello.c:42
-msgid "<control>A"
-msgstr "<control>A"
-
-#: gnome-hello/gnome-hello.c:208
-#, c-format
-msgid ""
-"%s: A gnomified 'Hello World' program\n"
-"\n"
-"Usage: %s [--help] [--version]\n"
-"\n"
-"Options:\n"
-"        --help     display this help and exit\n"
-"        --version  output version information and exit\n"
-msgstr ""
-"%s: 그놈식 'Hello World' 프로그램\n"
-"\n"
-"사용법: %s [--help] [--version]\n"
-"\n"
-"옵션:\n"
-"        --help     이 도움말을 출력하고 끝냅니다\n"
-"        --version  버전 정보를 표시하고 끝냅니다\n"
-
-#: gnome-hello/gnome-hello.c:217
-#, c-format
-msgid "Gnome Hello %s.\n"
-msgstr "그놈 Hello %s.\n"
-
-#: gnome-hello/gnome-hello.c:231
-msgid "Options error\n"
-msgstr "옵션 오류\n"
 
 #: libgnome/gconfigger.c:32
 msgid "get"
@@ -220,23 +42,23 @@ msgstr ""
 "옵션 %s에 오류: %s.\n"
 "가능한 모든 명령행 옵션을 보려면 '%s --help'을 실행하십시오.\n"
 
-#: libgnome/gnomelib-init.c:124
+#: libgnome/gnomelib-init.c:130
 msgid "Disable sound server usage"
 msgstr "사운드 서버 사용하지 않음"
 
-#: libgnome/gnomelib-init.c:126
+#: libgnome/gnomelib-init.c:132
 msgid "Enable sound server usage"
 msgstr "사운드 서버 사용함"
 
-#: libgnome/gnomelib-init.c:128
+#: libgnome/gnomelib-init.c:134
 msgid "Host:port on which the sound server to use is running"
 msgstr "사용할 사운드 서버가 실행중인 호스트:포트"
 
-#: libgnome/gnomelib-init.c:129
+#: libgnome/gnomelib-init.c:135
 msgid "HOSTNAME:PORT"
 msgstr "호스트이름:포트"
 
-#: libgnome/gnomelib-init.c:137
+#: libgnome/gnomelib-init.c:144
 msgid "GNOME Options"
 msgstr "GNOME 옵션"
 
@@ -854,47 +676,74 @@ msgstr "색상 선택"
 msgid "Calendar"
 msgstr "달력"
 
-#: libgnomeui/gnome-dentry-edit.c:170
+#: libgnomeui/gnome-dentry-edit.c:180
 msgid "Name:"
 msgstr "이름"
 
-#: libgnomeui/gnome-dentry-edit.c:183
+#: libgnomeui/gnome-dentry-edit.c:193
 msgid "Comment:"
 msgstr "설명"
 
-#: libgnomeui/gnome-dentry-edit.c:193
+#: libgnomeui/gnome-dentry-edit.c:203
 msgid "Command:"
 msgstr "명령어"
 
-#: libgnomeui/gnome-dentry-edit.c:203
+#: libgnomeui/gnome-dentry-edit.c:213
 msgid "Type:"
 msgstr "유형"
 
-#: libgnomeui/gnome-dentry-edit.c:219
+#: libgnomeui/gnome-dentry-edit.c:229
 msgid "Icon:"
 msgstr "아이콘:"
 
-#: libgnomeui/gnome-dentry-edit.c:229
+#: libgnomeui/gnome-dentry-edit.c:239
 msgid "Choose an icon"
 msgstr "아이콘 선택"
 
-#: libgnomeui/gnome-dentry-edit.c:242
+#: libgnomeui/gnome-dentry-edit.c:252
 msgid "Run in Terminal"
 msgstr "터미널에서 실행"
 
-#: libgnomeui/gnome-dentry-edit.c:255
+#: libgnomeui/gnome-dentry-edit.c:363
 msgid "Try this before using:"
 msgstr "미리 실행해 보기:"
 
-#: libgnomeui/gnome-dentry-edit.c:265
+#: libgnomeui/gnome-dentry-edit.c:373
 msgid "Documentation:"
 msgstr "문서:"
 
-#: libgnomeui/gnome-dentry-edit.c:351
+#: libgnomeui/gnome-dentry-edit.c:383
+msgid "Name/Comment translations:"
+msgstr ""
+
+#: libgnomeui/gnome-dentry-edit.c:386
+msgid "Language"
+msgstr ""
+
+#: libgnomeui/gnome-dentry-edit.c:387
+#, fuzzy
+msgid "Name"
+msgstr "이름"
+
+#: libgnomeui/gnome-dentry-edit.c:388
+#, fuzzy
+msgid "Comment"
+msgstr "설명"
+
+#: libgnomeui/gnome-dentry-edit.c:416
+#, fuzzy
+msgid "Add/Set"
+msgstr "추가"
+
+#: libgnomeui/gnome-dentry-edit.c:421 libgnomeui/gnome-stock.c:825
+msgid "Remove"
+msgstr "삭제"
+
+#: libgnomeui/gnome-dentry-edit.c:503
 msgid "Basic"
 msgstr "기본"
 
-#: libgnomeui/gnome-dentry-edit.c:355
+#: libgnomeui/gnome-dentry-edit.c:507
 msgid "Advanced"
 msgstr "자세히"
 
@@ -928,86 +777,91 @@ msgstr "hbox를 찾을 수 없음, 보통 파일 선택을 사용함"
 msgid "Preview"
 msgstr "미리 보기"
 
-#: libgnomeui/gnome-icon-sel.c:326
+#: libgnomeui/gnome-icon-sel.c:337
 msgid "Loading Icons..."
 msgstr "아이콘 읽어오기..."
 
-#: libgnomeui/gnome-init.c:153
+#: libgnomeui/gnome-init.c:157
 msgid "Gdk debugging flags to set"
 msgstr "Gdk 디버깅 플래그를 set"
 
-#: libgnomeui/gnome-init.c:153 libgnomeui/gnome-init.c:155
-#: libgnomeui/gnome-init.c:175 libgnomeui/gnome-init.c:177
+#: libgnomeui/gnome-init.c:157 libgnomeui/gnome-init.c:159
+#: libgnomeui/gnome-init.c:179 libgnomeui/gnome-init.c:181
 msgid "FLAGS"
 msgstr "FLAGS"
 
-#: libgnomeui/gnome-init.c:155
+#: libgnomeui/gnome-init.c:159
 msgid "Gdk debugging flags to unset"
 msgstr "Gdk 디버깅 플래그를 unset"
 
-#: libgnomeui/gnome-init.c:157
+#: libgnomeui/gnome-init.c:161
 msgid "X display to use"
 msgstr "사용할 X display"
 
-#: libgnomeui/gnome-init.c:157
+#: libgnomeui/gnome-init.c:161
 msgid "DISPLAY"
 msgstr "DISPLAY"
 
-#: libgnomeui/gnome-init.c:159
+#: libgnomeui/gnome-init.c:163
 msgid "Make X calls synchronous"
 msgstr "X call 동기화"
 
-#: libgnomeui/gnome-init.c:161
+#: libgnomeui/gnome-init.c:165
 msgid "Don't use X shared memory extension"
 msgstr "X 공유 기억장치 확장 기능을 사용하지 않음"
 
-#: libgnomeui/gnome-init.c:163
+#: libgnomeui/gnome-init.c:167
 msgid "Program name as used by the window manager"
 msgstr "윈도우 관리자가 사용할 프로그램 이름"
 
-#: libgnomeui/gnome-init.c:163
+#: libgnomeui/gnome-init.c:167
 msgid "NAME"
 msgstr "NAME"
 
-#: libgnomeui/gnome-init.c:165
+#: libgnomeui/gnome-init.c:169
 msgid "Program class as used by the window manager"
 msgstr "윈도우 관리자가 사용할 프로그램 클래스"
 
-#: libgnomeui/gnome-init.c:165
+#: libgnomeui/gnome-init.c:169
 msgid "CLASS"
 msgstr "CLASS"
 
-#: libgnomeui/gnome-init.c:167
+#: libgnomeui/gnome-init.c:171
 msgid "HOST"
 msgstr "HOST"
 
-#: libgnomeui/gnome-init.c:169
+#: libgnomeui/gnome-init.c:173
 msgid "PORT"
 msgstr "PORT"
 
-#: libgnomeui/gnome-init.c:171 libgnomeui/gnome-init.c:173
+#: libgnomeui/gnome-init.c:175 libgnomeui/gnome-init.c:177
 msgid "STYLE"
 msgstr "STYLE"
 
-#: libgnomeui/gnome-init.c:175
+#: libgnomeui/gnome-init.c:179
 msgid "Gtk+ debugging flags to set"
 msgstr "Gtk+ 디버깅 플래그를 set"
 
-#: libgnomeui/gnome-init.c:177
+#: libgnomeui/gnome-init.c:181
 msgid "Gtk+ debugging flags to unset"
 msgstr "Gtk+ 디버깅 플래그를 unset"
 
-#: libgnomeui/gnome-init.c:179
+#: libgnomeui/gnome-init.c:183
 msgid "Make all warnings fatal"
 msgstr "모든 경고를 치명적으로 생각함"
 
-#: libgnomeui/gnome-init.c:181
+#: libgnomeui/gnome-init.c:185
 msgid "Load an additional Gtk module"
 msgstr "Gtk 모듈을 추가로 읽어들임"
 
-#: libgnomeui/gnome-init.c:181
+#: libgnomeui/gnome-init.c:185
 msgid "MODULE"
 msgstr "MODULE"
+
+#. dialog display isn't working out
+#: libgnomeui/gnome-init.c:608
+msgid "Giving up on displaying error dialog"
+msgstr ""
 
 #: libgnomeui/gnome-messagebox.c:111 libgnomeui/gnome-messagebox.c:240
 msgid "Information"
@@ -1236,10 +1090,6 @@ msgstr "지우기"
 msgid "Select Color"
 msgstr "색깔 고르기"
 
-#: libgnomeui/gnome-stock.c:825
-msgid "Remove"
-msgstr "삭제"
-
 #: libgnomeui/gnome-stock.c:826
 msgid "Table Borders"
 msgstr "표 둘레"
@@ -1280,6 +1130,10 @@ msgstr "예"
 msgid "No"
 msgstr "아니오"
 
+#: libgnomeui/gnome-stock.c:840 libgnomeui/stock_demo.c:290
+msgid "Help"
+msgstr "도움말"
+
 #: libgnomeui/gnome-stock.c:841
 msgid "Next"
 msgstr "다음"
@@ -1312,17 +1166,21 @@ msgstr "메뉴 항목"
 msgid "Accelerator"
 msgstr "단축키"
 
-#: libgnomeui/gnome_segv.c:43
+#: libgnomeui/gnome_segv.c:44
 #, c-format
 msgid ""
-"Application \"%s\" (process %d) has crashed due to a bug in the software.\n"
-"(%s)\n"
-"For more information, see http://www.gnome.org/application_crashed.shtml"
+"Application \"%s\" (process %d) has crashed\n"
+"due to a fatal error.\n"
+"(%s)"
 msgstr ""
-"응용 프로그램 \"%s\" (프로세스 %d) 가(이) 이 소프트웨어의 버그로 인해\n"
-"비정상 종료되었습니다.  (%s)\n"
-"더 자세한 정보는, http://www.gnome.org/application_crashed.shtml 을 "
-"참고하세요"
+
+#: libgnomeui/gnome_segv.c:49
+msgid "Usage: gnome_segv appname signum\n"
+msgstr ""
+
+#: libgnomeui/gnome_segv.c:61
+msgid "Please visit the GNOME Application Crash page for more information"
+msgstr ""
 
 #: libgnomeui/stock_demo.c:112
 msgid "New..."
@@ -1351,6 +1209,10 @@ msgstr "페이지 준비..."
 #: libgnomeui/stock_demo.c:173
 msgid "Quit"
 msgstr "종료"
+
+#: libgnomeui/stock_demo.c:184
+msgid "File"
+msgstr "파일"
 
 #: libgnomeui/stock_demo.c:191
 msgid "Undo"
@@ -1548,7 +1410,7 @@ msgstr ""
 "않았거나 서비스를 찾을 경로를 알지 못합니다.  어떤 경우든\n"
 "간에 GNOME 설치 상태를 검사하십시오."
 
-#: libgnorba/goad.c:1294
+#: libgnorba/goad.c:1321
 msgid "(Internal use only) GOAD server ID to activate"
 msgstr "(내부 사용) 활성화할 GOAD 서버 ID"
 
@@ -1681,3 +1543,119 @@ msgstr "The user chose No/Cancel with data:\n"
 #: test-gnome/testgnome.c:1087
 msgid "Weird number in reply callback"
 msgstr "Weird number in reply callback"
+
+#~ msgid "Hello GNOME\n"
+#~ msgstr "안녕하세요 그놈입니다\n"
+
+#~ msgid "The Hello World Gnomified"
+#~ msgstr "그놈식 Hello World"
+
+#~ msgid "(C) 1998 the Free Software Foundation"
+#~ msgstr "(C) 1998 the Free Software Foundation"
+
+#~ msgid ""
+#~ "GNOME is a civilized software system so we've a \"hello world\" program"
+#~ msgstr ""
+#~ "GNOME is a civilized software system so we've a \"hello world\" program"
+
+#~ msgid "About GnomeHello..."
+#~ msgstr "GnomeHello은..."
+
+#~ msgid "Exit"
+#~ msgstr "끝내기"
+
+#~ msgid "Hello World Gnomified"
+#~ msgstr "그놈식 Hello World"
+
+#~ msgid "Hello GNOME"
+#~ msgstr "안녕하세요 그놈입니다"
+
+#~ msgid "Exit GNOME hello"
+#~ msgstr "그놈 hello 종료"
+
+#~ msgid "About..."
+#~ msgstr "이 프로그램은..."
+
+#~ msgid "Info about GNOME hello"
+#~ msgstr "그놈 hello에 대한 정보"
+
+#~ msgid "Add View"
+#~ msgstr "보기 추가"
+
+#~ msgid "Remove View"
+#~ msgstr "보기 삭제"
+
+#~ msgid "Increase Counter"
+#~ msgstr "카운터 증가"
+
+#~ msgid "Child"
+#~ msgstr "자식"
+
+#~ msgid "Add Child"
+#~ msgstr "자식 추가"
+
+#~ msgid "Remove Child"
+#~ msgstr "자식 삭제"
+
+#~ msgid "Children"
+#~ msgstr "자식"
+
+#~ msgid "Notebook"
+#~ msgstr "노트북"
+
+#~ msgid "Toplevel"
+#~ msgstr "최상위"
+
+#~ msgid "Modal"
+#~ msgstr "모달"
+
+#~ msgid "MDI Mode"
+#~ msgstr "MDI 모드"
+
+#~ msgid "Children/"
+#~ msgstr "자식/"
+
+#~ msgid "File/Exit"
+#~ msgstr "파일/끝내기"
+
+#~ msgid "<control>E"
+#~ msgstr "<control>E"
+
+#~ msgid "Help/About..."
+#~ msgstr "도움말/이 프로그램은..."
+
+#~ msgid "<control>A"
+#~ msgstr "<control>A"
+
+#~ msgid ""
+#~ "%s: A gnomified 'Hello World' program\n"
+#~ "\n"
+#~ "Usage: %s [--help] [--version]\n"
+#~ "\n"
+#~ "Options:\n"
+#~ "        --help     display this help and exit\n"
+#~ "        --version  output version information and exit\n"
+#~ msgstr ""
+#~ "%s: 그놈식 'Hello World' 프로그램\n"
+#~ "\n"
+#~ "사용법: %s [--help] [--version]\n"
+#~ "\n"
+#~ "옵션:\n"
+#~ "        --help     이 도움말을 출력하고 끝냅니다\n"
+#~ "        --version  버전 정보를 표시하고 끝냅니다\n"
+
+#~ msgid "Gnome Hello %s.\n"
+#~ msgstr "그놈 Hello %s.\n"
+
+#~ msgid "Options error\n"
+#~ msgstr "옵션 오류\n"
+
+#~ msgid ""
+#~ "Application \"%s\" (process %d) has crashed due to a bug in the software.\n"
+#~ "(%s)\n"
+#~ "For more information, see http://www.gnome.org/application_crashed.shtml"
+#~ msgstr ""
+#~ "응용 프로그램 \"%s\" (프로세스 %d) 가(이) 이 소프트웨어의 버그로 인해\n"
+#~ "비정상 종료되었습니다.  (%s)\n"
+#~ "더 자세한 정보는, http://www.gnome.org/application_crashed.shtml 을 "
+#~ "참고하세요"

@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-libs 1.0.5\n"
-"POT-Creation-Date: 1999-08-19 17:36-0400\n"
+"POT-Creation-Date: 1999-08-27 14:46-0500\n"
 "PO-Revision-Date: 1999-05-09 20:32+02:00\n"
 "Last-Translator: Ivan Vilata i Balaguer <al011097@alumail.uji.es>\n"
 "Language-Team: linux-ca@chanae.alphanet.ch\n"
@@ -9,184 +9,6 @@ msgstr ""
 "Content-Type: text/plain; charset=iso-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
 "From: Ivan Vilata i Balaguer <al011097@alumail.uji.es>\n"
-
-#: gnome-hello/gnome-hello-2-i18n.c:36
-#: gnome-hello/gnome-hello-3-parse-args.c:36
-#: gnome-hello/gnome-hello-4-SM.c:173 gnome-hello/gnome-hello.c:122
-msgid "Hello GNOME\n"
-msgstr "Hola GNOME\n"
-
-#: gnome-hello/gnome-hello-2-i18n.c:59
-#: gnome-hello/gnome-hello-3-parse-args.c:59
-#: gnome-hello/gnome-hello-4-SM.c:196 gnome-hello/gnome-hello.c:145
-msgid "The Hello World Gnomified"
-msgstr "L'«Hola món» gnomificat"
-
-#. copyright notice
-#: gnome-hello/gnome-hello-2-i18n.c:61
-#: gnome-hello/gnome-hello-3-parse-args.c:61
-msgid "(C) 1998 the Free Software Foundation"
-msgstr "(C) 1998 Free Software Foundation"
-
-#. another comments
-#: gnome-hello/gnome-hello-2-i18n.c:64
-#: gnome-hello/gnome-hello-3-parse-args.c:64
-#: gnome-hello/gnome-hello-4-SM.c:201 gnome-hello/gnome-hello.c:150
-msgid "GNOME is a civilized software system so we've a \"hello world\" program"
-msgstr ""
-"GNOME és un sistema civilitzat, i per això tenim un programa «Hola món»"
-
-#: gnome-hello/gnome-hello-2-i18n.c:73
-#: gnome-hello/gnome-hello-3-parse-args.c:73
-msgid "About GnomeHello..."
-msgstr "A propòsit de «Hola GNOME»..."
-
-#: gnome-hello/gnome-hello-2-i18n.c:78
-#: gnome-hello/gnome-hello-3-parse-args.c:78 gnome-hello/gnome-hello-4-SM.c:52
-#: gnome-hello/gnome-hello-7-mdi.c:428
-msgid "Exit"
-msgstr "Eixir"
-
-#. and document menu and document list paths (see gnome-app-helper menu
-#. insertion routines for details)
-#: gnome-hello/gnome-hello-2-i18n.c:84
-#: gnome-hello/gnome-hello-3-parse-args.c:84 gnome-hello/gnome-hello-4-SM.c:76
-#: gnome-hello/gnome-hello-7-mdi.c:434 gnome-hello/gnome-hello-7-mdi.c:535
-#: libgnomeui/stock_demo.c:184
-msgid "File"
-msgstr "Fitxer"
-
-#: gnome-hello/gnome-hello-2-i18n.c:85
-#: gnome-hello/gnome-hello-3-parse-args.c:85 gnome-hello/gnome-hello-4-SM.c:77
-#: gnome-hello/gnome-hello-7-mdi.c:483 libgnomeui/gnome-stock.c:840
-#: libgnomeui/stock_demo.c:290
-msgid "Help"
-msgstr "Ajuda"
-
-#.
-#. * Make the main window and binds the delete event so you can close
-#. * the program from your WM
-#.
-#: gnome-hello/gnome-hello-2-i18n.c:124
-#: gnome-hello/gnome-hello-3-parse-args.c:136
-#: gnome-hello/gnome-hello-4-SM.c:138
-msgid "Hello World Gnomified"
-msgstr "L'«Hola món» gnomificat"
-
-#.
-#. * We make a button, bind the 'clicked' signal to hello and setting it
-#. * to be the content of the main window
-#.
-#: gnome-hello/gnome-hello-2-i18n.c:136
-#: gnome-hello/gnome-hello-3-parse-args.c:148
-#: gnome-hello/gnome-hello-4-SM.c:154 gnome-hello/gnome-hello.c:103
-msgid "Hello GNOME"
-msgstr "Hola GNOME"
-
-#: gnome-hello/gnome-hello-4-SM.c:52
-msgid "Exit GNOME hello"
-msgstr "Eixir de «Hola GNOME»"
-
-#: gnome-hello/gnome-hello-4-SM.c:64 gnome-hello/gnome-hello-7-mdi.c:477
-msgid "About..."
-msgstr "A propòsit de..."
-
-#: gnome-hello/gnome-hello-4-SM.c:64
-msgid "Info about GNOME hello"
-msgstr "Informació sobre «Hola GNOME»"
-
-#: gnome-hello/gnome-hello-7-mdi.c:196
-msgid "Add View"
-msgstr "Afegir vista"
-
-#: gnome-hello/gnome-hello-7-mdi.c:201
-msgid "Remove View"
-msgstr "Eliminar vista"
-
-#: gnome-hello/gnome-hello-7-mdi.c:209
-msgid "Increase Counter"
-msgstr "Incrementar comptador"
-
-#: gnome-hello/gnome-hello-7-mdi.c:215
-msgid "Child"
-msgstr "Fill"
-
-#: gnome-hello/gnome-hello-7-mdi.c:412
-msgid "Add Child"
-msgstr "Afegir fill"
-
-#: gnome-hello/gnome-hello-7-mdi.c:418
-msgid "Remove Child"
-msgstr "Eliminar fill"
-
-#: gnome-hello/gnome-hello-7-mdi.c:441
-msgid "Children"
-msgstr "Fills"
-
-#: gnome-hello/gnome-hello-7-mdi.c:450
-msgid "Notebook"
-msgstr "Bloc de notes"
-
-#: gnome-hello/gnome-hello-7-mdi.c:456
-msgid "Toplevel"
-msgstr "Primer pla"
-
-#: gnome-hello/gnome-hello-7-mdi.c:462
-msgid "Modal"
-msgstr "Modal"
-
-#: gnome-hello/gnome-hello-7-mdi.c:468
-msgid "MDI Mode"
-msgstr "Mode MDI"
-
-#: gnome-hello/gnome-hello-7-mdi.c:536
-msgid "Children/"
-msgstr "Fills/"
-
-#: gnome-hello/gnome-hello.c:40
-msgid "File/Exit"
-msgstr "Fitxer/Eixir"
-
-#: gnome-hello/gnome-hello.c:40
-msgid "<control>E"
-msgstr "<control>E"
-
-#. The '...' end indicate that the options open a dialog
-#: gnome-hello/gnome-hello.c:42
-msgid "Help/About..."
-msgstr "Ajuda/A propòsit de..."
-
-#: gnome-hello/gnome-hello.c:42
-msgid "<control>A"
-msgstr "<control>A"
-
-#: gnome-hello/gnome-hello.c:208
-#, c-format
-msgid ""
-"%s: A gnomified 'Hello World' program\n"
-"\n"
-"Usage: %s [--help] [--version]\n"
-"\n"
-"Options:\n"
-"        --help     display this help and exit\n"
-"        --version  output version information and exit\n"
-msgstr ""
-"%s: Un programa «Hola Món» gnomificat\n"
-"\n"
-"Forma d'ús: %s [--help] [--version]\n"
-"\n"
-"Opcions:\n"
-"        --help     mostra aquesta ajuda i ix\n"
-"        --version  mostra informació sobre la versió i ix\n"
-
-#: gnome-hello/gnome-hello.c:217
-#, c-format
-msgid "Gnome Hello %s.\n"
-msgstr "Hola GNOME %s.\n"
-
-#: gnome-hello/gnome-hello.c:231
-msgid "Options error\n"
-msgstr "Error a les opcions\n"
 
 #: libgnome/gconfigger.c:32
 msgid "get"
@@ -218,23 +40,23 @@ msgstr ""
 "Proveu «%s --help» per veure una llista completa d'opcions de la línia de "
 "comandes.\n"
 
-#: libgnome/gnomelib-init.c:124
+#: libgnome/gnomelib-init.c:130
 msgid "Disable sound server usage"
 msgstr "Desactivar l'ús del servidor de so"
 
-#: libgnome/gnomelib-init.c:126
+#: libgnome/gnomelib-init.c:132
 msgid "Enable sound server usage"
 msgstr "Activar l'ús del servidor de so"
 
-#: libgnome/gnomelib-init.c:128
+#: libgnome/gnomelib-init.c:134
 msgid "Host:port on which the sound server to use is running"
 msgstr "Amfitrió:port on és corrent el servidor de so a usar"
 
-#: libgnome/gnomelib-init.c:129
+#: libgnome/gnomelib-init.c:135
 msgid "HOSTNAME:PORT"
 msgstr "AMFITRIÓ:PORT"
 
-#: libgnome/gnomelib-init.c:137
+#: libgnome/gnomelib-init.c:144
 msgid "GNOME Options"
 msgstr "Opcions de GNOME"
 
@@ -852,47 +674,74 @@ msgstr "Trieu un color"
 msgid "Calendar"
 msgstr "Calendari"
 
-#: libgnomeui/gnome-dentry-edit.c:170
+#: libgnomeui/gnome-dentry-edit.c:180
 msgid "Name:"
 msgstr "Nom:"
 
-#: libgnomeui/gnome-dentry-edit.c:183
+#: libgnomeui/gnome-dentry-edit.c:193
 msgid "Comment:"
 msgstr "Comentari:"
 
-#: libgnomeui/gnome-dentry-edit.c:193
+#: libgnomeui/gnome-dentry-edit.c:203
 msgid "Command:"
 msgstr "Comanda:"
 
-#: libgnomeui/gnome-dentry-edit.c:203
+#: libgnomeui/gnome-dentry-edit.c:213
 msgid "Type:"
 msgstr "Tipus:"
 
-#: libgnomeui/gnome-dentry-edit.c:219
+#: libgnomeui/gnome-dentry-edit.c:229
 msgid "Icon:"
 msgstr "Icona:"
 
-#: libgnomeui/gnome-dentry-edit.c:229
+#: libgnomeui/gnome-dentry-edit.c:239
 msgid "Choose an icon"
 msgstr "Trieu una icona"
 
-#: libgnomeui/gnome-dentry-edit.c:242
+#: libgnomeui/gnome-dentry-edit.c:252
 msgid "Run in Terminal"
 msgstr "Executar a un terminal"
 
-#: libgnomeui/gnome-dentry-edit.c:255
+#: libgnomeui/gnome-dentry-edit.c:363
 msgid "Try this before using:"
 msgstr "Abans d'usar, provar això:"
 
-#: libgnomeui/gnome-dentry-edit.c:265
+#: libgnomeui/gnome-dentry-edit.c:373
 msgid "Documentation:"
 msgstr "Documentació:"
 
-#: libgnomeui/gnome-dentry-edit.c:351
+#: libgnomeui/gnome-dentry-edit.c:383
+msgid "Name/Comment translations:"
+msgstr ""
+
+#: libgnomeui/gnome-dentry-edit.c:386
+msgid "Language"
+msgstr ""
+
+#: libgnomeui/gnome-dentry-edit.c:387
+#, fuzzy
+msgid "Name"
+msgstr "Nom:"
+
+#: libgnomeui/gnome-dentry-edit.c:388
+#, fuzzy
+msgid "Comment"
+msgstr "Comentari:"
+
+#: libgnomeui/gnome-dentry-edit.c:416
+#, fuzzy
+msgid "Add/Set"
+msgstr "Afegir"
+
+#: libgnomeui/gnome-dentry-edit.c:421 libgnomeui/gnome-stock.c:825
+msgid "Remove"
+msgstr "Eliminar"
+
+#: libgnomeui/gnome-dentry-edit.c:503
 msgid "Basic"
 msgstr "Bàsic"
 
-#: libgnomeui/gnome-dentry-edit.c:355
+#: libgnomeui/gnome-dentry-edit.c:507
 msgid "Advanced"
 msgstr "Avançat"
 
@@ -928,86 +777,91 @@ msgstr ""
 msgid "Preview"
 msgstr "Vista prèvia"
 
-#: libgnomeui/gnome-icon-sel.c:326
+#: libgnomeui/gnome-icon-sel.c:337
 msgid "Loading Icons..."
 msgstr "Carregant icones..."
 
-#: libgnomeui/gnome-init.c:153
+#: libgnomeui/gnome-init.c:157
 msgid "Gdk debugging flags to set"
 msgstr "Marques de depuració de GDK a activar"
 
-#: libgnomeui/gnome-init.c:153 libgnomeui/gnome-init.c:155
-#: libgnomeui/gnome-init.c:175 libgnomeui/gnome-init.c:177
+#: libgnomeui/gnome-init.c:157 libgnomeui/gnome-init.c:159
+#: libgnomeui/gnome-init.c:179 libgnomeui/gnome-init.c:181
 msgid "FLAGS"
 msgstr "MARQUES"
 
-#: libgnomeui/gnome-init.c:155
+#: libgnomeui/gnome-init.c:159
 msgid "Gdk debugging flags to unset"
 msgstr "Marques de depuració de GDK a desactivar"
 
-#: libgnomeui/gnome-init.c:157
+#: libgnomeui/gnome-init.c:161
 msgid "X display to use"
 msgstr "Pantalla X a usar"
 
-#: libgnomeui/gnome-init.c:157
+#: libgnomeui/gnome-init.c:161
 msgid "DISPLAY"
 msgstr "PANTALLA"
 
-#: libgnomeui/gnome-init.c:159
+#: libgnomeui/gnome-init.c:163
 msgid "Make X calls synchronous"
 msgstr "Fer síncrones les crides a X"
 
-#: libgnomeui/gnome-init.c:161
+#: libgnomeui/gnome-init.c:165
 msgid "Don't use X shared memory extension"
 msgstr "No usar extensió X de memòria compartida"
 
-#: libgnomeui/gnome-init.c:163
+#: libgnomeui/gnome-init.c:167
 msgid "Program name as used by the window manager"
 msgstr "Nom del programa com l'usa el gestor de finestres"
 
-#: libgnomeui/gnome-init.c:163
+#: libgnomeui/gnome-init.c:167
 msgid "NAME"
 msgstr "NOM"
 
-#: libgnomeui/gnome-init.c:165
+#: libgnomeui/gnome-init.c:169
 msgid "Program class as used by the window manager"
 msgstr "Classe del programa com l'usa el gestor de finestres"
 
-#: libgnomeui/gnome-init.c:165
+#: libgnomeui/gnome-init.c:169
 msgid "CLASS"
 msgstr "CLASSE"
 
-#: libgnomeui/gnome-init.c:167
+#: libgnomeui/gnome-init.c:171
 msgid "HOST"
 msgstr "AMFITRIÓ"
 
-#: libgnomeui/gnome-init.c:169
+#: libgnomeui/gnome-init.c:173
 msgid "PORT"
 msgstr "PORT"
 
-#: libgnomeui/gnome-init.c:171 libgnomeui/gnome-init.c:173
+#: libgnomeui/gnome-init.c:175 libgnomeui/gnome-init.c:177
 msgid "STYLE"
 msgstr "ESTIL"
 
-#: libgnomeui/gnome-init.c:175
+#: libgnomeui/gnome-init.c:179
 msgid "Gtk+ debugging flags to set"
 msgstr "Marques de depuració de GTK+ a activar"
 
-#: libgnomeui/gnome-init.c:177
+#: libgnomeui/gnome-init.c:181
 msgid "Gtk+ debugging flags to unset"
 msgstr "Marques de depuració de GTK+ a desactivar"
 
-#: libgnomeui/gnome-init.c:179
+#: libgnomeui/gnome-init.c:183
 msgid "Make all warnings fatal"
 msgstr "Fer errors fatals dels avisos"
 
-#: libgnomeui/gnome-init.c:181
+#: libgnomeui/gnome-init.c:185
 msgid "Load an additional Gtk module"
 msgstr "Carregar un mòdul Gtk addicional"
 
-#: libgnomeui/gnome-init.c:181
+#: libgnomeui/gnome-init.c:185
 msgid "MODULE"
 msgstr "MÒDUL"
+
+#. dialog display isn't working out
+#: libgnomeui/gnome-init.c:608
+msgid "Giving up on displaying error dialog"
+msgstr ""
 
 #: libgnomeui/gnome-messagebox.c:111 libgnomeui/gnome-messagebox.c:240
 msgid "Information"
@@ -1053,19 +907,19 @@ msgstr "_Tallar"
 msgid "Select"
 msgstr "Triar"
 
-#: libgnomeui/gnome-scores.c:76
+#: libgnomeui/gnome-scores.c:88
 msgid "Top Ten"
 msgstr "Els 10 millors"
 
-#: libgnomeui/gnome-scores.c:87
+#: libgnomeui/gnome-scores.c:99
 msgid "User"
 msgstr "Usuari"
 
-#: libgnomeui/gnome-scores.c:90
+#: libgnomeui/gnome-scores.c:102
 msgid "Score"
 msgstr "Puntuació"
 
-#: libgnomeui/gnome-scores.c:93
+#: libgnomeui/gnome-scores.c:105
 msgid "Date"
 msgstr "Data"
 
@@ -1077,7 +931,7 @@ msgstr "Data"
 #. %d is day of month, %m is month number, %T full hour,
 #. %H hours, %M minutes, %S seconds
 #.
-#: libgnomeui/gnome-scores.c:119
+#: libgnomeui/gnome-scores.c:131
 msgid "%a %b %d %T %Y"
 msgstr ""
 
@@ -1237,10 +1091,6 @@ msgstr "Esborrar"
 msgid "Select Color"
 msgstr "Triar un color"
 
-#: libgnomeui/gnome-stock.c:825
-msgid "Remove"
-msgstr "Eliminar"
-
 #: libgnomeui/gnome-stock.c:826
 msgid "Table Borders"
 msgstr "Vores de la taula"
@@ -1281,6 +1131,10 @@ msgstr "Sí"
 msgid "No"
 msgstr "No"
 
+#: libgnomeui/gnome-stock.c:840 libgnomeui/stock_demo.c:290
+msgid "Help"
+msgstr "Ajuda"
+
 #: libgnomeui/gnome-stock.c:841
 msgid "Next"
 msgstr "Següent"
@@ -1313,12 +1167,20 @@ msgstr "Ítem del menú"
 msgid "Accelerator"
 msgstr "Accelerador"
 
-#: libgnomeui/gnome_segv.c:43
+#: libgnomeui/gnome_segv.c:44
 #, c-format
 msgid ""
-"Application \"%s\" (process %d) has crashed due to a bug in the software.\n"
-"(%s)\n"
-"For more information, see http://www.gnome.org/application_crashed.shtml"
+"Application \"%s\" (process %d) has crashed\n"
+"due to a fatal error.\n"
+"(%s)"
+msgstr ""
+
+#: libgnomeui/gnome_segv.c:49
+msgid "Usage: gnome_segv appname signum\n"
+msgstr ""
+
+#: libgnomeui/gnome_segv.c:61
+msgid "Please visit the GNOME Application Crash page for more information"
 msgstr ""
 
 #: libgnomeui/stock_demo.c:112
@@ -1348,6 +1210,10 @@ msgstr "Configurar pàgina..."
 #: libgnomeui/stock_demo.c:173
 msgid "Quit"
 msgstr "Eixir"
+
+#: libgnomeui/stock_demo.c:184
+msgid "File"
+msgstr "Fitxer"
 
 #: libgnomeui/stock_demo.c:191
 msgid "Undo"
@@ -1545,7 +1411,7 @@ msgstr ""
 "instal·lat o no conec la ruta per trobar-los.  A qualsevol cas, per\n"
 "favor comproveu la vostra instal·lació de GNOME."
 
-#: libgnorba/goad.c:1294
+#: libgnorba/goad.c:1321
 msgid "(Internal use only) GOAD server ID to activate"
 msgstr "(Només per ús intern) ID del servidor GOAD a activar"
 
@@ -1679,6 +1545,112 @@ msgstr "L'usuari trià No/Cancel·lar amb les dades:\n"
 #: test-gnome/testgnome.c:1087
 msgid "Weird number in reply callback"
 msgstr "Número estrany a l'acció de resposta"
+
+#~ msgid "Hello GNOME\n"
+#~ msgstr "Hola GNOME\n"
+
+#~ msgid "The Hello World Gnomified"
+#~ msgstr "L'«Hola món» gnomificat"
+
+#~ msgid "(C) 1998 the Free Software Foundation"
+#~ msgstr "(C) 1998 Free Software Foundation"
+
+#~ msgid ""
+#~ "GNOME is a civilized software system so we've a \"hello world\" program"
+#~ msgstr ""
+#~ "GNOME és un sistema civilitzat, i per això tenim un programa «Hola món»"
+
+#~ msgid "About GnomeHello..."
+#~ msgstr "A propòsit de «Hola GNOME»..."
+
+#~ msgid "Exit"
+#~ msgstr "Eixir"
+
+#~ msgid "Hello World Gnomified"
+#~ msgstr "L'«Hola món» gnomificat"
+
+#~ msgid "Hello GNOME"
+#~ msgstr "Hola GNOME"
+
+#~ msgid "Exit GNOME hello"
+#~ msgstr "Eixir de «Hola GNOME»"
+
+#~ msgid "About..."
+#~ msgstr "A propòsit de..."
+
+#~ msgid "Info about GNOME hello"
+#~ msgstr "Informació sobre «Hola GNOME»"
+
+#~ msgid "Add View"
+#~ msgstr "Afegir vista"
+
+#~ msgid "Remove View"
+#~ msgstr "Eliminar vista"
+
+#~ msgid "Increase Counter"
+#~ msgstr "Incrementar comptador"
+
+#~ msgid "Child"
+#~ msgstr "Fill"
+
+#~ msgid "Add Child"
+#~ msgstr "Afegir fill"
+
+#~ msgid "Remove Child"
+#~ msgstr "Eliminar fill"
+
+#~ msgid "Children"
+#~ msgstr "Fills"
+
+#~ msgid "Notebook"
+#~ msgstr "Bloc de notes"
+
+#~ msgid "Toplevel"
+#~ msgstr "Primer pla"
+
+#~ msgid "Modal"
+#~ msgstr "Modal"
+
+#~ msgid "MDI Mode"
+#~ msgstr "Mode MDI"
+
+#~ msgid "Children/"
+#~ msgstr "Fills/"
+
+#~ msgid "File/Exit"
+#~ msgstr "Fitxer/Eixir"
+
+#~ msgid "<control>E"
+#~ msgstr "<control>E"
+
+#~ msgid "Help/About..."
+#~ msgstr "Ajuda/A propòsit de..."
+
+#~ msgid "<control>A"
+#~ msgstr "<control>A"
+
+#~ msgid ""
+#~ "%s: A gnomified 'Hello World' program\n"
+#~ "\n"
+#~ "Usage: %s [--help] [--version]\n"
+#~ "\n"
+#~ "Options:\n"
+#~ "        --help     display this help and exit\n"
+#~ "        --version  output version information and exit\n"
+#~ msgstr ""
+#~ "%s: Un programa «Hola Món» gnomificat\n"
+#~ "\n"
+#~ "Forma d'ús: %s [--help] [--version]\n"
+#~ "\n"
+#~ "Opcions:\n"
+#~ "        --help     mostra aquesta ajuda i ix\n"
+#~ "        --version  mostra informació sobre la versió i ix\n"
+
+#~ msgid "Gnome Hello %s.\n"
+#~ msgstr "Hola GNOME %s.\n"
+
+#~ msgid "Options error\n"
+#~ msgstr "Error a les opcions\n"
 
 #~ msgid "Really log out?"
 #~ msgstr "Realment voleu eixir?"
