@@ -261,7 +261,7 @@
 
       <tbody>
        <row>
-        <entry>RH Linux</entry>
+        <entry>Red Hat Linux</entry>
         <entry>/usr</entry>
         <entry>/etc</entry>
         <entry></entry>
@@ -318,7 +318,7 @@
    </question>
    <answer>
     <para>
-      This answer really needs filling in.
+      This is commonly asked. Foolproof answers are eagerly solicited.
     </para>
    </answer>
   </qandaentry>
@@ -332,7 +332,7 @@
    <answer>
     <para>
       You can create an RPM from a tarball if the tarball contains a
-      valid specfile. Most GNOME packages do. As root, run
+      valid specfile. Many GNOME packages do. As root, run
       <command>rpm -tb &lt;tarballname&gt;</command> to create a 
       binary rpm, or <command>rpm -ta &lt;tarballname&gt;</command>
       to create both a binary and a source rpm.
@@ -377,7 +377,10 @@
       Run this command before building the rpm: 
       <command>unset LINGUAS</command>. It should work now. You may
       want to add this to the %build section of the specfile instead.
-      <!-- FIXME: as well as LINGUAS, what else? LANGUAGE, LC_ALL and LANG? -->
+      Some people have suggested that you may wish to unset
+      <envar>LANGUAGE</envar>, <envar>LANG</envar> and <envar>LC_ALL</envar>
+      as well.
+      <!-- FIXME: Are unset LANGUAGE, LC_ALL and LANG actually necessary? -->
     </para>
    </answer>
   </qandaentry>
@@ -395,17 +398,75 @@
       called <application>stylesheets</application> and is needed for
       converting files from DocBook to HTML. As well as stylesheets,
       you will also need the packages: sgml-common, jade and docbook.
-      These are increasingly being provided by the major Linux and
-      BSD distributions. Check your vendor's FTP site. Much more 
-      information about DocBook and its tools is available from the pages 
-      of the
-      <ulink type="http" url="http://www.gnome.org/gdp">Gnome
-      Documentation Project</ulink>.
+      If you want to produce .ps documentation you will also want
+      jadetex. The canonical source for these tools is the Cygnus (well,
+      technically they're now part of Red Hat) 
+      <ulink type="ftp" 
+      url="ftp://sourceware.cygnus.com:/pub/docbook-tools/">sourceware</ulink>
+      site, but they are increasingly being provided by the major Linux and
+      BSD distributions. Check your vendor's FTP site. GNOME uses 
+      DocBook a lot for documentation and you can find lots of information
+      about it on the 
+      <ulink type="http" url="http://www.gnome.org/gdp/">Gnome
+      Documentation Project</ulink> pages. 
     </para>
     <para>
       This used to be a very common question but has not appeared for
       a few months. Perhaps this question can be removed.
     </para>
+   </answer>
+  </qandaentry>
+
+  <qandaentry id="gnome-stylesheets">
+   <question>
+    <para>
+      I have DocBook correctly installed but when I build a package I
+      get errors as the documentation sections get built. 
+    </para>
+   </question>
+
+   <answer>
+    <para>
+      GNOME has an extra stylesheet and a DTD which it uses for documents 
+      which use graphics. These enable us to use PNG graphics instead of
+      GIFs. In big package releases, the maintainers will make sure the
+      docs are already built. In some tarballs, though, this doesn't always
+      happen. These are generally the tarballs which aren't meant for
+      stable <quote>production</quote> release where it's expected the
+      people playing with them will know what is going on with this
+      message. If you meet it, you have a couple of choices:
+    </para>
+    <itemizedlist>
+     <listitem>
+      <para>
+        After <command>./configure</command> and before <command>make</command>,
+        edit the file <filename>Makefile.am</filename> and remove 
+        "docs" from the line beginning "SUBDIRS". This will mean the docs
+        just won't get built.
+      </para>
+     </listitem>
+     <listitem>
+      <para>
+        Change the DTD (the line in angle-brackets). Alter
+        <replaceable>"-//GNOME//DTD DocBook PNG Variant V1.1//EN"</replaceable>
+        to read <replaceable>"-//OASIS//DTD DocBook V3.1//EN"</replaceable>.
+        If you want to, remove all the sections which appear to look like
+        graphics (easily identified by being surrounded by the
+        <sgmltag>&lt;figure&gt;</sgmltag> and
+        <sgmltag>&lt;/figure&gt;</sgmltag> tags. This will build the docs
+        without the graphics (or with broken links if you leave them in).
+      </para>
+     </listitem>
+     <listitem>
+      <para>
+        Get the GNOME DTD and stylesheets and install them. They are
+        available as a tarball, an rpm, or the individual components
+        from
+        <ulink type="http" url="http://people.redhat.com/dcm/software.html">Dave
+        Mason's page</ulink>. Then it should build.
+      </para>
+     </listitem>
+    </itemizedlist>
    </answer>
   </qandaentry>
 
@@ -421,7 +482,7 @@
    <answer>
     <para>
       This affects people who install binary rpms or debs. It does not
-      affect people using tarballs or source rpms. (Are there source debs?)
+      affect people using tarballs, source rpms or debs with the source.
     </para>
     <para>
       Binary packages come in two sorts. There are the ones which come
@@ -431,13 +492,13 @@
       names, often abbreviates them further to such forms as 
       &lt;pkgdev&gt;.suffix or even &lt;pkgd&gt;.suffix.) The first sort 
       are what you need to run the programs in the package and are generally 
-      called the base packages on ftp sites. The second sort are what you 
-      need in addition if you want to compile and install new programs that 
-      rely on other programs' code. They contain header files which the
-      new programs you want to compile will look for. If you expect to be 
-      compiling the occasional tarball (or generating rpms from tarballs), 
-      collect gnome-core-devel, gnome-libs-devel and so on binaries and 
-      install them in addition to the base packages.
+      called the <quote>base</quote> packages on ftp sites. The second sort 
+      are what you need in addition if you want to compile and install new 
+      programs that rely on other programs' code. They contain header files 
+      which the new programs you want to compile will look for. If you expect 
+      to be compiling the occasional tarball (or generating rpms from 
+      tarballs), collect gnome-core-devel, gnome-libs-devel and so on 
+      binaries and install them in addition to the base packages.
     </para>
    </answer>
   </qandaentry>
