@@ -1,3 +1,5 @@
+SUBDIRS = ui-guide
+
 htmldir = $(prefix)/html
 html_DATA = gnome-dev-info.html
 
