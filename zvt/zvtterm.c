@@ -237,7 +237,8 @@ void
 zvt_term_set_color_scheme (ZvtTerm *term, gushort *red, gushort *grn, gushort *blu)
 {
   int  nallocated;
-
+  GdkColor c;
+  
   g_return_if_fail (term != NULL);
   g_return_if_fail (ZVT_IS_TERM (term));
   g_return_if_fail (red != NULL);
@@ -248,6 +249,8 @@ zvt_term_set_color_scheme (ZvtTerm *term, gushort *red, gushort *grn, gushort *b
   nallocated = 0;
   gdk_color_context_get_pixels (term->color_ctx, red, grn, blu,
 				18, term->colors, &nallocated);
+  c.pixel = term->colors [18];
+  gdk_window_set_background (GTK_WIDGET (term)->window, &c);
 }
 
 void
@@ -288,7 +291,6 @@ zvt_term_realize (GtkWidget *widget)
 
   attributes_mask = GDK_WA_X | GDK_WA_Y | GDK_WA_VISUAL | GDK_WA_COLORMAP;
   widget->window = gdk_window_new (widget->parent->window, &attributes, attributes_mask);
-
   widget->style = gtk_style_attach (widget->style, widget->window);
 
   gdk_window_set_user_data (widget->window, widget);

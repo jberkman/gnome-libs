@@ -1,3 +1,9 @@
+1998-05-08  Miguel de Icaza  <miguel@nuclecu.unam.mx>
+
+	* zvtterm.c (zvt_term_set_color_scheme): Set the GdkWindow color
+	to the default background of the terminal.  This avoids the
+	flashing gray when switching desktops. 
+
 1998-05-06  Miguel de Icaza  <miguel@nuclecu.unam.mx>
 
 	* zvtterm.c (vt_draw_text): Use the default background/foreground
