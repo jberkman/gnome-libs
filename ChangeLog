@@ -1,3 +1,10 @@
+1998-04-29  Federico Mena Quintero  <federico@nuclecu.unam.mx>
+
+	* libgnome/gnome-config.c (_gnome_config_set_translated_string):
+	If the language is the default "C", we don't want to write the [C]
+	suffix to the file.  This is so that this function will work in
+	pairs with gnome_config_get_translated_string().
+
 1998-04-29  Tristan Tarrant  <ttarrant@etnoteam.it>
 
 	* configure.in: add checks for forkpty
