@@ -1,7 +1,7 @@
 <!doctype chapter PUBLIC "-//Davenport//DTD DocBook V3.0//EN" [
 ]>
 
-<chapter id="GnomeAppHelper">
+<chapter id="gnome-app-helper">
 
   <title>Automatic menu and toolbar creation with GnomeAppHelper</title>
 
@@ -58,7 +58,7 @@
 	editing application.
       </para>
 
-      <programlisting>
+      <programlisting role="C">
 #include &lt;gnome.h&gt;
 
 /* Definition of the File menu */
@@ -158,6 +158,54 @@ static GnomeUIInfo main_menu[] = {
       detail.  You do not need to remember all the details to use
       GnomeAppHelper; it also provides convenient macros to make
       creating simple items easier, as we shall see.
+    </para>
+
+    <example>
+      <title>Inserting the menu bar in an application window</title>
+
+      <para>
+	Now that we have the <structname>GnomeUIInfo</structname>
+	arrays that define the menus in the application, we need to
+	call one of the GnomeAppHelper functions that take in such an
+	array and create the actual widgets for the menus.
+      </para>
+
+      <para>
+	Here, we create a new application window and create its menu
+	bar from the information defined in the
+	<symbol>main_menu</symbol> array we described above.
+      </para>
+
+      <programlisting role="C">
+/* This function creates an application window for our hypotetical
+ * text editor and creates a menu bar for it.  The window's title is
+ * set to the specified string.
+ */
+	
+GtkWidget *
+create_editor_main_window (char *window_title)
+{
+	GtkWidget *app;
+
+	/* Create the application window */
+
+	app = gnome_app_new ("edit-o-matic", title);
+
+	/* Create the menus and insert them in the application window */
+
+	gnome_app_create_menus (GNOME_APP (app), main_menu);
+
+	return app;
+}
+      </programlisting>
+
+    </example>
+
+    <para>
+      The <function>gnome_app_create_menus()</function> function is
+      the simplest way to create a menu bar's widgets out of a
+      <structname>GnomeUIInfo</structname> array.  There are other
+      functions to create menus and toolbars, as we will see below.
     </para>
 	
   </sect1>
@@ -659,7 +707,25 @@ typedef struct {
 
   </sect1>
 
-  <sect1 id="GnomeAppHelper-functions">
+  <sect1 id="convenience-macros">
+
+    <title>Convenience macros to fill <structname>GnomeUIInfo</structname> structures</title>
+
+    <para>
+      GnomeAppHelper also provides some convenience macros to let you
+      fill <structname>GnomeUIInfo</structname> structures easily.
+      You can use these macros wherever you would fill out the fields
+      in the <structname>GnomeUIInfo</structname> structur by hand.
+    </para>
+
+    <para>
+      The following macros are available:
+    </para>
+    
+
+  </sect1>
+
+  <sect1 id="functions">
 
     <title>Functions provided by GnomeAppHelper</title>
 
