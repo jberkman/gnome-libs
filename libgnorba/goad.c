@@ -682,6 +682,7 @@ goad_server_activate_shlib(GoadServer *sinfo,
       if (!strncmp(line, "dependency_libs='", strlen("dependency_libs='")))
 	break;
     }
+    fclose(lafile);
     if (!ptr) {
       /* no dependcy line, just load the lib */
       goto normal_loading;
