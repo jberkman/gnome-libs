@@ -17,7 +17,7 @@ SUBDIRS = po intl support \
 	images \
 	libart_lgpl \
 	libgnome libgnomeui gtk-xmhtml zvt \
-	libgnorba idl $(test_gnome) devel-docs gnome-data man \
+	oaf idl $(test_gnome) devel-docs gnome-data man \
 	gnome-faq
 
 if COMPILE_TEST_GNOME

@@ -206,7 +206,7 @@ dnl Test for libz
 AC_CHECK_LIB(z, inflate,
   AC_CHECK_HEADER(zlib.h,
     Z_LIBS="-lz";  AC_DEFINE(HAVE_LIBZ)))
-AC_CHECK_LIB(z, compress, , 
+AC_CHECK_LIB(z, compress, Z_LIBS="-lz", 
    AC_MSG_ERROR([[
 *** Incorrect libz version found.  Please make sure you do not have
 *** an outdated libz.a or libz.so hiding in your X11 distribution or
@@ -407,6 +407,11 @@ dnl
 dnl LibART_LGPL
 dnl
 AC_CONFIG_SUBDIRS(libart_lgpl)
+
+dnl
+dnl OAF
+dnl
+AC_CONFIG_SUBDIRS(oaf)
 
 dnl
 dnl GNOME libs Documentation
