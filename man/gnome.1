@@ -1,3 +1,10 @@
+.\"
+.\" gnome manual page
+.\" (C) 1999 Miguel de Icaza (miguel@gnu.org).
+.\" 
+.\" This manual page is covered by the terms of the GNU General
+.\" Public License.  
+.\"
 .TH GNOME 1 "GNOME 1.0" 
 .SH NAME
 GNOME \- The GNU Network Object Model Environment
@@ -15,10 +22,17 @@ your system is configured to use
 (the GNOME display and login manager) you can start your GNOME session
 by selecting the Gnome login profile.
 .PP
+If the special 
+.B WINDOW_MANAGER
+environment variable is set, the gnome-session system will use that as
+the session window manager.  Otherwise it will default to your
+system's configured window manager.
+.PP
 GNOME is a collection of libraries and applications.  A collection of
 these form the GNOME Desktop: an easy to use, yet powerful desktop
 environment for Unix systems.  You can find up to date information
-about GNOME in http://www.gnome.org. 
+about GNOME in http://www.gnome.org.  You can find more information
+about the GNU project in http://www.gnu.org.
 .PP
 From a user's point of view, the GNOME desktop consists of a desktop
 metaphor, a file manager and an easy way to launch applications
@@ -110,12 +124,12 @@ Richard Stallman of the Free Software Foundation, and Peter Mattis and
 Spencer Kimball of the GIMP project.  We launched the project after
 considering the various alternatives that could be tried.
 .PP
-The original call for developers included the team of programmers
-working on the GNU Image Manipulation Program (GIMP [GIMP]), the Guile
-mailing list and the free software mailing lists.  This is important
-because the mix of people that were part of the original GNOME team
-had a good background on free software issues, graphics and language
-design.
+The original call for developers, which included the team of
+programmers working on the GNU Image Manipulation Program (GIMP
+[GIMP]), the Guile mailing list and the free software mailing lists.
+This is important because the mix of people that were part of the
+original GNOME team had a good background on free software issues,
+graphics and language design.
 .PP
 Red Hat created the Advanced Development Laboratories division on
 January 1998 (http://www.labs.redhat.com).  RHAD labs was initially
@@ -136,18 +150,43 @@ developed.  Software developers will be able to take advantage of all
 the functions available in the library, and they can be sure that
 their applications will continue to work in the future.
 .PP
+In May, International GNOME support was launched: a company that offers
+contractual support for the GNOME system.  Their web page is at
+http://www.gnome-support.com.
+.PP
+.SH MAILING LISTS
+There are various mailing lists used by the GNOME project to
+coordinate the development of GNOME, you can subscribe to these lists
+by sending mail to the <listname>-request@domain address and put in
+the body of your message the word "subscribe". 
+.PP
+.SS gnome-announce-list@gnome.org
+Where general announcements about the GNOME system are done.  A good
+way of staying in touch with the developments of the system
+.PP
+.SS gnome-list@gnome.org
+General discussion of the GNOME system.
+.PP
+.SS gnome-devel-list@gnome.org
+Discussions on the development of the GNOME system and on writing
+GNOME applications.
+.PP
+There are many other lists that discuss specific parts of the project,
+for a complete list, check http://www.gnome.org/mailing-lists
+.PP
 .SH BUGS
 .PP
-To report bugs in the GNOME system, please use the command 
+To report bugs or suggestions you would like to see in the GNOME
+system, please use the command
 .B gnome-bug
 to send us information about the problem you are experimenting, or go
 directly to our bug tracking system on the Web at
 http://bugs.gnome.org
 .SH AUTHOR
 .PP
-GNOME has been developed by a large number of programmers, users and
-enthusiasts on the Internet.  The 
+GNOME has been developed by a large number of free software
+programmers, users and enthusiasts on the Internet.  The
 .B guname
-program lists some of the contributors. 
+program lists some of the contributors to the system.
 .PP
 This manual page has been written by Miguel de Icaza (miguel@gnu.org)
