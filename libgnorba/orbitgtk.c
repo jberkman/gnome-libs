@@ -1,10 +1,14 @@
 #include <unistd.h>
+#include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
 #include <limits.h>
 #include <gdk/gdkx.h>
 #include <gtk/gtk.h>
 #include "gnorba.h"
+
+CORBA_ORB gnome_orbit_orb;
+CORBA_Principal request_cookie;
 
 static void
 orb_handle_connection(GIOPConnection *cnx, gint source, GdkInputCondition cond)
@@ -37,17 +41,52 @@ static void orb_remove_connection(GIOPConnection *cnx)
   cnx->user_data = (gpointer)-1;
 }
 
-CORBA_ORB gnome_orbit_orb;
+CORBA_boolean
+gnome_ORBit_request_validate(CORBA_unsigned_long request_id,
+			     CORBA_Principal *principal,
+			     CORBA_char *operation)
+{
+  if(principal->_length == request_cookie._length
+     && !(principal->_buffer[principal->_length - 1])
+     && !strcmp(principal->_buffer, request_cookie._buffer))
+    return CORBA_TRUE;
+  else
+    return CORBA_FALSE;
+}
 
 CORBA_ORB
-gnome_CORBA_ORB_init(int *argc, char **argv, CORBA_ORBid orb_identifier,
-		CORBA_Environment *ev)
+gnome_CORBA_init(char *app_id,
+		 struct argp *app_parser,
+		 int *argc, char **argv,
+		 unsigned int flags,
+		 int *arg_index,
+		 CORBA_Environment *ev)
 {
   CORBA_ORB retval;
+  GString *tmpstr;
+
   IIOPAddConnectionHandler = orb_add_connection;
   IIOPRemoveConnectionHandler = orb_remove_connection;
 
-  gnome_orbit_orb = retval = CORBA_ORB_init(argc, argv, orb_identifier, ev);
+  gnome_init(app_id, app_parser, *argc, argv, flags, arg_index);
+
+  gnome_orbit_orb = retval = CORBA_ORB_init(argc, argv, "orbit-local-orb", ev);
+
+  tmpstr = g_string_new(NULL);
+
+  g_string_sprintf(tmpstr, "/panel/Secret/cookie-DISPLAY-%s=",
+		   getenv("DISPLAY"));
+
+  request_cookie._buffer = gnome_config_private_get_string(tmpstr->str);
+
+  g_assert(request_cookie._buffer && *request_cookie._buffer);
+
+  request_cookie._length = strlen(request_cookie._buffer) + 1;
+
+  g_string_free(tmpstr, TRUE);
+
+  ORBit_set_request_validation_handler(&gnome_ORBit_request_validate);
+  ORBit_set_default_principal(&request_cookie);
 
   return retval;
 }
