@@ -46,7 +46,7 @@ gnome_cv_use_gnome=yes
 
 GNOME_COMPILE_WARNINGS
 
-GNOME_X_CHECKS
+GNOME2_X_CHECKS
 
 GNOME_SUPPORT_CHECKS
 
@@ -355,7 +355,7 @@ dnl
 dnl Libart, GdkPixbuf checks
 dnl
 AM_PATH_LIBART(2.1.0, , AC_MSG_ERROR([You must have libart installed.]))
-AM_PATH_GDK_PIXBUF(0.4.0, , AC_MSG_ERROR([You must have gdk-pixbuf installed.]))
+dnl AM_PATH_GDK_PIXBUF(0.4.0, , AC_MSG_ERROR([You must have gdk-pixbuf installed.]))
 
 
 dnl
