@@ -113,6 +113,7 @@ goad_server_list_get(void)
   GoadServerList *newl;
   GHashTable *by_goad_id;
   int i;
+  char *ctmp;
 
   newl = g_new0(GoadServerList, 1);
   servinfo = g_array_new(TRUE, FALSE, sizeof(GoadServer));
@@ -142,7 +143,8 @@ goad_server_list_get(void)
   g_string_free(usersrvpath, TRUE);
   
   /* System servers */
-  dirh = opendir(GNOMESYSCONFDIR SERVER_LISTING_PATH);
+  ctmp = gnome_unconditional_config_file(SERVER_LISTING_PATH);
+  dirh = opendir(ctmp);
   if(dirh) {
     struct dirent *dent;
 
@@ -158,6 +160,7 @@ goad_server_list_get(void)
     }
     closedir(dirh);
   }
+  g_free(ctmp);
 
   goad_server_list_read(SERVER_LISTING_PATH "/", servinfo, tmpstr, newl);
 
