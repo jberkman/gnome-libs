@@ -16,7 +16,8 @@ noinst_PROGRAMS =  \
 	gnome-hello-2-i18n  		\
 	gnome-hello-3-parse-args	\
 	gnome-hello-4-SM		\
-	gnome-hello-5-dnd
+	gnome-hello-5-dnd		\
+	gnome-hello-6-dynamic-menus
 
 # automake does not yet dig .sgml files, so for now the DocBook files
 # must be extra_dist.  Also, in the future we should distribute the
