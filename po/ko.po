@@ -5,13 +5,181 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: GNOME-libraries 0.13\n"
-"POT-Creation-Date: 1998-05-28 08:53+0900\n"
+"POT-Creation-Date: 1998-08-01 16:36-0500\n"
 "PO-Revision-Date: 1998-05-28 08:53+0900\n"
 "Last-Translator: Changwoo Ryu <cwryu@adam.kaist.ac.kr>\n"
 "Language-Team: Korean <ko@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=euc-kr\n"
 "Content-Transfer-Encoding: 8bit\n"
+
+#: gnome-hello/gnome-hello-2-i18n.c:31
+#: gnome-hello/gnome-hello-3-parse-args.c:33 gnome-hello/gnome-hello.c:40
+msgid "File/Exit"
+msgstr "파일/끝내기"
+
+#: gnome-hello/gnome-hello-2-i18n.c:31
+#: gnome-hello/gnome-hello-3-parse-args.c:33 gnome-hello/gnome-hello.c:40
+msgid "<control>E"
+msgstr "<control>E"
+
+#. The '...' end indicate that the options open a dialog
+#: gnome-hello/gnome-hello-2-i18n.c:33
+#: gnome-hello/gnome-hello-3-parse-args.c:35 gnome-hello/gnome-hello.c:42
+msgid "Help/About..."
+msgstr "도움말/이 프로그램은..."
+
+#: gnome-hello/gnome-hello-2-i18n.c:33
+#: gnome-hello/gnome-hello-3-parse-args.c:35 gnome-hello/gnome-hello.c:42
+msgid "<control>A"
+msgstr "<control>A"
+
+#. Make the main window and binds the delete event so you can close
+#. the program from your WM
+#: gnome-hello/gnome-hello-2-i18n.c:69
+#: gnome-hello/gnome-hello-3-parse-args.c:99
+#: gnome-hello/gnome-hello-4-SM.c:197
+msgid "Hello World Gnomified"
+msgstr "그놈 Hello World"
+
+#. We make a button, bind the 'clicked' signal to hello and setting it
+#. to be the content of the main window
+#: gnome-hello/gnome-hello-2-i18n.c:83
+#: gnome-hello/gnome-hello-3-parse-args.c:113
+#: gnome-hello/gnome-hello-4-SM.c:213 gnome-hello/gnome-hello.c:103
+msgid "Hello GNOME"
+msgstr "안녕하세요 그놈입니다"
+
+#: gnome-hello/gnome-hello-2-i18n.c:102
+#: gnome-hello/gnome-hello-3-parse-args.c:132
+#: gnome-hello/gnome-hello-4-SM.c:232 gnome-hello/gnome-hello.c:122
+msgid "Hello GNOME\n"
+msgstr "안녕하세요 그놈입니다\n"
+
+#: gnome-hello/gnome-hello-2-i18n.c:125
+#: gnome-hello/gnome-hello-3-parse-args.c:155
+#: gnome-hello/gnome-hello-4-SM.c:255 gnome-hello/gnome-hello.c:145
+msgid "The Hello World Gnomified"
+msgstr "그놈 Hello World"
+
+#. another comments
+#: gnome-hello/gnome-hello-2-i18n.c:130
+#: gnome-hello/gnome-hello-3-parse-args.c:160
+#: gnome-hello/gnome-hello-4-SM.c:260 gnome-hello/gnome-hello.c:150
+msgid "GNOME is a civilized software system so we've a \"hello world\" program"
+msgstr ""
+"그놈은 수준높은 소프트웨어 시스템이므로 \"hello world\" 프로그램이 있습니다"
+
+#: gnome-hello/gnome-hello-3-parse-args.c:43
+msgid "Run silently"
+msgstr "조용히 실행"
+
+#: gnome-hello/gnome-hello-4-SM.c:54 gnome-hello/gnome-hello-7-mdi.c:356
+#, fuzzy
+msgid "Exit"
+msgstr "파일/끝내기"
+
+#: gnome-hello/gnome-hello-4-SM.c:54
+msgid "Exit GNOME hello"
+msgstr ""
+
+#: gnome-hello/gnome-hello-4-SM.c:66 gnome-hello/gnome-hello-7-mdi.c:398
+#, fuzzy
+msgid "About..."
+msgstr "이 프로그램은"
+
+#: gnome-hello/gnome-hello-4-SM.c:66
+msgid "Info about GNOME hello"
+msgstr ""
+
+#. and document menu and document list paths (see gnome-app-helper menu
+#. insertion routines for details)
+#: gnome-hello/gnome-hello-4-SM.c:78 gnome-hello/gnome-hello-7-mdi.c:362
+#: gnome-hello/gnome-hello-7-mdi.c:437 libgnomeui/stock_demo.c:212
+#, fuzzy
+msgid "File"
+msgstr "파일/끝내기"
+
+#: gnome-hello/gnome-hello-4-SM.c:79 gnome-hello/gnome-hello-7-mdi.c:404
+#: libgnomeui/gnome-stock.c:493 libgnomeui/stock_demo.c:342
+msgid "Help"
+msgstr "도움말"
+
+#: gnome-hello/gnome-hello-4-SM.c:91 libgnomeui/gnome-client.c:171
+#: libgnomeui/gnome-client.c:173
+msgid "ID"
+msgstr "ID"
+
+#: gnome-hello/gnome-hello-4-SM.c:91
+msgid "Discard session"
+msgstr "세션정보 지우기"
+
+#: gnome-hello/gnome-hello-7-mdi.c:180
+msgid "Add View"
+msgstr ""
+
+#: gnome-hello/gnome-hello-7-mdi.c:185
+msgid "Remove View"
+msgstr ""
+
+#: gnome-hello/gnome-hello-7-mdi.c:191
+msgid "Child"
+msgstr ""
+
+#: gnome-hello/gnome-hello-7-mdi.c:340
+msgid "Add Child"
+msgstr ""
+
+#: gnome-hello/gnome-hello-7-mdi.c:346
+msgid "Remove Child"
+msgstr ""
+
+#: gnome-hello/gnome-hello-7-mdi.c:371
+msgid "Notebook"
+msgstr ""
+
+#: gnome-hello/gnome-hello-7-mdi.c:377
+msgid "Toplevel"
+msgstr ""
+
+#: gnome-hello/gnome-hello-7-mdi.c:383
+msgid "Modal"
+msgstr ""
+
+#: gnome-hello/gnome-hello-7-mdi.c:389
+msgid "MDI Mode"
+msgstr ""
+
+#: gnome-hello/gnome-hello-7-mdi.c:438
+msgid "Children/"
+msgstr ""
+
+#: gnome-hello/gnome-hello.c:208
+#, c-format
+msgid ""
+"%s: A gnomified 'Hello World' program\n"
+"\n"
+"Usage: %s [--help] [--version]\n"
+"\n"
+"Options:\n"
+"        --help     display this help and exit\n"
+"        --version  output version information and exit\n"
+msgstr ""
+
+#: gnome-hello/gnome-hello.c:217
+#, c-format
+msgid "Gnome Hello %s.\n"
+msgstr ""
+
+#: gnome-hello/gnome-hello.c:231
+msgid "Options error\n"
+msgstr ""
+
+#: libgnome/gnome-parse.c:44
+msgid ""
+"\n"
+"Generic options"
+msgstr ""
 
 #: libgnomeui/gnome-about.c:193
 msgid "Author:"
@@ -25,17 +193,370 @@ msgstr "만든이:"
 msgid "Authors: "
 msgstr "만든이: "
 
-#: libgnomeui/gnome-about.c:550
+#: libgnomeui/gnome-about.c:567 libgnomeui/stock_demo.c:331
 msgid "About"
 msgstr "이 프로그램은"
 
-#: libgnomeui/gnome-file-entry.c:89
+#: libgnomeui/gnome-app-util.c:86
+msgid " (press return)"
+msgstr ""
+
+#: libgnomeui/gnome-app-util.c:114
+msgid "ERROR: "
+msgstr ""
+
+#: libgnomeui/gnome-app-util.c:136
+#, fuzzy
+msgid "Warning: "
+msgstr "경고"
+
+#: libgnomeui/gnome-app-util.c:242
+msgid "y"
+msgstr ""
+
+#: libgnomeui/gnome-app-util.c:243
+#, fuzzy
+msgid "yes"
+msgstr "예"
+
+#: libgnomeui/gnome-app-util.c:246
+#, fuzzy
+msgid "n"
+msgstr "ln"
+
+#: libgnomeui/gnome-app-util.c:247
+msgid "no"
+msgstr ""
+
+#: libgnomeui/gnome-app-util.c:286
+msgid " (yes or no)"
+msgstr ""
+
+#: libgnomeui/gnome-app-util.c:287
+msgid "  - OK? (yes or no)"
+msgstr ""
+
+#: libgnomeui/gnome-app-util.c:520
+msgid "Progress"
+msgstr ""
+
+#: libgnomeui/gnome-app.c:355 libgnomeui/gnome-app.c:380
+msgid "Top"
+msgstr ""
+
+#: libgnomeui/gnome-app.c:356 libgnomeui/gnome-app.c:381
+msgid "Bottom"
+msgstr ""
+
+#: libgnomeui/gnome-app.c:382
+msgid "Left"
+msgstr ""
+
+#: libgnomeui/gnome-app.c:383
+msgid "Right"
+msgstr ""
+
+#: libgnomeui/gnome-app.c:384
+msgid "Configure toolbar"
+msgstr ""
+
+#: libgnomeui/gnome-calculator.c:908 libgnomeui/gnome-calculator.c:1068
+msgid "DEG"
+msgstr "DEG"
+
+#: libgnomeui/gnome-calculator.c:910
+msgid "RAD"
+msgstr "RAD"
+
+#: libgnomeui/gnome-calculator.c:912
+msgid "GRAD"
+msgstr "GRAD"
+
+#: libgnomeui/gnome-calculator.c:1058
+msgid "1/x"
+msgstr "1/x"
+
+#: libgnomeui/gnome-calculator.c:1059
+msgid "x^2"
+msgstr "x^2"
+
+#: libgnomeui/gnome-calculator.c:1060
+msgid "SQRT"
+msgstr "SQRT"
+
+#: libgnomeui/gnome-calculator.c:1061
+msgid "CE/C"
+msgstr "CE/C"
+
+#: libgnomeui/gnome-calculator.c:1062
+msgid "AC"
+msgstr "AC"
+
+#. inverse button
+#: libgnomeui/gnome-calculator.c:1065
+msgid "sin"
+msgstr "sin"
+
+#: libgnomeui/gnome-calculator.c:1066
+msgid "cos"
+msgstr "cos"
+
+#: libgnomeui/gnome-calculator.c:1067
+msgid "tan"
+msgstr "tan"
+
+#: libgnomeui/gnome-calculator.c:1070
+msgid "e"
+msgstr "e"
+
+#: libgnomeui/gnome-calculator.c:1071
+msgid "EE"
+msgstr "EE"
+
+#: libgnomeui/gnome-calculator.c:1072
+msgid "log"
+msgstr "log"
+
+#: libgnomeui/gnome-calculator.c:1073
+msgid "ln"
+msgstr "ln"
+
+#: libgnomeui/gnome-calculator.c:1074
+msgid "x^y"
+msgstr "x^y"
+
+#: libgnomeui/gnome-calculator.c:1076
+msgid "PI"
+msgstr "PI"
+
+#: libgnomeui/gnome-calculator.c:1077
+msgid "x!"
+msgstr "x!"
+
+#: libgnomeui/gnome-calculator.c:1078
+msgid "("
+msgstr "("
+
+#: libgnomeui/gnome-calculator.c:1079
+msgid ")"
+msgstr ")"
+
+#: libgnomeui/gnome-calculator.c:1080
+msgid "/"
+msgstr "/"
+
+#: libgnomeui/gnome-calculator.c:1082
+msgid "STO"
+msgstr "STO"
+
+#: libgnomeui/gnome-calculator.c:1083
+msgid "7"
+msgstr "7"
+
+#: libgnomeui/gnome-calculator.c:1084
+msgid "8"
+msgstr "8"
+
+#: libgnomeui/gnome-calculator.c:1085
+msgid "9"
+msgstr "9"
+
+#: libgnomeui/gnome-calculator.c:1086
+msgid "*"
+msgstr "*"
+
+#: libgnomeui/gnome-calculator.c:1088
+msgid "RCL"
+msgstr "RCL"
+
+#: libgnomeui/gnome-calculator.c:1089
+msgid "4"
+msgstr "4"
+
+#: libgnomeui/gnome-calculator.c:1090
+msgid "5"
+msgstr "5"
+
+#: libgnomeui/gnome-calculator.c:1091
+msgid "6"
+msgstr "6"
+
+#: libgnomeui/gnome-calculator.c:1092
+msgid "-"
+msgstr "-"
+
+#: libgnomeui/gnome-calculator.c:1094
+msgid "SUM"
+msgstr "SUM"
+
+#: libgnomeui/gnome-calculator.c:1095
+msgid "1"
+msgstr "1"
+
+#: libgnomeui/gnome-calculator.c:1096
+msgid "2"
+msgstr "2"
+
+#: libgnomeui/gnome-calculator.c:1097
+msgid "3"
+msgstr "3"
+
+#: libgnomeui/gnome-calculator.c:1098
+msgid "+"
+msgstr "+"
+
+#: libgnomeui/gnome-calculator.c:1100
+msgid "EXC"
+msgstr "EXC"
+
+#: libgnomeui/gnome-calculator.c:1101
+msgid "0"
+msgstr "0"
+
+#: libgnomeui/gnome-calculator.c:1102
+msgid "."
+msgstr "."
+
+#: libgnomeui/gnome-calculator.c:1103
+msgid "+/-"
+msgstr "+/-"
+
+#: libgnomeui/gnome-calculator.c:1104
+msgid "="
+msgstr "="
+
+#: libgnomeui/gnome-calculator.c:1194
+msgid "INV"
+msgstr "INV"
+
+#: libgnomeui/gnome-client.c:172
+msgid "Specify session management id"
+msgstr "세션 관리 id 지정"
+
+#: libgnomeui/gnome-client.c:174
+msgid "Specify id of cloned client"
+msgstr ""
+
+#: libgnomeui/gnome-client.c:176
+msgid "Disable connection to session manager"
+msgstr ""
+
+#. Only add the label if all the children are to be shown.  Otherwise
+#. * things look too wide; in that case just show the arrow.
+#.
+#: libgnomeui/gnome-dateedit.c:393
+#, fuzzy
+msgid "Calendar"
+msgstr "지우기"
+
+#: libgnomeui/gnome-dentry-edit.c:164
+msgid "Name:"
+msgstr ""
+
+#: libgnomeui/gnome-dentry-edit.c:177
+msgid "Comment:"
+msgstr ""
+
+#: libgnomeui/gnome-dentry-edit.c:187
+msgid "Command:"
+msgstr ""
+
+#: libgnomeui/gnome-dentry-edit.c:197
+msgid "Type:"
+msgstr ""
+
+#: libgnomeui/gnome-dentry-edit.c:231
+msgid "Run in Terminal"
+msgstr ""
+
+#: libgnomeui/gnome-dentry-edit.c:245
+msgid "Try this before using:"
+msgstr ""
+
+#: libgnomeui/gnome-dentry-edit.c:255
+msgid "Documentation:"
+msgstr ""
+
+#: libgnomeui/gnome-dentry-edit.c:305
+msgid "Easy"
+msgstr ""
+
+#: libgnomeui/gnome-dentry-edit.c:309
+msgid "Advanced"
+msgstr ""
+
+#: libgnomeui/gnome-dentry-edit.c:542
+msgid ""
+"No\n"
+"icon"
+msgstr ""
+
+#: libgnomeui/gnome-dentry-edit.c:557
+msgid ""
+"Couldn't\n"
+"load\n"
+"icon"
+msgstr ""
+
+#: libgnomeui/gnome-dentry-edit.c:603
+msgid "Choose an icon"
+msgstr ""
+
+#: libgnomeui/gnome-file-entry.c:90
 msgid "Select file"
 msgstr "파일 선택"
 
-#: libgnomeui/gnome-file-entry.c:146
+#: libgnomeui/gnome-file-entry.c:147
 msgid "Browse..."
 msgstr "찾아보기..."
+
+#: libgnomeui/gnome-icon-sel.c:245
+msgid "Loading Icons..."
+msgstr ""
+
+#: libgnomeui/gnome-init.c:48
+msgid ""
+"\n"
+"Gtk toolkit options"
+msgstr ""
+
+#: libgnomeui/gnome-init.c:51
+msgid "DISPLAY"
+msgstr "DISPLAY"
+
+#: libgnomeui/gnome-init.c:51
+msgid "X display to use"
+msgstr "사용할 X display"
+
+#: libgnomeui/gnome-init.c:53
+msgid "Don't use X shared memory extension"
+msgstr "X 공유 기억장치 확장 기능을 사용하지 않음"
+
+#: libgnomeui/gnome-init.c:54
+msgid "NAME"
+msgstr "NAME"
+
+#: libgnomeui/gnome-init.c:54 libgnomeui/gnome-init.c:55
+#: libgnomeui/gnome-init.c:56 libgnomeui/gnome-init.c:57
+#: libgnomeui/gnome-init.c:58 libgnomeui/gnome-init.c:59
+msgid "FIXME"
+msgstr "FIXME"
+
+#: libgnomeui/gnome-init.c:55
+msgid "CLASS"
+msgstr "CLASS"
+
+#: libgnomeui/gnome-init.c:56
+msgid "HOST"
+msgstr "HOST"
+
+#: libgnomeui/gnome-init.c:57
+msgid "PORT"
+msgstr "PORT"
+
+#: libgnomeui/gnome-init.c:58 libgnomeui/gnome-init.c:59
+msgid "STYLE"
+msgstr "STYLE"
 
 #: libgnomeui/gnome-messagebox.c:95
 msgid "Information"
@@ -57,51 +578,69 @@ msgstr "물음"
 msgid "Message"
 msgstr "메시지"
 
-#: libgnomeui/gnome-init.c:41
-msgid "DISPLAY"
-msgstr "DISPLAY"
+#: libgnomeui/gnome-number-entry.c:124
+msgid "Calculator"
+msgstr ""
 
-#: libgnomeui/gnome-init.c:41
-msgid "X display to use"
-msgstr "사용할 X display"
+#: libgnomeui/gnome-number-entry.c:171
+msgid "Calculator..."
+msgstr ""
 
-#: libgnomeui/gnome-init.c:43
-msgid "Don't use X shared memory extension"
-msgstr "X 공유 기억장치 확장 기능을 사용하지 않음"
+#: libgnomeui/gnome-scores.c:72
+msgid "Top Ten"
+msgstr "상위 10등"
 
-#: libgnomeui/gnome-init.c:44
-msgid "NAME"
-msgstr "NAME"
+#: libgnomeui/gnome-scores.c:83
+msgid "User"
+msgstr "사용자"
 
-#: libgnomeui/gnome-init.c:44 libgnomeui/gnome-init.c:45
-#: libgnomeui/gnome-init.c:46 libgnomeui/gnome-init.c:47
-#: libgnomeui/gnome-init.c:48 libgnomeui/gnome-init.c:49
-msgid "FIXME"
-msgstr "FIXME"
+#: libgnomeui/gnome-scores.c:86
+msgid "Score"
+msgstr "점수"
 
-#: libgnomeui/gnome-init.c:45
-msgid "CLASS"
-msgstr "CLASS"
+#: libgnomeui/gnome-scores.c:89
+msgid "Date"
+msgstr "날짜"
 
-#: libgnomeui/gnome-init.c:46
-msgid "HOST"
-msgstr "HOST"
+#: libgnomeui/gnome-stock.c:487
+msgid "OK"
+msgstr "확인"
 
-#: libgnomeui/gnome-init.c:47
-msgid "PORT"
-msgstr "PORT"
+#: libgnomeui/gnome-stock.c:488
+msgid "Apply"
+msgstr "적용"
 
-#: libgnomeui/gnome-init.c:48 libgnomeui/gnome-init.c:49
-msgid "STYLE"
-msgstr "STYLE"
+#: libgnomeui/gnome-stock.c:489
+msgid "Cancel"
+msgstr "취소"
 
-#: gnome-hello/gnome-hello-4-SM.c:67 libgnomeui/gnome-client.c:145
-msgid "ID"
-msgstr "ID"
+#: libgnomeui/gnome-stock.c:490 libgnomeui/stock_demo.c:163
+msgid "Close"
+msgstr "닫기"
 
-#: libgnomeui/gnome-client.c:146
-msgid "Specify session management id"
-msgstr "세션 관리 id 지정"
+#: libgnomeui/gnome-stock.c:491
+msgid "Yes"
+msgstr "예"
+
+#: libgnomeui/gnome-stock.c:492
+msgid "No"
+msgstr "아니오"
+
+#: libgnomeui/gnome-stock.c:1411
+msgid "Menu Accelerator Keys"
+msgstr "메뉴 단축키"
+
+#: libgnomeui/gnome-stock.c:1413
+msgid "Global"
+msgstr "전체 설정"
+
+#: libgnomeui/gnome-stock.c:1415
+msgid "Menu Item"
+msgstr "메뉴 항목"
+
+#: libgnomeui/gnome-stock.c:1416
+msgid "Accelerator"
+msgstr "단축키"
 
 #: libgnomeui/gnome_segv.c:58
 msgid ""
@@ -126,174 +665,172 @@ msgstr ""
 "\n"
 "이 프로그램을 끝내겠습니까?"
 
-#: libgnomeui/gnome-calculator.c:889 libgnomeui/gnome-calculator.c:1049
-msgid "DEG"
-msgstr "DEG"
+#: libgnomeui/stock_demo.c:119
+msgid "New..."
+msgstr ""
 
-#: libgnomeui/gnome-calculator.c:891
-msgid "RAD"
-msgstr "RAD"
+#: libgnomeui/stock_demo.c:130
+msgid "Open..."
+msgstr ""
 
-#: libgnomeui/gnome-calculator.c:893
-msgid "GRAD"
-msgstr "GRAD"
+#: libgnomeui/stock_demo.c:141
+msgid "Save"
+msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1039
-msgid "1/x"
-msgstr "1/x"
+#: libgnomeui/stock_demo.c:152
+msgid "Save as..."
+msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1040
-msgid "x^2"
-msgstr "x^2"
+#: libgnomeui/stock_demo.c:178
+msgid "Print..."
+msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1041
-msgid "SQRT"
-msgstr "SQRT"
+#: libgnomeui/stock_demo.c:189
+msgid "Setup Page..."
+msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1042
-msgid "CE/C"
-msgstr "CE/C"
+#: libgnomeui/stock_demo.c:198
+msgid "Quit"
+msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1043
-msgid "AC"
-msgstr "AC"
+#: libgnomeui/stock_demo.c:219
+msgid "Undo"
+msgstr ""
 
-#. inverse button
-#: libgnomeui/gnome-calculator.c:1046
-msgid "sin"
-msgstr "sin"
+#: libgnomeui/stock_demo.c:230
+msgid "Redo"
+msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1047
-msgid "cos"
-msgstr "cos"
+#: libgnomeui/stock_demo.c:239
+msgid "Delete"
+msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1048
-msgid "tan"
-msgstr "tan"
+#: libgnomeui/stock_demo.c:244
+msgid "Cut"
+msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1051
-msgid "e"
-msgstr "e"
+#: libgnomeui/stock_demo.c:255
+msgid "Copy"
+msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1052
-msgid "EE"
-msgstr "EE"
+#: libgnomeui/stock_demo.c:266
+#, fuzzy
+msgid "Paste"
+msgstr "날짜"
 
-#: libgnomeui/gnome-calculator.c:1053
-msgid "log"
-msgstr "log"
+#: libgnomeui/stock_demo.c:281
+msgid "Properties..."
+msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1054
-msgid "ln"
-msgstr "ln"
+#: libgnomeui/stock_demo.c:294
+msgid "Preferences..."
+msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1055
-msgid "x^y"
-msgstr "x^y"
+#: libgnomeui/stock_demo.c:312
+#, fuzzy
+msgid "Scores..."
+msgstr "점수"
 
-#: libgnomeui/gnome-calculator.c:1057
-msgid "PI"
-msgstr "PI"
+#: libgnomeui/stock_demo.c:323
+msgid "Edit"
+msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1058
-msgid "x!"
-msgstr "x!"
+#: libvfs/extfs.c:268
+#, c-format
+msgid ""
+"Couldn't open %s archive\n"
+"%s"
+msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1059
-msgid "("
-msgstr "("
+#: libvfs/extfs.c:300 libvfs/extfs.c:320
+msgid "Inconsistent extfs archive"
+msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1060
-msgid ")"
-msgstr ")"
+#: libvfs/ftpfs.c:602
+#, c-format
+msgid " Could not set source routing (%s)"
+msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1061
-msgid "/"
-msgstr "/"
+#: libvfs/ftpfs.c:2782 libvfs/ftpfs.c:2797
+msgid ""
+"~/.netrc file has not correct mode.\n"
+"Remove password or correct mode."
+msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1063
-msgid "STO"
-msgstr "STO"
+#: libvfs/mcfs.c:156
+msgid " MCFS "
+msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1064
-msgid "7"
-msgstr "7"
+#: libvfs/mcfs.c:156
+msgid " The server does not support this version "
+msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1065
-msgid "8"
-msgstr "8"
+#: libvfs/mcfs.c:172
+#, fuzzy
+msgid " Warning "
+msgstr "경고"
 
-#: libgnomeui/gnome-calculator.c:1066
-msgid "9"
-msgstr "9"
+#: libvfs/mcfs.c:173
+msgid ""
+" The remote server is not running on a system port \n"
+" you need a password to log in, but the information may \n"
+" not be safe on the remote side.  Continue? \n"
+msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1067
-msgid "*"
-msgstr "*"
+#: libvfs/mcfs.c:176
+#, fuzzy
+msgid " Yes "
+msgstr "예"
 
-#: libgnomeui/gnome-calculator.c:1069
-msgid "RCL"
-msgstr "RCL"
+#: libvfs/mcfs.c:176
+#, fuzzy
+msgid " No "
+msgstr "아니오"
 
-#: libgnomeui/gnome-calculator.c:1070
-msgid "4"
-msgstr "4"
+#: libvfs/mcfs.c:178
+msgid " The remote server is running on strange port. Giving up.\n"
+msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1071
-msgid "5"
-msgstr "5"
+#: libvfs/mcfs.c:190
+msgid " MCFS Password required "
+msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1072
-msgid "6"
-msgstr "6"
+#: libvfs/mcfs.c:204
+msgid " Invalid password "
+msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1073
-msgid "-"
-msgstr "-"
+#: libvfs/mcfs.c:270
+msgid " Too many open connections "
+msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1075
-msgid "SUM"
-msgstr "SUM"
+#: libvfs/tar.c:578
+msgid "Unexpected EOF on archive file"
+msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1076
-msgid "1"
-msgstr "1"
+#: libvfs/tar.c:632 libvfs/tar.c:653
+msgid "Inconsistent tar archive"
+msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1077
-msgid "2"
-msgstr "2"
+#. Open for reading
+#: libvfs/tar.c:753
+#, c-format
+msgid ""
+"Couldn't open tar archive\n"
+"%s"
+msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1078
-msgid "3"
-msgstr "3"
+#. Error on first record
+#: libvfs/tar.c:772
+#, c-format
+msgid ""
+"Hmm,...\n"
+"%s\n"
+"doesn't look like a tar archive."
+msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1079
-msgid "+"
-msgstr "+"
-
-#: libgnomeui/gnome-calculator.c:1081
-msgid "EXC"
-msgstr "EXC"
-
-#: libgnomeui/gnome-calculator.c:1082
-msgid "0"
-msgstr "0"
-
-#: libgnomeui/gnome-calculator.c:1083
-msgid "."
-msgstr "."
-
-#: libgnomeui/gnome-calculator.c:1084
-msgid "+/-"
-msgstr "+/-"
-
-#: libgnomeui/gnome-calculator.c:1085
-msgid "="
-msgstr "="
-
-#: libgnomeui/gnome-calculator.c:1149
-msgid "INV"
-msgstr "INV"
+#: libvfs/vfs.c:1538
+msgid "Password:"
+msgstr ""
 
 #: support/argp-parse.c:90
 msgid "Give this help list"
@@ -328,174 +865,109 @@ msgstr "%s: 너무 인자가 많음\n"
 msgid "(PROGRAM ERROR) Option should have been recognized!?"
 msgstr "(프로그램 애러) 옵션을 알아 볼 수 없습니다!?"
 
-#: support/argp-help.c:186
-#, c-format
-msgid "%.*s: ARGP_HELP_FMT parameter requires a value"
-msgstr "%.*s: ARGP_HELP_FMT에는 매개변수로 값이 있어야 합니다"
-
-#: support/argp-help.c:195
-#, c-format
-msgid "%.*s: Unknown ARGP_HELP_FMT parameter"
-msgstr "%.*s: 알 수 없는 ARGP_HELP_FMT의 인자"
-
-#: support/argp-help.c:207
-#, c-format
-msgid "Garbage in ARGP_HELP_FMT: %s"
-msgstr "ARGP_HELP_FMT에 쓰레기: %s"
-
-#: support/argp-help.c:1147
-msgid ""
-"Mandatory or optional arguments to long options are also mandatory or "
-"optional for any corresponding short options."
-msgstr "긴 옵션에 대해 필수적이거나 선택적으로 필요한 인자들은 그에 대응하는 짧은 옵션에서도 역시 필수적이거나 선택적으로 필요합니다."
-
-#: support/argp-help.c:1523
-msgid "Usage:"
-msgstr "사용법:"
-
-#: support/argp-help.c:1527
-msgid "  or: "
-msgstr " 또는: "
-
-#: support/argp-help.c:1539
-msgid " [OPTION...]"
-msgstr " [옵션...]"
-
-#: support/argp-help.c:1566
-#, c-format
-msgid "Try `%s --help' or `%s --usage' for more information.\n"
-msgstr "더 자세한 정보를 보려면 `%s --help'나 `%s --usage'를 실행하십시오.\n"
-
-#: support/argp-help.c:1594
-#, c-format
-msgid "Report bugs to %s.\n"
-msgstr "잘못된 점은 %s로 알려주십시오.\n"
-
-#: libgnomeui/gnome-scores.c:82
-msgid "User"
-msgstr "사용자"
-
-#: libgnomeui/gnome-scores.c:85
-msgid "Score"
-msgstr "점수"
-
-#: libgnomeui/gnome-scores.c:88
-msgid "Date"
-msgstr "날짜"
-
-#: libgnomeui/gnome-scores.c:124
-msgid "Clear"
-msgstr "지우기"
-
-#: libgnomeui/gnome-scores.c:141
-msgid "Top Ten"
-msgstr "상위 10등"
-
-#: libgnomeui/gnome-stock.c:481
-msgid "OK"
-msgstr "확인"
-
-#: libgnomeui/gnome-stock.c:482
-msgid "Apply"
-msgstr "적용"
-
-#: libgnomeui/gnome-stock.c:483
-msgid "Cancel"
-msgstr "취소"
-
-#: libgnomeui/gnome-stock.c:484
-msgid "Close"
-msgstr "닫기"
-
-#: libgnomeui/gnome-stock.c:485
-msgid "Yes"
-msgstr "예"
-
-#: libgnomeui/gnome-stock.c:486
-msgid "No"
-msgstr "아니오"
-
-#: libgnomeui/gnome-stock.c:487
-msgid "Help"
-msgstr "도움말"
-
-#: libgnomeui/gnome-stock.c:1392
-msgid "Menu Accelerator Keys"
-msgstr "메뉴 단축키"
-
-#: libgnomeui/gnome-stock.c:1394
-msgid "Global"
-msgstr "전체 설정"
-
-#: libgnomeui/gnome-stock.c:1396
-msgid "Menu Item"
-msgstr "메뉴 항목"
-
-#: libgnomeui/gnome-stock.c:1397
-msgid "Accelerator"
-msgstr "단축키"
-
-#: gnome-hello/gnome-hello-2-i18n.c:31
-#: gnome-hello/gnome-hello-3-parse-args.c:33 gnome-hello/gnome-hello-4-SM.c:54
-msgid "File/Exit"
-msgstr "파일/끝내기"
-
-#: gnome-hello/gnome-hello-2-i18n.c:31
-#: gnome-hello/gnome-hello-3-parse-args.c:33 gnome-hello/gnome-hello-4-SM.c:54
-msgid "<control>E"
-msgstr "<control>E"
-
-#. The '...' end indicate that the options open a dialog
-#: gnome-hello/gnome-hello-2-i18n.c:33
-#: gnome-hello/gnome-hello-3-parse-args.c:35 gnome-hello/gnome-hello-4-SM.c:56
-msgid "Help/About..."
-msgstr "도움말/이 프로그램은..."
-
-#: gnome-hello/gnome-hello-2-i18n.c:33
-#: gnome-hello/gnome-hello-3-parse-args.c:35 gnome-hello/gnome-hello-4-SM.c:56
-msgid "<control>A"
-msgstr "<control>A"
-
-#. Make the main window and binds the delete event so you can close
-#. the program from your WM
-#: gnome-hello/gnome-hello-2-i18n.c:69
-#: gnome-hello/gnome-hello-3-parse-args.c:99
-#: gnome-hello/gnome-hello-4-SM.c:139
-msgid "Hello World Gnomified"
-msgstr "그놈 Hello World"
-
-#. We make a button, bind the 'clicked' signal to hello and setting it
-#. to be the content of the main window
-#: gnome-hello/gnome-hello-2-i18n.c:83
-#: gnome-hello/gnome-hello-3-parse-args.c:113
-#: gnome-hello/gnome-hello-4-SM.c:158
-msgid "Hello GNOME"
-msgstr "안녕하세요 그놈입니다"
-
-#: gnome-hello/gnome-hello-2-i18n.c:102
-#: gnome-hello/gnome-hello-3-parse-args.c:132
-#: gnome-hello/gnome-hello-4-SM.c:177
-msgid "Hello GNOME\n"
-msgstr "안녕하세요 그놈입니다\n"
-
-#: gnome-hello/gnome-hello-2-i18n.c:125
-#: gnome-hello/gnome-hello-3-parse-args.c:155
-#: gnome-hello/gnome-hello-4-SM.c:200
-msgid "The Hello World Gnomified"
-msgstr "그놈 Hello World"
-
-#. another comments
-#: gnome-hello/gnome-hello-2-i18n.c:130
-#: gnome-hello/gnome-hello-3-parse-args.c:160
-#: gnome-hello/gnome-hello-4-SM.c:205
-msgid "GNOME is a civilized software system so we've a \"hello world\" program"
+#: support/error.c:106
+msgid "Unknown system error"
 msgstr ""
-"그놈은 수준높은 소프트웨어 시스템이므로 \"hello world\" 프로그램이 있습니다"
 
-#: gnome-hello/gnome-hello-3-parse-args.c:43
-msgid "Run silently"
-msgstr "조용히 실행"
+#: support/getopt.c:669
+#, c-format
+msgid "%s: option `%s' is ambiguous\n"
+msgstr ""
 
-#: gnome-hello/gnome-hello-4-SM.c:67
-msgid "Discard session"
-msgstr "세션정보 지우기"
+#: support/getopt.c:693
+#, c-format
+msgid "%s: option `--%s' doesn't allow an argument\n"
+msgstr ""
+
+#: support/getopt.c:698
+#, c-format
+msgid "%s: option `%c%s' doesn't allow an argument\n"
+msgstr ""
+
+#: support/getopt.c:715 support/getopt.c:888
+#, fuzzy, c-format
+msgid "%s: option `%s' requires an argument\n"
+msgstr "%s: 너무 인자가 많음\n"
+
+#. --option
+#: support/getopt.c:744
+#, c-format
+msgid "%s: unrecognized option `--%s'\n"
+msgstr ""
+
+#. +option or -option
+#: support/getopt.c:748
+#, c-format
+msgid "%s: unrecognized option `%c%s'\n"
+msgstr ""
+
+#. 1003.2 specifies the format of this message.
+#: support/getopt.c:774
+#, c-format
+msgid "%s: illegal option -- %c\n"
+msgstr ""
+
+#: support/getopt.c:777
+#, c-format
+msgid "%s: invalid option -- %c\n"
+msgstr ""
+
+#. 1003.2 specifies the format of this message.
+#: support/getopt.c:807 support/getopt.c:937
+#, fuzzy, c-format
+msgid "%s: option requires an argument -- %c\n"
+msgstr "%s: 너무 인자가 많음\n"
+
+#: support/getopt.c:854
+#, c-format
+msgid "%s: option `-W %s' is ambiguous\n"
+msgstr ""
+
+#: support/getopt.c:872
+#, c-format
+msgid "%s: option `-W %s' doesn't allow an argument\n"
+msgstr ""
+
+#: test-gnome/testgnome.c:552
+msgid "The user chose Yes/OK with data:\n"
+msgstr ""
+
+#: test-gnome/testgnome.c:556
+msgid "The user chose No/Cancel with data:\n"
+msgstr ""
+
+#: test-gnome/testgnome.c:567
+msgid "Weird number in reply callback"
+msgstr ""
+
+#~ msgid "%.*s: ARGP_HELP_FMT parameter requires a value"
+#~ msgstr "%.*s: ARGP_HELP_FMT에는 매개변수로 값이 있어야 합니다"
+
+#~ msgid "%.*s: Unknown ARGP_HELP_FMT parameter"
+#~ msgstr "%.*s: 알 수 없는 ARGP_HELP_FMT의 인자"
+
+#~ msgid "Garbage in ARGP_HELP_FMT: %s"
+#~ msgstr "ARGP_HELP_FMT에 쓰레기: %s"
+
+#~ msgid ""
+#~ "Mandatory or optional arguments to long options are also mandatory or "
+#~ "optional for any corresponding short options."
+#~ msgstr ""
+#~ "긴 옵션에 대해 필수적이거나 선택적으로 필요한 인자들은 그에 대응하는 짧은 "
+#~ "옵션에서도 역시 필수적이거나 선택적으로 필요합니다."
+
+#~ msgid "Usage:"
+#~ msgstr "사용법:"
+
+#~ msgid "  or: "
+#~ msgstr " 또는: "
+
+#~ msgid " [OPTION...]"
+#~ msgstr " [옵션...]"
+
+#~ msgid "Try `%s --help' or `%s --usage' for more information.\n"
+#~ msgstr ""
+#~ "더 자세한 정보를 보려면 `%s --help'나 `%s --usage'를 실행하십시오.\n"
+
+#~ msgid "Report bugs to %s.\n"
+#~ msgstr "잘못된 점은 %s로 알려주십시오.\n"

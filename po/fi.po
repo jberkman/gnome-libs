@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 1998-04-23 13:12+0300\n"
+"POT-Creation-Date: 1998-08-01 16:36-0500\n"
 "PO-Revision-Date: 1998-04-23 14:20+0300\n"
 "Last-Translator: Ville Hautamäki <villeh@photon.joensuu.fi>\n"
 "Language-Team: Finnish <fi@li.org>\n"
@@ -14,29 +14,550 @@ msgstr ""
 "Content-Type: text/plain; charset=iso-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: libgnomeui/gnome-about.c:194
+#: gnome-hello/gnome-hello-2-i18n.c:31
+#: gnome-hello/gnome-hello-3-parse-args.c:33 gnome-hello/gnome-hello.c:40
+msgid "File/Exit"
+msgstr "Tiedosto/Poistu"
+
+#: gnome-hello/gnome-hello-2-i18n.c:31
+#: gnome-hello/gnome-hello-3-parse-args.c:33 gnome-hello/gnome-hello.c:40
+msgid "<control>E"
+msgstr "<control>E"
+
+#. The '...' end indicate that the options open a dialog
+#: gnome-hello/gnome-hello-2-i18n.c:33
+#: gnome-hello/gnome-hello-3-parse-args.c:35 gnome-hello/gnome-hello.c:42
+msgid "Help/About..."
+msgstr "Apua/Versiotiedot"
+
+#: gnome-hello/gnome-hello-2-i18n.c:33
+#: gnome-hello/gnome-hello-3-parse-args.c:35 gnome-hello/gnome-hello.c:42
+msgid "<control>A"
+msgstr "<control>A"
+
+#. Make the main window and binds the delete event so you can close
+#. the program from your WM
+#: gnome-hello/gnome-hello-2-i18n.c:69
+#: gnome-hello/gnome-hello-3-parse-args.c:99
+#: gnome-hello/gnome-hello-4-SM.c:197
+msgid "Hello World Gnomified"
+msgstr "Moro Maailma Gnomena"
+
+#. We make a button, bind the 'clicked' signal to hello and setting it
+#. to be the content of the main window
+#: gnome-hello/gnome-hello-2-i18n.c:83
+#: gnome-hello/gnome-hello-3-parse-args.c:113
+#: gnome-hello/gnome-hello-4-SM.c:213 gnome-hello/gnome-hello.c:103
+msgid "Hello GNOME"
+msgstr "Moro GNOME"
+
+#: gnome-hello/gnome-hello-2-i18n.c:102
+#: gnome-hello/gnome-hello-3-parse-args.c:132
+#: gnome-hello/gnome-hello-4-SM.c:232 gnome-hello/gnome-hello.c:122
+msgid "Hello GNOME\n"
+msgstr "Moro GNOME\n"
+
+#: gnome-hello/gnome-hello-2-i18n.c:125
+#: gnome-hello/gnome-hello-3-parse-args.c:155
+#: gnome-hello/gnome-hello-4-SM.c:255 gnome-hello/gnome-hello.c:145
+msgid "The Hello World Gnomified"
+msgstr "Moro Maailma Gnomena"
+
+#. another comments
+#: gnome-hello/gnome-hello-2-i18n.c:130
+#: gnome-hello/gnome-hello-3-parse-args.c:160
+#: gnome-hello/gnome-hello-4-SM.c:260 gnome-hello/gnome-hello.c:150
+msgid "GNOME is a civilized software system so we've a \"hello world\" program"
+msgstr ""
+"GNOME on sivistynyt ohjelma, jonka vuoksi meillä on \"hello world\" ohjelma"
+
+#: gnome-hello/gnome-hello-3-parse-args.c:43
+msgid "Run silently"
+msgstr "Käynnisty hiljaisesti"
+
+#: gnome-hello/gnome-hello-4-SM.c:54 gnome-hello/gnome-hello-7-mdi.c:356
+#, fuzzy
+msgid "Exit"
+msgstr "Tiedosto/Poistu"
+
+#: gnome-hello/gnome-hello-4-SM.c:54
+msgid "Exit GNOME hello"
+msgstr ""
+
+#: gnome-hello/gnome-hello-4-SM.c:66 gnome-hello/gnome-hello-7-mdi.c:398
+#, fuzzy
+msgid "About..."
+msgstr "Versiotiedot"
+
+#: gnome-hello/gnome-hello-4-SM.c:66
+msgid "Info about GNOME hello"
+msgstr ""
+
+#. and document menu and document list paths (see gnome-app-helper menu
+#. insertion routines for details)
+#: gnome-hello/gnome-hello-4-SM.c:78 gnome-hello/gnome-hello-7-mdi.c:362
+#: gnome-hello/gnome-hello-7-mdi.c:437 libgnomeui/stock_demo.c:212
+#, fuzzy
+msgid "File"
+msgstr "Tiedosto/Poistu"
+
+#: gnome-hello/gnome-hello-4-SM.c:79 gnome-hello/gnome-hello-7-mdi.c:404
+#: libgnomeui/gnome-stock.c:493 libgnomeui/stock_demo.c:342
+msgid "Help"
+msgstr "Apua"
+
+#: gnome-hello/gnome-hello-4-SM.c:91 libgnomeui/gnome-client.c:171
+#: libgnomeui/gnome-client.c:173
+msgid "ID"
+msgstr "ID"
+
+#: gnome-hello/gnome-hello-4-SM.c:91
+msgid "Discard session"
+msgstr "Lopeta istunto"
+
+#: gnome-hello/gnome-hello-7-mdi.c:180
+msgid "Add View"
+msgstr ""
+
+#: gnome-hello/gnome-hello-7-mdi.c:185
+msgid "Remove View"
+msgstr ""
+
+#: gnome-hello/gnome-hello-7-mdi.c:191
+msgid "Child"
+msgstr ""
+
+#: gnome-hello/gnome-hello-7-mdi.c:340
+msgid "Add Child"
+msgstr ""
+
+#: gnome-hello/gnome-hello-7-mdi.c:346
+msgid "Remove Child"
+msgstr ""
+
+#: gnome-hello/gnome-hello-7-mdi.c:371
+msgid "Notebook"
+msgstr ""
+
+#: gnome-hello/gnome-hello-7-mdi.c:377
+msgid "Toplevel"
+msgstr ""
+
+#: gnome-hello/gnome-hello-7-mdi.c:383
+msgid "Modal"
+msgstr ""
+
+#: gnome-hello/gnome-hello-7-mdi.c:389
+msgid "MDI Mode"
+msgstr ""
+
+#: gnome-hello/gnome-hello-7-mdi.c:438
+msgid "Children/"
+msgstr ""
+
+#: gnome-hello/gnome-hello.c:208
+#, c-format
+msgid ""
+"%s: A gnomified 'Hello World' program\n"
+"\n"
+"Usage: %s [--help] [--version]\n"
+"\n"
+"Options:\n"
+"        --help     display this help and exit\n"
+"        --version  output version information and exit\n"
+msgstr ""
+
+#: gnome-hello/gnome-hello.c:217
+#, c-format
+msgid "Gnome Hello %s.\n"
+msgstr ""
+
+#: gnome-hello/gnome-hello.c:231
+msgid "Options error\n"
+msgstr ""
+
+#: libgnome/gnome-parse.c:44
+msgid ""
+"\n"
+"Generic options"
+msgstr ""
+
+#: libgnomeui/gnome-about.c:193
 msgid "Author:"
 msgstr "Tekijä:"
 
-#: libgnomeui/gnome-about.c:196 libgnomeui/gnome-about.c:198
+#: libgnomeui/gnome-about.c:195 libgnomeui/gnome-about.c:197
 msgid "Authors:"
 msgstr "Tekijät:"
 
-#: libgnomeui/gnome-about.c:359
+#: libgnomeui/gnome-about.c:357
 msgid "Authors: "
 msgstr "Tekijät: "
 
-#: libgnomeui/gnome-about.c:553
+#: libgnomeui/gnome-about.c:567 libgnomeui/stock_demo.c:331
 msgid "About"
 msgstr "Versiotiedot"
 
-#: libgnomeui/gnome-file-entry.c:107
+#: libgnomeui/gnome-app-util.c:86
+msgid " (press return)"
+msgstr ""
+
+#: libgnomeui/gnome-app-util.c:114
+msgid "ERROR: "
+msgstr ""
+
+#: libgnomeui/gnome-app-util.c:136
+#, fuzzy
+msgid "Warning: "
+msgstr "Varoitus"
+
+#: libgnomeui/gnome-app-util.c:242
+msgid "y"
+msgstr ""
+
+#: libgnomeui/gnome-app-util.c:243
+#, fuzzy
+msgid "yes"
+msgstr "Kyllä"
+
+#: libgnomeui/gnome-app-util.c:246
+#, fuzzy
+msgid "n"
+msgstr "ln"
+
+#: libgnomeui/gnome-app-util.c:247
+msgid "no"
+msgstr ""
+
+#: libgnomeui/gnome-app-util.c:286
+msgid " (yes or no)"
+msgstr ""
+
+#: libgnomeui/gnome-app-util.c:287
+msgid "  - OK? (yes or no)"
+msgstr ""
+
+#: libgnomeui/gnome-app-util.c:520
+msgid "Progress"
+msgstr ""
+
+#: libgnomeui/gnome-app.c:355 libgnomeui/gnome-app.c:380
+msgid "Top"
+msgstr ""
+
+#: libgnomeui/gnome-app.c:356 libgnomeui/gnome-app.c:381
+msgid "Bottom"
+msgstr ""
+
+#: libgnomeui/gnome-app.c:382
+msgid "Left"
+msgstr ""
+
+#: libgnomeui/gnome-app.c:383
+msgid "Right"
+msgstr ""
+
+#: libgnomeui/gnome-app.c:384
+msgid "Configure toolbar"
+msgstr ""
+
+#: libgnomeui/gnome-calculator.c:908 libgnomeui/gnome-calculator.c:1068
+msgid "DEG"
+msgstr "DEG"
+
+#: libgnomeui/gnome-calculator.c:910
+msgid "RAD"
+msgstr "RAD"
+
+#: libgnomeui/gnome-calculator.c:912
+msgid "GRAD"
+msgstr "GRAD"
+
+#: libgnomeui/gnome-calculator.c:1058
+msgid "1/x"
+msgstr "1/x"
+
+#: libgnomeui/gnome-calculator.c:1059
+msgid "x^2"
+msgstr "x^2"
+
+#: libgnomeui/gnome-calculator.c:1060
+msgid "SQRT"
+msgstr "SQRT"
+
+#: libgnomeui/gnome-calculator.c:1061
+msgid "CE/C"
+msgstr "CE/C"
+
+#: libgnomeui/gnome-calculator.c:1062
+msgid "AC"
+msgstr "AC"
+
+#. inverse button
+#: libgnomeui/gnome-calculator.c:1065
+msgid "sin"
+msgstr "sin"
+
+#: libgnomeui/gnome-calculator.c:1066
+msgid "cos"
+msgstr "cos"
+
+#: libgnomeui/gnome-calculator.c:1067
+msgid "tan"
+msgstr "tan"
+
+#: libgnomeui/gnome-calculator.c:1070
+msgid "e"
+msgstr "e"
+
+#: libgnomeui/gnome-calculator.c:1071
+msgid "EE"
+msgstr "EE"
+
+#: libgnomeui/gnome-calculator.c:1072
+msgid "log"
+msgstr "log"
+
+#: libgnomeui/gnome-calculator.c:1073
+msgid "ln"
+msgstr "ln"
+
+#: libgnomeui/gnome-calculator.c:1074
+msgid "x^y"
+msgstr "x^y"
+
+#: libgnomeui/gnome-calculator.c:1076
+msgid "PI"
+msgstr "PI"
+
+#: libgnomeui/gnome-calculator.c:1077
+msgid "x!"
+msgstr "x!"
+
+#: libgnomeui/gnome-calculator.c:1078
+msgid "("
+msgstr "("
+
+#: libgnomeui/gnome-calculator.c:1079
+msgid ")"
+msgstr ")"
+
+#: libgnomeui/gnome-calculator.c:1080
+msgid "/"
+msgstr "/"
+
+#: libgnomeui/gnome-calculator.c:1082
+msgid "STO"
+msgstr "STO"
+
+#: libgnomeui/gnome-calculator.c:1083
+msgid "7"
+msgstr "7"
+
+#: libgnomeui/gnome-calculator.c:1084
+msgid "8"
+msgstr "8"
+
+#: libgnomeui/gnome-calculator.c:1085
+msgid "9"
+msgstr "9"
+
+#: libgnomeui/gnome-calculator.c:1086
+msgid "*"
+msgstr "*"
+
+#: libgnomeui/gnome-calculator.c:1088
+msgid "RCL"
+msgstr "RCL"
+
+#: libgnomeui/gnome-calculator.c:1089
+msgid "4"
+msgstr "4"
+
+#: libgnomeui/gnome-calculator.c:1090
+msgid "5"
+msgstr "5"
+
+#: libgnomeui/gnome-calculator.c:1091
+msgid "6"
+msgstr "6"
+
+#: libgnomeui/gnome-calculator.c:1092
+msgid "-"
+msgstr "-"
+
+#: libgnomeui/gnome-calculator.c:1094
+msgid "SUM"
+msgstr "SUM"
+
+#: libgnomeui/gnome-calculator.c:1095
+msgid "1"
+msgstr "1"
+
+#: libgnomeui/gnome-calculator.c:1096
+msgid "2"
+msgstr "2"
+
+#: libgnomeui/gnome-calculator.c:1097
+msgid "3"
+msgstr "3"
+
+#: libgnomeui/gnome-calculator.c:1098
+msgid "+"
+msgstr "+"
+
+#: libgnomeui/gnome-calculator.c:1100
+msgid "EXC"
+msgstr "EXC"
+
+#: libgnomeui/gnome-calculator.c:1101
+msgid "0"
+msgstr "0"
+
+#: libgnomeui/gnome-calculator.c:1102
+msgid "."
+msgstr "."
+
+#: libgnomeui/gnome-calculator.c:1103
+msgid "+/-"
+msgstr "+/-"
+
+#: libgnomeui/gnome-calculator.c:1104
+msgid "="
+msgstr "="
+
+#: libgnomeui/gnome-calculator.c:1194
+msgid "INV"
+msgstr "INV"
+
+#: libgnomeui/gnome-client.c:172
+msgid "Specify session management id"
+msgstr "Määrittele istunnon hallinnan id"
+
+#: libgnomeui/gnome-client.c:174
+msgid "Specify id of cloned client"
+msgstr ""
+
+#: libgnomeui/gnome-client.c:176
+msgid "Disable connection to session manager"
+msgstr ""
+
+#. Only add the label if all the children are to be shown.  Otherwise
+#. * things look too wide; in that case just show the arrow.
+#.
+#: libgnomeui/gnome-dateedit.c:393
+#, fuzzy
+msgid "Calendar"
+msgstr "Tyhjennä"
+
+#: libgnomeui/gnome-dentry-edit.c:164
+msgid "Name:"
+msgstr ""
+
+#: libgnomeui/gnome-dentry-edit.c:177
+msgid "Comment:"
+msgstr ""
+
+#: libgnomeui/gnome-dentry-edit.c:187
+msgid "Command:"
+msgstr ""
+
+#: libgnomeui/gnome-dentry-edit.c:197
+msgid "Type:"
+msgstr ""
+
+#: libgnomeui/gnome-dentry-edit.c:231
+msgid "Run in Terminal"
+msgstr ""
+
+#: libgnomeui/gnome-dentry-edit.c:245
+msgid "Try this before using:"
+msgstr ""
+
+#: libgnomeui/gnome-dentry-edit.c:255
+msgid "Documentation:"
+msgstr ""
+
+#: libgnomeui/gnome-dentry-edit.c:305
+msgid "Easy"
+msgstr ""
+
+#: libgnomeui/gnome-dentry-edit.c:309
+msgid "Advanced"
+msgstr ""
+
+#: libgnomeui/gnome-dentry-edit.c:542
+msgid ""
+"No\n"
+"icon"
+msgstr ""
+
+#: libgnomeui/gnome-dentry-edit.c:557
+msgid ""
+"Couldn't\n"
+"load\n"
+"icon"
+msgstr ""
+
+#: libgnomeui/gnome-dentry-edit.c:603
+msgid "Choose an icon"
+msgstr ""
+
+#: libgnomeui/gnome-file-entry.c:90
 msgid "Select file"
 msgstr "Valitse tiedosto"
 
-#: libgnomeui/gnome-file-entry.c:174
+#: libgnomeui/gnome-file-entry.c:147
 msgid "Browse..."
 msgstr "Selaa..."
+
+#: libgnomeui/gnome-icon-sel.c:245
+msgid "Loading Icons..."
+msgstr ""
+
+#: libgnomeui/gnome-init.c:48
+msgid ""
+"\n"
+"Gtk toolkit options"
+msgstr ""
+
+#: libgnomeui/gnome-init.c:51
+msgid "DISPLAY"
+msgstr "DISPLAY"
+
+#: libgnomeui/gnome-init.c:51
+msgid "X display to use"
+msgstr "käytössä oleva X näyttö"
+
+#: libgnomeui/gnome-init.c:53
+msgid "Don't use X shared memory extension"
+msgstr "Älä käytä X:n shared memory lisäystä"
+
+#: libgnomeui/gnome-init.c:54
+msgid "NAME"
+msgstr "NIMI"
+
+#: libgnomeui/gnome-init.c:54 libgnomeui/gnome-init.c:55
+#: libgnomeui/gnome-init.c:56 libgnomeui/gnome-init.c:57
+#: libgnomeui/gnome-init.c:58 libgnomeui/gnome-init.c:59
+msgid "FIXME"
+msgstr "KORJAA"
+
+#: libgnomeui/gnome-init.c:55
+msgid "CLASS"
+msgstr "LUOKKA"
+
+#: libgnomeui/gnome-init.c:56
+msgid "HOST"
+msgstr "KONE"
+
+#: libgnomeui/gnome-init.c:57
+msgid "PORT"
+msgstr "PORTTI"
+
+#: libgnomeui/gnome-init.c:58 libgnomeui/gnome-init.c:59
+msgid "STYLE"
+msgstr "TYYLI"
 
 #: libgnomeui/gnome-messagebox.c:95
 msgid "Information"
@@ -58,51 +579,69 @@ msgstr "Kysymys"
 msgid "Message"
 msgstr "Viesti"
 
-#: libgnomeui/gnome-init.c:34
-msgid "DISPLAY"
-msgstr "DISPLAY"
+#: libgnomeui/gnome-number-entry.c:124
+msgid "Calculator"
+msgstr ""
 
-#: libgnomeui/gnome-init.c:34
-msgid "X display to use"
-msgstr "käytössä oleva X näyttö"
+#: libgnomeui/gnome-number-entry.c:171
+msgid "Calculator..."
+msgstr ""
 
-#: libgnomeui/gnome-init.c:36
-msgid "Don't use X shared memory extension"
-msgstr "Älä käytä X:n shared memory lisäystä"
+#: libgnomeui/gnome-scores.c:72
+msgid "Top Ten"
+msgstr "Top Ten"
 
-#: libgnomeui/gnome-init.c:37
-msgid "NAME"
-msgstr "NIMI"
+#: libgnomeui/gnome-scores.c:83
+msgid "User"
+msgstr "Käyttäjä"
 
-#: libgnomeui/gnome-init.c:37 libgnomeui/gnome-init.c:38
-#: libgnomeui/gnome-init.c:39 libgnomeui/gnome-init.c:40
-#: libgnomeui/gnome-init.c:41 libgnomeui/gnome-init.c:42
-msgid "FIXME"
-msgstr "KORJAA"
+#: libgnomeui/gnome-scores.c:86
+msgid "Score"
+msgstr "Tulos"
 
-#: libgnomeui/gnome-init.c:38
-msgid "CLASS"
-msgstr "LUOKKA"
+#: libgnomeui/gnome-scores.c:89
+msgid "Date"
+msgstr "Päivämäärä"
 
-#: libgnomeui/gnome-init.c:39
-msgid "HOST"
-msgstr "KONE"
+#: libgnomeui/gnome-stock.c:487
+msgid "OK"
+msgstr "OK"
 
-#: libgnomeui/gnome-init.c:40
-msgid "PORT"
-msgstr "PORTTI"
+#: libgnomeui/gnome-stock.c:488
+msgid "Apply"
+msgstr "Toteuta"
 
-#: libgnomeui/gnome-init.c:41 libgnomeui/gnome-init.c:42
-msgid "STYLE"
-msgstr "TYYLI"
+#: libgnomeui/gnome-stock.c:489
+msgid "Cancel"
+msgstr "Palauta"
 
-#: gnome-hello/gnome-hello-4-SM.c:67 libgnomeui/gnome-client.c:145
-msgid "ID"
-msgstr "ID"
+#: libgnomeui/gnome-stock.c:490 libgnomeui/stock_demo.c:163
+msgid "Close"
+msgstr "Sulje"
 
-#: libgnomeui/gnome-client.c:146
-msgid "Specify session management id"
-msgstr "Määrittele istunnon hallinnan id"
+#: libgnomeui/gnome-stock.c:491
+msgid "Yes"
+msgstr "Kyllä"
+
+#: libgnomeui/gnome-stock.c:492
+msgid "No"
+msgstr "Ei"
+
+#: libgnomeui/gnome-stock.c:1411
+msgid "Menu Accelerator Keys"
+msgstr "Menun pikavalinta näppäimet"
+
+#: libgnomeui/gnome-stock.c:1413
+msgid "Global"
+msgstr "Koko koneen"
+
+#: libgnomeui/gnome-stock.c:1415
+msgid "Menu Item"
+msgstr "Menun kohta"
+
+#: libgnomeui/gnome-stock.c:1416
+msgid "Accelerator"
+msgstr "Pikavalinta"
 
 #: libgnomeui/gnome_segv.c:58
 msgid ""
@@ -127,174 +666,172 @@ msgstr ""
 "\n"
 "Haluatko poistua tästä ohjelmasta?"
 
-#: libgnomeui/gnome-calculator.c:888 libgnomeui/gnome-calculator.c:1048
-msgid "DEG"
-msgstr "DEG"
+#: libgnomeui/stock_demo.c:119
+msgid "New..."
+msgstr ""
 
-#: libgnomeui/gnome-calculator.c:890
-msgid "RAD"
-msgstr "RAD"
+#: libgnomeui/stock_demo.c:130
+msgid "Open..."
+msgstr ""
 
-#: libgnomeui/gnome-calculator.c:892
-msgid "GRAD"
-msgstr "GRAD"
+#: libgnomeui/stock_demo.c:141
+msgid "Save"
+msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1038
-msgid "1/x"
-msgstr "1/x"
+#: libgnomeui/stock_demo.c:152
+msgid "Save as..."
+msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1039
-msgid "x^2"
-msgstr "x^2"
+#: libgnomeui/stock_demo.c:178
+msgid "Print..."
+msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1040
-msgid "SQRT"
-msgstr "SQRT"
+#: libgnomeui/stock_demo.c:189
+msgid "Setup Page..."
+msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1041
-msgid "CE/C"
-msgstr "CE/C"
+#: libgnomeui/stock_demo.c:198
+msgid "Quit"
+msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1042
-msgid "AC"
-msgstr "AC"
+#: libgnomeui/stock_demo.c:219
+msgid "Undo"
+msgstr ""
 
-#. inverse button
-#: libgnomeui/gnome-calculator.c:1045
-msgid "sin"
-msgstr "sin"
+#: libgnomeui/stock_demo.c:230
+msgid "Redo"
+msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1046
-msgid "cos"
-msgstr "cos"
+#: libgnomeui/stock_demo.c:239
+msgid "Delete"
+msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1047
-msgid "tan"
-msgstr "tan"
+#: libgnomeui/stock_demo.c:244
+msgid "Cut"
+msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1050
-msgid "e"
-msgstr "e"
+#: libgnomeui/stock_demo.c:255
+msgid "Copy"
+msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1051
-msgid "EE"
-msgstr "EE"
+#: libgnomeui/stock_demo.c:266
+#, fuzzy
+msgid "Paste"
+msgstr "Päivämäärä"
 
-#: libgnomeui/gnome-calculator.c:1052
-msgid "log"
-msgstr "log"
+#: libgnomeui/stock_demo.c:281
+msgid "Properties..."
+msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1053
-msgid "ln"
-msgstr "ln"
+#: libgnomeui/stock_demo.c:294
+msgid "Preferences..."
+msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1054
-msgid "x^y"
-msgstr "x^y"
+#: libgnomeui/stock_demo.c:312
+#, fuzzy
+msgid "Scores..."
+msgstr "Tulos"
 
-#: libgnomeui/gnome-calculator.c:1056
-msgid "PI"
-msgstr "PI"
+#: libgnomeui/stock_demo.c:323
+msgid "Edit"
+msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1057
-msgid "x!"
-msgstr "x!"
+#: libvfs/extfs.c:268
+#, c-format
+msgid ""
+"Couldn't open %s archive\n"
+"%s"
+msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1058
-msgid "("
-msgstr "("
+#: libvfs/extfs.c:300 libvfs/extfs.c:320
+msgid "Inconsistent extfs archive"
+msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1059
-msgid ")"
-msgstr ")"
+#: libvfs/ftpfs.c:602
+#, c-format
+msgid " Could not set source routing (%s)"
+msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1060
-msgid "/"
-msgstr "/"
+#: libvfs/ftpfs.c:2782 libvfs/ftpfs.c:2797
+msgid ""
+"~/.netrc file has not correct mode.\n"
+"Remove password or correct mode."
+msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1062
-msgid "STO"
-msgstr "STO"
+#: libvfs/mcfs.c:156
+msgid " MCFS "
+msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1063
-msgid "7"
-msgstr "7"
+#: libvfs/mcfs.c:156
+msgid " The server does not support this version "
+msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1064
-msgid "8"
-msgstr "8"
+#: libvfs/mcfs.c:172
+#, fuzzy
+msgid " Warning "
+msgstr "Varoitus"
 
-#: libgnomeui/gnome-calculator.c:1065
-msgid "9"
-msgstr "9"
+#: libvfs/mcfs.c:173
+msgid ""
+" The remote server is not running on a system port \n"
+" you need a password to log in, but the information may \n"
+" not be safe on the remote side.  Continue? \n"
+msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1066
-msgid "*"
-msgstr "*"
+#: libvfs/mcfs.c:176
+#, fuzzy
+msgid " Yes "
+msgstr "Kyllä"
 
-#: libgnomeui/gnome-calculator.c:1068
-msgid "RCL"
-msgstr "RCL"
+#: libvfs/mcfs.c:176
+#, fuzzy
+msgid " No "
+msgstr "Ei"
 
-#: libgnomeui/gnome-calculator.c:1069
-msgid "4"
-msgstr "4"
+#: libvfs/mcfs.c:178
+msgid " The remote server is running on strange port. Giving up.\n"
+msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1070
-msgid "5"
-msgstr "5"
+#: libvfs/mcfs.c:190
+msgid " MCFS Password required "
+msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1071
-msgid "6"
-msgstr "6"
+#: libvfs/mcfs.c:204
+msgid " Invalid password "
+msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1072
-msgid "-"
-msgstr "-"
+#: libvfs/mcfs.c:270
+msgid " Too many open connections "
+msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1074
-msgid "SUM"
-msgstr "SUM"
+#: libvfs/tar.c:578
+msgid "Unexpected EOF on archive file"
+msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1075
-msgid "1"
-msgstr "1"
+#: libvfs/tar.c:632 libvfs/tar.c:653
+msgid "Inconsistent tar archive"
+msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1076
-msgid "2"
-msgstr "2"
+#. Open for reading
+#: libvfs/tar.c:753
+#, c-format
+msgid ""
+"Couldn't open tar archive\n"
+"%s"
+msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1077
-msgid "3"
-msgstr "3"
+#. Error on first record
+#: libvfs/tar.c:772
+#, c-format
+msgid ""
+"Hmm,...\n"
+"%s\n"
+"doesn't look like a tar archive."
+msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1078
-msgid "+"
-msgstr "+"
-
-#: libgnomeui/gnome-calculator.c:1080
-msgid "EXC"
-msgstr "EXC"
-
-#: libgnomeui/gnome-calculator.c:1081
-msgid "0"
-msgstr "0"
-
-#: libgnomeui/gnome-calculator.c:1082
-msgid "."
-msgstr "."
-
-#: libgnomeui/gnome-calculator.c:1083
-msgid "+/-"
-msgstr "+/-"
-
-#: libgnomeui/gnome-calculator.c:1084
-msgid "="
-msgstr "="
-
-#: libgnomeui/gnome-calculator.c:1128
-msgid "INV"
-msgstr "INV"
+#: libvfs/vfs.c:1538
+msgid "Password:"
+msgstr ""
 
 #: support/argp-parse.c:90
 msgid "Give this help list"
@@ -329,175 +866,106 @@ msgstr "%s: Liian monta parametriä\n"
 msgid "(PROGRAM ERROR) Option should have been recognized!?"
 msgstr "Ohjelman virhe (Optio olisi pitänyt tunnistaa!?)"
 
-#: support/argp-help.c:186
-#, c-format
-msgid "%.*s: ARGP_HELP_FMT parameter requires a value"
-msgstr "%.*s: ARGP_HELP_FMT parametri tarvitsee arvon"
-
-#: support/argp-help.c:195
-#, c-format
-msgid "%.*s: Unknown ARGP_HELP_FMT parameter"
-msgstr "%.*s: Tuntematon ARGP_HELP_FMT parametri"
-
-#: support/argp-help.c:207
-#, c-format
-msgid "Garbage in ARGP_HELP_FMT: %s"
-msgstr "Roskaa ARGP_HELP_FMT: %s :ssä"
-
-#: support/argp-help.c:1147
-msgid ""
-"Mandatory or optional arguments to long options are also mandatory or "
-"optional for any corresponding short options."
+#: support/error.c:106
+msgid "Unknown system error"
 msgstr ""
-"Lyhyiden ja pitkien optioiden parametrien pitää täsmätä"
 
-
-#: support/argp-help.c:1523
-msgid "Usage:"
-msgstr "Käyttö:"
-
-#: support/argp-help.c:1527
-msgid "  or: "
-msgstr "  tai: "
-
-#: support/argp-help.c:1539
-msgid " [OPTION...]"
-msgstr " [OPTION...]"
-
-#: support/argp-help.c:1566
+#: support/getopt.c:669
 #, c-format
-msgid "Try `%s --help' or `%s --usage' for more information.\n"
-msgstr "Kokeile `%s --help´ tai `%s --usage´ saadaksesi lisää tietoa.\n"
+msgid "%s: option `%s' is ambiguous\n"
+msgstr ""
 
-#: support/argp-help.c:1594
+#: support/getopt.c:693
 #, c-format
-msgid "Report bugs to %s.\n"
-msgstr "Raportoi bugeista %s.\n"
+msgid "%s: option `--%s' doesn't allow an argument\n"
+msgstr ""
 
-#: libgnomeui/gnome-scores.c:82
-msgid "User"
-msgstr "Käyttäjä"
+#: support/getopt.c:698
+#, c-format
+msgid "%s: option `%c%s' doesn't allow an argument\n"
+msgstr ""
 
-#: libgnomeui/gnome-scores.c:85
-msgid "Score"
-msgstr "Tulos"
+#: support/getopt.c:715 support/getopt.c:888
+#, fuzzy, c-format
+msgid "%s: option `%s' requires an argument\n"
+msgstr "%s: Liian monta parametriä\n"
 
-#: libgnomeui/gnome-scores.c:88
-msgid "Date"
-msgstr "Päivämäärä"
+#. --option
+#: support/getopt.c:744
+#, c-format
+msgid "%s: unrecognized option `--%s'\n"
+msgstr ""
 
-#: libgnomeui/gnome-scores.c:124
-msgid "Clear"
-msgstr "Tyhjennä"
+#. +option or -option
+#: support/getopt.c:748
+#, c-format
+msgid "%s: unrecognized option `%c%s'\n"
+msgstr ""
 
-#: libgnomeui/gnome-scores.c:141
-msgid "Top Ten"
-msgstr "Top Ten"
+#. 1003.2 specifies the format of this message.
+#: support/getopt.c:774
+#, c-format
+msgid "%s: illegal option -- %c\n"
+msgstr ""
 
-#: libgnomeui/gnome-stock.c:464
-msgid "OK"
-msgstr "OK"
+#: support/getopt.c:777
+#, c-format
+msgid "%s: invalid option -- %c\n"
+msgstr ""
 
-#: libgnomeui/gnome-stock.c:465
-msgid "Apply"
-msgstr "Toteuta"
+#. 1003.2 specifies the format of this message.
+#: support/getopt.c:807 support/getopt.c:937
+#, fuzzy, c-format
+msgid "%s: option requires an argument -- %c\n"
+msgstr "%s: Liian monta parametriä\n"
 
-#: libgnomeui/gnome-stock.c:466
-msgid "Cancel"
-msgstr "Palauta"
+#: support/getopt.c:854
+#, c-format
+msgid "%s: option `-W %s' is ambiguous\n"
+msgstr ""
 
-#: libgnomeui/gnome-stock.c:467
-msgid "Close"
-msgstr "Sulje"
+#: support/getopt.c:872
+#, c-format
+msgid "%s: option `-W %s' doesn't allow an argument\n"
+msgstr ""
 
-#: libgnomeui/gnome-stock.c:468
-msgid "Yes"
-msgstr "Kyllä"
+#: test-gnome/testgnome.c:552
+msgid "The user chose Yes/OK with data:\n"
+msgstr ""
 
-#: libgnomeui/gnome-stock.c:469
-msgid "No"
-msgstr "Ei"
+#: test-gnome/testgnome.c:556
+msgid "The user chose No/Cancel with data:\n"
+msgstr ""
 
-#: libgnomeui/gnome-stock.c:470
-msgid "Help"
-msgstr "Apua"
+#: test-gnome/testgnome.c:567
+msgid "Weird number in reply callback"
+msgstr ""
 
-#: libgnomeui/gnome-stock.c:1272
-msgid "Menu Accelerator Keys"
-msgstr "Menun pikavalinta näppäimet"
+#~ msgid "%.*s: ARGP_HELP_FMT parameter requires a value"
+#~ msgstr "%.*s: ARGP_HELP_FMT parametri tarvitsee arvon"
 
-#: libgnomeui/gnome-stock.c:1274
-msgid "Global"
-msgstr "Koko koneen"
+#~ msgid "%.*s: Unknown ARGP_HELP_FMT parameter"
+#~ msgstr "%.*s: Tuntematon ARGP_HELP_FMT parametri"
 
-#: libgnomeui/gnome-stock.c:1276
-msgid "Menu Item"
-msgstr "Menun kohta"
+#~ msgid "Garbage in ARGP_HELP_FMT: %s"
+#~ msgstr "Roskaa ARGP_HELP_FMT: %s :ssä"
 
-#: libgnomeui/gnome-stock.c:1277
-msgid "Accelerator"
-msgstr "Pikavalinta"
+#~ msgid ""
+#~ "Mandatory or optional arguments to long options are also mandatory or "
+#~ "optional for any corresponding short options."
+#~ msgstr "Lyhyiden ja pitkien optioiden parametrien pitää täsmätä"
 
-#: gnome-hello/gnome-hello-2-i18n.c:31
-#: gnome-hello/gnome-hello-3-parse-args.c:33 gnome-hello/gnome-hello-4-SM.c:54
-msgid "File/Exit"
-msgstr "Tiedosto/Poistu"
+#~ msgid "Usage:"
+#~ msgstr "Käyttö:"
 
-#: gnome-hello/gnome-hello-2-i18n.c:31
-#: gnome-hello/gnome-hello-3-parse-args.c:33 gnome-hello/gnome-hello-4-SM.c:54
-msgid "<control>E"
-msgstr "<control>E"
+#~ msgid "  or: "
+#~ msgstr "  tai: "
 
-#. The '...' end indicate that the options open a dialog
-#: gnome-hello/gnome-hello-2-i18n.c:33
-#: gnome-hello/gnome-hello-3-parse-args.c:35 gnome-hello/gnome-hello-4-SM.c:56
-msgid "Help/About..."
-msgstr "Apua/Versiotiedot"
+#~ msgid " [OPTION...]"
+#~ msgstr " [OPTION...]"
 
-#: gnome-hello/gnome-hello-2-i18n.c:33
-#: gnome-hello/gnome-hello-3-parse-args.c:35 gnome-hello/gnome-hello-4-SM.c:56
-msgid "<control>A"
-msgstr "<control>A"
+#~ msgid "Try `%s --help' or `%s --usage' for more information.\n"
+#~ msgstr "Kokeile `%s --help´ tai `%s --usage´ saadaksesi lisää tietoa.\n"
 
-#. Make the main window and binds the delete event so you can close
-#. the program from your WM
-#: gnome-hello/gnome-hello-2-i18n.c:69
-#: gnome-hello/gnome-hello-3-parse-args.c:99
-#: gnome-hello/gnome-hello-4-SM.c:139
-msgid "Hello World Gnomified"
-msgstr "Moro Maailma Gnomena"
-
-#. We make a button, bind the 'clicked' signal to hello and setting it
-#. to be the content of the main window
-#: gnome-hello/gnome-hello-2-i18n.c:83
-#: gnome-hello/gnome-hello-3-parse-args.c:113
-#: gnome-hello/gnome-hello-4-SM.c:158
-msgid "Hello GNOME"
-msgstr "Moro GNOME"
-
-#: gnome-hello/gnome-hello-2-i18n.c:102
-#: gnome-hello/gnome-hello-3-parse-args.c:132
-#: gnome-hello/gnome-hello-4-SM.c:177
-msgid "Hello GNOME\n"
-msgstr "Moro GNOME\n"
-
-#: gnome-hello/gnome-hello-2-i18n.c:125
-#: gnome-hello/gnome-hello-3-parse-args.c:155
-#: gnome-hello/gnome-hello-4-SM.c:200
-msgid "The Hello World Gnomified"
-msgstr "Moro Maailma Gnomena"
-
-#. another comments
-#: gnome-hello/gnome-hello-2-i18n.c:130
-#: gnome-hello/gnome-hello-3-parse-args.c:160
-#: gnome-hello/gnome-hello-4-SM.c:205
-msgid "GNOME is a civilized software system so we've a \"hello world\" program"
-msgstr "GNOME on sivistynyt ohjelma, jonka vuoksi meillä on \"hello world\" ohjelma"
-
-#: gnome-hello/gnome-hello-3-parse-args.c:43
-msgid "Run silently"
-msgstr "Käynnisty hiljaisesti"
-
-#: gnome-hello/gnome-hello-4-SM.c:67
-msgid "Discard session"
-msgstr "Lopeta istunto"
+#~ msgid "Report bugs to %s.\n"
+#~ msgstr "Raportoi bugeista %s.\n"
