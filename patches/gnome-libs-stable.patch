@@ -1,0 +1,102 @@
+? devel-docs/gnome-dev-info/gnome-dev-info.junk
+Index: libgnomeui/ChangeLog
+===================================================================
+RCS file: /cvs/gnome/gnome-libs/libgnomeui/ChangeLog,v
+retrieving revision 1.1161.4.110
+diff -u -u -p -r1.1161.4.110 ChangeLog
+--- libgnomeui/ChangeLog	2001/02/22 13:58:42	1.1161.4.110
++++ libgnomeui/ChangeLog	2001/02/23 17:53:12
+@@ -1,3 +1,9 @@
++2001-02-23  Martin Baulig  <baulig@suse.de>
++
++	* gnome-entry.c (gnome_entry_get_text, gnome_entry_set_text):
++	Added new accessor functions; this is the recommended way to
++	access the GnomeEntry's internal text entry for GNOME 2.0.
++
+ 2001-02-22  Gediminas Paulauskas <menesis@delfi.lt>
+ 
+ 	* gnome-property-entries.c: use _() instead of gettext().
+Index: libgnomeui/gnome-entry.c
+===================================================================
+RCS file: /cvs/gnome/gnome-libs/libgnomeui/gnome-entry.c,v
+retrieving revision 1.26
+diff -u -u -p -r1.26 gnome-entry.c
+--- libgnomeui/gnome-entry.c	1999/08/23 00:14:15	1.26
++++ libgnomeui/gnome-entry.c	2001/02/23 17:53:13
+@@ -201,6 +201,11 @@ gnome_entry_destroy (GtkObject *object)
+  *
+  * Description: Obtain pointer to GnomeEntry's internal text entry
+  *
++ *   This function will no longer exist in GNOME 2.0.
++ *
++ *   Please use #gnome_entry_get_text() and #gnome_entry_set_text() in
++ *   all new applications if possible.
++ *
+  * Returns: Pointer to GtkEntry widget.
+  */
+ GtkWidget *
+@@ -516,4 +521,46 @@ gnome_entry_save_history (GnomeEntry *ge
+ 	prefix = g_strconcat ("/",gnome_app_id,NULL);
+ 	gnome_config_sync_file (prefix);
+ 	g_free (prefix);
++}
++
++/**
++ * gnome_entry_get_text
++ * @gentry: Pointer to GnomeEntry object.
++ *
++ * Description: Returns the text from GnomeEntry's internal text entry.
++ *
++ *   This function is the recommended way to access the GnomeEntry's
++ *   internal text entry for GNOME 2.0. It should be used in all new
++ *   applications rather than sucking it out of the GtkEntry.
++ *
++ * Returns: Text from the GtkEntry widget.
++ */
++gchar *
++gnome_entry_get_text (GnomeEntry *gentry)
++{
++	g_return_val_if_fail (gentry != NULL, NULL);
++	g_return_val_if_fail (GNOME_IS_ENTRY (gentry), NULL);
++
++	return gtk_entry_get_text (GTK_ENTRY (gentry));
++}
++
++/**
++ * gnome_entry_set_text
++ * @gentry: Pointer to GnomeEntry object.
++ * @text: Text to set in the GnomeEntry's interal text entry.
++ *
++ * Description: Sets the text in the GnomeEntry's internal text entry.
++ *
++ *   This function is the recommended way to modify the GnomeEntry's
++ *   internal text entry for GNOME 2.0.
++ *
++ * Returns:
++ */
++void
++gnome_entry_set_text (GnomeEntry *gentry, const gchar *text)
++{
++	g_return_if_fail (gentry != NULL);
++	g_return_if_fail (GNOME_IS_ENTRY (gentry));
++
++	gtk_entry_set_text (GTK_ENTRY (gentry), text);
+ }
+Index: libgnomeui/gnome-entry.h
+===================================================================
+RCS file: /cvs/gnome/gnome-libs/libgnomeui/gnome-entry.h,v
+retrieving revision 1.7.4.1
+diff -u -u -p -r1.7.4.1 gnome-entry.h
+--- libgnomeui/gnome-entry.h	2000/05/20 19:11:41	1.7.4.1
++++ libgnomeui/gnome-entry.h	2001/02/23 17:53:13
+@@ -51,6 +51,10 @@ void       gnome_entry_append_history  (
+ void       gnome_entry_load_history    (GnomeEntry *gentry);
+ void       gnome_entry_save_history    (GnomeEntry *gentry);
+ 
++gchar     *gnome_entry_get_text        (GnomeEntry *gentry);
++void       gnome_entry_set_text        (GnomeEntry *gentry, const gchar *text);
++
++
+ END_GNOME_DECLS
+ 
+ #endif
