@@ -332,6 +332,13 @@ path_max (void)
 #endif
 #ifndef TTYDEF_LFLAG
 	/*ISIG|ICANON|IEXTEN|ECHO|ECHOE|ECHOK|ECHOCTL|ECHOKE;*/
+/* The symbols ECHOKE and ECHOCTL is not defined when compiling on irix. */
+#ifndef ECHOKE
+#define ECHOKE 0
+#endif
+#ifndef ECHOCTL
+#define ECHOCTL 0
+#endif
 #define TTYDEF_LFLAG (ECHO | ICANON | ISIG | IEXTEN | ECHOE | ECHOKE | ECHOCTL)
 #endif
 #ifndef TTYDEF_CFLAG

@@ -158,6 +158,9 @@ struct _zvtprivate
   int lastselectiontype;	/* last tried type for a selection query (see request_paste()) */
 
   int scroll_position;		/* offset for background pixmap when scrolling */
+  int pixmapx;			/* pixmap position offsets */
+  int pixmapy;
+
   GdkPixmap *bold_save;		/* when drawing bold, use this to save the
 				   maybe-overwritten line. */
   GdkPixmap *transpix;		/* transparency pixmap.  Must be treated

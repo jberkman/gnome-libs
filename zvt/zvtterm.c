@@ -941,6 +941,8 @@ zvt_term_size_allocate (GtkWidget     *widget,
   g_return_if_fail (ZVT_IS_TERM (widget));
   g_return_if_fail (allocation != NULL);
 
+  printf("size allocate called\n");
+
   if (GTK_WIDGET_REALIZED (widget)) {
       term = ZVT_TERM (widget);
 
@@ -1113,6 +1115,15 @@ zvt_term_expose (GtkWidget      *widget,
   return FALSE;
 }
 
+/* fuck it ... *sigh*
+static gint zvt_term_configure (GtkWidget *widget, GdkEventConfigure *event)
+{
+  printf("got configure event\n");
+  printf(" pos = %d,%d\n", event->x, event->y);
+  printf(" size= %d,%d\n", event->width, event->height);
+  return FALSE;
+}
+*/
 
 /**
  * zvt_term_show_pointer:
@@ -3158,7 +3169,7 @@ vt_scroll_area(void *user_data, int firstrow, int count, int offset, int fill)
   /* this does a 'scrolling' pixmap */
   if (term->transparent || term->pixmap_filename) {
     zp->scroll_position = (zp->scroll_position + offset*term->charheight) % term->background.h;
-    gdk_gc_set_ts_origin (term->back_gc, 0, -zp->scroll_position);
+    gdk_gc_set_ts_origin (term->back_gc, zp->pixmapx, zp->pixmapy-zp->scroll_position);
   }
 
   /* fill the exposed area with blank */
@@ -3620,16 +3631,36 @@ load_background (ZvtTerm *widget)
     return;
   }
 
+  /* get our position/size */
+  XTranslateCoordinates (
+      GDK_WINDOW_XDISPLAY (GTK_WIDGET(widget)->window),
+      GDK_WINDOW_XWINDOW (GTK_WIDGET(widget)->window),
+      GDK_ROOT_WINDOW (),
+      0, 0,
+      &x, &y,
+      &childret);
+
+  gdk_window_get_size(GTK_WIDGET(widget)->window, &width, &height);
+  
   zp = gtk_object_get_data (GTK_OBJECT (term), "_zvtprivate");
 
   /* we will be doing a background pixmap, not transparency */
   if (term->pixmap_filename) {
 
+    /* offset relative to screen coordinates */
+    if (1) {
+      zp->pixmapx = -x;
+      zp->pixmapy = -y;
+    } else {
+      zp->pixmapx = 0;
+      zp->pixmapy = 0;
+    }
+
     if (!term->background.pix) {
       term->background.pix =
 	load_pixmap_back (term->pixmap_filename, term->shaded);
       /* must reset origin */
-      gdk_gc_set_ts_origin(bgc,0, 0);
+      gdk_gc_set_ts_origin(bgc, zp->pixmapx, zp->pixmapy);
     }
 
     if (!term->background.pix && !term->transparent) {
@@ -3655,7 +3686,7 @@ load_background (ZvtTerm *widget)
       d(printf("height = %d\n", wp->height));
 
       gdk_gc_set_tile (bgc, term->background.pix);
-      gdk_gc_set_ts_origin (term->back_gc, 0, -zp->scroll_position);
+      gdk_gc_set_ts_origin (term->back_gc, zp->pixmapx, zp->pixmapy-zp->scroll_position);
       gdk_gc_set_fill (bgc, GDK_TILED);
       return;
     }
@@ -3674,16 +3705,6 @@ load_background (ZvtTerm *widget)
     gdk_gc_set_foreground (term->back_gc, &pen);
     return;
   }
-  
-  XTranslateCoordinates (
-      GDK_WINDOW_XDISPLAY (GTK_WIDGET(widget)->window),
-      GDK_WINDOW_XWINDOW (GTK_WIDGET(widget)->window),
-      GDK_ROOT_WINDOW (),
-      0, 0,
-      &x, &y,
-      &childret);
-
-  gdk_window_get_size(GTK_WIDGET(widget)->window, &width, &height);
   
   /* dont update if we're actually not visible? */
   if (x<-width || y<-height) {

@@ -1,3 +1,8 @@
+1999-09-22  Michael Zucchi  <zucchi@zedzone.mmc.com.au>
+
+	* gnome-pty-helper.c: Make the use of ECHOKE/ECHOCTL conditional.
+	More portability fixes (this time its broken-irix bug #2321).
+
 1999-09-19  Michael Zucchi  <zucchi@zedzone.mmc.com.au>
 
 	* vt.c (vt_set_text): Return VTTITLE_XPROPERTY as a title type
