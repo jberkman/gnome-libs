@@ -956,8 +956,6 @@ int main (int argc, char *argv[])
 
 	gnome_init ("testGNOME", NULL, argc, argv, 0, NULL);
 
-	gtk_init (&argc, &argv);
-
 	app = create_newwin(FALSE,"testGNOME", "testGNOME");
 	gtk_widget_set_usize (app, 200,300);
 	box1 = gtk_vbox_new (FALSE, 0);

@@ -1,3 +1,10 @@
+1998-07-15  Federico Mena Quintero  <federico@nuclecu.unam.mx>
+
+	* canvas.c (item_event): Grab/ungrab the item on button
+	press/release, respectively.
+
+	* testgnome.c (main): Do not call gnome_init() and gtk_init().
+
 1998-07-13  Federico Mena Quintero  <federico@nuclecu.unam.mx>
 
 	* canvas.c (piece_event): 
