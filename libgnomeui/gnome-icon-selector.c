@@ -42,7 +42,8 @@
 #include <gtk/gtkvscrollbar.h>
 #include <gtk/gtkscrolledwindow.h>
 #include <gtk/gtksignal.h>
-#include "libgnome/libgnomeP.h"
+#include <libgnome/gnome-util.h>
+#include "gnome-i18nP.h"
 #include "gnome-macros.h"
 #include "gnome-selectorP.h"
 #include "gnome-vfs-util.h"
