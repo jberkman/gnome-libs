@@ -40,7 +40,7 @@ GnomeStock
   <refsect2>
     <title>GNOME_STOCK icons internals</title>
     <para>
-      One such `icon' should have at least three pixmaps to reflect it's
+      One such `icon' should have at least three pixmaps to reflect its
       state. There is a `regular' pixmap, a `disabled' pixmap and a
       `focused' pixmap. You can get either each of these pixmaps by
       calling gnome_stock_pixmap or you can get a widget by calling
@@ -138,14 +138,19 @@ GnomeStock
 
 <!-- ##### MACRO GNOME_STOCK_PIXMAP_PROPERTIES ##### -->
 <para>
-    Image for representing "Properties".
+    Image for representing "Properties". Please note the difference
+between "Properties" and "Preferences". "Properties" should be used
+when editing the properties of a specific object, such as a file or a
+database. "Preferences" should be used when editing user preferences
+application-wide, such as display colors or default servers.
 </para>
 
 
 
 <!-- ##### MACRO GNOME_STOCK_PIXMAP_PREFERENCES ##### -->
 <para>
-    Image for representing "Preferences".
+    Image for representing "Preferences". Please see note for
+"Properties" above.
 </para>
 
 
