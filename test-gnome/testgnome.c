@@ -192,14 +192,136 @@ void create_colorsel(GtkWidget *widget, gpointer data)
 	gtk_widget_show(app);
 }
 
+/* 
+ * GnomeDialog
+ */
+
+enum {
+  modal, 
+  just_hide,
+  click_closes, 
+  editable_enters
+};
+
+void toggle_boolean(GtkWidget * toggle, gboolean * setme)
+{
+  gboolean current = *setme;
+  *setme = !current;
+}
+
+void block_until_clicked(GtkWidget * ignore, GnomeDialog * dialog)
+{
+  gint button;
+  button = gnome_dialog_run_modal(dialog);
+  g_print("Modal run ended, button %d clicked\n", button);
+}
+
+void set_to_null(GtkWidget * ignore, GnomeDialog ** d)
+{
+  *d = NULL;
+}
+
+void create_test_dialog (GtkWidget * ignored, gboolean * settings)
+{
+  static GnomeDialog * dialog = NULL;
+  GtkWidget * entry;
+  GtkWidget * button;
+
+  if (dialog) {
+    g_print("Previous dialog was not destroyed, destroying...\n");
+    gtk_widget_destroy(GTK_WIDGET(dialog));
+    dialog = NULL;
+  }
+
+  dialog = GNOME_DIALOG(gnome_dialog_new( "A Test Dialog", 
+					  GNOME_STOCK_BUTTON_OK,
+					  "Not a stock button",
+					  GNOME_STOCK_BUTTON_CANCEL, NULL ));
+  
+  entry = gtk_entry_new();
+  button = gtk_button_new_with_label("Block until clicked");
+  
+  gtk_signal_connect(GTK_OBJECT(button), "clicked", 
+		     GTK_SIGNAL_FUNC(block_until_clicked), 
+		     dialog);
+  
+  gtk_signal_connect(GTK_OBJECT(dialog), "destroy",
+		     GTK_SIGNAL_FUNC(set_to_null),
+		     &dialog);
+  
+  gtk_box_pack_start(GTK_BOX(dialog->vbox), entry, TRUE, TRUE, GNOME_PAD);
+  gtk_box_pack_start(GTK_BOX(dialog->vbox), button, FALSE, FALSE, GNOME_PAD);
+  
+  if (settings[modal]) {
+    g_print("Modal... ");
+    gnome_dialog_set_modal(dialog);
+  }
+  if (settings[just_hide]) {
+    g_print("Close hides... ");
+    gnome_dialog_close_hides(dialog, TRUE);
+  }
+  if (settings[click_closes]) {
+    g_print("Click closes... ");
+    gnome_dialog_set_close(dialog, TRUE);
+  }
+  if (settings[editable_enters]) {
+    g_print("Editable enters... ");
+    gnome_dialog_editable_enters(dialog, GTK_EDITABLE(entry));
+  }
+  g_print("\n");
+
+  gtk_widget_show_all(GTK_WIDGET(dialog));
+}
+
 void create_dialog()
 {
-	GtkWidget *dialog;
-	dialog = gnome_dialog_new("Close this window?",	GNOME_STOCK_BUTTON_YES,
-				  GNOME_STOCK_BUTTON_NO,NULL);
-	gnome_dialog_button_connect(GNOME_DIALOG(dialog),0,
-				    GTK_SIGNAL_FUNC(delete_event),dialog);
-	gtk_widget_show(dialog);
+  GtkWidget * app;
+  GtkWidget * vbox;
+  GtkWidget * hbox;
+  GtkWidget * toggle;
+  GtkWidget * button;
+  static gboolean settings[4] = {FALSE, TRUE, FALSE, TRUE};
+
+  app = create_newwin(TRUE,"testGNOME","Dialog Boxes");
+  vbox = gtk_vbox_new(FALSE, GNOME_PAD);
+  hbox = gtk_hbox_new(FALSE, GNOME_PAD);
+  
+  gnome_app_set_contents(GNOME_APP(app),vbox);
+  
+  gtk_box_pack_start(GTK_BOX(vbox), hbox, TRUE, TRUE, GNOME_PAD);
+
+  toggle = gtk_toggle_button_new_with_label("Modal");
+  gtk_toggle_button_set_state(GTK_TOGGLE_BUTTON(toggle), settings[modal]);
+  gtk_signal_connect(GTK_OBJECT(toggle), "toggled", 
+		     GTK_SIGNAL_FUNC(toggle_boolean), &settings[modal]);
+  gtk_box_pack_start(GTK_BOX(hbox), toggle, FALSE, FALSE, GNOME_PAD);
+
+  toggle = gtk_toggle_button_new_with_label("Hide don't destroy");
+  gtk_toggle_button_set_state(GTK_TOGGLE_BUTTON(toggle), settings[just_hide]);
+  gtk_signal_connect(GTK_OBJECT(toggle), "toggled", 
+		     GTK_SIGNAL_FUNC(toggle_boolean), &settings[just_hide]);
+  gtk_box_pack_start(GTK_BOX(hbox), toggle, FALSE, FALSE, GNOME_PAD);
+
+  toggle = gtk_toggle_button_new_with_label("Close on click");
+  gtk_toggle_button_set_state(GTK_TOGGLE_BUTTON(toggle), settings[click_closes]);
+  gtk_signal_connect(GTK_OBJECT(toggle), "toggled", 
+		     GTK_SIGNAL_FUNC(toggle_boolean), &settings[click_closes]);
+  gtk_box_pack_start(GTK_BOX(hbox), toggle, FALSE, FALSE, GNOME_PAD);
+
+  toggle = gtk_toggle_button_new_with_label("Editable enters");
+  gtk_toggle_button_set_state(GTK_TOGGLE_BUTTON(toggle), settings[editable_enters]);
+  gtk_signal_connect(GTK_OBJECT(toggle), "toggled", 
+		     GTK_SIGNAL_FUNC(toggle_boolean), &settings[editable_enters]);
+  gtk_box_pack_start(GTK_BOX(hbox), toggle, FALSE, FALSE, GNOME_PAD);
+
+  button = gtk_button_new_with_label("Create the dialog");
+  gtk_signal_connect(GTK_OBJECT(button), "clicked", 
+		     GTK_SIGNAL_FUNC(create_test_dialog), 
+		     &settings[0]);
+
+  gtk_box_pack_end(GTK_BOX(vbox), button, FALSE, FALSE, GNOME_PAD);
+
+  gtk_widget_show_all(app);
 }
 
 void create_file_entry()
