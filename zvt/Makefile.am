@@ -10,6 +10,7 @@ INCLUDES = -I.. -I$(srcdir)/.. 	\
 lib_LTLIBRARIES = libzvt.la
 
 libzvt_la_SOURCES =		\
+	forkpty.c		\
 	lists.c			\
 	memory.c		\
 	memory.h		\
@@ -21,6 +22,7 @@ libzvtinclude_HEADERS =	\
 	zvtterm.h	\
 	vtx.h		\
 	lists.h		\
+	forkpty.h	\
 	vt.h
 
 EXTRA_DIST = TODO BUGS README 
@@ -31,5 +33,5 @@ zterm_SOURCES	= zterm.c
 zterm_LDADD	= 	\
 	$(top_builddir)/zvt/libzvt.la	\
 	$(GTK_LIBS) \
-	@LIBSUPPORT@ $(INTLLIBS) -lutil
+	@LIBSUPPORT@ $(INTLLIBS) $(UTIL_LIB)
 

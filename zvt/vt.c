@@ -31,8 +31,13 @@
 #include <unistd.h>
 #include <signal.h>
 
-#include <pty.h>
+/* #include <pty.h> */
+#include <termios.h>
 #include <sys/ioctl.h>
+
+#ifndef HAVE_FORKPTY
+#include "forkpty.h"
+#endif
 
 #include "lists.h"
 #include "memory.h"
