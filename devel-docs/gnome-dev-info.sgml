@@ -420,8 +420,9 @@ about_cb (GtkWidget *widget, void *data)
       	<para>
 	  Internationalization (i18n for short) is very easy with GNOME. We
 	  use GNU gettext. You need to initialize it with a call to 
-	  <function>textdomain</function> in your main function. 
-	  After it a _() to all the strings that need translation. 
+	  <function>bindtextdomain</function> and
+	  <function>textdomain</function> in your main function.
+ 	  After it a _() to all the strings that need translation. 
       	  </para>
       	<para>
       	  You will need add your file to po/POTFILES.in. Then you can do
