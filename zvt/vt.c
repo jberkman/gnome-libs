@@ -684,15 +684,17 @@ vt_delete_line(struct vt_em *vt)
 {
   d(printf("vt_delete_line\n"));
 
-  if (vt->argcnt==0) {
+  if (vt->state == 1) {
     if (vt->cursory > vt->scrolltop) {	/* reverse line feed, not delete */
       d(printf("vt_delete_line: should we try to scroll up?\n"));
       vt->cursory--;
     } else {
       vt_scroll_down(vt, 1);
     }
+  } else if (vt->argcnt==0) {
+    vt_delete_lines(vt, 1);	/* delete single line */
   } else if (vt->argcnt==1) {
-    vt_delete_lines(vt, atoi(vt->args[0]));/* insert multiple characters */
+    vt_delete_lines(vt, atoi(vt->args[0]));/* delete multiple characters */
   } else {
     d(printf("vt_delete_line: delete characters got >1 parameters\n"));
   }
