@@ -1,5 +1,7 @@
 1998-02-13  Raja R Harinath  <harinath@cs.umn.edu>
 
+	* autogen.sh: Moved most of the stuff to `macros/autogen.sh'.
+
 	* Makefile.am (SUBDIRS): Add macros.
 	(macros/macros.dep): New maintainer rule for handling automatic
 	rebuilding of aclocal.m4 if any of the macros in `macros/' change.
