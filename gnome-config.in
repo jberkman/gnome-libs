@@ -137,7 +137,7 @@ while test $# -gt 0; do
 	the_flags="$the_flags @GNOME_INCLUDEDIR@ @ORBIT_CFLAGS@"
         ;;
     idl)
-        the_flags="@GNOME_INCLUDEDIR@/idl"
+        the_flags="@GNOME_IDLDIR@"
 	;;
     zvt)
 	the_libs="$the_libs @GNOME_LIBDIR@ @ZVT_LIBS@"
