@@ -1,6 +1,11 @@
+1998-30-26  Erik Troan  <ewt@redhat.com>
+
+	* zvtterm.c (vt_draw_text): attempted vx->back_match 
+	optimization was incorrect, and to ghost selections
+
 1998-07-25  Jonathan Blandford  <jrb@redhat.com>
 
-	*zvtterm.c (zvt_term_realize): Changed GdkIM*Nothing to
+	* zvtterm.c (zvt_term_realize): Changed GdkIM*Nothing to
 	GDK_IM_*_NOTHING to reflect the changes in gdk.
 	
 1998-07-19  Michael Zucchi  <zucchi@zzedzone.box.net.au>

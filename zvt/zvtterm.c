@@ -1470,8 +1470,8 @@ void vt_draw_text(void *user_data, int col, int row, char *text, int len, int at
   }
 
   /* optimise: dont 'clear' background if in expose, and background colour == window colour */
-  if ((term->in_expose==0 && vx->back_match==0)
-      || back!=17) {
+
+  if ((term->in_expose==0) || back!=17) {
     gdk_draw_rectangle(widget->window,
 		       bgc,
 		       1,
