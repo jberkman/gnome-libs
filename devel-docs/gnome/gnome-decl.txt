@@ -626,12 +626,12 @@ gfloat score,gchar *level,gboolean higher_to_lower_score_order
 </FUNCTION>
 <ENUM>
 <NAME>GnomeTriggerType</NAME>
-enum GnomeTriggerType {
+typede enum {
 	GTRIG_NONE,
 	GTRIG_FUNCTION,
 	GTRIG_COMMAND,
 	GTRIG_MEDIAPLAY
-};
+}  GnomeTriggerType;
 </ENUM>
 <USER_FUNCTION>
 <NAME>GnomeTriggerActionFunction</NAME>
