@@ -38,8 +38,8 @@ maintainer-clean-local: clean
 
 install-data-local: html
 	install -d -m 0755 $(TARGET_DIR)
-	install -m 0644 html/*.html $(TARGET_DIR)
-	install -m 0644 html/index.sgml $(TARGET_DIR)
-	gtkdoc-fixxref --module=$(DOC_MODULE) --html-dir=$(HTML_DIR)
+	-install -m 0644 html/*.html $(TARGET_DIR)
+	-install -m 0644 html/index.sgml $(TARGET_DIR)
+	-gtkdoc-fixxref --module=$(DOC_MODULE) --html-dir=$(HTML_DIR)
 
 .PHONY : html sgml templates scan
