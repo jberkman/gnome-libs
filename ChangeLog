@@ -1,3 +1,9 @@
+1999-09-22  Elliot Lee  <sopwith@redhat.com>
+
+	* libgnome/gnome-i18n.c: gnome_i18n_init() - revert the patch of contention
+	* libgnomeui/gnome-init.c: Perform the equivalent here - wrap $LC_CTYPE manipulation
+	around the gtk_set_locale() call.
+
 Sat Sep 18 12:42:46 1999  George Lebl  <jirka@5z.com>
 
 	* configure.in,devel-docs/Makefile.am,
