@@ -14,7 +14,7 @@ Menus:
 
      CUSTOM MENUS is where you should put your application-specific
      top-level menus, such as Gnumeric's "Insert" menu.  These are all
-     optional except File and Help.
+     optional except Help.
 
    - The prescribed order of standard menu items in the "File" menu is
      the following:
@@ -22,8 +22,10 @@ Menus:
           New Window, SEPARATOR, New, Open, Save, Save As, Revert,
           SEPARATOR, Print, Print Setup, SEPARATOR, Close, Exit
 
-     The first menu must always be the "File" menu, and it must always
-     be called "_File", even if you application never touches a file.
+     The first menu must always be the "File" menu (unless there are
+     no files in your application, for example, in a game you can call
+     this "Game"), and it must always be called "_File". 
+
      The main reason for this is that it is important for the menu
      accelerators to be consistent.  Your application is required to
      have at the very least a "File" menu containing at the very least
