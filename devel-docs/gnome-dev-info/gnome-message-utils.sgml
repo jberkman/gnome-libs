@@ -1,0 +1,341 @@
+<!doctype chapter PUBLIC "-//Davenport//DTD DocBook V3.0//EN" [
+]>
+
+<chapter id="DialogAppUtil">
+
+  <title>Talking to the user: GnomeDialog, GnomeMessageBox,
+    GnomeAppBar, and utility functions.</title>
+
+  <!-- Chapter Author: Havoc Pennington, hp@pobox.com -->
+
+  <sect1 id="introduction">
+
+    <title>Introduction</title>
+
+    <para>
+      Gnome strives to provide the user with a maximum level of 
+      configurability, and the programmer with a maximum level of
+      convenience. Happily, these two goals tend to go hand in hand:
+      fewer decisions for the programmer means more decisions for the
+      user.
+    </para>
+
+    <para>
+      This section describes Gnome's facilities for communicating
+      simple messages or questions to the user, and retrieving a
+      response. The main widgets involved are
+      <type>GnomeDialog</type> and
+      <type>GnomeAppBar</type> (a statusbar, but that name
+      was taken). Gnome also provides convenience functions which give
+      the user greater choice as a side effect. For example, if you
+      call <function>gnome_app_message</function> instead of creating a
+      dialog directly, the user can request that messages
+      appear in the app bar instead.
+    </para>
+
+    <para>
+      Some functionality is missing, and some of the API is
+      suboptimal. Hopefully this will be fixed eventually. In
+      particular:
+    </para>
+    <simplelist>
+      <member>GnomeAppBar does not work in interactive mode, so all 
+	questions must be asked via dialog. Full
+	Emacs-minibuffer-style functionality needs to be added.
+      <member>GnomeAppBar should use GnomePreferencesType for
+	has_progress, and not use a progress bar if the user wants
+	progress dialogs instead.
+      <member>Nonstandard function pointer callbacks are a poor
+	substitute for Gtk signals and unpleasant in non-C bindings.
+      <member>It is all sort of clunky feeling. Perhaps convenience
+	functions are inherently inelegant?
+    </simplelist>
+    <para>
+      Patches and suggestions are always welcome. Please think about
+      how the API could be improved as you read this and use the
+      facilities.
+    </para>
+
+  </sect1>
+
+  <sect1 id="GnomeAppBar">
+
+    <title>Using <type>GnomeAppBar</type> directly</title>
+
+    <sect2> <title>Creating an AppBar</title>
+      <funcsynopsis><funcdef> GtkWidget *<function>gnome_appbar_new</function>
+	</funcdef>
+	<paramdef>
+	  gboolean<parameter>has_progress</parameter>
+	</paramdef>
+	<paramdef>
+	  gboolean<parameter>has_status</parameter>
+	</paramdef>
+	<paramdef>
+	  GnomePreferencesType<parameter>interactivity</parameter>
+	</paramdef>
+      </funcsynopsis>
+      
+      <para>
+	<type>GnomeAppBar</type> is a progress bar on the left, and
+	a statusbar/minibuffer on the right. It can optionally be only a
+	progress bar (dumb, but you can do it), or only a
+	statusbar/minibuffer (if you have no progress to display).
+      </para>
+      
+      <para>
+	The statusbar/minibuffer can be an interactive prompt a
+	la Emacs or just a status display. (Eventually, anyway. For now
+	interactive mode is broken.) This is specified with the
+	<parameter>interactivity</parameter> parameter, which can have
+	three values: <symbol>GNOME_PREFERENCES_NEVER</symbol>,
+	<symbol>GNOME_PREFERENCES_USER</symbol>, or
+	<symbol>GNOME_PREFERENCES_ALWAYS</symbol>. If you specify
+	<symbol>_NEVER</symbol> or <symbol>_ALWAYS</symbol>, then
+	interactivity will be prohibited or forced. Otherwise, a user
+	setting provided by Gnome will determine interactivity.
+      </para> 
+      
+    </sect2>
+    <sect2> <title>Using an AppBar to display status</title>
+    <para>
+      The appbar displays one message at a time. There are three kinds
+      of messages: transient status messages, messages on the stack,
+      and the default message. 
+      <simplelist>
+	<member>Transient messages are displayed, overriding any other
+	  messages, but the appbar retains no knowledge of them; so
+	  they disappear forever as soon as the appbar is
+	  updated. <function>gnome_appbar_set_status</function> creates
+	  a transient message.  
+
+	<member>If no transient message has overwritten it, the top
+	  message on the stack is always
+	  displayed. <function>gnome_appbar_push</function> and
+	  <function>gnome_appbar_pop</function> manipulate the stack.
+
+	<member>If the stack is empty, the appbar displays the default
+	  message (which can be the empty string). The default message
+	  is set with <function>gnome_appbar_set_default</function>.
+      </simplelist>
+
+      <para>
+	It is possible and even encouraged to use only one of the three
+	kinds of message. You can make the appbar as simple or as
+	complicated as you like; with only
+	<function>gnome_appbar_set_status</function>, it's basically
+	just a <type>GtkLabel</type>.
+      </para>
+      
+    <funcsynopsis><funcdef> void<function>gnome_appbar_set_status</function>
+      </funcdef>
+      <paramdef>
+	GnomeAppBar*<parameter>appbar</parameter>
+      </paramdef>
+      <paramdef>
+	const gchar*<parameter>status</parameter>
+	</paramdef>
+    </funcsynopsis>
+
+    <para>
+      Often you want to pop up a message that isn't very important,
+      and you don't want to worry about removing it
+      later. <function>gnome_appbar_set_status</function> does this
+      for you. It sets the message in the appbar until the next
+      time the appbar is changed.
+    </para>
+    <para>
+      If you want, you can use the appbar with only this
+      function. For simple applications it can be a nice approach.
+    </para>
+
+    <funcsynopsis><funcdef> void<function>gnome_appbar_set_default</function>
+      </funcdef>
+      <paramdef>
+	GnomeAppBar*<parameter>appbar</parameter>
+      </paramdef>
+      <paramdef>
+	const gchar*<parameter>default_status</parameter>
+	</paramdef>
+    </funcsynopsis>
+
+    <para>
+      When there's no special status to display, the appbar is
+      normally empty. However, if you prefer you can set a default
+      message; this is a message that can never be removed from the
+      message stack.
+    </para>
+
+    <funcsynopsis><funcdef> void<function>gnome_appbar_push</function>
+      </funcdef>
+	<paramdef>
+	  GnomeAppBar*<parameter>appbar</parameter>
+	</paramdef>
+	<paramdef>
+	  const gchar*<parameter>status</parameter>
+	</paramdef>
+    </funcsynopsis>
+
+    <funcsynopsis><funcdef> void<function>gnome_appbar_pop</function>
+      </funcdef>
+      <paramdef>
+	GnomeAppBar*<parameter>appbar</parameter>
+      </paramdef>
+    </funcsynopsis>
+
+      <funcsynopsis><funcdef> void<function>gnome_appbar_clear_stack</function>
+	</funcdef>
+	<paramdef>
+	  GnomeAppBar*<parameter>appbar</parameter>
+	</paramdef>
+      </funcsynopsis>
+      
+    <para>
+      <type>GnomeAppBar</type> maintains a stack of messages; it
+      always displays the top message on the stack. (There's one
+      exception: <function>gnome_appbar_set_status</function>
+      overrides the current top message temporarily.)
+    </para>
+
+      <funcsynopsis><funcdef> void<function>gnome_appbar_refresh</function>
+	</funcdef>
+	<paramdef>
+	  GnomeAppBar*<parameter>appbar</parameter>
+	</paramdef>
+      </funcsynopsis>
+      
+      <para>
+	<function>gnome_appbar_refresh</function> updates the appbar
+	to reflect the current saved state. Basically this means any 
+	transient messages (created with
+	<function>gnome_appbar_set_status</function>) will disappear,
+	to be replaced by the top of the stack or the default message.
+      </para>
+
+    <sect2> <title>Using an AppBar to query the user</title>
+      <para>
+	This doesn't work so well, so it's not documented. Basically
+	you can put up a prompt, and get a signal if the user enters a
+	response or cancels. It's useful to avoid a dialog if you just
+	want to get a string or the like.
+      </para>
+
+    </sect2>
+
+  </sect1>
+
+  <sect1 id="gnome-app-util">
+    <title>The abstract message interface (gnome-app-util, gnome-dialog-util)</title>
+
+    <para>
+      Gnome provides utility functions for relaying simple messages to
+      the user and asking simple questions. The utility functions
+      server two purposes: first, they keep programmers from writing
+      dozens of identical dialogs; second, they let the user choose
+      whether messages should appear in dialogs or on the appbar. The
+      main set of utility functions assume that your app uses the
+      <type>GnomeApp widget</type>, and that one is visible at the
+      time they're called. These functions have a dialog backend and
+      an appbar backend. The dialog backend is exposed, so you can use
+      it directly if you have no GnomeApp widget available.  The
+      <type>GnomeApp</type> functions do <emphasis>not</emphasis>
+      assume you have an appbar available; you should use them even if
+      your app has no appbar. In some cases it makes a difference.
+    </para>
+    
+    <sect1> <title>Utility functions if a <type>GnomeApp</type> is
+      available</title>
+    <para>
+      When these functions return a <type>GtkWidget*</type>, they are
+      returning the created dialog, if any. If no dialog is created
+      they return NULL. In general this is useless, but in special
+      circumstances you might care. You should
+      <emphasis>never</emphasis> modify the settings on the returned
+      dialog, such as how it's destroyed, where it's positioned, etc.;
+      you could confuse the library internals and/or override user
+      preferences.
+    </para>
+    <funcsynopsis><funcdef>GtkWidget*<function>gnome_app_message</function>
+      </funcdef>
+      <paramdef>
+	GnomeApp*<parameter>app</parameter>
+      </paramdef>
+      <paramdef>
+	const gchar*<parameter>message</parameter>
+      </paramdef>
+    </funcsynopsis>
+    
+    <para>
+      <function>gnome_app_message</function> shows a simple message of
+      moderate importance. It will come in a dialog with an OK button,
+      or on the appbar; it will require the user to acknowledge it
+      somehow before it goes away. 
+    </para>
+    
+    <funcsynopsis><funcdef>GtkWidget*<function>gnome_app_flash</function>
+      </funcdef>
+      <paramdef>
+	GnomeApp*<parameter>app</parameter>
+      </paramdef>
+      <paramdef>
+	const gchar*<parameter>flash</parameter>
+      </paramdef>
+    </funcsynopsis>
+    
+    <para>
+      This is used for trivial messages that aren't very important; an
+      example might be the little Netscape messages telling which URL
+      is currently being fetched. If the user never sees these
+      messages, it's not a problem; in fact,
+      <function>gnome_app_flash</function> is not guaranteed to show
+      the user the message (for example, if dialogs are turned off and
+      the <type>GnomeApp</type> has no appbar).
+    </para>
+    
+    <funcsynopsis><funcdef>GtkWidget*<function>gnome_app_error</function>
+      </funcdef>
+      <paramdef>
+	GnomeApp*<parameter>app</parameter>
+      </paramdef>
+      <paramdef>
+	const gchar*<parameter>error</parameter>
+      </paramdef>
+    </funcsynopsis>
+    <para>
+      An important error, issued if an operation fails entirely or
+      there's a major problem. This may do something obnoxious like
+      beep, and will probably require user acknowledgement.
+    </para>
+
+    <funcsynopsis><funcdef>GtkWidget*<function>gnome_app_warning</function>
+      </funcdef>
+      <paramdef>
+	GnomeApp*<parameter>app</parameter>
+      </paramdef>
+      <paramdef>
+	const gchar*<parameter>warning</parameter>
+      </paramdef>
+    </funcsynopsis>
+    <para>
+      Just a warning; not as important as an error, but not as trivial
+      as a flash.
+    </para>
+
+    
+
+</chapter>
+
+<!-- Keep this comment at the end of the file
+Local variables:
+mode: sgml
+sgml-omittag:t
+sgml-shorttag:t
+sgml-minimize-attributes:nil
+sgml-always-quote-attributes:t
+sgml-indent-step:2
+sgml-indent-data:t
+sgml-exposed-tags:nil
+sgml-local-catalogs:nil
+sgml-local-ecat-files:nil
+End:
+-->
