@@ -966,7 +966,6 @@ zvt_term_draw (GtkWidget *widget, GdkRectangle *area)
 
       term->in_expose = 1;
 
-#if 0
       /* draw shadow/border */
       if (term->shadow_type != GTK_SHADOW_NONE)
 	      gtk_draw_shadow (
@@ -989,7 +988,6 @@ zvt_term_draw (GtkWidget *widget, GdkRectangle *area)
       vt_update_rect (term->vx, 0, 0,
 		      width / term->charwidth,
 		      height / term->charheight);
-#endif
 
       term->in_expose = 0;
     }	  
@@ -2480,22 +2478,22 @@ vt_draw_text(void *user_data, int col, int row, char *text, int len, int attr)
    */
   if (term->in_expose || vx->back_match == 0)
     {
-      if ( (term->in_expose && back < 17)
-	   || ( term->in_expose==0 && !vx->back_match ))
+      if ((term->transparent || term->pixmap_filename)
+	  && !term->in_expose && back >= 17) 
 	{
-	  gdk_draw_rectangle (
-              term->term_window,
-	      bgc, 1,
+	  draw_back_pixmap (
+              widget,
 	      col * term->charwidth,
 	      row * term->charheight,
 	      len * term->charwidth,
 	      term->charheight);
-	} 
-      else if ((term->transparent || term->pixmap_filename)
-	       && !term->in_expose) 
+	}
+      else if ( (term->in_expose && back < 17)
+	       || ( term->in_expose==0 && !vx->back_match ))
 	{
-	  draw_back_pixmap (
-              widget,
+	  gdk_draw_rectangle (
+              term->term_window,
+	      bgc, 1,
 	      col * term->charwidth,
 	      row * term->charheight,
 	      len * term->charwidth,

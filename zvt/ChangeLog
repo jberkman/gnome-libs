@@ -1,3 +1,12 @@
+Mon May 03 20:04:10 1999  George Lebl  <jirka@5z.com>
+
+	* zvtterm.c: removed an #if 0 from the _draw method as it is
+	  obviously there by mistake (if not then the code would need
+	  to be fixed for background pixmap/transparency stuff).
+	  Also fixed the code that clears the area to draw text on, now
+	  it properly draws pixmaps, while preserving the speed improvements
+	  made by michael for non-background terminals
+
 1999-05-03  Michael Zucchi  <zucchi@zzedzone.mmc.com.au>
 
 	* update.c (vt_expand_line): Fixed selection of single characters
