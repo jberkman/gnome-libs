@@ -228,18 +228,16 @@
 	  <td><b>Yes</b></td>
 	  <td>???</td>
 	  <td>
-	    <b>gnome-animator</b>:  Mark as immature.
+	    <b>gnome-animator</b>: Mark as immature.  It probably does
+	    not work on multiple visual displays.
 	  </td>
 	</tr>
 
 	<tr>
 	  <td><b>NO</b></td>
-	  <td>???</td>
+	  <td><a href="mailto:ettore@comm2000.it">Ettore Perazzoli</a></td>
 	  <td>
-	    <b>gnome-app</b>:  OK.  Can we have multiple toolbars on
-	    time?  <a href="mailto:ettore@comm2000.it">Ettore</a> and
-	    <a href="mailto:jaka.mocnik@kiss.uni-lj.si">Jaka</a> know
-	    about the multiple toolbars problem.
+	    <b>gnome-app</b>: Mostly OK.
 	  </td>
 	</tr>
 
@@ -274,9 +272,11 @@
 	  <td><b>NO</b></td>
 	  <td><a href="mailto:federico@nuclecu.unam.mx">Federico Mena</a></td>
 	  <td>
-	    <b>gnome-canvas</b>:  OK.  Finish the widget item, maybe add the
-	    reparent do_not_move flag (see the TODO list in
-	    gnome-canvas.c).
+	    <b>gnome-canvas</b>: OK.  Finish the widget item, maybe
+	    add the reparent do_not_move flag (see the TODO list in
+	    gnome-canvas.c).  Fix size_allocate and size_request
+	    behavior; among other things, it causes weird interactions
+	    with GnomeDock.
 	  </td>
 	</tr>
 
@@ -349,6 +349,42 @@
 	  <td>???</td>
 	  <td>
 	    <b>gnome-dialog-util</b>:  OK, just test it a bit more.
+	  </td>
+	</tr>
+
+	<tr>
+	  <td><b>NO</b></td>
+	  <td><a href="mailto:ettore@comm2000.it">Ettore Perazzoli</a></td>
+	  <td>
+	    <b>gnome-dock.c</b>: Some bugs left.  Mark as immature,
+	    as apps should be using the GnomeApp interface for now.
+	  </td>
+	</tr>
+
+	<tr>
+	  <td><b>NO</b></td>
+	  <td><a href="mailto:ettore@comm2000.it">Ettore Perazzoli</a></td>
+	  <td>
+	    <b>gnome-dock-band.c</b>: Some bugs need to be fixed.
+	    Mark as immature.
+	  </td>
+	</tr>
+
+	<tr>
+	  <td><b>NO</b></td>
+	  <td><a href="mailto:ettore@comm2000.it">Ettore Perazzoli</a></td>
+	  <td>
+	    <b>gnome-dock-item.c</b>: Some bugs need to be fixed.
+	    Mark as immature.
+	  </td>
+	</tr>
+
+	<tr>
+	  <td><b>NO</b></td>
+	  <td><a href="mailto:ettore@comm2000.it">Ettore Perazzoli</a></td>
+	  <td>
+	    <b>gnome-dock-layout.c</b>: Some bugs need to be fixed.
+	    Mark as immature.
 	  </td>
 	</tr>
 
@@ -800,7 +836,7 @@ gnome-about.c			done
 gnome-animator.c		done
 gnome-app-helper.c		done
 gnome-app-util.c		done
-gnome-app.c			done
+gnome-app.c			the new dock-related API is not doc'd
 gnome-appbar.c			done
 gnome-calculator.c		done
 gnome-canvas-image.c		needed? - federico's on it
@@ -818,6 +854,10 @@ gnome-dentry-edit.c		none yet
 gnome-dialog-util.c		only one of several functions doc'd
 gnome-dialog.c			none yet
 gnome-dns.c			none yet
+gnome-dock.c                    none yet
+gnome-dock-band.c               none yet
+gnome-dock-item.c               none yet
+gnome-dock-layout.c             none yet
 gnome-entry.c			none yet
 gnome-file-entry.c		done
 gnome-font-picker.c		none yet
