@@ -240,8 +240,6 @@ zvt_term_class_init (ZvtTermClass *class)
 		    GTK_TYPE_INT);
 
 
-  gtk_object_class_add_signals (object_class, term_signals, LAST_SIGNAL);
-
   object_class->destroy = zvt_term_destroy;
 
   widget_class->realize = zvt_term_realize;
