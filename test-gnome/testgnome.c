@@ -282,6 +282,13 @@ druid_back_callback (GnomeDruidPage *page, GnomeDruid *druid, gpointer data)
 	return FALSE;
 }
 
+static void
+druid_finish_callback (GnomeDruidPage *page, GnomeDruid *druid, gpointer data)
+{
+	gnome_ok_dialog ("Here something would happen");
+	gtk_widget_destroy (GTK_WIDGET (druid));
+}
+
 /*
  * The Druid's control flow looks something like this:
  *
@@ -294,7 +301,6 @@ druid_back_callback (GnomeDruidPage *page, GnomeDruid *druid, gpointer data)
 static void
 create_druid(void)
 {
-  GtkWidget *window;
   GtkWidget *druid;
   gchar *fname;
   GtkWidget *page_start, *page_finish;
@@ -311,8 +317,10 @@ create_druid(void)
   g_free (fname);
 
   /* The initial stuff */
-  window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-  druid = gnome_druid_new ();
+  druid = gnome_druid_new_with_window ("Druid Test",
+				       NULL,
+				       TRUE,
+				       NULL);
 
   /* The druid pages. */
   page_start = gnome_druid_page_edge_new_with_vals
@@ -334,6 +342,9 @@ create_druid(void)
      logo,
      NULL,
      NULL);
+  /* When the finish button is clicked, destroy the druid */
+  gtk_signal_connect (GTK_OBJECT (page_finish), "finish",
+		      GTK_SIGNAL_FUNC (druid_finish_callback), NULL);
 
   /* set each one up. */
   /* page_a */
@@ -409,7 +420,6 @@ create_druid(void)
   gtk_signal_connect (GTK_OBJECT (page_finish), "back", (GtkSignalFunc) druid_back_callback, (gpointer) NULL);
 
   /*Tie it together */
-  gtk_container_add (GTK_CONTAINER (window), druid);
   gnome_druid_append_page (GNOME_DRUID (druid),
 			   GNOME_DRUID_PAGE (page_start));
   gnome_druid_append_page (GNOME_DRUID (druid),
@@ -429,7 +439,9 @@ create_druid(void)
   gnome_druid_append_page (GNOME_DRUID (druid),
 			   GNOME_DRUID_PAGE (page_finish));
   gnome_druid_set_page (GNOME_DRUID (druid), GNOME_DRUID_PAGE (page_start));
-  gtk_widget_show_all (window);
+
+  /* This will show all the pages */
+  gtk_widget_show_all (druid);
 }
 
 /*
@@ -1149,6 +1161,7 @@ ok_cancel_modal_cb(GtkWidget * b, GtkEntry * e)
 }
 
 
+#ifndef GNOME_EXCLUDE_DEPRECATED
 static void
 string_cb(gchar * string, gpointer data)
 {
@@ -1160,6 +1173,7 @@ string_cb(gchar * string, gpointer data)
   gnome_ok_dialog(s);
   g_free(s);
 }
+#endif
 
 static void
 request_string_cb(GtkWidget * b, GtkEntry * e)
