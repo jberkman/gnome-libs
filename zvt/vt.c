@@ -1742,27 +1742,23 @@ vt_killchild(struct vt_em *vt, int signal)
  * vt_closepty:
  * @vt: An initialised &vt_em, which has had a subprocess started using vt_forkpty().
  *
- * Close the child connection pty, and invalidates it.  After calling this
- * function, do not call functions which operate on the child process.
+ * Close the child connection pty, and invalidates it.  Closes down all
+ * pty associated resources, and waits for the child to quit.
  *
- * Return value: Returns zero on success, or -1 on error, and sets errno.
- * See Also: close(2)
+ * Return value: Returns the exit status of the child, or -1 if a failure occured.
  */
 int
 vt_closepty(struct vt_em *vt)
 {
   int ret;
+  int status;
 
   d(printf("vt_closepty called\n"));
 
-  if (vt->childfd != -1){
-	  zvt_shutdown_subshell (vt);
-	  ret = close(vt->childfd);
-	  zvt_close_msgfd(vt->childpid);
-	  vt->msgfd = vt->childfd = -1;
-	  if (vt->keyfd != vt->childfd) close(vt->keyfd);
-  } else
-	  ret = 0;
+  if (vt->childfd != -1)
+    ret = zvt_shutdown_subshell (vt);
+  else
+    ret = -1;
   return ret;
 }
 

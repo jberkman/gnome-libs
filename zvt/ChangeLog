@@ -1,3 +1,19 @@
+1999-04-02  Michael Zucchi  <zucchi@zzedzone.fsi.com.au>
+
+	* subshell.h (zvt_shutdown_subshell, zvt_close_msgfd): Fixed
+	header entries/removed for changes.
+
+	* vt.c (vt_closepty): Just calls zvt_shutdown_subshell() and
+	returns the child exit status.
+
+	* subshell.c (zvt_shutdown_subshell): Moved all the shutdown
+	functionality here, includeing parts of vt_closepty(), and
+	zvt_close_msgfd().
+	(zvt_close_msgfd): Removed, no longer needed.
+
+	* vt.c (vt_closepty): Do an explicit waitpid() on the child process.
+	(vt_closepty): Dont set childfd==-1 before we see if it == keyfd.
+
 1999-03-30  Michael Zucchi  <zucchi@zzedzone.fsi.com.au>
 
 	* vt.c (vt_keypadon): Set VTMODE_APP_KEYPAD in vt->mode.

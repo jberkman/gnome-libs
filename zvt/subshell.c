@@ -50,23 +50,6 @@ typedef struct {
 	int listen_fd;
 } child_info_t;
 
-void
-zvt_close_msgfd (pid_t childpid)
-{
-	GSList *l;
-
-	for (l = children; l; l = l->next){
-		child_info_t *child = l->data;
-
-		if (child->pid == childpid){
-			close (child->fd);
-			g_free (child);
-			children = g_slist_remove (children, l->data);
-			return;
-		}
-	}
-}
-
 /*
  *  Fork the subshell, and set up many, many things.
  *
@@ -369,20 +352,49 @@ int zvt_resize_subshell (int fd, int col, int row, int xpixel, int ypixel)
  * zvt_shutdown_subsheel:
  * @vt: The terminal emulator object
  * 
- * Shuts down the pseudo terminal information. 
+ * Shuts down the subshell process.
+ *
+ * Return value: The exit status of the process, or -1 on error.
  **/
-void
+int
 zvt_shutdown_subshell (struct vt_em *vt)
 {
 	GnomePtyOps op;
-	
+	GSList *l;
+	int status;
+
 	g_return_if_fail (vt != NULL);
 
-	if (vt->pty_tag == NULL)
-		return;
+	/* shutdown pty through helper */
+	if (vt->pty_tag) {
+	  op = GNOME_PTY_CLOSE_PTY;
+	  write (helper_socket_protocol [0], &op, sizeof (op));
+	  write (helper_socket_protocol [0], &vt->pty_tag, sizeof (vt->pty_tag));
+	  vt->pty_tag == NULL;
+	}
 
-	op = GNOME_PTY_CLOSE_PTY;
-	write (helper_socket_protocol [0], &op, sizeof (op));
-	write (helper_socket_protocol [0], &vt->pty_tag, sizeof (vt->pty_tag));
-	vt->pty_tag == NULL;
+	/* close the child comms link(s) */
+	close(vt->childfd);
+	if (vt->keyfd != vt->childfd)
+	  close(vt->keyfd);
+	vt->msgfd = vt->childfd = -1;
+
+	/* remove the child node */
+	for (l = children; l; l = l->next){
+		child_info_t *child = l->data;
+
+		if (child->pid == vt->childpid){
+			close (child->fd);
+			g_free (child);
+			children = g_slist_remove (children, l->data);
+
+			/* make sure the child has quit! */
+			kill(vt->childpid, SIGHUP);
+			waitpid(vt->childpid, &status, 0);
+			return WEXITSTATUS(status);
+		}
+	}
+
+	/* unknown child? */
+	return -1;
 }

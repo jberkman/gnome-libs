@@ -20,8 +20,7 @@
  */
 
 int  zvt_init_subshell     (struct vt_em *vt, char *pty_name, int full);
-void zvt_shutdown_subshell (struct vt_em *vt);
+int zvt_shutdown_subshell (struct vt_em *vt);
 int  zvt_resize_subshell   (int fd, int col, int row, int xpixel, int ypixel);
-void zvt_close_msgfd       (pid_t childpid);
 
 #endif /* _SUBSHELL_H */
