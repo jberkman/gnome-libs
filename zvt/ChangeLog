@@ -1,3 +1,12 @@
+1998-11-22  Jay Painter <jpaint@serv.net>
+
+	* zvtterm.c: widget now creates a separate term_window for the
+	terminal window.  This is sized inside of the widget->window
+	so that the terminal widget has a relieved border.  I also 
+	cleaned up a couple of leaks and moved some stuff from the
+	_destroy method into the _unrealize method.  Sorry Michael,
+	I tried to e-mail you before this commit but the mail bounced!
+
 1998-11-21  Michael Zucchi  <zucchi@zzedzone.fsi.com.au>
 
 	* zterm.c: Made window global.

@@ -48,6 +48,10 @@ extern "C" {
   {
     GtkWidget widget;
 
+    GtkShadowType shadow_type;
+
+    GdkWindow *term_window;
+
     struct _vtx *vx;		/* zvt emulator */
 
     unsigned int cursor_on:1;		/* on/off cursor */
@@ -153,6 +157,10 @@ extern "C" {
   /*GtkAdjustment* zvt_term_get_adjustment         (ZvtTerm      *terminal);
     void           zvk_term_set_adjustment         (ZvtTerm      *dial,
     GtkAdjustment *adjustment);*/
+
+  void          zvt_term_set_shadow_type           (ZvtTerm       *term,
+						    GtkShadowType  type);
+
 #ifdef __cplusplus
 	   }
 #endif /* __cplusplus */

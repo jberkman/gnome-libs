@@ -340,9 +340,9 @@ static void
 zvt_term_init (ZvtTerm *term)
 {
   GTK_WIDGET_SET_FLAGS (term, GTK_CAN_FOCUS);
-
+  term->shadow_type = GTK_SHADOW_IN;
+  term->term_window = NULL;
   term->vx = vtx_new(term);
-
   term->cursor_on = 0;
   term->cursor_filled = 1;
   term->cursor_blink_state = 0;
@@ -354,10 +354,9 @@ zvt_term_init (ZvtTerm *term)
   term->transparent = 0;
   term->shaded = 0;
   term->pixmap_filename = NULL;
-  
   term->background.pix = NULL;
   term->background.x = term->background.y =
-	  term->background.w = term->background.h = 0;
+    term->background.w = term->background.h = 0;
   
   /* input handlers */
   term->input_id = -1;
@@ -463,16 +462,15 @@ zvt_term_destroy (GtkObject *object)
   g_return_if_fail (ZVT_IS_TERM (object));
 
   term = ZVT_TERM (object);
-  gdk_cursor_destroy (term->cursor_bar);
-  gdk_cursor_destroy (term->cursor_dot);
 
   zvt_term_closepty(term);
   vtx_destroy(term->vx);
 
-  if (term->ic) {
-    gdk_ic_destroy(term->ic);
-    term->ic = NULL;
-  }
+  if (term->ic) 
+    {
+      gdk_ic_destroy(term->ic);
+      term->ic = NULL;
+    }
 
   if (GTK_OBJECT_CLASS (parent_class)->destroy)
     (* GTK_OBJECT_CLASS (parent_class)->destroy) (object);
@@ -521,10 +519,9 @@ zvt_term_set_color_scheme (ZvtTerm *term, gushort *red, gushort *grn, gushort *b
   
   memset (term->colors, 0, sizeof (term->colors));
   nallocated = 0;
-  gdk_color_context_get_pixels (term->color_ctx, red, grn, blu,
-				18, term->colors, &nallocated);
+  gdk_color_context_get_pixels (term->color_ctx, red, grn, blu, 18, term->colors, &nallocated);
   c.pixel = term->colors [17];
-  gdk_window_set_background (GTK_WIDGET (term)->window, &c);
+  gdk_window_set_background (term->term_window, &c);
 }
 
 /**
@@ -562,35 +559,51 @@ zvt_term_realize (GtkWidget *widget)
   attributes.height = widget->allocation.height;
   attributes.wclass = GDK_INPUT_OUTPUT;
   attributes.window_type = GDK_WINDOW_CHILD;
-  attributes.event_mask = gtk_widget_get_events (widget) | 
-    GDK_EXPOSURE_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_MOTION_MASK |
-    GDK_POINTER_MOTION_MASK |
-    GDK_BUTTON_RELEASE_MASK | GDK_KEY_PRESS_MASK;
+  attributes.event_mask = gtk_widget_get_events (widget) |
+    GDK_EXPOSURE_MASK | 
+    GDK_BUTTON_PRESS_MASK | 
+    GDK_BUTTON_MOTION_MASK |
+    GDK_POINTER_MOTION_MASK | 
+    GDK_BUTTON_RELEASE_MASK | 
+    GDK_KEY_PRESS_MASK;
   attributes.visual = gtk_widget_get_visual (widget);
   attributes.colormap = gtk_widget_get_colormap (widget);
 
   attributes_mask = GDK_WA_X | GDK_WA_Y | GDK_WA_VISUAL | GDK_WA_COLORMAP;
+
+  /* main window */
   widget->window = gdk_window_new (gtk_widget_get_parent_window (widget),
 				   &attributes, attributes_mask);
   widget->style = gtk_style_attach (widget->style, widget->window);
-
   gdk_window_set_user_data (widget->window, widget);
+  gtk_style_set_background (widget->style, widget->window, GTK_STATE_NORMAL);
 
-  gtk_style_set_background (widget->style, widget->window, GTK_STATE_ACTIVE);
+  /* terminal window */
+  attributes.x = widget->style->klass->xthickness;
+  attributes.y = widget->style->klass->ythickness;
+  attributes.width = widget->allocation.width - (2 * widget->style->klass->xthickness);
+  attributes.height = widget->allocation.height - (2 * widget->style->klass->ythickness);
+
+  term->term_window = gdk_window_new (widget->window, &attributes, attributes_mask);
+  gdk_window_set_user_data (term->term_window, term);
+  gtk_style_set_background (widget->style, term->term_window, GTK_STATE_ACTIVE);
+  gdk_window_show (term->term_window);
 
   /* create pixmaps for this window */
-  cursor_dot_pm=gdk_pixmap_create_from_data(widget->window,
-					    "\0", 1, 1, 1,
-					    &widget->style->fg[GTK_STATE_ACTIVE],
-					    &widget->style->bg[GTK_STATE_ACTIVE]);
+  cursor_dot_pm = 
+    gdk_pixmap_create_from_data(term->term_window,
+				"\0", 1, 1, 1,
+				&widget->style->fg[GTK_STATE_ACTIVE],
+				&widget->style->bg[GTK_STATE_ACTIVE]);
 
   /* Get I beam cursor, and also create a blank one based on the blank image */
   term->cursor_bar = gdk_cursor_new(GDK_XTERM);
-  term->cursor_dot = gdk_cursor_new_from_pixmap(cursor_dot_pm, cursor_dot_pm,
-					      &widget->style->fg[GTK_STATE_ACTIVE],
-					      &widget->style->bg[GTK_STATE_ACTIVE],
-					      0, 0);
-  gdk_window_set_cursor(widget->window, term->cursor_bar);
+  term->cursor_dot = 
+    gdk_cursor_new_from_pixmap(cursor_dot_pm, cursor_dot_pm,
+			       &widget->style->fg[GTK_STATE_ACTIVE],
+			       &widget->style->bg[GTK_STATE_ACTIVE],
+			       0, 0);
+  gdk_window_set_cursor(term->term_window, term->cursor_bar);
   gdk_pixmap_unref (cursor_dot_pm);
   term->cursor_current = term->cursor_bar;
 
@@ -599,12 +612,12 @@ zvt_term_realize (GtkWidget *widget)
     term->timeout_id = gtk_timeout_add(500, zvt_term_cursor_blink, term);
 
   /* setup scrolling gc */
-  term->scroll_gc = gdk_gc_new (GTK_WIDGET(term)->window);
+  term->scroll_gc = gdk_gc_new (term->term_window);
   gdk_gc_set_exposures (term->scroll_gc, TRUE);
 
   /* Colors */
-  term->fore_gc = gdk_gc_new (term->widget.window);
-  term->back_gc = gdk_gc_new (term->widget.window);
+  term->fore_gc = gdk_gc_new (term->term_window);
+  term->back_gc = gdk_gc_new (term->term_window);
   term->color_ctx = gdk_color_context_new (gtk_widget_get_visual (GTK_WIDGET (term)),
 					   gtk_widget_get_colormap (GTK_WIDGET (term)));
   /* Allocate default color set */
@@ -618,7 +631,8 @@ zvt_term_realize (GtkWidget *widget)
   if (gdk_im_ready() && !term->ic) {
     GdkIMStyle style = GDK_IM_PREEDIT_NOTHING | GDK_IM_STATUS_NOTHING;
     /* FIXME: do we have any window yet? */
-    term->ic = gdk_ic_new(widget->window, widget->window, style, NULL);
+    term->ic = gdk_ic_new(term->term_window, term->term_window, style, NULL);
+
     if (!term->ic) {
       g_warning("Can't create input context.");
     }
@@ -632,18 +646,45 @@ zvt_term_realize (GtkWidget *widget)
 static void
 zvt_term_unrealize (GtkWidget *widget)
 {
-  ZvtTerm *term = ZVT_TERM (widget);
+  ZvtTerm *term;
+
+  g_return_if_fail (widget != NULL);
+  g_return_if_fail (ZVT_IS_TERM (widget));
+
+  term = ZVT_TERM (widget);
+
   /* free resources */
+  gdk_cursor_destroy (term->cursor_bar);
+  term->cursor_bar = NULL;
+
+  gdk_cursor_destroy (term->cursor_dot);
+  term->cursor_dot = NULL;
+
+  term->cursor_current = NULL;
+
   gdk_color_context_free (term->color_ctx);
+  term->color_ctx = NULL;
+
   gdk_gc_destroy (term->scroll_gc);
+  term->scroll_gc = NULL;
+
   gdk_gc_destroy (term->back_gc);
+  term->back_gc = NULL;
+
   gdk_gc_destroy (term->fore_gc);
+  term->fore_gc = NULL;
+
+  /* destroy the terminal window */
+  gdk_window_set_user_data (term->term_window, NULL);
+  gdk_window_destroy (term->term_window);
+  term->term_window = NULL;
 
   if (GTK_WIDGET_CLASS (parent_class)->unrealize)
     (*GTK_WIDGET_CLASS (parent_class)->unrealize) (widget);
 }
 
-static gint zvt_term_focus_in(GtkWidget *widget, GdkEventFocus *event)
+static gint
+zvt_term_focus_in(GtkWidget *widget, GdkEventFocus *event)
 {
   ZvtTerm *term;
 
@@ -663,11 +704,13 @@ static gint zvt_term_focus_in(GtkWidget *widget, GdkEventFocus *event)
     term->timeout_id = gtk_timeout_add(500, zvt_term_cursor_blink, term);
 
   if (term->ic)
-    gdk_im_begin (term->ic, widget->window);
+    gdk_im_begin (term->ic, term->term_window);
 
   return FALSE;
 }
-static gint zvt_term_focus_out(GtkWidget *widget, GdkEventFocus *event)
+
+static gint
+zvt_term_focus_out(GtkWidget *widget, GdkEventFocus *event)
 {
   ZvtTerm *term;
 
@@ -705,8 +748,12 @@ zvt_term_size_request (GtkWidget      *widget,
   g_return_if_fail (requisition != NULL);
 
   term = ZVT_TERM (widget);
-  requisition->width = term->vx->vt.width * term->charwidth;	/* FIXME: base size on terminal size */
-  requisition->height = term->vx->vt.height * term->charheight;
+
+  /* FIXME: base size on terminal size */
+  requisition->width = (term->vx->vt.width * term->charwidth) + 
+    (widget->style->klass->xthickness * 2);
+  requisition->height = (term->vx->vt.height * term->charheight) + 
+    (widget->style->klass->ythickness * 2);
 
   d(printf("size request\n");
     printf("term is %dx%d\n", term->vx->vt.width, term->vx->vt.height));
@@ -717,6 +764,7 @@ static void
 zvt_term_size_allocate (GtkWidget     *widget,
 			GtkAllocation *allocation)
 {
+  gint term_width, term_height;
   ZvtTerm *term;
   
   g_return_if_fail (widget != NULL);
@@ -724,6 +772,7 @@ zvt_term_size_allocate (GtkWidget     *widget,
   g_return_if_fail (allocation != NULL);
 
   widget->allocation = *allocation;
+
   if (GTK_WIDGET_REALIZED (widget))
     {
       term = ZVT_TERM (widget);
@@ -732,15 +781,26 @@ zvt_term_size_allocate (GtkWidget     *widget,
 	printf("term is %dx%d\n", term->vx->vt.width, term->vx->vt.height));
       
       gdk_window_move_resize (widget->window,
-			      allocation->x, allocation->y,
-			      allocation->width, allocation->height);
+			      allocation->x,
+			      allocation->y,
+			      allocation->width,
+			      allocation->height);
+
+      term_width = allocation->width - (2 * widget->style->klass->xthickness);
+      term_height = allocation->height - (2 * widget->style->klass->ythickness);
+
+      gdk_window_move_resize (term->term_window,
+			      widget->style->klass->xthickness,
+			      widget->style->klass->ythickness,
+			      term_width,
+			      term_height);
 
       /* resize the virtual terminal buffer, minimal size is 1x1 */
       vt_resize(&term->vx->vt,
-		MAX(allocation->width/term->charwidth,1),
-		MAX(allocation->height/term->charheight,1),
-		allocation->width,
-		allocation->height);
+		MAX(term_width / term->charwidth, 1),
+		MAX(term_height / term->charheight, 1),
+		term_width,
+		term_height);
       vt_update(term->vx, UPDATE_REFRESH|UPDATE_SCROLLBACK);/* redraw everything, unconditionally */
       
       /* resize the scrollbar */
@@ -757,7 +817,7 @@ draw_back_pixmap(GtkWidget *widget, int nx,int ny,int nw,int nh)
 	ZvtTerm *term = ZVT_TERM(widget);
 	GdkGC *bgc = term->back_gc;
 	Pixmap p;
-	
+
 	/*we will be doing a background pixmap, not transparency*/
 	if(term->pixmap_filename) {
 		GdkGCValues vals;
@@ -774,7 +834,7 @@ draw_back_pixmap(GtkWidget *widget, int nx,int ny,int nw,int nh)
 			gdk_gc_get_values(bgc,&vals);
 			gdk_gc_set_tile(bgc,term->background.pix);
 			gdk_gc_set_fill(bgc,GDK_TILED);
-			gdk_draw_rectangle(widget->window,
+			gdk_draw_rectangle(term->term_window,
 					   bgc,
 					   TRUE,
 					   nx,ny,
@@ -786,15 +846,14 @@ draw_back_pixmap(GtkWidget *widget, int nx,int ny,int nw,int nh)
 		    default to the transparency setting*/
 	}
 
-	p = get_pixmap_prop(GDK_WINDOW_XWINDOW(widget->window),
-			    "_XROOTPMAP_ID");
+	p = get_pixmap_prop(GDK_WINDOW_XWINDOW(term->term_window), "_XROOTPMAP_ID");
 	if(p == None) {
 		term->transparent = 0;
 		return;
 	}
 
-	XTranslateCoordinates(GDK_WINDOW_XDISPLAY(widget->window),
-			      GDK_WINDOW_XWINDOW(widget->window),
+	XTranslateCoordinates(GDK_WINDOW_XDISPLAY(term->term_window),
+			      GDK_WINDOW_XWINDOW(term->term_window),
 			      GDK_ROOT_WINDOW(),
 			      0,0,
 			      &x,&y,
@@ -807,7 +866,7 @@ draw_back_pixmap(GtkWidget *widget, int nx,int ny,int nw,int nh)
 		   term->background.w < nw+nx ||
 		   term->background.h < nh+ny) {
 			int width,height;
-			gdk_window_get_size(widget->window,
+			gdk_window_get_size(term->term_window,
 					    &width,&height);
 			if(term->background.pix)
 				gdk_pixmap_unref(term->background.pix);
@@ -818,7 +877,7 @@ draw_back_pixmap(GtkWidget *widget, int nx,int ny,int nw,int nh)
 			term->background.w = width;
 			term->background.h = height;
 		}
-		gdk_draw_pixmap(widget->window,
+		gdk_draw_pixmap(term->term_window,
 				bgc,
 				term->background.pix,
 				nx,ny,
@@ -826,9 +885,9 @@ draw_back_pixmap(GtkWidget *widget, int nx,int ny,int nw,int nh)
 				nw,nh);
 	} else {
 		/*non-shaded is simple*/
-		XCopyArea (GDK_WINDOW_XDISPLAY(widget->window),
+		XCopyArea (GDK_WINDOW_XDISPLAY(term->term_window),
 			   p,
-			   GDK_WINDOW_XWINDOW(widget->window),
+			   GDK_WINDOW_XWINDOW(term->term_window),
 			   GDK_GC_XGC(bgc),
 			   x+nx,y+ny,
 			   nw,nh,
@@ -843,20 +902,33 @@ static void zvt_term_draw (GtkWidget *widget, GdkRectangle *area)
   
   g_return_if_fail (widget != NULL);
   g_return_if_fail (ZVT_IS_TERM (widget));
+  g_return_if_fail (area != NULL);
 
-  term = ZVT_TERM (widget);
-  term->in_expose = 1;
+  if (GTK_WIDGET_DRAWABLE (widget))
+    {
+      term = ZVT_TERM (widget);
+      term->in_expose = 1;
+
+      /* draw shadow/border */
+      gtk_draw_shadow (
+          widget->style, widget->window,
+	  GTK_STATE_NORMAL, term->shadow_type, 0, 0, 
+	  widget->allocation.width,
+	  widget->allocation.height
+	  );
+
 #ifndef ZVT_NO_TRANSPARENT
-  if(term->transparent || term->pixmap_filename)
-	  draw_back_pixmap(widget,area->x,area->y,area->width,area->height);
+      if(term->transparent || term->pixmap_filename)
+	draw_back_pixmap(widget, area->x, area->y, area->width, area->height);
 #endif
-  vt_update_rect (term->vx,
-		  area->x/term->charwidth,
-		  area->y/term->charheight,
-		  (area->x+area->width)/term->charwidth+1,
-		  (area->y+area->height)/term->charheight+1);
-  term->in_expose = 0;
-		  
+      vt_update_rect (term->vx,
+		      area->x / term->charwidth,
+		      area->y / term->charheight,
+		      (area->x + area->width) / term->charwidth + 1,
+		      (area->y + area->height) / term->charheight + 1);
+
+      term->in_expose = 0;
+    }	  
 }
 
 static gint
@@ -869,23 +941,42 @@ zvt_term_expose (GtkWidget      *widget,
   g_return_val_if_fail (ZVT_IS_TERM (widget), FALSE);
   g_return_val_if_fail (event != NULL, FALSE);
 
-  term = ZVT_TERM (widget);
-
   d(printf("exposed!\n"));
 
-  /* FIXME: may update 1 more line/char than needed */
-  term->in_expose = 1;
+  if (GTK_WIDGET_DRAWABLE (widget))
+    {
+      term = ZVT_TERM (widget);
+
+      /* FIXME: may update 1 more line/char than needed */
+      term->in_expose = 1;
+
+      if (event->window == widget->window)
+	gtk_draw_shadow (
+	    widget->style, widget->window,
+	    GTK_STATE_NORMAL, term->shadow_type, 0, 0, 
+	    widget->allocation.width,
+	    widget->allocation.height
+	    );
+
+      if (event->window == term->term_window)
+	{
 #ifndef ZVT_NO_TRANSPARENT
-  if(term->transparent || term->pixmap_filename)
-	  draw_back_pixmap(widget,event->area.x,event->area.y,
-			   event->area.width,event->area.height);
+	  if(term->transparent || term->pixmap_filename)
+	    draw_back_pixmap(widget,
+			     event->area.x, 
+			     event->area.y,
+			     event->area.width, 
+			     event->area.height);
 #endif
-  vt_update_rect(term->vx,
-		 event->area.x/term->charwidth,
-		 event->area.y/term->charheight,
-		 (event->area.x+event->area.width)/term->charwidth+1,
-		 (event->area.y+event->area.height)/term->charheight+1);
-  term->in_expose = 0;
+	  vt_update_rect(term->vx,
+			 event->area.x / term->charwidth,
+			 event->area.y / term->charheight,
+			 (event->area.x + event->area.width) / term->charwidth+1,
+			 (event->area.y + event->area.height) / term->charheight+1);
+	}
+
+      term->in_expose = 0;
+    }
 
   return FALSE;
 }
@@ -899,10 +990,13 @@ zvt_term_expose (GtkWidget      *widget,
 void
 zvt_term_show_pointer(ZvtTerm *term)
 {
-  if (term->cursor_current != term->cursor_bar) {
-    gdk_window_set_cursor(GTK_WIDGET(term)->window, term->cursor_bar);
-    term->cursor_current = term->cursor_bar;
-  }
+  g_return_if_fail (term != NULL);
+
+  if (term->cursor_current != term->cursor_bar)
+    {
+      gdk_window_set_cursor(term->term_window, term->cursor_bar);
+      term->cursor_current = term->cursor_bar;
+    }
 }
 
 /**
@@ -915,10 +1009,13 @@ zvt_term_show_pointer(ZvtTerm *term)
 void
 zvt_term_hide_pointer(ZvtTerm *term)
 {
-  if (term->cursor_current != term->cursor_dot) {
-    gdk_window_set_cursor(GTK_WIDGET(term)->window, term->cursor_dot);
-    term->cursor_current = term->cursor_dot;
-  }
+  g_return_if_fail (term != NULL);
+
+  if (term->cursor_current != term->cursor_dot)
+    {
+      gdk_window_set_cursor(term->term_window, term->cursor_dot);
+      term->cursor_current = term->cursor_dot;
+    }
 }
 
 /**
@@ -931,6 +1028,8 @@ zvt_term_hide_pointer(ZvtTerm *term)
  */
 void zvt_term_set_scrollback(ZvtTerm *term, int lines)
 {
+  g_return_if_fail (term != NULL);
+
   vt_scrollback_set(&term->vx->vt, lines);
   zvt_term_fix_scrollbar(term);
 }
@@ -942,7 +1041,8 @@ void zvt_term_set_scrollback(ZvtTerm *term, int lines)
  *
  * FIXME: This should trigger a re-size
  */
-static void zvt_term_set_fonts_internal(ZvtTerm *term, GdkFont *font, GdkFont *font_bold)
+static void
+zvt_term_set_fonts_internal(ZvtTerm *term, GdkFont *font, GdkFont *font_bold)
 {
   if (font) {
     if (term->font)
@@ -960,7 +1060,7 @@ static void zvt_term_set_fonts_internal(ZvtTerm *term, GdkFont *font, GdkFont *f
   term->charheight = term->font->ascent+term->font->descent;
 
 #if 0
-  gdk_window_resize(GTK_WIDGET(term)->window,
+  gdk_window_resize(term->term_window,
 		    term->charwidth * term->vx->vt.width,
 		    term->charheight * term->vx->vt.height);
 #endif
@@ -983,7 +1083,8 @@ static void zvt_term_set_fonts_internal(ZvtTerm *term, GdkFont *font, GdkFont *f
  * These fonts should be the same size, otherwise it could get messy ...
  */
 
-void zvt_term_set_fonts(ZvtTerm *term, GdkFont *font, GdkFont *font_bold)
+void
+zvt_term_set_fonts(ZvtTerm *term, GdkFont *font, GdkFont *font_bold)
 {
   g_return_if_fail (term != NULL);
   g_return_if_fail (ZVT_IS_TERM (term));
@@ -1010,7 +1111,8 @@ void zvt_term_set_fonts(ZvtTerm *term, GdkFont *font, GdkFont *font_bold)
  * Tries to calculate bold font name from the base name.  This only
  * works with fonts where the names are alike.
  */
-void zvt_term_set_font_name(ZvtTerm *term, char *name)
+void
+zvt_term_set_font_name(ZvtTerm *term, char *name)
 {
   char *newname, *rest, *outname;
   int count;
@@ -1104,7 +1206,7 @@ zvt_term_button_press (GtkWidget      *widget,
 
   zvt_term_show_pointer(term);
 
-  gdk_window_get_pointer(widget->window, &x, &y, &mask);
+  gdk_window_get_pointer(term->term_window, &x, &y, &mask);
   x/=term->charwidth;
   y=y/term->charheight+vx->vt.scrollbackoffset;
 
@@ -1155,7 +1257,7 @@ zvt_term_button_press (GtkWidget      *widget,
     d(printf("selection starting %d %d\n", x, y));
 
     gtk_grab_add (widget);
-    gdk_pointer_grab (widget->window, TRUE,
+    gdk_pointer_grab (term->term_window, TRUE,
 		      GDK_BUTTON_RELEASE_MASK |
 		      GDK_BUTTON_MOTION_MASK |
 		      GDK_POINTER_MOTION_HINT_MASK,
@@ -1209,7 +1311,7 @@ zvt_term_button_press (GtkWidget      *widget,
       vt_draw_selection(vx);
       
       gtk_grab_add (widget);
-      gdk_pointer_grab (widget->window, TRUE,
+      gdk_pointer_grab (term->term_window, TRUE,
 			GDK_BUTTON_RELEASE_MASK |
 			GDK_BUTTON_MOTION_MASK |
 			GDK_POINTER_MOTION_HINT_MASK,
@@ -1238,7 +1340,7 @@ zvt_term_button_release (GtkWidget      *widget,
   term = ZVT_TERM (widget);
   vx = term->vx;
 
-  gdk_window_get_pointer(widget->window, &x, &y, &mask);
+  gdk_window_get_pointer(term->term_window, &x, &y, &mask);
 
   x = x/term->charwidth;
   y = y/term->charheight + vx->vt.scrollbackoffset;
@@ -1413,14 +1515,17 @@ zvt_term_selection_received (GtkWidget *widget, GtkSelectionData *selection_data
     }
 
   /* paste selection into window! */
-  if (selection_data->length) {
-    if (term->scroll_on_keystroke) zvt_term_scroll (term, 0);
-    vt_writechild(&vx->vt, selection_data->data, selection_data->length);
-  }
+  if (selection_data->length)
+    {
+      if (term->scroll_on_keystroke)
+	zvt_term_scroll (term, 0);
+      vt_writechild(&vx->vt, selection_data->data, selection_data->length);
+    }
 }  
 
 
-static gint zvt_term_cursor_blink(gpointer data)
+static gint
+zvt_term_cursor_blink(gpointer data)
 {
   ZvtTerm *term;
   GtkWidget *widget;
@@ -1542,19 +1647,26 @@ int zvt_term_closepty(ZvtTerm *term)
 static void
 zvt_term_scroll (ZvtTerm *term, int n)
 {
-	gfloat new_value = 0;
-	
-	if (n)
-		new_value = term->adjustment->value + (n * term->adjustment->page_size);
-	else if (new_value == (term->adjustment->upper - term->adjustment->page_size))
-		return;
-	else
-		new_value = term->adjustment->upper - term->adjustment->page_size;
+  gfloat new_value = 0;
+  
+  if (n)
+    {
+      new_value = term->adjustment->value + (n * term->adjustment->page_size);
+    }
+  else if (new_value == (term->adjustment->upper - term->adjustment->page_size))
+    {
+      return;
+    }
+  else
+    {
+      new_value = term->adjustment->upper - term->adjustment->page_size;
+    }
 
-	gtk_adjustment_set_value (term->adjustment,
-				  n > 0 ? MIN(new_value, term->adjustment->upper
-					      - term->adjustment->page_size)
-				  : MAX(new_value, term->adjustment->lower));
+  gtk_adjustment_set_value (
+      term->adjustment,
+      n > 0 ? MIN(new_value, term->adjustment->upper- term->adjustment->page_size) :
+      MAX(new_value, term->adjustment->lower)
+      );
 }
 
 /*
@@ -1959,6 +2071,7 @@ zvt_term_set_background(ZvtTerm *terminal, char *pixmap_file, int transparent, i
 	terminal->transparent = transparent;
 	terminal->shaded = shaded;
 	g_free(terminal->pixmap_filename);
+
 	if(pixmap_file)
 		terminal->pixmap_filename = g_strdup(pixmap_file);
 	else
@@ -2062,7 +2175,7 @@ void vt_draw_text(void *user_data, int col, int row, char *text, int len, int at
 #ifndef ZVT_NO_TRANSPARENT
 	  if((!term->transparent && !term->pixmap_filename) || back<17) {
 #endif
-		  gdk_draw_rectangle(widget->window,
+		  gdk_draw_rectangle(term->term_window,
 				     bgc,
 				     1,
 				     col*term->charwidth, row*term->charheight,
@@ -2079,7 +2192,7 @@ void vt_draw_text(void *user_data, int col, int row, char *text, int len, int at
     d(printf("txt = '%.*s'\n", len, text));
   }
 
-  gdk_draw_text(widget->window,
+  gdk_draw_text(term->term_window,
 		f,
 		fgc,
 		col*term->charwidth, row*term->charheight+term->font->ascent,
@@ -2087,7 +2200,7 @@ void vt_draw_text(void *user_data, int col, int row, char *text, int len, int at
 
   /* check for underline */
   if (attr&VTATTR_UNDERLINE) {
-    gdk_draw_line(widget->window,
+    gdk_draw_line(term->term_window,
 		  fgc,
 		  col*term->charwidth, row*term->charheight+term->font->ascent+1,
 		  (col+len)*term->charwidth, row*term->charheight+term->font->ascent+1);
@@ -2123,13 +2236,13 @@ void vt_scroll_area(void *user_data, int firstrow, int count, int offset, int fi
 
   d(printf("scrolling %d rows from %d, by %d lines\n", count,firstrow,offset));
 
-  width = widget->allocation.width;
-  height = widget->allocation.height;
+  width = widget->allocation.width - (2 * widget->style->klass->xthickness);
+  height = widget->allocation.height - (2 * widget->style->klass->ythickness);
 
   /* "scroll" area */
-  gdk_draw_pixmap(widget->window,
+  gdk_draw_pixmap(term->term_window,
 		  term->scroll_gc, /* must use this to generate expose events */
-		  widget->window,
+		  term->term_window,
 		  0, (firstrow+offset)*term->charheight,
 		  0, firstrow*term->charheight,
 		  width, count*term->charheight);
@@ -2146,13 +2259,13 @@ void vt_scroll_area(void *user_data, int firstrow, int count, int offset, int fi
     term->back_last = fill;
   }
   if (offset>0) {
-    gdk_draw_rectangle(widget->window,
+    gdk_draw_rectangle(term->term_window,
 		       term->back_gc,
 		       1,
 		       0, (firstrow+count)*term->charheight,
 		       width, offset*term->charheight);
   } else {
-    gdk_draw_rectangle(widget->window,
+    gdk_draw_rectangle(term->term_window,
 		       term->back_gc,
 		       1,
 		       0, (firstrow+offset)*term->charheight,
@@ -2169,7 +2282,7 @@ void vt_scroll_area(void *user_data, int firstrow, int count, int offset, int fi
      however, leaving it in cleans up rendering a little */
 
   /* fix up the screen display after a scroll */
-  while ((event = gdk_event_get_graphics_expose (widget->window)) 
+  while ((event = gdk_event_get_graphics_expose (term->term_window)) 
 	 != NULL) {
     gtk_widget_event (widget, event);
     if (event->expose.count == 0)
@@ -2248,4 +2361,14 @@ zvt_term_get_bell(ZvtTerm *term)
   return (term->vx->vt.ring_my_bell)?TRUE:FALSE;
 }
 
+void
+zvt_term_set_shadow_type(ZvtTerm  *term, GtkShadowType type)
+{
+  g_return_if_fail (term != NULL);
+  g_return_if_fail (ZVT_IS_TERM (term));
 
+  term->shadow_type = type;
+
+  if (GTK_WIDGET_VISIBLE (term))
+    gtk_widget_queue_resize (GTK_WIDGET (term));
+}
