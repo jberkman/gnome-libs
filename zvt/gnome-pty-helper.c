@@ -31,6 +31,7 @@
 /* Use this to pull SCM_RIGHTS definition on IRIX */
 #if defined(irix) || defined (__irix__) || defined(sgi) || defined (__sgi__)
 #    define _XOPEN_SOURCE 1
+extern char *strdup(const char *);
 #endif
 
 #include <sys/types.h>
@@ -156,6 +157,51 @@ pass_fd (int client_fd, int fd)
 
 	return 0;
 }
+
+#elif defined(__sgi) && !defined(HAVE_SENDMSG)
+
+/* 
+ * IRIX 6.2 is like 4.3BSD; it will not have HAVE_SENDMSG set, 
+ * because msghdr used msg_accrights and msg_accrightslen rather 
+ * than the newer msg_control and msg_controllen fields configure
+ * checks.  The SVR4 code below doesn't work because pipe()
+ * semantics are controlled by the svr3pipe systune variable, 
+ * which defaults to uni-directional pipes.  Also sending
+ * file descriptors through pipes isn't implemented.
+ */
+
+#include <sys/socket.h>
+#include <sys/uio.h>
+
+static int
+init_msg_pass ()
+{
+  return 0;
+}
+
+static int
+pass_fd (int client_fd, int fd)
+{
+  struct iovec  iov[1];
+  struct msghdr msg;
+  char          buf [1];
+
+  iov [0].iov_base = buf;
+  iov [0].iov_len  = 1;
+
+  msg.msg_iov        = iov;
+  msg.msg_iovlen     = 1;
+  msg.msg_name       = NULL;
+  msg.msg_namelen    = 0;
+  msg.msg_accrights    = (caddr_t) &fd;
+  msg.msg_accrightslen = sizeof(fd);
+               
+  if (sendmsg (client_fd, &msg, 0) != 1)
+    return -1;
+
+  return 0;
+}
+
 #else
 #include <stropts.h>
 static int

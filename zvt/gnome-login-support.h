@@ -28,6 +28,9 @@ pid_t forkpty (int *master_fd, char *name, struct termios *termp, struct winsize
 
 #ifndef HAVE_LOGIN_TTY
 int login_tty (int fd);
+#elif defined(HAVE_UTMP_H)
+/* Get the prototype from utmp.h */
+#include <utmp.h>
 #endif
 
 int n_read (int fd, void *buffer, int size);

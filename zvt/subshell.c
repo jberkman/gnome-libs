@@ -134,7 +134,53 @@ s_pipe (int fd [2])
 	return socketpair (AF_UNIX, SOCK_STREAM, 0, fd);
 }
 
+#elif defined(__sgi) && !defined(HAVE_SENDMSG)
+
+/* 
+ * IRIX 6.2 is like 4.3BSD; it will not have HAVE_SENDMSG set, 
+ * because msghdr used msg_accrights and msg_accrightslen rather 
+ * than the newer msg_control and msg_controllen fields configure
+ * checks.  The SVR4 code below doesn't work because pipe()
+ * semantics are controlled by the svr3pipe systune variable, 
+ * which defaults to uni-directional pipes.  Also sending
+ * file descriptors through pipes isn't implemented.
+ */
+
+#include <sys/socket.h>
+#include <sys/uio.h>
+
+static int
+receive_fd (int helper_fd)
+{
+	struct iovec iov [1];
+	struct msghdr msg;
+	char buf [32];
+	int fd;
+
+	iov [0].iov_base = buf;
+	iov [0].iov_len  = sizeof (buf);
+	msg.msg_iov      = iov;
+	msg.msg_iovlen   = 1;
+	msg.msg_name     = NULL;
+	msg.msg_namelen  = 0;
+
+	msg.msg_accrights = (caddr_t) &fd;
+	msg.msg_accrightslen = sizeof(fd);
+
+	if (recvmsg (helper_fd, &msg, 0) <= 0)
+		return -1;
+
+	return fd;
+}
+
+static int
+s_pipe (int fd [2])
+{
+	return socketpair (AF_UNIX, SOCK_STREAM, 0, fd);
+}
+
 #else
+
 static int
 receive_fd (int helper_fd)
 {
@@ -207,8 +253,8 @@ get_ptys (int *master, int *slave, int update_wutmp)
 			 * (otherwise gnome-pty-heler wont notice when
 			 * this process is killed).
 			 */
-			fcntl (helper_socket_protocol [0], F_SETFD, 1);
-			fcntl (helper_socket_fdpassing [0], F_SETFD, 1);
+			fcntl (helper_socket_protocol [0], F_SETFD, FD_CLOEXEC);
+			fcntl (helper_socket_fdpassing [0], F_SETFD, FD_CLOEXEC);
 		}
 	}
 	op = GNOME_PTY_OPEN_NO_DB_UPDATE;
@@ -372,7 +418,6 @@ zvt_shutdown_subshell (struct vt_em *vt)
 {
 	GnomePtyOps op;
 	GSList *l;
-	int status;
 
 	g_return_val_if_fail (vt != NULL, -1);
 
