@@ -21,12 +21,8 @@ if test ! -z "$ac_cv_gnome2_dir" ; then
   export LD_LIBRARY_PATH
 fi
 
-# When this value is updated, {libgnome,libgnomeui}/Makefile.am also need updating to reflect the change,
-# since this value is hardcoded into the library names (I love you automake!)
-GNOME_INTERFACE_VERSION=2
-AC_SUBST(GNOME_INTERFACE_VERSION)
-
 GNOME_COMMON_INIT
+GNOME_PLATFORM_GNOME_2(yes, force)
 
 AC_CONFIG_SUBDIRS(gnome-faq)
 
@@ -48,7 +44,9 @@ GNOME_COMPILE_WARNINGS
 
 GNOME2_X_CHECKS
 
-GNOME_SUPPORT_CHECKS
+GNOME_PKGCONFIG_CHECK_MODULES(GNOMESUPPORT, gnome-support-2.0:1.2.1)
+AC_SUBST(GNOMESUPPORT_CFLAGS)
+AC_SUBST(GNOMESUPPORT_LIBS)
 
 AC_FUNC_ALLOCA
 if test $ac_cv_header_alloca_h = yes; then
@@ -61,7 +59,7 @@ AC_SUBST(GNOME_HAVE_ALLOCA_H)
 
 GNOME2_X_CHECKS
 
-PKG_CHECK_MODULES(GLIB, glib-2.0:1.3.1)
+GNOME_PKGCONFIG_CHECK_MODULES(GLIB, glib-2.0:1.3.1)
 AC_SUBST(GLIB_CFLAGS)
 AC_SUBST(GLIB_LIBS)
 
@@ -264,28 +262,28 @@ fi
 dnl
 dnl ORBit check
 dnl
-PKG_CHECK_MODULES(ORBIT, ORBit-2.0:0.5.1)
+GNOME_PKGCONFIG_CHECK_MODULES(ORBIT, ORBit-2.0:0.5.1)
 AC_SUBST(ORBIT_CFLAGS)
 AC_SUBST(ORBIT_LIBS)
 
 dnl
 dnl OAF check
 dnl
-PKG_CHECK_MODULES(OAF, oaf-2.0)
+GNOME_PKGCONFIG_CHECK_MODULES(OAF, oaf-2.0)
 AC_SUBST(OAF_CFLAGS)
 AC_SUBST(OAF_LIBS)
 
 dnl
 dnl GConf check
 dnl
-PKG_CHECK_MODULES(GCONF, gconfgtk-2.0)
+GNOME_PKGCONFIG_CHECK_MODULES(GCONF, gconfgtk-2.0)
 AC_SUBST(GCONF_CFLAGS)
 AC_SUBST(GCONF_LIBS)
 
 dnl
 dnl Libart check
 dnl
-PKG_CHECK_MODULES(LIBART, libart-2.0:2.1.0)
+GNOME_PKGCONFIG_CHECK_MODULES(LIBART, libart-2.0:2.1.0)
 AC_SUBST(LIBART_CFLAGS)
 AC_SUBST(LIBART_LIBS)
 
@@ -300,7 +298,7 @@ AC_PATH_XTRA
 dnl
 dnl Check for gnome-vfs
 dnl
-PKG_CHECK_MODULES(GNOME_VFS, gnomevfs-2.0)
+GNOME_PKGCONFIG_CHECK_MODULES(GNOME_VFS, gnomevfs-2.0)
 AC_SUBST(GNOME_VFS_VERSION)
 AC_SUBST(GNOME_VFS_CFLAGS)
 AC_SUBST(GNOME_VFS_LIBS)
@@ -311,7 +309,6 @@ dnl
 LIBGNOME_LIBS="$DB_LIB $GLIB_LIBS $DL_LIB $GNOME_VFS_LIBS -lpopt"
 LIBGNOMEUI_LIBS="$LIBGNOME_LIBS $GTK_LIBS $OAF_LIBS"
 LIBGTKXMHTML_LIBS="$XPM_LIBS $JPEG_LIBS $PNG_LIBS $Z_LIBS $GTK_LIBS"
-SUPPORTINCS='-DNEED_GNOMESUPPORT_H -I$(top_builddir)/support -I$(top_srcdir)/support'
 
 dnl These are for using lib*
 GNOME_LIBS="-lgnome-$GNOME_INTERFACE_VERSION $LIBGNOME_LIBS"
@@ -322,7 +319,7 @@ ZVT_LIBS="-lzvt-$GNOME_INTERFACE_VERSION $GTK_LIBS $UTIL_LIBS $GTK_LIBS"
 
 dnl These definitions are expanded in make and gnome-config
 GNOME_LIBDIR='-L${libdir}'
-GNOME_INCLUDEDIR='-I${includedir}/gnome/${GNOME_INTERFACE_VERSION} -DNEED_GNOMESUPPORT_H'
+GNOME_INCLUDEDIR='-I${includedir}/gnome/${GNOME_INTERFACE_VERSION}'
 GNOME_IDLDIR='-I${datadir}/idl'
 
 dnl
@@ -374,7 +371,6 @@ AC_SUBST(GTKXMHTML_LIBS)
 AC_SUBST(GNOME_LIBDIR)
 AC_SUBST(GNOME_INCLUDEDIR)
 AC_SUBST(GNOME_IDLDIR)
-AC_SUBST(SUPPORTINCS)
 
 AC_SUBST(LIBGNOME_LIBS)
 AC_SUBST(LIBGNOMEUI_LIBS)
@@ -412,7 +408,6 @@ devel-docs/gnome-libs-tutorial/Makefile
 man/Makefile
 man/gnome-mime.5
 devel-docs/zvt/Makefile
-support/Makefile
 tools/Makefile
 tools/gnome-doc/Makefile
 ],[case "$CONFIG_FILES" in
