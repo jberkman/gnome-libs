@@ -346,7 +346,7 @@ dnl
 dnl test-gnome
 dnl
 
-AC_ARG_ENABLE(test-gnome, [  --enable-test-gnome     compile the test-gnome examples [default=yes]],[compile_test_gnome="$enableval"],[compile_test_gnome=yes])
+AC_ARG_ENABLE(test-gnome, [  --enable-test-gnome     Compile the test-gnome examples [default=yes]],[compile_test_gnome="$enableval"],[compile_test_gnome=yes])
 AM_CONDITIONAL(COMPILE_TEST_GNOME, test x$compile_test_gnome = xyes)
 
 
@@ -354,13 +354,13 @@ dnl
 dnl Compat libs
 dnl
 
-AC_ARG_ENABLE(gnome-compat, [  --enable-gnome-compat     compile the compatability library for gnome-1.0 [default=no]],[compile_gnome_compat="$enableval"],[compile_gnome_compat=no])
+AC_ARG_ENABLE(gnome-compat, [  --enable-gnome-compat   Compile the compatability library for gnome-1.0 [default=no]],[compile_gnome_compat="$enableval"],[compile_gnome_compat=no])
 AM_CONDITIONAL(COMPILE_GNOME_COMPAT, test x$compile_gnome_compat = xyes)
 
 AC_ARG_ENABLE(deprecated, [  --disable-deprecated    Disable deprecated stuff in header files],[enable_deprecated="$enableval"],[enable_deprecated=no])
 if test x$enable_deprecated != xyes ; then
-  AC_DEFINE(GNOME_EXCLUDE_DEPRECATED)
   AC_DEFINE(GNOME_EXCLUDE_DEPRECATED_SOURCE)
+  AC_DEFINE(GNOME_EXCLUDE_DEPRECATED)
 fi
 
 
@@ -417,9 +417,12 @@ images/Makefile
 idl/Makefile
 libgnome/Makefile
 libgnome/gnome-portability.h
+libgnome/libgnome-2.0.pc
 libgnomeui/Makefile
 libgnomeui/pixmaps/Makefile
+libgnomeui/libgnomeui-2.0.pc
 libcompat/Makefile
+libcompat/libgnome-1-compat-2.0.pc
 zvt/Makefile
 demos/Makefile
 test-suite/Makefile
