@@ -4,7 +4,7 @@ noinst_PROGRAMS  = zterm test-utmp
 
 libzvtincludedir = $(includedir)/zvt
 
-INCLUDES = -I.. -I$(srcdir)/.. $(SUPPORTINCS)		\
+INCLUDES = -I.. -I$(srcdir)/.. $(GNOMESUPPORT_CFLAGS)	\
 	-I$(top_srcdir)/intl -I$(top_builddir)/intl	\
 	-I$(top_srcdir)/gdk-pixbuf                      \
 	$(GLIB_CFLAGS) $(GTK_CFLAGS)			\

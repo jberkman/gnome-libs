@@ -1,6 +1,7 @@
 ## Process this file with automake to produce Makefile.in
 
-INCLUDES = -I$(top_srcdir)/gdk-pixbuf -I.. -I$(srcdir)/.. $(SUPPORTINCS) \
+INCLUDES = -I$(top_srcdir)/gdk-pixbuf -I.. -I$(srcdir)/.. \
+	$(GNOMESUPPORT_CFLAGS)				\
 	-I$(top_srcdir)/intl -I$(top_builddir)/intl \
 	$(GLIB_CFLAGS) $(GTK_CFLAGS)			\
 	$(OAF_CFLAGS)					\
