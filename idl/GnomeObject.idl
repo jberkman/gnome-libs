@@ -6,22 +6,22 @@
 #endif
 
 module GNOME {
-  interface GObject {
-    /**
-     * ref:
-     *
-     * increments the reference count
-     */
-    oneway void ref ();
-    /**
-     * unref:
-     * 
-     * decrements the reference count
-     */
-    oneway void unref ();
-
-    Object query_interface (in string repoid);
-  };
+	interface obj {
+		/**
+		 * ref:
+		 *
+		 * increments the reference count
+		 */
+		oneway void ref ();
+		/**
+		 * unref:
+		 * 
+		 * decrements the reference count
+		 */
+		oneway void unref ();
+		
+		Object query_interface (in string repoid);
+	};
 };
 
 #if !defined(__LIBGNORBA_COMPILATION) && defined(__ORBIT_IDL__)
