@@ -162,14 +162,10 @@ void vt_scroll_up(struct vt_em *vt, int count)
       wn->data[i] = vt->attr|VTATTR_CHANGED; /* FIXME: do attributes too */
     }
 
-    /* FIXME: make it update properly when lots of data gets calculated
-       before a re-draw */
-    if (wn->line == -1) {
-      wn->modcount = wn->width;
-    } else {
-      wn->modcount=0;
-      wn->line=-1;		/* flag new line */
-    }
+    /* FIXME: this sometimes makes it do too much work, but if it
+       isn't done this way, it seems to cause problems */
+    wn->modcount = wn->width;
+    wn->line=-1;		/* flag new line */
 
     /* insert it .. (on bottom of scroll area) */
     nn=(struct vt_line *)vt_list_index(&vt->lines, vt->scrollbottom);
