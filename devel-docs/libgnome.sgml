@@ -41,6 +41,7 @@ which language a string item should be accessed for.
 sections</para></listitem>
 </itemizedlist>
 </para>
+    </sect2>
 <sect2 id="gnome-config-get">
 <title>gnome_config_*get_* - routines to retrieve information for a
 specified config path.</title>
@@ -86,6 +87,7 @@ gnome_config_get_string_with_default("/foo/blah=DefaultValue", &amp;is_default);
 the caller as to whether the return value is a default value or was
 retrieved from the config database for the specified 'path'.
 </para>
+	  </listitem>
 </itemizedlist>
 </sect3>
 </sect2>
@@ -164,6 +166,7 @@ exists.</para>
 <itemizedlist><listitem><para>const char
 *<parameter>path</parameter></para>
 <para>Config section to list the items in.</para>
+	  </listitem>
 </itemizedlist>
 </sect3>
 </sect2>

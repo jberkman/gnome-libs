@@ -215,15 +215,15 @@
 
     <sect1 id="codstd">
       <title>Coding Standards.</title>
-      <para>
       <itemizedlist>
-
-        <listitem><para> Code that goes into Gnome uses the Linux kernel coding 
+        <listitem><para> Code that goes into Gnome uses the Linux
+          kernel coding 
           style (which is basically the GNU coding style but indentation is 
           8 spaces, and braces are on the same line as the statements that 
           open the block).  Make yourself familiar with both coding
           styles (the GNU coding style and the Linux kernel coding
           style)</para>
+	  </listitem>
 
         <listitem><para>Try to make your code readable in 80 columns</para>
           </listitem>
@@ -243,23 +243,24 @@
           the glib library provides various utility macros that help
           you make your code more robust.  g_return_if_fail,
           g_return_val_if_fail, g_warning, g_error and g_assert are
-          your friends.
+          your friends.</para>
+	  </listitem>
 
         <listitem><para> Document your programs.</para></listitem>
 
         <listitem><para> If you do changes to the APIs documented here or add
           some new ones please update the documentation.</para></listitem>
 
-        <listitem><para> Add translations for your native language. We would like
-          have a full internationalized GNOME. (so if you know more than
-          one language do translations for all them) (we would like all
-          the idioms, from francais to old greek :-) )
+        <listitem><para> Add translations for your native language. We
+	      would like have a full internationalized GNOME. (so if
+	      you know more than one language do translations for all
+	      them) (we would like all the idioms, from francais to
+	      old greek :-) )
 	</para></listitem>
 
         </itemizedlist>
       </sect1>
-
-    </chapter>
+  </chapter>
 
   <chapter id="tutorial">
     <title>GNOME Developer's Tutorial.</title>
@@ -489,8 +490,8 @@ about_cb (GtkWidget *widget, void *data)
       	<para>
       	  Well, Carsten and Tom are talking about standardizing it, so I'll
       	  wait a bit their definitions.
-      	  <para>
-	</sect1>
+      </para>
+    </sect1>
 	
     <sect1 id="tut-SM">
       <title>Session Management</title>
