@@ -1,3 +1,9 @@
+1999-06-07  Matt Loper  <matt@gnome-support.com>
+
+	* idl/GnomeObject.idl: Removed `oneway' from ref and unref; when
+	such network optimizations are necessary, they should be done by
+	caching the refcount in the client.
+
 1999-05-28  Raja R Harinath  <harinath@cs.umn.edu>
 
 	* gnome-config.in (Usage): Cleanups.
