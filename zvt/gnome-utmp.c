@@ -139,7 +139,7 @@ update_dbs (char *login_name, char *display_name, char *term_name)
 #endif
 #ifdef HAVE_UTMPX_H
 	getutmp (ut, &ut_aux);
-	getutid (&utmp_aux);
+	getutid (&ut_aux);
 #else
 	getutid (ut);
 #endif
@@ -183,11 +183,13 @@ write_logout_record (void *data)
 	struct utmpx ut;
 
 	utmpname (UTMP_FILENAME);
-	setutend ();
+	setutent ();
 	if (getutid (&ut) == NULL)
 		return;
 	ut.ut_type = DEAD_PROCESS;
+#ifdef _HAVE_UT_TIME
 	ut.ut_time = time (NULL);
+#endif
 	pututline (&ut);
 	getutmpx (&ut, &utmp_aux);
 	update_wtmp (WTMP_FILENAME, &ut);
