@@ -5,6 +5,7 @@ idl_DATA = \
 	gnome-factory.idl	\
 	Table.idl		\
 	gnome-editor.idl	\
+	gnome-file.idl	\
 	GnomeObject.idl
 
 EXTRA_DIST = $(idl_DATA)

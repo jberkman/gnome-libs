@@ -8,7 +8,7 @@
 #pragma inhibit push
 #endif
 
-#include <gnome-object.idl>
+#include <GnomeObject.idl>
 
 module GNOME {
 	enum SEEKFROM {
@@ -18,7 +18,7 @@ module GNOME {
 	};
 
 	typedef long SearchOption;
-	const SearchOption REG_REGEX = 1
+	const SearchOption REG_REGEX = 1;
 	const SearchOption REG_ICASE = 2;
 	const SearchOption REG_NOSUB = 4;
 	const SearchOption REG_NEWLINE = 8;
