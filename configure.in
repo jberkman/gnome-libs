@@ -258,11 +258,15 @@ dnl since some of the code in it was written before GDK existed.
 AC_PATH_X
 AC_PATH_XTRA
 
-AM_PATH_GDK_IMLIB(1.9, [AC_DEFINE(HAVE_IMLIB_1_9)],[
+AM_PATH_GDK_IMLIB(1.9, [define_imlib_1_9=true],[
     AM_PATH_GDK_IMLIB(1.8,[
 	    LIBGNOMEUI_LIBS="$LIBGNOMEUI_LIBS $PNG_LIBS"
 	],[AC_MSG_ERROR([*** IMLIB 1.8 not installed - please install first ***])])])
 
+
+if test x$define_imlib_1_9 = xtrue; then
+    AC_DEFINE(HAVE_IMLIB_1_9)
+fi
 
 dnl
 dnl Check for esound library
