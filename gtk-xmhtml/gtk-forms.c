@@ -212,9 +212,9 @@ formCountComponents(XmHTMLForm *parent, XmHTMLForm *comp)
 				if(current_entry->multiple || current_entry->size > 1) 
 				{
 					/* list. Get count of all selected items */
+#if 0
 					int *pos_list, pos_cnt = 0;
 
-#if 0
 					/* must take it from child, parent is a scrolledWindow */
 					if((XmListGetSelectedPos(current_entry->child, &pos_list,
 						&pos_cnt)))
@@ -357,7 +357,6 @@ _XmHTMLFormActivate(XmHTMLWidget html, TEvent *event, XmHTMLForm *entry)
 				else
 				{
 					/* list. Get all selected items and store them */
-					int *pos_list, pos_cnt = 0;
 
 					fprintf (stderr, "FormActivate: Missing chunk of code #1\n");
 				}
@@ -1003,7 +1002,6 @@ XmHTMLForm*
 _XmHTMLFormAddInput(XmHTMLWidget html, String attributes)
 {
 	static XmHTMLForm *entry;
-	GtkWidget *hbox;
 	gchar *chPtr = NULL;
 
 	if(attributes == NULL)

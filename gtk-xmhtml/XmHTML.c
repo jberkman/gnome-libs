@@ -1,6 +1,3 @@
-#ifndef lint
-static char rcsId[]="$Header$";
-#endif
 /*****
 * XmHTML.c : XmHTML main routines
 *
@@ -35,7 +32,11 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.28  1999/07/29 01:26:28  sopwith
+* Fix all warnings.
+*
 * Revision 1.27  1999/06/02 01:00:35  unammx
+*
 * 1999-06-01  Akira Higuchi <a-higuti@math.sci.hokudai.ac.jp>
 *
 * 	* libgnomeui/gnome-canvas-text.c:
@@ -394,7 +395,6 @@ static void DestroyPhaseZero (XmHTMLWidget html);
 
 /*** Private Datatype Declarations ****/
 
-static void XmHTML_Destroy(XmHTMLWidget html);
 static void XmHTML_Initialize (XmHTMLWidget html, XmHTMLWidget init, char *html_source);
 static void Layout(XmHTMLWidget html);
 static void CheckMaxColorSetting(XmHTMLWidget html);
@@ -2424,7 +2424,6 @@ void
 XmHTMLTextSetStringWithLength(TWidget w, String text, size_t len)
 {
  	XmHTMLWidget html;
- 	Boolean had_hsb, had_vsb;
  
  	/* sanity check */
  	if(!w || !XmIsHTML(w))
@@ -2831,7 +2830,6 @@ void
 _XmHTMLMoveToPos(TWidget w, XmHTMLWidget html, int value)
 {
 	int inc, x, y, width, height;
-	Display *dpy = Toolkit_Display(html->html.work_area);
 	TWindow win = Toolkit_Widget_Window(html->html.work_area);
 	TGC gc = html->html.gc;
 	int vsb_width = 0, hsb_height = 0;
@@ -3053,7 +3051,6 @@ _XmHTMLMoveToPos(TWidget w, XmHTMLWidget html, int value)
 void
 _XmHTMLClearArea(XmHTMLWidget html, int x, int y, int width, int height)
 {
-	Display *dpy = Toolkit_Display(html->html.work_area);
 	TWindow win = Toolkit_Widget_Window(html->html.work_area);
 
 	_XmHTMLDebug(1, ("XmHTML.c: _XmHTMLClearArea Start, x: %i, y: %i, width: %i "

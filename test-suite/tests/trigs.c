@@ -4,7 +4,7 @@
 
 int global_cntr = 0;
 
-void sample_trigger_function(char *msg, char *level, char *supinfo[])
+static void sample_trigger_function(char *msg, char *level, char *supinfo[])
 {
 	int i;
 	for(i = 0; supinfo[i]; i++)

@@ -1,6 +1,3 @@
-#ifndef lint
-static char rcsId[]="$Header$";
-#endif
 /*****
 * LZWStream.c : LZW uncompressor that doesn't use the LZW algorithm but
 *				converts LZW compressed data to compress LZW data and
@@ -34,6 +31,9 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.4  1999/07/29 01:26:28  sopwith
+* Fix all warnings.
+*
 * Revision 1.3  1998/02/12 03:07:53  unammx
 * Merge to Koen's XmHTML 1.1.2 + following fixes:
 *

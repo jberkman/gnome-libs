@@ -23,7 +23,6 @@ static void about_cb (GtkWidget *widget, void *data);
 static void quit_cb (GtkWidget *widget, void *data);
 
 static void prepare_app(void);
-static GtkMenuFactory *create_menu ();
 
 static gint save_state      (GnomeClient        *client,
 			     gint                phase,

@@ -1,6 +1,3 @@
-#ifndef lint
-static char rcsId[]="$Header$";
-#endif
 /*****
 * StringUtil.c:  badly named file with misc. routines that don't fit anywhere
 *                else.
@@ -41,6 +38,9 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.5  1999/07/29 01:26:28  sopwith
+* Fix all warnings.
+*
 * Revision 1.4  1998/02/12 03:07:55  unammx
 * Merge to Koen's XmHTML 1.1.2 + following fixes:
 *

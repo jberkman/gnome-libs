@@ -40,7 +40,12 @@
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.7  1999/07/29 01:26:28  sopwith
+* Fix all warnings.
+*
 * Revision 1.6  1999/04/08 19:32:52  unammx
+*
+*
 * 1999-04-08  Miguel de Icaza  <miguel@nuclecu.unam.mx>
 *
 * 	* configure.in (LIBS): Test for existance of dlfcn.h header.  Make
@@ -1046,6 +1051,25 @@ extern void __XmHTMLBadParent(TWidget w, String func);
 
 extern void _XmHTMLAllocError(TWidget w, char *module, char *routine, 
 	char *func, int size);
+
+#include "gtk-xmhtml.h"
+#include "gtk-xmhtml-p.h"
+
+void gtk_xmhtml_set_outline (GtkXmHTML *html, int flag);
+void my_x_query_colors(GdkColormap *colormap,
+		       GdkColor    *colors,
+		       gint         ncolors);
+void
+gtk_xmhtml_set_colors (GtkXmHTML *html,
+		       Pixel foreground,
+		       Pixel background,
+		       Pixel anchor_fg,
+		       Pixel anchor_target_fg,
+		       Pixel anchor_visited_fg,
+		       Pixel anchor_activated_fg,
+		       Pixel anchor_activated_bg);
+
+void _XmHTMLRecomputeShadowColors(XmHTMLWidget html, Pixel base);
 
 /* Don't add anything after this endif! */
 #endif /* _XmHTMLI_h_ */

@@ -3056,7 +3056,7 @@ zvt_term_set_shadow_type(ZvtTerm  *term, GtkShadowType type)
 guint32
 zvt_term_get_capabilities (ZvtTerm *term)
 {
-  Atom prop, type, prop2;
+  Atom prop, prop2;
   guint32 out = ZVT_TERM_EMBOLDEN_SUPPORT|ZVT_TERM_PIXMAPSCROLL_SUPPORT;
 
   /* pixmap and transparency support */
@@ -3185,7 +3185,6 @@ get_desktop_window (Window the_window)
   unsigned char *data;
   unsigned int nchildren;
   Window w, root, *children, parent;
-  Window last_desktop_window = desktop_window;
   
   prop = XInternAtom(GDK_DISPLAY(), "_XROOTPMAP_ID", True);
   prop2 = XInternAtom(GDK_DISPLAY(), "_XROOTCOLOR_PIXEL", True);
@@ -3247,7 +3246,6 @@ get_pixmap_prop (Window the_window, char *prop_id)
   int format;
   unsigned long length, after;
   unsigned char *data;
-  register unsigned long i=0;
   
   /*this should be changed when desktop changes I guess*/
   if(desktop_window == None)
@@ -3385,7 +3383,6 @@ load_background (ZvtTerm *widget)
 
   /* we will be doing a background pixmap, not transparency */
   if (term->pixmap_filename) {
-      GdkGCValues vals;
 
     if (!term->background.pix) {
       term->background.pix =
@@ -3480,7 +3477,6 @@ load_background (ZvtTerm *widget)
 
       gdk_gc_set_fill (bgc, GDK_TILED);
     } else {
-      GdkGC *gc;
       GdkPixmap *pp;
       
       d(printf("loading background at %d,%d\n", x, y));

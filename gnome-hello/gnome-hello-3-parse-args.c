@@ -90,7 +90,6 @@ int
 main (int argc, char *argv[])
 {
 	int got_quixote_option = 0;
-	poptContext ctx;
 	struct poptOption prog_options[] = {
 	{"quixote", 'q', POPT_ARG_NONE, NULL, 0, NULL, "Just an option"},
 	POPT_AUTOHELP

@@ -1,4 +1,5 @@
 #include <gnome.h>
+#include <libgnome/gnome-fileconvert.h>
 #include <glib.h>
 #include <stdio.h>
 #include <unistd.h>

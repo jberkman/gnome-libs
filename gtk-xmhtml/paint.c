@@ -1,6 +1,3 @@
-#ifndef lint
-static char rcsId[]="$Header$";
-#endif
 /*****
 * paint.c : XmHTML rendering routines
 *
@@ -35,7 +32,11 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.11  1999/07/29 01:26:29  sopwith
+* Fix all warnings.
+*
 * Revision 1.10  1999/06/02 01:00:43  unammx
+*
 * 1999-06-01  Akira Higuchi <a-higuti@math.sci.hokudai.ac.jp>
 *
 * 	* libgnomeui/gnome-canvas-text.c:
@@ -367,7 +368,6 @@ DrawText(XmHTMLWidget html, XmHTMLObjectTableElement data)
 {
 	int width, ys, xs, nwords = data->n_words;
 	XmHTMLWord *words = data->words;
-	Display *dpy = Toolkit_Display(html->html.work_area);
 	TWindow win = Toolkit_Widget_Window (html->html.work_area);
 	TGC gc = html->html.gc;
 	register int i;
@@ -479,7 +479,6 @@ static void
 DrawAnchor(XmHTMLWidget html, XmHTMLObjectTableElement data)
 {
 	int x, xs, y, ys, width, start, nwords = 0;
-	Display *dpy = Toolkit_Display(html->html.work_area);
 	TWindow win = Toolkit_Widget_Window(html->html.work_area);
 	TGC gc = html->html.gc;
 	XmHTMLfont *font;
@@ -808,7 +807,6 @@ static void
 DrawImageAnchor(XmHTMLWidget html, XmHTMLObjectTableElement data)
 {
 	int x, y, width, height;
-	Display *dpy = Toolkit_Display(html->html.work_area);
 	TWindow win = Toolkit_Widget_Window(html->html.work_area);
 	TGC gc = html->html.gc;
 
@@ -1049,9 +1047,6 @@ static void
 DrawFrame(XmHTMLWidget html, XmHTMLImage *image, int xs, int ys)
 {
 	int idx, width = 0, height = 0, fx, fy;
-	unsigned long valuemask;
-	XGCValues values;
-	Display *dpy = Toolkit_Display(html->html.work_area);
 	TWindow win = Toolkit_Widget_Window(html->html.work_area);
 	TGC gc = html->html.gc;
 
@@ -1413,8 +1408,6 @@ _XmHTMLDrawImage(XmHTMLWidget html, XmHTMLObjectTableElement data, int y_offset,
 {
 	int xs, ys;
 	XmHTMLImage *image;
-	unsigned long valuemask;
-	XGCValues values;
 	Display *dpy;
 	TWindow win;
 	TGC gc;
@@ -1564,7 +1557,6 @@ static void
 DrawRule(XmHTMLWidget html, XmHTMLObjectTableElement data)
 {
 	int dy;
-	Display *dpy = Toolkit_Display(html->html.work_area);
 	TWindow win = Toolkit_Widget_Window(html->html.work_area);
 	TGC gc;
 	int xs, ys;
@@ -1630,7 +1622,7 @@ DrawRule(XmHTMLWidget html, XmHTMLObjectTableElement data)
 		{
 			if (data->fg != html->html.body_fg)
 				_XmHTMLRecomputeShadowColors(html, data->fg);
-			Toolkit_Draw_Shadows(html,Toolkit_StyleGC_TopShadow(html),
+			Toolkit_Draw_Shadows(html, Toolkit_StyleGC_TopShadow(html),
 					     Toolkit_StyleGC_BottomShadow(html), xs, ys+dy,
 					     data->width, data->height, 1, XmSHADOW_IN);
 			if (data->fg != html->html.body_fg)
@@ -1665,7 +1657,6 @@ DrawRule(XmHTMLWidget html, XmHTMLObjectTableElement data)
 static void
 DrawBullet(XmHTMLWidget html, XmHTMLObjectTableElement data)
 {
-	Display *dpy = Toolkit_Display(html->html.work_area);
 	TWindow win = Toolkit_Widget_Window(html->html.work_area);
 	TGC gc = html->html.gc;
 	int ys, xs;
@@ -1710,7 +1701,6 @@ static void
 DrawAnchorButton(XmHTMLWidget html, int x, int y, Dimension width,
 	Dimension height, TGC top_shadow_GC, TGC bottom_shadow_GC)
 {
-	Display *dpy = Toolkit_Display(html->html.work_area);
 	TWindow win = Toolkit_Widget_Window(html->html.work_area);
 
 	/* top & left border */
@@ -1873,7 +1863,6 @@ static void
 DrawCellFrame(XmHTMLWidget html, TableCell *cell)
 {
 	XmHTMLObjectTableElement data = cell->owner;
-	Display *dpy = Toolkit_Display(html->html.work_area);
 	TWindow win = Toolkit_Widget_Window(html->html.work_area);
  	TGC gc;
  	int xs, ys, xoff, yoff, width, height;
@@ -1956,8 +1945,6 @@ DrawCellFrame(XmHTMLWidget html, TableCell *cell)
 	/* Do we have a background image? */
 	if(cell->properties->bg_image != NULL)
 	{
-		unsigned long valuemask;
-		XGCValues values;
 		int tile_width, tile_height, x_dist, y_dist;
 		int ntiles_x, ntiles_y, tsx, tsy;
 		int x_offset, y_offset;
@@ -2030,7 +2017,6 @@ DrawCellFrame(XmHTMLWidget html, TableCell *cell)
 static void
 DrawTableBorder(XmHTMLWidget html, XmHTMLTable *table)
 {
-	Display *dpy = Toolkit_Display(html->html.work_area);
 	TWindow win = Toolkit_Widget_Window(html->html.work_area);
 	TGC gc;
 	int xs, ys;

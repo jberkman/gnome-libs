@@ -1,6 +1,3 @@
-#ifndef lint
-static char rcsId[]="$Header$";
-#endif
 /*****
 * layout.c : XmHTML layout computation routines
 *
@@ -36,7 +33,11 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.6  1999/07/29 01:26:29  sopwith
+* Fix all warnings.
+*
 * Revision 1.5  1999/06/02 01:00:42  unammx
+*
 * 1999-06-01  Akira Higuchi <a-higuti@math.sci.hokudai.ac.jp>
 *
 * 	* libgnomeui/gnome-canvas-text.c:

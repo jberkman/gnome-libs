@@ -1912,7 +1912,7 @@ main (int argc, char *argv[])
 		  { "dentry edit", create_dentry_edit },
 		  { "href", create_href },
 		  { "(Reload preferences)", gnome_preferences_load },
-/*	{ "prop box", create_property_box }, */
+		  { "prop box", create_property_box },
 	  };
 	int nbuttons = sizeof (buttons) / sizeof (buttons[0]);
 	GtkWidget *app;

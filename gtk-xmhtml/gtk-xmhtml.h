@@ -8,9 +8,9 @@
 #ifndef WITH_GTK
 # define WITH_GTK
 #endif
+
 #include <gtk-xmhtml/toolkit.h>
 #include <gtk-xmhtml/XmHTML.h>
-#include <gtk-xmhtml/XmHTMLP.h>
 #endif
 
 #ifdef __cplusplus
@@ -27,6 +27,10 @@ extern "C" {
 
 typedef struct _GtkXmHTML       GtkXmHTML;
 typedef struct _GtkXmHTMLClass  GtkXmHTMLClass;
+
+#ifndef GTK_XMHTML_LIBRARY
+#include <gtk-xmhtml/XmHTMLP.h>
+#endif
 
 struct _GtkXmHTML
 {
@@ -155,7 +159,7 @@ void gtk_xmhtml_set_mime_type                     (GtkXmHTML *html, char *mime_t
 void gtk_xmhtml_set_alpha_processing              (GtkXmHTML *html, int flag);
 void gtk_xmhtml_set_rgb_conv_mode                 (GtkXmHTML *html, int val);
 
-void Toolkit_Draw_Shadows(XmHTMLWidget w, GC* top_shadow, GC* bottom_shadow,
+void Toolkit_Draw_Shadows(XmHTMLWidget w, TGC top_shadow, TGC bottom_shadow,
 			  gint xs, gint ys, gint xe, gint ye, gint xxx, gint shadow_type);
 
 

@@ -85,7 +85,6 @@ static void
 prepare_app(void)
 {
   GtkWidget *button;
-  GtkMenuFactory *mf;
 
   /* Make the main window and binds the delete event so you can close
      the program from your WM */
@@ -145,7 +144,6 @@ add_cb (GtkWidget *widget, void *data)
   static gint counter = 0;
   char buf[200];
   GnomeUIInfo entry[2];
-  int pos = 0;
 
   sprintf (buf, "menu item %d", counter);
 

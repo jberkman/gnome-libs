@@ -141,7 +141,6 @@ static GnomeUIInfo toolbar_info[5] = {
 static GtkWidget *my_child_create_view(GnomeMDIChild *child, gpointer data) {
 	GtkWidget *new_view;
 	gchar label[256];
-	gint counter;
 
 	sprintf(label, "Child %d",
 			GPOINTER_TO_INT (gtk_object_get_user_data(GTK_OBJECT(child))));

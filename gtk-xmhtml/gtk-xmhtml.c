@@ -33,8 +33,8 @@ gint gtk_xmhtml_signals [GTK_XMHTML_LAST_SIGNAL] = { 0, };
 static GtkContainer *parent_class = NULL;
 
 /* prototypes for functions defined here */
-static void gtk_xmhtml_realize (GtkWidget *widget);
-static void gtk_xmhtml_unrealize (GtkWidget *widget);
+static void gtk_xmhtml_realize (GtkWidget *widget) G_GNUC_UNUSED;
+static void gtk_xmhtml_unrealize (GtkWidget *widget) G_GNUC_UNUSED;
 static void gtk_xmhtml_forall (GtkContainer *we, gboolean include_internals, GtkCallback callback, gpointer callback_data);
 static void gtk_xmhtml_map (GtkWidget *widget);
 static void gtk_xmhtml_draw (GtkWidget *widget, GdkRectangle *area);
@@ -97,10 +97,8 @@ pixel_color (GtkXmHTML *html, char *color_name)
 	return c.pixel;
 }
 
-void donothing(void) {}
-
 /* These are initialized in the Motif sources with the resources */
-void
+static void
 gtk_xmhtml_resource_init (GtkXmHTML *html)
 {
 	/* The strings */
@@ -256,7 +254,7 @@ gtk_xmhtml_new (void)
 	return GTK_WIDGET (html);
 }
 
-void
+static void
 gtk_xmhtml_destroy (GtkObject *object)
 {
 	GtkXmHTML *html = GTK_XMHTML (object);
@@ -425,8 +423,6 @@ gtk_xmhtml_size_request (GtkWidget *widget, GtkRequisition *requisition)
 static void
 gtk_xmhtml_size_allocate (GtkWidget *widget, GtkAllocation *allocation)
 {
-	GtkXmHTML *html = GTK_XMHTML (widget);
-	
 	widget->allocation = *allocation;
 	
 /*	printf ("Size Allocate: (%d,%d) %d %d\n",
@@ -814,7 +810,6 @@ static void
 drawing_area_realized (GtkWidget *widget, gpointer data)
 {
 	GtkXmHTML *html = data;
-	GdkColor c;
 
 	html->background_pixel = widget->style->bg[GTK_STATE_NORMAL].pixel;
 	html->foreground_pixel = widget->style->fg[GTK_STATE_NORMAL].pixel;
@@ -950,7 +945,7 @@ gtk_xmhtml_realize (GtkWidget *widget)
 {
 	GdkWindowAttr attributes;
 	gint attributes_mask;
-	
+
 	g_return_if_fail (widget != NULL);
 	g_return_if_fail (GTK_IS_XMHTML (widget));
 	
@@ -2264,7 +2259,7 @@ gtk_signal_handler_pending (GtkObject *object, gint signal_type, gboolean may_be
 #endif
 
 void
-Toolkit_Draw_Shadows(XmHTMLWidget html, GC* top_shadow, GC* bottom_shadow,
+Toolkit_Draw_Shadows(XmHTMLWidget html, TGC top_shadow, TGC bottom_shadow,
 		     gint xs, gint ys, gint w, gint h, gint shadow_thick, gint shadow_type)
 {
 	switch (shadow_type)

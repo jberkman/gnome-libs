@@ -105,7 +105,7 @@ gint
 main (gint argc, gchar *argv[])
 {
   int i, c, cmdindex, scrollbacklines, login_shell;
-  char buffer[60], **p, *fontname=FONT;
+  char **p, *fontname=FONT;
   struct passwd *pw;
   GtkWidget *term, *hbox, *scrollbar;
   enum { RIGHT, LEFT } scrollpos = LEFT;

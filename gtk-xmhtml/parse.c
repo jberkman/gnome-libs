@@ -1,6 +1,3 @@
-#ifndef lint
-static char rcsId[]="$Header$";
-#endif
 /*****
 * parse.c : XmHTML HTML parser
 *
@@ -35,6 +32,9 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.8  1999/07/29 01:26:29  sopwith
+* Fix all warnings.
+*
 * Revision 1.7  1999/04/02 19:17:11  asbjoer
 * open in text mode
 *
@@ -429,7 +429,7 @@ _ParserPopState(Parser *parser)
 * Returns:
 *	nothing
 *****/
-void
+static void
 _ParserClearStack(Parser *parser)
 {
 	stateStack *tmp = parser->state_stack;

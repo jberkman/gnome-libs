@@ -58,11 +58,9 @@ static void vt_line_update(struct _vtx *vx, struct vt_line *l, struct vt_line *b
 {
   int i;
   int run, commonrun;
-  int runstart, commonrunstart;
+  int runstart;
   char *p;
-  uint32 attr, newattr, oldattr, oldchar, newchar, oldback, newback, lastchar;
-  uint32 c;
-  int ch;
+  uint32 attr, newattr, oldattr, oldchar, newchar, oldback, lastchar;
   /*  struct vt_line *bl;*/
   int sx, ex;			/* start/end selection */
   int force;

@@ -1,6 +1,3 @@
-#ifndef lint
-static char rcsId[]="$Header$";
-#endif
 /*****
 * colors.c : XmHTML color allocation routines
 *
@@ -35,7 +32,12 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.13  1999/07/29 01:26:28  sopwith
+* Fix all warnings.
+*
 * Revision 1.12  1998/05/25 02:36:33  sopwith
+*
+*
 * libgnomeui/gnome-dialog.[ch]:
 * Fix gnome_dialog_run_modal() to do the "sane thing" (while incorporating
 * Havoc's bug fixes):

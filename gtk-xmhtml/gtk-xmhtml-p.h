@@ -1,3 +1,5 @@
+#ifndef GTK_XMHTML_P_H
+#define GTK_XMHTML_P_H 1
 #define _XFUNCPROTOEND 
 #define XFUNCPROTOEND
 #include "XmHTMLP.h"
@@ -34,3 +36,4 @@ enum {
 void gtk_xmhtml_set_foreground_internal (GtkXmHTML *html);
 void gtk_xmhtml_set_background_internal (GtkXmHTML *html);
 */
+#endif

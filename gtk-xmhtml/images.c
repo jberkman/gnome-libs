@@ -1,6 +1,3 @@
-#ifndef lint
-static char rcsId[]="$Header$";
-#endif
 /*****
 * images.c : XmHTML image loading/manipulation routines.
 *
@@ -43,6 +40,9 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.13  1999/07/29 01:26:28  sopwith
+* Fix all warnings.
+*
 * Revision 1.12  1999/05/24 23:45:33  unammx
 * 1999-05-24  Miguel de Icaza  <miguel@nuclecu.unam.mx>
 *
@@ -404,7 +404,7 @@ readImage(TWidget html, ImageBuffer *ib)
 * Note:
 *	modified from xgif-1.2
 *****/
-void
+static void
 clipImage(XmImageInfo *image, Dimension new_w, Dimension new_h)
 {
 	Byte *data, *dataPtr, *imgPtr;
@@ -456,7 +456,7 @@ clipImage(XmImageInfo *image, Dimension new_w, Dimension new_h)
 * Note:
 *	modified from xgif-1.2
 *****/
-void
+static void
 scaleImage(XmImageInfo *image, Dimension new_w, Dimension new_h)
 {
 	Byte *data, *img_data, *ilptr, *ipptr, *elptr, *epptr;
@@ -563,9 +563,10 @@ static int
 getMaxColors(TWidget w, int max_colors)
 {
 	int ncolors;
-	TVisual *visual = NULL;
 
 #ifdef WITH_MOTIF
+	TVisual *visual = NULL;
+
 	/* get visual for this widget and take maximum colors from there. */
 	XtVaGetValues(w, XmNvisual, &visual, NULL);
 	/*
@@ -721,7 +722,6 @@ _XmHTMLCreateXImage(XmHTMLWidget html, XCC xcc, Dimension width,
 {
 	int depth     = XCCGetDepth (xcc);
 	TVisual *vis  = xcc->visual;
-	Display *dpy  = Toolkit_Display((TWidget)html);
 	static TXImage *ximage = NULL;
 
 	_XmHTMLDebug(6, ("images.c: _XmHTMLCreateXImage, creating XImage\n"));
@@ -885,7 +885,6 @@ _XmHTMLFillXImage(XmHTMLWidget html, TXImage *ximage, XCC xcc, Byte *data,
 	int hi, lo;
 	unsigned int wide, high;
 	unsigned long xcol;
-	Display *dpy = Toolkit_Display(html);
 	register int i;
 
 	wide    = ximage->width;
@@ -1304,8 +1303,6 @@ makeColormap(XmHTMLWidget html, XmHTMLImage *image, XmImageInfo *info)
 static void
 freePixmaps(XmHTMLWidget html, XmHTMLImage *image)
 {
-	Display *dpy = Toolkit_Display((TWidget)html);	/* fix 25/03/97-02, kdh */
-
 	/* first free all previous pixmaps */
 	if(image->frames)
 	{
@@ -1666,7 +1663,6 @@ imageDefaultProc(TWidget w, XmHTMLRawImageData *img_data, String url)
 			else if(_xmimage_cfg->flags & ImageBackground)
 			{
 				TColor bg_color;
-				TColormap cmap;
 
 				_XmHTMLDebug(6, ("images.c: imageDefaultProc, background pixel "
 					"value for this image: %i\n", img_data->bg));
@@ -2619,7 +2615,6 @@ _XmHTMLMakeAnimation(XmHTMLWidget html, XmHTMLImage *image, Dimension width,
 	*/
 	if(XmIsHTML((Widget)html) && ImageHasState(image))
 	{
-		Display *dpy = Toolkit_Display((Widget)html);
 		TWindow win = (html->html.gc == NULL ?
 			Toolkit_Default_Root_Window(dpy) : Toolkit_Widget_Window(html->html.work_area));
 
@@ -3313,7 +3308,6 @@ processBodyImage(XmHTMLWidget html, XmHTMLImage *body_image,
 		{
 			TWindow win;
 			TPixmap pixmap;
-			Display *dpy = Toolkit_Display((TWidget)html);
 
 			if(Toolkit_Widget_Is_Realized((TWidget)html))
 				win = Toolkit_Widget_Window(html->html.work_area);

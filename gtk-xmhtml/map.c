@@ -1,6 +1,3 @@
-#ifndef lint
-static char rcsId[]="$Header$";
-#endif
 /*****
 * map.c : XmHTML imagemap routines
 *
@@ -36,6 +33,9 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.7  1999/07/29 01:26:29  sopwith
+* Fix all warnings.
+*
 * Revision 1.6  1999/02/25 01:05:07  unammx
 * Missing bit of the strtok patches from Ulrich
 *
@@ -805,7 +805,7 @@ _XmHTMLCheckImagemaps(XmHTMLWidget html)
 
 	_XmHTMLDebug(10, ("map.c: _XmHTMLCheckImagemaps Start\n"));
 
-	if(html->html.images == NULL || CHECK_CALLBACK (html, imagemap_callback, IMAGEMAP) == NULL)
+	if(html->html.images == NULL || !CHECK_CALLBACK (html, imagemap_callback, IMAGEMAP))
 	{
 		_XmHTMLDebug(10, ("map.c: _XmHTMLCheckImagemaps End: %s.\n",
 			(html->html.images ? "no imagemap_callback" : 

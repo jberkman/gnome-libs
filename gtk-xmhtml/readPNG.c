@@ -1,6 +1,3 @@
-#ifndef lint
-static char rcsId[]="$Header$";
-#endif
 /*****
 * readPNG.c : XmHTML png image loading routines
 *
@@ -37,6 +34,9 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.9  1999/07/29 01:26:29  sopwith
+* Fix all warnings.
+*
 * Revision 1.8  1998/09/25 01:09:12  unammx
 * 1998-09-24  Miguel de Icaza  <miguel@nuclecu.unam.mx>
 *

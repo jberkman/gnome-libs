@@ -59,7 +59,6 @@ static void
 sigchld_handler (int signo)
 {
 	GSList *l;
-	pid_t pid;
 	int status;
 
 	if (waitpid (helper_pid, &status, WNOHANG) == helper_pid){
@@ -257,7 +256,6 @@ int
 zvt_init_subshell (struct vt_em *vt, char *pty_name, int log)
 {
 	int slave_pty, master_pty;
-	int subshell_pid;
 	struct sigaction sa;
 	child_info_t *child;
 	pid_t pid;

@@ -85,7 +85,6 @@ dump_scrollback(struct vt_em *vt)
     wn = wn->next;
   }
 }
-#endif
 
 static void
 vt_dump(struct vt_em *vt)
@@ -106,6 +105,8 @@ vt_dump(struct vt_em *vt)
   }
   (printf("done\n"));
 }
+
+#endif
 
 /***********************************************************************
  * Update functions
@@ -417,7 +418,7 @@ vt_delete_chars(struct vt_em *vt, int count)
 }
 
 /* erase characters */
-void
+static void
 vt_erase_chars(struct vt_em *vt, int count)
 {
   struct vt_line *l;
@@ -614,10 +615,8 @@ static void vt_nl(struct vt_em *vt)
 /* jump to next tab stop, wrap if needed */
 static void vt_tab(struct vt_em *vt)
 {
-  int nx;
   unsigned char c;
   struct vt_line *l;
-  int i;
 
   d(printf("tab\n"));
 
@@ -698,7 +697,7 @@ static void vt_scroll_forward(struct vt_em *vt)
 static void vt_insert_columns(struct vt_em *vt, int startx, int count)
 {
   struct vt_line *l, *oldthis;
-  int i, oldx;
+  int oldx;
 
   oldthis = vt->this_line;
   oldx = vt->cursorx;
@@ -716,7 +715,7 @@ static void vt_insert_columns(struct vt_em *vt, int startx, int count)
 static void vt_delete_columns(struct vt_em *vt, int startx, int count)
 {
   struct vt_line *l, *oldthis;
-  int i, oldx;
+  int oldx;
 
   oldthis = vt->this_line;
   oldx = vt->cursorx;
@@ -1850,7 +1849,6 @@ int
 vt_closepty(struct vt_em *vt)
 {
   int ret;
-  int status;
 
   d(printf("vt_closepty called\n"));
 
@@ -1971,7 +1969,7 @@ vt_resize_lines(struct vt_line *wn, int width, uint32 default_attr)
  */
 void vt_resize(struct vt_em *vt, int width, int height, int pixwidth, int pixheight)
 {
-  int i, count, pass, old_width;
+  int i, count, old_width;
   uint32 c;
   struct vt_line *wn, *nn;
 

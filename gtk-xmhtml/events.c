@@ -1,6 +1,3 @@
-#ifndef lint
-static char rcsId[]="$Header$";
-#endif
 /*****
 * events.c : HTML4.0 event routines
 *
@@ -36,6 +33,9 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.4  1999/07/29 01:26:28  sopwith
+* Fix all warnings.
+*
 * Revision 1.3  1998/02/12 03:08:37  unammx
 * Merge to Koen's XmHTML 1.1.2 + following fixes:
 *

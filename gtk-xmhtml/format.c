@@ -1,6 +1,3 @@
-#ifndef lint
-static char rcsId[]="$Header$";
-#endif
 /*****
 * format.c : XmHTML formatting routines: translates parsed HTML to 	info 
 *			required for displaying a HTML page.
@@ -36,7 +33,11 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.13  1999/07/29 01:26:28  sopwith
+* Fix all warnings.
+*
 * Revision 1.12  1999/06/02 01:00:39  unammx
+*
 * 1999-06-01  Akira Higuchi <a-higuti@math.sci.hokudai.ac.jp>
 *
 * 	* libgnomeui/gnome-canvas-text.c:

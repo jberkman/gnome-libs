@@ -1,6 +1,3 @@
-#ifndef lint
-static char rcsId[]="$Header$";
-#endif
 /*****
 * readJPEG.c : XmHTML jpeg image loading from a memory buffer
 *
@@ -37,6 +34,9 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.5  1999/07/29 01:26:29  sopwith
+* Fix all warnings.
+*
 * Revision 1.4  1998/02/12 03:09:46  unammx
 * Merge to Koen's XmHTML 1.1.2 + following fixes:
 *

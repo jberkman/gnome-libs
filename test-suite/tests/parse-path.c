@@ -83,7 +83,7 @@ run_tests_with_prefix (const char *pfx)
         char *old_prefix = prefix;
 
 	/*gnome_config_push_prefix (prefix);*/
-        prefix = pfx;
+        prefix = (char *)pfx;
 
 	run_tests ();
 

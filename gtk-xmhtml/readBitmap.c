@@ -1,7 +1,3 @@
-#ifndef lint
-static char rcsId[]="$Header$";
-#endif
-
 /*****
 * readBitmap.c : XmHTML X11 bitmap image loading routines
 *
@@ -37,6 +33,9 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.6  1999/07/29 01:26:29  sopwith
+* Fix all warnings.
+*
 * Revision 1.5  1998/02/12 03:09:44  unammx
 * Merge to Koen's XmHTML 1.1.2 + following fixes:
 *

@@ -1,6 +1,3 @@
-#ifndef lint
-static char rcsId[]="$Header$";
-#endif
 /*****
 * fonts.c : XmHTML font loading & caching routines.
 *
@@ -36,7 +33,11 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.10  1999/07/29 01:26:28  sopwith
+* Fix all warnings.
+*
 * Revision 1.9  1999/06/02 01:00:38  unammx
+*
 * 1999-06-01  Akira Higuchi <a-higuti@math.sci.hokudai.ac.jp>
 *
 * 	* libgnomeui/gnome-canvas-text.c:
@@ -1574,7 +1575,7 @@ _XmHTMLUnloadFonts(XmHTMLWidget html)
 #endif
 }
 
-void
+static void
 fillCacheInfo(fontCacheEntry *entry, XmHTMLFontCacheInfo *info)
 {
 	if(entry)

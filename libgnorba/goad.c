@@ -848,7 +848,7 @@ normal_loading:
 static gboolean
 gnome_plugin_unload(ActivePluginInfo *api)
 {
-  g_return_val_if_fail(api->refcount > 0, FALSE);
+  g_return_val_if_fail(api->refcount <= 0, FALSE);
 
   g_module_close(api->loaded);
   g_hash_table_remove(living_by_filename, api->filename);
@@ -1084,7 +1084,7 @@ goad_server_activate_exe(GoadServer *sinfo,
       args = g_realloc(args, sizeof(char *) * (i+j));
 
       for (j = 0; params[j]; j++)
-	args[i+j] = params[j];
+	args[i+j] = (char *)params[j];
       args[i+j] = NULL;
     }
 
