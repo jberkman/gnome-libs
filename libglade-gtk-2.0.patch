@@ -1,0 +1,41 @@
+Index: configure.in
+===================================================================
+RCS file: /cvs/gnome/libglade/configure.in,v
+retrieving revision 1.35
+diff -u -u -r1.35 configure.in
+--- configure.in	2000/07/28 17:06:51	1.35
++++ configure.in	2000/07/29 14:42:09
+@@ -23,7 +23,7 @@
+ 
+ AM_PROG_LIBTOOL
+ 
+-AM_PATH_GTK(1.2.0)
++AM_PATH_GTK_2_0(1.2.0)
+ 
+ AC_PATH_PROG(XML_CONFIG,xml-config,no)
+ if test x$XML_CONFIG = xno; then
+Index: glade/Makefile.am
+===================================================================
+RCS file: /cvs/gnome/libglade/glade/Makefile.am,v
+retrieving revision 1.30
+diff -u -u -r1.30 Makefile.am
+--- glade/Makefile.am	2000/07/10 15:48:10	1.30
++++ glade/Makefile.am	2000/07/29 14:42:09
+@@ -16,14 +16,14 @@
+ 	glade-sax.c	\
+ 	glade-xml.c 	\
+ 	glade-gtk.c 	\
+-	glade-tree.c 	\
+-	glade-private.h
++	glade-tree.c
+ 
+ the_headers =		\
+ 	glade.h 	\
+ 	glade-xml.h 	\
+ 	glade-build.h	\
+-	glade-widget-tree.h
++	glade-widget-tree.h \
++	glade-private.h
+ 
+ if GNOME_SUPPORT
+ build_glade_gnome = libglade-gnome.la
