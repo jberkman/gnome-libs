@@ -1,3 +1,8 @@
+1999-07-26  Michael Zucchi  <zucchi@zedzone.mmc.com.au>
+
+	* zvtterm.c (zvt_term_size_allocate): When resizing, turn off the
+	selection.  Can cause inconsistencies in state.  Fixes bug #1744.
+
 1999-07-19  Michael Zucchi  <zucchi@zedzone.mmc.com.au>
 
 	* update.c (vt_fix_selection): Some fixes from Matthijs Melchior

@@ -947,6 +947,12 @@ zvt_term_size_allocate (GtkWidget     *widget,
       grid_height = MAX(term_height / term->charheight, 1);
       if (grid_width != term->charwidth
 	  || grid_height != term->charheight) {
+
+	/* turn off the selection */
+	term->vx->selstartx = term->vx->selendx;
+	term->vx->selstarty = term->vx->selendy;
+	term->vx->selected = 0;
+
 	vt_resize (&term->vx->vt, grid_width, grid_height, term_width, term_height);
 	vt_update (term->vx, UPDATE_REFRESH|UPDATE_SCROLLBACK);
 	
