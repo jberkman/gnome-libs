@@ -33,11 +33,14 @@
 #include <stdio.h>
 #include <string.h>
 #include <gtk/gtkmain.h>
+#include <gtk/gtkentry.h>
 #include <gtk/gtklabel.h>
 #include <gtk/gtkframe.h>
 #include <gtk/gtkrange.h>
+#include <gtk/gtkfilesel.h>
 #include <gtk/gtkprogressbar.h>
 #include <gtk/gtkvscrollbar.h>
+#include <gtk/gtkscrolledwindow.h>
 #include <gtk/gtksignal.h>
 #include "libgnome/libgnomeP.h"
 #include "gnome-selectorP.h"
@@ -60,9 +63,10 @@ static void gnome_icon_selector_init       (GnomeIconSelector      *iselector);
 static void gnome_icon_selector_destroy    (GtkObject       *object);
 static void gnome_icon_selector_finalize   (GObject         *object);
 
-static gboolean  check_filename            (GnomeSelector   *selector,
+static void      clear_handler             (GnomeSelector   *selector);
+static gboolean  check_filename_handler    (GnomeSelector   *selector,
                                             const gchar     *filename);
-static void      update_filelist           (GnomeSelector   *selector);
+static void      update_filelist_handler   (GnomeSelector   *selector);
 
 
 static GnomeSelectorClass *parent_class;
@@ -95,10 +99,12 @@ static void
 gnome_icon_selector_class_init (GnomeIconSelectorClass *class)
 {
 	GnomeSelectorClass *selector_class;
+	GtkWidgetClass *widget_class;
 	GtkObjectClass *object_class;
 	GObjectClass *gobject_class;
 
 	selector_class = (GnomeSelectorClass *) class;
+	widget_class = (GtkWidgetClass *) class;
 	object_class = (GtkObjectClass *) class;
 	gobject_class = (GObjectClass *) class;
 
@@ -107,8 +113,9 @@ gnome_icon_selector_class_init (GnomeIconSelectorClass *class)
 	object_class->destroy = gnome_icon_selector_destroy;
 	gobject_class->finalize = gnome_icon_selector_finalize;
 
-	selector_class->check_filename = check_filename;
-	selector_class->update_filelist = update_filelist;
+	selector_class->clear = clear_handler;
+	selector_class->check_filename = check_filename_handler;
+	selector_class->update_filelist = update_filelist_handler;
 }
 
 static void
@@ -116,6 +123,46 @@ gnome_icon_selector_init (GnomeIconSelector *iselector)
 {
 	iselector->_priv = g_new0 (GnomeIconSelectorPrivate, 1);
 }
+
+static void
+browse_dialog_cancel (GtkWidget *widget, gpointer data)
+{
+        GnomeSelector *selector;
+	GtkFileSelection *fs;
+
+        selector = GNOME_SELECTOR (data);
+	fs = GTK_FILE_SELECTION (selector->_priv->browse_dialog);
+
+	if (GTK_WIDGET (fs)->window)
+		gdk_window_lower (GTK_WIDGET (fs)->window);
+	gtk_widget_hide (GTK_WIDGET (fs));
+}
+
+static void
+browse_dialog_ok (GtkWidget *widget, gpointer data)
+{
+        GnomeSelector *selector;
+	GtkFileSelection *fs;
+	gchar *filename;
+
+        selector = GNOME_SELECTOR (data);
+
+	fs = GTK_FILE_SELECTION (selector->_priv->browse_dialog);
+	filename = gtk_file_selection_get_filename (fs);
+
+	/* This is "directory safe". */
+	if (!gnome_selector_set_filename (selector, filename)) {
+		gdk_beep ();
+		return;
+	}
+
+	gnome_selector_update_file_list (selector);
+
+	if (GTK_WIDGET (fs)->window)
+		gdk_window_lower (GTK_WIDGET (fs)->window);
+	gtk_widget_hide (GTK_WIDGET (fs));
+}
+
 
 /**
  * gnome_icon_selector_construct:
@@ -132,14 +179,14 @@ gnome_icon_selector_construct (GnomeIconSelector *iselector,
 			       const gchar *history_id,
 			       const gchar *dialog_title,
 			       GtkWidget *selector_widget,
-			       gboolean is_popup)
+			       GtkWidget *browse_dialog)
 {
 	g_return_if_fail (iselector != NULL);
 	g_return_if_fail (GNOME_IS_ICON_SELECTOR (iselector));
 
 	gnome_selector_construct (GNOME_SELECTOR (iselector),
 				  history_id, dialog_title,
-				  selector_widget, is_popup);
+				  selector_widget, browse_dialog);
 }
 
 /**
@@ -158,35 +205,45 @@ gnome_icon_selector_new (const gchar *history_id,
 {
 	GnomeIconSelector *iselector;
 	GtkWidget *box, *sb, *frame, *list;
+	GtkFileSelection *filesel;
+	GtkAdjustment *vadj;
 
 	iselector = gtk_type_new (gnome_icon_selector_get_type ());
 
 	box = gtk_hbox_new (FALSE, 5);
 
 	sb = gtk_vscrollbar_new (NULL);
+	vadj = gtk_range_get_adjustment (GTK_RANGE(sb));
 	gtk_box_pack_end (GTK_BOX(box), sb, FALSE, FALSE, 0);
 	gtk_widget_show (sb);
+
+	list = gnome_icon_list_new_flags (ICON_SIZE+30, vadj, FALSE);
+	gtk_widget_set_usize (list, 100, 300);
 
 	frame = gtk_frame_new (NULL);
 	gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_IN);
 	gtk_box_pack_start (GTK_BOX (box), frame, TRUE, TRUE, 0);
 	gtk_widget_show (frame);
 
-	list = gnome_icon_list_new (ICON_SIZE+30,
-				    gtk_range_get_adjustment(GTK_RANGE(sb)),
-				    FALSE);
-	gtk_widget_set_usize (list, 350, 300);
+	gtk_container_add (GTK_CONTAINER (frame), list);
 
 	gnome_icon_list_set_selection_mode (GNOME_ICON_LIST (list),
 					    GTK_SELECTION_SINGLE);
-	gtk_container_add (GTK_CONTAINER (frame), list);
 
 	iselector->_priv->icon_list = GNOME_ICON_LIST (list);
 	
 	gtk_widget_show_all (box);
 
+	filesel = GTK_FILE_SELECTION (gtk_file_selection_new (dialog_title));
+
+	gtk_signal_connect (GTK_OBJECT (filesel->cancel_button), "clicked",
+			    browse_dialog_cancel, iselector);
+	gtk_signal_connect (GTK_OBJECT (filesel->ok_button), "clicked",
+			    browse_dialog_ok, iselector);
+
 	gnome_icon_selector_construct (iselector, history_id,
-				       dialog_title, box, FALSE);
+				       dialog_title, box,
+				       GTK_WIDGET (filesel));
 
 	return GTK_WIDGET (iselector);
 }
@@ -195,7 +252,7 @@ GtkWidget *
 gnome_icon_selector_new_custom (const gchar *history_id,
 				const gchar *dialog_title,
 				GtkWidget *selector_widget,
-				gboolean is_popup)
+				GtkWidget *browse_dialog)
 {
 	GnomeIconSelector *iselector;
 
@@ -203,7 +260,7 @@ gnome_icon_selector_new_custom (const gchar *history_id,
 
 	gnome_icon_selector_construct (iselector, history_id,
 				       dialog_title, selector_widget,
-				       is_popup);
+				       browse_dialog);
 
 	return GTK_WIDGET (iselector);
 }
@@ -217,7 +274,7 @@ gnome_icon_selector_destroy (GtkObject *object)
 	/* remember, destroy can be run multiple times! */
 
 	g_return_if_fail (object != NULL);
-	g_return_if_fail (GNOME_IS_SELECTOR (object));
+	g_return_if_fail (GNOME_IS_ICON_SELECTOR (object));
 
 	iselector = GNOME_ICON_SELECTOR (object);
 
@@ -231,7 +288,7 @@ gnome_icon_selector_finalize (GObject *object)
 	GnomeIconSelector *iselector;
 
 	g_return_if_fail (object != NULL);
-	g_return_if_fail (GNOME_IS_SELECTOR (object));
+	g_return_if_fail (GNOME_IS_ICON_SELECTOR (object));
 
 	iselector = GNOME_ICON_SELECTOR (object);
 
@@ -242,10 +299,30 @@ gnome_icon_selector_finalize (GObject *object)
 		(* G_OBJECT_CLASS (parent_class)->finalize) (object);
 }
 
+static void
+clear_handler (GnomeSelector *selector)
+{
+	GnomeIconSelector *iselector;
+
+	g_return_if_fail (selector != NULL);
+	g_return_if_fail (GNOME_IS_ICON_SELECTOR (selector));
+
+	iselector = GNOME_ICON_SELECTOR (selector);
+
+	gnome_icon_list_clear (iselector->_priv->icon_list);
+}
+
 static gboolean
-check_filename (GnomeSelector *selector, const gchar *filename)
+check_filename_handler (GnomeSelector *selector, const gchar *filename)
 {
 	const char *mimetype;
+
+	g_return_val_if_fail (selector != NULL, FALSE);
+	g_return_val_if_fail (GNOME_IS_ICON_SELECTOR (selector), FALSE);
+	g_return_val_if_fail (filename != NULL, FALSE);
+
+	if (g_file_test (filename, G_FILE_TEST_ISDIR))
+		return TRUE;
 
 	mimetype = gnome_mime_type (filename);
 	if (!mimetype || strncmp (mimetype, "image", sizeof("image")-1))
@@ -272,6 +349,7 @@ append_an_icon (GnomeIconSelector *gis, const gchar *path)
 	
 	w = gdk_pixbuf_get_width (iml);
 	h = gdk_pixbuf_get_height (iml);
+
 	if(w>h) {
 		if(w>ICON_SIZE) {
 			h = h*((double)ICON_SIZE/w);
@@ -285,7 +363,7 @@ append_an_icon (GnomeIconSelector *gis, const gchar *path)
 	}
 	w = w>0?w:1;
 	h = h>0?h:1;
-	
+
 	im = gdk_pixbuf_scale_simple (iml, w, h, GDK_INTERP_BILINEAR);
 	gdk_pixbuf_unref (iml);
 	if(!im)
@@ -311,7 +389,7 @@ set_flag (GtkWidget *w, int *flag)
 }
 
 static void
-update_filelist (GnomeSelector *gs)
+update_filelist_handler (GnomeSelector *gs)
 {
 	GtkWidget *label;
 	GtkWidget *progressbar;
@@ -321,7 +399,9 @@ update_filelist (GnomeSelector *gs)
 	GnomeIconSelector *gis;
 
 	g_return_if_fail (gs != NULL);
-	if (!gs->_priv->file_list) return;
+	g_return_if_fail (GNOME_IS_ICON_SELECTOR (gs));
+
+	/* if (!gs->_priv->file_list) return; */
 
 	gis = GNOME_ICON_SELECTOR (gs);
 
@@ -337,13 +417,13 @@ update_filelist (GnomeSelector *gs)
 
 	if (!label && !progressbar) {
 		label = gtk_label_new (_("Loading Icons..."));
-		gtk_box_pack_start (GTK_BOX (gs->_priv->box), label,
-				    FALSE, FALSE, 0);
+		gtk_box_pack_end (GTK_BOX (gs->_priv->box), label,
+				  FALSE, FALSE, 0);
 		gtk_widget_show (label);
 
 		progressbar = gtk_progress_bar_new ();
-		gtk_box_pack_start (GTK_BOX (gs->_priv->box),
-				    progressbar, FALSE, FALSE, 0);
+		gtk_box_pack_end (GTK_BOX (gs->_priv->box),
+				  progressbar, FALSE, FALSE, 0);
 		gtk_widget_show (progressbar);
 
 		/* attach label to progressbar, progressbar to gs 

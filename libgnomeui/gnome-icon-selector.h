@@ -72,13 +72,13 @@ GtkWidget   *gnome_icon_selector_new         (const gchar *history_id,
 GtkWidget   *gnome_icon_selector_new_custom  (const gchar *history_id,
 					      const gchar *dialog_title,
 					      GtkWidget *selector_widget,
-					      gboolean is_popup);
+					      GtkWidget *browse_dialog);
 
 void         gnome_icon_selector_construct   (GnomeIconSelector *selector,
                                               const gchar *history_id,
 					      const gchar *dialog_title,
 					      GtkWidget *selector_widget,
-					      gboolean is_popup);
+					      GtkWidget *browse_dialog);
 
 
 END_GNOME_DECLS
