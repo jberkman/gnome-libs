@@ -363,7 +363,7 @@ zvt_shutdown_subshell (struct vt_em *vt)
 	GSList *l;
 	int status;
 
-	g_return_if_fail (vt != NULL);
+	g_return_val_if_fail (vt != NULL, -1);
 
 	/* shutdown pty through helper */
 	if (vt->pty_tag) {

@@ -60,19 +60,17 @@ struct _vtx
 {
   struct vt_em vt;
 
+  /* ALL FOLLOWING FIELDS ARE TO BE CONSIDERED PRIVATE - USE AT OWN RISK */
+
   /* when updating, background colour matches for whole contents of line */
   unsigned int back_match:1;
 
   /* selection stuff */
-  char *selection_data;		/* actual selection */
+  uint32 *selection_data;		/* actual selection */
   int selection_size;
 
   /* 256 bits of word class characters (assumes a char is 8 bits or more) */
   unsigned char wordclass[32];
-
-  /* rendering buffer, for building output strings */
-  char *runbuffer;
-  int runbuffer_size;
 
   /* true if something selected */
   int selected;
@@ -87,6 +85,12 @@ struct _vtx
   int selstartxold, selstartyold;
   int selendxold, selendyold;
 
+  /* rendering callbacks */
+  void (*draw_text)(void *user_data, struct vt_line *line, int row, int col, int len, int attr);
+  void (*scroll_area)(void *user_data, int firstrow, int count, int offset, int fill);
+  /* set the cursor on/off, return old state */
+  int  (*cursor_state)(void *user_data, int state);
+
   /* added in gnome-libs 1.0.10
      ... this shouldn't break bin compatibility? */
   unsigned char scroll_type;	/* how we scroll (see VT_SCROLLTYPE enum) */
@@ -94,7 +98,7 @@ struct _vtx
 
 
 /* from update.c */
-char *vt_get_selection   (struct _vtx *vx, int *len);
+char *vt_get_selection   (struct _vtx *vx, int size, int *len);
 void vt_clear_selection  (struct _vtx *vx);
 void vt_fix_selection    (struct _vtx *vx);
 void vt_draw_selection   (struct _vtx *vx);
@@ -102,18 +106,10 @@ void vt_update_rect      (struct _vtx *vx, int fill, int sx, int sy, int ex, int
 void vt_update           (struct _vtx *vt, int state);
 void vt_draw_cursor      (struct _vtx *vx, int state);
 void vt_set_wordclass    (struct _vtx *vx, unsigned char *s);
+int  vt_get_attr_at      (struct _vtx *vx, int col, int row);
 			 
 struct _vtx *vtx_new     (int width, int height, void *user_data);
 void vtx_destroy         (struct _vtx *vx);
-void vtx_set_fontsize    (struct _vtx *vx, int width, int height);
-			 
-/* defined by caller */	 
-void vt_draw_text        (void *user_data, int col, int row, char *text, int len, int attr);
-void vt_scroll_area      (void *user_data, int firstrow, int count, int offset, int fill);
-int  vt_cursor_state     (void *user_data, int state);
-void vt_hightlight_block (void *user_data, int col, int row, int width, int height);
-int  vt_get_attr_at      (struct _vtx *vx, int col, int row);
-
 
 #ifdef __cplusplus
 	   }

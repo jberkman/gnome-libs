@@ -95,7 +95,11 @@ static void zvt_term_fix_scrollbar (ZvtTerm *term);
 static void vtx_unrender_selection (struct _vtx *vx);
 static void zvt_term_scroll (ZvtTerm *term, int n);
 static void zvt_term_scroll_by_lines (ZvtTerm *term, int n);
+static int vt_cursor_state(void *user_data, int state);
 
+/* callbacks from update layer */
+void vt_draw_text(void *user_data, struct vt_line *line, int row, int col, int len, int attr);
+void vt_scroll_area(void *user_data, int firstrow, int count, int offset, int fill);
 
 /* transparent terminal prototypes */
 static Window     get_desktop_window (Window the_window);
@@ -237,6 +241,11 @@ zvt_term_init (ZvtTerm *term)
   term->vx->vt.ring_my_bell = zvt_term_bell;
   term->vx->vt.change_my_name = zvt_term_title_changed_raise;
 
+  /* set rendering callbacks */
+  term->vx->draw_text = vt_draw_text;
+  term->vx->scroll_area = vt_scroll_area;
+  term->vx->cursor_state = vt_cursor_state;
+
   term->shadow_type = GTK_SHADOW_NONE;
   term->term_window = NULL;
   term->cursor_bar = NULL;
@@ -286,9 +295,11 @@ zvt_term_init (ZvtTerm *term)
   zp = g_malloc(sizeof(*zp));
   if (zp) {
     zp->scrollselect_id = -1;
-    zp->text16 = 0;
-    zp->text16len = 0;
+    zp->text_expand = 0;
+    zp->text_expandlen = 0;
     zp->scroll_position = 0;
+    zp->fonttype=0;
+    zp->default_char=0;
     zp->bold_save = 0;
     zp->transpix = 0;
   }
@@ -315,6 +326,14 @@ zvt_term_init (ZvtTerm *term)
       GDK_SELECTION_PRIMARY,
       GDK_SELECTION_TYPE_STRING, 
       0);
+#ifdef ZVT_UTF
+  gtk_selection_add_target (
+      GTK_WIDGET (term),
+      GDK_SELECTION_PRIMARY,
+      gdk_atom_intern ("UTF-8", FALSE),
+      1);
+#endif
+
 }
 
 /**
@@ -508,8 +527,8 @@ zvt_term_destroy (GtkObject *object)
 
   /* release private data */
   if (zp) {
-    if (zp->text16)
-      g_free(zp->text16);
+    if (zp->text_expand)
+      g_free(zp->text_expand);
     if (zp->bold_save)
       gdk_pixmap_unref(zp->bold_save);
     free_transpix(term);
@@ -1130,17 +1149,36 @@ i to * if font_bold is NULL, then the font is emboldened manually (overstrike)
 static void
 zvt_term_set_fonts_internal(ZvtTerm *term, GdkFont *font, GdkFont *font_bold)
 {
-  XFontStruct *xfont;
   struct _zvtprivate *zp;
 
   /* ignore no-font setting */
   if (font==NULL)
     return;
 
-  /* this is to get the real font width */
-  xfont = (XFontStruct *)GDK_FONT_XFONT(font);
-  term->charwidth = xfont->max_bounds.width;
-  term->charheight = font->ascent + font->descent;
+  zp = gtk_object_get_data (GTK_OBJECT (term), "_zvtprivate");
+
+  /* get the font/fontset size, and set the font type */
+  switch (font->type) {
+  case GDK_FONT_FONT: {
+    XFontStruct *xfont;
+    xfont = (XFontStruct *)GDK_FONT_XFONT(font);
+    term->charwidth = xfont->max_bounds.width;
+    term->charheight = font->ascent + font->descent;
+    if ((xfont->min_byte1 == 0) && (xfont->max_byte1 == 0))
+      zp->fonttype = ZVT_FONT_1BYTE;
+    else
+      zp->fonttype = ZVT_FONT_2BYTE;
+    break;
+  }
+  case GDK_FONT_FONTSET: {
+    XFontSet fontset = (XFontSet) ((GdkFontPrivate *)font)->xfont;
+    XFontSetExtents *extents = XExtentsOfFontSet(fontset);
+    term->charwidth = extents->max_logical_extent.width;
+    term->charheight = extents->max_logical_extent.height;
+    zp->fonttype = ZVT_FONT_FONTSET;
+  }
+  }
+  d(printf("fonttype = %d\n", zp->fonttype));
 
   /* set up a size pending request so that no matter
    * what the queue resize will resize the widget to
@@ -1163,7 +1201,6 @@ zvt_term_set_fonts_internal(ZvtTerm *term, GdkFont *font, GdkFont *font_bold)
   /* setup bold_save pixmap, for when drawing bold, we need to save
      what was at the end of the text, so we can restore it.  Affects
      tiny fonts only - what a mess */
-  zp = gtk_object_get_data (GTK_OBJECT (term), "_zvtprivate");
   if (zp && term->font_bold==0) {
     int depth;
 
@@ -1297,13 +1334,36 @@ zvt_term_fix_scrollbar (ZvtTerm *term)
   gtk_signal_emit_by_name (GTK_OBJECT (term->adjustment), "changed");
 }
 
-static void
-request_paste (GtkWidget *widget)
+/* keep calling with incrementing 'type' until you get a valid return,
+   or nothing
+   returns true if a paste was actually requested. */
+static int
+request_paste (GtkWidget *widget, int type)
 {
   GdkAtom string_atom;
+#ifdef ZVT_UTF
+  char *types[] = {"UTF-8", "STRING"};
+  int index;
+  struct _zvtprivate *zp = _ZVT_PRIVATE(widget);
 
+  if ( ((ZvtTerm *)widget)->vx->vt.coding != ZVT_CODE_UTF8)
+    index = type+1;
+  else
+    index = type;
+
+  if (index>sizeof(types)/sizeof(types[0])) {
+    zp->lastselectiontype = -1;
+    return 0;
+  }
+
+  string_atom = gdk_atom_intern (types[index], FALSE);
+  zp->lastselectiontype = type;
+
+  d(printf(" %s atom = %d\n", types[index], (int)string_atom));
+#else
   /* Get the atom corresonding to the target "STRING" */
   string_atom = gdk_atom_intern ("STRING", FALSE);
+#endif
 
   if (string_atom == GDK_NONE) {
     g_warning("WARNING: Could not get string atom\n");
@@ -1312,6 +1372,7 @@ request_paste (GtkWidget *widget)
   /* And request the "STRING" target for the primary selection */
   gtk_selection_convert (widget, GDK_SELECTION_PRIMARY, string_atom,
 			 GDK_CURRENT_TIME);
+  return 1;
 }
 
 /*
@@ -1421,7 +1482,7 @@ zvt_term_button_press (GtkWidget      *widget,
     break;
 
   case 2:			/* middle button - paste */
-    request_paste (widget);
+    request_paste (widget, 0);
     break;
 
   case 3:			/* right button - select extend? */
@@ -1558,7 +1619,8 @@ zvt_term_button_release (GtkWidget      *widget,
       vt_fix_selection(vx);
       vt_draw_selection(vx);
           
-      vt_get_selection(vx, 0);
+      /* get the selection as 32 bit utf */
+      vt_get_selection(vx, 4, 0);
       
       gtk_selection_owner_set (widget,
 			       GDK_SELECTION_PRIMARY,
@@ -1695,6 +1757,97 @@ zvt_term_selection_clear (GtkWidget *widget, GdkEventSelection *event)
   return TRUE;
 }
 
+#ifdef ZVT_UTF
+
+/* perform data-conversion on the selection */
+static char *
+zvt_term_convert_selection(ZvtTerm *term, int type, int *outlen)
+{
+  char *out;
+  int i;
+  uint32 c;
+
+  switch (type) {
+  default:
+  case 0: {			/* this is ascii/isolatin1 */
+    unsigned char *o;
+    d(printf("converting selection to ISOLATIN1\n"));
+    out = g_malloc(term->vx->selection_size);
+    o = out;
+    for(i=0;i<term->vx->selection_size;i++) {
+      c = term->vx->selection_data[i];
+      o[i] = c<0x100?c:'?';
+    }
+    *outlen = term->vx->selection_size;
+    break;
+  }
+  case 1: {			/* this is utf-8, basically a local implementation of wcstombs() */
+    unsigned char *o;
+    unsigned int len=0;
+    d(printf("converting selection to UTF-8\n"));
+    for(i=0;i<term->vx->selection_size;i++) {
+      c = term->vx->selection_data[i];
+      if (c<0x80)
+	len+=1;
+      else if (c<0x800)
+	len+=2;
+      else if (c<0x10000)
+	len+=3;
+      else if (c<0x200000)
+	len+=4;
+      else if (c<0x4000000)
+	len+=5;
+      else
+	len+=6;
+    }
+
+    out = g_malloc(len);
+    o = out;
+    *outlen = len;
+
+    for(i=0;i<term->vx->selection_size;i++) {
+      c = term->vx->selection_data[i];
+      if (c<0x80)
+	*o++=c;
+      else if (c<0x800) {
+	*o++=(c>>6)|0xc0;
+	*o++=(c&0x3f)|0x80;
+      } else if (c<0x10000) {
+	*o++=(c>>12)|0xe0;
+	*o++=((c>>6)&0x3f)|0x80;
+	*o++=(c&0x3f)|0x80;
+      } else if (c<0x200000) {
+	*o++=(c>>18)|0xf0;
+	*o++=((c>>12)&0x3f)|0x80;
+	*o++=((c>>6)&0x3f)|0x80;
+	*o++=(c&0x3f)|0x80;
+      } else if (c<0x4000000) {
+	*o++=(c>>24)|0xf8;
+	*o++=((c>>18)&0x3f)|0x80;
+	*o++=((c>>12)&0x3f)|0x80;
+	*o++=((c>>6)&0x3f)|0x80;
+	*o++=(c&0x3f)|0x80;
+      } else
+	/* these wont happen */
+	;
+    }
+    d(printf("len = %d, but length\n", len);
+    {
+      unsigned char *p = out;
+      printf("in utf: ");
+      while(p<o) {
+	printf("%02x", *p++);
+      }
+      printf("\n");
+    });
+    break;
+  }
+  }
+
+  return out;
+}
+#endif
+
 /* supply the current selection to the caller */
 static void
 zvt_term_selection_get (GtkWidget        *widget, 
@@ -1704,6 +1857,11 @@ zvt_term_selection_get (GtkWidget        *widget,
 {
   struct _vtx *vx;
   ZvtTerm *term;
+#ifdef ZVT_UTF
+  char *converted;
+  int len;
+  GdkAtom atom;
+#endif
 
   g_return_if_fail (widget != NULL);
   g_return_if_fail (ZVT_IS_TERM (widget));
@@ -1712,8 +1870,22 @@ zvt_term_selection_get (GtkWidget        *widget,
   term = ZVT_TERM (widget);
   vx = term->vx;
 
+#ifdef ZVT_UTF
+  /* convert selection based on info */
+  /* the selection is actually stored in 32 bit chars */
+  if (info==1)
+    atom = gdk_atom_intern ("UTF-8", FALSE);
+  else
+    atom = GDK_SELECTION_TYPE_STRING;
+
+  converted = zvt_term_convert_selection(term, info, &len);
+  gtk_selection_data_set (selection_data_ptr, atom,
+			  8, converted, len);
+  g_free(converted);
+#else
   gtk_selection_data_set (selection_data_ptr, GDK_SELECTION_TYPE_STRING,
 			  8, vx->selection_data, vx->selection_size);
+#endif
 }
 
 /* receive a selection */
@@ -1735,13 +1907,24 @@ zvt_term_selection_received (GtkWidget *widget, GtkSelectionData *selection_data
   d(printf("got selection from system\n"));
 
   /* **** IMPORTANT **** Check to see if retrieval succeeded  */
+  /* If we have more selection types we can ask for, try the next one,
+     until there are none left */
   if (selection_data->length < 0) {
-    g_print ("Selection retrieval failed\n");
+    struct _zvtprivate *zp = _ZVT_PRIVATE(widget);
+
+    /* now, try again with next selection type */
+    if (request_paste(widget, zp->lastselectiontype+1)==0)
+      g_print ("Selection retrieval failed\n");
     return;
   }
 
+  /* we will get a selection type of atom(UTF-8) for utf text,
+     perhaps that needs to do something different if the terminal
+     isn't actually in utf8 mode? */
+
   /* Make sure we got the data in the expected form */
-  if (selection_data->type != GDK_SELECTION_TYPE_STRING) {
+  if (selection_data->type != GDK_SELECTION_TYPE_STRING
+      && selection_data->type != gdk_atom_intern("UTF-8", FALSE)) {
     g_print ("Selection \"STRING\" was not returned as strings!\n");
     return;
   }
@@ -2005,7 +2188,7 @@ zvt_term_key_press (GtkWidget *widget, GdkEventKey *event)
   case GDK_KP_Insert:
   case GDK_Insert:
     if ((event->state & GDK_SHIFT_MASK) == GDK_SHIFT_MASK){
-        request_paste (widget);
+        request_paste (widget, 0);
     } else {
       p+=sprintf (p, "\033[2~");
     }
@@ -2397,9 +2580,9 @@ zvt_term_set_background (ZvtTerm *terminal, char *pixmap_file,
 }
 
 /*
- * external rendering functions called by vt_update, etc
+ * callback rendering functions called by vt_update, etc
  */
-int
+static int
 vt_cursor_state(void *user_data, int state)
 {
   ZvtTerm *term;
@@ -2425,7 +2608,7 @@ vt_cursor_state(void *user_data, int state)
 }
 
 void
-vt_draw_text(void *user_data, int col, int row, char *text, int len, int attr)
+vt_draw_text(void *user_data, struct vt_line *line, int row, int col, int len, int attr)
 {
   GdkFont *f;
   struct _vtx *vx;
@@ -2437,8 +2620,14 @@ vt_draw_text(void *user_data, int col, int row, char *text, int len, int attr)
   int overstrike=0;
   int dofill=0;
   int offx, offy, x, y;
+  int i;
+  uint32 c;
   struct _zvtprivate *zp=0;
 
+  GdkFontPrivate *font_private;
+  GdkWindowPrivate *drawable_private;
+  GdkGCPrivate *gc_private;
+  
   widget = user_data;
 
   g_return_if_fail (widget != NULL);
@@ -2459,6 +2648,7 @@ vt_draw_text(void *user_data, int col, int row, char *text, int len, int attr)
   y = row * term->charheight + term->font->ascent;
   offx = widget->style->klass->xthickness + PADDING;
   offy = widget->style->klass->ythickness;
+  zp = gtk_object_get_data (GTK_OBJECT (term), "_zvtprivate");
 
   if (attr & VTATTR_BOLD)  {
     or = 8;
@@ -2466,7 +2656,6 @@ vt_draw_text(void *user_data, int col, int row, char *text, int len, int attr)
     if (f==NULL) {
       f = term->font;
       overstrike = 1;
-      zp = gtk_object_get_data (GTK_OBJECT (term), "_zvtprivate");
       if (zp && zp->bold_save) {
 	gdk_draw_pixmap(zp->bold_save, term->fore_gc, GTK_WIDGET(term)->window,
 			x + offx + len*term->charwidth, offy + row*term->charheight,
@@ -2572,91 +2761,111 @@ vt_draw_text(void *user_data, int col, int row, char *text, int len, int attr)
 #endif
   d(printf("txt = '%.*s'\n", len, text));
 
-  /* check to see if we have a 2-byte font.
-     This should really be checked at font-setting time so it isn't done
-     every render, but its fairly cheap ... */
-  {
-    GdkFontPrivate *font_private;
+  font_private = (GdkFontPrivate*) f;
+  drawable_private = (GdkWindowPrivate *)widget->window;
+  gc_private = (GdkGCPrivate *)fgc;
+
+  /* make sure we have the space to expand the text */
+  if (zp->text_expand==0 || zp->text_expandlen<len) {
+    zp->text_expand = g_realloc(zp->text_expand, len*sizeof(uint32));
+    zp->text_expandlen = len;
+  }
+
+  /* convert text in input into the format suitable for output ... */
+  switch (zp->fonttype) {
+  case ZVT_FONT_1BYTE: {		/* simple single-byte font */
+    char *expand = zp->text_expand;
     XFontStruct *xfont;
 
-    font_private = (GdkFontPrivate*) f;
+    for(i=0;i<len;i++) {
+      c=VT_ASCII(line->data[i+col]);
+      if (c>=256)
+	c='?';
+      expand[i]=c&0xff;
+    }
+
+    /* render characters, with fill if we can */
     xfont = (XFontStruct *) font_private->xfont;
-    if (((xfont->min_byte1 == 0) && (xfont->max_byte1 == 0))
-	|| (zp==0 && (zp = gtk_object_get_data (GTK_OBJECT (term), "_zvtprivate"))) == 0) {
-      /* single-byte fonts */
-      if (dofill) {
-	GdkWindowPrivate *drawable_private;
-	GdkGCPrivate *gc_private;
-
-	drawable_private = (GdkWindowPrivate *)widget->window;
-	gc_private = (GdkGCPrivate *)fgc;
-	XSetFont(drawable_private->xdisplay, gc_private->xgc, xfont->fid);
-	XDrawImageString(drawable_private->xdisplay, drawable_private->xwindow,
-			 gc_private->xgc, offx + x, offy + y, text, len);
-      } else {
-	gdk_draw_text(widget->window, f, fgc,
-		      offx + x, offy + y,
-		      text, len);
-      }
-      if (overstrike)
-	gdk_draw_text(widget->window, f, fgc,
-		      offx + x + 1, offy + y,
-		      text, len);
+    XSetFont(drawable_private->xdisplay, gc_private->xgc, xfont->fid);
+    if (dofill) {
+      XDrawImageString(drawable_private->xdisplay, drawable_private->xwindow,
+		       gc_private->xgc, offx + x, offy + y, expand, len);
     } else {
-      XChar2b *text16 = zp->text16;
-      int i;
-    
-      /* double-byte fonts ... expand first */
-      if (zp->text16len<len || text16==0) {
-	zp->text16len = len;
-	zp->text16 = g_realloc(zp->text16, len*sizeof(zp->text16[0]));
-	text16 = zp->text16;
-      }
+      XDrawString(drawable_private->xdisplay, drawable_private->xwindow,
+		  gc_private->xgc, offx + x, offy + y, expand, len);
+    }
+    if (overstrike)
+      XDrawString(drawable_private->xdisplay, drawable_private->xwindow,
+		  gc_private->xgc, offx + x + 1, offy + y + 1, expand, len);
+  }
+  break;
+  case ZVT_FONT_2BYTE: {
+    XChar2b *expand16 = zp->text_expand;
+    XFontStruct *xfont;
 
-      for (i=0;i<len;i++) {
-	text16[i].byte2=text[i];
-	text16[i].byte1=0;
-      }
+    /* this needs to check for valid chars? */
+    for (i=0;i<len;i++) {
+      c=VT_ASCII(line->data[i+col]);
+      expand16[i].byte2=c&0xff;
+      expand16[i].byte1=(c>>8)&0xff;
+      /*printf("(%04x)", c);*/
+    }
+    /*    printf("\n");*/
 
-      if (dofill) {
-	GdkWindowPrivate *drawable_private;
-	GdkGCPrivate *gc_private;
+    /* render 2-byte characters, with fill if we can */
+    xfont = (XFontStruct *) font_private->xfont;
+    XSetFont(drawable_private->xdisplay, gc_private->xgc, xfont->fid);
+    if (dofill) {
+      XDrawImageString16(drawable_private->xdisplay, drawable_private->xwindow,
+			 gc_private->xgc, offx + x, offy + y, expand16, len);
+    } else {
+      XDrawString16(drawable_private->xdisplay, drawable_private->xwindow,
+		    gc_private->xgc, offx + x, offy + y, expand16, len);
+    }
+    if (overstrike)
+      XDrawString16(drawable_private->xdisplay, drawable_private->xwindow,
+		    gc_private->xgc, offx + x + 1, offy + y + 1, expand16, len);
+  }
+  break;
+  /* this is limited to 65535 characters! */
+  case ZVT_FONT_FONTSET: {
+    wchar_t *expandwc = zp->text_expand;
+    XFontSet fontset = (XFontSet) font_private->xfont;
 
-	drawable_private = (GdkWindowPrivate *)widget->window;
-	gc_private = (GdkGCPrivate *)fgc;
-	XSetFont(drawable_private->xdisplay, gc_private->xgc, xfont->fid);
-	XDrawImageString16(drawable_private->xdisplay, drawable_private->xwindow,
-			   gc_private->xgc, offx + x, offy + y,
-			   text16, len*sizeof(text16[0]));
-      } else {
-	gdk_draw_text(widget->window, f, fgc,
-		      offx + x, offy + y,
-		      (char *)text16, len*sizeof(text16[0]));
-      }
-
-      if (overstrike)
-	gdk_draw_text(widget->window, f, fgc,
-		      offx + x + 1, offy + y,
-		      (char *)text16, len*sizeof(text16[0]));
+    for (i=0;i<len;i++) {
+      expandwc[i] = VT_ASCII(line->data[i+col]);
     }
 
-    /* check for underline */
-    if (attr&VTATTR_UNDERLINE) {
-      gdk_draw_line(widget->window, fgc,
-		    offx + x,
-		    offy + y + 1,
-		    offx + (col + len) * term->charwidth - 1,
-		    offy + y + 1);
+    /* render wide characters, with fill if we can */
+    if (dofill) {
+      XwcDrawImageString(drawable_private->xdisplay, drawable_private->xwindow,
+			 fontset, gc_private->xgc, offx + x, offy + y, expandwc, len);
+    } else {
+      XwcDrawString(drawable_private->xdisplay, drawable_private->xwindow,
+		    fontset, gc_private->xgc, offx + x, offy + y, expandwc, len);
     }
+    if (overstrike)
+      XwcDrawString(drawable_private->xdisplay, drawable_private->xwindow,
+		    fontset, gc_private->xgc, offx + x + 1, offy + y + 1, expandwc, len);
+  }
+  }
 
-    if (overstrike && zp && zp->bold_save) {
-      gdk_draw_pixmap(GTK_WIDGET(term)->window,
-		      term->fore_gc,
-		      zp->bold_save,
-		      0, 0,
-		      x + offx + len*term->charwidth, offy + row*term->charheight,
-		      1, term->charheight);
-    }
+  /* check for underline */
+  if (attr&VTATTR_UNDERLINE) {
+    gdk_draw_line(widget->window, fgc,
+		  offx + x,
+		  offy + y + 1,
+		  offx + (col + len) * term->charwidth - 1,
+		  offy + y + 1);
+  }
+  
+  if (overstrike && zp && zp->bold_save) {
+    gdk_draw_pixmap(GTK_WIDGET(term)->window,
+		    term->fore_gc,
+		    zp->bold_save,
+		    0, 0,
+		    x + offx + len*term->charwidth, offy + row*term->charheight,
+		    1, term->charheight);
   }
 }
 
@@ -2909,7 +3118,7 @@ zvt_term_get_buffer(ZvtTerm *term, int *len, int type, int sx, int sy, int ex, i
 {
   struct _vtx *vx;
   int ssx, ssy, sex, sey, stype, slen;
-  char *sdata;
+  uint32 *sdata;
   char *data;
 
   g_return_val_if_fail (term != NULL, 0);
@@ -2940,7 +3149,8 @@ zvt_term_get_buffer(ZvtTerm *term, int *len, int type, int sx, int sy, int ex, i
 
   vt_fix_selection(vx);
 
-  data = vt_get_selection(vx, len);
+  /* this always currently gets the data as bytes */
+  data = vt_get_selection(vx, 1, len);
   
   vx->selstartx = ssx;
   vx->selstarty = ssy;

@@ -25,6 +25,9 @@
 
 #include "lists.h"
 
+/* for utf-8 input support */
+#define ZVT_UTF 1
+
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
@@ -150,7 +153,24 @@ struct vt_em {
   void (*change_my_name)(void *user_data, VTTITLE_TYPE type, char *name);	/* ring my bell ... */
 
   void *user_data;		/* opaque external data handle for callbacks */
+
+#ifdef ZVT_UTF
+  union {
+    struct {
+      uint32 wchar;		/* current wide char, for some states */
+      int shiftchar;		/* the first char of a mb char, shifted, scanning for input bits */
+      int shift;		/* the amount to shift 'shiftchar' to get valid data/map to wchar */
+    } utf8;
+  } decode;
+  int coding;			/* data encoding method */
+#endif
 };
+
+#ifdef ZVT_UTF
+  /* possible supported encoding methods */
+#define ZVT_CODE_ISOLATIN1 0
+#define ZVT_CODE_UTF8 1
+#endif
 
 #define VTMODE_INSERT 0x00000001 /* insert mode active */
 #define VTMODE_SEND_MOUSE 0x00000002 /* send mouse clicks */
@@ -160,6 +180,12 @@ struct vt_em {
 #define VTMODE_APP_KEYPAD 0x20	/* application keypad on */
 
 #define VTMODE_ALTSCREEN 0x80000000 /* on alternate screen? */
+
+/* some useful macro's for working with the line contents */
+#define VT_BLANK(n) ((n)==0 || (n)==9 || (n)==32)
+#define VT_BMASK(n) ((n) & (VTATTR_FORECOLOURM|VTATTR_BACKCOLOURM|VTATTR_REVERSE|VTATTR_UNDERLINE))
+#define VT_ASCII(n) ((((n)&VTATTR_DATAMASK)==0 || ((n)&VTATTR_DATAMASK)==9)?32:((n)&VTATTR_DATAMASK))
+#define VT_THRESHHOLD (4)
 
 struct vt_em *vt_init           (struct vt_em *vt, int width, int height);
 void          vt_destroy        (struct vt_em *vt);

@@ -105,7 +105,7 @@ gint
 main (gint argc, gchar *argv[])
 {
   int i, c, cmdindex, scrollbacklines, login_shell;
-  char buffer[60], **p;
+  char buffer[60], **p, *fontname=FONT;
   struct passwd *pw;
   GtkWidget *term, *hbox, *scrollbar;
   enum { RIGHT, LEFT } scrollpos = LEFT;
@@ -138,7 +138,7 @@ main (gint argc, gchar *argv[])
   gtk_init(&argc, &argv);
 
   /* process arguments */
-  while ( (cmdindex==0) && (c=getopt(argc, argv, "le:s:rh")) != EOF ) {
+  while ( (cmdindex==0) && (c=getopt(argc, argv, "le:s:rhf:")) != EOF ) {
     switch(c) {
     case 'e':
       cmdindex = optind-1;	/* index of argv array to pass to exec */
@@ -156,10 +156,14 @@ main (gint argc, gchar *argv[])
       scrollpos = RIGHT;
       break;
       
+    case 'f':
+      fontname = optarg;
+      break;
+
     case '?':
     case 'h':
     default:
-      fprintf(stderr, "Usage: zterm [-sNN] [-l] [-r] [-e command args]\n");
+      fprintf(stderr, "Usage: zterm [-sNN] [-l] [-r] [-f fontname] [-e command args]\n");
       exit(1);
       break;
     }
@@ -180,7 +184,7 @@ main (gint argc, gchar *argv[])
 
   /* create terminal */
   term = zvt_term_new_with_size(80,24);
-  zvt_term_set_font_name(ZVT_TERM (term), FONT);
+  zvt_term_set_font_name(ZVT_TERM (term), fontname);
   zvt_term_set_blink (ZVT_TERM (term), TRUE);
   zvt_term_set_bell (ZVT_TERM (term), TRUE);
   zvt_term_set_scrollback(ZVT_TERM (term), scrollbacklines);

@@ -65,10 +65,7 @@ static void vt_line_update(struct _vtx *vx, struct vt_line *l, struct vt_line *b
   int ch;
   /*  struct vt_line *bl;*/
   int sx, ex;			/* start/end selection */
-  struct vt_line *newline;
   int force;
-
-  newline = NULL;  
 
   d(printf("updating line %d: ", line));
   d(fwrite(l->data, l->width, 1, stdout));
@@ -124,10 +121,6 @@ static void vt_line_update(struct _vtx *vx, struct vt_line *l, struct vt_line *b
 
   /* scan line, checking back vs front, if there are differences, then
      look to render */
-  if (vx->vt.width > vx->runbuffer_size) {
-    vx->runbuffer_size = vx->vt.width;
-    vx->runbuffer = g_realloc(vx->runbuffer, vx->runbuffer_size);
-  }
 
   run = 0;
   attr = 0;
@@ -139,11 +132,6 @@ static void vt_line_update(struct _vtx *vx, struct vt_line *l, struct vt_line *b
 
   /* start out optimistic */
   vx->back_match = 1;
-
-#define VT_BLANK(n) ((n)==0 || (n)==9 || (n)==32)
-#define VT_BMASK(n) ((n) & (VTATTR_FORECOLOURM|VTATTR_BACKCOLOURM|VTATTR_REVERSE|VTATTR_UNDERLINE))
-#define VT_ASCII(n) ((((n)&0xff)==0 || ((n)&0xff)==9)?32:((n)&0xff))
-#define VT_THRESHHOLD (4)
 
   force = always;
 
@@ -186,15 +174,13 @@ static void vt_line_update(struct _vtx *vx, struct vt_line *l, struct vt_line *b
 	    commonrun=0;
 	  }
 #endif
-	  vx->runbuffer[run] = VT_ASCII(newchar);
 	  run++;
 	} else {
 	  /* render 'run so far' */
-	  vt_draw_text(vx->vt.user_data,
-		       runstart, line, vx->runbuffer, run, attr);
+	  vx->draw_text(vx->vt.user_data, bl,
+			line, runstart, run, attr);
 	  vx->back_match = always?0:
 	    ((VT_BMASK(newattr) == VT_BMASK(oldattr)) && VT_BLANK(oldchar&0xffff));
-	  vx->runbuffer[0] = VT_ASCII(newchar);
 	  run = 1;
 	  runstart = i;
 	  attr = newattr;
@@ -203,7 +189,6 @@ static void vt_line_update(struct _vtx *vx, struct vt_line *l, struct vt_line *b
       } else {
 	vx->back_match = always?0:
 	  ((VT_BMASK(newattr) == VT_BMASK(oldattr)) && VT_BLANK(oldchar&0xffff));
-	vx->runbuffer[0] = VT_ASCII(newchar);
 	runstart = i;
 	attr = newchar & VTATTR_MASK;
 	run=1;
@@ -215,17 +200,16 @@ static void vt_line_update(struct _vtx *vx, struct vt_line *l, struct vt_line *b
 	/* check for runs of common characters, if they are short, then
 	   use them */
 	if (commonrun>VT_THRESHHOLD) {
-	  vt_draw_text(vx->vt.user_data,
-		       runstart, line, vx->runbuffer, run, attr);
+	  vx->draw_text(vx->vt.user_data, bl,
+			line, runstart, run, attr);
 	  run=0;
 	  commonrun=0;
 	} else {
-	  vx->runbuffer[run+commonrun]=VT_ASCII(newchar);
 	  commonrun++;
 	}
 #else
-	vt_draw_text(vx->vt.user_data,
-		     runstart, line, vx->runbuffer, run, attr);
+	vx->draw_text(vx->vt.user_data, bl,
+		      line, runstart, run, attr);
 	run=0;
 #endif
       }
@@ -233,15 +217,13 @@ static void vt_line_update(struct _vtx *vx, struct vt_line *l, struct vt_line *b
   }
 
   if (run) {
-    vt_draw_text(vx->vt.user_data,
-		 runstart, line, vx->runbuffer, run, attr);
+    vx->draw_text(vx->vt.user_data, bl,
+		  line, runstart, run, attr);
   }
 
   l->modcount = 0;
   bl->line = line;
   l->line = line;
-
-  g_free(newline);
 }
 
 
@@ -358,7 +340,7 @@ static int vt_scroll_update(struct _vtx *vx, struct vt_line *fn, int firstline, 
     
     d(printf("scrolling ...\n"));
     fill = (nn->data[0] & VTATTR_BACKCOLOURM) >> VTATTR_BACKCOLOURB;
-    vt_scroll_area(vx->vt.user_data, firstline, count, offset, fill);
+    vx->scroll_area(vx->vt.user_data, firstline, count, offset, fill);
     /* force update of every other line */
 
     /* get the top line */
@@ -489,7 +471,7 @@ void vt_update(struct _vtx *vx, int update_state)
   nn = NULL;
   fn = NULL;
 
-  old_state = vt_cursor_state(vx->vt.user_data, 0);
+  old_state = vx->cursor_state(vx->vt.user_data, 0);
 
   /* find first line of visible screen, take into account scrollback */
   offset = vx->vt.scrollbackoffset;
@@ -735,7 +717,7 @@ void vt_update(struct _vtx *vx, int update_state)
   }
 #endif
 
-  vt_cursor_state(vx->vt.user_data, old_state);
+  vx->cursor_state(vx->vt.user_data, old_state);
 }
 
 /*
@@ -755,7 +737,7 @@ void vt_update_rect(struct _vtx *vx, int fill, int csx, int csy, int cex, int ce
   struct vt_line *bl;
   uint32 fillin;
 
-  old_state = vt_cursor_state(vx->vt.user_data, 0);	/* ensure cursor is really off */
+  old_state = vx->cursor_state(vx->vt.user_data, 0);	/* ensure cursor is really off */
 
   d(printf("updating (%d,%d) - (%d,%d)\n", csx, csy, cex, cey));
 
@@ -807,7 +789,7 @@ void vt_update_rect(struct _vtx *vx, int fill, int csx, int csy, int cex, int ce
     }
   }
 
-  vt_cursor_state(vx->vt.user_data, old_state);
+  vx->cursor_state(vx->vt.user_data, old_state);
 }
 
 /*
@@ -817,6 +799,8 @@ static int vt_in_wordclass(struct _vtx *vx, uint32 c)
 {
   int ch;
 
+  if (c>=256)
+    return 1;
   ch = c&0xff;
   return (vx->wordclass[ch>>3]&(1<<(ch&7)))!=0;
 }
@@ -981,12 +965,12 @@ void vt_fix_selection(struct _vtx *vx)
 }
 
 /* convert columns start to column end of line l, into
-   a byte array, and store into out */
-static char *vt_expand_line(struct vt_line *l, int start, int end, char *out)
+   chars of size 'size'.
+*/
+static char *vt_expand_line(struct vt_line *l, int size, int start, int end, char *out)
 {
   int i;
-  char *o;
-  unsigned char c;
+  unsigned int c=0;
   int state=0;
   int dataend=0;
   int lf=0;
@@ -995,13 +979,12 @@ static char *vt_expand_line(struct vt_line *l, int start, int end, char *out)
      actual end of screen data on that line */
   for(dataend=l->width;dataend>-1;) {
     dataend--;
-    if (l->data[dataend] & 0xff) {
+    if (l->data[dataend] & VTATTR_DATAMASK) {
       dataend++;
       break;
     }
   }
 
-  o = out;
   if (end>dataend) {
     lf = 1;			/* we selected past the end of the line */
     end = dataend;
@@ -1010,31 +993,87 @@ static char *vt_expand_line(struct vt_line *l, int start, int end, char *out)
   if (start<0)
     start=0;
  
-  for (i=start;i<end;i++) {
-    c = l->data[i] & 0xff;
-    switch(state) {
-    case 0:
-      if (c==0x09)
-	state=1;
-      else if (c<32)
-	c=' ';
-      *o++ = c;
-      break;
-    case 1:
-      if (c) {			/* in tab, keep skipping null bytes */
-	if (c!=0x09)
-	  state=0;
+  /* YUCK!  oh well, this seems easiest way to do this! */
+  switch(size) {
+  case 2: {
+    unsigned short *o = (unsigned short *)out;
+    for (i=start;i<end;i++) {
+      c = l->data[i] & VTATTR_DATAMASK;
+      if (state==0) {
+	if (c==0x09)
+	  state=1;
+	else if (c<32)
+	  c=' ';
+	else if (c>0xffff)
+	  c='?';
 	*o++ = c;
+      } else {
+	if (c) {			/* in tab, keep skipping null bytes */
+	  if (c!=0x09)
+	    state=0;
+	  *o++ = c;
+	}
       }
-      break;
+      d(printf("%02x", c));
     }
-    d(printf("%02x", c));
+    if (lf)
+      *o++='\n';
+    out = (char *)o;
   }
-
-  if (lf)			/* did we go past the end of the line? */
-    *o++='\n';
-
-  return o;
+  break;
+  case 4: {
+    unsigned int *o = (unsigned int *)out;
+    for (i=start;i<end;i++) {
+      c = l->data[i] & VTATTR_DATAMASK;
+      if (state==0) {
+	if (c==0x09)
+	  state=1;
+	else if (c<32)
+	  c=' ';
+	*o++ = c;
+      } else {
+	if (c) {			/* in tab, keep skipping null bytes */
+	  if (c!=0x09)
+	    state=0;
+	  *o++ = c;
+	}
+      }
+      d(printf("%02x", c));
+    }
+    if (lf)
+      *o++='\n';
+    out = (char *)o;
+  }
+  break;
+  case 1:
+  default: {
+    unsigned char *o = out;
+    for (i=start;i<end;i++) {
+      c = l->data[i] & VTATTR_DATAMASK;
+      if (state==0) {
+	if (c==0x09)
+	  state=1;
+	else if (c<32)
+	  c=' ';
+	else if (c>0xff)
+	  c='?';
+	*o++ = c;
+      } else {
+	if (c) {			/* in tab, keep skipping null bytes */
+	  if (c!=0x09)
+	    state=0;
+	  *o++ = c;
+	}
+      }
+      d(printf("%02x", c));
+    }
+    if (lf)
+      *o++='\n';
+    out = o;
+  }
+  break;
+  }
+  return out;
 }
 
 /*
@@ -1042,9 +1081,13 @@ static char *vt_expand_line(struct vt_line *l, int start, int end, char *out)
 
   Line '0' is the top of the screen, negative lines are part of the
   scrollback, positive lines are part of the visible screen.
+  size is the size of each character.
+  size = 1 -> char
+  size = 2 -> 16 bit utf
+  size = 4 -> 32 bit utf
 */
 static char *
-vt_select_block(struct _vtx *vx, int sx, int sy, int ex, int ey, int *len)
+vt_select_block(struct _vtx *vx, int size, int sx, int sy, int ex, int ey, int *len)
 {
   struct vt_line *wn, *nn;
   int line;
@@ -1059,7 +1102,7 @@ vt_select_block(struct _vtx *vx, int sx, int sy, int ex, int ey, int *len)
   }
 
   /* makes a rough assumption about the buffer size needed */
-  if ( (data = g_malloc((ey-sy+1)*(vx->vt.width+20))) == 0 ) {
+  if ( (data = g_malloc(size*(ey-sy+1)*(vx->vt.width+20))) == 0 ) {
     *len = 0;
     printf("ERROR: Cannot g_malloc selection buffer\n");
     return 0;
@@ -1082,15 +1125,15 @@ vt_select_block(struct _vtx *vx, int sx, int sy, int ex, int ey, int *len)
 
   /* only a single line selected? */
   if (sy == ey) {
-    out = vt_expand_line(wn, sx, ex, out);
+    out = vt_expand_line(wn, size, sx, ex, out);
   } else {
     /* scan lines */
     while (nn && (line<ey)) {
       d(printf("adding selection from line %d\n", line));
       if (line == sy) {
-	out = vt_expand_line(wn, sx, wn->width, out); /* first line */
+	out = vt_expand_line(wn, size, sx, wn->width, out); /* first line */
       } else {
-	out = vt_expand_line(wn, 0, wn->width, out);
+	out = vt_expand_line(wn, size, 0, wn->width, out);
       }
       line++;
       if (line==0) {		/* wrapped into 'on screen' area? */
@@ -1104,10 +1147,10 @@ vt_select_block(struct _vtx *vx, int sx, int sy, int ex, int ey, int *len)
 
     /* last line (if it exists - shouldn't happen?) */
     if (nn)
-      out = vt_expand_line(wn, 0, ex, out);
+      out = vt_expand_line(wn, size, 0, ex, out);
   }
 
-  *len = out-data;
+  *len = (out-data)/size;
 
   d(printf("selected text = \n");
     fwrite(data, out-data, 1, stdout);
@@ -1119,17 +1162,18 @@ vt_select_block(struct _vtx *vx, int sx, int sy, int ex, int ey, int *len)
 /*
   return currently selected text
 */
-char *vt_get_selection(struct _vtx *vx, int *len)
+char *vt_get_selection(struct _vtx *vx, int size, int *len)
 {
   if (vx->selection_data)
     g_free(vx->selection_data);
 
-  vx->selection_data = vt_select_block(vx, vx->selstartx, vx->selstarty,
-				      vx->selendx, vx->selendy, &vx->selection_size);
+  vx->selection_data =
+    (uint32 *)vt_select_block(vx, size, vx->selstartx, vx->selstarty,
+			      vx->selendx, vx->selendy, &vx->selection_size);
   if (len)
     *len = vx->selection_size;
 
-  return vx->selection_data;
+  return (char *)vx->selection_data;
 }
 
 /* clear the selection */
@@ -1229,22 +1273,35 @@ void vt_draw_selection(struct _vtx *vx)
 */
 void vt_draw_cursor(struct _vtx *vx, int state)
 {
-  unsigned char c;
   uint32 attr;
 
   if (vx->vt.scrollbackold == 0 && vx->vt.cursorx<vx->vt.width) {
     attr = vx->vt.this_line->data[vx->vt.cursorx];
-    c = attr & 0xff;
-    if (c==9 || c==0)			/* remap tab */
-      c=' ';
     if (state) {			/* must swap fore/background colour */
       attr = (((attr & VTATTR_FORECOLOURM) >> VTATTR_FORECOLOURB) << VTATTR_BACKCOLOURB)
 	| (((attr & VTATTR_BACKCOLOURM) >> VTATTR_BACKCOLOURB) << VTATTR_FORECOLOURB)
       | ( attr & ~(VTATTR_FORECOLOURM|VTATTR_BACKCOLOURM));
     }
     vx->back_match=0;		/* forces re-draw? */
-    vt_draw_text(vx->vt.user_data, vx->vt.cursorx, vx->vt.cursory, &c, 1, attr);
+    vx->draw_text(vx->vt.user_data,
+		  vx->vt.this_line,
+		  vx->vt.cursory, vx->vt.cursorx, 1, attr);
   }
+}
+
+/* dummy rendering callbacks */
+static void
+dummy_draw_text(void *user_data, struct vt_line *line, int row, int col, int len, int attr)
+{
+}
+static void 
+dummy_scroll_area(void *user_data, int firstrow, int count, int offset, int fill)
+{
+}
+static int
+dummy_cursor_state(void *user_data, int state)
+{
+  return 0;
 }
 
 struct _vtx *vtx_new(int width, int height, void *user_data)
@@ -1262,12 +1319,13 @@ struct _vtx *vtx_new(int width, int height, void *user_data)
   vx->selected = 0;
   vx->selectiontype = VT_SELTYPE_NONE;
 
-  vx->runbuffer = 0L;
-  vx->runbuffer_size = 0;
   vx->scroll_type = VT_SCROLL_ALWAYS;
 
-  /* other parameters initialised to 0 by calloc */
+  vx->scroll_area = dummy_scroll_area;
+  vx->draw_text = dummy_draw_text;
+  vx->cursor_state = dummy_cursor_state;
 
+  /* other parameters initialised to 0 by calloc */
   vx->vt.user_data = user_data;
 
   /* set '1' bits for all characters considered a 'word' */
@@ -1285,7 +1343,6 @@ void vtx_destroy(struct _vtx *vx)
     vt_destroy(&vx->vt);
     if (vx->selection_data)
       g_free(vx->selection_data);
-    g_free(vx->runbuffer);
     g_free(vx);
   }
 }

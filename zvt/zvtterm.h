@@ -136,14 +136,27 @@ struct _ZvtTermClass
   void (* title_changed) (ZvtTerm *term, VTTITLE_TYPE type, char *newtitle);
 };
 
+typedef enum {
+  ZVT_FONT_1BYTE=0,		/* simple, 1-byte fonts */
+  ZVT_FONT_2BYTE,		/* 2-byte fonts */
+  ZVT_FONT_FONTSET,		/* fontset fonts */
+} zvtfont_t;
+
 /* private data structure, stored under "_zvtprivate" */
 /* Yes, this data *really*is* private to the widget! */
+/* *** DO NOT USE THIS IN APPS! *** */
 struct _zvtprivate
 {
   gint scrollselect_id;
   int scrollselect_dir;		/* scrolling selection direction/step */  
-  XChar2b *text16;		/* 2-byte text expansion area */
-  int text16len;		/* how much space here */
+
+  void *text_expand;		/* text expansion area */
+  int text_expandlen;		/* how much space here */
+  zvtfont_t fonttype;		/* type of font */
+  uint32 default_char;		/* what to use for unknown characters (a box, or ?) */
+
+  int lastselectiontype;	/* last tried type for a selection query (see request_paste()) */
+
   int scroll_position;		/* offset for background pixmap when scrolling */
   GdkPixmap *bold_save;		/* when drawing bold, use this to save the
 				   maybe-overwritten line. */
@@ -151,7 +164,10 @@ struct _zvtprivate
 				   differently so we dont blow away the root
 				   pixmap! */
 };
+/* *** DO NOT USE THIS IN APPS! *** */
+#define _ZVT_PRIVATE(term) ((struct _zvtprivate *)gtk_object_get_data (GTK_OBJECT (term), "_zvtprivate"))
 
+/* options for fork */
 #define ZVT_TERM_DO_UTMP_LOG 1
 #define ZVT_TERM_DO_WTMP_LOG 2
 

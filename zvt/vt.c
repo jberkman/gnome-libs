@@ -41,7 +41,6 @@
 #include "vt.h"
 #include "subshell.h"
 
-
 /* define to 'x' to enable copius debug of this module */
 #define d(x)
 
@@ -1022,16 +1021,42 @@ vt_goto(struct vt_em *vt)
 }
 
 /* goto a specific y location */
+/* also handles \Ed reset coding method */
 static void
 vt_gotoabsy(struct vt_em *vt)
 {
-  vt_gotoxy(vt, vt->cursorx, vt->arg.num.intargs[0]?vt->arg.num.intargs[0]-1:0);
+#ifdef ZVT_UTF
+  if (vt->state==1) {
+    vt->coding = ZVT_CODE_ISOLATIN1;
+  } else {
+#endif
+    vt_gotoxy(vt, vt->cursorx, vt->arg.num.intargs[0]?vt->arg.num.intargs[0]-1:0);
+#ifdef ZVT_UTF
+  }
+#endif
 }
 
 static void
 vt_gotoabsx(struct vt_em *vt)
 {
   vt_gotoxy(vt, vt->arg.num.intargs[0]?vt->arg.num.intargs[0]-1:0, vt->cursory);
+}
+
+/* set character encoding
+   \E%n sequence */
+static void
+vt_char_encoding(struct vt_em *vt)
+{
+#ifdef ZVT_UTF
+  switch (vt->arg.num.intargs[1]) {
+  case 'G':
+    vt->coding = ZVT_CODE_UTF8;
+    vt->decode.utf8.shiftchar = 0;
+    break;
+  default:
+    vt->coding = ZVT_CODE_ISOLATIN1;
+  }
+#endif
 }
 
 /* various mode stuff */
@@ -1365,7 +1390,7 @@ struct vt_jump vtjumps[] = {
   {0,0}, {0,0}, {0,0}, {0,0},	/* 18: ^X ^[ */
   {0,0}, {0,0}, {0,0}, {0,0},	/* 1c: ^\ ^] ^^ ^_  */
   {0,VT_LIT}, {0,VT_LIT}, {0,VT_LIT}, {vt_deccharmode,VT_LIT|VT_EXA},	/*  !"# */
-  {0,VT_LIT}, {0,VT_LIT}, {0,VT_LIT}, {0,VT_LIT},	/* $%&' */
+  {0,VT_LIT}, {vt_char_encoding,VT_LIT|VT_EXA}, {0,VT_LIT}, {0,VT_LIT},	/* $%&' */
   {vt_gx_set,VT_LIT|VT_EXA}, {vt_gx_set,VT_LIT|VT_EXA}, {vt_gx_set,VT_LIT|VT_EXA}, {vt_gx_set,VT_LIT|VT_EXA},	/* ()*+ */
   {0,VT_LIT}, {0,VT_LIT}, {0,VT_LIT}, {0,VT_LIT},	/* ,-./ */
   {0,VT_LIT|VT_ARG}, {0,VT_LIT|VT_ARG}, {0,VT_LIT|VT_ARG}, {0,VT_LIT|VT_ARG},	/* 0123 */
@@ -1381,7 +1406,7 @@ struct vt_jump vtjumps[] = {
   {vt_erase_char,VT_EBL}, {0,VT_LIT}, {vt_backtab,VT_EBL}, {0,VT_LIT},	/* XYZ[ */
   {0,VT_LIT}, {0,VT_LIT}, {vt_scroll_reverse,VT_EBL}, {0,VT_LIT},	/* \]^_ */
   {0,VT_LIT}, {0,VT_LIT}, {0,VT_LIT}, {vt_reset,VT_EXL|VT_EXB},	/* `abc */
-  {vt_gotoabsy,VT_EBL}, {0,VT_LIT}, {vt_goto,VT_EBL}, {0,VT_LIT},	/* defg */
+  {vt_gotoabsy,VT_EBL|VT_ESC}, {0,VT_LIT}, {vt_goto,VT_EBL}, {0,VT_LIT},	/* defg */
   {vt_modeh,VT_EBL}, {0,VT_LIT}, {0,VT_LIT}, {vt_modek,VT_EBL},	/* hijk */
   {vt_model,VT_EBL}, {vt_mode,VT_EBL}, {vt_dsr,VT_EBL}, {0,VT_LIT},	/* lmno */
   {vt_reset,VT_EBL}, {0,VT_LIT}, {vt_scroll,VT_EBL}, {0,VT_LIT},	/* pqrs */
@@ -1431,148 +1456,188 @@ vt_parse_vt (struct vt_em *vt, char *ptr, int length)
 
     /* convert to unsigned byte */
     c = (*ptr++) & 0xff;
+
+#ifdef ZVT_UTF
+
+    if (vt->coding == ZVT_CODE_UTF8 && (c&0x80)!=0) {
+      if (c<0xc0) {
+	/* might be part of a multi-byte content ... */
+	if ((vt->decode.utf8.shiftchar & 0x80) == 0) {
+	  /* treat this character as a control character/international character.
+	     This (0x80-0xc0] should cover the C1 control set and some of the
+	     international characters in normal latin 1, but not all :( */
+	  mode = modes[c & 0x7f].modes;
+	  process = modes[c & 0x7f].process;
+	} else {
+	  vt->decode.utf8.shiftchar <<= 1;
+	  vt->decode.utf8.wchar = (vt->decode.utf8.wchar<<6) | (c&0x3f);
+	  if ((vt->decode.utf8.shiftchar & 0x80) == 0) {
+	    c = vt->decode.utf8.wchar|((vt->decode.utf8.shiftchar&0x7f)<<vt->decode.utf8.shift);
+	    /* and run with it! */
+	    vt->decode.utf8.shiftchar=0;
+
+	    /* all extended characters are just literals */
+	    mode = VT_LIT;
+	    process = 0;
+	  } else {
+	    vt->decode.utf8.shift+=5;
+	    continue;
+	  }
+	}
+      } else {
+	vt->decode.utf8.shiftchar=c<<1;
+	vt->decode.utf8.wchar=0;
+	vt->decode.utf8.shift=4;
+	continue;
+      }
+    } else {
+      mode = modes[c & 0x7f].modes;
+      process = modes[c & 0x7f].process;
+    }
+#else
     mode = modes[c & 0x7f].modes;
     process = modes[c & 0x7f].process;
+#endif /* ZVT_UTF */
 
     vt->state = state;		/* so callbacks know their state */
-
+    
     d(printf("state %d: %d $%02x '%c'\n",state, vt->argcnt, c, isprint(c)?c:'.'));
-
+    
     switch (state) {
-
-      case 0:
-	if (mode & VT_LIT) {
-	  /* remap character? */
-	  if (vt->remaptable)
-	    c=vt->remaptable[c];
-
-	  /* insert mode? */
-	  if (vt->mode & VTMODE_INSERT)
-	    vt_insert_chars(vt, 1);
-
-	  /* need to wrap? */
-	  if (vt->cursorx>=vt->width) {
-	    if (vt->mode&VTMODE_WRAPOFF)
-	      vt->cursorx = vt->width-1;
-	    else {
-	      vt_lf(vt);
-	      vt->cursorx=0;
-	    }
+      
+    case 0:
+      if (mode & VT_LIT) {
+	/* remap character? */
+	if (vt->remaptable && c<=0xff)
+	  c=vt->remaptable[c];
+	
+	/* insert mode? */
+	if (vt->mode & VTMODE_INSERT)
+	  vt_insert_chars(vt, 1);
+	
+	/* need to wrap? */
+	if (vt->cursorx>=vt->width) {
+	  if (vt->mode&VTMODE_WRAPOFF)
+	    vt->cursorx = vt->width-1;
+	  else {
+	    vt_lf(vt);
+	    vt->cursorx=0;
 	  }
-
-	  /* output character */
-	  vt->this_line->data[vt->cursorx] = ((vt->attr) & VTATTR_MASK) | c;
-	  vt->this_line->modcount++;
-	  /* d(printf("literal %c\n", c)); */
-	  vt->cursorx++;
-	} else if (mode & VT_CON) {
-	  process(vt);
-	} else if (c==27) {
-	  state=1;
 	}
-	/* else ignore */
-	break;
-
-
-	/* received 'esc', next byte */
-      case 1:
-	if (mode & VT_ESC) {	/* got a \Ex sequence */
-	  vt->argcnt = 0;
-	  vt->arg.num.intargs[0] = 0;
+	
+	/* output character */
+	vt->this_line->data[vt->cursorx] = ((vt->attr) & VTATTR_MASK) | c;
+	vt->this_line->modcount++;
+	/* d(printf("literal %c\n", c)); */
+	vt->cursorx++;
+      } else if (mode & VT_CON) {
+	process(vt);
+      } else if (c==27) {
+	state=1;
+      }
+      /* else ignore */
+      break;
+      
+      
+      /* received 'esc', next byte */
+    case 1:
+      if (mode & VT_ESC) {	/* got a \Ex sequence */
+	vt->argcnt = 0;
+	vt->arg.num.intargs[0] = 0;
+	process(vt);
+	state=0;
+      } else if (c=='[') {
+	vt->arg.num.intarg = 0;
+	vt->argcnt = 0;
+	state = 2;
+      } else if (c=='O') {
+	state = 3;
+      } else if (c==']') {	/* set text parameters, read parameters */
+	state = 4;
+	vt->arg.txt.outptr = vt->arg.txt.args_mem;
+      } else if (mode & VT_EXA) {
+	vt->arg.num.intargs[0] = c & 0x7f;
+	state = 5;
+      } else {
+	state = 0;		/* dont understand input */
+      }
+      break;
+      
+      
+    case 2:
+      if (c=='?') {
+	state = 6;
+	continue;
+      } else if (c=='!') {
+	state = 8;
+	continue;
+      }
+      /* note -> falls through */
+    case 6:
+    case 7:
+    case 8:
+    case 9:
+      if (mode & VT_ARG) {
+	/* accumulate subtotal */
+	vt->arg.num.intarg = vt->arg.num.intarg*10+(c-'0');
+      } else if ((mode & VT_EXB) || c==';' || c==':') {	/* looking for 'arg;arg;...' */
+	if (vt->argcnt < VTPARAM_INTARGS) {
+	  vt->arg.num.intargs[vt->argcnt] = vt->arg.num.intarg & 0x7fffffff;
+	  vt->argcnt++;
+	  vt->arg.num.intarg = 0;
+	}
+	if (mode & VT_EXB) {
 	  process(vt);
 	  state=0;
-	} else if (c=='[') {
-	  vt->arg.num.intarg = 0;
-	  vt->argcnt = 0;
-	  state = 2;
-	} else if (c=='O') {
-	  state = 3;
-	} else if (c==']') {	/* set text parameters, read parameters */
-	  state = 4;
-	  vt->arg.txt.outptr = vt->arg.txt.args_mem;
-	} else if (mode & VT_EXA) {
-	  vt->arg.num.intargs[0] = c & 0x7f;
-	  state = 5;
-	} else {
-	  state = 0;		/* dont understand input */
 	}
-	break;
-
-
-      case 2:
-	if (c=='?') {
-	  state = 6;
-	  continue;
-	} else if (c=='!') {
-	  state = 8;
-	  continue;
-	}
-	/* note -> falls through */
-      case 6:
-      case 7:
-      case 8:
-      case 9:
-	if (mode & VT_ARG) {
-	  /* accumulate subtotal */
-	  vt->arg.num.intarg = vt->arg.num.intarg*10+(c-'0');
-	} else if ((mode & VT_EXB) || c==';' || c==':') {	/* looking for 'arg;arg;...' */
-	  if (vt->argcnt < VTPARAM_INTARGS) {
-	    vt->arg.num.intargs[vt->argcnt] = vt->arg.num.intarg & 0x7fffffff;
-	    vt->argcnt++;
-	    vt->arg.num.intarg = 0;
-	  }
-	  if (mode & VT_EXB) {
-	    process(vt);
-	    state=0;
-	  }
-	} else if (mode & VT_CON) {
-	  process(vt);
-	} else if (c==' ') {	/* this expects the next char == VT_EXB.  close enough! */
-	  state = 7;		/* any other chars should be numbers anyway */
-	} else if (c=='\'') {
-	  state = 9;
-	} else {
-	  d(printf("unknown option '%c'\n", c));
-	  state=0;		/* unexpected escape sequence - ignore */
-	}
-	break;
-
-
-	/* \EOx */
-      case 3:
-	if (mode & VT_EXO) {
-	  vt->arg.num.intargs[0] = 0;
-	  process(vt);
-	}	/* ignore otherwise */
-	state=0;
-	break;
-
-
-	/* \E]..;...BEL */
-      case 4:
-	if (c==0x07) {
-	  /* handle output */
-	  *(vt->arg.txt.outptr)=0;
-	  vt_set_text(vt);
-	  d(printf("received text mode: %s\n", vt->arg.txt.args_mem));
-	  state = 0;
-	} else if (c==0x0a) {
-	  state = 0;		/* abort command */
-	} else {
-	  if (vt->arg.txt.outptr<(vt->arg.txt.args_mem+VTPARAM_MAXARGS*VTPARAM_ARGMAX-2)) /* truncate excessive args */
-	    *(vt->arg.txt.outptr)++=c;
-	}
-	break;
-
-
-	/* \E?x */
-      case 5:
-	vt->arg.num.intargs[1]=c;
-	vt->argcnt=0;
-	modes[vt->arg.num.intargs[0]].process(vt);
-	state=0;
-	break;
+      } else if (mode & VT_CON) {
+	process(vt);
+      } else if (c==' ') {	/* this expects the next char == VT_EXB.  close enough! */
+	state = 7;		/* any other chars should be numbers anyway */
+      } else if (c=='\'') {
+	state = 9;
+      } else {
+	d(printf("unknown option '%c'\n", c));
+	state=0;		/* unexpected escape sequence - ignore */
       }
+      break;
+      
+      
+      /* \EOx */
+    case 3:
+      if (mode & VT_EXO) {
+	vt->arg.num.intargs[0] = 0;
+	process(vt);
+      }	/* ignore otherwise */
+      state=0;
+      break;
+      
+      
+      /* \E]..;...BEL */
+    case 4:
+      if (c==0x07) {
+	/* handle output */
+	*(vt->arg.txt.outptr)=0;
+	vt_set_text(vt);
+	d(printf("received text mode: %s\n", vt->arg.txt.args_mem));
+	state = 0;
+      } else if (c==0x0a) {
+	state = 0;		/* abort command */
+      } else {
+	if (vt->arg.txt.outptr<(vt->arg.txt.args_mem+VTPARAM_MAXARGS*VTPARAM_ARGMAX-2)) /* truncate excessive args */
+	  *(vt->arg.txt.outptr)++=c;
+      }
+      break;
+      
+      
+      /* \E?x */
+    case 5:
+      vt->arg.num.intargs[1]=c;
+      vt->argcnt=0;
+      modes[vt->arg.num.intargs[0]].process(vt);
+      state=0;
+      break;
+    }
   }
 
   vt->state = state;
@@ -1674,6 +1739,12 @@ vt_init(struct vt_em *vt, int width, int height)
 
   vt->ring_my_bell = 0L;
   vt->change_my_name = 0L;
+
+#ifdef ZVT_UTF
+  vt->decode.utf8.shiftchar = 0;
+  /* we actually start in isolatin1 mode */
+  vt->coding = ZVT_CODE_ISOLATIN1;
+#endif
 
   vt->user_data = 0;
   return vt;
