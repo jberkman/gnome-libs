@@ -33,6 +33,14 @@ html:
 	if ! test -d sgml ; then mkdir sgml ; fi
 	-cd html && gtkdoc-mkhtml $(DOC_MODULE) ../$(DOC_MAIN_SGML_FILE)
 
+# MPZ: My doco make target (dont really like the other one much)
+html_z:
+	if ! test -d html ; then mkdir html ; fi
+	if ! test -d sgml ; then mkdir sgml ; fi
+	${GNOME_DOC} -module zvtterm -gnome \
+		${DOC_SOURCE_DIR}/zvtterm.c > sgml/zvtterm.sgml
+	-cd html && gtkdoc-mkhtml $(DOC_MODULE) ../$(DOC_MAIN_SGML_FILE)
+
 clean-local:
 	rm -f *~ *.bak *.hierarchy *.signals *-unused.txt
 

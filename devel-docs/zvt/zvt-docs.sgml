@@ -51,6 +51,9 @@
     
     <para><xref linkend="zvtterm-notes"> covers some
       implementation ideas and issues that will guide the implementor.</para>
+
+    <para>A few breif notes on future plans are include in <xref
+      linkend="zvtterm-future">.</para>
     
     <sect1>
       <title>Creating a Terminal</title>
@@ -183,7 +186,10 @@
     <title>API Reference</title>
     <para>The following pages contain the complete api reference.
     </para>
+    <sect1>
+    <title>Terminal functions</title>
       &zvt-zvtterm;
+    </sect1>
   </chapter>
   <chapter id="zvtterm-notes">
     <title>Implementation notes</title>
@@ -206,9 +212,9 @@
 	</listitem>
 	<listitem><para>When you want to generate coloured output
 	    and display it in a scrollable window.  ZvtTerm includes an
-	    efficient and fast display and rendering engine (although the
-	    pixmap background implementation is currently very
-	    poor).</para>
+	    efficient and fast display and rendering engine - even
+	    when transparency or pixmaps are used.
+	    </para>
 	</listitem>
       </itemizedlist>
     </sect1>
@@ -216,7 +222,7 @@
       <title>When not to use a ZvtTerm</title>
       <itemizedlist>
 	<listitem><para>When you need a word-wrapped or
-	    proportinal-font display.  ZvtTerm <emphasis>only
+	    proportional-font display.  ZvtTerm <emphasis>only
 	      works correctly</emphasis> with fixed-width fonts.</para>
 	</listitem>
 	<listitem><para>If you require any other rendering elements
@@ -243,6 +249,8 @@
 	  endterm="zvtterm-zvt-term-new-with-size">
 	functions are used for this purpose.
       </para>
+      <para>Further information can be found in <xref linkend="zvtterm-input-output">
+	about how to interact with the subordinate application. </para>
       <sect2>
 	<title>Creating an appropriate widget</title>
 	<para>
@@ -317,9 +325,6 @@
 	  child process terminates.  This signal should be caught if you
 	  wish to detect when the subordinate process exits.</para>
       </sect2>
-
-      <para>Further information can be found in <xref linkend="zvtterm-input-output">
-	about how to interact with the subordinate application. </para>
     </sect1>
 
     <sect1>
@@ -392,7 +397,7 @@
 	  a file descriptor which is assigned to the application to
 	  "add" extra keystrokes to the child's input.  This file
 	  descriptor is stored in
-	  <literal>term-&gt;vt-&gt;vx.keyfd</literal>.
+	  <literal>term-&gt;vx-&gt;vt.keyfd</literal>.
 	  Input to this file descriptor will be
 	  processed as if they were typed in by the user.
 	  zvt_term_feed() cannot be used for this purpose as it
@@ -473,11 +478,11 @@ set_hints (GtkWidget *widget)
 	g_assert (app != NULL);
 
 #define PADDING 2
-	hints.base_width = (GTK_WIDGET (term)->style->klass->xthickness * 2) + PADDING;
-	hints.base_height =  (GTK_WIDGET (term)->style->klass->ythickness * 2);
+	hints.base_width = (GTK_WIDGET (term)-&gt;style-&gt;klass-&gt;xthickness * 2) + PADDING;
+	hints.base_height =  (GTK_WIDGET (term)-&gt;style-&gt;klass-&gt;ythickness * 2);
 
-	hints.width_inc = term->charwidth;
-	hints.height_inc = term->charheight;
+	hints.width_inc = term-&gt;charwidth;
+	hints.height_inc = term-&gt;charheight;
 	hints.min_width = hints.base_width + hints.width_inc;
 	hints.min_height = hints.base_height + hints.height_inc;
 
@@ -937,6 +942,46 @@ main (gint argc, gchar *argv[])
     </sect1>
     
   </chapter>
+
+  <chapter id="zvtterm-future">
+    <title>Future plans</title>
+
+    <para>There is work underway on having ZvtTerm support multi-byte
+      Unicode characters.  This work is nearing completion and should be
+      available soon.  It looks like this will be able to be done in a
+      manner compatible with the current releases.  This includes full
+      display, selection and paste of Unicode encoded as UTF-8.</para>
+
+    <para>To properly support the display of many Asian languages the
+      terminal must support multi-width characters.  This is planned
+      too.  Probably a bi-width font implementation as I believe is
+      used in the cxterm program.  This may lead to proportional font
+      support, but it may not.</para>
+
+    <para>Another feature that will be added eventually is a search
+      facility.  This will require an API change, and so will have to
+      wait for the next major revision of gnome-libs.</para>
+
+    <para>Future extensions to the real xterm should be tracked as
+      well, hopefully this will involve a low work load.  Currently
+      the codebase is very stable and easy to maintain in this area.
+      There are no plans to provide an absolutely complete
+      implementation of a VT220 or other terminal - curses
+      implementations just don't use some features so there is little
+      payback for implementing every esoteric feature.
+    </para>
+
+    <para>There are some minor portability issues, primarily in the
+      pty code (which is most sensitive to portability problems), but
+      apart from those the bug count is now very low.  With any luck
+      this will continue and I can move onto other work!
+    </para>
+
+    <para>
+      Regards, !Zed
+    </para>
+
+   </chapter>
 </book>
 
 <!-- Keep this comment at the end of the file

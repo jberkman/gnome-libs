@@ -1,4 +1,79 @@
 <FUNCTION>
+<NAME>login</NAME>
+<RETURNS>void  </RETURNS>
+struct utmp *ut
+</FUNCTION>
+<FUNCTION>
+<NAME>login_tty</NAME>
+<RETURNS>int  </RETURNS>
+int fd
+</FUNCTION>
+<FUNCTION>
+<NAME>logout</NAME>
+<RETURNS>int  </RETURNS>
+char *line
+</FUNCTION>
+<FUNCTION>
+<NAME>logwtmp</NAME>
+<RETURNS>void  </RETURNS>
+const char *line, const char *name, const char *host
+</FUNCTION>
+<FUNCTION>
+<NAME>openpty</NAME>
+<RETURNS>int  </RETURNS>
+int *amaster, int *aslave, char *name, struct termios *termp, struct winsize *winp
+</FUNCTION>
+<FUNCTION>
+<NAME>forkpty</NAME>
+<RETURNS>int  </RETURNS>
+int *amaster, char *name, struct termios *termp, struct winsize *winp
+</FUNCTION>
+<FUNCTION>
+<NAME>openpty</NAME>
+<RETURNS>int  </RETURNS>
+int *master_fd, int *slavefd, char *name, struct termios *termp, struct winsize *winp
+</FUNCTION>
+<FUNCTION>
+<NAME>forkpty</NAME>
+<RETURNS>pid_t  </RETURNS>
+int *master_fd, char *name, struct termios *termp, struct winsize *winp
+</FUNCTION>
+<FUNCTION>
+<NAME>login_tty</NAME>
+<RETURNS>int  </RETURNS>
+int fd
+</FUNCTION>
+<FUNCTION>
+<NAME>n_read</NAME>
+<RETURNS>int  </RETURNS>
+int fd, void *buffer, int size
+</FUNCTION>
+<ENUM>
+<NAME>GnomePtyOps</NAME>
+typedef enum {
+	GNOME_PTY_OPEN_PTY_UTMP = 1,
+	GNOME_PTY_OPEN_PTY_UWTMP,
+	GNOME_PTY_OPEN_PTY_WTMP,
+	GNOME_PTY_OPEN_NO_DB_UPDATE,
+	GNOME_PTY_CLOSE_PTY
+} GnomePtyOps;
+</ENUM>
+<FUNCTION>
+<NAME>update_dbs</NAME>
+<RETURNS>void  *</RETURNS>
+int utmp, int wtmp, char *login_name, char *display_name, char *term_name
+</FUNCTION>
+<FUNCTION>
+<NAME>write_login_record</NAME>
+<RETURNS>void  *</RETURNS>
+char *login_name, char *display_name, char *term_name, int utmp, int wtmp
+</FUNCTION>
+<FUNCTION>
+<NAME>write_logout_record</NAME>
+<RETURNS>void  </RETURNS>
+void *data, int utmp, int wtmp
+</FUNCTION>
+<FUNCTION>
 <NAME>vt_list_new</NAME>
 <RETURNS>void  </RETURNS>
 struct vt_list *v
@@ -8,6 +83,14 @@ struct vt_list *v
 <RETURNS>int  </RETURNS>
 struct vt_list *l
 </FUNCTION>
+<MACRO>
+<NAME>WEXITSTATUS</NAME>
+#   define WEXITSTATUS(stat_val) ((unsigned)(stat_val) >> 8)
+</MACRO>
+<MACRO>
+<NAME>WIFEXITED</NAME>
+#   define WIFEXITED(stat_val) (((stat_val) & 255) == 0)
+</MACRO>
 <FUNCTION>
 <NAME>zvt_init_subshell</NAME>
 <RETURNS>int  </RETURNS>
@@ -23,6 +106,10 @@ struct vt_em *vt
 <RETURNS>int  </RETURNS>
 int fd, int col, int row, int xpixel, int ypixel
 </FUNCTION>
+<MACRO>
+<NAME>ZVT_UTF</NAME>
+#define ZVT_UTF 1
+</MACRO>
 <MACRO>
 <NAME>UPDATE_CHANGES</NAME>
 #define UPDATE_CHANGES    0x00	/* only update changed areas */
@@ -116,6 +203,14 @@ typedef enum {
 #define VTATTR_CLEAR (16<<VTATTR_FORECOLOURB)|(17<<VTATTR_BACKCOLOURB)|0x0000
 </MACRO>
 <MACRO>
+<NAME>ZVT_CODE_ISOLATIN1</NAME>
+#define ZVT_CODE_ISOLATIN1 0
+</MACRO>
+<MACRO>
+<NAME>ZVT_CODE_UTF8</NAME>
+#define ZVT_CODE_UTF8 1
+</MACRO>
+<MACRO>
 <NAME>VTMODE_INSERT</NAME>
 #define VTMODE_INSERT 0x00000001 /* insert mode active */
 </MACRO>
@@ -142,6 +237,22 @@ typedef enum {
 <MACRO>
 <NAME>VTMODE_ALTSCREEN</NAME>
 #define VTMODE_ALTSCREEN 0x80000000 /* on alternate screen? */
+</MACRO>
+<MACRO>
+<NAME>VT_BLANK</NAME>
+#define VT_BLANK(n) ((n)==0 || (n)==9 || (n)==32)
+</MACRO>
+<MACRO>
+<NAME>VT_BMASK</NAME>
+#define VT_BMASK(n) ((n) & (VTATTR_FORECOLOURM|VTATTR_BACKCOLOURM|VTATTR_REVERSE|VTATTR_UNDERLINE))
+</MACRO>
+<MACRO>
+<NAME>VT_ASCII</NAME>
+#define VT_ASCII(n) ((((n)&VTATTR_DATAMASK)==0 || ((n)&VTATTR_DATAMASK)==9)?32:((n)&VTATTR_DATAMASK))
+</MACRO>
+<MACRO>
+<NAME>VT_THRESHHOLD</NAME>
+#define VT_THRESHHOLD (4)
 </MACRO>
 <FUNCTION>
 <NAME>vt_destroy</NAME>
@@ -241,6 +352,14 @@ typedef enum {
 <NAME>VT_SELTYPE_MOVED</NAME>
 #define VT_SELTYPE_MOVED 0x2000 /* has motion occured? */
 </MACRO>
+<ENUM>
+<NAME>VT_SCROLLTYPE</NAME>
+typedef enum {
+  VT_SCROLL_ALWAYS=0,		/* normal display */
+  VT_SCROLL_SOMETIMES,		/* with 'fast scroll' background pixmap */
+  VT_SCROLL_NEVER		/* with transparency pixmap or fixed pixmap */
+} VT_SCROLLTYPE;
+</ENUM>
 <STRUCT>
 <NAME>vtx</NAME>
 struct vtx
@@ -251,15 +370,15 @@ struct vtx
   unsigned int back_match:1;
 
   /* selection stuff */
-  char *selection_data;		/* actual selection */
+  uint32 *selection_data;		/* actual selection */
   int selection_size;
 
   /* 256 bits of word class characters (assumes a char is 8 bits or more) */
   unsigned char wordclass[32];
 
   /* rendering buffer, for building output strings */
-  char *runbuffer;
-  int runbuffer_size;
+  char *runbuffer_donotuse;	/* TBR! */
+  int runbuffer_size_donotuse;
 
   /* true if something selected */
   int selected;
@@ -273,12 +392,22 @@ struct vtx
   /* previously rendered values */
   int selstartxold, selstartyold;
   int selendxold, selendyold;
+
+  /* rendering callbacks */
+  void (*draw_text)(void *user_data, struct vt_line *line, int row, int col, int len, int attr);
+  void (*scroll_area)(void *user_data, int firstrow, int count, int offset, int fill);
+  /* set the cursor on/off, return old state */
+  int  (*cursor_state)(void *user_data, int state);
+
+  /* added in gnome-libs 1.0.10
+     ... this shouldn't break bin compatibility? */
+  unsigned char scroll_type;	/* how we scroll (see VT_SCROLLTYPE enum) */
 };
 </STRUCT>
 <FUNCTION>
 <NAME>vt_get_selection</NAME>
 <RETURNS>char  *</RETURNS>
-struct _vtx *vx, int *len
+struct _vtx *vx, int size, int *len
 </FUNCTION>
 <FUNCTION>
 <NAME>vt_clear_selection</NAME>
@@ -298,7 +427,7 @@ struct _vtx *vx
 <FUNCTION>
 <NAME>vt_update_rect</NAME>
 <RETURNS>void  </RETURNS>
-struct _vtx *vx, int sx, int sy, int ex, int ey
+struct _vtx *vx, int fill, int sx, int sy, int ex, int ey
 </FUNCTION>
 <FUNCTION>
 <NAME>vt_update</NAME>
@@ -314,6 +443,11 @@ struct _vtx *vx, int state
 <NAME>vt_set_wordclass</NAME>
 <RETURNS>void  </RETURNS>
 struct _vtx *vx, unsigned char *s
+</FUNCTION>
+<FUNCTION>
+<NAME>vt_get_attr_at</NAME>
+<RETURNS>int  </RETURNS>
+struct _vtx *vx, int col, int row
 </FUNCTION>
 <MACRO>
 <NAME>ZVT_TERM</NAME>
@@ -334,6 +468,14 @@ struct _vtx *vx, unsigned char *s
 <MACRO>
 <NAME>ZVT_TERM_EMBOLDEN_SUPPORT</NAME>
 #define ZVT_TERM_EMBOLDEN_SUPPORT	0x02
+</MACRO>
+<MACRO>
+<NAME>ZVT_TERM_TRANSPARENCY_SUPPORT</NAME>
+#define ZVT_TERM_TRANSPARENCY_SUPPORT	0x04
+</MACRO>
+<MACRO>
+<NAME>ZVT_TERM_PIXMAPSCROLL_SUPPORT</NAME>
+#define ZVT_TERM_PIXMAPSCROLL_SUPPORT	0x08
 </MACRO>
 <STRUCT>
 <NAME>ZvtTerm</NAME>
@@ -410,14 +552,31 @@ struct ZvtTermClass
   void (* title_changed) (ZvtTerm *term, VTTITLE_TYPE type, char *newtitle);
 };
 </STRUCT>
+<ENUM>
+<NAME>zvtfont_t</NAME>
+typedef enum {
+  ZVT_FONT_1BYTE=0,		/* simple, 1-byte fonts */
+  ZVT_FONT_2BYTE,		/* 2-byte fonts */
+  ZVT_FONT_FONTSET,		/* fontset fonts */
+} zvtfont_t;
+</ENUM>
 <STRUCT>
 <NAME>zvtprivate</NAME>
 struct zvtprivate
 {
   gint scrollselect_id;
   int scrollselect_dir;		/* scrolling selection direction/step */  
-  XChar2b *text16;		/* 2-byte text expansion area */
-  int text16len;		/* how much space here */
+
+  void *text_expand;		/* text expansion area */
+  int text_expandlen;		/* how much space here */
+  zvtfont_t fonttype;		/* type of font */
+  uint32 default_char;		/* what to use for unknown characters (a box, or ?) */
+
+  int lastselectiontype;	/* last tried type for a selection query (see request_paste()) */
+
+  int scroll_position;		/* offset for background pixmap when scrolling */
+  GdkPixmap *bold_save;		/* when drawing bold, use this to save the
+				   maybe-overwritten line. */
 };
 </STRUCT>
 <MACRO>
@@ -427,6 +586,14 @@ struct zvtprivate
 <MACRO>
 <NAME>ZVT_TERM_DO_WTMP_LOG</NAME>
 #define ZVT_TERM_DO_WTMP_LOG 2
+</MACRO>
+<MACRO>
+<NAME>ZVT_BACKGROUND_SHADED</NAME>
+#define ZVT_BACKGROUND_SHADED 0x01 /* shade background image.  This must be left as 1 for api compat! */
+</MACRO>
+<MACRO>
+<NAME>ZVT_BACKGROUND_SCROLL</NAME>
+#define ZVT_BACKGROUND_SCROLL 0x02 /* background can scroll, exclusive option with transparency */
 </MACRO>
 <FUNCTION>
 <NAME>zvt_term_new</NAME>
@@ -551,7 +718,7 @@ ZvtTerm *term, unsigned char *klass
 <FUNCTION>
 <NAME>zvt_term_set_background</NAME>
 <RETURNS>void 	</RETURNS>
-ZvtTerm       *terminal,char          *pixmap_file,int		transparent,int		shaded
+ZvtTerm       *terminal,char          *pixmap_file,int		transparent,int		flags
 </FUNCTION>
 <FUNCTION>
 <NAME>zvt_term_set_shadow_type</NAME>
@@ -578,86 +745,3 @@ ZvtTerm      *terminal
 <RETURNS>void  </RETURNS>
 ZvtTerm      *dial,GtkAdjustment *adjustment
 </FUNCTION>
-<ENUM>
-<NAME>GnomePtyOps</NAME>
-typedef enum {
-	GNOME_PTY_OPEN_PTY_UTMP = 1,
-	GNOME_PTY_OPEN_PTY_UWTMP,
-	GNOME_PTY_OPEN_PTY_WTMP,
-	GNOME_PTY_OPEN_NO_DB_UPDATE,
-	GNOME_PTY_CLOSE_PTY
-} GnomePtyOps;
-</ENUM>
-<FUNCTION>
-<NAME>update_dbs</NAME>
-<RETURNS>void  *</RETURNS>
-int utmp, int wtmp, char *login_name, char *display_name, char *term_name
-</FUNCTION>
-<FUNCTION>
-<NAME>write_login_record</NAME>
-<RETURNS>void  *</RETURNS>
-char *login_name, char *display_name, char *term_name, int utmp, int wtmp
-</FUNCTION>
-<FUNCTION>
-<NAME>write_logout_record</NAME>
-<RETURNS>void  </RETURNS>
-void *data, int utmp, int wtmp
-</FUNCTION>
-<FUNCTION>
-<NAME>login</NAME>
-<RETURNS>void  </RETURNS>
-struct utmp *ut
-</FUNCTION>
-<FUNCTION>
-<NAME>login_tty</NAME>
-<RETURNS>int  </RETURNS>
-int fd
-</FUNCTION>
-<FUNCTION>
-<NAME>logout</NAME>
-<RETURNS>int  </RETURNS>
-char *line
-</FUNCTION>
-<FUNCTION>
-<NAME>logwtmp</NAME>
-<RETURNS>void  </RETURNS>
-const char *line, const char *name, const char *host
-</FUNCTION>
-<FUNCTION>
-<NAME>openpty</NAME>
-<RETURNS>int  </RETURNS>
-int *amaster, int *aslave, char *name, struct termios *termp, struct winsize *winp
-</FUNCTION>
-<FUNCTION>
-<NAME>forkpty</NAME>
-<RETURNS>int  </RETURNS>
-int *amaster, char *name, struct termios *termp, struct winsize *winp
-</FUNCTION>
-<FUNCTION>
-<NAME>openpty</NAME>
-<RETURNS>int  </RETURNS>
-int *master_fd, int *slavefd, char *name, struct termios *termp, struct winsize *winp
-</FUNCTION>
-<FUNCTION>
-<NAME>forkpty</NAME>
-<RETURNS>pid_t  </RETURNS>
-int *master_fd, char *name, struct termios *termp, struct winsize *winp
-</FUNCTION>
-<FUNCTION>
-<NAME>login_tty</NAME>
-<RETURNS>int  </RETURNS>
-int fd
-</FUNCTION>
-<FUNCTION>
-<NAME>n_read</NAME>
-<RETURNS>int  </RETURNS>
-int fd, void *buffer, int size
-</FUNCTION>
-<MACRO>
-<NAME>WEXITSTATUS</NAME>
-#   define WEXITSTATUS(stat_val) ((unsigned)(stat_val) >> 8)
-</MACRO>
-<MACRO>
-<NAME>WIFEXITED</NAME>
-#   define WIFEXITED(stat_val) (((stat_val) & 255) == 0)
-</MACRO>

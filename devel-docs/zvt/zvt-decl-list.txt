@@ -1,7 +1,32 @@
 <SECTION>
+<FILE>gnome-login-support</FILE>
+login
+login_tty
+logout
+logwtmp
+openpty
+forkpty
+n_read
+</SECTION>
+
+<SECTION>
+<FILE>gnome-pty</FILE>
+GnomePtyOps
+update_dbs
+write_login_record
+write_logout_record
+</SECTION>
+
+<SECTION>
 <FILE>lists</FILE>
 vt_list_new
 vt_list_empty
+</SECTION>
+
+<SECTION>
+<FILE>subshell-includes</FILE>
+WEXITSTATUS
+WIFEXITED
 </SECTION>
 
 <SECTION>
@@ -13,6 +38,7 @@ zvt_resize_subshell
 
 <SECTION>
 <FILE>vt</FILE>
+ZVT_UTF
 UPDATE_CHANGES
 UPDATE_REFRESH
 UPDATE_SCROLLBACK
@@ -35,6 +61,8 @@ VTATTR_BACKCOLOURM
 VTATTR_FORECOLOURB
 VTATTR_BACKCOLOURB
 VTATTR_CLEAR
+ZVT_CODE_ISOLATIN1
+ZVT_CODE_UTF8
 VTMODE_INSERT
 VTMODE_SEND_MOUSE
 VTMODE_WRAPOFF
@@ -42,6 +70,10 @@ VTMODE_APP_CURSOR
 VTMODE_RELATIVE
 VTMODE_APP_KEYPAD
 VTMODE_ALTSCREEN
+VT_BLANK
+VT_BMASK
+VT_ASCII
+VT_THRESHHOLD
 vt_destroy
 vt_resize
 vt_parse_vt
@@ -66,6 +98,7 @@ VT_SELTYPE_MASK
 VT_SELTYPE_BYEND
 VT_SELTYPE_BYSTART
 VT_SELTYPE_MOVED
+VT_SCROLLTYPE
 vtx
 vt_get_selection
 vt_clear_selection
@@ -75,6 +108,7 @@ vt_update_rect
 vt_update
 vt_draw_cursor
 vt_set_wordclass
+vt_get_attr_at
 </SECTION>
 
 <SECTION>
@@ -84,11 +118,16 @@ ZVT_TERM_CLASS
 ZVT_IS_TERM
 ZVT_TERM_PIXMAP_SUPPORT
 ZVT_TERM_EMBOLDEN_SUPPORT
+ZVT_TERM_TRANSPARENCY_SUPPORT
+ZVT_TERM_PIXMAPSCROLL_SUPPORT
 ZvtTerm
 ZvtTermClass
+zvtfont_t
 zvtprivate
 ZVT_TERM_DO_UTMP_LOG
 ZVT_TERM_DO_WTMP_LOG
+ZVT_BACKGROUND_SHADED
+ZVT_BACKGROUND_SCROLL
 zvt_term_new
 zvt_term_new_with_size
 zvt_term_reset
@@ -119,30 +158,5 @@ zvt_term_set_size
 zvt_term_get_capabilities
 zvt_term_get_adjustment
 zvk_term_set_adjustment
-</SECTION>
-
-<SECTION>
-<FILE>gnome-pty</FILE>
-GnomePtyOps
-update_dbs
-write_login_record
-write_logout_record
-</SECTION>
-
-<SECTION>
-<FILE>gnome-login-support</FILE>
-login
-login_tty
-logout
-logwtmp
-openpty
-forkpty
-n_read
-</SECTION>
-
-<SECTION>
-<FILE>subshell-includes</FILE>
-WEXITSTATUS
-WIFEXITED
 </SECTION>
 
