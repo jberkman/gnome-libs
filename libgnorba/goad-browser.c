@@ -140,8 +140,8 @@ gb_create_server_list(GtkWidget *w, GtkCList *clist)
   gtk_clist_freeze(clist);
   gtk_clist_clear(clist);
 
-  if(slist)
-    goad_server_list_free(slist);
+  if(servlist)
+    goad_server_list_free(servlist);
 
   servlist = goad_server_list_get();
   slist = servlist->list;

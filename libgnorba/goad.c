@@ -40,6 +40,7 @@ typedef struct {
 extern CORBA_ORB gnome_orbit_orb; /* In orbitgtk.c */
 
 static GSList *our_active_servers = NULL;
+static const char *goad_activation_id = NULL;
 
 static void goad_server_list_read(const char *filename,
 				  GArray *servinfo,
@@ -958,7 +959,7 @@ goad_server_register(CORBA_Object name_server,
   CORBA_Object            old_server, orig_ns = name_server;
   static int did_print_ior = 0;
 
-  if(!did_print_ior) {
+  if(!did_print_ior && goad_activation_id) {
     CORBA_char *strior;
     int stdoutfd;
     struct sigaction oldaction, myaction;
@@ -1083,8 +1084,6 @@ goad_server_unregister(CORBA_Object name_server,
 
   return 0;
 }
-
-static const char *goad_activation_id = NULL;
 
 const char *
 goad_server_activation_id(void)
