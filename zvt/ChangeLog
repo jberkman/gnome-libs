@@ -1,3 +1,12 @@
+1998-05-02  Michael Zucchi  <zucchi@zzedzone.box.net.au>
+
+	* vt.c (vt_swap_buffers): Removed.  Not needed in the end.
+	* update.c (vt_scroll_update): Cleaned up some dead code.
+	(vt_scroll_update): Added code to perform scrolling of on-screen
+	image buffer.
+	(vt_line_update): Modified to use screen image buffer to optimise
+	updates.  Seems to work very well!
+
 1998-05-01  Miguel de Icaza  <miguel@nuclecu.unam.mx>
 
 	* zvtterm.c (zvt_term_set_color_scheme): Add support for changing

@@ -401,6 +401,10 @@ zvt_term_size_request (GtkWidget      *widget,
   term = ZVT_TERM (widget);
   requisition->width = term->vx->vt.width * term->charwidth;	/* FIXME: base size on terminal size */
   requisition->height = term->vx->vt.height * term->charheight;
+
+  d(printf("size request\n");
+    printf("term is %dx%d\n", term->vx->vt.width, term->vx->vt.height));
+
 }
 
 static void
@@ -417,6 +421,9 @@ zvt_term_size_allocate (GtkWidget     *widget,
   if (GTK_WIDGET_REALIZED (widget))
     {
       term = ZVT_TERM (widget);
+
+      d(printf("size allocate\n");
+	printf("term is %dx%d\n", term->vx->vt.width, term->vx->vt.height));
       
       gdk_window_move_resize (widget->window,
 			      allocation->x, allocation->y,
@@ -1427,7 +1434,7 @@ void vt_scroll_area(void *user_data, int firstrow, int count, int offset)
 		  width, count*term->charheight);
 
 
-#if 0
+#if 1
   /* clear the other part of the screen */
   if (offset>0) {
     gdk_draw_rectangle(widget->window,
@@ -1444,7 +1451,7 @@ void vt_scroll_area(void *user_data, int firstrow, int count, int offset)
   }
 #endif
 
-#if 1
+#if 0
   /* this seems to slow it down, maybe, but I can't tell.
      it is also *not* necessary in this case, 'cause zvt
      will never try and scroll the same area twice, between

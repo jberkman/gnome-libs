@@ -44,6 +44,8 @@
 #include "vt.h"
 
 #define SCROLLBACK_BUFFER	/* use scrollback buffer? */
+#define DOUBLE_BUFFER		/* use back buffer to represent screen
+				   FIXME: THIS MUST BE DEFINED */
 
 /* define to 'x' to enable copius debug of this module */
 #define d(x)
@@ -1165,35 +1167,6 @@ void vt_destroy(struct vt_em *vt)
 
   /* done */
 }
-
-#ifdef DOUBLE_BUFFER
-/*
-  swap 'visible'/rendering buffer
-*/
-void vt_swap_buffers(struct vt_em *vt)
-{
-  struct vt_line *lh, *lt;
-
-  /* need to swap 2 list headers.
-     tricky bit is catering for all the back pointers? */
-  lh = vt->lines.head;
-  lt = vt->lines.tailpred;
-
-  /* first, the head pointers */
-  vt->lines.head = vt->lines_back.head;
-  vt->lines.head->prev = &vt->lines.tailpred;
-
-  vt->lines_back.head = lh;
-  lh->prev = &vt->lines_back.tailpred;
-
-  /* now, the tail pointers? */
-  vt->lines.tailpred = vt->lines_back.tailpred;
-  vt->lines.tailpred->next = &vt->lines_back.tail;
-
-  vt->lines_back.tailpred = lt;
-  lt->next = &vt->lines.tail;
-}  
-#endif
 
 /*
   resize the window to a new window size

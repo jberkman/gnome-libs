@@ -114,6 +114,7 @@ static void vt_line_update(struct _vtx *vx, struct vt_line *l, int line, int alw
   char *runbuffer, *p;
   int attr;
   uint32 c;
+  struct vt_line *bl;
 
   d(printf("updating line %d: ", line));
   d(fwrite(l->data, l->width, 1, stdout));
@@ -131,22 +132,43 @@ static void vt_line_update(struct _vtx *vx, struct vt_line *l, int line, int alw
 
   runbuffer = alloca(vx->vt.width * sizeof(char));
 
-  /* limit update range, based on changed characters */
+  bl = (struct vt_line *)vt_list_index(&vx->vt.lines_back, line);
+  if (bl->width != l->width) {
+    /* this should *always* be true */
+    printf("ASSERTION FAILED: line width mismatch %d != %d\n", bl->width, l->width);
+  }
+
+  /* work out the minimum range of change */
   if (!always) {
+    
     while (start<end) {
-      if (l->data[start] & VTATTR_CHANGED)
+      if ((l->data[start]&0x7fffffff) != (bl->data[start]&0x7fffffff))
 	break;
       start++;
     }
-
+    
     while (end>start) {
-      if (l->data[end-1] & VTATTR_CHANGED) {
+      if ((l->data[end-1]&0x7fffffff) != (bl->data[end-1]&0x7fffffff))
 	break;
-      }
       end--;
     }
+    
     if (end<l->width)
       end++;
+    
+    /* copy changed section of line to destination line */
+    for(i=start;i<end;i++) {
+      bl->data[i]=l->data[i];
+    }
+    bl->line = line;
+  } else {
+
+    /* always update everything, so always update the whole 'offscreen' buffer */
+    for(i=start;i<end;i++) {
+      bl->data[i]=l->data[i];
+    }
+    bl->line = line;
+
   }
 
   d(printf("actually (%d-%d)?\n", start, end));
@@ -212,36 +234,93 @@ static void vt_line_update(struct _vtx *vx, struct vt_line *l, int line, int alw
 */
 void vt_scroll_update(struct _vtx *vx, int firstline, struct vt_line *fn, int count, int offset)
 {
+  struct vt_line *tn, *bn, *dn;	/* top/bottom of scroll area */
   int i;
 
-  if (count>0)			/* FIXME: avoids code below? */
-    vt_scroll_area(vx->user_data, firstline, count, offset);
-  else {
-    /* FIXME: clean this up */
-    d(printf("avoiding scroll update for performance\n"));
-    /* if count is low, just mark line for text update? */
-    while (fn->next && count) {
-      for(i=0;i<fn->width;i++) { /* FIXME: optimised to see what was on that line before? */
-	fn->data[i] |= VTATTR_CHANGED;
-      }
-      fn->modcount=fn->width;
-      fn = fn->next;
-      firstline++;
-      count--;
-    }
+  d(printf("scrolling %d lines from %d, by %d\n", count, firstline, offset));
+
+  vt_scroll_area(vx->user_data, firstline, count, offset);
+
+  /* find start/end of scroll area */
+  if (offset>0) {
+    /* grab n lines at bottom of scroll area, and move them to above it */
+    tn = (struct vt_line *)vt_list_index(&vx->vt.lines_back, firstline);
+    bn = (struct vt_line *)vt_list_index(&vx->vt.lines_back, firstline+offset-1);
+    dn = (struct vt_line *)vt_list_index(&vx->vt.lines_back, firstline+count+offset);
+  } else {
+    /* grab n lines at top of scroll area, and move them to below it */
+    /* FIXME: this is wrong */
+    tn = (struct vt_line *)vt_list_index(&vx->vt.lines_back, firstline+count+offset);
+    bn = (struct vt_line *)vt_list_index(&vx->vt.lines_back, firstline+count-1);
+    dn = (struct vt_line *)vt_list_index(&vx->vt.lines_back, firstline+offset);
   }
 
-  d(printf("scrolling chunk of screen\n"));
-  d(printf("From line %d to line %d - %d lines\n", firstline, firstline+count, offset));
-  while (fn->next && count) {
-    d(fwrite(fn->data, fn->width, 1, stdout));
-    d(printf("\n"));
-    /*    if (fn->modcount)
-	  vt_line_update(vt, fn, firstline);*/
-    fn = fn->next;
-    firstline++;
-    count--;
-  }
+  /*
+    
+    0->dn->4->tn->1->2->bn->5
+    
+    0->dn->4->5
+    
+    0->tn->1->2->bn->dn->4->5
+  */
+
+
+  /* remove the scroll segment */
+  tn->prev->next = bn->next;
+  bn->next->prev = tn->prev;
+  
+  /* insert it again at the destination */
+  tn->prev = dn->prev;
+  dn->prev->next = tn;
+  bn->next = dn;
+  dn->prev = bn;
+
+  /* need to clear tn->bn lines */
+  /* FIXME: maybe if we didn't 'clear' this, and we dont 'clear' the screen after
+     a scroll, it will make things faster ... but we'd have to 'copy' stuff here
+     so it matches the result of a scroll */
+  do {
+    d(printf("clearning line %d\n", tn->line));
+    for(i=0;i<tn->width;i++) {
+      tn->data[i]=vx->vt.attr; /* not sure if this is the correct thing to 'clear' with */
+    }
+  } while ((tn!=bn) && (tn=tn->next));
+
+    /*
+1
+2
+3
+4
+5
+6
+7
+8
+9
+
+scroll(3, 4, 1);
+
+1
+2
+-7
+3
+4
+5
+6
+8
+9
+
+scroll(3, 4, -1);
+ 
+
+1
+3
+4
+5
+6
+-2
+7
+8
+    */
 }
 
 /*
@@ -476,9 +555,25 @@ void vt_update(struct _vtx *vx, int update_state)
     }
   }
 
-#ifdef DOUBLE_BUFFER
-  /* 'save' just-rendered buffer */
-  vt_swap_buffers(&vx->vt);
+  /* some debug */
+#if 0
+  {
+    struct vt_line *wb, *nb;
+    int i;
+
+    wb = (struct vt_line *)vx->vt.lines_back.head;
+    nb = wb->next;
+    printf("on-screen buffer contains:\n");
+    while (nb) {
+      printf("%d: ", wb->line);
+      for (i=0;i<wb->width;i++) {
+	(printf("%c", (wb->data[i]&0xffff)>=32?(wb->data[i]&0xffff):' '));
+      }
+      (printf("\n"));
+      wb=nb;
+      nb=nb->next;
+    }
+  }
 #endif
 
   d(vt_dump(&vx.vt));
