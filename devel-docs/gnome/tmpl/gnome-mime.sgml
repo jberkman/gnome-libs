@@ -2,53 +2,54 @@
 gnome-mime
 
 <!-- ##### SECTION Short_Description ##### -->
-Routines to find out the mime type of a file.
+Routines to determine the MIME type of a file
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-The routines in gnome-mime provide a way to find the MIME type of a
-file and some utility functions.  
+The routines in gnome-mime provide a way to obtain the MIME (Multipurpose
+Internet Mail Extension) type of a given file and some utility functions.
 </para>
 
 <para>
-There are two different methods for finding out the MIME type of a
-file: those where only the file name is used to find the MIME type: in
-this case the name is matched against a database of known extensions
-and regular expressions; and a routine that will try to guess the MIME
-type of the file by peeking at the contents of the file.  The former
-routines only do in-memory operations, while the later need to perform
-a possible time expensive operation to figure out the information.
+There are two different methods for getting the MIME type of a particular file:
+Using only the filename to find the corresponding MIME type by matching the
+name against a database of known extensions and regular expressions; Or
+obtaining the MIME type by peeking at the contents of the file. 
+Generally it should be faster using the former method, because the routines
+only do in-memory operations, while the latter method needs to do possibly
+time-expensive disk operations to obtain the necessary information.
 </para>
 
 <para>
-The routines that classify a file by its name, use the contents of all
-of the files with the extension <filename>.mime</filename> from the
-<filename>$gnome_prefix/share/mime-info</filename> directory and the
-<filename>~/.gnome/mime-info</filename> to build the database for
-filename matching.  The latter is supported to enable users to provide
-their mime types to extend the system defaults.</para>
-
-<para>Application that wish to install their own MIME types only need
-to install a file in this directory.
+The routines that classify a file only by its name, look at the
+<filename>*.mime</filename> files in the
+<filename>$gnome_prefix/share/mime-info/</filename> directory and in
+<filename>~/.gnome/mime-info/</filename> to build the extension
+database. This gives the user the possibility to extend and/or override the
+system defaults.
 </para>
 
 <para>
-The file <filename>$gnome/share/mime-info/gnome.mime</filename> is
-special, as it contains the defaults for gnome, and is read first.  In
-addition, the file <filename>~/.gnome/mime-info/user.mime</filename> is
-read last.  This will guarantee that there is a way to set system
-defaults, and there is a way for the user to override them.  There is
-currently no way to tell anything about the order of the other files in
-those directories, nor is there anyway to override system defaults yet.
+Applications wanting to make additional MIME types available only need to
+install their files in one of these directories.
 </para>
 
+<para>
+The file <filename>$gnome_prefix/share/mime-info/gnome.mime</filename>
+contains the defaults for Gnome and is read first. In addition,
+<filename>~/.gnome/mime-info/user.mime</filename> is the last file to be
+read and thus makes it possible to set system-wide defaults and still
+gives the user a chance to override them. However, there is currently no
+determined order in which the other files in these directories will be
+read, nor is there any way to override system defaults, yet.
+</para>
 
 <para>
-The <function>gnome_mime_type_from_magic</function> Uses the contents
-of the file <filename>$gnome_prefix/etc/mime-magic</filename> to
-determine the contents of a file (this database is usually kept in a
-fast machine-preprocessed format in the
-<filename>$gnome_prefix/etc/mime-magic.dat</filename> file).
+The gnome_mime_type_from_magic() function looks at the
+<filename>$gnome_prefix/etc/mime-magic</filename> file to determine the
+MIME type of a given file (This database in usually kept in a
+pre-processed, quickly-readable format in
+<filename>$gnome_prefix/etc/mime-magic.dat</filename>).
 </para>
 
 <!-- ##### SECTION See_Also ##### -->
