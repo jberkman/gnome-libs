@@ -47,21 +47,21 @@ X.
 
 <!-- ##### MACRO GNOME_CLIENT_CONNECTED ##### -->
 <para>
-
+Returns TRUE if the client is connected to the session manager.
 </para>
 
-@obj: 
+@obj: Client to check.
 
 
 <!-- ##### ENUM GnomeInteractStyle ##### -->
 <para>
-
+Controls permitted user interaction during session save.
 </para>
 
 
 <!-- ##### ENUM GnomeDialogType ##### -->
 <para>
-
+Controls type of dialog generated for user interaction.
 </para>
 
 
@@ -85,13 +85,13 @@ X.
 
 <!-- ##### USER_FUNCTION GnomeInteractFunction ##### -->
 <para>
-
+Callback invoked to perform user interaction.
 </para>
 
-@client: 
-@key: 
-@dialog_type: 
-@data: 
+@client: Client.
+@key: Key to be returned when interaction ends.
+@dialog_type: Type of dialog being shown.
+@data: Callback data.
 
 
 <!-- ##### FUNCTION gnome_client_disable_master_connection ##### -->
@@ -429,28 +429,28 @@ signal and save their state.
 
 <!-- ##### SIGNAL GnomeClient::die ##### -->
 <para>
-
+Emitted when the client should exit.
 </para>
 
 @client: the object which received the signal.
 
 <!-- ##### SIGNAL GnomeClient::save-complete ##### -->
 <para>
-
+Emitted when everything is saved.
 </para>
 
 @client: the object which received the signal.
 
 <!-- ##### SIGNAL GnomeClient::shutdown-cancelled ##### -->
 <para>
-
+Emitted if the user or a client cancels the logout.
 </para>
 
 @client: the object which received the signal.
 
 <!-- ##### SIGNAL GnomeClient::connect ##### -->
 <para>
-
+Emitted on connection to the session manager.
 </para>
 
 @client: the object which received the signal.
@@ -458,7 +458,7 @@ signal and save their state.
 
 <!-- ##### SIGNAL GnomeClient::disconnect ##### -->
 <para>
-
+Emitted on disconnection from the session manager.
 </para>
 
 @client: the object which received the signal.
