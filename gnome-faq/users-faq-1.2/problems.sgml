@@ -141,6 +141,25 @@
     </answer>
    </qandaentry>
 
+   <qandaentry id="wandering-menu-bar">
+    <question>
+     <para>
+       The <interface>menu panel</interface> (the narrow one at the top)
+       is sitting in the middle of the screen when I start GNOME.
+     </para>
+    </question>
+    <answer>
+     <para>
+       This may be a <application>sawfish</application>-specific problem.
+       If you are using <application>sawfish</application>, then open the
+       <application>control center</application> and find the options for
+       <application>sawfish</application>. Under <guilabel>Placement</guilabel>
+       you will find a checkbox for <guibutton>Ignore program-specified
+       window placements.</guibutton>. This needs to be unchecked.
+     </para>
+    </answer>
+   </qandaentry>
+
    <qandaentry id="panel-detected-error">
     <question> 
      <para>                        
