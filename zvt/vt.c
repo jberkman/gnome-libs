@@ -962,13 +962,14 @@ void parse_vt(struct vt_em *vt, char *ptr, int length)
   register int mode;
   struct vt_jump *modes = vtjumps;
   char *ptrend;
+  void (*process)(struct vt_em *vt);	/* process function */
 
   state = vt->state;
   ptrend = ptr+length;
   while (ptr<ptrend) {
-    c=*ptr++;
-    c &= 0x7f;			/* FIXME: should do whole range? */
-    mode = modes[c].modes;
+    c=(*ptr++) & 0xff;		/* convert to unsigned byte */
+    mode = modes[c & 0x7f].modes;
+    process = modes[c & 0x7f].process;
     switch(state) {
     case 0:
       if (mode & VT_LIT) {
@@ -992,7 +993,7 @@ void parse_vt(struct vt_em *vt, char *ptr, int length)
 	d(printf("literal %c\n", c));
 	vt->cursorx++;
       } else if (mode & VT_CON) {
-	modes[c].process(vt);
+	process(vt);
       } else if (c==27) {
 	state=1;
       }
@@ -1001,7 +1002,7 @@ void parse_vt(struct vt_em *vt, char *ptr, int length)
     case 1:			/* received 'esc', next byte */
       if (mode & VT_ESC) {	/* got a \Ex sequence */
 	vt->argcnt = 0;
-	modes[c].process(vt);
+	process(vt);
 	state=0;
       } else if (c=='[') {
 	vt->argptr = vt->args;	/* initialise output arg pointers */
@@ -1036,7 +1037,7 @@ void parse_vt(struct vt_em *vt, char *ptr, int length)
 	  vt->argptr++;
 	*(vt->outptr)=0;
 	vt->argcnt = (vt->argptr-vt->args);
-	modes[c].process(vt);
+	process(vt);
 	state=0;
       } else {
 	(printf("unknown option '%c'\n", c));
@@ -1045,7 +1046,7 @@ void parse_vt(struct vt_em *vt, char *ptr, int length)
       break;
     case 3:			/* \EOx */
       if (mode & VT_EXO) {
-	modes[c].process(vt);
+	process(vt);
       }	/* ignore otherwise */
       state=0;
       break;
