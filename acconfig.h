@@ -24,7 +24,6 @@
 #undef USE_TERMNET
 #undef USE_VFS
 #undef HAVE_ORBIT
-#undef HAVE_GTKCAL
 #undef HAVE_ESD
 #undef PACKAGE
 #undef VERSION

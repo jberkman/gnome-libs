@@ -130,18 +130,6 @@ create_newwin(gboolean normal, gchar *appname, gchar *title)
 }
 
 static void
-create_calendar(void)
-{
-	GtkWidget *app;
-	GtkWidget *cal;
-	app=create_newwin(TRUE,"testGNOME","calendar");
-	cal=gtk_calendar_new();
-	gnome_app_set_contents(GNOME_APP(app),cal);
-	gtk_widget_show(cal);
-	gtk_widget_show(app);
-}
-
-static void
 create_calc(void)
 {
 	GtkWidget *app,*calc;
@@ -1595,7 +1583,6 @@ main (int argc, char *argv[])
 	  {
 		  { "app-util/appbar/dialog-util", create_app_util },
 		  { "app-helper", create_app_helper },
-		  { "calendar", create_calendar },
 		  { "calculator", create_calc },
 		  { "canvas", create_canvas },
 		  { "clock",	create_clock },
