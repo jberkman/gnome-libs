@@ -1,55 +1,53 @@
-? gconf.spec
-? gconf.m4
-? gconf/gconfd-1
-? gconf/gconftool-1
-? gconf/gconfd.oafinfo
 Index: .cvsignore
 ===================================================================
 RCS file: /cvs/gnome/gconf/.cvsignore,v
-retrieving revision 1.5
-diff -u -u -r1.5 .cvsignore
---- .cvsignore	2000/01/25 10:16:38	1.5
-+++ .cvsignore	2000/09/30 15:45:02
-@@ -18,3 +18,5 @@
+retrieving revision 1.6
+diff -u -u -p -r1.6 .cvsignore
+--- .cvsignore	2000/08/29 21:16:59	1.6
++++ .cvsignore	2000/10/15 21:53:39
+@@ -18,5 +18,7 @@ ABOUT-NLS
  intl
  config.h.in
  gconf-config
 +gconf-2.0.pc
 +gconfgtk-2.0.pc
+ gconf.spec
+ gconf.m4
 Index: Makefile.am
 ===================================================================
 RCS file: /cvs/gnome/gconf/Makefile.am,v
-retrieving revision 1.16
-diff -u -u -r1.16 Makefile.am
---- Makefile.am	2000/08/10 05:26:51	1.16
-+++ Makefile.am	2000/09/30 15:45:02
+retrieving revision 1.19
+diff -u -u -p -r1.19 Makefile.am
+--- Makefile.am	2000/10/03 19:14:23	1.19
++++ Makefile.am	2000/10/15 21:53:39
 @@ -2,7 +2,8 @@
- SUBDIRS = gconf backends wrappers po intl doc examples standard-schemas
+ SUBDIRS = gconf backends wrappers po doc examples standard-schemas
  DIST_SUBDIRS=tests $(SUBDIRS)
  
--EXTRA_DIST=gconf-config.in gconf.m4.in gconf.spec.in gconf.spec
-+EXTRA_DIST=gconf-config.in gconf.m4.in gconf.spec.in gconf.spec \
+-EXTRA_DIST=gconf-config.in gconf.m4.in gconf.spec.in gconf.spec TODO
++EXTRA_DIST=gconf-config.in gconf.m4.in gconf.spec.in gconf.spec TODO \
 +	   gconf-2.0.pc.in gconfgtk-2.0.pc.in
  
  WARNING_MESSAGE="If this is your first install of GConf, you may need to move $(prefix)/etc/gconf/$(MAJOR_VERSION)/path.example to $(prefix)/etc/gconf/$(MAJOR_VERSION)/path, so that the default configuration is sane. If you are already using GConf, you may need to move your old configuration into place if $(MAJOR_VERSION) is not the same as your old version."
  
-@@ -24,4 +25,8 @@
+@@ -24,6 +25,9 @@ install-data-local:
  	echo "**** NOTE ****" && \
  	echo $(WARNING_MESSAGE) && \
  	echo "**************"
 +
 +pkgconfigdir = $(libdir)/pkgconfig
 +pkgconfig_DATA = gconf-2.0.pc gconfgtk-2.0.pc
-+
  
+ install-schemas:
+ 	(cd standard-schemas && $(MAKE) $(AM_MAKEFLAGS) install-schemas)
 Index: configure.in
 ===================================================================
 RCS file: /cvs/gnome/gconf/configure.in,v
-retrieving revision 1.53
-diff -u -u -r1.53 configure.in
---- configure.in	2000/08/10 05:26:51	1.53
-+++ configure.in	2000/09/30 15:45:03
-@@ -111,9 +111,9 @@
+retrieving revision 1.61
+diff -u -u -p -r1.61 configure.in
+--- configure.in	2000/10/08 19:06:11	1.61
++++ configure.in	2000/10/15 21:53:39
+@@ -137,9 +137,9 @@ if test "x$docs_only" = "xyes"; then
          AC_FYI("Only building documentation")
  else
  
@@ -61,7 +59,7 @@ diff -u -u -r1.53 configure.in
  
  AM_CONDITIONAL(GTK, test x$HAVE_GTK != xno)
  
-@@ -200,6 +200,8 @@
+@@ -244,6 +244,8 @@ doc/gconf/Makefile
  examples/Makefile
  tests/Makefile
  standard-schemas/Makefile
@@ -75,7 +73,7 @@ Index: gconf-2.0.pc.in
 RCS file: gconf-2.0.pc.in
 diff -N gconf-2.0.pc.in
 --- /dev/null	Tue May  5 16:32:27 1998
-+++ gconf-2.0.pc.in	Sat Sep 30 11:45:03 2000
++++ gconf-2.0.pc.in	Sun Oct 15 17:53:39 2000
 @@ -0,0 +1,12 @@
 +prefix=/gnome/head/INSTALL
 +exec_prefix=${prefix}
@@ -94,7 +92,7 @@ Index: gconfgtk-2.0.pc.in
 RCS file: gconfgtk-2.0.pc.in
 diff -N gconfgtk-2.0.pc.in
 --- /dev/null	Tue May  5 16:32:27 1998
-+++ gconfgtk-2.0.pc.in	Sat Sep 30 11:45:03 2000
++++ gconfgtk-2.0.pc.in	Sun Oct 15 17:53:39 2000
 @@ -0,0 +1,12 @@
 +prefix=/gnome/head/INSTALL
 +exec_prefix=${prefix}
@@ -108,14 +106,84 @@ diff -N gconfgtk-2.0.pc.in
 +Requires: gconf-2.0,gtk+-2.0
 +Libs: -lgconf-gtk-@MAJOR_VERSION@
 +Cflags: 
+Index: gconf/Makefile.am
+===================================================================
+RCS file: /cvs/gnome/gconf/gconf/Makefile.am,v
+retrieving revision 1.52
+diff -u -u -p -r1.52 Makefile.am
+--- gconf/Makefile.am	2000/09/11 21:58:47	1.52
++++ gconf/Makefile.am	2000/10/15 21:53:39
+@@ -31,7 +31,6 @@ gconfincludedir = $(includedir)/gconf/$(
+ gconfinclude_HEADERS =     \
+ 	gconf.h            \
+ 	gconf-changeset.h	\
+-	gconf-glib-public.h	\
+ 	gconf-listeners.h  \
+ 	gconf-schema.h 	   \
+ 	gconf-value.h	   \
+@@ -69,8 +68,6 @@ libgconf_1_la_SOURCES = \
+ 	gconf-backend.c		\
+ 	gconf-changeset.c	\
+ 	gconf-error.c		\
+-	gconf-glib.c		\
+-	gconf-glib-private.h	\
+ 	gconf-listeners.c	\
+ 	gconf-locale.h  	\
+ 	gconf-locale.c  	\
+Index: gconf/gconf-database.h
+===================================================================
+RCS file: /cvs/gnome/gconf/gconf/gconf-database.h,v
+retrieving revision 1.6
+diff -u -u -p -r1.6 gconf-database.h
+--- gconf/gconf-database.h	2000/10/08 19:51:32	1.6
++++ gconf/gconf-database.h	2000/10/15 21:53:39
+@@ -31,7 +31,6 @@ extern "C" {
+ #include "gconf-listeners.h"
+ #include "gconf-sources.h"
+ #include "gconf-internals.h"
+-#include "gconf-glib-private.h"
+ 
+ typedef struct _GConfDatabase GConfDatabase;
+ 
+Index: gconf/gconf-error.h
+===================================================================
+RCS file: /cvs/gnome/gconf/gconf/gconf-error.h,v
+retrieving revision 1.15
+diff -u -u -p -r1.15 gconf-error.h
+--- gconf/gconf-error.h	2000/10/07 01:31:18	1.15
++++ gconf/gconf-error.h	2000/10/15 21:53:40
+@@ -22,8 +22,6 @@
+ 
+ #include <glib.h>
+ 
+-#include <gconf/gconf-glib-public.h>
+-
+ #ifdef __cplusplus
+ extern "C" {
+ #endif /* __cplusplus */
+Index: gconf/gconfd.c
+===================================================================
+RCS file: /cvs/gnome/gconf/gconf/gconfd.c,v
+retrieving revision 1.94
+diff -u -u -p -r1.94 gconfd.c
+--- gconf/gconfd.c	2000/10/08 19:51:32	1.94
++++ gconf/gconfd.c	2000/10/15 21:53:42
+@@ -32,7 +32,6 @@
+ #include "gconf-listeners.h"
+ #include "gconf-locale.h"
+ #include "gconf-schema.h"
+-#include "gconf-glib-private.h"
+ #include "gconf.h"
+ #include "gconfd.h"
+ #include "gconf-database.h"
 Index: po/Makefile.in.in
 ===================================================================
 RCS file: /cvs/gnome/gconf/po/Makefile.in.in,v
-retrieving revision 1.1
-diff -u -u -r1.1 Makefile.in.in
---- po/Makefile.in.in	1999/07/22 20:20:02	1.1
-+++ po/Makefile.in.in	2000/09/30 15:45:03
-@@ -62,7 +62,7 @@
+retrieving revision 1.5
+diff -u -u -p -r1.5 Makefile.in.in
+--- po/Makefile.in.in	2000/09/15 04:30:24	1.5
++++ po/Makefile.in.in	2000/10/15 21:53:43
+@@ -62,7 +62,7 @@ INSTOBJEXT = @INSTOBJEXT@
  	$(COMPILE) $<
  
  .po.pox:
@@ -124,7 +192,7 @@ diff -u -u -r1.1 Makefile.in.in
  	$(MSGMERGE) $< $(srcdir)/$(PACKAGE).pot -o $*.pox
  
  .po.mo:
-@@ -79,7 +79,7 @@
+@@ -79,7 +79,7 @@ INSTOBJEXT = @INSTOBJEXT@
  
  all: all-@USE_NLS@
  
@@ -133,7 +201,7 @@ diff -u -u -r1.1 Makefile.in.in
  all-no:
  
  $(srcdir)/$(PACKAGE).pot: $(POTFILES)
-@@ -90,8 +90,8 @@
+@@ -90,8 +90,8 @@ $(srcdir)/$(PACKAGE).pot: $(POTFILES)
  	   || ( rm -f $(srcdir)/$(PACKAGE).pot \
  		&& mv $(PACKAGE).po $(srcdir)/$(PACKAGE).pot )
  
@@ -144,7 +212,7 @@ diff -u -u -r1.1 Makefile.in.in
  	rm -f cat-id-tbl.tmp
  	sed -f ../intl/po2tbl.sed $(srcdir)/$(PACKAGE).pot \
  		| sed -e "s/@PACKAGE NAME@/$(PACKAGE)/" > cat-id-tbl.tmp
-@@ -180,7 +180,8 @@
+@@ -180,7 +180,8 @@ uninstall:
  
  check: all
  
@@ -154,7 +222,7 @@ diff -u -u -r1.1 Makefile.in.in
  
  dvi info tags TAGS ID:
  
-@@ -196,7 +197,7 @@
+@@ -196,7 +197,7 @@ distclean: clean
  maintainer-clean: distclean
  	@echo "This command is intended for maintainers to use;"
  	@echo "it deletes files that may require special tools to rebuild."
@@ -163,7 +231,7 @@ diff -u -u -r1.1 Makefile.in.in
  
  distdir = ../$(PACKAGE)-$(VERSION)/$(subdir)
  dist distdir: update-po $(DISTFILES)
-@@ -207,7 +208,7 @@
+@@ -207,7 +208,7 @@ dist distdir: update-po $(DISTFILES)
  	done
  
  update-po: Makefile
@@ -175,20 +243,21 @@ diff -u -u -r1.1 Makefile.in.in
 Index: wrappers/gtk/gconf-client.c
 ===================================================================
 RCS file: /cvs/gnome/gconf/wrappers/gtk/gconf-client.c,v
-retrieving revision 1.27
-diff -u -u -r1.27 gconf-client.c
---- wrappers/gtk/gconf-client.c	2000/07/26 06:52:52	1.27
-+++ wrappers/gtk/gconf-client.c	2000/09/30 15:45:05
-@@ -122,7 +122,7 @@
- static void gconf_client_real_unreturned_error (GConfClient* client, GConfError* error);
- static void gconf_client_real_error            (GConfClient* client, GConfError* error);
- static void gconf_client_destroy               (GtkObject* object); 
+retrieving revision 1.36
+diff -u -u -p -r1.36 gconf-client.c
+--- wrappers/gtk/gconf-client.c	2000/10/08 18:03:53	1.36
++++ wrappers/gtk/gconf-client.c	2000/10/15 21:53:45
+@@ -110,7 +110,8 @@ static void gconf_client_class_init (GCo
+ static void gconf_client_init       (GConfClient      *client);
+ static void gconf_client_real_unreturned_error (GConfClient* client, GError* error);
+ static void gconf_client_real_error            (GConfClient* client, GError* error);
 -static void gconf_client_finalize              (GtkObject* object); 
++static void gconf_client_destroy               (GtkObject* object); 
 +static void gconf_client_finalize              (GObject* object); 
  
  static void gconf_client_cache                 (GConfClient* client,
                                                  const gchar* key,
-@@ -171,15 +171,17 @@
+@@ -161,15 +162,17 @@ static void
  gconf_client_class_init (GConfClientClass *class)
  {
    GtkObjectClass *object_class;
@@ -207,7 +276,7 @@ diff -u -u -r1.27 gconf-client.c
                      GTK_SIGNAL_OFFSET (GConfClientClass, value_changed),
                      gtk_marshal_NONE__POINTER_POINTER,
                      GTK_TYPE_NONE, 2, GTK_TYPE_POINTER, GTK_TYPE_POINTER);
-@@ -187,7 +189,7 @@
+@@ -177,7 +180,7 @@ gconf_client_class_init (GConfClientClas
    client_signals[UNRETURNED_ERROR] =
      gtk_signal_new ("unreturned_error",
                      GTK_RUN_LAST,
@@ -216,7 +285,7 @@ diff -u -u -r1.27 gconf-client.c
                      GTK_SIGNAL_OFFSET (GConfClientClass, unreturned_error),
                      gtk_marshal_NONE__POINTER,
                      GTK_TYPE_NONE, 1, GTK_TYPE_POINTER);
-@@ -195,7 +197,7 @@
+@@ -185,7 +188,7 @@ gconf_client_class_init (GConfClientClas
    client_signals[ERROR] =
      gtk_signal_new ("error",
                      GTK_RUN_LAST,
@@ -225,25 +294,44 @@ diff -u -u -r1.27 gconf-client.c
                      GTK_SIGNAL_OFFSET (GConfClientClass, error),
                      gtk_marshal_NONE__POINTER,
                      GTK_TYPE_NONE, 1, GTK_TYPE_POINTER);
-@@ -207,7 +209,7 @@
+@@ -195,8 +198,9 @@ gconf_client_class_init (GConfClientClas
+   class->value_changed    = NULL;
+   class->unreturned_error = gconf_client_real_unreturned_error;
    class->error            = gconf_client_real_error;
- 
-   object_class->destroy   = gconf_client_destroy;
+-  
 -  object_class->finalize  = gconf_client_finalize;
++
++  object_class->destroy   = gconf_client_destroy;
 +  gobject_class->finalize  = gconf_client_finalize;
  }
  
  static void
-@@ -253,7 +255,7 @@
+@@ -228,7 +232,7 @@ destroy_dir_foreach_remove(gpointer key,
  }
  
  static void
 -gconf_client_finalize (GtkObject* object)
-+gconf_client_finalize (GObject* object)
++gconf_client_destroy (GtkObject* object)
  {
    GConfClient* client = GCONF_CLIENT(object);
+ 
+@@ -237,6 +241,15 @@ gconf_client_finalize (GtkObject* object
    
-@@ -277,8 +279,8 @@
+   gconf_client_clear_cache(client);
+   
++  if (parent_class->destroy)
++    (*parent_class->destroy)(object);
++}
++
++static void
++gconf_client_finalize (GObject* object)
++{
++  GConfClient* client = GCONF_CLIENT(object);
++  
+   if (client->listeners != NULL)
+     {
+       gconf_listeners_free(client->listeners);
+@@ -257,8 +270,8 @@ gconf_client_finalize (GtkObject* object
        client->engine = NULL;
      }
  

@@ -2,10 +2,10 @@ Index: .cvsignore
 ===================================================================
 RCS file: /cvs/gnome/gnome-vfs/.cvsignore,v
 retrieving revision 1.4
-diff -u -u -r1.4 .cvsignore
+diff -u -u -p -r1.4 .cvsignore
 --- .cvsignore	2000/08/31 11:32:38	1.4
-+++ .cvsignore	2000/09/30 15:45:29
-@@ -28,3 +28,4 @@
++++ .cvsignore	2000/10/15 21:54:14
+@@ -28,3 +28,4 @@ vfsConf.sh
  vfscorbaConf.sh
  vfspthreadConf.sh
  gnome-vfs-config
@@ -13,11 +13,11 @@ diff -u -u -r1.4 .cvsignore
 Index: Makefile.am
 ===================================================================
 RCS file: /cvs/gnome/gnome-vfs/Makefile.am,v
-retrieving revision 1.15
-diff -u -u -r1.15 Makefile.am
---- Makefile.am	2000/09/05 14:20:32	1.15
-+++ Makefile.am	2000/09/30 15:45:29
-@@ -37,7 +37,8 @@
+retrieving revision 1.16
+diff -u -u -p -r1.16 Makefile.am
+--- Makefile.am	2000/10/11 17:36:39	1.16
++++ Makefile.am	2000/10/15 21:54:14
+@@ -31,7 +31,8 @@ EXTRA_DIST =					\
  	vfsConf.sh.in				\
  	vfscorbaConf.sh.in			\
  	vfspthreadConf.sh.in			\
@@ -27,7 +27,7 @@ diff -u -u -r1.15 Makefile.am
  
  bin_SCRIPTS = $(top_builddir)/gnome-vfs-config
  
-@@ -88,4 +89,6 @@
+@@ -82,4 +83,6 @@ gnome-vfs-config: gnome-vfs-config.in Ma
  	  && mv gnome-vfs-config.tmp gnome-vfs-config && \
  		chmod 755 gnome-vfs-config
  
@@ -37,12 +37,20 @@ diff -u -u -r1.15 Makefile.am
 Index: configure.in
 ===================================================================
 RCS file: /cvs/gnome/gnome-vfs/configure.in,v
-retrieving revision 1.73
-diff -u -u -r1.73 configure.in
---- configure.in	2000/09/29 05:05:16	1.73
-+++ configure.in	2000/09/30 15:45:29
-@@ -11,7 +11,7 @@
+retrieving revision 1.79
+diff -u -u -p -r1.79 configure.in
+--- configure.in	2000/10/11 17:36:39	1.79
++++ configure.in	2000/10/15 21:54:15
+@@ -7,6 +7,7 @@ AM_MAINTAINER_MODE
+ 
+ AC_ISC_POSIX
+ AC_PROG_CC
++AC_PROG_CPP
+ AC_PROG_AWK
  AM_PROG_LIBTOOL
+ 
+@@ -34,7 +35,7 @@ dnl = Profiling support
+ dnl ====================================
  
  dnl Version of the GNOME Platform (1002000 for GNOME 1.2.x)
 -GNOME_PLATFORM_VERSION=1002000
@@ -50,7 +58,7 @@ diff -u -u -r1.73 configure.in
  AC_DEFINE_UNQUOTED(GNOME_PLATFORM_VERSION, $GNOME_PLATFORM_VERSION)
  AM_CONDITIONAL(PLATFORM_GNOME_2, test $GNOME_PLATFORM_VERSION -ge 1095000)
  
-@@ -68,9 +68,9 @@
+@@ -91,13 +92,13 @@ AC_ARG_WITH(default-backend,
  	      [  --with-default-backend=(corba|pthread)		    ],
  	      default_backend="$withval")
  
@@ -62,7 +70,12 @@ diff -u -u -r1.73 configure.in
  *** is always available from ftp://ftp.gtk.org/.]),
      gmodule gthread)
  
-@@ -426,6 +426,7 @@
+-AM_PATH_GTK(1.2.0,,
++AM_PATH_GTK_2_0(1.3.0,,
+   AC_MSG_ERROR([
+ *** Gtk+ 1.2.0 or better is required. The latest version of Gtk+
+ *** is always available from ftp://ftp.gtk.org/.]),
+@@ -436,6 +437,7 @@ po/Makefile.in
  test/Makefile
  test/gnome-file-selection/Makefile
  test/vfs-run
@@ -75,7 +88,7 @@ Index: gnomevfs-2.0.pc.in
 RCS file: gnomevfs-2.0.pc.in
 diff -N gnomevfs-2.0.pc.in
 --- /dev/null	Tue May  5 16:32:27 1998
-+++ gnomevfs-2.0.pc.in	Sat Sep 30 11:45:29 2000
++++ gnomevfs-2.0.pc.in	Sun Oct 15 17:54:15 2000
 @@ -0,0 +1,12 @@
 +prefix=/gnome/head/INSTALL
 +exec_prefix=${prefix}
