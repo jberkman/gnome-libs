@@ -36,7 +36,7 @@ fi
 
 i=1
 while test -f $srcdir/expected/${the_test}_${i}.out; do
-  cmp -s $srcdir/expected/${the_test}_${i}.out && exit 0
+  cmp -s $srcdir/expected/${the_test}_${i}.out results/$the_test.out && exit 0
   i=`expr $i + 1`
 done
 
