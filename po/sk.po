@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-libs 1.95\n"
-"POT-Creation-Date: 2001-01-24 11:47+0100\n"
+"POT-Creation-Date: 2001-02-19 13:08+0100\n"
 "PO-Revision-Date: 2001-01-24 11:57CET\n"
 "Last-Translator: Stanislav Visnovsky <visnovsky@nenya.ms.mff.cuni.cz>\n"
 "Language-Team: Slovak <sk-i18n@rak.isternet.sk>\n"
@@ -105,6 +105,10 @@ msgstr "Nepodarilo sa vykona» príkaz '%s'!"
 #, c-format
 msgid "Command '%s' did not return an ID!"
 msgstr "Príkaz '%s' nevrátil ID!"
+
+#: libgnome/gnomelib-init2.c:1203
+msgid "Help options"
+msgstr "Mo¾nosti Pomocníka"
 
 #: libgnome/gnomelib-init2.c:1228
 msgid "Dynamic modules to load"
@@ -559,7 +563,8 @@ msgstr ""
 #: libgnome/gnomelib-init.c:230
 #, c-format
 msgid "Could not create gnome accelerators directory `%s': %s\n"
-msgstr "Nepodarilo sa vytvori» prieèinok `%s' pre klávesové skratky gnome: %s\n"
+msgstr ""
+"Nepodarilo sa vytvori» prieèinok `%s' pre klávesové skratky gnome: %s\n"
 
 #: libgnomeui/gnome-about.c:331
 msgid "Author:"
@@ -1145,31 +1150,31 @@ msgstr "="
 msgid "INV"
 msgstr "INV"
 
-#: libgnomeui/gnome-client.c:828
+#: libgnomeui/gnome-client.c:836
 msgid "Specify session management ID"
 msgstr "©pecifikujte ID správy sedenia"
 
-#: libgnomeui/gnome-client.c:828
+#: libgnomeui/gnome-client.c:836
 msgid "ID"
 msgstr "ID"
 
-#: libgnomeui/gnome-client.c:831
+#: libgnomeui/gnome-client.c:839
 msgid "Specify prefix of saved configuration"
 msgstr "©pecifikujte prefix ulo¾enej konfigurácie"
 
-#: libgnomeui/gnome-client.c:831
+#: libgnomeui/gnome-client.c:839
 msgid "PREFIX"
 msgstr "PREFIX"
 
-#: libgnomeui/gnome-client.c:834
+#: libgnomeui/gnome-client.c:842
 msgid "Disable connection to session manager"
 msgstr "Zakáza» pripojenie na správcu sedenia"
 
-#: libgnomeui/gnome-client.c:846
+#: libgnomeui/gnome-client.c:854
 msgid "Session management"
 msgstr "Správa sedenia"
 
-#: libgnomeui/gnome-client.c:2333
+#: libgnomeui/gnome-client.c:2341
 msgid "Cancel Logout"
 msgstr "Zru¹i» odhlásenie"
 
@@ -1228,7 +1233,8 @@ msgstr "Kalendár"
 
 #: libgnomeui/gnome-dateedit.c:845
 msgid "gnome_date_edit_get_date deprecated, use gnome_date_edit_get_time"
-msgstr "gnome_date_edit_get_date nie je podporovaný, pou¾ite gnome_date_edit_get_time"
+msgstr ""
+"gnome_date_edit_get_date nie je podporovaný, pou¾ite gnome_date_edit_get_time"
 
 #: libgnomeui/gnome-druid.c:125
 msgid "Back"
@@ -1576,7 +1582,8 @@ msgstr "http://www.gnome.org/application_crashed.shtml"
 
 #: libgnomeui/gnome_segv.c:141
 msgid "Please visit the GNOME Application Crash page for more information"
-msgstr "Prosím, nav¹tívte stránku GNOME Application Crash pre ïal¹ie informácie"
+msgstr ""
+"Prosím, nav¹tívte stránku GNOME Application Crash pre ïal¹ie informácie"
 
 #. Pixmap
 #: test-gnome/testgnome.c:830
@@ -1976,4 +1983,3 @@ msgid ""
 msgstr ""
 "Jednoduchá testovacia aplikácie pre overenie, ako funguje WIN_HINTS.\n"
 "A na testovanie funkcie gnome_win_hints_* na chyby. :)"
-
