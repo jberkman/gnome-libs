@@ -31,6 +31,8 @@
 int
 login_tty (int fd)
 {
+	pid_t pid = getpid ();
+	 
 	/* Create the session */
 	setsid ();
 
@@ -39,6 +41,12 @@ login_tty (int fd)
 		return -1;
 #endif
 
+#if defined (_POSIX_VERSION) || defined (__svr4__)
+	tcsetpgrp (0, pid);
+#elif defined (TIOCSPGRP)
+	ioctl (0, TIOCSPGRP, &pid);
+#endif
+	
 	dup2 (fd, 0);
 	dup2 (fd, 1);
 	dup2 (fd, 2);

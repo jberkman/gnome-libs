@@ -126,8 +126,8 @@ AC_CHECK_FUNCS(grantpt login utmpxname utmpname getutmpx setutent)
 AC_MSG_CHECKING([for Unix98 sendmsg])
 AC_TRY_LINK([
 #include <stdio.h>
-#include <sys/socket.h>
 #include <sys/types.h>
+#include <sys/socket.h>
 ],[
 struct msghdr hdr;
 hdr.msg_control = NULL;
