@@ -20,8 +20,8 @@ dnl Make sure else configure stuff exists.
 AC_CANONICAL_HOST
 
 dnl Foreign defaults:
-MC_IF_VAR_EQ(enable_static, yes, , enable_static=no)
-MC_IF_VAR_EQ(enable_shared, yes, , enable_shared=yes)
+MC_IF_VAR_EQ(enable_static, no, , enable_static=yes)
+MC_IF_VAR_EQ(enable_shared, no, , enable_shared=yes)
 
 dnl Additional arguments.
 AC_ARG_ENABLE(debug,
