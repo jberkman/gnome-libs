@@ -21,6 +21,18 @@ pkgincludedir=${includedir}/@PACKAGE@
 MODULE_VERSION=@PACKAGE@-@VERSION@
 module_dirs="$libdir:$GNOME_LIBCONFIG_PATH"
 
+# stolen from autoconf
+if (echo "testing\c"; echo 1,2,3) | grep c >/dev/null; then
+  if (echo -n testing; echo 1,2,3) | sed s/-n/xn/ | grep xn >/dev/null; then
+    ac_n= ac_c='
+' ac_t='	'
+  else
+    ac_n=-n ac_c= ac_t=
+  fi
+else
+  ac_n= ac_c='\c' ac_t=
+fi
+
 for extra in `echo $GNOME_PATH  | sed 's/:/ /'`; do
     module_dirs="$module_dirs:$extra/lib"
 done
@@ -68,29 +80,22 @@ appear to be:
 
 EOF
 
-    none=true
     for dir in `echo $module_dirs | sed 's/:/ /'`; do
 	conf_shs=`cd $dir; echo *Conf.sh`
 	if test "x$conf_shs" = x || test "x$conf_shs" = 'x*Conf.sh'; then :
 	else
-	    none=false
-	    # gnomeConf.sh is a placebo, in case the `echo' turns up nasties
 	    set gnomeConf.sh $conf_shs
 
 	    for i
 	    do
 		case "$i" in
-		# ignore either placebo or installed file
 		gnomeConf.sh) ;;
-		*Conf.sh) echo -n "$i" | sed -e 's/Conf\.sh$/, /' ;;
-		# should not happen
-		*) exit_code=2 ; echo "*** ERROR: What is this? $i" 1>&2 ;;
+		*Conf.sh) echo $ac_n "$i $ac_c";;
+		*) echo "*** ERROR: What is this? $i" 1>&2; exit 2 ;;
 		esac
-	    done | fmt
+	    done
 	fi
-    done
-
-    test true = "$none" && echo "    <NONE>"
+    done | sed -e 's/Conf\.sh /, /g' -e 's/, $//' | fmt
 
     exit $exit_code
 }

@@ -1,3 +1,9 @@
+1999-08-27  Raja R Harinath  <harinath@cs.umn.edu>
+
+	* gnome-config.in (Usage): 
+	`echo -n' is not portable.  Steal trick	from configure.  
+	Run `sed' just once (minor optimization).
+
 1999-08-27  Miguel de Icaza  <miguel@nuclecu.unam.mx>
 
 	* man/gnome.1 (http): Updated the GNOME manual page. 
@@ -6,7 +12,8 @@
 	existing modules separated by commas and format the resulting output.
 
 	* libgnorba/goad.c (goad_server_list_get): Use correct string
-	format.  Otherwise we could have never loaded user-defined GOAD services.
+	format.  Otherwise we could have never loaded user-defined GOAD
+	services. 
 	(goad_server_list_get): Add support for loading servers from
 	$GNOME_PATH/CORBA/servers and from $GNOME_GNORBA_PATH.
 
@@ -21,20 +28,26 @@
 	* configure.in: No gnome-hello or libvfs
 
 1999-08-25 Elliot Lee <sopwith@redhat.com>
-	* libgnomeui/gnome_segv.c: Include a GnomeHref to point to the GNOME appcrash page.
-	* libgnomeui/gnome-init.c: Clean up fatal signal handling, add env variable, etc.
-	                           Don't copy arguments unnecessarily for gnome_client's purposes.
-				   Remove POPT_AUTOHELP (it's already in libgnome) and move --version to libgnome
+
+	* libgnomeui/gnome_segv.c: Include a GnomeHref to point to the
+	GNOME appcrash page. 
+	* libgnomeui/gnome-init.c: Clean up fatal signal handling, add env
+	variable, etc. 
+	Don't copy arguments unnecessarily for gnome_client's purposes.
+	Remove POPT_AUTOHELP (it's already in libgnome) and move --version
+	to libgnome 
 	* libgnome/gnomelib-init.c: Move --version option handling here.
 
-
 1999-08-19 Elliot Lee <sopwith@redhat.com>
-	* libgnorba/orbitgnome.c: Fix brain-dead cookie setup logic (s/&/|/) and
-	  don't enable cookies if app asked for them to be turned off.
-	* libgnomeui/gnome-app-helper.h: Cast the 'callback' arguments to (gpointer)
-	  to avoid ANSI warnings.
+
+	* libgnorba/orbitgnome.c: Fix brain-dead cookie setup logic
+	  (s/&/|/) and don't enable cookies if app asked for them to be
+	  turned off. 
+	* libgnomeui/gnome-app-helper.h: Cast the 'callback' arguments to
+	  (gpointer) to avoid ANSI warnings.
 
 1999-08-20  Federico Mena Quintero  <federico@redhat.com>
+
 	* configure.in: Bumped version number to 1.0.14.
 
 1999-08-19 Elliot Lee <sopwith@redhat.com>
@@ -43,13 +56,17 @@
 	* zvt/*.[ch]: Patch included in bug #1641.
 
 1999-08-19 Elliot Lee <sopwith@redhat.com>
-	* libgnome/gnome-score.c, libgnomeui/gnome-stock.c, libgnomeui/gnome-animator.c:
+
+	* libgnome/gnome-score.c, libgnomeui/gnome-stock.c,
+	  libgnomeui/gnome-animator.c:
 	  Warning fixes from patch in bug #1594
 
 1999-08-19 Elliot Lee <sopwith@redhat.com>
+
 	* Makefile.am: Fix bug #1460 - put gnomeConf.sh in CLEANFILES.
 
 1999-08-16 Elliot Lee <sopwith@redhat.com>
+
 	* gnome-libs.spec.in: Use sysconfdir=/etc instead of $prefix/etc
 	* libgnome/gnome-config.c: Ignore lines that begin with a '#'
 	* libgnomeui/gnome-dentry-edit.c: Attempt to remove the memory
