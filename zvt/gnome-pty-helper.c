@@ -409,12 +409,19 @@ open_ptys (int utmp, int wtmp)
 #endif
 	  ;
 #ifdef EXTB
-	cfsetispeed(&term, EXTB);
-	cfsetospeed(&term, EXTB);
+	cfsetispeed (&term, EXTB);
+	cfsetospeed (&term, EXTB);
 #else
-	cfsetispeed(&term, B38400);
-	cfsetospeed(&term, B38400);
-#endif
+#   ifdef B38400
+        cfsetispeed(&term, B38400);
+        cfsetospeed(&term, B38400);
+#   else
+#       ifdef B9600
+        cfsetispeed(&term, B9600);
+        cfsetospeed(&term, B9600);
+#       endif
+#   endif
+#endif /* EXTB */
 	term.c_lflag = 0
 #ifdef ECHO
 	  | ECHO
