@@ -1,9 +1,15 @@
+1998-03-28  Miguel de Icaza  <miguel@nuclecu.unam.mx>
+
+	* gtk-forms.c (_XmHTMLFormActivate): Do not free the values from
+	the form on submit (as we are not the owner of the data, different
+	from the Motif code).
+
+	(_XmHTMLFormActivate): Cast the right widget in the FORM_TEXT.
+
 Sun Mar 15 15:54:10 1998  Owen Taylor  <owt1@cornell.edu>
 
 	* libgnome/Makefile.am libgnomeui/Makefile.am: 
 	Added GTK_CFLAGS to INCLUDES
-
-
 
 Wed Mar  4 00:43:58 1998  Miguel de Icaza  <miguel@nuclecu.unam.mx>
 

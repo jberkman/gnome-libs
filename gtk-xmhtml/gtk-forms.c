@@ -371,7 +371,7 @@ _XmHTMLFormActivate(XmHTMLWidget html, TEvent *event, XmHTMLForm *entry)
 
 			/* textfield contents aren't stored by us */
 			case FORM_TEXT:
-				chPtr = gtk_entry_get_text (GTK_ENTRY (current_entry->w));
+				chPtr = gtk_entry_get_text (GTK_ENTRY (current_entry->child));
 				components[j++].value = chPtr;
 				break;
 
@@ -464,11 +464,6 @@ _XmHTMLFormActivate(XmHTMLWidget html, TEvent *event, XmHTMLForm *entry)
 	/* free all */
 	for(i = 0; i < j; i++)
 	{ 
-		/* value of these components is retrieved using XmTextGetValue */
-		if(components[i].type == FORM_TEXT || components[i].type == FORM_FILE ||
-			components[i].type == FORM_TEXTAREA )
-			if(components[i].value) 
-				g_free (components[i].value);
 		/* use free to avoid FMM errors in purify */
 		if(components[i].type == FORM_IMAGE)
 		{
