@@ -69,6 +69,11 @@ static void vt_line_update(struct _vtx *vx, struct vt_line *l, int line, int alw
   /* for 'scrollback' where the window has changed size -
      create a proper-length line (this is easier than special case code below */
   bl = (struct vt_line *)vt_list_index(&vx->vt.lines_back, line);
+
+  /* some sanity checks */
+  g_return_if_fail (bl != NULL);
+  g_return_if_fail (bl->next != NULL);
+
   if (bl->width > l->width) {
     struct vt_line *newline;
 
@@ -95,10 +100,6 @@ static void vt_line_update(struct _vtx *vx, struct vt_line *l, int line, int alw
   }
 
   runbuffer = alloca(vx->vt.width * sizeof(char));
-
-  /* some sanity checks */
-  g_return_if_fail (bl != NULL);
-  g_return_if_fail (runbuffer != NULL);
 
   /* work out if selections are being rendered */
   if (vx->selected &&
@@ -553,6 +554,11 @@ void vt_update_rect(struct _vtx *vx, int csx, int csy, int cex, int cey)
   if (csx>vx->vt.width)
     csx = vx->vt.width;
 
+  if (cey>=vx->vt.height)
+    cey = vx->vt.height-1;
+  if (csy>=vx->vt.height)
+    csy = vx->vt.height-1;
+
   lines = cey-csy;
 
   /* check scrollback for current line */
@@ -575,7 +581,7 @@ void vt_update_rect(struct _vtx *vx, int csx, int csy, int cex, int cey)
 	wn = nn;
       }
 
-      nn = nn->next;
+      nn = wn->next;
     }
   }
 

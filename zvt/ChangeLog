@@ -1,3 +1,13 @@
+1998-10-22  Michael Zucchi  <zucchi@zzedzone.fsi.com.au>
+
+	* update.c (vt_update_rect): Was going to the wrong next node when
+	starting the screen list.
+	(vt_update_rect): Bounds-check csy - cey to height.
+	(vt_line_update): Removed assertion about runbuffer (alloca
+	doesn't return null).
+	(vt_line_update): Add node->next==NULL assertion to check for
+	end-of-list.
+	
 1998-10-21  Michael Zucchi  <zucchi@zzedzone.fsi.com.au>
 
 	* zterm.c (main): Set window hints/minimum size.  Now the terminal
