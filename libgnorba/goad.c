@@ -695,7 +695,6 @@ goad_server_activate_shlib(GoadServer *sinfo,
   gpointer impl_ptr;
   GModule *gmod;
 
-#define SHLIB_DEPENDENCIES 1
 #ifdef SHLIB_DEPENDENCIES
   FILE* lafile;
   gchar* ptr;

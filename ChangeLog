@@ -1,3 +1,8 @@
+1999-04-12  Miguel de Icaza  <miguel@nuclecu.unam.mx>
+
+	* libgnorba/goad.c (goad_server_activate_shlib): Do not define
+	SHLIB_DEPENDENCIES here.  This should be conditionally defined. 
+
 1999-04-10  Martin Baulig  <martin@home-of-linux.org>
 
 	Moved the GNOME FAQ from devel-docs to gnome-faq.
