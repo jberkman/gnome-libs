@@ -1279,12 +1279,19 @@ vt_deccharmode (struct vt_em *vt)
 static void
 vt_reset(struct vt_em *vt)
 {
-#define DEVICE_ATTRIBUTES "\033?61;"
+#define DEVICE_ATTRIBUTES "\033[?6c"
+#define DEVICE_ATTRIBUTES2 "\033[>1;0;0c"
 
-  if (vt->state == 2) {
-    /* report device attributes - FIXME: this needs to be checked */
+  switch (vt->state) {
+  case 2:
+    /* report device attributes - vt102 */
     vt_writechild(vt, DEVICE_ATTRIBUTES, sizeof(DEVICE_ATTRIBUTES));
-  } else {
+    break;
+  case 10:
+    /* report device attributes 2 - DUH this should only be in vt220 emulation vt220, firmware version 0.0, rom cart 0 */
+    vt_writechild(vt, DEVICE_ATTRIBUTES2, sizeof(DEVICE_ATTRIBUTES2));
+    break;
+  default:
     vt_reset_terminal(vt, 0);
   }
 }
@@ -1447,6 +1454,7 @@ vt_parse_vt (struct vt_em *vt, char *ptr, int length)
    *   7: '\E[.... X' escape sequence.
    *   8: '\E[!X' escape sequence.
    *   9: '\E[....'X' escape sequence.
+   *  10: '\E[>....X' escape sequence.
    *
    *   DO NOT CHANGE THESE STATES!  Some callbacks rely on them.
    */
@@ -1569,6 +1577,9 @@ vt_parse_vt (struct vt_em *vt, char *ptr, int length)
       if (c=='?') {
 	state = 6;
 	continue;
+      } else if (c=='>') {
+	state = 10;
+	continue;
       } else if (c=='!') {
 	state = 8;
 	continue;
@@ -1578,6 +1589,7 @@ vt_parse_vt (struct vt_em *vt, char *ptr, int length)
     case 7:
     case 8:
     case 9:
+    case 10:
       if (mode & VT_ARG) {
 	/* accumulate subtotal */
 	vt->arg.num.intarg = vt->arg.num.intarg*10+(c-'0');

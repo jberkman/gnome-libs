@@ -1,3 +1,8 @@
+2000-01-22  NotZed  <notzed@zedzone.helixcode.com>
+
+	* zvtterm.[ch] vt.c: Forward port fixes between zvt-merge-1 and
+	zvt-merge-2 back into HEAD.
+
 2000-01-09  ERDI Gergo  <cactus@cactus.rulez.org>
 
 	* background.c: Removed some warnings
@@ -69,6 +74,27 @@
 
 	* Makefile.am (zterm_LDADD): properly link zterm to gdk-pixbuf,
 	libart_lgpl, libgnomeui and libgnome.
+
+2000-01-22  NotZed  <notzed@zedzone.helixcode.com>
+
+	* zvtterm.c/h (term_force_size): Back-port resize and colour-setting
+	fixes from HEAD version.
+
+	* vt.c (vt_reset): Send a properly formatted DA response, and
+	implement a DA2 response.  DA2 should only be sent if this is a
+	vt220.  Duh.
+	(vt_parse_vt): Added state 10 for \e[> ...
+
+1999-12-21  Miguel de Icaza  <miguel@helixcode.com>
+
+	* zvtterm.c (zvt_term_key_press): Pass the time request_paste
+	(fixes ICCCM compliancy bug, check bug tracking system).
+	(zvt_term_button_press): ditto
+	(zvt_term_selection_received): ditto.
+	(request_paste): Take time argument;  Pass this to
+	gtk_selection_convert instead of GDK_CURRENT_TIME.
+
+	Fixes #4273
 
 1999-12-06  Michael Zucchi  <zucchi@zedzone.mmc.com.au>
 

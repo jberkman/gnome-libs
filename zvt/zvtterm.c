@@ -1479,7 +1479,7 @@ zvt_term_fix_scrollbar (ZvtTerm *term)
    or nothing
    returns true if a paste was actually requested. */
 static int
-request_paste (GtkWidget *widget, int type)
+request_paste (GtkWidget *widget, int type, gint32 time)
 {
   GdkAtom string_atom;
 #ifdef ZVT_UTF
@@ -1511,8 +1511,8 @@ request_paste (GtkWidget *widget, int type)
   }
 
   /* And request the "STRING" target for the primary selection */
-  gtk_selection_convert (widget, GDK_SELECTION_PRIMARY, string_atom,
-			 GDK_CURRENT_TIME);
+    gtk_selection_convert (widget, GDK_SELECTION_PRIMARY, string_atom,
+			   time);
   return 1;
 }
 
@@ -1622,7 +1622,7 @@ zvt_term_button_press (GtkWidget      *widget,
     break;
 
   case 2:			/* middle button - paste */
-    request_paste (widget, 0);
+    request_paste (widget, 0, event->time);
     break;
 
   case 3:			/* right button - select extend? */
@@ -2069,7 +2069,7 @@ zvt_term_selection_received (GtkWidget *widget, GtkSelectionData *selection_data
     struct _zvtprivate *zp = _ZVT_PRIVATE(widget);
 
     /* now, try again with next selection type */
-    if (request_paste(widget, zp->lastselectiontype+1)==0)
+    if (request_paste(widget, zp->lastselectiontype+1, time)==0)
       g_print ("Selection retrieval failed\n");
     return;
   }
@@ -2433,7 +2433,7 @@ zvt_term_key_press (GtkWidget *widget, GdkEventKey *event)
   case GDK_KP_Insert:
   case GDK_Insert:
     if ((event->state & GDK_SHIFT_MASK) == GDK_SHIFT_MASK){
-        request_paste (widget, 0);
+        request_paste (widget, 0, event->time);
     } else {
       p+=sprintf (p, "\033[2~");
     }
