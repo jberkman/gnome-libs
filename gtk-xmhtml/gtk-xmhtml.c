@@ -607,7 +607,6 @@ CheckGC(XmHTMLWidget html)
 		html->html.gc = gdk_gc_new_with_values (GTK_WIDGET (html)->window, &xgc,
 							GDK_GC_FOREGROUND | GDK_GC_BACKGROUND |
 							GDK_GC_FUNCTION);
-		fprintf (stderr, "FIXME: missing call to XmHTMLRecomputeColors\n");
 		_XmHTMLRecomputeColors(html);
 
 		_XmHTMLDebug(1, ("XmHTML.c: CheckGC, gc created\n"));
@@ -1677,6 +1676,33 @@ gtk_xmhtml_set_background_internal (GtkXmHTML *html)
 	widget->style->bg[GTK_STATE_NORMAL].pixel = html->html.body_bg;
 	gtk_style_set_background(widget->style, html->html.work_area->window, GTK_STATE_NORMAL);
 	gtk_widget_queue_draw(widget);
+}
+
+/* XXX: This function does an XQueryColors() the hard way, because there is
+ * no corresponding function in Gdk.
+ */
+
+void
+my_x_query_colors(GdkColormap *colormap,
+		  GdkColor    *colors,
+		  gint         ncolors)
+{
+	XColor *xcolors;
+	gint    i;
+
+	xcolors = g_new(XColor, ncolors);
+	for (i = 0; i < ncolors; i++)
+		xcolors[i].pixel = colors[i].pixel;
+
+	XQueryColors(gdk_display, GDK_COLORMAP_XCOLORMAP(colormap), xcolors, ncolors);
+
+	for (i = 0; i < ncolors; i++) {
+		colors[i].red   = xcolors[i].red;
+		colors[i].green = xcolors[i].green;
+		colors[i].blue  = xcolors[i].blue;
+	}
+
+	g_free(xcolors);
 }
 
 void

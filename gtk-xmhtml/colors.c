@@ -35,6 +35,10 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.6  1998/01/10 02:27:02  unammx
+* First attempt at fixing the RecomputeColors functions.  They are still
+* not perfect, as scrollbar colors are affected, too. - Federico
+*
 * Revision 1.5  1998/01/07 01:45:36  unammx
 * Gtk/XmHTML is ready to be used by the Gnome hackers now!
 * Weeeeeee!
@@ -479,6 +483,236 @@ _XmHTMLFreeColors(XmHTMLWidget html)
 	*/
 }
 
+#ifndef WITH_MOTIF
+
+/* This color shading method is taken from gtkstyle.c - Federico */
+
+#define LIGHTNESS_MULT 1.3
+#define DARKNESS_MULT  0.7
+
+static void
+rgb_to_hls (gdouble *r, gdouble *g, gdouble *b)
+{
+	gdouble min;
+	gdouble max;
+	gdouble red;
+	gdouble green;
+	gdouble blue;
+	gdouble h, l, s;
+	gdouble delta;
+
+	red = *r;
+	green = *g;
+	blue = *b;
+
+	if (red > green) {
+		if (red > blue)
+			max = red;
+		else
+			max = blue;
+
+		if (green < blue)
+			min = green;
+		else
+			min = blue;
+	} else {
+		if (green > blue)
+			max = green;
+		else
+			max = blue;
+
+		if (red < blue)
+			min = red;
+		else
+			min = blue;
+	}
+
+	l = (max + min) / 2;
+	s = 0;
+	h = 0;
+
+	if (max != min) {
+		if (l <= 0.5)
+			s = (max - min) / (max + min);
+		else
+			s = (max - min) / (2 - max - min);
+
+		delta = max -min;
+		if (red == max)
+			h = (green - blue) / delta;
+		else if (green == max)
+			h = 2 + (blue - red) / delta;
+		else if (blue == max)
+			h = 4 + (red - green) / delta;
+
+		h *= 60;
+		if (h < 0.0)
+			h += 360;
+	}
+
+	*r = h;
+	*g = l;
+	*b = s;
+}
+
+static void
+hls_to_rgb (gdouble *h, gdouble *l, gdouble *s)
+{
+	gdouble hue;
+	gdouble lightness;
+	gdouble saturation;
+	gdouble m1, m2;
+	gdouble r, g, b;
+
+	lightness = *l;
+	saturation = *s;
+
+	if (lightness <= 0.5)
+		m2 = lightness * (1 + saturation);
+	else
+		m2 = lightness + saturation - lightness * saturation;
+	m1 = 2 * lightness - m2;
+
+	if (saturation == 0) {
+		*h = lightness;
+		*l = lightness;
+		*s = lightness;
+	} else {
+		hue = *h + 120;
+		while (hue > 360)
+			hue -= 360;
+		while (hue < 0)
+			hue += 360;
+
+		if (hue < 60)
+			r = m1 + (m2 - m1) * hue / 60;
+		else if (hue < 180)
+			r = m2;
+		else if (hue < 240)
+			r = m1 + (m2 - m1) * (240 - hue) / 60;
+		else
+			r = m1;
+
+		hue = *h;
+		while (hue > 360)
+			hue -= 360;
+		while (hue < 0)
+			hue += 360;
+
+		if (hue < 60)
+			g = m1 + (m2 - m1) * hue / 60;
+		else if (hue < 180)
+			g = m2;
+		else if (hue < 240)
+			g = m1 + (m2 - m1) * (240 - hue) / 60;
+		else
+			g = m1;
+
+		hue = *h - 120;
+		while (hue > 360)
+			hue -= 360;
+		while (hue < 0)
+			hue += 360;
+
+		if (hue < 60)
+			b = m1 + (m2 - m1) * hue / 60;
+		else if (hue < 180)
+			b = m2;
+		else if (hue < 240)
+			b = m1 + (m2 - m1) * (240 - hue) / 60;
+		else
+			b = m1;
+
+		*h = r;
+		*l = g;
+		*s = b;
+	}
+}
+
+static void
+shade_color(GdkColor *a, GdkColor *b, gdouble k)
+{
+	gdouble red;
+	gdouble green;
+	gdouble blue;
+
+	red = (gdouble) a->red / 65535.0;
+	green = (gdouble) a->green / 65535.0;
+	blue = (gdouble) a->blue / 65535.0;
+
+	rgb_to_hls (&red, &green, &blue);
+
+	green *= k;
+	if (green > 1.0)
+		green = 1.0;
+	else if (green < 0.0)
+		green = 0.0;
+
+	blue *= k;
+	if (blue > 1.0)
+		blue = 1.0;
+	else if (blue < 0.0)
+		blue = 0.0;
+
+	hls_to_rgb (&red, &green, &blue);
+
+	b->red = red * 65535.0;
+	b->green = green * 65535.0;
+	b->blue = blue * 65535.0;
+}
+
+static void
+my_get_colors(GdkColormap *colormap, gulong background, gulong *top, gulong *bottom, gulong *highlight)
+{
+	GdkColor cbackground;
+	GdkColor ctop, cbottom, chighlight;
+
+	cbackground.pixel = background;
+	my_x_query_colors(colormap, &cbackground, 1);
+
+	if (top) {
+		shade_color(&cbackground, &ctop, LIGHTNESS_MULT * LIGHTNESS_MULT);
+		*top = ctop.pixel;
+	}
+
+	if (bottom) {
+		shade_color(&cbackground, &cbottom, DARKNESS_MULT * LIGHTNESS_MULT);
+		*bottom = cbottom.pixel;
+	}
+
+	if (highlight) {
+		shade_color(&cbackground, &chighlight, LIGHTNESS_MULT);
+		*highlight = chighlight.pixel;
+	}
+}
+
+static void
+set_widget_colors(GtkWidget *widget, gulong *top, gulong *bottom, gulong *highlight)
+{
+	/* FIXME: do we have to do all states, or only GTK_STATE_NORMAL? */
+	
+	if (top) {
+		widget->style->light[GTK_STATE_NORMAL].pixel = *top;
+		gdk_gc_set_foreground(widget->style->light_gc[GTK_STATE_NORMAL],
+				      &widget->style->light[GTK_STATE_NORMAL]);
+	}
+
+	if (bottom) {
+		widget->style->dark[GTK_STATE_NORMAL].pixel = *bottom;
+		gdk_gc_set_foreground(widget->style->dark_gc[GTK_STATE_NORMAL],
+				      &widget->style->dark[GTK_STATE_NORMAL]);
+	}
+
+	if (highlight) {
+		/* It *is* bg, right? */
+		widget->style->bg[GTK_STATE_NORMAL].pixel = *highlight;
+		gdk_gc_set_foreground(widget->style->bg_gc[GTK_STATE_NORMAL],
+				      &widget->style->bg[GTK_STATE_NORMAL]);
+	}
+}
+
+#endif
+
 /*****
 * Name: 		_XmHTMLRecomputeColors
 * Return Type: 	void
@@ -499,10 +733,10 @@ _XmHTMLRecomputeColors(XmHTMLWidget html)
 	*/
 	if(html->html.gc != NULL)
 	{
+#ifdef WITH_MOTIF
 		Pixel top = None, bottom = None, highlight = None;
 		Arg args[3];
 
-#ifdef WITH_MOTIF
 		XmGetColors(XtScreen((Widget)html), html->core.colormap,
 			html->html.body_bg, NULL, &top, &bottom, &highlight);
 		XtSetArg(args[0], XmNtopShadowColor, top);
@@ -510,8 +744,10 @@ _XmHTMLRecomputeColors(XmHTMLWidget html)
 		XtSetArg(args[2], XmNhighlightColor, highlight);
 		XtSetValues((Widget)html, args, 3);
 #else
-		/* FEDERICO */
-		fprintf (stderr, "%s is incomplete\n", __FUNCTION__);
+		gulong top, bottom, highlight;
+		
+		my_get_colors(gtk_widget_get_colormap(GTK_WIDGET(html)), html->html.body_bg, &top, &bottom, &highlight);
+		set_widget_colors(GTK_WIDGET(html), &top, &bottom, &highlight);
 #endif
 	}
 }
@@ -544,8 +780,10 @@ _XmHTMLRecomputeHighlightColor(XmHTMLWidget html, Pixel bg_color)
 		XtSetArg(args[0], XmNhighlightColor, highlight);
 		XtSetValues((Widget)html, args, 1);
 #else
-		/* FEDERICO */
-		fprintf (stderr, "%s is incomplete\n", __FUNCTION__);
+		gulong highlight;
+
+		my_get_colors(gtk_widget_get_colormap(GTK_WIDGET(html)), html->html.body_bg, NULL, NULL, &highlight);
+		set_widget_colors(GTK_WIDGET(html), NULL, NULL, &highlight);
 #endif
 	}
 }

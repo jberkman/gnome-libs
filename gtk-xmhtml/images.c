@@ -43,6 +43,10 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.9  1998/01/10 02:27:02  unammx
+* First attempt at fixing the RecomputeColors functions.  They are still
+* not perfect, as scrollbar colors are affected, too. - Federico
+*
 * Revision 1.8  1998/01/09 02:15:27  unammx
 * OK, fixed the non-working images on 16 bpp.  This is done by putting
 * in a my_gdk_image_new() that explicitly takes the data, padding and
@@ -298,33 +302,6 @@ static void processBodyImage(XmHTMLWidget html, XmHTMLImage *body_image,
 }
 
 /*** Private Variable Declarations ***/
-
-/* XXX: This function does an XQueryColors() the hard way, because there is
- * no corresponding function in Gdk.
- */
-
-static void
-my_x_query_colors(GdkColormap *colormap,
-		  GdkColor    *colors,
-		  gint         ncolors)
-{
-	XColor *xcolors;
-	gint    i;
-
-	xcolors = g_new(XColor, ncolors);
-	for (i = 0; i < ncolors; i++)
-		xcolors[i].pixel = colors[i].pixel;
-
-	XQueryColors(gdk_display, GDK_COLORMAP_XCOLORMAP(colormap), xcolors, ncolors);
-
-	for (i = 0; i < ncolors; i++) {
-		colors[i].red   = xcolors[i].red;
-		colors[i].green = xcolors[i].green;
-		colors[i].blue  = xcolors[i].blue;
-	}
-
-	g_free(xcolors);
-}
 
 /*****
 * Name: 		readImage
