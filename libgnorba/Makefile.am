@@ -90,3 +90,5 @@ gbpixmap_DATA = yes.xpm no.xpm
 install-data-hook:
 	rm -f $(DESTDIR)$(bindir)/new-object
 	ln -sf goad-browser $(DESTDIR)$(bindir)/new-object
+
+BUILT_SOURCES=$(gnorba_built)
