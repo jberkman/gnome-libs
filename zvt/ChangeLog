@@ -1,3 +1,9 @@
+1998-08-31  Miguel de Icaza  <miguel@nuclecu.unam.mx>
+
+	* zvtterm.c (zvt_term_scroll): Clear any pending cached
+	information about scrollback when the user has triggered a
+	scroll view change.
+
 1998-26-31  Erik Troan  <ewt@redhat.com>
 
 	* vt.c (process_vt): accept : as a parameter seperator,

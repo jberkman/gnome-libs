@@ -1105,12 +1105,15 @@ int zvt_term_closepty(ZvtTerm *term)
 static void
 zvt_term_scroll (ZvtTerm *term, int n)
 {
-  gfloat new_value;
-  new_value = term->adjustment->value + (n * term->adjustment->page_size);
-  gtk_adjustment_set_value (term->adjustment,
-							n > 0 ? MIN(new_value, term->adjustment->upper
-										 - term->adjustment->page_size)
-							       : MAX(new_value, term->adjustment->lower));
+	gfloat new_value;
+	
+	new_value = term->adjustment->value + (n * term->adjustment->page_size);
+
+	term->vx->vt.scrollbackold = -1;
+	gtk_adjustment_set_value (term->adjustment,
+				  n > 0 ? MIN(new_value, term->adjustment->upper
+					      - term->adjustment->page_size)
+				  : MAX(new_value, term->adjustment->lower));
 }
 
 /*
