@@ -5,7 +5,11 @@ INCLUDES =					\
 	$(SUPPORTINCS)				\
 	$(GDK_IMLIB_CFLAGS)			\
 	-I$(top_srcdir)/gdk-pixbuf              \
-	$(GTK_CFLAGS)
+	$(GLIB_CFLAGS) $(GTK_CFLAGS)		\
+	$(OAF_CFLAGS)				\
+	$(LIBART_CFLAGS)			\
+	$(ORBIT_CFLAGS)				\
+	$(GCONF_CFLAGS)
 
 LDADD = $(top_builddir)/libgnomeui/libgnomeui-$(GNOME_INTERFACE_VERSION).la	\
 	$(top_builddir)/libgnome/libgnome-$(GNOME_INTERFACE_VERSION).la		\

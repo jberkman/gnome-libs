@@ -7,7 +7,11 @@ libzvtincludedir = $(includedir)/zvt
 INCLUDES = -I.. -I$(srcdir)/.. $(SUPPORTINCS)		\
 	-I$(top_srcdir)/intl -I$(top_builddir)/intl	\
 	-I$(top_srcdir)/gdk-pixbuf                      \
-	$(GTK_CFLAGS)					\
+	$(GLIB_CFLAGS) $(GTK_CFLAGS)			\
+	$(OAF_CFLAGS)					\
+	$(LIBART_CFLAGS)				\
+	$(ORBIT_CFLAGS)					\
+	$(GCONF_CFLAGS)					\
 	-DGNOMESBINDIR=\""$(sbindir)"\"
 
 libzvt_2_la_SOURCES =		\
