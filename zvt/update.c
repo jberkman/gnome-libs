@@ -382,7 +382,7 @@ static int vt_scroll_update(struct _vtx *vx, struct vt_line *fn, int firstline, 
       d(printf("looking at line %d [%p] ", i, nn));
       if (i<top || i>bottom) {
 	d(printf("forcing update of %d [force=%d]\n", i, force));
-	vt_line_update(vx, nn, bl, i, force, 0, nn->width);
+	vt_line_update(vx, nn, bl, i, force, 0, bl->width);
       } else {
 	d(printf(" leaving\n"));
 	/* umm, force this line not updated */
@@ -415,7 +415,7 @@ static int vt_scroll_update(struct _vtx *vx, struct vt_line *fn, int firstline, 
 
       for (i=firstline;nn->next && i<(firstline+count+offset);i++) {
 	d(printf("updating line %d\n", i));
-	vt_line_update(vx, nn, bl, i, force, 0, nn->width);
+	vt_line_update(vx, nn, bl, i, force, 0, bl->width);
 
 	if (nn==(struct vt_line *)vx->vt.scrollback.tailpred) {
 	  d(printf("++ skipping to real lines at line %d\n", line));
@@ -446,7 +446,7 @@ static int vt_scroll_update(struct _vtx *vx, struct vt_line *fn, int firstline, 
       d(printf("negative offset - ooops\n"));
       for (i=firstline+offset;nn->next && i<firstline+count;i++) {
 	d(printf("updating line %d\n", i));
-	vt_line_update(vx, nn, bl, i, force, 0, nn->width);
+	vt_line_update(vx, nn, bl, i, force, 0, bl->width);
 	if (nn==(struct vt_line *)vx->vt.scrollback.tailpred) {
 	  d(printf("++ skipping to real lines at line %d\n", line));
 	  nn = (struct vt_line *)vx->vt.lines.head;
@@ -689,10 +689,10 @@ void vt_update(struct _vtx *vx, int update_state)
   while (nn && line<vx->vt.height) {
     d(printf("%p: scanning line %d, was %d\n", wn, line, wn->line));
     if (wn->line==-1) {
-      vt_line_update(vx, wn, bl, line, 0, 0, wn->width);
+      vt_line_update(vx, wn, bl, line, 0, 0, bl->width);
       d(printf("manual: updating line %d\n", line));
     } else if (wn->modcount || update_state&UPDATE_REFRESH) {
-      vt_line_update(vx, wn, bl, line, force, 0, wn->width);
+      vt_line_update(vx, wn, bl, line, force, 0, bl->width);
       d(printf("manual, forced: updating line %d\n", line));
     }
     wn->line = line;		/* make sure line is reset */
@@ -1168,7 +1168,7 @@ static void vt_draw_selection_part(struct _vtx *vx, int sx, int sy, int ex, int 
   while ((line<=ey) && (l->next) && ((line-vx->vt.scrollbackoffset)<vx->vt.height)) {
     d(printf("line %d = %p ->next = %p\n", line, l, l->next));
     if ((line-vx->vt.scrollbackoffset)>=0) {
-      vt_line_update(vx, l, bl, line-vx->vt.scrollbackoffset, 0, 0, l->width);
+      vt_line_update(vx, l, bl, line-vx->vt.scrollbackoffset, 0, 0, bl->width);
       bl=bl->next;
       if (bl->next==0)
 	return;

@@ -1,5 +1,11 @@
 1999-06-02  Michael Zucchi  <mzucchi@zedzone.mmc.com.au>
 
+	* update.c (vt_scroll_update): When we request an update, use
+	bl->width (the actual window width), not l->width (the stored line
+	width, which may not match).
+	(vt_update): Same.
+	(vt_draw_selection_part): Same again!
+
 	* zvtterm.c (vt_scroll_area): Added back some old code from about
 	version 1.10, that forces all expose events to be processed before
 	scrolling exits.  If we are rendering scrolled pixmaps, things get
