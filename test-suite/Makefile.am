@@ -26,4 +26,9 @@ TESTS_ENVIRONMENT = env \
 		      LDADD="$(LDADD)" \
 		    $(SHELL) 
 
-EXTRA_DIST = $(TESTS)
+EXTRA_DIST = $(TESTS)							\
+	tests/fileconvert.c tests/fileconvert.in tests/lynxdump.sh	\
+		tests/types.cvt expected/fileconvert.out		\
+	tests/skel.c expected/skel.out					\
+	tests/split.c expected/split.out				\
+	tests/trigs.c tests/trigs.in expected/trigs.out
