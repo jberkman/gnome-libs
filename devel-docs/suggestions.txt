@@ -6,10 +6,13 @@ Menus:
 
    - The order of the toplevel menus should be: 
 
-	  File, <any mdi child menus>, Edit, View, Settings, Windows,
-	  Help
+	  File, <any mdi child menus>, Edit, View, CUSTOM MENUS,
+	  Settings, Windows, Help
 
      The Help menu should not be right-justified.
+
+     CUSTOM MENUS is where you should put your application-specific
+     top-level menus, such as gnumeric's "Insert" menu.
 
    - The prescribed order of standard menu items in the "File" menu is
      the following:
@@ -22,17 +25,22 @@ Menus:
      The main reason for this is that it is important for the menu
      accelerators to be consistent.
 
+     The New Window menu item should be a subtree if there are
+     different types of new windows which can be spawned.
+
      All of these are optional, except Exit.
 
    - The prescribed order of standard menu items in the "Edit" menu is
      the following:
 
           Undo, Redo, SEPARATOR, Cut, Copy, Paste, Clear, SEPARATOR,
-	  New
+	  New, SEPARATOR, Find, Find Again, Replace
 
      The "New" item should be used to insert new editable items,
      e.g. a new card in a rolodex app.  If there is more than one type
      of insertable editable item, "New" should be a menu subtree.
+
+   - The View
 
    - The Settings menu should contain:
 	. All toggles (as menu items)
@@ -87,6 +95,9 @@ Menus:
 
    - Your menu hints should not have a trailing period.  They should be
      phrased like commands, e.g. "Open a new file"
+
+   - All menu text should be internationalized.  Use the N_() macro, e.g.
+     N_("Open new mailbox")
  
 Dialogs
 -------
