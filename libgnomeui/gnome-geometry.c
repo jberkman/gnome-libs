@@ -11,7 +11,7 @@
 #include "gnome-geometry.h"
 
 static int
-get_number (char **geometry)
+get_number (const char **geometry)
 {
 	int value = 0;
 	int mult  = 1;
@@ -32,10 +32,11 @@ get_number (char **geometry)
  * values are filled with the corresponding values.
  * if no value was found, the value is set to zero.
  */
-int
-gnome_parse_geometry (char *geometry, int *xpos, int *ypos, int *width, int *height)
+gboolean
+gnome_parse_geometry (const gchar *geometry, gint *xpos, 
+		      gint *ypos, gint *width, gint *height)
 {
-	int substract;
+	int subtract;
 
 	g_return_val_if_fail (xpos != NULL, 0);
 	g_return_val_if_fail (ypos != NULL, 0);
@@ -62,29 +63,49 @@ gnome_parse_geometry (char *geometry, int *xpos, int *ypos, int *width, int *hei
 	if (!*geometry)
 		return 1;
 	if (*geometry == '+'){
-		substract = 0;
+		subtract = 0;
 		geometry++;
 	} else if (*geometry == '-'){
-		substract = gdk_screen_width ();
+		subtract = gdk_screen_width ();
 		geometry++;
 	} else
 		return 0;
 	*xpos = get_number (&geometry);
-	if (substract)
-		*xpos = substract - *xpos;
+	if (subtract)
+		*xpos = subtract - *xpos;
 	if (!*geometry)
 		return 1;
 	if (*geometry == '+'){
-		substract = 0;
+		subtract = 0;
 		geometry++;
 	} else if (*geometry == '-'){
-		substract = gdk_screen_height ();
+		subtract = gdk_screen_height ();
 		geometry++;
 	} else
 		return 0;
 	*ypos = get_number (&geometry);
-	if (substract)
-		*ypos = substract - *ypos;
+	if (subtract)
+		*ypos = subtract - *ypos;
 	return 1;
 }
 
+/* lifted from gnomecal */
+
+#define BUFSIZE 32
+
+gchar * gnome_geometry_string (GdkWindow * window)
+{
+  gint x, y, w, h;
+  gchar *buffer = g_malloc (BUFSIZE + 1);
+  
+  gdk_window_get_origin (window, &x, &y);
+  gdk_window_get_size (window, &w, &h);
+
+  g_snprintf (buffer, BUFSIZE, "%dx%d+%d+%d", w, h, x, y);
+  
+#ifdef GNOME_ENABLE_DEBUG
+  g_print("Geometry string: %s\n", buffer);
+#endif
+
+  return buffer;
+}
