@@ -1,5 +1,11 @@
 1999-09-01  Havoc Pennington  <hp@pobox.com>
 
+	* configure.in: Apparently some old libpng's exist, and they don't 
+	have png_get_IHDR, so we check for png_get_IHDR. Closes bug
+	2049
+
+1999-09-01  Havoc Pennington  <hp@pobox.com>
+
 	* README: Remove false statement that --with-included-gettext works
 
 1999-08-31  Federico Mena Quintero  <federico@redhat.com>

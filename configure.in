@@ -255,6 +255,8 @@ if test "$png_ok" = yes; then
 ;],
     png_ok=yes,
     png_ok=no)
+  AC_CHECK_LIB(png, png_get_IHDR, 
+               png_ok=yes,png_ok=no)
   AC_MSG_RESULT($png_ok)
   if test "$png_ok" = yes; then
     PNG_LIBS="-lpng $Z_LIBS"; AC_DEFINE(HAVE_LIBPNG)
