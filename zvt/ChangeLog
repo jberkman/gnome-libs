@@ -1,5 +1,21 @@
 1998-11-18  Michael Zucchi  <zucchi@zzedzone.fsi.com.au>
 
+	* zvtterm.c (zvt_term_selection_received): Only scroll to bottom
+	if scroll on keystroke is set, now that it should be safe to do
+	so.
+
+	* vt.c (vt_scrollback_add): Properly adjust scrollbackoffset and
+	scrollbackold if extra data is added to the scrollback, and
+	scrollback is 'active' (scrollbackoffset != 0).
+
+	* update.c (vt_update): Handle edge condition when scanning
+	backwards at edge of scrollback/real buffers properly.
+
+	* vt.c (vt_scrollback_add): Force a newly added scrollback line to
+	slot into the right sequence if scrollback is active.  This should
+	fix scrolling output when viewing scrollback.  Only 3 @#$@ hours
+	later.
+
 	* zvtterm.c (zvt_term_bell): Definition of function.
 	(zvt_term_init): Set the new ring_my_bell pointer callback.
 	(zvt_term_set_bell): New function.  Sets ring_my_bell or clears it

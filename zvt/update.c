@@ -256,7 +256,7 @@ static void vt_scroll_update(struct _vtx *vx, int firstline, int count, int offs
     printf("before:\n");
     dn = &vx->vt.lines_back.head;
     while(dn) {
-      printf("node %p:  n: %p  p:%p\n", dn, dn->next, dn->prev);
+      printf("node %p:  n: %p  p:%p -> %d\n", dn, dn->next, dn->prev, dn->line);
       dn = dn->next;
     }
   });
@@ -297,7 +297,7 @@ static void vt_scroll_update(struct _vtx *vx, int firstline, int count, int offs
     printf("After\n");
     dn = &vx->vt.lines_back.head;
     while(dn) {
-      printf("node %p:  n: %p  p:%p\n", dn, dn->next, dn->prev);
+      printf("node %p:  n: %p  p:%p -> %d\n", dn, dn->next, dn->prev, dn->line);
       dn = dn->next;
     }
   });
@@ -355,6 +355,23 @@ void vt_update(struct _vtx *vx, int update_state)
     wn=(struct vt_line *)vx->vt.lines.head;
   }
   
+  d({
+    struct vt_line *dn;
+    printf("INPUT before:\n");
+    dn = &vx->vt.lines;
+    while(dn) {
+      printf("  node %p:  n: %p  p:%p -> %d\n", dn, dn->next, dn->prev, dn->line);
+      dn = dn->next;
+    }
+
+    dn = wn;
+    while(dn) {
+      printf("  node %p:  n: %p  p:%p -> %d\n", dn, dn->next, dn->prev, dn->line);
+      dn = dn->next;
+    }
+
+  });
+
   /* updated scrollback if we can ... otherwise dont */
   if (!(update_state&UPDATE_REFRESH)) {
 
@@ -428,8 +445,14 @@ void vt_update(struct _vtx *vx, int update_state)
     d(printf("scanning backwards now\n"));
     
       /* does this need checking for overflow? */
-    wn = wn->prev;
-    nn = wn->prev;
+    if (wn == (struct vt_line *)vx->vt.lines.head) {
+      wn = (struct vt_line *)vx->vt.scrollback.tailpred;
+      nn = wn->prev;
+    } else {
+      wn = wn->prev;
+      nn = wn->prev;
+    }
+
     line = vx->vt.height;
     oldoffset = 0;
     while (nn && line) {

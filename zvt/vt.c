@@ -215,8 +215,10 @@ vt_scrollback_add(struct vt_em *vt, struct vt_line *wn)
   ln = vt_mem_get(&vt->mem_list, sizeof(struct vt_line) + sizeof(uint32)*wn->width);/* always allocates 1 more 'char' */
   ln->width = wn->width;
   memcpy(ln->data, wn->data, wn->width*sizeof(uint32));
+
   /* add it to the scrollback buffer */
   vt_list_addtail(&vt->scrollback, (struct vt_listnode *)ln);
+  ln->line = ln->prev->line+1;
   
   d(printf("scrollback grow\n"));
   
@@ -224,8 +226,19 @@ vt_scrollback_add(struct vt_em *vt, struct vt_line *wn)
   if (vt->scrollbacklines >= vt->scrollbackmax) {
     ln = (struct vt_line *)vt_list_remhead(&vt->scrollback); /* remove the top of list line */
     vt_mem_push(&vt->mem_list, ln, sizeof(struct vt_line)+sizeof(uint32)*ln->width);
+    /* need to track changes to this, even if they're not 'real' */
+    if (vt->scrollbackoffset) {
+      vt->scrollbackold--;
+      if ((-vt->scrollbackoffset) < vt->scrollbackmax)
+	vt->scrollbackoffset--;
+    }
   } else {
     vt->scrollbacklines++;
+    /* we've effectively moved the 'old' scrollback position */
+    if (vt->scrollbackoffset) {
+      vt->scrollbackold--;
+      vt->scrollbackoffset--;
+    }
   }
 }
 

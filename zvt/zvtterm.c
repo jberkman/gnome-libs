@@ -1399,7 +1399,7 @@ zvt_term_selection_received (GtkWidget *widget, GtkSelectionData *selection_data
 
   /* paste selection into window! */
   if (selection_data->length) {
-    zvt_term_scroll(term, 0);
+    if (term->scroll_on_keystroke) zvt_term_scroll (term, 0);
     vt_writechild(&vx->vt, selection_data->data, selection_data->length);
   }
 }  
