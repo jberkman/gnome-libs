@@ -7,13 +7,18 @@ INCLUDES = -I.. -I$(srcdir)/.. -I$(includedir) $(GTK_CFLAGS) $(SUPPORTINCS) \
 
 noinst_PROGRAMS = testgnome
 
-testgnome_SOURCES = 	\
-	canvas.c	\
-	testgnome.c	\
+testgnome_SOURCES =		\
+	canvas.c		\
+	canvas-primitives.c	\
+	canvas-arrowhead.c	\
+	canvas-fifteen.c	\
+	testgnome.c		\
 	testgnome.h
 
-EXTRA_DIST = \
-	bomb.xpm
+EXTRA_DIST = 		\
+	bomb.xpm	\
+	flower.png	\
+	toroid.png
 
 testgnome_LDADD = \
 	$(top_builddir)/libgnomeui/libgnomeui.la 	\
