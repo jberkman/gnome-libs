@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-libs 1.0.5\n"
-"POT-Creation-Date: 1999-10-06 21:34-0500\n"
+"POT-Creation-Date: 1999-11-01 15:49+0100\n"
 "PO-Revision-Date: 1999-05-09 20:32+02:00\n"
 "Last-Translator: Ivan Vilata i Balaguer <al011097@alumail.uji.es>\n"
 "Language-Team: linux-ca@chanae.alphanet.ch\n"
@@ -10,25 +10,25 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "From: Ivan Vilata i Balaguer <al011097@alumail.uji.es>\n"
 
-#: libgnome/gconfigger.c:32
-msgid "get"
-msgstr "obtenir"
+#: libgnome/gconfigger.c:32 libgnome/gconfigger.c:33
+msgid "CONFIG-PATH"
+msgstr "RUTA-CONFIGURACIÓ"
 
 #: libgnome/gconfigger.c:32
 msgid "Get config entry"
 msgstr "Obtenir entrada de configuració"
 
-#: libgnome/gconfigger.c:32 libgnome/gconfigger.c:33
-msgid "CONFIG-PATH"
-msgstr "RUTA-CONFIGURACIÓ"
-
-#: libgnome/gconfigger.c:33
-msgid "set"
-msgstr "establir"
+#: libgnome/gconfigger.c:32
+msgid "get"
+msgstr "obtenir"
 
 #: libgnome/gconfigger.c:33
 msgid "Set config entry"
 msgstr "Establir entrada de configuració"
+
+#: libgnome/gconfigger.c:33
+msgid "set"
+msgstr "establir"
 
 #: libgnome/gnome-popt.c:90
 #, c-format
@@ -39,26 +39,6 @@ msgstr ""
 "Error a l'opció %s: %s.\n"
 "Proveu «%s --help» per veure una llista completa d'opcions de la línia de "
 "comandes.\n"
-
-#: libgnome/gnomelib-init.c:130
-msgid "Disable sound server usage"
-msgstr "Desactivar l'ús del servidor de so"
-
-#: libgnome/gnomelib-init.c:132
-msgid "Enable sound server usage"
-msgstr "Activar l'ús del servidor de so"
-
-#: libgnome/gnomelib-init.c:134
-msgid "Host:port on which the sound server to use is running"
-msgstr "Amfitrió:port on és corrent el servidor de so a usar"
-
-#: libgnome/gnomelib-init.c:135
-msgid "HOSTNAME:PORT"
-msgstr "AMFITRIÓ:PORT"
-
-#: libgnome/gnomelib-init.c:144
-msgid "GNOME Options"
-msgstr "Opcions de GNOME"
 
 #: libgnomeui/gnome-about.c:187
 msgid "Author:"
@@ -141,23 +121,23 @@ msgstr "_Ajuda"
 msgid "_Windows/"
 msgstr "Fi_nestres/"
 
+#: libgnomeui/gnome-app-helper.c:105
+msgid "Open a file"
+msgstr "Obre un fitxer"
+
 #. Open
 #: libgnomeui/gnome-app-helper.c:105
 msgid "_Open..."
 msgstr "_Obrir..."
 
-#: libgnomeui/gnome-app-helper.c:105
-msgid "Open a file"
-msgstr "Obre un fitxer"
+#: libgnomeui/gnome-app-helper.c:110
+msgid "Save the current file"
+msgstr "Guarda el fitxer actual"
 
 #. Save
 #: libgnomeui/gnome-app-helper.c:110
 msgid "_Save"
 msgstr "_Guardar"
-
-#: libgnomeui/gnome-app-helper.c:110
-msgid "Save the current file"
-msgstr "Guarda el fitxer actual"
 
 #. Save As
 #: libgnomeui/gnome-app-helper.c:115
@@ -177,14 +157,14 @@ msgstr "_Revertir"
 msgid "Revert to a saved version of the file"
 msgstr "Reverteix el fitxer a una versió guardada"
 
+#: libgnomeui/gnome-app-helper.c:127
+msgid "Print the current file"
+msgstr "Imprimeix el fitxer actual"
+
 #. Print
 #: libgnomeui/gnome-app-helper.c:127
 msgid "_Print"
 msgstr "Im_primir"
-
-#: libgnomeui/gnome-app-helper.c:127
-msgid "Print the current file"
-msgstr "Imprimeix el fitxer actual"
 
 #. Print Setup
 #: libgnomeui/gnome-app-helper.c:132
@@ -195,14 +175,14 @@ msgstr "_Configurar impressió..."
 msgid "Setup the page settings for your current printer"
 msgstr "Configurar la pàgina per la vostra impressora actual"
 
+#: libgnomeui/gnome-app-helper.c:138
+msgid "Close the current file"
+msgstr "Tanca el fitxer actual"
+
 #. Close
 #: libgnomeui/gnome-app-helper.c:138
 msgid "_Close"
 msgstr "_Tancar"
-
-#: libgnomeui/gnome-app-helper.c:138
-msgid "Close the current file"
-msgstr "Tanca el fitxer actual"
 
 #. Exit
 #: libgnomeui/gnome-app-helper.c:143
@@ -225,24 +205,24 @@ msgstr "_Tallar"
 msgid "Cut the selection"
 msgstr "Talla la selecció"
 
+#: libgnomeui/gnome-app-helper.c:157
+msgid "Copy the selection"
+msgstr "Còpia la selecció"
+
 #. 10
 #. Copy
 #: libgnomeui/gnome-app-helper.c:157 libgnomeui/gnome-popup-help.c:59
 msgid "_Copy"
 msgstr "_Copiar"
 
-#: libgnomeui/gnome-app-helper.c:157
-msgid "Copy the selection"
-msgstr "Còpia la selecció"
+#: libgnomeui/gnome-app-helper.c:162
+msgid "Paste the clipboard"
+msgstr "Apega el contingut del portapapers"
 
 #. Paste
 #: libgnomeui/gnome-app-helper.c:162 libgnomeui/gnome-popup-help.c:61
 msgid "_Paste"
 msgstr "A_pegar"
-
-#: libgnomeui/gnome-app-helper.c:162
-msgid "Paste the clipboard"
-msgstr "Apega el contingut del portapapers"
 
 #. Clear
 #: libgnomeui/gnome-app-helper.c:167
@@ -253,32 +233,32 @@ msgstr "Es_borrar"
 msgid "Clear the selection"
 msgstr "Esborra la selecció"
 
+#: libgnomeui/gnome-app-helper.c:172
+msgid "Undo the last action"
+msgstr "Desfà l'última acció"
+
 #. Undo
 #: libgnomeui/gnome-app-helper.c:172
 msgid "_Undo"
 msgstr "_Desfer"
 
-#: libgnomeui/gnome-app-helper.c:172
-msgid "Undo the last action"
-msgstr "Desfà l'última acció"
+#: libgnomeui/gnome-app-helper.c:177
+msgid "Redo the undone action"
+msgstr "Refà l'acció desfeta"
 
 #. Redo
 #: libgnomeui/gnome-app-helper.c:177
 msgid "_Redo"
 msgstr "_Refer"
 
-#: libgnomeui/gnome-app-helper.c:177
-msgid "Redo the undone action"
-msgstr "Refà l'acció desfeta"
+#: libgnomeui/gnome-app-helper.c:182
+msgid "Search for a string"
+msgstr "Cerca una cadena"
 
 #. Find
 #: libgnomeui/gnome-app-helper.c:182
 msgid "_Find..."
 msgstr "C_ercar..."
-
-#: libgnomeui/gnome-app-helper.c:182
-msgid "Search for a string"
-msgstr "Cerca una cadena"
 
 #. Find Again
 #: libgnomeui/gnome-app-helper.c:187
@@ -289,14 +269,14 @@ msgstr "Cercar _altra volta"
 msgid "Search again for the same string"
 msgstr "Cerca la mateixa cadena altra volta"
 
+#: libgnomeui/gnome-app-helper.c:193
+msgid "Replace a string"
+msgstr "Substitueix una cadena"
+
 #. Replace
 #: libgnomeui/gnome-app-helper.c:193
 msgid "_Replace..."
 msgstr "_Substituir"
-
-#: libgnomeui/gnome-app-helper.c:193
-msgid "Replace a string"
-msgstr "Substitueix una cadena"
 
 #. Properties
 #: libgnomeui/gnome-app-helper.c:198
@@ -636,32 +616,32 @@ msgstr "="
 msgid "INV"
 msgstr "INV"
 
-#: libgnomeui/gnome-client.c:828
-msgid "Specify session management ID"
-msgstr "Especifiqueu l'ID de la gestió de sessions"
-
-#: libgnomeui/gnome-client.c:828 libgnorba/goad-browser.c:27
+#: libgnomeui/gnome-client.c:839 libgnorba/goad-browser.c:27
 msgid "ID"
 msgstr "ID"
 
-#: libgnomeui/gnome-client.c:830
-msgid "Specify prefix of saved configuration"
-msgstr "Especifiqueu el prefix de la configuració guardada"
+#: libgnomeui/gnome-client.c:839
+msgid "Specify session management ID"
+msgstr "Especifiqueu l'ID de la gestió de sessions"
 
-#: libgnomeui/gnome-client.c:830
+#: libgnomeui/gnome-client.c:842
 msgid "PREFIX"
 msgstr "PREFIX"
 
-#: libgnomeui/gnome-client.c:832
+#: libgnomeui/gnome-client.c:842
+msgid "Specify prefix of saved configuration"
+msgstr "Especifiqueu el prefix de la configuració guardada"
+
+#: libgnomeui/gnome-client.c:845
 msgid "Disable connection to session manager"
 msgstr "Desactivar connexió amb el gestor de sessions"
 
-#. Register commandline options.
-#: libgnomeui/gnome-client.c:961
-msgid "Session management options"
+#: libgnomeui/gnome-client.c:857
+#, fuzzy
+msgid "Session management"
 msgstr "Opcions del gestor de sessions"
 
-#: libgnomeui/gnome-client.c:2341
+#: libgnomeui/gnome-client.c:2323
 msgid "Cancel Logout"
 msgstr "Cancel·lar eixida"
 
@@ -670,7 +650,7 @@ msgid "Pick a color"
 msgstr "Trieu un color"
 
 #. Calendar label, only shown if the date editor has a time field
-#: libgnomeui/gnome-dateedit.c:454
+#: libgnomeui/gnome-dateedit.c:455
 msgid "Calendar"
 msgstr "Calendari"
 
@@ -790,85 +770,85 @@ msgstr "Vista prèvia"
 msgid "Loading Icons..."
 msgstr "Carregant icones..."
 
-#: libgnomeui/gnome-init.c:160
-msgid "Gdk debugging flags to set"
-msgstr "Marques de depuració de GDK a activar"
-
-#: libgnomeui/gnome-init.c:160 libgnomeui/gnome-init.c:162
-#: libgnomeui/gnome-init.c:182 libgnomeui/gnome-init.c:184
+#: libgnomeui/gnome-init.c:50 libgnomeui/gnome-init.c:53
+#: libgnomeui/gnome-init.c:83 libgnomeui/gnome-init.c:86
 msgid "FLAGS"
 msgstr "MARQUES"
 
-#: libgnomeui/gnome-init.c:162
+#: libgnomeui/gnome-init.c:50
+msgid "Gdk debugging flags to set"
+msgstr "Marques de depuració de GDK a activar"
+
+#: libgnomeui/gnome-init.c:53
 msgid "Gdk debugging flags to unset"
 msgstr "Marques de depuració de GDK a desactivar"
 
-#: libgnomeui/gnome-init.c:164
-msgid "X display to use"
-msgstr "Pantalla X a usar"
-
-#: libgnomeui/gnome-init.c:164
+#: libgnomeui/gnome-init.c:56
 msgid "DISPLAY"
 msgstr "PANTALLA"
 
-#: libgnomeui/gnome-init.c:166
+#: libgnomeui/gnome-init.c:56
+msgid "X display to use"
+msgstr "Pantalla X a usar"
+
+#: libgnomeui/gnome-init.c:59
 msgid "Make X calls synchronous"
 msgstr "Fer síncrones les crides a X"
 
-#: libgnomeui/gnome-init.c:168
+#: libgnomeui/gnome-init.c:62
 msgid "Don't use X shared memory extension"
 msgstr "No usar extensió X de memòria compartida"
 
-#: libgnomeui/gnome-init.c:170
-msgid "Program name as used by the window manager"
-msgstr "Nom del programa com l'usa el gestor de finestres"
-
-#: libgnomeui/gnome-init.c:170
+#: libgnomeui/gnome-init.c:65
 msgid "NAME"
 msgstr "NOM"
 
-#: libgnomeui/gnome-init.c:172
-msgid "Program class as used by the window manager"
-msgstr "Classe del programa com l'usa el gestor de finestres"
+#: libgnomeui/gnome-init.c:65
+msgid "Program name as used by the window manager"
+msgstr "Nom del programa com l'usa el gestor de finestres"
 
-#: libgnomeui/gnome-init.c:172
+#: libgnomeui/gnome-init.c:68
 msgid "CLASS"
 msgstr "CLASSE"
 
-#: libgnomeui/gnome-init.c:174
+#: libgnomeui/gnome-init.c:68
+msgid "Program class as used by the window manager"
+msgstr "Classe del programa com l'usa el gestor de finestres"
+
+#: libgnomeui/gnome-init.c:71
 msgid "HOST"
 msgstr "AMFITRIÓ"
 
-#: libgnomeui/gnome-init.c:176
+#: libgnomeui/gnome-init.c:74
 msgid "PORT"
 msgstr "PORT"
 
-#: libgnomeui/gnome-init.c:178 libgnomeui/gnome-init.c:180
+#: libgnomeui/gnome-init.c:77 libgnomeui/gnome-init.c:80
 msgid "STYLE"
 msgstr "ESTIL"
 
-#: libgnomeui/gnome-init.c:182
+#: libgnomeui/gnome-init.c:83
 msgid "Gtk+ debugging flags to set"
 msgstr "Marques de depuració de GTK+ a activar"
 
-#: libgnomeui/gnome-init.c:184
+#: libgnomeui/gnome-init.c:86
 msgid "Gtk+ debugging flags to unset"
 msgstr "Marques de depuració de GTK+ a desactivar"
 
-#: libgnomeui/gnome-init.c:186
+#: libgnomeui/gnome-init.c:89
 msgid "Make all warnings fatal"
 msgstr "Fer errors fatals dels avisos"
 
-#: libgnomeui/gnome-init.c:188
+#: libgnomeui/gnome-init.c:92
 msgid "Load an additional Gtk module"
 msgstr "Carregar un mòdul Gtk addicional"
 
-#: libgnomeui/gnome-init.c:188
+#: libgnomeui/gnome-init.c:92
 msgid "MODULE"
 msgstr "MÒDUL"
 
 #. dialog display isn't working out
-#: libgnomeui/gnome-init.c:635
+#: libgnomeui/gnome-init.c:426
 msgid "Multiple segmentation faults occurred; can't display error dialog\n"
 msgstr ""
 
@@ -1283,12 +1263,12 @@ msgid "Edit"
 msgstr "Editar"
 
 #: libgnomeui/winhints_demo.c:46
-msgid "wmhints-test"
-msgstr "test wmhints"
-
-#: libgnomeui/winhints_demo.c:46
 msgid "winhints-test"
 msgstr "test winhints"
+
+#: libgnomeui/winhints_demo.c:46
+msgid "wmhints-test"
+msgstr "test wmhints"
 
 #: libgnomeui/winhints_demo.c:71
 msgid "Layer:"
@@ -1423,12 +1403,12 @@ msgid "GOAD ID of the server to activate"
 msgstr "ID GOAD del servidor a activar"
 
 #: libgnorba/goad-browser.c:28
-msgid "Repository ID of the server to activate"
-msgstr "ID de repositori del servidor a activar"
-
-#: libgnorba/goad-browser.c:28
 msgid "REPO-ID"
 msgstr "REPO-ID"
+
+#: libgnorba/goad-browser.c:28
+msgid "Repository ID of the server to activate"
+msgstr "ID de repositori del servidor a activar"
 
 #: libgnorba/goad-browser.c:171
 msgid ""
@@ -1440,25 +1420,25 @@ msgstr ""
 "instal·lat o no conec la ruta per trobar-los.  A qualsevol cas, per\n"
 "favor comproveu la vostra instal·lació de GNOME."
 
-#: libgnorba/goad.c:1350
+#: libgnorba/goad.c:1341
 msgid "(Internal use only) GOAD server ID to activate"
 msgstr "(Només per ús intern) ID del servidor GOAD a activar"
-
-#: libgnorba/loadshlib.c:11
-msgid "ID under which GOAD knows this server"
-msgstr "ID pel qual GOAD coneix aquest servidor"
 
 #: libgnorba/loadshlib.c:11
 msgid "GOAD_ID"
 msgstr "GOAD_ID"
 
-#: libgnorba/loadshlib.c:12
-msgid "Repository ID under which GOAD knows this server"
-msgstr "ID de repositori pel qual GOAD coneix aquest servidor"
+#: libgnorba/loadshlib.c:11
+msgid "ID under which GOAD knows this server"
+msgstr "ID pel qual GOAD coneix aquest servidor"
 
 #: libgnorba/loadshlib.c:12
 msgid "REPO_ID"
 msgstr "REPO_ID"
+
+#: libgnorba/loadshlib.c:12
+msgid "Repository ID under which GOAD knows this server"
+msgstr "ID de repositori pel qual GOAD coneix aquest servidor"
 
 #: libgnorba/orbitgtk.c:138
 #, c-format
@@ -1556,11 +1536,11 @@ msgstr "%s: l'opció «-W %s» és ambígua\n"
 msgid "%s: option `-W %s' doesn't allow an argument\n"
 msgstr "%s: l'opció «-W %s» no admet arguments\n"
 
-#: support/popthelp.c:35
+#: support/popthelp.c:23
 msgid "Show this help message"
 msgstr "Mostrar aquest missatge d'ajuda"
 
-#: support/popthelp.c:36
+#: support/popthelp.c:24
 msgid "Display brief usage message"
 msgstr "Mostra una breu ajuda sobre la forma d'ús"
 
@@ -1592,17 +1572,32 @@ msgstr "Mostrar tamany de la font"
 msgid "This is an hbox with pixmap and text"
 msgstr "Açò és una caixa horitzontal (hbox) amb un pixmap i text"
 
-#: test-gnome/testgnome.c:1072
+#: test-gnome/testgnome.c:1074
 msgid "The user chose Yes/OK with data:\n"
 msgstr "L'usuari trià Sí/Acceptar amb les dades:\n"
 
-#: test-gnome/testgnome.c:1076
+#: test-gnome/testgnome.c:1078
 msgid "The user chose No/Cancel with data:\n"
 msgstr "L'usuari trià No/Cancel·lar amb les dades:\n"
 
-#: test-gnome/testgnome.c:1087
+#: test-gnome/testgnome.c:1089
 msgid "Weird number in reply callback"
 msgstr "Número estrany a l'acció de resposta"
+
+#~ msgid "GNOME Options"
+#~ msgstr "Opcions de GNOME"
+
+#~ msgid "HOSTNAME:PORT"
+#~ msgstr "AMFITRIÓ:PORT"
+
+#~ msgid "Host:port on which the sound server to use is running"
+#~ msgstr "Amfitrió:port on és corrent el servidor de so a usar"
+
+#~ msgid "Enable sound server usage"
+#~ msgstr "Activar l'ús del servidor de so"
+
+#~ msgid "Disable sound server usage"
+#~ msgstr "Desactivar l'ús del servidor de so"
 
 #~ msgid "Hello GNOME\n"
 #~ msgstr "Hola GNOME\n"
