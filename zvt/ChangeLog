@@ -1,3 +1,8 @@
+Sat Jun 17 20:14:37 2000  George Lebl <jirka@5z.com>
+
+	* zvtterm.c (vt_cursor_state): don't draw the cursor outline when 
+	  in backscroll (using the same logic as in vt_draw_cursor)
+
 Fri Jun 16 12:17:53 2000  George Lebl <jirka@5z.com>
 
 	* zvtterm.c (vt_cursor_state): Draw the no-focus cursor as an

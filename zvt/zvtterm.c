@@ -2978,17 +2978,20 @@ vt_cursor_state(void *user_data, int state)
       if(term->cursor_filled || !state)
         vt_draw_cursor(term->vx, state);
       else {
-        int offx;
-	int offy;
         vt_draw_cursor(term->vx, FALSE);
-	offx = widget->style->klass->xthickness + PADDING;
-	offy = widget->style->klass->ythickness;
-	gdk_draw_rectangle (widget->window,
-			    term->fore_gc, 0,
-			    offx + term->vx->vt.cursorx * term->charwidth + 1,
-			    offy + term->vx->vt.cursory * term->charheight + 1,
-			    term->charwidth - 2,
-			    term->charheight - 2);
+        if (term->vx->vt.scrollbackold == 0 &&
+	    term->vx->vt.cursorx < term->vx->vt.width) {
+	  int offx = widget->style->klass->xthickness + PADDING;
+	  int offy = widget->style->klass->ythickness;
+	  gdk_draw_rectangle (widget->window,
+			      term->fore_gc, 0,
+			      offx + term->vx->vt.cursorx *
+			        term->charwidth + 1,
+			      offy + term->vx->vt.cursory *
+			        term->charheight + 1,
+			      term->charwidth - 2,
+			      term->charheight - 2);
+	}
       }
       term->cursor_on = state;
     }
