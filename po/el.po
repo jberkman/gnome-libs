@@ -10,7 +10,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-libs 1.95.0\n"
-"POT-Creation-Date: 2000-09-02 04:18+0000\n"
+"POT-Creation-Date: 2001-03-15 12:30+0100\n"
 "PO-Revision-Date: 2000-09-02 04:20:55+0000\n"
 "Last-Translator: Simos Xenitellis <simos@hellug.gr>\n"
 "Language-Team: Greek <nsl@tux.hellug.gr>\n"
@@ -18,35 +18,35 @@ msgstr ""
 "Content-Type: text/plain; charset=iso-8859-7\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: libgnome/gnome-ditem.c:562 libgnome/gnome-ditem.c:920
+#: libgnome/gnome-ditem.c:565 libgnome/gnome-ditem.c:923
 #, c-format
 msgid "Unknown desktop file format %d"
 msgstr "Άγνωστο είδος αρχείου %d"
 
 #. we are not an application so just exit
 #. with an error
-#: libgnome/gnome-ditem.c:909 libgnome/gnome-ditem.c:916
+#: libgnome/gnome-ditem.c:912 libgnome/gnome-ditem.c:919
 msgid "Attempting to launch a non-application"
 msgstr "Προσπάθεια εκκίνησης μη-εφαρμογής"
 
-#: libgnome/gnome-ditem.c:1033
+#: libgnome/gnome-ditem.c:1029
 msgid "Trying to execute an item with no 'Exec'"
 msgstr "Προσπάθεια εκκίνησης αντικειμένου που δεν έχει 'Exec'"
 
-#: libgnome/gnome-ditem.c:1075 libgnome/gnome-ditem.c:1168
+#: libgnome/gnome-ditem.c:1081 libgnome/gnome-ditem.c:1174
 msgid "No exec field for this drop"
 msgstr "Δεν υπάρχει πεδίο exec για αυτό το μεταφερμένο αρχείο"
 
-#: libgnome/gnome-ditem.c:1106
+#: libgnome/gnome-ditem.c:1112
 msgid "Nothing to replace with a file in the exec string"
 msgstr ""
 "Δεν υπάρχει κάτι για να αντικαταστήσει με αρχείο στο αλφαριθμητικό exec"
 
-#: libgnome/gnome-ditem.c:1219
+#: libgnome/gnome-ditem.c:1225
 msgid "There was no argument to replace with dropped files"
 msgstr "Δεν υπήρξε όρισμα να αντικαταστήσει το μεταφερμένα αρχεία"
 
-#: libgnome/gnome-ditem.c:1311
+#: libgnome/gnome-ditem.c:1325
 msgid "Dropped URLs on an app that can only take files"
 msgstr "Μεταφερμένο URL σε εφαρμογή που μπορεί μόνο να λάβει αρχεία"
 
@@ -109,55 +109,51 @@ msgstr "Αδύνατη η εκτέλεση της εντολής '%s'!"
 msgid "Command '%s' did not return an ID!"
 msgstr "Η εντολή '%s' δεν επέστρεψε ταυτότητα (ID)!"
 
-#: libgnome/gnomelib-init2.c:1227
+#: libgnome/gnomelib-init2.c:1203
+msgid "Help options"
+msgstr ""
+
+#: libgnome/gnomelib-init2.c:1228
 msgid "Dynamic modules to load"
 msgstr "Δυναμικά τμήματα προς φόρτωση"
 
-#: libgnome/gnomelib-init2.c:1228
+#: libgnome/gnomelib-init2.c:1229
 msgid "MODULE1,MODULE2,..."
 msgstr "ΤΜΗΜΑ1,ΤΜΗΜΑ2,..."
 
-#: libgnomeui/gnome-appbar.c:689
-msgid ""
-"gnome_appbar_set_progress deprecated, use "
-"gnome_appbar_set_progress_percentage"
-msgstr ""
-"αντί του gnome_appbar_set_progress, κάντε χρήση του "
-"gnome_appbar_set_progress_percentage"
-
-#: libcompat/gnome-dentry-edit.c:184 libgnomeui/gnome-ditem-edit.c:237
+#: libcompat/gnome-dentry-edit.c:184 libgnomeui/gnome-ditem-edit.c:210
 msgid "Name:"
 msgstr "Όνομα:"
 
-#: libcompat/gnome-dentry-edit.c:197 libgnomeui/gnome-ditem-edit.c:250
+#: libcompat/gnome-dentry-edit.c:197 libgnomeui/gnome-ditem-edit.c:223
 msgid "Comment:"
 msgstr "Σχόλιο:"
 
-#: libcompat/gnome-dentry-edit.c:207 libgnomeui/gnome-ditem-edit.c:260
+#: libcompat/gnome-dentry-edit.c:207 libgnomeui/gnome-ditem-edit.c:233
 msgid "Command:"
 msgstr "Εντολή:"
 
-#: libcompat/gnome-dentry-edit.c:217 libgnomeui/gnome-ditem-edit.c:270
+#: libcompat/gnome-dentry-edit.c:217 libgnomeui/gnome-ditem-edit.c:243
 msgid "Type:"
 msgstr "Τύπος:"
 
-#: libcompat/gnome-dentry-edit.c:233 libgnomeui/gnome-ditem-edit.c:288
+#: libcompat/gnome-dentry-edit.c:233 libgnomeui/gnome-ditem-edit.c:260
 msgid "Icon:"
 msgstr "Εικονίδιο:"
 
-#: libcompat/gnome-dentry-edit.c:243 libgnomeui/gnome-ditem-edit.c:298
+#: libcompat/gnome-dentry-edit.c:243 libgnomeui/gnome-ditem-edit.c:270
 msgid "Choose an icon"
 msgstr "Επιλογή εικονιδίου"
 
-#: libcompat/gnome-dentry-edit.c:256 libgnomeui/gnome-ditem-edit.c:311
+#: libcompat/gnome-dentry-edit.c:256 libgnomeui/gnome-ditem-edit.c:282
 msgid "Run in Terminal"
 msgstr "Εκτέλεση σε Τερματικό"
 
-#: libgnomeui/gnome-ditem-edit.c:337
+#: libgnomeui/gnome-ditem-edit.c:308
 msgid "Simple drag and drop"
 msgstr "Απλό σύρσιμο και ρήψη"
 
-#: libgnomeui/gnome-ditem-edit.c:359
+#: libgnomeui/gnome-ditem-edit.c:330
 #, c-format
 msgid ""
 "In the following commands you should use %s in the spot where the\n"
@@ -172,68 +168,68 @@ msgstr ""
 "πολλαπλά αρχεία ή URL ως ορίσματα μετά το όνομα εντολής του, επιλέξτε το "
 "παραπάνω κουτί."
 
-#: libgnomeui/gnome-ditem-edit.c:371
+#: libgnomeui/gnome-ditem-edit.c:342
 msgid "Command for file drops:"
 msgstr "Εντολή για ρήψεις αρχείων:"
 
-#: libgnomeui/gnome-ditem-edit.c:381
+#: libgnomeui/gnome-ditem-edit.c:352
 msgid "Drop one file at a time only."
 msgstr "Ρήψη ενός αρχείου τη φορά μόνο."
 
-#: libgnomeui/gnome-ditem-edit.c:393
+#: libgnomeui/gnome-ditem-edit.c:364
 msgid "Command for URL drops:"
 msgstr "Εντολή για ρήψεις URL:"
 
-#: libgnomeui/gnome-ditem-edit.c:403
+#: libgnomeui/gnome-ditem-edit.c:374
 msgid "Drop one URL at a time only."
 msgstr "Ρήψη ενός URL τη φορά μόνο."
 
-#: libcompat/gnome-dentry-edit.c:367 libgnomeui/gnome-ditem-edit.c:519
+#: libcompat/gnome-dentry-edit.c:367 libgnomeui/gnome-ditem-edit.c:487
 msgid "Try this before using:"
 msgstr "Δοκίμασε πρίν την χρήση:"
 
-#: libcompat/gnome-dentry-edit.c:377 libgnomeui/gnome-ditem-edit.c:529
+#: libcompat/gnome-dentry-edit.c:377 libgnomeui/gnome-ditem-edit.c:497
 msgid "Documentation:"
 msgstr "Τεκμηρίωση:"
 
-#: libgnomeui/gnome-ditem-edit.c:539
+#: libgnomeui/gnome-ditem-edit.c:507
 msgid "Window titles to wait for (comma separated):"
 msgstr "Αναμονή για τους κάτωθι τίτλους παραθύρων (διαχωρισμένων με κόμμα):"
 
-#: libcompat/gnome-dentry-edit.c:387 libgnomeui/gnome-ditem-edit.c:549
+#: libcompat/gnome-dentry-edit.c:387 libgnomeui/gnome-ditem-edit.c:517
 msgid "Name/Comment translations:"
 msgstr "Μεταφράσεις Ονόματος/Σχολίου"
 
-#: libcompat/gnome-dentry-edit.c:390 libgnomeui/gnome-ditem-edit.c:552
+#: libcompat/gnome-dentry-edit.c:390 libgnomeui/gnome-ditem-edit.c:520
 msgid "Language"
 msgstr "Γλώσσα"
 
-#: libcompat/gnome-dentry-edit.c:391 libgnomeui/gnome-ditem-edit.c:553
+#: libcompat/gnome-dentry-edit.c:391 libgnomeui/gnome-ditem-edit.c:521
 msgid "Name"
 msgstr "Όνομα"
 
-#: libcompat/gnome-dentry-edit.c:392 libgnomeui/gnome-ditem-edit.c:554
+#: libcompat/gnome-dentry-edit.c:392 libgnomeui/gnome-ditem-edit.c:522
 msgid "Comment"
 msgstr "Σχόλιο"
 
-#: libcompat/gnome-dentry-edit.c:420 libgnomeui/gnome-ditem-edit.c:582
+#: libcompat/gnome-dentry-edit.c:420 libgnomeui/gnome-ditem-edit.c:550
 msgid "Add/Set"
 msgstr "Προσθήκη"
 
-#: libcompat/gnome-dentry-edit.c:425 libgnomeui/gnome-ditem-edit.c:587
-#: libgnomeui/gnome-stock.c:710
+#: libcompat/gnome-dentry-edit.c:425 libgnomeui/gnome-ditem-edit.c:555
+#: libgnomeui/gnome-stock.c:566
 msgid "Remove"
 msgstr "Αφαίρεση"
 
-#: libcompat/gnome-dentry-edit.c:507 libgnomeui/gnome-ditem-edit.c:734
+#: libcompat/gnome-dentry-edit.c:507 libgnomeui/gnome-ditem-edit.c:702
 msgid "Basic"
 msgstr "Βασικές"
 
-#: libgnomeui/gnome-ditem-edit.c:738
+#: libgnomeui/gnome-ditem-edit.c:706
 msgid "Drag and Drop"
 msgstr "Σύρσιμο και Ρήψη"
 
-#: libcompat/gnome-dentry-edit.c:511 libgnomeui/gnome-ditem-edit.c:742
+#: libcompat/gnome-dentry-edit.c:511 libgnomeui/gnome-ditem-edit.c:710
 msgid "Advanced"
 msgstr "Για προχωρημένους"
 
@@ -250,23 +246,23 @@ msgstr "-greek-helvetica-bold-r-normal-*-*-180-*-*-p-*-*-*,*-r-*"
 msgid "-adobe-helvetica-medium-r-normal-*-*-120-*-*-p-*-*-*,*-r-*"
 msgstr "-greek-helvetica-medium-r-normal-*-*-120-*-*-p-*-*-*,*-r-*"
 
-#: libgnomeui/gnome-file-saver.c:191
+#: libgnomeui/gnome-file-saver.c:192
 msgid "File Name:"
 msgstr "Όνομα Αρχείου:"
 
-#: libgnomeui/gnome-file-saver.c:199
+#: libgnomeui/gnome-file-saver.c:200
 msgid "Location:"
 msgstr "Τοποθεσία:"
 
-#: libgnomeui/gnome-file-saver.c:207
+#: libgnomeui/gnome-file-saver.c:208
 msgid "Save As Type:"
 msgstr "Αποθήκευση Ως Τύπος:"
 
-#: libgnomeui/gnome-gconf.c:577
+#: libgnomeui/gnome-gconf.c:476
 msgid "GNOME GConf Support"
 msgstr "Υποστήριξη GNOME GConf"
 
-#: libgnomeui/gnome-gconf.c:621
+#: libgnomeui/gnome-gconf.c:516
 #, c-format
 msgid ""
 "You attempted to change an aspect of your configuration that your system "
@@ -279,7 +275,7 @@ msgstr ""
 "ρυθμίσεις που επιλέξατε μπορεί να μην ενεργοποιηθούν, ή να μην ανακτηθούν "
 "την επόμενη φορά που θα χρησιμοποιήσετε την εφαρμογή αυτή (%s)."
 
-#: libgnomeui/gnome-gconf.c:624
+#: libgnomeui/gnome-gconf.c:519
 #, c-format
 msgid ""
 "An error occurred while loading or saving configuration information for %s. "
@@ -288,57 +284,115 @@ msgstr ""
 "Συνέβει ένα σφάλμα κατά το φόρτωμα ή αποθήκευση πληροφοριών ρυθμίσεων για το "
 "%s. Μερικές από τις ρυθμίσεις μπορεί να μην δουλέψουν σωστά."
 
-#: libgnomeui/gnome-gconf.c:651
+#: libgnomeui/gnome-gconf.c:541
 #, c-format
 msgid "GConf error details: %s\n"
 msgstr "Λεπτομέρειες σφάλματος GConf: %s\n"
 
-#: libgnomeui/gnome-helpsys.c:105
+#: libgnomeui/gnome-helpsys.c:117
 msgid "_Popup"
 msgstr "_Ανάρτηση"
 
-#: libgnomeui/gnome-helpsys.c:106
+#: libgnomeui/gnome-helpsys.c:118
 msgid "Show help in temporary popup windows"
 msgstr "Εμφάνιση βοήθειας σε προσωρινά αναρτώμενα παράθυρα"
 
-#: libgnomeui/gnome-helpsys.c:108
+#: libgnomeui/gnome-helpsys.c:120
 msgid "_Embedded"
 msgstr "_Εμφυτευμένο"
 
-#: libgnomeui/gnome-helpsys.c:109
+#: libgnomeui/gnome-helpsys.c:121
 msgid "Show help inside the application window"
 msgstr "Εμφάνιση βοήθειας μέσα στο παράθυρο εφαρμογής"
 
-#: libgnomeui/gnome-helpsys.c:111
+#: libgnomeui/gnome-helpsys.c:123
 msgid "_Browser"
 msgstr "_Φυλλομετρητής"
 
-#: libgnomeui/gnome-helpsys.c:112
+#: libgnomeui/gnome-helpsys.c:124
 msgid "Show help in a help browser window"
 msgstr "Εμφάνιση βοήθειας σε παράθυρο βοήθειας φυλλομετρητή"
 
-#: libgnomeui/gnome-helpsys.c:201 libgnomeui/gnome-stock.c:725
-#: libgnomeui/stock_demo.c:315
+#: libgnomeui/gnome-helpsys.c:172
+msgid "App style"
+msgstr ""
+
+#: libgnomeui/gnome-helpsys.c:173
+msgid "The style of GnomeHelpView"
+msgstr ""
+
+#: libgnomeui/gnome-helpsys.c:182
+msgid "App style priority"
+msgstr ""
+
+#: libgnomeui/gnome-helpsys.c:183
+msgid "The priority of style of GnomeHelpView"
+msgstr ""
+
+#. orientation
+#: libgnomeui/gnome-helpsys.c:192 libgnomeui/gnome-helpsys.c:193
+#: libgnomeui/gnome-paper-selector.c:191
+msgid "Orientation"
+msgstr "Προσανατολισμός"
+
+#: libgnomeui/gnome-helpsys.c:202
+msgid "Toplevel"
+msgstr "Κορυφαίο"
+
+#: libgnomeui/gnome-helpsys.c:203
+msgid "The toplevel widget"
+msgstr ""
+
+#: demos/stock_demo.c:315 libgnomeui/gnome-helpsys.c:219
+#: libgnomeui/gnome-stock.c:581
 msgid "Help"
 msgstr "Βοήθεια"
 
-#: libgnomeui/gnome-helpsys.c:202
+#: libgnomeui/gnome-helpsys.c:220
 msgid "Show help for a specific region of the application"
 msgstr "Εμφάνιση βοήθειας για συγκεκριμένη περιοχή της εφαρμογής"
 
-#: libgnomeui/gnome-helpsys.c:206
+#: libgnomeui/gnome-helpsys.c:225
 msgid "Style"
 msgstr "Ύφος"
 
-#: libgnomeui/gnome-helpsys.c:207
+#: libgnomeui/gnome-helpsys.c:226
 msgid "Change the way help is displayed"
 msgstr "Αλλαγή του τρόπου εμφάνισης της βοήθειας"
 
-#: libgnomeui/gnome-helpsys.c:869 libgnomeui/gnome-helpsys.c:964
+#: libgnomeui/gnome-helpsys.c:928 libgnomeui/gnome-helpsys.c:1022
 msgid "No help is available for the selected portion of the application."
 msgstr "Δεν υπάρχει διαθέσιμη βοήθεια για το επιλεγμένο τμήμα της εφαρμογής."
 
-#: libgnomeui/gnome-about.c:1145 libgnomeui/gnome-href.c:367
+#. FIXME: properly handle the error!
+#: libgnomeui/gnome-helpsys.c:1192
+#, c-format
+msgid "Cought GnomeURL error: %s"
+msgstr ""
+
+#: libgnomeui/gnome-href.c:114
+#, fuzzy
+msgid "URL"
+msgstr "RCL"
+
+#: libgnomeui/gnome-href.c:115
+msgid "The URL that GnomeHRef activates"
+msgstr ""
+
+#: libgnomeui/gnome-href.c:122
+#, fuzzy
+msgid "Text"
+msgstr "Επόμενο"
+
+#: libgnomeui/gnome-href.c:123
+msgid "The text on the button"
+msgstr ""
+
+#: libgnomeui/gnome-href.c:124
+msgid "End World Hunger"
+msgstr ""
+
+#: libgnomeui/gnome-about.c:1169 libgnomeui/gnome-href.c:399
 msgid ""
 "Error occured while trying to launch the URL handler.\n"
 "Please check the settings in the Control Center if they are correct."
@@ -346,151 +400,140 @@ msgstr ""
 "Παρουσιάστηκε σφάλμα ενώ γινόταν προσπάθεια εκκίνησης του χειριστή URL.\n"
 "Παρακαλώ ελέγξτε ότι οι ρυθμίσεις στο Πίνακα Ελέγχου είναι σωστές."
 
-#: libgnomeui/gnome-icon-sel.c:360 libgnomeui/gnome-icon-selector.c:524
-msgid "Loading Icons..."
-msgstr "Ανάγνωση Εικονιδίων..."
-
 #. paper size
-#: libgnomeui/gnome-paper-selector.c:160
+#: libgnomeui/gnome-paper-selector.c:159
 msgid "Paper Size"
 msgstr "Μέγεθος Χαρτιού"
 
-#. orientation
-#: libgnomeui/gnome-paper-selector.c:192
-msgid "Orientation"
-msgstr "Προσανατολισμός"
-
-#: libgnomeui/gnome-paper-selector.c:214
+#: libgnomeui/gnome-paper-selector.c:213
 msgid "Portrait"
 msgstr "Πορτραίτο"
 
-#: libgnomeui/gnome-paper-selector.c:234
+#: libgnomeui/gnome-paper-selector.c:233
 msgid "Landscape"
 msgstr "Τοπίο"
 
 #. margins
-#: libgnomeui/gnome-paper-selector.c:242
+#: libgnomeui/gnome-paper-selector.c:241
 msgid "Margins"
 msgstr "Περιθώρια"
 
-#: libgnomeui/gnome-paper-selector.c:254
+#: libgnomeui/gnome-paper-selector.c:253
 msgid "Top:"
 msgstr "Κορυφή:"
 
-#: libgnomeui/gnome-paper-selector.c:267
+#: libgnomeui/gnome-paper-selector.c:266
 msgid "Bottom:"
 msgstr "Κάτω μέρος:"
 
-#: libgnomeui/gnome-paper-selector.c:280
+#: libgnomeui/gnome-paper-selector.c:279
 msgid "Left:"
 msgstr "Αριστερά:"
 
-#: libgnomeui/gnome-paper-selector.c:293
+#: libgnomeui/gnome-paper-selector.c:292
 msgid "Right:"
 msgstr "Δεξιά:"
 
 #. Scaling
-#: libgnomeui/gnome-paper-selector.c:307
+#: libgnomeui/gnome-paper-selector.c:306
 msgid "Scaling"
 msgstr "Κλιμάκωση"
 
-#: libgnomeui/gnome-paper-selector.c:322
+#: libgnomeui/gnome-paper-selector.c:321
 msgid "Fit to Page"
 msgstr "Ταίριασμα στη Σελίδα"
 
-#: libgnomeui/gnome-paper-selector.c:811
+#: libgnomeui/gnome-paper-selector.c:810
 #, c-format
 msgid "%0.3g%s x %0.3g%s"
 msgstr "%0.3g%s x %0.3g%s"
 
-#: libgnomeui/gnome-paper-selector.c:1041
+#: libgnomeui/gnome-paper-selector.c:1040
 msgid "Page Setup"
 msgstr "Ρύθμιση Σελίδας"
 
 #. to be kept in sync with GtkCornerType enumeration
-#: libgnomeui/gnome-pouch.c:796
+#: libgnomeui/gnome-pouch.c:782
 msgid "Top left"
 msgstr "Επάνω αριστερά"
 
-#: libgnomeui/gnome-pouch.c:797
+#: libgnomeui/gnome-pouch.c:783
 msgid "Bottom left"
 msgstr "Κάτω αριστερά"
 
-#: libgnomeui/gnome-pouch.c:798
+#: libgnomeui/gnome-pouch.c:784
 msgid "Top right"
 msgstr "Επάνω δεξιά"
 
-#: libgnomeui/gnome-pouch.c:799
+#: libgnomeui/gnome-pouch.c:785
 msgid "Bottom right"
 msgstr "Κάτω δεξιά"
 
 #. to be kept in sync with GtkOrientation enumeration
-#: libgnomeui/gnome-pouch.c:810
+#: libgnomeui/gnome-pouch.c:796
 msgid "Horizontal"
 msgstr "Οριζόντια"
 
-#: libgnomeui/gnome-pouch.c:811
+#: libgnomeui/gnome-pouch.c:797
 msgid "Vertical"
 msgstr "Κάθετα"
 
-#: libgnomeui/gnome-pouch.c:821
+#: libgnomeui/gnome-pouch.c:807
 msgid "Icon position"
 msgstr "Θέση εικονιδίου"
 
-#: libgnomeui/gnome-pouch.c:822
+#: libgnomeui/gnome-pouch.c:808
 msgid "Icon orientation"
 msgstr "Προσανατολισμός εικονιδίου"
 
-#: libgnomeui/gnome-pouch.c:824
+#: libgnomeui/gnome-pouch.c:810
 msgid "Tile children"
 msgstr "Επίστρωση παιδιών"
 
-#: libgnomeui/gnome-pouch.c:825
+#: libgnomeui/gnome-pouch.c:811
 msgid "Cascade children"
 msgstr "Κατάχυση παιδιών"
 
-#: libgnomeui/gnome-pouch.c:827
+#: libgnomeui/gnome-pouch.c:813
 msgid "Arrange icons"
 msgstr "Τακτοποίηση εικονιδίων"
 
-#: libgnomeui/gnome-pouch.c:828
+#: libgnomeui/gnome-pouch.c:814
 msgid "Autoarrange icons"
 msgstr "Αυτόματη τακτοποίηση εικονιδίων"
 
-#: libgnomeui/gnome-recently-used.c:989
+#: libgnomeui/gnome-recently-used.c:113
+msgid "App Specific"
+msgstr ""
+
+#: libgnomeui/gnome-recently-used.c:114
+#, fuzzy
+msgid "Is this list application specific"
+msgstr "Σχετικά με την εφαρμογή"
+
+#: libgnomeui/gnome-recently-used.c:897
+#, c-format
+msgid "bad GnomeRecentDocument attribute: %s\n"
+msgstr ""
+
+#: libgnomeui/gnome-recently-used.c:1127
 msgid "Unknown"
 msgstr "Άγνωστο"
 
 #. browse button ...
-#: libcompat/gnome-spell.c:620 libcompat/gnome-spell.c:637
-#: libcompat/gnome-spell.c:654 libgnomeui/gnome-file-entry.c:446
-#: libgnomeui/gnome-selector.c:803
+#: libcompat/gnome-file-entry.c:445 libcompat/gnome-spell.c:620
+#: libcompat/gnome-spell.c:637 libcompat/gnome-spell.c:654
+#: libgnomeui/gnome-selector.c:1040
 msgid "Browse..."
 msgstr "Εξερεύνηση..."
 
-#: libgnomeui/gnome-selector.c:813
+#: libgnomeui/gnome-selector.c:1051
 msgid "Default..."
 msgstr "Εξ' ορισμού..."
 
-#: libgnomeui/gnome-selector.c:823
+#: libgnomeui/gnome-selector.c:1062
 msgid "Clear..."
 msgstr "Καθαρισμός..."
-
-#: libgnomeui/mdi_demo.c:116
-msgid "Child Item 1"
-msgstr "Αντικείμενο Παιδιού 1"
-
-#: libgnomeui/mdi_demo.c:117
-msgid "Hint for item 1"
-msgstr "Υπόδειξη για αντικείμενο 1"
-
-#: libgnomeui/mdi_demo.c:119
-msgid "Child Item 2"
-msgstr "Αντικείμενο Παιδιού 2"
-
-#: libgnomeui/mdi_demo.c:120
-msgid "Hint for item 2"
-msgstr "Υπόδειξη για αντικείμενο 2"
 
 #: libgnomeui/oafgnome.c:242
 msgid "Username:"
@@ -500,12 +543,12 @@ msgstr "Χρήστης:"
 msgid "Password:"
 msgstr "Κωδικός:"
 
-#: libgnome/gnomelib-init.c:191 libgnome/gnomelib-init.c:205
+#: libgnome/gnomelib-init.c:200 libgnome/gnomelib-init.c:214
 #, c-format
 msgid "Could not create per-user gnome configuration directory `%s': %s\n"
 msgstr "Δημιουργία καταλόγου διαμόρφωσης GNOME ανά χρήστη αδύνατη `%s': %s\n"
 
-#: libgnome/gnomelib-init.c:214
+#: libgnome/gnomelib-init.c:223
 #, c-format
 msgid ""
 "Could not set mode 0700 on private per-user gnome configuration directory "
@@ -514,161 +557,161 @@ msgstr ""
 "Καταχώρηση κατάστασης 0700 στον ιδιωτικό κατάλογο διαμόρφωσης GNOME ανά "
 "χρήστη αδύνατη `%s': %s\n"
 
-#: libgnome/gnomelib-init.c:221
+#: libgnome/gnomelib-init.c:230
 #, c-format
 msgid "Could not create gnome accelerators directory `%s': %s\n"
 msgstr "Δημιουργία καταλόγου επιταχυντών GNOME αδύνατη `%s': %s\n"
 
-#: libgnomeui/gnome-about.c:335
+#: libgnomeui/gnome-about.c:331
 msgid "Author:"
 msgstr "Συγγραφέας:"
 
-#: libgnomeui/gnome-about.c:338 libgnomeui/gnome-about.c:340
+#: libgnomeui/gnome-about.c:341 libgnomeui/gnome-about.c:345
 msgid "Authors:"
 msgstr "Συγγραφείς:"
 
-#: libgnomeui/gnome-about.c:646
+#: libgnomeui/gnome-about.c:679
 msgid "Authors: "
 msgstr "Συγγραφείς: "
 
-#: libgnomeui/gnome-about.c:1042 libgnomeui/stock_demo.c:307
-#: libgnomeui/winhints_demo.c:256
+#: demos/stock_demo.c:307 demos/winhints_demo.c:256
+#: libgnomeui/gnome-about.c:1075
 msgid "About"
 msgstr "Περί"
 
-#: libgnomeui/gnome-app-helper.c:73
+#: libgnomeui/gnome-app-helper.c:82
 msgid "_File"
 msgstr "_Αρχείο"
 
-#: libgnomeui/gnome-app-helper.c:74
+#: libgnomeui/gnome-app-helper.c:83
 msgid "_File/"
 msgstr "_Αρχείο/"
 
-#: libgnomeui/gnome-app-helper.c:75
+#: libgnomeui/gnome-app-helper.c:84
 msgid "_Edit"
 msgstr "_Επεξεργασία"
 
-#: libgnomeui/gnome-app-helper.c:76
+#: libgnomeui/gnome-app-helper.c:85
 msgid "_Edit/"
 msgstr "_Επεξεργασία/"
 
-#: libgnomeui/gnome-app-helper.c:77
+#: libgnomeui/gnome-app-helper.c:86
 msgid "_View"
 msgstr "_Προβολή"
 
-#: libgnomeui/gnome-app-helper.c:78
+#: libgnomeui/gnome-app-helper.c:87
 msgid "_View/"
 msgstr "_Προβολή/"
 
-#: libgnomeui/gnome-app-helper.c:79
+#: libgnomeui/gnome-app-helper.c:88
 msgid "_Settings"
 msgstr "_Ρυθμίσεις"
 
-#: libgnomeui/gnome-app-helper.c:80
+#: libgnomeui/gnome-app-helper.c:89
 msgid "_Settings/"
 msgstr "_Ρυθμίσεις/"
 
-#: libgnomeui/gnome-app-helper.c:81
+#: libgnomeui/gnome-app-helper.c:90
 msgid "_New"
 msgstr "_Νέο"
 
-#: libgnomeui/gnome-app-helper.c:82
+#: libgnomeui/gnome-app-helper.c:91
 msgid "_New/"
 msgstr "_Νέο/"
 
-#: libgnomeui/gnome-app-helper.c:83
+#: libgnomeui/gnome-app-helper.c:92
 msgid "Fi_les"
 msgstr "Αρ_χεία"
 
-#: libgnomeui/gnome-app-helper.c:84
+#: libgnomeui/gnome-app-helper.c:93
 msgid "Fi_les/"
 msgstr "Αρ_χεία/"
 
-#: libgnomeui/gnome-app-helper.c:85
+#: libgnomeui/gnome-app-helper.c:94
 msgid "_Windows"
 msgstr "_Παράθυρα"
 
-#: libgnomeui/gnome-app-helper.c:86
+#: libgnomeui/gnome-app-helper.c:95
 msgid "_Game"
 msgstr "_Παιχνίδι"
 
-#: libgnomeui/gnome-app-helper.c:87
+#: libgnomeui/gnome-app-helper.c:96
 msgid "_Help"
 msgstr "_Βοήθεια"
 
-#: libgnomeui/gnome-app-helper.c:88
+#: libgnomeui/gnome-app-helper.c:97
 msgid "_Windows/"
 msgstr "_Παράθυρα/"
 
 #. Open
-#: libgnomeui/gnome-app-helper.c:100
+#: libgnomeui/gnome-app-helper.c:109
 msgid "_Open..."
 msgstr "_Άνοιγμα..."
 
-#: libgnomeui/gnome-app-helper.c:100
+#: libgnomeui/gnome-app-helper.c:109
 msgid "Open a file"
 msgstr "Άνοιγμα αρχείου"
 
 #. Save
-#: libgnomeui/gnome-app-helper.c:105
+#: libgnomeui/gnome-app-helper.c:114
 msgid "_Save"
 msgstr "_Αποθήκευση"
 
-#: libgnomeui/gnome-app-helper.c:105
+#: libgnomeui/gnome-app-helper.c:114
 msgid "Save the current file"
 msgstr "Αποθήκευση παρόντος αρχείου"
 
 #. Save As
-#: libgnomeui/gnome-app-helper.c:110
+#: libgnomeui/gnome-app-helper.c:119
 msgid "Save _As..."
 msgstr "Αποθήκευση _Ως"
 
-#: libgnomeui/gnome-app-helper.c:111
+#: libgnomeui/gnome-app-helper.c:120
 msgid "Save the current file with a different name"
 msgstr "Αποθήκευση παρόντος αρχείου με διαφορετικό όνομα"
 
 #. Revert
-#: libgnomeui/gnome-app-helper.c:116
+#: libgnomeui/gnome-app-helper.c:125
 msgid "_Revert"
 msgstr "Επανα_φορά"
 
-#: libgnomeui/gnome-app-helper.c:117
+#: libgnomeui/gnome-app-helper.c:126
 msgid "Revert to a saved version of the file"
 msgstr "Επαναφορά αποθηκευμένης έκδοσης του αρχείου"
 
 #. Print
-#: libgnomeui/gnome-app-helper.c:122
+#: libgnomeui/gnome-app-helper.c:131
 msgid "_Print"
 msgstr "_Εκτύπωση"
 
-#: libgnomeui/gnome-app-helper.c:122
+#: libgnomeui/gnome-app-helper.c:131
 msgid "Print the current file"
 msgstr "Εκτύπωση παρόντος αρχείου"
 
 #. Print Setup
-#: libgnomeui/gnome-app-helper.c:127
+#: libgnomeui/gnome-app-helper.c:136
 msgid "Print S_etup..."
 msgstr "_Ρυθμίσεις εκτύπωσης..."
 
-#: libgnomeui/gnome-app-helper.c:128
+#: libgnomeui/gnome-app-helper.c:137
 msgid "Setup the page settings for your current printer"
 msgstr "Καθορισμός ρυθμίσεων σελίδας του τρέχοντος εκτυπωτή"
 
 #. Close
-#: libgnomeui/gnome-app-helper.c:133
+#: libgnomeui/gnome-app-helper.c:142
 msgid "_Close"
 msgstr "_Κλείσιμο"
 
-#: libgnomeui/gnome-app-helper.c:133
+#: libgnomeui/gnome-app-helper.c:142
 msgid "Close the current file"
 msgstr "Κλείσιμο παρόντος αρχείου"
 
 #. Exit
-#: libgnomeui/gnome-app-helper.c:138
+#: libgnomeui/gnome-app-helper.c:147
 msgid "E_xit"
 msgstr "Έ_ξοδος"
 
-#: libgnomeui/gnome-app-helper.c:138
+#: libgnomeui/gnome-app-helper.c:147
 msgid "Exit the program"
 msgstr "Έξοδος από το πρόγραμμα"
 
@@ -676,93 +719,93 @@ msgstr "Έξοδος από το πρόγραμμα"
 #. * The "Edit" menu
 #.
 #. Cut
-#: libgnomeui/gnome-app-helper.c:146
+#: libgnomeui/gnome-app-helper.c:155
 msgid "C_ut"
 msgstr "_Αποκοπή"
 
-#: libgnomeui/gnome-app-helper.c:146
+#: libgnomeui/gnome-app-helper.c:155
 msgid "Cut the selection"
 msgstr "Αποκοπή της επιλογής"
 
 #. 10
 #. Copy
-#: libgnomeui/gnome-app-helper.c:152 libgnomeui/gnome-popup-help.c:64
+#: libgnomeui/gnome-app-helper.c:161 libgnomeui/gnome-popup-help.c:65
 msgid "_Copy"
 msgstr "_Αντιγραφή"
 
-#: libgnomeui/gnome-app-helper.c:152
+#: libgnomeui/gnome-app-helper.c:161
 msgid "Copy the selection"
 msgstr "Αντιγραφή της επιλογής"
 
 #. Paste
-#: libgnomeui/gnome-app-helper.c:157 libgnomeui/gnome-popup-help.c:66
+#: libgnomeui/gnome-app-helper.c:166 libgnomeui/gnome-popup-help.c:67
 msgid "_Paste"
 msgstr "Επι_κόλληση"
 
-#: libgnomeui/gnome-app-helper.c:157
+#: libgnomeui/gnome-app-helper.c:166
 msgid "Paste the clipboard"
 msgstr "Επικόλληση των περιεχομένων του τεμαχίου"
 
 #. Clear
-#: libgnomeui/gnome-app-helper.c:162
+#: libgnomeui/gnome-app-helper.c:171
 msgid "C_lear"
 msgstr "_Καθαρισμός"
 
-#: libgnomeui/gnome-app-helper.c:162
+#: libgnomeui/gnome-app-helper.c:171
 msgid "Clear the selection"
 msgstr "Καθαρισμός της επιλογής"
 
 #. Undo
-#: libgnomeui/gnome-app-helper.c:167
+#: libgnomeui/gnome-app-helper.c:176
 msgid "_Undo"
 msgstr "_Ακύρωση"
 
-#: libgnomeui/gnome-app-helper.c:167
+#: libgnomeui/gnome-app-helper.c:176
 msgid "Undo the last action"
 msgstr "Ακύρωση τελευταίας ενέργειας"
 
 #. Redo
-#: libgnomeui/gnome-app-helper.c:172
+#: libgnomeui/gnome-app-helper.c:181
 msgid "_Redo"
 msgstr "_Επανάληψη"
 
-#: libgnomeui/gnome-app-helper.c:172
+#: libgnomeui/gnome-app-helper.c:181
 msgid "Redo the undone action"
 msgstr "Επανάληψη ακυρωμένης ενέργειας"
 
 #. Find
-#: libgnomeui/gnome-app-helper.c:177
+#: libgnomeui/gnome-app-helper.c:186
 msgid "_Find..."
 msgstr "_Αναζήτηση..."
 
-#: libgnomeui/gnome-app-helper.c:177
+#: libgnomeui/gnome-app-helper.c:186
 msgid "Search for a string"
 msgstr "Αναζήτηση ακολουθίας"
 
 #. Find Again
-#: libgnomeui/gnome-app-helper.c:182
+#: libgnomeui/gnome-app-helper.c:191
 msgid "Find _Again"
 msgstr "_Επανάληψη αναζήτησης"
 
-#: libgnomeui/gnome-app-helper.c:183
+#: libgnomeui/gnome-app-helper.c:192
 msgid "Search again for the same string"
 msgstr "Aναζήτηση της ίδιας ακολουθίας"
 
 #. Replace
-#: libgnomeui/gnome-app-helper.c:188
+#: libgnomeui/gnome-app-helper.c:197
 msgid "_Replace..."
 msgstr "Αντι_κατάσταση"
 
-#: libgnomeui/gnome-app-helper.c:188
+#: libgnomeui/gnome-app-helper.c:197
 msgid "Replace a string"
 msgstr "Αντικατάσταση ακολουθίας"
 
 #. Properties
-#: libgnomeui/gnome-app-helper.c:193
+#: libgnomeui/gnome-app-helper.c:202
 msgid "_Properties..."
 msgstr "_Ιδιότητες..."
 
-#: libgnomeui/gnome-app-helper.c:194
+#: libgnomeui/gnome-app-helper.c:203
 msgid "Modify the file's properties"
 msgstr "Τροποποίηση ιδιοτήτων αρχείου"
 
@@ -770,11 +813,11 @@ msgstr "Τροποποίηση ιδιοτήτων αρχείου"
 #. * The Settings menu
 #.
 #. Settings
-#: libgnomeui/gnome-app-helper.c:202
+#: libgnomeui/gnome-app-helper.c:211
 msgid "_Preferences..."
 msgstr "_Προτιμήσεις..."
 
-#: libgnomeui/gnome-app-helper.c:203
+#: libgnomeui/gnome-app-helper.c:212
 msgid "Configure the application"
 msgstr "Καθορισμός παραμέτρων της εφαρμογής"
 
@@ -783,106 +826,106 @@ msgstr "Καθορισμός παραμέτρων της εφαρμογής"
 #. * And the "Help" menu
 #.
 #. About
-#: libgnomeui/gnome-app-helper.c:212
+#: libgnomeui/gnome-app-helper.c:221
 msgid "_About"
 msgstr "_Περί"
 
-#: libgnomeui/gnome-app-helper.c:213
+#: libgnomeui/gnome-app-helper.c:222
 msgid "About this application"
 msgstr "Σχετικά με την εφαρμογή"
 
-#: libgnomeui/gnome-app-helper.c:216
+#: libgnomeui/gnome-app-helper.c:225
 msgid "_Select All"
 msgstr "_Επιλογή όλων"
 
-#: libgnomeui/gnome-app-helper.c:217
+#: libgnomeui/gnome-app-helper.c:226
 msgid "Select everything"
 msgstr "Επιλογή όλων"
 
 #.
 #. * Window menu
 #.
-#: libgnomeui/gnome-app-helper.c:225
+#: libgnomeui/gnome-app-helper.c:234
 msgid "Create New _Window"
 msgstr "Δημιουργία _Νέου Παραθύρου"
 
-#: libgnomeui/gnome-app-helper.c:226
+#: libgnomeui/gnome-app-helper.c:235
 msgid "Create a new window"
 msgstr "Δημιουργία νέου παραθύρου"
 
-#: libgnomeui/gnome-app-helper.c:230
+#: libgnomeui/gnome-app-helper.c:239
 msgid "_Close This Window"
 msgstr "_Κλείσιμο παραθύρου"
 
-#: libgnomeui/gnome-app-helper.c:231
+#: libgnomeui/gnome-app-helper.c:240
 msgid "Close the current window"
 msgstr "Κλείσιμο παρόντος παραθύρου"
 
 #.
 #. * The "Game" menu
 #.
-#: libgnomeui/gnome-app-helper.c:239
+#: libgnomeui/gnome-app-helper.c:248
 msgid "_New game"
 msgstr "_Νέο παιχνίδι"
 
-#: libgnomeui/gnome-app-helper.c:240
+#: libgnomeui/gnome-app-helper.c:249
 msgid "Start a new game"
 msgstr "Εκκίνηση νέου παιχνιδιού"
 
-#: libgnomeui/gnome-app-helper.c:244
+#: libgnomeui/gnome-app-helper.c:253
 msgid "_Pause game"
 msgstr "_Παύση παιχνιδιού"
 
-#: libgnomeui/gnome-app-helper.c:245
+#: libgnomeui/gnome-app-helper.c:254
 msgid "Pause the game"
 msgstr "Πάυση του παιχνιδιού"
 
-#: libgnomeui/gnome-app-helper.c:249
+#: libgnomeui/gnome-app-helper.c:258
 msgid "_Restart game"
 msgstr "_Επανεκκίνηση παιχνιδιού"
 
-#: libgnomeui/gnome-app-helper.c:250
+#: libgnomeui/gnome-app-helper.c:259
 msgid "Restart the game"
 msgstr "Επανεκκίνηση του παιχνιδιού"
 
-#: libgnomeui/gnome-app-helper.c:254
+#: libgnomeui/gnome-app-helper.c:263
 msgid "_Undo move"
 msgstr "_Ακύρωση κίνησης"
 
-#: libgnomeui/gnome-app-helper.c:255
+#: libgnomeui/gnome-app-helper.c:264
 msgid "Undo the last move"
 msgstr "Ακύρωση της τελευταίας κίνησης"
 
-#: libgnomeui/gnome-app-helper.c:259
+#: libgnomeui/gnome-app-helper.c:268
 msgid "_Redo move"
 msgstr "_Επανάληψη κίνησης"
 
-#: libgnomeui/gnome-app-helper.c:260
+#: libgnomeui/gnome-app-helper.c:269
 msgid "Redo the undone move"
 msgstr "Επανάληψη της ακυρωμένης κίνησης"
 
-#: libgnomeui/gnome-app-helper.c:264
+#: libgnomeui/gnome-app-helper.c:273
 msgid "_Hint"
 msgstr "_Υπόδειξη"
 
-#: libgnomeui/gnome-app-helper.c:265
+#: libgnomeui/gnome-app-helper.c:274
 msgid "Get a hint for your next move"
 msgstr "Υπόδειξη για την επόμενη κίνηση"
 
 #. 30
-#: libgnomeui/gnome-app-helper.c:270
+#: libgnomeui/gnome-app-helper.c:279
 msgid "_Scores..."
 msgstr "_Βαθμολογία..."
 
-#: libgnomeui/gnome-app-helper.c:271
+#: libgnomeui/gnome-app-helper.c:280
 msgid "View the scores"
 msgstr "Εμφάνιση βαθμολογίας"
 
-#: libgnomeui/gnome-app-helper.c:275
+#: libgnomeui/gnome-app-helper.c:284
 msgid "_End game"
 msgstr "_Τέλος παιχνιδιού"
 
-#: libgnomeui/gnome-app-helper.c:276
+#: libgnomeui/gnome-app-helper.c:285
 msgid "End the current game"
 msgstr "Τέλος τρέχοντος παιχνιδιού"
 
@@ -926,262 +969,116 @@ msgstr " - Εντάξει? (ναί ή όχι)"
 msgid "Progress"
 msgstr "Εξέλιξη"
 
-#: libgnomeui/gnome-calculator.c:450 libgnomeui/gnome-calculator.c:1099
-msgid "DEG"
-msgstr "DEG"
+#: libgnomeui/gnome-app.c:151
+msgid "App ID"
+msgstr ""
 
-#: libgnomeui/gnome-calculator.c:452
-msgid "RAD"
-msgstr "RED"
+#: libgnomeui/gnome-app.c:152
+msgid "The application ID string"
+msgstr ""
 
-#: libgnomeui/gnome-calculator.c:454
-msgid "GRAD"
-msgstr "GRED"
-
-#: libgnomeui/gnome-calculator.c:1089
-msgid "1/x"
-msgstr "1/x"
-
-#: libgnomeui/gnome-calculator.c:1090
-msgid "x^2"
-msgstr "x^2"
-
-#: libgnomeui/gnome-calculator.c:1091
-msgid "SQRT"
-msgstr "SQRT"
-
-#: libgnomeui/gnome-calculator.c:1092
-msgid "CE/C"
-msgstr "CE/C"
-
-#: libgnomeui/gnome-calculator.c:1093
-msgid "AC"
-msgstr "AC"
-
-#. inverse button
-#: libgnomeui/gnome-calculator.c:1096
-msgid "sin"
-msgstr "ημ"
-
-#: libgnomeui/gnome-calculator.c:1097
-msgid "cos"
-msgstr "συν"
-
-#: libgnomeui/gnome-calculator.c:1098
-msgid "tan"
-msgstr "εφ"
-
-#: libgnomeui/gnome-calculator.c:1101
-msgid "e"
-msgstr "e"
-
-#: libgnomeui/gnome-calculator.c:1102
-msgid "EE"
-msgstr "EE"
-
-#: libgnomeui/gnome-calculator.c:1103
-msgid "log"
-msgstr "log"
-
-#: libgnomeui/gnome-calculator.c:1104
-msgid "ln"
-msgstr "ln"
-
-#: libgnomeui/gnome-calculator.c:1105
-msgid "x^y"
-msgstr "x^y"
-
-#: libgnomeui/gnome-calculator.c:1107
-msgid "PI"
-msgstr "π"
-
-#: libgnomeui/gnome-calculator.c:1108
-msgid "x!"
-msgstr "x!"
-
-#: libgnomeui/gnome-calculator.c:1109
-msgid "("
-msgstr "("
-
-#: libgnomeui/gnome-calculator.c:1110
-msgid ")"
-msgstr ")"
-
-#: libgnomeui/gnome-calculator.c:1111
-msgid "/"
-msgstr "/"
-
-#: libgnomeui/gnome-calculator.c:1113
-msgid "STO"
-msgstr "STO"
-
-#: libgnomeui/gnome-calculator.c:1114
-msgid "7"
-msgstr "7"
-
-#: libgnomeui/gnome-calculator.c:1115
-msgid "8"
-msgstr "8"
-
-#: libgnomeui/gnome-calculator.c:1116
-msgid "9"
-msgstr "9"
-
-#: libgnomeui/gnome-calculator.c:1117
-msgid "*"
-msgstr "*"
-
-#: libgnomeui/gnome-calculator.c:1119
-msgid "RCL"
-msgstr "RCL"
-
-#: libgnomeui/gnome-calculator.c:1120
-msgid "4"
-msgstr "4"
-
-#: libgnomeui/gnome-calculator.c:1121
-msgid "5"
-msgstr "5"
-
-#: libgnomeui/gnome-calculator.c:1122
-msgid "6"
-msgstr "6"
-
-#: libgnomeui/gnome-calculator.c:1123
-msgid "-"
-msgstr "-"
-
-#: libgnomeui/gnome-calculator.c:1125
-msgid "SUM"
-msgstr "SUM"
-
-#: libgnomeui/gnome-calculator.c:1126
-msgid "1"
-msgstr "1"
-
-#: libgnomeui/gnome-calculator.c:1127
-msgid "2"
-msgstr "2"
-
-#: libgnomeui/gnome-calculator.c:1128
-msgid "3"
-msgstr "3"
-
-#: libgnomeui/gnome-calculator.c:1129
-msgid "+"
-msgstr "+"
-
-#: libgnomeui/gnome-calculator.c:1131
-msgid "EXC"
-msgstr "EXC"
-
-#: libgnomeui/gnome-calculator.c:1132
-msgid "0"
-msgstr "0"
-
-#: libgnomeui/gnome-calculator.c:1133
-msgid "."
-msgstr "."
-
-#: libgnomeui/gnome-calculator.c:1134
-msgid "+/-"
-msgstr "+/-"
-
-#: libgnomeui/gnome-calculator.c:1135
-msgid "="
-msgstr "="
-
-#: libgnomeui/gnome-calculator.c:1341
-msgid "INV"
-msgstr "INV"
-
-#: libgnomeui/gnome-client.c:846
+#: libgnomeui/gnome-client.c:836
 msgid "Specify session management ID"
 msgstr "Καθορισμός κωδικού διαχείρισης συνεδρίας"
 
-#: libgnomeui/gnome-client.c:846
+#: libgnomeui/gnome-client.c:836
 msgid "ID"
 msgstr "ID"
 
-#: libgnomeui/gnome-client.c:849
+#: libgnomeui/gnome-client.c:839
 msgid "Specify prefix of saved configuration"
 msgstr "Καθορισμός προθέματος αποθήκευσης παραμέτρων"
 
-#: libgnomeui/gnome-client.c:849
+#: libgnomeui/gnome-client.c:839
 msgid "PREFIX"
 msgstr "PREFIX"
 
-#: libgnomeui/gnome-client.c:852
+#: libgnomeui/gnome-client.c:842
 msgid "Disable connection to session manager"
 msgstr "Απενεργοποίηση σύνδεσης με το διαχειριστή συνεδρίας"
 
-#: libgnomeui/gnome-client.c:864
+#: libgnomeui/gnome-client.c:854
 msgid "Session management"
 msgstr "Διαχείριση συνεδρίας"
 
-#: libgnomeui/gnome-client.c:2351
+#: libgnomeui/gnome-client.c:2340
 msgid "Cancel Logout"
 msgstr "Ακύρωση τερματισμού"
 
-#: libgnomeui/gnome-color-picker.c:413
+#: libgnomeui/gnome-color-picker.c:423
 msgid "Received invalid color data\n"
 msgstr "Ελήφθησαν μη έγκυρα δεδομένα χρώματος\n"
 
-#: libgnomeui/gnome-color-picker.c:477
+#: libgnomeui/gnome-color-picker.c:487
 msgid "Pick a color"
 msgstr "Επιλογή χρώματος"
 
+#: libgnomeui/gnome-dateedit.c:361
+msgid "Time"
+msgstr ""
+
+#: libgnomeui/gnome-dateedit.c:362
+msgid "The time currentlyselected"
+msgstr ""
+
+#: libgnomeui/gnome-dateedit.c:373
+msgid "DateEdit Flags"
+msgstr ""
+
+#: libgnomeui/gnome-dateedit.c:374
+msgid "Flags for how DateEdit looks"
+msgstr ""
+
+#: libgnomeui/gnome-dateedit.c:383
+msgid "Lower Hour"
+msgstr ""
+
+#: libgnomeui/gnome-dateedit.c:384
+msgid "Lower hour in the time popup selector"
+msgstr ""
+
+#: libgnomeui/gnome-dateedit.c:394
+msgid "Upper Hour"
+msgstr ""
+
+#: libgnomeui/gnome-dateedit.c:395
+msgid "Upper hour in the time popup selector"
+msgstr ""
+
+#: libgnomeui/gnome-dateedit.c:405
+msgid "Initial Time"
+msgstr ""
+
+#: libgnomeui/gnome-dateedit.c:406
+msgid "The initial time"
+msgstr ""
+
 #. Calendar label, only shown if the date editor has a time field
-#: libgnomeui/gnome-dateedit.c:623
+#: libgnomeui/gnome-dateedit.c:651
 msgid "Calendar"
 msgstr "Ημερολόγιο"
 
-#: libgnomeui/gnome-dateedit.c:814
+#: libgnomeui/gnome-dateedit.c:847
 msgid "gnome_date_edit_get_date deprecated, use gnome_date_edit_get_time"
 msgstr ""
 "αντί του gnome_date_edit_get_date, κάντε χρήση του gnome_date_edit_get_time"
 
-#: libgnomeui/gnome-druid.c:129
+#: libgnomeui/gnome-druid.c:125
 msgid "Back"
 msgstr "Πίσω"
 
-#: libgnomeui/gnome-druid.c:137
+#: libgnomeui/gnome-druid.c:133
 msgid "Finish"
 msgstr "Τερματισμός"
 
-#: libgnomeui/gnome-file-entry.c:315
-msgid "Select file"
-msgstr "Επιλογή αρχείου"
-
-#: libgnomeui/gnome-font-picker.c:877 libgnomeui/gnome-stock.c:730
+#: libgnomeui/gnome-font-picker.c:856 libgnomeui/gnome-stock.c:586
 msgid "Font"
 msgstr "Γραμματοσειρά"
 
-#: libgnomeui/gnome-icon-entry.c:285 libgnomeui/gnome-icon-entry.c:812
+#: libgnomeui/gnome-icon-entry.c:351 libgnomeui/gnome-icon-entry.c:720
+#: libgnomeui/gnome-icon-entry.c:737
 msgid "No Icon"
 msgstr "Χωρίς εικονίδιο"
-
-#: libgnomeui/gnome-icon-entry.c:486 libgnomeui/gnome-pixmap-entry.c:459
-msgid "Can't find an hbox, using a normal file selection"
-msgstr "Δεν βρέθηκε hbox, χρησιμοποιώ απλή επιλογή αρχείων"
-
-#: libgnomeui/gnome-icon-entry.c:492 libgnomeui/gnome-pixmap-entry.c:465
-msgid "Preview"
-msgstr "Προεπισκόπηση"
-
-#: libgnomeui/gnome-icon-entry.c:833
-msgid "Browse"
-msgstr "Εξερεύνηση"
-
-#: libgnomeui/gnome-icon-sel.c:279
-#, c-format
-msgid "GnomeIconSelection: '%s' does not exist or is not a directory"
-msgstr "GnomeIconSelection: To '%s' δεν υπάρχει ή δεν είναι κατάλογος"
-
-#: libgnomeui/gnome-icon-sel.c:287
-#, c-format
-msgid "GnomeIconSelection: couldn't open directory '%s'"
-msgstr "GnomeIconSelection: αδύνατο το άνοιγμα του καταλόγου '%s'"
 
 #: libgnomeui/gnome-init.c:81
 msgid "Gdk debugging flags to set"
@@ -1196,11 +1093,11 @@ msgstr "FLAGS"
 msgid "Gdk debugging flags to unset"
 msgstr "Διακόπτης αποσφαλμάτωσης του Gdk απενεργοποιημένος"
 
-#: libgnomeui/gnome-init.c:87 libgnomeui/gnome-init.c:239
+#: libgnomeui/gnome-init.c:87 libgnomeui/gnome-init.c:241
 msgid "X display to use"
 msgstr "Επιλογή οθόνης X"
 
-#: libgnomeui/gnome-init.c:87 libgnomeui/gnome-init.c:239
+#: libgnomeui/gnome-init.c:87 libgnomeui/gnome-init.c:241
 msgid "DISPLAY"
 msgstr "DISPLAY"
 
@@ -1261,47 +1158,50 @@ msgid "MODULE"
 msgstr "MODULE"
 
 #. dialog display isn't working out
-#: libgnomeui/gnome-init.c:464
+#: libgnomeui/gnome-init.c:473
 msgid "Multiple segmentation faults occurred; can't display error dialog\n"
 msgstr "Συνέβησαν πολλαπλά λάθη· εμφάνιση διαλόγου σφάλματος αδύνατη\n"
 
-#: libgnomeui/gnome-messagebox.c:172
+#: libgnomeui/gnome-init.c:636
+#, fuzzy
+msgid "GTK options"
+msgstr "Επιλογές GNOME"
+
+#: libgnomeui/gnome-init.c:637
+#, fuzzy
+msgid "GNOME GUI options"
+msgstr "Επιλογές GNOME"
+
+#: libgnomeui/gnome-init.c:788
+#, fuzzy, c-format
+msgid "%s options"
+msgstr "Επιλογές GNOME"
+
+#: libgnomeui/gnome-messagebox.c:179
 msgid "Information"
 msgstr "Πληροφορίες"
 
-#: libgnomeui/gnome-messagebox.c:181
+#: libgnomeui/gnome-messagebox.c:188
 msgid "Warning"
 msgstr "Προειδοποίηση"
 
-#: libgnomeui/gnome-messagebox.c:190
+#: libgnomeui/gnome-messagebox.c:197
 msgid "Error"
 msgstr "Σφάλμα"
 
-#: libgnomeui/gnome-messagebox.c:199
+#: libgnomeui/gnome-messagebox.c:206
 msgid "Question"
 msgstr "Ερώτηση"
 
-#: libgnomeui/gnome-messagebox.c:208
+#: libgnomeui/gnome-messagebox.c:215
 msgid "Message"
 msgstr "Μήνυμα"
 
-#: libgnomeui/gnome-number-entry.c:217
-msgid "Calculator"
-msgstr "Αριθμομηχανή"
-
-#: libgnomeui/gnome-number-entry.c:275
-msgid "Calculator..."
-msgstr "Αριθμομηχανή..."
-
-#: libgnomeui/gnome-pixmap-entry.c:256 libgnomeui/gnome-pixmap-entry.c:563
-msgid "No Image"
-msgstr "Χωρίς εικόνα"
-
-#: libgnomeui/gnome-popup-help.c:56
+#: libgnomeui/gnome-popup-help.c:57
 msgid "_Help with this"
 msgstr "Σχετική _βοήθεια"
 
-#: libgnomeui/gnome-popup-help.c:62
+#: libgnomeui/gnome-popup-help.c:63
 msgid "Cu_t"
 msgstr "_Αποκοπή"
 
@@ -1336,95 +1236,95 @@ msgstr "%a %b %d %T %Y"
 msgid "-freefont-garamond-*-*-*-*-30-170-*-*-*-*-*-*,*-r-*"
 msgstr "-freefont-garamond-*-*-*-*-30-170-*-*-*-*-*-*,*-r-*"
 
-#: libgnomeui/gnome-stock.c:707
+#: libgnomeui/gnome-stock.c:563
 msgid "Add"
 msgstr "Προσθήκη"
 
-#: libgnomeui/gnome-stock.c:708
+#: libgnomeui/gnome-stock.c:564
 msgid "Clear"
 msgstr "Καθαρισμός"
 
-#: libgnomeui/gnome-stock.c:709
+#: libgnomeui/gnome-stock.c:565
 msgid "Select Color"
 msgstr "Επιλογή Χρώματος"
 
-#: libgnomeui/gnome-stock.c:711
+#: libgnomeui/gnome-stock.c:567
 msgid "Table Borders"
 msgstr "Πλαίσια πίνακα"
 
-#: libgnomeui/gnome-stock.c:712
+#: libgnomeui/gnome-stock.c:568
 msgid "Table Fill"
 msgstr "Περιθώρια πίνακα"
 
-#: libgnomeui/gnome-stock.c:713
+#: libgnomeui/gnome-stock.c:569
 msgid "Bulleted List"
 msgstr "Λίστα με σφαίρες"
 
-#: libgnomeui/gnome-stock.c:714
+#: libgnomeui/gnome-stock.c:570
 msgid "Numbered List"
 msgstr "Αριθμημένη λίστα"
 
-#: libgnomeui/gnome-stock.c:715
+#: libgnomeui/gnome-stock.c:571
 msgid "Indent"
 msgstr "Στοίχιση"
 
-#: libgnomeui/gnome-stock.c:716
+#: libgnomeui/gnome-stock.c:572
 msgid "Un-Indent"
 msgstr "Ακύρωση στοίχισης"
 
-#: libcompat/gnome-spell.c:259 libgnomeui/gnome-stock.c:719
+#: libcompat/gnome-spell.c:259 libgnomeui/gnome-stock.c:575
 msgid "OK"
 msgstr "Εντάξει"
 
-#: libgnomeui/gnome-stock.c:720
+#: libgnomeui/gnome-stock.c:576
 msgid "Apply"
 msgstr "Εφαρμογή"
 
-#: libcompat/gnome-spell.c:266 libgnomeui/gnome-stock.c:721
+#: libcompat/gnome-spell.c:266 libgnomeui/gnome-stock.c:577
 msgid "Cancel"
 msgstr "Άκυρο"
 
-#: libgnomeui/gnome-stock.c:722 libgnomeui/stock_demo.c:169
+#: demos/stock_demo.c:169 libgnomeui/gnome-stock.c:578
 msgid "Close"
 msgstr "Κλείσιμο"
 
-#: libgnomeui/gnome-stock.c:723
+#: libgnomeui/gnome-stock.c:579
 msgid "Yes"
 msgstr "Ναι"
 
-#: libgnomeui/gnome-stock.c:724
+#: libgnomeui/gnome-stock.c:580
 msgid "No"
 msgstr "Όχι"
 
-#: libgnomeui/gnome-stock.c:726
+#: libgnomeui/gnome-stock.c:582
 msgid "Next"
 msgstr "Επόμενο"
 
-#: libgnomeui/gnome-stock.c:727
+#: libgnomeui/gnome-stock.c:583
 msgid "Prev"
 msgstr "Προηγούμενο"
 
-#: libgnomeui/gnome-stock.c:728
+#: libgnomeui/gnome-stock.c:584
 msgid "Up"
 msgstr "Επάνω"
 
-#: libgnomeui/gnome-stock.c:729
+#: libgnomeui/gnome-stock.c:585
 msgid "Down"
 msgstr "Κάτω"
 
-#: libgnomeui/gnome-stock.c:1501
+#: libgnomeui/gnome-stock.c:1354
 msgid "Menu Accelerator Keys"
 msgstr "Πλήκτρα συντόμευσης μενού"
 
-#: libgnomeui/gnome-stock.c:1503
+#: libgnomeui/gnome-stock.c:1356
 msgid "Global"
 msgstr "Καθολικός"
 
-#: libgnomeui/gnome-stock.c:1505
+#: libgnomeui/gnome-stock.c:1358
 msgid "Menu Item"
 msgstr "Στοιχείο Μενού"
 
-#: libgnomeui/gnome-stock.c:1506
+#: libgnomeui/gnome-stock.c:1359
 msgid "Accelerator"
 msgstr "Επιταχυντής"
 
@@ -1476,315 +1376,217 @@ msgstr ""
 "Παρακαλώ επισκεφ8είτε τη σελίδα Κατάρρευσης Εφαρμογής GNOME για περισσότερες "
 "πληροφορίες"
 
-#: libgnomeui/stock_demo.c:137
-msgid "New..."
-msgstr "Νέο..."
-
-#: libgnomeui/stock_demo.c:145
-msgid "Open..."
-msgstr "Άνοιγμα..."
-
-#: libgnomeui/stock_demo.c:153
-msgid "Save"
-msgstr "Αποθήκευση"
-
-#: libgnomeui/stock_demo.c:161
-msgid "Save as..."
-msgstr "Αποθήκευση ώς..."
-
-#: libgnomeui/stock_demo.c:181
-msgid "Print..."
-msgstr "Εκτύπωση..."
-
-#: libgnomeui/stock_demo.c:189
-msgid "Setup Page..."
-msgstr "Ρυθμίσεις σελίδας..."
-
-#: libgnomeui/stock_demo.c:198
-msgid "Quit"
-msgstr "Τέλος"
-
-#: libgnomeui/stock_demo.c:209
-msgid "File"
-msgstr "Αρχείο"
-
-#: libgnomeui/stock_demo.c:216
-msgid "Undo"
-msgstr "Ακύρωση"
-
-#: libgnomeui/stock_demo.c:224
-msgid "Redo"
-msgstr "Επανάληψη"
-
-#: libgnomeui/stock_demo.c:233
-msgid "Delete"
-msgstr "Διαγραφή"
-
-#: libgnomeui/stock_demo.c:238
-msgid "Cut"
-msgstr "Αποκοπή"
-
-#: libgnomeui/stock_demo.c:246
-msgid "Copy"
-msgstr "Αντιγραφή"
-
-#: libgnomeui/stock_demo.c:254
-msgid "Paste"
-msgstr "Επικόλληση"
-
-#: libgnomeui/stock_demo.c:266
-msgid "Properties..."
-msgstr "Ιδιότητες..."
-
-#: libgnomeui/stock_demo.c:276
-msgid "Preferences..."
-msgstr "Προτιμήσεις..."
-
-#: libgnomeui/stock_demo.c:291
-msgid "Scores..."
-msgstr "Βαθμολογία..."
-
-#: libgnomeui/stock_demo.c:299
-msgid "Edit"
-msgstr "Επεξεργασία"
-
-#: libgnomeui/winhints_demo.c:46
-msgid "wmhints-test"
-msgstr "wmhints-test"
-
-#: libgnomeui/winhints_demo.c:46
-msgid "winhints-test"
-msgstr "winhints-test"
-
-#: libgnomeui/winhints_demo.c:71
-msgid "Layer:"
-msgstr "Στρώμα:"
-
-#: libgnomeui/winhints_demo.c:94
-msgid "Above Dock"
-msgstr "Πάνω από την ενσωμάτωση"
-
-#: libgnomeui/winhints_demo.c:98
-msgid "Dock"
-msgstr "Ενσωμάτωση"
-
-#: libgnomeui/winhints_demo.c:102
-msgid "On Top"
-msgstr "Από επάνω"
-
-#: libgnomeui/winhints_demo.c:106
-msgid "Normal"
-msgstr "Κανονικό"
-
-#: libgnomeui/winhints_demo.c:110
-msgid "Below"
-msgstr "Από κάτω"
-
-#: libgnomeui/winhints_demo.c:114
-msgid "Desktop"
-msgstr "Επιφάνεια εργασίας"
-
-#: libgnomeui/winhints_demo.c:122
-msgid "Set Layer"
-msgstr "Καθορισμός Στρώματος"
-
-#: libgnomeui/winhints_demo.c:129
-msgid "Workspaces:"
-msgstr "Επιφάνειες εργασίας:"
-
-#: libgnomeui/winhints_demo.c:151
-msgid "Sticky"
-msgstr "Απανταχού παρόν"
-
-#: libgnomeui/winhints_demo.c:155
-msgid "Set Workspace"
-msgstr "Καθορισμός επιφάνειας εργασίας"
-
-#: libgnomeui/winhints_demo.c:165
-msgid "State Toggles:"
-msgstr "Εναλλαγές κατάστασης:"
-
-#: libgnomeui/winhints_demo.c:175
-msgid "Minimized"
-msgstr "Σμικρυσμένο"
-
-#: libgnomeui/winhints_demo.c:179
-msgid "Maximized Vertical"
-msgstr "Κάθετα Μεγιστοποιημένο"
-
-#: libgnomeui/winhints_demo.c:183
-msgid "Maximized Horizontal"
-msgstr "Οριζόντια Μεγιστοποιημένο"
-
-#: libgnomeui/winhints_demo.c:187
-msgid "Hidden"
-msgstr "Κρυμμένο"
-
-#: libgnomeui/winhints_demo.c:191
-msgid "Shaded"
-msgstr "Σκιασμένο"
-
-#: libgnomeui/winhints_demo.c:195
-msgid "Fixed Position"
-msgstr "Σταθερή Θέση"
-
-#: libgnomeui/winhints_demo.c:199
-msgid "Ignore on Arrange"
-msgstr "Αγνόηση κατά την τακτοποίηση"
-
-#: libgnomeui/winhints_demo.c:203
-msgid "Set State"
-msgstr "Καθορισμός Κατάστασης"
-
-#: libgnomeui/winhints_demo.c:209
-msgid "Skip Toggles:"
-msgstr "Παράλειψη διθέσιων διακοπτών"
-
-#: libgnomeui/winhints_demo.c:219
-msgid "Skip Focus"
-msgstr "Παράλειψη εστίασης"
-
-#: libgnomeui/winhints_demo.c:223
-msgid "Skip Window Menu"
-msgstr "Παράλειψη μενού παραθύρων"
-
-#: libgnomeui/winhints_demo.c:227
-msgid "Skip Taskbar / WinList"
-msgstr "Παράλειψη γραμμής εργασιών/λίστας παραθύρων"
-
-#: libgnomeui/winhints_demo.c:231
-msgid "Set Skip"
-msgstr "Καθορισμός παράλειψης"
-
-#: libgnomeui/winhints_demo.c:410
-msgid "WIN_HINTS Test"
-msgstr "Δοκιμή WIN_HINTS"
-
-#: libgnomeui/winhints_demo.c:411
-msgid "Copyright (C) 1998"
-msgstr "Πνευματικά δικαιώματα (C)1998"
-
-#: libgnomeui/winhints_demo.c:413
-msgid ""
-"Simple test app to check how the WIN_HINTS work.\n"
-"And to test the gnome_win_hints_* functions for errors. :)"
-msgstr ""
-"Απλή δοκιμαστική εφαρμογή για τον έλεγχο της λειτουργίας των WIN_HINTS.  "
-"Επιπλέον, για έλεγχο σφαλμάτων στις συναρτήσεις gnome_win_hints_*. :)"
-
-#: support/error.c:109
-msgid "Unknown system error"
-msgstr "Άγνωστο σφάλμα συστήματος"
-
-#: support/getopt.c:669
-#, c-format
-msgid "%s: option `%s' is ambiguous\n"
-msgstr "%s: η επιλογή `%s' είναι ασαφής\n"
-
-#: support/getopt.c:693
-#, c-format
-msgid "%s: option `--%s' doesn't allow an argument\n"
-msgstr "%s: η επιλογή `--%s' δε δέχεται όρισμα\n"
-
-#: support/getopt.c:698
-#, c-format
-msgid "%s: option `%c%s' doesn't allow an argument\n"
-msgstr "%s: η επιλογή `%c%s' δε δέχεται όρισμα\n"
-
-#: support/getopt.c:715 support/getopt.c:888
-#, c-format
-msgid "%s: option `%s' requires an argument\n"
-msgstr "%s: η επιλογή `%s' απαιτεί όρισμα\n"
-
-#. --option
-#: support/getopt.c:744
-#, c-format
-msgid "%s: unrecognized option `--%s'\n"
-msgstr "%s: άγνωστη επιλογή `--%s'\n"
-
-#. +option or -option
-#: support/getopt.c:748
-#, c-format
-msgid "%s: unrecognized option `%c%s'\n"
-msgstr "%s: άγνωστη επιλογή `%c%s'\n"
-
-#. 1003.2 specifies the format of this message.
-#: support/getopt.c:774
-#, c-format
-msgid "%s: illegal option -- %c\n"
-msgstr "%s: μη επιτρεπόμενη επιλογή -- %c'\n"
-
-#: support/getopt.c:777
-#, c-format
-msgid "%s: invalid option -- %c\n"
-msgstr "%s: άκυρη επιλογή -- %c'\n"
-
-#. 1003.2 specifies the format of this message.
-#: support/getopt.c:807 support/getopt.c:937
-#, c-format
-msgid "%s: option requires an argument -- %c\n"
-msgstr "%s: η επιλογή απαιτεί όρισμα -- %c'\n"
-
-#: support/getopt.c:854
-#, c-format
-msgid "%s: option `-W %s' is ambiguous\n"
-msgstr "%s: η επιλογή `-W %s' είναι ασαφής\n"
-
-#: support/getopt.c:872
-#, c-format
-msgid "%s: option `-W %s' doesn't allow an argument\n"
-msgstr "%s: η επιλογή `-W %s' δέν επιτρέπει όρισμα\n"
-
-#: support/popthelp.c:23
-msgid "Show this help message"
-msgstr "Εμφάνιση του παρόντος κείμενου βοηθείας"
-
-#: support/popthelp.c:24
-msgid "Display brief usage message"
-msgstr "Εμφάνιση σύντομης επεξήγησης χρήσεως"
-
 #. Pixmap
-#: test-gnome/testgnome.c:818
+#: test-gnome/testgnome.c:713
 msgid "Default Pixmap"
 msgstr "Προκαθορισμένη εικόνα"
 
-#: test-gnome/testgnome.c:826 test-gnome/testgnome.c:867
-#: test-gnome/testgnome.c:892
+#: test-gnome/testgnome.c:721 test-gnome/testgnome.c:762
+#: test-gnome/testgnome.c:787
 msgid "If you choose a font it will appear here"
 msgstr "Εάν επιλέξετε γραμματοσειρά, θα εμφανιστεί εδώ"
 
 #. Font_Info
-#: test-gnome/testgnome.c:833
+#: test-gnome/testgnome.c:728
 msgid "Font Info"
 msgstr "Πληροφορίες Γραμματοσειράς"
 
-#: test-gnome/testgnome.c:843
+#: test-gnome/testgnome.c:738
 msgid "Use Font in button with size"
 msgstr "Χρήση γραμματοσειράς στο κουμπί με μέγεθος"
 
-#: test-gnome/testgnome.c:850
+#: test-gnome/testgnome.c:745
 msgid "Show font size"
 msgstr "Εμφάνιση μεγέθους γραμματοσειράς"
 
-#: test-gnome/testgnome.c:886
+#: test-gnome/testgnome.c:781
 msgid "This is an hbox with pixmap and text"
 msgstr "Αυτό είναι ένα hbox με εικόνα και κείμενο"
 
-#: test-gnome/testgnome.c:1098
+#: test-gnome/testgnome.c:993
 msgid "The user chose Yes/OK with data:\n"
 msgstr "Ο χρήστης επέλεξε Ναι/Εντάξει με δεδομένα:\n"
 
-#: test-gnome/testgnome.c:1102
+#: test-gnome/testgnome.c:997
 msgid "The user chose No/Cancel with data:\n"
 msgstr "Ο χρήστης επέλεξε Όχι/Άκυρο με δεδομένα:\n"
 
-#: test-gnome/testgnome.c:1113
+#: test-gnome/testgnome.c:1008
 msgid "Weird number in reply callback"
 msgstr "Παράξενος αριθμός στο callback απάντησης"
 
-#: test-gnome/testgnome.c:1967
+#: test-gnome/testgnome.c:1860
 msgid "Test GNOME"
 msgstr "Τεστ GNOME"
+
+#: libcompat/gnome-calculator.c:431 libcompat/gnome-calculator.c:1074
+msgid "DEG"
+msgstr "DEG"
+
+#: libcompat/gnome-calculator.c:433
+msgid "RAD"
+msgstr "RED"
+
+#: libcompat/gnome-calculator.c:435
+msgid "GRAD"
+msgstr "GRED"
+
+#: libcompat/gnome-calculator.c:1064
+msgid "1/x"
+msgstr "1/x"
+
+#: libcompat/gnome-calculator.c:1065
+msgid "x^2"
+msgstr "x^2"
+
+#: libcompat/gnome-calculator.c:1066
+msgid "SQRT"
+msgstr "SQRT"
+
+#: libcompat/gnome-calculator.c:1067
+msgid "CE/C"
+msgstr "CE/C"
+
+#: libcompat/gnome-calculator.c:1068
+msgid "AC"
+msgstr "AC"
+
+#. inverse button
+#: libcompat/gnome-calculator.c:1071
+msgid "sin"
+msgstr "ημ"
+
+#: libcompat/gnome-calculator.c:1072
+msgid "cos"
+msgstr "συν"
+
+#: libcompat/gnome-calculator.c:1073
+msgid "tan"
+msgstr "εφ"
+
+#: libcompat/gnome-calculator.c:1076
+msgid "e"
+msgstr "e"
+
+#: libcompat/gnome-calculator.c:1077
+msgid "EE"
+msgstr "EE"
+
+#: libcompat/gnome-calculator.c:1078
+msgid "log"
+msgstr "log"
+
+#: libcompat/gnome-calculator.c:1079
+msgid "ln"
+msgstr "ln"
+
+#: libcompat/gnome-calculator.c:1080
+msgid "x^y"
+msgstr "x^y"
+
+#: libcompat/gnome-calculator.c:1082
+msgid "PI"
+msgstr "π"
+
+#: libcompat/gnome-calculator.c:1083
+msgid "x!"
+msgstr "x!"
+
+#: libcompat/gnome-calculator.c:1084
+msgid "("
+msgstr "("
+
+#: libcompat/gnome-calculator.c:1085
+msgid ")"
+msgstr ")"
+
+#: libcompat/gnome-calculator.c:1086
+msgid "/"
+msgstr "/"
+
+#: libcompat/gnome-calculator.c:1088
+msgid "STO"
+msgstr "STO"
+
+#: libcompat/gnome-calculator.c:1089
+msgid "7"
+msgstr "7"
+
+#: libcompat/gnome-calculator.c:1090
+msgid "8"
+msgstr "8"
+
+#: libcompat/gnome-calculator.c:1091
+msgid "9"
+msgstr "9"
+
+#: libcompat/gnome-calculator.c:1092
+msgid "*"
+msgstr "*"
+
+#: libcompat/gnome-calculator.c:1094
+msgid "RCL"
+msgstr "RCL"
+
+#: libcompat/gnome-calculator.c:1095
+msgid "4"
+msgstr "4"
+
+#: libcompat/gnome-calculator.c:1096
+msgid "5"
+msgstr "5"
+
+#: libcompat/gnome-calculator.c:1097
+msgid "6"
+msgstr "6"
+
+#: libcompat/gnome-calculator.c:1098
+msgid "-"
+msgstr "-"
+
+#: libcompat/gnome-calculator.c:1100
+msgid "SUM"
+msgstr "SUM"
+
+#: libcompat/gnome-calculator.c:1101
+msgid "1"
+msgstr "1"
+
+#: libcompat/gnome-calculator.c:1102
+msgid "2"
+msgstr "2"
+
+#: libcompat/gnome-calculator.c:1103
+msgid "3"
+msgstr "3"
+
+#: libcompat/gnome-calculator.c:1104
+msgid "+"
+msgstr "+"
+
+#: libcompat/gnome-calculator.c:1106
+msgid "EXC"
+msgstr "EXC"
+
+#: libcompat/gnome-calculator.c:1107
+msgid "0"
+msgstr "0"
+
+#: libcompat/gnome-calculator.c:1108
+msgid "."
+msgstr "."
+
+#: libcompat/gnome-calculator.c:1109
+msgid "+/-"
+msgstr "+/-"
+
+#: libcompat/gnome-calculator.c:1110
+msgid "="
+msgstr "="
+
+#: libcompat/gnome-calculator.c:1321
+msgid "INV"
+msgstr "INV"
 
 #: libcompat/gnome-druid-page-finish.c:261
 msgid "-adobe-helvetica-bold-r-normal-*-*-180-*-*-p-*-*-*"
@@ -1793,6 +1595,30 @@ msgstr "-greek-helvetica-bold-r-normal-*-*-180-*-*-p-*-*-*"
 #: libcompat/gnome-druid-page-finish.c:269
 msgid "-adobe-helvetica-medium-r-normal-*-*-120-*-*-p-*-*-*"
 msgstr "-greek-helvetica-medium-r-normal-*-*-120-*-*-p-*-*-*"
+
+#: libcompat/gnome-file-entry.c:314
+msgid "Select file"
+msgstr "Επιλογή αρχείου"
+
+#: libcompat/gnome-number-entry.c:217
+msgid "Calculator"
+msgstr "Αριθμομηχανή"
+
+#: libcompat/gnome-number-entry.c:275
+msgid "Calculator..."
+msgstr "Αριθμομηχανή..."
+
+#: libcompat/gnome-pixmap-entry.c:257 libcompat/gnome-pixmap-entry.c:564
+msgid "No Image"
+msgstr "Χωρίς εικόνα"
+
+#: libcompat/gnome-pixmap-entry.c:460
+msgid "Can't find an hbox, using a normal file selection"
+msgstr "Δεν βρέθηκε hbox, χρησιμοποιώ απλή επιλογή αρχείων"
+
+#: libcompat/gnome-pixmap-entry.c:466
+msgid "Preview"
+msgstr "Προεπισκόπηση"
 
 #: libcompat/gnome-property-entries.c:258
 msgid "Select"
@@ -1933,6 +1759,279 @@ msgstr "Ορθογραφία"
 msgid "Configure"
 msgstr "Διαμόρφωση"
 
+#: demos/mdi_demo.c:116
+msgid "Child Item 1"
+msgstr "Αντικείμενο Παιδιού 1"
+
+#: demos/mdi_demo.c:117
+msgid "Hint for item 1"
+msgstr "Υπόδειξη για αντικείμενο 1"
+
+#: demos/mdi_demo.c:119
+msgid "Child Item 2"
+msgstr "Αντικείμενο Παιδιού 2"
+
+#: demos/mdi_demo.c:120
+msgid "Hint for item 2"
+msgstr "Υπόδειξη για αντικείμενο 2"
+
+#: demos/stock_demo.c:137
+msgid "New..."
+msgstr "Νέο..."
+
+#: demos/stock_demo.c:145
+msgid "Open..."
+msgstr "Άνοιγμα..."
+
+#: demos/stock_demo.c:153
+msgid "Save"
+msgstr "Αποθήκευση"
+
+#: demos/stock_demo.c:161
+msgid "Save as..."
+msgstr "Αποθήκευση ώς..."
+
+#: demos/stock_demo.c:181
+msgid "Print..."
+msgstr "Εκτύπωση..."
+
+#: demos/stock_demo.c:189
+msgid "Setup Page..."
+msgstr "Ρυθμίσεις σελίδας..."
+
+#: demos/stock_demo.c:198
+msgid "Quit"
+msgstr "Τέλος"
+
+#: demos/stock_demo.c:209
+msgid "File"
+msgstr "Αρχείο"
+
+#: demos/stock_demo.c:216
+msgid "Undo"
+msgstr "Ακύρωση"
+
+#: demos/stock_demo.c:224
+msgid "Redo"
+msgstr "Επανάληψη"
+
+#: demos/stock_demo.c:233
+msgid "Delete"
+msgstr "Διαγραφή"
+
+#: demos/stock_demo.c:238
+msgid "Cut"
+msgstr "Αποκοπή"
+
+#: demos/stock_demo.c:246
+msgid "Copy"
+msgstr "Αντιγραφή"
+
+#: demos/stock_demo.c:254
+msgid "Paste"
+msgstr "Επικόλληση"
+
+#: demos/stock_demo.c:266
+msgid "Properties..."
+msgstr "Ιδιότητες..."
+
+#: demos/stock_demo.c:276
+msgid "Preferences..."
+msgstr "Προτιμήσεις..."
+
+#: demos/stock_demo.c:291
+msgid "Scores..."
+msgstr "Βαθμολογία..."
+
+#: demos/stock_demo.c:299
+msgid "Edit"
+msgstr "Επεξεργασία"
+
+#: demos/winhints_demo.c:46
+msgid "wmhints-test"
+msgstr "wmhints-test"
+
+#: demos/winhints_demo.c:46
+msgid "winhints-test"
+msgstr "winhints-test"
+
+#: demos/winhints_demo.c:71
+msgid "Layer:"
+msgstr "Στρώμα:"
+
+#: demos/winhints_demo.c:94
+msgid "Above Dock"
+msgstr "Πάνω από την ενσωμάτωση"
+
+#: demos/winhints_demo.c:98
+msgid "Dock"
+msgstr "Ενσωμάτωση"
+
+#: demos/winhints_demo.c:102
+msgid "On Top"
+msgstr "Από επάνω"
+
+#: demos/winhints_demo.c:106
+msgid "Normal"
+msgstr "Κανονικό"
+
+#: demos/winhints_demo.c:110
+msgid "Below"
+msgstr "Από κάτω"
+
+#: demos/winhints_demo.c:114
+msgid "Desktop"
+msgstr "Επιφάνεια εργασίας"
+
+#: demos/winhints_demo.c:122
+msgid "Set Layer"
+msgstr "Καθορισμός Στρώματος"
+
+#: demos/winhints_demo.c:129
+msgid "Workspaces:"
+msgstr "Επιφάνειες εργασίας:"
+
+#: demos/winhints_demo.c:151
+msgid "Sticky"
+msgstr "Απανταχού παρόν"
+
+#: demos/winhints_demo.c:155
+msgid "Set Workspace"
+msgstr "Καθορισμός επιφάνειας εργασίας"
+
+#: demos/winhints_demo.c:165
+msgid "State Toggles:"
+msgstr "Εναλλαγές κατάστασης:"
+
+#: demos/winhints_demo.c:175
+msgid "Minimized"
+msgstr "Σμικρυσμένο"
+
+#: demos/winhints_demo.c:179
+msgid "Maximized Vertical"
+msgstr "Κάθετα Μεγιστοποιημένο"
+
+#: demos/winhints_demo.c:183
+msgid "Maximized Horizontal"
+msgstr "Οριζόντια Μεγιστοποιημένο"
+
+#: demos/winhints_demo.c:187
+msgid "Hidden"
+msgstr "Κρυμμένο"
+
+#: demos/winhints_demo.c:191
+msgid "Shaded"
+msgstr "Σκιασμένο"
+
+#: demos/winhints_demo.c:195
+msgid "Fixed Position"
+msgstr "Σταθερή Θέση"
+
+#: demos/winhints_demo.c:199
+msgid "Ignore on Arrange"
+msgstr "Αγνόηση κατά την τακτοποίηση"
+
+#: demos/winhints_demo.c:203
+msgid "Set State"
+msgstr "Καθορισμός Κατάστασης"
+
+#: demos/winhints_demo.c:209
+msgid "Skip Toggles:"
+msgstr "Παράλειψη διθέσιων διακοπτών"
+
+#: demos/winhints_demo.c:219
+msgid "Skip Focus"
+msgstr "Παράλειψη εστίασης"
+
+#: demos/winhints_demo.c:223
+msgid "Skip Window Menu"
+msgstr "Παράλειψη μενού παραθύρων"
+
+#: demos/winhints_demo.c:227
+msgid "Skip Taskbar / WinList"
+msgstr "Παράλειψη γραμμής εργασιών/λίστας παραθύρων"
+
+#: demos/winhints_demo.c:231
+msgid "Set Skip"
+msgstr "Καθορισμός παράλειψης"
+
+#: demos/winhints_demo.c:410
+msgid "WIN_HINTS Test"
+msgstr "Δοκιμή WIN_HINTS"
+
+#: demos/winhints_demo.c:411
+msgid "Copyright (C) 1998"
+msgstr "Πνευματικά δικαιώματα (C)1998"
+
+#: demos/winhints_demo.c:413
+msgid ""
+"Simple test app to check how the WIN_HINTS work.\n"
+"And to test the gnome_win_hints_* functions for errors. :)"
+msgstr ""
+"Απλή δοκιμαστική εφαρμογή για τον έλεγχο της λειτουργίας των WIN_HINTS.  "
+"Επιπλέον, για έλεγχο σφαλμάτων στις συναρτήσεις gnome_win_hints_*. :)"
+
+#~ msgid ""
+#~ "gnome_appbar_set_progress deprecated, use "
+#~ "gnome_appbar_set_progress_percentage"
+#~ msgstr ""
+#~ "αντί του gnome_appbar_set_progress, κάντε χρήση του "
+#~ "gnome_appbar_set_progress_percentage"
+
+#~ msgid "Loading Icons..."
+#~ msgstr "Ανάγνωση Εικονιδίων..."
+
+#~ msgid "Browse"
+#~ msgstr "Εξερεύνηση"
+
+#~ msgid "GnomeIconSelection: '%s' does not exist or is not a directory"
+#~ msgstr "GnomeIconSelection: To '%s' δεν υπάρχει ή δεν είναι κατάλογος"
+
+#~ msgid "GnomeIconSelection: couldn't open directory '%s'"
+#~ msgstr "GnomeIconSelection: αδύνατο το άνοιγμα του καταλόγου '%s'"
+
+#~ msgid "Unknown system error"
+#~ msgstr "Άγνωστο σφάλμα συστήματος"
+
+#~ msgid "%s: option `%s' is ambiguous\n"
+#~ msgstr "%s: η επιλογή `%s' είναι ασαφής\n"
+
+#~ msgid "%s: option `--%s' doesn't allow an argument\n"
+#~ msgstr "%s: η επιλογή `--%s' δε δέχεται όρισμα\n"
+
+#~ msgid "%s: option `%c%s' doesn't allow an argument\n"
+#~ msgstr "%s: η επιλογή `%c%s' δε δέχεται όρισμα\n"
+
+#~ msgid "%s: option `%s' requires an argument\n"
+#~ msgstr "%s: η επιλογή `%s' απαιτεί όρισμα\n"
+
+#~ msgid "%s: unrecognized option `--%s'\n"
+#~ msgstr "%s: άγνωστη επιλογή `--%s'\n"
+
+#~ msgid "%s: unrecognized option `%c%s'\n"
+#~ msgstr "%s: άγνωστη επιλογή `%c%s'\n"
+
+#~ msgid "%s: illegal option -- %c\n"
+#~ msgstr "%s: μη επιτρεπόμενη επιλογή -- %c'\n"
+
+#~ msgid "%s: invalid option -- %c\n"
+#~ msgstr "%s: άκυρη επιλογή -- %c'\n"
+
+#~ msgid "%s: option requires an argument -- %c\n"
+#~ msgstr "%s: η επιλογή απαιτεί όρισμα -- %c'\n"
+
+#~ msgid "%s: option `-W %s' is ambiguous\n"
+#~ msgstr "%s: η επιλογή `-W %s' είναι ασαφής\n"
+
+#~ msgid "%s: option `-W %s' doesn't allow an argument\n"
+#~ msgstr "%s: η επιλογή `-W %s' δέν επιτρέπει όρισμα\n"
+
+#~ msgid "Show this help message"
+#~ msgstr "Εμφάνιση του παρόντος κείμενου βοηθείας"
+
+#~ msgid "Display brief usage message"
+#~ msgstr "Εμφάνιση σύντομης επεξήγησης χρήσεως"
+
 #~ msgid "Pick a Font"
 #~ msgstr "Επιλογή Γραμματοσειράς"
 
@@ -2004,9 +2103,6 @@ msgstr "Διαμόρφωση"
 
 #~ msgid "Notebook"
 #~ msgstr "Τετράδιο"
-
-#~ msgid "Toplevel"
-#~ msgstr "Κορυφαίο"
 
 #~ msgid "MDI Mode"
 #~ msgstr "Μορφή MDI"
@@ -2122,9 +2218,6 @@ msgstr "Διαμόρφωση"
 
 #~ msgid "_About..."
 #~ msgstr "_Περί..."
-
-#~ msgid "GNOME Options"
-#~ msgstr "Επιλογές GNOME"
 
 #~ msgid "HOSTNAME:PORT"
 #~ msgstr "ΣΥΣΤΗΜΑ:ΘΥΡΑ"

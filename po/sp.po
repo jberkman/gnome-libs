@@ -6,21 +6,552 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-libs 1.95.0\n"
-"POT-Creation-Date: 2000-07-18 13:04+0200\n"
+"POT-Creation-Date: 2001-03-15 12:30+0100\n"
 "PO-Revision-Date: 2000-06-09 12:40+0100\n"
 "Last-Translator: Tomislav Jankovic<tomaja@net.yu>\n"
 "Language-Team: Serbian(Cyrillic) <tomy@linuxyu.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=iso-8859-5\n"
-"Content-Transfer-Encoding: 8 bit\n"
+"Content-Transfer-Encoding: 8bit\n"
 
-#: libgnome/gnomelib-init.c:176 libgnome/gnomelib-init.c:190
+#: libgnome/gnome-ditem.c:565 libgnome/gnome-ditem.c:923
+#, c-format
+msgid "Unknown desktop file format %d"
+msgstr ""
+
+#. we are not an application so just exit
+#. with an error
+#: libgnome/gnome-ditem.c:912 libgnome/gnome-ditem.c:919
+msgid "Attempting to launch a non-application"
+msgstr ""
+
+#: libgnome/gnome-ditem.c:1029
+msgid "Trying to execute an item with no 'Exec'"
+msgstr ""
+
+#: libgnome/gnome-ditem.c:1081 libgnome/gnome-ditem.c:1174
+msgid "No exec field for this drop"
+msgstr ""
+
+#: libgnome/gnome-ditem.c:1112
+msgid "Nothing to replace with a file in the exec string"
+msgstr ""
+
+#: libgnome/gnome-ditem.c:1225
+msgid "There was no argument to replace with dropped files"
+msgstr ""
+
+#: libgnome/gnome-ditem.c:1325
+msgid "Dropped URLs on an app that can only take files"
+msgstr ""
+
+#: libgnome/gnome-moz-remote2.c:111
+#, fuzzy
+msgid "Specify X display to use."
+msgstr "Корисити X дисплеj"
+
+#: libgnome/gnome-moz-remote2.c:112
+msgid "Put the X connection in synchronous mode."
+msgstr ""
+
+#: libgnome/gnome-moz-remote2.c:113
+msgid "Specify the X window ID of Netscape."
+msgstr ""
+
+#: libgnome/gnome-moz-remote2.c:115
+#, fuzzy
+msgid "Don't raise the Netscape window."
+msgstr "Затворaње активног прозорa"
+
+#: libgnome/gnome-moz-remote2.c:116
+msgid "Show the given URL in a new window."
+msgstr ""
+
+#: libgnome/gnome-moz-remote2.c:117
+#, fuzzy
+msgid "Close the specified window."
+msgstr "Затворaње активног прозорa"
+
+#: libgnome/gnome-moz-remote2.c:118
+msgid "Print the X window ID of the utilized window."
+msgstr ""
+
+#: libgnome/gnome-url.c:117
+#, c-format
+msgid "Error parsing '%s' (empty result)"
+msgstr ""
+
+#: libgnome/gnome-url.c:133
+#, c-format
+msgid "Mozilla not found as '%s'"
+msgstr ""
+
+#: libgnome/gnome-url.c:291 libgnome/gnome-url.c:295
+#, c-format
+msgid "Cannot open a pipe: %s"
+msgstr ""
+
+#: libgnome/gnome-url.c:305 libgnome/gnome-url.c:363
+#, c-format
+msgid "Cannot parse handler template: %s"
+msgstr ""
+
+#: libgnome/gnome-url.c:315 libgnome/gnome-url.c:319 libgnome/gnome-url.c:368
+#: libgnome/gnome-url.c:372
+#, c-format
+msgid "Cannot execute command '%s'!"
+msgstr ""
+
+#: libgnome/gnome-url.c:351
+#, c-format
+msgid "Command '%s' did not return an ID!"
+msgstr ""
+
+#: libgnome/gnomelib-init2.c:1203
+msgid "Help options"
+msgstr ""
+
+#: libgnome/gnomelib-init2.c:1228
+msgid "Dynamic modules to load"
+msgstr ""
+
+#: libgnome/gnomelib-init2.c:1229
+msgid "MODULE1,MODULE2,..."
+msgstr ""
+
+#: libcompat/gnome-dentry-edit.c:184 libgnomeui/gnome-ditem-edit.c:210
+msgid "Name:"
+msgstr "Имe:"
+
+#: libcompat/gnome-dentry-edit.c:197 libgnomeui/gnome-ditem-edit.c:223
+msgid "Comment:"
+msgstr "Коментар:"
+
+#: libcompat/gnome-dentry-edit.c:207 libgnomeui/gnome-ditem-edit.c:233
+msgid "Command:"
+msgstr "Команда:"
+
+#: libcompat/gnome-dentry-edit.c:217 libgnomeui/gnome-ditem-edit.c:243
+msgid "Type:"
+msgstr "Тип:"
+
+#: libcompat/gnome-dentry-edit.c:233 libgnomeui/gnome-ditem-edit.c:260
+msgid "Icon:"
+msgstr "Икона:"
+
+#: libcompat/gnome-dentry-edit.c:243 libgnomeui/gnome-ditem-edit.c:270
+msgid "Choose an icon"
+msgstr "Изабери икону: "
+
+#: libcompat/gnome-dentry-edit.c:256 libgnomeui/gnome-ditem-edit.c:282
+msgid "Run in Terminal"
+msgstr "Покрени у треминалу"
+
+#: libgnomeui/gnome-ditem-edit.c:308
+msgid "Simple drag and drop"
+msgstr ""
+
+#: libgnomeui/gnome-ditem-edit.c:330
+#, c-format
+msgid ""
+"In the following commands you should use %s in the spot where the\n"
+"filename/URL should be substituted.  If you leave the field blank\n"
+"drops will not be accepted.  If this application can accept\n"
+"multiple files or URLs as arguments after its command name check the box "
+"above."
+msgstr ""
+
+#: libgnomeui/gnome-ditem-edit.c:342
+msgid "Command for file drops:"
+msgstr ""
+
+#: libgnomeui/gnome-ditem-edit.c:352
+msgid "Drop one file at a time only."
+msgstr ""
+
+#: libgnomeui/gnome-ditem-edit.c:364
+msgid "Command for URL drops:"
+msgstr ""
+
+#: libgnomeui/gnome-ditem-edit.c:374
+msgid "Drop one URL at a time only."
+msgstr ""
+
+#: libcompat/gnome-dentry-edit.c:367 libgnomeui/gnome-ditem-edit.c:487
+msgid "Try this before using:"
+msgstr "Пробаj пре употребe"
+
+#: libcompat/gnome-dentry-edit.c:377 libgnomeui/gnome-ditem-edit.c:497
+msgid "Documentation:"
+msgstr "Документациjа:"
+
+#: libgnomeui/gnome-ditem-edit.c:507
+msgid "Window titles to wait for (comma separated):"
+msgstr ""
+
+#: libcompat/gnome-dentry-edit.c:387 libgnomeui/gnome-ditem-edit.c:517
+msgid "Name/Comment translations:"
+msgstr "Име/Коментар превода:"
+
+#: libcompat/gnome-dentry-edit.c:390 libgnomeui/gnome-ditem-edit.c:520
+msgid "Language"
+msgstr "Jезик"
+
+#: libcompat/gnome-dentry-edit.c:391 libgnomeui/gnome-ditem-edit.c:521
+msgid "Name"
+msgstr "Имe"
+
+#: libcompat/gnome-dentry-edit.c:392 libgnomeui/gnome-ditem-edit.c:522
+msgid "Comment"
+msgstr "Коментар"
+
+#: libcompat/gnome-dentry-edit.c:420 libgnomeui/gnome-ditem-edit.c:550
+msgid "Add/Set"
+msgstr "Додаj/Подеси"
+
+#: libcompat/gnome-dentry-edit.c:425 libgnomeui/gnome-ditem-edit.c:555
+#: libgnomeui/gnome-stock.c:566
+msgid "Remove"
+msgstr "Уколони"
+
+#: libcompat/gnome-dentry-edit.c:507 libgnomeui/gnome-ditem-edit.c:702
+msgid "Basic"
+msgstr "Основно"
+
+#: libgnomeui/gnome-ditem-edit.c:706
+msgid "Drag and Drop"
+msgstr ""
+
+#: libcompat/gnome-dentry-edit.c:511 libgnomeui/gnome-ditem-edit.c:710
+msgid "Advanced"
+msgstr "Напредно"
+
+#: libcompat/gnome-druid-page-finish.c:262
+#: libcompat/gnome-druid-page-start.c:279
+#: libgnomeui/gnome-druid-page-edge.c:352
+#: libgnomeui/gnome-druid-page-standard.c:301
+#, fuzzy
+msgid "-adobe-helvetica-bold-r-normal-*-*-180-*-*-p-*-*-*,*-r-*"
+msgstr "-freefont-garamond-*-*-*-*-30-170-*-*-*-*-*-*,*-r-*"
+
+#: libcompat/gnome-druid-page-finish.c:270
+#: libcompat/gnome-druid-page-start.c:288
+#: libgnomeui/gnome-druid-page-edge.c:361
+#, fuzzy
+msgid "-adobe-helvetica-medium-r-normal-*-*-120-*-*-p-*-*-*,*-r-*"
+msgstr "-freefont-garamond-*-*-*-*-30-170-*-*-*-*-*-*,*-r-*"
+
+#: libgnomeui/gnome-file-saver.c:192
+#, fuzzy
+msgid "File Name:"
+msgstr "Имe:"
+
+#: libgnomeui/gnome-file-saver.c:200
+#, fuzzy
+msgid "Location:"
+msgstr "Документациjа:"
+
+#: libgnomeui/gnome-file-saver.c:208
+msgid "Save As Type:"
+msgstr ""
+
+#: libgnomeui/gnome-gconf.c:476
+msgid "GNOME GConf Support"
+msgstr ""
+
+#: libgnomeui/gnome-gconf.c:516
+#, c-format
+msgid ""
+"You attempted to change an aspect of your configuration that your system "
+"administrator or operating system vendor does not allow you to change. Some "
+"of the settings you have selected may not take effect, or may not be "
+"restored next time you use this application (%s)."
+msgstr ""
+
+#: libgnomeui/gnome-gconf.c:519
+#, c-format
+msgid ""
+"An error occurred while loading or saving configuration information for %s. "
+"Some of your configuration settings may not work properly."
+msgstr ""
+
+#: libgnomeui/gnome-gconf.c:541
+#, c-format
+msgid "GConf error details: %s\n"
+msgstr ""
+
+#: libgnomeui/gnome-helpsys.c:117
+msgid "_Popup"
+msgstr ""
+
+#: libgnomeui/gnome-helpsys.c:118
+msgid "Show help in temporary popup windows"
+msgstr ""
+
+#: libgnomeui/gnome-helpsys.c:120
+msgid "_Embedded"
+msgstr ""
+
+#: libgnomeui/gnome-helpsys.c:121
+#, fuzzy
+msgid "Show help inside the application window"
+msgstr "Подесите програм"
+
+#: libgnomeui/gnome-helpsys.c:123
+#, fuzzy
+msgid "_Browser"
+msgstr "Претрaжи"
+
+#: libgnomeui/gnome-helpsys.c:124
+msgid "Show help in a help browser window"
+msgstr ""
+
+#: libgnomeui/gnome-helpsys.c:172
+msgid "App style"
+msgstr ""
+
+#: libgnomeui/gnome-helpsys.c:173
+msgid "The style of GnomeHelpView"
+msgstr ""
+
+#: libgnomeui/gnome-helpsys.c:182
+msgid "App style priority"
+msgstr ""
+
+#: libgnomeui/gnome-helpsys.c:183
+msgid "The priority of style of GnomeHelpView"
+msgstr ""
+
+#. orientation
+#: libgnomeui/gnome-helpsys.c:192 libgnomeui/gnome-helpsys.c:193
+#: libgnomeui/gnome-paper-selector.c:191
+#, fuzzy
+msgid "Orientation"
+msgstr "Документациjа:"
+
+#: libgnomeui/gnome-helpsys.c:202
+msgid "Toplevel"
+msgstr ""
+
+#: libgnomeui/gnome-helpsys.c:203
+msgid "The toplevel widget"
+msgstr ""
+
+#: demos/stock_demo.c:315 libgnomeui/gnome-helpsys.c:219
+#: libgnomeui/gnome-stock.c:581
+msgid "Help"
+msgstr "Помоћ"
+
+#: libgnomeui/gnome-helpsys.c:220
+msgid "Show help for a specific region of the application"
+msgstr ""
+
+#: libgnomeui/gnome-helpsys.c:225
+msgid "Style"
+msgstr ""
+
+#: libgnomeui/gnome-helpsys.c:226
+msgid "Change the way help is displayed"
+msgstr ""
+
+#: libgnomeui/gnome-helpsys.c:928 libgnomeui/gnome-helpsys.c:1022
+msgid "No help is available for the selected portion of the application."
+msgstr ""
+
+#. FIXME: properly handle the error!
+#: libgnomeui/gnome-helpsys.c:1192
+#, c-format
+msgid "Cought GnomeURL error: %s"
+msgstr ""
+
+#: libgnomeui/gnome-href.c:114
+#, fuzzy
+msgid "URL"
+msgstr "RCL"
+
+#: libgnomeui/gnome-href.c:115
+msgid "The URL that GnomeHRef activates"
+msgstr ""
+
+#: libgnomeui/gnome-href.c:122
+#, fuzzy
+msgid "Text"
+msgstr "Следeћи"
+
+#: libgnomeui/gnome-href.c:123
+msgid "The text on the button"
+msgstr ""
+
+#: libgnomeui/gnome-href.c:124
+msgid "End World Hunger"
+msgstr ""
+
+#: libgnomeui/gnome-about.c:1169 libgnomeui/gnome-href.c:399
+msgid ""
+"Error occured while trying to launch the URL handler.\n"
+"Please check the settings in the Control Center if they are correct."
+msgstr ""
+"Jавила се грeшка приликом стартaња управљaча URL-овa .\n"
+"Проверите да ли су исправне поставке у Контролном Центру."
+
+#. paper size
+#: libgnomeui/gnome-paper-selector.c:159
+msgid "Paper Size"
+msgstr ""
+
+#: libgnomeui/gnome-paper-selector.c:213
+msgid "Portrait"
+msgstr ""
+
+#: libgnomeui/gnome-paper-selector.c:233
+msgid "Landscape"
+msgstr ""
+
+#. margins
+#: libgnomeui/gnome-paper-selector.c:241
+msgid "Margins"
+msgstr ""
+
+#: libgnomeui/gnome-paper-selector.c:253
+#, fuzzy
+msgid "Top:"
+msgstr "Тип:"
+
+#: libgnomeui/gnome-paper-selector.c:266
+msgid "Bottom:"
+msgstr ""
+
+#: libgnomeui/gnome-paper-selector.c:279
+msgid "Left:"
+msgstr ""
+
+#: libgnomeui/gnome-paper-selector.c:292
+msgid "Right:"
+msgstr ""
+
+#. Scaling
+#: libgnomeui/gnome-paper-selector.c:306
+msgid "Scaling"
+msgstr ""
+
+#: libgnomeui/gnome-paper-selector.c:321
+msgid "Fit to Page"
+msgstr ""
+
+#: libgnomeui/gnome-paper-selector.c:810
+#, c-format
+msgid "%0.3g%s x %0.3g%s"
+msgstr ""
+
+#: libgnomeui/gnome-paper-selector.c:1040
+msgid "Page Setup"
+msgstr ""
+
+#. to be kept in sync with GtkCornerType enumeration
+#: libgnomeui/gnome-pouch.c:782
+#, fuzzy
+msgid "Top left"
+msgstr "Наjбољих Десет"
+
+#: libgnomeui/gnome-pouch.c:783
+msgid "Bottom left"
+msgstr ""
+
+#: libgnomeui/gnome-pouch.c:784
+msgid "Top right"
+msgstr ""
+
+#: libgnomeui/gnome-pouch.c:785
+msgid "Bottom right"
+msgstr ""
+
+#. to be kept in sync with GtkOrientation enumeration
+#: libgnomeui/gnome-pouch.c:796
+#, fuzzy
+msgid "Horizontal"
+msgstr "Хоризонтално максимизовано"
+
+#: libgnomeui/gnome-pouch.c:797
+#, fuzzy
+msgid "Vertical"
+msgstr "Вертикално максимизовано"
+
+#: libgnomeui/gnome-pouch.c:807
+msgid "Icon position"
+msgstr ""
+
+#: libgnomeui/gnome-pouch.c:808
+#, fuzzy
+msgid "Icon orientation"
+msgstr "Информациje"
+
+#: libgnomeui/gnome-pouch.c:810
+msgid "Tile children"
+msgstr ""
+
+#: libgnomeui/gnome-pouch.c:811
+msgid "Cascade children"
+msgstr ""
+
+#: libgnomeui/gnome-pouch.c:813
+msgid "Arrange icons"
+msgstr ""
+
+#: libgnomeui/gnome-pouch.c:814
+msgid "Autoarrange icons"
+msgstr ""
+
+#: libgnomeui/gnome-recently-used.c:113
+msgid "App Specific"
+msgstr ""
+
+#: libgnomeui/gnome-recently-used.c:114
+#, fuzzy
+msgid "Is this list application specific"
+msgstr "О овом програму"
+
+#: libgnomeui/gnome-recently-used.c:897
+#, c-format
+msgid "bad GnomeRecentDocument attribute: %s\n"
+msgstr ""
+
+#: libgnomeui/gnome-recently-used.c:1127
+msgid "Unknown"
+msgstr ""
+
+#. browse button ...
+#: libcompat/gnome-file-entry.c:445 libcompat/gnome-spell.c:620
+#: libcompat/gnome-spell.c:637 libcompat/gnome-spell.c:654
+#: libgnomeui/gnome-selector.c:1040
+msgid "Browse..."
+msgstr "Претрaжи..."
+
+#: libgnomeui/gnome-selector.c:1051
+#, fuzzy
+msgid "Default..."
+msgstr "Дигитрон..."
+
+#: libgnomeui/gnome-selector.c:1062
+#, fuzzy
+msgid "Clear..."
+msgstr "Очисти"
+
+#: libgnomeui/oafgnome.c:242
+#, fuzzy
+msgid "Username:"
+msgstr "Корисник"
+
+#: libgnomeui/oafgnome.c:256
+msgid "Password:"
+msgstr ""
+
+#: libgnome/gnomelib-init.c:200 libgnome/gnomelib-init.c:214
 #, c-format
 msgid "Could not create per-user gnome configuration directory `%s': %s\n"
 msgstr ""
 "Не могу креирати корисничке gnome-конфигурациони директориjуме `%s': %s\n"
 
-#: libgnome/gnomelib-init.c:199
+#: libgnome/gnomelib-init.c:223
 #, c-format
 msgid ""
 "Could not set mode 0700 on private per-user gnome configuration directory "
@@ -29,169 +560,161 @@ msgstr ""
 "Не могу поставити мод 0700 нa  корисничком gnome-конфигурационом "
 "директориjуму`%s': %s\n"
 
-#: libgnome/gnomelib-init.c:206
+#: libgnome/gnomelib-init.c:230
 #, c-format
 msgid "Could not create gnome accelerators directory `%s': %s\n"
 msgstr "Не могу креирати директориjум gnome-убрзивачa `%s': %s\n"
 
-#: libgnomeui/gnome-about.c:356
+#: libgnomeui/gnome-about.c:331
 msgid "Author:"
 msgstr "Аутор: "
 
-#: libgnomeui/gnome-about.c:359 libgnomeui/gnome-about.c:361
+#: libgnomeui/gnome-about.c:341 libgnomeui/gnome-about.c:345
 msgid "Authors:"
 msgstr "Аутори: "
 
-#: libgnomeui/gnome-about.c:667
+#: libgnomeui/gnome-about.c:679
 msgid "Authors: "
 msgstr "Аутори:  "
 
-#: libgnomeui/gnome-about.c:1065 libgnomeui/stock_demo.c:307
-#: libgnomeui/winhints_demo.c:256
+#: demos/stock_demo.c:307 demos/winhints_demo.c:256
+#: libgnomeui/gnome-about.c:1075
 msgid "About"
 msgstr "О..."
 
-#: libgnomeui/gnome-about.c:1168
-msgid ""
-"Error occured while trying to launch the URL handler.\n"
-"Please check the settings in the Control Center if they are correct."
-msgstr ""
-"Jавила се грeшка приликом стартaња управљaча URL-овa .\n"
-"Проверите да ли су исправне поставке у Контролном Центру."
-
-#: libgnomeui/gnome-app-helper.c:74
+#: libgnomeui/gnome-app-helper.c:82
 msgid "_File"
 msgstr "_Фаjл"
 
-#: libgnomeui/gnome-app-helper.c:75
+#: libgnomeui/gnome-app-helper.c:83
 msgid "_File/"
 msgstr "_Фаjл/"
 
-#: libgnomeui/gnome-app-helper.c:76
+#: libgnomeui/gnome-app-helper.c:84
 msgid "_Edit"
 msgstr "_Едитовaњe"
 
-#: libgnomeui/gnome-app-helper.c:77
+#: libgnomeui/gnome-app-helper.c:85
 msgid "_Edit/"
 msgstr "_Едитовaњe/"
 
-#: libgnomeui/gnome-app-helper.c:78
+#: libgnomeui/gnome-app-helper.c:86
 msgid "_View"
 msgstr "_Поглед"
 
-#: libgnomeui/gnome-app-helper.c:79
+#: libgnomeui/gnome-app-helper.c:87
 msgid "_View/"
 msgstr "_Поглед/"
 
-#: libgnomeui/gnome-app-helper.c:80
+#: libgnomeui/gnome-app-helper.c:88
 msgid "_Settings"
 msgstr "_Поставкe"
 
-#: libgnomeui/gnome-app-helper.c:81
+#: libgnomeui/gnome-app-helper.c:89
 msgid "_Settings/"
 msgstr "_Поставке/"
 
-#: libgnomeui/gnome-app-helper.c:82
+#: libgnomeui/gnome-app-helper.c:90
 msgid "_New"
 msgstr "_Нови"
 
-#: libgnomeui/gnome-app-helper.c:83
+#: libgnomeui/gnome-app-helper.c:91
 msgid "_New/"
 msgstr "_Нови"
 
-#: libgnomeui/gnome-app-helper.c:84
+#: libgnomeui/gnome-app-helper.c:92
 msgid "Fi_les"
 msgstr "Фа_jлови"
 
-#: libgnomeui/gnome-app-helper.c:85
+#: libgnomeui/gnome-app-helper.c:93
 msgid "Fi_les/"
 msgstr "Фа_jлови/"
 
-#: libgnomeui/gnome-app-helper.c:86
+#: libgnomeui/gnome-app-helper.c:94
 msgid "_Windows"
 msgstr "_Прозори"
 
-#: libgnomeui/gnome-app-helper.c:87
+#: libgnomeui/gnome-app-helper.c:95
 msgid "_Game"
 msgstr "_Игрe"
 
-#: libgnomeui/gnome-app-helper.c:88
+#: libgnomeui/gnome-app-helper.c:96
 msgid "_Help"
 msgstr "_Помоћ"
 
-#: libgnomeui/gnome-app-helper.c:89
+#: libgnomeui/gnome-app-helper.c:97
 msgid "_Windows/"
 msgstr "_Прозори/"
 
 #. Open
-#: libgnomeui/gnome-app-helper.c:101
+#: libgnomeui/gnome-app-helper.c:109
 msgid "_Open..."
 msgstr "_Отвори..."
 
-#: libgnomeui/gnome-app-helper.c:101
+#: libgnomeui/gnome-app-helper.c:109
 msgid "Open a file"
 msgstr "Отвори фаjл"
 
 #. Save
-#: libgnomeui/gnome-app-helper.c:106
+#: libgnomeui/gnome-app-helper.c:114
 msgid "_Save"
 msgstr "_Сними"
 
-#: libgnomeui/gnome-app-helper.c:106
+#: libgnomeui/gnome-app-helper.c:114
 msgid "Save the current file"
 msgstr "Сними фаjл"
 
 #. Save As
-#: libgnomeui/gnome-app-helper.c:111
+#: libgnomeui/gnome-app-helper.c:119
 msgid "Save _As..."
 msgstr "Сними _Као..."
 
-#: libgnomeui/gnome-app-helper.c:112
+#: libgnomeui/gnome-app-helper.c:120
 msgid "Save the current file with a different name"
 msgstr "Сними фаjл под другим именом"
 
 #. Revert
-#: libgnomeui/gnome-app-helper.c:117
+#: libgnomeui/gnome-app-helper.c:125
 msgid "_Revert"
 msgstr "_Врати"
 
-#: libgnomeui/gnome-app-helper.c:118
+#: libgnomeui/gnome-app-helper.c:126
 msgid "Revert to a saved version of the file"
 msgstr "Врати на снимљену верзиjу фаjлa"
 
 #. Print
-#: libgnomeui/gnome-app-helper.c:123
+#: libgnomeui/gnome-app-helper.c:131
 msgid "_Print"
 msgstr "_штампа"
 
-#: libgnomeui/gnome-app-helper.c:123
+#: libgnomeui/gnome-app-helper.c:131
 msgid "Print the current file"
 msgstr "иштампаj фajл"
 
 #. Print Setup
-#: libgnomeui/gnome-app-helper.c:128
+#: libgnomeui/gnome-app-helper.c:136
 msgid "Print S_etup..."
 msgstr "Опциjе за штампу"
 
-#: libgnomeui/gnome-app-helper.c:129
+#: libgnomeui/gnome-app-helper.c:137
 msgid "Setup the page settings for your current printer"
 msgstr "Подесите страницу за штампaч"
 
 #. Close
-#: libgnomeui/gnome-app-helper.c:134
+#: libgnomeui/gnome-app-helper.c:142
 msgid "_Close"
 msgstr "_Затвори"
 
-#: libgnomeui/gnome-app-helper.c:134
+#: libgnomeui/gnome-app-helper.c:142
 msgid "Close the current file"
 msgstr "Затвори фаjл"
 
 #. Exit
-#: libgnomeui/gnome-app-helper.c:139
+#: libgnomeui/gnome-app-helper.c:147
 msgid "E_xit"
 msgstr "И_злаз"
 
-#: libgnomeui/gnome-app-helper.c:139
+#: libgnomeui/gnome-app-helper.c:147
 msgid "Exit the program"
 msgstr "Излаз из програмa"
 
@@ -199,93 +722,93 @@ msgstr "Излаз из програмa"
 #. * The "Edit" menu
 #.
 #. Cut
-#: libgnomeui/gnome-app-helper.c:147
+#: libgnomeui/gnome-app-helper.c:155
 msgid "C_ut"
 msgstr "Иz_рeжи"
 
-#: libgnomeui/gnome-app-helper.c:147
+#: libgnomeui/gnome-app-helper.c:155
 msgid "Cut the selection"
 msgstr "Изрeжи  селектовано"
 
 #. 10
 #. Copy
-#: libgnomeui/gnome-app-helper.c:153 libgnomeui/gnome-popup-help.c:64
+#: libgnomeui/gnome-app-helper.c:161 libgnomeui/gnome-popup-help.c:65
 msgid "_Copy"
 msgstr "_Копираj"
 
-#: libgnomeui/gnome-app-helper.c:153
+#: libgnomeui/gnome-app-helper.c:161
 msgid "Copy the selection"
 msgstr "Копираj селектовано"
 
 #. Paste
-#: libgnomeui/gnome-app-helper.c:158 libgnomeui/gnome-popup-help.c:66
+#: libgnomeui/gnome-app-helper.c:166 libgnomeui/gnome-popup-help.c:67
 msgid "_Paste"
 msgstr "_Уметни"
 
-#: libgnomeui/gnome-app-helper.c:158
+#: libgnomeui/gnome-app-helper.c:166
 msgid "Paste the clipboard"
 msgstr "Уметни на clipboard"
 
 #. Clear
-#: libgnomeui/gnome-app-helper.c:163
+#: libgnomeui/gnome-app-helper.c:171
 msgid "C_lear"
 msgstr "О_чисти"
 
-#: libgnomeui/gnome-app-helper.c:163
+#: libgnomeui/gnome-app-helper.c:171
 msgid "Clear the selection"
 msgstr "Очисти селектовано"
 
 #. Undo
-#: libgnomeui/gnome-app-helper.c:168
+#: libgnomeui/gnome-app-helper.c:176
 msgid "_Undo"
 msgstr "_Назад"
 
-#: libgnomeui/gnome-app-helper.c:168
+#: libgnomeui/gnome-app-helper.c:176
 msgid "Undo the last action"
 msgstr "Поништи задњу акциjу"
 
 #. Redo
-#: libgnomeui/gnome-app-helper.c:173
+#: libgnomeui/gnome-app-helper.c:181
 msgid "_Redo"
 msgstr "_Напред"
 
-#: libgnomeui/gnome-app-helper.c:173
+#: libgnomeui/gnome-app-helper.c:181
 msgid "Redo the undone action"
 msgstr "Врати поништено"
 
 #. Find
-#: libgnomeui/gnome-app-helper.c:178
+#: libgnomeui/gnome-app-helper.c:186
 msgid "_Find..."
 msgstr "_Пронaђи..."
 
-#: libgnomeui/gnome-app-helper.c:178
+#: libgnomeui/gnome-app-helper.c:186
 msgid "Search for a string"
 msgstr "Трaжи стринг"
 
 #. Find Again
-#: libgnomeui/gnome-app-helper.c:183
+#: libgnomeui/gnome-app-helper.c:191
 msgid "Find _Again"
 msgstr "Пронaђи _Поново"
 
-#: libgnomeui/gnome-app-helper.c:184
+#: libgnomeui/gnome-app-helper.c:192
 msgid "Search again for the same string"
 msgstr "Трaжи поново за исти стринг"
 
 #. Replace
-#: libgnomeui/gnome-app-helper.c:189
+#: libgnomeui/gnome-app-helper.c:197
 msgid "_Replace..."
 msgstr "_Замени..."
 
-#: libgnomeui/gnome-app-helper.c:189
+#: libgnomeui/gnome-app-helper.c:197
 msgid "Replace a string"
 msgstr "Замени стринг"
 
 #. Properties
-#: libgnomeui/gnome-app-helper.c:194
+#: libgnomeui/gnome-app-helper.c:202
 msgid "_Properties..."
 msgstr "_Поставке..."
 
-#: libgnomeui/gnome-app-helper.c:195
+#: libgnomeui/gnome-app-helper.c:203
 msgid "Modify the file's properties"
 msgstr "Промени поставке фаjлa"
 
@@ -293,11 +816,11 @@ msgstr "Промени поставке фаjлa"
 #. * The Settings menu
 #.
 #. Settings
-#: libgnomeui/gnome-app-helper.c:203
+#: libgnomeui/gnome-app-helper.c:211
 msgid "_Preferences..."
 msgstr "Опциjе..."
 
-#: libgnomeui/gnome-app-helper.c:204
+#: libgnomeui/gnome-app-helper.c:212
 msgid "Configure the application"
 msgstr "Подесите програм"
 
@@ -306,106 +829,106 @@ msgstr "Подесите програм"
 #. * And the "Help" menu
 #.
 #. About
-#: libgnomeui/gnome-app-helper.c:213
+#: libgnomeui/gnome-app-helper.c:221
 msgid "_About"
 msgstr "_О..."
 
-#: libgnomeui/gnome-app-helper.c:214
+#: libgnomeui/gnome-app-helper.c:222
 msgid "About this application"
 msgstr "О овом програму"
 
-#: libgnomeui/gnome-app-helper.c:217
+#: libgnomeui/gnome-app-helper.c:225
 msgid "_Select All"
 msgstr "_Селектуjте Cвe"
 
-#: libgnomeui/gnome-app-helper.c:218
+#: libgnomeui/gnome-app-helper.c:226
 msgid "Select everything"
 msgstr "Селекциjа свега"
 
 #.
 #. * Window menu
 #.
-#: libgnomeui/gnome-app-helper.c:226
+#: libgnomeui/gnome-app-helper.c:234
 msgid "Create New _Window"
 msgstr "Креираjте Нови _Прозор"
 
-#: libgnomeui/gnome-app-helper.c:227
+#: libgnomeui/gnome-app-helper.c:235
 msgid "Create a new window"
 msgstr "Креирањe новог прозорa"
 
-#: libgnomeui/gnome-app-helper.c:231
+#: libgnomeui/gnome-app-helper.c:239
 msgid "_Close This Window"
 msgstr "_Затвори оваj прозор"
 
-#: libgnomeui/gnome-app-helper.c:232
+#: libgnomeui/gnome-app-helper.c:240
 msgid "Close the current window"
 msgstr "Затворaње активног прозорa"
 
 #.
 #. * The "Game" menu
 #.
-#: libgnomeui/gnome-app-helper.c:240
+#: libgnomeui/gnome-app-helper.c:248
 msgid "_New game"
 msgstr "_Нова игрa"
 
-#: libgnomeui/gnome-app-helper.c:241
+#: libgnomeui/gnome-app-helper.c:249
 msgid "Start a new game"
 msgstr "Покрени нову игру"
 
-#: libgnomeui/gnome-app-helper.c:245
+#: libgnomeui/gnome-app-helper.c:253
 msgid "_Pause game"
 msgstr "_Пауза за игру"
 
-#: libgnomeui/gnome-app-helper.c:246
+#: libgnomeui/gnome-app-helper.c:254
 msgid "Pause the game"
 msgstr "Паузирaње игрe"
 
-#: libgnomeui/gnome-app-helper.c:250
+#: libgnomeui/gnome-app-helper.c:258
 msgid "_Restart game"
 msgstr "_Рестартуj игру"
 
-#: libgnomeui/gnome-app-helper.c:251
+#: libgnomeui/gnome-app-helper.c:259
 msgid "Restart the game"
 msgstr "Роновно покретaње игрe"
 
-#: libgnomeui/gnome-app-helper.c:255
+#: libgnomeui/gnome-app-helper.c:263
 msgid "_Undo move"
 msgstr "_Врати потез"
 
-#: libgnomeui/gnome-app-helper.c:256
+#: libgnomeui/gnome-app-helper.c:264
 msgid "Undo the last move"
 msgstr "Врaћaње последњег потезa"
 
-#: libgnomeui/gnome-app-helper.c:260
+#: libgnomeui/gnome-app-helper.c:268
 msgid "_Redo move"
 msgstr "_Изврши потез"
 
-#: libgnomeui/gnome-app-helper.c:261
+#: libgnomeui/gnome-app-helper.c:269
 msgid "Redo the undone move"
 msgstr "Извршeње поништеног потезa"
 
-#: libgnomeui/gnome-app-helper.c:265
+#: libgnomeui/gnome-app-helper.c:273
 msgid "_Hint"
 msgstr "_Алузиja"
 
-#: libgnomeui/gnome-app-helper.c:266
+#: libgnomeui/gnome-app-helper.c:274
 msgid "Get a hint for your next move"
 msgstr "Наговeштаj за вaш следeћи потез"
 
 #. 30
-#: libgnomeui/gnome-app-helper.c:271
+#: libgnomeui/gnome-app-helper.c:279
 msgid "_Scores..."
 msgstr "_Резултати..."
 
-#: libgnomeui/gnome-app-helper.c:272
+#: libgnomeui/gnome-app-helper.c:280
 msgid "View the scores"
 msgstr "Погледаjте резултатe"
 
-#: libgnomeui/gnome-app-helper.c:276
+#: libgnomeui/gnome-app-helper.c:284
 msgid "_End game"
 msgstr "_Краj игрe"
 
-#: libgnomeui/gnome-app-helper.c:277
+#: libgnomeui/gnome-app-helper.c:285
 msgid "End the current game"
 msgstr "Заврши тренутну игру"
 
@@ -449,329 +972,115 @@ msgstr "  - ОК? (да или не)"
 msgid "Progress"
 msgstr "Напредак"
 
-#: libgnomeui/gnome-calculator.c:472 libgnomeui/gnome-calculator.c:1121
-msgid "DEG"
-msgstr "DEG"
+#: libgnomeui/gnome-app.c:151
+msgid "App ID"
+msgstr ""
 
-#: libgnomeui/gnome-calculator.c:474
-msgid "RAD"
-msgstr "RAD"
+#: libgnomeui/gnome-app.c:152
+msgid "The application ID string"
+msgstr ""
 
-#: libgnomeui/gnome-calculator.c:476
-msgid "GRAD"
-msgstr "GRAD"
-
-#: libgnomeui/gnome-calculator.c:1111
-msgid "1/x"
-msgstr "1/x"
-
-#: libgnomeui/gnome-calculator.c:1112
-msgid "x^2"
-msgstr "x^2"
-
-#: libgnomeui/gnome-calculator.c:1113
-msgid "SQRT"
-msgstr "SQRT"
-
-#: libgnomeui/gnome-calculator.c:1114
-msgid "CE/C"
-msgstr "CE/C"
-
-#: libgnomeui/gnome-calculator.c:1115
-msgid "AC"
-msgstr "AC"
-
-#. inverse button
-#: libgnomeui/gnome-calculator.c:1118
-msgid "sin"
-msgstr "sin"
-
-#: libgnomeui/gnome-calculator.c:1119
-msgid "cos"
-msgstr "cos"
-
-#: libgnomeui/gnome-calculator.c:1120
-msgid "tan"
-msgstr "tan"
-
-#: libgnomeui/gnome-calculator.c:1123
-msgid "e"
-msgstr "e"
-
-#: libgnomeui/gnome-calculator.c:1124
-msgid "EE"
-msgstr "EE"
-
-#: libgnomeui/gnome-calculator.c:1125
-msgid "log"
-msgstr "log"
-
-#: libgnomeui/gnome-calculator.c:1126
-msgid "ln"
-msgstr "ln"
-
-#: libgnomeui/gnome-calculator.c:1127
-msgid "x^y"
-msgstr "x^y"
-
-#: libgnomeui/gnome-calculator.c:1129
-msgid "PI"
-msgstr "PI"
-
-#: libgnomeui/gnome-calculator.c:1130
-msgid "x!"
-msgstr "x!"
-
-#: libgnomeui/gnome-calculator.c:1131
-msgid "("
-msgstr "("
-
-#: libgnomeui/gnome-calculator.c:1132
-msgid ")"
-msgstr ")"
-
-#: libgnomeui/gnome-calculator.c:1133
-msgid "/"
-msgstr "/"
-
-#: libgnomeui/gnome-calculator.c:1135
-msgid "STO"
-msgstr "STO"
-
-#: libgnomeui/gnome-calculator.c:1136
-msgid "7"
-msgstr "7"
-
-#: libgnomeui/gnome-calculator.c:1137
-msgid "8"
-msgstr "8"
-
-#: libgnomeui/gnome-calculator.c:1138
-msgid "9"
-msgstr "9"
-
-#: libgnomeui/gnome-calculator.c:1139
-msgid "*"
-msgstr "*"
-
-#: libgnomeui/gnome-calculator.c:1141
-msgid "RCL"
-msgstr "RCL"
-
-#: libgnomeui/gnome-calculator.c:1142
-msgid "4"
-msgstr "4"
-
-#: libgnomeui/gnome-calculator.c:1143
-msgid "5"
-msgstr "5"
-
-#: libgnomeui/gnome-calculator.c:1144
-msgid "6"
-msgstr "6"
-
-#: libgnomeui/gnome-calculator.c:1145
-msgid "-"
-msgstr "-"
-
-#: libgnomeui/gnome-calculator.c:1147
-msgid "SUM"
-msgstr "SUM"
-
-#: libgnomeui/gnome-calculator.c:1148
-msgid "1"
-msgstr "1"
-
-#: libgnomeui/gnome-calculator.c:1149
-msgid "2"
-msgstr "2"
-
-#: libgnomeui/gnome-calculator.c:1150
-msgid "3"
-msgstr "3"
-
-#: libgnomeui/gnome-calculator.c:1151
-msgid "+"
-msgstr "+"
-
-#: libgnomeui/gnome-calculator.c:1153
-msgid "EXC"
-msgstr "EXC"
-
-#: libgnomeui/gnome-calculator.c:1154
-msgid "0"
-msgstr "0"
-
-#: libgnomeui/gnome-calculator.c:1155
-msgid "."
-msgstr "."
-
-#: libgnomeui/gnome-calculator.c:1156
-msgid "+/-"
-msgstr "+/-"
-
-#: libgnomeui/gnome-calculator.c:1157
-msgid "="
-msgstr "="
-
-#: libgnomeui/gnome-calculator.c:1363
-msgid "INV"
-msgstr "INV"
-
-#: libgnomeui/gnome-client.c:846
+#: libgnomeui/gnome-client.c:836
 msgid "Specify session management ID"
 msgstr "Одређуjе ID управљaча сесиje"
 
-#: libgnomeui/gnome-client.c:846
+#: libgnomeui/gnome-client.c:836
 msgid "ID"
 msgstr "ID"
 
-#: libgnomeui/gnome-client.c:849
+#: libgnomeui/gnome-client.c:839
 msgid "Specify prefix of saved configuration"
 msgstr "Одређуjе префикс снимљене конфигурациje"
 
-#: libgnomeui/gnome-client.c:849
+#: libgnomeui/gnome-client.c:839
 msgid "PREFIX"
 msgstr "ПРЕФИКS"
 
-#: libgnomeui/gnome-client.c:852
+#: libgnomeui/gnome-client.c:842
 msgid "Disable connection to session manager"
 msgstr "Онемогућуje конекциjу на менадзера сесиje"
 
-#: libgnomeui/gnome-client.c:864
+#: libgnomeui/gnome-client.c:854
 msgid "Session management"
 msgstr "Управљaње сесиjом"
 
-#: libgnomeui/gnome-client.c:2351
+#: libgnomeui/gnome-client.c:2340
 msgid "Cancel Logout"
 msgstr "Поништи одjаву "
 
-#: libgnomeui/gnome-color-picker.c:413
+#: libgnomeui/gnome-color-picker.c:423
 msgid "Received invalid color data\n"
 msgstr "Примљен  погрeшан податак о боjи\n"
 
-#: libgnomeui/gnome-color-picker.c:477
+#: libgnomeui/gnome-color-picker.c:487
 msgid "Pick a color"
 msgstr "Изабери боjу"
 
+#: libgnomeui/gnome-dateedit.c:361
+msgid "Time"
+msgstr ""
+
+#: libgnomeui/gnome-dateedit.c:362
+msgid "The time currentlyselected"
+msgstr ""
+
+#: libgnomeui/gnome-dateedit.c:373
+msgid "DateEdit Flags"
+msgstr ""
+
+#: libgnomeui/gnome-dateedit.c:374
+msgid "Flags for how DateEdit looks"
+msgstr ""
+
+#: libgnomeui/gnome-dateedit.c:383
+msgid "Lower Hour"
+msgstr ""
+
+#: libgnomeui/gnome-dateedit.c:384
+msgid "Lower hour in the time popup selector"
+msgstr ""
+
+#: libgnomeui/gnome-dateedit.c:394
+msgid "Upper Hour"
+msgstr ""
+
+#: libgnomeui/gnome-dateedit.c:395
+msgid "Upper hour in the time popup selector"
+msgstr ""
+
+#: libgnomeui/gnome-dateedit.c:405
+msgid "Initial Time"
+msgstr ""
+
+#: libgnomeui/gnome-dateedit.c:406
+msgid "The initial time"
+msgstr ""
+
 #. Calendar label, only shown if the date editor has a time field
-#: libgnomeui/gnome-dateedit.c:623
+#: libgnomeui/gnome-dateedit.c:651
 msgid "Calendar"
 msgstr "Календар"
 
-#: libgnomeui/gnome-dateedit.c:814
+#: libgnomeui/gnome-dateedit.c:847
 msgid "gnome_date_edit_get_date deprecated, use gnome_date_edit_get_time"
 msgstr "gnome_date_edit_get_date одбиjен , користитe  gnome_date_edit_get_time"
 
-#: libgnomeui/gnome-dentry-edit.c:183
-msgid "Name:"
-msgstr "Имe:"
-
-#: libgnomeui/gnome-dentry-edit.c:196
-msgid "Comment:"
-msgstr "Коментар:"
-
-#: libgnomeui/gnome-dentry-edit.c:206
-msgid "Command:"
-msgstr "Команда:"
-
-#: libgnomeui/gnome-dentry-edit.c:216
-msgid "Type:"
-msgstr "Тип:"
-
-#: libgnomeui/gnome-dentry-edit.c:232
-msgid "Icon:"
-msgstr "Икона:"
-
-#: libgnomeui/gnome-dentry-edit.c:242
-msgid "Choose an icon"
-msgstr "Изабери икону: "
-
-#: libgnomeui/gnome-dentry-edit.c:255
-msgid "Run in Terminal"
-msgstr "Покрени у треминалу"
-
-#: libgnomeui/gnome-dentry-edit.c:366
-msgid "Try this before using:"
-msgstr "Пробаj пре употребe"
-
-#: libgnomeui/gnome-dentry-edit.c:376
-msgid "Documentation:"
-msgstr "Документациjа:"
-
-#: libgnomeui/gnome-dentry-edit.c:386
-msgid "Name/Comment translations:"
-msgstr "Име/Коментар превода:"
-
-#: libgnomeui/gnome-dentry-edit.c:389
-msgid "Language"
-msgstr "Jезик"
-
-#: libgnomeui/gnome-dentry-edit.c:390
-msgid "Name"
-msgstr "Имe"
-
-#: libgnomeui/gnome-dentry-edit.c:391
-msgid "Comment"
-msgstr "Коментар"
-
-#: libgnomeui/gnome-dentry-edit.c:419
-msgid "Add/Set"
-msgstr "Додаj/Подеси"
-
-#: libgnomeui/gnome-dentry-edit.c:424 libgnomeui/gnome-stock.c:709
-msgid "Remove"
-msgstr "Уколони"
-
-#: libgnomeui/gnome-dentry-edit.c:506
-msgid "Basic"
-msgstr "Основно"
-
-#: libgnomeui/gnome-dentry-edit.c:510
-msgid "Advanced"
-msgstr "Напредно"
-
-#: libgnomeui/gnome-druid.c:149
+#: libgnomeui/gnome-druid.c:125
 msgid "Back"
 msgstr "Назад"
 
-#: libgnomeui/gnome-druid.c:157
+#: libgnomeui/gnome-druid.c:133
 msgid "Finish"
 msgstr "Краj"
 
-#: libgnomeui/gnome-file-entry.c:314
-msgid "Select file"
-msgstr "Изабери фаjл"
-
-#. browse button ...
-#: libgnomeui/gnome-file-entry.c:445 libgnomeui/gnome-spell.c:620
-#: libgnomeui/gnome-spell.c:637 libgnomeui/gnome-spell.c:654
-msgid "Browse..."
-msgstr "Претрaжи..."
-
-#: libgnomeui/gnome-font-picker.c:877 libgnomeui/gnome-stock.c:729
+#: libgnomeui/gnome-font-picker.c:856 libgnomeui/gnome-stock.c:586
 msgid "Font"
 msgstr "Фонт"
 
-#: libgnomeui/gnome-icon-entry.c:284 libgnomeui/gnome-icon-entry.c:808
+#: libgnomeui/gnome-icon-entry.c:351 libgnomeui/gnome-icon-entry.c:720
+#: libgnomeui/gnome-icon-entry.c:737
 msgid "No Icon"
 msgstr "Без иконe"
-
-#: libgnomeui/gnome-icon-entry.c:485 libgnomeui/gnome-pixmap-entry.c:458
-msgid "Can't find an hbox, using a normal file selection"
-msgstr "Не могу нaћи hbox,користим ниормални избор фаjловa"
-
-#: libgnomeui/gnome-icon-entry.c:491 libgnomeui/gnome-pixmap-entry.c:464
-msgid "Preview"
-msgstr "Први поглед"
-
-#: libgnomeui/gnome-icon-entry.c:829
-msgid "Browse"
-msgstr "Претрaжи"
-
-#: libgnomeui/gnome-icon-sel.c:375
-msgid "Loading Icons..."
-msgstr "Уносим иконе..."
 
 #: libgnomeui/gnome-init.c:81
 msgid "Gdk debugging flags to set"
@@ -786,11 +1095,11 @@ msgstr "ЗАСТАВE"
 msgid "Gdk debugging flags to unset"
 msgstr "Треба растурити дибагер заставe"
 
-#: libgnomeui/gnome-init.c:87 libgnomeui/gnome-init.c:239
+#: libgnomeui/gnome-init.c:87 libgnomeui/gnome-init.c:241
 msgid "X display to use"
 msgstr "Корисити X дисплеj"
 
-#: libgnomeui/gnome-init.c:87 libgnomeui/gnome-init.c:239
+#: libgnomeui/gnome-init.c:87 libgnomeui/gnome-init.c:241
 msgid "DISPLAY"
 msgstr "ДИСПЕЛJ"
 
@@ -851,54 +1160,51 @@ msgid "MODULE"
 msgstr "МОДУЛ"
 
 #. dialog display isn't working out
-#: libgnomeui/gnome-init.c:464
+#: libgnomeui/gnome-init.c:473
 msgid "Multiple segmentation faults occurred; can't display error dialog\n"
 msgstr ""
 "Поjава мулти-сегментационе грeшкё: не могу приказати диjалог о грeшци\n"
 
-#: libgnomeui/gnome-messagebox.c:172
+#: libgnomeui/gnome-init.c:636
+msgid "GTK options"
+msgstr ""
+
+#: libgnomeui/gnome-init.c:637
+msgid "GNOME GUI options"
+msgstr ""
+
+#: libgnomeui/gnome-init.c:788
+#, c-format
+msgid "%s options"
+msgstr ""
+
+#: libgnomeui/gnome-messagebox.c:179
 msgid "Information"
 msgstr "Информациje"
 
-#: libgnomeui/gnome-messagebox.c:181
+#: libgnomeui/gnome-messagebox.c:188
 msgid "Warning"
 msgstr "Упозорeњe"
 
-#: libgnomeui/gnome-messagebox.c:190
+#: libgnomeui/gnome-messagebox.c:197
 msgid "Error"
 msgstr "Грeшкa"
 
-#: libgnomeui/gnome-messagebox.c:199
+#: libgnomeui/gnome-messagebox.c:206
 msgid "Question"
 msgstr "Питaњe"
 
-#: libgnomeui/gnome-messagebox.c:208
+#: libgnomeui/gnome-messagebox.c:215
 msgid "Message"
 msgstr "Порукa"
 
-#: libgnomeui/gnome-number-entry.c:216
-msgid "Calculator"
-msgstr "Дигитрон"
-
-#: libgnomeui/gnome-number-entry.c:274
-msgid "Calculator..."
-msgstr "Дигитрон..."
-
-#: libgnomeui/gnome-pixmap-entry.c:255 libgnomeui/gnome-pixmap-entry.c:562
-msgid "No Image"
-msgstr "Без сликe"
-
-#: libgnomeui/gnome-popup-help.c:56
+#: libgnomeui/gnome-popup-help.c:57
 msgid "_Help with this"
 msgstr "_Помоћ у вези овогa"
 
-#: libgnomeui/gnome-popup-help.c:62
+#: libgnomeui/gnome-popup-help.c:63
 msgid "Cu_t"
 msgstr "Иzрeж_и"
-
-#: libgnomeui/gnome-property-entries.c:258
-msgid "Select"
-msgstr "Селектуj"
 
 #: libgnomeui/gnome-scores.c:105
 msgid "Top Ten"
@@ -931,238 +1237,99 @@ msgstr "%a %b %d %T %Y"
 msgid "-freefont-garamond-*-*-*-*-30-170-*-*-*-*-*-*,*-r-*"
 msgstr "-freefont-garamond-*-*-*-*-30-170-*-*-*-*-*-*,*-r-*"
 
-#: libgnomeui/gnome-spell.c:199
-msgid "Select dictionary"
-msgstr "Изабери рeчник"
-
-#: libgnomeui/gnome-spell.c:246
-#, c-format
-msgid ""
-"The word `%s'\n"
-"is not in the dictionary.\n"
-"Proceed anyway?"
-msgstr ""
-"Рeч: `%s'\n"
-"ниjе у рeчнику.\n"
-"Да ли да наставим?"
-
-#: libgnomeui/gnome-spell.c:250
-msgid "Confirm"
-msgstr "Потврди"
-
-#: libgnomeui/gnome-spell.c:259 libgnomeui/gnome-stock.c:718
-msgid "OK"
-msgstr "ОK"
-
-#: libgnomeui/gnome-spell.c:266 libgnomeui/gnome-stock.c:720
-msgid "Cancel"
-msgstr "Поништи"
-
-#: libgnomeui/gnome-spell.c:528
-msgid "Word:"
-msgstr "Рeч:"
-
-#: libgnomeui/gnome-spell.c:545
-msgid "Alternatives:"
-msgstr "Алтернативe:"
-
-#: libgnomeui/gnome-spell.c:564
-msgid "Accept"
-msgstr "Прихвати"
-
-#: libgnomeui/gnome-spell.c:569
-msgid ""
-"Accept the word for\n"
-"this session only"
-msgstr ""
-"Прихвати рeч само\n"
-"у овоj сесиjи"
-
-#: libgnomeui/gnome-spell.c:571
-msgid "Skip"
-msgstr "Прескочи"
-
-#: libgnomeui/gnome-spell.c:576
-msgid ""
-"Ignore this word\n"
-"this time only"
-msgstr ""
-"Игнорираj ову рeч\n"
-"само овaj пут"
-
-#: libgnomeui/gnome-spell.c:578
-msgid "Replace"
-msgstr "Замени"
-
-#: libgnomeui/gnome-spell.c:583
-msgid "Replace the word"
-msgstr "Замeни рeч"
-
-#: libgnomeui/gnome-spell.c:585
-msgid "Insert"
-msgstr "Убаци"
-
-#: libgnomeui/gnome-spell.c:590
-msgid ""
-"Insert the word\n"
-"in your personal dictionary"
-msgstr ""
-"Убаци рeч\n"
-"у моj персонални рeчник"
-
-#: libgnomeui/gnome-spell.c:592
-msgid "Insert with case"
-msgstr "Убаци за словом"
-
-#: libgnomeui/gnome-spell.c:598
-msgid ""
-"Insert the word\n"
-"in your personal dictionary\n"
-"(if mixed-case preserve\n"
-"case-sensitivity)"
-msgstr ""
-"Убаци рeч\n"
-"у моj персонални рeчник\n"
-"(уколико постоjи остeљивост\n"
-"на мала и велика словa)"
-
-#: libgnomeui/gnome-spell.c:613
-msgid "Ispell command:"
-msgstr "Ispell команда:"
-
-#: libgnomeui/gnome-spell.c:631
-msgid "Main dictionary:"
-msgstr "Главни рeчник:"
-
-#: libgnomeui/gnome-spell.c:648
-msgid "Personal dictionary:"
-msgstr "Лични рeчник: "
-
-#: libgnomeui/gnome-spell.c:665
-msgid "Valid chars in words:"
-msgstr "Валидна слова у рeчима:"
-
-#: libgnomeui/gnome-spell.c:676
-msgid "Check words longer than:"
-msgstr "Порвери рeчи дуже од:"
-
-#: libgnomeui/gnome-spell.c:687
-msgid "Sort by correctness"
-msgstr "Сортираj по исправности"
-
-#: libgnomeui/gnome-spell.c:695
-msgid "Accept run-together words"
-msgstr "Прихвати заjедно покренуте рeчи"
-
-#: libgnomeui/gnome-spell.c:705
-msgid "Discard accepted words on kill"
-msgstr "Изгуби прихвaћене рeчи при убиjaњу"
-
-#: libgnomeui/gnome-spell.c:713
-msgid "Enable tooltips"
-msgstr "Омогући напоменe"
-
-#: libgnomeui/gnome-spell.c:727
-msgid "Kill ispell process"
-msgstr "Убij  ispell  процес"
-
-#: libgnomeui/gnome-spell.c:753
-msgid "Spell"
-msgstr "Спелуj"
-
-#: libgnomeui/gnome-spell.c:760
-msgid "Configure"
-msgstr "Поставкa"
-
-#: libgnomeui/gnome-stock.c:706
+#: libgnomeui/gnome-stock.c:563
 msgid "Add"
 msgstr "Додаj"
 
-#: libgnomeui/gnome-stock.c:707
+#: libgnomeui/gnome-stock.c:564
 msgid "Clear"
 msgstr "Очисти"
 
-#: libgnomeui/gnome-stock.c:708
+#: libgnomeui/gnome-stock.c:565
 msgid "Select Color"
 msgstr "Изабери боjу"
 
-#: libgnomeui/gnome-stock.c:710
+#: libgnomeui/gnome-stock.c:567
 msgid "Table Borders"
 msgstr "Граница табелe"
 
-#: libgnomeui/gnome-stock.c:711
+#: libgnomeui/gnome-stock.c:568
 msgid "Table Fill"
 msgstr "Испуна табелe"
 
-#: libgnomeui/gnome-stock.c:712
+#: libgnomeui/gnome-stock.c:569
 msgid "Bulleted List"
 msgstr "Дугмаста листa"
 
-#: libgnomeui/gnome-stock.c:713
+#: libgnomeui/gnome-stock.c:570
 msgid "Numbered List"
 msgstr "Нумерисана листa"
 
-#: libgnomeui/gnome-stock.c:714
+#: libgnomeui/gnome-stock.c:571
 msgid "Indent"
 msgstr "размак"
 
-#: libgnomeui/gnome-stock.c:715
+#: libgnomeui/gnome-stock.c:572
 msgid "Un-Indent"
 msgstr "Без-размакa"
 
-#: libgnomeui/gnome-stock.c:719
+#: libcompat/gnome-spell.c:259 libgnomeui/gnome-stock.c:575
+msgid "OK"
+msgstr "ОK"
+
+#: libgnomeui/gnome-stock.c:576
 msgid "Apply"
 msgstr "Примени"
 
-#: libgnomeui/gnome-stock.c:721 libgnomeui/stock_demo.c:169
+#: libcompat/gnome-spell.c:266 libgnomeui/gnome-stock.c:577
+msgid "Cancel"
+msgstr "Поништи"
+
+#: demos/stock_demo.c:169 libgnomeui/gnome-stock.c:578
 msgid "Close"
 msgstr "Затвори"
 
-#: libgnomeui/gnome-stock.c:722
+#: libgnomeui/gnome-stock.c:579
 msgid "Yes"
 msgstr "Дa"
 
-#: libgnomeui/gnome-stock.c:723
+#: libgnomeui/gnome-stock.c:580
 msgid "No"
 msgstr "Нe"
 
-#: libgnomeui/gnome-stock.c:724 libgnomeui/stock_demo.c:315
-msgid "Help"
-msgstr "Помоћ"
-
-#: libgnomeui/gnome-stock.c:725
+#: libgnomeui/gnome-stock.c:582
 msgid "Next"
 msgstr "Следeћи"
 
-#: libgnomeui/gnome-stock.c:726
+#: libgnomeui/gnome-stock.c:583
 msgid "Prev"
 msgstr "Претходни"
 
-#: libgnomeui/gnome-stock.c:727
+#: libgnomeui/gnome-stock.c:584
 msgid "Up"
 msgstr "Горe"
 
-#: libgnomeui/gnome-stock.c:728
+#: libgnomeui/gnome-stock.c:585
 msgid "Down"
 msgstr "Долe"
 
-#: libgnomeui/gnome-stock.c:1500
+#: libgnomeui/gnome-stock.c:1354
 msgid "Menu Accelerator Keys"
 msgstr "Мени за тастерe убрзивaчa"
 
-#: libgnomeui/gnome-stock.c:1502
+#: libgnomeui/gnome-stock.c:1356
 msgid "Global"
 msgstr "Општe"
 
-#: libgnomeui/gnome-stock.c:1504
+#: libgnomeui/gnome-stock.c:1358
 msgid "Menu Item"
 msgstr "Ставка мениja"
 
-#: libgnomeui/gnome-stock.c:1505
+#: libgnomeui/gnome-stock.c:1359
 msgid "Accelerator"
 msgstr "Убрзивaч"
 
-#: libgnomeui/gnome_segv.c:84
+#: libgnomeui/gnome_segv.c:85
 #, c-format
 msgid ""
 "The GNOME Session Manager (process %d) has crashed\n"
@@ -1177,7 +1344,7 @@ msgstr ""
 "сесиja.\n"
 "Снимите све фаjлове пре затварањa овог диjалога, да не би изгубили податкe."
 
-#: libgnomeui/gnome_segv.c:94
+#: libgnomeui/gnome_segv.c:95
 #, c-format
 msgid ""
 "Application \"%s\" (process %d) has crashed\n"
@@ -1188,215 +1355,614 @@ msgstr ""
 "услед хаос грешкe.\n"
 "(%s)"
 
-#: libgnomeui/gnome_segv.c:102
+#: libgnomeui/gnome_segv.c:104
 msgid "Usage: gnome_segv appname signum\n"
 msgstr "Поступак: gnome_segv appname signum\n"
 
-#: libgnomeui/gnome_segv.c:116
+#: libgnomeui/gnome_segv.c:118
 msgid "Submit a bug report"
 msgstr "Поднеси извeштаj о багу"
 
-#: libgnomeui/gnome_segv.c:126
+#: libgnomeui/gnome_segv.c:128
 msgid "Debug"
 msgstr "Debug"
 
-#: libgnomeui/gnome_segv.c:133
+#: libgnomeui/gnome_segv.c:135
 msgid "http://www.gnome.org/application_crashed.shtml"
 msgstr "http://www.gnome.org/application_crashed.shtml"
 
-#: libgnomeui/gnome_segv.c:139
+#: libgnomeui/gnome_segv.c:141
 msgid "Please visit the GNOME Application Crash page for more information"
 msgstr "Посетите GNOME страницу за багове за више информациja "
 
-#: libgnomeui/stock_demo.c:137
+#. Pixmap
+#: test-gnome/testgnome.c:713
+msgid "Default Pixmap"
+msgstr "Default Pixmap"
+
+#: test-gnome/testgnome.c:721 test-gnome/testgnome.c:762
+#: test-gnome/testgnome.c:787
+msgid "If you choose a font it will appear here"
+msgstr "Уколико изаберете фонт он ћe се овде поjавити"
+
+#. Font_Info
+#: test-gnome/testgnome.c:728
+msgid "Font Info"
+msgstr "Информациjа о фонту"
+
+#: test-gnome/testgnome.c:738
+msgid "Use Font in button with size"
+msgstr "Користи фонт у тастеру са величином"
+
+#: test-gnome/testgnome.c:745
+msgid "Show font size"
+msgstr "Прикaжи величину фонтa"
+
+#: test-gnome/testgnome.c:781
+msgid "This is an hbox with pixmap and text"
+msgstr "Ово jе hbox са pixmap-ом и текстом"
+
+#: test-gnome/testgnome.c:993
+msgid "The user chose Yes/OK with data:\n"
+msgstr "Корисник бира Да/ОК са податком:\n"
+
+#: test-gnome/testgnome.c:997
+msgid "The user chose No/Cancel with data:\n"
+msgstr "Корисник бира Не/Cancel са податком:\n"
+
+#: test-gnome/testgnome.c:1008
+msgid "Weird number in reply callback"
+msgstr "Луд броj при повратку одговорa"
+
+#: test-gnome/testgnome.c:1860
+msgid "Test GNOME"
+msgstr "Теститираj GNOME"
+
+#: libcompat/gnome-calculator.c:431 libcompat/gnome-calculator.c:1074
+msgid "DEG"
+msgstr "DEG"
+
+#: libcompat/gnome-calculator.c:433
+msgid "RAD"
+msgstr "RAD"
+
+#: libcompat/gnome-calculator.c:435
+msgid "GRAD"
+msgstr "GRAD"
+
+#: libcompat/gnome-calculator.c:1064
+msgid "1/x"
+msgstr "1/x"
+
+#: libcompat/gnome-calculator.c:1065
+msgid "x^2"
+msgstr "x^2"
+
+#: libcompat/gnome-calculator.c:1066
+msgid "SQRT"
+msgstr "SQRT"
+
+#: libcompat/gnome-calculator.c:1067
+msgid "CE/C"
+msgstr "CE/C"
+
+#: libcompat/gnome-calculator.c:1068
+msgid "AC"
+msgstr "AC"
+
+#. inverse button
+#: libcompat/gnome-calculator.c:1071
+msgid "sin"
+msgstr "sin"
+
+#: libcompat/gnome-calculator.c:1072
+msgid "cos"
+msgstr "cos"
+
+#: libcompat/gnome-calculator.c:1073
+msgid "tan"
+msgstr "tan"
+
+#: libcompat/gnome-calculator.c:1076
+msgid "e"
+msgstr "e"
+
+#: libcompat/gnome-calculator.c:1077
+msgid "EE"
+msgstr "EE"
+
+#: libcompat/gnome-calculator.c:1078
+msgid "log"
+msgstr "log"
+
+#: libcompat/gnome-calculator.c:1079
+msgid "ln"
+msgstr "ln"
+
+#: libcompat/gnome-calculator.c:1080
+msgid "x^y"
+msgstr "x^y"
+
+#: libcompat/gnome-calculator.c:1082
+msgid "PI"
+msgstr "PI"
+
+#: libcompat/gnome-calculator.c:1083
+msgid "x!"
+msgstr "x!"
+
+#: libcompat/gnome-calculator.c:1084
+msgid "("
+msgstr "("
+
+#: libcompat/gnome-calculator.c:1085
+msgid ")"
+msgstr ")"
+
+#: libcompat/gnome-calculator.c:1086
+msgid "/"
+msgstr "/"
+
+#: libcompat/gnome-calculator.c:1088
+msgid "STO"
+msgstr "STO"
+
+#: libcompat/gnome-calculator.c:1089
+msgid "7"
+msgstr "7"
+
+#: libcompat/gnome-calculator.c:1090
+msgid "8"
+msgstr "8"
+
+#: libcompat/gnome-calculator.c:1091
+msgid "9"
+msgstr "9"
+
+#: libcompat/gnome-calculator.c:1092
+msgid "*"
+msgstr "*"
+
+#: libcompat/gnome-calculator.c:1094
+msgid "RCL"
+msgstr "RCL"
+
+#: libcompat/gnome-calculator.c:1095
+msgid "4"
+msgstr "4"
+
+#: libcompat/gnome-calculator.c:1096
+msgid "5"
+msgstr "5"
+
+#: libcompat/gnome-calculator.c:1097
+msgid "6"
+msgstr "6"
+
+#: libcompat/gnome-calculator.c:1098
+msgid "-"
+msgstr "-"
+
+#: libcompat/gnome-calculator.c:1100
+msgid "SUM"
+msgstr "SUM"
+
+#: libcompat/gnome-calculator.c:1101
+msgid "1"
+msgstr "1"
+
+#: libcompat/gnome-calculator.c:1102
+msgid "2"
+msgstr "2"
+
+#: libcompat/gnome-calculator.c:1103
+msgid "3"
+msgstr "3"
+
+#: libcompat/gnome-calculator.c:1104
+msgid "+"
+msgstr "+"
+
+#: libcompat/gnome-calculator.c:1106
+msgid "EXC"
+msgstr "EXC"
+
+#: libcompat/gnome-calculator.c:1107
+msgid "0"
+msgstr "0"
+
+#: libcompat/gnome-calculator.c:1108
+msgid "."
+msgstr "."
+
+#: libcompat/gnome-calculator.c:1109
+msgid "+/-"
+msgstr "+/-"
+
+#: libcompat/gnome-calculator.c:1110
+msgid "="
+msgstr "="
+
+#: libcompat/gnome-calculator.c:1321
+msgid "INV"
+msgstr "INV"
+
+#: libcompat/gnome-druid-page-finish.c:261
+msgid "-adobe-helvetica-bold-r-normal-*-*-180-*-*-p-*-*-*"
+msgstr ""
+
+#: libcompat/gnome-druid-page-finish.c:269
+msgid "-adobe-helvetica-medium-r-normal-*-*-120-*-*-p-*-*-*"
+msgstr ""
+
+#: libcompat/gnome-file-entry.c:314
+msgid "Select file"
+msgstr "Изабери фаjл"
+
+#: libcompat/gnome-number-entry.c:217
+msgid "Calculator"
+msgstr "Дигитрон"
+
+#: libcompat/gnome-number-entry.c:275
+msgid "Calculator..."
+msgstr "Дигитрон..."
+
+#: libcompat/gnome-pixmap-entry.c:257 libcompat/gnome-pixmap-entry.c:564
+msgid "No Image"
+msgstr "Без сликe"
+
+#: libcompat/gnome-pixmap-entry.c:460
+msgid "Can't find an hbox, using a normal file selection"
+msgstr "Не могу нaћи hbox,користим ниормални избор фаjловa"
+
+#: libcompat/gnome-pixmap-entry.c:466
+msgid "Preview"
+msgstr "Први поглед"
+
+#: libcompat/gnome-property-entries.c:258
+msgid "Select"
+msgstr "Селектуj"
+
+#: libcompat/gnome-spell.c:199
+msgid "Select dictionary"
+msgstr "Изабери рeчник"
+
+#: libcompat/gnome-spell.c:246
+#, c-format
+msgid ""
+"The word `%s'\n"
+"is not in the dictionary.\n"
+"Proceed anyway?"
+msgstr ""
+"Рeч: `%s'\n"
+"ниjе у рeчнику.\n"
+"Да ли да наставим?"
+
+#: libcompat/gnome-spell.c:250
+msgid "Confirm"
+msgstr "Потврди"
+
+#: libcompat/gnome-spell.c:528
+msgid "Word:"
+msgstr "Рeч:"
+
+#: libcompat/gnome-spell.c:545
+msgid "Alternatives:"
+msgstr "Алтернативe:"
+
+#: libcompat/gnome-spell.c:564
+msgid "Accept"
+msgstr "Прихвати"
+
+#: libcompat/gnome-spell.c:569
+msgid ""
+"Accept the word for\n"
+"this session only"
+msgstr ""
+"Прихвати рeч само\n"
+"у овоj сесиjи"
+
+#: libcompat/gnome-spell.c:571
+msgid "Skip"
+msgstr "Прескочи"
+
+#: libcompat/gnome-spell.c:576
+msgid ""
+"Ignore this word\n"
+"this time only"
+msgstr ""
+"Игнорираj ову рeч\n"
+"само овaj пут"
+
+#: libcompat/gnome-spell.c:578
+msgid "Replace"
+msgstr "Замени"
+
+#: libcompat/gnome-spell.c:583
+msgid "Replace the word"
+msgstr "Замeни рeч"
+
+#: libcompat/gnome-spell.c:585
+msgid "Insert"
+msgstr "Убаци"
+
+#: libcompat/gnome-spell.c:590
+msgid ""
+"Insert the word\n"
+"in your personal dictionary"
+msgstr ""
+"Убаци рeч\n"
+"у моj персонални рeчник"
+
+#: libcompat/gnome-spell.c:592
+msgid "Insert with case"
+msgstr "Убаци за словом"
+
+#: libcompat/gnome-spell.c:598
+msgid ""
+"Insert the word\n"
+"in your personal dictionary\n"
+"(if mixed-case preserve\n"
+"case-sensitivity)"
+msgstr ""
+"Убаци рeч\n"
+"у моj персонални рeчник\n"
+"(уколико постоjи остeљивост\n"
+"на мала и велика словa)"
+
+#: libcompat/gnome-spell.c:613
+msgid "Ispell command:"
+msgstr "Ispell команда:"
+
+#: libcompat/gnome-spell.c:631
+msgid "Main dictionary:"
+msgstr "Главни рeчник:"
+
+#: libcompat/gnome-spell.c:648
+msgid "Personal dictionary:"
+msgstr "Лични рeчник: "
+
+#: libcompat/gnome-spell.c:665
+msgid "Valid chars in words:"
+msgstr "Валидна слова у рeчима:"
+
+#: libcompat/gnome-spell.c:676
+msgid "Check words longer than:"
+msgstr "Порвери рeчи дуже од:"
+
+#: libcompat/gnome-spell.c:687
+msgid "Sort by correctness"
+msgstr "Сортираj по исправности"
+
+#: libcompat/gnome-spell.c:695
+msgid "Accept run-together words"
+msgstr "Прихвати заjедно покренуте рeчи"
+
+#: libcompat/gnome-spell.c:705
+msgid "Discard accepted words on kill"
+msgstr "Изгуби прихвaћене рeчи при убиjaњу"
+
+#: libcompat/gnome-spell.c:713
+msgid "Enable tooltips"
+msgstr "Омогући напоменe"
+
+#: libcompat/gnome-spell.c:727
+msgid "Kill ispell process"
+msgstr "Убij  ispell  процес"
+
+#: libcompat/gnome-spell.c:753
+msgid "Spell"
+msgstr "Спелуj"
+
+#: libcompat/gnome-spell.c:760
+msgid "Configure"
+msgstr "Поставкa"
+
+#: demos/mdi_demo.c:116
+msgid "Child Item 1"
+msgstr ""
+
+#: demos/mdi_demo.c:117
+msgid "Hint for item 1"
+msgstr ""
+
+#: demos/mdi_demo.c:119
+msgid "Child Item 2"
+msgstr ""
+
+#: demos/mdi_demo.c:120
+msgid "Hint for item 2"
+msgstr ""
+
+#: demos/stock_demo.c:137
 msgid "New..."
 msgstr "Нови..."
 
-#: libgnomeui/stock_demo.c:145
+#: demos/stock_demo.c:145
 msgid "Open..."
 msgstr "Отвори..."
 
-#: libgnomeui/stock_demo.c:153
+#: demos/stock_demo.c:153
 msgid "Save"
 msgstr "Сними"
 
-#: libgnomeui/stock_demo.c:161
+#: demos/stock_demo.c:161
 msgid "Save as..."
 msgstr "Сними као..."
 
-#: libgnomeui/stock_demo.c:181
+#: demos/stock_demo.c:181
 msgid "Print..."
 msgstr "штампаj..."
 
-#: libgnomeui/stock_demo.c:189
+#: demos/stock_demo.c:189
 msgid "Setup Page..."
 msgstr "Подеси страницу..."
 
-#: libgnomeui/stock_demo.c:198
+#: demos/stock_demo.c:198
 msgid "Quit"
 msgstr "Краj"
 
-#: libgnomeui/stock_demo.c:209
+#: demos/stock_demo.c:209
 msgid "File"
 msgstr "Фаjл"
 
-#: libgnomeui/stock_demo.c:216
+#: demos/stock_demo.c:216
 msgid "Undo"
 msgstr "Врати"
 
-#: libgnomeui/stock_demo.c:224
+#: demos/stock_demo.c:224
 msgid "Redo"
 msgstr "Уради"
 
-#: libgnomeui/stock_demo.c:233
+#: demos/stock_demo.c:233
 msgid "Delete"
 msgstr "ИЗбриши"
 
-#: libgnomeui/stock_demo.c:238
+#: demos/stock_demo.c:238
 msgid "Cut"
 msgstr "Изрeжи"
 
-#: libgnomeui/stock_demo.c:246
+#: demos/stock_demo.c:246
 msgid "Copy"
 msgstr "Копираj"
 
-#: libgnomeui/stock_demo.c:254
+#: demos/stock_demo.c:254
 msgid "Paste"
 msgstr "Уметни"
 
-#: libgnomeui/stock_demo.c:266
+#: demos/stock_demo.c:266
 msgid "Properties..."
 msgstr "Поставкe..."
 
-#: libgnomeui/stock_demo.c:276
+#: demos/stock_demo.c:276
 msgid "Preferences..."
 msgstr "Опциjе..."
 
-#: libgnomeui/stock_demo.c:291
+#: demos/stock_demo.c:291
 msgid "Scores..."
 msgstr "Резултати..."
 
-#: libgnomeui/stock_demo.c:299
+#: demos/stock_demo.c:299
 msgid "Edit"
 msgstr "Унос"
 
-#: libgnomeui/winhints_demo.c:46
+#: demos/winhints_demo.c:46
 msgid "wmhints-test"
 msgstr "wmhints-тест"
 
-#: libgnomeui/winhints_demo.c:46
+#: demos/winhints_demo.c:46
 msgid "winhints-test"
 msgstr "wmhints-тест"
 
-#: libgnomeui/winhints_demo.c:71
+#: demos/winhints_demo.c:71
 msgid "Layer:"
 msgstr "Слоj:"
 
-#: libgnomeui/winhints_demo.c:94
+#: demos/winhints_demo.c:94
 msgid "Above Dock"
 msgstr "Изнад докa"
 
-#: libgnomeui/winhints_demo.c:98
+#: demos/winhints_demo.c:98
 msgid "Dock"
 msgstr "Док"
 
-#: libgnomeui/winhints_demo.c:102
+#: demos/winhints_demo.c:102
 msgid "On Top"
 msgstr "На врху"
 
-#: libgnomeui/winhints_demo.c:106
+#: demos/winhints_demo.c:106
 msgid "Normal"
 msgstr "Нормално"
 
-#: libgnomeui/winhints_demo.c:110
+#: demos/winhints_demo.c:110
 msgid "Below"
 msgstr "Испод"
 
-#: libgnomeui/winhints_demo.c:114
+#: demos/winhints_demo.c:114
 msgid "Desktop"
 msgstr "Десктоп"
 
-#: libgnomeui/winhints_demo.c:122
+#: demos/winhints_demo.c:122
 msgid "Set Layer"
 msgstr "Подеси слоj"
 
-#: libgnomeui/winhints_demo.c:129
+#: demos/winhints_demo.c:129
 msgid "Workspaces:"
 msgstr "Рaдни простори:"
 
-#: libgnomeui/winhints_demo.c:151
+#: demos/winhints_demo.c:151
 msgid "Sticky"
 msgstr "Лепљиво"
 
-#: libgnomeui/winhints_demo.c:155
+#: demos/winhints_demo.c:155
 msgid "Set Workspace"
 msgstr "Подеси Радни простор"
 
-#: libgnomeui/winhints_demo.c:165
+#: demos/winhints_demo.c:165
 msgid "State Toggles:"
 msgstr "Стaње премeштaњa:"
 
-#: libgnomeui/winhints_demo.c:175
+#: demos/winhints_demo.c:175
 msgid "Minimized"
 msgstr "Минимизовано"
 
-#: libgnomeui/winhints_demo.c:179
+#: demos/winhints_demo.c:179
 msgid "Maximized Vertical"
 msgstr "Вертикално максимизовано"
 
-#: libgnomeui/winhints_demo.c:183
+#: demos/winhints_demo.c:183
 msgid "Maximized Horizontal"
 msgstr "Хоризонтално максимизовано"
 
-#: libgnomeui/winhints_demo.c:187
+#: demos/winhints_demo.c:187
 msgid "Hidden"
 msgstr "Сакривено"
 
-#: libgnomeui/winhints_demo.c:191
+#: demos/winhints_demo.c:191
 msgid "Shaded"
 msgstr "Засенчено"
 
-#: libgnomeui/winhints_demo.c:195
+#: demos/winhints_demo.c:195
 msgid "Fixed Position"
 msgstr "Фикснa позициja"
 
-#: libgnomeui/winhints_demo.c:199
+#: demos/winhints_demo.c:199
 msgid "Ignore on Arrange"
 msgstr "Игнорираj при урeђивaњу"
 
-#: libgnomeui/winhints_demo.c:203
+#: demos/winhints_demo.c:203
 msgid "Set State"
 msgstr "Подеси Стaњe"
 
-#: libgnomeui/winhints_demo.c:209
+#: demos/winhints_demo.c:209
 msgid "Skip Toggles:"
 msgstr "Прескочи премeштaњe"
 
-#: libgnomeui/winhints_demo.c:219
+#: demos/winhints_demo.c:219
 msgid "Skip Focus"
 msgstr "Прескочи фокус"
 
-#: libgnomeui/winhints_demo.c:223
+#: demos/winhints_demo.c:223
 msgid "Skip Window Menu"
 msgstr "Прескочи мени прозорa"
 
-#: libgnomeui/winhints_demo.c:227
+#: demos/winhints_demo.c:227
 msgid "Skip Taskbar / WinList"
 msgstr "Прескочи таскбар/Листу прозорa"
 
-#: libgnomeui/winhints_demo.c:231
+#: demos/winhints_demo.c:231
 msgid "Set Skip"
 msgstr "Подеси прескакaњe"
 
-#: libgnomeui/winhints_demo.c:410
+#: demos/winhints_demo.c:410
 msgid "WIN_HINTS Test"
 msgstr "WIN_HINTS тест"
 
-#: libgnomeui/winhints_demo.c:411
+#: demos/winhints_demo.c:411
 msgid "Copyright (C) 1998"
 msgstr "Copyright (C) 1998"
 
-#: libgnomeui/winhints_demo.c:413
+#: demos/winhints_demo.c:413
 msgid ""
 "Simple test app to check how the WIN_HINTS work.\n"
 "And to test the gnome_win_hints_* functions for errors. :)"
@@ -1404,119 +1970,50 @@ msgstr ""
 "Jедноставни тест аплет ради проверe како  WIN_HINTS ради.\n"
 "И ради тестирaња gnome_win_hints_* функциja. :)"
 
-#: support/error.c:109
-msgid "Unknown system error"
-msgstr "Непознати системска грeшкa"
+#~ msgid "Loading Icons..."
+#~ msgstr "Уносим иконе..."
 
-#: support/getopt.c:669
-#, c-format
-msgid "%s: option `%s' is ambiguous\n"
-msgstr "%s: опциja `%s' je двосмисленa\n"
+#~ msgid "Unknown system error"
+#~ msgstr "Непознати системска грeшкa"
 
-#: support/getopt.c:693
-#, c-format
-msgid "%s: option `--%s' doesn't allow an argument\n"
-msgstr "%s: опциja `--%s' не дозвољава аргумент\n"
+#~ msgid "%s: option `%s' is ambiguous\n"
+#~ msgstr "%s: опциja `%s' je двосмисленa\n"
 
-#: support/getopt.c:698
-#, c-format
-msgid "%s: option `%c%s' doesn't allow an argument\n"
-msgstr "%s: oпциja `%c%s' не дозвољава аргумент\n"
+#~ msgid "%s: option `--%s' doesn't allow an argument\n"
+#~ msgstr "%s: опциja `--%s' не дозвољава аргумент\n"
 
-#: support/getopt.c:715 support/getopt.c:888
-#, c-format
-msgid "%s: option `%s' requires an argument\n"
-msgstr "%s: oпциja `%s' захтевa аргумент\n"
+#~ msgid "%s: option `%c%s' doesn't allow an argument\n"
+#~ msgstr "%s: oпциja `%c%s' не дозвољава аргумент\n"
 
-#. --option
-#: support/getopt.c:744
-#, c-format
-msgid "%s: unrecognized option `--%s'\n"
-msgstr "%s: не препозната опциja `--%s'\n"
+#~ msgid "%s: option `%s' requires an argument\n"
+#~ msgstr "%s: oпциja `%s' захтевa аргумент\n"
 
-#. +option or -option
-#: support/getopt.c:748
-#, c-format
-msgid "%s: unrecognized option `%c%s'\n"
-msgstr "%s: не препозната опциja %c%s'\n"
+#~ msgid "%s: unrecognized option `--%s'\n"
+#~ msgstr "%s: не препозната опциja `--%s'\n"
 
-#. 1003.2 specifies the format of this message.
-#: support/getopt.c:774
-#, c-format
-msgid "%s: illegal option -- %c\n"
-msgstr "%s: нелегална опциja -- %c\n"
+#~ msgid "%s: unrecognized option `%c%s'\n"
+#~ msgstr "%s: не препозната опциja %c%s'\n"
 
-#: support/getopt.c:777
-#, c-format
-msgid "%s: invalid option -- %c\n"
-msgstr "%s: нелегална опциja -- %c\n"
+#~ msgid "%s: illegal option -- %c\n"
+#~ msgstr "%s: нелегална опциja -- %c\n"
 
-#. 1003.2 specifies the format of this message.
-#: support/getopt.c:807 support/getopt.c:937
-#, c-format
-msgid "%s: option requires an argument -- %c\n"
-msgstr "%s: опциjа захтева аргумент -- %c\n"
+#~ msgid "%s: invalid option -- %c\n"
+#~ msgstr "%s: нелегална опциja -- %c\n"
 
-#: support/getopt.c:854
-#, c-format
-msgid "%s: option `-W %s' is ambiguous\n"
-msgstr "%s: опциja `-W %s' jе двосмисленa\n"
+#~ msgid "%s: option requires an argument -- %c\n"
+#~ msgstr "%s: опциjа захтева аргумент -- %c\n"
 
-#: support/getopt.c:872
-#, c-format
-msgid "%s: option `-W %s' doesn't allow an argument\n"
-msgstr "%s: опциja `-W %s' не дозвољава аргумент\n"
+#~ msgid "%s: option `-W %s' is ambiguous\n"
+#~ msgstr "%s: опциja `-W %s' jе двосмисленa\n"
 
-#: support/popthelp.c:23
-msgid "Show this help message"
-msgstr "Прикaжи поруку о помоћи"
+#~ msgid "%s: option `-W %s' doesn't allow an argument\n"
+#~ msgstr "%s: опциja `-W %s' не дозвољава аргумент\n"
 
-#: support/popthelp.c:24
-msgid "Display brief usage message"
-msgstr "Прикaжи кратку поруку о коришћeњу"
+#~ msgid "Show this help message"
+#~ msgstr "Прикaжи поруку о помоћи"
 
-#. Pixmap
-#: test-gnome/testgnome.c:816
-msgid "Default Pixmap"
-msgstr "Default Pixmap"
-
-#: test-gnome/testgnome.c:824 test-gnome/testgnome.c:865
-#: test-gnome/testgnome.c:890
-msgid "If you choose a font it will appear here"
-msgstr "Уколико изаберете фонт он ћe се овде поjавити"
-
-#. Font_Info
-#: test-gnome/testgnome.c:831
-msgid "Font Info"
-msgstr "Информациjа о фонту"
-
-#: test-gnome/testgnome.c:841
-msgid "Use Font in button with size"
-msgstr "Користи фонт у тастеру са величином"
-
-#: test-gnome/testgnome.c:848
-msgid "Show font size"
-msgstr "Прикaжи величину фонтa"
-
-#: test-gnome/testgnome.c:884
-msgid "This is an hbox with pixmap and text"
-msgstr "Ово jе hbox са pixmap-ом и текстом"
-
-#: test-gnome/testgnome.c:1096
-msgid "The user chose Yes/OK with data:\n"
-msgstr "Корисник бира Да/ОК са податком:\n"
-
-#: test-gnome/testgnome.c:1100
-msgid "The user chose No/Cancel with data:\n"
-msgstr "Корисник бира Не/Cancel са податком:\n"
-
-#: test-gnome/testgnome.c:1111
-msgid "Weird number in reply callback"
-msgstr "Луд броj при повратку одговорa"
-
-#: test-gnome/testgnome.c:1965
-msgid "Test GNOME"
-msgstr "Теститираj GNOME"
+#~ msgid "Display brief usage message"
+#~ msgstr "Прикaжи кратку поруку о коришћeњу"
 
 #~ msgid "Pick a Font"
 #~ msgstr "Изабери фонт"
