@@ -1,3 +1,21 @@
+Thu Feb 18 03:29:00 1999  Timur Bakeyev <mc@bat.ru>
+
+        * gnome-utmp.c: Re-arrange source, so (suppose) it compilable on
+	both SVR and BSD. Everything #ifdef'ed. Removed dependences from
+	USE_SYSV_UTMP macro. Add update_utmp() function for BSD systems.
+	
+	* gnome-pty.h: Remove USE_SYSV_UTMP macro.
+	
+	* gnome-login-support.h: Add declarations from libutil.h for BSDI,
+	which has libutil.a, but not .h :(
+	
+	* gnome-pty-helper.c: Add casting to caddr_t for msg_control to avoid
+	warnings.
+	
+	* Makefile.am: Added $(UTIL_LIBS) to zvt dependences.
+	
+	* test-utmp.c: Now it does login/logout.
+
 1999-02-18  Michael Zucchi  <mzucchi@denr.sa.gov.au>
 
 	* zterm.c (main): Added bad argument/-h usage instructions, and

@@ -116,13 +116,12 @@ LIBS="$xLIBS"
 dnl
 dnl zvt checks
 dnl
-AC_CHECK_HEADERS(sys/select.h sys/un.h paths.h sys/syslimits.h sys/fsuid.h)
+AC_CHECK_HEADERS(sys/select.h sys/time.h sys/un.h paths.h sys/syslimits.h sys/fsuid.h)
 
 dnl
 dnl gnome-pty-support checks
 dnl
-AC_CHECK_HEADERS(pty.h libutil.h)
-AC_CHECK_FUNCS(grantpt login utmpxname utmpname getutmpx setutent)
+
 AC_MSG_CHECKING([for Unix98 sendmsg])
 AC_TRY_LINK([
 #include <stdio.h>
@@ -137,21 +136,21 @@ sendmsg (0, &hdr, 0);
 AC_DEFINE(HAVE_SENDMSG)
 AC_MSG_RESULT(yes)],[AC_MSG_RESULT(no)])
 
-oLIBS="$LIBS"
-LIBS="$LIBS -lutil"
-AC_CHECK_FUNC(openpty, [
-	AC_CHECK_FUNCS(login)
-	AC_DEFINE(HAVE_OPENPTY)
-	UTIL_LIBS="-lutil"
-	AC_SUBST(UTIL_LIBS)
-])
-LIBS="$oLIBS"
-AC_CHECK_HEADERS(pty.h, [
-	AC_DEFINE(HAVE_PTY_H)
-])
-AC_CHECK_HEADERS(util.h, [
-	AC_DEFINE(HAVE_UTIL_H)
-])
+AC_CHECK_UTMP
+
+AC_CHECK_HEADERS(pty.h util.h libutil.h)
+
+AC_CHECK_LIB(util, openpty,
+    [
+    AC_CHECK_LIB(util, login_tty, [AC_DEFINE(HAVE_LOGIN_TTY)])
+    AC_DEFINE(HAVE_OPENPTY)
+    AC_DEFINE(HAVE_LIBUTIL)
+    UTIL_LIBS="-lutil"
+    AC_SUBST(UTIL_LIBS)
+    ])
+
+AC_CHECK_FUNCS(grantpt utmpxname utmpname getutmpx getutent)
+AC_CHECK_FUNCS(fcntl flock)
 
 dnl And workaround for a Autoconf 2.4 bug:
 if test x$ac_cv_func_grantpt = xyes; then

@@ -74,7 +74,7 @@ char *alloca ();
 # endif
 #endif
 
-/* For PATH_MAX on FreeBSD. */
+/* For PATH_MAX on BSD-like systems. */
 #ifdef HAVE_SYS_SYSLIMITS_H
 #include <sys/syslimits.h>
 #endif
@@ -141,7 +141,7 @@ pass_fd (int client_fd, int fd)
 	msg.msg_iovlen     = 1;
 	msg.msg_name       = NULL;
 	msg.msg_namelen    = 0;
-	msg.msg_control    = cmptr;
+	msg.msg_control    = (caddr_t) cmptr;
 	msg.msg_controllen = CONTROLLEN;
 		
 	cmptr->cmsg_level = SOL_SOCKET;

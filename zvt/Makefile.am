@@ -47,7 +47,7 @@ zterm_LDADD	= 					\
 	$(top_builddir)/zvt/libzvt.la			\
 	$(GTK_LIBS) 					\
 	$(GDK_IMLIB_LIBS)				\
-	@LIBSUPPORT@ $(INTLLIBS)
+	@LIBSUPPORT@ $(INTLLIBS) $(UTIL_LIBS)
 
 test_utmp_SOURCES =					\
 	gnome-utmp.c					\

@@ -133,7 +133,7 @@ receive_fd (int helper_fd)
 
 	if (cmptr == NULL && (cmptr = g_malloc (CONTROLLEN)) == NULL)
 		return -1;
-	msg.msg_control = cmptr;
+	msg.msg_control = (caddr_t) cmptr;
 	msg.msg_controllen = CONTROLLEN;
 
 	if (recvmsg (helper_fd, &msg, 0) <= 0)

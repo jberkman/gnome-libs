@@ -1,3 +1,14 @@
+Thu Feb 18 03:40:04 1999  Timur Bakeyev <mc@bat.ru>
+
+	* configure.in: Added checks for various utmp members (AC_CHECK_UTMP),
+	some changes around libutil handling, removed check against login().
+	
+	* acconfig.h: Added set of macro, that corresponds to different members
+	of utmp structure (HAVE_UT_UT_member).
+	
+	* acinclude.m4: Added macro, that determines available utmp members
+	(AC_CHECK_UTMP).
+
 1999-02-17  Elliot Lee  <sopwith@redhat.com>
 
 	* gnome-libs.spec.in: Turn off debugging macro usage for .rpm's.
