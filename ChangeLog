@@ -1,3 +1,15 @@
+2000-02-21  Elliot Lee  <sopwith@redhat.com>
+
+	* AUTHORS: Sort.
+	* HACKING, README, README.cvs-commits: Update.
+	* acinclude.m4: Remove the ESD stuff from here.
+	* configure.in: Remove KDE_ICONDIR_* - only used by deprecated code.
+	* idl/Makefile.am: Remove unused .idl files.
+	* libgnome/Makefile.am: Move some 'backwards compat' files into the compat library, remove gconfigger.
+	* libgnome/dns-helper.c, libgnome/gconfigger.c: Remove unused
+	* libgnomeui/gnome-canvas-load.[ch]: Remove unused.
+	* */*.[ch] (I kid you not): Deck the halls with copyright notices, etc...
+
 2000-02-18  Elliot Lee  <sopwith@redhat.com>
 
 	* configure.in: Check for newer popt, and include it in the needed libs.

@@ -4,16 +4,14 @@ to have the following packages installed:
 	- GNU m4 1.4
 	- GNU texinfo 3.12 (for makeinfo 1.68)
 	- GNU autoconf 2.13
-	- GNU libtool 1.3.3
+	- GNU libtool 1.3.4
 	- GNU gettext 0.10.35
 	- GNU automake 1.4
-	- GNU guile 1.3a
-	- SLIB 2c3 (See http://www-swiss.ai.mit.edu/~jaffer/SLIB.html)
 
-These should be available by ftp from prep.ai.mit.edu or any of the
+These should be available by ftp from ftp.gnu.org or any of the
 fine GNU mirrors.  Prerelease software can be found at alpha.gnu.org.
 
-If you are accessing gnome via CVS, then you will have to run the
+If you are accessing gnome via CVS, then you will want to run the
 autogen.sh script with any possible arguments that you might want to
 pass to configure.
 
@@ -22,14 +20,8 @@ pass to configure.
 If you like to build in a directory different from the source, you can
 run `<path-to-src-dir>/autogen.sh' in the build directory.
 
-Please submit patches to the gnome-list@gnome.org mailing list.  All
-kinds of contributions are accepted. If at all possible, please use
-CVS to get the latest development version of gnome; the README file
-has the CVSROOT information.
-
-===========================================================================
-			NOTES
-
-GNOME_INTERFACE_VERSION is hardcoded into some of the library names
-(those of libgnome, libgnomeui, and the compat libraries). The current
-interface version is 2.0. When it is update
+Please submit patches via the GNOME bug tracking system
+(submit@bugs.gnome.org, or preferably use the included gnome-bug script),
+or to gnome-libs-maint@gnome.org. All kinds of contributions are accepted.
+If at all possible, please use CVS to get the latest development version
+of gnome; the README file has the CVSROOT information.
