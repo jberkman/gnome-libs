@@ -721,22 +721,8 @@ gnome_font_selector_get_type
 GNOME_FONT_SELECTOR_CLASS
 </SECTION>
 
-<SECTION>
-<FILE>gnome-guru</FILE>
-<TITLE>GnomeGuru</TITLE>
-GnomeGuru
-gnome_guru_new
-gnome_guru_construct
-gnome_guru_append_page
-gnome_guru_next_set_sensitive
-gnome_guru_back_set_sensitive
-gnome_guru_current_page
-<SUBSECTION Standard>
-GNOME_GURU
-GNOME_IS_GURU
-gnome_guru_get_type
-GNOME_GURU_CLASS
-</SECTION>
+
+
 
 <SECTION>
 <FILE>gnome-href</FILE>
@@ -1635,6 +1621,18 @@ gnome_icon_text_info_free
 <FILE>gnome-init</FILE>
 gnome_init
 gnome_init_with_popt_table
+<PRIVATE>
+GnomeGuru
+gnome_guru_new
+gnome_guru_construct
+gnome_guru_append_page
+gnome_guru_next_set_sensitive
+gnome_guru_back_set_sensitive
+gnome_guru_current_page
+GNOME_GURU
+GNOME_IS_GURU
+gnome_guru_get_type
+GNOME_GURU_CLASS
 </SECTION>
 
 <SECTION>
