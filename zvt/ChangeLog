@@ -1,3 +1,15 @@
+Tue Oct 27 01:07:21 1998  George Lebl  <jirka@5z.com>
+
+	* zvtterm.[ch]: transparency hacks, it's not 100% clean and probably
+	  doesn't work well with enlightenment desktops. it isn't much code
+	  but if you really really don't want it (it doesn't affect the
+	  normal operation at all) you can change a define in zvtterm.h,
+	  it still  needs a lot of cleanup and I hope that committing it will
+	  get people to make it work with their windowmanagers (hint hint
+	  raster)
+	
+	* zvtterm.c,update.c: add headers to avoid warnings
+
 1998-10-24  Martin Baulig  <martin@home-of-linux.org>
 
 	* update.c: Only #include <alloca.h> if we `HAVE_ALLOCA_H'.

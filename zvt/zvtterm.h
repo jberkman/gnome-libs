@@ -22,14 +22,19 @@
 #define __ZVT_TERM_H__
 
 #include <gdk/gdk.h>
+#include <gdk_imlib.h>
 #include <gtk/gtkadjustment.h>
 #include <gtk/gtkwidget.h>
 #include <zvt/vtx.h>
+
+#include <X11/X.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
 
+/*if one doesn't want to compile in transparency one would define this*/
+/*#define ZVT_NO_TRANSPARENT 1*/
 
 #define ZVT_TERM(obj)          GTK_CHECK_CAST (obj, zvt_term_get_type (), ZvtTerm)
 #define ZVT_TERM_CLASS(klass)  GTK_CHECK_CLASS_CAST (klass, zvt_term_get_type (), ZvtTermClass)
@@ -52,6 +57,8 @@ extern "C" {
     unsigned int in_expose:1;	/* updating from within expose events */
     unsigned int scroll_on_keystroke:1;
     unsigned int scroll_on_output:1;
+    unsigned int transparent:1;
+    unsigned int shaded:1;
 
     int charwidth;		/* size of characters */
     int charheight;
@@ -76,6 +83,14 @@ extern "C" {
     gulong colors [18];		/* Our colors, pixel values. */
 
     GdkIC ic;			/* input context */
+    
+    /*transparency stuff, it's left in even if we don't compile transparency,
+      if we don't, it will just be ignored*/
+    Pixmap background;
+    struct {
+	    GdkPixmap *pix;
+	    int x,y,w,h;
+    } shaded_s;
   };
 
   struct _ZvtTermClass
@@ -109,6 +124,12 @@ extern "C" {
   void          zvt_term_set_scroll_on_output   (ZvtTerm *term, int state);
   void          zvt_term_set_color_scheme       (ZvtTerm *term, gushort *red, gushort *grn, gushort *blu);
   void          zvt_term_set_default_color_scheme (ZvtTerm *term);
+
+  /*transparency stuff, it's left in even if we don't compile transparency,
+    if we don't, it will just be ignored*/
+  void		zvt_term_set_transparent	   (ZvtTerm      *terminal,
+						    int		  transparent,
+						    int		  shaded);
 	
   /*GtkAdjustment* zvt_term_get_adjustment         (ZvtTerm      *terminal);
     void           zvk_term_set_adjustment         (ZvtTerm      *dial,

@@ -4,6 +4,7 @@ INCLUDES = -I.. -I$(srcdir)/.. 	\
 	-I$(includedir) 	\
 	$(SUPPORTINCS) 		\
         $(GTK_CFLAGS)  		\
+	$(GDK_IMLIB_CFLAGS)	\
 	-I$(top_srcdir)/intl -I$(top_builddir)/intl
 
 lib_LTLIBRARIES = libzvt.la
@@ -32,5 +33,6 @@ zterm_SOURCES	= zterm.c
 zterm_LDADD	= 	\
 	$(top_builddir)/zvt/libzvt.la	\
 	$(GTK_LIBS) \
+	$(GDK_IMLIB_LIBS)	\
 	@LIBSUPPORT@ $(INTLLIBS)
 

@@ -22,13 +22,25 @@
 #include <gtk/gtkmain.h>
 #include <gtk/gtksignal.h>
 #include <gdk/gdk.h>
+
 #include <gdk/gdkkeysyms.h>
 
 #include <errno.h>
 #include <unistd.h>
 #include <string.h>
+#include <stdlib.h>
 
 #include "zvtterm.h"
+
+#ifndef ZVT_NO_TRANSPARENT
+#include <gdk/gdkx.h>
+#include <gdk_imlib.h>
+#include <X11/Xlib.h>
+#include <X11/Xutil.h>
+#include <X11/Xatom.h>
+#include <X11/Xos.h>
+#endif
+
 
 /* define to 'x' to enable copious debug output */
 #define d(x)
@@ -66,6 +78,132 @@ static void zvt_term_readmsg(gpointer data, gint fd, GdkInputCondition condition
 static void zvt_term_fix_scrollbar(ZvtTerm *term);
 static void vtx_unrender_selection (struct _vtx *vx);
 
+#ifndef ZVT_NO_TRANSPARENT
+/*kind of stolen from Eterm and needs heavy cleanup*/
+static Window desktop_window = None;
+
+static Window
+get_desktop_window(Window the_window)
+{
+    Atom prop, type, prop2;
+    int format;
+    unsigned long length, after;
+    unsigned char *data;
+    unsigned int nchildren;
+    Window w, root, *children, parent;
+    Window last_desktop_window = desktop_window;
+
+    prop = XInternAtom(GDK_DISPLAY(), "_XROOTPMAP_ID", True);
+
+    prop2 = XInternAtom(GDK_DISPLAY(), "_XROOTCOLOR_PIXEL", True);
+
+    if (prop == None && prop2 == None) {
+	return None;
+    }
+
+#ifdef WATCH_DESKTOP_OPTION
+    if (Options & Opt_watchDesktop) {
+      if (TermWin.wm_parent != None) {
+	XSelectInput(GDK_DISPLAY(), TermWin.wm_parent, None);
+      }
+      if (TermWin.wm_grandparent != None) {
+	XSelectInput(GDK_DISPLAY(), TermWin.wm_grandparent, None);
+      }
+    }
+#endif
+
+    for (w = the_window; w; w = parent) {
+	if ((XQueryTree(GDK_DISPLAY(), w, &root, &parent, &children, &nchildren)) == False) {
+	    return None;
+	}
+
+	if (nchildren) {
+	    XFree(children);
+	}
+#ifdef WATCH_DESKTOP_OPTION
+	if (Options & Opt_watchDesktop) {
+	  if (w == TermWin.parent) {
+	    TermWin.wm_parent = parent;
+	    XSelectInput(GDK_DISPLAY(), TermWin.wm_parent, StructureNotifyMask);
+	  } else if (w == TermWin.wm_parent) {
+	    TermWin.wm_grandparent = parent;
+	    XSelectInput(GDK_DISPLAY(), TermWin.wm_grandparent, StructureNotifyMask);
+	  }
+	}
+#endif
+
+	if (prop != None) {
+	    XGetWindowProperty(GDK_DISPLAY(), w, prop, 0L, 1L, False, AnyPropertyType,
+			       &type, &format, &length, &after, &data);
+	} else if (prop2 != None) {
+	    XGetWindowProperty(GDK_DISPLAY(), w, prop2, 0L, 1L, False, AnyPropertyType,
+			       &type, &format, &length, &after, &data);
+	} else {
+	    continue;
+	}
+	if (type != None) {
+	    return (desktop_window = w);
+	}
+    }
+
+  return (desktop_window = None);
+
+}
+
+static Pixmap
+get_pixmap_prop(Window the_window,char *prop_id)
+{
+	Atom prop, type;
+	int format;
+	unsigned long length, after;
+	unsigned char *data;
+	register unsigned long i=0;
+
+	/*this should be changed when desktop changes I guess*/
+	if(desktop_window == None)
+		desktop_window = get_desktop_window(the_window);
+	if(desktop_window == None)
+		desktop_window = GDK_ROOT_WINDOW();
+
+	prop = XInternAtom(GDK_DISPLAY(), prop_id, True);
+
+	if (prop == None)
+		return None;
+
+	XGetWindowProperty(GDK_DISPLAY(), desktop_window, prop, 0L, 1L, False,
+			   AnyPropertyType, &type, &format, &length, &after,
+			   &data);
+	if (type == XA_PIXMAP)
+		return *((Pixmap *)data);
+	return None;
+}
+
+static GdkPixmap *
+create_shaded_pixmap(Pixmap p, int x, int y, int w, int h)
+{
+	GdkPixmap *pix;
+	GdkImlibColorModifier mod;
+	GdkImlibImage *iim;
+	GdkWindowPrivate pw;
+
+	if(p == None)
+		return None;
+		
+	pw.xwindow = (Window)p;
+	iim = gdk_imlib_create_image_from_drawable((GdkPixmap*)&pw,NULL,
+						   x,y,w,h);
+	mod.contrast=256;
+	mod.brightness=190;
+	mod.gamma=256;
+	gdk_imlib_set_image_modifier(iim,&mod);
+	gdk_imlib_render(iim, iim->rgb_width,iim->rgb_height);
+	pix = gdk_imlib_move_image(iim);
+	gdk_imlib_destroy_image(iim);
+	
+	return pix;
+}
+#endif
+
 /* Local data */
 
 enum {
@@ -100,6 +238,7 @@ zvt_term_get_type (void )
 
   return term_type;
 }
+
 
 static void
 zvt_term_class_init (ZvtTermClass *class)
@@ -161,7 +300,13 @@ zvt_term_init (ZvtTerm *term)
   term->blink_enabled = 1;
   term->ic = NULL;
   term->in_expose = 0;
-
+  term->transparent = 0;
+  term->shaded = 0;
+  
+  term->background = None;
+  term->shaded_s.pix = NULL;
+  term->shaded_s.x = term->shaded_s.y = term->shaded_s.w = term->shaded_s.h = 0;
+  
   /* input handlers */
   term->input_id = -1;
   term->msg_id = -1;
@@ -493,6 +638,69 @@ zvt_term_size_allocate (GtkWidget     *widget,
     }
 }
 
+#ifndef ZVT_NO_TRANSPARENT
+static void
+draw_back_pixmap(GtkWidget *widget, int nx,int ny,int nw,int nh)
+{
+	int x,y;
+	Window childret;
+	ZvtTerm *term = ZVT_TERM(widget);
+	GdkGC *bgc = term->back_gc;
+
+	if(term->background == None) {
+		term->background = get_pixmap_prop(GDK_WINDOW_XWINDOW(widget->window),
+				    "_XROOTPMAP_ID");
+		if(term->background == None) {
+			term->transparent = 0;
+			return;
+		}
+	}
+
+	XTranslateCoordinates(GDK_WINDOW_XDISPLAY(widget->window),
+			      GDK_WINDOW_XWINDOW(widget->window),
+			      GDK_ROOT_WINDOW(),
+			      0,0,
+			      &x,&y,
+			      &childret);
+
+	if(term->shaded) {
+		if(term->shaded_s.pix == NULL ||
+		   term->shaded_s.x != x ||
+		   term->shaded_s.y != y ||
+		   term->shaded_s.w < nw+nx ||
+		   term->shaded_s.h < nh+ny) {
+			int width,height;
+			gdk_window_get_size(widget->window,
+					    &width,&height);
+			if(term->shaded_s.pix)
+				gdk_pixmap_unref(term->shaded_s.pix);
+			term->shaded_s.pix =
+				create_shaded_pixmap(term->background,
+						     x,y,width,height);
+			term->shaded_s.x = x;
+			term->shaded_s.y = y;
+			term->shaded_s.w = width;
+			term->shaded_s.h = height;
+		}
+		gdk_draw_pixmap(widget->window,
+				bgc,
+				term->shaded_s.pix,
+				nx,ny,
+				nx,ny,
+				nw,nh);
+	} else {
+		/*non-shaded is simple*/
+		XCopyArea (GDK_WINDOW_XDISPLAY(widget->window),
+			   term->background,
+			   GDK_WINDOW_XWINDOW(widget->window),
+			   GDK_GC_XGC(bgc),
+			   x+nx,y+ny,
+			   nw,nh,
+			   nx,ny);
+	}
+}
+#endif
+
 static void zvt_term_draw (GtkWidget *widget, GdkRectangle *area)
 {
   ZvtTerm *term;
@@ -502,6 +710,10 @@ static void zvt_term_draw (GtkWidget *widget, GdkRectangle *area)
 
   term = ZVT_TERM (widget);
   term->in_expose = 1;
+#ifndef ZVT_NO_TRANSPARENT
+  if(term->transparent)
+	  draw_back_pixmap(widget,area->x,area->y,area->width,area->height);
+#endif
   vt_update_rect (term->vx,
 		  area->x/term->charwidth,
 		  area->y/term->charheight,
@@ -527,6 +739,11 @@ zvt_term_expose (GtkWidget      *widget,
 
   /* FIXME: may update 1 more line/char than needed */
   term->in_expose = 1;
+#ifndef ZVT_NO_TRANSPARENT
+  if(term->transparent)
+	  draw_back_pixmap(widget,event->area.x,event->area.y,
+			   event->area.width,event->area.height);
+#endif
   vt_update_rect(term->vx,
 		 event->area.x/term->charwidth,
 		 event->area.y/term->charheight,
@@ -1472,6 +1689,17 @@ static void zvt_term_readmsg(gpointer data, gint fd, GdkInputCondition condition
   gtk_signal_emit(GTK_OBJECT(term), term_signals[CHILD_DIED]);
 }
 
+void
+zvt_term_set_transparent(ZvtTerm *terminal, int	transparent, int shaded)
+{
+/*if transparency is not compiled in we just ignore this*/
+#ifndef ZVT_NO_TRANSPARENT
+	terminal->transparent = transparent;
+	terminal->shaded = shaded;
+	gtk_widget_queue_draw(GTK_WIDGET(terminal));
+#endif
+}
+
 /*
   external rendering functions called by vt_update, etc
 */
@@ -1561,13 +1789,24 @@ void vt_draw_text(void *user_data, int col, int row, char *text, int len, int at
   }
 
   /* optimise: dont 'clear' background if not in expose, and background colour == window colour */
-  /* this may look a bit weird, it really does need to be this way - so dont touch!*/
+  /* this may look a bit weird, it really does need to be this way - so dont touch! */
+  /* if the terminal is transparent we must redraw all the time as we can't optimize in that case*/
   if (term->in_expose || vx->back_match==0) {
-    gdk_draw_rectangle(widget->window,
-		       bgc,
-		       1,
-		       col*term->charwidth, row*term->charheight,
-		       len*term->charwidth, term->charheight);
+#ifndef ZVT_NO_TRANSPARENT
+	  if(!term->transparent || back<17) {
+#endif
+		  gdk_draw_rectangle(widget->window,
+				     bgc,
+				     1,
+				     col*term->charwidth, row*term->charheight,
+				     len*term->charwidth, term->charheight);
+#ifndef ZVT_NO_TRANSPARENT
+	  } else if(!term->in_expose) {
+		  draw_back_pixmap(widget,
+				   col*term->charwidth, row*term->charheight,
+				   len*term->charwidth, term->charheight);
+	  }
+#endif
   } else {
     d(printf("not clearing background in_expose = %d, back_match=%d\n", term->in_expose, vx->back_match));
     d(printf("txt = '%.*s'\n", len, text));
@@ -1596,13 +1835,22 @@ void vt_scroll_area(void *user_data, int firstrow, int count, int offset)
 #if 0
   GdkEvent *event;
 #endif
-
+  
   widget = user_data;
-
+  
   g_return_if_fail (widget != NULL);
   g_return_if_fail (ZVT_IS_TERM (widget));
-
+  
   term = ZVT_TERM (widget);
+
+#ifndef ZVT_NO_TRANSPARENT
+  if(term->transparent) {
+	  /*FIXME: bad hack*/
+	  gtk_widget_queue_draw(widget);
+	  return;
+  }
+#endif
+
 
   /* FIXME: check args */
 
