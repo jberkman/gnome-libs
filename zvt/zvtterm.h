@@ -24,7 +24,7 @@
 #include <gdk/gdk.h>
 #include <gtk/gtkadjustment.h>
 #include <gtk/gtkwidget.h>
-#include "vtx.h"
+#include <zvt/vtx.h>
 
 #ifdef __cplusplus
 extern "C" {

@@ -11,17 +11,17 @@ lib_LTLIBRARIES = libzvt.la
 
 libzvt_la_SOURCES =		\
 	lists.c			\
-	lists.h			\
 	memory.c		\
 	memory.h		\
 	update.c		\
 	vt.c			\
-	vt.h			\
-	vtx.h			\
 	zvtterm.c
 
 libzvtinclude_HEADERS =	\
-	zvtterm.h
+	zvtterm.h	\
+	vtx.h		\
+	lists.h		\
+	vt.h
 
 EXTRA_DIST = TODO BUGS README 
 

@@ -21,8 +21,8 @@
 #ifndef _VTX_H
 #define _VTX_H
 
-#include "lists.h"
-#include "vt.h"
+#include <zvt/lists.h>
+#include <zvt/vt.h>
 
 /* include the toolkit */
 #include <gtk/gtk.h>
