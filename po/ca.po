@@ -1,126 +1,140 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: gnome-libs 0.3330\n"
-"PO-Revision-Date: 1998-11-11 22:11+01:00\n"
-"Date: 1998-11-11 22:11+01:00\n"
+"Project-Id-Version: gnome-libs 0.20\n"
+"POT-Creation-Date: 1998-11-20 22:00+01:00\n"
+"PO-Revision-Date: 1998-11-28 15:50+01:00\n"
 "Last-Translator: Ivan Vilata i Balaguer <al011097@alumail.uji.es>\n"
 "From: Ivan Vilata i Balaguer <al011097@alumail.uji.es>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=iso-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Xgettext-Options: --default-domain=gnome-libs --directory=.. --add-comments --keyword=_ --keyword=N_ --files-from=./POTFILES.in\n"
-"Files: gnome-hello/gnome-hello-2-i18n.c gnome-hello/gnome-hello-3-parse-args.c gnome-hello/gnome-hello-4-SM.c gnome-hello/gnome-hello-7-mdi.c gnome-hello/gnome-hello.c gtk-xmhtml/StringUtil.c gtk-xmhtml/XmHTML-motif.c gtk-xmhtml/XmHTML.c gtk-xmhtml/XmHTMLI.h gtk-xmhtml/callbacks.c gtk-xmhtml/colors.c gtk-xmhtml/fonts.c gtk-xmhtml/format.c gtk-xmhtml/frames.c gtk-xmhtml/gtk-forms.c gtk-xmhtml/gtk-xmhtml.c gtk-xmhtml/images.c gtk-xmhtml/layout.c gtk-xmhtml/map.c gtk-xmhtml/miniparse.h gtk-xmhtml/paint.c gtk-xmhtml/parse.c gtk-xmhtml/plc.c gtk-xmhtml/readFLG.c gtk-xmhtml/readGIF.c gtk-xmhtml/readGIFplc.c gtk-xmhtml/readJPEGplc.c gtk-xmhtml/readPNG.c gtk-xmhtml/readXPM.c libgnome/gnome-i18n.h libgnome/gnome-i18nP.h libgnome/gnome-parse.c libgnome/lib_date.c libgnomeui/gnome-about.c libgnomeui/gnome-about.h libgnomeui/gnome-app-helper.c libgnomeui/gnome-app-util.c libgnomeui/gnome-app.c libgnomeui/gnome-calculator.c libgnomeui/gnome-client.c libgnomeui/gnome-color-picker.c "
-"libgnomeui/gnome-dateedit.c libgnomeui/gnome-dentry-edit.c libgnomeui/gnome-file-entry.c libgnomeui/gnome-icon-sel.c libgnomeui/gnome-init.c libgnomeui/gnome-mdi.h libgnomeui/gnome-messagebox.c libgnomeui/gnome-number-entry.c libgnomeui/gnome-scores.c libgnomeui/gnome-scores.h libgnomeui/gnome-stock.c libgnomeui/gnome_segv.c libgnomeui/gtkcalendar.c libgnomeui/stock_demo.c libgnomeui/winhints_demo.c support/argp-fmtstream.h support/argp-parse.c support/argp.h support/easy-vsnprintf.c support/error.c support/error.h support/getopt.c test-gnome/testgnome.c\n"
 
-#: gnome-hello/gnome-hello-2-i18n.c:36 gnome-hello/gnome-hello-3-parse-args.c:36 gnome-hello/gnome-hello-4-SM.c:218 gnome-hello/gnome-hello.c:122
+#: gnome-hello/gnome-hello-2-i18n.c:34
+#: gnome-hello/gnome-hello-3-parse-args.c:42
+#: gnome-hello/gnome-hello-4-SM.c:232 gnome-hello/gnome-hello.c:122
 msgid "Hello GNOME\n"
 msgstr "Hola GNOME\n"
 
-#: gnome-hello/gnome-hello-2-i18n.c:59 gnome-hello/gnome-hello-3-parse-args.c:59 gnome-hello/gnome-hello-4-SM.c:241 gnome-hello/gnome-hello.c:145
+#: gnome-hello/gnome-hello-2-i18n.c:57
+#: gnome-hello/gnome-hello-3-parse-args.c:65
+#: gnome-hello/gnome-hello-4-SM.c:255 gnome-hello/gnome-hello.c:145
 msgid "The Hello World Gnomified"
-msgstr "Hola Món Gnomificat"
+msgstr "L'«Hola món» gnomificat"
 
-#: gnome-hello/gnome-hello-2-i18n.c:61 gnome-hello/gnome-hello-3-parse-args.c:61
+#. copyright notice
+#: gnome-hello/gnome-hello-2-i18n.c:59
+#: gnome-hello/gnome-hello-3-parse-args.c:67
 msgid "(C) 1998 the Free Software Foundation"
 msgstr "(C) 1998 Free Software Foundation"
 
 #. another comments
-#: gnome-hello/gnome-hello-2-i18n.c:64 gnome-hello/gnome-hello-3-parse-args.c:64 gnome-hello/gnome-hello-4-SM.c:246 gnome-hello/gnome-hello.c:150
+#: gnome-hello/gnome-hello-2-i18n.c:62
+#: gnome-hello/gnome-hello-3-parse-args.c:70
+#: gnome-hello/gnome-hello-4-SM.c:260 gnome-hello/gnome-hello.c:150
 msgid "GNOME is a civilized software system so we've a \"hello world\" program"
-msgstr "GNOME és un sistema civilitzat, i per això tenim un programa «hola món»"
+msgstr "GNOME és un sistema civilitzat, i per això tenim un programa «Hola món»"
 
-#: gnome-hello/gnome-hello-2-i18n.c:73 gnome-hello/gnome-hello-3-parse-args.c:73
+#: gnome-hello/gnome-hello-2-i18n.c:71
+#: gnome-hello/gnome-hello-3-parse-args.c:79
 msgid "About GnomeHello..."
-msgstr "Tocant a GnomeHello..."
+msgstr "Tocant a «Hola GNOME»..."
 
-#: gnome-hello/gnome-hello-2-i18n.c:78 gnome-hello/gnome-hello-3-parse-args.c:78 gnome-hello/gnome-hello-4-SM.c:53 gnome-hello/gnome-hello-7-mdi.c:467
+#: gnome-hello/gnome-hello-2-i18n.c:76
+#: gnome-hello/gnome-hello-3-parse-args.c:84 gnome-hello/gnome-hello-4-SM.c:54
+#: gnome-hello/gnome-hello-7-mdi.c:356
 msgid "Exit"
 msgstr "Eixir"
 
-#. and document menu and document list paths (see gnome-app-helper menu
-#. insertion routines for details)
-#: gnome-hello/gnome-hello-2-i18n.c:84 gnome-hello/gnome-hello-3-parse-args.c:84 gnome-hello/gnome-hello-4-SM.c:77 gnome-hello/gnome-hello-7-mdi.c:473 gnome-hello/gnome-hello-7-mdi.c:562 libgnomeui/stock_demo.c:184
+#. The menu definitions: File/Exit and Help/About are mandatory
+#: gnome-hello/gnome-hello-2-i18n.c:82
+#: gnome-hello/gnome-hello-3-parse-args.c:90 gnome-hello/gnome-hello-4-SM.c:78
+#: gnome-hello/gnome-hello-7-mdi.c:362 gnome-hello/gnome-hello-7-mdi.c:437
+#: libgnomeui/stock_demo.c:184
 msgid "File"
 msgstr "Fitxer"
 
-#: gnome-hello/gnome-hello-2-i18n.c:85 gnome-hello/gnome-hello-3-parse-args.c:85 gnome-hello/gnome-hello-4-SM.c:78 gnome-hello/gnome-hello-7-mdi.c:515 libgnomeui/gnome-stock.c:766 libgnomeui/stock_demo.c:290
+#: gnome-hello/gnome-hello-2-i18n.c:83
+#: gnome-hello/gnome-hello-3-parse-args.c:91 gnome-hello/gnome-hello-4-SM.c:79
+#: gnome-hello/gnome-hello-7-mdi.c:404 libgnomeui/gnome-stock.c:776
+#: libgnomeui/stock_demo.c:290
 msgid "Help"
 msgstr "Ajuda"
 
-#.
-#. * Make the main window and binds the delete event so you can close
-#. * the program from your WM
-#.
-#: gnome-hello/gnome-hello-2-i18n.c:124 gnome-hello/gnome-hello-3-parse-args.c:137 gnome-hello/gnome-hello-4-SM.c:183
+#. Make the main window and binds the delete event so you can close
+#. the program from your WM
+#: gnome-hello/gnome-hello-2-i18n.c:124
+#: gnome-hello/gnome-hello-3-parse-args.c:167
+#: gnome-hello/gnome-hello-4-SM.c:197
 msgid "Hello World Gnomified"
-msgstr "Hola Món Gnomificat"
+msgstr "L'«Hola món» gnomificat"
 
-#.
-#. * We make a button, bind the 'clicked' signal to hello and setting it
-#. * to be the content of the main window
-#.
-#: gnome-hello/gnome-hello-2-i18n.c:136 gnome-hello/gnome-hello-3-parse-args.c:149 gnome-hello/gnome-hello-4-SM.c:199 gnome-hello/gnome-hello.c:103
+#. We make a button, bind the 'clicked' signal to hello and setting it
+#. to be the content of the main window
+#: gnome-hello/gnome-hello-2-i18n.c:136
+#: gnome-hello/gnome-hello-3-parse-args.c:179
+#: gnome-hello/gnome-hello-4-SM.c:213 gnome-hello/gnome-hello.c:103
 msgid "Hello GNOME"
 msgstr "Hola GNOME"
 
-#: gnome-hello/gnome-hello-4-SM.c:53
+#: gnome-hello/gnome-hello-4-SM.c:54
 msgid "Exit GNOME hello"
 msgstr "Eixir d'«Hola GNOME»"
 
-#: gnome-hello/gnome-hello-4-SM.c:65 gnome-hello/gnome-hello-7-mdi.c:509
+#: gnome-hello/gnome-hello-4-SM.c:66 gnome-hello/gnome-hello-7-mdi.c:398
 msgid "About..."
 msgstr "Tocant a..."
 
-#: gnome-hello/gnome-hello-4-SM.c:65
+#: gnome-hello/gnome-hello-4-SM.c:66
 msgid "Info about GNOME hello"
 msgstr "Informació sobre «Hola GNOME»"
 
-#: gnome-hello/gnome-hello-4-SM.c:89 gnome-hello/gnome-hello-7-mdi.c:27
-msgid "Discard session"
-msgstr "Descartar sessió"
-
-#: gnome-hello/gnome-hello-4-SM.c:89 libgnomeui/gnome-client.c:175 libgnomeui/gnome-client.c:177
+#: gnome-hello/gnome-hello-4-SM.c:91 libgnomeui/gnome-client.c:171
+#: libgnomeui/gnome-client.c:173
 msgid "ID"
 msgstr "ID"
 
-#: gnome-hello/gnome-hello-7-mdi.c:232
+#: gnome-hello/gnome-hello-4-SM.c:91
+msgid "Discard session"
+msgstr "Descartar sessió"
+
+#: gnome-hello/gnome-hello-7-mdi.c:180
 msgid "Add View"
 msgstr "Afegir vista"
 
-#: gnome-hello/gnome-hello-7-mdi.c:237
+#: gnome-hello/gnome-hello-7-mdi.c:185
 msgid "Remove View"
 msgstr "Esborrar vista"
 
-#: gnome-hello/gnome-hello-7-mdi.c:243
+#: gnome-hello/gnome-hello-7-mdi.c:191
 msgid "Child"
 msgstr "Fill"
 
-#: gnome-hello/gnome-hello-7-mdi.c:451
+#: gnome-hello/gnome-hello-7-mdi.c:340
 msgid "Add Child"
 msgstr "Afegir fill"
 
-#: gnome-hello/gnome-hello-7-mdi.c:457
+#: gnome-hello/gnome-hello-7-mdi.c:346
 msgid "Remove Child"
 msgstr "Esborrar fill"
 
-#: gnome-hello/gnome-hello-7-mdi.c:482
+#: gnome-hello/gnome-hello-7-mdi.c:371
 msgid "Notebook"
 msgstr "Bloc de notes"
 
-#: gnome-hello/gnome-hello-7-mdi.c:488
+#: gnome-hello/gnome-hello-7-mdi.c:377
 msgid "Toplevel"
 msgstr "Primer pla"
 
-#: gnome-hello/gnome-hello-7-mdi.c:494
+#: gnome-hello/gnome-hello-7-mdi.c:383
 msgid "Modal"
 msgstr "Modal"
 
-#: gnome-hello/gnome-hello-7-mdi.c:500
+#: gnome-hello/gnome-hello-7-mdi.c:389
 msgid "MDI Mode"
 msgstr "Mode MDI"
 
-#: gnome-hello/gnome-hello-7-mdi.c:563
+#: gnome-hello/gnome-hello-7-mdi.c:438
 msgid "Children/"
 msgstr "Fills/"
 
@@ -161,13 +175,22 @@ msgstr ""
 
 #: gnome-hello/gnome-hello.c:217
 msgid "Gnome Hello %s.\n"
-msgstr "Gnome Hello %s.\n"
+msgstr "Hola GNOME %s.\n"
 
 #: gnome-hello/gnome-hello.c:231
 msgid "Options error\n"
 msgstr "Error a les opcions\n"
 
-#: libgnome/lib_date.c:73 libgnome/lib_date.c:79 libgnomeui/gnome-messagebox.c:117
+#: libgnome/gnome-parse.c:44
+msgid ""
+"\n"
+"Generic options"
+msgstr ""
+"\n"
+"Opcions genèriques"
+
+#: libgnome/lib_date.c:73 libgnome/lib_date.c:79
+#: libgnomeui/gnome-messagebox.c:107
 msgid "Error"
 msgstr "Error"
 
@@ -247,12 +270,6 @@ msgstr "novembre"
 msgid "December"
 msgstr "desembre"
 
-#: libgnome/gnome-popt.c:75
-msgid ""
-"Error on option %s: %s.\n"
-"Run '%s --help' to see a full list of available command line options.\n"
-msgstr ""
-
 #: libgnomeui/gnome-about.c:201
 msgid "Author:"
 msgstr "Autor:"
@@ -265,7 +282,8 @@ msgstr "Autors:"
 msgid "Authors: "
 msgstr "Autors: "
 
-#: libgnomeui/gnome-about.c:575 libgnomeui/stock_demo.c:282 libgnomeui/winhints_demo.c:257
+#: libgnomeui/gnome-about.c:575 libgnomeui/stock_demo.c:282
+#: libgnomeui/winhints_demo.c:245
 msgid "About"
 msgstr "Tocant a"
 
@@ -498,27 +516,23 @@ msgstr "="
 msgid "INV"
 msgstr "INV"
 
-#: libgnomeui/gnome-client.c:175
-msgid "Specify session management ID"
-msgstr ""
+#: libgnomeui/gnome-client.c:172
+msgid "Specify session management id"
+msgstr "Especificar l'id del gestor de sessions"
 
-#: libgnomeui/gnome-client.c:177
-msgid "Specify ID of cloned client"
-msgstr ""
+#: libgnomeui/gnome-client.c:174
+msgid "Specify id of cloned client"
+msgstr "Especificar l'id del client clonat"
 
-#: libgnomeui/gnome-client.c:179
+#: libgnomeui/gnome-client.c:176
 msgid "Disable connection to session manager"
 msgstr "Desactivar connexió amb el gestor de sessions"
-
-#: libgnomeui/gnome-client.c:287
-msgid "Session management options"
-msgstr ""
 
 #: libgnomeui/gnome-color-picker.c:269
 msgid "Pick a color"
 msgstr "Tria un color"
 
-#: libgnomeui/gnome-dateedit.c:392
+#: libgnomeui/gnome-dateedit.c:393
 msgid "Calendar"
 msgstr "Calendari"
 
@@ -540,11 +554,11 @@ msgstr "Tipus:"
 
 #: libgnomeui/gnome-dentry-edit.c:232
 msgid "Run in Terminal"
-msgstr "Executar a un Terminal"
+msgstr "Executar a un terminal"
 
 #: libgnomeui/gnome-dentry-edit.c:246
 msgid "Try this before using:"
-msgstr "Provar açò abans d'usar"
+msgstr "Abans d'usar, provar açò:"
 
 #: libgnomeui/gnome-dentry-edit.c:256
 msgid "Documentation:"
@@ -580,11 +594,11 @@ msgstr ""
 msgid "Choose an icon"
 msgstr "Tria una icona"
 
-#: libgnomeui/gnome-file-entry.c:97
+#: libgnomeui/gnome-file-entry.c:90
 msgid "Select file"
 msgstr "Tria un fitxer"
 
-#: libgnomeui/gnome-file-entry.c:151
+#: libgnomeui/gnome-file-entry.c:147
 msgid "Browse..."
 msgstr "Buscar..."
 
@@ -592,95 +606,105 @@ msgstr "Buscar..."
 msgid "Loading Icons..."
 msgstr "Carregant icones..."
 
-#: libgnomeui/gnome-init.c:162
-msgid "Gdk debugging flags to set"
+#: libgnomeui/gnome-init.c:48
+msgid ""
+"\n"
+"Gtk+ toolkit options"
 msgstr ""
+"\n"
+"Opcions de les eines Gtk+"
 
-#: libgnomeui/gnome-init.c:162 libgnomeui/gnome-init.c:164 libgnomeui/gnome-init.c:184 libgnomeui/gnome-init.c:186
+#: libgnomeui/gnome-init.c:49 libgnomeui/gnome-init.c:50
+#: libgnomeui/gnome-init.c:60 libgnomeui/gnome-init.c:61
 msgid "FLAGS"
 msgstr "MARQUES"
 
-#: libgnomeui/gnome-init.c:164
-msgid "Gdk debugging flags to unset"
-msgstr ""
+#: libgnomeui/gnome-init.c:49
+msgid "Gdk debuging flags to set"
+msgstr "Marques de depuració de GDK per activar"
 
-#: libgnomeui/gnome-init.c:166
-msgid "X display to use"
-msgstr "Pantalla X a usar"
+#: libgnomeui/gnome-init.c:50
+msgid "Gdk debuging flags to unset"
+msgstr "Marques de depuració de GDK per desactivar"
 
-#: libgnomeui/gnome-init.c:166
+#: libgnomeui/gnome-init.c:51
 msgid "DISPLAY"
 msgstr "PANTALLA"
 
-#: libgnomeui/gnome-init.c:168
-msgid "Make X calls synchronous"
-msgstr ""
+#: libgnomeui/gnome-init.c:51
+msgid "X display to use"
+msgstr "Pantalla X per usar"
 
-#: libgnomeui/gnome-init.c:170
+#: libgnomeui/gnome-init.c:53
 msgid "Don't use X shared memory extension"
 msgstr "No usar extensió X de memòria compartida"
 
-#: libgnomeui/gnome-init.c:172
-msgid "Program name as used by the window manager"
-msgstr "Nom del programa com l'usa el gestor de finestres"
-
-#: libgnomeui/gnome-init.c:172
+#: libgnomeui/gnome-init.c:54
 msgid "NAME"
 msgstr "NOM"
 
-#: libgnomeui/gnome-init.c:174
-msgid "Program class as used by the window manager"
-msgstr "Classe del programa com l'usa el gestor de finestres"
+#: libgnomeui/gnome-init.c:54
+msgid "Program name as used by the window manager"
+msgstr "Nom del programa com l'usa el gestor de finestres"
 
-#: libgnomeui/gnome-init.c:174
+#: libgnomeui/gnome-init.c:55
 msgid "CLASS"
 msgstr "CLASSE"
 
-#: libgnomeui/gnome-init.c:176
+#: libgnomeui/gnome-init.c:55
+msgid "Program class as used by the window manager"
+msgstr "Classe del programa com l'usa el gestor de finestres"
+
+#: libgnomeui/gnome-init.c:56
 msgid "HOST"
 msgstr "NODE"
 
-#: libgnomeui/gnome-init.c:178
+#: libgnomeui/gnome-init.c:56 libgnomeui/gnome-init.c:57
+#: libgnomeui/gnome-init.c:58 libgnomeui/gnome-init.c:59
+msgid "FIXME"
+msgstr "ARREGLA'M"
+
+#: libgnomeui/gnome-init.c:57
 msgid "PORT"
 msgstr "PORT"
 
-#: libgnomeui/gnome-init.c:180 libgnomeui/gnome-init.c:182
+#: libgnomeui/gnome-init.c:58 libgnomeui/gnome-init.c:59
 msgid "STYLE"
 msgstr "ESTIL"
 
-#: libgnomeui/gnome-init.c:184
-msgid "Gtk+ debugging flags to set"
-msgstr ""
+#: libgnomeui/gnome-init.c:60
+msgid "Gtk+ debuging flags to set"
+msgstr "Marques de depuració de GTK+ per activar"
 
-#: libgnomeui/gnome-init.c:186
-msgid "Gtk+ debugging flags to unset"
-msgstr ""
+#: libgnomeui/gnome-init.c:61
+msgid "Gtk+ debuging flags to unset"
+msgstr "Marques de depuració de GTK+ a desactivar"
 
-#: libgnomeui/gnome-init.c:188
+#: libgnomeui/gnome-init.c:62
 msgid "Make all warnings fatal"
 msgstr "Fer errors fatals dels avisos"
 
-#: libgnomeui/gnome-init.c:190
-msgid "Load an additional Gtk module"
-msgstr ""
-
-#: libgnomeui/gnome-init.c:190
+#: libgnomeui/gnome-init.c:63
 msgid "MODULE"
 msgstr "MÒDUL"
 
-#: libgnomeui/gnome-messagebox.c:99
+#: libgnomeui/gnome-init.c:63
+msgid "Load additional Gtk modules"
+msgstr "Carregar mòduls Gtk addicionals"
+
+#: libgnomeui/gnome-messagebox.c:95
 msgid "Information"
 msgstr "Informació"
 
-#: libgnomeui/gnome-messagebox.c:108
+#: libgnomeui/gnome-messagebox.c:101
 msgid "Warning"
 msgstr "Avís"
 
-#: libgnomeui/gnome-messagebox.c:126
+#: libgnomeui/gnome-messagebox.c:113
 msgid "Question"
 msgstr "Pregunta"
 
-#: libgnomeui/gnome-messagebox.c:135
+#: libgnomeui/gnome-messagebox.c:119
 msgid "Message"
 msgstr "Missatge"
 
@@ -692,83 +716,71 @@ msgstr "Calculadora"
 msgid "Calculator..."
 msgstr "Calculadora..."
 
-#: libgnomeui/gnome-scores.c:71
+#: libgnomeui/gnome-scores.c:72
 msgid "Top Ten"
 msgstr "Els 10 millors"
 
-#: libgnomeui/gnome-scores.c:82
+#: libgnomeui/gnome-scores.c:83
 msgid "User"
 msgstr "Usuari"
 
-#: libgnomeui/gnome-scores.c:85
+#: libgnomeui/gnome-scores.c:86
 msgid "Score"
 msgstr "Puntuació"
 
-#: libgnomeui/gnome-scores.c:88
+#: libgnomeui/gnome-scores.c:89
 msgid "Date"
 msgstr "Data"
 
-#: libgnomeui/gnome-stock.c:760
+#: libgnomeui/gnome-stock.c:770
 msgid "OK"
 msgstr "Acceptar"
 
-#: libgnomeui/gnome-stock.c:761
+#: libgnomeui/gnome-stock.c:771
 msgid "Apply"
 msgstr "Aplicar"
 
-#: libgnomeui/gnome-stock.c:762
+#: libgnomeui/gnome-stock.c:772
 msgid "Cancel"
 msgstr "Cancel·lar"
 
-#: libgnomeui/gnome-stock.c:763 libgnomeui/stock_demo.c:144
+#: libgnomeui/gnome-stock.c:773 libgnomeui/stock_demo.c:144
 msgid "Close"
 msgstr "Tancar"
 
-#: libgnomeui/gnome-stock.c:764
+#: libgnomeui/gnome-stock.c:774
 msgid "Yes"
 msgstr "Sí"
 
-#: libgnomeui/gnome-stock.c:765
+#: libgnomeui/gnome-stock.c:775
 msgid "No"
 msgstr "No"
 
-#: libgnomeui/gnome-stock.c:767
+#: libgnomeui/gnome-stock.c:777
 msgid "Next"
 msgstr "Següent"
 
-#: libgnomeui/gnome-stock.c:768
+#: libgnomeui/gnome-stock.c:778
 msgid "Prev"
 msgstr "Previ"
 
-#: libgnomeui/gnome-stock.c:769
-msgid "Up"
-msgstr ""
-
-#: libgnomeui/gnome-stock.c:770
-msgid "Down"
-msgstr ""
-
-#: libgnomeui/gnome-stock.c:771
-msgid "Font"
-msgstr ""
-
-#: libgnomeui/gnome-stock.c:1768
+#: libgnomeui/gnome-stock.c:1707
 msgid "Menu Accelerator Keys"
 msgstr "Acceleradors de menú"
 
-#: libgnomeui/gnome-stock.c:1770
+#: libgnomeui/gnome-stock.c:1709
 msgid "Global"
 msgstr "Global"
 
-#: libgnomeui/gnome-stock.c:1772
+#: libgnomeui/gnome-stock.c:1711
 msgid "Menu Item"
 msgstr "Ítem del menú"
 
-#: libgnomeui/gnome-stock.c:1773
+#: libgnomeui/gnome-stock.c:1712
 msgid "Accelerator"
 msgstr "Accelerador"
 
-#: libgnomeui/gnome_segv.c:60
+#: libgnomeui/gnome_segv.c:58
 msgid ""
 "No, and ignore\n"
 "future SIGSEGV's"
@@ -776,7 +788,7 @@ msgstr ""
 "No, i ignorar\n"
 "SIGSEGVs futurs."
 
-#: libgnomeui/gnome_segv.c:71
+#: libgnomeui/gnome_segv.c:68
 msgid ""
 "Application \"%s\" has a bug.\n"
 "SIGSEGV received at PC %#lx in PID %d.\n"
@@ -784,11 +796,39 @@ msgid ""
 "\n"
 "Do you want to exit this program?"
 msgstr ""
-"L'aplicació «%s» té un error de programaciói.\n"
+"L'aplicació «%s» té un error de programació.\n"
 "Error de segmentació al PC %#lx del PID %d.\n"
 "\n"
 "\n"
 "Vols abandonar aquest programa?"
+
+#: libgnomeui/gtkcalendar.c:893
+msgid "Su"
+msgstr "dg."
+
+#: libgnomeui/gtkcalendar.c:893
+msgid "Mo"
+msgstr "dl."
+
+#: libgnomeui/gtkcalendar.c:893
+msgid "Tu"
+msgstr "dt."
+
+#: libgnomeui/gtkcalendar.c:893
+msgid "We"
+msgstr "dc."
+
+#: libgnomeui/gtkcalendar.c:893
+msgid "Th"
+msgstr "dj."
+
+#: libgnomeui/gtkcalendar.c:893
+msgid "Fr"
+msgstr "dv."
+
+#: libgnomeui/gtkcalendar.c:893
+msgid "Sa"
+msgstr "ds."
 
 #: libgnomeui/stock_demo.c:112
 msgid "New..."
@@ -866,147 +906,143 @@ msgstr "test wmhints"
 msgid "winhints-test"
 msgstr "test winhints"
 
-#: libgnomeui/winhints_demo.c:72
+#: libgnomeui/winhints_demo.c:68
 msgid "Layer:"
 msgstr "Capa:"
 
-#: libgnomeui/winhints_demo.c:95
+#: libgnomeui/winhints_demo.c:91
 msgid "Above Dock"
 msgstr "A sobre del Moll"
 
-#: libgnomeui/winhints_demo.c:99
+#: libgnomeui/winhints_demo.c:95
 msgid "Dock"
 msgstr "Moll"
 
-#: libgnomeui/winhints_demo.c:103
+#: libgnomeui/winhints_demo.c:99
 msgid "On Top"
 msgstr "Damunt"
 
-#: libgnomeui/winhints_demo.c:107
+#: libgnomeui/winhints_demo.c:103
 msgid "Normal"
 msgstr "Normal"
 
-#: libgnomeui/winhints_demo.c:111
+#: libgnomeui/winhints_demo.c:107
 msgid "Below"
 msgstr "Davall"
 
-#: libgnomeui/winhints_demo.c:115
+#: libgnomeui/winhints_demo.c:111
 msgid "Desktop"
 msgstr "Escriptori"
 
-#: libgnomeui/winhints_demo.c:123
+#: libgnomeui/winhints_demo.c:119
 msgid "Set Layer"
 msgstr "Definir capa"
 
-#: libgnomeui/winhints_demo.c:130
+#: libgnomeui/winhints_demo.c:126
 msgid "Workspaces:"
 msgstr "Espais de treball:"
 
-#: libgnomeui/winhints_demo.c:152
-msgid "Sticky"
-msgstr ""
+#: libgnomeui/winhints_demo.c:148
+msgid "Occupy all workspaces"
+msgstr "Ocupar tots els espais de treball"
 
-#: libgnomeui/winhints_demo.c:156
+#: libgnomeui/winhints_demo.c:152
 msgid "Set Workspace"
 msgstr "Definir espai de treball"
 
-#: libgnomeui/winhints_demo.c:166
+#: libgnomeui/winhints_demo.c:162
 msgid "State Toggles:"
 msgstr "Interruptors d'estat:"
 
-#: libgnomeui/winhints_demo.c:176
+#: libgnomeui/winhints_demo.c:172
 msgid "Minimized"
 msgstr "Minimitzat"
 
-#: libgnomeui/winhints_demo.c:180
+#: libgnomeui/winhints_demo.c:176
 msgid "Maximized Vertical"
 msgstr "Maximitzat verticalment"
 
-#: libgnomeui/winhints_demo.c:184
+#: libgnomeui/winhints_demo.c:180
 msgid "Maximized Horizontal"
 msgstr "Maximitzat horitzontalment"
 
-#: libgnomeui/winhints_demo.c:188
+#: libgnomeui/winhints_demo.c:184
 msgid "Hidden"
 msgstr "Ocult"
 
+#: libgnomeui/winhints_demo.c:188
+msgid "Roll-Up"
+msgstr "Enrotllar"
+
 #: libgnomeui/winhints_demo.c:192
-msgid "Shaded"
-msgstr ""
-
-#: libgnomeui/winhints_demo.c:196
-msgid "Fixed Position"
-msgstr ""
-
-#: libgnomeui/winhints_demo.c:200
-msgid "Ignore on Arrange"
-msgstr ""
-
-#: libgnomeui/winhints_demo.c:204
 msgid "Set State"
 msgstr "Definir estat"
 
-#: libgnomeui/winhints_demo.c:210
+#: libgnomeui/winhints_demo.c:198
 msgid "Skip Toggles:"
 msgstr "Evitar interruptors:"
 
-#: libgnomeui/winhints_demo.c:220
+#: libgnomeui/winhints_demo.c:208
 msgid "Skip Focus"
 msgstr "Evitar focus"
 
-#: libgnomeui/winhints_demo.c:224
+#: libgnomeui/winhints_demo.c:212
 msgid "Skip Window Menu"
 msgstr "Evitar menú de finestra"
 
-#: libgnomeui/winhints_demo.c:228
+#: libgnomeui/winhints_demo.c:216
 msgid "Skip Taskbar / WinList"
-msgstr "Evitar Barra Tasques / WinList"
+msgstr "Evitar barra de tasques / WinList"
 
-#: libgnomeui/winhints_demo.c:232
+#: libgnomeui/winhints_demo.c:220
 msgid "Set Skip"
 msgstr "Definir què s'evita"
 
-#: libgnomeui/winhints_demo.c:412
+#: libgnomeui/winhints_demo.c:403
 msgid "WIN_HINTS Test"
 msgstr "Test WIN_HINTS"
 
-#: libgnomeui/winhints_demo.c:413
+#: libgnomeui/winhints_demo.c:404
 msgid "Copyright (C)1998"
 msgstr "Copyright (C)1998"
 
-#: libgnomeui/winhints_demo.c:415
-msgid "Simple test app to check how the WIN_HINTS work. And to test the gnome_win_hints_* functions for errors. :)"
-msgstr "Programa simple per provar com funcionen els WM_HINTS, i per si les funcions gnome_win_hints_* tenen errors. :)"
+#: libgnomeui/winhints_demo.c:406
+msgid ""
+"Simple test app to check how the WIN_HINTS work. And to test the "
+"gnome_win_hints_* functions for errors. :)"
+msgstr ""
+"Programa simple per provar com funcionen els WM_HINTS, i per si les funcions "
+"gnome_win_hints_* tenen errors. :)"
 
-#: support/argp-parse.c:95
+#: support/argp-parse.c:90
 msgid "Give this help list"
-msgstr "Mostrar aquest llistat d'ajuda"
+msgstr "Mostra aquest llistat d'ajuda"
 
-#: support/argp-parse.c:96
+#: support/argp-parse.c:91
 msgid "Give a short usage message"
-msgstr "Mostrar una breu ajuda d'ús"
+msgstr "Mostra una breu ajuda d'ús"
 
-#: support/argp-parse.c:97
+#: support/argp-parse.c:92
 msgid "Set the program name"
 msgstr "Estableix el nom del programa"
 
-#: support/argp-parse.c:99
+#: support/argp-parse.c:94
 msgid "Hang for SECS seconds (default 3600)"
-msgstr "Esperar SECS segons (3600 per defecte)"
+msgstr "Espera SECS segons (3600 per defecte)"
 
-#: support/argp-parse.c:156
+#: support/argp-parse.c:151
 msgid "Print program version"
 msgstr "Mostra la versió del programa"
 
-#: support/argp-parse.c:172
+#: support/argp-parse.c:167
 msgid "(PROGRAM ERROR) No version known!?"
 msgstr "(ERROR DEL PROGRAMA) Versió desconeguda?!"
 
-#: support/argp-parse.c:646
+#: support/argp-parse.c:641
 msgid "%s: Too many arguments\n"
 msgstr "%s: Massa arguments\n"
 
-#: support/argp-parse.c:785
+#: support/argp-parse.c:780
 msgid "(PROGRAM ERROR) Option should have been recognized!?"
 msgstr "(ERROR DEL PROGRAMA) L'opció hauria d'haver sigut reconeguda?!"
 
@@ -1034,20 +1070,20 @@ msgstr "%s: l'opció «%s» necessita un argument\n"
 #. --option
 #: support/getopt.c:744
 msgid "%s: unrecognized option `--%s'\n"
-msgstr "%s: opció «--%s» desconeguda\n"
+msgstr "%s: l'opció «--%s» és desconeguda\n"
 
 #: support/getopt.c:748
 msgid "%s: unrecognized option `%c%s'\n"
-msgstr "%s: opció «%c%s» desconeguda\n"
+msgstr "%s: l'opció «%c%s» és desconeguda\n"
 
 #. 1003.2 specifies the format of this message.
 #: support/getopt.c:774
 msgid "%s: illegal option -- %c\n"
-msgstr "%s: opció il·legal -- %c\n"
+msgstr "%s: l'opció no és permesa -- %c\n"
 
 #: support/getopt.c:777
 msgid "%s: invalid option -- %c\n"
-msgstr "%s: opció no vàlida -- %c\n"
+msgstr "%s: l'opció no és vàlida -- %c\n"
 
 #. 1003.2 specifies the format of this message.
 #: support/getopt.c:807 support/getopt.c:937
@@ -1062,44 +1098,15 @@ msgstr "%s: l'opció «-W %s» és ambígua\n"
 msgid "%s: option `-W %s' doesn't allow an argument\n"
 msgstr "%s: l'opció «-W %s» no admet arguments\n"
 
-#: test-gnome/testgnome.c:328
-msgid "Guru-in-a-dialog test"
-msgstr ""
-
-#. Pixmap
-#: test-gnome/testgnome.c:602
-msgid "Default Pixmap"
-msgstr ""
-
-#: test-gnome/testgnome.c:610 test-gnome/testgnome.c:651 test-gnome/testgnome.c:676
-msgid "If you choose a font it will appear here"
-msgstr ""
-
-#. Font_Info
-#: test-gnome/testgnome.c:617
-msgid "Font Info"
-msgstr ""
-
-#: test-gnome/testgnome.c:627
-msgid "Use Font in button with size"
-msgstr ""
-
-#: test-gnome/testgnome.c:634
-msgid "Show font size"
-msgstr ""
-
-#: test-gnome/testgnome.c:670
-msgid "This is an hbox with pixmap and text"
-msgstr ""
-
-#: test-gnome/testgnome.c:863
+#: test-gnome/testgnome.c:653
 msgid "The user chose Yes/OK with data:\n"
 msgstr "L'usuari trià Sí/Acceptar amb les dades:\n"
 
-#: test-gnome/testgnome.c:867
+#: test-gnome/testgnome.c:657
 msgid "The user chose No/Cancel with data:\n"
 msgstr "L'usuari trià No/Cancel·lar amb les dades:\n"
 
-#: test-gnome/testgnome.c:878
+#: test-gnome/testgnome.c:668
 msgid "Weird number in reply callback"
-msgstr "Número extrany a l'acció de resposta"
+msgstr "Nombre extrany a l'acció de resposta"
+
