@@ -38,7 +38,7 @@
 0	long		0100554		application/x-apl-workspace
 0	string		=<ar>		application/x-ar
 0	string	!<arch>\n__________E	application/x-ar
-0	string		-h-		Software Tools format archive text
+0	string		-h-		application/data
 0	string		!<arch>		application/x-ar
 0	string		\<ar>		application/x-ar
 0	string		=<ar>		application/x-ar
@@ -57,307 +57,304 @@
 0	lelong&0x8080ffff	0x0000031a	application/x-arc
 0	lelong&0x8080ffff	0x0000041a	application/x-arc
 0	lelong&0x8080ffff	0x0000061a	application/x-arc
-0	string		\032archive	RISC OS archive (ArcFS format)
-0	leshort		0xea60		application/x-arc
-0	string		HPAK		HPACK archive data
-0	string		\351,\001JAM\		JAM archive,
-2	string		-lh0-		LHarc 1.x archive data [lh0]
-2	string		-lh1-		LHarc 1.x archive data [lh1]
-2	string		-lz4-		LHarc 1.x archive data [lz4]
-2	string		-lz5-		LHarc 1.x archive data [lz5]
-2	string		-lzs-		LHa 2.x? archive data [lzs]
-2	string		-lh\40-		LHa 2.x? archive data [lh ]
-2	string		-lhd-		LHa 2.x? archive data [lhd]
-2	string		-lh2-		LHa 2.x? archive data [lh2]
-2	string		-lh3-		LHa 2.x? archive data [lh3]
-2	string		-lh4-		LHa (2.x) archive data [lh4]
-2	string		-lh5-		LHa (2.x) archive data [lh5]
-0	string		Rar!		RAR archive data
-0	string		SQSH		squished archive data (Acorn RISCOS)
-0	string		UC2\x1a		UC2 archive data
-0	string		PK\003\004	Zip archive data
-20	lelong		0xfdc4a7dc	Zoo archive data
-10	string		#\ This\ is\ a\ shell\ archive	shell archive text
-0	string		*STA		Aster*x
-0	string		2278		Aster*x Version 2
-0	beshort		0560		WE32000 COFF
-0	beshort		0561		WE32000 COFF executable (TV)
-0	string		\000\004\036\212\200	3b2 core file
-0	string		.snd		Sun/NeXT audio data:
-0	lelong		0x0064732E	DEC audio data:
-0	string	MThd			Standard MIDI data
-0	string	CTMF			Creative Music (CMF) data
-0	string	SBI			SoundBlaster instrument data
-0	string	Creative\ Voice\ File	Creative Labs voice data
-0	belong		0x4e54524b	MultiTrack sound data
-0	string		RIFF		Microsoft RIFF
-0	string		EMOD		Extended MOD sound data,
-0	belong		0x2e7261fd	realaudio sound file
-0	string		MTM		MultiTracker Module sound file
-0	string		if		Composer 669 Module sound data
-0	string		FAR		Module sound data
-0	string		MAS_U		ULT(imate) Module sound data
-0x2c	string		SCRM		ScreamTracker III Module sound data
-0	string		Extended Module	Extended Module sound data
-0	string		GF1PATCH110\0ID#000002\0	GUS patch
-0	string		GF1PATCH100\0ID#000002\0	Old GUS	patch
-0	string	JN		extended 669 module data
-0	string	MAS_UTrack_V00
-0	string	UN05		MikMod UNI format module sound data
-0	string	Extended\ Module: Fasttracker II module sound data
-21	string	!SCREAM!	Screamtracker 2 module sound data
-1080	string	M.K.		4-channel Protracker module sound data
-1080	string	M!K!		4-channel Protracker module sound data
-1080	string	FLT4		4-channel Startracker module sound data
-1080	string	4CHN		4-channel Fasttracker module sound data
-1080	string	6CHN		6-channel Fasttracker module sound data
-1080	string	8CHN		8-channel Fasttracker module sound data
-1080	string	CD81		8-channel Oktalyzer module sound data
-1080	string	OKTA		8-channel Oktalyzer module sound data
-1082	string	CH
-1080	string	16CN		16-channel Taketracker module sound data
-1080	string	32CN		32-channel Taketracker module sound data
-0       string          TOC             TOC sound file
-0	short		03401		VAX-order 68K Blit (standalone) executable
-0	long		0406		68k Blit mpx/mux executable
-0	short		0406		VAX-order2 68k Blit mpx/mux executable
-0	short		03001		VAX-order 68k Blit mpx/mux executable
-0	lelong			000000314	BSD/OS i386 compact demand paged executable
-0	string		//		C++ program text
-0       string          \\1cw\          ChiWriter file
-0       string          \\1cw           ChiWriter file
-0	belong&0xffffff00	0x85011400  cisco IOS microcode
-0	belong&0xffffff00	0x8501cb00  cisco IOS experimental microcode
-0	short		0575		CLIPPER COFF executable (VAX #)
-0	short		0577		CLIPPER COFF executable
-4	string		pipe		CLIPPER instruction trace
-4	string		prof		CLIPPER instruction profile
-0	string		:\ shell archive or commands for antique kernel text
-0	string		#!/bin/sh		Bourne shell script text
-0	string		#!\ /bin/sh		Bourne shell script text
-0	string		#!\	/bin/sh		Bourne shell script text
-0	string		#!/bin/csh		C shell script text
-0	string		#!\ /bin/csh		C shell script text
-0	string		#!\	/bin/csh	C shell script text
-0	string		#!/bin/ksh		Korn shell script text
-0	string		#!\ /bin/ksh		Korn shell script text
-0	string		#!\	/bin/ksh	Korn shell script text
-0	string	 	#!/bin/tcsh		Tenex C shell script text
-0	string	 	#!\ /bin/tcsh		Tenex C shell script text
-0	string	 	#!\	/bin/tcsh	Tenex C shell script text
-0	string		#!/usr/local/tcsh	Tenex C shell script text
-0	string	 	#!\ /usr/local/tcsh	Tenex C shell script text
-0	string		#!/usr/local/bin/tcsh	Tenex C shell script text
-0	string		#!\ /usr/local/bin/tcsh	Tenex C shell script text
-0	string		#!\	/usr/local/bin/tcsh	Tenex C shell script text
-0	string		#!/usr/local/bin/zsh	Paul Falstad's zsh
-0	string		#!\ /usr/local/bin/zsh	Paul Falstad's zsh
-0	string		#!\	/usr/local/bin/zsh	Paul Falstad's zsh
-0	string		#!/usr/local/bin/ash	Neil Brown's ash
-0	string		#!\ /usr/local/bin/ash	Neil Brown's ash
-0	string		#!\	/usr/local/bin/ash	Neil Brown's ash
-0	string		#!/usr/local/bin/ae	Neil Brown's ae
-0	string		#!\ /usr/local/bin/ae	Neil Brown's ae
-0	string		#!\	/usr/local/bin/ae	Neil Brown's ae
-0	string		#!/bin/nawk		new awk script text
-0	string		#!\ /bin/nawk		new awk script text
-0	string		#!\	/bin/nawk		new awk script text
-0	string		#!/usr/bin/nawk		new awk script text
-0	string		#!\ /usr/bin/nawk	new awk script text
-0	string		#!\	/usr/bin/nawk	new awk script text
-0	string		#!/usr/local/bin/nawk	new awk script text
-0	string		#!\ /usr/local/bin/nawk	new awk script text
-0	string		#!\	/usr/local/bin/nawk	new awk script text
-0	string		#!/bin/gawk		GNU awk script text
-0	string		#!\ /bin/gawk		GNU awk script text
-0	string		#!\	/bin/gawk		GNU awk script text
-0	string		#!/usr/bin/gawk		GNU awk script text
-0	string		#!\ /usr/bin/gawk	GNU awk script text
-0	string		#!\	/usr/bin/gawk	GNU awk script text
-0	string		#!/usr/local/bin/gawk	GNU awk script text
-0	string		#!\ /usr/local/bin/gawk	GNU awk script text
-0	string		#!\	/usr/local/bin/gawk	GNU awk script text
-0	string		#!/bin/awk		awk commands text
-0	string		#!\ /bin/awk		awk commands text
-0	string		#!\	/bin/awk		awk commands text
-0	string		#!/usr/bin/awk		awk commands text
-0	string		#!\ /usr/bin/awk	awk commands text
-0	string		#!\	/usr/bin/awk	awk commands text
-0	string		BEGIN			awk commands text
-0	string		#!/bin/perl			perl commands text
-0	string		#!\ /bin/perl			perl commands text
-0	string		#!\	/bin/perl		perl commands text
-0	string		eval\ "exec\ /bin/perl		perl commands text
-0	string		#!/usr/bin/perl			perl commands text
-0	string		#!\ /usr/bin/perl		perl commands text
-0	string		#!\	/usr/bin/perl		perl commands text
-0	string		eval\ "exec\ /usr/bin/perl	perl commands text
-0	string		#!/usr/local/bin/perl		perl commands text
-0	string		#!\ /usr/local/bin/perl		perl commands text
-0	string		#!\	/usr/local/bin/perl	perl commands text
-0	string		eval\ "exec\ /usr/local/bin/perl	perl commands text
-0	string		#!/bin/rc	Plan 9 rc shell script text
-0	string		#!\ /bin/rc	Plan 9 rc shell script text
-0	string		#!\	/bin/rc	Plan 9 rc shell script text
-0	string		#!/bin/bash	Bourne-Again shell script text
-0	string		#!\ /bin/bash	Bourne-Again shell script text
-0	string		#!\	/bin/bash	Bourne-Again shell script text
-0	string		#!/usr/local/bin/bash	Bourne-Again shell script text
-0	string		#!\ /usr/local/bin/bash	Bourne-Again shell script text
-0	string		#!\	/usr/local/bin/bash	Bourne-Again shell script text
-0	string		#!\ /			a
-0	string		#!\	/		a
-0	string		#!/			a
-0	string		#!\ 			commands text
-0	string		\037\235	compress'd data
-0       string          \037\213        gzip compressed data
-0	string		\037\036	packed data
-0	short		017437		old packed data
-0	short		0x1fff		compacted data
-0	string		\377\037	compacted data
-0	short		0145405		huf output
-0	string		BZh		bzip2 compressed data
-0	leshort		0xFF76		squeezed data,
-0	leshort		0xFE76		crunched data,
-0	leshort		0xFD76		LZH compressed data,
-0	string		\037\237	frozen file 2.1
-0	string		\037\236	frozen file 1.0 (or gzip 0.5)
-0	string		\037\240	SCO compress -H (LZH) data
-0	string		BZ		bzip compressed	data
-0	string		\x89\x4c\x5a\x4f\x00\x0d\x0a\x1a\x0a	lzop compressed data
-0	belong	0507	Convex old-style object
-0	belong	0513	Convex old-style demand paged executable
-0	belong	0515	Convex old-style pre-paged executable
-0	belong	0517	Convex old-style pre-paged, non-swapped executable
-0	belong	0x011257	Core file
-24	belong	=60011	dump format, 4.1 BSD or earlier
-24	belong	=60012	dump format, 4.2 or 4.3 BSD without IDC
-24	belong	=60013	dump format, 4.2 or 4.3 BSD (IDC compatible)
-24	belong	=60014	dump format, Convex Storage Manager by-reference dump
-0	belong	0601		Convex SOFF
-0	belong			0605		Convex SOFF core
-0	belong			0607		Convex SOFF checkpoint
-0	belong	0x13579ace	GNU dbm 1.x or ndbm database, big endian
-0	lelong	0x13579ace	GNU dbm 1.x or ndbm database, little endian
-0	string	GDBM		GNU dbm 2.x database
-0	belong	0x061561	Berkeley DB Hash file
-0	belong	0x053162	Berkeley DB Btree file
-0	string	=<list>\n<protocol\ bbn-m	Diamond Multimedia Document
-0	string		diff\ 	'diff' output text
-0	string		***\ 		'diff' output text
-0	string		Only\ in\ 	'diff' output text
-0	string		Common\ subdirectories:\ 	'diff' output text
-0	string	!<arch>\n________64E	Alpha archive
-0	leshort		0x183		COFF format alpha
-0	leshort		0x188	Alpha compressed COFF
-0	leshort		0x18f	Alpha u-code object
-0	string	\377\377\177		ddis/ddif
-0	string	\377\377\174		ddis/dots archive
-0	string	\377\377\176		ddis/dtif table data
-0	string	\033c\033		LN03 output
-0	long	04553207		X image
-0	string	!<PDF>!\n		profiling data file
-0	short		0x0501		locale data table
-24	belong	60012		new-fs dump file (big endian),
-24	belong	60011		old-fs dump file (big endian),
-24	lelong	60012		new-fs dump file (little endian),
-24	lelong	60011		old-fs dump file (little endian),
-0	string		\177ELF		ELF
-0	short		0x154		Encore
-0	short		0x155		Encore unsupported executable
-0x438	leshort	0xEF53			Linux/i386 ext2 filesystem
-0	string	\366\366\366\366	PC formatted floppy with no filesystem
-0774	beshort		0xdabe		Sun disk label
-0x1FE	leshort	0xAA55			x86 boot sector
-0x410	leshort		0x137f		Minix filesystem
-0x410	leshort		0x138f		Minix filesystem, 30 char names
-0x410	leshort		0x2468		Minix filesystem, version 2
-0x410	leshort		0x2478		Minix filesystem, version 2, 30 char names
-0	string		-rom1fs-\0	romfs filesystem, version 1
-0	lelong		0x1b031336L	Netboot image,
-0x18b	string	OS/2	OS/2 Boot Manager
-0	string		FONT		ASCII vfont text
-0	short		0436		Berkeley vfont data
-0	short		017001		byte-swapped Berkeley vfont data
-0	string		%!PS-AdobeFont-1.0	PostScript Type 1 font text
-6	string		%!PS-AdobeFont-1.0	PostScript Type 1 font program data
-0	belong		00000004		X11 SNF font data, MSB first
-0	lelong		00000004		X11 SNF font data, LSB first
-0	string		STARTFONT\040		X11 BDF font text
-0	string		\001fcp			X11 Portable Compiled Font data
-0	string		D1.0\015		X11 Speedo font data
-0	string		flf		FIGlet font
-0	string		flc		FIGlet controlfile
-0	belong		0x14025919	libGrx font data,
-0	belong		0xff464f4e	DOS code page font data collection
-7	belong		0x00454741	DOS code page font data
-7	belong		0x00564944	DOS code page font data (from Linux?)
-4098	string		DOSFONT		DOSFONT2 encrypted font data
-0	string		\<MakerFile	FrameMaker document
-0	string		\<MIFFile	FrameMaker MIF (ASCII) file
-0	string		\<MakerDictionary	FrameMaker Dictionary text
-0	string		\<MakerScreenFont	FrameMaker Font file
-0	string		\<MML		FrameMaker MML file
-0	string		\<BookFile	FrameMaker Book file
-0	string		\<Maker	Intermediate Print File	FrameMaker IPL file
-0	lelong&0377777777	041400407	FreeBSD/i386
-0	lelong&0377777777	041400410	FreeBSD/i386 pure
-0	lelong&0377777777	041400413	FreeBSD/i386 demand paged
-0	lelong&0377777777	041400314	FreeBSD/i386 compact demand paged
-7	string	\357\020\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0	FreeBSD/i386 a.out core file
-0	lelong			011421044151	ld.so hints file
-0       string          GIMP\ Gradient  GIMP gradient data
-0	string		gimp\ xcf	GIMP XCF image data,
-20      string          GPAT            GIMP pattern data,
-20      string          GIMP            GIMP brush data
-0	string		\336\22\4\225	GNU message catalog (little endian),
-0	string		\225\4\22\336	GNU message catalog (big endian),
-0	beshort		0627		Apollo m68k COFF executable
-0	beshort		0624		apollo a88k COFF executable
-0       long            01203604016     TML 0123 byte-order format
-0       long            01702407010     TML 1032 byte-order format
-0       long            01003405017     TML 2301 byte-order format
-0       long            01602007412     TML 3210 byte-order format
-0	belong 		0x02100106	PA-RISC1.1 relocatable object
-0	belong 		0x02100107	PA-RISC1.1 executable
-0	belong 		0x02100108	PA-RISC1.1 shared executable
-0	belong 		0x0210010b	PA-RISC1.1 demand-load executable
-0	belong 		0x0210010e	PA-RISC1.1 shared library
-0	belong 		0x0210010d	PA-RISC1.1 dynamic load library
-0	belong		0x02140106	PA-RISC2.0 relocatable object
-0       belong		0x02140107	PA-RISC2.0 executable
-0       belong		0x02140108	PA-RISC2.0 shared executable
-0       belong		0x0214010b	PA-RISC2.0 demand-load executable
-0       belong		0x0214010e	PA-RISC2.0 shared library
-0       belong		0x0214010d	PA-RISC2.0 dynamic load library
-0	belong 		0x020b0106	PA-RISC1.0 relocatable object
-0	belong 		0x020b0107	PA-RISC1.0 executable
-0	belong 		0x020b0108	PA-RISC1.0 shared executable
-0	belong 		0x020b010b	PA-RISC1.0 demand-load executable
-0	belong 		0x020b010e	PA-RISC1.0 shared library
-0	belong 		0x020b010d	PA-RISC1.0 dynamic load library
-0	belong		0x213c6172	archive file
-0	long		0x02080106	HP s500 relocatable executable
-0	long		0x02080107	HP s500 executable
-0	long		0x02080108	HP s500 pure executable
-0	belong 		0x020c0108	HP s200 pure executable
-0	belong		0x020c0107	HP s200 executable
-0	belong		0x020c010b	HP s200 demand-load executable
-0	belong		0x020c0106	HP s200 relocatable executable
-0	belong 		0x020a0108	HP s200 (2.x release) pure executable
-0	belong		0x020a0107	HP s200 (2.x release) executable
-0	belong		0x020c010e	HP s200 shared library
-0	belong		0x020c010d	HP s200 dynamic load library
-0	long		0x0000ff65	HP old archive
-0	long		0x020aff65	HP s200 old archive
-0	long		0x020cff65	HP s200 old archive
-0	long		0x0208ff65	HP s500 old archive
-0	long		0x015821a6	HP core file
-0	long		0x4da7eee8	HP-WINDOWS font
-0	string		Bitmapfile	HP Bitmapfile
-0	string		IMGfile	CIS 	compimg HP Bitmapfile
-0	long		0x020c010c	compiled Lisp
-0	string		msgcat01	HP NLS message catalog,
+0	string		\032archive	application/data
+0	leshort		0xea60		application/x-arj
+0	string		HPAK		application/data
+0	string		\351,\001JAM\		application/data
+2	string		-lh0-		application/x-lha
+2	string		-lh1-		application/x-lha
+2	string		-lz4-		application/x-lha
+2	string		-lz5-		application/x-lha
+2	string		-lzs-		application/x-lha
+2	string		-lh\40-		application/x-lha
+2	string		-lhd-		application/x-lha
+2	string		-lh2-		application/x-lha
+2	string		-lh3-		application/x-lha
+2	string		-lh4-		application/x-lha
+2	string		-lh5-		application/x-lha
+0	string		Rar!		application/x-rar
+0	string		SQSH		application/data
+0	string		UC2\x1a		application/data
+0	string		PK\003\004	application/zip
+20	lelong		0xfdc4a7dc	application/x-zoo
+10	string		#\ This\ is\ a\ shell\ archive	application/x-shar
+0	string		*STA		application/data
+0	string		2278		application/data
+0	beshort		0560		application/executable
+0	beshort		0561		application/executable
+0	string		\000\004\036\212\200	application/core
+0	string		.snd		audio/basic
+0	lelong		0x0064732E	audio/basic
+0	string	MThd			audio/midi
+0	string	CTMF			audio/x-cmf
+0	string	SBI			audio/x-sbi
+0	string	Creative\ Voice\ File	audio/x-voc
+0	belong		0x4e54524b	audio/x-multitrack
+0	string		RIFF		audio/x-wav
+0	string		EMOD		audio/x-emod
+0	belong		0x2e7261fd	audio/x-pn-realaudio
+0	string		MTM		audio/x-multitrack
+0	string		if		audio/x-669-mod
+0	string		FAR		audio/mod
+0	string		MAS_U		audio/x-multimate-mod
+0x2c	string		SCRM		audio/x-st3-mod
+0	string		GF1PATCH110\0ID#000002\0	audio/x-gus-patch
+0	string		GF1PATCH100\0ID#000002\0	audio/x-gus-patch
+0	string	JN		audio/x-669-mod
+0	string	UN05		audio/x-mikmod-uni
+0	string	Extended\ Module: audio/x-ft2-mod
+21	string	!SCREAM!	audio/x-st2-mod
+1080	string	M.K.		audio/x-protracker-mod
+1080	string	M!K!		audio/x-protracker-mod
+1080	string	FLT4		audio/x-startracker-mod
+1080	string	4CHN		audio/x-fasttracker-mod
+1080	string	6CHN		audio/x-fasttracker-mod
+1080	string	8CHN		audio/x-fasttracker-mod
+1080	string	CD81		audio/x-oktalyzer-mod
+1080	string	OKTA		audio/x-oktalyzer-mod
+1080	string	16CN		audio/x-taketracker-mod
+1080	string	32CN		audio/x-taketracker-mod
+0       string          TOC             audio/x-toc
+0	short		03401		application/executable
+0	long		0406		application/executable
+0	short		0406		application/executable
+0	short		03001		application/executable
+0	lelong			000000314	application/executable
+0	string		//		text/cpp
+0       string          \\1cw\          application/data
+0       string          \\1cw           application/data
+0	belong&0xffffff00	0x85011400  application/data
+0	belong&0xffffff00	0x8501cb00  application/data
+0	short		0575		application/executable
+0	short		0577		application/executable
+4	string		pipe		application/data
+4	string		prof		application/data
+0	string		:\ shell application/data
+0	string		#!/bin/sh		application/x-sh
+0	string		#!\ /bin/sh		application/x-sh
+0	string		#!\	/bin/sh		application/x-sh
+0	string		#!/bin/csh		application/x-csh
+0	string		#!\ /bin/csh		application/x-csh
+0	string		#!\	/bin/csh	application/x-csh
+0	string		#!/bin/ksh		application/x-ksh
+0	string		#!\ /bin/ksh		application/x-ksh
+0	string		#!\	/bin/ksh	application/x-ksh
+0	string	 	#!/bin/tcsh		application/x-csh
+0	string	 	#!\ /bin/tcsh		application/x-csh
+0	string	 	#!\	/bin/tcsh	application/x-csh
+0	string		#!/usr/local/tcsh	application/x-csh
+0	string	 	#!\ /usr/local/tcsh	application/x-csh
+0	string		#!/usr/local/bin/tcsh	application/x-csh
+0	string		#!\ /usr/local/bin/tcsh	application/x-csh
+0	string		#!\	/usr/local/bin/tcsh	application/x-csh
+0	string		#!/usr/local/bin/zsh	application/x-zsh
+0	string		#!\ /usr/local/bin/zsh	application/x-zsh
+0	string		#!\	/usr/local/bin/zsh	application/x-zsh
+0	string		#!/usr/local/bin/ash	application/x-sh
+0	string		#!\ /usr/local/bin/ash	application/x-zsh
+0	string		#!\	/usr/local/bin/ash	application/x-zsh
+0	string		#!/usr/local/bin/ae	text/script
+0	string		#!\ /usr/local/bin/ae	text/script
+0	string		#!\	/usr/local/bin/ae	text/script
+0	string		#!/bin/nawk		application/x-awk
+0	string		#!\ /bin/nawk		application/x-awk
+0	string		#!\	/bin/nawk		application/x-awk
+0	string		#!/usr/bin/nawk		application/x-awk
+0	string		#!\ /usr/bin/nawk	application/x-awk
+0	string		#!\	/usr/bin/nawk	application/x-awk
+0	string		#!/usr/local/bin/nawk	application/x-awk
+0	string		#!\ /usr/local/bin/nawk	application/x-awk
+0	string		#!\	/usr/local/bin/nawk	application/x-awk
+0	string		#!/bin/gawk		application/x-awk
+0	string		#!\ /bin/gawk		application/x-awk
+0	string		#!\	/bin/gawk		application/x-awk
+0	string		#!/usr/bin/gawk		application/x-awk
+0	string		#!\ /usr/bin/gawk	application/x-awk
+0	string		#!\	/usr/bin/gawk	application/x-awk
+0	string		#!/usr/local/bin/gawk	application/x-awk
+0	string		#!\ /usr/local/bin/gawk	application/x-awk
+0	string		#!\	/usr/local/bin/gawk	application/x-awk
+0	string		#!/bin/awk		application/x-awk
+0	string		#!\ /bin/awk		application/x-awk
+0	string		#!\	/bin/awk		application/x-awk
+0	string		#!/usr/bin/awk		application/x-awk
+0	string		#!\ /usr/bin/awk	application/x-awk
+0	string		#!\	/usr/bin/awk	application/x-awk
+0	string		BEGIN			application/x-awk
+0	string		#!/bin/perl			application/x-perl
+0	string		#!\ /bin/perl			application/x-perl
+0	string		#!\	/bin/perl		application/x-perl
+0	string		eval\ "exec\ /bin/perl		application/x-perl
+0	string		#!/usr/bin/perl			application/x-perl
+0	string		#!\ /usr/bin/perl		application/x-perl
+0	string		#!\	/usr/bin/perl		application/x-perl
+0	string		eval\ "exec\ /usr/bin/perl	application/x-perl
+0	string		#!/usr/local/bin/perl		application/x-perl
+0	string		#!\ /usr/local/bin/perl		application/x-perl
+0	string		#!\	/usr/local/bin/perl	application/x-perl
+0	string		eval\ "exec\ /usr/local/bin/perl	application/x-perl
+0	string		#!/bin/rc	text/script
+0	string		#!\ /bin/rc	text/script
+0	string		#!\	/bin/rc	text/script
+0	string		#!/bin/bash	application/x-sh
+0	string		#!\ /bin/bash	application/x-sh
+0	string		#!\	/bin/bash	application/x-sh
+0	string		#!/usr/local/bin/bash	application/x-sh
+0	string		#!\ /usr/local/bin/bash	application/x-sh
+0	string		#!\	/usr/local/bin/bash	application/x-sh
+0	string		#!\ /			text/script
+0	string		#!\	/		text/script
+0	string		#!/			text/script
+0	string		#!\ 			text/script
+0	string		\037\235	application/compress
+0       string          \037\213        application/x-gzip
+0	string		\037\036	application/data
+0	short		017437		application/data
+0	short		0x1fff		application/data
+0	string		\377\037	application/data
+0	short		0145405		application/data
+0	string		BZh		application/x-bzip2
+0	leshort		0xFF76		application/data
+0	leshort		0xFE76		application/data
+0	leshort		0xFD76		application/x-lzh
+0	string		\037\237	application/data
+0	string		\037\236	application/data
+0	string		\037\240	application/data
+0	string		BZ		application/x-bzip
+0	string		\x89\x4c\x5a\x4f\x00\x0d\x0a\x1a\x0a	application/data
+0	belong	0507	application/object
+0	belong	0513	application/executable
+0	belong	0515	application/executable
+0	belong	0517	application/executable
+0	belong	0x011257	application/core
+24	belong	60011	application/data
+24	belong	60012	application/data
+24	belong	60013	application/data
+24	belong	60014	application/data
+0	belong	0601		application/object
+0	belong			application/core
+0	belong			0607		application/data
+0	belong	0x13579ace	application/x-gdbm
+0	lelong	0x13579ace	application/x-gdbm
+0	string	GDBM		application/x-gdbm
+0	belong	0x061561	application/x-db
+0	belong	0x053162	application/x-db
+0	string	=<list>\n<protocol\ bbn-m	application/data
+0	string		diff\ 	text/x-patch
+0	string		***\ 		text/x-patch
+0	string		Only\ in\ 	text/x-patch
+0	string		Common\ subdirectories:\ 	text/x-patch
+0	string	!<arch>\n________64E	application/data
+0	leshort		0x183		application/executable
+0	leshort		0x188	application/executable
+0	leshort		0x18f	application/object
+0	string	\377\377\177		application/data
+0	string	\377\377\174		application/data
+0	string	\377\377\176		application/data
+0	string	\033c\033		application/data
+0	long	04553207		image/x11
+0	string	!<PDF>!\n		application/x-prof
+0	short		0x0501		application/x-locale
+24	belong	60012		application/x-dump
+24	belong	60011		application/x-dump
+24	lelong	60012		application/x-dump
+24	lelong	60011		application/x-dump
+0	string		\177ELF		application/executable
+0	short		0x154		application/data
+0	short		0x155		application/executable
+0x438	leshort	0xEF53			application/x-linux-ext2fs
+0	string	\366\366\366\366	application/x-pc-floppy
+0774	beshort		0xdabe		application/data
+0x1FE	leshort	0xAA55			application/data
+0x410	leshort		0x137f		application/x-filesystem
+0x410	leshort		0x138f		application/x-filesystem
+0x410	leshort		0x2468		application/x-filesystem
+0x410	leshort		0x2478		application/x-filesystem
+0	string		-rom1fs-\0	application/x-filesystem
+0	lelong		0x1b031336L	application/x-bootable
+0x18b	string	OS/2	application/x-bootable
+0	string		FONT		application/x-font
+0	short		0436		application/x-font
+0	short		017001		application/x-font
+0	string		%!PS-AdobeFont-1.0	application/x-postscript
+6	string		%!PS-AdobeFont-1.0	application/x-postscript
+0	belong		00000004		application/x-font
+0	lelong		00000004		application/x-font
+0	string		STARTFONT\040		application/x-font
+0	string		\001fcp			application/x-font
+0	string		D1.0\015		application/x-font
+0	string		flf		application/x-font
+0	string		flc		application/x-font
+0	belong		0x14025919	application/x-font
+0	belong		0xff464f4e	application/x-font
+7	belong		0x00454741	application/x-font
+7	belong		0x00564944	application/x-font
+4098	string		DOSFONT		application/x-font
+0	string		\<MakerFile	application/x-framemaker
+0	string		\<MIFFile	application/x-framemaker
+0	string		\<MakerDictionary	application/x-framemaker
+0	string		\<MakerScreenFont	application/x-framemaker
+0	string		\<MML		application/x-framemaker
+0	string		\<BookFile	application/x-framemaker
+0	string		\<Maker	application/x-framemaker
+0	lelong&0377777777	041400407	application/executable
+0	lelong&0377777777	041400410	application/executable
+0	lelong&0377777777	041400413	application/executable
+0	lelong&0377777777	041400314	application/executable
+7	string	\357\020\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0	application/core
+0	lelong			011421044151	application/data
+0       string          GIMP\ Gradient  application/x-gimp-gradient
+0	string		gimp\ xcf	application/x-gimp-image
+20      string          GPAT            application/x-gimp-pattern
+20      string          GIMP            application/x-gimp-brush
+0	string		\336\22\4\225	application/x-locale
+0	string		\225\4\22\336	application/x-locale
+0	beshort		0627		application/executable
+0	beshort		0624		application/executable
+0       long            01203604016     application/data
+0       long            01702407010     application/data
+0       long            01003405017     application/data
+0       long            01602007412     application/data
+0	belong 		0x02100106	application/object
+0	belong 		0x02100107	application/executable
+0	belong 		0x02100108	application/executable
+0	belong 		0x0210010b	application/executable
+0	belong 		0x0210010e	application/library
+0	belong 		0x0210010d	application/library
+0	belong		0x02140106	application/object
+0       belong		0x02140107	application/executable
+0       belong		0x02140108	application/executable
+0       belong		0x0214010b	application/executable
+0       belong		0x0214010e	application/library
+0       belong		0x0214010d	application/object
+0	belong 		0x020b0106	application/object
+0	belong 		0x020b0107	application/executable
+0	belong 		0x020b0108	application/executable
+0	belong 		0x020b010b	application/executable
+0	belong 		0x020b010e	application/library
+0	belong 		0x020b010d	application/library
+0	belong		0x213c6172	application/x-ar
+0	long		0x02080106	application/executable
+0	long		0x02080107	application/executable
+0	long		0x02080108	application/executable
+0	belong 		0x020c0108	application/executable
+0	belong		0x020c0107	application/executable
+0	belong		0x020c010b	application/executable
+0	belong		0x020c0106	application/executable
+0	belong 		0x020a0108	application/executable
+0	belong		0x020a0107	application/executable
+0	belong		0x020c010e	application/library
+0	belong		0x020c010d	application/library
+0	long		0x0000ff65	application/library
+0	long		0x020aff65	application/library
+0	long		0x020cff65	application/library
+0	long		0x0208ff65	application/library
+0	long		0x015821a6	application/core
+0	long		0x4da7eee8	application/x-font
+0	string		Bitmapfile	image/unknown
+0	string		IMGfile	CIS 	image/unknown
+0	long		0x020c010c	application/x-lisp
+0	string		msgcat01	application/x-locale
 0	string		HPHP48-		HP48 binary
 0	string		%%HP:		HP48 text
 0	beshort		200		hp200 (68010) BSD
