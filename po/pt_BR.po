@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-libs 1.0.16\n"
-"POT-Creation-Date: 1999-09-20 14:02-0300\n"
+"POT-Creation-Date: 1999-09-20 14:41-0500\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Alexandre Hautequest <hquest@fesppr.br>\n"
 "Language-Team: \n"
@@ -673,7 +673,7 @@ msgid "Pick a color"
 msgstr "Escolha uma cor"
 
 #. Calendar label, only shown if the date editor has a time field
-#: libgnomeui/gnome-dateedit.c:452
+#: libgnomeui/gnome-dateedit.c:454
 msgid "Calendar"
 msgstr "Calendário"
 
@@ -755,11 +755,11 @@ msgstr "Selecione um arquivo"
 msgid "Browse..."
 msgstr "Procurar..."
 
-#: libgnomeui/gnome-font-picker.c:159
+#: libgnomeui/gnome-font-picker.c:160
 msgid "Pick a Font"
 msgstr "Escolha uma fonte"
 
-#: libgnomeui/gnome-font-picker.c:705 libgnomeui/gnome-stock.c:845
+#: libgnomeui/gnome-font-picker.c:706 libgnomeui/gnome-stock.c:845
 msgid "Font"
 msgstr "Fonte"
 
@@ -1165,7 +1165,17 @@ msgstr "Item de Menu"
 msgid "Accelerator"
 msgstr "Atalho"
 
-#: libgnomeui/gnome_segv.c:44
+#: libgnomeui/gnome_segv.c:50
+#, c-format
+msgid ""
+"The GNOME Session Manager (process %d) has crashed\n"
+"due to a fatal error (%s).\n"
+"When you close this dialog, all applications will close and your session "
+"will exit.\n"
+"Please save all your files before closing this dialog."
+msgstr ""
+
+#: libgnomeui/gnome_segv.c:55
 #, c-format
 msgid ""
 "Application \"%s\" (process %d) has crashed\n"
@@ -1176,11 +1186,11 @@ msgstr ""
 "devido a um erro fatal.\n"
 "(%s)"
 
-#: libgnomeui/gnome_segv.c:49
+#: libgnomeui/gnome_segv.c:61
 msgid "Usage: gnome_segv appname signum\n"
 msgstr "Utilização: gnome_segv aplicação sinal\n"
 
-#: libgnomeui/gnome_segv.c:61
+#: libgnomeui/gnome_segv.c:73
 msgid "Please visit the GNOME Application Crash page for more information"
 msgstr ""
 "Por favor, visite a página do 'GNOME Application Crash' para mais informações"
