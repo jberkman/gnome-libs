@@ -7,8 +7,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-libs 1.0.14\n"
-"POT-Creation-Date: 1999-08-26 19:31+0200\n"
-"PO-Revision-Date: 1999-07-20 22:26+02:00\n"
+"POT-Creation-Date: 1999-08-28 06:40+0200\n"
+"PO-Revision-Date: 1999-08-28 07:36+02:00\n"
 "Last-Translator: Karl Eichwalder <ke@suse.de>\n"
 "Language-Team: Matthias Warkus <mawa@iname.com>\n"
 "MIME-Version: 1.0\n"
@@ -679,47 +679,71 @@ msgstr "Wähle eine Farbe"
 msgid "Calendar"
 msgstr "Kalender"
 
-#: libgnomeui/gnome-dentry-edit.c:170
+#: libgnomeui/gnome-dentry-edit.c:180
 msgid "Name:"
 msgstr "Name:"
 
-#: libgnomeui/gnome-dentry-edit.c:183
+#: libgnomeui/gnome-dentry-edit.c:193
 msgid "Comment:"
 msgstr "Kommentar:"
 
-#: libgnomeui/gnome-dentry-edit.c:193
+#: libgnomeui/gnome-dentry-edit.c:203
 msgid "Command:"
 msgstr "Kommando:"
 
-#: libgnomeui/gnome-dentry-edit.c:203
+#: libgnomeui/gnome-dentry-edit.c:213
 msgid "Type:"
 msgstr "Typ:"
 
-#: libgnomeui/gnome-dentry-edit.c:219
+#: libgnomeui/gnome-dentry-edit.c:229
 msgid "Icon:"
 msgstr "Icon:"
 
-#: libgnomeui/gnome-dentry-edit.c:229
+#: libgnomeui/gnome-dentry-edit.c:239
 msgid "Choose an icon"
 msgstr "Icon wählen"
 
-#: libgnomeui/gnome-dentry-edit.c:242
+#: libgnomeui/gnome-dentry-edit.c:252
 msgid "Run in Terminal"
 msgstr "Im Terminal laufen lassen"
 
-#: libgnomeui/gnome-dentry-edit.c:255
+#: libgnomeui/gnome-dentry-edit.c:363
 msgid "Try this before using:"
 msgstr "Vor dem Aufruf dies versuchen:"
 
-#: libgnomeui/gnome-dentry-edit.c:265
+#: libgnomeui/gnome-dentry-edit.c:373
 msgid "Documentation:"
 msgstr "Dokumentation:"
 
-#: libgnomeui/gnome-dentry-edit.c:351
+#: libgnomeui/gnome-dentry-edit.c:383
+msgid "Name/Comment translations:"
+msgstr "Übersetzungen:"
+
+#: libgnomeui/gnome-dentry-edit.c:386
+msgid "Language"
+msgstr "Sprache"
+
+#: libgnomeui/gnome-dentry-edit.c:387
+msgid "Name"
+msgstr "Name"
+
+#: libgnomeui/gnome-dentry-edit.c:388
+msgid "Comment"
+msgstr "Kommentar"
+
+#: libgnomeui/gnome-dentry-edit.c:416
+msgid "Add/Set"
+msgstr "Hinzufügen/Einstellen"
+
+#: libgnomeui/gnome-dentry-edit.c:421 libgnomeui/gnome-stock.c:825
+msgid "Remove"
+msgstr "Entfernen"
+
+#: libgnomeui/gnome-dentry-edit.c:503
 msgid "Basic"
 msgstr "Grundlegend"
 
-#: libgnomeui/gnome-dentry-edit.c:355
+#: libgnomeui/gnome-dentry-edit.c:507
 msgid "Advanced"
 msgstr "Fortgeschritten"
 
@@ -1066,10 +1090,6 @@ msgstr "Löschen"
 msgid "Select Color"
 msgstr "Farbe auswählen"
 
-#: libgnomeui/gnome-stock.c:825
-msgid "Remove"
-msgstr "Entfernen"
-
 #: libgnomeui/gnome-stock.c:826
 msgid "Table Borders"
 msgstr "Tabellenränder"
@@ -1163,7 +1183,7 @@ msgstr "Syntax: gnome_segv appname signum\n"
 
 #: libgnomeui/gnome_segv.c:61
 msgid "Please visit the GNOME Application Crash page for more information"
-msgstr ""
+msgstr "Bitte besuchen Sie die »GNOME Application Crash«-Seite, um an mehr Informationen zu gelangen"
 
 #: libgnomeui/stock_demo.c:112
 msgid "New..."
@@ -1219,7 +1239,7 @@ msgstr "Kopieren"
 
 #: libgnomeui/stock_demo.c:229
 msgid "Paste"
-msgstr "Datum"
+msgstr "Einfügen"
 
 #: libgnomeui/stock_demo.c:241
 msgid "Properties..."
@@ -1351,16 +1371,13 @@ msgstr "WIN_HINTS-Test"
 
 #: libgnomeui/winhints_demo.c:411
 msgid "Copyright (C)1998"
-msgstr "Copyright (C)1998"
+msgstr ""
 
 #: libgnomeui/winhints_demo.c:413
 msgid ""
 "Simple test app to check how the WIN_HINTS work. And to test the "
 "gnome_win_hints_* functions for errors. :)"
-msgstr ""
-"Einfache Testanwendung, um zu prüfen, ob die WIN_HINTS\n"
-"funktionieren. Um um die gnome_win_hints_*-Funktionen auf Fehler\n"
-"abzuklopfen. :)"
+msgstr "Einfache Testanwendung, um zu prüfen, ob die WIN_HINTS funktionieren. Um die gnome_win_hints_*-Funktionen auf Fehler abzuklopfen. :)"
 
 #: libgnorba/gnome-name-server.c:229
 #, c-format
@@ -1390,14 +1407,14 @@ msgid ""
 "any services installed or I don't know the path to find them.\n"
 "In either case, please check your GNOME installation."
 msgstr ""
-"Ich konnte keine installierten Dienste finden. Entweder haben Sie keine\n"
+"Ich konnte keine installierten Dienste finden.  Entweder haben Sie keine\n"
 "Dienste installiert, oder ich kenne den Pfad nicht, unter dem ich sie\n"
-"finden kann. Wie auch immer, bitte überprüfen Sie ihre\n"
+"finden kann.  Wie auch immer, bitte überprüfen Sie ihre\n"
 "GNOME-Installation."
 
-#: libgnorba/goad.c:1294
+#: libgnorba/goad.c:1321
 msgid "(Internal use only) GOAD server ID to activate"
-msgstr "(Nur intern) Zu aktivierende GOAD-Server-ID"
+msgstr "(Nur intern) zu aktivierende GOAD-Server-ID"
 
 #: libgnorba/loadshlib.c:11
 msgid "ID under which GOAD knows this server"
@@ -1519,7 +1536,7 @@ msgstr "Dies ist eine hbox mit Pixmap und Text"
 
 #: test-gnome/testgnome.c:1072
 msgid "The user chose Yes/OK with data:\n"
-msgstr "Der anwender wählte Ja/OK mit den Daten:\n"
+msgstr "Der Anwender wählte Ja/OK mit den Daten:\n"
 
 #: test-gnome/testgnome.c:1076
 msgid "The user chose No/Cancel with data:\n"
