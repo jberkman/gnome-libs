@@ -43,10 +43,10 @@ Also I would like to apologize if some of my English is not
 correct, as English is not my first language. I hope that
 my C is better then my English.</para></preface>
 
-<chapter>
+<chapter id="gnome-libraries-overview">
 <title>GNOME Libraries Overview</title>
 
-<sect1>
+<sect1 id="where-gnome-libraries-fit">
 <title>Where do GNOME Libraries Fit</title>
 
 <para>
@@ -70,7 +70,7 @@ a range of easy to use containers for C.
 
 </sect1>
 
-<sect1>
+<sect1 id="structure-of-gnome-libraries">
 <title>Structure of GNOME Libraries</title>
 
 <para>
@@ -136,9 +136,9 @@ soon, as GTK+ is a really great toolkit.</para>
 </sect1>
 </chapter>
 
-<chapter>
+<chapter id="gtk-programming">
 <title>GTK+ Programming</title>
-<sect1>
+<sect1 id="gtk-overview">
 <title>Overview</title>
 
 <para>
@@ -150,7 +150,7 @@ things to help porting to different architectures, and containers
 such as a linked list or a hash.  If you are already familiar with GTK+,
 you are now free to get bored.</para></sect1>
 
-<sect1>
+<sect1 id="glib">
 <title>GLib</title>
 <sect2>
 <title>Naming Conventions</title>
@@ -761,7 +761,7 @@ For more information look at the <emphasis>glib.h</emphasis> header file and at
 the documentation on the <ulink url="http://www.gtk.org/">www.gtk.org</ulink>
 web site.</para></sect2></sect1>
 
-<sect1>
+<sect1 id="gtk">
 <title>GTK+</title>
 <sect2>
 <title>GUI Basics</title>
@@ -1013,9 +1013,9 @@ and &lt;prefix&gt;/include/gdk/ and at the documentation on the
 <ulink url="http://www.gtk.org/">www.gtk.org</ulink> web site.
 </para></sect2></sect1></chapter>
 
-<chapter>
+<chapter id="gnome-programming">
 <title>GNOME Programming</title>
-<sect1>
+<sect1 id="gnome-introduction">
 <title>Introduction</title>
 <sect2>
 <title>What Is a GNOME Program</title>
@@ -1131,7 +1131,7 @@ these later.
 </sect2>
 </sect1>
 
-<sect1>
+<sect1 id="gnome-overview">
 <title>Overview</title>
 
 <para>
@@ -1144,7 +1144,7 @@ useful widget. We'll also say a few things about drag and drop.
 </para>
 </sect1>
 
-<sect1>
+<sect1 id="using-the-libgnome-library">
 <title>Using the libgnome Library</title>
 
 <para>
@@ -1674,7 +1674,7 @@ gnome_metadata_get("/some/file/name","bogus",&amp;size,&amp;data);
 </sect2>
 </sect1>
 
-<sect1>
+<sect1 id="using-the-libgnomeui-library">
 <title>Using the libgnomeui Library</title>
 
 <para>
@@ -3161,7 +3161,7 @@ if((child = gnome_mdi_generic_child_new(name)) != NULL) {
 }
 </programlisting></informalexample></para></sect3></sect2></sect1>
 
-<sect1>
+<sect1 id="gnomecanvas-widget">
 <title>GnomeCanvas Widget</title>
 
 <para>
@@ -3454,7 +3454,7 @@ This is because of limitations of Xlib as a graphics library. It can for
 example do any kind of affine transformation on it's objects, where on
 and Xlib canvas you can only do affine transformations on some objects.</para></sect2></sect1>
 
-<sect1>
+<sect1 id="drag-and-drop">
 <title>Drag and Drop</title>
 
 <para>
@@ -3595,9 +3595,9 @@ gtk_signal_connect (GTK_OBJECT (widget), "drag_data_get",
 The <emphasis>gtk_selection_data_set</emphasis> function copies the data into the selection
 data, which is used for the transfer.</para></sect2></sect1></chapter>
 
-<chapter>
+<chapter id="building-gnome-apps">
 <title>Building GNOME Apps</title>
-<sect1>
+<sect1 id="using-a-simple-makefile">
 <title>Using a Simple Makefile</title>
 
 <para>
@@ -3656,7 +3656,7 @@ This is an extremely simple makefile, but it should get you started.
 
 </sect1>
 
-<sect1>
+<sect1 id="using-autoconf-automake">
 <title>Using automake/autoconf</title>
 
 <para>
@@ -3681,9 +3681,9 @@ http://www.gnome.org/ftpmirrors.shtml</ulink> for a list of mirrors) in the
 </chapter>
 
 
-<chapter>
+<chapter id="conclusion">
 <title>Conclusion</title>
-<sect1>
+<sect1 id="getting-further-help">
 <title>Getting Further Help</title>
 
 <para>
@@ -3716,7 +3716,7 @@ they represent. For example the header file for <emphasis>gnome-config</emphasis
 <emphasis>libgnome/gnome-config.h</emphasis>. The header file for <emphasis>GnomeCanvas</emphasis>
 is <emphasis>libgnomeui/gnome-canvas.h</emphasis>.</para></sect1>
 
-<sect1>
+<sect1 id="future-gnome-library-developments">
 <title>Future GNOME Library Developments</title>
 
 <para>
