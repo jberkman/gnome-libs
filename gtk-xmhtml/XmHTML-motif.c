@@ -576,40 +576,6 @@ FormScroll(XmHTMLWidget html)
 }
 
 /*****
-* Name: 		ClearArea
-* Return Type: 	void
-* Description: 	XClearArea wrapper. Does form component updating as well.
-* In: 
-*	html:		XmHTMLWidget id;
-*	x,y:		upper left corner of region to be updated;
-*	width:		width of region;
-*	height:		height of region;
-* Returns:
-*
-*****/
-static void
-ClearArea(XmHTMLWidget html, int x, int y, int width, int height)
-{
-	Display *dpy = XtDisplay(html->html.work_area);
-	Window win = XtWindow(html->html.work_area);
-
-	_XmHTMLDebug(1, ("XmHTML.c: ClearArea Start, x: %i, y: %i, width: %i "
-		"height: %i.\n", x, y, width, height));
-
-	/* first scroll form TWidgets if we have them */
-	if(html->html.form_data)
-	{
-		FormScroll(html);
-		XClearArea(dpy, win, x, y, width, height, False);
-		Refresh(html, x, y, width, height);
-	}
-	else
-		XClearArea(dpy, win, x, y, width, height, True);
-
-	_XmHTMLDebug(1, ("XmHTML.c: ClearArea End.\n"));
-}
-
-/*****
 * Name: 		ScrollCB
 * Return Type: 	void
 * Description: 	callback procedure for scrollbar movement
@@ -739,7 +705,9 @@ CreateHTMLWidget(XmHTMLWidget html)
 * Return Type: 	void
 * Description: 	VisibilityChangeMask event handler. Used to store the
 *				visibility state of the work_area so we know when to
-*				serve or ignore GraphicsExpose requests.
+*				serve or ignore GraphicsExpose requests: if we're partially
+*				obscured we need to respond to them, in all other cases we
+*				can ignore them.
 * In: 
 *	w:			owner of this eventhandler 
 *	html:		client data, XmHTMLWidget to which w belongs
@@ -1012,10 +980,10 @@ CheckScrollBars(XmHTMLWidget html)
 		/* pageIncrement == sliderSize */
 		pinc = html->html.work_width - 2*(html->html.default_font ? 
 			html->html.default_font->xfont->max_bounds.width :
-			HORIZONTAL_INCREMENT);
+			XmHTML_HORIZONTAL_SCROLL_INCREMENT);
 		/* sanity check */
 		if(pinc < 1)
-			pinc = HORIZONTAL_INCREMENT;
+			pinc = XmHTML_HORIZONTAL_SCROLL_INCREMENT;
 
 		/* adjust horizontal scroll if necessary */
 		if(html->html.scroll_x > html->html.formatted_width - pinc)
@@ -1039,7 +1007,7 @@ CheckScrollBars(XmHTMLWidget html)
 		XtSetArg(args[argc], XmNsliderSize, pinc); argc++;
 		XtSetArg(args[argc], XmNincrement, (html->html.default_font ? 
 			html->html.default_font->xfont->max_bounds.width :
-			HORIZONTAL_INCREMENT));
+			XmHTML_HORIZONTAL_SCROLL_INCREMENT));
 		argc++;
 		XtSetArg(args[argc], XmNpageIncrement, pinc); argc++;
 		XtSetValues(html->html.hsb, args, argc);
@@ -1068,10 +1036,10 @@ CheckScrollBars(XmHTMLWidget html)
 
 		/* pageIncrement == sliderSize */
 		pinc = html->html.work_height - 2*(html->html.default_font ? 
-			html->html.default_font->height : VERTICAL_INCREMENT);
+			html->html.default_font->height : XmHTML_VERTICAL_SCROLL_INCREMENT);
 		/* sanity check */
 		if(pinc < 1)
-			pinc = VERTICAL_INCREMENT;
+			pinc = XmHTML_VERTICAL_SCROLL_INCREMENT;
 
 		/* adjust vertical scroll if necessary */
 		if(html->html.scroll_y > html->html.formatted_height - pinc)
@@ -1093,7 +1061,7 @@ CheckScrollBars(XmHTMLWidget html)
 		XtSetArg(args[argc], XmNvalue, html->html.scroll_y); argc++;
 		XtSetArg(args[argc], XmNsliderSize, pinc); argc++;
 		XtSetArg(args[argc], XmNincrement, (html->html.default_font ? 
-			html->html.default_font->height : VERTICAL_INCREMENT)); argc++;
+			html->html.default_font->height : XmHTML_VERTICAL_SCROLL_INCREMENT)); argc++;
 		XtSetArg(args[argc], XmNpageIncrement, pinc); argc++;
 		XtSetValues(html->html.vsb, args, argc);
 
@@ -1172,7 +1140,8 @@ Destroy(TWidget w)
 	XtRemoveAllCallbacks(w, XmNdocumentCallback);
 	XtRemoveAllCallbacks(w, XmNfocusCallback);
 	XtRemoveAllCallbacks(w, XmNlosingFocusCallback);
-
+	XtRemoveAllCallbacks(w, XmNeventCallback);
+	
 	/* invalidate this TWidget */
 	w = NULL;
 
@@ -1566,7 +1535,7 @@ XmCreateHTML(TWidget parent, String name, ArgList arglist, Cardinal argcount)
 		return(XtCreateWidget(name, xmHTMLWidgetClass, parent, 
 			arglist, argcount));
 
-	_XmHTMLError(__WFUNC__(NULL, "XmCreateHTML"), "XmHTML requires "
+	_XmHTMLWarning(__WFUNC__(NULL, "XmCreateHTML"), "XmHTML requires "
 		"a non-%s parent", parent ? "gadget" : "NULL");
 
 	/* keep compiler happy */
@@ -1576,7 +1545,7 @@ XmCreateHTML(TWidget parent, String name, ArgList arglist, Cardinal argcount)
 static void
 XmHTML_Frontend_Redisplay (XmHTMLWidget html)
 {
-	ClearArea(html, 0, 0, html->core.width, html->core.height);
+	_XmHTMLClearArea(html, 0, 0, html->core.width, html->core.height);
 
 	/* sync so the display is updated */
 	XSync(XtDisplay((TWidget)html), False);
@@ -1622,7 +1591,7 @@ GetScrollDim(XmHTMLWidget html, int *hsb_height, int *vsb_width)
 		* Not doing this would lead to X Protocol errors whenever text is set
 		* into the TWidget: the size of the workArea will be less than or equal
 		* to zero when scrollbars are required.
-		* We need always need to do this check since it's possible that some
+		* We always need to do this check since it's possible that some
 		* user has been playing with the dimensions of the scrollbars.
 		*/
 		if(height >= html->core.height)
@@ -2142,12 +2111,15 @@ SetValues(TWidget current, TWidget request, TWidget set,
 		if(!strcmp(XmNvalue, args[i].name))
 			valueReq = True;
 
-		/* changing the palette ain't allowed. */
-		if(!strcmp(XmNimagePalette, args[i].name))
+		/* Check for read-only resources */
+		if(!strcmp(XmNimagePalette, args[i].name) ||
+		   !strcmp(XmNhorizontalScrollBar, args[i].name) ||
+		   !strcmp(XmNverticalScrollBar, args[i].name) ||
+		   !strcmp(XmNworkWindow, args[i].name))
 		{
 			_XmHTMLWarning(__WFUNC__(w_curr, "SetValues"),
 				"Attempt to modify read-only resource %s denied.",
-				XmNimagePalette);
+				args [i].name);
 			return(False);
 		}
 	}
@@ -2222,6 +2194,9 @@ SetValues(TWidget current, TWidget request, TWidget set,
 
 		/* new text has been set, kill of any existing PLC's */
 		_XmHTMLKillPLCCycler(w_curr);
+
+		/* release event database */
+		_XmHTMLFreeEventDatabase(w_curr, w_new);
 
 		/* destroy any form data */
 		_XmHTMLFreeForm(w_curr, w_curr->html.form_data);
@@ -2538,8 +2513,7 @@ SetValues(TWidget current, TWidget request, TWidget set,
 			w_new->html.is_frame = w_curr->html.is_frame;
 		}
 
-		w_new->html.formatted = _XmHTMLformatObjects(w_curr->html.formatted,
-				w_curr->html.anchor_data, w_new);
+		_XmHTMLformatObjects(w_curr, w_new);
 
 		/* and check for possible external imagemaps */
 		_XmHTMLCheckImagemaps(w_new);
@@ -2744,7 +2718,7 @@ SetValues(TWidget current, TWidget request, TWidget set,
 				_XmHTMLImageCheckDelayedCreation(w_new);
 		}
 
-		_XmHTMLDebug(1, ("XmHTML.c: SetValues, calling ClearArea.\n"));
+		_XmHTMLDebug(1, ("XmHTML.c: SetValues, calling _XMHTMLClearArea.\n"));
 		/*****
 		* To make sure the new text is displayed, we need to clear
 		* the current contents and generate an expose event to render
@@ -2753,7 +2727,7 @@ SetValues(TWidget current, TWidget request, TWidget set,
 		* a gc, it means we haven't been realized yet. (fix 01/26/97-01, kdh)
 		*****/
 		if(w_new->html.gc != NULL)
-			ClearArea(w_new, 0, 0, w_new->core.width, w_new->core.height);
+			_XmHTMLClearArea(w_new, 0, 0, w_new->core.width, w_new->core.height);
 	}
 	_XmHTMLDebug(1, ("XmHTML.c: SetValues End\n"));
 
@@ -2824,6 +2798,10 @@ TrackMotion(TWidget w, XEvent *event, String *params, Cardinal *num_params)
 	/* ignore if we don't have to make any more feedback to the user */
 	if(!html->html.need_tracking)
 		return;
+	
+	/* we are already on the correct anchor, just return */
+	_XmHTMLFullDebug(1, ("XmHTML.c: TrackMotion Start.\n"));
+
 
 	/* save x and y position, we need it to get anchor data */
 	if(event->xany.type == MotionNotify)
@@ -2831,6 +2809,8 @@ TrackMotion(TWidget w, XEvent *event, String *params, Cardinal *num_params)
 		/* pass down to motion tracker callback if installed */
 		if(html->html.motion_track_callback)
 		{
+			_XmHTMLFullDebug(1, ("XmHTML.c: TrackMotion, MotionNotify.\n"));
+
 			cbs.reason = XmCR_HTML_MOTIONTRACK;
 			cbs.event = event;
 			XtCallCallbackList((TWidget)html, html->html.motion_track_callback,
@@ -2848,6 +2828,8 @@ TrackMotion(TWidget w, XEvent *event, String *params, Cardinal *num_params)
 		/* gaining focus */
 		if(event->type == FocusIn && html->html.focus_callback)
 		{
+			_XmHTMLFullDebug(1, ("XmHTML.c: TrackMotion, FocusIn.\n"));
+
 			cbs.reason = XmCR_FOCUS;
 			cbs.event = event;
 			XtCallCallbackList((TWidget)html, html->html.focus_callback,
@@ -2855,8 +2837,31 @@ TrackMotion(TWidget w, XEvent *event, String *params, Cardinal *num_params)
 			XUndefineCursor(XtDisplay(w), XtWindow(w));
 			return;
 		}
-		if(event->type==LeaveNotify||event->type==FocusOut)
+		/*
+		* LeaveNotify Events occur when the pointer focus is transferred
+		* from the DrawingArea child to another window. This can occur
+		* when the pointer is moved outside the Widget *OR* when a
+		* ButtonPress event occurs ON the drawingArea. When that happens,
+		* the pointer focus is transferred from the drawingArea to it's
+		* parent, being the Widget itself. In this case the detail
+		* detail member of the XEnterWindowEvent will be NotifyAncestor,
+		* and we would want to ignore this event (as it will cause a
+		* flicker of the screen or an unnecessary call to any installed
+		* callbacks).
+		*/
+		if(event->type == LeaveNotify &&
+			((XEnterWindowEvent*)event)->detail == NotifyAncestor)
 		{
+			/* store ptr coords and fall through */
+			x = motion->x;
+			y = motion->y;
+		}
+		else if(event->type==LeaveNotify||event->type==FocusOut)
+		{
+			_XmHTMLFullDebug(1, ("XmHTML.c: TrackMotion, "
+				"%s.\n", event->type == LeaveNotify ?
+					"LeaveNotify" : "FocusOut"));
+			
 			/* invalidate current selection if there is one */
 			if(html->html.anchor_track_callback && 
 				html->html.anchor_current_cursor_element)
@@ -2880,8 +2885,7 @@ TrackMotion(TWidget w, XEvent *event, String *params, Cardinal *num_params)
 			}
 			return;
 		}
-		/* uninteresting event, throw away */
-		else
+		else /* uninteresting event, throw away */
 			return;
 	}
 	AnchorTrack (html, event, x, y);
@@ -3007,7 +3011,7 @@ CheckAlignment(XmHTMLWidget html, XmHTMLWidget req)
 {
 	/* Set default alignment */
 	if(req->html.enable_outlining)
-		html->html.default_halign = XmHALIGN_OUTLINE;
+		html->html.default_halign = XmHALIGN_JUSTIFY;
 	else
 	{
 		/* default alignment depends on string direction */

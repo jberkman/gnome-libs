@@ -35,6 +35,21 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.3  1997/12/25 01:34:10  unammx
+* Good news for the day:
+*
+*    I have upgraded our XmHTML sources to XmHTML 1.1.1.
+*
+*    This basically means that we got table support :-)
+*
+* Still left to do:
+*
+*    - Set/Get gtk interface for all of the toys in the widget.
+*    - Frame support is broken, dunno why.
+*    - Form support (ie adding widgets to it)
+*
+* Miguel.
+*
 * Revision 1.2  1997/12/18 00:39:21  unammx
 * It compiles and links -miguel
 *
@@ -124,6 +139,7 @@ static int CreateColormap(XmHTMLWidget html, TColor *cmap);
 
 /*** Private Variable Declarations ***/
 static int last_color;
+static Boolean confirm_warning = True;
 
 /* HTML-3.2 color names */
 static String html_32_color_names[16] = {"black", "silver", "gray", 
@@ -300,10 +316,25 @@ _XmHTMLGetPixelByName(XmHTMLWidget html, String color, Pixel def_pixel)
 
 	if((!tryColor(dpy, colormap, color, &def)))
 	{
-		/* bad color spec, return */
-		_XmHTMLWarning(__WFUNC__(html, "_XmHTMLGetPixelByName"),
-			"Bad color name %s", color);
-		return(def_pixel);
+		Boolean again;
+
+		/* turn of warnings */
+		confirm_warning = False;
+
+		/* see if by chance it's one of the 16 appointed colors */
+		again = _XmHTMLConfirmColor32(color);
+
+		/* turn on warnings */
+		confirm_warning = True;
+
+		/* try it */
+		if(!again || !tryColor(dpy, colormap, color, &def))
+		{
+			/* bad color spec, return */
+			_XmHTMLWarning(__WFUNC__(html, "_XmHTMLGetPixelByName"),
+				"Bad color name %s", color);
+			return(def_pixel);
+		}
 	}
 
 	r[0] = def.red   >> 8;	/* downscale */
@@ -381,8 +412,10 @@ _XmHTMLConfirmColor32(char *color)
 		}
 	}
 	/* nope, don't know it. Use black */
-	_XmHTMLWarning(__WFUNC__(NULL, "_XmHTMLConfirmColor32"), 
-		"HTML 3.2 color violation: color %s not known, ignoring.\n", color);
+	if(confirm_warning)
+		_XmHTMLWarning(__WFUNC__(NULL, "_XmHTMLConfirmColor32"), 
+			"HTML 3.2 color violation: color %s not known, ignoring.\n",
+			color);
 	return(False);
 }
 

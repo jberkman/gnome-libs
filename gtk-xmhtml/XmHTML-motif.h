@@ -4,7 +4,7 @@ typedef struct _XmHTMLRec *XmHTMLWidget;
 
 externalref WidgetClass xmHTMLWidgetClass;
 
-/* XmHTML Widget subclassing callback */
+/* XmHTML Widget subclassing macro */
 #ifndef XmIsHTML
 #define XmIsHTML(w)	XtIsSubclass(w, xmHTMLWidgetClass)
 #endif /* XmIsHTML */

@@ -38,6 +38,21 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.6  1997/12/25 01:34:14  unammx
+* Good news for the day:
+*
+*    I have upgraded our XmHTML sources to XmHTML 1.1.1.
+*
+*    This basically means that we got table support :-)
+*
+* Still left to do:
+*
+*    - Set/Get gtk interface for all of the toys in the widget.
+*    - Frame support is broken, dunno why.
+*    - Form support (ie adding widgets to it)
+*
+* Miguel.
+*
 * Revision 1.5  1997/12/23 04:44:33  unammx
 * Ok kiddies, news for the day:
 *
@@ -1734,7 +1749,7 @@ _PLC_IMG_Transfer(PLC *plc)
 		}
 		/* destroy existing bitmap */
 		if(any_image->clipmask != TNone)
-			FreePixmap(dpy, any_image->clipmask);
+			FreePixmap (dpy, any_image->clipmask);
 
 		/* if we are realized we have a window */
 		if (Toolkit_Is_Realized (html))

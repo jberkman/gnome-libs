@@ -36,6 +36,21 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.4  1997/12/25 01:34:11  unammx
+* Good news for the day:
+*
+*    I have upgraded our XmHTML sources to XmHTML 1.1.1.
+*
+*    This basically means that we got table support :-)
+*
+* Still left to do:
+*
+*    - Set/Get gtk interface for all of the toys in the widget.
+*    - Frame support is broken, dunno why.
+*    - Form support (ie adding widgets to it)
+*
+* Miguel.
+*
 * Revision 1.3  1997/12/24 17:53:54  unammx
 * Fun stuff:
 *
@@ -294,18 +309,10 @@ doFrame(XmHTMLWidget html, String attributes)
 	frame->width_type = FRAME_SIZE_FIXED;
 
 	/* pick up all remaining frame attributes */
-	if((chPtr = _XmHTMLTagGetValue(attributes, "src")) != NULL)
-	{
-		frame->src = strdup(chPtr);
-		free(chPtr);
-	}
+	frame->src = _XmHTMLTagGetValue(attributes, "src");
+
 	/* get frame name, default to _frame if not present */
-	if((chPtr = _XmHTMLTagGetValue(attributes, "name")) != NULL)
-	{
-		frame->name = strdup(chPtr);
-		free(chPtr);
-	}
-	else
+	if((frame->name = _XmHTMLTagGetValue(attributes, "name")) == NULL)
 	{
 		char buf[24];
 		sprintf(buf, "_frame%i", current_frame);
@@ -1037,7 +1044,7 @@ frameDoneCallback(XmHTMLWidget html, XmHTMLFrameWidget *frame,
 {
 	XmHTMLFrameCallbackStruct cbs;
 
-	/* inform user that this frame is about to be created */
+	/* inform user that this frame is finished */
 	if(!html->html.frame_callback)
 		return;
 
@@ -1446,3 +1453,40 @@ _XmHTMLDrawFrameBorder(XmHTMLWidget html)
 	XFillRectangle(dsp, win, gc, x + width - 1, y + 1, 1, height-2);
 }
 #endif
+
+/*****
+* Name: 		XmHTMLFrameGetChild
+* Return Type: 	TWidget
+* Description: 	returns the TWidget id of a frame child given it's name.
+* In: 
+*	w:			XmHTMLWidget
+*	name:		name of frame to locate.
+* Returns:
+*	If found, the TWidget id of the requested frame, NULL otherwise. 
+*****/
+TWidget
+XmHTMLFrameGetChild(TWidget w, String name)
+{
+	XmHTMLWidget html;
+	int i;
+
+	/* sanity check */
+	if(!w || !XmIsHTML(w) || name == NULL)
+	{
+		_XmHTMLWarning(__WFUNC__(w, "XmHTMLFrameGetChild"),
+			"%s passed to XmHTMLFrameGetChild.",
+			w ? (name == NULL ? "NULL frame name" : "Invalid parent") :
+			"NULL parent");
+		return(NULL);
+	}
+
+	html = XmHTML (w);
+
+	for(i = 0; i < html->html.nframes; i++)
+	{
+		if(!(strcmp(html->html.frames[i]->name, name)))
+			return(html->html.frames[i]->frame);
+	}
+	return(NULL);
+}
+

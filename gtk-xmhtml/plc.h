@@ -38,6 +38,21 @@
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.2  1997/12/25 01:34:14  unammx
+* Good news for the day:
+*
+*    I have upgraded our XmHTML sources to XmHTML 1.1.1.
+*
+*    This basically means that we got table support :-)
+*
+* Still left to do:
+*
+*    - Set/Get gtk interface for all of the toys in the widget.
+*    - Frame support is broken, dunno why.
+*    - Form support (ie adding widgets to it)
+*
+* Miguel.
+*
 * Revision 1.1  1997/12/18 00:40:42  unammx
 * .
 *
@@ -57,8 +72,10 @@
 /* Pull in required declarations */
 #ifdef HAVE_PNG
 #  include <png.h>
-#elif defined(HAVE_ZLIB)
-#  include <zlib.h>
+#else
+# ifdef HAVE_ZLIB
+#   include <zlib.h>
+# endif
 #endif
 
 /*****

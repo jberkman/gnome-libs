@@ -35,6 +35,21 @@
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.2  1997/12/25 01:34:09  unammx
+* Good news for the day:
+*
+*    I have upgraded our XmHTML sources to XmHTML 1.1.1.
+*
+*    This basically means that we got table support :-)
+*
+* Still left to do:
+*
+*    - Set/Get gtk interface for all of the toys in the widget.
+*    - Frame support is broken, dunno why.
+*    - Form support (ie adding widgets to it)
+*
+* Miguel.
+*
 * Revision 1.1  1997/11/28 03:38:55  gnomecvs
 * Work in progress port of XmHTML;  No, it does not compile, don't even try -mig
 *
@@ -186,6 +201,9 @@ extern void XmHTMLImageAddImageMap(TWidget w, String image_map);
 /* free an XmImageInfo structure */
 extern void	XmHTMLImageFreeImageInfo(TWidget w, XmImageInfo *info);
 
+/* return the total size of a given XmImageInfo structure */
+extern int XmHTMLImageGetImageInfoSize(XmImageInfo *info);
+
 /* suspend progressive image loading */
 extern void XmHTMLImageProgressiveSuspend(TWidget w);
 
@@ -288,6 +306,13 @@ extern String XmHTMLTextGetSource(TWidget w);
 
 /* return a copy of the current parser output */
 extern String XmHTMLTextGetString(TWidget w);
+
+
+/* text search functions */
+
+/* search for the string to_find, possibly starting from curr_pos */
+extern XmHTMLPosition XmHTMLTextFindString(TWidget w, String to_find,
+		XmHTMLDirection dir, XmHTMLPosition curr_pos);
 
 /*****
 * Return a formatted copy of the current TWidget contents

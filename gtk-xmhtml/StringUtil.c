@@ -41,6 +41,21 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.2  1997/12/25 01:34:08  unammx
+* Good news for the day:
+*
+*    I have upgraded our XmHTML sources to XmHTML 1.1.1.
+*
+*    This basically means that we got table support :-)
+*
+* Still left to do:
+*
+*    - Set/Get gtk interface for all of the toys in the widget.
+*    - Frame support is broken, dunno why.
+*    - Form support (ie adding widgets to it)
+*
+* Miguel.
+*
 * Revision 1.1  1997/11/28 03:38:54  gnomecvs
 * Work in progress port of XmHTML;  No, it does not compile, don't even try -mig
 *
@@ -80,11 +95,18 @@ static char rcsId[]="$Header$";
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include <ctype.h>	/* toupper, tolower */
+#include <ctype.h>	/* toupper, tolower, isspace */
 #include <sys/types.h>
 
 #include <XmHTML/toolkit.h>
+#include "XmHTMLP.h"
 #include "XmHTMLfuncs.h"
+#include "escapes.h"
+
+
+/*** External Function Prototype Declarations ***/
+
+/*** Public Variable Declarations ***/
 
 /*** 
 * Character translation table for converting from upper to lower case 
@@ -92,7 +114,7 @@ static char rcsId[]="$Header$";
 * tolower routine on a number of systems.
 ***/
 
-Byte __my_translation_table[256]={
+const Byte __my_translation_table[256]={
 	0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,
 	24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,
 	45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,97,98,
@@ -108,14 +130,20 @@ Byte __my_translation_table[256]={
 	222,223,224,225,226,227,228,229,230,231,232,233,234,235,236,237,238,
 	239,240,241,242,243,244,245,246,247,248,249,250,251,252,253,254,255};
 
-static void table_idestroy(HashTable *table);
+/*** Private Function Prototype Declarations ****/
+static String to_ascii(int val);
+static String to_roman(int val);
 
-static HashEntry * delete_fromilist(HashTable *table, HashEntry *entry,
-	unsigned long key);
+/* convert a character escape sequence */
+static char tokenToEscape(char **escape, Boolean warn);
 
-static unsigned long hash_ikey(unsigned long key);
-
-static void rebuild_itable(HashTable *table);
+/*** Private Variable Declarations ***/
+static char *Ones[] = 
+		{"i", "ii", "iii", "iv", "v", "vi", "vii", "viii", "ix"};
+static char *Tens[] = 
+		{"x", "xx", "xxx", "xl", "l", "lx", "lxx", "lxxx", "xc"};
+static char *Hundreds[] = 
+		{"c", "cc", "ccc", "cd", "d", "dc", "dcc", "dccc", "cm"};
 
 /*****
 * Name: 		my_upcase
@@ -306,334 +334,784 @@ my_strcasecmp (const char *s1, const char *s2)
 #endif /* NEED_STRCASECMP */
 
 /*****
-* hashing functions.
+* string to number routines
 *****/
 
-#define INIT_TABLE_SIZE	512		/* aligned color hash */
-
 /*****
-* Private routines
-******/
-
-/*****
-* Name: 		table_idestroy
-* Return Type: 	void
-* Description: 	frees the table of a given hashtable. Only used when table
-*				is being rebuild.
+* Name: 		to_ascii
+* Return Type: 	String
+* Description: 	converts a numerical value to an abc representation.
 * In: 
-*	table:		table to be destroyed;
+*	val:		number to convert
 * Returns:
-*	nothing.
+*	converted number.
 *****/
-static void
-table_idestroy(HashTable *table)
+static String
+to_ascii(int val)
 {
-	HashEntry *entry, *next;
-	int i;
+	int remainder, i = 0, j = 0, value = val;
+	char number[10];
+	static char out[10];	/* return buffer */
 
-	for (i=0; i<table->size; i++)
+	do
 	{
-		entry=table->table[i];
-		while (entry)
+		remainder = (value % 26);
+		number[i++] = (remainder ? remainder + 96 : 'z');
+	}
+	while((value = (remainder ? (int)(value/26) : (int)((value-1)/26))) 
+		&& i < 10); /* no buffer overruns */
+
+	for(j = 0; i > 0 && j < 10; i--, j++)
+		out[j] = number[i-1];
+
+	out[j] = '\0';	/* NULL terminate */
+
+	return(out);
+}
+
+/*****
+* Name: 		to_roman
+* Return Type: 	String
+* Description: 	converts the given number to a lowercase roman numeral.
+* In: 
+*	val:		number to convert
+* Returns:
+*	converted number
+* Note:
+*	This routine is based on a similar one found in the Arena browser.
+*****/
+static String
+to_roman(int val)
+{
+	int value, one, ten, hundred, thousand;
+	static char buf[20], *p, *q;
+
+	value = val;
+	/* 
+	* XmHTML probably crashes **long** before a number with value 10^20 is
+	* reached.
+	*/
+	sprintf(buf, "%i", val);
+	
+	thousand = value/1000;
+	value = value % 1000;
+	hundred = value/100;
+	value = value % 100;
+	ten = value/10;
+	one = value % 10;
+
+	p = buf;
+	while(thousand-- > 0)
+		*p++ = 'm';
+
+	if(hundred)
+	{
+		q = Hundreds[hundred-1];
+		while ((*p++ = *q++));
+		--p;
+	}
+	if(ten)
+	{
+		q = Tens[ten-1];
+		while ((*p++ = *q++));
+		--p;
+	}
+	if(one)
+	{
+		q = Ones[one-1];
+		while ((*p++ = *q++));
+		--p;
+	}
+	*p = '\0';
+	
+	return(buf);
+}
+
+/*****
+* Name: 		ToAsciiLower
+* Return Type: 	String
+* Description: 	returns the abc representation of the given number
+* In: 
+*	val:		number to convert
+* Returns:
+*	converted number
+*****/
+String
+ToAsciiLower(int val)
+{
+	return((to_ascii(val)));
+}
+
+/*****
+* Name: 		ToAsciiUpper
+* Return Type: 	String
+* Description: 	returns the ABC representation of the given number
+* In: 
+*	val:		number to convert
+* Returns:
+*	converted number
+*****/
+String
+ToAsciiUpper(int val)
+{
+	static String buf;
+	buf = to_ascii(val);
+	my_upcase(buf);
+	return(buf);
+}
+
+/*****
+* Name: 		ToRomanLower
+* Return Type: 	String
+* Description: 	converts numbers between 1-3999 to roman numerals, lowercase.
+* In: 
+*	value:		value to convert
+* Returns:
+*	lowercase roman numeral
+*****/
+String
+ToRomanLower(int val)
+{
+	return(to_roman(val));
+}
+
+/*****
+* Name: 		ToRomanUpper
+* Return Type: 	String
+* Description: 	converts numbers between 1-3999 to roman numerals, uppercase.
+* In: 
+*	value:		value to convert
+* Returns:
+*	uppercase roman numeral
+*****/
+String
+ToRomanUpper(int val)
+{
+	static String buf;
+	buf = to_roman(val);
+	my_upcase(buf);
+	return(buf);
+}
+
+/*****
+* HTML Tag analyzers
+*****/
+
+/*****
+* Name: 		tokenToEscape
+* Return Type: 	char
+* Description: 	converts the HTML & escapes sequences to the appropriate char.
+* In: 
+*	**escape:	escape sequence to convert. This argument is updated upon
+*				return.
+*	warn:		warning issue flag;
+* Returns:
+*	the character representation of the given escape sequence
+*
+* Note: this routine uses a sorted table defined in the header file escapes.h
+*	and uses a binary search to locate the appropriate character for the given
+*	escape sequence.
+*	This table contains the hashed escapes as well as the named escapes.
+*	The number of elements is NUM_ESCAPES (currently 197), so a match is always
+*	found in less than 8 iterations (2^8=256).
+*	If an escape sequence is not matched and it is a hash escape, the value
+*	is assumed to be below 160 and converted to a char using the ASCII 
+*	representation of the given number. For other, non-matched characters, 0
+*	is returned and the return pointer is updated to point right after the
+*	ampersand sign.
+*****/
+static char 
+tokenToEscape(char **escape, Boolean warn)
+{
+	register int mid, lo = 0, hi = NUM_ESCAPES -1;
+	int cmp, skip = 1;
+	char tmp[8];
+
+	/*
+	* first check if this is indeed an escape sequence.
+	* It's much more cost-effective to do this test here instead of in
+	* the calling routine.
+	*/
+	if(*(*escape+1) != '#' && !(isalpha(*(*escape+1))))
+	{
+		if(warn)
 		{
-			next = entry->next;
-			entry = next;
+			/* bad escape, spit out a warning and continue */
+			strncpy(tmp, *escape, 7);
+			tmp[7] = '\0';
+			_XmHTMLWarning(__WFUNC__(NULL, "tokenToEscape"),
+				"Invalid escape sequence: %s...", tmp);
+		}
+		/* skip and return */
+		*escape += 1;
+		return('&');
+	}
+	/*
+	* run this loop twice: one time with a ; assumed present and one
+	* time with ; present.
+	*/
+	for(skip = 0; skip != 2; skip++)
+	{
+		lo = 0;
+		hi = NUM_ESCAPES - 1;
+		while(lo <= hi)
+		{
+			mid = (lo + hi)/2;
+			if((cmp = strncmp(*escape+1, escapes[mid].escape, 
+				escapes[mid].len - skip)) == 0)
+			{
+				/* update ptr to point right after the escape sequence */
+				*escape += escapes[mid].len + (1 - skip);
+				return(escapes[mid].token);
+			}
+			else
+				if(cmp < 0)				/* in lower end of array */
+					hi = mid - 1;
+				else					/* in higher end of array */
+					lo = mid + 1;
 		}
 	}
-	free(table->table);
-}
 
-/*****
-* Name: 		delete_fromilist
-* Return Type: 	HashEntry
-* Description: 	deletes a given entry from the given hashtable.
-* In: 
-*	table:		table from which an entry should be deleted.
-*	entry:		entry to be deleted;
-*	key:		entry identifier
-* Returns:
-*	entry following the deleted entry. This can be non-null if a hashvalue
-*	contains multiple keys.
-*****/
-static HashEntry *
-delete_fromilist(HashTable *table, HashEntry *entry, unsigned long key)
-{
-	HashEntry *next;
-
-	if(entry==NULL)
-		return NULL;
-	if(entry->key==key)
+	/*
+	* If we get here, the escape sequence wasn't matched: big chance
+	* it uses a &# escape below 160. To deal with this, we pick up the numeric
+	* code and convert to a plain ASCII value which is returned to the
+	* caller
+	*/
+	if( *(*escape+1) == '#')
 	{
-		if(table->last == entry)
-			table->last = entry->pptr;
-		if(entry->nptr)
-			entry->nptr->pptr = entry->pptr;
-		if(entry->pptr)
-			entry->pptr->nptr = entry->nptr;
-		next = entry->next;
-		free(entry);
-		return next;
-	}
-	entry->next = delete_fromilist(table, entry->next, key);
-	return entry;
-}
+		char *chPtr, ret_char;
+		int len = 0;
 
-/*****
-* Name: 		hash_ikey
-* Return Type: 	unsigned long
-* Description: 	computes a hash value based on a given key.
-* In: 
-*	key:		key for which to compute a hashing value.
-* Returns:
-*	computed hash value.
-*****/
-static unsigned long
-hash_ikey(unsigned long key)
-{
-	unsigned long h = 0, g;
-	int i;
-	char skey[sizeof(unsigned long)];
-	memcpy(skey, &key, sizeof(unsigned long));
-	for (i=0; i<sizeof(unsigned long); i++)
-	{
-		h = (h<<4) + skey[i];
-		if ((g = h & 0x7fffffff))
-			h ^=g >> 24;
-		h &= ~g;
-	}
-	return h;
-}
-
-/*****
-* Name: 		rebuild_itable
-* Return Type: 	void
-* Description: 	enlarges & rebuilds the given hashtable. Used when the
-*				size of the current hashtable is becoming to small to store
-*				new info efficiently.
-* In: 
-*	table:		table to rebuild
-* Returns:
-*	nothing.
-*****/
-static void
-rebuild_itable(HashTable *table)
-{
-	HashTable newtable;
-	HashEntry *entry;
-	int i;
-
-	newtable.last = NULL;
-	newtable.elements = 0;
-	newtable.size = table->size*2;
-	newtable.table = (HashEntry**)malloc(newtable.size * sizeof(HashEntry*));
-	memset(newtable.table, 0, newtable.size * sizeof(HashEntry*));
-	for (i=0; i<table->size; i++)
-	{
-		entry = table->table[i];
-		while (entry)
+		*escape += 2;	/* skip past the &# sequence */
+		chPtr = *escape;
+		while(isdigit(*chPtr))
 		{
-			_XmHTMLHashPut(&newtable, entry->key, entry->data);
-			entry=entry->next;
+			chPtr++;
+			len++;
 		}
+		if(*chPtr == ';')
+		{
+			*chPtr = '\0';	/* null out the ; */
+			len++;
+		}
+		ret_char = (char)atoi(*escape);	/* get corresponding char */
+		/* move past the escape sequence */
+		if(*(*escape + len) == ';')
+			*escape += len + 1;
+		else
+			*escape += len;
+		return(ret_char);
 	}
-	table_idestroy(table);
-	table->elements = newtable.elements;
-	table->size = newtable.size;
-	table->table = newtable.table;
+
+	/* bad escape, spit out a warning and continue */
+	if(warn)
+	{
+		strncpy(tmp, *escape, 7);
+		tmp[7] = '\0';
+		_XmHTMLWarning(__WFUNC__(NULL, "tokenToEscape"),
+			"Invalid escape sequence %s...", tmp);
+	}
+	*escape += 1;
+	return('&');
 }
 
 /*****
-* Public routines.
-*****/
-
-/*****
-* Name: 		_XmHTMLHashInit
-* Return Type: 	HashTable
-* Description: 	Initializes a hashtable with a initial size = INIT_TABLE_SIZE
-*				The table must already be allocated.
-* In: 
-*	table:		hashtable to be initialized;
-* Returns:
-*	initialized table.
-*****/
-HashTable *
-_XmHTMLHashInit(HashTable *table)
-{
-	table->elements = 0;
-	table->size = INIT_TABLE_SIZE;
-	table->table = (HashEntry**)malloc(INIT_TABLE_SIZE*sizeof(HashEntry*));
-	table->last = NULL;
-	memset(table->table, 0, INIT_TABLE_SIZE*sizeof(HashEntry*));
-
-#ifdef DEBUG
-	table->requests = table->hits = table->misses = 0;
-	table->puts = table->collisions = 0;
-#endif
-
-	return table;
-}
-
-/*****
-* Name: 		_XmHTMLHashPut
+* Name: 		_XmHTMLExpandEscapes
 * Return Type: 	void
-* Description: 	puts a new entry in the hash table
+* Description: 	replaces character escapes sequences with the appropriate char.
 * In: 
-*	key:		handle to data to be stored;
-*	data:		data to be stored;
+*	string:		text to scan for escape sequences
 * Returns:
-*	nothing.
+*	nothing
 *****/
 void
-_XmHTMLHashPut(HashTable *table, unsigned long key, unsigned long data)
+_XmHTMLExpandEscapes(char *string, Boolean warn)
 {
-	unsigned long hkey;
-	HashEntry *nentry;
-    
-#ifdef DEBUG
-	table->puts++;
-#endif
-	nentry = (HashEntry*)malloc(sizeof(HashEntry));
-#ifdef DEBUG
-	nentry->ncoll = 0;
-#endif
+	register char *chPtr = string;
+	char escape;	/* value of escape character */
 
-	nentry->key = key;
-	nentry->data = data;
-	hkey = hash_ikey(key) % table->size;
-	/* Aaie, collided */
-	if (table->table[hkey]!=NULL)
+	/* scan the entire text in search of escape codes (yuck) */
+	while(*string)	/* fix 02/26/97-02, dp */
 	{
-#ifdef DEBUG
-		nentry->ncoll++;
-#endif
-		nentry->next = table->table[hkey];
-		table->table[hkey] = nentry;
-#ifdef DEBUG
-		table->collisions++;
-#endif
-    }
-	else
-	{
-		nentry->next = NULL;
-		table->table[hkey] = nentry;
-    }
-	table->elements++;
-    
-	nentry->nptr = NULL;
-	nentry->pptr = table->last;
-	if(table->last)
-		table->last->nptr = nentry;
-	table->last = nentry;
-    
-	if(table->elements>(table->size*3)/2)
-	{
-		_XmHTMLDebug(9, ("StringUtil.c: _XmHTMLHashPut, rebuilding table, "
-			"%i elements stored using %i available slots.\n", table->elements,
-			table->size));
-		rebuild_itable(table);
-    }
+		switch(*string)
+		{
+			case '&':
+				if((escape = tokenToEscape(&string, warn)) != 0)
+					*chPtr++ = escape;
+				break;
+			default:
+				*(chPtr++) = *(string++);
+		}
+		if(*string == 0)
+		{
+			*chPtr = '\0';	/* NULL terminate */
+			return;
+		}
+	}
 }
 
 /*****
-* Name: 		_XmHTMLHashGet
+* Name: 		_XmHTMLTagCheck
 * Return Type: 	Boolean
-* Description: 	retrieves a hash entry.
+* Description: 	checks whether the given tag exists in the attributes of a 
+*				HTML element
 * In: 
-*	key:		id of entry to retrieve;
-*	*data:		object in which to store data reference;
+*	attributes:	attributes from an HTML element
+*	tag:		tag to look for.
 * Returns:
-*	True when entry was found, False if not.
+*	True if tag is found, False otherwise.
 *****/
-Boolean
-_XmHTMLHashGet(HashTable *table, unsigned long key, unsigned long *data)
+Boolean 
+_XmHTMLTagCheck(char *attributes, char *tag)
 {
-	unsigned long hkey;
-	HashEntry *entry;
-#ifdef DEBUG
-	table->requests++;
-#endif
-    
-	hkey = hash_ikey(key) % table->size;
-	entry = table->table[hkey];
-	while (entry!=NULL)
+	char *chPtr, *start;
+
+	/* sanity check */
+	if(attributes == NULL)
+		return(False);
+
+	if((chPtr = my_strcasestr(attributes, tag)) != NULL)
 	{
-		if(entry->key==key)
+		/* see if this is a valid tag: it must be preceeded with whitespace. */
+		while(*(chPtr-1) && !isspace(*(chPtr-1)))
 		{
-			*data=entry->data;
-#ifdef DEBUG
-			table->hits++;
-#endif
-			return(True);
+			start = chPtr+strlen(tag); /* start right after this element */
+			if((chPtr = my_strcasestr(start, tag)) == NULL)
+				return(False);
 		}
-		entry = entry->next;
+		if(chPtr)
+			return(True);
+		else
+			return(False);
 	}
-#ifdef DEBUG
-	table->misses++;
-#endif
 	return(False);
 }
 
 /*****
-* Name: 		_XmHTMLHashDelete
-* Return Type: 	void
-* Description: 	deletes the hash entry for the given key.
+* Name: 		_XmHTMLTagGetValue
+* Return Type: 	char *
+* Description: 	looks for the specified tag in the given list of attributes.
 * In: 
-*	table:		hashtable from which to delete an entry;
-*	key:		id of entry to be deleted.
+*	attributes:	attributes from an HTML element
+*	tag:		tag to look for.
 * Returns:
-*	nothing.
+*	if tag exists, the value of this tag, NULL otherwise. 
+*	return value is always malloc'd; caller must free it.
 *****/
-void
-_XmHTMLHashDelete(HashTable *table, unsigned long key)
+String
+_XmHTMLTagGetValue(char *attributes, char *tag)
 {
-    unsigned long hkey;
-    
-    hkey = hash_ikey(key) % table->size;
-    table->table[hkey] = delete_fromilist(table, table->table[hkey], key);
-    table->elements--;
+	static char *buf;
+	char *chPtr, *start, *end;
+
+	if(attributes == NULL || tag == NULL)	/* sanity check */
+		return(NULL);
+
+	_XmHTMLDebug(4, ("parse.c: _XmHTMLTagGetValue, attributes: %s, tag %s\n", 
+		attributes, tag));
+
+	if((chPtr = my_strcasestr(attributes, tag)) != NULL)
+	{
+		/* 
+		* check if the ptr obtained is correct, eg, no whitespace before it. 
+		* If this is not the case, get the next match.
+		* Need to do this since a single my_strcasestr on, for example, align 
+		* will match both align _and_ valign.
+		*/
+		while(*(chPtr-1) && !isspace(*(chPtr-1)))
+		{
+			start = chPtr+strlen(tag); /* start right after this element */
+			if((chPtr = my_strcasestr(start, tag)) == NULL)
+				return(NULL);
+		}
+		if(chPtr == NULL)
+			return(NULL);
+		
+		start = chPtr+strlen(tag); /* start right after this element */
+		/* remove leading spaces */
+		while(isspace(*start))
+			start++;
+
+		/* if no '=', return NULL */
+		if(*start != '=')
+		{
+			_XmHTMLDebug(4, ("parse.c: _XmHTMLTagGetValue, tag has no "
+				"= sign.\n"));
+			return(NULL);
+		}
+
+		start++;	/* move past the '=' char */
+
+		/* remove more spaces */
+		while(*start != '\0' && isspace(*start))
+			start++;
+
+		/* sanity check */
+		if(*start == '\0')
+		{
+#ifdef PEDANTIC
+			_XmHTMLWarning(__WFUNC__(NULL, "_XmHTMLTagGetValue"), 
+				"tag %s has no value.", tag);
+#endif /* PEDANTIC */
+			return(NULL);
+		}
+
+		/* unquoted tag values are treated differently */
+		if(*start != '\"')
+		{
+			for(end = start; !(isspace(*end)) && *end != '\0' ; end++);
+		}
+		else
+		{
+			start++;
+			for(end = start; *end != '\"' && *end != '\0' ; end++);
+		}
+		/* empty string */
+		if(end == start) 
+			return(NULL);
+
+		buf = my_strndup(start, end - start);
+
+		_XmHTMLDebug(4, ("parse.c: _XmHTMLTagGetValue, returning %s\n", buf));
+
+		return(buf);
+	}
+	return(NULL);
 }
 
 /*****
-* Name: 		_XmHTMLHashDestroy
-* Return Type: 	void
-* Description: 	completely destroys the given hashtable contents. Table
-*				and contents are not destroyed.
+* Name: 		_XmHTMLTagGetNumber
+* Return Type: 	int
+* Description: 	retrieves the numerical value of the given tag.
 * In: 
-*	table:		table to be destroyed;
+*	attributes:	attributes from an HTML element
+*	tag:		tag to look for.
+*	def:		default value if tag is not found.
 * Returns:
-*	nothing.
+*	if tag exists, the value of this tag, def otherwise
 *****/
-void
-_XmHTMLHashDestroy(HashTable *table)
+int
+_XmHTMLTagGetNumber(char *attributes, char *tag, int def)
 {
-	int i;
+	char *chPtr;
+	int ret_val = def;
 
-	_XmHTMLDebug(9, ("Hash statistics:\n"
-		"%i elements hashed, %i collided\n"
-		"%i requests, %i hits and %i misses.\n",
-		table->puts, table->collisions, table->requests, table->hits,
-		table->misses));
-
-	for (i=0; i<table->size; i++)
+	if((chPtr = _XmHTMLTagGetValue(attributes, tag)) != NULL)
 	{
-		/* delete all entries */
-		if(table->table[i]!=NULL)
-			while((table->table[i] = delete_fromilist(table, table->table[i],
-				table->table[i]->key)) != NULL);
+		ret_val = atoi(chPtr);
+		_XmHTMLDebug(4, ("parse.c: _XmHTMLTagGetNumber, value for tag %s "
+			"is %i\n",
+			tag, ret_val));
+		free(chPtr);
 	}
-	/* delete table */
-	free(table->table);
-
-	/* sanity */
-	table->table = NULL;
-
-#ifdef DEBUG
-	table->requests = table->hits = table->misses = 0;
-	table->puts = table->collisions = 0;
-#endif
+	return(ret_val);
 }
 
-/* debugging memory functions */
+/*****
+* Name:			_XmHTMLTagCheckNumber
+* Return Type: 	int
+* Description: 	retrieves the numerical value of the given tag.
+*				If the returned no is negative, the specified value was
+*				a relative number. Otherwise it's an absolute number.
+* In: 
+*	attributes:	attributes from an HTML element
+*	tag:		tag to look for.
+*	def:		default value if tag is not found.
+* Returns:
+*	if tag exists, the value of this tag, def otherwise
+*****/
+int
+_XmHTMLTagCheckNumber(char *attributes, char *tag, int def)
+{
+	int ret_val = def;
+	char *chPtr;
+
+	/* get the requested tag */
+	if((chPtr = _XmHTMLTagGetValue(attributes, tag)) != NULL)
+	{
+		/* when len is negative, a percentage has been used */
+		if((strpbrk(chPtr, "%")) != NULL)
+			ret_val = -1*atoi(chPtr);
+		else
+			ret_val = atoi(chPtr);
+		free(chPtr);
+	}
+	return(ret_val);
+}
+
+/*****
+* Name: 		_XmHTMLTagCheckValue
+* Return Type: 	Boolean
+* Description: 	checks whether the specified tag in the given list of attributes
+*				has a certain value.
+* In: 
+*	attributes:	attributes from an HTML element
+*	tag:		tag to look for.
+*	check:		value to check.
+* Returns:
+*	returns True if tag exists and has the correct value, False otherwise.
+*****/
+Boolean 
+_XmHTMLTagCheckValue(char *attributes, char *tag, char *check)
+{
+	char *buf;
+
+	_XmHTMLDebug(4, ("parse.c: _XmHTMLTagCheckValue: tag %s, check %s\n", 
+		tag, check));
+
+	/* no sanity check, TagGetValue returns NULL if attributes is empty */
+
+	if((buf = _XmHTMLTagGetValue(attributes, tag)) == NULL || 
+		strcasecmp(buf, check))
+	{
+		if(buf != NULL)
+			free(buf);
+		return(False);
+	}
+	free(buf);		/* fix 12-21-96-01, kdh */
+	return(True);
+}
+
+/*****
+* Name: 		_XmHTMLGetImageAlignment
+* Return Type: 	Alignment
+* Description: 	returns any specified image alignment
+* In: 
+*	attributes:	<IMG> attributes
+* Returns:
+*	specified image alignment. If none found, XmVALIGN_BOTTOM
+*****/
+Alignment
+_XmHTMLGetImageAlignment(char *attributes)
+{
+	char *buf;
+	Alignment ret_val = XmVALIGN_BOTTOM;
+
+	/* First check if this tag does exist */
+	if((buf = _XmHTMLTagGetValue(attributes, "align")) == NULL)
+		return(ret_val);
+
+	/* transform to lowercase */
+	my_locase(buf);
+
+	if(!(strcmp(buf, "left")))
+		ret_val = XmHALIGN_LEFT;
+	else if(!(strcmp(buf, "right")))
+		ret_val = XmHALIGN_RIGHT;
+	else if(!(strcmp(buf, "top")))
+		ret_val = XmVALIGN_TOP;
+	else if(!(strcmp(buf, "middle")))
+		ret_val = XmVALIGN_MIDDLE;
+	else if(!(strcmp(buf, "bottom")))
+		ret_val = XmVALIGN_BOTTOM;
+	else if(!(strcmp(buf, "baseline")))
+		ret_val = XmVALIGN_BASELINE;
+
+	free(buf);	/* fix 01/12/97-01; kdh */
+	return(ret_val);
+}
+
+/*****
+* Name: 		_XmHTMLGetHorizontalAlignment
+* Return Type: 	Alignment
+* Description:	Retrieve the value of the ALIGN attribute
+* In: 
+*	attributes:	attributes to check for the ALIGN tag
+*	def_align:	default alignment.
+* Returns:
+*	selected ALIGN enumeration type or def_align if no match is found.
+*****/
+Alignment 
+_XmHTMLGetHorizontalAlignment(char *attributes, Alignment def_align)
+{
+	char *buf;
+	Alignment ret_val = def_align;
+
+	/* First check if this tag does exist */
+	if((buf = _XmHTMLTagGetValue(attributes, "align")) == NULL)
+		return(ret_val);
+
+	/* transform to lowercase */
+	my_locase(buf);
+
+	if(!(strcmp(buf, "center")))
+		ret_val = XmHALIGN_CENTER;
+	else if(!(strcmp(buf, "right")))
+		ret_val = XmHALIGN_RIGHT;
+	else if(!(strcmp(buf, "justify")))
+		ret_val = XmHALIGN_JUSTIFY;
+	else if(!(strcmp(buf, "left")))
+		ret_val = XmHALIGN_LEFT;
+
+	free(buf);	/* fix 01/12/97-01; kdh */
+	return(ret_val);
+}
+
+/*****
+* Name: 		_XmHTMLGetVerticalAlignment
+* Return Type: 	Alignment
+* Description:	Retrieve the value of the VALIGN attribute
+* In: 
+*	attributes:	attributes to check for the VALIGN tag
+* Returns:
+*	selected VALIGN enumeration type or XmVALIGN_TOP when no valign tag 
+*	is found among the element's attributes.
+*****/
+Alignment 
+_XmHTMLGetVerticalAlignment(char *attributes, Alignment def_align)
+{
+	char *buf;
+	Alignment ret_val = def_align;
+
+	/* First check if this tag does exist */
+	if((buf = _XmHTMLTagGetValue(attributes, "valign")) == NULL)
+		return(ret_val);
+
+	if(!(strcmp(buf, "top")))
+		ret_val = XmVALIGN_TOP;
+	else if(!(strcmp(buf, "middle")))
+		ret_val = XmVALIGN_MIDDLE;
+	else if(!(strcmp(buf, "bottom")))
+		ret_val = XmVALIGN_BOTTOM;
+	else if(!(strcmp(buf, "baseline")))
+		ret_val = XmVALIGN_BASELINE;
+
+	free(buf);		/* fix 01/12/97-02; kdh */
+	return(ret_val);
+}
+
+TableFraming
+_XmHTMLGetFraming(String attributes, TableFraming def)
+{
+	char *buf;
+	TableFraming ret_val = def;
+
+	/* First check if this tag does exist */
+	if((buf = _XmHTMLTagGetValue(attributes, "frame")) == NULL)
+		return(ret_val);
+
+	if(!(strcmp(buf, "void")))
+		ret_val = TFRAME_VOID;
+	else if(!(strcmp(buf, "above")))
+		ret_val = TFRAME_ABOVE;
+	else if(!(strcmp(buf, "below")))
+		ret_val = TFRAME_BELOW;
+	else if(!(strcmp(buf, "hsides")))
+		ret_val = TFRAME_HSIDES;
+	else if(!(strcmp(buf, "lhs")))
+		ret_val = TFRAME_LEFT;
+	else if(!(strcmp(buf, "rhs")))
+		ret_val = TFRAME_RIGHT;
+	else if(!(strcmp(buf, "vsides")))
+		ret_val = TFRAME_VSIDES;
+	else if(!(strcmp(buf, "box")))
+		ret_val = TFRAME_BOX;
+	else if(!(strcmp(buf, "border")))
+		ret_val = TFRAME_BORDER;
+
+	free(buf);
+	return(ret_val);
+}
+
+TableRuling
+_XmHTMLGetRuling(String attributes, TableRuling def)
+{
+	char *buf;
+	TableRuling ret_val = def;
+
+	/* First check if this tag does exist */
+	if((buf = _XmHTMLTagGetValue(attributes, "rules")) == NULL)
+		return(ret_val);
+
+	if(!(strcmp(buf, "none")))
+		ret_val = TRULE_NONE;
+	else if(!(strcmp(buf, "groups")))
+		ret_val = TRULE_GROUPS;
+	else if(!(strcmp(buf, "rows")))
+		ret_val = TRULE_ROWS;
+	else if(!(strcmp(buf, "cols")))
+		ret_val = TRULE_COLS;
+	else if(!(strcmp(buf, "all")))
+		ret_val = TRULE_ALL;
+
+	free(buf);
+	return(ret_val);
+}
+
+/*****
+* Name: 		_XmHTMLGetMaxLineLength
+* Return Type: 	Dimension
+* Description: 	returns an estimated guess on how wide the formatted document
+*				will be based on the longest line in the document source.
+* In: 
+*	html:		XmHTMLWidget id
+* Returns:
+*	guess what?
+*****/
+Dimension
+_XmHTMLGetMaxLineLength(XmHTMLWidget html)
+{
+	Dimension max = 0, ret_val = 0;
+	int i;
+	String chPtr;
+	XmHTMLObject *tmp;
+
+	for(tmp = html->html.elements; tmp != NULL; tmp = tmp->next)
+	{
+		if(tmp->id == HT_ZTEXT)
+		{
+			chPtr = tmp->element;
+			i = 0;
+
+			/*****
+			* Count all chars. Tabs are expanded and newlines reset the
+			* linewidth.
+			*****/
+			for(chPtr = tmp->element; *chPtr != '\0'; chPtr++)
+			{
+				switch(*chPtr)
+				{
+					case '\t':
+						i = ((i/8)+1)*8;
+						break;
+					case '\n':
+						if(ret_val < i)
+							ret_val = i;
+						i = -1;
+					default:
+						i++;
+				}
+			}
+			/* long lines without a newline */
+			if(ret_val < i)
+				ret_val = i;
+		}
+	}
+
+	/* assume 80 chars if no text found */
+	if(ret_val == 0) ret_val = 80;
+
+	/* assume an average width of 7 pixels per character */
+	ret_val *= 7;
+
+	/* we allow widths up to 75% of the screen width */
+	max = (Dimension)(0.75*Toolkit_Screen_Width (html));
+
+	ret_val = (ret_val > max ? max : ret_val); 
+
+	_XmHTMLDebug(4, ("parse.c: _XmHTMLGetMaxLineLength, returning %d\n",
+		ret_val));
+
+	return(ret_val);
+}
+
+/*****
+* Debugging memory functions.
+* These *must* be kept at the end of this file as it overrides any
+* previously defined memory allocation macros.
+*****/
+
 #ifdef DEBUG
 
 /* need to undefine them or w'll get in an endless loop */
@@ -647,6 +1125,8 @@ __rsd_malloc(size_t size, char *file, int line)
 {
 	static char *ret_val;
 
+	my_assert(size != 0);
+
 	ret_val = (char*) malloc (size);
 
 	/* dump if failed */
@@ -659,6 +1139,8 @@ char*
 __rsd_calloc(size_t nmemb, size_t size, char *file, int line)
 {
 	static char *ret_val;
+
+	my_assert(nmemb != 0);
 
 	ret_val = (char*) calloc (nmemb, size);
 

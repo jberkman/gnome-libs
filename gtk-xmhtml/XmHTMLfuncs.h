@@ -35,6 +35,21 @@
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.3  1997/12/25 01:34:10  unammx
+* Good news for the day:
+*
+*    I have upgraded our XmHTML sources to XmHTML 1.1.1.
+*
+*    This basically means that we got table support :-)
+*
+* Still left to do:
+*
+*    - Set/Get gtk interface for all of the toys in the widget.
+*    - Frame support is broken, dunno why.
+*    - Form support (ie adding widgets to it)
+*
+* Miguel.
+*
 * Revision 1.2  1997/12/19 00:03:49  unammx
 * gtk/xmhtml updates
 *
@@ -111,24 +126,67 @@ typedef unsigned char Byte;
 * carefull when modifying these values.
 *****/
 
-/*** 
-* button press & release must occur within half a second of each other to 
-* trigger an anchor activation
-***/
-#define MAX_RELEASE_TIME	500		
-
-/* Default margin offsets */
-#define DEFAULT_MARGIN		20
-
-/* initial horizontal & vertical increment when a scrollbar is moved */
-#define HORIZONTAL_INCREMENT	12		/* average char width */
-#define VERTICAL_INCREMENT		18		/* average line height */
+/***** 
+* Time window in which button press & release trigger an anchor activation.
+* (specified in milliseconds).
+*****/
+#define XmHTML_BUTTON_RELEASE_TIME			500		
 
 /*****
-* maximum no of colors we allow. You can safely decrease this number, but
-* *never* increase it.
+* Default horizontal & vertical marginwidth.
 *****/
-#define MAX_IMAGE_COLORS	256
+#define XmHTML_DEFAULT_MARGIN				20
+
+/*****
+* Number of pixels to scroll when the scrollbar isn't being dragged but
+* moved by either keyboard actions or arrow pressing. Be warned that
+* using large values will cause a jumpy scrolling as XmHTML will have to
+* render increasing amounts of data.
+*****/
+#define XmHTML_HORIZONTAL_SCROLL_INCREMENT	12		/* average char width */
+#define XmHTML_VERTICAL_SCROLL_INCREMENT	18		/* average line height */
+
+/*****
+* Absolute maximum no of colors XmHTML may use. It is the maximum value for
+* the XmNmaxImageColors resource.
+* Increasing this number isn't a wise thing to do since all image routines
+* are optimized for using paletted images. If you want XmHTML to handle more
+* than 256 colors, you will have to modify the code.
+*****/
+#define MAX_IMAGE_COLORS					256
+
+/*****
+* Default font sizes
+* Scalable size array: default,sub/superscript,h1,h2,h3,h4,h5,h6
+* Fixed size array   : default,sub/superscript
+*****/
+#define XmHTML_DEFAULT_FONT_SCALABLE_SIZES	"14,8,24,18,14,12,10,8"
+#define XmHTML_DEFAULT_FONT_FIXED_SIZES		"12,8"
+
+/*****
+* Default Table cell & row spacing.
+*****/
+#define XmHTML_DEFAULT_CELLSPACING			2
+#define XmHTML_DEFAULT_ROWSPACING			2
+
+/*****
+* Maximum number of iterations the text-justification routines may reach.
+* Decreasing the default value of 1500 will lead to an increasing amount
+* of warnings.
+*****/
+#define MAX_JUSTIFY_ITERATIONS				1500
+
+/*****
+* Maximum number of iterations the table layout computation routines may
+* reach. This only occurs when the minimum suggested table width is smaller
+* than the available width and the maximum suggested table width is larger
+* than the available width. In this case, the layout routines have to compute
+* an optimum balance between the different colum widths within the available
+* width. The algorithm used should be convergent, but could be divergent for
+* nested tables or tables prefixed with an extreme indentation (nested lists
+* and such). Hence the safeguard.
+*****/
+#define MAX_TABLE_ITERATIONS				128
 
 /*****
 * Default gamma correction value for your display. This is only used for
@@ -138,7 +196,7 @@ typedef unsigned char Byte;
 * For Macintosh displays (MkLinux), change this to 1.4 (so I've been told)
 * If you change this value, it *must* be a floating point value.
 *****/
-#define XmHTML_DEFAULT_GAMMA	2.2
+#define XmHTML_DEFAULT_GAMMA				2.2
 
 /*****
 * Maximum size of the PLC get_data() buffer. This is the maximum amount
@@ -152,7 +210,7 @@ typedef unsigned char Byte;
 * type of image being loaded and the amount of data left in the current input
 * buffer.
 *****/
-#define PLC_MAX_BUFFER_SIZE		2048
+#define PLC_MAX_BUFFER_SIZE					2048
 
 /*****
 * The default timeout value for the Progressive Loader Context. This
@@ -165,9 +223,9 @@ typedef unsigned char Byte;
 * PLC_MIN_DELAY is the minimum value XmHTML can reduce the timeout to while
 * PLC_MAX_DELAY is the maximum value XmHTML can increase the timeout to.
 *****/
-#define PLC_DEFAULT_DELAY		250
-#define PLC_MIN_DELAY			5
-#define PLC_MAX_DELAY			1000
+#define PLC_DEFAULT_DELAY					250
+#define PLC_MIN_DELAY						5
+#define PLC_MAX_DELAY						1000
 
 /***************** End of User configurable section *****************/ 
 
@@ -185,37 +243,22 @@ typedef unsigned char Byte;
 #define False ((Boolean)0)
 #endif /* lint */
 
-extern Byte bitmap_bits[];
-
-/* usefull macros */
-#define Abs(x)		((x) < 0 ? -(x) : (x))
-#define Max(x,y)	(((x) > (y)) ? (x) : (y))
-#define Min(x,y)	(((x) < (y)) ? (x) : (y))
-#define FONTHEIGHT(f) ((f)->max_bounds.ascent + (f)->max_bounds.descent)
-#define FnHeight(f) ((f)->ascent + (f)->descent)
-
-#ifdef WITH_MOTIF
-#    define FreePixmap(DPY,PIX) if((PIX)!= None) XFreePixmap((DPY),(PIX))
-#else
-#    define FreePixmap(DPY,PIX) if((PIX)!= TNone) gdk_pixmap_unref((PIX))
-#endif
-
-/* check whether the body image is fully loaded */
-#define BodyImageLoaded(IMAGE) \
-	((IMAGE) ? (!ImageInfoDelayed((IMAGE)) && \
-		!ImageInfoProgressive((IMAGE))) : True)
-
-/* RANGE forces a to be in the range b..c (inclusive) */
-#define RANGE(a,b,c) { if (a < b) a = b;  if (a > c) a = c; }
-
 /****
 * debug.c
 * Must include this before anything else to prevent inconsistencies.
 ****/
 #include "debug.h"
 
+/*****
+* Using #if !defined(DMALLOC) && !defined(DEBUG) seems to trigger a bug
+* on SparcWorks CPP, so we use the old #ifndef combi's to work around it.
+* Fix 10/27/97-01, shl.
+*****/
+#ifndef DMALLOC
+#ifndef DEBUG
+ 
 /* Normal builds use Xt memory functions */
-#if !defined(DMALLOC) && !defined(DEBUG)
+
 #    ifdef WITH_MOTIF
 #        define malloc(SZ)		XtMalloc((SZ))
 #        define calloc(N,SZ)		XtCalloc((N),(SZ))
@@ -229,7 +272,7 @@ extern Byte bitmap_bits[];
 #        define free(PTR)               g_free(PTR)
 #        define strdup(STR)             g_strdup(STR)
 #    endif
-#elif !defined(DMALLOC)
+#else /* DEBUG defined */
 
 /* debug builds use asserted functions unless DMALLOC is defined */
 extern char *__rsd_malloc(size_t size, char *file, int line);
@@ -245,168 +288,13 @@ extern void  __rsd_free(void *ptr, char *file, int line);
 #define free(PTR)			__rsd_free((PTR), __FILE__, __LINE__)
 #define strdup(STR)			__rsd_strdup((STR), __FILE__, __LINE__)
 
+#endif /* DEBUG */
 #else /* DMALLOC */
 
 /* let dmalloc.h define it all */
 #include <dmalloc.h>
 
-#endif /* DEBUG && DMALLOC */
-
-/* global debug messages disabling */
-#ifdef DEBUG
-extern Boolean debug_disable_warnings;
-
-/* macro to display an error message and dump the core */
-#define my_assert(TST) if((TST) != True) do { \
-	fprintf(stderr, "Assertion failed: %s\n    (file %s, line %i)\n", \
-		#TST, __FILE__, __LINE__); \
-	abort(); \
-}while(0)
-
-#else
-
-#define my_assert(TST)	/* empty */
-
-#endif
-
-/****
-* error.c
-* We've got two separate versions of XmHTML's error & warning functions.
-* The debug versions include full location information while the normal
-* build versions only contain the warning/error message. This allows us
-* to reduce the data size of the normal build.
-****/
-#ifdef DEBUG
-
-#define __WFUNC__(WIDGET_ID, FUNC)	(TWidget)WIDGET_ID, __FILE__, \
-	 __LINE__, FUNC
-
-/* Display a warning message and continue */
-extern void __XmHTMLWarning(TWidget w, String module, int line, String routine, 
-	String fmt, ...);
-
-/* Display an error message and exit */
-extern void __XmHTMLError(TWidget w, String module, int line, String routine, 
-		String fmt, ...);
-
-/* Display a NULL/invalid parent warning message and continue */
-extern void __XmHTMLBadParent(TWidget w, String src_file, int line, String func);
-
-#define _XmHTMLBadParent(W,FUNC)	__XmHTMLBadParent(W,__FILE__,__LINE__,FUNC)
-
-#else
-
-#define __WFUNC__(WIDGET_ID, FUNC)	(TWidget)WIDGET_ID
-
-/* Display a warning message and continue */
-extern void __XmHTMLWarning(TWidget w, String fmt, ...);
-
-/* Display an error message and exit */
-extern void __XmHTMLError(TWidget w, String fmt, ...);
-
-/* Display a NULL/invalid parent warning message and continue */
-extern void __XmHTMLBadParent(TWidget w, String func);
-
-#define _XmHTMLBadParent(W,FUNC)	__XmHTMLBadParent(W,FUNC)
-
-#endif /* DEBUG */
-
-#define _XmHTMLWarning __XmHTMLWarning
-#define _XmHTMLError   __XmHTMLError
-
-/* Display an error message due to allocation problems and exit */
-extern void _XmHTMLAllocError(TWidget w, char *module, char *routine, 
-	char *func, int size);
-
-/****
-* StringUtil.c
-****/
-extern void my_upcase(char *string);
-extern void my_locase(char *string);
-extern char *my_strcasestr(const char *s1, const char *s2);
-extern char *my_strndup(const char *s1, size_t len);
-extern Byte __my_translation_table[];
-#define _FastLower(x) (__my_translation_table[(unsigned int)x])
-
-#ifdef NEED_STRERROR
-extern char *sys_errlist[];
-extern int errno;
-#define strerror(ERRNUM) sys_errlist[ERRNUM]
-#endif
-
-#ifdef NEED_STRCASECMP
-# include <sys/types.h>
-extern int my_strcasecmp(const char *s1, const char *s2);
-extern int my_strncasecmp(const char *s1, const char *s2, size_t n);
-#define strcasecmp(S1,S2) my_strcasecmp(S1,S2)
-#define strncasecmp(S1,S2,N) my_strncasecmp(S1,S2,N)
-#endif
-
-typedef struct _HashEntry{
-	struct _HashEntry *nptr;
-	struct _HashEntry *pptr;    /* linked list */
-	unsigned long key;
-	unsigned long data;
-#ifdef DEBUG
-	int ncoll;					/* no of collisions for this entry */
-#endif
-	struct _HashEntry *next;		/* next on the linked-list for collisions */
-}HashEntry;
-
-/* A generic hash table structure */
-typedef struct _HashTable{
-	int elements;				/* elements stored in the table */
-	int size;					/* size of the table */
-	HashEntry **table;
-	HashEntry *last;			/* last on the linked list */
-#ifdef DEBUG
-	int requests, hits, misses, puts, collisions;
-#endif
-}HashTable;
-
-/* initialize the given hashtable. */
-extern HashTable *_XmHTMLHashInit(HashTable *table);
-
-/* put a new entry in the hashtable */
-extern void _XmHTMLHashPut(HashTable *table, unsigned long key,
-	unsigned long data);
-
-/* get an entry from the hashtable */
-extern Boolean _XmHTMLHashGet(HashTable *table, unsigned long key,
-	unsigned long *data);
-
-/* delete an entry from the hashtable */
-extern void _XmHTMLHashDelete(HashTable *table,
-	unsigned long key);
-
-/* completely wipe the given hashtable */
-extern void _XmHTMLHashDestroy(HashTable *table);
-
-/*****
-* timings only available when compiled with GCC and when requested. 
-* Defining _WANT_TIMINGS yourself doesn't have *any* effect, its defined in
-* source files where I want to known how much time a routine requires to
-* perform it's task (crude profiling).
-*****/
-#if defined(DEBUG) && defined(_WANT_TIMINGS) && defined(__GNUC__)
-#include <sys/time.h>	/* timeval def */
-#include <unistd.h>		/* gettimeofday() */
-
-static struct timeval tstart, tend;
-#define SetTimer gettimeofday(&tstart,NULL)
-#define ShowTimer(LEVEL, FUNC) do { \
-	int secs, usecs; \
-	gettimeofday(&tend, NULL); \
-	secs = (int)(tend.tv_sec - tstart.tv_sec); \
-	usecs = (int)(tend.tv_usec - tstart.tv_usec); \
-	if(usecs < 0) usecs *= -1; \
-	_XmHTMLDebug(LEVEL,("%s: done in %i.%i seconds\n",FUNC,secs,usecs)); \
-}while(0)
-
-#else
-#define SetTimer				/* empty */
-#define ShowTimer(LEVEL,FUNC)	/* empty */
-#endif
+#endif /* DMALLOC */
 
 /* Don't add anything after this endif! */
 #endif /* _XmHTMLfuncs_h_ */

@@ -36,6 +36,21 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.2  1997/12/25 01:34:10  unammx
+* Good news for the day:
+*
+*    I have upgraded our XmHTML sources to XmHTML 1.1.1.
+*
+*    This basically means that we got table support :-)
+*
+* Still left to do:
+*
+*    - Set/Get gtk interface for all of the toys in the widget.
+*    - Frame support is broken, dunno why.
+*    - Form support (ie adding widgets to it)
+*
+* Miguel.
+*
 * Revision 1.1  1997/11/28 03:38:56  gnomecvs
 * Work in progress port of XmHTML;  No, it does not compile, don't even try -mig
 *
@@ -46,6 +61,7 @@ static char rcsId[]="$Header$";
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>		/* isspace */
 
 #include <XmHTMLP.h>
 #include <XmHTMLfuncs.h>
@@ -193,7 +209,7 @@ makeFontName(String name, String foundry, String family, String weight,
 		name, fndry, fam, wd, sp));
 
 	/* screen resolutions are stored in the display-bound font cache */
-	sprintf(new_name, "-%s-%s-%s-%s-%s--*-%i-%i-%i-%s-*-%s",
+	sprintf(new_name, "-%s-%s-%s-%s-%s-*-*-%i-%i-%i-%s-*-%s",
 		(foundry != NULL ? foundry : fndry), (family != NULL ? family : fam), 
 		weight, slant, wd, points, curr_cache->res_x, curr_cache->res_y,
 		sp, charset);
@@ -837,6 +853,7 @@ initializeFontSizeLists(XmHTMLWidget html)
 		for(; i < 8; i++)
 			xmhtml_fn_sizes[i] = def_fn_sizes[i];
 	}
+
 #ifdef DEBUG
 	_XmHTMLDebug(8, ( "fonts.c: initializeFontSizeLists, scalable font "
 		"size list:\n"));
@@ -1027,6 +1044,308 @@ _XmHTMLSelectFontCache(XmHTMLWidget html, Boolean reset)
 }
 
 /*****
+* Name: 		_XmHTMLLoadFont
+* Return Type: 	XmHTMLfont*
+* Description: 	loads a new font, with the style determined by the current 
+*				font: if current font is bold, and new is italic then a 
+*				bold-italic font will be returned.
+* In: 
+*	w:			Widget for which to load a font
+*	font_id:	id describing type of font to load.
+*	size:		size of font to load. Only used for HT_FONT.
+*	curr_font:	current font, required for propagating font style info.
+* Returns:
+*	the loaded font.
+*****/
+XmHTMLfont*
+_XmHTMLLoadFont(XmHTMLWidget html, htmlEnum font_id, int size,
+	XmHTMLfont *curr_font)
+{
+	XmHTMLfont *new_font = NULL;
+	String family;
+	int ptsz;
+	Byte new_style = (Byte)0, font_style;
+	Boolean ok = True;	/* enable font warnings */
+
+	/* curr_font *must* always have a value as it references a cached font */
+	my_assert(curr_font != NULL);
+
+	/* pick up style of the current font */
+	font_style = curr_font->style;
+
+	_XmHTMLDebug(8,("_XmHTMLLoadFont: current font is %s %s %s.\n",
+		(font_style & FONT_FIXED  ? "fixed"  : "scalable"),
+		(font_style & FONT_BOLD   ? "bold"   : "medium"),
+		(font_style & FONT_ITALIC ? "italic" : "regular"))); 
+
+	/* See if we need to proceed with bold font */
+	if(font_style & FONT_BOLD)
+		new_style = FONT_BOLD;
+	else
+		new_style &= ~FONT_BOLD;
+
+	/* See if we need to proceed with italic font */
+	if(font_style & FONT_ITALIC)
+		new_style |= FONT_ITALIC;
+	else
+		new_style &= ~FONT_ITALIC;
+
+	/* See if we need to proceed with a fixed font */
+	if(font_style & FONT_FIXED)
+	{
+		new_style |= FONT_FIXED;
+		family = html->html.font_family_fixed;
+		ptsz = xmhtml_fn_fixed_sizes[0];
+	}
+	else
+	{
+		new_style &= ~FONT_FIXED;
+		family = curr_font->font_family;
+		ptsz = xmhtml_fn_sizes[0];
+	}
+
+	_XmHTMLDebug(8,("_XmHTMLLoadFont: next font is %s %s %s (inherited).\n",
+		(new_style & FONT_FIXED  ? "fixed"  : "scalable"),
+		(new_style & FONT_BOLD   ? "bold"   : "medium"),
+		(new_style & FONT_ITALIC ? "italic" : "regular"))); 
+
+	switch(font_id)
+	{
+		case HT_CITE:
+		case HT_I:
+		case HT_EM:
+		case HT_DFN:
+		case HT_ADDRESS:
+			new_font = _XmHTMLloadQueryFont((Widget)html, family, NULL, 
+				xmhtml_basefont_sizes[size-1], new_style|FONT_ITALIC, &ok);  
+			break;
+		case HT_STRONG:
+		case HT_B:
+		case HT_CAPTION:
+			new_font = _XmHTMLloadQueryFont((Widget)html, family, NULL, 
+				xmhtml_basefont_sizes[size-1], new_style | FONT_BOLD, &ok);
+			break;
+
+		/*****
+		* Fixed fonts always use the font specified by the value of the
+		* fontFamilyFixed resource.
+		*****/
+		case HT_SAMP:
+		case HT_TT:
+		case HT_VAR:
+		case HT_CODE:
+		case HT_KBD:
+ 		case HT_PRE:	/* fix 01/20/97-03, kdh */
+			new_font = _XmHTMLloadQueryFont((Widget)html,
+				html->html.font_family_fixed, NULL, xmhtml_fn_fixed_sizes[0],
+				new_style |FONT_FIXED, &ok);
+			break;
+
+		/* The <FONT> element is useable in *every* state */
+		case HT_FONT:
+			new_font = _XmHTMLloadQueryFont((Widget)html, family, NULL, size,
+				new_style, &ok);
+			break;
+
+		/*****
+		* Since HTML Headings may not occur inside a <font></font> declaration,
+		* they *must* use the specified document font, and not derive their
+		* true font from the current font.
+		*****/
+		case HT_H1:
+			new_font = _XmHTMLloadQueryFont((Widget)html,
+				html->html.font_family, NULL, xmhtml_fn_sizes[2],
+				FONT_SCALABLE|FONT_BOLD, &ok);
+			break;
+		case HT_H2:
+			new_font = _XmHTMLloadQueryFont((Widget)html,
+				html->html.font_family, NULL, xmhtml_fn_sizes[3],
+				FONT_SCALABLE|FONT_BOLD, &ok);
+			break;
+		case HT_H3:
+			new_font = _XmHTMLloadQueryFont((Widget)html,
+				html->html.font_family, NULL, xmhtml_fn_sizes[4],
+				FONT_SCALABLE|FONT_BOLD, &ok);
+			break;
+		case HT_H4:
+			new_font = _XmHTMLloadQueryFont((Widget)html,
+				html->html.font_family, NULL, xmhtml_fn_sizes[5],
+				FONT_SCALABLE|FONT_BOLD, &ok);
+			break;
+		case HT_H5:
+			new_font = _XmHTMLloadQueryFont((Widget)html,
+				html->html.font_family, NULL, xmhtml_fn_sizes[6],
+				FONT_SCALABLE|FONT_BOLD, &ok);
+			break;
+		case HT_H6:
+			new_font = _XmHTMLloadQueryFont((Widget)html,
+				html->html.font_family, NULL, xmhtml_fn_sizes[7],
+				FONT_SCALABLE|FONT_BOLD, &ok);
+			break;
+
+		/* should never be reached */
+		default:
+#ifdef PEDANTIC
+			_XmHTMLWarning(__WFUNC__(html, "_XmHTMLLoadFont"), 
+				"Unknown font switch. Using default font.");
+#endif /* PEDANTIC */
+			/* this will always succeed */
+			ok = False;
+			new_font = _XmHTMLloadQueryFont((Widget)html, family, NULL, ptsz, 
+				FONT_SCALABLE|FONT_REGULAR|FONT_MEDIUM, &ok);
+			break;
+	}
+	return(new_font);
+}
+
+/*****
+* Name: 		_XmHTMLLoadFontWithFace
+* Return Type: 	XmHTMLfont*
+* Description: 	load a new font with given pixelsize and face. 
+*				Style is determined by the current font: if current font
+*				is bold, and new is italic then a bold-italic font will be 
+*				returned.
+* In: 
+*	w:			Widget for which to load a font
+*	size:		size of font to load. Only used for HT_FONT.
+*	face:		a comma separated list of font faces to use, contents are 
+*				destroyed when this function returns.
+*	curr_font:	current font, required for propagating font style info.
+* Returns:
+*	A new font with a face found in the list of faces given upon success
+*	or the default font on failure.
+*****/
+XmHTMLfont*
+_XmHTMLLoadFontWithFace(XmHTMLWidget html, int size, String face,
+	XmHTMLfont *curr_font)
+{
+	XmHTMLfont *new_font = NULL;
+	String chPtr, family, all_faces, first_face = NULL;
+	Byte new_style = (Byte)0, font_style;
+	int try;
+
+	/* curr_font *must* always have a value as it references a cached font */
+	my_assert(curr_font != NULL);
+
+	/* pick up style of the current font */
+	font_style = curr_font->style;
+
+	/* See if we need to proceed with bold font */
+	if(font_style & FONT_BOLD)
+		new_style = FONT_BOLD;
+	else
+		new_style &= ~FONT_BOLD;
+
+	/* See if we need to proceed with italic font */
+	if(font_style & FONT_ITALIC)
+		new_style |= FONT_ITALIC;
+	else
+		new_style &= ~FONT_ITALIC;
+
+	/***** 
+	* See if we need to proceed with a fixed font, only used to determine
+	* initial font family.
+	*****/
+	if(font_style & FONT_FIXED)
+	{
+		new_style |= FONT_FIXED;
+		family = html->html.font_family_fixed;
+	}
+	else
+	{
+		new_style &= ~FONT_FIXED;
+		family = html->html.font_family;
+	}
+
+	/* we must have a ``,'' or strtok will fail */
+	if((strstr(face, ",")) == NULL)
+	{
+		all_faces = (String)malloc(strlen(face) + 2);
+		strcpy(all_faces, face);
+		strcat(all_faces, ",\0");
+	}
+	else
+		all_faces = strdup(face);
+
+	/* walk all possible spaces */
+	try = 0;
+	for(chPtr = strtok(all_faces, ","); chPtr != NULL;
+		chPtr = strtok(NULL, ","))
+	{
+		Boolean ok = False;
+
+		try++;
+
+		/* skip any leading spaces */
+		while(isspace(*chPtr))
+			chPtr++;
+
+		_XmHTMLDebug(8, ("format.c: _XmHTMLLoadFontWithFace, trying with "
+			"face %s\n", chPtr));
+
+		/***** 
+		* Disable font not found warning message, we are trying to find
+		* a font of which we don't know if it exists.
+		*****/
+		ok = False;
+		new_font = _XmHTMLloadQueryFont((Widget)html, family, chPtr, size,
+			new_style, &ok);
+		if(new_font && ok)
+		{
+			_XmHTMLDebug(8, ("format.c: _XmHTMLLoadFontWithFace, font "
+				"loaded.\n"));
+			break;
+		}
+		if(try == 1)
+			first_face = strdup(chPtr);
+	}
+	free(all_faces);
+	/*****
+	* hmm, the first font in this face specification didn't yield a valid
+	* font. To speed up things considerably, we add a font mapping for the
+	* first face in the list of given spaces. There's no sense in doing this
+	* when there is only one face specified as this will always get us the
+	* default font. We only add a mapping if the name of the returned font
+	* contains at least one of the allowed faces. Not doing this check would
+	* ignore face specs which do have a face we know. We also want the font
+	* styles to match as well.
+	* BTW: this is a tremendous speedup!!!
+	*****/
+	if(first_face)
+	{
+		/*****
+		* Only add a mapping if the returned name contains one of the allowed
+		* faces. No need to check for the presence of a comma: we only take
+		* lists that have multiple face specifications.
+		*****/
+		if(try > 1)
+		{
+			/*****
+			* Walk all possible faces. Nukes the face array but that's not
+			* bad as we are the only ones using it.
+			*****/
+			for(chPtr = strtok(face, ","); chPtr != NULL;
+				chPtr = strtok(NULL, ","))
+			{
+				/* skip any leading spaces */
+				while(isspace(*chPtr))
+					chPtr++;
+				/* caseless 'cause fontnames ignore case */
+				if(my_strcasestr(new_font->font_name, chPtr) &&
+					new_font->style == new_style)
+				{
+					_XmHTMLaddFontMapping(html, family, first_face, size,
+						new_style, new_font);
+					break;
+				}
+			}
+		}
+		free(first_face);
+	}
+	return(new_font);
+}
+
+/*****
 * Name:			_XmHTMLUnloadFonts
 * Return Type: 	void
 * Description: 	removes a widget from the widget list of a display-bound
@@ -1110,59 +1429,6 @@ _XmHTMLUnloadFonts(XmHTMLWidget html)
 	}
 #endif
 }
-
-#ifdef DEBUG
-void dumpFontCache(fontCacheEntry *entry)
-{
-	if(entry)
-	{
-		dumpFontCache(entry->left);
-
-		_XmHTMLDebug(8, ("    %s, style %i\n", entry->name,
-			(int)entry->font->style));
-		if(entry->is_map)
-			_XmHTMLDebug(8, ("    map: %s, style %i\n",
-				entry->map_to->font_name, entry->map_to->style));
-
-		dumpFontCache(entry->right);
-	}
-}
-
-void
-dumpFontCacheStats(void)
-{
-	int i, k = 0;
-	fontCache *tmp;
-
-	_XmHTMLDebug(8, ("fonts.c, dumping font cache statistics\n"));
-
-	for(tmp = master_cache; tmp != NULL; tmp = tmp->next, k++)
-	{
-		_XmHTMLDebug(8, ("Cache id: %i", k));
-		if(tmp == curr_cache)
-			_XmHTMLDebug(8, (" (current cache)\n"));
-		else
-			_XmHTMLDebug(8, ("\n"));
-		_XmHTMLDebug(8, ("Widgets refererring this cache:\n"));
-		for(i = 0; i < tmp->nwidgets; i++)
-			_XmHTMLDebug(8, ("\t%s\n", Toolkit_Widget_Name(tmp->widgets[i])));
-		_XmHTMLDebug(8, ("Fonts    : %i (%i mapped)\n", tmp->nentries,
-			tmp->nmaps));
-		_XmHTMLDebug(8, ("requests : %i\n", tmp->requests));
-		_XmHTMLDebug(8, ("lookups  : %i\n", tmp->nlookups));
-		_XmHTMLDebug(8, ("misses   : %i\n", tmp->misses));
-		_XmHTMLDebug(8, ("hits     : %i\n", tmp->hits));
-		_XmHTMLDebug(8, ("hit ratio: %.2f%%\n",
-			(float)(tmp->hits*100./(float)tmp->requests)));
-		_XmHTMLDebug(8, ("Average lookups per font: %.2f\n",
-			(float)(tmp->nlookups/(float)tmp->hits)));
-		_XmHTMLDebug(8, ("\n"));
-
-		_XmHTMLDebug(8, ("List of fonts:\n"));
-			dumpFontCache(tmp->cache);
-	}
-}
-#endif
 
 void
 fillCacheInfo(fontCacheEntry *entry, XmHTMLFontCacheInfo *info)

@@ -43,6 +43,21 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.5  1997/12/25 01:34:12  unammx
+* Good news for the day:
+*
+*    I have upgraded our XmHTML sources to XmHTML 1.1.1.
+*
+*    This basically means that we got table support :-)
+*
+* Still left to do:
+*
+*    - Set/Get gtk interface for all of the toys in the widget.
+*    - Frame support is broken, dunno why.
+*    - Form support (ie adding widgets to it)
+*
+* Miguel.
+*
 * Revision 1.4  1997/12/24 17:53:55  unammx
 * Fun stuff:
 *
@@ -1208,14 +1223,10 @@ freePixmaps(XmHTMLWidget html, XmHTMLImage *image)
 static void
 getImageAttributes(XmHTMLImage *image, String attributes)
 {
-	String chPtr;
-
-	if((chPtr = _XmHTMLTagGetValue(attributes, "alt")) != NULL)
+	if((image->alt = _XmHTMLTagGetValue(attributes, "alt")) != NULL)
 	{
-		image->alt = strdup(chPtr);
 		/* handle escape sequences in the alt text */
 		_XmHTMLExpandEscapes(image->alt, False);
-		free(chPtr);
 	}
 	else
 	{
@@ -3360,7 +3371,9 @@ _XmHTMLNewImage(XmHTMLWidget html, String attributes, Dimension *width,
 		if(html->html.image_proc)
 		{
 			/* only external loaders can enable delayed image loading */
-			html_image = html->html.image_proc((TWidget)html, src);
+ 			html_image = html->html.image_proc((TWidget)html, src,
+ 				html->html.client_data);
+
 
 			/*
 			* If this image is to be loaded progressively we *need* to have
@@ -3990,7 +4003,7 @@ _XmHTMLLoadBodyImage(XmHTMLWidget html, String url)
 		html->html.body_image = NULL;
 		return;
 	}
-	_XmHTMLDebug(2, ("images.c: _XmHTMLLoadBodyImage, body image url is %s\n",
+	_XmHTMLDebug(6, ("images.c: _XmHTMLLoadBodyImage, body image url is %s\n",
 		url));
 
 	/* kludge so _XmHTMLNewImage recognizes it */
@@ -4021,7 +4034,7 @@ _XmHTMLFreeImageInfo(XmHTMLWidget html, XmImageInfo *info, Boolean external)
 	XmImageInfo *tmp;
 	XmHTMLImage *image;
 
-	_XmHTMLDebug(2, ("XmHTML.c: _XmHTMLFreeImageInfo Start, freeing %s\n",
+	_XmHTMLDebug(6, ("images.c: _XmHTMLFreeImageInfo Start, freeing %s\n",
 		(info->url ? info->url : "<unknown image>")));
 
 	/*****
@@ -4080,7 +4093,7 @@ _XmHTMLFreeImageInfo(XmHTMLWidget html, XmImageInfo *info, Boolean external)
 		info = NULL;
 		info = tmp;
 	}
-	_XmHTMLDebug(2, ("XmHTML.c: _XmHTMLFreeImageInfo End\n"));
+	_XmHTMLDebug(6, ("images.c: _XmHTMLFreeImageInfo End\n"));
 }
 
 /*****
@@ -4269,5 +4282,437 @@ XmHTMLImageDefaultProc(TWidget w, String file, unsigned char *buf, int size)
 	}
 	FreeImageBuffer(ib);
 	return(image);
+}
+
+
+/*****
+* Name: 		ImageGetInfoSize
+* Return Type: 	int
+* Description: 	returns the size of the given XmImageInfo structure.
+* In: 
+*	info:		ptr to a XmImageInfo structure;
+* Returns:
+*	size of the given XmImageInfo structure.
+* Note:
+*	This function is used both by us and the caching routines.
+*****/
+int
+XmHTMLImageGetImageInfoSize(XmImageInfo *info)
+{
+	int size = 0;
+	XmImageInfo *frame = info;
+
+	while(frame != NULL)
+	{
+		size += sizeof(XmImageInfo);
+		size += frame->width*frame->height;		/* raw image data */
+
+		/* clipmask size. The clipmask is a bitmap of depth 1 */
+		if(frame->clip)
+		{
+			int clipsize;
+			clipsize = frame->width;
+			/* make it byte-aligned */
+			while((clipsize % 8))
+				clipsize++;
+			/* this many bytes on a row */
+			clipsize /= 8;
+			/* and this many rows */
+			clipsize *= frame->height;
+			size += clipsize;
+		}
+		/* reds, greens and blues */
+		size += 3*frame->ncolors*sizeof(Dimension);
+		frame = frame->frame;	/* next frame of this image (if any) */
+	}
+	return(size);
+}
+
+/*****
+* Name: 		XmHTMLImageFreeAllImages
+* Return Type: 	void
+* Description: 	releases all allocated images and associated structures
+* In: 
+*	html:		XmHTMLWidget for which to free all images
+* Returns:
+*	nothing
+*****/
+void 
+XmHTMLImageFreeAllImages(TWidget w)
+{
+	XmHTMLImage *image, *image_list;
+	Display *dpy;
+	XmHTMLWidget html;
+
+	/* sanity check */
+	if(!w || !XmIsHTML(w))
+	{
+		_XmHTMLBadParent(w, "XmHTMLImageFreeAllImages");
+		return;
+	}
+
+	html = XmHTML (w);
+ 	image_list = html->html.images;
+ 	dpy = Toolkit_Display(w);
+
+	while(image_list != NULL)
+	{
+		image = image_list->next;
+		_XmHTMLFreeImage(html, image_list);
+		image_list = NULL;
+		image_list = image;
+	}
+	html->html.images = NULL;
+
+	/* alpha channel stuff */
+	if(html->html.alpha_buffer)
+	{
+		if(html->html.alpha_buffer->ncolors)
+			free(html->html.alpha_buffer->bg_cmap);
+		free(html->html.alpha_buffer);
+	}
+	html->html.alpha_buffer = (AlphaPtr)NULL;
+
+	/* only release XCC when we aren't using a fixed palette */
+	if(html->html.map_to_palette == XmDISABLED)
+	{
+		XCCFree(html->html.xcc);
+		html->html.xcc = (XCC)NULL;
+	}
+}
+
+/*****
+* Name: 		XmHTMLImageFreeImageInfo
+* Return Type: 	void
+* Description: 	free the given XmImageInfo structure
+* In: 
+*	info:		image to free
+* Returns:
+*	nothing
+*****/
+void
+XmHTMLImageFreeImageInfo(TWidget w, XmImageInfo *info)
+{
+	static String func = "XmHTMLImageFreeImageInfo";
+
+	/* sanity check */
+	if(!w || !XmIsHTML(w))
+	{
+		_XmHTMLBadParent(w, func);
+		return;
+	}
+
+	/* sanity check */
+	if(info == NULL)
+	{
+		_XmHTMLWarning(__WFUNC__(NULL, func), "NULL XmImageInfo "
+			"structure passed to %s.", func);
+		return;
+	}
+
+	_XmHTMLFreeImageInfo((XmHTMLWidget)w, info, True);
+}
+
+/*****
+* Name: 		XmHTMLImageAddImageMap
+* Return Type: 	void
+* Description: 	add the given imagemap to a HTML widget
+* In: 
+*	w:			widget
+*	image_map:	raw html data containing the imagemap to parse.
+* Returns:
+*	nothing
+*****/
+void
+XmHTMLImageAddImageMap(TWidget w, String image_map)
+{
+	XmHTMLWidget html;
+	XmHTMLObject *parsed_map, *temp;
+	XmHTMLImageMap *imageMap = NULL;
+
+	/* sanity check */
+	if(!w || !XmIsHTML(w) || image_map == NULL)
+	{
+		_XmHTMLWarning(__WFUNC__(w, "XmHTMLImageAddImageMap"),
+			"%s passed to XmHTMLImageAddImageMap.",
+			w ? (image_map ? "Invalid parent" : "NULL imagemap") :
+			"NULL parent");
+		return;
+	}
+
+	html = XmHTML (w);
+
+	/* parse the imagemap */
+	if((parsed_map = _XmHTMLparseHTML(html, NULL, image_map, NULL)) == NULL)
+		return;
+
+	for(temp = parsed_map; temp != NULL; temp = temp->next)
+	{
+		switch(temp->id)
+		{
+			case HT_MAP:
+				if(temp->is_end)
+				{
+					_XmHTMLStoreImagemap(html, imageMap);
+					imageMap = NULL;
+				}
+				else
+				{
+					String chPtr;
+
+					chPtr = _XmHTMLTagGetValue(temp->attributes, "name");
+					if(chPtr != NULL)
+					{
+						imageMap = _XmHTMLCreateImagemap(chPtr);
+						free(chPtr);
+					}
+					else
+						_XmHTMLWarning(__WFUNC__(w, "XmHTMLAddImagemap"),
+							"unnamed map, ignored (line %i in input).",
+							temp->line);
+				}
+				break;
+
+			case HT_AREA:
+				if(imageMap)
+					_XmHTMLAddAreaToMap(html, imageMap, temp);
+				else
+					_XmHTMLWarning(__WFUNC__(w, "XmHTMLAddImagemap"),
+						"<AREA> element outside <MAP>, ignored "
+						"(line %i in input).", temp->line);
+				break;
+			default:
+				break;
+		}
+	}
+	/* free the parsed imagemap data */
+	(void)_XmHTMLparseHTML(html, parsed_map, NULL, NULL);
+}
+
+/*****
+* Name: 		XmHTMLGetImageType
+* Return Type: 	int
+* Description: 	determines the type of a given image
+* In: 
+*	file:		name of image file to check
+* Returns:
+*	the image type if supported, IMAGE_UNKNOWN otherwise.
+*****/
+unsigned char
+XmHTMLImageGetType(String file, unsigned char *buf, int size)
+{
+	ImageBuffer data, *dp = NULL;
+	Byte ret_val = IMAGE_UNKNOWN;
+
+	if(!file)
+		return(IMAGE_ERROR);
+
+	if(size == 0 || buf == NULL)
+	{
+		if((dp = _XmHTMLImageFileToBuffer(file)) == NULL)
+			return(IMAGE_ERROR);
+	}
+	else
+	{
+		if(buf != NULL && size != 0)
+		{
+			data.file = file;
+			data.buffer = (Byte*)buf;
+			data.size = (size_t)size;
+			data.next = 0;
+			data.may_free = False;
+			dp = &data;
+		}
+		else
+			return(IMAGE_ERROR);
+	}
+
+	ret_val = _XmHTMLGetImageType(dp);
+
+	FreeImageBuffer(dp);
+
+	return(ret_val);
+}
+
+Boolean
+XmHTMLImageJPEGSupported(void)
+{
+#ifdef HAVE_JPEG
+	return(True);
+#else
+	return(False);
+#endif
+}
+
+Boolean
+XmHTMLImagePNGSupported(void)
+{
+#ifdef HAVE_PNG
+	return(True);
+#else
+	return(False);
+#endif
+}
+
+Boolean
+XmHTMLImageGZFSupported(void)
+{
+#if defined(HAVE_PNG) || defined(HAVE_ZLIB)
+	return(True);
+#else
+	return(False);
+#endif
+}
+
+/*****
+* Name: 		XmHTMLImageUpdate
+* Return Type: 	XmImageStatus
+* Description: 	updates an image
+* In: 
+*	w:			XmHTMLWidget
+*	image:		image info representing the image to be updated.
+*				This must be an XmImageInfo structure *known* to XmHTML.
+* Returns:
+*	XmIMAGE_ALMOST if updating this image requires a recomputation of the
+*	document layout, XmIMAGE_OK if not and some other value upon error.
+*****/
+XmImageStatus
+XmHTMLImageUpdate(TWidget w, XmImageInfo *image)
+{
+	XmHTMLWidget html;
+	XmHTMLObjectTableElement temp;
+	static String func = "XmHTMLImageUpdate";
+	Boolean is_body_image;
+	XmImageStatus status;
+
+	/* sanity check */
+	if(!w || !XmIsHTML(w))
+	{
+		_XmHTMLBadParent(w, func);
+		return(XmIMAGE_ERROR);
+	}
+
+	if(image == NULL)
+	{
+		_XmHTMLWarning(__WFUNC__(w, func), "%s called with a NULL image "
+			"argument.", func);
+		return(XmIMAGE_BAD);
+	}
+
+	html = XmHTML (w);
+
+	/* do we already have the body image? */
+	is_body_image = html->html.body_image != NULL;
+
+	/* return error code if failed */
+	if((status = _XmHTMLReplaceOrUpdateImage(html, image, NULL, &temp))
+		!= XmIMAGE_OK)
+		return(status);
+
+	if(temp != NULL)
+	{
+		int xs, ys;
+		xs = temp->x - html->html.scroll_x;
+		ys = temp->y - html->html.scroll_y;
+		/* We may paint the image, but we only do it when it's visible */
+		if(!(xs + temp->width < 0 || xs > html->html.work_width || 
+			ys + temp->height < 0 || ys > html->html.work_height))
+		{
+			_XmHTMLDebug(6, ("images.c: XmHTMLImageUpdate, painting image "
+				"%s\n", image->url));
+			/* clear the current image, don't generate an exposure */
+			Toolkit_Clear_Area(XtDisplay(html->html.work_area), 
+				Toolkit_Widget_Window(html->html.work_area), xs, ys,
+				temp->width, temp->height, False);
+			/* put up the new image */
+			_XmHTMLPaint(html, temp, temp->next);
+			Toolkit_Flush (Toolkit_Display ((TWidget)html), True);
+		}
+	}
+	else
+	{
+		/* if we've updated the body image, plug it in */
+		if(!is_body_image && html->html.body_image != NULL)
+		{
+			_XmHTMLClearArea(html, 0, 0, Toolkit_Widget_Dim (html).width,
+					 Toolkit_Widget_Dim(html).height);
+		}
+	}
+	return(XmIMAGE_OK);
+}
+
+/*****
+* Name: 		XmHTMLImageReplace
+* Return Type: 	XmImageStatus
+* Description: 	replaces the XmImageInfo structure with a new one
+* In: 
+*	w:			XmHTMLWidget
+*	image:		XmImageInfo structure to be replaced, must be known by XmHTML
+*	new_image:	new XmImageInfo structure 
+* Returns:
+*	XmIMAGE_ALMOST if replacing this image requires a recomputation of the
+*	document layout, XmIMAGE_OK if not and some other value upon error.
+*****/
+XmImageStatus
+XmHTMLImageReplace(TWidget w, XmImageInfo *image, XmImageInfo *new_image)
+{
+	XmHTMLWidget html;
+	XmHTMLObjectTableElement temp;
+	XmImageStatus status;
+	Boolean is_body_image;
+	static String func = "XmHTMLImageReplace";
+
+	/* sanity check */
+	if(!w || !XmIsHTML(w))
+	{
+		_XmHTMLBadParent(w, func);
+		return(XmIMAGE_ERROR);
+	}
+
+	/* sanity */
+	if(image == NULL || new_image == NULL)
+	{
+		_XmHTMLWarning(__WFUNC__(w, func), "%s called with a NULL %s "
+			"argument", func, (image == NULL ? "image" : "new_image"));
+		return(XmIMAGE_BAD);
+	}
+	html = (XmHTMLWidget)w;
+
+	/* do we already have the body image? */
+	is_body_image = html->html.body_image != NULL;
+
+	if((status = _XmHTMLReplaceOrUpdateImage(html, image, new_image, &temp))
+		!= XmIMAGE_OK)
+		return(status);
+
+	if(temp != NULL)
+	{
+		int xs, ys;
+		xs = temp->x - html->html.scroll_x;
+		ys = temp->y - html->html.scroll_y;
+		/* We may paint the image, but we only do it when it's visible */
+		if(!(xs + temp->width < 0 || xs > html->html.work_width || 
+			ys + temp->height < 0 || ys > html->html.work_height))
+		{
+			_XmHTMLDebug(6, ("images.c: XmHTMLImageReplace, painting image "
+				"%s\n", image->url));
+			/* clear the current image, don't generate an exposure */
+			Toolkit_Clear_Area(XtDisplay(html->html.work_area), 
+				Toolkit_Widget_Window(html->html.work_area), xs, ys,
+				temp->width, temp->height, False);
+			/* put up the new image */
+			_XmHTMLPaint(html, temp, temp->next);
+			Toolkit_Flush (XtDisplay((TWidget)html), True);
+		}
+	}
+	else
+	{
+		/* if we've replaced the body image, plug it in */
+		if(!is_body_image && html->html.body_image != NULL)
+		{
+			Toolkit_Widget_Force_Repaint (html);
+		}
+	}
+	return(XmIMAGE_OK); 
 }
 

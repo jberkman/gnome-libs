@@ -35,6 +35,21 @@
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.5  1997/12/25 01:34:10  unammx
+* Good news for the day:
+*
+*    I have upgraded our XmHTML sources to XmHTML 1.1.1.
+*
+*    This basically means that we got table support :-)
+*
+* Still left to do:
+*
+*    - Set/Get gtk interface for all of the toys in the widget.
+*    - Frame support is broken, dunno why.
+*    - Form support (ie adding widgets to it)
+*
+* Miguel.
+*
 * Revision 1.4  1997/12/24 17:53:54  unammx
 * Fun stuff:
 *
@@ -227,7 +242,7 @@ typedef enum{
 	XmHALIGN_LEFT,
 	XmHALIGN_CENTER,
 	XmHALIGN_RIGHT,
-	XmHALIGN_OUTLINE,	/* extension for fully outlined text */
+	XmHALIGN_JUSTIFY,	/* extension for fully justified text */
 	XmVALIGN_NONE = 8,	/* vertical alignment */
 	XmVALIGN_TOP,
 	XmVALIGN_MIDDLE,
@@ -350,6 +365,48 @@ typedef struct{
 	Cardinal st_thickness;		/* strikeout thickness */
 }XmHTMLfont;
 
+/**********
+****** Definition of all possible Objects
+**********/
+
+/*****
+* HTML4.0 Events
+*****/
+typedef struct _HTEvent{
+	int			type;			/* HTML4.0 event type	*/
+	XtPointer	data;			/* event user data		*/
+}HTEvent;
+
+/*****
+* All possible events that HTML4.0 defines
+* All fields are ptrs into XmHTML HTEvent array.
+*****/
+typedef struct _AllEvents{
+	/* Document/Frame specific events */
+	HTEvent		*onLoad;
+	HTEvent		*onUnload;
+
+	/* HTML Form specific events */
+	HTEvent		*onSubmit;
+	HTEvent		*onReset;
+	HTEvent		*onFocus;
+	HTEvent		*onBlur;
+	HTEvent		*onSelect;
+	HTEvent		*onChange;
+
+	/* object events */
+	HTEvent		*onClick;
+	HTEvent		*onDblClick;
+	HTEvent		*onMouseDown;
+	HTEvent		*onMouseUp;
+	HTEvent		*onMouseOver;
+	HTEvent		*onMouseMove;
+	HTEvent		*onMouseOut;
+	HTEvent		*onKeyPress;
+	HTEvent		*onKeyDown;
+	HTEvent		*onKeyUp;
+}AllEvents;
+
 /*****
 * Definition of an anchor 
 * URLType is an enumeration type defined in HTML.h
@@ -362,13 +419,15 @@ typedef struct _XmHTMLAnchor{
 	String				rel;			/* possible rel */
 	String				rev;			/* possible rev */
 	String				title;			/* possible title */
+	AllEvents			*events;		/* events to be served */
 	Cardinal 			line;			/* location of this anchor */
 	Boolean				visited;		/* true when anchor is visited */
 	struct _XmHTMLAnchor *next;			/* ptr to next anchor */
 }XmHTMLAnchor;
 
 /*****
-* Definition of words
+* Definition of words (a word can be plain text, and image or a form
+* member).
 *****/
 typedef struct _XmHTMLWord{
 	int 				x;			/* x-position for this word */
@@ -382,6 +441,7 @@ typedef struct _XmHTMLWord{
 	XmHTMLfont	 		*font;		/* font to use */
 	Byte 				line_data;	/* line data (underline/strikeout) */
 	Byte				spacing;	/* leading/trailing/nospace allowed */
+	AllEvents			*events;	/* events to be served */
 	struct _XmHTMLImage *image;		/* when this is an image */
 	struct _XmHTMLForm	*form;		/* when this is a form element */
 	struct _XmHTMLWord	*base;		/* baseline word for a line */
@@ -402,26 +462,6 @@ typedef struct _XmHTMLImageMap{
 	mapArea				*areas;				/* list of areas */
 	struct _XmHTMLImageMap *next;	/* ptr to next imagemap */
 }XmHTMLImageMap;
-
-/*****
-* Raw image data as read from the image. This structure	contains the raw
-* image data, alpha channel data if applicable, dimensions as read from the
-* image, transparent pixel index (if applicable) and the colormap for
-* this image.
-*****/
-typedef struct _XmHTMLRawImageData{
-	Byte			*data;			/* raw image data */
-	Byte			*alpha;			/* alpha channel data */
-	int				width;			/* image width in pixels */
-	int				height;			/* image height in pixels */
-	int				bg;				/* transparent pixel index */
-	TColor			*cmap;			/* colormap for this image */
-	int				cmapsize;		/* actual no of colors in image colormap */
-	Byte			type;			/* type of image */
-	Byte			color_class;	/* color class for this image */
-	Boolean			delayed_creation;
-	float			fg_gamma;		/* image foreground gamma */
-}XmHTMLRawImageData;
 
 /*****
 * XmHTML's internal image format.
@@ -471,11 +511,13 @@ typedef struct _XmHTMLImage{
 	TIntervalId	proc_id;		/* timer id for animations */
 	XmHTMLWidget	html;			/* image owner */
 	TAppContext	context;		/* Application context for animations */
+ 
+ 	/* other data */
+ 	AllEvents			*events;		/* events to be served */
 }XmHTMLImage;
 
 /*****
 * The following structure is used to mimic file access in memory.
-* It's currently only used for loading images, hence the name ImageBuffer.
 *****/
 typedef struct{
 	char *file;					/* name of file */
@@ -518,38 +560,161 @@ typedef struct _XmHTMLForm{
 }XmHTMLForm;
 
 /*****
+* Definition of XmHTML tables
+*
+* Dimensions:
+* positive -> absolute number;
+* negative -> relative number;
+* 0        -> no dimension specified;
+*
+* Each component in a table has a set of core properties. Properties are
+* inherited from top to bottom and can be overriden.
+*
+* Content containers render the contents of all objects between
+* start (inclusive) and end (exclusive).
+*****/
+/* possible framing types */
+typedef enum{
+	TFRAME_VOID = 0,			/* no borders		*/
+	TFRAME_ABOVE,				/* only top side	*/
+	TFRAME_BELOW,				/* only bottom side	*/
+	TFRAME_LEFT,				/* only left side	*/
+	TFRAME_RIGHT,				/* only right side	*/
+	TFRAME_HSIDES,				/* top & bottom		*/
+	TFRAME_VSIDES,				/* left & right		*/
+	TFRAME_BOX,					/* all sides		*/
+	TFRAME_BORDER				/* all sides		*/
+}TableFraming;
+
+/* possible ruling types */
+typedef enum{
+	TRULE_NONE = 0,				/* no rules			*/
+	TRULE_GROUPS,				/* only colgroups	*/
+	TRULE_ROWS,					/* only rows		*/
+	TRULE_COLS,					/* only columns		*/
+	TRULE_ALL					/* all cells		*/
+}TableRuling;
+
+/*****
+* Properties shared by all table elements. These are inherited from top to
+* bottom and can be overriden by the appropriate tag attributes.
+*****/
+typedef struct _TableProperties{
+	int				border;				/* border width, 0 = noborder	*/
+	Alignment		halign;				/* content horizontal alignment	*/
+	Alignment		valign;				/* content vertical alignment	*/
+	Pixel			bg;					/* content background color		*/
+	XmHTMLImage		*bg_image;			/* content background image		*/
+	TableFraming	framing;			/* what frame should we use?	*/
+	TableRuling		ruling;				/* what rules should we draw?	*/
+}TableProperties;
+
+/*****
+* a Cell, can be a header cell or a simple cell.
+*****/
+typedef struct _TableCell{
+	Boolean			header;				/* True if a header cell	*/
+	int				width;				/* suggested cell width		*/
+	int				height;				/* suggested cell height	*/
+	int				rowspan;			/* no of rows spanned		*/
+	int				colspan;			/* no of cells spanned		*/
+	TableProperties	*properties;		/* properties for this cell	*/
+	struct _XmHTMLObjectTable *start;	/* first object to render	*/
+	struct _XmHTMLObjectTable *end;		/* last object to render	*/
+	struct _TableRow *parent;			/* parent of this cell		*/
+}TableCell;
+
+/* A row. A row consists of a number of Cells */
+typedef struct _TableRow{
+	TableCell		*cells;				/* all cells in this row	*/
+	int				ncells;				/* no of cells in row		*/
+	int				lastcell;			/* last used cell			*/
+	TableProperties	*properties;		/* properties for this row	*/
+	struct _XmHTMLObjectTable *start;	/* first object to render	*/
+	struct _XmHTMLObjectTable *end;		/* last object to render	*/
+	struct _XmHTMLTable *parent;		/* parent of this row		*/
+}TableRow;
+
+/*****
+* A table. A table consists of a Caption and a number of Rows
+* The caption is a special row: it has only one cell that stretches
+* across the entire table: itself.
+*****/
+typedef struct _XmHTMLTable{
+	/* overall table properties */
+	int				width;				/* suggested table width	*/
+	int				hmargin;			/* horizontal cell margin	*/
+	int				vmargin;			/* vertical cell margin		*/
+	int				hpadding;			/* horizontal cell padding	*/
+	int				vpadding;			/* vertical row padding		*/
+	int				ncols;				/* no of columns			*/
+	TableProperties *properties;		/* master table properties	*/
+
+	TableRow		*caption;			/* table caption			*/
+	TableRow		*rows;				/* all table rows			*/
+	int				nrows;				/* no of rows in table		*/
+	int				lastrow;			/* last used row			*/
+
+	struct _XmHTMLTable *parent;		/* parent table (for childs)*/
+	struct _XmHTMLTable *childs;		/* table child				*/
+	int				nchilds;			/* no of child tables		*/
+	int				lastchild;			/* last used table			*/
+
+	struct _XmHTMLObjectTable *start;	/* first object in table	*/
+	struct _XmHTMLObjectTable *end;		/* last object in table		*/
+
+	struct _XmHTMLObjectTable *owner;	/* owner of this table		*/
+
+	struct _XmHTMLTable *next;			/* ptr to next table		*/
+}XmHTMLTable;
+
+/*****
 * Definition of formatted HTML elements
 *****/
 typedef struct _XmHTMLObjectTable{
-	int				x;				/* x position for this element */
-	int				y;				/* y position for this element */
-	Dimension		width;			/* width of this element */
-	Dimension		height;			/* height of this element */
+	int				x;				/* x position for this element		*/
+	int				y;				/* y position for this element		*/
+	Dimension		width;			/* width of this element			*/
+	Dimension		height;			/* height of this element			*/
 	Cardinal		line;			/* starting line number of this object */
-	Cardinal		id;				/* object identifier (anchors only) */
-	ObjectType		object_type;	/* element type */
-	String			text;			/* cleaned text */
-	Byte			text_data;		/* text/image/anchor data bits */
-	int				len;			/* length of text or width of a rule */
+	Cardinal		id;				/* object identifier (anchors only)	*/
+	ObjectType		object_type;	/* element type						*/
+	String			text;			/* cleaned text						*/
+	Byte			text_data;		/* text/image/anchor data bits		*/
+	int				len;			/* length of text or width of a rule*/
 	int				y_offset;		/* offset for sub/sup, <hr> noshade flag */
-	int				x_offset;		/* additional offset for sub/sup */
-	XmHTMLObject	*object;		/* object data (raw text) */
-	XmHTMLAnchor	*anchor;		/* ptr to anchor data */
-	XmHTMLWord		*words;			/* words to be displayed */
-	XmHTMLForm		*form;			/* form data */
-	int				n_words;		/* number of words */
-	Byte			anchor_state;	/* anchor selection state identifier */
-	Alignment		halign;			/* horizontal line alignment */
-	int				linefeed;		/* linebreak type */
-	Dimension		ident;			/* xoffset for list indentation */
-	Marker			marker;			/* marker to use in lists */		
-	int				list_level;		/* current count of list element. */
-	XmHTMLfont		*font;			/* font to be used for this object */
-	Pixel			fg;				/* foreground color for this object */
-	Pixel			bg;				/* background color for this object */
+	int				x_offset;		/* additional offset for sub/sup	*/
+	XmHTMLObject	*object;		/* object data (raw text)			*/
+	XmHTMLAnchor	*anchor;		/* ptr to anchor data				*/
+	XmHTMLWord		*words;			/* words to be displayed			*/
+	XmHTMLForm		*form;			/* form data						*/
+	XmHTMLTable		*table;			/* table data						*/
+	int				n_words;		/* number of words					*/
+	Byte			anchor_state;	/* anchor selection state identifier*/
+	Alignment		halign;			/* horizontal line alignment		*/
+	int				linefeed;		/* linebreak type					*/
+	Dimension		ident;			/* xoffset for list indentation		*/
+	Marker			marker;			/* marker to use in lists			*/		
+	int				list_level;		/* current count of list element.	*/
+	XmHTMLfont		*font;			/* font to be used for this object	*/
+	Pixel			fg;				/* foreground color for this object	*/
+	Pixel			bg;				/* background color for this object	*/
 	struct _XmHTMLObjectTable *next;
 	struct _XmHTMLObjectTable *prev;
 }XmHTMLObjectTable, *XmHTMLObjectTableElement;
+
+/*****
+*
+*****/
+typedef struct _XmHTMLSelection{
+	XmHTMLObjectTable *start;		/* selection start object */
+	int start_word;					/* first word index */
+	int start_nwords;				/* word count */
+
+	XmHTMLObjectTable *end;			/* ending start object (inclusive) */
+	int end_word;					/* first word index */
+	int end_nwords;					/* word count */
+}XmHTMLSelection;
 
 /*****
 * definition of frame childs
@@ -581,7 +746,7 @@ typedef struct _XmHTMLFrameWidget{
 typedef struct _XmHTMLFormData{
 	TWidget html;					/* owner of this form */
 	String action;					/* destination url/cgi-bin */
-	int method;						/* GET (0) or POST (0) */
+	int method;						/* XmHTML_FORM_GET,POST,PIPE */
 	String enctype;					/* form encoding */
 	int ncomponents;				/* no of items in this form */
 	TWidget fileSB;					/* input == file */
@@ -628,61 +793,6 @@ typedef struct _AlphaChannelInfo{
 }AlphaChannelInfo, *AlphaPtr;
 
 /*****
-* XmHTMLSource definition.
-* (unimplemented)
-*
-* Don't exactly know what to do with this yet.
-* Could use this to share a source between different HTML TWidgets.
-* Mostly intended for a tbd XmHTMLEditWidget or something like that.
-* All entered text is transformed into a list of XmHTMLObject, a struct
-* containing the raw element data and an element identifier. This element
-* identifier could be used to look up the properties of an element in a
-* table of element properties.
-*
-* Meaning of the fields:
-* head
-*	the top of the list of objects;
-* last
-*	a ptr. to the last element in this list, can be handy for fast insertion
-*	of new objects;
-* gap_start
-*	start of a ``floating'' list of objects?
-* gap_end
-*	end of the ``floating'' list of objects?
-* current
-*	the object that is being edited. Links back to the floating list?
-* value
-*	actually entered text. Contains raw text *and* HTML codes;
-* buffer
-*	current edit buffer. Links back to the current element. Also points to
-*	a position in value?
-* formatted
-*	display information. Required for rendering the list of objects.	
-*****/
-typedef struct _XmHTMLSourceRec	*XmHTMLSource;
-
-typedef struct _XmHTMLSourceDataRec{
-	XmHTMLSource		source;			/* ptr to source record */
-	XmHTMLWidget 		*TWidgets;		/* array of TWidgets displaying source */
-	int					num_TWidgets;	/* size of TWidgets */
-	String				value;			/* actual string data */
-	int					length;			/* size of value */
-	int					maxlength;		/* max. size available */
-	XmHTMLTextBlock		buffer;			/* current edit buffer */
-	XmHTMLObject		*head;			/* buffer start */
-	XmHTMLObject		*last;			/* last inserted object */
-	XmHTMLObject		*current;		/* currently active object */
-	XmHTMLObject		*gap_start;		/* gapped buffer start point */
-	XmHTMLObject		*gap_end;		/* gapped buffer end point */
-	XmHTMLObjectTable	*formatted;		/* display object data */
-}XmHTMLSourceDataRec;
-
-typedef struct _XmHTMLSourceRec{
-	struct _XmHTMLSourceDataRec *data;
-	/* FIXME */
-}XmHTMLSourceRec;
-
-/*****
 * XmHTMLPart definition 
 *****/
 typedef struct _XmHTMLPart {
@@ -719,8 +829,8 @@ typedef struct _XmHTMLPart {
 	Position			anchor_position_y;	/* for server-side imagemaps */
 	XmHTMLObjectTable	*armed_anchor;		/* current anchor */
 	XmHTMLAnchor		*anchor_current_cursor_element;
-	TPointer			anchor_visited_proc;
-
+	XmHTMLAnchorProc        anchor_visited_proc;
+	
 	/* background image/color and text color resources */
 	Boolean				body_colors_enabled;
 	Boolean				body_images_enabled;
@@ -776,6 +886,7 @@ typedef struct _XmHTMLPart {
 	Boolean				strict_checking;
 	Boolean				enable_outlining;
 	Boolean				bad_html_warnings;
+	XtPointer			client_data;	/* client_data for functional res. */
 
 	/* Private Resources */
 	Dimension			margin_width;	/* document margins */
@@ -843,7 +954,12 @@ typedef struct _XmHTMLPart {
 	TCallbackList		document_callback;
 	TCallbackList		focus_callback;
 	TCallbackList		losing_focus_callback;
+	TCallbackList		event_callback;
 	Boolean				need_tracking;		/* serve mouse/focus tracking? */
+
+ 	XmHTMLEventProc		event_proc;	/* HTML4.0 script processing proc */
+ 	HTEvent				*events;		/* HTML4.0 event data	*/
+ 	int					nevents;		/* no of events watched	*/
 
 	/* Formatted document resources */
 	int					formatted_width;	/* total width of document */
@@ -864,6 +980,9 @@ typedef struct _XmHTMLPart {
 	int					paint_height;	/* vertical paint end y-pos */
 	Cardinal			top_line;		/* current topline */
 	Cardinal			nlines;			/* no of lines in document */
+
+	/* Table resources */
+	XmHTMLTable			*tables;		/* list of all tables */
 
 	/* Anchor activation resources */
 	int					press_x;		/* ptr coordinates */
@@ -930,8 +1049,6 @@ externalref XmHTMLClassRec xmHTMLClassRec;
 #    include "gtk-xmhtml.h"
 #    include "gtk-xmhtml-p.h"
 #endif
-
-_XFUNCPROTOEND
 
 /* Don't add anything after this endif! */
 #endif /* _XmHTMLP_h_ */

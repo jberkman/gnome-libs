@@ -36,6 +36,21 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.3  1997/12/25 01:34:11  unammx
+* Good news for the day:
+*
+*    I have upgraded our XmHTML sources to XmHTML 1.1.1.
+*
+*    This basically means that we got table support :-)
+*
+* Still left to do:
+*
+*    - Set/Get gtk interface for all of the toys in the widget.
+*    - Frame support is broken, dunno why.
+*    - Form support (ie adding widgets to it)
+*
+* Miguel.
+*
 * Revision 1.2  1997/12/24 17:53:54  unammx
 * Fun stuff:
 *
@@ -147,8 +162,11 @@ Shift <Key>Tab: traverse-prev()\n\
 * Textfield translations
 *****/
 static char textF_translations[] =
-"~Meta ~Alt <Key>Tab: traverse-next()\n\
+"#override \n\
+~Meta ~Alt <Key>Tab: traverse-next()\n\
 <Key>Tab: traverse-next()\n\
+<Key>Return: traverse-next()\n\
+<Key>Linefeed: traverse-next()\n\
 <Btn1Down>: grab-focus() traverse-current()";
 
 /*****
@@ -279,7 +297,7 @@ passwdCB(Widget w, XtPointer client_data, XtPointer call_data)
 		if(entry->content == NULL)
 			return;
 		cbs->endPos = strlen(entry->content);	/* delete from here to end */
-		entry->content[cbs->startPos] = 0;		/* backspace end */
+		entry->content[cbs->startPos] = '\0';	/* backspace end */
 		return;
 	}
 	/*
@@ -297,6 +315,7 @@ passwdCB(Widget w, XtPointer client_data, XtPointer call_data)
 	if(entry->content)
 	{
 		strcpy(passwd, entry->content);
+		passwd[strlen(entry->content)] = '\0';	/* NULL terminate */
 		free(entry->content);
 	}
 	else
@@ -471,8 +490,7 @@ fileActivateCB(Widget w, XtPointer client_data, XtPointer call_data)
 		XtAddCallback(entry->parent->fileSB, XmNokCallback,
 			(XtCallbackProc)fileOkCB, entry->parent->html);
 
-		XtVaSetValues(XtParent(entry->parent->fileSB),
-				XmNtitle,
+		XtVaSetValues(XtParent(entry->parent->fileSB), XmNtitle,
 			entry->value ? entry->value : "Select A File", NULL);
 	}
 	/* check for a file selection pattern */
@@ -625,13 +643,18 @@ _XmHTMLStartForm(XmHTMLWidget html, String attributes)
 #endif
 		return;
 	}
-	/* default method is GET (0) */
-	form->method = 0;
+	/* default method is get */
+	form->method = XmHTML_FORM_GET;
 	{
 		char *method = _XmHTMLTagGetValue(attributes, "method"); 
 		if(method != NULL)
 		{ 
-			form->method = (strcasecmp(method, "post") ? 0 : 1 );
+			if(!strncasecmp(method, "get", 3))
+				form->method = (int)XmHTML_FORM_GET;
+			else if(!strncasecmp(method, "post", 4))
+				form->method = (int)XmHTML_FORM_POST;
+			else if(!strncasecmp(method, "pipe", 4))
+				form->method = (int)XmHTML_FORM_PIPE;
 			free(method);
 		}
 	}
@@ -738,7 +761,7 @@ _XmHTMLFormAddInput(XmHTMLWidget html, String attributes)
 	entry->type = getInputType(attributes);
 
 	/* get name */
-	if((chPtr = _XmHTMLTagGetValue(attributes, "name")) == NULL)
+	if((entry->name = _XmHTMLTagGetValue(attributes, "name")) == NULL)
 	{
 		switch(entry->type)
 		{
@@ -771,11 +794,6 @@ _XmHTMLFormAddInput(XmHTMLWidget html, String attributes)
 				break;
 		}
 		entry->name = strdup(chPtr);
-	}
-	else
-	{
-		entry->name = strdup(chPtr);
-		free(chPtr);
 	}
 
 	entry->value = _XmHTMLTagGetValue(attributes, "value");
@@ -1044,7 +1062,6 @@ XmHTMLForm*
 _XmHTMLFormAddSelect(XmHTMLWidget html, String attributes)
 {
 	static XmHTMLForm *entry;
-	String chPtr;
 	Widget parent;
 
 	/*****
@@ -1075,13 +1092,8 @@ _XmHTMLFormAddSelect(XmHTMLWidget html, String attributes)
 	entry->type = FORM_SELECT;
 
 	/* get name */
-	if((chPtr = _XmHTMLTagGetValue(attributes, "name")) == NULL)
+	if((entry->name = _XmHTMLTagGetValue(attributes, "name")) == NULL)
 		entry->name = strdup("Select");
-	else
-	{
-		entry->name = strdup(chPtr);
-		free(chPtr);
-	}
 
 	/* no of visible items in list */
 	entry->size = _XmHTMLTagGetNumber(attributes, "size", 1);
@@ -1418,15 +1430,18 @@ _XmHTMLFormAddTextArea(XmHTMLWidget html, String attributes, String text)
 	(void)memset(entry, 0, sizeof(XmHTMLForm));
 
 	/* fill in appropriate fields */
-	entry->name      = strdup(name);
+	entry->name      = name;
 	entry->parent    = current_form;
 	entry->type      = FORM_TEXTAREA;
 	entry->size      = cols;
 	entry->maxlength = rows;
-	free(name);
 
-	/* store default text */
-	entry->value = text;
+	/* default text. Empty value if not given */
+	if((entry->value = text) == NULL)
+	{
+		entry->value = (String)malloc(1);
+		entry->value[0] = '\0';
+	}
 
 	/* defaults for all widgets */
 	argc = 0;

@@ -35,6 +35,21 @@
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.2  1997/12/25 01:34:10  unammx
+* Good news for the day:
+*
+*    I have upgraded our XmHTML sources to XmHTML 1.1.1.
+*
+*    This basically means that we got table support :-)
+*
+* Still left to do:
+*
+*    - Set/Get gtk interface for all of the toys in the widget.
+*    - Frame support is broken, dunno why.
+*    - Form support (ie adding widgets to it)
+*
+* Miguel.
+*
 * Revision 1.1  1997/11/28 03:38:56  gnomecvs
 * Work in progress port of XmHTML;  No, it does not compile, don't even try -mig
 *
@@ -67,14 +82,19 @@
 
 #ifndef NO_DEBUG
 
-#define MAX_DEBUG_LEVELS	32
+#define MAX_DEBUG_LEVELS	64
 
 /* array of selected debug levels */
 extern int xmhtml_debug_levels_defined[];
+
 /* full debug selection flag */
 extern int xmhtml_debug_full;
+
 /* handle to output file */
 extern FILE *__rsd_debug_file;
+
+/* global warning disable flag */
+extern int debug_disable_warnings;
 
 extern int  __rsd_selectDebugLevels(char *levels);
 extern void __rsd_setDebugLevels(int *argc, char **argv);
@@ -84,6 +104,14 @@ extern void __rsd_fprintf(String fmt, ...);
 #endif /* NO_DEBUG */
 
 #ifdef DEBUG
+
+/* macro to display an error message and dump the core */
+#define my_assert(TST) if((TST) != True) do { \
+	fprintf(stderr, "Assertion failed: %s\n    (file %s, line %i)\n", \
+		#TST, __FILE__, __LINE__); \
+	abort(); \
+}while(0)
+
 /* 
 * Select possible debug levels 
 * levels _can_ start with a ``-d'', so you can call this routine
@@ -118,6 +146,8 @@ extern void __rsd_fprintf(String fmt, ...);
 
 #else	/* !DEBUG */
 
+#define my_assert(TST)	/* empty */
+
 #define _XmHTMLDebug(LEVEL,MSG)		 		/* empty */
 #define _XmHTMLFullDebug(LEVEL,MSG)	 		/* empty */
 #define _XmHTMLDebugMirrorToFile(MSG)		/* empty */
@@ -127,6 +157,33 @@ extern void __rsd_fprintf(String fmt, ...);
 #define _XmHTMLInitDebug(LEVEL)				/* empty */
 
 #endif	/* DEBUG */
+
+/*****
+* Timing defines.
+* Only available when compiled with GCC and when requested. 
+* Defining _WANT_TIMINGS yourself doesn't have *any* effect, its defined in
+* source files where I want to known how much time a routine requires to
+* perform it's task (crude profiling).
+*****/
+#if defined(DEBUG) && defined(_WANT_TIMINGS) && defined(__GNUC__)
+#include <sys/time.h>	/* timeval def */
+#include <unistd.h>		/* gettimeofday() */
+
+static struct timeval tstart, tend;
+#define SetTimer gettimeofday(&tstart,NULL)
+#define ShowTimer(LEVEL, FUNC) do { \
+	int secs, usecs; \
+	gettimeofday(&tend, NULL); \
+	secs = (int)(tend.tv_sec - tstart.tv_sec); \
+	usecs = (int)(tend.tv_usec - tstart.tv_usec); \
+	if(usecs < 0) usecs *= -1; \
+	_XmHTMLDebug(LEVEL,("%s: done in %i.%i seconds\n",FUNC,secs,usecs)); \
+}while(0)
+
+#else
+#define SetTimer				/* empty */
+#define ShowTimer(LEVEL,FUNC)	/* empty */
+#endif
 
 /* Don't add anything after this endif! */
 #endif /* _debug_h_ */

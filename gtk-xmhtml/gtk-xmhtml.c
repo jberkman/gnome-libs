@@ -2,6 +2,11 @@
  * Gtk/XmHTML widget port.
  *
  * Miguel de Icaza, 1997
+ *
+ * FIXME:
+ *   - need to implement widget destroy.
+ *   - Check all widget repaints against original source, many are
+ *     bogus, they should be calls to ClearArea()
  */
 #define SetScrollBars(HTML)
 #define AdjustVerticalScrollValue(VSB,VAL)
@@ -68,10 +73,11 @@ gtk_xmhtml_resource_init (GtkXmHTML *html)
 	html->html.charset               = g_strdup ("iso8859-1");
 	html->html.font_family           = g_strdup ("adobe-times-normal-*");
 	html->html.font_family_fixed     = g_strdup ("adobe-courier-normal-*");
-	html->html.font_sizes            = g_strdup ("14,8,24,18,14,12,10,8");
-	html->html.font_sizes_fixed      = g_strdup ("12,8");
+	html->html.font_sizes            = g_strdup (XmHTML_DEFAULT_FONT_SCALABLE_SIZES);
+	html->html.font_sizes_fixed      = g_strdup (XmHTML_DEFAULT_FONT_FIXED_SIZES);
 	html->html.zCmd                  = g_strdup ("gunzip");
-				         
+
+	html->html.event_proc            = NULL;
 	html->html.needs_vsb       	 = FALSE;
 	html->html.needs_hsb       	 = FALSE;
 	html->html.scroll_x        	 = 0;
@@ -112,6 +118,7 @@ gtk_xmhtml_resource_init (GtkXmHTML *html)
 	html->html.motion_track_callback = NULL;
 	html->html.imagemap_callback     = NULL;
 	html->html.document_callback     = NULL;
+	html->html.event_callback        = NULL;
 #endif
 	
 	html->html.hsb                   = NULL;
@@ -130,8 +137,8 @@ gtk_xmhtml_resource_init (GtkXmHTML *html)
 	html->html.resize_width          = FALSE;
 	html->html.sb_policy             = GTK_POLICY_AUTOMATIC;
 	html->html.sb_placement          = 0; /* FIXME */
-	html->html.margin_height         = DEFAULT_MARGIN;
-	html->html.margin_width          = DEFAULT_MARGIN;
+	html->html.margin_height         = XmHTML_DEFAULT_MARGIN;
+	html->html.margin_width          = XmHTML_DEFAULT_MARGIN;
 	html->html.string_direction      = TSTRING_DIRECTION_L_TO_R;
 	html->html.strict_checking       = FALSE;
 	html->html.enable_outlining      = FALSE;
@@ -153,6 +160,7 @@ gtk_xmhtml_resource_init (GtkXmHTML *html)
 	html->html.def_body_image_url    = NULL;
 	html->html.alpha_processing      = XmALWAYS;
 	html->html.rgb_conv_mode         = XmBEST;
+	html->html.client_data           = NULL;
 #ifdef DEBUG
 	html->html.debug_disable_warnings= FALSE;
 	html->html.debug_full_output     = FALSE;
@@ -269,6 +277,13 @@ gtk_xmhtml_class_init (GtkXmHTMLClass *class)
 
 	gtk_xmhtml_signals [GTK_XMHTML_MOTION_TRACK] =
 		gtk_signal_new ("motion_track",
+				GTK_RUN_FIRST,
+				object_class->type,
+				GTK_SIGNAL_OFFSET (GtkXmHTMLClass, motion_track),
+				gtk_xmthml_marshall_1, GTK_TYPE_NONE, 0);
+
+	gtk_xmhtml_signals [GTK_XMHTML_HTML_EVENT] =
+		gtk_signal_new ("html_event",
 				GTK_RUN_FIRST,
 				object_class->type,
 				GTK_SIGNAL_OFFSET (GtkXmHTMLClass, motion_track),
@@ -522,6 +537,9 @@ gtk_xmhtml_motion_event (GtkWidget *widget, GdkEvent *event, gpointer closure)
 	if (!html->html.need_tracking)
 		return TRUE;
 
+	/* we are already on the correct anchor, just return */
+	_XmHTMLFullDebug(1, ("XmHTML.c: TrackMotion Start.\n"));
+
 	/* pass down to motion tracker callback if installed */
 	cbs.reason = XmCR_HTML_MOTIONTRACK;
 	cbs.event = event;
@@ -565,7 +583,28 @@ gtk_xmhtml_focus (GtkWidget *widget, GdkEvent *event, gpointer closure)
 	}
 
 	/* Both Leave notify and focus out are handled here */
-	
+
+	/* FIXME, from the Motif code:
+		* LeaveNotify Events occur when the pointer focus is transferred
+		* from the DrawingArea child to another window. This can occur
+		* when the pointer is moved outside the Widget *OR* when a
+		* ButtonPress event occurs ON the drawingArea. When that happens,
+		* the pointer focus is transferred from the drawingArea to it's
+		* parent, being the Widget itself. In this case the detail
+		* detail member of the XEnterWindowEvent will be NotifyAncestor,
+		* and we would want to ignore this event (as it will cause a
+		* flicker of the screen or an unnecessary call to any installed
+		* callbacks).
+		*
+		*
+		* The correct code is thus:
+		* 
+		* if(event->type == LeaveNotify &&
+		*     ((XEnterWindowEvent*)event)->detail == NotifyAncestor) 
+		*     then {
+		*        ignore this one to avoid calling callbacks and flicker
+		*     }
+	        */
 	/* invalidate current selection if there is one */
 	if (gtk_signal_get_handlers (htmlo, gtk_xmhtml_signals [GTK_XMHTML_ANCHOR_TRACK])
 		&& html->html.anchor_current_cursor_element)
@@ -971,11 +1010,11 @@ CheckScrollBars(XmHTMLWidget html)
 		sb_height = html->html.hsb->requisition.height;
 
 		/* pageIncrement == sliderSize */
-		pinc = html->html.work_width - 2*(f ? xf->max_bounds.width : HORIZONTAL_INCREMENT);
+		pinc = html->html.work_width - 2*(f ? xf->max_bounds.width : XmHTML_HORIZONTAL_SCROLL_INCREMENT);
 		
 		/* sanity check */
 		if(pinc < 1)
-			pinc = HORIZONTAL_INCREMENT;
+			pinc = XmHTML_HORIZONTAL_SCROLL_INCREMENT;
 
 		/* adjust horizontal scroll if necessary */
 		if (html->html.scroll_x > html->html.formatted_width - pinc)
@@ -995,7 +1034,7 @@ CheckScrollBars(XmHTMLWidget html)
 		hsba->value          = (gfloat) html->html.scroll_x;
 		hsba->page_size      = (gfloat) pinc;
 		hsba->page_increment = (gfloat) pinc;
-		hsba->step_increment = (f ? xf->max_bounds.width : HORIZONTAL_INCREMENT);
+		hsba->step_increment = (f ? xf->max_bounds.width : XmHTML_HORIZONTAL_SCROLL_INCREMENT);
 		gtk_signal_emit_by_name (GTK_OBJECT (html->hsba), "changed");
 		
 		/* adjust x-position if vsb is on left */
@@ -1021,10 +1060,10 @@ CheckScrollBars(XmHTMLWidget html)
 
 		/* pageIncrement == sliderSize */
 		pinc = html->html.work_height - 2*(html->html.default_font ? 
-			html->html.default_font->height : VERTICAL_INCREMENT);
+			html->html.default_font->height : XmHTML_VERTICAL_SCROLL_INCREMENT);
 		/* sanity check */
 		if(pinc < 1)
-			pinc = VERTICAL_INCREMENT;
+			pinc = XmHTML_VERTICAL_SCROLL_INCREMENT;
 
 		/* adjust vertical scroll if necessary */
 		if(html->html.scroll_y > html->html.formatted_height - pinc)
@@ -1046,7 +1085,7 @@ CheckScrollBars(XmHTMLWidget html)
 		vsba->page_increment = (gfloat) pinc;
 		vsba->step_increment = (html->html.default_font
 					 ? html->html.default_font->height
-					: VERTICAL_INCREMENT);
+					: XmHTML_VERTICAL_SCROLL_INCREMENT);
 		gtk_signal_emit_by_name (GTK_OBJECT (html->vsba), "changed");
 		
 		/* adjust y-position if hsb is on top */

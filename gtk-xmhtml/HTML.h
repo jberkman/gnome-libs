@@ -37,6 +37,21 @@
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.3  1997/12/25 01:34:08  unammx
+* Good news for the day:
+*
+*    I have upgraded our XmHTML sources to XmHTML 1.1.1.
+*
+*    This basically means that we got table support :-)
+*
+* Still left to do:
+*
+*    - Set/Get gtk interface for all of the toys in the widget.
+*    - Frame support is broken, dunno why.
+*    - Form support (ie adding widgets to it)
+*
+* Miguel.
+*
 * Revision 1.2  1997/12/11 21:20:19  unammx
 * Step 2: more gtk/xmhtml code, still non-working - mig
 *
@@ -68,9 +83,10 @@
 #ifndef _HTML_h_
 #define _HTML_h_
 
-/*****
-* See the bottom of this file for resource names
-*****/
+/* include our new resources */
+#ifdef WITH_MOTIF
+#    include <XmHTML/HTMLStrings.h>
+#endif
 
 /******************************************************************************
 * Enumerations and other constants
@@ -117,35 +133,94 @@ enum{
 	XmCR_HTML_LINK,						/* XmNlinkCallback			*/
 	XmCR_HTML_MODIFYING_TEXT_VALUE,		/* XmNmodifyVerifyCallback	*/
 	XmCR_HTML_MOTIONTRACK,				/* XmNmotionTrackCallback	*/
-	XmCR_HTML_PARSER					/* XmNparserCallback		*/
+	XmCR_HTML_PARSER,					/* XmNparserCallback		*/
+	XmCR_HTML_EVENT,					/* XmNeventCallback			*/
+	XmCR_HTML_EVENTDESTROY				/* XmNeventCallback			*/
+};
+
+/*****
+* XmNeventCallback sub event types
+*****/
+enum{
+	/* Document/Frame specific events */
+	XmCR_HTML_LOAD = 0,				/* onLoad		*/
+	XmCR_HTML_UNLOAD,				/* onUnLoad		*/
+
+	/* HTML Form specific events */
+	XmCR_HTML_SUBMIT,				/* onSubmit		*/
+	XmCR_HTML_RESET,				/* onReset		*/
+	XmCR_HTML_FOCUS,				/* onFocus		*/
+	XmCR_HTML_BLUR,					/* onBlur		*/
+	XmCR_HTML_SELECT,				/* onSelect		*/
+	XmCR_HTML_CHANGE,				/* onChange		*/
+
+	/* object events */
+	XmCR_HTML_CLICK,				/* onClick		*/
+	XmCR_HTML_DOUBLE_CLICK,			/* onDblClick	*/
+	XmCR_HTML_MOUSEDOWN,			/* onMouseDown	*/
+	XmCR_HTML_MOUSEUP,				/* onMouseUp	*/
+	XmCR_HTML_MOUSEOVER,			/* onMouseOver	*/
+	XmCR_HTML_MOUSEMOVE,			/* onMouseMove	*/
+	XmCR_HTML_MOUSEOUT, 			/* onMouseOut	*/
+	XmCR_HTML_KEYPRESS,				/* onKeyPress	*/
+	XmCR_HTML_KEYDOWN,				/* onKeyDown	*/
+	XmCR_HTML_KEYUP,				/* onKeyUp		*/
+	XmCR_HTML_USEREVENT				/* must always be last */
 };
 
 /*****
 * URL types XmHTML knows of.
-* The port numbers are only shown for demonstration purposes, XmHTML doesn't
-* care whether they are present or not.
+* The hostnames, files and port numbers are only shown for demonstration
+* purposes, XmHTML doesn't care whether they are present or not.
 *****/
 typedef enum{
 	ANCHOR_UNKNOWN = 0,			/* unknown href								*/
 	ANCHOR_NAMED,				/* name="...."								*/
 	ANCHOR_JUMP,				/* href="#..."								*/
-	ANCHOR_FILE_LOCAL,			/* href="file.html"							*/
+	ANCHOR_FILE_LOCAL,			/* href="file.html"
+								 * href="file:/file.html" (clearly local)
+								 * href="file:///file.html" (NULL host)
+								 * href="file://localhost/file.html" (localhost)
+								 */
 	ANCHOR_FILE_REMOTE,			/* href="file://foo.bar/file.html"			*/
 	ANCHOR_FTP,					/* href="ftp://foo.bar/file"				*/
 	ANCHOR_HTTP,				/* href="http://foo.bar/file.html"			*/
+	ANCHOR_SECURE_HTTP,			/* href="https://foo.bar/file.html"			*/
 	ANCHOR_GOPHER,				/* href="gopher://foo.bar:70"				*/
 	ANCHOR_WAIS,				/* href="wais://foo.bar"					*/
 	ANCHOR_NEWS,				/* href="news://foo.bar"					*/
 	ANCHOR_TELNET,				/* href="telnet://foo.bar:23"				*/
 	ANCHOR_MAILTO,				/* href="mailto:foo@bar"					*/
 	ANCHOR_EXEC,				/* href="exec:foo_bar"						*/
+	ANCHOR_PIPE,				/* href="pipe:foo_bar"						*/
+	ANCHOR_ABOUT,				/* href="about:..."							*/
+	ANCHOR_INFO,				/* href="info:.."							*/
+	ANCHOR_MAN,					/* href="man:..."							*/
 	ANCHOR_FORM_IMAGE			/* <input type=image>, only used internally	*/
 }URLType;
 
 /*****
+* Procedure to be called whenever a script is encountered
+* Arguments:
+*	Tidget:		XmHTMLWidget id
+*	String:		script source text
+*	TPointer:	XmNclientData value
+* Return value:
+*	data to be stored whenever a document event should be processed.
+*	This data is unused internally and is provided as the user_data
+*	argument in the XmHTMLEvent structure. For example, the return value
+*	could be a pointer into some internal procedural database, a ptr to a
+*	compiled script procedure or the script source text if you want to
+*	process it at some later time (when the event occurs).
+*
+* When NULL is returned the event in question is disabled.
+*****/
+typedef TPointer (*XmHTMLEventProc)(TWidget, String, TPointer);
+
+/*****
 * HTML Form component types
 *****/
-typedef enum {
+typedef enum{
 	FORM_TEXT = 1,					/* textfield						*/
 	FORM_PASSWD,					/* password textfield				*/
 	FORM_CHECK,						/* checkbox							*/
@@ -159,6 +234,15 @@ typedef enum {
 	FORM_HIDDEN,					/* hidden input						*/
 	FORM_SUBMIT						/* submit button					*/
 }componentType;
+
+/*****
+* Supported HTML Form method types
+*****/
+enum{
+	XmHTML_FORM_GET = 0,			/* method = get						*/
+	XmHTML_FORM_POST,				/* method = post					*/
+	XmHTML_FORM_PIPE				/* method = pipe					*/
+};
 
 /*****
 * possible error codes for XmNparserCallback
@@ -437,6 +521,19 @@ enum{
 };
 
 /*****
+* Search directions: forward or backward search
+*****/
+typedef enum{
+	XmHTML_FORWARD,
+	XmHTML_BACKWARD
+}XmHTMLDirection;
+
+/*****
+* XmHTMLPosition is a fully opaque type
+*****/
+typedef struct _XmHTMLObjectTableElement *XmHTMLPosition;
+
+/*****
 * Custom Papersize dimension unit type
 * (under construction)
 *****/
@@ -530,21 +627,6 @@ enum{
 /******************************************************************************
 * Commonly used structures
 ******************************************************************************/
-/*****
-* XmHTMLTextBlock
-*****/
-typedef struct{
-	String ptr;					/* pointer to text to remove/insert	*/
-	int len;					/* length of this text				*/
-}XmHTMLTextBlockRec, *XmHTMLTextBlock;
-
-/*****
-* A parser aliasing table
-******/
-typedef struct{
-	String element;				/* element name				*/
-	htmlEnum alias;				/* alias for this element	*/
-}XmHTMLAlias, *XmHTMLAliasTable;
 
 /*****
 * Representation of parsed HTML elements
@@ -620,7 +702,7 @@ typedef struct _XmImageInfo
 }XmImageInfo, *XmImageInfoStruct;
 
 /* XmHTML method to load images */
-typedef XmImageInfo* (*XmImageProc)(TWidget, String);
+typedef XmImageInfo* (*XmImageProc)(TWidget, String, TPointer);
 
 /****
 * The next two structures constitute the XmImage definition which are used by
@@ -735,7 +817,7 @@ typedef struct{
 	String *fonts;					/* array of font names, size nentries */
 	String *mapping;				/* array of font mappings, size nentries */
 	int nwidgets;					/* no of widgets using this cache */
-	TWidgetList widgets;				/* array of widgets */
+	WidgetList widgets;				/* array of widgets */
 }XmHTMLFontCacheInfo;
 
 /*****
@@ -866,6 +948,18 @@ typedef struct _XmHTMLAnchorCallbackStruct{
 	Boolean visited;		/* local anchor visited flag				*/
 }XmHTMLAnchorCallbackStruct;
 
+typedef Boolean (*XmHTMLAnchorProc)(TWidget, String, TPointer);
+
+/*****
+* XmNeventCallback callback structure.
+*****/
+typedef struct{
+	int			reason;			/* the reason the event was called		*/
+	TEvent		*event;			/* event triggering this action			*/
+	int			type;			/* HTML4.0 event type, see above		*/
+	TPointer	data;			/* HTML4.0 event callback data			*/
+}XmHTMLEventCallbackStruct;
+
 /*****
 * XmNdocumentCallback callback structure.
 *****/
@@ -903,7 +997,7 @@ typedef struct
 	TEvent *event;			/* event structure that triggered callback	*/
 	String action;			/* URL or cgi-bin destination				*/
 	String enctype;			/* form encoding							*/
-	int method;				/* Form Method, GET (0) or POST (1)			*/
+	int method;				/* Form Method, GET, POST or PIPE			*/
 	int ncomponents;		/* no of components in this form			*/
 	XmHTMLFormDataPtr components;
 }XmHTMLFormCallbackStruct, *XmHTMLFormPtr;
@@ -965,955 +1059,6 @@ typedef struct{
 	int num_link;				/* number of LINK info to process			*/
 	XmHTMLLinkDataPtr link;		/* array of LINK info to process			*/
 }XmHTMLLinkCallbackStruct, *XmHTMLLinkPtr;
-
-/*****
-* XmNmodifyVerify callback structure.
-*****/
-typedef struct{
-	int reason;				/* the reason the callback was called		*/
-	TEvent *event;			/* always NULL for XmNmodifyVerifyCallback	*/
-	Boolean doit;			/* unused									*/
-	int action;				/* type of modification, HTML_REMOVE/INSERT	*/
-	Cardinal line;			/* current line number in input text		*/
-	int start_pos;			/* start of text to change					*/
-	int end_pos;			/* end of text to change					*/
-	XmHTMLTextBlock text;	/* describes text to be removed or inserted	*/
-}XmHTMLVerifyCallbackStruct, *XmHTMLVerifyPtr;
-
-/*****
-* XmNparserCallback callback structure.
-*****/
-typedef struct{
-	int reason;					/* the reason the callback was called	*/
-	TEvent *event;				/* always NULL for XmNparserCallback	*/
-	int errnum;					/* total error count uptil now			*/
-	Cardinal line;				/* line number where error was detected	*/
-	int start_pos;				/* absolute index where error starts	*/
-	int end_pos;				/* absolute index where error ends		*/
-	parserError error;			/* type of error						*/
-	unsigned char action;		/* suggested correction action			*/
-	String err_msg;				/* error message						*/
-	XmHTMLTextBlock repair;		/* proposed element to insert			*/
-	XmHTMLTextBlock current;	/* current parser state 				*/
-	XmHTMLTextBlock offender;	/* offending element					*/
-}XmHTMLParserCallbackStruct, *XmHTMLParserPtr;
-
-/******************************************************************************
-* Resource string definitions.
-* The debug resources are only effective when libXmHTML was compiled with
-* DEBUG defines.
-******************************************************************************/
-
-/*****
-* Automatically generated file.
-*  ***DO NOT EDIT THIS FILE***
-*****/
-/*****
-* mkStrings Version 1.00, Build Date: Oct 21 1997 19:06:39
-* File created at: Tue Oct 21 19:06:43 1997
-*****/
-
-#ifndef __XmHTML_Strings_h__
-#define __XmHTML_Strings_h__
-
-_XFUNCPROTOBEGIN
-
-/*****
-* Don't define XmHTML_STRINGDEFINES if you want to save space
-*****/
-
-#ifndef XmHTML_STRINGDEFINES
-# ifndef _XmConst
-#  define _XmConst
-# endif
-extern _XmConst char _XmHTMLStrings[];
-#endif
-
-
-#ifdef XmHTML_STRINGDEFINES
-# ifndef XmN
-#  define XmN ""
-# endif
-#else
-# ifndef XmN
-#  define XmN ((char *)&_XmHTMLStrings[0])
-# endif
-#endif
-
-#ifdef XmHTML_STRINGDEFINES
-# ifndef XmCAnchorUnderlineType
-#  define XmCAnchorUnderlineType "AnchorUnderlineType"
-# endif
-# ifndef XmRAnchorUnderlineType
-#  define XmRAnchorUnderlineType "AnchorUnderlineType"
-# endif
-#else
-# ifndef XmCAnchorUnderlineType
-#  define XmCAnchorUnderlineType ((char *)&_XmHTMLStrings[1])
-# endif
-# ifndef XmRAnchorUnderlineType
-#  define XmRAnchorUnderlineType ((char *)&_XmHTMLStrings[1])
-# endif
-#endif
-
-#ifdef XmHTML_STRINGDEFINES
-# ifndef XmCAnchorVisitedProc
-#  define XmCAnchorVisitedProc "AnchorVisitedProc"
-# endif
-# ifndef XmRAnchorVisitedProc
-#  define XmRAnchorVisitedProc "AnchorVisitedProc"
-# endif
-#else
-# ifndef XmCAnchorVisitedProc
-#  define XmCAnchorVisitedProc ((char *)&_XmHTMLStrings[21])
-# endif
-# ifndef XmRAnchorVisitedProc
-#  define XmRAnchorVisitedProc ((char *)&_XmHTMLStrings[21])
-# endif
-#endif
-
-#ifdef XmHTML_STRINGDEFINES
-# ifndef XmCConversionMode
-#  define XmCConversionMode "ConversionMode"
-# endif
-# ifndef XmRConversionMode
-#  define XmRConversionMode "ConversionMode"
-# endif
-#else
-# ifndef XmCConversionMode
-#  define XmCConversionMode ((char *)&_XmHTMLStrings[39])
-# endif
-# ifndef XmRConversionMode
-#  define XmRConversionMode ((char *)&_XmHTMLStrings[39])
-# endif
-#endif
-
-#ifdef XmHTML_STRINGDEFINES
-# ifndef XmCDecodeGIFProc
-#  define XmCDecodeGIFProc "DecodeGIFProc"
-# endif
-# ifndef XmRDecodeGIFProc
-#  define XmRDecodeGIFProc "DecodeGIFProc"
-# endif
-#else
-# ifndef XmCDecodeGIFProc
-#  define XmCDecodeGIFProc ((char *)&_XmHTMLStrings[54])
-# endif
-# ifndef XmRDecodeGIFProc
-#  define XmRDecodeGIFProc ((char *)&_XmHTMLStrings[54])
-# endif
-#endif
-
-#ifdef XmHTML_STRINGDEFINES
-# ifndef XmCEnableMode
-#  define XmCEnableMode "EnableMode"
-# endif
-# ifndef XmREnableMode
-#  define XmREnableMode "EnableMode"
-# endif
-#else
-# ifndef XmCEnableMode
-#  define XmCEnableMode ((char *)&_XmHTMLStrings[68])
-# endif
-# ifndef XmREnableMode
-#  define XmREnableMode ((char *)&_XmHTMLStrings[68])
-# endif
-#endif
-
-#ifdef XmHTML_STRINGDEFINES
-# ifndef XmCImageProc
-#  define XmCImageProc "ImageProc"
-# endif
-# ifndef XmRImageProc
-#  define XmRImageProc "ImageProc"
-# endif
-#else
-# ifndef XmCImageProc
-#  define XmCImageProc ((char *)&_XmHTMLStrings[79])
-# endif
-# ifndef XmRImageProc
-#  define XmRImageProc ((char *)&_XmHTMLStrings[79])
-# endif
-#endif
-
-#ifdef XmHTML_STRINGDEFINES
-# ifndef XmCMaxImageColors
-#  define XmCMaxImageColors "MaxImageColors"
-# endif
-# ifndef XmRMaxImageColors
-#  define XmRMaxImageColors "MaxImageColors"
-# endif
-#else
-# ifndef XmCMaxImageColors
-#  define XmCMaxImageColors ((char *)&_XmHTMLStrings[89])
-# endif
-# ifndef XmRMaxImageColors
-#  define XmRMaxImageColors ((char *)&_XmHTMLStrings[89])
-# endif
-#endif
-
-#ifdef XmHTML_STRINGDEFINES
-# ifndef XmCPerfectColors
-#  define XmCPerfectColors "PerfectColors"
-# endif
-# ifndef XmRPerfectColors
-#  define XmRPerfectColors "PerfectColors"
-# endif
-#else
-# ifndef XmCPerfectColors
-#  define XmCPerfectColors ((char *)&_XmHTMLStrings[104])
-# endif
-# ifndef XmRPerfectColors
-#  define XmRPerfectColors ((char *)&_XmHTMLStrings[104])
-# endif
-#endif
-
-#ifdef XmHTML_STRINGDEFINES
-# ifndef XmCProgressiveEndProc
-#  define XmCProgressiveEndProc "ProgressiveEndProc"
-# endif
-# ifndef XmRProgressiveEndProc
-#  define XmRProgressiveEndProc "ProgressiveEndProc"
-# endif
-#else
-# ifndef XmCProgressiveEndProc
-#  define XmCProgressiveEndProc ((char *)&_XmHTMLStrings[118])
-# endif
-# ifndef XmRProgressiveEndProc
-#  define XmRProgressiveEndProc ((char *)&_XmHTMLStrings[118])
-# endif
-#endif
-
-#ifdef XmHTML_STRINGDEFINES
-# ifndef XmCProgressiveInitialDelay
-#  define XmCProgressiveInitialDelay "ProgressiveInitialDelay"
-# endif
-# ifndef XmRProgressiveInitialDelay
-#  define XmRProgressiveInitialDelay "ProgressiveInitialDelay"
-# endif
-#else
-# ifndef XmCProgressiveInitialDelay
-#  define XmCProgressiveInitialDelay ((char *)&_XmHTMLStrings[137])
-# endif
-# ifndef XmRProgressiveInitialDelay
-#  define XmRProgressiveInitialDelay ((char *)&_XmHTMLStrings[137])
-# endif
-#endif
-
-#ifdef XmHTML_STRINGDEFINES
-# ifndef XmCProgressiveMaximumDelay
-#  define XmCProgressiveMaximumDelay "ProgressiveMaximumDelay"
-# endif
-# ifndef XmRProgressiveMaximumDelay
-#  define XmRProgressiveMaximumDelay "ProgressiveMaximumDelay"
-# endif
-#else
-# ifndef XmCProgressiveMaximumDelay
-#  define XmCProgressiveMaximumDelay ((char *)&_XmHTMLStrings[161])
-# endif
-# ifndef XmRProgressiveMaximumDelay
-#  define XmRProgressiveMaximumDelay ((char *)&_XmHTMLStrings[161])
-# endif
-#endif
-
-#ifdef XmHTML_STRINGDEFINES
-# ifndef XmCProgressiveMinimumDelay
-#  define XmCProgressiveMinimumDelay "ProgressiveMinimumDelay"
-# endif
-# ifndef XmRProgressiveMinimumDelay
-#  define XmRProgressiveMinimumDelay "ProgressiveMinimumDelay"
-# endif
-#else
-# ifndef XmCProgressiveMinimumDelay
-#  define XmCProgressiveMinimumDelay ((char *)&_XmHTMLStrings[185])
-# endif
-# ifndef XmRProgressiveMinimumDelay
-#  define XmRProgressiveMinimumDelay ((char *)&_XmHTMLStrings[185])
-# endif
-#endif
-
-#ifdef XmHTML_STRINGDEFINES
-# ifndef XmCProgressiveReadProc
-#  define XmCProgressiveReadProc "ProgressiveReadProc"
-# endif
-# ifndef XmRProgressiveReadProc
-#  define XmRProgressiveReadProc "ProgressiveReadProc"
-# endif
-#else
-# ifndef XmCProgressiveReadProc
-#  define XmCProgressiveReadProc ((char *)&_XmHTMLStrings[209])
-# endif
-# ifndef XmRProgressiveReadProc
-#  define XmRProgressiveReadProc ((char *)&_XmHTMLStrings[209])
-# endif
-#endif
-
-#ifdef XmHTML_STRINGDEFINES
-# ifndef XmCScreenGamma
-#  define XmCScreenGamma "ScreenGamma"
-# endif
-# ifndef XmRScreenGamma
-#  define XmRScreenGamma "ScreenGamma"
-# endif
-#else
-# ifndef XmCScreenGamma
-#  define XmCScreenGamma ((char *)&_XmHTMLStrings[229])
-# endif
-# ifndef XmRScreenGamma
-#  define XmRScreenGamma ((char *)&_XmHTMLStrings[229])
-# endif
-#endif
-
-#ifdef XmHTML_STRINGDEFINES
-# ifndef XmCTopLine
-#  define XmCTopLine "TopLine"
-# endif
-# ifndef XmRTopLine
-#  define XmRTopLine "TopLine"
-# endif
-#else
-# ifndef XmCTopLine
-#  define XmCTopLine ((char *)&_XmHTMLStrings[241])
-# endif
-# ifndef XmRTopLine
-#  define XmRTopLine ((char *)&_XmHTMLStrings[241])
-# endif
-#endif
-
-#ifdef XmHTML_STRINGDEFINES
-# ifndef XmNalphaChannelProcessing
-#  define XmNalphaChannelProcessing "alphaChannelProcessing"
-# endif
-#else
-# ifndef XmNalphaChannelProcessing
-#  define XmNalphaChannelProcessing ((char *)&_XmHTMLStrings[249])
-# endif
-#endif
-
-#ifdef XmHTML_STRINGDEFINES
-# ifndef XmNanchorActivatedBackground
-#  define XmNanchorActivatedBackground "anchorActivatedBackground"
-# endif
-#else
-# ifndef XmNanchorActivatedBackground
-#  define XmNanchorActivatedBackground ((char *)&_XmHTMLStrings[272])
-# endif
-#endif
-
-#ifdef XmHTML_STRINGDEFINES
-# ifndef XmNanchorActivatedForeground
-#  define XmNanchorActivatedForeground "anchorActivatedForeground"
-# endif
-#else
-# ifndef XmNanchorActivatedForeground
-#  define XmNanchorActivatedForeground ((char *)&_XmHTMLStrings[298])
-# endif
-#endif
-
-#ifdef XmHTML_STRINGDEFINES
-# ifndef XmNanchorButtons
-#  define XmNanchorButtons "anchorButtons"
-# endif
-#else
-# ifndef XmNanchorButtons
-#  define XmNanchorButtons ((char *)&_XmHTMLStrings[324])
-# endif
-#endif
-
-#ifdef XmHTML_STRINGDEFINES
-# ifndef XmNanchorCursor
-#  define XmNanchorCursor "anchorCursor"
-# endif
-#else
-# ifndef XmNanchorCursor
-#  define XmNanchorCursor ((char *)&_XmHTMLStrings[338])
-# endif
-#endif
-
-#ifdef XmHTML_STRINGDEFINES
-# ifndef XmNanchorDisplayCursor
-#  define XmNanchorDisplayCursor "anchorDisplayCursor"
-# endif
-#else
-# ifndef XmNanchorDisplayCursor
-#  define XmNanchorDisplayCursor ((char *)&_XmHTMLStrings[351])
-# endif
-#endif
-
-#ifdef XmHTML_STRINGDEFINES
-# ifndef XmNanchorForeground
-#  define XmNanchorForeground "anchorForeground"
-# endif
-#else
-# ifndef XmNanchorForeground
-#  define XmNanchorForeground ((char *)&_XmHTMLStrings[371])
-# endif
-#endif
-
-#ifdef XmHTML_STRINGDEFINES
-# ifndef XmNanchorTargetForeground
-#  define XmNanchorTargetForeground "anchorTargetForeground"
-# endif
-#else
-# ifndef XmNanchorTargetForeground
-#  define XmNanchorTargetForeground ((char *)&_XmHTMLStrings[388])
-# endif
-#endif
-
-#ifdef XmHTML_STRINGDEFINES
-# ifndef XmNanchorTargetUnderlineType
-#  define XmNanchorTargetUnderlineType "anchorTargetUnderlineType"
-# endif
-#else
-# ifndef XmNanchorTargetUnderlineType
-#  define XmNanchorTargetUnderlineType ((char *)&_XmHTMLStrings[411])
-# endif
-#endif
-
-#ifdef XmHTML_STRINGDEFINES
-# ifndef XmNanchorTrackCallback
-#  define XmNanchorTrackCallback "anchorTrackCallback"
-# endif
-#else
-# ifndef XmNanchorTrackCallback
-#  define XmNanchorTrackCallback ((char *)&_XmHTMLStrings[437])
-# endif
-#endif
-
-#ifdef XmHTML_STRINGDEFINES
-# ifndef XmNanchorUnderlineType
-#  define XmNanchorUnderlineType "anchorUnderlineType"
-# endif
-#else
-# ifndef XmNanchorUnderlineType
-#  define XmNanchorUnderlineType ((char *)&_XmHTMLStrings[457])
-# endif
-#endif
-
-#ifdef XmHTML_STRINGDEFINES
-# ifndef XmNanchorVisitedForeground
-#  define XmNanchorVisitedForeground "anchorVisitedForeground"
-# endif
-#else
-# ifndef XmNanchorVisitedForeground
-#  define XmNanchorVisitedForeground ((char *)&_XmHTMLStrings[477])
-# endif
-#endif
-
-#ifdef XmHTML_STRINGDEFINES
-# ifndef XmNanchorVisitedProc
-#  define XmNanchorVisitedProc "anchorVisitedProc"
-# endif
-#else
-# ifndef XmNanchorVisitedProc
-#  define XmNanchorVisitedProc ((char *)&_XmHTMLStrings[501])
-# endif
-#endif
-
-#ifdef XmHTML_STRINGDEFINES
-# ifndef XmNanchorVisitedUnderlineType
-#  define XmNanchorVisitedUnderlineType "anchorVisitedUnderlineType"
-# endif
-#else
-# ifndef XmNanchorVisitedUnderlineType
-#  define XmNanchorVisitedUnderlineType ((char *)&_XmHTMLStrings[519])
-# endif
-#endif
-
-#ifdef XmHTML_STRINGDEFINES
-# ifndef XmNbodyImage
-#  define XmNbodyImage "bodyImage"
-# endif
-#else
-# ifndef XmNbodyImage
-#  define XmNbodyImage ((char *)&_XmHTMLStrings[546])
-# endif
-#endif
-
-#ifdef XmHTML_STRINGDEFINES
-# ifndef XmNcharset
-#  define XmNcharset "charset"
-# endif
-#else
-# ifndef XmNcharset
-#  define XmNcharset ((char *)&_XmHTMLStrings[556])
-# endif
-#endif
-
-#ifdef XmHTML_STRINGDEFINES
-# ifndef XmNdebugDisableWarnings
-#  define XmNdebugDisableWarnings "debugDisableWarnings"
-# endif
-#else
-# ifndef XmNdebugDisableWarnings
-#  define XmNdebugDisableWarnings ((char *)&_XmHTMLStrings[564])
-# endif
-#endif
-
-#ifdef XmHTML_STRINGDEFINES
-# ifndef XmNdebugEnableFullOutput
-#  define XmNdebugEnableFullOutput "debugEnableFullOutput"
-# endif
-#else
-# ifndef XmNdebugEnableFullOutput
-#  define XmNdebugEnableFullOutput ((char *)&_XmHTMLStrings[585])
-# endif
-#endif
-
-#ifdef XmHTML_STRINGDEFINES
-# ifndef XmNdebugFilePrefix
-#  define XmNdebugFilePrefix "debugFilePrefix"
-# endif
-#else
-# ifndef XmNdebugFilePrefix
-#  define XmNdebugFilePrefix ((char *)&_XmHTMLStrings[607])
-# endif
-#endif
-
-#ifdef XmHTML_STRINGDEFINES
-# ifndef XmNdebugLevels
-#  define XmNdebugLevels "debugLevels"
-# endif
-#else
-# ifndef XmNdebugLevels
-#  define XmNdebugLevels ((char *)&_XmHTMLStrings[623])
-# endif
-#endif
-
-#ifdef XmHTML_STRINGDEFINES
-# ifndef XmNdebugNoAnimationLoopCount
-#  define XmNdebugNoAnimationLoopCount "debugNoAnimationLoopCount"
-# endif
-#else
-# ifndef XmNdebugNoAnimationLoopCount
-#  define XmNdebugNoAnimationLoopCount ((char *)&_XmHTMLStrings[635])
-# endif
-#endif
-
-#ifdef XmHTML_STRINGDEFINES
-# ifndef XmNdebugSaveClipmasks
-#  define XmNdebugSaveClipmasks "debugSaveClipmasks"
-# endif
-#else
-# ifndef XmNdebugSaveClipmasks
-#  define XmNdebugSaveClipmasks ((char *)&_XmHTMLStrings[661])
-# endif
-#endif
-
-#ifdef XmHTML_STRINGDEFINES
-# ifndef XmNdecodeGIFProc
-#  define XmNdecodeGIFProc "decodeGIFProc"
-# endif
-#else
-# ifndef XmNdecodeGIFProc
-#  define XmNdecodeGIFProc ((char *)&_XmHTMLStrings[680])
-# endif
-#endif
-
-#ifdef XmHTML_STRINGDEFINES
-# ifndef XmNdocumentCallback
-#  define XmNdocumentCallback "documentCallback"
-# endif
-#else
-# ifndef XmNdocumentCallback
-#  define XmNdocumentCallback ((char *)&_XmHTMLStrings[694])
-# endif
-#endif
-
-#ifdef XmHTML_STRINGDEFINES
-# ifndef XmNenableBadHTMLWarnings
-#  define XmNenableBadHTMLWarnings "enableBadHTMLWarnings"
-# endif
-#else
-# ifndef XmNenableBadHTMLWarnings
-#  define XmNenableBadHTMLWarnings ((char *)&_XmHTMLStrings[711])
-# endif
-#endif
-
-#ifdef XmHTML_STRINGDEFINES
-# ifndef XmNenableBodyColors
-#  define XmNenableBodyColors "enableBodyColors"
-# endif
-#else
-# ifndef XmNenableBodyColors
-#  define XmNenableBodyColors ((char *)&_XmHTMLStrings[733])
-# endif
-#endif
-
-#ifdef XmHTML_STRINGDEFINES
-# ifndef XmNenableBodyImages
-#  define XmNenableBodyImages "enableBodyImages"
-# endif
-#else
-# ifndef XmNenableBodyImages
-#  define XmNenableBodyImages ((char *)&_XmHTMLStrings[750])
-# endif
-#endif
-
-#ifdef XmHTML_STRINGDEFINES
-# ifndef XmNenableDocumentColors
-#  define XmNenableDocumentColors "enableDocumentColors"
-# endif
-#else
-# ifndef XmNenableDocumentColors
-#  define XmNenableDocumentColors ((char *)&_XmHTMLStrings[767])
-# endif
-#endif
-
-#ifdef XmHTML_STRINGDEFINES
-# ifndef XmNenableDocumentFonts
-#  define XmNenableDocumentFonts "enableDocumentFonts"
-# endif
-#else
-# ifndef XmNenableDocumentFonts
-#  define XmNenableDocumentFonts ((char *)&_XmHTMLStrings[788])
-# endif
-#endif
-
-#ifdef XmHTML_STRINGDEFINES
-# ifndef XmNenableFormColors
-#  define XmNenableFormColors "enableFormColors"
-# endif
-#else
-# ifndef XmNenableFormColors
-#  define XmNenableFormColors ((char *)&_XmHTMLStrings[808])
-# endif
-#endif
-
-#ifdef XmHTML_STRINGDEFINES
-# ifndef XmNenableOutlining
-#  define XmNenableOutlining "enableOutlining"
-# endif
-#else
-# ifndef XmNenableOutlining
-#  define XmNenableOutlining ((char *)&_XmHTMLStrings[825])
-# endif
-#endif
-
-#ifdef XmHTML_STRINGDEFINES
-# ifndef XmNfontFamily
-#  define XmNfontFamily "fontFamily"
-# endif
-#else
-# ifndef XmNfontFamily
-#  define XmNfontFamily ((char *)&_XmHTMLStrings[841])
-# endif
-#endif
-
-#ifdef XmHTML_STRINGDEFINES
-# ifndef XmNfontFamilyFixed
-#  define XmNfontFamilyFixed "fontFamilyFixed"
-# endif
-#else
-# ifndef XmNfontFamilyFixed
-#  define XmNfontFamilyFixed ((char *)&_XmHTMLStrings[852])
-# endif
-#endif
-
-#ifdef XmHTML_STRINGDEFINES
-# ifndef XmNfontSizeFixedList
-#  define XmNfontSizeFixedList "fontSizeFixedList"
-# endif
-#else
-# ifndef XmNfontSizeFixedList
-#  define XmNfontSizeFixedList ((char *)&_XmHTMLStrings[868])
-# endif
-#endif
-
-#ifdef XmHTML_STRINGDEFINES
-# ifndef XmNfontSizeList
-#  define XmNfontSizeList "fontSizeList"
-# endif
-#else
-# ifndef XmNfontSizeList
-#  define XmNfontSizeList ((char *)&_XmHTMLStrings[886])
-# endif
-#endif
-
-#ifdef XmHTML_STRINGDEFINES
-# ifndef XmNformCallback
-#  define XmNformCallback "formCallback"
-# endif
-#else
-# ifndef XmNformCallback
-#  define XmNformCallback ((char *)&_XmHTMLStrings[899])
-# endif
-#endif
-
-#ifdef XmHTML_STRINGDEFINES
-# ifndef XmNframeCallback
-#  define XmNframeCallback "frameCallback"
-# endif
-#else
-# ifndef XmNframeCallback
-#  define XmNframeCallback ((char *)&_XmHTMLStrings[912])
-# endif
-#endif
-
-#ifdef XmHTML_STRINGDEFINES
-# ifndef XmNfreezeAnimations
-#  define XmNfreezeAnimations "freezeAnimations"
-# endif
-#else
-# ifndef XmNfreezeAnimations
-#  define XmNfreezeAnimations ((char *)&_XmHTMLStrings[926])
-# endif
-#endif
-
-#ifdef XmHTML_STRINGDEFINES
-# ifndef XmNimageEnable
-#  define XmNimageEnable "imageEnable"
-# endif
-#else
-# ifndef XmNimageEnable
-#  define XmNimageEnable ((char *)&_XmHTMLStrings[943])
-# endif
-#endif
-
-#ifdef XmHTML_STRINGDEFINES
-# ifndef XmNimageMapToPalette
-#  define XmNimageMapToPalette "imageMapToPalette"
-# endif
-#else
-# ifndef XmNimageMapToPalette
-#  define XmNimageMapToPalette ((char *)&_XmHTMLStrings[955])
-# endif
-#endif
-
-#ifdef XmHTML_STRINGDEFINES
-# ifndef XmNimagePalette
-#  define XmNimagePalette "imagePalette"
-# endif
-#else
-# ifndef XmNimagePalette
-#  define XmNimagePalette ((char *)&_XmHTMLStrings[973])
-# endif
-#endif
-
-#ifdef XmHTML_STRINGDEFINES
-# ifndef XmNimageProc
-#  define XmNimageProc "imageProc"
-# endif
-#else
-# ifndef XmNimageProc
-#  define XmNimageProc ((char *)&_XmHTMLStrings[986])
-# endif
-#endif
-
-#ifdef XmHTML_STRINGDEFINES
-# ifndef XmNimageRGBConversion
-#  define XmNimageRGBConversion "imageRGBConversion"
-# endif
-#else
-# ifndef XmNimageRGBConversion
-#  define XmNimageRGBConversion ((char *)&_XmHTMLStrings[996])
-# endif
-#endif
-
-#ifdef XmHTML_STRINGDEFINES
-# ifndef XmNimagemapBoundingBoxForeground
-#  define XmNimagemapBoundingBoxForeground "imagemapBoundingBoxForeground"
-# endif
-#else
-# ifndef XmNimagemapBoundingBoxForeground
-#  define XmNimagemapBoundingBoxForeground ((char *)&_XmHTMLStrings[1015])
-# endif
-#endif
-
-#ifdef XmHTML_STRINGDEFINES
-# ifndef XmNimagemapCallback
-#  define XmNimagemapCallback "imagemapCallback"
-# endif
-#else
-# ifndef XmNimagemapCallback
-#  define XmNimagemapCallback ((char *)&_XmHTMLStrings[1045])
-# endif
-#endif
-
-#ifdef XmHTML_STRINGDEFINES
-# ifndef XmNimagemapDrawBoundingBoxes
-#  define XmNimagemapDrawBoundingBoxes "imagemapDrawBoundingBoxes"
-# endif
-#else
-# ifndef XmNimagemapDrawBoundingBoxes
-#  define XmNimagemapDrawBoundingBoxes ((char *)&_XmHTMLStrings[1062])
-# endif
-#endif
-
-#ifdef XmHTML_STRINGDEFINES
-# ifndef XmNlinkCallback
-#  define XmNlinkCallback "linkCallback"
-# endif
-#else
-# ifndef XmNlinkCallback
-#  define XmNlinkCallback ((char *)&_XmHTMLStrings[1088])
-# endif
-#endif
-
-#ifdef XmHTML_STRINGDEFINES
-# ifndef XmNmaxImageColors
-#  define XmNmaxImageColors "maxImageColors"
-# endif
-#else
-# ifndef XmNmaxImageColors
-#  define XmNmaxImageColors ((char *)&_XmHTMLStrings[1101])
-# endif
-#endif
-
-#ifdef XmHTML_STRINGDEFINES
-# ifndef XmNmimeType
-#  define XmNmimeType "mimeType"
-# endif
-#else
-# ifndef XmNmimeType
-#  define XmNmimeType ((char *)&_XmHTMLStrings[1116])
-# endif
-#endif
-
-#ifdef XmHTML_STRINGDEFINES
-# ifndef XmNmotionTrackCallback
-#  define XmNmotionTrackCallback "motionTrackCallback"
-# endif
-#else
-# ifndef XmNmotionTrackCallback
-#  define XmNmotionTrackCallback ((char *)&_XmHTMLStrings[1125])
-# endif
-#endif
-
-#ifdef XmHTML_STRINGDEFINES
-# ifndef XmNparserCallback
-#  define XmNparserCallback "parserCallback"
-# endif
-#else
-# ifndef XmNparserCallback
-#  define XmNparserCallback ((char *)&_XmHTMLStrings[1145])
-# endif
-#endif
-
-#ifdef XmHTML_STRINGDEFINES
-# ifndef XmNparserIsProgressive
-#  define XmNparserIsProgressive "parserIsProgressive"
-# endif
-#else
-# ifndef XmNparserIsProgressive
-#  define XmNparserIsProgressive ((char *)&_XmHTMLStrings[1160])
-# endif
-#endif
-
-#ifdef XmHTML_STRINGDEFINES
-# ifndef XmNperfectColors
-#  define XmNperfectColors "perfectColors"
-# endif
-#else
-# ifndef XmNperfectColors
-#  define XmNperfectColors ((char *)&_XmHTMLStrings[1180])
-# endif
-#endif
-
-#ifdef XmHTML_STRINGDEFINES
-# ifndef XmNprogressiveEndProc
-#  define XmNprogressiveEndProc "progressiveEndProc"
-# endif
-#else
-# ifndef XmNprogressiveEndProc
-#  define XmNprogressiveEndProc ((char *)&_XmHTMLStrings[1194])
-# endif
-#endif
-
-#ifdef XmHTML_STRINGDEFINES
-# ifndef XmNprogressiveInitialDelay
-#  define XmNprogressiveInitialDelay "progressiveInitialDelay"
-# endif
-#else
-# ifndef XmNprogressiveInitialDelay
-#  define XmNprogressiveInitialDelay ((char *)&_XmHTMLStrings[1213])
-# endif
-#endif
-
-#ifdef XmHTML_STRINGDEFINES
-# ifndef XmNprogressiveMaximumDelay
-#  define XmNprogressiveMaximumDelay "progressiveMaximumDelay"
-# endif
-#else
-# ifndef XmNprogressiveMaximumDelay
-#  define XmNprogressiveMaximumDelay ((char *)&_XmHTMLStrings[1237])
-# endif
-#endif
-
-#ifdef XmHTML_STRINGDEFINES
-# ifndef XmNprogressiveMinimumDelay
-#  define XmNprogressiveMinimumDelay "progressiveMinimumDelay"
-# endif
-#else
-# ifndef XmNprogressiveMinimumDelay
-#  define XmNprogressiveMinimumDelay ((char *)&_XmHTMLStrings[1261])
-# endif
-#endif
-
-#ifdef XmHTML_STRINGDEFINES
-# ifndef XmNprogressiveReadProc
-#  define XmNprogressiveReadProc "progressiveReadProc"
-# endif
-#else
-# ifndef XmNprogressiveReadProc
-#  define XmNprogressiveReadProc ((char *)&_XmHTMLStrings[1285])
-# endif
-#endif
-
-#ifdef XmHTML_STRINGDEFINES
-# ifndef XmNretainSource
-#  define XmNretainSource "retainSource"
-# endif
-#else
-# ifndef XmNretainSource
-#  define XmNretainSource ((char *)&_XmHTMLStrings[1305])
-# endif
-#endif
-
-#ifdef XmHTML_STRINGDEFINES
-# ifndef XmNscreenGamma
-#  define XmNscreenGamma "screenGamma"
-# endif
-#else
-# ifndef XmNscreenGamma
-#  define XmNscreenGamma ((char *)&_XmHTMLStrings[1318])
-# endif
-#endif
-
-#ifdef XmHTML_STRINGDEFINES
-# ifndef XmNstrictHTMLChecking
-#  define XmNstrictHTMLChecking "strictHTMLChecking"
-# endif
-#else
-# ifndef XmNstrictHTMLChecking
-#  define XmNstrictHTMLChecking ((char *)&_XmHTMLStrings[1330])
-# endif
-#endif
-
-#ifdef XmHTML_STRINGDEFINES
-# ifndef XmNtopLine
-#  define XmNtopLine "topLine"
-# endif
-#else
-# ifndef XmNtopLine
-#  define XmNtopLine ((char *)&_XmHTMLStrings[1349])
-# endif
-#endif
-
-#ifdef XmHTML_STRINGDEFINES
-# ifndef XmNuncompressCommand
-#  define XmNuncompressCommand "uncompressCommand"
-# endif
-#else
-# ifndef XmNuncompressCommand
-#  define XmNuncompressCommand ((char *)&_XmHTMLStrings[1357])
-# endif
-#endif
-
-_XFUNCPROTOEND
-
-/* Don't add anything after this endif! */
-#endif /* __XmHTML_Strings_h__ */
 
 /* Don't add anything after this endif! */
 #endif /* _HTML_h_ */

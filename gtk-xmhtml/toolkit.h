@@ -98,12 +98,16 @@ typedef XVisualInfo TVisualInfo;
 #define Toolkit_Copy_Area(dpy,src,dst,gc,sx,sy,w,h,dx,dy) \
 	gdk_window_copy_area ((dst),(gc),(dx),(dy),(src),(sx),(sy),(w),(h))
 #define Toolkit_Create_Pixmap(dpy,win,w,h,d) gdk_pixmap_new((win),(w),(h),(d))
+#define Toolkit_Free_Pixmap(d,p) gdk_pixmap_unref (p)
 #define Toolkit_Create_Image(d,v,depth,form,off,data,w,h,bp,bpl) \
 		gdk_image_new(type, (vis), (w), (h))
 #define Toolkit_GC_Free(dpy,gc) gdk_gc_destroy(gc)
-#define Toolkit_Widget_Repaint(w)  gtk_widget_draw (GTK_WIDGET (w), NULL)
+#define Toolkit_Widget_Repaint(w) \
+	_XmHTMLClearArea((w), 0, 0, GTK_WIDGET(w)->allocation.width, GTK_WIDGET(w)->allocation.height)
 #define Toolkit_Flush(d,de) gdk_flush ()
-#define Toolkit_Widget_Force_Repaint(w) do {gtk_widget_draw (GTK_WIDGET (w), NULL);gdk_flush();}while (0)
+#define Toolkit_Widget_Force_Repaint(w) do { \
+	Toolkit_Widget_Repaint(w); \
+		gtk_widget_draw (GTK_WIDGET (w), NULL);gdk_flush();}while (0)
 #define TOolkit_Widget_Repaint(w) gtk_widget_draw (GTK_WIDGET (w), NULL)
 #define Toolkit_StyleGC_BottomShadow(w) (GTK_WIDGET(w))->style->dark_gc [GTK_STATE_NORMAL]
 #define Toolkit_StyleGC_TopShadow(w)    (GTK_WIDGET(w))->style->light_gc [GTK_STATE_NORMAL]
@@ -208,13 +212,14 @@ typedef GdkColorContextDither XCCDither;
 #define Toolkit_Copy_Area(dpy,src,dst,gc,sx,sy,w,h,dx,dy) \
      XCopyArea ((dpy),(src),(dst),(gc),(sx),(sy),(w),(h),(dx),(dy))
 #define Toolkit_Create_Pixmap(dpy,win,w,h,d) XCreatePixmap((dpy),(win),(w),(h),(d))
+#define Toolkit_Free_Pixmap(d,p) XFreePixmap ((d),(p))
 #define Toolkit_Create_Image(d,v,depth,form,off,data,w,h,bp,bpl) \
 	     XCreateImage ((d),(v),(depth),(form),(off),(data),(w),(h),(bp),(bpl))
 #define Toolkit_GC_Free(dpy,gc) XFreeGC((dpy),(gc))
 #define Toolkit_Free_Cursor(dpy,cursor) XFreeCursor ((dpy), (cursor))
-#define Toolkit_Widget_Repaint(w) ClearArea((w), 0, 0, (w)->core.width, (w)->core.height)
+#define Toolkit_Widget_Repaint(w) _XmHTMLClearArea((w), 0, 0, (w)->core.width, (w)->core.height)
 #define Toolkit_Widget_Force_Repaint(w) \
-	do { ClearArea((w), 0, 0, (w)->core.width, (w)->core.height); \
+	do { _XmHTMLClearArea((w), 0, 0, (w)->core.width, (w)->core.height); \
 	XSync(XtDisplay((TWidget)(w)), True); } while (0)
 #define Toolkit_Flush(d,de) XSync (d,de)
 #define Toolkit_StyleGC_BottomShadow(w) (w)->manager.bottom_shadow_GC

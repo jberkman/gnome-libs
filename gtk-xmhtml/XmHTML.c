@@ -35,6 +35,21 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.13  1997/12/25 01:34:09  unammx
+* Good news for the day:
+*
+*    I have upgraded our XmHTML sources to XmHTML 1.1.1.
+*
+*    This basically means that we got table support :-)
+*
+* Still left to do:
+*
+*    - Set/Get gtk interface for all of the toys in the widget.
+*    - Frame support is broken, dunno why.
+*    - Form support (ie adding widgets to it)
+*
+* Miguel.
+*
 * Revision 1.12  1997/12/24 17:53:53  unammx
 * Fun stuff:
 *
@@ -231,18 +246,6 @@ static char rcsId[]="$Header$";
 /*** Public Variable Declarations ***/
 
 /*** Private Datatype Declarations ****/
-/*** 
-* button press & release must occur within half a second of each other to 
-* trigger an anchor activation
-***/
-#define MAX_RELEASE_TIME	500		
-
-/* Default margin offsets */
-#define DEFAULT_MARGIN		20
-
-/* initial horizontal & vertical increment when a scrollbar is moved */
-#define HORIZONTAL_INCREMENT 12 /* average char width */
-#define VERTICAL_INCREMENT 18	/* average line height */
 
 static void XmHTML_Destroy(XmHTMLWidget html);
 static void XmHTML_Initialize (XmHTMLWidget html, XmHTMLWidget init, char *html_source);
@@ -251,7 +254,7 @@ static void CheckMaxColorSetting(XmHTMLWidget html);
 static void CheckPLCIntervals(XmHTMLWidget html);
 static void Refresh(XmHTMLWidget html, int x, int y, int width, int height);
 static void Resize(TWidget w);
-static void ClearArea(XmHTMLWidget html, int x, int y, int width, int height);
+void _XmHTMLClearArea(XmHTMLWidget html, int x, int y, int width, int height);
 static void AnchorTrack (XmHTMLWidget html, TEvent *event, int x, int y);
 static void LeaveAnchor(XmHTMLWidget html);
 
@@ -386,6 +389,13 @@ XmHTML_Initialize (XmHTMLWidget html, XmHTMLWidget init, char *html_source)
 	html->html.plc_suspended = True;
 	html->html.plc_gc        = (TGC)NULL;
 
+	/* Table resources */
+	html->html.tables        = (XmHTMLTable*)NULL;
+
+	/* HTML4.0 Event database */
+	html->html.events = (HTEvent*)NULL;
+	html->html.nevents = 0;
+	
 	/* initial mimetype */
 	if(!(strcasecmp(html->html.mime_type, "text/html")))
 		html->html.mime_id = XmPLC_DOCUMENT;
@@ -485,8 +495,7 @@ XmHTML_Initialize (XmHTMLWidget html, XmHTMLWidget init, char *html_source)
 			_XmHTMLLinkCallback(html);
 
 		/* do initial document markup */
-		html->html.formatted = _XmHTMLformatObjects(NULL, NULL,
-			XmHTML(init));
+		_XmHTMLformatObjects(html, html);
 
 		/* check for possible delayed external imagemaps */
 		_XmHTMLCheckImagemaps(html);
@@ -1006,7 +1015,7 @@ Refresh(XmHTMLWidget html, int x, int y, int width, int height)
 	start = (html->html.paint_start ? 
 		html->html.paint_start : html->html.formatted);
 
-	/* below current paint engine start */
+	/* below current paint engine start, scrolling down */
 	if(y1 > start->y)
 	{
 		/* already in region, get first object in it */
@@ -1030,7 +1039,7 @@ Refresh(XmHTMLWidget html, int x, int y, int width, int height)
 			}
 		}
 	}
-	/* above current paint engine start */
+	/* above current paint engine start, scrolling up */
 	else
 	{
 		_XmHTMLDebug(1, ("XmHTML.c: Refresh, walking top-up, "
@@ -1254,12 +1263,15 @@ XmHTML_Destroy(XmHTMLWidget html)
 	/* First kill any outstanding PLC's */
 	_XmHTMLKillPLCCycler(html);
 
+	/* release event database */
+	_XmHTMLFreeEventDatabase(html, html);
+
 	/* Free list of parsed HTML elements */
 	html->html.elements = _XmHTMLparseHTML(html, html->html.elements, NULL, NULL);
 
 	/* Free list of formatted HTML elements */
-	html->html.formatted = _XmHTMLformatObjects(html->html.formatted, 
-		html->html.anchor_data, html);
+	_XmHTMLformatObjects(html, html);
+
 
 	/* Free list of form data */
 	_XmHTMLFreeForm(html, html->html.form_data);
@@ -1877,7 +1889,8 @@ ScrollToLine(XmHTMLWidget html, int line)
 		{
 			if(tmp->n_words)
 			{
-				for(i = 0; i < tmp->n_words && line < tmp->words[i].line; 
+				/* fix 11/11/97-01, dbl */
+				for(i = 0; i < tmp->n_words && line > tmp->words[i].line;
 					i++);
 				/* if found, we need to take y position of the previous word */
 				if(i != tmp->n_words && i != 0)
@@ -1903,9 +1916,10 @@ ScrollToLine(XmHTMLWidget html, int line)
 	}
 }
 
-/*****
-* Public Interfaces
-*****/
+/********
+****** Public XmHTML Functions
+********/
+
 /*****
 * Name: 		XmHTMLAnchorGetId
 * Return Type: 	int
@@ -2187,135 +2201,6 @@ XmHTMLGetTitle(TWidget w)
 }
 
 /*****
-* Name: 		XmHTMLImageFreeAllImages
-* Return Type: 	void
-* Description: 	releases all allocated images and associated structures
-* In: 
-*	html:		XmHTMLWidget for which to free all images
-* Returns:
-*	nothing
-*****/
-void 
-XmHTMLImageFreeAllImages(TWidget w)
-{
-	XmHTMLImage *image, *image_list;
-	Display *dpy;
-	XmHTMLWidget html;
-
-	/* sanity check */
-	if(!w || !XmIsHTML(w))
-	{
-		_XmHTMLBadParent(w, "XmHTMLImageFreeAllImages");
-		return;
-	}
-
-	html = XmHTML (w);
- 	image_list = html->html.images;
- 	dpy = Toolkit_Display(w);
-
-	while(image_list != NULL)
-	{
-		image = image_list->next;
-		_XmHTMLFreeImage(html, image_list);
-		image_list = NULL;
-		image_list = image;
-	}
-	html->html.images = NULL;
-
-	/* alpha channel stuff */
-	if(html->html.alpha_buffer)
-	{
-		if(html->html.alpha_buffer->ncolors)
-			free(html->html.alpha_buffer->bg_cmap);
-		free(html->html.alpha_buffer);
-	}
-	html->html.alpha_buffer = (AlphaPtr)NULL;
-
-	/* only release XCC when we aren't using a fixed palette */
-	if(html->html.map_to_palette == XmDISABLED)
-	{
-		XCCFree(html->html.xcc);
-		html->html.xcc = (XCC)NULL;
-	}
-}
-
-/*****
-* Name: 		XmHTMLImageAddImageMap
-* Return Type: 	void
-* Description: 	add the given imagemap to a HTML TWidget
-* In: 
-*	w:			TWidget
-*	image_map:	raw html data containing the imagemap to parse.
-* Returns:
-*	nothing
-*****/
-void
-XmHTMLImageAddImageMap(TWidget w, String image_map)
-{
-	XmHTMLWidget html;
-	XmHTMLObject *parsed_map, *temp;
-	XmHTMLImageMap *imageMap = NULL;
-
-	/* sanity check */
-	if(!w || !XmIsHTML(w) || image_map == NULL)
-	{
-		_XmHTMLWarning(__WFUNC__(w, "XmHTMLImageAddImageMap"),
-			"%s passed to XmHTMLImageAddImageMap.",
-			w ? (image_map ? "Invalid parent" : "NULL imagemap") :
-			"NULL parent");
-		return;
-	}
-
-	html = XmHTML (w);
-
-	/* parse the imagemap */
-	if((parsed_map = _XmHTMLparseHTML(html, NULL, image_map, NULL)) == NULL)
-		return;
-
-	for(temp = parsed_map; temp != NULL; temp = temp->next)
-	{
-		switch(temp->id)
-		{
-			case HT_MAP:
-				if(temp->is_end)
-				{
-					_XmHTMLStoreImagemap(html, imageMap);
-					imageMap = NULL;
-				}
-				else
-				{
-					String chPtr;
-
-					chPtr = _XmHTMLTagGetValue(temp->attributes, "name");
-					if(chPtr != NULL)
-					{
-						imageMap = _XmHTMLCreateImagemap(chPtr);
-						free(chPtr);
-					}
-					else
-						_XmHTMLWarning(__WFUNC__(w, "XmHTMLAddImagemap"),
-							"unnamed map, ignored (line %i in input).",
-							temp->line);
-				}
-				break;
-
-			case HT_AREA:
-				if(imageMap)
-					_XmHTMLAddAreaToMap(html, imageMap, temp);
-				else
-					_XmHTMLWarning(__WFUNC__(w, "XmHTMLAddImagemap"),
-						"<AREA> element outside <MAP>, ignored "
-						"(line %i in input).", temp->line);
-				break;
-			default:
-				break;
-		}
-	}
-	/* free the parsed imagemap data */
-	(void)_XmHTMLparseHTML(html, parsed_map, NULL, NULL);
-}
-
-/*****
 * Name: 		XmHTMLRedisplay
 * Return Type: 	void
 * Description: 	forces a layout recomputation of the currently loaded document
@@ -2347,301 +2232,6 @@ XmHTMLRedisplay(TWidget w)
 
 	if(html->html.gc != NULL)
 		XmHTML_Frontend_Redisplay (html);
-}
-
-/*****
-* Name: 		XmHTMLImageUpdate
-* Return Type: 	XmImageStatus
-* Description: 	updates an image
-* In: 
-*	w:			XmHTMLWidget
-*	image:		image info representing the image to be updated.
-*				This must be an XmImageInfo structure *known* to XmHTML.
-* Returns:
-*	XmIMAGE_ALMOST if updating this image requires a recomputation of the
-*	document layout, XmIMAGE_OK if not and some other value upon error.
-*****/
-XmImageStatus
-XmHTMLImageUpdate(TWidget w, XmImageInfo *image)
-{
-	XmHTMLWidget html;
-	XmHTMLObjectTableElement temp;
-	static String func = "XmHTMLImageUpdate";
-	Boolean is_body_image;
-	XmImageStatus status;
-
-	/* sanity check */
-	if(!w || !XmIsHTML(w))
-	{
-		_XmHTMLBadParent(w, func);
-		return(XmIMAGE_ERROR);
-	}
-
-	if(image == NULL)
-	{
-		_XmHTMLWarning(__WFUNC__(w, func), "%s called with a NULL image "
-			"argument.", func);
-		return(XmIMAGE_BAD);
-	}
-
-	html = XmHTML (w);
-
-	/* do we already have the body image? */
-	is_body_image = html->html.body_image != NULL;
-
-	/* return error code if failed */
-	if((status = _XmHTMLReplaceOrUpdateImage(html, image, NULL, &temp))
-		!= XmIMAGE_OK)
-		return(status);
-
-	if(temp != NULL)
-	{
-		int xs, ys;
-		xs = temp->x - html->html.scroll_x;
-		ys = temp->y - html->html.scroll_y;
-		/* We may paint the image, but we only do it when it's visible */
-		if(!(xs + temp->width < 0 || xs > html->html.work_width || 
-			ys + temp->height < 0 || ys > html->html.work_height))
-		{
-			_XmHTMLDebug(1, ("XmHTML.c: XmHTMLImageUpdate, painting image "
-				"%s\n", image->url));
-
-			/* clear the current image, don't generate an exposure */
-			Toolkit_Clear_Area (XtDisplay(html->html.work_area), 
-					    Toolkit_Widget_Window(html->html.work_area),
-					    xs, ys, temp->width, temp->height, False);
-			/* put up the new image */
-			_XmHTMLPaint(html, temp, temp->next);
-			Toolkit_Flush (Toolkit_Display((TWidget)html), True);
-		}
-	}
-	else
-	{
-		/* if we've updated the body image, plug it in */
-		if(!is_body_image && html->html.body_image != NULL)
-		{
-			Toolkit_Widget_Force_Repaint (html);
-		}
-	}
-	return(XmIMAGE_OK);
-}
-
-/*****
-* Name: 		XmHTMLImageReplace
-* Return Type: 	XmImageStatus
-* Description: 	replaces the XmImageInfo structure with a new one
-* In: 
-*	w:			XmHTMLWidget
-*	image:		XmImageInfo structure to be replaced, must be known by XmHTML
-*	new_image:	new XmImageInfo structure 
-* Returns:
-*	XmIMAGE_ALMOST if replacing this image requires a recomputation of the
-*	document layout, XmIMAGE_OK if not and some other value upon error.
-*****/
-XmImageStatus
-XmHTMLImageReplace(TWidget w, XmImageInfo *image, XmImageInfo *new_image)
-{
-	XmHTMLWidget html;
-	XmHTMLObjectTableElement temp;
-	XmImageStatus status;
-	Boolean is_body_image;
-	static String func = "XmHTMLImageReplace";
-
-	/* sanity check */
-	if(!w || !XmIsHTML(w))
-	{
-		_XmHTMLBadParent(w, func);
-		return(XmIMAGE_ERROR);
-	}
-
-	/* sanity */
-	if(image == NULL || new_image == NULL)
-	{
-		_XmHTMLWarning(__WFUNC__(w, func), "%s called with a NULL %s "
-			"argument", func, (image == NULL ? "image" : "new_image"));
-		return(XmIMAGE_BAD);
-	}
-	html = XmHTML (w);
-
-	/* do we already have the body image? */
-	is_body_image = html->html.body_image != NULL;
-
-	if((status = _XmHTMLReplaceOrUpdateImage(html, image, new_image, &temp))
-		!= XmIMAGE_OK)
-		return(status);
-
-	if(temp != NULL)
-	{
-		int xs, ys;
-		xs = temp->x - html->html.scroll_x;
-		ys = temp->y - html->html.scroll_y;
-		/* We may paint the image, but we only do it when it's visible */
-		if(!(xs + temp->width < 0 || xs > html->html.work_width || 
-			ys + temp->height < 0 || ys > html->html.work_height))
-		{
-			_XmHTMLDebug(1, ("XmHTML.c: XmHTMLImageReplace, painting image "
-				"%s\n", image->url));
-			/* clear the current image, don't generate an exposure */
-			Toolkit_Clear_Area(XtDisplay(html->html.work_area), 
-				Toolkit_Widget_Window(html->html.work_area), xs, ys,
-				temp->width, temp->height, False);
-			/* put up the new image */
-			_XmHTMLPaint(html, temp, temp->next);
-			Toolkit_Flush(Toolkit_Display ((TWidget)html), True);
-		}
-	}
-	else
-	{
-		/* if we've replaced the body image, plug it in */
-		if(!is_body_image && html->html.body_image != NULL)
-		{
-			Toolkit_Widget_Force_Repaint (html);
-		}
-	}
-	return(XmIMAGE_OK); 
-}
-
-/*****
-* Name: 		XmHTMLImageFreeImageInfo
-* Return Type: 	void
-* Description: 	free the given XmImageInfo structure
-* In: 
-*	info:		image to free
-* Returns:
-*	nothing
-*****/
-void
-XmHTMLImageFreeImageInfo(TWidget w, XmImageInfo *info)
-{
-	static String func = "XmHTMLImageFreeImageInfo";
-
-	/* sanity check */
-	if(!w || !XmIsHTML(w))
-	{
-		_XmHTMLBadParent(w, func);
-		return;
-	}
-
-	/* sanity check */
-	if(info == NULL)
-	{
-		_XmHTMLWarning(__WFUNC__(NULL, func), "NULL XmImageInfo "
-			"structure passed to %s.", func);
-		return;
-	}
-
-	_XmHTMLFreeImageInfo(XmHTML (w), info, True);
-}
-
-/*****
-* Name: 		XmHTMLGetImageType
-* Return Type: 	int
-* Description: 	determines the type of a given image
-* In: 
-*	file:		name of image file to check
-* Returns:
-*	the image type if supported, IMAGE_UNKNOWN otherwise.
-*****/
-unsigned char
-XmHTMLImageGetType(String file, unsigned char *buf, int size)
-{
-	ImageBuffer data, *dp = NULL;
-	Byte ret_val = IMAGE_UNKNOWN;
-
-	if(!file)
-		return(IMAGE_ERROR);
-
-	if(size == 0 || buf == NULL)
-	{
-		if((dp = _XmHTMLImageFileToBuffer(file)) == NULL)
-			return(IMAGE_ERROR);
-	}
-	else
-	{
-		if(buf != NULL && size != 0)
-		{
-			data.file = file;
-			data.buffer = (Byte*)buf;
-			data.size = (size_t)size;
-			data.next = 0;
-			data.may_free = False;
-			dp = &data;
-		}
-		else
-			return(IMAGE_ERROR);
-	}
-
-	ret_val = _XmHTMLGetImageType(dp);
-
-	FreeImageBuffer(dp);
-
-	return(ret_val);
-}
-
-Boolean
-XmHTMLImageJPEGSupported(void)
-{
-#ifdef HAVE_JPEG
-	return(True);
-#else
-	return(False);
-#endif
-}
-
-Boolean
-XmHTMLImagePNGSupported(void)
-{
-#ifdef HAVE_PNG
-	return(True);
-#else
-	return(False);
-#endif
-}
-
-Boolean
-XmHTMLImageGZFSupported(void)
-{
-#if defined(HAVE_PNG) || defined(HAVE_ZLIB)
-	return(True);
-#else
-	return(False);
-#endif
-}
-
-/*****
-* Name: 		XmHTMLFrameGetChild
-* Return Type: 	TWidget
-* Description: 	returns the TWidget id of a frame child given it's name.
-* In: 
-*	w:			XmHTMLWidget
-*	name:		name of frame to locate.
-* Returns:
-*	If found, the TWidget id of the requested frame, NULL otherwise. 
-*****/
-TWidget
-XmHTMLFrameGetChild(TWidget w, String name)
-{
-	XmHTMLWidget html;
-	int i;
-
-	/* sanity check */
-	if(!w || !XmIsHTML(w) || name == NULL)
-	{
-		_XmHTMLWarning(__WFUNC__(w, "XmHTMLFrameGetChild"),
-			"%s passed to XmHTMLFrameGetChild.",
-			w ? (name == NULL ? "NULL frame name" : "Invalid parent") :
-			"NULL parent");
-		return(NULL);
-	}
-
-	html = XmHTML (w);
-
-	for(i = 0; i < html->html.nframes; i++)
-	{
-		if(!(strcmp(html->html.frames[i]->name, name)))
-			return(html->html.frames[i]->frame);
-	}
-	return(NULL);
 }
 
 /*****
@@ -2681,6 +2271,9 @@ XmHTMLTextSetString(TWidget w, String text)
 	/* First kill any outstanding PLC's */
 	_XmHTMLKillPLCCycler(html);
 
+	/* release event database */
+	_XmHTMLFreeEventDatabase(html, html);
+	
 	/* now destroy any forms */
 	_XmHTMLFreeForm(html, html->html.form_data);
 	html->html.form_data = (XmHTMLFormData*)NULL;
@@ -2752,8 +2345,7 @@ XmHTMLTextSetString(TWidget w, String text)
 	}
 
 	/* do initial markup */
-	html->html.formatted = _XmHTMLformatObjects(html->html.formatted,
-			html->html.anchor_data, html);
+	_XmHTMLformatObjects(html, html);
 
 	/* check for delayed external imagemaps */
 	_XmHTMLCheckImagemaps(html);
@@ -2763,7 +2355,7 @@ XmHTMLTextSetString(TWidget w, String text)
 
 	/* and clear the display, causing an Expose event */
 	if(html->html.gc != NULL)
-		Toolkit_Widget_Repaint (html);
+		_XmHTMLClearArea (html, 0, 0, Toolkit_Widget_Dim (html).width, Toolkit_Widget_Dim(html).height);
 
 	/* and start up the PLC cycler */
 	html->html.plc_suspended = False;
@@ -3234,11 +2826,11 @@ _XmHTMLMoveToPos(TWidget w, XmHTMLWidget html, int value)
 	}
 
 	/* update display */
-	ClearArea(html, x, y, width, height);
+	_XmHTMLClearArea(html, x, y, width, height);
 }
 
 /*****
-* Name: 		ClearArea
+* Name: 		_XmHTMLClearArea
 * Return Type: 	void
 * Description: 	XClearArea wrapper. Does form component updating as well.
 * In: 
@@ -3249,13 +2841,13 @@ _XmHTMLMoveToPos(TWidget w, XmHTMLWidget html, int value)
 * Returns:
 *
 *****/
-static void
-ClearArea(XmHTMLWidget html, int x, int y, int width, int height)
+void
+_XmHTMLClearArea(XmHTMLWidget html, int x, int y, int width, int height)
 {
 	Display *dpy = Toolkit_Display(html->html.work_area);
 	TWindow win = Toolkit_Widget_Window(html->html.work_area);
 
-	_XmHTMLDebug(1, ("XmHTML.c: ClearArea Start, x: %i, y: %i, width: %i "
+	_XmHTMLDebug(1, ("XmHTML.c: _XmHTMLClearArea Start, x: %i, y: %i, width: %i "
 		"height: %i.\n", x, y, width, height));
 
 	/* first scroll form TWidgets if we have them */
@@ -3268,7 +2860,7 @@ ClearArea(XmHTMLWidget html, int x, int y, int width, int height)
 	else
 		Toolkit_Clear_Area(dpy, win, x, y, width, height, True);
 
-	_XmHTMLDebug(1, ("XmHTML.c: ClearArea End.\n"));
+	_XmHTMLDebug(1, ("XmHTML.c: _XmHTMLClearArea End.\n"));
 }
 
 static void
@@ -3281,6 +2873,7 @@ AnchorTrack (XmHTMLWidget html, TEvent *event, int x, int y)
 	if(((anchor_word = GetAnchor(html, x, y)) == NULL) &&
 		((anchor = GetImageAnchor(html, x, y)) == NULL))
 	{
+		_XmHTMLFullDebug(1, ("XmHTML.c: TrackMotion, no current anchor.\n"));
 		/* invalidate current selection if there is one */
 		if(html->html.anchor_track_callback && 
 			html->html.anchor_current_cursor_element)
@@ -3301,15 +2894,24 @@ AnchorTrack (XmHTMLWidget html, TEvent *event, int x, int y)
 	/* Trigger callback and set cursor if we are entering a new element */
 	if(anchor != html->html.anchor_current_cursor_element) 
 	{
+		_XmHTMLFullDebug(1, ("XmHTML.c: TrackMotion, new anchor.\n"));
+
 		/* remove highlight of previous anchor */
 		if(html->html.highlight_on_enter)
 		{
-			/* unarm previous selection */
-			if(html->html.armed_anchor )
-				LeaveAnchor(html);
-			/* highlight new selection */
 			if(anchor_word)
+			{
+				/* unarm previous selection */
+				if(html->html.armed_anchor &&
+					html->html.armed_anchor != anchor_word->owner)
+					LeaveAnchor(html);
+				/* highlight new selection */
 				EnterAnchor(html, anchor_word->owner);
+			}
+			else /* unarm previous selection */
+				if(html->html.armed_anchor)
+					LeaveAnchor(html);
+
 		}
 
 		html->html.anchor_current_cursor_element = anchor;
@@ -3353,20 +2955,9 @@ TPROTO (ExtendStart, TWidget w, TEvent *event, String *params, Cardinal *num_par
 	
 	_XmHTMLFullDebug(1, ("XmHTML.c: ExtendStart Start\n"));
 
-	/* Could be we still have a cursor around. Unset it */
-	Toolkit_Undefine_Cursor(Toolkit_Display(w), Toolkit_Widget_Window(w));
-
 	/* Get coordinates of button event and add core offsets */
 	x = pressed->x;
 	y = pressed->y;
-
-	/*
-	* First check if we have an active anchor: user might be dragging his
-	* mouse around when he has selected an anchor. If so, invalidate the
-	* current selection.
-	*/
-	if(html->html.current_anchor != NULL)
-		PaintAnchorUnSelected(html);
 
 	/* try to get current anchor element */
 	if(pressed->button != Button3 &&
@@ -3384,15 +2975,36 @@ TPROTO (ExtendStart, TWidget w, TEvent *event, String *params, Cardinal *num_par
 		******/
 		if(anchor == NULL)
 		{
-			/* real anchor data */
+			/* store anchor & paint as selected */
 			anchor = anchor_word->owner->anchor;
+			/*****
+			 * uncheck currently selected anchor if it's not the same as
+			 * the current anchor (mouse dragging)
+			 *****/
+			if(html->html.current_anchor != NULL &&
+			   html->html.current_anchor != anchor_word->owner)
+				PaintAnchorUnSelected(html);
+
 			PaintAnchorSelected(html, anchor_word);
 		}
-
+		else if(html->html.selected != NULL &&
+			html->html.selected != anchor)
+			PaintAnchorUnSelected(html);
+		
+		/* check for the onMouseDown event */
+		if(anchor->events && anchor->events->onMouseDown)
+			_XmHTMLProcessEvent(html, event, anchor->events->onMouseDown);
+		
 		html->html.selected = anchor;
-
+		
 		_XmHTMLFullDebug(1, ("XmHTML.c: ExtendStart, anchor selected is %s\n",
 			anchor->href));
+	}
+	else if(html->html.current_anchor != NULL)
+	{
+		/* not over an anchor, unselect current anchor and reset cursor */
+		PaintAnchorUnSelected(html);
+		Toolkit_Undefine_Cursor(XtDisplay(w), Toolkit_Widget_Window(w));
 	}
 
 	/* remember pointer position and time */
@@ -3422,7 +3034,8 @@ TPROTO (ExtendStart, TWidget w, TEvent *event, String *params, Cardinal *num_par
 *				anchor as being deselected. XmNactivateCallback  or
 *				XmNarmCallback callback resources are only called if the
 *				buttonpress and release occur within a certain time limit 
-*				(MAX_RELEASE_TIME, defined in the header of this file.
+*				(XmHTML_MAX_BUTTON_RELEASE_TIME, defined XmHTMLfuncs.h)
+
 * In: 
 *
 * Returns:
@@ -3448,14 +3061,6 @@ TPROTO (ExtendEnd, TWidget w, TEvent *event, String *params, Cardinal *num_param
 	if(release->button == Button3)
 		return;
 
-	/*
-	* First check if we have an active anchor: user might be dragging his
-	* mouse around when he has selected an anchor. If so, invalidate the
-	* current selection.
-	*/
-	if(html->html.current_anchor != NULL)
-		PaintAnchorUnSelected(html);
-
 	_XmHTMLFullDebug(1, ("XmHTML.c: ExtendEnd Start\n"));
 
 	/* Get coordinates of button event */
@@ -3474,6 +3079,23 @@ TPROTO (ExtendEnd, TWidget w, TEvent *event, String *params, Cardinal *num_param
 		if(anchor == NULL)
 			anchor = anchor_word->owner->anchor;
 
+		/*
+		* If we already have an active anchor and it's different from the
+		* current anchor, deselect it.
+		*/
+		if(html->html.current_anchor &&
+			html->html.current_anchor != anchor_word->owner)
+			PaintAnchorUnSelected(html);
+
+		/* see if we need to serve the mouseUp event */
+		if(anchor->events && anchor->events->onMouseUp)
+			_XmHTMLProcessEvent(html, event, anchor->events->onMouseUp);
+
+		/* this anchor is still in selection */
+		if(anchor_word)
+			EnterAnchor(html, anchor_word->owner);
+
+
 		_XmHTMLFullDebug(1, ("XmHTML.c: ExtendEnd, anchor selected is %s\n",
 			anchor->href));
 		/* 
@@ -3481,8 +3103,12 @@ TPROTO (ExtendEnd, TWidget w, TEvent *event, String *params, Cardinal *num_param
 		* and the button was released in time, trigger the activation callback.
 		*/
 		if(html->html.selected != NULL && anchor == html->html.selected &&
-			(release->time - html->html.pressed_time) < MAX_RELEASE_TIME)
+		   (release->time - html->html.pressed_time) < XmHTML_BUTTON_RELEASE_TIME)
 		{
+			/* check for the onClick event */
+			if(anchor->events && anchor->events->onClick)
+				_XmHTMLProcessEvent(html, event, anchor->events->onClick);
+
 			if(anchor->url_type == ANCHOR_FORM_IMAGE)
 				_XmHTMLFormActivate(html, event, anchor_word->form);
 			else {
@@ -3502,10 +3128,15 @@ TPROTO (ExtendEnd, TWidget w, TEvent *event, String *params, Cardinal *num_param
 		}
 	}
 
+	/* unset any previously selected anchor */
 	if(html->html.current_anchor != NULL)
 	{
-		/* unset current anchor */
-		PaintAnchorUnSelected(html);
+		/* keep current anchor selection or unset it */
+		if(anchor_word)
+			EnterAnchor(html, anchor_word->owner);
+		else
+			PaintAnchorUnSelected(html);
+
 	}
 	_XmHTMLFullDebug(1, ("XmHTML.c: ExtendEnd End\n"));
 

@@ -36,6 +36,21 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.4  1997/12/25 01:34:11  unammx
+* Good news for the day:
+*
+*    I have upgraded our XmHTML sources to XmHTML 1.1.1.
+*
+*    This basically means that we got table support :-)
+*
+* Still left to do:
+*
+*    - Set/Get gtk interface for all of the toys in the widget.
+*    - Frame support is broken, dunno why.
+*    - Form support (ie adding widgets to it)
+*
+* Miguel.
+*
 * Revision 1.3  1997/12/13 01:49:15  unammx
 * your daily dose of ported XmHTML code, non functional as usual -mig
 *
@@ -122,21 +137,12 @@ static char rcsId[]="$Header$";
 #include "XmHTMLfuncs.h"
 
 /*** External Function Prototype Declarations ***/
-#ifdef DEBUG
-extern void dumpFontCacheStats(void);
-#endif
-
-extern void _XmHTMLaddFontMapping(XmHTMLWidget html, String name,
-	String family, int ptsz, Byte style, XmHTMLfont *font);
 
 /*** Public Variable Declarations ***/
 
 /*** Private Datatype Declarations ****/
 #define MAX_NESTED_LISTS	26	/* maximum no of nested lists */
 #define IDENT_SPACES		3	/* length of each indent, in no of spaces */
-
-/* required for anchor testing */
-typedef int (*anchorProc)(TWidget,String);
 
 typedef struct{
 	String name;
@@ -145,7 +151,7 @@ typedef struct{
 
 /* for nesting of ordered and unordered lists */
 typedef struct{
-	Boolean isindex;	/* propagete index numbers? */
+	Boolean isindex;	/* propagate index numbers? */
 	int level;			/* item number */
 	htmlEnum type;		/* ol or ul, used for custom markers */
 	Marker marker;		/* marker to use */
@@ -184,14 +190,11 @@ static void InsertTableElement(XmHTMLWidget html,
 /* Release the formatted element table */
 static void FreeObjectTable(XmHTMLObjectTable *list);
 
+/* Free the given list of tables */
+static void freeTables(XmHTMLTable *table);
+
 /* Initialize the formatted element table */
 static void InitObjectTable(XmHTMLObjectTable *list, XmHTMLAnchor *anchors);
-
-/* load a font (or get from font cache) and place it on the font stack. */
-static XmHTMLfont *NextFont(XmHTMLWidget html, htmlEnum font_id, int size);
-
-/* load a font (or get from font cache) with a given size and face */
-static XmHTMLfont *NextFontWithFace(XmHTMLWidget html, int size, String face);
 
 /* push/pop a font on font stack */
 static void PushFont(XmHTMLfont *font, int size);
@@ -237,6 +240,49 @@ static XmHTMLWord *TextToPre(String text, int *num_words, XmHTMLfont *font,
 static XmHTMLWord* SetTab(int size, Dimension *height, XmHTMLfont *font, 
 	XmHTMLObjectTableElement owner);  
 
+/* Initialize a bullet (a real bullet or some number) */
+static void FillBullet(XmHTMLWidget html, XmHTMLObjectTableElement owner);
+
+/* get properties of a table element */
+static TableProperties *tableCheckProperties(XmHTMLWidget html,
+	String attributes, TableProperties *parent, Alignment halign, Pixel bg);
+
+/* open a new table */
+static XmHTMLTable *tableOpen(XmHTMLWidget html, XmHTMLTable *parent,
+	XmHTMLObjectTableElement start, XmHTMLObject *obj, Alignment *halign,
+	Pixel *bg);
+
+/* close the current table */
+static XmHTMLTable *tableClose(XmHTMLWidget html, XmHTMLTable *parent,
+	XmHTMLObjectTableElement end);
+
+/* open a caption in the current table */
+static void tableOpenCaption(XmHTMLWidget html, XmHTMLTable *parent,
+	XmHTMLObjectTableElement start, XmHTMLObject *obj,
+	Pixel *bg);
+
+/* close the current caption */
+static void tableCloseCaption(XmHTMLWidget html, XmHTMLTable *parent,
+	XmHTMLObjectTableElement end);
+
+/* open a row in the current table */
+static void tableOpenRow(XmHTMLWidget html, XmHTMLTable *parent,
+	XmHTMLObjectTableElement start, XmHTMLObject *obj, Alignment *halign,
+	Pixel *bg);
+
+/* close the current row */
+static void tableCloseRow(XmHTMLWidget html, XmHTMLTable *parent,
+	XmHTMLObjectTableElement end);
+
+/* open a cell in the current row */
+static void tableOpenCell(XmHTMLWidget html, XmHTMLTable *parent,
+	XmHTMLObjectTableElement start, XmHTMLObject *obj, Alignment *halign,
+	Pixel *bg);
+
+/* close the current cell in the current row */
+static void tableCloseCell(XmHTMLWidget html, XmHTMLTable *parent,
+	XmHTMLObjectTableElement end);
+
 /* Parse body tags and update the TWidget */
 static void ParseBodyTags(XmHTMLWidget html, XmHTMLObject *data);
 
@@ -244,8 +290,10 @@ static void ParseBodyTags(XmHTMLWidget html, XmHTMLObject *data);
 static int CheckLineFeed(int this, Boolean force);
 
 /* push/pop a color on the color stack */
-static void PushColor(Pixel color);
-static Pixel PopColor(void);
+static void PushFGColor(Pixel color);
+static void PushBGColor(Pixel color);
+static Pixel PopFGColor(void);
+static Pixel PopBGColor(void);
 
 /* push/pop an alignment on/from the alignment stack */
 static void PushAlignment(Alignment align);
@@ -276,7 +324,8 @@ static struct{
 }list_data;
 
 /* color and alignment stacks */
-static colorStack color_base, *color_stack;
+static colorStack fg_color_base, *fg_color_stack;
+static colorStack bg_color_base, *bg_color_stack;
 static alignStack align_base, *align_stack;
 static fontStack font_base, *font_stack;
 
@@ -446,6 +495,55 @@ FreeObjectTable(XmHTMLObjectTable *list)
 }
 
 /*****
+* Name:			freeTables
+* Return Type: 	void
+* Description: 	frees all data allocated for HTML table support.
+* In: 
+*	table:		list of tables to be freed.
+* Returns:
+*	nothing.
+*****/
+static void
+freeTables(XmHTMLTable *table)
+{
+	XmHTMLTable *tab, *tmp = table;
+	TableRow *row;
+	int i, j, k;
+
+	while(table)
+	{
+		tmp = table->next;
+
+		/*****
+		* Free all child tables (first table in the childs array is the
+		* table itself)
+		*****/
+		for(i = 0; i < table->nchilds; i++)
+		{
+			tab = &table->childs[i];
+
+			/* free all rows */
+			for(j = 0; j < tab->nrows; j++)
+			{
+				row = &tab->rows[j];
+				/* free all cells in this row */
+				for(k = 0; k < row->ncells; k++)
+				{
+					free(row->cells[k].properties);
+				}
+				free(row->cells);
+				free(row->properties);
+			}
+			free(tab->rows);
+			free(tab->properties);
+		}
+		free(table->childs);
+		free(table);
+		table = tmp;
+	}
+}
+
+/*****
 * Name: 		FreeAnchors
 * Return Type: 	void
 * Description: 	frees the memory occupied by the anchor data
@@ -475,6 +573,8 @@ FreeAnchors(XmHTMLAnchor *anchors)
 			free(anchors->title);
 		if(anchors->name)		/* fix 07/09/97-01, kdh */
 			free(anchors->name);
+		if(anchors->events)
+			free(anchors->events);
 		free(anchors);
 		anchors = NULL;
 		anchors = tmp;
@@ -519,301 +619,6 @@ InitObjectTable(XmHTMLObjectTable *list, XmHTMLAnchor *anchors)
 	list_data.anchor_current = (XmHTMLAnchor*)NULL;
 	list_data.num_elements = 1;
 	list_data.num_anchors  = 0;
-}
-
-/*****
-* Name: 		NextFont
-* Return Type: 	XmHTMLfont*
-* Description: 	loads a new font, with the style determined by the current 
-*				font: if current font is bold, and new is italic then a 
-*				bold-italic font will be returned.
-* In: 
-*	w:			TWidget for which to load a font
-*	font_id:	id describing type of font to load.
-*	size:		size of font to load. Only used for HT_FONT.
-* Returns:
-*	the loaded font.
-*****/
-static XmHTMLfont*
-NextFont(XmHTMLWidget html, htmlEnum font_id, int size)
-{
-	XmHTMLfont *new_font = NULL, *curr_font;
-	String family;
-	int ptsz;
-	Byte new_style = (Byte)0, font_style;
-	Boolean ok = True;	/* enable font warnings */
-
-	/* pick up style of the current font */
-	curr_font = font_stack->font;
-
-	/* curr_font *must* always have a value as it references a cached font */
-	my_assert(curr_font != NULL);
-
-	font_style = curr_font->style;
-
-	_XmHTMLDebug(2,("NextFont: current font is %s %s %s.\n",
-		(font_style & FONT_FIXED  ? "fixed"  : "scalable"),
-		(font_style & FONT_BOLD   ? "bold"   : "medium"),
-		(font_style & FONT_ITALIC ? "italic" : "regular"))); 
-
-	/* See if we need to proceed with bold font */
-	if(font_style & FONT_BOLD)
-		new_style = FONT_BOLD;
-	else
-		new_style &= ~FONT_BOLD;
-
-	/* See if we need to proceed with italic font */
-	if(font_style & FONT_ITALIC)
-		new_style |= FONT_ITALIC;
-	else
-		new_style &= ~FONT_ITALIC;
-
-	/* See if we need to proceed with a fixed font */
-	if(font_style & FONT_FIXED)
-	{
-		new_style |= FONT_FIXED;
-		family = html->html.font_family_fixed;
-		ptsz = xmhtml_fn_fixed_sizes[0];
-	}
-	else
-	{
-		new_style &= ~FONT_FIXED;
-		family = curr_font->font_family;
-		ptsz = xmhtml_fn_sizes[0];
-	}
-
-	switch(font_id)
-	{
-		case HT_CITE:
-		case HT_I:
-		case HT_EM:
-		case HT_DFN:
-		case HT_ADDRESS:
-			new_font = _XmHTMLloadQueryFont((TWidget)html, family, NULL, 
-				xmhtml_basefont_sizes[size-1], new_style|FONT_ITALIC, &ok);  
-			break;
-		case HT_STRONG:
-		case HT_B:
-		case HT_CAPTION:
-			new_font = _XmHTMLloadQueryFont((TWidget)html, family, NULL, 
-				xmhtml_basefont_sizes[size-1], new_style | FONT_BOLD, &ok);
-			break;
-
-		/*****
-		* Fixed fonts always use the font specified by the value of the
-		* fontFamilyFixed resource.
-		*****/
-		case HT_SAMP:
-		case HT_TT:
-		case HT_VAR:
-		case HT_CODE:
-		case HT_KBD:
- 		case HT_PRE:	/* fix 01/20/97-03, kdh */
-			new_font = _XmHTMLloadQueryFont((TWidget)html,
-				html->html.font_family_fixed, NULL, xmhtml_fn_fixed_sizes[0],
-				new_style |FONT_FIXED, &ok);
-			break;
-
-		/* The <FONT> element is useable in *every* state */
-		case HT_FONT:
-			new_font = _XmHTMLloadQueryFont((TWidget)html, family, NULL, size,
-				new_style, &ok);
-			break;
-
-		/*****
-		* Since HTML Headings may not occur inside a <font></font> declaration,
-		* they *must* use the specified document font, and not derive their
-		* true font from the current font.
-		*****/
-		case HT_H1:
-			new_font = _XmHTMLloadQueryFont((TWidget)html,
-				html->html.font_family, NULL, xmhtml_fn_sizes[2],
-				FONT_SCALABLE|FONT_BOLD, &ok);
-			break;
-		case HT_H2:
-			new_font = _XmHTMLloadQueryFont((TWidget)html,
-				html->html.font_family, NULL, xmhtml_fn_sizes[3],
-				FONT_SCALABLE|FONT_BOLD, &ok);
-			break;
-		case HT_H3:
-			new_font = _XmHTMLloadQueryFont((TWidget)html,
-				html->html.font_family, NULL, xmhtml_fn_sizes[4],
-				FONT_SCALABLE|FONT_BOLD, &ok);
-			break;
-		case HT_H4:
-			new_font = _XmHTMLloadQueryFont((TWidget)html,
-				html->html.font_family, NULL, xmhtml_fn_sizes[5],
-				FONT_SCALABLE|FONT_BOLD, &ok);
-			break;
-		case HT_H5:
-			new_font = _XmHTMLloadQueryFont((TWidget)html,
-				html->html.font_family, NULL, xmhtml_fn_sizes[6],
-				FONT_SCALABLE|FONT_BOLD, &ok);
-			break;
-		case HT_H6:
-			new_font = _XmHTMLloadQueryFont((TWidget)html,
-				html->html.font_family, NULL, xmhtml_fn_sizes[7],
-				FONT_SCALABLE|FONT_BOLD, &ok);
-			break;
-
-		/* should never be reached */
-		default:
-#ifdef PEDANTIC
-			_XmHTMLWarning(__WFUNC__(html, "NextFont"), 
-				"Unknown font switch. Using default font.");
-#endif /* PEDANTIC */
-			/* this will always succeed */
-			ok = False;
-			new_font = _XmHTMLloadQueryFont((TWidget)html, family, NULL, ptsz, 
-				FONT_SCALABLE|FONT_REGULAR|FONT_MEDIUM, &ok);
-			break;
-	}
-	return(new_font);
-}
-
-/*****
-* Name: 		NextFontWithFace
-* Return Type: 	XmHTMLfont*
-* Description: 	load a new font with given pixelsize and face. 
-*				Style is determined by the current font: if current font
-*				is bold, and new is italic then a bold-italic font will be 
-*				returned.
-* In: 
-*	w:			TWidget for which to load a font
-*	size:		size of font to load. Only used for HT_FONT.
-*	face:		a comma separated list of font faces to use, contents are 
-*				destroyed when this function returns.
-* Returns:
-*	A new font with a face found in the list of faces given upon success
-*	or the default font on failure.
-*****/
-static XmHTMLfont*
-NextFontWithFace(XmHTMLWidget html, int size, String face)
-{
-	XmHTMLfont *new_font = NULL, *curr_font;
-	String chPtr, family, all_faces, first_face = NULL;
-	Byte new_style = (Byte)0, font_style;
-	int try;
-
-	/* pick up style of the current font */
-	curr_font = font_stack->font;
-
-	my_assert(curr_font != NULL);
-
-	font_style = curr_font->style;
-
-	/* See if we need to proceed with bold font */
-	if(font_style & FONT_BOLD)
-		new_style = FONT_BOLD;
-	else
-		new_style &= ~FONT_BOLD;
-
-	/* See if we need to proceed with italic font */
-	if(font_style & FONT_ITALIC)
-		new_style |= FONT_ITALIC;
-	else
-		new_style &= ~FONT_ITALIC;
-
-	/***** 
-	* See if we need to proceed with a fixed font, only used to determine
-	* initial font family.
-	*****/
-	if(font_style & FONT_FIXED)
-	{
-		new_style |= FONT_FIXED;
-		family = html->html.font_family_fixed;
-	}
-	else
-	{
-		new_style &= ~FONT_FIXED;
-		family = html->html.font_family;
-	}
-
-	/* we must have a ``,'' or strtok will fail */
-	if((strstr(face, ",")) == NULL)
-	{
-		all_faces = (String)malloc(strlen(face) + 2);
-		strcpy(all_faces, face);
-		strcat(all_faces, ",\0");
-	}
-	else
-		all_faces = strdup(face);
-
-	/* walk all possible spaces */
-	try = 0;
-	for(chPtr = strtok(all_faces, ","); chPtr != NULL;
-		chPtr = strtok(NULL, ","))
-	{
-		Boolean ok = False;
-
-		try++;
-
-		/* skip any leading spaces */
-		while(isspace(*chPtr))
-			chPtr++;
-
-		_XmHTMLDebug(2, ("format.c: NextFontWithFace, trying with face %s\n",
-			chPtr));
-
-		/***** 
-		* Disable font not found warning message, we are trying to find
-		* a font of which we don't know if it exists.
-		*****/
-		ok = False;
-		new_font = _XmHTMLloadQueryFont((TWidget)html, family, chPtr, size,
-			new_style, &ok);
-		if(new_font && ok)
-		{
-			_XmHTMLDebug(2, ("format.c: NextFontWithFace, font loaded.\n"));
-			break;
-		}
-		if(try == 1)
-			first_face = strdup(chPtr);
-	}
-	free(all_faces);
-	/*****
-	* hmm, the first font in this face specification didn't yield a valid
-	* font. To speed up things considerably, we add a font mapping for the
-	* first face in the list of given spaces. There's no sense in doing this
-	* when there is only one face specified as this will always get us the
-	* default font. We only add a mapping if the name of the returned font
-	* contains at least one of the allowed faces. Not doing this check would
-	* ignore face specs which do have a face we know. We also want the font
-	* styles to match as well.
-	* BTW: this is a tremendous speedup!!!
-	*****/
-	if(first_face)
-	{
-		/*****
-		* Only add a mapping if the returned name contains one of the allowed
-		* faces. No need to check for the presence of a comma: we only take
-		* lists that have multiple face specifications.
-		*****/
-		if(try > 1)
-		{
-			/*****
-			* Walk all possible faces. Nukes the face array but that's not
-			* bad as we are the only ones using it.
-			*****/
-			for(chPtr = strtok(face, ","); chPtr != NULL;
-				chPtr = strtok(NULL, ","))
-			{
-				/* skip any leading spaces */
-				while(isspace(*chPtr))
-					chPtr++;
-				/* caseless 'cause fontnames ignore case */
-				if(my_strcasestr(new_font->font_name, chPtr) &&
-					new_font->style == new_style)
-				{
-					_XmHTMLaddFontMapping(html, family, first_face, size,
-						new_style, new_font);
-					break;
-				}
-			}
-		}
-		free(first_face);
-	}
-	return(new_font);
 }
 
 /*****
@@ -918,7 +723,7 @@ TextToWords(String text, int *num_words, Dimension *height, XmHTMLfont *font,
 	raw = strdup(text);
 
 	/* allocate memory for all words */
-	words = (XmHTMLWord*)malloc((n_words)*sizeof(XmHTMLWord));
+	words = (XmHTMLWord*)calloc(n_words, sizeof(XmHTMLWord));
 
 	/* Split the text in words and fill in the appropriate fields */
 	*height = font->height;
@@ -934,9 +739,8 @@ TextToWords(String text, int *num_words, Dimension *height, XmHTMLfont *font,
 				chPtr++;			/* nuke the space */
 				raw[j++] = '\0';
 			}
-			words[i].base      = NULL;
+			/* fill in required fields */
 			words[i].self      = &words[i];
-			words[i].x         = words[i].y = 0;
 			words[i].word      = start;
 			words[i].len       = len;
 			words[i].height    = *height;
@@ -946,7 +750,6 @@ TextToWords(String text, int *num_words, Dimension *height, XmHTMLfont *font,
 			words[i].spacing   = TEXT_SPACE_LEAD | TEXT_SPACE_TRAIL;
 			words[i].type      = OBJ_TEXT;
 			words[i].line_data = line_data;
-			words[i].line      = 0;
 
 			_XmHTMLFullDebug(2, ("format.c: TextToWords, word is %s, len is "
 				"%i, width is %i, height is %i\n", words[i].word, words[i].len,
@@ -1014,14 +817,13 @@ ImageToWord(XmHTMLWidget html, String attributes, int *num_words,
 	_XmHTMLFullDebug(2, ("format.c: ImageToWord, image in is: %s\n",
 		image->url));
 
-	word = (XmHTMLWord*)malloc(sizeof(XmHTMLWord));
+	word = (XmHTMLWord*)calloc(1, sizeof(XmHTMLWord));
 
 	/* required for image anchoring/replace/update */
 	image->owner = owner;
 
-	word->base   = NULL;
+	/* fill in required fields */
 	word->self   = word;
-	word->x      = word->y = 0;
 	word->word   = strdup(image->alt);	/* we always have this */
 	word->len    = strlen(image->alt);
 	word->width  = width + 2*image->hspace + 2*image->border;
@@ -1043,7 +845,6 @@ ImageToWord(XmHTMLWidget html, String attributes, int *num_words,
 	word->spacing = formatted ? 0 : TEXT_SPACE_LEAD | TEXT_SPACE_TRAIL;
 	word->type = OBJ_IMG;
 	word->line_data = NO_LINE;	/* no underlining for images */
-	word->line  = 0;
 	word->image = image;
 
 	_XmHTMLFullDebug(2, ("format.c: TextToWords, word is %s, len is %i, "
@@ -1074,10 +875,9 @@ allocFormWord(XmHTMLForm *form, Dimension *width, Dimension *height,
 	static XmHTMLWord *word;
 
 	/* allocate new entry */
-	word = (XmHTMLWord*)malloc(sizeof(XmHTMLWord));
-	memset(word, 0, sizeof(XmHTMLWord));
+	word = (XmHTMLWord*)calloc(1, sizeof(XmHTMLWord));
 
-	/* fill in appropriate fields */
+	/* fill in required fields */
 	word->self    = word;
 	word->word    = strdup(form->name); 	/* we always have this */
 	word->len     = strlen(form->name);
@@ -1334,11 +1134,11 @@ indexToWord(XmHTMLWidget html, listStack list_stack[], int current_list,
 {
 	static XmHTMLWord *word;
 	int i;
-	char index[42], number[42];		/* enough for a zillion numbers & depths */
+	char index[128], number[42];	/* enough for a zillion numbers & depths */
 
-	word = (XmHTMLWord*)malloc(sizeof(XmHTMLWord));
+	word = (XmHTMLWord*)calloc(1, sizeof(XmHTMLWord));
 
-	(void)memset(&index, '\0', 42);
+	(void)memset(&index, '\0', 128);
 	for(i = 0; i < current_list; i++)
 	{
 		if(list_stack[i].type == HT_OL)
@@ -1363,28 +1163,21 @@ indexToWord(XmHTMLWidget html, listStack list_stack[], int current_list,
 					break;
 			}
 			/* no buffer overflow */
-			if(strlen(index) + strlen(number) > 42)
+			if(strlen(index) + strlen(number) > 128)
 				break;
 			strcat(index, number);
 		}
 	}
 
+	/* fill in required fields */
 	word->word = strdup(index);
 	word->len  = strlen(index);
-
-	word->base      = NULL;					/* unused */
 	word->self      = word;					/* unused */
-	word->x         = word->y = 0;			/* unused */
-	word->height    = 0;					/* unused */
-	word->width     = 0;					/* unused */
 	word->owner     = owner;				/* unused */
 	word->font      = font_base.font;		/* unused */
 	word->spacing   = formatted ? 0 : TEXT_SPACE_NONE;
 	word->type      = OBJ_TEXT;				/* unused */
 	word->line_data = NO_LINE;				/* unused */
-	word->line      = 0;					/* unused */
-	word->image     = NULL;					/* unused */
-	word->form      = NULL;					/* unused */
 
 	return(word);
 }
@@ -1556,7 +1349,7 @@ TextToPre(String text, int *num_words, XmHTMLfont *font, Byte line_data,
 	}
 	_XmHTMLDebug(2, ("format.c: TextToPre, %i bytes actually used\n", used));
 
-	/* Now go and allocate all words */
+	/* Now go and fill all words */
 	start = end = raw;
 	max_width = i = len = 0;
 	nfeeds = 0;
@@ -1599,16 +1392,13 @@ TextToPre(String text, int *num_words, XmHTMLfont *font, Byte line_data,
 			}
 
 			words[i].type      = OBJ_TEXT;
-			words[i].base      = NULL;
 			words[i].self      = &words[i];
-			words[i].x         = words[i].y = 0;
 			words[i].word      = start;
 			words[i].height    = font->height;
 			words[i].owner     = owner;
 			words[i].spacing   = (Byte)nfeeds;	/* no of newlines */
 			words[i].font      = font;
 			words[i].line_data = line_data;
-			words[i].line      = 0;
 			words[i].len       = len;
 			words[i].width     = Toolkit_Text_Width(font->xfont, words[i].word, len);
 			start = end;
@@ -1652,12 +1442,10 @@ SetTab(int size, Dimension *height, XmHTMLfont *font,
 	(void)memset(raw, ' ', size);
 	raw[size] = '\0'; /* NULL terminate */
 
-	tab = (XmHTMLWord*)malloc(sizeof(XmHTMLWord));
+	tab = (XmHTMLWord*)calloc(1, sizeof(XmHTMLWord));
 
 	/* Set all text fields for this tab */
-	tab->base      = NULL;
 	tab->self      = tab;
-	tab->x         = tab->y = 0;
 	tab->word      = raw;
 	tab->len       = size;
 	tab->height    = *height = font->height;
@@ -1788,8 +1576,6 @@ CopyText(XmHTMLWidget html, String text, Boolean formatted, Byte *text_data,
 *	data:		body element data.
 * Returns:
 *	nothing, but the HTML TWidget is updated to reflect the body stuff.
-* Note:
-*	hugely inefficient due to the various _XmHTMLGetAnchorValue calls.
 *****/
 static void 
 ParseBodyTags(XmHTMLWidget html, XmHTMLObject *data)
@@ -1957,10 +1743,12 @@ ParseBodyTags(XmHTMLWidget html, XmHTMLObject *data)
 	else if(!bg_color_set && html->html.def_body_image_url)
 		_XmHTMLLoadBodyImage(html, html->html.def_body_image_url);
 
-	/*
+	/*****
 	* Now nullify it if we aren't to show the background image.
-	* makes sense huh?
-	*/
+	* makes sense huh? (the list of images is a global resource so the
+	* storage occupied by this unused image is freed when all document
+	* data is freed).
+	*****/
 	if(!html->html.images_enabled || !html->html.body_images_enabled)
 	{
 		if(html->html.body_image)
@@ -1978,6 +1766,73 @@ ParseBodyTags(XmHTMLWidget html, XmHTMLObject *data)
 		_XmHTMLRecomputeHighlightColor(html, html->html.anchor_activated_fg);
 	else
 		_XmHTMLRecomputeHighlightColor(html, html->html.body_bg);
+}
+
+static void
+FillBullet(XmHTMLWidget html, XmHTMLObjectTableElement owner)
+{
+	Dimension radius;
+	char number[42];	/* large enough buffer for a zillion numbers */
+	XmHTMLfont *font = html->html.default_font;
+	String prefix;
+
+#ifdef WITH_MOTIF
+#   define XF(font) (font)
+#else
+#   define XF(font) ((XFontStruct *)((GdkFontPrivate *)font))
+#endif
+	/***** 
+	* x-offset for any marker and radius for a bullet or length of a 
+	* side for a square marker.
+	*****/
+	radius = (Dimension)(0.5*(XF (font->xfont)->max_bounds.lbearing + 
+		XF(font->xfont)->max_bounds.rbearing)); 
+
+	if(owner->marker == XmMARKER_DISC || owner->marker == XmMARKER_SQUARE ||
+		owner->marker == XmMARKER_CIRCLE)
+	{
+		/* y-offset for this marker */
+		owner->height = (Dimension)(0.5*font->lineheight + 0.25*radius);
+		owner->width = radius;
+	}
+	else
+	{
+		/*****
+		* If we have a word, this is an ordered list for which the index
+		* should be propageted.
+		*****/
+		if(owner->words)
+			prefix = owner->words[0].word;
+		else
+			prefix = "";
+		switch(owner->marker)
+		{
+			case XmMARKER_ALPHA_LOWER: 
+				sprintf(number, "%s%s.", prefix,
+					ToAsciiLower(owner->list_level));
+				break;
+			case XmMARKER_ALPHA_UPPER: 
+				sprintf(number, "%s%s.", prefix,
+					ToAsciiUpper(owner->list_level));
+				break;
+			case XmMARKER_ROMAN_LOWER:
+				sprintf(number, "%s%s.", prefix,
+					ToRomanLower(owner->list_level));
+				break;
+			case XmMARKER_ROMAN_UPPER:
+				sprintf(number, "%s%s.", prefix,
+					ToRomanUpper(owner->list_level));
+				break;
+			case XmMARKER_ARABIC:
+			default:
+				sprintf(number, "%s%i.", prefix, owner->list_level);
+				break;
+		}
+		owner->text  = strdup(number);
+		owner->len   = strlen(number);
+		owner->width = radius + Toolkit_Text_Width (font->xfont, owner->text, owner->len);
+		owner->height = html->html.default_font->height;
+	}
 }
 
 /*****
@@ -2044,6 +1899,669 @@ CheckLineFeed(int this, Boolean force)
 	return(ret_val);
 }
 
+/*****
+* Name:			tableCheckProperties
+* Return Type: 	TableProperties
+* Description: 	scans a table element for common properties (border,
+*				alignment, background and border styles).
+* In: 
+*	html:		XmHTMLWidget id;
+*	attributes:	attributes to be checked;
+*	parent:		properties of parent table element. Properties not found
+*				in the attributes are inherited from this parent.
+* Returns:
+*	a new property.
+*****/
+static TableProperties*
+tableCheckProperties(XmHTMLWidget html, String attributes,
+	TableProperties *parent, Alignment halign, Pixel bg)
+{
+	TableProperties prop;
+	static TableProperties *prop_ret;
+	String chPtr;
+
+	prop_ret = (TableProperties*)malloc(sizeof(TableProperties));
+	memset(prop_ret, 0, sizeof(TableProperties));
+
+	if(parent)
+		memcpy(&prop, parent, sizeof(TableProperties));
+	else
+	{
+		/* defaults */
+		prop.border = 0;
+		prop.halign = halign;		 	/* unused */
+		prop.valign = XmVALIGN_TOP;		/* contents on top */
+		prop.bg = bg;					/* propagate */
+		prop.bg_image = NULL;
+		prop.framing  = TFRAME_VOID;	/* no border */
+		prop.ruling   = TRULE_NONE;		/* no ruling */
+	}
+
+	/*****
+	* Horizontal alignment is only inherited through the halign argument:
+	* the align attribute on the table tag applies to the table in a whole,
+	* not to any of it's members.
+	*****/
+	prop_ret->halign   = _XmHTMLGetHorizontalAlignment(attributes, halign);
+	prop_ret->border   = _XmHTMLTagGetNumber(attributes, "border", prop.border);
+	prop_ret->valign   = _XmHTMLGetVerticalAlignment(attributes, prop.valign);
+	prop_ret->framing  = _XmHTMLGetFraming(attributes, prop.framing);
+	prop_ret->ruling   = _XmHTMLGetRuling(attributes, prop.ruling);
+	
+	/* only pick up background color if we are allowed to honor this attrib */
+	if(html->html.allow_color_switching &&
+		(chPtr = _XmHTMLTagGetValue(attributes, "bgcolor")) != NULL)
+	{
+		Boolean doit = True;
+		if(html->html.strict_checking)
+			doit = _XmHTMLConfirmColor32(chPtr);
+		if(doit)
+			prop_ret->bg = _XmHTMLGetPixelByName(html, chPtr, prop.bg);
+		free(chPtr);
+	}
+	else
+		prop_ret->bg = prop.bg;
+
+	/* table background image? */
+	if((chPtr = _XmHTMLTagGetValue(attributes, "background")))
+	{
+		String buf;
+		Dimension width, height;
+		XmHTMLImage *image;
+
+		/* kludge so _XmHTMLNewImage recognizes it */
+		buf = malloc(strlen(chPtr)+7);
+		sprintf(buf, "src=\"%s\"", chPtr);
+
+		/* load it */
+		if((image = _XmHTMLNewImage(html, buf, &width, &height)) != NULL)
+		{
+			/* animations are not allowed as background images */
+			if(ImageIsAnim(image))
+				image = NULL;
+			/* and we sure won't have the default image as background */
+			else if(ImageIsInternal(image))
+				image = NULL;
+		}
+		prop_ret->bg_image = image;
+		free(buf);
+		free(chPtr);
+	}
+	return(prop_ret);
+}
+
+/*****
+* Name:			tableOpen
+* Return Type: 	XmHTMLTable
+* Description: 	opens a new table.
+* In: 
+*	html;		XmHTMLWidget id;
+*	parent:		parent table. Storage for nested tables is always allocated
+*				in this table. It is NULL when a truely new table is needed.
+*	start:		start of objects contained in this table.
+*	obj:		XmHTMLObject starting this table.
+* Returns:
+*	a newly opened table.
+*****/
+static XmHTMLTable*
+tableOpen(XmHTMLWidget html, XmHTMLTable *parent,
+	XmHTMLObjectTableElement start, XmHTMLObject *obj, Alignment *halign,
+	Pixel *bg)
+{
+	static XmHTMLTable *table;
+	XmHTMLTable *parent_table;
+	XmHTMLObject *tmp;
+	int nrows = 0;				/* no of rows in table				*/
+	int depth = 0;
+	int nchilds = 0;			/* no of table childs in this table */
+	Alignment caption_position;	/* where should we put the caption? */
+	Boolean have_caption = False;
+
+	if(parent)
+	{
+		/* get to the absolute parent of this table */
+		parent_table = parent;
+		while(parent_table->parent != NULL)
+			parent_table = parent_table->parent;
+
+		/* get correct ptr */
+		parent_table = &(parent_table->childs[0]);
+
+		/* sanity check */
+		if(parent_table->lastchild+1 == parent_table->nchilds)
+		{
+			_XmHTMLError(__WFUNC__(html, "tableOpen"),
+				"Bad table count!!!");
+		}
+		/* get next available table */
+		parent_table->lastchild++;
+		table = &(parent_table->childs[parent_table->lastchild]);
+	}
+	else
+	{
+		table = (XmHTMLTable*)calloc(1, sizeof(XmHTMLTable));
+	}
+
+	/*****
+	* Get table attributes.
+	*****/
+	table->width    = _XmHTMLTagCheckNumber(obj->attributes, "width", 0);
+	table->hmargin  = _XmHTMLTagGetNumber(obj->attributes, "cellspacing",
+						XmHTML_DEFAULT_CELLSPACING);
+	table->vmargin  = _XmHTMLTagGetNumber(obj->attributes, "rowspacing", 
+						XmHTML_DEFAULT_ROWSPACING);
+	table->hpadding = _XmHTMLTagGetNumber(obj->attributes, "cellpadding", 0);
+	table->vpadding = _XmHTMLTagGetNumber(obj->attributes, "rowpadding", 0);
+	table->ncols    = _XmHTMLTagGetNumber(obj->attributes, "cols", 0);
+	table->start    = start;	/* starting object */
+	table->owner    = start;	/* owning object */
+	table->parent	= NULL;		/* parent table */
+
+	/* table properties */
+	table->properties = tableCheckProperties(html, obj->attributes,
+		parent ? parent->properties : NULL, *halign, *bg);
+
+	/* set return alignment */
+	*halign = table->properties->halign;
+
+	/* set return background */
+	*bg = table->properties->bg;
+
+	/* count how many rows this table has */
+	for(tmp = obj->next; tmp != NULL; tmp = tmp->next)
+	{
+		/* check for end of table and child tables */
+		if(tmp->id == HT_TABLE)
+		{
+			if(tmp->is_end)
+			{
+				if(depth == 0)
+					break;
+				else
+					depth--;
+			}
+			else	/* new table opens */
+			{
+				depth++;
+				nchilds++;
+			}
+		}
+		/*****
+		* only count a row when it belongs to the top-level table.
+		* A caption is considered a special row that spans the entire table
+		* and has only one cell: the row itself.
+		*****/
+		if((tmp->id == HT_TR || tmp->id == HT_CAPTION) && depth == 0 &&
+			!tmp->is_end)
+		{
+			if(tmp->id == HT_CAPTION)
+			{
+				/*****
+				* see where the caption should be inserted: as the first
+				* or last row for this table.
+				*****/
+				String chPtr = _XmHTMLTagGetValue(tmp->attributes, "align");
+				if(chPtr == NULL)
+					caption_position = XmVALIGN_TOP;
+				else
+				{
+					if(!(strcasecmp(chPtr, "bottom")))
+						caption_position = XmVALIGN_BOTTOM;
+					else
+						caption_position = XmVALIGN_TOP;
+					free(chPtr);
+				}
+				have_caption = True;
+			}
+			nrows++;
+		}
+	}
+	/* sanity, should never happen */
+	if(!nrows)
+		nrows++;
+
+	/* allocate all rows for this table */
+	table->rows = (TableRow*)calloc(nrows, sizeof(TableRow));
+	table->nrows = nrows;
+	table->lastrow = 0;
+
+	/* set caption ptr. */
+	if(have_caption)
+	{
+		if(caption_position == XmVALIGN_TOP)
+		{
+			table->caption = &(table->rows[0]);
+			table->lastrow = 1;
+		}
+		else
+			table->caption = &(table->rows[nrows-1]);
+	}
+
+	/* The master table contains all tables */
+	if(parent == NULL)
+	{
+		nchilds++;
+		table->childs = (XmHTMLTable*)calloc(nchilds, sizeof(XmHTMLTable));
+		table->nchilds = nchilds;
+		table->childs[0] = *table;		/* we are the first table */
+		table->lastchild = 0;
+	}
+	else
+	{
+		table->childs = (XmHTMLTable*)NULL;
+		table->nchilds = 0;
+		table->lastchild = 0;
+		/* set parent table */
+		table->parent = parent;
+	}
+
+	/* and set as table in the element given to us */
+	start->table = table;
+
+	return(table);
+}
+
+/*****
+* Name:			tableClose
+* Return Type: 	int
+* Description: 	performs required table wrapup actions
+* In: 
+*	html:		XmHTMLWidget id;
+*	parent:		parent table;
+*	end:		last object to be used by this table;
+* Returns:
+*	-1 when this was the last table to be closed, a 0 or a positive integer
+*	when there are still tables open.
+*****/
+static XmHTMLTable*
+tableClose(XmHTMLWidget html, XmHTMLTable *parent,
+	XmHTMLObjectTableElement end)
+{
+	/* current table */
+	XmHTMLTable *table = parent;
+	int i, ncols = 0;
+
+	/* sanity */
+	if(parent == NULL)
+		return(NULL);
+
+	if(table->parent == NULL)
+		table = &(parent->childs[0]);
+
+	table->start = table->owner->next;
+	table->end   = end;
+
+	/* See how many columns we have (if not already set by the COLS attr.) */
+	for(i = 0; i < table->nrows; i++)
+	{
+		if(ncols < table->rows[i].ncells)
+			ncols = table->rows[i].ncells;
+	}
+	if(ncols > table->ncols)
+		table->ncols = ncols;
+
+	/* move to current table */
+	return(table->parent);
+}
+
+/*****
+* Name:			tableOpenCaption
+* Return Type: 	void
+* Description: 	adds a caption to the given table.
+* In: 
+*	html:		XmHTMLWidget id;
+*	parent:		parent table;
+*	start:		start of objects contained in this caption.
+*	obj:		XmHTMLObject starting this caption.
+* Returns:
+*	nothing, but upon return the current table will have a caption.
+*****/
+static void
+tableOpenCaption(XmHTMLWidget html, XmHTMLTable *parent,
+	XmHTMLObjectTableElement start, XmHTMLObject *obj,
+	Pixel *bg)
+{
+	XmHTMLTable *table = parent;
+	TableRow *caption;
+	TableCell *cell;
+
+	/* sanity */
+	if(parent == NULL)
+		return;
+
+	if(table->parent == NULL)
+		table = &(parent->childs[0]);
+
+	/* get caption */
+	caption = table->caption;
+
+	/* only one caption allowed */
+	if(caption->lastcell)
+		return;
+
+	/* get properties for this caption */
+	caption->properties = tableCheckProperties(html, obj->attributes,
+						table->properties, html->html.default_halign, *bg);
+	/* starting object */
+	caption->start = start;
+
+	/* set parent table */
+	caption->parent = table;
+
+	/* one cell: the caption itself */
+	caption->cells = (TableCell*)calloc(1, sizeof(TableCell));
+	caption->ncells   = 1;
+	caption->lastcell = 1;
+
+	/* fill in used fields */
+	cell = &(caption->cells[0]);
+
+	cell->header = False;	/* unused */
+	cell->width = 0;		/* unused */
+	cell->height = 0;		/* unused */
+	cell->rowspan = 1;		/* unused */
+	cell->colspan = 0;		/* spans the full table width */
+
+	/* get properties for this cell */
+	cell->properties = tableCheckProperties(html, obj->attributes,
+						table->properties, caption->properties->halign,
+						caption->properties->bg);
+	/* set return background */
+	*bg = caption->properties->bg;
+
+	/* starting object */
+	cell->start = start;
+
+	/* ending object unknown */
+	cell->end = NULL;
+
+	/* set parent caption */
+	cell->parent = caption;
+
+	/* all done */
+}
+
+/*****
+* Name:			tableCloseCaption
+* Return Type: 	int
+* Description: 	performs required caption wrapup actions
+* In: 
+*	html:		XmHTMLWidget id;
+*	parent:		parent table;
+*	end:		last object to be used by this caption;
+* Returns:
+*	nothing.
+*****/
+static void
+tableCloseCaption(XmHTMLWidget html, XmHTMLTable *parent,
+	XmHTMLObjectTableElement end)
+{
+	XmHTMLTable *table = parent;
+	TableRow *caption;
+	TableCell *cell;
+
+	/* sanity */
+	if(parent == NULL)
+		return;
+
+	if(table->parent == NULL)
+		table = &(parent->childs[0]);
+
+	caption = table->caption;
+
+	/* sanity */
+	if(caption->ncells == 0)
+		return;
+
+	cell = &(caption->cells[0]);
+
+	cell->start = cell->start->next;
+	cell->end   = end;
+}
+
+/*****
+* Name:			tableOpenRow
+* Return Type: 	void
+* Description: 	adds a row to the current table.
+* In: 
+*	html:		XmHTMLWidget id;
+*	parent:		parent table;
+*	start:		start of objects contained in this row.
+*	obj:		XmHTMLObject starting this row, used to compute no of cells
+*				in a row.
+* Returns:
+*	Nothing, but a new row has been prepared in the current table.
+*****/
+static void
+tableOpenRow(XmHTMLWidget html, XmHTMLTable *parent,
+	XmHTMLObjectTableElement start, XmHTMLObject *obj, Alignment *halign,
+	Pixel *bg)
+{
+	XmHTMLTable *table = parent;
+	TableRow *row;
+	XmHTMLObject *tmp;
+	int ncells = 0;
+	int depth  = 0;
+
+	/* sanity */
+	if(parent == NULL)
+		return;
+
+	if(table->parent == NULL)
+		table = &(parent->childs[0]);
+
+	/* sanity */
+	if(table->lastrow == table->nrows)
+	{
+		_XmHTMLError(__WFUNC__(html, "tableRowOpen"),
+			"Bad tablerow count!!!");
+	}
+
+	/* get next available row in this table */
+	row = &(table->rows[table->lastrow]);
+
+	/* get properties for this row */
+	row->properties = tableCheckProperties(html, obj->attributes,
+						table->properties, html->html.default_halign, *bg);
+	/* set return alignment */
+	*halign = row->properties->halign;
+
+	/* set return background */
+	*bg = row->properties->bg;
+
+	/* starting object */
+	row->start = start;
+
+	/* set parent table */
+	row->parent = table;
+
+	/* count how many cells this row has */
+	for(tmp = obj->next; tmp != NULL; tmp = tmp->next)
+	{
+		/* check for end of row and child rows (in child tables) */
+		if(tmp->id == HT_TR)
+		{
+			if(tmp->is_end)
+			{
+				if(depth == 0)
+					break;
+				else
+					depth--;
+			}
+			else	/* new row opens */
+				depth++;
+		}
+		/* only count a cell when it belongs to the top-level row */
+		if((tmp->id == HT_TH || tmp->id == HT_TD) && depth == 0 && !tmp->is_end)
+			ncells++;
+	}
+	/* empty rows don't have cells */
+	if(ncells)
+		row->cells = (TableCell*)calloc(ncells, sizeof(TableCell));
+	else	/* allocate an empty cell */
+		row->cells = (TableCell*)calloc(1, sizeof(TableCell));
+	row->ncells   = ncells;
+	row->lastcell = 0;
+
+	/* move to next available row */
+	table->lastrow++;
+}
+
+/*****
+* Name:			tableCloseRow
+* Return Type: 	int
+* Description: 	performs required row wrapup actions
+* In: 
+*	html:		XmHTMLWidget id;
+*	parent:		parent table;
+*	end:		last object to be used by this row;
+* Returns:
+*	nothing.
+*****/
+static void
+tableCloseRow(XmHTMLWidget html, XmHTMLTable *parent,
+	XmHTMLObjectTableElement end)
+{
+	XmHTMLTable *table = parent;
+	TableRow *row;
+	int i, ncols = 0;
+
+	/* sanity */
+	if(parent == NULL)
+		return;
+
+	if(table->parent == NULL)
+		table = &(parent->childs[0]);
+
+	/* get current row in this table */
+	row = &(table->rows[table->lastrow-1]);
+
+	/*****
+	* Count how many columns this row has (including cells spanning multiple
+	* columns).
+	*****/
+	for(i = 0; i < row->ncells; i++)
+		ncols += row->cells[i].colspan;
+
+	if(ncols > table->ncols)
+		table->ncols = ncols;
+
+	row->start = row->start->next;
+	row->end   = end;
+}
+
+/*****
+* Name:			tableOpenCell
+* Return Type: 	void
+* Description: 	adds a cell to the current row in the current table.
+* In: 
+*	html:		XmHTMLWidget id;
+*	parent:		parent table;
+*	start:		start of objects contained in this cell;
+*	obj:		XmHTMLObject starting this cell;
+* Returns:
+*	Nothing, but a new cell has been prepared in the current row.
+*****/
+static void
+tableOpenCell(XmHTMLWidget html, XmHTMLTable *parent,
+	XmHTMLObjectTableElement start, XmHTMLObject *obj, Alignment *halign,
+	Pixel *bg)
+{
+	XmHTMLTable *table = parent;
+	TableRow *row;
+	TableCell *cell;
+
+	/* sanity */
+	if(parent == NULL)
+		return;
+
+	if(table->parent == NULL)
+		table = &(parent->childs[0]);
+
+	/* get current row in this table */
+	row = &(table->rows[table->lastrow-1]);
+
+	/* sanity */
+	if(row->lastcell == row->ncells)
+	{
+		_XmHTMLError(__WFUNC__(html, "tableCellOpen"),
+			"Bad tablerow cell count!!!");
+	}
+
+	/* get next available cell in this row */
+	cell = &(row->cells[row->lastcell]);
+
+	/* get cell-specific properties */
+	cell->header = (obj->id == HT_TH ? True : False);
+	cell->width = _XmHTMLTagCheckNumber(obj->attributes, "width", 0);
+	cell->height = _XmHTMLTagCheckNumber(obj->attributes, "width", 0);
+	cell->rowspan = _XmHTMLTagGetNumber(obj->attributes, "rowspan", 1);
+	cell->colspan = _XmHTMLTagGetNumber(obj->attributes, "colspan", 1);
+
+	/* [row/cell]span = 0 : span entire table in requested direction */
+	if(cell->rowspan <= 0 || cell->rowspan > table->nrows)
+		cell->rowspan = table->nrows;
+
+	/*****
+	* colspan <= 0 gets handled in SetTable when we now how many columns
+	* this table has
+	*****/
+
+	/* get global properties for this cell */
+	cell->properties = tableCheckProperties(html, obj->attributes,
+						row->properties, row->properties->halign, *bg);
+	/* set return alignment */
+	*halign = cell->properties->halign;
+
+	/* set return background */
+	*bg = cell->properties->bg;
+
+	/* starting object */
+	cell->start = start;
+
+	/* set parent row */
+	cell->parent = row;
+
+	/* move to next available cell */
+	row->lastcell++;
+}
+
+/*****
+* Name:			tableCloseCell
+* Return Type: 	int
+* Description: 	performs required cell wrapup actions
+* In: 
+*	html:		XmHTMLWidget id;
+*	parent:		parent table;
+*	end:		last object to be used by this cell;
+* Returns:
+*	nothing.
+*****/
+static void
+tableCloseCell(XmHTMLWidget html, XmHTMLTable *parent,
+	XmHTMLObjectTableElement end)
+{
+	XmHTMLTable *table = parent;
+	TableRow *row;
+	TableCell *cell;
+
+	/* sanity */
+	if(parent == NULL)
+		return;
+
+	if(table->parent == NULL)
+		table = &(parent->childs[0]);
+
+	/* get current row in this table */
+	row = &(table->rows[table->lastrow-1]);
+
+	/* get current cell in this row */
+	cell = &(row->cells[row->lastcell-1]);
+
+	cell->start = cell->start->next;
+	cell->end   = end;
+}
+
 static void
 PushAlignment(Alignment align)
 {
@@ -2077,33 +2595,65 @@ PopAlignment(void)
 }
 
 static void
-PushColor(Pixel color)
+PushFGColor(Pixel color)
 {
 	colorStack *tmp;
 
 	tmp = (colorStack*)malloc(sizeof(colorStack));
 	tmp->color = color;
-	tmp->next = color_stack;
-	color_stack = tmp;
+	tmp->next = fg_color_stack;
+	fg_color_stack = tmp;
 }
 
 static Pixel
-PopColor(void)
+PopFGColor(void)
 {
 	Pixel color;
 	colorStack *tmp;
 
-	if(color_stack->next != NULL)
+	if(fg_color_stack->next != NULL)
 	{
-		tmp = color_stack;
-		color_stack = color_stack->next;
+		tmp = fg_color_stack;
+		fg_color_stack = fg_color_stack->next;
 		color = tmp->color;
 		free(tmp);
 	}
 	else
 	{
-		_XmHTMLDebug(2, ("XmHTML: negative color stack!\n"));
-		color = color_stack->color;
+		_XmHTMLDebug(2, ("XmHTML: negative foreground color stack!\n"));
+		color = fg_color_stack->color;
+	}
+	return(color);
+}
+
+static void
+PushBGColor(Pixel color)
+{
+	colorStack *tmp;
+
+	tmp = (colorStack*)malloc(sizeof(colorStack));
+	tmp->color = color;
+	tmp->next = bg_color_stack;
+	bg_color_stack = tmp;
+}
+
+static Pixel
+PopBGColor(void)
+{
+	Pixel color;
+	colorStack *tmp;
+
+	if(bg_color_stack->next != NULL)
+	{
+		tmp = bg_color_stack;
+		bg_color_stack = bg_color_stack->next;
+		color = tmp->color;
+		free(tmp);
+	}
+	else
+	{
+		_XmHTMLDebug(2, ("XmHTML: negative background color stack!\n"));
+		color = bg_color_stack->color;
 	}
 	return(color);
 }
@@ -2152,7 +2702,7 @@ PopFont(int *size)
 #define PUSH_COLOR(TWidget) { \
 	char *chPtr; \
 	/* check for color spec */ \
-	PushColor(fg); \
+	PushFGColor(fg); \
 	chPtr = _XmHTMLTagGetValue(temp->attributes, "color"); \
 	if(chPtr != NULL) \
 	{ \
@@ -2186,58 +2736,6 @@ PopFont(int *size)
 /********
 ****** Private XmHTML Functions
 ********/
-
-/*****
-* Name: 		XmHTMLGetURLType
-* Return Type: 	URLType
-* Description: 	tries to figure out what type of url the given href is
-* In: 
-*	href:		url specification
-* Returns:
-*	type of url when we know it, ANCHOR_UNKNOWN otherwise.
-* Note:
-*	this routine is quite forgiving on typos of any url spec: only the
-*	first character is checked, the remainder doesn't matter.
-*****/
-URLType
-XmHTMLGetURLType(String href)
-{
-	char *chPtr;
-
-	if(href == NULL || *href == '\0')
-		return(ANCHOR_UNKNOWN);
-
-	_XmHTMLDebug(2, ("format.c: XmHTMLGetURLType; checking url type of %s\n",
-		href));
-
-	/* first pick up any leading url spec */
-	if((chPtr = strstr(href, ":")) != NULL)
-	{
-		/* check for URL types we know of. Do in most logical order(?) */
-		if(!strncasecmp(href, "http", 4))
-			return(ANCHOR_HTTP);
-		if(!strncasecmp(href, "mailto", 6))
-			return(ANCHOR_MAILTO);
-		if(!strncasecmp(href, "ftp", 3))
-			return(ANCHOR_FTP);
-		if(!strncasecmp(href, "file", 4))
-			return(ANCHOR_FILE_REMOTE);
-		if(!strncasecmp(href, "news", 4))
-			return(ANCHOR_NEWS);
-		if(!strncasecmp(href, "telnet", 6))
-			return(ANCHOR_TELNET);
-		if(!strncasecmp(href, "gopher", 6))
-			return(ANCHOR_GOPHER);
-		if(!strncasecmp(href, "wais", 4))
-			return(ANCHOR_WAIS);
-		if(!strncasecmp(href, "exec", 4) ||
-			!strncasecmp(href, "xexec", 5))
-			return(ANCHOR_EXEC);
-		_XmHTMLDebug(2, ("format.c: XmHTMLGetURLType; unknown type\n"));
-		return(ANCHOR_UNKNOWN);
-	}
-	return(href[0] == '#' ? ANCHOR_JUMP : ANCHOR_FILE_LOCAL);
-}
 
 /*****
 * Name: 		_XmHTMLNewAnchor
@@ -2276,6 +2774,9 @@ _XmHTMLNewAnchor(XmHTMLWidget html, XmHTMLObject *object)
 	if(anchor->url_type == ANCHOR_UNKNOWN && anchor->name)
 		anchor->url_type = ANCHOR_NAMED;
 
+	/* see if we need to watch any events for this anchor */
+	anchor->events = _XmHTMLCheckCoreEvents(html, object->attributes);
+
 #ifdef PEDANTIC
 	if(anchor->url_type == ANCHOR_UNKNOWN)
 	{
@@ -2290,11 +2791,9 @@ _XmHTMLNewAnchor(XmHTMLWidget html, XmHTMLObject *object)
 	* set the visited field.
 	*/
 	if(html->html.anchor_visited_proc)
-	{
-		anchorProc proc = (anchorProc)html->html.anchor_visited_proc;
-		if((*proc)((TWidget)html, anchor->href)) 
-			anchor->visited = True;
-	}
+ 		anchor->visited = html->html.anchor_visited_proc((TWidget)html, 
+ 				anchor->href, html->html.client_data);
+ 
 	/* insert in the anchor list */
 	if(list_data.anchor_head)
 	{
@@ -2317,14 +2816,15 @@ _XmHTMLNewAnchor(XmHTMLWidget html, XmHTMLObject *object)
 * Return Type:	XmHTMLObjectTable*
 * Description:	creates a list of formatted HTML objects.
 * In:
-*	old_table:	a formatted object list to be freed.
-*	w:			TWidget containing parsed html data
+*	old:		previous XmHTMLWidget id (contains all items to be freed);
+*	html:		current XmHTMLWidget id, containing raw (parser) html object
+*				data and will receive new formatted data.
 * Returns:
-*	list of formatted html objects
+*	nothing, but list of formatted objects, anchors, tables (and images)
+*	is updated upon return.
 *****/
-XmHTMLObjectTable*
-_XmHTMLformatObjects(XmHTMLObjectTable *old_table, XmHTMLAnchor *old_anchor,
-	XmHTMLWidget html)
+void
+_XmHTMLformatObjects(XmHTMLWidget old, XmHTMLWidget html)
 {
 	/* text level variables */
 	String text;
@@ -2342,6 +2842,7 @@ _XmHTMLformatObjects(XmHTMLObjectTable *old_table, XmHTMLAnchor *old_anchor,
 	/* list variables */
 	int ul_level, ol_level, ident_level, current_list;
 	listStack list_stack[MAX_NESTED_LISTS];
+	int in_dt = 0;
 
 	/* remaining object variables */
 	Pixel fg, bg;
@@ -2359,6 +2860,10 @@ _XmHTMLformatObjects(XmHTMLObjectTable *old_table, XmHTMLAnchor *old_anchor,
 	/* local flags */
 	Boolean ignore = False, in_pre = False;
 
+	/* HTML tables */
+	XmHTMLTable *table = NULL;
+	XmHTMLTable *current_table = NULL;
+
 	/* misc. variables */
 	XmHTMLObject *temp;
 	int i, new_anchors = 0;
@@ -2369,10 +2874,13 @@ _XmHTMLformatObjects(XmHTMLObjectTable *old_table, XmHTMLAnchor *old_anchor,
 #endif
 
 	/* Free any previous lists and initialize it */
-	InitObjectTable(old_table, old_anchor);
-
-	/* need to reset list ptrs as well, fix 09/17/97-01, kdh */
+	InitObjectTable(old->html.formatted, old->html.anchor_data);
+	html->html.formatted   = (XmHTMLObjectTable*)NULL;
 	html->html.anchor_data = (XmHTMLAnchor*)NULL;
+
+	/* free table data */
+	freeTables(old->html.tables);
+	html->html.tables = (XmHTMLTable*)NULL;
 
 	/* 
 	* Nothing to do, just return. Should only happen if we get called
@@ -2384,7 +2892,7 @@ _XmHTMLformatObjects(XmHTMLObjectTable *old_table, XmHTMLAnchor *old_anchor,
 		if(list_data.head)
 			free(list_data.head);
 		list_data.head = NULL;
-		return(NULL);
+		return;
 	}
 
 	/* Move to the body element */
@@ -2400,7 +2908,7 @@ _XmHTMLformatObjects(XmHTMLObjectTable *old_table, XmHTMLAnchor *old_anchor,
 	{
 		_XmHTMLWarning(__WFUNC__(html, func), "Nothing to display: no "
 			"<BODY> tag found (HTML parser failure)!");
-		return(NULL);
+		return;
 	}
 
 	/* initialize font stack */
@@ -2447,10 +2955,15 @@ _XmHTMLformatObjects(XmHTMLObjectTable *old_table, XmHTMLAnchor *old_anchor,
 	/* background color to use */
 	bg = html->html.body_bg;
 
-	/* Initialize color stack */
-	color_stack = &color_base;
-	color_stack->color = fg;
-	color_stack->next = NULL;
+	/* Initialize foreground color stack */
+	fg_color_stack = &fg_color_base;
+	fg_color_stack->color = fg;
+	fg_color_stack->next = NULL;
+
+	/* Initialize background color stack */
+	bg_color_stack = &bg_color_base;
+	bg_color_stack->color = fg;
+	bg_color_stack->next = NULL;
 
 	/* move to the next element */
 	temp = temp->next;
@@ -2464,7 +2977,19 @@ _XmHTMLformatObjects(XmHTMLObjectTable *old_table, XmHTMLAnchor *old_anchor,
 	while(temp != NULL)
 	{
 		/* create new element */
-		element = NewTableElement(temp);
+		if(!ignore)
+			element = NewTableElement(temp);
+		else
+		{
+			/*****
+			* reuse current element if it wasn't needed on the previous
+			* pass.
+			* fix 11/12/97-01, kdh
+			*****/
+			(void)memset(element, 0, sizeof(XmHTMLObjectTable));
+			/* fill in appropriate fields */
+			element->object = temp;
+		}
 
 		/* Initialize all fields changed in here */
 		text = NULL;
@@ -2578,7 +3103,7 @@ _XmHTMLformatObjects(XmHTMLObjectTable *old_table, XmHTMLAnchor *old_anchor,
 					/* unset anchor bitfields */
 					element_data &= ( ~ELE_ANCHOR & ~ELE_ANCHOR_TARGET & 
 							~ELE_ANCHOR_VISITED & ~ELE_ANCHOR_INTERN);
-					fg = PopColor();
+					fg = PopFGColor();
 					bg = html->html.body_bg;
 					anchor_data = NULL;
 					ignore = True;	/* only need anchor data */
@@ -2597,7 +3122,7 @@ _XmHTMLformatObjects(XmHTMLObjectTable *old_table, XmHTMLAnchor *old_anchor,
 						break;
 					}
 					/* save current color */
-					PushColor(fg);
+					PushFGColor(fg);
 
 					new_anchors++;
 					anchor_data_used = False;
@@ -2652,7 +3177,7 @@ _XmHTMLformatObjects(XmHTMLObjectTable *old_table, XmHTMLAnchor *old_anchor,
 				if(temp->is_end)
 				{
 					if(html->html.allow_color_switching)
-						fg = PopColor();
+						fg = PopFGColor();
 					font = PopFont(&basefont);
 				}
 				else
@@ -2660,7 +3185,7 @@ _XmHTMLformatObjects(XmHTMLObjectTable *old_table, XmHTMLAnchor *old_anchor,
 					if(html->html.allow_color_switching)
 						PUSH_COLOR(html);
 					PushFont(font, basefont);
-					font = NextFont(html, temp->id, basefont);
+					font = _XmHTMLLoadFont(html, temp->id, basefont, font);
 				}
 				ignore = True; /* only need font data */
 				break;
@@ -2709,7 +3234,7 @@ _XmHTMLformatObjects(XmHTMLObjectTable *old_table, XmHTMLAnchor *old_anchor,
 					if(html->html.allow_font_switching)
 						font = PopFont(&basefont);
 					if(html->html.allow_color_switching)
-						fg = PopColor();
+						fg = PopFGColor();
 				}
 				else
 				{
@@ -2773,16 +3298,17 @@ _XmHTMLformatObjects(XmHTMLObjectTable *old_table, XmHTMLAnchor *old_anchor,
 							* Ignore face but must allow for size change.
 							* (Font stack will get unbalanced otherwise!)
 							*****/
-							font = NextFont(html, HT_FONT, size);
+							font = _XmHTMLLoadFont(html, HT_FONT, size, font);
 						}
 						else
 #endif
-							font = NextFontWithFace(html, size, chPtr);
+							font = _XmHTMLLoadFontWithFace(html, size, chPtr,
+										font);
 
 						free(chPtr);
 					}
 					else
-						font = NextFont(html, HT_FONT, size);
+						font = _XmHTMLLoadFont(html, HT_FONT, size, font);
 				}
 				ignore = True; /* only need font data */
 				break;
@@ -2793,7 +3319,8 @@ _XmHTMLformatObjects(XmHTMLObjectTable *old_table, XmHTMLAnchor *old_anchor,
 				else /* multiple big elements are not honoured */
 				{
 					PushFont(font, basefont);
-					font = NextFont(html, HT_FONT, xmhtml_basefont_sizes[4]);
+					font = _XmHTMLLoadFont(html, HT_FONT,
+								xmhtml_basefont_sizes[4], font);
 				}
 				ignore = True; /* only need font data */
 				break;
@@ -2804,7 +3331,8 @@ _XmHTMLformatObjects(XmHTMLObjectTable *old_table, XmHTMLAnchor *old_anchor,
 				else /* multiple small elements are not honoured */
 				{
 					PushFont(font, basefont);
-					font = NextFont(html, HT_FONT, xmhtml_basefont_sizes[2]);
+					font = _XmHTMLLoadFont(html, HT_FONT,
+								xmhtml_basefont_sizes[2], font);
 				}
 				ignore = True; /* only need font data */
 				break;
@@ -2821,7 +3349,8 @@ _XmHTMLformatObjects(XmHTMLObjectTable *old_table, XmHTMLAnchor *old_anchor,
 				else /* multiple small elements are not honoured */
 				{
 					PushFont(font, basefont);
-					font = NextFont(html, HT_FONT, xmhtml_basefont_sizes[2]);
+					font = _XmHTMLLoadFont(html, HT_FONT,
+								xmhtml_basefont_sizes[2], font);
 					y_offset = (temp->id == HT_SUB ? 
 						font->sub_yoffset : font->sup_yoffset);
 					x_offset = (temp->id == HT_SUB ? 
@@ -2839,7 +3368,7 @@ _XmHTMLformatObjects(XmHTMLObjectTable *old_table, XmHTMLAnchor *old_anchor,
 				if(temp->is_end)
 				{
 					if(html->html.allow_color_switching)
-						fg = PopColor();
+						fg = PopFGColor();
 					halign = PopAlignment();
 					font = PopFont(&basefont);
 				}
@@ -2852,7 +3381,7 @@ _XmHTMLformatObjects(XmHTMLObjectTable *old_table, XmHTMLAnchor *old_anchor,
 					halign = _XmHTMLGetHorizontalAlignment(temp->attributes,
 						halign);
 					PushFont(font, basefont);
-					font = NextFont(html, temp->id, basefont);
+					font = _XmHTMLLoadFont(html, temp->id, basefont, font);
 					/*
 					* Need to update basefont size as well so font face changes
 					* *inside* these elements use the correct font size as
@@ -3093,9 +3622,13 @@ _XmHTMLformatObjects(XmHTMLObjectTable *old_table, XmHTMLAnchor *old_anchor,
 				break;
 
 			case HT_DT:
+				if(temp->is_end)
+					in_dt--;
+				else
+					in_dt++;
 			case HT_DD:
-				linefeed = CheckLineFeed(CLEAR_SOFT, False);
 				object_type = OBJ_BLOCK;
+				linefeed = CheckLineFeed(CLEAR_SOFT, False);
 				break;
 
 			/* block commands */
@@ -3103,7 +3636,7 @@ _XmHTMLformatObjects(XmHTMLObjectTable *old_table, XmHTMLAnchor *old_anchor,
 				if(temp->is_end)
 				{
 					if(html->html.allow_color_switching)
-						fg = PopColor();
+						fg = PopFGColor();
 					font = PopFont(&basefont);
 				}
 				else
@@ -3111,7 +3644,7 @@ _XmHTMLformatObjects(XmHTMLObjectTable *old_table, XmHTMLAnchor *old_anchor,
 					if(html->html.allow_color_switching)
 						PUSH_COLOR(html);
 					PushFont(font, basefont);
-					font = NextFont(html, temp->id, basefont);
+					font = _XmHTMLLoadFont(html, temp->id, basefont, font);
 				}
 				linefeed = CheckLineFeed(CLEAR_SOFT, False);
 				object_type = OBJ_BLOCK;
@@ -3169,7 +3702,7 @@ _XmHTMLformatObjects(XmHTMLObjectTable *old_table, XmHTMLAnchor *old_anchor,
 				if(temp->is_end)
 				{
 					if(html->html.allow_color_switching)
-						fg = PopColor();
+						fg = PopFGColor();
 					font = PopFont(&basefont);
 					in_pre = False;
 				}
@@ -3178,7 +3711,7 @@ _XmHTMLformatObjects(XmHTMLObjectTable *old_table, XmHTMLAnchor *old_anchor,
 					if(html->html.allow_color_switching)
 						PUSH_COLOR(html);
 					PushFont(font, basefont);
-					font = NextFont(html, temp->id, basefont);
+					font = _XmHTMLLoadFont(html, temp->id, basefont, font);
 					in_pre = True;
 				}
 				linefeed = CheckLineFeed(CLEAR_SOFT, False);
@@ -3190,7 +3723,7 @@ _XmHTMLformatObjects(XmHTMLObjectTable *old_table, XmHTMLAnchor *old_anchor,
 				{
 					ident_level--;
 					if(html->html.allow_color_switching)
-						fg = PopColor();
+						fg = PopFGColor();
 				}
 				else
 				{
@@ -3215,7 +3748,7 @@ _XmHTMLformatObjects(XmHTMLObjectTable *old_table, XmHTMLAnchor *old_anchor,
 						(temp->id == HT_P ? CLEAR_HARD : CLEAR_SOFT), False);
 					/* do we have a color attrib? */
 					if(html->html.allow_color_switching)
-						fg = PopColor();
+						fg = PopFGColor();
 				}
 				else
 				{
@@ -3237,7 +3770,7 @@ _XmHTMLformatObjects(XmHTMLObjectTable *old_table, XmHTMLAnchor *old_anchor,
 					halign = PopAlignment();
 					/* do we have a color attrib? */
 					if(html->html.allow_color_switching)
-						fg = PopColor();
+						fg = PopFGColor();
 				}
 				else
 				{
@@ -3253,8 +3786,6 @@ _XmHTMLformatObjects(XmHTMLObjectTable *old_table, XmHTMLAnchor *old_anchor,
 
 			case HT_HR:
 				{
-					char *chPtr;
-
 					/* 
 					* horizontal rules don't have an ending counterpart,
 					* so the alignment is never pushed. If we should do that, 
@@ -3264,16 +3795,9 @@ _XmHTMLformatObjects(XmHTMLObjectTable *old_table, XmHTMLAnchor *old_anchor,
 						_XmHTMLGetHorizontalAlignment(temp->attributes,
 							halign);
 					/* see if we have a width spec */
-					chPtr = _XmHTMLTagGetValue(temp->attributes, "width");
-					if(chPtr)
-					{
-						/* when len is negative, a percentage has been used */
-						if((strpbrk(chPtr, "%")) != NULL)
-							element->len = -1*atoi(chPtr);
-						else
-							element->len = atoi(chPtr);
-						free(chPtr);
-					}
+					element->len = _XmHTMLTagCheckNumber(temp->attributes,
+										"width", 0);
+
 					/* check height */
 					height = _XmHTMLTagGetNumber(temp->attributes, "size", 0);
 					/* sanity check */
@@ -3455,124 +3979,118 @@ _XmHTMLformatObjects(XmHTMLObjectTable *old_table, XmHTMLAnchor *old_anchor,
 			case HT_TABLE:
 				if(temp->is_end)
 				{
-					linefeed = CheckLineFeed(CLEAR_SOFT, True);
+					/* wrapup current table */
+					table = tableClose(html, table, element);
+
 					halign = PopAlignment();
+					bg = PopBGColor();
+					object_type = OBJ_NONE;
 				}
 				else
 				{
+					/* table start always causes a linebreak */
 					linefeed = CheckLineFeed(CLEAR_SOFT, False);
-					PushAlignment(halign);
 
-					/* 
-					* table alignment has limited scope within the table 
-					* itself. 
-					*/
-					halign = _XmHTMLGetHorizontalAlignment(temp->attributes,
-						html->html.default_halign);
-					if(html->html.bad_html_warnings)
-						_XmHTMLWarning(__WFUNC__(html, func), 
-							"<TABLE> element not supported yet.");
+					PushAlignment(halign);
+					PushBGColor(bg);
+
+					/*****
+					* Open a new table. Returns a parent or a child table.
+					*****/
+					table = tableOpen(html, table, element, temp, &halign, &bg);
+
+					/* new master table, insert */
+					if(table->parent == NULL)
+					{
+						/* insert this table in the list of tables */
+						if(html->html.tables)
+						{
+							current_table->next = table;
+							current_table = table;
+						}
+						else
+						{
+							html->html.tables = table;
+							current_table = table;
+						}
+					}
+					object_type = OBJ_TABLE;
 				}
-				ignore = True;
-				object_type = OBJ_TABLE;
 				break;
 
 			case HT_CAPTION:		/* table caption */
 				if(temp->is_end)
 				{
-					font = PopFont(&basefont);
+					/* close the caption */
+					tableCloseCaption(html, table, element);
+
 					halign = PopAlignment();
+					bg = PopBGColor();
 				}
 				else
 				{
-					linefeed = CheckLineFeed(CLEAR_SOFT, False);
 					PushAlignment(halign);
-					halign = _XmHTMLGetHorizontalAlignment(temp->attributes,
-						halign);
-					PushFont(font, basefont);
-					font = NextFont(html, temp->id, basefont);
+					PushBGColor(bg);
+
+					/* captions are always centered */
+					halign = XmHALIGN_CENTER;
+
+					/* open the caption */
+					tableOpenCaption(html, table, element, temp, &bg);
 				}
-				linefeed = CheckLineFeed(CLEAR_HARD, False);
-				object_type = OBJ_TABLE;
+				object_type = OBJ_NONE;
 				break;
 
 			case HT_TR:		/* table row */
 				if(temp->is_end)	/* optional termination */
 				{
-					if(html->html.allow_color_switching)
-						fg = PopColor();
-#if 0
+					/* close current row */
+					tableCloseRow(html, table, element);
+
 					halign = PopAlignment();
-#endif
-					valign = XmVALIGN_NONE;
+					bg = PopBGColor();
 				}
 				else
 				{
-#if 0
+					/* open a row */
 					PushAlignment(halign);
-					halign = _XmHTMLGetHorizontalAlignment(temp->attributes,
-						halign);
-#endif
-					if(html->html.allow_color_switching)
-						PUSH_COLOR(html);
-					valign = _XmHTMLGetVerticalAlignment(temp->attributes);
-					linefeed = CheckLineFeed(CLEAR_SOFT, False);
+					PushBGColor(bg);
+
+					tableOpenRow(html, table, element, temp, &halign, &bg);
 				}
-				object_type = OBJ_TABLE;
+				object_type = OBJ_NONE;
 				break;
 
-			case HT_TH:		/* table header */
+			case HT_TH:		/* header cell */
+			case HT_TD:		/* regular cell */
 				if(temp->is_end)	/* optional termination */
 				{
-					font = PopFont(&basefont);
-					if(html->html.allow_color_switching)
-						fg = PopColor();
-					valign = XmVALIGN_NONE;
-#if 0
+					/* header cell used a bold font, restore */
+					if(temp->id == HT_TH)
+						font = PopFont(&basefont);
+
+					/* close current cell */
+					tableCloseCell(html, table, element);
+
 					halign = PopAlignment();
-#endif
+					bg = PopBGColor();
 				}
 				else
 				{
 					/* header cell uses a bold font */
-					PushFont(font, basefont);
-					font = NextFont(html, HT_B, basefont);
-					if(html->html.allow_color_switching)
-						PUSH_COLOR(html);
-#if 0
-					PushAlignment(halign);
-					halign = _XmHTMLGetHorizontalAlignment(temp->attributes,
-						halign);
-#endif
-					valign = _XmHTMLGetVerticalAlignment(temp->attributes);
-					linefeed = CheckLineFeed(CLEAR_SOFT, False);
-				}
-				object_type = OBJ_TABLE;
-				break;
+					if(temp->id == HT_TH)
+					{
+						PushFont(font, basefont);
+						font = _XmHTMLLoadFont(html, HT_B, basefont, font);
+					}
 
-			case HT_TD:			/* table cell */
-				if(temp->is_end)	/* optional termination */
-				{
-#if 0
-					PopAlignment();
-					valign = XmVALIGN_NONE;
-#endif
-					if(html->html.allow_color_switching)
-						fg = PopColor();
-				}
-				else
-				{
-#if 0
 					PushAlignment(halign);
-					halign = _XmHTMLGetHorizontalAlignment(temp->attributes,
-						halign);
-#endif
-					if(html->html.allow_color_switching)
-						PUSH_COLOR(html);
-					valign = _XmHTMLGetVerticalAlignment(temp->attributes);
-					linefeed = CheckLineFeed(CLEAR_SOFT, True);
+					PushBGColor(bg);
+
+					/* open a cell */
+					tableOpenCell(html, table, element, temp, &halign, &bg);
 				}
-				object_type = OBJ_TABLE;
+				object_type = OBJ_NONE;
 				break;
 
 			/*****
@@ -3629,11 +4147,12 @@ _XmHTMLformatObjects(XmHTMLObjectTable *old_table, XmHTMLAnchor *old_anchor,
 			element->font = font;
 			element->marker = list_stack[current_list].marker;
 			element->list_level = list_stack[current_list].level;
+			element->table = table;
 			/* 
 			* <dt> elements have an identation one less than the current.
 			* all identation must use the default font (consistency).
 			*/
-			if(temp->id == HT_DT && ident_level)
+			if(in_dt && ident_level)
 				element->ident = (ident_level-1) * IDENT_SPACES * 
 					Toolkit_XFont(html->html.default_font->xfont)->max_bounds.width;
 			else
@@ -3651,9 +4170,12 @@ _XmHTMLformatObjects(XmHTMLObjectTable *old_table, XmHTMLAnchor *old_anchor,
 			}
 			else if(html->html.allow_color_switching &&
 						!html->html.strict_checking)
-				fg = PopColor();
+				fg = PopFGColor();
 
 			element->object_type = object_type;
+
+			if(object_type == OBJ_BULLET)
+				FillBullet(html, element);
 
 			/*****
 			* If we have a form component of type <input type="image">, we
@@ -3681,18 +4203,23 @@ _XmHTMLformatObjects(XmHTMLObjectTable *old_table, XmHTMLAnchor *old_anchor,
 			InsertTableElement(html, element, element_data & ELE_ANCHOR);
 			previous_element = element;
 		}
-		/* Clean up if this new element should be ignored. */
-		else 
-		{
-			free(element);	/* fix 01/28/97-05, kdh */
+		/* element will be reused if it was ignored */
 #ifdef DEBUG
+		else 
 			num_ignore++;
 #endif
-		}
 
 		/* move to next element */
 		temp = temp->next;
 	}
+	/* if there still is an open table, close it now */
+	if(table)
+		tableClose(html, table, element);
+
+	/* free the last element if it should have been ignored */
+	if(ignore)
+		free(element);
+
 	/*
 	* Some sucker forget to terminate a list and parser failed to repair it.
 	* Spit out a warning.
@@ -3701,16 +4228,29 @@ _XmHTMLformatObjects(XmHTMLObjectTable *old_table, XmHTMLAnchor *old_anchor,
 		_XmHTMLWarning(__WFUNC__(html, func), "non-zero indentation at "
 			"end of input. Check your document.");
 
-	/* clear colorstack */
-	if(color_stack->next)
+	/* clear foreground colorstack */
+	if(fg_color_stack->next)
 	{
 		int i=0;
-		while(color_stack->next)
+		while(fg_color_stack->next)
 		{
-			(void)PopColor();
+			(void)PopFGColor();
 			i++;
 		}
-		_XmHTMLDebug(2, ("unbalanced color stack (%i colors remain).\n", i));
+		_XmHTMLDebug(2, ("unbalanced foreground color stack (%i colors "
+			"remained).\n", i));
+	}
+	/* clear background colorstack */
+	if(bg_color_stack->next)
+	{
+		int i=0;
+		while(bg_color_stack->next)
+		{
+			(void)PopBGColor();
+			i++;
+		}
+		_XmHTMLDebug(2, ("unbalanced background color stack (%i colors "
+			"remained).\n", i));
 	}
 
 	/* clear alignment stack */
@@ -3765,8 +4305,8 @@ _XmHTMLformatObjects(XmHTMLObjectTable *old_table, XmHTMLAnchor *old_anchor,
 
 	_XmHTMLDebug(2,("_XmHTMLFormatObjects: formatted %li elements of which %li"
 		" anchors.\n", list_data.num_elements, list_data.num_anchors));
-	_XmHTMLDebug(2, ("_XmHTMLformatObjects, allocated %i elements of which "
-		"%i have been ignored.\n", allocated, num_ignore));
+	_XmHTMLDebug(2, ("_XmHTMLformatObjects, allocated %i elements and "
+		"ignored %i objects.\n", allocated, num_ignore));
 
 	_XmHTMLDebug(2, ("_XmHTMLformatObjects, allocated %i XmHTMLAnchor "
 		"objects\n", new_anchors));
@@ -3785,9 +4325,74 @@ _XmHTMLformatObjects(XmHTMLObjectTable *old_table, XmHTMLAnchor *old_anchor,
 	free(list_data.head);
 	list_data.head = NULL;
 
-#ifdef DEBUG
-	dumpFontCacheStats();
-#endif
+	/* store it */
+	html->html.formatted = list_data.current;
 
-	return(list_data.current);
+	/* all done! */
+}
+
+/********
+****** Public XmHTML Functions
+********/
+
+/*****
+* Name: 		XmHTMLGetURLType
+* Return Type: 	URLType
+* Description: 	tries to figure out what type of url the given href is
+* In: 
+*	href:		url specification
+* Returns:
+*	type of url when we know it, ANCHOR_UNKNOWN otherwise.
+* Note:
+*	this routine is quite forgiving on typos of any url spec: only the
+*	first character is checked, the remainder doesn't matter.
+*****/
+URLType
+XmHTMLGetURLType(String href)
+{
+	char *chPtr;
+
+	if(href == NULL || *href == '\0')
+		return(ANCHOR_UNKNOWN);
+
+	_XmHTMLDebug(2, ("format.c: XmHTMLGetURLType; checking url type of %s\n",
+		href));
+
+	/* first pick up any leading url spec */
+	if((chPtr = strstr(href, ":")) != NULL)
+	{
+		/* check for URL types we know of. Do in most logical order(?) */
+		if(!strncasecmp(href, "https", 5))	/* must be before http */
+			return(ANCHOR_SECURE_HTTP);
+		if(!strncasecmp(href, "http", 4))
+			return(ANCHOR_HTTP);
+		if(!strncasecmp(href, "mailto", 6))
+			return(ANCHOR_MAILTO);
+		if(!strncasecmp(href, "ftp", 3))
+			return(ANCHOR_FTP);
+		if(!strncasecmp(href, "file", 4))
+			return(ANCHOR_FILE_REMOTE);
+		if(!strncasecmp(href, "news", 4))
+			return(ANCHOR_NEWS);
+		if(!strncasecmp(href, "telnet", 6))
+			return(ANCHOR_TELNET);
+		if(!strncasecmp(href, "gopher", 6))
+			return(ANCHOR_GOPHER);
+		if(!strncasecmp(href, "wais", 4))
+			return(ANCHOR_WAIS);
+		if(!strncasecmp(href, "exec", 4) ||
+			!strncasecmp(href, "xexec", 5))
+			return(ANCHOR_EXEC);
+		if(!strncasecmp(href, "pipe", 4))
+			return(ANCHOR_PIPE);
+		if(!strncasecmp(href, "about", 4))
+			return(ANCHOR_ABOUT);
+		if(!strncasecmp(href, "man", 4))
+			return(ANCHOR_MAN);
+		if(!strncasecmp(href, "info", 4))
+			return(ANCHOR_INFO);
+		_XmHTMLDebug(2, ("format.c: XmHTMLGetURLType; unknown type\n"));
+		return(ANCHOR_UNKNOWN);
+	}
+	return(href[0] == '#' ? ANCHOR_JUMP : ANCHOR_FILE_LOCAL);
 }

@@ -3,6 +3,8 @@
 
 #include <gdk/gdk.h>
 #include <gtk/gtkobject.h>
+#define _XFUNCPROTOEND 
+#define XFUNCPROTOEND
 #include "XmHTMLP.h"
 
 #ifdef __cplusplus
@@ -48,6 +50,7 @@ struct _GtkXmHTMLClass
 	void (*focus)        (GtkXmHTML *, void *);
 	void (*losing_focus) (GtkXmHTML *, void *);
 	void (*motion_track) (GtkXmHTML *, void *);
+	void (*html_event)   (GtkXmHTML *, void *); /* HTML 4.0 event */
 };
 
 GtkWidget *gtk_xmhtml_new (char *html_source);

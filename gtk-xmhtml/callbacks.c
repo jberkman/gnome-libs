@@ -35,6 +35,21 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.3  1997/12/25 01:34:10  unammx
+* Good news for the day:
+*
+*    I have upgraded our XmHTML sources to XmHTML 1.1.1.
+*
+*    This basically means that we got table support :-)
+*
+* Still left to do:
+*
+*    - Set/Get gtk interface for all of the toys in the widget.
+*    - Frame support is broken, dunno why.
+*    - Form support (ie adding widgets to it)
+*
+* Miguel.
+*
 * Revision 1.2  1997/12/24 17:53:54  unammx
 * Fun stuff:
 *
@@ -789,12 +804,14 @@ XmHTMLGetHeadAttributes(TWidget w, XmHTMLHeadAttributes *head, Byte mask_bits)
 	/* fill in remaining link and meta members */
 	if(mask_bits & HeadMeta)
 	{
-		head->meta = ParseMeta(meta_start, &num_meta);
+		if(num_meta)
+			head->meta = ParseMeta(meta_start, &num_meta);
 		head->num_meta = num_meta;
 	}
 	if(mask_bits & HeadLink)
 	{
-		head->link = ParseLinks(link_start, &num_link);
+		if(num_link)
+			head->link = ParseLinks(link_start, &num_link);
 		head->num_link = num_link;
 	}
 	/* we found a head */
