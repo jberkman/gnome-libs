@@ -36,6 +36,14 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.12  1997/12/31 20:22:31  unammx
+* Frames work.
+*
+* There is a bug in the frame engine from Koen, it is not a bug of the
+* port anymore, hopefully it will get fixed soonish.
+*
+* Miguel.
+*
 * Revision 1.11  1997/12/31 05:20:55  unammx
 * Frames work.  Resizing a window still does not propagate to child
 * frames, will fix that next.
@@ -1297,11 +1305,6 @@ _XmHTMLFrameCreateCallback(XmHTMLWidget html, XmHTMLFrameWidget *frame)
 		gtk_widget_hide (html->html.hsb);
 		gtk_widget_hide (html->html.vsb);
 	}
-	printf ("PONIENDO: %d %d %d %d\n", 
-				 frame->x,
-				 frame->y,
-				 frame->width - frame->border,
-				 frame->height - frame->border);
 	gtk_widget_show (widget);
 	gtk_xmhtml_manage (GTK_CONTAINER (html), widget);
 	gtk_xmhtml_set_geometry (widget,
@@ -1385,6 +1388,16 @@ _XmHTMLReconfigureFrames(XmHTMLWidget html)
 		XtConfigureWidget(frame->frame, frame->x, frame->y,
 			frame->width - frame->border,
 			frame->height - frame->border, frame->border);
+#else
+	printf ("PONIENDO: %d %d %d %d\n", 
+				 frame->x,
+				 frame->y,
+				 frame->width,
+				 frame->height);
+	gtk_xmhtml_set_geometry (frame->frame,
+				 frame->x, frame->y,
+				 frame->width,
+				 frame->height);
 #endif
 	}
 	_XmHTMLDebug(11, ("frames.c: _XmHTMLReconfigureFrames End.\n"));

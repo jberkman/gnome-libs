@@ -211,8 +211,8 @@ gtk_xmhtml_new (void)
 	GtkXmHTML *html;
 
 	html = gtk_type_new (gtk_xmhtml_get_type ());
-	GTK_WIDGET(html)->allocation.width  = 300;
-	GTK_WIDGET(html)->allocation.height = 300;
+	GTK_WIDGET(html)->allocation.width  = 200;
+	GTK_WIDGET(html)->allocation.height = 200;
 	html->initialized = 0;
 	return GTK_WIDGET (html);
 }
