@@ -34,6 +34,11 @@ libgnome.sgml:
 
 TEXT_FILES =
 
+PIC_FILES= \
+	gnome-hello-0-basic.jpg \
+	gnome-hello-1-menus.jpg \
+	gnome-hello-2-i18n.jpg
+
 # automake does not yet dig .sgml files, so for now the DocBook
 # files must be extra_dist.  Also, distribute the `.html' file
 # so that people without DocBook can still use the docs.
@@ -49,7 +54,8 @@ EXTRA_DIST = \
 	libgnomeui.sgml			\
 	libgnome.sgml			\
 	trailer.sgml			\
-	$(TEXT_FILES)
+	$(TEXT_FILES)			\
+	$(PIC_FILES)
 
 
 dist-hook:
@@ -58,6 +64,10 @@ dist-hook:
 install-data-local: gnome-dev-info/gnome-dev-info.html
 	$(mkinstalldirs) $(DESTDIR)$(htmldir)
 	-for file in $(srcdir)/gnome-dev-info/*.html $(srcdir)/gnome-dev-info/*.css; do \
+          basefile=`echo $$file | sed -e 's,^.*/,,'`; \
+          $(INSTALL_DATA) $$file $(DESTDIR)$(htmldir)/$$basefile; \
+	done
+	-for file in $(srcdir)/*.jpg; do \
           basefile=`echo $$file | sed -e 's,^.*/,,'`; \
           $(INSTALL_DATA) $$file $(DESTDIR)$(htmldir)/$$basefile; \
         done
