@@ -1,3 +1,4 @@
+libzvtincludedir = $(includedir)/zvt
 
 INCLUDES = -I.. -I$(srcdir)/.. 	\
 	-I$(includedir) 	\
@@ -17,7 +18,7 @@ libzvt_la_SOURCES =		\
 	vt.c			\
 	vt.h			\
 	vtx.h			\
-	zvtterm.c		\
+	zvtterm.c
 
 libzvtinclude_HEADERS =	\
 	zvtterm.h
