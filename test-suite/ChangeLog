@@ -1,3 +1,22 @@
+1999-01-17  Raja R Harinath  <harinath@cs.umn.edu>
+
+	Overhaul test-suite framework.  Now, you can run individual tests
+	with "make TESTS=foo.test check", like the god of automake meant
+	it to be.  
+	* Makefile.am (SUBDIRS): Add `tests/'.
+	(TESTS): List individual tests.
+	(EXTRA_DIST): Don't lists tests/*.
+	(dummy.c): Remove.
+
+	* runtest.sh: Simplify drastically.  Now, is not a full-fledged
+	shell-script, but a shell-script fragment.  It should be sourced
+	with $the_test set to the name of the desired test.
+
+	* tests/Makefile.am: New file.
+	(noinst_PROGRAMS): List names of individual tests.
+	(INCLUDES): Move here from Makefile.am.
+	(LDADD): Likewise.
+	
 1999-01-15  Raja R Harinath  <harinath@cs.umn.edu>
 
 	* runtest.sh (failed): `exit 1' if failed, not `exit 0'.

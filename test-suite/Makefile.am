@@ -1,38 +1,29 @@
-INCLUDES =					\
-	-I..					\
-	-I$(srcdir)/..				\
-	$(SUPPORTINCS)				\
-	-I$(includedir)				\
-	@GTK_CFLAGS@
+SUBDIRS = tests
 
-LDADD = $(top_builddir)/libgnomeui/libgnomeui.la \
-	$(top_builddir)/libgnome/libgnome.la \
-	$(top_builddir)/libart_lgpl/libart_lgpl.la	\
-	@LIBSUPPORT@ $(LIBGNOMEUI_LIBS) $(INTLLIBS)
+TESTS = fileconvert.test \
+	metadata.test \
+	parse-path.test \
+	skel.test \
+	split.test \
+	trigs.test
 
-# Hacky way of forcing `automake' to define $(COMPILE) and $(LINK)
-BUILT_SOURCES=dummy.c
-dummy.c:
-	echo "int main(void){return 0;}" > dummy.c
-if FALSE
-noinst_PROGRAMS=dummy
+noinst_SCRIPTS = $(TESTS)
+
+if MAINTAINER_MODE
+%.test: 
+	echo "the_test=$*" > $(srcdir)/$@; \
+	echo ". $(srcdir)/runtest.sh" >> $(srcdir)/$@; \
+	chmod +x $(srcdir)/$@
 endif
 
-TESTS = runtest.sh
+# Always run via sh so we don't have to worry about permissions
+TESTS_ENVIRONMENT = $(SHELL) 
 
-# Always run via sh so we don't have to worry about permissions.
-TESTS_ENVIRONMENT = env \
-		      srcdir="$(srcdir)" \
-		      COMPILE="$(COMPILE)" \
-		      LINK="$(LINK)" \
-		      LDADD="$(LDADD)" \
-		    $(SHELL) 
-
-EXTRA_DIST = $(TESTS)							\
-	tests/fileconvert.c tests/fileconvert.in tests/lynxdump.sh	\
-		tests/types.cvt expected/fileconvert.out		\
-	tests/skel.c expected/skel.out					\
-	tests/split.c expected/split.out				\
-	tests/trigs.c tests/trigs.in expected/trigs.out			\
-	tests/metadata.c expected/metadata.out				\
-	tests/parse-path.c expected/parse-path.out data/sample
+EXTRA_DIST =					\
+	runtest.sh				\
+	expected/fileconvert.out		\
+	expected/skel.out			\
+	expected/split.out			\
+	expected/trigs.out			\
+	expected/metadata.out			\
+	expected/parse-path.out data/sample
