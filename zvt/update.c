@@ -179,6 +179,8 @@ static void vt_line_update(struct _vtx *vx, struct vt_line *l, int line, int alw
       d(printf("bl->data[i] = %08x != %08x, c=%d (back now=%d not %d)\n", bl->data[i], l->data[i], c, (l->data[i]&VTATTR_BACKCOLOURM)>>VTATTR_BACKCOLOURB, (bl->data[i]&VTATTR_BACKCOLOURM)>>VTATTR_BACKCOLOURB));
       vx->back_match=0;
       break;
+    } else {
+      d(printf("bl->data[i] == %08x != %08x, c=%08x (back now=%d not %d)\n", bl->data[i], l->data[i], c, (l->data[i]&VTATTR_BACKCOLOURM)>>VTATTR_BACKCOLOURB, (bl->data[i]&VTATTR_BACKCOLOURM)>>VTATTR_BACKCOLOURB));
     }
   }
 
@@ -204,6 +206,8 @@ static void vt_line_update(struct _vtx *vx, struct vt_line *l, int line, int alw
       attr = newattr;
     } else {
       if (attr != newattr) { /* check run of same type ... */
+	d(printf("found a run of %d characters from %d: '", run, runstart));
+	d(fwrite(runbuffer, run, 1, stdout));
 	vt_draw_text(vx->user_data, runstart, line, runbuffer, run, attr);
 	runstart = i;
 	p = runbuffer;
@@ -243,7 +247,7 @@ int vt_get_attr_at (struct _vtx *vx, int col, int row)
 */
 static void vt_scroll_update(struct _vtx *vx, int firstline, int count, int offset)
 {
-  struct vt_line *tn, *bn, *dn;	/* top/bottom of scroll area */
+  struct vt_line *tn, *bn, *dn, *nn;	/* top/bottom of scroll area */
   int i, fill;
 
   d(printf("scrolling %d lines from %d, by %d\n", count, firstline, offset));
@@ -262,12 +266,13 @@ static void vt_scroll_update(struct _vtx *vx, int firstline, int count, int offs
   if (offset>0) {
     /* grab n lines at bottom of scroll area, and move them to above it */
     tn = (struct vt_line *)vt_list_index(&vx->vt.lines_back, firstline);
+    nn = (struct vt_line *)vt_list_index(&vx->vt.lines, firstline);
     bn = (struct vt_line *)vt_list_index(&vx->vt.lines_back, firstline+offset-1);
     dn = (struct vt_line *)vt_list_index(&vx->vt.lines_back, firstline+count+offset);
   } else {
     /* grab n lines at top of scroll area, and move them to below it */
-    /* FIXME: this is wrong */
     tn = (struct vt_line *)vt_list_index(&vx->vt.lines_back, firstline+count+offset);
+    nn = (struct vt_line *)vt_list_index(&vx->vt.lines, firstline+count+offset);
     bn = (struct vt_line *)vt_list_index(&vx->vt.lines_back, firstline+count-1);
     dn = (struct vt_line *)vt_list_index(&vx->vt.lines_back, firstline+offset);
   }
@@ -297,13 +302,13 @@ static void vt_scroll_update(struct _vtx *vx, int firstline, int count, int offs
     }
   });
 
-  /* find out what colour the backbuffer is already - make it match (use
+  /* find out what colour the new lines is - make it match (use
      first character as a guess), and perform the visual scroll */
-  fill = (tn->data[0] & VTATTR_BACKCOLOURM) >> VTATTR_BACKCOLOURB;
+  fill = (nn->data[0] & VTATTR_BACKCOLOURM) >> VTATTR_BACKCOLOURB;
   vt_scroll_area(vx->user_data, firstline, count, offset, fill);
 
-  /* need to clear tn->bn lines.  Use attributes from first character */
-  fill = tn->data[0] & 0xffff0000;
+  /* need to clear tn->bn lines.  Use attributes from first character of corresponding new line */
+  fill = nn->data[0] & 0xffff0000;
   do {
     d(printf("clearning line %d\n", tn->line));
     for(i=0;i<tn->width;i++) {

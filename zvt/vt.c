@@ -265,7 +265,7 @@ vt_scroll_up(struct vt_em *vt, int count)
 #endif /* SCROLLBACK_BUFFER */
 
     for (i=0;i<wn->width;i++)
-      wn->data[i] = vt->attr|VTATTR_CHANGED;
+      wn->data[i] = vt->attr;
 
     if (wn->line == -1) {
       wn->modcount = wn->width;	/* make sure a wrap-scrolled line isn't marked clean */
@@ -310,7 +310,7 @@ vt_scroll_down(struct vt_em *vt, int count)
     
     /* clear it */
     for (i=0;i<wn->width;i++) {
-      wn->data[i] = vt->attr|VTATTR_CHANGED;
+      wn->data[i] = vt->attr;
     }
     wn->modcount=0;
     wn->line = -1;		/* flag new line */
@@ -342,12 +342,12 @@ vt_insert_chars(struct vt_em *vt, int count)
   /* scroll data over count bytes */
   j = (l->width-count)-vt->cursorx;
   for (i=l->width-1;j>0;i--,j--) {
-    l->data[i] = l->data[i-count]|VTATTR_CHANGED;    
+    l->data[i] = l->data[i-count];
   }
 
   /* clear the rest of the line */
   for (i=vt->cursorx;i<vt->cursorx+count;i++) {
-    l->data[i] = vt->attr|VTATTR_CHANGED;
+    l->data[i] = vt->attr;
   }
   l->modcount+=count;
 }
@@ -364,12 +364,12 @@ vt_delete_chars(struct vt_em *vt, int count)
   /* scroll data over count bytes */
   j = (l->width-count)-vt->cursorx;
   for (i=vt->cursorx;j>0;i++,j--) {
-    l->data[i] = l->data[i+count]|VTATTR_CHANGED;
+    l->data[i] = l->data[i+count];
   }
 
   /* clear the rest of the line */
   for (i=l->width-count;i<l->width;i++) {
-    l->data[i] = vt->attr|VTATTR_CHANGED;
+    l->data[i] = vt->attr;
   }
   l->modcount+=count;
 
@@ -391,12 +391,7 @@ void vt_insert_lines(struct vt_em *vt, int count)
     
     /* clear it */
     for (i=0;i<wn->width;i++) {
-      if ((wn->data[i]&0xff) && ((wn->data[i] & 0xff) != ' ')) {
-	wn->data[i] = vt->attr|VTATTR_CHANGED; /* FIXME: include attributes */
-      }
-				/* NOTE: This should not have
-				   ATTR_CHANGED - taken care of by
-				   scroll update */
+      wn->data[i] = vt->attr;
     }
     wn->modcount=0;		/* set as 'unchanged' so the scroll
 				   routine can update it.
@@ -431,10 +426,7 @@ void vt_delete_lines(struct vt_em *vt, int count)
     
     /* clear it */
     for (i=0;i<wn->width;i++) {
-      if ((wn->data[i]&0xff) && (((wn->data[i] & 0xff) != ' ') || 
-		((wn->data[i] & (0x7ffff)) != vt->attr))) {
-	wn->data[i] = vt->attr|VTATTR_CHANGED; /* FIXME: include attributes */
-      }
+      wn->data[i] = vt->attr;
     }
     wn->modcount=0;
     /*wn->line=vt->scrollbottom;*/
@@ -460,7 +452,7 @@ void vt_clear_lines(struct vt_em *vt, int top, int count)
   nn=wn->next;
   while(nn && count>=0) {
     for(i=0;i<wn->width;i++) {
-      wn->data[i] = vt->attr|VTATTR_CHANGED;
+      wn->data[i] = vt->attr;
     }
     wn->modcount = wn->width;
     count--;
@@ -478,7 +470,7 @@ void vt_clear_line_portion(struct vt_em *vt, int start_col, int end_col)
 
   this = vt->this;
   for(i=start_col;i<end_col;i++) {
-    this->data[i] = vt->attr | VTATTR_CHANGED;
+    this->data[i] = vt->attr;
   }
   this->modcount+=(this->width-vt->cursorx);
 }
@@ -530,14 +522,14 @@ static void vt_tab(struct vt_em *vt)
   c=l->data[vt->cursorx]&0xff;
   /* dont store tab over a space - will affect attributes */
   if (c==0) {
-    l->data[vt->cursorx] = 9|vt->attr|VTATTR_CHANGED; /* store 'tab' if we can ... helps cut/paste */
+    l->data[vt->cursorx] = 9|vt->attr; /* store 'tab' if we can ... helps cut/paste */
   }
   
   /* expand data after tab to be 'empty', but dont change attributes */
   nx = (vt->cursorx+8) & ~7;
   for(i=vt->cursorx+1;i<nx;i++) {
     if ( ((c=l->data[i]&0xff)==' ')) {
-      l->data[i] = (l->data[i]&0xffff0000)|VTATTR_CHANGED;
+      l->data[i] = (l->data[i]&0xffff0000);
     } else {
       break;
     }
@@ -635,10 +627,25 @@ vt_delete_line(struct vt_em *vt)
 static void
 vt_cleareos(struct vt_em *vt)
 {
+  int arg=0;
+
   d(printf("clear screen/end of screen\n"));
-  vt_clear_line_portion(vt, vt->cursorx, vt->this->width);
-  if (vt->cursory<vt->height) {
+
+  if (vt->argcnt)
+    arg = atoi(vt->args[0]);
+
+  switch(arg) {
+  case 0:			/* clear top of screen to here */
+    vt_clear_line_portion(vt, 0, vt->cursorx);
+    vt_clear_lines(vt, 0, vt->cursory);
+    break;
+  case 1:			/* clear here to end of screen */
+    vt_clear_line_portion(vt, vt->cursorx, vt->this->width);
     vt_clear_lines(vt, vt->cursory+1, vt->height);
+    break;
+  case 2:			/* clear the whole damn thing */
+    vt_clear_lines(vt, 0, vt->height);
+    break;
   }
 }
 
@@ -716,8 +723,8 @@ vt_down(struct vt_em *vt)
     count=atoi(vt->args[0]);
 
   vt->cursory+=count;
-  if (vt->cursory>=vt->scrollbottom)
-    vt->cursory=vt->scrollbottom-1;
+  if (vt->cursory>vt->scrollbottom)
+    vt->cursory=vt->scrollbottom;
 
   vt->this = (struct vt_line *)vt_list_index(&vt->lines, vt->cursory);
 }
@@ -974,7 +981,7 @@ vt_reset(struct vt_em *vt)
   vt->remaptable = 0;		/* no character remapping */
   vt_set_screen(vt, 0);
   vt->mode = 0;
-  vt_cleareos(vt);
+  vt_clear_lines(vt, 0, vt->height);
 
   vt->Gx=0;			/* reset all fonts */
   vt->G[0]=0;
@@ -1120,7 +1127,7 @@ vt_parse_vt (struct vt_em *vt, char *ptr, int length)
 	  }
 
 	  /* output character */
-	  vt->this->data[vt->cursorx] = ((vt->attr | VTATTR_CHANGED) & 0xffff0000) | c;
+	  vt->this->data[vt->cursorx] = ((vt->attr) & 0xffff0000) | c;
 	  vt->this->modcount++;
 	  d(printf("literal %c\n", c));
 	  vt->cursorx++;
@@ -1237,7 +1244,7 @@ struct vt_line *vt_newline(struct vt_em *vt)
     n->width = vt->width;
     n->modcount = vt->width;
     for (i=0;i<len+1;i++) {
-      n->data[i] = vt->attr | VTATTR_CHANGED;
+      n->data[i] = vt->attr;
     }
     n->line = j++;
   }

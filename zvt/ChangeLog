@@ -1,3 +1,31 @@
+1998-11-10  Michael Zucchi  <zucchi@zzedzone.fsi.com.au>
+
+	* update.c (vt_scroll_update): Get the scroll fill colour from the
+	corresponding new line, not the old line (the 'fill' is free, it
+	may as well more likely match what we want - even if it doesn't it
+	just slows it down a bit).
+
+	* vt.c (vt_reset): Changed vt_cleareos call to vt_clear_lines.
+	(vt_cleareos): Handle screen clear options properly, not just
+	'clear to end'.
+	(vt_insert_lines): Simplified clear condition - always clear
+	(mumble grumble).
+	(vt_delete_lines): Always clear line contents.
+	(vt_clear_lines): Remove VTATTR_CHANGED from update.
+	(vt_delete_chars): Remove VTATTR_CHANGED.
+	(vt_insert_chars): Ditto.
+	(vt_scroll_up): Ditto.
+	(vt_scroll_down): Ditto.
+	(vt_clear_line_portion): Ditto.
+	(vt_tab): Ditto.
+	(vt_parse_vt): Ditto.
+	(vt_newline): Ditto.
+
+1998-11-10  Michael Zucchi  <zucchi@zedzone.mmc.com.au>
+
+	* vt.c (vt_down): Out by one on bounds checking against the bottom
+	of the screen.
+
 1998-11-10  Michael Zucchi  <zucchi@zedzone.mmc.com.au>
 
 	* vtx.h (vt_scroll_area): Fix prototype for new 'fill' parameter.
