@@ -69,6 +69,75 @@ Wed Dec 16 16:52:53 1998  Owen Taylor  <otaylor@redhat.com>
 
 	* zvtterm.c (zvt_term_init): Initialize timeout_id to -1.
 
+1998-12-31  Jay Painter <jpaint@serv.net>
+
+	* zvtterm.c, vtx.h, update.c: changed the way the zvtterm
+	widget preforms size requests to be more consistant with the
+	way other GTK+ widgets do -- that is, they only request their
+	minimum allocation size and let their parents allocate more.
+	Unfortunately, this scheme doesn't work well for a terminal 
+	widget because it's hard for the parent widgets to know exactly
+	how much to allocate; therefore, there is an additional API for
+	setting the terminal grid size (zvt_term_set_size) which will
+	preform a widget resize to the appropriate grid dimentions.
+
+1998-12-30  Miguel de Icaza  <miguel@nuclecu.unam.mx>
+
+	* gnome-pty-helper.c (open_ptys): Use pathmax, as the sysconfig
+	tty size does not include the whole pathname.
+
+	* vt.c (vt_tab): Ok, use the VTATTR_CLEAR for tabs, not just
+	"no-attributes".  This fixes the tab problem with other colors.
+	Thanks to Jay for pointing this out.
+
+1998-12-30  Jay Painter <jpaint@serv.net>
+
+	* memory.[ch]: removed!  replaced with glib g_malloc, g_free
+	and friends; this is for code clarty and to also fix a nasty
+	bug that tried to free un-allocated memory when you resized
+	while scrolled up.
+
+	* vt.c, update.c: g_memory stuff all the way; removed all calls
+	to alloca; 
+
+	* zvtterm.c: just some formatting changes here and there
+
+1998-12-29  Jay Painter <jpaint@serv.net>
+
+	* zvtterm.[ch]: massive reformatting, added many meaningful 
+	asserts, added gtk_widget_queue_resizes after font changes and
+	maybe in another place or two; added framework for getting this
+	widget to size itself like a normal GTK+ widget, but I havn't
+	implimented it yet.  Replaced the alloca string allocations with
+	GString(s) because if I remember right once you've increased your
+	stack frame size, all stack frames called under it are at least
+	that size -- but then I could also be on drugs.  I probably did 
+	somthing else too...
+
+1998-12-28  Miguel de Icaza  <miguel@nuclecu.unam.mx>
+
+	* zvtterm.c (draw_back_pixmap): Do not reset the _tile to the
+	previous value.  We probably do not care, as we have reset the
+	fill style anyways (and tile only makes sense if the fill is set
+	to GDK_TILED).
+	
+	(zvt_term_get_capabilities): Only allow the pixmap settings to
+	take effect if the visuals are compatible. 
+	
+	(zvt_term_set_background): Even if we have support, make sure we
+	do not acknowledge any calls if _capabilities does not allow us to
+	use it. 
+
+	Do not know why XSetTile does not accept a NULL pixmap though to
+	reset this value. 
+
+	* vt.c (vt_tab): Fix for the tab problem reported by Alan.  It
+	happens that tabs are transparent regarding attributes.
+
+Wed Dec 16 16:52:53 1998  Owen Taylor  <otaylor@redhat.com>
+
+	* zvtterm.c (zvt_term_init): Initialize timeout_id to -1.
+
 1998-12-09  Miguel de Icaza  <miguel@nuclecu.unam.mx>
 
 	* update.c (vt_get_selection): Fixed the paste problems.  We need

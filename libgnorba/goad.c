@@ -1108,8 +1108,6 @@ goad_server_activation_id(void)
   return goad_activation_id;
 }
 
-void goad_register_arguments(void); /* shut up gcc */
-
 void
 goad_register_arguments(void)
 {

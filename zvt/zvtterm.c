@@ -432,7 +432,6 @@ zvt_term_set_default_color_scheme (ZvtTerm *term)
   zvt_term_set_color_scheme (term, default_red, default_grn, default_blu);
 }
 
-
 void
 zvt_term_set_size (ZvtTerm *term, guint width, guint height)
 {
@@ -443,12 +442,8 @@ zvt_term_set_size (ZvtTerm *term, guint width, guint height)
   term->grid_width = width;
   term->grid_height = height;
 
-  printf("zvt_term_set_size term->grid_width=%d term->grid_height=%d\n",
-	 term->grid_width, term->grid_height);
-
   gtk_widget_queue_resize (GTK_WIDGET (term));
 }
-
 
 static void
 zvt_term_realize (GtkWidget *widget)
@@ -732,8 +727,13 @@ zvt_term_size_request (GtkWidget      *widget,
   requisition->height = (grid_height * term->charheight) + 
     (widget->style->klass->ythickness * 2);
 
+<<<<<<< zvtterm.c
   /* debug ouput */
   printf("zvt_term_size_request x=%d y=%d\n", grid_width, grid_height);
+=======
+  /* debug ouput */
+  d( printf("zvt_term_size_request x=%d y=%d\n", grid_width, grid_height) );
+>>>>>>> 1.69.2.5
 }
 
 

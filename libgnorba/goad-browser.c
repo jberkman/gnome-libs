@@ -112,7 +112,7 @@ gb_create_main_window(CORBA_ORB orb, CORBA_Environment *ev)
 
   gnome_app_set_contents(GNOME_APP(mainwin), wtmp);
 
-  gnome_app_create_menus_with_data(GNOME_APP(mainwin), mainmenu, clist);
+  /* gnome_app_create_menus_with_data(GNOME_APP(mainwin), mainmenu, clist); */
   gnome_app_create_toolbar_with_data(GNOME_APP(mainwin), toolbar, clist);
   gnome_app_set_statusbar(GNOME_APP(mainwin), gtk_statusbar_new());
 
