@@ -1,3 +1,14 @@
+1998-12-08  Herbert Valerio Riedel  <hvr@hvrlab.ml.org>
+
+	* libgnorba/orbitgtk.c (orb_remove_connection): added proper cast
+
+	* libgnome/gnome-magic.c (gnome_magic_parse): made infile_name
+	pointer to constant string
+	(gnome_magic_db_load): added pointer cast
+
+	* libgnome/gnome-remote.[ch] (gnome_remote_set_command): made
+	argv-argument a constant array to constant strings
+
 1998-12-08  Tom Tromey  <tromey@cygnus.com>
 
 	* libgnome/gnome-metadata.c (get_worker): Make sure to call

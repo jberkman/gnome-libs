@@ -39,16 +39,16 @@ orb_handle_connection(GIOPConnection *cnx, gint source, GdkInputCondition cond)
 
 static void orb_add_connection(GIOPConnection *cnx)
 {
-  cnx->user_data = (gpointer)gtk_input_add_full(GIOP_CONNECTION_GET_FD(cnx),
+  cnx->user_data = GINT_TO_POINTER (gtk_input_add_full(GIOP_CONNECTION_GET_FD(cnx),
 						GDK_INPUT_READ|GDK_INPUT_EXCEPTION,
 						(GdkInputFunction)orb_handle_connection,
-						NULL, cnx, NULL);
+						NULL, cnx, NULL));
 }
 
 static void orb_remove_connection(GIOPConnection *cnx)
 {
-  gtk_input_remove((guint)cnx->user_data);
-  cnx->user_data = (gpointer)-1;
+  gtk_input_remove(GPOINTER_TO_UINT (cnx->user_data));
+  cnx->user_data = GINT_TO_POINTER (-1);
 }
 
 static CORBA_boolean

@@ -2,7 +2,9 @@
 #undef LIBRARY
 #undef _LIBRARY
 
+#include <string.h> 
 #include <stdio.h>
+#include <stdlib.h>
 #include <gtk/gtk.h>
 #include <X11/Xatom.h>		/* property defines */
 #include <gtk-xmhtml/gtk-xmhtml.h>

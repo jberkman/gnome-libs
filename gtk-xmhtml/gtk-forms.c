@@ -1004,7 +1004,7 @@ _XmHTMLFormAddInput(XmHTMLWidget html, String attributes)
 {
 	static XmHTMLForm *entry;
 	GtkWidget *hbox;
-	char   *chPtr;
+	gchar *chPtr = NULL;
 
 	if(attributes == NULL)
 		return(NULL);

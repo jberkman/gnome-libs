@@ -138,7 +138,7 @@ static GtkWidget *my_child_create_view(GnomeMDIChild *child, gpointer data) {
 	gint counter;
 
 	sprintf(label, "Hello! Child %d reporting...",
-			(gint)gtk_object_get_user_data(GTK_OBJECT(child)));
+			GPOINTER_TO_INT (gtk_object_get_user_data(GTK_OBJECT(child))));
 
 	new_view = gtk_label_new(label);
 
@@ -149,7 +149,7 @@ static GtkWidget *my_child_create_view(GnomeMDIChild *child, gpointer data) {
  * create config string for this child
  */
 static gchar *my_child_get_config_string(GnomeMDIChild *child, gpointer data) {
-	return g_strdup_printf ("%d", (gint)gtk_object_get_user_data(GTK_OBJECT(child)));
+	return g_strdup_printf ("%d", GPOINTER_TO_INT (gtk_object_get_user_data(GTK_OBJECT(child))));
 }
 
 static GtkWidget *my_child_set_label(GnomeMDIChild *child,
@@ -314,9 +314,9 @@ static void inc_counter_cb(GtkWidget *w, gpointer user_data) {
 	gchar name[32];
 	gint counter;
 
-	counter = (gint)gtk_object_get_user_data(GTK_OBJECT(child));
+	counter = GPOINTER_TO_INT (gtk_object_get_user_data(GTK_OBJECT(child)));
 	counter++;
-	gtk_object_set_user_data(GTK_OBJECT(child), (gpointer)counter);
+	gtk_object_set_user_data(GTK_OBJECT(child), GINT_TO_POINTER (counter));
 
 	sprintf(name, "Child %d", counter);
 	gnome_mdi_child_set_name(GNOME_MDI_CHILD(child), name);
@@ -364,7 +364,7 @@ static gint remove_child_handler(GnomeMDI *mdi, GnomeMDIChild *child) {
 	gint reply;
 
 	sprintf(question, "Do you really want to remove child %d\n",
-			(gint)gtk_object_get_user_data(GTK_OBJECT(child)));
+			GPOINTER_TO_INT (gtk_object_get_user_data(GTK_OBJECT(child))));
 
 	gnome_app_question_modal(gnome_mdi_active_window(mdi), question,
 							 reply_handler, &reply);

@@ -134,7 +134,7 @@ quit_cb (GtkWidget *widget, void *data)
 static void
 added_item_callback (GtkWidget *widget, gpointer data)
 {
-  int num = (int) data;
+  gint num = GPOINTER_TO_INT (data);
   printf ("menu item %d\n", num);
 }
 
@@ -142,7 +142,7 @@ added_item_callback (GtkWidget *widget, gpointer data)
 static void
 add_cb (GtkWidget *widget, void *data)
 {
-  static int counter = 0;
+  static gint counter = 0;
   char buf[200];
   GnomeUIInfo entry[2];
   int pos = 0;
@@ -153,7 +153,7 @@ add_cb (GtkWidget *widget, void *data)
   entry[0].label = buf;
   entry[0].hint = NULL;
   entry[0].moreinfo = added_item_callback;
-  entry[0].user_data = (gpointer) counter;
+  entry[0].user_data = GINT_TO_POINTER (counter);
   entry[0].unused_data = NULL;
   entry[0].pixmap_type = GNOME_APP_PIXMAP_NONE;
   entry[0].pixmap_info = NULL;

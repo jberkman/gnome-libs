@@ -731,7 +731,7 @@ gtk_xmhtml_focus (GtkWidget *widget, GdkEvent *event, gpointer closure)
 	GtkObject *htmlo = GTK_OBJECT (closure);
 	GdkEventFocus *focus = (GdkEventFocus *) event;
 	XmAnyCallbackStruct cbs;
-	int focusing_in;
+	gint focusing_in = 0;
 	
 	if (event->type == GDK_FOCUS_CHANGE)
 		focusing_in = (focus->window == html->html.work_area->window);
