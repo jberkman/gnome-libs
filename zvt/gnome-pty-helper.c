@@ -27,15 +27,15 @@
  * We use as little as possible external libraries.  
  */
 #include <config.h>
-#include <termios.h>
+#include <sys/types.h>
 #include <unistd.h>
+#include <termios.h>
 #include <errno.h>
 #include <malloc.h>
 #include <termios.h>
 #include <pwd.h>
 #include <stdlib.h>
 #include <string.h>
-#include <sys/types.h>
 #include <stdio.h>
 #include <utmp.h>
 #include "gnome-pty.h"
@@ -286,7 +286,8 @@ main (int argc, char *argv [])
 	
 	if (init_msg_pass () == -1)
 		exit (1);
-	
+
+	setsid ();
 	for (;;){
 		res = read (STDIN_FILENO, &op, sizeof (op));
 		

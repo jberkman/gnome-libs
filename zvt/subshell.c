@@ -341,5 +341,6 @@ zvt_shutdown_subshell (struct vt_em *vt)
 
 	op = GNOME_PTY_CLOSE_PTY;
 	write (helper_socket_protocol [0], &op, sizeof (op));
+	write (helper_socket_protocol [0], &vt->pty_tag, sizeof (vt->pty_tag));
 	vt->pty_tag == NULL;
 }
