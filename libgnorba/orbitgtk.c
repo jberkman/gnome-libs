@@ -253,8 +253,6 @@ _gnome_gnorba_cookie_setup(Display *disp, Window rootwin)
     XFree(ret_prop); /* XFree barfs on NULL ptrs */
     XUngrabServer(disp);
   }
-
-  g_message("Set cookie to %s", setval);
 }
 
 /**
