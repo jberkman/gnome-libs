@@ -2,6 +2,9 @@
 
 	* canvas.c (item_event): Grab/ungrab the item on button
 	press/release, respectively.
+	(item_event): Now you can click buttons 2 or 3 on an item to
+	lower/raise it, respectively.  If shift is pressed as well, the
+	item will be sent to the bottom/top of the stack.
 
 	* testgnome.c (main): Do not call gnome_init() and gtk_init().
 
