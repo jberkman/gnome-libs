@@ -313,7 +313,7 @@ create_druid(void)
   /* load the images */
   fname = gnome_pixmap_file ("gnome-logo-icon.png");
   if (fname)
-    logo = gdk_pixbuf_new_from_file(fname);
+    logo = gdk_pixbuf_new_from_file(fname, NULL);
   g_free (fname);
 
   /* The initial stuff */

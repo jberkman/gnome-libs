@@ -663,7 +663,7 @@ zvt_background_set(ZvtTerm *term)
     cmap = b->data.pixmap.cmap;
     break;
   case ZVT_BGTYPE_FILE:		/* file */
-    pixbuf = gdk_pixbuf_new_from_file(b->data.pixmap_file);
+    pixbuf = gdk_pixbuf_new_from_file(b->data.pixmap_file, NULL);
     break;
   case ZVT_BGTYPE_PIXBUF:		/* pixbuf */
     pixbuf = b->data.pixbuf;

@@ -50,6 +50,7 @@
 #include <X11/Xatom.h>
 #include <X11/Xos.h>
 
+#include "libgnomeui/gnomemarshal.h"
 
 /* define to 'x' to enable copious debug output */
 #define d(x)
@@ -199,7 +200,7 @@ zvt_term_class_init (ZvtTermClass *class)
                     GTK_RUN_FIRST,
                     GTK_CLASS_TYPE (object_class),
                     GTK_SIGNAL_OFFSET (ZvtTermClass, child_died),
-                    gtk_marshal_NONE__INT_POINTER,
+                    gnome_marshal_VOID__INT_POINTER,
                     GTK_TYPE_NONE, 2,
 		    GTK_TYPE_INT,
 		    GTK_TYPE_STRING);
@@ -209,7 +210,7 @@ zvt_term_class_init (ZvtTermClass *class)
 		      GTK_RUN_FIRST,
 		      GTK_CLASS_TYPE (object_class),
 		      GTK_SIGNAL_OFFSET (ZvtTermClass, child_died),
-		      gtk_marshal_NONE__POINTER_INT,
+		      gnome_marshal_VOID__POINTER_INT,
 		      GTK_TYPE_NONE, 2,
 		      GTK_TYPE_STRING,
 		      GTK_TYPE_INT);
@@ -219,7 +220,7 @@ zvt_term_class_init (ZvtTermClass *class)
 		    GTK_RUN_LAST | GTK_RUN_ACTION,
 		    GTK_CLASS_TYPE (object_class),
 		    GTK_SIGNAL_OFFSET (ZvtTermClass, copy_clipboard),
-		    gtk_marshal_NONE__NONE,
+		    gtk_marshal_VOID__VOID,
 		    GTK_TYPE_NONE, 0);
 
     term_signals[PASTE_CLIPBOARD] =
@@ -227,7 +228,7 @@ zvt_term_class_init (ZvtTermClass *class)
 		    GTK_RUN_LAST | GTK_RUN_ACTION,
 		    GTK_CLASS_TYPE (object_class),
 		    GTK_SIGNAL_OFFSET (ZvtTermClass, paste_clipboard),
-		    gtk_marshal_NONE__NONE,
+		    gtk_marshal_VOID__VOID,
 		    GTK_TYPE_NONE, 0);
 
     term_signals[SCROLL] =
@@ -235,7 +236,7 @@ zvt_term_class_init (ZvtTermClass *class)
 		    GTK_RUN_LAST | GTK_RUN_ACTION,
 		    GTK_CLASS_TYPE (object_class),
 		    GTK_SIGNAL_OFFSET (ZvtTermClass,scroll),
-		    gtk_marshal_NONE__INT,
+		    gtk_marshal_VOID__INT,
 		    GTK_TYPE_NONE, 1, 
 		    GTK_TYPE_INT);
 
