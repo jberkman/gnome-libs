@@ -152,7 +152,8 @@ zvt_term_init (ZvtTerm *term)
   term->cursor_on = 0;
   term->cursor_filled = 1;
   term->cursor_blink_state = 0;
-
+  term->blink_enabled = 1;
+  
   /* input handler */
   term->input_id = -1;
 
@@ -170,6 +171,24 @@ zvt_term_init (ZvtTerm *term)
 			     zvt_term_selection_handler, term);
 }
 
+void
+zvt_term_set_blink (ZvtTerm *term, int state)
+{
+  if (!(term->blink_enabled ^ state))
+    return;
+  if (term->blink_enabled){
+    if (term->timeout_id != -1){
+      gtk_timeout_remove (term->timeout_id);
+      term->timeout_id = -1;
+    }
+    if (GTK_WIDGET_REALIZED (term))
+      vt_cursor_state (GTK_WIDGET (term), 1);
+    term->blink_enabled = 0;
+  } else {
+    term->timeout_id = gtk_timeout_add (500, zvt_term_cursor_blink, term);
+    term->blink_enabled = 1;
+  }
+}
 
 GtkWidget*
 zvt_term_new (void)
@@ -262,7 +281,8 @@ zvt_term_realize (GtkWidget *widget)
   term->cursor_current = term->cursor_bar;
 
   /* setup blinking cursor */
-  term->timeout_id = gtk_timeout_add(500, zvt_term_cursor_blink, term);
+  if (term->blink_enabled)
+    term->timeout_id = gtk_timeout_add(500, zvt_term_cursor_blink, term);
 
   /* setup scrolling gc */
   term->scroll_gc = gdk_gc_new (GTK_WIDGET(term)->window);
@@ -318,7 +338,7 @@ static gint zvt_term_focus_in(GtkWidget *widget, GdkEventFocus *event)
   vt_cursor_state(term, 1);
 
   /* setup blinking cursor */
-  if (term->timeout_id == -1)
+  if (term->blink_enabled && term->timeout_id == -1)
     term->timeout_id = gtk_timeout_add(500, zvt_term_cursor_blink, term);
 
   return FALSE;
@@ -339,7 +359,7 @@ static gint zvt_term_focus_out(GtkWidget *widget, GdkEventFocus *event)
   vt_cursor_state(term, 1);
 
   /* setup blinking cursor */
-  if (term->timeout_id != -1) {
+  if (term->blink_enabled && term->timeout_id != -1) {
     gtk_timeout_remove(term->timeout_id);
     term->timeout_id = -1;
   }
@@ -1215,6 +1235,9 @@ static void zvt_term_readdata(gpointer data, gint fd, GdkInputCondition conditio
     saveerrno = errno;
   }
 
+  if (!term->blink_enabled)
+    vt_cursor_state (term, 1);
+  
   /* flush all X events - this is really necessary to stop X queuing up
      lots of screen updates and reducing interactivity on a busy terminal */
   gdk_flush();

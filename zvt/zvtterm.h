@@ -46,9 +46,9 @@ extern "C" {
     struct _vtx *vx;		/* zvt emulator */
 
     int cursor_on:1;		/* on/off cursor */
-    int cursor_filled:1;		/* is the cursor filled? */
+    int cursor_filled:1;	/* is the cursor filled? */
     int cursor_blink_state:1;	/* cursor blink state */
-
+    int blink_enabled:1;        /* Set to on if we do blinking */
     int charwidth;		/* size of characters */
     int charheight;
 
@@ -96,6 +96,8 @@ extern "C" {
   void          zvt_term_hide_pointer           (ZvtTerm *term);
   void          zvt_term_show_pointer           (ZvtTerm *term);
 
+  void          zvt_term_set_blink              (ZvtTerm *term, int state);
+	
   /*GtkAdjustment* zvt_term_get_adjustment         (ZvtTerm      *terminal);
     void           zvk_term_set_adjustment         (ZvtTerm      *dial,
     GtkAdjustment *adjustment);*/

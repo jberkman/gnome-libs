@@ -1005,7 +1005,7 @@ struct vt_line *vt_newline(struct vt_em *vt)
   if (n) {
     n->width = vt->width;
     n->modcount = vt->width;
-    for (i=0;i<len;i++) {
+    for (i=0;i<len+1;i++) {
       n->data[i] = vt->attr | VTATTR_CHANGED;
     }
     n->line = j++;
@@ -1082,11 +1082,6 @@ int vt_forkpty(struct vt_em *vt)
   win.ws_ypixel = 480;
   vt->childpid = forkpty(&vt->childfd, ttyname, 0, &win);
 
-  if (vt->childpid == 0){
-	  for (i = 3; i < 1024; i++)
-		  if (i != vt->childfd)
-			  close (i);
-  }
   if (vt->childpid>0) {
     fcntl(vt->childfd, F_SETFL, O_NONBLOCK);
   }

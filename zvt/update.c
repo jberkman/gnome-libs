@@ -549,7 +549,7 @@ void vt_fix_selection(struct _vtx *vx)
   case VT_SELTYPE_WORD:
     d(printf("selecting by word\n"));
     /* scan back over word chars */
-    d(printf("startx = %d -> ", sx));
+    d(printf("startx = %d %p-> \n", sx, s->data));
     if ((s->data[sx]&0xff)==0) {
       while ((sx>0) && ((s->data[sx]&0xff) == 0))
 	sx--;
