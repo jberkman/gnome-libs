@@ -67,25 +67,26 @@ int main(int argc, char *argv[])
   return 0;
 }
 
+static GnomeUIInfo filemenu[] = {
+  GNOMEUIINFO_ITEM_STOCK("E_xit", NULL, gtk_main_quit, GNOME_STOCK_MENU_EXIT),
+  GNOMEUIINFO_END
+};
+static GnomeUIInfo mainmenu[] = {
+  GNOMEUIINFO_SUBTREE("_File", filemenu),
+  GNOMEUIINFO_END
+};
+
+static GnomeUIInfo toolbar[] = {
+  GNOMEUIINFO_ITEM_STOCK("Activate", "Start this server",
+			 gb_activate_server, GNOME_STOCK_PIXMAP_EXEC),
+  GNOMEUIINFO_ITEM_STOCK("Refresh", "Refresh the server list",
+			 gb_create_server_list, GNOME_STOCK_PIXMAP_REFRESH),
+  GNOMEUIINFO_END
+};
+
 static GtkWidget *
 gb_create_main_window(CORBA_ORB orb, CORBA_Environment *ev)
 {
-  static GnomeUIInfo filemenu[] = {
-    GNOMEUIINFO_ITEM_STOCK("E_xit", NULL, gtk_main_quit, GNOME_STOCK_MENU_EXIT),
-    GNOMEUIINFO_END
-  };
-  static GnomeUIInfo mainmenu[] = {
-    GNOMEUIINFO_SUBTREE("_File", filemenu),
-    GNOMEUIINFO_END
-  };
-  static GnomeUIInfo toolbar[] = {
-    GNOMEUIINFO_ITEM_STOCK("Activate", "Start this server",
-			   gb_activate_server, GNOME_STOCK_PIXMAP_EXEC),
-    GNOMEUIINFO_ITEM_STOCK("Refresh", "Refresh the server list",
-			   gb_create_server_list, GNOME_STOCK_PIXMAP_REFRESH),
-    GNOMEUIINFO_END
-  };
-
   GtkWidget *wtmp, *clist;
 
   mainwin = gnome_app_new("goad-browser",
@@ -112,8 +113,9 @@ gb_create_main_window(CORBA_ORB orb, CORBA_Environment *ev)
 
   gnome_app_set_contents(GNOME_APP(mainwin), wtmp);
 
-  /* gnome_app_create_menus_with_data(GNOME_APP(mainwin), mainmenu, clist); */
+  gnome_app_create_menus_with_data(GNOME_APP(mainwin), mainmenu, clist);
   gnome_app_create_toolbar_with_data(GNOME_APP(mainwin), toolbar, clist);
+
   gnome_app_set_statusbar(GNOME_APP(mainwin), gtk_statusbar_new());
 
   gtk_widget_show_all(mainwin);
@@ -158,7 +160,7 @@ gb_create_server_list(GtkWidget *w, GtkCList *clist)
   memset(maxw, 0, sizeof(maxw));
 
   if (slist == NULL) {
-    no_server_warning = gnome_warning_dialog("I couldn't find any installed services.  Either you don't have\nany services installed or I don't know the patch to find them.\nIn either case, please check your GNOME installation.");
+    no_server_warning = gnome_warning_dialog("I couldn't find any installed services.  Either you don't have\nany services installed or I don't know the path to find them.\nIn either case, please check your GNOME installation.");
     gtk_signal_connect(GTK_OBJECT(no_server_warning), "destroy",
 		       gtk_widget_destroy, no_server_warning);
   }
