@@ -143,6 +143,17 @@ gnome_icon_selector_init (GnomeIconSelector *iselector)
     iselector->_priv = g_new0 (GnomeIconSelectorPrivate, 1);
 }
 
+static void
+icon_selected_cb (GnomeIconList *gil, gint num, GdkEvent *event,
+		  GnomeIconSelector *iselector)
+{
+	g_return_if_fail (iselector != NULL);
+	g_return_if_fail (GNOME_IS_ICON_SELECTOR (iselector));
+
+	gtk_signal_emit_by_name (GTK_OBJECT (iselector),
+				 "selection_changed");
+}
+
 
 /**
  * gnome_icon_selector_construct:
@@ -197,6 +208,13 @@ gnome_icon_selector_construct (GnomeIconSelector *iselector,
 
 	gnome_icon_list_set_selection_mode (GNOME_ICON_LIST (list),
 					    GTK_SELECTION_SINGLE);
+
+        gtk_signal_connect_after (GTK_OBJECT (list), "select_icon",
+                                  GTK_SIGNAL_FUNC (icon_selected_cb),
+                                  iselector);
+        gtk_signal_connect_after (GTK_OBJECT (list), "unselect_icon",
+                                  GTK_SIGNAL_FUNC (icon_selected_cb),
+                                  iselector);
 
 	iselector->_priv->icon_list = GNOME_ICON_LIST (list);
 	
@@ -467,8 +485,6 @@ get_selection_handler (GnomeSelector *selector)
     iselector = GNOME_ICON_SELECTOR (selector);
     gil = GNOME_ICON_LIST (iselector->_priv->icon_list);
     list = gnome_icon_list_get_selection (gil);
-
-    g_message (G_STRLOC);
 
     for (c = list; c; c = c->next) {
 	guint pos = GPOINTER_TO_INT (c->data);
