@@ -1,3 +1,8 @@
+1999-09-19  Michael Zucchi  <zucchi@zedzone.mmc.com.au>
+
+	* zvtterm.c (zvt_term_button_release): Make sure we update the
+	selection for a right click, even if the mouse hasn't moved.
+
 1999-09-14  Michael Zucchi  <mzucchi@denr.sa.gov.au>
 
 	* gnome-pty-helper.c (open_ptys): init the termio's structure to

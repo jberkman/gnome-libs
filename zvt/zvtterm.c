@@ -1649,7 +1649,7 @@ zvt_term_button_release (GtkWidget      *widget,
 	gdk_input_add(term->vx->vt.childfd, GDK_INPUT_READ, zvt_term_readdata, term);
     }
 
-    if (vx->selectiontype & VT_SELTYPE_MOVED) {
+    if (vx->selectiontype & (VT_SELTYPE_MOVED|VT_SELTYPE_BYEND|VT_SELTYPE_BYSTART)) {
       vt_fix_selection(vx);
       vt_draw_selection(vx);
           
