@@ -4,8 +4,6 @@ built_SUBDIRS = libgnome libgnomeui gtk-xmhtml gnome-hello libgtktty
 
 SUBDIRS = po intl support macros $(built_SUBDIRS) 
 
-DISTCLEANFILES = stamp-v
-
 include_HEADERS = gnome.h
 
 EXTRA_DIST = HACKING gnomeConf.sh.in
