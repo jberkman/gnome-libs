@@ -6,14 +6,21 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-libs VERSION\n"
-"POT-Creation-Date: 1998-06-07 19:18+0200\n"
+"POT-Creation-Date: 1998-07-16 13:49+0200\n"
 "Last-Translator: Vincent Renardias <vincent@waw.com>\n"
 "Language-Team: Vincent Renardias <vincent@waw.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=iso-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Creation-Date: 1998-02-28 18:40+0100\n"
 "POT-Revision-Date: 1998-03-28 20:08+0100\n"
+
+#: libgnome/gnome-parse.c:44
+msgid ""
+"\n"
+"Generic options"
+msgstr ""
+"\n"
+"Options Génériques"
 
 #: libgnomeui/gnome-about.c:193
 msgid "Author:"
@@ -31,11 +38,11 @@ msgstr "Auteurs: "
 msgid "About"
 msgstr "A Propos"
 
-#: libgnomeui/gnome-file-entry.c:89
+#: libgnomeui/gnome-file-entry.c:90
 msgid "Select file"
 msgstr "Sélectionnez un fichier"
 
-#: libgnomeui/gnome-file-entry.c:146
+#: libgnomeui/gnome-file-entry.c:147
 msgid "Browse..."
 msgstr "Parcourir..."
 
@@ -59,60 +66,68 @@ msgstr "Question"
 msgid "Message"
 msgstr "Message"
 
-#: libgnomeui/gnome-init.c:43
+#: libgnomeui/gnome-init.c:42
+msgid ""
+"\n"
+"Gtk toolkit options"
+msgstr ""
+"\n"
+"Options de Gtk"
+
+#: libgnomeui/gnome-init.c:45
 msgid "DISPLAY"
 msgstr "DISPLAY"
 
-#: libgnomeui/gnome-init.c:43
+#: libgnomeui/gnome-init.c:45
 msgid "X display to use"
 msgstr "Display X a utiliser"
 
-#: libgnomeui/gnome-init.c:45
+#: libgnomeui/gnome-init.c:47
 msgid "Don't use X shared memory extension"
 msgstr "Ne pas utiliser l'entention mémoire partagée X11"
 
-#: libgnomeui/gnome-init.c:46
+#: libgnomeui/gnome-init.c:48
 msgid "NAME"
 msgstr "NAME"
 
-#: libgnomeui/gnome-init.c:46 libgnomeui/gnome-init.c:47
 #: libgnomeui/gnome-init.c:48 libgnomeui/gnome-init.c:49
 #: libgnomeui/gnome-init.c:50 libgnomeui/gnome-init.c:51
+#: libgnomeui/gnome-init.c:52 libgnomeui/gnome-init.c:53
 msgid "FIXME"
 msgstr "FIXME"
 
-#: libgnomeui/gnome-init.c:47
+#: libgnomeui/gnome-init.c:49
 msgid "CLASS"
 msgstr "CLASS"
 
-#: libgnomeui/gnome-init.c:48
+#: libgnomeui/gnome-init.c:50
 msgid "HOST"
 msgstr "HOTE"
 
-#: libgnomeui/gnome-init.c:49
+#: libgnomeui/gnome-init.c:51
 msgid "PORT"
 msgstr "PORT"
 
-#: libgnomeui/gnome-init.c:50 libgnomeui/gnome-init.c:51
+#: libgnomeui/gnome-init.c:52 libgnomeui/gnome-init.c:53
 msgid "STYLE"
 msgstr "STYLE"
 
-#: gnome-hello/gnome-hello-4-SM.c:67 libgnomeui/gnome-client.c:157
-#: libgnomeui/gnome-client.c:159
+#: gnome-hello/gnome-hello-4-SM.c:91 libgnomeui/gnome-client.c:170
+#: libgnomeui/gnome-client.c:172
 msgid "ID"
 msgstr "ID"
 
-#: libgnomeui/gnome-client.c:158
+#: libgnomeui/gnome-client.c:171
 msgid "Specify session management id"
 msgstr "Spécifiez l'ID de gestion de session"
 
-#: libgnomeui/gnome-client.c:160
+#: libgnomeui/gnome-client.c:173
 msgid "Specify id of cloned client"
 msgstr "Spécifiez l'ID du client cloné"
 
-#: libgnomeui/gnome-client.c:162
-msgid "Disable connetion to session manager"
-msgstr "Désactiver la connexion avec le gestionnaire de session"
+#: libgnomeui/gnome-client.c:175
+msgid "Disable connection to session manager"
+msgstr "Désactive la connexion avec le gestionnaire de session"
 
 #: libgnomeui/gnome_segv.c:58
 msgid ""
@@ -137,172 +152,172 @@ msgstr ""
 "\n"
 "Voulez-vous quitter ce programme?"
 
-#: libgnomeui/gnome-calculator.c:889 libgnomeui/gnome-calculator.c:1049
+#: libgnomeui/gnome-calculator.c:908 libgnomeui/gnome-calculator.c:1068
 msgid "DEG"
 msgstr "DEG"
 
-#: libgnomeui/gnome-calculator.c:891
+#: libgnomeui/gnome-calculator.c:910
 msgid "RAD"
 msgstr "RAD"
 
-#: libgnomeui/gnome-calculator.c:893
+#: libgnomeui/gnome-calculator.c:912
 msgid "GRAD"
 msgstr "GRAD"
 
-#: libgnomeui/gnome-calculator.c:1039
+#: libgnomeui/gnome-calculator.c:1058
 msgid "1/x"
 msgstr "1/x"
 
-#: libgnomeui/gnome-calculator.c:1040
+#: libgnomeui/gnome-calculator.c:1059
 msgid "x^2"
 msgstr "x^2"
 
-#: libgnomeui/gnome-calculator.c:1041
+#: libgnomeui/gnome-calculator.c:1060
 msgid "SQRT"
 msgstr "RAC"
 
-#: libgnomeui/gnome-calculator.c:1042
+#: libgnomeui/gnome-calculator.c:1061
 msgid "CE/C"
 msgstr "CE/C"
 
-#: libgnomeui/gnome-calculator.c:1043
+#: libgnomeui/gnome-calculator.c:1062
 msgid "AC"
 msgstr "AC"
 
 #. inverse button
-#: libgnomeui/gnome-calculator.c:1046
+#: libgnomeui/gnome-calculator.c:1065
 msgid "sin"
 msgstr "sin"
 
-#: libgnomeui/gnome-calculator.c:1047
+#: libgnomeui/gnome-calculator.c:1066
 msgid "cos"
 msgstr "cos"
 
-#: libgnomeui/gnome-calculator.c:1048
+#: libgnomeui/gnome-calculator.c:1067
 msgid "tan"
 msgstr "tan"
 
-#: libgnomeui/gnome-calculator.c:1051
+#: libgnomeui/gnome-calculator.c:1070
 msgid "e"
 msgstr "e"
 
-#: libgnomeui/gnome-calculator.c:1052
+#: libgnomeui/gnome-calculator.c:1071
 msgid "EE"
 msgstr "EE"
 
-#: libgnomeui/gnome-calculator.c:1053
+#: libgnomeui/gnome-calculator.c:1072
 msgid "log"
 msgstr "log"
 
-#: libgnomeui/gnome-calculator.c:1054
+#: libgnomeui/gnome-calculator.c:1073
 msgid "ln"
 msgstr "ln"
 
-#: libgnomeui/gnome-calculator.c:1055
+#: libgnomeui/gnome-calculator.c:1074
 msgid "x^y"
 msgstr "x^y"
 
-#: libgnomeui/gnome-calculator.c:1057
+#: libgnomeui/gnome-calculator.c:1076
 msgid "PI"
 msgstr "PI"
 
-#: libgnomeui/gnome-calculator.c:1058
+#: libgnomeui/gnome-calculator.c:1077
 msgid "x!"
 msgstr "x!"
 
-#: libgnomeui/gnome-calculator.c:1059
+#: libgnomeui/gnome-calculator.c:1078
 msgid "("
 msgstr "("
 
-#: libgnomeui/gnome-calculator.c:1060
+#: libgnomeui/gnome-calculator.c:1079
 msgid ")"
 msgstr ")"
 
-#: libgnomeui/gnome-calculator.c:1061
+#: libgnomeui/gnome-calculator.c:1080
 msgid "/"
 msgstr "/"
 
-#: libgnomeui/gnome-calculator.c:1063
+#: libgnomeui/gnome-calculator.c:1082
 msgid "STO"
 msgstr "STO"
 
-#: libgnomeui/gnome-calculator.c:1064
+#: libgnomeui/gnome-calculator.c:1083
 msgid "7"
 msgstr "7"
 
-#: libgnomeui/gnome-calculator.c:1065
+#: libgnomeui/gnome-calculator.c:1084
 msgid "8"
 msgstr "8"
 
-#: libgnomeui/gnome-calculator.c:1066
+#: libgnomeui/gnome-calculator.c:1085
 msgid "9"
 msgstr "9"
 
-#: libgnomeui/gnome-calculator.c:1067
+#: libgnomeui/gnome-calculator.c:1086
 msgid "*"
 msgstr "*"
 
-#: libgnomeui/gnome-calculator.c:1069
+#: libgnomeui/gnome-calculator.c:1088
 msgid "RCL"
 msgstr "RCL"
 
-#: libgnomeui/gnome-calculator.c:1070
+#: libgnomeui/gnome-calculator.c:1089
 msgid "4"
 msgstr "4"
 
-#: libgnomeui/gnome-calculator.c:1071
+#: libgnomeui/gnome-calculator.c:1090
 msgid "5"
 msgstr "5"
 
-#: libgnomeui/gnome-calculator.c:1072
+#: libgnomeui/gnome-calculator.c:1091
 msgid "6"
 msgstr "6"
 
-#: libgnomeui/gnome-calculator.c:1073
+#: libgnomeui/gnome-calculator.c:1092
 msgid "-"
 msgstr "-"
 
-#: libgnomeui/gnome-calculator.c:1075
+#: libgnomeui/gnome-calculator.c:1094
 msgid "SUM"
 msgstr "SOM"
 
-#: libgnomeui/gnome-calculator.c:1076
+#: libgnomeui/gnome-calculator.c:1095
 msgid "1"
 msgstr "1"
 
-#: libgnomeui/gnome-calculator.c:1077
+#: libgnomeui/gnome-calculator.c:1096
 msgid "2"
 msgstr "2"
 
-#: libgnomeui/gnome-calculator.c:1078
+#: libgnomeui/gnome-calculator.c:1097
 msgid "3"
 msgstr "3"
 
-#: libgnomeui/gnome-calculator.c:1079
+#: libgnomeui/gnome-calculator.c:1098
 msgid "+"
 msgstr "+"
 
-#: libgnomeui/gnome-calculator.c:1081
+#: libgnomeui/gnome-calculator.c:1100
 msgid "EXC"
 msgstr "EXC"
 
-#: libgnomeui/gnome-calculator.c:1082
+#: libgnomeui/gnome-calculator.c:1101
 msgid "0"
 msgstr "0"
 
-#: libgnomeui/gnome-calculator.c:1083
+#: libgnomeui/gnome-calculator.c:1102
 msgid "."
 msgstr "."
 
-#: libgnomeui/gnome-calculator.c:1084
+#: libgnomeui/gnome-calculator.c:1103
 msgid "+/-"
 msgstr "+/-"
 
-#: libgnomeui/gnome-calculator.c:1085
+#: libgnomeui/gnome-calculator.c:1104
 msgid "="
 msgstr "="
 
-#: libgnomeui/gnome-calculator.c:1149
+#: libgnomeui/gnome-calculator.c:1194
 msgid "INV"
 msgstr "INV"
 
@@ -339,22 +354,22 @@ msgstr "%s: Trop d'arguments\n"
 msgid "(PROGRAM ERROR) Option should have been recognized!?"
 msgstr "(ERREUR PROGRAMME) L'option aurait du etre reconnue!?"
 
-#: support/argp-help.c:186
+#: support/argp-help.c:185
 #, c-format
 msgid "%.*s: ARGP_HELP_FMT parameter requires a value"
 msgstr "%.*s: Le paramétre ARGP_HELP_FMT nécessite une valeur"
 
-#: support/argp-help.c:195
+#: support/argp-help.c:194
 #, c-format
 msgid "%.*s: Unknown ARGP_HELP_FMT parameter"
 msgstr "%.*s: Paramétre ARGP_HELP_FMT inconnu"
 
-#: support/argp-help.c:207
+#: support/argp-help.c:206
 #, c-format
 msgid "Garbage in ARGP_HELP_FMT: %s"
 msgstr "Détritus dans ARGP_HELP_FMT: %s"
 
-#: support/argp-help.c:1147
+#: support/argp-help.c:1146
 msgid ""
 "Mandatory or optional arguments to long options are also mandatory or "
 "optional for any corresponding short options."
@@ -362,24 +377,24 @@ msgstr ""
 "Les arguments optionnels ou obligatoires pour les options longues sont "
 "également optionnels ou obligatoires pour les formes courtes correspondantes."
 
-#: support/argp-help.c:1523
+#: support/argp-help.c:1522
 msgid "Usage:"
 msgstr "Usage:"
 
-#: support/argp-help.c:1527
+#: support/argp-help.c:1526
 msgid "  or: "
 msgstr "  ou: "
 
-#: support/argp-help.c:1539
+#: support/argp-help.c:1538
 msgid " [OPTION...]"
 msgstr " [OPTION...]"
 
-#: support/argp-help.c:1566
+#: support/argp-help.c:1565
 #, c-format
 msgid "Try `%s --help' or `%s --usage' for more information.\n"
 msgstr "Essayez `%s --help' ou `%s --usage' pour plus d'informations.\n"
 
-#: support/argp-help.c:1594
+#: support/argp-help.c:1593
 #, c-format
 msgid "Report bugs to %s.\n"
 msgstr "Rapportez les bugs éventuels à %s.\n"
@@ -404,68 +419,68 @@ msgstr "Effacer"
 msgid "Top Ten"
 msgstr "Top 10"
 
-#: libgnomeui/gnome-stock.c:484
+#: libgnomeui/gnome-stock.c:485
 msgid "OK"
 msgstr "OK"
 
-#: libgnomeui/gnome-stock.c:485
+#: libgnomeui/gnome-stock.c:486
 msgid "Apply"
 msgstr "Appliquer"
 
-#: libgnomeui/gnome-stock.c:486
+#: libgnomeui/gnome-stock.c:487
 msgid "Cancel"
 msgstr "Annuler"
 
-#: libgnomeui/gnome-stock.c:487
+#: libgnomeui/gnome-stock.c:488
 msgid "Close"
 msgstr "Fermer"
 
-#: libgnomeui/gnome-stock.c:488
+#: libgnomeui/gnome-stock.c:489
 msgid "Yes"
 msgstr "Oui"
 
-#: libgnomeui/gnome-stock.c:489
+#: libgnomeui/gnome-stock.c:490
 msgid "No"
 msgstr "Non"
 
-#: libgnomeui/gnome-stock.c:490
+#: gnome-hello/gnome-hello-4-SM.c:79 libgnomeui/gnome-stock.c:491
 msgid "Help"
 msgstr "Aide"
 
-#: libgnomeui/gnome-stock.c:1399
+#: libgnomeui/gnome-stock.c:1407
 msgid "Menu Accelerator Keys"
 msgstr "Touches Acceleratrices du Menu"
 
-#: libgnomeui/gnome-stock.c:1401
+#: libgnomeui/gnome-stock.c:1409
 msgid "Global"
 msgstr "Global"
 
-#: libgnomeui/gnome-stock.c:1403
+#: libgnomeui/gnome-stock.c:1411
 msgid "Menu Item"
 msgstr "Elément de Menu"
 
-#: libgnomeui/gnome-stock.c:1404
+#: libgnomeui/gnome-stock.c:1412
 msgid "Accelerator"
 msgstr "Accélérateur"
 
 #: gnome-hello/gnome-hello-2-i18n.c:31
-#: gnome-hello/gnome-hello-3-parse-args.c:33 gnome-hello/gnome-hello-4-SM.c:54
+#: gnome-hello/gnome-hello-3-parse-args.c:33
 msgid "File/Exit"
 msgstr "Fichier/Quitter"
 
 #: gnome-hello/gnome-hello-2-i18n.c:31
-#: gnome-hello/gnome-hello-3-parse-args.c:33 gnome-hello/gnome-hello-4-SM.c:54
+#: gnome-hello/gnome-hello-3-parse-args.c:33
 msgid "<control>E"
 msgstr "<control>E"
 
 #. The '...' end indicate that the options open a dialog
 #: gnome-hello/gnome-hello-2-i18n.c:33
-#: gnome-hello/gnome-hello-3-parse-args.c:35 gnome-hello/gnome-hello-4-SM.c:56
+#: gnome-hello/gnome-hello-3-parse-args.c:35
 msgid "Help/About..."
 msgstr "Aide/A Propos..."
 
 #: gnome-hello/gnome-hello-2-i18n.c:33
-#: gnome-hello/gnome-hello-3-parse-args.c:35 gnome-hello/gnome-hello-4-SM.c:56
+#: gnome-hello/gnome-hello-3-parse-args.c:35
 msgid "<control>A"
 msgstr "<control>A"
 
@@ -473,7 +488,7 @@ msgstr "<control>A"
 #. the program from your WM
 #: gnome-hello/gnome-hello-2-i18n.c:69
 #: gnome-hello/gnome-hello-3-parse-args.c:99
-#: gnome-hello/gnome-hello-4-SM.c:139
+#: gnome-hello/gnome-hello-4-SM.c:197
 msgid "Hello World Gnomified"
 msgstr "Hello World Gnomifié"
 
@@ -481,26 +496,26 @@ msgstr "Hello World Gnomifié"
 #. to be the content of the main window
 #: gnome-hello/gnome-hello-2-i18n.c:83
 #: gnome-hello/gnome-hello-3-parse-args.c:113
-#: gnome-hello/gnome-hello-4-SM.c:158
+#: gnome-hello/gnome-hello-4-SM.c:213
 msgid "Hello GNOME"
 msgstr "Hello GNOME"
 
 #: gnome-hello/gnome-hello-2-i18n.c:102
 #: gnome-hello/gnome-hello-3-parse-args.c:132
-#: gnome-hello/gnome-hello-4-SM.c:177
+#: gnome-hello/gnome-hello-4-SM.c:232
 msgid "Hello GNOME\n"
 msgstr "Hello GNOME\n"
 
 #: gnome-hello/gnome-hello-2-i18n.c:125
 #: gnome-hello/gnome-hello-3-parse-args.c:155
-#: gnome-hello/gnome-hello-4-SM.c:200
+#: gnome-hello/gnome-hello-4-SM.c:255
 msgid "The Hello World Gnomified"
 msgstr "Hello World Gnomifié"
 
 #. another comments
 #: gnome-hello/gnome-hello-2-i18n.c:130
 #: gnome-hello/gnome-hello-3-parse-args.c:160
-#: gnome-hello/gnome-hello-4-SM.c:205
+#: gnome-hello/gnome-hello-4-SM.c:260
 msgid "GNOME is a civilized software system so we've a \"hello world\" program"
 msgstr ""
 "GNOME est un locigiel civilisé qui comporte un programme \"hello world\""
@@ -509,7 +524,26 @@ msgstr ""
 msgid "Run silently"
 msgstr "Tourner en silence"
 
-#: gnome-hello/gnome-hello-4-SM.c:67
+#: gnome-hello/gnome-hello-4-SM.c:54
+msgid "Exit"
+msgstr "Quitter"
+
+#: gnome-hello/gnome-hello-4-SM.c:54
+msgid "Exit GNOME hello"
+msgstr "Quitter GNOME hello"
+
+#: gnome-hello/gnome-hello-4-SM.c:66
+msgid "About..."
+msgstr "A Propos..."
+
+#: gnome-hello/gnome-hello-4-SM.c:66
+msgid "Info about GNOME hello"
+msgstr "Information sur GNOME hello"
+
+#: gnome-hello/gnome-hello-4-SM.c:78
+msgid "File"
+msgstr "Fichier"
+
+#: gnome-hello/gnome-hello-4-SM.c:91
 msgid "Discard session"
 msgstr "Ne pas sauver la session"
-
