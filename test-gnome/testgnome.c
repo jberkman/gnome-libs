@@ -236,6 +236,53 @@ gtk_widget_show(app);
 }
 */
 
+
+static void
+create_lamp_update(GtkAdjustment *adj, GnomeLamp *lamp)
+{
+	GdkColor c;
+	
+	c.red = (adj->value / 100) * 0xf000;
+	c.green = (1.0 - (adj->value / 100)) * 0xf000;
+	c.blue = (c.red < 0x8000) ? c.red + 0x8000 : c.green + 0x8000;
+	gnome_lamp_set_color(lamp, &c);
+}
+
+static void
+create_lamp(void)
+{
+	GtkWidget *w, *lamp, *vbox, *hbox, *scale, *app;
+	GtkAdjustment *adj;
+
+	app = create_newwin(TRUE, "testGNOME", "Lamp/Beacon");
+	vbox = gtk_vbox_new(0, FALSE);
+	hbox = gtk_hbox_new(0, FALSE);
+	gtk_widget_show(hbox);
+	gtk_box_pack_start_defaults(GTK_BOX(vbox), hbox);
+	lamp = gnome_lamp_new();
+	gtk_box_pack_start_defaults(GTK_BOX(hbox), lamp);
+	gtk_widget_show(lamp);
+	w = gnome_lamp_new_with_type(GNOME_LAMP_INPUT);
+	gtk_widget_show(w);
+	gtk_box_pack_start_defaults(GTK_BOX(hbox), w);
+	w = gnome_lamp_new();
+	gnome_lamp_set_sequence(GNOME_LAMP(w), "RRRBBBRYGABPRRRBBB");
+	gtk_widget_show(w);
+	gtk_box_pack_start_defaults(GTK_BOX(hbox), w);
+	adj = (GtkAdjustment *)gtk_adjustment_new(0.0, 0.0, 110.0,
+						  1.0, 10.0, 10.0);
+	create_lamp_update(adj, GNOME_LAMP(lamp));
+	gtk_signal_connect(GTK_OBJECT(adj), "value_changed",
+			   (GtkSignalFunc)create_lamp_update, lamp);
+	scale = gtk_hscale_new(adj);
+	gtk_scale_set_draw_value(GTK_SCALE(scale), FALSE);
+	gtk_box_pack_start_defaults(GTK_BOX(vbox), scale);
+	gtk_widget_show(scale);
+	gtk_widget_show(vbox);
+	gnome_app_set_contents(GNOME_APP(app), vbox);
+	gtk_widget_show(app);
+}
+
 void create_less()
 {
 	GtkWidget *app;
@@ -302,6 +349,7 @@ int main (int argc, char *argv[])
 		  { "file entry", create_file_entry },
 		  { "font sel", create_font_sel },
 /*	{ "icon list", create_icon_list }, */
+		  { "lamp", create_lamp },
 		  { "less", create_less },
 		  { "pixmap", create_pixmap },
 /*	{ "prop box", create_property_box }, */
@@ -353,6 +401,7 @@ int main (int argc, char *argv[])
 
 	gtk_widget_show (app);
 	gtk_main();
+	return 0;
 }
 
 
