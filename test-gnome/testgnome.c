@@ -316,19 +316,19 @@ create_druid(void)
 
   /* The druid pages. */
   page_start = gnome_druid_page_edge_new_with_vals
-    (GNOME_EDGE_START, "Beginning of the DRUID",
+    (GNOME_EDGE_START, FALSE, "Beginning of the DRUID",
      "This is a Sample DRUID\nIt will walk you through absolutely nothing. (-:\n\nIt would be nice to have a watermark on the left.",
      logo,
      NULL);
-  page_a = gnome_druid_page_standard_new_with_vals ("Page A", logo);
-  page_b = gnome_druid_page_standard_new_with_vals ("Page B", logo);
-  page_c = gnome_druid_page_standard_new_with_vals ("Page C", logo);
-  page_d = gnome_druid_page_standard_new_with_vals ("Page D", logo);
-  page_e = gnome_druid_page_standard_new_with_vals ("Page E", logo);
-  page_f = gnome_druid_page_standard_new_with_vals ("Page F", logo);
-  page_g = gnome_druid_page_standard_new_with_vals ("Page G", logo);
+  page_a = gnome_druid_page_standard_new_with_vals (FALSE, "Page A", logo);
+  page_b = gnome_druid_page_standard_new_with_vals (FALSE, "Page B", logo);
+  page_c = gnome_druid_page_standard_new_with_vals (FALSE, "Page C", logo);
+  page_d = gnome_druid_page_standard_new_with_vals (FALSE, "Page D", logo);
+  page_e = gnome_druid_page_standard_new_with_vals (FALSE, "Page E", logo);
+  page_f = gnome_druid_page_standard_new_with_vals (FALSE, "Page F", logo);
+  page_g = gnome_druid_page_standard_new_with_vals (FALSE, "Page G", logo);
   page_finish = gnome_druid_page_edge_new_with_vals
-    (GNOME_EDGE_FINISH, "End of the DRUID",
+    (GNOME_EDGE_FINISH, FALSE, "End of the DRUID",
      "I hope you found this demo informative.  You would\nnormally put a message here letting someone know\nthat they'd successfully installed something.",
      logo,
      NULL);
