@@ -64,35 +64,29 @@ appear to be:
 
 EOF
 
+    none=true
     for dir in `echo $module_dirs | sed 's/:/ /'`; do
-       conf_shs="${conf_shs} `cd ${dir}; echo *Conf.sh`"
+	conf_shs=`cd $dir; echo *Conf.sh`
+	if test "x$conf_shs" = x || test "x$conf_shs" = 'x*Conf.sh'; then :
+	else
+	    none=false
+	    # gnomeConf.sh is a placebo, in case the `echo' turns up nasties
+	    set gnomeConf.sh $conf_shs
+
+	    for i
+	    do
+		case "$i" in
+		# ignore either placebo or installed file
+		gnomeConf.sh) ;;
+		*Conf.sh) echo "    $i" | sed -e 's/Conf\.sh$//' ;;
+		# should not happen
+		*) exit_code=2 ; echo "*** ERROR: What is this? $i" 1>&2 ;;
+		esac
+	    done
+	fi
     done
 
-    if test "x$conf_shs" = x || test "x$conf_shs" = 'x*Conf.sh'; then
-	echo "    <NONE>"
-    else
-	# gnomeConf.sh is a placebo, in case the `echo' turns up some nasties
-	set gnomeConf.sh $conf_shs
-
-	for i
-	do
-	    case "$i" in
-	    gnomeConf.sh) 
-		# either the placebo or installed file, it doesn't matter
-		# `gnome' is handled as a special case already
-		;;
-	    *Conf.sh) 
-		# strip out the trailing Conf.sh
-		echo "    $i" | sed -e 's/Conf\.sh$//'
-		;;
-	    *)
-		# should not happen
-		echo "*** ERROR: What is this? $i"
-		exit_code=2
-		;;
-	    esac
-	done
-    fi
+    test true = "$none" && echo "    <NONE>"
 
     exit $exit_code
 }
@@ -196,6 +190,7 @@ while test $# -gt 0; do
     		the_libs="$the_libs `eval echo $cnf_libdir` `eval echo $cnf_libs`"
     		the_flags="$the_flags `eval echo $cnf_flags`"
 		error=false
+		break
     	    fi
         done
 	if $error; then
