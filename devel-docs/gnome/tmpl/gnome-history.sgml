@@ -6,19 +6,19 @@ Keeping track of recently used documents.
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-These functions provide access to store and retrieve a list of
-recently used documents.  Applications need to call
+These functions provide ways to store and retrieve a list of
+recently used documents.  Applications need to call the
 gnome_history_recently_used() routine with the proper arguments to
 register a file as having been recently used.  The creator field
-should be an action in the format supported by the "open" mime-type
+should be an action in the format supported by the "open" MIME type
 action (for example "program %f", or "program") to re-open the
 document.</para>
 
 <para>In the following example, the file
-<filename>sales.gnumeric</filename> will be added to the historic list
-of visited documents, the mime-type of the file is
+<filename>sales.gnumeric</filename> will be added to the history
+of visited documents, the MIME type of the file is
 "application/x-gnumeric" and the program that will open this file is
-"gnumeric".  Finally note that the descriptive information is
+"gnumeric".  Finally, note that the descriptive information is
 surrounded by the _() macro to have this item translated to the user's
 language at runtime.</para>
 

@@ -2,21 +2,21 @@
 gnome-mime-info
 
 <!-- ##### SECTION Short_Description ##### -->
-Routines to get information bound to a MIME-type.
+Routines to get information bound to a MIME type.
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
 The routines in the <filename>gnome-mime-info</filename> allow
-retrieval of information that has been bound to a given mime-type.
+retrieval of information that has been bound to a given MIME type.
 There are a number of standard keys used in GNOME to provide default
 actions and behaviour.</para>
 
 <para>
-To add keys to a mime-type, it is necessary to install a file with the
+To add keys to a MIME type, it is necessary to install a file with the
 extension <filename>.keys</filename> in the
 <filename>$gnome/share/mime-info</filename> directory or in the
 <filename>~/.gnome/mime-info directory</filename> directory.  The
-former is for system-provided mime-information and the latter is to
+former is for system-provided MIME information and the latter is to
 enable the user to extend the actions as provided by the system.
 </para>
 
@@ -27,7 +27,7 @@ addition, the file <filename>~/.gnome/mime-info/user.keys</filename> is
 read last.  This will guarantee that there is a way to set system
 defaults, and there is a way for the user to override them.  There is
 currently no way to tell anything about the order of the other files in
-those directories, nor is there anyway to override system defaults yet.
+those directories, nor is there any way to override system defaults yet.
 </para>
 
 <para>
@@ -43,7 +43,7 @@ mime-type-match:
 
 <para>
 Above, the <structfield>key</structfield> is the key that is being
-defined and <structfield>value</structfield> is the value we bind to
+defined, and <structfield>value</structfield> is the value we bind to
 it.  The optional <structfield>[LANG]</structfield> represents a
 language in which this definition is valid.  If this part is
 specified, then the definition will only be valid if LANG matches the
@@ -53,7 +53,7 @@ provide keys which can be displayed to the user in a localized way.
 
 <para>
 This is an example to bind the key <emphasis>open</emphasis> to all of
-the mime-types matching <emphasis>image/*</emphasis> and the
+the MIME types matching <emphasis>image/*</emphasis> and the
 <emphasis>icon-filename</emphasis> key is bound to the
 <filename>/opt/gimp/share/xcf.png</filename> value:</para>
 
@@ -69,10 +69,10 @@ image/x-xcf:
 </example>
 
 <para>This will make the GIMP the handler for the open action.  Files of
-type xcf would use the filename pointed in the icon-filename key.</para>
+type xcf would use the filename pointed to in the icon-filename key.</para>
 
 <para>%f gets interpolated with the file name or the list of file names that
-matched this mime-type.</para>
+matched this MIME type.</para>
 
 <para>As you can see from the example above, a
 <filename>.keys</filename> file does not need to provide all of the

@@ -7,15 +7,16 @@ Hierarchical signal mechanism for application events.
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-The GNOME triggers API was intended to provide a general way of the
+The GNOME triggers API was intended to provide a general way for the
 application to tell GNOME about "interesting events".  Most of it is
 presently deprecated - at the present time, the application writer
-should only use gnome_triggers_do and gnome_triggers_vdo for the purpose of firing application sound events
-(in conjunction with .soundlist files).
+should only use gnome_triggers_do and gnome_triggers_vdo for the purpose
+of firing application sound events (in conjunction with .soundlist files).
 </para>
 
 <para>
-Please see the "GNOME configuration files" white paper for more information on .soundlist files.
+Please see the "GNOME configuration files" white paper for more information
+on .soundlist files.
 </para>
 
 <!-- ##### SECTION See_Also ##### -->
@@ -81,7 +82,8 @@ Deprecated.
 
 <!-- ##### FUNCTION gnome_triggers_do ##### -->
 <para>
-This function tells the GNOME framework that an event has occurred inside the application that GNOME might be interested in.
+This function tells the GNOME framework that an event has occurred inside 
+the application that GNOME might be interested in.
 Currently this is just used to trigger user-configurable sound events.
 </para>
 

@@ -7,8 +7,8 @@ Support for localization and internationalization.
 <!-- ##### SECTION Long_Description ##### -->
 <para>
   This module allows the programmer to internationalize his
-  application by providing a number macros that can be used to tag his
-  texts and some functions that control the internationalization of
+  application by providing a number of macros that can be used to tag his
+  texts, and some functions that control the internationalization of
   the application or library.
 </para>
 
@@ -49,10 +49,10 @@ void print_hello (void)
   shared object CORBA servers (CORBA servers implemented as shared
   libraries), you should define the
   <emphasis>GNOME_EXPLICIT_TRANSLATION_DOMAIN</emphasis> macro to your
-  package name (usually a define on the compilation Makefile or in the
+  package name (usually a define in the compilation Makefile or in the
   config.h file will do it).  By doing this your library, shared
   library or CORBA server will explicitly translate its string
-  messages in its translation domain (rather than using the
+  messages in its own translation domain (rather than using the
   application domain, which will not have a translation table for your
   messages). 
 </para>
@@ -88,7 +88,7 @@ void print_hello (void)
   This macro is just an identity macro, the only purpose of this macro
   is to allow <filename>gettext</filename> to identify the string as a
   translatable message.  This macro can be used in static
-  initializers, while the _() macros can not be used.
+  initializers, where the _() macros can not be used.
 
   <example>
     <title>Typical usage of the N_ macro</title>

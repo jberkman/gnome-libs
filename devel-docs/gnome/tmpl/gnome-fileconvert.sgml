@@ -11,9 +11,9 @@ target mime type.  They return -1 on failure, or an opened file
 descriptor with the data on success</para>
 
 <para>
-The rules for converting from a mime-type to another mime-type are
+The rules for converting from one MIME type to another are
 loaded from the <filename>$gnome-prefix/share/type-convert</filename>
-directory, any files in that directory whose extension is
+directory. Any files in that directory whose extension is
 <filename>.convert</filename> is loaded as well as the per-user
 <filename>~/.gnome/type.convert</filename> file.</para>
 
