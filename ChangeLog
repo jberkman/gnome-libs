@@ -1,5 +1,9 @@
 1998-02-20  Carsten Schaar  <nhadcasc@fs-maphy.uni-hannover.de>
 
+	* libgnome/gnome-mime.c: Now includes 'libgnome.h' and 'gtk/gtk.h'
+ 	instead of 'gnome.h'. This removes the dependence from
+ 	'libgnomeui.h'.
+
 	* devel-docs/.cvsignore: Added 'Makefile' and 'Makefile.in'.
 
 	* configure.in (ALL_LINGUAS): Added german translations.
