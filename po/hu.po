@@ -1299,7 +1299,8 @@ msgid ""
 "future SIGSEGV's"
 msgstr ""
 "Nem, és ezután\n"
-"ne reagálj's"
+"ne reagálj a "
+"SIGSEGVekre"
 
 #: libgnomeui/gnome_segv.c:79
 #, c-format
@@ -1310,6 +1311,11 @@ msgid ""
 "\n"
 "Do you want to exit this program?"
 msgstr ""
+"Az alkalmazásban (%s) hiba van.\n"
+"SIGSEGV generálódott: PC %#lx PID %d.\n"
+"\n"
+"\n"
+"Ki akarsz lépni a programból?"
 
 #: libgnomeui/stock_demo.c:112
 msgid "New..."
@@ -1504,12 +1510,12 @@ msgstr ""
 #: libgnorba/gnome-name-server.c:230
 #, c-format
 msgid "Creating '/GNOME' context %s %d"
-msgstr ""
+msgstr "/GNOME környezet létrehozása: %s %d"
 
 #: libgnorba/gnome-name-server.c:247
 #, c-format
 msgid "Creating '/GNOME/Servers' context %s %d"
-msgstr ""
+msgstr "/GNOME/Servers környezet létrehozása: %s %d"
 
 #: libgnorba/goad-browser.c:27
 msgid "GOAD ID of the server to activate"
