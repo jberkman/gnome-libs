@@ -22,7 +22,7 @@ libzvt_2_0_la_SOURCES =		\
 	background.c		\
 	zvtterm.c
 
-libzvt_la_LDFLAGS = -version-info 0:0:0
+libzvt_2_0_la_LDFLAGS = -version-info 0:0:0
 
 libzvtinclude_HEADERS =		\
 	lists.h			\

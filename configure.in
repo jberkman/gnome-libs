@@ -360,7 +360,7 @@ GNOME_LIBS="-lgnome-$GNOME_INTERFACE_VERSION $LIBGNOME_LIBS"
 GNOMEUI_LIBS="-lgnomeui-$GNOME_INTERFACE_VERSION $OAF_LIBS $ORBIT_LIBS $ART_LIBS $GTK_LIBS $GNOME_LIBS"
 
 GTKXMHTML_LIBS="-lgtkxmhtml $LIBGTKXMHTML_LIBS"
-ZVT_LIBS="-lzvt-$GNOME_INTERFACE_VERSION $UTIL_LIBS $GTK_LIBS"
+ZVT_LIBS="-lzvt-$GNOME_INTERFACE_VERSION $GTK_LIBS $UTIL_LIBS $GTK_LIBS"
 
 dnl These definitions are expanded in make and gnome-config
 GNOME_LIBDIR='-L${libdir}'
@@ -396,15 +396,8 @@ dnl 	ln -sf `pwd`/.lclintrc $srcdir/libgnome/.lclintrc
 dnl 	ln -sf `pwd`/.lclintrc $srcdir/libgnomeui/.lclintrc
 dnl fi
 
-dnl
-dnl Separate libraries shipped with gnome-libs
-dnl
-AC_CONFIG_SUBDIRS(libart_lgpl gdk-pixbuf)
-
-dnl
-dnl OAF
-dnl
-AC_CONFIG_SUBDIRS(oaf)
+AM_PATH_LIBART(2.1.0, , AC_MSG_ERROR([You must have libart installed.]))
+AM_PATH_GDK_PIXBUF(0.4.0, , AC_MSG_ERROR([You must have gdk-pixbuf installed.]))
 
 dnl
 dnl GNOME libs Documentation

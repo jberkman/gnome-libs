@@ -335,6 +335,11 @@ if [ "$get_gnorba" != "false" ]; then
     the_flags="$the_flags $GNOME_INCLUDEDIR `orbit-config --cflags`"
     the_libs="$the_libs $GNOME_LIBDIR -lgnorba $GNOMEUI_LIBS `orbit-config --libs`"
 fi
+if [ "$get_zvt" != "false" ]; then
+    the_flags="$the_flags $GNOME_INCLUDEDIR"
+    [ -z "$ZVT_LIBS" ] && ZVT_LIBS="-lzvt `gtk-config --libs`"
+    the_libs="$the_libs $GNOME_LIBDIR $ZVT_LIBS"
+fi
 
 # And now, for the rest of the story
 for I in $get_modules; do

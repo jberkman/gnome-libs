@@ -19,8 +19,6 @@ SUBDIRS = po intl support	\
 	tools			\
 	images			\
 	libgnome		\
-	libart_lgpl		\
-	gdk-pixbuf		\
 	libgnomeui		\
 	idl			\
 	$(gconf_SUBDIRS)	\
