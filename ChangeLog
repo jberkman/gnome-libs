@@ -1,3 +1,10 @@
+1999-08-15  Pablo Saratxaga <srtxg@chanae.alphanet.ch>
+
+	* libgnomeui/gnome-app-helper.c: changed "Create _New Window" to
+	"Create New _Window" to avoid conflicts with menus that also use
+	"_New" (it is the case of gmc)
+	* po/*.po: modified to reflect that change
+
 1999-07-26  Miguel de Icaza  <miguel@gnu.org>
 
 	* libgnorba/orbitgtk.c (gnorba_CORBA_init): Add new flag to
