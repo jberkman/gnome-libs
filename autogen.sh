@@ -28,6 +28,7 @@ DIE=0
     NO_AUTOMAKE=yes
 }
 
+
 # if no automake, don't bother testing for aclocal
 test -n "$NO_AUTOMAKE" || (aclocal --version) < /dev/null > /dev/null 2>&1 || {
     echo
@@ -75,7 +76,7 @@ fi
 for i in libgtktty .
 do 
     echo processing $srcdir/$i
-    (cd $srcdir/$i; aclocal; automake --gnu; autoheader; autoconf)
+    (cd $srcdir/$i; libtoolize --copy --force; aclocal; automake --gnu; autoheader; autoconf)
 done
 
 echo running $srcdir/configure
