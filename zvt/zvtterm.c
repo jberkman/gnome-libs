@@ -1131,6 +1131,9 @@ zvt_term_key_press (GtkWidget *widget, GdkEventKey *event)
   handled = TRUE;
   switch (event->keyval) {
   case GDK_BackSpace:
+    if (event->state & GDK_MOD1_MASK){
+      *p++ = '\033';
+    }
     *p++ = 8;
     break;
   case GDK_KP_Right:
@@ -1154,6 +1157,9 @@ zvt_term_key_press (GtkWidget *widget, GdkEventKey *event)
     p+=sprintf (p, "\033[2~");
     break;
   case GDK_Delete:
+    if (event->state & GDK_MOD1_MASK){
+      *p++ = '\033';
+    }
     *p++ = '\177';
     break;
   case GDK_KP_Delete:

@@ -1,5 +1,10 @@
 1998-06-15  Michael Zucchi  <zucchi@zzedzone.box.net.au>
 
+	* zvtterm.c (zvt_term_key_press): Insert \033 before backspace for
+	meta-bs.
+	(zvt_term_key_press): Same for delete.  Should probably be a
+	cleaner/more generic way to do this.
+
 	* vt.c (vt_gx_set): New function, sets the current font remappings
 	for G0 to G3 font.
 	(vt_init): Initialise vt->Gx, and vt->G[x]
