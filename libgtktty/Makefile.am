@@ -3,12 +3,12 @@ bin_PROGRAMS = gemvt
 LINK     = $(LIBTOOL) --mode=link $(CC) $(CFLAGS) $(LDFLAGS) $(X_LIBS) -o $@
 INCLUDE_always = -I$(includedir) $(X_CFLAGS)
 GNOMELIBS = \
-	../../libgnomeui/libgnomeui.la \
-	../../libgnome/libgnome.la
+	../libgnomeui/libgnomeui.la \
+	../libgnome/libgnome.la
 
 if	BUILD_LIBGEMVT
 
-INCLUDES = -I../.. -I$(srcdir)/../.. $(INCLUDE_always)
+INCLUDES = -I.. -I$(srcdir)/../.. $(INCLUDE_always)
 gemvt_SOURCES = $(gmevt_c_files) 
 gemvt_LDADD = $(top_builddir)/libgemvt.la $(GNOMELIBS) $(GETOPT_OBJS) \
 	      $(INTLLIBS)

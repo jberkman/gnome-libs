@@ -10,8 +10,7 @@ LDADD = \
 	$(XPM_LIBS)					\
 	$(GTK_LIBS)					\
 	$(DL_LIB)					\
-        $(X_LIBS) $(x_libs) $(INTLLIBS)			\
-	$(top_builddir)/support/libsupport.a
+        $(X_LIBS) $(x_libs) $(INTLLIBS)			
 
 noinst_PROGRAMS =  \
 	gnome-hello-0-basic 		\
