@@ -1,0 +1,168 @@
+<!DOCTYPE HTML PUBLIC "-//Norman Walsh//DTD DocBook HTML 1.0//EN">
+<HTML
+><HEAD
+><TITLE
+>Programación de los eventos-conducidos ____
+	</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet"><LINK
+REL="HOME"
+TITLE="Información para desarrolladores de Gnome "
+HREF="book1.html"><LINK
+REL="UP"
+TITLE=""
+HREF="x-concepts-docs.html#AEN2433"><LINK
+REL="PREVIOUS"
+TITLE="Contextos Gráficos
+	"
+HREF="graphics-contexts.html"><LINK
+REL="NEXT"
+TITLE=" 	Documentación de LibGnorba
+	"
+HREF="libgnorba-docs.html"></HEAD
+><BODY
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>Información para desarrolladores de Gnome</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="graphics-contexts.html"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 10. Conceptos basicos sobre X</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="libgnorba-docs.html"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="EVENT-DRIVEN-PROGRAMMING"
+>Programación de los eventos-conducidos ____</A
+></H1
+><P
+>        Los programadores que vienen desde el mundo de la consola pueden
+        encontrar la programación GUI un poco estraña al principio. En la 
+        programación tradicional, el programa guía al usuario a través de 
+        varias pantallas con entradas y opciones, y el programa tiene siempre
+        el control de lo que se hará a continuación.
+      </P
+><P
+>        De la forma GUI, la mayoría de las veces no pondrás el control de
+        flujo de tus programas y dejarás al sistemas que lo conduzca por
+        tí. Ahora es el usuario quien lo controla &#8212; cada vez que el 
+        programa se ejecuta, el usuario puede elegir una forma diferente
+        de trabajar a través del interface de usuario. Las opciones
+        del menú pueden ser invocadas en cualquier orden y las ventanas
+        también podrán ser abiertas y cerradas.
+      </P
+><P
+>        La programación GUI generalmente trabaja sobre un modelo de
+        <I
+CLASS="EMPHASIS"
+>eventos-conducidos</I
+>. Esto significa que las
+        aplicaciones obtienen eventos desde el sistema o del usuario y deben
+        reaccionar a ellas. Esta es una forma diferente del modelo tradicional
+        dónde el programa le dice al usuario lo que debe hacer en el siguiente
+        paso.
+      </P
+><P
+>        Los programas con eventos-conducidos generalmente permanecen 
+        alrededor de un bucle de espera buscando eventos por llegar. Cuando
+        un evento es recibido, el programa busca lo que debe hacer y actua
+        en consecuencia. Un evento podría ser "que el usuario presionará
+        un botón del ratón", o "se mueva una ventana", o "salir aplicación 
+        (tu debes terminarte)".
+      </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="graphics-contexts.html"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book1.html"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="libgnorba-docs.html"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Contextos Gráficos</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="x-concepts-docs.html#AEN2433"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Documentación de LibGnorba</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

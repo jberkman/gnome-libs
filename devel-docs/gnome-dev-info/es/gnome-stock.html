@@ -1,0 +1,765 @@
+<!DOCTYPE HTML PUBLIC "-//Norman Walsh//DTD DocBook HTML 1.0//EN">
+<HTML
+><HEAD
+><TITLE
+>gnome-stock</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet"><LINK
+REL="HOME"
+TITLE="Información para desarrolladores de Gnome "
+HREF="book1.html"><LINK
+REL="UP"
+TITLE="     Libreria de Interfaz de Usuario de GNOME.
+    "
+HREF="libgnomeui.html"><LINK
+REL="PREVIOUS"
+TITLE="gnome-stock-xpm - XPM"
+HREF="gnome-stock-xpm.html"><LINK
+REL="NEXT"
+TITLE="gtk-clock"
+HREF="gtk-clock.html"></HEAD
+><BODY
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>Información para desarrolladores de Gnome</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="gnome-stock-xpm.html"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 6. Libreria de Interfaz de Usuario de GNOME.</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="gtk-clock.html"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="GNOME-STOCK"
+>gnome-stock</A
+></H1
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN1252"
+>Descripción</A
+></H2
+><P
+>Si es definido, gdk_imlib  es usada para un componente pixmap. Te ayudará un
+montón. Tanto para mapas de colores como para determinar el tamaño de un
+mapa de pixels antes de crear una GdkWindow.</P
+><P
+>TODO: No puedo definir aqui esto permanentemente porque requerirá que todas 
+las aplicaciones se enlacen con gdk_imlib. Requeriremos un chequeo, si
+gdk_imlib es instalada en un sistema particular e incluye -lgdk_imlib
+in LIBS para ello.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="GNOMESTOCKPIXMAPENTRYANY"
+>GnomeStockPixmapEntryAny - Algunas definiciones internas</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SYNOPSIS"
+>struct _GnomeStockPixmapEntryAny GnomeStockPixmapEntryAny</PRE
+></TD
+></TR
+></TABLE
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN1259"
+>Descripción</A
+></H3
+><P
+>Algunas definiciones internas</P
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="GNOMESTOCKPIXMAPWIDGET"
+>GnomeStockPixmapWidget - El GnomeStockPixmapWidget</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SYNOPSIS"
+>struct _GnomeStockPixmapWidget GnomeStockPixmapWidget</PRE
+></TD
+></TR
+></TABLE
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN1265"
+>Descripción</A
+></H3
+><P
+>El GnomeStockPixmapWidget</P
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="GNOME-STOCK-PIXMAP"
+>gnoem_stock_pixmap - Tan sólo trae un mapa de pixels</A
+></H2
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><CODE
+CLASS="FUNCDEF"
+> GtkPixmap *<B
+CLASS="FSFUNC"
+>gnome_stock_pixmap</B
+></CODE
+>(GtkWidget *<VAR
+CLASS="PDPARAM"
+>window</VAR
+>, char *<VAR
+CLASS="PDPARAM"
+>icon</VAR
+>, char *<VAR
+CLASS="PDPARAM"
+>subtype</VAR
+>);<P
+></P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN1279"
+>Descripción</A
+></H3
+><P
+> Tan sólo trae un mapa de pixels</P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN1282"
+>Parámetros</A
+></H3
+><P
+></P
+><UL
+><LI
+><P
+>GtkWidget *<TT
+CLASS="PARAMETER"
+><I
+>window</I
+></TT
+></P
+><P
+>No Descrito.</P
+></LI
+><LI
+><P
+>char *<TT
+CLASS="PARAMETER"
+><I
+>icon</I
+></TT
+></P
+><P
+>No Descrito.</P
+></LI
+><LI
+><P
+>char *<TT
+CLASS="PARAMETER"
+><I
+>subtype</I
+></TT
+></P
+><P
+>No Descrito.</P
+></LI
+></UL
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="GNOME-STOCK-PIXMAP-WIDGET"
+>gnome_stock_pixmap_widget - Tan sólo trae un GnomeStockPixmapWidget</A
+></H2
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><CODE
+CLASS="FUNCDEF"
+> GtkWidget *<B
+CLASS="FSFUNC"
+>gnome_stock_pixmap_widget</B
+></CODE
+>(GtkWidget *<VAR
+CLASS="PDPARAM"
+>window</VAR
+>, char *<VAR
+CLASS="PDPARAM"
+>icon</VAR
+>);<P
+></P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN1306"
+>Descripción</A
+></H3
+><P
+>Tan sólo trae un GnomeStockPixmapWidget</P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN1309"
+>Parámetros</A
+></H3
+><P
+></P
+><UL
+><LI
+><P
+>GtkWidget *<TT
+CLASS="PARAMETER"
+><I
+>window</I
+></TT
+></P
+><P
+>No Descrito.</P
+></LI
+><LI
+><P
+>char *<TT
+CLASS="PARAMETER"
+><I
+>icon</I
+></TT
+></P
+><P
+>No Descrito.</P
+></LI
+></UL
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="GNOME-STOCK-PIXMAP-REGISTER"
+>gnome_stock_pixmap_register - registra un mapa de pixels. Devuelve
+no-cero si tiene exito la operación.</A
+></H2
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><CODE
+CLASS="FUNCDEF"
+> gint <B
+CLASS="FSFUNC"
+>gnome_stock_pixmap_register</B
+></CODE
+>(char *<VAR
+CLASS="PDPARAM"
+>icon</VAR
+>, char *<VAR
+CLASS="PDPARAM"
+>subtype</VAR
+>, GnomeStockPixmapEntry *<VAR
+CLASS="PDPARAM"
+>entry</VAR
+>);<P
+></P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN1331"
+>Descripción</A
+></H3
+><P
+>registra un mapa de pixels. Devuelve un valor distinto de cero si 
+tiene exito la operación.</P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN1334"
+>Parámetros</A
+></H3
+><P
+></P
+><UL
+><LI
+><P
+>char *<TT
+CLASS="PARAMETER"
+><I
+>icon</I
+></TT
+></P
+><P
+>No descrito.</P
+></LI
+><LI
+><P
+>char *<TT
+CLASS="PARAMETER"
+><I
+>subtype</I
+></TT
+></P
+><P
+>No descrito.</P
+></LI
+><LI
+><P
+>GnomeStockPixmapEntry *<TT
+CLASS="PARAMETER"
+><I
+>entry</I
+></TT
+></P
+><P
+>No descrito.</P
+></LI
+></UL
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="GNOME-STOCK-PIXMAP-CHANGE"
+>gnome_stock_pixmap_change - cambia una entrada existente. Devuelve
+no-cero si tiene exito.</A
+></H2
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><CODE
+CLASS="FUNCDEF"
+> gint <B
+CLASS="FSFUNC"
+>gnome_stock_pixmap_change</B
+></CODE
+>(char *<VAR
+CLASS="PDPARAM"
+>icon</VAR
+>, char *<VAR
+CLASS="PDPARAM"
+>subtype</VAR
+>, GnomeStockPixmapEntry *<VAR
+CLASS="PDPARAM"
+>entry</VAR
+>);<P
+></P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN1360"
+>Descripción</A
+></H3
+><P
+>Cambia una entrada existente. Devuelve un valor distinto de cero si tiene exito
+la operación.</P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN1363"
+>Parámetros</A
+></H3
+><P
+></P
+><UL
+><LI
+><P
+>char *<TT
+CLASS="PARAMETER"
+><I
+>icon</I
+></TT
+></P
+><P
+>No descrito.</P
+></LI
+><LI
+><P
+>char *<TT
+CLASS="PARAMETER"
+><I
+>subtype</I
+></TT
+></P
+><P
+>No descrito.</P
+></LI
+><LI
+><P
+>GnomeStockPixmapEntry *<TT
+CLASS="PARAMETER"
+><I
+>entry</I
+></TT
+></P
+><P
+>No descrito.</P
+></LI
+></UL
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="GNOME-STOCK-PIXMAP-CHECKFOR"
+>gnome_stock_pixmap_checkfor</A
+></H2
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><CODE
+CLASS="FUNCDEF"
+> GnomeStockPixmapEntry *<B
+CLASS="FSFUNC"
+>gnome_stock_pixmap_checkfor</B
+></CODE
+>(char *<VAR
+CLASS="PDPARAM"
+>icon</VAR
+>, char *<VAR
+CLASS="PDPARAM"
+>subtype</VAR
+>);<P
+></P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN1387"
+>Descripción</A
+></H3
+><P
+>Comprueba la existencia de una entrada. Devuelve la entrada si ésta existe,
+o NULL en otro caso.</P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN1390"
+>Parámetros</A
+></H3
+><P
+></P
+><UL
+><LI
+><P
+>char *<TT
+CLASS="PARAMETER"
+><I
+>icon</I
+></TT
+></P
+><P
+>No descrito.</P
+></LI
+><LI
+><P
+>char *<TT
+CLASS="PARAMETER"
+><I
+>subtype</I
+></TT
+></P
+><P
+>No descrito.</P
+></LI
+></UL
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="GNOME-STOCK-BUTTON"
+>gnome_stock_button - devuelve un widget botón por defecto para diálogos</A
+></H2
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><CODE
+CLASS="FUNCDEF"
+> GtkWidget *<B
+CLASS="FSFUNC"
+>gnome_stock_button</B
+></CODE
+>(char *<VAR
+CLASS="PDPARAM"
+>type</VAR
+>);<P
+></P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN1408"
+>Descripción</A
+></H3
+><P
+>devuelve un widget botón por defecto para diálogos</P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN1411"
+>Parámetros</A
+></H3
+><P
+></P
+><UL
+><LI
+><P
+>char *<TT
+CLASS="PARAMETER"
+><I
+>type</I
+></TT
+></P
+><P
+>No descrito.</P
+></LI
+></UL
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="GNOME-STOCK-MENU-ITEM"
+>gnome_stock_menu_item - devuelve un GtkMenuItem con un icono predefinido y
+texto</A
+></H2
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><CODE
+CLASS="FUNCDEF"
+> GtkWidget *<B
+CLASS="FSFUNC"
+>gnome_stock_menu_item</B
+></CODE
+>(char *<VAR
+CLASS="PDPARAM"
+>type</VAR
+>, char *<VAR
+CLASS="PDPARAM"
+>text</VAR
+>);<P
+></P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN1427"
+>Descripción</A
+></H3
+><P
+>devuelve un GtkMenuItem con un icono predefinido y texto</P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN1430"
+>Parámetros</A
+></H3
+><P
+></P
+><UL
+><LI
+><P
+>char *<TT
+CLASS="PARAMETER"
+><I
+>type</I
+></TT
+></P
+><P
+>No descrito.</P
+></LI
+><LI
+><P
+>char *<TT
+CLASS="PARAMETER"
+><I
+>text</I
+></TT
+></P
+><P
+>	No descrito.</P
+></LI
+></UL
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="gnome-stock-xpm.html"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book1.html"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="gtk-clock.html"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>gnome-stock-xpm - XPM</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="libgnomeui.html"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>gtk-clock</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,0 +1,315 @@
+<!DOCTYPE HTML PUBLIC "-//Norman Walsh//DTD DocBook HTML 1.0//EN">
+<HTML
+><HEAD
+><TITLE
+>gnome-font-selector</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet"><LINK
+REL="HOME"
+TITLE="Información para desarrolladores de Gnome "
+HREF="book1.html"><LINK
+REL="UP"
+TITLE="     Libreria de Interfaz de Usuario de GNOME.
+    "
+HREF="libgnomeui.html"><LINK
+REL="PREVIOUS"
+TITLE="gnome-dns"
+HREF="gnome-dns.html"><LINK
+REL="NEXT"
+TITLE="gnome-ice"
+HREF="gnome-ice.html"></HEAD
+><BODY
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>Información para desarrolladores de Gnome</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="gnome-dns.html"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 6. Libreria de Interfaz de Usuario de GNOME.</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="gnome-ice.html"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="GNOME-FONT-SELECTOR"
+>gnome-font-selector</A
+></H1
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN762"
+>Descripción</A
+></H2
+><P
+> Widget GnomeFontSelector, por Elliot Lee.
+ Derivado del código perteneciente a:
+ The GIMP -- un programa de manipulación de imagenes.
+ Copyright (C) 1995 Spencer Kimball y Peter Mattis</P
+><P
+> Este program es software libre; puedes redistribuirlo y/o
+	modificarlo bajo los terminos de la Licencia Pública General de GNU 
+	como es publicada por la Free Software Foundation; también la
+	versión 2 de la Licencia, o (en tu opción) cualquier versión
+	posterior.</P
+><P
+>	Este programa es distribuido con la esperanza de que sea útil
+	, pero SIN NINGUNA GARANTIA; igualmente sin la garantía implicita de
+        COMERCIALIDAD o CONVENIENCIA PARA UN PROPOSITO PARTICULAR. Mirar 
+	la Licencia Pública General de GNU para más detalles.	</P
+><P
+>Debería haber recibido una copia de la Licencia Pública General
+	de GNU junto con este programa; si no, escriba a la  Free
+	Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, 
+	USA.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="FONTINFO"
+>FontInfo - Estructura definida en gnome-fontsel.c</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SYNOPSIS"
+>struct _FontInfo FontInfo</PRE
+></TD
+></TR
+></TABLE
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN771"
+>Descripción</A
+></H3
+><P
+>Estructura definida en gnome-fontsel.c</P
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="GNOME-FONT-SELECTOR-GET-SELECTED"
+>gnome_font_selector_get_selected - Deberías liberar el valor de retorno
+   después de usarlo.</A
+></H2
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><CODE
+CLASS="FUNCDEF"
+> gchar *<B
+CLASS="FSFUNC"
+>gnome_font_selector_get_selected</B
+></CODE
+>(GnomeFontSelector *<VAR
+CLASS="PDPARAM"
+>text_tool</VAR
+>);<P
+></P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN781"
+>Descripción</A
+></H3
+><P
+> Deberías liberar el valor de retorno después de usarlo.</P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN784"
+>Parámetros</A
+></H3
+><P
+></P
+><UL
+><LI
+><P
+>GnomeFontSelector *<TT
+CLASS="PARAMETER"
+><I
+>text_tool</I
+></TT
+></P
+><P
+>No Descrito</P
+></LI
+></UL
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="GNOME-FONT-SELECT"
+>gnome_font_select</A
+></H2
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><CODE
+CLASS="FUNCDEF"
+> gchar *<B
+CLASS="FSFUNC"
+>gnome_font_select</B
+></CODE
+>(void <VAR
+CLASS="PDPARAM"
+>(null)</VAR
+>);<P
+></P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN798"
+>Descripción</A
+></H3
+><P
+>Basicamente ejecuta una versión en forma de diálogo modal, y devuelve
+la cadena de caracteres que identifica la fuente seleccionada.</P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN801"
+>Parámetros</A
+></H3
+><P
+></P
+><UL
+><LI
+><P
+>void <TT
+CLASS="PARAMETER"
+><I
+>(null)</I
+></TT
+></P
+><P
+>No Descrito.</P
+></LI
+></UL
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="gnome-dns.html"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book1.html"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="gnome-ice.html"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>gnome-dns</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="libgnomeui.html"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>gnome-ice</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

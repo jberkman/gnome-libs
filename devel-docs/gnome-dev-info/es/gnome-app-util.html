@@ -1,0 +1,181 @@
+<!DOCTYPE HTML PUBLIC "-//Norman Walsh//DTD DocBook HTML 1.0//EN">
+<HTML
+><HEAD
+><TITLE
+>  Funciones utiles para mensajes abstractos
+  </TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet"><LINK
+REL="HOME"
+TITLE="Información para desarrolladores de Gnome "
+HREF="book1.html"><LINK
+REL="UP"
+TITLE="Talking to the user: GnomeDialog, GnomeMessageBox,
+    GnomeAppBar, and utility functions."
+HREF="dialogapputil-docs.html"><LINK
+REL="PREVIOUS"
+TITLE="	Usando GnomeAppBar directamente
+    "
+HREF="gnomeappbar.html"><LINK
+REL="NEXT"
+TITLE="   Funciones útiles si un GnomeApp está disponible
+  "
+HREF="x2158.html"></HEAD
+><BODY
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>Información para desarrolladores de Gnome</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="gnomeappbar.html"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 9. Talking to the user: <SPAN
+CLASS="TYPE"
+>GnomeDialog</SPAN
+>, <SPAN
+CLASS="TYPE"
+>GnomeMessageBox</SPAN
+>,
+    <SPAN
+CLASS="TYPE"
+>GnomeAppBar</SPAN
+>, and utility functions.</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x2158.html"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="GNOME-APP-UTIL"
+>Funciones utiles para mensajes abstractos</A
+></H1
+><P
+>	Gnome provee funciones para retransmitir mensajes simples al usuario
+	y preguntar cuestiones simples. Dichas funciones sirven 2
+	propositos: primero, evitar a los programadore escribir docenas de 
+	díalogos idénticos; segundo, permitir al usuario elegir si los
+	mensajes deben aparecer en diálogos o en la barra de aplicación. El
+	conjunto principal de funciones asumen que tu aplicación usa el 
+	widget <SPAN
+CLASS="TYPE"
+>GnomeApp</SPAN
+>, y que es visible cuando se llaman a 
+	estas funciones. Estas funciones tienen un dialog backend y un 
+	appbar backend. El dialog backend es expuesto, asi que puedes usarla 
+	directamente si no tienes disponible el widget GnomeApp. Las 
+	funciones <TT
+CLASS="FUNCTION"
+><B
+>GnomeApp</B
+></TT
+> <I
+CLASS="EMPHASIS"
+>no</I
+> asumen 
+	que tengas un barra de aplicación disponible; deberías usarlas
+	incluso si tu aplicación no tiene appbar. En algunos casos hace una
+	diferencia (por ejemplo, un díalogo puede ser posicionado relativo
+	al <SPAN
+CLASS="TYPE"
+>GnomeApp</SPAN
+>).
+    </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="gnomeappbar.html"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book1.html"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x2158.html"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Usando <SPAN
+CLASS="TYPE"
+>GnomeAppBar</SPAN
+> directamente</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="dialogapputil-docs.html"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Funciones útiles si un <SPAN
+CLASS="TYPE"
+>GnomeApp</SPAN
+> está disponible</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

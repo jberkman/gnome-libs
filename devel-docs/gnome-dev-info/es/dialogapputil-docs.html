@@ -1,0 +1,282 @@
+<!DOCTYPE HTML PUBLIC "-//Norman Walsh//DTD DocBook HTML 1.0//EN">
+<HTML
+><HEAD
+><TITLE
+>Talking to the user: GnomeDialog, GnomeMessageBox,
+    GnomeAppBar, and utility functions.</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet"><LINK
+REL="HOME"
+TITLE="Información para desarrolladores de Gnome "
+HREF="book1.html"><LINK
+REL="PREVIOUS"
+TITLE="  	Comenzando con el canvas     
+	"
+HREF="gnome-canvas-getting-started.html"><LINK
+REL="NEXT"
+TITLE="	Usando GnomeAppBar directamente
+    "
+HREF="gnomeappbar.html"></HEAD
+><BODY
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>Información para desarrolladores de Gnome</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="gnome-canvas-getting-started.html"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="gnomeappbar.html"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="CHAPTER"
+><H1
+><A
+NAME="DIALOGAPPUTIL-DOCS"
+>Chapter 9. Talking to the user: <SPAN
+CLASS="TYPE"
+>GnomeDialog</SPAN
+>, <SPAN
+CLASS="TYPE"
+>GnomeMessageBox</SPAN
+>,
+    <SPAN
+CLASS="TYPE"
+>GnomeAppBar</SPAN
+>, and utility functions.</A
+></H1
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+><A
+HREF="dialogapputil-docs.html#INTRODUCTION"
+>Introducción</A
+></DT
+><DT
+><A
+HREF="gnomeappbar.html"
+>Usando <SPAN
+CLASS="TYPE"
+>GnomeAppBar</SPAN
+> directamente</A
+></DT
+><DT
+><A
+HREF="gnome-app-util.html"
+>Funciones utiles para mensajes abstractos</A
+></DT
+><DT
+><A
+HREF="x2158.html"
+>Funciones útiles si un <SPAN
+CLASS="TYPE"
+>GnomeApp</SPAN
+> está disponible</A
+></DT
+><DT
+><A
+HREF="gnome-dialog.html"
+>Usando <SPAN
+CLASS="TYPE"
+>GnomeDialog</SPAN
+> directamente</A
+></DT
+></DL
+></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="INTRODUCTION"
+>Introducción</A
+></H1
+><P
+>      Gnome se esfuerza en proveer al usuario con el máximo nivel
+      de configurabilidad, y al programador con el máximo nivel de
+      comodidad. Afortunadamente, estas dos metas tienden a ir de 
+      la mano: Pocas decisiones para el programador significa muchas
+      decisiones para el usuario.
+    </P
+><P
+>	Esta sección describe las facilidades de Gnome para comunicar
+	mensajes simples o preguntas al usuario, y recuperar una 
+	respuesta. Los widgets principales involucrados son 
+	<SPAN
+CLASS="TYPE"
+>GnomeDialog</SPAN
+> y <SPAN
+CLASS="TYPE"
+>GnomeAppBar</SPAN
+> (una barra
+	de estado, pero este nombre se desechó). Gnome también provee 
+	de funciones útiles las cuáles dan al usuario una gran alternativa
+	como un efecto lateral. Por ejemplo, si llamas a la función
+	<TT
+CLASS="FUNCTION"
+><B
+>gnome_app_message()</B
+></TT
+> en lugar de crear un 
+	diálogo directamente, el usuario puede solitar que los mensajes
+	le aparezca en la barra de aplicaciones.
+    </P
+><P
+>	Alguna funcionalidad se ha perdido, y alguno de los API no
+	está totalmente optimizado. Esperemos que esto se solucionará
+	proximamente. En particular:
+    </P
+><P
+></P
+><UL
+><LI
+><P
+>	<SPAN
+CLASS="TYPE"
+>GnomeAppBar</SPAN
+> no funciona en modo interactivo, asi que
+	todas las preguntas se deben hacer via díalogo. Toda la
+	funcionalidad del Emacs-minibuffer-style se tiene que añadir.
+	</P
+></LI
+><LI
+><P
+>	<SPAN
+CLASS="TYPE"
+>GnomeAppBar</SPAN
+> deberia usar 
+	<SPAN
+CLASS="TYPE"
+>GnomePreferencesType</SPAN
+> para sus parametros has_progress
+	, y no usar una barra de progreso si el usuario quiere díalogos de 
+	progreso en su lugar.
+	</P
+></LI
+><LI
+><P
+>	Llamadas a funciones con punteros no estándard son un pobre 
+	substituto para las señales Gtk y molesto con las ligaduras distintos 
+	de C. Una posible solución  es crear un <SPAN
+CLASS="TYPE"
+>GtkObject</SPAN
+> para
+	representar la interacción con el usuario,  completado con señales. 
+	<SPAN
+CLASS="TYPE"
+>GnomeQuestion</SPAN
+>, por ejemplo, con una señal de "answered"
+	y "cancelled". Más complejo, pero más flexible.
+	
+	</P
+></LI
+><LI
+><P
+>	It is all sort of clunky feeling. ¿Quizás las funciones utiles
+	no son elegantes inherentemente?.
+	</P
+></LI
+></UL
+><P
+>	Parches y sugerencias son siempre bienvenidos. Por favor piensa 
+	mientras lees esto como el API se podría mejorar y usa las 
+	facilidades, entonces envianos tus ideas.
+    </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="gnome-canvas-getting-started.html"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book1.html"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="gnomeappbar.html"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Comenzando con el canvas</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Usando <SPAN
+CLASS="TYPE"
+>GnomeAppBar</SPAN
+> directamente</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

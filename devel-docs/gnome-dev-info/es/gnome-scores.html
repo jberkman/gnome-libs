@@ -1,0 +1,1076 @@
+<!DOCTYPE HTML PUBLIC "-//Norman Walsh//DTD DocBook HTML 1.0//EN">
+<HTML
+><HEAD
+><TITLE
+>  gnome-scores - Widget de "Puntuaciones máximas"
+  </TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet"><LINK
+REL="HOME"
+TITLE="Información para desarrolladores de Gnome "
+HREF="book1.html"><LINK
+REL="UP"
+TITLE="     Libreria de Interfaz de Usuario de GNOME.
+    "
+HREF="libgnomeui.html"><LINK
+REL="PREVIOUS"
+TITLE="gnome-properties"
+HREF="gnome-properties.html"><LINK
+REL="NEXT"
+TITLE="gnome-session"
+HREF="gnome-session.html"></HEAD
+><BODY
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>Información para desarrolladores de Gnome</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="gnome-properties.html"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 6. Libreria de Interfaz de Usuario de GNOME.</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="gnome-session.html"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="GNOME-SCORES"
+>gnome-scores - Widget de "Puntuaciones máximas"</A
+></H1
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN852"
+>Autor(es)</A
+></H2
+><P
+>Horacio J. Peña &#60;horape@compendium.com.ar&#62;</P
+><P
+> Éste es software libre (bajo terminos de la licencia GNU LGPL)</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN856"
+>Descripción</A
+></H2
+><P
+>Es un widget especializado en mostrar las "Puntuaciónes Máximas" en juegos.
+Está muy integrado con el componente gnome-score así que solo necesitas 
+llamar una función para hacer todo el trabajo...</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN859"
+>Uso</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>  Usa la función gnome_scores_display. Las otras funciónes van a ser 
+  interrumpidas...(vale, antes debería añadir soporte para mapas de pixels a 
+  * _display)</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="GNOME-SCORES-DISPLAY"
+>gnome_scores_display - Realiza todo el trabajo de mostrar los mejores 
+  marcadores.</A
+></H2
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><CODE
+CLASS="FUNCDEF"
+> void <B
+CLASS="FSFUNC"
+>gnome_scores_display</B
+></CODE
+>(gchar *<VAR
+CLASS="PDPARAM"
+>title</VAR
+>, gchar *<VAR
+CLASS="PDPARAM"
+>app_name</VAR
+>, gchar *<VAR
+CLASS="PDPARAM"
+>level</VAR
+>, int <VAR
+CLASS="PDPARAM"
+>pos</VAR
+>);<P
+></P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN875"
+>Descripción</A
+></H3
+><P
+>Llama a la función gnome_score_get_notables para recuperar la información, 
+crear la ventana y mostarla.</P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN878"
+>Retorno</A
+></H3
+><P
+>No devuelve nada</P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN881"
+>Uso</A
+></H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>pos = gnome_score_log (score, level, TRUE);
+gnome_scores_display (_ ("Mi game"), "migame", level, pos);</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN884"
+>Parámetros</A
+></H3
+><P
+></P
+><UL
+><LI
+><P
+>gchar *<TT
+CLASS="PARAMETER"
+><I
+>title</I
+></TT
+></P
+><P
+>Titulo.</P
+></LI
+><LI
+><P
+>gchar *<TT
+CLASS="PARAMETER"
+><I
+>app_name</I
+></TT
+></P
+><P
+>Nombre de la aplicación, como en gnome_score_init.</P
+></LI
+><LI
+><P
+>gchar *<TT
+CLASS="PARAMETER"
+><I
+>level</I
+></TT
+></P
+><P
+>Nivel del juego o NULL.</P
+></LI
+><LI
+><P
+>int <TT
+CLASS="PARAMETER"
+><I
+>pos</I
+></TT
+></P
+><P
+>Posición entre los diez mejores en la que se encuentra el jugador actual, 
+devuelta por gnome_score_log.</P
+></LI
+></UL
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="GNOME-SCORES-NEW"
+>gnome_scores_new - Crea la ventana de máximas puntuaciones.</A
+></H2
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><CODE
+CLASS="FUNCDEF"
+> GtkWidget *<B
+CLASS="FSFUNC"
+>gnome_scores_new</B
+></CODE
+>(guint <VAR
+CLASS="PDPARAM"
+>n_scores</VAR
+>, gchar **<VAR
+CLASS="PDPARAM"
+>names</VAR
+>, gfloat *<VAR
+CLASS="PDPARAM"
+>scores</VAR
+>, time_t *<VAR
+CLASS="PDPARAM"
+>times</VAR
+>, guint <VAR
+CLASS="PDPARAM"
+>clear</VAR
+>);<P
+></P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN918"
+>Descripción</A
+></H3
+><P
+>Crea la ventana de máximas puntuaciones.
+Creates the high-scores window.</P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN921"
+>Parámetros</A
+></H3
+><P
+></P
+><UL
+><LI
+><P
+>guint <TT
+CLASS="PARAMETER"
+><I
+>n_scores</I
+></TT
+></P
+><P
+>	Número de posiciones.</P
+></LI
+><LI
+><P
+>gchar **<TT
+CLASS="PARAMETER"
+><I
+>names</I
+></TT
+></P
+><P
+>	Nombres de los jugadores.</P
+></LI
+><LI
+><P
+>gfloat *<TT
+CLASS="PARAMETER"
+><I
+>scores</I
+></TT
+></P
+><P
+>	Puntuaciones</P
+></LI
+><LI
+><P
+>time_t *<TT
+CLASS="PARAMETER"
+><I
+>times</I
+></TT
+></P
+><P
+>Hora en la que se realizó la puntuación</P
+></LI
+><LI
+><P
+>guint <TT
+CLASS="PARAMETER"
+><I
+>clear</I
+></TT
+></P
+><P
+>	¿Añade un botón de "Limpiar"?</P
+></LI
+></UL
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="GNOME-SCORES-SET-LOGO-LABEL"
+>gnome_scores_set_logo_label - Crea una etiqueta para que sea el logotipo</A
+></H2
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><CODE
+CLASS="FUNCDEF"
+> void <B
+CLASS="FSFUNC"
+>gnome_scores_set_logo_label</B
+></CODE
+>(GnomeScores *<VAR
+CLASS="PDPARAM"
+>gs</VAR
+>, gchar *<VAR
+CLASS="PDPARAM"
+>txt</VAR
+>, gchar *<VAR
+CLASS="PDPARAM"
+>font</VAR
+>, GdkColor *<VAR
+CLASS="PDPARAM"
+>color</VAR
+>);<P
+></P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN957"
+>Descripción</A
+></H3
+><P
+>Crea una etiqueta para que sea el logotipo</P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN960"
+>Parámetros</A
+></H3
+><P
+></P
+><UL
+><LI
+><P
+>GnomeScores *<TT
+CLASS="PARAMETER"
+><I
+>gs</I
+></TT
+></P
+><P
+>Widget de Puntuaciones en GNOME.</P
+></LI
+><LI
+><P
+>gchar *<TT
+CLASS="PARAMETER"
+><I
+>txt</I
+></TT
+></P
+><P
+>Texto de la etiqueta.</P
+></LI
+><LI
+><P
+>gchar *<TT
+CLASS="PARAMETER"
+><I
+>font</I
+></TT
+></P
+><P
+>Tipo de fuente a usar en la etiqueta.</P
+></LI
+><LI
+><P
+>GdkColor *<TT
+CLASS="PARAMETER"
+><I
+>color</I
+></TT
+></P
+><P
+> El color a usar en la etiqueta.</P
+></LI
+></UL
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="GNOME-SCORES-SET-LOGO-PIXMAP"
+>gnome_scores_set_logo_pixmap - Crea un mapa de pixels para que sea el
+logotipo</A
+></H2
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><CODE
+CLASS="FUNCDEF"
+> void <B
+CLASS="FSFUNC"
+>gnome_scores_set_logo_pixmap</B
+></CODE
+>(GnomeScores *<VAR
+CLASS="PDPARAM"
+>gs</VAR
+>, gchar *<VAR
+CLASS="PDPARAM"
+>logo</VAR
+>);<P
+></P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN988"
+>Descripción</A
+></H3
+><P
+>	Crea un mapa de pixels para que sea el logotipo.</P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN991"
+>Parámetros</A
+></H3
+><P
+></P
+><UL
+><LI
+><P
+>GnomeScores *<TT
+CLASS="PARAMETER"
+><I
+>gs</I
+></TT
+></P
+><P
+>	Widget de Puntuaciones en GNOME.</P
+></LI
+><LI
+><P
+>gchar *<TT
+CLASS="PARAMETER"
+><I
+>logo</I
+></TT
+></P
+><P
+>Nombre del fichero con extensión .xpm. (mapa de pixels)</P
+></LI
+></UL
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="GNOME-SCORES-SET-LOGO-WIDGET"
+>gnome_scores_set_logo_widget - Establece un Widget arbitrario para que
+sea el logotipo.</A
+></H2
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><CODE
+CLASS="FUNCDEF"
+> void <B
+CLASS="FSFUNC"
+>gnome_scores_set_logo_widget</B
+></CODE
+>(GnomeScores *<VAR
+CLASS="PDPARAM"
+>gs</VAR
+>, GtkWidget *<VAR
+CLASS="PDPARAM"
+>w</VAR
+>);<P
+></P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN1011"
+>Descripción</A
+></H3
+><P
+>Establece un Widget arbitrario para que sea el logotipo.</P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN1014"
+>Parámetros</A
+></H3
+><P
+></P
+><UL
+><LI
+><P
+>GnomeScores *<TT
+CLASS="PARAMETER"
+><I
+>gs</I
+></TT
+></P
+><P
+>Widget de Puntuaciones en GNOME.</P
+></LI
+><LI
+><P
+>GtkWidget *<TT
+CLASS="PARAMETER"
+><I
+>w</I
+></TT
+></P
+><P
+>Widget que será usado como logotipo.</P
+></LI
+></UL
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="GNOME-SCORES-SET-COLOR"
+>gnome_scores_set_color - Establece el color de una anotación.</A
+></H2
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><CODE
+CLASS="FUNCDEF"
+> void <B
+CLASS="FSFUNC"
+>gnome_scores_set_color</B
+></CODE
+>(GnomeScores *<VAR
+CLASS="PDPARAM"
+>gs</VAR
+>, guint <VAR
+CLASS="PDPARAM"
+>pos</VAR
+>, GdkColor *<VAR
+CLASS="PDPARAM"
+>col</VAR
+>);<P
+></P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN1036"
+>Descripción</A
+></H3
+><P
+>Establece el color de una anotación.</P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN1039"
+>Parámetros</A
+></H3
+><P
+></P
+><UL
+><LI
+><P
+>GnomeScores *<TT
+CLASS="PARAMETER"
+><I
+>gs</I
+></TT
+></P
+><P
+>Widget de Puntuaciones en GNOME.</P
+></LI
+><LI
+><P
+>guint <TT
+CLASS="PARAMETER"
+><I
+>pos</I
+></TT
+></P
+><P
+>Entrada que se cambiará.</P
+></LI
+><LI
+><P
+>GdkColor *<TT
+CLASS="PARAMETER"
+><I
+>col</I
+></TT
+></P
+><P
+>Color.</P
+></LI
+></UL
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="GNOME-SCORES-SET-DEF-COLOR"
+>gnome_scores_set_def_color - Establece el color por defecto de las
+anotacines.</A
+></H2
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><CODE
+CLASS="FUNCDEF"
+> void <B
+CLASS="FSFUNC"
+>gnome_scores_set_def_color</B
+></CODE
+>(GnomeScores *<VAR
+CLASS="PDPARAM"
+>gs</VAR
+>, GdkColor *<VAR
+CLASS="PDPARAM"
+>col</VAR
+>);<P
+></P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN1063"
+>Descripción</A
+></H3
+><P
+>Establece el color por defecto de las anotaciones.</P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN1066"
+>Parameters</A
+></H3
+><P
+></P
+><UL
+><LI
+><P
+>GnomeScores *<TT
+CLASS="PARAMETER"
+><I
+>gs</I
+></TT
+></P
+><P
+>Widget de Puntuaciones en GNOME.</P
+></LI
+><LI
+><P
+>GdkColor *<TT
+CLASS="PARAMETER"
+><I
+>col</I
+></TT
+></P
+><P
+>Color.</P
+></LI
+></UL
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="GNOME-SCORES-SET-COLORS"
+>gnome_scores_set_colors - Establece el color de todas las anotaciones.</A
+></H2
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><CODE
+CLASS="FUNCDEF"
+> void <B
+CLASS="FSFUNC"
+>gnome_scores_set_colors</B
+></CODE
+>(GnomeScores *<VAR
+CLASS="PDPARAM"
+>gs</VAR
+>, GdkColor *<VAR
+CLASS="PDPARAM"
+>col</VAR
+>);<P
+></P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN1086"
+>Descripción</A
+></H3
+><P
+>Establece el color de todas las anotaciones.</P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN1089"
+>Parámetros</A
+></H3
+><P
+></P
+><UL
+><LI
+><P
+>GnomeScores *<TT
+CLASS="PARAMETER"
+><I
+>gs</I
+></TT
+></P
+><P
+>No Descrito.</P
+></LI
+><LI
+><P
+>GdkColor *<TT
+CLASS="PARAMETER"
+><I
+>col</I
+></TT
+></P
+><P
+>Vector de colores.</P
+></LI
+></UL
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="GNOME-SCORES-SET-LOGO-LABEL-TITLE"
+>gnome_scores_set_logo_label_title - Crea una etiqueta para que sea el
+logotipo.</A
+></H2
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><CODE
+CLASS="FUNCDEF"
+> void <B
+CLASS="FSFUNC"
+>gnome_scores_set_logo_label_title</B
+></CODE
+>(GnomeScores *<VAR
+CLASS="PDPARAM"
+>gs</VAR
+>, gchar *<VAR
+CLASS="PDPARAM"
+>txt</VAR
+>);<P
+></P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN1109"
+>Descripción.</A
+></H3
+><P
+>Crea una etiqueta para que sea el logotipo.</P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN1112"
+>Parámetros</A
+></H3
+><P
+></P
+><UL
+><LI
+><P
+>GnomeScores *<TT
+CLASS="PARAMETER"
+><I
+>gs</I
+></TT
+></P
+><P
+>Widget de Puntuaciones en GNOME. </P
+></LI
+><LI
+><P
+>gchar *<TT
+CLASS="PARAMETER"
+><I
+>txt</I
+></TT
+></P
+><P
+>Nombre del logotipo.</P
+></LI
+></UL
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="GNOME-SCORES-SET-CURRENT-PLAYER"
+>gnome_scores_set_current_player - Establece el indice de los jugadores
+   actuales entre las diez mejores anotaciones.</A
+></H2
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><CODE
+CLASS="FUNCDEF"
+> void <B
+CLASS="FSFUNC"
+>gnome_scores_set_current_player</B
+></CODE
+>(GnomeScores *<VAR
+CLASS="PDPARAM"
+>gs</VAR
+>, gint <VAR
+CLASS="PDPARAM"
+>i</VAR
+>);<P
+></P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN1132"
+>Descripción</A
+></H3
+><P
+>	Establece el indice de los jugadores actuales entre las diez mejores
+	anotaciones.</P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN1135"
+>Parámetros</A
+></H3
+><P
+></P
+><UL
+><LI
+><P
+>GnomeScores *<TT
+CLASS="PARAMETER"
+><I
+>gs</I
+></TT
+></P
+><P
+>  Widget de Puntuaciones en GNOME.</P
+></LI
+><LI
+><P
+>gint <TT
+CLASS="PARAMETER"
+><I
+>i</I
+></TT
+></P
+><P
+>	Indice del actual (de 0 a 9).</P
+></LI
+></UL
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="gnome-properties.html"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book1.html"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="gnome-session.html"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>gnome-properties</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="libgnomeui.html"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>gnome-session</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

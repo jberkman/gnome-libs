@@ -1,0 +1,522 @@
+<!DOCTYPE HTML PUBLIC "-//Norman Walsh//DTD DocBook HTML 1.0//EN">
+<HTML
+><HEAD
+><TITLE
+> 	Documentación de LibGnorba
+	</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet"><LINK
+REL="HOME"
+TITLE="Información para desarrolladores de Gnome "
+HREF="book1.html"><LINK
+REL="PREVIOUS"
+TITLE="Conceptos basicos sobre X"
+HREF="x-concepts-docs.html"><LINK
+REL="NEXT"
+TITLE="ORBit-Gtk"
+HREF="orbitgtk.html"></HEAD
+><BODY
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>Información para desarrolladores de Gnome</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x-concepts-docs.html"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="orbitgtk.html"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="CHAPTER"
+><H1
+><A
+NAME="LIBGNORBA-DOCS"
+>Chapter 11.  	Documentación de LibGnorba
+	</A
+></H1
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+><A
+HREF="libgnorba-docs.html#GOAD"
+>GOAD (Gnome Object Activation Directory)
+       (Directorio de Activación de Objetos Gnome)</A
+></DT
+><DT
+><A
+HREF="orbitgtk.html"
+>ORBit-Gtk</A
+></DT
+><DT
+><A
+HREF="gnome-plugins.html"
+>gnome-plugins</A
+></DT
+></DL
+></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="GOAD"
+>GOAD (Gnome Object Activation Directory)
+       (Directorio de Activación de Objetos Gnome)</A
+></H1
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN2492"
+>Autor(es)</A
+></H2
+><P
+>Elliot Lee &#60;sopwith@redhat.com&#62;</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN2495"
+>Descripción</A
+></H2
+><P
+>Un conjunto de rutinas para obtener un listado de los servidores de objetos
+CORBA disponibles, y conectar a servidores nuevos o ya existentes usando 
+parámetros especificos.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="GOAD-SERVER-LIST-GET"
+>goad_server_list_get - obtiene un listado de objectos de los cuáles
+	sabemos como arrancar.</A
+></H2
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><CODE
+CLASS="FUNCDEF"
+>GoadServer *<B
+CLASS="FSFUNC"
+>goad_server_list_get</B
+></CODE
+>(void);<P
+></P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN2504"
+>Descripción</A
+></H3
+><P
+> Esta función devuelve un array de estructuras (registros) GoadServer que
+listan los objetos que el programa puede usar.
+  </P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN2507"
+>Uso</A
+></H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>GoadServer *servlist = goad_server_list_get();
+	/* usa servlist */
+goad_server_list_free(servlist);</PRE
+></TD
+></TR
+></TABLE
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="GOAD-SERVER-ACTIVATE"
+>goad_server_activate - obtiene el servidor especificado</A
+></H2
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><CODE
+CLASS="FUNCDEF"
+>CORBA_Object <B
+CLASS="FSFUNC"
+>goad_server_activate</B
+></CODE
+>(GoadServer *<VAR
+CLASS="PDPARAM"
+>sinfo</VAR
+>, GoadActivationFlags <VAR
+CLASS="PDPARAM"
+>flags</VAR
+>);<P
+></P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN2519"
+>Descripción</A
+></H3
+><P
+>	Cuando pasamos la dirección de una estructura GoadServer (una
+recuperada de <TT
+CLASS="FUNCTION"
+><B
+>goad_server_list_get</B
+></TT
+>), esta función 
+intentará también conectar el objeto con un servidor existente, o lanzar
+uno nuevo.</P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN2523"
+>Uso</A
+></H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>GoadServer *servlist, *chosen = NULL;
+CORBA_Object dothings;
+int i;
+servlist = goad_server_list_get();
+for(i = 0; servlist[i].repo_id; i++) {
+    if(!strcmp(servlist[i].id, "gnumeric")) {
+	    chosen = &#38;servlist[i];
+	    break;
+    }
+}
+dothings = goad_server_activate(chosen, GOAD_ACTIVATE_SHLIB|GOAD_NO_NS_REGISTER);</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN2526"
+>Parámetros</A
+></H3
+><P
+></P
+><UL
+><LI
+><P
+>GoadServer *<TT
+CLASS="PARAMETER"
+><I
+>sinfo</I
+></TT
+></P
+><P
+>  Una estructura que mantiene información sobre el servidor que a ejecutar.</P
+></LI
+><LI
+><P
+>GoadActivationFlags <TT
+CLASS="PARAMETER"
+><I
+>flags</I
+></TT
+></P
+><P
+>  Las banderas indican cómo quiere la aplicación que se arranque el
+servidor. Posibles valores (unidos por AND) incluidos: 
+<P
+></P
+><UL
+><LI
+><P
+>GOAD_ACTIVATE_SHLIB</P
+><P
+>  Si se necesita crear un nuevo servidor, la aplicación prefiere que sea
+  cargado de una libreria compartida dentro del espacio de direccionamiento
+  de la aplicación.</P
+></LI
+><LI
+><P
+>GOAD_ACTIVATE_REMOTE</P
+><P
+>  Si se necesita crear un nuevo servidor, la aplicación prefiere que se
+  ejecute como un programa separado.</P
+></LI
+><LI
+><P
+>GOAD_ACTIVATE_EXISTING_ONLY</P
+><P
+>No lanzar un servidor nuevo para la activación especificada - solo comprueba
+si alguno está en ejecución.</P
+></LI
+><LI
+><P
+>GOAD_ACTIVATE_NEW_ONLY</P
+><P
+>No comprueba si un servidor existente se está ejecutando para la activación 
+especificada - solamente lanza uno nuevo.</P
+></LI
+><LI
+><P
+>GOAD_ACTIVATE_NO_NS_REGISTER</P
+><P
+>No registra el servidor que se acaba de lanzar con el servicio de nombres (
+sólo valida si el sevidor resulta de ser activado como libreria compartida).</P
+></LI
+></UL
+></P
+></LI
+></UL
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="GOAD-SERVER-ACTIVATE-WITH-REPO-ID"
+>goad_server_activate_with_repo_id - obtiene un servidor que ofrece un
+  interfaz específico.</A
+></H2
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><CODE
+CLASS="FUNCDEF"
+>CORBA_Object <B
+CLASS="FSFUNC"
+>goad_server_activate_with_repo_id</B
+></CODE
+>(GoadServer *<VAR
+CLASS="PDPARAM"
+>server_list</VAR
+>, const char *<VAR
+CLASS="PDPARAM"
+>repo_id</VAR
+>, GoadActivationFlags <VAR
+CLASS="PDPARAM"
+>flags</VAR
+>);<P
+></P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN2564"
+>Descripción</A
+></H3
+><P
+>  Cuando pasemos el ID (identificador) de repositorio de un objeto, esta
+  función intentará también conectar el objeto con un servidor existente 
+  que ofrezca dicho interfaz, o lanzar uno nuevo.</P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN2567"
+>Uso</A
+></H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>CORBA_Object dothings;
+dothings = goad_server_activate_with_repo_id(NULL, "IDL:GNOME/HelpBrowser", 0);</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN2570"
+>Parámetros</A
+></H3
+><P
+></P
+><UL
+><LI
+><P
+>GoadServer *<TT
+CLASS="PARAMETER"
+><I
+>server_list</I
+></TT
+></P
+><P
+>  Un listado de servidores previamente obtenido de goad_server_list_get(), o
+  NULL. Si se pasa NULL, se obtendrá una lista de servidores, se usará, y 
+  liberará dentro de la rutina.</P
+></LI
+><LI
+><P
+>const char *<TT
+CLASS="PARAMETER"
+><I
+>repo_id</I
+></TT
+></P
+><P
+>El ID (identificador) de repositorio de la interfaz que un objeto devuelto
+debería tener. Acutalmente debe ser la interfaz especificada. En el futuro
+el Interfaz de Repositorio podrá ser usada para encontrar servidores con
+interfaces que hereden del interfaz especificado - caveat user.</P
+></LI
+><LI
+><P
+>GoadActivationFlags <TT
+CLASS="PARAMETER"
+><I
+>flags</I
+></TT
+></P
+><P
+>Ver la documentación sobre los parámetros para
+<TT
+CLASS="FUNCTION"
+><B
+>goad_server_activate</B
+></TT
+></P
+></LI
+></UL
+></DIV
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x-concepts-docs.html"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book1.html"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="orbitgtk.html"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Conceptos basicos sobre X</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>ORBit-Gtk</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

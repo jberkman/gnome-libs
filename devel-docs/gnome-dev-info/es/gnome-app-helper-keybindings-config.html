@@ -1,0 +1,311 @@
+<!DOCTYPE HTML PUBLIC "-//Norman Walsh//DTD DocBook HTML 1.0//EN">
+<HTML
+><HEAD
+><TITLE
+>Formato de la información para la configuración de las
+      envolturas de teclado(keybindings) para los menús estandar
+    </TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet"><LINK
+REL="HOME"
+TITLE="Información para desarrolladores de Gnome "
+HREF="book1.html"><LINK
+REL="UP"
+TITLE="Creación automática del menú y barra de herramientas con
+GnomeAppHelper
+   "
+HREF="gnome-app-helper.html"><LINK
+REL="PREVIOUS"
+TITLE="Distintas macros para rellenar la estructura GnomeUIInfo
+	"
+HREF="gnome-app-helper-convenience-macros.html"><LINK
+REL="NEXT"
+TITLE="Funciones proporcionadas por GnomeAppHelper
+	"
+HREF="gnome-app-helper-functions.html"></HEAD
+><BODY
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>Información para desarrolladores de Gnome</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="gnome-app-helper-convenience-macros.html"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 7. Creación automática del menú y barra de herramientas con
+GnomeAppHelper</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="gnome-app-helper-functions.html"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="GNOME-APP-HELPER-KEYBINDINGS-CONFIG"
+>Formato de la información para la configuración de las
+      envolturas de teclado(keybindings) para los menús estandar</A
+></H1
+><P
+>	La información sobre las envolturas de teclado (keybindings)
+	 se almacena utilizando
+	gnome-config. Está almacenada en la sección "/Gnome/Menus". Cada
+	keybinding tiene dos pares tecla/valor. Asumimos que el elemento del
+	menú es nuevo. El primer par tecla es Menu-new-accelerator-key. El
+	valor es un entero (yo creo de gtk+/gdk/gdkkeysyms.h) describiendo
+	qué tecla corresponde a este elemento del menú. La segunda tecla es
+	Menu-new-ac-mods. El valor es otro entero, que describe que conjunto
+	de modificadores le corresponden a este item de menú. Este valor es
+	el or lógico de valores de GdkModifierType en
+	gtk+/gdk/gdktypes.h.
+      </P
+><P
+>	Si construyendo la configuración a mano, necesitas editar 
+	~/.gnome/Gnome.	Necesitas añadir la cabecera de la sección por
+	[Menus]. Este debe contener dos lineas por cada elemento menú. Otra
+	vez suponemos que  estás configurando un elemento del menú nuevo.
+	En la primera línea de el par se debe leer
+	"Menu-new-accelerator-key=lt;número&#62;" donde &#60;número&#62; es un entero
+	de gtk+/gdk/gdkkeysyms.h. 
+	Generalmente esto significa que es un valor ASCII el que describe
+	que tecla corresponde a este item del menu. En la segunda linea se
+	debe leer "Menu-new-ac-mods=&#60;número&#62;" dónde &#60;número&#62; es un 
+	or lógico de valores de GdkModifierType en gtk+/gdk/gdktypes.h.
+	
+	Generalmente, este significa comenzar con
+	0. Si tu quieres que shift sea parte de la envoltura del teclado, 
+	añade 1.
+	Si tu quieres que control sea parte añade 4. Si tu quieres que alt
+	sea parte añade 8. El resultado es el valor sustituido por
+	&#60;número&#62; en la segunda línea del par.
+
+      </P
+><P
+>	 La lista de posibles elementos del menú la siguiente.
+        <P
+></P
+><UL
+><LI
+><P
+>new</P
+></LI
+><LI
+><P
+>open</P
+></LI
+><LI
+><P
+>save</P
+></LI
+><LI
+><P
+>save-as</P
+></LI
+><LI
+><P
+>revert</P
+></LI
+><LI
+><P
+>print</P
+></LI
+><LI
+><P
+>print-setup</P
+></LI
+><LI
+><P
+>close</P
+></LI
+><LI
+><P
+>exit</P
+></LI
+><LI
+><P
+>cut</P
+></LI
+><LI
+><P
+>copy</P
+></LI
+><LI
+><P
+>paste</P
+></LI
+><LI
+><P
+>clear</P
+></LI
+><LI
+><P
+>undo</P
+></LI
+><LI
+><P
+>redo</P
+></LI
+><LI
+><P
+>find</P
+></LI
+><LI
+><P
+>find-again</P
+></LI
+><LI
+><P
+>replace</P
+></LI
+><LI
+><P
+>properties</P
+></LI
+><LI
+><P
+>preferences</P
+></LI
+><LI
+><P
+>about</P
+></LI
+><LI
+><P
+>select-all</P
+></LI
+><LI
+><P
+>new-window</P
+></LI
+><LI
+><P
+>close-window</P
+></LI
+><LI
+><P
+>new-game</P
+></LI
+><LI
+><P
+>pause-game</P
+></LI
+><LI
+><P
+>restart-game</P
+></LI
+><LI
+><P
+>undo-move</P
+></LI
+><LI
+><P
+>redo-move</P
+></LI
+><LI
+><P
+>hint</P
+></LI
+><LI
+><P
+>scores</P
+></LI
+><LI
+><P
+>end-game</P
+></LI
+></UL
+>
+      </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="gnome-app-helper-convenience-macros.html"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book1.html"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="gnome-app-helper-functions.html"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Distintas macros para rellenar la estructura <SPAN
+CLASS="STRUCTNAME"
+>GnomeUIInfo</SPAN
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="gnome-app-helper.html"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Funciones proporcionadas por GnomeAppHelper</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

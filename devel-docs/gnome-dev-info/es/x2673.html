@@ -1,0 +1,2949 @@
+<!DOCTYPE HTML PUBLIC "-//Norman Walsh//DTD DocBook HTML 1.0//EN">
+<HTML
+><HEAD
+><TITLE
+>	Descripción
+  </TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet"><LINK
+REL="HOME"
+TITLE="Información para desarrolladores de Gnome "
+HREF="book1.html"><LINK
+REL="UP"
+TITLE="	Gnome-MDI (Interfaz de Múltiples Documentos en Gnome)
+    "
+HREF="gnome-mdi-docs.html"><LINK
+REL="PREVIOUS"
+TITLE="	Gnome-MDI (Interfaz de Múltiples Documentos en Gnome)
+    "
+HREF="gnome-mdi-docs.html"><LINK
+REL="NEXT"
+TITLE="	Acerca de la Traducción
+     "
+HREF="sobre-tradu.html"></HEAD
+><BODY
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>Información para desarrolladores de Gnome</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="gnome-mdi-docs.html"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 12. Gnome-MDI (Interfaz de Múltiples Documentos en Gnome)</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="sobre-tradu.html"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="AEN2673"
+>Descripción</A
+></H1
+><P
+>     Este es el interfaz GnomeMDI de Jaka Mocnik usado en GHex y GTop.
+     (N. del T.: MDI viene de Multiple Document Interface)
+  </P
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="GNOME-MDI-NEW"
+>gnome_mdi_new - crea un nuevo objeto GnomeMDI</A
+></H2
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><CODE
+CLASS="FUNCDEF"
+>GtkObject *<B
+CLASS="FSFUNC"
+>gnome_mdi_new</B
+></CODE
+>(gchar *<VAR
+CLASS="PDPARAM"
+>appname</VAR
+>, gchar *<VAR
+CLASS="PDPARAM"
+>title</VAR
+>);<P
+></P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN2685"
+>Descripción</A
+></H3
+><P
+>	Esta función devuelve un nuevo objeto GnomeMDI. Normalemente solo
+	se le llama una vez en <TT
+CLASS="FUNCTION"
+><B
+>main</B
+></TT
+>. El modo se
+	establece al modo por defecto (seleccionado por el usuario en 
+	las propiedades look-and-feel (apariencia-y-sensación)). 
+        </P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN2689"
+>Uso</A
+></H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>	GnomeMDI *mdi = gnome_mdi_new ("gtop", "GTop");
+      </PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN2692"
+>Parámetros</A
+></H3
+><P
+></P
+><UL
+><LI
+><P
+>gchar *<TT
+CLASS="PARAMETER"
+><I
+>appname</I
+></TT
+>
+          </P
+><P
+>	Cádena de caracteres con el nombre de una aplicación. Esta cadena se
+	duplica y se almacena en la estructura GnomeMDI. La copia
+	almacenada se pasa como primer parámetro a la función
+	<TT
+CLASS="FUNCTION"
+><B
+>gnome_app_new</B
+></TT
+> cuando el MDI crea nueva ventana
+	del nivel más alto.
+          </P
+></LI
+><LI
+><P
+>gchar *<TT
+CLASS="PARAMETER"
+><I
+>title</I
+></TT
+>
+          </P
+><P
+>	El titulo de la aplicación. Esta cadena se duplica y se almacena en
+	la estructura GnomeMDI. La copia almacenada se pasa como segundo
+	parámetro de <TT
+CLASS="FUNCTION"
+><B
+>gnome_app_new</B
+></TT
+> cuando el MDI crea
+	una nueva ventana de alto nivel y usado en construir el titulo de la
+	ventana de alto nivel.
+          </P
+></LI
+></UL
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="GNOME-MDI-SET-MODE"
+>gnome_mdi_set_mode - establece el modo GnomeMDI</A
+></H2
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><CODE
+CLASS="FUNCDEF"
+>void <B
+CLASS="FSFUNC"
+>gnome_mdi_set_mode</B
+></CODE
+>(GnomeMDI *<VAR
+CLASS="PDPARAM"
+>mdi</VAR
+>, GnomeMDIMode <VAR
+CLASS="PDPARAM"
+>mode</VAR
+>);<P
+></P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN2714"
+>Descripción</A
+></H3
+><P
+>	Esta función establece el modo MDI a <TT
+CLASS="PARAMETER"
+><I
+>mode</I
+></TT
+>.
+	Cuando se llama sin ningúna vista abierta, simplemente abre una
+	ventana de alto nivel, por otro lado oculta todas las vistas y la
+	vuelve a mostrar en el nuevo modo.
+       </P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN2718"
+>Uso</A
+></H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>	gnome_mdi_set_mode (mdi, GNOME_MDI_NOTEBOOK);
+      </PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN2721"
+>Parámetros</A
+></H3
+><P
+></P
+><UL
+><LI
+><P
+>GnomeMDI *<TT
+CLASS="PARAMETER"
+><I
+>mdi</I
+></TT
+>
+          </P
+><P
+>	Un puntero a un objeto GnomeMDI.
+          </P
+></LI
+><LI
+><P
+>GnomeMDIMode <TT
+CLASS="PARAMETER"
+><I
+>mode</I
+></TT
+>
+          </P
+><P
+>El modo al que intercambia MDI; puede ser uno de los
+	siguientes:
+	</P
+><P
+>	    <DIV
+CLASS="GLOSSLIST"
+><DL
+><DT
+><B
+><SPAN
+CLASS="SYMBOL"
+>GNOME_MDI_NOTEBOOK</SPAN
+></B
+></DT
+><DD
+><P
+>		Dónde cada vista se muestra cómo una página de un block de
+	notas, dandole al usuario la habilidad para distribuir éstas entre 
+	múltiples blocks de notas (por medio de arrastrar las páginas sobre
+	la ventana raiz o dentro de otro block de notas de la misma
+	aplicación) cada uno en su propia ventana de alto nivel.
+                  </P
+></DD
+><DT
+><B
+><SPAN
+CLASS="SYMBOL"
+>GNOME_MDI_TOPLEVEL</SPAN
+></B
+></DT
+><DD
+><P
+>	En este modo, cada vista se muestra en su propia ventana de alto
+	nivel.
+                  </P
+></DD
+><DT
+><B
+><SPAN
+CLASS="SYMBOL"
+>GNOME_MDI_MODAL</SPAN
+></B
+></DT
+><DD
+><P
+>	en el modo "modal", solo se muesta una vista a la vez. Las otras se
+	deben seleccionar de un menu.
+                  </P
+></DD
+><DT
+><B
+><SPAN
+CLASS="SYMBOL"
+>GNOME_MDI_DEFAULT_MODE</SPAN
+></B
+></DT
+><DD
+><P
+>	El modo se establece a uno que fue elegido por el usuario al
+	ejecutar la aplicación en las propiedades de look-and-feel. Esta es
+	la opción preferida para muchas aplicaciones.
+                   </P
+></DD
+></DL
+></DIV
+>
+          </P
+></LI
+></UL
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="GNOME-MDI-SET-TAB-POS"
+>gnome_mdi_set_tab_pos - Establece la posción de las pestañas de los block de notas
+	MDI.
+    <DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><CODE
+CLASS="FUNCDEF"
+>void <B
+CLASS="FSFUNC"
+>gnome_mdi_set_tab_pos</B
+></CODE
+>(GnomeMDI *<VAR
+CLASS="PDPARAM"
+>mdi</VAR
+>, GtkPositionType<VAR
+CLASS="PDPARAM"
+>tab_pos</VAR
+>);<P
+></P
+></DIV
+>
+    <DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN2763"
+>Descripción</A
+></H3
+>Descripción<P
+> 	Establece la posición de las pestañas de los blocks de notas mostrado
+ 	en en el modo <SPAN
+CLASS="SYMBOL"
+>GNOME_MDI_NOTEBOOK</SPAN
+> a tab_pos.
+      </P
+></DIV
+>
+    <DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN2767"
+>Uso</A
+></H3
+>Uso<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>	gnome_mdi_set_tab_pos (mdi, GTK_POS_LEFT);
+      </PRE
+></TD
+></TR
+></TABLE
+></DIV
+>
+    <DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN2770"
+>Parameters</A
+></H3
+>Parameters<P
+></P
+><UL
+><LI
+><P
+>GnomeMDI *<TT
+CLASS="PARAMETER"
+><I
+>mdi</I
+></TT
+>
+          </P
+><P
+>	Un puntero a un objeto MDI. 
+          </P
+></LI
+><LI
+><P
+>GtkPositionType <TT
+CLASS="PARAMETER"
+><I
+>tab_pos</I
+></TT
+>
+          </P
+><P
+>	La nueva posición de las pestañas de los block de notas para los
+	blocks de notas en modo <SPAN
+CLASS="SYMBOL"
+>GNOME_MDI_NOTEBOOK</SPAN
+>. Ver
+	<TT
+CLASS="FUNCTION"
+><B
+>gtk_notebook_set_tab_pos</B
+></TT
+> para más detalles 
+	sobre la posición de las pestañas.
+          </P
+></LI
+></UL
+></DIV
+></A
+></H2
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="GNOME-MDI-SET-MENU-TEMPLATE"
+>gnome_mdi_set_menu_template - establece la plantilla para los menús
+MDI</A
+></H2
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><CODE
+CLASS="FUNCDEF"
+>void <B
+CLASS="FSFUNC"
+>gnome_mdi_set_menu_template</B
+></CODE
+>(GnomeMDI *<VAR
+CLASS="PDPARAM"
+>mdi</VAR
+>, GnomeUIInfo *<VAR
+CLASS="PDPARAM"
+>menu_template</VAR
+>);<P
+></P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN2792"
+>Descripción</A
+></H3
+><P
+>	Esta función establece la plantilla para los menús que aparecen en 
+	cada ventana del nivel más alto a menu_template. Para cada nueva
+	ventana de alto nivel creada por el MDI, se copia la estructura, los
+	menús son creados con la función gnome_app_create_menus_with_data()
+	con <TT
+CLASS="PARAMETER"
+><I
+>mdi</I
+></TT
+> como llamada de los datos de usuario.
+	Finalmente el puntero a la copia se asigna a la nueva ventana de
+	alto nivel (un widget GnomeApp) como dato con llave
+	<SPAN
+CLASS="SYMBOL"
+>GNOME_MDI_MENUBAR_INFO_KEY</SPAN
+>
+      </P
+><P
+>	La copia de la plantilla (y, lo que es más importante, sus widget
+	miembros) pueden ser accedidos a través del correspondiente widget
+	con la llamada gtk_object_get_data():
+        <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>          GnomeUIInfo *uiinfo;
+
+          uiinfo = gtk_object_get_data(GTK_OBJECT(mdi-&#62;active_window), GNOME_MDI_MENUBAR_INFO_KEY);
+          gtk_widget_set_sensitive(uiinfo[3].member, FALSE);
+        </PRE
+></TD
+></TR
+></TABLE
+>
+      </P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN2799"
+>Uso</A
+></H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>	gnome_mdi_set_menu_template(mdi, mdi_menubar);
+      </PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN2802"
+>Parámetros</A
+></H3
+><P
+></P
+><UL
+><LI
+><P
+>GnomeMDI *<TT
+CLASS="PARAMETER"
+><I
+>mdi</I
+></TT
+>
+          </P
+><P
+>	Un puntero a un objeto MDI.
+          </P
+></LI
+><LI
+><P
+>GnomeUIInfo *<TT
+CLASS="PARAMETER"
+><I
+>menu_template</I
+></TT
+>
+          </P
+><P
+>	Un puntero a un vector de entradas de GnomeUIInfo. Estos deben
+	permanecer inalterados durante el ciclo de vida del objeto MDI,
+	hasta que son copiados cada vez que una ventana de alto nivel nueva 
+	se crea.
+          </P
+></LI
+></UL
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="GNOME-MDI-SET-TOOLBAR-TEMPLATE"
+>gnome_mdi_set_toolbar_template - establece la plantilla para la
+	barra de herramientas MDI</A
+></H2
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><CODE
+CLASS="FUNCDEF"
+>void <B
+CLASS="FSFUNC"
+>gnome_mdi_set_toolbar_template</B
+></CODE
+>(GnomeMDI *<VAR
+CLASS="PDPARAM"
+>mdi</VAR
+>, GnomeUIInfo *<VAR
+CLASS="PDPARAM"
+>toolbar_template</VAR
+>);<P
+></P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN2822"
+>Descripción</A
+></H3
+><P
+>	Esta función establece la plantilla para la barra de herramientas
+	que aparece en cada ventana de alto nivel a toolbar_template. Para 
+	cada nueva ventana de alto nivel creada por el MDI, se copia esta estructura,
+	 la barra de herramientas es creada con la función 
+	gnome_app_create_toolbar_with_data() con 
+	<TT
+CLASS="PARAMETER"
+><I
+>mdi</I
+></TT
+> como llamada de datos de
+	usuario.Finalmente, el puntero a la copia se asigna a la nueva
+	ventana de alto nivel (un widget GnomeApp) como dato con llave 
+	<SPAN
+CLASS="SYMBOL"
+>GNOME_MDI_TOOLBAR_INFO_KEY</SPAN
+>.
+      </P
+><P
+>	La copia de la plantilla (y, lo mas importante, sus miembros widget)
+	pueden ser accedidos a través del correspondiente widget GnomeApp
+	con la llamada gtk_object_get_data():
+        <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>          GnomeUIInfo *uiinfo;
+
+          uiinfo = gtk_object_get_data(GTK_OBJECT(mdi-&#62;active_window), GNOME_MDI_TOOLBAR_INFO_KEY);
+          gtk_widget_set_sensitive(uiinfo[3].member, FALSE);
+        </PRE
+></TD
+></TR
+></TABLE
+>
+      </P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN2829"
+>Uso</A
+></H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>	gnome_mdi_set_toolbar_template(mdi, mdi_toolbar);
+      </PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN2832"
+>Parámetros</A
+></H3
+><P
+></P
+><UL
+><LI
+><P
+>GnomeMDI *<TT
+CLASS="PARAMETER"
+><I
+>mdi</I
+></TT
+>
+          </P
+><P
+>	Un puntero a un objeto MDI.
+          </P
+></LI
+><LI
+><P
+>GnomeUIInfo *<TT
+CLASS="PARAMETER"
+><I
+>toolbar_template</I
+></TT
+>
+          </P
+><P
+>	Un puntero a un vector de entradas de GnomeUIInfo. Estos deben
+	permanecer inalterados durante el ciclo de vida del objeto MDI,
+	hasta que son copiados cada vez que una ventana de alto nivel nueva 
+	se crea.
+          </P
+></LI
+></UL
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="GNOME-MDI-SET-CHILD-MENU-PATH"
+>gnome_mdi_set_child_menu_path - establece el camino para los menus
+	especificos de los descendientes</A
+></H2
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><CODE
+CLASS="FUNCDEF"
+>void <B
+CLASS="FSFUNC"
+>gnome_mdi_set_child_menu_path</B
+></CODE
+>(GnomeMDI *<VAR
+CLASS="PDPARAM"
+>mdi</VAR
+>, gchar *<VAR
+CLASS="PDPARAM"
+>path</VAR
+>);<P
+></P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN2852"
+>Descripción</A
+></H3
+><P
+>	Establece la posición deseada de los menús especificos de los
+	descendientes (los cuales son añadidos a la ventana de alto nivel
+	cuando una nueva vista se activa en ella). Ver 
+	<TT
+CLASS="FUNCTION"
+><B
+>gnome_app_find_menu_pos</B
+></TT
+> para los detalles sobre
+	las trayectorias de los menús.
+      </P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN2856"
+>Uso</A
+></H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>	gnome_mdi_set_child_menu_path(mdi, "File");
+      </PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN2859"
+>Parámetros</A
+></H3
+><P
+></P
+><UL
+><LI
+><P
+>GnomeMDI *<TT
+CLASS="PARAMETER"
+><I
+>mdi</I
+></TT
+>
+          </P
+><P
+>	Un puntero a un objeto MDI.
+          </P
+></LI
+><LI
+><P
+>gchar *<TT
+CLASS="PARAMETER"
+><I
+>path</I
+></TT
+>
+          </P
+><P
+>	Una trayectoria a un menú (ver
+	<TT
+CLASS="FUNCTION"
+><B
+>gnome_app_find_menu_pos</B
+></TT
+> para los detalles sobre
+	trayectorias de menús) describe la posición donde el submenu debe
+	ser  insertado.
+          </P
+></LI
+></UL
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="GNOME-MDI-SET-CHILD-LIST-PATH"
+>gnome_mdi_set_child_list_path - establece la ruta de menu
+	para la lista de hijos</A
+></H2
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><CODE
+CLASS="FUNCDEF"
+>void <B
+CLASS="FSFUNC"
+>gnome_mdi_set_child_list_path</B
+></CODE
+>(GnomeMDI *<VAR
+CLASS="PDPARAM"
+>mdi</VAR
+>, gchar *<VAR
+CLASS="PDPARAM"
+>path</VAR
+>);<P
+></P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN2880"
+>Descripción</A
+></H3
+><P
+>	Establece la posición para la inserción de items de menús usados
+	para activar el hijo MDI que fue añadido al MDI. Ver
+	<TT
+CLASS="FUNCTION"
+><B
+>gnome_app_find_menu_pos</B
+></TT
+> para más detalles sobre
+	las rutas de menús. Si la ruta no está establecida o se ha
+	establecido a NULL, estos items de menus no van a ser insertados en
+	la estructura del menú MDI. Notar que si quieres que todos los items
+	de menu se inserten en su propio submenu, tienes que crear ese
+	submenu (y dejarlo vacio, de acuerdo).
+      </P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN2884"
+>Uso</A
+></H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>	gnome_mdi_set_child_list_path(mdi, "Children/");
+      </PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN2887"
+>Parámetros</A
+></H3
+><P
+></P
+><UL
+><LI
+><P
+>GnomeMDI *<TT
+CLASS="PARAMETER"
+><I
+>mdi</I
+></TT
+>
+          </P
+><P
+>	Un puntero a un objeto MDI.
+          </P
+></LI
+><LI
+><P
+>gchar *<TT
+CLASS="PARAMETER"
+><I
+>path</I
+></TT
+>
+          </P
+><P
+>	Una ruta de menu (ver <TT
+CLASS="FUNCTION"
+><B
+>gnome_app_find_menu_pos</B
+></TT
+>
+	para más detalles sobre rutas de menús) describe la posición dónde
+	los items de menú con los nombres de los hijos serán insertados.
+          </P
+></LI
+></UL
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="GNOME-MDI-ADD-VIEW"
+>gnome_mdi_add_view - añade una nueva vista al MDI</A
+></H2
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><CODE
+CLASS="FUNCDEF"
+>gint <B
+CLASS="FSFUNC"
+>gnome_mdi_add_view</B
+></CODE
+>(GnomeMDI *<VAR
+CLASS="PDPARAM"
+>mdi</VAR
+>, GnomeMDIChild *<VAR
+CLASS="PDPARAM"
+>child</VAR
+>);<P
+></P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN2908"
+>Descripción</A
+></H3
+><P
+>	Crea una nueva vista de <TT
+CLASS="PARAMETER"
+><I
+>child</I
+></TT
+> y la añade al
+	MDI. GnomeMDIChild <TT
+CLASS="PARAMETER"
+><I
+>child</I
+></TT
+> tiene que ser
+	añadido al MDI con una llamada a
+	<TT
+CLASS="FUNCTION"
+><B
+>gnome_mdi_add_child</B
+></TT
+> antes que sus vistas se
+	añadan al MDI.
+      </P
+><P
+>	Una señal "add_view" se emite al MDI después de que la vista se haya
+	creado, pero antes de que se muestre y se añada al MDI, con un
+	puntero a la vista creada como su parámetro. La vista se añade al
+	MDI sólo si el manejador de señales (si este existe) devuelve TRUE.
+	Si el manjeador devuelve FALSE, la vista creada es destruida y no se
+	añade al MDI.
+      </P
+><P
+>	La función devuelve TRUE si la vista se ha añadido y FALSO en
+	cualquier otro caso.
+      </P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN2916"
+>Uso</A
+></H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>	success = gnome_mdi_add_view(mdi, child);
+      </PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN2919"
+>Parámetros</A
+></H3
+><P
+></P
+><UL
+><LI
+><P
+>GnomeMDI *<TT
+CLASS="PARAMETER"
+><I
+>mdi</I
+></TT
+>
+          </P
+><P
+>	Un puntero a un objeto MDI.
+          </P
+></LI
+><LI
+><P
+>GnomeMDIChild *<TT
+CLASS="PARAMETER"
+><I
+>child</I
+></TT
+>
+          </P
+><P
+>	El hijo, una vista del cuál se añade al MDI.
+          </P
+></LI
+></UL
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="GNOME-MDI-ADD-TOPLEVEL-VIEW"
+>gnome_mdi_add_toplevel_view - añade una nueva vista al MDI en un
+	nueva ventana de alto nivel.
+	nuevo
+    <DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><CODE
+CLASS="FUNCDEF"
+>gint <B
+CLASS="FSFUNC"
+>gnome_mdi_add_view</B
+></CODE
+>(GnomeMDI *<VAR
+CLASS="PDPARAM"
+>mdi</VAR
+>, GnomeMDIChild *<VAR
+CLASS="PDPARAM"
+>child</VAR
+>);<P
+></P
+></DIV
+>
+    <DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN2939"
+>Descripción</A
+></H3
+>Descripción<P
+>	Crea una nueva vista de <TT
+CLASS="PARAMETER"
+><I
+>child</I
+></TT
+> y la añade al
+	MDI; procede de la misma manera que
+	<TT
+CLASS="FUNCTION"
+><B
+>gnome_mdi_add_view</B
+></TT
+> en los modos
+	<SPAN
+CLASS="SYMBOL"
+>GNOME_MDI_MODAL</SPAN
+> y
+	<SPAN
+CLASS="SYMBOL"
+>GNOME_MDI_TOPLEVEL</SPAN
+>, pero abre en el modo
+	<SPAN
+CLASS="SYMBOL"
+>GNOME_MDI_NOTEBOOK</SPAN
+>, la vista se añade a una nueva ventana
+	de alto nivel a menos que la que esté activa no tenga vistas en
+	ella.
+      </P
+><P
+>	La función devuelve TRUE si la vista se ha añadido con exito y FALSE
+	en cualquier otro caso.
+      </P
+></DIV
+>
+    <DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN2948"
+>Uso</A
+></H3
+>Uso<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>	success = gnome_mdi_add_toplevel_view(mdi, child);
+      </PRE
+></TD
+></TR
+></TABLE
+></DIV
+>
+    <DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN2951"
+>Parámetros</A
+></H3
+>Parámetros<P
+></P
+><UL
+><LI
+><P
+>GnomeMDI *<TT
+CLASS="PARAMETER"
+><I
+>mdi</I
+></TT
+>
+          </P
+><P
+>	Un puntero a un objeto MDI.
+          </P
+></LI
+><LI
+><P
+>GnomeMDIChild *<TT
+CLASS="PARAMETER"
+><I
+>child</I
+></TT
+>
+          </P
+><P
+>	El hijo, una vista de la cuál se añadirá al MDI.
+          </P
+></LI
+></UL
+></DIV
+></A
+></H2
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="GNOME-MDI-REMOVE-VIEW"
+>gnome_mdi_remove_view - borra una vista existente del MDI.</A
+></H2
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><CODE
+CLASS="FUNCDEF"
+>gint <B
+CLASS="FSFUNC"
+>gnome_mdi_remove_view</B
+></CODE
+>(GnomeMDI *<VAR
+CLASS="PDPARAM"
+>mdi</VAR
+>, GtkWidget *<VAR
+CLASS="PDPARAM"
+>view</VAR
+>, gint <VAR
+CLASS="PDPARAM"
+>force</VAR
+>);<P
+></P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN2973"
+>Descripción</A
+></H3
+><P
+>	Borra una vista de un MDI.
+      </P
+><P
+>	Una señal "remove_view" se emite al MDI antes de borrar la vista. La
+	vista se borra solo si el manejador de señales (si existe y
+	<TT
+CLASS="PARAMETER"
+><I
+>force</I
+></TT
+> está puesto a FALSE) devuelve TRUE.
+      </P
+><P
+>	La función devuelve TRUE si la vista se ha borrado y FALSE en
+	cualquier otro caso.
+      </P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN2979"
+>Uso</A
+></H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>	success = gnome_mdi_remove_view(mdi, view, FALSE);
+      </PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN2982"
+>Parámetros</A
+></H3
+><P
+></P
+><UL
+><LI
+><P
+>GnomeMDI *<TT
+CLASS="PARAMETER"
+><I
+>mdi</I
+></TT
+>
+          </P
+><P
+>	Un puntero a un objeto MDI.
+          </P
+></LI
+><LI
+><P
+>GtkWidget *<TT
+CLASS="PARAMETER"
+><I
+>view</I
+></TT
+>
+          </P
+><P
+>	La vista que queremos borrar.
+          </P
+></LI
+><LI
+><P
+>gint <TT
+CLASS="PARAMETER"
+><I
+>force</I
+></TT
+>
+          </P
+><P
+>	Si está a TRUE, la señal "remove_view" no se emite antes de borrar
+	la vista, lo que quiere decir que la vista es incondicionalmente 
+	borrada.
+          </P
+></LI
+></UL
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="GNOME-MDI-ACTIVE-VIEW"
+>gnome_mdi_active_view - devuelve un puntero a al última vista activa</A
+></H2
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><CODE
+CLASS="FUNCDEF"
+>GtkWidget *<B
+CLASS="FSFUNC"
+>gnome_mdi_active_view</B
+></CODE
+>(GnomeMDI *<VAR
+CLASS="PDPARAM"
+>mdi</VAR
+>);<P
+></P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN3004"
+>Descripción</A
+></H3
+><P
+>	Devuelve un puntero a al última vista activa (i.e.: la vista que ha
+	tenido por última vez el foco) o NULL si no hay ninguna.
+      </P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN3007"
+>Uso</A
+></H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>	active_view = gnome_mdi_active_view(mdi);
+      </PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN3010"
+>Parámetros</A
+></H3
+><P
+></P
+><UL
+><LI
+><P
+>GnomeMDI *<TT
+CLASS="PARAMETER"
+><I
+>mdi</I
+></TT
+>
+          </P
+><P
+>	Un puntero a un objeto MDI.
+          </P
+></LI
+></UL
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="GNOME-MDI-SET-ACTIVE-VIEW"
+>gnome_mdi_set_active_view - establece la vista activa.</A
+></H2
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><CODE
+CLASS="FUNCDEF"
+>void <B
+CLASS="FSFUNC"
+>gnome_mdi_set_active_view</B
+></CODE
+>(GnomeMDI *<VAR
+CLASS="PDPARAM"
+>mdi</VAR
+>, GtkWidget *<VAR
+CLASS="PDPARAM"
+>view</VAR
+>);<P
+></P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN3026"
+>Descripción</A
+></H3
+><P
+> 	Establece la vista activa a <TT
+CLASS="PARAMETER"
+><I
+>view</I
+></TT
+>.     
+      </P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN3030"
+>Uso</A
+></H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>	gnome_mdi_set_active_view(mdi, view);
+      </PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN3033"
+>Parámetros</A
+></H3
+><P
+></P
+><UL
+><LI
+><P
+>GnomeMDI *<TT
+CLASS="PARAMETER"
+><I
+>mdi</I
+></TT
+>
+          </P
+><P
+>	Un puntero a un objeto MDI.
+          </P
+></LI
+><LI
+><P
+>GtkWidget *<TT
+CLASS="PARAMETER"
+><I
+>view</I
+></TT
+>
+          </P
+><P
+> 	 La vista para ser activa, ya añadida al MDI.         
+          </P
+></LI
+></UL
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="GNOME-MDI-ADD-CHILD"
+>gnome_mdi_add_child - añade un nuevo hijo a un MDI</A
+></H2
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><CODE
+CLASS="FUNCDEF"
+>gint <B
+CLASS="FSFUNC"
+>gnome_mdi_add_child</B
+></CODE
+>(GnomeMDI *<VAR
+CLASS="PDPARAM"
+>mdi</VAR
+>, GnomeMDIChild *<VAR
+CLASS="PDPARAM"
+>child</VAR
+>);<P
+></P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN3053"
+>Descripción</A
+></H3
+><P
+>	Añade un nuevo hijo al MDI. No se añaden vistas: esto se tiene que
+	hacer con una llamada a <TT
+CLASS="FUNCTION"
+><B
+>gnome_mdi_add_view</B
+></TT
+>.
+      </P
+><P
+>	Primero se emite una señal "add_child" al MDI con un puntero al hijo
+	como su parámetro. Se añade el hijo al MDI solo si el manejador de
+	señales (si existe) devuelve TRUE. Si el manejador devuelve FALSE,
+	el hijo no se añade al MDI.
+      </P
+><P
+>	La función devuelve TRUE si el hijo ha sido añadido y FALSE en
+	cualquier otro caso.
+	</P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN3059"
+>Uso</A
+></H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>	success = gnome_mdi_add_child(mdi, child);
+      </PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN3062"
+>Parámetros</A
+></H3
+><P
+></P
+><UL
+><LI
+><P
+>GnomeMDI *<TT
+CLASS="PARAMETER"
+><I
+>mdi</I
+></TT
+>
+          </P
+><P
+>	Un puntero a un objeto MDI.
+          </P
+></LI
+><LI
+><P
+>GnomeMDIChild *<TT
+CLASS="PARAMETER"
+><I
+>child</I
+></TT
+>
+          </P
+><P
+>	El hijo a añadir al MDI.
+          </P
+></LI
+></UL
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="GNOME-MDI-REMOVE-CHILD"
+>gnome_mdi_remove_child - borra a un hijo del MDI</A
+></H2
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><CODE
+CLASS="FUNCDEF"
+>gint <B
+CLASS="FSFUNC"
+>gnome_mdi_remove_child</B
+></CODE
+>(GnomeMDI *<VAR
+CLASS="PDPARAM"
+>mdi</VAR
+>, GnomeMDIChild *<VAR
+CLASS="PDPARAM"
+>view</VAR
+>, gint <VAR
+CLASS="PDPARAM"
+>force</VAR
+>);<P
+></P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN3084"
+>Descripción</A
+></H3
+><P
+>	Borra un hijo y todas sus vistas del MDI.
+      </P
+><P
+>	Una señal "remove_child" se emite al MDI justo antes de borrar al
+	hijo. El hijo se borrra solo si el manejador de señales (si este
+	existe y <TT
+CLASS="PARAMETER"
+><I
+>force</I
+></TT
+> esta puesto a FALSE) devuelve
+	TRUE.
+      </P
+><P
+>	La función devuelve TRUE si el hijo ha sido borrado y FALSO en
+	cualquier otro caso.
+      </P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN3090"
+>Uso</A
+></H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>	success = gnome_mdi_remove_child(mdi, child, FALSE);
+      </PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN3093"
+>Parámetros</A
+></H3
+><P
+></P
+><UL
+><LI
+><P
+>GnomeMDI *<TT
+CLASS="PARAMETER"
+><I
+>mdi</I
+></TT
+>
+          </P
+><P
+>	Un puntero a un objeto MDI.
+          </P
+></LI
+><LI
+><P
+>GnomeMDIChild *<TT
+CLASS="PARAMETER"
+><I
+>child</I
+></TT
+>
+          </P
+><P
+>	El hijo a borrar.
+          </P
+></LI
+><LI
+><P
+>gint <TT
+CLASS="PARAMETER"
+><I
+>force</I
+></TT
+>
+          </P
+><P
+>	Si TRUE, la señal "remove_child" no se emite antes de borrar al
+	hijo. De esta forma el hijo se borrar incondicionalmente.
+          </P
+></LI
+></UL
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="GNOME-MDI-REMOVE-ALL"
+>gnome_mdi_remove_all - borra todos los hijos del MDI</A
+></H2
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><CODE
+CLASS="FUNCDEF"
+>gint <B
+CLASS="FSFUNC"
+>gnome_mdi_remove_all</B
+></CODE
+>(GnomeMDI *<VAR
+CLASS="PDPARAM"
+>mdi</VAR
+>, gint <VAR
+CLASS="PDPARAM"
+>force</VAR
+>);<P
+></P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN3117"
+>Descripción</A
+></H3
+><P
+>	Borra todo los hijos y todas las vistas del MDI.
+      </P
+><P
+>	Una señal "remove_child" se emite al MDI por cada hijo justo antes de
+	intentar borrar ninguno. Si los manejadores de señales para todos los
+	hijos (si estos existen y <TT
+CLASS="PARAMETER"
+><I
+>force</I
+></TT
+> esta puesto a
+	FALSE) devuelve TRUE, todos los hijos y sus vistas son borrados y
+	ninguno en otro caso.
+      </P
+><P
+>	La función devuelve TRUE si todos los hijos han sido borrados y
+	FALSE en otro caso.
+      </P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN3123"
+>Uso</A
+></H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>	success = gnome_mdi_remove_all(mdi, FALSE);
+      </PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN3126"
+>Parámetros</A
+></H3
+><P
+></P
+><UL
+><LI
+><P
+>GnomeMDI *<TT
+CLASS="PARAMETER"
+><I
+>mdi</I
+></TT
+>
+          </P
+><P
+>	Un puntero a un objeto MDI.
+          </P
+></LI
+><LI
+><P
+>gint <TT
+CLASS="PARAMETER"
+><I
+>force</I
+></TT
+>
+          </P
+><P
+>	Si TRUE, las señales "remove_child" no son emitidas antes de borrar
+	a los hijos. Todos los hijos son borrados incondicionalmente en este
+	caso.
+          </P
+></LI
+></UL
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="GNOME-MDI-UPDATE-CHILD"
+>gnome_mdi_update_child - actualiza un hijo cuando su nombre cambia</A
+></H2
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><CODE
+CLASS="FUNCDEF"
+>void <B
+CLASS="FSFUNC"
+>gnome_mdi_update_child</B
+></CODE
+>(GnomeMDI *<VAR
+CLASS="PDPARAM"
+>mdi</VAR
+>, GnomeMDIChild *<VAR
+CLASS="PDPARAM"
+>child</VAR
+>);<P
+></P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN3146"
+>Descripción</A
+></H3
+><P
+> 	Por ahora todo lo que hace es actualizar el nombre del hijo en 
+ 	el MDI.
+      </P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN3149"
+>Uso</A
+></H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>	gnome_mdi_update_child(mdi, child);
+      </PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN3152"
+>Parámetros</A
+></H3
+><P
+></P
+><UL
+><LI
+><P
+>GnomeMDI *<TT
+CLASS="PARAMETER"
+><I
+>mdi</I
+></TT
+>
+          </P
+><P
+>	Un puntero a un objeto MDI.
+          </P
+></LI
+><LI
+><P
+>GnomeMDIChild *<TT
+CLASS="PARAMETER"
+><I
+>child</I
+></TT
+>
+          </P
+><P
+>	El hijo a actualizar.
+          </P
+></LI
+></UL
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="GNOME-MDI-ACTIVE-CHILD"
+>gnome_mdi_active_child - devuelve el hijo activo</A
+></H2
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><CODE
+CLASS="FUNCDEF"
+>GnomeMDIChild  *<B
+CLASS="FSFUNC"
+>gnome_mdi_active_child</B
+></CODE
+>(GnomeMDI *<VAR
+CLASS="PDPARAM"
+>mdi</VAR
+>);<P
+></P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN3170"
+>Descripción</A
+></H3
+><P
+>	Devuelve el ultimo hijo activo (i.e.: una vista del hijo la cuál ha
+	tenido la última el foco).
+      </P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN3173"
+>Uso</A
+></H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>	active_child = gnome_mdi_active_child(mdi);
+      </PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN3176"
+>Parámetros</A
+></H3
+><P
+></P
+><UL
+><LI
+><P
+>GnomeMDI *<TT
+CLASS="PARAMETER"
+><I
+>mdi</I
+></TT
+>
+          </P
+><P
+>	Un puntero a un objeto MDI.
+          </P
+></LI
+></UL
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="GNOME-MDI-FIND-CHILD"
+>gnome_mdi_find_child - devuelve el hijo nombrado</A
+></H2
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><CODE
+CLASS="FUNCDEF"
+>GnomeMDIChild  *<B
+CLASS="FSFUNC"
+>gnome_mdi_update_child</B
+></CODE
+>(GnomeMDI *<VAR
+CLASS="PDPARAM"
+>mdi</VAR
+>, gchar *<VAR
+CLASS="PDPARAM"
+>name</VAR
+>);<P
+></P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN3192"
+>Descripción</A
+></H3
+><P
+>	Devuelve el hijo con nombre <TT
+CLASS="PARAMETER"
+><I
+>name</I
+></TT
+>. Si no se
+	encuentra ningún hijo con ese nombre, se devuelve NULL.
+      </P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN3196"
+>Uso</A
+></H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>	wanted_child = gnome_mdi_find_child(mdi, "Donald E.");
+      </PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN3199"
+>Parámetros</A
+></H3
+><P
+></P
+><UL
+><LI
+><P
+>GnomeMDI *<TT
+CLASS="PARAMETER"
+><I
+>mdi</I
+></TT
+>
+          </P
+><P
+>	Un puntero a un objeto MDI.
+          </P
+></LI
+><LI
+><P
+>gchar *<TT
+CLASS="PARAMETER"
+><I
+>name</I
+></TT
+>
+          </P
+><P
+>	Una cadena con el nombre del hijo que estamos buscando.
+          </P
+></LI
+></UL
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="GNOME-MDI-OPEN-TOPLEVEL"
+>gnome_mdi_open_toplevel - abre una nueva ventana de alto nivel.</A
+></H2
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><CODE
+CLASS="FUNCDEF"
+>void <B
+CLASS="FSFUNC"
+>gnome_mdi_open_toplevel</B
+></CODE
+>(GnomeMDI *<VAR
+CLASS="PDPARAM"
+>mdi</VAR
+>);<P
+></P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN3217"
+>Descripción</A
+></H3
+><P
+>	A menos que el MDI este en modo <SPAN
+CLASS="SYMBOL"
+>GNOME_MDI_MODAL</SPAN
+>,
+	una nueva ventana de alto nivel se crea. En el modo
+	<SPAN
+CLASS="SYMBOL"
+>GNOME_MDI_MODAL</SPAN
+> el número de ventanas de alto 
+	nivel se restringe a un máximo de una.
+      </P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN3222"
+>Uso</A
+></H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>	gnome_mdi_open_toplevel(mdi);
+      </PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN3225"
+>Parámetros</A
+></H3
+><P
+></P
+><UL
+><LI
+><P
+>GnomeMDI *<TT
+CLASS="PARAMETER"
+><I
+>mdi</I
+></TT
+>
+          </P
+><P
+>	Un puntero a un objeto MDI.
+          </P
+></LI
+></UL
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="GNOME-MDI-REGISTER"
+>gnome_mdi_register - registra un GtkObject con MDI</A
+></H2
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><CODE
+CLASS="FUNCDEF"
+>void <B
+CLASS="FSFUNC"
+>gnome_mdi_register</B
+></CODE
+>(GnomeMDI *<VAR
+CLASS="PDPARAM"
+>mdi</VAR
+>, GtkObject *<VAR
+CLASS="PDPARAM"
+>object</VAR
+>);<P
+></P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN3241"
+>Descripción</A
+></H3
+><P
+> 	Registra un GtkObject con MDI.     
+      </P
+><P
+>	Esto es muy útil para aplicaciones que abren otras ventanas además
+	de las abiertas por el MDI y quieren que continuen funcionando
+	incluso cuando no haya ventanas MDI( un ejemplo de esto podría ser
+	la ventana de GIMP con herramientas, si las imagenes fueron hijas
+	MDI). Mientras hay un objeto registrado con el MDI, el MDI no se
+	destruye cuando la última de sus ventanas es cerrada. Si no hay
+	objetos registrados, cerrando la última ventana del MDI hace que el
+	MDI se destruya.
+      </P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN3245"
+>Uso</A
+></H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>	gnome_mdi_register(mdi, tool_window);
+      </PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN3248"
+>Parámetros</A
+></H3
+><P
+></P
+><UL
+><LI
+><P
+>GnomeMDI *<TT
+CLASS="PARAMETER"
+><I
+>mdi</I
+></TT
+>
+          </P
+><P
+>	Un puntero a una objeto MDI.
+          </P
+></LI
+><LI
+><P
+>GtkObject *<TT
+CLASS="PARAMETER"
+><I
+>object</I
+></TT
+>
+          </P
+><P
+>	Un puntero al objeto a registrar.
+          </P
+></LI
+></UL
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="GNOME-MDI-UNREGISTER"
+>gnome_mdi_unregister - borrar un GtkObject de la lista de objetos 
+	registrados
+    <DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><CODE
+CLASS="FUNCDEF"
+>void <B
+CLASS="FSFUNC"
+>gnome_mdi_unregister</B
+></CODE
+>(GnomeMDI *<VAR
+CLASS="PDPARAM"
+>mdi</VAR
+>, GtkObject *<VAR
+CLASS="PDPARAM"
+>object</VAR
+>);<P
+></P
+></DIV
+>
+    <DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN3268"
+>Descripción</A
+></H3
+>Descripción<P
+>	Borra un GtkObject de la lista de objetos registrados.
+      </P
+></DIV
+>
+    <DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN3271"
+>Uso</A
+></H3
+>Uso<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>	gnome_mdi_unregister(mdi, tool_window);
+      </PRE
+></TD
+></TR
+></TABLE
+></DIV
+>
+    <DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN3274"
+>Parámetros</A
+></H3
+>Parámetros<P
+></P
+><UL
+><LI
+><P
+>GnomeMDI *<TT
+CLASS="PARAMETER"
+><I
+>mdi</I
+></TT
+>
+          </P
+><P
+>	Un puntero a un objeto MDI.
+          </P
+></LI
+><LI
+><P
+>GtkObject *<TT
+CLASS="PARAMETER"
+><I
+>object</I
+></TT
+>
+          </P
+><P
+>	Un puntero al objeto a borrar de la lista de objetos registrados.
+          </P
+></LI
+></UL
+></DIV
+></A
+></H2
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="GNOME-MDI-GET-APP-FROM-VIEW"
+>gnome_mdi_get_app_from_view - recupera la ventana de alto nivel de
+	una vista.</A
+></H2
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><CODE
+CLASS="FUNCDEF"
+>GnomeApp *<B
+CLASS="FSFUNC"
+>gnome_mdi_get_app_from_view</B
+></CODE
+>(GtkWidget *<VAR
+CLASS="PDPARAM"
+>view</VAR
+>);<P
+></P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN3292"
+>Descripción</A
+></H3
+><P
+>	Devuelve una ventana de alto nivel de una vista.
+      </P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN3295"
+>Uso</A
+></H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>	view_app = gnome_mdi_get_app_from_view(view);
+      </PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN3298"
+>Parámetros</A
+></H3
+><P
+></P
+><UL
+><LI
+><P
+>GtkWidget *<TT
+CLASS="PARAMETER"
+><I
+>view</I
+></TT
+>
+          </P
+><P
+>	Un puntero a la vista que ha sido añadida al MDI.
+          </P
+></LI
+></UL
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="GNOME-MDI-GET-CHILD-FROM-VIEW"
+>gnome_mdi_get_child_from_view - recupera el hijo de una vista.</A
+></H2
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><CODE
+CLASS="FUNCDEF"
+>GnomeMDIChild *<B
+CLASS="FSFUNC"
+>gnome_mdi_get_child_from_view</B
+></CODE
+>(GtkWidget *<VAR
+CLASS="PDPARAM"
+>view</VAR
+>);<P
+></P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN3312"
+>Descripción</A
+></H3
+><P
+>	Devuelve el hijo al que <TT
+CLASS="PARAMETER"
+><I
+>view</I
+></TT
+> pertenece.
+      </P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN3316"
+>Uso</A
+></H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>	view_child = gnome_mdi_get_child_from_view(view);
+      </PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN3319"
+>Parámetros</A
+></H3
+><P
+></P
+><UL
+><LI
+><P
+>GtkWidget *<TT
+CLASS="PARAMETER"
+><I
+>view</I
+></TT
+>
+          </P
+><P
+>	Un puntero a una vista que ha sido añadida al MDI.
+          </P
+></LI
+></UL
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="GNOME-MDI-GET-VIEW-FROM-WINDOW"
+>gnome_mdi_get_view_from_window - recuperar una vista de una cierta
+	ventana</A
+></H2
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><CODE
+CLASS="FUNCDEF"
+>GtkWidget *<B
+CLASS="FSFUNC"
+>gnome_mdi_get_view_from_window</B
+></CODE
+>(GnomeMDI *<VAR
+CLASS="PDPARAM"
+>mdi</VAR
+>, GnomeApp *<VAR
+CLASS="PDPARAM"
+>app</VAR
+>);<P
+></P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN3335"
+>Descripción</A
+></H3
+><P
+>	Devuelve la vista que reside en la ventana
+	<TT
+CLASS="PARAMETER"
+><I
+>app</I
+></TT
+>. Si el modo MDI es
+	<SPAN
+CLASS="SYMBOL"
+>GNOME_MDI_NOTEBOOK</SPAN
+>, la vista en la pagina seleccionada 
+	del "block de notas" es devuelta.
+      </P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN3340"
+>Uso</A
+></H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>	view = gnome_mdi_get_view_from_window(mdi, app);
+      </PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN3343"
+>Parámetros</A
+></H3
+><P
+></P
+><UL
+><LI
+><P
+>GnomeMDI *<TT
+CLASS="PARAMETER"
+><I
+>mdi</I
+></TT
+>
+          </P
+><P
+>	Un puntero a un objeto MDI.
+          </P
+></LI
+><LI
+><P
+>GnomeApp *<TT
+CLASS="PARAMETER"
+><I
+>app</I
+></TT
+>
+          </P
+><P
+>	Un puntero a un widget GnomeApp creado por el MDI
+	<TT
+CLASS="PARAMETER"
+><I
+>mdi</I
+></TT
+>.
+          </P
+></LI
+></UL
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="gnome-mdi-docs.html"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book1.html"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="sobre-tradu.html"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Gnome-MDI (Interfaz de Múltiples Documentos en Gnome)</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="gnome-mdi-docs.html"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Acerca de la Traducción</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,0 +1,354 @@
+<!DOCTYPE HTML PUBLIC "-//Norman Walsh//DTD DocBook HTML 1.0//EN">
+<HTML
+><HEAD
+><TITLE
+>Visuals</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet"><LINK
+REL="HOME"
+TITLE="Información para desarrolladores de Gnome "
+HREF="book1.html"><LINK
+REL="UP"
+TITLE=""
+HREF="x-concepts-docs.html#AEN2433"><LINK
+REL="PREVIOUS"
+TITLE=""
+HREF="x-concepts-docs.html#AEN2433"><LINK
+REL="NEXT"
+TITLE="Contextos Gráficos
+	"
+HREF="graphics-contexts.html"></HEAD
+><BODY
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>Información para desarrolladores de Gnome</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x-concepts-docs.html#AEN2433"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 10. Conceptos basicos sobre X</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="graphics-contexts.html"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="VISUALS"
+>Visuals</A
+></H1
+><P
+>	Visuals son un concepto <I
+CLASS="EMPHASIS"
+>muy importante</I
+> que 
+        amenudo es pasado por alto. Rapidamente, un visual define la
+        representación de la memoria que una pieza de hardware utiliza para
+        almacenar los contenidos de una imagen. Las X soportan diferentes
+        tipos de visuales para diferenciar los diferentes tipos de hardware
+        que hay.
+      </P
+><P
+>	Hay tres tipos básicos de visuales, cada uno dividido en dos clases:
+      </P
+><P
+></P
+><UL
+><LI
+><P
+>            Los visuales <I
+CLASS="EMPHASIS"
+>Grayscale (escala de grises)</I
+>
+            son utilizados por pantallas que utilizan un único canal de 
+            información de color. De negro y blanco o monitores de escala de 
+            grises (incluyendo monitores ambar y verdes) pueden utilizar
+            este tipo de visual. Este visual puede ser 
+            <I
+CLASS="EMPHASIS"
+>static gray</I
+> o <I
+CLASS="EMPHASIS"
+>grayscale</I
+>.
+	  </P
+><P
+>            Los visuales static gray (gris estático) son aquellos en los que
+            tu no puedes cambiar la intensidad de gris del hardware. Pantallas
+            monocromo (B/W) planas o pantallas fijas de 4 grises pueden ser
+            del tipo static gray. Los visuales Grayscale (escala de grises)
+            son aquellos en los que  puedes cambiar la intensidad de grises
+            utilizados por el hardware. Pantallas de escalas de gris exóticas
+            de 12-bit (como las utilizadas para visualización médica) que te
+            permiten cambiar la intensidad pueden ser de este tipo de visuales.
+	  </P
+></LI
+><LI
+><P
+>            Los visuales <I
+CLASS="EMPHASIS"
+>Indexed</I
+> utilizan el concepto
+            "pintar por número": donde cada valor de un pixel es un entero 
+            que indexa a la tabla de colores. Por lo que 0 puede representar 
+            negro, 1 puede representar rosa, 2 azul, etc. Estos visuales pueden
+            ser <I
+CLASS="EMPHASIS"
+>static color (color estático)</I
+> o 
+            <I
+CLASS="EMPHASIS"
+>pseudo color</I
+>.
+	  </P
+><P
+>            Los visuales Static color (color stático) son aquellos en los que 
+            no puedes cambiar los colores actales a los que la indexación
+            corresponde. ¿Recuerdas las tarjetas viejas CGA con cuatro colores
+            fijos en los modos gráficos?. Estos puede ser considerados un tipo
+            de static color. Los visuales del tipo pseudo color son aquellos 
+            en los que tu puedes cambiar el color actual al que se 
+            corresponde la indexación. Cada indice se refiere a una tripleta
+            RGB que define el color que será mostrado sobre la pantalla. 
+            Puedes cambiar esta tripleta RGB para cada índice. Los visuales
+            pseudo color són muy común en las tarjetas gráficas. Las tarjetas
+            gráficas con 256 colores que puedes cambiar, por ejemplo, 
+            tarjetas VGA, són del tipo de pseudo color.
+	  </P
+></LI
+><LI
+><P
+>            Los visuales <I
+CLASS="EMPHASIS"
+>Color</I
+> proporcionan la más alta
+            calidad que tu puedes obtener del hardware, y ellas también 
+            consumen la mayor cantidad de recursos en terminos de velocidad
+            y memoria. Los visuales Color almacenan explicitamente los valores
+            RGB para cada pixel, en vez de almacenar un único valor como los 
+            visuales indexados. Los visuales Color pueden ser 
+            <I
+CLASS="EMPHASIS"
+>true color (color verdadero)</I
+> o 
+            <I
+CLASS="EMPHASIS"
+>direct color (color directo)</I
+>.
+	  </P
+><P
+>            La distinción entre color verdadero y directo puede ser dificil
+            entender al principio. Depués de todo, ambos tipos de visuales
+            utilizan tres valores para cada pixel. ¿Qué más se puede
+            decir?. La diferencia es que los visuales color verdadero utilizan
+            los valores exactos que tu especifícas para cada pixel como el 
+            color que logras mostrar sobre la pantalla para el pixel. Muchas
+            tarjetas SVGA "color verdadero" son de este tipo.
+	  </P
+><P
+>            Sin embargo, los valores en un visual del tipo color directo van
+            a través de un paso de indirección antes de ser enviados a la
+            pantalla.<I
+CLASS="EMPHASIS"
+>Cada uno</I
+> de los valores de R/G/B 
+            que tu especificas es indexado en tablas separadas, y aquellas 
+            tablas contienen un valor transformado. Por lo que una tripleta
+            RGB logra la transformación en otra tripleta R'G'B', es decir
+            que las tres tablas juntas definen una función 
+            f(r, g, b) -&#62; (r', g', b'). Para la mayoría de los propósitos
+            tus tablas serán rellenadas por la función identidad y la 
+            obtendrás linealmente incrementando la intensidad de los valores
+            para cada uno de los canales RGB. Cosas bastante más interesantes
+            pueden llegar a realizarse, pudes modificar las tablas para
+            tener un mapeado no lineal. Si las llenas usando un función
+            exponencial, puedes, por ejemplo, hacer una corrección del
+            color sobre el hardware. La mayoría de los últimos hardware 
+            (hardware gráficos de Sun/HP/SGI) soportan color directo para
+            lograr la más alta calidad y flexibilidad.
+	  </P
+></LI
+></UL
+><P
+>        Estos son las seis clases de visuales soportados por las X
+        (gris estático, escala de grises, color estático, pseudo colo,
+        color verdadero, color directo). ¿Te puedes preguntar por qué no 
+        tratar directamente con tripletas RGB todo el tiempo?. Esto haría más
+        fácil la programación. La razón es que no todo el hardware piensa en
+        terminos de tripletas RGB, y las X actuan de cierre de todo 
+        este hardware, por lo que nos vemos forzados a tratar con esto. 
+        Afortunadamente, ésto no tan duro de realizar.
+      </P
+><P
+>        Recuerda lo que significa la diferencia de las clases visuales, 
+        piensa en terminos de que gris estático, color estático y color
+        verdadero tienen operaciones de sólo lectura en los planos de 
+        intensidad, y que los tipos de escala de grises, pseudo color y
+        color directo tienen operaciones de lectura y escritura en los planos 
+        de intensidad.
+      </P
+><P
+>        En adición a las clases visuales, cada visual tiene un bit de
+        profundidad. Esto es el número de bit significativos que son 
+        utilizados para codificar el valor de cada pixel. La mayoría de
+        las tarjetas de video PC de 256 colores operan con un pseudocolor 
+        visual de 8-bit. Tarjetas de video mejores operan con visuales
+        color verdadero de 24-bit, con 8 bits de información por canal.
+        Algunas tarjeta de video Amiga operan con visuales de 12-bit de 
+        pseudocolor, con lo que conseguir una paleta de 4096 colores indexados.
+        Algunas tarjetas exóticas utilizan visuales color verdatero de 8-bit,
+        utilizando 3/3/2 bits para cada canal RGB respectivamente.
+      </P
+><P
+>        El mejor modo de conocer sobre los tipos visuales que tu hardware
+        soporta es ejecutar el comando xdpyinfo. Tu obtendrás una información
+        muy interestante.
+      </P
+><P
+>        Como hemos mencionado en la sección anterior, una de las propiedades
+        de los dibujables es su clase visual. Este define el formato de la 
+        imagen que debemos utilizar para pintar sobre el dibujable.
+      </P
+><P
+>        La mayoría del hardware de gama baja soporta una única clase visual
+        que es utilizada para todos los dibujables. Por ejemplo, una tarjeta
+        SVGA puede ejecutar psedocolor de 8-bit o color verdadero con 24-bit;
+        uno o el otro pero nó ambos a la misma vez.
+      </P
+><P
+>        Harware de gama alta, sin embargo, puede soportar diferentes tipos
+        visuales simultaneamente. Por ejemplo, varias tarjetas de video 
+        de Sun y SGI pueden manejar visuales del tipo pseudocolor con 8-bit y
+        color verdadero con 24-bit simultaneamente. Esto significa que tu 
+        puedes operar sobre ventanas con diferentes tipos visuales al mismo
+        tiempo. En una estación SGI puedes ejecutar un xterm y ejecutar xwininfo sobre
+        la ventana xterm. Ahora ejecutando xv o Electric Eyes y  puedes ver
+        que este usa un visual 24-bit con color verdadero. El hardware es
+        bastante listo para dividir su memoria de video en diferentes areas
+        para la información pseudocolor y color verdadero.
+      </P
+><P
+>        La razón por la que es conveniente tener dibujables con diferentes 
+        tipos de visuales al mismo tiempo es su ejecución. Por ejemplo, 
+        la información de una imagen sobre visuales de pseudocolor
+        generalmente coge mucho menos espacio que un visual de color verdadero
+        (un ejemplo común es 8 bits por pixel frente a 24 bits por pixel, 
+        respectivamente). Usando menos memoria también significa que puedes
+        pintar las cosas más rápido, ya que hay menos información que poner.
+        Esto hace que la mayoría de las aplicaciones que no ejecutan 
+        intensivamene gráficos utilicen vizuales de baja calidad mientras que
+        los que requieren imágenes de alta-calidad utilen visuales como
+        color verdadero y color directo.
+      </P
+><P
+>        Tener diferenentes tipos de visuales simultáneamente tambén tiene
+        ventajas sutiles. Permitenos considerar una parte de hardware de video
+        con bastante memoria para almacenar información pseudocolor y color 
+        verdadero para cada pixel, más un bit extra. Este bit es un flag que 
+        selecciona cuando pintar el pixel desde las regiones de memoria 
+        de pseudocolor o color verdadero. Decir que hay aplicaciones
+        ambrientas con algunas ventanas de visuales de color verdadero que 
+        son lentas de repintar (por ejemplo, renderización 3d). Si la 
+        aplicación necesita desplegar un menú que pronto se cerrará, es 
+        conveniente crear el menú sobre un visual pseudocolor, y poner todos 
+        los bits conmutables de la correspondiente región para indicar que
+        la información utiliza visuales pseudocolor en vez de los de color
+        verdadero. Desde que la información sobre la región de memoria de
+        color verdadero no es borrada, y únicamente no es mostrada, el servidor
+        X puede rapidamente recoger el menú cuando este lo haga cambiando los
+        bits conmutables a su anterior estado para indicar color verdadero;
+        no será necesario ninguna petición de repintar la región de la 
+        aplicación. Esto significa que las cosas iran lo más rapidas posibles.
+      </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x-concepts-docs.html#AEN2433"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book1.html"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="graphics-contexts.html"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="x-concepts-docs.html#AEN2433"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Contextos Gráficos</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

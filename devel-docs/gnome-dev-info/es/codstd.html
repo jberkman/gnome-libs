@@ -1,0 +1,195 @@
+<!DOCTYPE HTML PUBLIC "-//Norman Walsh//DTD DocBook HTML 1.0//EN">
+<HTML
+><HEAD
+><TITLE
+>Estándares de codificación.</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet"><LINK
+REL="HOME"
+TITLE="Información para desarrolladores de Gnome "
+HREF="book1.html"><LINK
+REL="UP"
+TITLE=" Principios no (muy) técnicos."
+HREF="nontech.html"><LINK
+REL="PREVIOUS"
+TITLE="Cuando incluirte en el fichero de AUTHORS"
+HREF="addauth.html"><LINK
+REL="NEXT"
+TITLE="     Tutorial para los desarrolladores de GNOME
+    "
+HREF="tutorial.html"></HEAD
+><BODY
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>Información para desarrolladores de Gnome</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="addauth.html"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 2. Principios no (muy) técnicos.</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="tutorial.html"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="CODSTD"
+>Estándares de codificación.</A
+></H1
+><P
+></P
+><UL
+><LI
+><P
+> El código de Gnome usa el estilo de codificación del núcleo de linux 
+	(el cúal es básicamente el estilo de códificación de GNU
+	pero la identación es a 8 espacios, y las llaves están en la misma linea que
+	las sentencias que abren el bloque). Familiarizate con ámbos estilos de
+	codificación (estilo de codificación GNU y estilo de codificación del núcleo
+	de Linux)</P
+></LI
+><LI
+><P
+> Intenta hacer tu código legible en 80 columnas</P
+></LI
+><LI
+><P
+> Cuando cambies cosas, edita el ChangeLog, así la
+	otra gente puede saber que has hecho. El ChangeLog es un documento
+	importante que acompaña al paquete y permite al usuario final y programadores
+	no familiarizados con las formas de hacer las cosas en GNOME para
+	saber cuál es la evolución de un paquete. También permite a la gente
+	que no tiene acceso continuo a la red encontrar que cambios se han hecho
+	y por quien.</P
+></LI
+><LI
+><P
+> 
+        Cuando estés escribiendo código que debería ser escrito mejor añade
+        comentarios FIXME, de esta forma será fácil reconocerlo.
+      </P
+></LI
+><LI
+><P
+>	Intenta usar técnicas de programación defensiva:
+	la librería glib provee varias macros útiles que te ayudarán a hacer
+	tu código más robusto. g_return_if_fail, g_return_val_if_fail,
+	g_warning, g_error and g_assert son tus amigas
+      </P
+></LI
+><LI
+><P
+> 
+ 	 Documenta tus programas.       
+        </P
+></LI
+><LI
+><P
+> 
+        Si realizas cambios en la APIS documentadas aquí o añades algunas
+        nuevas, por favor actualiza la documentación.
+        </P
+></LI
+><LI
+><P
+> 
+        Añade traducciones en tu lengua nativa. Queremos tener un GNOME
+     	internacional. (de esta manera, si sabes más de una lengua, haz traducciones
+	para todas ellas) (Nos gustarían todos los idiomas, desde francés a griego
+	clásico :-) )
+       	</P
+></LI
+></UL
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="addauth.html"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book1.html"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="tutorial.html"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Cuando incluirte en el fichero de AUTHORS</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="nontech.html"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Tutorial para los desarrolladores de GNOME</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

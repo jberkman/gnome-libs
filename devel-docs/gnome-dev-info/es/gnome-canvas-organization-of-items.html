@@ -1,0 +1,220 @@
+<!DOCTYPE HTML PUBLIC "-//Norman Walsh//DTD DocBook HTML 1.0//EN">
+<HTML
+><HEAD
+><TITLE
+>       Organización de los items     
+      </TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet"><LINK
+REL="HOME"
+TITLE="Información para desarrolladores de Gnome "
+HREF="book1.html"><LINK
+REL="UP"
+TITLE="El Widget GnomeCanvas"
+HREF="gnome-canvas.html"><LINK
+REL="PREVIOUS"
+TITLE="El Widget GnomeCanvas"
+HREF="gnome-canvas.html"><LINK
+REL="NEXT"
+TITLE="	Coordenadas
+      "
+HREF="gnome-canvas-coordinates.html"></HEAD
+><BODY
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>Información para desarrolladores de Gnome</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="gnome-canvas.html"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 8. El Widget <SPAN
+CLASS="TYPE"
+>GnomeCanvas</SPAN
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="gnome-canvas-coordinates.html"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="GNOME-CANVAS-ORGANIZATION-OF-ITEMS"
+>Organización de los items</A
+></H1
+><P
+>	Los items en el canvas estan organizados en una jerarquia de árbol.
+	Los items pueden ser grupos (nodos del árbol), o items terminales
+	(hojas del árbol). Los grupos pueden contener cualquier número de
+	hijos, los cuáles pueden ser items terminales u otros grupos. Así, 
+	los items pueden estar anidados hasta un profundiad arbitraria dentro
+	del canvas.
+      </P
+><P
+>	Un canvas tiene un grupo raiz solo. Para dibujos simples podrías
+	poner todos tus items directamente dentro de éste grupo. Para 
+	dibujos más complejos, sería conveniente usar una estructura 
+	jerárquica de grupos anidados del canvas.
+	</P
+><P
+>&#13;	Por ejemplo, considerar un editor de circuitos. Podrías 
+	definir grupos que contuviesen los items que son necesarios 
+	para dibujar cierto tipo de puerta lógica. Entonces podrías 
+	definir grupos para diferentes componentes. Un grupo que 
+	representase un sumador contendría varias puertas logicas y 
+	algunas conexiones. Podrias agrupar algunos sumadores con 
+	otros componentes para formar un circuito más complejo. Por 
+	ello es conveniente mantener las jerarquias como entidades
+	simples, para cuando tu quierar mover todos los items que 
+	definen una cadena de sumadores, por ejemplo.
+	
+      </P
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="GNOME-CANVAS-STACKING-ORDER"
+>Orden de apilamiento</A
+></H2
+><P
+>	Los items que pones dentro de los grupos se apilan encima unos 
+	de otros, y los items cerca de la cima de la pila ocultan los 
+	items por debajo de ellos. Cuando un item es creado, es puesto 
+	encima de todos los demás items en su grupo padre.
+	</P
+><P
+>	El canvas provee varias funciones que te permiten cambiar el 
+	orden de aplilamiento de los items en los grupos. Puedes mover
+	items a la cima o al fondo de sus grupos padres respectivos, y
+	incrementar o decrementarlos en un número arbitrario de posiciones.
+	
+	</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="GNOME-CANVAS-BEHAVIOR-AND-EVENTS"
+>Comportamiento y eventos</A
+></H2
+><P
+>	El canvas <I
+CLASS="EMPHASIS"
+>no</I
+> tiene ningún comportamiento
+	predefinido para los items. Tu puedes definir la conducta de los 
+	items por medio de operaciones explicitas sobre ellos (cambiar 
+	el color del item Foo cuando el usuario selecione un item del
+	menú), o definiendo acciones que deberían tener lugar cuando 
+	los items reciban los eventos (Permitir al usuario arrastrar items
+	con el ratón).
+
+	</P
+><P
+>&#13;	  La razón trás esto es que el canvas debe ser de proposito general
+	  tanto como sea posible. Si tiene un comportamiento predefinido con
+	  los items, puede no ser apropiado para todas las clases de
+          aplicaciones &#8212; un programa para dibujar diagramas
+	  esquemáticos puede beneficiarse de tener una funcionalidad para 
+	  arrastrar predefinida en el canvas, pero esto no sería muy útil
+	  (o incluso no muy deseable) para un programa que muestre un 
+	  calendario.
+
+	</P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="gnome-canvas.html"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book1.html"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="gnome-canvas-coordinates.html"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>El Widget <SPAN
+CLASS="TYPE"
+>GnomeCanvas</SPAN
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="gnome-canvas.html"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Coordenadas</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,0 +1,200 @@
+<!DOCTYPE HTML PUBLIC "-//Norman Walsh//DTD DocBook HTML 1.0//EN">
+<HTML
+><HEAD
+><TITLE
+>Conceptos basicos sobre X</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet"><LINK
+REL="HOME"
+TITLE="Información para desarrolladores de Gnome "
+HREF="book1.html"><LINK
+REL="PREVIOUS"
+TITLE="   Usando GnomeDialog directamente
+  "
+HREF="gnome-dialog.html"><LINK
+REL="NEXT"
+TITLE=" 	Documentación de LibGnorba
+	"
+HREF="libgnorba-docs.html"></HEAD
+><BODY
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>Información para desarrolladores de Gnome</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="gnome-dialog.html"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="libgnorba-docs.html"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="CHAPTER"
+><H1
+><A
+NAME="X-CONCEPTS-DOCS"
+>Chapter 10. Conceptos basicos sobre X</A
+></H1
+><P
+>      El Sistema X Windows es un gran y compleja maraña. Las librerías
+      Gnome intentan hacer más facil las cosas poniendo una agradable envoltura
+      a dicho sistema. Aún hay unas pocas cosas que deberías tener en 
+      mente para poder escribir mejores aplicaciones.  
+    </P
+><P
+>      Este capítulo está pensado para programadores con poca experiencia
+      programando las X. Si no conoces que son contextos gráficos,
+      dibujables y visuales, deberías definitivamente leer este capítulo.
+      Si conoces la manera de hacer las cosas con las X, puedes saltarte
+      este capítulo.
+    </P
+><P
+>      Toma nota de que este capítulo está pensado como un pequeño curso
+      de choque sobre los conceptos X que se necesitan tener en mente mientras
+      escribes Aplicaciones de Gnome. Este capítulo no sustituye al manual
+      de las Xlib. Deberías obtener un manual de programación y referencia
+      de las Xlib.
+
+    <DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="DRAWABLES"
+>Dibujables</A
+></H1
+><P
+>	Dibujables son cosas sobre las que tu puedes pintar. Las X tienen dos
+        tipos de dibujables,<I
+CLASS="EMPHASIS"
+>ventanas (windows)</I
+> y 
+        <I
+CLASS="EMPHASIS"
+>mapas de pixeles (pixmaps)</I
+>. Los mapas de pixeles 
+        son entidades fuera de la pantalla que no puedes ver. Puedes 
+        ver cuando esta es mapeada (mostrada) sobre la pantalla.
+      </P
+><P
+>        Las ventanas pueden ser colocadas en una estructura de árbol. Todas
+        las ventanas excepto la ventana raiz tendrán un único padre, pero 
+        en cambio todas las ventanas pueden tener varías ventanas hijas.
+        Los mapas de pixeles no se pueden colocar unos dentro de otros, y 
+        no pueden tener padres. 
+      </P
+><P
+>	Las ventanas tienen las propiedades x/y/ancho/alto que definen su 
+        posición dentro de su padre. Los mapas de pixeles solo tienen las
+        propiedades ancho y alto. 
+      </P
+><P
+>	Las ventanas y mapas de pixeles pueden tener otras propiedades. Sin
+        embargo, es muy importante la propiedad de 
+        <I
+CLASS="EMPHASIS"
+>visual class</I
+> de los dibujables,
+        la cual comentaremos a continuación.
+      </P
+></DIV
+>
+
+    
+
+    
+
+    
+
+  </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="gnome-dialog.html"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book1.html"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="libgnorba-docs.html"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Usando <SPAN
+CLASS="TYPE"
+>GnomeDialog</SPAN
+> directamente</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Documentación de LibGnorba</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,0 +1,525 @@
+<!DOCTYPE HTML PUBLIC "-//Norman Walsh//DTD DocBook HTML 1.0//EN">
+<HTML
+><HEAD
+><TITLE
+>   Funciones útiles si un GnomeApp está disponible
+  </TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet"><LINK
+REL="HOME"
+TITLE="Información para desarrolladores de Gnome "
+HREF="book1.html"><LINK
+REL="UP"
+TITLE="Talking to the user: GnomeDialog, GnomeMessageBox,
+    GnomeAppBar, and utility functions."
+HREF="dialogapputil-docs.html"><LINK
+REL="PREVIOUS"
+TITLE="  Funciones utiles para mensajes abstractos
+  "
+HREF="gnome-app-util.html"><LINK
+REL="NEXT"
+TITLE="   Usando GnomeDialog directamente
+  "
+HREF="gnome-dialog.html"></HEAD
+><BODY
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>Información para desarrolladores de Gnome</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="gnome-app-util.html"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 9. Talking to the user: <SPAN
+CLASS="TYPE"
+>GnomeDialog</SPAN
+>, <SPAN
+CLASS="TYPE"
+>GnomeMessageBox</SPAN
+>,
+    <SPAN
+CLASS="TYPE"
+>GnomeAppBar</SPAN
+>, and utility functions.</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="gnome-dialog.html"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="AEN2158"
+>Funciones útiles si un <SPAN
+CLASS="TYPE"
+>GnomeApp</SPAN
+> está disponible</A
+></H1
+><P
+>     Cuando estas funciones devuelven un <SPAN
+CLASS="TYPE"
+>GtkWidget*</SPAN
+>, están
+     devolviendo el díalogo creado, si se ha creado alguno. Si no se ha
+     creado ningún díalogo, devuelven NULL. En general esto no tiene ningún
+     uso, pero en circustancias especiales debes tener cuidado. 
+     <I
+CLASS="EMPHASIS"
+>Núnca</I
+> deberías modificar las caracteristicas
+     del dialgo devuelto, como son: cómo se destruye, dónde se posiciona,
+     etc.; podrías confundir la libreria interna y/o machacar las
+     preferencias del usuario.
+    </P
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><CODE
+CLASS="FUNCDEF"
+>GtkWidget *<B
+CLASS="FSFUNC"
+>gnome_app_message</B
+>
+      </CODE
+>(	GnomeApp *<VAR
+CLASS="PDPARAM"
+>app</VAR
+>
+      , 	const gchar *<VAR
+CLASS="PDPARAM"
+>message</VAR
+>
+      );<P
+></P
+></DIV
+><P
+>	<TT
+CLASS="FUNCTION"
+><B
+>gnome_app_message()</B
+></TT
+> muesta un mensaje simple
+	de importancia moderada. Vendrá en un díalogo con un botón de
+	Aceptar, o en la barra de aplicación; requerirá que el usuario
+	conozca esto de alguna manera antes de desaparecer.
+    </P
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><CODE
+CLASS="FUNCDEF"
+>GtkWidget *<B
+CLASS="FSFUNC"
+>gnome_app_flash</B
+>
+      </CODE
+>(	GnomeApp *<VAR
+CLASS="PDPARAM"
+>app</VAR
+>
+      , 	const gchar *<VAR
+CLASS="PDPARAM"
+>flash</VAR
+>
+      );<P
+></P
+></DIV
+><P
+>	Esta se usa para mensajes triviales que no son muy importantes; 
+	un ejemplo podría ser los pequeños mensajes de Netscape, diciendo
+	que URL esta traiendo actualmente. Si el usuario nunca ve estos
+	mensajes, no es un problema; de hecho,
+	<TT
+CLASS="FUNCTION"
+><B
+>gnome_app_flash()</B
+></TT
+> no garantiza mostrar el
+	mensaje al usuario (por ejemplo, si los díalogos se cancelan y 
+	el <SPAN
+CLASS="TYPE"
+>GnomeApp</SPAN
+> no tiene barra de aplicación).
+    </P
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><CODE
+CLASS="FUNCDEF"
+>GtkWidget *<B
+CLASS="FSFUNC"
+>gnome_app_error</B
+>
+      </CODE
+>(	GnomeApp *<VAR
+CLASS="PDPARAM"
+>app</VAR
+>
+      , 	const gchar *<VAR
+CLASS="PDPARAM"
+>error</VAR
+>
+      );<P
+></P
+></DIV
+><P
+>	Un error importante, emitido si una operación falla al completo
+	o hay un problema mayor. Esto puede hacer algo molesto como un
+	pitido, y probablemente requerirán el reconocimiento del usuario.
+    </P
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><CODE
+CLASS="FUNCDEF"
+>GtkWidget *<B
+CLASS="FSFUNC"
+>gnome_app_warning</B
+>
+      </CODE
+>(	GnomeApp *<VAR
+CLASS="PDPARAM"
+>app</VAR
+>
+      , 	const gchar *<VAR
+CLASS="PDPARAM"
+>warning</VAR
+>
+      );<P
+></P
+></DIV
+><P
+> 	Sólo un aviso; no es un error importante, pero no tan trivial como
+ 	un flash.     
+    </P
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><CODE
+CLASS="FUNCDEF"
+>GtkWidget *<B
+CLASS="FSFUNC"
+>gnome_app_question</B
+>
+      </CODE
+>(	GnomeApp *<VAR
+CLASS="PDPARAM"
+>app</VAR
+>
+      , 	const gchar *<VAR
+CLASS="PDPARAM"
+>question</VAR
+>
+      , 	GnomeReplyCallback <VAR
+CLASS="PDPARAM"
+>callback</VAR
+>
+      , 	gpointer <VAR
+CLASS="PDPARAM"
+>data</VAR
+>
+      );<P
+></P
+></DIV
+><P
+>	Pregunta la cuestión si o no <TT
+CLASS="PARAMETER"
+><I
+>question</I
+></TT
+>, y
+	llama a <TT
+CLASS="PARAMETER"
+><I
+>callback</I
+></TT
+> para indicar una respuesta
+	o si el usuario cancela (borrando el díalogo o con control-G desde
+	el eventual widget minibuffer).
+    </P
+><P
+>	<SPAN
+CLASS="TYPE"
+>GnomeReplyCallback</SPAN
+> es una definición de tipo:
+      <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>	typedef void (* GnomeReplyCallback)(gint reply, gpointer data);
+      </PRE
+></TD
+></TR
+></TABLE
+>
+ 	El primer argumento pasado en la llamada es un número
+	representado la contestación del usuario. También puede ser 
+	<SPAN
+CLASS="SYMBOL"
+>GNOME_YES</SPAN
+> o <SPAN
+CLASS="SYMBOL"
+>GNOME_NO</SPAN
+>. La
+	llamada también recibe un argumento 
+	<SPAN
+CLASS="SYMBOL"
+>data</SPAN
+>, los mismos que pasaste en la función
+	<TT
+CLASS="FUNCTION"
+><B
+>gnome_app_question()</B
+></TT
+>.
+    </P
+><P
+>	Ten en mente que la llamada <I
+CLASS="EMPHASIS"
+>no</I
+> tiene
+	garatizado que sea llamada (N.del.T: O mejor retrollamada). 
+	Si el usuario declina responder a la 
+	pregunta --- lo dice, destruyendo el díalogo por medio del gestor
+	de ventana --- la llamada es ignorada. Esta es un area para la mejora
+	de las API's; probablemente de la sensación de que hace la 
+	llamada contestando con
+	<SPAN
+CLASS="SYMBOL"
+>GNOME_USER_CANCELLED</SPAN
+> o algo así. De todas formas,
+	esta carateristica no está implementada todavía, así que no asumas
+	que tú llamada va a ocurrir.
+    </P
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><CODE
+CLASS="FUNCDEF"
+>GtkWidget *<B
+CLASS="FSFUNC"
+>gnome_app_question_modal</B
+>
+      </CODE
+>(	GnomeApp *<VAR
+CLASS="PDPARAM"
+>app</VAR
+>
+      , 	const gchar *<VAR
+CLASS="PDPARAM"
+>question</VAR
+>
+      , 	GnomeReplyCallback <VAR
+CLASS="PDPARAM"
+>callback</VAR
+>
+      , 	gpointer <VAR
+CLASS="PDPARAM"
+>data</VAR
+>
+      );<P
+></P
+></DIV
+><P
+>	Esta función es exactamente la misma que
+	<TT
+CLASS="FUNCTION"
+><B
+>gnome_app_question()</B
+></TT
+>, pero crea un díalogo
+	modal o un prompt en la barra de aplicación, así el usuario será 
+	incapaz de interactuar con otras partes de la aplicación hasta 
+	que se haya ocupado del díalogo (también se contesta a la pregunta,
+	o el usuario cancela cerrando el díalogo/cancela mediante control-G
+	desde la barra de aplicación). Es un defecto esperar a que se 
+	arregle el manejar la cancelación de preguntas modales tan
+	pobremente.(Ver también comentario en la introducción acerca de usar
+	posiblemente un <SPAN
+CLASS="TYPE"
+>GtkObject</SPAN
+> aqui).
+    </P
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><CODE
+CLASS="FUNCDEF"
+>GtkWidget *<B
+CLASS="FSFUNC"
+>gnome_app_ok_cancel</B
+>
+      </CODE
+>(	GnomeApp *<VAR
+CLASS="PDPARAM"
+>app</VAR
+>
+      , 	const gchar *<VAR
+CLASS="PDPARAM"
+>message</VAR
+>
+      , 	GnomeReplyCallback <VAR
+CLASS="PDPARAM"
+>callback</VAR
+>
+      , 	gpointer <VAR
+CLASS="PDPARAM"
+>data</VAR
+>
+      );<P
+></P
+></DIV
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><CODE
+CLASS="FUNCDEF"
+>GtkWidget *<B
+CLASS="FSFUNC"
+>gnome_app_ok_cancel_modal</B
+>
+      </CODE
+>(	GnomeApp *<VAR
+CLASS="PDPARAM"
+>app</VAR
+>
+      , 	const gchar *<VAR
+CLASS="PDPARAM"
+>message</VAR
+>
+      , 	GnomeReplyCallback <VAR
+CLASS="PDPARAM"
+>callback</VAR
+>
+      , 	gpointer <VAR
+CLASS="PDPARAM"
+>data</VAR
+>
+      );<P
+></P
+></DIV
+><P
+>	Estas dos funciones son exactamente paralelas a las funciones
+	<TT
+CLASS="FUNCTION"
+><B
+>gnome_app_question()</B
+></TT
+>, solo preguntan al 
+	usuario Aceptar/Cancelar en vez de Si/No, y la llamada
+	recibe <SPAN
+CLASS="SYMBOL"
+>GNOME_OK</SPAN
+> o <SPAN
+CLASS="SYMBOL"
+>GNOME_CANCEL</SPAN
+>.
+    </P
+><P
+>	[FIXME el resto de las funciones gnome-app-util].
+    </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="gnome-app-util.html"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book1.html"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="gnome-dialog.html"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Funciones utiles para mensajes abstractos</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="dialogapputil-docs.html"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Usando <SPAN
+CLASS="TYPE"
+>GnomeDialog</SPAN
+> directamente</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

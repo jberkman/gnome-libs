@@ -1,0 +1,1961 @@
+<!DOCTYPE HTML PUBLIC "-//Norman Walsh//DTD DocBook HTML 1.0//EN">
+<HTML
+><HEAD
+><TITLE
+>Información para desarrolladores de Gnome </TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet"><LINK
+REL="NEXT"
+TITLE="Introducción.."
+HREF="intro.html"></HEAD
+><BODY
+><DIV
+CLASS="BOOK"
+><DIV
+CLASS="TITLEPAGE"
+><H1
+CLASS="TITLE"
+><A
+NAME="AEN2"
+>Información para desarrolladores de Gnome</A
+></H1
+><H3
+CLASS="AUTHOR"
+>Horacio Peña</H3
+><DIV
+CLASS="AFFILIATION"
+><P
+CLASS="LITERALLAYOUT"
+>	&nbsp;&nbsp;&nbsp;&nbsp;<TT
+CLASS="EMAIL"
+>&#60;<A
+HREF="mailto:horape@compendium.com.ar"
+>horape@compendium.com.ar</A
+>&#62;</TT
+><br>
+	&nbsp;&nbsp;</P
+></DIV
+><P
+CLASS="COPYRIGHT"
+><A
+HREF="ln14.html"
+>Copyright</A
+> © 1998 by <SPAN
+CLASS="HOLDER"
+>Proyecto GNOME - Horacio J. Peña (n.)</SPAN
+></P
+><HR></DIV
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+>1. <A
+HREF="intro.html"
+>Introducción..</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="intro.html#FEEDBACK"
+>Realimentación..</A
+></DT
+><DT
+><A
+HREF="whatis.html"
+>Qué es  GNOME..</A
+></DT
+><DT
+><A
+HREF="thisdoc.html"
+>Este documento..</A
+></DT
+></DL
+></DD
+><DT
+>2. <A
+HREF="nontech.html"
+>Principios no (muy) técnicos.</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="nontech.html#PROGLANG"
+>Lenguajes de Programación que pueden ser usados en GNOME.</A
+></DT
+><DT
+><A
+HREF="start.html"
+>Como empezar a trastear con GNOME.</A
+></DT
+><DT
+><A
+HREF="what.html"
+>Que husmear.</A
+></DT
+><DT
+><A
+HREF="cvs.html"
+>Consiguiendo una cuenta CVS.</A
+></DT
+><DT
+><A
+HREF="altpol.html"
+>Politica sobre retocar el código de otra gente</A
+></DT
+><DT
+><A
+HREF="addauth.html"
+>Cuando incluirte en el fichero de AUTHORS</A
+></DT
+><DT
+><A
+HREF="codstd.html"
+>Estándares de codificación.</A
+></DT
+></DL
+></DD
+><DT
+>3. <A
+HREF="tutorial.html"
+>Tutorial para los desarrolladores de GNOME</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="tutorial.html#TUT-BASICS"
+>Empezando con GNOME</A
+></DT
+><DT
+><A
+HREF="tut-menus.html"
+>Añadiendo menús
+	<P
+><IMG
+SRC="gnome-hello-1-menus.jpg"></P
+>
+      	<P
+> 	 De la <I
+CLASS="CITETITLE"
+>Guía de Estilo de GNOME</I
+>     	  
+      	  </P
+>
+      	<P
+>      	  <P
+CLASS="LITERALLAYOUT"
+>	Menús&nbsp;y&nbsp;Barras&nbsp;de&nbsp;Menús<br>
+	La&nbsp;Barra&nbsp;de&nbsp;Menú&nbsp;debe&nbsp;estar&nbsp;presente&nbsp;en&nbsp;todas&nbsp;las&nbsp;Aplicaciones.<br>
+	Todas&nbsp;las&nbsp;aplicaciones&nbsp;deben&nbsp;tener&nbsp;una&nbsp;entrada&nbsp;"Ayuda"&nbsp;en&nbsp;la&nbsp;barra&nbsp;de&nbsp;Menú.<br>
+	Todos&nbsp;los&nbsp;menús&nbsp;necesitan&nbsp;al&nbsp;menos&nbsp;una&nbsp;entrada.<br>
+	Un&nbsp;Menú&nbsp;Acerca&nbsp;de...&nbsp;debe&nbsp;estar&nbsp;disponible&nbsp;bajo&nbsp;el&nbsp;Menú&nbsp;de&nbsp;Ayuda&nbsp;y&nbsp;debe&nbsp;<br>
+abrir&nbsp;un&nbsp;pequeño&nbsp;dialogo&nbsp;mostrando&nbsp;por&nbsp;lo&nbsp;menos&nbsp;el&nbsp;nombre&nbsp;de&nbsp;la<br>
+aplicación,&nbsp;el&nbsp;autor,&nbsp;la&nbsp;versión&nbsp;y&nbsp;la&nbsp;fecha.<br>
+	Un&nbsp;menú&nbsp;"Archivo"&nbsp;debe&nbsp;aparecer&nbsp;en&nbsp;todas&nbsp;la&nbsp;aplicaciones,&nbsp;y&nbsp;contener<br>
+por&nbsp;lo&nbsp;menos&nbsp;Salir.<br>
+	Los&nbsp;items&nbsp;del&nbsp;menú&nbsp;que&nbsp;abran&nbsp;diálogos&nbsp;deben&nbsp;indicarlo&nbsp;con&nbsp;un&nbsp;"..."<br>
+	Los&nbsp;items&nbsp;del&nbsp;menú&nbsp;que&nbsp;lleven&nbsp;submenús&nbsp;lo&nbsp;deben&nbsp;indicar&nbsp;con&nbsp;una	flecha.&nbsp;<br>
+	El&nbsp;menú&nbsp;de&nbsp;Ayuda&nbsp;debe&nbsp;estar&nbsp;justificado&nbsp;a&nbsp;la&nbsp;derecha&nbsp;en&nbsp;la&nbsp;Barra&nbsp;de&nbsp;Menú.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;</P
+>
+       </P
+>
+       <P
+>         En el momento de escribir este borrador, gnome-hello usa
+	GtkMenuFactory como forma de crear lo menús. Ésta será reemplazada
+	por gnome-app-helper en poco tiempo. (cuando gnome_app_* tenga soporte para
+	i18n, aceleradores y posibilidad de menús justificados a la derecha). Hasta
+	entonces no será una explicación sobre "como" hacer los menús.
+       </P
+>
+      	<P
+>	Las opciones de menú presentes en gnome-hello son sólo las
+	obligatorias: <SPAN
+CLASS="GUIMENUITEM"
+>Fichero/Salida</SPAN
+>, que usa la misma quit_cb
+	que hemos visto en la sección anterior y 
+	<SPAN
+CLASS="GUIMENUITEM"
+>Ayuda/Acerca de...</SPAN
+> que usa el widget
+	gnome-about (ver <A
+HREF="libgnomeui.html#GNOME-ABOUT"
+>the section called <I
+>gnome-about - Widget "Acerca de..."</I
+> in Chapter 6</A
+>) escrito por Cesar
+	<TT
+CLASS="EMAIL"
+>&#60;<A
+HREF="mailto:miquel@df.uba.ar"
+>miquel@df.uba.ar</A
+>&#62;</TT
+>.
+       </P
+>
+      	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>	void	
+	about_cb (GtkWidget *widget, void *data)
+	{
+	  GtkWidget *about;
+	  gchar *authors[] = {
+	/* Here should be your names */
+	          "Mark Galassi",
+	          "Horacio J. Peña",
+	          NULL
+	          };
+	
+	  about = gnome_about_new ( "The Hello World Gnomified", VERSION,
+	                        /* copyright notice */
+	                        "(C) 1998 the Free Software Foundation",
+	                        authors,
+	                        /* another comments */
+	                        "GNOME is a civilized software system "
+	                          "so we've a \"hello world\" program",
+	                        NULL);
+	  gtk_widget_show (about);
+
+	  return;
+	}
+      	  </PRE
+></TD
+></TR
+></TABLE
+></A
+></DT
+><DT
+><A
+HREF="tut-i18n.html"
+>Internacionalización.</A
+></DT
+><DT
+><A
+HREF="tut-parsing.html"
+>Analizando parámetros.</A
+></DT
+><DT
+><A
+HREF="tut-sm.html"
+>Gestión de sesiones</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="tut-sm.html#AEN167"
+>Gestión de la Sesión en general</A
+></DT
+><DT
+><A
+HREF="tut-sm.html#AEN175"
+>Implementación de la Gestión de Sesión en GNOME</A
+></DT
+><DT
+><A
+HREF="tut-sm.html#AEN315"
+>Continuando el tutorial</A
+></DT
+></DL
+></DD
+><DT
+><A
+HREF="tut-doc.html"
+>Ayuda y documentación.</A
+></DT
+></DL
+></DD
+><DT
+>4. <A
+HREF="arch.html"
+>Notas referentes a la Arquitectura</A
+></DT
+><DT
+>5. <A
+HREF="libgnome.html"
+>Libreria de GNOME</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="libgnome.html#GNOME-CONFIG"
+>gnome-config</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="libgnome.html#AEN365"
+>Autor(es)</A
+></DT
+><DT
+><A
+HREF="libgnome.html#AEN368"
+>Descripción</A
+></DT
+><DT
+><A
+HREF="libgnome.html#AEN371"
+>Glosario</A
+></DT
+><DT
+><A
+HREF="libgnome.html#GNOME-CONFIG-GET"
+>gnome_config_*get_* - rutinas para recoger información de una ruta de
+configuración especificada.</A
+></DT
+><DT
+><A
+HREF="libgnome.html#GNOME-CONFIG-SET"
+>gnome_config_set_* - rutinas para almacenar información para una
+ruta de configuración especificada.</A
+></DT
+><DT
+><A
+HREF="libgnome.html#GNOME-CONFIG-HAS-SECTION"
+>gnome_config_has_section - Comprueba si una sección de configuración
+existe</A
+></DT
+><DT
+><A
+HREF="libgnome.html#GNOME-CONFIG-INIT-ITERATOR"
+>gnome_config_init_iterator - Configurar con un iterador para obtener
+una lista de los items de una sección de configuración especificada.</A
+></DT
+><DT
+><A
+HREF="libgnome.html#GNOME-CONFIG-INIT-ITERATOR-SECTIONS"
+>gnome_config_init_iterator - Configurar con un iterador para lograr
+una lista de las secciones en una sección de configuración especificada.</A
+></DT
+><DT
+><A
+HREF="libgnome.html#GNOME-CONFIG-ITERATOR-NEXT"
+>gnome_config_iterator_next - obtener el siguiente item desde un
+iterador</A
+></DT
+><DT
+><A
+HREF="libgnome.html#GNOME-CONFIG-DROP-ALL"
+>gnome_config_drop_all - eliminación de todos los datos de configuración
+de la memoria caché</A
+></DT
+><DT
+><A
+HREF="libgnome.html#GNOME-CONFIG-SYNC"
+>gnome_config_sync - escribe todas las entradas configuradas no
+salvadas aún en la base de datos de la configuración</A
+></DT
+><DT
+><A
+HREF="libgnome.html#GNOME-CONFIG-CLEAN"
+>gnome_config_*_clean_* - rutinas para borrar entradas de la base de
+datos de configuración o subarboles</A
+></DT
+><DT
+><A
+HREF="libgnome.html#GNOME-CONFIG-GET-REAL-PATH"
+>gnome_config_*_get_real_path</A
+></DT
+></DL
+></DD
+><DT
+><A
+HREF="gnome-defs.html"
+>gnome-defs</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="gnome-defs.html#AEN611"
+>Descripción</A
+></DT
+></DL
+></DD
+><DT
+><A
+HREF="gnome-dentry.html"
+>gnome-dentry</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="gnome-dentry.html#AEN616"
+>Descripción</A
+></DT
+></DL
+></DD
+><DT
+><A
+HREF="gnome-fileconvert.html"
+>gnome-fileconvert</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="gnome-fileconvert.html#AEN621"
+>Descripción</A
+></DT
+></DL
+></DD
+><DT
+><A
+HREF="gnome-help.html"
+>gnome-help</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="gnome-help.html#AEN626"
+>Descripción</A
+></DT
+></DL
+></DD
+><DT
+><A
+HREF="gnome-history.html"
+>gnome-history</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="gnome-history.html#AEN631"
+>Descripción</A
+></DT
+></DL
+></DD
+><DT
+><A
+HREF="gnome-hook.html"
+>gnome-hook</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="gnome-hook.html#AEN636"
+>Descripción</A
+></DT
+></DL
+></DD
+><DT
+><A
+HREF="gnome-i18n.html"
+>gnome-i18n</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="gnome-i18n.html#AEN641"
+>Descripción</A
+></DT
+></DL
+></DD
+><DT
+><A
+HREF="gnome-mime.html"
+>gnome-mime</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="gnome-mime.html#AEN646"
+>Descripción</A
+></DT
+></DL
+></DD
+><DT
+><A
+HREF="gnome-score.html"
+>gnome-score</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="gnome-score.html#AEN651"
+>Descripción</A
+></DT
+></DL
+></DD
+><DT
+><A
+HREF="gnome-string.html"
+>gnome-string</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="gnome-string.html#AEN656"
+>Descripción</A
+></DT
+></DL
+></DD
+><DT
+><A
+HREF="gnome-triggers.html"
+>gnome-triggers</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="gnome-triggers.html#AEN661"
+>Descripción</A
+></DT
+></DL
+></DD
+><DT
+><A
+HREF="gnome-util.html"
+>gnome-util</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="gnome-util.html#AEN666"
+>Descripción</A
+></DT
+></DL
+></DD
+><DT
+><A
+HREF="x669.html"
+>libgnome</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="x669.html#AEN671"
+>Descripción</A
+></DT
+></DL
+></DD
+></DL
+></DD
+><DT
+>6. <A
+HREF="libgnomeui.html"
+>Libreria de Interfaz de Usuario de GNOME.</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="libgnomeui.html#GNOME-ABOUT"
+>gnome-about - Widget "Acerca de..."</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="libgnomeui.html#AEN679"
+>Autor(es)</A
+></DT
+><DT
+><A
+HREF="libgnomeui.html#AEN682"
+>Descripción</A
+></DT
+><DT
+><A
+HREF="libgnomeui.html#GNOME-ABOUT-NEW"
+>gnome_about_new - Rutina principal que crea el widget</A
+></DT
+></DL
+></DD
+><DT
+><A
+HREF="gnome-actionarea.html"
+>gnome-actionarea</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="gnome-actionarea.html#AEN737"
+>Descripción</A
+></DT
+></DL
+></DD
+><DT
+><A
+HREF="gnome-app.html"
+>gnome-app</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="gnome-app.html#AEN742"
+>Descripción
+<P
+>No descrita</P
+></A
+></DT
+></DL
+></DD
+><DT
+><A
+HREF="gnome-client.html"
+>gnome-client</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="gnome-client.html#AEN747"
+>Descripción</A
+></DT
+></DL
+></DD
+><DT
+><A
+HREF="gnome-color-selector.html"
+>gnome-color-selector</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="gnome-color-selector.html#AEN752"
+>Descripción</A
+></DT
+></DL
+></DD
+><DT
+><A
+HREF="gnome-dns.html"
+>gnome-dns</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="gnome-dns.html#AEN757"
+>Descripción</A
+></DT
+></DL
+></DD
+><DT
+><A
+HREF="gnome-font-selector.html"
+>gnome-font-selector</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="gnome-font-selector.html#AEN762"
+>Descripción</A
+></DT
+><DT
+><A
+HREF="gnome-font-selector.html#FONTINFO"
+>FontInfo - Estructura definida en gnome-fontsel.c</A
+></DT
+><DT
+><A
+HREF="gnome-font-selector.html#GNOME-FONT-SELECTOR-GET-SELECTED"
+>gnome_font_selector_get_selected - Deberías liberar el valor de retorno
+   después de usarlo.</A
+></DT
+><DT
+><A
+HREF="gnome-font-selector.html#GNOME-FONT-SELECT"
+>gnome_font_select</A
+></DT
+></DL
+></DD
+><DT
+><A
+HREF="gnome-ice.html"
+>gnome-ice</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="gnome-ice.html#AEN810"
+>Descripción</A
+></DT
+><DT
+><A
+HREF="gnome-ice.html#GNOME-ICE-INIT"
+>gnome_ice_init</A
+></DT
+></DL
+></DD
+><DT
+><A
+HREF="gnome-messagebox.html"
+>gnome-messagebox</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="gnome-messagebox.html#AEN832"
+>Descripción</A
+></DT
+></DL
+></DD
+><DT
+><A
+HREF="gnome-net.html"
+>gnome-net</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="gnome-net.html#AEN837"
+>Descripción</A
+></DT
+></DL
+></DD
+><DT
+><A
+HREF="gnome-pixmap.html"
+>gnome-pixmap</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="gnome-pixmap.html#AEN842"
+>Descripción</A
+></DT
+></DL
+></DD
+><DT
+><A
+HREF="gnome-properties.html"
+>gnome-properties</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="gnome-properties.html#AEN847"
+>Descripción</A
+></DT
+></DL
+></DD
+><DT
+><A
+HREF="gnome-scores.html"
+>gnome-scores - Widget de "Puntuaciones máximas"</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="gnome-scores.html#AEN852"
+>Autor(es)</A
+></DT
+><DT
+><A
+HREF="gnome-scores.html#AEN856"
+>Descripción</A
+></DT
+><DT
+><A
+HREF="gnome-scores.html#AEN859"
+>Uso</A
+></DT
+><DT
+><A
+HREF="gnome-scores.html#GNOME-SCORES-DISPLAY"
+>gnome_scores_display - Realiza todo el trabajo de mostrar los mejores 
+  marcadores.</A
+></DT
+><DT
+><A
+HREF="gnome-scores.html#GNOME-SCORES-NEW"
+>gnome_scores_new - Crea la ventana de máximas puntuaciones.</A
+></DT
+><DT
+><A
+HREF="gnome-scores.html#GNOME-SCORES-SET-LOGO-LABEL"
+>gnome_scores_set_logo_label - Crea una etiqueta para que sea el logotipo</A
+></DT
+><DT
+><A
+HREF="gnome-scores.html#GNOME-SCORES-SET-LOGO-PIXMAP"
+>gnome_scores_set_logo_pixmap - Crea un mapa de pixels para que sea el
+logotipo</A
+></DT
+><DT
+><A
+HREF="gnome-scores.html#GNOME-SCORES-SET-LOGO-WIDGET"
+>gnome_scores_set_logo_widget - Establece un Widget arbitrario para que
+sea el logotipo.</A
+></DT
+><DT
+><A
+HREF="gnome-scores.html#GNOME-SCORES-SET-COLOR"
+>gnome_scores_set_color - Establece el color de una anotación.</A
+></DT
+><DT
+><A
+HREF="gnome-scores.html#GNOME-SCORES-SET-DEF-COLOR"
+>gnome_scores_set_def_color - Establece el color por defecto de las
+anotacines.</A
+></DT
+><DT
+><A
+HREF="gnome-scores.html#GNOME-SCORES-SET-COLORS"
+>gnome_scores_set_colors - Establece el color de todas las anotaciones.</A
+></DT
+><DT
+><A
+HREF="gnome-scores.html#GNOME-SCORES-SET-LOGO-LABEL-TITLE"
+>gnome_scores_set_logo_label_title - Crea una etiqueta para que sea el
+logotipo.</A
+></DT
+><DT
+><A
+HREF="gnome-scores.html#GNOME-SCORES-SET-CURRENT-PLAYER"
+>gnome_scores_set_current_player - Establece el indice de los jugadores
+   actuales entre las diez mejores anotaciones.</A
+></DT
+></DL
+></DD
+><DT
+><A
+HREF="gnome-session.html"
+>gnome-session</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="gnome-session.html#AEN1148"
+>Descripción</A
+></DT
+></DL
+></DD
+><DT
+><A
+HREF="gnome-startup.html"
+>gnome-startup</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="gnome-startup.html#AEN1153"
+>Descripción</A
+></DT
+></DL
+></DD
+><DT
+><A
+HREF="gnome-stock-imlib.html"
+>gnome-stock-imlib</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="gnome-stock-imlib.html#AEN1158"
+>Descripción</A
+></DT
+><DT
+><A
+HREF="gnome-stock-imlib.html#IMLIB-NEW"
+>imlib_new - mapas de pixels de la barra de herramientas</A
+></DT
+><DT
+><A
+HREF="gnome-stock-imlib.html#IMLIB-OK"
+>imlib_ok - mapas de pixels de los botones</A
+></DT
+><DT
+><A
+HREF="gnome-stock-imlib.html#IMLIB-MENU-NEW"
+>imlib_menu_new - mapas de pixels del menú</A
+></DT
+></DL
+></DD
+><DT
+><A
+HREF="gnome-stock-xpm.html"
+>gnome-stock-xpm - XPM</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="gnome-stock-xpm.html#AEN1181"
+>Descripción</A
+></DT
+><DT
+><A
+HREF="gnome-stock-xpm.html#GNOME-STOCK-CANCEL-XPM"
+>gnome_stock_cancel_xpm - XPM</A
+></DT
+><DT
+><A
+HREF="gnome-stock-xpm.html#GNOME-STOCK-MENU-ABOUT-XPM"
+>gnome_stock_menu_about_xpm - XPM</A
+></DT
+><DT
+><A
+HREF="gnome-stock-xpm.html#GNOME-STOCK-MENU-EXIT-XPM"
+>gnome_stock_menu_exit_xpm - XPM</A
+></DT
+><DT
+><A
+HREF="gnome-stock-xpm.html#GNOME-STOCK-MENU-NEW-XPM"
+>gnome_stock_menu_new_xpm - XPM</A
+></DT
+><DT
+><A
+HREF="gnome-stock-xpm.html#MENU-CUT-XPM"
+>menu_cut_xpm - XPM</A
+></DT
+><DT
+><A
+HREF="gnome-stock-xpm.html#MENU-COPY-XPM"
+>menu_copy_xpm - XPM</A
+></DT
+><DT
+><A
+HREF="gnome-stock-xpm.html#MENU-PASTE-XPM"
+>menu_paste_xpm - XPM</A
+></DT
+><DT
+><A
+HREF="gnome-stock-xpm.html#MENU-PROP-XPM"
+>menu_prop_xpm - XPM</A
+></DT
+><DT
+><A
+HREF="gnome-stock-xpm.html#MENU-OPEN-XPM"
+>menu_open_xpm - XPM</A
+></DT
+><DT
+><A
+HREF="gnome-stock-xpm.html#MENU-SAVE-XPM"
+>menu_save_xpm - XPM</A
+></DT
+><DT
+><A
+HREF="gnome-stock-xpm.html#MENU-BLANK-XPM"
+>menu_blank_xpm - XPM</A
+></DT
+></DL
+></DD
+><DT
+><A
+HREF="gnome-stock.html"
+>gnome-stock</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="gnome-stock.html#AEN1252"
+>Descripción</A
+></DT
+><DT
+><A
+HREF="gnome-stock.html#GNOMESTOCKPIXMAPENTRYANY"
+>GnomeStockPixmapEntryAny - Algunas definiciones internas</A
+></DT
+><DT
+><A
+HREF="gnome-stock.html#GNOMESTOCKPIXMAPWIDGET"
+>GnomeStockPixmapWidget - El GnomeStockPixmapWidget</A
+></DT
+><DT
+><A
+HREF="gnome-stock.html#GNOME-STOCK-PIXMAP"
+>gnoem_stock_pixmap - Tan sólo trae un mapa de pixels</A
+></DT
+><DT
+><A
+HREF="gnome-stock.html#GNOME-STOCK-PIXMAP-WIDGET"
+>gnome_stock_pixmap_widget - Tan sólo trae un GnomeStockPixmapWidget</A
+></DT
+><DT
+><A
+HREF="gnome-stock.html#GNOME-STOCK-PIXMAP-REGISTER"
+>gnome_stock_pixmap_register - registra un mapa de pixels. Devuelve
+no-cero si tiene exito la operación.</A
+></DT
+><DT
+><A
+HREF="gnome-stock.html#GNOME-STOCK-PIXMAP-CHANGE"
+>gnome_stock_pixmap_change - cambia una entrada existente. Devuelve
+no-cero si tiene exito.</A
+></DT
+><DT
+><A
+HREF="gnome-stock.html#GNOME-STOCK-PIXMAP-CHECKFOR"
+>gnome_stock_pixmap_checkfor</A
+></DT
+><DT
+><A
+HREF="gnome-stock.html#GNOME-STOCK-BUTTON"
+>gnome_stock_button - devuelve un widget botón por defecto para diálogos</A
+></DT
+><DT
+><A
+HREF="gnome-stock.html#GNOME-STOCK-MENU-ITEM"
+>gnome_stock_menu_item - devuelve un GtkMenuItem con un icono predefinido y
+texto</A
+></DT
+></DL
+></DD
+><DT
+><A
+HREF="gtk-clock.html"
+>gtk-clock</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="gtk-clock.html#AEN1443"
+>Descripción</A
+></DT
+></DL
+></DD
+><DT
+><A
+HREF="gtk-ted.html"
+>gtk-ted</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="gtk-ted.html#AEN1448"
+>Descripción</A
+></DT
+></DL
+></DD
+><DT
+><A
+HREF="x1451.html"
+>libgnomeui</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="x1451.html#AEN1453"
+>Descripción</A
+></DT
+></DL
+></DD
+></DL
+></DD
+><DT
+>7. <A
+HREF="gnome-app-helper.html"
+>Creación automática del menú y barra de herramientas con
+GnomeAppHelper</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="gnome-app-helper.html#GNOME-APP-HELPER-INTRODUCTION"
+>Introducción</A
+></DT
+><DT
+><A
+HREF="gnome-app-helper-quick-example.html"
+>Un ejemplo rápido de uso de GnomeAppHelper</A
+></DT
+><DT
+><A
+HREF="gnome-app-helper-gnomeuiinfo.html"
+>La estructura <SPAN
+CLASS="STRUCTNAME"
+>GnomeUIInfo</SPAN
+></A
+></DT
+><DT
+><A
+HREF="gnome-app-helper-convenience-macros.html"
+>Distintas macros para rellenar la estructura <SPAN
+CLASS="STRUCTNAME"
+>GnomeUIInfo</SPAN
+></A
+></DT
+><DT
+><A
+HREF="gnome-app-helper-keybindings-config.html"
+>Formato de la información para la configuración de las
+      envolturas de teclado(keybindings) para los menús estandar</A
+></DT
+><DT
+><A
+HREF="gnome-app-helper-functions.html"
+>Funciones proporcionadas por GnomeAppHelper</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="gnome-app-helper-functions.html#GNOME-APP-FIND-MENU-POS"
+>gnome_app_find_menu_pos - devuelve la posición del elemento del
+	menú.
+#gnome_app_find_menu_pos - return position of a menu item</A
+></DT
+><DT
+><A
+HREF="gnome-app-helper-functions.html#GNOME-APP-REMOVE-MENUS"
+>gnome_app_remove_menus - borra un número de elementos del
+	menú.</A
+></DT
+><DT
+><A
+HREF="gnome-app-helper-functions.html#GNOME-APP-INSERT-MENUS"
+>gnome_app_insert_menus - inserta una estructura de menú en
+	       una barra de menú de GnomeApp</A
+></DT
+></DL
+></DD
+></DL
+></DD
+><DT
+>8. <A
+HREF="gnome-canvas.html"
+>El Widget <SPAN
+CLASS="TYPE"
+>GnomeCanvas</SPAN
+></A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="gnome-canvas.html#GNOME-CANVAS-INTRODUCTION"
+>Introducción</A
+></DT
+><DT
+><A
+HREF="gnome-canvas-organization-of-items.html"
+>Organización de los items</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="gnome-canvas-organization-of-items.html#GNOME-CANVAS-STACKING-ORDER"
+>Orden de apilamiento</A
+></DT
+><DT
+><A
+HREF="gnome-canvas-organization-of-items.html#GNOME-CANVAS-BEHAVIOR-AND-EVENTS"
+>Comportamiento y eventos</A
+></DT
+></DL
+></DD
+><DT
+><A
+HREF="gnome-canvas-coordinates.html"
+>Coordenadas</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="gnome-canvas-coordinates.html#GNOME-CANVAS-ZOOMING-AND-SCALE"
+>Zooming y Escalado</A
+></DT
+></DL
+></DD
+><DT
+><A
+HREF="gnome-canvas-object-arguments.html"
+>Atribuos y argumentos de objetos</A
+></DT
+><DT
+><A
+HREF="gnome-canvas-getting-started.html"
+>Comenzando con el canvas</A
+></DT
+></DL
+></DD
+><DT
+>9. <A
+HREF="dialogapputil-docs.html"
+>Talking to the user: <SPAN
+CLASS="TYPE"
+>GnomeDialog</SPAN
+>, <SPAN
+CLASS="TYPE"
+>GnomeMessageBox</SPAN
+>,
+    <SPAN
+CLASS="TYPE"
+>GnomeAppBar</SPAN
+>, and utility functions.</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="dialogapputil-docs.html#INTRODUCTION"
+>Introducción</A
+></DT
+><DT
+><A
+HREF="gnomeappbar.html"
+>Usando <SPAN
+CLASS="TYPE"
+>GnomeAppBar</SPAN
+> directamente</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="gnomeappbar.html#AEN2063"
+>Creando una barra de aplicaciones.</A
+></DT
+><DT
+><A
+HREF="gnomeappbar.html#AEN2083"
+>Usando una GnomeAppBar para mostrar el estado</A
+></DT
+><DT
+><A
+HREF="gnomeappbar.html#AEN2147"
+>Usar una Barra de Aplicación para preguntar al usuario</A
+></DT
+></DL
+></DD
+><DT
+><A
+HREF="gnome-app-util.html"
+>Funciones utiles para mensajes abstractos</A
+></DT
+><DT
+><A
+HREF="x2158.html"
+>Funciones útiles si un <SPAN
+CLASS="TYPE"
+>GnomeApp</SPAN
+> está disponible</A
+></DT
+><DT
+><A
+HREF="gnome-dialog.html"
+>Usando <SPAN
+CLASS="TYPE"
+>GnomeDialog</SPAN
+> directamente</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="gnome-dialog.html#AEN2275"
+>Creando un cuadro de díalogo</A
+></DT
+><DT
+><A
+HREF="gnome-dialog.html#AEN2292"
+>Cerrando el cuadro de díalogo</A
+></DT
+><DT
+><A
+HREF="gnome-dialog.html#AEN2314"
+>Opciones del Dialogo</A
+></DT
+><DT
+><A
+HREF="gnome-dialog.html#AEN2394"
+>Dialogos modales</A
+></DT
+></DL
+></DD
+></DL
+></DD
+><DT
+>10. <A
+HREF="x-concepts-docs.html"
+>Conceptos basicos sobre X</A
+></DT
+><DT
+>11. <A
+HREF="libgnorba-docs.html"
+>Documentación de LibGnorba</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="libgnorba-docs.html#GOAD"
+>GOAD (Gnome Object Activation Directory)
+       (Directorio de Activación de Objetos Gnome)</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="libgnorba-docs.html#AEN2492"
+>Autor(es)</A
+></DT
+><DT
+><A
+HREF="libgnorba-docs.html#AEN2495"
+>Descripción</A
+></DT
+><DT
+><A
+HREF="libgnorba-docs.html#GOAD-SERVER-LIST-GET"
+>goad_server_list_get - obtiene un listado de objectos de los cuáles
+	sabemos como arrancar.</A
+></DT
+><DT
+><A
+HREF="libgnorba-docs.html#GOAD-SERVER-ACTIVATE"
+>goad_server_activate - obtiene el servidor especificado</A
+></DT
+><DT
+><A
+HREF="libgnorba-docs.html#GOAD-SERVER-ACTIVATE-WITH-REPO-ID"
+>goad_server_activate_with_repo_id - obtiene un servidor que ofrece un
+  interfaz específico.</A
+></DT
+></DL
+></DD
+><DT
+><A
+HREF="orbitgtk.html"
+>ORBit-Gtk</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="orbitgtk.html#AEN2588"
+>Autor(es)</A
+></DT
+><DT
+><A
+HREF="orbitgtk.html#AEN2591"
+>Descripción</A
+></DT
+><DT
+><A
+HREF="orbitgtk.html#GNOME-CORBA-INIT"
+>gnome_CORBA_init inicializa ORBit y GNOME para ser usados en un programa.</A
+></DT
+><DT
+><A
+HREF="orbitgtk.html#GNOME-NAME-SERVICE-GET"
+>gnome_name_service_get - Recupera una referencia de un objeto al contexto 
+  del servicio de nombres raiz para la sesión GNOME actual</A
+></DT
+></DL
+></DD
+><DT
+><A
+HREF="gnome-plugins.html"
+>gnome-plugins</A
+></DT
+></DL
+></DD
+><DT
+>12. <A
+HREF="gnome-mdi-docs.html"
+>Gnome-MDI (Interfaz de Múltiples Documentos en Gnome)</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="gnome-mdi-docs.html#AEN2669"
+>Autores</A
+></DT
+><DT
+><A
+HREF="x2673.html"
+>Descripción</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="x2673.html#GNOME-MDI-NEW"
+>gnome_mdi_new - crea un nuevo objeto GnomeMDI</A
+></DT
+><DT
+><A
+HREF="x2673.html#GNOME-MDI-SET-MODE"
+>gnome_mdi_set_mode - establece el modo GnomeMDI</A
+></DT
+><DT
+><A
+HREF="x2673.html#GNOME-MDI-SET-TAB-POS"
+>gnome_mdi_set_tab_pos - Establece la posción de las pestañas de los block de notas
+	MDI.
+    <DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><CODE
+CLASS="FUNCDEF"
+>void <B
+CLASS="FSFUNC"
+>gnome_mdi_set_tab_pos</B
+></CODE
+>(GnomeMDI *<VAR
+CLASS="PDPARAM"
+>mdi</VAR
+>, GtkPositionType<VAR
+CLASS="PDPARAM"
+>tab_pos</VAR
+>);<P
+></P
+></DIV
+>
+    <DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN2763"
+>Descripción</A
+></H3
+>Descripción<P
+> 	Establece la posición de las pestañas de los blocks de notas mostrado
+ 	en en el modo <SPAN
+CLASS="SYMBOL"
+>GNOME_MDI_NOTEBOOK</SPAN
+> a tab_pos.
+      </P
+></DIV
+>
+    <DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN2767"
+>Uso</A
+></H3
+>Uso<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>	gnome_mdi_set_tab_pos (mdi, GTK_POS_LEFT);
+      </PRE
+></TD
+></TR
+></TABLE
+></DIV
+>
+    <DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN2770"
+>Parameters</A
+></H3
+>Parameters<P
+></P
+><UL
+><LI
+><P
+>GnomeMDI *<TT
+CLASS="PARAMETER"
+><I
+>mdi</I
+></TT
+>
+          </P
+><P
+>	Un puntero a un objeto MDI. 
+          </P
+></LI
+><LI
+><P
+>GtkPositionType <TT
+CLASS="PARAMETER"
+><I
+>tab_pos</I
+></TT
+>
+          </P
+><P
+>	La nueva posición de las pestañas de los block de notas para los
+	blocks de notas en modo <SPAN
+CLASS="SYMBOL"
+>GNOME_MDI_NOTEBOOK</SPAN
+>. Ver
+	<TT
+CLASS="FUNCTION"
+><B
+>gtk_notebook_set_tab_pos</B
+></TT
+> para más detalles 
+	sobre la posición de las pestañas.
+          </P
+></LI
+></UL
+></DIV
+></A
+></DT
+><DT
+><A
+HREF="x2673.html#GNOME-MDI-SET-MENU-TEMPLATE"
+>gnome_mdi_set_menu_template - establece la plantilla para los menús
+MDI</A
+></DT
+><DT
+><A
+HREF="x2673.html#GNOME-MDI-SET-TOOLBAR-TEMPLATE"
+>gnome_mdi_set_toolbar_template - establece la plantilla para la
+	barra de herramientas MDI</A
+></DT
+><DT
+><A
+HREF="x2673.html#GNOME-MDI-SET-CHILD-MENU-PATH"
+>gnome_mdi_set_child_menu_path - establece el camino para los menus
+	especificos de los descendientes</A
+></DT
+><DT
+><A
+HREF="x2673.html#GNOME-MDI-SET-CHILD-LIST-PATH"
+>gnome_mdi_set_child_list_path - establece la ruta de menu
+	para la lista de hijos</A
+></DT
+><DT
+><A
+HREF="x2673.html#GNOME-MDI-ADD-VIEW"
+>gnome_mdi_add_view - añade una nueva vista al MDI</A
+></DT
+><DT
+><A
+HREF="x2673.html#GNOME-MDI-ADD-TOPLEVEL-VIEW"
+>gnome_mdi_add_toplevel_view - añade una nueva vista al MDI en un
+	nueva ventana de alto nivel.
+	nuevo
+    <DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><CODE
+CLASS="FUNCDEF"
+>gint <B
+CLASS="FSFUNC"
+>gnome_mdi_add_view</B
+></CODE
+>(GnomeMDI *<VAR
+CLASS="PDPARAM"
+>mdi</VAR
+>, GnomeMDIChild *<VAR
+CLASS="PDPARAM"
+>child</VAR
+>);<P
+></P
+></DIV
+>
+    <DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN2939"
+>Descripción</A
+></H3
+>Descripción<P
+>	Crea una nueva vista de <TT
+CLASS="PARAMETER"
+><I
+>child</I
+></TT
+> y la añade al
+	MDI; procede de la misma manera que
+	<TT
+CLASS="FUNCTION"
+><B
+>gnome_mdi_add_view</B
+></TT
+> en los modos
+	<SPAN
+CLASS="SYMBOL"
+>GNOME_MDI_MODAL</SPAN
+> y
+	<SPAN
+CLASS="SYMBOL"
+>GNOME_MDI_TOPLEVEL</SPAN
+>, pero abre en el modo
+	<SPAN
+CLASS="SYMBOL"
+>GNOME_MDI_NOTEBOOK</SPAN
+>, la vista se añade a una nueva ventana
+	de alto nivel a menos que la que esté activa no tenga vistas en
+	ella.
+      </P
+><P
+>	La función devuelve TRUE si la vista se ha añadido con exito y FALSE
+	en cualquier otro caso.
+      </P
+></DIV
+>
+    <DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN2948"
+>Uso</A
+></H3
+>Uso<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>	success = gnome_mdi_add_toplevel_view(mdi, child);
+      </PRE
+></TD
+></TR
+></TABLE
+></DIV
+>
+    <DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN2951"
+>Parámetros</A
+></H3
+>Parámetros<P
+></P
+><UL
+><LI
+><P
+>GnomeMDI *<TT
+CLASS="PARAMETER"
+><I
+>mdi</I
+></TT
+>
+          </P
+><P
+>	Un puntero a un objeto MDI.
+          </P
+></LI
+><LI
+><P
+>GnomeMDIChild *<TT
+CLASS="PARAMETER"
+><I
+>child</I
+></TT
+>
+          </P
+><P
+>	El hijo, una vista de la cuál se añadirá al MDI.
+          </P
+></LI
+></UL
+></DIV
+></A
+></DT
+><DT
+><A
+HREF="x2673.html#GNOME-MDI-REMOVE-VIEW"
+>gnome_mdi_remove_view - borra una vista existente del MDI.</A
+></DT
+><DT
+><A
+HREF="x2673.html#GNOME-MDI-ACTIVE-VIEW"
+>gnome_mdi_active_view - devuelve un puntero a al última vista activa</A
+></DT
+><DT
+><A
+HREF="x2673.html#GNOME-MDI-SET-ACTIVE-VIEW"
+>gnome_mdi_set_active_view - establece la vista activa.</A
+></DT
+><DT
+><A
+HREF="x2673.html#GNOME-MDI-ADD-CHILD"
+>gnome_mdi_add_child - añade un nuevo hijo a un MDI</A
+></DT
+><DT
+><A
+HREF="x2673.html#GNOME-MDI-REMOVE-CHILD"
+>gnome_mdi_remove_child - borra a un hijo del MDI</A
+></DT
+><DT
+><A
+HREF="x2673.html#GNOME-MDI-REMOVE-ALL"
+>gnome_mdi_remove_all - borra todos los hijos del MDI</A
+></DT
+><DT
+><A
+HREF="x2673.html#GNOME-MDI-UPDATE-CHILD"
+>gnome_mdi_update_child - actualiza un hijo cuando su nombre cambia</A
+></DT
+><DT
+><A
+HREF="x2673.html#GNOME-MDI-ACTIVE-CHILD"
+>gnome_mdi_active_child - devuelve el hijo activo</A
+></DT
+><DT
+><A
+HREF="x2673.html#GNOME-MDI-FIND-CHILD"
+>gnome_mdi_find_child - devuelve el hijo nombrado</A
+></DT
+><DT
+><A
+HREF="x2673.html#GNOME-MDI-OPEN-TOPLEVEL"
+>gnome_mdi_open_toplevel - abre una nueva ventana de alto nivel.</A
+></DT
+><DT
+><A
+HREF="x2673.html#GNOME-MDI-REGISTER"
+>gnome_mdi_register - registra un GtkObject con MDI</A
+></DT
+><DT
+><A
+HREF="x2673.html#GNOME-MDI-UNREGISTER"
+>gnome_mdi_unregister - borrar un GtkObject de la lista de objetos 
+	registrados
+    <DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><CODE
+CLASS="FUNCDEF"
+>void <B
+CLASS="FSFUNC"
+>gnome_mdi_unregister</B
+></CODE
+>(GnomeMDI *<VAR
+CLASS="PDPARAM"
+>mdi</VAR
+>, GtkObject *<VAR
+CLASS="PDPARAM"
+>object</VAR
+>);<P
+></P
+></DIV
+>
+    <DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN3268"
+>Descripción</A
+></H3
+>Descripción<P
+>	Borra un GtkObject de la lista de objetos registrados.
+      </P
+></DIV
+>
+    <DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN3271"
+>Uso</A
+></H3
+>Uso<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>	gnome_mdi_unregister(mdi, tool_window);
+      </PRE
+></TD
+></TR
+></TABLE
+></DIV
+>
+    <DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN3274"
+>Parámetros</A
+></H3
+>Parámetros<P
+></P
+><UL
+><LI
+><P
+>GnomeMDI *<TT
+CLASS="PARAMETER"
+><I
+>mdi</I
+></TT
+>
+          </P
+><P
+>	Un puntero a un objeto MDI.
+          </P
+></LI
+><LI
+><P
+>GtkObject *<TT
+CLASS="PARAMETER"
+><I
+>object</I
+></TT
+>
+          </P
+><P
+>	Un puntero al objeto a borrar de la lista de objetos registrados.
+          </P
+></LI
+></UL
+></DIV
+></A
+></DT
+><DT
+><A
+HREF="x2673.html#GNOME-MDI-GET-APP-FROM-VIEW"
+>gnome_mdi_get_app_from_view - recupera la ventana de alto nivel de
+	una vista.</A
+></DT
+><DT
+><A
+HREF="x2673.html#GNOME-MDI-GET-CHILD-FROM-VIEW"
+>gnome_mdi_get_child_from_view - recupera el hijo de una vista.</A
+></DT
+><DT
+><A
+HREF="x2673.html#GNOME-MDI-GET-VIEW-FROM-WINDOW"
+>gnome_mdi_get_view_from_window - recuperar una vista de una cierta
+	ventana</A
+></DT
+></DL
+></DD
+></DL
+></DD
+><DT
+>13. <A
+HREF="sobre-tradu.html"
+>Acerca de la Traducción</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="sobre-tradu.html#AEN3357"
+></A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="sobre-tradu.html#AEN3359"
+>Autores</A
+></DT
+><DT
+><A
+HREF="sobre-tradu.html#AEN3363"
+>Agradecimientos y demás...</A
+></DT
+></DL
+></DD
+></DL
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="intro.html"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Introducción..</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,0 +1,288 @@
+<!DOCTYPE HTML PUBLIC "-//Norman Walsh//DTD DocBook HTML 1.0//EN">
+<HTML
+><HEAD
+><TITLE
+>      	Añadiendo menús
+	
+      	 	 De la Guía de Estilo de GNOME     	  
+      	  
+      	      	  	Menús y Barras de Menús
+	La Barra de Menú debe estar presente en todas las Aplicaciones.
+	Todas las aplicaciones deben tener una entrada "Ayuda" en la barra de Menú.
+	Todos los menús necesitan al menos una entrada.
+	Un Menú Acerca de... debe estar disponible bajo el Menú de Ayuda y debe 
+abrir un pequeño dialogo mostrando por lo menos el nombre de la
+aplicación, el autor, la versión y la fecha.
+	Un menú "Archivo" debe aparecer en todas la aplicaciones, y contener
+por lo menos Salir.
+	Los items del menú que abran diálogos deben indicarlo con un "..."
+	Los items del menú que lleven submenús lo deben indicar con una	flecha. 
+	El menú de Ayuda debe estar justificado a la derecha en la Barra de Menú.
+    
+       
+                En el momento de escribir este borrador, gnome-hello usa
+	GtkMenuFactory como forma de crear lo menús. Ésta será reemplazada
+	por gnome-app-helper en poco tiempo. (cuando gnome_app_* tenga soporte para
+	i18n, aceleradores y posibilidad de menús justificados a la derecha). Hasta
+	entonces no será una explicación sobre "como" hacer los menús.
+       
+      		Las opciones de menú presentes en gnome-hello son sólo las
+	obligatorias: Fichero/Salida, que usa la misma quit_cb
+	que hemos visto en la sección anterior y 
+	Ayuda/Acerca de... que usa el widget
+	gnome-about (ver ) escrito por Cesar
+	miquel@df.uba.ar.
+       
+      		void	
+	about_cb (GtkWidget *widget, void *data)
+	{
+	  GtkWidget *about;
+	  gchar *authors[] = {
+	/* Here should be your names */
+	          "Mark Galassi",
+	          "Horacio J. Peña",
+	          NULL
+	          };
+	
+	  about = gnome_about_new ( "The Hello World Gnomified", VERSION,
+	                        /* copyright notice */
+	                        "(C) 1998 the Free Software Foundation",
+	                        authors,
+	                        /* another comments */
+	                        "GNOME is a civilized software system "
+	                          "so we've a \"hello world\" program",
+	                        NULL);
+	  gtk_widget_show (about);
+
+	  return;
+	}
+      	  
+	</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet"><LINK
+REL="HOME"
+TITLE="Información para desarrolladores de Gnome "
+HREF="book1.html"><LINK
+REL="UP"
+TITLE="     Tutorial para los desarrolladores de GNOME
+    "
+HREF="tutorial.html"><LINK
+REL="PREVIOUS"
+TITLE="     Tutorial para los desarrolladores de GNOME
+    "
+HREF="tutorial.html"><LINK
+REL="NEXT"
+TITLE=" 	Internacionalización.     	
+	"
+HREF="tut-i18n.html"></HEAD
+><BODY
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>Información para desarrolladores de Gnome</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="tutorial.html"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 3. Tutorial para los desarrolladores de GNOME</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="tut-i18n.html"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="TUT-MENUS"
+>Añadiendo menús
+	<P
+><IMG
+SRC="gnome-hello-1-menus.jpg"></P
+>
+      	<P
+> 	 De la <I
+CLASS="CITETITLE"
+>Guía de Estilo de GNOME</I
+>     	  
+      	  </P
+>
+      	<P
+>      	  <P
+CLASS="LITERALLAYOUT"
+>	Menús&nbsp;y&nbsp;Barras&nbsp;de&nbsp;Menús<br>
+	La&nbsp;Barra&nbsp;de&nbsp;Menú&nbsp;debe&nbsp;estar&nbsp;presente&nbsp;en&nbsp;todas&nbsp;las&nbsp;Aplicaciones.<br>
+	Todas&nbsp;las&nbsp;aplicaciones&nbsp;deben&nbsp;tener&nbsp;una&nbsp;entrada&nbsp;"Ayuda"&nbsp;en&nbsp;la&nbsp;barra&nbsp;de&nbsp;Menú.<br>
+	Todos&nbsp;los&nbsp;menús&nbsp;necesitan&nbsp;al&nbsp;menos&nbsp;una&nbsp;entrada.<br>
+	Un&nbsp;Menú&nbsp;Acerca&nbsp;de...&nbsp;debe&nbsp;estar&nbsp;disponible&nbsp;bajo&nbsp;el&nbsp;Menú&nbsp;de&nbsp;Ayuda&nbsp;y&nbsp;debe&nbsp;<br>
+abrir&nbsp;un&nbsp;pequeño&nbsp;dialogo&nbsp;mostrando&nbsp;por&nbsp;lo&nbsp;menos&nbsp;el&nbsp;nombre&nbsp;de&nbsp;la<br>
+aplicación,&nbsp;el&nbsp;autor,&nbsp;la&nbsp;versión&nbsp;y&nbsp;la&nbsp;fecha.<br>
+	Un&nbsp;menú&nbsp;"Archivo"&nbsp;debe&nbsp;aparecer&nbsp;en&nbsp;todas&nbsp;la&nbsp;aplicaciones,&nbsp;y&nbsp;contener<br>
+por&nbsp;lo&nbsp;menos&nbsp;Salir.<br>
+	Los&nbsp;items&nbsp;del&nbsp;menú&nbsp;que&nbsp;abran&nbsp;diálogos&nbsp;deben&nbsp;indicarlo&nbsp;con&nbsp;un&nbsp;"..."<br>
+	Los&nbsp;items&nbsp;del&nbsp;menú&nbsp;que&nbsp;lleven&nbsp;submenús&nbsp;lo&nbsp;deben&nbsp;indicar&nbsp;con&nbsp;una	flecha.&nbsp;<br>
+	El&nbsp;menú&nbsp;de&nbsp;Ayuda&nbsp;debe&nbsp;estar&nbsp;justificado&nbsp;a&nbsp;la&nbsp;derecha&nbsp;en&nbsp;la&nbsp;Barra&nbsp;de&nbsp;Menú.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;</P
+>
+       </P
+>
+       <P
+>         En el momento de escribir este borrador, gnome-hello usa
+	GtkMenuFactory como forma de crear lo menús. Ésta será reemplazada
+	por gnome-app-helper en poco tiempo. (cuando gnome_app_* tenga soporte para
+	i18n, aceleradores y posibilidad de menús justificados a la derecha). Hasta
+	entonces no será una explicación sobre "como" hacer los menús.
+       </P
+>
+      	<P
+>	Las opciones de menú presentes en gnome-hello son sólo las
+	obligatorias: <SPAN
+CLASS="GUIMENUITEM"
+>Fichero/Salida</SPAN
+>, que usa la misma quit_cb
+	que hemos visto en la sección anterior y 
+	<SPAN
+CLASS="GUIMENUITEM"
+>Ayuda/Acerca de...</SPAN
+> que usa el widget
+	gnome-about (ver <A
+HREF="libgnomeui.html#GNOME-ABOUT"
+>the section called <I
+>gnome-about - Widget "Acerca de..."</I
+> in Chapter 6</A
+>) escrito por Cesar
+	<TT
+CLASS="EMAIL"
+>&#60;<A
+HREF="mailto:miquel@df.uba.ar"
+>miquel@df.uba.ar</A
+>&#62;</TT
+>.
+       </P
+>
+      	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>	void	
+	about_cb (GtkWidget *widget, void *data)
+	{
+	  GtkWidget *about;
+	  gchar *authors[] = {
+	/* Here should be your names */
+	          "Mark Galassi",
+	          "Horacio J. Peña",
+	          NULL
+	          };
+	
+	  about = gnome_about_new ( "The Hello World Gnomified", VERSION,
+	                        /* copyright notice */
+	                        "(C) 1998 the Free Software Foundation",
+	                        authors,
+	                        /* another comments */
+	                        "GNOME is a civilized software system "
+	                          "so we've a \"hello world\" program",
+	                        NULL);
+	  gtk_widget_show (about);
+
+	  return;
+	}
+      	  </PRE
+></TD
+></TR
+></TABLE
+></A
+></H1
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="tutorial.html"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book1.html"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="tut-i18n.html"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Tutorial para los desarrolladores de GNOME</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="tutorial.html"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Internacionalización.</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

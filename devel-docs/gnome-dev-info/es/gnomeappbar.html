@@ -1,0 +1,516 @@
+<!DOCTYPE HTML PUBLIC "-//Norman Walsh//DTD DocBook HTML 1.0//EN">
+<HTML
+><HEAD
+><TITLE
+>	Usando GnomeAppBar directamente
+    </TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet"><LINK
+REL="HOME"
+TITLE="Información para desarrolladores de Gnome "
+HREF="book1.html"><LINK
+REL="UP"
+TITLE="Talking to the user: GnomeDialog, GnomeMessageBox,
+    GnomeAppBar, and utility functions."
+HREF="dialogapputil-docs.html"><LINK
+REL="PREVIOUS"
+TITLE="Talking to the user: GnomeDialog, GnomeMessageBox,
+    GnomeAppBar, and utility functions."
+HREF="dialogapputil-docs.html"><LINK
+REL="NEXT"
+TITLE="  Funciones utiles para mensajes abstractos
+  "
+HREF="gnome-app-util.html"></HEAD
+><BODY
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>Información para desarrolladores de Gnome</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="dialogapputil-docs.html"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 9. Talking to the user: <SPAN
+CLASS="TYPE"
+>GnomeDialog</SPAN
+>, <SPAN
+CLASS="TYPE"
+>GnomeMessageBox</SPAN
+>,
+    <SPAN
+CLASS="TYPE"
+>GnomeAppBar</SPAN
+>, and utility functions.</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="gnome-app-util.html"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="GNOMEAPPBAR"
+>Usando <SPAN
+CLASS="TYPE"
+>GnomeAppBar</SPAN
+> directamente</A
+></H1
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN2063"
+>Creando una barra de aplicaciones.</A
+></H2
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><CODE
+CLASS="FUNCDEF"
+>GtkWidget *<B
+CLASS="FSFUNC"
+>gnome_appbar_new</B
+>
+	</CODE
+>(	  gboolean <VAR
+CLASS="PDPARAM"
+>has_progress</VAR
+>
+	, 	  gboolean <VAR
+CLASS="PDPARAM"
+>has_status</VAR
+>
+	, 	  GnomePreferencesType <VAR
+CLASS="PDPARAM"
+>interactivity</VAR
+>
+	);<P
+></P
+></DIV
+><P
+>	<SPAN
+CLASS="TYPE"
+>GnomeAppBar</SPAN
+> es una barra de progreso a la izquierda
+	y una barra de estado/minibúfer a la derecha. Puede ser
+	opcionalmente solamente una barra de progreso (sin habla, pero 
+	puedes hacerlo), o solo una barra de estado/minibúfer (si no
+	tienes ningún progreso que mostrar).
+      </P
+><P
+>	La barra de estado/minibúfer puede ser una entrada interactiva a 
+	lo Emacs o solo mostrar el estado. (De todos modos, por ahora el
+	modo interactivo esta inacabado.) Esto se especifica con el
+	parámetro <TT
+CLASS="PARAMETER"
+><I
+>interactivity</I
+></TT
+>, el cuál puede tener
+	tres valores: <SPAN
+CLASS="SYMBOL"
+>GNOME_PREFERENCES_NEVER</SPAN
+>, 
+	<SPAN
+CLASS="SYMBOL"
+>GNOME_PREFERENCES_USER</SPAN
+>, o 
+	<SPAN
+CLASS="SYMBOL"
+>GNOME_PREFERENCES_ALWAYS</SPAN
+>. Si especificas 
+	<SPAN
+CLASS="SYMBOL"
+>_NEVER</SPAN
+> o <SPAN
+CLASS="SYMBOL"
+>_ALWAYS</SPAN
+>, entonces la
+	interactividad se prohibe o se fuerza. Por otra parte, un usuario
+     	provisto por GNOME determinará la interactividad.
+      </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN2083"
+>Usando una GnomeAppBar para mostrar el estado</A
+></H2
+><P
+>	La barra de aplicación muesta un mensaje cada vez. Hay tres 
+	formas de mensaje: mensajes de estado transitorios, mensajes 
+	de la pila y mensajes por defecto. 
+	<P
+></P
+><UL
+><LI
+><P
+>	Los mensajes transitorios son mostrados, anulando cualquier
+	otro mensaje, pero la barra de aplicación no guarda nada sobre
+	ellos; asi que desaparecen siempre, tan pronto como se refresca
+	la barra de aplicación. La función
+	<TT
+CLASS="FUNCTION"
+><B
+>gnome_appbar_set_status()</B
+></TT
+> crea un mensaje
+	transitorio.
+	    </P
+></LI
+><LI
+><P
+>	Si ningún mensaje transitorio lo ha sobreescrito, el mensaje que 
+	hay en la cima de la pila se muestra. Las funciones
+	<TT
+CLASS="FUNCTION"
+><B
+>gnome_appbar_push()</B
+></TT
+>,
+	<TT
+CLASS="FUNCTION"
+><B
+>gnome_appbar_pop()</B
+></TT
+>,
+	<TT
+CLASS="FUNCTION"
+><B
+>gnome_appbar_clear_stack()</B
+></TT
+> manipulan la pila.
+	    </P
+></LI
+><LI
+><P
+>	Si la pila está vacia, la barra de aplicación muestra el mensaje
+	por defecto (el cuál puede ser una cadena de caracteres vacia). El
+	mensaje por defecto se establece con
+	<TT
+CLASS="FUNCTION"
+><B
+>gnome_appbar_set_default()</B
+></TT
+>.
+	    </P
+></LI
+></UL
+>
+      </P
+><P
+>	Es posible e incluso estimulante usar solo uno de los 3 tipos de
+	mensaje. Puedes hacer la barra de aplicación tan simple o tan 
+	compleja como quieras; con solo
+	<TT
+CLASS="FUNCTION"
+><B
+>gnome_appbar_set_status()</B
+></TT
+>, es basicamente solo
+	una <SPAN
+CLASS="TYPE"
+>GtkLabel</SPAN
+>.
+      </P
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><CODE
+CLASS="FUNCDEF"
+>void <B
+CLASS="FSFUNC"
+>gnome_appbar_set_status</B
+>
+	</CODE
+>(	  GnomeAppBar *<VAR
+CLASS="PDPARAM"
+>appbar</VAR
+>
+	, 	  const gchar *<VAR
+CLASS="PDPARAM"
+>status</VAR
+>
+	);<P
+></P
+></DIV
+><P
+>	Muchas veces quieres mostrar un mensaje que no es muy importante,
+	y no te quieres preocupar de borrarlo más tarde.
+	<TT
+CLASS="FUNCTION"
+><B
+>gnome_appbar_set_status()</B
+></TT
+> hace esto por tí.
+	Pone el mensaje en la barra de aplicación hasta que en un momento
+	posterior la barra cambie.
+      </P
+><P
+>	Si quieres, puedes usar la barra de aplicación con solamente esta
+	función. Para aplicación simples puede ser un buen enfoque.
+      </P
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><CODE
+CLASS="FUNCDEF"
+>void <B
+CLASS="FSFUNC"
+>gnome_appbar_set_default</B
+>
+	</CODE
+>(	  GnomeAppBar *<VAR
+CLASS="PDPARAM"
+>appbar</VAR
+>
+	, 	  const gchar *<VAR
+CLASS="PDPARAM"
+>default_status</VAR
+>
+	);<P
+></P
+></DIV
+><P
+>	Cuando  no hay un estado especial que mostrar, la barra de aplicación
+	está normalmente vacia. De todas formas, si lo prefieres puedes 
+	poner un mensaje por defecto; este es un mensaje que nunca puede ser
+	eliminado de la pila de mensajes. Para volver a una barra de
+	aplicación vacia, ponemos el mensaje por defecto a una cadena de
+	caracteres vacia.
+      </P
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><CODE
+CLASS="FUNCDEF"
+>void <B
+CLASS="FSFUNC"
+>gnome_appbar_push</B
+>
+	</CODE
+>(	  GnomeAppBar *<VAR
+CLASS="PDPARAM"
+>appbar</VAR
+>
+	, 	  const gchar *<VAR
+CLASS="PDPARAM"
+>status</VAR
+>
+	);<P
+></P
+></DIV
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><CODE
+CLASS="FUNCDEF"
+>void <B
+CLASS="FSFUNC"
+>gnome_appbar_pop</B
+>
+	</CODE
+>(	  GnomeAppBar *<VAR
+CLASS="PDPARAM"
+>appbar</VAR
+>
+	);<P
+></P
+></DIV
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><CODE
+CLASS="FUNCDEF"
+>void <B
+CLASS="FSFUNC"
+>gnome_appbar_clear_stack</B
+>
+	</CODE
+>(	  GnomeAppBar *<VAR
+CLASS="PDPARAM"
+>appbar</VAR
+>
+	);<P
+></P
+></DIV
+><P
+>	<SPAN
+CLASS="TYPE"
+>GnomeAppBar</SPAN
+> mantiene una pila de mensajes; siempre 
+	muesta el mensaje que hay en la cima de la pila. (Hay una
+	excepción: <TT
+CLASS="FUNCTION"
+><B
+>gnome_appbar_set_status()</B
+></TT
+> 
+	machaca el mensaje de la cima de la pila temporalmente.)
+      </P
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><CODE
+CLASS="FUNCDEF"
+>void <B
+CLASS="FSFUNC"
+>gnome_appbar_refresh</B
+>
+	</CODE
+>(	  GnomeAppBar *<VAR
+CLASS="PDPARAM"
+>appbar</VAR
+>
+	);<P
+></P
+></DIV
+><P
+>	<TT
+CLASS="FUNCTION"
+><B
+>gnome_appbar_refresh()</B
+></TT
+> actualiza la 
+	barra de herramientas para reflejar el estado salvado actual.
+	Basicamente esto quiere decir que cualquier mensaje transitorio
+	(creado con <TT
+CLASS="FUNCTION"
+><B
+>gnome_appbar_set_status()</B
+></TT
+>)
+	desparecerá para ser reemplazado por el mensaje que haya en la cima
+	de la pila o por el mensaje por defecto.
+      </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN2147"
+>Usar una Barra de Aplicación para preguntar al usuario</A
+></H2
+><P
+>	No funciona muy bien, asi que no se documenta. Basicamente puedes
+	presentar un prompt, y capturar una señal si el usuario da una
+	respuesta o cancela. Es util para evitar un díalogo si solo quieres
+	obtener una cadena de caracteres o algo similar. Pero alguien tiene
+	que escribir el widget apropiado, quizás basado en
+	<SPAN
+CLASS="TYPE"
+>GtkEntry</SPAN
+>.
+      </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="dialogapputil-docs.html"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book1.html"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="gnome-app-util.html"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Talking to the user: <SPAN
+CLASS="TYPE"
+>GnomeDialog</SPAN
+>, <SPAN
+CLASS="TYPE"
+>GnomeMessageBox</SPAN
+>,
+    <SPAN
+CLASS="TYPE"
+>GnomeAppBar</SPAN
+>, and utility functions.</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="dialogapputil-docs.html"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Funciones utiles para mensajes abstractos</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

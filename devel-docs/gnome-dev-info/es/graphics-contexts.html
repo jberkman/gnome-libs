@@ -1,0 +1,146 @@
+<!DOCTYPE HTML PUBLIC "-//Norman Walsh//DTD DocBook HTML 1.0//EN">
+<HTML
+><HEAD
+><TITLE
+>Contextos Gráficos
+	</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet"><LINK
+REL="HOME"
+TITLE="Información para desarrolladores de Gnome "
+HREF="book1.html"><LINK
+REL="UP"
+TITLE=""
+HREF="x-concepts-docs.html#AEN2433"><LINK
+REL="PREVIOUS"
+TITLE="Visuals"
+HREF="visuals.html"><LINK
+REL="NEXT"
+TITLE="Programación de los eventos-conducidos ____
+	"
+HREF="event-driven-programming.html"></HEAD
+><BODY
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>Información para desarrolladores de Gnome</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="visuals.html"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 10. Conceptos basicos sobre X</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="event-driven-programming.html"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="GRAPHICS-CONTEXTS"
+>Contextos Gráficos</A
+></H1
+><P
+>        Los contextos gráficos (GCs) son usados en la mayoría del sistemas
+        de ventanas para tener información sobre que atributos usar 
+        cuando dibujamos en el objeto. Vamos a decir que queremos dibujar
+        una línea en la pantalla. Esto debería de ser pesado el tener 
+        que especificar el estilo de la líneo, patrón de puntos, ancho,
+        color, operaciones gráficas, y todas las veces que queramos dibujar
+        una línea en la pantalla. La solución es tener una estructura
+        registro con esta información, y pasar la estructura a las funciones
+        que dibujan las primitivas gráficas. Como amenudo  quieres
+        pintar grupos de primitivas con los mismos atributos (color, estilo
+        línea, letra, etc.), GCs es el camino conveniente y fácil para
+        especificar estos valores.
+      </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="visuals.html"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book1.html"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="event-driven-programming.html"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Visuals</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="x-concepts-docs.html#AEN2433"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Programación de los eventos-conducidos ____</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,0 +1,926 @@
+<!DOCTYPE HTML PUBLIC "-//Norman Walsh//DTD DocBook HTML 1.0//EN">
+<HTML
+><HEAD
+><TITLE
+>   Usando GnomeDialog directamente
+  </TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet"><LINK
+REL="HOME"
+TITLE="Información para desarrolladores de Gnome "
+HREF="book1.html"><LINK
+REL="UP"
+TITLE="Talking to the user: GnomeDialog, GnomeMessageBox,
+    GnomeAppBar, and utility functions."
+HREF="dialogapputil-docs.html"><LINK
+REL="PREVIOUS"
+TITLE="   Funciones útiles si un GnomeApp está disponible
+  "
+HREF="x2158.html"><LINK
+REL="NEXT"
+TITLE="Conceptos basicos sobre X"
+HREF="x-concepts-docs.html"></HEAD
+><BODY
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>Información para desarrolladores de Gnome</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x2158.html"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 9. Talking to the user: <SPAN
+CLASS="TYPE"
+>GnomeDialog</SPAN
+>, <SPAN
+CLASS="TYPE"
+>GnomeMessageBox</SPAN
+>,
+    <SPAN
+CLASS="TYPE"
+>GnomeAppBar</SPAN
+>, and utility functions.</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x-concepts-docs.html"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="GNOME-DIALOG"
+>Usando <SPAN
+CLASS="TYPE"
+>GnomeDialog</SPAN
+> directamente</A
+></H1
+><P
+>	<SPAN
+CLASS="TYPE"
+>GnomeDialog</SPAN
+> proovee de un parecido y sensación de uso
+	común para todos los díalogos de Gnome (look &#38; feel). Permite al usuario controlar
+	el parecido y la sensación de uso a algunas extensiones; y permite
+	al programador obtener los aspectos de parecido y manejo con un 
+	minimo esfuerzo. <SPAN
+CLASS="TYPE"
+>GnomeDialog</SPAN
+> se propone que tenga por 
+	defecto algunas cosas razonables, no es una hoja en blanco como
+	<SPAN
+CLASS="TYPE"
+>GtkDialog</SPAN
+>.
+    </P
+><P
+>	Un <SPAN
+CLASS="TYPE"
+>GnomeDialog</SPAN
+> es una ventana emergente y que desparece
+	completa y rapidamente; los Dialogos de Capas del GIMP, por ejemplo, 
+	no es un díalogo en este sentido. No hay widget estádard para
+	díalogos persistentes en este momento.
+    </P
+><P
+>	<SPAN
+CLASS="TYPE"
+>GnomeDialog</SPAN
+> tiene un gran número de funciones, pero
+	casi todas ellas son de un proposito especial y raramente se usan.
+	En la práctica solo necesitarás unas pocas.
+    </P
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN2275"
+>Creando un cuadro de díalogo</A
+></H2
+><P
+>	He aqui un ejemplo basico de uso, mostrando una llamada y la 
+	creación del díalogo:
+	
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>            void dialog_clicked_cb(GnomeDialog * dialog, gint button_number, 
+                                    gpointer data)
+            {
+              switch (button_number) {
+                case 0: /* 
+ 			botón de Aceptar               	
+                	*/
+          	  g_print(_("OK was clicked.\n"));
+                  break;
+                case 1: /* "
+			El nombre de mi Botón	                
+			*/
+	          g_print(_("My Button Name was clicked.\n"));
+                  break;
+                case 2: /* 
+			 Botón de Cancelar
+	          g_print(_("Cancel clicked\n"));
+                  break;
+	        default:
+                  g_assert_not_reached();
+              };
+              gnome_dialog_close(dialog);
+            }
+	</PRE
+></TD
+></TR
+></TABLE
+>
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>	    GtkWidget * label;
+            GtkWidget * dialog;
+
+	    label  = gtk_label_new(_("Dialog contents"));
+
+            dialog = gnome_dialog_new(_("My Title"), GNOME_STOCK_BUTTON_OK,
+                                      _("My Button Name"), 
+	                              GNOME_STOCK_BUTTON_CANCEL, 
+                                      NULL); 
+                 
+	    gtk_box_pack_start(GNOME_DIALOG(dialog)-&#62;vbox,
+                               label, TRUE, TRUE, GNOME_PAD);
+
+	    gtk_signal_connect(GTK_OBJECT(dialog), "clicked",
+                               GTK_SIGNAL_FUNC(dialog_clicked_cb),
+                               NULL);
+
+            gtk_widget_show(dialog);
+	</PRE
+></TD
+></TR
+></TABLE
+>
+      </P
+><P
+>	Este ejemplo crea un díalogo con una etiqueta dentro; El díalogo
+	tiene 3 botones: un boton de OK, un botón personalizado "My Button
+	Name", y un boton de Cancel. La lista de argumentos para los botones debe
+	terminar en NULL. El dialgo se titula "My Title". Darse cuenta de 
+	la macro _(), la cuál traduce la cadena de caracteres al lenguaje
+	nativo del usuario.
+      </P
+><P
+>	Los botones que creas son numerados en orden, empezando desde el 0;
+	la llamada recibe este número. En la llamda (o en 
+	cualquier lugar que tenga sentido en tu programa), deberías cerrar
+	el díalogo con <TT
+CLASS="FUNCTION"
+><B
+>gnome_dialog_close()</B
+></TT
+>, si quieres
+        que el díalogo desaparezca.	
+      </P
+><P
+>	Los botones aparecen en el diálogo en el mismo orden que se pasan
+	a la función <TT
+CLASS="FUNCTION"
+><B
+>gnome_dialog_new()</B
+></TT
+>. Esto es, el
+	primer argumento botón será el botón más la izquierda. Gnome
+	por convención pone Aceptar antes de Cancelar y Si antes de No. El 
+	último botón de la lista será el botón por defecto. Normalmente 
+	quieres que Cancelar/No sea la respuesta por defecto, puesto que
+	estas acciones son las menos destructivas. De todos modos puedes
+	cambiar la respuesta por defecto con
+	<TT
+CLASS="FUNCTION"
+><B
+>gnome_dialog_set_default()</B
+></TT
+>.
+      </P
+><P
+>	Para un díalogo que simplemente muestra un mensaje, como éste, 
+	normalemte usarías <SPAN
+CLASS="TYPE"
+>GnomeMessageBox</SPAN
+> o alguna de 
+	las funciones apropiadas de Gnome, en lugar de crear la 
+	tuya propia. 
+	Las subclases de <SPAN
+CLASS="TYPE"
+>GnomeDialog</SPAN
+> incluyen
+	<SPAN
+CLASS="TYPE"
+>GnomeMessageBox</SPAN
+>, <SPAN
+CLASS="TYPE"
+>GnomePropertyBox</SPAN
+> y
+	<SPAN
+CLASS="TYPE"
+>GnomeAbout</SPAN
+>, de lo cuál nos beneficiamos.
+      </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN2292"
+>Cerrando el cuadro de díalogo</A
+></H2
+><P
+>	<SPAN
+CLASS="TYPE"
+>GnomeDialog</SPAN
+> tiene una señal de <SPAN
+CLASS="SYMBOL"
+>close</SPAN
+>
+	la cuál puedes mandar con la función
+	<TT
+CLASS="FUNCTION"
+><B
+>gnome_dialog_close()</B
+></TT
+>. Esta señal agrupa
+	la variedad de <I
+CLASS="EMPHASIS"
+>causas</I
+> y
+	<I
+CLASS="EMPHASIS"
+>efectos</I
+> del cierre de un diálogo.
+      </P
+><P
+>	Hay muchas razones para que un diálogo se pueda cerrar: la más común
+	es pulsar un botón y borrarlo con una decoración del gestor de
+	ventanas. Muchas aplicaciones definen sus propios criterios; por
+	ejemplo, si la ventana padre del diálogo se cierra, la aplicación
+	puede llamar a <TT
+CLASS="FUNCTION"
+><B
+>gnome_dialog_close()</B
+></TT
+>.
+      </P
+><P
+>	Asi mismo, hay dos significados comúnes de "cerrar un diálogo"
+	desde la perspectiva del programador. La más popular es la función
+	<TT
+CLASS="FUNCTION"
+><B
+>gtk_widget_destroy()</B
+></TT
+> &#8212; se libra del 
+	diálogo completamente. De todas formas, si un diálogo es costoso
+	de crear, podrías querer crearlo sólo una vez, entonces llamas 
+	a la función <TT
+CLASS="FUNCTION"
+><B
+>gtk_widget_hide()</B
+></TT
+> para cerrarlo, y
+	<TT
+CLASS="FUNCTION"
+><B
+>gtk_widget_show()</B
+></TT
+> para mostrarlo otra vez. 
+	La señal de <SPAN
+CLASS="SYMBOL"
+>close</SPAN
+> puede ser también causa de estos
+	efectos.
+      </P
+><P
+>	La señal <SPAN
+CLASS="SYMBOL"
+>close</SPAN
+> te permite invocar una llamada
+	sin importar la razón por la que el díalogo fue cerrado. 
+	Esto te libra de preocuparte del <SPAN
+CLASS="SYMBOL"
+>delete_event</SPAN
+>,
+	y si más tarde añades un nueva forma de cerrar un díalogo, 
+	no hay necesidad de añadir un caso epecial en el código de
+	tu diálogo. También puede cambiar el efecto de cerrar el diálogo por
+	defecto (ocultar o destruir) sin cambiar todo tu código.
+      </P
+><P
+>	Si conectas una llamada a la señal <SPAN
+CLASS="SYMBOL"
+>close</SPAN
+>, debe
+	devolver un valor booleano. Si la llamada devuelve 
+	<SPAN
+CLASS="SYMBOL"
+>FALSE</SPAN
+>, el díalogo se cierra. Si la llamada
+	devuelve <SPAN
+CLASS="SYMBOL"
+>TRUE</SPAN
+>, el cierre se detiene;
+	el dialog permanece en la pantalla. Por ejemplo, si el usuario
+	inserta datos invalidos y pulsa Aceptar, podrías detectar los datos
+	invalidos en tu llamada, mostrar un error, y devolver TRUE.
+      </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN2314"
+>Opciones del Dialogo</A
+></H2
+><P
+>	<SPAN
+CLASS="TYPE"
+>GnomeDialog</SPAN
+> tiene un número de opciones para 
+	modificar su comportamiento por defecto. Ten en mente también las
+	funciones <SPAN
+CLASS="TYPE"
+>GtkWindow</SPAN
+>, especialmente
+	<TT
+CLASS="FUNCTION"
+><B
+>gtk_window_set_modal()</B
+></TT
+>. Recuerda no machacar
+	ninguna de las preferencias del usuario para los diálogos: por
+	ejemplo, no deberías llamar a la función
+	<TT
+CLASS="FUNCTION"
+><B
+>gtk_window_position</B
+></TT
+>, o forzar a que el diálogo
+	se posicione en unas coordenadas determinadas.
+      </P
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><CODE
+CLASS="FUNCDEF"
+>GtkWidget *<B
+CLASS="FSFUNC"
+>gnome_dialog_close_hides</B
+>
+	</CODE
+>(	  GnomeDialog *<VAR
+CLASS="PDPARAM"
+>dialog</VAR
+>
+	, 	  gboolean<VAR
+CLASS="PDPARAM"
+>just_hide</VAR
+>
+	);<P
+></P
+></DIV
+><P
+>	La señal <SPAN
+CLASS="SYMBOL"
+>close</SPAN
+> puede también ocultar o destruir
+	el diálogo. Por defecto, <SPAN
+CLASS="SYMBOL"
+>close</SPAN
+> destruye el diálogo.
+	Si le pasas <SPAN
+CLASS="SYMBOL"
+>TRUE</SPAN
+> a esta función, la oculta.
+      </P
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><CODE
+CLASS="FUNCDEF"
+>GtkWidget *<B
+CLASS="FSFUNC"
+>gnome_dialog_set_default</B
+>
+	</CODE
+>(	  GnomeDialog *<VAR
+CLASS="PDPARAM"
+>dialog</VAR
+>
+	, 	  gint<VAR
+CLASS="PDPARAM"
+>button</VAR
+>
+	);<P
+></P
+></DIV
+><P
+>	Establece el botón por defecto. Si el usuario presiona enter, se pulsa 
+	el botón por defecto.Por defecto, el botón con mayor número es el
+	botón por defecto (el último botón dado en
+	<TT
+CLASS="FUNCTION"
+><B
+>gnome_dialog_new()</B
+></TT
+>).
+      </P
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><CODE
+CLASS="FUNCDEF"
+>GtkWidget *<B
+CLASS="FSFUNC"
+>gnome_dialog_set_sensitive</B
+>
+	</CODE
+>(	  GnomeDialog *<VAR
+CLASS="PDPARAM"
+>dialog</VAR
+>
+	, 	  gint<VAR
+CLASS="PDPARAM"
+>button</VAR
+>
+	, 	  gboolean<VAR
+CLASS="PDPARAM"
+>sensitivity</VAR
+>
+	);<P
+></P
+></DIV
+><P
+>	Establece la sensitividad de un botón, usando
+	<TT
+CLASS="FUNCTION"
+><B
+>gtk_widget_set_sensitive()</B
+></TT
+>.
+	Por defecto todos los botones son sensitivos.
+      </P
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><CODE
+CLASS="FUNCDEF"
+>GtkWidget *<B
+CLASS="FSFUNC"
+>gnome_dialog_set_parent</B
+>
+	</CODE
+>(	  GnomeDialog *<VAR
+CLASS="PDPARAM"
+>dialog</VAR
+>
+	, 	  GtkWindow *<VAR
+CLASS="PDPARAM"
+>parent</VAR
+>
+	);<P
+></P
+></DIV
+><P
+>	Los díalogos tiene una ventana "padre", a menudo la ventana
+	principal de la aplicación. Por ahora, el único efecto de 
+	decirle al diálogo quien es su padre, es para centrar el diálogo
+	sobre la ventana padre, si el usuario ha solicitado ésta
+	caracteristica. En el futuro podrá tener otros efectos (¿posiblemente
+	para indicarle al gestor de ventana que mantenga el díalogo encima 
+	de su padre?).
+      </P
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><CODE
+CLASS="FUNCDEF"
+>GtkWidget *<B
+CLASS="FSFUNC"
+>gnome_dialog_set_accelerator</B
+>
+	</CODE
+>(	  GnomeDialog *<VAR
+CLASS="PDPARAM"
+>dialog</VAR
+>
+	, 	  gint<VAR
+CLASS="PDPARAM"
+>button</VAR
+>
+	, 	  const guchar<VAR
+CLASS="PDPARAM"
+>accelerator_key</VAR
+>
+	, 	  guint8<VAR
+CLASS="PDPARAM"
+>accelerator_mods</VAR
+>
+	);<P
+></P
+></DIV
+><P
+>	No está claro que esta función todavia funcione, y puede que no
+	se ajuste al nuevo esquema <SPAN
+CLASS="TYPE"
+>GtkAccelGroup</SPAN
+> apropiadamente.
+	Todavía toma solo un argumento de tipo carácter en vez de un keysym.
+      </P
+><P
+>	Si/cuando funciona, establece un accelerador el cuál pulsa uno
+	de los botones del diálogo. Eventualmente debería ser probable
+	alguna indicación de esto en el botón. Pero las cosas se han
+	interrumpido.
+      </P
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><CODE
+CLASS="FUNCDEF"
+>GtkWidget *<B
+CLASS="FSFUNC"
+>gnome_dialog_set_close</B
+>
+	</CODE
+>(	  GnomeDialog *<VAR
+CLASS="PDPARAM"
+>dialog</VAR
+>
+	, 	  gboolean<VAR
+CLASS="PDPARAM"
+>click_closes</VAR
+>
+	);<P
+></P
+></DIV
+><P
+>	Esta es una función útil, pero con un nombre poco apropiado, que
+	te evita escribir; llama a la función
+	<TT
+CLASS="FUNCTION"
+><B
+>gnome_dialog_close()</B
+></TT
+> cada vez que se emite la
+	señal <SPAN
+CLASS="SYMBOL"
+>clicked</SPAN
+>. En efecto, crea esta llamada:
+
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>	  void 
+          dialog_clicked(GtkWidget * dialog, gint button, 
+	                 gpointer data)
+	  {
+            gnome_dialog_close(GNOME_DIALOG(dialog));
+          }
+	</PRE
+></TD
+></TR
+></TABLE
+>
+
+      </P
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><CODE
+CLASS="FUNCDEF"
+>GtkWidget *<B
+CLASS="FSFUNC"
+>gnome_dialog_editable_enters</B
+>
+	</CODE
+>(	  GnomeDialog *<VAR
+CLASS="PDPARAM"
+>dialog</VAR
+>
+	, 	  GtkEditable *<VAR
+CLASS="PDPARAM"
+>editable</VAR
+>
+	);<P
+></P
+></DIV
+><P
+>	Un <SPAN
+CLASS="TYPE"
+>GtkEditable</SPAN
+> tal que una entrada o un widget de texto,
+	normalemente interfiere con con la tecla aceleradora de entrada (la
+        cuál pulsa el botón por defecto del díalogo). A veces los usuarios 
+        quieren escribir en la entrada de datos, entonces pulsan return para
+        cerrar el díalogo, esta función permite dicha funcionalidad.
+      </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN2394"
+>Dialogos modales</A
+></H2
+><P
+>	Primero: Los díalogos modales no son buenos. No los uses a menos
+        que en la actualidad tenga sentido hacerlo así , o estés añadiendo
+        soporte a Gnome para heredar código que lo requiera. Realmente es 
+	trivial hacer las llamadas apropiadas en su lugar, y menos confuso 
+	para el usuario.
+      </P
+><P
+>???	Con la lectura "fuera de tema", basicamente todo lo que tienes que hacer
+        para crear un díalogo modal es llamar a la función 
+        <TT
+CLASS="FUNCTION"
+><B
+>gtk_window_set_modal()</B
+></TT
+>. Si quieres ser realmente vago
+        , y escribir realmente código inextensible, feo, yucky gratuito, o 
+        tienes que soportar una estructura heredada de un programa, puedes usar
+        la función <TT
+CLASS="FUNCTION"
+><B
+>gnome_dialog_run()</B
+></TT
+>:
+	</P
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><CODE
+CLASS="FUNCDEF"
+>gint<B
+CLASS="FSFUNC"
+>gnome_dialog_run</B
+>
+	</CODE
+>(	  GnomeDialog *<VAR
+CLASS="PDPARAM"
+>dialog</VAR
+>
+	);<P
+></P
+></DIV
+><P
+>        Esta función establece el díalogo modal y se bloquea hasta que 
+        el usuario pulsa un botón; devuelve entonces el diálogo a su modo
+        original. Devuelve el número de botón que fue pulsado, o -1 si el 
+	usuario pulsa el borrado de la decoración del gestor de ventanas.
+       o si hubo un error. También muestra el díalogo si no está visible.
+      </P
+><P
+>	Debes asegurarte que el díalogo se cierrra después que la función
+	vuelva. Puedes hacerlo llamando
+	<TT
+CLASS="FUNCTION"
+><B
+>gnome_dialog_set_close()</B
+></TT
+> antes de ejecutar
+	<TT
+CLASS="FUNCTION"
+><B
+>gnome_dialog_run()</B
+></TT
+>, o  puedes tan solo llamar a 
+	<TT
+CLASS="FUNCTION"
+><B
+>gnome_dialog_close()</B
+></TT
+> manualmente después 
+	de obtener una respuesta.
+      </P
+><P
+>	Es importante tener cuidado aqui:
+	La función <TT
+CLASS="FUNCTION"
+><B
+>gnome_dialog_close()</B
+></TT
+> por defecto 
+	<I
+CLASS="EMPHASIS"
+>destruye</I
+> el diálogo. Asi que no es seguro 
+	llamarla 2 veces. Y por defecto, si el usuario pulsa el 
+	el borrado de la decorarción del gestor de ventanas, será llamada.
+	Asi pues <I
+CLASS="EMPHASIS"
+>no debes</I
+> cerrar el diálogo otra vez en
+	este caso.
+	
+#	It is important to be careful here:
+	<TT
+CLASS="FUNCTION"
+><B
+>gnome_dialog_close()</B
+></TT
+>
+	<I
+CLASS="EMPHASIS"
+>destroys</I
+> the dialog by default. Thus it's
+	not safe to call twice. And by default, if the user clicks the
+	window manager's delete decoration, it will be called. So you
+	<I
+CLASS="EMPHASIS"
+>must not</I
+> close the dialog again in that
+	case. 
+      </P
+><P
+>	Hay dos soluciones sencillas: usa la función 
+	<TT
+CLASS="FUNCTION"
+><B
+>gnome_dialog_set_close()</B
+></TT
+> para asegurarte de
+	su destrucción en <I
+CLASS="EMPHASIS"
+>todos</I
+> los casos; o 
+	cambia la cararcteristica de cerrar por la de "ocultar" con
+	<TT
+CLASS="FUNCTION"
+><B
+>gnome_dialog_close_hides()</B
+></TT
+>, entonces
+	destruyes el díalogo con <TT
+CLASS="FUNCTION"
+><B
+>gtk_widget_destroy()</B
+></TT
+>
+	después de la vuelta de <TT
+CLASS="FUNCTION"
+><B
+>gnome_dialog_run()</B
+></TT
+>.
+      </P
+><P
+>	One caveat: <TT
+CLASS="FUNCTION"
+><B
+>gnome_dialog_run()</B
+></TT
+> tiene que
+	ejecutar alguna limpieza para borrar sus llamadas internas y 
+	reestablecer el díalogo a no-modal si es necesario. Esto significa
+	que debe averiguar si el dialgo se destruyó cuando se pulsó (o 
+	borrado por el gestor de ventanas). Ahora mismo
+	<I
+CLASS="EMPHASIS"
+>no</I
+> lo hace seguramente (problemente debería 
+	conectar una llamada a <SPAN
+CLASS="SYMBOL"
+>GtkObject::destroy</SPAN
+>
+	para estar seguros - se aceptan parches). Asi que es seguramente
+	mejor tener <SPAN
+CLASS="SYMBOL"
+>cerrado</SPAN
+> el díalogo oculto, entonces
+	destruir el díalogo por ti mismo con 
+	<TT
+CLASS="FUNCTION"
+><B
+>gtk_widget_destroy()</B
+></TT
+>.
+      </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x2158.html"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book1.html"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x-concepts-docs.html"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Funciones útiles si un <SPAN
+CLASS="TYPE"
+>GnomeApp</SPAN
+> está disponible</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="dialogapputil-docs.html"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Conceptos basicos sobre X</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

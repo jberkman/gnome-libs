@@ -1,0 +1,1066 @@
+<!DOCTYPE HTML PUBLIC "-//Norman Walsh//DTD DocBook HTML 1.0//EN">
+<HTML
+><HEAD
+><TITLE
+>&#13;      Gestión de sesiones
+      
+      </TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet"><LINK
+REL="HOME"
+TITLE="Información para desarrolladores de Gnome "
+HREF="book1.html"><LINK
+REL="UP"
+TITLE="     Tutorial para los desarrolladores de GNOME
+    "
+HREF="tutorial.html"><LINK
+REL="PREVIOUS"
+TITLE="
+      	Analizando parámetros.
+	"
+HREF="tut-parsing.html"><LINK
+REL="NEXT"
+TITLE=" 	Ayuda y documentación.     	
+
+      	"
+HREF="tut-doc.html"></HEAD
+><BODY
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>Información para desarrolladores de Gnome</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="tut-parsing.html"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 3. Tutorial para los desarrolladores de GNOME</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="tut-doc.html"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="TUT-SM"
+>Gestión de sesiones</A
+></H1
+><DIV
+CLASS="WARNING"
+><P
+></P
+><TABLE
+CLASS="WARNING"
+BORDER="1"
+WIDTH="100%"
+><TR
+><TD
+ALIGN="CENTER"
+><B
+>Warning</B
+></TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+><P
+>	Este capítulo está elaborándose, pero contén la respiración, estará
+	pronto acabado (eso espero).
+	</P
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN167"
+>Gestión de la Sesión en general</A
+></H2
+><P
+>	El propÓsito de la gestión de la sesión es ofrecer a los
+	usuarios la posibilidad de salvar y restaurar sus sesiones. 
+	Una sesión es una colección de aplicaciones, todas ellas tienen
+	un estado interno. Este estado puede ser el nombre de un fichero
+	abierto, una imagen visualizada o el marcador de un juego.
+        </P
+><P
+>	Cada aplicación que es consciente de la gestión de la sesión se
+	conecta a un servidor especial: el <I
+CLASS="EMPHASIS"
+> gestor de sesión
+	</I
+>. Un gestor de sesión manda comandos a sus 
+	<I
+CLASS="EMPHASIS"
+>clientes</I
+> diciéndoles que guarden su estado o
+ 	bien terminen. Un cliente debe dar el manejador de sesión con toda la información, 
+        siendo ésta la que se necesita para volver a ejecutar el cliente en el mismo estado en el
+	que está ejecutándose ahora. La tarea del 
+	manejador de sesión es guardar esta información y usarla cuando
+	volvamos a ejecutar la sesión. Para distinguir a todos los clientes
+	el manejador de sesión les asigna un identificador único: el 
+	llamado <I
+CLASS="EMPHASIS"
+>client id</I
+>.
+         </P
+><P
+>	El gestor de sesión adicionalmente incluye un protocolo para 
+	sincronizar las -así llamadas- solicitudes de interacción de las 
+	aplicaciones. Supónte que tienes tres aplicaciones ejecutándose. 
+	Cada una de estas aplicaciones tiene un fichero abierto, que tu
+	acabas de editar sin salvar. Si tu ahora sales del sistema, cada
+	aplicación preguntará si quieres salvar tus cambios o si quieres
+	abandonar sin hacerlo. Puede ser muy molesto, si todas, las tres
+	aplicaciones en nuestro caso, emergiesen sus cajas de diálogo a
+	la misma vez. Si estas tres aplicaciones han implementado la 
+	gestión de sesión de manera correcta, una nueva caja de diálogo 
+	emergerá sólo si la caja previa se ha cerrado.
+       </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN175"
+>Implementación de la Gestión de Sesión en GNOME</A
+></H2
+><P
+>	El proyecto GNOME usa un objeto especial - el objeto 
+	GnomeClient - para implementar la gestión de la sesión. Este
+	objeto maneja la conexión a un gestor de sesión, el 
+	establecimiento y retirada de propiedades y la manipulación de 
+	mensajes enviados por un gestor de sesión.	 
+        </P
+><P
+>        Hay dos funciones en las librerias de GNOME que crean un nuevo
+        objeto GnomeClient:
+        </P
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><CODE
+CLASS="FUNCDEF"
+>GnomeClient
+	    *<B
+CLASS="FSFUNC"
+>gnome_client_new</B
+></CODE
+>();<P
+></P
+></DIV
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><CODE
+CLASS="FUNCDEF"
+>GnomeClient
+	    *<B
+CLASS="FSFUNC"
+>gnome_client_new_without_connection</B
+></CODE
+>();<P
+></P
+></DIV
+><P
+> 
+ 	Como podemos adivinar por los nombres de las funciones:
+ 	la primera función intenta conectar con un gestor de sesión
+ 	automaticamente, mientras que la segunda no. Tu puedes conectar
+ 	o desconectar un GnomeClient después de su creación usando las 
+ 	siguientes funciones:
+        </P
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><CODE
+CLASS="FUNCDEF"
+>void <B
+CLASS="FSFUNC"
+>gnome_client_connect</B
+></CODE
+>(GnomeClient *<VAR
+CLASS="PDPARAM"
+>client</VAR
+>);<P
+></P
+></DIV
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><CODE
+CLASS="FUNCDEF"
+>void
+	    <B
+CLASS="FSFUNC"
+>gnome_client_disconnect</B
+></CODE
+>(GnomeClient
+	    *<VAR
+CLASS="PDPARAM"
+>client</VAR
+>);<P
+></P
+></DIV
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><CODE
+CLASS="FUNCDEF"
+>gchar *<B
+CLASS="FSFUNC"
+>gnome_client_get_id</B
+></CODE
+>(GnomeClient *<VAR
+CLASS="PDPARAM"
+>client</VAR
+>);<P
+></P
+></DIV
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><CODE
+CLASS="FUNCDEF"
+>void <B
+CLASS="FSFUNC"
+>gnome_client_set_id</B
+></CODE
+>(GnomeClient *<VAR
+CLASS="PDPARAM"
+>client</VAR
+>, const gchar *<VAR
+CLASS="PDPARAM"
+>client_id</VAR
+>);<P
+></P
+></DIV
+><P
+>&#13;	continuará...
+
+	</P
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN211"
+>Propiedades</A
+></H3
+><P
+>          </P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN214"
+>Señales</A
+></H3
+><P
+>          Siempre que el gestor de sesión quiere un cliente para
+          hacer algo, sus deseos se emiten como señales.
+          
+          </P
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><CODE
+CLASS="FUNCDEF"
+>gint <B
+CLASS="FSFUNC"
+>save_yourself_signal</B
+></CODE
+>(GnomeClient *<VAR
+CLASS="PDPARAM"
+>client</VAR
+>, gint <VAR
+CLASS="PDPARAM"
+>phase</VAR
+>, GnomeSaveStyle <VAR
+CLASS="PDPARAM"
+>save_style</VAR
+>, gint <VAR
+CLASS="PDPARAM"
+>shutdown</VAR
+>, GnomeInteractStyle <VAR
+CLASS="PDPARAM"
+>interact_style</VAR
+>, gint <VAR
+CLASS="PDPARAM"
+>fast</VAR
+>, gpointer <VAR
+CLASS="PDPARAM"
+>client_data</VAR
+>);<P
+></P
+></DIV
+><P
+>&#13;	Esta señal es probablemente la más importante, por que implica que 
+	los clientes salven el estado de los programas.
+	
+          </P
+><P
+>            <TT
+CLASS="PARAMETER"
+><I
+>save_style</I
+></TT
+>.
+          </P
+><P
+>&#13; 	El parámetro <TT
+CLASS="PARAMETER"
+><I
+>shutdown</I
+></TT
+> indica si esto
+
+          </P
+><P
+>            GNOME_INTERACT_NONE, GNOME_INTERACT_ERRORS, GNOME_INTERACT_ANY
+          </P
+><P
+>&#13;	Si el parámetro <TT
+CLASS="PARAMETER"
+><I
+>fast</I
+></TT
+> es TRUE, se requiere que
+	el cliente salve su estado tan pronto como sea posible.
+	          </P
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><CODE
+CLASS="FUNCDEF"
+>gint <B
+CLASS="FSFUNC"
+>die_signal</B
+></CODE
+>(GnomeClient *<VAR
+CLASS="PDPARAM"
+>client</VAR
+>, gpointer <VAR
+CLASS="PDPARAM"
+>client_data</VAR
+>);<P
+></P
+></DIV
+><P
+>	La señal de arriba es emitida si el gestor de sesión quiere que 
+	el cliente termine. Esto ocurre a menudo, si el usuario sale del
+	sistema con una sesión en ejecución.
+        </P
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><CODE
+CLASS="FUNCDEF"
+>gint <B
+CLASS="FSFUNC"
+>save_complete_signal</B
+></CODE
+>(GnomeClient *<VAR
+CLASS="PDPARAM"
+>client</VAR
+>, gpointer <VAR
+CLASS="PDPARAM"
+>client_data</VAR
+>);<P
+></P
+></DIV
+><P
+> 	El gestor de sesión envía este mensaje si todos los clientes
+ 	han terminado guardando sus estados.
+        </P
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><CODE
+CLASS="FUNCDEF"
+>gint <B
+CLASS="FSFUNC"
+>shutdown_cancelled_signal</B
+></CODE
+>(GnomeClient *<VAR
+CLASS="PDPARAM"
+>client</VAR
+>, gpointer <VAR
+CLASS="PDPARAM"
+>client_data</VAR
+>);<P
+></P
+></DIV
+><P
+>           Siempre que se va a cerrar el sistema, tal que se ha anunciado
+           mediante la señal save_yourself, si ha sido cancelado por el 
+           usuario, el mensaje shutdown_cancelled es enviado.
+          </P
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><CODE
+CLASS="FUNCDEF"
+>gint <B
+CLASS="FSFUNC"
+>connect_signal</B
+></CODE
+>(GnomeClient *<VAR
+CLASS="PDPARAM"
+>client</VAR
+>, gint <VAR
+CLASS="PDPARAM"
+>restarted</VAR
+>, gpointer <VAR
+CLASS="PDPARAM"
+>client_data</VAR
+>);<P
+></P
+></DIV
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><CODE
+CLASS="FUNCDEF"
+>gint <B
+CLASS="FSFUNC"
+>disconnect_signal</B
+></CODE
+>(GnomeClient *<VAR
+CLASS="PDPARAM"
+>client</VAR
+>, gpointer <VAR
+CLASS="PDPARAM"
+>client_data</VAR
+>);<P
+></P
+></DIV
+><P
+> 	Esta señal es emitida si la conexión con el gestor de sesión se 
+ 	pierde.
+          </P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN283"
+>El cliente maestro</A
+></H3
+><P
+> 	Para hacer la vida un poco más fácil a los desarrolladores de GNOME,
+ 	las librerías de GNOME destacan un cliente especial: el
+ 	<I
+CLASS="EMPHASIS"
+>cliente maestro</I
+>. Este cliente es creado 
+ 	automáticamente cuando llamamos a la función 
+ 	<TT
+CLASS="FUNCTION"
+><B
+>gnome_init</B
+></TT
+>. Obtiene algunas propiedades por
+	defecto y generalmente también es conectado al gestor de sesión 
+	automáticamente. Las librerías de GNOME también avisan si un 
+	cliente se volvió a ejecutar. En este caso, las librerías intentan
+	conectar el cliente maestro con el gestor de sesión con el mismo 
+	identificador de cliente (client_id) que la última vez. Esto
+	quiere decir que una aplicación que llama a
+	<TT
+CLASS="FUNCTION"
+><B
+>gnome_init</B
+></TT
+> será reconocida y volverá a ser
+	ejecutada en una gestión de sesión sin ninguna linea extra de 
+	código. Un desarrollador solo tiene que tener cuidado de que el
+	estado de la aplicación es salvado y restaurado correctamente y que la 
+	aplicación termine, si se requiere.
+       </P
+><P
+> 	Tú obtienes el cliente maestro al llamar a
+ 	<TT
+CLASS="FUNCTION"
+><B
+>gnome_master_client</B
+></TT
+>.
+          </P
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><CODE
+CLASS="FUNCDEF"
+>GnomeClient
+	    *<B
+CLASS="FSFUNC"
+>gnome_master_client</B
+></CODE
+>();<P
+></P
+></DIV
+><P
+> 	El cliente maestro tiene las siguientes propiedades preestablecidas.       
+
+          </P
+><DIV
+CLASS="INFORMALTABLE"
+><P
+></P
+><TABLE
+BORDER="1"
+CLASS="CALSTABLE"
+><TR
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+>propiedad</TH
+><TH
+ALIGN="LEFT"
+VALIGN="TOP"
+>valor</TH
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>		  directorio actual
+		  </TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>		    directorio actual
+		  </TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>		  identificador de proceso
+		  </TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>pid</TD
+></TR
+><TR
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>		  identificador de usuario
+		  </TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+>uid</TD
+></TR
+></TABLE
+><P
+></P
+></DIV
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN312"
+>El cliente clonado</A
+></H3
+><P
+></P
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN315"
+>Continuando el tutorial</A
+></H2
+><P
+>&#13;	Queremos implementar la gestión de la sesión, así que tendremos
+	que usar el cliente maestro. Para tener acceso a este cliente, 
+	que fue creado en <TT
+CLASS="FUNCTION"
+><B
+>gnome_init</B
+></TT
+>, tienes que 
+	llamar a <TT
+CLASS="FUNCTION"
+><B
+>gnome_master_client</B
+></TT
+>. 
+	Nuestra aplicación debería por lo menos escuchar las señales de 
+	die (muere) y save_yourself (sálvate), así pues insertar las 
+	siguientes líneas de código justo depués de la llamada a 
+	<TT
+CLASS="FUNCTION"
+><B
+>gnome_init</B
+></TT
+>.
+        </P
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>  client= gnome_master_client ();
+
+  gtk_signal_connect (GTK_OBJECT (client), "save_yourself",
+                      GTK_SIGNAL_FUNC (save_state_cb), NULL);
+  gtk_signal_connect (GTK_OBJECT (client), "die",
+                      GTK_SIGNAL_FUNC (die_cb), NULL);</PRE
+></TD
+></TR
+></TABLE
+><P
+>        Ahora tenemos que implementar nuestras funciones de tratamiento de 
+        las señales. La función de tratamiento de la señal "die" es bastante 
+        fácil de implementar. Tenemos que acabar nuestra aplicación.
+        Darse cuenta que no debemos guardar el estado de la aplicación en la 
+        función de tratamiento de la señal "die". Si el gestor de sesión 
+        nos hubiera requerido para salvar el estado, nos habría mandado una
+	señal save_yourself antes que la señal die. Si estás escribiendo 
+	una aplicación más complicada, podrías querer cerrar algunos 
+	archivos aquí ó hacer alguna otra cosa mágica.
+        </P
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>static gint
+die (GnomeClient *client, gpointer client_data)
+{
+  gtk_exit (0);
+
+  return FALSE;
+}</PRE
+></TD
+></TR
+></TABLE
+><P
+>	Implementar la función de tratamiento de la señal save_yourself es 
+	un pelín más complicado, por que tenemos que salvar todo el 
+	estado de nuestra aplicación. Nuestra aplicación del tutorial tiene 
+	solo un estado: la posición de la ventana en la pantalla. Así pues
+	podemos empezar nuestra función de tratamiento de la señal 
+	save_yourself tal que así:
+        </P
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>gint
+save_yourself (GnomeClient        *client,
+               gint                phase,
+               GnomeRestartStyle   restart_style,
+               gint                shutdown,
+               GnomeInteractStyle  interact_style,
+               gint                fast,
+               gpointer            client_data)
+{
+  gchar *argv[3];
+  gint x, y, w, h;
+
+  gdk_window_get_geometry (app-&#62;window, &#38;x, &#38;y, &#38;w, &#38;h, NULL);</PRE
+></TD
+></TR
+></TABLE
+><P
+>&#13;	Ahora que tenemos el estado de nuestra aplicación, tenemos que 
+	guardarlo. Una manera de hacer esto es guardar el estado de 
+	la aplicación en la línea de comandos que usamos para volver
+	a ejecutar nuestra aplicación.
+	Este es un método bastante útil para guardar un pequeño conjunto 
+	de valores. En este tutorial implementaremos otra forma de guardar
+	el estado de las aplicaciones, que es igual de práctico si tu tienes
+	que guardar un conjunto grande de datos. Usamos los ficheros de 
+	configuración de gnome. La función
+	<TT
+CLASS="FUNCTION"
+><B
+>gnome_client_get_config_prefix</B
+></TT
+> nos da una
+	indicación de donde salvar nuestra información.
+        </P
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>   /* Guardar el estado usando gnome-config */
+  gnome_config_push_prefix (gnome_client_get_config_prefix (client));
+
+  gnome_config_set_int ("Geometry/x", x);
+  gnome_config_set_int ("Geometry/y", y);
+  gnome_config_set_int ("Geometry/w", w);
+  gnome_config_set_int ("Geometry/h", h);
+
+  gnome_config_pop_prefix ();
+  gnome_config_sync();</PRE
+></TD
+></TR
+></TABLE
+><P
+>	Adicionalmente tenemos que dar al gestor de sesión algunas
+	indicaciones de como volver a ejecutar nuestra aplicación. Esto
+	significa que tenemos que usar las funciones 
+	<TT
+CLASS="FUNCTION"
+><B
+>gnome_client_set_clone_command</B
+></TT
+> y
+	<TT
+CLASS="FUNCTION"
+><B
+>gnome_client_set_restart_command</B
+></TT
+>. Date cuenta
+	que no tenemos que añadir el identificador de cliente a estos
+	comandos; igual que nosotros no tenemos que añadir las opciones 
+	estándard de línea de comandos de GNOME. Ambas son añadidas por
+	las librerías de GNOME. Tampoco tenemos que distinguir entre el 
+	comando de relanzamiento y el comando de clonación. Esto es 
+	manejado también por las librerias.
+       </P
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>  gnome_client_set_clone_command (client, 1, argv);
+  gnome_client_set_restart_command (client, 1, argv);
+
+  return TRUE;                                               
+}</PRE
+></TD
+></TR
+></TABLE
+><P
+>	El lector antento se habrá percatado que salvamos el estado 
+	de la aplicación, pero no hemos añadido código para 
+	restaurarla. ¡Esto tiene que ser cambiado!.	
+       </P
+><P
+>	El siguiente pedazo de código deberá ser insertado directamente
+	después de la llamada a <TT
+CLASS="FUNCTION"
+><B
+>gtk_signal_connect</B
+></TT
+>,
+	que insertamos al principio del capítulo de gestión de la sesión.
+       </P
+><P
+>	Para restaurar el estado guardado, usamos el cliente clonado.
+	Tendremos acceso a este cliente por medio de la llamada a
+	<TT
+CLASS="FUNCTION"
+><B
+>gnome_clone_client</B
+></TT
+>. La creación del 
+	cliente cloando es manejada por las librerías de GNOME. Nuestra
+	aplicación vuelve a ser ejecutar solamente por el gestor de 
+	sesión si <TT
+CLASS="FUNCTION"
+><B
+>gnome_cloned_cliente</B
+></TT
+> devuelve un
+	valor distinto de NULL. Esto significa que si 
+	<TT
+CLASS="FUNCTION"
+><B
+>gnome_cloned_client</B
+></TT
+> devuelve NULL no tenemos
+	que restaurar ningun estado por lo que no hay ningún estado que 
+	restaurar.
+          </P
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>  if (GNOME_CLIENT_CONNECTED (client))
+    {
+      GnomeClient *cloned= gnome_cloned_client ();
+
+      if (cloned)
+	{
+	  restarted= 1;
+	  
+	  </PRE
+></TD
+></TR
+></TABLE
+><P
+>          
+	Ahora vamos a usar
+	<TT
+CLASS="FUNCTION"
+><B
+>gnome_client_get_config_prefix</B
+></TT
+> para obtener
+	una indicación de donde encontrar nuestro estado guardado. Darse 
+	cuenta que usamos el cliente clonado cuando restauramos y el 
+	cliente maestro cuando salvamos el estado. La razón de esto es que 
+	el identificador del cliente clonado puede ser otro distinto del 
+	cliente maestro, asi que los prefijos de configuración difieren.
+	Esto puede ocurrir si tú clonas un cliente (algo que todavía no es 
+	soportado por el servidor de manejo de sesión<SPAN
+CLASS="APPLICATION"
+>gnome-session</SPAN
+>)
+	</P
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>	  gnome_config_push_prefix (gnome_client_get_config_prefix
+	  (cloned));
+	  
+	  os_x = gnome_config_get_int ("Geometry/x");
+	  os_y = gnome_config_get_int ("Geometry/y");
+	  os_w = gnome_config_get_int ("Geometry/w");
+	  os_h = gnome_config_get_int ("Geometry/h");
+	  
+	  gnome_config_pop_prefix ();
+	}
+    }</PRE
+></TD
+></TR
+></TABLE
+><P
+> 	Adicionalmente las siguiente líenas deben ser incluidas en la 
+ 	función <TT
+CLASS="FUNCTION"
+><B
+>prepare_app</B
+></TT
+>  para establecer
+ 	realmente los valores:  
+
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>  if (restarted) {
+    gtk_widget_set_uposition (app, os_x, os_y);
+    gtk_widget_set_usize     (app, os_w, os_h);
+  }</PRE
+></TD
+></TR
+></TABLE
+>
+
+
+	<P
+> 	Todavía no hemos acabado este capítulo del tutorial, por que ahora
+ 	mismo, guardando el estado de la aplicación podríamos llenar 
+ 	nuestro disco duro. Así que tenemos que borrar nuestros fichero 
+ 	de configuración si no se necesitan más. Esto lo soporta el
+ 	gestor de sesión, usando el comando de descarte apropiado.
+ 	         
+          </P
+>
+
+	<P
+>          
+ 	Tenemos que añadir una nueva opción de linea de comando a nuestra
+ 	aplicación, que descarta un estado guardado (Contén la respiración,
+ 	Añadiré el código pronto). Adicionalmente, tenemos que informar 
+ 	al gestor de sesión, para que nos llame con esta opción de línea 
+ 	de comandos para descartar nuestro estado. Esto es fácil de hacer
+ 	usando la función
+	<TT
+CLASS="FUNCTION"
+><B
+>gnome_client_set_discard_command</B
+></TT
+>. Las
+	siguiente líneas, insertadas en algún lugar dentro de la función
+	de tratamiento de la señal <TT
+CLASS="FUNCTION"
+><B
+>save_yourself</B
+></TT
+>, hace
+	exactamente lo que nosotros queremos.
+          </P
+>
+
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>  argv[0] = program_invocation_name;
+  argv[1] = "--discard-session";
+  argv[2] = gnome_client_get_config_prefix (client);
+  gnome_client_set_discard_command (client, 3, argv);</PRE
+></TD
+></TR
+></TABLE
+>
+
+
+	<P
+>          
+	  todavía continuará...
+	  
+      </P
+></P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="tut-parsing.html"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book1.html"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="tut-doc.html"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Analizando parámetros.</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="tutorial.html"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Ayuda y documentación.</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

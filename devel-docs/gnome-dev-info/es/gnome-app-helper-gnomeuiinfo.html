@@ -1,0 +1,995 @@
+<!DOCTYPE HTML PUBLIC "-//Norman Walsh//DTD DocBook HTML 1.0//EN">
+<HTML
+><HEAD
+><TITLE
+>La estructura GnomeUIInfo
+      </TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet"><LINK
+REL="HOME"
+TITLE="Información para desarrolladores de Gnome "
+HREF="book1.html"><LINK
+REL="UP"
+TITLE="Creación automática del menú y barra de herramientas con
+GnomeAppHelper
+   "
+HREF="gnome-app-helper.html"><LINK
+REL="PREVIOUS"
+TITLE="Un ejemplo rápido de uso de GnomeAppHelper
+     "
+HREF="gnome-app-helper-quick-example.html"><LINK
+REL="NEXT"
+TITLE="Distintas macros para rellenar la estructura GnomeUIInfo
+	"
+HREF="gnome-app-helper-convenience-macros.html"></HEAD
+><BODY
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>Información para desarrolladores de Gnome</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="gnome-app-helper-quick-example.html"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 7. Creación automática del menú y barra de herramientas con
+GnomeAppHelper</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="gnome-app-helper-convenience-macros.html"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="GNOME-APP-HELPER-GNOMEUIINFO"
+>La estructura <SPAN
+CLASS="STRUCTNAME"
+>GnomeUIInfo</SPAN
+></A
+></H1
+><P
+>	GnomeAppHelper utiliza  arrays de estructuras
+	<SPAN
+CLASS="STRUCTNAME"
+>GnomeUIInfo</SPAN
+> para definir los items que
+	componen la barra de menú o de herramientas. Cada item tiene la
+	opción de usar un icono y etiqueta de texto. Cada item tiene que
+	unirse a la llamada de una función para que sea invocada cuando el
+	item sea activado. También los items pueden tener teclas rápidas
+	definidas por ellos. Los items también pueden tener botón de
+	comprobacióno estar agrupados dentro de un grupo de opciones.
+	También los items del menú pueden especificar un subárbol que ellos
+	generarán.
+      </P
+><P
+>	La estructura <SPAN
+CLASS="STRUCTNAME"
+>GnomeUIInfo</SPAN
+> se define como
+	sigue.
+      </P
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>	typedef struct {
+	GnomeUIInfoType <TT
+CLASS="STRUCTFIELD"
+><I
+>type</I
+></TT
+> ;
+	gchar *<TT
+CLASS="STRUCTFIELD"
+><I
+>label</I
+></TT
+>;
+	gchar *<TT
+CLASS="STRUCTFIELD"
+><I
+>hint</I
+></TT
+>;
+	gpointer <TT
+CLASS="STRUCTFIELD"
+><I
+>moreinfo</I
+></TT
+>;
+	gpointer <TT
+CLASS="STRUCTFIELD"
+><I
+>user_data</I
+></TT
+>;
+	gpointer <TT
+CLASS="STRUCTFIELD"
+><I
+>unused_data</I
+></TT
+>;
+	GnomeUIPixmapType <TT
+CLASS="STRUCTFIELD"
+><I
+>pixmap_type</I
+></TT
+>;
+	gpointer <TT
+CLASS="STRUCTFIELD"
+><I
+>pixmap_info</I
+></TT
+>;
+	guint <TT
+CLASS="STRUCTFIELD"
+><I
+>accelerator_key</I
+></TT
+>;
+	GdkModifierType <TT
+CLASS="STRUCTFIELD"
+><I
+>ac_mods</I
+></TT
+>;
+	GtkWidget *<TT
+CLASS="STRUCTFIELD"
+><I
+>widget</I
+></TT
+>;
+	} <SPAN
+CLASS="STRUCTNAME"
+>GnomeUIInfo</SPAN
+>;
+      </PRE
+></TD
+></TR
+></TABLE
+><P
+>	Estos son los campos de la estructura
+	<SPAN
+CLASS="STRUCTNAME"
+>GnomeUIInfo</SPAN
+>.
+      </P
+><DIV
+CLASS="GLOSSLIST"
+><DL
+><DT
+><B
+><TT
+CLASS="STRUCTFIELD"
+><I
+>type</I
+></TT
+></B
+></DT
+><DD
+><P
+>	      Este campo se utiliza para especificar el tipo de item que
+	      debería ser creado. El resto de campos en la estructura
+	      definen los atributos de los items. El campo
+	      <TT
+CLASS="STRUCTFIELD"
+><I
+>type</I
+></TT
+> puede tener los siguiente
+	      valores :
+	    </P
+><DIV
+CLASS="GLOSSLIST"
+><DL
+><DT
+><B
+><SPAN
+CLASS="SYMBOL"
+>GNOME_APP_UI_ITEM</SPAN
+></B
+></DT
+><DD
+><P
+>		    Indica que un item normal debe ser creado. Si el
+		    item está dentro de un grupo de botones de opción
+		    (ver después), entonces este elemento de opción deberá
+		    ser creado, por defecto en su estado inactivo.
+		  </P
+></DD
+><DT
+><B
+><SPAN
+CLASS="SYMBOL"
+>GNOME_APP_UI_TOGGLEITEM</SPAN
+></B
+></DT
+><DD
+><P
+>		    Este indica que un item conmutado debe ser creado. Por
+		    defecto comienza en el estado inactivo.
+		  </P
+></DD
+><DT
+><B
+><SPAN
+CLASS="SYMBOL"
+>GNOME_APP_UI_RADIOITEMS</SPAN
+></B
+></DT
+><DD
+><P
+>		    Indica que un grupo de elementos de opción debe ser
+		    creado. El campo <TT
+CLASS="STRUCTFIELD"
+><I
+>moreinfo</I
+></TT
+>
+		    debe apuntar a un array de elementos que serán
+		    creados como elementos de opción en el grupo. Por defecto
+		    el primer elemento será el elemento activo dentro del
+		    grupo de elementos de opción. 
+		   </P
+></DD
+><DT
+><B
+><SPAN
+CLASS="SYMBOL"
+>GNOME_APP_UI_SUBTREE</SPAN
+></B
+></DT
+><DD
+><P
+>		    Indica que el elemento creado debe tener un submenú
+		    unido a él. El campo <TT
+CLASS="STRUCTFIELD"
+><I
+>moreinfo</I
+></TT
+>
+	   	    debe apuntar a un array de elementos que serán puestos
+		    en el submenú. Este tipo de elementos no es soportado en
+		    las barras de herramientas.
+		  </P
+></DD
+><DT
+><B
+><SPAN
+CLASS="SYMBOL"
+>GNOME_APP_UI_SEPARATOR</SPAN
+></B
+></DT
+><DD
+><P
+>		    Indica que un separador debe ser creado. Para los
+		    menús este es una línea mientras que para las barras de
+		    herramientas es un espacio en blanco.
+		  </P
+></DD
+><DT
+><B
+><SPAN
+CLASS="SYMBOL"
+>GNOME_APP_UI_HELP</SPAN
+></B
+></DT
+><DD
+><P
+>		    Indica que entradas de ayuda deben ser creadas. El campo
+		    <TT
+CLASS="STRUCTFIELD"
+><I
+>moreinfo</I
+></TT
+> debe apuntar a una 
+		    cadena con la cadena ID de la aplicación. Ver debajo
+		    para información adicional sobre como crear entradas
+		    de ayuda.
+		  </P
+></DD
+><DT
+><B
+><SPAN
+CLASS="SYMBOL"
+>GNOME_APP_UI_JUSTIFY_RIGHT</SPAN
+></B
+></DT
+><DD
+><P
+>		    Indica que todos los items  siguientes deben
+		    ser alineados en la parte derecha del menú. Solo trabaja
+		    con los menús y solo tiene sentido para barras de menú.
+		  </P
+></DD
+><DT
+><B
+><SPAN
+CLASS="SYMBOL"
+>GNOME_APP_UI_BUILDER_DATA</SPAN
+></B
+></DT
+><DD
+><P
+>		    Se utiliza para las envolturas de lenguajes y
+		    constructores de GUI &#8212; no se necesita en los
+		    programas normales. Especifica que toda subsecuencia de
+		    items debería utilizar una estructura 
+		    GnomeUIBuilderData diferente de una que estaba en uso
+		    cuando el item fue insertado.
+		    El campo <TT
+CLASS="STRUCTFIELD"
+><I
+>moreinfo</I
+></TT
+> debería 
+		    apuntar a la estructura GnomeUIBuilderData deseada.
+		  </P
+></DD
+><DT
+><B
+><SPAN
+CLASS="SYMBOL"
+>GNOME_APP_UI_ENDOFINFO</SPAN
+></B
+></DT
+><DD
+><P
+>		    Se utiliza para indicar el fín de un array de elementos.
+		    Es muy importante incluir un elemento de este tipo como
+		    última entrada in arrays de 
+		   <SPAN
+CLASS="STRUCTNAME"
+>GnomeUIInfo</SPAN
+>.
+		  </P
+></DD
+><DT
+><B
+><SPAN
+CLASS="SYMBOL"
+>GNOME_APP_UI_ITEM_CONFIGURABLE</SPAN
+></B
+></DT
+><DD
+><P
+>&#13;		    Utilizado para indicar que los valores para este
+		    elemento del menú deben ser cargados del fichero
+		    de configuración. Una descripción del formato del
+		    fichero de configuración está en <A
+HREF="gnome-app-helper-keybindings-config.html"
+>the section called <I
+>Formato de la información para la configuración de las
+      envolturas de teclado(keybindings) para los menús estandar</I
+></A
+>.
+		    Esto probablemente no debe ser utilizado manualmente. Cada
+		    posible elemento configurable tiene que coincidir con la
+		    macro conveniente (ver <A
+HREF="gnome-app-helper-convenience-macros.html"
+>the section called <I
+>Distintas macros para rellenar la estructura <SPAN
+CLASS="STRUCTNAME"
+>GnomeUIInfo</SPAN
+></I
+></A
+>).	
+		  </P
+><P
+>		    De todas formas, para mayor completitud, se debe dar 
+		    una descripción del uso en la programación de
+		   este tipo. Cuando usamos este item,
+		    la mayoría de los datos son ignorados. Las excepciones
+		    son tres. Primera, los campos <TT
+CLASS="STRUCTFIELD"
+><I
+>moreinfo</I
+></TT
+>
+		    y <TT
+CLASS="STRUCTFIELD"
+><I
+>data</I
+></TT
+> son tratados
+		    exactamente como en un GNOME_APP_UI_ITEM array de
+		    elementos <SPAN
+CLASS="STRUCTNAME"
+>GnomeUIInfo</SPAN
+>. Segunda, 
+		    el campo <TT
+CLASS="STRUCTFIELD"
+><I
+>accelerator_key</I
+></TT
+> es
+		    un entero transformado desde un elemento enumerado de
+		    GNOMEUIInfoConfigurableTypes describiendo que elemento
+		    del menú configurable representa. Finalmente, si el
+		    acelerator_key es 0, es decir 
+		    GNOME_APP_CONFIGURABLE_ITEM_NEW, entonces la etiqueta
+		    y el hint (ayuda al pasar el ratón) són ambas
+		    utilizadas literalmente.
+		  </P
+></DD
+></DL
+></DIV
+><P
+>	      Los otros campos en la estructura <SPAN
+CLASS="STRUCTNAME"
+>GnomeUIInfo</SPAN
+>
+	      son utilizados para especificar los atributos de los elementos
+	      que están siendo definidos.
+	    </P
+></DD
+><DT
+><B
+><TT
+CLASS="STRUCTFIELD"
+><I
+>label</I
+></TT
+></B
+></DT
+><DD
+><P
+>	      Este campo es utilizado para especificar una etiqueta de texto
+	      para el elemento que está siendo creado. La versión no-traducida
+	      de la etiqueta debe ser especificada; GnomeAppHelper llama el
+              mismo a las rutinas para la traducción.
+	    </P
+><P
+>	      Para elementos del menú es deseable tener una letra subrayada
+	      en la etiqueta, para que el usuario conozca que el puede presionar
+	      la letra en el teclado y activar el correspondiente elemento
+	      del menú. Para especificar una letra subrayada, pon (_) antes 
+	      de la letra deseada de la etiqueta. Ejemplos son, "_Fichero",
+	      "_Edición" y "_Copiar".
+	    </P
+></DD
+><DT
+><B
+><TT
+CLASS="STRUCTFIELD"
+><I
+>hint</I
+></TT
+></B
+></DT
+><DD
+><P
+>	      Este campo especifica una cadena opcional que debe ser
+	      utilizada como tooltip en los elementos de la barra de
+	      herramientas o en los elementos del menú, poniendolo en
+	      la barra de estado. Una versión no traducida debe ser
+	      especificada. Si no se desea una cadena de este tipo se
+	      debe especificar NULL.
+
+	     </P
+></DD
+><DT
+><B
+><TT
+CLASS="STRUCTFIELD"
+><I
+>moreinfo</I
+></TT
+></B
+></DT
+><DD
+><P
+>	      El campo se utiliza para especificar diferentes cosas de
+	      acuerdo al tipo de elemento que está siendo definido.
+	    </P
+><P
+></P
+><UL
+><LI
+><P
+>		  Para elementos normales, de opción y de conmutación 
+		  (GNOME_APP_UI_ITEM, GNOME_APP_UI_ITEM, y
+		  GNOME_APP_UI_TOGGLEITEM, respectivamente), este campo debe
+		  apuntar a la función que debe ser llamada cuando el elemento
+		  es activado. El prototipo general de la función es como 
+		  sigue :
+		  <DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><CODE
+CLASS="FUNCDEF"
+>void <B
+CLASS="FSFUNC"
+>callback</B
+></CODE
+>(GtkWidget *<VAR
+CLASS="PDPARAM"
+>item</VAR
+>, gpointer <VAR
+CLASS="PDPARAM"
+>user_data</VAR
+>);<P
+></P
+></DIV
+>
+		  El argumento <TT
+CLASS="PARAMETER"
+><I
+>item</I
+></TT
+> es el item
+		  del menú o botón en la barra de herramientas que ha sido
+	          seleccionado, y el argumento <TT
+CLASS="PARAMETER"
+><I
+>&#62;user_data</I
+></TT
+>
+		  es la llamada normal de los datos de usuario. 
+
+		</P
+></LI
+><LI
+><P
+>		  Para submenús ( subtrees, tipo 
+	          <SPAN
+CLASS="SYMBOL"
+>GNOME_APP_UI_SUBTREE</SPAN
+>), este campo debería
+		  apuntar a otro array de estructuras
+		  <SPAN
+CLASS="STRUCTNAME"
+>GnomeUIInfo</SPAN
+>. Este array define el
+		  submenú
+		</P
+></LI
+><LI
+><P
+>		  Para elementos de tipo <SPAN
+CLASS="SYMBOL"
+>GNOME_APP_UI_RADIOITEMS</SPAN
+>,
+		  este campo debe apuntar a un array de estructuras 
+		  <SPAN
+CLASS="STRUCTNAME"
+>GnomeUIInfo</SPAN
+> que define los items
+		  que son puestos dentro del grupo de botones de opción.
+		  Dentro del array, sólo los elementos de tipo 
+		  <SPAN
+CLASS="SYMBOL"
+>GNOME_APP_UI_ITEM</SPAN
+> y
+		  <SPAN
+CLASS="SYMBOL"
+>GNOME_APP_UI_BUILDER_DATA</SPAN
+> son soportados.
+		</P
+></LI
+><LI
+><P
+>		  Para elementos de tipo <SPAN
+CLASS="SYMBOL"
+>GNOME_APP_UI_HELP</SPAN
+>,
+		  este elemento debe apuntar a una cadena que es un ID nombre
+	          para la aplicación. GnomeAppHelper buscará el fichero
+		  topic.dat en el directorio de ayuda definido por la cadena
+		  ID de la aplicación, lo leerá e incluirá la ayuda
+		  apropiada en el menú. Este tipo no es valido para las barras
+		  de herramientas.
+		</P
+></LI
+><LI
+><P
+>		  Para elementos del tipo <SPAN
+CLASS="SYMBOL"
+>GNOME_APP_UI_BUILDER_DATA</SPAN
+>,
+		  este campo debe apuntar a la estructura
+		  <SPAN
+CLASS="STRUCTNAME"
+>GnomeUIBuilderData</SPAN
+>. La
+		  información en esta estructura será utilizada por todos
+		  los elementos
+		  siguientes en el array. Esto es solamente necesario para
+		  envolturas de lenguajes y construcción de GUI. 
+		</P
+></LI
+><LI
+><P
+>		  Para todos los otros tipos de elementos, este campo es
+		  ignorado. Debes ponerlo a NULL por compatibilidad
+		  con futuras extensiones de GnomeAppHelper.
+		</P
+></LI
+></UL
+></DD
+><DT
+><B
+><TT
+CLASS="STRUCTFIELD"
+><I
+>user_data</I
+></TT
+></B
+></DT
+><DD
+><P
+>	      Este debería apuntar a los datos que tú pasas a la llamada que
+	      será activada cuando el menú o los elementos de de la barra de
+	      herramientas son seleccionados. Frecuentemente dejarás este
+	      como NULL, y pasarás un puntero de datos específico a todas las 
+	      llamadas usando las funciones definidas posteriormente.
+	    </P
+></DD
+><DT
+><B
+><TT
+CLASS="STRUCTFIELD"
+><I
+>unused_data</I
+></TT
+></B
+></DT
+><DD
+><P
+>	      Este campo está reservado para futuras extensiones, y debe ser
+	      puesto a NULL.
+	    </P
+></DD
+><DT
+><B
+><TT
+CLASS="STRUCTFIELD"
+><I
+>pixmap_type</I
+></TT
+></B
+></DT
+><DD
+><P
+>	      Este debe ser uno de los siguientes valores.
+	    </P
+><DIV
+CLASS="GLOSSLIST"
+><DL
+><DT
+><B
+><SPAN
+CLASS="SYMBOL"
+>GNOME_APP_PIXMAP_NONE</SPAN
+></B
+></DT
+><DD
+><P
+>		    Especifica que ningún icono debe ser utilizado para este
+		    item.
+		  </P
+></DD
+><DT
+><B
+><SPAN
+CLASS="SYMBOL"
+>GNOME_APP_PIXMAP_STOCK</SPAN
+></B
+></DT
+><DD
+><P
+>		    Especifica que un icono almacenado debe ser utilizado.
+		    El nombre o identificador del icono debe ser especificado
+		    en el campo <TT
+CLASS="STRUCTFIELD"
+><I
+>pixmap_info</I
+></TT
+>
+		  </P
+></DD
+><DT
+><B
+><SPAN
+CLASS="SYMBOL"
+>GNOME_APP_PIXMAP_DATA</SPAN
+></B
+></DT
+><DD
+><P
+>		    Especifica que un icono creado desde un dato XPM debe
+		    ser utilizado. Un puntero al dato XPM debe ser 
+		    especificado en el campo 
+		    <TT
+CLASS="STRUCTFIELD"
+><I
+>pixmap_info</I
+></TT
+>.
+		  </P
+></DD
+><DT
+><B
+><SPAN
+CLASS="SYMBOL"
+>GNOME_APP_PIXMAP_FILENAME</SPAN
+></B
+></DT
+><DD
+><P
+>		    Especifica que un fichero con una imagen debe ser
+		    cargado y utilizado como icono. El nombre del
+		    fichero debe ser especificado
+		    en el campo <TT
+CLASS="STRUCTFIELD"
+><I
+>pixmap_info</I
+></TT
+>.
+		  </P
+></DD
+></DL
+></DIV
+></DD
+><DT
+><B
+><TT
+CLASS="STRUCTFIELD"
+><I
+>pixmap_info</I
+></TT
+></B
+></DT
+><DD
+><P
+>	      Este campo especifica que la información utilizada para crear
+	      un mapa de pixeles para el elemento icono.
+	    </P
+><P
+></P
+><UL
+><LI
+><P
+>		  Para iconos del tipo <SPAN
+CLASS="SYMBOL"
+>GNOME_APP_PIXMAP_NONE</SPAN
+>,
+		  debe ser puesto a NULL.
+		</P
+></LI
+><LI
+><P
+>		  Para iconos del tipo <SPAN
+CLASS="SYMBOL"
+>GNOME_APP_PIXMAP_STOCK</SPAN
+>,
+		  este campo debe apuntar a una cadena con el identificador
+		  del icono almacenado. Para elementos del menú se sugiere
+		  que se utilizen los simbolos <SPAN
+CLASS="SYMBOL"
+>GNOME_STOCK_MENU_*</SPAN
+>
+		  . Para las barras de herramientas, usa los simbolos 
+		  <SPAN
+CLASS="SYMBOL"
+>GNOME_STOCK_PIXMAP_*</SPAN
+>
+		</P
+></LI
+><LI
+><P
+>		  Para iconos del tipo <SPAN
+CLASS="SYMBOL"
+>GNOME_APP_PIXMAP_DATA</SPAN
+>,
+		  este campo debe apuntar al dato en línea XMP desde el que
+		  se creará el icono.
+		</P
+></LI
+><LI
+><P
+>		  Para iconos del tipo 
+		  <SPAN
+CLASS="SYMBOL"
+>GNOME_APP_PIXMAP_FILENAME</SPAN
+>, este campo
+		  debe apuntar a una cadena con el nombre del fichero
+		  imagen a cargar. Esta imagen será utilizada como un icono.
+		</P
+></LI
+></UL
+></DD
+><DT
+><B
+><TT
+CLASS="STRUCTFIELD"
+><I
+>accelerator_key</I
+></TT
+></B
+></DT
+><DD
+><P
+>	      Este campo se utiliza para especificar una opcional tecla
+	      aceleradora para el item. Las aplicaciones deberían usar
+	      las teclas aceleradoras estandar definidas en las Guías de
+	      Interface de Usuario GNOME.
+	    </P
+><P
+>	      Debes especificar el código de la tecla que tú desees
+	      utilizar como aceleradora. Los códigos de las teclas són
+	      listados en el fichero include gdkkeysyms.h
+	    </P
+></DD
+><DT
+><B
+><TT
+CLASS="STRUCTFIELD"
+><I
+>ac_mods</I
+></TT
+></B
+></DT
+><DD
+><P
+>	      Este campo es utilizado para especificar las teclas de
+	      modificación que deben ser usadas en conjunción con la
+	      tecla especificada en el campo 
+	      <TT
+CLASS="STRUCTFIELD"
+><I
+>accelerator_key</I
+></TT
+> para el elemento
+	      acelerador. Las aplicaciones deben usar las teclas
+	      aceleradoras estandar definidas en las Guías de Interface
+	      de Usuario de GNOME.
+	    </P
+><P
+>	      El valor en este campo es una máscara de bit compuesta por
+	      valores enumerados de <SPAN
+CLASS="TYPE"
+>GdkModifierType</SPAN
+>. 
+	    </P
+></DD
+><DT
+><B
+><TT
+CLASS="STRUCTFIELD"
+><I
+>widget</I
+></TT
+></B
+></DT
+><DD
+><P
+>	      Este campo es llenado por la funciones de GnomeAppHelper.
+	      Una vez que has llamado a una de las funciones que toman el
+	      array de estructuras <SPAN
+CLASS="STRUCTNAME"
+>GnomeUIInfo</SPAN
+> y
+	      lo activas en un arbol widget, los campos
+	      <TT
+CLASS="STRUCTFIELD"
+><I
+>widget</I
+></TT
+> de lasestructuras en el array
+	      tendrán punteros a los widgets creados. Tu puedes usar estos 
+	      punteros para hacer varias operaciones como ocultar y mostrar
+	      los elementos, y hacerlos inactivos a los distintos eventos.
+	    </P
+></DD
+></DL
+></DIV
+><P
+>	Para las estructuras <SPAN
+CLASS="STRUCTNAME"
+>GnomeUIInfo</SPAN
+>,
+	GnomeAppHelper proporciona varias macros para poder llenar más
+	facilmente estas estructuras. Hay muchas bastante útiles para
+	elementos que necesitan pocos parámetros y para barras de
+	herramientas, que no tienen muchas opciones como los menús.
+      </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="gnome-app-helper-quick-example.html"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book1.html"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="gnome-app-helper-convenience-macros.html"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Un ejemplo rápido de uso de GnomeAppHelper</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="gnome-app-helper.html"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Distintas macros para rellenar la estructura <SPAN
+CLASS="STRUCTNAME"
+>GnomeUIInfo</SPAN
+></TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,0 +1,404 @@
+<!DOCTYPE HTML PUBLIC "-//Norman Walsh//DTD DocBook HTML 1.0//EN">
+<HTML
+><HEAD
+><TITLE
+>ORBit-Gtk</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet"><LINK
+REL="HOME"
+TITLE="Información para desarrolladores de Gnome "
+HREF="book1.html"><LINK
+REL="UP"
+TITLE=" 	Documentación de LibGnorba
+	"
+HREF="libgnorba-docs.html"><LINK
+REL="PREVIOUS"
+TITLE=" 	Documentación de LibGnorba
+	"
+HREF="libgnorba-docs.html"><LINK
+REL="NEXT"
+TITLE="gnome-plugins"
+HREF="gnome-plugins.html"></HEAD
+><BODY
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>Información para desarrolladores de Gnome</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="libgnorba-docs.html"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 11. Documentación de LibGnorba</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="gnome-plugins.html"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="ORBITGTK"
+>ORBit-Gtk</A
+></H1
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN2588"
+>Autor(es)</A
+></H2
+><P
+>Elliot Lee &#60;sopwith@redhat.com&#62;</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN2591"
+>Descripción</A
+></H2
+><P
+>  Rutinas para hacer que ORBit trabaje elegantemente con gtk, y
+arranque/recupere el servicio de nombres de objetos para una sesión de GNOME.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="GNOME-CORBA-INIT"
+>gnome_CORBA_init inicializa ORBit y GNOME para ser usados en un programa.</A
+></H2
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><CODE
+CLASS="FUNCDEF"
+>CORBA_ORB <B
+CLASS="FSFUNC"
+>gnome_CORBA_init</B
+></CODE
+>(char *<VAR
+CLASS="PDPARAM"
+>app_id</VAR
+>, struct argp *<VAR
+CLASS="PDPARAM"
+>app_parser</VAR
+>, int *<VAR
+CLASS="PDPARAM"
+>argc</VAR
+>, char **<VAR
+CLASS="PDPARAM"
+>argv</VAR
+>, unsigned int <VAR
+CLASS="PDPARAM"
+>flags </VAR
+>, int *<VAR
+CLASS="PDPARAM"
+>arg_index</VAR
+>, CORBA_Environment *<VAR
+CLASS="PDPARAM"
+>ev</VAR
+>);<P
+></P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN2613"
+>Descripción</A
+></H3
+><P
+>Esta rutina inicializa gnome (llamando a <TT
+CLASS="FUNCTION"
+><B
+>gnome_init</B
+></TT
+>).
+Unos  pocos items serán establecidos para permitir que ORBit y gtk
+interactúen bien, y finalmente inicializa ORBit y devuelve la referencia
+ CORBA_ORB al nuevo ORB.</P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN2617"
+>Uso</A
+></H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int main(int argc, char *argv)
+{
+	CORBA_ORB my_orb;
+	CORBA_Environment ev;
+
+	CORBA_exception_init(&#38;ev);
+	my_orb = gnome_CORBA_init("myapp", NULL, &#38;argc, &#38;argv, 0, NULL, &#38;ev);
+	if(ev._major != CORBA_NO_EXCEPTION)
+	    exit(1); /* error initializing ORB */
+
+	/* inserta el código para matar a la aplicación aquí */
+}</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN2620"
+>Parámetros</A
+></H3
+><P
+></P
+><UL
+><LI
+><P
+>char *<TT
+CLASS="PARAMETER"
+><I
+>app_id</I
+></TT
+></P
+><P
+>  Una cadena de caracteres alfanúmerica de ID (identificación) de la
+aplicación (el nombre de la aplicación es una buena elección).</P
+></LI
+><LI
+><P
+>struct argp *<TT
+CLASS="PARAMETER"
+><I
+>app_parser</I
+></TT
+></P
+><P
+>  Ver los (inexistentes) documentos de argp como ayuda .</P
+></LI
+><LI
+><P
+>int *<TT
+CLASS="PARAMETER"
+><I
+>argc</I
+></TT
+></P
+><P
+>  Un puntero al número de argumentos.</P
+></LI
+><LI
+><P
+>char **<TT
+CLASS="PARAMETER"
+><I
+>argv</I
+></TT
+></P
+><P
+>El vector de cadenas de argumentos.</P
+></LI
+><LI
+><P
+>unsigned int <TT
+CLASS="PARAMETER"
+><I
+>flags</I
+></TT
+></P
+><P
+>Ver los (inexistentes) documentos de argp como ayuda.</P
+></LI
+><LI
+><P
+>int *<TT
+CLASS="PARAMETER"
+><I
+>arg_index</I
+></TT
+></P
+><P
+>Ver los (inexistentes) documentos de argp como ayuda.</P
+></LI
+><LI
+><P
+>CORBA_Environment *<TT
+CLASS="PARAMETER"
+><I
+>ev</I
+></TT
+></P
+><P
+>Puntero a una estructura de información de excepción de CORBA, para 
+permitir a las funciones de inicialización del ORB señalar cualquier
+error que acontezca. </P
+></LI
+></UL
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="GNOME-NAME-SERVICE-GET"
+>gnome_name_service_get - Recupera una referencia de un objeto al contexto 
+  del servicio de nombres raiz para la sesión GNOME actual</A
+></H2
+><DIV
+CLASS="FUNCSYNOPSIS"
+><P
+></P
+><CODE
+CLASS="FUNCDEF"
+>CORBA_Object
+<B
+CLASS="FSFUNC"
+>gnome_name_service_get</B
+></CODE
+>(void);<P
+></P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN2657"
+>Descripción</A
+></H3
+><P
+>Esta rutina se usa para tener acceso al contexto de nombres más alto para
+la sesión de GNOME actual. Si ningún servidor de nombres se está ejecutando, 
+se lanzará uno.</P
+><P
+>Esta función asume que tanto gtk como ORBit se han inicializado.</P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN2661"
+>Uso</A
+></H3
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>CORBA_Object ns;
+
+ns = gnome_name_service_get();</PRE
+></TD
+></TR
+></TABLE
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="libgnorba-docs.html"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book1.html"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="gnome-plugins.html"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Documentación de LibGnorba</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="libgnorba-docs.html"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>gnome-plugins</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,0 +1,218 @@
+<!DOCTYPE HTML PUBLIC "-//Norman Walsh//DTD DocBook HTML 1.0//EN">
+<HTML
+><HEAD
+><TITLE
+>	Coordenadas
+      </TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet"><LINK
+REL="HOME"
+TITLE="Información para desarrolladores de Gnome "
+HREF="book1.html"><LINK
+REL="UP"
+TITLE="El Widget GnomeCanvas"
+HREF="gnome-canvas.html"><LINK
+REL="PREVIOUS"
+TITLE="       Organización de los items     
+      "
+HREF="gnome-canvas-organization-of-items.html"><LINK
+REL="NEXT"
+TITLE=" 	Atribuos y argumentos de objetos     
+	"
+HREF="gnome-canvas-object-arguments.html"></HEAD
+><BODY
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>Información para desarrolladores de Gnome</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="gnome-canvas-organization-of-items.html"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 8. El Widget <SPAN
+CLASS="TYPE"
+>GnomeCanvas</SPAN
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="gnome-canvas-object-arguments.html"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="GNOME-CANVAS-COORDINATES"
+>Coordenadas</A
+></H1
+><P
+>        El canvas usa un sistema de coordenadas global con dichas
+        coordenadas especificadas como números en punto flotante. 
+	Coordenadas globales significa que las unidades se puden 
+	representar de la forma más conveniente para ti: metros, 
+	pixels, parsecs, etc.
+
+      </P
+><P
+>	Las coordenadas son calculadas desde el origen del canvas,
+	con coordenadas (0.0, 0.0). Las coordenadas X positivas van
+	hacia la derecha desde el origen, y las coordenadas Y positivas
+	van hacia abajo, como en el resto de los sistemas X Window.
+	
+      </P
+><P
+>       	Las coordenadas de los items son calcualdas con respecto a 
+       	su grupo padre. Cuando un grupo es movido, las coordenadas
+       	lógicas de los hijos no cambian, aunque si su posición física.
+       	Un grupo almacena un solo par de coordenadas, las cuáles definen
+       	su origen relativo con respecto a su grupo padre. El grupo raiz
+       	del canvas comienza con su origen en la posición global (0.0, 0.0).
+      </P
+><P
+>	Por ejemplo, permitenos decir que tienes el grupo de más alto
+	nivel en la posición (5.0, 3.0). Si insertas un item en dicho 
+	grupo con coordenadas (2.0, 1.0), el item aparecerá en la 
+	posición (7.0, 4.0).
+	Las coordenadas de los items son siempre relativas a su grupo 
+	padre.
+      </P
+><P
+>	Normalmente solo necesitarás emplear este sistema global de 
+	coordenadas mediante puntos flotantes. El canvas también 
+	tiene un sistema de coordenadas diferente el cuál trabaja en
+	términos de desplazamientos de pixels. Este sistema de coordenadas
+	es empleado internamente para controlar el desplazamiento 
+	(scrolling) del canvas. No necesitarás saber nada sobre el a menos
+	que quieras hacer el desplazmiento del canvas a mano (opuestamente a 
+	permitir a las barras de desplazamiento manejen esto por ti), o
+	cuando crees tus propios tipos de items en el canvas. Discutiremos
+	este sistema de coordenas basado en pixels después.
+      </P
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="GNOME-CANVAS-ZOOMING-AND-SCALE"
+>Zooming y Escalado</A
+></H2
+><P
+>	Puedes cambiar el factor de zoom del canvas, asi todos los objetos
+	existentes en él aparecerán más grandes o más pequeños. Para 
+	controlar el factor de zoom, especifica el número de <I
+CLASS="EMPHASIS"
+>	pixels por unidad</I
+> que el canvas usará cuando convierta 
+	las coordenadas globales a coordenadas de pantalla. Por defecto se usa 
+	1.0 pixels por unidad, asi que un objeto que tiene 10 unidades
+	de ancho se mostrará como de 10 pixels de ancho. Si tu pones el
+	canvas para que use 5 pixels por unidad, entonces el objeto se
+	mostrará como de 50 pixels de ancho.
+	</P
+><P
+>	Algunas veces pudes querer que algunas formas de tu dibujo muestren
+	el mismo tamaño independientemente del factor de zoom del canvas.
+	Por ejemple, al mostrar un grafico compuesto de vertices y bordes, 
+	puedes querer que los bordes mantengan el mismo ancho al ser 
+	mostrados incluso si tu zoom se acerca más al gráfico, así mismo
+	que las cabezas de flecha tengan el mismo tamaño sin importar el
+	factor de zoom del canvas.
+	</P
+><P
+>	Los items del Canvas como lineas y rectangulos que soportan un
+	parámetro para la anchura del borde, te permiten elegir si la 
+	anchura del borde se especifica en pixels absolutos (los cuáles
+	mantendran el mismo tamaño al mostrarlos independientemente del 
+	factor de zoom del canvas),o en unidades normales (los cuáles 
+	serán escalados cuando el factor de zoom varíe).
+	</P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="gnome-canvas-organization-of-items.html"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book1.html"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="gnome-canvas-object-arguments.html"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Organización de los items</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="gnome-canvas.html"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Atribuos y argumentos de objetos</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

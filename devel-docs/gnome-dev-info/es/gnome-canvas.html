@@ -1,0 +1,207 @@
+<!DOCTYPE HTML PUBLIC "-//Norman Walsh//DTD DocBook HTML 1.0//EN">
+<HTML
+><HEAD
+><TITLE
+>El Widget GnomeCanvas</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet"><LINK
+REL="HOME"
+TITLE="Información para desarrolladores de Gnome "
+HREF="book1.html"><LINK
+REL="PREVIOUS"
+TITLE="Funciones proporcionadas por GnomeAppHelper
+	"
+HREF="gnome-app-helper-functions.html"><LINK
+REL="NEXT"
+TITLE="       Organización de los items     
+      "
+HREF="gnome-canvas-organization-of-items.html"></HEAD
+><BODY
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>Información para desarrolladores de Gnome</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="gnome-app-helper-functions.html"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="gnome-canvas-organization-of-items.html"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="CHAPTER"
+><H1
+><A
+NAME="GNOME-CANVAS"
+>Chapter 8. El Widget <SPAN
+CLASS="TYPE"
+>GnomeCanvas</SPAN
+></A
+></H1
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+><A
+HREF="gnome-canvas.html#GNOME-CANVAS-INTRODUCTION"
+>Introducción</A
+></DT
+><DT
+><A
+HREF="gnome-canvas-organization-of-items.html"
+>Organización de los items</A
+></DT
+><DT
+><A
+HREF="gnome-canvas-coordinates.html"
+>Coordenadas</A
+></DT
+><DT
+><A
+HREF="gnome-canvas-object-arguments.html"
+>Atribuos y argumentos de objetos</A
+></DT
+><DT
+><A
+HREF="gnome-canvas-getting-started.html"
+>Comenzando con el canvas</A
+></DT
+></DL
+></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="GNOME-CANVAS-INTRODUCTION"
+>Introducción</A
+></H1
+><P
+>&#13;	El widget <SPAN
+CLASS="TYPE"
+>GnomeCanvas</SPAN
+> es un motor de alto nivel para la
+	creación de gráficos estructurados. Un canvas(lienzo) muestra una 
+	colección de items, que pueden ser lineas, rectangulos, elipses y 
+	texto. Los items tienen atributos asociados los cuáles puedes
+	cambiar, como son el color, la posición y el tamaño. Los items
+	pueden ser movidos o reapilados en el canvas(lienzo), y organizados
+	en grupos jerarquicamente. Tu puedes recibir eventos del teclado y
+	del ratón desde los items y llevar a cabo acciones sobre ellos 
+	basadas en estos eventos. 
+      </P
+><P
+>	El canvas es útil para cuando quieras crear 
+	presentaciones gráficas interactivas las cuáles serian dificiles
+	o engorrosas de implementar con llamadas "a pelo" al Gdk, o cuando
+	escribir un widget a medida para Gtk no es conveniente.
+      </P
+><P
+>	El canvas es también util para crear presentaciones de
+	gráfos, diagramas y muchos otros tipos de dibujos estrucuturados.
+	Puede ser incluso usado como un motor de presentación en general
+	&#8212; por ejemplo la hoja de cálculo Gnumeric y el programa de
+	presentaciones Achtung, ámbos usan el widget GnomeCanvas como su
+	motor de presentación.
+      </P
+><P
+>	
+	Si los tipos predefinidos de items del canvas no se ajustan a tus
+	necesidades, facilmente puedes escribir nuevos tipos de items. Estos
+	pueden ser items primitiva, los cuáles pintan sus propias 
+	presentaciones, o items compuestos, los cuales son construidos como 
+	parte alta de la jerarquia de los grupos de items del canvas.	
+      </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="gnome-app-helper-functions.html"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book1.html"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="gnome-canvas-organization-of-items.html"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Funciones proporcionadas por GnomeAppHelper</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Organización de los items</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>
