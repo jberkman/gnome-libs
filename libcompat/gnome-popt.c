@@ -86,12 +86,16 @@ gnomelib_parse_args (int argc, char *argv[], int popt_flags)
 	poptContext retval;
 	int nextopt;
 	struct poptOption end_opt;
+	char *base;
 
 	memset(&end_opt, 0, sizeof(end_opt));
 	g_array_append_val(opt_tables, end_opt);
 
-	gnome_program_init(g_basename(argv[0]), "broken!", argc, argv, GNOME_PARAM_POPT_FLAGS, popt_flags,
-			   GNOME_PARAM_POPT_TABLE, opt_tables->data, NULL);
+	base = g_path_basename(argv[0]);
+	gnome_program_init(base, "broken!", argc, argv, GNOME_PARAM_POPT_FLAGS,
+			   popt_flags, GNOME_PARAM_POPT_TABLE,
+			   opt_tables->data, NULL);
+	g_free(base);
 	gnome_program_attributes_get(gnome_program_get(), GNOME_PARAM_POPT_CONTEXT, &retval, NULL);
 
 	return retval;

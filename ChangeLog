@@ -1,3 +1,14 @@
+Wed Aug 23 04:47:28 2000  George Lebl <jirka@5z.com>
+
+	* devel-docs/Porting-1.0-2.0.txt, libcompat/gnome-popt.c,
+	  libgnome/gnome-ditem.c, libgnome/gnome-util.c,
+	  libgnome/gnomelib-init2.c, libgnomeui/gnome-icon-entry.c,
+	  libgnomeui/gnome-icon-sel.c, libgnomeui/gnome-icon-sel.h,
+	  libgnomeui/gnome_segv.c:  use g_path_basename instead of
+	  g_basename.  This changes the behaviour of
+	  gnome_icon_selection_get_icon to return a newly allocated string.
+	  Porting documents are updated.
+
 2000-07-29  Martin Baulig  <baulig@suse.de>
 
 	* configure.in: Require libglade.
