@@ -69,7 +69,7 @@ void quit_test (GtkWidget *widget, gpointer data)
 
 void window_close (GtkWidget *widget, gpointer data)
 {
-	gtk_widget_destroy (GTK_WIDGET(data));
+        gtk_widget_destroy (GTK_WIDGET(data));
 }
 
 GnomeUIInfo file_menu[] = {
@@ -120,12 +120,7 @@ GtkWidget *create_newwin(gboolean normal, gchar *appname, gchar *title)
 	GtkWidget *app;
 
 	app = gnome_app_new (appname,title);
-	if (normal==TRUE)
-        {
-                gtk_signal_connect(GTK_OBJECT(app), "delete_event",
-				   GTK_SIGNAL_FUNC(window_close), NULL);
-        }
-	else
+	if (!normal)
         {
                 gtk_signal_connect(GTK_OBJECT(app), "delete_event",
 				   GTK_SIGNAL_FUNC(quit_test), NULL);
