@@ -1,3 +1,29 @@
+Sun Mar  8 18:24:31 1998  Tom Tromey  <tromey@cygnus.com>
+
+	* Makefile.am (LDADD): Use @LIBSUPPORT@, not libsupport.a.
+	(INCLUDES): Added @SUPPORTINCS@.
+
+Sat Mar  7 00:42:33 1998  Tom Tromey  <tromey@cygnus.com>
+
+	* gnome-hello-4-SM.c (main): Changes for new gnome_init.
+	(arguments): New structure.
+	(parser =): Likewise.
+	(parse_args): Removed.
+	(parse_an_arg): New function.
+	(DISCARD_KEY): New macro.
+	(session_id): Removed.
+	(just_exit): New global.
+	(save_state): Set restart and clone commands.
+	(connect_client): Use previous id, not current one, to look up
+	info.
+	* gnome-hello-3-parse-args.c (main): Changes for new gnome_init.
+	(arguments): New structure.
+	(parser =): Likewise.
+	(parse_args): Removed.
+	(parse_an_arg): New function.
+	* gnome-hello-1-menus.c (main): Changes for new gnome_init.
+	* gnome-hello-0-basic.c (main): Changes for new gnome_init.
+
 1998-02-23  Federico Mena Quintero  <federico@nuclecu.unam.mx>
 
 	* gnome-hello-4-SM.c (connect_client): Changed name from "connect"

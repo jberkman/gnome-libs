@@ -25,9 +25,13 @@ GtkWidget *app;
 int
 main(int argc, char *argv[])
 {
+  argp_program_version = VERSION;
+
   /* gnome_init() is always called at the beginning of a program.  it
-     takes care of initializing both Gtk and GNOME */
-  gnome_init ("gnome-hello-0-basic", &argc, &argv);
+     takes care of initializing both Gtk and GNOME.  It also parses
+     the command-line arguments.  */
+  gnome_init ("gnome-hello-0-basic", NULL, argc, argv,
+	      0, NULL);
 
   /* prepare_app() makes all the gtk calls necessary to set up a
      minimal Gnome application; It's based on the hello world example

@@ -17,12 +17,6 @@
    that we're in the gnome tree. */
 #include <config.h>
 #include <gnome.h>
-/* We are using GNU GetOpt */
-#ifdef HAVE_GETOPT_LONG
-#include <getopt.h>
-#else
-#include <support/getopt.h>
-#endif
 
 void hello_cb (GtkWidget *widget, void *data);
 void about_cb (GtkWidget *widget, void *data);
@@ -62,32 +56,74 @@ GtkMenuEntry hello_menu [] = {
   { N_("Help/About..."), N_("<control>A"), (GtkMenuCallback) about_cb, NULL },
 };
 
-char *session_id;
+
+/* True if parsing determined that all the work is already done.  */
+int just_exit = 0;
+
+/* These are the arguments that our application supports.  */
+static struct argp_option arguments[] =
+{
+#define DISCARD_KEY -1
+  { "discard-session", DISCARD_KEY, N_("ID"), 0, N_("Discard session"), 1 },
+  { NULL, 0, NULL, 0, NULL, 0 }
+};
+
+/* Forward declaration of the function that gets called when one of
+   our arguments is recognized.  */
+static error_t parse_an_arg (int key, char *arg, struct argp_state *state);
+
+/* This structure defines our parser.  It can be used to specify some
+   options for how our parsing function should be called.  */
+static struct argp parser =
+{
+  arguments,			/* Options.  */
+  parse_an_arg,			/* The parser function.  */
+  NULL,				/* Some docs.  */
+  NULL,				/* Some more docs.  */
+  NULL,				/* Child arguments -- gnome_init fills
+				   this in for us.  */
+  NULL,				/* Help filter.  */
+  NULL				/* Translation domain; for the app it
+				   can always be NULL.  */
+};
 
 int
 main(int argc, char *argv[])
 {
-  /* gnome_init() is always called at the beginning of a program.  it
-     takes care of initializing both Gtk and GNOME */
-  gnome_init ("gnome-hello-4-SM", &argc, &argv);
+  GnomeClient *client;
 
-  /* Now we parse the arguments (i would prefer having a first parsing
-     before the gnome_init so we could do the --version, --help and
-     --discard-session without having a DISPLAY available. Tom Tromey
-     and Carsten Schaar */
-  /* parse_args initializes the session management stuff too. */
-  parse_args (argc, argv);
+  argp_program_version = VERSION;
 
   /* Initialize the i18n stuff */
   bindtextdomain (PACKAGE, GNOMELOCALEDIR);
   textdomain (PACKAGE);
 
-  /* prepare_app() makes all the gtk calls necessary to set up a
-     minimal Gnome application; It's based on the hello world example
-     from the Gtk+ tutorial */
-  prepare_app ();
+  /* This creates the default client and arranges for it to parse some
+     command-line arguments and connect the session manager if
+     possible.  */
+  client = gnome_client_new_default ();
 
-  gtk_main ();
+  /* Arrange to be told when something interesting happens.  */
+  gtk_signal_connect (GTK_OBJECT (client), "save_yourself",
+		      GTK_SIGNAL_FUNC (save_state), (gpointer) argv[0]);
+  gtk_signal_connect (GTK_OBJECT (client), "connect",
+		      GTK_SIGNAL_FUNC (connect_client), NULL);
+
+  /* gnome_init() is always called at the beginning of a program.  it
+     takes care of initializing both Gtk and GNOME.  It also parses
+     the command-line arguments.  */
+  gnome_init ("gnome-hello-4-SM", &parser, argc, argv,
+	      0, NULL);
+
+  if (! just_exit)
+    {
+      /* prepare_app() makes all the gtk calls necessary to set up a
+	 minimal Gnome application; It's based on the hello world
+	 example from the Gtk+ tutorial */
+      prepare_app ();
+
+      gtk_main ();
+    }
 
   return 0;
 }
@@ -109,7 +145,7 @@ prepare_app()
   if (restarted) {
     gtk_widget_set_uposition (app, os_x, os_y);
     gtk_widget_set_usize     (app, os_w, os_h);
-    }
+  }
 
   /* Now that we've the main window we'll make the menues */
   /* I'm using GtkMenuFactory, i've asked to the gnome-list if i should
@@ -194,82 +230,18 @@ create_menu ()
   return subfactory;
 }
 
-/* parsing args */
-void
-parse_args (int argc, char *argv[])
+static error_t
+parse_an_arg (int key, char *arg, struct argp_state *state)
 {
-  GnomeClient *client;
-  gint ch;
-
-  struct option options[] = {
-	/* Default args */
-	{ "help",		no_argument,            NULL,   'h'     },
-	{ "version",	 	no_argument,            NULL,   'v'     },
-	/* Session Management stuff */
-	{ "sm-client-id",	required_argument,      NULL,   'S'     },
-	{ "discard-session",	required_argument,      NULL,   'D'     },
-
-	{ NULL, 0, NULL, 0 }
-	};
-
-  gchar *id = NULL;
-
-  /* initialize getopt */
-  optarg = NULL;
-  optind = 0;
-  optopt = 0;
-
-  while( (ch = getopt_long(argc, argv, "hv", options, NULL)) != EOF )
-  {
-    switch(ch)
+  if (key == DISCARD_KEY)
     {
-      case 'h':
-        g_print ( 
-      	  _("%s: A gnomified 'Hello World' program\n\n"
-      	    "Usage: %s [--help] [--version]\n\n"
-      	    "Options:\n"
-      	    "        --help     display this help and exit\n"
-      	    "        --version  output version information and exit\n"),
-      	    argv[0], argv[0]);
-        exit(0);
-        break;
-      case 'v':
-        g_print (_("Gnome Hello %s.\n"), VERSION);
-        exit(0);
-        break;
-      case 'S':
-	/* This option is only a dummy. It is evaluated from the
-	   'gnome_client_new_without_connection' call.
-
-        id = g_strdup (optarg);
-        restart_session (id); */
-        break;
-      case 'D':
-        id = g_strdup (optarg);
-        discard_session (id);
-        exit(0);
-        break;
-      case ':':
-      case '?':
-        g_print (_("Options error\n"));
-        exit(0);
-        break;
+      discard_session (arg);
+      just_exit = 1;
+      return 0;
     }
-  }
 
-  /* SM stuff */
-  client = gnome_client_new_without_connection (argc, argv);
-  
-  gtk_signal_connect (GTK_OBJECT (client), "save_yourself",
-		      GTK_SIGNAL_FUNC (save_state), (gpointer) argv[0]);
-  gtk_signal_connect (GTK_OBJECT (client), "connect",
-		      GTK_SIGNAL_FUNC (connect_client), NULL);
-
-  gnome_client_connect (client);
-
-  g_free(id);
-
-  return;
+  /* We didn't recognize it.  */
+  return ARGP_ERR_UNKNOWN;
 }
 
 /* Session management */
@@ -324,6 +296,13 @@ save_state (GnomeClient        *client,
   argv[2] = session_id;
   gnome_client_set_discard_command (client, 3, argv);
 
+  /* Set commands to clone and restart this application.  Note that we
+     use the same values for both -- the session management code will
+     automatically add whatever magic option is required to set the
+     session id on startup.  */
+  gnome_client_set_clone_command (client, 1, argv);
+  gnome_client_set_restart_command (client, 1, argv);
+
   return TRUE;
 }
 
@@ -333,18 +312,21 @@ save_state (GnomeClient        *client,
 void
 connect_client (GnomeClient *client, gint was_restarted, gpointer client_data)
 {
-  if (was_restarted)
+  gchar *session_id;
+
+  /* Note that information is stored according to our *old*
+     session id.  The id can change across sessions.  */
+  session_id = gnome_client_get_previous_id (client);
+
+  if (was_restarted && session_id != NULL)
     {
-      gchar *session_id;
       gchar *sess;
       gchar *buf;
-      
+
       restarted = 1;
-      
-      session_id= gnome_client_get_id (client);
-      
+
       sess = g_copy_strings ("/gnome-hello/Saved-Session-", session_id, NULL);
-      
+
       buf = g_copy_strings ( sess, "/x", NULL);
       os_x = gnome_config_get_int (buf);
       g_free(buf);
@@ -358,6 +340,10 @@ connect_client (GnomeClient *client, gint was_restarted, gpointer client_data)
       os_h = gnome_config_get_int (buf);
       g_free(buf);
     }
+
+  /* If we had an old session, we clean up after ourselves.  */
+  if (session_id != NULL)
+    discard_session (session_id);
 
   return;
 }

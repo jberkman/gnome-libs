@@ -17,12 +17,6 @@
    that we're in the gnome tree. */
 #include <config.h>
 #include <gnome.h>
-/* We are using GNU GetOpt */
-#ifdef HAVE_GETOPT_LONG
-#include <getopt.h>
-#else
-#include <support/getopt.h>
-#endif
 
 void hello_cb (GtkWidget *widget, void *data);
 void about_cb (GtkWidget *widget, void *data);
@@ -41,22 +35,48 @@ GtkMenuEntry hello_menu [] = {
   { N_("Help/About..."), N_("<control>A"), (GtkMenuCallback) about_cb, NULL },
 };
 
+/* These are the arguments that our application supports.  We define a
+   simple one just for demonstration purposes.  Our argument is `-q',
+   or `--quiet'.  */
+static struct argp_option arguments[] =
+{
+  { "quiet", 'q', NULL, 0, N_("Run silently"), 1 },
+  { NULL, 0, NULL, 0, NULL, 0 }
+};
+
+/* Forward declaration of the function that gets called when one of
+   our arguments is recognized.  */
+static error_t parse_an_arg (int key, char *arg, struct argp_state *state);
+
+/* This structure defines our parser.  It can be used to specify some
+   options for how our parsing function should be called.  */
+static struct argp parser =
+{
+  arguments,			/* Options.  */
+  parse_an_arg,			/* The parser function.  */
+  NULL,				/* Some docs.  */
+  NULL,				/* Some more docs.  */
+  NULL,				/* Child arguments -- gnome_init fills
+				   this in for us.  */
+  NULL,				/* Help filter.  */
+  NULL				/* Translation domain; for the app it
+				   can always be NULL.  */
+};
+
 int
 main(int argc, char *argv[])
 {
-  /* gnome_init() is always called at the beginning of a program.  it
-     takes care of initializing both Gtk and GNOME */
-  gnome_init ("gnome-hello-3-parse-args", &argc, &argv);
-
-  /* Now we parse the arguments (i would prefer having a first parsing
-     before the gnome_init so we could do the --version and --help 
-     without having a DISPLAY available. Tom Tromey and Carsten Schaar
-     are working on it. */
-  parse_args (argc, argv);
+  argp_program_version = VERSION;
 
   /* Initialize the i18n stuff */
   bindtextdomain (PACKAGE, GNOMELOCALEDIR);
   textdomain (PACKAGE);
+
+  /* gnome_init() is always called at the beginning of a program.  it
+     takes care of initializing both Gtk and GNOME.  It also parses
+     the command-line arguments.  */
+  gnome_init ("gnome-hello-3-parse-args", &parser, argc, argv,
+	      0, NULL);
 
   /* prepare_app() makes all the gtk calls necessary to set up a
      minimal Gnome application; It's based on the hello world example
@@ -165,50 +185,16 @@ create_menu ()
   return subfactory;
 }
 
-/* parsing args */
-void
-parse_args (int argc, char *argv[])
+static error_t
+parse_an_arg (int key, char *arg, struct argp_state *state)
 {
-  gint ch;
-
-  struct option options[] = {
-	/* Default args */
-	{ "help",		no_argument,            NULL,   'h'     },
-	{ "version",	 	no_argument,            NULL,   'v'     },
-
-	{ NULL, 0, NULL, 0 }
-	};
-
-  /* initialize getopt */
-  optarg = NULL;
-  optind = 0;
-  optopt = 0;
-
-  while( (ch = getopt_long(argc, argv, "hv", options, NULL)) != EOF )
-  {
-    switch(ch)
+  if (key == 'q')
     {
-      case 'h':
-        g_print ( 
-      	  _("%s: A gnomified 'Hello World' program\n\n"
-      	    "Usage: %s [--help] [--version]\n\n"
-      	    "Options:\n"
-      	    "        --help     display this help and exit\n"
-      	    "        --version  output version information and exit\n"),
-      	    argv[0], argv[0]);
-        exit(0);
-        break;
-      case 'v':
-        g_print (_("Gnome Hello %s.\n"), VERSION);
-        exit(0);
-        break;
-      case ':':
-      case '?':
-        g_print (_("Options error\n"));
-        exit(0);
-        break;
+      /* We found our argument.  Unfortunately, it does nothing here.
+       */
+      return 0;
     }
-  }
 
-  return;
+  /* We didn't recognize it.  */
+  return ARGP_ERR_UNKNOWN;
 }

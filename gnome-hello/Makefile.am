@@ -1,6 +1,6 @@
 #Utilitiesdir = $(datadir)/apps/Utilities
 
-INCLUDES = -I.. -I$(srcdir)/.. -I$(includedir) \
+INCLUDES = -I.. -I$(srcdir)/.. -I$(includedir) @SUPPORTINCS@ \
 	-DGNOMELOCALEDIR=\""$(datadir)/locale"\" \
 	-DLOCALEDIR=\"$(datadir)/locale\"
 
@@ -8,7 +8,7 @@ LDADD = \
 	$(top_builddir)/libgnomeui/libgnomeui.la 	\
 	$(top_builddir)/libgnome/libgnome.la		\
 	$(top_builddir)/gtk-xmhtml/libgtkxmhtml.la	\
-	$(top_builddir)/support/libsupport.a		\
+	@LIBSUPPORT@					\
 	$(LIBGTKXMHTML_LIBS) $(LIBGNOME_LIBS) $(LIBGNOMEUI_LIBS) $(INTLLIBS)
 
 noinst_PROGRAMS =  \
