@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-libs 1.0.15\n"
-"POT-Creation-Date: 1999-08-31 13:26+0200\n"
+"POT-Creation-Date: 1999-08-31 15:54-0500\n"
 "PO-Revision-Date: 1998-12-05 14:02+0100\n"
 "Last-Translator: Zbigniew Chyla <chyla@alice.ci.pwr.wroc.pl>\n"
 "Language-Team: \n"
@@ -9,26 +9,26 @@ msgstr ""
 "Content-Type: text/plain; charset=iso-8859-2\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: libgnome/gconfigger.c:32 libgnome/gconfigger.c:33
-msgid "CONFIG-PATH"
+#: libgnome/gconfigger.c:32
+msgid "get"
 msgstr ""
 
 #: libgnome/gconfigger.c:32
 msgid "Get config entry"
 msgstr ""
 
-#: libgnome/gconfigger.c:32
-msgid "get"
-msgstr ""
-
-#: libgnome/gconfigger.c:33
-msgid "Set config entry"
+#: libgnome/gconfigger.c:32 libgnome/gconfigger.c:33
+msgid "CONFIG-PATH"
 msgstr ""
 
 #: libgnome/gconfigger.c:33
 #, fuzzy
 msgid "set"
 msgstr "U¿ytkownik"
+
+#: libgnome/gconfigger.c:33
+msgid "Set config entry"
+msgstr ""
 
 #: libgnome/gnome-popt.c:90
 #, c-format
@@ -153,26 +153,26 @@ msgstr "Pomoc"
 msgid "_Windows/"
 msgstr "Nowy..."
 
-#: libgnomeui/gnome-app-helper.c:105
-msgid "Open a file"
-msgstr ""
-
 #. Open
 #: libgnomeui/gnome-app-helper.c:105
 #, fuzzy
 msgid "_Open..."
 msgstr "Otwórz..."
 
-#: libgnomeui/gnome-app-helper.c:110
-#, fuzzy
-msgid "Save the current file"
-msgstr "Wybierz plik"
+#: libgnomeui/gnome-app-helper.c:105
+msgid "Open a file"
+msgstr ""
 
 #. Save
 #: libgnomeui/gnome-app-helper.c:110
 #, fuzzy
 msgid "_Save"
 msgstr "Zapisz"
+
+#: libgnomeui/gnome-app-helper.c:110
+#, fuzzy
+msgid "Save the current file"
+msgstr "Wybierz plik"
 
 #. Save As
 #: libgnomeui/gnome-app-helper.c:115
@@ -193,15 +193,15 @@ msgstr ""
 msgid "Revert to a saved version of the file"
 msgstr ""
 
-#: libgnomeui/gnome-app-helper.c:127
-msgid "Print the current file"
-msgstr ""
-
 #. Print
 #: libgnomeui/gnome-app-helper.c:127
 #, fuzzy
 msgid "_Print"
 msgstr "Drukuj..."
+
+#: libgnomeui/gnome-app-helper.c:127
+msgid "Print the current file"
+msgstr ""
 
 #. Print Setup
 #: libgnomeui/gnome-app-helper.c:132
@@ -213,18 +213,18 @@ msgstr "Drukuj..."
 msgid "Setup the page settings for your current printer"
 msgstr ""
 
+#. Close
+#: libgnomeui/gnome-app-helper.c:138
+#, fuzzy
+msgid "_Close"
+msgstr "Zamknij"
+
 #: libgnomeui/gnome-app-helper.c:138
 #, fuzzy
 msgid "Close the current file"
 msgstr ""
 "Nie mo¿na otworzyæ archiwum tar\n"
 "%s"
-
-#. Close
-#: libgnomeui/gnome-app-helper.c:138
-#, fuzzy
-msgid "_Close"
-msgstr "Zamknij"
 
 #. Exit
 #: libgnomeui/gnome-app-helper.c:143
@@ -250,10 +250,6 @@ msgstr "Wytnij"
 msgid "Cut the selection"
 msgstr ""
 
-#: libgnomeui/gnome-app-helper.c:157
-msgid "Copy the selection"
-msgstr ""
-
 #. 10
 #. Copy
 #: libgnomeui/gnome-app-helper.c:157 libgnomeui/gnome-popup-help.c:59
@@ -261,8 +257,8 @@ msgstr ""
 msgid "_Copy"
 msgstr "Kopiuj"
 
-#: libgnomeui/gnome-app-helper.c:162
-msgid "Paste the clipboard"
+#: libgnomeui/gnome-app-helper.c:157
+msgid "Copy the selection"
 msgstr ""
 
 #. Paste
@@ -270,6 +266,10 @@ msgstr ""
 #, fuzzy
 msgid "_Paste"
 msgstr "Wklej"
+
+#: libgnomeui/gnome-app-helper.c:162
+msgid "Paste the clipboard"
+msgstr ""
 
 #. Clear
 #: libgnomeui/gnome-app-helper.c:167
@@ -281,18 +281,14 @@ msgstr "Kalendarz"
 msgid "Clear the selection"
 msgstr ""
 
-#: libgnomeui/gnome-app-helper.c:172
-msgid "Undo the last action"
-msgstr ""
-
 #. Undo
 #: libgnomeui/gnome-app-helper.c:172
 #, fuzzy
 msgid "_Undo"
 msgstr "Cofnij"
 
-#: libgnomeui/gnome-app-helper.c:177
-msgid "Redo the undone action"
+#: libgnomeui/gnome-app-helper.c:172
+msgid "Undo the last action"
 msgstr ""
 
 #. Redo
@@ -301,8 +297,8 @@ msgstr ""
 msgid "_Redo"
 msgstr "Ponów"
 
-#: libgnomeui/gnome-app-helper.c:182
-msgid "Search for a string"
+#: libgnomeui/gnome-app-helper.c:177
+msgid "Redo the undone action"
 msgstr ""
 
 #. Find
@@ -310,6 +306,10 @@ msgstr ""
 #, fuzzy
 msgid "_Find..."
 msgstr "Drukuj..."
+
+#: libgnomeui/gnome-app-helper.c:182
+msgid "Search for a string"
+msgstr ""
 
 #. Find Again
 #: libgnomeui/gnome-app-helper.c:187
@@ -320,13 +320,13 @@ msgstr ""
 msgid "Search again for the same string"
 msgstr ""
 
-#: libgnomeui/gnome-app-helper.c:193
-msgid "Replace a string"
-msgstr ""
-
 #. Replace
 #: libgnomeui/gnome-app-helper.c:193
 msgid "_Replace..."
+msgstr ""
+
+#: libgnomeui/gnome-app-helper.c:193
+msgid "Replace a string"
 msgstr ""
 
 #. Properties
@@ -673,20 +673,20 @@ msgstr "="
 msgid "INV"
 msgstr "INV"
 
-#: libgnomeui/gnome-client.c:828 libgnorba/goad-browser.c:27
-msgid "ID"
-msgstr "ID"
-
 #: libgnomeui/gnome-client.c:828
 msgid "Specify session management ID"
 msgstr "Podaj identyfikator sesji"
 
-#: libgnomeui/gnome-client.c:830
-msgid "PREFIX"
-msgstr ""
+#: libgnomeui/gnome-client.c:828 libgnorba/goad-browser.c:27
+msgid "ID"
+msgstr "ID"
 
 #: libgnomeui/gnome-client.c:830
 msgid "Specify prefix of saved configuration"
+msgstr ""
+
+#: libgnomeui/gnome-client.c:830
+msgid "PREFIX"
 msgstr ""
 
 #: libgnomeui/gnome-client.c:832
@@ -819,13 +819,13 @@ msgstr "Poprzedni"
 msgid "Loading Icons..."
 msgstr "Wczytywanie ikon..."
 
+#: libgnomeui/gnome-init.c:157
+msgid "Gdk debugging flags to set"
+msgstr ""
+
 #: libgnomeui/gnome-init.c:157 libgnomeui/gnome-init.c:159
 #: libgnomeui/gnome-init.c:179 libgnomeui/gnome-init.c:181
 msgid "FLAGS"
-msgstr ""
-
-#: libgnomeui/gnome-init.c:157
-msgid "Gdk debugging flags to set"
 msgstr ""
 
 #: libgnomeui/gnome-init.c:159
@@ -833,11 +833,11 @@ msgid "Gdk debugging flags to unset"
 msgstr ""
 
 #: libgnomeui/gnome-init.c:161
-msgid "DISPLAY"
+msgid "X display to use"
 msgstr ""
 
 #: libgnomeui/gnome-init.c:161
-msgid "X display to use"
+msgid "DISPLAY"
 msgstr ""
 
 #: libgnomeui/gnome-init.c:163
@@ -849,20 +849,20 @@ msgid "Don't use X shared memory extension"
 msgstr ""
 
 #: libgnomeui/gnome-init.c:167
-msgid "NAME"
-msgstr "NAZWA"
-
-#: libgnomeui/gnome-init.c:167
 msgid "Program name as used by the window manager"
 msgstr "Nazwa programu wykorzystywana przez mena¿era okien"
 
-#: libgnomeui/gnome-init.c:169
-msgid "CLASS"
-msgstr "KLASA"
+#: libgnomeui/gnome-init.c:167
+msgid "NAME"
+msgstr "NAZWA"
 
 #: libgnomeui/gnome-init.c:169
 msgid "Program class as used by the window manager"
 msgstr "Klasa programu wykorzystywana przez mena¿era okien"
+
+#: libgnomeui/gnome-init.c:169
+msgid "CLASS"
+msgstr "KLASA"
 
 #: libgnomeui/gnome-init.c:171
 msgid "HOST"
@@ -1288,11 +1288,11 @@ msgid "Edit"
 msgstr "Edycja"
 
 #: libgnomeui/winhints_demo.c:46
-msgid "winhints-test"
+msgid "wmhints-test"
 msgstr ""
 
 #: libgnomeui/winhints_demo.c:46
-msgid "wmhints-test"
+msgid "winhints-test"
 msgstr ""
 
 #: libgnomeui/winhints_demo.c:71
@@ -1425,11 +1425,11 @@ msgid "GOAD ID of the server to activate"
 msgstr ""
 
 #: libgnorba/goad-browser.c:28
-msgid "REPO-ID"
+msgid "Repository ID of the server to activate"
 msgstr ""
 
 #: libgnorba/goad-browser.c:28
-msgid "Repository ID of the server to activate"
+msgid "REPO-ID"
 msgstr ""
 
 #: libgnorba/goad-browser.c:171
@@ -1444,19 +1444,19 @@ msgid "(Internal use only) GOAD server ID to activate"
 msgstr ""
 
 #: libgnorba/loadshlib.c:11
-msgid "GOAD_ID"
-msgstr ""
-
-#: libgnorba/loadshlib.c:11
 msgid "ID under which GOAD knows this server"
 msgstr ""
 
-#: libgnorba/loadshlib.c:12
-msgid "REPO_ID"
+#: libgnorba/loadshlib.c:11
+msgid "GOAD_ID"
 msgstr ""
 
 #: libgnorba/loadshlib.c:12
 msgid "Repository ID under which GOAD knows this server"
+msgstr ""
+
+#: libgnorba/loadshlib.c:12
+msgid "REPO_ID"
 msgstr ""
 
 #: libgnorba/orbitns.c:295

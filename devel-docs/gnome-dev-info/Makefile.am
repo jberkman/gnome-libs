@@ -2,6 +2,7 @@ htmldir = $(datadir)/gnome/help/gnome-dev-info/C
 html_DATA = gnome-dev-info.html
 
 gnome-dev-info.html: gnome-dev-info/book1.html
+	-mkdir gnome-dev-info
 	-cp $(srcdir)/gnome-dev-info/book1.html gnome-dev-info/index.html
 	-cp $(srcdir)/gnome-dev-info/book1.html gnome-dev-info/gnome-dev-info.html
 

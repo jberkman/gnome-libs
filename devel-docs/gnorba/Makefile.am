@@ -22,7 +22,7 @@ gnorba_doc_DATA = 			\
 	gnorba-decl.txt			\
 	gnorba-sections.txt
 	
-EXTRA_DIST = $(gnorba_doc_DATA)
+EXTRA_DIST = $(gnorba_doc_DATA) gnorba-docs.sgml
 
 all-local: html/book1.html
 
@@ -83,5 +83,6 @@ dist-hook:
 	-cp $(srcdir)/html/*.html $(srcdir)/html/*.css $(distdir)/html
 	-cp $(srcdir)/tmpl/*.sgml $(distdir)/tmpl
 	-cp $(srcdir)/sgml/*.sgml $(distdir)/sgml
+	-cp $(srcdir)/sgml/*.bottom $(srcdir)/sgml/*.top $(distdir)/sgml
 
 .PHONY : html sgml templates scan

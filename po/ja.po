@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-libs 1.0.12\n"
-"POT-Creation-Date: 1999-08-31 13:26+0200\n"
+"POT-Creation-Date: 1999-08-31 15:54-0500\n"
 "PO-Revision-Date: 1999-06-23 06:04+09:00\n"
 "Last-Translator: Eiichiro ITANI <emu@ceres.dti.ne.jp>\n"
 "Language-Team: <gnome@lists.hypercore.co.jp>\n"
@@ -13,25 +13,25 @@ msgstr ""
 "Content-Type: text/plain; charset=EUC-jp\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: libgnome/gconfigger.c:32 libgnome/gconfigger.c:33
-msgid "CONFIG-PATH"
+#: libgnome/gconfigger.c:32
+msgid "get"
 msgstr ""
 
 #: libgnome/gconfigger.c:32
 msgid "Get config entry"
 msgstr "設定エントリを取得"
 
-#: libgnome/gconfigger.c:32
-msgid "get"
+#: libgnome/gconfigger.c:32 libgnome/gconfigger.c:33
+msgid "CONFIG-PATH"
+msgstr ""
+
+#: libgnome/gconfigger.c:33
+msgid "set"
 msgstr ""
 
 #: libgnome/gconfigger.c:33
 msgid "Set config entry"
 msgstr "設定エントリを設定"
-
-#: libgnome/gconfigger.c:33
-msgid "set"
-msgstr ""
 
 #: libgnome/gnome-popt.c:90
 #, c-format
@@ -143,23 +143,23 @@ msgstr "ヘルプ(_H)"
 msgid "_Windows/"
 msgstr "ウインドウ(_W)/"
 
-#: libgnomeui/gnome-app-helper.c:105
-msgid "Open a file"
-msgstr "ファイルを開く"
-
 #. Open
 #: libgnomeui/gnome-app-helper.c:105
 msgid "_Open..."
 msgstr "開く(_O)..."
 
-#: libgnomeui/gnome-app-helper.c:110
-msgid "Save the current file"
-msgstr "現在のファイルを保存"
+#: libgnomeui/gnome-app-helper.c:105
+msgid "Open a file"
+msgstr "ファイルを開く"
 
 #. Save
 #: libgnomeui/gnome-app-helper.c:110
 msgid "_Save"
 msgstr "保存(_S)"
+
+#: libgnomeui/gnome-app-helper.c:110
+msgid "Save the current file"
+msgstr "現在のファイルを保存"
 
 #. Save As
 #: libgnomeui/gnome-app-helper.c:115
@@ -179,14 +179,14 @@ msgstr "戻す(_R)"
 msgid "Revert to a saved version of the file"
 msgstr "ファイルを保存されたものに戻す"
 
-#: libgnomeui/gnome-app-helper.c:127
-msgid "Print the current file"
-msgstr "現在のファイルを印刷"
-
 #. Print
 #: libgnomeui/gnome-app-helper.c:127
 msgid "_Print"
 msgstr "印刷(_P)"
+
+#: libgnomeui/gnome-app-helper.c:127
+msgid "Print the current file"
+msgstr "現在のファイルを印刷"
 
 #. Print Setup
 #: libgnomeui/gnome-app-helper.c:132
@@ -197,14 +197,14 @@ msgstr "印刷の設定(_E)..."
 msgid "Setup the page settings for your current printer"
 msgstr "使っているプリンタのページ設定"
 
-#: libgnomeui/gnome-app-helper.c:138
-msgid "Close the current file"
-msgstr "現在のファイルを閉じる"
-
 #. Close
 #: libgnomeui/gnome-app-helper.c:138
 msgid "_Close"
 msgstr "閉じる(_C)"
+
+#: libgnomeui/gnome-app-helper.c:138
+msgid "Close the current file"
+msgstr "現在のファイルを閉じる"
 
 #. Exit
 #: libgnomeui/gnome-app-helper.c:143
@@ -227,24 +227,24 @@ msgstr "切取り(_U)"
 msgid "Cut the selection"
 msgstr "セレクションを切取る"
 
-#: libgnomeui/gnome-app-helper.c:157
-msgid "Copy the selection"
-msgstr "セレクションをコピー"
-
 #. 10
 #. Copy
 #: libgnomeui/gnome-app-helper.c:157 libgnomeui/gnome-popup-help.c:59
 msgid "_Copy"
 msgstr "コピー(_C)"
 
-#: libgnomeui/gnome-app-helper.c:162
-msgid "Paste the clipboard"
-msgstr "クリップボードから貼り付け"
+#: libgnomeui/gnome-app-helper.c:157
+msgid "Copy the selection"
+msgstr "セレクションをコピー"
 
 #. Paste
 #: libgnomeui/gnome-app-helper.c:162 libgnomeui/gnome-popup-help.c:61
 msgid "_Paste"
 msgstr "貼り付け(_P)"
+
+#: libgnomeui/gnome-app-helper.c:162
+msgid "Paste the clipboard"
+msgstr "クリップボードから貼り付け"
 
 #. Clear
 #: libgnomeui/gnome-app-helper.c:167
@@ -255,32 +255,32 @@ msgstr "消去(_L)"
 msgid "Clear the selection"
 msgstr "セレクションの消去"
 
-#: libgnomeui/gnome-app-helper.c:172
-msgid "Undo the last action"
-msgstr "直前の操作を取り消す"
-
 #. Undo
 #: libgnomeui/gnome-app-helper.c:172
 msgid "_Undo"
 msgstr "元に戻す(_U)"
 
-#: libgnomeui/gnome-app-helper.c:177
-msgid "Redo the undone action"
-msgstr "取り消した操作をやり直す"
+#: libgnomeui/gnome-app-helper.c:172
+msgid "Undo the last action"
+msgstr "直前の操作を取り消す"
 
 #. Redo
 #: libgnomeui/gnome-app-helper.c:177
 msgid "_Redo"
 msgstr "やり直し(_R)"
 
-#: libgnomeui/gnome-app-helper.c:182
-msgid "Search for a string"
-msgstr "文字列を検索する"
+#: libgnomeui/gnome-app-helper.c:177
+msgid "Redo the undone action"
+msgstr "取り消した操作をやり直す"
 
 #. Find
 #: libgnomeui/gnome-app-helper.c:182
 msgid "_Find..."
 msgstr "検索(_F)..."
+
+#: libgnomeui/gnome-app-helper.c:182
+msgid "Search for a string"
+msgstr "文字列を検索する"
 
 #. Find Again
 #: libgnomeui/gnome-app-helper.c:187
@@ -291,14 +291,14 @@ msgstr "再検索(_A)"
 msgid "Search again for the same string"
 msgstr "更に同じ文字列を探す"
 
-#: libgnomeui/gnome-app-helper.c:193
-msgid "Replace a string"
-msgstr "文字列を置き換える"
-
 #. Replace
 #: libgnomeui/gnome-app-helper.c:193
 msgid "_Replace..."
 msgstr "置換(_R)..."
+
+#: libgnomeui/gnome-app-helper.c:193
+msgid "Replace a string"
+msgstr "文字列を置き換える"
 
 #. Properties
 #: libgnomeui/gnome-app-helper.c:198
@@ -638,21 +638,21 @@ msgstr "="
 msgid "INV"
 msgstr "INV"
 
-#: libgnomeui/gnome-client.c:828 libgnorba/goad-browser.c:27
-msgid "ID"
-msgstr "ID"
-
 #: libgnomeui/gnome-client.c:828
 msgid "Specify session management ID"
 msgstr "セッションマネージメントIDの指定"
 
-#: libgnomeui/gnome-client.c:830
-msgid "PREFIX"
-msgstr "プレフィクス"
+#: libgnomeui/gnome-client.c:828 libgnorba/goad-browser.c:27
+msgid "ID"
+msgstr "ID"
 
 #: libgnomeui/gnome-client.c:830
 msgid "Specify prefix of saved configuration"
 msgstr "設定を保存する際のプレフィクスを指定する"
+
+#: libgnomeui/gnome-client.c:830
+msgid "PREFIX"
+msgstr "プレフィクス"
 
 #: libgnomeui/gnome-client.c:832
 msgid "Disable connection to session manager"
@@ -781,26 +781,26 @@ msgstr "プレビュー"
 msgid "Loading Icons..."
 msgstr "アイコンを読み込み中..."
 
+#: libgnomeui/gnome-init.c:157
+msgid "Gdk debugging flags to set"
+msgstr "セットするGdkデバッグフラグ"
+
 #: libgnomeui/gnome-init.c:157 libgnomeui/gnome-init.c:159
 #: libgnomeui/gnome-init.c:179 libgnomeui/gnome-init.c:181
 msgid "FLAGS"
 msgstr "フラグ"
-
-#: libgnomeui/gnome-init.c:157
-msgid "Gdk debugging flags to set"
-msgstr "セットするGdkデバッグフラグ"
 
 #: libgnomeui/gnome-init.c:159
 msgid "Gdk debugging flags to unset"
 msgstr "下ろすGdkデバッグフラグ"
 
 #: libgnomeui/gnome-init.c:161
-msgid "DISPLAY"
-msgstr "ディスプレイ"
-
-#: libgnomeui/gnome-init.c:161
 msgid "X display to use"
 msgstr "使用するXディスプレイ"
+
+#: libgnomeui/gnome-init.c:161
+msgid "DISPLAY"
+msgstr "ディスプレイ"
 
 #: libgnomeui/gnome-init.c:163
 msgid "Make X calls synchronous"
@@ -811,20 +811,20 @@ msgid "Don't use X shared memory extension"
 msgstr "X共有メモリエクステンションを使用しない"
 
 #: libgnomeui/gnome-init.c:167
-msgid "NAME"
-msgstr "名前"
-
-#: libgnomeui/gnome-init.c:167
 msgid "Program name as used by the window manager"
 msgstr "ウィンドウマネージャに指示するプログラム名"
 
-#: libgnomeui/gnome-init.c:169
-msgid "CLASS"
-msgstr "クラス"
+#: libgnomeui/gnome-init.c:167
+msgid "NAME"
+msgstr "名前"
 
 #: libgnomeui/gnome-init.c:169
 msgid "Program class as used by the window manager"
 msgstr "ウィンドウマネージャに指示するクラス名"
+
+#: libgnomeui/gnome-init.c:169
+msgid "CLASS"
+msgstr "クラス"
 
 #: libgnomeui/gnome-init.c:171
 msgid "HOST"
@@ -1255,12 +1255,12 @@ msgid "Edit"
 msgstr "編集"
 
 #: libgnomeui/winhints_demo.c:46
-msgid "winhints-test"
-msgstr "winhintsのテスト"
-
-#: libgnomeui/winhints_demo.c:46
 msgid "wmhints-test"
 msgstr "wmhintsのテスト"
+
+#: libgnomeui/winhints_demo.c:46
+msgid "winhints-test"
+msgstr "winhintsのテスト"
 
 #: libgnomeui/winhints_demo.c:71
 msgid "Layer:"
@@ -1395,12 +1395,12 @@ msgid "GOAD ID of the server to activate"
 msgstr "活性化するサーバの GOAD ID"
 
 #: libgnorba/goad-browser.c:28
-msgid "REPO-ID"
-msgstr "REPO-ID"
-
-#: libgnorba/goad-browser.c:28
 msgid "Repository ID of the server to activate"
 msgstr "活性化するサーバのリポジトリID"
+
+#: libgnorba/goad-browser.c:28
+msgid "REPO-ID"
+msgstr "REPO-ID"
 
 #: libgnorba/goad-browser.c:171
 msgid ""
@@ -1417,20 +1417,20 @@ msgid "(Internal use only) GOAD server ID to activate"
 msgstr "(内部使用のみ)活性化する GOAD サーバの ID"
 
 #: libgnorba/loadshlib.c:11
-msgid "GOAD_ID"
-msgstr "GOAD_ID"
-
-#: libgnorba/loadshlib.c:11
 msgid "ID under which GOAD knows this server"
 msgstr "GOADがこのサーバとして認識する ID"
 
-#: libgnorba/loadshlib.c:12
-msgid "REPO_ID"
-msgstr ""
+#: libgnorba/loadshlib.c:11
+msgid "GOAD_ID"
+msgstr "GOAD_ID"
 
 #: libgnorba/loadshlib.c:12
 msgid "Repository ID under which GOAD knows this server"
 msgstr "GOADがこのサーバとして認識するリポジトリ ID"
+
+#: libgnorba/loadshlib.c:12
+msgid "REPO_ID"
+msgstr ""
 
 #: libgnorba/orbitns.c:295
 msgid "Could not get name service!"

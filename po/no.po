@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-libs 1.0.11\n"
-"POT-Creation-Date: 1999-08-31 13:26+0200\n"
+"POT-Creation-Date: 1999-08-31 15:54-0500\n"
 "PO-Revision-Date: 1999-08-31 22:53+02:00\n"
 "Last-Translator: Kjartan Maraas <kmaraas@online.no>\n"
 "Language-Team: Norwegian <no@li.org>\n"
@@ -13,25 +13,25 @@ msgstr ""
 "Content-Type: text/plain; charset=iso-8859-1\n"
 "Content-Transfer-Encoding: 8-bit\n"
 
-#: libgnome/gconfigger.c:32 libgnome/gconfigger.c:33
-msgid "CONFIG-PATH"
-msgstr "KONFIGURASJONS-STI"
+#: libgnome/gconfigger.c:32
+msgid "get"
+msgstr "hent"
 
 #: libgnome/gconfigger.c:32
 msgid "Get config entry"
 msgstr "Hent konfigurasjonsoppføring"
 
-#: libgnome/gconfigger.c:32
-msgid "get"
-msgstr "hent"
-
-#: libgnome/gconfigger.c:33
-msgid "Set config entry"
-msgstr "Sett konfigurasjonsoppføring"
+#: libgnome/gconfigger.c:32 libgnome/gconfigger.c:33
+msgid "CONFIG-PATH"
+msgstr "KONFIGURASJONS-STI"
 
 #: libgnome/gconfigger.c:33
 msgid "set"
 msgstr "sett"
+
+#: libgnome/gconfigger.c:33
+msgid "Set config entry"
+msgstr "Sett konfigurasjonsoppføring"
 
 #: libgnome/gnome-popt.c:90
 #, c-format
@@ -144,23 +144,23 @@ msgstr "_Hjelp"
 msgid "_Windows/"
 msgstr "Vin_duer/"
 
-#: libgnomeui/gnome-app-helper.c:105
-msgid "Open a file"
-msgstr "Åpne en fil"
-
 #. Open
 #: libgnomeui/gnome-app-helper.c:105
 msgid "_Open..."
 msgstr "_Åpne..."
 
-#: libgnomeui/gnome-app-helper.c:110
-msgid "Save the current file"
-msgstr "Lagre aktiv fil"
+#: libgnomeui/gnome-app-helper.c:105
+msgid "Open a file"
+msgstr "Åpne en fil"
 
 #. Save
 #: libgnomeui/gnome-app-helper.c:110
 msgid "_Save"
 msgstr "_Lagre"
+
+#: libgnomeui/gnome-app-helper.c:110
+msgid "Save the current file"
+msgstr "Lagre aktiv fil"
 
 #. Save As
 #: libgnomeui/gnome-app-helper.c:115
@@ -180,14 +180,14 @@ msgstr "_Gå tilbake"
 msgid "Revert to a saved version of the file"
 msgstr "Gå tilbake til lagret versjon av filen"
 
-#: libgnomeui/gnome-app-helper.c:127
-msgid "Print the current file"
-msgstr "Skriv ut aktiv fil"
-
 #. Print
 #: libgnomeui/gnome-app-helper.c:127
 msgid "_Print"
 msgstr "S_kriv ut"
+
+#: libgnomeui/gnome-app-helper.c:127
+msgid "Print the current file"
+msgstr "Skriv ut aktiv fil"
 
 #. Print Setup
 #: libgnomeui/gnome-app-helper.c:132
@@ -198,14 +198,14 @@ msgstr "Skriveropps_ett"
 msgid "Setup the page settings for your current printer"
 msgstr "Oppsett av sideinnstillingene for din nåværende skriver"
 
-#: libgnomeui/gnome-app-helper.c:138
-msgid "Close the current file"
-msgstr "Lukk aktiv fil"
-
 #. Close
 #: libgnomeui/gnome-app-helper.c:138
 msgid "_Close"
 msgstr "L_ukk"
+
+#: libgnomeui/gnome-app-helper.c:138
+msgid "Close the current file"
+msgstr "Lukk aktiv fil"
 
 #. Exit
 #: libgnomeui/gnome-app-helper.c:143
@@ -228,24 +228,24 @@ msgstr "Klipp _ut"
 msgid "Cut the selection"
 msgstr "Klipp ut utvalget"
 
-#: libgnomeui/gnome-app-helper.c:157
-msgid "Copy the selection"
-msgstr "Kopier utvalget"
-
 #. 10
 #. Copy
 #: libgnomeui/gnome-app-helper.c:157 libgnomeui/gnome-popup-help.c:59
 msgid "_Copy"
 msgstr "_Kopier"
 
-#: libgnomeui/gnome-app-helper.c:162
-msgid "Paste the clipboard"
-msgstr "Lim inn fra utklippstavlen"
+#: libgnomeui/gnome-app-helper.c:157
+msgid "Copy the selection"
+msgstr "Kopier utvalget"
 
 #. Paste
 #: libgnomeui/gnome-app-helper.c:162 libgnomeui/gnome-popup-help.c:61
 msgid "_Paste"
 msgstr "_Lim inn"
+
+#: libgnomeui/gnome-app-helper.c:162
+msgid "Paste the clipboard"
+msgstr "Lim inn fra utklippstavlen"
 
 #. Clear
 #: libgnomeui/gnome-app-helper.c:167
@@ -256,32 +256,32 @@ msgstr "_Slett"
 msgid "Clear the selection"
 msgstr "Slett utvalget"
 
-#: libgnomeui/gnome-app-helper.c:172
-msgid "Undo the last action"
-msgstr "Angre siste handling"
-
 #. Undo
 #: libgnomeui/gnome-app-helper.c:172
 msgid "_Undo"
 msgstr "A_ngre"
 
-#: libgnomeui/gnome-app-helper.c:177
-msgid "Redo the undone action"
-msgstr "Gjenopprett den angrede handlingen"
+#: libgnomeui/gnome-app-helper.c:172
+msgid "Undo the last action"
+msgstr "Angre siste handling"
 
 #. Redo
 #: libgnomeui/gnome-app-helper.c:177
 msgid "_Redo"
 msgstr "_Gjenopprett"
 
-#: libgnomeui/gnome-app-helper.c:182
-msgid "Search for a string"
-msgstr "Søk etter en tekststreng"
+#: libgnomeui/gnome-app-helper.c:177
+msgid "Redo the undone action"
+msgstr "Gjenopprett den angrede handlingen"
 
 #. Find
 #: libgnomeui/gnome-app-helper.c:182
 msgid "_Find..."
 msgstr "_Finn..."
+
+#: libgnomeui/gnome-app-helper.c:182
+msgid "Search for a string"
+msgstr "Søk etter en tekststreng"
 
 #. Find Again
 #: libgnomeui/gnome-app-helper.c:187
@@ -292,14 +292,14 @@ msgstr "Finn _igjen"
 msgid "Search again for the same string"
 msgstr "Søk på nytt etter den samme tekststrengen"
 
-#: libgnomeui/gnome-app-helper.c:193
-msgid "Replace a string"
-msgstr "Erstatt en tekststreng"
-
 #. Replace
 #: libgnomeui/gnome-app-helper.c:193
 msgid "_Replace..."
 msgstr "E_rstatt"
+
+#: libgnomeui/gnome-app-helper.c:193
+msgid "Replace a string"
+msgstr "Erstatt en tekststreng"
 
 #. Properties
 #: libgnomeui/gnome-app-helper.c:198
@@ -639,21 +639,21 @@ msgstr "="
 msgid "INV"
 msgstr "INV"
 
-#: libgnomeui/gnome-client.c:828 libgnorba/goad-browser.c:27
-msgid "ID"
-msgstr "ID"
-
 #: libgnomeui/gnome-client.c:828
 msgid "Specify session management ID"
 msgstr "Spesifiser ID for sesjonskontroll"
 
-#: libgnomeui/gnome-client.c:830
-msgid "PREFIX"
-msgstr "PREFIKS"
+#: libgnomeui/gnome-client.c:828 libgnorba/goad-browser.c:27
+msgid "ID"
+msgstr "ID"
 
 #: libgnomeui/gnome-client.c:830
 msgid "Specify prefix of saved configuration"
 msgstr "Spesifiser prefiks for lagret konfigurasjon"
+
+#: libgnomeui/gnome-client.c:830
+msgid "PREFIX"
+msgstr "PREFIKS"
 
 #: libgnomeui/gnome-client.c:832
 msgid "Disable connection to session manager"
@@ -779,26 +779,26 @@ msgstr "Forhåndsvisning"
 msgid "Loading Icons..."
 msgstr "Laster ikoner..."
 
+#: libgnomeui/gnome-init.c:157
+msgid "Gdk debugging flags to set"
+msgstr "Gdk avlusingsflagg som skal slås på"
+
 #: libgnomeui/gnome-init.c:157 libgnomeui/gnome-init.c:159
 #: libgnomeui/gnome-init.c:179 libgnomeui/gnome-init.c:181
 msgid "FLAGS"
 msgstr "FLAGG"
-
-#: libgnomeui/gnome-init.c:157
-msgid "Gdk debugging flags to set"
-msgstr "Gdk avlusingsflagg som skal slås på"
 
 #: libgnomeui/gnome-init.c:159
 msgid "Gdk debugging flags to unset"
 msgstr "Gdk avlusingsflagg som skal slås av"
 
 #: libgnomeui/gnome-init.c:161
-msgid "DISPLAY"
-msgstr "DISPLAY"
-
-#: libgnomeui/gnome-init.c:161
 msgid "X display to use"
 msgstr "X-display som skal brukes"
+
+#: libgnomeui/gnome-init.c:161
+msgid "DISPLAY"
+msgstr "DISPLAY"
 
 #: libgnomeui/gnome-init.c:163
 msgid "Make X calls synchronous"
@@ -809,20 +809,20 @@ msgid "Don't use X shared memory extension"
 msgstr "Ikke bruk X-utvidelse for delt minne"
 
 #: libgnomeui/gnome-init.c:167
-msgid "NAME"
-msgstr "NAVN"
-
-#: libgnomeui/gnome-init.c:167
 msgid "Program name as used by the window manager"
 msgstr "Programnavn som brukt av vindusbehandleren"
 
-#: libgnomeui/gnome-init.c:169
-msgid "CLASS"
-msgstr "KLASSE"
+#: libgnomeui/gnome-init.c:167
+msgid "NAME"
+msgstr "NAVN"
 
 #: libgnomeui/gnome-init.c:169
 msgid "Program class as used by the window manager"
 msgstr "Programklasse som brukt av vindusbehandleren"
+
+#: libgnomeui/gnome-init.c:169
+msgid "CLASS"
+msgstr "KLASSE"
 
 #: libgnomeui/gnome-init.c:171
 msgid "HOST"
@@ -1256,12 +1256,12 @@ msgid "Edit"
 msgstr "Rediger"
 
 #: libgnomeui/winhints_demo.c:46
-msgid "winhints-test"
-msgstr "winhints-test"
-
-#: libgnomeui/winhints_demo.c:46
 msgid "wmhints-test"
 msgstr "wmhints-test"
+
+#: libgnomeui/winhints_demo.c:46
+msgid "winhints-test"
+msgstr "winhints-test"
 
 #: libgnomeui/winhints_demo.c:71
 msgid "Layer:"
@@ -1394,12 +1394,12 @@ msgid "GOAD ID of the server to activate"
 msgstr "GOAD-ID til tjeneren som skal aktiveres"
 
 #: libgnorba/goad-browser.c:28
-msgid "REPO-ID"
-msgstr "REPO-ID"
-
-#: libgnorba/goad-browser.c:28
 msgid "Repository ID of the server to activate"
 msgstr "Repository-ID til tjeneren som skal aktiveres"
+
+#: libgnorba/goad-browser.c:28
+msgid "REPO-ID"
+msgstr "REPO-ID"
 
 #: libgnorba/goad-browser.c:171
 msgid ""
@@ -1416,20 +1416,20 @@ msgid "(Internal use only) GOAD server ID to activate"
 msgstr "(Kun for intern bruk) GOAD-tjener ID som skal aktiveres"
 
 #: libgnorba/loadshlib.c:11
-msgid "GOAD_ID"
-msgstr "GOAD_ID"
-
-#: libgnorba/loadshlib.c:11
 msgid "ID under which GOAD knows this server"
 msgstr "ID som GOAD kjenner tjeneren under"
 
-#: libgnorba/loadshlib.c:12
-msgid "REPO_ID"
-msgstr "REPO_ID"
+#: libgnorba/loadshlib.c:11
+msgid "GOAD_ID"
+msgstr "GOAD_ID"
 
 #: libgnorba/loadshlib.c:12
 msgid "Repository ID under which GOAD knows this server"
 msgstr "Lager-ID som GOAD kjenner denne tjeneren som"
+
+#: libgnorba/loadshlib.c:12
+msgid "REPO_ID"
+msgstr "REPO_ID"
 
 #: libgnorba/orbitns.c:295
 msgid "Could not get name service!"
