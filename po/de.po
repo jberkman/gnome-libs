@@ -6,9 +6,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: gnome-libs 1.0.17\n"
-"POT-Creation-Date: 1999-09-27 13:56-0500\n"
-"PO-Revision-Date: 1999-09-19 05:30+02:00\n"
+"Project-Id-Version: gnome-libs 1.0.42\n"
+"POT-Creation-Date: 1999-09-28 21:34+0200\n"
+"PO-Revision-Date: 1999-09-28 21:41+02:00\n"
 "Last-Translator: Karl Eichwalder <ke@suse.de>\n"
 "Language-Team: Matthias Warkus <mawa@iname.com>\n"
 "MIME-Version: 1.0\n"
@@ -749,13 +749,12 @@ msgid "Advanced"
 msgstr "Fortgeschritten"
 
 #: libgnomeui/gnome-druid.c:129
-#, fuzzy
 msgid "Back"
-msgstr "Grundlegend"
+msgstr "Zurück"
 
 #: libgnomeui/gnome-druid.c:136
 msgid "Finish"
-msgstr ""
+msgstr "Beenden"
 
 #: libgnomeui/gnome-file-entry.c:151
 msgid "Select file"
@@ -870,8 +869,8 @@ msgstr "MODUL"
 
 #. dialog display isn't working out
 #: libgnomeui/gnome-init.c:635
-msgid "Giving up on displaying error dialog"
-msgstr "Gebe es auf, Fehlerdialog anzuzeigen"
+msgid "Multiple segmentation faults occurred; can't display error dialog\n"
+msgstr "Mehrere Segmentation Faults ist vorgefallen; kann Fehlerdialog nicht anzeigen\n"
 
 #: libgnomeui/gnome-messagebox.c:111 libgnomeui/gnome-messagebox.c:240
 msgid "Information"
@@ -1206,11 +1205,12 @@ msgstr ""
 msgid "Usage: gnome_segv appname signum\n"
 msgstr "Syntax: gnome_segv appname signum\n"
 
+# AFAIK, this string should not be marked as translatable. -ke-
 #. Please download http://www.gnome.org/application_crashed-shtml.txt,
 #. * translate the plain text, and send the file to webmaster@gnome.org.
 #: libgnomeui/gnome_segv.c:74
 msgid "http://www.gnome.org/application_crashed.shtml"
-msgstr ""
+msgstr "http://www.gnome.org/application_crashed.shtml"
 
 #: libgnomeui/gnome_segv.c:75
 msgid "Please visit the GNOME Application Crash page for more information"
