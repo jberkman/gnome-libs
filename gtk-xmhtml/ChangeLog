@@ -1,5 +1,9 @@
 Tue Jan 13 22:04:43 1998  Federico Mena  <federico@bananoid.nuclecu.unam.mx>
 
+	* gtk-xmhtml.c (gtk_xmhtml_new): The widget starts up frozen and
+ 	thaws itself when it is realized.  This fixes all of the problems
+ 	regarding realization, gc creation, and window background setting.
+
 	* Lots of changes all over the place to fix colors.  Things are
 	*almost* working right now.  I think I'm only missing setting the
 	window backgrounds appropriately.  Several things were done:

@@ -205,7 +205,6 @@ gtk_xmhtml_init (GtkXmHTML *html)
 	gtk_xmhtml_reset_pending_flags (html);
 
 	/* Gtk port bits */
-	html->frozen = 0;
 	html->children = NULL;
 
 	html->background_pixel = 0;
@@ -225,6 +224,7 @@ gtk_xmhtml_new (void)
 	GTK_WIDGET(html)->allocation.width  = 200;
 	GTK_WIDGET(html)->allocation.height = 200;
 	html->initialized = 0;
+	html->frozen = 1;
 	gtk_xmhtml_source (html, "<body></body>");
 	return GTK_WIDGET (html);
 }
@@ -611,7 +611,7 @@ CheckGC(XmHTMLWidget html)
 		xgc.function = GDK_COPY;
 		xgc.foreground.pixel = Toolkit_StyleColor_Foreground(html);
 		xgc.background.pixel = Toolkit_StyleColor_Background(html);
-		html->html.gc = gdk_gc_new_with_values (GTK_WIDGET (html)->window, &xgc,
+		html->html.gc = gdk_gc_new_with_values (GTK_WIDGET(html)->window, &xgc,
 							GDK_GC_FOREGROUND | GDK_GC_BACKGROUND |
 							GDK_GC_FUNCTION);
 		_XmHTMLRecomputeColors(html);
@@ -621,8 +621,8 @@ CheckGC(XmHTMLWidget html)
 	/* background image gc */
 	if(html->html.body_images_enabled && html->html.bg_gc == NULL)
 	{
-		html->html.bg_gc = gdk_gc_new (GTK_WIDGET (html)->window);
-		gdk_gc_copy (html->html.gc, html->html.bg_gc);
+		html->html.bg_gc = gdk_gc_new (GTK_WIDGET(html)->window);
+		gdk_gc_copy (html->html.bg_gc, html->html.gc);
 	}
 
 	_XmHTMLDebug(1, ("XmHTML.c: CheckGC End\n"));
@@ -801,6 +801,7 @@ static void
 drawing_area_realized (GtkWidget *widget, gpointer data)
 {
 	GtkXmHTML *html = data;
+	GdkColor c;
 
 	html->background_pixel = widget->style->bg[GTK_STATE_NORMAL].pixel;
 	html->foreground_pixel = widget->style->fg[GTK_STATE_NORMAL].pixel;
@@ -814,6 +815,8 @@ drawing_area_realized (GtkWidget *widget, gpointer data)
 	html->highlight_gc = gdk_gc_new (widget->window);
 	gdk_gc_copy (html->highlight_gc, widget->style->bg_gc[GTK_STATE_PRELIGHT]);
 	html->highlight_color = widget->style->bg[GTK_STATE_PRELIGHT].pixel;
+
+	gtk_xmhtml_thaw (html);
 
 	/* FIXME: remember to destroy the GCs later */
 }
@@ -847,7 +850,7 @@ CreateHTMLWidget(XmHTMLWidget html)
 
 		gtk_signal_connect (GTK_OBJECT (draw_area), "realize",
 				    (GtkSignalFunc) drawing_area_realized, html);
-		
+
 		gtk_signal_connect (GTK_OBJECT (draw_area), "expose_event",
 				    (GtkSignalFunc) gtk_xmhtml_expose_event, html);
 		
@@ -885,6 +888,7 @@ CreateHTMLWidget(XmHTMLWidget html)
 				       /* not yet handled */
 				       | GDK_KEY_PRESS_MASK
 				       | GDK_KEY_RELEASE_MASK);
+
 		gtk_widget_show (draw_area);
 	}
 
@@ -932,7 +936,7 @@ gtk_xmhtml_realize (GtkWidget *widget)
 	g_return_if_fail (GTK_IS_XMHTML (widget));
 	
 	GTK_WIDGET_SET_FLAGS (widget, GTK_REALIZED);
-	
+
 	attributes.window_type = GDK_WINDOW_CHILD;
 	attributes.x = widget->allocation.x;
 	attributes.y = widget->allocation.y;
@@ -1547,7 +1551,6 @@ gtk_xmhtml_sync_reformat (GtkXmHTML *html)
 
 		GdkColor c;
 		c.pixel = html->html.body_bg;
-		printf("4\n");
 		gdk_window_set_background(html->html.work_area->window, &c);
 	}
 
@@ -1639,7 +1642,7 @@ gtk_xmhtml_try_sync (GtkXmHTML *html)
 void
 gtk_xmhtml_freeze (GtkXmHTML *html)
 {
-	html->frozen = 1;
+	html->frozen++;
 }
 
 void
@@ -1648,8 +1651,8 @@ gtk_xmhtml_thaw (GtkXmHTML *html)
 	if (!html->frozen)
 		return;
 
-	html->frozen = 0;
-	gtk_xmhtml_sync (html);
+	html->frozen--;
+	gtk_xmhtml_try_sync (html);
 }
 
 void

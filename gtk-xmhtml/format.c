@@ -36,6 +36,15 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.9  1998/01/14 05:49:51  unammx
+* Tue Jan 13 22:04:43 1998  Federico Mena  <federico@bananoid.nuclecu.unam.mx>
+*
+* 	* gtk-xmhtml.c (gtk_xmhtml_new): The widget starts up frozen and
+*  	thaws itself when it is realized.  This fixes all of the problems
+*  	regarding realization, gc creation, and window background setting.
+*
+* (Federico and Miguel)
+*
 * Revision 1.8  1998/01/14 04:11:52  unammx
 * Tue Jan 13 22:04:43 1998  Federico Mena  <federico@bananoid.nuclecu.unam.mx>
 *
@@ -1726,7 +1735,6 @@ ParseBodyTags(XmHTMLWidget html, XmHTMLObject *data)
 					/* FIXME: I don't know if this is what we want */
 					GdkColor c;
 					c.pixel = html->html.body_bg;
-					printf("2\n");
 					gdk_window_set_background(html->html.work_area->window, &c);
 				}
 #endif
