@@ -112,6 +112,7 @@ goad_server_list_get(void)
   DIR *dirh;
   GoadServerList *newl;
   GHashTable *by_goad_id;
+  int i;
 
   newl = g_new0(GoadServerList, 1);
   servinfo = g_array_new(TRUE, FALSE, sizeof(GoadServer));
@@ -158,6 +159,10 @@ goad_server_list_get(void)
   goad_server_list_read(SERVER_LISTING_PATH "/", servinfo, tmpstr, newl);
 
   newl->list = (GoadServer *)servinfo->data;
+  for(i = 0; newl->list[i].repo_id; i++)
+    g_hash_table_insert(newl->by_goad_id,
+			newl->list[i].server_id, &newl->list[i]);
+
   g_array_free(servinfo, FALSE);
   g_string_free(tmpstr, TRUE);
 
@@ -329,8 +334,6 @@ goad_server_list_read(const char *filename,
 		       newval.description);
     newval.location_info = gnome_config_get_string(dummy->str);
     g_array_append_val(servinfo, newval);
-    nvptr = &g_array_index(servinfo, GoadServer, servinfo->len - 1);
-    g_hash_table_insert(newl->by_goad_id, newval.server_id, nvptr);
   }
 
   gnome_config_pop_prefix();
