@@ -1,5 +1,8 @@
 Fri May 22 18:24:09 1998  Tom Tromey  <tromey@cygnus.com>
 
+	* libgnome/gnome-util.c (g_file_exists): `filename' argument now
+	const.
+
 	Some -Wall fixes:
 	* libgnome/lib_date.c: Include <stdio.h> for sprintf.
 	* libgnome/gnome-triggers.c (gnome_triggers_add_trigger): Removed
