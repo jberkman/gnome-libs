@@ -220,17 +220,20 @@ gnome_icon_selector_construct (GnomeIconSelector *iselector,
  */
 GtkWidget *
 gnome_icon_selector_new (const gchar *history_id,
-			 const gchar *dialog_title)
+			 const gchar *dialog_title,
+			 guint32 flags)
 {
     GnomeIconSelector *iselector;
-    guint32 flags;
+
+    g_return_val_if_fail ((flags & ~GNOME_SELECTOR_USER_FLAGS) == 0, NULL);
 
     iselector = gtk_type_new (gnome_icon_selector_get_type ());
 
-    flags = GNOME_SELECTOR_DEFAULT_ENTRY_WIDGET |
+    flags |= GNOME_SELECTOR_DEFAULT_ENTRY_WIDGET |
 	GNOME_SELECTOR_DEFAULT_SELECTOR_WIDGET |
 	GNOME_SELECTOR_DEFAULT_BROWSE_DIALOG |
 	GNOME_SELECTOR_WANT_BROWSE_BUTTON |
+	GNOME_SELECTOR_WANT_DEFAULT_BUTTON |
 	GNOME_SELECTOR_WANT_CLEAR_BUTTON;
 
     gnome_icon_selector_construct (iselector, history_id, dialog_title,
@@ -468,10 +471,8 @@ get_selection_handler (GnomeSelector *selector)
 
     for (c = list; c; c = c->next) {
 	guint pos = GPOINTER_TO_INT (c->data);
-	GSList *total_list;
 	gchar *filename;
 
-	total_list = gnome_selector_get_file_list (selector, TRUE);
 	filename = gnome_icon_list_get_icon_filename (gil, pos);
 
 	selection = g_slist_prepend (selection, filename);
@@ -616,7 +617,7 @@ gnome_icon_selector_add_defaults (GnomeIconSelector *iselector)
     pixmap_dir = gnome_unconditional_datadir_file ("pixmaps");
   
     gnome_selector_append_directory (GNOME_SELECTOR (iselector),
-				     pixmap_dir);
+				     pixmap_dir, TRUE);
 
     g_free (pixmap_dir);
 }
