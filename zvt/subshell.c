@@ -102,7 +102,7 @@ struct child_list {
 
 /* {{{ init_subshell */
 
-void close_msgfd (int childpid) {
+void close_msgfd (pid_t childpid) {
   struct child_list * prev, * child;
 
     child = children, prev = NULL;

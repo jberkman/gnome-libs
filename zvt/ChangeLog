@@ -1,3 +1,8 @@
+1998-09-14  Raja R Harinath  <harinath@cs.umn.edu>
+
+	* subshell.c (close_msgfd): Change prototype to agree with
+	declaration (use `pid_t', not int).
+
 1998-20-14  Erik Troan  <ewt@redhat.com>
 
 	* zvtterm.c, zvtterm.h: added optional automatic scrolling
