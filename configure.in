@@ -136,6 +136,11 @@ AC_CHECK_LIB(gif, DGifOpenFileName,
   AC_CHECK_HEADER(gif_lib.h,
     GIF_LIBS="-lgif"; AC_DEFINE(HAVE_LIBGIF)),,$GTK_LIBS)
 
+dnl Test for libungif
+AC_CHECK_LIB(ungif, DGifOpenFileName,
+  AC_CHECK_HEADER(gif_lib.h,
+    GIF_LIBS="-lungif"; AC_DEFINE(HAVE_LIBGIF)),,$GTK_LIBS)
+
 dnl Test for libpng
 AC_CHECK_LIB(png, png_read_info,
   AC_CHECK_HEADER(png.h,
