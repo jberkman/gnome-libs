@@ -1,3 +1,14 @@
+1998-07-30  Federico Mena Quintero  <federico@nuclecu.unam.mx>
+
+	* canvas-primitives.c (create_canvas_primitives): Made the
+	necessary changes for the new canvas.
+	(create_canvas_primitives): Use scrollbars instead of the stupid
+	scroll buttons we had before.  Removed the scroll() and
+	create_arrow() functions.
+
+	* canvas-arrowhead.c (create_canvas_arrowhead): Likewise.
+	* canvas-fifteen.c (create_canvas_fifteen): Likewise.
+
 1998-07-29  Federico Mena Quintero  <federico@nuclecu.unam.mx>
 
 	* canvas-arrowhead.c (create_canvas_arrowhead): New spiffy test
