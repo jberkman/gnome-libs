@@ -23,7 +23,6 @@ SUBDIRS = po intl support	\
 	gdk-pixbuf		\
 	libgnomeui		\
 	gtk-xmhtml		\
-	zvt			\
 	idl			\
 	$(gconf_SUBDIRS)	\
 	$(gnome_vfs_SUBDIRS)	\
