@@ -10,6 +10,8 @@
  */
 #undef	HAVE_TERMCAP_LINUX
 
+#undef	HAVE_LIBGLE
+
 /* build for the GNOME desktop project ?
  */
 #undef	HAVE_GNOME

@@ -51,6 +51,13 @@ static struct option	long_options[] = {
   { "execute",		required_argument,	NULL,	ARG_EXEC	},
   { "status-bar",	optional_argument,	NULL,	ARG_STATUS_BAR	},
   { "version",		no_argument,		NULL,	ARG_VERSION	},
+  /* Gdk options */
+  { "display",            required_argument,	NULL,	ARG_IGNORE	},
+  { "sync",               no_argument,          NULL,   ARG_IGNORE	},
+  { "show-events",        no_argument,          NULL,   ARG_IGNORE	},
+  { "no-show-events",     no_argument,          NULL,   ARG_IGNORE	},
+  { "no-xshm",            no_argument,          NULL,   ARG_IGNORE	},
+  { "debug-level",        required_argument,    NULL,   ARG_IGNORE	},
   { NULL, 0, NULL, 0 }
 };
 

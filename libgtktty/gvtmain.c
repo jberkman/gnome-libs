@@ -28,8 +28,12 @@
 #include	<string.h>
 
 #ifdef	HAVE_GNOME
-#include	"gnome.h"
+#  include	<gnome.h>
 #endif	HAVE_GNOME
+
+#ifdef	HAVE_LIBGLE
+#  include	<gle/gle.h>
+#endif	/* HAVE_LIBGLE */
 
 
 /* --- typedefs --- */
@@ -151,7 +155,7 @@ main	(int	argc,
     return exit_status;
 
   
-  /* Gtk+/GNOME initialization
+  /* Gtk+/GNOME/GLE initialization
    */
 #ifdef	HAVE_GNOME
   gnome_init(&argc, &argv);
@@ -159,6 +163,11 @@ main	(int	argc,
   gtk_init (&argc, &argv);
 #endif	/* !HAVE_GNOME */
 
+#ifdef	HAVE_LIBGLE
+  gle_init (&argc, &argv);
+#endif	/* HAVE_LIBGLE */
+
+  
   /* parse ~/.gtkrc, (this file also ommitted by the gnome_init stuff
    */
   home_dir = getenv ("HOME");
