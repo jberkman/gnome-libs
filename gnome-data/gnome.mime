@@ -54,9 +54,14 @@ audio/x-voc
 application/vcard		
 	ext: vcf
 
+application/x-gnome-card
+	ext: gcrd
+
 applicacion/x-troff-man		
-	ext: ms me
 	regex: (([^0-9]|^[^\.]*)\.([1-9][A-Za-z]*|n)|\.man)$
+
+application/x-troff-man-compressed
+	regex: ([^0-9]|^[^\.]*)\.([1-9][a-z]?|n)\.g?[Zz]$
 
 image/x-bmp			
 	ext: bmp
@@ -69,6 +74,9 @@ image/x-tga
 
 application/x-object-file	
 	ext: o
+
+application/x-shared-library
+	ext: so
 
 application/postscript
 	ext: ps eps
@@ -98,6 +106,9 @@ application/x-netcdf
 
 application/x-cpio
 	ext: cpio
+
+application/x-cpio-compressed
+	regex: \.cpio\.gz$
 
 application/x-csh
 	ext: csh
@@ -215,6 +226,7 @@ application/x-tar
 
 application/x-compressed-tar
 	regex,2: tar\.gz$
+	ext: tgz
 
 application/x-tcl
 	ext: tcl
@@ -251,3 +263,27 @@ application/zip
 
 audio/x-pn-realaudio      
 	ext: rm ra ram
+
+application/x-rpm
+	ext: rpm
+
+application/x-deb
+	ext: deb
+
+application/x-zoo
+	ext: zoo
+
+application/x-lha
+	ext: lha
+
+application/x-arj
+	ext: arj
+
+application/x-unix-archive
+	ext: a sa
+
+text/fortran:
+	ext: f
+
+application/x-gnu-rmail
+	regex: ^RMAIL$
