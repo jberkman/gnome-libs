@@ -1,9 +1,15 @@
-Tue Sep  1 00:48:02 CDT 1998  Frank Belew <frb@umr.edu>
-	* configure.in: use imlib.m4 instead of kludge
-	* libgnome/Makefile.am, libgnomeui/Makefile.am, test-gnome/Makefile.am
-	  gnome-hello/Makefile.am: use new GDK_IMLIB_CFLAGS isntead of 
-	  GTK_CFLAGS
+1998-09-07  Raja R Harinath  <harinath@cs.umn.edu>
 
+	* libgnome/Makefile.am (install-data-local): Setgid $(scoredir)
+	only if `chgrp' succeeds.
+
+Tue Sep  1 00:48:02 CDT 1998  Frank Belew <frb@umr.edu>
+	
+	* configure.in: Use imlib.m4 instead of kludge.
+	* libgnome/Makefile.am, libgnomeui/Makefile.am,
+	test-gnome/Makefile.am, gnome-hello/Makefile.am: Use new
+	GDK_IMLIB_CFLAGS instead of GTK_CFLAGS.
+	
 Mon Aug 24 11:51:03 1998  Tom Tromey  <tromey@cygnus.com>
 
 	* libgnome/gnome-metadata.h: New file.
