@@ -2,17 +2,19 @@
 GnomeDruidPage
 
 <!-- ##### SECTION Short_Description ##### -->
-
+  A virtual widget defining the druid page.
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-
+  This widget is a virtual widget to define the interface to a druid
+  page.  It's descendants are placed in #GnomeDruid, and comprise of the
+  actual material in the widget.
 </para>
 
 
 <!-- ##### SECTION See_Also ##### -->
 <para>
-
+#GnomeDruid, #GnomeDruidPageStart, #GnomeDruidPageStandard, #GnomeDruidPageFinish
 </para>
 
 
@@ -61,12 +63,13 @@ GnomeDruidPage
 
 <!-- ##### SIGNAL GnomeDruidPage::next ##### -->
 <para>
-
+This signal is emitted by the druid when the next button is pressed.  If
+the page wants to 
 </para>
 
 @druidpage: the object which received the signal.
 @arg1: 
-@Returns: 
+@Returns: TRUE or FALSE.
 
 <!-- ##### SIGNAL GnomeDruidPage::prepare ##### -->
 <para>

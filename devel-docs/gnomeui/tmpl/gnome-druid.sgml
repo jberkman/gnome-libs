@@ -8,18 +8,17 @@ GnomeDruid
   <para>
     The GNOME druid is a system for assisting the user with installing a
     service.  It is roughly equivilent in functionality to the
-    "Wizards" available in windows.
+    "Wizards" available in Windows.
   </para>
   <para>
-    There are two major parts of the druid, the #GnomeDruid widget,
-    and the set of #GnomeDruidPage widgets.  The #GnomeDruid widget is
-    the top level widget that interacts with the user.  It has a Next,
-    a Prev, and a Cancel button, as well as acts as a container.  It
-    is not a top-level widget, so it needs to be put in a #GtkWindow
-    in almost all cases.  The #GnomeDruidPage is a virtual widget,
-    from which all of the actual content of the page inherits from.
-    There are currently three of these available.  However, there is
-    no reason why more couldn't be written.
+    There are two major parts of the druid, the #GnomeDruid widget, and
+    the set of #GnomeDruidPage widgets.  The #GnomeDruid widget is the
+    top level widget that interacts with the user.  It has a Next, a
+    Prev, and a Cancel button, and acts as a container for the pages.
+    It is not a top-level widget, so it needs to be put in a #GtkWindow
+    in almost all cases.  The #GnomeDruidPage is a virtual widget, from
+    which all of the actual content of the page inherits from.  There
+    are currently three of these available withing gnome-libs.
   </para>
   <refsect2>
     <title>Creating a druid</title>
@@ -31,19 +30,21 @@ GnomeDruid
     </para>
     <para>
       You then create all appropriate #GnomeDruidPage widgets.  There
-      are three implementations of these in libgnomeui, although there's
-      no reason why you couldn't right a custom one.  They are the
+      are three implementations of these in libgnomeui, although there
+      is no reason why more couldn't be written.  They are the
       #GnomeDruidPageStart, the #GnomeDruidPageStandard, and the
       #GnomeDruidPageFinish.  The #GnomeDruidPageStandard acts as a
       #GtkContainer, and is probably the most commonly used druid page.
-      More information on the specific properties of these widgets can
-      be found on their respective pages.
+      The other ones, as their names might suggest, are used at the
+      endpoints of the druid.  More information on the specific
+      properties of these widgets can be found on their respective
+      pages.
     </para>
     <para>
-      In order to appear in the druid, you will need to add the pages to
-      it.  The druid itself keeps an internal list of all pages, and
+      You will need to add the pages to the druid in order for them to
+      appear.  The druid itself keeps an internal list of all pages, and
       using the gnome_druid_prepend_page(), gnome_druid_append_page(),
-      and gnome_druid_insert_page() will place them into it.  
+      and gnome_druid_insert_page() will place them into it.
     </para>
   </refsect2>
   <refsect2>
@@ -54,18 +55,18 @@ GnomeDruid
       "next", "finish", "cancel" and "prepare", and all but the last are
       triggered when their respective buttons are pressed.  In the
       absence of anything connected to these signals, the druid will
-      cycle through the pages in the order of the internal list.  
+      cycle through the pages in the order of the internal list, so for
+      a simple druid, just adding the pages in order is sufficient.
     </para>
     <para>
-      If the druid The current page will emit the appropriate signal in this case.
-      It is up to the druid author to trap this signal when necessary.
-      Most druids that have a non-linear flow of pages will want to call
-      gnome_druid_set_page() with the next page.  In addition, they will
-      want to return TRUE to let the druid know that it has handled the
-      page change.
-    </para>
-    <para>
-      
+      If the druid has some branching code, then it will be handled at
+      the point of the branch.  The current page will emit the
+      appropriate "next" or "back" signal in this case.  It is up to the
+      druid author to trap this signal when necessary and call
+      gnome_druid_set_page() in the handler to go to the correct page.
+      In addition, they will want to return TRUE to let the druid know
+      that it has handled the page change, and to prevent the druid from
+      following its list.
     </para>
   </refsect2>
 <!-- ##### SECTION See_Also ##### -->
@@ -141,7 +142,9 @@ GnomeDruid
 
 <!-- ##### SIGNAL GnomeDruid::cancel ##### -->
 <para>
-
+  This is emitted when the cancel button has been pressed.  Note that
+  the current druid page has the option to trap the signal and use it,
+  if need be, preventing this signal from being emitted.
 </para>
 
 @druid: the object which received the signal.
