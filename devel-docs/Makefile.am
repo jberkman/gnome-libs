@@ -69,3 +69,9 @@ doc_DATA = $(TEXT_FILES)
 dist-hook:
 	tar cvf - gnome-dev-info | (cd $(distdir); tar xf -)
 
+install-data-local: gnome-dev-info.html
+	for file in gnome-dev-info/*.html gnome-dev-info/*.css; do \
+          basefile=cho $$file | sed -e 's,^.*/,,' \
+          $(INSTALL_DATA) $$file $(DESTDIR)$(htmldir)/$$basefile; \
+        done
+
