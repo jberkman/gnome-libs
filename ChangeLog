@@ -1,3 +1,8 @@
+1998-05-18  Miguel de Icaza  <miguel@nuclecu.unam.mx>
+
+	* libgnome/gnome-dentry.c (gnome_desktop_entry_free): Do not free
+	item->exec as the gnome_string_arry_free already freed that.
+	
 Mon May 18 14:10:42 1998  Tom Tromey  <tromey@cygnus.com>
 
 	* libgnome/gnome-config.c (_gnome_config_set_vector): Also quote
