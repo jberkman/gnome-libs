@@ -1107,7 +1107,7 @@ vt_select_block(struct _vtx *vx, int size, int sx, int sy, int ex, int ey, int *
   }
 
   /* makes a rough assumption about the buffer size needed */
-  if ( (data = g_malloc(size*(ey-sy+1)*(vx->vt.width+20))) == 0 ) {
+  if ( (data = g_malloc(size*(ey-sy+1)*(vx->vt.width+20)+1)) == 0 ) {
     *len = 0;
     printf("ERROR: Cannot g_malloc selection buffer\n");
     return 0;
@@ -1156,6 +1156,7 @@ vt_select_block(struct _vtx *vx, int size, int sx, int sy, int ex, int ey, int *
   }
 
   *len = (out-data)/size;
+  *out = 0;
 
   d(printf("selected text = \n");
     fwrite(data, out-data, 1, stdout);
