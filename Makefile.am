@@ -6,12 +6,6 @@ AUTOMAKE_OPTIONS = 1.3
 
 bin_SCRIPTS = gnome-config gnome-bug
 
-if COMPILE_GNOME_HELLO
-gnome_hello = gnome-hello
-else
-gnome_hello =
-endif
-
 if COMPILE_TEST_GNOME
 test_gnome = test-gnome test-suite
 else
@@ -22,7 +16,7 @@ SUBDIRS = po intl support macros \
 	tools \
 	images \
 	libart_lgpl \
-	libgnome libgnomeui gtk-xmhtml $(gnome_hello) zvt \
+	libgnome libgnomeui gtk-xmhtml zvt \
 	libgnorba idl $(test_gnome) devel-docs gnome-data man \
 	gnome-faq
 

@@ -342,10 +342,8 @@ dnl
 GNOME_ORBIT_CHECK
 
 dnl
-dnl Gnome-Hello
+dnl test-gnome
 dnl
-AC_ARG_ENABLE(gnome-hello, [  --enable-gnome-hello    compile the gnome-hello examples [default=yes]],[compile_gnome_hello="$enableval"],[compile_gnome_hello=yes])
-AM_CONDITIONAL(COMPILE_GNOME_HELLO, test x$compile_gnome_hello = xyes)
 
 AC_ARG_ENABLE(test-gnome, [  --enable-test-gnome     compile the test-gnome examples [default=yes]],[compile_test_gnome="$enableval"],[compile_test_gnome=yes])
 AM_CONDITIONAL(COMPILE_TEST_GNOME, test x$compile_test_gnome = xyes)
@@ -402,12 +400,10 @@ libgnome/Makefile
 libgnomeui/Makefile
 libgnomeui/pixmaps/Makefile
 libgnorba/Makefile
-libvfs/Makefile
 zvt/Makefile
 test-suite/Makefile
 test-suite/tests/Makefile
 gnome-data/Makefile
-gnome-hello/Makefile
 test-gnome/Makefile
 gnome-faq/Makefile
 devel-docs/Makefile
