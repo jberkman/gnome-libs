@@ -1,0 +1,27 @@
+Standard Source Annotation Format:
+
+@BEGIN-NOTES@
+<notes>
+	<author>
+		<name></name>
+		<email></email>
+		<contribution></contribution>
+	</author>
+	<todo>
+	</todo>
+	<bugs>
+		<historical>
+		...
+		</historical>
+		<current>
+		...
+		</current>
+	</bugs>
+</notes>
+@END-NOTES@
+
+Using this in your source & header files (preferably in a comment
+immediately after the copyright/license) will allow more people to
+maintain the software easily.
+
+-- Elliot Lee <sopwith@redhat.com>
