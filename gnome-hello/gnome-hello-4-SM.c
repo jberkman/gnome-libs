@@ -32,16 +32,16 @@ void prepare_app();
 void parse_args (int argc, char *argv[]);
 GtkMenuFactory *create_menu ();
 
-static int save_state (GnomeClient        *client,
-		       gint                phase,
-		       GnomeRestartStyle   save_style,
-		       gint                shutdown,
-		       GnomeInteractStyle  interact_style,
-		       gint                fast,
-		       gpointer            client_data);
-static void connect   (GnomeClient *client, 
-		       gint         was_restarted, 
-		       gpointer     client_data);
+static int save_state      (GnomeClient        *client,
+			    gint                phase,
+			    GnomeRestartStyle   save_style,
+			    gint                shutdown,
+			    GnomeInteractStyle  interact_style,
+			    gint                fast,
+			    gpointer            client_data);
+static void connect_client (GnomeClient *client, 
+			    gint         was_restarted, 
+			    gpointer     client_data);
 
 void discard_session (gchar *id);
 
@@ -263,7 +263,7 @@ parse_args (int argc, char *argv[])
   gtk_signal_connect (GTK_OBJECT (client), "save_yourself",
 		      GTK_SIGNAL_FUNC (save_state), (gpointer) argv[0]);
   gtk_signal_connect (GTK_OBJECT (client), "connect",
-		      GTK_SIGNAL_FUNC (connect), NULL);
+		      GTK_SIGNAL_FUNC (connect_client), NULL);
 
   gnome_client_connect (client);
 
@@ -331,7 +331,7 @@ save_state (GnomeClient        *client,
    reads the state of the previous session. Sets os_* (prepare_app
    uses them) */
 void
-connect (GnomeClient *client, gint was_restarted, gpointer client_data)
+connect_client (GnomeClient *client, gint was_restarted, gpointer client_data)
 {
   if (was_restarted)
     {
