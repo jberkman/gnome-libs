@@ -403,6 +403,14 @@ print_selected_icons (GnomeIconList *gil)
     be examined to get this information.
   </para>
 
+  <important>
+    <para>
+      You should not insert or delete icons, or otherwise change the
+      selection in the icon list, from within a callback to this
+      signal.
+    </para>
+  </important>
+
 @iconlist: Icon list which emitted the signal
 @arg1: 
 @event: Event that triggered the selection, or NULL if none
@@ -415,6 +423,14 @@ print_selected_icons (GnomeIconList *gil)
     meaning of the <symbol>event</symbol> argument is the same as for
     the select-icon signal.
   </para>
+
+  <important>
+    <para>
+      You should not insert or delete icons, or otherwise change the
+      selection in the icon list, from within a callback to this
+      signal.
+    </para>
+  </important>
 
 @iconlist: Icon list which emitted the signal
 @arg1: 
