@@ -770,12 +770,20 @@ AC_DEFUN([GNOME_X_CHECKS],
         LDFLAGS="$saved_ldflags $X_LDFLAGS $X_LIBS"
 
 	dnl Assume that if we have -lSM then we also have -lICE.
-	AC_CHECK_LIB(SM, SmcSaveYourselfDone,
+	case "$x_libs" in
+	 *-lSM*)
+	    # Already found it.
+	    AC_DEFINE(HAVE_LIBSM)
+	    ;;
+	 *)
+	    AC_CHECK_LIB(SM, SmcSaveYourselfDone,
 	        [AC_DEFINE(HAVE_LIBSM)
 	        x_libs="$x_libs -lSM -lICE"], ,
 		$x_libs -lICE)
 		AM_CONDITIONAL(ENABLE_GSM,
 			test "x$ac_cv_lib_SM_SmcSaveYourselfDone" = "xyes")
+	    ;;
+	esac
 
         AC_CHECK_LIB(gtk, gdk_pixmap_unref,
                 GTK_LIBS="-lgtk -lgdk -lglib -lm",
@@ -789,10 +797,7 @@ AC_DEFUN([GNOME_X_CHECKS],
 	AC_CHECK_LIB(Xpm, XpmFreeXpmImage, [XPM_LIBS="-lXpm"], , $x_libs)
 	AC_SUBST(XPM_LIBS)
 
-	PTHREAD_LIB=""
-	AC_CHECK_LIB(pthread, pthread_create, PTHREAD_LIB="-lpthread",
-		[AC_CHECK_LIB(c_r, pthread_create, PTHREAD_LIB="-lc_r")])
-	AC_SUBST(PTHREAD_LIB)
+	AC_REQUIRE([GNOME_PTHREAD_CHECK])
 
         CFLAGS="$saved_cflags $X_CFLAGS"
         LDFLAGS="$saved_ldflags"
@@ -811,6 +816,14 @@ else
   $1_TRUE='#'
   $1_FALSE=
 fi])
+
+AC_DEFUN([GNOME_PTHREAD_CHECK],[
+	PTHREAD_LIB=""
+	AC_CHECK_LIB(pthread, pthread_create, PTHREAD_LIB="-lpthread",
+		[AC_CHECK_LIB(c_r, pthread_create, PTHREAD_LIB="-lc_r")])
+	AC_SUBST(PTHREAD_LIB)
+	AC_PROVIDE([GNOME_PTHREAD_CHECK])
+])
 
 dnl libsupport stuff
 dnl GNOME_SUPPORT_CHECKS

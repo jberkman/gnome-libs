@@ -1,3 +1,7 @@
+## Process this file with automake to produce Makefile.in.
+
+ACLOCAL_AMFLAGS = -Imacros
+
 built_SUBDIRS = libgnome libgnomeui gtk-xmhtml gnome-hello libgtktty
 
 SUBDIRS = po intl support macros $(built_SUBDIRS) 
