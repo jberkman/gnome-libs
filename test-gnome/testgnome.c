@@ -590,8 +590,7 @@ create_font_picker (void)
         gnome_font_picker_set_mode(GNOME_FONT_PICKER(fontpicker3),GNOME_FONT_PICKER_MODE_USER_WIDGET);
 
         hbox3=gtk_hbox_new(FALSE,0);
-        gtk_box_pack_start(GTK_BOX(hbox3),gnome_stock_pixmap_widget_new(app,
-                                                                        GNOME_STOCK_PIXMAP_SPELLCHECK),
+        gtk_box_pack_start(GTK_BOX(hbox3),gnome_stock_new_with_icon(GNOME_STOCK_PIXMAP_SPELLCHECK),
                            FALSE,FALSE,5);
         gtk_box_pack_start(GTK_BOX(hbox3),gtk_label_new(_("This is an hbox with pixmap and text")),
             FALSE,FALSE,5);
