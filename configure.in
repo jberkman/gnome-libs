@@ -376,6 +376,19 @@ dnl
 AC_ARG_ENABLE(test-gnome, [  --enable-test-gnome     compile the test-gnome examples [default=yes]],[compile_test_gnome="$enableval"],[compile_test_gnome=yes])
 AM_CONDITIONAL(COMPILE_TEST_GNOME, test x$compile_test_gnome = xyes)
 
+dnl hack to let people use lclint
+if test -f $srcdir/.lclintrc.in; then
+	LCLINTRC_OUT=.lclintrc
+	LINT_TOP_BUILDDIR=`pwd`
+	LINT_TOP_SRCDIR=`pwd`/$srcdir
+	AC_SUBST(LINT_TOP_BUILDDIR)
+	AC_SUBST(LINT_TOP_SRCDIR)
+	ln -sf `pwd`/.lclintrc $srcdir/.lclintrc
+	mkdir -p $srcdir/libgnome $srcdir/libgnomeui
+	ln -sf `pwd`/.lclintrc $srcdir/libgnome/.lclintrc
+	ln -sf `pwd`/.lclintrc $srcdir/libgnomeui/.lclintrc
+fi
+
 dnl AC_CONFIG_SUBDIRS(libgtktty)
 
 dnl
@@ -463,6 +476,7 @@ support/Makefile
 tools/Makefile
 tools/convertrgb/Makefile
 tools/gnome-doc/Makefile
+$LCLINTRC_OUT
 macros/Makefile],[case "$CONFIG_FILES" in
 *gnome-config*)chmod +x gnome-config;;
 esac
