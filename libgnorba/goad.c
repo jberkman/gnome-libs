@@ -839,6 +839,8 @@ goad_server_activate_exe(GoadServer *sinfo,
       if(do_srv_output)
 	g_message("srv output: '%s'", iorbuf);
     }
+    if(do_srv_output)
+      g_message("srv output EOF.");
 
     if (strncmp(iorbuf, "IOR:", 4)) {
       retval = CORBA_OBJECT_NIL;

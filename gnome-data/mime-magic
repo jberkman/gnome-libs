@@ -1,64 +1,64 @@
-0	leshort	0x602	ALAN text adventure code data
-0	string	TADS	TADS game data
-0	short		0420		0420 Alliant virtual executable
-0	short		0421		0421 Alliant compact executable
-0	leshort		0603		COFF format alpha
-0	string		Core\001	Alpha COFF format core dump (Digital UNIX)
-0       string          AMANDA:\ TAPESTART\ DATE     AMANDA dump header file,
-0	belong		0x000003f3	AmigaOS loadseg()ble executable/binary
-0	belong		0x000003e7	AmigaOS object/library data
-0	belong		0x000001b3		MPEG video stream data
-0	belong		0x000001ba		MPEG system stream data
-0	beshort&0xfff0	0xfff0			MPEG audio stream data
-4	leshort		0xAF11			FLI file
-4	leshort		0xAF12			FLC file
-0	string		MOVI		Silicon Graphics movie file
-4	string		moov		Apple QuickTime movie file (moov)
-4	string		mdat		Apple QuickTime movie file (mdat)
-0	long		0100554		APL workspace (Ken's original?)
-0	string		FiLeStArTfIlEsTaRt	binscii (apple ][) text
-0	string		\x0aGL			Binary II (apple ][) data
-0	string		\x76\xff		Squeezed (apple ][) data
-0	string		NuFile			NuFile archive (apple ][) data
-0	string		N\xf5F\xe9l\xe5		NuFile archive (apple ][) data
-0	belong		0x00051600		AppleSingle encoded Macintosh file
-0	belong		0x00051607		AppleDouble encoded Macintosh file
-257	string		ustar\0		POSIX tar archive
-257	string		ustar\040\040\0	GNU tar archive
-0	short		070707		cpio archive
-0	short		0143561		byte-swapped cpio archive
-0	string		070707		ASCII cpio archive (pre-SVR4 or odc)
-0	string		070701		ASCII cpio archive (SVR4 with no CRC)
-0	string		070702		ASCII cpio archive (SVR4 with CRC)
-0	string		!<arch>\ndebian
-0	long		0177555		very old archive
-0	short		0177555		very old PDP-11 archive
-0	long		0177545		old archive
-0	short		0177545		old PDP-11 archive
-0	long		0100554		apl workspace
-0	string		=<ar>		archive
-0	string	!<arch>\n__________E	MIPS archive
+0	leshort	0x602	application/x-alan-adventure-game
+0	string	TADS	application/x-tads-game
+0	short		0420		application/executable
+0	short		0421		appliation/executable
+0	leshort		0603		appliation/executable
+0	string		Core\001	appliation/executable
+0       string          AMANDA:\ TAPESTART\ DATE     application/x-amanda-header
+0	belong		0x000003f3	appliation/executable
+0	belong		0x000003e7	appliation/library
+0	belong		0x000001b3		video/mpeg
+0	belong		0x000001ba		video/mpeg
+0	beshort&0xfff0	0xfff0			audio/mpeg
+4	leshort		0xAF11			video/fli
+4	leshort		0xAF12			video/flc
+0	string		MOVI		video/x-sgi-movie
+4	string		moov		video/quicktime
+4	string		mdat		video/quicktime
+0	long		0100554		application/x-apl-workspace
+0	string		FiLeStArTfIlEsTaRt	text/x-apple-binscii
+0	string		\x0aGL			application/data
+0	string		\x76\xff		application/data
+0	string		NuFile			application/data
+0	string		N\xf5F\xe9l\xe5		application/data
+0	belong		0x00051600		application/data
+0	belong		0x00051607		application/data
+257	string		ustar\0		application/x-tar
+257	string		ustar\040\040\0	application/x-gtar
+0	short		070707		application/x-cpio
+0	short		0143561		application/x-bcpio
+0	string		070707		application/x-cpio
+0	string		070701		application/x-cpio
+0	string		070702		application/x-cpio
+0	string		!<arch>\ndebian application/x-dpkg
+0	long		0177555		application/x-ar
+0	short		0177555		application/data
+0	long		0177545		application/data
+0	short		0177545		application/data
+0	long		0100554		application/x-apl-workspace
+0	string		=<ar>		application/x-ar
+0	string	!<arch>\n__________E	application/x-ar
 0	string		-h-		Software Tools format archive text
-0	string		!<arch>		current ar archive
-0	string		\<ar>		System V Release 1 ar archive
-0	string		=<ar>		archive
-0	belong		0x65ff0000	VAX 3.0 archive
-0	belong		0x3c61723e	VAX 5.0 archive
-0	long		0x213c6172	archive file
-0	lelong		0177555		very old VAX archive
-0	leshort		0177555		very old PDP-11 archive
-0	lelong		0177545		old VAX archive
-0	leshort		0177545		old PDP-11 archive
-0	lelong		0x39bed		PDP-11 old archive
-0	lelong		0x39bee		PDP-11 4.0 archive
-0	lelong&0x8080ffff	0x0000081a	ARC archive data, dynamic LZW
-0	lelong&0x8080ffff	0x0000091a	ARC archive data, squashed
-0	lelong&0x8080ffff	0x0000021a	ARC archive data, uncompressed
-0	lelong&0x8080ffff	0x0000031a	ARC archive data, packed
-0	lelong&0x8080ffff	0x0000041a	ARC archive data, squeezed
-0	lelong&0x8080ffff	0x0000061a	ARC archive data, crunched
+0	string		!<arch>		application/x-ar
+0	string		\<ar>		application/x-ar
+0	string		=<ar>		application/x-ar
+0	belong		0x65ff0000	application/x-ar
+0	belong		0x3c61723e	application/x-ar
+0	long		0x213c6172	application/x-ar
+0	lelong		0177555		application/data
+0	leshort		0177555		application/data
+0	lelong		0177545		application/data
+0	leshort		0177545		application/data
+0	lelong		0x39bed		application/data
+0	lelong		0x39bee		application/data
+0	lelong&0x8080ffff	0x0000081a	application/x-arc
+0	lelong&0x8080ffff	0x0000091a	application/x-arc
+0	lelong&0x8080ffff	0x0000021a	application/x-arc
+0	lelong&0x8080ffff	0x0000031a	application/x-arc
+0	lelong&0x8080ffff	0x0000041a	application/x-arc
+0	lelong&0x8080ffff	0x0000061a	application/x-arc
 0	string		\032archive	RISC OS archive (ArcFS format)
-0	leshort		0xea60		ARJ archive data
+0	leshort		0xea60		application/x-arc
 0	string		HPAK		HPACK archive data
 0	string		\351,\001JAM\		JAM archive,
 2	string		-lh0-		LHarc 1.x archive data [lh0]
