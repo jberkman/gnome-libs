@@ -11,6 +11,8 @@ AM_INIT_AUTOMAKE(gnome-libs, 1.1.0)
 
 AM_ACLOCAL_INCLUDE(macros)
 
+AC_CONFIG_SUBDIRS(gnome-faq)
+
 AC_ISC_POSIX
 AC_PROG_CC
 AC_STDC_HEADERS
@@ -446,7 +448,6 @@ test-suite/Makefile
 test-suite/tests/Makefile
 gnome-data/Makefile
 test-gnome/Makefile
-gnome-faq/Makefile
 devel-docs/Makefile
 devel-docs/gnome/Makefile
 devel-docs/gnome-dev-info/Makefile
