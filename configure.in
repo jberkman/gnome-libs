@@ -36,11 +36,6 @@ AC_CANONICAL_SYSTEM
 
 AM_INIT_AUTOMAKE(gnome-libs, 1.95.0)
 
-if test -z "$CERTIFIED_GNOMIE"; then
-  cat $srcdir/message-of-doom
-  exit 1
-fi
-
 AC_CACHE_VAL(ac_cv_gnome2_dir, ac_cv_gnome2_dir="$GNOME2_DIR")
 
 if test ! -z "$ac_cv_gnome2_dir" ; then
