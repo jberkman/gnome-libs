@@ -232,12 +232,24 @@ open_ptys (int update_db)
 		if (fork () == 0) {
 			setsid ();
 			dup2 (slave_pty, 0);
+#ifdef USE_SYSV_UTMP
+			/* [FIXME]: This is only a hack since we
+			 * declared `update_dbs' conditionally to
+			 * the same #ifdef in gnome-utmp.c.
+			 */
 			update_dbs (login_name, display_name, term_name);
+#endif
 			exit (0);
 		}
 		return 1;
 #else
+#ifdef USE_SYSV_UTMP
+		/* [FIXME]: This is only a hack since we declared
+		 * `update_dbs' conditionally to the same #ifdef
+		 * in gnome-utmp.c.
+		 */
 		update_dbs (login_name, display_name, term_name);
+#endif
 #endif
 	}
 	

@@ -1,7 +1,10 @@
 1998-11-17  Martin Baulig  <martin@home-of-linux.org>
 
-	* test-utmp.c (update_dgs): #ifdef USE_SYSV_UTMP this, it's
-	not defined otherwise.
+	* gnome-pty-helper.c, test-utmp.c (update_dgs): Only call this
+ 	function if USE_SYSV_UTMP is defined.
+
+	[NOTE: This is only some kind of hack since we define this
+	function conditionally to USE_SYSV_UTMP in gnome-utmp.c.]
 
 1998-11-16  Walter Mueller <walt@pi4.informatik.uni-mannheim.de>
 
