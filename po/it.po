@@ -134,7 +134,7 @@ msgstr "Figli"
 
 #: gnome-hello/gnome-hello-7-mdi.c:451
 msgid "Notebook"
-msgstr ""
+msgstr "Pannello a linguette"
 
 #: gnome-hello/gnome-hello-7-mdi.c:457
 msgid "Toplevel"
@@ -180,11 +180,18 @@ msgid ""
 "        --help     display this help and exit\n"
 "        --version  output version information and exit\n"
 msgstr ""
+"%s: Una versione del programma 'Ciao Mondo' per Gnome\n"
+"\n"
+"Utilizzo: %s [--help] [--version]\n"
+"\n"
+"Opzioni:\n"
+"        --help     mostra questo aiuto ed esce\n"
+"        --version  mostra informazioni sulla versione ed esce\n"
 
 #: gnome-hello/gnome-hello.c:217
 #, c-format
 msgid "Gnome Hello %s.\n"
-msgstr ""
+msgstr "Ciao Mondo Gnome %s.\n"
 
 #: gnome-hello/gnome-hello.c:231
 msgid "Options error\n"
@@ -192,23 +199,23 @@ msgstr "Errore nelle opzioni\n"
 
 #: libgnome/gconfigger.c:32
 msgid "get"
-msgstr ""
+msgstr "get"
 
 #: libgnome/gconfigger.c:32
 msgid "Get config entry"
-msgstr ""
+msgstr "Preleva voce di configurazione"
 
 #: libgnome/gconfigger.c:32 libgnome/gconfigger.c:33
 msgid "CONFIG-PATH"
-msgstr ""
+msgstr "CONFIG-PATH"
 
 #: libgnome/gconfigger.c:33
 msgid "set"
-msgstr ""
+msgstr "set"
 
 #: libgnome/gconfigger.c:33
 msgid "Set config entry"
-msgstr ""
+msgstr "Assegna valore a voce di configurazione"
 
 #: libgnome/gnome-popt.c:90
 #, c-format
@@ -216,6 +223,8 @@ msgid ""
 "Error on option %s: %s.\n"
 "Run '%s --help' to see a full list of available command line options.\n"
 msgstr ""
+"Errore sull'opzione %s: %s.\n"
+"Esegui '%s --help' per vedere una lista completa di tutti i comandi disponibili.\n"
 
 #: libgnome/gnomelib-init.c:117
 msgid "Disable sound server usage"
@@ -258,72 +267,72 @@ msgstr "Informazioni"
 #: libgnomeui/gnome-app-helper.c:77
 #, fuzzy
 msgid "_File"
-msgstr "Esci"
+msgstr "_File"
 
 # , fuzzy
 #: libgnomeui/gnome-app-helper.c:78
 #, fuzzy
 msgid "_File/"
-msgstr "Esci"
+msgstr "_File/"
 
 #: libgnomeui/gnome-app-helper.c:79
 #, fuzzy
 msgid "_Edit"
-msgstr "Modifica"
+msgstr "_Modifica"
 
 #: libgnomeui/gnome-app-helper.c:80
 #, fuzzy
 msgid "_Edit/"
-msgstr "Modifica"
+msgstr "_Modifica/"
 
 #: libgnomeui/gnome-app-helper.c:81
 #, fuzzy
 msgid "_View"
-msgstr "Aggiungi vista"
+msgstr "_Vista"
 
 #: libgnomeui/gnome-app-helper.c:82
 msgid "_View/"
-msgstr ""
+msgstr "_Vista/"
 
 #: libgnomeui/gnome-app-helper.c:83
 msgid "_Settings"
-msgstr ""
+msgstr "_Opzioni"
 
 #: libgnomeui/gnome-app-helper.c:84
 msgid "_Settings/"
-msgstr ""
+msgstr "_Opzioni/"
 
 # , fuzzy
 #: libgnomeui/gnome-app-helper.c:85
 #, fuzzy
 msgid "Fi_les"
-msgstr "Esci"
+msgstr "Fi_le"
 
 # , fuzzy
 #: libgnomeui/gnome-app-helper.c:86
 #, fuzzy
 msgid "Fi_les/"
-msgstr "Esci"
+msgstr "Fi_le/"
 
 #: libgnomeui/gnome-app-helper.c:87
 #, fuzzy
 msgid "_Windows"
-msgstr "_Nuova Finestra..."
+msgstr "_Finestre"
 
 #: libgnomeui/gnome-app-helper.c:88
 #, fuzzy
 msgid "_Game"
-msgstr "_Salva"
+msgstr "_Gioco"
 
 #: libgnomeui/gnome-app-helper.c:89
 #, fuzzy
 msgid "_Help"
-msgstr "Aiuto"
+msgstr "_Aiuto"
 
 #: libgnomeui/gnome-app-helper.c:90
 #, fuzzy
 msgid "_Windows/"
-msgstr "_Nuova Finestra..."
+msgstr "_Finestre/"
 
 #. Open
 #: libgnomeui/gnome-app-helper.c:102
@@ -1258,11 +1267,11 @@ msgstr "Lista numerata"
 
 #: libgnomeui/gnome-stock.c:776
 msgid "Indent"
-msgstr ""
+msgstr "Sposta a destra"
 
 #: libgnomeui/gnome-stock.c:777
 msgid "Un-Indent"
-msgstr ""
+msgstr "Sposta a sinistra"
 
 #: libgnomeui/gnome-stock.c:781
 msgid "Apply"
@@ -1421,11 +1430,11 @@ msgstr "Livello:"
 
 #: libgnomeui/winhints_demo.c:95
 msgid "Above Dock"
-msgstr ""
+msgstr "Sopra pannello"
 
 #: libgnomeui/winhints_demo.c:99
 msgid "Dock"
-msgstr ""
+msgstr "Pannello"
 
 #: libgnomeui/winhints_demo.c:103
 msgid "On Top"
@@ -1461,19 +1470,19 @@ msgstr "Seleziona Area di Lavoro"
 
 #: libgnomeui/winhints_demo.c:166
 msgid "State Toggles:"
-msgstr ""
+msgstr "Interruttori di stato:"
 
 #: libgnomeui/winhints_demo.c:176
 msgid "Minimized"
-msgstr ""
+msgstr "Minimizzato"
 
 #: libgnomeui/winhints_demo.c:180
 msgid "Maximized Vertical"
-msgstr ""
+msgstr "Massimizzato verticalmente"
 
 #: libgnomeui/winhints_demo.c:184
 msgid "Maximized Horizontal"
-msgstr ""
+msgstr "Massimizzato orizzontalmente"
 
 #: libgnomeui/winhints_demo.c:188
 msgid "Hidden"
@@ -1497,7 +1506,7 @@ msgstr "Seleziona stato"
 
 #: libgnomeui/winhints_demo.c:210
 msgid "Skip Toggles:"
-msgstr ""
+msgstr "Ignora interruttori:"
 
 #: libgnomeui/winhints_demo.c:220
 msgid "Skip Focus"
@@ -1528,6 +1537,8 @@ msgid ""
 "Simple test app to check how the WIN_HINTS work. And to test the "
 "gnome_win_hints_* functions for errors. :)"
 msgstr ""
+"Semplice applicazione di prova per verificare il funzionamento dei WIN_HINTS.\n"
+"E per verificare se le funzioni gnome_win_hints_* contengono errori :)"
 
 #: libgnorba/gnome-name-server.c:209
 #, c-format
@@ -1545,7 +1556,7 @@ msgstr "ID GOAD del server da attivare"
 
 #: libgnorba/goad-browser.c:28
 msgid "Repository ID of the server to activate"
-msgstr ""
+msgstr "ID del repositorio del server da attivare"
 
 #: libgnorba/goad-browser.c:28
 msgid "REPO-ID"
