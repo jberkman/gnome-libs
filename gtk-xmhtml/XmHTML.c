@@ -35,6 +35,12 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.25  1998/05/09 17:05:20  kmaraas
+* 1998-05-09  Kjartan Maraas  <kmaraas@fib.hl.no>
+*
+* 	* XmHTML.c: Added declaration of DestroyPhaseZero to get
+* 	rid of compiler warning.
+*
 * Revision 1.24  1998/04/08 14:45:35  jpaint
 * Reverted border changes (finally, sorry miguel!)
 *
@@ -350,6 +356,8 @@ static char rcsId[]="$Header$";
 * undocumented motif functions used: (declared in XmP.h): 
 * _XmRedisplayGadgets (Widget, XEvent*, Region);
 */
+
+static void DestroyPhaseZero (XmHTMLWidget html);
 
 /*** Public Variable Declarations ***/
 
