@@ -35,4 +35,4 @@ EXTRA_DIST = $(TESTS)							\
 	tests/split.c expected/split.out				\
 	tests/trigs.c tests/trigs.in expected/trigs.out			\
 	tests/metadata.c expected/metadata.out				\
-	tests/parse-path.c expected/parse-path.out
+	tests/parse-path.c expected/parse-path.out data/sample
