@@ -226,7 +226,7 @@ dnl
 GNOME_ORBIT_HOOK([have_orbit=true],[])
 AM_CONDITIONAL(HAVE_ORBIT, test x$have_orbit = xtrue)
 	
-AC_CONFIG_SUBDIRS(libgtktty)
+dnl AC_CONFIG_SUBDIRS(libgtktty)
 
 AC_OUTPUT([
 Makefile
