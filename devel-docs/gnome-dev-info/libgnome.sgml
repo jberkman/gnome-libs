@@ -191,6 +191,7 @@ exists.</para>
 <itemizedlist><listitem><para>const char
 *<parameter>path</parameter></para>
 <para>Config section to list the sub-sections of.</para>
+	  </listitem>
 </itemizedlist>
 </sect3>
 </sect2>
@@ -256,7 +257,7 @@ iterators.</para>
 </sect3>
 </sect2>
 <sect2 id="gnome-config-drop-all"><title>gnome_config_drop_all - drops all the cached config data from the in-memory cache</title>
-<funcsynopsis><funcdef>void <function>gnome_config_drop_all</function></funcdef></funcsynopsis>
+<funcsynopsis><funcdef>void <function>gnome_config_drop_all</function></funcdef><void></funcsynopsis>
 <sect3><title>Description</title>
 <para>
 The gnome_config routines cache the configuration entries in memory to
@@ -266,7 +267,7 @@ cleared. <!-- XXX verify this information with Miguel -->
 </sect2>
 <sect2 id="gnome-config-sync"><title>gnome_config_sync - writes all
 unwritten config entries to the config database</title>
-<funcsynopsis><funcdef>void <function>gnome_config_sync</function></funcdef></funcsynopsis>
+<funcsynopsis><funcdef>void <function>gnome_config_sync</function></funcdef><void></funcsynopsis>
 <sect3><title>Description</title>
 <para>
 As previously stated, the gnome_config routines cache configuration
@@ -276,22 +277,22 @@ gnome_config_set_* operations.
 </para></sect3>
 </sect2>
 <sect2 id="gnome-config-clean"><title>gnome_config_*clean_* - routines for removing a configuration database entry or subtree altogether</title>
-<funcsynopsis><funcdef>void <function>gnome_config_clean_file<function></funcdef>
+<funcsynopsis><funcdef>void <function>gnome_config_clean_file</function></funcdef>
 <paramdef>const char *<parameter>path</parameter></paramdef>
 </funcsynopsis>
-<funcsynopsis><funcdef>void <function>gnome_config_private_clean_file<function></funcdef>
+<funcsynopsis><funcdef>void <function>gnome_config_private_clean_file</function></funcdef>
 <paramdef>const char *<parameter>path</parameter></paramdef>
 </funcsynopsis>
-<funcsynopsis><funcdef>void <function>gnome_config_clean_section<function></funcdef>
+<funcsynopsis><funcdef>void <function>gnome_config_clean_section</function></funcdef>
 <paramdef>const char *<parameter>path</parameter></paramdef>
 </funcsynopsis>
-<funcsynopsis><funcdef>void <function>gnome_config_private_clean_section<function></funcdef>
+<funcsynopsis><funcdef>void <function>gnome_config_private_clean_section</function></funcdef>
 <paramdef>const char *<parameter>path</parameter></paramdef>
 </funcsynopsis>
-<funcsynopsis><funcdef>void <function>gnome_config_clean_key<function></funcdef>
+<funcsynopsis><funcdef>void <function>gnome_config_clean_key</function></funcdef>
 <paramdef>const char *<parameter>path</parameter></paramdef>
 </funcsynopsis>
-<funcsynopsis><funcdef>void <function>gnome_config_private_clean_key<function></funcdef>
+<funcsynopsis><funcdef>void <function>gnome_config_private_clean_key</function></funcdef>
 <paramdef>const char *<parameter>path</parameter></paramdef>
 </funcsynopsis>
 <sect3><title>Description</title>
@@ -316,10 +317,11 @@ if(val1 && val2 && !strcmp(val1, val2)) {
 <itemizedlist>
 <listitem><para>const char *<parameter>path</parameter></para>
 <para>The config path to the config item which is to be removed.</para>
-</itemizedlist>
-</sect3>
-</sect2>
-<sect2 id="gnome-config-get-real-path"><title>gnome_config_*get_real_path</title>
+	  </listitem>
+	</itemizedlist>
+      </sect3>
+    </sect2>
+    <sect2 id="gnome-config-get-real-path"><title>gnome_config_*get_real_path</title>
 <funcsynopsis><funcdef>char *<function>gnome_config_get_real_path</function></funcdef>
 <paramdef>const char *<parameter>path</parameter></paramdef>
 </funcsynopsis>

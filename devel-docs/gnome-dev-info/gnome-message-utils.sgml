@@ -247,7 +247,7 @@
 	disappear, to be replaced by the top of the stack or the
 	default message.
       </para>
-
+      </sect2>
     <sect2> <title>Using an AppBar to query the user</title>
       <para>
 	This doesn't work so well, so it's not documented. Basically
@@ -281,7 +281,7 @@
       example, dialog can be positioned relative to the
       <type>GnomeApp</type>).
     </para>
-    
+    </sect1>
   <sect1> <title>Utility functions if a <type>GnomeApp</type> is available</title>
     <para>
       When these functions return a <type>GtkWidget*</type>, they are
@@ -643,7 +643,7 @@
 	invalid data in your callback, display an error, and return
 	TRUE.
       </para>
-      
+      </sect2>
     <sect2><title>Dialog options</title>
 
       <para>
@@ -804,7 +804,7 @@
 	entry, then press return to close the dialog; this function
 	enables that behavior.
       </para>
-
+      </sect2>
     <sect2><title>Modal dialogs</title>
 
       <para>
@@ -821,7 +821,7 @@
 	truly lazy, and write truly unextensible, ugly, gratuitously
 	yucky code, or you have to support legacy program structure,
 	you can use the <function>gnome_dialog_run()</function>:
-
+	</para>
       <funcsynopsis><funcdef>gint<function>gnome_dialog_run</function>
 	</funcdef>
 	<paramdef>
