@@ -95,6 +95,27 @@ dnl zvt checks
 dnl
 AC_CHECK_HEADERS(sys/select.h)
 
+dnl
+dnl gnome-pty-support checks
+dnl
+AC_CHECK_HEADERS(utmpx.h)
+AC_CHECK_FUNCS(grantpt sendmsg)
+oLIBS="$LIBS"
+LIBS="$LIBS -lutil"
+AC_CHECK_FUNC(openpty, [
+	AC_DEFINE(HAVE_OPENPTY)
+	UTIL_LIBS="-lutil"
+	AC_SUBST(UTIL_LIBS)
+])
+LIBS="$oLIBS"
+
+dnl And workaround for a Autoconf 2.4 bug:
+if test x$ac_cv_func_grantpt = xyes; then
+    :
+else
+    AC_CHECK_LIB(pt, grantpt)
+fi
+
 dnl Image handling libraries
 Z_LIBS= JPEG_LIBS= PNG_LIBS= TIFF_LIBS= GIF_LIBS= GDK_IMLIB_LIBS=
 
