@@ -1472,8 +1472,9 @@ _XmHTMLCheckXCC(XmHTMLWidget html)
 		/* walk TWidget tree or get default visual */
 		if(visual == NULL){
 			/* visual = XCCGetParentVisual((TWidget)html);*/
-			fprintf (stderr, "%s: should not happen\n", __FUNCTION__);
-			exit (1);
+		  fprintf(stderr,
+			  "XmHTML.c: _XmHTMLCheckXCC:: should not happen\n");
+		  exit (1);
 		}
 		/* create an xcc for this TWidget */
 		html->html.xcc = XCCCreate((TWidget)html, visual, cmap);
