@@ -7,9 +7,117 @@ Calculator widget.
 <!-- ##### SECTION Long_Description ##### -->
 <para>
   This widget provides a simple calculator that you can embed in your
-  applications for doing quick computations.
-</para>
+  applications for doing quick computations.</para>
 
+<para>
+  The widget consists of a fully functional calculator including
+  standard arithmetic functions as well as trigonometric capabilities,
+  exponents, factorials, nested equations, and others.<para>
+
+<refsect2>
+  <title><structname>GnomeCalculator</structname> functions</title>
+
+  <para>The following is a list and description of each button represented on the
+        GnomeCalculator widget</para>
+
+  <itemizedlist>
+	<listitem><para>
+		Calculations accurate to a maximum of 10 digits, or 9 decimal places.</para>
+	</listitem>
+
+    	<listitem><para>
+      		Numbers %0-%9 for numerical input</para>
+	</listitem>
+ 
+    	<listitem><para>
+		Decimal point for decimal calculations</para>
+	</listitem>
+
+	<listitem><para>
+		+/- button for positive/negative number entry</para>
+	</listitem>
+
+	<listitem><para>
+		/ for Division, * for Multiplication, - for Subtraction, and + for Addition</para>
+	</listitem>
+
+	<listitem><para>
+		%PI feature to automatically use the value of %PI at the touch of a button</para>
+	</listitem>	
+
+	<listitem><para>
+		%X! calculates the factorial for the current resultant</para>
+
+		<para>i.e: If resultant is 5, 5 factorial is 5*4*3*2*1 = 120</para>
+	</listitem>
+
+	<listitem><para>
+		( and )</para>
+		
+		<para>Parenthesis used to force grouping of expressions to be evaluated in a
+		certain order.</para>
+	
+		<para>5 + 6 * 8 = 53 is ambiguous, if you really meant to add 5 + 6 together first.</para>
+		
+		<para>Use (5 + 6) * 8 = 88, to make sure your meaning is understood</para>
+	</listitem>
+  </itemizedlist>
+</refsect2>
+
+<refsect2>
+  <title>Exponential functions</title>
+
+  <para>The following are <structname>GnomeCalculator</structname> widget's exponential functions</para>
+
+  <itemizedlist>
+
+	<listitem><para>
+		%SQRT raises the current value to the 1/2 power.  This is the opposite of
+		squaring the number, seen below.</para>
+
+		<para>For example, the SQRT of 4 is 4^(1/2) = 2.</para>
+
+	<listitem><para>
+		%EE is used for scientific notation.  Use this for manipulating numbers such 
+		as 1e+50, 9e+10, and so forth.</para>
+	</listitem>
+
+	<listitem><para>
+		%x^2 is used to square the current number.  The square of a number is that 
+		same number multiplied by itself.  2^2 is 2 * 2 = 4.</para>
+	</listitem>
+
+	<listitem><para>
+		%x^y is used to take a number and raise it to the power of the 2nd number.</para>
+
+		<para>For example, entering a 3, pressing the x^y button, entering another 3
+		will lead to the result of 27.  In other words, 3^3, or 3 * 3 * 3, or 27.</para>
+	</listitem>
+  </itemizedlist>
+</refsect2>
+
+<refsect2>
+  <title>Trigonometric functions</title>
+</refsect2>
+
+	<listitem><para>
+		%SIN calculates the trigonometric sine function on the current value</para>
+	</listitem>
+
+	<listitem><para>
+		%COS calculates the trigonometric cosine function on the current value</para>
+	</listitem>
+
+	<listitem><para>
+		%TAN calculates the trigonometric tangent function on the current value</para>
+	</listitem>
+
+	<listitem><para>
+		The %INV button will reversie the previous three trig functions.  If the %INV button is pressed, the %SIN button will instead calculate the Inverse-Sine.  %COS will calculate the Inverse-Cosine, and the %TAN will calculate the Inverse-Tangent.</para>
+	</listitem>
+    </itemizedlist>
+</refsect2>
+		
 <!-- ##### SECTION See_Also ##### -->
 <para>
   #GnomeNumberEntry
