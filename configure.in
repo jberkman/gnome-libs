@@ -71,20 +71,36 @@ dnl These are for building the apporpriate lib*
 LIBGNOME_LIBS="$DL_LIB"
 LIBGNOMEUI_LIBS="$LIBGNOME_LIBS $GDK_IMLIB_LIBS $GTK_LIBS $X_LIBS $x_libs"
 LIBGTKXMHTML_LIBS="$GTK_LIBS $XPM_LIBS $JPEG_LIBS $PNG_LIBS $Z_LIBS $X_LIBS $x_libs"
+LIBSUPPORT=
+SUPPORTINCS=
+if test "$need_gnome_support" = yes; then
+   LIBSUPPORT='$(top_builddir)/support/libgnomesupport.la'
+   SUPPORTINCS='-I$(top_srcdir)/support'
+fi
 
 dnl These are for using lib*
-GNOME_LIBS="-lgnome $LIBGNOME_LIBS"
+if test "$need_gnome_support" = yes; then
+   GNOME_LIBS="-lgnome -lgnomesupport $LIBGNOME_LIBS"
+else
+   GNOME_LIBS="-lgnome $LIBGNOME_LIBS"
+fi
 GNOMEUI_LIBS="-lgnomeui $GNOME_LIBS $GDK_IMLIB_LIBS $GTK_LIBS $X_LIBS $x_libs"
 GTKXMHTML_LIBS="-lgtkxmhtml $LIBGTKXMHTML_LIBS"
 
 dnl These definitions are expanded in make.
 GNOME_LIBDIR='-L$(libdir)'
 GNOME_INCLUDEDIR='-I$(includedir)'
+if test "$need_gnome_support" = yes; then
+   GNOME_INCLUDEDIR="$GNOME_INCLUDEDIR -I\$(includedir)/libgnomesupport"
+fi
 AC_SUBST(GNOME_LIBS)
 AC_SUBST(GNOMEUI_LIBS)
 AC_SUBST(GTKXMHTML_LIBS)
 AC_SUBST(GNOME_LIBDIR)
 AC_SUBST(GNOME_INCLUDEDIR)
+
+AC_SUBST(LIBSUPPORT)
+AC_SUBST(SUPPORTINCS)
 
 AC_SUBST(LIBGNOME_LIBS)
 AC_SUBST(LIBGNOMEUI_LIBS)

@@ -1,9 +1,37 @@
+Sun Mar  8 17:15:17 1998  Tom Tromey  <tromey@cygnus.com>
+
+	* libgnome/Makefile.am (INCLUDES): Added @SUPPORTINCS@.
+
+	* configure.in (SUPPORTINCS, LIBSUPPORT): New defines.
+	(GNOME_LIBS): Include -lgnomesupport if required.
+	(GNOME_INCLUDEDIR): Include -I for libgnomesupport if required.
+
+	* gnomeConf.sh.in (GNOME_INCLUDEDIR, GNOMELIBDIR): Quote values.
+
+Fri Mar  6 21:42:09 1998  Tom Tromey  <tromey@cygnus.com>
+
+	* libgnome/libgnome.h: Include gnome-parse.h.
+
 Fri Mar 06 20:31:13 1998  George Lebl  <jirka@5z.com>
 
 	* libgnome/gnome-dentry.c: fixed the _load function to always set
 	  ->icon, at least to NULL, this was causing the panel to segfault
 
 Wed Mar  4 01:06:58 1998  Tom Tromey  <tromey@cygnus.com>
+
+	* libgnome/libgnome.h (gnomelib_register_arguments): Declare.
+	* libgnome/gnomelib-init.c (gnomelib_register_arguments): New
+	function.
+
+	* libgnome/Makefile.am (libgnome_la_SOURCES): Added
+	gnome-parse.c.
+	(libgnomeinclude_HEADERS): Added gnome-parse.h.
+	* libgnome/gnome-parse.h: New file.
+	* libgnome/gnome-parse.c: New file.
+
+	* libgnome/gnomelib-init.c (gnomelib_init): Removed argc, argv
+	arguments.
+	* libgnome/libgnome.h (gnomelib_init): Likewise.
 
 	* acconfig.h (HAVE_PROGRAM_INVOCATION_SHORT_NAME,
 	HAVE_PROGRAM_INVOCATION_NAME): Added.
