@@ -32,6 +32,9 @@ static CORBA_Object goad_server_activate_exe(GoadServer *sinfo,
 static void goad_servers_unregister_atexit(void);
 
 /**** goad_server_list_get
+
+      Outputs: 'retval' - newly created server list.
+
       Description: Returns an array listing all the servers available
                    for activation.
  */
@@ -86,7 +89,9 @@ goad_server_typename_to_type(const char *typename)
               'servinfo' - array to append entries onto.
 	      'tmpstr' - GString for scratchpad use.
 
-      Called by goad_server_list_get() only.
+      Side effects: Adds entries to 'servinfo'. Modifies 'tmpstr'.
+
+      Notes: Called by goad_server_list_get() only.
 
       Description: Adds GoadServer entries from 'filename' onto the
       array 'servinfo'
@@ -149,16 +154,17 @@ goad_server_list_read(const char *filename,
   gnome_config_pop_prefix();
 }
 
-/*
- * goad_server_list_free
- *
- * @server_list: an array of GoadServer structures.
- *
- * Description: Frees up all the memory associated with 'server_list'
- * (which should have been received from goad_server_list_get())
- *
- * Side effects: Invalidates the memory pointed to by 'server_list'.
- */
+/**** goad_server_list_free
+
+      Inputs: 'server_list' - an array of GoadServer structures.
+
+      Description: 'Frees up all the memory associated with
+                   'server_list' (which should have been received from
+                   goad_server_list_get())
+
+      Side effects: Invalidates the memory pointed to by
+      'server_list'.
+*/
 void
 goad_server_list_free (GoadServer *server_list)
 {
@@ -188,8 +194,9 @@ goad_server_list_free (GoadServer *server_list)
                    Picks the first one on the list that meets criteria.
 
 		   This is done by possibly making two passes through the list,
-		   the first pass taking into account any activation method
-		   preferences, and the second pass just doing "best we can get"
+		   the first pass checking for existing objects only,
+		   the second pass taking into account any activation method
+		   preferences, and the last pass just doing "best we can get"
 		   service.
  */
 CORBA_Object
@@ -200,7 +207,7 @@ goad_server_activate_with_repo_id(GoadServer *server_list,
   GoadServer *slist;
   CORBA_Object retval = CORBA_OBJECT_NIL;
   int i;
-  enum { PASS_PREFER, PASS_FALLBACK, PASS_DONE } passnum;
+  enum { PASS_EXISTING, PASS_PREFER, PASS_FALLBACK, PASS_DONE } passnum;
 
   g_return_val_if_fail(repo_id, CORBA_OBJECT_NIL);
   g_return_val_if_fail(!((flags & GOAD_ACTIVATE_EXISTING_ONLY)
@@ -220,16 +227,10 @@ goad_server_activate_with_repo_id(GoadServer *server_list,
      if the app has not specified any activation method preferences,
      then we obviously don't need to bother with that pass through the list.
   */
-  if((flags & GOAD_ACTIVATE_EXISTING_ONLY)
-     || !(flags & (GOAD_ACTIVATE_SHLIB|GOAD_ACTIVATE_REMOTE)))
-    passnum = PASS_FALLBACK;
-  else
-    passnum = PASS_PREFER;
 
-  for(; passnum < PASS_DONE; passnum++) {
+  for(passnum = PASS_CHECK_EXISTING; passnum < PASS_DONE; passnum++) {
 
     for(i = 0; slist[i].repo_id; i++) {
-
       if(passnum == PASS_PREFER) {
 	/* Check the type */
 	if(((flags & GOAD_ACTIVATE_SHLIB)
@@ -245,13 +246,26 @@ goad_server_activate_with_repo_id(GoadServer *server_list,
 	continue;
 
       /* entry matched */
-      retval = goad_server_activate(&slist[i], flags);
+      if(passnum == PASS_CHECK_EXISTING)
+	retval = goad_server_activate(&slist[i],
+				      flags | GOAD_ACTIVATE_EXISTING_ONLY);
+      else
+	retval = goad_server_activate(&slist[i], flags | GOAD_ACTIVATE_NEW_ONLY);
 
       if(retval != CORBA_OBJECT_NIL)
 	break;
     }
 
-    if(retval != CORBA_OBJECT_NIL)
+    /* If we got something, out of here.
+       If we were asked to check existing servers and we are done that,
+       out of here.
+       If we were not asked to do any special activation method checking,
+       then we've done all the needed passes, out of here. */
+    if(retval != CORBA_OBJECT_NIL
+       || ((passnum == PASS_CHECK_EXISTING)
+	   && (flags & GOAD_ACTIVATE_EXISTING_ONLY))
+       || ((passnum == PASS_PREFER)
+	   && !(flags & (GOAD_ACTIVATE_SHLIB|GOAD_ACTIVATE_REMOTE)))
       break;
   }
 
@@ -261,15 +275,12 @@ goad_server_activate_with_repo_id(GoadServer *server_list,
   return retval;
 }
 
-/*
- * goad_server_activate
- *
- * @sinfo: information on the server to be "activated"
- * @flags: information on how the application wants
- *         the server to be activated.
- *
- * Description: Activates a CORBA server specified by 'sinfo', using
- * the 'flags' hints on how to activate that server.
+/**** goad_server_activate
+      Inputs: 'sinfo' - information on the server to be "activated"
+              'flags' - information on how the application wants
+	                the server to be activated.
+      Description: Activates a CORBA server specified by 'sinfo', using
+                   the 'flags' hints on how to activate that server.
  */
 CORBA_Object
 goad_server_activate(GoadServer *sinfo,
@@ -390,23 +401,21 @@ goad_server_activate(GoadServer *sinfo,
   return retval;
 }
 
-/*
- * goad_server_activate_shlib
- * @sinfo: information on the plugin to be loaded.
- * @flags: information about how the plugin should be loaded, etc.
- * @ev:    exception information (passed in to save us
- *         creating another one)
- *
- * Pre-conditions: Assumes sinfo->type == GOAD_SERVER_SHLIB
- *
- * Side effects: May add information on the newly created server to
- * 'our_active_servers' list, so we can unregister the server from the
- * name service when we exit.
- *
- * Description: Loads the plugin specified in 'sinfo'. Looks for
- * an object of id 'sinfo->id' in it, and activates it
- * if found.
- */
+/**** goad_server_activate_shlib
+      Inputs: 'sinfo' - information on the plugin to be loaded.
+              'flags' - information about how the plugin should be loaded, etc.
+	      'ev' - exception information (passed in to save us
+	             creating another one)
+      Pre-conditions: Assumes sinfo->type == GOAD_SERVER_SHLIB
+
+      Side effects: May add information on the newly created server to
+                    'our_active_servers' list, so we can unregister
+                    the server from the name service when we exit.
+
+      Description: Loads the plugin specified in 'sinfo'. Looks for an
+                   object of id 'sinfo->id' in it, and activates it if
+                   found.
+*/
 static CORBA_Object
 goad_server_activate_shlib(GoadServer *sinfo,
 			   GoadActivationFlags flags,
@@ -451,11 +460,11 @@ goad_server_activate_shlib(GoadServer *sinfo,
 }
 
 
-/*
- * goad_servers_unregister_atexit
- *
- * Description: For each shlib server that we had started,
- * try to unregister it from the name service.
+/**** goad_servers_unregister_atexit
+
+      Description: For each shlib server that we had started, try to
+                   unregister it from the name service.
+
  */
 static void
 goad_server_unregister_atexit(ActiveServerInfo *ai, CORBA_Environment *ev)
