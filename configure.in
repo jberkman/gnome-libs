@@ -42,7 +42,10 @@ AM_CONDITIONAL(FALSE, test x = y)
 dnl
 dnl Compile with newer gtks that include gtkcalendar widget there
 dnl
-AC_CHECK_LIB(gtk, gtk_calendar_get_type,[gtkcal=true],[gtkcal=false])
+AC_CHECK_LIB(gtk, gtk_calendar_get_type,[
+	gtkcal=true
+	AC_DEFINE(HAVE_GTKCAL)
+],[gtkcal=false])
 AM_CONDITIONAL(HAVE_GTKCAL, $gtkcal)
 
 AC_ARG_ENABLE(debug, [  --enable-debug turn on debugging [default=no]],AC_DEFINE(GNOME_ENABLE_DEBUG),)

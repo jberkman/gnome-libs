@@ -26,3 +26,4 @@
 #undef USE_TERMNET
 #undef USE_VFS
 #undef HAVE_ORBIT
+#undef HAVE_GTKCAL
