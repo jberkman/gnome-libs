@@ -19,7 +19,6 @@ tmpl_sources =				\
 
 gnorba_docdir = $(HTML_DIR)
 gnorba_doc_DATA = 			\
-	gnorba-decl.txt			\
 	gnorba-sections.txt
 
 EXTRA_DIST = $(gnorba_doc_DATA)
