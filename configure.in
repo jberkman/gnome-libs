@@ -68,9 +68,9 @@ Z_LIBS= JPEG_LIBS= PNG_LIBS= TIFF_LIBS= GIF_LIBS= GDK_IMLIB_LIBS=
 AC_CHECK_LIB(z, inflate, [Z_LIBS="-lz";  AC_DEFINE(HAVE_LIBZ)])
 AC_CHECK_LIB(jpeg, jpeg_abort, [JPEG_LIBS="-ljpeg"; AC_DEFINE(HAVE_LIBJPEG)])
 AC_CHECK_LIB(png, png_get_valid, [PNG_LIBS="-lpng"; AC_DEFINE(HAVE_LIBPNG)], , $Z_LIBS)
-AC_CHECK_LIB(tiff, main, [TIFF_LIBS="-ltiff $Z_LIBS $JPEG_LIBS"; AC_DEFINE(HAVE_LIBTIFF)], ,$Z_LIBS $JPEG_LIBS)
-AC_CHECK_LIB(gif, main, [GIF_LIBS="-lgif"; AC_DEFINE(HAVE_LIBGIF)], ,$GTK_LIBS $X_LIBS $x_libs)
-AC_CHECK_LIB(gdk_imlib, main, [
+AC_CHECK_LIB(tiff, TIFFClose, [TIFF_LIBS="-ltiff $Z_LIBS $JPEG_LIBS"; AC_DEFINE(HAVE_LIBTIFF)], ,$Z_LIBS $JPEG_LIBS)
+AC_CHECK_LIB(gif, DGifOpenFileName, [GIF_LIBS="-lgif"; AC_DEFINE(HAVE_LIBGIF)], ,$GTK_LIBS $X_LIBS $x_libs)
+AC_CHECK_LIB(gdk_imlib, gdk_imlib_init, [
  GDK_IMLIB_LIBS="-lgdk_imlib $TIFF_LIBS $GIF_LIBS $JPEG_LIBS $PNG_LIBS $Z_LIBS"
 ],[
 AC_MSG_ERROR(I could not find gdk_imlib, which is required by Gnome libs)
