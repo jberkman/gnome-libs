@@ -19,12 +19,17 @@ int main(int argc, char *argv[])
 
 	chdir("tests");
 	chmod("lynxdump.sh", S_IXGRP|S_IXOTH|S_IXUSR|S_IRGRP|S_IROTH|S_IRUSR|S_IWUSR);
-	gnomelib_init(&argc, &argv);
+	gnomelib_init("fileconvert", &argc, &argv);
 	outfd = gnome_file_convert("fileconvert.in",
 				   "text/html",
 				   "text/ascii");
+	if(outfd >= 0) return 1;
+	outfd = gnome_file_convert("fileconvert.in",
+				   "text/html",
+				   "text/plain");
+	if(outfd < 0) return 1;
 	while((readlen = read(outfd, abuf, sizeof(abuf) - 1))) {
-		printf("%.*s", readlen, abuf);
+		printf("%.*s", readlen, abuf); fflush(stdout);
 	} 
 
 	printf("\n");

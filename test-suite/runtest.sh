@@ -9,13 +9,13 @@ fi
 for I in $TESTS; do
 	TEST=`basename $I .c`
 	$CC tests/$TEST.c -L../../libgnomeui/.libs -lgnomeui -L../../libgnome/.libs \
-		-lgnome -I../.. -lgtk -lgdk -lglib -L/usr/X11R6/lib \
+		-lgnome -I../.. -lgtk -lgdk -lglib -ldl -L/usr/X11R6/lib \
 		-lXext -lSM -lX11 -lm \
+		-Wl,-rpath,../libgnome/.libs \
+		-Wl,-rpath,../libgnomeui/.libs \
 		-Wl,-rpath,../../libgnome/.libs \
 		-Wl,-rpath,../../libgnomeui/.libs \
-		-Wl,-rpath,../../../libgnome/.libs \
-		-Wl,-rpath,../../../libgnomeui/.libs \
-		-g -static \
+		-g \
 		-o tests/$TEST > /tmp/.$$ 2>&1
 	T=$?
 	if [ $T != 0 ]; then

@@ -22,7 +22,7 @@ int main(int argc, char *argv[])
 	trig.u.function = sample_trigger_function;
 	trig.level = NULL;
 
-	gnomelib_init(&argc, &argv);
+	gnomelib_init("trigs", &argc, &argv);
 	gnome_triggers_init();
 	gnome_triggers_readfile("tests/trigs.in");
 	gnome_triggers_add_trigger(&trig, "test", "one", NULL);
