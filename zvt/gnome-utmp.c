@@ -227,7 +227,7 @@ write_login_record (char *login_name, char *display_name, char *term_name, int u
 		char buf[5];
 		
 		if (sscanf (pty, "%*[^0-9]%d", &num) == 1){
-			sprintf (buf, "gt%02x", num));
+			sprintf (buf, "gt%02x", num);
 			strncpy (ut->ut_id, buf, sizeof (ut->ut_id));
 		} 
 		else
