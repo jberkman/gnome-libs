@@ -1,3 +1,11 @@
+Thu Feb 19 13:49:32 1998  Miguel de Icaza  <miguel@nuclecu.unam.mx>
+
+	* gtk-xmhtml.c (gtk_xmhtml_foreach): Add container foreach method
+	for the XmHTML widget.
+	
+	* gtk-xmhtml.c (gtk_xmhtml_init): Mark the gtk-xmhtml widget as
+	not having a window.   Thanks to Federico for figuring this out.
+
 1998-02-12  Raja R Harinath  <harinath@cs.umn.edu>
 
 	* gtk-forms.c (_XmHTMLFormActivate): CHECK_CALLBACK returns int, 

@@ -27,6 +27,7 @@ static GtkContainer *parent_class = NULL;
 /* prototypes for functions defined here */
 static void gtk_xmhtml_realize (GtkWidget *widget);
 static void gtk_xmhtml_unrealize (GtkWidget *widget);
+static void gtk_xmhtml_foreach (GtkContainer *we, GtkCallback callback, gpointer callback_data);
 static void gtk_xmhtml_map (GtkWidget *widget);
 static void gtk_xmhtml_draw (GtkWidget *widget, GdkRectangle *area);
 static gint gtk_xmhtml_expose (GtkWidget *widget, GdkEventExpose *event);
@@ -203,6 +204,8 @@ static void gtk_xmhtml_create_widgets (GtkXmHTML *html);
 static void
 gtk_xmhtml_init (GtkXmHTML *html)
 {
+	GTK_WIDGET_SET_FLAGS (html, GTK_NO_WINDOW);
+	
 	gtk_xmhtml_resource_init (html);
 	gtk_xmhtml_reset_pending_flags (html);
 
@@ -225,7 +228,6 @@ gtk_xmhtml_init (GtkXmHTML *html)
 	gtk_xmhtml_create_widgets (html);
 	gtk_xmhtml_source (html, "<body></body>");
 	html->frozen = 1;
-
 }
 
 GtkWidget *
@@ -351,6 +353,7 @@ gtk_xmhtml_class_init (GtkXmHTMLClass *class)
 	
 	container_class->add = gtk_xmhtml_add;
 	container_class->remove = gtk_xmhtml_remove;
+	container_class->foreach = gtk_xmhtml_foreach;
 }
 
 static void
@@ -1016,6 +1019,28 @@ gtk_xmhtml_remove (GtkContainer *container, GtkWidget *widget)
 		}
 		children = children->next;
 	}
+}
+
+static void
+gtk_xmhtml_foreach (GtkContainer *container, GtkCallback callback, gpointer callback_data)
+{
+	GtkXmHTML *html;
+	
+	g_return_if_fail (container != NULL);
+	g_return_if_fail (GTK_IS_XMHTML (container));
+	g_return_if_fail (callback != NULL);
+
+	html = (GtkXmHTML *) container;
+
+	/* First the scrollbars */
+	(*callback)(html->html.vsb, callback_data);
+	(*callback)(html->html.hsb, callback_data);
+
+	/* The drawing area */
+	(*callback)(html->html.work_area, callback_data);
+
+	/* Any childs */
+	g_list_foreach (html->children, (GFunc) callback, callback_data);
 }
 
 static void
