@@ -226,6 +226,770 @@ GnomeAnimator *animator,gdouble speed
 <RETURNS>gdouble  </RETURNS>
 GnomeAnimator *animator
 </FUNCTION>
+<ENUM>
+<NAME>GnomeUIInfoType</NAME>
+typedef enum {
+	GNOME_APP_UI_ENDOFINFO,		/* No more items, use it at the end of 
+					   an array */
+	GNOME_APP_UI_ITEM,		/* Normal item, or radio item if it is 
+					   inside a radioitems group */
+	GNOME_APP_UI_TOGGLEITEM,	/* Toggle (check box) item */
+	GNOME_APP_UI_RADIOITEMS,	/* Radio item group */
+	GNOME_APP_UI_SUBTREE,		/* Item that defines a 
+					   subtree/submenu */
+	GNOME_APP_UI_SEPARATOR,		/* Separator line (menus) or blank 
+					   space (toolbars) */
+	GNOME_APP_UI_HELP,		/* Create a list of help topics, 
+					   used in the Help menu */
+	GNOME_APP_UI_BUILDER_DATA,	/* Specifies the builder data for the 
+					   following entries, see code for 
+					   further info */
+	GNOME_APP_UI_ITEM_CONFIGURABLE, /* A configurable menu item. */
+	/* one should be careful when using 
+	 * gnome_app_create_*_[custom|interp|with_data]() functions with 
+	 * GnomeUIInfo arrays containing GNOME_APP_UI_BUILDER_DATA items since 
+	 * their GnomeUIBuilderData structures completely override the ones 
+	 * generated or supplied by the above functions. */
+	GNOME_APP_UI_SUBTREE_STOCK	/* Item that defines a 
+					   subtree/submenu, same as GNOME_APP_UI_SUBTREE,
+					   but the texts should be looked up in the
+					   gnome-libs catalog
+					*/
+} GnomeUIInfoType;
+</ENUM>
+<ENUM>
+<NAME>GnomeUIInfoConfigurableTypes</NAME>
+typedef enum {
+        /* 0 */
+        GNOME_APP_CONFIGURABLE_ITEM_NEW,
+        GNOME_APP_CONFIGURABLE_ITEM_OPEN,
+        GNOME_APP_CONFIGURABLE_ITEM_SAVE,
+        GNOME_APP_CONFIGURABLE_ITEM_SAVE_AS,
+        GNOME_APP_CONFIGURABLE_ITEM_REVERT,
+        GNOME_APP_CONFIGURABLE_ITEM_PRINT,
+        GNOME_APP_CONFIGURABLE_ITEM_PRINT_SETUP,
+        GNOME_APP_CONFIGURABLE_ITEM_CLOSE,
+        GNOME_APP_CONFIGURABLE_ITEM_EXIT,
+        GNOME_APP_CONFIGURABLE_ITEM_CUT,
+	/* 10 */
+        GNOME_APP_CONFIGURABLE_ITEM_COPY,
+        GNOME_APP_CONFIGURABLE_ITEM_PASTE,
+        GNOME_APP_CONFIGURABLE_ITEM_CLEAR,
+        GNOME_APP_CONFIGURABLE_ITEM_UNDO,
+        GNOME_APP_CONFIGURABLE_ITEM_REDO,
+        GNOME_APP_CONFIGURABLE_ITEM_FIND,
+        GNOME_APP_CONFIGURABLE_ITEM_FIND_AGAIN,
+        GNOME_APP_CONFIGURABLE_ITEM_REPLACE,
+        GNOME_APP_CONFIGURABLE_ITEM_PROPERTIES,
+        GNOME_APP_CONFIGURABLE_ITEM_PREFERENCES,
+	/* 20 */
+        GNOME_APP_CONFIGURABLE_ITEM_ABOUT,
+	GNOME_APP_CONFIGURABLE_ITEM_SELECT_ALL,
+	GNOME_APP_CONFIGURABLE_ITEM_NEW_WINDOW,
+	GNOME_APP_CONFIGURABLE_ITEM_CLOSE_WINDOW,
+	GNOME_APP_CONFIGURABLE_ITEM_NEW_GAME,
+	GNOME_APP_CONFIGURABLE_ITEM_PAUSE_GAME,
+	GNOME_APP_CONFIGURABLE_ITEM_RESTART_GAME,
+	GNOME_APP_CONFIGURABLE_ITEM_UNDO_MOVE,
+	GNOME_APP_CONFIGURABLE_ITEM_REDO_MOVE,
+	GNOME_APP_CONFIGURABLE_ITEM_HINT,
+	/* 30 */
+	GNOME_APP_CONFIGURABLE_ITEM_SCORES,
+	GNOME_APP_CONFIGURABLE_ITEM_END_GAME
+} GnomeUIInfoConfigurableTypes;
+</ENUM>
+<ENUM>
+<NAME>GnomeUIPixmapType</NAME>
+typedef enum {
+	GNOME_APP_PIXMAP_NONE,		/* No pixmap specified */
+	GNOME_APP_PIXMAP_STOCK,		/* Use a stock pixmap (GnomeStock) */
+	GNOME_APP_PIXMAP_DATA,		/* Use a pixmap from inline xpm data */
+	GNOME_APP_PIXMAP_FILENAME	/* Use a pixmap from the specified 
+					   filename */
+} GnomeUIPixmapType;
+</ENUM>
+<STRUCT>
+<NAME>GnomeUIInfo</NAME>
+typedef struct {
+	GnomeUIInfoType type;		/* Type of item */
+	gchar *label;			/* String to use in the label */
+	gchar *hint;			/* For toolbar items, the tooltip. For 
+					   menu items, the status bar message */
+	gpointer moreinfo;		/* For an item, toggleitem, or 
+					   radioitem, this is a pointer to the 
+					   function to call when the item is 
+					   activated. For a subtree, a pointer 
+					   to another array of GnomeUIInfo 
+					   structures. For a radioitem lead 
+					   entry, a pointer to an array of 
+					   GnomeUIInfo structures for the radio 
+					   item group. For a help item, 
+					   specifies the help node to load 
+					   (i.e. the application's identifier) 
+					   or NULL for the main program's name.
+					   For builder data, points to the 
+					   GnomeUIBuilderData structure for 
+					   the following items */
+	gpointer user_data;		/* Data pointer to pass to callbacks */
+	gpointer unused_data;		/* Reserved for future expansion, 
+					   should be NULL */
+	GnomeUIPixmapType pixmap_type;	/* Type of pixmap for the item */
+	gpointer pixmap_info;		/* Pointer to the pixmap information:
+					 *
+					 * For GNOME_APP_PIXMAP_STOCK, a 
+					 * pointer to the stock icon name.
+					 *
+					 * For GNOME_APP_PIXMAP_DATA, a 
+					 * pointer to the inline xpm data.
+					 *
+					 * For GNOME_APP_PIXMAP_FILENAME, a 
+					 * pointer to the filename string.
+					 */
+	guint accelerator_key;		/* Accelerator key, or 0 for none */
+	GdkModifierType ac_mods;	/* Mask of modifier keys for the 
+					   accelerator */
+
+	GtkWidget *widget;		/* Filled in by gnome_app_create*, you 
+					   can use this to tweak the widgets 
+					   once they have been created */
+} GnomeUIInfo;
+</STRUCT>
+<MACRO>
+<NAME>GNOMEUIINFO_KEY_UIDATA</NAME>
+#define GNOMEUIINFO_KEY_UIDATA		"uidata"
+</MACRO>
+<MACRO>
+<NAME>GNOMEUIINFO_KEY_UIBDATA</NAME>
+#define GNOMEUIINFO_KEY_UIBDATA		"uibdata"
+</MACRO>
+<MACRO>
+<NAME>GNOMEUIINFO_END</NAME>
+#define GNOMEUIINFO_END			{ GNOME_APP_UI_ENDOFINFO, NULL, NULL, NULL, NULL, NULL,		\
+					  (GnomeUIPixmapType) 0, NULL, 0, (GdkModifierType) 0, NULL }
+</MACRO>
+<MACRO>
+<NAME>GNOMEUIINFO_SEPARATOR</NAME>
+#define GNOMEUIINFO_SEPARATOR		{ GNOME_APP_UI_SEPARATOR, NULL, NULL, NULL, NULL, NULL,		\
+					  (GnomeUIPixmapType) 0, NULL, 0, (GdkModifierType) 0, NULL }
+</MACRO>
+<MACRO>
+<NAME>GNOMEUIINFO_ITEM</NAME>
+#define GNOMEUIINFO_ITEM(label, tooltip, callback, xpm_data) \
+	{ GNOME_APP_UI_ITEM, label, tooltip, callback, NULL, NULL, \
+		GNOME_APP_PIXMAP_DATA, xpm_data, 0, (GdkModifierType) 0, NULL}
+</MACRO>
+<MACRO>
+<NAME>GNOMEUIINFO_ITEM_STOCK</NAME>
+#define GNOMEUIINFO_ITEM_STOCK(label, tooltip, callback, stock_id) \
+	{ GNOME_APP_UI_ITEM, label, tooltip, callback, NULL, NULL, \
+		GNOME_APP_PIXMAP_STOCK, stock_id, 0, (GdkModifierType) 0, NULL }
+</MACRO>
+<MACRO>
+<NAME>GNOMEUIINFO_ITEM_NONE</NAME>
+#define GNOMEUIINFO_ITEM_NONE(label, tooltip, callback) \
+	{ GNOME_APP_UI_ITEM, label, tooltip, callback, NULL, NULL, \
+		GNOME_APP_PIXMAP_NONE, NULL, 0, (GdkModifierType) 0, NULL }
+</MACRO>
+<MACRO>
+<NAME>GNOMEUIINFO_ITEM_DATA</NAME>
+#define GNOMEUIINFO_ITEM_DATA(label, tooltip, callback, user_data, xpm_data) \
+	{ GNOME_APP_UI_ITEM, label, tooltip, callback, user_data, NULL, \
+		GNOME_APP_PIXMAP_DATA, xpm_data, 0, (GdkModifierType) 0, NULL }
+</MACRO>
+<MACRO>
+<NAME>GNOMEUIINFO_TOGGLEITEM</NAME>
+#define GNOMEUIINFO_TOGGLEITEM(label, tooltip, callback, xpm_data) \
+	{ GNOME_APP_UI_TOGGLEITEM, label, tooltip, callback, NULL, NULL, \
+		GNOME_APP_PIXMAP_DATA, xpm_data, 0, (GdkModifierType) 0, NULL }
+</MACRO>
+<MACRO>
+<NAME>GNOMEUIINFO_TOGGLEITEM_DATA</NAME>
+#define GNOMEUIINFO_TOGGLEITEM_DATA(label, tooltip, callback, user_data, xpm_data)		\
+					{ GNOME_APP_UI_TOGGLEITEM, label, tooltip, callback,	\
+					  user_data, NULL, GNOME_APP_PIXMAP_DATA, xpm_data,	\
+					  0, (GdkModifierType) 0, NULL }
+</MACRO>
+<MACRO>
+<NAME>GNOMEUIINFO_HELP</NAME>
+#define GNOMEUIINFO_HELP(app_name) \
+	{ GNOME_APP_UI_HELP, NULL, NULL, app_name, NULL, NULL, \
+		(GnomeUIPixmapType) 0, NULL, 0,	(GdkModifierType) 0, NULL }
+</MACRO>
+<MACRO>
+<NAME>GNOMEUIINFO_SUBTREE</NAME>
+#define GNOMEUIINFO_SUBTREE(label, tree) \
+	{ GNOME_APP_UI_SUBTREE, label, NULL, tree, NULL, NULL, \
+		(GnomeUIPixmapType) 0, NULL, 0,	(GdkModifierType) 0, NULL }
+</MACRO>
+<MACRO>
+<NAME>GNOMEUIINFO_SUBTREE_HINT</NAME>
+#define GNOMEUIINFO_SUBTREE_HINT(label, hint, tree) \
+	{ GNOME_APP_UI_SUBTREE, label, hint, tree, NULL, NULL, \
+		(GnomeUIPixmapType) 0, NULL, 0,	(GdkModifierType) 0, NULL }
+</MACRO>
+<MACRO>
+<NAME>GNOMEUIINFO_SUBTREE_STOCK</NAME>
+#define GNOMEUIINFO_SUBTREE_STOCK(label, tree, stock_id) \
+	{ GNOME_APP_UI_SUBTREE, label, NULL, tree, NULL, NULL, \
+		GNOME_APP_PIXMAP_STOCK, stock_id, 0, (GdkModifierType) 0, NULL }
+</MACRO>
+<MACRO>
+<NAME>GNOMEUIINFO_RADIOLIST</NAME>
+#define GNOMEUIINFO_RADIOLIST(list) \
+	{ GNOME_APP_UI_RADIOITEMS, NULL, NULL, list, NULL, NULL, \
+		(GnomeUIPixmapType) 0, NULL, 0,	(GdkModifierType) 0, NULL }
+</MACRO>
+<MACRO>
+<NAME>GNOMEUIINFO_RADIOITEM</NAME>
+#define GNOMEUIINFO_RADIOITEM(label, tooltip, callback, xpm_data) \
+	{ GNOME_APP_UI_ITEM, label, tooltip, callback, NULL, NULL, \
+		GNOME_APP_PIXMAP_DATA, xpm_data, 0, (GdkModifierType) 0, NULL }
+</MACRO>
+<MACRO>
+<NAME>GNOMEUIINFO_RADIOITEM_DATA</NAME>
+#define GNOMEUIINFO_RADIOITEM_DATA(label, tooltip, callback, user_data, xpm_data)		\
+					{ GNOME_APP_UI_ITEM, label, tooltip, callback,	\
+					  user_data, NULL, GNOME_APP_PIXMAP_DATA, xpm_data,	\
+					  0, (GdkModifierType) 0, NULL }
+</MACRO>
+<MACRO>
+<NAME>GNOMEUIINFO_MENU_NEW_ITEM</NAME>
+#define GNOMEUIINFO_MENU_NEW_ITEM(label, tip, cb, data)                     \
+        { GNOME_APP_UI_ITEM_CONFIGURABLE, label, tip,                       \
+          cb, (gpointer)(data), NULL,                                       \
+          GNOME_APP_PIXMAP_NONE, NULL,                                      \
+          GNOME_APP_CONFIGURABLE_ITEM_NEW, (GdkModifierType) 0, NULL }
+</MACRO>
+<MACRO>
+<NAME>GNOMEUIINFO_MENU_NEW_SUBTREE</NAME>
+#define GNOMEUIINFO_MENU_NEW_SUBTREE(tree)                                  \
+        { GNOME_APP_UI_SUBTREE_STOCK, N_("_New"), NULL, tree, NULL, NULL,   \
+          GNOME_APP_PIXMAP_STOCK, GNOME_STOCK_MENU_NEW,                     \
+          GNOME_KEY_NAME_NEW, GNOME_KEY_MOD_NEW, NULL }
+</MACRO>
+<MACRO>
+<NAME>GNOMEUIINFO_MENU_OPEN_ITEM</NAME>
+#define GNOMEUIINFO_MENU_OPEN_ITEM(cb, data)                                \
+        { GNOME_APP_UI_ITEM_CONFIGURABLE, NULL, NULL,                       \
+          cb, (gpointer)(data), NULL,                                       \
+          GNOME_APP_PIXMAP_NONE, NULL,                                      \
+          GNOME_APP_CONFIGURABLE_ITEM_OPEN, (GdkModifierType) 0, NULL }
+</MACRO>
+<MACRO>
+<NAME>GNOMEUIINFO_MENU_SAVE_ITEM</NAME>
+#define GNOMEUIINFO_MENU_SAVE_ITEM(cb, data)                                \
+        { GNOME_APP_UI_ITEM_CONFIGURABLE, NULL, NULL,                       \
+          cb, (gpointer)(data), NULL,                                       \
+          GNOME_APP_PIXMAP_NONE, NULL,                                      \
+          GNOME_APP_CONFIGURABLE_ITEM_SAVE, (GdkModifierType) 0, NULL }
+</MACRO>
+<MACRO>
+<NAME>GNOMEUIINFO_MENU_SAVE_AS_ITEM</NAME>
+#define GNOMEUIINFO_MENU_SAVE_AS_ITEM(cb, data)                             \
+        { GNOME_APP_UI_ITEM_CONFIGURABLE, NULL, NULL,                       \
+          cb, (gpointer)(data), NULL,                                       \
+          GNOME_APP_PIXMAP_NONE, NULL,                                      \
+          GNOME_APP_CONFIGURABLE_ITEM_SAVE_AS, (GdkModifierType) 0, NULL }
+</MACRO>
+<MACRO>
+<NAME>GNOMEUIINFO_MENU_REVERT_ITEM</NAME>
+#define GNOMEUIINFO_MENU_REVERT_ITEM(cb, data)                              \
+        { GNOME_APP_UI_ITEM_CONFIGURABLE, NULL, NULL,                       \
+          cb, (gpointer)(data), NULL,                                       \
+          GNOME_APP_PIXMAP_NONE, NULL,                                      \
+          GNOME_APP_CONFIGURABLE_ITEM_REVERT, (GdkModifierType) 0, NULL }
+</MACRO>
+<MACRO>
+<NAME>GNOMEUIINFO_MENU_PRINT_ITEM</NAME>
+#define GNOMEUIINFO_MENU_PRINT_ITEM(cb, data)                               \
+        { GNOME_APP_UI_ITEM_CONFIGURABLE, NULL, NULL,                       \
+          cb, (gpointer)(data), NULL,                                       \
+          GNOME_APP_PIXMAP_NONE, NULL,                                      \
+          GNOME_APP_CONFIGURABLE_ITEM_PRINT, (GdkModifierType) 0, NULL }
+</MACRO>
+<MACRO>
+<NAME>GNOMEUIINFO_MENU_PRINT_SETUP_ITEM</NAME>
+#define GNOMEUIINFO_MENU_PRINT_SETUP_ITEM(cb, data)                         \
+        { GNOME_APP_UI_ITEM_CONFIGURABLE, NULL, NULL,                       \
+          cb, (gpointer)(data), NULL,                                       \
+          GNOME_APP_PIXMAP_NONE, NULL,                                      \
+          GNOME_APP_CONFIGURABLE_ITEM_PRINT_SETUP, (GdkModifierType) 0, NULL }
+</MACRO>
+<MACRO>
+<NAME>GNOMEUIINFO_MENU_CLOSE_ITEM</NAME>
+#define GNOMEUIINFO_MENU_CLOSE_ITEM(cb, data)                               \
+        { GNOME_APP_UI_ITEM_CONFIGURABLE, NULL, NULL,                       \
+          cb, (gpointer)(data), NULL,                                       \
+          GNOME_APP_PIXMAP_NONE, NULL,                                      \
+          GNOME_APP_CONFIGURABLE_ITEM_CLOSE, (GdkModifierType) 0, NULL }
+</MACRO>
+<MACRO>
+<NAME>GNOMEUIINFO_MENU_EXIT_ITEM</NAME>
+#define GNOMEUIINFO_MENU_EXIT_ITEM(cb, data)                                \
+        { GNOME_APP_UI_ITEM_CONFIGURABLE, NULL, NULL,                       \
+          cb, (gpointer)(data), NULL,                                       \
+          GNOME_APP_PIXMAP_NONE, NULL,                                      \
+          GNOME_APP_CONFIGURABLE_ITEM_EXIT, (GdkModifierType) 0, NULL }
+</MACRO>
+<MACRO>
+<NAME>GNOMEUIINFO_MENU_CUT_ITEM</NAME>
+#define GNOMEUIINFO_MENU_CUT_ITEM(cb, data)                                 \
+        { GNOME_APP_UI_ITEM_CONFIGURABLE, NULL, NULL,                       \
+          cb, (gpointer)(data), NULL,                                       \
+          GNOME_APP_PIXMAP_NONE, NULL,                                      \
+          GNOME_APP_CONFIGURABLE_ITEM_CUT, (GdkModifierType) 0, NULL }
+</MACRO>
+<MACRO>
+<NAME>GNOMEUIINFO_MENU_COPY_ITEM</NAME>
+#define GNOMEUIINFO_MENU_COPY_ITEM(cb, data)                                \
+        { GNOME_APP_UI_ITEM_CONFIGURABLE, NULL, NULL,                       \
+          cb, (gpointer)(data), NULL,                                       \
+          GNOME_APP_PIXMAP_NONE, NULL,                                      \
+          GNOME_APP_CONFIGURABLE_ITEM_COPY, (GdkModifierType) 0, NULL }
+</MACRO>
+<MACRO>
+<NAME>GNOMEUIINFO_MENU_PASTE_ITEM</NAME>
+#define GNOMEUIINFO_MENU_PASTE_ITEM(cb, data)                               \
+        { GNOME_APP_UI_ITEM_CONFIGURABLE, NULL, NULL,                       \
+          cb, (gpointer)(data), NULL,                                       \
+          GNOME_APP_PIXMAP_NONE, NULL,                                      \
+          GNOME_APP_CONFIGURABLE_ITEM_PASTE, (GdkModifierType) 0, NULL }
+</MACRO>
+<MACRO>
+<NAME>GNOMEUIINFO_MENU_SELECT_ALL_ITEM</NAME>
+#define GNOMEUIINFO_MENU_SELECT_ALL_ITEM(cb, data)                          \
+        { GNOME_APP_UI_ITEM_CONFIGURABLE, NULL, NULL,                       \
+          cb, (gpointer)(data), NULL,                                       \
+          GNOME_APP_PIXMAP_NONE, NULL,                                      \
+          GNOME_APP_CONFIGURABLE_ITEM_SELECT_ALL, (GdkModifierType) 0, NULL }
+</MACRO>
+<MACRO>
+<NAME>GNOMEUIINFO_MENU_CLEAR_ITEM</NAME>
+#define GNOMEUIINFO_MENU_CLEAR_ITEM(cb, data)                               \
+        { GNOME_APP_UI_ITEM_CONFIGURABLE, NULL, NULL,                       \
+          cb, (gpointer)(data), NULL,                                       \
+          GNOME_APP_PIXMAP_NONE, NULL,                                      \
+          GNOME_APP_CONFIGURABLE_ITEM_CLEAR, (GdkModifierType) 0, NULL }
+</MACRO>
+<MACRO>
+<NAME>GNOMEUIINFO_MENU_UNDO_ITEM</NAME>
+#define GNOMEUIINFO_MENU_UNDO_ITEM(cb, data)                                \
+        { GNOME_APP_UI_ITEM_CONFIGURABLE, NULL, NULL,                       \
+          cb, (gpointer)(data), NULL,                                       \
+          GNOME_APP_PIXMAP_NONE, NULL,                                      \
+          GNOME_APP_CONFIGURABLE_ITEM_UNDO, (GdkModifierType) 0, NULL }
+</MACRO>
+<MACRO>
+<NAME>GNOMEUIINFO_MENU_REDO_ITEM</NAME>
+#define GNOMEUIINFO_MENU_REDO_ITEM(cb, data)                                \
+        { GNOME_APP_UI_ITEM_CONFIGURABLE, NULL, NULL,                       \
+          cb, (gpointer)(data), NULL,                                       \
+          GNOME_APP_PIXMAP_NONE, NULL,                                      \
+          GNOME_APP_CONFIGURABLE_ITEM_REDO, (GdkModifierType) 0, NULL }
+</MACRO>
+<MACRO>
+<NAME>GNOMEUIINFO_MENU_FIND_ITEM</NAME>
+#define GNOMEUIINFO_MENU_FIND_ITEM(cb, data)                                \
+        { GNOME_APP_UI_ITEM_CONFIGURABLE, NULL, NULL,                       \
+          cb, (gpointer)(data), NULL,                                       \
+          GNOME_APP_PIXMAP_NONE, NULL,                                      \
+          GNOME_APP_CONFIGURABLE_ITEM_FIND, (GdkModifierType) 0, NULL }
+</MACRO>
+<MACRO>
+<NAME>GNOMEUIINFO_MENU_FIND_AGAIN_ITEM</NAME>
+#define GNOMEUIINFO_MENU_FIND_AGAIN_ITEM(cb, data)                          \
+        { GNOME_APP_UI_ITEM_CONFIGURABLE, NULL, NULL,                       \
+          cb, (gpointer)(data), NULL,                                       \
+          GNOME_APP_PIXMAP_NONE, NULL,                                      \
+          GNOME_APP_CONFIGURABLE_ITEM_FIND_AGAIN, (GdkModifierType) 0, NULL }
+</MACRO>
+<MACRO>
+<NAME>GNOMEUIINFO_MENU_REPLACE_ITEM</NAME>
+#define GNOMEUIINFO_MENU_REPLACE_ITEM(cb, data)                             \
+        { GNOME_APP_UI_ITEM_CONFIGURABLE, NULL, NULL,                       \
+          cb, (gpointer)(data), NULL,                                       \
+          GNOME_APP_PIXMAP_NONE, NULL,                                      \
+          GNOME_APP_CONFIGURABLE_ITEM_REPLACE, (GdkModifierType) 0, NULL }
+</MACRO>
+<MACRO>
+<NAME>GNOMEUIINFO_MENU_PROPERTIES_ITEM</NAME>
+#define GNOMEUIINFO_MENU_PROPERTIES_ITEM(cb, data)                          \
+        { GNOME_APP_UI_ITEM_CONFIGURABLE, NULL, NULL,                       \
+          cb, (gpointer)(data), NULL,                                       \
+          GNOME_APP_PIXMAP_NONE, NULL,                                      \
+          GNOME_APP_CONFIGURABLE_ITEM_PROPERTIES, (GdkModifierType) 0, NULL }
+</MACRO>
+<MACRO>
+<NAME>GNOMEUIINFO_MENU_PREFERENCES_ITEM</NAME>
+#define GNOMEUIINFO_MENU_PREFERENCES_ITEM(cb, data)                         \
+        { GNOME_APP_UI_ITEM_CONFIGURABLE, NULL, NULL,                       \
+          cb, (gpointer)(data), NULL,                                       \
+          GNOME_APP_PIXMAP_NONE, NULL,                                      \
+          GNOME_APP_CONFIGURABLE_ITEM_PREFERENCES, (GdkModifierType) 0, NULL }
+</MACRO>
+<MACRO>
+<NAME>GNOMEUIINFO_MENU_NEW_WINDOW_ITEM</NAME>
+#define GNOMEUIINFO_MENU_NEW_WINDOW_ITEM(cb, data)                          \
+        { GNOME_APP_UI_ITEM_CONFIGURABLE, NULL, NULL,                       \
+          cb, (gpointer)(data), NULL,                                       \
+          GNOME_APP_PIXMAP_NONE, NULL,                                      \
+          GNOME_APP_CONFIGURABLE_ITEM_NEW_WINDOW, (GdkModifierType) 0, NULL }
+</MACRO>
+<MACRO>
+<NAME>GNOMEUIINFO_MENU_CLOSE_WINDOW_ITEM</NAME>
+#define GNOMEUIINFO_MENU_CLOSE_WINDOW_ITEM(cb, data)                        \
+        { GNOME_APP_UI_ITEM_CONFIGURABLE, NULL, NULL,                       \
+          cb, (gpointer)(data), NULL,                                       \
+          GNOME_APP_PIXMAP_NONE, NULL,                                      \
+          GNOME_APP_CONFIGURABLE_ITEM_CLOSE_WINDOW, (GdkModifierType) 0, NULL }
+</MACRO>
+<MACRO>
+<NAME>GNOMEUIINFO_MENU_ABOUT_ITEM</NAME>
+#define GNOMEUIINFO_MENU_ABOUT_ITEM(cb, data)                               \
+        { GNOME_APP_UI_ITEM_CONFIGURABLE, NULL, NULL,                       \
+          cb, (gpointer)(data), NULL,                                       \
+          GNOME_APP_PIXMAP_NONE, NULL,                                      \
+          GNOME_APP_CONFIGURABLE_ITEM_ABOUT, (GdkModifierType) 0, NULL }
+</MACRO>
+<MACRO>
+<NAME>GNOMEUIINFO_MENU_NEW_GAME_ITEM</NAME>
+#define GNOMEUIINFO_MENU_NEW_GAME_ITEM(cb, data)                            \
+        { GNOME_APP_UI_ITEM_CONFIGURABLE, NULL, NULL,                       \
+          cb, (gpointer)(data), NULL,                                       \
+          GNOME_APP_PIXMAP_NONE, NULL,                                      \
+          GNOME_APP_CONFIGURABLE_ITEM_NEW_GAME, (GdkModifierType) 0, NULL }
+</MACRO>
+<MACRO>
+<NAME>GNOMEUIINFO_MENU_PAUSE_GAME_ITEM</NAME>
+#define GNOMEUIINFO_MENU_PAUSE_GAME_ITEM(cb, data)                            \
+        { GNOME_APP_UI_ITEM_CONFIGURABLE, NULL, NULL,                       \
+          cb, (gpointer)(data), NULL,                                       \
+          GNOME_APP_PIXMAP_NONE, NULL,                                      \
+          GNOME_APP_CONFIGURABLE_ITEM_PAUSE_GAME, (GdkModifierType) 0, NULL }
+</MACRO>
+<MACRO>
+<NAME>GNOMEUIINFO_MENU_RESTART_GAME_ITEM</NAME>
+#define GNOMEUIINFO_MENU_RESTART_GAME_ITEM(cb, data)                            \
+        { GNOME_APP_UI_ITEM_CONFIGURABLE, NULL, NULL,                       \
+          cb, (gpointer)(data), NULL,                                       \
+          GNOME_APP_PIXMAP_NONE, NULL,                                      \
+          GNOME_APP_CONFIGURABLE_ITEM_RESTART_GAME, (GdkModifierType) 0, NULL }
+</MACRO>
+<MACRO>
+<NAME>GNOMEUIINFO_MENU_UNDO_MOVE_ITEM</NAME>
+#define GNOMEUIINFO_MENU_UNDO_MOVE_ITEM(cb, data)                            \
+        { GNOME_APP_UI_ITEM_CONFIGURABLE, NULL, NULL,                       \
+          cb, (gpointer)(data), NULL,                                       \
+          GNOME_APP_PIXMAP_NONE, NULL,                                      \
+          GNOME_APP_CONFIGURABLE_ITEM_UNDO_MOVE, (GdkModifierType) 0, NULL }
+</MACRO>
+<MACRO>
+<NAME>GNOMEUIINFO_MENU_REDO_MOVE_ITEM</NAME>
+#define GNOMEUIINFO_MENU_REDO_MOVE_ITEM(cb, data)                            \
+        { GNOME_APP_UI_ITEM_CONFIGURABLE, NULL, NULL,                       \
+          cb, (gpointer)(data), NULL,                                       \
+          GNOME_APP_PIXMAP_NONE, NULL,                                      \
+          GNOME_APP_CONFIGURABLE_ITEM_REDO_MOVE, (GdkModifierType) 0, NULL }
+</MACRO>
+<MACRO>
+<NAME>GNOMEUIINFO_MENU_HINT_ITEM</NAME>
+#define GNOMEUIINFO_MENU_HINT_ITEM(cb, data)                            \
+        { GNOME_APP_UI_ITEM_CONFIGURABLE, NULL, NULL,                       \
+          cb, (gpointer)(data), NULL,                                       \
+          GNOME_APP_PIXMAP_NONE, NULL,                                      \
+          GNOME_APP_CONFIGURABLE_ITEM_HINT, (GdkModifierType) 0, NULL }
+</MACRO>
+<MACRO>
+<NAME>GNOMEUIINFO_MENU_SCORES_ITEM</NAME>
+#define GNOMEUIINFO_MENU_SCORES_ITEM(cb, data)                            \
+        { GNOME_APP_UI_ITEM_CONFIGURABLE, NULL, NULL,                       \
+          cb, (gpointer)(data), NULL,                                       \
+          GNOME_APP_PIXMAP_NONE, NULL,                                      \
+          GNOME_APP_CONFIGURABLE_ITEM_SCORES, (GdkModifierType) 0, NULL }
+</MACRO>
+<MACRO>
+<NAME>GNOMEUIINFO_MENU_END_GAME_ITEM</NAME>
+#define GNOMEUIINFO_MENU_END_GAME_ITEM(cb, data)                            \
+        { GNOME_APP_UI_ITEM_CONFIGURABLE, NULL, NULL,                       \
+          cb, (gpointer)(data), NULL,                                       \
+          GNOME_APP_PIXMAP_NONE, NULL,                                      \
+          GNOME_APP_CONFIGURABLE_ITEM_END_GAME, (GdkModifierType) 0, NULL }
+</MACRO>
+<FUNCTION>
+<NAME>gnome_app_helper_gettext</NAME>
+<RETURNS>char  *</RETURNS>
+char *string
+</FUNCTION>
+<MACRO>
+<NAME>D_</NAME>
+#define D_(x) dgettext (PACKAGE, x)
+</MACRO>
+<MACRO>
+<NAME>L_</NAME>
+#define L_(x) gnome_app_helper_gettext(x)
+</MACRO>
+<MACRO>
+<NAME>D_</NAME>
+#define D_(x) x
+</MACRO>
+<MACRO>
+<NAME>L_</NAME>
+#define L_(x) x
+</MACRO>
+<MACRO>
+<NAME>GNOMEUIINFO_MENU_FILE_TREE</NAME>
+#define GNOMEUIINFO_MENU_FILE_TREE(tree) \
+	{ GNOME_APP_UI_SUBTREE_STOCK, N_("_File"), NULL, tree, NULL, NULL, \
+		(GnomeUIPixmapType) 0, NULL, 0,	(GdkModifierType) 0, NULL }
+</MACRO>
+<MACRO>
+<NAME>GNOMEUIINFO_MENU_EDIT_TREE</NAME>
+#define GNOMEUIINFO_MENU_EDIT_TREE(tree) \
+	{ GNOME_APP_UI_SUBTREE_STOCK, N_("_Edit"), NULL, tree, NULL, NULL, \
+		(GnomeUIPixmapType) 0, NULL, 0,	(GdkModifierType) 0, NULL }
+</MACRO>
+<MACRO>
+<NAME>GNOMEUIINFO_MENU_VIEW_TREE</NAME>
+#define GNOMEUIINFO_MENU_VIEW_TREE(tree) \
+	{ GNOME_APP_UI_SUBTREE_STOCK, N_("_View"), NULL, tree, NULL, NULL, \
+		(GnomeUIPixmapType) 0, NULL, 0,	(GdkModifierType) 0, NULL }
+</MACRO>
+<MACRO>
+<NAME>GNOMEUIINFO_MENU_SETTINGS_TREE</NAME>
+#define GNOMEUIINFO_MENU_SETTINGS_TREE(tree) \
+	{ GNOME_APP_UI_SUBTREE_STOCK, N_("_Settings"), NULL, tree, NULL, NULL, \
+		(GnomeUIPixmapType) 0, NULL, 0,	(GdkModifierType) 0, NULL }
+</MACRO>
+<MACRO>
+<NAME>GNOMEUIINFO_MENU_FILES_TREE</NAME>
+#define GNOMEUIINFO_MENU_FILES_TREE(tree) \
+	{ GNOME_APP_UI_SUBTREE_STOCK, N_("Fi_les"), NULL, tree, NULL, NULL, \
+		(GnomeUIPixmapType) 0, NULL, 0,	(GdkModifierType) 0, NULL }
+</MACRO>
+<MACRO>
+<NAME>GNOMEUIINFO_MENU_WINDOWS_TREE</NAME>
+#define GNOMEUIINFO_MENU_WINDOWS_TREE(tree) \
+	{ GNOME_APP_UI_SUBTREE_STOCK, N_("_Windows"), NULL, tree, NULL, NULL, \
+		(GnomeUIPixmapType) 0, NULL, 0,	(GdkModifierType) 0, NULL }
+</MACRO>
+<MACRO>
+<NAME>GNOMEUIINFO_MENU_HELP_TREE</NAME>
+#define GNOMEUIINFO_MENU_HELP_TREE(tree) \
+	{ GNOME_APP_UI_SUBTREE_STOCK, N_("_Help"), NULL, tree, NULL, NULL, \
+		(GnomeUIPixmapType) 0, NULL, 0,	(GdkModifierType) 0, NULL }
+</MACRO>
+<MACRO>
+<NAME>GNOMEUIINFO_MENU_GAME_TREE</NAME>
+#define GNOMEUIINFO_MENU_GAME_TREE(tree) \
+	{ GNOME_APP_UI_SUBTREE_STOCK, N_("_Game"), NULL, tree, NULL, NULL, \
+		(GnomeUIPixmapType) 0, NULL, 0,	(GdkModifierType) 0, NULL }
+</MACRO>
+<MACRO>
+<NAME>GNOME_MENU_FILE_STRING</NAME>
+#define GNOME_MENU_FILE_STRING D_("_File")
+</MACRO>
+<MACRO>
+<NAME>GNOME_MENU_FILE_PATH</NAME>
+#define GNOME_MENU_FILE_PATH D_("_File/")
+</MACRO>
+<MACRO>
+<NAME>GNOME_MENU_EDIT_STRING</NAME>
+#define GNOME_MENU_EDIT_STRING D_("_Edit")
+</MACRO>
+<MACRO>
+<NAME>GNOME_MENU_EDIT_PATH</NAME>
+#define GNOME_MENU_EDIT_PATH D_("_Edit/")
+</MACRO>
+<MACRO>
+<NAME>GNOME_MENU_VIEW_STRING</NAME>
+#define GNOME_MENU_VIEW_STRING D_("_View")
+</MACRO>
+<MACRO>
+<NAME>GNOME_MENU_VIEW_PATH</NAME>
+#define GNOME_MENU_VIEW_PATH D_("_View/")
+</MACRO>
+<MACRO>
+<NAME>GNOME_MENU_SETTINGS_STRING</NAME>
+#define GNOME_MENU_SETTINGS_STRING D_("_Settings")
+</MACRO>
+<MACRO>
+<NAME>GNOME_MENU_SETTINGS_PATH</NAME>
+#define GNOME_MENU_SETTINGS_PATH D_("_Settings/")
+</MACRO>
+<MACRO>
+<NAME>GNOME_MENU_NEW_STRING</NAME>
+#define GNOME_MENU_NEW_STRING D_("_New")
+</MACRO>
+<MACRO>
+<NAME>GNOME_MENU_NEW_PATH</NAME>
+#define GNOME_MENU_NEW_PATH D_("_New/")
+</MACRO>
+<MACRO>
+<NAME>GNOME_MENU_FILES_STRING</NAME>
+#define GNOME_MENU_FILES_STRING D_("Fi_les")
+</MACRO>
+<MACRO>
+<NAME>GNOME_MENU_FILES_PATH</NAME>
+#define GNOME_MENU_FILES_PATH D_("Fi_les/")
+</MACRO>
+<MACRO>
+<NAME>GNOME_MENU_WINDOWS_STRING</NAME>
+#define GNOME_MENU_WINDOWS_STRING D_("_Windows")
+</MACRO>
+<MACRO>
+<NAME>GNOME_MENU_WINDOWS_PATH</NAME>
+#define GNOME_MENU_WINDOWS_PATH D_("_Windows/")
+</MACRO>
+<STRUCT>
+<NAME>GnomeUIBuilderData</NAME>
+</STRUCT>
+<USER_FUNCTION>
+<NAME>GnomeUISignalConnectFunc</NAME>
+<RETURNS>void </RETURNS>
+GnomeUIInfo        *uiinfo,
+					   gchar              *signal_name,
+					   GnomeUIBuilderData *uibdata
+</USER_FUNCTION>
+<STRUCT>
+<NAME>GnomeUIBuilderData</NAME>
+struct GnomeUIBuilderData {
+	GnomeUISignalConnectFunc connect_func;	/* Function that connects to the item's signals */
+	gpointer data;				/* User data pointer */
+	gboolean is_interp;			/* Should use gtk_signal_connect_interp or normal gtk_signal_connect? */
+	GtkCallbackMarshal relay_func;		/* Marshaller function for language bindings */
+	GtkDestroyNotify destroy_func;		/* Destroy notification function for language bindings */
+};
+</STRUCT>
+<FUNCTION>
+<NAME>gnome_accelerators_sync</NAME>
+<RETURNS>void  </RETURNS>
+void
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_app_fill_menu</NAME>
+<RETURNS>void  </RETURNS>
+GtkMenuShell	*menu_shell,GnomeUIInfo	*uiinfo,GtkAccelGroup	*accel_group,gboolean	 uline_accels,gint		 pos
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_app_fill_menu_with_data</NAME>
+<RETURNS>void  </RETURNS>
+GtkMenuShell	*menu_shell,GnomeUIInfo		*uiinfo,GtkAccelGroup	*accel_group,gboolean		 uline_accels,gint		 pos,gpointer		 user_data
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_app_fill_menu_custom</NAME>
+<RETURNS>void  </RETURNS>
+GtkMenuShell	    *menu_shell,GnomeUIInfo	    *uiinfo,GnomeUIBuilderData *uibdata,GtkAccelGroup	    *accel_group,gboolean	     uline_accels,gint		     pos
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_app_ui_configure_configurable</NAME>
+<RETURNS>void  </RETURNS>
+GnomeUIInfo* uiinfo
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_app_create_menus</NAME>
+<RETURNS>void  </RETURNS>
+GnomeApp *app, GnomeUIInfo *uiinfo
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_app_create_menus_interp</NAME>
+<RETURNS>void  </RETURNS>
+GnomeApp *app, GnomeUIInfo *uiinfo,GtkCallbackMarshal relay_func, gpointer data,GtkDestroyNotify destroy_func
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_app_create_menus_with_data</NAME>
+<RETURNS>void  </RETURNS>
+GnomeApp *app, GnomeUIInfo *uiinfo, gpointer user_data
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_app_create_menus_custom</NAME>
+<RETURNS>void  </RETURNS>
+GnomeApp *app, GnomeUIInfo *uiinfo, GnomeUIBuilderData *uibdata
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_app_fill_toolbar</NAME>
+<RETURNS>void  </RETURNS>
+GtkToolbar *toolbar, GnomeUIInfo *uiinfo, GtkAccelGroup *accel_group
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_app_fill_toolbar_with_data</NAME>
+<RETURNS>void  </RETURNS>
+GtkToolbar *toolbar, GnomeUIInfo *uiinfo,GtkAccelGroup *accel_group, gpointer user_data
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_app_fill_toolbar_custom</NAME>
+<RETURNS>void  </RETURNS>
+GtkToolbar *toolbar, GnomeUIInfo *uiinfo, GnomeUIBuilderData *uibdata,GtkAccelGroup *accel_group
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_app_create_toolbar</NAME>
+<RETURNS>void  </RETURNS>
+GnomeApp *app, GnomeUIInfo *uiinfo
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_app_create_toolbar_interp</NAME>
+<RETURNS>void  </RETURNS>
+GnomeApp *app, GnomeUIInfo *uiinfo,GtkCallbackMarshal relay_func, gpointer data,GtkDestroyNotify destroy_func
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_app_create_toolbar_with_data</NAME>
+<RETURNS>void  </RETURNS>
+GnomeApp *app, GnomeUIInfo *uiinfo, gpointer user_data
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_app_create_toolbar_custom</NAME>
+<RETURNS>void  </RETURNS>
+GnomeApp *app, GnomeUIInfo *uiinfo, GnomeUIBuilderData *uibdata
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_app_find_menu_pos</NAME>
+<RETURNS>GtkWidget  *</RETURNS>
+GtkWidget *parent, gchar *path, gint *pos
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_app_remove_menus</NAME>
+<RETURNS>void  </RETURNS>
+GnomeApp *app, gchar *path, gint items
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_app_remove_menu_range</NAME>
+<RETURNS>void  </RETURNS>
+GnomeApp *app, gchar *path, gint start, gint items
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_app_insert_menus_custom</NAME>
+<RETURNS>void  </RETURNS>
+GnomeApp *app, gchar *path, GnomeUIInfo *menuinfo, GnomeUIBuilderData *uibdata
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_app_insert_menus</NAME>
+<RETURNS>void  </RETURNS>
+GnomeApp *app, gchar *path, GnomeUIInfo *menuinfo
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_app_insert_menus_with_data</NAME>
+<RETURNS>void  </RETURNS>
+GnomeApp *app, gchar *path, GnomeUIInfo *menuinfo, gpointer data
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_app_insert_menus_interp</NAME>
+<RETURNS>void  </RETURNS>
+GnomeApp *app, gchar *path, GnomeUIInfo *menuinfo,GtkCallbackMarshal relay_func, gpointer data,GtkDestroyNotify destroy_func
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_app_install_appbar_menu_hints</NAME>
+<RETURNS>void  </RETURNS>
+GnomeAppBar* appbar,GnomeUIInfo* uiinfo
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_app_install_statusbar_menu_hints</NAME>
+<RETURNS>void  </RETURNS>
+GtkStatusbar* bar,GnomeUIInfo* uiinfo
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_app_install_menu_hints</NAME>
+<RETURNS>void  </RETURNS>
+GnomeApp *app,GnomeUIInfo *uinfo
+</FUNCTION>
 <FUNCTION>
 <NAME>gnome_app_message</NAME>
 <RETURNS>GtkWidget  *</RETURNS>
@@ -781,6 +1545,16 @@ struct GnomeCanvasLine {
 <RETURNS>GtkType  </RETURNS>
 void
 </FUNCTION>
+<FUNCTION>
+<NAME>gnome_canvas_load_alpha</NAME>
+<RETURNS>GdkImlibImage  *</RETURNS>
+char *file
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_canvas_destroy_image</NAME>
+<RETURNS>void  </RETURNS>
+GdkImlibImage *image
+</FUNCTION>
 <MACRO>
 <NAME>GNOME_TYPE_CANVAS_POLYGON</NAME>
 #define GNOME_TYPE_CANVAS_POLYGON            (gnome_canvas_polygon_get_type ())
@@ -1166,6 +1940,16 @@ GnomeCanvasItem *item, int x1, int y1, int x2, int y2
 <RETURNS>void  </RETURNS>
 GnomeCanvasBuf *buf
 </FUNCTION>
+<FUNCTION>
+<NAME>gnome_canvas_join_gdk_to_art</NAME>
+<RETURNS>ArtPathStrokeJoinType  </RETURNS>
+GdkJoinStyle gdk_join
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_canvas_cap_gdk_to_art</NAME>
+<RETURNS>ArtPathStrokeCapType  </RETURNS>
+GdkCapStyle gdk_cap
+</FUNCTION>
 <MACRO>
 <NAME>GNOME_TYPE_CANVAS_WIDGET</NAME>
 #define GNOME_TYPE_CANVAS_WIDGET            (gnome_canvas_widget_get_type ())
@@ -1308,7 +2092,7 @@ struct GnomeCanvasItem {
 	/* Parent canvas group for this item (a GnomeCanvasGroup) */
 	GnomeCanvasItem *parent;
 
-	/* Bounding box for this item */
+	/* Bounding box for this item (in world coordinates) */
 	double x1, y1, x2, y2;
 
 	/* If NULL, assumed to be the identity tranform.  If flags does not have
@@ -1377,7 +2161,7 @@ GnomeCanvasItem *item, const double affine[6]
 <FUNCTION>
 <NAME>gnome_canvas_item_scale</NAME>
 <RETURNS>void  </RETURNS>
-GnomeCanvasItem *item, double x, double y,double scale_x, double scale_y
+GnomeCanvasItem *item,double x, double y,double scale_x, double scale_y
 </FUNCTION>
 <FUNCTION>
 <NAME>gnome_canvas_item_rotate</NAME>
@@ -1550,7 +2334,7 @@ struct GnomeCanvas {
 	/* Scaling factor to be used for display */
 	double pixels_per_unit;
 
-	/* Area tha needs redrawing.  Contains (x1, y1) but not (x2, y2).
+	/* Area that is being redrawn.  Contains (x1, y1) but not (x2, y2).
 	 * Specified in canvas pixel coordinates.
 	 */
 	int redraw_x1, redraw_y1;
@@ -2149,6 +2933,10 @@ GnomeColorPicker *cp, gboolean use_alpha
 <RETURNS>void  </RETURNS>
 GnomeColorPicker *cp, const gchar *title
 </FUNCTION>
+<MACRO>
+<NAME>GNOME_IS_MDI_MDI_CHILD</NAME>
+#  define GNOME_IS_MDI_MDI_CHILD(obj)     GNOME_IS_MDI_GENERIC_CHILD(obj)
+</MACRO>
 <ENUM>
 <NAME>GnomeDateEditFlags</NAME>
 typedef enum {
@@ -2614,6 +3402,526 @@ const char *hostname,void (* callback) (guint32 ip_addr, void *callback_data),vo
 guint32 tag
 </FUNCTION>
 <MACRO>
+<NAME>GNOME_DOCK_BAND</NAME>
+#define GNOME_DOCK_BAND(obj) \
+  GTK_CHECK_CAST (obj, gnome_dock_band_get_type (), GnomeDockBand)
+</MACRO>
+<MACRO>
+<NAME>GNOME_DOCK_BAND_CLASS</NAME>
+#define GNOME_DOCK_BAND_CLASS(class) \
+  GTK_CHECK_CLASS_CAST (class, gnome_dock_band_get_type (), GnomeDockBandClass)
+</MACRO>
+<MACRO>
+<NAME>GNOME_IS_DOCK_BAND</NAME>
+#define GNOME_IS_DOCK_BAND(obj) \
+  GTK_CHECK_TYPE (obj, gnome_dock_band_get_type ())
+</MACRO>
+<STRUCT>
+<NAME>GnomeDockBand</NAME>
+</STRUCT>
+<STRUCT>
+<NAME>GnomeDockBandClass</NAME>
+</STRUCT>
+<STRUCT>
+<NAME>GnomeDockBandChild</NAME>
+</STRUCT>
+<STRUCT>
+<NAME>GnomeDockBand</NAME>
+struct GnomeDockBand
+{
+  GtkContainer container;
+
+  GtkOrientation orientation;
+
+  GList *children;              /* GnomeDockBandChild */
+  guint num_children;
+
+  GList *floating_child;        /* GnomeDockBandChild */
+
+  gboolean doing_drag;
+
+  guint max_space_requisition;
+  guint tot_offsets;
+
+  /* This used to remember the allocation before the drag begin: it is
+     necessary to do so because we actually decide what docking action
+     happens depending on it, instead of using the current allocation
+     (which might be constantly changing while the user drags things
+     around).  */
+  GtkAllocation drag_allocation;
+
+  guint new_for_drag : 1;
+};
+</STRUCT>
+<STRUCT>
+<NAME>GnomeDockBandChild</NAME>
+struct GnomeDockBandChild
+{
+  GtkWidget *widget;
+
+  /* Maximum (requested) offset from the previous child.  */
+  guint offset;
+
+  /* Actual offset.  */
+  guint real_offset;
+
+  guint drag_offset;
+
+  GtkAllocation drag_allocation;
+
+  guint prev_space, foll_space;
+  guint drag_prev_space, drag_foll_space;
+
+  guint max_space_requisition;
+};
+</STRUCT>
+<FUNCTION>
+<NAME>gnome_dock_band_new</NAME>
+<RETURNS>GtkWidget      *</RETURNS>
+void
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_dock_band_get_type</NAME>
+<RETURNS>guint  </RETURNS>
+void
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_dock_band_set_orientation</NAME>
+<RETURNS>void  </RETURNS>
+GnomeDockBand *band,GtkOrientation orientation
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_dock_band_get_orientation</NAME>
+<RETURNS>GtkOrientation  </RETURNS>
+GnomeDockBand *band
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_dock_band_insert</NAME>
+<RETURNS>gboolean  </RETURNS>
+GnomeDockBand *band,GtkWidget *child,guint offset,gint position
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_dock_band_prepend</NAME>
+<RETURNS>gboolean  </RETURNS>
+GnomeDockBand *band,GtkWidget *child,guint offset
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_dock_band_append</NAME>
+<RETURNS>gboolean  </RETURNS>
+GnomeDockBand *band,GtkWidget *child,guint offset
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_dock_band_set_child_offset</NAME>
+<RETURNS>void  </RETURNS>
+GnomeDockBand *band,GtkWidget *child,guint offset
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_dock_band_get_child_offset</NAME>
+<RETURNS>guint  </RETURNS>
+GnomeDockBand *band,GtkWidget *child
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_dock_band_move_child</NAME>
+<RETURNS>void  </RETURNS>
+GnomeDockBand *band,GList *old_child,guint new_num
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_dock_band_get_num_children</NAME>
+<RETURNS>guint  </RETURNS>
+GnomeDockBand *band
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_dock_band_drag_begin</NAME>
+<RETURNS>void  </RETURNS>
+GnomeDockBand *band,GnomeDockItem *item
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_dock_band_drag_to</NAME>
+<RETURNS>gboolean  </RETURNS>
+GnomeDockBand *band,GnomeDockItem *item,gint x, gint y
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_dock_band_drag_end</NAME>
+<RETURNS>void  </RETURNS>
+GnomeDockBand *band,GnomeDockItem *item
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_dock_band_get_item_by_name</NAME>
+<RETURNS>GnomeDockItem  *</RETURNS>
+GnomeDockBand *band,const char *name,guint *position_return,guint *offset_return
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_dock_band_layout_add</NAME>
+<RETURNS>void  </RETURNS>
+GnomeDockBand *band,GnomeDockLayout *layout,GnomeDockPlacement placement,guint band_num
+</FUNCTION>
+<MACRO>
+<NAME>GNOME_DOCK_ITEM</NAME>
+#define GNOME_DOCK_ITEM(obj) \
+  GTK_CHECK_CAST (obj, gnome_dock_item_get_type (), GnomeDockItem)
+</MACRO>
+<MACRO>
+<NAME>GNOME_DOCK_ITEM_CLASS</NAME>
+#define GNOME_DOCK_ITEM_CLASS(klass) \
+  GTK_CHECK_CLASS_CAST (klass, gnome_dock_item_get_type (), GnomeDockItemClass)
+</MACRO>
+<MACRO>
+<NAME>GNOME_IS_DOCK_ITEM</NAME>
+#define GNOME_IS_DOCK_ITEM(obj) \
+  GTK_CHECK_TYPE (obj, gnome_dock_item_get_type ())
+</MACRO>
+<ENUM>
+<NAME>GnomeDockItemBehavior</NAME>
+typedef enum
+{
+  GNOME_DOCK_ITEM_BEH_NORMAL = 0,
+  GNOME_DOCK_ITEM_BEH_EXCLUSIVE = 1 << 0,
+  GNOME_DOCK_ITEM_BEH_NEVER_FLOATING = 1 << 1,
+  GNOME_DOCK_ITEM_BEH_NEVER_VERTICAL = 1 << 2,
+  GNOME_DOCK_ITEM_BEH_NEVER_HORIZONTAL = 1 << 3,
+  GNOME_DOCK_ITEM_BEH_LOCKED = 1 << 4
+} GnomeDockItemBehavior;
+</ENUM>
+<MACRO>
+<NAME>GNOME_DOCK_ITEM_BEH_NEVER_DETACH</NAME>
+#define GNOME_DOCK_ITEM_BEH_NEVER_DETACH GNOME_DOCK_ITEM_BEH_NEVER_FLOATING
+</MACRO>
+<MACRO>
+<NAME>GNOME_DOCK_ITEM_NOT_LOCKED</NAME>
+#define GNOME_DOCK_ITEM_NOT_LOCKED(x) (! (GNOME_DOCK_ITEM(x)->behavior \
+                                          & GNOME_DOCK_ITEM_BEH_LOCKED))
+</MACRO>
+<STRUCT>
+<NAME>GnomeDockItem</NAME>
+</STRUCT>
+<STRUCT>
+<NAME>GnomeDockItemClass</NAME>
+</STRUCT>
+<STRUCT>
+<NAME>GnomeDockItem</NAME>
+struct GnomeDockItem
+{
+  GtkBin bin;
+
+  gchar                *name;
+
+  GdkWindow            *bin_window; /* parent window for children */
+  GdkWindow            *float_window;
+  GtkShadowType         shadow_type;
+
+  GtkOrientation        orientation;
+  GnomeDockItemBehavior behavior;
+
+  guint                 float_window_mapped : 1;
+  guint                 is_floating : 1;
+  guint                 in_drag : 1;
+
+  /* Start drag position (wrt widget->window).  */
+  gint                  dragoff_x, dragoff_y;
+
+  /* Position of the floating window.  */
+  gint                  float_x, float_y;
+
+  /* If TRUE, the pointer must be grabbed on "map_event".  */
+  guint                 grab_on_map_event;
+};
+</STRUCT>
+<FUNCTION>
+<NAME>gnome_dock_item_get_type</NAME>
+<RETURNS>guint  </RETURNS>
+void
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_dock_item_new</NAME>
+<RETURNS>GtkWidget      *</RETURNS>
+const gchar *name,GnomeDockItemBehavior behavior
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_dock_item_get_child</NAME>
+<RETURNS>GtkWidget      *</RETURNS>
+GnomeDockItem *dock_item
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_dock_item_get_name</NAME>
+<RETURNS>char           *</RETURNS>
+GnomeDockItem *dock_item
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_dock_item_set_shadow_type</NAME>
+<RETURNS>void  </RETURNS>
+GnomeDockItem *dock_item,GtkShadowType type
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_dock_item_get_shadow_type</NAME>
+<RETURNS>GtkShadowType  </RETURNS>
+GnomeDockItem *dock_item
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_dock_item_set_orientation</NAME>
+<RETURNS>gboolean  </RETURNS>
+GnomeDockItem *dock_item,GtkOrientation orientation
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_dock_item_get_orientation</NAME>
+<RETURNS>GtkOrientation  </RETURNS>
+GnomeDockItem *dock_item
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_dock_item_get_behavior</NAME>
+<RETURNS>GnomeDockItemBehavior</RETURNS>
+GnomeDockItem *dock_item
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_dock_item_detach</NAME>
+<RETURNS>gboolean  </RETURNS>
+GnomeDockItem *item,gint x, gint y
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_dock_item_attach</NAME>
+<RETURNS>void  </RETURNS>
+GnomeDockItem *item,GtkWidget *parent,gint x, gint y
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_dock_item_grab_pointer</NAME>
+<RETURNS>void  </RETURNS>
+GnomeDockItem *item
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_dock_item_drag_floating</NAME>
+<RETURNS>void  </RETURNS>
+GnomeDockItem *item,gint x, gint y
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_dock_item_handle_size_request</NAME>
+<RETURNS>void  </RETURNS>
+GnomeDockItem *item,GtkRequisition *requisition
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_dock_item_get_floating_position</NAME>
+<RETURNS>void  </RETURNS>
+GnomeDockItem *item,gint *x, gint *y
+</FUNCTION>
+<MACRO>
+<NAME>GNOME_DOCK_LAYOUT</NAME>
+#define GNOME_DOCK_LAYOUT(obj) \
+  GTK_CHECK_CAST (obj, gnome_dock_layout_get_type (), GnomeDockLayout)
+</MACRO>
+<MACRO>
+<NAME>GNOME_DOCK_LAYOUT_CLASS</NAME>
+#define GNOME_DOCK_LAYOUT_CLASS(klass) \
+  GTK_CHECK_CLASS_CAST (klass, gnome_dock_layout_get_type (), GnomeDockLayoutClass)
+</MACRO>
+<MACRO>
+<NAME>GNOME_IS_DOCK_LAYOUT</NAME>
+#define GNOME_IS_DOCK_LAYOUT(obj) \
+  GTK_CHECK_TYPE (obj, gnome_dock_layout_get_type ())
+</MACRO>
+<STRUCT>
+<NAME>GnomeDockLayoutItem</NAME>
+</STRUCT>
+<STRUCT>
+<NAME>GnomeDockLayoutClass</NAME>
+</STRUCT>
+<STRUCT>
+<NAME>GnomeDockLayout</NAME>
+</STRUCT>
+<STRUCT>
+<NAME>GnomeDockLayoutItem</NAME>
+struct GnomeDockLayoutItem
+{
+  GnomeDockItem *item;
+
+  GnomeDockPlacement placement;
+
+  union
+  {
+    struct
+    {
+      gint x;
+      gint y;
+      GtkOrientation orientation;
+    } floating;
+
+    struct
+    {
+      gint band_num;
+      gint band_position;
+      gint offset;
+    } docked;
+
+  } position;
+};
+</STRUCT>
+<STRUCT>
+<NAME>GnomeDockLayout</NAME>
+struct GnomeDockLayout
+{
+  GtkObject object;
+
+  GList *items;                 /* GnomeDockLayoutItem */
+};
+</STRUCT>
+<FUNCTION>
+<NAME>gnome_dock_layout_new</NAME>
+<RETURNS>GnomeDockLayout      *</RETURNS>
+void
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_dock_layout_get_type</NAME>
+<RETURNS>guint  </RETURNS>
+void
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_dock_layout_add_item</NAME>
+<RETURNS>gboolean  </RETURNS>
+GnomeDockLayout *layout,GnomeDockItem *item,GnomeDockPlacement placement,gint band_num,gint band_position,gint offset
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_dock_layout_add_floating_item</NAME>
+<RETURNS>gboolean  </RETURNS>
+GnomeDockLayout *layout,GnomeDockItem *item,gint x, gint y,GtkOrientation orientation
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_dock_layout_get_item</NAME>
+<RETURNS>GnomeDockLayoutItem  *</RETURNS>
+GnomeDockLayout *layout,GnomeDockItem *item
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_dock_layout_get_item_by_name</NAME>
+<RETURNS>GnomeDockLayoutItem  *</RETURNS>
+GnomeDockLayout *layout,const gchar *name
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_dock_layout_remove_item</NAME>
+<RETURNS>gboolean  </RETURNS>
+GnomeDockLayout *layout,GnomeDockItem *item
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_dock_layout_remove_item_by_name</NAME>
+<RETURNS>gboolean  </RETURNS>
+GnomeDockLayout *layout,const gchar *name
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_dock_layout_create_string</NAME>
+<RETURNS>gchar                *</RETURNS>
+GnomeDockLayout *layout
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_dock_layout_parse_string</NAME>
+<RETURNS>gboolean  </RETURNS>
+GnomeDockLayout *layout,const gchar *string
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_dock_layout_add_to_dock</NAME>
+<RETURNS>gboolean  </RETURNS>
+GnomeDockLayout *layout,GnomeDock *dock
+</FUNCTION>
+<MACRO>
+<NAME>GNOME_DOCK</NAME>
+#define GNOME_DOCK(obj) \
+  GTK_CHECK_CAST (obj, gnome_dock_get_type (), GnomeDock)
+</MACRO>
+<MACRO>
+<NAME>GNOME_DOCK_CLASS</NAME>
+#define GNOME_DOCK_CLASS(klass) \
+  GTK_CHECK_CLASS_CAST (klass, gnome_dock_get_type (), GnomeDockClass)
+</MACRO>
+<MACRO>
+<NAME>GNOME_IS_DOCK</NAME>
+#define GNOME_IS_DOCK(obj) \
+  GTK_CHECK_TYPE (obj, gnome_dock_get_type ())
+</MACRO>
+<ENUM>
+<NAME>GnomeDockPlacement</NAME>
+typedef enum
+{
+  GNOME_DOCK_TOP,
+  GNOME_DOCK_RIGHT,
+  GNOME_DOCK_BOTTOM,
+  GNOME_DOCK_LEFT,
+  GNOME_DOCK_FLOATING
+} GnomeDockPlacement;
+</ENUM>
+<STRUCT>
+<NAME>GnomeDock</NAME>
+</STRUCT>
+<STRUCT>
+<NAME>GnomeDockClass</NAME>
+</STRUCT>
+<STRUCT>
+<NAME>GnomeDock</NAME>
+struct GnomeDock
+{
+  GtkContainer container;
+
+  GtkWidget *client_area;
+
+  /* GnomeDockBands associated with this dock.  */
+  GList *top_bands;
+  GList *bottom_bands;
+  GList *right_bands;
+  GList *left_bands;
+
+  /* Children that are currently not docked.  */
+  GList *floating_children;     /* GtkWidget */
+
+  /* Client rectangle before drag.  */
+  GtkAllocation client_rect;
+
+  gboolean floating_items_allowed : 1;
+};
+</STRUCT>
+<FUNCTION>
+<NAME>gnome_dock_new</NAME>
+<RETURNS>GtkWidget      *</RETURNS>
+void
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_dock_get_type</NAME>
+<RETURNS>guint  </RETURNS>
+void
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_dock_allow_floating_items</NAME>
+<RETURNS>void  </RETURNS>
+GnomeDock *dock,gboolean enable
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_dock_add_item</NAME>
+<RETURNS>void  </RETURNS>
+GnomeDock             *dock,GnomeDockItem         *item,GnomeDockPlacement  placement,guint                  band_num,gint                   position,guint                  offset,gboolean               in_new_band
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_dock_add_floating_item</NAME>
+<RETURNS>void  </RETURNS>
+GnomeDock *dock,GnomeDockItem *widget,gint x, gint y,GtkOrientation orientation
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_dock_set_client_area</NAME>
+<RETURNS>void  </RETURNS>
+GnomeDock             *dock,GtkWidget             *widget
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_dock_get_client_area</NAME>
+<RETURNS>GtkWidget      *</RETURNS>
+GnomeDock             *dock
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_dock_get_item_by_name</NAME>
+<RETURNS>GnomeDockItem  *</RETURNS>
+GnomeDock *dock,const gchar *name,GnomeDockPlacement *placement_return,guint *num_band_return,guint *band_position_return,guint *offset_return
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_dock_get_layout</NAME>
+<RETURNS>GnomeDockLayout  *</RETURNS>
+GnomeDock *dock
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_dock_add_from_layout</NAME>
+<RETURNS>gboolean  </RETURNS>
+GnomeDock *dock,GnomeDockLayout *layout
+</FUNCTION>
+<MACRO>
 <NAME>GNOME_ENTRY</NAME>
 #define GNOME_ENTRY(obj)         GTK_CHECK_CAST (obj, gnome_entry_get_type (), GnomeEntry)
 </MACRO>
@@ -2978,6 +4286,82 @@ const gchar *geometry, gint *xpos, gint *ypos,gint *width, gint *height
 <RETURNS>gchar  *</RETURNS>
 GdkWindow * window
 </FUNCTION>
+<STRUCT>
+<NAME>GnomeGuru</NAME>
+</STRUCT>
+<STRUCT>
+<NAME>GnomeGuruClass</NAME>
+</STRUCT>
+<MACRO>
+<NAME>GNOME_GURU</NAME>
+#define GNOME_GURU(obj) GTK_CHECK_CAST (obj, gnome_guru_get_type (), GnomeGuru)
+</MACRO>
+<MACRO>
+<NAME>GNOME_GURU_CLASS</NAME>
+#define GNOME_GURU_CLASS(klass)  GTK_CHECK_CLASS_CAST (klass, gnome_guru_get_type (), GnomeGuruClass)
+</MACRO>
+<MACRO>
+<NAME>GNOME_IS_GURU</NAME>
+#define GNOME_IS_GURU(obj)  GTK_CHECK_TYPE (obj, gnome_guru_get_type ())
+</MACRO>
+<STRUCT>
+<NAME>GnomeGuru</NAME>
+struct GnomeGuru {
+  GtkVBox vbox;
+
+  /* all private, don't touch it. */
+
+  GtkWidget * graphic;
+
+  GList * pages;
+
+  struct _GnomeGuruPage* current_page;
+
+  GtkWidget * next;
+  GtkWidget * back;
+  GtkWidget * finish;
+  GtkWidget * page_title;
+  GtkWidget * page_box;
+  GtkWidget * buttonbox;
+
+  guint has_dialog : 1;
+};
+</STRUCT>
+<FUNCTION>
+<NAME>gnome_guru_get_type</NAME>
+<RETURNS>guint  </RETURNS>
+void
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_guru_new</NAME>
+<RETURNS>GtkWidget  *</RETURNS>
+const gchar * name,GtkWidget   * graphic,GnomeDialog * dialog
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_guru_construct</NAME>
+<RETURNS>void  </RETURNS>
+GnomeGuru   * guru,const gchar * name,GtkWidget   * graphic,GnomeDialog * dialog
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_guru_append_page</NAME>
+<RETURNS>void  </RETURNS>
+GnomeGuru   * guru,const gchar * name,GtkWidget   * widget
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_guru_next_set_sensitive</NAME>
+<RETURNS>void  </RETURNS>
+GnomeGuru   * guru,gboolean      sensitivity
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_guru_back_set_sensitive</NAME>
+<RETURNS>void  </RETURNS>
+GnomeGuru   * guru,gboolean      sensitivity
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_guru_current_page</NAME>
+<RETURNS>GtkWidget  *</RETURNS>
+GnomeGuru   * guru
+</FUNCTION>
 <MACRO>
 <NAME>GNOME_HREF</NAME>
 #define GNOME_HREF(obj) GTK_CHECK_CAST(obj, gnome_href_get_type(), GnomeHRef)
@@ -3041,6 +4425,77 @@ GnomeHRef *href
 void
 </FUNCTION>
 <MACRO>
+<NAME>GNOME_ICON_ENTRY</NAME>
+#define GNOME_ICON_ENTRY(obj)         GTK_CHECK_CAST (obj, gnome_icon_entry_get_type (), GnomeIconEntry)
+</MACRO>
+<MACRO>
+<NAME>GNOME_ICON_ENTRY_CLASS</NAME>
+#define GNOME_ICON_ENTRY_CLASS(klass) GTK_CHECK_CLASS_CAST (klass, gnome_icon_entry_get_type (), GnomeIconEntryClass)
+</MACRO>
+<MACRO>
+<NAME>GNOME_IS_ICON_ENTRY</NAME>
+#define GNOME_IS_ICON_ENTRY(obj)      GTK_CHECK_TYPE (obj, gnome_icon_entry_get_type ())
+</MACRO>
+<STRUCT>
+<NAME>GnomeIconEntry</NAME>
+</STRUCT>
+<STRUCT>
+<NAME>GnomeIconEntryClass</NAME>
+</STRUCT>
+<STRUCT>
+<NAME>GnomeIconEntry</NAME>
+struct GnomeIconEntry {
+	GtkVBox vbox;
+	
+	GtkWidget *fentry;
+
+	GtkWidget *pickbutton;
+	
+	GtkWidget *pick_dialog;
+	char *pick_dialog_dir;
+};
+</STRUCT>
+<FUNCTION>
+<NAME>gnome_icon_entry_get_type</NAME>
+<RETURNS>guint  </RETURNS>
+void
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_icon_entry_new</NAME>
+<RETURNS>GtkWidget  *</RETURNS>
+char *history_id,char *browse_dialog_title
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_icon_entry_set_pixmap_subdir</NAME>
+<RETURNS>void  </RETURNS>
+GnomeIconEntry *ientry,const char *subdir
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_icon_entry_set_icon</NAME>
+<RETURNS>void  </RETURNS>
+GnomeIconEntry *ientry,const char *filename
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_icon_entry_gnome_file_entry</NAME>
+<RETURNS>GtkWidget  *</RETURNS>
+GnomeIconEntry *ientry
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_icon_entry_gnome_entry</NAME>
+<RETURNS>GtkWidget  *</RETURNS>
+GnomeIconEntry *ientry
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_icon_entry_gtk_entry</NAME>
+<RETURNS>GtkWidget  *</RETURNS>
+GnomeIconEntry *ientry
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_icon_entry_get_filename</NAME>
+<RETURNS>char       *</RETURNS>
+GnomeIconEntry *ientry
+</FUNCTION>
+<MACRO>
 <NAME>GNOME_ICON_TEXT_ITEM</NAME>
 #define GNOME_ICON_TEXT_ITEM(obj)     (GTK_CHECK_CAST((obj), \
         gnome_icon_text_item_get_type (), GnomeIconTextItem))
@@ -3060,31 +4515,40 @@ void
 typedef struct {
 	GnomeCanvasItem canvas_item;
 
-	int      x, y;
-	int      width;		/* Our assigned width */
-	char     *fontname;	/* Font in which we display */
+	/* Size and maximum allowed width */
+	int x, y;
+	int width;
 
-	/* Hack: create an offscreen window, and place the entry there */
-	GtkEntry  *entry;
-	GtkWidget *entry_top;
+	/* Font name */
+	char *fontname;
 
-	/* Standard equipment */
-	GdkFont *font;
+	/* Private data */
+	gpointer priv; /* was GtkEntry *entry */
+	gpointer pad1; /* was GtkWidget *entry_top */
+	gpointer pad2; /* was GdkFont *font */
 
-	char    *text;
+	/* Actual text */
+	char *text;
 
-	/* Layed out information */
+	/* Text layout information */
 	GnomeIconTextInfo *ti;
 
-	/* Flags */
-	unsigned int editing:1; /* true if it is being edited */
-	unsigned int selected:1;/* true if it should be displayed as selected */
-        /* true if current click is on unselected icon */
-	unsigned int unselected_click:1;
-        /* true if current selecting text with mouse */
-	unsigned int selecting:1;
-	unsigned int is_editable:1;
-	unsigned int is_text_allocated:1;
+	/* Whether the text is being edited */
+	unsigned int editing : 1;
+
+	/* Whether the text item is selected */
+	unsigned int selected : 1;
+
+	unsigned int pad3; /* was unsigned int unselected_click : 1 */
+
+	/* Whether the user is select-dragging a block of text */
+	unsigned int selecting : 1;
+
+	/* Whether the text is editable */
+	unsigned int is_editable : 1;
+
+	/* Whether the text is allocated by us (FALSE if allocated by the client) */
+	unsigned int is_text_allocated : 1;
 } GnomeIconTextItem;
 </STRUCT>
 <FUNCTION>
@@ -3095,17 +4559,17 @@ void
 <FUNCTION>
 <NAME>gnome_icon_text_item_configure</NAME>
 <RETURNS>void  </RETURNS>
-GnomeIconTextItem *iti,int         x,int         y,int         width,const char *fontname,const char *text,gboolean is_editable,gboolean is_static
+GnomeIconTextItem *iti,int                x,int                y,int                width,const char        *fontname,const char        *text,gboolean           is_editable,gboolean           is_static
 </FUNCTION>
 <FUNCTION>
 <NAME>gnome_icon_text_item_setxy</NAME>
 <RETURNS>void  </RETURNS>
-GnomeIconTextItem *iti,int      x,int      y
+GnomeIconTextItem *iti,int                x,int                y
 </FUNCTION>
 <FUNCTION>
 <NAME>gnome_icon_text_item_select</NAME>
 <RETURNS>void  </RETURNS>
-GnomeIconTextItem *iti,int      sel
+GnomeIconTextItem *iti,int                sel
 </FUNCTION>
 <FUNCTION>
 <NAME>gnome_icon_text_item_get_text</NAME>
@@ -3115,12 +4579,8 @@ GnomeIconTextItem *iti
 <FUNCTION>
 <NAME>gnome_icon_text_item_stop_editing</NAME>
 <RETURNS>void  </RETURNS>
-GnomeIconTextItem *iti,gboolean accept
+GnomeIconTextItem *iti,gboolean           accept
 </FUNCTION>
-<MACRO>
-<NAME>GNOME_ICON_LIST_VERSION2</NAME>
-#define GNOME_ICON_LIST_VERSION2
-</MACRO>
 <MACRO>
 <NAME>GNOME_ICON_LIST</NAME>
 #define GNOME_ICON_LIST(obj)     GTK_CHECK_CAST (obj, gnome_icon_list_get_type (), GnomeIconList)
@@ -3146,59 +4606,44 @@ typedef enum {
 typedef struct {
 	GnomeCanvas canvas;
 
-	GtkAdjustment *adj;	/* The scrolling adjustment we use */
-        GtkAdjustment *hadj;	/* dummmy need for GtkScrolledWindow compat */
-  
-	int icons;		/* Number of icons in the IconList */
-	GList *icon_list;	/* The list of icons */
-	
-	int frozen;		/* frozen count */
-	int dirty;		/* dirty flag */
+	/* Private data */
+	gpointer priv; /* was GtkAdjustment *adj */
 
-	/* Various display spacing configuration */
-	int row_spacing;
-	int col_spacing;
-	int text_spacing;
-	int icon_border;
+	gpointer pad1; /* was GtkAdjustment *hadj */
 
-	/* Separators used to wrap the text displayed below the icon */
-	char *separators;
+	/* Number of icons in the list */
+	int icons;
 
-	/* Display mode */
-	GnomeIconListMode mode;
+	gpointer pad2; /* was GList *icon_list */
+	int pad3; /* was int frozen */
+	int pad4; /* was int dirty */
+	int pad5; /* was int row_spacing */
+	int pad6; /* was int col_spacing */
+	int pad7; /* was int text_spacing */
+	int pad8; /* was int icon_border */
+	gpointer pad9; /* was char *separators */
+	GnomeIconListMode pad10; /* was GnomeIconListMode mode */
 
-	/* Selection  */
-	GtkSelectionMode selection_mode;
+	GtkSelectionMode pad11; /* was GtkSelectionMode selection_mode */
 
-	/* A list of integers with the indexes of the current selection */
+	/* A list of integers with the indices of the currently selected icons */
 	GList *selection;
 
-	/* Internal: used during band-selection */
-	GList *preserve_selection; 
-
-	int icon_width;		/* The icon width */
-
-	unsigned int is_editable:1;	/* Whether the icon names are editable or not  */
-	unsigned int static_text:1;     /* Whether we need to make a copy of the names */
-	
-	int last_selected;	/* Last icon selected */
-	void *last_clicked;	/* Icon * */
-
-	/* Timed scrolling */
-	int timer_tag;		/* timeout tag for autoscrolling */
-	int value_diff;		/* change the adjustment value by this */
-	gdouble event_last_x;	/* The X position last time we read it */
-	gdouble event_last_y;	/* The Y position last time we read it */
-	
-	/* Opaque to the user */
-	GList *lines;
-	int total_height;	/* Max of the height of all the icon rows and window height */
-
-	/* Mouse band selection state */
-	double sel_start_x;
-	double sel_start_y;
-
-	GnomeCanvasItem *sel_rect;
+	gpointer pad12; /* was GList *preserve_selection */
+	int pad13; /* was int icon_width */
+	unsigned int pad14 : 1; /* was unsigned int is_editable : 1 */
+	unsigned int pad15 : 1; /* was unsigned int static_text : 1 */
+	int pad16; /* was int last_selected */
+	gpointer pad17; /* was void *last_clicked */
+	int pad18; /* was int timer_tag */
+	int pad19; /* was int value_diff */
+	gdouble pad20; /* was gdouble event_last_x */
+	gdouble pad21; /* was gdouble event_last_y */
+	gpointer pad22; /* was GList *lines */
+	int pad23; /* was int total_height */
+	double pad24; /* was double sel_start_x */
+	double pad25; /* was double sel_start_y */
+	gpointer pad26; /* was GnomeCanvasItem *sel_rect */
 } GnomeIconList;
 </STRUCT>
 <MACRO>
@@ -3297,7 +4742,7 @@ GnomeIconList *gil,int pos
 <FUNCTION>
 <NAME>gnome_icon_list_unselect_all</NAME>
 <RETURNS>int  </RETURNS>
-GnomeIconList *gil,GdkEvent *event, void *keep
+GnomeIconList *gil,GdkEvent *event, gpointer keep
 </FUNCTION>
 <FUNCTION>
 <NAME>gnome_icon_list_set_icon_width</NAME>
@@ -3397,6 +4842,8 @@ struct GnomeIconSelection {
   GtkWidget * gil;
 
   GList * file_list;
+  
+  int stop_loading; /* a flag set to stop the loading of images in midprocess */
 };
 </STRUCT>
 <FUNCTION>
@@ -3438,6 +4885,11 @@ GnomeIconSelection * gis,gboolean full_path
 <NAME>gnome_icon_selection_select_icon</NAME>
 <RETURNS>void  </RETURNS>
 GnomeIconSelection * gis,const gchar * filename
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_icon_selection_stop_loading</NAME>
+<RETURNS>void  </RETURNS>
+GnomeIconSelection * gis
 </FUNCTION>
 <STRUCT>
 <NAME>GnomeIconTextInfoRow</NAME>
@@ -3660,6 +5112,95 @@ GnomeMDIChild *mdi_child, gchar *name
 <RETURNS>void  </RETURNS>
 GnomeMDIChild *mdi_child, GnomeUIInfo *menu_tmpl
 </FUNCTION>
+<MACRO>
+<NAME>GNOME_MDI_GENERIC_CHILD</NAME>
+#define GNOME_MDI_GENERIC_CHILD(obj)          GTK_CHECK_CAST (obj, gnome_mdi_generic_child_get_type (), GnomeMDIGenericChild)
+</MACRO>
+<MACRO>
+<NAME>GNOME_MDI_GENERIC_CHILD_CLASS</NAME>
+#define GNOME_MDI_GENERIC_CHILD_CLASS(klass)  GTK_CHECK_CLASS_CAST (klass, gnome_mdi_generic_child_get_type (), GnomeMDIGenericChildClass)
+</MACRO>
+<MACRO>
+<NAME>GNOME_IS_MDI_GENERIC_CHILD</NAME>
+#define GNOME_IS_MDI_GENERIC_CHILD(obj)       GTK_CHECK_TYPE (obj, gnome_mdi_generic_child_get_type ())
+</MACRO>
+<STRUCT>
+<NAME>GnomeMDIGenericChild</NAME>
+</STRUCT>
+<STRUCT>
+<NAME>GnomeMDIGenericChildClass</NAME>
+</STRUCT>
+<STRUCT>
+<NAME>GnomeMDIGenericChild</NAME>
+struct GnomeMDIGenericChild {
+	GnomeMDIChild mdi_child;
+
+	/* if any of these are set they override the virtual functions
+	   in GnomeMDIChildClass. create_view is mandatory, as no default
+	   handler is provided, others may be NULL */
+	GnomeMDIChildViewCreator create_view;
+	GnomeMDIChildMenuCreator create_menus;
+	GnomeMDIChildConfigFunc  get_config_string;
+	GnomeMDIChildLabelFunc   set_label;
+
+	GtkCallbackMarshal create_view_cbm, create_menus_cbm,
+		               get_config_string_cbm, set_label_cbm;
+	GtkDestroyNotify   create_view_dn, create_menus_dn,
+		               get_config_string_dn, set_label_dn;
+	gpointer           create_view_data, create_menus_data,
+		               get_config_string_data, set_label_data;
+};
+</STRUCT>
+<FUNCTION>
+<NAME>gnome_mdi_generic_child_get_type</NAME>
+<RETURNS>guint  </RETURNS>
+void
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_mdi_generic_child_new</NAME>
+<RETURNS>GnomeMDIGenericChild  *</RETURNS>
+gchar *name
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_mdi_generic_child_set_view_creator</NAME>
+<RETURNS>void  </RETURNS>
+GnomeMDIGenericChild *child,GnomeMDIChildViewCreator func,gpointer data
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_mdi_generic_child_set_view_creator_full</NAME>
+<RETURNS>void  </RETURNS>
+GnomeMDIGenericChild *child,GnomeMDIChildViewCreator func,GtkCallbackMarshal marshal,gpointer data,GtkDestroyNotify notify
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_mdi_generic_child_set_menu_creator</NAME>
+<RETURNS>void  </RETURNS>
+GnomeMDIGenericChild *child,GnomeMDIChildMenuCreator func,gpointer data
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_mdi_generic_child_set_menu_creator_full</NAME>
+<RETURNS>void  </RETURNS>
+GnomeMDIGenericChild *child,GnomeMDIChildMenuCreator func,GtkCallbackMarshal marshal,gpointer data,GtkDestroyNotify notify
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_mdi_generic_child_set_config_func</NAME>
+<RETURNS>void  </RETURNS>
+GnomeMDIGenericChild *child,GnomeMDIChildConfigFunc func,gpointer data
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_mdi_generic_child_set_config_func_full</NAME>
+<RETURNS>void  </RETURNS>
+GnomeMDIGenericChild *child,GnomeMDIChildConfigFunc func,GtkCallbackMarshal marshal,gpointer data,GtkDestroyNotify notify
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_mdi_generic_child_set_label_func</NAME>
+<RETURNS>void  </RETURNS>
+GnomeMDIGenericChild *child,GnomeMDIChildLabelFunc func,gpointer data
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_mdi_generic_child_set_label_func_full</NAME>
+<RETURNS>void  </RETURNS>
+GnomeMDIGenericChild *child,GnomeMDIChildLabelFunc func,GtkCallbackMarshal marshal,gpointer data,GtkDestroyNotify notify
+</FUNCTION>
 <USER_FUNCTION>
 <NAME>GnomeMDIChildCreator</NAME>
 <RETURNS>GnomeMDIChild *</RETURNS>
@@ -3668,12 +5209,12 @@ const gchar *
 <FUNCTION>
 <NAME>gnome_mdi_restore_state</NAME>
 <RETURNS>gboolean 	</RETURNS>
-GnomeMDI *, const char *,GnomeMDIChildCreator
+GnomeMDI *mdi, const char *section,GnomeMDIChildCreator child_create_func
 </FUNCTION>
 <FUNCTION>
 <NAME>gnome_mdi_save_state</NAME>
 <RETURNS>void 	</RETURNS>
-GnomeMDI *, const gchar *
+GnomeMDI *mdi, const gchar *section
 </FUNCTION>
 <MACRO>
 <NAME>GNOME_MDI</NAME>
@@ -3948,16 +5489,6 @@ GnomeMessageBox *messagebox
 <RETURNS>void  </RETURNS>
 GnomeMessageBox *messagebox,gint            button
 </FUNCTION>
-<FUNCTION>
-<NAME>gnome_property_entry_font</NAME>
-<RETURNS>GtkWidget  *</RETURNS>
-GnomePropertyObject *object, const gchar *label,gchar **font_name_ptr, GdkFont **font_ptr
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_property_entry_colors</NAME>
-<RETURNS>GtkWidget  *</RETURNS>
-GnomePropertyObject *object, const gchar *label,gint num_colors, gint columns, gint *table_pos,GdkColor *colors, const gchar *texts []
-</FUNCTION>
 <MACRO>
 <NAME>GNOME_NUMBER_ENTRY</NAME>
 #define GNOME_NUMBER_ENTRY(obj)         GTK_CHECK_CAST (obj, gnome_number_entry_get_type (), GnomeNumberEntry)
@@ -4111,6 +5642,85 @@ GnomePaperSelector *gspaper,gfloat width
 <NAME>gnome_paper_selector_set_height</NAME>
 <RETURNS>void 	</RETURNS>
 GnomePaperSelector *gspaper,gfloat height
+</FUNCTION>
+<MACRO>
+<NAME>GNOME_PIXMAP_ENTRY</NAME>
+#define GNOME_PIXMAP_ENTRY(obj)         GTK_CHECK_CAST (obj, gnome_pixmap_entry_get_type (), GnomePixmapEntry)
+</MACRO>
+<MACRO>
+<NAME>GNOME_PIXMAP_ENTRY_CLASS</NAME>
+#define GNOME_PIXMAP_ENTRY_CLASS(klass) GTK_CHECK_CLASS_CAST (klass, gnome_pixmap_entry_get_type (), GnomePixmapEntryClass)
+</MACRO>
+<MACRO>
+<NAME>GNOME_IS_PIXMAP_ENTRY</NAME>
+#define GNOME_IS_PIXMAP_ENTRY(obj)      GTK_CHECK_TYPE (obj, gnome_pixmap_entry_get_type ())
+</MACRO>
+<STRUCT>
+<NAME>GnomePixmapEntry</NAME>
+</STRUCT>
+<STRUCT>
+<NAME>GnomePixmapEntryClass</NAME>
+</STRUCT>
+<STRUCT>
+<NAME>GnomePixmapEntry</NAME>
+struct GnomePixmapEntry {
+	GtkVBox vbox;
+	
+	GtkWidget *fentry;
+
+	int do_preview; /*put a preview frame with the pixmap next to
+			  the entry*/
+	GtkWidget *preview;
+	GtkWidget *preview_sw;
+	
+	/*very private*/
+	char *last_preview;
+};
+</STRUCT>
+<FUNCTION>
+<NAME>gnome_pixmap_entry_get_type</NAME>
+<RETURNS>guint  </RETURNS>
+void
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_pixmap_entry_new</NAME>
+<RETURNS>GtkWidget  *</RETURNS>
+char *history_id,char *browse_dialog_title,int do_preview
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_pixmap_entry_set_pixmap_subdir</NAME>
+<RETURNS>void  </RETURNS>
+GnomePixmapEntry *pentry,const char *subdir
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_pixmap_entry_gnome_file_entry</NAME>
+<RETURNS>GtkWidget  *</RETURNS>
+GnomePixmapEntry *pentry
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_pixmap_entry_gnome_entry</NAME>
+<RETURNS>GtkWidget  *</RETURNS>
+GnomePixmapEntry *pentry
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_pixmap_entry_gtk_entry</NAME>
+<RETURNS>GtkWidget  *</RETURNS>
+GnomePixmapEntry *pentry
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_pixmap_entry_set_preview</NAME>
+<RETURNS>void  </RETURNS>
+GnomePixmapEntry *pentry,int do_preview
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_pixmap_entry_set_preview_size</NAME>
+<RETURNS>void 	</RETURNS>
+GnomePixmapEntry *pentry,int preview_w,int preview_h
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_pixmap_entry_get_filename</NAME>
+<RETURNS>char       *</RETURNS>
+GnomePixmapEntry *pentry
 </FUNCTION>
 <MACRO>
 <NAME>GNOME_PIXMAP</NAME>
@@ -4540,6 +6150,85 @@ void
 <RETURNS>void  </RETURNS>
 int disable_imlib_cache
 </FUNCTION>
+<MACRO>
+<NAME>GNOME_PROC_BAR</NAME>
+#define GNOME_PROC_BAR(obj)		GTK_CHECK_CAST (obj, gnome_proc_bar_get_type (), GnomeProcBar)
+</MACRO>
+<MACRO>
+<NAME>GNOME_PROC_BAR__CLASS</NAME>
+#define GNOME_PROC_BAR__CLASS(klass)	GTK_CHECK_CLASS_CAST (klass, gnome_proc_bar_get_type (), GnomeProcBarClass)
+</MACRO>
+<MACRO>
+<NAME>GNOME_IS_PROC_BAR</NAME>
+#define GNOME_IS_PROC_BAR(obj)		GTK_CHECK_TYPE (obj, gnome_proc_bar_get_type ())
+</MACRO>
+<STRUCT>
+<NAME>GnomeProcBar</NAME>
+</STRUCT>
+<STRUCT>
+<NAME>GnomeProcBarClass</NAME>
+</STRUCT>
+<STRUCT>
+<NAME>GnomeProcBar</NAME>
+struct GnomeProcBar {
+
+	GtkHBox hbox;
+
+	GtkWidget *bar;
+	GtkWidget *label;
+	GtkWidget *frame;
+
+	gboolean vertical : 1;
+
+	GdkPixmap *bs;
+	GdkColor *colors;
+
+	gint colors_allocated;
+	gint first_request;
+	gint n;
+	gint tag;
+
+	unsigned *last;
+
+	gint (*cb)();
+	gpointer cb_data;
+};
+</STRUCT>
+<FUNCTION>
+<NAME>gnome_proc_bar_get_type</NAME>
+<RETURNS>guint  </RETURNS>
+void
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_proc_bar_new</NAME>
+<RETURNS>GtkWidget  *</RETURNS>
+GtkWidget *label,gint n, GdkColor *colors,gint (*cb)()
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_proc_bar_set_values</NAME>
+<RETURNS>void  </RETURNS>
+GnomeProcBar *pb, unsigned val []
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_proc_bar_set_orient</NAME>
+<RETURNS>void  </RETURNS>
+GnomeProcBar *pb, gboolean vertical
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_proc_bar_start</NAME>
+<RETURNS>void  </RETURNS>
+GnomeProcBar *pb, gint gtime, gpointer data
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_proc_bar_stop</NAME>
+<RETURNS>void  </RETURNS>
+GnomeProcBar *pb
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_proc_bar_update</NAME>
+<RETURNS>void  </RETURNS>
+GnomeProcBar *pb, GdkColor *colors
+</FUNCTION>
 <STRUCT>
 <NAME>GnomePropertyObject</NAME>
 </STRUCT>
@@ -4639,6 +6328,16 @@ GnomePropertyObject *object
 <NAME>gnome_property_object_changed</NAME>
 <RETURNS>void  </RETURNS>
 GnomePropertyObject *object
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_property_entry_font</NAME>
+<RETURNS>GtkWidget  *</RETURNS>
+GnomePropertyObject *object, const gchar *label,gchar **font_name_ptr, GdkFont **font_ptr
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_property_entry_colors</NAME>
+<RETURNS>GtkWidget  *</RETURNS>
+GnomePropertyObject *object, const gchar *label,gint num_colors, gint columns, gint *table_pos,GdkColor *colors, const gchar *texts []
 </FUNCTION>
 <MACRO>
 <NAME>GNOME_PROPERTY_BOX</NAME>
@@ -4744,11 +6443,6 @@ struct GnomeScores
 void
 </FUNCTION>
 <FUNCTION>
-<NAME>gnome_scores_display</NAME>
-<RETURNS>void</RETURNS>
-gchar *title,gchar *app_name,gchar *level,int pos
-</FUNCTION>
-<FUNCTION>
 <NAME>gnome_scores_new</NAME>
 <RETURNS>GtkWidget *</RETURNS>
 guint n_scores,gchar **names,gfloat *scores,time_t *times,guint clear
@@ -4792,6 +6486,106 @@ GnomeScores *gs,gchar *txt
 <NAME>gnome_scores_set_current_player</NAME>
 <RETURNS>void  </RETURNS>
 GnomeScores *gs,gint i
+</FUNCTION>
+<MACRO>
+<NAME>GNOME_SPELL</NAME>
+#define GNOME_SPELL(obj)		GTK_CHECK_CAST(obj, gnome_spell_get_type(), GnomeSpell)
+</MACRO>
+<MACRO>
+<NAME>GNOME_SPELL_CLASS</NAME>
+#define GNOME_SPELL_CLASS(klass)		GTK_CHECK_CLASS_CAST(klass, gnome_spell_get_type(), GnomeSpelliClass)
+</MACRO>
+<MACRO>
+<NAME>GNOME_IS_SPELL</NAME>
+#define GNOME_IS_SPELL(obj)		GTK_CHECK_TYPE(obj, gnome_spell_get_type())
+</MACRO>
+<STRUCT>
+<NAME>GnomeSpell</NAME>
+</STRUCT>
+<STRUCT>
+<NAME>GnomeSpellClass</NAME>
+</STRUCT>
+<STRUCT>
+<NAME>GnomeSpellInfo</NAME>
+</STRUCT>
+<STRUCT>
+<NAME>GnomeSpellInfo</NAME>
+struct GnomeSpellInfo {
+	gchar* original;
+	gchar* replacement;
+	gchar* word;
+	guint offset;
+	GSList * words;
+};
+</STRUCT>
+<STRUCT>
+<NAME>GnomeSpell</NAME>
+struct GnomeSpell {
+	GtkVBox vbox;
+
+	GSList * spellinfo;
+
+	GtkWidget* page_spell;
+	GtkWidget* page_config;
+	GtkWidget* word;
+	GtkWidget* list;
+	GtkWidget* b_accept;
+	GtkWidget* b_skip;
+	GtkWidget* b_replace;
+	GtkWidget* b_insert;
+	GtkWidget* b_insertl;
+	GtkWidget* command;
+	GtkWidget* dict;
+	GtkWidget* pdict;
+	GtkWidget* wchars;
+	GtkWidget* wlen;
+	GtkWidget* sort;
+	GtkWidget* runtog;
+	GtkWidget* discard;
+	GtkWidget* tooltip;
+	GtkWidget* killproc;
+	GtkTooltips* tooltips;
+	GSList* awords;
+
+	FILE* rispell;
+	FILE* wispell;
+	pid_t spell_pid;
+};
+</STRUCT>
+<FUNCTION>
+<NAME>gnome_spell_get_type</NAME>
+<RETURNS>guint  </RETURNS>
+void
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_spell_new</NAME>
+<RETURNS>GtkWidget *</RETURNS>
+void
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_spell_check</NAME>
+<RETURNS>gint  </RETURNS>
+GnomeSpell* gtkspell, gchar* str
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_spell_accept</NAME>
+<RETURNS>void  </RETURNS>
+GnomeSpell* gtkspell, gchar* word
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_spell_insert</NAME>
+<RETURNS>void  </RETURNS>
+GnomeSpell* gtkspell, gchar* word, gint lowercase
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_spell_next</NAME>
+<RETURNS>int 	</RETURNS>
+GnomeSpell* gtkspell
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_spell_kill</NAME>
+<RETURNS>void 	</RETURNS>
+GnomeSpell* gtkspell
 </FUNCTION>
 <FUNCTION>
 <NAME>gnome_startup_acquire_token</NAME>
@@ -6486,6 +8280,10 @@ struct GtkTed
 <NAME>GTK_CAULDRON_GRAB</NAME>
 #define GTK_CAULDRON_GRAB		(0x1L<<9)
 </MACRO>
+<MACRO>
+<NAME>GTK_CAULDRON_PARENT</NAME>
+#define GTK_CAULDRON_PARENT		(0x1L<<10)
+</MACRO>
 <USER_FUNCTION>
 <NAME>GtkCauldronNextArgCallback</NAME>
 <RETURNS>void </RETURNS>
@@ -6507,12 +8305,12 @@ GtkWidget * widget, gpointer user_data
 <FUNCTION>
 <NAME>gtk_dialog_cauldron</NAME>
 <RETURNS>gchar  *</RETURNS>
-const gchar * title, glong options,const gchar * fmt, ...
+const gchar * title, glong options, ...
 </FUNCTION>
 <FUNCTION>
 <NAME>gtk_dialog_cauldron_parse</NAME>
 <RETURNS>gchar  *</RETURNS>
-const gchar * title, glong options,const gchar * format,GtkCauldronNextArgCallback next_arg,gpointer user_data
+const gchar * title, glong options,const gchar * format,GtkCauldronNextArgCallback next_arg,gpointer user_data,GtkWidget *parent
 </FUNCTION>
 <MACRO>
 <NAME>GTK_DIAL</NAME>
@@ -6609,169 +8407,54 @@ GtkDial        *dial
 GtkDial        *dial,gboolean       view_only
 </FUNCTION>
 <MACRO>
-<NAME>GNOME_MDI_GENERIC_CHILD</NAME>
-#define GNOME_MDI_GENERIC_CHILD(obj)          GTK_CHECK_CAST (obj, gnome_mdi_generic_child_get_type (), GnomeMDIGenericChild)
+<NAME>GTK_TYPE_PIXMAP_MENU_ITEM</NAME>
+#define GTK_TYPE_PIXMAP_MENU_ITEM	    (gtk_pixmap_menu_item_get_type ())
 </MACRO>
 <MACRO>
-<NAME>GNOME_MDI_GENERIC_CHILD_CLASS</NAME>
-#define GNOME_MDI_GENERIC_CHILD_CLASS(klass)  GTK_CHECK_CLASS_CAST (klass, gnome_mdi_generic_child_get_type (), GnomeMDIGenericChildClass)
+<NAME>GTK_PIXMAP_MENU_ITEM</NAME>
+#define GTK_PIXMAP_MENU_ITEM(obj)	    (GTK_CHECK_CAST ((obj), GTK_TYPE_PIXMAP_MENU_ITEM, GtkPixmapMenuItem))
 </MACRO>
 <MACRO>
-<NAME>GNOME_IS_MDI_MDI_CHILD</NAME>
-#define GNOME_IS_MDI_MDI_CHILD(obj)           GTK_CHECK_TYPE (obj, gnome_mdi_generic_child_get_type ())
+<NAME>GTK_PIXMAP_MENU_ITEM_CLASS</NAME>
+#define GTK_PIXMAP_MENU_ITEM_CLASS(klass)    (GTK_CHECK_CLASS_CAST ((klass), GTK_TYPE_PIXMAP_MENU_ITEM, GtkPixmapMenuItemClass))
+</MACRO>
+<MACRO>
+<NAME>GTK_IS_PIXMAP_MENU_ITEM</NAME>
+#define GTK_IS_PIXMAP_MENU_ITEM(obj)	    (GTK_CHECK_TYPE ((obj), GTK_TYPE_PIXMAP_MENU_ITEM))
+</MACRO>
+<MACRO>
+<NAME>GTK_IS_PIXMAP_MENU_ITEM_CLASS</NAME>
+#define GTK_IS_PIXMAP_MENU_ITEM_CLASS(klass) (GTK_CHECK_CLASS_TYPE ((klass), GTK_TYPE_PIXMAP_MENU_ITEM))
 </MACRO>
 <STRUCT>
-<NAME>GnomeMDIGenericChild</NAME>
+<NAME>GtkPixmapMenuItem</NAME>
 </STRUCT>
 <STRUCT>
-<NAME>GnomeMDIGenericChildClass</NAME>
+<NAME>GtkPixmapMenuItemClass</NAME>
 </STRUCT>
 <STRUCT>
-<NAME>GnomeMDIGenericChild</NAME>
-struct GnomeMDIGenericChild {
-	GnomeMDIChild mdi_child;
+<NAME>GtkPixmapMenuItem</NAME>
+struct GtkPixmapMenuItem
+{
+  GtkMenuItem menu_item;
 
-	/* if any of these are set they override the virtual functions
-	   in GnomeMDIChildClass. create_view is mandatory, as no default
-	   handler is provided, others may be NULL */
-	GnomeMDIChildViewCreator create_view;
-	GnomeMDIChildMenuCreator create_menus;
-	GnomeMDIChildConfigFunc  get_config_string;
-	GnomeMDIChildLabelFunc   set_label;
-
-	GtkCallbackMarshal create_view_cbm, create_menus_cbm,
-		               get_config_string_cbm, set_label_cbm;
-	GtkDestroyNotify   create_view_dn, create_menus_dn,
-		               get_config_string_dn, set_label_dn;
-	gpointer           create_view_data, create_menus_data,
-		               get_config_string_data, set_label_data;
+  GtkWidget *pixmap;
 };
 </STRUCT>
 <FUNCTION>
-<NAME>gnome_mdi_generic_child_get_type</NAME>
-<RETURNS>guint  </RETURNS>
+<NAME>gtk_pixmap_menu_item_get_type</NAME>
+<RETURNS>GtkType 	</RETURNS>
 void
 </FUNCTION>
 <FUNCTION>
-<NAME>gnome_mdi_generic_child_new</NAME>
-<RETURNS>GnomeMDIGenericChild  *</RETURNS>
-gchar *name
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_mdi_generic_child_set_view_creator</NAME>
-<RETURNS>void  </RETURNS>
-GnomeMDIGenericChild *child,GnomeMDIChildViewCreator func,gpointer data
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_mdi_generic_child_set_view_creator_full</NAME>
-<RETURNS>void  </RETURNS>
-GnomeMDIGenericChild *child,GnomeMDIChildViewCreator func,GtkCallbackMarshal marshal,gpointer data,GtkDestroyNotify notify
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_mdi_generic_child_set_menu_creator</NAME>
-<RETURNS>void  </RETURNS>
-GnomeMDIGenericChild *child,GnomeMDIChildMenuCreator func,gpointer data
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_mdi_generic_child_set_menu_creator_full</NAME>
-<RETURNS>void  </RETURNS>
-GnomeMDIGenericChild *child,GnomeMDIChildMenuCreator func,GtkCallbackMarshal marshal,gpointer data,GtkDestroyNotify notify
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_mdi_generic_child_set_config_func</NAME>
-<RETURNS>void  </RETURNS>
-GnomeMDIGenericChild *child,GnomeMDIChildConfigFunc func,gpointer data
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_mdi_generic_child_set_config_func_full</NAME>
-<RETURNS>void  </RETURNS>
-GnomeMDIGenericChild *child,GnomeMDIChildConfigFunc func,GtkCallbackMarshal marshal,gpointer data,GtkDestroyNotify notify
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_mdi_generic_child_set_label_func</NAME>
-<RETURNS>void  </RETURNS>
-GnomeMDIGenericChild *child,GnomeMDIChildLabelFunc func,gpointer data
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_mdi_generic_child_set_label_func_full</NAME>
-<RETURNS>void  </RETURNS>
-GnomeMDIGenericChild *child,GnomeMDIChildLabelFunc func,GtkCallbackMarshal marshal,gpointer data,GtkDestroyNotify notify
-</FUNCTION>
-<STRUCT>
-<NAME>GnomeGuru</NAME>
-</STRUCT>
-<STRUCT>
-<NAME>GnomeGuruClass</NAME>
-</STRUCT>
-<MACRO>
-<NAME>GNOME_GURU</NAME>
-#define GNOME_GURU(obj) GTK_CHECK_CAST (obj, gnome_guru_get_type (), GnomeGuru)
-</MACRO>
-<MACRO>
-<NAME>GNOME_GURU_CLASS</NAME>
-#define GNOME_GURU_CLASS(klass)  GTK_CHECK_CLASS_CAST (klass, gnome_guru_get_type (), GnomeGuruClass)
-</MACRO>
-<MACRO>
-<NAME>GNOME_IS_GURU</NAME>
-#define GNOME_IS_GURU(obj)  GTK_CHECK_TYPE (obj, gnome_guru_get_type ())
-</MACRO>
-<STRUCT>
-<NAME>GnomeGuru</NAME>
-struct GnomeGuru {
-  GtkVBox vbox;
-
-  /* all private, don't touch it. */
-
-  GtkWidget * graphic;
-
-  GList * pages;
-
-  struct _GnomeGuruPage* current_page;
-
-  GtkWidget * next;
-  GtkWidget * back;
-  GtkWidget * finish;
-  GtkWidget * page_title;
-  GtkWidget * page_box;
-  GtkWidget * buttonbox;
-
-  guint has_dialog : 1;
-};
-</STRUCT>
-<FUNCTION>
-<NAME>gnome_guru_get_type</NAME>
-<RETURNS>guint  </RETURNS>
+<NAME>gtk_pixmap_menu_item_new</NAME>
+<RETURNS>GtkWidget *</RETURNS>
 void
 </FUNCTION>
 <FUNCTION>
-<NAME>gnome_guru_new</NAME>
-<RETURNS>GtkWidget  *</RETURNS>
-const gchar * name,GtkWidget   * graphic,GnomeDialog * dialog
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_guru_construct</NAME>
+<NAME>gtk_pixmap_menu_item_set_pixmap</NAME>
 <RETURNS>void  </RETURNS>
-GnomeGuru   * guru,const gchar * name,GtkWidget   * graphic,GnomeDialog * dialog
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_guru_append_page</NAME>
-<RETURNS>void  </RETURNS>
-GnomeGuru   * guru,const gchar * name,GtkWidget   * widget
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_guru_next_set_sensitive</NAME>
-<RETURNS>void  </RETURNS>
-GnomeGuru   * guru,gboolean      sensitivity
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_guru_back_set_sensitive</NAME>
-<RETURNS>void  </RETURNS>
-GnomeGuru   * guru,gboolean      sensitivity
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_guru_current_page</NAME>
-<RETURNS>GtkWidget  *</RETURNS>
-GnomeGuru   * guru
+GtkPixmapMenuItem *menu_item,GtkWidget *pixmap
 </FUNCTION>
 <VARIABLE>
 <NAME>GTK_TYPE_GNOME_ANIMATOR_STATUS</NAME>
@@ -6890,1670 +8573,541 @@ extern GtkType GTK_TYPE_GNOME_CANVAS_POINTS;
 #define	GNOME_TYPE_NUM_BUILTINS	(28)
 </MACRO>
 <MACRO>
-<NAME>GNOME_PIXMAP_ENTRY</NAME>
-#define GNOME_PIXMAP_ENTRY(obj)         GTK_CHECK_CAST (obj, gnome_pixmap_entry_get_type (), GnomePixmapEntry)
+<NAME>GNOME_ICON_TEXT_ITEM</NAME>
+#define GNOME_ICON_TEXT_ITEM(obj)     (GTK_CHECK_CAST((obj), \
+        gnome_icon_text_item_get_type (), GnomeIconTextItem))
 </MACRO>
 <MACRO>
-<NAME>GNOME_PIXMAP_ENTRY_CLASS</NAME>
-#define GNOME_PIXMAP_ENTRY_CLASS(klass) GTK_CHECK_CLASS_CAST (klass, gnome_pixmap_entry_get_type (), GnomePixmapEntryClass)
+<NAME>GNOME_ICON_TEXT_ITEM_CLASS</NAME>
+#define GNOME_ICON_TEXT_ITEM_CLASS(k) (GTK_CHECK_CLASS_CAST ((k),\
+	gnome_icon_text_item_get_type ()))
 </MACRO>
 <MACRO>
-<NAME>GNOME_IS_PIXMAP_ENTRY</NAME>
-#define GNOME_IS_PIXMAP_ENTRY(obj)      GTK_CHECK_TYPE (obj, gnome_pixmap_entry_get_type ())
+<NAME>GNOME_IS_ICON_TEXT_ITEM</NAME>
+#define GNOME_IS_ICON_TEXT_ITEM(o)    (GTK_CHECK_TYPE((o), \
+	gnome_icon_text_item_get_type ()))
 </MACRO>
 <STRUCT>
-<NAME>GnomePixmapEntry</NAME>
-</STRUCT>
-<STRUCT>
-<NAME>GnomePixmapEntryClass</NAME>
-</STRUCT>
-<STRUCT>
-<NAME>GnomePixmapEntry</NAME>
-struct GnomePixmapEntry {
-	GtkVBox vbox;
-	
-	GtkWidget *fentry;
-
-	int do_preview; /*put a preview frame with the pixmap next to
-			  the entry*/
-	GtkWidget *preview;
-	GtkWidget *preview_sw;
-	
-	/*very private*/
-	char *last_preview;
-};
-</STRUCT>
-<FUNCTION>
-<NAME>gnome_pixmap_entry_get_type</NAME>
-<RETURNS>guint  </RETURNS>
-void
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_pixmap_entry_new</NAME>
-<RETURNS>GtkWidget  *</RETURNS>
-char *history_id,char *browse_dialog_title,int do_preview
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_pixmap_entry_set_pixmap_subdir</NAME>
-<RETURNS>void  </RETURNS>
-GnomePixmapEntry *pentry,const char *subdir
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_pixmap_entry_gnome_file_entry</NAME>
-<RETURNS>GtkWidget  *</RETURNS>
-GnomePixmapEntry *pentry
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_pixmap_entry_gnome_entry</NAME>
-<RETURNS>GtkWidget  *</RETURNS>
-GnomePixmapEntry *pentry
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_pixmap_entry_gtk_entry</NAME>
-<RETURNS>GtkWidget  *</RETURNS>
-GnomePixmapEntry *pentry
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_pixmap_entry_set_preview</NAME>
-<RETURNS>void  </RETURNS>
-GnomePixmapEntry *pentry,int do_preview
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_pixmap_entry_set_preview_size</NAME>
-<RETURNS>void 	</RETURNS>
-GnomePixmapEntry *pentry,int preview_w,int preview_h
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_pixmap_entry_get_filename</NAME>
-<RETURNS>char       *</RETURNS>
-GnomePixmapEntry *pentry
-</FUNCTION>
-<MACRO>
-<NAME>GNOME_ICON_ENTRY</NAME>
-#define GNOME_ICON_ENTRY(obj)         GTK_CHECK_CAST (obj, gnome_icon_entry_get_type (), GnomeIconEntry)
-</MACRO>
-<MACRO>
-<NAME>GNOME_ICON_ENTRY_CLASS</NAME>
-#define GNOME_ICON_ENTRY_CLASS(klass) GTK_CHECK_CLASS_CAST (klass, gnome_icon_entry_get_type (), GnomeIconEntryClass)
-</MACRO>
-<MACRO>
-<NAME>GNOME_IS_ICON_ENTRY</NAME>
-#define GNOME_IS_ICON_ENTRY(obj)      GTK_CHECK_TYPE (obj, gnome_icon_entry_get_type ())
-</MACRO>
-<STRUCT>
-<NAME>GnomeIconEntry</NAME>
-</STRUCT>
-<STRUCT>
-<NAME>GnomeIconEntryClass</NAME>
-</STRUCT>
-<STRUCT>
-<NAME>GnomeIconEntry</NAME>
-struct GnomeIconEntry {
-	GtkVBox vbox;
-	
-	GtkWidget *fentry;
-
-	GtkWidget *pickbutton;
-	
-	GtkWidget *pick_dialog;
-	char *pick_dialog_dir;
-};
-</STRUCT>
-<FUNCTION>
-<NAME>gnome_icon_entry_get_type</NAME>
-<RETURNS>guint  </RETURNS>
-void
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_icon_entry_new</NAME>
-<RETURNS>GtkWidget  *</RETURNS>
-char *history_id,char *browse_dialog_title
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_icon_entry_set_pixmap_subdir</NAME>
-<RETURNS>void  </RETURNS>
-GnomeIconEntry *ientry,const char *subdir
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_icon_entry_set_icon</NAME>
-<RETURNS>void  </RETURNS>
-GnomeIconEntry *ientry,const char *filename
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_icon_entry_gnome_file_entry</NAME>
-<RETURNS>GtkWidget  *</RETURNS>
-GnomeIconEntry *ientry
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_icon_entry_gnome_entry</NAME>
-<RETURNS>GtkWidget  *</RETURNS>
-GnomeIconEntry *ientry
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_icon_entry_gtk_entry</NAME>
-<RETURNS>GtkWidget  *</RETURNS>
-GnomeIconEntry *ientry
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_icon_entry_get_filename</NAME>
-<RETURNS>char       *</RETURNS>
-GnomeIconEntry *ientry
-</FUNCTION>
-<MACRO>
-<NAME>GNOME_DOCK_BAND</NAME>
-#define GNOME_DOCK_BAND(obj) \
-  GTK_CHECK_CAST (obj, gnome_dock_band_get_type (), GnomeDockBand)
-</MACRO>
-<MACRO>
-<NAME>GNOME_DOCK_BAND_CLASS</NAME>
-#define GNOME_DOCK_BAND_CLASS(class) \
-  GTK_CHECK_CLASS_CAST (class, gnome_dock_band_get_type (), GnomeDockBandClass)
-</MACRO>
-<MACRO>
-<NAME>GNOME_IS_DOCK_BAND</NAME>
-#define GNOME_IS_DOCK_BAND(obj) \
-  GTK_CHECK_TYPE (obj, gnome_dock_band_get_type ())
-</MACRO>
-<STRUCT>
-<NAME>GnomeDockBand</NAME>
-</STRUCT>
-<STRUCT>
-<NAME>GnomeDockBandClass</NAME>
-</STRUCT>
-<STRUCT>
-<NAME>GnomeDockBandChild</NAME>
-</STRUCT>
-<STRUCT>
-<NAME>GnomeDockBand</NAME>
-struct GnomeDockBand
-{
-  GtkContainer container;
-
-  GtkOrientation orientation;
-
-  GList *children;              /* GnomeDockBandChild */
-  guint num_children;
-
-  GList *floating_child;        /* GnomeDockBandChild */
-
-  gboolean doing_drag;
-
-  guint max_space_requisition;
-  guint tot_offsets;
-
-  /* This used to remember the allocation before the drag begin: it is
-     necessary to do so because we actually decide what docking action
-     happens depending on it, instead of using the current allocation
-     (which might be constantly changing while the user drags things
-     around).  */
-  GtkAllocation drag_allocation;
-
-  guint new_for_drag : 1;
-};
-</STRUCT>
-<STRUCT>
-<NAME>GnomeDockBandChild</NAME>
-struct GnomeDockBandChild
-{
-  GtkWidget *widget;
-
-  /* Maximum (requested) offset from the previous child.  */
-  guint offset;
-
-  /* Actual offset.  */
-  guint real_offset;
-
-  guint drag_offset;
-
-  GtkAllocation drag_allocation;
-
-  guint prev_space, foll_space;
-  guint drag_prev_space, drag_foll_space;
-
-  guint max_space_requisition;
-};
-</STRUCT>
-<FUNCTION>
-<NAME>gnome_dock_band_new</NAME>
-<RETURNS>GtkWidget      *</RETURNS>
-void
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_dock_band_get_type</NAME>
-<RETURNS>guint  </RETURNS>
-void
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_dock_band_set_orientation</NAME>
-<RETURNS>void  </RETURNS>
-GnomeDockBand *band,GtkOrientation orientation
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_dock_band_get_orientation</NAME>
-<RETURNS>GtkOrientation  </RETURNS>
-GnomeDockBand *band
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_dock_band_insert</NAME>
-<RETURNS>gboolean  </RETURNS>
-GnomeDockBand *band,GtkWidget *child,guint offset,gint position
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_dock_band_prepend</NAME>
-<RETURNS>gboolean  </RETURNS>
-GnomeDockBand *band,GtkWidget *child,guint offset
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_dock_band_append</NAME>
-<RETURNS>gboolean  </RETURNS>
-GnomeDockBand *band,GtkWidget *child,guint offset
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_dock_band_set_child_offset</NAME>
-<RETURNS>void  </RETURNS>
-GnomeDockBand *band,GtkWidget *child,guint offset
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_dock_band_get_child_offset</NAME>
-<RETURNS>guint  </RETURNS>
-GnomeDockBand *band,GtkWidget *child
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_dock_band_move_child</NAME>
-<RETURNS>void  </RETURNS>
-GnomeDockBand *band,GList *old_child,guint new_num
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_dock_band_get_num_children</NAME>
-<RETURNS>guint  </RETURNS>
-GnomeDockBand *band
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_dock_band_drag_begin</NAME>
-<RETURNS>void  </RETURNS>
-GnomeDockBand *band,GnomeDockItem *item
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_dock_band_drag_to</NAME>
-<RETURNS>gboolean  </RETURNS>
-GnomeDockBand *band,GnomeDockItem *item,gint x, gint y
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_dock_band_drag_end</NAME>
-<RETURNS>void  </RETURNS>
-GnomeDockBand *band,GnomeDockItem *item
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_dock_band_get_item_by_name</NAME>
-<RETURNS>GnomeDockItem  *</RETURNS>
-GnomeDockBand *band,const char *name,guint *position_return,guint *offset_return
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_dock_band_layout_add</NAME>
-<RETURNS>void  </RETURNS>
-GnomeDockBand *band,GnomeDockLayout *layout,GnomeDockPlacement placement,guint band_num
-</FUNCTION>
-<MACRO>
-<NAME>GNOME_DOCK_ITEM</NAME>
-#define GNOME_DOCK_ITEM(obj) \
-  GTK_CHECK_CAST (obj, gnome_dock_item_get_type (), GnomeDockItem)
-</MACRO>
-<MACRO>
-<NAME>GNOME_DOCK_ITEM_CLASS</NAME>
-#define GNOME_DOCK_ITEM_CLASS(klass) \
-  GTK_CHECK_CLASS_CAST (klass, gnome_dock_item_get_type (), GnomeDockItemClass)
-</MACRO>
-<MACRO>
-<NAME>GNOME_IS_DOCK_ITEM</NAME>
-#define GNOME_IS_DOCK_ITEM(obj) \
-  GTK_CHECK_TYPE (obj, gnome_dock_item_get_type ())
-</MACRO>
-<ENUM>
-<NAME>GnomeDockItemBehavior</NAME>
-typedef enum
-{
-  GNOME_DOCK_ITEM_BEH_NORMAL = 0,
-  GNOME_DOCK_ITEM_BEH_EXCLUSIVE = 1 << 0,
-  GNOME_DOCK_ITEM_BEH_NEVER_FLOATING = 1 << 1,
-  GNOME_DOCK_ITEM_BEH_NEVER_VERTICAL = 1 << 2,
-  GNOME_DOCK_ITEM_BEH_NEVER_HORIZONTAL = 1 << 3,
-  GNOME_DOCK_ITEM_BEH_LOCKED = 1 << 4
-} GnomeDockItemBehavior;
-</ENUM>
-<MACRO>
-<NAME>GNOME_DOCK_ITEM_BEH_NEVER_DETACH</NAME>
-#define GNOME_DOCK_ITEM_BEH_NEVER_DETACH GNOME_DOCK_ITEM_BEH_NEVER_FLOATING
-</MACRO>
-<MACRO>
-<NAME>GNOME_DOCK_ITEM_NOT_LOCKED</NAME>
-#define GNOME_DOCK_ITEM_NOT_LOCKED(x) (! (GNOME_DOCK_ITEM(x)->behavior \
-                                          & GNOME_DOCK_ITEM_BEH_LOCKED))
-</MACRO>
-<STRUCT>
-<NAME>GnomeDockItem</NAME>
-</STRUCT>
-<STRUCT>
-<NAME>GnomeDockItemClass</NAME>
-</STRUCT>
-<STRUCT>
-<NAME>GnomeDockItem</NAME>
-struct GnomeDockItem
-{
-  GtkBin bin;
-
-  gchar                *name;
-
-  GdkWindow            *bin_window; /* parent window for children */
-  GdkWindow            *float_window;
-  GtkShadowType         shadow_type;
-
-  GtkOrientation        orientation;
-  GnomeDockItemBehavior behavior;
-
-  guint                 float_window_mapped : 1;
-  guint                 is_floating : 1;
-  guint                 in_drag : 1;
-
-  /* Start drag position (wrt widget->window).  */
-  gint                  dragoff_x, dragoff_y;
-
-  /* Position of the floating window.  */
-  gint                  float_x, float_y;
-
-  /* If TRUE, the pointer must be grabbed on "map_event".  */
-  guint                 grab_on_map_event;
-};
-</STRUCT>
-<FUNCTION>
-<NAME>gnome_dock_item_get_type</NAME>
-<RETURNS>guint  </RETURNS>
-void
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_dock_item_new</NAME>
-<RETURNS>GtkWidget      *</RETURNS>
-const gchar *name,GnomeDockItemBehavior behavior
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_dock_item_get_child</NAME>
-<RETURNS>GtkWidget      *</RETURNS>
-GnomeDockItem *dock_item
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_dock_item_get_name</NAME>
-<RETURNS>char           *</RETURNS>
-GnomeDockItem *dock_item
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_dock_item_set_shadow_type</NAME>
-<RETURNS>void  </RETURNS>
-GnomeDockItem *dock_item,GtkShadowType type
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_dock_item_get_shadow_type</NAME>
-<RETURNS>GtkShadowType  </RETURNS>
-GnomeDockItem *dock_item
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_dock_item_set_orientation</NAME>
-<RETURNS>gboolean  </RETURNS>
-GnomeDockItem *dock_item,GtkOrientation orientation
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_dock_item_get_orientation</NAME>
-<RETURNS>GtkOrientation  </RETURNS>
-GnomeDockItem *dock_item
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_dock_item_get_behavior</NAME>
-<RETURNS>GnomeDockItemBehavior</RETURNS>
-GnomeDockItem *dock_item
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_dock_item_detach</NAME>
-<RETURNS>gboolean  </RETURNS>
-GnomeDockItem *item,gint x, gint y
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_dock_item_attach</NAME>
-<RETURNS>void  </RETURNS>
-GnomeDockItem *item,GtkWidget *parent,gint x, gint y
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_dock_item_grab_pointer</NAME>
-<RETURNS>void  </RETURNS>
-GnomeDockItem *item
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_dock_item_drag_floating</NAME>
-<RETURNS>void  </RETURNS>
-GnomeDockItem *item,gint x, gint y
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_dock_item_handle_size_request</NAME>
-<RETURNS>void  </RETURNS>
-GnomeDockItem *item,GtkRequisition *requisition
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_dock_item_get_floating_position</NAME>
-<RETURNS>void  </RETURNS>
-GnomeDockItem *item,gint *x, gint *y
-</FUNCTION>
-<MACRO>
-<NAME>GNOME_DOCK</NAME>
-#define GNOME_DOCK(obj) \
-  GTK_CHECK_CAST (obj, gnome_dock_get_type (), GnomeDock)
-</MACRO>
-<MACRO>
-<NAME>GNOME_DOCK_CLASS</NAME>
-#define GNOME_DOCK_CLASS(klass) \
-  GTK_CHECK_CLASS_CAST (klass, gnome_dock_get_type (), GnomeDockClass)
-</MACRO>
-<MACRO>
-<NAME>GNOME_IS_DOCK</NAME>
-#define GNOME_IS_DOCK(obj) \
-  GTK_CHECK_TYPE (obj, gnome_dock_get_type ())
-</MACRO>
-<ENUM>
-<NAME>GnomeDockPlacement</NAME>
-typedef enum
-{
-  GNOME_DOCK_TOP,
-  GNOME_DOCK_RIGHT,
-  GNOME_DOCK_BOTTOM,
-  GNOME_DOCK_LEFT,
-  GNOME_DOCK_FLOATING
-} GnomeDockPlacement;
-</ENUM>
-<STRUCT>
-<NAME>GnomeDock</NAME>
-</STRUCT>
-<STRUCT>
-<NAME>GnomeDockClass</NAME>
-</STRUCT>
-<STRUCT>
-<NAME>GnomeDock</NAME>
-struct GnomeDock
-{
-  GtkContainer container;
-
-  GtkWidget *client_area;
-
-  /* GnomeDockBands associated with this dock.  */
-  GList *top_bands;
-  GList *bottom_bands;
-  GList *right_bands;
-  GList *left_bands;
-
-  /* Children that are currently not docked.  */
-  GList *floating_children;     /* GtkWidget */
-
-  /* Client rectangle before drag.  */
-  GtkAllocation client_rect;
-
-  gboolean floating_items_allowed : 1;
-};
-</STRUCT>
-<FUNCTION>
-<NAME>gnome_dock_new</NAME>
-<RETURNS>GtkWidget      *</RETURNS>
-void
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_dock_get_type</NAME>
-<RETURNS>guint  </RETURNS>
-void
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_dock_allow_floating_items</NAME>
-<RETURNS>void  </RETURNS>
-GnomeDock *dock,gboolean enable
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_dock_add_item</NAME>
-<RETURNS>void  </RETURNS>
-GnomeDock             *dock,GnomeDockItem         *item,GnomeDockPlacement  placement,guint                  band_num,gint                   position,guint                  offset,gboolean               in_new_band
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_dock_add_floating_item</NAME>
-<RETURNS>void  </RETURNS>
-GnomeDock *dock,GnomeDockItem *widget,gint x, gint y,GtkOrientation orientation
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_dock_set_client_area</NAME>
-<RETURNS>void  </RETURNS>
-GnomeDock             *dock,GtkWidget             *widget
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_dock_get_client_area</NAME>
-<RETURNS>GtkWidget      *</RETURNS>
-GnomeDock             *dock
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_dock_get_item_by_name</NAME>
-<RETURNS>GnomeDockItem  *</RETURNS>
-GnomeDock *dock,const gchar *name,GnomeDockPlacement *placement_return,guint *num_band_return,guint *band_position_return,guint *offset_return
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_dock_get_layout</NAME>
-<RETURNS>GnomeDockLayout  *</RETURNS>
-GnomeDock *dock
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_dock_add_from_layout</NAME>
-<RETURNS>gboolean  </RETURNS>
-GnomeDock *dock,GnomeDockLayout *layout
-</FUNCTION>
-<MACRO>
-<NAME>GTK_TYPE_PIXMAP_MENU_ITEM</NAME>
-#define GTK_TYPE_PIXMAP_MENU_ITEM	    (gtk_pixmap_menu_item_get_type ())
-</MACRO>
-<MACRO>
-<NAME>GTK_PIXMAP_MENU_ITEM</NAME>
-#define GTK_PIXMAP_MENU_ITEM(obj)	    (GTK_CHECK_CAST ((obj), GTK_TYPE_PIXMAP_MENU_ITEM, GtkPixmapMenuItem))
-</MACRO>
-<MACRO>
-<NAME>GTK_PIXMAP_MENU_ITEM_CLASS</NAME>
-#define GTK_PIXMAP_MENU_ITEM_CLASS(klass)    (GTK_CHECK_CLASS_CAST ((klass), GTK_TYPE_PIXMAP_MENU_ITEM, GtkPixmapMenuItemClass))
-</MACRO>
-<MACRO>
-<NAME>GTK_IS_PIXMAP_MENU_ITEM</NAME>
-#define GTK_IS_PIXMAP_MENU_ITEM(obj)	    (GTK_CHECK_TYPE ((obj), GTK_TYPE_PIXMAP_MENU_ITEM))
-</MACRO>
-<MACRO>
-<NAME>GTK_IS_PIXMAP_MENU_ITEM_CLASS</NAME>
-#define GTK_IS_PIXMAP_MENU_ITEM_CLASS(klass) (GTK_CHECK_CLASS_TYPE ((klass), GTK_TYPE_PIXMAP_MENU_ITEM))
-</MACRO>
-<STRUCT>
-<NAME>GtkPixmapMenuItem</NAME>
-</STRUCT>
-<STRUCT>
-<NAME>GtkPixmapMenuItemClass</NAME>
-</STRUCT>
-<STRUCT>
-<NAME>GtkPixmapMenuItem</NAME>
-struct GtkPixmapMenuItem
-{
-  GtkMenuItem menu_item;
-
-  GtkWidget *pixmap;
-};
-</STRUCT>
-<FUNCTION>
-<NAME>gtk_pixmap_menu_item_get_type</NAME>
-<RETURNS>GtkType 	</RETURNS>
-void
-</FUNCTION>
-<FUNCTION>
-<NAME>gtk_pixmap_menu_item_new</NAME>
-<RETURNS>GtkWidget *</RETURNS>
-void
-</FUNCTION>
-<FUNCTION>
-<NAME>gtk_pixmap_menu_item_set_pixmap</NAME>
-<RETURNS>void  </RETURNS>
-GtkPixmapMenuItem *menu_item,GtkWidget *pixmap
-</FUNCTION>
-<MACRO>
-<NAME>GNOME_DOCK_LAYOUT</NAME>
-#define GNOME_DOCK_LAYOUT(obj) \
-  GTK_CHECK_CAST (obj, gnome_dock_layout_get_type (), GnomeDockLayout)
-</MACRO>
-<MACRO>
-<NAME>GNOME_DOCK_LAYOUT_CLASS</NAME>
-#define GNOME_DOCK_LAYOUT_CLASS(klass) \
-  GTK_CHECK_CLASS_CAST (klass, gnome_dock_layout_get_type (), GnomeDockLayoutClass)
-</MACRO>
-<MACRO>
-<NAME>GNOME_IS_DOCK_LAYOUT</NAME>
-#define GNOME_IS_DOCK_LAYOUT(obj) \
-  GTK_CHECK_TYPE (obj, gnome_dock_layout_get_type ())
-</MACRO>
-<STRUCT>
-<NAME>GnomeDockLayoutItem</NAME>
-</STRUCT>
-<STRUCT>
-<NAME>GnomeDockLayoutClass</NAME>
-</STRUCT>
-<STRUCT>
-<NAME>GnomeDockLayout</NAME>
-</STRUCT>
-<STRUCT>
-<NAME>GnomeDockLayoutItem</NAME>
-struct GnomeDockLayoutItem
-{
-  GnomeDockItem *item;
-
-  GnomeDockPlacement placement;
-
-  union
-  {
-    struct
-    {
-      gint x;
-      gint y;
-      GtkOrientation orientation;
-    } floating;
-
-    struct
-    {
-      gint band_num;
-      gint band_position;
-      gint offset;
-    } docked;
-
-  } position;
-};
-</STRUCT>
-<STRUCT>
-<NAME>GnomeDockLayout</NAME>
-struct GnomeDockLayout
-{
-  GtkObject object;
-
-  GList *items;                 /* GnomeDockLayoutItem */
-};
-</STRUCT>
-<FUNCTION>
-<NAME>gnome_dock_layout_new</NAME>
-<RETURNS>GnomeDockLayout      *</RETURNS>
-void
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_dock_layout_get_type</NAME>
-<RETURNS>guint  </RETURNS>
-void
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_dock_layout_add_item</NAME>
-<RETURNS>gboolean  </RETURNS>
-GnomeDockLayout *layout,GnomeDockItem *item,GnomeDockPlacement placement,gint band_num,gint band_position,gint offset
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_dock_layout_add_floating_item</NAME>
-<RETURNS>gboolean  </RETURNS>
-GnomeDockLayout *layout,GnomeDockItem *item,gint x, gint y,GtkOrientation orientation
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_dock_layout_get_item</NAME>
-<RETURNS>GnomeDockLayoutItem  *</RETURNS>
-GnomeDockLayout *layout,GnomeDockItem *item
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_dock_layout_get_item_by_name</NAME>
-<RETURNS>GnomeDockLayoutItem  *</RETURNS>
-GnomeDockLayout *layout,const gchar *name
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_dock_layout_remove_item</NAME>
-<RETURNS>gboolean  </RETURNS>
-GnomeDockLayout *layout,GnomeDockItem *item
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_dock_layout_remove_item_by_name</NAME>
-<RETURNS>gboolean  </RETURNS>
-GnomeDockLayout *layout,const gchar *name
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_dock_layout_create_string</NAME>
-<RETURNS>gchar                *</RETURNS>
-GnomeDockLayout *layout
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_dock_layout_parse_string</NAME>
-<RETURNS>gboolean  </RETURNS>
-GnomeDockLayout *layout,const gchar *string
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_dock_layout_add_to_dock</NAME>
-<RETURNS>gboolean  </RETURNS>
-GnomeDockLayout *layout,GnomeDock *dock
-</FUNCTION>
-<MACRO>
-<NAME>GNOME_PROC_BAR</NAME>
-#define GNOME_PROC_BAR(obj)		GTK_CHECK_CAST (obj, gnome_proc_bar_get_type (), GnomeProcBar)
-</MACRO>
-<MACRO>
-<NAME>GNOME_PROC_BAR__CLASS</NAME>
-#define GNOME_PROC_BAR__CLASS(klass)	GTK_CHECK_CLASS_CAST (klass, gnome_proc_bar_get_type (), GnomeProcBarClass)
-</MACRO>
-<MACRO>
-<NAME>GNOME_IS_PROC_BAR</NAME>
-#define GNOME_IS_PROC_BAR(obj)		GTK_CHECK_TYPE (obj, gnome_proc_bar_get_type ())
-</MACRO>
-<STRUCT>
-<NAME>GnomeProcBar</NAME>
-</STRUCT>
-<STRUCT>
-<NAME>GnomeProcBarClass</NAME>
-</STRUCT>
-<STRUCT>
-<NAME>GnomeProcBar</NAME>
-struct GnomeProcBar {
-
-	GtkHBox hbox;
-
-	GtkWidget *bar;
-	GtkWidget *label;
-	GtkWidget *frame;
-
-	gboolean vertical : 1;
-
-	GdkPixmap *bs;
-	GdkColor *colors;
-
-	gint colors_allocated;
-	gint first_request;
-	gint n;
-	gint tag;
-
-	unsigned *last;
-
-	gint (*cb)();
-	gpointer cb_data;
-};
-</STRUCT>
-<FUNCTION>
-<NAME>gnome_proc_bar_get_type</NAME>
-<RETURNS>guint  </RETURNS>
-void
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_proc_bar_new</NAME>
-<RETURNS>GtkWidget  *</RETURNS>
-GtkWidget *label,gint n, GdkColor *colors,gint (*cb)()
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_proc_bar_set_values</NAME>
-<RETURNS>void  </RETURNS>
-GnomeProcBar *pb, unsigned val []
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_proc_bar_set_orient</NAME>
-<RETURNS>void  </RETURNS>
-GnomeProcBar *pb, gboolean vertical
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_proc_bar_start</NAME>
-<RETURNS>void  </RETURNS>
-GnomeProcBar *pb, gint gtime, gpointer data
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_proc_bar_stop</NAME>
-<RETURNS>void  </RETURNS>
-GnomeProcBar *pb
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_proc_bar_update</NAME>
-<RETURNS>void  </RETURNS>
-GnomeProcBar *pb, GdkColor *colors
-</FUNCTION>
-<MACRO>
-<NAME>GNOME_SPELL</NAME>
-#define GNOME_SPELL(obj)		GTK_CHECK_CAST(obj, gnome_spell_get_type(), GnomeSpell)
-</MACRO>
-<MACRO>
-<NAME>GNOME_SPELL_CLASS</NAME>
-#define GNOME_SPELL_CLASS(klass)		GTK_CHECK_CLASS_CAST(klass, gnome_spell_get_type(), GnomeSpelliClass)
-</MACRO>
-<MACRO>
-<NAME>GNOME_IS_SPELL</NAME>
-#define GNOME_IS_SPELL(obj)		GTK_CHECK_TYPE(obj, gnome_spell_get_type())
-</MACRO>
-<STRUCT>
-<NAME>GnomeSpell</NAME>
-</STRUCT>
-<STRUCT>
-<NAME>GnomeSpellClass</NAME>
-</STRUCT>
-<STRUCT>
-<NAME>GnomeSpellInfo</NAME>
-</STRUCT>
-<STRUCT>
-<NAME>GnomeSpellInfo</NAME>
-struct GnomeSpellInfo {
-	gchar* original;
-	gchar* replacement;
-	gchar* word;
-	guint offset;
-	GSList * words;
-};
-</STRUCT>
-<STRUCT>
-<NAME>GnomeSpell</NAME>
-struct GnomeSpell {
-	GtkVBox vbox;
-
-	GSList * spellinfo;
-
-	GtkWidget* page_spell;
-	GtkWidget* page_config;
-	GtkWidget* word;
-	GtkWidget* list;
-	GtkWidget* b_accept;
-	GtkWidget* b_skip;
-	GtkWidget* b_replace;
-	GtkWidget* b_insert;
-	GtkWidget* b_insertl;
-	GtkWidget* command;
-	GtkWidget* dict;
-	GtkWidget* pdict;
-	GtkWidget* wchars;
-	GtkWidget* wlen;
-	GtkWidget* sort;
-	GtkWidget* runtog;
-	GtkWidget* discard;
-	GtkWidget* tooltip;
-	GtkWidget* killproc;
-	GtkTooltips* tooltips;
-	GSList* awords;
-
-	FILE* rispell;
-	FILE* wispell;
-	pid_t spell_pid;
-};
-</STRUCT>
-<FUNCTION>
-<NAME>gnome_spell_get_type</NAME>
-<RETURNS>guint  </RETURNS>
-void
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_spell_new</NAME>
-<RETURNS>GtkWidget *</RETURNS>
-void
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_spell_check</NAME>
-<RETURNS>gint  </RETURNS>
-GnomeSpell* gtkspell, gchar* str
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_spell_accept</NAME>
-<RETURNS>void  </RETURNS>
-GnomeSpell* gtkspell, gchar* word
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_spell_insert</NAME>
-<RETURNS>void  </RETURNS>
-GnomeSpell* gtkspell, gchar* word, gint lowercase
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_spell_next</NAME>
-<RETURNS>int 	</RETURNS>
-GnomeSpell* gtkspell
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_spell_kill</NAME>
-<RETURNS>void 	</RETURNS>
-GnomeSpell* gtkspell
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_canvas_load_alpha</NAME>
-<RETURNS>GdkImlibImage  *</RETURNS>
-char *file
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_canvas_destroy_image</NAME>
-<RETURNS>void  </RETURNS>
-GdkImlibImage *image
-</FUNCTION>
-<ENUM>
-<NAME>GnomeUIInfoType</NAME>
-typedef enum {
-	GNOME_APP_UI_ENDOFINFO,		/* No more items, use it at the end of 
-					   an array */
-	GNOME_APP_UI_ITEM,		/* Normal item, or radio item if it is 
-					   inside a radioitems group */
-	GNOME_APP_UI_TOGGLEITEM,	/* Toggle (check box) item */
-	GNOME_APP_UI_RADIOITEMS,	/* Radio item group */
-	GNOME_APP_UI_SUBTREE,		/* Item that defines a 
-					   subtree/submenu */
-	GNOME_APP_UI_SEPARATOR,		/* Separator line (menus) or blank 
-					   space (toolbars) */
-	GNOME_APP_UI_HELP,		/* Create a list of help topics, 
-					   used in the Help menu */
-	GNOME_APP_UI_BUILDER_DATA,	/* Specifies the builder data for the 
-					   following entries, see code for 
-					   further info */
-	GNOME_APP_UI_ITEM_CONFIGURABLE, /* A configurable menu item. */
-	/* one should be careful when using 
-	 * gnome_app_create_*_[custom|interp|with_data]() functions with 
-	 * GnomeUIInfo arrays containing GNOME_APP_UI_BUILDER_DATA items since 
-	 * their GnomeUIBuilderData structures completely override the ones 
-	 * generated or supplied by the above functions. */
-	GNOME_APP_UI_SUBTREE_STOCK	/* Item that defines a 
-					   subtree/submenu, same as GNOME_APP_UI_SUBTREE,
-					   but the texts should be looked up in the
-					   gnome-libs catalog
-					*/
-} GnomeUIInfoType;
-</ENUM>
-<ENUM>
-<NAME>GnomeUIInfoConfigurableTypes</NAME>
-typedef enum {
-        /* 0 */
-        GNOME_APP_CONFIGURABLE_ITEM_NEW,
-        GNOME_APP_CONFIGURABLE_ITEM_OPEN,
-        GNOME_APP_CONFIGURABLE_ITEM_SAVE,
-        GNOME_APP_CONFIGURABLE_ITEM_SAVE_AS,
-        GNOME_APP_CONFIGURABLE_ITEM_REVERT,
-        GNOME_APP_CONFIGURABLE_ITEM_PRINT,
-        GNOME_APP_CONFIGURABLE_ITEM_PRINT_SETUP,
-        GNOME_APP_CONFIGURABLE_ITEM_CLOSE,
-        GNOME_APP_CONFIGURABLE_ITEM_EXIT,
-        GNOME_APP_CONFIGURABLE_ITEM_CUT,
-	/* 10 */
-        GNOME_APP_CONFIGURABLE_ITEM_COPY,
-        GNOME_APP_CONFIGURABLE_ITEM_PASTE,
-        GNOME_APP_CONFIGURABLE_ITEM_CLEAR,
-        GNOME_APP_CONFIGURABLE_ITEM_UNDO,
-        GNOME_APP_CONFIGURABLE_ITEM_REDO,
-        GNOME_APP_CONFIGURABLE_ITEM_FIND,
-        GNOME_APP_CONFIGURABLE_ITEM_FIND_AGAIN,
-        GNOME_APP_CONFIGURABLE_ITEM_REPLACE,
-        GNOME_APP_CONFIGURABLE_ITEM_PROPERTIES,
-        GNOME_APP_CONFIGURABLE_ITEM_PREFERENCES,
-	/* 20 */
-        GNOME_APP_CONFIGURABLE_ITEM_ABOUT,
-	GNOME_APP_CONFIGURABLE_ITEM_SELECT_ALL,
-	GNOME_APP_CONFIGURABLE_ITEM_NEW_WINDOW,
-	GNOME_APP_CONFIGURABLE_ITEM_CLOSE_WINDOW,
-	GNOME_APP_CONFIGURABLE_ITEM_NEW_GAME,
-	GNOME_APP_CONFIGURABLE_ITEM_PAUSE_GAME,
-	GNOME_APP_CONFIGURABLE_ITEM_RESTART_GAME,
-	GNOME_APP_CONFIGURABLE_ITEM_UNDO_MOVE,
-	GNOME_APP_CONFIGURABLE_ITEM_REDO_MOVE,
-	GNOME_APP_CONFIGURABLE_ITEM_HINT,
-	/* 30 */
-	GNOME_APP_CONFIGURABLE_ITEM_SCORES,
-	GNOME_APP_CONFIGURABLE_ITEM_END_GAME
-} GnomeUIInfoConfigurableTypes;
-</ENUM>
-<ENUM>
-<NAME>GnomeUIPixmapType</NAME>
-typedef enum {
-	GNOME_APP_PIXMAP_NONE,		/* No pixmap specified */
-	GNOME_APP_PIXMAP_STOCK,		/* Use a stock pixmap (GnomeStock) */
-	GNOME_APP_PIXMAP_DATA,		/* Use a pixmap from inline xpm data */
-	GNOME_APP_PIXMAP_FILENAME	/* Use a pixmap from the specified 
-					   filename */
-} GnomeUIPixmapType;
-</ENUM>
-<STRUCT>
-<NAME>GnomeUIInfo</NAME>
+<NAME>GnomeIconTextItem</NAME>
 typedef struct {
-	GnomeUIInfoType type;		/* Type of item */
-	gchar *label;			/* String to use in the label */
-	gchar *hint;			/* For toolbar items, the tooltip. For 
-					   menu items, the status bar message */
-	gpointer moreinfo;		/* For an item, toggleitem, or 
-					   radioitem, this is a pointer to the 
-					   function to call when the item is 
-					   activated. For a subtree, a pointer 
-					   to another array of GnomeUIInfo 
-					   structures. For a radioitem lead 
-					   entry, a pointer to an array of 
-					   GnomeUIInfo structures for the radio 
-					   item group. For a help item, 
-					   specifies the help node to load 
-					   (i.e. the application's identifier) 
-					   or NULL for the main program's name.
-					   For builder data, points to the 
-					   GnomeUIBuilderData structure for 
-					   the following items */
-	gpointer user_data;		/* Data pointer to pass to callbacks */
-	gpointer unused_data;		/* Reserved for future expansion, 
-					   should be NULL */
-	GnomeUIPixmapType pixmap_type;	/* Type of pixmap for the item */
-	gpointer pixmap_info;		/* Pointer to the pixmap information:
-					 *
-					 * For GNOME_APP_PIXMAP_STOCK, a 
-					 * pointer to the stock icon name.
-					 *
-					 * For GNOME_APP_PIXMAP_DATA, a 
-					 * pointer to the inline xpm data.
-					 *
-					 * For GNOME_APP_PIXMAP_FILENAME, a 
-					 * pointer to the filename string.
-					 */
-	guint accelerator_key;		/* Accelerator key, or 0 for none */
-	GdkModifierType ac_mods;	/* Mask of modifier keys for the 
-					   accelerator */
+	GnomeCanvasItem canvas_item;
 
-	GtkWidget *widget;		/* Filled in by gnome_app_create*, you 
-					   can use this to tweak the widgets 
-					   once they have been created */
-} GnomeUIInfo;
+	int      x, y;
+	int      width;		/* Our assigned width */
+	char     *fontname;	/* Font in which we display */
+
+	/* Hack: create an offscreen window, and place the entry there */
+	GtkEntry  *entry;
+	GtkWidget *entry_top;
+
+	/* Standard equipment */
+	GdkFont *font;
+
+	char    *text;
+
+	/* Layed out information */
+	GnomeIconTextInfo *ti;
+
+	/* Flags */
+	unsigned int editing:1; /* true if it is being edited */
+	unsigned int selected:1;/* true if it should be displayed as selected */
+        /* true if current click is on unselected icon */
+	unsigned int unselected_click:1;
+        /* true if current selecting text with mouse */
+	unsigned int selecting:1;
+	unsigned int is_editable:1;
+	unsigned int is_text_allocated:1;
+} GnomeIconTextItem;
 </STRUCT>
-<MACRO>
-<NAME>GNOMEUIINFO_KEY_UIDATA</NAME>
-#define GNOMEUIINFO_KEY_UIDATA		"uidata"
-</MACRO>
-<MACRO>
-<NAME>GNOMEUIINFO_KEY_UIBDATA</NAME>
-#define GNOMEUIINFO_KEY_UIBDATA		"uibdata"
-</MACRO>
-<MACRO>
-<NAME>GNOMEUIINFO_END</NAME>
-#define GNOMEUIINFO_END			{ GNOME_APP_UI_ENDOFINFO, NULL, NULL, NULL, NULL, NULL,		\
-					  (GnomeUIPixmapType) 0, NULL, 0, (GdkModifierType) 0, NULL }
-</MACRO>
-<MACRO>
-<NAME>GNOMEUIINFO_SEPARATOR</NAME>
-#define GNOMEUIINFO_SEPARATOR		{ GNOME_APP_UI_SEPARATOR, NULL, NULL, NULL, NULL, NULL,		\
-					  (GnomeUIPixmapType) 0, NULL, 0, (GdkModifierType) 0, NULL }
-</MACRO>
-<MACRO>
-<NAME>GNOMEUIINFO_ITEM</NAME>
-#define GNOMEUIINFO_ITEM(label, tooltip, callback, xpm_data) \
-	{ GNOME_APP_UI_ITEM, label, tooltip, callback, NULL, NULL, \
-		GNOME_APP_PIXMAP_DATA, xpm_data, 0, (GdkModifierType) 0, NULL}
-</MACRO>
-<MACRO>
-<NAME>GNOMEUIINFO_ITEM_STOCK</NAME>
-#define GNOMEUIINFO_ITEM_STOCK(label, tooltip, callback, stock_id) \
-	{ GNOME_APP_UI_ITEM, label, tooltip, callback, NULL, NULL, \
-		GNOME_APP_PIXMAP_STOCK, stock_id, 0, (GdkModifierType) 0, NULL }
-</MACRO>
-<MACRO>
-<NAME>GNOMEUIINFO_ITEM_NONE</NAME>
-#define GNOMEUIINFO_ITEM_NONE(label, tooltip, callback) \
-	{ GNOME_APP_UI_ITEM, label, tooltip, callback, NULL, NULL, \
-		GNOME_APP_PIXMAP_NONE, NULL, 0, (GdkModifierType) 0, NULL }
-</MACRO>
-<MACRO>
-<NAME>GNOMEUIINFO_ITEM_DATA</NAME>
-#define GNOMEUIINFO_ITEM_DATA(label, tooltip, callback, user_data, xpm_data) \
-	{ GNOME_APP_UI_ITEM, label, tooltip, callback, user_data, NULL, \
-		GNOME_APP_PIXMAP_DATA, xpm_data, 0, (GdkModifierType) 0, NULL }
-</MACRO>
-<MACRO>
-<NAME>GNOMEUIINFO_TOGGLEITEM</NAME>
-#define GNOMEUIINFO_TOGGLEITEM(label, tooltip, callback, xpm_data) \
-	{ GNOME_APP_UI_TOGGLEITEM, label, tooltip, callback, NULL, NULL, \
-		GNOME_APP_PIXMAP_DATA, xpm_data, 0, (GdkModifierType) 0, NULL }
-</MACRO>
-<MACRO>
-<NAME>GNOMEUIINFO_TOGGLEITEM_DATA</NAME>
-#define GNOMEUIINFO_TOGGLEITEM_DATA(label, tooltip, callback, user_data, xpm_data)		\
-					{ GNOME_APP_UI_TOGGLEITEM, label, tooltip, callback,	\
-					  user_data, NULL, GNOME_APP_PIXMAP_DATA, xpm_data,	\
-					  0, (GdkModifierType) 0, NULL }
-</MACRO>
-<MACRO>
-<NAME>GNOMEUIINFO_HELP</NAME>
-#define GNOMEUIINFO_HELP(app_name) \
-	{ GNOME_APP_UI_HELP, NULL, NULL, app_name, NULL, NULL, \
-		(GnomeUIPixmapType) 0, NULL, 0,	(GdkModifierType) 0, NULL }
-</MACRO>
-<MACRO>
-<NAME>GNOMEUIINFO_SUBTREE</NAME>
-#define GNOMEUIINFO_SUBTREE(label, tree) \
-	{ GNOME_APP_UI_SUBTREE, label, NULL, tree, NULL, NULL, \
-		(GnomeUIPixmapType) 0, NULL, 0,	(GdkModifierType) 0, NULL }
-</MACRO>
-<MACRO>
-<NAME>GNOMEUIINFO_SUBTREE_HINT</NAME>
-#define GNOMEUIINFO_SUBTREE_HINT(label, hint, tree) \
-	{ GNOME_APP_UI_SUBTREE, label, hint, tree, NULL, NULL, \
-		(GnomeUIPixmapType) 0, NULL, 0,	(GdkModifierType) 0, NULL }
-</MACRO>
-<MACRO>
-<NAME>GNOMEUIINFO_SUBTREE_STOCK</NAME>
-#define GNOMEUIINFO_SUBTREE_STOCK(label, tree, stock_id) \
-	{ GNOME_APP_UI_SUBTREE, label, NULL, tree, NULL, NULL, \
-		GNOME_APP_PIXMAP_STOCK, stock_id, 0, (GdkModifierType) 0, NULL }
-</MACRO>
-<MACRO>
-<NAME>GNOMEUIINFO_RADIOLIST</NAME>
-#define GNOMEUIINFO_RADIOLIST(list) \
-	{ GNOME_APP_UI_RADIOITEMS, NULL, NULL, list, NULL, NULL, \
-		(GnomeUIPixmapType) 0, NULL, 0,	(GdkModifierType) 0, NULL }
-</MACRO>
-<MACRO>
-<NAME>GNOMEUIINFO_RADIOITEM</NAME>
-#define GNOMEUIINFO_RADIOITEM(label, tooltip, callback, xpm_data) \
-	{ GNOME_APP_UI_ITEM, label, tooltip, callback, NULL, NULL, \
-		GNOME_APP_PIXMAP_DATA, xpm_data, 0, (GdkModifierType) 0, NULL }
-</MACRO>
-<MACRO>
-<NAME>GNOMEUIINFO_RADIOITEM_DATA</NAME>
-#define GNOMEUIINFO_RADIOITEM_DATA(label, tooltip, callback, user_data, xpm_data)		\
-					{ GNOME_APP_UI_ITEM, label, tooltip, callback,	\
-					  user_data, NULL, GNOME_APP_PIXMAP_DATA, xpm_data,	\
-					  0, (GdkModifierType) 0, NULL }
-</MACRO>
-<MACRO>
-<NAME>GNOMEUIINFO_MENU_NEW_ITEM</NAME>
-#define GNOMEUIINFO_MENU_NEW_ITEM(label, tip, cb, data)                     \
-        { GNOME_APP_UI_ITEM_CONFIGURABLE, label, tip,                       \
-          cb, (gpointer)(data), NULL,                                       \
-          GNOME_APP_PIXMAP_NONE, NULL,                                      \
-          GNOME_APP_CONFIGURABLE_ITEM_NEW, (GdkModifierType) 0, NULL }
-</MACRO>
-<MACRO>
-<NAME>GNOMEUIINFO_MENU_NEW_SUBTREE</NAME>
-#define GNOMEUIINFO_MENU_NEW_SUBTREE(tree)                                  \
-        { GNOME_APP_UI_SUBTREE_STOCK, N_("_New"), NULL, tree, NULL, NULL,   \
-          GNOME_APP_PIXMAP_STOCK, GNOME_STOCK_MENU_NEW,                     \
-          GNOME_KEY_NAME_NEW, GNOME_KEY_MOD_NEW, NULL }
-</MACRO>
-<MACRO>
-<NAME>GNOMEUIINFO_MENU_OPEN_ITEM</NAME>
-#define GNOMEUIINFO_MENU_OPEN_ITEM(cb, data)                                \
-        { GNOME_APP_UI_ITEM_CONFIGURABLE, NULL, NULL,                       \
-          cb, (gpointer)(data), NULL,                                       \
-          GNOME_APP_PIXMAP_NONE, NULL,                                      \
-          GNOME_APP_CONFIGURABLE_ITEM_OPEN, (GdkModifierType) 0, NULL }
-</MACRO>
-<MACRO>
-<NAME>GNOMEUIINFO_MENU_SAVE_ITEM</NAME>
-#define GNOMEUIINFO_MENU_SAVE_ITEM(cb, data)                                \
-        { GNOME_APP_UI_ITEM_CONFIGURABLE, NULL, NULL,                       \
-          cb, (gpointer)(data), NULL,                                       \
-          GNOME_APP_PIXMAP_NONE, NULL,                                      \
-          GNOME_APP_CONFIGURABLE_ITEM_SAVE, (GdkModifierType) 0, NULL }
-</MACRO>
-<MACRO>
-<NAME>GNOMEUIINFO_MENU_SAVE_AS_ITEM</NAME>
-#define GNOMEUIINFO_MENU_SAVE_AS_ITEM(cb, data)                             \
-        { GNOME_APP_UI_ITEM_CONFIGURABLE, NULL, NULL,                       \
-          cb, (gpointer)(data), NULL,                                       \
-          GNOME_APP_PIXMAP_NONE, NULL,                                      \
-          GNOME_APP_CONFIGURABLE_ITEM_SAVE_AS, (GdkModifierType) 0, NULL }
-</MACRO>
-<MACRO>
-<NAME>GNOMEUIINFO_MENU_REVERT_ITEM</NAME>
-#define GNOMEUIINFO_MENU_REVERT_ITEM(cb, data)                              \
-        { GNOME_APP_UI_ITEM_CONFIGURABLE, NULL, NULL,                       \
-          cb, (gpointer)(data), NULL,                                       \
-          GNOME_APP_PIXMAP_NONE, NULL,                                      \
-          GNOME_APP_CONFIGURABLE_ITEM_REVERT, (GdkModifierType) 0, NULL }
-</MACRO>
-<MACRO>
-<NAME>GNOMEUIINFO_MENU_PRINT_ITEM</NAME>
-#define GNOMEUIINFO_MENU_PRINT_ITEM(cb, data)                               \
-        { GNOME_APP_UI_ITEM_CONFIGURABLE, NULL, NULL,                       \
-          cb, (gpointer)(data), NULL,                                       \
-          GNOME_APP_PIXMAP_NONE, NULL,                                      \
-          GNOME_APP_CONFIGURABLE_ITEM_PRINT, (GdkModifierType) 0, NULL }
-</MACRO>
-<MACRO>
-<NAME>GNOMEUIINFO_MENU_PRINT_SETUP_ITEM</NAME>
-#define GNOMEUIINFO_MENU_PRINT_SETUP_ITEM(cb, data)                         \
-        { GNOME_APP_UI_ITEM_CONFIGURABLE, NULL, NULL,                       \
-          cb, (gpointer)(data), NULL,                                       \
-          GNOME_APP_PIXMAP_NONE, NULL,                                      \
-          GNOME_APP_CONFIGURABLE_ITEM_PRINT_SETUP, (GdkModifierType) 0, NULL }
-</MACRO>
-<MACRO>
-<NAME>GNOMEUIINFO_MENU_CLOSE_ITEM</NAME>
-#define GNOMEUIINFO_MENU_CLOSE_ITEM(cb, data)                               \
-        { GNOME_APP_UI_ITEM_CONFIGURABLE, NULL, NULL,                       \
-          cb, (gpointer)(data), NULL,                                       \
-          GNOME_APP_PIXMAP_NONE, NULL,                                      \
-          GNOME_APP_CONFIGURABLE_ITEM_CLOSE, (GdkModifierType) 0, NULL }
-</MACRO>
-<MACRO>
-<NAME>GNOMEUIINFO_MENU_EXIT_ITEM</NAME>
-#define GNOMEUIINFO_MENU_EXIT_ITEM(cb, data)                                \
-        { GNOME_APP_UI_ITEM_CONFIGURABLE, NULL, NULL,                       \
-          cb, (gpointer)(data), NULL,                                       \
-          GNOME_APP_PIXMAP_NONE, NULL,                                      \
-          GNOME_APP_CONFIGURABLE_ITEM_EXIT, (GdkModifierType) 0, NULL }
-</MACRO>
-<MACRO>
-<NAME>GNOMEUIINFO_MENU_CUT_ITEM</NAME>
-#define GNOMEUIINFO_MENU_CUT_ITEM(cb, data)                                 \
-        { GNOME_APP_UI_ITEM_CONFIGURABLE, NULL, NULL,                       \
-          cb, (gpointer)(data), NULL,                                       \
-          GNOME_APP_PIXMAP_NONE, NULL,                                      \
-          GNOME_APP_CONFIGURABLE_ITEM_CUT, (GdkModifierType) 0, NULL }
-</MACRO>
-<MACRO>
-<NAME>GNOMEUIINFO_MENU_COPY_ITEM</NAME>
-#define GNOMEUIINFO_MENU_COPY_ITEM(cb, data)                                \
-        { GNOME_APP_UI_ITEM_CONFIGURABLE, NULL, NULL,                       \
-          cb, (gpointer)(data), NULL,                                       \
-          GNOME_APP_PIXMAP_NONE, NULL,                                      \
-          GNOME_APP_CONFIGURABLE_ITEM_COPY, (GdkModifierType) 0, NULL }
-</MACRO>
-<MACRO>
-<NAME>GNOMEUIINFO_MENU_PASTE_ITEM</NAME>
-#define GNOMEUIINFO_MENU_PASTE_ITEM(cb, data)                               \
-        { GNOME_APP_UI_ITEM_CONFIGURABLE, NULL, NULL,                       \
-          cb, (gpointer)(data), NULL,                                       \
-          GNOME_APP_PIXMAP_NONE, NULL,                                      \
-          GNOME_APP_CONFIGURABLE_ITEM_PASTE, (GdkModifierType) 0, NULL }
-</MACRO>
-<MACRO>
-<NAME>GNOMEUIINFO_MENU_SELECT_ALL_ITEM</NAME>
-#define GNOMEUIINFO_MENU_SELECT_ALL_ITEM(cb, data)                          \
-        { GNOME_APP_UI_ITEM_CONFIGURABLE, NULL, NULL,                       \
-          cb, (gpointer)(data), NULL,                                       \
-          GNOME_APP_PIXMAP_NONE, NULL,                                      \
-          GNOME_APP_CONFIGURABLE_ITEM_SELECT_ALL, (GdkModifierType) 0, NULL }
-</MACRO>
-<MACRO>
-<NAME>GNOMEUIINFO_MENU_CLEAR_ITEM</NAME>
-#define GNOMEUIINFO_MENU_CLEAR_ITEM(cb, data)                               \
-        { GNOME_APP_UI_ITEM_CONFIGURABLE, NULL, NULL,                       \
-          cb, (gpointer)(data), NULL,                                       \
-          GNOME_APP_PIXMAP_NONE, NULL,                                      \
-          GNOME_APP_CONFIGURABLE_ITEM_CLEAR, (GdkModifierType) 0, NULL }
-</MACRO>
-<MACRO>
-<NAME>GNOMEUIINFO_MENU_UNDO_ITEM</NAME>
-#define GNOMEUIINFO_MENU_UNDO_ITEM(cb, data)                                \
-        { GNOME_APP_UI_ITEM_CONFIGURABLE, NULL, NULL,                       \
-          cb, (gpointer)(data), NULL,                                       \
-          GNOME_APP_PIXMAP_NONE, NULL,                                      \
-          GNOME_APP_CONFIGURABLE_ITEM_UNDO, (GdkModifierType) 0, NULL }
-</MACRO>
-<MACRO>
-<NAME>GNOMEUIINFO_MENU_REDO_ITEM</NAME>
-#define GNOMEUIINFO_MENU_REDO_ITEM(cb, data)                                \
-        { GNOME_APP_UI_ITEM_CONFIGURABLE, NULL, NULL,                       \
-          cb, (gpointer)(data), NULL,                                       \
-          GNOME_APP_PIXMAP_NONE, NULL,                                      \
-          GNOME_APP_CONFIGURABLE_ITEM_REDO, (GdkModifierType) 0, NULL }
-</MACRO>
-<MACRO>
-<NAME>GNOMEUIINFO_MENU_FIND_ITEM</NAME>
-#define GNOMEUIINFO_MENU_FIND_ITEM(cb, data)                                \
-        { GNOME_APP_UI_ITEM_CONFIGURABLE, NULL, NULL,                       \
-          cb, (gpointer)(data), NULL,                                       \
-          GNOME_APP_PIXMAP_NONE, NULL,                                      \
-          GNOME_APP_CONFIGURABLE_ITEM_FIND, (GdkModifierType) 0, NULL }
-</MACRO>
-<MACRO>
-<NAME>GNOMEUIINFO_MENU_FIND_AGAIN_ITEM</NAME>
-#define GNOMEUIINFO_MENU_FIND_AGAIN_ITEM(cb, data)                          \
-        { GNOME_APP_UI_ITEM_CONFIGURABLE, NULL, NULL,                       \
-          cb, (gpointer)(data), NULL,                                       \
-          GNOME_APP_PIXMAP_NONE, NULL,                                      \
-          GNOME_APP_CONFIGURABLE_ITEM_FIND_AGAIN, (GdkModifierType) 0, NULL }
-</MACRO>
-<MACRO>
-<NAME>GNOMEUIINFO_MENU_REPLACE_ITEM</NAME>
-#define GNOMEUIINFO_MENU_REPLACE_ITEM(cb, data)                             \
-        { GNOME_APP_UI_ITEM_CONFIGURABLE, NULL, NULL,                       \
-          cb, (gpointer)(data), NULL,                                       \
-          GNOME_APP_PIXMAP_NONE, NULL,                                      \
-          GNOME_APP_CONFIGURABLE_ITEM_REPLACE, (GdkModifierType) 0, NULL }
-</MACRO>
-<MACRO>
-<NAME>GNOMEUIINFO_MENU_PROPERTIES_ITEM</NAME>
-#define GNOMEUIINFO_MENU_PROPERTIES_ITEM(cb, data)                          \
-        { GNOME_APP_UI_ITEM_CONFIGURABLE, NULL, NULL,                       \
-          cb, (gpointer)(data), NULL,                                       \
-          GNOME_APP_PIXMAP_NONE, NULL,                                      \
-          GNOME_APP_CONFIGURABLE_ITEM_PROPERTIES, (GdkModifierType) 0, NULL }
-</MACRO>
-<MACRO>
-<NAME>GNOMEUIINFO_MENU_PREFERENCES_ITEM</NAME>
-#define GNOMEUIINFO_MENU_PREFERENCES_ITEM(cb, data)                         \
-        { GNOME_APP_UI_ITEM_CONFIGURABLE, NULL, NULL,                       \
-          cb, (gpointer)(data), NULL,                                       \
-          GNOME_APP_PIXMAP_NONE, NULL,                                      \
-          GNOME_APP_CONFIGURABLE_ITEM_PREFERENCES, (GdkModifierType) 0, NULL }
-</MACRO>
-<MACRO>
-<NAME>GNOMEUIINFO_MENU_NEW_WINDOW_ITEM</NAME>
-#define GNOMEUIINFO_MENU_NEW_WINDOW_ITEM(cb, data)                          \
-        { GNOME_APP_UI_ITEM_CONFIGURABLE, NULL, NULL,                       \
-          cb, (gpointer)(data), NULL,                                       \
-          GNOME_APP_PIXMAP_NONE, NULL,                                      \
-          GNOME_APP_CONFIGURABLE_ITEM_NEW_WINDOW, (GdkModifierType) 0, NULL }
-</MACRO>
-<MACRO>
-<NAME>GNOMEUIINFO_MENU_CLOSE_WINDOW_ITEM</NAME>
-#define GNOMEUIINFO_MENU_CLOSE_WINDOW_ITEM(cb, data)                        \
-        { GNOME_APP_UI_ITEM_CONFIGURABLE, NULL, NULL,                       \
-          cb, (gpointer)(data), NULL,                                       \
-          GNOME_APP_PIXMAP_NONE, NULL,                                      \
-          GNOME_APP_CONFIGURABLE_ITEM_CLOSE_WINDOW, (GdkModifierType) 0, NULL }
-</MACRO>
-<MACRO>
-<NAME>GNOMEUIINFO_MENU_ABOUT_ITEM</NAME>
-#define GNOMEUIINFO_MENU_ABOUT_ITEM(cb, data)                               \
-        { GNOME_APP_UI_ITEM_CONFIGURABLE, NULL, NULL,                       \
-          cb, (gpointer)(data), NULL,                                       \
-          GNOME_APP_PIXMAP_NONE, NULL,                                      \
-          GNOME_APP_CONFIGURABLE_ITEM_ABOUT, (GdkModifierType) 0, NULL }
-</MACRO>
-<MACRO>
-<NAME>GNOMEUIINFO_MENU_NEW_GAME_ITEM</NAME>
-#define GNOMEUIINFO_MENU_NEW_GAME_ITEM(cb, data)                            \
-        { GNOME_APP_UI_ITEM_CONFIGURABLE, NULL, NULL,                       \
-          cb, (gpointer)(data), NULL,                                       \
-          GNOME_APP_PIXMAP_NONE, NULL,                                      \
-          GNOME_APP_CONFIGURABLE_ITEM_NEW_GAME, (GdkModifierType) 0, NULL }
-</MACRO>
-<MACRO>
-<NAME>GNOMEUIINFO_MENU_PAUSE_GAME_ITEM</NAME>
-#define GNOMEUIINFO_MENU_PAUSE_GAME_ITEM(cb, data)                            \
-        { GNOME_APP_UI_ITEM_CONFIGURABLE, NULL, NULL,                       \
-          cb, (gpointer)(data), NULL,                                       \
-          GNOME_APP_PIXMAP_NONE, NULL,                                      \
-          GNOME_APP_CONFIGURABLE_ITEM_PAUSE_GAME, (GdkModifierType) 0, NULL }
-</MACRO>
-<MACRO>
-<NAME>GNOMEUIINFO_MENU_RESTART_GAME_ITEM</NAME>
-#define GNOMEUIINFO_MENU_RESTART_GAME_ITEM(cb, data)                            \
-        { GNOME_APP_UI_ITEM_CONFIGURABLE, NULL, NULL,                       \
-          cb, (gpointer)(data), NULL,                                       \
-          GNOME_APP_PIXMAP_NONE, NULL,                                      \
-          GNOME_APP_CONFIGURABLE_ITEM_RESTART_GAME, (GdkModifierType) 0, NULL }
-</MACRO>
-<MACRO>
-<NAME>GNOMEUIINFO_MENU_UNDO_MOVE_ITEM</NAME>
-#define GNOMEUIINFO_MENU_UNDO_MOVE_ITEM(cb, data)                            \
-        { GNOME_APP_UI_ITEM_CONFIGURABLE, NULL, NULL,                       \
-          cb, (gpointer)(data), NULL,                                       \
-          GNOME_APP_PIXMAP_NONE, NULL,                                      \
-          GNOME_APP_CONFIGURABLE_ITEM_UNDO_MOVE, (GdkModifierType) 0, NULL }
-</MACRO>
-<MACRO>
-<NAME>GNOMEUIINFO_MENU_REDO_MOVE_ITEM</NAME>
-#define GNOMEUIINFO_MENU_REDO_MOVE_ITEM(cb, data)                            \
-        { GNOME_APP_UI_ITEM_CONFIGURABLE, NULL, NULL,                       \
-          cb, (gpointer)(data), NULL,                                       \
-          GNOME_APP_PIXMAP_NONE, NULL,                                      \
-          GNOME_APP_CONFIGURABLE_ITEM_REDO_MOVE, (GdkModifierType) 0, NULL }
-</MACRO>
-<MACRO>
-<NAME>GNOMEUIINFO_MENU_HINT_ITEM</NAME>
-#define GNOMEUIINFO_MENU_HINT_ITEM(cb, data)                            \
-        { GNOME_APP_UI_ITEM_CONFIGURABLE, NULL, NULL,                       \
-          cb, (gpointer)(data), NULL,                                       \
-          GNOME_APP_PIXMAP_NONE, NULL,                                      \
-          GNOME_APP_CONFIGURABLE_ITEM_HINT, (GdkModifierType) 0, NULL }
-</MACRO>
-<MACRO>
-<NAME>GNOMEUIINFO_MENU_SCORES_ITEM</NAME>
-#define GNOMEUIINFO_MENU_SCORES_ITEM(cb, data)                            \
-        { GNOME_APP_UI_ITEM_CONFIGURABLE, NULL, NULL,                       \
-          cb, (gpointer)(data), NULL,                                       \
-          GNOME_APP_PIXMAP_NONE, NULL,                                      \
-          GNOME_APP_CONFIGURABLE_ITEM_SCORES, (GdkModifierType) 0, NULL }
-</MACRO>
-<MACRO>
-<NAME>GNOMEUIINFO_MENU_END_GAME_ITEM</NAME>
-#define GNOMEUIINFO_MENU_END_GAME_ITEM(cb, data)                            \
-        { GNOME_APP_UI_ITEM_CONFIGURABLE, NULL, NULL,                       \
-          cb, (gpointer)(data), NULL,                                       \
-          GNOME_APP_PIXMAP_NONE, NULL,                                      \
-          GNOME_APP_CONFIGURABLE_ITEM_END_GAME, (GdkModifierType) 0, NULL }
-</MACRO>
 <FUNCTION>
-<NAME>gnome_app_helper_gettext</NAME>
-<RETURNS>char  *</RETURNS>
-char *string
+<NAME>gnome_icon_text_item_get_type</NAME>
+<RETURNS>GtkType  </RETURNS>
+void
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_icon_text_item_configure</NAME>
+<RETURNS>void  </RETURNS>
+GnomeIconTextItem *iti,int         x,int         y,int         width,const char *fontname,const char *text,gboolean is_editable,gboolean is_static
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_icon_text_item_setxy</NAME>
+<RETURNS>void  </RETURNS>
+GnomeIconTextItem *iti,int      x,int      y
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_icon_text_item_select</NAME>
+<RETURNS>void  </RETURNS>
+GnomeIconTextItem *iti,int      sel
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_icon_text_item_get_text</NAME>
+<RETURNS>char     *</RETURNS>
+GnomeIconTextItem *iti
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_icon_text_item_stop_editing</NAME>
+<RETURNS>void  </RETURNS>
+GnomeIconTextItem *iti,gboolean accept
 </FUNCTION>
 <MACRO>
-<NAME>D_</NAME>
-#define D_(x) dgettext (PACKAGE, x)
+<NAME>GNOME_TYPE_DRUID_PAGE_FINISH</NAME>
+#define GNOME_TYPE_DRUID_PAGE_FINISH			(gnome_druid_page_finish_get_type ())
 </MACRO>
 <MACRO>
-<NAME>L_</NAME>
-#define L_(x) gnome_app_helper_gettext(x)
+<NAME>GNOME_DRUID_PAGE_FINISH</NAME>
+#define GNOME_DRUID_PAGE_FINISH(obj)			(GTK_CHECK_CAST ((obj), GNOME_TYPE_DRUID_PAGE_FINISH, GnomeDruidPageFinish))
 </MACRO>
 <MACRO>
-<NAME>D_</NAME>
-#define D_(x) x
+<NAME>GNOME_DRUID_PAGE_FINISH_CLASS</NAME>
+#define GNOME_DRUID_PAGE_FINISH_CLASS(klass)		(GTK_CHECK_CLASS_CAST ((klass), GNOME_TYPE_DRUID_PAGE_FINISH, GnomeDruidPageFinishClass))
 </MACRO>
 <MACRO>
-<NAME>L_</NAME>
-#define L_(x) x
+<NAME>GNOME_IS_DRUID_PAGE_FINISH</NAME>
+#define GNOME_IS_DRUID_PAGE_FINISH(obj)			(GTK_CHECK_TYPE ((obj), GNOME_TYPE_DRUID_PAGE_FINISH))
 </MACRO>
 <MACRO>
-<NAME>GNOMEUIINFO_MENU_FILE_TREE</NAME>
-#define GNOMEUIINFO_MENU_FILE_TREE(tree) \
-	{ GNOME_APP_UI_SUBTREE_STOCK, N_("_File"), NULL, tree, NULL, NULL, \
-		(GnomeUIPixmapType) 0, NULL, 0,	(GdkModifierType) 0, NULL }
-</MACRO>
-<MACRO>
-<NAME>GNOMEUIINFO_MENU_EDIT_TREE</NAME>
-#define GNOMEUIINFO_MENU_EDIT_TREE(tree) \
-	{ GNOME_APP_UI_SUBTREE_STOCK, N_("_Edit"), NULL, tree, NULL, NULL, \
-		(GnomeUIPixmapType) 0, NULL, 0,	(GdkModifierType) 0, NULL }
-</MACRO>
-<MACRO>
-<NAME>GNOMEUIINFO_MENU_VIEW_TREE</NAME>
-#define GNOMEUIINFO_MENU_VIEW_TREE(tree) \
-	{ GNOME_APP_UI_SUBTREE_STOCK, N_("_View"), NULL, tree, NULL, NULL, \
-		(GnomeUIPixmapType) 0, NULL, 0,	(GdkModifierType) 0, NULL }
-</MACRO>
-<MACRO>
-<NAME>GNOMEUIINFO_MENU_SETTINGS_TREE</NAME>
-#define GNOMEUIINFO_MENU_SETTINGS_TREE(tree) \
-	{ GNOME_APP_UI_SUBTREE_STOCK, N_("_Settings"), NULL, tree, NULL, NULL, \
-		(GnomeUIPixmapType) 0, NULL, 0,	(GdkModifierType) 0, NULL }
-</MACRO>
-<MACRO>
-<NAME>GNOMEUIINFO_MENU_FILES_TREE</NAME>
-#define GNOMEUIINFO_MENU_FILES_TREE(tree) \
-	{ GNOME_APP_UI_SUBTREE_STOCK, N_("Fi_les"), NULL, tree, NULL, NULL, \
-		(GnomeUIPixmapType) 0, NULL, 0,	(GdkModifierType) 0, NULL }
-</MACRO>
-<MACRO>
-<NAME>GNOMEUIINFO_MENU_WINDOWS_TREE</NAME>
-#define GNOMEUIINFO_MENU_WINDOWS_TREE(tree) \
-	{ GNOME_APP_UI_SUBTREE_STOCK, N_("_Windows"), NULL, tree, NULL, NULL, \
-		(GnomeUIPixmapType) 0, NULL, 0,	(GdkModifierType) 0, NULL }
-</MACRO>
-<MACRO>
-<NAME>GNOMEUIINFO_MENU_HELP_TREE</NAME>
-#define GNOMEUIINFO_MENU_HELP_TREE(tree) \
-	{ GNOME_APP_UI_SUBTREE_STOCK, N_("_Help"), NULL, tree, NULL, NULL, \
-		(GnomeUIPixmapType) 0, NULL, 0,	(GdkModifierType) 0, NULL }
-</MACRO>
-<MACRO>
-<NAME>GNOMEUIINFO_MENU_GAME_TREE</NAME>
-#define GNOMEUIINFO_MENU_GAME_TREE(tree) \
-	{ GNOME_APP_UI_SUBTREE_STOCK, N_("_Game"), NULL, tree, NULL, NULL, \
-		(GnomeUIPixmapType) 0, NULL, 0,	(GdkModifierType) 0, NULL }
-</MACRO>
-<MACRO>
-<NAME>GNOME_MENU_FILE_STRING</NAME>
-#define GNOME_MENU_FILE_STRING D_("_File")
-</MACRO>
-<MACRO>
-<NAME>GNOME_MENU_FILE_PATH</NAME>
-#define GNOME_MENU_FILE_PATH D_("_File/")
-</MACRO>
-<MACRO>
-<NAME>GNOME_MENU_EDIT_STRING</NAME>
-#define GNOME_MENU_EDIT_STRING D_("_Edit")
-</MACRO>
-<MACRO>
-<NAME>GNOME_MENU_EDIT_PATH</NAME>
-#define GNOME_MENU_EDIT_PATH D_("_Edit/")
-</MACRO>
-<MACRO>
-<NAME>GNOME_MENU_VIEW_STRING</NAME>
-#define GNOME_MENU_VIEW_STRING D_("_View")
-</MACRO>
-<MACRO>
-<NAME>GNOME_MENU_VIEW_PATH</NAME>
-#define GNOME_MENU_VIEW_PATH D_("_View/")
-</MACRO>
-<MACRO>
-<NAME>GNOME_MENU_SETTINGS_STRING</NAME>
-#define GNOME_MENU_SETTINGS_STRING D_("_Settings")
-</MACRO>
-<MACRO>
-<NAME>GNOME_MENU_SETTINGS_PATH</NAME>
-#define GNOME_MENU_SETTINGS_PATH D_("_Settings/")
-</MACRO>
-<MACRO>
-<NAME>GNOME_MENU_NEW_STRING</NAME>
-#define GNOME_MENU_NEW_STRING D_("_New")
-</MACRO>
-<MACRO>
-<NAME>GNOME_MENU_NEW_PATH</NAME>
-#define GNOME_MENU_NEW_PATH D_("_New/")
-</MACRO>
-<MACRO>
-<NAME>GNOME_MENU_FILES_STRING</NAME>
-#define GNOME_MENU_FILES_STRING D_("Fi_les")
-</MACRO>
-<MACRO>
-<NAME>GNOME_MENU_FILES_PATH</NAME>
-#define GNOME_MENU_FILES_PATH D_("Fi_les/")
-</MACRO>
-<MACRO>
-<NAME>GNOME_MENU_WINDOWS_STRING</NAME>
-#define GNOME_MENU_WINDOWS_STRING D_("_Windows")
-</MACRO>
-<MACRO>
-<NAME>GNOME_MENU_WINDOWS_PATH</NAME>
-#define GNOME_MENU_WINDOWS_PATH D_("_Windows/")
+<NAME>GNOME_IS_DRUID_PAGE_FINISH_CLASS</NAME>
+#define GNOME_IS_DRUID_PAGE_FINISH_CLASS(klass)		(GTK_CHECK_CLASS_TYPE ((obj), GNOME_TYPE_DRUID_PAGE_FINISH))
 </MACRO>
 <STRUCT>
-<NAME>GnomeUIBuilderData</NAME>
+<NAME>GnomeDruidPageFinish</NAME>
 </STRUCT>
-<USER_FUNCTION>
-<NAME>GnomeUISignalConnectFunc</NAME>
-<RETURNS>void </RETURNS>
-GnomeUIInfo        *uiinfo,
-					   gchar              *signal_name,
-					   GnomeUIBuilderData *uibdata
-</USER_FUNCTION>
 <STRUCT>
-<NAME>GnomeUIBuilderData</NAME>
-struct GnomeUIBuilderData {
-	GnomeUISignalConnectFunc connect_func;	/* Function that connects to the item's signals */
-	gpointer data;				/* User data pointer */
-	gboolean is_interp;			/* Should use gtk_signal_connect_interp or normal gtk_signal_connect? */
-	GtkCallbackMarshal relay_func;		/* Marshaller function for language bindings */
-	GtkDestroyNotify destroy_func;		/* Destroy notification function for language bindings */
+<NAME>GnomeDruidPageFinishClass</NAME>
+</STRUCT>
+<STRUCT>
+<NAME>GnomeDruidPageFinish</NAME>
+struct GnomeDruidPageFinish
+{
+	GnomeDruidPage parent;
+
+	GdkColor background_color;
+	GdkColor textbox_color;
+	GdkColor logo_background_color;
+	GdkColor title_color;
+	GdkColor text_color;
+
+	gchar *title;
+	gchar *text;
+	GdkImlibImage *logo_image;
+	GdkImlibImage *watermark_image;
+
+	/*< private >*/
+	GtkWidget *canvas;
+	GnomeCanvasItem *background_item;
+	GnomeCanvasItem *textbox_item;
+	GnomeCanvasItem *text_item;
+	GnomeCanvasItem *logo_item;
+	GnomeCanvasItem *logoframe_item;
+	GnomeCanvasItem *watermark_item;
+	GnomeCanvasItem *title_item;
 };
 </STRUCT>
 <FUNCTION>
-<NAME>gnome_app_fill_menu</NAME>
-<RETURNS>void  </RETURNS>
-GtkMenuShell *menu_shell, GnomeUIInfo *uiinfo,GtkAccelGroup *accel_group,gboolean insert_shortcuts, gint pos
+<NAME>gnome_druid_page_finish_get_type</NAME>
+<RETURNS>GtkType  </RETURNS>
+void
 </FUNCTION>
 <FUNCTION>
-<NAME>gnome_app_fill_menu_with_data</NAME>
-<RETURNS>void  </RETURNS>
-GtkMenuShell *menu_shell, GnomeUIInfo *uiinfo,GtkAccelGroup *accel_group,gboolean insert_shortcuts, gint pos,gpointer user_data
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_app_fill_menu_custom</NAME>
-<RETURNS>void  </RETURNS>
-GtkMenuShell *menu_shell, GnomeUIInfo *uiinfo,GnomeUIBuilderData *uibdata,GtkAccelGroup *accel_group,gboolean insert_shortcuts, gint pos
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_app_ui_configure_configurable</NAME>
-<RETURNS>void  </RETURNS>
-GnomeUIInfo* uiinfo
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_app_create_menus</NAME>
-<RETURNS>void  </RETURNS>
-GnomeApp *app, GnomeUIInfo *uiinfo
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_app_create_menus_interp</NAME>
-<RETURNS>void  </RETURNS>
-GnomeApp *app, GnomeUIInfo *uiinfo,GtkCallbackMarshal relay_func, gpointer data,GtkDestroyNotify destroy_func
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_app_create_menus_with_data</NAME>
-<RETURNS>void  </RETURNS>
-GnomeApp *app, GnomeUIInfo *uiinfo, gpointer user_data
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_app_create_menus_custom</NAME>
-<RETURNS>void  </RETURNS>
-GnomeApp *app, GnomeUIInfo *uiinfo, GnomeUIBuilderData *uibdata
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_app_fill_toolbar</NAME>
-<RETURNS>void  </RETURNS>
-GtkToolbar *toolbar, GnomeUIInfo *uiinfo, GtkAccelGroup *accel_group
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_app_fill_toolbar_with_data</NAME>
-<RETURNS>void  </RETURNS>
-GtkToolbar *toolbar, GnomeUIInfo *uiinfo,GtkAccelGroup *accel_group, gpointer user_data
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_app_fill_toolbar_custom</NAME>
-<RETURNS>void  </RETURNS>
-GtkToolbar *toolbar, GnomeUIInfo *uiinfo, GnomeUIBuilderData *uibdata,GtkAccelGroup *accel_group
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_app_create_toolbar</NAME>
-<RETURNS>void  </RETURNS>
-GnomeApp *app, GnomeUIInfo *uiinfo
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_app_create_toolbar_interp</NAME>
-<RETURNS>void  </RETURNS>
-GnomeApp *app, GnomeUIInfo *uiinfo,GtkCallbackMarshal relay_func, gpointer data,GtkDestroyNotify destroy_func
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_app_create_toolbar_with_data</NAME>
-<RETURNS>void  </RETURNS>
-GnomeApp *app, GnomeUIInfo *uiinfo, gpointer user_data
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_app_create_toolbar_custom</NAME>
-<RETURNS>void  </RETURNS>
-GnomeApp *app, GnomeUIInfo *uiinfo, GnomeUIBuilderData *uibdata
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_app_find_menu_pos</NAME>
+<NAME>gnome_druid_page_finish_new</NAME>
 <RETURNS>GtkWidget  *</RETURNS>
-GtkWidget *parent, gchar *path, gint *pos
+void
 </FUNCTION>
 <FUNCTION>
-<NAME>gnome_app_remove_menus</NAME>
-<RETURNS>void  </RETURNS>
-GnomeApp *app, gchar *path, gint items
+<NAME>gnome_druid_page_finish_new_with_vals</NAME>
+<RETURNS>GtkWidget  *</RETURNS>
+gchar *title,gchar* text,GdkImlibImage *logo,GdkImlibImage *watermark
 </FUNCTION>
 <FUNCTION>
-<NAME>gnome_app_remove_menu_range</NAME>
+<NAME>gnome_druid_page_finish_set_bg_color</NAME>
 <RETURNS>void  </RETURNS>
-GnomeApp *app, gchar *path, gint start, gint items
+GnomeDruidPageFinish *druid_page_finish,GdkColor *color
 </FUNCTION>
 <FUNCTION>
-<NAME>gnome_app_insert_menus_custom</NAME>
+<NAME>gnome_druid_page_finish_set_textbox_color</NAME>
 <RETURNS>void  </RETURNS>
-GnomeApp *app, gchar *path, GnomeUIInfo *menuinfo, GnomeUIBuilderData *uibdata
+GnomeDruidPageFinish *druid_page_finish,GdkColor *color
 </FUNCTION>
 <FUNCTION>
-<NAME>gnome_app_insert_menus</NAME>
+<NAME>gnome_druid_page_finish_set_logo_bg_color</NAME>
 <RETURNS>void  </RETURNS>
-GnomeApp *app, gchar *path, GnomeUIInfo *menuinfo
+GnomeDruidPageFinish *druid_page_finish,GdkColor *color
 </FUNCTION>
 <FUNCTION>
-<NAME>gnome_app_insert_menus_with_data</NAME>
+<NAME>gnome_druid_page_finish_set_title_color</NAME>
 <RETURNS>void  </RETURNS>
-GnomeApp *app, gchar *path, GnomeUIInfo *menuinfo, gpointer data
+GnomeDruidPageFinish *druid_page_finish,GdkColor *color
 </FUNCTION>
 <FUNCTION>
-<NAME>gnome_app_insert_menus_interp</NAME>
+<NAME>gnome_druid_page_finish_set_text_color</NAME>
 <RETURNS>void  </RETURNS>
-GnomeApp *app, gchar *path, GnomeUIInfo *menuinfo,GtkCallbackMarshal relay_func, gpointer data,GtkDestroyNotify destroy_func
+GnomeDruidPageFinish *druid_page_finish,GdkColor *color
 </FUNCTION>
 <FUNCTION>
-<NAME>gnome_app_install_appbar_menu_hints</NAME>
+<NAME>gnome_druid_page_finish_set_text</NAME>
 <RETURNS>void  </RETURNS>
-GnomeAppBar* appbar,GnomeUIInfo* uiinfo
+GnomeDruidPageFinish *druid_page_finish,gchar *text
 </FUNCTION>
 <FUNCTION>
-<NAME>gnome_app_install_statusbar_menu_hints</NAME>
+<NAME>gnome_druid_page_finish_set_title</NAME>
 <RETURNS>void  </RETURNS>
-GtkStatusbar* bar,GnomeUIInfo* uiinfo
+GnomeDruidPageFinish *druid_page_finish,gchar *title
 </FUNCTION>
 <FUNCTION>
-<NAME>gnome_app_install_menu_hints</NAME>
+<NAME>gnome_druid_page_finish_set_logo</NAME>
 <RETURNS>void  </RETURNS>
-GnomeApp *app,GnomeUIInfo *uinfo
+GnomeDruidPageFinish *druid_page_finish,GdkImlibImage *logo_image
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_druid_page_finish_set_watermark</NAME>
+<RETURNS>void  </RETURNS>
+GnomeDruidPageFinish *druid_page_finish,GdkImlibImage *watermark
+</FUNCTION>
+<MACRO>
+<NAME>GNOME_TYPE_DRUID_PAGE_STANDARD</NAME>
+#define GNOME_TYPE_DRUID_PAGE_STANDARD			(gnome_druid_page_standard_get_type ())
+</MACRO>
+<MACRO>
+<NAME>GNOME_DRUID_PAGE_STANDARD</NAME>
+#define GNOME_DRUID_PAGE_STANDARD(obj)			(GTK_CHECK_CAST ((obj), GNOME_TYPE_DRUID_PAGE_STANDARD, GnomeDruidPageStandard))
+</MACRO>
+<MACRO>
+<NAME>GNOME_DRUID_PAGE_STANDARD_CLASS</NAME>
+#define GNOME_DRUID_PAGE_STANDARD_CLASS(klass)		(GTK_CHECK_CLASS_CAST ((klass), GNOME_TYPE_DRUID_PAGE_STANDARD, GnomeDruidPageStandardClass))
+</MACRO>
+<MACRO>
+<NAME>GNOME_IS_DRUID_PAGE_STANDARD</NAME>
+#define GNOME_IS_DRUID_PAGE_STANDARD(obj)			(GTK_CHECK_TYPE ((obj), GNOME_TYPE_DRUID_PAGE_STANDARD))
+</MACRO>
+<MACRO>
+<NAME>GNOME_IS_DRUID_PAGE_STANDARD_CLASS</NAME>
+#define GNOME_IS_DRUID_PAGE_STANDARD_CLASS(klass)		(GTK_CHECK_CLASS_TYPE ((obj), GNOME_TYPE_DRUID_PAGE_STANDARD))
+</MACRO>
+<STRUCT>
+<NAME>GnomeDruidPageStandard</NAME>
+</STRUCT>
+<STRUCT>
+<NAME>GnomeDruidPageStandardClass</NAME>
+</STRUCT>
+<STRUCT>
+<NAME>GnomeDruidPageStandard</NAME>
+struct GnomeDruidPageStandard
+{
+	GnomeDruidPage parent;
+
+	GtkWidget *vbox;
+	GdkColor background_color;
+	GdkColor logo_background_color;
+	GdkColor title_color;
+	GdkImlibImage *logo_image;
+
+	gchar *title;
+	
+	/*< private >*/
+	GtkWidget *canvas;
+	GtkWidget *side_bar;
+	GnomeCanvasItem *logoframe_item;
+	GnomeCanvasItem *logo_item;
+	GnomeCanvasItem *title_item;
+	GnomeCanvasItem *background_item;
+};
+</STRUCT>
+<FUNCTION>
+<NAME>gnome_druid_page_standard_get_type</NAME>
+<RETURNS>GtkType  </RETURNS>
+void
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_druid_page_standard_new</NAME>
+<RETURNS>GtkWidget  *</RETURNS>
+void
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_druid_page_standard_new_with_vals</NAME>
+<RETURNS>GtkWidget  *</RETURNS>
+gchar *title, GdkImlibImage *logo
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_druid_page_standard_set_bg_color</NAME>
+<RETURNS>void  </RETURNS>
+GnomeDruidPageStandard *druid_page_standard,GdkColor *color
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_druid_page_standard_set_logo_bg_color</NAME>
+<RETURNS>void  </RETURNS>
+GnomeDruidPageStandard *druid_page_standard,GdkColor *color
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_druid_page_standard_set_title_color</NAME>
+<RETURNS>void  </RETURNS>
+GnomeDruidPageStandard *druid_page_standard,GdkColor *color
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_druid_page_standard_set_title</NAME>
+<RETURNS>void  </RETURNS>
+GnomeDruidPageStandard *druid_page_standard,gchar *title
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_druid_page_standard_set_logo</NAME>
+<RETURNS>void  </RETURNS>
+GnomeDruidPageStandard *druid_page_standard,GdkImlibImage *logo_image
+</FUNCTION>
+<MACRO>
+<NAME>GNOME_TYPE_DRUID_PAGE_START</NAME>
+#define GNOME_TYPE_DRUID_PAGE_START			(gnome_druid_page_start_get_type ())
+</MACRO>
+<MACRO>
+<NAME>GNOME_DRUID_PAGE_START</NAME>
+#define GNOME_DRUID_PAGE_START(obj)			(GTK_CHECK_CAST ((obj), GNOME_TYPE_DRUID_PAGE_START, GnomeDruidPageStart))
+</MACRO>
+<MACRO>
+<NAME>GNOME_DRUID_PAGE_START_CLASS</NAME>
+#define GNOME_DRUID_PAGE_START_CLASS(klass)		(GTK_CHECK_CLASS_CAST ((klass), GNOME_TYPE_DRUID_PAGE_START, GnomeDruidPageStartClass))
+</MACRO>
+<MACRO>
+<NAME>GNOME_IS_DRUID_PAGE_START</NAME>
+#define GNOME_IS_DRUID_PAGE_START(obj)			(GTK_CHECK_TYPE ((obj), GNOME_TYPE_DRUID_PAGE_START))
+</MACRO>
+<MACRO>
+<NAME>GNOME_IS_DRUID_PAGE_START_CLASS</NAME>
+#define GNOME_IS_DRUID_PAGE_START_CLASS(klass)		(GTK_CHECK_CLASS_TYPE ((obj), GNOME_TYPE_DRUID_PAGE_START))
+</MACRO>
+<STRUCT>
+<NAME>GnomeDruidPageStart</NAME>
+</STRUCT>
+<STRUCT>
+<NAME>GnomeDruidPageStartClass</NAME>
+</STRUCT>
+<STRUCT>
+<NAME>GnomeDruidPageStart</NAME>
+struct GnomeDruidPageStart
+{
+	GnomeDruidPage parent;
+
+	GdkColor background_color;
+	GdkColor textbox_color;
+	GdkColor logo_background_color;
+	GdkColor title_color;
+	GdkColor text_color;
+
+	gchar *title;
+	gchar *text;
+	GdkImlibImage *logo_image;
+	GdkImlibImage *watermark_image;
+
+	/*< private >*/
+	GtkWidget *canvas;
+	GnomeCanvasItem *background_item;
+	GnomeCanvasItem *textbox_item;
+	GnomeCanvasItem *text_item;
+	GnomeCanvasItem *logo_item;
+	GnomeCanvasItem *logoframe_item;
+	GnomeCanvasItem *watermark_item;
+	GnomeCanvasItem *title_item;
+};
+</STRUCT>
+<FUNCTION>
+<NAME>gnome_druid_page_start_get_type</NAME>
+<RETURNS>GtkType  </RETURNS>
+void
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_druid_page_start_new</NAME>
+<RETURNS>GtkWidget  *</RETURNS>
+void
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_druid_page_start_new_with_vals</NAME>
+<RETURNS>GtkWidget  *</RETURNS>
+gchar *title,gchar* text,GdkImlibImage *logo,GdkImlibImage *watermark
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_druid_page_start_set_bg_color</NAME>
+<RETURNS>void  </RETURNS>
+GnomeDruidPageStart *druid_page_start,GdkColor *color
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_druid_page_start_set_textbox_color</NAME>
+<RETURNS>void  </RETURNS>
+GnomeDruidPageStart *druid_page_start,GdkColor *color
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_druid_page_start_set_logo_bg_color</NAME>
+<RETURNS>void  </RETURNS>
+GnomeDruidPageStart *druid_page_start,GdkColor *color
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_druid_page_start_set_title_color</NAME>
+<RETURNS>void  </RETURNS>
+GnomeDruidPageStart *druid_page_start,GdkColor *color
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_druid_page_start_set_text_color</NAME>
+<RETURNS>void  </RETURNS>
+GnomeDruidPageStart *druid_page_start,GdkColor *color
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_druid_page_start_set_text</NAME>
+<RETURNS>void  </RETURNS>
+GnomeDruidPageStart *druid_page_start,gchar *text
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_druid_page_start_set_title</NAME>
+<RETURNS>void  </RETURNS>
+GnomeDruidPageStart *druid_page_start,gchar *title
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_druid_page_start_set_logo</NAME>
+<RETURNS>void  </RETURNS>
+GnomeDruidPageStart *druid_page_start,GdkImlibImage *logo_image
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_druid_page_start_set_watermark</NAME>
+<RETURNS>void  </RETURNS>
+GnomeDruidPageStart *druid_page_start,GdkImlibImage *watermark
+</FUNCTION>
+<MACRO>
+<NAME>GNOME_TYPE_DRUID_PAGE</NAME>
+#define GNOME_TYPE_DRUID_PAGE			(gnome_druid_page_get_type ())
+</MACRO>
+<MACRO>
+<NAME>GNOME_DRUID_PAGE</NAME>
+#define GNOME_DRUID_PAGE(obj)			(GTK_CHECK_CAST ((obj), GNOME_TYPE_DRUID_PAGE, GnomeDruidPage))
+</MACRO>
+<MACRO>
+<NAME>GNOME_DRUID_PAGE_CLASS</NAME>
+#define GNOME_DRUID_PAGE_CLASS(klass)		(GTK_CHECK_CLASS_CAST ((klass), GNOME_TYPE_DRUID_PAGE, GnomeDruidPageClass))
+</MACRO>
+<MACRO>
+<NAME>GNOME_IS_DRUID_PAGE</NAME>
+#define GNOME_IS_DRUID_PAGE(obj)		(GTK_CHECK_TYPE ((obj), GNOME_TYPE_DRUID_PAGE))
+</MACRO>
+<MACRO>
+<NAME>GNOME_IS_DRUID_PAGE_CLASS</NAME>
+#define GNOME_IS_DRUID_PAGE_CLASS(klass)	(GTK_CHECK_CLASS_TYPE ((obj), GNOME_TYPE_DRUID_PAGE))
+</MACRO>
+<STRUCT>
+<NAME>GnomeDruidPage</NAME>
+</STRUCT>
+<STRUCT>
+<NAME>GnomeDruidPageClass</NAME>
+</STRUCT>
+<STRUCT>
+<NAME>GnomeDruidPage</NAME>
+struct GnomeDruidPage
+{
+	GtkBin parent;
+};
+</STRUCT>
+<FUNCTION>
+<NAME>gnome_druid_page_get_type</NAME>
+<RETURNS>GtkType  </RETURNS>
+void
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_druid_page_next</NAME>
+<RETURNS>gboolean  </RETURNS>
+GnomeDruidPage *druid_page
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_druid_page_prepare</NAME>
+<RETURNS>void  </RETURNS>
+GnomeDruidPage *druid_page
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_druid_page_back</NAME>
+<RETURNS>gboolean  </RETURNS>
+GnomeDruidPage *druid_page
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_druid_page_cancel</NAME>
+<RETURNS>gboolean  </RETURNS>
+GnomeDruidPage *druid_page
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_druid_page_finish</NAME>
+<RETURNS>void  </RETURNS>
+GnomeDruidPage *druid_page
+</FUNCTION>
+<MACRO>
+<NAME>GNOME_TYPE_DRUID</NAME>
+#define GNOME_TYPE_DRUID			(gnome_druid_get_type ())
+</MACRO>
+<MACRO>
+<NAME>GNOME_DRUID</NAME>
+#define GNOME_DRUID(obj)			(GTK_CHECK_CAST ((obj), GNOME_TYPE_DRUID, GnomeDruid))
+</MACRO>
+<MACRO>
+<NAME>GNOME_DRUID_CLASS</NAME>
+#define GNOME_DRUID_CLASS(klass)		(GTK_CHECK_CLASS_CAST ((klass), GNOME_TYPE_DRUID, GnomeDruidClass))
+</MACRO>
+<MACRO>
+<NAME>GNOME_IS_DRUID</NAME>
+#define GNOME_IS_DRUID(obj)			(GTK_CHECK_TYPE ((obj), GNOME_TYPE_DRUID))
+</MACRO>
+<MACRO>
+<NAME>GNOME_IS_DRUID_CLASS</NAME>
+#define GNOME_IS_DRUID_CLASS(klass)		(GTK_CHECK_CLASS_TYPE ((obj), GNOME_TYPE_DRUID))
+</MACRO>
+<STRUCT>
+<NAME>GnomeDruid</NAME>
+</STRUCT>
+<STRUCT>
+<NAME>GnomeDruidClass</NAME>
+</STRUCT>
+<STRUCT>
+<NAME>GnomeDruid</NAME>
+struct GnomeDruid
+{
+	GtkContainer parent;
+	GtkWidget *back;
+	GtkWidget *next;
+	GtkWidget *cancel;
+	GtkWidget *finish;
+
+	/*< private >*/
+	GnomeDruidPage *current;
+	GList *children;
+	gboolean show_finish; /* if TRUE, then we are showing the finish button instead of the next button */
+};
+</STRUCT>
+<FUNCTION>
+<NAME>gnome_druid_get_type</NAME>
+<RETURNS>GtkType  </RETURNS>
+void
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_druid_new</NAME>
+<RETURNS>GtkWidget  *</RETURNS>
+void
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_druid_set_buttons_sensitive</NAME>
+<RETURNS>void 	</RETURNS>
+GnomeDruid *druid,gboolean back_sensitive,gboolean next_sensitive,gboolean cancel_sensitive
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_druid_set_show_finish</NAME>
+<RETURNS>void 	</RETURNS>
+GnomeDruid *druid, gboolean show_finish
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_druid_prepend_page</NAME>
+<RETURNS>void  </RETURNS>
+GnomeDruid *druid, GnomeDruidPage *page
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_druid_insert_page</NAME>
+<RETURNS>void  </RETURNS>
+GnomeDruid *druid, GnomeDruidPage *back_page, GnomeDruidPage *page
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_druid_append_page</NAME>
+<RETURNS>void  </RETURNS>
+GnomeDruid *druid, GnomeDruidPage *page
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_druid_set_page</NAME>
+<RETURNS>void 	</RETURNS>
+GnomeDruid *druid, GnomeDruidPage *page
 </FUNCTION>

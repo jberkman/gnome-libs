@@ -204,6 +204,11 @@ it is not recommended, as it is an error-prone task).</para>
       </itemizedlist>
   </sect2>
 
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
 
 <!-- ##### ENUM GnomeUIInfoType ##### -->
 <para>
@@ -260,6 +265,7 @@ thos instead of these macros.  It is defined as follows:</para>
               in the gnome-libs catalog. </para></listitem>
 
 </itemizedlist>
+
 
 <!-- ##### ENUM GnomeUIInfoConfigurableTypes ##### -->
 <para>
@@ -454,7 +460,7 @@ menu entry.
 </para>
 
 @cb: Specifies the routine to be invoked when the menu is selected
-@data: The data passed to your routine. 
+@data: The data passed to your routine.
 
 
 <!-- ##### MACRO GNOMEUIINFO_MENU_CLEAR_ITEM ##### -->
@@ -464,7 +470,7 @@ option.  This is used typically in the Edit menu.
 </para>
 
 @cb: Specifies the routine to be invoked when the menu is selected
-@data: The data passed to your routine. 
+@data: The data passed to your routine.
 
 
 <!-- ##### MACRO GNOMEUIINFO_MENU_CLOSE_ITEM ##### -->
@@ -475,7 +481,7 @@ to close the toplevel window.
 </para>
 
 @cb: Specifies the routine to be invoked when the menu is selected
-@data: The data passed to your routine. 
+@data: The data passed to your routine.
 
 
 <!-- ##### MACRO GNOMEUIINFO_MENU_CLOSE_WINDOW_ITEM ##### -->
@@ -486,7 +492,8 @@ includes one.
 </para>
 
 @cb: Specifies the routine to be invoked when the menu is selected
-@data: The data passed to your routine. 
+@data: The data passed to your routine.
+
 
 <!-- ##### MACRO GNOMEUIINFO_MENU_COPY_ITEM ##### -->
 <para>
@@ -496,7 +503,8 @@ option.  This is used typically in the Edit menu.
 
 @cb: Specifies the routine to be invoked when the menu is selected
 @data: The data passed to your routine.
- 
+
+
 <!-- ##### MACRO GNOMEUIINFO_MENU_CUT_ITEM ##### -->
 <para>
 Use this macro inside a GnomeUIInfo structure to include a "Cut"
@@ -504,7 +512,7 @@ option.  This is used typically in the Edit menu.
 </para>
 
 @cb: Specifies the routine to be invoked when the menu is selected
-@data: The data passed to your routine. 
+@data: The data passed to your routine.
 
 
 <!-- ##### MACRO GNOMEUIINFO_MENU_EDIT_TREE ##### -->
@@ -524,7 +532,8 @@ Use this macro to include an "End game" menu item.
 </para>
 
 @cb: Specifies the routine to be invoked when the menu is selected
-@data: The data passed to your routine. 
+@data: The data passed to your routine.
+
 
 <!-- ##### MACRO GNOMEUIINFO_MENU_EXIT_ITEM ##### -->
 <para>
@@ -533,7 +542,8 @@ Use this macro to include an "Exit" menu entry.  To be included in the
 </para>
 
 @cb: Specifies the routine to be invoked when the menu is selected
-@data: The data passed to your routine. 
+@data: The data passed to your routine.
+
 
 <!-- ##### MACRO GNOMEUIINFO_MENU_FILES_TREE ##### -->
 <para>
@@ -564,7 +574,7 @@ in the "Edit" menu.
 </para>
 
 @cb: Specifies the routine to be invoked when the menu is selected
-@data: The data passed to your routine. 
+@data: The data passed to your routine.
 
 
 <!-- ##### MACRO GNOMEUIINFO_MENU_FIND_ITEM ##### -->
@@ -575,7 +585,8 @@ Use this macro to include an "Find" menu entry.  To be included in the
 </para>
 
 @cb: Specifies the routine to be invoked when the menu is selected
-@data: The data passed to your routine. 
+@data: The data passed to your routine.
+
 
 <!-- ##### MACRO GNOMEUIINFO_MENU_GAME_TREE ##### -->
 <para>
@@ -605,7 +616,8 @@ the submenu.
 </para>
 
 @cb: Specifies the routine to be invoked when the menu is selected
-@data: The data passed to your routine. 
+@data: The data passed to your routine.
+
 
 <!-- ##### MACRO GNOMEUIINFO_MENU_NEW_GAME_ITEM ##### -->
 <para>
@@ -614,7 +626,8 @@ Use this macro to include an "New game" menu entry.  To be included in the
 </para>
 
 @cb: Specifies the routine to be invoked when the menu is selected
-@data: The data passed to your routine. 
+@data: The data passed to your routine.
+
 
 <!-- ##### MACRO GNOMEUIINFO_MENU_NEW_ITEM ##### -->
 <para>
@@ -625,7 +638,8 @@ Use this macro to include a "New" menu entry.  To be included in the
 @label: The text that will be displayed
 @tip: 
 @cb: Specifies the routine to be invoked when the menu is selected
-@data: The data passed to your routine. 
+@data: The data passed to your routine.
+
 
 <!-- ##### MACRO GNOMEUIINFO_MENU_NEW_SUBTREE ##### -->
 <para>
@@ -642,7 +656,8 @@ Use this macro to include an "New window" menu entry.
 </para>
 
 @cb: Specifies the routine to be invoked when the menu is selected
-@data: The data passed to your routine. 
+@data: The data passed to your routine.
+
 
 <!-- ##### MACRO GNOMEUIINFO_MENU_OPEN_ITEM ##### -->
 <para>
@@ -651,7 +666,8 @@ Use this macro to include an "Open" menu entry.  To be used in the
 </para>
 
 @cb: Specifies the routine to be invoked when the menu is selected
-@data: The data passed to your routine. 
+@data: The data passed to your routine.
+
 
 <!-- ##### MACRO GNOMEUIINFO_MENU_PASTE_ITEM ##### -->
 <para>
@@ -660,7 +676,8 @@ Use this macro to include a "Paste" menu entry.  To be used in the
 </para>
 
 @cb: Specifies the routine to be invoked when the menu is selected
-@data: The data passed to your routine. 
+@data: The data passed to your routine.
+
 
 <!-- ##### MACRO GNOMEUIINFO_MENU_PAUSE_GAME_ITEM ##### -->
 <para>
@@ -669,7 +686,8 @@ Use this macro to include a "Pause game" menu entry.  To be used in the
 </para>
 
 @cb: Specifies the routine to be invoked when the menu is selected
-@data: The data passed to your routine. 
+@data: The data passed to your routine.
+
 
 <!-- ##### MACRO GNOMEUIINFO_MENU_PREFERENCES_ITEM ##### -->
 <para>
@@ -677,7 +695,8 @@ Use this macro to include a "Preferences" menu entry.
 </para>
 
 @cb: Specifies the routine to be invoked when the menu is selected
-@data: The data passed to your routine. 
+@data: The data passed to your routine.
+
 
 <!-- ##### MACRO GNOMEUIINFO_MENU_PRINT_ITEM ##### -->
 <para>
@@ -686,7 +705,8 @@ Use this macro to include a "Print" menu entry.  To be used in the
 </para>
 
 @cb: Specifies the routine to be invoked when the menu is selected
-@data: The data passed to your routine. 
+@data: The data passed to your routine.
+
 
 <!-- ##### MACRO GNOMEUIINFO_MENU_PRINT_SETUP_ITEM ##### -->
 <para>
@@ -695,7 +715,8 @@ Use this macro to include a "Print setup" menu entry.  To be used in the
 </para>
 
 @cb: Specifies the routine to be invoked when the menu is selected
-@data: The data passed to your routine. 
+@data: The data passed to your routine.
+
 
 <!-- ##### MACRO GNOMEUIINFO_MENU_PROPERTIES_ITEM ##### -->
 <para>
@@ -703,7 +724,8 @@ Use this macro to include a "Properties" menu entry.
 </para>
 
 @cb: Specifies the routine to be invoked when the menu is selected
-@data: The data passed to your routine. 
+@data: The data passed to your routine.
+
 
 <!-- ##### MACRO GNOMEUIINFO_MENU_REDO_ITEM ##### -->
 <para>
@@ -712,7 +734,8 @@ in the "Edit" menu.
 </para>
 
 @cb: Specifies the routine to be invoked when the menu is selected
-@data: The data passed to your routine. 
+@data: The data passed to your routine.
+
 
 <!-- ##### MACRO GNOMEUIINFO_MENU_REDO_MOVE_ITEM ##### -->
 <para>
@@ -721,7 +744,8 @@ in the "Edit" menu.
 </para>
 
 @cb: Specifies the routine to be invoked when the menu is selected
-@data: The data passed to your routine. 
+@data: The data passed to your routine.
+
 
 <!-- ##### MACRO GNOMEUIINFO_MENU_REPLACE_ITEM ##### -->
 <para>
@@ -729,7 +753,8 @@ Use this macro to include a "Replace" menu entry.
 </para>
 
 @cb: Specifies the routine to be invoked when the menu is selected
-@data: The data passed to your routine. 
+@data: The data passed to your routine.
+
 
 <!-- ##### MACRO GNOMEUIINFO_MENU_RESTART_GAME_ITEM ##### -->
 <para>
@@ -738,7 +763,8 @@ the "Game" menu.
 </para>
 
 @cb: Specifies the routine to be invoked when the menu is selected
-@data: The data passed to your routine. 
+@data: The data passed to your routine.
+
 
 <!-- ##### MACRO GNOMEUIINFO_MENU_REVERT_ITEM ##### -->
 <para>
@@ -746,7 +772,8 @@ Use this macro to include a "Revert" menu entry.
 </para>
 
 @cb: Specifies the routine to be invoked when the menu is selected
-@data: The data passed to your routine. 
+@data: The data passed to your routine.
+
 
 <!-- ##### MACRO GNOMEUIINFO_MENU_SAVE_AS_ITEM ##### -->
 <para>
@@ -755,7 +782,8 @@ the "File" menu.
 </para>
 
 @cb: Specifies the routine to be invoked when the menu is selected
-@data: The data passed to your routine. 
+@data: The data passed to your routine.
+
 
 <!-- ##### MACRO GNOMEUIINFO_MENU_SAVE_ITEM ##### -->
 <para>
@@ -764,7 +792,8 @@ the "File" menu.
 </para>
 
 @cb: Specifies the routine to be invoked when the menu is selected
-@data: The data passed to your routine. 
+@data: The data passed to your routine.
+
 
 <!-- ##### MACRO GNOMEUIINFO_MENU_SCORES_ITEM ##### -->
 <para>
@@ -773,7 +802,8 @@ the "Game" menu.
 </para>
 
 @cb: Specifies the routine to be invoked when the menu is selected
-@data: The data passed to your routine. 
+@data: The data passed to your routine.
+
 
 <!-- ##### MACRO GNOMEUIINFO_MENU_SELECT_ALL_ITEM ##### -->
 <para>
@@ -782,7 +812,8 @@ be used in the "Edit" menu.
 </para>
 
 @cb: Specifies the routine to be invoked when the menu is selected
-@data: The data passed to your routine. 
+@data: The data passed to your routine.
+
 
 <!-- ##### MACRO GNOMEUIINFO_MENU_SETTINGS_TREE ##### -->
 <para>
@@ -802,7 +833,8 @@ be used in the "Edit" menu.
 </para>
 
 @cb: Specifies the routine to be invoked when the menu is selected
-@data: The data passed to your routine. 
+@data: The data passed to your routine.
+
 
 <!-- ##### MACRO GNOMEUIINFO_MENU_UNDO_MOVE_ITEM ##### -->
 <para>
@@ -811,7 +843,8 @@ be used in the "Edit" menu.
 </para>
 
 @cb: Specifies the routine to be invoked when the menu is selected
-@data: The data passed to your routine. 
+@data: The data passed to your routine.
+
 
 <!-- ##### MACRO GNOMEUIINFO_MENU_VIEW_TREE ##### -->
 <para>
@@ -950,8 +983,10 @@ the submenu.
 @menu_shell: 
 @uiinfo: 
 @accel_group: 
-@insert_shortcuts: 
+@uline_accels: 
 @pos: 
+<!-- # Unused Parameters # -->
+@insert_shortcuts: 
 
 
 <!-- ##### FUNCTION gnome_app_fill_menu_custom ##### -->
@@ -963,8 +998,10 @@ the submenu.
 @uiinfo: 
 @uibdata: 
 @accel_group: 
-@insert_shortcuts: 
+@uline_accels: 
 @pos: 
+<!-- # Unused Parameters # -->
+@insert_shortcuts: 
 
 
 <!-- ##### FUNCTION gnome_app_ui_configure_configurable ##### -->

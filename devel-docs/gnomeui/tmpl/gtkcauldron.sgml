@@ -401,6 +401,12 @@ be changed, see global options.</para>
 
 </refsect2>
 
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+
 <!-- ##### MACRO GTK_CAULDRON_TOPLEVEL ##### -->
 <para>
 This is translated to the top level window (%GTK_WINDOW_TOPLEVEL)
@@ -591,15 +597,6 @@ application will work until the dialog exits.
 </para>
 
 
-<!-- ##### MACRO GTK_CAULDRON_PARENT ##### -->
-<para>
-Window managers sometimes allow specification of a parent window so that
-the behaviour of the dialog and some other top level window are associated.
-Gtk allows you to set the parent of the dialog. If you want to enable this,
-use this flag and add in an extra parent argument between the options argument
-and the format argument.
-</para>
-
 
 <!-- ##### USER_FUNCTION GtkCauldronNextArgCallback ##### -->
 <para>
@@ -628,9 +625,10 @@ and the format argument.
 
 @title: 
 @options: 
-@fmt: 
 @Varargs: 
 @Returns: 
+<!-- # Unused Parameters # -->
+@fmt: 
 
 
 <!-- ##### FUNCTION gtk_dialog_cauldron_parse ##### -->
@@ -643,6 +641,7 @@ and the format argument.
 @format: 
 @next_arg: 
 @user_data: 
+@parent: 
 @Returns: 
 
 

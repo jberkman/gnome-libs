@@ -2,41 +2,94 @@
 GnomeIconList
 
 <!-- ##### SECTION Short_Description ##### -->
-An icon list of widgets, with optional caption editing.
+An list of icons with captions, with optional caption editing.
 
 <!-- ##### SECTION Long_Description ##### -->
-<para>
-The GNOME icon list widget can hold a number of icons with captions.
-You can make the icon captions in the icon list be editable (this is
-configured at the widget creation time).</para>
+  <para>
+    The GNOME icon list widget can hold a number of icons with
+    captions.  You can make the icon captions be editable; this is
+    configured when you create the icon list.
+  </para>
 
-<para>You can control the type of selection mode you desire by using
-the gnome_icon_list_set_selection_mode() function.</para>
+  <para>
+    You can control the type of selection mode you desire by using the
+    <function>gnome_icon_list_set_selection_mode()</function>
+    function.
+  </para>
 
-<!-- ##### STRUCT GnomeIconList ##### -->
+<!-- ##### SECTION See_Also ##### -->
 <para>
 
 </para>
+
+
+<!-- ##### STRUCT GnomeIconList ##### -->
+  <para>
+    All fields in the <structname>GnomeIconList</structname> structure
+    are private, except for the <structfield>selection</structfield>
+    field which you must query to get information about which icons
+    are currently selected in the icon list.
+  </para>
+
+  <para>
+    The <structfield>selection</structfield> field of the
+    <structname>GnomeIconList</structname> structure is a linked list
+    that holds the indices of the icons that are selected at any one
+    time.  The <structfield>data</structfield> pointer in each link of
+    the list can be casted to an integer, preferably using the
+    <function>GPOINTER_TO_INT()</function> macro, to get the index of
+    the icon represented by that link:
+
+    <programlisting>
+static void
+print_selected_icons (GnomeIconList *gil)
+{
+	GList *l;
+	int i;
+
+	for (l = gil-&gt;selection; l; l = l-&gt;next) {
+		i = GPOINTER_TO_INT (l->data)
+		printf ("Icon number &percnt;d is selected\n", i);
+	}
+}
+    </programlisting>
+  </para>
 
 
 <!-- ##### MACRO GNOME_ICON_LIST_IS_EDITABLE ##### -->
-<para>
-
-</para>
+  <para>
+    This macro is a flag passed to the constructor functions.  It is
+    used to specify that the icon list should have editable text
+    captions.
+  </para>
 
 
 
 <!-- ##### MACRO GNOME_ICON_LIST_STATIC_TEXT ##### -->
-<para>
+  <para>
+    This macro is a flag passed to the constructor functions.  It is
+    used to specify whether an icon list makes copies of the text in
+    the icon captions or whether it just keeps pointers to the text
+    strings supplied by the application.  If this flag is specified,
+    then the icon list will just store pointers to the original text
+    strings specified by the application, which must then guarantee
+    that they will not be freed or changed until the icon list no
+    longer needs them.  If it is not specified, then the icon list
+    will make copies of the text strings specified by the application.
+  </para>
 
-</para>
+  <para>
+    Applications with very big icon lists can save memory by
+    specifying this flag and being careful about when to free the text
+    strings that are used for the icon captions.
+  </para>
 
 
 
 <!-- ##### ENUM GnomeIconListMode ##### -->
-<para>
-
-</para>
+  <para>
+    The use of this enumeration is currently not implemented.
+  </para>
 
 
 <!-- ##### FUNCTION gnome_icon_list_new ##### -->
@@ -46,7 +99,7 @@ the gnome_icon_list_set_selection_mode() function.</para>
 
 @icon_width: 
 @adj: 
-@is_editable: 
+@flags: 
 @Returns: 
 
 
@@ -96,8 +149,6 @@ the gnome_icon_list_set_selection_mode() function.</para>
 </para>
 
 @gil: 
-<!-- # Unused Parameters # -->
-@ilist: 
 
 
 <!-- ##### FUNCTION gnome_icon_list_thaw ##### -->
@@ -106,8 +157,6 @@ the gnome_icon_list_set_selection_mode() function.</para>
 </para>
 
 @gil: 
-<!-- # Unused Parameters # -->
-@ilist: 
 
 
 <!-- ##### FUNCTION gnome_icon_list_insert ##### -->
@@ -119,8 +168,6 @@ the gnome_icon_list_set_selection_mode() function.</para>
 @pos: 
 @icon_filename: 
 @text: 
-<!-- # Unused Parameters # -->
-@ilist: 
 
 
 <!-- ##### FUNCTION gnome_icon_list_insert_imlib ##### -->
@@ -143,8 +190,6 @@ the gnome_icon_list_set_selection_mode() function.</para>
 @icon_filename: 
 @text: 
 @Returns: 
-<!-- # Unused Parameters # -->
-@ilist: 
 
 
 <!-- ##### FUNCTION gnome_icon_list_append_imlib ##### -->
@@ -156,8 +201,6 @@ the gnome_icon_list_set_selection_mode() function.</para>
 @im: 
 @text: 
 @Returns: 
-<!-- # Unused Parameters # -->
-@ilist: 
 
 
 <!-- ##### FUNCTION gnome_icon_list_clear ##### -->
@@ -166,8 +209,6 @@ the gnome_icon_list_set_selection_mode() function.</para>
 </para>
 
 @gil: 
-<!-- # Unused Parameters # -->
-@ilist: 
 
 
 <!-- ##### FUNCTION gnome_icon_list_remove ##### -->
@@ -177,8 +218,6 @@ the gnome_icon_list_set_selection_mode() function.</para>
 
 @gil: 
 @pos: 
-<!-- # Unused Parameters # -->
-@ilist: 
 
 
 <!-- ##### FUNCTION gnome_icon_list_set_selection_mode ##### -->
@@ -188,8 +227,6 @@ the gnome_icon_list_set_selection_mode() function.</para>
 
 @gil: 
 @mode: 
-<!-- # Unused Parameters # -->
-@ilist: 
 
 
 <!-- ##### FUNCTION gnome_icon_list_select_icon ##### -->
@@ -199,9 +236,6 @@ the gnome_icon_list_set_selection_mode() function.</para>
 
 @gil: 
 @idx: 
-<!-- # Unused Parameters # -->
-@ilist: 
-@pos: 
 
 
 <!-- ##### FUNCTION gnome_icon_list_unselect_icon ##### -->
@@ -211,8 +245,6 @@ the gnome_icon_list_set_selection_mode() function.</para>
 
 @gil: 
 @pos: 
-<!-- # Unused Parameters # -->
-@ilist: 
 
 
 <!-- ##### FUNCTION gnome_icon_list_unselect_all ##### -->
@@ -224,8 +256,6 @@ the gnome_icon_list_set_selection_mode() function.</para>
 @event: 
 @keep: 
 @Returns: 
-<!-- # Unused Parameters # -->
-@ilist: 
 
 
 <!-- ##### FUNCTION gnome_icon_list_set_icon_width ##### -->
@@ -244,9 +274,6 @@ the gnome_icon_list_set_selection_mode() function.</para>
 
 @gil: 
 @pixels: 
-<!-- # Unused Parameters # -->
-@ilist: 
-@spacing: 
 
 
 <!-- ##### FUNCTION gnome_icon_list_set_col_spacing ##### -->
@@ -256,9 +283,6 @@ the gnome_icon_list_set_selection_mode() function.</para>
 
 @gil: 
 @pixels: 
-<!-- # Unused Parameters # -->
-@ilist: 
-@spacing: 
 
 
 <!-- ##### FUNCTION gnome_icon_list_set_text_spacing ##### -->
@@ -268,9 +292,6 @@ the gnome_icon_list_set_selection_mode() function.</para>
 
 @gil: 
 @pixels: 
-<!-- # Unused Parameters # -->
-@ilist: 
-@spacing: 
 
 
 <!-- ##### FUNCTION gnome_icon_list_set_icon_border ##### -->
@@ -280,9 +301,6 @@ the gnome_icon_list_set_selection_mode() function.</para>
 
 @gil: 
 @pixels: 
-<!-- # Unused Parameters # -->
-@ilist: 
-@spacing: 
 
 
 <!-- ##### FUNCTION gnome_icon_list_set_separators ##### -->
@@ -292,9 +310,6 @@ the gnome_icon_list_set_selection_mode() function.</para>
 
 @gil: 
 @sep: 
-<!-- # Unused Parameters # -->
-@ilist: 
-@separators: 
 
 
 <!-- ##### FUNCTION gnome_icon_list_set_icon_data ##### -->
@@ -305,8 +320,6 @@ the gnome_icon_list_set_selection_mode() function.</para>
 @gil: 
 @pos: 
 @data: 
-<!-- # Unused Parameters # -->
-@ilist: 
 
 
 <!-- ##### FUNCTION gnome_icon_list_set_icon_data_full ##### -->
@@ -318,8 +331,6 @@ the gnome_icon_list_set_selection_mode() function.</para>
 @pos: 
 @data: 
 @destroy: 
-<!-- # Unused Parameters # -->
-@ilist: 
 
 
 <!-- ##### FUNCTION gnome_icon_list_find_icon_from_data ##### -->
@@ -330,8 +341,6 @@ the gnome_icon_list_set_selection_mode() function.</para>
 @gil: 
 @data: 
 @Returns: 
-<!-- # Unused Parameters # -->
-@ilist: 
 
 
 <!-- ##### FUNCTION gnome_icon_list_get_icon_data ##### -->
@@ -342,8 +351,6 @@ the gnome_icon_list_set_selection_mode() function.</para>
 @gil: 
 @pos: 
 @Returns: 
-<!-- # Unused Parameters # -->
-@ilist: 
 
 
 <!-- ##### FUNCTION gnome_icon_list_moveto ##### -->
@@ -354,8 +361,6 @@ the gnome_icon_list_set_selection_mode() function.</para>
 @gil: 
 @pos: 
 @yalign: 
-<!-- # Unused Parameters # -->
-@ilist: 
 
 
 <!-- ##### FUNCTION gnome_icon_list_icon_is_visible ##### -->
@@ -366,8 +371,6 @@ the gnome_icon_list_set_selection_mode() function.</para>
 @gil: 
 @pos: 
 @Returns: 
-<!-- # Unused Parameters # -->
-@ilist: 
 
 
 <!-- ##### FUNCTION gnome_icon_list_get_icon_at ##### -->
@@ -379,8 +382,6 @@ the gnome_icon_list_set_selection_mode() function.</para>
 @x: 
 @y: 
 @Returns: 
-<!-- # Unused Parameters # -->
-@ilist: 
 
 
 <!-- ##### FUNCTION gnome_icon_list_get_items_per_line ##### -->
@@ -393,56 +394,71 @@ the gnome_icon_list_set_selection_mode() function.</para>
 
 
 <!-- ##### SIGNAL GnomeIconList::select-icon ##### -->
-<para>
-This signal is emited when an icon becomes selected.  If the event
-argument point to NULL the icon was selected programatically with the
-gnome_icon_list_select_icon() function.  Otherwise it points to the
-<type>GdkEvent</type> that made this icon selected. 
-</para>
+  <para>
+    This signal is emitted when an icon becomes selected.  If the
+    <symbol>event</symbol> argument is NULL, then it means the icon
+    became selected due to a range or rubberband selection.  If it is
+    non-NULL, it means the icon became selected due to an
+    user-initiated event such as a mouse button press.  The event can
+    be examined to get this information.
+  </para>
 
-@iconlist: the object which received the signal.
-@arg1: 
-@event: 
+@iconlist: Icon list which emitted the signal
+@num: Index of the icon that became selected
+@event: Event that triggered the selection, or NULL if none
 
 <!-- ##### SIGNAL GnomeIconList::unselect-icon ##### -->
-<para>
-This signal is emited when an icon becomes unselected (this signal is
-only emited if the icon had been previously selected).  If the event
-argument point to NULL the icon was selected programatically with the
-gnome_icon_list_unselect_icon() function.  Otherwise it points to the
-<type>GdkEvent</type> that made this icon selected. 
-</para>
+  <para>
+    This signal is emitted when an icon becomes unselected.  The
+    meaning of the <symbol>event</symbol> argument is the same as for
+    the select-icon signal.
+  </para>
 
-@iconlist: the object which received the signal.
-@arg1: 
-@event: 
+@iconlist: Icon list which emitted the signal
+@num: Index of the icon that became unselected
+@event: Event that triggered the unselection, or NULL if none
 
 <!-- ##### SIGNAL GnomeIconList::text-changed ##### -->
-<para>
-The <emphasis>text_changed</emphasis> signal is emited on editable
-icon list widgets if the user has changed the caption of an icon 
-</para>
+  <para>
+    This signal is emitted when the user has finished editing the text
+    of an icon's caption.  Typically this happens when the user
+    presses <keycap>Enter</keycap>.  The application must then decide
+    whether the text is valid or not.
+  </para>
 
-<para>
-The return value indicates whether the name change is accepted (for
-example, if renaming a file succeeds or not).  If the change is not
-accepted, the text is reset to its previous value.
-</para>
+  <para>
+    The return value of this signal indicates whether the proposed
+    text is accepted by the application.  For example, an application
+    may need to check whether the user can rename a file to the
+    proposed name or not.  If the proposed text is valid, then a
+    signal handler should return <symbol>TRUE</symbol>, otherwise it
+    should return <symbol>FALSE</symbol>.  If the change is not
+    accepted, the text is automatically reset to its original state.
+  </para>
 
-@iconlist: the object which received the signal.
-@arg1: 
-@arg2: The text entered by the user.
-@Returns: Whether the change is accepted or not.
-<!-- # Unused Parameters # -->
-@num: Icon index whose text changed.
+@iconlist: Icon list which emitted the signal
+@num: Index of the icon whose text was edited
+@new_text: Text entered by the user, which must be validated
+@Returns: Whether the change is accepted by the application or not
 
 <!-- ##### ARG GnomeIconList:hadjustment ##### -->
-<para>
-
-</para>
+  <para>
+    This is a <structname>GtkHAdjustment</structname> that is used
+    internally to support the
+    <structname>GtkScrolledWindow</structname> scrolling interface.
+  </para>
 
 <!-- ##### ARG GnomeIconList:vadjustment ##### -->
-<para>
+  <para>
+    This is a <structname>GtkVAdjustment</structname> that is used
+    internally to support the
+    <structname>GtkScrolledWindow</structname> scrolling interface.
+  </para>
 
-</para>
+<!--
+Local variables:
+mode: sgml
+sgml-parent-document: ("../gnomeui-docs.sgml" "book" "sect1" "")
+End:
+-->
 
