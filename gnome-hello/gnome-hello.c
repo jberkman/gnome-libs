@@ -3,11 +3,13 @@
 
 /* Copyright (C) 1998 Mark Galassi, all rights reserved */
 
+/* include <config.h> first.  Some stuffs in gnome.h depend on this.  */
+#include <config.h>
+
 /* including gnome.h gives you all you need to use the gtk toolkit as
    well as the GNOME libraries; it also handles internationalization
    via GNU gettext */
 #include <gnome.h>
-#include <config.h>
 
 /* the following are needed for internationalization using GNU gettext */
 /* #include <libintl.h> */
@@ -24,6 +26,12 @@ int main(int argc, char *argv[])
      takes care of initializing both Gtk and GNOME */
   gnome_init(&argc, &argv);
 
+  /* For internationalization, bindtextdomain() and textdomain() are needed.
+     bindtextdomain() specifies where the needed message catalog files can be
+     found.  textdomain selects the domain.  */
+  bindtextdomain(PACKAGE, LOCALEDIR); 
+  textdomain(PACKAGE); 
+  
   /* prepare_app() makes all the gtk calls necessary to set up a
      minimal Gnome application; It's based on the hello world example
      from the Gtk+ tutorial */
