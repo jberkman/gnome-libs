@@ -96,8 +96,6 @@ static GnomeUIInfo file_menu[] = {
 };
 
 static GnomeUIInfo help_menu[] = {
-        { GNOME_APP_UI_HELP, NULL, NULL, NULL, NULL, NULL,
-	  GNOME_APP_PIXMAP_NONE, NULL, 0, 0, NULL },
         { GNOME_APP_UI_ITEM, "About...", NULL, create_about, NULL, NULL,
 	  GNOME_APP_PIXMAP_STOCK, GNOME_STOCK_MENU_ABOUT, 0, 0,
 	  NULL },
@@ -404,7 +402,7 @@ create_test_dialog (GtkWidget * ignored, gboolean * settings)
   
   if (settings[modal]) {
     g_print("Modal... ");
-    gtk_window_set_modal(dialog, TRUE);
+    gtk_window_set_modal(GTK_WINDOW (dialog), TRUE);
   }
   if (settings[just_hide]) {
     g_print("Close hides... ");
@@ -596,7 +594,7 @@ create_number_entry(void)
 
 /* CREATE FONT PICKER
  */
-void cfp_ck_UseFont(GtkWidget *widget,GnomeFontPicker *gfp)
+static void cfp_ck_UseFont(GtkWidget *widget,GnomeFontPicker *gfp)
 {
     gboolean show;
     gint size;
@@ -607,7 +605,7 @@ void cfp_ck_UseFont(GtkWidget *widget,GnomeFontPicker *gfp)
     gnome_font_picker_fi_set_use_font_in_label(gfp,show,size);
 
 }
-void cfp_sp_value_changed(GtkAdjustment *adj,GnomeFontPicker *gfp)
+static void cfp_sp_value_changed(GtkAdjustment *adj,GnomeFontPicker *gfp)
 {
     gboolean show;
     gint size;
@@ -619,7 +617,7 @@ void cfp_sp_value_changed(GtkAdjustment *adj,GnomeFontPicker *gfp)
 
 }
 
-void cfp_ck_ShowSize(GtkWidget *widget,GnomeFontPicker *gfp)
+static void cfp_ck_ShowSize(GtkWidget *widget,GnomeFontPicker *gfp)
 {
     GtkToggleButton *tb;
 
@@ -628,7 +626,7 @@ void cfp_ck_ShowSize(GtkWidget *widget,GnomeFontPicker *gfp)
     gnome_font_picker_fi_set_show_size(gfp,tb->active);
 }
 
-void cfp_set_font(GnomeFontPicker *gfp, gchar *font_name, GtkLabel *label)
+static void cfp_set_font(GnomeFontPicker *gfp, gchar *font_name, GtkLabel *label)
 {
     g_print("Font name: %s\n",font_name);
     gtk_label_set(label,font_name);
@@ -767,6 +765,7 @@ create_icon_list(void)
 	gtk_widget_grab_focus (iconlist);
 	
 	gnome_icon_list_freeze (GNOME_ICON_LIST (iconlist));
+
 	for (i = 0; i < 30; i++) {
 		gnome_icon_list_append_imlib(GNOME_ICON_LIST(iconlist), pix, "Foo");
 		gnome_icon_list_append_imlib(GNOME_ICON_LIST(iconlist), pix, "Bar");
@@ -1632,7 +1631,7 @@ create_dentry_edit(void)
 	nbook = gtk_notebook_new();
 
 	app = create_newwin(TRUE,"testGNOME","DEntry Entry");
-	edit = gnome_dentry_edit_new_notebook(GTK_NOTEBOOK(nbook));
+	edit = GTK_WIDGET (gnome_dentry_edit_new_notebook(GTK_NOTEBOOK(nbook)));
 	gnome_app_set_contents(GNOME_APP(app),nbook);
 	gtk_widget_show_all(app);
 }
