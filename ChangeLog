@@ -1,3 +1,10 @@
+1999-01-01  Miguel de Icaza  <miguel@nuclecu.unam.mx>
+
+	* libgnorba/orbitns.c (gnome_name_service_get): Fix to deal with
+	the startup race condition.  Basically, we need to retry the
+	get_name_server_ior_from_root_window operation if the
+	name_server_by_forking fails.
+
 1999-01-01  Jeff Garzik  <jgarzik@pobox.com>
 
 	* libgnome/gnome-dump.c, libgnome/gnome-magic.c,
