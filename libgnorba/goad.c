@@ -760,7 +760,10 @@ normal_loading:
     gmod = local_plugin_info->loaded;
   else {
     gmod = g_module_open(sinfo->location_info, G_MODULE_BIND_LAZY);
-    if(!gmod && *sinfo->location_info != '/') {
+
+    if(gmod)
+      filename = g_strdup(sinfo->location_info);
+    else if(*sinfo->location_info != '/') {
       char *ctmp;
       ctmp = gnome_libdir_file(sinfo->location_info);
       if(living_by_filename)
@@ -771,13 +774,18 @@ normal_loading:
 	gmod = local_plugin_info->loaded;
       } else {
 	gmod = g_module_open(ctmp, G_MODULE_BIND_LAZY);
-	filename = ctmp;
+
+	if(gmod)
+	  filename = ctmp;
+	else
+	  g_warning("CORBA plugin load failed: %s", g_module_error());
       }
     } else
-      filename = g_strdup(sinfo->location_info);
+      g_warning("CORBA plugin load failed: %s", g_module_error());
   }
 
   g_return_val_if_fail(gmod, CORBA_OBJECT_NIL);
+
   i = g_module_symbol(gmod, "GNOME_Plugin_info",
 		      (gpointer *)&plugin);
   g_return_val_if_fail(i, CORBA_OBJECT_NIL);
