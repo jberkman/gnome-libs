@@ -15,7 +15,8 @@ noinst_PROGRAMS =  \
 	gnome-hello-1-menus 		\
 	gnome-hello-2-i18n  		\
 	gnome-hello-3-parse-args	\
-	gnome-hello-4-SM
+	gnome-hello-4-SM		\
+	gnome-hello-5-dnd
 
 htmldir = $(prefix)/html
 html_DATA = gnome-hello.html

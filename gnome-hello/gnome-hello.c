@@ -42,7 +42,7 @@ GtkMenuEntry hello_menu [] = {
   { N_("Help/About..."), N_("<control>A"), (GtkMenuCallback) about_cb, NULL },
 };
 
-char *session_id;
+GnomeClient *session_id;
 
 int
 main(int argc, char *argv[])
@@ -67,6 +67,8 @@ main(int argc, char *argv[])
   prepare_app (argc, argv);
 
   gtk_main ();
+  gtk_object_destroy(GTK_OBJECT(app));
+  gtk_object_unref(GTK_OBJECT(session_id));
 
   return 0;
 }
@@ -233,15 +235,18 @@ parse_args (int argc, char *argv[])
   }
 
   /* SM stuff */
-  session_id = gnome_session_init (
+  session_id = gnome_client_new (argc, argv);
+#if 0
+  session_id = gnome_client_new (
   	/* callback to save the state and parameter for it */
   	save_state, argv[0], 
   	/* callback to die and parameter for it */
     	NULL, NULL,
 	/* id from the previous session if restarted, NULL otherwise */
        	id);
+#endif
   /* set the program name */
-  gnome_session_set_program (argv[0]);
+  gnome_client_set_program (session_id, argv[0]);
   g_free(id);
 
   return;
@@ -286,14 +291,14 @@ save_state (gpointer client_data, GnomeSaveStyle save_style,
 
   /* Here is the real SM code. We set the argv to the parameters needed
      to restart/discard the session that we've just saved and call
-     the gnome_session_set_*_command to tell the session manager it. */
+     the gnome_client_set_*_command to tell the session manager it. */
   argv[0] = (char*) client_data;
   argv[1] = "--restart-session";
-  argv[2] = session_id;
-  gnome_session_set_restart_command (3, argv);
+  argv[2] = gnome_client_get_id(session_id);
+  gnome_client_set_restart_command (session_id, 3, argv);
 
   argv[1] = "--discard-session";
-  gnome_session_set_discard_command (3, argv);
+  gnome_client_set_discard_command (session_id, 3, argv);
 
   return(1);
 }
