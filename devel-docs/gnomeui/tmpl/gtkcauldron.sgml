@@ -92,6 +92,16 @@ require.</para>
          window title respectively. In the case of <emphasis>E</emphasis>, only one
          more <type>gchar *</type> is converted: the history_id.</para></listitem>
 
+       <listitem><para><emphasis>%D</emphasis> Date edit widget. Causes
+         two va_arg conversions of type <type>gdouble *</type> and type
+	 <type>gint</type>. The first represents the time in seconds
+	 since Jan 1 1970 and is used to initialise the widget as well
+	 as to store the result - it is cast internally to
+	 <type>time_t</type>. The second is the options flag and is the
+	 inclusive <emphasis>OR</emphasis> of one or more of
+         <emphasis>GNOME_DATE_EDIT_SHOW_TIME</emphasis>, <emphasis>GNOME_DATE_EDIT_24_HR</emphasis>, and
+         <emphasis>GNOME_DATE_EDIT_WEEK_STARTS_ON_MONDAY</emphasis>.
+
        <listitem><para><emphasis>%B </emphasis> Button with label. One
          va_arg conversion of type <type>char *</type>, dictating the
          button label. If this is NULL, then gtk_button_new is called
@@ -580,6 +590,15 @@ Causes a grab on the dialog - that is, no other widgets in the
 application will work until the dialog exits.
 </para>
 
+
+<!-- ##### MACRO GTK_CAULDRON_PARENT ##### -->
+<para>
+Window managers sometimes allow specification of a parent window so that
+the behaviour of the dialog and some other top level window are associated.
+Gtk allows you to set the parent of the dialog. If you want to enable this,
+use this flag and add in an extra parent argument between the options argument
+and the format argument.
+</para>
 
 
 <!-- ##### USER_FUNCTION GtkCauldronNextArgCallback ##### -->
