@@ -43,7 +43,8 @@ main (int argc, char *argv[])
 	gnome_metadata_db_file_name = "test.db";
 	unlink (gnome_metadata_db_file_name);
 
-	gnome_metadata_app_dir = "./data";
+	gnome_metadata_app_dir = g_copy_strings (getenv ("srcdir"),
+						 "/data", NULL);
 
 	/* Populate the database.  */
 	gnome_metadata_type_add (PLAIN, "frob-key", strlen (W) + 1, W);

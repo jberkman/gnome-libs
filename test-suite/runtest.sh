@@ -58,7 +58,7 @@ for I in $TESTS; do
     if diff -q $srcdir/expected/$TEST.out results/$TEST.out; then
 	echo "PASS: $TEST" >&3
 	echo "PASS: $TEST"
-	rm -f test_$TEST
+	rm -f $TEST.o test_$TEST
     else
 	echo "FAIL: $TEST" >&3
 	echo "FAIL: $TEST"
