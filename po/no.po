@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-libs 0.30\n"
-"POT-Creation-Date: 1998-12-11 23:57+0100\n"
-"PO-Revision-Date: 1998-12-12 11:40+0100\n"
+"POT-Creation-Date: 1998-12-13 11:39+0100\n"
+"PO-Revision-Date: 1998-12-13 11:45+0100\n"
 "Last-Translator: Kjartan Maraas <kmaraas@fib.hl.no>\n"
 "Language-Team: Norwegian <no@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -102,8 +102,8 @@ msgstr "Informasjon om GNOME hello"
 msgid "Discard session"
 msgstr "Avbryt sesjon"
 
-#: gnome-hello/gnome-hello-4-SM.c:89 libgnomeui/gnome-client.c:668
-#: libgnomeui/gnome-client.c:670
+#: gnome-hello/gnome-hello-4-SM.c:89 libgnomeui/gnome-client.c:680
+#: libgnomeui/gnome-client.c:682
 msgid "ID"
 msgstr "ID"
 
@@ -537,22 +537,26 @@ msgstr "="
 msgid "INV"
 msgstr "INV"
 
-#: libgnomeui/gnome-client.c:668
+#: libgnomeui/gnome-client.c:680
 msgid "Specify session management ID"
 msgstr "Spesifiser ID for sesjonskontroll"
 
-#: libgnomeui/gnome-client.c:670
+#: libgnomeui/gnome-client.c:682
 msgid "Specify ID of cloned client"
 msgstr "Spesifiser ID for klonet klient"
 
-#: libgnomeui/gnome-client.c:672
+#: libgnomeui/gnome-client.c:684
 msgid "Disable connection to session manager"
 msgstr "Fjern forbindelse til sesjonsbehandler"
 
 #. Register commandline options.
-#: libgnomeui/gnome-client.c:798
+#: libgnomeui/gnome-client.c:812
 msgid "Session management options"
 msgstr "Alternativer for sesjonskontroll"
+
+#: libgnomeui/gnome-client.c:2118
+msgid "Cancel Logout"
+msgstr "Avbryt utlogging"
 
 #: libgnomeui/gnome-color-picker.c:270
 msgid "Pick a color"
@@ -617,80 +621,80 @@ msgstr "Se på..."
 msgid "Loading Icons..."
 msgstr "Laster ikoner..."
 
-#: libgnomeui/gnome-init.c:171
+#: libgnomeui/gnome-init.c:177
 msgid "Gdk debugging flags to set"
 msgstr "Gdk avlusingsflagg som skal slås på"
 
-#: libgnomeui/gnome-init.c:171 libgnomeui/gnome-init.c:173
-#: libgnomeui/gnome-init.c:193 libgnomeui/gnome-init.c:195
+#: libgnomeui/gnome-init.c:177 libgnomeui/gnome-init.c:179
+#: libgnomeui/gnome-init.c:199 libgnomeui/gnome-init.c:201
 msgid "FLAGS"
 msgstr "FLAGG"
 
-#: libgnomeui/gnome-init.c:173
+#: libgnomeui/gnome-init.c:179
 msgid "Gdk debugging flags to unset"
 msgstr "Gdk avlusingsflagg som skal slås av"
 
-#: libgnomeui/gnome-init.c:175
+#: libgnomeui/gnome-init.c:181
 msgid "X display to use"
 msgstr "X-display som skal brukes"
 
-#: libgnomeui/gnome-init.c:175
+#: libgnomeui/gnome-init.c:181
 msgid "DISPLAY"
 msgstr "DISPLAY"
 
-#: libgnomeui/gnome-init.c:177
+#: libgnomeui/gnome-init.c:183
 msgid "Make X calls synchronous"
 msgstr "Bruk synkrone X-kall"
 
-#: libgnomeui/gnome-init.c:179
+#: libgnomeui/gnome-init.c:185
 msgid "Don't use X shared memory extension"
 msgstr "Ikke bruk X-utvidelse for delt minne"
 
-#: libgnomeui/gnome-init.c:181
+#: libgnomeui/gnome-init.c:187
 msgid "Program name as used by the window manager"
 msgstr "Programnavn som brukt av vindusbehandleren"
 
-#: libgnomeui/gnome-init.c:181
+#: libgnomeui/gnome-init.c:187
 msgid "NAME"
 msgstr "NAVN"
 
-#: libgnomeui/gnome-init.c:183
+#: libgnomeui/gnome-init.c:189
 msgid "Program class as used by the window manager"
 msgstr "Programklasse som brukt av vindusbehandleren"
 
-#: libgnomeui/gnome-init.c:183
+#: libgnomeui/gnome-init.c:189
 msgid "CLASS"
 msgstr "KLASSE"
 
-#: libgnomeui/gnome-init.c:185
+#: libgnomeui/gnome-init.c:191
 msgid "HOST"
 msgstr "VERT"
 
-#: libgnomeui/gnome-init.c:187
+#: libgnomeui/gnome-init.c:193
 msgid "PORT"
 msgstr "PORT"
 
-#: libgnomeui/gnome-init.c:189 libgnomeui/gnome-init.c:191
+#: libgnomeui/gnome-init.c:195 libgnomeui/gnome-init.c:197
 msgid "STYLE"
 msgstr "STIL"
 
-#: libgnomeui/gnome-init.c:193
+#: libgnomeui/gnome-init.c:199
 msgid "Gtk+ debugging flags to set"
 msgstr "Gtk+ avlusingsflagg som skal slås på"
 
-#: libgnomeui/gnome-init.c:195
+#: libgnomeui/gnome-init.c:201
 msgid "Gtk+ debugging flags to unset"
 msgstr "Gtk+ avlusingsflagg som skal slås av"
 
-#: libgnomeui/gnome-init.c:197
+#: libgnomeui/gnome-init.c:203
 msgid "Make all warnings fatal"
 msgstr "Gjør all advarsler til fatale"
 
-#: libgnomeui/gnome-init.c:199
+#: libgnomeui/gnome-init.c:205
 msgid "Load an additional Gtk module"
 msgstr "Last Gtk+ tilleggsmoduler"
 
-#: libgnomeui/gnome-init.c:199
+#: libgnomeui/gnome-init.c:205
 msgid "MODULE"
 msgstr "MODUL"
 
