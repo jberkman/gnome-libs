@@ -30,6 +30,40 @@
     consistent look.
   </para>
 
+  <sect1 id="introduction">
+
+    <title>Introduction to GnomeAppHelper</title>
+
+    <para>
+      This section presents a simple example of creating a menu bar
+      for an application window.  The menu bar would serve for a
+      hypotetical text editing application.  The purpose of this
+      example is to give you a general idea of how GnomeAppHelper
+      works.
+    </para>
+
+    <para>
+      GnomeAppHelper uses a hierarchy of arrays to define menus and
+      tool bars.  Here we will define a simple menu bar with three
+      submenus, called File, Edit, and Help.  We will use the stock
+      icon mechanism to provide standard icons for the menu items, and
+      we will provide hot keys for the most common functions.
+    </para>
+
+    <example>
+      <title>Submenu definitions</title>
+
+      <para>
+	First of all, we will define the three submenus that make up
+	the menu bar.
+      </para>
+
+      <programlisting>
+    
+
+    
+  </sect1>
+
   <sect1 id="GnomeUIInfo">
 
     <title>The <structname>GnomeUIInfo</structname> structure</title>
@@ -47,9 +81,10 @@
 
     <para>
       The <structname>GnomeUIInfo</structname> structure is defined as
-      follows:
+      follows.
+    </para>
 
-      <programlisting role="C">
+    <programlisting role="C">
 typedef struct {
 	GnomeUIInfoType <structfield>type</structfield> ;
 	gchar *<structfield>label</structfield>;
@@ -63,7 +98,10 @@ typedef struct {
 	GdkModifierType <structfield>ac_mods</structfield>;
 	GtkWidget *<structfield>widget</structfield>;
 } <structname>GnomeUIInfo</structname>;
-      </programlisting>
+    </programlisting>
+
+    <para>
+      These are the fields in the <structname>GnomeUIInfo</structname>.
     </para>
 
     <glosslist>
@@ -511,6 +549,30 @@ typedef struct {
 	</glossdef>
       </glossentry>
     </glosslist>
+
+    <para>
+      In addition to the plain <structname>GnomeUIInfo</structname>
+      structures, GnomeAppHelper provides some macros to make filling
+      these structures easier.  These are most useful for items that
+      require a few parameters and for toolbars, which do not have as
+      many options as menus.
+    </para>
+
+  </sect1>
+
+  <sect1 id="gnome-app-helper functions">
+
+    <title>Functions provided by GnomeAppHelper</title>
+
+    <para>
+      The following is a list of the functions provided by
+      GnomeAppHelper.
+    </para>
+
+  </sect1>
+
+	
+      
 
   </sect1>
   
