@@ -1,4 +1,8 @@
-Mon Jan 19 10:52:26 1998  Miguel de Icaza  <miguel@nuclecu.unam.mx>
+Mon Jan 19 12:56:08 1998  Miguel de Icaza  <miguel@nuclecu.unam.mx>
+
+	* gtk-xmhtml.c (gtk_xmhtml_realize): use
+	gtk_widget_get_parent_window instead of widget->parent->window as
+	posted by Owen.
 
 	* Makefile.am (libgtkxmhtml_la_LIBADD): Add the Z_LIBS, JPEG_LIBS,
 	PNG_LIBS and PNG_LIBS to the libgtkxmhtml_la_LIBADD, so that
