@@ -90,6 +90,50 @@ if the server happens to be activated as a shared library).
 </itemizedlist>
 </sect3>
 </sect2>
+<sect2 id="goad-server-activate-with-repo-id">
+
+<title>goad_server_activate_with_repo_id - get a server that offers a
+specified interface.</title>
+<funcsynopsis><funcdef>CORBA_Object <function>goad_server_activate_with_repo_id</function></funcdef>
+<paramdef>GoadServer *<parameter>server_list</parameter></paramdef>
+<paramdef>const char *<parameter>repo_id</parameter></paramdef>
+<paramdef>GoadActivationFlags <parameter>flags</parameter></paramdef>
+</funcsynopsis>
+<sect3><title>Description</title>
+<para>
+When passed the repository ID of an object, this function will try to
+either connect to an existing server for an object offering that
+interface, or start a new one up.
+</para>
+</sect3>
+<sect3><title>Usage</title>
+<programlisting>
+CORBA_Object dothings;
+dothings = goad_server_activate_with_repo_id(NULL, "IDL:GNOME/HelpBrowser", 0);
+</programlisting>
+</sect3>
+<sect3><title>Parameters</title>
+<itemizedlist>
+<listitem>
+<para>GoadServer *<parameter>server_list</parameter></para>
+<para>A server listing previously obtained from goad_server_list_get(), or NULL. If NULL is passed, a server list will be obtained, used, and freed inside the routine.</para>
+</listitem>
+<listitem><para>const char *<parameter>repo_id</parameter></para>
+<para>
+The repository ID of the interface that a returned object should have.
+This currently must be the specific interface. In the future the
+Interface Repository may be used to find servers with interfaces that
+inherit from the specified interface - caveat user.
+</para>
+<listitem>
+<para>GoadActivationFlags <parameter>flags</parameter></para>
+<para>
+See the parameter documentation for <function>goad_server_activate</function>
+</para>
+</listitem>
+</itemizedlist>
+</sect3>
+</sect2>
 </sect1>
 <sect1 id="orbitgtk">
 <title>ORBit-Gtk</title>
