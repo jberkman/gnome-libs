@@ -23,7 +23,6 @@
 
 #include <gdk/gdkx.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
-#include <gdk-pixbuf/gdk-pixbuf-drawable.h>
 
 #include <libart_lgpl/art_rgb_pixbuf_affine.h>
 
@@ -61,13 +60,17 @@ pixmap_from_atom(GdkWindow *win, GdkAtom pmap)
 
   d(printf("getting property off root window ...\n"));
 
+  gdk_error_trap_push();
   if (gdk_property_get(win, pmap, 0, 0, 10, FALSE, &type, NULL, NULL, &data)) {
     if (type == GDK_TARGET_PIXMAP) {
       d(printf("converting to pixmap\n"));
       pm = gdk_pixmap_foreign_new(*((Pixmap *)data));
     }
     g_free(data);
+  } else {
+    g_warning("Cannot get window property %d\n", pmap);
   }
+  gdk_error_trap_pop();
 
   return pm;
 }
@@ -82,7 +85,11 @@ pixbuf_from_atom(GdkWindow *win, GdkAtom pmap)
   pp = pixmap_from_atom(win, pmap);
   if (pp) {
     gdk_window_get_size(pp, &pwidth, &pheight);
-    pb = gdk_pixbuf_rgba_from_drawable(pp, 0, 0, pwidth, pheight);
+    pb = gdk_pixbuf_get_from_drawable(NULL,
+				      pp,
+				      gdk_window_get_colormap(win),
+				      0, 0, 0, 0,
+				      pwidth, pheight);
     pixmap_free_atom(pp);
     return pb;
   }
@@ -239,7 +246,7 @@ del_winwatch(GdkWindow *win, void *data)
       an = a->next;
       while (an) {
 	if (a->data == data) {
-	  vt_list_remove((struct vt_list *)a);
+	  vt_list_remove((struct vt_listnode *)a);
 	  g_free(a);
 	}
 	a = an;
@@ -250,7 +257,7 @@ del_winwatch(GdkWindow *win, void *data)
       gdk_window_set_events(w->win, w->propmask);
       gdk_window_remove_filter(w->win, zvt_filter_prop_change, w);
       gdk_window_unref(w->win);
-      vt_list_remove((struct vt_list *)w);
+      vt_list_remove((struct vt_listnode *)w);
       g_free(w);
     }
     w = wn;
@@ -311,7 +318,7 @@ zvt_term_background_unref(struct zvt_background *b)
 {
   if (b) {
     if (b->refcount==1) {
-      zvt_term_background_set_pixmap(b, 0);
+      zvt_term_background_set_pixmap(b, 0, 0);
       g_free(b);
     } else {
       b->refcount--;
@@ -336,11 +343,14 @@ zvt_term_background_ref(struct zvt_background *b)
  * zvt_term_background_set_pixmap:
  * @b: Background.
  * @p: A Pixmap.
+ * @cmap: Colourmap for this pixmap.
  * 
- * Set a pixmap as the base image for the background.
+ * Set a pixmap, or other drawable as the base image for the background.
+ * If @p is just a pixmap, then @cmap should be the colourmap for that
+ * pimxap, otherwise it may be %NULL if it is a window.
  **/
 void
-zvt_term_background_set_pixmap(struct zvt_background *b, GdkPixmap *p)
+zvt_term_background_set_pixmap(struct zvt_background *b, GdkPixmap *p, GdkColormap *cmap)
 {
   switch (b->type) {
   case ZVT_BGTYPE_NONE:		/* no background */
@@ -349,8 +359,10 @@ zvt_term_background_set_pixmap(struct zvt_background *b, GdkPixmap *p)
     gdk_window_unref(b->data.atom.window);
     break;
   case ZVT_BGTYPE_PIXMAP:	/* normal pixmap */
-    if (b->data.pixmap)
-      gdk_pixmap_unref(b->data.pixmap);
+    if (b->data.pixmap.pixmap)
+      gdk_pixmap_unref(b->data.pixmap.pixmap);
+    if (b->data.pixmap.cmap)
+      gdk_colormap_unref(b->data.pixmap.cmap);
     break;
   case ZVT_BGTYPE_FILE:		/* file */
     g_free(b->data.pixmap_file);
@@ -359,7 +371,12 @@ zvt_term_background_set_pixmap(struct zvt_background *b, GdkPixmap *p)
     gdk_pixbuf_unref(b->data.pixbuf);
     break;
   }
-  b->data.pixmap = p;
+  b->data.pixmap.pixmap = p;
+  if (p)
+    gdk_pixmap_ref(p);
+  b->data.pixmap.cmap = cmap;
+  if (cmap)
+    gdk_colormap_ref(cmap);
   b->type = ZVT_BGTYPE_PIXMAP;
 }
 
@@ -376,7 +393,7 @@ zvt_term_background_set_pixmap(struct zvt_background *b, GdkPixmap *p)
 void
 zvt_term_background_set_pixmap_atom(struct zvt_background *b, GdkWindow *win, GdkAtom atom)
 {
-  zvt_term_background_set_pixmap(b, 0);
+  zvt_term_background_set_pixmap(b, 0, 0);
   b->data.atom.atom = atom;
   gdk_window_ref(win);
   b->data.atom.window = win;
@@ -394,7 +411,7 @@ zvt_term_background_set_pixmap_atom(struct zvt_background *b, GdkWindow *win, Gd
 void
 zvt_term_background_set_pixmap_file(struct zvt_background *b, char *filename)
 {
-  zvt_term_background_set_pixmap(b, 0);
+  zvt_term_background_set_pixmap(b, 0, 0);
   b->data.pixmap_file = g_strdup(filename);
   b->type = ZVT_BGTYPE_FILE;
 }
@@ -409,7 +426,7 @@ zvt_term_background_set_pixmap_file(struct zvt_background *b, char *filename)
 void
 zvt_term_background_set_pixbuf(struct zvt_background *b, GdkPixbuf *pb)
 {
-  zvt_term_background_set_pixmap(b, 0);
+  zvt_term_background_set_pixmap(b, 0, 0);
   gdk_pixbuf_ref(pb);
   b->data.pixbuf = pb;
   b->type = ZVT_BGTYPE_PIXBUF;
@@ -637,6 +654,7 @@ zvt_background_set(ZvtTerm *term)
   int wwidth, wheight, wdepth;
   int process = 0;
   GdkColor pen;
+  GdkColormap *cmap = 0;
 
   /* if we have no 'background image', use a solid colour */
   if (b == NULL
@@ -661,8 +679,9 @@ zvt_background_set(ZvtTerm *term)
     else
       pixmap = pixmap_from_atom(b->data.atom.window, b->data.atom.atom);
     break;
-  case ZVT_BGTYPE_PIXMAP:	/* normal pixmap */
-    pixmap = b->data.pixmap;
+  case ZVT_BGTYPE_PIXMAP:	/* normal pixmap/window */
+    pixmap = b->data.pixmap.pixmap;
+    cmap = b->data.pixmap.cmap;
     break;
   case ZVT_BGTYPE_FILE:		/* file */
     pixbuf = gdk_pixbuf_new_from_file(b->data.pixmap_file);
@@ -676,38 +695,40 @@ zvt_background_set(ZvtTerm *term)
 
   if (process) {
     int width, height;
-    if (pixbuf==NULL) {
+    if (pixbuf==NULL && pixmap!=NULL) {
       int pwidth, pheight;
       gdk_window_get_size(pixmap, &pwidth, &pheight);
-      pixbuf = gdk_pixbuf_rgb_from_drawable(pixmap, 0, 0, pwidth, pheight);
+      pixbuf = gdk_pixbuf_get_from_drawable(0, pixmap, cmap, 0, 0, 0, 0, pwidth, pheight);
       /* free the pixmap? */
     }
 
-    width = gdk_pixbuf_get_width(pixbuf);
-    height = gdk_pixbuf_get_height(pixbuf);
+    if (pixbuf != NULL) {
+      width = gdk_pixbuf_get_width(pixbuf);
+      height = gdk_pixbuf_get_height(pixbuf);
+      
+      if (b->shade.a != 0) {
+	pixbuf_shade(pixbuf, b->shade.r, b->shade.g, b->shade.b, b->shade.a);
+      }
 
-    if (b->shade.a != 0) {
-      pixbuf_shade(pixbuf, b->shade.r, b->shade.g, b->shade.b, b->shade.a);
+      switch (b->scale.type) {
+      case ZVT_BGSCALE_NONE:		/* no scaling */
+	break;
+      case ZVT_BGSCALE_WINDOW:		/* scale to window */
+	width = wwidth;
+	height = wheight;
+	break;
+      case ZVT_BGSCALE_FIXED:		/* scale fixed amount */
+	width = (width * b->scale.x) >> 14;
+	height = (height * b->scale.y) >> 14;
+	break;
+      case ZVT_BGSCALE_ABSOLUTE:		/* scale absolute coords */
+	width = b->scale.x;
+	height = b->scale.y;
+	break;
+      }
+      if (b->scale.type != ZVT_BGSCALE_NONE)
+	pixbuf = pixbuf_scale(pixbuf, width, height);
     }
-
-    switch (b->scale.type) {
-    case ZVT_BGSCALE_NONE:		/* no scaling */
-      break;
-    case ZVT_BGSCALE_WINDOW:		/* scale to window */
-      width = wwidth;
-      height = wheight;
-      break;
-    case ZVT_BGSCALE_FIXED:		/* scale fixed amount */
-      width = (width * b->scale.x) >> 14;
-      height = (height * b->scale.y) >> 14;
-      break;
-    case ZVT_BGSCALE_ABSOLUTE:		/* scale absolute coords */
-      width = b->scale.x;
-      height = b->scale.y;
-      break;
-    }
-    if (b->scale.type != ZVT_BGSCALE_NONE)
-      pixbuf = pixbuf_scale(pixbuf, width, height);
   }
 
   /* if we have a pixbuf, then we need to convert it to a pixmap to actually

@@ -253,7 +253,6 @@ zvt_term_init (ZvtTerm *term)
   term->ic = NULL;
 
   /* grid sizing */
-  term->set_grid_size_pending = TRUE;
   term->grid_width = term->vx->vt.width;
   term->grid_height = term->vx->vt.height;
 
@@ -276,22 +275,27 @@ zvt_term_init (ZvtTerm *term)
 
   /* private data - set before calling functions */
   zp = g_malloc(sizeof(*zp));
-  if (zp) {
-    zp->scrollselect_id = -1;
-    zp->text_expand = 0;
-    zp->text_expandlen = 0;
-    zp->scroll_position = 0;
-    zp->fonttype=0;
-    zp->default_char=0;
-    zp->bold_save = 0;
-    zp->transpix = 0;
-    zp->paste_id = -1;
-    zp->paste = 0;
+  zp->scrollselect_id = -1;
+  zp->text_expand = 0;
+  zp->text_expandlen = 0;
+  zp->scroll_position = 0;
+  zp->fonttype=0;
+  zp->default_char=0;
+  zp->bold_save = 0;
+  zp->paste_id = -1;
+  zp->paste = 0;
+  
+  zp->auto_hint = TRUE;
+  
+  /* background stuff */
+  zp->background = 0;
+  zp->background_queue = 0;
+  
+  /* for queuing colours till we can set them */
+  zp->queue_red = 0;
+  zp->queue_green = 0;
+  zp->queue_blue = 0;
 
-    /* background stuff */
-    zp->background = 0;
-    zp->background_queue = 0;
-  }
   gtk_object_set_data(GTK_OBJECT (term), "_zvtprivate", zp);
 
   /* charwidth, charheight set here */
@@ -389,6 +393,30 @@ zvt_term_set_scroll_on_output   (ZvtTerm *term, int state)
 }
 
 /**
+ * zvt_term_set_auto_window_hint:
+ * @term: A &ZvtTerm widget.
+ * @state: Desired state.
+ *
+ * If @state is %TRUE, then window hints will automatically
+ * be set when the font is set or resized.  This function
+ * should be called before the widget is realized, otherwise
+ * it will not have an effect until the next font size change.
+ *
+ * Note that the default is %TRUE.
+ */
+void 
+zvt_term_set_auto_window_hint (ZvtTerm *term, int state)
+{
+  struct _zvtprivate *zp;
+  g_return_if_fail (term != NULL);                     
+  g_return_if_fail (ZVT_IS_TERM (term));
+
+  zp = _ZVT_PRIVATE(term);
+  zp->auto_hint = state;
+}
+
+
+/**
  * zvt_term_set_wordclass:
  * @term: A &ZvtTerm widget.
  * @class: A string of characters to consider a "word" character.
@@ -408,6 +436,51 @@ void zvt_term_set_wordclass(ZvtTerm *term, unsigned char *class)
   g_return_if_fail (ZVT_IS_TERM (term));
 
   vt_set_wordclass(term->vx, class);
+}
+
+static void
+term_force_size(ZvtTerm *term)
+{
+  struct _zvtprivate *zp = _ZVT_PRIVATE(term);
+  if (GTK_WIDGET_REALIZED (term)) {
+
+    /* ok, if we update the window hints ourselves, then we
+       use that to implicitly resize the window, otherwise
+       we do it explicitly */
+    if (zp->auto_hint) {
+      GdkGeometry hints;
+      GtkWidget *app;
+      
+      app = gtk_widget_get_toplevel(term);
+      g_assert (app != NULL);
+
+      hints.base_width = (GTK_WIDGET (term)->style->klass->xthickness * 2) + PADDING;
+      hints.base_height =  (GTK_WIDGET (term)->style->klass->ythickness * 2);
+      
+      hints.width_inc = term->charwidth;
+      hints.height_inc = term->charheight;
+      hints.min_width = hints.base_width + hints.width_inc;
+      hints.min_height = hints.base_height + hints.height_inc;
+
+      d(printf("setting window hints:\n  min %dx%d\n  base %dx%d\n  inc %dx%d\n",
+	       hints.min_width, hints.min_height, hints.base_width, hints.base_height,
+	       hints.width_inc, hints.height_inc));
+
+      gtk_window_set_geometry_hints(app,
+				    GTK_WIDGET(term),
+				    &hints,
+				    GDK_HINT_RESIZE_INC|GDK_HINT_MIN_SIZE|GDK_HINT_BASE_SIZE);
+    } else {
+      gtk_widget_queue_resize (GTK_WIDGET (term));
+    }
+
+    d(printf("forcing term size to %d, %d\n", term->grid_width, term->grid_height));
+    d(printf("                   = %d, %d\n",
+	     (term->grid_width * term->charwidth) + 
+	     (GTK_WIDGET(term)->style->klass->xthickness * 2) + PADDING,
+	     (term->grid_height * term->charheight) + 
+	     (GTK_WIDGET(term)->style->klass->ythickness * 2)));
+  }
 }
 
 /**
@@ -430,9 +503,9 @@ zvt_term_new_with_size (int cols, int rows)
 
   /* fudge the pixel size, not (really) used anyway */
   vt_resize (&term->vx->vt, cols, rows, cols*8, rows*8);
+
   term->grid_width = cols;
   term->grid_height = rows;
-  term->set_grid_size_pending = TRUE;
 
   return GTK_WIDGET (term);
 }
@@ -456,24 +529,6 @@ zvt_term_new (void)
   return GTK_WIDGET (term);
 }
 
-/* free's the tranparenxy pixmap */
-/* make special care any call to this also overrides or
-   clears the background gc to which the transparency pixmap
-   has been set as the tile */
-static void
-free_transpix(ZvtTerm *term)
-{
-  struct _zvtprivate *zp;
-  zp = gtk_object_get_data (GTK_OBJECT (term), "_zvtprivate");
-  if (zp && zp->transpix) {
-    gdk_xid_table_remove (GDK_WINDOW_XWINDOW(zp->transpix));
-    g_dataset_destroy (zp->transpix);
-    g_free (zp->transpix);
-    zp->transpix = 0;
-  }
-}
-
-
 static void
 zvt_term_destroy (GtkObject *object)
 {
@@ -484,7 +539,7 @@ zvt_term_destroy (GtkObject *object)
   g_return_if_fail (ZVT_IS_TERM (object));
 
   term = ZVT_TERM (object);
-  zp = gtk_object_get_data (GTK_OBJECT (term), "_zvtprivate");
+  zp = _ZVT_PRIVATE(term);
 
   if (term->timeout_id != -1)
     gtk_timeout_remove(term->timeout_id);
@@ -520,7 +575,6 @@ zvt_term_destroy (GtkObject *object)
       g_free(zp->text_expand);
     if (zp->bold_save)
       gdk_pixmap_unref(zp->bold_save);
-    free_transpix(term);
     if (zp->paste)
       g_free(zp->paste);
     if (zp->paste_id != -1)
@@ -554,6 +608,18 @@ zvt_term_reset (ZvtTerm *term, int hard)
   zvt_term_updated(term, 2);
 }
 
+static void
+clone_col(unsigned short **dest, unsigned short *from)
+{
+  if (*dest)
+    g_free(*dest);
+  if (from) {
+    *dest = g_malloc(18 * sizeof(unsigned short));
+    memcpy(*dest, from, 18 * sizeof(unsigned short));
+  } else {
+    *dest = 0;
+  }
+}
 
 /**
  * zvt_term_set_color_scheme:
@@ -575,13 +641,23 @@ zvt_term_set_color_scheme (ZvtTerm *term, gushort *red, gushort *grn, gushort *b
 {
   int  nallocated;
   GdkColor c;
+  struct _zvtprivate *zp;
   
   g_return_if_fail (term != NULL);
   g_return_if_fail (ZVT_IS_TERM (term));
   g_return_if_fail (red != NULL);
   g_return_if_fail (grn != NULL);
   g_return_if_fail (blu != NULL);
-  
+
+  zp = _ZVT_PRIVATE(term);
+
+  if (term->color_ctx == NULL) {
+    clone_col(&zp->queue_red, red);
+    clone_col(&zp->queue_green, grn);
+    clone_col(&zp->queue_blue, blu);
+    return;
+  }
+
   memset (term->colors, 0, sizeof (term->colors));
   nallocated = 0;
   gdk_color_context_get_pixels (term->color_ctx, red, grn, blu, 18, 
@@ -591,6 +667,11 @@ zvt_term_set_color_scheme (ZvtTerm *term, gushort *red, gushort *grn, gushort *b
   gdk_window_set_background (GTK_WIDGET (term)->window, &c);
   gdk_window_clear (GTK_WIDGET (term)->window);
 #endif
+
+  /* always clear up any old queued values */
+  clone_col(&zp->queue_red, 0);
+  clone_col(&zp->queue_green, 0);
+  clone_col(&zp->queue_blue, 0);
 }
 
 /**
@@ -623,11 +704,9 @@ zvt_term_set_size (ZvtTerm *term, guint width, guint height)
   g_return_if_fail (term != NULL);
   g_return_if_fail (ZVT_IS_TERM (term));
 
-  term->set_grid_size_pending = TRUE;
   term->grid_width = width;
   term->grid_height = height;
-
-  gtk_widget_queue_resize (GTK_WIDGET (term));
+  term_force_size(term);
 }
 
 static void
@@ -644,7 +723,7 @@ zvt_term_realize (GtkWidget *widget)
 
   GTK_WIDGET_SET_FLAGS (widget, GTK_REALIZED);
   term = ZVT_TERM (widget);
-  zp = gtk_object_get_data (GTK_OBJECT (term), "_zvtprivate");
+  zp = _ZVT_PRIVATE(term);
 
   attributes.x = widget->allocation.x;
   attributes.y = widget->allocation.y;
@@ -713,12 +792,19 @@ zvt_term_realize (GtkWidget *widget)
       gdk_color_context_new (gtk_widget_get_visual (GTK_WIDGET (term)),
 			     gtk_widget_get_colormap (GTK_WIDGET (term)));
 
-  /* Allocate default color set */
-  zvt_term_set_default_color_scheme (term);
+  /* Allocate default or requested colour set */
+  if (zp->queue_red != NULL && zp->queue_green != NULL && zp->queue_blue != NULL) {
+    zvt_term_set_color_scheme(term, zp->queue_red, zp->queue_green, zp->queue_blue);
+  } else {
+    zvt_term_set_default_color_scheme (term);
+  }
   
   /* set the initial colours */
   term->back_last = -1;
   term->fore_last = -1;
+
+  /* and the initial size ... */
+  term_force_size(term);
 
   /* input context */
   if (gdk_im_ready () && !term->ic) {
@@ -752,7 +838,7 @@ zvt_term_unrealize (GtkWidget *widget)
   g_return_if_fail (ZVT_IS_TERM (widget));
 
   term = ZVT_TERM (widget);
-  zp = gtk_object_get_data (GTK_OBJECT (term), "_zvtprivate");
+  zp = _ZVT_PRIVATE(term);
 
   /* free resources */
   gdk_cursor_destroy (term->cursor_bar);
@@ -878,7 +964,13 @@ zvt_term_focus_out(GtkWidget *widget, GdkEventFocus *event)
   return FALSE;
 }
 
-
+/*
+ Ok, this is a bit weird, we basically keep returning
+ the initial size, until we no longer need it (this is
+ during realization), then we just return 1x1 always,
+ so that the window can grow or shrink so that set_usize
+ always works.
+*/
 static void 
 zvt_term_size_request (GtkWidget      *widget,
 		       GtkRequisition *requisition)
@@ -892,23 +984,14 @@ zvt_term_size_request (GtkWidget      *widget,
 
   term = ZVT_TERM (widget);
 
-  if (term->set_grid_size_pending) {
-    grid_width = term->grid_width;
-    grid_height = term->grid_height;
-    
-    if (grid_width <= 0)
-      grid_width = 8;
-    
-    if (grid_height <= 0)
-      grid_height = 2;
-    term->set_grid_size_pending = FALSE;
-  } else {
-    grid_width = term->grid_width;
-    grid_height = term->grid_height;
-
-    grid_width = term->vx->vt.width;
-    grid_height = term->vx->vt.height;
-  }
+  grid_width = term->grid_width;
+  grid_height = term->grid_height;
+  
+  if (grid_width <= 0)
+    grid_width = 8;
+  
+  if (grid_height <= 0)
+    grid_height = 2;
 
   requisition->width = (grid_width * term->charwidth) + 
     (widget->style->klass->xthickness * 2) + PADDING;
@@ -932,6 +1015,8 @@ zvt_term_size_allocate (GtkWidget     *widget,
   g_return_if_fail (widget != NULL);
   g_return_if_fail (ZVT_IS_TERM (widget));
   g_return_if_fail (allocation != NULL);
+
+  widget->allocation = *allocation;
 
   if (GTK_WIDGET_REALIZED (widget)) {
       term = ZVT_TERM (widget);
@@ -970,11 +1055,6 @@ zvt_term_size_allocate (GtkWidget     *widget,
 	d(printf("zvt_term_size_allocate grid calc x=%d y=%d\n", 
 		 grid_width,
 		 grid_height) );
-
-	/* is this right? Seems we have to update this... */
-	/* term->set_grid_size_pending = TRUE; */
-	term->grid_height = grid_height;
-	term->grid_width = grid_width;
       }
 
       /* resize the scrollbar */
@@ -985,7 +1065,6 @@ zvt_term_size_allocate (GtkWidget     *widget,
 		term->vx->vt.width,
 		term->vx->vt.height) );
   }
-  widget->allocation = *allocation;
 }
 
 
@@ -1016,19 +1095,44 @@ zvt_term_draw (GtkWidget *widget, GdkRectangle *area)
       c.pixel = term->colors [17];
       gdk_window_set_background (GTK_WIDGET (term)->window, &c);
     }
-    
+
     term->in_expose = 1;
     
     gdk_window_get_size (widget->window, &width, &height);
 
     if(zp->background) {
+      /* draw the border area - left edge */
       gdk_draw_rectangle (widget->window,
 			  term->back_gc, 1,
-			  0, 0,
-			  widget->allocation.width,
-			  widget->allocation.height);
-    }
-    fill=17;
+			  0,
+			  widget->style->klass->ythickness,
+			  widget->style->klass->xthickness + PADDING,
+			  height - (widget->style->klass->ythickness*2));
+      /* right edge */
+      gdk_draw_rectangle (widget->window,
+			  term->back_gc, 1,
+			  width - widget->style->klass->xthickness,
+			  widget->style->klass->ythickness,
+			  widget->style->klass->xthickness,
+			  height - (widget->style->klass->ythickness*2));
+      /* top */
+      gdk_draw_rectangle (widget->window,
+			  term->back_gc, 1,
+			  0,
+			  0,
+			  width,
+			  widget->style->klass->ythickness);
+      /* bottom */
+      gdk_draw_rectangle (widget->window,
+			  term->back_gc, 1,
+			  0,
+			  height - widget->style->klass->ythickness,
+			  width,
+			  widget->style->klass->ythickness);
+      /* force a full redraw of everything else */
+      fill = -1;
+    } else
+      fill=17;
 
     /* assume the screen is filled with background? */
     vt_update_rect (term->vx, fill, 0, 0,
@@ -1182,7 +1286,7 @@ zvt_term_set_fonts_internal(ZvtTerm *term, GdkFont *font, GdkFont *font_bold)
   if (font==NULL)
     return;
 
-  zp = gtk_object_get_data (GTK_OBJECT (term), "_zvtprivate");
+  zp = _ZVT_PRIVATE(term);
 
   /* get the font/fontset size, and set the font type */
   switch (font->type) {
@@ -1207,15 +1311,10 @@ zvt_term_set_fonts_internal(ZvtTerm *term, GdkFont *font, GdkFont *font_bold)
   }
   d(printf("fonttype = %d\n", zp->fonttype));
 
-  /* set up a size pending request so that no matter
-   * what the queue resize will resize the widget to
-   * have the same grid size
-   */
-  if (!term->set_grid_size_pending) {
-    term->set_grid_size_pending = TRUE;
-    term->grid_width = term->vx->vt.width;
-    term->grid_height = term->vx->vt.height;
-  }
+  /* set the desired size, and force a resize */
+  term->grid_width = term->vx->vt.width;
+  term->grid_height = term->vx->vt.height;
+  term_force_size(term);
 
   if (term->font)
     gdk_font_unref (term->font);
@@ -1239,7 +1338,7 @@ zvt_term_set_fonts_internal(ZvtTerm *term, GdkFont *font, GdkFont *font_bold)
 				   1, term->charheight, depth);
   }
 
-  gtk_widget_queue_resize (GTK_WIDGET (term));
+  /*gtk_widget_queue_resize (GTK_WIDGET (term));*/
 }
 
 /**
@@ -1427,7 +1526,7 @@ zvt_term_button_press (GtkWidget      *widget,
 
   term = ZVT_TERM (widget);
   vx = term->vx;
-  zp = gtk_object_get_data (GTK_OBJECT (term), "_zvtprivate");
+  zp = _ZVT_PRIVATE(term);
 
   zvt_term_show_pointer (term);
 
@@ -1589,7 +1688,7 @@ zvt_term_button_release (GtkWidget      *widget,
 
   term = ZVT_TERM (widget);
   vx = term->vx;
-  zp = gtk_object_get_data (GTK_OBJECT (term), "_zvtprivate");
+  zp = _ZVT_PRIVATE(term);
 
   gdk_window_get_pointer (widget->window, &x, &y, &mask);
 
@@ -1684,7 +1783,7 @@ static gint zvt_selectscroll(gpointer data)
 
   widget = data;
   term = ZVT_TERM (widget);
-  zp = gtk_object_get_data (GTK_OBJECT (term), "_zvtprivate");
+  zp = _ZVT_PRIVATE(term);
 
   if (zp) {
     zvt_term_scroll_by_lines(term, zp->scrollselect_dir);
@@ -1713,7 +1812,7 @@ zvt_term_motion_notify (GtkWidget      *widget,
 
   term = ZVT_TERM (widget);
   vx = term->vx;
-  zp = gtk_object_get_data (GTK_OBJECT (term), "_zvtprivate");
+  zp = _ZVT_PRIVATE(term);
 
   x=(((int)event->x))/term->charwidth;
   y=(((int)event->y))/term->charheight;
@@ -2005,7 +2104,7 @@ zvt_term_writechild(ZvtTerm *term, char *data, int len)
   int length;
   struct _zvtprivate *zp;
 
-  zp = gtk_object_get_data (GTK_OBJECT (term), "_zvtprivate");
+  zp = _ZVT_PRIVATE(term);
 
   /* if we are already pasting something, make sure we append ... */
   if (zp->paste_id == -1)
@@ -2041,7 +2140,7 @@ zvt_term_writemore (gpointer data, gint fd, GdkInputCondition condition)
   struct _zvtprivate *zp;
   int length;
 
-  zp = gtk_object_get_data (GTK_OBJECT (term), "_zvtprivate");
+  zp = _ZVT_PRIVATE(term);
   length = vt_writechild(&term->vx->vt, zp->paste + zp->paste_offset, zp->paste_len);
 
   d(printf("zvt_writemore(): written %d of %d bytes\n", length, zp->paste_len));
@@ -2110,7 +2209,7 @@ zvt_term_scrollbar_moved (GtkAdjustment *adj, GtkWidget *widget)
 
   term = ZVT_TERM (widget);
   vx = term->vx;
-  zp = gtk_object_get_data (GTK_OBJECT (term), "_zvtprivate");
+  zp = _ZVT_PRIVATE(term);
 
   line = term->vx->vt.scrollbacklines - (int)adj->value;
 
@@ -2883,7 +2982,7 @@ vt_draw_text(void *user_data, struct vt_line *line, int row, int col, int len, i
   y = row * term->charheight + term->font->ascent;
   offx = widget->style->klass->xthickness + PADDING;
   offy = widget->style->klass->ythickness;
-  zp = gtk_object_get_data (GTK_OBJECT (term), "_zvtprivate");
+  zp = _ZVT_PRIVATE(term);
 
   if (attr & VTATTR_BOLD)  {
     or = 8;
@@ -3128,7 +3227,7 @@ vt_scroll_area(void *user_data, int firstrow, int count, int offset, int fill)
   }
 
   term = ZVT_TERM (widget);
-  zp = gtk_object_get_data (GTK_OBJECT (term), "_zvtprivate");
+  zp = _ZVT_PRIVATE(term);
 
   d(printf("scrolling %d rows from %d, by %d lines, fill=%d\n",
 	  count,firstrow,offset,fill));

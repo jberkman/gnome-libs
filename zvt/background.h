@@ -50,7 +50,10 @@ struct zvt_background {
 
   /* possible sources of base image */
   union {
-    GdkPixmap *pixmap;
+    struct {
+      GdkPixmap *pixmap;
+      GdkColormap *cmap;
+    } pixmap;
     GdkPixbuf *pixbuf;
     char *pixmap_file;
     struct {
@@ -86,7 +89,7 @@ struct _ZvtTerm;
 struct zvt_background *zvt_term_background_new(struct _ZvtTerm *t);
 void zvt_term_background_unref(struct zvt_background *b);
 void zvt_term_background_ref(struct zvt_background *b);
-void zvt_term_background_set_pixmap(struct zvt_background *b, GdkPixmap *p);
+void zvt_term_background_set_pixmap(struct zvt_background *b, GdkPixmap *p, GdkColormap *cmap);
 void zvt_term_background_set_pixmap_atom(struct zvt_background *b, GdkWindow *win, GdkAtom atom);
 void zvt_term_background_set_pixmap_file(struct zvt_background *b, char *filename);
 void zvt_term_background_set_pixbuf(struct zvt_background *b, GdkPixbuf *pb);

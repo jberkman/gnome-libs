@@ -81,7 +81,7 @@ struct _ZvtTerm
   gint timeout_id;
 
   /* resizing */
-  gboolean set_grid_size_pending;
+  gboolean set_grid_size_pending__dummy;/* totally deprecated/unused */
   guint grid_width;
   guint grid_height;
 
@@ -161,9 +161,6 @@ struct _zvtprivate
   int scroll_position;		/* offset for background pixmap when scrolling */
   GdkPixmap *bold_save;		/* when drawing bold, use this to save the
 				   maybe-overwritten line. */
-  GdkPixmap *transpix;		/* transparency pixmap.  Must be treated
-				   differently so we dont blow away the root
-				   pixmap! */
   char *paste;			/* where paste overflow is stored temporarily */
   int paste_len;		/* how much left to write */
   int paste_offset;		/* how much written so far */
@@ -175,6 +172,10 @@ struct _zvtprivate
   struct zvt_background *background_queue; /* if set before realised */
   GdkPixmap *background_pixmap;	/* actual pixmap used to pre-draw background */
   int background_watchsig;	/* signal to watch window movement */
+
+  unsigned short *queue_red, *queue_green, *queue_blue;
+
+  char auto_hint;		/* when 1, we automatically set window manager size hints */
 };
 
 /* *** DO NOT USE THIS IN APPS! *** */
@@ -222,6 +223,7 @@ void         zvt_term_set_color_scheme         (ZvtTerm *term,
 void         zvt_term_set_default_color_scheme (ZvtTerm *term);
 void         zvt_term_set_del_key_swap         (ZvtTerm *term, int state);
 void	     zvt_term_set_wordclass	       (ZvtTerm *term, unsigned char *klass);
+void	     zvt_term_set_auto_window_hint     (ZvtTerm *term, int state);
 
 /* regular expression matching - automagically! */
 int	     zvt_term_match_add		       (ZvtTerm *term, char *regex,

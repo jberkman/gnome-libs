@@ -1,3 +1,60 @@
+1999-12-30  Michael Zucchi  <zucchi@zedzone.mmc.com.au>
+
+	* background.c (pixmap_from_atom): Trap errors, so a missing root
+	pixmap doesn't crash us!
+	(zvt_background_set): Do some valid pointer checking before we try
+	and use them, where they might fail.
+
+	* zvtterm.h (struct _zvtprivate): Removed transpix, no longer
+	used.
+
+	* zvtterm.c (zvt_term_draw): When we do a whole draw, first
+	refresh the border then update each line individually rather than
+	clearing the whole screen.  It is a little slower, but visually
+	smoother esp on opaque move.
+	(free_transpix): Use _ZVT_PRIVATE() macro to get private data, and
+	in all other functions using the direct method.
+	(zvt_term_size_request): Ignore size_pending flag, and always
+	supply the grid_width/grid_height as the desired size.
+	(zvt_term_size_allocate): Make sure we DO NOT set the grid size
+	to the real grid size.  This causes loops in the gtk resize code
+	otherwise as it changes what we say want (wrongly!).
+	(term_force_size): New funciton - forces the size of the terminal
+	window.  Either performs a queue resize, or sets window hints
+	(which does as well), if the auto_hint option is on.
+	(zvt_term_new_with_size): Remove reference to
+	set_grid_size_pending (and in all other functions).
+	(zvt_term_set_size): Call term_force_size() to set the size.
+	(zvt_term_realize): Ditto.
+	(zvt_term_set_fonts_internal): Force the size to match the current
+	terminal size.
+	(zvt_term_set_auto_window_hint): New API function.  Controls if
+	the terminal will try and auto-window manager-hint the application
+	window based on the terminal window geometry.  By default this is
+	enabled, and tracks font size changes, etc.
+	(zvt_term_destroy): Removed call to free_transpix().
+	(free_transpix): Removed function, no longer needed.
+
+1999-12-09  Michael Zucchi  <zucchi@zedzone.mmc.com.au>
+
+	* background.c (pixbuf_from_atom): Use new
+	gdk_pixbuf_get_from_drawable() function to get the pixbuf.
+	Remove reference to gdk-pixbuf-drawable.h file.
+	(zvt_term_background_set_pixmap): Changed to include a colourmap
+	as well, and to properly ref/unref pixmaps.  Fixed all callers.
+	(zvt_background_set): Changed to use get_from_drawable, and to
+	support the colourmap of a pixmap/drawable, when further
+	processing required.
+
+1999-12-06  Michael Zucchi  <zucchi@zedzone.mmc.com.au>
+
+	* zvtterm.c (zvt_term_set_color_scheme): If there is no colour
+	context setup yet, then queue the colour setting request until
+	there is one.
+	(zvt_term_realize): If there was a queued colour request, then use
+	it rather than the default when setting up the initial colour
+	scheme.
+
 1999-12-08  Jaka Mocnik  <jaka.mocnik@kiss.uni-lj.si>
 
 	* Makefile.am (zterm_LDADD): properly link zterm to gdk-pixbuf,
