@@ -109,6 +109,12 @@ AC_CHECK_FUNC(openpty, [
 	AC_SUBST(UTIL_LIBS)
 ])
 LIBS="$oLIBS"
+AC_CHECK_HEADERS(pty.h, [
+	AC_DEFINE(HAVE_PTY_H)
+])
+AC_CHECK_HEADERS(util.h, [
+	AC_DEFINE(HAVE_UTIL_H)
+])
 
 dnl And workaround for a Autoconf 2.4 bug:
 if test x$ac_cv_func_grantpt = xyes; then

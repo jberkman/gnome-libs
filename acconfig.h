@@ -33,3 +33,5 @@
 #undef HAVE_LIBAUDIOFILE
 #undef umode_t
 #undef HAVE_OPENPTY
+#undef HAVE_PTY_H
+#undef HAVE_UTIL_H

@@ -1,3 +1,9 @@
+1998-11-09  Michael Zucchi  <zucchi@zzedzone.fsi.com.au>
+
+	* acconfig.h: Added HAVE_PTY_H, HAVE_UTIL_H define.
+
+	* configure.in (gnome-pty-support): Added check for pty.h, util.h.
+
 1998-11-09  Martin Baulig  <martin@home-of-linux.org>
 
 	* configure.in (AC_CHECK_HEADERS): Add `utmpx.h pty.h libutil.h'.
