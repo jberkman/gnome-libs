@@ -1,3 +1,9 @@
+Mon Jan 11 11:54:00 1999  Manish Vachharajani <mvachhar@vger.rutgers.edu>
+
+	* libgnome/gnome-exec.c: Remove the _with_fds functions and 
+	add a new _fds API with a flag to ask if you want to close fds or 
+	not.
+
 1999-01-11  Miguel de Icaza  <miguel@nuclecu.unam.mx>
 
 	* libgnome/gnomelib-init.c (gnomelib_init): Improved
