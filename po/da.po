@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-libs 1.95.0\n"
 "POT-Creation-Date: 2000-07-27 14:18+0200\n"
-"PO-Revision-Date: 2001-01-16 17:43+01:00\n"
+"PO-Revision-Date: 2001-02-27 17:43+01:00\n"
 "Last-Translator: Keld Simonsen <keld@dkuug.dk>\n"
 "Language-Team: Dansk/Danish <dansk@klid.dk>\n"
 "MIME-Version: 1.0\n"
@@ -105,6 +105,10 @@ msgstr "Kan ikke køre kommando '%s'!"
 msgid "Command '%s' did not return an ID!"
 msgstr "Kommando '%s' returnerede ikke en ID!"
 
+#: libgnome/gnomelib-init2.c:1203
+msgid "Help options"
+msgstr "Valgmuligheder for hjælp"
+
 #: libgnome/gnomelib-init2.c:1228
 msgid "Dynamic modules to load"
 msgstr "Dynamiske moduler som skal indlæses"
@@ -112,14 +116,6 @@ msgstr "Dynamiske moduler som skal indlæses"
 #: libgnome/gnomelib-init2.c:1229
 msgid "MODULE1,MODULE2,..."
 msgstr "MODUL1,MODUL2,..."
-
-#: libgnomeui/gnome-appbar.c:682
-msgid ""
-"gnome_appbar_set_progress deprecated, use "
-"gnome_appbar_set_progress_percentage"
-msgstr ""
-"gnome_appbar_set_progress er udgået, brug "
-"gnome_appbar_set_progress_percentage"
 
 #: libcompat/gnome-dentry-edit.c:184 libgnomeui/gnome-ditem-edit.c:210
 msgid "Name:"
@@ -184,52 +180,52 @@ msgstr "Kommando for slip af URLer:"
 msgid "Drop one URL at a time only."
 msgstr "Slip kun én URL ad gangen."
 
-#: libcompat/gnome-dentry-edit.c:367 libgnomeui/gnome-ditem-edit.c:490
+#: libcompat/gnome-dentry-edit.c:367 libgnomeui/gnome-ditem-edit.c:487
 msgid "Try this before using:"
 msgstr "Prøv dette før brug:"
 
-#: libcompat/gnome-dentry-edit.c:377 libgnomeui/gnome-ditem-edit.c:500
+#: libcompat/gnome-dentry-edit.c:377 libgnomeui/gnome-ditem-edit.c:497
 msgid "Documentation:"
 msgstr "Dokumentation:"
 
-#: libgnomeui/gnome-ditem-edit.c:510
+#: libgnomeui/gnome-ditem-edit.c:507
 msgid "Window titles to wait for (comma separated):"
 msgstr "Vinduestitler der skal ventes på (kommasepareret):"
 
-#: libcompat/gnome-dentry-edit.c:387 libgnomeui/gnome-ditem-edit.c:520
+#: libcompat/gnome-dentry-edit.c:387 libgnomeui/gnome-ditem-edit.c:517
 msgid "Name/Comment translations:"
 msgstr "Navn/Kommentar-oversættelser:"
 
-#: libcompat/gnome-dentry-edit.c:390 libgnomeui/gnome-ditem-edit.c:523
+#: libcompat/gnome-dentry-edit.c:390 libgnomeui/gnome-ditem-edit.c:520
 msgid "Language"
 msgstr "Sprog"
 
-#: libcompat/gnome-dentry-edit.c:391 libgnomeui/gnome-ditem-edit.c:524
+#: libcompat/gnome-dentry-edit.c:391 libgnomeui/gnome-ditem-edit.c:521
 msgid "Name"
 msgstr "Navn"
 
-#: libcompat/gnome-dentry-edit.c:392 libgnomeui/gnome-ditem-edit.c:525
+#: libcompat/gnome-dentry-edit.c:392 libgnomeui/gnome-ditem-edit.c:522
 msgid "Comment"
 msgstr "Kommentar"
 
-#: libcompat/gnome-dentry-edit.c:420 libgnomeui/gnome-ditem-edit.c:553
+#: libcompat/gnome-dentry-edit.c:420 libgnomeui/gnome-ditem-edit.c:550
 msgid "Add/Set"
 msgstr "Tilføj/Sæt"
 
-#: libcompat/gnome-dentry-edit.c:425 libgnomeui/gnome-ditem-edit.c:558
-#: libgnomeui/gnome-stock.c:709
+#: libcompat/gnome-dentry-edit.c:425 libgnomeui/gnome-ditem-edit.c:555
+#: libgnomeui/gnome-stock.c:566
 msgid "Remove"
 msgstr "Fjern"
 
-#: libcompat/gnome-dentry-edit.c:507 libgnomeui/gnome-ditem-edit.c:705
+#: libcompat/gnome-dentry-edit.c:507 libgnomeui/gnome-ditem-edit.c:702
 msgid "Basic"
 msgstr "Basal"
 
-#: libgnomeui/gnome-ditem-edit.c:709
+#: libgnomeui/gnome-ditem-edit.c:706
 msgid "Drag and Drop"
 msgstr "Træk-og-slip"
 
-#: libcompat/gnome-dentry-edit.c:511 libgnomeui/gnome-ditem-edit.c:713
+#: libcompat/gnome-dentry-edit.c:511 libgnomeui/gnome-ditem-edit.c:710
 msgid "Advanced"
 msgstr "Avanceret"
 
@@ -258,11 +254,11 @@ msgstr "Placering:"
 msgid "Save As Type:"
 msgstr "Gem som type:"
 
-#: libgnomeui/gnome-gconf.c:581
+#: libgnomeui/gnome-gconf.c:476
 msgid "GNOME GConf Support"
 msgstr "GNOME GConf støtte"
 
-#: libgnomeui/gnome-gconf.c:621
+#: libgnomeui/gnome-gconf.c:516
 #, c-format
 msgid ""
 "You attempted to change an aspect of your configuration that your system "
@@ -275,7 +271,7 @@ msgstr ""
 "ændre. Nogen af opsætningerne du har valgt kan muligvis ikke udføres, eller "
 "vil ikke blive brugt næste gang du bruger denne anvendelse (%s)."
 
-#: libgnomeui/gnome-gconf.c:624
+#: libgnomeui/gnome-gconf.c:519
 #, c-format
 msgid ""
 "An error occurred while loading or saving configuration information for %s. "
@@ -284,7 +280,7 @@ msgstr ""
 "En fejl skete ved indlæsning eller gemning af konfigureringsinformation for "
 "%s. Nogen af dine konfigurationsindstillinger virker muligvis ikke korrekt."
 
-#: libgnomeui/gnome-gconf.c:646
+#: libgnomeui/gnome-gconf.c:541
 #, c-format
 msgid "GConf error details: %s\n"
 msgstr "Detaljer om GConf fejl: %s\n"
@@ -344,7 +340,7 @@ msgid "The toplevel widget"
 msgstr "Den øverste widget"
 
 #: demos/stock_demo.c:315 libgnomeui/gnome-helpsys.c:219
-#: libgnomeui/gnome-stock.c:724
+#: libgnomeui/gnome-stock.c:581
 msgid "Help"
 msgstr "Hjælp"
 
@@ -352,20 +348,20 @@ msgstr "Hjælp"
 msgid "Show help for a specific region of the application"
 msgstr "Vis hjælp for en speciel del af applikationen"
 
-#: libgnomeui/gnome-helpsys.c:224
+#: libgnomeui/gnome-helpsys.c:225
 msgid "Style"
 msgstr "Stil"
 
-#: libgnomeui/gnome-helpsys.c:225
+#: libgnomeui/gnome-helpsys.c:226
 msgid "Change the way help is displayed"
 msgstr "Ændr måden hjælpen vises på"
 
-#: libgnomeui/gnome-helpsys.c:926 libgnomeui/gnome-helpsys.c:1020
+#: libgnomeui/gnome-helpsys.c:928 libgnomeui/gnome-helpsys.c:1022
 msgid "No help is available for the selected portion of the application."
 msgstr "Ingen hjælp er tilgængelig for den valgte del af denne applikation."
 
 #. FIXME: properly handle the error!
-#: libgnomeui/gnome-helpsys.c:1190
+#: libgnomeui/gnome-helpsys.c:1192
 #, c-format
 msgid "Cought GnomeURL error: %s"
 msgstr "Opfangede GnomeURL fejl: %s"
@@ -390,7 +386,7 @@ msgstr "Teksten på knappen"
 msgid "End World Hunger"
 msgstr "End world hunger"
 
-#: libgnomeui/gnome-about.c:1169 libgnomeui/gnome-href.c:395
+#: libgnomeui/gnome-about.c:1169 libgnomeui/gnome-href.c:399
 msgid ""
 "Error occured while trying to launch the URL handler.\n"
 "Please check the settings in the Control Center if they are correct."
@@ -518,17 +514,17 @@ msgid "Unknown"
 msgstr "Ukendt"
 
 #. browse button ...
-#: libcompat/gnome-spell.c:620 libcompat/gnome-spell.c:637
-#: libcompat/gnome-spell.c:654 libgnomeui/gnome-file-entry.c:445
-#: libgnomeui/gnome-selector.c:859
+#: libcompat/gnome-file-entry.c:445 libcompat/gnome-spell.c:620
+#: libcompat/gnome-spell.c:637 libcompat/gnome-spell.c:654
+#: libgnomeui/gnome-selector.c:1040
 msgid "Browse..."
 msgstr "Gennemse..."
 
-#: libgnomeui/gnome-selector.c:869
+#: libgnomeui/gnome-selector.c:1051
 msgid "Default..."
 msgstr "Forvalgt..."
 
-#: libgnomeui/gnome-selector.c:879
+#: libgnomeui/gnome-selector.c:1062
 msgid "Clear..."
 msgstr "Tøm..."
 
@@ -974,200 +970,31 @@ msgstr "App-ID"
 msgid "The application ID string"
 msgstr "Applikationens ID-streng"
 
-#: libgnomeui/gnome-calculator.c:431 libgnomeui/gnome-calculator.c:1074
-msgid "DEG"
-msgstr "DEG"
-
-#: libgnomeui/gnome-calculator.c:433
-msgid "RAD"
-msgstr "RAD"
-
-#: libgnomeui/gnome-calculator.c:435
-msgid "GRAD"
-msgstr "GRAD"
-
-#: libgnomeui/gnome-calculator.c:1064
-msgid "1/x"
-msgstr "1/x"
-
-#: libgnomeui/gnome-calculator.c:1065
-msgid "x^2"
-msgstr "x^2"
-
-#: libgnomeui/gnome-calculator.c:1066
-msgid "SQRT"
-msgstr "SQRT"
-
-#: libgnomeui/gnome-calculator.c:1067
-msgid "CE/C"
-msgstr "CE/C"
-
-#: libgnomeui/gnome-calculator.c:1068
-msgid "AC"
-msgstr "AC"
-
-#. inverse button
-#: libgnomeui/gnome-calculator.c:1071
-msgid "sin"
-msgstr "sin"
-
-#: libgnomeui/gnome-calculator.c:1072
-msgid "cos"
-msgstr "cos"
-
-#: libgnomeui/gnome-calculator.c:1073
-msgid "tan"
-msgstr "tan"
-
-#: libgnomeui/gnome-calculator.c:1076
-msgid "e"
-msgstr "e"
-
-#: libgnomeui/gnome-calculator.c:1077
-msgid "EE"
-msgstr "EE"
-
-#: libgnomeui/gnome-calculator.c:1078
-msgid "log"
-msgstr "log"
-
-#: libgnomeui/gnome-calculator.c:1079
-msgid "ln"
-msgstr "ln"
-
-#: libgnomeui/gnome-calculator.c:1080
-msgid "x^y"
-msgstr "x^y"
-
-#: libgnomeui/gnome-calculator.c:1082
-msgid "PI"
-msgstr "PI"
-
-#: libgnomeui/gnome-calculator.c:1083
-msgid "x!"
-msgstr "x!"
-
-#: libgnomeui/gnome-calculator.c:1084
-msgid "("
-msgstr "("
-
-#: libgnomeui/gnome-calculator.c:1085
-msgid ")"
-msgstr ")"
-
-#: libgnomeui/gnome-calculator.c:1086
-msgid "/"
-msgstr "/"
-
-#: libgnomeui/gnome-calculator.c:1088
-msgid "STO"
-msgstr "STO"
-
-#: libgnomeui/gnome-calculator.c:1089
-msgid "7"
-msgstr "7"
-
-#: libgnomeui/gnome-calculator.c:1090
-msgid "8"
-msgstr "8"
-
-#: libgnomeui/gnome-calculator.c:1091
-msgid "9"
-msgstr "9"
-
-#: libgnomeui/gnome-calculator.c:1092
-msgid "*"
-msgstr "*"
-
-#: libgnomeui/gnome-calculator.c:1094
-msgid "RCL"
-msgstr "RCL"
-
-#: libgnomeui/gnome-calculator.c:1095
-msgid "4"
-msgstr "4"
-
-#: libgnomeui/gnome-calculator.c:1096
-msgid "5"
-msgstr "5"
-
-#: libgnomeui/gnome-calculator.c:1097
-msgid "6"
-msgstr "6"
-
-#: libgnomeui/gnome-calculator.c:1098
-msgid "-"
-msgstr "-"
-
-#: libgnomeui/gnome-calculator.c:1100
-msgid "SUM"
-msgstr "SUM"
-
-#: libgnomeui/gnome-calculator.c:1101
-msgid "1"
-msgstr "1"
-
-#: libgnomeui/gnome-calculator.c:1102
-msgid "2"
-msgstr "2"
-
-#: libgnomeui/gnome-calculator.c:1103
-msgid "3"
-msgstr "3"
-
-#: libgnomeui/gnome-calculator.c:1104
-msgid "+"
-msgstr "+"
-
-#: libgnomeui/gnome-calculator.c:1106
-msgid "EXC"
-msgstr "EXC"
-
-#: libgnomeui/gnome-calculator.c:1107
-msgid "0"
-msgstr "0"
-
-#: libgnomeui/gnome-calculator.c:1108
-msgid "."
-msgstr "."
-
-#: libgnomeui/gnome-calculator.c:1109
-msgid "+/-"
-msgstr "+/-"
-
-#: libgnomeui/gnome-calculator.c:1110
-msgid "="
-msgstr "="
-
-#: libgnomeui/gnome-calculator.c:1321
-msgid "INV"
-msgstr "INV"
-
-#: libgnomeui/gnome-client.c:828
+#: libgnomeui/gnome-client.c:836
 msgid "Specify session management ID"
 msgstr "Angiv ID for sessionskontrol"
 
-#: libgnomeui/gnome-client.c:828
+#: libgnomeui/gnome-client.c:836
 msgid "ID"
 msgstr "ID"
 
-#: libgnomeui/gnome-client.c:831
+#: libgnomeui/gnome-client.c:839
 msgid "Specify prefix of saved configuration"
 msgstr "Angiv præfiks på gemt konfiguration"
 
-#: libgnomeui/gnome-client.c:831
+#: libgnomeui/gnome-client.c:839
 msgid "PREFIX"
 msgstr "PREFIX"
 
-#: libgnomeui/gnome-client.c:834
+#: libgnomeui/gnome-client.c:842
 msgid "Disable connection to session manager"
 msgstr "Afbryd forbindelse til sessionhåndteringen"
 
-#: libgnomeui/gnome-client.c:846
+#: libgnomeui/gnome-client.c:854
 msgid "Session management"
 msgstr "Sessionshåndtering"
 
-#: libgnomeui/gnome-client.c:2333
+#: libgnomeui/gnome-client.c:2340
 msgid "Cancel Logout"
 msgstr "Annullér logud"
 
@@ -1224,7 +1051,7 @@ msgstr "Start-tiden"
 msgid "Calendar"
 msgstr "Kalender"
 
-#: libgnomeui/gnome-dateedit.c:845
+#: libgnomeui/gnome-dateedit.c:847
 msgid "gnome_date_edit_get_date deprecated, use gnome_date_edit_get_time"
 msgstr "gnome_date_edit_get_date er forældet, brug gnome_date_edit_get_time"
 
@@ -1236,16 +1063,13 @@ msgstr "Tilbage"
 msgid "Finish"
 msgstr "Færdig"
 
-#: libgnomeui/gnome-file-entry.c:314
-msgid "Select file"
-msgstr "Vælg fil"
-
-#: libgnomeui/gnome-font-picker.c:856 libgnomeui/gnome-stock.c:729
+#: libgnomeui/gnome-font-picker.c:856 libgnomeui/gnome-stock.c:586
 msgid "Font"
 msgstr "Skrifttype"
 
 # This text mustn't be too long, it has to fit inside a gnome-icon
-#: libgnomeui/gnome-icon-entry.c:231 libgnomeui/gnome-icon-entry.c:540
+#: libgnomeui/gnome-icon-entry.c:351 libgnomeui/gnome-icon-entry.c:720
+#: libgnomeui/gnome-icon-entry.c:737
 msgid "No Icon"
 msgstr "Ikon"
 
@@ -1276,11 +1100,11 @@ msgstr "FLAGS"
 msgid "Gdk debugging flags to unset"
 msgstr "Gdk aflusningsflag at fjerne"
 
-#: libgnomeui/gnome-init.c:87 libgnomeui/gnome-init.c:239
+#: libgnomeui/gnome-init.c:87 libgnomeui/gnome-init.c:241
 msgid "X display to use"
 msgstr "X-skærm som skal bruges"
 
-#: libgnomeui/gnome-init.c:87 libgnomeui/gnome-init.c:239
+#: libgnomeui/gnome-init.c:87 libgnomeui/gnome-init.c:241
 msgid "DISPLAY"
 msgstr "DISPLAY"
 
@@ -1341,19 +1165,19 @@ msgid "MODULE"
 msgstr "MODULE"
 
 #. dialog display isn't working out
-#: libgnomeui/gnome-init.c:471
+#: libgnomeui/gnome-init.c:473
 msgid "Multiple segmentation faults occurred; can't display error dialog\n"
 msgstr "Indtil flere segmentationsfejl opstod; kan ikke vise fejldialogboks\n"
 
-#: libgnomeui/gnome-init.c:634
+#: libgnomeui/gnome-init.c:636
 msgid "GTK options"
 msgstr "GTK valgmuligheder"
 
-#: libgnomeui/gnome-init.c:635
+#: libgnomeui/gnome-init.c:637
 msgid "GNOME GUI options"
 msgstr "GNOME GUI valgmuligheder"
 
-#: libgnomeui/gnome-init.c:786
+#: libgnomeui/gnome-init.c:788
 #, c-format
 msgid "%s options"
 msgstr "%s valgmuligheder"
@@ -1377,26 +1201,6 @@ msgstr "Spørgsmål"
 #: libgnomeui/gnome-messagebox.c:215
 msgid "Message"
 msgstr "Meddelelse"
-
-#: libgnomeui/gnome-number-entry.c:217
-msgid "Calculator"
-msgstr "Lommeregner"
-
-#: libgnomeui/gnome-number-entry.c:275
-msgid "Calculator..."
-msgstr "Lommeregner..."
-
-#: libgnomeui/gnome-pixmap-entry.c:257 libgnomeui/gnome-pixmap-entry.c:564
-msgid "No Image"
-msgstr "Intet billede"
-
-#: libgnomeui/gnome-pixmap-entry.c:460
-msgid "Can't find an hbox, using a normal file selection"
-msgstr "Kan ikke finde en hbox, bruger normal filvælger"
-
-#: libgnomeui/gnome-pixmap-entry.c:466
-msgid "Preview"
-msgstr "Eksempel"
 
 #: libgnomeui/gnome-popup-help.c:57
 msgid "_Help with this"
@@ -1437,95 +1241,95 @@ msgstr "%a %d %b %T %Y"
 msgid "-freefont-garamond-*-*-*-*-30-170-*-*-*-*-*-*,*-r-*"
 msgstr "-freefont-garamond-*-*-*-*-30-170-*-*-*-*-*-*,*-r-*"
 
-#: libgnomeui/gnome-stock.c:706
+#: libgnomeui/gnome-stock.c:563
 msgid "Add"
 msgstr "Tilføj"
 
-#: libgnomeui/gnome-stock.c:707
+#: libgnomeui/gnome-stock.c:564
 msgid "Clear"
 msgstr "Ryd"
 
-#: libgnomeui/gnome-stock.c:708
+#: libgnomeui/gnome-stock.c:565
 msgid "Select Color"
 msgstr "Vælg farve"
 
-#: libgnomeui/gnome-stock.c:710
+#: libgnomeui/gnome-stock.c:567
 msgid "Table Borders"
 msgstr "Tabelkanter"
 
-#: libgnomeui/gnome-stock.c:711
+#: libgnomeui/gnome-stock.c:568
 msgid "Table Fill"
 msgstr "Tabelfyld"
 
-#: libgnomeui/gnome-stock.c:712
+#: libgnomeui/gnome-stock.c:569
 msgid "Bulleted List"
 msgstr "Punktliste"
 
-#: libgnomeui/gnome-stock.c:713
+#: libgnomeui/gnome-stock.c:570
 msgid "Numbered List"
 msgstr "Nummereret liste"
 
-#: libgnomeui/gnome-stock.c:714
+#: libgnomeui/gnome-stock.c:571
 msgid "Indent"
 msgstr "Indryk"
 
-#: libgnomeui/gnome-stock.c:715
+#: libgnomeui/gnome-stock.c:572
 msgid "Un-Indent"
 msgstr "Af-indryk"
 
-#: libcompat/gnome-spell.c:259 libgnomeui/gnome-stock.c:718
+#: libcompat/gnome-spell.c:259 libgnomeui/gnome-stock.c:575
 msgid "OK"
 msgstr "OK"
 
-#: libgnomeui/gnome-stock.c:719
+#: libgnomeui/gnome-stock.c:576
 msgid "Apply"
 msgstr "Anvend"
 
-#: libcompat/gnome-spell.c:266 libgnomeui/gnome-stock.c:720
+#: libcompat/gnome-spell.c:266 libgnomeui/gnome-stock.c:577
 msgid "Cancel"
 msgstr "Annullér"
 
-#: demos/stock_demo.c:169 libgnomeui/gnome-stock.c:721
+#: demos/stock_demo.c:169 libgnomeui/gnome-stock.c:578
 msgid "Close"
 msgstr "Luk"
 
-#: libgnomeui/gnome-stock.c:722
+#: libgnomeui/gnome-stock.c:579
 msgid "Yes"
 msgstr "Ja"
 
-#: libgnomeui/gnome-stock.c:723
+#: libgnomeui/gnome-stock.c:580
 msgid "No"
 msgstr "Nej"
 
-#: libgnomeui/gnome-stock.c:725
+#: libgnomeui/gnome-stock.c:582
 msgid "Next"
 msgstr "Næste"
 
-#: libgnomeui/gnome-stock.c:726
+#: libgnomeui/gnome-stock.c:583
 msgid "Prev"
 msgstr "Forrige"
 
-#: libgnomeui/gnome-stock.c:727
+#: libgnomeui/gnome-stock.c:584
 msgid "Up"
 msgstr "Op"
 
-#: libgnomeui/gnome-stock.c:728
+#: libgnomeui/gnome-stock.c:585
 msgid "Down"
 msgstr "Ned"
 
-#: libgnomeui/gnome-stock.c:1492
+#: libgnomeui/gnome-stock.c:1354
 msgid "Menu Accelerator Keys"
 msgstr "Menu-genvejstaster"
 
-#: libgnomeui/gnome-stock.c:1494
+#: libgnomeui/gnome-stock.c:1356
 msgid "Global"
 msgstr "Global"
 
-#: libgnomeui/gnome-stock.c:1496
+#: libgnomeui/gnome-stock.c:1358
 msgid "Menu Item"
 msgstr "Menupunkt"
 
-#: libgnomeui/gnome-stock.c:1497
+#: libgnomeui/gnome-stock.c:1359
 msgid "Accelerator"
 msgstr "Tastegenvej"
 
@@ -1576,47 +1380,216 @@ msgid "Please visit the GNOME Application Crash page for more information"
 msgstr "Besøg venligst GNOME applikationscrash siden for mere information"
 
 #. Pixmap
-#: test-gnome/testgnome.c:830
+#: test-gnome/testgnome.c:713
 msgid "Default Pixmap"
 msgstr "Standard billede"
 
-#: test-gnome/testgnome.c:838 test-gnome/testgnome.c:879
-#: test-gnome/testgnome.c:904
+#: test-gnome/testgnome.c:721 test-gnome/testgnome.c:762
+#: test-gnome/testgnome.c:787
 msgid "If you choose a font it will appear here"
 msgstr "Hvis du vælger en skrifttype vises den her"
 
 #. Font_Info
-#: test-gnome/testgnome.c:845
+#: test-gnome/testgnome.c:728
 msgid "Font Info"
 msgstr "Skriftinfo"
 
-#: test-gnome/testgnome.c:855
+#: test-gnome/testgnome.c:738
 msgid "Use Font in button with size"
 msgstr "Brug skrift i knap med størrelse"
 
-#: test-gnome/testgnome.c:862
+#: test-gnome/testgnome.c:745
 msgid "Show font size"
 msgstr "Vis skriftstørrelse"
 
-#: test-gnome/testgnome.c:898
+#: test-gnome/testgnome.c:781
 msgid "This is an hbox with pixmap and text"
 msgstr "Dette er en hbox med billede og tekst"
 
-#: test-gnome/testgnome.c:1110
+#: test-gnome/testgnome.c:993
 msgid "The user chose Yes/OK with data:\n"
 msgstr "Brugeren valgte Ja/Ok med data:\n"
 
-#: test-gnome/testgnome.c:1114
+#: test-gnome/testgnome.c:997
 msgid "The user chose No/Cancel with data:\n"
 msgstr "Brugeren valgte Nej/Annullér med data:\n"
 
-#: test-gnome/testgnome.c:1125
+#: test-gnome/testgnome.c:1008
 msgid "Weird number in reply callback"
 msgstr "Mærkeligt nummer i tilbagekald"
 
-#: test-gnome/testgnome.c:1981
+#: test-gnome/testgnome.c:1860
 msgid "Test GNOME"
 msgstr "Test Gnome"
+
+#: libcompat/gnome-calculator.c:431 libcompat/gnome-calculator.c:1074
+msgid "DEG"
+msgstr "DEG"
+
+#: libcompat/gnome-calculator.c:433
+msgid "RAD"
+msgstr "RAD"
+
+#: libcompat/gnome-calculator.c:435
+msgid "GRAD"
+msgstr "GRAD"
+
+#: libcompat/gnome-calculator.c:1064
+msgid "1/x"
+msgstr "1/x"
+
+#: libcompat/gnome-calculator.c:1065
+msgid "x^2"
+msgstr "x^2"
+
+#: libcompat/gnome-calculator.c:1066
+msgid "SQRT"
+msgstr "SQRT"
+
+#: libcompat/gnome-calculator.c:1067
+msgid "CE/C"
+msgstr "CE/C"
+
+#: libcompat/gnome-calculator.c:1068
+msgid "AC"
+msgstr "AC"
+
+#. inverse button
+#: libcompat/gnome-calculator.c:1071
+msgid "sin"
+msgstr "sin"
+
+#: libcompat/gnome-calculator.c:1072
+msgid "cos"
+msgstr "cos"
+
+#: libcompat/gnome-calculator.c:1073
+msgid "tan"
+msgstr "tan"
+
+#: libcompat/gnome-calculator.c:1076
+msgid "e"
+msgstr "e"
+
+#: libcompat/gnome-calculator.c:1077
+msgid "EE"
+msgstr "EE"
+
+#: libcompat/gnome-calculator.c:1078
+msgid "log"
+msgstr "log"
+
+#: libcompat/gnome-calculator.c:1079
+msgid "ln"
+msgstr "ln"
+
+#: libcompat/gnome-calculator.c:1080
+msgid "x^y"
+msgstr "x^y"
+
+#: libcompat/gnome-calculator.c:1082
+msgid "PI"
+msgstr "PI"
+
+#: libcompat/gnome-calculator.c:1083
+msgid "x!"
+msgstr "x!"
+
+#: libcompat/gnome-calculator.c:1084
+msgid "("
+msgstr "("
+
+#: libcompat/gnome-calculator.c:1085
+msgid ")"
+msgstr ")"
+
+#: libcompat/gnome-calculator.c:1086
+msgid "/"
+msgstr "/"
+
+#: libcompat/gnome-calculator.c:1088
+msgid "STO"
+msgstr "STO"
+
+#: libcompat/gnome-calculator.c:1089
+msgid "7"
+msgstr "7"
+
+#: libcompat/gnome-calculator.c:1090
+msgid "8"
+msgstr "8"
+
+#: libcompat/gnome-calculator.c:1091
+msgid "9"
+msgstr "9"
+
+#: libcompat/gnome-calculator.c:1092
+msgid "*"
+msgstr "*"
+
+#: libcompat/gnome-calculator.c:1094
+msgid "RCL"
+msgstr "RCL"
+
+#: libcompat/gnome-calculator.c:1095
+msgid "4"
+msgstr "4"
+
+#: libcompat/gnome-calculator.c:1096
+msgid "5"
+msgstr "5"
+
+#: libcompat/gnome-calculator.c:1097
+msgid "6"
+msgstr "6"
+
+#: libcompat/gnome-calculator.c:1098
+msgid "-"
+msgstr "-"
+
+#: libcompat/gnome-calculator.c:1100
+msgid "SUM"
+msgstr "SUM"
+
+#: libcompat/gnome-calculator.c:1101
+msgid "1"
+msgstr "1"
+
+#: libcompat/gnome-calculator.c:1102
+msgid "2"
+msgstr "2"
+
+#: libcompat/gnome-calculator.c:1103
+msgid "3"
+msgstr "3"
+
+#: libcompat/gnome-calculator.c:1104
+msgid "+"
+msgstr "+"
+
+#: libcompat/gnome-calculator.c:1106
+msgid "EXC"
+msgstr "EXC"
+
+#: libcompat/gnome-calculator.c:1107
+msgid "0"
+msgstr "0"
+
+#: libcompat/gnome-calculator.c:1108
+msgid "."
+msgstr "."
+
+#: libcompat/gnome-calculator.c:1109
+msgid "+/-"
+msgstr "+/-"
+
+#: libcompat/gnome-calculator.c:1110
+msgid "="
+msgstr "="
+
+#: libcompat/gnome-calculator.c:1321
+msgid "INV"
+msgstr "INV"
 
 #: libcompat/gnome-druid-page-finish.c:261
 msgid "-adobe-helvetica-bold-r-normal-*-*-180-*-*-p-*-*-*"
@@ -1625,6 +1598,30 @@ msgstr "-adobe-helvetica-bold-r-normal-*-*-180-*-*-p-*-*-*"
 #: libcompat/gnome-druid-page-finish.c:269
 msgid "-adobe-helvetica-medium-r-normal-*-*-120-*-*-p-*-*-*"
 msgstr "-adobe-helvetica-medium-r-normal-*-*-120-*-*-p-*-*-*"
+
+#: libcompat/gnome-file-entry.c:314
+msgid "Select file"
+msgstr "Vælg fil"
+
+#: libcompat/gnome-number-entry.c:217
+msgid "Calculator"
+msgstr "Lommeregner"
+
+#: libcompat/gnome-number-entry.c:275
+msgid "Calculator..."
+msgstr "Lommeregner..."
+
+#: libcompat/gnome-pixmap-entry.c:257 libcompat/gnome-pixmap-entry.c:564
+msgid "No Image"
+msgstr "Intet billede"
+
+#: libcompat/gnome-pixmap-entry.c:460
+msgid "Can't find an hbox, using a normal file selection"
+msgstr "Kan ikke finde en hbox, bruger normal filvælger"
+
+#: libcompat/gnome-pixmap-entry.c:466
+msgid "Preview"
+msgstr "Eksempel"
 
 #: libcompat/gnome-property-entries.c:258
 msgid "Select"
@@ -1976,6 +1973,13 @@ msgid ""
 msgstr ""
 "Simpelt testprogram til at checke om WIN_HINTS virker.\n"
 "Og til at teste gnome_win_hints_* funktioner for fejl. :)"
+
+#~ msgid ""
+#~ "gnome_appbar_set_progress deprecated, use "
+#~ "gnome_appbar_set_progress_percentage"
+#~ msgstr ""
+#~ "gnome_appbar_set_progress er udgået, brug "
+#~ "gnome_appbar_set_progress_percentage"
 
 #~ msgid "Browse"
 #~ msgstr "Gennemse"
