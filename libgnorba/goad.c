@@ -676,7 +676,12 @@ goad_server_activate_shlib(GoadServer *sinfo,
       strncat(libname, libstart, ptr - libstart);
       strcat(libname, ".so");
       fprintf(stderr,"Using '%s' for dlopen\n", libname);
+#ifdef RTLD_GLOBAL
       handle = dlopen(libname, RTLD_GLOBAL | RTLD_LAZY);
+#else
+      handle = dlopen(libname, RTLD_LAZY);
+#endif /*RTLD_GLOBAL*/
+
       if (!handle) {
 	g_warning("Cannot load %s: %s", libname, dlerror());
       }
