@@ -3,6 +3,38 @@
 
 [this document is still work-in-progress.]
 
+Notation
+========
+
+* MODIFIED
+
+  The file/widget/feature has been modified in a source incompatible way,
+  but it is possible to reuse old code without completely rewriting it
+  (compatibility layer exists, fixable by scripts, ....)
+
+* CHANGED API
+
+  The API of this file/widget/feature has completely changed; it is not
+  possible to reuse old code without rewriting at least large parts of it.
+
+* ADDED FUNCTIONALITY
+
+  There is some added functionality over GNOME 1.x.
+
+* OBSOLETE
+
+  The file/widget/feature is obsolete and it has been moved to libcompat.
+
+* REMOVED
+
+  The file/widget/feature has been completely removed, it is not in libcompat.
+  This normally means that it is easier to fix code which was using this than
+  to provide a compatibility layer.
+
+* NEW
+
+  The file/widget/feature is completely new in GNOME 2.0.
+
 How to prepare your GNOME 1.0 Applications for GNOME 2.0
 ========================================================
 
@@ -16,7 +48,7 @@ thing is to use accessor functions rather than accessing widget data
 directly whereever it's possible. These new functions will help you
 doing this.
 
-* GnomeEntry
+* GnomeEntry - MODIFIED
 
   - this is isn't a GtkCombo any longer, but a GnomeSelector.
 
@@ -51,11 +83,11 @@ doing this.
     'max_saved' fields in the GnomeEntry directly, they will be private
     in GNOME 2.0.
 
-* GnomeFileEntry
+* GnomeFileEntry - OBSOLETE
 
   - this has been replaced by GnomeFileSelector.
 
-* GnomeIconEntry
+* GnomeIconEntry - MODIFIED + ADDED FUNCTIONALITY
 
   - this is now derived from GnomeFileSelector instead of GtkVBox.
   - previously, the difference between GnomeIconEntry and GnomePixmapEntry
@@ -84,10 +116,29 @@ doing this.
   - `fentry', `pickbutton', `pick_dialog', `pick_dialog_dir' have been
     removed from the GnomeIconEntry instance struct.
 
-* GnomePixmapEntry
+* GnomePixmapEntry - OBSOLETE
 
   - this has been obsoleted by GnomeIconEntry.
 
+* GnomeCalculator - REMOVED
+
+  - this has been moved to libcompat for the moment; it should go somewhere
+    else, but not in libgnomeui.
+
+* GnomeNumberEntry - REMOVED
+
+  - this was using GnomeCalculator and has been moved to libcompat as well.
+
+* GnomeProcBar - REMOVED
+
+  - this was only used in GTop and some applets; it has been moved into GTop.
+  - the three applets will be moved into GTop as well to share some code with
+    it for GNOME 2.0.
+
+* gnome-properties, gnome-property-entries - REMOVED
+
+  - this was only used in GTop and some applets; it is totally obsolete due
+    to GConf.
 
 Last changed Feb 25, 2001.
 Martin Baulig <baulig@suse.de>
