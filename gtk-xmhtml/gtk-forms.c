@@ -969,7 +969,7 @@ create_file_selection (GtkEntry *entry)
 	
 	if (!window){
 		window = gtk_file_selection_new ("file selection dialog");
-		gtk_window_position (GTK_WINDOW (window), GTK_WIN_POS_MOUSE);
+		gtk_window_set_position (GTK_WINDOW (window), GTK_WIN_POS_MOUSE);
 		
 		gtk_signal_connect (GTK_OBJECT (window), "destroy",
 				    GTK_SIGNAL_FUNC(destroy_window),
