@@ -1,9 +1,9 @@
 msgid ""
 msgstr ""
-"Date: 1998-07-31 21:48:00+0200\n"
+"Date: 1998-08-08 13:01:00+0200\n"
 "Project-Id-Version: gnome-libs 0.20\n"
 "POT-Creation-Date: 1998-04-20 20:15:47-0500\n"
-"PO-Revision-Date: 1998-07-31 21:48:00+0200\n"
+"PO-Revision-Date: 1998-08-08 13:01:00+0200\n"
 "From: Miguel de Icaza,computo,622-4680 <miguel@metropolis.nuclecu.unam.mx>\n"
 "Last-Translator: Pablo Saratxaga <srtxg@chanae.alphanet.ch>\n"
 "Language-Team: \n"
@@ -12,6 +12,126 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Xgettext-Options: --default-domain=gnome-libs --directory=.. --add-comments --keyword=_ --keyword=N_ --files-from=./POTFILES.in\n"
 "Files: libgnomeui/gnome-about.c libgnomeui/gnome-file-entry.c libgnomeui/gnome-messagebox.c libgnomeui/gnome-init.c libgnomeui/gnome-client.c libgnomeui/gnome_segv.c libgnomeui/gnome-calculator.c support/argp-parse.c support/argp-help.c libgnomeui/gnome-scores.c libgnomeui/gnome-stock.c gnome-hello/gnome-hello-2-i18n.c gnome-hello/gnome-hello-3-parse-args.c gnome-hello/gnome-hello-4-SM.c\n"
+
+#: gnome-hello/gnome-hello-2-i18n.c:31 gnome-hello/gnome-hello-3-parse-args.c:33
+msgid "File/Exit"
+msgstr "Archivo/Salir"
+
+#: gnome-hello/gnome-hello-2-i18n.c:31 gnome-hello/gnome-hello-3-parse-args.c:33
+msgid "<control>E"
+msgstr "<control>E"
+
+#. The '...' end indicate that the options open a dialog
+#: gnome-hello/gnome-hello-2-i18n.c:33 gnome-hello/gnome-hello-3-parse-args.c:35
+msgid "Help/About..."
+msgstr "Ayuda/Acerca..."
+
+#: gnome-hello/gnome-hello-2-i18n.c:33 gnome-hello/gnome-hello-3-parse-args.c:35
+msgid "<control>A"
+msgstr "<control>A"
+
+#. Make the main window and binds the delete event so you can close
+#. the program from your WM
+#: gnome-hello/gnome-hello-2-i18n.c:69 gnome-hello/gnome-hello-3-parse-args.c:99 gnome-hello/gnome-hello-4-SM.c:197
+msgid "Hello World Gnomified"
+msgstr "Hola Mundo -- Gnomificado"
+
+#. We make a button, bind the 'clicked' signal to hello and setting it
+#. to be the content of the main window
+#: gnome-hello/gnome-hello-2-i18n.c:83 gnome-hello/gnome-hello-3-parse-args.c:113 gnome-hello/gnome-hello-4-SM.c:213
+msgid "Hello GNOME"
+msgstr "Hola GNOME"
+
+#: gnome-hello/gnome-hello-2-i18n.c:102 gnome-hello/gnome-hello-3-parse-args.c:132 gnome-hello/gnome-hello-4-SM.c:232
+msgid "Hello GNOME\n"
+msgstr "Hola GNOME\n"
+
+#: gnome-hello/gnome-hello-2-i18n.c:125 gnome-hello/gnome-hello-3-parse-args.c:155 gnome-hello/gnome-hello-4-SM.c:255
+msgid "The Hello World Gnomified"
+msgstr "Hola Mundo Gnomificado"
+
+#. another comments
+#: gnome-hello/gnome-hello-2-i18n.c:130 gnome-hello/gnome-hello-3-parse-args.c:160 gnome-hello/gnome-hello-4-SM.c:260
+msgid "GNOME is a civilized software system so we've a \"hello world\" program"
+msgstr "GNOME es un sistema de programas civilizado, así que tenemos un programa \"hola mundo\""
+
+#: gnome-hello/gnome-hello-3-parse-args.c:43
+msgid "Run silently"
+msgstr "Correr silenciosamente"
+
+#: gnome-hello/gnome-hello-4-SM.c:54 gnome-hello/gnome-hello-7-mdi.c:356
+msgid "Exit"
+msgstr "Salir"
+
+#: gnome-hello/gnome-hello-4-SM.c:54
+msgid "Exit GNOME hello"
+msgstr "Salir de Hola GNOME"
+
+#: gnome-hello/gnome-hello-4-SM.c:66 gnome-hello/gnome-hello-7-mdi.c:398
+msgid "About..."
+msgstr "Acerca..."
+
+#: gnome-hello/gnome-hello-4-SM.c:66
+msgid "Info about GNOME hello"
+msgstr "Información acerca de Hola GNOME"
+
+#. and document menu and document list paths (see gnome-app-helper menu
+#. insertion routines for details)
+#: gnome-hello/gnome-hello-4-SM.c:78 gnome-hello/gnome-hello-7-mdi.c:362 gnome-hello/gnome-hello-7-mdi.c:437 libgnomeui/stock_demo.c:212
+msgid "File"
+msgstr "Archivo"
+
+#: gnome-hello/gnome-hello-4-SM.c:79 gnome-hello/gnome-hello-7-mdi.c:404 libgnomeui/gnome-stock.c:474 libgnomeui/stock_demo.c:342
+msgid "Help"
+msgstr "Ayuda"
+
+#: gnome-hello/gnome-hello-4-SM.c:91 libgnomeui/gnome-client.c:171 libgnomeui/gnome-client.c:173
+msgid "ID"
+msgstr "ID"
+
+#: gnome-hello/gnome-hello-4-SM.c:91
+msgid "Discard session"
+msgstr "Descartar sesión"
+
+#: gnome-hello/gnome-hello-7-mdi.c:180
+msgid "Add View"
+msgstr ""
+
+#: gnome-hello/gnome-hello-7-mdi.c:185
+msgid "Remove View"
+msgstr ""
+
+#: gnome-hello/gnome-hello-7-mdi.c:191
+msgid "Child"
+msgstr ""
+
+#: gnome-hello/gnome-hello-7-mdi.c:340
+msgid "Add Child"
+msgstr ""
+
+#: gnome-hello/gnome-hello-7-mdi.c:346
+msgid "Remove Child"
+msgstr ""
+
+#: gnome-hello/gnome-hello-7-mdi.c:371
+msgid "Notebook"
+msgstr ""
+
+#: gnome-hello/gnome-hello-7-mdi.c:377
+msgid "Toplevel"
+msgstr ""
+
+#: gnome-hello/gnome-hello-7-mdi.c:383
+msgid "Modal"
+msgstr ""
+
+#: gnome-hello/gnome-hello-7-mdi.c:389
+msgid "MDI Mode"
+msgstr ""
+
+#: gnome-hello/gnome-hello-7-mdi.c:438
+msgid "Children/"
+msgstr ""
 
 #: libgnome/gnome-parse.c:44
 msgid ""
@@ -33,9 +153,69 @@ msgstr "Autores:"
 msgid "Authors: "
 msgstr "Autores: "
 
-#: libgnomeui/gnome-about.c:567
+#: libgnomeui/gnome-about.c:567 libgnomeui/stock_demo.c:331
 msgid "About"
 msgstr "Acerca"
+
+#: libgnomeui/gnome-app-util.c:86
+msgid " (press return)"
+msgstr " (presione return)"
+
+#: libgnomeui/gnome-app-util.c:114
+msgid "ERROR: "
+msgstr "ERROR: "
+
+#: libgnomeui/gnome-app-util.c:136
+msgid "Warning: "
+msgstr "Cuidado: "
+
+#: libgnomeui/gnome-app-util.c:242
+msgid "y"
+msgstr "s"
+
+#: libgnomeui/gnome-app-util.c:243
+msgid "yes"
+msgstr "sí"
+
+#: libgnomeui/gnome-app-util.c:246
+msgid "n"
+msgstr "n"
+
+#: libgnomeui/gnome-app-util.c:247
+msgid "no"
+msgstr "no"
+
+#: libgnomeui/gnome-app-util.c:286
+msgid " (yes or no)"
+msgstr " (sí o no)"
+
+#: libgnomeui/gnome-app-util.c:287
+msgid "  - OK? (yes or no)"
+msgstr " - ¿OK? (sí o no)"
+
+#: libgnomeui/gnome-app-util.c:520
+msgid "Progress"
+msgstr "Progresión"
+
+#: libgnomeui/gnome-app.c:355 libgnomeui/gnome-app.c:380
+msgid "Top"
+msgstr "Arriba"
+
+#: libgnomeui/gnome-app.c:356 libgnomeui/gnome-app.c:381
+msgid "Bottom"
+msgstr "Abajo"
+
+#: libgnomeui/gnome-app.c:382
+msgid "Left"
+msgstr "Izquierda"
+
+#: libgnomeui/gnome-app.c:383
+msgid "Right"
+msgstr "Derecha"
+
+#: libgnomeui/gnome-app.c:384
+msgid "Configure toolbar"
+msgstr "Configurar barra de íconos"
 
 #: libgnomeui/gnome-calculator.c:908 libgnomeui/gnome-calculator.c:1068
 msgid "DEG"
@@ -205,10 +385,6 @@ msgstr "="
 msgid "INV"
 msgstr "INV"
 
-#: gnome-hello/gnome-hello-4-SM.c:91 libgnomeui/gnome-client.c:171 libgnomeui/gnome-client.c:173
-msgid "ID"
-msgstr "ID"
-
 #: libgnomeui/gnome-client.c:172
 msgid "Specify session management id"
 msgstr "Especifica el identificador del controlador de sesiones"
@@ -220,6 +396,10 @@ msgstr "Especificar id del cliente clonado"
 #: libgnomeui/gnome-client.c:176
 msgid "Disable connection to session manager"
 msgstr "Desactivar connexión al gestor de sesiones"
+
+#: libgnomeui/gnome-dateedit.c:393
+msgid "Calendar"
+msgstr "Calendario"
 
 #: libgnomeui/gnome-dentry-edit.c:164
 msgid "Name:"
@@ -287,6 +467,10 @@ msgstr "Selecciona archivo"
 msgid "Browse..."
 msgstr "Busca..."
 
+#: libgnomeui/gnome-icon-sel.c:245
+msgid "Loading Icons..."
+msgstr "Cargando íconos..."
+
 #: libgnomeui/gnome-init.c:48
 msgid ""
 "\n"
@@ -351,6 +535,14 @@ msgstr "Pregunta"
 msgid "Message"
 msgstr "Mensaje"
 
+#: libgnomeui/gnome-number-entry.c:124
+msgid "Calculator"
+msgstr "Calculadora"
+
+#: libgnomeui/gnome-number-entry.c:171
+msgid "Calculator..."
+msgstr "Calculadora..."
+
 #: libgnomeui/gnome-scores.c:72
 msgid "Top Ten"
 msgstr "Los mejores 10"
@@ -366,6 +558,54 @@ msgstr "Puntuación"
 #: libgnomeui/gnome-scores.c:89
 msgid "Date"
 msgstr "Fecha"
+
+#: libgnomeui/gnome-stock.c:468
+msgid "OK"
+msgstr "Aceptar"
+
+#: libgnomeui/gnome-stock.c:469
+msgid "Apply"
+msgstr "Aplicar"
+
+#: libgnomeui/gnome-stock.c:470
+msgid "Cancel"
+msgstr "Cancelar"
+
+#: libgnomeui/gnome-stock.c:471 libgnomeui/stock_demo.c:163
+msgid "Close"
+msgstr "Cerrar"
+
+#: libgnomeui/gnome-stock.c:472
+msgid "Yes"
+msgstr "Si"
+
+#: libgnomeui/gnome-stock.c:473
+msgid "No"
+msgstr "No"
+
+#: libgnomeui/gnome-stock.c:475
+msgid "Next"
+msgstr "Próximo"
+
+#: libgnomeui/gnome-stock.c:476
+msgid "Prev"
+msgstr "Anterior"
+
+#: libgnomeui/gnome-stock.c:1394
+msgid "Menu Accelerator Keys"
+msgstr "Aceleradores del menú"
+
+#: libgnomeui/gnome-stock.c:1396
+msgid "Global"
+msgstr "Global"
+
+#: libgnomeui/gnome-stock.c:1398
+msgid "Menu Item"
+msgstr "Entrada del menú"
+
+#: libgnomeui/gnome-stock.c:1399
+msgid "Accelerator"
+msgstr "Acelerador"
 
 #: libgnomeui/gnome_segv.c:58
 msgid ""
@@ -389,49 +629,174 @@ msgstr ""
 "\n"
 "¿Desea terminar este programa?"
 
-#: libgnomeui/gnome-stock.c:487
-msgid "OK"
-msgstr "Aceptar"
+#: libgnomeui/stock_demo.c:119
+msgid "New..."
+msgstr "Nuevo..."
 
-#: libgnomeui/gnome-stock.c:488
-msgid "Apply"
-msgstr "Aplicar"
+#: libgnomeui/stock_demo.c:130
+msgid "Open..."
+msgstr "Abrir..."
 
-#: libgnomeui/gnome-stock.c:489
-msgid "Cancel"
-msgstr "Cancelar"
+#: libgnomeui/stock_demo.c:141
+msgid "Save"
+msgstr "Guardar"
 
-#: libgnomeui/gnome-stock.c:490
-msgid "Close"
-msgstr "Cerrar"
+#: libgnomeui/stock_demo.c:152
+msgid "Save as..."
+msgstr "Guardar como..."
 
-#: libgnomeui/gnome-stock.c:491
-msgid "Yes"
-msgstr "Si"
+#: libgnomeui/stock_demo.c:178
+msgid "Print..."
+msgstr "Imprimir..."
 
-#: libgnomeui/gnome-stock.c:492
-msgid "No"
-msgstr "No"
+#: libgnomeui/stock_demo.c:189
+msgid "Setup Page..."
+msgstr "Cónfigurar Página..."
 
-#: gnome-hello/gnome-hello-4-SM.c:79 libgnomeui/gnome-stock.c:493
-msgid "Help"
-msgstr "Ayuda"
+#: libgnomeui/stock_demo.c:198
+msgid "Quit"
+msgstr "Salir"
 
-#: libgnomeui/gnome-stock.c:1411
-msgid "Menu Accelerator Keys"
-msgstr "Aceleradores del menú"
+#: libgnomeui/stock_demo.c:219
+msgid "Undo"
+msgstr "Anular"
 
-#: libgnomeui/gnome-stock.c:1413
-msgid "Global"
-msgstr "Global"
+#: libgnomeui/stock_demo.c:230
+msgid "Redo"
+msgstr "Recomenzar"
 
-#: libgnomeui/gnome-stock.c:1415
-msgid "Menu Item"
-msgstr "Entrada del menú"
+#: libgnomeui/stock_demo.c:239
+msgid "Delete"
+msgstr "Borrar"
 
-#: libgnomeui/gnome-stock.c:1416
-msgid "Accelerator"
-msgstr "Acelerador"
+#: libgnomeui/stock_demo.c:244
+msgid "Cut"
+msgstr "Cortar"
+
+#: libgnomeui/stock_demo.c:255
+msgid "Copy"
+msgstr "Copiar"
+
+#: libgnomeui/stock_demo.c:266
+msgid "Paste"
+msgstr "Pegar"
+
+#: libgnomeui/stock_demo.c:281
+msgid "Properties..."
+msgstr "Propiedades..."
+
+#: libgnomeui/stock_demo.c:294
+msgid "Preferences..."
+msgstr "Preferencias..."
+
+#: libgnomeui/stock_demo.c:312
+msgid "Scores..."
+msgstr "Puntuación..."
+
+#: libgnomeui/stock_demo.c:323
+msgid "Edit"
+msgstr "Editar"
+
+#: libvfs/extfs.c:268
+msgid ""
+"Couldn't open %s archive\n"
+"%s"
+msgstr ""
+"No pude abrir el archivo %s\n"
+"%s"
+
+#: libvfs/extfs.c:300 libvfs/extfs.c:320
+msgid "Inconsistent extfs archive"
+msgstr "Archivo extfs inconsistente"
+
+#: libvfs/ftpfs.c:602
+msgid " Could not set source routing (%s)"
+msgstr " No puedo iniciar ruteo fuente (%s)"
+
+#: libvfs/ftpfs.c:2783 libvfs/ftpfs.c:2798
+msgid ""
+"~/.netrc file has not correct mode.\n"
+"Remove password or correct mode."
+msgstr ""
+"el modo del archivo ~/.netrc no es correcto.\n"
+"Borre la clave de acceso o corrija el modo."
+
+#: libvfs/mcfs.c:156
+msgid " MCFS "
+msgstr " MCFS "
+
+#: libvfs/mcfs.c:156
+msgid " The server does not support this version "
+msgstr " El servidor no soporta esta versión "
+
+#: libvfs/mcfs.c:172
+msgid " Warning "
+msgstr " Cuidado "
+
+#: libvfs/mcfs.c:173
+msgid ""
+" The remote server is not running on a system port \n"
+" you need a password to log in, but the information may \n"
+" not be safe on the remote side.  Continue? \n"
+msgstr ""
+" El servidor remoto no está corriendo en un puerto del sistema \n"
+" que necesite una clave de acceso, pero la información puede \n"
+" no ser segura en el lado remoto. ¿ Desea continuar ? \n"
+
+#: libvfs/mcfs.c:176
+msgid " Yes "
+msgstr " Sí "
+
+#: libvfs/mcfs.c:176
+msgid " No "
+msgstr " No "
+
+#: libvfs/mcfs.c:178
+msgid " The remote server is running on strange port. Giving up.\n"
+msgstr " El servidor remoto está corriendo en un puerto extraño. Abandonando.\n"
+
+#: libvfs/mcfs.c:190
+msgid " MCFS Password required "
+msgstr " Clave de acceso MCFS requerida "
+
+#: libvfs/mcfs.c:204
+msgid " Invalid password "
+msgstr " Clave de acceso inválida "
+
+#: libvfs/mcfs.c:270
+msgid " Too many open connections "
+msgstr " Demasiadas conexiones abiertas "
+
+#: libvfs/tar.c:586
+msgid "Unexpected EOF on archive file"
+msgstr "Fin de archivo (EOF) inesperado"
+
+#: libvfs/tar.c:640 libvfs/tar.c:661
+msgid "Inconsistent tar archive"
+msgstr "Archivo tar inconsistente"
+
+#: libvfs/tar.c:761
+msgid ""
+"Couldn't open tar archive\n"
+"%s"
+msgstr ""
+"No pude abrir el archivo tar\n"
+"%s"
+
+#. Error on first record
+#: libvfs/tar.c:780
+msgid ""
+"Hmm,...\n"
+"%s\n"
+"doesn't look like a tar archive."
+msgstr ""
+"Mmmh,...\n"
+"%s\n"
+"no parece ser un archivo tar."
+
+#: libvfs/vfs.c:1538
+msgid "Password:"
+msgstr "Clave de acceso:"
 
 #: support/argp-parse.c:90
 msgid "Give this help list"
@@ -465,112 +830,66 @@ msgstr "%s: Demasiados argumentos\n"
 msgid "(PROGRAM ERROR) Option should have been recognized!?"
 msgstr "(ERROR DEL PROGRAMA) ¿¡La opción deberá haber sido reconocida?!"
 
-#: support/argp-help.c:185
-msgid "%.*s: ARGP_HELP_FMT parameter requires a value"
-msgstr "%.*s: El parámetro ARGP_HELP_FMT requiere un valor"
-
-#: support/argp-help.c:194
-msgid "%.*s: Unknown ARGP_HELP_FMT parameter"
-msgstr "%.*s: parámetro de ARGP_HELP_FMT desconocido"
-
-#: support/argp-help.c:206
-msgid "Garbage in ARGP_HELP_FMT: %s"
-msgstr "Basura en ARGP_HELP_FMT: %s"
-
-#: support/argp-help.c:1146
-msgid "Mandatory or optional arguments to long options are also mandatory or optional for any corresponding short options."
-msgstr "Los argumentos obligatoirios u opcionales de las opciones largas son también obligatorios u opcionales para sus opciones cortas correspondientes."
-
-#: support/argp-help.c:1522
-msgid "Usage:"
-msgstr "Uso:"
-
-#: support/argp-help.c:1526
-msgid "  or: "
-msgstr " o: "
-
-#: support/argp-help.c:1538
-msgid " [OPTION...]"
-msgstr " [OPCIóN...]"
-
-#: support/argp-help.c:1565
-msgid "Try `%s --help' or `%s --usage' for more information.\n"
-msgstr "Intente `%s --help' o `%s --usage' para mayor información\n"
-
-#: support/argp-help.c:1593
-msgid "Report bugs to %s.\n"
-msgstr "Reporte los errores a %s.\n"
-
-#: support/error.c:106
+#: support/error.c:109
 msgid "Unknown system error"
 msgstr "Error sistema desconocido"
 
-#: gnome-hello/gnome-hello-2-i18n.c:31 gnome-hello/gnome-hello-3-parse-args.c:33
-msgid "File/Exit"
-msgstr "Archivo/Salir"
+#: support/getopt.c:669
+msgid "%s: option `%s' is ambiguous\n"
+msgstr "%s: la opción `%s' es ambigua\n"
 
-#: gnome-hello/gnome-hello-2-i18n.c:31 gnome-hello/gnome-hello-3-parse-args.c:33
-msgid "<control>E"
-msgstr "<control>E"
+#. --option
+#: support/getopt.c:693
+msgid "%s: option `--%s' doesn't allow an argument\n"
+msgstr "%s: la opción `--%s' no accepta un argumento\n"
 
-#. The '...' end indicate that the options open a dialog
-#: gnome-hello/gnome-hello-2-i18n.c:33 gnome-hello/gnome-hello-3-parse-args.c:35
-msgid "Help/About..."
-msgstr "Ayuda/Acerca..."
+#: support/getopt.c:698
+msgid "%s: option `%c%s' doesn't allow an argument\n"
+msgstr "%s: la opción  `%c%s' no accepta un argumento\n"
 
-#: gnome-hello/gnome-hello-2-i18n.c:33 gnome-hello/gnome-hello-3-parse-args.c:35
-msgid "<control>A"
-msgstr "<control>A"
+#: support/getopt.c:715 support/getopt.c:888
+msgid "%s: option `%s' requires an argument\n"
+msgstr "%s: la opción `%s' requiere un argumento"
 
-#. Make the main window and binds the delete event so you can close
-#. the program from your WM
-#: gnome-hello/gnome-hello-2-i18n.c:69 gnome-hello/gnome-hello-3-parse-args.c:99 gnome-hello/gnome-hello-4-SM.c:197
-msgid "Hello World Gnomified"
-msgstr "Hola Mundo -- Gnomificado"
+#. --option
+#: support/getopt.c:744
+msgid "%s: unrecognized option `--%s'\n"
+msgstr "%s: opción `--%s' desconocida\n"
 
-#. We make a button, bind the 'clicked' signal to hello and setting it
-#. to be the content of the main window
-#: gnome-hello/gnome-hello-2-i18n.c:83 gnome-hello/gnome-hello-3-parse-args.c:113 gnome-hello/gnome-hello-4-SM.c:213
-msgid "Hello GNOME"
-msgstr "Hola GNOME"
+#: support/getopt.c:748
+msgid "%s: unrecognized option `%c%s'\n"
+msgstr "%s: opción `%c%s' desconocida\n"
 
-#: gnome-hello/gnome-hello-2-i18n.c:102 gnome-hello/gnome-hello-3-parse-args.c:132 gnome-hello/gnome-hello-4-SM.c:232
-msgid "Hello GNOME\n"
-msgstr "Hola GNOME\n"
+#. 1003.2 specifies the format of this message.
+#: support/getopt.c:774
+msgid "%s: illegal option -- %c\n"
+msgstr "%s: opción ilegal -- %c\n"
 
-#: gnome-hello/gnome-hello-2-i18n.c:125 gnome-hello/gnome-hello-3-parse-args.c:155 gnome-hello/gnome-hello-4-SM.c:255
-msgid "The Hello World Gnomified"
-msgstr "Hola Mundo Gnomificado"
+#: support/getopt.c:777
+msgid "%s: invalid option -- %c\n"
+msgstr "%s: opción, inválida -- %c\n"
 
-#. another comments
-#: gnome-hello/gnome-hello-2-i18n.c:130 gnome-hello/gnome-hello-3-parse-args.c:160 gnome-hello/gnome-hello-4-SM.c:260
-msgid "GNOME is a civilized software system so we've a \"hello world\" program"
-msgstr "GNOME es un sistema de programas civilizado, así que tenemos un programa \"hola mundo\""
+#. 1003.2 specifies the format of this message.
+#: support/getopt.c:807 support/getopt.c:937
+msgid "%s: option requires an argument -- %c\n"
+msgstr "%s: la opción requiere un argumento -- %c\n"
 
-#: gnome-hello/gnome-hello-3-parse-args.c:43
-msgid "Run silently"
-msgstr "Correr silenciosamente"
+#: support/getopt.c:854
+msgid "%s: option `-W %s' is ambiguous\n"
+msgstr "%s: la opción `-W %s' es ambigua\n"
 
-#: gnome-hello/gnome-hello-4-SM.c:54
-msgid "Exit"
-msgstr "Salir"
+#: support/getopt.c:872
+msgid "%s: option `-W %s' doesn't allow an argument\n"
+msgstr "%s: la opción `-W %s' no accepta un argumento\n"
 
-#: gnome-hello/gnome-hello-4-SM.c:54
-msgid "Exit GNOME hello"
-msgstr "Salir de Hola GNOME"
+#: test-gnome/testgnome.c:551
+msgid "The user chose Yes/OK with data:\n"
+msgstr "El usuario eligió Sí/OK con los datos:\n"
 
-#: gnome-hello/gnome-hello-4-SM.c:66
-msgid "About..."
-msgstr "Acerca..."
+#: test-gnome/testgnome.c:555
+msgid "The user chose No/Cancel with data:\n"
+msgstr "El usuario eligió No/Anular con los datos:\n"
 
-#: gnome-hello/gnome-hello-4-SM.c:66
-msgid "Info about GNOME hello"
-msgstr "Información acerca de Hola GNOME"
-
-#: gnome-hello/gnome-hello-4-SM.c:78
-msgid "File"
-msgstr "Archivo"
-
-#: gnome-hello/gnome-hello-4-SM.c:91
-msgid "Discard session"
-msgstr "Descartar sesión"
+#: test-gnome/testgnome.c:566
+msgid "Weird number in reply callback"
+msgstr "Número raro en la respuesta"
