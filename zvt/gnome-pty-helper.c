@@ -331,10 +331,13 @@ sanity_checks (void)
 	 */
 	close (2);
 	stderr_fd = open ("/dev/tty", O_RDWR);
-	if (stderr_fd == -1)
+	if (stderr_fd == -1) {
+#if 0
 		exit (1);
-	
-	if (stderr_fd != 2){
+#endif	
+		fprintf(stderr, "Well, we can't get a stderr port, oh well\n");
+	}
+	if (stderr > 0 && stderr_fd != 2){
 		while (dup2 (stderr_fd, 2) == -1 && errno == EINTR)
 			;
 	}
