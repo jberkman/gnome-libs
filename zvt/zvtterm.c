@@ -860,7 +860,7 @@ zvt_term_size_allocate (GtkWidget     *widget,
 			      allocation->width,
 			      allocation->height);
 
-      term_width = allocation->width - (2 * widget->style->klass->xthickness) - PADDING;
+      term_width = allocation->width - (2 * widget->style->klass->xthickness);
       term_height = allocation->height - (2 * widget->style->klass->ythickness);
 
       gdk_window_move_resize (term->term_window,
