@@ -26,4 +26,5 @@ EXTRA_DIST =					\
 	expected/split.out			\
 	expected/trigs.out			\
 	expected/metadata.out			\
-	expected/parse-path.out data/sample
+	expected/parse-path.out data/sample	\
+	$(TESTS)
