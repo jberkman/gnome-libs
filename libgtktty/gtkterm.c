@@ -25,7 +25,7 @@
 #include <gtk/gtksignal.h>
 #include <gtk/gtkselection.h>
 #include <gdk/gdkkeysyms.h>
-
+#include <stdio.h>
 
 
 /* --- limits & defaults --- */
@@ -681,7 +681,6 @@ gtk_term_draw (GtkWidget    *widget,
   
   g_return_if_fail (widget != NULL);
   g_return_if_fail (GTK_IS_TERM (widget));
-  g_return_if_fail (area != NULL);
   
   term = GTK_TERM (widget);
   

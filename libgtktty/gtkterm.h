@@ -254,9 +254,6 @@ void		gtk_term_restore_cursor	(GtkTerm	*term);
 void		gtk_term_set_scroll_reg	(GtkTerm	*term,
 					 guint		top,
 					 guint		bottom);
-void		gtk_term_get_cursor	(GtkTerm	*term,
-					 guint		*x,
-					 guint		*y);
 void		gtk_term_reset		(GtkTerm	*term);
 void		gtk_term_get_size	(GtkTerm	*term,
 					 guint		*width,
