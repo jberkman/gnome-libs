@@ -2,7 +2,9 @@
 /*
  * gnome-hello-7-mdi.c
  *
- * Illustration of use of GnomeMDI interface.
+ * Illustration of use of GnomeMDI interface using GnomeMDIGenericChild object.
+ * For an alternative example, showing how to subclass GnomeMDIChild instead of
+ * using GnomeMDIGenericChild, refer to either ghex or gtop source.
  *
  * Jaka Mocnik <jaka.mocnik@kiss.uni-lj.si>
  * Martin Baulig <martin@home-of-linux.org>
@@ -13,11 +15,12 @@
 
 #include <stdio.h>
 
-/* undefining this symbol makes this app use custom-built 
+/* undefining USE_TEMPLATES makes this app use custom-built 
    menus instead of letting GnomeMDI build them from GnomeUIInfo
    templates
 */
-#define USE_TEMPLATES 1
+#define USE_TEMPLATES YES!
+/* #undef USE_TEMPLATES */
 
 static int restarted = 0;
 
@@ -44,6 +47,11 @@ static void mode_top_cb(GtkWidget *w);
 static void mode_book_cb(GtkWidget *w);
 static void mode_modal_cb(GtkWidget *w);
 static void inc_counter_cb(GtkWidget *w, gpointer user_data);
+
+static gchar         *my_child_get_config_string(GnomeMDIChild *);
+static GnomeMDIChild *my_child_new_from_config (const gchar *);
+static GtkWidget     *my_child_set_label(GnomeMDIChild *, GtkWidget *);
+static GtkWidget     *my_child_create_view(GnomeMDIChild *child);
 
 #ifdef USE_TEMPLATES
 /* the template for MDI menus */
@@ -92,39 +100,11 @@ GnomeUIInfo main_menu[] = {
 	  GNOME_APP_PIXMAP_NONE, NULL, 0, 0, NULL },
 	{ GNOME_APP_UI_ENDOFINFO }
 };
-#endif
+#endif /* USE_TEMPLATES */
 
 GnomeMDI *mdi;
 
 GnomeClient *client;
-
-/*
- * here we derive a new object from GnomeMDIChild. this actually belongs in a
- * separate header and source file.
- * An alternative to this would be to gtk_object_set_data() your own data to GnomeMDIChild
- * objects instead of subclassing it.
- */
-
-#define MY_CHILD(obj)          GTK_CHECK_CAST (obj, my_child_get_type (), MyChild)
-#define MY_CHILD_CLASS(klass)  GTK_CHECK_CLASS_CAST (klass, my_child_get_type (), MyChildClass)
-#define IS_MY_CHILD(obj)       GTK_CHECK_TYPE (obj, my_child_get_type ())
-
-typedef struct _MyChild       MyChild;
-typedef struct _MyChildClass  MyChildClass;
-
-struct _MyChild
-{
-	GnomeMDIChild mdi_child;
-
-	gint counter;
-};
-
-struct _MyChildClass
-{
-	GnomeMDIChildClass parent_class;
-};
-
-static GnomeMDIChildClass *parent_class = NULL;
 
 #ifdef USE_TEMPLATES
 /* the template for child-specific menus */
@@ -144,34 +124,7 @@ GnomeUIInfo main_child_menu[] = {
 	  GNOME_APP_PIXMAP_NONE, NULL, 0, 0, NULL },
 	{ GNOME_APP_UI_ENDOFINFO }
 };
-#endif
-
-static void my_child_class_init(MyChildClass *);
-static void my_child_init(MyChild *);
-
-static gchar *my_child_get_config_string(GnomeMDIChild *);
-static GnomeMDIChild *my_child_new_from_config (const gchar *);
-static GtkWidget *my_child_set_label(GnomeMDIChild *, GtkWidget *);
-
-static guint my_child_get_type () {
-	static guint my_type = 0;
-
-	if (!my_type) {
-		GtkTypeInfo my_info = {
-			"MyChild",
-			sizeof (MyChild),
-			sizeof (MyChildClass),
-			(GtkClassInitFunc) my_child_class_init,
-			(GtkObjectInitFunc) my_child_init,
-			(GtkArgSetFunc) NULL,
-			(GtkArgGetFunc) NULL,
-		};
-    
-		my_type = gtk_type_unique (gnome_mdi_child_get_type (), &my_info);
-	}
-  
-	return my_type;
-}
+#endif /* USE_TEMPLATES */
 
 /*
  * create_view signal handler: creates any GtkWidget to be used as a view
@@ -180,8 +133,11 @@ static guint my_child_get_type () {
 static GtkWidget *my_child_create_view(GnomeMDIChild *child) {
 	GtkWidget *new_view;
 	gchar label[256];
+	gint counter;
 
-	sprintf(label, "Hello! Child %d reporting...", MY_CHILD(child)->counter);
+	sprintf(label, "Hello! Child %d reporting...",
+			(gint)gnome_mdi_generic_child_get_data(GNOME_MDI_GENERIC_CHILD(child)));
+
 	new_view = gtk_label_new(label);
 
 	return new_view;
@@ -191,7 +147,7 @@ static GtkWidget *my_child_create_view(GnomeMDIChild *child) {
  * create config string for this child
  */
 static gchar *my_child_get_config_string(GnomeMDIChild *child) {
-	return g_strdup_printf ("%d", MY_CHILD(child)->counter);
+	return g_strdup_printf ("%d", (gint)gnome_mdi_generic_child_get_data(GNOME_MDI_GENERIC_CHILD(child)));
 }
 
 static GtkWidget *my_child_set_label(GnomeMDIChild *child,
@@ -249,64 +205,33 @@ static GList *my_child_create_menus(GnomeMDIChild *child, GtkWidget *view) {
 }  
 #endif
 
-static void my_child_class_init (MyChildClass *class) {
-	GtkObjectClass *object_class;
-	GnomeMDIChildClass *child_class;
-
-	object_class = (GtkObjectClass*)class;
-
-	child_class = GNOME_MDI_CHILD_CLASS(class);
-
-	child_class->create_view = my_child_create_view;
-
-	/* get_config_string signal handler returns the config string for
-	   MDI state restoration. you need to provide it if you intend to
-	   use GnomeMDI's session saving capabilities.
-	*/
-	child_class->get_config_string = my_child_get_config_string;
-
-	child_class->set_book_label = my_child_set_label;
-
-#ifndef USE_TEMPLATES
-	/* we are providing our custom-built menus instead of just
-	   GnomeUIInfo templates
-	*/
-	child_class->create_menus = my_child_create_menus;
-#endif
-
-	parent_class = gtk_type_class (gnome_mdi_child_get_type ());
-}
-
-static void my_child_init (MyChild *child) {
-#ifdef USE_TEMPLATES
-	/* we provide GnomeUIInfo menu templates */
-	gnome_mdi_child_set_menu_template(GNOME_MDI_CHILD(child), main_child_menu);
-#endif
-}
-
-static MyChild *my_child_new(gint c) {
-	MyChild *child;
-	gchar name[32];
-
-	if((child = gtk_type_new (my_child_get_type ()))) {
-		child->counter = c;
-
-		/* it is ESSENTIAL that we set the GnomeMDIChild's name, otherwise some
-		   very strange things might happen */
-		sprintf(name, "Child #%d", c);
-		GNOME_MDI_CHILD(child)->name = g_strdup(name);
-	}
-
-	return child;
-}
-
 static GnomeMDIChild *my_child_new_from_config (const gchar *string) {
+	GnomeMDIGenericChild *child;
+	gchar *name;
 	gint c;
 	
 	if (sscanf (string, "%d", &c) != 1)
 		return NULL;
 	
-	return GNOME_MDI_CHILD (my_child_new (c));
+	name = g_strdup_printf("Child %d", c);
+
+	child = gnome_mdi_generic_child_new(name,
+										my_child_create_view,
+#ifdef USE_TEMPLATES
+										NULL,
+#else
+										my_child_create_menus,
+#endif /* USE_TEMPLATES */
+										my_child_get_config_string,
+										NULL,
+										(gpointer)c);
+
+#ifdef USE_TEMPLATES
+	gnome_mdi_child_set_menu_template(GNOME_MDI_CHILD(child),
+										 main_child_menu);
+#endif
+
+	return GNOME_MDI_CHILD (child);
 }
 
 static void quit_cb (GtkWidget *widget) {
@@ -356,20 +281,48 @@ static void remove_cb(GtkWidget *w) {
 }
 
 static void add_cb(GtkWidget *w) {
-	MyChild *my_child;
 	static gint counter = 1;
+	gchar name[32];
+	GnomeMDIGenericChild *child;
 
-	/* create a new child */
-	if((my_child = my_child_new(counter)) != NULL) {
+	sprintf(name, "Child %d", counter);
+	
+	if((child = gnome_mdi_generic_child_new(name,
+											my_child_create_view,
+#ifdef USE_TEMPLATES
+											NULL,
+#else
+											my_child_create_menus,
+#endif /* USE_TEMPLATES */
+											my_child_get_config_string,
+											NULL,
+											(gpointer)counter)) != NULL) {
+#ifdef USE_TEMPLATES
+		gnome_mdi_child_set_menu_template(GNOME_MDI_CHILD(child),
+											 main_child_menu);
+#endif										  
 
 		/* add the child to MDI */
-		gnome_mdi_add_child(mdi, GNOME_MDI_CHILD(my_child));
-
+		gnome_mdi_add_child(mdi, GNOME_MDI_CHILD(child));
+		
 		/* and add a new view of the child */
-		gnome_mdi_add_view(mdi, GNOME_MDI_CHILD(my_child));
+		gnome_mdi_add_view(mdi, GNOME_MDI_CHILD(child));
 
 		counter++;
 	}
+}
+
+static void inc_counter_cb(GtkWidget *w, gpointer user_data) {
+	GnomeMDIGenericChild *child = GNOME_MDI_GENERIC_CHILD(user_data);
+	gchar name[32];
+	gint counter;
+
+	counter = (gint)gnome_mdi_generic_child_get_data(child);
+	counter++;
+	gnome_mdi_generic_child_set_data(child, (gpointer)counter);
+
+	sprintf(name, "Child %d", counter);
+	gnome_mdi_child_set_name(GNOME_MDI_CHILD(child), name);
 }
 
 static void mode_top_cb(GtkWidget *w) {
@@ -382,16 +335,6 @@ static void mode_book_cb(GtkWidget *w) {
 
 static void mode_modal_cb(GtkWidget *w) {
 	gnome_mdi_set_mode(mdi, GNOME_MDI_MODAL);
-}
-
-static void inc_counter_cb(GtkWidget *w, gpointer user_data) {
-	MyChild *child = MY_CHILD(user_data);
-	gchar name[32];
-
-	child->counter++;
-
-	sprintf(name, "Child #%d", child->counter);
-	gnome_mdi_child_set_name(GNOME_MDI_CHILD(child), name);
 }
 
 static void about_cb (GtkWidget *w) {
@@ -424,7 +367,7 @@ static gint remove_child_handler(GnomeMDI *mdi, GnomeMDIChild *child) {
 	gint reply;
 
 	sprintf(question, "Do you really want to remove child %d\n",
-			MY_CHILD(child)->counter);
+			(gint)gnome_mdi_generic_child_get_data(GNOME_MDI_GENERIC_CHILD(child)));
 
 	gnome_app_question_modal(gnome_mdi_active_window(mdi), question,
 							 reply_handler, &reply);
@@ -471,6 +414,13 @@ static GtkMenuBar *mdi_create_menus(GnomeMDI *mdi) {
 	gtk_menu_append(GTK_MENU(menu), w);
 
 	w = gtk_menu_item_new_with_label(_("File"));
+	gtk_widget_show(w);
+	gtk_menu_item_set_submenu(GTK_MENU_ITEM(w), menu);
+
+	gtk_menu_bar_append(GTK_MENU_BAR(bar), w);
+
+	menu = gtk_menu_new();
+	w = gtk_menu_item_new_with_label(_("Children"));
 	gtk_widget_show(w);
 	gtk_menu_item_set_submenu(GTK_MENU_ITEM(w), menu);
 
@@ -551,10 +501,10 @@ int main(int argc, char **argv) {
 	/* set up MDI menus: note that GnomeMDI will copy this struct for its own use, so
 	   main_menu[] will remain intact */
 #ifdef USE_TEMPLATES
-	gnome_mdi_set_menu_template(mdi, main_menu);
+	gnome_mdi_set_menubar_template(mdi, main_menu);
 #else
 	/* we connect the handler providing our custom-built menus */
-	gtk_signal_connect(GTK_OBJECT(mdi), "create_menus", GTK_SIGNAL_FUNC(mdi_create_menus), NULL);
+	gnome_mdi_set_menubar_creator(mdi, mdi_create_menus);
 #endif
 
 	/* and document menu and document list paths (see gnome-app-helper menu
@@ -595,8 +545,8 @@ int main(int argc, char **argv) {
 					   GTK_SIGNAL_FUNC(remove_child_handler), NULL);
 	/* we could also connect handlers to other signals, but since we're lazy, we won't ;) */
 
-	/* set MDI mode */
-	gnome_mdi_set_mode(mdi, GNOME_MDI_DEFAULT_MODE);
+	/* open the initial toplevel window */
+	gnome_mdi_open_toplevel(mdi);
 
 	/* Restore MDI session. */
 
