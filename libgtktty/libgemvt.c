@@ -24,7 +24,7 @@
 #include	"libgemvt.h"
 
 
-const guint     gemvt_libversion_major = LIBGEMVT_MAJOR;
-const guint     gemvt_libversion_revision = LIBGEMVT_REVISION;
-const guint     gemvt_libversion_age = LIBGEMVT_AGE;
-const gchar     *gemvt_libversion = LIBGEMVT_VERSION;
+const guint     gvt_libversion_major = LIBGEMVT_MAJOR;
+const guint     gvt_libversion_revision = LIBGEMVT_REVISION;
+const guint     gvt_libversion_age = LIBGEMVT_AGE;
+const gchar     *gvt_libversion = LIBGEMVT_VERSION;

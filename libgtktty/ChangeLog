@@ -1,5 +1,16 @@
 Thu Dec 11 08:56:19 1997  Tim Janik  <timj@psynet.net>
 
+	* tagged package as 0.2.0.
+
+	* main.c (gvt_term_set_color_table): applied patch from
+	Torsten Paul <paul@os.inf.tu-dresden.de> which fixes a
+	bug in the color allocation code.
+
+	* gtkttyos.c (gtk_tty_os_wait): use waitpid() if wait4()
+	is not available. the configure script still gives a fatal
+	error if neither is available, because we need to wait for
+	a specific process.
+
 	* begin to GNOMEify gemvt.
 	* building of libgemvt is omitted now if not building for GNOME.
 

@@ -324,7 +324,7 @@ wait_restart:
   do
   {
 #ifdef	HAVE_WAIT4
-    memset (&resusage, 0, sizeof (resusage));
+    memset (&res_usage, 0, sizeof (res_usage));
     err = wait4 (tty->pid, &status, WNOHANG, &res_usage);
 #else	/* not HAVE_WAIT4 */
     err = waitpid (tty->pid, &status, WNOHANG);

@@ -727,11 +727,18 @@ gvt_program_exit (GtkTty	 *tty,
   if (1)
   {
     gchar string[256];
+    gchar sys_time[64];
+    gchar user_time[64];
+    guint i;
 
-    sprintf (string,
-	     "System: %f  User: %f",
-	     tty->sys_sec + tty->sys_usec/1000000.0,
-	     tty->user_sec + tty->user_usec/1000000.0);
+    sprintf (sys_time, "%f", tty->sys_sec + tty->sys_usec/1000000.0);
+    for (i = strlen (sys_time) - 1; sys_time[i] == '0'; i--)
+      sys_time[i] = 0;
+    sprintf (user_time, "%f", tty->user_sec + tty->user_usec/1000000.0);
+    for (i = strlen (user_time) - 1; user_time[i] == '0'; i--)
+      user_time[i] = 0;
+
+    sprintf (string, "System: %s  User: %s", sys_time, user_time);
     gtk_label_set (GTK_LABEL (time_label), string);
   }
   
@@ -781,11 +788,11 @@ gvt_term_set_color_table (GtkTerm       *term,
     if (!color_table[i].fore_col)
     {
       color_table[i].fore_col = g_new0 (GdkColor, 1);
-      color_table[i].fore_col->red = color_table[i].back_val >> 8 & 0xff00;
+      color_table[i].fore_col->red = color_table[i].fore_val >> 8 & 0xff00;
       color_table[i].fore_col->red += color_table[i].fore_col->red >> 8;
-      color_table[i].fore_col->green = color_table[i].back_val & 0xff00;
+      color_table[i].fore_col->green = color_table[i].fore_val & 0xff00;
       color_table[i].fore_col->green += color_table[i].fore_col->green >> 8;
-      color_table[i].fore_col->blue = color_table[i].back_val & 0xff;
+      color_table[i].fore_col->blue = color_table[i].fore_val & 0xff;
       color_table[i].fore_col->blue += color_table[i].fore_col->blue << 8;
       
       if (!gdk_color_alloc (cmap, color_table[i].fore_col))
@@ -802,11 +809,11 @@ gvt_term_set_color_table (GtkTerm       *term,
     if (!color_table[i].dim_col)
     {
       color_table[i].dim_col = g_new0 (GdkColor, 1);
-      color_table[i].dim_col->red = color_table[i].back_val >> 8 & 0xff00;
+      color_table[i].dim_col->red = color_table[i].dim_val >> 8 & 0xff00;
       color_table[i].dim_col->red += color_table[i].dim_col->red >> 8;
-      color_table[i].dim_col->green = color_table[i].back_val & 0xff00;
+      color_table[i].dim_col->green = color_table[i].dim_val & 0xff00;
       color_table[i].dim_col->green += color_table[i].dim_col->green >> 8;
-      color_table[i].dim_col->blue = color_table[i].back_val & 0xff;
+      color_table[i].dim_col->blue = color_table[i].dim_val & 0xff;
       color_table[i].dim_col->blue += color_table[i].dim_col->blue << 8;
       
       if (!gdk_color_alloc (cmap, color_table[i].dim_col))
@@ -827,11 +834,11 @@ gvt_term_set_color_table (GtkTerm       *term,
     if (!color_table[i].bold_col)
     {
       color_table[i].bold_col = g_new0 (GdkColor, 1);
-      color_table[i].bold_col->red = color_table[i].back_val >> 8 & 0xff00;
+      color_table[i].bold_col->red = color_table[i].bold_val >> 8 & 0xff00;
       color_table[i].bold_col->red += color_table[i].bold_col->red >> 8;
-      color_table[i].bold_col->green = color_table[i].back_val & 0xff00;
+      color_table[i].bold_col->green = color_table[i].bold_val & 0xff00;
       color_table[i].bold_col->green += color_table[i].bold_col->green >> 8;
-      color_table[i].bold_col->blue = color_table[i].back_val & 0xff;
+      color_table[i].bold_col->blue = color_table[i].bold_val & 0xff;
       color_table[i].bold_col->blue += color_table[i].bold_col->blue << 8;
       
       if (!gdk_color_alloc (cmap, color_table[i].bold_col))

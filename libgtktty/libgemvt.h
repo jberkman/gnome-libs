@@ -44,10 +44,10 @@ extern "C" {
 
 
 
-extern	const guint	gemvt_libversion_major;
-extern	const guint	gemvt_libversion_revision;
-extern	const guint	gemvt_libversion_age;
-extern	const gchar	*gemvt_libversion;
+extern	const guint	gvt_libversion_major;
+extern	const guint	gvt_libversion_revision;
+extern	const guint	gvt_libversion_age;
+extern	const gchar	*gvt_libversion;
 
 
 
