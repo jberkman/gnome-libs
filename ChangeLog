@@ -1,5 +1,10 @@
 Wed Sep  9 00:01:56 1998  Tom Tromey  <tromey@cygnus.com>
 
+	* libgnome/gnome-metadata.c (get_worker): Use
+	gnome_mime_type_or_default.
+	* libgnome/gnome-mime.c (gnome_mime_type_or_default): New function.
+	* libgnome/gnome-mime.h (gnome_mime_type_or_default): Declare.
+
 	* libgnome/gnome-metadata.c (LIST): New macro.
 	(LISTLEN): Use it.
 	(metadata_set): Use new macros.  Compute special key length
