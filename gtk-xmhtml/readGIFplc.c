@@ -36,6 +36,18 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.4  1998/01/07 01:45:41  unammx
+* Gtk/XmHTML is ready to be used by the Gnome hackers now!
+* Weeeeeee!
+*
+* This afternoon:
+*
+* 	- Changes to integrate gtk-xmhtml into an autoconf setup.
+*
+* 	- Changes to make gtk-xmhtml a library to be used by Gnome
+* 	  (simply include <gtk-xmhtml/gtk-xmhtml.h and link
+* 	   with -lgtkxmhtml and you are set).
+*
 * Revision 1.3  1997/12/29 22:16:36  unammx
 * This version does:
 *
@@ -72,8 +84,9 @@ static char rcsId[]="$Header$";
 *****/ 
 #include <stdio.h>
 #include <stdlib.h>
+#include <config.h>\
 
-#if defined(HAVE_PNG) || defined(HAVE_ZLIB)
+#if defined(HAVE_LIBPNG) || defined(HAVE_LIBZ)
 #include <unistd.h>	/* unlink */
 #include <zlib.h>
 #endif
@@ -655,7 +668,7 @@ _PLC_GIF_Destructor(PLC *plc)
 	}
 }
 
-#if defined(HAVE_PNG) || defined(HAVE_ZLIB)
+#if defined(HAVE_LIBPNG) || defined(HAVE_LIBZ)
 /*****
 * Name: 		_PLC_GZF_Init
 * Return Type: 	void
@@ -844,7 +857,7 @@ _PLC_GZF_Destructor(PLC *plc)
 	plc->plc_status = PLC_ABORT;
 }
 
-#endif	/* !HAVE_PNG && !HAVE_ZLIB */
+#endif	/* !HAVE_LIBPNG && !HAVE_LIBZ */
 
 /*********
 *** Private functions used by both GIF and GZF progressive loaders.

@@ -38,6 +38,18 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.8  1998/01/07 01:45:38  unammx
+* Gtk/XmHTML is ready to be used by the Gnome hackers now!
+* Weeeeeee!
+*
+* This afternoon:
+*
+* 	- Changes to integrate gtk-xmhtml into an autoconf setup.
+*
+* 	- Changes to make gtk-xmhtml a library to be used by Gnome
+* 	  (simply include <gtk-xmhtml/gtk-xmhtml.h and link
+* 	   with -lgtkxmhtml and you are set).
+*
 * Revision 1.7  1997/12/29 22:16:34  unammx
 * This version does:
 *
@@ -116,18 +128,19 @@ static char rcsId[]="$Header$";
 *****/ 
 #include <stdlib.h>
 #include <stdio.h>
+#include <config.h>
 
-#if defined (HAVE_PNG) || defined(HAVE_ZLIB)
+#if defined (HAVE_LIBPNG) || defined(HAVE_LIBZ)
 #include <zlib.h>
 #endif
 
-#if defined(HAVE_JPEG)
+#if defined(HAVE_LIBJPEG)
 #include <jpeglib.h>
 #endif
 
 #ifndef WITH_MOTIF
 #    include <gdk/gdkprivate.h>
-#    include <XmHTML/toolkit.h>
+#    include <gtk-xmhtml/toolkit.h>
 #endif
 
 #include "XmHTMLP.h"
@@ -503,7 +516,7 @@ _XmHTMLPLCCreate(XmHTMLWidget html, TPointer priv_data, String url, Byte type)
 	/* a privatly ownded GC for XPutImage to use */
 	if(html->html.plc_gc == NULL)
 	{
-#ifdef __GTK__
+#ifdef WITH_GTK
 		GdkGCValues values;
 		GtkWidget *w = GTK_WIDGET (html->html.work_area);
 		
@@ -844,7 +857,7 @@ _PLCRun(PLC *plc)
 *	there are PLC's in the list), and True when processing is complete.
 *	This function is actually of type XtWorkProc.
 *****/
-#ifdef __GTK__
+#ifdef WITH_GTK
 static gint
 _PLCSubCycler(gpointer call_data)
 #else
@@ -929,7 +942,7 @@ _PLCSubCycler(XtPointer call_data)
 *	when new text has been set into the widget.
 *****/
 /*ARGSUSED*/
-#ifdef __GTK__
+#ifdef WITH_GTK
 gint
 _XmHTMLPLCCycler(gpointer call_data)
 #else
@@ -960,7 +973,7 @@ _XmHTMLPLCCycler(TPointer call_data, TIntervalId *proc_id)
 #ifdef PLC_WORKPROCS
 	_XmHTMLDebug(14, ("plc.c: _XmHTMLPLCCycler, starting subCycler\n"));
 
-#  ifdef __GTK__
+#  ifdef WITH_GTK
 	html->html.plc_proc_id = gtk_idle_add(_PLCSubCycler, html);
 #  else
 	html->html.plc_proc_id = (XtWorkProcId)
@@ -1043,7 +1056,7 @@ _XmHTMLPLCCycler(TPointer call_data, TIntervalId *proc_id)
 
 	/* and re-instate ourselves if we have any plc's left */
 	if(html->html.plc_buffer != NULL)
-#ifdef __GTK__
+#ifdef WITH_GTK
 
 		return TIdleKeep;
 	else
@@ -1084,13 +1097,13 @@ _XmHTMLKillPLCCycler(XmHTMLWidget html)
 		html->html.plc_suspended = True;
 
 #ifdef PLC_WORKPROCS
-#  ifdef __GTK__
+#  ifdef WITH_GTK
 		gtk_idle_remove(html->html.plc_proc_id);
 #  else
 		XtRemoveWorkProc((XtWorkProcId)html->html.plc_proc_id);
 #  endif
 #else
-#  ifdef __GTK__
+#  ifdef WITH_GTK
 		gtk_timeout_remove(html->html.plc_proc_id);
 #  else
 		XtRemoveTimeOut(html->html.plc_proc_id);
@@ -1131,7 +1144,7 @@ _XmHTMLKillPLCCycler(XmHTMLWidget html)
 	/* free the plc_gc if it's still here */
 	if(html->html.plc_gc)
 	{
-#ifdef __GTK__
+#ifdef WITH_GTK
 		gdk_gc_destroy(html->html.plc_gc);
 #else
 		XFreeGC(XtDisplay((Widget)html), html->html.plc_gc);
@@ -1209,29 +1222,29 @@ _PLC_IMG_Init(PLC *plc)
 	else if(!(strncmp((char*)magic, "GZF87a", 6)) || 
 		!(strncmp((char*)magic, "GZF89a", 6)))
 	{
-#if defined (HAVE_PNG) || defined (HAVE_ZLIB)
+#if defined (HAVE_LIBPNG) || defined (HAVE_LIBZ)
 		obj_type = plcGZF;
 		img_type = IMAGE_GZF;
 		plc->init         = _PLC_GZF_Init;
 		plc->destructor   = _PLC_GZF_Destructor;
 		plc->obj_funcs[0] = _PLC_GZF_ScanlineProc;
 		plc->object->plc_gzf_image.info = (XmImageInfo*)plc->priv_data;
-#endif /* HAVE_PNG || HAVE_ZLIB */
+#endif /* HAVE_LIBPNG || HAVE_LIBZ */
 	}
 	else if(magic[0] == 0xff && magic[1] == 0xd8 && magic[2] == 0xff)
 	{
-#ifdef HAVE_JPEG
+#ifdef HAVE_LIBJPEG
 		obj_type = plcJPEG;
 		img_type = IMAGE_JPEG;
 		plc->init         = _PLC_JPEG_Init;
 		plc->destructor   = _PLC_JPEG_Destructor;
 		plc->obj_funcs[0] = _PLC_JPEG_ScanlineProc;
 		plc->object->plc_jpeg_image.info = (XmImageInfo*)plc->priv_data;
-#endif /* HAVE_PNG */
+#endif /* HAVE_LIBJPEG */
 	}
 	else if(!(memcmp(magic, png_magic, 8)))
 	{
-#ifdef HAVE_PNG
+#ifdef HAVE_LIBPNG
 
 /*** internal configuration define, don't define this yourself ***/
 #ifdef PLC_PNG
@@ -1243,7 +1256,7 @@ _PLC_IMG_Init(PLC *plc)
 		plc->object->plc_png_image.info = (XmImageInfo*)plc->priv_data;
 #endif /* PLC_PNG */
 
-#endif /* HAVE_PNG */
+#endif /* HAVE_LIBPNG */
 	}
 	else if(!(strncmp((char*)magic, "/* XPM */", 9)))
 	{
@@ -1322,7 +1335,7 @@ _PLC_IMG_Transfer(PLC *plc)
 	register int i;
 	Byte *ptr, *data;
 	int ypos, nlines;
-#ifndef __GTK__
+#ifndef WITH_GTK
 	Display *dpy  = XtDisplay((Widget)html);
 #endif
 
@@ -1437,7 +1450,7 @@ _PLC_IMG_Transfer(PLC *plc)
 		}
 
 		/* allocate pixmaps */
-#ifdef __GTK__
+#ifdef WITH_GTK
 		if ((any_image->pixmap = gdk_pixmap_new(win, image->width, image->height,
 							 html->html.xcc->visual->depth)) == NULL)
 #else
@@ -1458,7 +1471,7 @@ _PLC_IMG_Transfer(PLC *plc)
 			&& !ImageDelayedCreation(html->html.body_image) &&
 			BodyImageLoaded(html->html.body_image->html_image))
 		{
-#ifndef __GTK__
+#ifndef WITH_GTK
 			XGCValues values;
 			unsigned long valuemask;
 #endif
@@ -1484,7 +1497,7 @@ _PLC_IMG_Transfer(PLC *plc)
 			tsx = xs - x_offset;
 			tsy = ys - y_offset;
 
-#ifdef __GTK__
+#ifdef WITH_GTK
 			gdk_gc_set_fill(html->html.bg_gc, GDK_TILED);
 			gdk_gc_set_tile(html->html.bg_gc, html->html.body_image->pixmap);
 			gdk_gc_set_ts_origin(html->html.bg_gc, tsx, tsy);
@@ -1508,7 +1521,7 @@ _PLC_IMG_Transfer(PLC *plc)
 		}
 		else
 		{
-#ifdef __GTK__
+#ifdef WITH_GTK
 			GdkColor pix;
 			pix.pixel = html->html.body_bg;
 			gdk_gc_set_foreground(html->html.gc, &pix);
@@ -1550,7 +1563,7 @@ _PLC_IMG_Transfer(PLC *plc)
 			/* raw clipmask data */
 			any_image->clip_data = (Byte*)calloc(clipsize, sizeof(Byte));
 			/* fully transparent clipmask */
-#ifdef __GTK__
+#ifdef WITH_GTK
 			{
 				GdkColor fg, bg;
 
@@ -1767,7 +1780,7 @@ _PLC_IMG_Transfer(PLC *plc)
 			win = Toolkit_Default_Root_Window (dpy);
 
 		/* create new one */
-#ifdef __GTK__
+#ifdef WITH_GTK
 		{
 			GdkColor fg, bg;
 			
@@ -1879,7 +1892,7 @@ _PLC_IMG_Transfer(PLC *plc)
 		"scanline %i to %i\n", ypos, ypos + nlines));
 
 	/* update pixmap */
-#ifdef __GTK__
+#ifdef WITH_GTK
 	gdk_draw_image(any_image->pixmap, html->html.plc_gc, any_image->ximage,
 		       0, ypos, 0, ypos, width, nlines);
 #else
@@ -1933,7 +1946,7 @@ _PLC_IMG_Finalize(PLC *plc)
 
 	/* this must *always* be destroyed */
 	if(any_image->ximage)
-#ifdef __GTK__
+#ifdef WITH_GTK
 		gdk_image_destroy(any_image->ximage);
 #else
 		XDestroyImage(any_image->ximage);
@@ -2037,7 +2050,7 @@ _PLC_IMG_Finalize(PLC *plc)
 				    Toolkit_Widget_Dim (html).height, True);
 	}
 	/* make sure we are updated */
-#ifdef __GTK__
+#ifdef WITH_GTK
 	gtk_widget_draw(GTK_WIDGET (html), NULL); /* XXX: I don't know if this is what we want to do */
 #else
 	XmUpdateDisplay((Widget)html);
@@ -2182,13 +2195,13 @@ XmHTMLImageProgressiveSuspend(TWidget w)
 	if(html->html.plc_proc_id)
 	{
 #ifdef PLC_WORKPROCS
-#  ifdef __GTK__
+#  ifdef WITH_GTK
 		gtk_idle_remove(html->html.plc_proc_id);
 #  else
 		XtRemoveWorkProc((XtWorkProcId)html->html.plc_proc_id);
 #  endif
 #else
-#  ifdef __GTK__
+#  ifdef WITH_GTK
 		gtk_timeout_remove(html->html.plc_proc_id);
 #  else
 		XtRemoveTimeOut(html->html.plc_proc_id);
@@ -2228,7 +2241,7 @@ XmHTMLImageProgressiveContinue(TWidget w)
 
 	/* reactivate cycler */
 	html->html.plc_suspended = False;
-#ifdef __GTK__
+#ifdef WITH_GTK
 	_XmHTMLPLCCycler((TPointer)html);
 #else
 	_XmHTMLPLCCycler((TPointer)html, NULL);

@@ -37,6 +37,18 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.4  1998/01/07 01:45:42  unammx
+* Gtk/XmHTML is ready to be used by the Gnome hackers now!
+* Weeeeeee!
+*
+* This afternoon:
+*
+* 	- Changes to integrate gtk-xmhtml into an autoconf setup.
+*
+* 	- Changes to make gtk-xmhtml a library to be used by Gnome
+* 	  (simply include <gtk-xmhtml/gtk-xmhtml.h and link
+* 	   with -lgtkxmhtml and you are set).
+*
 * Revision 1.3  1997/12/25 01:34:14  unammx
 * Good news for the day:
 *
@@ -103,8 +115,9 @@ static char rcsId[]="$Header$";
 *****/ 
 #include <stdio.h>
 #include <stdlib.h>
+#include <config.h>
 
-#ifdef HAVE_PNG
+#ifdef HAVE_LIBPNG
 #include <png.h>
 #include <setjmp.h>
 #include <math.h>		/* required for full alpha channel processing */
@@ -113,7 +126,7 @@ static char rcsId[]="$Header$";
 #include "XmHTMLP.h"
 #include "XmHTMLfuncs.h"
 
-#ifdef HAVE_PNG
+#ifdef HAVE_LIBPNG
 
 /*** External Function Prototype Declarations ***/
 
@@ -799,7 +812,7 @@ _XmHTMLReReadPNG(XmHTMLWidget html, XmHTMLRawImageData *raw_data, int x,
 	return(img_data);
 }
 
-#else	/* !HAVE_PNG */
+#else	/* !HAVE_LIBPNG */
 
 /* empty func if PNG isn't supported */
 /* ARGSUSED */
@@ -816,4 +829,4 @@ _XmHTMLReReadPNG(XmHTMLWidget html, XmHTMLRawImageData *raw_data, int x,
 {
 	return((XmHTMLRawImageData*)NULL);
 }
-#endif /* HAVE_PNG */
+#endif /* HAVE_LIBPNG */

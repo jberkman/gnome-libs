@@ -35,6 +35,18 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.2  1998/01/07 01:45:36  unammx
+* Gtk/XmHTML is ready to be used by the Gnome hackers now!
+* Weeeeeee!
+*
+* This afternoon:
+*
+* 	- Changes to integrate gtk-xmhtml into an autoconf setup.
+*
+* 	- Changes to make gtk-xmhtml a library to be used by Gnome
+* 	  (simply include <gtk-xmhtml/gtk-xmhtml.h and link
+* 	   with -lgtkxmhtml and you are set).
+*
 * Revision 1.1  1997/12/30 03:32:51  unammx
 * More work on getting the frames working, still some bits are missing - Miguel
 *
@@ -76,7 +88,6 @@ static char rcsId[]="$Header$";
 #include <unistd.h>		/* getpid() */
 #include <errno.h>
 #include <time.h>		/* time(), ctime() */
-
 /* Local includes */
 #include "XmHTMLfuncs.h"
 #include "debug.h"

@@ -38,6 +38,18 @@
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.4  1998/01/07 01:45:39  unammx
+* Gtk/XmHTML is ready to be used by the Gnome hackers now!
+* Weeeeeee!
+*
+* This afternoon:
+*
+* 	- Changes to integrate gtk-xmhtml into an autoconf setup.
+*
+* 	- Changes to make gtk-xmhtml a library to be used by Gnome
+* 	  (simply include <gtk-xmhtml/gtk-xmhtml.h and link
+* 	   with -lgtkxmhtml and you are set).
+*
 * Revision 1.3  1997/12/29 22:16:35  unammx
 * This version does:
 *
@@ -79,10 +91,10 @@
 #include "toolkit.h"
 
 /* Pull in required declarations */
-#ifdef HAVE_PNG
+#ifdef HAVE_LIBPNG
 #  include <png.h>
 #else
-# ifdef HAVE_ZLIB
+# ifdef HAVE_LIBZ
 #   include <zlib.h>
 # endif
 #endif
@@ -91,9 +103,9 @@
 * png.h includes setjmp.h and issues a cpp error on Linux when it gets
 * included more than once...
 *****/
-#ifdef HAVE_JPEG
+#ifdef HAVE_LIBJPEG
 #  include <jpeglib.h>
-#  ifndef HAVE_PNG	
+#  ifndef HAVE_LIBPNG	
 #    include <setjmp.h>
 #  endif
 #endif
@@ -319,7 +331,7 @@ typedef struct{
 	plc_image_private_fields;		/* private fields for all image objects */
 
 	/* GZF specific data follows */
-#if defined(HAVE_PNG) || defined(HAVE_ZLIB)
+#if defined(HAVE_LIBPNG) || defined(HAVE_LIBZ)
 	Byte zbuf[256];					/* block of compressed raster data */
 	z_stream zstream;				/* zlib inflate() stream object */
 #endif
@@ -329,7 +341,7 @@ typedef struct{
 /*****
 * JPEG image object
 *****/
-#ifdef HAVE_JPEG
+#ifdef HAVE_LIBJPEG
 /* default libjpeg error override */
 typedef struct _plc_jpeg_err_mgr{
 	struct jpeg_error_mgr pub;		/* jpeg public fields */
@@ -348,7 +360,7 @@ typedef struct{
 	plc_jpeg_err_mgr	jerr;				/* error manager object */
 }PLCImageJPEG;
 
-#else	/* !HAVE_JPEG */
+#else	/* !HAVE_LIBJPEG */
 
 /*****
 * dummy JPEG image object
@@ -357,12 +369,12 @@ typedef struct{
 	plc_common_object_fields;		/* fields common for all PLC structures */
 }PLCImageJPEG;
 
-#endif /* HAVE_JPEG */
+#endif /* HAVE_LIBJPEG */
 
 /*****
 * PNG image object
 *****/
-#ifdef HAVE_PNG
+#ifdef HAVE_LIBPNG
 
 typedef struct{
 	plc_common_object_fields;		/* fields common for all PLC structures */
@@ -372,7 +384,7 @@ typedef struct{
 	/* PNG specific data follows */
 }PLCImagePNG;
 
-#else /* !HAVE_PNG */
+#else /* !HAVE_LIBPNG */
 
 /*****
 * dummy PNG image object
@@ -381,7 +393,7 @@ typedef struct{
 	plc_common_object_fields;		/* fields common for all PLC structures */
 }PLCImagePNG;
 
-#endif /* HAVE_PNG */
+#endif /* HAVE_LIBPNG */
 
 /*****
 * XPM image object

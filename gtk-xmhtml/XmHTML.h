@@ -35,6 +35,18 @@
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.4  1998/01/07 01:45:35  unammx
+* Gtk/XmHTML is ready to be used by the Gnome hackers now!
+* Weeeeeee!
+*
+* This afternoon:
+*
+* 	- Changes to integrate gtk-xmhtml into an autoconf setup.
+*
+* 	- Changes to make gtk-xmhtml a library to be used by Gnome
+* 	  (simply include <gtk-xmhtml/gtk-xmhtml.h and link
+* 	   with -lgtkxmhtml and you are set).
+*
 * Revision 1.3  1997/12/29 22:16:21  unammx
 * This version does:
 *
@@ -154,8 +166,12 @@
 #    include <gtk/gtk.h>
 #endif
 
-#include <XmHTML/HTML.h>
-
+#ifdef WITH_MOTIF
+#    include <XmHTML/HTML.h>
+#else
+#    include <gtk-xmhtml/HTML.h>
+#endif
+	
 _XFUNCPROTOBEGIN
 
 #ifdef WITH_MOTIF

@@ -36,6 +36,18 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.3  1998/01/07 01:45:40  unammx
+* Gtk/XmHTML is ready to be used by the Gnome hackers now!
+* Weeeeeee!
+*
+* This afternoon:
+*
+* 	- Changes to integrate gtk-xmhtml into an autoconf setup.
+*
+* 	- Changes to make gtk-xmhtml a library to be used by Gnome
+* 	  (simply include <gtk-xmhtml/gtk-xmhtml.h and link
+* 	   with -lgtkxmhtml and you are set).
+*
 * Revision 1.2  1997/12/18 22:13:20  unammx
 * Internal image format now compiles.
 *
@@ -47,7 +59,8 @@ static char rcsId[]="$Header$";
 #include <stdlib.h>
 #include <string.h>
 
-#if defined(HAVE_PNG) || defined(HAVE_ZLIB)
+#include <config.h>
+#if defined(HAVE_LIBPNG) || defined(HAVE_LIBZ)
 #include <zlib.h>
 #endif
 
@@ -281,7 +294,7 @@ _XmHTMLReadFLG(XmHTMLWidget html, ImageBuffer *ib)
 	Boolean err = False;
 	ImageBuffer *dp;
 
-#if defined(HAVE_PNG) || defined(HAVE_ZLIB)
+#if defined(HAVE_LIBPNG) || defined(HAVE_LIBZ)
 	ImageBuffer data;
 	int zlib_err;
 #endif
@@ -300,7 +313,7 @@ _XmHTMLReadFLG(XmHTMLWidget html, ImageBuffer *ib)
 
 	if(c == 1)
 	{
-#if !defined(HAVE_PNG) && !defined(HAVE_ZLIB)
+#if !defined(HAVE_LIBPNG) && !defined(HAVE_LIBZ)
 		/* compressed FLG requires zlib support to be present */
 		_XmHTMLWarning(__WFUNC__(html, "_XmHTMLReadFLG"),
 			"%s: can't uncompress:\n    Reason: zlib support not present.",

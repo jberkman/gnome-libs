@@ -35,6 +35,18 @@
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.8  1998/01/07 01:45:36  unammx
+* Gtk/XmHTML is ready to be used by the Gnome hackers now!
+* Weeeeeee!
+*
+* This afternoon:
+*
+* 	- Changes to integrate gtk-xmhtml into an autoconf setup.
+*
+* 	- Changes to make gtk-xmhtml a library to be used by Gnome
+* 	  (simply include <gtk-xmhtml/gtk-xmhtml.h and link
+* 	   with -lgtkxmhtml and you are set).
+*
 * Revision 1.7  1997/12/30 03:32:51  unammx
 * More work on getting the frames working, still some bits are missing - Miguel
 *
@@ -160,17 +172,29 @@
 #define _XmHTMLP_h_
 
 #include <X11/Xatom.h>		/* property defines */
-
-#include <XmHTML/toolkit.h>
-
 /* Required includes */
-#include <XmHTML/XmHTML.h>
+
+#ifdef WITH_MOTIF
+#     include <XmHTML/toolkit.h>
+#     include <XmHTML/XmHTML.h>
+#else
+#     include <gtk-xmhtml/toolkit.h>
+#     include <gtk-xmhtml/XmHTML.h>
+#endif
+
+
 
 /*****
 * NEVER define VERSION *or* _LIBRARY yourself. These are defines required
 * for compiling the library. When defined, they pull in a number of other
 * header files which are normally *not* installed.
 *****/
+#ifdef GNOME_LIB
+#   ifndef VERSION
+#       define VERSION
+#   endif
+#endif
+
 #ifdef VERSION
 # ifndef _LIBRARY
 #  define _LIBRARY

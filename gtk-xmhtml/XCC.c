@@ -73,6 +73,18 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.2  1998/01/07 01:45:34  unammx
+* Gtk/XmHTML is ready to be used by the Gnome hackers now!
+* Weeeeeee!
+*
+* This afternoon:
+*
+* 	- Changes to integrate gtk-xmhtml into an autoconf setup.
+*
+* 	- Changes to make gtk-xmhtml a library to be used by Gnome
+* 	  (simply include <gtk-xmhtml/gtk-xmhtml.h and link
+* 	   with -lgtkxmhtml and you are set).
+*
 * Revision 1.1  1997/11/28 03:38:54  gnomecvs
 * Work in progress port of XmHTML;  No, it does not compile, don't even try -mig
 *
@@ -127,7 +139,6 @@ static char rcsId[]="$Header$";
 #ifdef DMALLOC
 #include "dmalloc.h"
 #endif
-
 #include "XmHTMLP.h"
 #include "XmHTMLfuncs.h"
 #include "XCCP.h"

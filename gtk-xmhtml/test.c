@@ -1,8 +1,11 @@
+/* These are defined by the Makefile for gtk-xmhtml */
+#undef LIBRARY
+#undef _LIBRARY
+
 #include <stdio.h>
 #include <gtk/gtk.h>
 #include <X11/Xatom.h>		/* property defines */
-#include <XmHTML/toolkit.h>
-#include "gtk-xmhtml.h"
+#include <gtk-xmhtml/gtk-xmhtml.h>
 
 char *urls [] = {
 	"unknown", "named (...)", "jump (#...)",

@@ -37,6 +37,18 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.3  1998/01/07 01:45:41  unammx
+* Gtk/XmHTML is ready to be used by the Gnome hackers now!
+* Weeeeeee!
+*
+* This afternoon:
+*
+* 	- Changes to integrate gtk-xmhtml into an autoconf setup.
+*
+* 	- Changes to make gtk-xmhtml a library to be used by Gnome
+* 	  (simply include <gtk-xmhtml/gtk-xmhtml.h and link
+* 	   with -lgtkxmhtml and you are set).
+*
 * Revision 1.2  1997/12/23 04:44:33  unammx
 * Ok kiddies, news for the day:
 *
@@ -79,7 +91,7 @@ static char rcsId[]="$Header$";
 * of width*width...
 *
 * Revision 1.3  1997/03/20 08:15:06  newt
-* _XmHTMLReadJPEG is now a dummy func when HAVE_JPEG isn't defined
+* _XmHTMLReadJPEG is now a dummy func when HAVE_LIBJPEG isn't defined
 *
 * Revision 1.2  1997/03/11 19:58:44  newt
 * ImageBuffer changes, Dick Porter (dick@cymru.net)
@@ -89,12 +101,13 @@ static char rcsId[]="$Header$";
 *
 *****/ 
 /*****
-* This entire file is wrapped between a #ifdef HAVE_JPEG/#endif pair.
+* This entire file is wrapped between a #ifdef HAVE_LIBJPEG/#endif pair.
 *****/
 #include <stdio.h>
 #include <stdlib.h>
+#include <config.h>
 
-#ifdef HAVE_JPEG
+#ifdef HAVE_LIBJPEG
 #include <jpeglib.h>
 #include <setjmp.h>
 #endif
@@ -102,7 +115,7 @@ static char rcsId[]="$Header$";
 #include "XmHTMLP.h"
 #include "XmHTMLfuncs.h"
 
-#ifdef HAVE_JPEG
+#ifdef HAVE_LIBJPEG
 /*** External Function Prototype Declarations ***/
 
 /*** Public Variable Declarations ***/
@@ -373,7 +386,7 @@ _XmHTMLReadJPEG(TWidget html, ImageBuffer *ib)
 	return(img_data);
 }
 
-#else	/* !HAVE_JPEG */
+#else	/* !HAVE_LIBJPEG */
 
 /* empty func if JPEG isn't supported */
 /* ARGSUSED */
@@ -383,4 +396,4 @@ _XmHTMLReadJPEG(TWidget html, ImageBuffer *ib)
 	return((XmHTMLRawImageData*)NULL);
 }
 
-#endif	/* HAVE_JPEG */
+#endif	/* HAVE_LIBJPEG */

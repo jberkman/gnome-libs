@@ -1,9 +1,7 @@
-#ifndef TOOLKIT_H
-#define TOOLKIT_H
+#ifndef __TOOLKIT_H__
+#define __TOOLKIT_H__
 
-#ifndef WITH_MOTIF
-#define __GTK__
-#define WITH_GTK
+#ifdef WITH_GTK
 
 #include <gtk/gtk.h>
 #include <gdk/gdkx.h>
@@ -138,7 +136,7 @@ typedef XVisualInfo TVisualInfo;
     gtk_signal_emit (GTK_OBJECT(w), gtk_xmhtml_signals [GTK_XMHTML_##s], d)
 #define Toolkit_Undefine_Cursor(d,w) gdk_window_set_cursor ((w), NULL)
 #define Toolkit_Define_Cursor(d,w,c) gdk_window_set_cursor ((w),(c))
-	    
+
 #define XCCCreate(w,v,c)   gdk_color_context_new (v, c)
 #define XCCFree(c)         gdk_color_context_free (c)
 #define XCCGetDepth(c)     (c)->visual->depth
