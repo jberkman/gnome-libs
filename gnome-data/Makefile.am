@@ -10,7 +10,7 @@ EXTRA_DIST = 			\
 	gnome.mime 		\
 	paper.config
 
-scoredir=$(localstatedir)/games
+scoredir=$(DESTDIR)$(localstatedir)/games
 sysconf_DATA=paper.config mime-magic
 
 soundlistdir = $(sysconfdir)/sound/events
