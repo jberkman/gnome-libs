@@ -1,3 +1,9 @@
+1998-02-12  Raja R Harinath  <harinath@cs.umn.edu>
+
+	* gtkvt102.c (gtk_vt102_input): Enclose if-else in {} to remove
+	egcs warning.
+	* gtkterm.c: Include <stdio.h> for `printf'.
+
 Thu Feb  5 04:49:22 1998  Tim Janik  <timj@gimp.org>
 
 	* gvtmain.c: do proper widget shutdown if the application is finished.
