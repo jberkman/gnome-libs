@@ -5,7 +5,6 @@ module GNOME {
 		const short VALUE_FLOAT   = 2;
 
 		union Value switch(short) {
-			case VALUE_INTEGER: long   v_int;
 			case VALUE_FLOAT:   double v_float;
 			case VALUE_STRING:  string str;
 		};
