@@ -1,3 +1,25 @@
+1998-04-27  Carsten Schaar  <nhadcasc@fs-maphy.uni-hannover.de>
+
+	* libgnome/gnome-help.c (gnome_help_file_find_file): Changed to
+	look for more than one language.
+	(gnome_help_file_path): Changed to use
+	gnome_help_file_find_file. If no file is found, than return a
+	value like in former times.
+
+	* libgnome/gnome-config.c
+	(_gnome_config_get_translated_string_with_default): Changed to
+	look for more than one language.
+	(_gnome_config_set_translated_string): Changed to support language 
+	lists.
+
+	* libgnome/gnome-i18n.c (guess_category_value): New function.
+	(gnome_i18n_get_language_list): New function.
+
+	* libgnome/gnome-i18n.h: Added gnome_i18n_get_language_list, that
+	returns a list of languages, depending on the users environment.
+
+	* libgnome/gnome-i18nP.h: Likewise.
+
 1998-04-27  Michael Fulbright  <msf@redhat.com>
 
 	* libgnome/gnome-help.c (gnome_help_file_find_file):
