@@ -134,6 +134,8 @@ rm -rf $RPM_BUILD_ROOT
 %{prefix}/share/mime-info/gnome.mime
 %{prefix}/share/type-convert/type.convert
 %config %{sysconfdir}/*
+%{prefix}/man/man1/*
+%{prefix}/man/man5/*
 
 %files devel
 %defattr(-, root, root)
