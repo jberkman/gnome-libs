@@ -17,7 +17,6 @@
 <!entity wwwgnomedeb   "http://www.gnome.org/start/getting.shtml">
 <!entity wwwgnomecvs   "http://cvs.gnome.org">
 <!entity wwwgnomewicvs "http://www.gnome.org/devel/whatiscvs.shtml">
-<!entity wwwsorencvs   "http://www.cinternet.net/~soren/gnome/cvs.shtml">
 <!entity wwwgnomeftp   "http://www.gnome.org/ftpmirrors.shtml">
 <!entity wwwgnometour  "http://www.gnome.org/start/gnometour.shtml">
 <!entity wwwgnomefoo   "http://www.gnome.org/start/gnometour.shtml">
@@ -73,7 +72,7 @@
   <bookinfo>
     <title>GNOME Frequently Asked Questions</title>
     <titleabbrev>Users-FAQ</titleabbrev>
-    <edition>v1.0.8</edition>
+    <edition>v1.1.3</edition>
     <authorgroup>
       <author>
 	<firstname>Todd</firstname>
@@ -631,8 +630,7 @@
       guarantee that the CVS version will even compile, much less
       work, but bug reports are quite appreciated.  If this sounds
       like its for you, you can find more information on getting the
-      CVS version at <ulink url="&wwwgnomewicvs;">&wwwgnomewicvs;</ulink>
-      and <ulink url="&wwwsorencvs;">&wwwsorencvs;</ulink>.</para>
+      CVS version at <ulink url="&wwwgnomewicvs;">&wwwgnomewicvs;</ulink>.</para>
 
       <para>If you don't want to deal with compiling GNOME, and you
       are on a common system, there might be precompiled binary
@@ -972,6 +970,14 @@
       url="http://sourceware.cygnus.com/cygwin/">CygWin32</ulink>
       libraries and utilities.  They will make such a task much
       easier.</para>
+    </sect1>
+
+    <sect1 id="CreatingRPMS">
+      <title>How do I create RPMs from the GNOME tarballs?</title>
+      <para>If RPM is properly set up, 
+      <userinput>rpm -tb modulename.tar.gz</userinput> is all it should
+      take.</para>
+      <comment>Add some more info later</comment>
     </sect1>
   </chapter>
 
@@ -1686,6 +1692,23 @@ Program received signal SIGINT, Interrupt.
         known as esound. This is a program which allows multiple sounds
         to be played at once, since normally linux only allows one
         connection to the sound card.</para>
+      </sect2>
+
+      <sect2 id="brokenGettext">
+        <title>When compiling, I get errors about the ./intl directory</title>
+        
+        <para>This usually means that your gettext install has been 
+        broken. It is usually fixed by simply reinstalling</para>
+      </sect2>
+
+      <sect2 id="LINGUAS">
+        <title>When compiling, I get an error about /usr/share/locate/*/*/*</title>
+
+        <para>This usually means that the LINGUAS environment variable has been
+        set. Unset it however your shell unsets variables (For bash, it's
+        <userinput>unset LINGUAS</userinput>).</para>
+        <comment>Sometimes it may also be LC_ALL or LANG, but I haven't run 
+        into that</comment>
       </sect2>
 
       <sect2 id="db185">
@@ -2780,33 +2803,47 @@ WM=foo</screen>
       code to the GNOME project, you will eventually want an account
       on the main CVS server, but get used to the Anonymous CVS system
       first, so you are familiar with how GNOME makes use of
-      CVS.</para>
+      CVS. Note that this is not for those who do not know how to compile
+      a typical linux application.</para>
 
       <para>Directions on how to access the Anonymous CVS system are at
-      <ulink url="&wwwgnomewicvs;">&wwwgnomewicvs;</ulink>.  There is also
-      a very useful guide at <ulink
-      url="&wwwsorencvs;">&wwwsorencvs;</ulink>.  The anonymous CVS
-      servers should be updating themselves </para>
+      <ulink url="&wwwgnomewicvs;">&wwwgnomewicvs;</ulink>. The anonymous 
+      CVS servers should be updating themselves </para>
 
       <para>In order to use the CVS version, you need to have GNU
       tools installed on your system.  You need at least GNU Autoconf,
       Automake, Libtool and m4.  If your system doesn't include these,
       you can get them from the GNU website at <ulink
       url="&wwwgnu;">&wwwgnu;</ulink>.</para>
-    </sect1>
 
-    <sect1>
-      <title>I want bleeding edge GNOME, but I can't use CVS.  How do
-      I get it?</title>
+      <para>When downloading CVS modules normally, you are grabbing what
+      is known as the HEAD branch. It is possible to download branches
+      which are considered mostly stable. Currently the stable branch is
+      1-0. The branch is specified with the -r option. So, if you wanted 
+      to checkout stable gnome-libs (Since HEAD is extremely unstable), 
+      you would do: 
+      <userinput>cvs -z3 checkout gnome-libs -r gnome-libs-1-0</userinput>.</para>
 
-      <para>There are some occasions where CVS just isn't feasible.
-      Perhaps you want to make sure GNOME works using just the native
-      tools for your system instead of the GNU tools.  Perhaps you are
-      sitting on the other side of a firewall that blocks the CVS
-      port.  Whatever your reason, Jim Pick Software offers daily
-      snapshots of the CVS version, in tarball form, available via FTP
-      at <ulink url="&ftpsnap;">&ftpsnap;</ulink>.  The conversion to
-      tarball form bypasses the need for GNU tools as well.</para>
+      <para>Another question that frequently comes up is the order of 
+      dependencies. This changes all the time, so it would be difficult
+      to maintain a current list, especially with the growing number of
+      libraries. Most CVS modules have a README or a HACKING file explaining
+      which modules they depend upon.</para>
+
+      <para>After you are sure you have the proper pieces of software,
+      and have downloaded whatever CVS module you would like to compile,
+      cd into its directory, and type <userinput>./autogen.sh</userinput>.
+      If you would like to add additional configure options, such as
+      the prefix you wish to install the module into, add them to the
+      autogen command, such as 
+      <userinput>./autogen.sh --prefix=/gnome/unstable</userinput>.</para>
+
+      <para>This is followed by the typical <userinput>make</userinput> 
+      and if it works, <userinput>make install</userinput>.</para>
+
+      <para>If you have trouble, don't expect much help unless you really
+      know what you're doing. CVS is not intended for end users.</para>
+
     </sect1>
 
     <sect1>
