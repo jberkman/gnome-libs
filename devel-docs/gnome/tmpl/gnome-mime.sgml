@@ -2,13 +2,38 @@
 gnome-mime
 
 <!-- ##### SECTION Short_Description ##### -->
-Routines to find out the mime type of a file based on its name.
+Routines to find out the mime type of a file.
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-
+The routines in gnome-mime provide a way to find the MIME type of a
+file and some utility functions.  
 </para>
 
+<para>
+There are two different methods for finding out the MIME type of a
+file: those where only the file name is used to find the MIME type: in
+this case the name is matched against a database of known extensions
+and regular expressions; and a routine that will try to guess the MIME
+type of the file by peeking at the contents of the file.  The former
+routines only do in-memory operations, while the later need to perform
+a possible time expensive operation to figure out the information.
+</para>
+
+<para>
+The routines that classify a file by its name, use the contents of all
+of the files with the extension .mime from the
+<filename>$gnome_prefix/share/mime-info</filename> directory to build
+the database for filename matching.  Application that wish to install
+their own MIME types only need to install a file in this directory
+</para>
+
+<para>
+The <function>gnome_mime_type_from_magic</function> Uses the contents
+of the file <filename>$gnome_prefix/etc/mime-magic</filename> to
+determine the contents of a file (this database is usually kept in a
+fast machine-preprocessed format in the
+<filename>$gnome_prefix/etc/mime-magic.dat</filename> file).
 
 <!-- ##### FUNCTION gnome_mime_type ##### -->
 <para>
