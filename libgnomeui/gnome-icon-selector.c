@@ -396,11 +396,12 @@ add_file_async_done_cb (gpointer data)
 
     iselector = async_data->iselector;
 
+    g_message (G_STRLOC ": %p", async_data->async_handle);
+
     /* When the operation was successful, this is already NULL. */
     gnome_gdk_pixbuf_new_from_uri_cancel (async_data->handle);
 
     /* free the async data. */
-    gnome_selector_async_handle_unref (async_data->async_handle);
     gtk_object_unref (GTK_OBJECT (async_data->iselector));
     gnome_vfs_uri_unref (async_data->uri);
     g_free (async_data);
@@ -472,6 +473,20 @@ add_file_async_cb (GnomeGdkPixbufAsyncHandle *handle,
 }
 
 static void
+add_file_done_cb (GnomeGdkPixbufAsyncHandle *handle,
+		  gpointer callback_data)
+{
+    GnomeIconSelectorAsyncData *async_data = callback_data;
+
+    g_return_if_fail (async_data != NULL);
+
+    g_message (G_STRLOC ": %p", async_data->async_handle);
+
+    _gnome_selector_async_handle_remove (async_data->async_handle,
+					 async_data);
+}
+
+static void
 add_file_handler (GnomeSelector *selector, const gchar *uri, gint position,
 		  GnomeSelectorAsyncHandle *async_handle)
 {
@@ -494,13 +509,12 @@ add_file_handler (GnomeSelector *selector, const gchar *uri, gint position,
     async_data->position = position;
 
     gtk_object_ref (GTK_OBJECT (async_data->iselector));
-    gnome_selector_async_handle_ref (async_data->async_handle);
 
     _gnome_selector_async_handle_add (async_handle, async_data,
 				      add_file_async_done_cb);
 
     async_data->handle = gnome_gdk_pixbuf_new_from_uri_async
-	(uri, add_file_async_cb, NULL, async_data);
+	(uri, add_file_async_cb, add_file_done_cb, async_data);
 }
 
 static void
