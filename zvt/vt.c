@@ -713,7 +713,7 @@ vt_restore_cursor(struct vt_em *vt)
   d(printf("restore cursor\n"));
   vt->cursorx = vt->savex;
   vt->cursory = vt->savey;
-  vt->mode = vt->savemode;
+  vt->mode = (vt->savemode & (VTMODE_INSERT | VTMODE_WRAPOFF | VTMODE_APP_CURSOR | VTMODE_RELATIVE | VTMODE_ALTSCREEN));
   vt->attr = vt->saveattr;
   vt->remaptable = vt->saveremaptable;
 

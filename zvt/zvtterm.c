@@ -1445,7 +1445,7 @@ zvt_term_motion_notify (GtkWidget      *widget,
 
   /* d(printf("Motion notify\n")); */
 
-  if (vx->selectiontype != VT_SELTYPE_NONE) {
+  if (vx->selectiontype != VT_SELTYPE_NONE){
     x=(((int)event->x))/term->charwidth;
     y=(((int)event->y))/term->charheight;
     
