@@ -1,4 +1,4 @@
-1999-07-19  Michael Zucchi  <mzucchi@zedzone.mmc.com.au>
+1999-07-19  Michael Zucchi  <zucchi@zedzone.mmc.com.au>
 
 	* update.c (vt_fix_selection): Some fixes from Matthijs Melchior
 	<mmelchio@xs4all.nl> for word selection.
@@ -7,7 +7,7 @@
 
 	* zvtterm.c (request_paste): Fix an out-by-1 array bounds check.
 
-1999-06-26  Michael Zucchi  <mzucchi@zedzone.mmc.com.au>
+1999-06-26  Michael Zucchi  <zucchi@zedzone.mmc.com.au>
 
 	* update.c (vt_line_update): When reverse video set, then force
 	background render always.  Fixes a really nasty bug where lots of
@@ -17,12 +17,12 @@
 	* vt.c (vt_tab): When storing tab, dont over-write blank
 	attributes.
 
-1999-06-23  Michael Zucchi  <mzucchi@zedzone.mmc.com.au>
+1999-06-23  Michael Zucchi  <zucchi@zedzone.mmc.com.au>
 
 	* update.c (vt_in_wordclass): Make sure we ignore attributes before
 	doing character type tests.
 
-1999-06-20  Michael Zucchi  <mzucchi@zedzone.mmc.com.au>
+1999-06-20  Michael Zucchi  <zucchi@zedzone.mmc.com.au>
 
 	* zvtterm.c (vt_draw_text): When we render bold, dont offset y as
 	well as x (well you can, but its kinda hard to read :)
@@ -36,19 +36,19 @@
 	other unices ...
 	This fixes bug #1435.
 
-1999-06-19  Michael Zucchi  <mzucchi@zedzone.mmc.com.au>
+1999-06-19  Michael Zucchi  <zucchi@zedzone.mmc.com.au>
 
 	* zvtterm.h: Removed unecessary include of X11.h and Xlib.h.
 
 	* vt.h: Merged ZVT_UTF to head.  Yay UTF8 font support.  Roll on
 	new bugs I guess.
 
-1999-06-18  Michael Zucchi  <mzucchi@zedzone.mmc.com.au>
+1999-06-18  Michael Zucchi  <zucchi@zedzone.mmc.com.au>
 
 	* zvtterm.c (zvt_term_key_press): Support function keys right upto
 	GDK_F20.
 
-1999-06-17  Michael Zucchi  <mzucchi@zedzone.mmc.com.au>
+1999-06-17  Michael Zucchi  <zucchi@zedzone.mmc.com.au>
 
 	* zvtterm.h (struct _zvtprivate): New field transpix to store the
 	transparency pixmap pointer.
@@ -75,7 +75,7 @@
 	* zvtterm.h: Removed the zvt_term_get/set_adjusetment() ifdef'd
 	out functions, so they dont confuse developers.
 
-1999-06-14  Michael Zucchi  <mzucchi@zedzone.mmc.com.au>
+1999-06-14  Michael Zucchi  <zucchi@zedzone.mmc.com.au>
 
 	* update.c (vt_expand_line): Range check start value.
 	(vt_fix_selection): Range check x values, at least above 0.  For
@@ -97,7 +97,7 @@
 	(zvt_term_size_allocate): Removed a couple more magic numbers from
 	the size stuff, since it actually seems to work now.
 
-1999-06-10  Michael Zucchi  <mzucchi@zedzone.mmc.com.au>
+1999-06-10  Michael Zucchi  <zucchi@zedzone.mmc.com.au>
 
 	* gnome-pty-helper.c (open_ptys): Use fchown()/fchmod() to set the
 	slave pty's ownership/permissions after openpty() returns.  IMHO
@@ -105,7 +105,7 @@
 	(): Also include sys/stat.h, for S_* defines.
 	(open_ptys): Rewrote the last change to be a bit simpler!
 
-1999-06-02  Michael Zucchi  <mzucchi@zedzone.mmc.com.au>
+1999-06-02  Michael Zucchi  <zucchi@zedzone.mmc.com.au>
 
 	* zvtterm.c (zvt_term_draw): Use a forced fill to draw the
 	background, rather than a big rectangle.  Makes it smoother.
@@ -125,7 +125,7 @@
 
 	* Merged ZVT_PXIMAP branch back to head!
 
-1999-06-02  Michael Zucchi  <mzucchi@zedzone.mmc.com.au >
+1999-06-02  Michael Zucchi  <zucchi@zedzone.mmc.com.au >
 
 	* zvtterm.c (zvt_term_init): Set _zvtprivate data before calling
 	any functions.
@@ -163,7 +163,7 @@
 	visual.
 	(vt_update): Only force background update if we are on a scrolled pixmap.
 
-1999-06-01  Michael Zucchi  <mzucchi@zedzone.mmc.com.au>
+1999-06-01  Michael Zucchi  <zucchi@zedzone.mmc.com.au>
 
 	* zvtterm.c (zvt_term_set_color_scheme): Removed reference to
 	term_window.
