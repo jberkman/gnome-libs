@@ -1,3 +1,10 @@
+1998-02-28  Carsten Schaar  <nhadcasc@fs-maphy.uni-hannover.de>
+
+	* libgnome/gnome-dentry.c (get_translated_string): Due to the
+ 	changes in libgnome/gnome-config.c (parse_path), empty strings
+ 	instead of the untranslated strings have beed returned, if a
+ 	translated string was not available. This is fixed now.
+
 Thu Feb 26 18:08:15 1998  Miguel de Icaza  <miguel@nuclecu.unam.mx>
 
 	* libgnome/gnome-dentry.c, libgnome/gnome-dentry.h: Dropped the
