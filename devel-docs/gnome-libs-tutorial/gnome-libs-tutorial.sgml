@@ -2824,7 +2824,7 @@ source_drag_data_get  (GtkWidget          *widget,
 		       guint               time,
 		       gpointer            data)
 {
-	char string[] = "Some String!"
+	char string[] = "Some String!";
 	gtk_selection_data_set (selection_data,
 				selection_data-&gt;target,
 				8, string, sizeof(string));
@@ -2832,7 +2832,7 @@ source_drag_data_get  (GtkWidget          *widget,
 ...
 static GtkTargetEntry target_table[] = {
 	{ "text/plain", 0, 0 }
-}
+};
 ...
 gtk_drag_source_set (widget,
 		     GDK_BUTTON1_MASK|GDK_BUTTON3_MASK,
@@ -2844,6 +2844,92 @@ gtk_signal_connect (GTK_OBJECT (widget), "drag_data_get",
 </programlisting></informalexample>
 The <emphasis>gtk_selection_data_set</emphasis> function copies the data into the selection
 data, which is used for the transfer.</para></sect2></sect1></chapter>
+
+<chapter>
+<title>Building GNOME Apps</title>
+<sect1>
+<title>Using a Simple Makefile</title>
+
+<para>
+Using a simple makefile is the fastest way to compile a small GNOME
+application. If you require a more sophisticated build enviroment, 
+you should use an autoconf/automake setup, which I will briefly talk about
+later.
+</para>
+
+<sect2>
+<title>The gnome-config Script</title>
+
+<para>
+The command line to the C compiler for building a GNOME application can be
+quite long and would be hard to figure out by hand. So gnome-libs installs a
+script to simplify this. It is called <emphasis>gnome-config</emphasis> and
+it takes two options, <emphasis>--cflags</emphasis> and
+<emphasis>--libs</emphasis>. The --cflags option will give you the compiler
+flags, needed for the compilation step, and --libs will give you the
+libraries you need to pass to the linker. You also need to pass another
+set of arguments to gnome-config. It needs to know what libraries you wish
+to use. For our purposes, this is <emphasis>gnome</emphasis> and
+<emphasis>gnomeui</emphasis>. So for example to get the compiler flags
+for some program using the standard gnome and gnomeui libraries, you would
+call "gnome-config --cflags gnome gnomeui".
+</para>
+
+</sect2>
+
+<sect2>
+<title>A Simple Example Makefile</title>
+
+<para>
+Now to build a simple makefile, you can use variables
+<emphasis>CFLAGS</emphasis> and <emphasis>LDFLAGS</emphasis> and the implicit
+rules that at least GNU make supports (others probably do as well, but I'm
+notfamiliar with other makes). So for example let's say you have an
+application that has a main.c, main.h, extra.c and extra.h and the executable
+is called gnome-foo.Now let's build a small Makefile for this app.
+<informalexample><programlisting>
+CFLAGS=-g -Wall `gnome-config --cflags gnome gnomeui`
+LDFLAGS=`gnome-config --libs gnome gnomeui`
+
+all: gnome-foo
+
+gnome-foo: main.o extra.o
+main.o: main.c main.h extra.h
+extra.o: extra.c extra.h
+
+clean:
+	rm -f core *.o gnome-foo
+</programlisting></informalexample>
+This is an extremely simple makefile, but it should get you started.
+</para>
+</sect2>
+
+</sect1>
+
+<sect1>
+<title>Using automake/autoconf</title>
+
+<para>
+Using automake and autoconf is really beyond the scope of this document,
+but you should go read manuals online at
+<ulink url="http://www.gnu.org/manual/manual.html">
+http://www.gnu.org/manual/manual.html</ulink>, or read the info pages if
+you have them installed with gnome-help-browser.
+</para>
+
+<para>
+There is now an example application which can help you get started with
+autoconf/automake, the internationalization setup, andother build issues,
+as well as serve as a good hello world example. You can get it at
+any gnome ftp site mirror (go to
+<ulink url="http://www.gnome.org/ftpmirrors.shtml">
+http://www.gnome.org/ftpmirrors.shtml</ulink> for a list of mirrors) in the
+<emphasis>sources/GnomeHello/</emphasis> directory.
+</para>
+
+</sect1>
+</chapter>
+
 
 <chapter>
 <title>Conclusion</title>
