@@ -28,34 +28,51 @@ get_number (const char **geometry)
 }
 
 /*
- * Returns 1 if the geometry was successfully parsed, 0 otherwise
- * values are filled with the corresponding values.
- * if no value was found, the value is set to zero.
  */
+
+/**
+ * gnome_parse_geometry
+ * @geometry: geometry string to be parsed
+ * @xpos: X position geometry component
+ * @ypos: Y position geometry component
+ * @width: pixel width geometry component
+ * @height: pixel height geometry component
+ *
+ * Description:
+ * Parses the geometry string passed in @geometry, and fills
+ * @xpos, @ypos, @width, and @height with
+ * the corresponding values upon completion of the parse.
+ * If the parse fails, it should be assumed that @xpos, @ypos, @width,
+ * and @height contain undefined values.
+ *
+ * Returns:
+ * %TRUE if the geometry was successfully parsed, %FALSE otherwise.
+ **/
+
 gboolean
 gnome_parse_geometry (const gchar *geometry, gint *xpos, 
 		      gint *ypos, gint *width, gint *height)
 {
 	int subtract;
 
-	g_return_val_if_fail (xpos != NULL, 0);
-	g_return_val_if_fail (ypos != NULL, 0);
-	g_return_val_if_fail (width != NULL, 0);
-	g_return_val_if_fail (height != NULL, 0);
+	g_return_val_if_fail (xpos != NULL, FALSE);
+	g_return_val_if_fail (ypos != NULL, FALSE);
+	g_return_val_if_fail (width != NULL, FALSE);
+	g_return_val_if_fail (height != NULL, FALSE);
 	
 	*xpos = *ypos = *width = *height = -1;
 
 	if (!geometry)
-		return 0;
+		return FALSE;
 
 	if (*geometry == '=')
 		geometry++;
 	if (!*geometry)
-		return 0;
+		return FALSE;
 	if (isdigit (*geometry))
 		*width = get_number (&geometry);
 	if (!*geometry)
-		return 1;
+		return TRUE;
 	if (*geometry == 'x' || *geometry == 'X'){
 		geometry++;
 		*height = get_number (&geometry);
@@ -69,12 +86,12 @@ gnome_parse_geometry (const gchar *geometry, gint *xpos,
 		subtract = gdk_screen_width ();
 		geometry++;
 	} else
-		return 0;
+		return FALSE;
 	*xpos = get_number (&geometry);
 	if (subtract)
 		*xpos = subtract - *xpos;
 	if (!*geometry)
-		return 1;
+		return TRUE;
 	if (*geometry == '+'){
 		subtract = 0;
 		geometry++;
@@ -82,16 +99,29 @@ gnome_parse_geometry (const gchar *geometry, gint *xpos,
 		subtract = gdk_screen_height ();
 		geometry++;
 	} else
-		return 0;
+		return FALSE;
 	*ypos = get_number (&geometry);
 	if (subtract)
 		*ypos = subtract - *ypos;
-	return 1;
+	return TRUE;
 }
 
 /* lifted from gnomecal */
 
 #define BUFSIZE 32
+
+/**
+ * gnome_geometry_string
+ * @window: Pointer to window or dialog object
+ *
+ * Description:
+ * Determines the size and position of @window (must be a window or
+ * dialog), and returns that information as an X geometry string.
+ * Geometry strings are in the form of WIDTHxHEIGHT+X+Y.
+ *
+ * Returns: Newly-allocated string containing geometry string for given
+ * window.  Contents must be g_free'd.
+ **/
 
 gchar * gnome_geometry_string (GdkWindow * window)
 {
@@ -109,3 +139,4 @@ gchar * gnome_geometry_string (GdkWindow * window)
 
   return buffer;
 }
+
