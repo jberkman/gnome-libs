@@ -608,6 +608,29 @@ create_dialog(void)
 }
 
 static void
+create_message_box(void)
+{
+	GtkWidget *box;
+	char *buttons[3] = {0};
+
+	box = gnome_message_box_new("Test",GNOME_MESSAGE_BOX_INFO,
+				    GNOME_STOCK_BUTTON_OK,
+				    NULL);
+	gtk_widget_show(box);
+
+	buttons[0] = GNOME_STOCK_BUTTON_OK;
+	buttons[1] = GNOME_STOCK_BUTTON_CANCEL;
+	buttons[2] = NULL;
+	box = gnome_message_box_newv("Test2",GNOME_MESSAGE_BOX_QUESTION,
+				     buttons);
+	gtk_widget_show(box);
+
+	box = gnome_message_box_newv("Test3 (no buttons)",
+				     GNOME_MESSAGE_BOX_GENERIC, NULL);
+	gtk_widget_show(box);
+}
+
+static void
 file_entry_update_files(GtkWidget *w, GnomeFileEntry *fentry)
 {
 	char *p;
@@ -1908,6 +1931,7 @@ main (int argc, char *argv[])
 		  { "paper-sel", create_papersel },
 		  { "date edit", create_date_edit },
 		  { "dialog", create_dialog },
+                  { "message box", create_message_box },
 		  { "file entry", create_file_entry },
                   { "pixmap entry", create_pixmap_entry },
                   { "icon entry", create_icon_entry },
