@@ -60,20 +60,23 @@ struct _GnomeIconSelectorPrivate {
 };
 	
 
-static void gnome_icon_selector_class_init (GnomeIconSelectorClass *class);
-static void gnome_icon_selector_init       (GnomeIconSelector      *iselector);
-static void gnome_icon_selector_destroy    (GtkObject       *object);
-static void gnome_icon_selector_finalize   (GObject         *object);
+static void gnome_icon_selector_class_init  (GnomeIconSelectorClass *class);
+static void gnome_icon_selector_init        (GnomeIconSelector      *iselector);
+static void gnome_icon_selector_destroy     (GtkObject       *object);
+static void gnome_icon_selector_finalize    (GObject         *object);
 
-static void      clear_handler             (GnomeSelector   *selector);
-static gboolean  check_filename_handler    (GnomeSelector   *selector,
-                                            const gchar     *filename);
-static void      freeze_handler            (GnomeSelector   *selector);
-static void      update_handler            (GnomeSelector   *selector);
-static void      thaw_handler              (GnomeSelector   *selector);
+static void      clear_handler              (GnomeSelector   *selector);
+static gboolean  check_filename_handler     (GnomeSelector   *selector,
+                                             const gchar     *filename);
+static void      freeze_handler             (GnomeSelector   *selector);
+static void      update_file_list_handler   (GnomeSelector   *selector);
+static void      thaw_handler               (GnomeSelector   *selector);
+static void      set_selection_mode_handler (GnomeSelector   *selector,
+                                             guint            mode);
+static GSList *  get_selection_handler      (GnomeSelector   *selector);
 
-static void      free_entry_func           (gpointer         data,
-					    gpointer         user_data);
+static void      free_entry_func            (gpointer         data,
+					     gpointer         user_data);
 
 static GnomeSelectorClass *parent_class;
 
@@ -122,8 +125,10 @@ gnome_icon_selector_class_init (GnomeIconSelectorClass *class)
 	selector_class->clear = clear_handler;
 	selector_class->check_filename = check_filename_handler;
 	selector_class->freeze = freeze_handler;
-	selector_class->update = update_handler;
+	selector_class->update_file_list = update_file_list_handler;
 	selector_class->thaw = thaw_handler;
+	selector_class->set_selection_mode = set_selection_mode_handler;
+	selector_class->get_selection = get_selection_handler;
 }
 
 static void
@@ -373,6 +378,9 @@ clear_handler (GnomeSelector *selector)
 	iselector = GNOME_ICON_SELECTOR (selector);
 
 	gnome_icon_list_clear (iselector->_priv->icon_list);
+
+	if (GNOME_SELECTOR_CLASS (parent_class)->clear)
+		(* GNOME_SELECTOR_CLASS (parent_class)->clear) (selector);
 }
 
 static gboolean
@@ -459,9 +467,14 @@ freeze_handler (GnomeSelector *selector)
 	g_return_if_fail (selector != NULL);
 	g_return_if_fail (GNOME_IS_ICON_SELECTOR (selector));
 
-	iselector = GNOME_ICON_SELECTOR (iselector);
+	iselector = GNOME_ICON_SELECTOR (selector);
+
+	g_message (G_STRLOC ": %p", iselector->_priv->icon_list);
 
 	gnome_icon_list_freeze (iselector->_priv->icon_list);
+
+	if (GNOME_SELECTOR_CLASS (parent_class)->freeze)
+		(* GNOME_SELECTOR_CLASS (parent_class)->freeze) (selector);
 }
 
 static void
@@ -472,9 +485,62 @@ thaw_handler (GnomeSelector *selector)
 	g_return_if_fail (selector != NULL);
 	g_return_if_fail (GNOME_IS_ICON_SELECTOR (selector));
 
-	iselector = GNOME_ICON_SELECTOR (iselector);
+	iselector = GNOME_ICON_SELECTOR (selector);
+
+	g_message (G_STRLOC ": %p", iselector->_priv->icon_list);
 
 	gnome_icon_list_thaw (iselector->_priv->icon_list);
+
+	if (GNOME_SELECTOR_CLASS (parent_class)->thaw)
+		(* GNOME_SELECTOR_CLASS (parent_class)->thaw) (selector);
+}
+
+static void
+set_selection_mode_handler (GnomeSelector *selector, guint mode)
+{
+	GnomeIconSelector *iselector;
+
+	g_return_if_fail (selector != NULL);
+	g_return_if_fail (GNOME_IS_ICON_SELECTOR (selector));
+
+	iselector = GNOME_ICON_SELECTOR (selector);
+
+	g_message (G_STRLOC ": %d", mode);
+
+	gnome_icon_list_set_selection_mode (iselector->_priv->icon_list,
+					    (GtkSelectionMode) mode);
+
+	if (GNOME_SELECTOR_CLASS (parent_class)->set_selection_mode)
+		(* GNOME_SELECTOR_CLASS (parent_class)->set_selection_mode)
+			(selector, mode);
+}
+
+static GSList *
+get_selection_handler (GnomeSelector *selector)
+{
+	GnomeIconSelector *iselector;
+	GnomeIconList *gil;
+	GSList *selection = NULL;
+	GList *c;
+
+	g_return_val_if_fail (selector != NULL, NULL);
+	g_return_val_if_fail (GNOME_IS_ICON_SELECTOR (selector), NULL);
+
+	iselector = GNOME_ICON_SELECTOR (selector);
+	gil = GNOME_ICON_LIST (iselector->_priv->icon_list);
+
+	g_message (G_STRLOC);
+
+	for (c = gil->selection; c; c = c->next) {
+		GSList *total_list, *item;
+
+		total_list = gnome_selector_get_file_list (selector, TRUE);
+		item = g_slist_nth (total_list, GPOINTER_TO_INT (c->data));
+
+		selection = g_slist_prepend (selection, item->data);
+	}
+
+	return g_slist_reverse (selection);
 }
 
 static void
@@ -484,7 +550,7 @@ free_entry_func (gpointer data, gpointer user_data)
 }
 
 static void
-update_handler (GnomeSelector *gs)
+update_file_list_handler (GnomeSelector *gs)
 {
 	GtkWidget *label;
 	GtkWidget *progressbar;
@@ -496,13 +562,18 @@ update_handler (GnomeSelector *gs)
 	g_return_if_fail (gs != NULL);
 	g_return_if_fail (GNOME_IS_ICON_SELECTOR (gs));
 
+	if (GNOME_SELECTOR_CLASS (parent_class)->update_file_list)
+		(* GNOME_SELECTOR_CLASS (parent_class)->update_file_list) (gs);
+
 	gis = GNOME_ICON_SELECTOR (gs);
 
 	g_slist_foreach (gis->_priv->file_list, free_entry_func, gis);
-	gis->_priv->file_list = g_slist_copy (gs->_priv->file_list);
+	gis->_priv->file_list = g_slist_copy (gs->_priv->total_list);
 
 	file_count = g_slist_length (gis->_priv->file_list);
 	i = 0;
+
+	g_message (G_STRLOC ": %d", file_count);
 
 	/* Locate previous progressbar/label,
 	 * if previously called. */
