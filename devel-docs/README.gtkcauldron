@@ -88,7 +88,7 @@ r - results, for a button widget, causes clicking on the button to assign
 	the current state of all the widgets to the user pointers given
 	for any widgets.
 q - quit, for a button widget, causes the button to exit the dialog.
-j - pass adjustment to the widget (for SB) causes 6 convertions:
+j - pass adjustment to the widget (for SB only) causes 6 convertions:
 	    `double *'	/* value and where result is stored */
 	    `double'	/* lower bound */
 	    `double'	/* upper bound */
@@ -102,6 +102,7 @@ h - add horizontal scrollbar to text widget.
 a - accelerator, gchar *signal, gint key, gint modifier is converted.
 g - gnome, gnome version of the widget. May cause additional
 	conversions, see above.
+n - notebook (see below).
 
 Brackets:
 ^^^^^^^^^
@@ -120,6 +121,12 @@ be packed into a scrollable window. Hence
     ( %C // %C // %C )v
 are checkboxes inside a scrollable window with a vertical scrollbar but an
 automatic horizontal bar.
+
+A very useful option is the n option. This creates a PAGE OF A NOTEBOOK
+from the frame. A notebook can be created like
+    ( %C // %C )n ( %L / %E )n ( %Te )n
+This creates a three page notebook. n causes conversion of one additional
+of type char *, which is the text to go onto the tag.
 
 Breakers:
 ^^^^^^^^^
