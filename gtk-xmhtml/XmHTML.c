@@ -35,6 +35,9 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.4  1997/12/13 01:49:11  unammx
+* your daily dose of ported XmHTML code, non functional as usual -mig
+*
 * Revision 1.3  1997/12/12 00:58:40  unammx
 * Most of the Motif dependant code is now splitted.
 *
@@ -155,7 +158,7 @@ static char rcsId[]="$Header$";
 /* This is the anchor cursor */
 #include "bitmaps/fingers.xbm"
 #include "bitmaps/fingers_m.xbm"
-
+	
 /*** External Function Prototype Declarations ***/
 /* 
 * undocumented motif functions used: (declared in XmP.h): 
@@ -184,7 +187,7 @@ static void XmHTML_Initialize (XmHTMLWidget html, char *html_source);
 #ifdef WITH_MOTIF
 #    include "XmHTML-motif.c"
 #else
-#    include "XmHTML-gtk.c"
+#    include "gtk-xmhtml.c"
 #endif
 	
 /*****

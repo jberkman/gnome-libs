@@ -36,6 +36,9 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.3  1997/12/13 01:49:15  unammx
+* your daily dose of ported XmHTML code, non functional as usual -mig
+*
 * Revision 1.2  1997/12/11 21:20:21  unammx
 * Step 2: more gtk/xmhtml code, still non-working - mig
 *
@@ -1908,8 +1911,8 @@ ParseBodyTags(XmHTMLWidget html, XmHTMLObject *data)
 			{
 				html->html.body_fg = html->html.body_fg_save;
 				html->html.body_bg = html->html.body_bg_save;
-				GTK_WIDGET(html)->style.fg[GTK_STATE_NORMAL].pixel = html->html.body_fg;
-				GTK_WIDGET(html)->style.bg[GTK_STATE_NORMAL].pixel = html->html.body_bg;
+				GTK_WIDGET(html)->style->fg[GTK_STATE_NORMAL].pixel = html->html.body_fg;
+				GTK_WIDGET(html)->style->bg[GTK_STATE_NORMAL].pixel = html->html.body_bg;
 				/* XXX: set the background resource equivalent */
 			}
 					
@@ -1923,7 +1926,7 @@ ParseBodyTags(XmHTMLWidget html, XmHTMLObject *data)
 			html->manager.foreground      = html->html.body_fg;
 #else
 			/* FEDERICO */
-			GTK_WIDGET(html)->style->fg[GTK_STAT_NORMAL].pixel = html->html.body_fg;
+			GTK_WIDGET(html)->style->fg[GTK_STATE_NORMAL].pixel = html->html.body_fg;
 #endif
 			bg_color_set = False;
 		}

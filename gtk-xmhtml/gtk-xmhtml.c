@@ -19,8 +19,8 @@ static gint gtk_xmhtml_signals [LAST_SIGNAL] = { 0, };
 
 /* prototypes for functions defined here */
 static void gtk_xmhtml_map (GtkWidget *widget);
+guint gtk_xmhtml_get_type (void);
 
-static
 static void
 gtk_xmhtml_init (GtkXmHTML *html, char *html_source)
 {
@@ -47,7 +47,7 @@ static void
 gtk_xmhtml_class_init (GtkXmHTMLClass *class)
 {
 	GtkObjectClass *object_class;
-	GtkWidgetClass *widget_class
+	GtkWidgetClass *widget_class;
 		
 	object_class = (GtkObjectClass *) class;
 	widget_class = (GtkWidgetClass *) class;
@@ -67,7 +67,7 @@ gtk_xmhtml_class_init (GtkXmHTMLClass *class)
 }
 
 guint
-gtk_xmhtml_get_type ()
+gtk_xmhtml_get_type (void)
 {
 	static guint gtk_xmhtml_type = 0;
 
@@ -80,7 +80,7 @@ gtk_xmhtml_get_type ()
 			(GtkClassInitFunc) gtk_xmhtml_class_init,
 			(GtkObjectInitFunc) gtk_xmhtml_init,
 			(GtkArgFunc) NULL
-		}
+		};
 
 		gtk_xmhtml_type = gtk_type_unique (gtk_xmhtml_get_type (), &gtk_xmhtml_info);
 	}
@@ -103,7 +103,6 @@ CreateAnchorCursor(XmHTMLWidget html)
 	TColor white_def, black_def;
 	TWindow window = Toolkit_Widget_Window((TWidget)html);
 	Display *display = Toolkit_Display((TWidget)html);
-	Screen *screen = XtScreen((TWidget)html);
 	GdkColormap *colormap;
 	GdkColor fg, bg, white, black;
 
@@ -141,7 +140,7 @@ CreateAnchorCursor(XmHTMLWidget html)
 static void
 FormScroll (XmHTMLWidget html)
 {
-	fprintf ("FormScroll called\n");
+	fprintf (stderr, "FormScroll called\n");
 }
 
 /*****
@@ -176,7 +175,7 @@ ClearArea(XmHTMLWidget html, int x, int y, int width, int height)
 		rect.height = height;
 		FormScroll(html);
 		gdk_window_clear_area (win, x, y, width, height);
-		gtk_widget_draw (html, &rect);
+		gtk_widget_draw (GTK_WIDGET (html), &rect);
 	}
 	else
 		gdk_window_clear_area_e (win, x, y, width, height);
@@ -198,7 +197,7 @@ ClearArea(XmHTMLWidget html, int x, int y, int width, int height)
 void
 _XmHTMLMoveToPos(TWidget w, XmHTMLWidget html, int value)
 {
-	fprintf ("Move to pos called %d\n", value);
+	fprintf (stderr, "Move to pos called %d\n", value);
 }
 
 /*
@@ -218,7 +217,7 @@ html_work_area_callback (GtkWidget *widget, GdkEvent *event, void *d)
 		
 	case 999999 + GDK_VISIBILITY_MASK:
 		/* Visibility Handler, 999999 is because there is no GDK_VIS yet */
-		html->html.visibility = event->xvisibility.state;
+		html->html.visibility = 0; /* event->xvisibility.state; */
 		return TRUE;
 
 	}
@@ -248,12 +247,12 @@ CheckGC(XmHTMLWidget html)
 
 	/* main gc */
 	if (html->html.gc == NULL){
-		TGC xgc;
+		GdkGCValues xgc;
 
 		xgc.function = GDK_COPY;
 		xgc.foreground = GTK_WIDGET(html)->style->fg[GTK_STATE_NORMAL];
 		xgc.background = GTK_WIDGET(html)->style->bg[GTK_STATE_NORMAL];
-		html->html.gc = gdk_gc_new_with_values (Toolkit_Widget_Window (html), &xgc,
+		html->html.gc = gdk_gc_new_with_values (GTK_WIDGET (html)->window, &xgc,
 							GDK_GC_FOREGROUND | GDK_GC_BACKGROUND |
 							GDK_GC_FUNCTION);
 		fprintf (stderr, "FIXME: missing call to XmHTMLRecomputeColors\n");
@@ -272,7 +271,7 @@ CheckGC(XmHTMLWidget html)
 	_XmHTMLDebug(1, ("XmHTML.c: CheckGC End\n"));
 }
 
-*****
+/*****
  * Name: 		CreateHTMLWidget
  * Return Type: 	void
  * Description: 	creates the HTML TWidget
@@ -293,8 +292,8 @@ CreateHTMLWidget(XmHTMLWidget html)
 		GtkWidget *draw_area;
 		draw_area = gtk_drawing_area_new ();
 		gtk_drawing_area_size (GTK_DRAWING_AREA (draw_area),
-				       html->core.width,
-				       html->core.height);
+				       GTK_WIDGET(html)->alignement.width,
+				       GTK_WIDGET(html)->alignement.height);
 	}
 	/* catch all exposure events on the render window */
 	gtk_widget_set_events (html->html.work_area,
