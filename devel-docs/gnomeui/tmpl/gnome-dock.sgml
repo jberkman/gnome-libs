@@ -15,7 +15,7 @@ Every <type>GnomeDock</type> contains a widget called the "client
 area".  On the four sides of the client area, there are four "dock
 areas", which can contain an arbitrary number of dockable widgets.
 All the dockable widgets should be <type>GnomeDockItem</type>
-widgets"; the <type>GnomeDockItem</type> widget can in turn contain
+widgets; the <type>GnomeDockItem</type> widget can in turn contain
 any kind of widget, and implements the dragging functionality: every
 <type>GnomeDockItem</type> has a handle that users can use to move
 them within the dock, or even move them outside it, so that they
@@ -44,7 +44,9 @@ the band and a "offset" from the previous item in the same band.
 
 <!-- ##### SECTION See_Also ##### -->
 <para>
-
+#GnomeDockItem
+#GnomeDockBand
+#GnomeDockLayout
 </para>
 
 <!-- ##### STRUCT GnomeDock ##### -->
@@ -55,9 +57,19 @@ the band and a "offset" from the previous item in the same band.
 
 <!-- ##### ENUM GnomeDockPlacement ##### -->
 <para>
-
+This enumeration is used to specify the position of a dock item in the
+dock widget.
 </para>
 
+<para>
+<itemizedlist>
+<listitem><para>GNOME_DOCK_TOP - The horizontal area at the top of the dock widget </para></listitem>
+<listitem><para>GNOME_DOCK_RIGHT - The vertical area on the right side of the dock widget </para></listitem>
+<listitem><para>GNOME_DOCK_BOTTOM - The horizontal area at the bottom of the dock widget </para></listitem>
+<listitem><para>GNOME_DOCK_RIGHT - The vertical area on the right side of the dock widget </para></listitem>
+<listitem><para>GNOME_DOCK_FLOATING - Used for floating (detached) items</para></listitem>
+</itemizedlist>
+</para>
 
 <!-- ##### FUNCTION gnome_dock_new ##### -->
 <para>

@@ -15,7 +15,9 @@ widget or detach it so that it gets displayed into its own window
 
 <!-- ##### SECTION See_Also ##### -->
 <para>
-
+#GnomeDock
+#GnomeDockBand
+#GnomeDockLayout
 </para>
 
 <!-- ##### STRUCT GnomeDockItem ##### -->
@@ -26,9 +28,31 @@ widget or detach it so that it gets displayed into its own window
 
 <!-- ##### ENUM GnomeDockItemBehavior ##### -->
 <para>
-
+This enumeration can be used to customize the behavior of a dock item.
+Every value represents a property bit, so that the properties can be
+combined together by using the OR (`|') operator.
 </para>
 
+<para>
+The special value GNOME_DOCK_ITEM_BEH_NORMAL specifies the ``normal''
+(default) behavior, and means to have all the properties disabled (and
+thus the corresponding bits set to zero).
+</para>
+
+<itemizedlist>
+<listitem><para>GNOME_DOCK_ITEM_BEH_EXCLUSIVE specifies that the dock
+item is always the only one in its band. </para></listitem>
+<listitem><para>GNOME_DOCK_ITEM_BEH_NEVER_FLOATING specifies that
+users cannot detach the dock item from the dock. </para> </listitem>
+<listitem><para>GNOME_DOCK_ITEM_BEH_NEVER_VERTICAL specifies that the
+dock item must be kept horizontal, and users cannot move it to a
+vertical band.</para></listitem>
+<listitem><para>GNOME_DOCK_ITEM_BEH_NEVER_HORIZONTAL specifies that
+the dock item must be kept horizontal, and users cannot move it to a
+vertical band.</para></listitem>
+<listitem><para>GNOME_DOCK_ITEM_BEH_LOCKED specifies that users cannot
+drag the item around.</para></listitem>
+<itemizedlist>
 
 <!-- ##### MACRO GNOME_DOCK_ITEM_NOT_LOCKED ##### -->
 <para>
