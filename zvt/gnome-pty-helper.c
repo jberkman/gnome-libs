@@ -291,11 +291,11 @@ open_ptys (int utmp, int wtmp)
 	savedGid = getegid();
 
 #ifdef HAVE_SETEUID
-	seteuid (pwent->pw_uid);
 	setegid (pwent->pw_gid);
+	seteuid (pwent->pw_uid);
 #else
-	setuid (pwent->pw_uid);
 	setgid (pwent->pw_gid);
+	setuid (pwent->pw_uid);
 #endif
 	status = openpty (&master_pty, &slave_pty, term_name, NULL, NULL);
 	setuid(savedUid);
