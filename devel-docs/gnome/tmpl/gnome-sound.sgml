@@ -16,7 +16,11 @@ These routines provide a simple way of playing sounds.
 
 <!-- ##### FUNCTION gnome_sound_init ##### -->
 <para>
-
+This routine initializes the application connection to the system's sound server.
+</para>
+<para>
+The application can expect this to be automatically called if the user has requested
+GNOME sound support.
 </para>
 
 @hostname: 
@@ -24,14 +28,14 @@ These routines provide a simple way of playing sounds.
 
 <!-- ##### FUNCTION gnome_sound_shutdown ##### -->
 <para>
-
 </para>
 
 
 
 <!-- ##### FUNCTION gnome_sound_sample_load ##### -->
 <para>
-
+Loads a sound file into esound sample with the given name. Returns the
+esound numeric ID of the sample.
 </para>
 
 @sample_name: 
@@ -41,7 +45,7 @@ These routines provide a simple way of playing sounds.
 
 <!-- ##### FUNCTION gnome_sound_play ##### -->
 <para>
-
+Convenience routine to play a sound file. Fire and forget.
 </para>
 
 @filename: 
