@@ -375,7 +375,7 @@ gnome_name_service_get(void)
   if(!CORBA_Object_is_nil(name_service, &ev))
     retval = CORBA_Object_duplicate(name_service, &ev);
   else
-    g_error("Could not get name service!");
+    g_warning("Could not get name service!");
 
   CORBA_exception_free(&ev);
   return retval;
