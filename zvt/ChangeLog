@@ -1,5 +1,10 @@
 1999-01-07  Miguel de Icaza  <miguel@nuclecu.unam.mx>
 
+	* gnome-pty-helper.c: Ditto. 
+
+	* subshell.c: Removed the defines that make gcc -ansi -pedantic
+	works as it breaks compilation on FreeBSD.
+
 	* gnome-pty-helper.c (pty_remove): Return here instead of
 	continuing (this was causing pty-helper to die prematurely).
 

@@ -20,10 +20,6 @@
  */
 #include <config.h>
 
-/* needed for sigaction stuff under 'gcc -ansi -pedantic' */
-#ifndef _POSIX_SOURCE
-#  define _POSIX_SOURCE 1
-#endif
 #include <sys/types.h>
 
 #include "subshell-includes.h"
