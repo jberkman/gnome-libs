@@ -1,5 +1,12 @@
 2000-02-01  Iain Holmes  <ih@csd.abdn.ac.uk>
 
+	* zvtterm.c (zvt_term_realize): Undid the change below.
+
+	* Makefile.am: Use the $(GDK_PIXBUF_LIBS) and $(LIBART_LIBS) instead
+	of the relative paths.
+
+2000-02-01  Iain Holmes  <ih@csd.abdn.ac.uk>
+
 	* zvtterm.c (zvt_term_realize): Changed to use gnome_stock_cursor_new.
 
 2000-01-22  NotZed  <notzed@zedzone.helixcode.com>

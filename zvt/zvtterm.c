@@ -43,8 +43,6 @@
 
 #include "zvtterm.h"
 
-#include <libgnomeui/gnome-cursors.h>
-
 #include <gdk/gdkx.h>
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
@@ -781,7 +779,7 @@ zvt_term_realize (GtkWidget *widget)
 				&widget->style->bg[GTK_STATE_ACTIVE]);
 
   /* Get I beam cursor, and also create a blank one based on the blank image */
-  term->cursor_bar = gnome_stock_cursor_new(GNOME_STOcK_CURSOR_XTERM);
+  term->cursor_bar = gdk_cursor_new(GDK_XTERM);
   term->cursor_dot = 
     gdk_cursor_new_from_pixmap(cursor_dot_pm, cursor_dot_pm,
 			       &widget->style->fg[GTK_STATE_ACTIVE],
@@ -789,7 +787,7 @@ zvt_term_realize (GtkWidget *widget)
 			       0, 0);
   gdk_window_set_cursor(widget->window, term->cursor_bar);
   gdk_pixmap_unref (cursor_dot_pm);
-  zp->cursor_hand = gnome_stock_cursor_new(GNOME_STOCK_CURSOR_POINTING_HAND);
+  zp->cursor_hand = gdk_cursor_new(GDK_HAND2);
   term->cursor_current = term->cursor_bar;
 
   /* setup blinking cursor */

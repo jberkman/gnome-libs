@@ -20,6 +20,7 @@ SUBDIRS = po intl support	\
 	images			\
 	libgnome		\
 	libgnomeui		\
+	zvt			\
 	idl			\
 	$(gconf_SUBDIRS)	\
 	$(gnome_vfs_SUBDIRS)	\
