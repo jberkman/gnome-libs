@@ -92,6 +92,7 @@ void vt_update_rect(struct _vtx *vx, int sx, int sy, int ex, int ey);
 void vt_update(struct _vtx *vt, int state);
 
 struct _vtx *vtx_new(void *user_data);
+void vtx_destroy(struct _vtx *vx);
 void vtx_set_fontsize(struct _vtx *vx, int width, int height);
 
 /* defined by caller */

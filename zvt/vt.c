@@ -29,6 +29,7 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <unistd.h>
+#include <signal.h>
 
 #include <pty.h>
 #include <sys/ioctl.h>
@@ -1030,6 +1031,7 @@ struct vt_em *vt_init(struct vt_em *vt, int width, int height)
   vt->remaptable = 0;		/* no character remapping */
   for (i=0;i<height;i++) {
     vl = vt_newline(vt);
+    vl->line = i;
     d(vt_dump(vt));
     vt_list_addtail(&vt->lines, (struct vt_listnode *)vl);
   }
@@ -1100,6 +1102,56 @@ int vt_readchild(struct vt_em *vt, char *buffer, int len)
 {
   return read(vt->childfd, buffer, len);
 }
+
+/*
+  signal the child process
+*/
+int vt_killchild(struct vt_em *vt, int signal)
+{
+  if (vt->childpid!=-1) {
+    return kill(vt->childpid, signal);
+  }
+  return -1;
+}
+
+/*
+  close the child connection pty, and invalidates it.
+*/
+int vt_closepty(struct vt_em *vt)
+{
+  int ret;
+
+  d(printf("vt_closepty called\n"));
+
+  ret = close(vt->childfd);
+  vt->childfd = -1;
+  return ret;
+}
+
+/*
+  destroy all data associated with a given 'vt' structure
+*/
+void vt_destroy(struct vt_em *vt)
+{
+  struct vt_line *wn;
+
+  d(printf("vt_destroy called\n"));
+
+  vt_closepty(vt);
+
+#ifdef SCROLLBACK_BUFFER
+  /* clear out all scrollback memory */
+  vt_scrollback_set(vt, 0);
+#endif
+
+  /* clear all visible lines */
+  while ( (wn = (struct vt_line *)vt_list_remhead(&vt->lines)) ) {
+    free(wn);
+  }
+
+  /* done */
+}
+  
 
 /*
   resize the window to a new window size

@@ -1,3 +1,57 @@
+1998-04-28  Michael Zucchi  <zucchi@zzedzone.box.net.au>
+
+	* zterm.c (child_died_event): New function, exits.  This is the
+	signal handler for the "child_died" event.
+
+	* zvtterm.c (zvt_term_destroy): Added call to zvt_term_closepty
+	and vtx_destroy, to clean up emulator resources.  Not sure if its
+	working right though.
+	(zvt_term_init): Removed some redundant code.
+	(zvt_term_child_died): Default signal handler for child death.
+	Does nothing.
+	(zvt_term_readdata): Emits "child_died" signal when read fails.
+	(zvt_term_class_init): Added "child_died" signal creation to
+	class.
+
+	* vt.c (vt_init): Sets the line number on initialisation of
+	lines.  Maybe cleaner rendering on startup?
+
+	* zvtterm.c (zvt_term_destroy): Added call to vtx_destory.
+
+	* vt.c (vt_destory): New function.  Cleans up memory associated
+	with vt run-time.  Scrollback and lines.  Closes child file
+	descriptor.
+
+	* update.c (vtx_destroy): New function.  Cleans up the vtx
+	structure and free's it.
+
+	* zvtterm.c (zvt_term_killchild): New function.  Calls
+	vt_killchild().
+	(zvt_term_forkpty): Checks validity of arguments.  Also doesn't
+	allow a 'forked terminal' to fork again.
+	(zvt_term_closepty): New function.  Close the child's process
+	master terminal, and removes the gdk input handler.  Logical
+	inverse of zvt_term_forkpty()
+
+	* vt.h (vt_closepty): Added api functions killchild/closepty.
+	Perhaps it should also SIGHUP the child?
+
+	* vt.c (vt_killchild): New function.  Sorry about the name.
+	Equivalent of 'kill(2)'.
+	(vt_closepty): Inverse of forkpty().  Just closes the master pty.
+
+	* zvtterm.h: Added fore_last and back_last to keep track of the
+	last foreground/background colour used in the fore/back_gc's.
+
+	* update.c (vt_update): Added initialisation of fn and firstline
+	so that gcc won't complain about logic it couldn't follow.
+
+	* zvtterm.c (vt_scroll_area): Clears the scrolled area using the
+	term->back_gc, which cleans up scrolling.
+	(vt_term_realize): Initialises fore_last/back_last.
+	(vt_draw_text): Removed static variables last_fore, last_back to
+	term->fore_last, term->back_last.
+
 1998-04-27  Miguel de Icaza  <miguel@nuclecu.unam.mx>
 
 	* vt.h (VTATTR_BACK_SET): Added two new attribute flags to

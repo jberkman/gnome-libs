@@ -326,6 +326,8 @@ void vt_update(struct _vtx *vx, int update_state)
 				/* perform optimised update */
       wn = (struct vt_line *)vx->vt.lines.head;
       nn = wn->next;
+      firstline = 0;		/* this isn't really necessary */
+      fn = wn;
       while (nn) {
 	d(printf("scanning line %d, offset=%d : ", line, (wn->line-line)));
 	d(printf("(%d - %d)\n", line, wn->line));
@@ -431,6 +433,8 @@ void vt_update(struct _vtx *vx, int update_state)
 
     wn = (struct vt_line *)vx->vt.lines.head;
     nn = wn->next;
+    firstline = 0;		/* this isn't really necessary */
+    fn = wn;
     line=0;
     while (nn) {
       if (wn->modcount || update_state) {
@@ -844,4 +848,17 @@ struct _vtx *vtx_new(void *user_data)
   vx->user_data = user_data;
 
   return vx;
+}
+
+/*
+  reverse of new!
+*/
+void vtx_destroy(struct _vtx *vx)
+{
+  if (vx) {
+    vt_destroy(&vx->vt);
+    if (vx->selection_data)
+      free(vx->selection_data);
+    free(vx);
+  }
 }

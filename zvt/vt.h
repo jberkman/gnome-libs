@@ -114,6 +114,7 @@ struct vt_em {
 #define VTMODE_APP_CURSOR 0x00000008 /* application cursor keys */
 
 struct vt_em *vt_init(struct vt_em *vt, int width, int height);
+void vt_destroy(struct vt_em *vt);
 void vt_resize(struct vt_em *vt, int width, int height, int pixwidth, int pixheight);
 void parse_vt(struct vt_em *vt, char *ptr, int length);
 
@@ -122,5 +123,7 @@ int vt_readchild(struct vt_em *vt, char *buffer, int len);
 int vt_writechild(struct vt_em *vt, char *buffer, int len);
 int vt_report_button(struct vt_em *vt, int button, int qual, int x, int y);
 void vt_scrollback_set(struct vt_em *vt, int lines);
+int vt_killchild(struct vt_em *vt, int signal);
+int vt_closepty(struct vt_em *vt);
 
 #endif

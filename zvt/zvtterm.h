@@ -66,6 +66,7 @@ extern "C" {
       *font_bold;		/* current bold font */
     GdkGC *scroll_gc;		/* special GC used for scrolling */
     GdkGC *fore_gc, *back_gc;	/* GCs for the foreground and background colors */
+    int fore_last, back_last;	/* last colour for foreground/background gc's */
     GdkColorContext *color_ctx;	/* The color context in use, where we allocate our colors */
     gulong colors [16];		/* Our colors, pixel values. */
   };
@@ -73,11 +74,16 @@ extern "C" {
   struct _ZvtTermClass
   {
     GtkWidgetClass parent_class;
+
+    void (* child_died) (ZvtTerm *term);    
   };
 
 
   GtkWidget*    zvt_term_new                    (void);
   int		zvt_term_forkpty		(ZvtTerm *term);
+  int           zvt_term_closepty               (ZvtTerm *term);
+
+  int           zvt_term_killchild              (ZvtTerm *term, int signal);
 
   guint         zvt_term_get_type               (void);
 
@@ -99,4 +105,5 @@ extern "C" {
 
 
 #endif /* __ZVT_TERM_H__ */
+
 

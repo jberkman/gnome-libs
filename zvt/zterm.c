@@ -32,6 +32,11 @@
 
 #include "zvtterm.h"
 
+void child_died_event(ZvtTerm *term)
+{
+  exit(0);
+}
+
 /*
   main routine
 
@@ -74,6 +79,9 @@ gint main (gint argc, gchar *argv[])
 
   zvt_term_set_scrollback(term, scrollbacklines);
   zvt_term_set_font_name(term, "-misc-fixed-medium-r-normal--20-200-75-75-c-100-iso8859-1");
+
+  gtk_signal_connect (GTK_OBJECT (term), "child_died",
+                      (GtkSignalFunc) child_died_event, NULL);
 
   scrollbar = gtk_vscrollbar_new (GTK_ADJUSTMENT (term->adjustment));
   GTK_WIDGET_UNSET_FLAGS (scrollbar, GTK_CAN_FOCUS);

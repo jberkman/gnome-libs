@@ -55,13 +55,22 @@ static void zvt_term_selection_received (GtkWidget *widget, GtkSelectionData *se
 static gint zvt_term_selection_clear (GtkWidget *widget, GdkEventSelection *event);
 static void zvt_term_selection_handler (GtkWidget *widget, GtkSelectionData *selection_data_ptr, gpointer data);
 
+static void zvt_term_child_died(ZvtTerm *term);
+
 static gint zvt_term_cursor_blink(gpointer data);
-void zvt_term_scrollbar_moved (GtkAdjustment *adj, GtkWidget *widget);
-void zvt_term_readdata(gpointer data, gint fd, GdkInputCondition condition);
+static void zvt_term_scrollbar_moved (GtkAdjustment *adj, GtkWidget *widget);
+static void zvt_term_readdata(gpointer data, gint fd, GdkInputCondition condition);
 
 static void zvt_term_fix_scrollbar(ZvtTerm *term);
 
 /* Local data */
+
+enum {
+  CHILD_DIED,
+  LAST_SIGNAL
+};
+
+static guint term_signals[LAST_SIGNAL] = { 0 };
 
 static GtkWidgetClass *parent_class = NULL;
 
@@ -94,11 +103,23 @@ zvt_term_class_init (ZvtTermClass *class)
 {
   GtkObjectClass *object_class;
   GtkWidgetClass *widget_class;
+  ZvtTermClass *term_class;
 
   object_class = (GtkObjectClass*) class;
   widget_class = (GtkWidgetClass*) class;
+  term_class = (ZvtTermClass*) class;
 
   parent_class = gtk_type_class (gtk_widget_get_type ());
+
+  term_signals[CHILD_DIED] =
+    gtk_signal_new ("child_died",
+                    GTK_RUN_FIRST,
+                    object_class->type,
+                    GTK_SIGNAL_OFFSET (ZvtTermClass, child_died),
+                    gtk_signal_default_marshaller,
+                    GTK_TYPE_NONE, 0);
+
+  gtk_object_class_add_signals (object_class, term_signals, LAST_SIGNAL);
 
   object_class->destroy = zvt_term_destroy;
 
@@ -117,6 +138,8 @@ zvt_term_class_init (ZvtTermClass *class)
 
   widget_class->selection_clear_event = zvt_term_selection_clear;
   widget_class->selection_received = zvt_term_selection_received;
+
+  term_class->child_died = zvt_term_child_died;
 }
 
 static void
@@ -131,22 +154,9 @@ zvt_term_init (ZvtTerm *term)
   term->cursor_blink_state = 0;
 
   /* input handler */
-  term->input_id = 0;
+  term->input_id = -1;
 
   zvt_term_set_font_name(term, "-misc-fixed-medium-r-semicondensed--13-120-75-75-c-60-iso8859-1");
-
-#if 0
-  /* load fonts */
-  term->font = gdk_font_load("-misc-fixed-medium-r-semicondensed--13-120-75-75-c-60-iso8859-1");
-  term->font_bold = gdk_font_load("-misc-fixed-bold-r-semicondensed--13-120-75-75-c-60-iso8859-1");
-
-  /* FIXME: should use font metrics to set the default size of letters.
-     In practice, since this is fixed width, it wont make much difference ...
-     Also, 'M' is usually the widest letter (well, in English anyway) */
-
-  term->charwidth = gdk_string_width(term->font, "M");
-  term->charheight = term->font->ascent+term->font->descent;
-#endif
 
   /* scrollback position adjustment */
   term->adjustment = GTK_ADJUSTMENT(gtk_adjustment_new(0.0, 0.0, 24.0, 1.0, 24.0, 24.0));
@@ -182,6 +192,10 @@ zvt_term_destroy (GtkObject *object)
   term = ZVT_TERM (object);
   gdk_cursor_destroy (term->cursor_bar);
   gdk_cursor_destroy (term->cursor_dot);
+
+  zvt_term_closepty(term);
+  vtx_destroy(term->vx);
+
   if (GTK_OBJECT_CLASS (parent_class)->destroy)
     (* GTK_OBJECT_CLASS (parent_class)->destroy) (object);
 }
@@ -201,7 +215,7 @@ zvt_term_realize (GtkWidget *widget)
   GdkPixmap *cursor_dot_pm;
   gint attributes_mask;
   int  nallocated;
-  
+
   g_return_if_fail (widget != NULL);
   g_return_if_fail (ZVT_IS_TERM (widget));
 
@@ -264,6 +278,11 @@ zvt_term_realize (GtkWidget *widget)
   nallocated = 0;
   gdk_color_context_get_pixels (term->color_ctx, default_red, default_grn, default_blu,
 				16, term->colors, &nallocated);
+
+  /* set the initial colours */
+  term->back_last = -1;
+  term->fore_last = -1;
+
   /* FIXME: not sure if this is right or not? */
   if (!GTK_WIDGET_HAS_FOCUS (widget))
     gtk_widget_grab_focus (widget);
@@ -278,6 +297,7 @@ zvt_term_unrealize (GtkWidget *widget)
   gdk_gc_destroy (term->scroll_gc);
   gdk_gc_destroy (term->back_gc);
   gdk_gc_destroy (term->fore_gc);
+
   if (GTK_WIDGET_CLASS (parent_class)->unrealize)
     (*GTK_WIDGET_CLASS (parent_class)->unrealize) (widget);
 }
@@ -905,7 +925,7 @@ static gint zvt_term_cursor_blink(gpointer data)
   Callback for when the adjustment changes - i.e., the scrollbar
   moves.
 */
-void zvt_term_scrollbar_moved (GtkAdjustment *adj, GtkWidget *widget)
+static void zvt_term_scrollbar_moved (GtkAdjustment *adj, GtkWidget *widget)
 {
   int line;
   ZvtTerm *term;
@@ -928,21 +948,55 @@ void zvt_term_scrollbar_moved (GtkAdjustment *adj, GtkWidget *widget)
 }
 
 
-
-/* FIXME: check argument */
+/*
+  begin a child process, with a master controlling terminal
+*/
 int zvt_term_forkpty(ZvtTerm *term)
 {
   int pid;
 
+  g_return_val_if_fail (term != NULL, -1);
+  g_return_val_if_fail (ZVT_IS_TERM (term), -1);
+
+  if (term->input_id!=-1)	/* cannot fork twice! */
+    return -1;
+
   pid = vt_forkpty(&term->vx->vt);
   if (pid>0) {
-    if (!term->input_id) {
+    if (term->input_id==-1) {
       gdk_input_add(term->vx->vt.childfd, GDK_INPUT_READ, zvt_term_readdata, term);
     }
   }
   return pid;
 }
 
+/*
+  send a signal to the child process
+*/
+int zvt_term_killchild(ZvtTerm *term, int signal)
+{
+  g_return_val_if_fail (term != NULL, -1);
+  g_return_val_if_fail (ZVT_IS_TERM (term), -1);
+
+  return vt_killchild(&term->vx->vt, signal);
+}
+
+/*
+  Close the child's pty.
+
+  (and presumably the child process)
+*/
+int zvt_term_closepty(ZvtTerm *term)
+{
+  g_return_val_if_fail (term != NULL, -1);
+  g_return_val_if_fail (ZVT_IS_TERM (term), -1);
+
+  if (term->input_id!=-1) {
+    gdk_input_remove(term->input_id);
+    term->input_id=-1;
+  }
+  return vt_closepty(&term->vx->vt);
+}
 
 /*
   Keyboard input callback
@@ -1099,6 +1153,16 @@ zvt_term_key_press (GtkWidget *widget, GdkEventKey *event)
   return 1;
 }
 
+/*
+  dummy default signal handler
+*/
+static void zvt_term_child_died(ZvtTerm *term)
+{
+  g_return_if_fail (term != NULL);
+  g_return_if_fail (ZVT_IS_TERM (term));
+
+  printf("Warning: Child died\n");
+}
 
 /*
   this callback is called when data is ready on the child's file descriptor
@@ -1108,7 +1172,7 @@ zvt_term_key_press (GtkWidget *widget, GdkEventKey *event)
 
   NOTE: this may impact on slow machines, but it may not also ...!
 */
-void zvt_term_readdata(gpointer data, gint fd, GdkInputCondition condition)
+static void zvt_term_readdata(gpointer data, gint fd, GdkInputCondition condition)
 {
   char buffer[4096];
   int count;
@@ -1161,8 +1225,14 @@ void zvt_term_readdata(gpointer data, gint fd, GdkInputCondition condition)
     printf("errno = %d, saverrno = %d\n", errno, saveerrno);
     printf("out of data on read\n");
 
+    /* close this fd, just to make sure (removes input handler too) */
+    zvt_term_closepty(term);
+
+    /* signal application */
+    gtk_signal_emit(GTK_OBJECT(term), term_signals[CHILD_DIED]);
+
     /* FIXME: raise signal to caller ... */
-    gtk_exit(1);
+    /*gtk_exit(1);*/
   }
 
   /* fix scroll bar */
@@ -1209,13 +1279,10 @@ int vt_cursor_state(void *user_data, int state)
 void vt_draw_text(void *user_data, int col, int row, char *text, int len, int attr)
 {
   GdkFont *f;
-  GdkGC *gc1, *gc2;
   struct _vtx *vx;
   ZvtTerm *term;
   GtkWidget *widget;
-  GdkColor fore_pix, back_pix;
   int fore, back;
-  static int last_fore = -1, last_back = -1;
   GdkColor pen;
   
   widget = user_data;
@@ -1245,10 +1312,11 @@ void vt_draw_text(void *user_data, int col, int row, char *text, int len, int at
     fore = back;
     back = tmp;
   }
-  if (last_back != back){
+
+  if (term->back_last != back){
     pen.pixel = term->colors [back];
     gdk_gc_set_foreground (term->back_gc, &pen);
-    last_back = back;
+    term->back_last = back;
   }
   
   gdk_draw_rectangle(widget->window,
@@ -1257,10 +1325,10 @@ void vt_draw_text(void *user_data, int col, int row, char *text, int len, int at
 		     col*term->charwidth, row*term->charheight,
 		     len*term->charwidth, term->charheight);
 
-  if (last_fore != fore){
+  if (term->fore_last != fore){
     pen.pixel = term->colors [fore];
     gdk_gc_set_foreground (term->fore_gc, &pen);
-    last_fore = fore;
+    term->fore_last = fore;
   }
   gdk_draw_text(widget->window,
 		f,
@@ -1310,13 +1378,13 @@ void vt_scroll_area(void *user_data, int firstrow, int count, int offset)
   /* clear the other part of the screen */
   if (offset>0) {
     gdk_draw_rectangle(widget->window,
-		       widget->style->bg_gc[GTK_WIDGET_STATE (widget)],
+		       term->back_gc,
 		       1,
 		       0, (firstrow+count)*term->charheight,
 		       width, offset*term->charheight);
   } else {
     gdk_draw_rectangle(widget->window,
-		       widget->style->bg_gc[GTK_WIDGET_STATE (widget)],
+		       term->back_gc,
 		       1,
 		       0, (firstrow+offset)*term->charheight,
 		       width, (-offset)*term->charheight);
