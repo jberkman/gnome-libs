@@ -28,7 +28,8 @@ Menus:
 
    - The order of the toplevel menus should be: 
 
-	  File, <any mdi child menus>, Edit, View, Windows, Help
+	  File, <any mdi child menus>, Edit, View, Options, Windows,
+	  Help
 
      The Help menu should not be right-justified.
 
@@ -43,6 +44,10 @@ Menus:
 
           Undo, Redo, separator, Cut, Copy, Paste, Clear, SEPARATOR,
           Properties
+
+   - The Options menu should only contain toggle items.  Most of the
+     user's preferences should be configurable via the File/Preferences
+     menu item.
 
    - For the help menu, you should have this:
      GNOMEUIINFO_HELP(app_name),
