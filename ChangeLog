@@ -1,3 +1,13 @@
+Tue Jun 30 16:12:55 1998  Tom Tromey  <tromey@cygnus.com>
+
+	* libgnome/gnome-i18n.c: Include libgnomeP.h.
+	* libgnome/gnome-help.c: Include gnome-i18nP.h, sys/wait.h.
+	* libgnome/gnomelib-init.c: Include gnome-i18nP.h.
+	* libgnome/gnome-mime.c: Include libgnomeP.h.
+	* libgnome/gnome-config.c: Include libgnomeP.h.
+	* libgnome/Makefile.am (noinst_HEADERS): Added libgnomeP.h.
+	* libgnome/libgnomeP.h: New file.
+
 1998-06-29  Miguel de Icaza  <miguel@nuclecu.unam.mx>
 
 	* libgnome/gnome-config.c (gnome_config_pop_prefix,
