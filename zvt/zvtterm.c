@@ -2177,5 +2177,8 @@ void vt_hightlight_block(void *user_data, int col, int row, int width, int heigh
 void
 zvt_term_set_del_key_swap (ZvtTerm *term, int state)
 {
-	
+	g_return_if_fail (term != NULL);
+	g_return_if_fail (ZVT_IS_TERM (term));
+
+	term->swap_del_key = state != 0;
 }
