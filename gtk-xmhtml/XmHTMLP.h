@@ -35,6 +35,32 @@
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.11  1999/06/02 01:00:37  unammx
+* 1999-06-01  Akira Higuchi <a-higuti@math.sci.hokudai.ac.jp>
+*
+* 	* libgnomeui/gnome-canvas-text.c:
+* 	* libgnomeui/gnome-icon-item.c:
+* 	* libgnomeui/gnome-less.c: Replace some gdk_font_load() calls with
+* 	gdk_fontset_load.    Use a more open fontset rule to load the fonts.
+*
+* 1999-06-01  Akira Higuchi <a-higuti@math.sci.hokudai.ac.jp>
+*
+* 	* gtk-xmhtml/XmHTMLP.h: Add three members lbearing, rbearing,
+* 	and width. These members are computed in allocFont().
+*
+* 	* gtk-xmhtml/toolkit.h: Remove Toolkit_XFont() macro.
+*
+* 	* gtk-xmhtml/XmHTML.c:
+* 	* gtk-xmhtml/fonts.c:
+* 	* gtk-xmhtml/format.c:
+* 	* gtk-xmhtml/gtk-xmhtml.c:
+* 	* gtk-xmhtml/layout.c:
+* 	* gtk-xmhtml/paint.c: Add fontset support. We use gdk_fontset_load()
+* 	instead of gdk_font_load() iff a fontset is supplied for label
+* 	widgets.
+*
+* 	* gtk-xmhtml/test.c: Add gtk_set_locale() call before gtk_init().
+*
 * Revision 1.10  1998/02/12 03:08:23  unammx
 * Merge to Koen's XmHTML 1.1.2 + following fixes:
 *
@@ -408,6 +434,9 @@ typedef struct{
  	String font_name;			/* full XLFD								*/
  	String font_family;			/* fontFamily (foundry-family-sw-spacing)	*/
  	TFontStruct *xfont;			/* ptr to font definition					*/
+ 	int lbearing;					/* lbearing of largest character			*/
+ 	int rbearing;					/* rbearing of largest character			*/
+ 	int width;					/* width of largest character				*/
  	int height;					/* height of largest character				*/
  	int lineheight;				/* suggested lineheight						*/
  	Cardinal isp;				/* normal interword spacing					*/

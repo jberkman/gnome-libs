@@ -96,6 +96,7 @@ main (int argc, char *argv [])
 	char aline[1024];
 	FILE *afile = NULL;
 
+	gtk_set_locale();
 	gtk_init (&argc, &argv);
 	window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
 

@@ -36,6 +36,32 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.5  1999/06/02 01:00:42  unammx
+* 1999-06-01  Akira Higuchi <a-higuti@math.sci.hokudai.ac.jp>
+*
+* 	* libgnomeui/gnome-canvas-text.c:
+* 	* libgnomeui/gnome-icon-item.c:
+* 	* libgnomeui/gnome-less.c: Replace some gdk_font_load() calls with
+* 	gdk_fontset_load.    Use a more open fontset rule to load the fonts.
+*
+* 1999-06-01  Akira Higuchi <a-higuti@math.sci.hokudai.ac.jp>
+*
+* 	* gtk-xmhtml/XmHTMLP.h: Add three members lbearing, rbearing,
+* 	and width. These members are computed in allocFont().
+*
+* 	* gtk-xmhtml/toolkit.h: Remove Toolkit_XFont() macro.
+*
+* 	* gtk-xmhtml/XmHTML.c:
+* 	* gtk-xmhtml/fonts.c:
+* 	* gtk-xmhtml/format.c:
+* 	* gtk-xmhtml/gtk-xmhtml.c:
+* 	* gtk-xmhtml/layout.c:
+* 	* gtk-xmhtml/paint.c: Add fontset support. We use gdk_fontset_load()
+* 	instead of gdk_font_load() iff a fontset is supplied for label
+* 	widgets.
+*
+* 	* gtk-xmhtml/test.c: Add gtk_set_locale() call before gtk_init().
+*
 * Revision 1.4  1998/02/12 03:09:18  unammx
 * Merge to Koen's XmHTML 1.1.2 + following fixes:
 *
@@ -229,12 +255,6 @@ static int total_iterations;
 		named_anchor++; \
 	} \
 }
-
-#ifdef WITH_MOTIF
-#   define XF(x) (x)->xfont
-#else
-#   define XF(x) ((XFontStruct *)((GdkFontPrivate *)x)->xfont)
-#endif
 
 /*****
 * Name:			_XmHTMLComputeLayout
@@ -1479,10 +1499,10 @@ ComputeTextLayout(XmHTMLWidget html, PositionBox *box, XmHTMLWord **words,
 	/* store final box height */
 	if(first_line || (box->height = box->y - y_start) == 0)
 	{
-		if(lineheight > FONTHEIGHT(XF (base_obj->font)))
+		if(lineheight > base_obj->font->height)
 			box->height = lineheight;
 		else
-			box->height = FONTHEIGHT(XF (base_obj->font));
+			box->height = base_obj->height;
 	}
 	else
 		box->height = max_box_height;
@@ -1495,8 +1515,8 @@ ComputeTextLayout(XmHTMLWidget html, PositionBox *box, XmHTMLWord **words,
 	box->width = max_box_width > min_box_width ? max_box_width : min_box_width;
 	box->min_width = min_box_width;
 
-	box->width += XF (base_obj->font)->max_bounds.lbearing;
-	box->min_width += XF (base_obj->font)->max_bounds.lbearing;
+	box->width += base_obj->font->lbearing;
+	box->min_width += base_obj->font->lbearing;
 
 	/* and check against document maximum width */
 	if(max_box_width > max_width)

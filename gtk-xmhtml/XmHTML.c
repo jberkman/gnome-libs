@@ -35,6 +35,32 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.27  1999/06/02 01:00:35  unammx
+* 1999-06-01  Akira Higuchi <a-higuti@math.sci.hokudai.ac.jp>
+*
+* 	* libgnomeui/gnome-canvas-text.c:
+* 	* libgnomeui/gnome-icon-item.c:
+* 	* libgnomeui/gnome-less.c: Replace some gdk_font_load() calls with
+* 	gdk_fontset_load.    Use a more open fontset rule to load the fonts.
+*
+* 1999-06-01  Akira Higuchi <a-higuti@math.sci.hokudai.ac.jp>
+*
+* 	* gtk-xmhtml/XmHTMLP.h: Add three members lbearing, rbearing,
+* 	and width. These members are computed in allocFont().
+*
+* 	* gtk-xmhtml/toolkit.h: Remove Toolkit_XFont() macro.
+*
+* 	* gtk-xmhtml/XmHTML.c:
+* 	* gtk-xmhtml/fonts.c:
+* 	* gtk-xmhtml/format.c:
+* 	* gtk-xmhtml/gtk-xmhtml.c:
+* 	* gtk-xmhtml/layout.c:
+* 	* gtk-xmhtml/paint.c: Add fontset support. We use gdk_fontset_load()
+* 	instead of gdk_font_load() iff a fontset is supplied for label
+* 	widgets.
+*
+* 	* gtk-xmhtml/test.c: Add gtk_set_locale() call before gtk_init().
+*
 * Revision 1.26  1998/11/29 00:06:34  unammx
 * 1998-11-28  Ronald de Man <deman@win.tue.nl>
 *
@@ -567,25 +593,29 @@ XmHTML_Initialize (XmHTMLWidget html, XmHTMLWidget init, char *html_source)
 	* height of a single line. We need to do this check since the Core
 	* initialize() method doesn't do it.
 	*****/
-#ifdef WITH_MOTIF
-#   define XF(font) (font)
-#else
-#   define XF(font) ((XFontStruct *)((GdkFontPrivate *)font))
-#endif
 	if(Toolkit_Widget_Dim (html).width <= 0)
 	{
 		unsigned long value = 0;
+#ifdef WITH_MOTIF
 		if(!(XGetFontProperty(XF (html->html.default_font->xfont), XA_QUAD_WIDTH, &value)))
 		{
 			XCharStruct ch;
 			int dir, ascent, descent;
-			XTextExtents(XF (html->html.default_font->xfont), "m", 1, &dir, &ascent, 
-				&descent, &ch);
+			XTextExtents (html->html.default_font->xfont, "m", 1,
+				      &dir, &ascent, &descent, &ch);
 			value = (Cardinal)ch.width;
-			/* sanity for non-ISO fonts */
-			if(value <= 0)
-				value = 16;
 		}
+#else
+		GdkFontPrivate *gfn;
+		gfn = (GdkFontPrivate *)html->html.default_font->xfont;
+		if ((gfn->font.type != GDK_FONT_FONT) &&
+		    (!XGetFontProperty(
+			(XFontStruct *)gfn->xfont, XA_QUAD_WIDTH, &value)))
+			value = gdk_char_width (&gfn->font, 'm');
+#endif
+		/* sanity for non-ISO fonts */
+		if(value <= 0)
+			value = 16;
 		Toolkit_Widget_Dim (html).width = (Dimension)(20*(Dimension)value +
 							      2*html->html.margin_width);
 	}

@@ -35,6 +35,32 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.10  1999/06/02 01:00:43  unammx
+* 1999-06-01  Akira Higuchi <a-higuti@math.sci.hokudai.ac.jp>
+*
+* 	* libgnomeui/gnome-canvas-text.c:
+* 	* libgnomeui/gnome-icon-item.c:
+* 	* libgnomeui/gnome-less.c: Replace some gdk_font_load() calls with
+* 	gdk_fontset_load.    Use a more open fontset rule to load the fonts.
+*
+* 1999-06-01  Akira Higuchi <a-higuti@math.sci.hokudai.ac.jp>
+*
+* 	* gtk-xmhtml/XmHTMLP.h: Add three members lbearing, rbearing,
+* 	and width. These members are computed in allocFont().
+*
+* 	* gtk-xmhtml/toolkit.h: Remove Toolkit_XFont() macro.
+*
+* 	* gtk-xmhtml/XmHTML.c:
+* 	* gtk-xmhtml/fonts.c:
+* 	* gtk-xmhtml/format.c:
+* 	* gtk-xmhtml/gtk-xmhtml.c:
+* 	* gtk-xmhtml/layout.c:
+* 	* gtk-xmhtml/paint.c: Add fontset support. We use gdk_fontset_load()
+* 	instead of gdk_font_load() iff a fontset is supplied for label
+* 	widgets.
+*
+* 	* gtk-xmhtml/test.c: Add gtk_set_locale() call before gtk_init().
+*
 * Revision 1.9  1998/10/09 21:34:30  mila
 *  ChangeLog
 *
@@ -736,7 +762,7 @@ DrawAnchor(XmHTMLWidget html, XmHTMLObjectTableElement data)
 			if(!html->html.anchor_buttons && 
 				(tmp->line_data & LINE_SOLID || tmp->line_data & LINE_DASHED))
 			{
-				int dy = y + Toolkit_XFont (font->xfont)->max_bounds.descent-2;
+				int dy = y + font->xfont->descent-2;
 				Toolkit_Set_Line_Attributes(dpy, gc, 1, 
 					(tmp->line_data & LINE_SOLID ? TLineSolid : TLineDoubleDash), 
 					TCapButt, TJoinBevel);
@@ -747,7 +773,7 @@ DrawAnchor(XmHTMLWidget html, XmHTMLObjectTableElement data)
 			}
 			if(tmp->line_data & LINE_STRIKE)
 			{
-				int dy = y - (int)(0.5*(Toolkit_XFont (font->xfont)->max_bounds.ascent))+3;
+				int dy = y - (int)(0.5*(font->xfont->ascent))+3;
 				Toolkit_Set_Line_Attributes(dpy, gc, 1, TLineSolid, TCapButt, TJoinBevel);
 				Toolkit_Draw_Line(dpy, win, gc, x+2, dy, x + width - 2, dy);
 			}

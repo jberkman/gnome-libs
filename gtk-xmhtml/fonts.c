@@ -36,6 +36,32 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.9  1999/06/02 01:00:38  unammx
+* 1999-06-01  Akira Higuchi <a-higuti@math.sci.hokudai.ac.jp>
+*
+* 	* libgnomeui/gnome-canvas-text.c:
+* 	* libgnomeui/gnome-icon-item.c:
+* 	* libgnomeui/gnome-less.c: Replace some gdk_font_load() calls with
+* 	gdk_fontset_load.    Use a more open fontset rule to load the fonts.
+*
+* 1999-06-01  Akira Higuchi <a-higuti@math.sci.hokudai.ac.jp>
+*
+* 	* gtk-xmhtml/XmHTMLP.h: Add three members lbearing, rbearing,
+* 	and width. These members are computed in allocFont().
+*
+* 	* gtk-xmhtml/toolkit.h: Remove Toolkit_XFont() macro.
+*
+* 	* gtk-xmhtml/XmHTML.c:
+* 	* gtk-xmhtml/fonts.c:
+* 	* gtk-xmhtml/format.c:
+* 	* gtk-xmhtml/gtk-xmhtml.c:
+* 	* gtk-xmhtml/layout.c:
+* 	* gtk-xmhtml/paint.c: Add fontset support. We use gdk_fontset_load()
+* 	instead of gdk_font_load() iff a fontset is supplied for label
+* 	widgets.
+*
+* 	* gtk-xmhtml/test.c: Add gtk_set_locale() call before gtk_init().
+*
 * Revision 1.8  1999/02/25 01:05:06  unammx
 * Missing bit of the strtok patches from Ulrich
 *
@@ -228,6 +254,8 @@ makeFontName(String name, String foundry, String family, String weight,
 	int i;
 	static char fontfam[512], new_name[1024];
 	String fndry, fam, wd, sp;
+	GtkWidget *dummy_label;
+	gboolean use_fontset = 0;
 
 	strncpy(fontfam, name, 511);
 	fontfam[strlen(name)] = '\0';
@@ -254,11 +282,34 @@ makeFontName(String name, String foundry, String family, String weight,
 		"value %s:\nfoundry : %s\nfamily : %s\nwidth : %s\nspacing : %s\n",
 		name, fndry, fam, wd, sp));
 
+	/* determine whether we use a font or a fontset */
+	dummy_label = gtk_label_new("Dummy");
+	gtk_widget_ensure_style(dummy_label);
+	use_fontset = (dummy_label->style->font->type == GDK_FONT_FONTSET);
+	gtk_object_destroy(GTK_OBJECT(dummy_label));
+
 	/* screen resolutions are stored in the display-bound font cache */
-	sprintf(new_name, "-%s-%s-%s-%s-%s-*-*-%i-%i-%i-%s-*-%s",
-		(foundry != NULL ? foundry : fndry), (family != NULL ? family : fam), 
-		weight, slant, wd, points, curr_cache->res_x, curr_cache->res_y,
-		sp, charset);
+	if (use_fontset) {
+		/* we try to load fonts close to the specified one */
+		/* FIXME: better way to determine the fontset name? */
+		sprintf(new_name,
+			"-%s-%s-%s-%s-%s-*-*-%i-%i-%i-%s-*-%s,"
+			"-*-*-%s-%s-%s-*-*-%i-*-*-*-*-*,"
+			"-*-*-*-*-*-*-%i-*-*-*-*-*-*,*",
+			foundry != NULL ? foundry : fndry,
+			family != NULL ? family : fam, 
+			weight, slant, wd, points,
+			curr_cache->res_x, curr_cache->res_y, sp, charset, 
+			weight, slant, wd, points,
+			points / 10);
+	} else {
+		sprintf(new_name,
+			"-%s-%s-%s-%s-%s-*-*-%i-%i-%i-%s-*-%s",
+			foundry != NULL ? foundry : fndry,
+			family != NULL ? family : fam, 
+			weight, slant, wd, points,
+			curr_cache->res_x, curr_cache->res_y, sp, charset);
+	}
 
 	/* create XmHTML fontFamily spec for this font */
 	sprintf(fam_return, "%s-%s-%s-%s", (foundry != NULL ? foundry : fndry),
@@ -398,12 +449,20 @@ allocFont(TFontStruct *xfont, String name, String family, Byte style)
 {
 	static XmHTMLfont *font;
 	unsigned long value = 0;
-#ifdef WITH_MOTIF
-#   define XF xfont
-#else
-#   define XF ((XFontStruct *)((GdkFontPrivate *)xfont)->xfont)
+	XFontStruct *xfs = NULL;
+	int mb_ascent, mb_descent;
 
-	if (xfont->type != GDK_FONT_FONT){
+#ifdef WITH_MOTIF
+	xfs = xfont;
+#else	
+	switch (xfont->type) {
+	case GDK_FONT_FONT:
+		xfs = (XFontStruct *)(((GdkFontPrivate *)xfont)->xfont);
+		break;
+	case GDK_FONT_FONTSET:
+		xfs = NULL;
+		break;
+	default:
 		printf ("Passed a non-font to allocFont!\n");
 		exit (1);
 	}
@@ -418,75 +477,106 @@ allocFont(TFontStruct *xfont, String name, String family, Byte style)
 	font->style = style;
 
 	/* size of largest character */
-	font->height = (XF)->max_bounds.ascent + (XF)->max_bounds.descent;
+	if (xfs)
+	{
+		mb_ascent = xfs->max_bounds.ascent;
+		mb_descent = xfs->max_bounds.descent;
+		font->width = xfs->max_bounds.width;
+		font->lbearing = xfs->max_bounds.lbearing;
+		font->rbearing = xfs->max_bounds.rbearing;
+	}
+#ifndef WITH_MOTIF
+	else
+	{
+		XFontStruct **fsl;
+		char **names;
+		int n, i;
+		XFontSet fset;
+		fset = (XFontSet)(((GdkFontPrivate *)xfont)->xfont);
+		n = XFontsOfFontSet(fset, &fsl, &names);
+		font->width = font->rbearing = font->lbearing = 1;
+		mb_ascent = mb_descent = 0;
+		for (i = 0; i < n; i++) {
+			XCharStruct mb;
+			mb = fsl[i]->max_bounds;
+			font->lbearing = MIN(font->lbearing, mb.lbearing);
+			font->rbearing = MAX(font->rbearing, mb.rbearing);
+			font->width = MAX(font->width, mb.width);
+			mb_ascent = MAX(mb.ascent, mb_ascent);
+			mb_descent = MAX(mb.descent, mb_descent);
+		}
+	}
+#endif
+	font->height = mb_ascent + mb_descent;
 
 	/* suggested lineheight */
-	font->lineheight = (XF)->ascent + (XF)->descent;
+	font->lineheight = xfont->ascent + xfont->descent;
 
 	/* now go get a bunch of properties */
 
 	/* normal interword spacing */
-	if((XGetFontProperty(XF, XA_NORM_SPACE, &value)) == True)
+	if (xfs && XGetFontProperty(xfs, XA_NORM_SPACE, &value) == True)
 		font->isp = (Cardinal)value;
 	else
-	{
-		/* use width of a single space */
+        {
+                /* use width of a single space */
+#ifdef WITH_MOTIF
 		int dir, ascent, descent;
 		XCharStruct sp;
 		XTextExtents(XF, " ", 1, &dir, &ascent, &descent, &sp);
 		font->isp = sp.width;
-	}
+#else
+		font->isp = gdk_char_width(xfont, ' ');
+#endif
+        }
 
 	/* additional end-of-line spacing */
-	if((XGetFontProperty(XF, XA_END_SPACE, &value)) == True)
+	if (xfs && XGetFontProperty(xfs, XA_END_SPACE, &value) == True)
 		font->eol_sp = (Cardinal)value;
 	else
 		font->eol_sp = 0;
 
 	/* superscript x-offset */
-	if((XGetFontProperty(XF, XA_SUPERSCRIPT_X, &value)) == True)
-		font->sup_xoffset = (int)value;
-	else
 		font->sup_xoffset = 0;
 
 	/* superscript y-offset */
-	if((XGetFontProperty(XF, XA_SUPERSCRIPT_Y, &value)) == True)
+	if (xfs && XGetFontProperty(xfs, XA_END_SPACE, &value) == True)
 		font->sup_yoffset = (int)value;
 	else
-		font->sup_yoffset = (int)(XF->max_bounds.ascent  * -.4);
+		font->sup_yoffset = (int)(mb_ascent  * -.4);
 
 	/* subscript x-offset */
-	if((XGetFontProperty(XF, XA_SUBSCRIPT_X, &value)) == True)
+	if (xfs && XGetFontProperty(xfs, XA_SUBSCRIPT_X, &value) == True)
 		font->sub_xoffset = (int)value;
 	else
 		font->sub_xoffset = 0;
 
 	/* subscript y-offset */
-	if((XGetFontProperty(XF, XA_SUBSCRIPT_Y, &value)) == True)
+	if (xfs && XGetFontProperty(xfs, XA_SUBSCRIPT_Y, &value) == True)
 		font->sub_yoffset = (int)value;
 	else
-		font->sub_yoffset = (int)(XF->max_bounds.descent * .8);
+		font->sub_yoffset = (int)(mb_descent * .8);
 
 	/* underline offset */
-	if((XGetFontProperty(XF, XA_UNDERLINE_POSITION, &value)) == True)
+	if (xfs && XGetFontProperty(xfs, XA_UNDERLINE_POSITION, &value) == True)
 		font->ul_offset = (int)value;
 	else
-		font->ul_offset = (int)(XF->max_bounds.descent-2);
+		font->ul_offset = (int)(mb_descent-2);
 
 	/* underline thickness */
-	if((XGetFontProperty(XF, XA_UNDERLINE_THICKNESS, &value)) == True)
+	if (xfs && XGetFontProperty(xfs, XA_UNDERLINE_THICKNESS, &value) == True)
 		font->ul_thickness = (Cardinal)value;
 	else
 		font->ul_thickness = (Cardinal)1;
 
 	/* strikeout offset */
-	if((XGetFontProperty(XF, XA_STRIKEOUT_ASCENT, &value)) == True)
+	if(xfs && XGetFontProperty(xfs, XA_STRIKEOUT_ASCENT, &value) == True)
 		font->st_offset = (int)value;
 	else
-		font->st_offset = (int)(0.5*(XF->max_bounds.ascent))+3;
+		font->st_offset = (int)(0.5*(mb_ascent))+3;
 
 	/* strikeout descent */
-	if((XGetFontProperty(XF, XA_STRIKEOUT_DESCENT, &value)) == True)
+	if(xfs && XGetFontProperty(xfs, XA_STRIKEOUT_DESCENT, &value) == True)
 		font->st_thickness = font->st_offset + (Cardinal)value;
 	else
 		font->st_thickness = 1;
@@ -533,7 +623,13 @@ loadAndCacheFont(TWidget w, String name, String family, Byte style)
 	/* A new font, try to load it */
 	xfont = XLoadQueryFont(XtDisplay(w), name);
 #else
-	xfont = gdk_font_load (name);
+	if (strchr(name, ',')) {
+		_XmHTMLDebug(8, ( "a fontset..." ));
+		xfont = gdk_fontset_load (name);
+	} else {
+		_XmHTMLDebug(8, ( "a font..." ));
+		xfont = gdk_font_load (name);
+	}
 #endif
 	/* store it if successfull */
 	if(xfont != NULL)

@@ -1158,15 +1158,12 @@ static void
 CheckScrollBars(XmHTMLWidget html)
 {
 	XmHTMLfont *f = html->html.default_font ? html->html.default_font : NULL;
-	XFontStruct *xf;
 	int dx, dy, hsb_height, vsb_width, st, nx, ny, sx, sy;
 	int hsb_on_top, vsb_on_left;
 	/* forced display of scrollbars: XmSTATIC or frames with scrolling = yes */
 	int force_vsb = FALSE, force_hsb = FALSE;
 	GtkAdjustment *hsba = GTK_ADJUSTMENT (html->hsba);
 	GtkAdjustment *vsba = GTK_ADJUSTMENT (html->vsba);
-
-	xf = f ? (XFontStruct *) ((GdkFontPrivate *) f)->xfont : NULL;
 
 	/* don't do a thing if we aren't managed yet */
 	if (!GTK_WIDGET_MAPPED (html))
@@ -1284,8 +1281,7 @@ CheckScrollBars(XmHTMLWidget html)
 		sb_height = child_requisition.height;
 
 		/* pageIncrement == sliderSize */
-		pinc = html->html.work_width - 2*(f ? xf->max_bounds.width : XmHTML_HORIZONTAL_SCROLL_INCREMENT);
-		
+		pinc = html->html.work_width - 2*XmHTML_HORIZONTAL_SCROLL_INCREMENT;
 		/* sanity check */
 		if(pinc < 1)
 			pinc = XmHTML_HORIZONTAL_SCROLL_INCREMENT;
@@ -1308,7 +1304,7 @@ CheckScrollBars(XmHTMLWidget html)
 		hsba->value          = (gfloat) html->html.scroll_x;
 		hsba->page_size      = (gfloat) pinc;
 		hsba->page_increment = (gfloat) pinc;
-		hsba->step_increment = (f ? xf->max_bounds.width : XmHTML_HORIZONTAL_SCROLL_INCREMENT);
+		hsba->step_increment = (f ? f->width : XmHTML_HORIZONTAL_SCROLL_INCREMENT);
 		gtk_signal_emit_by_name (GTK_OBJECT (html->hsba), "changed");
 		
 		/* adjust x-position if vsb is on left */

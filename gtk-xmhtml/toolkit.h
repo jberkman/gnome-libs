@@ -111,7 +111,6 @@ extern void wrap_gdk_cc_get_pixels (int              incremental,
 #define Toolkit_Fill_Arc(dpy,win,gc,x,y,w,h,a1,a2) gdk_draw_arc ((win),(gc),TRUE,(x),(y),(w),(h),(a1),(a2))
 #define Toolkit_Draw_Lines(dpy,win,gc,points,npoints,mode) gdk_draw_polygon ((win),(gc),FALSE,(points),(npoints))
 #define Toolkit_Text_Width(font,text,len) gdk_text_width (font, text, len)
-#define Toolkit_XFont(font) ((XFontStruct *)(((GdkFontPrivate *)font)->xfont))
 #define Toolkit_Copy_Area(dpy,src,dst,gc,sx,sy,w,h,dx,dy) \
 	gdk_window_copy_area ((dst),(gc),(dx),(dy),(src),(sx),(sy),(w),(h))
 #define Toolkit_Create_Pixmap(dpy,win,w,h,d) gdk_pixmap_new((win),(w),(h),(d))
@@ -233,7 +232,6 @@ typedef GdkColorContextDither XCCDither;
 #define Toolkit_Fill_Arc(dpy,win,gc,x,y,w,h,a1,a2) XFillArc ((dpy),(win),(gc),(x),(y),(w),(h),(a1),(a2))
 #define Toolkit_Draw_Lines(dpy,win,gc,points,npoints,mode) XDrawLines((dpy),(win),(gc),(points),(npoints),(mode))
 #define Toolkit_Text_Width(font,text,len) XTextWidth (font, text, len)
-#define Toolkit_XFont(font) font
 #define Toolkit_Copy_Area(dpy,src,dst,gc,sx,sy,w,h,dx,dy) \
      XCopyArea ((dpy),(src),(dst),(gc),(sx),(sy),(w),(h),(dx),(dy))
 #define Toolkit_Create_Pixmap(dpy,win,w,h,d) XCreatePixmap((dpy),(win),(w),(h),(d))

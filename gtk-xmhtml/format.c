@@ -36,6 +36,32 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.12  1999/06/02 01:00:39  unammx
+* 1999-06-01  Akira Higuchi <a-higuti@math.sci.hokudai.ac.jp>
+*
+* 	* libgnomeui/gnome-canvas-text.c:
+* 	* libgnomeui/gnome-icon-item.c:
+* 	* libgnomeui/gnome-less.c: Replace some gdk_font_load() calls with
+* 	gdk_fontset_load.    Use a more open fontset rule to load the fonts.
+*
+* 1999-06-01  Akira Higuchi <a-higuti@math.sci.hokudai.ac.jp>
+*
+* 	* gtk-xmhtml/XmHTMLP.h: Add three members lbearing, rbearing,
+* 	and width. These members are computed in allocFont().
+*
+* 	* gtk-xmhtml/toolkit.h: Remove Toolkit_XFont() macro.
+*
+* 	* gtk-xmhtml/XmHTML.c:
+* 	* gtk-xmhtml/fonts.c:
+* 	* gtk-xmhtml/format.c:
+* 	* gtk-xmhtml/gtk-xmhtml.c:
+* 	* gtk-xmhtml/layout.c:
+* 	* gtk-xmhtml/paint.c: Add fontset support. We use gdk_fontset_load()
+* 	instead of gdk_font_load() iff a fontset is supplied for label
+* 	widgets.
+*
+* 	* gtk-xmhtml/test.c: Add gtk_set_locale() call before gtk_init().
+*
 * Revision 1.11  1998/06/23 18:45:55  unammx
 * James Henstridge's signal fixes to GtkXmHTML
 *
@@ -1892,17 +1918,11 @@ FillBullet(XmHTMLWidget html, XmHTMLObjectTableElement owner)
 	XmHTMLfont *font = html->html.default_font;
 	String prefix;
 
-#ifdef WITH_MOTIF
-#   define XF(font) (font)
-#else
-#   define XF(font) ((XFontStruct *)((GdkFontPrivate *)font))
-#endif
 	/***** 
 	* x-offset for any marker and radius for a bullet or length of a 
 	* side for a square marker.
 	*****/
-	radius = (Dimension)(0.5*(XF (font->xfont)->max_bounds.lbearing + 
-		XF(font->xfont)->max_bounds.rbearing)); 
+	radius = (Dimension)(0.5*(font->width));
 
 	if(owner->marker == XmMARKER_DISC || owner->marker == XmMARKER_SQUARE ||
 		owner->marker == XmMARKER_CIRCLE)
@@ -4430,10 +4450,10 @@ _XmHTMLformatObjects(XmHTMLWidget old, XmHTMLWidget html)
 			*/
 			if(in_dt && ident_level)
 				element->ident = (ident_level-1) * IDENT_SPACES * 
-					Toolkit_XFont(html->html.default_font->xfont)->max_bounds.width;
+					html->html.default_font->width;
 			else
 				element->ident = ident_level * IDENT_SPACES * 
-					Toolkit_XFont(html->html.default_font->xfont)->max_bounds.width;
+					html->html.default_font->width;
 
 			element->linefeed = (int)((1+linefeed)*font->lineheight);
 
