@@ -398,13 +398,6 @@ open_ptys (int utmp, int wtmp)
 #endif
 	  ;
 	term.c_cflag = 0
-#ifdef EXTB
-	  | EXTB
-#else
-# ifdef B9600
-	  | B9600
-# endif
-#endif /* EXTB */
 #ifdef CREAD
 	  | CREAD
 #endif
@@ -415,6 +408,13 @@ open_ptys (int utmp, int wtmp)
 	  | HUPCL
 #endif
 	  ;
+#ifdef EXTB
+	cfsetispeed(&term, EXTB);
+	cfsetospeed(&term, EXTB);
+#else
+	cfsetispeed(&term, B38400);
+	cfsetospeed(&term, B38400);
+#endif
 	term.c_lflag = 0
 #ifdef ECHO
 	  | ECHO
