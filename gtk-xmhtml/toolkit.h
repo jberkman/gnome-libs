@@ -158,7 +158,7 @@ extern void wrap_gdk_cc_get_pixels (int              incremental,
 #define Toolkit_Undefine_Cursor(d,w) gdk_window_set_cursor ((w), NULL)
 #define Toolkit_Define_Cursor(d,w,c) gdk_window_set_cursor ((w),(c))
 
-i#define XCCCreate(w,v,c)   gdk_color_context_new (v, c)
+#define XCCCreate(w,v,c)   gdk_color_context_new (v, c)
 #define XCCFree(c)         if ((c)) gdk_color_context_free ((c))
 #define XCCGetDepth(c)     (c)->visual->depth
 #define XCCGetParentVisual(w) gtk_widget_get_visual(w)
