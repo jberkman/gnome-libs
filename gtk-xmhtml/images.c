@@ -43,6 +43,13 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.11  1998/11/09 00:32:31  jaycox
+* Included alloca where necesary.  Fixed some void pointer
+* arithmetic.  Fixed some variable used as initializer errors.
+* replaced gint foo:1; with guint foo:1;
+*
+* Everything but zvt now compiles on irix 6.5 with sgi's compiler.
+*
 * Revision 1.10  1998/02/12 03:09:11  unammx
 * Merge to Koen's XmHTML 1.1.2 + following fixes:
 *
@@ -2466,7 +2473,7 @@ _XmHTMLInfoToPixmap(XmHTMLWidget html, XmHTMLImage *image,
 				}
 				else
 					sprintf(xbm, "%s.%i.xbm", image->url, num);
-				XWriteBitmapFile(dpy, xbm, *clip, info->width, info->height,
+				XWriteBitmapFile(dpy, xbm, (Pixmap) *clip, info->width, info->height,
 					0, 0);
 				fprintf(stderr, "Wrote clipping bitmap to file %s\n", xbm);
 				num++;

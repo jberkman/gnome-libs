@@ -116,7 +116,7 @@ gint main (gint argc, gchar *argv[])
 				/* get shell from passwd */
       pw = getpwuid(getuid());
       if (pw) {
-	execl(pw->pw_shell, rindex(pw->pw_shell, '/'), 0);
+	execl(pw->pw_shell, strrchr(pw->pw_shell, '/'), 0);
       } else {
 	execl("/bin/bash", "bash", 0);
       }

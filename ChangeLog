@@ -1,3 +1,14 @@
+1998-11-08  Jay Cox  <jaycox@earthlink.net>
+
+	* libgnomeui/*almost-every*.h: gint foo:1; => guint foo:1;
+	
+	* gnome-hello/gnome-hello-3-parse-args.c, gtk-xmhtml/images.c,
+	* libgnomeui/*lots-of-files*.c, gtk-xmhtml/images.c,
+	* gnome-hello/gnome-hello-3-parse-args.c, support/*somefiles*.c,
+	* support/gnome-argp.h, zvt/update.c, zvt/zterm.c:
+ 	Included alloca where necesary.  Fixed some void pointer
+ 	arithmetic.  Fixed some variable used as initializer errors.
+
 1998-11-09  Michael Zucchi  <zucchi@zzedzone.fsi.com.au>
 
 	* acconfig.h: Added HAVE_PTY_H, HAVE_UTIL_H define.

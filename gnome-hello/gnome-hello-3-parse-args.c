@@ -92,11 +92,11 @@ main (int argc, char *argv[])
 	int got_quixote_option = 0;
 	poptContext ctx;
 	struct poptOption prog_options[] = {
-	{"quixote", 'q', POPT_ARG_NONE, &got_quixote_option, 0, NULL, "Just an option"},
+	{"quixote", 'q', POPT_ARG_NONE, NULL, 0, NULL, "Just an option"},
 	POPT_AUTOHELP
 	{NULL, '\0', 0, NULL}
 	};
-	
+	prog_options[1].arg =  &got_quixote_option;
 	/* Initialize the i18n stuff */
 	bindtextdomain (PACKAGE, GNOMELOCALEDIR);
 	textdomain (PACKAGE);

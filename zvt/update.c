@@ -25,6 +25,7 @@
   It also handles selections, and making them visible, etc.
 */
 
+#include <config.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

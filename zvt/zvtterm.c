@@ -18,6 +18,7 @@
  *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
+#include <config.h>
 #include <stdio.h>
 #include <gtk/gtkmain.h>
 #include <gtk/gtksignal.h>
@@ -29,6 +30,10 @@
 #include <unistd.h>
 #include <string.h>
 #include <stdlib.h>
+
+#ifdef HAVE_ALLOCA_H
+#include <alloca.h>
+#endif
 
 #include "zvtterm.h"
 
