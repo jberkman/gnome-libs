@@ -1,3 +1,8 @@
+1999-04-06  Jaka Mocnik  <jaka.mocnik@kiss.uni-lj.si>
+
+	* zvtterm.c (zvt_term_set_fonts): only gdk_font_ref() fonts if
+	they are non-null in order to prevent some segfaults.
+	
 1999-04-04  Michael Zucchi  <zucchi@zzedzone.mmc.com.au>
 
 	* zvtterm.h: Changed capability bits to #define's so they can more
