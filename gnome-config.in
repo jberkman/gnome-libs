@@ -19,7 +19,7 @@ pkgdatadir=${datadir}/@PACKAGE@
 pkglibdir=${libdir}/@PACKAGE@
 pkgincludedir=${includedir}/@PACKAGE@
 MODULE_VERSION=@PACKAGE@-@VERSION@
-module_dirs="$libdir:$GNOME_LIBCONFIG_PATH"
+module_dirs="$libdir"
 
 # stolen from autoconf
 if (echo "testing\c"; echo 1,2,3) | grep c >/dev/null; then
@@ -33,8 +33,11 @@ else
   ac_n= ac_c='\c' ac_t=
 fi
 
-for extra in `echo $GNOME_PATH  | sed 's/:/ /'`; do
-    module_dirs="$module_dirs:$extra/lib"
+for extra in `echo $GNOME_PATH  | sed 's/:/ /g'`; do
+    module_dirs="$extra/lib:$module_dirs"
+done
+for extra in `echo $GNOME_LIBCONFIG_PATH  | sed 's/:/ /g'`; do
+    module_dirs="$extra:$module_dirs"
 done
 
 usage()
@@ -80,7 +83,7 @@ appear to be:
 
 EOF
 
-    for dir in `echo $module_dirs | sed 's/:/ /'`; do
+    for dir in `echo $module_dirs | sed 's/:/ /g'`; do
 	conf_shs=`cd $dir; echo *Conf.sh`
 	if test "x$conf_shs" = x || test "x$conf_shs" = 'x*Conf.sh'; then :
 	else

@@ -59,3 +59,5 @@
 
 #undef KDE_ICONDIR
 #undef KDE_MINI_ICONDIR
+
+#undef PREFER_DB1

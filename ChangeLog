@@ -1,3 +1,10 @@
+1999-09-01 Elliot Lee <sopwith@redhat.com>
+	* configure.in, acconfig.h, libgnome/gnome-{dump,metadata}.c:
+	  Add a --enable-prefer-db1 option to make life easier
+	* gnome-config.in: Properly handle $GNOME_LIBCONFIG_PATH and $GNOME_PATH
+	  (don't barf on paths with more than one directory, don't barf on GNOME_PATH
+	   with no GNOME_LIBCONFIG_PATH).
+
 1999-09-03 Augusto Cesar Radtke <bishop@sekure.org>
 	* configure.in: (ALL_LINGUAS): Added brazilian portuguese translations.
 
