@@ -1,0 +1,208 @@
+The following is an example python wrapper for gtk_dialog_cauldron()
+It can be inserted directly into gtkmodule.c of the pygtk package.
+It might go better into the pygnome package considering that it is
+from the libgnomeui library and can use gnome buttons with HAVE_GNOME
+defined.
+
+----------------
+
+#include "gtkcauldron.h"
+
+#define MAX_CAULDRON_RESULTS 64
+#define MAX_CAULDRON_CALLBACKS 64
+
+
+struct CauldronIntResult {
+    int type;
+    int value;
+};
+
+struct CauldronCharResult {
+    int type;
+    char *value;
+    char *original_value;
+};
+
+struct CauldronDoubleResult {
+    int type;
+    double value;
+};
+
+union CauldronResult {
+    int type;
+    struct CauldronIntResult i;
+    struct CauldronCharResult c;
+    struct CauldronDoubleResult d;
+};
+
+struct TupleAndIndexAndResults {
+    PyObject *tuple;
+    int index;
+    PyObject *user_data[MAX_CAULDRON_CALLBACKS];
+    int nuser_data;
+    union CauldronResult results[MAX_CAULDRON_RESULTS];
+    int nresults;
+};
+
+static GtkWidget *python_cauldron_callback (GtkWidget * widget, PyObject * o)
+{
+    PyObject *ret, *parems;
+    GtkObject *og;
+    ret = PyTuple_New (1);
+    PyTuple_SetItem (ret, 0, PyGtk_New (GTK_OBJECT (widget)));
+    parems = PySequence_Concat (ret, PyTuple_GetItem (o, 1));
+    Py_DECREF (ret);
+    ret = PyObject_CallObject (PyTuple_GetItem (o, 0), parems);
+    Py_DECREF (parems);
+    if (ret == NULL) {
+	PyErr_Print ();
+	PyErr_Clear ();
+	return NULL;
+    }
+    if (!PyGtk_Check (ret)) {
+      error:
+	PyErr_SetString (PyExc_TypeError, "cauldron user callbacks for format X must return a widget");
+	PyErr_Print ();
+	PyErr_Clear ();
+	return NULL;
+    }
+    og = PyGtk_Get (ret);
+    if (!GTK_IS_WIDGET (og))
+	goto error;
+    gtk_object_ref (og);	/* --> prevents Py_DECREF(ret) from freeing og */
+    Py_DECREF (ret);
+    return GTK_WIDGET (og);
+}
+
+#define TYPE_ERROR(PyWhat_Check,x,s)			\
+	    if (!PyWhat_Check (x)) {			\
+		PyErr_SetString (PyExc_TypeError, "entry within tuple is not a " s); \
+		return;					\
+	    }
+
+static void next_arg (gint type, struct TupleAndIndexAndResults *a, void *result)
+{
+    PyObject *o;
+    if (a->index >= PyTuple_Size (a->tuple)) {
+	PyErr_SetString (PyExc_ValueError, "not enough entries for format in tuple passed to gtk_dialog_cauldron");
+	PyErr_Print ();
+	PyErr_Clear ();
+	return;
+    }
+    o = PyTuple_GetItem (a->tuple, a->index++);
+    switch (type) {
+    case GTK_CAULDRON_TYPE_CHAR_P:{
+	    gchar **x = (gchar **) result;
+	    TYPE_ERROR (PyString_Check, o, "string");
+	    *x = PyString_AsString (o);		/* doesn't allocate anything and hence need not be free'd */
+	    break;
+	}
+    case GTK_CAULDRON_TYPE_CHAR_P_P:{
+	    gchar ***x = (gchar ***) result;
+	    TYPE_ERROR (PyString_Check, o, "string");
+	    a->results[a->nresults].type = GTK_CAULDRON_TYPE_CHAR_P;
+	    a->results[a->nresults].c.value = PyString_AsString (o);
+	    a->results[a->nresults].c.original_value = a->results[a->nresults].c.value;
+	    *x = &(a->results[a->nresults++].c.value);
+	    break;
+	}
+    case GTK_CAULDRON_TYPE_INT:{
+	    gint *x = (gint *) result;
+	    TYPE_ERROR (PyInt_Check, o, "integer");
+	    *x = PyInt_AsLong (o);
+	    break;
+	}
+    case GTK_CAULDRON_TYPE_INT_P:{
+	    gint **x = (gint **) result;
+	    TYPE_ERROR (PyInt_Check, o, "integer");
+	    a->results[a->nresults].type = GTK_CAULDRON_TYPE_INT;
+	    a->results[a->nresults].i.value = PyInt_AsLong (o);
+	    *x = &(a->results[a->nresults++].i.value);
+	    break;
+	}
+    case GTK_CAULDRON_TYPE_DOUBLE:{
+	    gdouble *x = (gdouble *) result;
+	    TYPE_ERROR (PyFloat_Check, o, "float");
+	    *x = PyFloat_AsDouble (o);
+	    break;
+	}
+    case GTK_CAULDRON_TYPE_DOUBLE_P:{
+	    gdouble **x = (gdouble **) result;
+	    TYPE_ERROR (PyFloat_Check, o, "float");
+	    a->results[a->nresults].type = GTK_CAULDRON_TYPE_DOUBLE;
+	    a->results[a->nresults].d.value = PyFloat_AsDouble (o);
+	    *x = &(a->results[a->nresults++].d.value);
+	    break;
+	}
+    case GTK_CAULDRON_TYPE_USERDATA_P:{
+	    PyObject *t;
+	    gpointer *x = (gpointer *) result;
+	    TYPE_ERROR (PyTuple_Check, o, "tuple");
+	    t = a->user_data[a->nuser_data++];
+	    Py_INCREF (o);
+	    PyTuple_SetItem (t, 1, o);	/* item two set here */
+	    *x = (gpointer) t;
+	    break;
+	}
+    case GTK_CAULDRON_TYPE_CALLBACK:{
+	    PyObject *t;
+	    GtkCauldronNextArgCallback *x = (GtkCauldronNextArgCallback *) result;
+	    TYPE_ERROR (PyCallable_Check, o, "callable");
+	    a->user_data[a->nuser_data] = t = PyTuple_New (2);
+	    Py_INCREF (o);
+	    PyTuple_SetItem (t, 0, o);	/* item one set here */
+	    *x = (GtkCauldronNextArgCallback) python_cauldron_callback;
+	    break;
+	}
+    }
+    return;
+}
+
+static PyObject *gtk__dialog_cauldron (PyObject * self, PyObject * args)
+{
+    struct TupleAndIndexAndResults r;
+    PyObject *tuple, *res;
+    char *format, *title;
+    char *result;
+    int options;
+    int i;
+
+    memset (&r, 0, sizeof (r));
+
+    if (!PyArg_ParseTuple (args, "sisO:gtk_dialog_cauldron", &title, &options, &format, &tuple))
+	return NULL;
+
+    if (!PyTuple_Check (tuple)) {
+	PyErr_SetString (PyExc_TypeError, "third argument must be a tuple");
+	return NULL;
+    }
+    r.tuple = tuple;
+    result = gtk_dialog_cauldron_parse (title, options, format, (GtkCauldronNextArgCallback) next_arg, &r);
+    res = PyString_FromString (result);
+    for (i = 0; i < r.nuser_data; i++)
+	Py_DECREF (r.user_data[i]);
+    Py_DECREF (tuple);
+    tuple = PyTuple_New (r.nresults + 1);	/* first tuple entry is the string of the button pressed, returned from gtk_dialog_cauldron */
+
+    PyTuple_SetItem (tuple, 0, res);
+    for (i = 0; i < r.nresults; i++) {
+	switch (r.results[i].type) {
+	case GTK_CAULDRON_TYPE_INT:
+	    res = PyInt_FromLong (r.results[i].i.value);
+	    PyTuple_SetItem (tuple, i + 1, res);
+	    break;
+	case GTK_CAULDRON_TYPE_DOUBLE:
+	    res = PyFloat_FromDouble (r.results[i].d.value);
+	    PyTuple_SetItem (tuple, i + 1, res);
+	    break;
+	case GTK_CAULDRON_TYPE_CHAR_P:
+	    res = PyString_FromString (r.results[i].c.value);
+	    if (r.results[i].c.value != r.results[i].c.original_value)	/* heres how we check if stuff has been allocated */
+		free (r.results[i].c.value);
+	    PyTuple_SetItem (tuple, i + 1, res);
+	    break;
+	}
+    }
+    return tuple;
+}
+
