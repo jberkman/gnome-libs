@@ -1,11 +1,13 @@
 /*###################################################################*/
-/*##                    gdk_imlib raw rgb converter                ##*/
+/*##                Image to Imlib raw rgb data Converter          ##*/
 /*##                                                               ##*/
 /*## This software falls under the GNU Public License. Please read ##*/
 /*##              the COPYING file for more information            ##*/
 /*###################################################################*/
 
 #include "convertrgb.h"
+
+#define CRGB_VERSION "0.2.0"
 
 static int efficient;
 static int dimensions;
@@ -29,16 +31,15 @@ static void convert(char *real_file)
 	FILE *f, *sf;
 	char outfile[4096];
 	char data_var[4096];
+	char cmd[4096];
+	unsigned char buf[16];
 	char *ptr, *file;
-	int x, y;
 	int col = 0;
-	unsigned char *d;
+	int c = 1;
 	int w, h, t;
 
-	t = 0;
-
-	ptr = strrchr (real_file, '/');
-	file = ptr ? ptr+1 : real_file;
+        ptr = strrchr (real_file, '/');
+        file = ptr ? ptr+1 : real_file;
 
 	if (file_for_output)
 		{
@@ -46,13 +47,7 @@ static void convert(char *real_file)
 		}
 	else
 		{
-		ptr = file + strlen(file);
-		while(ptr > &file[0] && ptr[0] != '/') ptr--;
-		if (ptr[0] == '/')
-			ptr++;
-		else
-			ptr = file;
-		strcpy (outfile, ptr);
+		strcpy (outfile, file);
 		ptr = outfile + strlen(outfile);
 		while (ptr > &outfile[0] && ptr[0] != '.') ptr--;
 		ptr[0] = '\0';
@@ -78,101 +73,178 @@ static void convert(char *real_file)
 		return;
 		}
 
-	sf = fopen(real_file, "rb");
-	if (!sf) return;
 
-	if (gisxpm(real_file) && 0) /* imlib needs display to load xpms, so use convert */
-		d = g_LoadXPM(real_file, &w, &h, &t);
+	if (gispng(real_file))
+		{
 #ifdef HAVE_LIBPNG
-	else if (gispng(real_file))
-		d = g_LoadPNG(sf, &w, &h, &t);
-#endif
-#ifdef HAVE_LIBJPEG
-	else if (gisjpeg(real_file))
-		d = g_LoadJPEG(sf, &w, &h);
-#endif
-#ifdef HAVE_LIBTIFF
-	else if (gistiff(real_file))
-		d = g_LoadTIFF(real_file, &w, &h, &t);
-#endif
-#ifdef HAVE_LIBGIF
-	else if (gisgif(real_file))
-		d = g_LoadGIF(real_file, &w, &h, &t);
-#endif
-	else if (gisbmp(real_file))
-		d = g_LoadBMP(real_file, &w, &h, &t);
-	else
-		{
-		fclose(sf);
-		sf = open_helper("%C/convert %s pnm:-", real_file, "rb");
-		d = g_LoadPPM(sf, &w, &h);
-		}
+		unsigned char *d;
+		int x, y;
 
-	fclose (sf);
-	if (!d) return;
-
-	if (append)
-		f = fopen(outfile,"a");
-	else
-		f = fopen(outfile,"w");
-	
-	if (!f)
-		{
-		printf("unable to open output file: %s\n", outfile);
-		free(d);
-		return;
-		}
-
-	fprintf(f, "/* Imlib raw rgb data file created by convertrgb */\n\n");
-
-	if (dimensions)
-		{
-		fprintf(f, "static const int %s_width  = %d;\n", data_var, w);
-		fprintf(f, "static const int %s_height = %d;\n", data_var, h);
-		if (t)
-			fprintf(f, "static const GdkImlibColor %s_alpha  = { 255, 0, 255, 0 };\n", data_var);
-		else
-			fprintf(f, "static const GdkImlibColor %s_alpha  = { -1, -1, -1, 0 };\n", data_var);
-		}
-
-	fprintf(f, "static const char %s[] = {\n", data_var);
-
-	for (y=0;y < h; y++)
-		for (x=0;x < w; x++)
+		sf = fopen(real_file, "rb");
+		if (!sf)
 			{
-			unsigned int r, g, b;
-			int l;
-			l = (( y * w) + x ) * 3;
-			r = d[l];
-			l++;
-			g = d[l];
-			l++;
-			b = d[l];
+			return;
+			}
+
+		d = g_LoadPNG(sf, &w, &h, &t);
+
+		if (!d) return;
+
+		if (append)
+			f = fopen(outfile,"a");
+		else
+			f = fopen(outfile,"w");
+	
+		if (!f)
+			{
+			printf("unable to open output file: %s\n", outfile);
+			free(d);
+			return;
+			}
+
+		fprintf(f, "/* Imlib raw rgb data file created by convertrgb */\n\n");
+
+		if (dimensions)
+			{
+			fprintf(f, "static const int %s_width  = %d;\n", data_var, w);
+			fprintf(f, "static const int %s_height = %d;\n", data_var, h);
+			if (t)
+				fprintf(f, "static const GdkImlibColor %s_alpha  = { 255, 0, 255, 0 };\n", data_var);
+			else
+				fprintf(f, "static const GdkImlibColor %s_alpha  = { -1, -1, -1, 0 };\n", data_var);
+			}
+
+		fprintf(f, "static const char %s[] = {\n", data_var);
+
+		for (y=0;y < h; y++)
+			for (x=0;x < w; x++)
+				{
+				unsigned int r, g, b;
+				int l;
+				l = (( y * w) + x ) * 3;
+				r = d[l];
+				l++;
+				g = d[l];
+				l++;
+				b = d[l];
+				if (!efficient)
+					fprintf(f, "0x%.2x, 0x%.2x, 0x%.2x", r, g, b);
+				else
+					fprintf(f, "%d,%d,%d", r, g, b);
+				col++;
+				if (y != h -1 || x != w - 1)
+					fprintf(f, ",");
+				if (col > 3)
+					{
+					col = 0;
+					fprintf(f , "\n");
+					}
+				else
+					{
+					if (!efficient) fprintf(f, " ");
+					}
+				}
+
+		if (col == 0)
+			fprintf (f, "};\n");
+		else
+			fprintf (f, "\n};\n");
+
+		fclose(f);
+		free(d);
+#endif
+		}
+	else
+		{
+		sprintf(cmd, "convert %s rgba:-", real_file);
+
+		sf = popen(cmd, "rb");
+		if (!sf) return;
+
+		if (append)
+			f = fopen(outfile,"a");
+		else
+			f = fopen(outfile,"w");
+	
+		if (!f)
+			{
+			pclose(sf);
+			printf("unable to open output file: %s\n", outfile);
+			return;
+			}
+
+		fprintf(f, "* Imlib raw rgb data created by convertrgb %s */\n\n", CRGB_VERSION);
+
+		/* FIXME dimensions are broke
+		if (dimensions)
+			{
+			fprintf(f, "static const int %s_width  = %d;\n", data_var, w);
+			fprintf(f, "static const int %s_height = %d;\n", data_var, h);
+			}
+		*/
+
+		fprintf(f, "static const char %s[] = {\n", data_var);
+
+		while (fread(buf, sizeof(unsigned char), 8, sf) == 8)
+			{
+			unsigned int r, g, b, a;
+
+			/* most images don't go beyond 24 bits, but just in case: */
+			if (buf[0] == buf[1])
+				r = buf[0];
+			else
+				r = (buf[0] * buf[1]) / 255;
+
+			if (buf[2] == buf[3])
+				g = buf[2];
+			else
+				g = (buf[2] * buf[3]) / 255;
+	
+			if (buf[4] == buf[5])
+				b = buf[4];
+			else
+				b = (buf[4] * buf[5]) / 255;
+
+			if (buf[6] == buf[7])
+				a = buf[6];
+			else
+				a = (buf[6] * buf[7]) / 255;
+			/* imlib data uses 255,0,255 for tranparency */
+			if (a < 128)
+				{
+				r = 255;
+				g = 0;
+				b = 255;
+				}
+
+			if (c != 1)
+				{
+				fprintf(f, ",");
+				if (col > 3)
+					{
+					col = 0;
+					fprintf(f , "\n");
+					}
+				else
+					{
+					if (!efficient) fprintf(f, " ");
+					}
+				}
+
 			if (!efficient)
 				fprintf(f, "0x%.2x, 0x%.2x, 0x%.2x", r, g, b);
 			else
 				fprintf(f, "%d,%d,%d", r, g, b);
 			col++;
-			if (y != h -1 || x != w - 1)
-				fprintf(f, ",");
-			if (col > 3)
-				{
-				col = 0;
-				fprintf(f , "\n");
-				}
-			else
-				{
-				if (!efficient) fprintf(f, " ");
-				}
+			c++;
 			}
 
-	if (col == 0)
-		fprintf (f, "};\n");
-	else
+		pclose(sf);
+	
 		fprintf (f, "\n};\n");
 
-	fclose(f);
-	free(d);
+		fclose(f);
+		}
 }
 
 int main (int argc, char *argv[])
@@ -285,12 +357,12 @@ int main (int argc, char *argv[])
 		}
 	else
 		{
-		printf ("Image to Imlib raw rgb data Converter                 Version 0.1.2\n");
+		printf ("Image to Imlib raw rgb data Converter                 Version %s\n", CRGB_VERSION);
 		printf ("This program is released under the terms of the GNU public license.\n");
 		printf ("Command line params:\n\n");
 		printf ("      convertrgb [-e] [-o=fn|-a=fn|-s=sn] [-v=vn] inputfile [inputfile] ...\n\n");
 		printf ("   -e, --efficient      Use smallest format possible to save space\n");
-		printf ("   -n, --nodim          Suppress output of dimensions and transparency\n");
+		printf ("   -n, --nodim          Suppress output of image dimensions\n");
 		printf ("   -o=[fn]              Output to file named fn , default is .c extension\n");
 		printf ("                          to replace extension of inputfile\n");
 		printf ("   -a=[fn]              Like -o, but appends to file named fn\n");
