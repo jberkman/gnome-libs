@@ -1,3 +1,11 @@
+Sat Feb 14 00:35:54 1998  Tom Tromey  <tromey@cygnus.com>
+
+	* configure.in (GNOME_LIBDIR, GNOME_INCLUDEDIR): Define to be
+	expanded in make.
+	(AC_OUTPUT): Don't create gnomeConf.sh.
+	* Makefile.am (release): Fixed typo.
+	(gnomeConf.sh): New target.
+
 1998-02-13  Raja R Harinath  <harinath@cs.umn.edu>
 
 	* configure.in (GNOME_INCLUDEDIR): Include `-I'.
