@@ -1,5 +1,5 @@
 # Note that this is NOT a relocatable package
-%define ver      0.27.1
+%define ver      0.30
 %define rel      SNAP
 %define prefix   /usr
 
@@ -9,11 +9,12 @@ Version: %ver
 Release: %rel
 Copyright: LGPL
 Group: X11/gnome
-Source: ftp://ftp.gnome.org/pub/gnome-libs-%{ver}.tar.gz
-BuildRoot: /tmp/gnome-libs-root
+Source: ftp://ftp.gnome.org/pub/GNOME/sources/gnome-libs-%{ver}.tar.gz
+BuildRoot: /var/tmp/gnome-libs-root
 Obsoletes: gnome
 Packager: Marc Ewing <marc@redhat.com>
 URL: http://www.gnome.org/
+Requires: gtk+ >= 1.1
 Docdir: %{prefix}/doc
 
 %description
@@ -26,13 +27,17 @@ using your computer easy, powerful, and easy to configure.
 %package devel
 Summary: Libraries, includes, etc to develop GNOME applications
 Group: X11/gnome
-Requires: gnome-libs
+Requires: gnome-libs = %{PACKAGE_VERSION}
 Obsoletes: gnome
 
 %description devel
 Libraries, include files, etc you can use to develop GNOME applications.
 
 %changelog
+
+* Wed Sep 23 1998 Michael Fulbright <msf@redhat.com>
+
+- Updated to version 0.30
 
 * Mon Apr 13 1998 Marc Ewing <marc@redhat.com>
 - Added %{prefix}/lib/gnome-libs
@@ -82,6 +87,7 @@ fi
 %doc AUTHORS COPYING ChangeLog NEWS README
 %{prefix}/lib/lib*.so.*
 %{prefix}/bin/*
+%{prefix}/share/pixmaps/*
 
 %files devel
 %defattr(-, root, root)
@@ -91,4 +97,5 @@ fi
 %{prefix}/lib/*.sh
 %{prefix}/lib/gnome-libs
 %{prefix}/include/*
-%{prefix}/share/pixmaps/*
+
+
