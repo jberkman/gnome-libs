@@ -69,7 +69,7 @@ goad_server_unregister  (CORBA_Object name_server,
 
 /**** gnome-plugins module ****/
 typedef struct {
-	const char   *repo_id;
+	const char   **repo_id;
 	const char   *server_id;
 	const char   *kind;
 	const char   *description;
@@ -101,7 +101,7 @@ typedef enum {
 
 typedef struct {
 	GoadServerType type;
-	char     *repo_id;
+	char     **repo_id;
 	char     *server_id;
 	char     *description;
 	

@@ -48,6 +48,17 @@ static CORBA_Object goad_server_activate_exe(GoadServer *sinfo,
 					     CORBA_Environment *ev);
 static void goad_servers_unregister_atexit(void);
 
+static gboolean string_in_array(const char *string, const char **array)
+{
+  int i;
+  for(i = 0; array[i]; i++) {
+    if(!strcmp(string, array[i]))
+      return TRUE;
+  }
+
+  return FALSE;
+}
+
 /**** goad_server_list_get
 
       Outputs: 'retval' - newly created server list.
@@ -133,6 +144,8 @@ goad_server_list_read(const char *filename,
   iter = gnome_config_init_iterator_sections(filename);
 
   while((iter = gnome_config_iterator_next(iter, &newval.server_id, NULL))) {
+    int vlen;
+
     if (*filename == '=')
       g_string_sprintf(dummy, "=%s/=type",
 		       newval.server_id);
@@ -154,7 +167,9 @@ goad_server_list_read(const char *filename,
     else
       g_string_sprintf(dummy, "%s/repo_id",
 		       newval.server_id);
-    newval.repo_id = gnome_config_get_string(dummy->str);
+    gnome_config_get_vector(dummy->str, &vlen, &newval.repo_id);
+    newval.repo_id = g_realloc(newval.repo_id, (vlen + 1)*sizeof(char *));
+    newval.repo_id[vlen] = NULL;
 
     if (*filename == '=')
       g_string_sprintf(dummy, "=%s/=description",
@@ -193,7 +208,7 @@ goad_server_list_free (GoadServer *server_list)
   int i;
 
   for(i = 0; server_list[i].repo_id; i++) {
-    g_free(server_list[i].repo_id);
+    g_strfreev(server_list[i].repo_id);
     g_free(server_list[i].server_id);
     g_free(server_list[i].description);
     g_free(server_list[i].location_info);
@@ -310,8 +325,8 @@ goad_server_activate_with_repo_id(GoadServer *server_list,
 	   && slist[i].type != GOAD_SERVER_EXE)
 	  continue;
       }
-	
-      if(strcmp(repo_id, slist[i].repo_id))
+
+      if(!string_in_array(repo_id, slist[i].repo_id))
 	continue;
 	
       /* entry matched */
@@ -412,13 +427,12 @@ goad_server_activate(GoadServer *sinfo,
     if (flags & GOAD_ACTIVATE_REMOTE) {
       GoadServer fake_sinfo;
       gchar cmdline[1024];
-      
+
+      fake_sinfo = *sinfo;
       fake_sinfo.type = GOAD_SERVER_EXE;
-      fake_sinfo.repo_id     = "loadshlib";
-      fake_sinfo.server_id          = "loadshlib";
-      fake_sinfo.description = "DLL Loader for GOAD";
+
       g_snprintf(cmdline, sizeof(cmdline), "loadshlib -i %s -r %s %s",
-		 sinfo->server_id, sinfo->repo_id, sinfo->location_info);
+		 sinfo->server_id, sinfo->repo_id[0], sinfo->location_info);
       fake_sinfo.location_info = cmdline;
       retval = goad_server_activate_exe(&fake_sinfo, flags, &ev);
     } else {
@@ -432,33 +446,6 @@ goad_server_activate(GoadServer *sinfo,
     g_warning("Relay interface not yet defined (write an RFC :). Relay objects NYI");
     break;
   }
-#if 0 
-  /*
-   * This goes _before_ "out:" - don't want to reregister
-   * the object with the name service if we got it from there ;-)
-   */
-
-  if(!CORBA_Object_is_nil(retval, &ev) && !(flags & GOAD_ACTIVATE_NO_NS_REGISTER)) {
-    
-    name_service = gnome_name_service_get();
-    nc[2].id = sinfo->server_id;
-    nc[2].kind = "object";
-    CosNaming_NamingContext_bind(name_service, &nom, retval, &ev);
-    if (ev._major != CORBA_NO_EXCEPTION)
-      {
-	g_warning("goad_server_activate: Exception during server registration");
-	switch( ev._major )
-	  {
-	  case CORBA_SYSTEM_EXCEPTION:
-	    g_warning("sysex: %s.\n", CORBA_exception_id(&ev));
-	  case CORBA_USER_EXCEPTION:
-	    g_warning( "usr	ex: %s.\n", CORBA_exception_id(&ev));
-	  default:
-	    break;
-	  }
-      }
-  }
-#endif    
  out:
   CORBA_exception_free(&ev);
   return retval;
@@ -544,8 +531,7 @@ normal_loading:
   g_return_val_if_fail(plugin, CORBA_OBJECT_NIL);
 
   for(i = 0; plugin->plugin_object_list[i].repo_id; i++) {
-    if(!strcmp(sinfo->server_id, plugin->plugin_object_list[i].server_id)
-       && !strcmp(sinfo->repo_id, plugin->plugin_object_list[i].repo_id))
+    if(!strcmp(sinfo->server_id, plugin->plugin_object_list[i].server_id))
        break;
   }
   g_return_val_if_fail(plugin->plugin_object_list[i].repo_id, CORBA_OBJECT_NIL);

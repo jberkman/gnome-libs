@@ -155,7 +155,7 @@ gb_create_server_list(GtkWidget *w, GtkCList *clist)
 
     columns[0] = slist[i].server_id;
     columns[2] = slist[i].description;
-    columns[3] = slist[i].repo_id;
+    columns[3] = g_strjoinv(",",slist[i].repo_id);
 
     switch(slist[i].type) {
     case GOAD_SERVER_SHLIB: columns[4] = "shlib"; break;
@@ -168,6 +168,8 @@ gb_create_server_list(GtkWidget *w, GtkCList *clist)
     columns[5] = slist[i].location_info;
 
     currow = gtk_clist_append(clist, columns);
+    g_free(columns[3]);
+
     gtk_clist_set_row_data(clist, currow, &slist[i]);
 
     if(gb_is_server_active_p(ns, &slist[i], &ev))
