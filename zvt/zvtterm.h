@@ -34,9 +34,12 @@ extern "C" {
 /* if one doesn't want to compile in transparency one would define this */
 /* #define ZVT_NO_TRANSPARENT 1 */
 
-#define ZVT_TERM(obj)          GTK_CHECK_CAST (obj, zvt_term_get_type (), ZvtTerm)
-#define ZVT_TERM_CLASS(klass)  GTK_CHECK_CLASS_CAST (klass, zvt_term_get_type (), ZvtTermClass)
-#define ZVT_IS_TERM(obj)       GTK_CHECK_TYPE (obj, zvt_term_get_type ())
+#define ZVT_TYPE_TERM            (zvt_term_get_type ())
+#define ZVT_TERM(obj)            (GTK_CHECK_CAST ((obj), ZVT_TYPE_TERM, ZvtTerm))
+#define ZVT_TERM_CLASS(klass)    (GTK_CHECK_CLASS_CAST ((klass), ZVT_TYPE_TERM, ZvtTermClass))
+#define ZVT_IS_TERM(obj)         (GTK_CHECK_TYPE ((obj), ZVT_TYPE_TERM))
+#define ZVT_IS_TERM_CLASS(klass) (GTK_CHECK_CLASS_TYPE ((klass), ZVT_TYPE_TERM))
+#define ZVT_TERM_GET_CLASS(obj)  (GTK_CHECK_GET_CLASS ((obj), ZVT_TYPE_TERM, ZvtTermClass))
 	
   /* Capabilities
 
