@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 1998-11-14 12:23+0300\n"
+"POT-Creation-Date: 1998-12-03 19:50-0600\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Max Valianskiy <maxcom@vinchi.ru>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -46,7 +46,7 @@ msgstr ""
 
 #: gnome-hello/gnome-hello-2-i18n.c:78
 #: gnome-hello/gnome-hello-3-parse-args.c:78 gnome-hello/gnome-hello-4-SM.c:53
-#: gnome-hello/gnome-hello-7-mdi.c:467
+#: gnome-hello/gnome-hello-7-mdi.c:403
 msgid "Exit"
 msgstr ""
 
@@ -54,14 +54,14 @@ msgstr ""
 #. insertion routines for details)
 #: gnome-hello/gnome-hello-2-i18n.c:84
 #: gnome-hello/gnome-hello-3-parse-args.c:84 gnome-hello/gnome-hello-4-SM.c:77
-#: gnome-hello/gnome-hello-7-mdi.c:473 gnome-hello/gnome-hello-7-mdi.c:562
+#: gnome-hello/gnome-hello-7-mdi.c:409 gnome-hello/gnome-hello-7-mdi.c:505
 #: libgnomeui/stock_demo.c:184
 msgid "File"
 msgstr ""
 
 #: gnome-hello/gnome-hello-2-i18n.c:85
 #: gnome-hello/gnome-hello-3-parse-args.c:85 gnome-hello/gnome-hello-4-SM.c:78
-#: gnome-hello/gnome-hello-7-mdi.c:515 libgnomeui/gnome-stock.c:766
+#: gnome-hello/gnome-hello-7-mdi.c:458 libgnomeui/gnome-stock.c:775
 #: libgnomeui/stock_demo.c:290
 msgid "Help"
 msgstr ""
@@ -90,7 +90,7 @@ msgstr ""
 msgid "Exit GNOME hello"
 msgstr ""
 
-#: gnome-hello/gnome-hello-4-SM.c:65 gnome-hello/gnome-hello-7-mdi.c:509
+#: gnome-hello/gnome-hello-4-SM.c:65 gnome-hello/gnome-hello-7-mdi.c:452
 msgid "About..."
 msgstr ""
 
@@ -98,52 +98,56 @@ msgstr ""
 msgid "Info about GNOME hello"
 msgstr ""
 
-#: gnome-hello/gnome-hello-4-SM.c:89 gnome-hello/gnome-hello-7-mdi.c:27
+#: gnome-hello/gnome-hello-4-SM.c:89 gnome-hello/gnome-hello-7-mdi.c:30
 msgid "Discard session"
 msgstr ""
 
-#: gnome-hello/gnome-hello-4-SM.c:89 libgnomeui/gnome-client.c:175
-#: libgnomeui/gnome-client.c:177
+#: gnome-hello/gnome-hello-4-SM.c:89 libgnomeui/gnome-client.c:651
+#: libgnomeui/gnome-client.c:653
 msgid "ID"
 msgstr ""
 
-#: gnome-hello/gnome-hello-7-mdi.c:232
+#: gnome-hello/gnome-hello-7-mdi.c:187
 msgid "Add View"
 msgstr ""
 
-#: gnome-hello/gnome-hello-7-mdi.c:237
+#: gnome-hello/gnome-hello-7-mdi.c:192
 msgid "Remove View"
 msgstr ""
 
-#: gnome-hello/gnome-hello-7-mdi.c:243
+#: gnome-hello/gnome-hello-7-mdi.c:198
 msgid "Child"
 msgstr ""
 
-#: gnome-hello/gnome-hello-7-mdi.c:451
+#: gnome-hello/gnome-hello-7-mdi.c:387
 msgid "Add Child"
 msgstr ""
 
-#: gnome-hello/gnome-hello-7-mdi.c:457
+#: gnome-hello/gnome-hello-7-mdi.c:393
 msgid "Remove Child"
 msgstr ""
 
-#: gnome-hello/gnome-hello-7-mdi.c:482
+#: gnome-hello/gnome-hello-7-mdi.c:416
+msgid "Children"
+msgstr ""
+
+#: gnome-hello/gnome-hello-7-mdi.c:425
 msgid "Notebook"
 msgstr ""
 
-#: gnome-hello/gnome-hello-7-mdi.c:488
+#: gnome-hello/gnome-hello-7-mdi.c:431
 msgid "Toplevel"
 msgstr ""
 
-#: gnome-hello/gnome-hello-7-mdi.c:494
+#: gnome-hello/gnome-hello-7-mdi.c:437
 msgid "Modal"
 msgstr ""
 
-#: gnome-hello/gnome-hello-7-mdi.c:500
+#: gnome-hello/gnome-hello-7-mdi.c:443
 msgid "MDI Mode"
 msgstr ""
 
-#: gnome-hello/gnome-hello-7-mdi.c:563
+#: gnome-hello/gnome-hello-7-mdi.c:506
 msgid "Children/"
 msgstr ""
 
@@ -273,21 +277,22 @@ msgid ""
 "Run '%s --help' to see a full list of available command line options.\n"
 msgstr ""
 "Ошибка в опции %s: %s.\n"
-"Запустите '%s --help' чтобы увидеть полный список доступных опций командной строки.\n"
+"Запустите '%s --help' чтобы увидеть полный список доступных опций командной "
+"строки.\n"
 
-#: libgnomeui/gnome-about.c:201
+#: libgnomeui/gnome-about.c:186
 msgid "Author:"
 msgstr "Автор:"
 
-#: libgnomeui/gnome-about.c:203 libgnomeui/gnome-about.c:205
+#: libgnomeui/gnome-about.c:188 libgnomeui/gnome-about.c:190
 msgid "Authors:"
 msgstr "Авторы:"
 
-#: libgnomeui/gnome-about.c:365
+#: libgnomeui/gnome-about.c:350
 msgid "Authors: "
 msgstr "Авторы: "
 
-#: libgnomeui/gnome-about.c:575 libgnomeui/stock_demo.c:282
+#: libgnomeui/gnome-about.c:565 libgnomeui/stock_demo.c:282
 #: libgnomeui/winhints_demo.c:257
 msgid "About"
 msgstr "О программе"
@@ -296,397 +301,385 @@ msgstr "О программе"
 msgid " (press return)"
 msgstr " (нажмите ENTER)"
 
-#: libgnomeui/gnome-app-util.c:114
+#: libgnomeui/gnome-app-util.c:128
 msgid "ERROR: "
 msgstr "ОШИБКА: "
 
-#: libgnomeui/gnome-app-util.c:136
+#: libgnomeui/gnome-app-util.c:165
 msgid "Warning: "
 msgstr ""
 
-#: libgnomeui/gnome-app-util.c:242
+#: libgnomeui/gnome-app-util.c:297
 msgid "y"
 msgstr ""
 
-#: libgnomeui/gnome-app-util.c:243
+#: libgnomeui/gnome-app-util.c:298
 msgid "yes"
 msgstr "да"
 
-#: libgnomeui/gnome-app-util.c:246
+#: libgnomeui/gnome-app-util.c:301
 msgid "n"
 msgstr ""
 
-#: libgnomeui/gnome-app-util.c:247
+#: libgnomeui/gnome-app-util.c:302
 msgid "no"
 msgstr "нет"
 
-#: libgnomeui/gnome-app-util.c:286
+#: libgnomeui/gnome-app-util.c:341
 msgid " (yes or no)"
 msgstr " (да или нет)"
 
-#: libgnomeui/gnome-app-util.c:287
+#: libgnomeui/gnome-app-util.c:342
 msgid "  - OK? (yes or no)"
 msgstr " - OK? (да или нет)"
 
-#: libgnomeui/gnome-app-util.c:520
+#: libgnomeui/gnome-app-util.c:667
 msgid "Progress"
 msgstr "Прогресс"
 
-#: libgnomeui/gnome-app.c:345 libgnomeui/gnome-app.c:371
+#: libgnomeui/gnome-app.c:411 libgnomeui/gnome-app.c:437
 msgid "Top"
 msgstr "Сверху"
 
-#: libgnomeui/gnome-app.c:346 libgnomeui/gnome-app.c:372
+#: libgnomeui/gnome-app.c:412 libgnomeui/gnome-app.c:438
 msgid "Bottom"
 msgstr "Снизу"
 
-#: libgnomeui/gnome-app.c:373
+#: libgnomeui/gnome-app.c:439
 msgid "Left"
 msgstr "Слева"
 
-#: libgnomeui/gnome-app.c:374
+#: libgnomeui/gnome-app.c:440
 msgid "Right"
 msgstr "Справа"
 
-#: libgnomeui/gnome-app.c:375
+#: libgnomeui/gnome-app.c:441
 msgid "Configure toolbar"
 msgstr "Настройть панель"
 
-#: libgnomeui/gnome-calculator.c:909 libgnomeui/gnome-calculator.c:1065
+#: libgnomeui/gnome-calculator.c:932 libgnomeui/gnome-calculator.c:1087
 msgid "DEG"
 msgstr "ГРД"
 
-#: libgnomeui/gnome-calculator.c:911
+#: libgnomeui/gnome-calculator.c:934
 msgid "RAD"
 msgstr "РАД"
 
-#: libgnomeui/gnome-calculator.c:913
+#: libgnomeui/gnome-calculator.c:936
 msgid "GRAD"
 msgstr "ГРАД"
 
-#: libgnomeui/gnome-calculator.c:1055
+#: libgnomeui/gnome-calculator.c:1077
 msgid "1/x"
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1056
+#: libgnomeui/gnome-calculator.c:1078
 msgid "x^2"
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1057
+#: libgnomeui/gnome-calculator.c:1079
 msgid "SQRT"
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1058
+#: libgnomeui/gnome-calculator.c:1080
 msgid "CE/C"
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1059
+#: libgnomeui/gnome-calculator.c:1081
 msgid "AC"
 msgstr ""
 
 #. inverse button
-#: libgnomeui/gnome-calculator.c:1062
+#: libgnomeui/gnome-calculator.c:1084
 msgid "sin"
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1063
+#: libgnomeui/gnome-calculator.c:1085
 msgid "cos"
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1064
+#: libgnomeui/gnome-calculator.c:1086
 msgid "tan"
 msgstr "tg"
 
-#: libgnomeui/gnome-calculator.c:1067
+#: libgnomeui/gnome-calculator.c:1089
 msgid "e"
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1068
+#: libgnomeui/gnome-calculator.c:1090
 msgid "EE"
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1069
+#: libgnomeui/gnome-calculator.c:1091
 msgid "log"
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1070
+#: libgnomeui/gnome-calculator.c:1092
 msgid "ln"
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1071
+#: libgnomeui/gnome-calculator.c:1093
 msgid "x^y"
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1073
+#: libgnomeui/gnome-calculator.c:1095
 msgid "PI"
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1074
+#: libgnomeui/gnome-calculator.c:1096
 msgid "x!"
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1075
+#: libgnomeui/gnome-calculator.c:1097
 msgid "("
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1076
+#: libgnomeui/gnome-calculator.c:1098
 msgid ")"
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1077
+#: libgnomeui/gnome-calculator.c:1099
 msgid "/"
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1079
+#: libgnomeui/gnome-calculator.c:1101
 msgid "STO"
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1080
+#: libgnomeui/gnome-calculator.c:1102
 msgid "7"
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1081
+#: libgnomeui/gnome-calculator.c:1103
 msgid "8"
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1082
+#: libgnomeui/gnome-calculator.c:1104
 msgid "9"
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1083
+#: libgnomeui/gnome-calculator.c:1105
 msgid "*"
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1085
+#: libgnomeui/gnome-calculator.c:1107
 msgid "RCL"
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1086
+#: libgnomeui/gnome-calculator.c:1108
 msgid "4"
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1087
+#: libgnomeui/gnome-calculator.c:1109
 msgid "5"
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1088
+#: libgnomeui/gnome-calculator.c:1110
 msgid "6"
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1089
+#: libgnomeui/gnome-calculator.c:1111
 msgid "-"
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1091
+#: libgnomeui/gnome-calculator.c:1113
 msgid "SUM"
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1092
+#: libgnomeui/gnome-calculator.c:1114
 msgid "1"
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1093
+#: libgnomeui/gnome-calculator.c:1115
 msgid "2"
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1094
+#: libgnomeui/gnome-calculator.c:1116
 msgid "3"
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1095
+#: libgnomeui/gnome-calculator.c:1117
 msgid "+"
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1097
+#: libgnomeui/gnome-calculator.c:1119
 msgid "EXC"
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1098
+#: libgnomeui/gnome-calculator.c:1120
 msgid "0"
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1099
+#: libgnomeui/gnome-calculator.c:1121
 msgid "."
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1100
+#: libgnomeui/gnome-calculator.c:1122
 msgid "+/-"
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1101
+#: libgnomeui/gnome-calculator.c:1123
 msgid "="
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1170
+#: libgnomeui/gnome-calculator.c:1192
 msgid "INV"
 msgstr ""
 
-#: libgnomeui/gnome-client.c:175
+#: libgnomeui/gnome-client.c:651
 msgid "Specify session management ID"
 msgstr ""
 
-#: libgnomeui/gnome-client.c:177
+#: libgnomeui/gnome-client.c:653
 msgid "Specify ID of cloned client"
 msgstr ""
 
-#: libgnomeui/gnome-client.c:179
+#: libgnomeui/gnome-client.c:655
 msgid "Disable connection to session manager"
 msgstr "Отменить соединение с менеджером сессий"
 
-#: libgnomeui/gnome-client.c:287
+#. Register commandline options.
+#: libgnomeui/gnome-client.c:781
 msgid "Session management options"
 msgstr "Опции менеджера сессий"
 
-#: libgnomeui/gnome-color-picker.c:269
+#: libgnomeui/gnome-color-picker.c:270
 msgid "Pick a color"
 msgstr "Выберите цвет"
 
 #. Only add the label if all the children are to be shown.  Otherwise
 #. * things look too wide; in that case just show the arrow.
 #.
-#: libgnomeui/gnome-dateedit.c:392
+#: libgnomeui/gnome-dateedit.c:395
 msgid "Calendar"
 msgstr "Календарь"
 
-#: libgnomeui/gnome-dentry-edit.c:165
+#: libgnomeui/gnome-dentry-edit.c:161
 msgid "Name:"
 msgstr "Имя:"
 
-#: libgnomeui/gnome-dentry-edit.c:178
+#: libgnomeui/gnome-dentry-edit.c:174
 msgid "Comment:"
 msgstr "Комментарий:"
 
-#: libgnomeui/gnome-dentry-edit.c:188
+#: libgnomeui/gnome-dentry-edit.c:184
 msgid "Command:"
 msgstr "Команда:"
 
-#: libgnomeui/gnome-dentry-edit.c:198
+#: libgnomeui/gnome-dentry-edit.c:194
 msgid "Type:"
 msgstr "Тип:"
 
-#: libgnomeui/gnome-dentry-edit.c:232
-msgid "Run in Terminal"
-msgstr "Запускать в Терминале"
-
-#: libgnomeui/gnome-dentry-edit.c:246
-msgid "Try this before using:"
-msgstr "Проверить перед использованием:"
-
-#: libgnomeui/gnome-dentry-edit.c:256
-msgid "Documentation:"
-msgstr "Документация:"
-
-#: libgnomeui/gnome-dentry-edit.c:306
-msgid "Easy"
-msgstr "Простые"
-
-#: libgnomeui/gnome-dentry-edit.c:310
-msgid "Advanced"
-msgstr "Продвинутые"
-
-#: libgnomeui/gnome-dentry-edit.c:581
-msgid ""
-"No\n"
-"icon"
-msgstr ""
-
-#: libgnomeui/gnome-dentry-edit.c:596
-msgid ""
-"Couldn't\n"
-"load\n"
-"icon"
-msgstr ""
-
-#: libgnomeui/gnome-dentry-edit.c:642
+#: libgnomeui/gnome-dentry-edit.c:210
 msgid "Choose an icon"
 msgstr ""
 
-#: libgnomeui/gnome-file-entry.c:97
+#: libgnomeui/gnome-dentry-edit.c:224
+msgid "Run in Terminal"
+msgstr "Запускать в Терминале"
+
+#: libgnomeui/gnome-dentry-edit.c:238
+msgid "Try this before using:"
+msgstr "Проверить перед использованием:"
+
+#: libgnomeui/gnome-dentry-edit.c:248
+msgid "Documentation:"
+msgstr "Документация:"
+
+#: libgnomeui/gnome-dentry-edit.c:310
+msgid "Easy"
+msgstr "Простые"
+
+#: libgnomeui/gnome-dentry-edit.c:314
+msgid "Advanced"
+msgstr "Продвинутые"
+
+#: libgnomeui/gnome-file-entry.c:141
 msgid "Select file"
 msgstr "Выберите файл"
 
-#: libgnomeui/gnome-file-entry.c:151
+#: libgnomeui/gnome-file-entry.c:219
 msgid "Browse..."
 msgstr "Обзор..."
 
-#: libgnomeui/gnome-icon-sel.c:245
+#: libgnomeui/gnome-icon-sel.c:307
 msgid "Loading Icons..."
 msgstr "Загружаем Иконки..."
 
-#: libgnomeui/gnome-init.c:162
+#: libgnomeui/gnome-init.c:166
 msgid "Gdk debugging flags to set"
 msgstr ""
 
-#: libgnomeui/gnome-init.c:162 libgnomeui/gnome-init.c:164
-#: libgnomeui/gnome-init.c:184 libgnomeui/gnome-init.c:186
+#: libgnomeui/gnome-init.c:166 libgnomeui/gnome-init.c:168
+#: libgnomeui/gnome-init.c:188 libgnomeui/gnome-init.c:190
 msgid "FLAGS"
 msgstr ""
 
-#: libgnomeui/gnome-init.c:164
+#: libgnomeui/gnome-init.c:168
 msgid "Gdk debugging flags to unset"
 msgstr ""
 
-#: libgnomeui/gnome-init.c:166
+#: libgnomeui/gnome-init.c:170
 msgid "X display to use"
 msgstr ""
 
-#: libgnomeui/gnome-init.c:166
+#: libgnomeui/gnome-init.c:170
 msgid "DISPLAY"
 msgstr ""
 
-#: libgnomeui/gnome-init.c:168
+#: libgnomeui/gnome-init.c:172
 msgid "Make X calls synchronous"
 msgstr ""
 
-#: libgnomeui/gnome-init.c:170
+#: libgnomeui/gnome-init.c:174
 msgid "Don't use X shared memory extension"
 msgstr ""
 
-#: libgnomeui/gnome-init.c:172
+#: libgnomeui/gnome-init.c:176
 msgid "Program name as used by the window manager"
 msgstr ""
 
-#: libgnomeui/gnome-init.c:172
+#: libgnomeui/gnome-init.c:176
 msgid "NAME"
 msgstr ""
 
-#: libgnomeui/gnome-init.c:174
+#: libgnomeui/gnome-init.c:178
 msgid "Program class as used by the window manager"
 msgstr ""
 
-#: libgnomeui/gnome-init.c:174
+#: libgnomeui/gnome-init.c:178
 msgid "CLASS"
 msgstr ""
 
-#: libgnomeui/gnome-init.c:176
+#: libgnomeui/gnome-init.c:180
 msgid "HOST"
 msgstr ""
 
-#: libgnomeui/gnome-init.c:178
+#: libgnomeui/gnome-init.c:182
 msgid "PORT"
 msgstr ""
 
-#: libgnomeui/gnome-init.c:180 libgnomeui/gnome-init.c:182
+#: libgnomeui/gnome-init.c:184 libgnomeui/gnome-init.c:186
 msgid "STYLE"
 msgstr ""
 
-#: libgnomeui/gnome-init.c:184
+#: libgnomeui/gnome-init.c:188
 msgid "Gtk+ debugging flags to set"
 msgstr ""
 
-#: libgnomeui/gnome-init.c:186
+#: libgnomeui/gnome-init.c:190
 msgid "Gtk+ debugging flags to unset"
 msgstr ""
 
-#: libgnomeui/gnome-init.c:188
+#: libgnomeui/gnome-init.c:192
 msgid "Make all warnings fatal"
 msgstr ""
 
-#: libgnomeui/gnome-init.c:190
+#: libgnomeui/gnome-init.c:194
 msgid "Load an additional Gtk module"
 msgstr ""
 
-#: libgnomeui/gnome-init.c:190
+#: libgnomeui/gnome-init.c:194
 msgid "MODULE"
 msgstr ""
 
@@ -706,11 +699,11 @@ msgstr "Вопрос"
 msgid "Message"
 msgstr "Сообщение"
 
-#: libgnomeui/gnome-number-entry.c:124
+#: libgnomeui/gnome-number-entry.c:134
 msgid "Calculator"
 msgstr "Калькулятор"
 
-#: libgnomeui/gnome-number-entry.c:166
+#: libgnomeui/gnome-number-entry.c:183
 msgid "Calculator..."
 msgstr "Калькулятор..."
 
@@ -730,63 +723,63 @@ msgstr "Счет"
 msgid "Date"
 msgstr "Дата"
 
-#: libgnomeui/gnome-stock.c:760
+#: libgnomeui/gnome-stock.c:769
 msgid "OK"
 msgstr ""
 
-#: libgnomeui/gnome-stock.c:761
+#: libgnomeui/gnome-stock.c:770
 msgid "Apply"
 msgstr "Применить"
 
-#: libgnomeui/gnome-stock.c:762
+#: libgnomeui/gnome-stock.c:771
 msgid "Cancel"
 msgstr "Отменить"
 
-#: libgnomeui/gnome-stock.c:763 libgnomeui/stock_demo.c:144
+#: libgnomeui/gnome-stock.c:772 libgnomeui/stock_demo.c:144
 msgid "Close"
 msgstr "Закрыть"
 
-#: libgnomeui/gnome-stock.c:764
+#: libgnomeui/gnome-stock.c:773
 msgid "Yes"
 msgstr "Да"
 
-#: libgnomeui/gnome-stock.c:765
+#: libgnomeui/gnome-stock.c:774
 msgid "No"
 msgstr "Нет"
 
-#: libgnomeui/gnome-stock.c:767
+#: libgnomeui/gnome-stock.c:776
 msgid "Next"
 msgstr "Вперед"
 
-#: libgnomeui/gnome-stock.c:768
+#: libgnomeui/gnome-stock.c:777
 msgid "Prev"
 msgstr "Назад"
 
-#: libgnomeui/gnome-stock.c:769
+#: libgnomeui/gnome-stock.c:778
 msgid "Up"
 msgstr "Вверх"
 
-#: libgnomeui/gnome-stock.c:770
+#: libgnomeui/gnome-stock.c:779
 msgid "Down"
 msgstr "Вниз"
 
-#: libgnomeui/gnome-stock.c:771
+#: libgnomeui/gnome-stock.c:780
 msgid "Font"
 msgstr "Шрифт"
 
-#: libgnomeui/gnome-stock.c:1768
+#: libgnomeui/gnome-stock.c:1787
 msgid "Menu Accelerator Keys"
 msgstr ""
 
-#: libgnomeui/gnome-stock.c:1770
+#: libgnomeui/gnome-stock.c:1789
 msgid "Global"
 msgstr ""
 
-#: libgnomeui/gnome-stock.c:1772
+#: libgnomeui/gnome-stock.c:1791
 msgid "Menu Item"
 msgstr ""
 
-#: libgnomeui/gnome-stock.c:1773
+#: libgnomeui/gnome-stock.c:1792
 msgid "Accelerator"
 msgstr ""
 
@@ -1003,6 +996,101 @@ msgid ""
 "gnome_win_hints_* functions for errors. :)"
 msgstr ""
 
+#: libvfs/extfs.c:274
+#, c-format
+msgid ""
+"Couldn't open %s archive\n"
+"%s"
+msgstr ""
+
+#: libvfs/extfs.c:306 libvfs/extfs.c:326
+msgid "Inconsistent extfs archive"
+msgstr ""
+
+#: libvfs/ftpfs.c:461
+#, c-format
+msgid " Could not set source routing (%s)"
+msgstr ""
+
+#: libvfs/ftpfs.c:1863 libvfs/ftpfs.c:1878
+msgid ""
+"~/.netrc file has not correct mode.\n"
+"Remove password or correct mode."
+msgstr ""
+
+#: libvfs/mcfs.c:155
+msgid " MCFS "
+msgstr ""
+
+#: libvfs/mcfs.c:155
+msgid " The server does not support this version "
+msgstr ""
+
+#: libvfs/mcfs.c:171
+msgid " Warning "
+msgstr ""
+
+#: libvfs/mcfs.c:172
+msgid ""
+" The remote server is not running on a system port \n"
+" you need a password to log in, but the information may \n"
+" not be safe on the remote side.  Continue? \n"
+msgstr ""
+
+#: libvfs/mcfs.c:175
+#, fuzzy
+msgid " Yes "
+msgstr "Да"
+
+#: libvfs/mcfs.c:175
+#, fuzzy
+msgid " No "
+msgstr "Нет"
+
+#: libvfs/mcfs.c:177
+msgid " The remote server is running on strange port. Giving up.\n"
+msgstr ""
+
+#: libvfs/mcfs.c:189
+msgid " MCFS Password required "
+msgstr ""
+
+#: libvfs/mcfs.c:203
+msgid " Invalid password "
+msgstr ""
+
+#: libvfs/mcfs.c:322
+msgid " Too many open connections "
+msgstr ""
+
+#: libvfs/tar.c:90 libvfs/tar.c:107
+#, c-format
+msgid ""
+"Couldn't open tar archive\n"
+"%s"
+msgstr ""
+
+#: libvfs/tar.c:277
+msgid "Unexpected EOF on archive file"
+msgstr ""
+
+#: libvfs/tar.c:332 libvfs/tar.c:339
+msgid "Inconsistent tar archive"
+msgstr ""
+
+#. Error on first record
+#: libvfs/tar.c:398
+#, c-format
+msgid ""
+"Hmm,...\n"
+"%s\n"
+"doesn't look like a tar archive."
+msgstr ""
+
+#: libvfs/vfs.c:1678
+msgid "Password:"
+msgstr ""
+
 #: support/argp-parse.c:95
 msgid "Give this help list"
 msgstr "Получить этот экран помощи"
@@ -1099,45 +1187,45 @@ msgstr ""
 msgid "%s: option `-W %s' doesn't allow an argument\n"
 msgstr ""
 
-#: test-gnome/testgnome.c:328
+#: test-gnome/testgnome.c:290
 msgid "Guru-in-a-dialog test"
 msgstr ""
 
 #. Pixmap
-#: test-gnome/testgnome.c:602
+#: test-gnome/testgnome.c:657
 msgid "Default Pixmap"
 msgstr ""
 
-#: test-gnome/testgnome.c:610 test-gnome/testgnome.c:651
-#: test-gnome/testgnome.c:676
+#: test-gnome/testgnome.c:665 test-gnome/testgnome.c:706
+#: test-gnome/testgnome.c:731
 msgid "If you choose a font it will appear here"
 msgstr ""
 
 #. Font_Info
-#: test-gnome/testgnome.c:617
+#: test-gnome/testgnome.c:672
 msgid "Font Info"
 msgstr ""
 
-#: test-gnome/testgnome.c:627
+#: test-gnome/testgnome.c:682
 msgid "Use Font in button with size"
 msgstr ""
 
-#: test-gnome/testgnome.c:634
+#: test-gnome/testgnome.c:689
 msgid "Show font size"
 msgstr ""
 
-#: test-gnome/testgnome.c:670
+#: test-gnome/testgnome.c:725
 msgid "This is an hbox with pixmap and text"
 msgstr ""
 
-#: test-gnome/testgnome.c:863
+#: test-gnome/testgnome.c:910
 msgid "The user chose Yes/OK with data:\n"
 msgstr ""
 
-#: test-gnome/testgnome.c:867
+#: test-gnome/testgnome.c:914
 msgid "The user chose No/Cancel with data:\n"
 msgstr ""
 
-#: test-gnome/testgnome.c:878
+#: test-gnome/testgnome.c:925
 msgid "Weird number in reply callback"
 msgstr ""

@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-libs VERSION\n"
-"POT-Creation-Date: 1998-09-30 19:52+0900\n"
+"POT-Creation-Date: 1998-12-03 19:50-0600\n"
 "PO-Revision-Date: 1998-09-30 19:52+0900\n"
 "Last-Translator: Yukihiro Nakai@abricot.co.jp>\n"
 "Language-Team: Yukihiro Nakai@abricot.co.jp>\n"
@@ -14,110 +14,143 @@ msgstr ""
 "Content-Type: text/plain; charset=euc-japan\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: gnome-hello/gnome-hello-2-i18n.c:34 gnome-hello/gnome-hello-3-parse-args.c:42 gnome-hello/gnome-hello-4-SM.c:232 gnome-hello/gnome-hello.c:122
+#: gnome-hello/gnome-hello-2-i18n.c:36
+#: gnome-hello/gnome-hello-3-parse-args.c:36
+#: gnome-hello/gnome-hello-4-SM.c:218 gnome-hello/gnome-hello.c:122
 msgid "Hello GNOME\n"
 msgstr "こんにちは GNOME\n"
 
-#: gnome-hello/gnome-hello-2-i18n.c:57 gnome-hello/gnome-hello-3-parse-args.c:65 gnome-hello/gnome-hello-4-SM.c:255 gnome-hello/gnome-hello.c:145
+#: gnome-hello/gnome-hello-2-i18n.c:59
+#: gnome-hello/gnome-hello-3-parse-args.c:59
+#: gnome-hello/gnome-hello-4-SM.c:241 gnome-hello/gnome-hello.c:145
 msgid "The Hello World Gnomified"
 msgstr "Gnome版Hello World"
 
 #. copyright notice
-#: gnome-hello/gnome-hello-2-i18n.c:59 gnome-hello/gnome-hello-3-parse-args.c:67
+#: gnome-hello/gnome-hello-2-i18n.c:61
+#: gnome-hello/gnome-hello-3-parse-args.c:61
 msgid "(C) 1998 the Free Software Foundation"
 msgstr ""
 
 #. another comments
-#: gnome-hello/gnome-hello-2-i18n.c:62 gnome-hello/gnome-hello-3-parse-args.c:70 gnome-hello/gnome-hello-4-SM.c:260 gnome-hello/gnome-hello.c:150
+#: gnome-hello/gnome-hello-2-i18n.c:64
+#: gnome-hello/gnome-hello-3-parse-args.c:64
+#: gnome-hello/gnome-hello-4-SM.c:246 gnome-hello/gnome-hello.c:150
 msgid "GNOME is a civilized software system so we've a \"hello world\" program"
-msgstr "GNOMEは洗練されたソフトウェアシステムなので\"hello world\"プログラムがあるのです。"
+msgstr ""
+"GNOMEは洗練されたソフトウェアシステムなので\"hello "
+"world\"プログラムがあるのです。"
 
-#: gnome-hello/gnome-hello-2-i18n.c:71 gnome-hello/gnome-hello-3-parse-args.c:79
+#: gnome-hello/gnome-hello-2-i18n.c:73
+#: gnome-hello/gnome-hello-3-parse-args.c:73
 msgid "About GnomeHello..."
 msgstr "GnomeHelloについて"
 
-#: gnome-hello/gnome-hello-2-i18n.c:76 gnome-hello/gnome-hello-3-parse-args.c:84 gnome-hello/gnome-hello-4-SM.c:54 gnome-hello/gnome-hello-7-mdi.c:356
+#: gnome-hello/gnome-hello-2-i18n.c:78
+#: gnome-hello/gnome-hello-3-parse-args.c:78 gnome-hello/gnome-hello-4-SM.c:53
+#: gnome-hello/gnome-hello-7-mdi.c:403
 msgid "Exit"
 msgstr "終了"
 
-#. The menu definitions: File/Exit and Help/About are mandatory
-#: gnome-hello/gnome-hello-2-i18n.c:82 gnome-hello/gnome-hello-3-parse-args.c:90 gnome-hello/gnome-hello-4-SM.c:78 gnome-hello/gnome-hello-7-mdi.c:362 gnome-hello/gnome-hello-7-mdi.c:437 libgnomeui/stock_demo.c:184
+#. and document menu and document list paths (see gnome-app-helper menu
+#. insertion routines for details)
+#: gnome-hello/gnome-hello-2-i18n.c:84
+#: gnome-hello/gnome-hello-3-parse-args.c:84 gnome-hello/gnome-hello-4-SM.c:77
+#: gnome-hello/gnome-hello-7-mdi.c:409 gnome-hello/gnome-hello-7-mdi.c:505
+#: libgnomeui/stock_demo.c:184
 msgid "File"
 msgstr "ファイル"
 
-#: gnome-hello/gnome-hello-2-i18n.c:83 gnome-hello/gnome-hello-3-parse-args.c:91 gnome-hello/gnome-hello-4-SM.c:79 gnome-hello/gnome-hello-7-mdi.c:404 libgnomeui/gnome-stock.c:776 libgnomeui/stock_demo.c:290
+#: gnome-hello/gnome-hello-2-i18n.c:85
+#: gnome-hello/gnome-hello-3-parse-args.c:85 gnome-hello/gnome-hello-4-SM.c:78
+#: gnome-hello/gnome-hello-7-mdi.c:458 libgnomeui/gnome-stock.c:775
+#: libgnomeui/stock_demo.c:290
 msgid "Help"
 msgstr "ヘルプ"
 
-#. Make the main window and binds the delete event so you can close
-#. the program from your WM
-#: gnome-hello/gnome-hello-2-i18n.c:124 gnome-hello/gnome-hello-3-parse-args.c:167 gnome-hello/gnome-hello-4-SM.c:197
+#.
+#. * Make the main window and binds the delete event so you can close
+#. * the program from your WM
+#.
+#: gnome-hello/gnome-hello-2-i18n.c:124
+#: gnome-hello/gnome-hello-3-parse-args.c:137
+#: gnome-hello/gnome-hello-4-SM.c:183
 msgid "Hello World Gnomified"
 msgstr "Gnome版Hello World"
 
-#. We make a button, bind the 'clicked' signal to hello and setting it
-#. to be the content of the main window
-#: gnome-hello/gnome-hello-2-i18n.c:136 gnome-hello/gnome-hello-3-parse-args.c:179 gnome-hello/gnome-hello-4-SM.c:213 gnome-hello/gnome-hello.c:103
+#.
+#. * We make a button, bind the 'clicked' signal to hello and setting it
+#. * to be the content of the main window
+#.
+#: gnome-hello/gnome-hello-2-i18n.c:136
+#: gnome-hello/gnome-hello-3-parse-args.c:149
+#: gnome-hello/gnome-hello-4-SM.c:199 gnome-hello/gnome-hello.c:103
 msgid "Hello GNOME"
 msgstr "こんにちは GNOME"
 
-#: gnome-hello/gnome-hello-4-SM.c:54
+#: gnome-hello/gnome-hello-4-SM.c:53
 msgid "Exit GNOME hello"
 msgstr "Gnome helloの終了"
 
-#: gnome-hello/gnome-hello-4-SM.c:66 gnome-hello/gnome-hello-7-mdi.c:398
+#: gnome-hello/gnome-hello-4-SM.c:65 gnome-hello/gnome-hello-7-mdi.c:452
 msgid "About..."
 msgstr "情報..."
 
-#: gnome-hello/gnome-hello-4-SM.c:66
+#: gnome-hello/gnome-hello-4-SM.c:65
 msgid "Info about GNOME hello"
 msgstr "GNOME helloについての情報"
 
-#: gnome-hello/gnome-hello-4-SM.c:91 libgnomeui/gnome-client.c:171 libgnomeui/gnome-client.c:173
-msgid "ID"
-msgstr ""
-
-#: gnome-hello/gnome-hello-4-SM.c:91
+#: gnome-hello/gnome-hello-4-SM.c:89 gnome-hello/gnome-hello-7-mdi.c:30
 msgid "Discard session"
 msgstr "セッションを終了する"
 
-#: gnome-hello/gnome-hello-7-mdi.c:180
+#: gnome-hello/gnome-hello-4-SM.c:89 libgnomeui/gnome-client.c:651
+#: libgnomeui/gnome-client.c:653
+msgid "ID"
+msgstr ""
+
+#: gnome-hello/gnome-hello-7-mdi.c:187
 msgid "Add View"
 msgstr "ビューの追加"
 
-#: gnome-hello/gnome-hello-7-mdi.c:185
+#: gnome-hello/gnome-hello-7-mdi.c:192
 msgid "Remove View"
 msgstr "ビューの削除"
 
-#: gnome-hello/gnome-hello-7-mdi.c:191
+#: gnome-hello/gnome-hello-7-mdi.c:198
 msgid "Child"
 msgstr "子ウィンドウ"
 
-#: gnome-hello/gnome-hello-7-mdi.c:340
+#: gnome-hello/gnome-hello-7-mdi.c:387
 msgid "Add Child"
 msgstr "子ウィンドウの追加"
 
-#: gnome-hello/gnome-hello-7-mdi.c:346
+#: gnome-hello/gnome-hello-7-mdi.c:393
 msgid "Remove Child"
 msgstr "子ウィンドウの追加"
 
-#: gnome-hello/gnome-hello-7-mdi.c:371
+#: gnome-hello/gnome-hello-7-mdi.c:416
+#, fuzzy
+msgid "Children"
+msgstr "子ウィンドウ/"
+
+#: gnome-hello/gnome-hello-7-mdi.c:425
 msgid "Notebook"
 msgstr "ノート"
 
-#: gnome-hello/gnome-hello-7-mdi.c:377
+#: gnome-hello/gnome-hello-7-mdi.c:431
 msgid "Toplevel"
 msgstr "トップレベル"
 
-#: gnome-hello/gnome-hello-7-mdi.c:383
+#: gnome-hello/gnome-hello-7-mdi.c:437
 msgid "Modal"
 msgstr "モーダル"
 
-#: gnome-hello/gnome-hello-7-mdi.c:389
+#: gnome-hello/gnome-hello-7-mdi.c:443
 msgid "MDI Mode"
 msgstr "MDIモード"
 
-#: gnome-hello/gnome-hello-7-mdi.c:438
+#: gnome-hello/gnome-hello-7-mdi.c:506
 msgid "Children/"
 msgstr "子ウィンドウ/"
 
@@ -139,6 +172,7 @@ msgid "<control>A"
 msgstr ""
 
 #: gnome-hello/gnome-hello.c:208
+#, c-format
 msgid ""
 "%s: A gnomified 'Hello World' program\n"
 "\n"
@@ -157,6 +191,7 @@ msgstr ""
 "        --version  バージョン情報を表示して終了する\n"
 
 #: gnome-hello/gnome-hello.c:217
+#, c-format
 msgid "Gnome Hello %s.\n"
 msgstr ""
 
@@ -164,15 +199,8 @@ msgstr ""
 msgid "Options error\n"
 msgstr "オプションエラー\n"
 
-#: libgnome/gnome-parse.c:44
-msgid ""
-"\n"
-"Generic options"
-msgstr ""
-"\n"
-"一般"
-
-#: libgnome/lib_date.c:73 libgnome/lib_date.c:79 libgnomeui/gnome-messagebox.c:107
+#: libgnome/lib_date.c:73 libgnome/lib_date.c:79
+#: libgnomeui/gnome-messagebox.c:117
 msgid "Error"
 msgstr "エラー"
 
@@ -252,19 +280,27 @@ msgstr "１１月"
 msgid "December"
 msgstr "１２月"
 
-#: libgnomeui/gnome-about.c:201
+#: libgnome/gnome-popt.c:75
+#, c-format
+msgid ""
+"Error on option %s: %s.\n"
+"Run '%s --help' to see a full list of available command line options.\n"
+msgstr ""
+
+#: libgnomeui/gnome-about.c:186
 msgid "Author:"
 msgstr "作者:"
 
-#: libgnomeui/gnome-about.c:203 libgnomeui/gnome-about.c:205
+#: libgnomeui/gnome-about.c:188 libgnomeui/gnome-about.c:190
 msgid "Authors:"
 msgstr "作者一覧:"
 
-#: libgnomeui/gnome-about.c:365
+#: libgnomeui/gnome-about.c:350
 msgid "Authors: "
 msgstr "作者一覧:"
 
-#: libgnomeui/gnome-about.c:575 libgnomeui/stock_demo.c:282 libgnomeui/winhints_demo.c:245
+#: libgnomeui/gnome-about.c:565 libgnomeui/stock_demo.c:282
+#: libgnomeui/winhints_demo.c:257
 msgid "About"
 msgstr "情報"
 
@@ -272,500 +308,504 @@ msgstr "情報"
 msgid " (press return)"
 msgstr " (リターンを押してください)"
 
-#: libgnomeui/gnome-app-util.c:114
+#: libgnomeui/gnome-app-util.c:128
 msgid "ERROR: "
 msgstr "エラー："
 
-#: libgnomeui/gnome-app-util.c:136
+#: libgnomeui/gnome-app-util.c:165
 msgid "Warning: "
 msgstr "警告："
 
-#: libgnomeui/gnome-app-util.c:242
+#: libgnomeui/gnome-app-util.c:297
 msgid "y"
 msgstr ""
 
-#: libgnomeui/gnome-app-util.c:243
+#: libgnomeui/gnome-app-util.c:298
 msgid "yes"
 msgstr "はい"
 
-#: libgnomeui/gnome-app-util.c:246
+#: libgnomeui/gnome-app-util.c:301
 msgid "n"
 msgstr ""
 
-#: libgnomeui/gnome-app-util.c:247
+#: libgnomeui/gnome-app-util.c:302
 msgid "no"
 msgstr "いいえ"
 
-#: libgnomeui/gnome-app-util.c:286
+#: libgnomeui/gnome-app-util.c:341
 msgid " (yes or no)"
 msgstr "(はい or いいえ)"
 
-#: libgnomeui/gnome-app-util.c:287
+#: libgnomeui/gnome-app-util.c:342
 msgid "  - OK? (yes or no)"
 msgstr " - OK? (はい or いいえ)"
 
-#: libgnomeui/gnome-app-util.c:520
+#: libgnomeui/gnome-app-util.c:667
 msgid "Progress"
 msgstr "経過"
 
-#: libgnomeui/gnome-app.c:345 libgnomeui/gnome-app.c:371
+#: libgnomeui/gnome-app.c:411 libgnomeui/gnome-app.c:437
 msgid "Top"
 msgstr "上"
 
-#: libgnomeui/gnome-app.c:346 libgnomeui/gnome-app.c:372
+#: libgnomeui/gnome-app.c:412 libgnomeui/gnome-app.c:438
 msgid "Bottom"
 msgstr "下"
 
-#: libgnomeui/gnome-app.c:373
+#: libgnomeui/gnome-app.c:439
 msgid "Left"
 msgstr "左"
 
-#: libgnomeui/gnome-app.c:374
+#: libgnomeui/gnome-app.c:440
 msgid "Right"
 msgstr "右"
 
-#: libgnomeui/gnome-app.c:375
+#: libgnomeui/gnome-app.c:441
 msgid "Configure toolbar"
 msgstr "ツールバーの設定"
 
-#: libgnomeui/gnome-calculator.c:909 libgnomeui/gnome-calculator.c:1065
+#: libgnomeui/gnome-calculator.c:932 libgnomeui/gnome-calculator.c:1087
 msgid "DEG"
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:911
+#: libgnomeui/gnome-calculator.c:934
 msgid "RAD"
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:913
+#: libgnomeui/gnome-calculator.c:936
 msgid "GRAD"
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1055
+#: libgnomeui/gnome-calculator.c:1077
 msgid "1/x"
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1056
+#: libgnomeui/gnome-calculator.c:1078
 msgid "x^2"
 msgstr "自乗"
 
-#: libgnomeui/gnome-calculator.c:1057
+#: libgnomeui/gnome-calculator.c:1079
 msgid "SQRT"
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1058
+#: libgnomeui/gnome-calculator.c:1080
 msgid "CE/C"
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1059
+#: libgnomeui/gnome-calculator.c:1081
 msgid "AC"
 msgstr ""
 
 #. inverse button
-#: libgnomeui/gnome-calculator.c:1062
+#: libgnomeui/gnome-calculator.c:1084
 msgid "sin"
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1063
+#: libgnomeui/gnome-calculator.c:1085
 msgid "cos"
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1064
+#: libgnomeui/gnome-calculator.c:1086
 msgid "tan"
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1067
+#: libgnomeui/gnome-calculator.c:1089
 msgid "e"
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1068
+#: libgnomeui/gnome-calculator.c:1090
 msgid "EE"
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1069
+#: libgnomeui/gnome-calculator.c:1091
 msgid "log"
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1070
+#: libgnomeui/gnome-calculator.c:1092
 msgid "ln"
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1071
+#: libgnomeui/gnome-calculator.c:1093
 msgid "x^y"
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1073
+#: libgnomeui/gnome-calculator.c:1095
 msgid "PI"
 msgstr "π"
 
-#: libgnomeui/gnome-calculator.c:1074
+#: libgnomeui/gnome-calculator.c:1096
 msgid "x!"
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1075
+#: libgnomeui/gnome-calculator.c:1097
 msgid "("
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1076
+#: libgnomeui/gnome-calculator.c:1098
 msgid ")"
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1077
+#: libgnomeui/gnome-calculator.c:1099
 msgid "/"
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1079
+#: libgnomeui/gnome-calculator.c:1101
 msgid "STO"
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1080
+#: libgnomeui/gnome-calculator.c:1102
 msgid "7"
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1081
+#: libgnomeui/gnome-calculator.c:1103
 msgid "8"
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1082
+#: libgnomeui/gnome-calculator.c:1104
 msgid "9"
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1083
+#: libgnomeui/gnome-calculator.c:1105
 msgid "*"
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1085
+#: libgnomeui/gnome-calculator.c:1107
 msgid "RCL"
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1086
+#: libgnomeui/gnome-calculator.c:1108
 msgid "4"
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1087
+#: libgnomeui/gnome-calculator.c:1109
 msgid "5"
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1088
+#: libgnomeui/gnome-calculator.c:1110
 msgid "6"
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1089
+#: libgnomeui/gnome-calculator.c:1111
 msgid "-"
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1091
+#: libgnomeui/gnome-calculator.c:1113
 msgid "SUM"
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1092
+#: libgnomeui/gnome-calculator.c:1114
 msgid "1"
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1093
+#: libgnomeui/gnome-calculator.c:1115
 msgid "2"
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1094
+#: libgnomeui/gnome-calculator.c:1116
 msgid "3"
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1095
+#: libgnomeui/gnome-calculator.c:1117
 msgid "+"
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1097
+#: libgnomeui/gnome-calculator.c:1119
 msgid "EXC"
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1098
+#: libgnomeui/gnome-calculator.c:1120
 msgid "0"
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1099
+#: libgnomeui/gnome-calculator.c:1121
 msgid "."
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1100
+#: libgnomeui/gnome-calculator.c:1122
 msgid "+/-"
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1101
+#: libgnomeui/gnome-calculator.c:1123
 msgid "="
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1170
+#: libgnomeui/gnome-calculator.c:1192
 msgid "INV"
 msgstr ""
 
-#: libgnomeui/gnome-client.c:172
-msgid "Specify session management id"
+#: libgnomeui/gnome-client.c:651
+#, fuzzy
+msgid "Specify session management ID"
 msgstr "セッションマネージメントIDの指定"
 
-#: libgnomeui/gnome-client.c:174
-msgid "Specify id of cloned client"
+#: libgnomeui/gnome-client.c:653
+#, fuzzy
+msgid "Specify ID of cloned client"
 msgstr "クローンクライアントIDの指定"
 
-#: libgnomeui/gnome-client.c:176
+#: libgnomeui/gnome-client.c:655
 msgid "Disable connection to session manager"
 msgstr "セッションマネージャとの接続の切断"
 
-#: libgnomeui/gnome-color-picker.c:269
+#. Register commandline options.
+#: libgnomeui/gnome-client.c:781
+#, fuzzy
+msgid "Session management options"
+msgstr "セッションマネージメントIDの指定"
+
+#: libgnomeui/gnome-color-picker.c:270
 msgid "Pick a color"
 msgstr "カラーの選択"
 
-#: libgnomeui/gnome-dateedit.c:393
+#. Only add the label if all the children are to be shown.  Otherwise
+#. * things look too wide; in that case just show the arrow.
+#.
+#: libgnomeui/gnome-dateedit.c:395
 msgid "Calendar"
 msgstr "カレンダー"
 
-#: libgnomeui/gnome-dentry-edit.c:165
+#: libgnomeui/gnome-dentry-edit.c:161
 msgid "Name:"
 msgstr "名前："
 
-#: libgnomeui/gnome-dentry-edit.c:178
+#: libgnomeui/gnome-dentry-edit.c:174
 msgid "Comment:"
 msgstr "コメント："
 
-#: libgnomeui/gnome-dentry-edit.c:188
+#: libgnomeui/gnome-dentry-edit.c:184
 msgid "Command:"
 msgstr "コマンド："
 
-#: libgnomeui/gnome-dentry-edit.c:198
+#: libgnomeui/gnome-dentry-edit.c:194
 msgid "Type:"
 msgstr "タイプ："
 
-#: libgnomeui/gnome-dentry-edit.c:232
-msgid "Run in Terminal"
-msgstr "ターミナルの実行"
-
-#: libgnomeui/gnome-dentry-edit.c:246
-msgid "Try this before using:"
-msgstr "使う前に試すこと："
-
-#: libgnomeui/gnome-dentry-edit.c:256
-msgid "Documentation:"
-msgstr "ドキュメント："
-
-#: libgnomeui/gnome-dentry-edit.c:306
-msgid "Easy"
-msgstr "初級"
-
-#: libgnomeui/gnome-dentry-edit.c:310
-msgid "Advanced"
-msgstr "上級"
-
-#: libgnomeui/gnome-dentry-edit.c:581
-msgid ""
-"No\n"
-"icon"
-msgstr ""
-"アイコン\n"
-"なし"
-
-#: libgnomeui/gnome-dentry-edit.c:596
-msgid ""
-"Couldn't\n"
-"load\n"
-"icon"
-msgstr ""
-"アイコンを\n"
-"ロード\n"
-"できません"
-
-#: libgnomeui/gnome-dentry-edit.c:642
+#: libgnomeui/gnome-dentry-edit.c:210
 msgid "Choose an icon"
 msgstr "アイコンの選択"
 
-#: libgnomeui/gnome-file-entry.c:90
+#: libgnomeui/gnome-dentry-edit.c:224
+msgid "Run in Terminal"
+msgstr "ターミナルの実行"
+
+#: libgnomeui/gnome-dentry-edit.c:238
+msgid "Try this before using:"
+msgstr "使う前に試すこと："
+
+#: libgnomeui/gnome-dentry-edit.c:248
+msgid "Documentation:"
+msgstr "ドキュメント："
+
+#: libgnomeui/gnome-dentry-edit.c:310
+msgid "Easy"
+msgstr "初級"
+
+#: libgnomeui/gnome-dentry-edit.c:314
+msgid "Advanced"
+msgstr "上級"
+
+#: libgnomeui/gnome-file-entry.c:141
 msgid "Select file"
 msgstr "ファイルの選択"
 
-#: libgnomeui/gnome-file-entry.c:147
+#: libgnomeui/gnome-file-entry.c:219
 msgid "Browse..."
 msgstr "参照..."
 
-#: libgnomeui/gnome-icon-sel.c:245
+#: libgnomeui/gnome-icon-sel.c:307
 msgid "Loading Icons..."
 msgstr "アイコンのロード..."
 
-#: libgnomeui/gnome-init.c:48
-msgid ""
-"\n"
-"Gtk+ toolkit options"
-msgstr ""
-"\n"
-"Gtk+ツールキットオプション"
+#: libgnomeui/gnome-init.c:166
+#, fuzzy
+msgid "Gdk debugging flags to set"
+msgstr "セットするGdkデバッグフラグ"
 
-#: libgnomeui/gnome-init.c:49 libgnomeui/gnome-init.c:50 libgnomeui/gnome-init.c:60 libgnomeui/gnome-init.c:61
+#: libgnomeui/gnome-init.c:166 libgnomeui/gnome-init.c:168
+#: libgnomeui/gnome-init.c:188 libgnomeui/gnome-init.c:190
 msgid "FLAGS"
 msgstr "フラグ"
 
-#: libgnomeui/gnome-init.c:49
-msgid "Gdk debuging flags to set"
-msgstr "セットするGdkデバッグフラグ"
-
-#: libgnomeui/gnome-init.c:50
-msgid "Gdk debuging flags to unset"
+#: libgnomeui/gnome-init.c:168
+#, fuzzy
+msgid "Gdk debugging flags to unset"
 msgstr "セットしないGdkデバッグフラグ"
 
-#: libgnomeui/gnome-init.c:51
-msgid "DISPLAY"
-msgstr "ディスプレイ"
-
-#: libgnomeui/gnome-init.c:51
+#: libgnomeui/gnome-init.c:170
 msgid "X display to use"
 msgstr "使用するXディスプレイ"
 
-#: libgnomeui/gnome-init.c:53
+#: libgnomeui/gnome-init.c:170
+msgid "DISPLAY"
+msgstr "ディスプレイ"
+
+#: libgnomeui/gnome-init.c:172
+msgid "Make X calls synchronous"
+msgstr ""
+
+#: libgnomeui/gnome-init.c:174
 msgid "Don't use X shared memory extension"
 msgstr "X共有メモリエクステンションを使用しない"
 
-#: libgnomeui/gnome-init.c:54
-msgid "NAME"
-msgstr "名前"
-
-#: libgnomeui/gnome-init.c:54
+#: libgnomeui/gnome-init.c:176
 msgid "Program name as used by the window manager"
 msgstr "ウィンドウマネージャが使用しているプログラムの名前"
 
-#: libgnomeui/gnome-init.c:55
-msgid "CLASS"
-msgstr "クラス"
+#: libgnomeui/gnome-init.c:176
+msgid "NAME"
+msgstr "名前"
 
-#: libgnomeui/gnome-init.c:55
+#: libgnomeui/gnome-init.c:178
 msgid "Program class as used by the window manager"
 msgstr "ウィンドウマネージャが使用しているクラスの名前"
 
-#: libgnomeui/gnome-init.c:56
+#: libgnomeui/gnome-init.c:178
+msgid "CLASS"
+msgstr "クラス"
+
+#: libgnomeui/gnome-init.c:180
 msgid "HOST"
 msgstr "ホスト"
 
-#: libgnomeui/gnome-init.c:56 libgnomeui/gnome-init.c:57 libgnomeui/gnome-init.c:58 libgnomeui/gnome-init.c:59
-msgid "FIXME"
-msgstr "要・訂正"
-
-#: libgnomeui/gnome-init.c:57
+#: libgnomeui/gnome-init.c:182
 msgid "PORT"
 msgstr "ポート"
 
-#: libgnomeui/gnome-init.c:58 libgnomeui/gnome-init.c:59
+#: libgnomeui/gnome-init.c:184 libgnomeui/gnome-init.c:186
 msgid "STYLE"
 msgstr "スタイル"
 
-#: libgnomeui/gnome-init.c:60
-msgid "Gtk+ debuging flags to set"
+#: libgnomeui/gnome-init.c:188
+#, fuzzy
+msgid "Gtk+ debugging flags to set"
 msgstr "セットするGtk+デバッグフラグ"
 
-#: libgnomeui/gnome-init.c:61
-msgid "Gtk+ debuging flags to unset"
+#: libgnomeui/gnome-init.c:190
+#, fuzzy
+msgid "Gtk+ debugging flags to unset"
 msgstr "セットしないGtk+デバッグフラグ"
 
-#: libgnomeui/gnome-init.c:62
+#: libgnomeui/gnome-init.c:192
 msgid "Make all warnings fatal"
 msgstr "すべての警告を致命的にする"
 
-#: libgnomeui/gnome-init.c:63
+#: libgnomeui/gnome-init.c:194
+#, fuzzy
+msgid "Load an additional Gtk module"
+msgstr "Gtkモジュールの追加"
+
+#: libgnomeui/gnome-init.c:194
 msgid "MODULE"
 msgstr "モジュール"
 
-#: libgnomeui/gnome-init.c:63
-msgid "Load additional Gtk modules"
-msgstr "Gtkモジュールの追加"
-
-#: libgnomeui/gnome-messagebox.c:95
+#: libgnomeui/gnome-messagebox.c:99
 msgid "Information"
 msgstr "情報"
 
-#: libgnomeui/gnome-messagebox.c:101
+#: libgnomeui/gnome-messagebox.c:108
 msgid "Warning"
 msgstr "注意"
 
-#: libgnomeui/gnome-messagebox.c:113
+#: libgnomeui/gnome-messagebox.c:126
 msgid "Question"
 msgstr "質問"
 
-#: libgnomeui/gnome-messagebox.c:119
+#: libgnomeui/gnome-messagebox.c:135
 msgid "Message"
 msgstr "メッセージ"
 
-#: libgnomeui/gnome-number-entry.c:124
+#: libgnomeui/gnome-number-entry.c:134
 msgid "Calculator"
 msgstr "電卓"
 
-#: libgnomeui/gnome-number-entry.c:166
+#: libgnomeui/gnome-number-entry.c:183
 msgid "Calculator..."
 msgstr "電卓..."
 
-#: libgnomeui/gnome-scores.c:72
+#: libgnomeui/gnome-scores.c:71
 msgid "Top Ten"
 msgstr "トップ10"
 
-#: libgnomeui/gnome-scores.c:83
+#: libgnomeui/gnome-scores.c:82
 msgid "User"
 msgstr "ユーザ"
 
-#: libgnomeui/gnome-scores.c:86
+#: libgnomeui/gnome-scores.c:85
 msgid "Score"
 msgstr "スコア"
 
-#: libgnomeui/gnome-scores.c:89
+#: libgnomeui/gnome-scores.c:88
 msgid "Date"
 msgstr "日付"
 
-#: libgnomeui/gnome-stock.c:770
+#: libgnomeui/gnome-stock.c:769
 msgid "OK"
 msgstr ""
 
-#: libgnomeui/gnome-stock.c:771
+#: libgnomeui/gnome-stock.c:770
 msgid "Apply"
 msgstr "適用"
 
-#: libgnomeui/gnome-stock.c:772
+#: libgnomeui/gnome-stock.c:771
 msgid "Cancel"
 msgstr "キャンセル"
 
-#: libgnomeui/gnome-stock.c:773 libgnomeui/stock_demo.c:144
+#: libgnomeui/gnome-stock.c:772 libgnomeui/stock_demo.c:144
 msgid "Close"
 msgstr "閉じる"
 
-#: libgnomeui/gnome-stock.c:774
+#: libgnomeui/gnome-stock.c:773
 msgid "Yes"
 msgstr "はい"
 
-#: libgnomeui/gnome-stock.c:775
+#: libgnomeui/gnome-stock.c:774
 msgid "No"
 msgstr "いいえ"
 
-#: libgnomeui/gnome-stock.c:777
+#: libgnomeui/gnome-stock.c:776
 msgid "Next"
 msgstr "次"
 
-#: libgnomeui/gnome-stock.c:778
+#: libgnomeui/gnome-stock.c:777
 msgid "Prev"
 msgstr "前"
 
-#: libgnomeui/gnome-stock.c:1707
+#: libgnomeui/gnome-stock.c:778
+msgid "Up"
+msgstr ""
+
+#: libgnomeui/gnome-stock.c:779
+msgid "Down"
+msgstr ""
+
+#: libgnomeui/gnome-stock.c:780
+msgid "Font"
+msgstr ""
+
+#: libgnomeui/gnome-stock.c:1787
 msgid "Menu Accelerator Keys"
 msgstr "メニューアクセラレータキー"
 
-#: libgnomeui/gnome-stock.c:1709
+#: libgnomeui/gnome-stock.c:1789
 msgid "Global"
 msgstr "グローバル"
 
-#: libgnomeui/gnome-stock.c:1711
+#: libgnomeui/gnome-stock.c:1791
 msgid "Menu Item"
 msgstr "メニューアイテム"
 
-#: libgnomeui/gnome-stock.c:1712
+#: libgnomeui/gnome-stock.c:1792
 msgid "Accelerator"
 msgstr "アクセラレータ"
 
-#: libgnomeui/gnome_segv.c:58
+#: libgnomeui/gnome_segv.c:60
 msgid ""
 "No, and ignore\n"
 "future SIGSEGV's"
 msgstr ""
 
-#: libgnomeui/gnome_segv.c:68
+#: libgnomeui/gnome_segv.c:71
+#, c-format
 msgid ""
 "Application \"%s\" has a bug.\n"
 "SIGSEGV received at PC %#lx in PID %d.\n"
@@ -855,139 +895,248 @@ msgstr "wmhintsのテスト"
 msgid "winhints-test"
 msgstr "winhintsのテスト"
 
-#: libgnomeui/winhints_demo.c:68
+#: libgnomeui/winhints_demo.c:72
 msgid "Layer:"
 msgstr "レイヤ："
 
-#: libgnomeui/winhints_demo.c:91
+#: libgnomeui/winhints_demo.c:95
 msgid "Above Dock"
 msgstr "デッキの上"
 
-#: libgnomeui/winhints_demo.c:95
+#: libgnomeui/winhints_demo.c:99
 msgid "Dock"
 msgstr "デッキ"
 
-#: libgnomeui/winhints_demo.c:99
+#: libgnomeui/winhints_demo.c:103
 msgid "On Top"
 msgstr "トップ"
 
-#: libgnomeui/winhints_demo.c:103
+#: libgnomeui/winhints_demo.c:107
 msgid "Normal"
 msgstr "標準"
 
-#: libgnomeui/winhints_demo.c:107
+#: libgnomeui/winhints_demo.c:111
 msgid "Below"
 msgstr "下"
 
-#: libgnomeui/winhints_demo.c:111
+#: libgnomeui/winhints_demo.c:115
 msgid "Desktop"
 msgstr "デスクトップ"
 
-#: libgnomeui/winhints_demo.c:119
+#: libgnomeui/winhints_demo.c:123
 msgid "Set Layer"
 msgstr "レイヤのセット"
 
-#: libgnomeui/winhints_demo.c:126
+#: libgnomeui/winhints_demo.c:130
 msgid "Workspaces:"
 msgstr "ワークスペース："
 
-#: libgnomeui/winhints_demo.c:148
-msgid "Occupy all workspaces"
-msgstr "すべてのワークスペースの占領"
-
 #: libgnomeui/winhints_demo.c:152
+msgid "Sticky"
+msgstr ""
+
+#: libgnomeui/winhints_demo.c:156
 msgid "Set Workspace"
 msgstr "ワークスペースのセット"
 
-#: libgnomeui/winhints_demo.c:162
+#: libgnomeui/winhints_demo.c:166
 msgid "State Toggles:"
 msgstr "状態のトグル："
 
-#: libgnomeui/winhints_demo.c:172
+#: libgnomeui/winhints_demo.c:176
 msgid "Minimized"
 msgstr "最小化"
 
-#: libgnomeui/winhints_demo.c:176
+#: libgnomeui/winhints_demo.c:180
 msgid "Maximized Vertical"
 msgstr "垂直方向へ最大化"
 
-#: libgnomeui/winhints_demo.c:180
+#: libgnomeui/winhints_demo.c:184
 msgid "Maximized Horizontal"
 msgstr "水平方向へ最大化"
 
-#: libgnomeui/winhints_demo.c:184
+#: libgnomeui/winhints_demo.c:188
 msgid "Hidden"
 msgstr "隠す"
 
-#: libgnomeui/winhints_demo.c:188
-msgid "Roll-Up"
-msgstr "巻き上げる"
-
 #: libgnomeui/winhints_demo.c:192
+msgid "Shaded"
+msgstr ""
+
+#: libgnomeui/winhints_demo.c:196
+msgid "Fixed Position"
+msgstr ""
+
+#: libgnomeui/winhints_demo.c:200
+msgid "Ignore on Arrange"
+msgstr ""
+
+#: libgnomeui/winhints_demo.c:204
 msgid "Set State"
 msgstr "状態のセット"
 
-#: libgnomeui/winhints_demo.c:198
+#: libgnomeui/winhints_demo.c:210
 msgid "Skip Toggles:"
 msgstr "トグルのスキップ："
 
-#: libgnomeui/winhints_demo.c:208
+#: libgnomeui/winhints_demo.c:220
 msgid "Skip Focus"
 msgstr "フォーカスのスキップ"
 
-#: libgnomeui/winhints_demo.c:212
+#: libgnomeui/winhints_demo.c:224
 msgid "Skip Window Menu"
 msgstr "ウィンドウメニューのスキップ"
 
-#: libgnomeui/winhints_demo.c:216
+#: libgnomeui/winhints_demo.c:228
 msgid "Skip Taskbar / WinList"
 msgstr "タスクバー／ウィンドウリストのスキップ"
 
-#: libgnomeui/winhints_demo.c:220
+#: libgnomeui/winhints_demo.c:232
 msgid "Set Skip"
 msgstr "スキップのセット"
 
-#: libgnomeui/winhints_demo.c:403
+#: libgnomeui/winhints_demo.c:412
 msgid "WIN_HINTS Test"
 msgstr "WIN_HINTSのテスト"
 
-#: libgnomeui/winhints_demo.c:404
+#: libgnomeui/winhints_demo.c:413
 msgid "Copyright (C)1998"
 msgstr ""
 
-#: libgnomeui/winhints_demo.c:406
-msgid "Simple test app to check how the WIN_HINTS work. And to test the gnome_win_hints_* functions for errors. :)"
-msgstr "WIN_HINTSがどうやって動作するかをチェックするシンプルなテストアプリケーション。そしてgnome_winhints_* 関数のエラーをテストするためのもの。:)"
+#: libgnomeui/winhints_demo.c:415
+msgid ""
+"Simple test app to check how the WIN_HINTS work. And to test the "
+"gnome_win_hints_* functions for errors. :)"
+msgstr ""
+"WIN_HINTSがどうやって動作するかをチェックするシンプルなテストアプリケーション"
+"。そしてgnome_winhints_* 関数のエラーをテストするためのもの。:)"
 
-#: support/argp-parse.c:90
+#: libvfs/extfs.c:274
+#, c-format
+msgid ""
+"Couldn't open %s archive\n"
+"%s"
+msgstr ""
+
+#: libvfs/extfs.c:306 libvfs/extfs.c:326
+msgid "Inconsistent extfs archive"
+msgstr ""
+
+#: libvfs/ftpfs.c:461
+#, c-format
+msgid " Could not set source routing (%s)"
+msgstr ""
+
+#: libvfs/ftpfs.c:1863 libvfs/ftpfs.c:1878
+msgid ""
+"~/.netrc file has not correct mode.\n"
+"Remove password or correct mode."
+msgstr ""
+
+#: libvfs/mcfs.c:155
+msgid " MCFS "
+msgstr ""
+
+#: libvfs/mcfs.c:155
+msgid " The server does not support this version "
+msgstr ""
+
+#: libvfs/mcfs.c:171
+#, fuzzy
+msgid " Warning "
+msgstr "警告："
+
+#: libvfs/mcfs.c:172
+msgid ""
+" The remote server is not running on a system port \n"
+" you need a password to log in, but the information may \n"
+" not be safe on the remote side.  Continue? \n"
+msgstr ""
+
+#: libvfs/mcfs.c:175
+#, fuzzy
+msgid " Yes "
+msgstr "はい"
+
+#: libvfs/mcfs.c:175
+#, fuzzy
+msgid " No "
+msgstr "いいえ"
+
+#: libvfs/mcfs.c:177
+msgid " The remote server is running on strange port. Giving up.\n"
+msgstr ""
+
+#: libvfs/mcfs.c:189
+msgid " MCFS Password required "
+msgstr ""
+
+#: libvfs/mcfs.c:203
+msgid " Invalid password "
+msgstr ""
+
+#: libvfs/mcfs.c:322
+msgid " Too many open connections "
+msgstr ""
+
+#: libvfs/tar.c:90 libvfs/tar.c:107
+#, c-format
+msgid ""
+"Couldn't open tar archive\n"
+"%s"
+msgstr ""
+
+#: libvfs/tar.c:277
+msgid "Unexpected EOF on archive file"
+msgstr ""
+
+#: libvfs/tar.c:332 libvfs/tar.c:339
+msgid "Inconsistent tar archive"
+msgstr ""
+
+#. Error on first record
+#: libvfs/tar.c:398
+#, c-format
+msgid ""
+"Hmm,...\n"
+"%s\n"
+"doesn't look like a tar archive."
+msgstr ""
+
+#: libvfs/vfs.c:1678
+msgid "Password:"
+msgstr ""
+
+#: support/argp-parse.c:95
 msgid "Give this help list"
 msgstr "ヘルプリストの表示"
 
-#: support/argp-parse.c:91
+#: support/argp-parse.c:96
 msgid "Give a short usage message"
 msgstr "使い方についての短い説明"
 
-#: support/argp-parse.c:92
+#: support/argp-parse.c:97
 msgid "Set the program name"
 msgstr "プログラム名のセット"
 
-#: support/argp-parse.c:94
+#: support/argp-parse.c:99
 msgid "Hang for SECS seconds (default 3600)"
 msgstr "ハングの秒指定(デフォルトは3600)"
 
-#: support/argp-parse.c:151
+#: support/argp-parse.c:156
 msgid "Print program version"
 msgstr "プログラムバージョンの表示"
 
-#: support/argp-parse.c:167
+#: support/argp-parse.c:172
 msgid "(PROGRAM ERROR) No version known!?"
 msgstr "(プログラムエラー)バージョンがない！？"
 
-#: support/argp-parse.c:641
+#: support/argp-parse.c:646
+#, c-format
 msgid "%s: Too many arguments\n"
 msgstr "%s: 引数が多すぎます\n"
 
-#: support/argp-parse.c:780
+#: support/argp-parse.c:785
 msgid "(PROGRAM ERROR) Option should have been recognized!?"
 msgstr "(プログラムエラー)認識されていないオプション指定！？"
 
@@ -996,61 +1145,142 @@ msgid "Unknown system error"
 msgstr "不明なシステムエラー"
 
 #: support/getopt.c:669
+#, c-format
 msgid "%s: option `%s' is ambiguous\n"
 msgstr "%s: オプション `%s' はあいまいです\n"
 
-#. --option
 #: support/getopt.c:693
+#, c-format
 msgid "%s: option `--%s' doesn't allow an argument\n"
 msgstr "%s: オプション `--%s' には引数はありません\n"
 
 #: support/getopt.c:698
+#, c-format
 msgid "%s: option `%c%s' doesn't allow an argument\n"
 msgstr "%s: オプション `%c%s' には引数はありません\n"
 
 #: support/getopt.c:715 support/getopt.c:888
+#, c-format
 msgid "%s: option `%s' requires an argument\n"
 msgstr "%s: オプション `%s' には引数が必要です\n"
 
 #. --option
 #: support/getopt.c:744
+#, c-format
 msgid "%s: unrecognized option `--%s'\n"
 msgstr "%s: 認識されないオプションです `--%s'\n"
 
+#. +option or -option
 #: support/getopt.c:748
+#, c-format
 msgid "%s: unrecognized option `%c%s'\n"
 msgstr "%s: 認識されないオプションです '%c%s'\n"
 
 #. 1003.2 specifies the format of this message.
 #: support/getopt.c:774
+#, c-format
 msgid "%s: illegal option -- %c\n"
 msgstr "%s: 誤ったオプションです -- %c\n"
 
 #: support/getopt.c:777
+#, c-format
 msgid "%s: invalid option -- %c\n"
 msgstr "%s: 不正なオプションです -- %c\n"
 
 #. 1003.2 specifies the format of this message.
 #: support/getopt.c:807 support/getopt.c:937
+#, c-format
 msgid "%s: option requires an argument -- %c\n"
 msgstr "%s: オプションには引数が必要です -- %c\n"
 
 #: support/getopt.c:854
+#, c-format
 msgid "%s: option `-W %s' is ambiguous\n"
 msgstr "%s: オプション `-W %s' はあいまいです\n"
 
 #: support/getopt.c:872
+#, c-format
 msgid "%s: option `-W %s' doesn't allow an argument\n"
 msgstr "%s: オプション `-W %s' には引数はありません\n"
 
-#: test-gnome/testgnome.c:653
+#: test-gnome/testgnome.c:290
+msgid "Guru-in-a-dialog test"
+msgstr ""
+
+#. Pixmap
+#: test-gnome/testgnome.c:657
+msgid "Default Pixmap"
+msgstr ""
+
+#: test-gnome/testgnome.c:665 test-gnome/testgnome.c:706
+#: test-gnome/testgnome.c:731
+msgid "If you choose a font it will appear here"
+msgstr ""
+
+#. Font_Info
+#: test-gnome/testgnome.c:672
+msgid "Font Info"
+msgstr ""
+
+#: test-gnome/testgnome.c:682
+msgid "Use Font in button with size"
+msgstr ""
+
+#: test-gnome/testgnome.c:689
+msgid "Show font size"
+msgstr ""
+
+#: test-gnome/testgnome.c:725
+msgid "This is an hbox with pixmap and text"
+msgstr ""
+
+#: test-gnome/testgnome.c:910
 msgid "The user chose Yes/OK with data:\n"
 msgstr "ユーザはデータをはい／OKを選択します:\n"
 
-#: test-gnome/testgnome.c:657
+#: test-gnome/testgnome.c:914
 msgid "The user chose No/Cancel with data:\n"
 msgstr "ユーザはいいえ／キャンセルを選択します:\n"
 
-#: test-gnome/testgnome.c:668
+#: test-gnome/testgnome.c:925
 msgid "Weird number in reply callback"
 msgstr ""
+
+#~ msgid ""
+#~ "\n"
+#~ "Generic options"
+#~ msgstr ""
+#~ "\n"
+#~ "一般"
+
+#~ msgid ""
+#~ "No\n"
+#~ "icon"
+#~ msgstr ""
+#~ "アイコン\n"
+#~ "なし"
+
+#~ msgid ""
+#~ "Couldn't\n"
+#~ "load\n"
+#~ "icon"
+#~ msgstr ""
+#~ "アイコンを\n"
+#~ "ロード\n"
+#~ "できません"
+
+#~ msgid ""
+#~ "\n"
+#~ "Gtk+ toolkit options"
+#~ msgstr ""
+#~ "\n"
+#~ "Gtk+ツールキットオプション"
+
+#~ msgid "FIXME"
+#~ msgstr "要・訂正"
+
+#~ msgid "Occupy all workspaces"
+#~ msgstr "すべてのワークスペースの占領"
+
+#~ msgid "Roll-Up"
+#~ msgstr "巻き上げる"
