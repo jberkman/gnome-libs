@@ -191,9 +191,9 @@ fi
 
 dnl These are for using lib*
 if test "$need_gnome_support" = yes; then
-   GNOME_LIBS="-lgnome -lgnomesupport $DB_LIB $LIBGNOME_LIBS"
+   GNOME_LIBS="-lgnome -lgnomesupport $LIBGNOME_LIBS"
 else
-   GNOME_LIBS="-lgnome $DB_LIB $LIBGNOME_LIBS"
+   GNOME_LIBS="-lgnome $LIBGNOME_LIBS"
 fi
 GNOMEUI_LIBS="-lgnomeui $GDK_IMLIB_LIBS $GTK_LIBS $GNOME_LIBS"
 GTKXMHTML_LIBS="-lgtkxmhtml $LIBGTKXMHTML_LIBS"
