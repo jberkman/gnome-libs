@@ -4,7 +4,6 @@
  * Miguel de Icaza, 1997
  *
  * FIXME:
- *   - need to implement widget destroy.
  *   - Check all widget repaints against original source, many are
  *     bogus, they should be calls to ClearArea()
  */
