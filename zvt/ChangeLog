@@ -1,3 +1,11 @@
+1999-03-18  Michael Zucchi  <mzucchi@denr.sa.gov.au>
+
+	* zterm.c (main): Catch "destroy" signal to die on.
+
+	* zvtterm.c (zvt_term_closepty): Revert yesterdays' changes.  As
+	suggested by ewt, catch for "destroy" signal to detect end of life
+	from window system.
+
 1999-03-17  Michael Zucchi  <mzucchi@denr.sa.gov.au>
 
 	* zvtterm.c (zvt_term_closepty): Make sure we raise a "child_died"

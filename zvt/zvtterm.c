@@ -1721,17 +1721,11 @@ zvt_term_killchild (ZvtTerm *term, int signal)
  * Note that a child process must have first been started using
  * zvt_term_forkpty().
  *
- * This function will automatically raise the "child_died" signal,
- * if the child was running at the time of close.
- *
  * Return Value: See close(2).
  */
 int
 zvt_term_closepty (ZvtTerm *term)
 {
-  int ret;
-  int raise=0;
-
   g_return_val_if_fail (term != NULL, -1);
   g_return_val_if_fail (ZVT_IS_TERM (term), -1);
 
@@ -1739,7 +1733,6 @@ zvt_term_closepty (ZvtTerm *term)
     {
       gdk_input_remove (term->input_id);
       term->input_id = -1;
-      raise = 1;
     }
 
   if (term->msg_id != -1) 
@@ -1748,12 +1741,7 @@ zvt_term_closepty (ZvtTerm *term)
       term->msg_id = -1;
     }
 
-  ret = vt_closepty (&term->vx->vt);
-
-  if (raise)
-    gtk_signal_emit (GTK_OBJECT(term), term_signals[CHILD_DIED]);
-
-  return ret;
+  return vt_closepty (&term->vx->vt);
 }
 
 static void

@@ -211,6 +211,12 @@ main (gint argc, gchar *argv[])
 
   gtk_signal_connect (
       GTK_OBJECT (term),
+      "destroy",
+      GTK_SIGNAL_FUNC (child_died_event),
+      NULL);
+
+  gtk_signal_connect (
+      GTK_OBJECT (term),
       "title_changed",
       GTK_SIGNAL_FUNC (title_changed_event),
       NULL);
