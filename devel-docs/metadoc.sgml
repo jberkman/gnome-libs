@@ -1,0 +1,71 @@
+<!doctype book PUBLIC "-//Davenport//DTD DocBook V3.0//EN" [
+]>
+
+<book id="metadoc">
+  <bookinfo>
+    <title>GNOME Meta-documentation</title>
+    <subtitle>Or, how to write documentation for GNOME</subtitle>
+
+    <authorgroup>
+      <author>
+	<firstname>Federico</firstname>
+	<surname>Mena Quintero</surname>
+	<authorblurb>
+	  <simpara><email>federico@nuclecu.unam.mx</email></simpara>
+	</authorblurb>
+      </author>
+    </authorgroup>
+
+    <copyright>
+      <year>1998</year>
+      <holder>The GNOME Project</holder>
+    </copyright>
+    
+  </bookinfo>
+
+  <!-- FIXME: make the TOC -->
+  <toc></toc>
+
+  <preface id="metadoc-preface">
+
+    <title>Preface</title>
+
+    <para>
+      Like any complete piece software, the GNOME Project needs good
+      documentation.  This is a book with meta-documentation, or how
+      to write documentation for GNOME.  It describes the tools that
+      you need to have to write documentation for GNOME, and it also
+      explains the conventions GNOME uses regarding user and developer
+      documentation.
+    </para>
+
+  </preface>
+
+  <chapter id="metadoc-backend">
+
+    <title>DocBook as the documenation back-end</title>
+
+    <sect1 id="metadoc-backend-introduction">
+      <title>Introduction</title>
+
+      <para>
+	GNOME uses DocBook as its documentation back-end.  DocBook is
+	built on top of SGML, so multiple tools can be used to process
+	the markup source files.  DocBook lets you write markup based
+	on the logical structure of your document's content (sections,
+	chapters, etc.), instead of the "lower level" method of
+	explicitly changing fonts and paragraph styles.  Markup based
+	on the logical structure is a good thing because it lets the
+	writer concentrate on concent rather than on presentation,
+	which can be left to automatic processing tools.  The final
+	look of the document is determined by the <emphasis>style
+	sheet</emphasis> that is used with the processing tools, so
+	different presentation formats can be obtained by changing the
+	style sheet.
+      </para>
+
+    </sect1>
+
+  </chapter>
+
+</book>
