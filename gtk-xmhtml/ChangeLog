@@ -1,3 +1,8 @@
+1999-05-24  Miguel de Icaza  <miguel@nuclecu.unam.mx>
+
+	* images.c (imageDefaultProc): Use the colormap from the widget
+	(before it was un-initialized).
+
 1999-04-08  Miguel de Icaza  <miguel@nuclecu.unam.mx>
 
 	* XmHTMLI.h: Always use full prototypes.  Fixes compilation on

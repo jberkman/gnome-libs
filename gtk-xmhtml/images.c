@@ -43,7 +43,14 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.12  1999/05/24 23:45:33  unammx
+* 1999-05-24  Miguel de Icaza  <miguel@nuclecu.unam.mx>
+*
+* 	* images.c (imageDefaultProc): Use the colormap from the widget
+* 	(before it was un-initialized).
+*
 * Revision 1.11  1998/11/09 00:32:31  jaycox
+*
 * Included alloca where necesary.  Fixed some void pointer
 * arithmetic.  Fixed some variable used as initializer errors.
 * replaced gint foo:1; with guint foo:1;
@@ -1677,7 +1684,7 @@ imageDefaultProc(TWidget w, XmHTMLRawImageData *img_data, String url)
 				/* get RGB value for the background pixel */
 				XQueryColor(Toolkit_Display(w), cmap, &bg_color);
 #else
-				my_x_query_colors(cmap, &bg_color, 1);
+				my_x_query_colors(gtk_widget_get_colormap (GTK_WIDGET (w)), &bg_color, 1);
 #endif
 				/* downscale to 0-255 */
 				bg_color.red   >>= 8;
