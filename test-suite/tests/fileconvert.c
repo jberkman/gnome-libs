@@ -16,10 +16,12 @@ int main(int argc, char *argv[])
 {
 	gint outfd, readlen = 0;
 	gchar abuf[128];
-
-	chdir("tests");
+	gchar *fn;
+	
+	gnomelib_init("fileconvert");
+	fn = g_copy_strings(getenv("srcdir"), "/tests", NULL);
+	chdir(fn);
 	chmod("lynxdump.sh", S_IXGRP|S_IXOTH|S_IXUSR|S_IRGRP|S_IROTH|S_IRUSR|S_IWUSR);
-	gnomelib_init("fileconvert", &argc, &argv);
 	outfd = gnome_file_convert("fileconvert.in",
 				   "text/html",
 				   "text/ascii");

@@ -18,13 +18,16 @@ void sample_trigger_function(char *msg, char *level, char *supinfo[])
 int main(int argc, char *argv[])
 {
 	struct _GnomeTrigger trig;
+	gchar *fn;
+
 	trig.type = GTRIG_FUNCTION;
 	trig.u.function = sample_trigger_function;
 	trig.level = NULL;
 
-	gnomelib_init("trigs", &argc, &argv);
+	gnomelib_init("trigs");
+	fn = g_copy_strings(getenv("srcdir"), "/tests/trigs.in", NULL);
 	gnome_triggers_init();
-	gnome_triggers_readfile("tests/trigs.in");
+	gnome_triggers_readfile(fn);
 	gnome_triggers_add_trigger(&trig, "test", "one", NULL);
 	gnome_triggers_do("Test of direct hit", "warning", "test", "one", NULL);
 	fflush(stdout);

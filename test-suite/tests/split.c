@@ -13,7 +13,7 @@ int main(int argc, char *argv[])
 {
 	char **output;
 	int i;
-	gnomelib_init("split", &argc, &argv);
+	gnomelib_init("split");
 	output = gnome_string_split("foo:bar:baz", ":", -1);
 	for(i = 0; output[i]; i++) {
 		g_print("%s ", output[i]);

@@ -1,3 +1,21 @@
+1998-07-13  Raja R Harinath  <harinath@cs.umn.edu>
+
+	* tests/lynxdump.sh: Sed out the /tmp/.$$.html filename from the
+	output. 
+	* expected/fileconvert.out: Update to reflect this.
+
+	* tests/skel.c (main): `gnomelib_init' has one argument now.
+	* tests/split.c (main): Likewise.
+	* tests/fileconvert.c (main): Likewise.  Also, look for input file
+	in $srcdir.
+	* tests/trigs.c (main): Likewise.
+
+	* runtest.sh: Cleanup.
+	(LINK): Give the output of the LINK a name.
+
+	Based partly on patch from James Michael Mastros
+	<spare@jennifer-unix.dyn.ml.org>. 
+	
 1998-06-11  Raja R Harinath  <harinath@cs.umn.edu>
 
 	Improve test harness.

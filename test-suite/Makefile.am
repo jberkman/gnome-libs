@@ -20,9 +20,10 @@ TESTS = runtest.sh
 
 # Always run via sh so we don't have to worry about permissions.
 TESTS_ENVIRONMENT = env \
+		      srcdir="$(srcdir)" \
 		      COMPILE="$(COMPILE)" \
 		      LINK="$(LINK)" \
 		      LDADD="$(LDADD)" \
-		    $(SHELL) -x
+		    $(SHELL) 
 
 EXTRA_DIST = $(TESTS)
