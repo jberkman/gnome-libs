@@ -260,10 +260,10 @@ while test $# -gt 0; do
 	get_gnorba=true
 	;;
     idl)
-	the_flags="-I${datadir}/idl"
-	for extra in `echo $GNOME_PATH  | sed 's/:/ /g'`; do
-	    the_flags="-I$extra/share/idl $the_flags"
+	for extra in `echo $GNOME_PATH | sed 's/:/ /g'`; do
+	    extra_idl_flags="$extra_idl_flags -I${extra}/share/idl"
 	done
+	the_flags="$the_flags -I${datadir}/idl $extra_idl_flags"
 	idl_def=yes
 	;;
     oaf)

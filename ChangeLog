@@ -1,3 +1,11 @@
+2000-11-12  Jason Leach  <leach@wam.umd.edu>
+
+	* gnome-config.in: Bugfix found while cleaning my mailboxes, from
+	Tom Gilbert <gilbertt@tomgilbert.freeserve.co.uk> on Oct 19, 1999
+	in gnome-list.  Basically fixes --cflags idl, it was screwed up
+	like so:
+	`gnome-config --cflags idl gtk` != `gnome-config --cflags gtk idl`
+
 Sat Nov 04 22:14:46 2000  George Lebl <jirka@5z.com>
 
 	* merged from stable:
