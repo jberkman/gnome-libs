@@ -1,3 +1,8 @@
+1998-11-17  Martin Baulig  <martin@home-of-linux.org>
+
+	* test-utmp.c (update_dgs): #ifdef USE_SYSV_UTMP this, it's
+	not defined otherwise.
+
 1998-11-16  Walter Mueller <walt@pi4.informatik.uni-mannheim.de>
 
 	* gnome-utmp.c (write_logout_record): Changes for Solaris compilation.
