@@ -93,7 +93,8 @@ sigchld_handler (int signo)
 	}
 
 	/* No children of ours, chain */
-	(*old_sigchld_handler.sa_handler)(signo);
+	if (old_sigchld_handler.sa_handler)
+		(*old_sigchld_handler.sa_handler)(signo);
 }
 
 #ifdef HAVE_SENDMSG
