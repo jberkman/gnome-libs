@@ -54,7 +54,7 @@ gnome_entry_set_history_id (GnomeEntry *gentry, const gchar *history_id)
     g_return_if_fail (GNOME_IS_ENTRY (gentry));
 
     g_warning (G_STRLOC ": This function is deprecated, use "
-	       "gnome_selector_set_history_id() instead.");
+	       "gnome_selector_set_history_id().");
 
     gnome_selector_set_history_id (GNOME_SELECTOR (gentry), history_id);
 }
@@ -75,7 +75,7 @@ gnome_entry_get_history_id (GnomeEntry *gentry)
     g_return_val_if_fail (GNOME_IS_ENTRY (gentry), NULL);
 
     g_warning (G_STRLOC ": This function is deprecated, use "
-	       "gnome_selector_get_history_id() instead.");
+	       "gnome_selector_get_history_id().");
 
     return gnome_selector_get_history_id (GNOME_SELECTOR (gentry));
 }
@@ -99,7 +99,7 @@ gnome_entry_set_max_saved (GnomeEntry *gentry, guint max_saved)
     g_return_if_fail (GNOME_IS_ENTRY (gentry));
 
     g_warning (G_STRLOC ": This function is deprecated, use "
-	       "gnome_selector_set_history_length() instead.");
+	       "gnome_selector_set_history_length().");
 
     gnome_selector_set_history_length (GNOME_SELECTOR (gentry), max_saved);
 }
@@ -121,7 +121,7 @@ gnome_entry_get_max_saved (GnomeEntry *gentry)
     g_return_val_if_fail (GNOME_IS_ENTRY (gentry), 0);
 
     g_warning (G_STRLOC ": This function is deprecated, use "
-	       "gnome_selector_get_history_length() instead.");
+	       "gnome_selector_get_history_length().");
 
     return gnome_selector_get_history_length (GNOME_SELECTOR (gentry));
 }
@@ -148,7 +148,7 @@ gnome_entry_prepend_history (GnomeEntry *gentry, gboolean save,
     g_return_if_fail (GNOME_IS_ENTRY (gentry));
 
     g_warning (G_STRLOC ": This function is deprecated, use "
-	       "gnome_selector_prepend_history() instead.");
+	       "gnome_selector_prepend_history().");
 
     gnome_selector_prepend_history (GNOME_SELECTOR (gentry), save, text);
 }
@@ -175,7 +175,7 @@ gnome_entry_append_history (GnomeEntry *gentry, gboolean save,
     g_return_if_fail (GNOME_IS_ENTRY (gentry));
 
     g_warning (G_STRLOC ": This function is deprecated, use "
-	       "gnome_selector_append_history() instead.");
+	       "gnome_selector_append_history().");
 
     gnome_selector_append_history (GNOME_SELECTOR (gentry), save, text);
 }
@@ -198,7 +198,7 @@ gnome_entry_load_history (GnomeEntry *gentry)
     g_return_if_fail (GNOME_IS_ENTRY (gentry));
 
     g_warning (G_STRLOC ": This function is deprecated, use "
-	       "gnome_selector_load_history() instead.");
+	       "gnome_selector_load_history().");
 
     gnome_selector_load_history (GNOME_SELECTOR (gentry));
 }
@@ -220,7 +220,7 @@ gnome_entry_clear_history (GnomeEntry *gentry)
     g_return_if_fail (GNOME_IS_ENTRY (gentry));
 
     g_warning (G_STRLOC ": This function is deprecated, use "
-	       "gnome_selector_clear_history() instead.");
+	       "gnome_selector_clear_history().");
 
     gnome_selector_clear_history (GNOME_SELECTOR (gentry));
 }
@@ -243,7 +243,7 @@ gnome_entry_save_history (GnomeEntry *gentry)
     g_return_if_fail (GNOME_IS_ENTRY (gentry));
 
     g_warning (G_STRLOC ": This function is deprecated, use "
-	       "gnome_selector_clear_history() instead.");
+	       "gnome_selector_clear_history().");
 
     gnome_selector_save_history (GNOME_SELECTOR (gentry));
 }
@@ -293,7 +293,7 @@ gnome_icon_entry_set_filename (GnomeIconEntry *ientry,
 	g_return_val_if_fail (GNOME_IS_ICON_ENTRY (ientry), FALSE);
 
 	g_warning (G_STRLOC ": this function is deprecated; use "
-		   "gnome_selector_set_uri instead.");
+		   "gnome_selector_set_uri().");
 
 	gnome_selector_set_uri (GNOME_SELECTOR (ientry), NULL,
 				filename, NULL, NULL);
@@ -319,8 +319,23 @@ gnome_icon_entry_get_filename (GnomeIconEntry *ientry)
 	g_return_val_if_fail (GNOME_IS_ICON_ENTRY (ientry),NULL);
 
 	g_warning (G_STRLOC ": this function is deprecated; use "
-		   "gnome_selector_get_uri instead.");
+		   "gnome_selector_get_uri().");
 
 	return gnome_selector_get_uri (GNOME_SELECTOR (ientry));
 }
 
+/**
+ * gnome_appbar_set_progress
+ *
+ * Description:
+ * Deprecated, use #gnome_appbar_set_progress_percentage
+ **/
+
+void
+gnome_appbar_set_progress (GnomeAppBar *appbar, gfloat percentage)
+{
+    g_warning(G_STRLOC ": this function is deprecated; use "
+	      "gnome_appbar_set_progress_percentage().");
+
+    gnome_appbar_set_progress_percentage (appbar, percentage);
+}

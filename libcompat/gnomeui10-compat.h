@@ -35,6 +35,7 @@
 
 #include <gnome-entry.h>
 #include <gnome-icon-entry.h>
+#include <gnome-appbar.h>
 
 #  define GNOME_IS_MDI_MDI_CHILD(obj)     GNOME_IS_MDI_GENERIC_CHILD(obj)
 
@@ -66,13 +67,24 @@ void         gnome_entry_clear_history    (GnomeEntry  *gentry);
  * GnomeIconEntry
  */
 
-void         gnome_icon_entry_set_pixmap_subdir (GnomeIconEntry *ientry,
-                                                 const gchar    *subdir);
+void
+gnome_icon_entry_set_pixmap_subdir (GnomeIconEntry            *ientry,
+				    const gchar               *subdir);
 
-gchar       *gnome_icon_entry_get_filename      (GnomeIconEntry *ientry);
+gchar *
+gnome_icon_entry_get_filename      (GnomeIconEntry            *ientry);
 
-gboolean     gnome_icon_entry_set_filename      (GnomeIconEntry *ientry,
-                                                 const gchar    *filename);
+gboolean
+gnome_icon_entry_set_filename      (GnomeIconEntry            *ientry,
+				    const gchar               *filename);
+
+/*
+ * GnomeAppBar
+ */
+
+void
+gnome_appbar_set_progress          (GnomeAppBar               *appbar,
+				    gfloat                     percentage);
 
 #endif /* GNOME_DISABLE_COMPAT_H */
 #endif
