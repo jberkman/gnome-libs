@@ -12,7 +12,7 @@ EXTRA_DIST = 			\
 	mime-magic 		\
 	gnome.mime 		\
 	paper.config		\
-	type-convert
+	type.convert
 
 scoredir=$(DESTDIR)$(localstatedir)/games
 sysconf_DATA=paper.config mime-magic
