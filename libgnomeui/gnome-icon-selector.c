@@ -326,12 +326,6 @@ gnome_icon_selector_new (const gchar *history_id,
     GnomeIconSelector *iselector;
 
     iselector = g_object_new (gnome_icon_selector_get_type (),
-			      "use_default_entry_widget", TRUE,
-			      "use_default_selector_widget", TRUE,
-			      "use_default_browse_dialog", TRUE,
-			      "want_browse_button", TRUE,
-			      "want_clear_button", TRUE,
-			      "want_default_button", TRUE,
 			      "history_id", history_id,
 			      "dialog_title", dialog_title,
 			       NULL);
