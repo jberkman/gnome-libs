@@ -16,7 +16,7 @@ msgstr ""
 #: libgnome/gnomelib-init.c:176 libgnome/gnomelib-init.c:190
 #, c-format
 msgid "Could not create per-user gnome configuration directory `%s': %s\n"
-msgstr ""
+msgstr "Kan geen persoonlijke gnome configuratiedirectory aanmaken '%s': '%s'\n""
 
 #: libgnome/gnomelib-init.c:199
 #, c-format
@@ -24,11 +24,13 @@ msgid ""
 "Could not set mode 0700 on private per-user gnome configuration directory "
 "`%s': %s\n"
 msgstr ""
+"Kan geen 700 beveiliging op de persoonlijke gnome configuratiedirectory "
+"zetten '%s': '%s'\n""
 
 #: libgnome/gnomelib-init.c:206
 #, c-format
 msgid "Could not create gnome accelerators directory `%s': %s\n"
-msgstr ""
+msgstr "Kan geen gnome snelkoppelingendirectory aanmaken `%s': %s\n""
 
 #: libgnomeui/gnome-about.c:320
 msgid "Author:"
@@ -295,9 +297,8 @@ msgstr "De applicatie configureren"
 #.
 #. About
 #: libgnomeui/gnome-app-helper.c:213
-#, fuzzy
 msgid "_About"
-msgstr "Info"
+msgstr "_Info"
 
 #: libgnomeui/gnome-app-helper.c:214
 msgid "About this application"
@@ -628,9 +629,8 @@ msgid "Disable connection to session manager"
 msgstr "Desactiveer de connectie naar de sessiebeheerder"
 
 #: libgnomeui/gnome-client.c:864
-#, fuzzy
 msgid "Session management"
-msgstr "Sessiebeheer opties"
+msgstr "Sessiebeheer"
 
 #: libgnomeui/gnome-client.c:2330
 msgid "Cancel Logout"
@@ -1510,9 +1510,8 @@ msgid "Weird number in reply callback"
 msgstr "Vreemd nummer in antwoord"
 
 #: test-gnome/testgnome.c:1963
-#, fuzzy
 msgid "Test GNOME"
-msgstr "Hello GNOME"
+msgstr "Test GNOME"
 
 #~ msgid "get"
 #~ msgstr "ophalen"
