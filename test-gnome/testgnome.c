@@ -26,6 +26,8 @@
 #include <stdio.h>
 
 #include "testgnome.h"
+#include "libgnome/gnome-program.h"
+#include "libgnomeui/gnome-app-util.h"
 #include "bomb.xpm"
 
 static const gchar *authors[] = {
@@ -1855,8 +1857,8 @@ main (int argc, char *argv[])
 	int i;
 
 	gnome_program_init ("testGNOME", VERSION, argc, argv,
-                            GNOMEUI_INIT,
-                            LIBGNOME_PARAM_HUMAN_READABLE_NAME,
+                            LIBGNOMEUI_INIT,
+                            GNOME_PARAM_HUMAN_READABLE_NAME,
                             _("Test GNOME"),
                             NULL);
 

@@ -6,7 +6,7 @@ RCS file: /cvs/gnome/gnome-vfs/.cvsignore,v
 retrieving revision 1.6
 diff -u -u -p -r1.6 .cvsignore
 --- .cvsignore	2001/02/06 10:56:48	1.6
-+++ .cvsignore	2001/03/18 18:40:51
++++ .cvsignore	2001/03/20 17:42:29
 @@ -28,6 +28,8 @@ stamp-h.in
  vfsConf.sh
  vfscorbaConf.sh
@@ -22,7 +22,7 @@ RCS file: /cvs/gnome/gnome-vfs/Makefile.am,v
 retrieving revision 1.20
 diff -u -u -p -r1.20 Makefile.am
 --- Makefile.am	2001/03/07 22:07:25	1.20
-+++ Makefile.am	2001/03/18 18:40:51
++++ Makefile.am	2001/03/20 17:42:30
 @@ -20,8 +20,7 @@ SUBDIRS =					\
  	man					\
  	devel-docs				\
@@ -60,7 +60,7 @@ RCS file: /cvs/gnome/gnome-vfs/autogen.sh,v
 retrieving revision 1.1.1.1
 diff -u -u -p -r1.1.1.1 autogen.sh
 --- autogen.sh	1999/08/25 00:15:45	1.1.1.1
-+++ autogen.sh	2001/03/18 18:40:51
++++ autogen.sh	2001/03/20 17:42:30
 @@ -14,4 +14,4 @@ PKG_NAME="GNOME VFS"
      exit 1
  }
@@ -73,7 +73,7 @@ RCS file: /cvs/gnome/gnome-vfs/configure.in,v
 retrieving revision 1.103
 diff -u -u -p -r1.103 configure.in
 --- configure.in	2001/03/17 04:27:25	1.103
-+++ configure.in	2001/03/18 18:40:53
++++ configure.in	2001/03/20 17:42:33
 @@ -1,7 +1,7 @@
  AC_INIT(libgnomevfs/gnome-vfs.h)
  AM_CONFIG_HEADER(config.h)
@@ -259,7 +259,33 @@ diff -u -u -p -r1.103 configure.in
  dnl
  dnl gnome vfs Documentation
  dnl 
-@@ -353,29 +324,16 @@ AC_SUBST(VFS_LIBDIR)
+@@ -326,7 +297,7 @@ dnl CORBA backend.
+ VFSCORBA_LIBDIR='-L${libdir}'
+ VFSCORBA_INCLUDEDIR='-I${includedir} -I${libdir}/vfs/include'
+ VFSCORBA_INCLUDEDIR="$VFSCORBA_INCLUDEDIR $VFS_GNOMEUI_CFLAGS `orbit-config --cflags server`"
+-VFSCORBA_LIBS="-lgnomevfs -lgnomevfs-corba $VFS_GNOMEUI_LIBS `orbit-config --libs server`"
++VFSCORBA_LIBS="-lgnomevfs-2 -lgnomevfs-corba-2 $VFS_GNOMEUI_LIBS `orbit-config --libs server`"
+ AC_SUBST(VFSCORBA_LIBDIR)
+ AC_SUBST(VFSCORBA_INCLUDEDIR)
+ AC_SUBST(VFSCORBA_LIBS)
+@@ -335,7 +306,7 @@ dnl Pthread backend.
+ VFSPTHREAD_LIBDIR='-L${libdir}'
+ VFSPTHREAD_INCLUDEDIR='-I${includedir} -I${libdir}/vfs/include'
+ VFSPTHREAD_INCLUDEDIR="$VFSPTHREAD_INCLUDEDIR $VFS_GNOME_CFLAGS"
+-VFSPTHREAD_LIBS="-lgnomevfs -lgnomevfs-pthread $VFS_GNOME_LIBS `$VFS_GLIB_CONFIG --libs gthread`"
++VFSPTHREAD_LIBS="-lgnomevfs-2 -lgnomevfs-pthread-2 $VFS_GNOME_LIBS `$VFS_GLIB_CONFIG --libs gthread`"
+ AC_SUBST(VFSPTHREAD_LIBDIR)
+ AC_SUBST(VFSPTHREAD_INCLUDEDIR)
+ AC_SUBST(VFSPTHREAD_LIBS)
+@@ -346,36 +317,23 @@ if test -z "$default_backend"; then
+ fi
+ AC_DEFINE_UNQUOTED(GNOME_VFS_DEFAULT_BACKEND, "$default_backend")
+ 
+-VFS_LIBS="-lgnomevfs `$VFS_GLIB_CONFIG --libs gthread gmodule`"
++VFS_LIBS="-lgnomevfs-2 `$VFS_GLIB_CONFIG --libs gthread gmodule`"
+ VFS_LIBDIR='-L${libdir}'
+ VFS_INCLUDEDIR='-I${includedir} -I${libdir}/vfs/include'" `$VFS_GLIB_CONFIG --cflags gthread gmodule`"
+ AC_SUBST(VFS_LIBDIR)
  AC_SUBST(VFS_INCLUDEDIR)
  AC_SUBST(VFS_LIBS)
  
@@ -311,7 +337,7 @@ Index: gnomevfs-2.0.pc.in
 RCS file: gnomevfs-2.0.pc.in
 diff -N gnomevfs-2.0.pc.in
 --- /dev/null	Tue May  5 16:32:27 1998
-+++ gnomevfs-2.0.pc.in	Sun Mar 18 13:40:53 2001
++++ gnomevfs-2.0.pc.in	Tue Mar 20 12:42:33 2001
 @@ -0,0 +1,12 @@
 +prefix=/gnome/head/INSTALL
 +exec_prefix=${prefix}
@@ -331,7 +357,7 @@ RCS file: /cvs/gnome/gnome-vfs/libgnomevfs/Makefile.am,v
 retrieving revision 1.56
 diff -u -u -p -r1.56 Makefile.am
 --- libgnomevfs/Makefile.am	2001/03/06 23:33:15	1.56
-+++ libgnomevfs/Makefile.am	2001/03/18 18:40:53
++++ libgnomevfs/Makefile.am	2001/03/20 17:42:33
 @@ -21,12 +21,13 @@ INCLUDES =					\
  	-DG_LOG_DOMAIN=\"GnomeVFS\"		\
  	$(NULL)
@@ -372,7 +398,7 @@ Index: libgnomevfs/gi18n.c
 RCS file: gi18n.c
 diff -N gi18n.c
 --- /dev/null	Tue May  5 16:32:27 1998
-+++ gi18n.c	Sun Mar 18 13:40:53 2001
++++ gi18n.c	Tue Mar 20 12:42:33 2001
 @@ -0,0 +1,320 @@
 +/*
 + * Copyright (C) 1997, 1998, 1999, 2000 Free Software Foundation
@@ -699,7 +725,7 @@ Index: libgnomevfs/gnome-i18n.c
 RCS file: gnome-i18n.c
 diff -N gnome-i18n.c
 --- /dev/null	Tue May  5 16:32:27 1998
-+++ gnome-i18n.c	Sun Mar 18 13:40:53 2001
++++ gnome-i18n.c	Tue Mar 20 12:42:33 2001
 @@ -0,0 +1,369 @@
 +#include <config.h>
 +#include <string.h>
@@ -1070,13 +1096,29 @@ diff -N gnome-i18n.c
 +{
 +  return gnome_config_get_string (LANGKEY);
 +}
+Index: libgnomevfs/gnome-vfs-backend.c
+===================================================================
+RCS file: /cvs/gnome/gnome-vfs/libgnomevfs/gnome-vfs-backend.c,v
+retrieving revision 1.26
+diff -u -u -p -r1.26 gnome-vfs-backend.c
+--- libgnomevfs/gnome-vfs-backend.c	2001/01/30 03:17:43	1.26
++++ libgnomevfs/gnome-vfs-backend.c	2001/03/20 17:42:33
+@@ -72,7 +72,7 @@ gnome_vfs_backend_loadinit (gpointer app
+ 	g_strdown (backend_lower);
+ 
+ 	g_snprintf (backend_filename, sizeof (backend_filename), 
+-		"libgnomevfs-%s.so.0", backend_lower);
++		"libgnomevfs-%s-2.so.0", backend_lower);
+ 
+ 	gmod = g_module_open (backend_filename, G_MODULE_BIND_LAZY);
+ 	if (gmod == NULL) {
 Index: libgnomevfs/gnome-vfs-mime-info.c
 ===================================================================
 RCS file: /cvs/gnome/gnome-vfs/libgnomevfs/gnome-vfs-mime-info.c,v
 retrieving revision 1.48
 diff -u -u -p -r1.48 gnome-vfs-mime-info.c
 --- libgnomevfs/gnome-vfs-mime-info.c	2001/03/06 23:33:15	1.48
-+++ libgnomevfs/gnome-vfs-mime-info.c	2001/03/18 18:40:54
++++ libgnomevfs/gnome-vfs-mime-info.c	2001/03/20 17:42:34
 @@ -35,7 +35,6 @@
  #include "gnome-vfs-result.h"
  #include "gnome-vfs-private.h"
@@ -1091,7 +1133,7 @@ RCS file: /cvs/gnome/gnome-vfs/libgnomevfs/gnome-vfs-mime-monitor.c,v
 retrieving revision 1.4
 diff -u -u -p -r1.4 gnome-vfs-mime-monitor.c
 --- libgnomevfs/gnome-vfs-mime-monitor.c	2001/01/05 19:58:59	1.4
-+++ libgnomevfs/gnome-vfs-mime-monitor.c	2001/03/18 18:40:54
++++ libgnomevfs/gnome-vfs-mime-monitor.c	2001/03/20 17:42:34
 @@ -27,13 +27,16 @@
  
  #include "gnome-vfs-mime-private.h"
@@ -1215,7 +1257,7 @@ RCS file: /cvs/gnome/gnome-vfs/libgnomevfs/gnome-vfs-mime-monitor.h,v
 retrieving revision 1.1
 diff -u -u -p -r1.1 gnome-vfs-mime-monitor.h
 --- libgnomevfs/gnome-vfs-mime-monitor.h	2000/12/22 19:51:28	1.1
-+++ libgnomevfs/gnome-vfs-mime-monitor.h	2001/03/18 18:40:54
++++ libgnomevfs/gnome-vfs-mime-monitor.h	2001/03/20 17:42:34
 @@ -25,10 +25,10 @@
  #ifndef GNOME_VFS_MIME_MONITOR_H
  #define GNOME_VFS_MIME_MONITOR_H
@@ -1235,7 +1277,7 @@ RCS file: /cvs/gnome/gnome-vfs/libgnomevfs/gnome-vfs-private-utils.c,v
 retrieving revision 1.12
 diff -u -u -p -r1.12 gnome-vfs-private-utils.c
 --- libgnomevfs/gnome-vfs-private-utils.c	2001/03/06 23:33:15	1.12
-+++ libgnomevfs/gnome-vfs-private-utils.c	2001/03/18 18:40:55
++++ libgnomevfs/gnome-vfs-private-utils.c	2001/03/20 17:42:35
 @@ -491,6 +491,9 @@ gnome_vfs_atotm (const gchar *time_strin
  	return FALSE;
  }
@@ -1252,7 +1294,7 @@ RCS file: /cvs/gnome/gnome-vfs/libgnomevfs-corba/Makefile.am,v
 retrieving revision 1.18
 diff -u -u -p -r1.18 Makefile.am
 --- libgnomevfs-corba/Makefile.am	2000/11/10 00:54:23	1.18
-+++ libgnomevfs-corba/Makefile.am	2001/03/18 18:40:57
++++ libgnomevfs-corba/Makefile.am	2001/03/20 17:42:35
 @@ -1,7 +1,7 @@
  OBJECT_DIRECTORY_CFLAGS = $(OAF_CFLAGS)
  OBJECT_DIRECTORY_LIBS = $(OAF_LIBS)
@@ -1296,7 +1338,7 @@ RCS file: /cvs/gnome/gnome-vfs/libgnomevfs-pthread/Makefile.am,v
 retrieving revision 1.15
 diff -u -u -p -r1.15 Makefile.am
 --- libgnomevfs-pthread/Makefile.am	2001/01/16 21:46:58	1.15
-+++ libgnomevfs-pthread/Makefile.am	2001/03/18 18:40:57
++++ libgnomevfs-pthread/Makefile.am	2001/03/20 17:42:35
 @@ -1,4 +1,4 @@
 -lib_LTLIBRARIES = libgnomevfs-pthread.la
 +lib_LTLIBRARIES = libgnomevfs-pthread-2.la
@@ -1318,7 +1360,7 @@ RCS file: /cvs/gnome/gnome-vfs/modules/file-method.c,v
 retrieving revision 1.80
 diff -u -u -p -r1.80 file-method.c
 --- modules/file-method.c	2001/03/06 23:33:20	1.80
-+++ modules/file-method.c	2001/03/18 18:41:06
++++ modules/file-method.c	2001/03/20 17:42:37
 @@ -31,8 +31,6 @@
  #define _LARGEFILE64_SOURCE
  
@@ -1342,7 +1384,7 @@ RCS file: /cvs/gnome/gnome-vfs/modules/gconf-method.c,v
 retrieving revision 1.27
 diff -u -u -p -r1.27 gconf-method.c
 --- modules/gconf-method.c	2001/03/06 23:33:20	1.27
-+++ modules/gconf-method.c	2001/03/18 18:41:06
++++ modules/gconf-method.c	2001/03/20 17:42:38
 @@ -706,8 +706,7 @@ vfs_module_init (const char *method_name
  
  	/* These just return and do nothing if GTK
@@ -1359,7 +1401,7 @@ RCS file: /cvs/gnome/gnome-vfs/modules/http-method.c,v
 retrieving revision 1.117
 diff -u -u -p -r1.117 http-method.c
 --- modules/http-method.c	2001/03/06 23:33:20	1.117
-+++ modules/http-method.c	2001/03/18 18:41:09
++++ modules/http-method.c	2001/03/20 17:42:42
 @@ -42,9 +42,9 @@
  
  #include <stdlib.h> /* for atoi */
@@ -1389,7 +1431,7 @@ RCS file: /cvs/gnome/gnome-vfs/modules/test-method.c,v
 retrieving revision 1.10
 diff -u -u -p -r1.10 test-method.c
 --- modules/test-method.c	2001/03/06 23:33:21	1.10
-+++ modules/test-method.c	2001/03/18 18:41:10
++++ modules/test-method.c	2001/03/20 17:42:42
 @@ -36,11 +36,13 @@
  
  #include <config.h>
