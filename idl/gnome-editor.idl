@@ -1,0 +1,35 @@
+#ifndef __GNOME_EDITOR_IDL__
+#define __GNOME_EDITOR_IDL__
+
+
+#pragma inhibit push
+#include <GnomeObject.idl>
+#pragma inhibit pop
+
+module GNOME {
+	interface EditorFactory {
+		exception NotFound {};
+
+		Object open (in string path) raises (NotFound);
+  };
+
+	interface Editor : GNOME::object {
+		enum {
+			SCROLL_START,
+			SCROLL_CURRENT,
+			SCROLL_END
+		} ScrollFrom;
+
+		exception SaveError {};
+
+		void save () raises (SaveError);
+		void save_as (in string path) raises (SaveError);
+		void close ();
+
+		attribute currentline;
+		void scroll (in unsigned long offset, in ScrollFrom whence);
+	};
+};
+
+
+#endif /* __GNOME_EDITOR_IDL__ */
