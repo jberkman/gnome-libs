@@ -17,8 +17,7 @@ Calculator widget.
 <refsect2>
   <title><structname>GnomeCalculator</structname> functions</title>
 
-  <para>The following is a list and description of each button represented on the
-        GnomeCalculator widget</para>
+  <para>The following is a list and description of each button represented on the GnomeCalculator widget</para>
 
   <itemizedlist>
 	<listitem><para>
@@ -61,7 +60,40 @@ Calculator widget.
 		
 		<para>Use (5 + 6) * 8 = 88, to make sure your meaning is understood</para>
 	</listitem>
+
+	<listitem><para>
+		The %DEG or %RAD button will switch between the degree or radians mode.  Its often needed to measure in one mode or the other.  As an example, 90 degrees is the same as %PI/2, 180 degrees is %PI, 270 degrees is 3 PI/2, and 360 degrees is 2 %PI.</para>
+	</listitem>
+
+	<listitem><para>
+		%C will clear the current result value.  %AC will clear the current result, but will also clear all values stored in memory.</para>
+	</listitem>
   </itemizedlist>
+</refsect2>
+
+<refsect2>
+  <title>Memory Functions</title>
+
+  <para>The following are <structname>GnomeCalculator</structname> widget's memory functions</para>
+
+  <itemizedlist>
+
+	<listitem><para>
+		%STO stores the current result in the display into memory.</para>
+	</listitem>
+
+	<listitem><para>
+		%RCL will take the value stored in memory, and display it in the resultant.</para>
+	</listitem>
+
+	<listitem><para>
+		%SUM will take the current result in the display and add it to the current value stored in memory.  If nothing is in the memory, the current value will be placed in memory as it is.</para>
+	</listitem>
+
+	<listitem><para>
+		%EXC will take the current value in memory and exchange it with the current resultant.  The previous current result will be placed back in memory.</para>
+	</listitem>
+    </itemizedlist>
 </refsect2>
 
 <refsect2>
