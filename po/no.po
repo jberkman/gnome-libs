@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-libs 1.0.11\n"
-"POT-Creation-Date: 1999-08-19 17:36-0400\n"
-"PO-Revision-Date: 1999-08-17 23:26+02:00\n"
+"POT-Creation-Date: 1999-08-26 00:21+0200\n"
+"PO-Revision-Date: 1999-08-26 00:24+02:00\n"
 "Last-Translator: Kjartan Maraas <kmaraas@online.no>\n"
 "Language-Team: Norwegian <no@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -221,23 +221,23 @@ msgstr ""
 "Kjør '%s --help' for å få en full liste med tilgjengelige "
 "kommandolinjeflagg.\n"
 
-#: libgnome/gnomelib-init.c:124
+#: libgnome/gnomelib-init.c:130
 msgid "Disable sound server usage"
 msgstr "Slå av bruk av lydtjener"
 
-#: libgnome/gnomelib-init.c:126
+#: libgnome/gnomelib-init.c:132
 msgid "Enable sound server usage"
 msgstr "Slå på bruk av lydtjener"
 
-#: libgnome/gnomelib-init.c:128
+#: libgnome/gnomelib-init.c:134
 msgid "Host:port on which the sound server to use is running"
 msgstr "Vert:port hvor lydtjeneren som skal brukes kjører"
 
-#: libgnome/gnomelib-init.c:129
+#: libgnome/gnomelib-init.c:135
 msgid "HOSTNAME:PORT"
 msgstr "VERTSNAVN:PORT"
 
-#: libgnome/gnomelib-init.c:137
+#: libgnome/gnomelib-init.c:144
 msgid "GNOME Options"
 msgstr "GNOME Alternativer"
 
@@ -929,86 +929,91 @@ msgstr "Kan ikke finne en hboks, bruker vanlig filvalg"
 msgid "Preview"
 msgstr "Forhåndsvisning"
 
-#: libgnomeui/gnome-icon-sel.c:326
+#: libgnomeui/gnome-icon-sel.c:337
 msgid "Loading Icons..."
 msgstr "Laster ikoner..."
 
-#: libgnomeui/gnome-init.c:153
+#: libgnomeui/gnome-init.c:157
 msgid "Gdk debugging flags to set"
 msgstr "Gdk avlusingsflagg som skal slås på"
 
-#: libgnomeui/gnome-init.c:153 libgnomeui/gnome-init.c:155
-#: libgnomeui/gnome-init.c:175 libgnomeui/gnome-init.c:177
+#: libgnomeui/gnome-init.c:157 libgnomeui/gnome-init.c:159
+#: libgnomeui/gnome-init.c:179 libgnomeui/gnome-init.c:181
 msgid "FLAGS"
 msgstr "FLAGG"
 
-#: libgnomeui/gnome-init.c:155
+#: libgnomeui/gnome-init.c:159
 msgid "Gdk debugging flags to unset"
 msgstr "Gdk avlusingsflagg som skal slås av"
 
-#: libgnomeui/gnome-init.c:157
+#: libgnomeui/gnome-init.c:161
 msgid "X display to use"
 msgstr "X-display som skal brukes"
 
-#: libgnomeui/gnome-init.c:157
+#: libgnomeui/gnome-init.c:161
 msgid "DISPLAY"
 msgstr "DISPLAY"
 
-#: libgnomeui/gnome-init.c:159
+#: libgnomeui/gnome-init.c:163
 msgid "Make X calls synchronous"
 msgstr "Bruk synkrone X-kall"
 
-#: libgnomeui/gnome-init.c:161
+#: libgnomeui/gnome-init.c:165
 msgid "Don't use X shared memory extension"
 msgstr "Ikke bruk X-utvidelse for delt minne"
 
-#: libgnomeui/gnome-init.c:163
+#: libgnomeui/gnome-init.c:167
 msgid "Program name as used by the window manager"
 msgstr "Programnavn som brukt av vindusbehandleren"
 
-#: libgnomeui/gnome-init.c:163
+#: libgnomeui/gnome-init.c:167
 msgid "NAME"
 msgstr "NAVN"
 
-#: libgnomeui/gnome-init.c:165
+#: libgnomeui/gnome-init.c:169
 msgid "Program class as used by the window manager"
 msgstr "Programklasse som brukt av vindusbehandleren"
 
-#: libgnomeui/gnome-init.c:165
+#: libgnomeui/gnome-init.c:169
 msgid "CLASS"
 msgstr "KLASSE"
 
-#: libgnomeui/gnome-init.c:167
+#: libgnomeui/gnome-init.c:171
 msgid "HOST"
 msgstr "VERT"
 
-#: libgnomeui/gnome-init.c:169
+#: libgnomeui/gnome-init.c:173
 msgid "PORT"
 msgstr "PORT"
 
-#: libgnomeui/gnome-init.c:171 libgnomeui/gnome-init.c:173
+#: libgnomeui/gnome-init.c:175 libgnomeui/gnome-init.c:177
 msgid "STYLE"
 msgstr "STIL"
 
-#: libgnomeui/gnome-init.c:175
+#: libgnomeui/gnome-init.c:179
 msgid "Gtk+ debugging flags to set"
 msgstr "Gtk+ avlusingsflagg som skal slås på"
 
-#: libgnomeui/gnome-init.c:177
+#: libgnomeui/gnome-init.c:181
 msgid "Gtk+ debugging flags to unset"
 msgstr "Gtk+ avlusingsflagg som skal slås av"
 
-#: libgnomeui/gnome-init.c:179
+#: libgnomeui/gnome-init.c:183
 msgid "Make all warnings fatal"
 msgstr "Gjør alle advarsler til fatale"
 
-#: libgnomeui/gnome-init.c:181
+#: libgnomeui/gnome-init.c:185
 msgid "Load an additional Gtk module"
 msgstr "Last tilleggsmodul for Gtk+"
 
-#: libgnomeui/gnome-init.c:181
+#: libgnomeui/gnome-init.c:185
 msgid "MODULE"
 msgstr "MODUL"
+
+#. dialog display isn't working out
+#: libgnomeui/gnome-init.c:608
+msgid "Giving up on displaying error dialog"
+msgstr "Gir opp forsøk på å vise feildialogen"
 
 #: libgnomeui/gnome-messagebox.c:111 libgnomeui/gnome-messagebox.c:240
 msgid "Information"
@@ -1054,19 +1059,19 @@ msgstr "K_lipp"
 msgid "Select"
 msgstr "Velg"
 
-#: libgnomeui/gnome-scores.c:76
+#: libgnomeui/gnome-scores.c:88
 msgid "Top Ten"
 msgstr "Topp ti"
 
-#: libgnomeui/gnome-scores.c:87
+#: libgnomeui/gnome-scores.c:99
 msgid "User"
 msgstr "Bruker"
 
-#: libgnomeui/gnome-scores.c:90
+#: libgnomeui/gnome-scores.c:102
 msgid "Score"
 msgstr "Poengsum"
 
-#: libgnomeui/gnome-scores.c:93
+#: libgnomeui/gnome-scores.c:105
 msgid "Date"
 msgstr "Dato"
 
@@ -1078,7 +1083,7 @@ msgstr "Dato"
 #. %d is day of month, %m is month number, %T full hour,
 #. %H hours, %M minutes, %S seconds
 #.
-#: libgnomeui/gnome-scores.c:119
+#: libgnomeui/gnome-scores.c:131
 msgid "%a %b %d %T %Y"
 msgstr "%a %b %d %T %Y"
 
@@ -1313,16 +1318,24 @@ msgstr "Menyvalg"
 msgid "Accelerator"
 msgstr "Aksellerator"
 
-#: libgnomeui/gnome_segv.c:43
+#: libgnomeui/gnome_segv.c:44
 #, c-format
 msgid ""
-"Application \"%s\" (process %d) has crashed due to a bug in the software.\n"
-"(%s)\n"
-"For more information, see http://www.gnome.org/application_crashed.shtml"
+"Application \"%s\" (process %d) has crashed\n"
+"due to a fatal error.\n"
+"(%s)"
 msgstr ""
-"Applikasjon \"%s\" (prosess %d) har krasjet pga en feil i programvaren.\n"
-"(%s)\n"
-"For mer informasjon, se http://www.gnome.org/application_crashed.shtml"
+"Applikasjonen \"%s\" (prosess %d) har krasjet\n"
+"pga en fatal feil.\n"
+"(%s)"
+
+#: libgnomeui/gnome_segv.c:49
+msgid "Usage: gnome_segv appname signum\n"
+msgstr "Bruk: gnome_segv appname signum\n"
+
+#: libgnomeui/gnome_segv.c:61
+msgid "Please visit the GNOME Application Crash page for more information"
+msgstr "Vennligst besøk GNOME Applikasjonskrasj-siden for mer informasjon"
 
 #: libgnomeui/stock_demo.c:112
 msgid "New..."
