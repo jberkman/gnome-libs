@@ -53,10 +53,10 @@ void Exception( CORBA_Environment* ev )
   switch( ev->_major )
     {
     case CORBA_SYSTEM_EXCEPTION:
-      gwarning("CORBA system exception %s.\n", CORBA_exception_id(ev));
+      g_warning("CORBA system exception %s.\n", CORBA_exception_id(ev));
       exit ( 1 );
     case CORBA_USER_EXCEPTION:
-      gwarning("CORBA user exception: %s.\n", CORBA_exception_id( ev ) );
+      g_warning("CORBA user exception: %s.\n", CORBA_exception_id( ev ) );
       exit ( 1 );
     default:
       break;
