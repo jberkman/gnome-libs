@@ -1,156 +1,481 @@
-From owner-gnome-hackers@athena.nuclecu.unam.mx  Sat Jan 23 10:10:34 1999
-X-Authentication-Warning: athena.nuclecu.unam.mx: majordom set sender to owner-gnome-hackers using -f
-Date: Sat, 23 Jan 1999 15:50:12 GMT
-From: Felix Bellaby <felix@pooh.u-net.com>
-To: gnome-hackers@nuclecu.unam.mx
-Subject: Re: gnome-session race conditions
-Sender: owner-gnome-hackers@nuclecu.unam.mx
+Gnome Session Management
+========================
 
-Hi all,
+The gnome-session manager implements the SM protocol for X11R6. (specified 
+in xc/docs/specs/SM.txt from xc-3.tar.gz in the X distribution). Additional 
+details of the support for the SM protocol are given in Appendix A.
 
-I think that I have the runlevel start up code working in 
-the gnome-session in cvs. This means that the gnome start 
-up can now be controled in much more detail.
+This document describes any extensions to the SM protocol which are 
+implemented by gnome-session.
 
-However, esd and gnome-name-server must be made session
-aware before we see substantial benefits. At the moment
-esd sometimes fails to start up and gnome apps appearing 
-to be waiting for a long periods before registering.
+Avoiding Race Conditions During Session Start Up
+------------------------------------------------
 
-I can try to implement session awareness in these servers
-if that is ok with the authors. The logical approach in
-these cases would seem to be to make them into clients
-which start up in the earliest run level and have a
-restart style of RestartImmediately so that gnome-session
-ensures they are always available (acting like init).
+The standard SM protocol does not specify a start up ordering for the apps
+that form the clients in a session. As a result, apps have traditionally
+been faced with race conditions when they rely on other members of the 
+session to provide them with services or initialise the environment.
 
-This approach remains compatible with starting them up
-from the gnome-libs when necessary (e.g. when gnome-session
-is not being used or has been misconfigured). Providing the
-servers set their Priority and RestartStyleHint properly
-they will automatically fix a misconfigured gnome-session.
+gnome-session avoids these problems by allocating "priority" levels to
+the apps in a session. The priority levels range from 0 to 99 with
+a default value of 50.
 
-There are subsiduary changes to gnome-core/smproxy and 
-libgnomeui (gnome-client) which you will need to rebuild
-to get everything working.
+gnome-session starts up a session by executing any apps in priority level 0. 
+It then waits until all those apps have registered as clients with the 
+session manager before executing any apps with priority level 1.
+gnome-session continues in this fashion until all the apps in the session
+have been restarted.
 
-There is a new function in gnome-client.c which allows 
-gnome-apps to set their priority (for the next restart):
+gnome-session gives up waiting for clients that fail to register after
+a configurable period which defaults to 30 seconds and then goes onto
+the next priority level.
 
-void gnome_client_set_priority (GnomeClient *client, 
-                                guint priority);
+The priority levels assigned to apps are ultimately under the control
+of the user so that any conflicts can always be resolved. However, apps
+which need to start in priority levels outside the default 50 level may 
+suggest a priority level to gnome-session. Providing apps make sensible 
+and consistent suggestions for these priority levels then the user need 
+never become involved.
 
-This just calls SmcSetProperties to set a SmCARD8 property
-with the name "Priority" to a value between 0 and 99. The
-priority is not stored in the GnomeClient object. I have not
-patched anyone's code to use this but it does work.
+a) Details of app compliance.
+   --------------------------
+ 
+1) The app must implement the rudiments of the standard SM protocol.
 
-I intend to implement user control over the priorities using
-a GUI on the session manager side so there should be no reason
-for apps to do anything with this priority beyond setting its
-value to whatever they feel is a reasonable default. Apps
-which wish to run at priority 50 (i.e. almost everything)
-need not use this function at all.
+2) The app must delay connection to the session manager until it has
+   performed whatever initialisation steps might be necessary to allow
+   apps in later priority levels to start up correctly.
 
-gnome-session currently prints a log of which apps are
-starting and registering out to stderr. When gnome-session 
-has to register the client under a different id than it had 
-in the previous session then it prints out that is "Cloning" 
-the client to help you keep track.
+   libgnomeui normally connects to gnome-session during gnome_init().
+   Apps which can not perform their initialisation steps before
+   calling gnome_init() may delay the connection by calling:
 
-gnome-session normally goes onto the next runlevel when
-all the clients in the preceeding levels have either registered
-or failed to register within 30 seconds. This 30000ms delay
-may be altered using the --purge-delay option to gnome-session.
-Setting it to 0 makes gnome-session wait forever and gives
-you the tightest control over start up order (at the expense
-of a possible freeze waiting for a broken client).
+	gnome_client_disable_master_connection()
 
-The easiest approach to trying this code out is to delete 
-your ~/.gnome/session and force gnome-session to use the new 
-default.session. Starting X up with a single gnome-terminal
-(NOT an xterm) and calling gnome-session from the command 
-line makes things clearer. 
+   Once the initialisation steps have been completed the connection
+   should then be made by calling:
 
-The format of the default.session file has altered to match 
-the ~/.gnome/session file. This increases its complexity 
-but is unavoidable. Each client in the new default.session 
-typically needs three lines: e.g.
+	gnome_client_connect (gnome_master_client());
 
-0,Priority=40
-0,id=default0
-0,RestartCommand=panel --sm-client-id default0
+   Apps which do not use libgnomeui to connect to the session manager
+   should ensure that they have completed their initialisation steps
+   before calling SmcOpenConnection().
 
-The Priority= property gives the runlevel (0 is the highest 
-priority). This property is carried through to subsequent 
-restarts. gnome-session currently assigns a priority of
-50 to all clients that join the session without being
-restarted (i.e. start ups from the panel, xterm, etc.).
-These clients must set their priority for themselves.
+3) Once the app has connected then it must suggest a priority level
+   in which it should be restarted to the session manager (unless it 
+   has no reason to run outside the default 50 level).
 
-I intend to make gnome-session a bit more intelligent
-in this respect by making it remember the runlevels 
-that have been assigned to particular apps in other 
-sessions and apply them as the defaults instead.
+   libgnomeui provides the following API for sending this suggestion:
 
-The id= property tells gnome-session which client id will be
-used by the client to register. The ids used for session aware
-clients in the default.session file can be almost anything 
-providing they are all distinct (see below re "ghost" ids).
-This allows you to copy a ~/.gnome/session over to the 
-default.session file (stripping out user specific options). 
+	gnome_client_set_priority (gnome_master_client (), priority);
 
-The ids in the default.sesion file are NOT inherited by the 
-running clients. Your app should not be concerning itself with
-the id which is been assigned to it in any case as the protocol
-makes no ABSOLUTE gaurantees about the value that it will take
-(i.e. it is preserved 99% of the time but not always). I will
-alter the panel to reflect this shortly.
+   Apps which do not use libgnomeui may send the suggestion by
+   including a SMProp with name "Priority" and type SmCARD8
+   among the properties in a call to SmcSetProperties().
 
-The RestartCommand= property gives the startup command and 
-MUST incorporate the option needed to tell the client to 
-register with the string in the id property. For gnome apps 
-this means  appending the "--sm-client-id" option. No option 
-name is specified by the protocol and many are used...
+4) If the app is included among the apps that are started up for every
+   brand new gnome user then it should record its priority level in 
+   the gsm/default.in file in the gnome-core module in cvs.
 
-I have passed 2 options to the (unknown) WM in default.in since 
-E uses "-smid" and all the others that I know use "-clientId". 
+   The records in this file take the following format where <n> is
+   a number between 0 and the value in the num_clients= field:
 
-Does anyone know of any other names used for this option by WMs 
-or of any WMs which complain about being fed options which they 
-do not recognise ? If so patch up gsm/default.in. (:
+   <n>,id=default<n>
+   <n>,Priority=<the priority level>
+   <n>,RestartCommand=<command line> <client id option> default<n>
 
-The default.session and ~/.gnome/session files can also include 
-clients which are NOT session aware. These are distinguished 
-from the session aware clients by having ids that begin with 
-the word "ghost", indicating to gnome-session that there is 
-no point waiting for these apps to register: e.g.
+   libgnomeui apps always use "--sm-client-id" as the <client id option>.
 
-8,id=ghost0
-8,RestartCommand=fetchmail
-
-This app would be started up with the Priority=50 session 
-aware clients. gnome-session will then remember to start
-the app up again at the next restart of this session.
-
-These changes mean that the "session-properties" GUI no 
-longer works (because the [preloads] section has been
-replaced with the "ghost" apps and gnome-session now
-holds this data internally - overwriting any changes 
-to the config section for the current session). This
-fixes a known bug: the preloads should be session 
-specific.
-
-I will have a look at how hard it will be to integrate
-the session-properties GUI (or better) into gnome-session 
-and edit the live data. This might be able to go into
-gnome-1.0.
-
-My testing suggested that the gnome_execute_async
-functions are NOT returning the pids of the children
-that are being started. Is this a known problem ?
-I have not looked at it in any detail. (:
-
-Felix
+   Apps which not use libgnomeui may use any option names to set their
+   client id but it is helpful to the maintainers of default.session
+   files if they support the "--sm-client-id" option.
 
 
+b) An Example server: esd
+   ----------------------
+
+Since many of the servers that might wish to participate in this protocol
+extension are unlikely to implement SM at present the following example
+showing how esd implements SM may be useful:
+
+session.c:
+-------------
+/* Session management support for a server to support 
+   gnome-session start up, close down and re-spawning. 
+
+   Author: Felix Bellaby <felix@pooh.u-net.com> */
+
+#include "config.h"
+#include "esd-server.h"
+#ifdef HAVE_X11_SM_SMLIB_H
+#include <X11/SM/SMlib.h>
+#include <pwd.h>
+#define GnomePriority "Priority"
+#endif
+
+/* imported stuff: esd options */
+extern int listen_socket;
+extern int esd_port;
+extern int esd_beeps;
+
+/* exported stuff: */
+void session_init (char* argv0, char* id);
+void poll_ice_msgs(void);
+void add_ice_fd (fd_set *rd_fds, int *max_fd);
+
+#ifdef HAVE_X11_SM_SMLIB_H
+/* Useful if you want to change the SM properties outside this file. */
+SmcConn sm_conn = NULL;
+#endif
+
+/* static stuff: */
+#ifdef HAVE_X11_SM_SMLIB_H
+
+static IceConn ice_conn = NULL;
+static int     ice_fd = -1;
+static int     set_props = 0;
+static char*   sm_client_id = "";
+static char*   command = NULL;
+
+static void
+callback_die(SmcConn smc_conn, SmPointer client_data)
+{
+    esd_client_t * client = esd_clients_list;
+
+    SmcCloseConnection(smc_conn, 0, NULL);
+
+    /* this graceful closedown stuff needs to be kept in sync: */
+    esd_audio_close();
+
+    close( listen_socket );
+
+    while ( client != NULL )
+    {
+	close( client->fd );
+	client = client->next;
+    }
+
+    exit( 0 );
+}
+
+static void
+callback_save_yourself(SmcConn smc_conn, SmPointer client_data,
+		       int save_style, Bool shutdown, int interact_style,
+		       Bool fast)
+{
+    if (set_props) {
+        struct {
+            SmPropValue program[1];
+            SmPropValue user[1];
+            SmPropValue hint[1];
+            SmPropValue priority[1];
+            SmPropValue restart[15];
+	} vals;
+	SmProp prop[] = {
+	    { SmProgram,          SmLISTofARRAY8, 1, vals.program },
+	    { SmUserID,           SmLISTofARRAY8, 1, vals.user    },
+	    { SmRestartStyleHint, SmCARD8,        1, vals.hint    },
+	    { GnomePriority,      SmCARD8,        1, vals.priority},
+	    { SmCloneCommand,     SmLISTofARRAY8, 0, vals.restart },
+	    { SmRestartCommand,   SmLISTofARRAY8, 0, vals.restart }
+	};
+	SmProp *props[] = { 
+	    &prop[0], 
+	    &prop[1], 
+	    &prop[2],
+	    &prop[3], 
+	    &prop[4],
+	    &prop[5]
+	};
+	char           priority = 5;
+	char           restart_style = SmRestartImmediately;
+	struct passwd *pw = getpwuid (getuid());
+	int            n = 0, i;
+
+	char           port[10];
+	char           rate[10];
+	char           as[10];
+	
+	vals.program->value  = command;
+	vals.program->length = strlen(vals.program->value);
+	
+	vals.user->value  = pw ? pw->pw_name : "";
+	vals.user->length = strlen(vals.user->value);
+	
+	vals.hint->value  = &restart_style;
+	vals.hint->length = 1;
+	
+	vals.priority->value  = &priority;
+	vals.priority->length = 1;
+
+	/* This stuff MUST be kept in sync with esd.c: */
+	sprintf (port, "%9d", esd_port);
+	sprintf (rate, "%9d", esd_audio_rate);
+	sprintf (as, "%9d", esd_autostandby_secs);
+	
+	vals.restart[n++].value = command;
+	vals.restart[n++].value = "-port";
+	vals.restart[n++].value = port;
+	vals.restart[n++].value = "-r";
+	vals.restart[n++].value = rate;
+	if (! esd_beeps) {
+	    vals.restart[n++].value = "-nobeeps";
+	}
+	if (esd_audio_format & ESD_BITS8)
+	    vals.restart[n++].value = "-b";
+	if (esd_audio_device) {
+	    vals.restart[n++].value = "-d";
+	    vals.restart[n++].value = esd_audio_device;
+	}
+	if (esd_autostandby_secs > -1) {
+	    vals.restart[n++].value = "-as";
+	    vals.restart[n++].value = as;
+	}
+	/* end of stuff to keep in sync */
+	
+	prop[4].num_vals = n;
+
+	vals.restart[n++].value = "--sm-client-id";
+	vals.restart[n++].value = sm_client_id;
+	
+	prop[5].num_vals = n;
+
+	for (i = 0; i < n; i++)
+	    vals.restart[i].length = strlen(vals.restart[i].value);
+		
+	SmcSetProperties(smc_conn, sizeof(props)/sizeof(SmProp*), props);
+
+	set_props = 0;
+    }
+
+    /* Nothing to save */
+    SmcSaveYourselfDone(smc_conn, 1);
+}
+
+static void 
+callback_shutdown_cancelled(SmcConn smc_conn, SmPointer client_data)
+{
+    /* We are not really interested in this message. */
+}
+
+static void 
+callback_save_complete(SmcConn smc_conn, SmPointer client_data)
+{
+    /* We are not really interested in this message. */
+}
+
+static void 
+ice_io_error_handler(IceConn connection)
+{
+    /* The less we do here the better - the default handler does an
+       exit(1) instead of closing the losing connection. */
+}    
+
+static void 
+process_ice_msgs(void)
+{
+    IceProcessMessagesStatus status;
+
+    status = IceProcessMessages(ice_conn, NULL, NULL);
+
+    if (status == IceProcessMessagesIOError) {
+	SmcCloseConnection (sm_conn, 0, NULL);
+	ice_fd   = -1;
+	ice_conn = NULL; 
+	sm_conn  = NULL;
+    }
+}
+
+void 
+session_init(char* argv0, char* id)
+{
+    SmcCallbacks        callbacks;
+
+    callbacks.save_yourself.callback = callback_save_yourself;
+    callbacks.die.callback = callback_die;
+    callbacks.save_complete.callback = callback_save_complete;
+    callbacks.shutdown_cancelled.callback = callback_shutdown_cancelled;
+    
+    callbacks.save_yourself.client_data =
+        callbacks.die.client_data =
+        callbacks.save_complete.client_data =
+        callbacks.shutdown_cancelled.client_data = (SmPointer) NULL;
+
+    command = argv0;
+    sm_client_id = id;
+    
+    IceSetIOErrorHandler (ice_io_error_handler);
+
+    if (getenv("SESSION_MANAGER")) {
+        char  error_string_ret[4096] = "";
+	char* client_id = NULL; 
+
+	if (sm_client_id)
+	    client_id = strdup (sm_client_id);
+
+	sm_conn = SmcOpenConnection(NULL, NULL, SmProtoMajor, SmProtoMinor,
+				    SmcSaveYourselfProcMask | SmcDieProcMask |
+				    SmcSaveCompleteProcMask |
+				    SmcShutdownCancelledProcMask,
+				    &callbacks, client_id, &sm_client_id,
+				    4096, error_string_ret);
+
+	if (!client_id)
+	    set_props = 1;
+	else {
+	    set_props = strcmp (client_id, sm_client_id);
+	    free(client_id);
+	}
+
+	if (error_string_ret[0])
+	    fprintf(stderr, "While connecting to session manager:\n%s.",
+		    error_string_ret);
+    }
+    if (sm_conn) {
+        ice_conn = SmcGetIceConnection(sm_conn);
+	ice_fd = IceConnectionNumber(ice_conn);
+
+	/* Not really needed... */
+	fcntl(ice_fd, F_SETFD, fcntl(ice_fd, F_GETFD, 0) | FD_CLOEXEC);
+    }
+}
+
+void 
+poll_ice_msgs(void)
+{
+    if (ice_fd != -1) {
+	fd_set rd_fds;
+	struct timeval timeout;
+
+        timeout.tv_sec = 0;
+	timeout.tv_usec = 0;
+	FD_ZERO( &rd_fds );
+	FD_SET( ice_fd, &rd_fds );
+
+	if (select( ice_fd + 1, &rd_fds, NULL, NULL, &timeout ))
+	    process_ice_msgs();
+    }
+}
+
+void add_ice_fd (fd_set *rd_fds, int *max_fd)
+{
+    if (ice_fd != -1) {
+	FD_SET( ice_fd, rd_fds );
+	if (ice_fd > *max_fd)
+	    *max_fd = ice_fd;
+    }
+}
+
+#else /* HAVE_X11_SM_SMLIB_H */ 
+
+void 
+session_init(char* argv0, char* id)
+{
+    /* Nothing to do */ 
+}
+
+void 
+poll_ice_msgs(void)
+{
+    /* Nothing to do */ 
+}
+
+void add_ice_fd (fd_set *rd_fds, int *max_fd)
+{
+    /* Nothing to do */
+}
+
+#endif /* HAVE_X11_SM_SMLIB_H */ 
+---------
+
+The session_init() function is called after esd has created the socket on
+which it accepts connections from its clients. It is passed the value of 
+argv[0] and the client id specified on the command line using the
+"--sm-client-id" option.
+
+The add_ice_fd() function is called before entering a blocking select on 
+the sockets which esd uses and adds the ICE connection fd into the select 
+so that gnome-session can get esd's attention when necessary.
+
+The poll_ice_msgs() function checks for messages from gnome-session and 
+dispatches them to the callback_* functions detailed above.
+
+Most of the session.c file could be used for any server. However, there are 
+two pieces of esd specific code.
+
+Firstly, the callback_die() function performs the steps required to close 
+down the server gracefully (typically on a session logout).
+
+Secondly, the callback_save_yourself() function sets a gnome-session priority 
+level of 5 (because E starts at level 10), requests that gnome-session 
+respawns the server if it dies and specifies the command line arguments that 
+are peculiar to esd.
+
+c) Legacy app support
+   ------------------
+
+gnome-session provides some support for controlling the start up order of 
+apps that do not implement this protocol extension. 
+
+Any app can be assigned a priority level within the default.in or 
+~/.gnome/session files. gnome-session will provide a GUI for the user to
+simplify this task.
+
+X11R6 SM compliant apps are all handled as if they implemented the protocol
+extension and performed their initialisation steps before connecting to 
+gnome-session. This is an approximation of the truth.
+
+X11R5 SM compliant apps are handled by gnome-smproxy and delay their
+connections to gnome-session until they map their first windows on the 
+X display. They may well have completed any initialisation steps by then.
+
+Non-SM apps are started within their allocated priority level but no
+attempt is made to wait for them to complete initialisation. Non-SM apps 
+must be entered into the default.in and ~/.gnome/session files with a
+record in the following format so that gnome-session does not wait for
+them to register: 
+
+    <n>,id=ghost
+    <n>,Priority=<the proirity level>
+    <n>,RestartCommand=<command line> 
+
+That is it as of 01-28-99.
+
+Felix 
+
+<felix@pooh.u-net.com>
+
+
+APPENDIX A: X11R6 SM Protocol Support
+-------------------------------------
+
+The SM protocol is a bit vague about the types that should be used for
+the properties that are set on the session manager. gnome-session uses
+the types recommended for POSIX systems in the protocol specs:
+
+------------------------------------
+Name                 Type           
+------------------------------------
+SmCloneCommand       SmLISTofARRAY8 
+SmCurrentDirectory   SmARRAY8       
+SmDiscardCommand     SmLISTofARRAY8 
+SmEnvironment        SmLISTofARRAY8 
+SmProcessID          SmARRAY8       
+SmProgram            SmARRAY8       
+SmRestartCommand     SmLISTofARRAY8 
+SmResignCommand      SmLISTofARRAY8 
+SmRestartStyleHint   SmCARD8        
+SmShutdownCommand    SmLISTofARRAY8 
+SmUserID             SmARRAY8       
+------------------------------------
+
+In addition, gnome-session exactly reproduces the behavior of xsm when sent 
+a SmDiscardCommand of type SmARRAY8. However, the SmLISTofARRAY8 type is 
+strongly recommmended because the SmARRAY8 type commands are always run on 
+the host running the session manager whilst the SmLISTofARRAY8 type command
+will be run on the host running the client.
+
+xsm does not send a SaveComplete message in response to the initial
+SaveYourself message sent on registration (section 7.2 of the specs).
+gnome-session does not reproduce this violation of the protocol as
+it might leave properly compliant clients in a frozen state.
