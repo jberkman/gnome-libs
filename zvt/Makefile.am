@@ -58,5 +58,5 @@ test_utmp_LDADD =			\
 	$(UTIL_LIBS)
 
 install-exec-local:
-	-chown root.root $(DESTDIR)$(sbindir)/gnome-pty-helper
-	-chmod u+s $(DESTDIR)$(sbindir)/gnome-pty-helper
+	-file=$(DESTDIR)$(sbindir)/gnome-pty-helper; \
+	chown root $$file && chgrp root $$file && chmod u+s $$file

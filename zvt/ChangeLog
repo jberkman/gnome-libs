@@ -1,3 +1,8 @@
+1999-05-24  Raja R Harinath  <harinath@cs.umn.edu>
+
+	* Makefile.am (install-exec-local): Uses separate `chown root' and
+	`chgrp root' rather than `chown root.root'.
+
 1999-05-18  Michael Zucchi  <zucchi@zzedzone.mmc.com.au>
 
 	* vt.c (vt_insert_lines): range check upper limit.
