@@ -1,7 +1,8 @@
 #Utilitiesdir = $(datadir)/apps/Utilities
 
 INCLUDES = -I.. -I$(srcdir)/.. -I$(includedir) \
-	 -DLOCALEDIR=\"$(datadir)/locale\"
+	-DGNOMELOCALEDIR=\""$(datadir)/locale"\" \
+	-DLOCALEDIR=\"$(datadir)/locale\"
 
 LDADD = \
 	$(top_builddir)/libgnomeui/libgnomeui.la 	\
