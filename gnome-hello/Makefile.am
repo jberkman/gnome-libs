@@ -1,16 +1,14 @@
 #Utilitiesdir = $(datadir)/apps/Utilities
 
-INCLUDES = -I../.. -I$(srcdir)/../.. -I$(includedir) \
+INCLUDES = -I.. -I$(srcdir)/.. -I$(includedir) \
 	 -DLOCALEDIR=\"$(datadir)/locale\"
 
 LDADD = \
 	$(top_builddir)/libgnomeui/libgnomeui.la 	\
 	$(top_builddir)/libgnome/libgnome.la		\
 	$(top_builddir)/gtk-xmhtml/libgtkxmhtml.la	\
-	$(XPM_LIBS)					\
-	$(GTK_LIBS)					\
-	$(DL_LIB)					\
-        $(X_LIBS) $(x_libs) $(INTLLIBS)			
+	$(top_builddir)/support/libsupport.a		\
+	$(LIBGTKXMHTML_LIBS) $(INTLLIBS)
 
 noinst_PROGRAMS =  \
 	gnome-hello-0-basic 		\

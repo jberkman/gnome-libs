@@ -1,3 +1,11 @@
+1998-02-12  Raja R Harinath  <harinath@cs.umn.edu>
+
+	* gnome-hello-3-parse-args.c: Look for getopt.h in `support' too.
+	* gnome-hello-4-SM.c: Likewise.
+	
+	* Makefile.am (LDADD): Use $(LIBGTKXMHTML_LIBS) instead of a long
+	list of libraries.
+
 1998-02-07  Raja R Harinath  <harinath@cs.umn.edu>
 
 	* Makefile.am (*_LDADD): Remove redundant *_LDADD=$(LDADD).  This

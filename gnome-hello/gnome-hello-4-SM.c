@@ -18,7 +18,11 @@
 #include <config.h>
 #include <gnome.h>
 /* We are using GNU GetOpt */
+#ifdef HAVE_GETOPT_LONG
 #include <getopt.h>
+#else
+#include <support/getopt.h>
+#endif
 
 void hello_cb (GtkWidget *widget, void *data);
 void about_cb (GtkWidget *widget, void *data);
