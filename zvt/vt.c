@@ -483,6 +483,8 @@ void vt_clear_line_portion(struct vt_em *vt, int start_col, int end_col)
 \********************************************************************************/
 static void vt_bell(struct vt_em *vt)
 {
+  if (vt->ring_my_bell)
+    vt->ring_my_bell();
   d(printf("bell\n"));
 }
 
@@ -1303,6 +1305,8 @@ vt_init(struct vt_em *vt, int width, int height)
   vt->G[3]=0;
 
   vt_mem_init(&vt->mem_list);
+
+  vt->ring_my_bell = 0L;
 
   return vt;
 }

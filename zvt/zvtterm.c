@@ -83,6 +83,8 @@ static void zvt_term_readmsg(gpointer data, gint fd, GdkInputCondition condition
 static void zvt_term_fix_scrollbar(ZvtTerm *term);
 static void vtx_unrender_selection (struct _vtx *vx);
 
+static void zvt_term_scroll (ZvtTerm *term, int n);
+
 #ifndef ZVT_NO_TRANSPARENT
 /*kind of stolen from Eterm and needs heavy cleanup*/
 static Window desktop_window = None;
@@ -346,6 +348,9 @@ zvt_term_init (ZvtTerm *term)
   /* input handlers */
   term->input_id = -1;
   term->msg_id = -1;
+
+  /* set bell callback  */
+  term->vx->vt.ring_my_bell = zvt_term_bell;
 
   zvt_term_set_font_name(term, "-misc-fixed-medium-r-semicondensed--13-120-75-75-c-60-iso8859-1");
 
@@ -2185,3 +2190,37 @@ zvt_term_set_del_key_swap (ZvtTerm *term, int state)
 
 	term->swap_del_key = state != 0;
 }
+
+/**
+ * zvt_term_bell:
+ * 
+ * Generate a terminal bell.  Currently this is just a beep.
+ **/
+void
+zvt_term_bell(void)
+{
+  gdk_beep();
+}
+
+
+/**
+ * zvt_term_set_bell:
+ * @term: A &ZvtTerm widget.
+ * @state: New bell state.
+ * 
+ * Enable or disable the terminal bell.  If @state is %TRUE, then the
+ * bell is enabled.
+ **/
+void
+zvt_term_set_bell(ZvtTerm *term, int state)
+{
+  g_return_if_fail (term != NULL);
+  g_return_if_fail (ZVT_IS_TERM (term));
+
+  if (state)
+    term->vx->vt.ring_my_bell = zvt_term_bell;
+  else
+    term->vx->vt.ring_my_bell = 0;
+}
+
+

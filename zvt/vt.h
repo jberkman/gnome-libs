@@ -116,6 +116,7 @@ struct vt_em {
   int scrollbackold;		/* old scrollback offset */
   int scrollbackmax;		/* maximum scrollbacklines, after this total is reached,
 				   old lines are discarded */
+  void (*ring_my_bell)(void);	/* ring my bell ... */
 
 };
 

@@ -112,6 +112,8 @@ extern "C" {
 
   int           zvt_term_killchild                (ZvtTerm *term, int signal);
 
+  void		zvt_term_bell			  (void);
+
   guint         zvt_term_get_type                 (void);
 
   void          zvt_term_set_scrollback           (ZvtTerm *term, int lines);
@@ -124,6 +126,7 @@ extern "C" {
   void          zvt_term_hide_pointer             (ZvtTerm *term);
   void          zvt_term_show_pointer             (ZvtTerm *term);
 
+  void		zvt_term_set_bell		  (ZvtTerm *term, int state);
   void          zvt_term_set_blink                (ZvtTerm *term, int state);
   void          zvt_term_set_scroll_on_keystroke  (ZvtTerm *term, int state);
   void          zvt_term_set_scroll_on_output     (ZvtTerm *term, int state);

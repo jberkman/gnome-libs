@@ -1,3 +1,18 @@
+1998-11-18  Michael Zucchi  <zucchi@zzedzone.fsi.com.au>
+
+	* zvtterm.c (zvt_term_bell): Definition of function.
+	(zvt_term_init): Set the new ring_my_bell pointer callback.
+	(zvt_term_set_bell): New function.  Sets ring_my_bell or clears it
+	depending on the requested state.
+
+	* zvtterm.h (zvt_term_bell): New external function to beep in a
+	terminal-way.
+
+	* vt.c (vt_bell): Use the new ring_my_bell callback if it is set.
+	(vt_init): Set ring_my_bell to NULL on initialisation.
+
+	* vt.h (ring_my_bell): callback function for bell ringers.
+
 1998-11-17  Martin Baulig  <martin@home-of-linux.org>
 
 	* gnome-pty-helper.c, test-utmp.c (update_dgs): Only call this
