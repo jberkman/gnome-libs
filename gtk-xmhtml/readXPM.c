@@ -36,6 +36,9 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.3  1998/01/10 03:26:24  unammx
+* fix
+*
 * Revision 1.2  1998/01/07 01:45:42  unammx
 * Gtk/XmHTML is ready to be used by the Gnome hackers now!
 * Weeeeeee!
@@ -192,14 +195,13 @@ doXpm(TWidget html, ImageBuffer *ib, XpmImage *xpm_image)
 				}
 #endif
 			}
-#ifdef WITH_MOTIF
+
 			/* get RGB components for this color. */
 			tmpcolr.pixel = bg_pixel;
-			
+#ifdef WITH_MOTIF
 			XQueryColor(Toolkit_Display(html), cmap, &tmpcolr);
 #else
-			tmpcolr.pixel = bg_pixel;
-			tmpcolr = cmap->colors [bg_pixel];
+			my_x_query_colors(cmap, &tmpcolr, 1);
 #endif
 			/* store background pixel index */
 			img_data->bg = i;
