@@ -3,6 +3,7 @@ noinst_PROGRAMS = fileconvert metadata parse-path skel split trigs
 INCLUDES =					\
 	-I$(top_builddir) -I$(top_srcdir)	\
 	$(SUPPORTINCS)				\
+	$(GDK_IMLIB_CFLAGS)			\
 	-I$(includedir)				\
 	@GTK_CFLAGS@
 

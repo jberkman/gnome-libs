@@ -16,6 +16,8 @@ INCLUDES = 						\
         $(GNOME_INCLUDES)  				\
 	$(ORBIT_CFLAGS) 				\
 	$(GLIB_INCLUDES) 				\
+	$(AUDIOFILE_CFLAGS) $(ESD_CFLAGS) 		\
+	$(GDK_IMLIB_CFLAGS)				\
 	-DGNOMEBINDIR=$(bindir) 			\
 	-DGNOMESYSCONFDIR=\"$(sysconfdir)\" 		\
 	-DVERSION=\""$(VERSION)"\"
