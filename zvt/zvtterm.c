@@ -179,6 +179,34 @@ get_pixmap_prop(Window the_window,char *prop_id)
 }
 
 static GdkPixmap *
+load_pixmap_back(char *file, int shaded)
+{
+	GdkPixmap *pix;
+	GdkImlibColorModifier mod;
+	GdkImlibImage *iim;
+
+	if(!file)
+		return NULL;
+		
+	iim = gdk_imlib_load_image(file);
+	if(!iim)
+		return NULL;
+	mod.contrast=256;
+	mod.gamma=256;
+	if(shaded)
+		mod.brightness=190;
+	else
+		mod.brightness=256;
+
+	gdk_imlib_set_image_modifier(iim,&mod);
+	gdk_imlib_render(iim, iim->rgb_width,iim->rgb_height);
+	pix = gdk_imlib_move_image(iim);
+	gdk_imlib_destroy_image(iim);
+	
+	return pix;
+}
+
+static GdkPixmap *
 create_shaded_pixmap(Pixmap p, int x, int y, int w, int h)
 {
 	GdkPixmap *pix;
@@ -187,11 +215,13 @@ create_shaded_pixmap(Pixmap p, int x, int y, int w, int h)
 	GdkWindowPrivate pw;
 
 	if(p == None)
-		return None;
+		return NULL;
 		
 	pw.xwindow = (Window)p;
 	iim = gdk_imlib_create_image_from_drawable((GdkPixmap*)&pw,NULL,
 						   x,y,w,h);
+	if(!iim)
+		return NULL;
 	mod.contrast=256;
 	mod.brightness=190;
 	mod.gamma=256;
@@ -302,10 +332,11 @@ zvt_term_init (ZvtTerm *term)
   term->in_expose = 0;
   term->transparent = 0;
   term->shaded = 0;
+  term->pixmap_filename = NULL;
   
-  term->background = None;
-  term->shaded_s.pix = NULL;
-  term->shaded_s.x = term->shaded_s.y = term->shaded_s.w = term->shaded_s.h = 0;
+  term->background.pix = NULL;
+  term->background.x = term->background.y =
+	  term->background.w = term->background.h = 0;
   
   /* input handlers */
   term->input_id = -1;
@@ -646,14 +677,41 @@ draw_back_pixmap(GtkWidget *widget, int nx,int ny,int nw,int nh)
 	Window childret;
 	ZvtTerm *term = ZVT_TERM(widget);
 	GdkGC *bgc = term->back_gc;
-
-	if(term->background == None) {
-		term->background = get_pixmap_prop(GDK_WINDOW_XWINDOW(widget->window),
-				    "_XROOTPMAP_ID");
-		if(term->background == None) {
-			term->transparent = 0;
-			return;
+	Pixmap p;
+	
+	/*we will be doing a background pixmap, not transparency*/
+	if(term->pixmap_filename) {
+		GdkGCValues vals;
+		if(!term->background.pix) {
+			term->background.pix =
+				load_pixmap_back(term->pixmap_filename,
+						 term->shaded);
 		}
+		if(!term->background.pix && !term->transparent) {
+			g_free(term->pixmap_filename);
+			term->pixmap_filename = NULL;
+			return;
+		} else if(term->background.pix) {
+			gdk_gc_get_values(bgc,&vals);
+			gdk_gc_set_tile(bgc,term->background.pix);
+			gdk_gc_set_fill(bgc,GDK_TILED);
+			gdk_draw_rectangle(widget->window,
+					   bgc,
+					   TRUE,
+					   nx,ny,
+					   nw,nh);
+			gdk_gc_set_fill(bgc,vals.fill);
+			gdk_gc_set_tile(bgc,vals.tile);
+			return;
+		} /*if we can't load a pixmap and transparency is set,
+		    default to the transparency setting*/
+	}
+
+	p = get_pixmap_prop(GDK_WINDOW_XWINDOW(widget->window),
+			    "_XROOTPMAP_ID");
+	if(p == None) {
+		term->transparent = 0;
+		return;
 	}
 
 	XTranslateCoordinates(GDK_WINDOW_XDISPLAY(widget->window),
@@ -664,34 +722,33 @@ draw_back_pixmap(GtkWidget *widget, int nx,int ny,int nw,int nh)
 			      &childret);
 
 	if(term->shaded) {
-		if(term->shaded_s.pix == NULL ||
-		   term->shaded_s.x != x ||
-		   term->shaded_s.y != y ||
-		   term->shaded_s.w < nw+nx ||
-		   term->shaded_s.h < nh+ny) {
+		if(term->background.pix == NULL ||
+		   term->background.x != x ||
+		   term->background.y != y ||
+		   term->background.w < nw+nx ||
+		   term->background.h < nh+ny) {
 			int width,height;
 			gdk_window_get_size(widget->window,
 					    &width,&height);
-			if(term->shaded_s.pix)
-				gdk_pixmap_unref(term->shaded_s.pix);
-			term->shaded_s.pix =
-				create_shaded_pixmap(term->background,
-						     x,y,width,height);
-			term->shaded_s.x = x;
-			term->shaded_s.y = y;
-			term->shaded_s.w = width;
-			term->shaded_s.h = height;
+			if(term->background.pix)
+				gdk_pixmap_unref(term->background.pix);
+			term->background.pix =
+				create_shaded_pixmap(p, x,y,width,height);
+			term->background.x = x;
+			term->background.y = y;
+			term->background.w = width;
+			term->background.h = height;
 		}
 		gdk_draw_pixmap(widget->window,
 				bgc,
-				term->shaded_s.pix,
+				term->background.pix,
 				nx,ny,
 				nx,ny,
 				nw,nh);
 	} else {
 		/*non-shaded is simple*/
 		XCopyArea (GDK_WINDOW_XDISPLAY(widget->window),
-			   term->background,
+			   p,
 			   GDK_WINDOW_XWINDOW(widget->window),
 			   GDK_GC_XGC(bgc),
 			   x+nx,y+ny,
@@ -711,7 +768,7 @@ static void zvt_term_draw (GtkWidget *widget, GdkRectangle *area)
   term = ZVT_TERM (widget);
   term->in_expose = 1;
 #ifndef ZVT_NO_TRANSPARENT
-  if(term->transparent)
+  if(term->transparent || term->pixmap_filename)
 	  draw_back_pixmap(widget,area->x,area->y,area->width,area->height);
 #endif
   vt_update_rect (term->vx,
@@ -740,7 +797,7 @@ zvt_term_expose (GtkWidget      *widget,
   /* FIXME: may update 1 more line/char than needed */
   term->in_expose = 1;
 #ifndef ZVT_NO_TRANSPARENT
-  if(term->transparent)
+  if(term->transparent || term->pixmap_filename)
 	  draw_back_pixmap(widget,event->area.x,event->area.y,
 			   event->area.width,event->area.height);
 #endif
@@ -1689,13 +1746,41 @@ static void zvt_term_readmsg(gpointer data, gint fd, GdkInputCondition condition
   gtk_signal_emit(GTK_OBJECT(term), term_signals[CHILD_DIED]);
 }
 
+#ifndef ZVT_NO_TRANSPARENT
+static int
+safe_strcmp(char *a, char *b)
+{
+	if(!a && !b)
+		return 0;
+	if(a && b)
+		return strcmp(a,b);
+	return 1;
+}
+#endif
+
+
 void
-zvt_term_set_transparent(ZvtTerm *terminal, int	transparent, int shaded)
+zvt_term_set_background(ZvtTerm *terminal, char *pixmap_file, int transparent, int shaded)
 {
 /*if transparency is not compiled in we just ignore this*/
 #ifndef ZVT_NO_TRANSPARENT
+	/*if there no changes return*/
+	if(shaded == terminal->shaded &&
+	   safe_strcmp(pixmap_file,terminal->pixmap_filename)==0 &&
+	   transparent == terminal->transparent)
+		return;
+	
+	if(terminal->background.pix) {
+		gdk_pixmap_unref(terminal->background.pix);
+		terminal->background.pix = NULL;
+	}
 	terminal->transparent = transparent;
 	terminal->shaded = shaded;
+	g_free(terminal->pixmap_filename);
+	if(pixmap_file)
+		terminal->pixmap_filename = g_strdup(pixmap_file);
+	else
+		terminal->pixmap_filename = NULL;
 	gtk_widget_queue_draw(GTK_WIDGET(terminal));
 #endif
 }
@@ -1793,7 +1878,7 @@ void vt_draw_text(void *user_data, int col, int row, char *text, int len, int at
   /* if the terminal is transparent we must redraw all the time as we can't optimize in that case*/
   if (term->in_expose || vx->back_match==0) {
 #ifndef ZVT_NO_TRANSPARENT
-	  if(!term->transparent || back<17) {
+	  if((!term->transparent && !term->pixmap_filename) || back<17) {
 #endif
 		  gdk_draw_rectangle(widget->window,
 				     bgc,

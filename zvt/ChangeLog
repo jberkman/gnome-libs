@@ -1,3 +1,18 @@
+Tue Oct 27 14:19:15 1998  George Lebl  <jirka@5z.com>
+
+	(this is a detailed changelog even for the last commit)
+	* zvtterm.h: added transparent,shaded,pixmap_filename and background
+	  pixmaps and zvt_term_set_background
+
+	* zvtterm.c: added get_desktop_window for getting the current desktop
+	  window, get_pixmap_prop, for getting an arbitrary pixmap property
+	  on a window load_pixmap_back to load a pixmap, create_shaded_pixmap,
+	  to make a shaded background pixmap, draw_back_pixmap for drawing
+	  the background, which is done in draw and expose, and sometimes in
+	  vt_draw_text. the call to set background stuff is
+	  zvt_term_background. scrolling is done by calling a redraw even for
+	  the entire widget
+
 Tue Oct 27 01:07:21 1998  George Lebl  <jirka@5z.com>
 
 	* zvtterm.[ch]: transparency hacks, it's not 100% clean and probably

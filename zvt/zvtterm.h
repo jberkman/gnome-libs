@@ -57,8 +57,10 @@ extern "C" {
     unsigned int in_expose:1;	/* updating from within expose events */
     unsigned int scroll_on_keystroke:1;
     unsigned int scroll_on_output:1;
-    unsigned int transparent:1;
-    unsigned int shaded:1;
+    unsigned int transparent:1;		/*transparent background*/
+    unsigned int shaded:1;		/*transparent background with shade*/
+    char *pixmap_filename;		/*file name of a pixmap, if NULL, none is loaded
+					  and normal mode is used*/
 
     int charwidth;		/* size of characters */
     int charheight;
@@ -84,13 +86,13 @@ extern "C" {
 
     GdkIC ic;			/* input context */
     
-    /*transparency stuff, it's left in even if we don't compile transparency,
-      if we don't, it will just be ignored*/
-    Pixmap background;
+    /*transparency stuff, it's left in even if we don't compile
+      transparency/background pixmaps, if we don't, it will just be ignored*/
     struct {
-	    GdkPixmap *pix;
-	    int x,y,w,h;
-    } shaded_s;
+	    GdkPixmap *pix; /*background pixmap*/
+	    int x,y,w,h;    /*these are used to know if the position changed
+			      and we need to get new shaded transparent pixmap*/
+    } background;
   };
 
   struct _ZvtTermClass
@@ -125,9 +127,11 @@ extern "C" {
   void          zvt_term_set_color_scheme       (ZvtTerm *term, gushort *red, gushort *grn, gushort *blu);
   void          zvt_term_set_default_color_scheme (ZvtTerm *term);
 
-  /*transparency stuff, it's left in even if we don't compile transparency,
-    if we don't, it will just be ignored*/
-  void		zvt_term_set_transparent	   (ZvtTerm      *terminal,
+  /*transparency stuff, it's left in even if we don't compile
+    transparency/backround pixmaps, if we don't, it will just be ignored,
+    setting pixmap_file to NULL disables the background pixmap*/
+  void		zvt_term_set_background		   (ZvtTerm      *terminal,
+						    char	 *pixmap_file,
 						    int		  transparent,
 						    int		  shaded);
 	
