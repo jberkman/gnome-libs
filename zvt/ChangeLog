@@ -6,6 +6,11 @@
 	(zvt_term_selection_clear): Modularised what had been, removed the
 	fixme (calls vtx_unrender_selection()).
 	(vtx_unrender_selection): Killed FIXME.
+	(zvt_term_draw): Always force re-draw (through 'in_expose').
+	(vt_draw_text): Change the sense of the dont-draw-background
+	condition.  Always redraw background for expose events (will slow
+	down refresh though - FIXME: the screen representation needs to be
+	cleared to match the window, even for refresh).
 
 1998-10-14  Michael Zucchi  <zucchi@zzedzone.fsi.com.au>
 

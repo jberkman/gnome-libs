@@ -501,11 +501,13 @@ static void zvt_term_draw (GtkWidget *widget, GdkRectangle *area)
   g_return_if_fail (ZVT_IS_TERM (widget));
 
   term = ZVT_TERM (widget);
+  term->in_expose = 1;
   vt_update_rect (term->vx,
 		  area->x/term->charwidth,
 		  area->y/term->charheight,
 		  (area->x+area->width)/term->charwidth+1,
 		  (area->y+area->height)/term->charheight+1);
+  term->in_expose = 0;
 		  
 }
 
@@ -1544,16 +1546,17 @@ void vt_draw_text(void *user_data, int col, int row, char *text, int len, int at
     back = tmp2;
   }
 
-  /* optimise: dont 'clear' background if in expose, and background colour == window colour */
+  /* optimise: dont 'clear' background if not in expose, and background colour == window colour */
   /* this may look a bit weird, it really does need to be this way - so dont touch!*/
-  if (term->in_expose==0 && vx->back_match==0) {
+  if (term->in_expose || vx->back_match==0) {
     gdk_draw_rectangle(widget->window,
 		       bgc,
 		       1,
 		       col*term->charwidth, row*term->charheight,
 		       len*term->charwidth, term->charheight);
   } else {
-    d(printf("not clearing background\n"));
+    (printf("not clearing background in_expose = %d, back_match=%d\n", term->in_expose, vx->back_match));
+    d(printf("txt = '%.*s'\n", len, text));
   }
 
   gdk_draw_text(widget->window,
