@@ -1,0 +1,39 @@
+This is a generic method for packages to install multiple, incompatible versions of a
+package used for software development.
+
+It is still broken because it doesn't properly handle versioning of libraries that depend
+on a given version of another library.
+
+	Concepts:
+. Interface version: A version of a source code interface.
+
+	Header files:
+Header files should be installed under $(includedir)/$(PACKAGE)/$(INTERFACE_VERSION)/
+
+Header files for backwards compatibility should be installed under
+$(includedir)/$(PACKAGE)/$(INTERFACE_VERSION)/compat/$(PREVIOUS_INTERFACE_VERSION)/
+e.g. If providing backwards compat with interface version 1.0, 
+$(includedir)/$(PACKAGE)/$(INTERFACE_VERSION)/compat/1.0/
+
+	Libraries:
+For libtool libraries, use -release $(INTERFACE_VERSION) in LDFLAGS.
+
+For non-libtool libraries, suffix the library name with -$(INTERFACE_VERSION)
+
+	Configuration:
+A $(bindir)/package-config script should be installed. This script will offer the
+following command-line interface:
+
+'package-config --version' outputs the currently installed version of the package.
+
+'package-config --libs' outputs the flags needed to link a program against the package's
+library.
+
+'package-config --cflags' outputs the flags needed to compile the program.
+
+'package-config --interface-version=X' sets the interface version to X.
+
+'package-config --chosen-interface-version' prints out the chosen interface version.
+
+'package-config --compat=X...' attempts to enable source compatibility with the interface
+version(s) specified by X. Multiple versions should be separated by commas.
