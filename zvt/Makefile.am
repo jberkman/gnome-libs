@@ -23,6 +23,8 @@ libzvt_la_SOURCES =					\
 	vt.c						\
 	zvtterm.c
 
+libzvt_la_LDFLAGS = -version-info 1:0:0 -rpath $(libdir)
+
 libzvtinclude_HEADERS =					\
 	lists.h						\
 	vt.h						\
