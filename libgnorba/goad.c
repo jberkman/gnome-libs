@@ -1068,10 +1068,25 @@ goad_server_activate_exe(GoadServer *sinfo,
     args = g_strsplit(sinfo->location_info, " ", -1);
     for(i = 0; args[i]; i++) /**/ ;
 
-    args = g_realloc(args, sizeof(char *) * (i+3));
-    args[i] = "--activate-goad-server";
-    args[i+1] = sinfo->server_id;
-    args[i+2] = NULL;
+    if (sinfo->server_id) {
+      args = g_realloc(args, sizeof(char *) * (i+3));
+      args[i] = "--activate-goad-server";
+      args[i+1] = sinfo->server_id;
+      args[i+2] = NULL;
+      i += 2;
+    }
+
+    if (params) {
+      int j;
+
+      for (j = 0; params[j]; j++) /**/ ;
+
+      args = g_realloc(args, sizeof(char *) * (i+j));
+
+      for (j = 0; params[j]; j++)
+	args[i+j] = params[j];
+      args[i+j] = NULL;
+    }
 
     execvp(args[0], args);
     _exit(1);
