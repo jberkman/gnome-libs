@@ -1,766 +1,1258 @@
 # gnome-libs fr.po
-# Copyright (C) 1998, 1999, 2000 Free Software Foundation, Inc.
-# Vincent Renardias <vincent@ldsol.com>, 1998, 1999, 2000.
+# Copyright (C) 1998-2001 Free Software Foundation, Inc.
+# Vincent Renardias <vincent@ldsol.com>, 1998-2000.
 # Thibaut Cousin <Thibaut.Cousin@clermont.in2p3.fr>, 1999.
+# Christophe Merlet (RedFox) <redfox@eikonex.org>, 2000-2001.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: gnome-libs 1.0.18\n"
-"POT-Creation-Date: 2000-02-26 17:45+0100\n"
-"PO-Revision-Date: 1998-03-28 20:08+0100\n"
-"Last-Translator: Vincent Renardias <vincent@ldsol.com>\n"
+"Project-Id-Version: gnome-libs 1.95.0\n"
+"POT-Creation-Date: 2001-02-09 16:49+0100\n"
+"PO-Revision-Date: 2001-02-09 16:48+0100\n"
+"Last-Translator: Christophe Merlet (RedFox) <redfox@eikonex.org>\n"
 "Language-Team: Gnome French Team <gnomefr@gnomefr.traduc.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: libgnome/gnomelib-init.c:176 libgnome/gnomelib-init.c:190
+#: libgnome/gnome-ditem.c:565 libgnome/gnome-ditem.c:923
+#, c-format
+msgid "Unknown desktop file format %d"
+msgstr "Format de fichier de bureau %d inconnu"
+
+#. we are not an application so just exit
+#. with an error
+#: libgnome/gnome-ditem.c:912 libgnome/gnome-ditem.c:919
+msgid "Attempting to launch a non-application"
+msgstr "Tentative de lancer une non-application"
+
+#: libgnome/gnome-ditem.c:1029
+msgid "Trying to execute an item with no 'Exec'"
+msgstr ""
+
+#: libgnome/gnome-ditem.c:1081 libgnome/gnome-ditem.c:1174
+msgid "No exec field for this drop"
+msgstr ""
+
+#: libgnome/gnome-ditem.c:1112
+msgid "Nothing to replace with a file in the exec string"
+msgstr "Rien à remplacer avec un fichier dans la chaîne exec"
+
+#: libgnome/gnome-ditem.c:1225
+msgid "There was no argument to replace with dropped files"
+msgstr "Il n'y a aucun argument à remplacer avec les fichiers déposés"
+
+#: libgnome/gnome-ditem.c:1325
+msgid "Dropped URLs on an app that can only take files"
+msgstr ""
+
+#: libgnome/gnome-moz-remote2.c:111
+msgid "Specify X display to use."
+msgstr "Écran X spécifique à utiliser."
+
+#: libgnome/gnome-moz-remote2.c:112
+msgid "Put the X connection in synchronous mode."
+msgstr "Mets la connexion X en mode synchrone."
+
+#: libgnome/gnome-moz-remote2.c:113
+msgid "Specify the X window ID of Netscape."
+msgstr "Spécifie l'ID de la fenêtre X de Netscape"
+
+#: libgnome/gnome-moz-remote2.c:115
+msgid "Don't raise the Netscape window."
+msgstr "Ne pas élever la fenêtre de Netscape"
+
+#: libgnome/gnome-moz-remote2.c:116
+msgid "Show the given URL in a new window."
+msgstr "Afficher l'URL donné dans une nouvelle fenêtre"
+
+#: libgnome/gnome-moz-remote2.c:117
+msgid "Close the specified window."
+msgstr "Ferme la fenêtre spécifié."
+
+#: libgnome/gnome-moz-remote2.c:118
+msgid "Print the X window ID of the utilized window."
+msgstr "Affiche l'ID de la fenêtre X de la fenêtre utilisée."
+
+#: libgnome/gnome-url.c:117
+#, c-format
+msgid "Error parsing '%s' (empty result)"
+msgstr ""
+
+#: libgnome/gnome-url.c:133
+#, c-format
+msgid "Mozilla not found as '%s'"
+msgstr "Mozilla n'a pas été trouvé comme « %s »"
+
+#: libgnome/gnome-url.c:291 libgnome/gnome-url.c:295
+#, c-format
+msgid "Cannot open a pipe: %s"
+msgstr "Ne peut ouvrir un tube : %s"
+
+#: libgnome/gnome-url.c:305 libgnome/gnome-url.c:363
+#, c-format
+msgid "Cannot parse handler template: %s"
+msgstr ""
+
+#: libgnome/gnome-url.c:315 libgnome/gnome-url.c:319 libgnome/gnome-url.c:368
+#: libgnome/gnome-url.c:372
+#, c-format
+msgid "Cannot execute command '%s'!"
+msgstr "Ne peut exécuter la commande « %s » !"
+
+#: libgnome/gnome-url.c:351
+#, c-format
+msgid "Command '%s' did not return an ID!"
+msgstr "La commande « %s » n'a pas retourné d'ID !"
+
+#: libgnome/gnomelib-init2.c:1228
+msgid "Dynamic modules to load"
+msgstr "Modules dynamiques à charger"
+
+#: libgnome/gnomelib-init2.c:1229
+msgid "MODULE1,MODULE2,..."
+msgstr "MODULE1,MODULE2,..."
+
+#: libgnomeui/gnome-appbar.c:682
+msgid ""
+"gnome_appbar_set_progress deprecated, use "
+"gnome_appbar_set_progress_percentage"
+msgstr ""
+"gnome_appbar_set_progress est déconseillé, utilisez "
+"gnome_appbar_set_progress_percentage"
+
+#: libcompat/gnome-dentry-edit.c:184 libgnomeui/gnome-ditem-edit.c:210
+msgid "Name:"
+msgstr "Nom :"
+
+#: libcompat/gnome-dentry-edit.c:197 libgnomeui/gnome-ditem-edit.c:223
+msgid "Comment:"
+msgstr "Commentaire :"
+
+#: libcompat/gnome-dentry-edit.c:207 libgnomeui/gnome-ditem-edit.c:233
+msgid "Command:"
+msgstr "Commande :"
+
+#: libcompat/gnome-dentry-edit.c:217 libgnomeui/gnome-ditem-edit.c:243
+msgid "Type:"
+msgstr "Type :"
+
+#: libcompat/gnome-dentry-edit.c:233 libgnomeui/gnome-ditem-edit.c:260
+msgid "Icon:"
+msgstr "Icone :"
+
+#: libcompat/gnome-dentry-edit.c:243 libgnomeui/gnome-ditem-edit.c:270
+msgid "Choose an icon"
+msgstr "Choisissez une icône"
+
+#: libcompat/gnome-dentry-edit.c:256 libgnomeui/gnome-ditem-edit.c:282
+msgid "Run in Terminal"
+msgstr "Lancer dans un terminal"
+
+#: libgnomeui/gnome-ditem-edit.c:308
+msgid "Simple drag and drop"
+msgstr "Glisser/déposer simple"
+
+#: libgnomeui/gnome-ditem-edit.c:330
+#, c-format
+msgid ""
+"In the following commands you should use %s in the spot where the\n"
+"filename/URL should be substituted.  If you leave the field blank\n"
+"drops will not be accepted.  If this application can accept\n"
+"multiple files or URLs as arguments after its command name check the box "
+"above."
+msgstr ""
+
+#: libgnomeui/gnome-ditem-edit.c:342
+msgid "Command for file drops:"
+msgstr "Commande pour les fichiers déposés :"
+
+#: libgnomeui/gnome-ditem-edit.c:352
+msgid "Drop one file at a time only."
+msgstr "Déposer un fichier à la fois seulement."
+
+#: libgnomeui/gnome-ditem-edit.c:364
+msgid "Command for URL drops:"
+msgstr "Commande pour les URLs déposées :"
+
+#: libgnomeui/gnome-ditem-edit.c:374
+msgid "Drop one URL at a time only."
+msgstr "Déposer une URL à la fois seulement."
+
+#: libcompat/gnome-dentry-edit.c:367 libgnomeui/gnome-ditem-edit.c:490
+msgid "Try this before using:"
+msgstr "Essayer cette commande avant :"
+
+#: libcompat/gnome-dentry-edit.c:377 libgnomeui/gnome-ditem-edit.c:500
+msgid "Documentation:"
+msgstr "Documentation :"
+
+#: libgnomeui/gnome-ditem-edit.c:510
+msgid "Window titles to wait for (comma separated):"
+msgstr ""
+
+#: libcompat/gnome-dentry-edit.c:387 libgnomeui/gnome-ditem-edit.c:520
+msgid "Name/Comment translations:"
+msgstr "Traduction Nom/Commentaire :"
+
+#: libcompat/gnome-dentry-edit.c:390 libgnomeui/gnome-ditem-edit.c:523
+msgid "Language"
+msgstr "Langue"
+
+#: libcompat/gnome-dentry-edit.c:391 libgnomeui/gnome-ditem-edit.c:524
+msgid "Name"
+msgstr "Nom"
+
+#: libcompat/gnome-dentry-edit.c:392 libgnomeui/gnome-ditem-edit.c:525
+msgid "Comment"
+msgstr "Commentaire"
+
+#: libcompat/gnome-dentry-edit.c:420 libgnomeui/gnome-ditem-edit.c:553
+msgid "Add/Set"
+msgstr "Ajouter/Changer"
+
+#: libcompat/gnome-dentry-edit.c:425 libgnomeui/gnome-ditem-edit.c:558
+#: libgnomeui/gnome-stock.c:709
+msgid "Remove"
+msgstr "Supprimer"
+
+#: libcompat/gnome-dentry-edit.c:507 libgnomeui/gnome-ditem-edit.c:705
+msgid "Basic"
+msgstr "Basique"
+
+#: libgnomeui/gnome-ditem-edit.c:709
+msgid "Drag and Drop"
+msgstr ""
+
+#: libcompat/gnome-dentry-edit.c:511 libgnomeui/gnome-ditem-edit.c:713
+msgid "Advanced"
+msgstr "Avancée"
+
+#: libcompat/gnome-druid-page-finish.c:262
+#: libcompat/gnome-druid-page-start.c:279
+#: libgnomeui/gnome-druid-page-edge.c:352
+#: libgnomeui/gnome-druid-page-standard.c:301
+msgid "-adobe-helvetica-bold-r-normal-*-*-180-*-*-p-*-*-*,*-r-*"
+msgstr "-adobe-helvetica-bold-r-normal-*-*-180-*-*-p-*-*-*,*-r-*"
+
+#: libcompat/gnome-druid-page-finish.c:270
+#: libcompat/gnome-druid-page-start.c:288
+#: libgnomeui/gnome-druid-page-edge.c:361
+msgid "-adobe-helvetica-medium-r-normal-*-*-120-*-*-p-*-*-*,*-r-*"
+msgstr "-adobe-helvetica-medium-r-normal-*-*-120-*-*-p-*-*-*,*-r-*"
+
+#: libgnomeui/gnome-file-saver.c:192
+msgid "File Name:"
+msgstr "Nom de fichier :"
+
+#: libgnomeui/gnome-file-saver.c:200
+msgid "Location:"
+msgstr "Emplacement :"
+
+#: libgnomeui/gnome-file-saver.c:208
+msgid "Save As Type:"
+msgstr "Enregistrer comme type :"
+
+#: libgnomeui/gnome-gconf.c:581
+msgid "GNOME GConf Support"
+msgstr "Support GNOME GConf"
+
+#: libgnomeui/gnome-gconf.c:621
+#, c-format
+msgid ""
+"You attempted to change an aspect of your configuration that your system "
+"administrator or operating system vendor does not allow you to change. Some "
+"of the settings you have selected may not take effect, or may not be "
+"restored next time you use this application (%s)."
+msgstr ""
+
+#: libgnomeui/gnome-gconf.c:624
+#, c-format
+msgid ""
+"An error occurred while loading or saving configuration information for %s. "
+"Some of your configuration settings may not work properly."
+msgstr ""
+
+#: libgnomeui/gnome-gconf.c:646
+#, c-format
+msgid "GConf error details: %s\n"
+msgstr "Détails de l'erreur GConf : %s\n"
+
+#: libgnomeui/gnome-helpsys.c:117
+msgid "_Popup"
+msgstr ""
+
+#: libgnomeui/gnome-helpsys.c:118
+msgid "Show help in temporary popup windows"
+msgstr ""
+
+#: libgnomeui/gnome-helpsys.c:120
+msgid "_Embedded"
+msgstr ""
+
+#: libgnomeui/gnome-helpsys.c:121
+msgid "Show help inside the application window"
+msgstr "Afficher l'aide à l'intérieur de la fenêtre de l'application"
+
+#: libgnomeui/gnome-helpsys.c:123
+msgid "_Browser"
+msgstr "_Parcourir"
+
+#: libgnomeui/gnome-helpsys.c:124
+msgid "Show help in a help browser window"
+msgstr "Afficher l'aide dans une fenêtre de navigation d'aide"
+
+#: libgnomeui/gnome-helpsys.c:172
+msgid "App style"
+msgstr ""
+
+#: libgnomeui/gnome-helpsys.c:173
+msgid "The style of GnomeHelpView"
+msgstr ""
+
+#: libgnomeui/gnome-helpsys.c:182
+msgid "App style priority"
+msgstr ""
+
+#: libgnomeui/gnome-helpsys.c:183
+msgid "The priority of style of GnomeHelpView"
+msgstr ""
+
+#. orientation
+#: libgnomeui/gnome-helpsys.c:192 libgnomeui/gnome-helpsys.c:193
+#: libgnomeui/gnome-paper-selector.c:191
+msgid "Orientation"
+msgstr "Orientation :"
+
+#: libgnomeui/gnome-helpsys.c:202
+msgid "Toplevel"
+msgstr ""
+
+#: libgnomeui/gnome-helpsys.c:203
+msgid "The toplevel widget"
+msgstr ""
+
+#: demos/stock_demo.c:315 libgnomeui/gnome-helpsys.c:219
+#: libgnomeui/gnome-stock.c:724
+msgid "Help"
+msgstr "Aide"
+
+#: libgnomeui/gnome-helpsys.c:220
+msgid "Show help for a specific region of the application"
+msgstr ""
+
+#: libgnomeui/gnome-helpsys.c:224
+msgid "Style"
+msgstr "Style"
+
+#: libgnomeui/gnome-helpsys.c:225
+msgid "Change the way help is displayed"
+msgstr ""
+
+#: libgnomeui/gnome-helpsys.c:926 libgnomeui/gnome-helpsys.c:1020
+msgid "No help is available for the selected portion of the application."
+msgstr ""
+"Aucune aide n'est disponible pour la portion sélectionné de l'application."
+
+#. FIXME: properly handle the error!
+#: libgnomeui/gnome-helpsys.c:1190
+#, c-format
+msgid "Cought GnomeURL error: %s"
+msgstr ""
+
+#: libgnomeui/gnome-href.c:114
+msgid "URL"
+msgstr "URL"
+
+#: libgnomeui/gnome-href.c:115
+msgid "The URL that GnomeHRef activates"
+msgstr ""
+
+#: libgnomeui/gnome-href.c:122
+msgid "Text"
+msgstr "Texte"
+
+#: libgnomeui/gnome-href.c:123
+msgid "The text on the button"
+msgstr "Le texte du bouton"
+
+#: libgnomeui/gnome-href.c:124
+msgid "End World Hunger"
+msgstr ""
+
+#: libgnomeui/gnome-about.c:1169 libgnomeui/gnome-href.c:395
+msgid ""
+"Error occured while trying to launch the URL handler.\n"
+"Please check the settings in the Control Center if they are correct."
+msgstr ""
+
+#. paper size
+#: libgnomeui/gnome-paper-selector.c:159
+msgid "Paper Size"
+msgstr "Taille du papier"
+
+#: libgnomeui/gnome-paper-selector.c:213
+msgid "Portrait"
+msgstr "Portrait"
+
+#: libgnomeui/gnome-paper-selector.c:233
+msgid "Landscape"
+msgstr "Paysage"
+
+#. margins
+#: libgnomeui/gnome-paper-selector.c:241
+msgid "Margins"
+msgstr "Marges"
+
+#: libgnomeui/gnome-paper-selector.c:253
+msgid "Top:"
+msgstr "Haut :"
+
+#: libgnomeui/gnome-paper-selector.c:266
+msgid "Bottom:"
+msgstr "Bas :"
+
+#: libgnomeui/gnome-paper-selector.c:279
+msgid "Left:"
+msgstr "Gauche :"
+
+#: libgnomeui/gnome-paper-selector.c:292
+msgid "Right:"
+msgstr "Droite :"
+
+#. Scaling
+#: libgnomeui/gnome-paper-selector.c:306
+msgid "Scaling"
+msgstr ""
+
+#: libgnomeui/gnome-paper-selector.c:321
+msgid "Fit to Page"
+msgstr "Ajuster à la page"
+
+#: libgnomeui/gnome-paper-selector.c:810
+#, c-format
+msgid "%0.3g%s x %0.3g%s"
+msgstr ""
+
+#: libgnomeui/gnome-paper-selector.c:1040
+msgid "Page Setup"
+msgstr "Configuration de la page"
+
+#. to be kept in sync with GtkCornerType enumeration
+#: libgnomeui/gnome-pouch.c:782
+msgid "Top left"
+msgstr "Haut gauche"
+
+#: libgnomeui/gnome-pouch.c:783
+msgid "Bottom left"
+msgstr "Bas gauche"
+
+#: libgnomeui/gnome-pouch.c:784
+msgid "Top right"
+msgstr "Haut droit"
+
+#: libgnomeui/gnome-pouch.c:785
+msgid "Bottom right"
+msgstr "Bas droit"
+
+#. to be kept in sync with GtkOrientation enumeration
+#: libgnomeui/gnome-pouch.c:796
+msgid "Horizontal"
+msgstr "Horizontale"
+
+#: libgnomeui/gnome-pouch.c:797
+msgid "Vertical"
+msgstr "Verticale"
+
+#: libgnomeui/gnome-pouch.c:807
+msgid "Icon position"
+msgstr "Position de l'icône"
+
+#: libgnomeui/gnome-pouch.c:808
+msgid "Icon orientation"
+msgstr "Orientation de l'icône"
+
+#: libgnomeui/gnome-pouch.c:810
+msgid "Tile children"
+msgstr ""
+
+#: libgnomeui/gnome-pouch.c:811
+msgid "Cascade children"
+msgstr ""
+
+#: libgnomeui/gnome-pouch.c:813
+msgid "Arrange icons"
+msgstr "Arranger les icônes"
+
+#: libgnomeui/gnome-pouch.c:814
+msgid "Autoarrange icons"
+msgstr "Arrangement automatique des icônes"
+
+#: libgnomeui/gnome-recently-used.c:113
+msgid "App Specific"
+msgstr ""
+
+#: libgnomeui/gnome-recently-used.c:114
+msgid "Is this list application specific"
+msgstr "Si cette liste d'applications est spécifique"
+
+#: libgnomeui/gnome-recently-used.c:897
+#, c-format
+msgid "bad GnomeRecentDocument attribute: %s\n"
+msgstr ""
+
+#: libgnomeui/gnome-recently-used.c:1127
+msgid "Unknown"
+msgstr "Inconnu"
+
+#. browse button ...
+#: libcompat/gnome-spell.c:620 libcompat/gnome-spell.c:637
+#: libcompat/gnome-spell.c:654 libgnomeui/gnome-file-entry.c:445
+#: libgnomeui/gnome-selector.c:859
+msgid "Browse..."
+msgstr "Parcourir..."
+
+#: libgnomeui/gnome-selector.c:869
+msgid "Default..."
+msgstr "Défaut..."
+
+#: libgnomeui/gnome-selector.c:879
+msgid "Clear..."
+msgstr "Vider..."
+
+#: libgnomeui/oafgnome.c:242
+msgid "Username:"
+msgstr "Nom d'utilisateur :"
+
+#: libgnomeui/oafgnome.c:256
+msgid "Password:"
+msgstr "Mot de passe :"
+
+#: libgnome/gnomelib-init.c:200 libgnome/gnomelib-init.c:214
 #, c-format
 msgid "Could not create per-user gnome configuration directory `%s': %s\n"
-msgstr "Impossible de créer le répertoire de configuration GNOME `%s' : %s\n"
+msgstr ""
 
-#: libgnome/gnomelib-init.c:199
+#: libgnome/gnomelib-init.c:223
 #, c-format
 msgid ""
 "Could not set mode 0700 on private per-user gnome configuration directory "
 "`%s': %s\n"
-msgstr "Impossible de mettre les permissions 0700 sur le répertoire de configuration `%s' : %s\n"
+msgstr ""
 
-#: libgnome/gnomelib-init.c:206
+#: libgnome/gnomelib-init.c:230
 #, c-format
 msgid "Could not create gnome accelerators directory `%s': %s\n"
-msgstr "Impossible de créer le répertoires de raccourcis clavier `%s': %s\n"
+msgstr ""
 
-#: libgnomeui/gnome-about.c:332
+#: libgnomeui/gnome-about.c:331
 msgid "Author:"
 msgstr "Auteur :"
 
-#: libgnomeui/gnome-about.c:335 libgnomeui/gnome-about.c:337
+#: libgnomeui/gnome-about.c:341 libgnomeui/gnome-about.c:345
 msgid "Authors:"
 msgstr "Auteurs :"
 
-#: libgnomeui/gnome-about.c:643
+#: libgnomeui/gnome-about.c:679
 msgid "Authors: "
 msgstr "Auteurs : "
 
-#: libgnomeui/gnome-about.c:1020 libgnomeui/stock_demo.c:307
-#: libgnomeui/winhints_demo.c:256
+#: demos/stock_demo.c:307 demos/winhints_demo.c:256
+#: libgnomeui/gnome-about.c:1075
 msgid "About"
-msgstr "A propos"
+msgstr "À propos"
 
-#: libgnomeui/gnome-app-helper.c:74
+#: libgnomeui/gnome-app-helper.c:82
 msgid "_File"
 msgstr "_Fichier"
 
-#: libgnomeui/gnome-app-helper.c:75
+#: libgnomeui/gnome-app-helper.c:83
 msgid "_File/"
 msgstr "_Fichier/"
 
-#: libgnomeui/gnome-app-helper.c:76
+#: libgnomeui/gnome-app-helper.c:84
 msgid "_Edit"
-msgstr "_Edition"
+msgstr "_Édition"
 
-#: libgnomeui/gnome-app-helper.c:77
+#: libgnomeui/gnome-app-helper.c:85
 msgid "_Edit/"
-msgstr "_Edition/"
+msgstr "_Édition/"
 
-#: libgnomeui/gnome-app-helper.c:78
+#: libgnomeui/gnome-app-helper.c:86
 msgid "_View"
 msgstr "_Vue"
 
-#: libgnomeui/gnome-app-helper.c:79
+#: libgnomeui/gnome-app-helper.c:87
 msgid "_View/"
 msgstr "_Vue/"
 
-#: libgnomeui/gnome-app-helper.c:80
+#: libgnomeui/gnome-app-helper.c:88
 msgid "_Settings"
 msgstr "_Paramètres"
 
-#: libgnomeui/gnome-app-helper.c:81
+#: libgnomeui/gnome-app-helper.c:89
 msgid "_Settings/"
 msgstr "_Paramètres/"
 
-#: libgnomeui/gnome-app-helper.c:82
+#: libgnomeui/gnome-app-helper.c:90
 msgid "_New"
 msgstr "_Nouveau"
 
-#: libgnomeui/gnome-app-helper.c:83
+#: libgnomeui/gnome-app-helper.c:91
 msgid "_New/"
 msgstr "_Nouveau/"
 
-#: libgnomeui/gnome-app-helper.c:84
+#: libgnomeui/gnome-app-helper.c:92
 msgid "Fi_les"
 msgstr "Fi_chiers"
 
-#: libgnomeui/gnome-app-helper.c:85
+#: libgnomeui/gnome-app-helper.c:93
 msgid "Fi_les/"
 msgstr "Fi_chiers/"
 
-#: libgnomeui/gnome-app-helper.c:86
+#: libgnomeui/gnome-app-helper.c:94
 msgid "_Windows"
 msgstr "_Fenêtres"
 
-#: libgnomeui/gnome-app-helper.c:87
+#: libgnomeui/gnome-app-helper.c:95
 msgid "_Game"
 msgstr "_Jeu"
 
-#: libgnomeui/gnome-app-helper.c:88
+#: libgnomeui/gnome-app-helper.c:96
 msgid "_Help"
 msgstr "_Aide"
 
-#: libgnomeui/gnome-app-helper.c:89
+#: libgnomeui/gnome-app-helper.c:97
 msgid "_Windows/"
 msgstr "_Fenêtres/"
 
 #. Open
-#: libgnomeui/gnome-app-helper.c:101
+#: libgnomeui/gnome-app-helper.c:109
 msgid "_Open..."
 msgstr "_Ouvrir..."
 
-#: libgnomeui/gnome-app-helper.c:101
+#: libgnomeui/gnome-app-helper.c:109
 msgid "Open a file"
-msgstr "Ouvrir un fichier"
+msgstr "Ouvre un fichier"
 
 #. Save
-#: libgnomeui/gnome-app-helper.c:106
+#: libgnomeui/gnome-app-helper.c:114
 msgid "_Save"
 msgstr "_Enregistrer"
 
-#: libgnomeui/gnome-app-helper.c:106
+#: libgnomeui/gnome-app-helper.c:114
 msgid "Save the current file"
-msgstr "Enregistrer le fichier courant"
+msgstr "Enregistre le fichier courant"
 
 #. Save As
-#: libgnomeui/gnome-app-helper.c:111
+#: libgnomeui/gnome-app-helper.c:119
 msgid "Save _As..."
 msgstr "Enregistrer _sous..."
 
-#: libgnomeui/gnome-app-helper.c:112
+#: libgnomeui/gnome-app-helper.c:120
 msgid "Save the current file with a different name"
-msgstr "Enregistrer le fichier en cours sous un nom différent"
+msgstr "Enregistre le fichier en cours sous un nom différent"
 
 #. Revert
-#: libgnomeui/gnome-app-helper.c:117
+#: libgnomeui/gnome-app-helper.c:125
 msgid "_Revert"
 msgstr "_Revenir"
 
-#: libgnomeui/gnome-app-helper.c:118
+#: libgnomeui/gnome-app-helper.c:126
 msgid "Revert to a saved version of the file"
-msgstr "Revenir à la dernière version enregistrée du fichier"
+msgstr "Revient à la dernière version enregistrée du fichier"
 
 #. Print
-#: libgnomeui/gnome-app-helper.c:123
+#: libgnomeui/gnome-app-helper.c:131
 msgid "_Print"
 msgstr "_Imprimer"
 
-#: libgnomeui/gnome-app-helper.c:123
+#: libgnomeui/gnome-app-helper.c:131
 msgid "Print the current file"
 msgstr "Imprime le fichier en cours"
 
 #. Print Setup
-#: libgnomeui/gnome-app-helper.c:128
+#: libgnomeui/gnome-app-helper.c:136
 msgid "Print S_etup..."
 msgstr "Configuration de l'impr_ession..."
 
-#: libgnomeui/gnome-app-helper.c:129
+#: libgnomeui/gnome-app-helper.c:137
 msgid "Setup the page settings for your current printer"
-msgstr "Configurer les paramètres d'impression pour votre imprimante"
+msgstr "Configure les paramètres d'impression pour votre imprimante"
 
 #. Close
-#: libgnomeui/gnome-app-helper.c:134
+#: libgnomeui/gnome-app-helper.c:142
 msgid "_Close"
 msgstr "_Fermer"
 
-#: libgnomeui/gnome-app-helper.c:134
+#: libgnomeui/gnome-app-helper.c:142
 msgid "Close the current file"
-msgstr "Fermer le fichier en cours"
+msgstr "Ferme le fichier en cours"
 
 #. Exit
-#: libgnomeui/gnome-app-helper.c:139
+#: libgnomeui/gnome-app-helper.c:147
 msgid "E_xit"
 msgstr "_Quitter"
 
-#: libgnomeui/gnome-app-helper.c:139
+#: libgnomeui/gnome-app-helper.c:147
 msgid "Exit the program"
-msgstr "Quitter le programme"
+msgstr "Quitte le programme"
 
 #.
 #. * The "Edit" menu
 #.
 #. Cut
-#: libgnomeui/gnome-app-helper.c:147
+#: libgnomeui/gnome-app-helper.c:155
 msgid "C_ut"
 msgstr "Co_uper"
 
-#: libgnomeui/gnome-app-helper.c:147
+#: libgnomeui/gnome-app-helper.c:155
 msgid "Cut the selection"
-msgstr "Couper la sélection"
+msgstr "Coupe la sélection vers le presse-papiers"
 
 #. 10
 #. Copy
-#: libgnomeui/gnome-app-helper.c:153 libgnomeui/gnome-popup-help.c:64
+#: libgnomeui/gnome-app-helper.c:161 libgnomeui/gnome-popup-help.c:65
 msgid "_Copy"
 msgstr "_Copier"
 
-#: libgnomeui/gnome-app-helper.c:153
+#: libgnomeui/gnome-app-helper.c:161
 msgid "Copy the selection"
-msgstr "Copier la sélection"
+msgstr "Copie la sélection vers le presse-papiers"
 
 #. Paste
-#: libgnomeui/gnome-app-helper.c:158 libgnomeui/gnome-popup-help.c:66
+#: libgnomeui/gnome-app-helper.c:166 libgnomeui/gnome-popup-help.c:67
 msgid "_Paste"
 msgstr "C_oller"
 
-#: libgnomeui/gnome-app-helper.c:158
+#: libgnomeui/gnome-app-helper.c:166
 msgid "Paste the clipboard"
-msgstr "Coller le contenu du presse-papier"
+msgstr "Colle le contenu du presse-papiers"
 
 #. Clear
-#: libgnomeui/gnome-app-helper.c:163
+#: libgnomeui/gnome-app-helper.c:171
 msgid "C_lear"
-msgstr "_Vider"
+msgstr "_Effacer"
 
-#: libgnomeui/gnome-app-helper.c:163
+#: libgnomeui/gnome-app-helper.c:171
 msgid "Clear the selection"
-msgstr "Vider la sélection"
+msgstr "Efface la sélection"
 
 #. Undo
-#: libgnomeui/gnome-app-helper.c:168
+#: libgnomeui/gnome-app-helper.c:176
 msgid "_Undo"
 msgstr "_Annuler"
 
-#: libgnomeui/gnome-app-helper.c:168
+#: libgnomeui/gnome-app-helper.c:176
 msgid "Undo the last action"
-msgstr "Annuler la dernière action"
+msgstr "Annule la dernière action"
 
 #. Redo
-#: libgnomeui/gnome-app-helper.c:173
+#: libgnomeui/gnome-app-helper.c:181
 msgid "_Redo"
-msgstr "_Recommencer"
+msgstr "_Refaire"
 
-#: libgnomeui/gnome-app-helper.c:173
+#: libgnomeui/gnome-app-helper.c:181
 msgid "Redo the undone action"
-msgstr "Refaire l'action annulée"
+msgstr "Refait l'action annulée"
 
 #. Find
-#: libgnomeui/gnome-app-helper.c:178
+#: libgnomeui/gnome-app-helper.c:186
 msgid "_Find..."
 msgstr "_Rechercher..."
 
-#: libgnomeui/gnome-app-helper.c:178
+#: libgnomeui/gnome-app-helper.c:186
 msgid "Search for a string"
-msgstr "Rechercher une chaîne"
+msgstr "Recherche une chaîne"
 
 #. Find Again
-#: libgnomeui/gnome-app-helper.c:183
+#: libgnomeui/gnome-app-helper.c:191
 msgid "Find _Again"
-msgstr "Chercher à nouve_au"
+msgstr "Rechercher à nouve_au"
 
-#: libgnomeui/gnome-app-helper.c:184
+#: libgnomeui/gnome-app-helper.c:192
 msgid "Search again for the same string"
-msgstr "Rechercher encore la même chaîne"
+msgstr "Recherche encore la même chaîne"
 
 #. Replace
-#: libgnomeui/gnome-app-helper.c:189
+#: libgnomeui/gnome-app-helper.c:197
 msgid "_Replace..."
 msgstr "_Remplacer..."
 
-#: libgnomeui/gnome-app-helper.c:189
+#: libgnomeui/gnome-app-helper.c:197
 msgid "Replace a string"
-msgstr "Remplacer la chaîne"
+msgstr "Remplace la chaîne"
 
 #. Properties
-#: libgnomeui/gnome-app-helper.c:194
+#: libgnomeui/gnome-app-helper.c:202
 msgid "_Properties..."
 msgstr "_Propriétés..."
 
-#: libgnomeui/gnome-app-helper.c:195
+#: libgnomeui/gnome-app-helper.c:203
 msgid "Modify the file's properties"
-msgstr "Modifier les propriétés du fichier"
+msgstr "Modifie les propriétés du fichier"
 
 #.
 #. * The Settings menu
 #.
 #. Settings
-#: libgnomeui/gnome-app-helper.c:203
+#: libgnomeui/gnome-app-helper.c:211
 msgid "_Preferences..."
 msgstr "_Préférences..."
 
-#: libgnomeui/gnome-app-helper.c:204
+#: libgnomeui/gnome-app-helper.c:212
 msgid "Configure the application"
-msgstr "Configurer l'application"
+msgstr "Configure l'application"
 
 #. 20
 #.
 #. * And the "Help" menu
 #.
 #. About
-#: libgnomeui/gnome-app-helper.c:213
+#: libgnomeui/gnome-app-helper.c:221
 msgid "_About"
-msgstr "_A propos"
+msgstr "À _propos"
 
-#: libgnomeui/gnome-app-helper.c:214
+#: libgnomeui/gnome-app-helper.c:222
 msgid "About this application"
-msgstr "A propos de cette application"
+msgstr "À propos de cette application"
 
-#: libgnomeui/gnome-app-helper.c:217
+#: libgnomeui/gnome-app-helper.c:225
 msgid "_Select All"
 msgstr "Tout _sélectionner"
 
-#: libgnomeui/gnome-app-helper.c:218
+#: libgnomeui/gnome-app-helper.c:226
 msgid "Select everything"
 msgstr "Sélectionne tout"
 
 #.
 #. * Window menu
 #.
-#: libgnomeui/gnome-app-helper.c:226
+#: libgnomeui/gnome-app-helper.c:234
 msgid "Create New _Window"
 msgstr "Créer une nouvelle _fenêtre"
 
-#: libgnomeui/gnome-app-helper.c:227
+#: libgnomeui/gnome-app-helper.c:235
 msgid "Create a new window"
-msgstr "Créér une nouvelle fenêtre"
+msgstr "Crée une nouvelle fenêtre"
 
-#: libgnomeui/gnome-app-helper.c:231
+#: libgnomeui/gnome-app-helper.c:239
 msgid "_Close This Window"
 msgstr "_Fermer cette fenêtre"
 
-#: libgnomeui/gnome-app-helper.c:232
+#: libgnomeui/gnome-app-helper.c:240
 msgid "Close the current window"
 msgstr "Ferme la fenêtre courante"
 
 #.
 #. * The "Game" menu
 #.
-#: libgnomeui/gnome-app-helper.c:240
+#: libgnomeui/gnome-app-helper.c:248
 msgid "_New game"
 msgstr "_Nouvelle partie"
 
-#: libgnomeui/gnome-app-helper.c:241
+#: libgnomeui/gnome-app-helper.c:249
 msgid "Start a new game"
-msgstr "Démarrer une nouvelle partie"
+msgstr "Démarre une nouvelle partie"
 
-#: libgnomeui/gnome-app-helper.c:245
+#: libgnomeui/gnome-app-helper.c:253
 msgid "_Pause game"
 msgstr "_Pause"
 
-#: libgnomeui/gnome-app-helper.c:246
+#: libgnomeui/gnome-app-helper.c:254
 msgid "Pause the game"
 msgstr "Faire une pause"
 
-#: libgnomeui/gnome-app-helper.c:250
+#: libgnomeui/gnome-app-helper.c:258
 msgid "_Restart game"
 msgstr "_Recommencer la partie"
 
-#: libgnomeui/gnome-app-helper.c:251
+#: libgnomeui/gnome-app-helper.c:259
 msgid "Restart the game"
-msgstr "_Recommencer la partie en cours"
+msgstr "Recommence la partie en cours"
 
-#: libgnomeui/gnome-app-helper.c:255
+#: libgnomeui/gnome-app-helper.c:263
 msgid "_Undo move"
 msgstr "Ann_uler le mouvement"
 
-#: libgnomeui/gnome-app-helper.c:256
+#: libgnomeui/gnome-app-helper.c:264
 msgid "Undo the last move"
-msgstr "Annuler le dernier mouvement"
+msgstr "Annule le dernier mouvement"
 
-#: libgnomeui/gnome-app-helper.c:260
+#: libgnomeui/gnome-app-helper.c:268
 msgid "_Redo move"
 msgstr "_Rétablir le dernier mouvement annulé"
 
-#: libgnomeui/gnome-app-helper.c:261
+#: libgnomeui/gnome-app-helper.c:269
 msgid "Redo the undone move"
-msgstr "Rétablir le dernier mouvement annulé"
+msgstr "Rétablit le dernier mouvement annulé"
 
-#: libgnomeui/gnome-app-helper.c:265
+#: libgnomeui/gnome-app-helper.c:273
 msgid "_Hint"
 msgstr "Conse_il"
 
-#: libgnomeui/gnome-app-helper.c:266
+#: libgnomeui/gnome-app-helper.c:274
 msgid "Get a hint for your next move"
 msgstr "Demandez un conseil pour votre prochain mouvement"
 
 #. 30
-#: libgnomeui/gnome-app-helper.c:271
+#: libgnomeui/gnome-app-helper.c:279
 msgid "_Scores..."
 msgstr "_Scores..."
 
-#: libgnomeui/gnome-app-helper.c:272
+#: libgnomeui/gnome-app-helper.c:280
 msgid "View the scores"
-msgstr "Voir les scores"
+msgstr "Affiche les scores"
 
-#: libgnomeui/gnome-app-helper.c:276
+#: libgnomeui/gnome-app-helper.c:284
 msgid "_End game"
 msgstr "_Fin de la partie"
 
-#: libgnomeui/gnome-app-helper.c:277
+#: libgnomeui/gnome-app-helper.c:285
 msgid "End the current game"
-msgstr "Terminer la partie en cours"
+msgstr "Termine la partie en cours"
 
-#: libgnomeui/gnome-app-util.c:99
+#: libgnomeui/gnome-app-util.c:100
 msgid " (press return)"
 msgstr " (tapez entrée)"
 
-#: libgnomeui/gnome-app-util.c:142
+#: libgnomeui/gnome-app-util.c:143
 msgid "ERROR: "
 msgstr "ERREUR : "
 
-#: libgnomeui/gnome-app-util.c:179
+#: libgnomeui/gnome-app-util.c:180
 msgid "Warning: "
 msgstr "Avertissement : "
 
-#: libgnomeui/gnome-app-util.c:316
+#: libgnomeui/gnome-app-util.c:317
 msgid "y"
 msgstr "o"
 
-#: libgnomeui/gnome-app-util.c:317
+#: libgnomeui/gnome-app-util.c:318
 msgid "yes"
 msgstr "oui"
 
-#: libgnomeui/gnome-app-util.c:320
+#: libgnomeui/gnome-app-util.c:321
 msgid "n"
 msgstr "n"
 
-#: libgnomeui/gnome-app-util.c:321
+#: libgnomeui/gnome-app-util.c:322
 msgid "no"
 msgstr "non"
 
-#: libgnomeui/gnome-app-util.c:360
+#: libgnomeui/gnome-app-util.c:361
 msgid " (yes or no)"
 msgstr " (oui ou non)"
 
-#: libgnomeui/gnome-app-util.c:361
+#: libgnomeui/gnome-app-util.c:362
 msgid "  - OK? (yes or no)"
-msgstr "  - OK ? (oui ou non)"
+msgstr "  - Valider ? (oui ou non)"
 
-#: libgnomeui/gnome-app-util.c:693
+#: libgnomeui/gnome-app-util.c:694
 msgid "Progress"
 msgstr "Avancement"
 
-#: libgnomeui/gnome-calculator.c:982 libgnomeui/gnome-calculator.c:1132
+#: libgnomeui/gnome-app.c:151
+msgid "App ID"
+msgstr "ID de l'app."
+
+#: libgnomeui/gnome-app.c:152
+msgid "The application ID string"
+msgstr "La chaîne d'ID de l'application"
+
+#: libgnomeui/gnome-calculator.c:431 libgnomeui/gnome-calculator.c:1074
 msgid "DEG"
 msgstr "DEG"
 
-#: libgnomeui/gnome-calculator.c:984
+#: libgnomeui/gnome-calculator.c:433
 msgid "RAD"
 msgstr "RAD"
 
-#: libgnomeui/gnome-calculator.c:986
+#: libgnomeui/gnome-calculator.c:435
 msgid "GRAD"
 msgstr "GRAD"
 
-#: libgnomeui/gnome-calculator.c:1122
+#: libgnomeui/gnome-calculator.c:1064
 msgid "1/x"
 msgstr "1/x"
 
-#: libgnomeui/gnome-calculator.c:1123
+#: libgnomeui/gnome-calculator.c:1065
 msgid "x^2"
 msgstr "x^2"
 
-#: libgnomeui/gnome-calculator.c:1124
+#: libgnomeui/gnome-calculator.c:1066
 msgid "SQRT"
 msgstr "RAC"
 
-#: libgnomeui/gnome-calculator.c:1125
+#: libgnomeui/gnome-calculator.c:1067
 msgid "CE/C"
 msgstr "CE/C"
 
-#: libgnomeui/gnome-calculator.c:1126
+#: libgnomeui/gnome-calculator.c:1068
 msgid "AC"
 msgstr "AC"
 
 #. inverse button
-#: libgnomeui/gnome-calculator.c:1129
+#: libgnomeui/gnome-calculator.c:1071
 msgid "sin"
 msgstr "sin"
 
-#: libgnomeui/gnome-calculator.c:1130
+#: libgnomeui/gnome-calculator.c:1072
 msgid "cos"
 msgstr "cos"
 
-#: libgnomeui/gnome-calculator.c:1131
+#: libgnomeui/gnome-calculator.c:1073
 msgid "tan"
 msgstr "tan"
 
-#: libgnomeui/gnome-calculator.c:1134
+#: libgnomeui/gnome-calculator.c:1076
 msgid "e"
 msgstr "e"
 
-#: libgnomeui/gnome-calculator.c:1135
+#: libgnomeui/gnome-calculator.c:1077
 msgid "EE"
 msgstr "EE"
 
-#: libgnomeui/gnome-calculator.c:1136
+#: libgnomeui/gnome-calculator.c:1078
 msgid "log"
 msgstr "log"
 
-#: libgnomeui/gnome-calculator.c:1137
+#: libgnomeui/gnome-calculator.c:1079
 msgid "ln"
 msgstr "ln"
 
-#: libgnomeui/gnome-calculator.c:1138
+#: libgnomeui/gnome-calculator.c:1080
 msgid "x^y"
 msgstr "x^y"
 
-#: libgnomeui/gnome-calculator.c:1140
+#: libgnomeui/gnome-calculator.c:1082
 msgid "PI"
 msgstr "PI"
 
-#: libgnomeui/gnome-calculator.c:1141
+#: libgnomeui/gnome-calculator.c:1083
 msgid "x!"
 msgstr "x!"
 
-#: libgnomeui/gnome-calculator.c:1142
+#: libgnomeui/gnome-calculator.c:1084
 msgid "("
 msgstr "("
 
-#: libgnomeui/gnome-calculator.c:1143
+#: libgnomeui/gnome-calculator.c:1085
 msgid ")"
 msgstr ")"
 
-#: libgnomeui/gnome-calculator.c:1144
+#: libgnomeui/gnome-calculator.c:1086
 msgid "/"
 msgstr "/"
 
-#: libgnomeui/gnome-calculator.c:1146
+#: libgnomeui/gnome-calculator.c:1088
 msgid "STO"
 msgstr "STO"
 
-#: libgnomeui/gnome-calculator.c:1147
+#: libgnomeui/gnome-calculator.c:1089
 msgid "7"
 msgstr "7"
 
-#: libgnomeui/gnome-calculator.c:1148
+#: libgnomeui/gnome-calculator.c:1090
 msgid "8"
 msgstr "8"
 
-#: libgnomeui/gnome-calculator.c:1149
+#: libgnomeui/gnome-calculator.c:1091
 msgid "9"
 msgstr "9"
 
-#: libgnomeui/gnome-calculator.c:1150
+#: libgnomeui/gnome-calculator.c:1092
 msgid "*"
 msgstr "*"
 
-#: libgnomeui/gnome-calculator.c:1152
+#: libgnomeui/gnome-calculator.c:1094
 msgid "RCL"
 msgstr "RCL"
 
-#: libgnomeui/gnome-calculator.c:1153
+#: libgnomeui/gnome-calculator.c:1095
 msgid "4"
 msgstr "4"
 
-#: libgnomeui/gnome-calculator.c:1154
+#: libgnomeui/gnome-calculator.c:1096
 msgid "5"
 msgstr "5"
 
-#: libgnomeui/gnome-calculator.c:1155
+#: libgnomeui/gnome-calculator.c:1097
 msgid "6"
 msgstr "6"
 
-#: libgnomeui/gnome-calculator.c:1156
+#: libgnomeui/gnome-calculator.c:1098
 msgid "-"
 msgstr "-"
 
-#: libgnomeui/gnome-calculator.c:1158
+#: libgnomeui/gnome-calculator.c:1100
 msgid "SUM"
 msgstr "SOM"
 
-#: libgnomeui/gnome-calculator.c:1159
+#: libgnomeui/gnome-calculator.c:1101
 msgid "1"
 msgstr "1"
 
-#: libgnomeui/gnome-calculator.c:1160
+#: libgnomeui/gnome-calculator.c:1102
 msgid "2"
 msgstr "2"
 
-#: libgnomeui/gnome-calculator.c:1161
+#: libgnomeui/gnome-calculator.c:1103
 msgid "3"
 msgstr "3"
 
-#: libgnomeui/gnome-calculator.c:1162
+#: libgnomeui/gnome-calculator.c:1104
 msgid "+"
 msgstr "+"
 
-#: libgnomeui/gnome-calculator.c:1164
+#: libgnomeui/gnome-calculator.c:1106
 msgid "EXC"
 msgstr "EXC"
 
-#: libgnomeui/gnome-calculator.c:1165
+#: libgnomeui/gnome-calculator.c:1107
 msgid "0"
 msgstr "0"
 
-#: libgnomeui/gnome-calculator.c:1166
+#: libgnomeui/gnome-calculator.c:1108
 msgid "."
 msgstr "."
 
-#: libgnomeui/gnome-calculator.c:1167
+#: libgnomeui/gnome-calculator.c:1109
 msgid "+/-"
 msgstr "+/-"
 
-#: libgnomeui/gnome-calculator.c:1168
+#: libgnomeui/gnome-calculator.c:1110
 msgid "="
 msgstr "="
 
-#: libgnomeui/gnome-calculator.c:1237
+#: libgnomeui/gnome-calculator.c:1321
 msgid "INV"
 msgstr "INV"
 
-#: libgnomeui/gnome-client.c:846
+#: libgnomeui/gnome-client.c:836
 msgid "Specify session management ID"
 msgstr "Spécifiez l'ID de gestion de session"
 
-#: libgnomeui/gnome-client.c:846
+#: libgnomeui/gnome-client.c:836
 msgid "ID"
 msgstr "ID"
 
-#: libgnomeui/gnome-client.c:849
+#: libgnomeui/gnome-client.c:839
 msgid "Specify prefix of saved configuration"
 msgstr "Spécifiez le préfixe de la configuration sauvegardée"
 
-#: libgnomeui/gnome-client.c:849
+#: libgnomeui/gnome-client.c:839
 msgid "PREFIX"
 msgstr "PREFIX"
 
-#: libgnomeui/gnome-client.c:852
+#: libgnomeui/gnome-client.c:842
 msgid "Disable connection to session manager"
 msgstr "Désactive la connexion avec le gestionnaire de session"
 
-#: libgnomeui/gnome-client.c:864
+#: libgnomeui/gnome-client.c:854
 msgid "Session management"
 msgstr "Gestion de session"
 
-#: libgnomeui/gnome-client.c:2330
+#: libgnomeui/gnome-client.c:2341
 msgid "Cancel Logout"
 msgstr "Annuler la demande de fin de session"
 
-#: libgnomeui/gnome-color-picker.c:338
+#: libgnomeui/gnome-color-picker.c:423
+msgid "Received invalid color data\n"
+msgstr ""
+
+#: libgnomeui/gnome-color-picker.c:487
 msgid "Pick a color"
 msgstr "Choisissez une couleur"
 
+#: libgnomeui/gnome-dateedit.c:361
+msgid "Time"
+msgstr ""
+
+#: libgnomeui/gnome-dateedit.c:362
+msgid "The time currentlyselected"
+msgstr ""
+
+#: libgnomeui/gnome-dateedit.c:373
+msgid "DateEdit Flags"
+msgstr ""
+
+#: libgnomeui/gnome-dateedit.c:374
+msgid "Flags for how DateEdit looks"
+msgstr ""
+
+#: libgnomeui/gnome-dateedit.c:383
+msgid "Lower Hour"
+msgstr ""
+
+#: libgnomeui/gnome-dateedit.c:384
+msgid "Lower hour in the time popup selector"
+msgstr ""
+
+#: libgnomeui/gnome-dateedit.c:394
+msgid "Upper Hour"
+msgstr ""
+
+#: libgnomeui/gnome-dateedit.c:395
+msgid "Upper hour in the time popup selector"
+msgstr ""
+
+#: libgnomeui/gnome-dateedit.c:405
+msgid "Initial Time"
+msgstr ""
+
+#: libgnomeui/gnome-dateedit.c:406
+msgid "The initial time"
+msgstr ""
+
 #. Calendar label, only shown if the date editor has a time field
-#: libgnomeui/gnome-dateedit.c:480
+#: libgnomeui/gnome-dateedit.c:651
 msgid "Calendar"
 msgstr "Calendrier"
 
-#: libgnomeui/gnome-dentry-edit.c:183
-msgid "Name:"
-msgstr "Nom :"
+#: libgnomeui/gnome-dateedit.c:845
+msgid "gnome_date_edit_get_date deprecated, use gnome_date_edit_get_time"
+msgstr ""
 
-#: libgnomeui/gnome-dentry-edit.c:196
-msgid "Comment:"
-msgstr "Commentaire :"
-
-#: libgnomeui/gnome-dentry-edit.c:206
-msgid "Command:"
-msgstr "Commande :"
-
-#: libgnomeui/gnome-dentry-edit.c:216
-msgid "Type:"
-msgstr "Type :"
-
-#: libgnomeui/gnome-dentry-edit.c:232
-msgid "Icon:"
-msgstr "Icône :"
-
-#: libgnomeui/gnome-dentry-edit.c:242
-msgid "Choose an icon"
-msgstr "Choisissez une icône"
-
-#: libgnomeui/gnome-dentry-edit.c:255
-msgid "Run in Terminal"
-msgstr "Lancer dans un terminal"
-
-#: libgnomeui/gnome-dentry-edit.c:366
-msgid "Try this before using:"
-msgstr "Essayer cette commande avant :"
-
-#: libgnomeui/gnome-dentry-edit.c:376
-msgid "Documentation:"
-msgstr "Documentation :"
-
-#: libgnomeui/gnome-dentry-edit.c:386
-msgid "Name/Comment translations:"
-msgstr "Traduction Nom/Commentaire :"
-
-#: libgnomeui/gnome-dentry-edit.c:389
-msgid "Language"
-msgstr "Langue"
-
-#: libgnomeui/gnome-dentry-edit.c:390
-msgid "Name"
-msgstr "Nom"
-
-#: libgnomeui/gnome-dentry-edit.c:391
-msgid "Comment"
-msgstr "Commentaire"
-
-#: libgnomeui/gnome-dentry-edit.c:419
-msgid "Add/Set"
-msgstr "Ajouter/Changer"
-
-#: libgnomeui/gnome-dentry-edit.c:424 libgnomeui/gnome-stock.c:644
-msgid "Remove"
-msgstr "Supprimer"
-
-#: libgnomeui/gnome-dentry-edit.c:506
-msgid "Basic"
-msgstr "Basique"
-
-#: libgnomeui/gnome-dentry-edit.c:510
-msgid "Advanced"
-msgstr "Avancée"
-
-#: libgnomeui/gnome-druid.c:135
+#: libgnomeui/gnome-druid.c:125
 msgid "Back"
 msgstr "Retour"
 
-#: libgnomeui/gnome-druid.c:143
+#: libgnomeui/gnome-druid.c:133
 msgid "Finish"
-msgstr "Fin"
+msgstr "Terminer"
 
-#: libgnomeui/gnome-file-entry.c:175
+#: libgnomeui/gnome-file-entry.c:314
 msgid "Select file"
 msgstr "Sélectionnez un fichier"
 
-#. browse button ...
-#: libgnomeui/gnome-file-entry.c:304 libgnomeui/gnome-spell.c:620
-#: libgnomeui/gnome-spell.c:637 libgnomeui/gnome-spell.c:654
-msgid "Browse..."
-msgstr "Parcourir..."
-
-#: libgnomeui/gnome-font-picker.c:161
-msgid "Pick a Font"
-msgstr "Choisissez une police"
-
-#: libgnomeui/gnome-font-picker.c:719 libgnomeui/gnome-stock.c:664
+#: libgnomeui/gnome-font-picker.c:856 libgnomeui/gnome-stock.c:729
 msgid "Font"
 msgstr "Police"
 
-#: libgnomeui/gnome-icon-entry.c:273 libgnomeui/gnome-icon-entry.c:773
+#: libgnomeui/gnome-icon-entry.c:231 libgnomeui/gnome-icon-entry.c:540
 msgid "No Icon"
-msgstr "Pas d'icône"
+msgstr ""
+"Pas\n"
+"d'icône"
 
-#: libgnomeui/gnome-icon-entry.c:447 libgnomeui/gnome-pixmap-entry.c:296
-msgid "Can't find an hbox, using a normal file selection"
-msgstr "hbox non trouvée, utilisation d'une sélection de fichier normale"
+#: libgnomeui/gnome-icon-sel.c:280
+#, c-format
+msgid "GnomeIconSelection: '%s' does not exist or is not a directory"
+msgstr ""
 
-#: libgnomeui/gnome-icon-entry.c:453 libgnomeui/gnome-pixmap-entry.c:302
-msgid "Preview"
-msgstr "Prévisualisation"
+#: libgnomeui/gnome-icon-sel.c:288
+#, c-format
+msgid "GnomeIconSelection: couldn't open directory '%s'"
+msgstr ""
 
-#: libgnomeui/gnome-icon-entry.c:794
-msgid "Browse"
-msgstr "Parcourir"
-
-#: libgnomeui/gnome-icon-sel.c:338
+#: libgnomeui/gnome-icon-sel.c:361
 msgid "Loading Icons..."
 msgstr "Chargement des icônes..."
 
 #: libgnomeui/gnome-init.c:81
 msgid "Gdk debugging flags to set"
-msgstr "Options de débugage de Gdk à activer"
+msgstr "Options de débogage de Gdk à activer"
 
 #: libgnomeui/gnome-init.c:81 libgnomeui/gnome-init.c:84
 #: libgnomeui/gnome-init.c:114 libgnomeui/gnome-init.c:117
@@ -769,11 +1261,11 @@ msgstr "DRAPEAUX"
 
 #: libgnomeui/gnome-init.c:84
 msgid "Gdk debugging flags to unset"
-msgstr "Options de débugage de Gdk à désactiver"
+msgstr "Options de débogage de Gdk à désactiver"
 
 #: libgnomeui/gnome-init.c:87 libgnomeui/gnome-init.c:239
 msgid "X display to use"
-msgstr "Ecran X à utiliser"
+msgstr "Écran X à utiliser"
 
 #: libgnomeui/gnome-init.c:87 libgnomeui/gnome-init.c:239
 msgid "DISPLAY"
@@ -805,7 +1297,7 @@ msgstr "CLASSE"
 
 #: libgnomeui/gnome-init.c:102
 msgid "HOST"
-msgstr "HOTE"
+msgstr "HÔTE"
 
 #: libgnomeui/gnome-init.c:105
 msgid "PORT"
@@ -817,11 +1309,11 @@ msgstr "STYLE"
 
 #: libgnomeui/gnome-init.c:114
 msgid "Gtk+ debugging flags to set"
-msgstr "Options de débugage de Gtk+ à activer"
+msgstr "Options de débogage de Gtk+ à activer"
 
 #: libgnomeui/gnome-init.c:117
 msgid "Gtk+ debugging flags to unset"
-msgstr "Options de débugage de Gtk+ à désactiver"
+msgstr "Options de débogage de Gtk+ à désactiver"
 
 #: libgnomeui/gnome-init.c:120
 msgid "Make all warnings fatal"
@@ -836,123 +1328,329 @@ msgid "MODULE"
 msgstr "MODULE"
 
 #. dialog display isn't working out
-#: libgnomeui/gnome-init.c:464
+#: libgnomeui/gnome-init.c:471
 msgid "Multiple segmentation faults occurred; can't display error dialog\n"
 msgstr ""
-"Multiples erreurs de segmentation; impossible d'afficher une boîte de "
+"Plusieurs erreurs de segmentation sont apparues ; ne peut afficher de "
 "dialogue d'erreur\n"
 
-#: libgnomeui/gnome-messagebox.c:137
+#: libgnomeui/gnome-init.c:634
+msgid "GTK options"
+msgstr "Options GTK"
+
+#: libgnomeui/gnome-init.c:635
+msgid "GNOME GUI options"
+msgstr "Options IUG GNOME"
+
+#: libgnomeui/gnome-init.c:786
+#, c-format
+msgid "%s options"
+msgstr "%s options"
+
+#: libgnomeui/gnome-messagebox.c:179
 msgid "Information"
 msgstr "Information"
 
-#: libgnomeui/gnome-messagebox.c:146
+#: libgnomeui/gnome-messagebox.c:188
 msgid "Warning"
 msgstr "Avertissement"
 
-#: libgnomeui/gnome-messagebox.c:155
+#: libgnomeui/gnome-messagebox.c:197
 msgid "Error"
 msgstr "Erreur"
 
-#: libgnomeui/gnome-messagebox.c:164
+#: libgnomeui/gnome-messagebox.c:206
 msgid "Question"
 msgstr "Question"
 
-#: libgnomeui/gnome-messagebox.c:173
+#: libgnomeui/gnome-messagebox.c:215
 msgid "Message"
 msgstr "Message"
 
-#: libgnomeui/gnome-number-entry.c:177
+#: libgnomeui/gnome-number-entry.c:217
 msgid "Calculator"
 msgstr "Calculatrice"
 
-#: libgnomeui/gnome-number-entry.c:233
+#: libgnomeui/gnome-number-entry.c:275
 msgid "Calculator..."
 msgstr "Calculatrice..."
 
-#: libgnomeui/gnome-pixmap-entry.c:128 libgnomeui/gnome-pixmap-entry.c:399
+#: libgnomeui/gnome-pixmap-entry.c:257 libgnomeui/gnome-pixmap-entry.c:564
 msgid "No Image"
 msgstr "Pas d'image"
 
-#: libgnomeui/gnome-popup-help.c:56
+#: libgnomeui/gnome-pixmap-entry.c:460
+msgid "Can't find an hbox, using a normal file selection"
+msgstr "hbox non trouvée, utilisation d'une sélection de fichier normale"
+
+#: libgnomeui/gnome-pixmap-entry.c:466
+msgid "Preview"
+msgstr "Prévisualisation"
+
+#: libgnomeui/gnome-popup-help.c:57
 msgid "_Help with this"
 msgstr "_Aide sur ceci"
 
-#: libgnomeui/gnome-popup-help.c:62
+#: libgnomeui/gnome-popup-help.c:63
 msgid "Cu_t"
 msgstr "_Couper"
 
-#: libgnomeui/gnome-property-entries.c:258
-msgid "Select"
-msgstr "Sélectionner"
-
-#: libgnomeui/gnome-scores.c:112
+#: libgnomeui/gnome-scores.c:105
 msgid "Top Ten"
 msgstr "Top 10"
 
-#: libgnomeui/gnome-scores.c:123
+#: libgnomeui/gnome-scores.c:115
 msgid "User"
 msgstr "Utilisateur"
 
-#: libgnomeui/gnome-scores.c:126
+#: libgnomeui/gnome-scores.c:118
 msgid "Score"
 msgstr "Score"
 
-#: libgnomeui/gnome-scores.c:129
+#: libgnomeui/gnome-scores.c:121
 msgid "Date"
 msgstr "Date"
 
 #. the localized string should fit (after replacing the %a %b
-#. etc) in ~18 chars; so drop some if needed; after all this
-#. is for games scores, there is no need for extra precision.
+#. etc) in ~18 chars.
 #. %a is abbreviated weekday, %A is full weekday,
 #. %b %B are abbreviated and full monthname, %Y is year,
 #. %d is day of month, %m is month number, %T full hour,
 #. %H hours, %M minutes, %S seconds
 #.
-#: libgnomeui/gnome-scores.c:155
+#: libgnomeui/gnome-scores.c:236
 msgid "%a %b %d %T %Y"
 msgstr "%a %b %d %T %Y"
 
-#: libgnomeui/gnome-spell.c:199
+#: libgnomeui/gnome-scores.c:444
+msgid "-freefont-garamond-*-*-*-*-30-170-*-*-*-*-*-*,*-r-*"
+msgstr "-freefont-garamond-*-*-*-*-30-170-*-*-*-*-*-*,*-r-*"
+
+#: libgnomeui/gnome-stock.c:706
+msgid "Add"
+msgstr "Ajouter"
+
+#: libgnomeui/gnome-stock.c:707
+msgid "Clear"
+msgstr "Vider"
+
+#: libgnomeui/gnome-stock.c:708
+msgid "Select Color"
+msgstr "Sélectionner une couleur"
+
+#: libgnomeui/gnome-stock.c:710
+msgid "Table Borders"
+msgstr "Bordures de table"
+
+#: libgnomeui/gnome-stock.c:711
+msgid "Table Fill"
+msgstr "Remplissage de table"
+
+#: libgnomeui/gnome-stock.c:712
+msgid "Bulleted List"
+msgstr "Liste à puces"
+
+#: libgnomeui/gnome-stock.c:713
+msgid "Numbered List"
+msgstr "Liste numérotée"
+
+#: libgnomeui/gnome-stock.c:714
+msgid "Indent"
+msgstr "Indenter"
+
+#: libgnomeui/gnome-stock.c:715
+msgid "Un-Indent"
+msgstr "Désindenter"
+
+#: libcompat/gnome-spell.c:259 libgnomeui/gnome-stock.c:718
+msgid "OK"
+msgstr "Valider"
+
+#: libgnomeui/gnome-stock.c:719
+msgid "Apply"
+msgstr "Appliquer"
+
+#: libcompat/gnome-spell.c:266 libgnomeui/gnome-stock.c:720
+msgid "Cancel"
+msgstr "Annuler"
+
+#: demos/stock_demo.c:169 libgnomeui/gnome-stock.c:721
+msgid "Close"
+msgstr "Fermer"
+
+#: libgnomeui/gnome-stock.c:722
+msgid "Yes"
+msgstr "Oui"
+
+#: libgnomeui/gnome-stock.c:723
+msgid "No"
+msgstr "Non"
+
+#: libgnomeui/gnome-stock.c:725
+msgid "Next"
+msgstr "Suivant"
+
+#: libgnomeui/gnome-stock.c:726
+msgid "Prev"
+msgstr "Précédent"
+
+#: libgnomeui/gnome-stock.c:727
+msgid "Up"
+msgstr "Haut"
+
+#: libgnomeui/gnome-stock.c:728
+msgid "Down"
+msgstr "Bas"
+
+#: libgnomeui/gnome-stock.c:1492
+msgid "Menu Accelerator Keys"
+msgstr "Touches accélératrices du menu"
+
+#: libgnomeui/gnome-stock.c:1494
+msgid "Global"
+msgstr "Global"
+
+#: libgnomeui/gnome-stock.c:1496
+msgid "Menu Item"
+msgstr "Élément de menu"
+
+#: libgnomeui/gnome-stock.c:1497
+msgid "Accelerator"
+msgstr "Accélérateur"
+
+#: libgnomeui/gnome_segv.c:85
+#, c-format
+msgid ""
+"The GNOME Session Manager (process %d) has crashed\n"
+"due to a fatal error (%s).\n"
+"When you close this dialog, all applications will close and your session "
+"will exit.\n"
+"Please save all your files before closing this dialog."
+msgstr ""
+"Le Gestionnaire de Session GNOME (processus %d) s'est\n"
+"terminé à la suite d'une erreur fatale (%s).\n"
+"Lorsque vous fermerez cette boîte de dialogue, toutes les applications "
+"seront fermées et votre session sera terminée.\n"
+"Enregistrez tous vos fichiers en cours avant de fermer cette\n"
+"boîte de dialogue."
+
+#: libgnomeui/gnome_segv.c:95
+#, c-format
+msgid ""
+"Application \"%s\" (process %d) has crashed\n"
+"due to a fatal error.\n"
+"(%s)"
+msgstr ""
+"L'application « %s » (processus %d) s'est\n"
+"terminée à la suite d'une erreur fatale.\n"
+"(%s)"
+
+#: libgnomeui/gnome_segv.c:104
+msgid "Usage: gnome_segv appname signum\n"
+msgstr "Usage : gnome_segv nom-appli num-signal\n"
+
+#: libgnomeui/gnome_segv.c:118
+msgid "Submit a bug report"
+msgstr "Transmettre un rapport d'anomalies"
+
+#: libgnomeui/gnome_segv.c:128
+msgid "Debug"
+msgstr "Débogage"
+
+#: libgnomeui/gnome_segv.c:135
+msgid "http://www.gnome.org/application_crashed.shtml"
+msgstr "http://www.gnome.org/application_crashed.shtml"
+
+#: libgnomeui/gnome_segv.c:141
+msgid "Please visit the GNOME Application Crash page for more information"
+msgstr "Visitez la page GNOME Application Crash pour plus d'informations"
+
+#. Pixmap
+#: test-gnome/testgnome.c:830
+msgid "Default Pixmap"
+msgstr "Pixmap par défaut"
+
+#: test-gnome/testgnome.c:838 test-gnome/testgnome.c:879
+#: test-gnome/testgnome.c:904
+msgid "If you choose a font it will appear here"
+msgstr "Si vous choisissez une police, elle apparaîtra ici"
+
+#. Font_Info
+#: test-gnome/testgnome.c:845
+msgid "Font Info"
+msgstr "Information sur la police"
+
+#: test-gnome/testgnome.c:855
+msgid "Use Font in button with size"
+msgstr "Utiliser la police pour le bouton avec la taille"
+
+#: test-gnome/testgnome.c:862
+msgid "Show font size"
+msgstr "Afficher la taille de la police"
+
+#: test-gnome/testgnome.c:898
+msgid "This is an hbox with pixmap and text"
+msgstr "Ceci est une hbox avec un pixmap et du texte"
+
+#: test-gnome/testgnome.c:1110
+msgid "The user chose Yes/OK with data:\n"
+msgstr "L'utilisateur a choisi Oui/Valider avec comme données :\n"
+
+#: test-gnome/testgnome.c:1114
+msgid "The user chose No/Cancel with data:\n"
+msgstr "L'utilisateur a choisi Non/Annuler avec comme données :\n"
+
+#: test-gnome/testgnome.c:1125
+msgid "Weird number in reply callback"
+msgstr "Nombre bizarre dans la réponse du rappel de signal"
+
+#: test-gnome/testgnome.c:1981
+msgid "Test GNOME"
+msgstr "Test GNOME"
+
+#: libcompat/gnome-druid-page-finish.c:261
+msgid "-adobe-helvetica-bold-r-normal-*-*-180-*-*-p-*-*-*"
+msgstr "-adobe-helvetica-bold-r-normal-*-*-180-*-*-p-*-*-*"
+
+#: libcompat/gnome-druid-page-finish.c:269
+msgid "-adobe-helvetica-medium-r-normal-*-*-120-*-*-p-*-*-*"
+msgstr "-adobe-helvetica-medium-r-normal-*-*-120-*-*-p-*-*-*"
+
+#: libcompat/gnome-property-entries.c:258
+msgid "Select"
+msgstr "Sélectionner"
+
+#: libcompat/gnome-spell.c:199
 msgid "Select dictionary"
 msgstr "Choix du dictionnaire"
 
-#: libgnomeui/gnome-spell.c:246
+#: libcompat/gnome-spell.c:246
 #, c-format
 msgid ""
 "The word `%s'\n"
 "is not in the dictionary.\n"
 "Proceed anyway?"
 msgstr ""
-"Le mot `%s' n'est pas dans le dictionnaire.\n"
+"Le mot « %s » n'est pas dans le dictionnaire.\n"
 "Continuer quand même ?"
 
-#: libgnomeui/gnome-spell.c:250
+#: libcompat/gnome-spell.c:250
 msgid "Confirm"
 msgstr "Confirmer"
 
-#: libgnomeui/gnome-spell.c:259 libgnomeui/gnome-stock.c:653
-msgid "OK"
-msgstr "OK"
-
-#: libgnomeui/gnome-spell.c:266 libgnomeui/gnome-stock.c:655
-msgid "Cancel"
-msgstr "Annuler"
-
-#: libgnomeui/gnome-spell.c:528
+#: libcompat/gnome-spell.c:528
 msgid "Word:"
 msgstr "Mot :"
 
-#: libgnomeui/gnome-spell.c:545
+#: libcompat/gnome-spell.c:545
 msgid "Alternatives:"
 msgstr "Alternatives :"
 
-#: libgnomeui/gnome-spell.c:564
+#: libcompat/gnome-spell.c:564
 msgid "Accept"
 msgstr "Accepter"
 
-#: libgnomeui/gnome-spell.c:569
+#: libcompat/gnome-spell.c:569
 msgid ""
 "Accept the word for\n"
 "this session only"
@@ -960,11 +1658,11 @@ msgstr ""
 "Accepter ce mot pour\n"
 "cette session uniquement"
 
-#: libgnomeui/gnome-spell.c:571
+#: libcompat/gnome-spell.c:571
 msgid "Skip"
 msgstr "Passer"
 
-#: libgnomeui/gnome-spell.c:576
+#: libcompat/gnome-spell.c:576
 msgid ""
 "Ignore this word\n"
 "this time only"
@@ -972,19 +1670,19 @@ msgstr ""
 "Ignorer ce mot cette\n"
 "fois-ci"
 
-#: libgnomeui/gnome-spell.c:578
+#: libcompat/gnome-spell.c:578
 msgid "Replace"
 msgstr "Remplacer"
 
-#: libgnomeui/gnome-spell.c:583
+#: libcompat/gnome-spell.c:583
 msgid "Replace the word"
 msgstr "Remplacer ce mot"
 
-#: libgnomeui/gnome-spell.c:585
+#: libcompat/gnome-spell.c:585
 msgid "Insert"
 msgstr "Insérer"
 
-#: libgnomeui/gnome-spell.c:590
+#: libcompat/gnome-spell.c:590
 msgid ""
 "Insert the word\n"
 "in your personal dictionary"
@@ -992,11 +1690,11 @@ msgstr ""
 "Insérer ce mot dans\n"
 "votre dictionnaire personnel"
 
-#: libgnomeui/gnome-spell.c:592
+#: libcompat/gnome-spell.c:592
 msgid "Insert with case"
 msgstr "Insérer avec la casse"
 
-#: libgnomeui/gnome-spell.c:598
+#: libcompat/gnome-spell.c:598
 msgid ""
 "Insert the word\n"
 "in your personal dictionary\n"
@@ -1008,515 +1706,266 @@ msgstr ""
 "(préserver la case s'il y a des\n"
 "majuscules ET des minuscules)"
 
-#: libgnomeui/gnome-spell.c:613
+#: libcompat/gnome-spell.c:613
 msgid "Ispell command:"
 msgstr "Commande ispell :"
 
-#: libgnomeui/gnome-spell.c:631
+#: libcompat/gnome-spell.c:631
 msgid "Main dictionary:"
 msgstr "Dictionnaire principal :"
 
-#: libgnomeui/gnome-spell.c:648
+#: libcompat/gnome-spell.c:648
 msgid "Personal dictionary:"
 msgstr "Dictionnaire personnel :"
 
-#: libgnomeui/gnome-spell.c:665
+#: libcompat/gnome-spell.c:665
 msgid "Valid chars in words:"
 msgstr "Caractères valides dans les mots :"
 
-#: libgnomeui/gnome-spell.c:676
+#: libcompat/gnome-spell.c:676
 msgid "Check words longer than:"
 msgstr "Vérifier les mots plus longs que :"
 
-#: libgnomeui/gnome-spell.c:687
+#: libcompat/gnome-spell.c:687
 msgid "Sort by correctness"
 msgstr "Trier par exactitude"
 
-#: libgnomeui/gnome-spell.c:695
+#: libcompat/gnome-spell.c:695
 msgid "Accept run-together words"
 msgstr "Accepter les mots composés"
 
-#: libgnomeui/gnome-spell.c:705
+#: libcompat/gnome-spell.c:705
 msgid "Discard accepted words on kill"
 msgstr "Oublier les mots acceptés en fin de correction"
 
-#: libgnomeui/gnome-spell.c:713
+#: libcompat/gnome-spell.c:713
 msgid "Enable tooltips"
 msgstr "Activer les bulles d'aide"
 
-#: libgnomeui/gnome-spell.c:727
+#: libcompat/gnome-spell.c:727
 msgid "Kill ispell process"
 msgstr "Tuer le process ispell"
 
-#: libgnomeui/gnome-spell.c:753
+#: libcompat/gnome-spell.c:753
 msgid "Spell"
 msgstr "Épeler"
 
-#: libgnomeui/gnome-spell.c:760
+#: libcompat/gnome-spell.c:760
 msgid "Configure"
 msgstr "Configurer"
 
-#: libgnomeui/gnome-stock.c:641
-msgid "Add"
-msgstr "Ajouter"
-
-#: libgnomeui/gnome-stock.c:642
-msgid "Clear"
-msgstr "Vider"
-
-#: libgnomeui/gnome-stock.c:643
-msgid "Select Color"
-msgstr "Sélectionner une couleur"
-
-#: libgnomeui/gnome-stock.c:645
-msgid "Table Borders"
-msgstr "Bordures de table"
-
-#: libgnomeui/gnome-stock.c:646
-msgid "Table Fill"
-msgstr "Remplissage de table"
-
-#: libgnomeui/gnome-stock.c:647
-msgid "Bulleted List"
-msgstr "Liste à puces"
-
-#: libgnomeui/gnome-stock.c:648
-msgid "Numbered List"
-msgstr "Liste numérotée"
-
-#: libgnomeui/gnome-stock.c:649
-msgid "Indent"
-msgstr "Indenter"
-
-#: libgnomeui/gnome-stock.c:650
-msgid "Un-Indent"
-msgstr "Désindenter"
-
-#: libgnomeui/gnome-stock.c:654
-msgid "Apply"
-msgstr "Appliquer"
-
-#: libgnomeui/gnome-stock.c:656 libgnomeui/stock_demo.c:169
-msgid "Close"
-msgstr "Fermer"
-
-#: libgnomeui/gnome-stock.c:657
-msgid "Yes"
-msgstr "Oui"
-
-#: libgnomeui/gnome-stock.c:658
-msgid "No"
-msgstr "Non"
-
-#: libgnomeui/gnome-stock.c:659 libgnomeui/stock_demo.c:315
-msgid "Help"
-msgstr "Aide"
-
-#: libgnomeui/gnome-stock.c:660
-msgid "Next"
-msgstr "Suivant"
-
-#: libgnomeui/gnome-stock.c:661
-msgid "Prev"
-msgstr "Précédent"
-
-#: libgnomeui/gnome-stock.c:662
-msgid "Up"
-msgstr "Haut"
-
-#: libgnomeui/gnome-stock.c:663
-msgid "Down"
-msgstr "Bas"
-
-#: libgnomeui/gnome-stock.c:1426
-msgid "Menu Accelerator Keys"
-msgstr "Touches accélératrices du menu"
-
-#: libgnomeui/gnome-stock.c:1428
-msgid "Global"
-msgstr "Global"
-
-#: libgnomeui/gnome-stock.c:1430
-msgid "Menu Item"
-msgstr "Elément de menu"
-
-#: libgnomeui/gnome-stock.c:1431
-msgid "Accelerator"
-msgstr "Accélérateur"
-
-#: libgnomeui/gnome_segv.c:81
-#, c-format
-msgid ""
-"The GNOME Session Manager (process %d) has crashed\n"
-"due to a fatal error (%s).\n"
-"When you close this dialog, all applications will close and your session "
-"will exit.\n"
-"Please save all your files before closing this dialog."
+#: demos/mdi_demo.c:116
+msgid "Child Item 1"
 msgstr ""
-"Le Gestionnaire de Session GNOME (processus %d) a\n"
-"planté à la suite d'une erreur fatale (%s).\n"
-"Lorsque vous fermerez cette boîte de dialogue, toutes lesapplications seront "
-"fermées et votre session sera terminée.\n"
-"Enregistrez tous vos fichiers en cours avant de fermer cette\n"
-"boîte de dialogue."
 
-#: libgnomeui/gnome_segv.c:87
-#, c-format
-msgid ""
-"Application \"%s\" (process %d) has crashed\n"
-"due to a fatal error.\n"
-"(%s)"
+#: demos/mdi_demo.c:117
+msgid "Hint for item 1"
 msgstr ""
-"L'application \"%s\" (processus %d) a\n"
-"planté à cause d'une erreur fatale.\n"
-"(%s)"
 
-#: libgnomeui/gnome_segv.c:95
-msgid "Usage: gnome_segv appname signum\n"
-msgstr "Usage : gnome_segv nom-appli num-signal\n"
+#: demos/mdi_demo.c:119
+msgid "Child Item 2"
+msgstr ""
 
-#: libgnomeui/gnome_segv.c:109
-msgid "Submit a bug report"
-msgstr "Sousmettre un rapport d'erreur"
+#: demos/mdi_demo.c:120
+msgid "Hint for item 2"
+msgstr ""
 
-#: libgnomeui/gnome_segv.c:115
-msgid "http://www.gnome.org/application_crashed.shtml"
-msgstr "http://www.gnome.org/application_crashed.shtml.fr"
-
-#: libgnomeui/gnome_segv.c:121
-msgid "Please visit the GNOME Application Crash page for more information"
-msgstr "Visitez la page GNOME Application Crash pour plus d'informations"
-
-#: libgnomeui/stock_demo.c:137
+#: demos/stock_demo.c:137
 msgid "New..."
 msgstr "Nouveau..."
 
-#: libgnomeui/stock_demo.c:145
+#: demos/stock_demo.c:145
 msgid "Open..."
 msgstr "Ouvrir..."
 
-#: libgnomeui/stock_demo.c:153
+#: demos/stock_demo.c:153
 msgid "Save"
 msgstr "Enregistrer"
 
-#: libgnomeui/stock_demo.c:161
+#: demos/stock_demo.c:161
 msgid "Save as..."
 msgstr "Enregistrer sous..."
 
-#: libgnomeui/stock_demo.c:181
+#: demos/stock_demo.c:181
 msgid "Print..."
 msgstr "Imprimer..."
 
-#: libgnomeui/stock_demo.c:189
+#: demos/stock_demo.c:189
 msgid "Setup Page..."
-msgstr "Page de configuration..."
+msgstr "Mise en page..."
 
-#: libgnomeui/stock_demo.c:198
+#: demos/stock_demo.c:198
 msgid "Quit"
 msgstr "Quitter"
 
-#: libgnomeui/stock_demo.c:209
+#: demos/stock_demo.c:209
 msgid "File"
 msgstr "Fichier"
 
-#: libgnomeui/stock_demo.c:216
+#: demos/stock_demo.c:216
 msgid "Undo"
 msgstr "Annuler"
 
-#: libgnomeui/stock_demo.c:224
+#: demos/stock_demo.c:224
 msgid "Redo"
 msgstr "Recommencer"
 
-#: libgnomeui/stock_demo.c:233
+#: demos/stock_demo.c:233
 msgid "Delete"
 msgstr "Effacer"
 
-#: libgnomeui/stock_demo.c:238
+#: demos/stock_demo.c:238
 msgid "Cut"
 msgstr "Couper"
 
-#: libgnomeui/stock_demo.c:246
+#: demos/stock_demo.c:246
 msgid "Copy"
 msgstr "Copier"
 
-#: libgnomeui/stock_demo.c:254
+#: demos/stock_demo.c:254
 msgid "Paste"
 msgstr "Coller"
 
-#: libgnomeui/stock_demo.c:266
+#: demos/stock_demo.c:266
 msgid "Properties..."
 msgstr "Propriétés..."
 
-#: libgnomeui/stock_demo.c:276
+#: demos/stock_demo.c:276
 msgid "Preferences..."
 msgstr "Préférences..."
 
-#: libgnomeui/stock_demo.c:291
+#: demos/stock_demo.c:291
 msgid "Scores..."
 msgstr "Scores..."
 
-#: libgnomeui/stock_demo.c:299
+#: demos/stock_demo.c:299
 msgid "Edit"
-msgstr "Editer"
+msgstr "Éditer"
 
-#: libgnomeui/winhints_demo.c:46
+#: demos/winhints_demo.c:46
 msgid "wmhints-test"
 msgstr "wmhints-test"
 
-#: libgnomeui/winhints_demo.c:46
+#: demos/winhints_demo.c:46
 msgid "winhints-test"
 msgstr "winhints-test"
 
-#: libgnomeui/winhints_demo.c:71
+#: demos/winhints_demo.c:71
 msgid "Layer:"
 msgstr "Calque :"
 
-#: libgnomeui/winhints_demo.c:94
+#: demos/winhints_demo.c:94
 msgid "Above Dock"
-msgstr "Au dessus du dock"
+msgstr "Au-dessus du dock"
 
-#: libgnomeui/winhints_demo.c:98
+#: demos/winhints_demo.c:98
 msgid "Dock"
 msgstr "Dock"
 
-#: libgnomeui/winhints_demo.c:102
+#: demos/winhints_demo.c:102
 msgid "On Top"
 msgstr "Au-dessus"
 
-#: libgnomeui/winhints_demo.c:106
+#: demos/winhints_demo.c:106
 msgid "Normal"
 msgstr "Normal"
 
-#: libgnomeui/winhints_demo.c:110
+#: demos/winhints_demo.c:110
 msgid "Below"
-msgstr "En dessous"
+msgstr "En-dessous"
 
-#: libgnomeui/winhints_demo.c:114
+#: demos/winhints_demo.c:114
 msgid "Desktop"
 msgstr "Bureau"
 
-#: libgnomeui/winhints_demo.c:122
+#: demos/winhints_demo.c:122
 msgid "Set Layer"
 msgstr "Définir le calque"
 
-#: libgnomeui/winhints_demo.c:129
+#: demos/winhints_demo.c:129
 msgid "Workspaces:"
 msgstr "Espaces de travail :"
 
-#: libgnomeui/winhints_demo.c:151
+#: demos/winhints_demo.c:151
 msgid "Sticky"
 msgstr "Collé"
 
-#: libgnomeui/winhints_demo.c:155
+#: demos/winhints_demo.c:155
 msgid "Set Workspace"
-msgstr "Définir le bureau"
+msgstr "Définir l'espace de travail"
 
-#: libgnomeui/winhints_demo.c:165
+#: demos/winhints_demo.c:165
 msgid "State Toggles:"
-msgstr "Commutateur d'état :"
+msgstr "Commutateurs d'état :"
 
-#: libgnomeui/winhints_demo.c:175
+#: demos/winhints_demo.c:175
 msgid "Minimized"
 msgstr "Minimisé"
 
-#: libgnomeui/winhints_demo.c:179
+#: demos/winhints_demo.c:179
 msgid "Maximized Vertical"
 msgstr "Maximisé verticalement"
 
-#: libgnomeui/winhints_demo.c:183
+#: demos/winhints_demo.c:183
 msgid "Maximized Horizontal"
 msgstr "Maximisé horizontalement"
 
-#: libgnomeui/winhints_demo.c:187
+#: demos/winhints_demo.c:187
 msgid "Hidden"
 msgstr "Caché"
 
-#: libgnomeui/winhints_demo.c:191
+#: demos/winhints_demo.c:191
 msgid "Shaded"
 msgstr "Ombré"
 
-#: libgnomeui/winhints_demo.c:195
+#: demos/winhints_demo.c:195
 msgid "Fixed Position"
 msgstr "Position fixe"
 
-#: libgnomeui/winhints_demo.c:199
+#: demos/winhints_demo.c:199
 msgid "Ignore on Arrange"
 msgstr "Ignorer les arrangements"
 
-#: libgnomeui/winhints_demo.c:203
+#: demos/winhints_demo.c:203
 msgid "Set State"
 msgstr "Définir l'état"
 
-#: libgnomeui/winhints_demo.c:209
+#: demos/winhints_demo.c:209
 msgid "Skip Toggles:"
 msgstr "Ignorer les commutateurs :"
 
-#: libgnomeui/winhints_demo.c:219
+#: demos/winhints_demo.c:219
 msgid "Skip Focus"
 msgstr "Ignorer le focus"
 
-#: libgnomeui/winhints_demo.c:223
+#: demos/winhints_demo.c:223
 msgid "Skip Window Menu"
 msgstr "Ignorer les menus de fenêtre"
 
-#: libgnomeui/winhints_demo.c:227
+#: demos/winhints_demo.c:227
 msgid "Skip Taskbar / WinList"
 msgstr "Ignorer la barre des tâches et la liste des fenêtres"
 
-#: libgnomeui/winhints_demo.c:231
+#: demos/winhints_demo.c:231
 msgid "Set Skip"
 msgstr "Appliquer"
 
-#: libgnomeui/winhints_demo.c:410
+#: demos/winhints_demo.c:410
 msgid "WIN_HINTS Test"
 msgstr "WIN_HINTS Test"
 
-#: libgnomeui/winhints_demo.c:411
+#: demos/winhints_demo.c:411
 msgid "Copyright (C) 1998"
 msgstr "Copyright (C) 1998"
 
-#: libgnomeui/winhints_demo.c:413
+#: demos/winhints_demo.c:413
 msgid ""
 "Simple test app to check how the WIN_HINTS work.\n"
 "And to test the gnome_win_hints_* functions for errors. :)"
 msgstr ""
-"Simple application de test pour controler comment les WIN_HINTS "
+"Simple application de test pour contrôler comment les WIN_HINTS "
 "fonctionnent.\n"
 "Et pour tester les fonctions gnome_win_hints_*. :)"
-
-#: support/error.c:109
-msgid "Unknown system error"
-msgstr "Erreur système inconnue"
-
-# , c-format
-# , c-format
-#: support/getopt.c:669
-#, c-format
-msgid "%s: option `%s' is ambiguous\n"
-msgstr "%s: option `%s' ambigüe\n"
-
-# , c-format
-# , c-format
-#: support/getopt.c:693
-#, c-format
-msgid "%s: option `--%s' doesn't allow an argument\n"
-msgstr "%s: l'option `--%s' n'a pas d'argument\n"
-
-# , c-format
-# , c-format
-#: support/getopt.c:698
-#, c-format
-msgid "%s: option `%c%s' doesn't allow an argument\n"
-msgstr "%s: l'option `%c%s' n'a pas d'argument\n"
-
-# , c-format
-#: support/getopt.c:715 support/getopt.c:888
-#, c-format
-msgid "%s: option `%s' requires an argument\n"
-msgstr "%s: l'option `%s' requiert un argument\n"
-
-# , c-format
-# , c-format
-#. --option
-#: support/getopt.c:744
-#, c-format
-msgid "%s: unrecognized option `--%s'\n"
-msgstr "%s: option `--%s' non reconnue\n"
-
-# , c-format
-# , c-format
-#. +option or -option
-#: support/getopt.c:748
-#, c-format
-msgid "%s: unrecognized option `%c%s'\n"
-msgstr "%s: option `%c%s' non reconnue\n"
-
-# , c-format
-# , c-format
-#. 1003.2 specifies the format of this message.
-#: support/getopt.c:774
-#, c-format
-msgid "%s: illegal option -- %c\n"
-msgstr "%s: option illégale -- %c\n"
-
-# , c-format
-# , c-format
-#: support/getopt.c:777
-#, c-format
-msgid "%s: invalid option -- %c\n"
-msgstr "%s: option invalide -- %c\n"
-
-# , c-format
-#. 1003.2 specifies the format of this message.
-#: support/getopt.c:807 support/getopt.c:937
-#, c-format
-msgid "%s: option requires an argument -- %c\n"
-msgstr "%s: cette option requiert un argument -- %c\n"
-
-# , c-format
-# , c-format
-#: support/getopt.c:854
-#, c-format
-msgid "%s: option `-W %s' is ambiguous\n"
-msgstr "%s: l'option `-W %s' est ambigüe\n"
-
-# , c-format
-# , c-format
-#: support/getopt.c:872
-#, c-format
-msgid "%s: option `-W %s' doesn't allow an argument\n"
-msgstr "%s: l'option `-W %s' n'a pas d'argument\n"
-
-#: support/popthelp.c:23
-msgid "Show this help message"
-msgstr "Montrer ce message d'aide"
-
-#: support/popthelp.c:24
-msgid "Display brief usage message"
-msgstr "Donne une aide succinte"
-
-#. Pixmap
-#: test-gnome/testgnome.c:814
-msgid "Default Pixmap"
-msgstr "Pixmap par défaut"
-
-#: test-gnome/testgnome.c:822 test-gnome/testgnome.c:863
-#: test-gnome/testgnome.c:888
-msgid "If you choose a font it will appear here"
-msgstr "Si vous choisissez une police, elle apparaîtra ici"
-
-#. Font_Info
-#: test-gnome/testgnome.c:829
-msgid "Font Info"
-msgstr "Information sur la police"
-
-#: test-gnome/testgnome.c:839
-msgid "Use Font in button with size"
-msgstr "Utiliser la police pour le bouton avec la taille"
-
-#: test-gnome/testgnome.c:846
-msgid "Show font size"
-msgstr "Afficher la taille de la police"
-
-#: test-gnome/testgnome.c:882
-msgid "This is an hbox with pixmap and text"
-msgstr "Ceci est une hbox avec un pixmap et du texte"
-
-#: test-gnome/testgnome.c:1094
-msgid "The user chose Yes/OK with data:\n"
-msgstr "L'utilisateur a choisi Oui/OK avec comme données:\n"
-
-#: test-gnome/testgnome.c:1098
-msgid "The user chose No/Cancel with data:\n"
-msgstr "L'utilisateur a choisi Non/Annuler avec comme données:\n"
-
-#: test-gnome/testgnome.c:1109
-msgid "Weird number in reply callback"
-msgstr "Nombre bizarre dans le callback de réponse"
-
-#: test-gnome/testgnome.c:1963
-msgid "Test GNOME"
-msgstr "Test de GNOME"
 
 #~ msgid "get"
 #~ msgstr "Récupérer"
@@ -1533,11 +1982,79 @@ msgstr "Test de GNOME"
 #~ msgid "Set config entry"
 #~ msgstr "Valider l'entrée de configuration"
 
+#~ msgid ""
+#~ "Error on option %s: %s.\n"
+#~ "Run '%s --help' to see a full list of available command line options.\n"
+#~ msgstr ""
+#~ "Erreur avec l'option %s : %s.\n"
+#~ "Utilisez « %s --help » pour avoir la liste complète des options de la ligne "
+#~ "de commande.\n"
+
+#~ msgid "Disable sound server usage"
+#~ msgstr "Désactiver l'utilisation du son"
+
+#~ msgid "Enable sound server usage"
+#~ msgstr "Activer l'utilisation du son"
+
+#~ msgid "Host:port on which the sound server to use is running"
+#~ msgstr "Machine:port sur lequel le serveur de son est accessible"
+
+#~ msgid "HOSTNAME:PORT"
+#~ msgstr "MACHINE:PORT"
+
+#~ msgid "GNOME Options"
+#~ msgstr "Options GNOME"
+
+#~ msgid "File/"
+#~ msgstr "Fichier/"
+
+#~ msgid "Edit/"
+#~ msgstr "Édition/"
+
+#~ msgid "View"
+#~ msgstr "Vue"
+
+#~ msgid "View/"
+#~ msgstr "Vue/"
+
+#~ msgid "Settings"
+#~ msgstr "Paramètres"
+
+#~ msgid "Settings/"
+#~ msgstr "Paramètres/"
+
+#~ msgid "New"
+#~ msgstr "Nouveau"
+
+#~ msgid "New/"
+#~ msgstr "Nouveau/"
+
+#~ msgid "Files"
+#~ msgstr "Fichiers"
+
+#~ msgid "Files/"
+#~ msgstr "Fichiers/"
+
+#~ msgid "Windows"
+#~ msgstr "Fenêtres"
+
+#~ msgid "Game"
+#~ msgstr "Jeu"
+
+#~ msgid "Windows/"
+#~ msgstr "Fenêtres/"
+
+#~ msgid "_About..."
+#~ msgstr "À _propos..."
+
+#~ msgid "Pick a Font"
+#~ msgstr "Choisissez une police"
+
 #~ msgid "Creating '/GNOME' context %s %d"
-#~ msgstr "Création du contexte '/GNOME' %s %d"
+#~ msgstr "Création du contexte « /GNOME » %s %d"
 
 #~ msgid "Creating '/GNOME/Servers' context %s %d"
-#~ msgstr "Création du contexte '/GNOME/Servers' %s %d"
+#~ msgstr "Création du contexte « /GNOME/Servers » %s %d"
 
 #~ msgid "GOAD ID of the server to activate"
 #~ msgstr "ID GOAD du serveur à activer"
@@ -1553,12 +2070,18 @@ msgstr "Test de GNOME"
 #~ "any services installed or I don't know the path to find them.\n"
 #~ "In either case, please check your GNOME installation."
 #~ msgstr ""
-#~ "Je n'ai pu trouve aucun service installé. Soit vous n'avez\n"
+#~ "Je n'ai pu trouver aucun service installé. Soit vous n'avez\n"
 #~ "aucun service installé, soit je n'ai pas le chemin pour les atteindre.\n"
 #~ "Dans les deux cas, vérifiez votre installation GNOME."
 
 #~ msgid "(Internal use only) GOAD server ID to activate"
 #~ msgstr "(Usage interne seulement) ID GOAD du serveur à activer"
+
+#~ msgid "(Internal use only) GOAD file descriptor"
+#~ msgstr "(Usage interne seulement) descripteur de fichier GOAD"
+
+#~ msgid "Gnome Object Activation Directory"
+#~ msgstr "Répertoire d'Activation d'Objet Gnome (GOAD)"
 
 #~ msgid "ID under which GOAD knows this server"
 #~ msgstr "ID sous lequel GOAD connaît ce serveur"
@@ -1580,45 +2103,87 @@ msgstr "Test de GNOME"
 #~ msgstr "Impossible d'écrire dans le fichier de cookie CORBA (%s) : %s\n"
 
 #~ msgid "Failed to write CORBA cookie to `%s': %s\n"
-#~ msgstr "Impossible d'écrire le cookie CORBA dans `%s' : %s\n"
+#~ msgstr "Impossible d'écrire le cookie CORBA dans « %s » : %s\n"
 
 #~ msgid "Failed to open CORBA cookie file `%s': %s\n"
-#~ msgstr "Impossible d'ouvrir de fichier de cookie CORBA `%s' : %s\n"
+#~ msgstr "Impossible d'ouvrir de fichier de cookie CORBA « %s » : %s\n"
 
 #~ msgid "Failed to read CORBA cookie file `%s': %s\n"
-#~ msgstr "Impossible de lire de fichier de cookie CORBA `%s' : %s\n"
+#~ msgstr "Impossible de lire de fichier de cookie CORBA « %s » : %s\n"
 
 #~ msgid "Failed to obtain CORBA authentication cookie, exiting\n"
 #~ msgstr "Impossible d'obtenir le cookie d'authentification CORBA, abandon.\n"
 
 #~ msgid "Could not get name service!"
-#~ msgstr "Impossible d'obtenir le service de noms !"
+#~ msgstr "Ne peut obtenir le service de noms !"
 
-#~ msgid ""
-#~ "Error on option %s: %s.\n"
-#~ "Run '%s --help' to see a full list of available command line options.\n"
-#~ msgstr ""
-#~ "Erreur avec l'option %s : %s.\n"
-#~ "Utilisez '%s --help' pour avoir la liste complète des options de la ligne de "
-#~ "commande.\n"
+#~ msgid "Unknown system error"
+#~ msgstr "Erreur système inconnue"
 
-#~ msgid "Disable sound server usage"
-#~ msgstr "Désactiver l'utilisation du son"
+# , c-format
+# , c-format
+#~ msgid "%s: option `%s' is ambiguous\n"
+#~ msgstr "%s : option « %s » ambigüe\n"
 
-#~ msgid "Enable sound server usage"
-#~ msgstr "Activer l'utilisation du son"
+# , c-format
+# , c-format
+#~ msgid "%s: option `--%s' doesn't allow an argument\n"
+#~ msgstr "%s : l'option « --%s » n'a pas d'argument\n"
 
-#~ msgid "Host:port on which the sound server to use is running"
-#~ msgstr "Machine:port sur lequel le serveur de son est accessible"
+# , c-format
+# , c-format
+#~ msgid "%s: option `%c%s' doesn't allow an argument\n"
+#~ msgstr "%s : l'option « %c%s » n'a pas d'argument\n"
 
-#~ msgid "HOSTNAME:PORT"
-#~ msgstr "MACHINE:PORT"
+# , c-format
+#~ msgid "%s: option `%s' requires an argument\n"
+#~ msgstr "%s : l'option « %s » requiert un argument\n"
 
-#~ msgid "GNOME Options"
-#~ msgstr "Options GNOME"
+# , c-format
+# , c-format
+#~ msgid "%s: unrecognized option `--%s'\n"
+#~ msgstr "%s : option « --%s » non reconnue\n"
 
-#~ msgid "_About..."
-#~ msgstr "_A propos..."
+# , c-format
+# , c-format
+#~ msgid "%s: unrecognized option `%c%s'\n"
+#~ msgstr "%s : option « %c%s » non reconnue\n"
+
+# , c-format
+# , c-format
+#~ msgid "%s: illegal option -- %c\n"
+#~ msgstr "%s : option illégale -- %c\n"
+
+# , c-format
+# , c-format
+#~ msgid "%s: invalid option -- %c\n"
+#~ msgstr "%s : option invalide -- %c\n"
+
+# , c-format
+#~ msgid "%s: option requires an argument -- %c\n"
+#~ msgstr "%s : cette option requiert un argument -- %c\n"
+
+# , c-format
+# , c-format
+#~ msgid "%s: option `-W %s' is ambiguous\n"
+#~ msgstr "%s : l'option « -W %s » est ambigüe\n"
+
+# , c-format
+# , c-format
+#~ msgid "%s: option `-W %s' doesn't allow an argument\n"
+#~ msgstr "%s : l'option « -W %s » n'a pas d'argument\n"
+
+#~ msgid "Show this help message"
+#~ msgstr "Montrer ce message d'aide"
+
+#~ msgid "Display brief usage message"
+#~ msgstr "Donne une aide succinte"
+
+#~ msgid "Specifies the geometry for the toplevel window"
+#~ msgstr "Spécifie la géométrie de la fenêtre principale"
+
+#~ msgid "GEOMETRY"
+#~ msgstr "GÉOMÉTRIE"
 
 #~ msgid "Giving up on displaying error dialog"
 #~ msgstr "Abandon sur une erreur d'affichage d'un dialogue"
