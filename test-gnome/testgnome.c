@@ -280,6 +280,23 @@ create_colorsel(void)
 }
 
 /* 
+ * GnomePaperSelector
+ */
+
+static void
+create_papersel(void)
+{
+	GtkWidget *papersel;
+	GtkWidget *app;
+	gchar *dummy;
+	app = create_newwin(TRUE,"testGNOME","Paper Selection");
+	papersel = gnome_paper_selector_new( );
+	gnome_app_set_contents(GNOME_APP(app),papersel);
+	gtk_widget_show(papersel);
+	gtk_widget_show(app);
+}
+
+/* 
  * GnomeDialog
  */
 
@@ -1379,6 +1396,7 @@ main (int argc, char *argv[])
 		  { "clock",	create_clock },
 		  { "color picker", create_color_picker },
 		  { "color-sel", create_colorsel },
+		  { "paper-sel", create_papersel },
 		  { "date edit", create_date_edit },
 		  { "dialog", create_dialog },
 		  { "file entry", create_file_entry },
