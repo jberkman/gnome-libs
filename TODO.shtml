@@ -66,11 +66,10 @@
 	</tr>
 
 	<tr>
-	  <td><b>NO</b></td>
+	  <td><b>Yes</b></td>
 	  <td>???</td>
 	  <td>
-	    <b>gnome-exec</b>:  OK, needs a function to fetch the PID back
-	    (ask <a href="mailto:jrb@redhat.com">Jonathan</a>).
+	    <b>gnome-exec</b>:  OK.
 	  </td>
 	</tr>
 
@@ -83,7 +82,7 @@
 	</tr>
 
 	<tr>
-	  <td><b>NO</b></td>
+	  <td><b>Yes.</b></td>
 	  <td>???</td>
 	  <td>
 	    <b>gnome-help</b>:  It works; it is not perfect, but it will do
@@ -132,7 +131,7 @@
 	</tr>
 
 	<tr>
-	  <td><b>NO</b></td>
+	  <td><b>Yes</b></td>
 	  <td>???</td>
 	  <td>
 	    <b>gnome-paper</b>:  OK.  Maybe needs a capplet to configure/add
@@ -182,7 +181,7 @@
 	</tr>
 
 	<tr>
-	  <td><b>YES</b></td>
+	  <td>Yes</td>
 	  <td><a href="mailto:james@daa.com.au">James Henstridge</a></td>
 	  <td>
 	    <b>gnome-url</b>:  OK for now.  Can now be configured by a capplet.
@@ -192,11 +191,10 @@
 	</tr>
 
 	<tr>
-	  <td><b>NO</b></td>
+	  <td><b>Yes.</b></td>
 	  <td>???</td>
 	  <td>
-	    <b>gnome-util</b>:  OK, see what is duplicated from Glib and mark
-	    it as deprecated.  The rest is OK.  Make sure everything that looks
+	    <b>gnome-util</b>:  OK.  Make sure everything that looks
 	    for files in $GNOMEDIR actually uses the gnome_*file()
 	    functions.
 	  </td>
@@ -214,7 +212,7 @@
 	  <td>What</td>
 	</tr>
 	<tr>
-	  <td><b>NO</b></td>
+	  <td><b>Yes</b></td>
 	  <td>???</td>
 	  <td>
 	    <b>gnome-about</b>: OK, yucky green changed to a passable
@@ -801,9 +799,8 @@ All apps:
 
 libgnome API doc status:
 
-gnome-config.c		partly done.
+gnome-config.c		done.
 gnome-dentry.c		done
-gnome-dump.c		none yet
 gnome-exec.c		done
 gnome-fileconvert.c	done
 gnome-help.c		done
@@ -813,16 +810,15 @@ gnome-magic.c		done
 gnome-metadata.c	done
 gnome-mime.c		done
 gnome-mime-info.c	done
-gnome-moz-remote.c	none yet
 gnome-paper.c		done
 gnome-popt.c		done
 gnome-regex.c		done
 gnome-remote.c		done
 gnome-score.c		done
 gnome-sound.c		done
-gnome-triggers.c	none yet
+gnome-triggers.c	done
 gnome-url.c		done
-gnome-util.c		mostly done
+gnome-util.c		done
 
 
 libgnomeui API doc status:
@@ -903,4 +899,3 @@ gtkspell.c			none yet
 
 <!-- The very end -->
 <!--#include virtual="/include/footer.html" -->
-
