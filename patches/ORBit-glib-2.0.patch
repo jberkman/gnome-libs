@@ -1,24 +1,26 @@
+? test/test-dynany
 Index: .cvsignore
 ===================================================================
 RCS file: /cvs/gnome/ORBit/.cvsignore,v
 retrieving revision 1.6.4.1
-diff -u -u -r1.6.4.1 .cvsignore
+diff -u -u -p -r1.6.4.1 .cvsignore
 --- .cvsignore	2000/09/29 23:34:02	1.6.4.1
-+++ .cvsignore	2000/09/30 15:44:19
-@@ -20,4 +20,4 @@
++++ .cvsignore	2000/11/22 12:07:17
+@@ -20,4 +20,6 @@ missing
  install-sh
  mkinstalldirs
  ORBit.spec
--ORBit.pc
++ORBit-2.0.pc
+ ORBit.pc
 +ORBit-2.0.pc
 Index: Makefile.am
 ===================================================================
 RCS file: /cvs/gnome/ORBit/Makefile.am,v
 retrieving revision 1.13.4.3
-diff -u -u -r1.13.4.3 Makefile.am
+diff -u -u -p -r1.13.4.3 Makefile.am
 --- Makefile.am	2000/09/30 02:09:43	1.13.4.3
-+++ Makefile.am	2000/09/30 15:44:19
-@@ -4,7 +4,7 @@
++++ Makefile.am	2000/11/22 12:07:17
+@@ -4,7 +4,7 @@ SUBDIRS=popt libIDL src test
  
  bin_SCRIPTS=orbit-config
  
@@ -27,19 +29,19 @@ diff -u -u -r1.13.4.3 Makefile.am
  
  dist-hook: ORBit.spec
  	mkdir $(distdir)/docs
-@@ -18,4 +18,5 @@
+@@ -18,4 +18,5 @@ m4datadir=$(datadir)/aclocal
  m4data_DATA=ORBit.m4
  
  pkgconfigdir = $(libdir)/pkgconfig
 -pkgconfig_DATA= ORBit.pc
-+pkgconfig_DATA = ORBit-2.0.pc
++pkgconfig_DATA = ORBit.pc ORBit-2.0.pc
 +
 Index: ORBit-2.0.pc.in
 ===================================================================
 RCS file: ORBit-2.0.pc.in
 diff -N ORBit-2.0.pc.in
 --- /dev/null	Tue May  5 16:32:27 1998
-+++ ORBit-2.0.pc.in	Sat Sep 30 11:44:19 2000
++++ ORBit-2.0.pc.in	Wed Nov 22 07:07:17 2000
 @@ -0,0 +1,12 @@
 +prefix=@prefix@
 +exec_prefix=@exec_prefix@
@@ -53,37 +55,144 @@ diff -N ORBit-2.0.pc.in
 +Requires: glib-2.0
 +Libs: -L${libdir} -lORBit -lIIOP -lORBitutil @LIBS@ -lm
 +Cflags: -I${includedir}
+Index: autogen.sh
+===================================================================
+RCS file: /cvs/gnome/ORBit/autogen.sh,v
+retrieving revision 1.26.4.1
+diff -u -u -p -r1.26.4.1 autogen.sh
+--- autogen.sh	2000/02/22 00:52:22	1.26.4.1
++++ autogen.sh	2000/11/22 12:07:17
+@@ -4,78 +4,11 @@
+ srcdir=`dirname $0`
+ test -z "$srcdir" && srcdir=.
+ 
+-ORIGDIR=`pwd`
+-cd $srcdir
++PKG_NAME="ORBit"
+ 
+-DIE=0
+-
+-# Check for autoconf, the required version is set in configure.in
+-(autoconf --version) < /dev/null > /dev/null 2>&1 || {
+-	echo
+-	echo "You must have at minimum autoconf version 2.12 installed"
+-	echo "to compile ORBit. Download the appropriate package for"
+-	echo "your distribution, or get the source tarball at"
+-	echo "ftp://ftp.gnu.org/pub/gnu/"
+-	DIE=1
+-}
+-
+-# Check for libtool
+-(libtool --version | egrep "1.2") > /dev/null || 
+-(libtool --version | egrep "1.3") > /dev/null || {
+-	echo
+-	echo "You must have at minimum libtool version 1.2 installed"
+-	echo "to compile ORBit. Download the appropriate package for"
+-	echo "your distribution, or get the source tarball at"
+-	echo "ftp://alpha.gnu.org/gnu/libtool-1.2d.tar.gz"
+-	DIE=1
+-}
+-
+-# Check for automake, the required version is set in Makefile.am
+-(automake --version) < /dev/null > /dev/null 2>&1 ||{
+-	echo
+-	echo "You must have at minimum automake version 1.4 installed"
+-	echo "to compile ORBit. Download the appropriate package for"
+-	echo "your distribution, or get the source tarball at"
+-	echo "ftp://ftp.cygnus.com/pub/home/tromey/automake-1.4.tar.gz"
+-	DIE=1
+-}
+-
+-
+-if test "$DIE" -eq 1; then
+-	exit 1
+-fi
+-
+ (test -f src/orb/orbit_types.h) || {
+ 	echo "You must run this script in the top-level ORBit directory"
+ 	exit 1
+ }
+-
+-if test -z "$*"; then
+-	echo "I am going to run ./configure with no arguments - if you wish "
+-        echo "to pass any to it, please specify them on the $0 command line."
+-fi
+-
+-case $CC in
+-xlc )
+-  am_opt=--include-deps;;
+-esac
+-
+-for i in . libIDL popt
+-do 
+-  echo processing $i
+-  (cd $i; \
+-    libtoolize --copy --force; \
+-    aclocal $ACLOCAL_FLAGS;
+-    if test "$i" != "libIDL"; then autoheader; fi; \
+-    automake --add-missing $am_opt; \
+-    if test "$i" != "libIDL"; then autoheader; fi; \
+-    autoconf)
+-done
+-
+-cd $ORIGDIR
+-
+-echo "Running $srcdir/configure --enable-maintainer-mode" "$@"
+-$srcdir/configure --enable-maintainer-mode "$@"
+ 
+-echo 
+-echo "Now type 'make' to compile ORBit."
++USE_GNOME2_MACROS=1 . gnome-autogen.sh
 Index: configure.in
 ===================================================================
 RCS file: /cvs/gnome/ORBit/configure.in,v
 retrieving revision 1.98.4.6
-diff -u -u -r1.98.4.6 configure.in
+diff -u -u -p -r1.98.4.6 configure.in
 --- configure.in	2000/09/29 23:34:02	1.98.4.6
-+++ configure.in	2000/09/30 15:44:19
-@@ -99,7 +99,7 @@
++++ configure.in	2000/11/22 12:07:17
+@@ -98,16 +98,19 @@ AC_DEFINE_UNQUOTED(INDENT_COMMAND,"$INDE
+ 
  dnl Checks for libraries.
  
- # Make sure that we have glib>=1.1.16
+-# Make sure that we have glib>=1.1.16
 -AM_PATH_GLIB(1.2.1,,
-+AM_PATH_GLIB_2_0(1.2.1,,
- AC_MSG_ERROR([
- *** GLIB 1.2.1 or better is required. The latest version of GLIB
- *** is always available from ftp://ftp.gtk.org/.]))
-@@ -347,5 +347,5 @@
+-AC_MSG_ERROR([
+-*** GLIB 1.2.1 or better is required. The latest version of GLIB
+-*** is always available from ftp://ftp.gtk.org/.]))
++GNOME_PLATFORM_GNOME_2
+ 
+-GMODULE_CFLAGS=`glib-config --cflags gmodule`
+-AC_SUBST(GMODULE_CFLAGS)
+-GMODULE_LIBS=`glib-config --libs gmodule`
++if test $platform_gnome_2 = yes ; then
++  GNOME_PKGCONFIG_CHECK_MODULES(GLIB, glib-2.0:1.3.1)
++  GNOME_PKGCONFIG_CHECK_MODULES(GMODULE, gmodule-2.0:1.3.1)
++else
++  GNOME_PKGCONFIG_CHECK_MODULES(GLIB, glib:1.2.6)
++  GNOME_PKGCONFIG_CHECK_MODULES(GMODULE, gmodule:1.2.6)
++fi
++AC_SUBST(GLIB_LIBS)
++AC_SUBST(GLIB_CFLAGS)
+ AC_SUBST(GMODULE_LIBS)
++AC_SUBST(GMODULE_CFLAGS)
+ 
+ AC_PROG_YACC
+ AM_PROG_LEX
+@@ -347,5 +350,6 @@ src/daemons/interface_repository/Makefil
  test/Makefile
  test/idl/Makefile
  test/test-poa/Makefile
--ORBit.pc
 +ORBit-2.0.pc
+ ORBit.pc
  ORBit.spec)
 Index: orbit-config.in
 ===================================================================
 RCS file: /cvs/gnome/ORBit/orbit-config.in,v
 retrieving revision 1.7
-diff -u -u -r1.7 orbit-config.in
+diff -u -u -p -r1.7 orbit-config.in
 --- orbit-config.in	1999/10/08 04:49:07	1.7
-+++ orbit-config.in	2000/09/30 15:44:19
-@@ -87,8 +87,8 @@
++++ orbit-config.in	2000/11/22 12:07:17
+@@ -87,8 +87,8 @@ while test $# -gt 0; do
         	;;
  
      client|server)
@@ -98,68 +207,85 @@ Index: libIDL/.cvsignore
 ===================================================================
 RCS file: /cvs/gnome/libIDL/.cvsignore,v
 retrieving revision 1.8.4.1
-diff -u -u -r1.8.4.1 .cvsignore
+diff -u -u -p -r1.8.4.1 .cvsignore
 --- libIDL/.cvsignore	2000/09/29 23:35:50	1.8.4.1
-+++ libIDL/.cvsignore	2000/09/30 15:44:19
-@@ -28,4 +28,4 @@
- libIDL.m4
++++ libIDL/.cvsignore	2000/11/22 12:07:17
+@@ -29,3 +29,4 @@ libIDL.m4
  Makefile.msc
  libIDL.spec
--libIDL.pc
+ libIDL.pc
 +libIDL-2.0.pc
 Index: libIDL/Makefile.am
 ===================================================================
 RCS file: /cvs/gnome/libIDL/Makefile.am,v
 retrieving revision 1.65.4.3
-diff -u -u -r1.65.4.3 Makefile.am
+diff -u -u -p -r1.65.4.3 Makefile.am
 --- libIDL/Makefile.am	2000/09/30 02:09:43	1.65.4.3
-+++ libIDL/Makefile.am	2000/09/30 15:44:19
-@@ -33,7 +33,7 @@
++++ libIDL/Makefile.am	2000/11/22 12:07:17
+@@ -33,7 +33,7 @@ EXTRA_DIST		= BUGS parser.y lexer.l \
  			  Makefile.msc README.win32 \
  			  libIDL.def libIDLConf.sh.in \
  			  stamp-parser lexer.c parser.c parser.h \
 -			  libIDL.pc.in
-+			  libIDL-2.0.pc.in
++			  libIDL.pc.in libIDL-2.0.pc.in
  
  info_TEXINFOS		= libIDL.texi
  pkginclude_HEADERS	= IDL.h
-@@ -73,5 +73,5 @@
+@@ -73,5 +73,5 @@ libIDLConf.sh: libIDLConf.sh.in Makefile
  		&& mv libIDLConf.tmp libIDLConf.sh
  
  pkgconfigdir = $(libdir)/pkgconfig
 -pkgconfig_DATA= libIDL.pc
-+pkgconfig_DATA = libIDL-2.0.pc
++pkgconfig_DATA= libIDL.pc libIDL-2.0.pc
  
 Index: libIDL/configure.in
 ===================================================================
 RCS file: /cvs/gnome/libIDL/configure.in,v
 retrieving revision 1.54.4.1
-diff -u -u -r1.54.4.1 configure.in
+diff -u -u -p -r1.54.4.1 configure.in
 --- libIDL/configure.in	2000/09/29 23:35:50	1.54.4.1
-+++ libIDL/configure.in	2000/09/30 15:44:20
-@@ -82,7 +82,7 @@
- AC_CHECK_PROG(HAVE_GLIB_CONFIG, glib-config, yes, no)
++++ libIDL/configure.in	2000/11/22 12:07:18
+@@ -19,7 +19,6 @@ LIBIDL_MICRO_VERSION=8
+ LIBIDL_INTERFACE_AGE=4
+ LIBIDL_BINARY_AGE=8
+ LIBIDL_LIBRARY_VERSION=$LIBIDL_MAJOR_VERSION.$LIBIDL_MINOR_VERSION.$LIBIDL_MICRO_VERSION
+-GLIB_VERSION_REQUIRED=1.2.0
+ AC_DIVERT_POP()dnl
  
- AC_SUBST(GLIB_VERSION_REQUIRED)
+ AC_SUBST(LIBIDL_MAJOR_VERSION)
+@@ -79,10 +78,15 @@ AM_PROG_LIBTOOL
+ AM_MAINTAINER_MODE
+ 
+ dnl Checks for libraries.
+-AC_CHECK_PROG(HAVE_GLIB_CONFIG, glib-config, yes, no)
++GNOME_PLATFORM_GNOME_2
+ 
+-AC_SUBST(GLIB_VERSION_REQUIRED)
 -AM_PATH_GLIB($GLIB_VERSION_REQUIRED)
-+AM_PATH_GLIB_2_0($GLIB_VERSION_REQUIRED)
++if test $platform_gnome_2 = yes ; then
++  GNOME_PKGCONFIG_CHECK_MODULES(GLIB, glib-2.0:1.3.1)
++else
++  GNOME_PKGCONFIG_CHECK_MODULES(GLIB, glib:1.2.6)
++fi
++AC_SUBST(GLIB_LIBS)
++AC_SUBST(GLIB_CFLAGS)
  
  AC_STDC_HEADERS
  AC_CHECK_HEADERS(stddef.h)
-@@ -105,6 +105,7 @@
+@@ -104,6 +108,7 @@ libIDL-config
+ libIDL.m4
  libIDL.spec
  libIDL.pc
- IDL.h.new
 +libIDL-2.0.pc
+ IDL.h.new
  ],[
  AC_UPDATE_IF_CHANGED(IDL.h, IDL.h.new)
- ])
 Index: libIDL/libIDL-2.0.pc.in
 ===================================================================
 RCS file: libIDL-2.0.pc.in
 diff -N libIDL-2.0.pc.in
 --- /dev/null	Tue May  5 16:32:27 1998
-+++ libIDL-2.0.pc.in	Sat Sep 30 11:44:20 2000
++++ libIDL-2.0.pc.in	Wed Nov 22 07:07:18 2000
 @@ -0,0 +1,12 @@
 +prefix=@prefix@
 +exec_prefix=@exec_prefix@

@@ -1,3 +1,10 @@
+2000-11-22  Martin Baulig  <martin@home-of-linux.org>
+
+	* patches/ORBit-glib-2.0.patch: This is now a better patch which
+	does not really break things on the GNOME 1.x platform. You need
+	to have gnome-common and pkg-config and give ORBit's configure
+	the --enable-platform-gnome-2 parameter.
+
 2000-11-12  Jason Leach  <leach@wam.umd.edu>
 
 	* gnome-config.in: Bugfix found while cleaning my mailboxes, from
