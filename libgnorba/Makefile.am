@@ -79,9 +79,9 @@ gnome_name_service_SOURCES =				\
 
 gnome_name_service_LDADD = 				\
 	$(top_builddir)/libgnorba/libgnorbagtk.la	\
+	-lname-server					\
 	$(ORBIT_LIBS) 					\
 	$(X_LIBS) -lX11					\
-	-lname-server					\
 	$(INTLLIBS)
 
 gbpixmapdir = $(datadir)/pixmaps
