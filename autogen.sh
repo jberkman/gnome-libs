@@ -8,7 +8,7 @@ PKG_NAME="Gnome Libraries"
 
 (test -f $srcdir/configure.in \
   && test -f $srcdir/HACKING \
-  && test -d $srcdir/gtk-xmhtml) || {
+  && test -d $srcdir/libgnomeui) || {
     echo -n "**Error**: Directory "\`$srcdir\'" does not look like the"
     echo " top-level gnome directory"
     exit 1
