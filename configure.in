@@ -9,6 +9,11 @@ AC_CANONICAL_SYSTEM
 
 AM_INIT_AUTOMAKE(gnome-libs, 1.1.0)
 
+if test -z "$CERTIFIED_GNOMIE"; then
+  cat $srcdir/message-of-doom
+  exit 1
+fi
+
 # When this value is updated, {libgnome,libgnomeui}/Makefile.am also need updating to reflect the change,
 # since this value is hardcoded into the library names (I love you automake!)
 GNOME_INTERFACE_VERSION=2.0
