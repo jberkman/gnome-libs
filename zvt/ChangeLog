@@ -1,3 +1,8 @@
+1999-05-03  Michael Zucchi  <zucchi@zzedzone.mmc.com.au>
+
+	* update.c (vt_expand_line): Fixed selection of single characters
+	at the start of an otherwise empty line (bug#1168).
+
 1999-04-24  Michael Zucchi  <zucchi@zzedzone.mmc.com.au>
 
 	* vt.c (vt_newline): Make sure a new-line is initialised with an

@@ -872,7 +872,8 @@ static char *vt_expand_line(struct vt_line *l, int start, int end, char *out)
 
   /* scan from the end of the line to the start, looking for the
      actual end of screen data on that line */
-  for(dataend=l->width-1;dataend>0;dataend--) {
+  for(dataend=l->width;dataend>-1;) {
+    dataend--;
     if (l->data[dataend] & 0xff) {
       dataend++;
       break;
