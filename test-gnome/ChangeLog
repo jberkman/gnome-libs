@@ -1,3 +1,9 @@
+1998-07-24  Federico Mena Quintero  <federico@nuclecu.unam.mx>
+
+	* canvas.c (create_canvas): Split the item creation into separate
+	functions:  setup_rectangles(), setup_ellipses(), setup_texts(),
+	setup_images(), and setup_lines().
+
 1998-07-19  Federico Mena Quintero  <federico@nuclecu.unam.mx>
 
 	* canvas.c (item_event): Use gnome_canvas_item_raise_to_top() and
