@@ -1,5 +1,6 @@
 EXTRA_DIST = \
-	about.sgml		\
+	intro.sgml		\
+	components.sgml		\
 	develinfo.sgml		\
 	fundamentals.sgml	\
 	ui-guide.sgml		\
