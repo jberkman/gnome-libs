@@ -163,16 +163,19 @@ if test "$png_ok" = yes; then
 fi
 
 dnl Check for db stuff.
-AC_CHECK_LIB(db, dbopen, , [
-  AC_MSG_ERROR([Berkeley db library required for Gnome])])
+DB_LIB=
+AC_CHECK_FUNCS(dbopen,,[
+  AC_CHECK_LIB(db, dbopen, DB_LIB="-ldl",[
+    AC_MSG_ERROR([Berkeley db library required for Gnome])])])
 AC_CHECK_HEADER(db.h, , [
   AC_MSG_ERROR([Berkeley db library required for Gnome])])
 
 AM_PATH_GDK_IMLIB(1.8, ,
         AC_MSG_ERROR([*** IMLIB 1.8 not installed - please install first ***]))
 
-dnl These are for building the apporpriate lib*
-LIBGNOME_LIBS="-ldb $GLIB_LIBS $DL_LIB"
+dnl These are for building the appropriate lib*
+
+LIBGNOME_LIBS="$DB_LIB $GLIB_LIBS $DL_LIB"
 LIBGNOMEUI_LIBS="$LIBGNOME_LIBS $GDK_IMLIB_LIBS $GTK_LIBS"
 LIBGTKXMHTML_LIBS="$XPM_LIBS $JPEG_LIBS $PNG_LIBS $Z_LIBS $GTK_LIBS"
 LIBSUPPORT=
@@ -184,9 +187,9 @@ fi
 
 dnl These are for using lib*
 if test "$need_gnome_support" = yes; then
-   GNOME_LIBS="-lgnome -lgnomesupport -ldb $LIBGNOME_LIBS"
+   GNOME_LIBS="-lgnome -lgnomesupport $DB_LIB $LIBGNOME_LIBS"
 else
-   GNOME_LIBS="-lgnome -ldb $LIBGNOME_LIBS"
+   GNOME_LIBS="-lgnome $DB_LIB $LIBGNOME_LIBS"
 fi
 GNOMEUI_LIBS="-lgnomeui $GDK_IMLIB_LIBS $GTK_LIBS $GNOME_LIBS"
 GTKXMHTML_LIBS="-lgtkxmhtml $LIBGTKXMHTML_LIBS"
