@@ -1,3 +1,14 @@
+2000-07-24  Martin Baulig  <baulig@suse.de>
+
+	Use the new gnome-common module instead of having the .m4
+	files in gnome-data.
+
+	* autogen.sh: Use gnome-autogen.sh from gnome-common.
+	* gnome.m4, acinclude.m4: Removed.
+	* configure.in: Use AM_GNOME2_GETTEXT and GNOME_COMMON_INIT.
+
+	* gnome-data/*.m4: Removed. This is now in gnome-common/macros2.
+
 Tue Jul 18 13:08:27 2000 Pablo Saratxaga <pablo@mandrakesoft.com>
 
 	* libgnomeui/gnome-scores.c: completed the fontset string with an

@@ -19,7 +19,7 @@ fi
 GNOME_INTERFACE_VERSION=2
 AC_SUBST(GNOME_INTERFACE_VERSION)
 
-AM_ACLOCAL_INCLUDE(gnome-data)
+GNOME_COMMON_INIT
 
 AC_CONFIG_SUBDIRS(gnome-faq)
 
@@ -118,10 +118,7 @@ fi
 
 ALL_LINGUAS="ca cs da de el en_GB es et eu fi fr ga gl hr hu it ja ko lt nl no pl pt pt_BR ro ru sk sl sp sr sv tr uk wa zh_TW.Big5 zh_CN.GB2312"
 	
-# FIXME: This should I guess use the GNOME2 macro, however that
-# breaks for me, this needs some fixing
-# AM_GNOME2_GETTEXT
-AM_GNOME_GETTEXT
+AM_GNOME2_GETTEXT
 # AM_GNOME_GETTEXT above substs $DATADIRNAME
 # this is the directory where the *.{mo,gmo} files are installed
 gnomelocaledir='${prefix}/${DATADIRNAME}/locale'
