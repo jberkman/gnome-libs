@@ -13,7 +13,7 @@ GNORBA =
 endif
 
 SUBDIRS = po intl support macros \
-	tools	\
+	tools \
 	libgnome libgnomeui gtk-xmhtml gnome-hello zvt \
 	$(GNORBA) idl test-gnome test-suite devel-docs
 
