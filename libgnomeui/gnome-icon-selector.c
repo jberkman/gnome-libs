@@ -443,10 +443,7 @@ append_an_icon (GnomeIconSelector *gis, const gchar *path)
 	basename = g_path_get_basename (path);
 	
 	pos = gnome_icon_list_append_pixbuf (gis->_priv->icon_list, im,
-					     basename);
-	gnome_icon_list_set_icon_data_full (gis->_priv->icon_list, pos,
-					    g_strdup (path),
-					    (GtkDestroyNotify) g_free);
+					     path, basename);
 	gdk_pixbuf_unref (im);
 
 	g_free (basename);
@@ -538,7 +535,7 @@ get_selection_handler (GnomeSelector *selector)
 		gchar *filename;
 
 		total_list = gnome_selector_get_file_list (selector, TRUE);
-		filename = gnome_icon_list_get_icon_data (gil, pos);
+		filename = gnome_icon_list_get_icon_filename (gil, pos);
 
 		selection = g_slist_prepend (selection, filename);
 	}
