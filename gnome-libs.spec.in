@@ -3,7 +3,8 @@
 %define ver      @VERSION@
 %define  RELEASE 1
 %define  rel     %{?CUSTOM_RELEASE} %{!?CUSTOM_RELEASE:%RELEASE}
-%define prefix   /usr
+%define  prefix  /usr
+%define  sysconfdir /etc
 
 Name: %name
 Summary: The libraries needed by the GNOME GUI desktop environment.
@@ -94,9 +95,9 @@ packages.
 MYCFLAGS="$RPM_OPT_FLAGS"
 
 if [ ! -f configure ]; then
-  CFLAGS="$MYCFLAGS" ./autogen.sh $MYARCH_FLAGS --prefix=%prefix --localstatedir=/var/lib --sysconfdir=/etc
+  CFLAGS="$MYCFLAGS" ./autogen.sh $MYARCH_FLAGS --prefix=%prefix --localstatedir=/var/lib --sysconfdir=%{sysconfdir}
 else
-  CFLAGS="$MYCFLAGS" ./configure $MYARCH_FLAGS --prefix=%prefix --localstatedir=/var/lib --sysconfdir=/etc
+  CFLAGS="$MYCFLAGS" ./configure $MYARCH_FLAGS --prefix=%prefix --localstatedir=/var/lib --sysconfdir=%{sysconfdir}
 fi
 
 if [ "$SMP" != "" ]; then
@@ -108,7 +109,7 @@ fi
 %install
 rm -rf $RPM_BUILD_ROOT
 
-make sysconfdir=$RPM_BUILD_ROOT/etc prefix=$RPM_BUILD_ROOT%{prefix} install
+make sysconfdir=$RPM_BUILD_ROOT%{sysconfdir} prefix=$RPM_BUILD_ROOT%{prefix} install
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -135,7 +136,7 @@ fi
 %config %{prefix}/share/gtkrc*
 %{prefix}/share/mime-info/gnome.mime
 %{prefix}/share/type-convert/type.convert
-%config /etc/*
+%config %{sysconfdir}/*
 
 %files devel
 %defattr(-, root, root)
