@@ -296,7 +296,8 @@ zvt_term_realize (GtkWidget *widget)
   attributes.colormap = gtk_widget_get_colormap (widget);
 
   attributes_mask = GDK_WA_X | GDK_WA_Y | GDK_WA_VISUAL | GDK_WA_COLORMAP;
-  widget->window = gdk_window_new (widget->parent->window, &attributes, attributes_mask);
+  widget->window = gdk_window_new (gtk_widget_get_parent_window (widget),
+				   &attributes, attributes_mask);
   widget->style = gtk_style_attach (widget->style, widget->window);
 
   gdk_window_set_user_data (widget->window, widget);
@@ -1114,6 +1115,7 @@ zvt_term_key_press (GtkWidget *widget, GdkEventKey *event)
   char *p=buffer;
   struct _vtx *vx;
   ZvtTerm *term;
+  int handled;
   
   g_return_val_if_fail (widget != NULL, FALSE);
   g_return_val_if_fail (ZVT_IS_TERM (widget), FALSE);
@@ -1125,6 +1127,7 @@ zvt_term_key_press (GtkWidget *widget, GdkEventKey *event)
   zvt_term_hide_pointer(term);
   
   d(printf("keyval = %04x state = %x\n", event->keyval, event->state));
+  handled = TRUE;
   switch (event->keyval) {
   case GDK_BackSpace:
     *p++ = 8;
@@ -1253,22 +1256,24 @@ zvt_term_key_press (GtkWidget *widget, GdkEventKey *event)
   case GDK_Multi_key:
     break;
   default:
-    if (event->length > 0) {
-      if (event->state & GDK_MOD1_MASK){
-	*p++ = '\033';
+      if (event->length > 0){
+	if (event->state & GDK_MOD1_MASK){
+	   *p++ = '\033';
+        }
+	memcpy(p, event->string, event->length*sizeof(char));
+	p += event->length;
+      } else {
+        if ((event->keyval == 0x20) && (event->state & GDK_CONTROL_MASK)){
+          *p++ = 0;
+	} else   
+	  handled = FALSE;
       }
-      memcpy(p, event->string, event->length*sizeof(char));
-      p+= event->length;
-    } else {
-      /* FIXME: do something more intelligent with unknown keykodes */
-      p+=sprintf(p, "[%x]", event->keyval);
-    }
-    break;
+      printf ("[%s,%d,%d]\n", event->string, event->length, handled);
   }
-  if (p>buffer)
+  if (handled && p>buffer)
     vt_writechild(&vx->vt, buffer, (p-buffer));
 
-  return 1;
+  return handled;
 }
 
 /*

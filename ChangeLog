@@ -1,3 +1,10 @@
+1998-06-01  Miguel de Icaza  <miguel@nuclecu.unam.mx>
+
+	* libgnome/gnome-dentry.c (gnome_desktop_entry_destroy): Remove
+	references to the gnome-config entry when discarding a
+	gnome-dentry and release the memory associated with the
+	GnomeDesktopEntry. 
+
 Mon Jun  1 13:23:26 1998  Havoc Pennington  <hp@pobox.com>
 
 	* libgnome/gnome-exec.h, gnome-exec.c (gnome_execute_async):
