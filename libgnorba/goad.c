@@ -66,9 +66,6 @@ goad_server_list_get(void)
     struct dirent *dent;
 
     while((dent = readdir(dirh))) {
-	    if (!strcmp(dent->d_name, ".") || !strcmp(dent->d_name, ".."))
-		    continue;
-
       g_string_sprintf(tmpstr, "=" GNOMESYSCONFDIR "/CORBA/servers/" "%s",
 		       dent->d_name);
 		       
@@ -123,12 +120,17 @@ goad_server_list_read(const char *filename,
   GString*   dummy;
 
   dummy = g_string_new("");
-
+  
   gnome_config_push_prefix(filename);
   iter = gnome_config_init_iterator_sections(filename);
 
   while((iter = gnome_config_iterator_next(iter, &newval.id, NULL))) {
-	  g_string_sprintf(dummy, "%s/type", newval.id);
+    if (*filename == '=')
+      g_string_sprintf(dummy, "=%s/=type",
+		       newval.id);
+    else
+      g_string_sprintf(dummy, "%s/type",
+		       newval.id);
     typename = gnome_config_get_string(dummy->str);
     newval.type = goad_server_typename_to_type(typename);
     g_free(typename);
@@ -138,13 +140,28 @@ goad_server_list_read(const char *filename,
       continue;
     }
 
-    g_string_sprintf(dummy, "%s/repo_id", newval.id);
+    if (*filename == '=')
+      g_string_sprintf(dummy, "=%s/=repo_id",
+		       newval.id);
+    else
+      g_string_sprintf(dummy, "%s/repo_id",
+		       newval.id);
     newval.repo_id = gnome_config_get_string(dummy->str);
 
-    g_string_sprintf(dummy, "%s/description", newval.id);
+    if (*filename == '=')
+      g_string_sprintf(dummy, "=%s/=description",
+		       newval.description);
+    else
+      g_string_sprintf(dummy, "%s/description",
+		       newval.description);
     newval.description = gnome_config_get_string(dummy->str);
 
-    g_string_sprintf(dummy, "%s/location_info", newval.id);
+    if (*filename == '=')
+      g_string_sprintf(dummy, "=%s/=location_info",
+		       newval.id);
+    else
+      g_string_sprintf(dummy, "%s/location_info",
+		       newval.description);
     newval.location_info = gnome_config_get_string(dummy->str);
     g_array_append_val(servinfo, newval);
   }
