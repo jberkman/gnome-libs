@@ -35,7 +35,12 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.5  1999/02/25 01:05:05  unammx
+* Missing bit of the strtok patches from Ulrich
+*
 * Revision 1.4  1998/12/03 06:29:09  sopwith
+*
+*
 * gtk-xmhtml: fix something bacchus pointed out (initialization of global
 * variables from non-constant values).
 *
@@ -234,6 +239,7 @@ __rsd_selectDebugLevels(char *levels)
 	char *chPtr, *text;
 	int i;
 	int ret_val = 0;
+	char *tokp;
 
 	/* leave debuglevels alone if levels is not defined */
 	if(levels == NULL)
@@ -270,7 +276,7 @@ __rsd_selectDebugLevels(char *levels)
 		return(1);
 	}
 
-	for(chPtr = strtok(text, ","); chPtr != NULL; chPtr = strtok(NULL, ","))
+	for(chPtr = strtok_r(text, ",", &tokp); chPtr != NULL; chPtr = strtok_r(NULL, ",", &tokp))
 	{
 		i = 0;
 		i = atoi(chPtr);		

@@ -36,6 +36,9 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.6  1999/02/25 01:05:07  unammx
+* Missing bit of the strtok patches from Ulrich
+*
 * Revision 1.5  1998/02/12 03:09:33  unammx
 * Merge to Koen's XmHTML 1.1.2 + following fixes:
 *
@@ -279,6 +282,7 @@ getCoordinates(String attributes, int *ncoords)
 	String chPtr, tmp;
 	int *coords;
 	int num;
+	char *tokp;
 
 	*ncoords = 0;
 	coords = NULL;
@@ -289,8 +293,8 @@ getCoordinates(String attributes, int *ncoords)
 		return(NULL);
 
 	/* count how many coordinates we have */
-	for(num = 0, tmp = strtok(chPtr, ","); tmp != NULL; 
-		tmp = strtok(NULL, ","), num++);
+	for(num = 0, tmp = strtok_r(chPtr, ",", &tokp); tmp != NULL;
+		tmp = strtok_r(NULL, ",", &tokp), num++);
 
 	free(chPtr);
 	if(!num)
@@ -303,8 +307,8 @@ getCoordinates(String attributes, int *ncoords)
 	
 	/* again get coordinates, but now convert to numbers */
 	chPtr = _XmHTMLTagGetValue(attributes, "coords");
-	for(num = 0, tmp = strtok(chPtr, ","); tmp != NULL; 
-		tmp = strtok(NULL, ","), num++)
+	for(num = 0, tmp = strtok_r(chPtr, ",", &tokp); tmp != NULL;
+		tmp = strtok_r(NULL, ",", &tokp), num++)
 		coords[num] = atoi(tmp);
 
 	/* no longer needed */

@@ -36,6 +36,9 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.8  1999/02/25 01:05:06  unammx
+* Missing bit of the strtok patches from Ulrich
+*
 * Revision 1.7  1998/05/11 07:54:07  kmaraas
 * 1998-05-11  Kjartan Maraas  <kmaraas@fib.hl.no>
 *
@@ -874,6 +877,7 @@ initializeFontSizeLists(XmHTMLWidget html)
 	char size_list[64];
 	int i;
 	Boolean ok;
+	char *tokp;
 
 	_XmHTMLDebug(8,( "fonts.c: initializeFontSizeLists Start\n"));
 
@@ -884,8 +888,8 @@ initializeFontSizeLists(XmHTMLWidget html)
 	strncpy(size_list, html->html.font_sizes, 63);	
 
 	/* This list has 8 elements */
-	for(chPtr = strtok(size_list, ","), i = 0; i < 8 && chPtr != NULL; 
-		chPtr = strtok(NULL, ","), i++)
+	for(chPtr = strtok_r(size_list, ",", &tokp), i = 0; i < 8 && chPtr != NULL;
+		chPtr = strtok_r(NULL, ",", &tokp), i++)
 	{
 		if((xmhtml_fn_sizes[i] = 10*atoi(chPtr)) == 0)
 			xmhtml_fn_sizes[i] = def_fn_sizes[i];
@@ -911,8 +915,8 @@ initializeFontSizeLists(XmHTMLWidget html)
 	strncpy(size_list, html->html.font_sizes_fixed, 63);
 
 	/* This list has 2 elements */
-	for(chPtr = strtok(size_list, ","), i = 0; i < 2 && chPtr != NULL; 
-		chPtr = strtok(NULL, ","), i++)
+	for(chPtr = strtok_r(size_list, ",", &tokp), i = 0; i < 2 && chPtr != NULL;
+		chPtr = strtok_r(NULL, ",", &tokp), i++)
 	{
 		if((xmhtml_fn_fixed_sizes[i] = 10*atoi(chPtr)) == 0)
 			xmhtml_fn_fixed_sizes[i] = def_fn_fixed_sizes[i];
@@ -1266,6 +1270,7 @@ _XmHTMLLoadFontWithFace(XmHTMLWidget html, int size, String face,
 	String chPtr, family, all_faces, first_face = NULL;
 	Byte new_style = (Byte)0, font_style;
 	int try;
+	char *tokp;
 
 	/* curr_font *must* always have a value as it references a cached font */
 	my_assert(curr_font != NULL);
@@ -1312,8 +1317,8 @@ _XmHTMLLoadFontWithFace(XmHTMLWidget html, int size, String face,
 
 	/* walk all possible spaces */
 	try = 0;
-	for(chPtr = strtok(all_faces, ","); chPtr != NULL;
-		chPtr = strtok(NULL, ","))
+	for(chPtr = strtok_r(all_faces, ",", &tokp); chPtr != NULL;
+		chPtr = strtok_r(NULL, ",", &tokp))
 	{
 		Boolean ok = False;
 
@@ -1367,8 +1372,8 @@ _XmHTMLLoadFontWithFace(XmHTMLWidget html, int size, String face,
 			* Walk all possible faces. Nukes the face array but that's not
 			* bad as we are the only ones using it.
 			*****/
-			for(chPtr = strtok(face, ","); chPtr != NULL;
-				chPtr = strtok(NULL, ","))
+			for(chPtr = strtok_r(face, ",", &tokp); chPtr != NULL;
+				chPtr = strtok_r(NULL, ",", &tokp))
 			{
 				/* skip any leading spaces */
 				while(isspace(*chPtr))

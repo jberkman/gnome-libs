@@ -1,3 +1,11 @@
+1999-02-16  Ulrich Drepper  <drepper@cygnus.com>
+	
+	* gtk-xmhtml/debug.c (__rsd_selectDebugLevels): Use strtok_r instead
+	of strtok.
+	* gtk-xmhtml/fonts.c (initializeFontSizeLists): Likewise.
+	(_XmHTMLLoadFontWithFace): Likewise.
+	* gtk-xmhtml/map.c (getCoordinates): Likewise.
+
 1999-02-21  Nuno Ferreira  <nmrf@rnl.ist.utl.pt>
 
 	* Makefile.am (htmltest_LDADD): Use libgtkxmhtml.la  without the
