@@ -1,12 +1,14 @@
 # Copyright 1999 Free Software Foundation, Inc.
 # Pofeng Lee <pofeng.lee@ms7.url.com.tw>, 1999.
+# Jing-Jong Shyue <shyue@sonoma.com.tw>, 2000.
 #
+
 msgid ""
 msgstr ""
-"Project-Id-Version: gnome-libs 0.99.7\n"
-"POT-Creation-Date: 2000-02-21 18:12-0500\n"
-"PO-Revision-Date: 1999-02-20 22:30+0800\n"
-"Last-Translator: Pofeng Lee <pofeng.lee@ms7.url.com.tw> \n"
+"Project-Id-Version: gnome-libs 1.34\n"
+"POT-Creation-Date: 2000-05-24 13:19+0800\n"
+"PO-Revision-Date: 2000-05-24 22:30+0800\n"
+"Last-Translator: Jing-Jong Shyue <shyue@sonoma.com.tw> \n"
 "Language-Team: Chinese <zh@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=big5\n"
@@ -15,7 +17,7 @@ msgstr ""
 #: libgnome/gnomelib-init.c:176 libgnome/gnomelib-init.c:190
 #, c-format
 msgid "Could not create per-user gnome configuration directory `%s': %s\n"
-msgstr ""
+msgstr "無法建立個別使用者的 Gnome 組態目錄 '%s': %s\n"
 
 #: libgnome/gnomelib-init.c:199
 #, c-format
@@ -23,28 +25,38 @@ msgid ""
 "Could not set mode 0700 on private per-user gnome configuration directory "
 "`%s': %s\n"
 msgstr ""
+"無法將私用個別使用者的 Gnome 組態目錄設定為模式 0700"
+"'%s': %s\n"
 
 #: libgnome/gnomelib-init.c:206
 #, c-format
 msgid "Could not create gnome accelerators directory `%s': %s\n"
-msgstr ""
+msgstr "無法建立 Gnome 加速目錄 '%s': %s\n"
 
-#: libgnomeui/gnome-about.c:320
+#: libgnomeui/gnome-about.c:332
 msgid "Author:"
 msgstr "作者:"
 
-#: libgnomeui/gnome-about.c:323 libgnomeui/gnome-about.c:325
+#: libgnomeui/gnome-about.c:335 libgnomeui/gnome-about.c:337
 msgid "Authors:"
 msgstr "作者群:"
 
-#: libgnomeui/gnome-about.c:630
+#: libgnomeui/gnome-about.c:643
 msgid "Authors: "
 msgstr "作者群:"
 
-#: libgnomeui/gnome-about.c:971 libgnomeui/stock_demo.c:307
+#: libgnomeui/gnome-about.c:1020 libgnomeui/stock_demo.c:307
 #: libgnomeui/winhints_demo.c:256
 msgid "About"
 msgstr "關於本程式"
+
+#: libgnomeui/gnome-about.c:1128
+msgid ""
+"Error occured while trying to launch the URL handler.\n"
+"Please check the settings in the Control Center if they are correct."
+msgstr ""
+"嘗試啟動 URL 處理器發生錯誤.\n"
+"請檢查控制中心中的設定是否正確."
 
 #: libgnomeui/gnome-app-helper.c:74
 msgid "_File"
@@ -294,9 +306,8 @@ msgstr "改變目前應用程式的設定"
 #.
 #. About
 #: libgnomeui/gnome-app-helper.c:213
-#, fuzzy
 msgid "_About"
-msgstr "關於本程式"
+msgstr "關於 (_A)"
 
 #: libgnomeui/gnome-app-helper.c:214
 msgid "About this application"
@@ -437,172 +448,172 @@ msgstr " - 確定嗎? (是或否)"
 msgid "Progress"
 msgstr "進行"
 
-#: libgnomeui/gnome-calculator.c:982 libgnomeui/gnome-calculator.c:1132
+#: libgnomeui/gnome-calculator.c:443 libgnomeui/gnome-calculator.c:1088
 msgid "DEG"
 msgstr "DEG"
 
-#: libgnomeui/gnome-calculator.c:984
+#: libgnomeui/gnome-calculator.c:445
 msgid "RAD"
 msgstr "RAD"
 
-#: libgnomeui/gnome-calculator.c:986
+#: libgnomeui/gnome-calculator.c:447
 msgid "GRAD"
 msgstr "GRAD"
 
-#: libgnomeui/gnome-calculator.c:1122
+#: libgnomeui/gnome-calculator.c:1078
 msgid "1/x"
 msgstr "1/x"
 
-#: libgnomeui/gnome-calculator.c:1123
+#: libgnomeui/gnome-calculator.c:1079
 msgid "x^2"
 msgstr "x^2"
 
-#: libgnomeui/gnome-calculator.c:1124
+#: libgnomeui/gnome-calculator.c:1080
 msgid "SQRT"
 msgstr "SQRT"
 
-#: libgnomeui/gnome-calculator.c:1125
+#: libgnomeui/gnome-calculator.c:1081
 msgid "CE/C"
 msgstr "CE/C"
 
-#: libgnomeui/gnome-calculator.c:1126
+#: libgnomeui/gnome-calculator.c:1082
 msgid "AC"
 msgstr "AC"
 
 #. inverse button
-#: libgnomeui/gnome-calculator.c:1129
+#: libgnomeui/gnome-calculator.c:1085
 msgid "sin"
 msgstr "sin"
 
-#: libgnomeui/gnome-calculator.c:1130
+#: libgnomeui/gnome-calculator.c:1086
 msgid "cos"
 msgstr "cos"
 
-#: libgnomeui/gnome-calculator.c:1131
+#: libgnomeui/gnome-calculator.c:1087
 msgid "tan"
 msgstr "tan"
 
-#: libgnomeui/gnome-calculator.c:1134
+#: libgnomeui/gnome-calculator.c:1090
 msgid "e"
 msgstr "e"
 
-#: libgnomeui/gnome-calculator.c:1135
+#: libgnomeui/gnome-calculator.c:1091
 msgid "EE"
 msgstr "EE"
 
-#: libgnomeui/gnome-calculator.c:1136
+#: libgnomeui/gnome-calculator.c:1092
 msgid "log"
 msgstr "log"
 
-#: libgnomeui/gnome-calculator.c:1137
+#: libgnomeui/gnome-calculator.c:1093
 msgid "ln"
 msgstr "ln"
 
-#: libgnomeui/gnome-calculator.c:1138
+#: libgnomeui/gnome-calculator.c:1094
 msgid "x^y"
 msgstr "x^y"
 
-#: libgnomeui/gnome-calculator.c:1140
+#: libgnomeui/gnome-calculator.c:1096
 msgid "PI"
 msgstr "PI"
 
-#: libgnomeui/gnome-calculator.c:1141
+#: libgnomeui/gnome-calculator.c:1097
 msgid "x!"
 msgstr "x!"
 
-#: libgnomeui/gnome-calculator.c:1142
+#: libgnomeui/gnome-calculator.c:1098
 msgid "("
 msgstr "("
 
-#: libgnomeui/gnome-calculator.c:1143
+#: libgnomeui/gnome-calculator.c:1099
 msgid ")"
 msgstr ")"
 
-#: libgnomeui/gnome-calculator.c:1144
+#: libgnomeui/gnome-calculator.c:1100
 msgid "/"
 msgstr "/"
 
-#: libgnomeui/gnome-calculator.c:1146
+#: libgnomeui/gnome-calculator.c:1102
 msgid "STO"
 msgstr "STO"
 
-#: libgnomeui/gnome-calculator.c:1147
+#: libgnomeui/gnome-calculator.c:1103
 msgid "7"
 msgstr "7"
 
-#: libgnomeui/gnome-calculator.c:1148
+#: libgnomeui/gnome-calculator.c:1104
 msgid "8"
 msgstr "8"
 
-#: libgnomeui/gnome-calculator.c:1149
+#: libgnomeui/gnome-calculator.c:1105
 msgid "9"
 msgstr "9"
 
-#: libgnomeui/gnome-calculator.c:1150
+#: libgnomeui/gnome-calculator.c:1106
 msgid "*"
 msgstr "*"
 
-#: libgnomeui/gnome-calculator.c:1152
+#: libgnomeui/gnome-calculator.c:1108
 msgid "RCL"
 msgstr "RCL"
 
-#: libgnomeui/gnome-calculator.c:1153
+#: libgnomeui/gnome-calculator.c:1109
 msgid "4"
 msgstr "4"
 
-#: libgnomeui/gnome-calculator.c:1154
+#: libgnomeui/gnome-calculator.c:1110
 msgid "5"
 msgstr "5"
 
-#: libgnomeui/gnome-calculator.c:1155
+#: libgnomeui/gnome-calculator.c:1111
 msgid "6"
 msgstr "6"
 
-#: libgnomeui/gnome-calculator.c:1156
+#: libgnomeui/gnome-calculator.c:1112
 msgid "-"
 msgstr "-"
 
-#: libgnomeui/gnome-calculator.c:1158
+#: libgnomeui/gnome-calculator.c:1114
 msgid "SUM"
 msgstr "SUM"
 
-#: libgnomeui/gnome-calculator.c:1159
+#: libgnomeui/gnome-calculator.c:1115
 msgid "1"
 msgstr "1"
 
-#: libgnomeui/gnome-calculator.c:1160
+#: libgnomeui/gnome-calculator.c:1116
 msgid "2"
 msgstr "2"
 
-#: libgnomeui/gnome-calculator.c:1161
+#: libgnomeui/gnome-calculator.c:1117
 msgid "3"
 msgstr "3"
 
-#: libgnomeui/gnome-calculator.c:1162
+#: libgnomeui/gnome-calculator.c:1118
 msgid "+"
 msgstr "+"
 
-#: libgnomeui/gnome-calculator.c:1164
+#: libgnomeui/gnome-calculator.c:1120
 msgid "EXC"
 msgstr "EXC"
 
-#: libgnomeui/gnome-calculator.c:1165
+#: libgnomeui/gnome-calculator.c:1121
 msgid "0"
 msgstr "0"
 
-#: libgnomeui/gnome-calculator.c:1166
+#: libgnomeui/gnome-calculator.c:1122
 msgid "."
 msgstr "."
 
-#: libgnomeui/gnome-calculator.c:1167
+#: libgnomeui/gnome-calculator.c:1123
 msgid "+/-"
 msgstr "+/-"
 
-#: libgnomeui/gnome-calculator.c:1168
+#: libgnomeui/gnome-calculator.c:1124
 msgid "="
 msgstr "="
 
-#: libgnomeui/gnome-calculator.c:1237
+#: libgnomeui/gnome-calculator.c:1330
 msgid "INV"
 msgstr "INV"
 
@@ -627,9 +638,8 @@ msgid "Disable connection to session manager"
 msgstr "不連結到作業階段管理程式"
 
 #: libgnomeui/gnome-client.c:864
-#, fuzzy
 msgid "Session management"
-msgstr "作業階段管理用的選項"
+msgstr "作業階段管理"
 
 #: libgnomeui/gnome-client.c:2330
 msgid "Cancel Logout"
@@ -682,28 +692,25 @@ msgstr "文件:"
 
 #: libgnomeui/gnome-dentry-edit.c:386
 msgid "Name/Comment translations:"
-msgstr ""
+msgstr "名稱/說明翻譯:"
 
 #: libgnomeui/gnome-dentry-edit.c:389
 msgid "Language"
-msgstr ""
+msgstr "語言"
 
 #: libgnomeui/gnome-dentry-edit.c:390
-#, fuzzy
 msgid "Name"
-msgstr "名稱:"
+msgstr "名稱"
 
 #: libgnomeui/gnome-dentry-edit.c:391
-#, fuzzy
 msgid "Comment"
-msgstr "說明:"
+msgstr "說明"
 
 #: libgnomeui/gnome-dentry-edit.c:419
-#, fuzzy
 msgid "Add/Set"
-msgstr "增加"
+msgstr "增加/設定"
 
-#: libgnomeui/gnome-dentry-edit.c:424 libgnomeui/gnome-stock.c:644
+#: libgnomeui/gnome-dentry-edit.c:424 libgnomeui/gnome-stock.c:707
 msgid "Remove"
 msgstr "移除"
 
@@ -716,20 +723,19 @@ msgid "Advanced"
 msgstr "進階"
 
 #: libgnomeui/gnome-druid.c:135
-#, fuzzy
 msgid "Back"
-msgstr "基本"
+msgstr "往回"
 
 #: libgnomeui/gnome-druid.c:143
 msgid "Finish"
-msgstr ""
+msgstr "完成"
 
-#: libgnomeui/gnome-file-entry.c:175
+#: libgnomeui/gnome-file-entry.c:298
 msgid "Select file"
 msgstr "選取檔案"
 
 #. browse button ...
-#: libgnomeui/gnome-file-entry.c:304 libgnomeui/gnome-spell.c:620
+#: libgnomeui/gnome-file-entry.c:427 libgnomeui/gnome-spell.c:620
 #: libgnomeui/gnome-spell.c:637 libgnomeui/gnome-spell.c:654
 msgid "Browse..."
 msgstr "瀏覽..."
@@ -738,21 +744,25 @@ msgstr "瀏覽..."
 msgid "Pick a Font"
 msgstr "選擇字型"
 
-#: libgnomeui/gnome-font-picker.c:719 libgnomeui/gnome-stock.c:664
+#: libgnomeui/gnome-font-picker.c:719 libgnomeui/gnome-stock.c:727
 msgid "Font"
 msgstr "字型"
 
-#: libgnomeui/gnome-icon-entry.c:157 libgnomeui/gnome-icon-entry.c:612
+#: libgnomeui/gnome-icon-entry.c:273 libgnomeui/gnome-icon-entry.c:770
 msgid "No Icon"
 msgstr "無圖示"
 
-#: libgnomeui/gnome-icon-entry.c:321 libgnomeui/gnome-pixmap-entry.c:296
+#: libgnomeui/gnome-icon-entry.c:447 libgnomeui/gnome-pixmap-entry.c:429
 msgid "Can't find an hbox, using a normal file selection"
 msgstr "找不到 hbox, 使用一般的檔案選取"
 
-#: libgnomeui/gnome-icon-entry.c:327 libgnomeui/gnome-pixmap-entry.c:302
+#: libgnomeui/gnome-icon-entry.c:453 libgnomeui/gnome-pixmap-entry.c:435
 msgid "Preview"
 msgstr "預覽"
+
+#: libgnomeui/gnome-icon-entry.c:791
+msgid "Browse"
+msgstr "瀏覽"
 
 #: libgnomeui/gnome-icon-sel.c:338
 msgid "Loading Icons..."
@@ -838,7 +848,7 @@ msgstr "模組"
 #. dialog display isn't working out
 #: libgnomeui/gnome-init.c:464
 msgid "Multiple segmentation faults occurred; can't display error dialog\n"
-msgstr ""
+msgstr "多重區段發生錯誤; 無法顯示錯誤對話窗\n"
 
 #: libgnomeui/gnome-messagebox.c:137
 msgid "Information"
@@ -860,15 +870,15 @@ msgstr "問題"
 msgid "Message"
 msgstr "訊息"
 
-#: libgnomeui/gnome-number-entry.c:177
+#: libgnomeui/gnome-number-entry.c:200
 msgid "Calculator"
 msgstr "計算機"
 
-#: libgnomeui/gnome-number-entry.c:233
+#: libgnomeui/gnome-number-entry.c:256
 msgid "Calculator..."
 msgstr "計算機..."
 
-#: libgnomeui/gnome-pixmap-entry.c:128 libgnomeui/gnome-pixmap-entry.c:399
+#: libgnomeui/gnome-pixmap-entry.c:251 libgnomeui/gnome-pixmap-entry.c:532
 msgid "No Image"
 msgstr "沒有圖片"
 
@@ -901,16 +911,19 @@ msgid "Date"
 msgstr "日期"
 
 #. the localized string should fit (after replacing the %a %b
-#. etc) in ~18 chars; so drop some if needed; after all this
-#. is for games scores, there is no need for extra precision.
+#. etc) in ~18 chars.
 #. %a is abbreviated weekday, %A is full weekday,
 #. %b %B are abbreviated and full monthname, %Y is year,
 #. %d is day of month, %m is month number, %T full hour,
 #. %H hours, %M minutes, %S seconds
 #.
-#: libgnomeui/gnome-scores.c:155
+#: libgnomeui/gnome-scores.c:154
 msgid "%a %b %d %T %Y"
-msgstr ""
+msgstr "%a %b %d %T %Y"
+
+#: libgnomeui/gnome-scores.c:323
+msgid "-freefont-garamond-*-*-*-*-30-170-*-*-*-*-*-*"
+msgstr "-freefont-garamond-*-*-*-*-30-170-*-*-*-*-*-*"
 
 #: libgnomeui/gnome-spell.c:199
 msgid "Select dictionary"
@@ -931,11 +944,11 @@ msgstr ""
 msgid "Confirm"
 msgstr "確定"
 
-#: libgnomeui/gnome-spell.c:259 libgnomeui/gnome-stock.c:653
+#: libgnomeui/gnome-spell.c:259 libgnomeui/gnome-stock.c:716
 msgid "OK"
 msgstr "確定"
 
-#: libgnomeui/gnome-spell.c:266 libgnomeui/gnome-stock.c:655
+#: libgnomeui/gnome-spell.c:266 libgnomeui/gnome-stock.c:718
 msgid "Cancel"
 msgstr "取消"
 
@@ -1055,91 +1068,91 @@ msgstr "拼法"
 msgid "Configure"
 msgstr "設定"
 
-#: libgnomeui/gnome-stock.c:641
+#: libgnomeui/gnome-stock.c:704
 msgid "Add"
 msgstr "增加"
 
-#: libgnomeui/gnome-stock.c:642
+#: libgnomeui/gnome-stock.c:705
 msgid "Clear"
 msgstr "清除"
 
-#: libgnomeui/gnome-stock.c:643
+#: libgnomeui/gnome-stock.c:706
 msgid "Select Color"
 msgstr "選擇顏色"
 
-#: libgnomeui/gnome-stock.c:645
+#: libgnomeui/gnome-stock.c:708
 msgid "Table Borders"
 msgstr "表格邊框"
 
-#: libgnomeui/gnome-stock.c:646
+#: libgnomeui/gnome-stock.c:709
 msgid "Table Fill"
 msgstr "表格填滿"
 
-#: libgnomeui/gnome-stock.c:647
+#: libgnomeui/gnome-stock.c:710
 msgid "Bulleted List"
 msgstr "符號列表"
 
-#: libgnomeui/gnome-stock.c:648
+#: libgnomeui/gnome-stock.c:711
 msgid "Numbered List"
 msgstr "編號列表"
 
-#: libgnomeui/gnome-stock.c:649
+#: libgnomeui/gnome-stock.c:712
 msgid "Indent"
 msgstr "縮排"
 
-#: libgnomeui/gnome-stock.c:650
+#: libgnomeui/gnome-stock.c:713
 msgid "Un-Indent"
 msgstr "去除縮排"
 
-#: libgnomeui/gnome-stock.c:654
+#: libgnomeui/gnome-stock.c:717
 msgid "Apply"
 msgstr "套用"
 
-#: libgnomeui/gnome-stock.c:656 libgnomeui/stock_demo.c:169
+#: libgnomeui/gnome-stock.c:719 libgnomeui/stock_demo.c:169
 msgid "Close"
 msgstr "關閉"
 
-#: libgnomeui/gnome-stock.c:657
+#: libgnomeui/gnome-stock.c:720
 msgid "Yes"
 msgstr "是"
 
-#: libgnomeui/gnome-stock.c:658
+#: libgnomeui/gnome-stock.c:721
 msgid "No"
 msgstr "否"
 
-#: libgnomeui/gnome-stock.c:659 libgnomeui/stock_demo.c:315
+#: libgnomeui/gnome-stock.c:722 libgnomeui/stock_demo.c:315
 msgid "Help"
 msgstr "說明"
 
-#: libgnomeui/gnome-stock.c:660
+#: libgnomeui/gnome-stock.c:723
 msgid "Next"
 msgstr "下個"
 
-#: libgnomeui/gnome-stock.c:661
+#: libgnomeui/gnome-stock.c:724
 msgid "Prev"
 msgstr "前個"
 
-#: libgnomeui/gnome-stock.c:662
+#: libgnomeui/gnome-stock.c:725
 msgid "Up"
 msgstr "上"
 
-#: libgnomeui/gnome-stock.c:663
+#: libgnomeui/gnome-stock.c:726
 msgid "Down"
 msgstr "下"
 
-#: libgnomeui/gnome-stock.c:1426
+#: libgnomeui/gnome-stock.c:1498
 msgid "Menu Accelerator Keys"
 msgstr "選單快速鍵"
 
-#: libgnomeui/gnome-stock.c:1428
+#: libgnomeui/gnome-stock.c:1500
 msgid "Global"
 msgstr "全域"
 
-#: libgnomeui/gnome-stock.c:1430
+#: libgnomeui/gnome-stock.c:1502
 msgid "Menu Item"
 msgstr "選單項目"
 
-#: libgnomeui/gnome-stock.c:1431
+#: libgnomeui/gnome-stock.c:1503
 msgid "Accelerator"
 msgstr "加速"
 
@@ -1152,6 +1165,11 @@ msgid ""
 "will exit.\n"
 "Please save all your files before closing this dialog."
 msgstr ""
+"GNOME 工作階段管理員 (程序 %d) 發生錯誤\n"
+"原因是致命的錯誤 (%s).\n"
+"當您關閉這個段話窗後, "
+"所有的程式將會關閉且您的工作階段將會結束.\n"
+"在關閉這個對話窗前, 請儲存您全部的檔案."
 
 #: libgnomeui/gnome_segv.c:87
 #, c-format
@@ -1160,22 +1178,25 @@ msgid ""
 "due to a fatal error.\n"
 "(%s)"
 msgstr ""
+"應用程式 \"%s\" (程序 %d) 發生錯誤\n"
+"原因是致命的錯誤.\n"
+"(%s)"
 
 #: libgnomeui/gnome_segv.c:95
 msgid "Usage: gnome_segv appname signum\n"
-msgstr ""
+msgstr "用法: gnome_segv 程式名稱 信號代碼\n"
 
 #: libgnomeui/gnome_segv.c:109
 msgid "Submit a bug report"
-msgstr ""
+msgstr "送出一個臭蟲報告"
 
 #: libgnomeui/gnome_segv.c:115
 msgid "http://www.gnome.org/application_crashed.shtml"
-msgstr ""
+msgstr "http://www.gnome.org/application_crashed.shtml"
 
 #: libgnomeui/gnome_segv.c:121
 msgid "Please visit the GNOME Application Crash page for more information"
-msgstr ""
+msgstr "請光零 Gnome 應用程式錯誤網頁以取得更多資訊"
 
 #: libgnomeui/stock_demo.c:137
 msgid "New..."
@@ -1362,17 +1383,16 @@ msgid "WIN_HINTS Test"
 msgstr "WIN_HINTS Test"
 
 #: libgnomeui/winhints_demo.c:411
-#, fuzzy
 msgid "Copyright (C) 1998"
-msgstr "Copyright (C)1998"
+msgstr "Copyright (C) 1998"
 
 #: libgnomeui/winhints_demo.c:413
-#, fuzzy
 msgid ""
 "Simple test app to check how the WIN_HINTS work.\n"
 "And to test the gnome_win_hints_* functions for errors. :)"
 msgstr ""
-"關于 WIN_HINTS 工作情形的簡單測試程式，並測試 gnome_win_hints_* 函式的錯誤 :)"
+"關于 WIN_HINTS 工作情形的簡單測試程式，\n"
+"並測試 gnome_win_hints_* 函式的錯誤 :)"
 
 #: support/error.c:109
 msgid "Unknown system error"
@@ -1485,9 +1505,8 @@ msgid "Weird number in reply callback"
 msgstr "Weird number in reply callback"
 
 #: test-gnome/testgnome.c:1963
-#, fuzzy
 msgid "Test GNOME"
-msgstr "GNOME 您好"
+msgstr "測試 GNOME"
 
 #~ msgid "get"
 #~ msgstr "取得"
