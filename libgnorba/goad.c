@@ -859,6 +859,7 @@ get_cmd(gchar* line)
   gchar* ptr;
   gint   argc = 1;
   gchar* tok;
+  gchar* tokp;
   
   retval.argv = (gchar**)malloc(sizeof(char*) * 2);
   retval.argv[1] = 0;
@@ -871,11 +872,11 @@ get_cmd(gchar* line)
   if (!*ptr)
     return &retval;
 
-  retval.cmd = strtok(ptr, " \t");
+  retval.cmd = strtok_r(ptr, " \t", &tokp);
   retval.argv[0] = retval.cmd;
   while (1)
     {
-      tok = strtok(0, " \t");
+      tok = strtok_r(0, " \t", &tokp);
       if (!tok)
 	return &retval;
       argc++;
