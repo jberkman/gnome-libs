@@ -67,8 +67,8 @@ GNOMEUI_LIBS="-lgnomeui $GNOME_LIBS $GTK_LIBS $X_LIBS $x_libs"
 LIBGTKXMHTML_LIBS="$GTK_LIBS $XPM_LIBS $JPEG_LIBS $PNG_LIBS $Z_LIBS $X_LIBS $x_libs"
 GTKXMHTML_LIBS="-lgtkxmhtml $LIBGTKXMHTML_LIBS"
 
-GNOME_LIBDIR=`eval echo \`echo $libdir\``
-GNOME_INCLUDEDIR=`eval echo \`echo $includedir\``
+GNOME_LIBDIR=-L`eval echo \`echo $libdir\``
+GNOME_INCLUDEDIR=-I`eval echo \`echo $includedir\``
 AC_SUBST(GNOME_LIBS)
 AC_SUBST(GNOMEUI_LIBS)
 AC_SUBST(GTKXMHTML_LIBS)
