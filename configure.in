@@ -369,7 +369,7 @@ ZVT_LIBS="-lzvt-$GNOME_INTERFACE_VERSION $GTK_LIBS $UTIL_LIBS $GTK_LIBS"
 
 dnl These definitions are expanded in make and gnome-config
 GNOME_LIBDIR='-L${libdir}'
-GNOME_INCLUDEDIR='-I${includedir} -DNEED_GNOMESUPPORT_H -I${pkglibdir}/include'
+GNOME_INCLUDEDIR='-I${includedir}/gnome/${GNOME_INTERFACE_VERSION} -DNEED_GNOMESUPPORT_H'
 GNOME_IDLDIR='-I${datadir}/idl'
 
 dnl
