@@ -1,6 +1,6 @@
 GTK=/usr/local/include
 
-CFLAGS = -I. -I$(GTK) -DVERSION=1 -g -Wall
+CFLAGS = -I. -I$(GTK) -DVERSION=1 -g -Wall -DHAVE_JPEG -DHAVE_PNG -DHAVE_ZLIB
 
 all: xmhtml test
 
@@ -19,9 +19,12 @@ HTMLOBJS = XmHTML.o gtk-error.o frames.o parse.o StringUtil.o fonts.o paint.o \
 	readFLG.o readPNG.o colors.o images.o quantize.o
 
 test: test.o
-	gcc -g -o xtest test.o $(HTMLOBJS)  -lXpm -lgtk -lgdk -lglib -lX11 -L/usr/X11R6/lib -lm
+	gcc -g -o xtest test.o $(HTMLOBJS)  -lXpm -lgtk -lgdk -lglib -lX11 -ljpeg -lpng -lz -L/usr/X11R6/lib -lm
 
 test.o: test.c
 	gcc -c test.c -I. -g
 
 XmHTML.o: XmHTML.c gtk-xmhtml.c XmHTML.h
+
+clean:
+	rm *.o

@@ -32,6 +32,10 @@ typedef void *TPointer;
 #include <X11/Xlib.h>
 #include <X11/Intrinsic.h>
 
+enum {
+	XmAUTOMATIC = 0
+};
+
 typedef GdkFont     TFontStruct;
 typedef GdkCursor   *TCursor;
 typedef GdkVisual   TVisual;
@@ -103,7 +107,12 @@ typedef XVisualInfo TVisualInfo;
 #define Toolkit_Widget_Dim(h) (GTK_WIDGET(h)->allocation)
 #define Toolkit_Screen_Height(w) gdk_screen_height ()
 #define Toolkit_Widget_Is_Realized(w) GTK_WIDGET_REALIZED (w)
-#define Toolkit_Clear_Area(d,w,xs,ys,wi,h) gdk_window_clear_area ((w),(xs),(ys),(wi),(h));
+#define Toolkit_Clear_Area(d,w,xs,ys,wi,h,b) do {\
+		if (b) \
+			gdk_window_clear_area_e ((w),(xs),(ys),(wi),(h)); \
+                else \
+			gdk_window_clear_area ((w),(xs),(ys),(wi),(h)); \
+		} while (0);
 #define Toolkit_Widget_Destroy(w) gtk_widget_destroy (w)
 #define Toolkit_CreateHTML(w,n,as,ac) gtk_xmhtml_new ("")
 #define Toolkit_Widget_Colormap(w) gtk_widget_get_colormap (GTK_WIDGET (w))
@@ -201,7 +210,7 @@ typedef GdkColorContextDither XCCDither;
 #define Toolkit_Widget_Dim(h) ((h)->core)
 #define Toolkit_Screen_Height(w) HeightOfScreen(w)
 #define Toolkit_Widget_Is_Realized(w) XtIsRealized (w)
-#define Toolkit_Clear_Area(d,w,xs,ys,w,h) XClearArea ((d),(w),(xs),(ys),(w),(h), False);
+#define Toolkit_Clear_Area(d,wid,xs,ys,w,h,b) XClearArea ((d),(wid),(xs),(ys),(w),(h), b);
 #define Toolkit_Widget_Destroy(w) XtDestroyWidget (w)
 #define Toolkit_CreateHTML(w,n,as,ac) XmCreateHTML(w,n,as,ac)
 #define Toolkit_Widget_Colormap(w) (w)->core.colormap

@@ -37,6 +37,22 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.2  1997/12/23 04:44:33  unammx
+* Ok kiddies, news for the day:
+*
+* It scrolls nicely.
+* It now displays GIFs.
+* It now displays animated GIFs.
+* It now displays JPEGs.
+* Colors work.
+*
+* Weeeeee!  The beginning on an XmHTML era is here ;-)
+*
+* The rendering engine is pretty amazing, very accurate, looks like
+* Netscape on equivalent pages :-).
+*
+* Miguel and Federico.
+*
 * Revision 1.1  1997/12/18 22:23:30  unammx
 * readJPEG*.c compile - Federico
 *
@@ -212,7 +228,7 @@ jpeg_buffer_src(j_decompress_ptr cinfo, Byte *data, unsigned int len)
 *	loaded image data on success, NULL on failure.
 *****/
 XmHTMLRawImageData*
-_XmHTMLReadJPEG(Widget html, ImageBuffer *ib)
+_XmHTMLReadJPEG(TWidget html, ImageBuffer *ib)
 {
 	struct jpeg_decompress_struct cinfo;
 	struct my_error_mgr jerr;

@@ -35,6 +35,22 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.11  1997/12/23 04:44:27  unammx
+* Ok kiddies, news for the day:
+*
+* It scrolls nicely.
+* It now displays GIFs.
+* It now displays animated GIFs.
+* It now displays JPEGs.
+* Colors work.
+*
+* Weeeeee!  The beginning on an XmHTML era is here ;-)
+*
+* The rendering engine is pretty amazing, very accurate, looks like
+* Netscape on equivalent pages :-).
+*
+* Miguel and Federico.
+*
 * Revision 1.10  1997/12/19 07:06:54  unammx
 * My pretty pathetic attempt at getting scrollbars displayed on the XmHTML widget is here, make fun of me - miguel
 *
@@ -216,6 +232,7 @@ static void CheckMaxColorSetting(XmHTMLWidget html);
 static void CheckPLCIntervals(XmHTMLWidget html);
 static void Refresh(XmHTMLWidget html, int x, int y, int width, int height);
 static void Resize(TWidget w);
+static void ClearArea(XmHTMLWidget html, int x, int y, int width, int height);
 
 #ifdef WITH_MOTIF
 #    include "XmHTML-motif.c"
@@ -2371,7 +2388,7 @@ XmHTMLImageUpdate(TWidget w, XmImageInfo *image)
 			/* clear the current image, don't generate an exposure */
 			Toolkit_Clear_Area (XtDisplay(html->html.work_area), 
 					    Toolkit_Widget_Window(html->html.work_area),
-					    xs, ys, temp->width, temp->height);
+					    xs, ys, temp->width, temp->height, False);
 			/* put up the new image */
 			_XmHTMLPaint(html, temp, temp->next);
 			Toolkit_Flush (Toolkit_Display((TWidget)html), True);
@@ -2446,7 +2463,7 @@ XmHTMLImageReplace(TWidget w, XmImageInfo *image, XmImageInfo *new_image)
 			/* clear the current image, don't generate an exposure */
 			Toolkit_Clear_Area(XtDisplay(html->html.work_area), 
 				Toolkit_Widget_Window(html->html.work_area), xs, ys,
-				temp->width, temp->height);
+				temp->width, temp->height, False);
 			/* put up the new image */
 			_XmHTMLPaint(html, temp, temp->next);
 			Toolkit_Flush(Toolkit_Display ((TWidget)html), True);
@@ -2653,7 +2670,7 @@ XmHTMLTextSetString(TWidget w, String text)
 		Toolkit_Clear_Area (XtDisplay(html->html.work_area), 
 				    Toolkit_Widget_Window(html->html.work_area), 0, 0, 
 				    Toolkit_Widget_Dim (html).width,
-				    Toolkit_Widget_Dim (html).height);
+				    Toolkit_Widget_Dim (html).height, False);
 	}
 
 	/* clear current source */
@@ -2993,3 +3010,243 @@ XmHTMLTextGetFormatted(TWidget w, unsigned char papertype,
 #endif
 	return(NULL);
 }
+
+/*****
+* Name: 		_XmHTMLMoveToPos
+* Return Type: 	void
+* Description: 	scroll the working area with the given value
+* In: 
+*	w:			originator
+*	html:		XmHTMLWidget
+*	value:		position to scroll to
+* Returns:
+*	nothing
+*****/
+void
+_XmHTMLMoveToPos(TWidget w, XmHTMLWidget html, int value)
+{
+	int inc, x, y, width, height;
+	Display *dpy = Toolkit_Display(html->html.work_area);
+	TWindow win = Toolkit_Widget_Window(html->html.work_area);
+	TGC gc = html->html.gc;
+	int vsb_width = 0, hsb_height = 0;
+
+	/* sanity check */
+	if(value < 0)
+		return;
+
+	/* default exposure region */
+	x = y = 0;
+	width  = Toolkit_Widget_Dim (html).width;
+	height = Toolkit_Widget_Dim (html).height;
+
+#ifdef WITH_MOTIF
+	/* 
+	* need to adjust slider position since we may not be called from
+	* the scrollbar callback handler.
+	*/
+	XtVaSetValues(w, XmNvalue, value, NULL);
+#endif
+	
+	/* vertical scrolling */
+	if(w == html->html.vsb)
+	{
+		/* 
+		* clicking on the slider causes activation of the scrollbar
+		* callbacks. Since there is no real movement, just return.
+		* Not doing this will cause an entire redraw of the window.
+		*/
+		if(value == html->html.scroll_y)
+			return;		/* fix 01/20/97-01 kdh */
+
+		/* save line number */
+		SetCurrentLineNumber(html, value);
+
+		/* moving down (text moving up) */
+		if(value > html->html.scroll_y)
+		{
+			inc = value - html->html.scroll_y;
+
+			/* save new value */
+			html->html.scroll_y = value;
+
+			/* save new paint engine start */
+			html->html.paint_start = html->html.paint_end;
+
+			/* small increment */
+			if(inc < html->html.work_height)
+			{
+				/*****
+				* See if we have a hsb. If we have one, we need to add
+				* the height of the hsb to the region requiring updating.
+				*****/
+				if(html->html.needs_hsb)
+#ifdef NO_XLIB_ILLEGAL_ACCESS
+					GetScrollDim(html, &hsb_height, &vsb_width);
+#else
+					hsb_height = Toolkit_Widget_Dim (html->html.hsb).height;
+#endif
+				/* copy visible part upward */
+				Toolkit_Copy_Area (dpy, win, win, gc, 0, inc,
+						   html->html.work_width + html->html.margin_width, 
+						   html->html.work_height - inc - hsb_height, 0, 0);
+
+				/* clear area below */
+				x = 0;
+				y = html->html.work_height - inc - hsb_height;
+				width = Toolkit_Widget_Dim (html).width;
+				height = inc + hsb_height;
+			}
+			/* large increment, use default area */
+		}
+		/* moving up (text moving down) */
+		else
+		{
+			inc = html->html.scroll_y - value;
+
+			/* save new value */
+			html->html.scroll_y = value;
+
+			/* small increment */
+			if(inc < html->html.work_height)
+			{
+				/* copy area down */
+				Toolkit_Copy_Area (dpy, win, win, gc, 0, 0, 
+						   html->html.work_width + html->html.margin_width, 
+						   html->html.work_height - inc, 0, inc);
+
+				/* save paint engine end */
+				html->html.paint_end = html->html.paint_start;
+
+				/* clear area above */
+				x = y = 0;
+				width = Toolkit_Widget_Dim (html).width;
+				height = inc;
+			}
+			/* large increment, use default area */
+		}
+	}
+	/* horizontal scrolling */
+	else if(w == html->html.hsb)
+	{
+		/* 
+		* clicking on the slider causes activation of the scrollbar
+		* callbacks. Since there is no real movement, just return.
+		* Not doing this will cause an entire redraw of the window.
+		*/
+		if(value == html->html.scroll_x)
+			return;		/* fix 01/20/97-01 kdh */
+
+		/* moving right (text moving left) */
+		if (value > html->html.scroll_x)
+		{
+			inc = value - html->html.scroll_x;
+
+			/* save new value */
+			html->html.scroll_x = value;
+
+			/* small increment */
+			if(inc < html->html.work_width)
+			{
+				/*
+				* See if we have a vsb. If we have, no additional offset
+				* required, otherwise we also have to clear the space that
+				* has been reserved for it.
+				*/
+				if(!html->html.needs_vsb)
+#ifdef NO_XLIB_ILLEGAL_ACCESS
+					GetScrollDim(html, &hsb_height, &vsb_width);
+#else
+					vsb_width = Toolkit_Widget_Dim (html->html.vsb).width;
+#endif
+
+				/* copy area to the left */
+				Toolkit_Copy_Area(dpy, win, win, gc, inc, 0, 
+						  html->html.work_width - inc,
+						  html->html.work_height, 0, 0);
+
+				/* clear area on right */
+				x = html->html.work_width - inc;
+				y = 0;
+				width = inc + html->html.margin_width + vsb_width;
+				height = html->html.work_height;
+			}
+			/* large increment, use default area */
+		}
+		/* moving left (text moving right) */
+		else 
+		{
+			inc = html->html.scroll_x - value;
+
+			/* save new value */
+			html->html.scroll_x = value;
+
+			/* small increment */
+			if(inc < html->html.work_width)
+			{
+				if(!html->html.needs_vsb)
+#ifdef NO_XLIB_ILLEGAL_ACCESS
+					GetScrollDim(html, &hsb_height, &vsb_width);
+#else
+					vsb_width = Toolkit_Widget_Dim (html->html.vsb).width;
+#endif
+
+				/* copy area to the right */
+				/* fix 01/24/97-01, kdh */
+				Toolkit_Copy_Area (dpy, win, win, gc, 0, 0, 
+						   html->html.work_width - inc + html->html.margin_width +
+						   vsb_width, html->html.work_height, inc, 0); 
+
+				/* clear area on left */
+				x = y = 0;
+				width = inc;
+				height = html->html.work_height;
+			}
+			/* large increment, use default area */
+		}
+	}
+	else
+	{
+		_XmHTMLWarning(__WFUNC__(html, "_XmHTMLMoveToPos"), 
+			"Internal Error: unknown scrollbar!");
+		return;
+	}
+
+	/* update display */
+	ClearArea(html, x, y, width, height);
+}
+
+/*****
+* Name: 		ClearArea
+* Return Type: 	void
+* Description: 	XClearArea wrapper. Does form component updating as well.
+* In: 
+*	html:		XmHTMLWidget id;
+*	x,y:		upper left corner of region to be updated;
+*	width:		width of region;
+*	height:		height of region;
+* Returns:
+*
+*****/
+static void
+ClearArea(XmHTMLWidget html, int x, int y, int width, int height)
+{
+	Display *dpy = Toolkit_Display(html->html.work_area);
+	TWindow win = Toolkit_Widget_Window(html->html.work_area);
+
+	_XmHTMLDebug(1, ("XmHTML.c: ClearArea Start, x: %i, y: %i, width: %i "
+		"height: %i.\n", x, y, width, height));
+
+	/* first scroll form TWidgets if we have them */
+	if(html->html.form_data)
+	{
+		FormScroll(html);
+		Toolkit_Clear_Area(dpy, win, x, y, width, height, False);
+		Refresh(html, x, y, width, height);
+	}
+	else
+		Toolkit_Clear_Area(dpy, win, x, y, width, height, True);
+
+	_XmHTMLDebug(1, ("XmHTML.c: ClearArea End.\n"));
+}
+

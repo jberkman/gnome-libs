@@ -43,6 +43,22 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.3  1997/12/23 04:44:30  unammx
+* Ok kiddies, news for the day:
+*
+* It scrolls nicely.
+* It now displays GIFs.
+* It now displays animated GIFs.
+* It now displays JPEGs.
+* Colors work.
+*
+* Weeeeee!  The beginning on an XmHTML era is here ;-)
+*
+* The rendering engine is pretty amazing, very accurate, looks like
+* Netscape on equivalent pages :-).
+*
+* Miguel and Federico.
+*
 * Revision 1.2  1997/12/18 00:39:22  unammx
 * It compiles and links -miguel
 *
@@ -278,7 +294,6 @@ readImage(TWidget html, ImageBuffer *ib)
 			img_data = _XmHTMLReadXPM(html, ib);
 			_XmHTMLDebug(6, ("readImage: loaded Xpm3 image %s\n", ib->file));
 			break;
-#ifdef WITH_MOTIF
 		case IMAGE_JPEG:
 			img_data = _XmHTMLReadJPEG(html, ib);
 			_XmHTMLDebug(6, ("readImage: loaded jpeg image %s\n", ib->file));
@@ -287,7 +302,6 @@ readImage(TWidget html, ImageBuffer *ib)
 			img_data = _XmHTMLReadPNG(html, ib);
 			_XmHTMLDebug(6, ("readImage: loaded png image %s\n", ib->file));
 			break;
-#endif
 		case IMAGE_FLG:		/* treated wholy differently */
 			break;
 		case IMAGE_UNKNOWN:
@@ -543,11 +557,7 @@ TXImage*
 _XmHTMLCreateXImage(XmHTMLWidget html, XCC xcc, Dimension width,
 	Dimension height, String url)
 {
-#ifdef WITH_MOTIF
-	int depth     = xcc->visualInfo->depth;
-#else
-	int depth     = xcc->visual->depth; 
-#endif
+	int depth     = XCCGetDepth (xcc);
 	TVisual *vis  = xcc->visual;
 	Display *dpy  = Toolkit_Display((TWidget)html);
 	static TXImage *ximage = NULL;
@@ -2977,11 +2987,7 @@ doAlphaChannel(XmHTMLWidget html, XmHTMLImage *image)
 
 	_XmHTMLDebug(6, ("doAlphaChannel, processing alpha channel.\n"));
 
-#ifdef WITH_MOTIF
 	img_data = _XmHTMLReReadPNG(html, &raw_data, x, y, image->owner == NULL);
-#else
-	fprintf (stderr, "No rereadpng yet\n");
-#endif
 	_XmHTMLDebug(6, ("doAlphaChannel, processing read image data.\n"));
 
 	img_data->type = IMAGE_PNG;
@@ -4202,9 +4208,7 @@ XmHTMLImageDefaultProc(TWidget w, String file, unsigned char *buf, int size)
 			break;
 		case IMAGE_FLG:
 			/* bypasses the readImage + defaultImage proc entirely */
-#ifdef WITH_MOTIF
 			image = _XmHTMLReadFLG((XmHTMLWidget)w, ib);
-#endif
 			break;
 		case IMAGE_XPM:
 		case IMAGE_XBM:
@@ -4247,3 +4251,4 @@ XmHTMLImageDefaultProc(TWidget w, String file, unsigned char *buf, int size)
 	FreeImageBuffer(ib);
 	return(image);
 }
+

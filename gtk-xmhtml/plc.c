@@ -38,6 +38,22 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.5  1997/12/23 04:44:33  unammx
+* Ok kiddies, news for the day:
+*
+* It scrolls nicely.
+* It now displays GIFs.
+* It now displays animated GIFs.
+* It now displays JPEGs.
+* Colors work.
+*
+* Weeeeee!  The beginning on an XmHTML era is here ;-)
+*
+* The rendering engine is pretty amazing, very accurate, looks like
+* Netscape on equivalent pages :-).
+*
+* Miguel and Federico.
+*
 * Revision 1.4  1997/12/19 03:58:11  unammx
 * Simple test program works!  -mig&fed
 *
@@ -1990,16 +2006,11 @@ _PLC_IMG_Finalize(PLC *plc)
 	*****/
 	if(image && ImageIsBackground(image) && html->html.gc != NULL)
 	{
-#ifdef __GTK__
-		GtkWidget *w = GTK_WIDGET (html);
-		
-		gdk_window_clear_area_e(html->html.work_area->window,
-					0, 0, w->allocation.width, w->allocation.height);
-#else
-		XClearArea(XtDisplay(html->html.work_area),
-			XtWindow(html->html.work_area), 0, 0, html->core.width,
-			html->core.height, True);
-#endif
+		Toolkit_Clear_Area (XtDisplay(html->html.work_area),
+				    Toolkit_Widget_Window (html->html.work_area),
+				    0, 0,
+				    Toolkit_Widget_Dim (html).width,
+				    Toolkit_Widget_Dim (html).height, True);
 	}
 	/* make sure we are updated */
 #ifdef __GTK__

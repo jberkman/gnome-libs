@@ -37,6 +37,22 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.2  1997/12/23 04:44:34  unammx
+* Ok kiddies, news for the day:
+*
+* It scrolls nicely.
+* It now displays GIFs.
+* It now displays animated GIFs.
+* It now displays JPEGs.
+* Colors work.
+*
+* Weeeeee!  The beginning on an XmHTML era is here ;-)
+*
+* The rendering engine is pretty amazing, very accurate, looks like
+* Netscape on equivalent pages :-).
+*
+* Miguel and Federico.
+*
 * Revision 1.1  1997/12/18 23:00:17  unammx
 * More fixes and added PNG support. - Federico
 *
@@ -169,7 +185,7 @@ my_png_read(png_structp png_ptr, png_bytep data, png_size_t len)
 *	loaded image data upon success or NULL on failure
 *****/
 XmHTMLRawImageData*
-_XmHTMLReadPNG(Widget html, ImageBuffer *ib)
+_XmHTMLReadPNG(TWidget html, ImageBuffer *ib)
 {
 	png_structp png_ptr;
 	png_infop info_ptr;
