@@ -805,12 +805,12 @@ static char *vt_expand_line(struct vt_line *l, int start, int end, char *out)
 }
 
 /*
-  slect block (sx,sy)-(ex,ey) from the buffer.
+  select block (sx,sy)-(ex,ey) from the buffer.
 
   Line '0' is the top of the screen, negative lines are part of the
   scrollback, positive lines are part of the visible screen.
 */
-char *vt_get_block(struct _vtx *vx, int sx, int sy, int ex, int ey, int *len)
+char *vt_select_block(struct _vtx *vx, int sx, int sy, int ex, int ey, int *len)
 {
   struct vt_line *wn, *nn;
   int line;
@@ -893,7 +893,7 @@ char *vt_get_selection(struct _vtx *vx, int *len)
   if (vx->selection_data)
     free(vx->selection_data);
 
-  vx->slection_data = vt_select_block(vx, vx->selstartx, vx->selstarty,
+  vx->selection_data = vt_select_block(vx, vx->selstartx, vx->selstarty,
 				      vx->selendx, vx->selendy, len);
 
   return vx->selection_data;
