@@ -6,3 +6,4 @@
 #undef HAVE_STRUCT_OSOCKADDR
 #undef PACKAGE
 #undef VERSION
+#undef HAVE_LIBSM
