@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-libs 1.2.4\n"
-"POT-Creation-Date: 2001-03-02 00:32+0100\n"
+"POT-Creation-Date: 2001-03-28 19:13+0200\n"
 "PO-Revision-Date: 2000-07-28 13:59+0200\n"
 "Last-Translator: Andraz Tori <andraz.tori1@guest.arnes.si>\n"
 "Language-Team: Slovenian <sl@li.org>\n"
@@ -72,46 +72,50 @@ msgstr "Zapri navedeno okno."
 msgid "Print the X window ID of the utilized window."
 msgstr "Izpi¹i ID uporabljenega X okna."
 
-#: libgnome/gnome-url.c:117
+#: libgnome/gnome-url.c:124
 #, c-format
 msgid "Error parsing '%s' (empty result)"
 msgstr "Napaka pri razèlenjevanju '%s' (prazen rezultat)"
 
-#: libgnome/gnome-url.c:133
+#: libgnome/gnome-url.c:140
 #, c-format
 msgid "Mozilla not found as '%s'"
 msgstr "Mozilla ni bila najdena kot '%s'"
 
-#: libgnome/gnome-url.c:291 libgnome/gnome-url.c:295
+#: libgnome/gnome-url.c:298 libgnome/gnome-url.c:302
 #, c-format
 msgid "Cannot open a pipe: %s"
 msgstr "Ne morem odpreti cevi: %s"
 
-#: libgnome/gnome-url.c:305 libgnome/gnome-url.c:363
+#: libgnome/gnome-url.c:312 libgnome/gnome-url.c:370
 #, c-format
 msgid "Cannot parse handler template: %s"
 msgstr "Ne morem razèleniti ¹ablone upravljalnika: %s"
 
-#: libgnome/gnome-url.c:315 libgnome/gnome-url.c:319 libgnome/gnome-url.c:368
-#: libgnome/gnome-url.c:372
+#: libgnome/gnome-url.c:322 libgnome/gnome-url.c:326 libgnome/gnome-url.c:375
+#: libgnome/gnome-url.c:379
 #, c-format
 msgid "Cannot execute command '%s'!"
 msgstr "Ne morem izvr¹iti ukaza '%s'!"
 
-#: libgnome/gnome-url.c:351
+#: libgnome/gnome-url.c:358
 #, c-format
 msgid "Command '%s' did not return an ID!"
 msgstr "Ukaz '%s' ni vrnil IDja!"
 
-#: libgnome/gnomelib-init2.c:1203
+#: libgnome/gnome-program.c:1149
 msgid "Help options"
 msgstr "Mo¾nosti pomoèi"
 
-#: libgnome/gnomelib-init2.c:1228
+#: libgnome/gnome-program.c:1154
+msgid "Application options"
+msgstr "Mo¾nosti programa"
+
+#: libgnome/gnome-program.c:1170
 msgid "Dynamic modules to load"
 msgstr "Dinamièni moduli, ki naj se nalo¾ijo"
 
-#: libgnome/gnomelib-init2.c:1229
+#: libgnome/gnome-program.c:1171
 msgid "MODULE1,MODULE2,..."
 msgstr "MODUL1,MODUL2,..."
 
@@ -282,108 +286,107 @@ msgstr ""
 msgid "GConf error details: %s\n"
 msgstr "GConf podrobnosti napake: %s\n"
 
-#: libgnomeui/gnome-helpsys.c:117
+#: libgnomeui/gnome-helpsys.c:115
 msgid "_Popup"
 msgstr "_Vzklièni seznam"
 
-#: libgnomeui/gnome-helpsys.c:118
+#: libgnomeui/gnome-helpsys.c:116
 msgid "Show help in temporary popup windows"
 msgstr "Ka¾i pomoè v zaèasnih vkliènih oknih"
 
-#: libgnomeui/gnome-helpsys.c:120
+#: libgnomeui/gnome-helpsys.c:118
 msgid "_Embedded"
 msgstr "_Vkopan"
 
-#: libgnomeui/gnome-helpsys.c:121
+#: libgnomeui/gnome-helpsys.c:119
 msgid "Show help inside the application window"
 msgstr "Ka¾i pomoè znotraj okna programa"
 
-#: libgnomeui/gnome-helpsys.c:123
+#: libgnomeui/gnome-helpsys.c:121
 msgid "_Browser"
 msgstr "_Brskalnik"
 
-#: libgnomeui/gnome-helpsys.c:124
+#: libgnomeui/gnome-helpsys.c:122
 msgid "Show help in a help browser window"
 msgstr "Ka¾i pomoè v oknu brskalnika pomoèi"
 
-#: libgnomeui/gnome-helpsys.c:172
+#: libgnomeui/gnome-helpsys.c:170
 msgid "App style"
 msgstr "Slog aplikacije"
 
-#: libgnomeui/gnome-helpsys.c:173
+#: libgnomeui/gnome-helpsys.c:171
 msgid "The style of GnomeHelpView"
 msgstr "Slog Gnome brskalnika pomoèi"
 
-#: libgnomeui/gnome-helpsys.c:182
+#: libgnomeui/gnome-helpsys.c:180
 msgid "App style priority"
 msgstr "Prioriteta sloga aplikacije"
 
-#: libgnomeui/gnome-helpsys.c:183
+#: libgnomeui/gnome-helpsys.c:181
 msgid "The priority of style of GnomeHelpView"
 msgstr "Prioriteta sloga Gnome brskalnika pomoèi"
 
 #. orientation
-#: libgnomeui/gnome-helpsys.c:192 libgnomeui/gnome-helpsys.c:193
+#: libgnomeui/gnome-helpsys.c:190 libgnomeui/gnome-helpsys.c:191
 #: libgnomeui/gnome-paper-selector.c:191
 msgid "Orientation"
 msgstr "Usmerjenost"
 
-#: libgnomeui/gnome-helpsys.c:202
+#: libgnomeui/gnome-helpsys.c:200
 msgid "Toplevel"
 msgstr "Najvi¹je"
 
-#: libgnomeui/gnome-helpsys.c:203
+#: libgnomeui/gnome-helpsys.c:201
 msgid "The toplevel widget"
 msgstr "Najvi¹ji gradnik"
 
-#: demos/stock_demo.c:315 libgnomeui/gnome-helpsys.c:219
-#: libgnomeui/gnome-stock.c:581
+#: libgnomeui/gnome-helpsys.c:217 libgnomeui/gnome-stock.c:581
 msgid "Help"
 msgstr "Pomoè"
 
-#: libgnomeui/gnome-helpsys.c:220
+#: libgnomeui/gnome-helpsys.c:218
 msgid "Show help for a specific region of the application"
 msgstr "Ka¾i pomoè za doloèen del programa"
 
-#: libgnomeui/gnome-helpsys.c:225
+#: libgnomeui/gnome-helpsys.c:223
 msgid "Style"
 msgstr "Slog"
 
-#: libgnomeui/gnome-helpsys.c:226
+#: libgnomeui/gnome-helpsys.c:224
 msgid "Change the way help is displayed"
 msgstr "Spremeni naèin prikazovanja pomoèi"
 
-#: libgnomeui/gnome-helpsys.c:928 libgnomeui/gnome-helpsys.c:1022
+#: libgnomeui/gnome-helpsys.c:924 libgnomeui/gnome-helpsys.c:1018
 msgid "No help is available for the selected portion of the application."
 msgstr "Za izbran del programa pomoè ni na voljo."
 
 #. FIXME: properly handle the error!
-#: libgnomeui/gnome-helpsys.c:1192
+#: libgnomeui/gnome-helpsys.c:1188
 #, c-format
 msgid "Cought GnomeURL error: %s"
 msgstr "Ujel sem GnomeURL napako: %s"
 
-#: libgnomeui/gnome-href.c:114
+#: libgnomeui/gnome-href.c:112
 msgid "URL"
 msgstr "URL"
 
-#: libgnomeui/gnome-href.c:115
+#: libgnomeui/gnome-href.c:113
 msgid "The URL that GnomeHRef activates"
 msgstr "URL, ki ga aktivira GnomeHRef"
 
-#: libgnomeui/gnome-href.c:122
+#: libgnomeui/gnome-href.c:120
 msgid "Text"
 msgstr "Besedilo"
 
-#: libgnomeui/gnome-href.c:123
+#: libgnomeui/gnome-href.c:121
 msgid "The text on the button"
 msgstr "Besedilo na gumbu"
 
-#: libgnomeui/gnome-href.c:124
+#: libgnomeui/gnome-href.c:122
 msgid "End World Hunger"
 msgstr "Konèaj svetovno lakoto"
 
-#: libgnomeui/gnome-about.c:1169 libgnomeui/gnome-href.c:399
+#: libgnomeui/gnome-about.c:1169 libgnomeui/gnome-href.c:397
 msgid ""
 "Error occured while trying to launch the URL handler.\n"
 "Please check the settings in the Control Center if they are correct."
@@ -493,35 +496,35 @@ msgstr "Uredi ikone"
 msgid "Autoarrange icons"
 msgstr "Samodejno urejaj ikone"
 
-#: libgnomeui/gnome-recently-used.c:113
+#: libgnomeui/gnome-recently-used.c:111
 msgid "App Specific"
 msgstr "Znaèilno za aplikacijo"
 
-#: libgnomeui/gnome-recently-used.c:114
+#: libgnomeui/gnome-recently-used.c:112
 msgid "Is this list application specific"
 msgstr "Je ta seznam znaèilen za aplikacijo"
 
-#: libgnomeui/gnome-recently-used.c:897
+#: libgnomeui/gnome-recently-used.c:893
 #, c-format
 msgid "bad GnomeRecentDocument attribute: %s\n"
 msgstr "slab GnomeRecentDocument atribut: %s\n"
 
-#: libgnomeui/gnome-recently-used.c:1127
+#: libgnomeui/gnome-recently-used.c:1123
 msgid "Unknown"
 msgstr "Neznan"
 
 #. browse button ...
 #: libcompat/gnome-file-entry.c:445 libcompat/gnome-spell.c:620
 #: libcompat/gnome-spell.c:637 libcompat/gnome-spell.c:654
-#: libgnomeui/gnome-selector.c:1040
+#: libgnomeui/gnome-selector.c:1037
 msgid "Browse..."
 msgstr "Brskaj..."
 
-#: libgnomeui/gnome-selector.c:1051
+#: libgnomeui/gnome-selector.c:1048
 msgid "Default..."
 msgstr "Privzeto..."
 
-#: libgnomeui/gnome-selector.c:1062
+#: libgnomeui/gnome-selector.c:1059
 msgid "Clear..."
 msgstr "Poèisti..."
 
@@ -533,13 +536,13 @@ msgstr "Uporabnik:"
 msgid "Password:"
 msgstr "Geslo:"
 
-#: libgnome/gnomelib-init.c:200 libgnome/gnomelib-init.c:214
+#: libgnome/gnomelib-init.c:158 libgnome/gnomelib-init.c:172
 #, c-format
 msgid "Could not create per-user gnome configuration directory `%s': %s\n"
 msgstr ""
 "Ne morem ustvariti uporabni¹kega gnome nastavitvenega imenika `%s': %s\n"
 
-#: libgnome/gnomelib-init.c:223
+#: libgnome/gnomelib-init.c:181
 #, c-format
 msgid ""
 "Could not set mode 0700 on private per-user gnome configuration directory "
@@ -548,7 +551,7 @@ msgstr ""
 "Ne morem nastaviti naèina 0700 na privatnem uporabni¹kem gnome nastavitvenem "
 "imeniku `%s': %s\n"
 
-#: libgnome/gnomelib-init.c:230
+#: libgnome/gnomelib-init.c:188
 #, c-format
 msgid "Could not create gnome accelerators directory `%s': %s\n"
 msgstr "Ne morem ustvariti gnome pospe¹evalnega imenika `%s': %s\n"
@@ -565,7 +568,6 @@ msgstr "Avtorji:"
 msgid "Authors: "
 msgstr "Avtorji: "
 
-#: demos/stock_demo.c:307 demos/winhints_demo.c:256
 #: libgnomeui/gnome-about.c:1075
 msgid "About"
 msgstr "O"
@@ -960,11 +962,11 @@ msgstr "  - v redu? (da ali ne) "
 msgid "Progress"
 msgstr "Napredek"
 
-#: libgnomeui/gnome-app.c:151
+#: libgnomeui/gnome-app.c:149
 msgid "App ID"
 msgstr "App ID"
 
-#: libgnomeui/gnome-app.c:152
+#: libgnomeui/gnome-app.c:150
 msgid "The application ID string"
 msgstr "ID niz aplikacije"
 
@@ -992,64 +994,64 @@ msgstr "Izkljuèi povezavo z upravljalnikom seje"
 msgid "Session management"
 msgstr "Upravljanje seje"
 
-#: libgnomeui/gnome-client.c:2340
+#: libgnomeui/gnome-client.c:2345
 msgid "Cancel Logout"
 msgstr "Preklièi odjavo"
 
-#: libgnomeui/gnome-color-picker.c:423
+#: libgnomeui/gnome-color-picker.c:421
 msgid "Received invalid color data\n"
 msgstr "Prejel neveljavne podatke o barvi\n"
 
-#: libgnomeui/gnome-color-picker.c:487
+#: libgnomeui/gnome-color-picker.c:485
 msgid "Pick a color"
 msgstr "Izberi barvo"
 
-#: libgnomeui/gnome-dateedit.c:361
+#: libgnomeui/gnome-dateedit.c:359
 msgid "Time"
 msgstr "Èas"
 
-#: libgnomeui/gnome-dateedit.c:362
+#: libgnomeui/gnome-dateedit.c:360
 msgid "The time currentlyselected"
 msgstr "Trenutno izbran èas"
 
-#: libgnomeui/gnome-dateedit.c:373
+#: libgnomeui/gnome-dateedit.c:371
 msgid "DateEdit Flags"
 msgstr "Zastavice DateEdit"
 
-#: libgnomeui/gnome-dateedit.c:374
+#: libgnomeui/gnome-dateedit.c:372
 msgid "Flags for how DateEdit looks"
 msgstr "Zastavice, ki doloèajo kako izgleda DateEdit"
 
-#: libgnomeui/gnome-dateedit.c:383
+#: libgnomeui/gnome-dateedit.c:381
 msgid "Lower Hour"
 msgstr "Ni¾ja ura"
 
-#: libgnomeui/gnome-dateedit.c:384
+#: libgnomeui/gnome-dateedit.c:382
 msgid "Lower hour in the time popup selector"
 msgstr "Ni¾ja ura v vzkliènem èasovnem izbiranju"
 
-#: libgnomeui/gnome-dateedit.c:394
+#: libgnomeui/gnome-dateedit.c:392
 msgid "Upper Hour"
 msgstr "Vi¹ja ura"
 
-#: libgnomeui/gnome-dateedit.c:395
+#: libgnomeui/gnome-dateedit.c:393
 msgid "Upper hour in the time popup selector"
 msgstr "Vi¹ja ura v vzkliènem èasovnem izbiranju"
 
-#: libgnomeui/gnome-dateedit.c:405
+#: libgnomeui/gnome-dateedit.c:403
 msgid "Initial Time"
 msgstr "Zaèetni èas"
 
-#: libgnomeui/gnome-dateedit.c:406
+#: libgnomeui/gnome-dateedit.c:404
 msgid "The initial time"
 msgstr "Zaèetni èas"
 
 #. Calendar label, only shown if the date editor has a time field
-#: libgnomeui/gnome-dateedit.c:651
+#: libgnomeui/gnome-dateedit.c:647
 msgid "Calendar"
 msgstr "Koledar"
 
-#: libgnomeui/gnome-dateedit.c:847
+#: libgnomeui/gnome-dateedit.c:843
 msgid "gnome_date_edit_get_date deprecated, use gnome_date_edit_get_time"
 msgstr ""
 "gnome_date_edit_get_date ni za¾eljen, uporabite gnome_date_edit_get_time"
@@ -1066,118 +1068,104 @@ msgstr "Konèaj"
 msgid "Font"
 msgstr "Pisava"
 
-#: libgnomeui/gnome-icon-entry.c:351 libgnomeui/gnome-icon-entry.c:720
-#: libgnomeui/gnome-icon-entry.c:737
+#: libgnomeui/gnome-icon-entry.c:348 libgnomeui/gnome-icon-entry.c:717
+#: libgnomeui/gnome-icon-entry.c:734
 msgid "No Icon"
 msgstr "Brez"
 
-#: libgnomeui/gnome-icon-sel.c:280
-#, c-format
-msgid "GnomeIconSelection: '%s' does not exist or is not a directory"
-msgstr "GnomeIconSelection: '%s' ne obstaja ali ni imenik"
-
-#: libgnomeui/gnome-icon-sel.c:288
-#, c-format
-msgid "GnomeIconSelection: couldn't open directory '%s'"
-msgstr "GnomeIconSelection: ne morem odpreti imenika '%s'"
-
-#: libgnomeui/gnome-icon-sel.c:361
-msgid "Loading Icons..."
-msgstr "Nalagam ione..."
-
-#: libgnomeui/gnome-init.c:81
+#: libgnomeui/gnome-init.c:84
 msgid "Gdk debugging flags to set"
 msgstr "Gdk razhro¹èevalne zastavice, ki naj bodo nastavljene"
 
-#: libgnomeui/gnome-init.c:81 libgnomeui/gnome-init.c:84
-#: libgnomeui/gnome-init.c:114 libgnomeui/gnome-init.c:117
+#: libgnomeui/gnome-init.c:84 libgnomeui/gnome-init.c:87
+#: libgnomeui/gnome-init.c:117 libgnomeui/gnome-init.c:120
 msgid "FLAGS"
 msgstr "ZASTAVICE"
 
-#: libgnomeui/gnome-init.c:84
+#: libgnomeui/gnome-init.c:87
 msgid "Gdk debugging flags to unset"
 msgstr "Gdk razhro¹èevalne zastavice, ki naj ne bodo nastavljene"
 
-#: libgnomeui/gnome-init.c:87 libgnomeui/gnome-init.c:241
+#: libgnomeui/gnome-init.c:90 libgnomeui/gnome-init.c:254
 msgid "X display to use"
 msgstr "X zaslon za uporabo"
 
-#: libgnomeui/gnome-init.c:87 libgnomeui/gnome-init.c:241
+#: libgnomeui/gnome-init.c:90 libgnomeui/gnome-init.c:254
 msgid "DISPLAY"
 msgstr "ZASLON"
 
-#: libgnomeui/gnome-init.c:90
+#: libgnomeui/gnome-init.c:93
 msgid "Make X calls synchronous"
 msgstr "Naredi X klice sinhrone"
 
-#: libgnomeui/gnome-init.c:93
+#: libgnomeui/gnome-init.c:96
 msgid "Don't use X shared memory extension"
 msgstr "Ne uporabljal X dodatka za skupno rabo pomnilnika"
 
-#: libgnomeui/gnome-init.c:96
+#: libgnomeui/gnome-init.c:99
 msgid "Program name as used by the window manager"
 msgstr "Ime programa, kot ga uporablja upravljalnik oken"
 
-#: libgnomeui/gnome-init.c:96
+#: libgnomeui/gnome-init.c:99
 msgid "NAME"
 msgstr "IME"
 
-#: libgnomeui/gnome-init.c:99
+#: libgnomeui/gnome-init.c:102
 msgid "Program class as used by the window manager"
 msgstr "Razred programa, kot ga uporablja upravljalnik oken"
 
-#: libgnomeui/gnome-init.c:99
+#: libgnomeui/gnome-init.c:102
 msgid "CLASS"
 msgstr "RAZRED"
 
-#: libgnomeui/gnome-init.c:102
+#: libgnomeui/gnome-init.c:105
 msgid "HOST"
 msgstr "GOSTITELJ"
 
-#: libgnomeui/gnome-init.c:105
+#: libgnomeui/gnome-init.c:108
 msgid "PORT"
 msgstr "VRATA"
 
-#: libgnomeui/gnome-init.c:108 libgnomeui/gnome-init.c:111
+#: libgnomeui/gnome-init.c:111 libgnomeui/gnome-init.c:114
 msgid "STYLE"
 msgstr "SLOG"
 
-#: libgnomeui/gnome-init.c:114
+#: libgnomeui/gnome-init.c:117
 msgid "Gtk+ debugging flags to set"
 msgstr "Gtk+ razhro¹èevalne zastavice, ki naj bodo nastavljene"
 
-#: libgnomeui/gnome-init.c:117
+#: libgnomeui/gnome-init.c:120
 msgid "Gtk+ debugging flags to unset"
 msgstr "Gtk+ razhro¹èevalne zastavice, ki naj ne bodo nastavljene"
 
-#: libgnomeui/gnome-init.c:120
+#: libgnomeui/gnome-init.c:123
 msgid "Make all warnings fatal"
 msgstr "Naj bodo vsa opozorila usodna"
 
-#: libgnomeui/gnome-init.c:123
+#: libgnomeui/gnome-init.c:126
 msgid "Load an additional Gtk module"
 msgstr "Nalo¾i dodaten Gtk modul"
 
-#: libgnomeui/gnome-init.c:123
+#: libgnomeui/gnome-init.c:126
 msgid "MODULE"
 msgstr "MODUL"
 
 #. dialog display isn't working out
-#: libgnomeui/gnome-init.c:473
+#: libgnomeui/gnome-init.c:498
 msgid "Multiple segmentation faults occurred; can't display error dialog\n"
 msgstr ""
 "Pojavilo se je veè segmentacijskih napak: ne morem pokazati dialoga za "
 "napako\n"
 
-#: libgnomeui/gnome-init.c:636
+#: libgnomeui/gnome-init.c:669
 msgid "GTK options"
 msgstr "Mo¾nosti GTK"
 
-#: libgnomeui/gnome-init.c:637
+#: libgnomeui/gnome-init.c:670
 msgid "GNOME GUI options"
 msgstr "Mo¾nosti GNOME grafiènega vmesnika"
 
-#: libgnomeui/gnome-init.c:788
+#: libgnomeui/gnome-init.c:821
 #, c-format
 msgid "%s options"
 msgstr "Mo¾nosti %s"
@@ -1289,7 +1277,7 @@ msgstr "Uporabi"
 msgid "Cancel"
 msgstr "Preklièi"
 
-#: demos/stock_demo.c:169 libgnomeui/gnome-stock.c:578
+#: libgnomeui/gnome-stock.c:578
 msgid "Close"
 msgstr "Zapri"
 
@@ -1379,45 +1367,45 @@ msgid "Please visit the GNOME Application Crash page for more information"
 msgstr "Za veè informacij prosimo obi¹èite stran Sesutje programov GNOME"
 
 #. Pixmap
-#: test-gnome/testgnome.c:713
+#: test-gnome/testgnome.c:715
 msgid "Default Pixmap"
 msgstr "Privzeta slika"
 
-#: test-gnome/testgnome.c:721 test-gnome/testgnome.c:762
-#: test-gnome/testgnome.c:787
+#: test-gnome/testgnome.c:723 test-gnome/testgnome.c:764
+#: test-gnome/testgnome.c:789
 msgid "If you choose a font it will appear here"
 msgstr "Èe izberete pisavo se bo pokazala tu"
 
 #. Font_Info
-#: test-gnome/testgnome.c:728
+#: test-gnome/testgnome.c:730
 msgid "Font Info"
 msgstr "Podatki o pisavi"
 
-#: test-gnome/testgnome.c:738
+#: test-gnome/testgnome.c:740
 msgid "Use Font in button with size"
 msgstr "Uporabi Pisavo z velikostjo v gumbu"
 
-#: test-gnome/testgnome.c:745
+#: test-gnome/testgnome.c:747
 msgid "Show font size"
 msgstr "Ka¾i velikost pisave"
 
-#: test-gnome/testgnome.c:781
+#: test-gnome/testgnome.c:783
 msgid "This is an hbox with pixmap and text"
 msgstr "To je hbox s sliko in besedilom"
 
-#: test-gnome/testgnome.c:993
+#: test-gnome/testgnome.c:995
 msgid "The user chose Yes/OK with data:\n"
 msgstr "Uporabnik izbere Da/V redu nad podatki:\n"
 
-#: test-gnome/testgnome.c:997
+#: test-gnome/testgnome.c:999
 msgid "The user chose No/Cancel with data:\n"
 msgstr "Uporabnik izbere Ne/Preklièi nad podatki:\n"
 
-#: test-gnome/testgnome.c:1008
+#: test-gnome/testgnome.c:1010
 msgid "Weird number in reply callback"
 msgstr "Èudna ¹tevilka v povratnem klicu"
 
-#: test-gnome/testgnome.c:1860
+#: test-gnome/testgnome.c:1862
 msgid "Test GNOME"
 msgstr "Preizkusi GNOME"
 
@@ -1602,6 +1590,20 @@ msgstr "-adobe-helvetica-medium-r-normal-*-*-120-*-*-p-*-iso8859-2"
 msgid "Select file"
 msgstr "Izberi datoteko"
 
+#: libcompat/gnome-icon-sel.c:280
+#, c-format
+msgid "GnomeIconSelection: '%s' does not exist or is not a directory"
+msgstr "GnomeIconSelection: '%s' ne obstaja ali ni imenik"
+
+#: libcompat/gnome-icon-sel.c:288
+#, c-format
+msgid "GnomeIconSelection: couldn't open directory '%s'"
+msgstr "GnomeIconSelection: ne morem odpreti imenika '%s'"
+
+#: libcompat/gnome-icon-sel.c:361
+msgid "Loading Icons..."
+msgstr "Nalagam ione..."
+
 #: libcompat/gnome-number-entry.c:217
 msgid "Calculator"
 msgstr "Kalkulator"
@@ -1761,217 +1763,165 @@ msgstr "Èrkuj"
 msgid "Configure"
 msgstr "Nastavi"
 
-#: demos/mdi_demo.c:116
-msgid "Child Item 1"
-msgstr "Otrokov predmet 1"
+#~ msgid "Child Item 1"
+#~ msgstr "Otrokov predmet 1"
 
-#: demos/mdi_demo.c:117
-msgid "Hint for item 1"
-msgstr "Namig za predmet 1"
+#~ msgid "Hint for item 1"
+#~ msgstr "Namig za predmet 1"
 
-#: demos/mdi_demo.c:119
-msgid "Child Item 2"
-msgstr "Otrokov predmet 2"
+#~ msgid "Child Item 2"
+#~ msgstr "Otrokov predmet 2"
 
-#: demos/mdi_demo.c:120
-msgid "Hint for item 2"
-msgstr "Namig za predmet 2"
+#~ msgid "Hint for item 2"
+#~ msgstr "Namig za predmet 2"
 
-#: demos/stock_demo.c:137
-msgid "New..."
-msgstr "Nova..."
+#~ msgid "New..."
+#~ msgstr "Nova..."
 
-#: demos/stock_demo.c:145
-msgid "Open..."
-msgstr "Odpri..."
+#~ msgid "Open..."
+#~ msgstr "Odpri..."
 
-#: demos/stock_demo.c:153
-msgid "Save"
-msgstr "Shrani"
+#~ msgid "Save"
+#~ msgstr "Shrani"
 
-#: demos/stock_demo.c:161
-msgid "Save as..."
-msgstr "Shrani kot..."
+#~ msgid "Save as..."
+#~ msgstr "Shrani kot..."
 
-#: demos/stock_demo.c:181
-msgid "Print..."
-msgstr "Natisni..."
+#~ msgid "Print..."
+#~ msgstr "Natisni..."
 
-#: demos/stock_demo.c:189
-msgid "Setup Page..."
-msgstr "Nastavi stran..."
+#~ msgid "Setup Page..."
+#~ msgstr "Nastavi stran..."
 
-#: demos/stock_demo.c:198
-msgid "Quit"
-msgstr "Izhod"
+#~ msgid "Quit"
+#~ msgstr "Izhod"
 
-#: demos/stock_demo.c:209
-msgid "File"
-msgstr "Datoteka"
+#~ msgid "File"
+#~ msgstr "Datoteka"
 
-#: demos/stock_demo.c:216
-msgid "Undo"
-msgstr "Razveljavi"
+#~ msgid "Undo"
+#~ msgstr "Razveljavi"
 
-#: demos/stock_demo.c:224
-msgid "Redo"
-msgstr "Obnovi"
+#~ msgid "Redo"
+#~ msgstr "Obnovi"
 
-#: demos/stock_demo.c:233
-msgid "Delete"
-msgstr "Zbri¹i"
+#~ msgid "Delete"
+#~ msgstr "Zbri¹i"
 
-#: demos/stock_demo.c:238
-msgid "Cut"
-msgstr "Izre¾i"
+#~ msgid "Cut"
+#~ msgstr "Izre¾i"
 
-#: demos/stock_demo.c:246
-msgid "Copy"
-msgstr "Kopiraj"
+#~ msgid "Copy"
+#~ msgstr "Kopiraj"
 
-#: demos/stock_demo.c:254
-msgid "Paste"
-msgstr "Prilepi"
+#~ msgid "Paste"
+#~ msgstr "Prilepi"
 
-#: demos/stock_demo.c:266
-msgid "Properties..."
-msgstr "Lastnosti..."
+#~ msgid "Properties..."
+#~ msgstr "Lastnosti..."
 
-#: demos/stock_demo.c:276
-msgid "Preferences..."
-msgstr "Nastavitve..."
+#~ msgid "Preferences..."
+#~ msgstr "Nastavitve..."
 
-#: demos/stock_demo.c:291
-msgid "Scores..."
-msgstr "Rezultati..."
+#~ msgid "Scores..."
+#~ msgstr "Rezultati..."
 
-#: demos/stock_demo.c:299
-msgid "Edit"
-msgstr "Uredi"
+#~ msgid "Edit"
+#~ msgstr "Uredi"
 
-#: demos/winhints_demo.c:46
-msgid "wmhints-test"
-msgstr "wmnamigi-test"
+#~ msgid "wmhints-test"
+#~ msgstr "wmnamigi-test"
 
-#: demos/winhints_demo.c:46
-msgid "winhints-test"
-msgstr "winnamigi-test"
+#~ msgid "winhints-test"
+#~ msgstr "winnamigi-test"
 
-#: demos/winhints_demo.c:71
-msgid "Layer:"
-msgstr "Plast:"
+#~ msgid "Layer:"
+#~ msgstr "Plast:"
 
-#: demos/winhints_demo.c:94
-msgid "Above Dock"
-msgstr "Nad dokom"
+#~ msgid "Above Dock"
+#~ msgstr "Nad dokom"
 
-#: demos/winhints_demo.c:98
-msgid "Dock"
-msgstr "Dok"
+#~ msgid "Dock"
+#~ msgstr "Dok"
 
-#: demos/winhints_demo.c:102
-msgid "On Top"
-msgstr "Na vrhu"
+#~ msgid "On Top"
+#~ msgstr "Na vrhu"
 
-#: demos/winhints_demo.c:106
-msgid "Normal"
-msgstr "Obièajno"
+#~ msgid "Normal"
+#~ msgstr "Obièajno"
 
-#: demos/winhints_demo.c:110
-msgid "Below"
-msgstr "Pod"
+#~ msgid "Below"
+#~ msgstr "Pod"
 
-#: demos/winhints_demo.c:114
-msgid "Desktop"
-msgstr "Namizje"
+#~ msgid "Desktop"
+#~ msgstr "Namizje"
 
-#: demos/winhints_demo.c:122
-msgid "Set Layer"
-msgstr "Nastavi plast"
+#~ msgid "Set Layer"
+#~ msgstr "Nastavi plast"
 
-#: demos/winhints_demo.c:129
-msgid "Workspaces:"
-msgstr "Delovne povr¹ine:"
+#~ msgid "Workspaces:"
+#~ msgstr "Delovne povr¹ine:"
 
-#: demos/winhints_demo.c:151
-msgid "Sticky"
-msgstr "Lepljiv"
+#~ msgid "Sticky"
+#~ msgstr "Lepljiv"
 
-#: demos/winhints_demo.c:155
-msgid "Set Workspace"
-msgstr "Nastavi delovno povr¹ino"
+#~ msgid "Set Workspace"
+#~ msgstr "Nastavi delovno povr¹ino"
 
-#: demos/winhints_demo.c:165
-msgid "State Toggles:"
-msgstr "Preklopi Stanja:"
+#~ msgid "State Toggles:"
+#~ msgstr "Preklopi Stanja:"
 
-#: demos/winhints_demo.c:175
-msgid "Minimized"
-msgstr "Pomanj¹ano"
+#~ msgid "Minimized"
+#~ msgstr "Pomanj¹ano"
 
-#: demos/winhints_demo.c:179
-msgid "Maximized Vertical"
-msgstr "Poveèano navpièno"
+#~ msgid "Maximized Vertical"
+#~ msgstr "Poveèano navpièno"
 
-#: demos/winhints_demo.c:183
-msgid "Maximized Horizontal"
-msgstr "Poveèano vodoravno"
+#~ msgid "Maximized Horizontal"
+#~ msgstr "Poveèano vodoravno"
 
-#: demos/winhints_demo.c:187
-msgid "Hidden"
-msgstr "Skrito"
+#~ msgid "Hidden"
+#~ msgstr "Skrito"
 
-#: demos/winhints_demo.c:191
-msgid "Shaded"
-msgstr "Senèeno"
+#~ msgid "Shaded"
+#~ msgstr "Senèeno"
 
-#: demos/winhints_demo.c:195
-msgid "Fixed Position"
-msgstr "Stalno mesto"
+#~ msgid "Fixed Position"
+#~ msgstr "Stalno mesto"
 
-#: demos/winhints_demo.c:199
-msgid "Ignore on Arrange"
-msgstr "Ignoriraj pri premestitivi"
+#~ msgid "Ignore on Arrange"
+#~ msgstr "Ignoriraj pri premestitivi"
 
-#: demos/winhints_demo.c:203
-msgid "Set State"
-msgstr "Nastavi stanje"
+#~ msgid "Set State"
+#~ msgstr "Nastavi stanje"
 
-#: demos/winhints_demo.c:209
-msgid "Skip Toggles:"
-msgstr "Preskoèi preklope:"
+#~ msgid "Skip Toggles:"
+#~ msgstr "Preskoèi preklope:"
 
-#: demos/winhints_demo.c:219
-msgid "Skip Focus"
-msgstr "Preskoèi fokus"
+#~ msgid "Skip Focus"
+#~ msgstr "Preskoèi fokus"
 
-#: demos/winhints_demo.c:223
-msgid "Skip Window Menu"
-msgstr "Preskoèi menu okna"
+#~ msgid "Skip Window Menu"
+#~ msgstr "Preskoèi menu okna"
 
-#: demos/winhints_demo.c:227
-msgid "Skip Taskbar / WinList"
-msgstr "Preskoèi vrstico s posli / seznam oken"
+#~ msgid "Skip Taskbar / WinList"
+#~ msgstr "Preskoèi vrstico s posli / seznam oken"
 
-#: demos/winhints_demo.c:231
-msgid "Set Skip"
-msgstr "Nastavi preskok"
+#~ msgid "Set Skip"
+#~ msgstr "Nastavi preskok"
 
-#: demos/winhints_demo.c:410
-msgid "WIN_HINTS Test"
-msgstr "WIN_NAMIGI test"
+#~ msgid "WIN_HINTS Test"
+#~ msgstr "WIN_NAMIGI test"
 
-#: demos/winhints_demo.c:411
-msgid "Copyright (C) 1998"
-msgstr "Avtorske pravice pridr¾ane (C) 1998"
+#~ msgid "Copyright (C) 1998"
+#~ msgstr "Avtorske pravice pridr¾ane (C) 1998"
 
-#: demos/winhints_demo.c:413
-msgid ""
-"Simple test app to check how the WIN_HINTS work.\n"
-"And to test the gnome_win_hints_* functions for errors. :)"
-msgstr ""
-"Enostavna preizkusna aplikacija, ki preveri kako delujejo WIN_HINTS.\n"
-"Dodaj preizku¹anje gnome_win_hints_* funkcij za napake. :)"
+#~ msgid ""
+#~ "Simple test app to check how the WIN_HINTS work.\n"
+#~ "And to test the gnome_win_hints_* functions for errors. :)"
+#~ msgstr ""
+#~ "Enostavna preizkusna aplikacija, ki preveri kako delujejo WIN_HINTS.\n"
+#~ "Dodaj preizku¹anje gnome_win_hints_* funkcij za napake. :)"
 
 #~ msgid ""
 #~ "gnome_appbar_set_progress deprecated, use "
