@@ -28,7 +28,7 @@ gnome_cv_use_gnome=yes
 GNOME_X_CHECKS
 if test "$USE_DEVGTK" = true; then
    GNOME_CANVAS_SRC="gnome-canvas.c gnome-canvas-rect-ellipse.c"
-   GNOME_CANVAS_HED="gnome-canvas.h"
+   GNOME_CANVAS_HED="gnome-canvas.h gnome-canvas-rect-ellipse.h"
    GNOME_CANVAS_OBJS="gnome-canvas.lo gnome-canvas-rect-ellipse.lo"
 fi
 AC_SUBST(GNOME_CANVAS_SRC)
