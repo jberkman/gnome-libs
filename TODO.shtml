@@ -551,9 +551,11 @@
 	  <td>???</td>
 	  <td>
 	    <b>gnome-popup-menu</b>:  OK.  Fix <a
-	    href="mailto:rhpennin@midway.uchicago.edu">Havoc</a>'s bug
+	    href="mailto:hp@pobox.com">Havoc</a>'s bug
 	    report about the user_data not being propagated to
-	    submenus.
+	    submenus. Update: this is on line 61 and 63, where we
+	    assume the popup menu is the immediate parent of the 
+            menu item.
 	  </td>
 	</tr>
 
