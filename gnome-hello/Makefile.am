@@ -1,7 +1,4 @@
-Utilitiesdir = $(datadir)/apps/Utilities
-HELLO_HELP_DIR = $(datadir)/gnome-hello
-
-# DEFS += -ggdb -Wall -DDEBUG
+#Utilitiesdir = $(datadir)/apps/Utilities
 
 INCLUDES = -I../.. -I$(srcdir)/../.. -I$(includedir) \
 	 -DLOCALEDIR=\"$(datadir)/locale\"
@@ -33,12 +30,6 @@ gnome-hello.ps: gnome-hello.dvi
 	-dvips -o $@ $<
 
 # automake does not yet dig .sgml files, so for now the DocBook
-# files must be extra_dist.
-EXTRA_DIST = gnome-hello.sgml
-
-#GTT_HELP_FILES = \
-#	index.html		\
-#	ch-dialogs.html		\
-#	ch-main.html		\
-#	ch-intro.html		\
-#	ch-working.html
+# files must be extra_dist.  Also, distribute the `.html' file
+# so that people without DocBook can still use the docs.
+EXTRA_DIST = gnome-hello.sgml gnome-hello.html
