@@ -1,3 +1,10 @@
+1999-02-07  Miguel de Icaza  <miguel@nuclecu.unam.mx>
+
+	* zvtterm.c (zvt_term_size_request): I do not think the code for
+	set_grid_size_pending is working as it should.  If you send
+	another size_allocate, it will get the broken 8/2 defaults.  This
+	fixes gnome-terminal starting up in 8x2
+
 1999-02-06  Michael Zucchi  <zucchi@zedzone.mmc.com.au>
 
 	* update.c (vt_set_wordclass): Fix loop end condition so it
@@ -89,6 +96,10 @@ Thu Feb  4 16:34:03 1999  Owen Taylor  <otaylor@redhat.com>
 	* zvtterm.c (zvt_term_init): Set shadow to none.  We should kill
 	this code, as it broke my hack to add the extra padding to make
 	the terminals readable.
+
+	Use PADDING bytes on the left as well to work as a padding region 
+	(zvt_term_draw): Check against GTK_SHADOW_NONE
+	(zvt_term_expose): ditto.
 
 1999-01-22  Miguel de Icaza  <miguel@nuclecu.unam.mx>
 

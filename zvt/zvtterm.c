@@ -818,8 +818,8 @@ zvt_term_size_request (GtkWidget      *widget,
     }
   else
     {
-      grid_width = 8;
-      grid_height = 2;
+      grid_width = term->grid_width;
+      grid_height = term->grid_height;
     }
 
   requisition->width = (grid_width * term->charwidth) + 
