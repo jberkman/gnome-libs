@@ -47,39 +47,39 @@ libgnorba_la_LIBADD = $(ORBIT_LIBS) $(GLIB_LIBS) -lm
 loadshlib_SOURCES = loadshlib.c
 
 loadshlib_LDADD = 					\
+	$(top_builddir)/libgnorba/libgnorba.la		\
 	$(ORBIT_LIBS) 					\
         $(top_builddir)/libgnome/libgnome.la		\
         $(top_builddir)/libgnomeui/libgnomeui.la	\
 	$(top_builddir)/libart_lgpl/libart_lgpl.la	\
         @LIBSUPPORT@					\
-        $(LIBGNOME_LIBS) $(LIBGNOMEUI_LIBS)		\
-	$(top_builddir)/libgnorba/libgnorba.la		\
+        $(LIBGNOMEUI_LIBS) $(LIBGNOME_LIBS)		\
 	$(INTLLIBS)
 
 goad_browser_SOURCES = 	\
 	goad-browser.c
 
 goad_browser_LDADD = 					\
+	$(top_builddir)/libgnorba/libgnorba.la		\
 	$(ORBIT_LIBS) 					\
-        $(top_builddir)/libgnome/libgnome.la		\
         $(top_builddir)/libgnomeui/libgnomeui.la	\
+        $(top_builddir)/libgnome/libgnome.la		\
 	$(top_builddir)/libart_lgpl/libart_lgpl.la	\
         @LIBSUPPORT@					\
-        $(LIBGNOME_LIBS) $(LIBGNOMEUI_LIBS)		\
-	$(top_builddir)/libgnorba/libgnorba.la		\
+        $(LIBGNOMEUI_LIBS) $(LIBGNOME_LIBS) 		\
 	$(INTLLIBS)
 
 gnome_name_service_SOURCES =				\
 	gnome-name-server.c
 
 gnome_name_service_LDADD = 				\
+	$(top_builddir)/libgnorba/libgnorba.la		\
 	$(ORBIT_LIBS) 					\
-        $(top_builddir)/libgnome/libgnome.la		\
         $(top_builddir)/libgnomeui/libgnomeui.la	\
+        $(top_builddir)/libgnome/libgnome.la		\
 	$(top_builddir)/libart_lgpl/libart_lgpl.la	\
         @LIBSUPPORT@					\
         $(LIBGNOME_LIBS) $(LIBGNOMEUI_LIBS)		\
-	$(top_builddir)/libgnorba/libgnorba.la		\
 	-lname-server					\
 	$(INTLLIBS)
 
