@@ -11,7 +11,8 @@ EXTRA_DIST = 			\
 	gtk-events.soundlist	\
 	mime-magic 		\
 	gnome.mime 		\
-	paper.config
+	paper.config		\
+	type-convert
 
 scoredir=$(DESTDIR)$(localstatedir)/games
 sysconf_DATA=paper.config mime-magic
