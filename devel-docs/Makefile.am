@@ -6,18 +6,26 @@ gnome-dev-info.html: gnome-dev-info.sgml libgnomeui.sgml libgnome.sgml
 
 libgnomeui.sgml:
 	if [ -x `which gdoc` ]; then \
-		>libgnomeui.sgml; \
+## Inputs and generated files all are in srcdir.
+		cd $(srcdir); \
+		: > libgnomeui.sgml; \
 		for i in ../libgnomeui/*.h; do \
-			gdoc/gdoc.pl $$i >> libgnomeui.sgml; \
+## FIXME: should use explicit perl invocation here.
+			./gdoc/gdoc.pl $$i >> libgnomeui.sgml; \
 		done; \
+		cat trailer.sgml >> libgnomeui.sgml; \
 	fi
 
 libgnome.sgml:
 	if [ -x `which gdoc` ]; then \
-		>libgnome.sgml; \
+## Inputs and generated files all are in srcdir.
+		cd $(srcdir); \
+		: > libgnome.sgml; \
+## FIXME: should use explicit perl invocation here.
 		for i in ../libgnome/*.h; do \
 			gdoc/gdoc.pl $$i >> libgnome.sgml; \
 		done; \
+		cat trailer.sgml >> libgnome.sgml; \
 	fi
 
 # automake does not yet dig .sgml files, so for now the DocBook
