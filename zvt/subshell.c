@@ -214,6 +214,15 @@ get_ptys (int *master, int *slave, int update_wutmp)
 		} else {
 			close (helper_socket_fdpassing [1]);
 			close (helper_socket_protocol  [1]);
+
+			/*
+			 * Set the close-on-exec flag for the other
+			 * descriptors, these should never propagate
+			 * (otherwise gnome-pty-heler wont notice when
+			 * this process is killed).
+			 */
+			fcntl (helper_socket_protocol [0], F_SETFD, 1);
+			fcntl (helper_socket_fdpassing [0], F_SETFD, 1);
 		}
 	}
 	op = GNOME_PTY_OPEN_NO_DB_UPDATE;
