@@ -162,11 +162,8 @@ if test "$png_ok" = yes; then
   fi
 fi
 
-AC_CHECK_LIB(gdk_imlib, gdk_imlib_init, [
- GDK_IMLIB_LIBS="-lgdk_imlib $TIFF_LIBS $GIF_LIBS $JPEG_LIBS $PNG_LIBS $Z_LIBS"
-],[
-AC_MSG_ERROR(I could not find gdk_imlib, which is required by Gnome libs)
-],$TIFF_LIBS $GIF_LIBS $JPEG_LIBS $PNG_LIBS $Z_LIBS $GTK_LIBS $X_LIBS $x_libs)
+AM_PATH_GDK_IMLIB(1.8, ,
+        AC_MSG_ERROR([*** IMLIB 1.8 not installed - please install first ***]))
 
 dnl These are for building the apporpriate lib*
 LIBGNOME_LIBS="$GLIB_LIBS $DL_LIB"
