@@ -272,8 +272,78 @@ disk - you would ordinarily use it after a number of
 gnome_config_set_* operations.
 </para></sect3>
 </sect2>
-<sect2 id="gnome-config-clean"><title>gnome_*clean_* - routines for removing a configuration database entry or subtree altogether</title>
-<
+<sect2 id="gnome-config-clean"><title>gnome_config_*clean_* - routines for removing a configuration database entry or subtree altogether</title>
+<funcsynopsis><funcdef>void <function>gnome_config_clean_file<function></funcdef>
+<paramdef>const char *<parameter>path</parameter></paramdef>
+</funcsynopsis>
+<funcsynopsis><funcdef>void <function>gnome_config_private_clean_file<function></funcdef>
+<paramdef>const char *<parameter>path</parameter></paramdef>
+</funcsynopsis>
+<funcsynopsis><funcdef>void <function>gnome_config_clean_section<function></funcdef>
+<paramdef>const char *<parameter>path</parameter></paramdef>
+</funcsynopsis>
+<funcsynopsis><funcdef>void <function>gnome_config_private_clean_section<function></funcdef>
+<paramdef>const char *<parameter>path</parameter></paramdef>
+</funcsynopsis>
+<funcsynopsis><funcdef>void <function>gnome_config_clean_key<function></funcdef>
+<paramdef>const char *<parameter>path</parameter></paramdef>
+</funcsynopsis>
+<funcsynopsis><funcdef>void <function>gnome_config_private_clean_key<function></funcdef>
+<paramdef>const char *<parameter>path</parameter></paramdef>
+</funcsynopsis>
+<sect3><title>Description</title>
+<para>These routines delete all the configuration entries associated with the specified entity (either a file, section, or key).</para>
+</sect3>
+<sect3><title>Usage</title>
+<programlisting>
+char *val1, *val2;
+
+gnome_config_set_string("/foo/bar", "baz");
+val1 = gnome_config_get_string("/foo/bar");
+gnome_config_clean_section("/foo");
+val2 = gnome_config_get_string("/foo/bar");
+if(val1 && val2 && !strcmp(val1, val2)) {
+    g_error("The values match! gnome_config_clean_section is broken!");
+} else {
+    g_message("gnome_config_clean_section worked.");
+}
+</programlisting>
+</sect3>
+<sect3><title>Parameters</title>
+<itemizedlist>
+<listitem><para>const char *<parameter>path</parameter></para>
+<para>The config path to the config item which is to be removed.</para>
+</itemizedlist>
+</sect3>
+</sect2>
+<sect2 id="gnome-config-get-real-path"><title>gnome_config_*get_real_path</title>
+<funcsynopsis><funcdef>char *<function>gnome_config_get_real_path</function></funcdef>
+<paramdef>const char *<parameter>path</parameter></paramdef>
+</funcsynopsis>
+<funcsynopsis><funcdef>char *<function>gnome_config_private_get_real_path</function></funcdef>
+<paramdef>const char *<parameter>path</parameter></paramdef>
+</funcsynopsis>
+<sect3><title>Description</title>
+<para>
+Occasionally an application writer may want to get the local filename
+where a config item is stored. When passed a config path, these
+routines (currently implemented as macros) return that filename.
+</para>
+</sect3>
+<sect3><title>Usage</title>
+<programlisting>
+char *filename = gnome_config_get_real_path("/foo/bar");
+FILE *filehandle = fopen(filename, "w");
+/* do devious things with the file */
+</programlisting>
+</sect3>
+<sect3><title>Parameters</title>
+<itemizedlist>
+<listitem><para>const char *<parameter>path</parameter></para>
+<para>The config path to the config item being accessed.</para>
+</listitem>
+</itemizedlist></sect3>
+</sect2>
 </sect1>
 
 <sect1 id="gnome-defs">
