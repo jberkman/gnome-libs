@@ -270,3 +270,28 @@ forkpty (int *master_fd, char *name, struct termios *termp, struct winsize *winp
 	return pid;
 }
 #endif /* HAVE_OPENPTY */
+
+int
+n_read (int fd, void *buffer, int n)
+{
+	int left, nread;
+	char *ptr;
+
+	ptr = buffer;
+	left = n;
+	while (left > 0){
+		if ((nread = read (fd, ptr, left)) < 0){
+			if (errno == EINTR)
+				nread = 0;
+			else
+				return -1;
+		} else if (nread == 0)
+			break;	/* EOF */
+
+		left -= nread;
+		ptr += nread;
+	}
+	
+	return n - left;
+}
+

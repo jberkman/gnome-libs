@@ -361,11 +361,11 @@ sanity_checks (void)
 		sigaction (SIGIO, &sa, NULL);
 	}
 }
-	
+
 int
 main (int argc, char *argv [])
 {
-	int res;
+	int res, n;
 	void *tag;
 	GnomePtyOps op;
 
@@ -388,12 +388,9 @@ main (int argc, char *argv [])
 		exit (1);
 
 	for (;;){
-		res = read (STDIN_FILENO, &op, sizeof (op));
-		
-		if (res == -1){
-			if (errno == EINTR)
-				continue;
+		res = n_read (STDIN_FILENO, &op, sizeof (op));
 
+		if (res != sizeof (op) || res == -1){
 			shutdown_helper ();
 			return 1;
 		}
@@ -413,7 +410,8 @@ main (int argc, char *argv [])
 			break;
 			
 		case GNOME_PTY_CLOSE_PTY:
-			if (read (STDIN_FILENO, &tag, sizeof (tag)) == -1){
+			n = n_read (STDIN_FILENO, &tag, sizeof (tag));
+			if (n == -1 || n != sizeof (tag)){
 				shutdown_helper ();
 				return 1;
 			}

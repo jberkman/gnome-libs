@@ -22,4 +22,6 @@ pid_t forkpty (int *master_fd, char *name, struct termios *termp, struct winsize
 int login_tty (int fd);
 #endif
 
+int n_read (int fd, void *buffer, int size);
+
 #endif /* _GNOME_LOGIN_SUPPORT_H */

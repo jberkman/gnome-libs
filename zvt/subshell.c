@@ -172,7 +172,7 @@ static void *
 get_ptys (int *master, int *slave, int update_wutmp)
 {
 	GnomePtyOps op;
-	int result;
+	int result, n;
 	void *tag;
 	
 	if (helper_pid == -1)
@@ -225,11 +225,21 @@ get_ptys (int *master, int *slave, int update_wutmp)
 	if (write (helper_socket_protocol [0], &op, sizeof (op)) < 0)
 		return NULL;
 	
-	read (helper_socket_protocol [0], &result, sizeof (result));
+	n = n_read (helper_socket_protocol [0], &result, sizeof (result));
+	if (n == -1 || n != sizeof (result)){
+		helper_pid = 0;
+		return NULL;
+	}
+	
 	if (result == 0)
 		return NULL;
 
-	read (helper_socket_protocol [0], &tag, sizeof (tag));
+	n = n_read (helper_socket_protocol [0], &tag, sizeof (tag));
+	
+	if (n == -1 || n != sizeof (tag)){
+		helper_pid = 0;
+		return NULL;
+	}
 
 	*master = receive_fd (helper_socket_fdpassing [0]);
 	*slave  = receive_fd (helper_socket_fdpassing [0]);

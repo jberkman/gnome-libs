@@ -1,5 +1,14 @@
 1998-11-26  Miguel de Icaza  <miguel@nuclecu.unam.mx>
 
+	* subshell.c (get_ptys): Use n_read, just like gnome-pty-helper. 
+
+	* gnome-pty-helper.c (main): Deal properly with read().  read
+	might return -1/EINTR for an interrupted system call.  read might
+	return less bytes than requested and read might return 0 on eof. 
+
+	* gnome-login-support.c (n_read): New utility routine to deal with
+	all of the read () system calls details.
+	
 	* subshell.c (zvt_init_subshell): Init SIGCHLD before the first
 	fork. 
 
