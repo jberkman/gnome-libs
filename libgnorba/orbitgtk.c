@@ -134,11 +134,18 @@ _gnorba_get_cookie_reliably (const char *setme)
 		/* Just write it into the file for reference purposes */
 		fd = open (name, O_CREAT|O_WRONLY, S_IRUSR | S_IWUSR);
 		
-		if (fd < 0)
+		if (fd < 0) {
+                        fprintf(stderr, _("Failed to open CORBA cookie file (%s) for writing: %s\n"), name, strerror(errno));
 			goto out;
-		
+                }
+                        
 		get_exclusive_lock(fd);
-		write(fd, setme, strlen(setme));
+
+		if (write(fd, setme, strlen(setme)) < 0) {
+                        fprintf(stderr, _("Failed to write CORBA cookie file (%s): %s\n"), name, strerror(errno));
+                        goto out;
+                }
+                
 		release_lock(fd);
 		random_string = g_strdup(setme);
 		
@@ -160,19 +167,28 @@ _gnorba_get_cookie_reliably (const char *setme)
 			for (i = 0; i < sizeof (buf)-1; i++)
 				buf [i] = (random () % (126-33)) + 33;
 			
-			if(write(fd, buf, sizeof(buf)-1) < (sizeof(buf)-1))
+			if(write(fd, buf, sizeof(buf)-1) < (sizeof(buf)-1)) {
+                                fprintf(stderr, _("Failed to write CORBA cookie to `%s': %s\n"), name, strerror(errno));
 				goto out;
+                        }
 			
 			release_lock(fd);
 		} else if(fd < 0) {
 			int i;
 			fd = open(name, O_RDONLY);
-			i = read(fd, buf, sizeof(buf)-1);
-			if(i < 0)
+
+                        if (fd < 0) {
+                                fprintf(stderr, _("Failed to open CORBA cookie file `%s': %s\n"), name, strerror(errno));
 				goto out;
+                        }
+                        
+			i = read(fd, buf, sizeof(buf)-1);
+			if(i < 0) {
+                                fprintf(stderr, _("Failed to read CORBA cookie file `%s': %s\n"), name, strerror(errno));
+				goto out;
+                        }
 			buf[i] = '\0';
-		} else /* error */
-			goto out;
+		}
 		
 		random_string = g_strdup(buf);
 	}
@@ -192,7 +208,11 @@ _gnorba_cookie_setup(const char *setme)
 
   _gnorba_request_cookie._buffer = _gnorba_get_cookie_reliably (setme);
 		
-  g_assert(_gnorba_request_cookie._buffer && *_gnorba_request_cookie._buffer);
+  if (_gnorba_request_cookie._buffer == NULL ||
+      *_gnorba_request_cookie._buffer == '\0') {
+          fprintf(stderr, _("Failed to obtain CORBA authentication cookie, exiting\n"));
+          exit(1);
+  }
 		
   _gnorba_request_cookie._length = strlen(_gnorba_request_cookie._buffer) + 1;
 
