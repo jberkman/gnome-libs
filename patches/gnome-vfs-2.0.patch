@@ -4,7 +4,7 @@ RCS file: /cvs/gnome/gnome-vfs/.cvsignore,v
 retrieving revision 1.4
 diff -u -u -p -r1.4 .cvsignore
 --- .cvsignore	2000/08/31 11:32:38	1.4
-+++ .cvsignore	2000/10/15 21:54:14
++++ .cvsignore	2000/11/22 14:35:31
 @@ -28,3 +28,4 @@ vfsConf.sh
  vfscorbaConf.sh
  vfspthreadConf.sh
@@ -16,7 +16,7 @@ RCS file: /cvs/gnome/gnome-vfs/Makefile.am,v
 retrieving revision 1.16
 diff -u -u -p -r1.16 Makefile.am
 --- Makefile.am	2000/10/11 17:36:39	1.16
-+++ Makefile.am	2000/10/15 21:54:14
++++ Makefile.am	2000/11/22 14:35:32
 @@ -31,7 +31,8 @@ EXTRA_DIST =					\
  	vfsConf.sh.in				\
  	vfscorbaConf.sh.in			\
@@ -34,14 +34,34 @@ diff -u -u -p -r1.16 Makefile.am
 +pkgconfigdir = $(libdir)/pkgconfig
 +pkgconfig_DATA = gnomevfs-2.0.pc
  
+Index: autogen.sh
+===================================================================
+RCS file: /cvs/gnome/gnome-vfs/autogen.sh,v
+retrieving revision 1.1.1.1
+diff -u -u -p -r1.1.1.1 autogen.sh
+--- autogen.sh	1999/08/25 00:15:45	1.1.1.1
++++ autogen.sh	2000/11/22 14:35:32
+@@ -14,4 +14,4 @@ PKG_NAME="GNOME VFS"
+     exit 1
+ }
+ 
+-. $srcdir/macros/autogen.sh
++USE_GNOME2_MACROS=1 . gnome-autogen.sh
 Index: configure.in
 ===================================================================
 RCS file: /cvs/gnome/gnome-vfs/configure.in,v
-retrieving revision 1.79
-diff -u -u -p -r1.79 configure.in
---- configure.in	2000/10/11 17:36:39	1.79
-+++ configure.in	2000/10/15 21:54:15
-@@ -7,6 +7,7 @@ AM_MAINTAINER_MODE
+retrieving revision 1.91
+diff -u -u -p -r1.91 configure.in
+--- configure.in	2000/11/07 07:31:55	1.91
++++ configure.in	2000/11/22 14:35:32
+@@ -1,12 +1,13 @@
+ AC_INIT(libgnomevfs/gnome-vfs.h)
+ AM_CONFIG_HEADER(config.h)
+ AM_INIT_AUTOMAKE(gnome-vfs, 0.4.2.0)
+-AM_ACLOCAL_INCLUDE(macros)
++GNOME_COMMON_INIT
+ 
+ AM_MAINTAINER_MODE
  
  AC_ISC_POSIX
  AC_PROG_CC
@@ -49,33 +69,225 @@ diff -u -u -p -r1.79 configure.in
  AC_PROG_AWK
  AM_PROG_LIBTOOL
  
-@@ -34,7 +35,7 @@ dnl = Profiling support
+@@ -33,14 +34,37 @@ dnl ====================================
+ dnl = Profiling support
  dnl ====================================
  
- dnl Version of the GNOME Platform (1002000 for GNOME 1.2.x)
+-dnl Version of the GNOME Platform (1002000 for GNOME 1.2.x)
 -GNOME_PLATFORM_VERSION=1002000
-+GNOME_PLATFORM_VERSION=1095000
- AC_DEFINE_UNQUOTED(GNOME_PLATFORM_VERSION, $GNOME_PLATFORM_VERSION)
- AM_CONDITIONAL(PLATFORM_GNOME_2, test $GNOME_PLATFORM_VERSION -ge 1095000)
+-AC_DEFINE_UNQUOTED(GNOME_PLATFORM_VERSION, $GNOME_PLATFORM_VERSION)
+-AM_CONDITIONAL(PLATFORM_GNOME_2, test $GNOME_PLATFORM_VERSION -ge 1095000)
+-
+-dnl Init GNOME for the GNOME 1.2 platform
+-if test $GNOME_PLATFORM_VERSION -lt 1095000 ; then
+-  GNOME_INIT
++GNOME_PLATFORM_GNOME_2(no)
++
++if test $platform_gnome_2 = yes ; then
++  GNOME_PKGCONFIG_CHECK_MODULES(GLIB, glib-2.0:1.3.1)
++  GNOME_PKGCONFIG_CHECK_MODULES(GTK,  gtk+-2.0:1.3.1)
++  GNOME_PKGCONFIG_CHECK_MODULES(GMODULE, gmodule-2.0:1.3.1)
++  GNOME_PKGCONFIG_CHECK_MODULES(GTHREAD, gthread-2.0:1.3.1)
++  GNOME_PKGCONFIG_CHECK_MODULES(ORBIT, ORBit-2.0:0.5.3)
++  GNOME_PKGCONFIG_CHECK_OPTIONAL_MODULES(OAF, oaf-2.0:0.6.1)
++  GNOME_PKGCONFIG_CHECK_MODULES(XML, libxml-2.0:2.2.8)
++  GNOME_PKGCONFIG_CHECK_MODULES(GCONF, gconfgtk-2.0:0.11.0)
++
++  VFS_GNOME_CFLAGS="$GLIB_CFLAGS"
++  VFS_GNOMEUI_CFLAGS="$GLIB_CFLAGS"
++  VFS_CAPPLET_CFLAGS=
++  VFS_GNOME_LIBS="$GLIB_LIBS"
++  VFS_GNOMEUI_LIBS="GLIB_LIBS"
++  VFS_CAPPLET_LIBS=
++  VFS_GLIB_CONFIG="glib-config-2.0"
++
++  AC_DEFINE(GNOME_PLATFORM_VERSION, 1095000)
++else
++  GNOME_PKGCONFIG_CHECK_MODULES(GLIB, glib:1.2.6)
++  GNOME_PKGCONFIG_CHECK_MODULES(GTK,  gtk+:1.2.6)
++  GNOME_PKGCONFIG_CHECK_MODULES(GMODULE, glib:1.2.6)
++  GNOME_PKGCONFIG_CHECK_MODULES(GTHREAD, gthread:1.2.6)
++  GNOME_PKGCONFIG_CHECK_MODULES(ORBIT, ORBit:0.5.1)
++  GNOME_PKGCONFIG_CHECK_OPTIONAL_MODULES(OAF, oaf:0.6.0)
++  GNOME_PKGCONFIG_CHECK_MODULES(XML, libxml:1.8.0)
++  GNOME_PKGCONFIG_CHECK_MODULES(GCONF, gconfgtk:0.9.0)
++
+   VFS_GNOME_CFLAGS="`gnome-config --cflags gnome`"
+   VFS_GNOMEUI_CFLAGS="`gnome-config --cflags gnome gnomeui`"
+   VFS_CAPPLET_CFLAGS="`gnome-config --cflags gnome gnomeui capplet`"
+@@ -48,14 +72,8 @@ if test $GNOME_PLATFORM_VERSION -lt 1095
+   VFS_GNOMEUI_LIBS="`gnome-config --libs gnome gnomeui`"
+   VFS_CAPPLET_LIBS="`gnome-config --libs gnome gnomeui capplet`"
+   VFS_GLIB_CONFIG="glib-config"
+-else
+-  VFS_GNOME_CFLAGS="`glib-config-2.0 --cflags`"
+-  VFS_GNOMEUI_CFLAGS="`glib-config-2.0 --cflags`"
+-  VFS_CAPPLET_CFLAGS=
+-  VFS_GNOME_LIBS="`glib-config-2.0 --libs`"
+-  VFS_GNOMEUI_LIBS="`glib-config-2.0 --libs`"
+-  VFS_CAPPLET_LIBS=
+-  VFS_GLIB_CONFIG="glib-config-2.0"
++
++  AC_DEFINE(GNOME_PLATFORM_VERSION, 1002000)
+ fi
+ AC_SUBST(VFS_GNOME_CFLAGS)
+ AC_SUBST(VFS_GNOMEUI_CFLAGS)
+@@ -64,30 +82,35 @@ AC_SUBST(VFS_GNOME_LIBS)
+ AC_SUBST(VFS_GNOMEUI_LIBS)
+ AC_SUBST(VFS_CAPPLET_LIBS)
  
-@@ -91,13 +92,13 @@ AC_ARG_WITH(default-backend,
++AC_SUBST(GLIB_LIBS)
++AC_SUBST(GLIB_CFLAGS)
++AC_SUBST(GMODULE_LIBS)
++AC_SUBST(GMODULE_CFLAGS)
++AC_SUBST(GTHREAD_LIBS)
++AC_SUBST(GTHREAD_CFLAGS)
++AC_SUBST(GTK_LIBS)
++AC_SUBST(GTK_CFLAGS)
++AC_SUBST(ORBIT_LIBS)
++AC_SUBST(ORBIT_CFLAGS)
++AC_SUBST(XML_LIBS)
++AC_SUBST(XML_CFLAGS)
++AC_SUBST(GCONF_LIBS)
++AC_SUBST(GCONF_CFLAGS)
+ 
+-AC_CHECK_PROG(GTKDOC, gtkdoc-mkdb, true, false)
+-AM_CONDITIONAL(HAVE_GTK_DOC, $GTKDOC)
+-AC_SUBST(HAVE_GTK_DOC)
+-
+-dnl Let people disable the gtk-doc stuff.
+-AC_ARG_ENABLE(gtk-doc, [  --enable-gtk-doc  Use gtk-doc to build documentation [default=auto]], enable_gtk_doc="$enableval", enable_gtk_doc=auto)
+-
+-if test x$enable_gtk_doc = xauto ; then
+-  if test x$GTKDOC = xtrue ; then
+-    enable_gtk_doc=yes
+-  else
+-    enable_gtk_doc=no
+-  fi
++AC_SUBST(GNOME_LIBS)
++AC_SUBST(GNOME_LIBDIR)
++AC_SUBST(GNOMEUI_LIBS)
++AC_SUBST(GNOMEGNORBA_LIBS)
++
++AM_CONDITIONAL(USING_OAF, test x"$HAVE_OAF" = "xyes")
++if test x"$HAVE_OAF" = "xyes" ; then
++  AC_DEFINE(USING_OAF)
+ fi
++AC_SUBST(OAF_LIBS)
++AC_SUBST(OAF_CFLAGS)
++
++GNOME_GTKDOC_CHECK
+ 
+-dnl NOTE: We need to use a separate automake conditional for this
+-dnl       to make this work with the tarballs.
+-AM_CONDITIONAL(ENABLE_GTK_DOC, test x$enable_gtk_doc = xyes)
+-dnl end documentation support
+-
+-AC_ARG_ENABLE(gconf,
+-              [  --enable-gconf          Enable GConf access backend],
+-              gconf_enabled="yes")
+ AC_ARG_ENABLE(libefs,
+               [  --disable-libefs={yes|no}       Disable libefs access backend],
+               libefs_disabled="yes")
+@@ -95,25 +118,11 @@ AC_ARG_WITH(default-backend,
  	      [  --with-default-backend=(corba|pthread)		    ],
  	      default_backend="$withval")
  
 -AM_PATH_GLIB(1.2.0,,
-+AM_PATH_GLIB_2_0(1.3.0,,
-   AC_MSG_ERROR([
+-  AC_MSG_ERROR([
 -*** GLIB 1.2.0 or better is required. The latest version of GLIB
-+*** GLIB 1.3.0 or better is required. The latest version of GLIB
- *** is always available from ftp://ftp.gtk.org/.]),
-     gmodule gthread)
- 
+-*** is always available from ftp://ftp.gtk.org/.]),
+-    gmodule gthread)
+-
 -AM_PATH_GTK(1.2.0,,
-+AM_PATH_GTK_2_0(1.3.0,,
-   AC_MSG_ERROR([
- *** Gtk+ 1.2.0 or better is required. The latest version of Gtk+
- *** is always available from ftp://ftp.gtk.org/.]),
-@@ -436,6 +437,7 @@ po/Makefile.in
+-  AC_MSG_ERROR([
+-*** Gtk+ 1.2.0 or better is required. The latest version of Gtk+
+-*** is always available from ftp://ftp.gtk.org/.]),
+-    gmodule gthread)
+-
+ cflags_set=yes
+ GNOME_COMPILE_WARNINGS
+ VFS_CFLAGS="$warnCFLAGS $complCFLAGS"
+ 
+-if test $GNOME_PLATFORM_VERSION -lt 1095000 ; then
+-  GNOME_SUPPORT_CHECKS
+-fi
++GNOME_PKGCONFIG_CHECK_MODULES(GNOMESUPPORT, gnome-support-2.0:1.2.1)
+ GNOME_PTHREAD_CHECK
+ 
+ dnl Don't blindly #define them if they're typedef'ed in <sys/types.h>
+@@ -121,7 +130,7 @@ AM_GNOME_SIZE_T
+ AM_GNOME_OFF_T
+ 
+ ALL_LINGUAS="ca da de el fi fr ga gl hu it ja ko lt nl no pl pt_BR ru sk sl sv tr uk"
+-AM_GNOME_GETTEXT
++AM_GNOME2_GETTEXT
+ 
+ AC_FUNC_ALLOCA
+ AC_CHECK_FUNCS(getdtablesize open64 lseek64 statvfs)
+@@ -218,31 +227,6 @@ fi
+ AC_SUBST(WERROR)
+ AC_SUBST(VFS_CFLAGS)
+ 
+-using_oaf=no
+-AC_PATH_PROG(OAF_CONFIG,oaf-config,no)
+-if test x$OAF_CONFIG = xno; then
+-	AC_MSG_RESULT("The program oaf-config was not found")
+-	OAF_LIBS=""
+-	OAF_CFLAGS=""
+-else
+-	AC_MSG_CHECKING(for Oaf >= 0.3.0)
+-	vers=`$OAF_CONFIG --version | \
+-		awk 'BEGIN { FS = "."; } { printf "%d", $1 * 1000 + $2;}'`
+-	if test "$vers" -ge 3; then
+-		using_oaf=yes
+-	        OAF_LIBS=`$OAF_CONFIG --libs`
+-        	OAF_CFLAGS=`$OAF_CONFIG --cflags`
+-		AC_MSG_RESULT(found)
+-		AC_DEFINE(USING_OAF)
+-	else
+-		AC_MSG_RESULT(not found)	
+-		AC_MSG_ERROR(Please upgrade the oaf and oaf-devel packages)
+-	fi
+-fi
+-AM_CONDITIONAL(USING_OAF, test x"$using_oaf" = "xyes")
+-AC_SUBST(OAF_LIBS)
+-AC_SUBST(OAF_CFLAGS)
+-
+ dnl
+ dnl gnome vfs Documentation
+ dnl 
+@@ -294,29 +278,6 @@ AC_SUBST(CAPPLET_INCLUDEDIR)
+ AC_SUBST(CAPPLET_LIBS)
+ 
+ dnl
+-dnl gnome-xml libraries - for WebDAV support in modules/http-method.c
+-dnl
+-
+-AC_PATH_PROG(XML_CONFIG,xml-config,no)
+-if test x$XML_CONFIG = "xno"; then
+-  AC_MSG_ERROR(Couldn't find xml-config please install the gnome-xml package)
+-fi
+-XML_LIBS=`$XML_CONFIG --libs`
+-XML_CFLAGS=`$XML_CONFIG --cflags`
+-AC_SUBST(XML_LIBS)
+-AC_SUBST(XML_CFLAGS)
+-
+-dnl
+-dnl gconf
+-dnl
+-
+-AM_PATH_GCONF(0.9.0,,,gconf gconf-gtk)
+-AC_SUBST(GCONF_LIBS)
+-AC_SUBST(GCONF_CFLAGS)
+-AC_SUBST(GTK_LIBS)
+-AC_SUBST(GTK_CFLAGS)
+-
+-dnl
+ dnl efs-method.c
+ dnl
+ 
+@@ -440,6 +401,7 @@ po/Makefile.in
  test/Makefile
  test/gnome-file-selection/Makefile
  test/vfs-run
@@ -88,7 +300,7 @@ Index: gnomevfs-2.0.pc.in
 RCS file: gnomevfs-2.0.pc.in
 diff -N gnomevfs-2.0.pc.in
 --- /dev/null	Tue May  5 16:32:27 1998
-+++ gnomevfs-2.0.pc.in	Sun Oct 15 17:54:15 2000
++++ gnomevfs-2.0.pc.in	Wed Nov 22 09:35:32 2000
 @@ -0,0 +1,12 @@
 +prefix=/gnome/head/INSTALL
 +exec_prefix=${prefix}
@@ -102,3 +314,23 @@ diff -N gnomevfs-2.0.pc.in
 +Requires: oaf-2.0,gthread-2.0,gmodule-2.0
 +Libs: -L${libdir} -lgnomevfs
 +Cflags: -I${includedir} -I${libdir}/vfs/include
+Index: modules/test-method.c
+===================================================================
+RCS file: /cvs/gnome/gnome-vfs/modules/test-method.c,v
+retrieving revision 1.6
+diff -u -u -p -r1.6 test-method.c
+--- modules/test-method.c	2000/11/12 05:03:47	1.6
++++ modules/test-method.c	2000/11/22 14:35:33
+@@ -36,8 +36,12 @@
+ 
+ #include <stdio.h>
+ #include <unistd.h>
++#if GNOME_PLATFORM_VERSION < 1095000
+ #include <libgnome/gnome-defs.h>
+ #include <libgnome/gnome-util.h>
++#else
++#include <glib.h>
++#endif
+ #include <libgnomevfs/gnome-vfs.h>
+ #include <libgnomevfs/gnome-vfs-private.h>
+ #include <string.h>

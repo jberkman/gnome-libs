@@ -4,7 +4,7 @@ RCS file: /cvs/gnome/gconf/.cvsignore,v
 retrieving revision 1.6
 diff -u -u -p -r1.6 .cvsignore
 --- .cvsignore	2000/08/29 21:16:59	1.6
-+++ .cvsignore	2000/11/22 13:44:15
++++ .cvsignore	2000/11/22 14:21:34
 @@ -18,5 +18,7 @@ ABOUT-NLS
  intl
  config.h.in
@@ -19,7 +19,7 @@ RCS file: /cvs/gnome/gconf/Makefile.am,v
 retrieving revision 1.19
 diff -u -u -p -r1.19 Makefile.am
 --- Makefile.am	2000/10/03 19:14:23	1.19
-+++ Makefile.am	2000/11/22 13:44:15
++++ Makefile.am	2000/11/22 14:21:34
 @@ -2,7 +2,8 @@
  SUBDIRS = gconf backends wrappers po doc examples standard-schemas
  DIST_SUBDIRS=tests $(SUBDIRS)
@@ -46,7 +46,7 @@ RCS file: /cvs/gnome/gconf/autogen.sh,v
 retrieving revision 1.5
 diff -u -u -p -r1.5 autogen.sh
 --- autogen.sh	1999/11/19 17:38:12	1.5
-+++ autogen.sh	2000/11/22 13:44:15
++++ autogen.sh	2000/11/22 14:21:34
 @@ -4,132 +4,11 @@
  srcdir=`dirname $0`
  test -z "$srcdir" && srcdir=.
@@ -188,8 +188,8 @@ RCS file: /cvs/gnome/gconf/configure.in,v
 retrieving revision 1.63
 diff -u -u -p -r1.63 configure.in
 --- configure.in	2000/10/31 19:15:39	1.63
-+++ configure.in	2000/11/22 13:44:16
-@@ -137,24 +137,32 @@ if test "x$docs_only" = "xyes"; then
++++ configure.in	2000/11/22 14:21:34
+@@ -137,24 +137,34 @@ if test "x$docs_only" = "xyes"; then
          AC_FYI("Only building documentation")
  else
  
@@ -221,6 +221,8 @@ diff -u -u -p -r1.63 configure.in
 +  GNOME_PKGCONFIG_CHECK_OPTIONAL_MODULES(GTK, gtk+:1.2.6)
 +  GNOME_PKGCONFIG_CHECK_MODULES(XML, libxml:1.8.0)
 +fi
++AC_PATH_PROG(OAF_CONFIG, oaf-config)
++AC_SUBST(OAF_CONFIG)
 +AC_SUBST(GLIB_LIBS)
 +AC_SUBST(GLIB_CFLAGS)
 +AC_SUBST(OAF_LIBS)
@@ -236,7 +238,7 @@ diff -u -u -p -r1.63 configure.in
  BDB_LIBS=
  BDB_CFLAGS=
  
-@@ -212,7 +220,7 @@ fi # docs_only
+@@ -212,7 +222,7 @@ fi # docs_only
  
  ALL_LINGUAS="ca cs da de el fi fr ga ja ko nl no pt_BR ru sv tr uk"
  
@@ -245,7 +247,7 @@ diff -u -u -p -r1.63 configure.in
  
  # AM_GNU_GETTEXT above substs $DATADIRNAME
  # this is the directory where the *.{mo,gmo} files are installed
-@@ -244,6 +252,8 @@ doc/gconf/Makefile
+@@ -244,6 +254,8 @@ doc/gconf/Makefile
  examples/Makefile
  tests/Makefile
  standard-schemas/Makefile
@@ -259,7 +261,7 @@ Index: gconf-2.0.pc.in
 RCS file: gconf-2.0.pc.in
 diff -N gconf-2.0.pc.in
 --- /dev/null	Tue May  5 16:32:27 1998
-+++ gconf-2.0.pc.in	Wed Nov 22 08:44:16 2000
++++ gconf-2.0.pc.in	Wed Nov 22 09:21:34 2000
 @@ -0,0 +1,12 @@
 +prefix=/gnome/head/INSTALL
 +exec_prefix=${prefix}
@@ -278,7 +280,7 @@ Index: gconfgtk-2.0.pc.in
 RCS file: gconfgtk-2.0.pc.in
 diff -N gconfgtk-2.0.pc.in
 --- /dev/null	Tue May  5 16:32:27 1998
-+++ gconfgtk-2.0.pc.in	Wed Nov 22 08:44:16 2000
++++ gconfgtk-2.0.pc.in	Wed Nov 22 09:21:35 2000
 @@ -0,0 +1,12 @@
 +prefix=/gnome/head/INSTALL
 +exec_prefix=${prefix}
@@ -296,7 +298,7 @@ Index: backends/gthreadpool.c
 ===================================================================
 RCS file: gthreadpool.c
 diff -N gthreadpool.c
---- /tmp/cvsxriX1k	Wed Nov 22 08:44:20 2000
+--- /tmp/cvsRImAs5	Wed Nov 22 09:21:40 2000
 +++ /dev/null	Tue May  5 16:32:27 1998
 @@ -1,435 +0,0 @@
 -/* GConf
@@ -738,7 +740,7 @@ Index: backends/gthreadpool.h
 ===================================================================
 RCS file: gthreadpool.h
 diff -N gthreadpool.h
---- /tmp/cvsSZmSeQ	Wed Nov 22 08:44:20 2000
+--- /tmp/cvsGVcbE2	Wed Nov 22 09:21:40 2000
 +++ /dev/null	Tue May  5 16:32:27 1998
 @@ -1,66 +0,0 @@
 -/* GConf
@@ -813,7 +815,7 @@ RCS file: /cvs/gnome/gconf/gconf/Makefile.am,v
 retrieving revision 1.52
 diff -u -u -p -r1.52 Makefile.am
 --- gconf/Makefile.am	2000/09/11 21:58:47	1.52
-+++ gconf/Makefile.am	2000/11/22 13:44:16
++++ gconf/Makefile.am	2000/11/22 14:21:35
 @@ -31,7 +31,6 @@ gconfincludedir = $(includedir)/gconf/$(
  gconfinclude_HEADERS =     \
  	gconf.h            \
@@ -837,7 +839,7 @@ RCS file: /cvs/gnome/gconf/gconf/gconf-database.h,v
 retrieving revision 1.6
 diff -u -u -p -r1.6 gconf-database.h
 --- gconf/gconf-database.h	2000/10/08 19:51:32	1.6
-+++ gconf/gconf-database.h	2000/11/22 13:44:16
++++ gconf/gconf-database.h	2000/11/22 14:21:35
 @@ -31,7 +31,6 @@ extern "C" {
  #include "gconf-listeners.h"
  #include "gconf-sources.h"
@@ -852,7 +854,7 @@ RCS file: /cvs/gnome/gconf/gconf/gconf-error.h,v
 retrieving revision 1.15
 diff -u -u -p -r1.15 gconf-error.h
 --- gconf/gconf-error.h	2000/10/07 01:31:18	1.15
-+++ gconf/gconf-error.h	2000/11/22 13:44:16
++++ gconf/gconf-error.h	2000/11/22 14:21:35
 @@ -22,8 +22,6 @@
  
  #include <glib.h>
@@ -868,7 +870,7 @@ RCS file: /cvs/gnome/gconf/gconf/gconfd.c,v
 retrieving revision 1.95
 diff -u -u -p -r1.95 gconfd.c
 --- gconf/gconfd.c	2000/11/05 18:09:48	1.95
-+++ gconf/gconfd.c	2000/11/22 13:44:18
++++ gconf/gconfd.c	2000/11/22 14:21:38
 @@ -32,7 +32,6 @@
  #include "gconf-listeners.h"
  #include "gconf-locale.h"
@@ -883,7 +885,7 @@ RCS file: /cvs/gnome/gconf/po/Makefile.in.in,v
 retrieving revision 1.5
 diff -u -u -p -r1.5 Makefile.in.in
 --- po/Makefile.in.in	2000/09/15 04:30:24	1.5
-+++ po/Makefile.in.in	2000/11/22 13:44:18
++++ po/Makefile.in.in	2000/11/22 14:21:39
 @@ -62,7 +62,7 @@ INSTOBJEXT = @INSTOBJEXT@
  	$(COMPILE) $<
  
@@ -947,7 +949,7 @@ RCS file: /cvs/gnome/gconf/wrappers/gtk/gconf-client.c,v
 retrieving revision 1.38
 diff -u -u -p -r1.38 gconf-client.c
 --- wrappers/gtk/gconf-client.c	2000/10/26 02:03:03	1.38
-+++ wrappers/gtk/gconf-client.c	2000/11/22 13:44:20
++++ wrappers/gtk/gconf-client.c	2000/11/22 14:21:40
 @@ -110,7 +110,8 @@ static void gconf_client_class_init (GCo
  static void gconf_client_init       (GConfClient      *client);
  static void gconf_client_real_unreturned_error (GConfClient* client, GError* error);
