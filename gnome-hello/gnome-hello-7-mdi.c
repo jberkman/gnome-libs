@@ -22,8 +22,8 @@
 
 static void add_cb(GtkWidget *w);
 static void remove_cb(GtkWidget *w);
-static void add_view_cb(GtkWidget *w, GnomeMDIChild *);
-static void remove_view_cb(GtkWidget *w, GnomeMDIChild *);
+static void add_view_cb(GtkWidget *w);
+static void remove_view_cb(GtkWidget *w);
 static void quit_cb(GtkWidget *w);
 static void about_cb(GtkWidget *w);
 static void mode_top_cb(GtkWidget *w);
@@ -78,6 +78,11 @@ GnomeMDI *mdi;
 /*
  * here we derive a new object from GnomeMDIChild. this actually belongs in a
  * separate header and source file.
+ * An alternative to this would be to gtk_object_set_data() your own data to GnomeMDIChild
+ * objects instead of subclassing it. This would result in more code when creating new
+ * children (you'd have to create a GnomeMDIChild, set its values (name) and allocate the
+ * structure with your data and then make a gtk_object_set_data() call so that this data
+ * could be accessed via the GnomeMDIChild (in callbacks etc.).
  */
 
 #define MY_CHILD(obj)          GTK_CHECK_CAST (obj, my_child_get_type (), MyChild)
@@ -240,13 +245,18 @@ void cleanup_cb(GnomeMDI *mdi) {
   gtk_main_quit();
 }
 
-void add_view_cb(GtkWidget *w, GnomeMDIChild *child) {
+void add_view_cb(GtkWidget *w) {
   /* our child-menu-item activate signal handler also gets the pointer to
      the child that this menu item belongs to as the second argument */
-  gnome_mdi_add_view(mdi, child);
+  GnomeMDIChild *child;
+
+  if(mdi->active_view) {
+    child = VIEW_GET_CHILD(mdi->active_view);
+    gnome_mdi_add_view(mdi, child);
+  }
 }
 
-void remove_view_cb(GtkWidget *w, GnomeMDIChild *child) {
+void remove_view_cb(GtkWidget *w) {
   /* mdi->active_view holds the pointer to the view that this action
      applies to */
   if(mdi->active_view)
@@ -256,10 +266,8 @@ void remove_view_cb(GtkWidget *w, GnomeMDIChild *child) {
 void remove_cb(GtkWidget *w) {
   /* mdi->active_child holds the pointer to the child that this action
      applies to */
-  if(mdi->active_child == NULL)
-    return;
-  
-  gnome_mdi_remove_child(mdi, mdi->active_child, FALSE);
+  if(mdi->active_view)
+    gnome_mdi_remove_child(mdi, VIEW_GET_CHILD(mdi->active_view), FALSE);
 }
 
 void add_cb(GtkWidget *w) {
@@ -423,11 +431,11 @@ int main(int argc, char **argv) {
   
   /* connect signals */
   gtk_signal_connect(GTK_OBJECT(mdi), "destroy", GTK_SIGNAL_FUNC(cleanup_cb), NULL);
-  /* we could also connect other signals, but since we're lazy, we won't ;) */
+  /* we could also connect handlers to other signals, but since we're lazy, we won't ;) */
 
   /* set MDI mode */
   gnome_mdi_set_mode(mdi, GNOME_MDI_NOTEBOOK);
-  
+
   /* and here we go... */
   gtk_main();
 
