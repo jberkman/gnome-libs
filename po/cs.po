@@ -4,9 +4,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: 1.0.10\n"
+"Project-Id-Version: 1.0.11\n"
 "POT-Creation-Date: 1999-10-06 21:34-0500\n"
-"PO-Revision-Date: 1999-06-25 08:26+02:00\n"
+"PO-Revision-Date: 1999-10-15 16:19+02:00\n"
 "Last-Translator: David Sauer <davids@penguin.cz>\n"
 "Language-Team: czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -89,11 +89,11 @@ msgstr "_Soubor/"
 
 #: libgnomeui/gnome-app-helper.c:80
 msgid "_Edit"
-msgstr "_Edit"
+msgstr "Úp_ravy"
 
 #: libgnomeui/gnome-app-helper.c:81
 msgid "_Edit/"
-msgstr "_Edit/"
+msgstr "Úp_ravy/"
 
 #: libgnomeui/gnome-app-helper.c:82
 msgid "_View"
@@ -105,11 +105,11 @@ msgstr "_Pohled/"
 
 #: libgnomeui/gnome-app-helper.c:84
 msgid "_Settings"
-msgstr "_Nastavení"
+msgstr "Nas_tavení"
 
 #: libgnomeui/gnome-app-helper.c:85
 msgid "_Settings/"
-msgstr "_Nastavení/"
+msgstr "Nas_tavení/"
 
 #: libgnomeui/gnome-app-helper.c:86
 msgid "_New"
@@ -328,7 +328,7 @@ msgstr "Konfigurace aplikace"
 #. About
 #: libgnomeui/gnome-app-helper.c:217
 msgid "_About..."
-msgstr "O _programu"
+msgstr "_O programu"
 
 #: libgnomeui/gnome-app-helper.c:218
 msgid "About this application"
@@ -347,7 +347,7 @@ msgstr "Vybrat v¹echno"
 #.
 #: libgnomeui/gnome-app-helper.c:230
 msgid "Create New _Window"
-msgstr "Vytvoøit Nové _okno"
+msgstr "Vytvoøit nové _okno"
 
 #: libgnomeui/gnome-app-helper.c:231
 msgid "Create a new window"
@@ -714,26 +714,23 @@ msgstr "Dokumetace:"
 
 #: libgnomeui/gnome-dentry-edit.c:383
 msgid "Name/Comment translations:"
-msgstr ""
+msgstr "Pøeklady pro jméno/komentáø:"
 
 #: libgnomeui/gnome-dentry-edit.c:386
 msgid "Language"
-msgstr ""
+msgstr "Jazyk"
 
 #: libgnomeui/gnome-dentry-edit.c:387
-#, fuzzy
 msgid "Name"
-msgstr "Jméno:"
+msgstr "Jméno"
 
 #: libgnomeui/gnome-dentry-edit.c:388
-#, fuzzy
 msgid "Comment"
-msgstr "Komentáø:"
+msgstr "Komentáø"
 
 #: libgnomeui/gnome-dentry-edit.c:416
-#, fuzzy
 msgid "Add/Set"
-msgstr "Pøidat"
+msgstr "Pøidat/Nastavit"
 
 #: libgnomeui/gnome-dentry-edit.c:421 libgnomeui/gnome-stock.c:825
 msgid "Remove"
@@ -748,13 +745,12 @@ msgid "Advanced"
 msgstr "Pokroèilej¹í"
 
 #: libgnomeui/gnome-druid.c:129
-#, fuzzy
 msgid "Back"
-msgstr "Základní"
+msgstr "Zpìt"
 
 #: libgnomeui/gnome-druid.c:136
 msgid "Finish"
-msgstr ""
+msgstr "Dokonèit"
 
 #: libgnomeui/gnome-file-entry.c:151
 msgid "Select file"
@@ -872,7 +868,7 @@ msgstr "MODUL"
 #. dialog display isn't working out
 #: libgnomeui/gnome-init.c:635
 msgid "Multiple segmentation faults occurred; can't display error dialog\n"
-msgstr ""
+msgstr "Pøíli¹ mnoho výpadkù segmentu; nelze zobrazit chybový dialog\n"
 
 #: libgnomeui/gnome-messagebox.c:111 libgnomeui/gnome-messagebox.c:240
 msgid "Information"
@@ -944,7 +940,7 @@ msgstr "Datum"
 #.
 #: libgnomeui/gnome-scores.c:131
 msgid "%a %b %d %T %Y"
-msgstr ""
+msgstr "%a, %e.%b %T %Y"
 
 #: libgnomeui/gnome-spell.c:196
 msgid "Select dictionary"
@@ -1186,6 +1182,11 @@ msgid ""
 "will exit.\n"
 "Please save all your files before closing this dialog."
 msgstr ""
+"Správce sezení Gnome (proces %d) skonèil s fatální\n"
+"chybou (%s).\n"
+"Po uzavøení tohoto dialogu budou v¹echny aplikace uzavøeny a va¹e sezení \n"
+"ukonèeno.\n"
+"Ulo¾te, prosím, v¹echna data pøed uzavøením tohoto okna."
 
 #: libgnomeui/gnome_segv.c:62
 #, c-format
@@ -1194,14 +1195,17 @@ msgid ""
 "due to a fatal error.\n"
 "(%s)"
 msgstr ""
+"Aplikace \"%s\" (proces %d) skonèil\n"
+"s fatální chybou.\n"
+"(%s)"
 
 #: libgnomeui/gnome_segv.c:70
 msgid "Usage: gnome_segv appname signum\n"
-msgstr ""
+msgstr "Pou¾ití: gnome_segv aplikace signál\n"
 
 #: libgnomeui/gnome_segv.c:87
 msgid "Submit a bug report"
-msgstr ""
+msgstr "Sepsat hlá¹ení o chybách"
 
 #: libgnomeui/gnome_segv.c:93
 msgid "http://www.gnome.org/application_crashed.shtml"
@@ -1209,7 +1213,7 @@ msgstr ""
 
 #: libgnomeui/gnome_segv.c:99
 msgid "Please visit the GNOME Application Crash page for more information"
-msgstr ""
+msgstr "Pro více informací nav¹tivte centrum aplikací Gnome"
 
 #: libgnomeui/stock_demo.c:112
 msgid "New..."
@@ -1357,7 +1361,7 @@ msgstr "Skryto"
 
 #: libgnomeui/winhints_demo.c:191
 msgid "Shaded"
-msgstr ""
+msgstr "Jen titulek"
 
 #: libgnomeui/winhints_demo.c:195
 msgid "Fixed Position"
@@ -1377,11 +1381,11 @@ msgstr ""
 
 #: libgnomeui/winhints_demo.c:219
 msgid "Skip Focus"
-msgstr ""
+msgstr "Vynechat pøi zmìnì zameøení oken"
 
 #: libgnomeui/winhints_demo.c:223
 msgid "Skip Window Menu"
-msgstr ""
+msgstr "Vynechat z menu oken"
 
 #: libgnomeui/winhints_demo.c:227
 msgid "Skip Taskbar / WinList"
@@ -1396,9 +1400,8 @@ msgid "WIN_HINTS Test"
 msgstr ""
 
 #: libgnomeui/winhints_demo.c:411
-#, fuzzy
 msgid "Copyright (C) 1998"
-msgstr "Copyright (C)1998"
+msgstr "Copyright (C) 1998"
 
 #: libgnomeui/winhints_demo.c:413
 msgid ""
@@ -1426,7 +1429,7 @@ msgstr ""
 
 #: libgnorba/goad-browser.c:28
 msgid "REPO-ID"
-msgstr ""
+msgstr "REPO-ID"
 
 #: libgnorba/goad-browser.c:171
 msgid ""
@@ -1440,15 +1443,15 @@ msgstr ""
 
 #: libgnorba/goad.c:1350
 msgid "(Internal use only) GOAD server ID to activate"
-msgstr ""
+msgstr "(Interní pou¾ítí) Aktivovaný GOAD server ID"
 
 #: libgnorba/loadshlib.c:11
 msgid "ID under which GOAD knows this server"
-msgstr ""
+msgstr "ID, pod kterým GOAD eviduje tento server"
 
 #: libgnorba/loadshlib.c:11
 msgid "GOAD_ID"
-msgstr ""
+msgstr "GOAD_ID"
 
 #: libgnorba/loadshlib.c:12
 msgid "Repository ID under which GOAD knows this server"
@@ -1456,7 +1459,7 @@ msgstr ""
 
 #: libgnorba/loadshlib.c:12
 msgid "REPO_ID"
-msgstr ""
+msgstr "REPO_ID"
 
 #: libgnorba/orbitgtk.c:138
 #, c-format
@@ -1623,137 +1626,136 @@ msgstr ""
 msgid "Weird number in reply callback"
 msgstr ""
 
-#~ msgid "Guru-in-a-dialog test"
-#~ msgstr "Test Guru-v-dialogu"
+msgid "Guru-in-a-dialog test"
+msgstr "Test Guru-v-dialogu"
 
 # , c-format
 # , c-format
-#~ msgid ""
-#~ "Application \"%s\" has a bug.\n"
-#~ "SIGSEGV received at PC %#lx in PID %d.\n"
-#~ "\n"
-#~ "\n"
-#~ "Do you want to exit this program?"
-#~ msgstr ""
-#~ "Aplikace \"%s\" obsahuje chybu.\n"
-#~ "Pøijat signál SIGSEGV. PC = %#lx, PID = %d\n"
-#~ "\n"
-#~ "Chcete ukonèit tento program?"
+msgid ""
+"Application \"%s\" has a bug.\n"
+"SIGSEGV received at PC %#lx in PID %d.\n"
+"\n"
+"\n"
+"Do you want to exit this program?"
+msgstr ""
+"Aplikace \"%s\" obsahuje chybu.\n"
+"Pøijat signál SIGSEGV. PC = %#lx, PID = %d\n"
+"\n"
+"Chcete ukonèit tento program?"
 
-#~ msgid ""
-#~ "No, and ignore\n"
-#~ "future SIGSEGV's"
-#~ msgstr ""
-#~ "Ne a ignorovat\n"
-#~ "dal¹í signály SIGSEGV"
+msgid ""
+"No, and ignore\n"
+"future SIGSEGV's"
+msgstr ""
+"Ne a ignorovat\n"
+"dal¹í signály SIGSEGV"
 
-#~ msgid "Ask next time"
-#~ msgstr "Zeptat se i pøí¹tì"
+msgid "Ask next time"
+msgstr "Zeptat se i pøí¹tì"
 
-#~ msgid "Really log out?"
-#~ msgstr "Skuteènì odhlásit ?"
+msgid "Really log out?"
+msgstr "Skuteènì odhlásit ?"
 
-#~ msgid "Options error\n"
-#~ msgstr "Chyba ve volbách\n"
+msgid "Options error\n"
+msgstr "Chyba ve volbách\n"
 
-#~ msgid "Gnome Hello %s.\n"
-#~ msgstr "Gnome Hello %s.\n"
+msgid "Gnome Hello %s.\n"
+msgstr "Gnome Hello %s.\n"
 
-#~ msgid ""
-#~ "%s: A gnomified 'Hello World' program\n"
-#~ "\n"
-#~ "Usage: %s [--help] [--version]\n"
-#~ "\n"
-#~ "Options:\n"
-#~ "        --help     display this help and exit\n"
-#~ "        --version  output version information and exit\n"
-#~ msgstr ""
-#~ "%s: program 'Hello World' pro Gnome\n"
-#~ "\n"
-#~ "Pou¾ití: %s [--help] [--version]\n"
-#~ "\n"
-#~ "Pøepínaèe:\n"
-#~ "        --help     tato nápovìda a konec\n"
-#~ "        --version  informace o verzi a konec\n"
+msgid ""
+"%s: A gnomified 'Hello World' program\n"
+"\n"
+"Usage: %s [--help] [--version]\n"
+"\n"
+"Options:\n"
+"        --help     display this help and exit\n"
+"        --version  output version information and exit\n"
+msgstr ""
+"%s: program 'Hello World' pro Gnome\n"
+"\n"
+"Pou¾ití: %s [--help] [--version]\n"
+"\n"
+"Pøepínaèe:\n"
+"        --help     tato nápovìda a konec\n"
+"        --version  informace o verzi a konec\n"
 
-#~ msgid "<control>A"
-#~ msgstr "<control>A"
+msgid "<control>A"
+msgstr "<control>A"
 
-#~ msgid "Help/About..."
-#~ msgstr "Nápovìda/O programu ..."
+msgid "Help/About..."
+msgstr "Nápovìda/O programu ..."
 
-#~ msgid "<control>E"
-#~ msgstr "<control>E"
+msgid "<control>E"
+msgstr "<control>E"
 
-#~ msgid "File/Exit"
-#~ msgstr "Soubor/Konec"
+msgid "File/Exit"
+msgstr "Soubor/Konec"
 
-#~ msgid "Children/"
-#~ msgstr "Potomci/"
+msgid "Children/"
+msgstr "Potomci/"
 
-#~ msgid "MDI Mode"
-#~ msgstr "Re¾im MDI"
+msgid "MDI Mode"
+msgstr "Re¾im MDI"
 
-#~ msgid "Modal"
-#~ msgstr "Modální"
+msgid "Modal"
+msgstr "Modální"
 
-#~ msgid "Toplevel"
-#~ msgstr "Nejvy¹¹í úroveò"
+msgid "Toplevel"
+msgstr "Nejvy¹¹í úroveò"
 
-#~ msgid "Notebook"
-#~ msgstr "Blok"
+msgid "Notebook"
+msgstr "Blok"
 
-#~ msgid "Children"
-#~ msgstr "Potomci"
+msgid "Children"
+msgstr "Potomci"
 
-#~ msgid "Remove Child"
-#~ msgstr "Odstranit potomka"
+msgid "Remove Child"
+msgstr "Odstranit potomka"
 
-#~ msgid "Add Child"
-#~ msgstr "Pøidat potomka"
+msgid "Add Child"
+msgstr "Pøidat potomka"
 
-#~ msgid "Child"
-#~ msgstr "Potomek"
+msgid "Child"
+msgstr "Potomek"
 
-#~ msgid "Increase Counter"
-#~ msgstr "Zvìt¹it poèítadlo"
+msgid "Increase Counter"
+msgstr "Zvìt¹it poèítadlo"
 
-#~ msgid "Remove View"
-#~ msgstr "Odstranit prvek"
+msgid "Remove View"
+msgstr "Odstranit prvek"
 
-#~ msgid "Add View"
-#~ msgstr "Pøidat prvek"
+msgid "Add View"
+msgstr "Pøidat prvek"
 
-#~ msgid "Info about GNOME hello"
-#~ msgstr "Info o GNOME hello"
+msgid "Info about GNOME hello"
+msgstr "Info o GNOME hello"
 
-#~ msgid "About..."
-#~ msgstr "O programu"
+msgid "About..."
+msgstr "O programu"
 
-#~ msgid "Exit GNOME hello"
-#~ msgstr "Konec GNOME hello"
+msgid "Exit GNOME hello"
+msgstr "Konec GNOME hello"
 
-#~ msgid "Hello GNOME"
-#~ msgstr "Ahoj GNOME"
+msgid "Hello GNOME"
+msgstr "Ahoj GNOME"
 
-#~ msgid "Hello World Gnomified"
-#~ msgstr "Hello World pro Gnome"
+msgid "Hello World Gnomified"
+msgstr "Hello World pro Gnome"
 
-#~ msgid "Exit"
-#~ msgstr "Konec"
+msgid "Exit"
+msgstr "Konec"
 
-#~ msgid "About GnomeHello..."
-#~ msgstr "O GnomeHello..."
+msgid "About GnomeHello..."
+msgstr "O GnomeHello..."
 
-#~ msgid ""
-#~ "GNOME is a civilized software system so we've a \"hello world\" program"
-#~ msgstr "GNOME je civilizovaný software, proto máme program \"hello world\""
+msgid "GNOME is a civilized software system so we've a \"hello world\" program"
+msgstr "GNOME je civilizovaný software, proto máme program \"hello world\""
 
-#~ msgid "(C) 1998 the Free Software Foundation"
-#~ msgstr "(C) 1998 Free Software Foundation"
+msgid "(C) 1998 the Free Software Foundation"
+msgstr "(C) 1998 Free Software Foundation"
 
-#~ msgid "The Hello World Gnomified"
-#~ msgstr "Verze 'Hello World' pro Gnome"
+msgid "The Hello World Gnomified"
+msgstr "Verze 'Hello World' pro Gnome"
 
-#~ msgid "Hello GNOME\n"
-#~ msgstr "Hello pro GNOME\n"
+msgid "Hello GNOME\n"
+msgstr "Hello pro GNOME\n"
