@@ -65,6 +65,7 @@ extern "C" {
     guint timeout_id;		/* id of timeout function */
     GdkFont *font,		/* current normal font */
       *font_bold;		/* current bold font */
+    GdkGC *scroll_gc;		/* special GC used for scrolling */
   };
 
   struct _ZvtTermClass

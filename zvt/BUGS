@@ -3,6 +3,8 @@ Known bugs.
 
 Current known bugs.
 
+ - Lots of little ones.
+
  - Selection rendering.
     Sometimes the selection rendering gets out of sync with what
     is on screen - result is a mess.  Clear the screen to fix it up.
@@ -30,13 +32,3 @@ Current known bugs.
     Only does English as well.  Hopefully 16 bit characters aren't
     that hard to implement (internally there is room for it in each
     line, but currently its stripped to byte size first).
-
- - Scrolling.
-    Scrolling on a partially obscured window may cause bits of the
-    display to vanish.  I haven't been able to work out if there
-    is a way to find out where the window is obscured ... at
-    best the visibility X event will tell me I am obscured, but not
-    where?  Otherwise may have to degenerate to simple refresh
-    mechanism when partially obscured --> slow.
-
-

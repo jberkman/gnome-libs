@@ -1,4 +1,16 @@
-1998-04-26  ZED  <zucchi@zzedzone.box.net.au>
+1998-04-27  Michael Zucchi  <zucchi@zzedzone.box.net.au>
+
+	* zvtterm.c (vt_scroll_area): Generates and processes graphics_expose
+		events when scrolling from off-window areas.
+
+	* update.c (vt_update_rect): Modified to keep old state of cursor
+		on exit.
+		(vt_update): Modified to keep old state of cursor on exit.
+
+	* zvtterm.c (vt_cursor_state): Modified to return the previous
+		state of the cursor.
+
+1998-04-26  Michael Zucchi  <zucchi@zzedzone.box.net.au>
 
 	* memory.c: renamed mem_* functions to vt_mem_* functions.
 

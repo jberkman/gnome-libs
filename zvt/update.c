@@ -236,10 +236,11 @@ void vt_update(struct _vtx *vx, int update_state)
   struct vt_line *wn, *nn, *fn;
   int firstline;
   int count;
+  int old_state;
 
   d(printf("updating screen\n"));
 
-  vt_cursor_state(vx->user_data, 0);
+  old_state = vt_cursor_state(vx->user_data, 0);
 
   if (vx->vt.scrollbackoffset != 0) {
     if (vx->vt.scrollbackoffset != vx->vt.scrollbackold ||
@@ -447,7 +448,7 @@ void vt_update(struct _vtx *vx, int update_state)
 
   d(vt_dump(&vx.vt));
 
-  vt_cursor_state(vx->user_data, 1);
+  vt_cursor_state(vx->user_data, old_state);
 }
 
 /*
@@ -460,8 +461,9 @@ void vt_update_rect(struct _vtx *vx, int csx, int csy, int cex, int cey)
 {
   int lines;
   struct vt_line *wn, *nn;
+  int old_state;
 
-  vt_cursor_state(vx->user_data, 0);	/* ensure cursor is really off */
+  old_state = vt_cursor_state(vx->user_data, 0);	/* ensure cursor is really off */
 
   d(printf("updating (%d,%d) - (%d,%d)\n", csx, csy, cex, cey));
 
@@ -478,7 +480,7 @@ void vt_update_rect(struct _vtx *vx, int csx, int csy, int cex, int cey)
     }
   }
 
-  vt_cursor_state(vx->user_data, 1);
+  vt_cursor_state(vx->user_data, old_state);
 }
 
 /*
@@ -676,6 +678,7 @@ char *vt_get_selection(struct _vtx *vx, int *len)
 
   if ( (vx->selection_data = malloc((ey-sy+1)*(vx->vt.width+20))) == 0 ) {
     vx->selection_size = 0;
+    printf("ERROR: Cannot malloc selection buffer\n");
     return 0;
   }
 

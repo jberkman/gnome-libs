@@ -237,6 +237,10 @@ zvt_term_realize (GtkWidget *widget)
   /* setup blinking cursor */
   term->timeout_id = gtk_timeout_add(500, zvt_term_cursor_blink, term);
 
+  /* setup scrolling gc */
+  term->scroll_gc = gdk_gc_new (GTK_WIDGET(term)->window);
+  gdk_gc_set_exposures (term->scroll_gc, TRUE);
+
   /* FIXME: not sure if this is right or not? */
   if (!GTK_WIDGET_HAS_FOCUS (widget))
     gtk_widget_grab_focus (widget);
@@ -533,7 +537,7 @@ zvt_term_button_press (GtkWidget      *widget,
 {
   gint x,y;
   GdkModifierType mask;
-  static GdkAtom string_atom = GDK_NONE;
+  GdkAtom string_atom;
   struct _vtx *vx;
   ZvtTerm *term;
 
@@ -600,11 +604,14 @@ zvt_term_button_press (GtkWidget      *widget,
     break;
 
   case 2:			/* middle button - paste */
-    /* Get the atom corresonding to the string "TARGETS" */
-    if (string_atom == GDK_NONE)
-      string_atom = gdk_atom_intern ("STRING", FALSE);
-    
-    /* And request the "TARGETS" target for the primary selection */
+    /* Get the atom corresonding to the target "STRING" */
+    string_atom = gdk_atom_intern ("STRING", FALSE);
+
+    if (string_atom == GDK_NONE) {
+      printf("WARNING: Could not get string atom\n");
+    }
+
+    /* And request the "STRING" target for the primary selection */
     gtk_selection_convert (widget, GDK_SELECTION_PRIMARY, string_atom,
 			   GDK_CURRENT_TIME);
     break;
@@ -792,7 +799,7 @@ zvt_term_selection_handler (GtkWidget *widget,
 {
   struct _vtx *vx;
   ZvtTerm *term;
-  
+
   g_return_if_fail (widget != NULL);
   g_return_if_fail (ZVT_IS_TERM (widget));
   g_return_if_fail (selection_data_ptr != NULL);
@@ -811,7 +818,7 @@ zvt_term_selection_received (GtkWidget *widget, GtkSelectionData *selection_data
 {
   struct _vtx *vx;
   ZvtTerm *term;
-  
+
   g_return_if_fail (widget != NULL);
   g_return_if_fail (ZVT_IS_TERM (widget));
   g_return_if_fail (selection_data != NULL);
@@ -1129,20 +1136,22 @@ void zvt_term_readdata(gpointer data, gint fd, GdkInputCondition condition)
 /*
   external rendering functions called by vt_update, etc
 */
-void vt_cursor_state(void *user_data, int state)
+int vt_cursor_state(void *user_data, int state)
 {
   ZvtTerm *term;
   GtkWidget *widget;
+  int old_state;
 
   widget = user_data;
 
-  g_return_if_fail (widget != NULL);
-  g_return_if_fail (ZVT_IS_TERM (widget));
+  g_return_val_if_fail (widget != NULL, 0);
+  g_return_val_if_fail (ZVT_IS_TERM (widget), 0);
 
   term = ZVT_TERM (widget);
 
   gdk_gc_set_function(widget->style->fg_gc[GTK_WIDGET_STATE (widget)], GDK_INVERT);
 
+  old_state = term->cursor_on;
   if ((state && !term->cursor_on) ||	/* turn it on, or*/
       (!state && term->cursor_on)) {	/* turn it off - then toggle it */
     gdk_draw_rectangle(widget->window,
@@ -1156,6 +1165,8 @@ void vt_cursor_state(void *user_data, int state)
   }
 
   gdk_gc_set_function(widget->style->fg_gc[GTK_WIDGET_STATE (widget)], GDK_COPY);
+
+  return old_state;
 }
 
 void vt_draw_text(void *user_data, int col, int row, char *text, int len, int attr)
@@ -1212,6 +1223,7 @@ void vt_scroll_area(void *user_data, int firstrow, int count, int offset)
   int width,height;
   ZvtTerm *term;
   GtkWidget *widget;
+  GdkEvent *event;
 
   widget = user_data;
 
@@ -1227,12 +1239,14 @@ void vt_scroll_area(void *user_data, int firstrow, int count, int offset)
   width = widget->allocation.width;
   height = widget->allocation.height;
 
-  gdk_window_copy_area(widget->window,
-		       widget->style->fg_gc[GTK_WIDGET_STATE (widget)],
-		       0, firstrow*term->charheight,
-		       NULL, 
-		       0, (firstrow+offset)*term->charheight,
-		       width, count*term->charheight);
+  /* "scroll" area */
+  gdk_draw_pixmap(widget->window,
+		  term->scroll_gc, /* must use this to generate expose events */
+		  widget->window,
+		  0, (firstrow+offset)*term->charheight,
+		  0, firstrow*term->charheight,
+		  width, count*term->charheight);
+
 
   /* clear the other part of the screen */
   if (offset>0) {
@@ -1248,6 +1262,19 @@ void vt_scroll_area(void *user_data, int firstrow, int count, int offset)
 		       0, (firstrow+offset)*term->charheight,
 		       width, (-offset)*term->charheight);
   }
+
+  /* fix up the screen display after a scroll */
+  while ((event = gdk_event_get_graphics_expose (widget->window)) 
+	 != NULL) {
+    gtk_widget_event (widget, event);
+    if (event->expose.count == 0)
+      {
+	gdk_event_free (event);
+	break;
+      }
+    gdk_event_free (event);
+  }
+
 }
 
 /*
