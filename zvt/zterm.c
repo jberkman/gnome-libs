@@ -77,7 +77,7 @@ button_press_event (ZvtTerm *term, GdkEventButton *e)
 
   gdk_window_get_pointer(GTK_WIDGET(term)->window, &x, &y, &mask);
 
-  str = zvt_term_match_check(term, x/term->charwidth, y/term->charheight, &data);
+  str = zvt_term_match_check(term, x/term->charwidth, y/term->charheight,(void *)&data);
   if (str) {
     gtk_signal_emit_stop_by_name (GTK_OBJECT (term), "button_press_event");
     printf("User clicked on type '%s' -> '%s'\n", data, str);
@@ -265,7 +265,7 @@ main (gint argc, gchar *argv[])
   gtk_widget_show (window);
 
   /* fork the shell/program */
-  switch (zvt_term_forkpty(ZVT_TERM (term), ZVT_TERM_DO_UTMP_LOG | ZVT_TERM_DO_WTMP_LOG)) {
+  switch (zvt_term_forkpty(ZVT_TERM (term), ZVT_TERM_DO_UTMP_LOG | ZVT_TERM_DO_WTMP_LOG | ZVT_TERM_DO_LASTLOG)) {
   case -1:
     perror("ERROR: unable to fork:");
     exit(1);

@@ -100,6 +100,7 @@ static void zvt_term_scroll_by_lines (ZvtTerm *term, int n);
 static int vt_cursor_state(void *user_data, int state);
 static void zvt_term_writemore (gpointer data, gint fd, GdkInputCondition condition);
 static void zvt_term_updated(ZvtTerm *term, int mode);
+static void clone_col(unsigned short **dest, unsigned short *from);
 
 /* callbacks from update layer */
 void vt_draw_text(void *user_data, struct vt_line *line, int row, int col, int len, int attr);
@@ -592,6 +593,14 @@ zvt_term_destroy (GtkObject *object)
       g_free(zp->paste);
     if (zp->paste_id != -1)
       gdk_input_remove(zp->paste_id);
+
+    if (zp->queue_red)
+	    g_free(zp->queue_red);
+    if (zp->queue_green)
+	    g_free(zp->queue_green);
+    if (zp->queue_blue)
+	    g_free(zp->queue_blue);
+    
     g_free(zp);
     gtk_object_set_data (GTK_OBJECT (term), "_zvtprivate", 0);
   }
@@ -2906,8 +2915,10 @@ zvt_term_set_background (ZvtTerm *terminal, char *pixmap_file,
   struct zvt_background *b = 0;
   struct _zvtprivate *zp = _ZVT_PRIVATE(terminal);
 
+#if 0
   if (!(zvt_term_get_capabilities (terminal) & ZVT_TERM_PIXMAP_SUPPORT))  
     return; 
+#endif
 
   /* get base image */
   if (!transparent && pixmap_file) {

@@ -1,7 +1,7 @@
 /*
  * utmp/wtmp file updating
  *
- * Author:
+ * Authors:
  *    Miguel de Icaza (miguel@gnu.org).
  *    Timur I. Bakeyev (timur@gnu.org).
  *
@@ -12,19 +12,31 @@
  */
  
 #include <config.h>
+#include <sys/types.h>
+#include <sys/file.h>
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
 #include <string.h>
-#include <sys/file.h>
 #include <fcntl.h>
-#include <utmp.h>
+#include <pwd.h>
 #include <errno.h>
-#include "gnome-pty.h"
-#include "gnome-login-support.h"
 
-#if defined(HAVE_SYS_TIME_H)
-#include <sys/time.h>
+#if defined(TIME_WITH_SYS_TIME)
+#    include <sys/time.h>
+#include <time.h>
+#else
+#  if defined(HAVE_SYS_TIME_H)
+#    include <sys/time.h>
+#  else
+#    include <time.h>
+#  endif
+#endif
+
+#include <utmp.h>
+
+#if defined(HAVE_LASTLOG_H)
+#    include <lastlog.h>
 #endif
 
 #if defined(HAVE_PATHS_H)
@@ -38,6 +50,11 @@
 #if defined(HAVE_TTYENT_H)
 #    include <ttyent.h>
 #endif
+
+#include "gnome-pty.h"
+#include "gnome-login-support.h"
+
+
 
 #if !defined(UTMP_OUTPUT_FILENAME)
 #    if defined(UTMP_FILE)
@@ -63,6 +80,12 @@
 #    else
 #        define WTMP_OUTPUT_FILENAME "/etc/wtmp"
 #    endif
+#endif
+
+#if defined(_PATH_LASTLOG) /* BSD systems */
+#    define LASTLOG_OUTPUT_FILE	_PATH_LASTLOG
+#else
+#    define LASTLOG_OUTPUT_FILE	"/var/log/lastlog"
 #endif
 
 #if defined(HAVE_UPDWTMPX)
@@ -122,15 +145,8 @@ update_wtmp (char *file, UTMP *putmp)
 static void
 update_utmp (UTMP *ut)
 {
-	/* struct utmp ut_aux; */
-	
 	setutxent();
 	pututxline (ut);
-	
-	/* FIXME: Do we need this?
-	   getutmp (ut, &ut_aux);
-	   pututline (&ut_aux);
-	*/
 }
 #elif defined(HAVE_GETUTENT)
 static void
@@ -140,20 +156,21 @@ update_utmp (UTMP *ut)
 	pututline (ut);
 }
 #elif defined(HAVE_GETTTYENT)
+/* This variant is sutable for most BSD */
 static void
 update_utmp (UTMP *ut)
 {
 	struct ttyent *ty;
 	int fd, pos = 0;
 	
-	if ((fd=open (UTMP_OUTPUT_FILENAME, O_RDWR|O_CREAT, 0644)) < 0) 
+	if ((fd = open (UTMP_OUTPUT_FILENAME, O_RDWR|O_CREAT, 0644)) < 0) 
 		return;
 	
 	setttyent ();
 	while ((ty = getttyent ()) != NULL)
 	{
 		++pos;
-		if (strncmp (ty->ty_name, ut->ut_line, sizeof (ut->ut_line)) == NULL)
+		if (strncmp (ty->ty_name, ut->ut_line, sizeof (ut->ut_line)) == 0)
 		{
 			lseek (fd, (off_t)(pos * sizeof(UTMP)), SEEK_SET);
 			write(fd, ut, sizeof(UTMP));
@@ -163,7 +180,43 @@ update_utmp (UTMP *ut)
 	
 	close(fd);
 }
+#else
+#define update_utmp(ut)
 #endif
+
+#if !defined(HAVE_LASTLOG)
+#define update_lastlog(login_name, ut)
+#else
+static void
+update_lastlog(char* login_name, UTMP *ut)
+{
+    struct passwd *pwd;
+    struct lastlog ll;
+    int fd;
+
+    if ((fd = open(LASTLOG_OUTPUT_FILE, O_WRONLY, 0)) < 0)
+	return;
+
+    if ((pwd=getpwnam(login_name)) == NULL)
+	return;
+
+    memset (&ll, 0, sizeof(ll));
+    
+    lseek (fd, (off_t)pwd->pw_uid * sizeof (ll), SEEK_SET);
+    
+    time (&ll.ll_time);
+
+    strncpy (ll.ll_line, ut->ut_line, sizeof (ll.ll_line));
+
+#if defined(HAVE_UT_UT_HOST)
+    if (ut->ut_host)
+	strncpy (ll.ll_host, ut->ut_host, sizeof (ll.ll_host));
+#endif
+    
+    write (fd, (void *)&ll, sizeof (ll));
+    close (fd);
+}
+#endif /* HAVE_LASTLOG */
 
 void 
 write_logout_record (void *data, int utmp, int wtmp)
@@ -197,7 +250,7 @@ write_logout_record (void *data, int utmp, int wtmp)
 }
 
 void *
-write_login_record (char *login_name, char *display_name, char *term_name, int utmp, int wtmp)
+write_login_record (char *login_name, char *display_name, char *term_name, int utmp, int wtmp, int lastlog)
 {
 	UTMP *ut;
 	char *pty = term_name;
@@ -216,64 +269,80 @@ write_login_record (char *login_name, char *display_name, char *term_name, int u
 	/* This shouldn't happen */
 	if (strncmp (pty, "/dev/", 5) == 0)
 	    pty += 5;
-	    
-#if defined(HAVE_UT_UT_ID)
-	/* BSD-like terminal name */
-	if (strncmp (pty, "pty", 3) == 0 ||
-	    strncmp (pty, "tty", 3) == 0)
-		strncpy (ut->ut_id, pty+3, sizeof (ut->ut_id));
-	else {
-		int num;
-		char buf[5];
-		
-		if (sscanf (pty, "%*[^0-9]%d", &num) == 1){
-			sprintf (buf, "gt%02x", num);
-			strncpy (ut->ut_id, buf, sizeof (ut->ut_id));
-		} 
-		else
-			ut->ut_id [0] = '\0';
-	}
-#elif defined(HAVE_STRRCHR)
+
+#if defined(HAVE_STRRCHR)
 	{
 		char *p;
 		
-		if ((p = strrchr (pty, '/')) != NULL) 
+		if (strncmp (pty, "pts", 3) &&
+		    (p = strrchr (pty, '/')) != NULL)
 			pty = p + 1;
 	}
 #endif
+	    
+#if defined(HAVE_UT_UT_ID)
+	/* Just a safe-guard */
+	ut->ut_id [0] = '\0';
 
+	/* BSD-like terminal name */
+	if (strncmp (pty, "pts", 3) == 0 ||
+	    strncmp (pty, "pty", 3) == 0 || 
+	    strncmp (pty, "tty", 3) == 0) {
+		strncpy (ut->ut_id, pty+3, sizeof (ut->ut_id));
+	}
+	else {
+		unsigned int num;
+		char buf[10];
+		/* Try to get device number and convert it to gnome-terminal # */
+		if (sscanf (pty, "%*[^0-9a-f]%x", &num) == 1) {
+			sprintf (buf, "gt%02.2x", num);
+			strncpy (ut->ut_id, buf, sizeof (ut->ut_id));
+		}
+	}
+#endif
+
+	/* For utmpx ut_line should be null terminated */
+	/* We do that for both cases to be sure */
 	strncpy (ut->ut_line, pty, sizeof (ut->ut_line));
+	ut->ut_line[sizeof (ut->ut_line)-1] = '\0';
 
+	/* We want parent's pid, not our own */
 #if defined(HAVE_UT_UT_PID)
 	ut->ut_pid  = getppid ();
 #endif
+
 #if defined(HAVE_UT_UT_TYPE)
 	ut->ut_type = USER_PROCESS;
 #endif
+	/* If structure has ut_tv it doesn't need ut_time */
 #if defined(HAVE_UT_UT_TV)
 	gettimeofday ((struct timeval*) &(ut->ut_tv), NULL);
 #elif defined(HAVE_UT_UT_TIME)
 	time (&ut->ut_time);
 #endif
+	/* ut_ host supposed to be null terminated or len should */
+	/* be specifid in additional field. We do both :)  */
 #if defined(HAVE_UT_UT_HOST)
 	strncpy (ut->ut_host, display_name, sizeof (ut->ut_host));
-#    if defined(HAVE_UT_UT_SYSLEN)
 	ut->ut_host [sizeof (ut->ut_host)-1] = '\0';
-	ut->ut_syslen = strlen (ut->ut_host) + 1;
+#    if defined(HAVE_UT_UT_SYSLEN)
+	ut->ut_syslen = strlen (ut->ut_host);
 #    endif
 #endif
-
 	if (utmp)
 		update_utmp (ut);
 
 	if (wtmp)
 		update_wtmp (WTMP_OUTPUT_FILENAME, ut);
 
+	if (lastlog)
+		update_lastlog(login_name, ut);
+
 	return ut;
 }
 
 void *
-update_dbs (int utmp, int wtmp, char *login_name, char *display_name, char *term_name)
+update_dbs (int utmp, int wtmp, int lastlog, char *login_name, char *display_name, char *term_name)
 {
-	return write_login_record (login_name, display_name, term_name, utmp, wtmp);
+	return write_login_record (login_name, display_name, term_name, utmp, wtmp, lastlog);
 }

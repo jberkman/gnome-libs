@@ -95,7 +95,9 @@ vt_dump(struct vt_em *vt)
   nn = wn->next;
   (printf("dumping state of vt buffer:\n"));
   while (nn) {
-    for (i=0;i<wn->width;i++) {
+    /*for (i=0;i<wn->width;i++) {*/
+    printf ("%05d: ", wn->line);
+    for (i=0;i<80;i++) {
       (printf("%c", wn->data[i]&VTATTR_DATAMASK));
     }
     (printf("\n"));

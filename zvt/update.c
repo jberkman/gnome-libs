@@ -244,6 +244,7 @@ static int vt_scroll_update(struct _vtx *vx, struct vt_line *fn, int firstline, 
   int force;
   int top,bottom;
   int index;
+  int end;
 
   /* if we are not scrolling, then the background doesn't need rendering! */
   if (vx->scroll_type == VT_SCROLL_SOMETIMES)
@@ -356,9 +357,14 @@ static int vt_scroll_update(struct _vtx *vx, struct vt_line *fn, int firstline, 
     bl = (struct vt_line *)vx->vt.lines_back.head;
 
     top=firstline;bottom=firstline+count-1;
-    
+    if (vx->scroll_type == VT_SCROLL_SOMETIMES)
+	    end = vx->vt.height;
+    else
+	    end = (firstline+count+offset);
+
     d(printf("fixing up [force=%d] from %d-%d\n", force, top, bottom));
-    for (i=0;nn->next && i<vx->vt.height;i++) {
+    /*for (i=0;nn->next && i<vx->vt.height;i++) {*/
+    for (i=0;nn->next && i<end;i++) {
       d(printf("looking at line %d [%p] ", i, nn));
       if (i<top || i>bottom) {
 	d(printf("forcing update of %d [force=%d]\n", i, force));
@@ -1630,8 +1636,6 @@ struct vt_match *vt_match_check(struct _vtx *vx, int x, int y)
   while (m) {
     b = m->blocks;
     while (b) {
-      d(printf("checking '%s' %d,%d-%d against %d,%d\n",
-	       b->matchstr, b->lineno, b->start, b->end, x, y));
       if (b->lineno == y && x>=b->start && x<b->end)
 	return m;
       b = b->next;

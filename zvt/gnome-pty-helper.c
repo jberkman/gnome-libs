@@ -318,43 +318,17 @@ path_max (void)
 #endif
 }
 
-static int
-open_ptys (int utmp, int wtmp)
+static struct termios*
+init_term_with_defaults(struct termios* term)
 {
-	char *term_name;
-	int status, master_pty, slave_pty;
-	pty_info *p;
-	int result;
-	pid_t savedUid;
-	gid_t savedGid;
-	struct group *group_info;
-	struct termios term;
-	
-	term_name = ((char *)alloca (path_max())) + 1;
-
-	if (term_name == NULL){
-		exit (1);
-	}
-	
-	savedUid = geteuid();
-	savedGid = getegid();
-
-#ifdef HAVE_SETEUID
-	setegid (pwent->pw_gid);
-	seteuid (pwent->pw_uid);
-#else
-	setgid (pwent->pw_gid);
-	setuid (pwent->pw_uid);
-#endif
-
 	/*
 	 *	openpty assumes POSIX termios so this should be portable.
 	 *	Don't change this to a structure init - POSIX doesn't say
 	 *	anything about field order.
 	 */
-	memset(&term, 0, sizeof(term));
+	memset(term, 0, sizeof(struct termios));
 
-	term.c_iflag = 0
+	term->c_iflag = 0
 #ifdef BRKINT
 	  | BRKINT
 #endif
@@ -371,7 +345,7 @@ open_ptys (int utmp, int wtmp)
 	  | IXANY
 #endif
 	  ;
-	term.c_oflag = 0
+	term->c_oflag = 0
 #ifdef OPOST
 	  | OPOST
 #endif
@@ -397,7 +371,7 @@ open_ptys (int utmp, int wtmp)
 	  | FF0
 #endif
 	  ;
-	term.c_cflag = 0
+	term->c_cflag = 0
 #ifdef CREAD
 	  | CREAD
 #endif
@@ -409,21 +383,21 @@ open_ptys (int utmp, int wtmp)
 #endif
 	  ;
 #ifdef EXTB
-	cfsetispeed (&term, EXTB);
-	cfsetospeed (&term, EXTB);
+	cfsetispeed(term, EXTB);
+	cfsetospeed(term, EXTB);
 #else
 #   ifdef B38400
-        cfsetispeed(&term, B38400);
-        cfsetospeed(&term, B38400);
+        cfsetispeed(term, B38400);
+        cfsetospeed(term, B38400);
 #   else
 #       ifdef B9600
-        cfsetispeed(&term, B9600);
-        cfsetospeed(&term, B9600);
+        cfsetispeed(term, B9600);
+        cfsetospeed(term, B9600);
 #       endif
 #   endif
 #endif /* EXTB */
 
-	term.c_lflag = 0
+	term->c_lflag = 0
 #ifdef ECHO
 	  | ECHO
 #endif
@@ -449,12 +423,14 @@ open_ptys (int utmp, int wtmp)
 
 #ifdef N_TTY
 	/* should really be a check for c_line, but maybe this is good enough */
-	term.c_line = N_TTY;
+	term->c_line = N_TTY;
 #endif
 
 	/* These two may overlap so set them first */
-	term.c_cc[VTIME] =  0;
-	term.c_cc[VMIN] = 0;
+	/* That setup means, that read() will be blocked untill */
+	/* at least 1 symbol will be read.                      */
+	term->c_cc[VMIN]  = 1;
+	term->c_cc[VTIME] = 0;
 	
 	/*
 	 * Now set the characters. This is of course a religious matter
@@ -464,53 +440,110 @@ open_ptys (int utmp, int wtmp)
 	 * These are the ones set by "stty sane".
 	 */
 	   
-	term.c_cc[VINTR] = 'C'-64;
-	term.c_cc[VQUIT] = '\\'-64;
-	term.c_cc[VERASE] = 127;
-	term.c_cc[VKILL] =  'U'-64;
-	term.c_cc[VEOF] =  'D'-64;
+	term->c_cc[VINTR]  = 'C'-64;
+	term->c_cc[VQUIT]  = '\\'-64;
+	term->c_cc[VERASE] = 127;
+	term->c_cc[VKILL]  = 'U'-64;
+	term->c_cc[VEOF]   = 'D'-64;
 #ifdef VSWTC
-	term.c_cc[VSWTC] = 0;
+	term->c_cc[VSWTC]  = 255;
 #endif
-	term.c_cc[VSTART] = 'Q'-64;
-	term.c_cc[VSTOP] = 'S'-64;
-	term.c_cc[VSUSP] =  'Z'-64;
-	term.c_cc[VEOL] = 0;
+	term->c_cc[VSTART] = 'Q'-64;
+	term->c_cc[VSTOP]  = 'S'-64;
+	term->c_cc[VSUSP]  = 'Z'-64;
+	term->c_cc[VEOL]   = 255;
 	
 	/*
 	 *	Extended stuff.
 	 */
 	 
 #ifdef VREPRINT	
-	term.c_cc[VREPRINT] = 'R'-64;
+	term->c_cc[VREPRINT] = 'R'-64;
+#endif
+#ifdef VSTATUS
+	term->c_cc[VSTATUS]  = 'T'-64;
 #endif
 #ifdef VDISCARD	
-	term.c_cc[VDISCARD] = 'O'-64;
+	term->c_cc[VDISCARD] = 'O'-64;
 #endif
 #ifdef VWERASE
-	term.c_cc[VWERASE] = 'W'-64;
+	term->c_cc[VWERASE]  = 'W'-64;
 #endif	
 #ifdef VLNEXT
-	term.c_cc[VLNEXT] =  'V'-64;
+	term->c_cc[VLNEXT]   = 'V'-64;
+#endif
+#ifdef VDSUSP
+	term->c_cc[VDSUSP]   = 'Y'-64;
 #endif
 #ifdef VEOL2	
-	term.c_cc[VEOL2] = 0;
+	term->c_cc[VEOL2]    = 255;
 #endif
+    return(term);
+}
 
+static int
+open_ptys (int utmp, int wtmp, int lastlog)
+{
+	char *term_name;
+	int status, master_pty, slave_pty;
+	pty_info *p;
+	int result;
+	uid_t savedUid;
+	gid_t savedGid;
+	struct group *group_info;
+	struct termios term;
+	
+	term_name = ((char *) alloca (path_max())) + 1;
+
+	if (term_name == NULL){
+		exit (1);
+	}
+	/* Initialize term */
+	init_term_with_defaults(&term);
+
+	/* root priveleges */
+	savedUid = geteuid();
+	savedGid = getegid();
+	
+	/* drop privileges to the user level */
+#if defined(HAVE_SETEUID)
+	seteuid (pwent->pw_uid);
+	setegid (pwent->pw_gid);
+#elif defined(HAVE_SETREUID)
+	setreuid (savedUid, pwent->pw_uid);
+	setregid (savedGid, pwent->pw_gid);
+#else
+#error "No means to drop privileges! Huge security risk! Won't compile."
+#endif
+	/* Open pty with priveleges of the user */
 	status = openpty (&master_pty, &slave_pty, term_name, &term, NULL);
-	setuid(savedUid);
-	setgid(savedGid);
 
+	/* Restore saved priveleges to root */
+#ifdef HAVE_SETEUID
+	seteuid (savedUid);
+	setegid (savedGid);
+#elif defined(HAVE_SETREUID)
+	setreuid (pwent->pw_uid, savedUid);
+	setregid (pwent->pw_gid, savedGid);
+#else
+#error "No means to raise privileges! Huge security risk! Won't compile."
+#endif
+	/* openpty() failed, reject request */
 	if (status == -1){
 		result = 0;
 		write (STDIN_FILENO, &result, sizeof (result));
 		return 0;
 	}
 
+	/* a bit tricky, we re-do the part of the openpty()  */
+	/* that required root priveleges, and, hence, failed */
 	group_info = getgrnam ("tty");
-	fchown (slave_pty, getuid (), group_info?group_info->gr_gid:-1);
+	fchown (slave_pty, getuid (), group_info ? group_info->gr_gid : -1);
 	fchmod (slave_pty, S_IRUSR | S_IWUSR | S_IWGRP);
-
+	/* It's too late to call revoke at this time... */
+	/* revoke(term_name); */
+	
+	/* add pty to the list of allocated by us */
 	p = pty_add (utmp, wtmp, master_pty, slave_pty, term_name);
 	result = 1;
 
@@ -521,8 +554,8 @@ open_ptys (int utmp, int wtmp)
 		exit (0);
 	}
 
-	if (utmp || wtmp){
-		p->data = update_dbs (utmp, wtmp, login_name, display_name, term_name);
+	if (utmp || wtmp || lastlog){
+		p->data = write_login_record (login_name, display_name, term_name, utmp, wtmp, lastlog);
 	}
 	
 	return 1;
@@ -550,7 +583,7 @@ struct {
 	{ RLIMIT_CPU,    120 },
 	{ RLIMIT_FSIZE,  1 * MB },
 	{ RLIMIT_DATA,   1 * MB },
-	{ RLIMIT_STACK,  1  * MB },
+	{ RLIMIT_STACK,  1 * MB },
 #ifdef RLIMIT_AS
 	{ RLIMIT_AS,     1 * MB },
 #endif
@@ -676,19 +709,38 @@ main (int argc, char *argv [])
 
 		switch (op){
 		case GNOME_PTY_OPEN_PTY_UTMP:
-			open_ptys (1, 0);
+			open_ptys (1, 0, 0);
 			break;
 			
 		case GNOME_PTY_OPEN_PTY_UWTMP:
-			open_ptys (1, 1);
+			open_ptys (1, 1, 0);
 			break;
 			
 		case GNOME_PTY_OPEN_PTY_WTMP:
-			open_ptys (0, 1);
+			open_ptys (0, 1, 0);
 			break;
 			
+		case GNOME_PTY_OPEN_PTY_LASTLOG:
+			open_ptys (0, 0, 1);
+			break;
+
+		case GNOME_PTY_OPEN_PTY_LASTLOGUTMP:
+			open_ptys (1, 0, 1);
+			break;
+
+		case GNOME_PTY_OPEN_PTY_LASTLOGUWTMP:
+			open_ptys (1, 1, 1);
+			break;
+
+		case GNOME_PTY_OPEN_PTY_LASTLOGWTMP:
+			open_ptys (0, 1, 1);
+			break;
+
 		case GNOME_PTY_OPEN_NO_DB_UPDATE:
-			open_ptys (0, 0);
+			open_ptys (0, 0, 0);
+			break;
+
+		case GNOME_PTY_RESET_TO_DEFAULTS:
 			break;
 			
 		case GNOME_PTY_CLOSE_PTY:
@@ -705,5 +757,4 @@ main (int argc, char *argv [])
 
 	return 0;
 }
-
 

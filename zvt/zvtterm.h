@@ -185,6 +185,7 @@ struct _zvtprivate
 /* options for fork */
 #define ZVT_TERM_DO_UTMP_LOG 1
 #define ZVT_TERM_DO_WTMP_LOG 2
+#define ZVT_TERM_DO_LASTLOG  4
 
 /* background flag options */
 #define ZVT_BACKGROUND_SHADED 0x01 /* shade background image.  This must be left as 1 for api compat! */

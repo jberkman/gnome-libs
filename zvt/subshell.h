@@ -19,8 +19,8 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-int  zvt_init_subshell     (struct vt_em *vt, char *pty_name, int full);
+int zvt_init_subshell     (struct vt_em *vt, char *pty_name, int full);
 int zvt_shutdown_subshell (struct vt_em *vt);
-int  zvt_resize_subshell   (int fd, int col, int row, int xpixel, int ypixel);
+int zvt_resize_subshell   (int fd, int col, int row, int xpixel, int ypixel);
 
 #endif /* _SUBSHELL_H */

@@ -1,3 +1,7 @@
+2000-03-28  NotZed  <NotZed@HelixCode.com>
+
+	* Merged from gnome-libs-1-0, zvt-merge-2 till zvt-merge-3 changes.
+
 2000-03-06  Elliot Lee <sopwith@redhat.com>
 	* gnome-utmp.c: strncmp returns int not pointer - act accordingly.
 
@@ -88,6 +92,50 @@
 
 	* Makefile.am (zterm_LDADD): properly link zterm to gdk-pixbuf,
 	libart_lgpl, libgnomeui and libgnome.
+
+2000-03-20  Jacob Berkman  <jacob@helixcode.com>
+
+	* gnome-utmp.c (write_login_record): patch from Gerald Britton
+	<gbritton@mit.edu> for utmp handling
+
+2000-03-06  Elliot Lee <sopwith@redhat.com>
+	* gnome-utmp.c: strncmp returns an int, not a pointer - act
+	accordingly.
+
+2000-03-02  NotZed  <NotZed@HelixCode.com>
+
+	* update.c (vt_update): When scroll-updating, dont update till the
+	end of the screen, unless we have a background pixmap.  Fixes a
+	rendering glitch when multiple scrolled regions have occured
+	between updates.
+
+2000-02-14  Timur Bakeyev <timur@gnu.org>
+
+	* gnome-utmp.c: Changed [sizeof()] to [sizeof()-1]. That prevents
+	overriding next field. Stupid me...
+
+2000-02-14  Timur Bakeyev <timur@gnu.org>
+
+	* gnome-pty-helper.[ch], gnome-utmp.c, subshell.c, zvt-term.h,
+	zterm.c: Applied patches from Andrew J. Korty <ajk@waterspout.com>
+	that fixes/extends such parts:
+	
+	* gnome-pty-helper didn't raise permissions after dropping them, so,
+	updates to the utmp/tty permissions didn't work... Thanks a lot!
+	
+	* Add support for lastlog records, if possible.
+	
+	Patches re-worked a bit to be more consistent. Also, some mine fixes
+	to the original code.	
+	
+2000-01-29  NotZed  <notzed@zedzone.helixcode.com>
+
+	* zvtterm.c (zvt_term_destroy): Free colours if they are set.
+	(zvt_term_init): Initialise queue_*, and use g_malloc0() for
+	private data.
+	Fixes for bug #5574, fixes from Petr Tesarik
+	<tesarik@petr.lupa.cz>, and Fabrice Bellet
+	<Fabrice.Bellet@creatis.insa-lyon.fr>
 
 2000-01-22  NotZed  <notzed@zedzone.helixcode.com>
 

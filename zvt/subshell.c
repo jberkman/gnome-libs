@@ -25,6 +25,7 @@
 #include "subshell-includes.h"
 #define ZVT_TERM_DO_UTMP_LOG 1
 #define ZVT_TERM_DO_WTMP_LOG 2
+#define ZVT_TERM_DO_LASTLOG  4
 
 /* Pid of the helper SUID process */
 static pid_t helper_pid;
@@ -260,14 +261,22 @@ get_ptys (int *master, int *slave, int update_wutmp)
 	op = GNOME_PTY_OPEN_NO_DB_UPDATE;
 	
 	if (update_wutmp & ZVT_TERM_DO_UTMP_LOG){
-		if (update_wutmp & ZVT_TERM_DO_WTMP_LOG)
+		if (update_wutmp & (ZVT_TERM_DO_WTMP_LOG | ZVT_TERM_DO_LASTLOG))
+			op = GNOME_PTY_OPEN_PTY_LASTLOGUWTMP;
+		else if (update_wutmp & ZVT_TERM_DO_WTMP_LOG)
 			op = GNOME_PTY_OPEN_PTY_UWTMP;
+		else if (update_wutmp & ZVT_TERM_DO_LASTLOG)
+			op = GNOME_PTY_OPEN_PTY_LASTLOGUTMP;
 		else
 			op = GNOME_PTY_OPEN_PTY_UTMP;
-	} else {
-		if (update_wutmp & ZVT_TERM_DO_WTMP_LOG)
+	} else if (update_wutmp & ZVT_TERM_DO_WTMP_LOG) {
+		if (update_wutmp & (ZVT_TERM_DO_WTMP_LOG | ZVT_TERM_DO_LASTLOG))
+			op = GNOME_PTY_OPEN_PTY_LASTLOGWTMP;
+		else if (update_wutmp & ZVT_TERM_DO_WTMP_LOG)
 			op = GNOME_PTY_OPEN_PTY_WTMP;
-	}
+	} else
+		if (update_wutmp & ZVT_TERM_DO_LASTLOG)
+			op = GNOME_PTY_OPEN_PTY_LASTLOG;
 	
 	if (write (helper_socket_protocol [0], &op, sizeof (op)) < 0)
 		return NULL;
