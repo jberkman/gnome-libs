@@ -30,14 +30,19 @@ libgnome.sgml:
 		cat trailer.sgml >> libgnome.sgml; \
 	fi
 
+TEXT_FILES =				\
+	README.gtkcauldron		\
+	README.gtkcauldron_for_python	\
+	adding-sounds.txt		\
+	api-comment-style.txt		\
+	gtk_dialog_cauldron.3		\
+	suggestions.txt			\
+	mime-type-handling.txt
+
 # automake does not yet dig .sgml files, so for now the DocBook
 # files must be extra_dist.  Also, distribute the `.html' file
 # so that people without DocBook can still use the docs.
 EXTRA_DIST = \
-	README.gtkcauldron		\
-	README.gtkcauldron_for_pyton	\	
-	adding-sounds.txt		\
-	api-comment-style.txt		\
 	gnome-doc-framework.txt		\
 	gnome-app-helper.sgml		\
 	gnome-canvas.sgml		\
@@ -49,7 +54,8 @@ EXTRA_DIST = \
 	libgnorba.sgml			\
 	gnome-mdi.sgml			\
 	libgnomeui.sgml			\
-	gtk_dialog_cauldron.3		\
-	suggestions.txt			\
-	mime-type-handling.txt		\
-	libgnome.sgml
+	libgnome.sgml			\
+	$(TEXT_FILES)
+
+docdir   = $(prefix)/doc
+doc_DATA = $(TEXT_FILES)
