@@ -1,0 +1,65 @@
+
+This document includes:
+
+    * General information
+    * Tour
+    * Licensing
+    * Requirements
+
+* General information
+
+   This is a snapshot of the GNOME libraries, part of the GNOME
+project, the GNU desktop.
+
+* Tour
+
+   GNOME is using several capabilities in all of its applications.
+
+   One of these is internationalization, often abbreviated I18N.  A
+GNOME programmer should modify his C coding style slightly so that his
+messages go through a mapping function.  This allows a non-programmer
+to supply a translation of the strings into another language.  Look at
+the GNU readtext package and intl/ for more information.
+
+   Another capability is Guile, which is a scheme interpreter.
+Programs that need more configuration than just loading a few values
+can include Guile in their program.  This allows users much more
+freedom to extend the program.  Look in guile-gnome/ and guile-gtk/
+for more information.
+
+   Another capability is the gtk, Gimp Tool Kit.  It's an X toolkit,
+originally written for the Gimp image editing system, but now extended
+to be generally useful.  It is the use of gtk that gives gnome
+applications a common look and feel.
+
+   And of course, GNOME comes with applications.  Look in programs/
+for more information.
+
+* Licensing
+
+The libgnome and libgnomeui are released under the terms of the LGPL
+license, read the file COPYING.LIB for more information.
+
+The rest of the code is released under the terms of the GPL license,
+read the file COPYING for more information. 
+
+* Requirements
+
+The Gnome desktop environment depends on a couple of extra packages
+for working properly:
+
+	- GNU gettext:
+
+	   ftp://prep.ai.mit.edu/pub/gnu
+
+	- Gtk+ 0.99.3
+
+	   ftp://ftp.gimp.org/pub/gtk/
+
+	- libXpm.
+
+Optional libraries that might be used during compile:
+
+	- JPEG, PNG and zlib are optionally used by the HTML display
+	  engine.  If found the engine will support those image formats.
+
