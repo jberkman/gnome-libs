@@ -1,3 +1,9 @@
+1999-01-13  Mark Galassi  <rosalia@cygnus.com>
+
+	* libgnorba/Makefile.am (install-data-hook): replaced rm with rm
+	-f so as not to cause "make install" to stop dead when the
+	new-object file was not previously installed.
+
 1999-01-13  Havoc Pennington  <hp@pobox.com>
 
 	* libgnome/gnome-popt.h: Place the inclusion of the popt header
