@@ -5,8 +5,6 @@
 #include "convertrgb.h"
 #include <glib.h>
 
-static int transp;
-
 #ifdef HAVE_LIBPNG
 /* this code is cut-and-pasted from gdk-pixbuf; if someone wants
    to fool with the build issues, we could just use gdk-pixbuf
