@@ -23,11 +23,10 @@ EXTRA_DIST = 		\
 	toroid.png
 
 test_gnome_LDADD = \
-	$(top_builddir)/libgnomeui/libgnomeui.la 	\
-	$(top_builddir)/libgnome/libgnome.la		\
-	$(top_builddir)/gdk-pixbuf/gdk-pixbuf/libgdk_pixbuf.la	\
-	$(top_builddir)/libart_lgpl/libart_lgpl.la	\
-	$(LIBGTKXMHTML_LIBS) $(LIBGNOME_LIBS) $(LIBGNOMEUI_LIBS) $(INTLLIBS)
+	$(top_builddir)/libgnomeui/libgnomeui-$(GNOME_INTERFACE_VERSION).la 	\
+	$(top_builddir)/libgnome/libgnome-$(GNOME_INTERFACE_VERSION).la		\
+	$(GDK_PIXBUF_LIBS) \
+	$(LIBGNOME_LIBS) $(LIBGNOMEUI_LIBS) $(INTLLIBS)
 
 # the program has to be run from $srcdir to find its image files
 test: test-gnome
