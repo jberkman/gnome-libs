@@ -33,7 +33,6 @@ SUBDIRS = \
 	$(gconf_SUBDIRS)	\
 	$(gnome_vfs_SUBDIRS)	\
 	$(test_gnome)		\
-	devel-docs		\
 	gnome-data man
 
 if COMPILE_TEST_GNOME
