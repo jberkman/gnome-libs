@@ -332,7 +332,7 @@ int main ()
 # Checks for availability of various utmp fields
 #
 # Original code by Bernhard Rosenkraenzer (bero@linux.net.eu.org), 1998.
-# Modifications by Timur Bakeyev (mc@bat.ru), 1999.
+# Modifications by Timur Bakeyev (timur@gnu.org), 1999.
 #
 
 dnl AC_CHECK_UTMP()
@@ -341,8 +341,14 @@ dnl
 
 AC_DEFUN(AC_CHECK_UTMP,[
 
-AC_CHECK_HEADERS(sys/time.h)
+AC_CHECK_HEADERS(sys/time.h utmp.h utmpx.h)
 AC_HEADER_TIME
+
+if test "$ac_cv_header_utmpx_h" = "yes"; then
+    AC_DEFINE(UTMP,[struct utmpx])
+else
+    AC_DEFINE(UTMP,[struct utmp])
+fi
 
 dnl some systems (BSD4.4-like) require time.h to be included before utmp.h :/
 AC_MSG_CHECKING(for ut_host field in the utmp structure)
@@ -356,7 +362,12 @@ AC_TRY_COMPILE([#ifdef TIME_WITH_SYS_TIME
 #include <time.h>
 #endif
 #endif
-#include <utmp.h>],[struct utmp ut; char *p; p=ut.ut_host;],result=yes,result=no)
+#ifdef HAVE_UTMP_H
+#include <utmp.h>
+#endif
+#ifdef HAVE_UTMPX_H
+#include <utmpx.h>
+#endif],[UTMP ut; char *p; p=ut.ut_host;],result=yes,result=no)
 if test "$result" = "yes"; then
   AC_DEFINE(HAVE_UT_UT_HOST)
 fi
@@ -373,7 +384,12 @@ AC_TRY_COMPILE([#ifdef TIME_WITH_SYS_TIME
 #include <time.h>
 #endif
 #endif
-#include <utmp.h>],[struct utmp ut; int i; i=ut.ut_pid;],result=yes,result=no)
+#ifdef HAVE_UTMP_H
+#include <utmp.h>
+#endif
+#ifdef HAVE_UTMPX_H
+#include <utmpx.h>
+#endif],[UTMP ut; int i; i=ut.ut_pid;],result=yes,result=no)
 if test "$result" = "yes"; then
   AC_DEFINE(HAVE_UT_UT_PID)
 fi
@@ -390,7 +406,12 @@ AC_TRY_COMPILE([#ifdef TIME_WITH_SYS_TIME
 #include <time.h>
 #endif
 #endif
-#include <utmp.h>],[struct utmp ut; char *p; p=ut.ut_id;],result=yes,result=no)
+#ifdef HAVE_UTMP_H
+#include <utmp.h>
+#endif
+#ifdef HAVE_UTMPX_H
+#include <utmpx.h>
+#endif],[UTMP ut; char *p; p=ut.ut_id;],result=yes,result=no)
 if test "$result" = "yes"; then
   AC_DEFINE(HAVE_UT_UT_ID)
 fi
@@ -407,7 +428,12 @@ AC_TRY_COMPILE([#ifdef TIME_WITH_SYS_TIME
 #include <time.h>
 #endif
 #endif
-#include <utmp.h>],[struct utmp ut; char *p; p=ut.ut_name;],result=yes,result=no)
+#ifdef HAVE_UTMP_H
+#include <utmp.h>
+#endif
+#ifdef HAVE_UTMPX_H
+#include <utmpx.h>
+#endif],[UTMP ut; char *p; p=ut.ut_name;],result=yes,result=no)
 if test "$result" = "yes"; then
   AC_DEFINE(HAVE_UT_UT_NAME)
 fi
@@ -424,7 +450,12 @@ AC_TRY_COMPILE([#ifdef TIME_WITH_SYS_TIME
 #include <time.h>
 #endif
 #endif
-#include <utmp.h>],[struct utmp ut; int i; i=(int) ut.ut_type;],result=yes,result=no)
+#ifdef HAVE_UTMP_H
+#include <utmp.h>
+#endif
+#ifdef HAVE_UTMPX_H
+#include <utmpx.h>
+#endif],[UTMP ut; int i; i=(int) ut.ut_type;],result=yes,result=no)
 if test "$result" = "yes"; then
   AC_DEFINE(HAVE_UT_UT_TYPE)
 fi
@@ -441,7 +472,12 @@ AC_TRY_COMPILE([#ifdef TIME_WITH_SYS_TIME
 #include <time.h>
 #endif
 #endif
-#include <utmp.h>],[struct utmp ut; ut.ut_exit.e_termination=0;],result=yes,result=no)
+#ifdef HAVE_UTMP_H
+#include <utmp.h>
+#endif
+#ifdef HAVE_UTMPX_H
+#include <utmpx.h>
+#endif],[UTMP ut; ut.ut_exit.e_termination=0;],result=yes,result=no)
 if test "$result" = "yes"; then
   AC_DEFINE(HAVE_UT_UT_EXIT_E_TERMINATION)
 fi
@@ -458,7 +494,12 @@ AC_TRY_COMPILE([#ifdef TIME_WITH_SYS_TIME
 #include <time.h>
 #endif
 #endif
-#include <utmp.h>],[struct utmp ut; char *p; p=ut.ut_user;],result=yes,result=no)
+#ifdef HAVE_UTMP_H
+#include <utmp.h>
+#endif
+#ifdef HAVE_UTMPX_H
+#include <utmpx.h>
+#endif],[UTMP ut; char *p; p=ut.ut_user;],result=yes,result=no)
 if test "$result" = "yes"; then
   AC_DEFINE(HAVE_UT_UT_USER)
 fi
@@ -475,7 +516,12 @@ AC_TRY_COMPILE([#ifdef TIME_WITH_SYS_TIME
 #include <time.h>
 #endif
 #endif
-#include <utmp.h>],[struct utmp ut; ut.ut_time=0;],result=yes,result=no)
+#ifdef HAVE_UTMP_H
+#include <utmp.h>
+#endif
+#ifdef HAVE_UTMPX_H
+#include <utmpx.h>
+#endif],[UTMP ut; ut.ut_time=0;],result=yes,result=no)
 if test "$result" = "yes"; then
   AC_DEFINE(HAVE_UT_UT_TIME)
 fi
@@ -492,7 +538,12 @@ AC_TRY_COMPILE([#ifdef TIME_WITH_SYS_TIME
 #include <time.h>
 #endif
 #endif
-#include <utmp.h>],[struct utmp ut; ut.ut_tv={0, 0};],result=yes,result=no)
+#ifdef HAVE_UTMP_H
+#include <utmp.h>
+#endif
+#ifdef HAVE_UTMPX_H
+#include <utmpx.h>
+#endif],[UTMP ut; ut.ut_tv={0, 0};],result=yes,result=no)
 if test "$result" = "yes"; then
   AC_DEFINE(HAVE_UT_UT_TV)
 fi

@@ -10,50 +10,51 @@ INCLUDES = -I.. -I$(srcdir)/.. $(SUPPORTINCS)		\
 	$(GDK_IMLIB_CFLAGS)				\
 	-DGNOMESBINDIR=\""$(sbindir)"\"
 
-libzvt_la_SOURCES =					\
-	gnome-login-support.h				\
-	gnome-login-support.c				\
-	lists.c						\
-	subshell.h					\
-	subshell.c					\
-	subshell-includes.h				\
-	update.c					\
-	vt.c						\
+libzvt_la_SOURCES =		\
+	gnome-login-support.h	\
+	gnome-login-support.c	\
+	lists.c			\
+	subshell.h		\
+	subshell.c		\
+	subshell-includes.h	\
+	update.c		\
+	vt.c			\
 	zvtterm.c
 
 libzvt_la_LDFLAGS = -version-info 3:1:1 -rpath $(libdir)
 
-libzvtinclude_HEADERS =					\
-	lists.h						\
-	vt.h						\
-	vtx.h						\
+libzvtinclude_HEADERS =		\
+	lists.h			\
+	vt.h			\
+	vtx.h			\
 	zvtterm.h
 
-gnome_pty_helper_SOURCES = 				\
-	gnome-pty.h					\
-	gnome-pty-helper.c				\
-	gnome-login-support.c				\
-	gnome-utmp.c					\
+gnome_pty_helper_SOURCES = 	\
+	gnome-pty.h		\
+	gnome-pty-helper.c	\
+	gnome-login-support.c	\
+	gnome-utmp.c		\
 	gnome-login-support.h
 
-gnome_pty_helper_LDADD =				\
+gnome_pty_helper_LDADD =	\
 	$(UTIL_LIBS)
 
 EXTRA_DIST = TODO BUGS README 
 
 zterm_SOURCES	= zterm.c
 
-zterm_LDADD	= 					\
-	$(top_builddir)/zvt/libzvt.la			\
-	$(GTK_LIBS) 					\
-	$(GDK_IMLIB_LIBS)				\
-	@LIBSUPPORT@ $(INTLLIBS) $(UTIL_LIBS)
+zterm_LDADD	= 			\
+	$(top_builddir)/zvt/libzvt.la	\
+	$(UTIL_LIBS)			\
+	$(GTK_LIBS) 			\
+	$(GDK_IMLIB_LIBS)		\
+	@LIBSUPPORT@ $(INTLLIBS)
 
-test_utmp_SOURCES =					\
-	gnome-utmp.c					\
+test_utmp_SOURCES =			\
+	gnome-utmp.c			\
 	test-utmp.c
 
-test_utmp_LDADD =					\
+test_utmp_LDADD =			\
 	$(UTIL_LIBS)
 
 install-exec-local:

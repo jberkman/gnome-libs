@@ -1,3 +1,9 @@
+Sat Feb 20 16:53:37 1999  Timur Bakeyev <mc@bat.ru>
+
+	* acconfig.h, acinclude.m4: Add defenition of UTMP macro during
+	configure. This allows to check exactly what we'll use, not plain
+	struct utmp.
+
 Thu Feb 18 12:34:37 1999  Maciej Stachowiak  <mstachow@alum.mit.edu>
 
 	* libgnorba/Makefile.am (install-data-hook): Use `$(LN_S)' instead

@@ -28,7 +28,7 @@
 #    include <paths.h>
 #endif
 
-#if defined(HAVE_GETUTMPX)
+#if defined(HAVE_UTMPX_H)
 #    include <utmpx.h>
 #endif
 
@@ -53,12 +53,10 @@
 #endif
 
 #if defined(HAVE_GETUTMPX)
-#define UTMP struct utmpx
 #undef  WTMP_FILENAME
 #define WTMP_FILENAME WTMPX_FILE
 #define update_wtmp updwtmpx
 #else /* !HAVE_GETUTMPX */
-#define UTMP struct utmp
 
 static void
 update_wtmp (char *file, struct utmp *putmp)
