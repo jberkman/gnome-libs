@@ -1,5 +1,9 @@
 Tue Jun 30 16:12:55 1998  Tom Tromey  <tromey@cygnus.com>
 
+	* libgnome/gnome-config.c: Removed backwards-compatibility hack.
+	(_gnome_config_get_translated_string_with_default): Handle
+	language specs like `pt_PT@foo'.
+
 	* libgnome/gnome-i18n.c: Include libgnomeP.h.
 	* libgnome/gnome-help.c: Include gnome-i18nP.h, sys/wait.h.
 	* libgnome/gnomelib-init.c: Include gnome-i18nP.h.
