@@ -69,36 +69,31 @@ title_changed_event (ZvtTerm *term, VTTITLE_TYPE type, char *newtitle)
 }
 
 static void
-size_allocate (GtkWidget *widget)
+set_hints (GtkWidget *widget)
 {
-  ZvtTerm *term;
-  XSizeHints sizehints;
-  
-  g_assert (widget != NULL);
-  term = ZVT_TERM (widget);
+        ZvtTerm *term;
+	GdkGeometry hints;
+	GtkWidget *app;
 
-#define PADDING 2  
-  sizehints.base_width = 
-    (GTK_WIDGET (window)->allocation.width) +
-    (GTK_WIDGET (term)->style->klass->xthickness * 2) -
-    (GTK_WIDGET (term)->allocation.width) + PADDING;
-  
-  sizehints.base_height =
-    (GTK_WIDGET (window)->allocation.height) +
-    (GTK_WIDGET (term)->style->klass->ythickness * 2) -
-    (GTK_WIDGET (term)->allocation.height);
-  
-  sizehints.width_inc = term->charwidth;
-  sizehints.height_inc = term->charheight;
-  sizehints.min_width = sizehints.base_width + sizehints.width_inc;
-  sizehints.min_height = sizehints.base_height + sizehints.height_inc;
-  
-  sizehints.flags = (PBaseSize|PMinSize|PResizeInc);
-  
-  XSetWMNormalHints (GDK_DISPLAY(),
-		     GDK_WINDOW_XWINDOW (GTK_WIDGET (window)->window),
-		     &sizehints);
-  gdk_flush ();
+	g_assert (widget != NULL);
+	term = ZVT_TERM (widget);
+
+	app = gtk_widget_get_toplevel(widget);
+	g_assert (app != NULL);
+
+#define PADDING 2
+	hints.base_width = (GTK_WIDGET (term)->style->klass->xthickness * 2) + PADDING;
+	hints.base_height =  (GTK_WIDGET (term)->style->klass->ythickness * 2);
+
+	hints.width_inc = term->charwidth;
+	hints.height_inc = term->charheight;
+	hints.min_width = hints.base_width + hints.width_inc;
+	hints.min_height = hints.base_height + hints.height_inc;
+
+	gtk_window_set_geometry_hints(GTK_WINDOW(app),
+				      GTK_WIDGET(term),
+				      &hints,
+				      GDK_HINT_RESIZE_INC|GDK_HINT_MIN_SIZE|GDK_HINT_BASE_SIZE);
 }
 
 /*
@@ -214,8 +209,8 @@ main (gint argc, gchar *argv[])
   
   gtk_signal_connect_after (
       GTK_OBJECT (term),
-      "size_allocate",
-      GTK_SIGNAL_FUNC (size_allocate),
+      "realize",
+      GTK_SIGNAL_FUNC (set_hints),
       term);
 
   gtk_widget_show (term);

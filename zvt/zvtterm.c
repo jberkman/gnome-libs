@@ -857,6 +857,9 @@ zvt_term_size_request (GtkWidget      *widget,
   } else {
     grid_width = term->grid_width;
     grid_height = term->grid_height;
+
+    grid_width = term->vx->vt.width;
+    grid_height = term->vx->vt.height;
   }
 
   requisition->width = (grid_width * term->charwidth) + 
@@ -866,6 +869,7 @@ zvt_term_size_request (GtkWidget      *widget,
 
   /* debug ouput */
   d( printf("zvt_term_size_request x=%d y=%d\n", grid_width, grid_height) );
+  d( printf("   requestion size w=%d, h=%d\n", requisition->width, requisition->height) );
 }
 
 static void
@@ -880,8 +884,6 @@ zvt_term_size_allocate (GtkWidget     *widget,
   g_return_if_fail (ZVT_IS_TERM (widget));
   g_return_if_fail (allocation != NULL);
 
-  widget->allocation = *allocation;
-
   if (GTK_WIDGET_REALIZED (widget)) {
       term = ZVT_TERM (widget);
 
@@ -889,6 +891,9 @@ zvt_term_size_allocate (GtkWidget     *widget,
 		term->vx->vt.width,
 		term->vx->vt.height) );
       
+      d(printf("old size w=%d h=%d\n", widget->allocation.width, widget->allocation.height));
+      d(printf("new allocation w=%d h=%d\n", allocation->width, allocation->height));
+
       gdk_window_move_resize (widget->window,
 			      allocation->x,
 			      allocation->y,
@@ -896,12 +901,6 @@ zvt_term_size_allocate (GtkWidget     *widget,
 			      allocation->height);
 
       term_width = allocation->width - (2 * widget->style->klass->xthickness) - PADDING;
-      term_height = allocation->height - (2 * widget->style->klass->ythickness);
-
-      /* fixme: this must not include padding
-	 some of the sizes are a little bit out ... */
-
-      term_width = allocation->width - (2 * widget->style->klass->xthickness);
       term_height = allocation->height - (2 * widget->style->klass->ythickness);
 
       /* resize the virtual terminal buffer, if its size has changed, minimal size is 1x1 */
@@ -912,9 +911,9 @@ zvt_term_size_allocate (GtkWidget     *widget,
 	vt_resize (&term->vx->vt, grid_width, grid_height, term_width, term_height);
 	vt_update (term->vx, UPDATE_REFRESH|UPDATE_SCROLLBACK);
 	
-	d( printf("zvt_term_size_allocate grid calc x=%d y=%d\n", 
-		  grid_width,
-		  grid_height) );
+	d(printf("zvt_term_size_allocate grid calc x=%d y=%d\n", 
+		 grid_width,
+		 grid_height) );
 
 	/* is this right? Seems we have to update this... */
 	/* term->set_grid_size_pending = TRUE; */
@@ -928,7 +927,8 @@ zvt_term_size_allocate (GtkWidget     *widget,
       d( printf("zvt_term_size_allocate new grid x=%d y=%d\n", 
 		term->vx->vt.width,
 		term->vx->vt.height) );
-    }
+  }
+  widget->allocation = *allocation;
 }
 
 

@@ -1,3 +1,16 @@
+1999-06-14  Michael Zucchi  <mzucchi@zedzone.mmc.com.au>
+
+	* zterm.c (set_hints): Renamed size_allocate to set_hints.
+	Changed to use gtk_window_set_geometry_hints() instead of the X
+	call.
+	(main): Change the size_allocate signal to a realize signal, to
+	set the window hints once the window is realized.
+
+	* zvtterm.c (zvt_term_size_request): Removed bogus 'magic numbers'
+	from some of the size values.
+	(zvt_term_size_allocate): Removed a couple more magic numbers from
+	the size stuff, since it actually seems to work now.
+
 1999-06-10  Michael Zucchi  <mzucchi@zedzone.mmc.com.au>
 
 	* gnome-pty-helper.c (open_ptys): Use fchown()/fchmod() to set the
