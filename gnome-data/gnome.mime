@@ -72,8 +72,20 @@ application/x-troff-man
 application/x-troff-man-compressed
 	regex: ([^0-9]|^[^\.]*)\.([1-9][a-z]?|n)\.g?[Zz]$
 
-application/x-url
+x-url/http
 	regex: http://.*
+
+x-url/ftp
+	regex: ftp://.*
+
+x-url/info
+	regex: info:.*
+
+x-url/gopher
+	regex: gopher:.*
+
+x-url/news
+	regex: news:.*
 
 image/x-bmp			
 	ext: bmp
