@@ -114,9 +114,10 @@ static GnomeUIInfo main_menu[] = {
 GtkWidget *
 create_newwin(gboolean normal, gchar *appname, gchar *title)
 {
-	GtkWidget *app;
+	GtkWidget *app, *w;
 
 	app = gnome_app_new (appname,title);
+
 	if (!normal)
         {
                 gtk_signal_connect(GTK_OBJECT(app), "delete_event",
@@ -124,6 +125,9 @@ create_newwin(gboolean normal, gchar *appname, gchar *title)
         };
 
 	gnome_app_create_menus_with_data (GNOME_APP(app), main_menu, app);
+
+	gnome_app_set_help_view(GNOME_APP(app), NULL);
+
 	return GTK_WIDGET(app);
 }
 

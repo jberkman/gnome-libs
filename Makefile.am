@@ -23,7 +23,7 @@ SUBDIRS = po intl support \
 	libgnomeui \
 	gtk-xmhtml \
 	zvt \
-	oaf idl \
+	oaf liboafgnome idl \
 	$(gconf_SUBDIRS) \
 	$(gnome_vfs_SUBDIRS) \
 	$(test_gnome) devel-docs gnome-data man \

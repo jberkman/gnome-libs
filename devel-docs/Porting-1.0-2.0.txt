@@ -7,8 +7,17 @@ Using new feature: libgnome/gnomelib-init2.h
   modules to affect their initialization.  It replaces the old
   gnome-init style.
 
+New modules:
+- gnome-helpsys
+
+	This help API is more complete than the previous implementation.
+
+	Major app-visible changes besides the new API include:
+		Using topic.list instead of topic.dat (topic.list uses chapter names instead of HTML file names).
+
 New functions:
 - gnome_message_box_get_label
+- gnome_file_locate
 
 Removed functions:
 - gnome_message_box_set_modal
@@ -22,3 +31,4 @@ Removed Modules:
 - gnome-spell
 - gnome-startup (use gnome-session instead)
 - gtkcauldron (use glade instead)
+- gnome-help (use gnome-helpsys instead)
