@@ -65,6 +65,48 @@ values to simplify the code).</para>
   </para>
 </sect2>
 
+<sect2>
+  <title>How Config Items are Read</title>
+  <para>
+
+    Gnome has a versatile method of storing config items.  When a
+    config item is written by a program, it is written to a file under
+    the <filename>~/.gnome</filename> heirachy.  However, when config
+    items are read, the process is a little more complicated.  There
+    are a number of places that are searched.  If the config item is
+    not found in one, then the next place is checked, finally falling
+    back to the default value provided by the application.  The
+    locations are as follows:
+    <itemizedlist>
+      <listitem><para><filename>$(sysconfdir)/gnome/config-override</filename>
+        - a system administrator would put config items in this directory
+        that they don't want to be configurable.</para></listitem>
+      <listitem><para><filename>~/.gnome</filename> - this is where the
+        user's config items are written to and is the next place that is
+        searched</para></listitem>
+      <listitem><para><filename>$(sysconfdir)/gnome/config</filename>
+        - this directory would hold system wide default configuration values.
+        </para></listitem>
+    </itemizedlist>
+  </para>
+
+  <para>
+    Possible uses for this are setting system wide defaults such as
+    proxy servers for system (either using
+    <filename>config-override</filename> to enforce such a policy or
+    the <filename>config</filename> directory to suggest such a
+    default).  It is also possible to configure the application
+    through its graphical interface, and then copy the configuration
+    file accross to the appropriate system wide directory.  The use of
+    the <filename>config-override</filename> directory should be used
+    sparingly, as it could annoy or confuse some users.  Note also
+    that some applications will not read the config items every time
+    they are needed, so putting defaults into the
+    <filename>config-override</filename> directory will not always
+    completely enforce a setting.
+  </para>
+</sect2>
+
 <para>There are two types of routines</para> 
 
 <para>FIXME: Finish this.  Explain the different types of routines,
