@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-libs 1.0.11\n"
-"POT-Creation-Date: 2000-02-21 18:12-0500\n"
-"PO-Revision-Date: 1999-10-07 11:55+02:00\n"
+"POT-Creation-Date: 2000-02-29 14:51+0100\n"
+"PO-Revision-Date: 2000-02-29 14:54+01:00\n"
 "Last-Translator: Kjartan Maraas <kmaraas@online.no>\n"
 "Language-Team: Norwegian <no@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -16,33 +16,33 @@ msgstr ""
 #: libgnome/gnomelib-init.c:176 libgnome/gnomelib-init.c:190
 #, c-format
 msgid "Could not create per-user gnome configuration directory `%s': %s\n"
-msgstr ""
+msgstr "Kunn ikke opprette per-bruker gnome konfigurasjonskatalog `%s': %s\n"
 
 #: libgnome/gnomelib-init.c:199
 #, c-format
 msgid ""
 "Could not set mode 0700 on private per-user gnome configuration directory "
 "`%s': %s\n"
-msgstr ""
+msgstr "Kunne ikke sette modus 0700 på privat per-bruker gnome konfigurasjonskatalog `%s': %s\n"
 
 #: libgnome/gnomelib-init.c:206
 #, c-format
 msgid "Could not create gnome accelerators directory `%s': %s\n"
-msgstr ""
+msgstr "Kunne ikke opprette gnome akselleratorkatalog `%s': %s\n"
 
-#: libgnomeui/gnome-about.c:320
+#: libgnomeui/gnome-about.c:332
 msgid "Author:"
 msgstr "Forfatter:"
 
-#: libgnomeui/gnome-about.c:323 libgnomeui/gnome-about.c:325
+#: libgnomeui/gnome-about.c:335 libgnomeui/gnome-about.c:337
 msgid "Authors:"
 msgstr "Forfattere:"
 
-#: libgnomeui/gnome-about.c:630
+#: libgnomeui/gnome-about.c:643
 msgid "Authors: "
 msgstr "Forfattere: "
 
-#: libgnomeui/gnome-about.c:971 libgnomeui/stock_demo.c:307
+#: libgnomeui/gnome-about.c:1020 libgnomeui/stock_demo.c:307
 #: libgnomeui/winhints_demo.c:256
 msgid "About"
 msgstr "Om"
@@ -737,17 +737,21 @@ msgstr "Velg en skrifttype"
 msgid "Font"
 msgstr "Skrifttype"
 
-#: libgnomeui/gnome-icon-entry.c:157 libgnomeui/gnome-icon-entry.c:612
+#: libgnomeui/gnome-icon-entry.c:273 libgnomeui/gnome-icon-entry.c:773
 msgid "No Icon"
 msgstr "Uten ikon"
 
-#: libgnomeui/gnome-icon-entry.c:321 libgnomeui/gnome-pixmap-entry.c:296
+#: libgnomeui/gnome-icon-entry.c:447 libgnomeui/gnome-pixmap-entry.c:296
 msgid "Can't find an hbox, using a normal file selection"
 msgstr "Kan ikke finne en hboks, bruker vanlig filvalg"
 
-#: libgnomeui/gnome-icon-entry.c:327 libgnomeui/gnome-pixmap-entry.c:302
+#: libgnomeui/gnome-icon-entry.c:453 libgnomeui/gnome-pixmap-entry.c:302
 msgid "Preview"
 msgstr "Forhåndsvisning"
+
+#: libgnomeui/gnome-icon-entry.c:794
+msgid "Browse"
+msgstr "Bla gjennom"
 
 #: libgnomeui/gnome-icon-sel.c:338
 msgid "Loading Icons..."
@@ -1510,105 +1514,4 @@ msgstr "Rart nummer i tilbakeringingssvaret"
 
 #: test-gnome/testgnome.c:1963
 msgid "Test GNOME"
-msgstr ""
-
-#~ msgid "get"
-#~ msgstr "hent"
-
-#~ msgid "Get config entry"
-#~ msgstr "Hent konfigurasjonsoppføring"
-
-#~ msgid "CONFIG-PATH"
-#~ msgstr "KONFIGURASJONS-STI"
-
-#~ msgid "set"
-#~ msgstr "sett"
-
-#~ msgid "Set config entry"
-#~ msgstr "Sett konfigurasjonsoppføring"
-
-#~ msgid ""
-#~ "Error on option %s: %s.\n"
-#~ "Run '%s --help' to see a full list of available command line options.\n"
-#~ msgstr ""
-#~ "Feil ved flagg %s: %s.\n"
-#~ "Kjør '%s --help' for å få en full liste med tilgjengelige "
-#~ "kommandolinjeflagg.\n"
-
-#~ msgid "Creating '/GNOME' context %s %d"
-#~ msgstr "Oppretter '/GNOME' kontekst %s %d"
-
-#~ msgid "Creating '/GNOME/Servers' context %s %d"
-#~ msgstr "Oppretter '/GNOME/Servers' kontekst %s %d"
-
-#~ msgid "GOAD ID of the server to activate"
-#~ msgstr "GOAD-ID til tjeneren som skal aktiveres"
-
-#~ msgid "Repository ID of the server to activate"
-#~ msgstr "Repository-ID til tjeneren som skal aktiveres"
-
-#~ msgid "REPO-ID"
-#~ msgstr "REPO-ID"
-
-#~ msgid ""
-#~ "I couldn't find any installed services.  Either you don't have\n"
-#~ "any services installed or I don't know the path to find them.\n"
-#~ "In either case, please check your GNOME installation."
-#~ msgstr ""
-#~ "Jeg kunne ikke finne noen installerte tjenester. Enten har du ikke\n"
-#~ "noen tjenester installert, eller så kjenner jeg ikke stien til dem.\n"
-#~ "Uansett, vennligst sjekk din GNOME installasjon."
-
-#~ msgid "(Internal use only) GOAD server ID to activate"
-#~ msgstr "(Kun for intern bruk) GOAD-tjener ID som skal aktiveres"
-
-#~ msgid "ID under which GOAD knows this server"
-#~ msgstr "ID som GOAD kjenner tjeneren under"
-
-#~ msgid "GOAD_ID"
-#~ msgstr "GOAD_ID"
-
-#~ msgid "Repository ID under which GOAD knows this server"
-#~ msgstr "Lager-ID som GOAD kjenner denne tjeneren som"
-
-#~ msgid "REPO_ID"
-#~ msgstr "REPO_ID"
-
-#~ msgid "Failed to open CORBA cookie file (%s) for writing: %s\n"
-#~ msgstr "Kunne ikke åpne CORBA cookie fil (%s) for skriving: %s\n"
-
-#~ msgid "Failed to write CORBA cookie file (%s): %s\n"
-#~ msgstr "Kunne ikke skrive CORBA cookie fil (%s): %s\n"
-
-#~ msgid "Failed to write CORBA cookie to `%s': %s\n"
-#~ msgstr "Kunne ikke skrive CORBA cookie til `%s': %s\n"
-
-#~ msgid "Failed to open CORBA cookie file `%s': %s\n"
-#~ msgstr "Kunne ikke åpne CORBA cookie fil `%s': %s\n"
-
-#~ msgid "Failed to read CORBA cookie file `%s': %s\n"
-#~ msgstr "Kunne ikke lese CORBA cookie fil `%s': %s\n"
-
-#~ msgid "Failed to obtain CORBA authentication cookie, exiting\n"
-#~ msgstr "Klarte ikke å hente CORBA autentiseringscookie, avslutter\n"
-
-#~ msgid "Could not get name service!"
-#~ msgstr "Fikk ikke kontakt med navnetjenesten!"
-
-#~ msgid "Disable sound server usage"
-#~ msgstr "Slå av bruk av lydtjener"
-
-#~ msgid "Enable sound server usage"
-#~ msgstr "Slå på bruk av lydtjener"
-
-#~ msgid "Host:port on which the sound server to use is running"
-#~ msgstr "Vert:port hvor lydtjeneren som skal brukes kjører"
-
-#~ msgid "HOSTNAME:PORT"
-#~ msgstr "VERTSNAVN:PORT"
-
-#~ msgid "GNOME Options"
-#~ msgstr "GNOME Alternativer"
-
-#~ msgid "_About..."
-#~ msgstr "_Om..."
+msgstr "Test GNOME"
