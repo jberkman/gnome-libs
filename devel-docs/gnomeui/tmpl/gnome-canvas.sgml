@@ -2,51 +2,197 @@
 GnomeCanvas
 
 <!-- ##### SECTION Short_Description ##### -->
-
+A generic engine for structured graphics
 
 <!-- ##### SECTION Long_Description ##### -->
-<para>
-
-</para>
+  <para>
+    The GNOME canvas is an engine for creating structured graphics.
+    This means that graphical <emphasis>items</emphasis> like lines,
+    rectangles, and text, can be inserted into the canvas and referred
+    to later for manipulation.  Item attributes include properties
+    like their position and color.  The canvas takes care of all
+    drawing operations so that it will never flicker.  The canvas is
+    designed to be extensible by letting the user define custom
+    graphical items, and thus it can work as a generic display engine
+    for applications.
+  </para>
 
 <!-- ##### STRUCT GnomeCanvas ##### -->
 <para>
 
 </para>
 
-
 <!-- ##### MACRO GNOME_CANVAS_EPSILON ##### -->
-<para>
-
-</para>
-
+  <para>
+    This macro defines a &lsquo;small&rsquo; floating-point value for
+    the internal computations that the canvas performs.  It can be
+    used by item implementations as a test to see whether a number is
+    &ldquo;almost zero&rdquo;.
+  </para>
 
 
 <!-- ##### MACRO GNOME_CANVAS_COLOR ##### -->
-<para>
+  <para>
+    This macro is used to build a 32-bit integer with an RGB color
+    specification.  The specified values must be integers in the range
+    [0, 255].
+  </para>
 
-</para>
-
-@r: 
-@g: 
-@b: 
+@r: Red component of the color.
+@g: Green component of the color.
+@b: Blue component of the color.
 
 
 <!-- ##### MACRO GNOME_CANVAS_COLOR_A ##### -->
-<para>
+  <para>
+    This macro is used to build a 32-bit integer with an RGBA color
+    specification.  This is the same as an RGB color specification,
+    but with an added alpha or opacity value.  The specified values
+    must be integers in the range [0, 255].
+  </para>
 
-</para>
-
-@r: 
-@g: 
-@b: 
-@a: 
+@r: Red component of the color.
+@g: Green component of the color.
+@b: Blue component of the color.
+@a: Opacity component of the color.
 
 
 <!-- ##### STRUCT GnomeCanvasBuf ##### -->
-<para>
+  <para>
+    This structure is passed to the <function>render</function> method
+    of canvas items when they need to paint themselves on an
+    antialiased canvas.  The <structfield>buf</structfield> field
+    points to a 24-bit RGB buffer for rendering.  The
+    <structfield>buf_rowstride</structfield> field specifies the
+    number of bytes in each row in the buffer, which should be used to
+    calculate byte offsets inside it.  The buffer's pixel offsets in
+    canvas pixel coordinates are given by the
+    <structfield>rect</structfield> rectangle.  The
+    <structfield>is_bg</structfield> and
+    <structfield>is_buf</structfield> fields are flags that items can
+    use to implement rendering optimizations, and they ar used in
+    conjunction with the <structfield>bg_color</structfield> field.
+  </para>
 
-</para>
+  <para>
+    The <structfield>is_buf</structfield> flag specifies whether the
+    contents of the buffer are an accurate representation of the state
+    of the canvas.  If this flag is true, then the RGB data in the
+    <structfield>buf</structfield> is valid, that is, it contains
+    meaningful data.
+  </para>
+
+  <para>
+    The <structfield>is_bg</structfield> flag specifies whether the
+    buffer has all its pixels set to the same color.  This allows
+    canvas items to optimize for this case by doing alpha compositing
+    for a smaller set of values than if the buffer had pixels of
+    different colors.
+  </para>
+
+  <para>
+    At least one of these flags is on at any one time.  The meaning of
+    their combinations is as follows:
+
+    <table>
+      <title>
+	Values for <structfield>is_bg</structfield> and
+	<structfield>is_buf</structfield>
+      </title>
+      <tgroup cols="3">
+	<thead>
+	  <row>
+	    <entry><structfield>is_buf</structfield></entry>
+	    <entry><structfield>is_bg</structfield></entry>
+	    <entry>Meaning</entry>
+	  </row>
+	</thead>
+	<tbody>
+	  <row>
+	    <entry><symbol>FALSE</symbol></entry>
+	    <entry><symbol>TRUE</symbol></entry>
+	    <entry>
+	      The buffer does not contain meaningful data.  However,
+	      it should be considered as if it were filled with the
+	      solid color specified in the
+	      <structfield>bg_color</structfield> field.  Item
+	      implementations may want to call
+	      <function>gnome_canvas_buf_ensure_buf()</function> to
+	      fill the buffer automatically.
+	    </entry>
+	  </row>
+	  <row>
+	    <entry><symbol>TRUE</symbol></entry>
+	    <entry><symbol>FALSE</symbol></entry>
+	    <entry>
+	      The buffer contains meaningful data and not all of its
+	      pixels may be the same color.  Item implementations can
+	      use the buffer data as-is for alpha compositing.
+	    </entry>
+	  </row>
+	  <row>
+	    <entry><symbol>TRUE</symbol></entry>
+	    <entry><symbol>TRUE</symbol></entry>
+	    <entry>
+	      The buffer contains meaningful data, and all the pixels
+	      are of the same color.  Item implementations can use the
+	      buffer data as-is for alpha compositing, or be smarter
+	      and do less operations since they can just composite
+	      over a single color.
+	    </entry>
+	  </row>
+	</tbody>
+      </tgroup>
+    </table>
+  </para>
+
+  <para>
+    Whenever an item paints to an RGB buffer in which the
+    <structfield>is_bg</structfield> field was true, the item is then
+    responsible for turning off this flag if it knows that the result
+    will not be pixels all of the same color.  If a large item, like a
+    solid rectangle, knows that it will be filling the buffer with a
+    solid color, then it take any one of the following actions:
+
+    <itemizedlist>
+      <listitem>
+	<para>
+	  Fill the actual pixels in the buffer with the solid color
+	  and turn off the <structfield>is_bg</structfield> flag.  It
+	  should then turn on the <structfield>is_buf</structfield>
+	  flag.
+	</para>
+      </listitem>
+      <listitem>
+	<para>
+	  Fill the actual pixels in the buffer with the solid color,
+	  set the <structfield>bg_color</structfield> field to that
+	  same color, and turn on both the
+	  <structfield>is_bg</structfield> and
+	  <structfield>is_buf</structfield> flags.  This is correct,
+	  but is wasteful, since it could have done just the following
+	  instead.
+	</para>
+      </listitem>
+      <listitem>
+	<para>
+	  Just set the <structfield>bg_color</structfield> to the
+	  solid color, turn on the <structfield>is_bg</structfield>
+	  flag, and turn off the <structfield>is_buf</structfield>
+	  flag.  This means that the buffer does not contain the
+	  actual meaningful data, and the next item to be repainted
+	  should look at the solid color instead.  This is the most
+	  efficient version.
+	</para>
+      </listitem>
+    </itemizedlist>
+  </para>
+
+  <para>
+    Most item implementations may only need to perform the actions for
+    the first case described above.  The other two are simply
+    optimizations they can perform.
+  </para>
 
 
 <!-- ##### FUNCTION gnome_canvas_new ##### -->
@@ -256,3 +402,9 @@ GnomeCanvas
 @gc: 
 
 
+<!--
+Local variables:
+mode: sgml
+sgml-parent-document: ("../gnomeui-docs.sgml" "book" "sect1" "")
+End:
+-->
