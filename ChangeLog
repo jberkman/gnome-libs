@@ -1,3 +1,33 @@
+Thu Sep 17 00:24:19 1998  Tom Tromey  <tromey@cygnus.com>
+
+	* libgnome/gnome-metadata.c (gnome_metadata_app_dir): Renamed from
+	app_dir.
+	(maybe_scan_app_dir): Only free list if scandir succeeds.
+	(free_hash_entry): Free key.
+	(add_hash_entry): Set type_set field if required.
+
+	* libgnome/gnome-metadata.c (lock): Use mkdir, not fcntl.
+	(unlock): Use rmdir, not fcntl.
+	(lock_directory): New global.
+	(init): Initialize lock_directory.
+	(maybe_scan_app_dir): New function.
+	(app_dir_mtime): New global.
+	(app_dir): New global.
+	(scan_app_file): New function.
+	(try_app_regexs): New function.
+	(get_worker): Check application-installed information.
+	(app_get_by_type): New function.
+	(struct kv): New structure.
+	(free_mapping): New function.
+	(free_hash_entry): New function.
+	(struct app_entry): New structure.
+	(short_circuit): New global.
+	(try_one_app_regex): New function.
+	(desired_key): New global.
+	(app_rx_hash): New global.
+	(app_type_hash): New global.
+	(add_hash_entry): New function.
+
 1998-09-15  Federico Mena Quintero  <federico@nuclecu.unam.mx>
 
 	* libgnome/gnome-metadata.c: Fixed some compiler warnings.
