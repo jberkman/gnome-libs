@@ -4,11 +4,11 @@
 # Still, 1.3 is the first "released" automake that is OK.
 AUTOMAKE_OPTIONS = 1.3
 
-built_SUBDIRS = libgnome libgnomeui gtk-xmhtml gnome-hello libgtktty zvt test-gnome test-suite
-
 bin_SCRIPTS = gnome-config
 
-SUBDIRS = po intl support macros $(built_SUBDIRS) 
+SUBDIRS = po intl support macros \
+	libgnome libgnomeui gtk-xmhtml gnome-hello libgtktty zvt \
+	test-gnome test-suite
 
 include_HEADERS = gnome.h
 
