@@ -655,13 +655,13 @@ file_entry_update_files(GtkWidget *w, GnomeFileEntry *fentry)
 static void
 file_entry_modal_toggle(GtkWidget *w, GnomeFileEntry *fentry)
 {
-	gnome_file_entry_set_modal(fentry,GTK_TOGGLE_BUTTON(w)->active);
+	gnome_file_entry_set_modal(fentry, GTK_TOGGLE_BUTTON(w)->active);
 }
 
 static void
 file_entry_directory_toggle(GtkWidget *w, GnomeFileEntry *fentry)
 {
-	gnome_file_entry_set_directory(fentry,GTK_TOGGLE_BUTTON(w)->active);
+	gnome_file_entry_set_directory_entry(fentry, GTK_TOGGLE_BUTTON(w)->active);
 }
 
 static void
@@ -753,24 +753,26 @@ create_number_entry(void)
  */
 static void cfp_ck_UseFont(GtkWidget *widget,GnomeFontPicker *gfp)
 {
-    gboolean show;
+	/*FIXME these are now private */
+    /*gboolean show;
     gint size;
 
     show=!gfp->use_font_in_label;
     size=gfp->use_font_in_label_size;
 
-    gnome_font_picker_fi_set_use_font_in_label(gfp,show,size);
+    gnome_font_picker_fi_set_use_font_in_label(gfp,show,size);*/
 
 }
 static void cfp_sp_value_changed(GtkAdjustment *adj,GnomeFontPicker *gfp)
 {
-    gboolean show;
+	/*FIXME these are now private */
+    /*gboolean show;
     gint size;
 
     show=gfp->use_font_in_label;
     size=(gint)adj->value;
 
-    gnome_font_picker_fi_set_use_font_in_label(gfp,show,size);
+    gnome_font_picker_fi_set_use_font_in_label(gfp,show,size);*/
 
 }
 
@@ -1281,7 +1283,7 @@ bar_progress_cb(GtkWidget * b, GtkSpinButton * sb)
   GnomeApp * app = gtk_object_get_user_data(GTK_OBJECT(sb));
   gdouble value = gtk_spin_button_get_value_as_float(sb);
 
-  gnome_appbar_set_progress(GNOME_APPBAR(app->statusbar), value);
+  gnome_appbar_set_progress_percentage(GNOME_APPBAR(app->statusbar), value);
 }
 
 static void
