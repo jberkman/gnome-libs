@@ -16,21 +16,21 @@ msgstr ""
 #: libgnome/gnome-ditem.c:565 libgnome/gnome-ditem.c:923
 #, c-format
 msgid "Unknown desktop file format %d"
-msgstr "Namə'lum masaüstü dosye şəkli %d"
+msgstr "Namə'lum masa üstü fayl şəkli %d"
 
 #. we are not an application so just exit
 #. with an error
 #: libgnome/gnome-ditem.c:912 libgnome/gnome-ditem.c:919
 msgid "Attempting to launch a non-application"
-msgstr "Uyǧulama xarici dosye başladılır "
+msgstr "Proqram tǝ'minatı xarici fayl başladılır "
 
 #: libgnome/gnome-ditem.c:1029
 msgid "Trying to execute an item with no 'Exec'"
-msgstr " 'Exec' olmayan uyǧulama başladılmaya çalışılır "
+msgstr " 'Exec' olmayan proqram tǝ'minatı başladılmaya çalışılır "
 
 #: libgnome/gnome-ditem.c:1081 libgnome/gnome-ditem.c:1174
 msgid "No exec field for this drop"
-msgstr "Bu grup üçün uyǧulama girdişi tapýlmadı"
+msgstr "Bu grup üçün proqram tǝ'minatı girdişi tapılmadı"
 
 #: libgnome/gnome-ditem.c:1112
 msgid "Nothing to replace with a file in the exec string"
@@ -39,13 +39,14 @@ msgstr "Exec axışı ilə dəyişdirilə bilən bir şey tapılmadı"
 #: libgnome/gnome-ditem.c:1225
 msgid "There was no argument to replace with dropped files"
 msgstr ""
-"Buraxılan dosyelərlə dəyişdirilə bilən hər hansı bir arqument "
+"Buraxılan fayllarla dəyişdirilə bilən hər hansı bir arqument "
 "tapılmadı"
 
 #: libgnome/gnome-ditem.c:1325
 msgid "Dropped URLs on an app that can only take files"
 msgstr ""
-"Təkcə dosyeləri qəbul edə bilən uyǧulama üstünə buraxılan URLlər"
+"Təkcə faylları qəbul edə bilən proqram tǝ'minatı üstünə "
+"buraxılan URLlər"
 
 #: libgnome/gnome-moz-remote2.c:111
 msgid "Specify X display to use."
@@ -65,11 +66,11 @@ msgstr "Netscape pəncərəsini böyütmə."
 
 #: libgnome/gnome-moz-remote2.c:116
 msgid "Show the given URL in a new window."
-msgstr "Verilən URLyi təzə pəncərədə göstər."
+msgstr "Verilən URLyi yeni pəncərədə göstər."
 
 #: libgnome/gnome-moz-remote2.c:117
 msgid "Close the specified window."
-msgstr "Bu pəncərəyi qapat"
+msgstr "Bu pəncərəyi qapat."
 
 #: libgnome/gnome-moz-remote2.c:118
 msgid "Print the X window ID of the utilized window."
@@ -107,9 +108,8 @@ msgid "Command '%s' did not return an ID!"
 msgstr "'%s' əmri ID bildirmədi!"
 
 #: libgnome/gnomelib-init2.c:1203
-#, fuzzy
 msgid "Help options"
-msgstr "%s seçənəkləri"
+msgstr "Kömǝk seçənəkləri"
 
 #: libgnome/gnomelib-init2.c:1228
 msgid "Dynamic modules to load"
@@ -160,19 +160,20 @@ msgid ""
 "multiple files or URLs as arguments after its command name check the box "
 "above."
 msgstr ""
-"Bu əmrlərdə dosyeadı/URL girilən yerdə %s\n"
+"Bu əmrlərdə fayladı/URL girilən yerdə %s\n"
 "istifadə etməlisiniz.  Əgər girişləri boş buraxsanız\n"
-"əməliyyatınız yerinə gətirilməyəcək.  Əgər bu uyğulama\n"
-"birçoz dosye və URlləri qəbul edirsə əmrdən sonra yuxarıdakı qutunu "
+"əməliyyatınız yerinə gətirilməyəcək.  Əgər bu proqram "
+"tǝ'minatı\n"
+"bir çox fayl və URlləri qəbul edirsə əmrdən sonra yuxarıdakı qutunu "
 "işarətləyin."
 
 #: libgnomeui/gnome-ditem-edit.c:342
 msgid "Command for file drops:"
-msgstr "Dosye buraxılması üçün əmr:"
+msgstr "Fayl buraxılması üçün əmr:"
 
 #: libgnomeui/gnome-ditem-edit.c:352
 msgid "Drop one file at a time only."
-msgstr "Dosyeləri vaxtında buraxın."
+msgstr "Faylları vaxtında buraxın."
 
 #: libgnomeui/gnome-ditem-edit.c:364
 msgid "Command for URL drops:"
@@ -184,7 +185,7 @@ msgstr "URLlərii vaxtında buraxın."
 
 #: libcompat/gnome-dentry-edit.c:367 libgnomeui/gnome-ditem-edit.c:487
 msgid "Try this before using:"
-msgstr "İstifadədən əvval bunu sınayın:"
+msgstr "İstifadədən əvvǝl bunu sınayın:"
 
 #: libcompat/gnome-dentry-edit.c:377 libgnomeui/gnome-ditem-edit.c:497
 msgid "Documentation:"
@@ -192,7 +193,7 @@ msgstr "Sənədlər:"
 
 #: libgnomeui/gnome-ditem-edit.c:507
 msgid "Window titles to wait for (comma separated):"
-msgstr "Gözlədilən pancərə adları (vergüllə ayrılıb):"
+msgstr "Gözlədilən pǝncərə adları (vergüllə ayrılıb):"
 
 #: libcompat/gnome-dentry-edit.c:387 libgnomeui/gnome-ditem-edit.c:517
 msgid "Name/Comment translations:"
@@ -246,11 +247,11 @@ msgstr "-adobe-helvetica-medium-r-normal-*-*-120-*-*-p-*-*-*,*-r-"
 
 #: libgnomeui/gnome-file-saver.c:192
 msgid "File Name:"
-msgstr "Dosye Adı:"
+msgstr "Fayl Adı:"
 
 #: libgnomeui/gnome-file-saver.c:200
 msgid "Location:"
-msgstr "Yerï:"
+msgstr "Yeri:"
 
 #: libgnomeui/gnome-file-saver.c:208
 msgid "Save As Type:"
@@ -270,8 +271,8 @@ msgid ""
 msgstr ""
 "Siz sistem idarəcinizin icazə vermədiyi bir qurǧunu dəyişdirməyə "
 "çalışırsınız. Seçdiyiniz bu qurǧlurdan bə'ziləri ya heç işə "
-"düşməyəcək ya da bir sonrakı (%s) uyǧulamayı işə saldıgınızda "
-"geriyəyüklənə bilməyəcək."
+"düşməyəcək ya da bir sonrakı (%s) proqram tǝ'minatını işə "
+"saldığınızda geriyə yüklənə bilməyəcək."
 
 #: libgnomeui/gnome-gconf.c:519
 #, c-format
@@ -301,7 +302,7 @@ msgstr "_Basdırılmış"
 
 #: libgnomeui/gnome-helpsys.c:121
 msgid "Show help inside the application window"
-msgstr "Köməyi uyǧulama pəncərəsi içində göstər"
+msgstr "Köməyi proqram tǝ'minatı pəncərəsi içində göstər"
 
 #: libgnomeui/gnome-helpsys.c:123
 msgid "_Browser"
@@ -313,7 +314,7 @@ msgstr "Köməyi səyahət pəncərəsində göstər"
 
 #: libgnomeui/gnome-helpsys.c:172
 msgid "App style"
-msgstr "Uyǧulama tərzi"
+msgstr "Proqram tǝ'minatı tərzi"
 
 #: libgnomeui/gnome-helpsys.c:173
 msgid "The style of GnomeHelpView"
@@ -321,7 +322,7 @@ msgstr "GnomeHelpView göstəriliş tərzi"
 
 #: libgnomeui/gnome-helpsys.c:182
 msgid "App style priority"
-msgstr "Uyǧulama Tərzi xüsusiyyətləri"
+msgstr "Proqram tǝ'minatı Tərzi xüsusiyyətləri"
 
 #: libgnomeui/gnome-helpsys.c:183
 msgid "The priority of style of GnomeHelpView"
@@ -348,7 +349,7 @@ msgstr "Kömək"
 
 #: libgnomeui/gnome-helpsys.c:220
 msgid "Show help for a specific region of the application"
-msgstr "Uyǧulamanın xüsusi yerləri üçün kömək göstər"
+msgstr "Proqram tǝ'minatının xüsusi yerləri üçün kömək göstər"
 
 #: libgnomeui/gnome-helpsys.c:225
 msgid "Style"
@@ -360,7 +361,7 @@ msgstr "Köməyin göstərilmə şəklini dəyişdir"
 
 #: libgnomeui/gnome-helpsys.c:928 libgnomeui/gnome-helpsys.c:1022
 msgid "No help is available for the selected portion of the application."
-msgstr "Uyǧulamanın seçilən bölgəsi üçün kömək yoxdur."
+msgstr "Proqram tǝ'minatının seçilən bölgəsi üçün kömək yoxdur."
 
 #. FIXME: properly handle the error!
 #: libgnomeui/gnome-helpsys.c:1192
@@ -374,7 +375,7 @@ msgstr "URL"
 
 #: libgnomeui/gnome-href.c:115
 msgid "The URL that GnomeHRef activates"
-msgstr "GnomeHRefin aktivləşdirdiyi URL"
+msgstr "GnomeHRefin fǝallaşdırdığı URL"
 
 #: libgnomeui/gnome-href.c:122
 msgid "Text"
@@ -433,7 +434,7 @@ msgstr "Saǧ:"
 #. Scaling
 #: libgnomeui/gnome-paper-selector.c:306
 msgid "Scaling"
-msgstr "Şkalalanmış"
+msgstr "Böyütmǝ"
 
 #: libgnomeui/gnome-paper-selector.c:321
 msgid "Fit to Page"
@@ -476,19 +477,19 @@ msgstr "Şaquli"
 
 #: libgnomeui/gnome-pouch.c:807
 msgid "Icon position"
-msgstr "Timsalların yerləri"
+msgstr "Timsal yerləri"
 
 #: libgnomeui/gnome-pouch.c:808
 msgid "Icon orientation"
-msgstr "Timsalların istiqaməti"
+msgstr "Timsal istiqaməti"
 
 #: libgnomeui/gnome-pouch.c:810
 msgid "Tile children"
-msgstr "Tile children"
+msgstr "Kirǝmit törǝmǝ"
 
 #: libgnomeui/gnome-pouch.c:811
 msgid "Cascade children"
-msgstr "Cascade children"
+msgstr "Daşan törǝmǝ"
 
 #: libgnomeui/gnome-pouch.c:813
 msgid "Arrange icons"
@@ -500,11 +501,11 @@ msgstr "Timsalların öz özünə düzülməsi"
 
 #: libgnomeui/gnome-recently-used.c:113
 msgid "App Specific"
-msgstr "Uyǧulamaya xas"
+msgstr "Proqram Tǝ'minatına Xas"
 
 #: libgnomeui/gnome-recently-used.c:114
 msgid "Is this list application specific"
-msgstr "Siyahıdakı uyǧulamalar spesifikdir"
+msgstr "Siyahıdakı proqram tǝ'minatları spesifikdir"
 
 #: libgnomeui/gnome-recently-used.c:897
 #, c-format
@@ -618,11 +619,11 @@ msgstr "_Yeni/"
 
 #: libgnomeui/gnome-app-helper.c:92
 msgid "Fi_les"
-msgstr "Dos_yelər"
+msgstr "Fay_lar"
 
 #: libgnomeui/gnome-app-helper.c:93
 msgid "Fi_les/"
-msgstr "Dos_yelər/"
+msgstr "Fay_lar/"
 
 #: libgnomeui/gnome-app-helper.c:94
 msgid "_Windows"
@@ -692,7 +693,7 @@ msgstr "Q_uruluşu Çap Et"
 
 #: libgnomeui/gnome-app-helper.c:137
 msgid "Setup the page settings for your current printer"
-msgstr "Hazırkı yazıçınız üçün səhifə seçənaklərini quraşdır"
+msgstr "Hazırkı yazıçınız üçün səhifə seçənǝklərini quraşdır"
 
 #. Close
 #: libgnomeui/gnome-app-helper.c:142
@@ -816,7 +817,7 @@ msgstr "_Seçənəklər..."
 
 #: libgnomeui/gnome-app-helper.c:212
 msgid "Configure the application"
-msgstr "Uyğulamayı quraşdır"
+msgstr "Proqram tǝ'minatlarını quraşdır"
 
 #. 20
 #.
@@ -829,7 +830,7 @@ msgstr "_Haqqında"
 
 #: libgnomeui/gnome-app-helper.c:222
 msgid "About this application"
-msgstr "Uyğulama haqqında"
+msgstr "Proqram tǝ'minatları haqqında"
 
 #: libgnomeui/gnome-app-helper.c:225
 msgid "_Select All"
@@ -924,7 +925,7 @@ msgstr "Oyunun _Sonu"
 
 #: libgnomeui/gnome-app-helper.c:285
 msgid "End the current game"
-msgstr "Hazırkı oyunda çıxın"
+msgstr "Hazırkı oyundan çıxın"
 
 #: libgnomeui/gnome-app-util.c:100
 msgid " (press return)"
@@ -960,7 +961,7 @@ msgstr " (bəli və ya xeyr)"
 
 #: libgnomeui/gnome-app-util.c:362
 msgid "  - OK? (yes or no)"
-msgstr " - OLDU MU? (bəli və ya xeyr)"
+msgstr " - OLDUMU? (bəli və ya xeyr)"
 
 #: libgnomeui/gnome-app-util.c:694
 msgid "Progress"
@@ -968,11 +969,11 @@ msgstr "Gedişat"
 
 #: libgnomeui/gnome-app.c:151
 msgid "App ID"
-msgstr "Uyǧulama ID"
+msgstr "Proqram tǝ'minatı ID"
 
 #: libgnomeui/gnome-app.c:152
 msgid "The application ID string"
-msgstr "Uyǧulama ID kəliməsi"
+msgstr "Proqram tǝ'minatı ID kəliməsi"
 
 #: libgnomeui/gnome-client.c:836
 msgid "Specify session management ID"
@@ -996,7 +997,7 @@ msgstr "Gedişat idarəcisinə bağlantıya mane ol"
 
 #: libgnomeui/gnome-client.c:854
 msgid "Session management"
-msgstr "GediÅat idarÉsi"
+msgstr "Gedşat idarǝsi"
 
 #: libgnomeui/gnome-client.c:2340
 msgid "Cancel Logout"
@@ -1004,7 +1005,7 @@ msgstr "Çıxışı Ləğv Et"
 
 #: libgnomeui/gnome-color-picker.c:423
 msgid "Received invalid color data\n"
-msgstr "Xətalı rəng versi alındı\n"
+msgstr "Xətalı rəng mǝ'lumatı alındı\n"
 
 #: libgnomeui/gnome-color-picker.c:487
 msgid "Pick a color"
@@ -1204,7 +1205,7 @@ msgstr "K_əs"
 
 #: libgnomeui/gnome-scores.c:105
 msgid "Top Ten"
-msgstr "Üstdəki onluq"
+msgstr "Zirvǝdǝki On"
 
 #: libgnomeui/gnome-scores.c:115
 msgid "User"
@@ -1353,7 +1354,7 @@ msgstr ""
 
 #: libgnomeui/gnome_segv.c:104
 msgid "Usage: gnome_segv appname signum\n"
-msgstr "İstifadə qaydası:gnome_segv uyğ_adı nömrəsi\n"
+msgstr "İstifadə qaydası: gnome_segv uyğ_adı nömrəsi\n"
 
 #: libgnomeui/gnome_segv.c:118
 msgid "Submit a bug report"
@@ -1370,35 +1371,35 @@ msgstr "http://www.gnome.org/application_crashed.shtml"
 #: libgnomeui/gnome_segv.c:141
 msgid "Please visit the GNOME Application Crash page for more information"
 msgstr ""
-"Lütfən ətraflı mə'lumat üçün GNOME Uyğulama Xətası səhifəsini "
-"ziyarət edin"
+"Lütfən ətraflı mə'lumat üçün GNOME Proqram tǝ'minatı Xətası "
+"səhifəsini ziyarət edin"
 
 #. Pixmap
 #: test-gnome/testgnome.c:713
 msgid "Default Pixmap"
-msgstr "Əsas Pixmap"
+msgstr "Əsas Piksmap"
 
 #: test-gnome/testgnome.c:721 test-gnome/testgnome.c:762
 #: test-gnome/testgnome.c:787
 msgid "If you choose a font it will appear here"
-msgstr "Yazıtipi seçdiyiniz vaxt burda görünər"
+msgstr "Yazı növü seçdiyiniz vaxt burda görünər"
 
 #. Font_Info
 #: test-gnome/testgnome.c:728
 msgid "Font Info"
-msgstr "Yazıtipi Mə'lumatı"
+msgstr "Yazı növü Mə'lumatı"
 
 #: test-gnome/testgnome.c:738
 msgid "Use Font in button with size"
-msgstr "Düymədəki Yazıtipini bu böyüklükdə istifadə et"
+msgstr "Düymədəki Yazı növünü bu böyüklükdə istifadə et"
 
 #: test-gnome/testgnome.c:745
 msgid "Show font size"
-msgstr "Yazitipi böyüklüyünü göstər"
+msgstr "Yazı növü böyüklüyünü göstər"
 
 #: test-gnome/testgnome.c:781
 msgid "This is an hbox with pixmap and text"
-msgstr "Bu paxmap və mətnli hboxdur"
+msgstr "Bu piksmap və mətnli hboxdur"
 
 #: test-gnome/testgnome.c:993
 msgid "The user chose Yes/OK with data:\n"
@@ -1615,7 +1616,7 @@ msgstr "Heç birhbox tapılmadı, sıraci fayl seçkisini istifadə edəcəm"
 
 #: libcompat/gnome-pixmap-entry.c:466
 msgid "Preview"
-msgstr "Göz Gəzdirmə"
+msgstr "Nümayiş"
 
 #: libcompat/gnome-property-entries.c:258
 msgid "Select"
@@ -1742,7 +1743,7 @@ msgstr "Qəbul edilmiş sözləri xətalarda qoru"
 
 #: libcompat/gnome-spell.c:713
 msgid "Enable tooltips"
-msgstr "İpuclarını aktivləşdir"
+msgstr "İp uclarını fǝallaşdır"
 
 #: libcompat/gnome-spell.c:727
 msgid "Kill ispell process"
@@ -1758,7 +1759,7 @@ msgstr "Quraşdır"
 
 #: demos/mdi_demo.c:116
 msgid "Child Item 1"
-msgstr "Child Item 1"
+msgstr "Törǝmǝ Üzv 1"
 
 #: demos/mdi_demo.c:117
 msgid "Hint for item 1"
@@ -1766,7 +1767,7 @@ msgstr "Birinci üzv üçün ipucu"
 
 #: demos/mdi_demo.c:119
 msgid "Child Item 2"
-msgstr "Child Item 2"
+msgstr "Törǝmǝ Üzv 2"
 
 #: demos/mdi_demo.c:120
 msgid "Hint for item 2"
@@ -1878,7 +1879,7 @@ msgstr "Aşağı"
 
 #: demos/winhints_demo.c:114
 msgid "Desktop"
-msgstr "Masaüstü"
+msgstr "Masa üstü"
 
 #: demos/winhints_demo.c:122
 msgid "Set Layer"
@@ -1934,7 +1935,7 @@ msgstr "Hal Seç:"
 
 #: demos/winhints_demo.c:209
 msgid "Skip Toggles:"
-msgstr "Toogleları Keç:"
+msgstr "Toqqlları Keç:"
 
 #: demos/winhints_demo.c:219
 msgid "Skip Focus"
@@ -1946,7 +1947,7 @@ msgstr "Pəncərə Menyusunu Keç"
 
 #: demos/winhints_demo.c:227
 msgid "Skip Taskbar / WinList"
-msgstr "Taskbarı Keç / Winlist"
+msgstr "Vǝzifǝ Çubuğu / Pǝncǝrǝ Siyahısını Keç"
 
 #: demos/winhints_demo.c:231
 msgid "Set Skip"
@@ -2120,7 +2121,7 @@ msgstr ""
 #~ msgstr "Yeni/"
 
 #~ msgid "Pick a Font"
-#~ msgstr "Yazı Tipi seç"
+#~ msgstr "Yazı Növü seç"
 
 #~ msgid "REPO-ID"
 #~ msgstr "REPO-ID"
@@ -2129,7 +2130,7 @@ msgstr ""
 #~ msgstr "REPO_ID"
 
 #~ msgid "Repository ID of the server to activate"
-#~ msgstr "Aktivləşdiriləcək xidmətin REPO IDsi"
+#~ msgstr "Fǝallaşdırılacaq xidmətin REPO IDsi"
 
 #~ msgid "Repository ID under which GOAD knows this server"
 #~ msgstr "GOADın vericiyi tanıdığı REPO IDsi"
@@ -2147,7 +2148,7 @@ msgstr ""
 #~ msgstr "Seçənəklər/"
 
 #~ msgid "Show this help message"
-#~ msgstr "Bu kömək mesajını göstər"
+#~ msgstr "Bu kömək ismarıcını göstər"
 
 #~ msgid "Unknown system error"
 #~ msgstr "Bilinməyan sistem xətası"
