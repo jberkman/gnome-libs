@@ -35,6 +35,15 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.4  1997/12/29 22:16:23  unammx
+* This version does:
+*
+*    - Sync with Koen to version Beta 1.1.2c of the XmHTML widget.
+*      Includes various table fixes.
+*
+*    - Callbacks are now properly checked for the Gtk edition (ie,
+*      signals).
+*
 * Revision 1.3  1997/12/25 01:34:10  unammx
 * Good news for the day:
 *
@@ -569,7 +578,7 @@ _XmHTMLDocumentCallback(XmHTMLWidget html, Boolean html32, Boolean verified,
 {
 	XmHTMLDocumentCallbackStruct cbs;
 
-	if(html->html.document_callback)
+	if(CHECK_CALLBACK (html, document_callback, DOCUMENT))
 	{
 		cbs.reason     = XmCR_HTML_DOCUMENT;
 		cbs.event      = (TEvent*)NULL;

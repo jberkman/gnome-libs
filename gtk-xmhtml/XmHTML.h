@@ -35,6 +35,15 @@
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.3  1997/12/29 22:16:21  unammx
+* This version does:
+*
+*    - Sync with Koen to version Beta 1.1.2c of the XmHTML widget.
+*      Includes various table fixes.
+*
+*    - Callbacks are now properly checked for the Gtk edition (ie,
+*      signals).
+*
 * Revision 1.2  1997/12/25 01:34:09  unammx
 * Good news for the day:
 *
@@ -127,7 +136,7 @@
 
 #define XmHTMLVERSION	1
 #define XmHTMLREVISION	1
-#define XmHTMLUPDATE_LEVEL 1
+#define XmHTMLUPDATE_LEVEL 2
 #define XmHTMLVersion \
 	(XmHTMLVERSION * 1000 + XmHTMLREVISION * 100 + XmHTMLUPDATE_LEVEL)
 
@@ -135,7 +144,7 @@
 #ifndef _LIBRARY
 
 #define XmHTMLVERSION_STRING \
-	"XmHTML Beta Version 1.1.1 (C)Ripley Software Development"
+	"XmHTML Pre-Beta Version 1.1.2c (C)Ripley Software Development"
 
 /* Required includes */
 #ifdef WITH_MOTIF

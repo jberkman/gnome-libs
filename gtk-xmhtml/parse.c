@@ -35,6 +35,15 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.3  1997/12/29 22:16:33  unammx
+* This version does:
+*
+*    - Sync with Koen to version Beta 1.1.2c of the XmHTML widget.
+*      Includes various table fixes.
+*
+*    - Callbacks are now properly checked for the Gtk edition (ie,
+*      signals).
+*
 * Revision 1.2  1997/12/25 01:34:13  unammx
 * Good news for the day:
 *
@@ -128,7 +137,7 @@ static char rcsId[]="$Header$";
 #include <ctype.h>
 
 #ifdef MINIPARSE
-#include "miniparse.h"
+#include <XmHTML/miniparse.h>
 #else
 #include "XmHTMLP.h"
 #include "XmHTMLfuncs.h"
@@ -178,8 +187,13 @@ static String storeElementUnconditional(Parser *parser, char *start, char *end);
 static void parserWarning(Parser *parser, htmlEnum id, htmlEnum current,
 	parserError error);
 
+/*****
+* Only call the warner when we may issue warnings and this isn't a
+* notification message (cheaper to do this here than have a useless function
+* call).
+*****/
 #define parserCallback(PARSER,ID,CURR,ERR) do {\
-	if(PARSER->warn) \
+	if(PARSER->warn != XmHTML_NONE && ERR != HTML_NOTIFY) \
 		parserWarning(PARSER, ID, CURR, ERR); \
 }while(0)
 
@@ -276,8 +290,11 @@ _ParserTokenToId(Parser *parser, String token, Boolean warn)
 	* token or not.
 	*/
 	if(warn)
+		parserCallback(parser, HT_ZTEXT, HT_ZTEXT, HTML_UNKNOWN_ELEMENT);
+#if 0
 		_XmHTMLWarning(__WFUNC__(parser->widget, "_ParserTokenToId"),
 			"Unknown element %s at line %i of input", token, parser->num_lines);
+#endif
 	return(-1);
 }
 
@@ -858,12 +875,6 @@ _ParserCheckElementContent(Parser *parser, htmlEnum current, htmlEnum state)
 		case HT_DT:
 		case HT_EM:
 		case HT_FONT:
-		case HT_H1:
-		case HT_H2:
-		case HT_H3:
-		case HT_H4:
-		case HT_H5:
-		case HT_H6:
 		case HT_I:
 		case HT_KBD:
 		case HT_P:
@@ -893,6 +904,39 @@ _ParserCheckElementContent(Parser *parser, htmlEnum current, htmlEnum state)
 				current == HT_U || current == HT_VAR ||
 				current == HT_ZTEXT)
 				return(True);
+			break;
+
+		case HT_H1:
+		case HT_H2:
+		case HT_H3:
+		case HT_H4:
+		case HT_H5:
+		case HT_H6:
+			if(current == HT_A || current == HT_APPLET ||
+				current == HT_B || current == HT_BIG ||
+				current == HT_BR || current == HT_CITE ||
+				current == HT_CODE || current == HT_DFN ||
+				current == HT_EM || current == HT_FONT ||
+				current == HT_I || current == HT_IMG ||
+				current == HT_INPUT || current == HT_KBD ||
+				current == HT_MAP || current == HT_NOFRAMES ||
+				current == HT_SAMP || current == HT_SCRIPT ||
+				current == HT_SELECT || current == HT_SMALL ||
+				current == HT_STRIKE || current == HT_STRONG ||
+				current == HT_SUB || current == HT_SUP ||
+				current == HT_TEXTAREA || current == HT_TT ||
+				current == HT_U || current == HT_VAR ||
+				current == HT_ZTEXT)
+				return(True);
+
+			/* allow these as well if we can relax */
+			if(!parser->strict_checking &&
+				(current == HT_P || current == HT_DIV))
+			{
+				/* but always issue a warning */
+				parserCallback(parser, current, state, HTML_VIOLATION);
+				return(True);
+			}
 			break;
 
 		case HT_APPLET:
@@ -1049,17 +1093,16 @@ _ParserCheckElementContent(Parser *parser, htmlEnum current, htmlEnum state)
 	}
 	/*****
 	* There are a number of semi-container elements that often contain
-	* the <P> element. As this isn't a really dangerous element to be
+	* the <P>/<DIV> element. As this isn't a really dangerous element to be
 	* floating around randomly, allow it if we haven't been told to
 	* be strict.
 	* We can't do this for the elements that have an optional terminator
 	* as this would mess up the entire parser algorithm.
 	*****/
-	if(current == HT_P && !parser->strict_checking)
+	if(!parser->strict_checking && (current == HT_P || current == HT_DIV))
 	{
-		if(state == HT_H1 || state == HT_H2 || state == HT_H3 ||
-			state == HT_H4 || state == HT_H5 || state == HT_H6 ||
-			state == HT_UL || state == HT_OL || state == HT_DL ||
+		/* h1 through h6 is handled above */
+		if(state == HT_UL || state == HT_OL || state == HT_DL ||
 			state == HT_TABLE || state == HT_CAPTION)
 		{
 			/* but always issue a warning */
@@ -1505,13 +1548,15 @@ _ParserCopyElement(Parser *parser, XmHTMLObject *src, Boolean is_end)
 static void
 parserWarning(Parser *parser, htmlEnum id, htmlEnum current, parserError error)
 {
-	static char msg[1024], tmp[128];
-	int len;
+	static char msg[256];
 
-	/* get max length for the tmp array */
-	len = parser->cend - parser->cstart;
-	if(len > 127)
-		len = 127;
+	/* update error count before doing anything else */
+	if(error != HTML_UNKNOWN_ELEMENT)
+#ifdef MINIPARSE
+		parser_errors++;
+#else
+		parser->err_count++;
+#endif
 
 	/*
 	* make appropriate error message, set bad_html flag and update error
@@ -1520,55 +1565,70 @@ parserWarning(Parser *parser, htmlEnum id, htmlEnum current, parserError error)
 	switch(error)
 	{
 		case HTML_UNKNOWN_ELEMENT:
-			strncpy(tmp, &parser->source[parser->cstart], len);
-			tmp[len] = '\0';
-			sprintf(msg, "%s: unknown HTML identifier.", tmp);
+			{
+				int len;
+				if(!(parser->warn & XmHTML_UNKNOWN_ELEMENT))
+					return;
+				len = parser->cend - parser->cstart;
+				if(len > 127)
+					len = 127;
+				strcpy(msg, "<");
+				msg[1] = '\0';		/* nullify */
+				strncat(msg, &parser->source[parser->cstart], len);
+				strcat(msg, ">: unknown HTML identifier.");
+			}
 			break;
 		case HTML_OPEN_ELEMENT:
+			parser->html32 = False;
+			if(!(parser->warn & XmHTML_OPEN_ELEMENT))
+				return;
 			sprintf(msg, "Unbalanced terminator: got %s while %s is "
 				"required.", html_tokens[id], html_tokens[current]);
-			parser->html32 = False;
 			break;
 		case HTML_BAD:
+			parser->html32 = False;
+			if(!(parser->warn & XmHTML_BAD))
+				return;
 			sprintf(msg, "Terrible HTML! element %s completely out "
 				"of balance", html_tokens[id]);
-			parser->html32 = False;
 			break;
 		case HTML_OPEN_BLOCK:
+			parser->html32 = False;
+			if(!(parser->warn & XmHTML_OPEN_BLOCK))
+				return;
 			sprintf(msg, "A new block level element (%s) was encountered "
 				"while %s is still open.", html_tokens[id],
 				html_tokens[current]);
-			parser->html32 = False;
 			break;
 		case HTML_CLOSE_BLOCK:
+			parser->html32 = False;
+			if(!(parser->warn & XmHTML_CLOSE_BLOCK))
+				return;
 			sprintf(msg, "A closing block level element (%s) was encountered "
 				"while it was\n    never opened.", html_tokens[id]);
-			parser->html32 = False;
 			break;
 		case HTML_NESTED:
+			parser->html32 = False;
+			if(!(parser->warn & XmHTML_NESTED))
+				return;
 			sprintf(msg, "Improperly nested element: %s may not be nested",
 				html_tokens[id]);
-			parser->html32 = False;
 			break;
 		case HTML_VIOLATION:
-			sprintf(msg, "%s may not occur inside %s",
-				html_tokens[id], html_tokens[current]);
 			parser->html32 = False;
+			if(!(parser->warn & XmHTML_VIOLATION))
+				return;
+			sprintf(msg, "HTML Violation: %s may not occur inside %s",
+				html_tokens[id], html_tokens[current]);
 			break;
-		case HTML_NOTIFY:
-			return;
 		case HTML_INTERNAL:
 			sprintf(msg, "Internal parser error!");
 			break;
+		case HTML_NOTIFY:	/* not reached */
+			return;
+
 		/* no default */
 	}
-
-	if(error != HTML_UNKNOWN_ELEMENT)
-#ifdef MINIPARSE
-		parser_errors++;
-#else
-		parser->err_count++;
-#endif
 
 	_XmHTMLWarning(__WFUNC__(parser->widget, "_ParserVerify"), "%s\n    "
 		"(line %i in input)", msg, parser->num_lines);
@@ -3416,7 +3476,7 @@ parserDriver(XmHTMLWidget html, XmHTMLObject *old_list, String input)
 	}
 	else if(!(strcasecmp(html->html.mime_type, "text/plain")))
 	{
-		html->html.mime_id = XmNONE;
+		html->html.mime_id = XmHTML_NONE;
 		parsePLAIN(parser);
 	}
 	else if(!(strncasecmp(html->html.mime_type, "image/", 6)))

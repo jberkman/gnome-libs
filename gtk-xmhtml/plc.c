@@ -38,6 +38,15 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.7  1997/12/29 22:16:34  unammx
+* This version does:
+*
+*    - Sync with Koen to version Beta 1.1.2c of the XmHTML widget.
+*      Includes various table fixes.
+*
+*    - Callbacks are now properly checked for the Gtk edition (ie,
+*      signals).
+*
 * Revision 1.6  1997/12/25 01:34:14  unammx
 * Good news for the day:
 *
@@ -374,7 +383,7 @@ _PLCEndData(PLC *plc)
 
 	if(plc->object->type == plcAny || plc->object->type == plcDocument)
 	{
-		plc->sf.end_data(&plc_context, NULL, XmNONE, /* FIXME: XmNONE -> ??? */
+		plc->sf.end_data(&plc_context, NULL, XmHTML_NONE, /* FIXME: XmHTML_NONE -> ??? */
 			(plc->plc_status == PLC_COMPLETE));
 		return;
 	}
@@ -461,7 +470,7 @@ _PLCGetDataBlock(PLC *plc, Byte *buf)
 *	a newly created PLC.
 * Note:
 *	Type indicates what type of object should be created. It can be
-*	XmNONE, XmPLC_IMAGE or XmPLC_DOCUMENT.
+*	Xm_HTML_NONE, XmPLC_IMAGE or XmPLC_DOCUMENT.
 *	The priv_data argument is not the same as the user_data field. It allows
 *	an application to attach internal data to a PLC.
 ****/
@@ -537,7 +546,7 @@ _XmHTMLPLCCreate(XmHTMLWidget html, TPointer priv_data, String url, Byte type)
 		plc->object->type = plcAnyImage;
 		plc->transfer     = (PLCProc)_PLC_IMG_Transfer;
 		plc->finalize     = (PLCProc)_PLC_IMG_Finalize;
-		plc->sf.new       = (PLCProc)_PLC_IMG_Init;
+		plc->sf.c_new     = (PLCProc)_PLC_IMG_Init;
 		plc->obj_set      = False;
 	}
 	else if(type == XmPLC_DOCUMENT)
@@ -545,7 +554,7 @@ _XmHTMLPLCCreate(XmHTMLWidget html, TPointer priv_data, String url, Byte type)
 		plc->object->type = plcDocument;
 		plc->transfer     = (PLCProc)_PLC_DOC_Transfer;
 		plc->finalize     = (PLCProc)_PLC_DOC_Finalize;
-		plc->sf.new       = (PLCProc)_PLC_DOC_Init;
+		plc->sf.c_new     = (PLCProc)_PLC_DOC_Init;
 		plc->obj_set      = False;
 	}
 	else /* type is unknown */
@@ -553,10 +562,10 @@ _XmHTMLPLCCreate(XmHTMLWidget html, TPointer priv_data, String url, Byte type)
 		plc->object->type = plcAny;
 		plc->transfer     = (PLCProc)_PLC_ANY_Transfer;
 		plc->finalize     = (PLCProc)_PLC_ANY_Finalize;
-		plc->sf.new       = (PLCProc)_PLC_ANY_Init;
+		plc->sf.c_new     = (PLCProc)_PLC_ANY_Init;
 		plc->obj_set      = False;
 	}
-	/* these *must* be set when the plc->sf.new() function is called */
+	/* these *must* be set when the plc->sf.c_new() function is called */
 	plc->init        = (PLCProc)NULL;
 	plc->destructor  = (PLCProc)NULL;
 
@@ -781,7 +790,7 @@ _PLCRun(PLC *plc)
 	/* see if the object has been set */
 	if(plc->obj_set == False)
 	{
-		plc->sf.new(plc->self);
+		plc->sf.c_new(plc->self);
 		return;
 	}
 

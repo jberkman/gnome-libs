@@ -40,6 +40,15 @@
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.5  1997/12/29 22:16:22  unammx
+* This version does:
+*
+*    - Sync with Koen to version Beta 1.1.2c of the XmHTML widget.
+*      Includes various table fixes.
+*
+*    - Callbacks are now properly checked for the Gtk edition (ie,
+*      signals).
+*
 * Revision 1.4  1997/12/25 01:34:09  unammx
 * Good news for the day:
 *
@@ -163,7 +172,7 @@ typedef struct _Parser{
 	Cardinal loop_count;		/* no of loops made so far				*/
 	Boolean strict_checking;	/* HTML 3.2 looseness flag				*/
 	Boolean have_body;			/* indicates presence of <body> tag		*/
-	Boolean warn;				/* warn about bad html constructs		*/
+	Byte warn;				/* warn about bad html constructs		*/
 	Boolean bad_html;			/* bad HTML document flag				*/
 	Boolean html32;				/* HTML32 conforming document flag		*/
 	Boolean	automatic;			/* when in automatic mode				*/
@@ -376,6 +385,8 @@ extern XmHTMLObjectTableElement _XmHTMLGetAnchorByValue(XmHTMLWidget html,
 *                          Scroll direction is given by the widget id.
 * _XmHTMLCheckXCC        : create a XColorContext for the a HTML widget.
 * _XmHTMLClearArea       : XClearArea for a XmHTML widget.
+* _XmHTMLCvtStringToWarning: convert a XmCHTMLWarningType to it's internal
+*                          representation.
 *
 **********************************************************************/
 
@@ -388,6 +399,10 @@ extern void _XmHTMLCheckXCC(XmHTMLWidget html);
 
 extern void _XmHTMLClearArea(XmHTMLWidget html, int x, int y, int width,
 	int height);
+
+extern Boolean _XmHTMLCvtStringToWarning(Display *dpy, XrmValuePtr args,
+	Cardinal *num_args, XrmValuePtr from_val, XrmValuePtr to_val,
+	XtPointer *converter_data);
 
 /*********************************************************************
 * @Module: paint.c 

@@ -36,6 +36,15 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.9  1997/12/29 22:16:28  unammx
+* This version does:
+*
+*    - Sync with Koen to version Beta 1.1.2c of the XmHTML widget.
+*      Includes various table fixes.
+*
+*    - Callbacks are now properly checked for the Gtk edition (ie,
+*      signals).
+*
 * Revision 1.8  1997/12/29 03:17:10  sopwith
 * amessagetosatisfyCVS
 *
@@ -1065,11 +1074,10 @@ frameDoneCallback(XmHTMLWidget html, XmHTMLFrameWidget *frame,
 {
 	XmHTMLFrameCallbackStruct cbs;
 
-	CHECK_CALLBACK(html, frame_callback, FRAME);
-
+	if (!CHECK_CALLBACK(html, frame_callback, FRAME))
+		return
+			
 	/* inform user that this frame is finished */
-	if(!html->html.frame_callback)
-		return;
 
 	cbs.reason = XmCR_HTML_FRAME;
 	cbs.event = NULL;
@@ -1102,15 +1110,9 @@ _XmHTMLCheckForFrames(XmHTMLWidget html, XmHTMLObject *objects)
 	XmHTMLObject *tmp;
 	int nframes = 0;
 
-#ifdef WITH_MOTIF
-	/* we only support frames if user has attached a frame callback */
-	if(!html->html.frame_callback) {
-		return(0);
-	}
-#else
-	if (!gtk_xmhtml_signal_get_handlers (GTK_WIDGET(html), gtk_xmhtml_signals [GTK_XMHTML_FRAME]))
+	if (!CHECK_CALLBACK(html, frame_callback, FRAME))
 		return 0;
-#endif
+
 	/*
 	* frames are not allowed to appear inside the BODY tag.
 	* So we never have to walk the entire contents of the current document
@@ -1140,7 +1142,7 @@ _XmHTMLFrameDestroyCallback(XmHTMLWidget html, XmHTMLFrameWidget *frame)
 	XmHTMLFrameCallbackStruct cbs;
 
 	/* inform user that this frame is about to be destroyed */
-	if(!html->html.frame_callback)
+	if(!CHECK_CALLBACK (html, frame_callback, FRAME))
 		return;
 
 	cbs.reason = XmCR_HTML_FRAMEDESTROY;
@@ -1195,7 +1197,7 @@ _XmHTMLFrameCreateCallback(XmHTMLWidget html, XmHTMLFrameWidget *frame)
 	static TWidget widget;
 
 	/* inform user that this frame is about to be created */
-	if(!html->html.frame_callback)
+	if(!CHECK_CALLBACK (html, frame_callback, FRAME))
 		return(NULL);
 
 	cbs.reason = XmCR_HTML_FRAMECREATE;
@@ -1380,7 +1382,7 @@ _XmHTMLCreateFrames(XmHTMLWidget old, XmHTMLWidget html)
 	* Don't do a thing if we are destroying the previous list, we don't have
 	* a frame callback or the new widget doesn't have any frames at all
 	*/
-	if(html == NULL || !html->html.frame_callback || html->html.nframes == 0)
+	if(html == NULL || !CHECK_CALLBACK (html, frame_callback, FRAME) || html->html.nframes == 0)
 		return(False);
 
 	frame = NULL;

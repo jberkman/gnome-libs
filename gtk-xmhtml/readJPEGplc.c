@@ -36,6 +36,15 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.3  1997/12/29 22:16:38  unammx
+* This version does:
+*
+*    - Sync with Koen to version Beta 1.1.2c of the XmHTML widget.
+*      Includes various table fixes.
+*
+*    - Callbacks are now properly checked for the Gtk edition (ie,
+*      signals).
+*
 * Revision 1.2  1997/12/23 04:44:34  unammx
 * Ok kiddies, news for the day:
 *
@@ -681,7 +690,7 @@ _PLC_JPEG_Init(PLC *plc)
 	jpeg->info->type = IMAGE_JPEG;
 
 	/* jpeg images are always fully opaque */
-	jpeg->transparency = XmNONE;
+	jpeg->transparency = XmHTML_NONE;
 	jpeg->bg_pixel = -1;
 
 	/*****

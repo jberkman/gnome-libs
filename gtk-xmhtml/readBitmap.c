@@ -37,6 +37,15 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.2  1997/12/29 22:16:36  unammx
+* This version does:
+*
+*    - Sync with Koen to version Beta 1.1.2c of the XmHTML widget.
+*      Includes various table fixes.
+*
+*    - Callbacks are now properly checked for the Gtk edition (ie,
+*      signals).
+*
 * Revision 1.1  1997/11/28 03:38:59  gnomecvs
 * Work in progress port of XmHTML;  No, it does not compile, don't even try -mig
 *
@@ -469,7 +478,7 @@ _PLC_XBM_Init(PLC *plc)
 	xbm->cmap = (TColor*)calloc(xbm->cmapsize, sizeof(TColor));
 
 	/* image is initially fully opaque */
-	xbm->transparency = XmNONE;
+	xbm->transparency = XmHTML_NONE;
 	xbm->bg_pixel = -1;
 
 	/*****

@@ -37,6 +37,15 @@
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.5  1997/12/29 22:16:18  unammx
+* This version does:
+*
+*    - Sync with Koen to version Beta 1.1.2c of the XmHTML widget.
+*      Includes various table fixes.
+*
+*    - Callbacks are now properly checked for the Gtk edition (ie,
+*      signals).
+*
 * Revision 1.4  1997/12/26 23:54:37  unammx
 * More Gtk/XmHTML work: now a number of features can be configured on
 * the widget, look at the gazillions of options in gtk-xmhtml.h for
@@ -271,6 +280,24 @@ typedef enum{
 	HTML_NOTIFY,				/* notification of text insertion/removal	*/
 	HTML_INTERNAL				/* internal parser error					*/
 }parserError;
+
+/*****
+* And corresponding values for XmNenableBadHTMLWarnings.
+* These are or'd together.
+* XmNONE disables warnings and XmHTML_ALL enables all warnings.
+* See parserError for their meaning.
+*****/
+enum{
+	XmHTML_NONE = 0,				/* no warnings	*/
+	XmHTML_UNKNOWN_ELEMENT = 1,	
+	XmHTML_BAD = 2,
+	XmHTML_OPEN_BLOCK = 4,
+	XmHTML_CLOSE_BLOCK = 8,
+	XmHTML_OPEN_ELEMENT = 16,
+	XmHTML_NESTED = 32,
+	XmHTML_VIOLATION = 64,
+	XmHTML_ALL = 127			/* all warnings	*/
+};
 
 /*****
 * possible action codes for the action field in the XmHTMLParserCallbackStruct
@@ -916,9 +943,7 @@ typedef void (*XmHTMLEndDataProc)(XmHTMLPLCStream*, TPointer, int, Boolean);
 * possible values for the third argument on the EndDataProc
 *****/
 enum{
-#ifndef WITH_MOTIF
-	XmNONE = 0,	/* PLCObject referenced by all objects */
-#endif
+	/* XmHTML_NONE = 0 */	/* PLCObject referenced by all objects */
 	XmPLC_IMAGE,		/* PLCObject for an image */
 	XmPLC_DOCUMENT,		/* PLCObject for a document */
 	XmPLC_FINISHED		/* indicates all plc's have been processed */

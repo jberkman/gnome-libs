@@ -36,6 +36,15 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.2  1997/12/29 22:16:31  unammx
+* This version does:
+*
+*    - Sync with Koen to version Beta 1.1.2c of the XmHTML widget.
+*      Includes various table fixes.
+*
+*    - Callbacks are now properly checked for the Gtk edition (ie,
+*      signals).
+*
 * Revision 1.1  1997/12/25 01:34:13  unammx
 * Good news for the day:
 *
@@ -129,7 +138,7 @@ static void CheckAlignment(XmHTMLWidget html, XmHTMLWord *words[],
 	int skip_id);
 
 static void CheckVerticalAlignment(XmHTMLWidget html, PositionBox *box,
-	XmHTMLObjectTableElement obj_start, XmHTMLObjectTableElement obj_end,
+	XmHTMLObjectTableElement start, XmHTMLObjectTableElement end,
 	Alignment valign);
 
 static void AdjustBaseline(XmHTMLWord *base_obj, XmHTMLWord **words,
@@ -337,6 +346,8 @@ _XmHTMLComputeLayout(XmHTMLWidget html)
 				}
 				SetBreak(html, &box, temp);
 				break;
+			case OBJ_TABLE_FRAME:
+				break;
 			case OBJ_APPLET:
 				SetApplet(html, &box, temp);
 				SetBreak(html, &box, temp);
@@ -501,7 +512,7 @@ JustifyText(XmHTMLWidget html, XmHTMLWord *words[], int word_start,
 		/* walk all words in search of the longest one */
 		for(i = word_start ; i < word_end && nspace; i++, num_iter++)
 		{
-			if(i == skip_id)
+			if(i == skip_id || words[i]->len == 0)
 				continue;
 			/* Found! */
 			if(words[i]->len == word_len && 
@@ -820,7 +831,7 @@ AdjustBaseline(XmHTMLWord *base_obj, XmHTMLWord **words, int start, int end,
 	/* proper vertical alignment. */ \
 	(W)->line = line; \
 	(W)->x = x_pos + e_space; \
-	if((W)->type != OBJ_TEXT) \
+	if((W)->type != OBJ_TEXT && (W)->type != OBJ_BLOCK) \
 	{ \
 		(W)->y = y_pos + (W)->owner->y_offset - (W)->font->xfont->ascent; \
 		have_object = True; \
@@ -1015,6 +1026,8 @@ ComputeTextLayout(XmHTMLWidget html, PositionBox *box, XmHTMLWord **words,
 	/* interword spacing */
 	e_space = sw = font->isp;
 
+	had_break = False;
+
 	/*****
 	* Proper baseline continuation of lines consisting of words with different
 	* properties (font, fontstyle, images, form members or anchors) require us
@@ -1065,6 +1078,7 @@ ComputeTextLayout(XmHTMLWidget html, PositionBox *box, XmHTMLWord **words,
 			}
 		}
 		in_line = True;	/* we are busy with a line of text */
+		had_break = False;
 
 		/* get new space width if font changes */
 		if(font != words[i]->font)
@@ -1114,25 +1128,62 @@ ComputeTextLayout(XmHTMLWidget html, PositionBox *box, XmHTMLWord **words,
 			min_box_width = word_width;
 
 		/* Check if we are about to exceed the viewing width */
-		if(i && x_pos + word_width + e_space >= right)
+		if((i && x_pos + word_width + e_space >= right) ||
+			words[i]->type == OBJ_BLOCK)
 		{
+			/*****
+			* If this is a forced linebreak we act as this is the last
+			* line in a paragraph: no implicit lineheight adjustment and no
+			* text justification in CheckAlignment.
+			*****/
+			Boolean is_break = words[i]->type == OBJ_BLOCK;
+
 			/*****
 			* set font of non-text objects to the largest font of the
 			* text objects (required for proper anchor drawing)
 			*****/
 			if(base_obj->type != OBJ_TEXT)
 				base_obj->font = basefont;
+
 			/* adjust baseline for all words on the current line */
-			AdjustBaseline(base_obj, words, word_start, i, &lineheight, False);
+			AdjustBaseline(base_obj, words, word_start, i, &lineheight,
+				is_break);
 
 			/* Adjust for alignment */
-			CheckAlignment(html, words, word_start, i, sw, width, False,
+			CheckAlignment(html, words, word_start, i, sw, width, is_break,
 				skip_id);
 
 			/* increment absolute height */
 			y_pos += lineheight;
+
 			/* increment absolute box height */
 			max_box_height += lineheight;
+
+			/* insert linebreak */
+			if(is_break)
+			{
+				int h;
+				h = (int)((words[i]->line_data)*base_obj->font->lineheight);
+				if((h -= lineheight) < 0)
+					h = 0; /* no negative breaks! */
+				y_pos += h;
+				max_box_height += h;
+				/*****
+				* INSERT CODE
+				* if we are flowing around an image, check if break = clear
+				* was given. If so, terminate flow around the current
+				* image.
+				*****/
+
+				/*****
+				* This word was a break and therefore the next word can't have
+				* a leading space (if it has it will mess up text
+				* justification).
+				* Fix 12/15/97-02, kdh
+				*****/
+				if(i+1 != *nwords)
+					words[i+1]->spacing &= ~TEXT_SPACE_LEAD;
+			}
 
 			/* update maximum box width */
 			if(x_pos > max_box_width)
@@ -1868,8 +1919,8 @@ static XmHTMLObjectTableElement
 SetTable(XmHTMLWidget html, PositionBox *box, XmHTMLObjectTableElement data)
 {
 	XmHTMLTable *table;
-	TableRow *row;
-	TableCell *cell;
+	TableRow *row = NULL;
+	TableCell *cell = NULL;
 	PositionBox **boxes = NULL;	/* 2D position matrix		*/
 	int *rows = NULL;			/* maximum row heights		*/
 	int *min_cols = NULL;		/* minimum width column dimensions	*/
@@ -1908,7 +1959,7 @@ SetTable(XmHTMLWidget html, PositionBox *box, XmHTMLObjectTableElement data)
 	_XmHTMLDebug(17, ("layout.c: table starts near line %i and ends at line "
 		"%i in input).\n", table->start->object->line,
 		table->end->object->line));
-	_XmHTMLDebug(17, ("layout.c: table depth: %i\n", depth));
+	_XmHTMLDebug(17, ("layout.c: table depth: %i\n", depth + 1));
 	depth++;
 
 	/* set maximum table width */
@@ -2417,10 +2468,74 @@ SetTable(XmHTMLWidget html, PositionBox *box, XmHTMLObjectTableElement data)
 		}
 #endif
 	}
+	/*****
+	* Step Six: adjust row heights to account for rowspan attributes.
+	*
+	* Each (filled) cell has it's dimensions set. We now need to adjust
+	* the row heights to properly account for any rowspan attributes set.
+	* The way we do this is as follows: for each row, check if it contains
+	* a cell with the rowspan attribute set and get the one which spans the
+	* most rows. When found, compute the total height of all spanned rows
+	* and then compute the difference between this height and the height of
+	* the spanning cell. If this difference is negative, we can keep the
+	* current row heights. If it's positive however, we distribute this
+	* difference evenly accross the height of all spanned rows.
+	*****/
+	if(needs_height_adjustment)
+	{
+		_XmHTMLDebug(17, ("layout.c: rowspan in effect, re-adjusting row "
+			"heights :\n"));
+
+		for(i = 0; i < nrows; i++)
+		{
+			int max_span = 1;
+			int span_cell = -1;
+
+			row = &(table->rows[i]);
+			for(j = 0; j < ncols; j++)
+			{
+				/* skip if this is a spanned cell */
+				if((idx = boxes[i][j].idx) != -1)
+					cell = &(row->cells[idx]);
+				else
+					continue;
+				if(cell->rowspan > max_span)
+				{
+					max_span = cell->rowspan;
+					span_cell = j;
+				}
+			}
+			if(span_cell != -1)
+			{
+				/* height of spanning cell */
+				int max_h = boxes[i][span_cell].height;
+
+				/* compute height of all spanned rows */
+				int span_h = 0;
+
+				for(k = i; k < nrows && k < i + max_span; k++)
+					span_h += rows[k];
+
+				/* spanned height greater than occupied height, adjust rows */
+				if((max_h - span_h) > 0)
+				{
+					int extra = (max_h - span_h)/(float)max_span;
+					for(k = i; k < nrows && k < i + max_span; k++)
+						rows[k] += extra;
+				}
+			}
+		}
+#ifdef DEBUG
+		for(i = 0; i < nrows; i++)
+		{
+			_XmHTMLDebug(17, ("layout.c: row %i, height = %i\n", i, rows[i]));
+		}
+#endif
+	}
 
 	_XmHTMLDebug(17, ("layout.c: ------ Table Precomputation End -----\n"));
 	/*****
-	* Step Six: assign box dimensions for each cell.
+	* Step Seven: assign box dimensions for each cell.
 	*****/
 	_XmHTMLDebug(17, ("layout.c: Final Cell Dimensions:\n"));
 
@@ -2461,20 +2576,25 @@ SetTable(XmHTMLWidget html, PositionBox *box, XmHTMLObjectTableElement data)
 		x_pos = x_start;
 		row = &(table->rows[i]);
 
+		/* top-left row positions */
+		row->owner->x = x_pos;
+		row->owner->y = y_pos;
+
 		for(j = 0; j < ncols; j++)
 		{
 			/* skip if this is a spanned cell */
 			if((idx = boxes[i][j].idx) != -1)
 				cell = &(row->cells[idx]);
 
-			boxes[i][j].x += hextra;
+			boxes[i][j].x += table->properties->border;
 			boxes[i][j].y  = y_pos;
 
 			/* set correct left & right margin */
-			boxes[i][j].lmargin = x_pos + hextra;
+			boxes[i][j].lmargin = x_pos + table->hmargin;
 			if(idx == -1 || cell->colspan == 1)
 			{
-				boxes[i][j].rmargin = x_pos + max_cols[j] + 2*hextra;
+				boxes[i][j].rmargin = x_pos + max_cols[j] + hextra +
+										table->hmargin;
 			}
 			else
 			{
@@ -2482,11 +2602,19 @@ SetTable(XmHTMLWidget html, PositionBox *box, XmHTMLObjectTableElement data)
 				int k;
 				boxes[i][j].rmargin = boxes[i][j].lmargin;
 				for(k = j; k < j + cell->colspan; k++)
-					boxes[i][j].rmargin += (max_cols[k] + hextra);
+				{
+					boxes[i][j].rmargin += (max_cols[k] + hextra +
+											table->hmargin);
+				}
 			}
+			/* total cell width */
+			boxes[i][j].width   = boxes[i][j].rmargin - boxes[i][j].lmargin;
+			boxes[i][j].left    = boxes[i][j].lmargin;
+			boxes[i][j].right   = boxes[i][j].rmargin;
+
 			if(idx == -1 || cell->rowspan == 1)
 			{
-				boxes[i][j].height = rows[i];
+				boxes[i][j].height = rows[i] + 2*vextra;
 			}
 			else
 			{
@@ -2496,12 +2624,21 @@ SetTable(XmHTMLWidget html, PositionBox *box, XmHTMLObjectTableElement data)
 				for(k = i; k < i + cell->rowspan; k++)
 					boxes[i][j].height += (rows[k] + 2*vextra);
 			}
-			/* total cell width */
-			boxes[i][j].width   = boxes[i][j].rmargin - boxes[i][j].lmargin;
-			boxes[i][j].left    = boxes[i][j].lmargin;
-			boxes[i][j].right   = boxes[i][j].rmargin;
+			/* vertical margins */
+			boxes[i][j].tmargin = vextra;
+			boxes[i][j].bmargin = (boxes[i][j].height - vextra);
 
-			x_pos += max_cols[j] + table->hpadding;
+			/* top-left cell offset & cell dimensions */
+			cell->owner->x = x_pos + boxes[i][j].x;
+			cell->owner->y = boxes[i][j].y;
+			cell->owner->width  = boxes[i][j].width  + table->hpadding;
+			cell->owner->height = boxes[i][j].height + table->vpadding;
+
+			/*****
+			* advance x position to next column. Must add room for the
+			* border, cellspacing and cellpadding
+			*****/
+			x_pos += max_cols[j] + hextra + table->hmargin + table->hpadding;
 
 			_XmHTMLDebug(17, ("Cell(%i,%i,%i): x = %i, y = %i, w = %i, "
 				"h = %i, left = %i, right = %i %s\n", depth, i, j,
@@ -2520,9 +2657,10 @@ SetTable(XmHTMLWidget html, PositionBox *box, XmHTMLObjectTableElement data)
 
 		/* move to next row */
 		y_pos += (rows[i] + 2*vextra + table->vpadding);
-#if 0
-		max_theight += rows[i] + 2*vextra + table->vpadding;
-#endif
+
+		/* save row dimensions */
+		row->owner->width = x_pos - row->owner->x;
+		row->owner->height = y_pos - row->owner->y;
 	}
 
 	/* Final table height */
@@ -2532,7 +2670,7 @@ SetTable(XmHTMLWidget html, PositionBox *box, XmHTMLObjectTableElement data)
 	line = save_line;
 
 	/*****
-	* Step Seven: compute real text layout using the computed box dimensions.
+	* Step Eight: compute real text layout using the computed box dimensions.
 	*****/
 	for(i = 0; i < table->nrows; i++)
 	{
@@ -2556,7 +2694,9 @@ SetTable(XmHTMLWidget html, PositionBox *box, XmHTMLObjectTableElement data)
 			line = save_line;
 
 			_XmHTMLDebug(17, ("layout.c: Cell(%i,%i,%i): computing final "
-				"layout\n", depth, i, j));
+				"layout for box at (%i,%i) with size %ix%i\n", depth, i, j,
+				boxes[i][j].x, boxes[i][j].y,
+				boxes[i][j].width, boxes[i][j].height));
 
 			/* compute final layout for the current cell */
 			ComputeTableLayout(html, &boxes[i][j], cell->start, cell->end);
@@ -2611,10 +2751,10 @@ SetTable(XmHTMLWidget html, PositionBox *box, XmHTMLObjectTableElement data)
 		_XmHTMLDebug(17, ("layout.c: adjusted max_width to %i\n", max_width));
 	}
 
-	depth--;
-
 	_XmHTMLDebug(17, ("layout.c: table at depth %i finished, table width: %i, "
 		"table height: %i\n", depth, max_twidth, max_theight));
+
+	depth--;
 
 	_XmHTMLDebug(17, ("layout.c: ------ Table Layout Ends -----\n"));
 
@@ -2629,14 +2769,10 @@ PreComputeTableLayout(XmHTMLWidget html, PositionBox *parent,
 	XmHTMLObjectTableElement tmp, end;
 	int max_width_save;
 	PositionBox box, box_return;
-	Boolean had_break_save;
-	XmHTMLWord *base_obj_save;
 	int y_start = parent->y;
 
 	memcpy(&box, parent, sizeof(PositionBox));
 	memcpy(&box_return, parent, sizeof(PositionBox));
-
-	had_break = False;
 
 	/*****
 	* Save current max_width, it's possible it will be changed in
@@ -2644,20 +2780,13 @@ PreComputeTableLayout(XmHTMLWidget html, PositionBox *parent,
 	* value (width is ignored when precomputing cell widths).
 	*****/
 	max_width_save = max_width;
-	had_break_save = had_break;
-	base_obj_save  = baseline_obj;
-
 	had_break = False;
-
-#if 0
-	box_return.height = 0;
-#endif
+	baseline_obj = False;
+	box.y = 0;
+	box.x = 0;
 
 	for(tmp = obj_start; tmp && tmp != obj_end; tmp = tmp->next)
 	{
-#if 0
-		box.height = 0;
-#endif
 		switch(tmp->object_type)
 		{
 			/* collect all words */
@@ -2702,6 +2831,8 @@ PreComputeTableLayout(XmHTMLWidget html, PositionBox *parent,
 				SetBreak(html, &box, tmp);
 				tmp = SetTable(html, &box, tmp);
 				break;
+			case OBJ_TABLE_FRAME:
+				break;
 			case OBJ_APPLET:
 				SetApplet(html, &box, tmp);
 				SetBreak(html, &box, tmp);
@@ -2723,10 +2854,6 @@ PreComputeTableLayout(XmHTMLWidget html, PositionBox *parent,
 		/* store minimum box width (ignore empty boxes) */
 		if(box.min_width > 0 && box_return.min_width < box.min_width)
 			box_return.min_width = box.min_width;
-#if 0
-		/* minimal box height */
-		box_return.height += box.height;
-#endif
 	}
 	/* Done precomputing, update return values */
 
@@ -2756,10 +2883,11 @@ PreComputeTableLayout(XmHTMLWidget html, PositionBox *parent,
 	else
 		parent->height = box.y - y_start;
 
+	box.y = 0;
+	box.x = 0;
+
 	/* and restore max_width */
 	max_width = max_width_save;
-	had_break = had_break_save;
-	baseline_obj = base_obj_save;
 }
 
 static void
@@ -2768,18 +2896,17 @@ ComputeTableLayout(XmHTMLWidget html, PositionBox *box,
 {
 	XmHTMLObjectTableElement tmp, end;
 	int max_width_save;
-	Boolean had_break_save;
-	XmHTMLWord *base_obj_save;
 
 	/*****
 	* max_width also to be restored, it's final value is governed by the
 	* total width of the enclosing table.
+	* We also *must* reset the baseline object: it only applies *per*
+	* box (= cell). Not resetting it would transfer the baseline object
+	* to another cell, which is not very desirable...
 	*****/
 	max_width_save = max_width;
-	had_break_save = had_break;
-	base_obj_save  = baseline_obj;
-
 	had_break = False;
+	baseline_obj = False;
 
 	for(tmp = obj_start; tmp && tmp != obj_end; tmp = tmp->next)
 	{
@@ -2828,6 +2955,8 @@ ComputeTableLayout(XmHTMLWidget html, PositionBox *box,
 				SetBreak(html, box, tmp);
 				tmp = SetTable(html, box, tmp);
 				break;
+			case OBJ_TABLE_FRAME:
+				break;
 			case OBJ_APPLET:
 				SetApplet(html, box, tmp);
 				SetBreak(html, box, tmp);
@@ -2844,18 +2973,16 @@ ComputeTableLayout(XmHTMLWidget html, PositionBox *box,
 					"Unknown object type!");
 		}
 	}
-	had_break = had_break_save;
 	max_width = max_width_save;
-	baseline_obj = base_obj_save;
 }
 
 static void
 CheckVerticalAlignment(XmHTMLWidget html, PositionBox *box,
-	XmHTMLObjectTableElement obj_start, XmHTMLObjectTableElement obj_end,
+	XmHTMLObjectTableElement start, XmHTMLObjectTableElement end,
 	Alignment valign)
 {
 	/*****
 	* INSERT CODE
-	* to shift cell contents down by a proper amount
+	* to shift all objects down
 	*****/
 }

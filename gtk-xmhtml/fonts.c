@@ -36,6 +36,15 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.4  1997/12/29 22:16:24  unammx
+* This version does:
+*
+*    - Sync with Koen to version Beta 1.1.2c of the XmHTML widget.
+*      Includes various table fixes.
+*
+*    - Callbacks are now properly checked for the Gtk edition (ie,
+*      signals).
+*
 * Revision 1.3  1997/12/25 01:38:29  unammx
 * Small bug fixes
 *
@@ -893,8 +902,8 @@ initializeFontSizeLists(XmHTMLWidget html)
 	xmhtml_basefont_sizes[0] = xmhtml_fn_sizes[1];	/* sub/superscript size */
 	xmhtml_basefont_sizes[1] = xmhtml_fn_sizes[7];	/* H6 size */
 	xmhtml_basefont_sizes[2] = xmhtml_fn_sizes[6];	/* H5 size */
-	xmhtml_basefont_sizes[3] = xmhtml_fn_sizes[5];	/* H4 size (def font size)*/
-	xmhtml_basefont_sizes[4] = xmhtml_fn_sizes[4];	/* H3 size */
+	xmhtml_basefont_sizes[3] = xmhtml_fn_sizes[5];	/* H4 size */
+	xmhtml_basefont_sizes[4] = xmhtml_fn_sizes[4];	/* H3 size (def font size)*/
 	xmhtml_basefont_sizes[5] = xmhtml_fn_sizes[3];	/* H2 size */
 	xmhtml_basefont_sizes[6] = xmhtml_fn_sizes[2];	/* H1 size */
 

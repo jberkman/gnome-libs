@@ -38,6 +38,15 @@
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.3  1997/12/29 22:16:35  unammx
+* This version does:
+*
+*    - Sync with Koen to version Beta 1.1.2c of the XmHTML widget.
+*      Includes various table fixes.
+*
+*    - Callbacks are now properly checked for the Gtk edition (ie,
+*      signals).
+*
 * Revision 1.2  1997/12/25 01:34:14  unammx
 * Good news for the day:
 *
@@ -135,7 +144,7 @@ typedef struct _PLC{
 	struct s_funcs{					/* stream manipulation routines */
 				XmHTMLGetDataProc get_data;
 				XmHTMLEndDataProc end_data;
-				PLCProc new;		/* PLCObject initializer */
+				PLCProc c_new;		/* PLCObject initializer */
 	}sf;
 	PLCProc		init;				/* object initializer function */
 	PLCProc		destructor;			/* object destructor */

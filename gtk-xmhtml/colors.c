@@ -35,6 +35,15 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.4  1997/12/29 22:16:24  unammx
+* This version does:
+*
+*    - Sync with Koen to version Beta 1.1.2c of the XmHTML widget.
+*      Includes various table fixes.
+*
+*    - Callbacks are now properly checked for the Gtk edition (ie,
+*      signals).
+*
 * Revision 1.3  1997/12/25 01:34:10  unammx
 * Good news for the day:
 *
@@ -698,25 +707,19 @@ XmHTMLAllocColor(TWidget w, String color, Pixel def_pixel)
 void
 XmHTMLFreeColor(TWidget w, Pixel pixel)
 {
-	XmHTMLWidget html;
-
 	/* sanity check */
 	if(!w)
 	{
-		_XmHTMLWarning(__WFUNC__(w, "XmHTMLFreeColor"),
-			"NULL parent passed to XmHTMLFreeColor.");
+		_XmHTMLBadParent(w, "XmHTMLFreeColor");
 		return;
 	}
-
-	/* not necessarly true */
-	html = (XmHTMLWidget)w;
 
 	/*
 	* ->core.colormap will always yield a colormap, all widgets are
 	* subclassed from core.
 	*/
 #ifdef WITH_MOTIF
-	XFreeColors(XtDisplay(w), html->core.colormap, &pixel, 1, 0L);
+	XFreeColors(XtDisplay(w), w->core.colormap, &pixel, 1, 0L);
 #else
 	gdk_colors_free(gtk_widget_get_colormap(w), &pixel, 1, 0L);
 #endif

@@ -35,6 +35,15 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.6  1997/12/29 22:16:32  unammx
+* This version does:
+*
+*    - Sync with Koen to version Beta 1.1.2c of the XmHTML widget.
+*      Includes various table fixes.
+*
+*    - Callbacks are now properly checked for the Gtk edition (ie,
+*      signals).
+*
 * Revision 1.5  1997/12/26 21:03:34  sopwith
 * A few miscellaneous XmHTML bug fixes, including a note to miguel so he can fix frames ;-)
 *
@@ -139,14 +148,20 @@ static char rcsId[]="$Header$";
 /*** Private Datatype Declarations ****/
 
 /*** Private Function Prototype Declarations ****/
+/* main rendering routines */
 static void DrawText(XmHTMLWidget html, XmHTMLObjectTableElement data);
 static void DrawAnchor(XmHTMLWidget html, XmHTMLObjectTableElement data);
 static void DrawImageAnchor(XmHTMLWidget html, XmHTMLObjectTableElement data);
 static void DrawRule(XmHTMLWidget html, XmHTMLObjectTableElement data);
 static void DrawBullet(XmHTMLWidget html, XmHTMLObjectTableElement data);
-static void DrawFrame(XmHTMLWidget html, XmHTMLImage *image, int xs, int ys);
+static XmHTMLObjectTableElement DrawTable(XmHTMLWidget html,
+	XmHTMLObjectTableElement data, XmHTMLObjectTableElement data_end);
+
+/* various helper routines */
 static void DrawAnchorButton(XmHTMLWidget html, int x, int y, Dimension width,
 	Dimension height, TGC top, TGC bottom);
+static void DrawFrame(XmHTMLWidget html, XmHTMLImage *image, int xs, int ys);
+static void DrawTableFrame(XmHTMLWidget html, XmHTMLObjectTableElement data);
 
 #ifdef WITH_MOTIF
 static void
@@ -219,30 +234,9 @@ _XmHTMLPaint(XmHTMLWidget html, XmHTMLObjectTable *start,
 					"Refresh: Invalid image object.");
 				break;
 			case OBJ_TABLE:
-#if 0
-			{
-				/* horrible kludge */
-				int paint_y = html->html.paint_y;
-				int paint_x = html->html.paint_x;
-				int paint_height = html->html.paint_height;
-				int paint_width  = html->html.paint_width;
-							
-				_XmHTMLPaint(html, temp->table->start->next, temp->table->end);
-
-				html->html.paint_y = paint_y;
-				html->html.paint_x = paint_x;
-				html->html.paint_height = paint_height;
-				html->html.paint_width  = paint_width;
-
-				/* move to last object in this table */
-				if((temp = temp->table->end) == NULL);
-				{
-					_XmHTMLDebug(16, ("paint.c: _XmHTMLPaint End\n"));
-					return;
-				}
-			}
-			break;
-#endif
+			case OBJ_TABLE_FRAME:
+				temp = DrawTable(html, temp, end);
+				break;
 			case OBJ_APPLET:
 			case OBJ_BLOCK:
 			case OBJ_NONE:
@@ -348,20 +342,25 @@ DrawText(XmHTMLWidget html, XmHTMLObjectTableElement data)
 		* position is outside the exposed area. Not doing this check would 
 		* cause a visible flicker of the screen when scrolling: the entire 
 		* line would be repainted, even the invisible text.
+		* And we sure don't want to render any linebreaks, looks pretty ugly.
+		* (this test is a lot cheaper than doing ``invisible'' rendering)
 		*/
-		if(html->html.paint_y > tmp->y + tmp->height ||
-			html->html.paint_height < tmp->y)
+		if((html->html.paint_y > tmp->y + tmp->height ||
+			html->html.paint_height < tmp->y) ||
+			(html->html.paint_x > tmp->x + tmp->width ||
+			html->html.paint_width < tmp->x) || tmp->type == OBJ_BLOCK)
 		{
-			_XmHTMLDebug(16, ("paint.c: DrawText, skipping %s, outside "
-				"vertical range.\n", tmp->word));
-			continue;
-		}
-
-		if(html->html.paint_x > tmp->x + tmp->width ||
-			html->html.paint_width < tmp->x)
-		{
-			_XmHTMLDebug(16, ("paint.c: DrawText, skipping %s, outside "
-				"horizontal range.\n", tmp->word));
+#ifdef DEBUG
+			if(html->html.paint_y > tmp->y + tmp->height ||
+				html->html.paint_height < tmp->y)
+				_XmHTMLDebug(16, ("paint.c: DrawText, skipping %s, outside "
+					"vertical range.\n", tmp->word));
+			else if(tmp->type != OBJ_BLOCK)
+				_XmHTMLDebug(16, ("paint.c: DrawText, skipping %s, outside "
+					"horizontal range.\n", tmp->word));
+			else
+				_XmHTMLDebug(16, ("paint.c: DrawText, skipping break.\n"));
+#endif
 			continue;
 		}
 
@@ -428,7 +427,7 @@ DrawAnchor(XmHTMLWidget html, XmHTMLObjectTableElement data)
 	XmHTMLObjectTableElement a_start, a_end, temp;
 
 	/* pick up the real start of this anchor */
-	for(a_start = data; a_start != NULL && a_start->anchor == data->anchor;
+	for(a_start = data; a_start && a_start->anchor == data->anchor;
 		a_start = a_start->prev);
 
 	/* sanity, should never happen */
@@ -438,6 +437,7 @@ DrawAnchor(XmHTMLWidget html, XmHTMLObjectTableElement data)
 			"could not locate anchor starting point!");
 		return;
 	}
+
 	/* previous loop always walks back one to many */
 	a_start = a_start->next;
 
@@ -446,7 +446,8 @@ DrawAnchor(XmHTMLWidget html, XmHTMLObjectTableElement data)
 		a_end != NULL && a_end->anchor == a_start->anchor; a_end = a_end->next)
 	{
 		/* ignore image words, they get handled by DrawImageAnchor. */
-		if(!(a_end->text_data & TEXT_IMAGE))
+		if(!(a_end->text_data & TEXT_IMAGE) &&
+			!(a_end->text_data & TEXT_BREAK))
 			nwords += a_end->n_words;
 	}
 
@@ -474,7 +475,8 @@ DrawAnchor(XmHTMLWidget html, XmHTMLObjectTableElement data)
 		for(temp = a_start; temp != a_end; temp = temp->next)
 		{
 			/* ignore image words, they get handled by DrawImageAnchor. */
-			if(!(temp->text_data & TEXT_IMAGE))
+			if(!(temp->text_data & TEXT_IMAGE) &&
+				!(temp->text_data & TEXT_BREAK))
 			{
 				for(j = 0 ; j < temp->n_words; j++)
 					all_words[i++] = &(temp->words[j]);
@@ -1556,44 +1558,6 @@ DrawRule(XmHTMLWidget html, XmHTMLObjectTableElement data)
 		{
 			gc = html->html.gc;
 			Toolkit_Set_Line_Attributes(dpy, gc, 1, TLineSolid, TCapButt, TJoinBevel);
-			Toolkit_Set_Foreground(dpy, gc, data->fg);
-			Toolkit_Fill_Rectangle(dpy, win, gc, xs, ys + dy, data->width, data->height); 
-		}
-		else
-		{
-			/* top & left border */
-			gc = Toolkit_StyleGC_BottomShadow(html);
-			/* top & left border */
-			Toolkit_Fill_Rectangle(dpy, win, gc, xs, ys + dy, data->width, 1);
-			Toolkit_Fill_Rectangle(dpy, win, gc, xs, ys + dy, 1, data->height-1);
-
-			/* bottom & right border */
-			gc = Toolkit_StyleGC_TopShadow(html);
-			Toolkit_Fill_Rectangle(dpy, win, gc, xs+1, ys + dy + data->height-1, 
-				data->width-1, 1);
-			Toolkit_Fill_Rectangle(dpy, win, gc, 
-				xs + data->width - 1, ys + dy + 1, 1, data->height-2);
-		}
-	}
-	else
-	{
-		if(data->y_offset) /* noshade */
-		{
-			gc = html->html.gc;
-			Toolkit_Set_Line_Attributes(dpy, gc, 1, TLineSolid, TCapButt, TJoinBevel);
-			Toolkit_Set_Foreground(dpy, gc, data->fg);
-			Toolkit_Draw_Line(dpy, win, gc, xs, ys + dy, xs + data->width, ys + dy);
-			Toolkit_Draw_Line(dpy, win, gc, xs, ys + dy + 1, xs + data->width, ys + dy + 1);
-		}
-		else
-		{
-			/* topline */
-			gc = Toolkit_StyleGC_BottomShadow(html);
-			Toolkit_Draw_Line (dpy, win, gc, xs, ys + dy, xs + data->width, ys + dy);
-
-			/* bottomline */
-			gc = Toolkit_StyleGC_TopShadow(html);
-			Toolkit_Draw_Line (dpy, win, gc, xs, ys + dy + 1, xs + data->width, ys + dy + 1);
 		}
 	}
 }
@@ -1658,4 +1622,131 @@ DrawAnchorButton(XmHTMLWidget html, int x, int y, Dimension width,
 		y + height);
 	Toolkit_Draw_Line(dpy, win, bottom_shadow_GC, x + width,  y, x + width,
 		y + height - 1);
+}
+
+static XmHTMLObjectTableElement
+DrawTable(XmHTMLWidget html, XmHTMLObjectTableElement data,
+	XmHTMLObjectTableElement data_end)
+{
+	XmHTMLTable *table;
+	XmHTMLObjectTableElement temp, start, end;
+
+	/* pick up table data */
+	table = data->table;
+
+	/*****
+	* The first table in a stack of tables contains all data for all
+	* table childs it contains. The first table child is the master
+	* table itself. So when a table doesn't have a child table it *is*
+	* a child table itself and thus we should add the left offset
+	* to the initial horizontal position.
+	*****/
+	if(table->childs)
+		table = &(table->childs[0]);
+
+	temp = start = table->start;
+	end = table->end;
+
+	_XmHTMLDebug(16, ("paint.c: DrawTable, table_start: x = %i, "
+		"y = %i\n", start->x, start->y));
+
+	while(temp != end)
+	{
+		_XmHTMLDebug(16, ("paint.c: DrawTable, checking object %s\n",
+			temp->object->element));
+		switch(temp->object_type)
+		{
+			case OBJ_TEXT:
+			case OBJ_PRE_TEXT:
+				/*
+				* First check if this is an image. DrawImage will render
+				* an image as an anchor if required.
+				*/
+				if(temp->text_data & TEXT_IMAGE)
+					_XmHTMLDrawImage(html, temp, 0, False);
+				else
+				{
+					/* form scrolling gets handled by formScroll in XmHTML.c */
+					if(temp->text_data & TEXT_FORM)
+						break;
+					else
+					{
+						if(temp->text_data & TEXT_ANCHOR)
+							DrawAnchor(html, temp);
+						else
+							DrawText(html, temp);
+					}
+				}
+				break;
+			case OBJ_BULLET:
+				DrawBullet(html, temp);
+				break;
+			case OBJ_HRULE:
+				DrawRule(html, temp);
+				break;
+			case OBJ_TABLE:
+				/* nested tables, hehehe */
+				temp = DrawTable(html, temp, data_end);
+				break;
+			case OBJ_TABLE_FRAME:
+#if 0
+				DrawTableFrame(html, temp);
+#endif
+				break;
+			case OBJ_IMG:
+			case OBJ_APPLET:
+			case OBJ_BLOCK:
+			case OBJ_NONE:
+				_XmHTMLDebug(16, ("paint.c: DrawTable, skipping undrawable "
+					"object %s\n", temp->object->element));
+				break;
+			default:
+				_XmHTMLWarning(__WFUNC__(html, "DrawTable"), 
+					"Unknown object type!");
+		}
+		temp = temp->next;
+	}
+	_XmHTMLDebug(16, ("paint.c: DrawTable End\n"));
+
+	/* sanity */
+	if(end && data_end)
+		return(end->y < data_end->y ? end->prev : data_end->prev);
+	return(end ? end->prev : data_end);
+}
+
+static void
+DrawTableFrame(XmHTMLWidget html, XmHTMLObjectTableElement data)
+{
+	int ys, xs;
+	Display *dpy = Toolkit_Display(html->html.work_area);
+	TWindow win = Toolkit_Widget_Window(html->html.work_area);
+	TGC gc = html->html.gc;
+
+	_XmHTMLDebug(16, ("paint.c: DrawTableFrame, x = %i, y = %i, wxh = %ix%i\n",
+			  data->x, data->y, data->width, data->height));
+	
+	/*
+	 * Don't draw anything if the background color equals the body
+	 * background.
+	 */
+	if(data->bg == html->html.body_bg)
+		return;
+	
+	/* 
+	 * When any of the two cases below is true, the object at the current
+	 * position is outside the exposed area. Not doing this check would 
+	 * cause a visible flicker of the screen when scrolling: the entire 
+	 * object would be repainted, even the invisible ones.
+	 */
+	if((html->html.paint_y > data->y + data->height ||
+	    html->html.paint_height < data->y) ||
+	   (html->html.paint_x > data->x + data->width ||
+	    html->html.paint_width < data->x))
+		return;
+	
+	xs = data->x - html->html.scroll_x;
+	ys = data->y - html->html.scroll_y;
+	
+	Toolkit_Set_Foreground(dpy, gc, data->bg);
+	Toolkit_Fill_Rectangle(dpy, win, gc, xs, ys, data->width, data->height);
 }

@@ -26,6 +26,9 @@
 /* Primary ClassInitialize method */
 static void ClassInitialize(void);
 
+/* ClassPartInitialize method */
+static void ClassPartInitialize(WidgetClass wc);
+
 /* class initialize method */
 static void Initialize(Widget request, Widget init, ArgList args,
 	Cardinal *num_args);
@@ -199,7 +202,7 @@ XmHTMLClassRec xmHTMLClassRec = {
 	"XmHTML",								/* class_name			*/
 	sizeof(XmHTMLRec),						/* widget_size			*/
 	ClassInitialize,						/* class_initialize	 	*/
-	NULL,									/* class_part_init		*/
+	ClassPartInitialize,						/* class_part_init		*/
 	FALSE,									/* class_inited		 	*/
 	(XtInitProc)Initialize,					/* initialize		 	*/
 	NULL,									/* initialize_hook		*/
@@ -234,7 +237,7 @@ XmHTMLClassRec xmHTMLClassRec = {
 	NULL,									/* change_managed	 	*/
 	XtInheritInsertChild,					/* insert_child		 	*/
 	XtInheritDeleteChild,					/* delete_child			*/
-	(XtPointer)&htmlCompositeExtension		/* extension			*/
+	NULL,									/* set by ClassPartInit	*/
 },
 											/* constraint_class fields */
 {
@@ -272,7 +275,7 @@ TestRepId(XmRepTypeId id, String name)
 	if(id == XmREP_TYPE_INVALID)
  		_XmHTMLWarning(__WFUNC__(NULL, "TestRepId"), "Representation "
 			"type resource convertor %s not found/installed.\n"
-			"    Please contact ripley@xs4all.nl", name);
+			"    Please contact ripley@xs4all.nl.", name);
 }
 
 /*****
@@ -320,6 +323,33 @@ ClassInitialize(void)
 	XmRepTypeRegister(XmCAnchorUnderlineType, line_styles, NULL, 5);
 	underline_repid = XmRepTypeGetId(XmCAnchorUnderlineType);
 	TestRepId(underline_repid, XmCAnchorUnderlineType);
+	XtSetTypeConverter(XmRString, XmRHTMLWarningMode,
+		(XtTypeConverter)_XmHTMLCvtStringToWarning, NULL, 0, XtCacheAll, NULL);
+}
+
+/*****
+* Name:			ClassPartInitialize
+* Return Type: 	void
+* Description:  object class method to initialize class part structure fields.
+* In: 
+*	subclass:	pointer to a widget class structure.
+* Returns:
+*	nothing.
+* Note:
+*	This routine initializes the Composite extension. XmHTML *must* be a
+*	subclass of composite if we want to have it accept any type of Object
+*	(including real Objects, Gadgets and Widgets).
+*	Kindly donated by Youssef Ouaghli <Youssef.Ouaghli@elec.rma.ac.be>
+*****/
+static void
+ClassPartInitialize(WidgetClass wc)
+{
+	XmHTMLWidgetClass html_wc = (XmHTMLWidgetClass)wc;
+
+	htmlCompositeExtension.next_extension = html_wc->composite_class.extension;
+	htmlCompositeExtension.accepts_objects = True;
+
+	html_wc->composite_class.extension = (XtPointer)&htmlCompositeExtension;
 }
 
 /*****
@@ -425,10 +455,10 @@ CreateAnchorCursor(XmHTMLWidget html)
 			window = RootWindowOfScreen(screen);
 
 		shape = XCreatePixmapFromBitmapData(display, window,
-			fingers_bits, fingers_width, fingers_height, 1, 0, 1);
+			(char *) fingers_bits, fingers_width, fingers_height, 1, 0, 1);
 
 		mask = XCreatePixmapFromBitmapData(display, window,
-			fingers_m_bits, fingers_m_width, fingers_m_height, 1, 0, 1);
+			(char *) fingers_m_bits, fingers_m_width, fingers_m_height, 1, 0, 1);
 
 		(void)XParseColor(display, html->core.colormap, "white", 
 			&white_def);
@@ -3059,5 +3089,103 @@ TPROTO (ExtendAdjust, TWidget w, TEvent *event, String *params, Cardinal *num_pa
 	_XmHTMLFullDebug(1, ("XmHTML.c: ExtendAdjust End\n"));
 
 	return;
+}
+
+/*****
+* Name:			_XmHTMLCvtStringToWarning
+* Return Type: 	Boolean
+* Description: 	converts a XmHTML XmCHTMLWarningType to it's internal value.
+* In: 
+*	dpy:		display with which this conversion is associated;
+*	args:		any XrmValue arguments to this converter. Always NULL;
+*	num_args:	no of args. Always 0;
+*	from_val:	address and size of value to be converted;
+*	to_val:		address where the converted value must be stored;
+*	convert..:	data to be passed to the destructor routine. Since this
+*				converter doesn't allocate any data, this argument is ignored.
+* Returns:
+*	True when the conversion was successfull, False if not.
+*****/
+Boolean
+_XmHTMLCvtStringToWarning(Display *dpy, XrmValuePtr args, Cardinal *num_args,
+	XrmValuePtr from_val, XrmValuePtr to_val, XtPointer *converter_data)
+{
+	static String warn_styles[] = {"unknown_element", "bad", "open_block",
+					"close_block", "open_element", "nested", "violation"};
+	Byte warn_values[] = {XmHTML_UNKNOWN_ELEMENT, XmHTML_BAD,
+					XmHTML_OPEN_BLOCK, XmHTML_CLOSE_BLOCK, XmHTML_OPEN_ELEMENT,
+					XmHTML_NESTED, XmHTML_VIOLATION};
+
+	String warning = NULL;
+	int i;
+	String ptr = (String)from_val->addr;
+	Byte ret_val = XmHTML_NONE;
+
+	if(*num_args != 0)
+	{
+		_XmHTMLWarning(__WFUNC__(NULL, "_XmHTMLCvtStringToWarning"),
+			"String to Warning conversion may not have any arguments.");
+		return(False);
+	}
+
+	/* hmm, shouldn't happen */
+	if(ptr == NULL || *ptr == '\0' || from_val->size < 3)
+		goto end;
+
+	/* copy so we scan it safely */
+	warning = my_strndup(ptr, from_val->size);
+
+	/* check if we have NONE */
+	if(my_strcasestr(warning, "none"))
+		goto end;
+
+	/* check if we have HTML_ALL */
+	if(my_strcasestr(warning, "all"))
+	{
+		ret_val = XmHTML_ALL;
+		goto end;
+	}
+
+#define NUM_WARNINGS 7
+	/* now scan the string for the possible warning types */
+	for(i = 0; i < NUM_WARNINGS; i++)
+	{
+		if(my_strcasestr(warning, warn_styles[i]))
+			ret_val |= warn_values[i];
+	}
+#undef NUM_WARNINGS
+
+	/* this is an error */
+	if(ret_val == XmHTML_NONE)
+	{
+		_XmHTMLWarning(__WFUNC__(NULL, "_XmHTMLCvtStringToWarning"),
+			"Cannot convert string \"%s\" to XmCWarningMode.", warning);
+		free(warning);
+		return(False);
+	}
+
+end:
+	/* no longer needed, free it */
+	if(warning != NULL)
+		free(warning);
+
+	if(to_val->addr != NULL)
+	{
+		if(to_val->size < sizeof(Byte))
+		{
+			to_val->size = sizeof(Byte);
+			return(False);
+		}
+		*(Byte*)to_val->addr = ret_val;
+		return(True);
+	}
+	else
+	{
+		static Byte static_val;
+		static_val = ret_val;
+		to_val->addr = (XtPointer)&static_val;
+		to_val->size = sizeof(Byte);
+		return(True);
+	}
 }
 

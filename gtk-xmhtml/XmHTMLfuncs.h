@@ -35,6 +35,15 @@
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.4  1997/12/29 22:16:23  unammx
+* This version does:
+*
+*    - Sync with Koen to version Beta 1.1.2c of the XmHTML widget.
+*      Includes various table fixes.
+*
+*    - Callbacks are now properly checked for the Gtk edition (ie,
+*      signals).
+*
 * Revision 1.3  1997/12/25 01:34:10  unammx
 * Good news for the day:
 *
@@ -242,6 +251,22 @@ typedef unsigned char Byte;
 #define True ((Boolean)1)
 #define False ((Boolean)0)
 #endif /* lint */
+
+/*****
+* When X was written, noboby ever heard of C++, let alone what words
+* would be reserved for this language, and as a result of this, a few
+* structures in X contain words that could cause a problem when compiling
+* XmHTML with a C++ compiler. 
+*****/
+#if defined(__cplusplus) || defined(c_plusplus)
+#define MEMBER_CLASS	c_class
+#define MEMBER_NEW		c_new
+#define MEMBER_DELETE	c_delete
+#else
+#define MEMBER_CLASS	class
+#define MEMBER_NEW		new
+#define MEMBER_DELETE	delete
+#endif
 
 /****
 * debug.c

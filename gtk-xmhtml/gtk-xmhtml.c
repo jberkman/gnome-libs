@@ -379,11 +379,12 @@ gtk_xmhtml_size_allocate (GtkWidget *widget, GtkAllocation *allocation)
 	gtk_container_disable_resize (GTK_CONTAINER (html));
 
 	
-	printf ("Size Allocate: (%d,%d) %d %d\n",
+/*	printf ("Size Allocate: (%d,%d) %d %d\n",
 		allocation->x,
 		allocation->y,
 		allocation->height,
 		allocation->width);
+*/
 	Resize (widget);
 	gtk_container_enable_resize (GTK_CONTAINER (html));
 }
@@ -654,7 +655,7 @@ gtk_xmhtml_focus (GtkWidget *widget, GdkEvent *event, gpointer closure)
 	gdk_window_set_cursor (html->html.work_area->window, NULL);
 
 	/* final step: call focusOut callback */
-	if(event->type == FocusOut && html->html.losing_focus_callback){
+	if(event->type == FocusOut && CHECK_CALLBACK (html, losing_focus_callback, LOSING_FOCUS)){
 		cbs.reason = XmCR_LOSING_FOCUS;
 		cbs.event = event;
 		gtk_signal_emit (htmlo, gtk_xmhtml_signals [GTK_XMHTML_LOSING_FOCUS], &cbs);
@@ -1304,7 +1305,7 @@ gtk_xmhtml_sync_parse (GtkXmHTML *html)
 	html->html.nframes = _XmHTMLCheckForFrames(html, html->html.elements);
 	
 	/* Trigger link callback */
-	if(html->html.link_callback)
+	if(CHECK_CALLBACK (html, link_callback, LINK))
 		_XmHTMLLinkCallback(html);
 
 	html->reformat_needed   = TRUE;

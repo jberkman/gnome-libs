@@ -3,6 +3,8 @@
 
 #ifndef WITH_MOTIF
 #define __GTK__
+#define WITH_GTK
+
 #include <gtk/gtk.h>
 #include <gdk/gdkx.h>
 enum {
@@ -67,6 +69,7 @@ typedef XVisualInfo TVisualInfo;
 #define TMSBFirst GDK_MSB_FIRST
 #define XmAnyCallbackStruct gtk_xmhtml_callback_info
 
+#define CHECK_CALLBACK(w,f,g) (gtk_xmhtml_signal_get_handlers (w, gtk_xmhtml_signals [GTK_XMHTML_##g]))
 #define XtCallCallbackList(a,b,c) fprintf (stderr, "Warning callback being invoked\n");
 #define TPROTO(f,a,b,c,d) f (a, b)
 #define Toolkit_Widget_Parent(w) GTK_WIDGET(w)->parent
@@ -185,6 +188,7 @@ typedef GdkColorContextDither XCCDither;
 #define TLSBFirst LSBFirst
 #define TMSBFirst MSBFirst
 
+#define CHECK_CALLBACK(w,f,g) ((w)->html.(f))
 #define TPROTO(f,a,b,c,d) f (a, b, c, d)
 #define Toolkit_Widget_Parent(w) XtParent(w)
 #define Toolkit_Is_Realized(w) XtIsRealized ((Widget) w)

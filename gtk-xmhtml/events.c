@@ -36,6 +36,15 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.2  1997/12/29 22:16:24  unammx
+* This version does:
+*
+*    - Sync with Koen to version Beta 1.1.2c of the XmHTML widget.
+*      Includes various table fixes.
+*
+*    - Callbacks are now properly checked for the Gtk edition (ie,
+*      signals).
+*
 * Revision 1.1  1997/12/25 01:34:10  unammx
 * Good news for the day:
 *
@@ -133,7 +142,7 @@ _XmHTMLCheckCoreEvents(XmHTMLWidget html, String attributes)
 	Boolean have_events = False;
 
 	/* don't do a damn thing if we can't process any scripts or events */
-	if(!html->html.event_proc || !html->html.event_callback)
+	if(!html->html.event_proc || !CHECK_CALLBACK (html, event_callback, HTML_EVENT))
 		return(NULL);
 
 	/* reset */
@@ -189,7 +198,7 @@ _XmHTMLCheckFormEvents(XmHTMLWidget html, String attributes)
 	Boolean have_events = False;
 
 	/* don't do a damn thing if we can't process any scripts or events */
-	if(!html->html.event_proc || !html->html.event_callback)
+	if(!html->html.event_proc || !CHECK_CALLBACK (html, event_callback, HTML_EVENT))
 		return(NULL);
 
 	/* reset */
@@ -250,7 +259,7 @@ _XmHTMLCheckBodyEvents(XmHTMLWidget html, String attributes)
 	Boolean have_events = False;
 
 	/* don't do a damn thing if we can't process any scripts or events */
-	if(!html->html.event_proc || !html->html.event_callback)
+	if(!html->html.event_proc || !CHECK_CALLBACK (html, event_callback, HTML_EVENT))
 		return(NULL);
 
 	/* reset */
@@ -309,7 +318,7 @@ _XmHTMLProcessEvent(XmHTMLWidget html, TEvent *event, HTEvent *ht_event)
 	cbs.type      = ht_event->type;
 	cbs.data      = ht_event->data;
 
-	XtCallCallbackList((TWidget)html, html->html.event_callback, &cbs);
+	Toolkit_Call_Callback((TWidget)html, html->html.event_callback, HTML_EVENT, &cbs);
 }
 
 /*****
@@ -334,7 +343,7 @@ _XmHTMLFreeEventDatabase(XmHTMLWidget old, XmHTMLWidget html)
 		cbs.event  = NULL;
 		cbs.type   = old->html.events[i].type;
 		cbs.data   = old->html.events[i].data;
-		XtCallCallbackList((TWidget)old, old->html.event_callback, &cbs);
+		Toolkit_Call_Callback((TWidget)old, old->html.event_callback, HTML_EVENT, &cbs);
 	}
 	if(old->html.events)
 		free(old->html.events);

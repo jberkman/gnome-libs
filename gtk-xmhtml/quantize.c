@@ -59,6 +59,15 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.3  1997/12/29 22:16:36  unammx
+* This version does:
+*
+*    - Sync with Koen to version Beta 1.1.2c of the XmHTML widget.
+*      Includes various table fixes.
+*
+*    - Callbacks are now properly checked for the Gtk edition (ie,
+*      signals).
+*
 * Revision 1.2  1997/12/18 00:39:23  unammx
 * It compiles and links -miguel
 *
@@ -945,8 +954,10 @@ _XmHTMLConvert24to8(Byte *data, XmHTMLRawImageData *img_data, int max_colors,
 {
 	Boolean done = False;
 
+#if 0
 	if(!done)	/* quantize image */
 		ppm_quant(data, NULL, img_data, max_colors);
+#endif
 
 	_XmHTMLDebug(13, ("quantize.c: _XmHTMLConvert24to8, start for %i colors "
 		"maximum.\n", max_colors));

@@ -43,6 +43,15 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.6  1997/12/29 22:16:29  unammx
+* This version does:
+*
+*    - Sync with Koen to version Beta 1.1.2c of the XmHTML widget.
+*      Includes various table fixes.
+*
+*    - Callbacks are now properly checked for the Gtk edition (ie,
+*      signals).
+*
 * Revision 1.5  1997/12/25 01:34:12  unammx
 * Good news for the day:
 *
@@ -1622,7 +1631,7 @@ imageDefaultProc(TWidget w, XmHTMLRawImageData *img_data, String url)
 	image->bg      = img_data->bg;		/* save background pixel index */
 	image->options = options;			/* set XmImageInfo options */
 	image->colorspace = (Byte)img_data->color_class;
-	image->transparency = img_data->bg != -1 ? XmIMAGE_TRANSPARENCY_BG:XmNONE;
+	image->transparency = img_data->bg != -1 ? XmIMAGE_TRANSPARENCY_BG:XmHTML_NONE;
 
 	cnt = 1;
 	cptr = image->clip;
@@ -1918,7 +1927,7 @@ animDefaultProc(TWidget w, XmHTMLRawImageData *img_data,
 	image->bg      = img_data->bg;		/* save background pixel index */
 	image->options = options;			/* set XmImageInfo options */
 	image->colorspace = (Byte)img_data->color_class;
-	image->transparency = img_data->bg != -1 ? XmIMAGE_TRANSPARENCY_BG:XmNONE;
+	image->transparency = img_data->bg != -1 ? XmIMAGE_TRANSPARENCY_BG:XmHTML_NONE;
 
 	/*****
 	* Fill array of used pixel indices.
@@ -2969,7 +2978,7 @@ doAlphaChannel(XmHTMLWidget html, XmHTMLImage *image)
 		return;
 	}
 
-	if(html->html.anchor_track_callback)
+	if(CHECK_CALLBACK (html, anchor_track_callback, ANCHOR_TRACK))
 	{
 		char msg[1024];
 		XmHTMLAnchorCallbackStruct cbs;

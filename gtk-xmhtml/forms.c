@@ -36,6 +36,15 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.4  1997/12/29 22:16:27  unammx
+* This version does:
+*
+*    - Sync with Koen to version Beta 1.1.2c of the XmHTML widget.
+*      Includes various table fixes.
+*
+*    - Callbacks are now properly checked for the Gtk edition (ie,
+*      signals).
+*
 * Revision 1.3  1997/12/25 01:34:11  unammx
 * Good news for the day:
 *
@@ -121,7 +130,7 @@ static char rcsId[]="$Header$";
 
 /*** Private Function Prototype Declarations ****/
 static componentType getInputType(String attributes);
-static void freeForm(XmHTMLForm *entry);
+static void freeForm(XmHTMLForm *entry, Boolean being_destroyed);
 static void passwdCB(Widget w, XtPointer client_data, XtPointer call_data);
 static void buttonActivateCB(Widget w, XtPointer client_data, XtPointer call_data);
 static void radioChangedCB(Widget w, XtPointer client_data, XtPointer call_data);
@@ -228,18 +237,27 @@ getInputType(String attributes)
 * Description: 	releases all memory occupied by the given form component.
 * In: 
 *	entry:		form component to be released;
+*	being_de..: True if the parent HTML widget is being destroyed, in 
+*				which case don't destroy the widgets as they've already been
+*				destroyed by the time this is called via the
+*				DestroyCallback -- fix 15/12/97-01, offer
 * Returns:
 *	nothing.
+* Background:
+*	when the parent HTML widget is being destroyed, the call to XtMoveWidget
+*	triggers a call to XtConfigureWidget which in turn triggers a call to
+*	XConfigureWindow resulting in a BadWindow as the Window ID already
+*	has become invalid.
 *****/
 static void
-freeForm(XmHTMLForm *entry)
+freeForm(XmHTMLForm *entry, Boolean being_destroyed)
 {
 	XmHTMLForm *tmp;
 
 	while(entry != NULL)
 	{
 		tmp = entry->next;
-		if(entry->w)
+		if(entry->w && !being_destroyed)
 		{
 			/* move of screen */
 			XtMoveWidget(entry->w, -1000, -1000);
@@ -256,7 +274,7 @@ freeForm(XmHTMLForm *entry)
 
 		/* call ourselves recursively to destroy all option members */
 		if(entry->options)
-			freeForm(entry->options);
+			freeForm(entry->options, being_destroyed);
 
 		free(entry);
 		entry = tmp;
@@ -1489,11 +1507,12 @@ void
 _XmHTMLFreeForm(XmHTMLWidget html, XmHTMLFormData *form)
 {
 	XmHTMLFormData *tmp;
+	Boolean being_destroyed = html->core.being_destroyed;
 
 	while(form != NULL)
 	{
 		tmp = form->next;
-		freeForm(form->components);
+		freeForm(form->components, being_destroyed);
 		if(form->action)
 			free(form->action);
 		if(form->enctype)
@@ -1502,7 +1521,8 @@ _XmHTMLFreeForm(XmHTMLWidget html, XmHTMLFormData *form)
 		{
 			if(XtIsManaged(form->fileSB))
 				XtUnmanageChild(form->fileSB);
-			XtDestroyWidget(form->fileSB);
+			if(!being_destroyed)
+				XtDestroyWidget(form->fileSB);
 		}
 		free(form);
 		form = tmp;
@@ -1639,7 +1659,7 @@ _XmHTMLFormActivate(XmHTMLWidget html, XEvent *event, XmHTMLForm *entry)
 		"%s\n", entry->name));
 
 	/* only do something when a form callback has been installed */
-	if(html->html.form_callback == NULL)
+	if(CHECK_CALLBACK (html, form_callback, FORM) == NULL)
 		return;
 
 	/*****

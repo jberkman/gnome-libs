@@ -36,6 +36,15 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.6  1997/12/29 22:16:25  unammx
+* This version does:
+*
+*    - Sync with Koen to version Beta 1.1.2c of the XmHTML widget.
+*      Includes various table fixes.
+*
+*    - Callbacks are now properly checked for the Gtk edition (ie,
+*      signals).
+*
 * Revision 1.5  1997/12/27 20:58:17  unammx
 * More access functions to the widget internals.  I missed these
 * yesterday (ie, those that did not require SetValues validation
@@ -243,6 +252,12 @@ static XmHTMLWord *SelectToWord(XmHTMLWidget html, XmHTMLObject *start,
 static XmHTMLWord *TextAreaToWord(XmHTMLWidget html, XmHTMLObject *start,
 	int *num_words, Dimension *width, Dimension *height,
 	XmHTMLObjectTableElement owner, Boolean formatted);
+
+static XmHTMLWord *BreakToWord(Dimension *height, XmHTMLfont *font,
+	int linefeed, XmHTMLObjectTableElement owner);
+
+static XmHTMLWord *MakeDummyWord(Dimension *height, XmHTMLfont *font,
+	Byte line_data, XmHTMLObjectTableElement owner);
 
 /* Split raw text into a chunk of preformatted lines */
 static XmHTMLWord *TextToPre(String text, int *num_words, XmHTMLfont *font, 
@@ -1431,7 +1446,52 @@ TextToPre(String text, int *num_words, XmHTMLfont *font, Byte line_data,
 	*num_words = i;
 	return(words);
 }
-  
+
+static XmHTMLWord*
+BreakToWord(Dimension *height, XmHTMLfont *font, int linefeed,
+	XmHTMLObjectTableElement owner)
+{
+	static XmHTMLWord *word;
+
+	word = (XmHTMLWord*)calloc(1, sizeof(XmHTMLWord));
+
+	word->type      = OBJ_BLOCK;
+	word->self      = word;
+	word->word      = (String)malloc(1);	/* needs an empty word */
+	word->word[0]   = '\0';
+	word->len       = 0;
+	word->height    = font->height;			/* height of current font */
+	word->owner     = owner;
+	word->spacing   = TEXT_SPACE_LEAD | TEXT_SPACE_TRAIL;
+	word->line_data = linefeed+1;	/* how much lines to break */
+	word->font      = font;
+
+	return(word);
+}
+
+static XmHTMLWord*
+MakeDummyWord(Dimension *height, XmHTMLfont *font, Byte line_data,
+	XmHTMLObjectTableElement owner)
+{
+	static XmHTMLWord *word;
+
+	word = (XmHTMLWord*)calloc(1, sizeof(XmHTMLWord));
+
+	word->type      = OBJ_TEXT;
+	word->self      = word;
+	word->word      = (String)malloc(1);		/* needs an empty word */
+	word->word[0]   = '\0';
+	word->len       = 0;
+	word->height    = *height = font->height;	/* height of current font */
+	word->owner     = owner;
+	word->line_data = line_data;
+	word->font      = font;
+	/* an empty word acts as a single space */
+	word->spacing   = TEXT_SPACE_LEAD|TEXT_SPACE_TRAIL;
+
+	return(word);
+}
+
 /*****
 * Name: 		SetTab
 * Return Type: 	XmHTMLWord*
@@ -1883,8 +1943,8 @@ CheckLineFeed(int this, Boolean force)
 			}
 			if(prev_state == CLEAR_HARD)
 			{
++				/* unchanged */
 				ret_val = CLEAR_NONE;
-				prev_state = CLEAR_HARD;
 				break;
 			}
 			prev_state = ret_val = this;
@@ -1898,8 +1958,8 @@ CheckLineFeed(int this, Boolean force)
 			}
 			if(prev_state == CLEAR_HARD)
 			{
+				/* unchanged */
 				ret_val = CLEAR_NONE;
-				prev_state = CLEAR_HARD;
 				break;
 			}
 			ret_val = prev_state = this;
@@ -2026,7 +2086,7 @@ tableOpen(XmHTMLWidget html, XmHTMLTable *parent,
 	int nrows = 0;				/* no of rows in table				*/
 	int depth = 0;
 	int nchilds = 0;			/* no of table childs in this table */
-	Alignment caption_position;	/* where should we put the caption? */
+	Alignment caption_position = XmVALIGN_TOP; /* where is the caption? */
 	Boolean have_caption = False;
 
 	if(parent)
@@ -2256,7 +2316,8 @@ tableOpenCaption(XmHTMLWidget html, XmHTMLTable *parent,
 						table->properties, html->html.default_halign, *bg);
 	/* starting object */
 	caption->start = start;
-
+	caption->owner = start;
+	
 	/* set parent table */
 	caption->parent = table;
 
@@ -2383,7 +2444,8 @@ tableOpenRow(XmHTMLWidget html, XmHTMLTable *parent,
 
 	/* starting object */
 	row->start = start;
-
+	row->owner = start;
+	
 	/* set parent table */
 	row->parent = table;
 
@@ -2530,7 +2592,8 @@ tableOpenCell(XmHTMLWidget html, XmHTMLTable *parent,
 
 	/* starting object */
 	cell->start = start;
-
+	cell->owner = start;
+	
 	/* set parent row */
 	cell->parent = row;
 
@@ -2984,6 +3047,16 @@ _XmHTMLformatObjects(XmHTMLWidget old, XmHTMLWidget html)
 	/* move to the next element */
 	temp = temp->next;
 
+ 	/*
+	* Insert a dummy element at the head of the list to prevent incorrect
+	* handling of the first real element to be rendered.
+	* fix 12/14/97-01, kdh
+	*/
+	element = NewTableElement(temp);
+	element->object_type = OBJ_NONE;
+	element->font = html->html.default_font;
+	InsertTableElement(html, element, False);
+
 	/*
 	* Only elements between <BODY></BODY> elements are really interesting.
 	* BUT: if the HTML verification/reparation routines in parse.c should
@@ -3028,38 +3101,49 @@ _XmHTMLformatObjects(XmHTMLWidget old, XmHTMLWidget html)
 		{
 			/* plain text */
 			case HT_ZTEXT:
+				object_type = OBJ_TEXT;
 				/*
 				* text_data gets completely reset in CopyText.
 				* We do not want escape expansion if we are loading a plain
 				* text document.
 				*/
 				if((text = CopyText(html, temp->element, in_pre, &text_data,
-					html->html.mime_id != XmNONE)) == NULL)
+					html->html.mime_id != XmHTML_NONE)) == NULL)
 				{
-					/* 
-					* named anchors can be empty, so keep them but mark the
-					* element as empty.
-					*/
-					if(!(element_data & ELE_ANCHOR_INTERN))
-						ignore = True; /* ignore empty text fields */
+					/***** 
+					* named anchors can be empty, so keep them by inserting
+					* a dummy word, but only do that once (prevents a margin
+					* reset as well).
+					*****/
+					if((element_data & ELE_ANCHOR_INTERN) && !anchor_data_used)
+					{
+						words = MakeDummyWord(&height, font, line_data,
+									element);
+						n_words = 1;
+					}
 					else
-						object_type = OBJ_NONE;
+						ignore = True; /* ignore empty text fields */
 					break;
 				}
 				if(!in_pre)
 				{
-					object_type = OBJ_TEXT;
 					CollapseWhiteSpace(text);
-					/*
+					/*****
 					* If this turns out to be an empty block, ignore it,
 					* but only if it's not an empty named anchor.
-					*/
+					*****/
 					if(strlen(text) == 0)
 					{
-						if(!(element_data & ELE_ANCHOR_INTERN))
-							ignore = True;
-						else
+						if((element_data & ELE_ANCHOR_INTERN) &&
+							!anchor_data_used)
+						{
 							object_type = OBJ_NONE;
+							words = MakeDummyWord(&height, font, line_data,
+										element);
+							n_words = 1;
+						}
+						else
+							ignore = True;
 						free(text);
 						break;
 					}
@@ -3068,6 +3152,9 @@ _XmHTMLformatObjects(XmHTMLWidget old, XmHTMLWidget html)
 					/* convert text to a number of words */
 					words = TextToWords(text, &n_words, &height, font, 
 						line_data, text_data, element);
+
+					/* Plain text does a hard reset */
+					linefeed = CheckLineFeed(CLEAR_NONE, True);
 				}
 				else
 				{
@@ -3076,9 +3163,10 @@ _XmHTMLformatObjects(XmHTMLWidget old, XmHTMLWidget html)
 					CHECK_LINE;
 					/* convert text to a number of words, keep formatting. */
 					words = TextToPre(text, &n_words, font, line_data, element);
+
+					/* Preformatted text does a soft reset */
+					linefeed = CheckLineFeed(CLEAR_NONE, False);
 				}
-				/* No returns for plain text, reset */
-				linefeed = CheckLineFeed(CLEAR_NONE, False);
 				break;
 
 			/* images */
@@ -3102,7 +3190,7 @@ _XmHTMLformatObjects(XmHTMLWidget old, XmHTMLWidget html)
 					/*
 					* this is a very sneaky hack: since empty named anchors
 					* are allowed, we must store it somehow. And this is how
-					* we do it: set object_type to OBJ_NONE, ignore to False
+					* we do it: insert a dummy word (to prevent margin reset)
 					* and back up one element.
 					*/
 					if(!anchor_data_used && (element_data & ELE_ANCHOR_INTERN))
@@ -3110,10 +3198,15 @@ _XmHTMLformatObjects(XmHTMLWidget old, XmHTMLWidget html)
 						_XmHTMLDebug(2, ("format.c: _XmHTMLformatObjects, "
 							"adding bogus named anchor %s\n", 
 							anchor_data->name));
-						object_type = OBJ_NONE;
+
+						/* insert a dummy word to prevent margin reset */
+						words = MakeDummyWord(&height, font, line_data,
+									element);
+						n_words = 1;
+						object_type = OBJ_TEXT;
+
 						anchor_data_used = True;
 						temp = temp->prev;
-						ignore = False;
 						break;
 					}
 					/* unset anchor bitfields */
@@ -3666,6 +3759,7 @@ _XmHTMLformatObjects(XmHTMLWidget old, XmHTMLWidget html)
 				object_type = OBJ_BLOCK;
 				break;
 
+			/* <BR> is a special word */
 			case HT_BR:
 #if 0
 				{
@@ -3690,8 +3784,20 @@ _XmHTMLformatObjects(XmHTMLWidget old, XmHTMLWidget html)
 						linefeed = CheckLineFeed(CLEAR_SOFT, False);
 				}
 #endif
-				linefeed = CheckLineFeed(CLEAR_SOFT, False);
-				object_type = OBJ_BLOCK;
+				if((linefeed = CheckLineFeed(CLEAR_SOFT, False)) != CLEAR_NONE)
+				{
+					words = BreakToWord(&height, font, linefeed, element); 
+					n_words = 1;
+					object_type = OBJ_TEXT;
+					text_data |= TEXT_BREAK;	/* it's a linebreak */
+				}
+				else
+				{
+					/* linebreak follows a stronger linebreak, ignore */
+					object_type = OBJ_NONE;
+					ignore = True;
+				}
+
 				break;
 
 			case HT_TAB:
@@ -3751,6 +3857,11 @@ _XmHTMLformatObjects(XmHTMLWidget old, XmHTMLWidget html)
 				object_type = OBJ_BLOCK;
 				break;
 
+			/*****
+			* <P> and <DIV> are equal all except for the amount of
+			* vertical whitespace added: <P> causes a hard linebreak whereas
+			* <DIV> causes a soft linebreak.
+			*****/
 			case HT_P:
 			case HT_DIV:
 				if(temp->is_end)
@@ -3762,6 +3873,7 @@ _XmHTMLformatObjects(XmHTMLWidget old, XmHTMLWidget html)
 					*/
 					linefeed = CheckLineFeed(
 						(temp->id == HT_P ? CLEAR_HARD : CLEAR_SOFT), False);
+					
 					/* do we have a color attrib? */
 					if(html->html.allow_color_switching)
 						fg = PopFGColor();
@@ -4042,6 +4154,7 @@ _XmHTMLformatObjects(XmHTMLWidget old, XmHTMLWidget html)
 
 					halign = PopAlignment();
 					bg = PopBGColor();
+					object_type = OBJ_NONE;
 				}
 				else
 				{
@@ -4053,8 +4166,9 @@ _XmHTMLformatObjects(XmHTMLWidget old, XmHTMLWidget html)
 
 					/* open the caption */
 					tableOpenCaption(html, table, element, temp, &bg);
+
+					object_type = OBJ_TABLE_FRAME;
 				}
-				object_type = OBJ_NONE;
 				break;
 
 			case HT_TR:		/* table row */
@@ -4065,6 +4179,7 @@ _XmHTMLformatObjects(XmHTMLWidget old, XmHTMLWidget html)
 
 					halign = PopAlignment();
 					bg = PopBGColor();
+					object_type = OBJ_NONE;
 				}
 				else
 				{
@@ -4073,8 +4188,9 @@ _XmHTMLformatObjects(XmHTMLWidget old, XmHTMLWidget html)
 					PushBGColor(bg);
 
 					tableOpenRow(html, table, element, temp, &halign, &bg);
+
+					object_type = OBJ_TABLE_FRAME;
 				}
-				object_type = OBJ_NONE;
 				break;
 
 			case HT_TH:		/* header cell */
@@ -4090,6 +4206,8 @@ _XmHTMLformatObjects(XmHTMLWidget old, XmHTMLWidget html)
 
 					halign = PopAlignment();
 					bg = PopBGColor();
+
+					object_type = OBJ_NONE;
 				}
 				else
 				{
@@ -4105,8 +4223,12 @@ _XmHTMLformatObjects(XmHTMLWidget old, XmHTMLWidget html)
 
 					/* open a cell */
 					tableOpenCell(html, table, element, temp, &halign, &bg);
+
+					/* table cell always resets linefeeding */
+					(void)CheckLineFeed(CLEAR_SOFT, True);
+
+					object_type = OBJ_TABLE_FRAME;
 				}
-				object_type = OBJ_NONE;
 				break;
 
 			/*****

@@ -36,6 +36,15 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.3  1997/12/29 22:16:36  unammx
+* This version does:
+*
+*    - Sync with Koen to version Beta 1.1.2c of the XmHTML widget.
+*      Includes various table fixes.
+*
+*    - Callbacks are now properly checked for the Gtk edition (ie,
+*      signals).
+*
 * Revision 1.2  1997/12/18 01:36:15  unammx
 * Ok, final hacks for the day.  Now we setup the default values
 * for the XmHTML widget properly.
@@ -151,7 +160,7 @@ _PLC_GIF_Init(PLC *plc)
 		gif->cmap = (TColor*)calloc(gif->cmapsize, sizeof(TColor));
 
 	/* image is initially fully opaque */
-	gif->transparency = XmNONE;
+	gif->transparency = XmHTML_NONE;
 	gif->bg_pixel = -1;
 
 	/*

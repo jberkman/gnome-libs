@@ -36,6 +36,15 @@
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.2  1997/12/29 22:16:32  unammx
+* This version does:
+*
+*    - Sync with Koen to version Beta 1.1.2c of the XmHTML widget.
+*      Includes various table fixes.
+*
+*    - Callbacks are now properly checked for the Gtk edition (ie,
+*      signals).
+*
 * Revision 1.1  1997/12/25 01:34:13  unammx
 * Good news for the day:
 *
@@ -194,6 +203,24 @@ typedef enum{
 	HTML_NOTIFY,				/* insertion of optional opening/closing */
 	HTML_INTERNAL				/* internal parser error */
 }parserError;
+
+/*****
+* And corresponding values for XmNenableBadHTMLWarnings.
+* These are or'd together.
+* XmNONE disables warnings and XmHTML_ALL enables all warnings.
+* See parserError for their meaning.
+*****/
+enum{
+	XmHTML_NONE = 0,						/* no warnings */
+	XmHTML_UNKNOWN_ELEMENT = 1,	
+	XmHTML_BAD = 2,
+	XmHTML_OPEN_BLOCK = 4,
+	XmHTML_CLOSE_BLOCK = 8,
+	XmHTML_OPEN_ELEMENT = 16,
+	XmHTML_NESTED = 32,
+	XmHTML_VIOLATION = 64,
+	XmHTML_ALL = 128				/* all warnings */
+};
 
 /*****
 * Definition of parsed HTML elements

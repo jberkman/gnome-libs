@@ -35,6 +35,15 @@
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.6  1997/12/29 22:16:22  unammx
+* This version does:
+*
+*    - Sync with Koen to version Beta 1.1.2c of the XmHTML widget.
+*      Includes various table fixes.
+*
+*    - Callbacks are now properly checked for the Gtk edition (ie,
+*      signals).
+*
 * Revision 1.5  1997/12/25 01:34:10  unammx
 * Good news for the day:
 *
@@ -200,24 +209,25 @@ _XFUNCPROTOBEGIN
 /*****
 * Line styles
 *****/
-#define LINE_SOLID		(1<<1)	/* paint a solid line */
-#define LINE_DASHED		(1<<2)	/* paint a dashed line */
-#define LINE_SINGLE		(1<<3)	/* paint a single line */
-#define LINE_DOUBLE		(1<<4)	/* paint a double line */
-#define LINE_STRIKE		(1<<5)	/* render as strikeout */
-#define LINE_UNDER		(1<<6)	/* render as underline */
-#define NO_LINE			0		/* no lines at all */
+#define LINE_SOLID		(1<<1)	/* paint a solid line	*/
+#define LINE_DASHED		(1<<2)	/* paint a dashed line	*/
+#define LINE_SINGLE		(1<<3)	/* paint a single line	*/
+#define LINE_DOUBLE		(1<<4)	/* paint a double line	*/
+#define LINE_STRIKE		(1<<5)	/* render as strikeout	*/
+#define LINE_UNDER		(1<<6)	/* render as underline	*/
+#define NO_LINE			0		/* no lines at all		*/
 
 /*****
 * Spacing and anchor text data bits
 *****/
-#define TEXT_SPACE_NONE			(1<<0)	/* no spacing at all */
-#define TEXT_SPACE_LEAD			(1<<1)	/* add a leading space */
-#define TEXT_SPACE_TRAIL 		(1<<2)	/* add a trailing space */
-#define TEXT_ANCHOR				(1<<3)	/* a regular anchor */
-#define TEXT_ANCHOR_INTERN		(1<<4)	/* internal anchor flag */
-#define TEXT_IMAGE				(1<<5)	/* indicates an image member */
-#define TEXT_FORM				(1<<6)	/* indicates a form member */
+#define TEXT_SPACE_NONE			(1<<0)	/* no spacing at all			*/
+#define TEXT_SPACE_LEAD			(1<<1)	/* add a leading space			*/
+#define TEXT_SPACE_TRAIL 		(1<<2)	/* add a trailing space			*/
+#define TEXT_ANCHOR				(1<<3)	/* a regular anchor				*/
+#define TEXT_ANCHOR_INTERN		(1<<4)	/* internal anchor flag			*/
+#define TEXT_IMAGE				(1<<5)	/* indicates an image member	*/
+#define TEXT_FORM				(1<<6)	/* indicates a form member		*/
+#define TEXT_BREAK				(1<<7)	/* indicates a linebreak		*/
 
 /***** 
 * HTML list marker enumeration type 
@@ -256,24 +266,25 @@ typedef enum{
 *****/
 typedef enum{
 	OBJ_NONE = 0,
-	OBJ_TEXT,			/* text element */
-	OBJ_PRE_TEXT,		/* preformatted text */
-	OBJ_BULLET,			/* all types of markers for lists */
-	OBJ_HRULE,			/* horizontal rule */
-	OBJ_TABLE,			/* table elements */
-	OBJ_IMG,			/* image elements */
-	OBJ_FORM,			/* form elements */
-	OBJ_APPLET,			/* applet elements */
-	OBJ_BLOCK			/* other block level elements */
+	OBJ_TEXT,			/* text element							*/
+	OBJ_PRE_TEXT,		/* preformatted text					*/
+	OBJ_BULLET,			/* all types of markers for lists		*/
+	OBJ_HRULE,			/* horizontal rule						*/
+	OBJ_TABLE,			/* table elements						*/
+	OBJ_TABLE_FRAME,	/* table caption, row, cell elements	*/
+	OBJ_IMG,			/* image elements						*/
+	OBJ_FORM,			/* form elements						*/
+	OBJ_APPLET,			/* applet elements						*/
+	OBJ_BLOCK			/* other block level elements			*/
 }ObjectType;
 
 /*****
 * linefeed types
 *****/
-#define CLEAR_NONE			-1		/* stay on the same line */
-#define CLEAR_SOFT			0		/* return + move single line downard */
-#define CLEAR_HARD			1		/* return + move two lines downward */
-#define CLEAR_ALL			2		/* return + move baseline fully down */
+#define CLEAR_NONE			-1		/* stay on the same line				*/
+#define CLEAR_SOFT			0		/* return + move single line downard	*/
+#define CLEAR_HARD			1		/* return + move two lines downward		*/
+#define CLEAR_ALL			2		/* return + move baseline fully down	*/
 
 /*****
 * Server/client side and map type values 
@@ -288,17 +299,17 @@ typedef enum{
 * Image option bits.
 * Each of these bits represents certain state information about an image.
 *****/
-#define IMG_ISBACKGROUND		(1L<<1)	/* is a background image */
-#define IMG_ISINTERNAL			(1L<<2)	/* is an internal image */
-#define IMG_ISCOPY				(1L<<3)	/* is a referential copy */
-#define IMG_ISANIM				(1L<<4)	/* is an animation */
-#define IMG_FRAMEREFRESH		(1L<<5)	/* set when running an animation */
-#define IMG_HASDIMENSIONS		(1L<<6)	/* dimensions are given in <IMG>*/
-#define IMG_HASSTATE			(1L<<7)	/* current state pixmap present */
-#define IMG_INFOFREED			(1L<<8)	/* imageinfo has been freed */
-#define IMG_DELAYED_CREATION	(1L<<9)	/* create when needed */
-#define IMG_ORPHANED			(1L<<10)/* indicates orphaned image */
-#define IMG_PROGRESSIVE			(1L<<11)/* indicates image is being loaded */
+#define IMG_ISBACKGROUND		(1L<<1)	/* is a background image			*/
+#define IMG_ISINTERNAL			(1L<<2)	/* is an internal image				*/
+#define IMG_ISCOPY				(1L<<3)	/* is a referential copy			*/
+#define IMG_ISANIM				(1L<<4)	/* is an animation					*/
+#define IMG_FRAMEREFRESH		(1L<<5)	/* set when running an animation	*/
+#define IMG_HASDIMENSIONS		(1L<<6)	/* dimensions are given in <IMG>	*/
+#define IMG_HASSTATE			(1L<<7)	/* current state pixmap present		*/
+#define IMG_INFOFREED			(1L<<8)	/* imageinfo has been freed			*/
+#define IMG_DELAYED_CREATION	(1L<<9)	/* create when needed				*/
+#define IMG_ORPHANED			(1L<<10)/* indicates orphaned image			*/
+#define IMG_PROGRESSIVE			(1L<<11)/* indicates image is being loaded	*/
 
 /*****
 * Possible colorclass an image can have.
@@ -320,17 +331,17 @@ typedef enum{
 * Possible types of frame sizes
 *****/
 typedef enum{
-	FRAME_SIZE_FIXED = 1,			/* size specified in pixels */
-	FRAME_SIZE_RELATIVE,			/* size is relative */
-	FRAME_SIZE_OPTIONAL				/* size is optional */
+	FRAME_SIZE_FIXED = 1,			/* size specified in pixels	*/
+	FRAME_SIZE_RELATIVE,			/* size is relative			*/
+	FRAME_SIZE_OPTIONAL				/* size is optional			*/
 }FrameSize;
 
 /*****
 * The three possible anchor selection states
 *****/
-#define ANCHOR_UNSELECTED	(Byte)0		/* default anchor state */
-#define ANCHOR_INSELECT		(Byte)1		/* anchor is gaining selection */
-#define ANCHOR_SELECTED		(Byte)2		/* anchor is selected */
+#define ANCHOR_UNSELECTED	(Byte)0		/* default anchor state			*/
+#define ANCHOR_INSELECT		(Byte)1		/* anchor is gaining selection	*/
+#define ANCHOR_SELECTED		(Byte)2		/* anchor is selected			*/
 
 /*****
 * XmHTML font style bits
@@ -347,22 +358,22 @@ typedef enum{
 * reasons (the layout routines use a *lot* of font properties).
 *****/
 typedef struct{
-	Byte style;					/* this font's style */
-	String font_name;			/* full XLFD */
-	String font_family;			/* fontFamily (foundry-family-sw-spacing) */
-	TFontStruct *xfont;			/* ptr to font definition */
-	int height;					/* height of largest character */
-	int lineheight;				/* suggested lineheight */
-	Cardinal isp;				/* normal interword spacing */
-	Cardinal eol_sp;			/* additional end-of-line spacing */
-	int sup_xoffset;			/* additional superscript x-offset */
-	int sup_yoffset;			/* additional superscript y-offset */
-	int sub_xoffset;			/* additional subscript x-offset */
-	int sub_yoffset;			/* additional subscript y-offset */
-	int ul_offset;				/* additional underline offset */
-	Cardinal ul_thickness;		/* underline thickness */
-	int st_offset;				/* additional strikeout offset */
-	Cardinal st_thickness;		/* strikeout thickness */
+ 	Byte style;					/* this font's style						*/
+ 	String font_name;			/* full XLFD								*/
+ 	String font_family;			/* fontFamily (foundry-family-sw-spacing)	*/
+ 	TFontStruct *xfont;			/* ptr to font definition					*/
+ 	int height;					/* height of largest character				*/
+ 	int lineheight;				/* suggested lineheight						*/
+ 	Cardinal isp;				/* normal interword spacing					*/
+ 	Cardinal eol_sp;			/* additional end-of-line spacing			*/
+ 	int sup_xoffset;			/* additional superscript x-offset			*/
+ 	int sup_yoffset;			/* additional superscript y-offset			*/
+ 	int sub_xoffset;			/* additional subscript x-offset			*/
+ 	int sub_yoffset;			/* additional subscript y-offset			*/
+ 	int ul_offset;				/* additional underline offset				*/
+ 	Cardinal ul_thickness;		/* underline thickness						*/
+ 	int st_offset;				/* additional strikeout offset				*/
+ 	Cardinal st_thickness;		/* strikeout thickness						*/
 }XmHTMLfont;
 
 /**********
@@ -412,41 +423,41 @@ typedef struct _AllEvents{
 * URLType is an enumeration type defined in HTML.h
 *****/
 typedef struct _XmHTMLAnchor{
-	URLType				url_type;		/* url type of anchor */
-	String				name;			/* name if it's a named anchor */
-	String				href;			/* referenced URL */
-	String				target;			/* target spec */
-	String				rel;			/* possible rel */
-	String				rev;			/* possible rev */
-	String				title;			/* possible title */
-	AllEvents			*events;		/* events to be served */
-	Cardinal 			line;			/* location of this anchor */
-	Boolean				visited;		/* true when anchor is visited */
-	struct _XmHTMLAnchor *next;			/* ptr to next anchor */
+	URLType				url_type;		/* url type of anchor			*/
+	String				name;			/* name if it's a named anchor	*/
+	String				href;			/* referenced URL				*/
+	String				target;			/* target spec					*/
+	String				rel;			/* possible rel					*/
+	String				rev;			/* possible rev					*/
+	String				title;			/* possible title				*/
+	AllEvents			*events;		/* events to be served			*/
+	Cardinal 			line;			/* location of this anchor		*/
+	Boolean				visited;		/* true when anchor is visited	*/
+	struct _XmHTMLAnchor *next;			/* ptr to next anchor			*/
 }XmHTMLAnchor;
 
 /*****
-* Definition of words (a word can be plain text, and image or a form
-* member).
+* Definition of a word (a word can be plain text, an image, a form member
+* or a linebreak).
 *****/
 typedef struct _XmHTMLWord{
-	int 				x;			/* x-position for this word */
-	int					y;			/* y-position for this word */
-	Dimension 			width;		/* pixel width of word */
-	Dimension 			height;		/* pixel height of word */
-	Cardinal 			line;		/* line for this word */
-	ObjectType 			type;		/* type of word, used by <pre>,<img> */
-	String 				word;		/* word to display */
-	int 				len;		/* string length of word */
-	XmHTMLfont	 		*font;		/* font to use */
-	Byte 				line_data;	/* line data (underline/strikeout) */
-	Byte				spacing;	/* leading/trailing/nospace allowed */
-	AllEvents			*events;	/* events to be served */
-	struct _XmHTMLImage *image;		/* when this is an image */
-	struct _XmHTMLForm	*form;		/* when this is a form element */
-	struct _XmHTMLWord	*base;		/* baseline word for a line */
-	struct _XmHTMLWord	*self; 		/* ptr to itself, for anchor adjustment */
-	struct _XmHTMLObjectTable *owner;	/* owner of this worddata */
+	int 				x;			/* x-position for this word				*/
+	int					y;			/* y-position for this word				*/
+	Dimension 			width;		/* pixel width of word					*/
+	Dimension 			height;		/* pixel height of word					*/
+	Cardinal 			line;		/* line for this word					*/
+	ObjectType 			type;		/* type of word, used by <pre>,<img>	*/
+	String 				word;		/* word to display						*/
+	int 				len;		/* string length of word				*/
+	XmHTMLfont	 		*font;		/* font to use							*/
+	Byte 				line_data;	/* line data (underline/strikeout)		*/
+	Byte				spacing;	/* leading/trailing/nospace allowed		*/
+	AllEvents			*events;	/* events to be served					*/
+	struct _XmHTMLImage *image;		/* when this is an image				*/
+	struct _XmHTMLForm	*form;		/* when this is a form element			*/
+	struct _XmHTMLWord	*base;		/* baseline word for a line				*/
+	struct _XmHTMLWord	*self; 		/* ptr to itself, for anchor adjustment	*/
+	struct _XmHTMLObjectTable *owner;	/* owner of this worddata			*/
 }XmHTMLWord;
 
 /* area definition. See map.c for the full definition */
@@ -457,9 +468,9 @@ typedef struct _mapArea mapArea;
 * mapArea is a transparent object and is defined in map.c
 *****/
 typedef struct _XmHTMLImageMap{
-	String				name;				/* name of map */
-	int					nareas;				/* no of areas */
-	mapArea				*areas;				/* list of areas */
+	String				name;		/* name of map			*/
+	int					nareas;		/* no of areas			*/
+	mapArea				*areas;		/* list of areas		*/
 	struct _XmHTMLImageMap *next;	/* ptr to next imagemap */
 }XmHTMLImageMap;
 
@@ -471,9 +482,7 @@ typedef struct _XmHTMLImageMap{
 * XmImage).
 *****/
 typedef struct _XmHTMLImage{
-	/*
-	* Normal image data
-	*/
+	/* Normal image data */
 	Byte			magic;			/* structure identifier */
 	String			url;			/* raw src specification */
 	XmImageInfo		*html_image;	/* local image data */
@@ -485,9 +494,7 @@ typedef struct _XmHTMLImage{
 	int				npixels;		/* no of allocated pixels */
 	XCC             xcc;			/* a lot of visual info */
 
-	/*
-	* Possible <IMG> attributes
-	*/
+	/* Possible <IMG> attributes */
 	int				swidth;			/* requested image width */
 	int				sheight;		/* requested image height */
 	String			alt;			/* alternative image text */
@@ -513,7 +520,7 @@ typedef struct _XmHTMLImage{
 	TAppContext	context;		/* Application context for animations */
  
  	/* other data */
- 	AllEvents			*events;		/* events to be served */
+	AllEvents			*events;	/* events to be served */
 }XmHTMLImage;
 
 /*****
@@ -558,6 +565,21 @@ typedef struct _XmHTMLForm{
 	struct _XmHTMLForm *prev;		/* ptr to previous record */
 	struct _XmHTMLForm *next;		/* ptr to next record */
 }XmHTMLForm;
+
+/*****
+* Definition of form data
+*****/
+typedef struct _XmHTMLFormData{
+	Widget html;					/* owner of this form */
+	String action;					/* destination url/cgi-bin */
+	int method;						/* XmHTML_FORM_GET,POST,PIPE */
+	String enctype;					/* form encoding */
+	int ncomponents;				/* no of items in this form */
+	Widget fileSB;					/* input == file */
+	XmHTMLForm *components;			/* list of form items */
+	struct _XmHTMLFormData *prev;	/* ptr to previous form */
+	struct _XmHTMLFormData *next;	/* ptr to next form */
+}XmHTMLFormData;
 
 /*****
 * Definition of XmHTML tables
@@ -621,6 +643,7 @@ typedef struct _TableCell{
 	TableProperties	*properties;		/* properties for this cell	*/
 	struct _XmHTMLObjectTable *start;	/* first object to render	*/
 	struct _XmHTMLObjectTable *end;		/* last object to render	*/
+	struct _XmHTMLObjectTable *owner;	/* owning object			*/
 	struct _TableRow *parent;			/* parent of this cell		*/
 }TableCell;
 
@@ -632,6 +655,7 @@ typedef struct _TableRow{
 	TableProperties	*properties;		/* properties for this row	*/
 	struct _XmHTMLObjectTable *start;	/* first object to render	*/
 	struct _XmHTMLObjectTable *end;		/* last object to render	*/
+	struct _XmHTMLObjectTable *owner;	/* owning object			*/
 	struct _XmHTMLTable *parent;		/* parent of this row		*/
 }TableRow;
 
@@ -739,21 +763,6 @@ typedef struct _XmHTMLFrameWidget{
 	int				border;			/* add a border around this frame? */
 	TWidget			frame;			/* XmHTMLWidget id for this frame */
 }XmHTMLFrameWidget;
-
-/*****
-* Definition of form data
-*****/
-typedef struct _XmHTMLFormData{
-	TWidget html;					/* owner of this form */
-	String action;					/* destination url/cgi-bin */
-	int method;						/* XmHTML_FORM_GET,POST,PIPE */
-	String enctype;					/* form encoding */
-	int ncomponents;				/* no of items in this form */
-	TWidget fileSB;					/* input == file */
-	XmHTMLForm *components;			/* list of form items */
-	struct _XmHTMLFormData *prev;	/* ptr to previous form */
-	struct _XmHTMLFormData *next;	/* ptr to next form */
-}XmHTMLFormData;
 
 /*****
 * Parser state stack object
@@ -885,7 +894,7 @@ typedef struct _XmHTMLPart {
 	/* Document resources */
 	Boolean				strict_checking;
 	Boolean				enable_outlining;
-	Boolean				bad_html_warnings;
+	Byte				bad_html_warnings;
 	XtPointer			client_data;	/* client_data for functional res. */
 
 	/* Private Resources */

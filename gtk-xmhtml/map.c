@@ -36,6 +36,15 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.4  1997/12/29 22:16:31  unammx
+* This version does:
+*
+*    - Sync with Koen to version Beta 1.1.2c of the XmHTML widget.
+*      Includes various table fixes.
+*
+*    - Callbacks are now properly checked for the Gtk edition (ie,
+*      signals).
+*
 * Revision 1.3  1997/12/24 17:53:55  unammx
 * Fun stuff:
 *
@@ -777,7 +786,7 @@ _XmHTMLCheckImagemaps(XmHTMLWidget html)
 
 	_XmHTMLDebug(10, ("map.c: _XmHTMLCheckImagemaps Start\n"));
 
-	if(html->html.images == NULL || html->html.imagemap_callback == NULL)
+	if(html->html.images == NULL || CHECK_CALLBACK (html, imagemap_callback, IMAGEMAP) == NULL)
 	{
 		_XmHTMLDebug(10, ("map.c: _XmHTMLCheckImagemaps End: %s.\n",
 			(html->html.images ? "no imagemap_callback" : 
