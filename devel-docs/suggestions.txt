@@ -3,8 +3,9 @@ Suggestions for enhancing the user experience in your application:
 
 Try to use:
 
-   - Use Ctrl-Q as the accelerator to exit the application.  The
-     exit-application menu item should be File/Exit, not File/Quit.
+   - For standard menu items (Save, Save As, Close, Quit, etc), use
+     the macros defined in gnome-app-helper.h, e.g.
+     GNOMEUIINFO_MENU_EXIT_ITEM(cb, data)
 
    - GnomePropertyBox widgets for configuring things in your
      application.  These will allow the user to use their prefered way
