@@ -1,3 +1,10 @@
+Mon Apr  6 00:05:34 1998  Havoc Pennington  <hp@pobox.com>
+
+	* libgnome/gnome-i18nP.h: new file
+	* libgnome/gnome-i18n.h: #warning if used together with
+	gnome-i18nP.h
+	* libgnome/Makefile.am: noinst_HEADERS = gnome-i18nP.h
+
 Sat Apr 04 12:12:47 1998  George Lebl  <jirka@5z.com>
 
 	* libgnome/gnome-config.c: do init on functions that
