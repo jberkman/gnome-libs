@@ -113,7 +113,10 @@ gbpixmapdir = $(datadir)/pixmaps
 gbpixmap_DATA = yes.xpm no.xpm
 
 install-data-hook:
-	rm -f $(DESTDIR)$(bindir)/new-object
+	$(RM) -f $(DESTDIR)$(bindir)/new-object
 	$(LN_S) goad-browser $(DESTDIR)$(bindir)/new-object
 
 BUILT_SOURCES=$(gnorba_built)
+
+clean-local:
+	$(RM) -f $(BUILT_SOURCES)
