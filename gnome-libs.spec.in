@@ -62,8 +62,7 @@ Libraries, include files, etc you can use to develop GNOME applications.
 %build
 # Needed for snapshot releases.
 
-MYCFLAGS="-DGTK_NO_CHECK_CASTS -DG_DISABLE_ASSERT -DG_DISABLE_CHECKS \
-$RPM_OPT_FLAGS"
+MYCFLAGS="$RPM_OPT_FLAGS"
 
 if [ ! -f configure ]; then
   CFLAGS="$MYCFLAGS" ./autogen.sh --prefix=%prefix --localstatedir=/var/lib
