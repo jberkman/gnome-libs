@@ -799,6 +799,7 @@ static int vt_in_wordclass(struct _vtx *vx, uint32 c)
 {
   int ch;
 
+  c &= VTATTR_DATAMASK;
   if (c>=256)
     return 1;
   ch = c&0xff;

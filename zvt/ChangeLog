@@ -1,3 +1,8 @@
+1999-06-23  Michael Zucchi  <mzucchi@zedzone.mmc.com.au>
+
+	* update.c (vt_in_wordclass): Make sure we ignore attributes before
+	doing character type tests.
+
 1999-06-20  Michael Zucchi  <mzucchi@zedzone.mmc.com.au>
 
 	* zvtterm.c (vt_draw_text): When we render bold, dont offset y as
