@@ -175,3 +175,18 @@ Miscellaneous
 
    - GNOME uses Imlib, try to provide your images in PNG format.  Do
      not care about the color usage, Imlib will dither to a nice
+
+
+Internationalization
+--------------------
+
+   - Tag any strings in C statements with _(...) and with N_(...) for
+     static initializers to allow your application messages to be
+     localized.
+
+
+Session management
+------------------
+
+   - If possible, make your application support session management.
+
