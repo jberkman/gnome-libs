@@ -1,6 +1,8 @@
 mimedir = $(datadir)/mime-info
 mime_DATA = gnome.mime
 
+GAMES_GROUP = games
+
 EXTRA_DIST = 			\
 	gnome.soundlist 	\
 	gtk-events.soundlist	\
@@ -16,5 +18,5 @@ soundlist_DATA = gnome.soundlist gtk-events.soundlist
 
 install-data-local:
 	$(mkinstalldirs) $(scoredir)
-	-chgrp games $(scoredir) && chmod g=rwXs $(scoredir)
-	$(top_builddir)/libgnome/gnome-gen-mimedb $(sysconfdir)/mime-magic
+	-chgrp $(GAMES_GROUP) $(scoredir) && chmod g=rwXs $(scoredir)
+	$(top_builddir)/libgnome/gnome-gen-mimedb $(DESTDIR)$(sysconfdir)/mime-magic
