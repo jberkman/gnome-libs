@@ -605,6 +605,19 @@ create_pixmap_entry(void)
 }
 
 static void
+create_icon_entry(void)
+{
+	GtkWidget *app;
+	GtkWidget *entry;
+
+	app = create_newwin(TRUE,"testGNOME","Icon Entry");
+	entry = gnome_icon_entry_new("Foo","Icon");
+	gnome_app_set_contents(GNOME_APP(app),entry);
+	gtk_widget_show(entry);
+	gtk_widget_show(app);
+}
+
+static void
 create_number_entry(void)
 {
 	GtkWidget *app;
@@ -1674,6 +1687,7 @@ main (int argc, char *argv[])
 		  { "dialog", create_dialog },
 		  { "file entry", create_file_entry },
                   { "pixmap entry", create_pixmap_entry },
+                  { "icon entry", create_icon_entry },
                   { "number entry", create_number_entry },
                   { "font picker", create_font_picker },                  
 		  { "font sel", create_font_sel },
