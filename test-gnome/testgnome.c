@@ -540,6 +540,12 @@ file_entry_modal_toggle(GtkWidget *w, GnomeFileEntry *fentry)
 }
 
 static void
+file_entry_directory_toggle(GtkWidget *w, GnomeFileEntry *fentry)
+{
+	gnome_file_entry_set_directory(fentry,GTK_TOGGLE_BUTTON(w)->active);
+}
+
+static void
 create_file_entry(void)
 {
 	GtkWidget *app;
@@ -572,6 +578,12 @@ create_file_entry(void)
 	but = gtk_toggle_button_new_with_label("Make browse dialog modal");
 	gtk_signal_connect(GTK_OBJECT(but),"toggled",
 			   GTK_SIGNAL_FUNC(file_entry_modal_toggle),
+			   entry);
+	gtk_box_pack_start(GTK_BOX(box),but,FALSE,FALSE,0);
+
+	but = gtk_toggle_button_new_with_label("Directory only picker");
+	gtk_signal_connect(GTK_OBJECT(but),"toggled",
+			   GTK_SIGNAL_FUNC(file_entry_directory_toggle),
 			   entry);
 	gtk_box_pack_start(GTK_BOX(box),but,FALSE,FALSE,0);
 
