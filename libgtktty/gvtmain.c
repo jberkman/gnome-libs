@@ -860,7 +860,7 @@ gvt_menus_setup (void)
     gtk_widget_set_sensitive (item, FALSE);
     gtk_widget_show (item);
     gtk_menu_append (GTK_MENU (menu), item);
-    item = gtk_menu_item_new_with_label ("Quit");
+    item = gtk_menu_item_new_with_label ("Exit");
     gtk_signal_connect(GTK_OBJECT (item), "activate",
 		       GTK_SIGNAL_FUNC (gtk_main_quit),
 		       NULL);
