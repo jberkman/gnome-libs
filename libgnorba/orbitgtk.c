@@ -181,9 +181,6 @@ do_CORBA_init(int *argc, char **argv,
 {
   CORBA_ORB retval;
 
-  if(flags & GNORBA_INIT_SERVER_FUNC)
-    goad_register_arguments();
-
   IIOPAddConnectionHandler = orb_add_connection;
   IIOPRemoveConnectionHandler = orb_remove_connection;
 
@@ -212,8 +209,11 @@ gnome_CORBA_init(const char *app_id,
 {
   CORBA_ORB retval;
 
-  retval = do_CORBA_init(argc, argv, gnorba_flags, ev);
+  if(gnorba_flags & GNORBA_INIT_SERVER_FUNC)
+    goad_register_arguments();
+
   gnome_init(app_id, app_version, *argc, argv);
+  retval = do_CORBA_init(argc, argv, gnorba_flags, ev);
 
   return retval;
 }
@@ -230,9 +230,12 @@ gnome_CORBA_init_with_popt_table(const char *app_id,
 {
   CORBA_ORB retval;
 
-  retval = do_CORBA_init(argc, argv, gnorba_flags, ev);
+  if(gnorba_flags & GNORBA_INIT_SERVER_FUNC)
+    goad_register_arguments();
+
   gnome_init_with_popt_table(app_id, app_version, *argc, argv, options,
 			     popt_flags, return_ctx);
+  retval = do_CORBA_init(argc, argv, gnorba_flags, ev);
 
   return retval;
 }

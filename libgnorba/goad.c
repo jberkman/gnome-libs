@@ -563,7 +563,7 @@ real_goad_server_activate(GoadServer *sinfo,
       retval = CORBA_OBJECT_NIL;
     }
     else if (ev._major != CORBA_NO_EXCEPTION) {
-      g_warning("goad_server_activate: %s %d: unexpected exception:", __FILE__, __LINE__);
+      g_warning("goad_server_activate: %s %d: unexpected exception %s:", __FILE__, __LINE__, ev._repo_id);
       switch( ev._major ) {
 	case CORBA_SYSTEM_EXCEPTION:
 	  g_warning("sysex: %s.\n", CORBA_exception_id(&ev));
@@ -849,6 +849,7 @@ goad_server_activate_factory(GoadServer *sinfo,
 
   sl._length = string_array_len(params);
   sl._buffer = (char **)params;
+  sl._release = CORBA_FALSE;
 
   retval = GNOME_GenericFactory_create_object(factory_obj,
 					      sinfo->server_id, &sl, ev);
@@ -982,9 +983,12 @@ goad_server_register(CORBA_Object name_server,
       
       sigaction(SIGPIPE, &myaction, &oldaction);
       strior = CORBA_ORB_object_to_string(gnome_CORBA_ORB(), server, ev);
-      fprintf(iorout, "%s\n", strior); fflush(iorout);
+      if(ev->_major == CORBA_NO_EXCEPTION) {
+	fprintf(iorout, "%s\n", strior);
+	CORBA_free(strior);
+      }
+      fflush(iorout);
       fclose(iorout);
-      CORBA_free(strior);
       sigaction(SIGPIPE, &oldaction, NULL);
     }
 
