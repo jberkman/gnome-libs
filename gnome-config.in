@@ -329,7 +329,7 @@ if [ "$get_gnomeui" != "false" ]; then
 fi
 if [ "$get_gtkxmhtml" != "false" ]; then
     the_flags="$the_flags $GNOME_INCLUDEDIR"
-    the_libs="$the_libs $GNOME_LIBDIR $GNOMEUI_LIBS"
+    the_libs="$the_libs $GNOME_LIBDIR -lgtkxmhtml $GNOMEUI_LIBS"
 fi
 if [ "$get_gnorba" != "false" ]; then
     the_flags="$the_flags $GNOME_INCLUDEDIR `orbit-config --cflags`"

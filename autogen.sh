@@ -114,7 +114,7 @@ do
     echo processing $dr
     macrodirs=`sed -n -e 's,AM_ACLOCAL_INCLUDE(\(.*\)),\1,gp' < $coin`
     ( cd $dr
-	DELETEFILES="`find . -name gnome-gettext.m4`"
+	DELETEFILES="`find . -path '*/macros/gnome-gettext.m4'`"
       aclocalinclude="$ACLOCAL_FLAGS"
       for k in $aclocalinclude; do
   	if test -d $k; then
