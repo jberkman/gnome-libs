@@ -955,9 +955,9 @@ create_icon_list(void)
 	gnome_icon_list_freeze (GNOME_ICON_LIST (iconlist));
 
 	for (i = 0; i < 30; i++) {
-		gnome_icon_list_append_pixbuf(GNOME_ICON_LIST(iconlist), pix, "Foo");
-		gnome_icon_list_append_pixbuf(GNOME_ICON_LIST(iconlist), pix, "Bar");
-		gnome_icon_list_append_pixbuf(GNOME_ICON_LIST(iconlist), pix, "LaLa");
+		gnome_icon_list_append_pixbuf(GNOME_ICON_LIST(iconlist), pix, NULL, "Foo");
+		gnome_icon_list_append_pixbuf(GNOME_ICON_LIST(iconlist), pix, NULL, "Bar");
+		gnome_icon_list_append_pixbuf(GNOME_ICON_LIST(iconlist), pix, NULL, "LaLa");
 	}
 
 	gnome_icon_list_set_selection_mode (GNOME_ICON_LIST (iconlist), GTK_SELECTION_EXTENDED);
