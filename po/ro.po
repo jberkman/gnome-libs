@@ -7,8 +7,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-libs 1.1.0\n"
-"POT-Creation-Date: 2000-03-16 00:44+0200\n"
-"PO-Revision-Date: 2000-04-15 19:20+0200\n"
+"POT-Creation-Date: 2000-04-05 22:11+0300\n"
+"PO-Revision-Date: 2000-04-15 19:21+0200\n"
 "Last-Translator: Dan Damian <dand@dnttm.ro>\n"
 "Language-Team: Romanian <ro@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -18,7 +18,9 @@ msgstr ""
 #: libgnome/gnomelib-init.c:176 libgnome/gnomelib-init.c:190
 #, c-format
 msgid "Could not create per-user gnome configuration directory `%s': %s\n"
-msgstr "Directorul per-utilizator `%s' de configuraþii gnome nu a putut fi creat: %s\n"
+msgstr ""
+"Directorul per-utilizator `%s' de configuraþii gnome nu a putut fi creat: "
+"%s\n"
 
 #: libgnome/gnomelib-init.c:199
 #, c-format
@@ -26,8 +28,8 @@ msgid ""
 "Could not set mode 0700 on private per-user gnome configuration directory "
 "`%s': %s\n"
 msgstr ""
-"Modul 0700 nu a putut fi setat pe directorul privat per-utilizator de configuraþii gnome "
-"`%s': %s\n"
+"Modul 0700 nu a putut fi setat pe directorul privat per-utilizator de "
+"configuraþii gnome `%s': %s\n"
 
 #: libgnome/gnomelib-init.c:206
 #, c-format
@@ -234,7 +236,7 @@ msgstr "_Anuleazã"
 
 #: libgnomeui/gnome-app-helper.c:168
 msgid "Undo the last action"
-msgstr "Refã ultima acþiune"
+msgstr "Anuleazã ultima acþiune"
 
 #. Redo
 #: libgnomeui/gnome-app-helper.c:173
@@ -287,7 +289,7 @@ msgstr "Modificã proprietãþile fiºierului"
 #. Settings
 #: libgnomeui/gnome-app-helper.c:203
 msgid "_Preferences..."
-msgstr "_Preferinþe"
+msgstr "_Preferinþe..."
 
 #: libgnomeui/gnome-app-helper.c:204
 msgid "Configure the application"
@@ -362,19 +364,19 @@ msgstr "Reîncepe jocul"
 
 #: libgnomeui/gnome-app-helper.c:255
 msgid "_Undo move"
-msgstr "_Refã mutarea"
+msgstr "An_uleazã mutarea"
 
 #: libgnomeui/gnome-app-helper.c:256
 msgid "Undo the last move"
-msgstr "Refã utima mutare"
+msgstr "Anuleazã utima mutare"
 
 #: libgnomeui/gnome-app-helper.c:260
 msgid "_Redo move"
-msgstr "Eliminã mutarea refãcutã"
+msgstr "Repetã mutarea"
 
 #: libgnomeui/gnome-app-helper.c:261
 msgid "Redo the undone move"
-msgstr "Eliminã mutarea refãcutã"
+msgstr "Repetã mutarea anulatã"
 
 #: libgnomeui/gnome-app-helper.c:265
 msgid "_Hint"
@@ -841,7 +843,8 @@ msgstr "MODULE"
 #. dialog display isn't working out
 #: libgnomeui/gnome-init.c:464
 msgid "Multiple segmentation faults occurred; can't display error dialog\n"
-msgstr "Au avut loc segmentation faulturi multiple; nu pot afiºa dialogul de eroare\n"
+msgstr ""
+"Au avut loc segmentation faulturi multiple; nu pot afiºa dialogul de eroare\n"
 
 #: libgnomeui/gnome-messagebox.c:137
 msgid "Information"
@@ -863,11 +866,11 @@ msgstr "Întrebare"
 msgid "Message"
 msgstr "Mesaj"
 
-#: libgnomeui/gnome-number-entry.c:177
+#: libgnomeui/gnome-number-entry.c:200
 msgid "Calculator"
 msgstr "Calculator"
 
-#: libgnomeui/gnome-number-entry.c:233
+#: libgnomeui/gnome-number-entry.c:256
 msgid "Calculator..."
 msgstr "Calculator..."
 
@@ -1157,8 +1160,8 @@ msgid ""
 msgstr ""
 "Managerul GNOME de sesiuni (procesul %d) s-a prãbuºit\n"
 "datoritã unei erori fatale (%s).\n"
-"Când închideþi acest dialog, toate aplicaþiile se vor închide ºi"
-"sesiunea dvs. se va termina.\n"
+"Când închideþi acest dialog, toate aplicaþiile se vor închide ºisesiunea "
+"dvs. se va termina.\n"
 "Vã rog sã vã salvaþi toate fiºierele înainte de a închide acest dialog."
 
 #: libgnomeui/gnome_segv.c:87
@@ -1186,7 +1189,9 @@ msgstr "http://www.gnome.org/application_crashed.shtml.ro"
 
 #: libgnomeui/gnome_segv.c:121
 msgid "Please visit the GNOME Application Crash page for more information"
-msgstr "Vã rugãm sã vizitaþi pagina Prabuºiri Aplicaþii GNOME pentru mai multe informaþii"
+msgstr ""
+"Vã rugãm sã vizitaþi pagina Prabuºiri Aplicaþii GNOME pentru mai multe "
+"informaþii"
 
 #: libgnomeui/stock_demo.c:137
 msgid "New..."
@@ -1222,11 +1227,11 @@ msgstr "Fiºier"
 
 #: libgnomeui/stock_demo.c:216
 msgid "Undo"
-msgstr "Refã"
+msgstr "Anuleazã"
 
 #: libgnomeui/stock_demo.c:224
 msgid "Redo"
-msgstr "Eliminã refacerea"
+msgstr "Repetã"
 
 #: libgnomeui/stock_demo.c:233
 msgid "Delete"
@@ -1498,9 +1503,5 @@ msgstr "Numãr ciudat în replica callback"
 msgid "Test GNOME"
 msgstr "Test GNOME"
 
-
-
-
-
-
-
+#~ msgid "_About..."
+#~ msgstr "_Despre..."
