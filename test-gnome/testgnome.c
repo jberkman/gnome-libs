@@ -1933,7 +1933,11 @@ main (int argc, char *argv[])
 	GtkWidget *scrolled_window;
 	int i;
 
-	gnome_program_init ("testGNOME", VERSION, argc, argv, GNOMEUI_INIT, NULL);
+	gnome_program_init ("testGNOME", VERSION, argc, argv,
+                            GNOMEUI_INIT,
+                            LIBGNOME_PARAM_HUMAN_READABLE_NAME,
+                            _("Test GNOME"),
+                            NULL);
 
 	app = create_newwin(FALSE,"testGNOME", "testGNOME");
 	gtk_widget_set_usize (app, 200,300);
