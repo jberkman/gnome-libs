@@ -1,3 +1,9 @@
+1998-10-15  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* libgnorba/Makefile.am (loadshlib_LDADD): changed to make it
+	compile before gnome-libs is installed (which is the usual order,
+	isn't it?)
+
 1998-10-14  Martin Baulig  <martin@home-of-linux.org>
 
 	* libgnome/gnome-config.c (parse_path): If the pushed config prefix

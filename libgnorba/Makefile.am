@@ -37,8 +37,11 @@ loadshlib_SOURCES = loadshlib.c
 
 loadshlib_LDADD = \
 	$(ORBIT_LIBS) \
-	$(GNOMEUI_LIBS) \
-	-lgnorba        \
+        $(top_builddir)/libgnome/libgnome.la		\
+        $(top_builddir)/libgnomeui/libgnomeui.la	\
+        @LIBSUPPORT@					\
+        $(LIBGNOME_LIBS) $(LIBGNOMEUI_LIBS)		\
+	$(top_builddir)/libgnorba/libgnorba.la		\
 	$(INTLLIBS)
 
 CLEANFILES = $(name_IDL_SOURCES)
