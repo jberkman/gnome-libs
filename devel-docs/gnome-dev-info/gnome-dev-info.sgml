@@ -223,6 +223,17 @@
           open the block).  Make yourself familiar with both coding
           styles (the GNU coding style and the Linux kernel coding
           style)</para>
+	  <para>If you are working with vim, you can use the following setting
+	  for the cindent feature that will be compatible with the style used
+	  in gnome-libs. If you put this setting in your ~/.vimrc file, it will
+	  turn on cindent and other stuff useful for writing code for *.c and
+	  *.h files.
+      	  </para>
+	  <programlisting>
+	  set cino=t0,:0,(0,)100,*100
+	  au BufReadPost *.c set cindent sm wm=0 tw=0
+	  au BufReadPost *.h set cindent sm wm=0 tw=0
+	  </programlisting>
 	  </listitem>
 
         <listitem><para>Try to make your code readable in 80 columns</para>
