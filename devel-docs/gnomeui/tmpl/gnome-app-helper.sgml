@@ -106,7 +106,7 @@ it is not recommended, as it is an error-prone task).</para>
          N_("_New Document"), or whatever is appropriate for your
          application.  TIP should be the description of this menu
          item's function, e.g. N_("Create a new document").  This
-         ensures that your application menus will be translated to the
+         ensures that your application menus can be translated to the
          language of the user.</para>
    </listitem>
 
@@ -160,9 +160,8 @@ it is not recommended, as it is an error-prone task).</para>
     the default texts to show, images (in case they have one), pop-up
     tooltips and in some cases default key-bindings. </para>
 
-    <para>A toplevel menu (as the one used in a regular application,
-    typically used in a GnomeApp widget) is just an array of
-    structures of type
+    <para>A toplevel menu (like the one used by the GnomeApp widget)
+    is just an array of structures of type
     <structname>GnomeUIInfoType</structname>.  Each record of type
     <structname>GnomeUIInfoType</structname> in this array can
     represent a menu item that the user can select, a radio-button, a
@@ -217,8 +216,8 @@ it is not recommended, as it is an error-prone task).</para>
 <para>
 This enumeration is used to set the value in a
 <structname>GnomeUIInfo</structname> record to specify the type of the
-record.  There are macros that would do all the work for you.  Use
-thos instead of these macros.  It is defined as follows:</para>
+record.  There are macros that can do all the work for you.  Use
+those instead of these macros.  It is defined as follows:</para>
 
 <itemizedlist>
 	<listitem><para>%GNOME_APP_UI_ENDOFINFO: Use this to denote
@@ -235,7 +234,7 @@ thos instead of these macros.  It is defined as follows:</para>
 	<listitem><para>%GNOME_APP_UI_RADIOITEMS: Use this for a radio
 	     item group.</para></listitem>
 
-	<listitem><para>%GNOME_APP_UI_SUBTREE: Use this to defines a
+	<listitem><para>%GNOME_APP_UI_SUBTREE: Use this to define a
 	     subtree or a submenu.  Set the
 	     <structfield>moreinfo</structfield> field in the
 	     structure to point to another array of #GnomeUIInfo
@@ -319,7 +318,7 @@ Use this macro to include a separator in your menu.
 <!-- ##### MACRO GNOMEUIINFO_ITEM ##### -->
 <para>
 Generic menu or toolbar item which includes a label, a tooltip and an
-optional pixmap (in xpm format) to display next to the entry. 
+optional pixmap (in xpm format) to be displayed next to the entry. 
 </para>
 
 @label: The text that will be displayed
@@ -366,7 +365,7 @@ structure.
 
 <!-- ##### MACRO GNOMEUIINFO_TOGGLEITEM ##### -->
 <para>
-Creates a toggle-item (a checkbox) in a menu, this include an xpm
+Creates a toggle-item (a checkbox) in a menu, this includes an xpm
 graphic. 
 </para>
 
@@ -378,7 +377,7 @@ graphic.
 
 <!-- ##### MACRO GNOMEUIINFO_TOGGLEITEM_DATA ##### -->
 <para>
-Creates a toggle-item (a checkbox) in a menu, this include an xpm
+Creates a toggle-item (a checkbox) in a menu, this includes an xpm
 graphic.  Allows you to specify the data to be passed around to your
 callback routine.
 </para>
@@ -397,7 +396,7 @@ in the <filename>topic.dat</filename> file.  The menu is constructed
 from the information stored in the file associated with the @app_name
 you provide.  The information is usually taken from
 <filename>$(datadir)/help/@app_name/$LANG/topic.dat</filename>.  Where
-$LANG is the selected language for running the application.
+$LANG is the language chosen when running the application.
 </para>
 
 @app_name: The application name.  Used to locate the correct topic.dat file.
@@ -520,7 +519,7 @@ option.  This is used typically in the Edit menu.
 
 <!-- ##### MACRO GNOMEUIINFO_MENU_EDIT_TREE ##### -->
 <para>
-Inserts a top-level "Edit" menu.  The argument is pointer to
+Inserts a top-level "Edit" menu.  The argument is a pointer to
 <structname>GnomeUIInfo</structname> that will contain the submenu to
 insert. 
 </para>
@@ -582,7 +581,7 @@ in the "Edit" menu.
 
 <!-- ##### MACRO GNOMEUIINFO_MENU_FIND_ITEM ##### -->
 <para>
-Use this macro to include an "Find" menu entry.  To be included in the
+Use this macro to include a "Find" menu entry.  To be included in the
 "Edit" menu.
 
 </para>
@@ -593,7 +592,7 @@ Use this macro to include an "Find" menu entry.  To be included in the
 
 <!-- ##### MACRO GNOMEUIINFO_MENU_GAME_TREE ##### -->
 <para>
-Inserts a top-level "Game" menu.  The argument is pointer to
+Inserts a top-level "Game" menu.  The argument is a pointer to
 <structname>GnomeUIInfo</structname> that will contain the submenu to
 insert. 
 </para>
@@ -655,7 +654,7 @@ the submenu.
 
 <!-- ##### MACRO GNOMEUIINFO_MENU_NEW_WINDOW_ITEM ##### -->
 <para>
-Use this macro to include an "New window" menu entry.  
+Use this macro to include a "New window" menu entry.  
 </para>
 
 @cb: Specifies the routine to be invoked when the menu is selected
@@ -820,7 +819,7 @@ be used in the "Edit" menu.
 
 <!-- ##### MACRO GNOMEUIINFO_MENU_SETTINGS_TREE ##### -->
 <para>
-Inserts a top-level "Settings" menu.  The argument is pointer to
+Inserts a top-level "Settings" menu.  The argument is a pointer to
 <structname>GnomeUIInfo</structname> that will contain the submenu to
 insert. 
 </para>

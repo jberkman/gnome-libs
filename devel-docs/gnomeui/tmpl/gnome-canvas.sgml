@@ -14,7 +14,7 @@ GnomeCanvas
   <refsect2>
     <title>Canvas Items</title>
     <para>
-      The GNOME Canvas basic building block are the GNOME Canvas
+      The GNOME Canvas basic building blocks are the GNOME Canvas
       Items (#GnomeCanvasItem): lines, rectangles, text, ellipses,
       polylines, images and embedded widgets.  You can use any of
       those directly in your application.
@@ -29,8 +29,8 @@ GnomeCanvas
     </para>
     
     <para>
-      Specialized canvas items allows the developer to write
-      custom items that can adapt to its needs of speed,
+      Specialized canvas items allow the developer to write
+      custom items that can adapt to their needs for speed,
       scalability and gives the user the power to extend the
       canvas. 
     </para>
@@ -39,7 +39,7 @@ GnomeCanvas
       Items on the canvas can be reconfigured by using the Gtk
       argument system.  Users can reconfigure the parameters of
       the canvas items and the changes on the parameters will be
-      reflected inmediately on the screen.
+      reflected immediately on the screen.
     </para>
   </refsect2>
   
@@ -49,7 +49,7 @@ GnomeCanvas
       The GNOME Canvas uses off-screen buffers to render the images
       before transfering them to the screen.  Transfers can take
       place at the command of the programmer (by explicitly
-      requesting a repait update) or done automatically by the
+      requesting a repaint update) or done automatically by the
       engine (during the idle look handler).
     </para>
   </refsect2>
@@ -70,7 +70,7 @@ GnomeCanvas
       The Canvas can be run in two different modes: X11 mode and Art
       mode.  The mode is chosen at the creation time of the widget
       by either calling gnome_canvas_new() or gnome_canvas_new_aa(),
-      the former creates an X11 canvas, while the later creates an
+      the former creates an X11 canvas, while the latter creates an
       Art-based canvas.
     </para>
     
