@@ -2,11 +2,10 @@
 # Copyright (C) YEAR Free Software Foundation, Inc.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 1999-04-08 15:24-0500\n"
+"POT-Creation-Date: 1999-04-28 01:22+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -78,7 +77,7 @@ msgstr "Aiuto"
 #: gnome-hello/gnome-hello-3-parse-args.c:137
 #: gnome-hello/gnome-hello-4-SM.c:139
 msgid "Hello World Gnomified"
-msgstr "Ciao Mondo di Gnome"
+msgstr "Ciao Mondo Gnomificato"
 
 #.
 #. * We make a button, bind the 'clicked' signal to hello and setting it
@@ -153,7 +152,7 @@ msgstr "Figli/"
 
 #: gnome-hello/gnome-hello.c:40
 msgid "File/Exit"
-msgstr "Archivio/Esci"
+msgstr "File/Esci"
 
 #: gnome-hello/gnome-hello.c:40
 msgid "<control>E"
@@ -240,7 +239,7 @@ msgstr "Host:porta sul quale è attivo il server audio"
 
 #: libgnome/gnomelib-init.c:129
 msgid "HOSTNAME:PORT"
-msgstr "HOSTNAME:PORTA"
+msgstr "NOMEHOST:PORTA"
 
 #: libgnome/gnomelib-init.c:137
 msgid "GNOME Options"
@@ -258,7 +257,7 @@ msgstr "Autori:"
 msgid "Authors: "
 msgstr "Autori: "
 
-#: libgnomeui/gnome-about.c:565 libgnomeui/stock_demo.c:282
+#: libgnomeui/gnome-about.c:566 libgnomeui/stock_demo.c:282
 #: libgnomeui/winhints_demo.c:257
 msgid "About"
 msgstr "Informazioni"
@@ -868,11 +867,11 @@ msgstr "Annulla Uscita"
 
 #: libgnomeui/gnome-client.c:2497
 msgid "Really log out?"
-msgstr ""
+msgstr "Uscire veramente?"
 
 #: libgnomeui/gnome-client.c:2506
 msgid "Ask next time"
-msgstr ""
+msgstr "Chiedi conferma la prossima volta"
 
 #: libgnomeui/gnome-color-picker.c:313
 msgid "Pick a color"
@@ -1580,49 +1579,52 @@ msgid ""
 "any services installed or I don't know the path to find them.\n"
 "In either case, please check your GNOME installation."
 msgstr ""
+"Impossibile trovare servizi installati.  O nessun servizio è installato,\n"
+"o io non conosco il path corretto per trovarli.  In entrambi i casi,\n"
+"controllare l'installazione di GNOME."
 
-#: libgnorba/goad.c:1236
+#: libgnorba/goad.c:1235
 msgid "(Internal use only) GOAD server ID to activate"
-msgstr ""
+msgstr "ID server GOAD da attivare (solo per uso interno)"
 
 #: libgnorba/loadshlib.c:18
 msgid "ID under which GOAD knows this server"
-msgstr ""
+msgstr "ID attraverso il quale GOAD conosce questo server"
 
 #: libgnorba/loadshlib.c:18
 msgid "GOAD_ID"
-msgstr ""
+msgstr "GOAD_ID"
 
 #: libgnorba/loadshlib.c:19
 msgid "Repository ID under which GOAD knows this server"
-msgstr ""
+msgstr "Repository ID attraverso il quale GOAD conosce questo server"
 
 #: libgnorba/loadshlib.c:19
 msgid "REPO_ID"
-msgstr ""
+msgstr "REPO_ID"
 
 #: libgnorba/orbitns.c:301
 msgid "Could not get name service!"
-msgstr ""
+msgstr "Impossibile ottenere il servizio dei nomi!"
 
 #: support/error.c:109
 msgid "Unknown system error"
-msgstr ""
+msgstr "Errore di sistema sconosciuto"
 
 #: support/getopt.c:669
 #, c-format
 msgid "%s: option `%s' is ambiguous\n"
-msgstr ""
+msgstr "%s: l'opzione `%s' è ambigua\n"
 
 #: support/getopt.c:693
 #, c-format
 msgid "%s: option `--%s' doesn't allow an argument\n"
-msgstr ""
+msgstr "%s: l'opzione `--%s' non permette un argomento.\n"
 
 #: support/getopt.c:698
 #, c-format
 msgid "%s: option `%c%s' doesn't allow an argument\n"
-msgstr ""
+msgstr "%s: L'opzione `%c%s' non permette un argomento\n"
 
 # , fuzzy, c-format
 # , c-format
@@ -1635,24 +1637,24 @@ msgstr "%s: Troppi parametri\n"
 #: support/getopt.c:744
 #, c-format
 msgid "%s: unrecognized option `--%s'\n"
-msgstr ""
+msgstr "%s: opzione non riconosciuta `--%s'\n"
 
 #. +option or -option
 #: support/getopt.c:748
 #, c-format
 msgid "%s: unrecognized option `%c%s'\n"
-msgstr ""
+msgstr "%s: opzione non riconosciuta `%c%s'\n"
 
 #. 1003.2 specifies the format of this message.
 #: support/getopt.c:774
 #, c-format
 msgid "%s: illegal option -- %c\n"
-msgstr ""
+msgstr "%s: opzione illegale -- %c\n"
 
 #: support/getopt.c:777
 #, c-format
 msgid "%s: invalid option -- %c\n"
-msgstr ""
+msgstr "%s: opzione non valida -- %c\n"
 
 # , fuzzy, c-format
 # , c-format
@@ -1660,21 +1662,21 @@ msgstr ""
 #: support/getopt.c:807 support/getopt.c:937
 #, c-format
 msgid "%s: option requires an argument -- %c\n"
-msgstr "%s: Troppi parametri\n"
+msgstr "%s: l'opzione richiede un argomento -- %c\n"
 
 #: support/getopt.c:854
 #, c-format
 msgid "%s: option `-W %s' is ambiguous\n"
-msgstr ""
+msgstr "%s: l'opzione `-W %s' è ambigua\n"
 
 #: support/getopt.c:872
 #, c-format
 msgid "%s: option `-W %s' doesn't allow an argument\n"
-msgstr ""
+msgstr "%s: l'opzione `-W %s' non consente un argomento\n"
 
 #: support/popthelp.c:35
 msgid "Show this help message"
-msgstr ""
+msgstr "Mostra questo messaggio di aiuto"
 
 #: support/popthelp.c:36
 msgid "Display brief usage message"
@@ -1682,46 +1684,46 @@ msgstr "Mostra un breve messaggio di utilizzo"
 
 #: test-gnome/testgnome.c:287
 msgid "Guru-in-a-dialog test"
-msgstr ""
+msgstr "Test guru-in-un-dialog"
 
 #. Pixmap
 #: test-gnome/testgnome.c:664
 msgid "Default Pixmap"
-msgstr ""
+msgstr "Immagine di default"
 
 #: test-gnome/testgnome.c:672 test-gnome/testgnome.c:713
 #: test-gnome/testgnome.c:738
 msgid "If you choose a font it will appear here"
-msgstr ""
+msgstr "Se viene selezionato un font, esso apparirà qui"
 
 #. Font_Info
 #: test-gnome/testgnome.c:679
 msgid "Font Info"
-msgstr ""
+msgstr "Informazioni sul font"
 
 #: test-gnome/testgnome.c:689
 msgid "Use Font in button with size"
-msgstr ""
+msgstr "Usare il font nel pulsante con dimensione"
 
 #: test-gnome/testgnome.c:696
 msgid "Show font size"
-msgstr ""
+msgstr "Mostra la dimensione del font"
 
 #: test-gnome/testgnome.c:732
 msgid "This is an hbox with pixmap and text"
-msgstr ""
+msgstr "Questo è un hbox con pixmap e testo"
 
 #: test-gnome/testgnome.c:915
 msgid "The user chose Yes/OK with data:\n"
-msgstr ""
+msgstr "L'utente ha scelto Sì/OK con dati:\n"
 
 #: test-gnome/testgnome.c:919
 msgid "The user chose No/Cancel with data:\n"
-msgstr ""
+msgstr "L'utente ha scelto No/Annulla con dati:\n"
 
 #: test-gnome/testgnome.c:930
 msgid "Weird number in reply callback"
-msgstr ""
+msgstr "Strano numero nella chiamata di risposta"
 
 #~ msgid "_New Window..."
 #~ msgstr "_Nuova Finestra..."
