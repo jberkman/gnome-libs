@@ -32,8 +32,6 @@ gtk_xmhtml_init (GtkXmHTML *html, char *html_source)
 	html->html.needs_hsb    = False;
 	html->html.scroll_x     = 0;
 	html->html.scroll_y     = 0;
-
-	CheckAnchorUnderlining(html, html);
 }
 
 GtkWidget *
@@ -415,7 +413,7 @@ XmHTML_Frontend_Redisplay (XmHTMLWidget html)
 {
 	GtkWidget *w = GTK_WIDGET (html);
 	
-	gdk_widget_draw (html, NULL);
+	gtk_widget_draw (GTK_WIDGET (html), NULL);
 
 	if (GTK_WIDGET_MAPPED (html->html.vsb))
 		/* update_display html->html.vsb */;

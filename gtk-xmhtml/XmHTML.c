@@ -35,6 +35,12 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.6  1997/12/16 00:34:47  unammx
+* More progress on the XmHTML work.  This time, I did frames.c, not
+* as nice as I would like it to be.
+*
+* It still does not link.
+*
 * Revision 1.5  1997/12/14 23:20:59  unammx
 * it compiles.  Now we need to make it link and work -mig
 *
@@ -219,8 +225,9 @@ XmHTML_Initialize (XmHTMLWidget html, XmHTMLWidget init, char *html_source)
 	html->html.scroll_x     = 0;
 	html->html.scroll_y     = 0;
 
+#ifdef WITH_MOTIF
 	CheckAnchorUnderlining(html, html);
-
+#endif
 	/* repeat delay. Must be positive */
 	if(html->html.repeat_delay < 1)
 	{
@@ -230,9 +237,11 @@ XmHTML_Initialize (XmHTMLWidget html, XmHTMLWidget init, char *html_source)
 		html->html.repeat_delay = 25;
 	}
 
+#ifdef WITH_MOTIF
 	/* Set default text alignment */
 	CheckAlignment(html, html);
-
+#endif
+	
 	/****
 	* Initialize private resources.
 	****/

@@ -55,6 +55,7 @@ typedef XVisualInfo TVisualInfo;
 #define TJoinBevel      GDK_JOIN_BEVEL
 #define TJoinRound      GDK_JOIN_ROUND
 
+#define XtCallCallbackList(a,b,c) fprintf (stderr, "Warning callback being invoked\n");
 #define Toolkit_Is_Realized(w) GTK_WIDGET_REALIZED(w)
 #define Toolkit_Widget_Window(x) (x)->window
 #define Toolkit_Default_Root_Window(dpy) ((GdkWindow*) &gdk_root_parent)
@@ -83,6 +84,7 @@ typedef XVisualInfo TVisualInfo;
 	gdk_window_copy_area ((dst),(gc),(dx),(dy),(src),(sx),(sy),(w),(h))
 #define Toolkit_Create_Pixmap(dpy,win,w,h,d) gdk_pixmap_new((win),(w),(h),(d))
 #define Toolkit_GC_Free(dpy,gc) gdk_gc_destroy(gc)
+#define Toolkit_Widget_Repaint(w)  gtk_widget_draw (GTK_WIDGET (w), NULL)
 #define Toolkit_Widget_Force_Repaint(w) gtk_widget_draw (GTK_WIDGET (w), NULL)
 #define TOolkit_Widget_Repaint(w) gtk_widget_draw (GTK_WIDGET (w), NULL)
 #define Toolkit_StyleGC_BottomShadow(w) (GTK_WIDGET(w))->style->dark_gc [GTK_STATE_NORMAL]
@@ -93,6 +95,9 @@ typedef XVisualInfo TVisualInfo;
 #define Toolkit_Screen_Height(w) gdk_screen_height ()
 #define Toolkit_Widget_Is_Realized(w) GTK_WIDGET_REALIZED (w)
 #define Toolkit_Clear_Area(d,w,xs,ys,wi,h) gdk_window_clear_area ((w),(xs),(ys),(wi),(h));
+#define Toolkit_Widget_Destroy(w) gtk_widget_destroy (w)
+#define Toolkit_CreateHTML(w,n,as,ac) gtk_xmhtml_new ("")
+		
 #else
 
 #define TNone        None
@@ -161,6 +166,8 @@ typedef XVisualInfo TVisualInfo;
 #define Toolkit_Screen_Height(w) HeightOfScreen(w)
 #define Toolkit_Widget_Is_Realized(w) XtIsRealized (w)
 #define Toolkit_Clear_Area (d,w,xs,ys,w,h) XClearArea ((d),(w),(xs),(ys),(w),(h), False);
+#define Toolkit_Widget_Destroy(w) XtDestroyWidget (w)
+#define Toolkit_CreateHTML(w,n,as,ac) XmCreateHTML(w,n,as,ac)
 	     
 #define	TALIGNMENT_END       XmALIGNMENT_END 
 #define TALIGNMENT_CENTER    XmALIGNMENT_CENTER

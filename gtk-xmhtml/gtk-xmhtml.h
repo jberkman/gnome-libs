@@ -3,6 +3,7 @@
 
 #include <gdk/gdk.h>
 #include <gtk/gtkobject.h>
+#include "XmHTMLP.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -32,6 +33,8 @@ struct _GtkXmHTMLClass
 
 	void (* testsignal) (GtkXmHTML *xmhtml);
 };
+
+GtkWidget *gtk_xmhtml_new (char *html_source);
 
 #define XmCR_ACTIVATE 0
 
