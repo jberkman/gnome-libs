@@ -35,6 +35,9 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.10  1997/12/19 07:06:54  unammx
+* My pretty pathetic attempt at getting scrollbars displayed on the XmHTML widget is here, make fun of me - miguel
+*
 * Revision 1.9  1997/12/19 03:58:10  unammx
 * Simple test program works!  -mig&fed
 *
@@ -212,6 +215,7 @@ static void Layout(XmHTMLWidget html);
 static void CheckMaxColorSetting(XmHTMLWidget html);
 static void CheckPLCIntervals(XmHTMLWidget html);
 static void Refresh(XmHTMLWidget html, int x, int y, int width, int height);
+static void Resize(TWidget w);
 
 #ifdef WITH_MOTIF
 #    include "XmHTML-motif.c"
