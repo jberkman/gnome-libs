@@ -3,6 +3,9 @@
 	* vt.c (vt_resize): If we remove lines from the top of the buffer,
 	then make sure we also move the cursor up (but not beyond the top
 	of the screen).
+	(vt_resize): If we have reduced the size of the scrollback buffer
+	below the current displayed area, then make sure we reduce the
+	offset.
 
 1999-02-18  Michael Zucchi  <mzucchi@denr.sa.gov.au>
 

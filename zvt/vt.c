@@ -1847,6 +1847,11 @@ void vt_resize(struct vt_em *vt, int width, int height, int pixwidth, int pixhei
 	vt_list_addhead(&vt->lines_back, (struct vt_listnode *)vt_newline(vt));
 
 	vt->scrollbacklines--;	/* since we just nuked one */
+
+	if ((-vt->scrollbackoffset)>vt->scrollbacklines){
+	  vt->scrollbackoffset++;
+	}
+
 	vt->cursory++;		/* fix up cursor */
       } else {
 	d(printf("adding line to bottom of screen\n"));
