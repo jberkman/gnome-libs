@@ -176,7 +176,7 @@ main (gint argc, gchar *argv[])
   /* create hbox */
   hbox = gtk_hbox_new (FALSE, 0);
   gtk_box_set_spacing (GTK_BOX (hbox), 2);
-  gtk_container_border_width (GTK_CONTAINER (hbox), 2);
+  gtk_container_set_border_width (GTK_CONTAINER (hbox), 2);
   gtk_container_add (GTK_CONTAINER (window), hbox);
   gtk_widget_show (hbox);
 
