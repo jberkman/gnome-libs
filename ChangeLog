@@ -1,3 +1,8 @@
+1999-12-07  Martin Baulig  <martin@home-of-linux.org>
+
+	* Makefile.am (SUBDIRS): We need to compile libgnomeui before
+	gdk_pixbuf because gdk_pixbuf links against libgnomeui.
+
 1999-11-28  Havoc Pennington  <hp@pobox.com>
 
 	* configure.in (GNOME_LIBS_DIR): Remove liboafgnome from the list
