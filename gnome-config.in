@@ -24,19 +24,27 @@ usage()
     cat <<EOF
 Usage: gnome-config [OPTION]... [LIBRARY]...
 
+Generic options
+  --version	output gnome version information
+  --help	display this help and exit
+
+Compilation support options
+  --cflags	print pre-processor and compiler flags
   --libs	print library linking information
   --libs-only-L	only print the -L/-R part of --libs
   --libs-only-l only print the -l part of --libs
-  --cflags	print pre-processor and compiler flags
-  --help	display this help and exit
-  --prefix	output gnome install path
-  --version	output gnome version information
+
+Install directories gnome-libs was configured to
+  --prefix  --exec-prefix  --bindir  --sbindir  --libexecdir  --datadir
+  --sysconfdir  --sharedstatedir  --localstatedir  --libdir  --infodir
+  --mandir  --includedir
 
 Known values for LIBRARY are:
 
     glib	(calls glib-config)
     gnome
     gnomeui
+    gnorba
     gtk		(calls gtk-config)
     gtkxmhtml	(only --libs)
     zvt		(only --libs)
@@ -70,8 +78,19 @@ while test $# -gt 0; do
 	echo @PACKAGE@ @VERSION@
 	exit 0
 	;;
+    --exec-prefix)
+	echo $exec_prefix
+	exit 0
+	;;
     --prefix)
-	echo @prefix@
+	echo $prefix
+	exit 0
+	;;
+    --*dir)
+	dirname=\$`echo $1 | sed -e 's,^--,,'`
+	dirname=`eval echo $dirname`
+	test -z "$dirname" && exit 1
+	echo $dirname
 	exit 0
 	;;
     --help)
