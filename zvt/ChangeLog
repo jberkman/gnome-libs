@@ -1,3 +1,9 @@
+1999-09-26  Martin Baulig  <martin@home-of-linux.org>
+
+	* update.c (vt_match_clear): You must use g_free() to free a
+	g_malloc()ed piece of memory, not libc's free(); this segv's
+	when using malloc checking in glib.
+
 1999-09-23  Michael Zucchi  <mzucchi@denr.sa.gov.au>
 
 	* update.c (vt_getmatches): Keep track of the position of the

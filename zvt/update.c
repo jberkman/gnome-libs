@@ -1362,11 +1362,11 @@ void vt_free_match_blocks(struct _vtx *vx)
     b = m->blocks;
     while (b) {
       n = b->next;
-      free(b);
+      g_free(b);
       b=n;
     }
     mn = m->next;
-    free(m->matchstr);
+    g_free(m->matchstr);
     m = mn;
   }
   vx->matches = 0;
@@ -1556,9 +1556,9 @@ vt_match_clear(struct _vtx *vx, char *regex)
   while (n) {
     if (regex==0 || strcmp(m->regex, regex)==0) {
       vt_list_remove((struct vt_listnode *)m);
-      free(m->regex);
+      g_free(m->regex);
       regfree(&m->preg);
-      free(m);
+      g_free(m);
     }
     m = n;
     n = n->next;
