@@ -704,8 +704,8 @@ goad_server_register(CORBA_Object name_server,
   CosNaming_Name          nom = {0, 3, nc, CORBA_FALSE};
   CORBA_Object            old_server;
 
-  nc[2].id   = name;
-  nc[2].kind = kind;
+  nc[2].id   = (char *)name;
+  nc[2].kind = (char *)kind;
 
   CORBA_exception_free(ev);
 
@@ -767,8 +767,8 @@ goad_server_unregister(CORBA_Object name_server,
 				   {"Servers", "subcontext"}};
   CosNaming_Name          nom = {0, 3, nc, CORBA_FALSE};
 
-  nc[2].id   = name;
-  nc[2].kind = kind;
+  nc[2].id   = (char *)name;
+  nc[2].kind = (char *)kind;
   CosNaming_NamingContext_unbind(name_server, &nom, ev);
   if (ev->_major != CORBA_NO_EXCEPTION) {
 #if 0
@@ -784,4 +784,26 @@ goad_server_unregister(CORBA_Object name_server,
     return -1;
   }
   return 0;
+}
+
+const char *goad_activation_id = NULL;
+
+const char *
+goad_server_activation_id(void)
+{
+  return goad_activation_id;
+}
+
+void goad_register_arguments(void); /* shut up gcc */
+
+void
+goad_register_arguments(void)
+{
+  static const struct poptOption options[] = {
+    {"activate-goad-server", '\0', POPT_ARG_STRING, &goad_activation_id, 0,
+    N_("(Internal use only) GOAD server ID to activate"), "GOAD_ID"},
+    {NULL, '\0', 0, NULL, 0}
+  };
+
+  gnomelib_register_popt_table(options, "Gnome Object Activation Directory");
 }

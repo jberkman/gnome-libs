@@ -30,6 +30,9 @@ CORBA_ORB gnome_CORBA_init_with_popt_table(char *app_id,
 */
 CORBA_Object gnome_name_service_get       (void);
 
+/* If this program was activated for a specific goad id, print it out */
+const char *goad_server_activation_id(void);
+
 /* register an object with the name server. name_server is the object
  * returned by a call to gnome_name_service_get, and server is your
  *  CORBA server.

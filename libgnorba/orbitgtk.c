@@ -18,6 +18,8 @@
 CORBA_ORB gnome_orbit_orb;
 CORBA_Principal request_cookie;
 
+extern void goad_register_arguments(void);
+
 static void
 orb_handle_connection(GIOPConnection *cnx, gint source, GdkInputCondition cond)
 {
@@ -177,6 +179,8 @@ gnome_CORBA_init(char *app_id,
 {
   CORBA_ORB retval;
 
+  goad_register_arguments();
+
   retval = do_CORBA_init(argc, argv, ev);
   gnome_init(app_id, app_version, *argc, argv);
 
@@ -193,6 +197,8 @@ gnome_CORBA_init_with_popt_table(char *app_id,
 				 CORBA_Environment *ev)
 {
   CORBA_ORB retval;
+
+  goad_register_arguments();
 
   retval = do_CORBA_init(argc, argv, ev);
   gnome_init_with_popt_table(app_id, app_version, *argc, argv, options,
