@@ -134,8 +134,12 @@ pty_open_slave_bsd (const char *pty_name)
 }
 
 /* SystemVish pty opening */
-#ifdef HAVE_GRANTPT
-#include <stropts.h>
+#if defined (HAVE_GRANTPT)
+
+#ifdef (HAVE_STROPTS_H)
+#    include <stropts.h>
+#endif
+
 static int
 pty_open_slave (const char *pty_name)
 {
@@ -143,7 +147,8 @@ pty_open_slave (const char *pty_name)
 	
 	if (pty_slave == -1)
 		return -1;
-	
+
+#ifdef (HAVE_STROPTS_H)
 #if !defined(__osf__)
 	if (!ioctl (pty_slave, I_FIND, "ptem"))
 		if (ioctl (pty_slave, I_PUSH, "ptem") == -1){
@@ -167,6 +172,7 @@ pty_open_slave (const char *pty_name)
 	    }
 #endif /* sgi || __sgi */
 #endif /* __osf__ */
+#endif /* HAVE_STROPTS_H */
     
     return pty_slave;
 }

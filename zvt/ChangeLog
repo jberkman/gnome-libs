@@ -1,3 +1,13 @@
+1999-04-03  Michael Zucchi  <zucchi@zzedzone.fsi.com.au>
+
+	* Merged in ZVT_XTERMNEW branch again, to pick up Miguel's
+	stropts.h changes.
+
+1999-04-01  Miguel de Icaza  <miguel@nuclecu.unam.mx>
+
+	* gnome-login-support.c (pty_open_slave): Use the strams ioctls
+	only if the system has <stropts.h> header files.
+
 1999-04-02  Michael Zucchi  <zucchi@zzedzone.fsi.com.au>
 
 	* zvtterm.c (zvt_term_set_fonts_internal): Query the XFontStruct

@@ -45,7 +45,9 @@
 #endif
 
 #ifdef HAVE_GRANTPT
-#   include <stropts.h> /* For I_PUSH			      */
+#   ifdef HAVE_STROPTS_H
+#       include <stropts.h>  /* For I_PUSH			      */
+#   endif
 #else
 #   include <grp.h>	/* For the group struct & getgrnam()  */
 #endif
