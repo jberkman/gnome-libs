@@ -1,4 +1,4 @@
-bin_PROGRAMS = loadshlib #goad-browser
+bin_PROGRAMS = loadshlib goad-browser
 
 lib_LTLIBRARIES = libgnorba.la
 
@@ -34,14 +34,13 @@ loadshlib_LDADD = \
 	$(top_builddir)/libgnorba/libgnorba.la		\
 	$(INTLLIBS)
 
-#goad_browser_SOURCES = goad-browser.c
+goad_browser_SOURCES = goad-browser.c
 
-#goad_browser_LDADD = \
-#	$(ORBIT_LIBS) \
-#        $(top_builddir)/libgnome/libgnome.la		\
-#        $(top_builddir)/libgnomeui/libgnomeui.la	\
-#        @LIBSUPPORT@					\
-#        $(LIBGNOME_LIBS) $(LIBGNOMEUI_LIBS)		\
-#	$(top_builddir)/libgnorba/libgnorba.la		\
-#	$(INTLLIBS)
-
+goad_browser_LDADD = \
+	$(ORBIT_LIBS) \
+        $(top_builddir)/libgnome/libgnome.la		\
+        $(top_builddir)/libgnomeui/libgnomeui.la	\
+        @LIBSUPPORT@					\
+        $(LIBGNOME_LIBS) $(LIBGNOMEUI_LIBS)		\
+	$(top_builddir)/libgnorba/libgnorba.la		\
+	$(INTLLIBS)
