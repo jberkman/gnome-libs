@@ -137,14 +137,14 @@
 
 	<listitem>
 	  <para>The GNOME community is working hard on developing an
-	  object model called baboon. Based on CORBA and similar to
-	  Microsoft's Object Linking and Embedding, v2 (OLE2), baboon
+	  object model called bonobo. Based on CORBA and similar to
+	  Microsoft's Object Linking and Embedding, v2 (OLE2), bonobo
 	  will allow programmers to export and/or import componentized
 	  resources. This, for example, would allow users to use
 	  whatever editor they like in their development environment,
 	  provided that their editor supported via CORBA a
 	  standardized editor interface (See <link
-	  linkend="BABOON">BABOON</link>)</para>
+	  linkend="Bonobo">Bonobo</link>)</para>
 	</listitem>
 
 	<listitem>
@@ -1700,7 +1700,7 @@ WM=foo</screen>
     </sect1>
 
     <sect1 ID="CORBA">
-      <title>CORBA, ORBit and Baboon</title>
+      <title>CORBA, ORBit and Bonobon</title>
 
       <para>Network Objects is GNOME's middle name.  This is how they
       work.</para>
@@ -1998,15 +1998,15 @@ WM=foo</screen>
 	CORBA in the GNOME.</para>
       </sect2>
 
-      <sect2 id="BABOON">
+      <sect2 id="Bonobo">
 	<title>How will CORBA be used in GNOME, or, what is
-	BABOON?</title>
+	Bonobo?</title>
 
 	<para>(This section comes pretty much verbatim from Miguel de
 	Icaza, Chief of the GNOMErs.)</para>
 
 	<para>CORBA will be used in various contexts. A set of
-	interfaces and library routines called "Baboon" are used to
+	interfaces and library routines called "Bonobo" are used to
 	simplify and integrate applications:</para>
 
 	<itemizedlist>
@@ -2019,9 +2019,9 @@ WM=foo</screen>
 
 	  <listitem>
 	    <para>Application embedding and in-place activation:
-	    Baboon is a set of interfaces for providing application
+	    Bonobo is a set of interfaces for providing application
 	    embedding and in-place activation which are being defined.
-	    The Baboon interfaces and interactions are modeled after
+	    The Bonobo interfaces and interactions are modeled after
 	    the OLE2 and OpenDoc interfaces.</para>
 	  </listitem>
 
@@ -2039,15 +2039,16 @@ WM=foo</screen>
 	  </listitem>
 
 	  <listitem>
-	    <para>Reusable controls: Another set of Baboon interfaces
+	    <para>Reusable controls: Another set of Bonobo interfaces
 	    deal with reusable controls. This is similar to Sun's
 	    JavaBeans and Microsoft Active-X.</para>
 	  </listitem>
 
 	</itemizedlist>
-
-	<para><firstterm>BABOON</firstterm> stands for: Baboon Allows
-	Baboon Objects Over Networks.</para>
+	<comment>Bonobo doesn't stand for anything
+	<para><firstterm>Bonobo</firstterm> stands for: Bonobo Allows
+	Bonobo Objects Over Networks.</para>
+	</comment>
       </sect2>
     </sect1>
 
