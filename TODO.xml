@@ -2,6 +2,36 @@
   <title>GNOME Libs</title>
   <section>
     <title>libgnomeui</title>
+    <entry size="small" status="0%" target="2.0">
+      <title>Add upper limit to GnomeRecentlyUsed</title>
+      <description>
+	<p>
+          The GnomeRecentlyUsed object
+          (libgnomeui/gnome-recently-used.[hc]) needs an upper limit 
+          on the number of items (i.e. it should truncate the list 
+          after a while).
+	</p>
+      </description>
+      <contact>Havoc &lt;hp@redhat.com&gt;</contact>
+    </entry>
+
+    <entry size="big" status="0%" target="2.0">
+      <title>Clean up menu/toolbar mess</title>
+      <description>
+	<p>
+          Bonobo has a new, much nicer menu and toolbar interface 
+          compared to libgnomeui/gnome-app-helper.h. Separate the 
+          Bonobo code cleanly, so that the Bonobo-dependent parts 
+          can "plug in" via a subclass or some other mechanism 
+          in the Bonobo library, while the main API can go in 
+          libgnomeui. For bonus points, get a solution 
+          to the problem solved by GtkPixmapMenuItem into GTK+ itself, 
+          and nuke GtkPixmapMenuItem.
+	</p>
+      </description>
+      <contact>gnome-devel-list &lt;gnome-devel-list@gnome.org&gt;</contact>
+    </entry>
+
     <entry size="small" status="100%" target="2.0">
       <title>Sample TODO item</title>
       <description>
