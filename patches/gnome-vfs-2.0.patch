@@ -5,7 +5,7 @@ RCS file: /cvs/gnome/gnome-vfs/.cvsignore,v
 retrieving revision 1.4
 diff -u -u -r1.4 .cvsignore
 --- .cvsignore	2000/08/31 11:32:38	1.4
-+++ .cvsignore	2000/12/13 11:24:07
++++ .cvsignore	2000/12/28 11:52:41
 @@ -28,3 +28,4 @@
  vfscorbaConf.sh
  vfspthreadConf.sh
@@ -17,7 +17,7 @@ RCS file: /cvs/gnome/gnome-vfs/Makefile.am,v
 retrieving revision 1.16
 diff -u -u -r1.16 Makefile.am
 --- Makefile.am	2000/10/11 17:36:39	1.16
-+++ Makefile.am	2000/12/13 11:24:08
++++ Makefile.am	2000/12/28 11:52:43
 @@ -31,7 +31,8 @@
  	vfsConf.sh.in				\
  	vfscorbaConf.sh.in			\
@@ -41,7 +41,7 @@ RCS file: /cvs/gnome/gnome-vfs/autogen.sh,v
 retrieving revision 1.1.1.1
 diff -u -u -r1.1.1.1 autogen.sh
 --- autogen.sh	1999/08/25 00:15:45	1.1.1.1
-+++ autogen.sh	2000/12/13 11:24:08
++++ autogen.sh	2000/12/28 11:52:43
 @@ -14,4 +14,4 @@
      exit 1
  }
@@ -51,10 +51,10 @@ diff -u -u -r1.1.1.1 autogen.sh
 Index: configure.in
 ===================================================================
 RCS file: /cvs/gnome/gnome-vfs/configure.in,v
-retrieving revision 1.91
-diff -u -u -r1.91 configure.in
---- configure.in	2000/11/07 07:31:55	1.91
-+++ configure.in	2000/12/13 11:24:08
+retrieving revision 1.92
+diff -u -u -r1.92 configure.in
+--- configure.in	2000/12/21 21:51:57	1.92
++++ configure.in	2000/12/28 11:52:44
 @@ -1,12 +1,13 @@
  AC_INIT(libgnomevfs/gnome-vfs.h)
  AM_CONFIG_HEADER(config.h)
@@ -301,7 +301,7 @@ Index: gnomevfs-2.0.pc.in
 RCS file: gnomevfs-2.0.pc.in
 diff -N gnomevfs-2.0.pc.in
 --- /dev/null	Tue May  5 16:32:27 1998
-+++ gnomevfs-2.0.pc.in	Wed Dec 13 06:24:08 2000
++++ gnomevfs-2.0.pc.in	Thu Dec 28 06:52:44 2000
 @@ -0,0 +1,12 @@
 +prefix=/gnome/head/INSTALL
 +exec_prefix=${prefix}
@@ -318,10 +318,10 @@ diff -N gnomevfs-2.0.pc.in
 Index: libgnomevfs/Makefile.am
 ===================================================================
 RCS file: /cvs/gnome/gnome-vfs/libgnomevfs/Makefile.am,v
-retrieving revision 1.53
-diff -u -u -r1.53 Makefile.am
---- libgnomevfs/Makefile.am	2000/12/11 22:54:51	1.53
-+++ libgnomevfs/Makefile.am	2000/12/13 11:24:08
+retrieving revision 1.54
+diff -u -u -r1.54 Makefile.am
+--- libgnomevfs/Makefile.am	2000/12/22 19:51:28	1.54
++++ libgnomevfs/Makefile.am	2000/12/28 11:52:44
 @@ -24,7 +24,8 @@
  lib_LTLIBRARIES = libgnomevfs.la
  
@@ -337,7 +337,7 @@ Index: libgnomevfs/gi18n.c
 RCS file: gi18n.c
 diff -N gi18n.c
 --- /dev/null	Tue May  5 16:32:27 1998
-+++ gi18n.c	Wed Dec 13 06:24:09 2000
++++ gi18n.c	Thu Dec 28 06:52:44 2000
 @@ -0,0 +1,320 @@
 +/*
 + * Copyright (C) 1997, 1998, 1999, 2000 Free Software Foundation
@@ -664,7 +664,7 @@ Index: libgnomevfs/gnome-i18n.c
 RCS file: gnome-i18n.c
 diff -N gnome-i18n.c
 --- /dev/null	Tue May  5 16:32:27 1998
-+++ gnome-i18n.c	Wed Dec 13 06:24:09 2000
++++ gnome-i18n.c	Thu Dec 28 06:52:45 2000
 @@ -0,0 +1,369 @@
 +#include <config.h>
 +#include <string.h>
@@ -1035,13 +1035,39 @@ diff -N gnome-i18n.c
 +{
 +  return gnome_config_get_string (LANGKEY);
 +}
+Index: libgnomevfs/gnome-vfs-mime-monitor.c
+===================================================================
+RCS file: /cvs/gnome/gnome-vfs/libgnomevfs/gnome-vfs-mime-monitor.c,v
+retrieving revision 1.2
+diff -u -u -r1.2 gnome-vfs-mime-monitor.c
+--- libgnomevfs/gnome-vfs-mime-monitor.c	2000/12/22 20:46:38	1.2
++++ libgnomevfs/gnome-vfs-mime-monitor.c	2000/12/28 11:52:45
+@@ -102,12 +102,18 @@
+ 	signals[DATA_CHANGED]
+ 		= gtk_signal_new ("data_changed",
+ 				  GTK_RUN_LAST,
++#if GNOME_PLATFORM_VERSION < 1095000
+ 				  object_class->type,
++#else
++				  G_OBJECT_CLASS_TYPE (G_OBJECT (object_class)),
++#endif
+ 				  0,
+ 				  gtk_marshal_NONE__NONE,
+ 				  GTK_TYPE_NONE, 0);
+ 
++#if GNOME_PLATFORM_VERSION < 1095000
+ 	gtk_object_class_add_signals (object_class, signals, LAST_SIGNAL);
++#endif
+ }
+ 
+ void
 Index: libgnomevfs/gnome-vfs-private-utils.c
 ===================================================================
 RCS file: /cvs/gnome/gnome-vfs/libgnomevfs/gnome-vfs-private-utils.c,v
 retrieving revision 1.11
 diff -u -u -r1.11 gnome-vfs-private-utils.c
 --- libgnomevfs/gnome-vfs-private-utils.c	2000/10/18 08:04:23	1.11
-+++ libgnomevfs/gnome-vfs-private-utils.c	2000/12/13 11:24:10
++++ libgnomevfs/gnome-vfs-private-utils.c	2000/12/28 11:52:45
 @@ -513,6 +513,9 @@
  	return FALSE;
  }
@@ -1055,10 +1081,10 @@ diff -u -u -r1.11 gnome-vfs-private-utils.c
 Index: modules/http-method.c
 ===================================================================
 RCS file: /cvs/gnome/gnome-vfs/modules/http-method.c,v
-retrieving revision 1.109
-diff -u -u -r1.109 http-method.c
---- modules/http-method.c	2000/12/12 04:19:23	1.109
-+++ modules/http-method.c	2000/12/13 11:24:13
+retrieving revision 1.110
+diff -u -u -r1.110 http-method.c
+--- modules/http-method.c	2000/12/23 01:09:27	1.110
++++ modules/http-method.c	2000/12/28 11:52:48
 @@ -42,9 +42,9 @@
  
  #include <stdlib.h> /* for atoi */
@@ -1075,27 +1101,24 @@ diff -u -u -r1.109 http-method.c
 Index: modules/test-method.c
 ===================================================================
 RCS file: /cvs/gnome/gnome-vfs/modules/test-method.c,v
-retrieving revision 1.6
-diff -u -u -r1.6 test-method.c
---- modules/test-method.c	2000/11/12 05:03:47	1.6
-+++ modules/test-method.c	2000/12/13 11:24:13
-@@ -36,13 +36,17 @@
+retrieving revision 1.7
+diff -u -u -r1.7 test-method.c
+--- modules/test-method.c	2000/12/19 21:40:57	1.7
++++ modules/test-method.c	2000/12/28 11:52:49
+@@ -36,11 +36,13 @@
  
- #include <stdio.h>
- #include <unistd.h>
+ #include <config.h>
+ 
+-#include <gnome-xml/parser.h>
+-#include <gnome-xml/tree.h>
+-#include <gnome-xml/xmlmemory.h>
++#include <libxml/parser.h>
++#include <libxml/tree.h>
++#include <libxml/xmlmemory.h>
 +#if GNOME_PLATFORM_VERSION < 1095000
  #include <libgnome/gnome-defs.h>
  #include <libgnome/gnome-util.h>
-+#else
-+#include <glib.h>
 +#endif
  #include <libgnomevfs/gnome-vfs.h>
  #include <libgnomevfs/gnome-vfs-private.h>
- #include <string.h>
--#include <gnome-xml/tree.h>
--#include <gnome-xml/parser.h>
-+#include <libxml/tree.h>
-+#include <libxml/parser.h>
- #include "gnome-vfs-uri.h"
- 
- typedef struct {
+ #include <stdio.h>
