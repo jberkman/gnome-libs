@@ -160,7 +160,9 @@ else
     AC_CHECK_LIB(pt, grantpt)
 fi
 
+dnl
 dnl Image handling libraries
+dnl
 Z_LIBS= JPEG_LIBS= PNG_LIBS= TIFF_LIBS= GIF_LIBS= GDK_IMLIB_LIBS=
 
 dnl Test for libz
@@ -263,8 +265,10 @@ if test x$ac_cv_header_db_185_h = xno && test x$ac_cv_header_db_h = xno; then
   AC_MSG_ERROR([Berkeley db library required for Gnome])
 fi
 
+dnl
 dnl This is needed for the gnome-moz-remote program.  It doesn't use GDK,
 dnl since some of the code in it was written before GDK existed.
+dnl
 AC_PATH_X
 AC_PATH_XTRA
 
@@ -309,6 +313,37 @@ GNOME_LIBDIR='-L${libdir}'
 GNOME_INCLUDEDIR='-I${includedir} -DNEED_GNOMESUPPORT_H -I${pkglibdir}/include'
 GNOME_IDLDIR='-I${datadir}/idl'
 
+dnl
+dnl ORBit checks
+dnl
+GNOME_ORBIT_CHECK
+
+dnl
+dnl Gnome-Hello
+dnl
+AC_ARG_ENABLE(gnome-hello, [  --enable-gnome-hello    compile the gnome-hello examples [default=yes]],[compile_gnome_hello="$enableval"],[compile_gnome_hello=yes])
+AM_CONDITIONAL(COMPILE_GNOME_HELLO, test x$compile_gnome_hello = xyes)
+
+AC_ARG_ENABLE(test-gnome, [  --enable-test-gnome     compile the test-gnome examples [default=yes]],[compile_test_gnome="$enableval"],[compile_test_gnome=yes])
+AM_CONDITIONAL(COMPILE_TEST_GNOME, test x$compile_test_gnome = xyes)
+
+dnl AC_CONFIG_SUBDIRS(libgtktty)
+
+dnl
+dnl LibART_LGPL
+dnl
+AC_CONFIG_SUBDIRS(libart_lgpl)
+
+dnl
+dnl GNOME libs Documentation
+dnl 
+GNOME_LIBS_DIR=`(cd $srcdir; pwd)`
+AC_SUBST(GNOME_LIBS_DIR)
+
+dnl
+dnl Substitutions
+dnl
+
 AC_SUBST(ESD_LIBS)
 AC_SUBST(GTK_LIBS)
 AC_SUBST(GNOME_LIBS)
@@ -326,23 +361,8 @@ AC_SUBST(LIBGNOMEUI_LIBS)
 AC_SUBST(LIBGTKXMHTML_LIBS)
 
 dnl
-dnl ORBit checks
+dnl List of files to create
 dnl
-GNOME_ORBIT_CHECK
-
-dnl
-dnl Gnome-Hello
-dnl
-AC_ARG_ENABLE(gnome-hello, [  --enable-gnome-hello    compile the gnome-hello examples [default=yes]],[compile_gnome_hello="$enableval"],[compile_gnome_hello=yes])
-AM_CONDITIONAL(COMPILE_GNOME_HELLO, test x$compile_gnome_hello = xyes)
-
-AC_ARG_ENABLE(test-gnome, [  --enable-test-gnome     compile the test-gnome examples [default=yes]],[compile_test_gnome="$enableval"],[compile_test_gnome=yes])
-AM_CONDITIONAL(COMPILE_TEST_GNOME, test x$compile_test_gnome = xyes)
-
-dnl AC_CONFIG_SUBDIRS(libgtktty)
-
-AC_CONFIG_SUBDIRS(libart_lgpl)
-
 AC_OUTPUT([
 gnome-bug
 gnome-config
