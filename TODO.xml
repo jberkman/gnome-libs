@@ -2,6 +2,7 @@
   <title>GNOME Libs</title>
   <section>
     <title>libgnomeui</title>
+
     <entry size="small" status="0%" target="2.0">
       <title>Add upper limit to GnomeRecentlyUsed</title>
       <description>
@@ -31,5 +32,189 @@
       </description>
       <contact>gnome-devel-list &lt;gnome-devel-list@gnome.org&gt;</contact>
     </entry>
+
+    <entry size="medium" status="90%" target="2.0">
+      <title>Private pointers/Private members</title>
+      <description>
+	<p>
+	  All objects should have private pointers, perhaps including some
+	  of the non-object structures.  Even if they are not used, they
+	  should be there.  What also needs to be figured out is which
+	  members belong where.
+	</p>
+      </description>
+      <contact>gnome-devel-list &lt;gnome-devel-list@gnome.org&gt;</contact>
+    </entry>
+
+    <entry size="big" status="50%" target="2.0">
+      <title>Language binding support</title>
+      <description>
+	<p>
+	  Improve binding support.  This means adding neccessary accessors,
+	  making signal emit signatures the same as the emit functions, and
+	  generally use simple emit signatures if possible.  Also add
+	  constructors to all objects that require constructing parameters.
+	</p>
+      </description>
+      <contact>gnome-devel-list &lt;gnome-devel-list@gnome.org&gt;</contact>
+    </entry>
+
+    <entry size="big" status="60%" target="2.0">
+      <title>GtkArgization of widgets/objects</title>
+      <description>
+	<p>
+	  Add GtkArg stuff to all widgets/objects.  Also investigate the
+	  use of the GParam thing.
+	</p>
+      </description>
+      <contact>gnome-devel-list &lt;gnome-devel-list@gnome.org&gt;</contact>
+    </entry>
+
+    <entry size="big" status="0%" target="2.0">
+      <title>Help API</title>
+      <description>
+	<p>
+	  Need to figure out if gnome-helpsys/textfu is worth keeping,
+	  finishing, dumping.  Figure out if gnome-help.[ch] should stay.
+	  Alternativelly make new API.
+	</p>
+      </description>
+      <contact>gnome-devel-list &lt;gnome-devel-list@gnome.org&gt;</contact>
+    </entry>
+
+    <entry size="big" status="0%" target="2.0">
+      <title>GnomeDialog</title>
+      <description>
+	<p>
+	  Need to decide if GnomeDialog will be deprecated or if it can actually
+	  use GtkDialog (currently in havoc's branch only apparently).
+	</p>
+      </description>
+      <contact>gnome-devel-list &lt;gnome-devel-list@gnome.org&gt;</contact>
+    </entry>
+
+    <entry size="big" status="0%" target="2.0">
+      <title>Dialog Helper routines</title>
+      <description>
+	<p>
+	  These need to be made more unified.  They also need routines that
+	  can add "show this dialog next time" checkboxes which will automatically
+	  bind to a gconf key.
+	</p>
+      </description>
+      <contact>George &lt;jirka@5z.com&gt;</contact>
+    </entry>
+
+    <entry size="big" status="0%" target="2.0">
+      <title>Stock API</title>
+      <description>
+	<p>
+	  Figure out a way to use the stock api with the gtk+2.0 stock icon
+	  stuff.  Also we may want other stock stuff such as sounds etc...
+	  So deprecating this api completely may not be such a good idea.
+	</p>
+      </description>
+      <contact>gnome-devel-list &lt;gnome-devel-list@gnome.org&gt;</contact>
+    </entry>
+
+    <entry size="medium" status="0%" target="2.0">
+      <title>Mature GnomeDruid</title>
+      <description>
+	<p>
+	  GnomeDruid is a likely candidate for some fixing of API.  Ramiro
+	  Estrugo (ramiro@eazel.com) has some ideas about this.
+	</p>
+      </description>
+      <contact>gnome-devel-list &lt;gnome-devel-list@gnome.org&gt;</contact>
+    </entry>
+
+    <entry size="medium" status="50%" target="2.0">
+      <title>DND support</title>
+      <description>
+	<p>
+	  Add drag and drop capability where possible.  Extending the current
+	  ones as well.  All of the entries/pickers should be able to do some DND.
+	</p>
+      </description>
+      <contact>gnome-devel-list &lt;gnome-devel-list@gnome.org&gt;</contact>
+    </entry>
+
+    <entry size="medium" status="0%" target="2.0">
+      <title>PixmapEntry and FileEntry from GnomeEntry</title>
+      <description>
+	<p>
+	  It may be possible to somehow derive these.  The problem is that
+	  GtkCombo derives from an HBox.  One way to do this is to make GnomeEntry
+	  derive from a container widget or somehow override the size_allocate/size_request
+	  methods (though that would not be clean(tm)).
+	</p>
+      </description>
+      <contact>George &lt;jirka@5z.com&gt;</contact>
+    </entry>
+
+    <entry size="big" status="0%" target="2.0">
+      <title>Integrate gnome-vfs</title>
+      <description>
+	<p>
+	  As gnome-vfs is supposed to be the standard way to access files, then gnome-libs
+	  widgets that deal with files need to support it fully.  This is mostly the entries
+	  relating to files.  Also GnomeLess and perhaps others.
+	</p>
+      </description>
+      <contact>gnome-devel-list &lt;gnome-devel-list@gnome.org&gt;</contact>
+    </entry>
+
+    <entry size="medium" status="0%" target="2.0">
+      <title>GnomeApp/Dock and GnomeMDI should use gconf</title>
+      <description>
+	<p>
+	  gconf should be used for saving the state of these things.  Any other places
+	  should be switched as well.
+	</p>
+      </description>
+      <contact>gnome-devel-list &lt;gnome-devel-list@gnome.org&gt;</contact>
+    </entry>
+
+    <entry size="small" status="0%" target="2.0">
+      <title>GnomeFileEntry modes</title>
+      <description>
+	<p>
+           The file entry needs to support "exec entry" mode where browse actions are
+	   appended on the end of the entry (see the panel run box) and "multiple file"
+	   mode where multiple files can be chosen.
+	</p>
+      </description>
+      <contact>George &lt;jirka@5z.com&gt;</contact>
+    </entry>
+
   </section>
+
+  <section>
+    <title>The Build</title>
+
+    <entry size="big" status="50%" target="2.0">
+      <title>The build / macros</title>
+      <description>
+	<p>
+	  Make sure this thing builds on peoples machines.  Make sure all the
+	  macros work in a setup where both gnome1.0 stuff and gnome2.0 stuff
+	  is installed (including development stuff for both)
+	</p>
+      </description>
+      <contact>gnome-devel-list &lt;gnome-devel-list@gnome.org&gt;</contact>
+    </entry>
+
+    <entry size="small" status="0%" target="2.0">
+      <title>pkg-config</title>
+      <description>
+	<p>
+	  Use pkg-config.  This is dependent on Havoc's pkg-config rewrite and
+	  it's use in all the different dependencies.
+	</p>
+      </description>
+      <contact>gnome-devel-list &lt;gnome-devel-list@gnome.org&gt;</contact>
+    </entry>
+
+  </section>
+
 </todo>
