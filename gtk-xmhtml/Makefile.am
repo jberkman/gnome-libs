@@ -56,7 +56,7 @@ libgtkxmhtmlinclude_HEADERS =	\
 libgtkxmhtml_la_LDFLAGS = -version-info 0:0:0 -rpath $(libdir)
 libgtkxmhtml_la_LIBADD = $(LIBGTKXMHTML_LIBS)
 
-bin_PROGRAMS = htmltest
+noinst_PROGRAMS = htmltest
 
 htmltest_SOURCES = test.c
 
