@@ -1,24 +1,26 @@
 Index: Makefile.am
 ===================================================================
 RCS file: /cvs/gnome/glib/Makefile.am,v
-retrieving revision 1.57
-diff -u -u -r1.57 Makefile.am
---- Makefile.am	2000/09/30 02:14:04	1.57
-+++ Makefile.am	2000/09/30 20:58:44
-@@ -82,6 +82,7 @@
+retrieving revision 1.67
+diff -u -u -p -r1.67 Makefile.am
+--- Makefile.am	2000/11/20 23:59:31	1.67
++++ Makefile.am	2000/11/21 17:28:16
+@@ -85,7 +85,8 @@ libglib_1_3_la_SOURCES = 	\
+ 	gunichartables.h	\
  	gunidecomp.h		\
  	gunidecomp.c		\
- 	gutils.c		\
-+	gi18n.c			\
- 	@ALLOCA@
+-	gutils.c
++	gutils.c		\
++	gi18n.c
  
- glibincludedir=$(includedir)/glib-2.0
+ ## If we decide to link in 'alloca.c', this is how to do it
+ #libglib_1_3_la_LIBADD = @ALLOCA@
 Index: gi18n.c
 ===================================================================
 RCS file: gi18n.c
 diff -N gi18n.c
 --- /dev/null	Tue May  5 16:32:27 1998
-+++ gi18n.c	Sat Sep 30 16:58:45 2000
++++ gi18n.c	Tue Nov 21 12:28:16 2000
 @@ -0,0 +1,330 @@
 +/*
 + * Copyright (C) 1997, 1998, 1999, 2000 Free Software Foundation
@@ -350,185 +352,20 @@ diff -N gi18n.c
 +  return g_list_reverse (g_list_copy (list));
 +}
 +
-Index: glib.h
-===================================================================
-RCS file: /cvs/gnome/glib/glib.h,v
-retrieving revision 1.204
-diff -u -u -r1.204 glib.h
---- glib.h	2000/09/29 23:12:58	1.204
-+++ glib.h	2000/09/30 20:58:49
-@@ -1518,7 +1518,7 @@
- #define	g_warning(...)	g_log (G_LOG_DOMAIN,         \
- 			       G_LOG_LEVEL_WARNING,  \
- 			       __VA_ARGS__)
--#elif __GNUC__ > 2 || (__GNUC__ == 2 && __GNUC_MINOR__ >= 4)
-+#elif (__GNUC__ > 2 || (__GNUC__ == 2 && __GNUC_MINOR__ >= 4)) && (!defined __STRICT_ANSI__)
- #define	g_error(format...)	g_log (G_LOG_DOMAIN,         \
- 				       G_LOG_LEVEL_ERROR,    \
- 				       format)
-@@ -1532,7 +1532,7 @@
- 				       G_LOG_LEVEL_WARNING,  \
- 				       format)
- #else	/* !__GNUC__ */
--static void
-+static void G_GNUC_UNUSED
- g_error (const gchar *format,
- 	 ...)
- {
-@@ -1541,7 +1541,7 @@
-   g_logv (G_LOG_DOMAIN, G_LOG_LEVEL_ERROR, format, args);
-   va_end (args);
- }
--static void
-+static void G_GNUC_UNUSED
- g_message (const gchar *format,
- 	   ...)
- {
-@@ -1550,7 +1550,7 @@
-   g_logv (G_LOG_DOMAIN, G_LOG_LEVEL_MESSAGE, format, args);
-   va_end (args);
- }
--static void
-+static void G_GNUC_UNUSED
- g_critical (const gchar *format,
- 	    ...)
- {
-@@ -1559,7 +1559,7 @@
-   g_logv (G_LOG_DOMAIN, G_LOG_LEVEL_CRITICAL, format, args);
-   va_end (args);
- }
--static void
-+static void G_GNUC_UNUSED
- g_warning (const gchar *format,
- 	   ...)
- {
 Index: gunicode.h
 ===================================================================
 RCS file: /cvs/gnome/glib/gunicode.h,v
-retrieving revision 1.8
-diff -u -u -r1.8 gunicode.h
---- gunicode.h	2000/09/11 00:09:31	1.8
-+++ gunicode.h	2000/09/30 20:58:49
-@@ -193,6 +193,9 @@
-                           gint          len,
+retrieving revision 1.10
+diff -u -u -p -r1.10 gunicode.h
+--- gunicode.h	2000/10/19 15:21:03	1.10
++++ gunicode.h	2000/11/21 17:28:17
+@@ -191,6 +191,9 @@ gboolean g_utf8_validate (const gchar  *
+                           gint          max_len,
                            const gchar **end);
  
 +GList *   g_i18n_get_language_list (const gchar *category_name);
 +const gchar * g_i18n_guess_category_value (const gchar *categoryname);
 +
- #ifdef __cplusplus
- }
- #endif
-Index: docs/reference/glib/tmpl/glib-unused.sgml
-===================================================================
-RCS file: /cvs/gnome/glib/docs/reference/glib/tmpl/glib-unused.sgml,v
-retrieving revision 1.3
-diff -u -u -r1.3 glib-unused.sgml
---- docs/reference/glib/tmpl/glib-unused.sgml	2000/09/07 16:36:55	1.3
-+++ docs/reference/glib/tmpl/glib-unused.sgml	2000/09/30 20:58:52
-@@ -1,82 +1,82 @@
--<!-- ##### MACRO lseek ##### -->
-+<!-- ##### MACRO popen ##### -->
- <para>
+ G_END_DECLS
  
- </para>
- 
- 
--<!-- ##### USER_FUNCTION GSearchFunc ##### -->
-+<!-- ##### MACRO pclose ##### -->
- <para>
--Specifies the type of function passed to g_tree_search().
-+
- </para>
- 
--@key: a key from a #GTree.
--@data: the data to compare with the key.
--@Returns: 0 if the desired key has been found, a negative number if the
--desired key comes before @key in the sort order of the #GTree, or a positive
--value if the desired key comes after @key.
- 
--<!-- ##### MACRO write ##### -->
-+<!-- ##### MACRO lseek ##### -->
- <para>
- 
- </para>
- 
- 
--<!-- ##### MACRO pclose ##### -->
-+<!-- ##### MACRO getpid ##### -->
- <para>
- 
- </para>
- 
- 
--<!-- ##### MACRO g_string ##### -->
-+<!-- ##### MACRO close ##### -->
- <para>
--Turns the argument into a string literal by using the '#' stringizing operator.
-+
- </para>
- 
--@x: text to convert to a literal string.
- 
--<!-- ##### MACRO popen ##### -->
-+<!-- ##### MACRO fdopen ##### -->
- <para>
- 
- </para>
- 
- 
--<!-- ##### MACRO access ##### -->
-+<!-- ##### MACRO getcwd ##### -->
- <para>
- 
- </para>
- 
- 
--<!-- ##### MACRO open ##### -->
-+<!-- ##### USER_FUNCTION GSearchFunc ##### -->
- <para>
--
-+Specifies the type of function passed to g_tree_search().
- </para>
- 
-+@key: a key from a #GTree.
-+@data: the data to compare with the key.
-+@Returns: 0 if the desired key has been found, a negative number if the
-+desired key comes before @key in the sort order of the #GTree, or a positive
-+value if the desired key comes after @key.
- 
--<!-- ##### MACRO getpid ##### -->
-+<!-- ##### MACRO write ##### -->
- <para>
- 
- </para>
- 
- 
--<!-- ##### MACRO fdopen ##### -->
-+<!-- ##### MACRO access ##### -->
- <para>
- 
- </para>
- 
- 
--<!-- ##### MACRO close ##### -->
-+<!-- ##### MACRO g_string ##### -->
- <para>
--
-+Turns the argument into a string literal by using the '#' stringizing operator.
- </para>
- 
-+@x: text to convert to a literal string.
- 
--<!-- ##### MACRO getcwd ##### -->
-+<!-- ##### MACRO read ##### -->
- <para>
- 
- </para>
- 
- 
--<!-- ##### MACRO read ##### -->
-+<!-- ##### MACRO open ##### -->
- <para>
- 
- </para>
+ #endif /* __G_UNICODE_H__ */
