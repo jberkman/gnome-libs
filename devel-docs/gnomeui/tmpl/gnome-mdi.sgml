@@ -55,7 +55,7 @@ GNOME Multiple Document Interface
 
 <!-- ##### SECTION See_Also ##### -->
 <para>
-
+  #GnomeApp, #GnomeMDIChild, #GnomeMDIGenericChild, #GnomeMDISession
 </para>
 
 <!-- ##### STRUCT GnomeMDI ##### -->
@@ -325,63 +325,76 @@ GNOME Multiple Document Interface
 
 <!-- ##### SIGNAL GnomeMDI::add-child ##### -->
 <para>
-
+  Emitted before actually adding a child. If the handler returns %TRUE, the
+  child is added, otherwise, nothing happens.
 </para>
 
 @mdi: the object which received the signal.
-@arg1: 
-@Returns: 
+@arg1: child to be added
+@Returns: boolean, to indicate if the child is to be added
 
 <!-- ##### SIGNAL GnomeMDI::remove-child ##### -->
 <para>
-
+  Emitted before actually removing a child. If the handler returns %TRUE, the
+  child is remove, otherwise, nothing happens.
 </para>
 
 @mdi: the object which received the signal.
-@arg1: 
-@Returns: 
+@arg1: child to be remove
+@Returns: boolean, to indicate if the child is to be removed
 
 <!-- ##### SIGNAL GnomeMDI::add-view ##### -->
 <para>
-
+  Emitted before actually adding a view. If the handler returns %TRUE, the
+  view is added, otherwise, nothing happens.
 </para>
 
 @mdi: the object which received the signal.
-@widget: 
-@Returns: 
+@widget: view to be added
+@Returns: boolean, to indicate if the view is to be added
 
 <!-- ##### SIGNAL GnomeMDI::remove-view ##### -->
 <para>
-
+  Emitted before actually removing a view. If the handler returns %TRUE, the
+  view is remove, otherwise, nothing happens.
 </para>
 
 @mdi: the object which received the signal.
-@widget: 
-@Returns: 
+@widget: the view to be removed
+@Returns: boolean, to indicate if the view is to be removed
 
 <!-- ##### SIGNAL GnomeMDI::child-changed ##### -->
 <para>
-
+  Emitted each time when active child is changed with the second argument
+  pointing to the old child. mdi->active_view and mdi->active_child already
+  hold the new values
 </para>
 
 @mdi: the object which received the signal.
-@arg1: 
+@arg1: the old child
 
 <!-- ##### SIGNAL GnomeMDI::view-changed ##### -->
 <para>
-
+  Emitted whenever a view is changed, regardless of it being the view of the same child as
+  the old view or not. the second argument points to the old view, mdi->active_view and
+  mdi->active_child hold the new values. If the child has also been changed, this signal is
+  emitted after the #child_changed signal.
 </para>
 
 @mdi: the object which received the signal.
-@widget: 
+@widget: the old view
 
 <!-- ##### SIGNAL GnomeMDI::app-created ##### -->
 <para>
-
+  Emitted with each newly created #GnomeApp to allow the MDI user to customize it (add a
+  statusbar, toolbars or menubar if the method with #GnomeUIInfo templates is not sufficient,
+  etc.).  No contents may be set since #GnomeMDI uses them for storing either a view of a child
+  or a notebook.
 </para>
 
 @mdi: the object which received the signal.
-@arg1: <!--
+@arg1: the #GnomeApp being created
+<!--
 Local variables:
 mode: sgml
 sgml-parent-document: ("../gnomeui-docs.sgml" "book" "sect1" "")
