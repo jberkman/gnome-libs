@@ -55,7 +55,7 @@
   <bookinfo>
     <title>GNOME Frequently Asked Questions</title>
     <titleabbrev>GNOME-FAQ</titleabbrev>
-    <edition>v1.0.0a</edition>
+    <edition>v1.0.0b</edition>
     <authorgroup>
       <author>
 	<firstname>Todd</firstname>
@@ -1027,8 +1027,8 @@
       and configuration.  Of course, make sure that the GNOME binaries
       are in your path, and there are no lines starting with
       <userinput>exec</userinput> prior to the one you just added.
-      With versions of GNOME after 1.03, you can select the window
-      manager run by setting the <envar>WINDOW_MANAGER</envar>
+      With gnome-core versions 1.04 and later, you can select the
+      window manager run by setting the <envar>WINDOW_MANAGER</envar>
       variable to the one you want.</para>
 
       <para>Running <command>gnome-session</command> like this will
@@ -1292,14 +1292,116 @@ exec gnome-wm</screen>
 	<title>What is a backtrace?  Someone just asked me to send
 	them a backtrace, how do I do this?</title>
 
-	<para>To be answered later.</para>
+	<para>An incredibly useful debugging tool is the backtrace.
+	This is essentially a snapshot of exactly where in the program
+	you are.  It is most often done when a program crashes (exits
+	unexpectedly, often with a segmentation fault or other error)
+	or hangs (stops working but doesn't exit).  In this answer,
+	I'm going to have to assume you are using the GNU project's
+	GDB debugger, since that's the most common one used with
+	GNOME, and the one I've used.  If you use some other debugger,
+	consult your documentation.</para>
+
+	<para>There are two ways to do a backtrace.  You can use a
+	core file left when the program crashed, or you can run the
+	program from within the debugger.  I have found that running
+	the program within the debugger is more reliable, but I will
+	discuss using core files as well.</para>
+
+	<para>To run a program within GDB, go to an xterm (or
+	equivalent), and type <userinput>gdb &lt;full name and
+	location of program&gt;</userinput>, for example, to debug
+	gtalk, you might do <userinput>gdb
+	/usr/local/bin/gtalk</userinput>.  GDB does not search the
+	path, so you have to specify where the program is.  If you
+	want to run the program with arguments, <emphasis>don't put
+	them here</emphasis>.  You can specify command like arguments
+	later.</para>
+
+	<para>GDB will then identify itself, and give you a
+	<prompt>(gdb)</prompt> prompt.  From here, you type
+	<userinput>run</userinput> to start the program.  If you want
+	to run the program with arguments, put them here.  For
+	example, to debug gtalk with sound disabled, you would type
+	<userinput>run --disable-sound</userinput>.  The program will
+	then start.  Keep in mind the program will be slower than
+	normal, and it will use a lot more memory.</para>
+
+	<para>Now you try to recreate the problem you had.  Do
+	whatever it is that caused the problem before.  Once the
+	program crashes, you should immediately see stuff in the debug
+	session, and a <prompt>(gdb)</prompt> prompt.  If the program
+	hangs, wait until you are sure it is hung in the right place,
+	and then hit Control-C in the debug session.  It too should
+	reply with a bunch of stuff, followed by a
+	<prompt>(gdb)</prompt> prompt.  At this prompt (whichever way
+	you got to it), type <userinput>bt</userinput>.  It will then
+	reply with the actual backtrace.</para>
+
+	<para>Here's an example of a debug session.  If you are asked
+	for a backtrace, you should send in the whole
+	thing:</para><screen>
+<prompt>$</prompt> <userinput>gdb /usr/local/bin/gtalk</userinput>
+<computeroutput>GNU gdb 4.17
+Copyright 1998 Free Software Foundation, Inc.
+GDB is free software, covered by the GNU General Public License, and you are
+welcome to change it and/or distribute copies of it under certain conditions.
+Type "show copying" to see the conditions.
+There is absolutely no warranty for GDB.  Type "show warranty" for details.
+This GDB was configured as "i386-redhat-linux"...</computeroutput>
+<prompt>(gdb)</prompt> <userinput>run --disable-sound</userinput>
+<computeroutput>Starting program: /usr/local/bin/gtalk --disable-sound
+
+Program received signal SIGINT, Interrupt.
+0x4049290d in __poll (fds=0x808c110, nfds=3, timeout=-1)
+    at ../sysdeps/unix/sysv/linux/poll.c:45
+../sysdeps/unix/sysv/linux/poll.c:45: No such file or directory.</computeroutput>
+<prompt>(gdb)</prompt> <userinput>bt</userinput>
+<computeroutput>#0  0x4049290d in __poll (fds=0x808c110, nfds=3, timeout=-1)
+    at ../sysdeps/unix/sysv/linux/poll.c:45
+#1  0x403c54e9 in g_main_poll (timeout=-1, use_priority=0, priority=0)
+    at gmain.c:991
+#2  0x403c516e in g_main_iterate (block=1, dispatch=1) at gmain.c:789
+#3  0x403c58a1 in g_main_run (loop=0x80882e8) at gmain.c:912
+#4  0x401cbf1d in gtk_main () at gtkmain.c:475
+#5  0x804a629 in main (argc=2, argv=0xbffffaa4) at main.c:54
+#6  0x40407c77 in __libc_start_main (main=0x804a570 &lt;main&gt;, argc=2, 
+    argv=0xbffffaa4, init=0x8049e10 &lt;_init&gt;, fini=0x804c7dc &lt;_fini&gt;, 
+    rtld_fini=0x40009c10 &lt;_dl_fini&gt;, stack_end=0xbffffa9c)
+    at ../sysdeps/generic/libc-start.c:78</computeroutput>
+<prompt>(gdb)</prompt></screen>
+
+	<para>To do a backtrace with a core dump is very similar.
+	Change directories to the one which has the core dump, and
+	then run <userinput>gdb -c core &lt;full name and location of
+	program&gt;</userinput>.  Again, GDB doesn't look at your
+	path, you have to specify where to find the program.  All you
+	then have to do is type <userinput>bt</userinput> at the
+	prompt, and send in the whole session.</para>
       </sect2>
 
       <sect2>
 	<title>What is an strace?  Someone asked me to send them one,
 	how do I do this?</title>
 
-	<para>To be answered later.</para>
+	<para>The <command>strace</command> command will run a
+	program, outputting system calls and signals as the program
+	runs.  This is a much more verbose debugging tool than the
+	backtrace, but sometimes you need the extra information an
+	strace can give you.  Getting an strace is easy, just type
+	<userinput>strace -o &lt;output file&gt; &lt;command with
+	args&gt;</userinput> into an xterm.  For example, to do an
+	strace on the gtalk program with sound disabled, I might do
+	<userinput>strace -o /tmp/gtalk.strace gtalk
+	--disable-sound</userinput>.  This will save the strace output
+	in <filename>/tmp/gtalk.strace</filename>.  Strace does make
+	use of the path, and does accept program arguments on the
+	command line.</para>
+
+	<para>Warning, strace produces lots of output (the above
+	strace example came up with 5,498 lines in five seconds).
+	Don't send straces to the mailing lists, and only send them to
+	the developers if they specifically request it.</para>
       </sect2>
     </sect1>
 
@@ -1364,8 +1466,8 @@ exec gnome-wm</screen>
 	resetting your session management settings (See <link
 	linkend="ResetSM">above</link>)?  If this doesn't fix it, than
 	<command>gnome-session</command> is having trouble finding the
-	<filename>default.session</filename> file.  In GNOME version
-	1.03 and later the file should be in
+	<filename>default.session</filename> file.  In gnome-core
+	versions 1.03 and later the file should be in
 	<filename>$prefix/share/gnome</filename>.  Prior to that it
 	should be in <filename>$prefix/share</filename>.  If the file
 	is missing, you should probably reinstall GNOME-core.</para>
@@ -1381,9 +1483,10 @@ exec gnome-wm</screen>
 	<command>control-center</command>.  If that doesn't work for
 	you for some reason, here's how to do it.</para>
 
-	<para>Up to version 1.03, the window manager is selected by
-	placing it in a file called <filename>default.wm</filename>.
-	The system default for this file should be in either the
+	<para>In gnome-core version 1.03 and earlier, the window
+	manager is selected by placing it in a file called
+	<filename>default.wm</filename>.  The system default for this
+	file should be in either the
 	<filename>$prefix/share/gnome</filename> or
 	<filename>$prefix/share</filename> directories, whichever one
 	has the file <filename>default.session</filename>.</para>
@@ -1402,13 +1505,13 @@ WM=foo</screen>
 	default, you might also have to change the
 	<filename>default.session</filename> file.</para>
 
-	<para>On a version of GNOME after 1.03 it is much easier.  Set
-	the environment variable <envar>WINDOW_MANAGER</envar> to the
-	window manager you want, then start X.  If that variable is
-	not set, GNOME will run a script to make a good guess as to
-	your window manager.  You can also edit the
-	<filename>~/.gnome/default.wm</filename> file as in older
-	versions.</para>
+	<para>In gnome-core versions 1.04 and later, it is much
+	easier.  Set the environment variable
+	<envar>WINDOW_MANAGER</envar> to the window manager you want,
+	then start X.  If that variable is not set, GNOME will run a
+	script to make a good guess as to your window manager.  You
+	can also edit the <filename>~/.gnome/default.wm</filename>
+	file as in older versions.</para>
       </sect2>
     </sect1>
   </chapter>
