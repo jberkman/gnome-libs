@@ -38,9 +38,6 @@ endif
 gnomeincludedir=$(includedir)/gnome/$(GNOME_INTERFACE_VERSION)
 gnomeinclude_HEADERS = gnome.h $(compat_headers)
 
-EXTRA_DIST =	HACKING gnomeConf.sh.in gnome-bug.in gnome-config.in \
-		gnome-libs.spec.in
-
 dist-hook: gnome-libs.spec
 	cp gnome-libs.spec $(distdir)
 
@@ -91,3 +88,7 @@ CLEANFILES=gnomeConf.sh
 
 m4datadir=$(datadir)/aclocal
 m4data_DATA=gnome.m4
+
+EXTRA_DIST =	HACKING gnomeConf.sh.in gnome-bug.in gnome-config.in \
+		gnome-libs.spec.in gnome.m4
+

@@ -23,7 +23,7 @@ MODULE_VERSION=@PACKAGE@-@VERSION@
 interface_version_installed() {
     error=true
     [ -n "$1" ] || exit 1
-    if [ "$1" = "1.0" ]; then
+    if [ "$1" = "1" ]; then
 	tmp_module_dirs="${libdir}"
 	for extra in `echo $GNOME_PATH  | sed 's/:/ /g'`; do
 	    tmp_module_dirs="$extra/lib:$module_dirs"
@@ -126,7 +126,7 @@ Known values for LIBRARY are:
     gnomeui
     gtk		(calls gtk-config)
     zvt		(only --libs)
-GNOME 1.0 only:
+GNOME 1 only:
     gnorba
     gtkxmhtml	(only --libs)
 
@@ -135,7 +135,7 @@ If LIBRARY is none of these,
     ${datadir}/gnome/conf/<INTERFACE_VERSION>/<LIBRARY>Conf.sh
 
 is looked at for the necessary information (${libdir} for interface
-version 1.0).  Those currently installed appear to be:
+version 1).  Those currently installed appear to be:
 
 EOF
     for dir in `echo $module_dirs | sed 's/:/ /g'`; do
@@ -285,7 +285,7 @@ fi
 if [ -n "$GNOME_INTERFACE_VERSION" ]; then
     INTERFACE_VERSION="$GNOME_INTERFACE_VERSION"
 fi
-if [ "$INTERFACE_VERSION" != "1.0" ]; then
+if [ "$INTERFACE_VERSION" != "1" ]; then
     module_dirs="${datadir}/gnome/conf/${INTERFACE_VERSION}"
     for extra in `echo $GNOME_PATH  | sed 's/:/ /g'`; do
 	module_dirs="${extra}/share/gnome/conf/${INTERFACE_VERSION}:$module_dirs"
@@ -309,12 +309,12 @@ if [ "$show_chosen_iver" = "yes" ]; then
     exit 0
 fi
 
-if [ "$get_gtkxmhtml" != "false" -a "$INTERFACE_VERSION" != "1.0" ]; then
-    echo "gtkxmhtml only comes with GNOME 1.0, not $INTERFACE_VERSION"
+if [ "$get_gtkxmhtml" != "false" -a "$INTERFACE_VERSION" != "1" ]; then
+    echo "gtkxmhtml only comes with GNOME 1, not $INTERFACE_VERSION"
     error=true
 fi
-if [ "$get_gnorba" != "false" -a "$INTERFACE_VERSION" != "1.0" ]; then
-    echo "libgnorba only comes with GNOME 1.0, not $INTERFACE_VERSION"
+if [ "$get_gnorba" != "false" -a "$INTERFACE_VERSION" != "1" ]; then
+    echo "libgnorba only comes with GNOME 1, not $INTERFACE_VERSION"
     error=true
 fi
 if [ "$error" = "true" ]; then
@@ -325,6 +325,7 @@ fi
 if [ "$need_gnome_conf" = "true" ]; then
     source_conf_file gnome
 fi
+the_flags="$the_flags -DGNOME_INTERFACE_VERSION=$INTERFACE_VERSION"
 if [ "$get_gnome" != "false" ]; then
     the_flags="$the_flags $GNOME_INCLUDEDIR"
     the_libs="$the_libs $GNOME_LIBDIR $GNOME_LIBS"

@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-libs 1.0.11\n"
-"POT-Creation-Date: 2000-02-03 20:49+0100\n"
+"POT-Creation-Date: 2000-02-21 18:12-0500\n"
 "PO-Revision-Date: 1999-04-01 17:11+0200\n"
 "Last-Translator: Joseba Bidaurrazaga van Dierdonck <gcpbivaj@lg.ehu.es>\n"
 "Language-Team: euskara <linux-eu@chanae.alphanet.ch>\n"
@@ -13,193 +13,173 @@ msgstr ""
 "Content-Type: text/plain; charset=iso-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: libgnome/gconfigger.c:32 libgnome/gconfigger.c:33
-msgid "CONFIG-PATH"
-msgstr "CONFIG-PATH"
-
-#: libgnome/gconfigger.c:32
-msgid "Get config entry"
-msgstr "Sarrera konfigurazioa lortu"
-
-#: libgnome/gconfigger.c:32
-msgid "get"
-msgstr "lortu"
-
-#: libgnome/gconfigger.c:33
-msgid "Set config entry"
-msgstr "Ezarri sarrera konfigurazioa"
-
-#: libgnome/gconfigger.c:33
-msgid "set"
-msgstr "ezarri"
-
-#: libgnome/gnomelib-init.c:153 libgnome/gnomelib-init.c:167
+#: libgnome/gnomelib-init.c:176 libgnome/gnomelib-init.c:190
 #, c-format
 msgid "Could not create per-user gnome configuration directory `%s': %s\n"
 msgstr ""
 
-#: libgnome/gnomelib-init.c:176
+#: libgnome/gnomelib-init.c:199
 #, c-format
 msgid ""
 "Could not set mode 0700 on private per-user gnome configuration directory "
 "`%s': %s\n"
 msgstr ""
 
-#: libgnome/gnomelib-init.c:183
+#: libgnome/gnomelib-init.c:206
 #, c-format
 msgid "Could not create gnome accelerators directory `%s': %s\n"
 msgstr ""
 
-#: libgnomeui/gnome-about.c:313
+#: libgnomeui/gnome-about.c:320
 msgid "Author:"
 msgstr "Egilea:"
 
-#: libgnomeui/gnome-about.c:316 libgnomeui/gnome-about.c:318
+#: libgnomeui/gnome-about.c:323 libgnomeui/gnome-about.c:325
 msgid "Authors:"
 msgstr "Egileak:"
 
-#: libgnomeui/gnome-about.c:623
+#: libgnomeui/gnome-about.c:630
 msgid "Authors: "
 msgstr "Egileak: "
 
-#: libgnomeui/gnome-about.c:964 libgnomeui/stock_demo.c:282
+#: libgnomeui/gnome-about.c:971 libgnomeui/stock_demo.c:307
 #: libgnomeui/winhints_demo.c:256
 msgid "About"
 msgstr "Zerari buruz"
 
-#: libgnomeui/gnome-app-helper.c:52
+#: libgnomeui/gnome-app-helper.c:74
 msgid "_File"
 msgstr "_Fitxategia"
 
-#: libgnomeui/gnome-app-helper.c:53
+#: libgnomeui/gnome-app-helper.c:75
 msgid "_File/"
 msgstr "_Ftxategia/"
 
-#: libgnomeui/gnome-app-helper.c:54
+#: libgnomeui/gnome-app-helper.c:76
 msgid "_Edit"
 msgstr "A_rgitaratu"
 
-#: libgnomeui/gnome-app-helper.c:55
+#: libgnomeui/gnome-app-helper.c:77
 msgid "_Edit/"
 msgstr "A_rgitaratu/"
 
-#: libgnomeui/gnome-app-helper.c:56
+#: libgnomeui/gnome-app-helper.c:78
 msgid "_View"
 msgstr "_Ikusi"
 
-#: libgnomeui/gnome-app-helper.c:57
+#: libgnomeui/gnome-app-helper.c:79
 msgid "_View/"
 msgstr "_Ikusi/"
 
-#: libgnomeui/gnome-app-helper.c:58
+#: libgnomeui/gnome-app-helper.c:80
 msgid "_Settings"
 msgstr "_Konfigurazioa"
 
-#: libgnomeui/gnome-app-helper.c:59
+#: libgnomeui/gnome-app-helper.c:81
 msgid "_Settings/"
 msgstr "_Konfigurazioa/"
 
-#: libgnomeui/gnome-app-helper.c:60
+#: libgnomeui/gnome-app-helper.c:82
 msgid "_New"
 msgstr "_Berria"
 
-#: libgnomeui/gnome-app-helper.c:61
+#: libgnomeui/gnome-app-helper.c:83
 msgid "_New/"
 msgstr "_Berria/"
 
-#: libgnomeui/gnome-app-helper.c:62
+#: libgnomeui/gnome-app-helper.c:84
 msgid "Fi_les"
 msgstr "_Fitxategiak"
 
-#: libgnomeui/gnome-app-helper.c:63
+#: libgnomeui/gnome-app-helper.c:85
 msgid "Fi_les/"
 msgstr "_Fitxategia/"
 
-#: libgnomeui/gnome-app-helper.c:64
+#: libgnomeui/gnome-app-helper.c:86
 msgid "_Windows"
 msgstr "_Leihoak"
 
-#: libgnomeui/gnome-app-helper.c:65
+#: libgnomeui/gnome-app-helper.c:87
 msgid "_Game"
 msgstr "_Jokua"
 
-#: libgnomeui/gnome-app-helper.c:66
+#: libgnomeui/gnome-app-helper.c:88
 msgid "_Help"
 msgstr "_Laguntza"
 
-#: libgnomeui/gnome-app-helper.c:67
+#: libgnomeui/gnome-app-helper.c:89
 msgid "_Windows/"
 msgstr "_Lehioak/"
 
-#: libgnomeui/gnome-app-helper.c:79
-msgid "Open a file"
-msgstr "Fitxategia ireki"
-
 #. Open
-#: libgnomeui/gnome-app-helper.c:79
+#: libgnomeui/gnome-app-helper.c:101
 msgid "_Open..."
 msgstr "_Ireki..."
 
-#: libgnomeui/gnome-app-helper.c:84
-msgid "Save the current file"
-msgstr "Oraingo fitxategia gorde"
+#: libgnomeui/gnome-app-helper.c:101
+msgid "Open a file"
+msgstr "Fitxategia ireki"
 
 #. Save
-#: libgnomeui/gnome-app-helper.c:84
+#: libgnomeui/gnome-app-helper.c:106
 msgid "_Save"
 msgstr "_Gorde"
 
+#: libgnomeui/gnome-app-helper.c:106
+msgid "Save the current file"
+msgstr "Oraingo fitxategia gorde"
+
 #. Save As
-#: libgnomeui/gnome-app-helper.c:89
+#: libgnomeui/gnome-app-helper.c:111
 msgid "Save _As..."
 msgstr "Gorde _honela..."
 
-#: libgnomeui/gnome-app-helper.c:90
+#: libgnomeui/gnome-app-helper.c:112
 msgid "Save the current file with a different name"
 msgstr "Oraingo fitxategia beste izenez gorde"
 
 #. Revert
-#: libgnomeui/gnome-app-helper.c:95
+#: libgnomeui/gnome-app-helper.c:117
 msgid "_Revert"
 msgstr "_Atzera jo"
 
-#: libgnomeui/gnome-app-helper.c:96
+#: libgnomeui/gnome-app-helper.c:118
 msgid "Revert to a saved version of the file"
 msgstr "Atzera jo gordetako bertsiora"
 
-#: libgnomeui/gnome-app-helper.c:101
-msgid "Print the current file"
-msgstr "Inprimatu oraingo fitxategia"
-
 #. Print
-#: libgnomeui/gnome-app-helper.c:101
+#: libgnomeui/gnome-app-helper.c:123
 msgid "_Print"
 msgstr "_Inprimatu"
 
+#: libgnomeui/gnome-app-helper.c:123
+msgid "Print the current file"
+msgstr "Inprimatu oraingo fitxategia"
+
 #. Print Setup
-#: libgnomeui/gnome-app-helper.c:106
+#: libgnomeui/gnome-app-helper.c:128
 msgid "Print S_etup..."
 msgstr "Inprimatzeko A_ukerak..."
 
-#: libgnomeui/gnome-app-helper.c:107
+#: libgnomeui/gnome-app-helper.c:129
 msgid "Setup the page settings for your current printer"
 msgstr "Darabilzun inprimatzaileari egokitu orria"
 
-#: libgnomeui/gnome-app-helper.c:112
-msgid "Close the current file"
-msgstr "Oraingo fitxategia itxi"
-
 #. Close
-#: libgnomeui/gnome-app-helper.c:112
+#: libgnomeui/gnome-app-helper.c:134
 msgid "_Close"
 msgstr "I_txi"
 
+#: libgnomeui/gnome-app-helper.c:134
+msgid "Close the current file"
+msgstr "Oraingo fitxategia itxi"
+
 #. Exit
-#: libgnomeui/gnome-app-helper.c:117
+#: libgnomeui/gnome-app-helper.c:139
 msgid "E_xit"
 msgstr "I_rten"
 
-#: libgnomeui/gnome-app-helper.c:117
+#: libgnomeui/gnome-app-helper.c:139
 msgid "Exit the program"
 msgstr "Programatik irten"
 
@@ -207,93 +187,93 @@ msgstr "Programatik irten"
 #. * The "Edit" menu
 #.
 #. Cut
-#: libgnomeui/gnome-app-helper.c:125
+#: libgnomeui/gnome-app-helper.c:147
 msgid "C_ut"
 msgstr "_Ebaki"
 
-#: libgnomeui/gnome-app-helper.c:125
+#: libgnomeui/gnome-app-helper.c:147
 msgid "Cut the selection"
 msgstr "Ebaki aukeratutakoa"
 
-#: libgnomeui/gnome-app-helper.c:131
-msgid "Copy the selection"
-msgstr "Kopiatu aukeratutakoa"
-
 #. 10
 #. Copy
-#: libgnomeui/gnome-app-helper.c:131 libgnomeui/gnome-popup-help.c:59
+#: libgnomeui/gnome-app-helper.c:153 libgnomeui/gnome-popup-help.c:64
 msgid "_Copy"
 msgstr "_Kopiatu"
 
-#: libgnomeui/gnome-app-helper.c:136
-msgid "Paste the clipboard"
-msgstr "Kaieran jarri"
+#: libgnomeui/gnome-app-helper.c:153
+msgid "Copy the selection"
+msgstr "Kopiatu aukeratutakoa"
 
 #. Paste
-#: libgnomeui/gnome-app-helper.c:136 libgnomeui/gnome-popup-help.c:61
+#: libgnomeui/gnome-app-helper.c:158 libgnomeui/gnome-popup-help.c:66
 msgid "_Paste"
 msgstr "_Itsatsi"
 
+#: libgnomeui/gnome-app-helper.c:158
+msgid "Paste the clipboard"
+msgstr "Kaieran jarri"
+
 #. Clear
-#: libgnomeui/gnome-app-helper.c:141
+#: libgnomeui/gnome-app-helper.c:163
 msgid "C_lear"
 msgstr "_Garbitu"
 
-#: libgnomeui/gnome-app-helper.c:141
+#: libgnomeui/gnome-app-helper.c:163
 msgid "Clear the selection"
 msgstr "Ezabatu aukeratutakoa"
 
-#: libgnomeui/gnome-app-helper.c:146
-msgid "Undo the last action"
-msgstr "Azkenekoa ez egin"
-
 #. Undo
-#: libgnomeui/gnome-app-helper.c:146
+#: libgnomeui/gnome-app-helper.c:168
 msgid "_Undo"
 msgstr "_Desegin"
 
-#: libgnomeui/gnome-app-helper.c:151
-msgid "Redo the undone action"
-msgstr "Berregin azkenekoa"
+#: libgnomeui/gnome-app-helper.c:168
+msgid "Undo the last action"
+msgstr "Azkenekoa ez egin"
 
 #. Redo
-#: libgnomeui/gnome-app-helper.c:151
+#: libgnomeui/gnome-app-helper.c:173
 msgid "_Redo"
 msgstr "_Berregin"
 
-#: libgnomeui/gnome-app-helper.c:156
-msgid "Search for a string"
-msgstr "Hizkiak bilatu"
+#: libgnomeui/gnome-app-helper.c:173
+msgid "Redo the undone action"
+msgstr "Berregin azkenekoa"
 
 #. Find
-#: libgnomeui/gnome-app-helper.c:156
+#: libgnomeui/gnome-app-helper.c:178
 msgid "_Find..."
 msgstr "_Aurkitu..."
 
+#: libgnomeui/gnome-app-helper.c:178
+msgid "Search for a string"
+msgstr "Hizkiak bilatu"
+
 #. Find Again
-#: libgnomeui/gnome-app-helper.c:161
+#: libgnomeui/gnome-app-helper.c:183
 msgid "Find _Again"
 msgstr "Berriz _bilatu"
 
-#: libgnomeui/gnome-app-helper.c:162
+#: libgnomeui/gnome-app-helper.c:184
 msgid "Search again for the same string"
 msgstr "Hizki berdinak berriz bilatu"
 
-#: libgnomeui/gnome-app-helper.c:167
-msgid "Replace a string"
-msgstr "Ordeztu hizkiak"
-
 #. Replace
-#: libgnomeui/gnome-app-helper.c:167
+#: libgnomeui/gnome-app-helper.c:189
 msgid "_Replace..."
 msgstr "_Ordeztu..."
 
+#: libgnomeui/gnome-app-helper.c:189
+msgid "Replace a string"
+msgstr "Ordeztu hizkiak"
+
 #. Properties
-#: libgnomeui/gnome-app-helper.c:172
+#: libgnomeui/gnome-app-helper.c:194
 msgid "_Properties..."
 msgstr "_Ezaugarriak..."
 
-#: libgnomeui/gnome-app-helper.c:173
+#: libgnomeui/gnome-app-helper.c:195
 msgid "Modify the file's properties"
 msgstr "Fitxategiaren ezaugarriak aldatu"
 
@@ -301,11 +281,11 @@ msgstr "Fitxategiaren ezaugarriak aldatu"
 #. * The Settings menu
 #.
 #. Settings
-#: libgnomeui/gnome-app-helper.c:181
+#: libgnomeui/gnome-app-helper.c:203
 msgid "_Preferences..."
 msgstr "_Aukerak"
 
-#: libgnomeui/gnome-app-helper.c:182
+#: libgnomeui/gnome-app-helper.c:204
 msgid "Configure the application"
 msgstr "Aplikazioa konfiguratu"
 
@@ -314,610 +294,610 @@ msgstr "Aplikazioa konfiguratu"
 #. * And the "Help" menu
 #.
 #. About
-#: libgnomeui/gnome-app-helper.c:191
+#: libgnomeui/gnome-app-helper.c:213
 #, fuzzy
 msgid "_About"
 msgstr "Zerari buruz"
 
-#: libgnomeui/gnome-app-helper.c:192
+#: libgnomeui/gnome-app-helper.c:214
 msgid "About this application"
 msgstr "Aplikazio honi buruz"
 
-#: libgnomeui/gnome-app-helper.c:195
+#: libgnomeui/gnome-app-helper.c:217
 msgid "_Select All"
 msgstr "_Dena aukeratu"
 
-#: libgnomeui/gnome-app-helper.c:196
+#: libgnomeui/gnome-app-helper.c:218
 msgid "Select everything"
 msgstr "Dena aukeratu"
 
 #.
 #. * Window menu
 #.
-#: libgnomeui/gnome-app-helper.c:204
+#: libgnomeui/gnome-app-helper.c:226
 msgid "Create New _Window"
 msgstr "_Lehio Berria Sortu"
 
-#: libgnomeui/gnome-app-helper.c:205
+#: libgnomeui/gnome-app-helper.c:227
 msgid "Create a new window"
 msgstr "Lehio berria sortu"
 
-#: libgnomeui/gnome-app-helper.c:209
+#: libgnomeui/gnome-app-helper.c:231
 msgid "_Close This Window"
 msgstr "_Itxi lehio hau"
 
-#: libgnomeui/gnome-app-helper.c:210
+#: libgnomeui/gnome-app-helper.c:232
 msgid "Close the current window"
 msgstr "Darabildan lehioa itxi"
 
 #.
 #. * The "Game" menu
 #.
-#: libgnomeui/gnome-app-helper.c:218
+#: libgnomeui/gnome-app-helper.c:240
 msgid "_New game"
 msgstr "Joku _Berria"
 
-#: libgnomeui/gnome-app-helper.c:219
+#: libgnomeui/gnome-app-helper.c:241
 msgid "Start a new game"
 msgstr "Hasi joku berria"
 
-#: libgnomeui/gnome-app-helper.c:223
+#: libgnomeui/gnome-app-helper.c:245
 msgid "_Pause game"
 msgstr "_Eten jokua"
 
-#: libgnomeui/gnome-app-helper.c:224
+#: libgnomeui/gnome-app-helper.c:246
 msgid "Pause the game"
 msgstr "Eten jokua"
 
-#: libgnomeui/gnome-app-helper.c:228
+#: libgnomeui/gnome-app-helper.c:250
 msgid "_Restart game"
 msgstr "_Abiatu jokua"
 
-#: libgnomeui/gnome-app-helper.c:229
+#: libgnomeui/gnome-app-helper.c:251
 msgid "Restart the game"
 msgstr "Abiatu jokua"
 
-#: libgnomeui/gnome-app-helper.c:233
+#: libgnomeui/gnome-app-helper.c:255
 msgid "_Undo move"
 msgstr "_Ez mugi"
 
-#: libgnomeui/gnome-app-helper.c:234
+#: libgnomeui/gnome-app-helper.c:256
 msgid "Undo the last move"
 msgstr "Azkenekoa ez mugi"
 
-#: libgnomeui/gnome-app-helper.c:238
+#: libgnomeui/gnome-app-helper.c:260
 msgid "_Redo move"
 msgstr "_Berriz mugitu"
 
-#: libgnomeui/gnome-app-helper.c:239
+#: libgnomeui/gnome-app-helper.c:261
 msgid "Redo the undone move"
 msgstr "Ez egindako mugimendua berregin"
 
-#: libgnomeui/gnome-app-helper.c:243
+#: libgnomeui/gnome-app-helper.c:265
 msgid "_Hint"
 msgstr "_Hitzerdi"
 
-#: libgnomeui/gnome-app-helper.c:244
+#: libgnomeui/gnome-app-helper.c:266
 msgid "Get a hint for your next move"
 msgstr "Hurrengo mugimendurako hitzerdia lortu"
 
 #. 30
-#: libgnomeui/gnome-app-helper.c:249
+#: libgnomeui/gnome-app-helper.c:271
 msgid "_Scores..."
 msgstr "_Tantuak"
 
-#: libgnomeui/gnome-app-helper.c:250
+#: libgnomeui/gnome-app-helper.c:272
 msgid "View the scores"
 msgstr "Tantuak ikusi"
 
-#: libgnomeui/gnome-app-helper.c:254
+#: libgnomeui/gnome-app-helper.c:276
 msgid "_End game"
 msgstr "_Bukatu jokoa"
 
-#: libgnomeui/gnome-app-helper.c:255
+#: libgnomeui/gnome-app-helper.c:277
 msgid "End the current game"
 msgstr "Oraingo jokoa bukatu"
 
-#: libgnomeui/gnome-app-util.c:93
+#: libgnomeui/gnome-app-util.c:99
 msgid " (press return)"
 msgstr " (return sakatu)"
 
-#: libgnomeui/gnome-app-util.c:136
+#: libgnomeui/gnome-app-util.c:142
 msgid "ERROR: "
 msgstr "OKERRA: "
 
-#: libgnomeui/gnome-app-util.c:173
+#: libgnomeui/gnome-app-util.c:179
 msgid "Warning: "
 msgstr "Kontuz: "
 
-#: libgnomeui/gnome-app-util.c:310
+#: libgnomeui/gnome-app-util.c:316
 msgid "y"
 msgstr "b"
 
-#: libgnomeui/gnome-app-util.c:311
+#: libgnomeui/gnome-app-util.c:317
 msgid "yes"
 msgstr "bai"
 
-#: libgnomeui/gnome-app-util.c:314
+#: libgnomeui/gnome-app-util.c:320
 msgid "n"
 msgstr "e"
 
-#: libgnomeui/gnome-app-util.c:315
+#: libgnomeui/gnome-app-util.c:321
 msgid "no"
 msgstr "ez"
 
-#: libgnomeui/gnome-app-util.c:354
+#: libgnomeui/gnome-app-util.c:360
 msgid " (yes or no)"
 msgstr " (bai edo ez)"
 
-#: libgnomeui/gnome-app-util.c:355
+#: libgnomeui/gnome-app-util.c:361
 msgid "  - OK? (yes or no)"
 msgstr "  - Ados? (bai edo ez)"
 
-#: libgnomeui/gnome-app-util.c:687
+#: libgnomeui/gnome-app-util.c:693
 msgid "Progress"
 msgstr "Aurrera"
 
-#: libgnomeui/gnome-calculator.c:920 libgnomeui/gnome-calculator.c:1070
+#: libgnomeui/gnome-calculator.c:982 libgnomeui/gnome-calculator.c:1132
 msgid "DEG"
 msgstr "DEG"
 
-#: libgnomeui/gnome-calculator.c:922
+#: libgnomeui/gnome-calculator.c:984
 msgid "RAD"
 msgstr "RAD"
 
-#: libgnomeui/gnome-calculator.c:924
+#: libgnomeui/gnome-calculator.c:986
 msgid "GRAD"
 msgstr "GRAD"
 
-#: libgnomeui/gnome-calculator.c:1060
+#: libgnomeui/gnome-calculator.c:1122
 msgid "1/x"
 msgstr "1/x"
 
-#: libgnomeui/gnome-calculator.c:1061
+#: libgnomeui/gnome-calculator.c:1123
 msgid "x^2"
 msgstr "x^2"
 
-#: libgnomeui/gnome-calculator.c:1062
+#: libgnomeui/gnome-calculator.c:1124
 msgid "SQRT"
 msgstr "SQRT"
 
-#: libgnomeui/gnome-calculator.c:1063
+#: libgnomeui/gnome-calculator.c:1125
 msgid "CE/C"
 msgstr "CE/C"
 
-#: libgnomeui/gnome-calculator.c:1064
+#: libgnomeui/gnome-calculator.c:1126
 msgid "AC"
 msgstr "AC"
 
 #. inverse button
-#: libgnomeui/gnome-calculator.c:1067
+#: libgnomeui/gnome-calculator.c:1129
 msgid "sin"
 msgstr "sin"
 
-#: libgnomeui/gnome-calculator.c:1068
+#: libgnomeui/gnome-calculator.c:1130
 msgid "cos"
 msgstr "cos"
 
-#: libgnomeui/gnome-calculator.c:1069
+#: libgnomeui/gnome-calculator.c:1131
 msgid "tan"
 msgstr "tan"
 
-#: libgnomeui/gnome-calculator.c:1072
+#: libgnomeui/gnome-calculator.c:1134
 msgid "e"
 msgstr "e"
 
-#: libgnomeui/gnome-calculator.c:1073
+#: libgnomeui/gnome-calculator.c:1135
 msgid "EE"
 msgstr "EE"
 
-#: libgnomeui/gnome-calculator.c:1074
+#: libgnomeui/gnome-calculator.c:1136
 msgid "log"
 msgstr "log"
 
-#: libgnomeui/gnome-calculator.c:1075
+#: libgnomeui/gnome-calculator.c:1137
 msgid "ln"
 msgstr "ln"
 
-#: libgnomeui/gnome-calculator.c:1076
+#: libgnomeui/gnome-calculator.c:1138
 msgid "x^y"
 msgstr "x^y"
 
-#: libgnomeui/gnome-calculator.c:1078
+#: libgnomeui/gnome-calculator.c:1140
 msgid "PI"
 msgstr "PI"
 
-#: libgnomeui/gnome-calculator.c:1079
+#: libgnomeui/gnome-calculator.c:1141
 msgid "x!"
 msgstr "x!"
 
-#: libgnomeui/gnome-calculator.c:1080
+#: libgnomeui/gnome-calculator.c:1142
 msgid "("
 msgstr "("
 
-#: libgnomeui/gnome-calculator.c:1081
+#: libgnomeui/gnome-calculator.c:1143
 msgid ")"
 msgstr ")"
 
-#: libgnomeui/gnome-calculator.c:1082
+#: libgnomeui/gnome-calculator.c:1144
 msgid "/"
 msgstr "/"
 
-#: libgnomeui/gnome-calculator.c:1084
+#: libgnomeui/gnome-calculator.c:1146
 msgid "STO"
 msgstr "STO"
 
-#: libgnomeui/gnome-calculator.c:1085
+#: libgnomeui/gnome-calculator.c:1147
 msgid "7"
 msgstr "7"
 
-#: libgnomeui/gnome-calculator.c:1086
+#: libgnomeui/gnome-calculator.c:1148
 msgid "8"
 msgstr "8"
 
-#: libgnomeui/gnome-calculator.c:1087
+#: libgnomeui/gnome-calculator.c:1149
 msgid "9"
 msgstr "9"
 
-#: libgnomeui/gnome-calculator.c:1088
+#: libgnomeui/gnome-calculator.c:1150
 msgid "*"
 msgstr "*"
 
-#: libgnomeui/gnome-calculator.c:1090
+#: libgnomeui/gnome-calculator.c:1152
 msgid "RCL"
 msgstr "RCL"
 
-#: libgnomeui/gnome-calculator.c:1091
+#: libgnomeui/gnome-calculator.c:1153
 msgid "4"
 msgstr "4"
 
-#: libgnomeui/gnome-calculator.c:1092
+#: libgnomeui/gnome-calculator.c:1154
 msgid "5"
 msgstr "5"
 
-#: libgnomeui/gnome-calculator.c:1093
+#: libgnomeui/gnome-calculator.c:1155
 msgid "6"
 msgstr "6"
 
-#: libgnomeui/gnome-calculator.c:1094
+#: libgnomeui/gnome-calculator.c:1156
 msgid "-"
 msgstr "-"
 
-#: libgnomeui/gnome-calculator.c:1096
+#: libgnomeui/gnome-calculator.c:1158
 msgid "SUM"
 msgstr "SUM"
 
-#: libgnomeui/gnome-calculator.c:1097
+#: libgnomeui/gnome-calculator.c:1159
 msgid "1"
 msgstr "1"
 
-#: libgnomeui/gnome-calculator.c:1098
+#: libgnomeui/gnome-calculator.c:1160
 msgid "2"
 msgstr "2"
 
-#: libgnomeui/gnome-calculator.c:1099
+#: libgnomeui/gnome-calculator.c:1161
 msgid "3"
 msgstr "3"
 
-#: libgnomeui/gnome-calculator.c:1100
+#: libgnomeui/gnome-calculator.c:1162
 msgid "+"
 msgstr "+"
 
-#: libgnomeui/gnome-calculator.c:1102
+#: libgnomeui/gnome-calculator.c:1164
 msgid "EXC"
 msgstr "EXC"
 
-#: libgnomeui/gnome-calculator.c:1103
+#: libgnomeui/gnome-calculator.c:1165
 msgid "0"
 msgstr "0"
 
-#: libgnomeui/gnome-calculator.c:1104
+#: libgnomeui/gnome-calculator.c:1166
 msgid "."
 msgstr "."
 
-#: libgnomeui/gnome-calculator.c:1105
+#: libgnomeui/gnome-calculator.c:1167
 msgid "+/-"
 msgstr "+/-"
 
-#: libgnomeui/gnome-calculator.c:1106
+#: libgnomeui/gnome-calculator.c:1168
 msgid "="
 msgstr "="
 
-#: libgnomeui/gnome-calculator.c:1175
+#: libgnomeui/gnome-calculator.c:1237
 msgid "INV"
 msgstr "INV"
 
-#: libgnomeui/gnome-client.c:843
-msgid "ID"
-msgstr "ID"
-
-#: libgnomeui/gnome-client.c:843
+#: libgnomeui/gnome-client.c:846
 msgid "Specify session management ID"
 msgstr "Sesioaren kudeaketarako ID zenbakia ezarri"
 
 #: libgnomeui/gnome-client.c:846
-msgid "PREFIX"
-msgstr "PREFIX"
+msgid "ID"
+msgstr "ID"
 
-#: libgnomeui/gnome-client.c:846
+#: libgnomeui/gnome-client.c:849
 msgid "Specify prefix of saved configuration"
 msgstr "Aurrez finkatutakoa edo gordetako onfigurazioa ezarri"
 
 #: libgnomeui/gnome-client.c:849
+msgid "PREFIX"
+msgstr "PREFIX"
+
+#: libgnomeui/gnome-client.c:852
 msgid "Disable connection to session manager"
 msgstr "Sesioaren kudeaketarekiko lotura eten"
 
-#: libgnomeui/gnome-client.c:861
+#: libgnomeui/gnome-client.c:864
 #, fuzzy
 msgid "Session management"
 msgstr "Sesioaren kudeaketa aukerak"
 
-#: libgnomeui/gnome-client.c:2327
+#: libgnomeui/gnome-client.c:2330
 msgid "Cancel Logout"
 msgstr "Etsi Logout"
 
-#: libgnomeui/gnome-color-picker.c:316
+#: libgnomeui/gnome-color-picker.c:338
 msgid "Pick a color"
 msgstr "Aukeratu kolorea"
 
 #. Calendar label, only shown if the date editor has a time field
-#: libgnomeui/gnome-dateedit.c:456
+#: libgnomeui/gnome-dateedit.c:480
 msgid "Calendar"
 msgstr "Egutegia"
 
-#: libgnomeui/gnome-dentry-edit.c:180
+#: libgnomeui/gnome-dentry-edit.c:183
 msgid "Name:"
 msgstr "Izena:"
 
-#: libgnomeui/gnome-dentry-edit.c:193
+#: libgnomeui/gnome-dentry-edit.c:196
 msgid "Comment:"
 msgstr "Aipamena:"
 
-#: libgnomeui/gnome-dentry-edit.c:203
+#: libgnomeui/gnome-dentry-edit.c:206
 msgid "Command:"
 msgstr "Komandoa:"
 
-#: libgnomeui/gnome-dentry-edit.c:213
+#: libgnomeui/gnome-dentry-edit.c:216
 msgid "Type:"
 msgstr "Mota:"
 
-#: libgnomeui/gnome-dentry-edit.c:229
+#: libgnomeui/gnome-dentry-edit.c:232
 msgid "Icon:"
 msgstr "Ikonoa:"
 
-#: libgnomeui/gnome-dentry-edit.c:239
+#: libgnomeui/gnome-dentry-edit.c:242
 msgid "Choose an icon"
 msgstr "Aukeratu ikonoa"
 
-#: libgnomeui/gnome-dentry-edit.c:252
+#: libgnomeui/gnome-dentry-edit.c:255
 msgid "Run in Terminal"
 msgstr "Terminalean ekin"
 
-#: libgnomeui/gnome-dentry-edit.c:363
+#: libgnomeui/gnome-dentry-edit.c:366
 msgid "Try this before using:"
 msgstr "Erabili aurretik hau saiatu:"
 
-#: libgnomeui/gnome-dentry-edit.c:373
+#: libgnomeui/gnome-dentry-edit.c:376
 msgid "Documentation:"
 msgstr "Dokumentazioa:"
 
-#: libgnomeui/gnome-dentry-edit.c:383
+#: libgnomeui/gnome-dentry-edit.c:386
 msgid "Name/Comment translations:"
 msgstr ""
 
-#: libgnomeui/gnome-dentry-edit.c:386
+#: libgnomeui/gnome-dentry-edit.c:389
 msgid "Language"
 msgstr ""
 
-#: libgnomeui/gnome-dentry-edit.c:387
+#: libgnomeui/gnome-dentry-edit.c:390
 #, fuzzy
 msgid "Name"
 msgstr "Izena:"
 
-#: libgnomeui/gnome-dentry-edit.c:388
+#: libgnomeui/gnome-dentry-edit.c:391
 #, fuzzy
 msgid "Comment"
 msgstr "Aipamena:"
 
-#: libgnomeui/gnome-dentry-edit.c:416
+#: libgnomeui/gnome-dentry-edit.c:419
 #, fuzzy
 msgid "Add/Set"
 msgstr "Gehitu"
 
-#: libgnomeui/gnome-dentry-edit.c:421 libgnomeui/gnome-stock.c:642
+#: libgnomeui/gnome-dentry-edit.c:424 libgnomeui/gnome-stock.c:644
 msgid "Remove"
 msgstr "Kendu"
 
-#: libgnomeui/gnome-dentry-edit.c:503
+#: libgnomeui/gnome-dentry-edit.c:506
 msgid "Basic"
 msgstr "Oinarrizkoa"
 
-#: libgnomeui/gnome-dentry-edit.c:507
+#: libgnomeui/gnome-dentry-edit.c:510
 msgid "Advanced"
 msgstr "Aurreratua"
 
-#: libgnomeui/gnome-druid.c:132
+#: libgnomeui/gnome-druid.c:135
 #, fuzzy
 msgid "Back"
 msgstr "Oinarrizkoa"
 
-#: libgnomeui/gnome-druid.c:140
+#: libgnomeui/gnome-druid.c:143
 msgid "Finish"
 msgstr ""
 
-#: libgnomeui/gnome-file-entry.c:151
+#: libgnomeui/gnome-file-entry.c:175
 msgid "Select file"
 msgstr "Aukeratu fitxategia"
 
 #. browse button ...
-#: libgnomeui/gnome-file-entry.c:280 libgnomeui/gnome-spell.c:617
-#: libgnomeui/gnome-spell.c:634 libgnomeui/gnome-spell.c:651
+#: libgnomeui/gnome-file-entry.c:304 libgnomeui/gnome-spell.c:620
+#: libgnomeui/gnome-spell.c:637 libgnomeui/gnome-spell.c:654
 msgid "Browse..."
 msgstr "Erakus..."
 
-#: libgnomeui/gnome-font-picker.c:159
+#: libgnomeui/gnome-font-picker.c:161
 msgid "Pick a Font"
 msgstr "Aukeratu Font"
 
-#: libgnomeui/gnome-font-picker.c:714 libgnomeui/gnome-stock.c:662
+#: libgnomeui/gnome-font-picker.c:719 libgnomeui/gnome-stock.c:664
 msgid "Font"
 msgstr "Font"
 
-#: libgnomeui/gnome-icon-entry.c:133 libgnomeui/gnome-icon-entry.c:588
+#: libgnomeui/gnome-icon-entry.c:157 libgnomeui/gnome-icon-entry.c:612
 msgid "No Icon"
 msgstr "Ikonorik ez"
 
-#: libgnomeui/gnome-icon-entry.c:297 libgnomeui/gnome-pixmap-entry.c:273
+#: libgnomeui/gnome-icon-entry.c:321 libgnomeui/gnome-pixmap-entry.c:296
 msgid "Can't find an hbox, using a normal file selection"
 msgstr "hbox-ik ezin aurkitu, fitxategi aukera arruntaz"
 
-#: libgnomeui/gnome-icon-entry.c:303 libgnomeui/gnome-pixmap-entry.c:279
+#: libgnomeui/gnome-icon-entry.c:327 libgnomeui/gnome-pixmap-entry.c:302
 msgid "Preview"
 msgstr "Aurreikuspegia"
 
-#: libgnomeui/gnome-icon-sel.c:332
+#: libgnomeui/gnome-icon-sel.c:338
 msgid "Loading Icons..."
 msgstr "Ikonoak kargatzen..."
 
-#: libgnomeui/gnome-init.c:55 libgnomeui/gnome-init.c:58
-#: libgnomeui/gnome-init.c:88 libgnomeui/gnome-init.c:91
-msgid "FLAGS"
-msgstr "FLAGS"
-
-#: libgnomeui/gnome-init.c:55
+#: libgnomeui/gnome-init.c:81
 msgid "Gdk debugging flags to set"
 msgstr "Gdk-ren frogaketa ikurrak ezarriz"
 
-#: libgnomeui/gnome-init.c:58
+#: libgnomeui/gnome-init.c:81 libgnomeui/gnome-init.c:84
+#: libgnomeui/gnome-init.c:114 libgnomeui/gnome-init.c:117
+msgid "FLAGS"
+msgstr "FLAGS"
+
+#: libgnomeui/gnome-init.c:84
 msgid "Gdk debugging flags to unset"
 msgstr "Gdk-ren frogaketa ikurrak ez ezarriz"
 
-#: libgnomeui/gnome-init.c:61 libgnomeui/gnome-init.c:213
-msgid "DISPLAY"
-msgstr "DISLAY"
-
-#: libgnomeui/gnome-init.c:61 libgnomeui/gnome-init.c:213
+#: libgnomeui/gnome-init.c:87 libgnomeui/gnome-init.c:239
 msgid "X display to use"
 msgstr "X ikuspegia erabilgai"
 
-#: libgnomeui/gnome-init.c:64
+#: libgnomeui/gnome-init.c:87 libgnomeui/gnome-init.c:239
+msgid "DISPLAY"
+msgstr "DISLAY"
+
+#: libgnomeui/gnome-init.c:90
 msgid "Make X calls synchronous"
 msgstr "X dei sinkronikoak egin"
 
-#: libgnomeui/gnome-init.c:67
+#: libgnomeui/gnome-init.c:93
 msgid "Don't use X shared memory extension"
 msgstr "X-aren shared memoria estentsioa ez erabili"
 
-#: libgnomeui/gnome-init.c:70
-msgid "NAME"
-msgstr "IZENA"
-
-#: libgnomeui/gnome-init.c:70
+#: libgnomeui/gnome-init.c:96
 msgid "Program name as used by the window manager"
 msgstr "Lehio kudeatzaileak erabilitako programaren izenaren bezalakoa"
 
-#: libgnomeui/gnome-init.c:73
-msgid "CLASS"
-msgstr "MOTA"
+#: libgnomeui/gnome-init.c:96
+msgid "NAME"
+msgstr "IZENA"
 
-#: libgnomeui/gnome-init.c:73
+#: libgnomeui/gnome-init.c:99
 msgid "Program class as used by the window manager"
 msgstr "Lehio kudeatzaileak erabilitako programa motaren bezalakoa"
 
-#: libgnomeui/gnome-init.c:76
+#: libgnomeui/gnome-init.c:99
+msgid "CLASS"
+msgstr "MOTA"
+
+#: libgnomeui/gnome-init.c:102
 msgid "HOST"
 msgstr "HARTZAILE"
 
-#: libgnomeui/gnome-init.c:79
+#: libgnomeui/gnome-init.c:105
 msgid "PORT"
 msgstr "KAI"
 
-#: libgnomeui/gnome-init.c:82 libgnomeui/gnome-init.c:85
+#: libgnomeui/gnome-init.c:108 libgnomeui/gnome-init.c:111
 msgid "STYLE"
 msgstr "ESTILOA"
 
-#: libgnomeui/gnome-init.c:88
+#: libgnomeui/gnome-init.c:114
 msgid "Gtk+ debugging flags to set"
 msgstr "Gtk+-ren"
 
-#: libgnomeui/gnome-init.c:91
+#: libgnomeui/gnome-init.c:117
 msgid "Gtk+ debugging flags to unset"
 msgstr "Gtk-ren frogaketa ikurrak ezarriz"
 
-#: libgnomeui/gnome-init.c:94
+#: libgnomeui/gnome-init.c:120
 msgid "Make all warnings fatal"
 msgstr "Ohar guztiak larriak egin"
 
-#: libgnomeui/gnome-init.c:97
+#: libgnomeui/gnome-init.c:123
 msgid "Load an additional Gtk module"
 msgstr "Gtk modulu gehigarria gehitu"
 
-#: libgnomeui/gnome-init.c:97
+#: libgnomeui/gnome-init.c:123
 msgid "MODULE"
 msgstr "MODULU"
 
 #. dialog display isn't working out
-#: libgnomeui/gnome-init.c:438
+#: libgnomeui/gnome-init.c:464
 msgid "Multiple segmentation faults occurred; can't display error dialog\n"
 msgstr ""
 
-#: libgnomeui/gnome-messagebox.c:133
+#: libgnomeui/gnome-messagebox.c:137
 msgid "Information"
 msgstr "Argibidea"
 
-#: libgnomeui/gnome-messagebox.c:142
+#: libgnomeui/gnome-messagebox.c:146
 msgid "Warning"
 msgstr "Kontuz"
 
-#: libgnomeui/gnome-messagebox.c:151
+#: libgnomeui/gnome-messagebox.c:155
 msgid "Error"
 msgstr "Okerra"
 
-#: libgnomeui/gnome-messagebox.c:160
+#: libgnomeui/gnome-messagebox.c:164
 msgid "Question"
 msgstr "Galdera"
 
-#: libgnomeui/gnome-messagebox.c:169
+#: libgnomeui/gnome-messagebox.c:173
 msgid "Message"
 msgstr "Mensajea"
 
-#: libgnomeui/gnome-number-entry.c:154
+#: libgnomeui/gnome-number-entry.c:177
 msgid "Calculator"
 msgstr "Kalkulagailua"
 
-#: libgnomeui/gnome-number-entry.c:210
+#: libgnomeui/gnome-number-entry.c:233
 msgid "Calculator..."
 msgstr "Kalkulagailua..."
 
-#: libgnomeui/gnome-pixmap-entry.c:105 libgnomeui/gnome-pixmap-entry.c:376
+#: libgnomeui/gnome-pixmap-entry.c:128 libgnomeui/gnome-pixmap-entry.c:399
 msgid "No Image"
 msgstr "Irudirik ez"
 
-#: libgnomeui/gnome-popup-help.c:51
+#: libgnomeui/gnome-popup-help.c:56
 msgid "_Help with this"
 msgstr "_Lagundu"
 
-#: libgnomeui/gnome-popup-help.c:57
+#: libgnomeui/gnome-popup-help.c:62
 msgid "Cu_t"
 msgstr "_Ebaki"
 
-#: libgnomeui/gnome-property-entries.c:254
+#: libgnomeui/gnome-property-entries.c:258
 msgid "Select"
 msgstr "Aukeratu"
 
-#: libgnomeui/gnome-scores.c:88
+#: libgnomeui/gnome-scores.c:112
 msgid "Top Ten"
 msgstr "Hamar lehenak"
 
-#: libgnomeui/gnome-scores.c:99
+#: libgnomeui/gnome-scores.c:123
 msgid "User"
 msgstr "Erabiltzailea"
 
-#: libgnomeui/gnome-scores.c:102
+#: libgnomeui/gnome-scores.c:126
 msgid "Score"
 msgstr "Tantoak"
 
-#: libgnomeui/gnome-scores.c:105
+#: libgnomeui/gnome-scores.c:129
 msgid "Date"
 msgstr "Data"
 
@@ -929,15 +909,15 @@ msgstr "Data"
 #. %d is day of month, %m is month number, %T full hour,
 #. %H hours, %M minutes, %S seconds
 #.
-#: libgnomeui/gnome-scores.c:131
+#: libgnomeui/gnome-scores.c:155
 msgid "%a %b %d %T %Y"
 msgstr ""
 
-#: libgnomeui/gnome-spell.c:196
+#: libgnomeui/gnome-spell.c:199
 msgid "Select dictionary"
 msgstr "Aukeratu hiztegia"
 
-#: libgnomeui/gnome-spell.c:243
+#: libgnomeui/gnome-spell.c:246
 #, c-format
 msgid ""
 "The word `%s'\n"
@@ -948,31 +928,31 @@ msgstr ""
 " hitzaez dago hiztegian.\n"
 "Halaere jarraitu?"
 
-#: libgnomeui/gnome-spell.c:247
+#: libgnomeui/gnome-spell.c:250
 msgid "Confirm"
 msgstr "Baieztatu"
 
-#: libgnomeui/gnome-spell.c:256 libgnomeui/gnome-stock.c:651
+#: libgnomeui/gnome-spell.c:259 libgnomeui/gnome-stock.c:653
 msgid "OK"
 msgstr "Ados"
 
-#: libgnomeui/gnome-spell.c:263 libgnomeui/gnome-stock.c:653
+#: libgnomeui/gnome-spell.c:266 libgnomeui/gnome-stock.c:655
 msgid "Cancel"
 msgstr "Ezeztatu"
 
-#: libgnomeui/gnome-spell.c:525
+#: libgnomeui/gnome-spell.c:528
 msgid "Word:"
 msgstr "Hitza:"
 
-#: libgnomeui/gnome-spell.c:542
+#: libgnomeui/gnome-spell.c:545
 msgid "Alternatives:"
 msgstr "Aukerak:"
 
-#: libgnomeui/gnome-spell.c:561
+#: libgnomeui/gnome-spell.c:564
 msgid "Accept"
 msgstr "Onartu"
 
-#: libgnomeui/gnome-spell.c:566
+#: libgnomeui/gnome-spell.c:569
 msgid ""
 "Accept the word for\n"
 "this session only"
@@ -980,11 +960,11 @@ msgstr ""
 "Hitza onartu \n"
 "bakarrik sesio honetarako"
 
-#: libgnomeui/gnome-spell.c:568
+#: libgnomeui/gnome-spell.c:571
 msgid "Skip"
 msgstr "Ahaztu"
 
-#: libgnomeui/gnome-spell.c:573
+#: libgnomeui/gnome-spell.c:576
 msgid ""
 "Ignore this word\n"
 "this time only"
@@ -992,19 +972,19 @@ msgstr ""
 "Ezikusiarena egin\n"
 "bakarrik oraingoz"
 
-#: libgnomeui/gnome-spell.c:575
+#: libgnomeui/gnome-spell.c:578
 msgid "Replace"
 msgstr "aldatu"
 
-#: libgnomeui/gnome-spell.c:580
+#: libgnomeui/gnome-spell.c:583
 msgid "Replace the word"
 msgstr "Aldatu hitza"
 
-#: libgnomeui/gnome-spell.c:582
+#: libgnomeui/gnome-spell.c:585
 msgid "Insert"
 msgstr "Sartu"
 
-#: libgnomeui/gnome-spell.c:587
+#: libgnomeui/gnome-spell.c:590
 msgid ""
 "Insert the word\n"
 "in your personal dictionary"
@@ -1012,11 +992,11 @@ msgstr ""
 "Sartu hitza\n"
 "norberaren hiztegian"
 
-#: libgnomeui/gnome-spell.c:589
+#: libgnomeui/gnome-spell.c:592
 msgid "Insert with case"
 msgstr "Sartu idazkerarekin"
 
-#: libgnomeui/gnome-spell.c:595
+#: libgnomeui/gnome-spell.c:598
 msgid ""
 "Insert the word\n"
 "in your personal dictionary\n"
@@ -1028,143 +1008,143 @@ msgstr ""
 "(hizkera bitxirik badu\n"
 "gorde ezaugarriok)"
 
-#: libgnomeui/gnome-spell.c:610
+#: libgnomeui/gnome-spell.c:613
 msgid "Ispell command:"
 msgstr "Idazkera komandoa:"
 
-#: libgnomeui/gnome-spell.c:628
+#: libgnomeui/gnome-spell.c:631
 msgid "Main dictionary:"
 msgstr "Hiztegi Nagusia:"
 
-#: libgnomeui/gnome-spell.c:645
+#: libgnomeui/gnome-spell.c:648
 msgid "Personal dictionary:"
 msgstr "Norberaren hiztegia:"
 
-#: libgnomeui/gnome-spell.c:662
+#: libgnomeui/gnome-spell.c:665
 msgid "Valid chars in words:"
 msgstr "Hitzek izan ditzazketen hizkiak:"
 
-#: libgnomeui/gnome-spell.c:673
+#: libgnomeui/gnome-spell.c:676
 msgid "Check words longer than:"
 msgstr "Hau baino luzeagoak begiratu:"
 
-#: libgnomeui/gnome-spell.c:684
+#: libgnomeui/gnome-spell.c:687
 msgid "Sort by correctness"
 msgstr "Zuzentasunarekiko ordenatu"
 
-#: libgnomeui/gnome-spell.c:692
+#: libgnomeui/gnome-spell.c:695
 msgid "Accept run-together words"
 msgstr "Onartu hitz loturak"
 
-#: libgnomeui/gnome-spell.c:702
+#: libgnomeui/gnome-spell.c:705
 msgid "Discard accepted words on kill"
 msgstr "Etena ematekotan onartutako hitzak ez gorde"
 
-#: libgnomeui/gnome-spell.c:710
+#: libgnomeui/gnome-spell.c:713
 msgid "Enable tooltips"
 msgstr "Baimendu tresnak"
 
-#: libgnomeui/gnome-spell.c:724
+#: libgnomeui/gnome-spell.c:727
 msgid "Kill ispell process"
 msgstr "Zuzenketa eten"
 
-#: libgnomeui/gnome-spell.c:750
+#: libgnomeui/gnome-spell.c:753
 msgid "Spell"
 msgstr "Idazkera zuzendu"
 
-#: libgnomeui/gnome-spell.c:757
+#: libgnomeui/gnome-spell.c:760
 msgid "Configure"
 msgstr "Konfiguratu"
 
-#: libgnomeui/gnome-stock.c:639
+#: libgnomeui/gnome-stock.c:641
 msgid "Add"
 msgstr "Gehitu"
 
-#: libgnomeui/gnome-stock.c:640
+#: libgnomeui/gnome-stock.c:642
 msgid "Clear"
 msgstr "Garbitu"
 
-#: libgnomeui/gnome-stock.c:641
+#: libgnomeui/gnome-stock.c:643
 msgid "Select Color"
 msgstr "Kolorea Aukeratu"
 
-#: libgnomeui/gnome-stock.c:643
+#: libgnomeui/gnome-stock.c:645
 msgid "Table Borders"
 msgstr "Taularen mugak"
 
-#: libgnomeui/gnome-stock.c:644
+#: libgnomeui/gnome-stock.c:646
 msgid "Table Fill"
 msgstr "Taula bete"
 
-#: libgnomeui/gnome-stock.c:645
+#: libgnomeui/gnome-stock.c:647
 msgid "Bulleted List"
 msgstr "Zerrenda bolatxoekin"
 
-#: libgnomeui/gnome-stock.c:646
+#: libgnomeui/gnome-stock.c:648
 msgid "Numbered List"
 msgstr "Zerrenda zenbakiekin"
 
-#: libgnomeui/gnome-stock.c:647
+#: libgnomeui/gnome-stock.c:649
 msgid "Indent"
 msgstr "Indentatu"
 
-#: libgnomeui/gnome-stock.c:648
+#: libgnomeui/gnome-stock.c:650
 msgid "Un-Indent"
 msgstr "Ez indentatu"
 
-#: libgnomeui/gnome-stock.c:652
+#: libgnomeui/gnome-stock.c:654
 msgid "Apply"
 msgstr "Ezarri"
 
-#: libgnomeui/gnome-stock.c:654 libgnomeui/stock_demo.c:144
+#: libgnomeui/gnome-stock.c:656 libgnomeui/stock_demo.c:169
 msgid "Close"
 msgstr "Itxi"
 
-#: libgnomeui/gnome-stock.c:655
+#: libgnomeui/gnome-stock.c:657
 msgid "Yes"
 msgstr "Bai"
 
-#: libgnomeui/gnome-stock.c:656
+#: libgnomeui/gnome-stock.c:658
 msgid "No"
 msgstr "Ez"
 
-#: libgnomeui/gnome-stock.c:657 libgnomeui/stock_demo.c:290
+#: libgnomeui/gnome-stock.c:659 libgnomeui/stock_demo.c:315
 msgid "Help"
 msgstr "Laguntza"
 
-#: libgnomeui/gnome-stock.c:658
+#: libgnomeui/gnome-stock.c:660
 msgid "Next"
 msgstr "Hurrengoa"
 
-#: libgnomeui/gnome-stock.c:659
+#: libgnomeui/gnome-stock.c:661
 msgid "Prev"
 msgstr "Aurrekoa"
 
-#: libgnomeui/gnome-stock.c:660
+#: libgnomeui/gnome-stock.c:662
 msgid "Up"
 msgstr "Gora"
 
-#: libgnomeui/gnome-stock.c:661
+#: libgnomeui/gnome-stock.c:663
 msgid "Down"
 msgstr "Behera"
 
-#: libgnomeui/gnome-stock.c:1424
+#: libgnomeui/gnome-stock.c:1426
 msgid "Menu Accelerator Keys"
 msgstr "Giltzen abiaduraren menua"
 
-#: libgnomeui/gnome-stock.c:1426
+#: libgnomeui/gnome-stock.c:1428
 msgid "Global"
 msgstr "Globala"
 
-#: libgnomeui/gnome-stock.c:1428
+#: libgnomeui/gnome-stock.c:1430
 msgid "Menu Item"
 msgstr "enuaren item"
 
-#: libgnomeui/gnome-stock.c:1429
+#: libgnomeui/gnome-stock.c:1431
 msgid "Accelerator"
 msgstr "Azkarrarazlea"
 
-#: libgnomeui/gnome_segv.c:58
+#: libgnomeui/gnome_segv.c:81
 #, c-format
 msgid ""
 "The GNOME Session Manager (process %d) has crashed\n"
@@ -1174,7 +1154,7 @@ msgid ""
 "Please save all your files before closing this dialog."
 msgstr ""
 
-#: libgnomeui/gnome_segv.c:64
+#: libgnomeui/gnome_segv.c:87
 #, c-format
 msgid ""
 "Application \"%s\" (process %d) has crashed\n"
@@ -1182,100 +1162,100 @@ msgid ""
 "(%s)"
 msgstr ""
 
-#: libgnomeui/gnome_segv.c:72
+#: libgnomeui/gnome_segv.c:95
 msgid "Usage: gnome_segv appname signum\n"
 msgstr ""
 
-#: libgnomeui/gnome_segv.c:86
+#: libgnomeui/gnome_segv.c:109
 msgid "Submit a bug report"
 msgstr ""
 
-#: libgnomeui/gnome_segv.c:92
+#: libgnomeui/gnome_segv.c:115
 msgid "http://www.gnome.org/application_crashed.shtml"
 msgstr ""
 
-#: libgnomeui/gnome_segv.c:98
+#: libgnomeui/gnome_segv.c:121
 msgid "Please visit the GNOME Application Crash page for more information"
 msgstr ""
 
-#: libgnomeui/stock_demo.c:112
+#: libgnomeui/stock_demo.c:137
 msgid "New..."
 msgstr "Berria..."
 
-#: libgnomeui/stock_demo.c:120
+#: libgnomeui/stock_demo.c:145
 msgid "Open..."
 msgstr "Ireki..."
 
-#: libgnomeui/stock_demo.c:128
+#: libgnomeui/stock_demo.c:153
 msgid "Save"
 msgstr "Gorde"
 
-#: libgnomeui/stock_demo.c:136
+#: libgnomeui/stock_demo.c:161
 msgid "Save as..."
 msgstr "Gorde honela..."
 
-#: libgnomeui/stock_demo.c:156
+#: libgnomeui/stock_demo.c:181
 msgid "Print..."
 msgstr "Inprimatu..."
 
-#: libgnomeui/stock_demo.c:164
+#: libgnomeui/stock_demo.c:189
 msgid "Setup Page..."
 msgstr "Orriaren aukerak..."
 
-#: libgnomeui/stock_demo.c:173
+#: libgnomeui/stock_demo.c:198
 msgid "Quit"
 msgstr "Atera"
 
-#: libgnomeui/stock_demo.c:184
+#: libgnomeui/stock_demo.c:209
 msgid "File"
 msgstr "Fitxategia"
 
-#: libgnomeui/stock_demo.c:191
+#: libgnomeui/stock_demo.c:216
 msgid "Undo"
 msgstr "Desegin"
 
-#: libgnomeui/stock_demo.c:199
+#: libgnomeui/stock_demo.c:224
 msgid "Redo"
 msgstr "Berregin"
 
-#: libgnomeui/stock_demo.c:208
+#: libgnomeui/stock_demo.c:233
 msgid "Delete"
 msgstr "Ezabatu"
 
-#: libgnomeui/stock_demo.c:213
+#: libgnomeui/stock_demo.c:238
 msgid "Cut"
 msgstr "Ebaki"
 
-#: libgnomeui/stock_demo.c:221
+#: libgnomeui/stock_demo.c:246
 msgid "Copy"
 msgstr "Copiatu"
 
-#: libgnomeui/stock_demo.c:229
+#: libgnomeui/stock_demo.c:254
 msgid "Paste"
 msgstr "Itsatsi"
 
-#: libgnomeui/stock_demo.c:241
+#: libgnomeui/stock_demo.c:266
 msgid "Properties..."
 msgstr "Ezaugarriak..."
 
-#: libgnomeui/stock_demo.c:251
+#: libgnomeui/stock_demo.c:276
 msgid "Preferences..."
 msgstr "Aukerak..."
 
-#: libgnomeui/stock_demo.c:266
+#: libgnomeui/stock_demo.c:291
 msgid "Scores..."
 msgstr "Tantoak..."
 
-#: libgnomeui/stock_demo.c:274
+#: libgnomeui/stock_demo.c:299
 msgid "Edit"
 msgstr "Argitaratu"
 
 #: libgnomeui/winhints_demo.c:46
-msgid "winhints-test"
+msgid "wmhints-test"
 msgstr "wmhints-test"
 
 #: libgnomeui/winhints_demo.c:46
-msgid "wmhints-test"
+msgid "winhints-test"
 msgstr "wmhints-test"
 
 #: libgnomeui/winhints_demo.c:71
@@ -1510,6 +1490,21 @@ msgstr "Zenbaki okerra deia egiterakoan"
 #, fuzzy
 msgid "Test GNOME"
 msgstr "Kaixo GNOME"
+
+#~ msgid "CONFIG-PATH"
+#~ msgstr "CONFIG-PATH"
+
+#~ msgid "Get config entry"
+#~ msgstr "Sarrera konfigurazioa lortu"
+
+#~ msgid "get"
+#~ msgstr "lortu"
+
+#~ msgid "Set config entry"
+#~ msgstr "Ezarri sarrera konfigurazioa"
+
+#~ msgid "set"
+#~ msgstr "ezarri"
 
 #~ msgid "Guru-in-a-dialog test"
 #~ msgstr "Gurua hizketa testuan"

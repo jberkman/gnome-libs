@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-libs VERSION\n"
-"POT-Creation-Date: 1999-10-06 21:34+0100\n"
+"POT-Creation-Date: 2000-02-21 18:12-0500\n"
 "PO-Revision-Date: 1999-11-24 19:15+0100\n"
 "Last-Translator: Shooby Ban <bansz@szif.hu>\n"
 "Language-Team: Hungarian <hu@li.org>\n"
@@ -13,205 +13,173 @@ msgstr ""
 "Content-Type: text/plain; charset=iso-8859-2\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: libgnome/gconfigger.c:32
-msgid "get"
+#: libgnome/gnomelib-init.c:176 libgnome/gnomelib-init.c:190
+#, c-format
+msgid "Could not create per-user gnome configuration directory `%s': %s\n"
 msgstr ""
 
-#: libgnome/gconfigger.c:32
-msgid "Get config entry"
-msgstr "Beállítás lekérdezése"
-
-#: libgnome/gconfigger.c:32 libgnome/gconfigger.c:33
-msgid "CONFIG-PATH"
-msgstr ""
-
-#: libgnome/gconfigger.c:33
-msgid "set"
-msgstr ""
-
-#: libgnome/gconfigger.c:33
-msgid "Set config entry"
-msgstr "Beállítás"
-
-#: libgnome/gnome-popt.c:90
+#: libgnome/gnomelib-init.c:199
 #, c-format
 msgid ""
-"Error on option %s: %s.\n"
-"Run '%s --help' to see a full list of available command line options.\n"
+"Could not set mode 0700 on private per-user gnome configuration directory "
+"`%s': %s\n"
 msgstr ""
-"Hiba a %s opciónál: %s\n"
-"Futtasd a '%s --help' parancsot a parancssori opciók megtudásához.\n"
 
-#: libgnome/gnomelib-init.c:130
-msgid "Disable sound server usage"
-msgstr "Hangok (ESD) tiltása"
+#: libgnome/gnomelib-init.c:206
+#, c-format
+msgid "Could not create gnome accelerators directory `%s': %s\n"
+msgstr ""
 
-#: libgnome/gnomelib-init.c:132
-msgid "Enable sound server usage"
-msgstr "Hangok (ESD) engedélyezése"
-
-#: libgnome/gnomelib-init.c:134
-msgid "Host:port on which the sound server to use is running"
-msgstr "Szerver:port ahol az ESD (ESound Server) fut"
-
-#: libgnome/gnomelib-init.c:135
-msgid "HOSTNAME:PORT"
-msgstr "SZERVER:PORT"
-
-#: libgnome/gnomelib-init.c:144
-msgid "GNOME Options"
-msgstr "GNOME opciók"
-
-#: libgnomeui/gnome-about.c:187
+#: libgnomeui/gnome-about.c:320
 msgid "Author:"
 msgstr "Szerzõ:"
 
-#: libgnomeui/gnome-about.c:189 libgnomeui/gnome-about.c:191
+#: libgnomeui/gnome-about.c:323 libgnomeui/gnome-about.c:325
 msgid "Authors:"
 msgstr "Szerzõk:"
 
-#: libgnomeui/gnome-about.c:352
+#: libgnomeui/gnome-about.c:630
 msgid "Authors: "
 msgstr "Szerzõk: "
 
-#: libgnomeui/gnome-about.c:590 libgnomeui/stock_demo.c:282
+#: libgnomeui/gnome-about.c:971 libgnomeui/stock_demo.c:307
 #: libgnomeui/winhints_demo.c:256
 msgid "About"
 msgstr "Névjegy"
 
-#: libgnomeui/gnome-app-helper.c:78
+#: libgnomeui/gnome-app-helper.c:74
 msgid "_File"
 msgstr "_Fájl"
 
-#: libgnomeui/gnome-app-helper.c:79
+#: libgnomeui/gnome-app-helper.c:75
 msgid "_File/"
 msgstr "_Fájl/"
 
-#: libgnomeui/gnome-app-helper.c:80
+#: libgnomeui/gnome-app-helper.c:76
 msgid "_Edit"
 msgstr "_Szerkesztés"
 
-#: libgnomeui/gnome-app-helper.c:81
+#: libgnomeui/gnome-app-helper.c:77
 msgid "_Edit/"
 msgstr "_Szerkesztés/"
 
-#: libgnomeui/gnome-app-helper.c:82
+#: libgnomeui/gnome-app-helper.c:78
 msgid "_View"
 msgstr "_Nézet"
 
-#: libgnomeui/gnome-app-helper.c:83
+#: libgnomeui/gnome-app-helper.c:79
 msgid "_View/"
 msgstr "_Nézet/"
 
-#: libgnomeui/gnome-app-helper.c:84
+#: libgnomeui/gnome-app-helper.c:80
 msgid "_Settings"
 msgstr "_Beállítások"
 
-#: libgnomeui/gnome-app-helper.c:85
+#: libgnomeui/gnome-app-helper.c:81
 msgid "_Settings/"
 msgstr "_Beállítások/"
 
-#: libgnomeui/gnome-app-helper.c:86
+#: libgnomeui/gnome-app-helper.c:82
 msgid "_New"
 msgstr "Ú_j"
 
-#: libgnomeui/gnome-app-helper.c:87
+#: libgnomeui/gnome-app-helper.c:83
 msgid "_New/"
 msgstr "Ú_j/"
 
-#: libgnomeui/gnome-app-helper.c:88
+#: libgnomeui/gnome-app-helper.c:84
 msgid "Fi_les"
 msgstr "Fá_ljok"
 
-#: libgnomeui/gnome-app-helper.c:89
+#: libgnomeui/gnome-app-helper.c:85
 msgid "Fi_les/"
 msgstr "Fá_ljok/"
 
-#: libgnomeui/gnome-app-helper.c:90
+#: libgnomeui/gnome-app-helper.c:86
 msgid "_Windows"
 msgstr "_Ablakok"
 
-#: libgnomeui/gnome-app-helper.c:91
+#: libgnomeui/gnome-app-helper.c:87
 msgid "_Game"
 msgstr "_Játék"
 
-#: libgnomeui/gnome-app-helper.c:92
+#: libgnomeui/gnome-app-helper.c:88
 msgid "_Help"
 msgstr "_Súgó"
 
-#: libgnomeui/gnome-app-helper.c:93
+#: libgnomeui/gnome-app-helper.c:89
 msgid "_Windows/"
 msgstr "_Ablakok/"
 
 #. Open
-#: libgnomeui/gnome-app-helper.c:105
+#: libgnomeui/gnome-app-helper.c:101
 msgid "_Open..."
 msgstr "_Megnyit..."
 
-#: libgnomeui/gnome-app-helper.c:105
+#: libgnomeui/gnome-app-helper.c:101
 msgid "Open a file"
 msgstr "Megnyit egy fájlt"
 
 #. Save
-#: libgnomeui/gnome-app-helper.c:110
+#: libgnomeui/gnome-app-helper.c:106
 msgid "_Save"
 msgstr "M_ent"
 
-#: libgnomeui/gnome-app-helper.c:110
+#: libgnomeui/gnome-app-helper.c:106
 msgid "Save the current file"
 msgstr "Elmenti az aktuális fájlt"
 
 #. Save As
-#: libgnomeui/gnome-app-helper.c:115
+#: libgnomeui/gnome-app-helper.c:111
 msgid "Save _As..."
 msgstr "Ment m_int..."
 
-#: libgnomeui/gnome-app-helper.c:116
+#: libgnomeui/gnome-app-helper.c:112
 msgid "Save the current file with a different name"
 msgstr "Elmenti az aktuális fájlt más néven"
 
 #. Revert
-#: libgnomeui/gnome-app-helper.c:121
+#: libgnomeui/gnome-app-helper.c:117
 msgid "_Revert"
 msgstr "_Visszaállít"
 
-#: libgnomeui/gnome-app-helper.c:122
+#: libgnomeui/gnome-app-helper.c:118
 msgid "Revert to a saved version of the file"
 msgstr "Visszaállítja a fájl elmentett változatát"
 
 #. Print
-#: libgnomeui/gnome-app-helper.c:127
+#: libgnomeui/gnome-app-helper.c:123
 msgid "_Print"
 msgstr "_Nyomtat..."
 
-#: libgnomeui/gnome-app-helper.c:127
+#: libgnomeui/gnome-app-helper.c:123
 msgid "Print the current file"
 msgstr "Kinyomtatja az aktuális fájlt"
 
 #. Print Setup
-#: libgnomeui/gnome-app-helper.c:132
+#: libgnomeui/gnome-app-helper.c:128
 msgid "Print S_etup..."
 msgstr "Ny_omtatás beállítása..."
 
-#: libgnomeui/gnome-app-helper.c:133
+#: libgnomeui/gnome-app-helper.c:129
 msgid "Setup the page settings for your current printer"
 msgstr "Lapbeállítás az aktuális nyomtatóhoz"
 
 #. Close
-#: libgnomeui/gnome-app-helper.c:138
+#: libgnomeui/gnome-app-helper.c:134
 msgid "_Close"
 msgstr "_Bezár"
 
-#: libgnomeui/gnome-app-helper.c:138
+#: libgnomeui/gnome-app-helper.c:134
 msgid "Close the current file"
 msgstr "Az aktuális fájl bezárása"
 
 #. Exit
-#: libgnomeui/gnome-app-helper.c:143
+#: libgnomeui/gnome-app-helper.c:139
 msgid "E_xit"
 msgstr "_Kilépés"
 
-#: libgnomeui/gnome-app-helper.c:143
+#: libgnomeui/gnome-app-helper.c:139
 msgid "Exit the program"
 msgstr "Kilépés a programból"
 
@@ -219,93 +187,93 @@ msgstr "Kilépés a programból"
 #. * The "Edit" menu
 #.
 #. Cut
-#: libgnomeui/gnome-app-helper.c:151
+#: libgnomeui/gnome-app-helper.c:147
 msgid "C_ut"
 msgstr "_Kivág"
 
-#: libgnomeui/gnome-app-helper.c:151
+#: libgnomeui/gnome-app-helper.c:147
 msgid "Cut the selection"
 msgstr "Kivágja a kijelölt részt"
 
 #. 10
 #. Copy
-#: libgnomeui/gnome-app-helper.c:157 libgnomeui/gnome-popup-help.c:59
+#: libgnomeui/gnome-app-helper.c:153 libgnomeui/gnome-popup-help.c:64
 msgid "_Copy"
 msgstr "_Másol"
 
-#: libgnomeui/gnome-app-helper.c:157
+#: libgnomeui/gnome-app-helper.c:153
 msgid "Copy the selection"
 msgstr "Másolja a kijelölt részt"
 
 #. Paste
-#: libgnomeui/gnome-app-helper.c:162 libgnomeui/gnome-popup-help.c:61
+#: libgnomeui/gnome-app-helper.c:158 libgnomeui/gnome-popup-help.c:66
 msgid "_Paste"
 msgstr "_Beilleszt"
 
-#: libgnomeui/gnome-app-helper.c:162
+#: libgnomeui/gnome-app-helper.c:158
 msgid "Paste the clipboard"
 msgstr "Beilleszti a vágólap tartalmát"
 
 #. Clear
-#: libgnomeui/gnome-app-helper.c:167
+#: libgnomeui/gnome-app-helper.c:163
 msgid "C_lear"
 msgstr "_Töröl"
 
-#: libgnomeui/gnome-app-helper.c:167
+#: libgnomeui/gnome-app-helper.c:163
 msgid "Clear the selection"
 msgstr "Törli a kijelölt részt"
 
 #. Undo
-#: libgnomeui/gnome-app-helper.c:172
+#: libgnomeui/gnome-app-helper.c:168
 msgid "_Undo"
 msgstr "_Visszavon"
 
-#: libgnomeui/gnome-app-helper.c:172
+#: libgnomeui/gnome-app-helper.c:168
 msgid "Undo the last action"
 msgstr "Az utolsó mûvelet visszavonása"
 
 #. Redo
-#: libgnomeui/gnome-app-helper.c:177
+#: libgnomeui/gnome-app-helper.c:173
 msgid "_Redo"
 msgstr "Ú_jra"
 
-#: libgnomeui/gnome-app-helper.c:177
+#: libgnomeui/gnome-app-helper.c:173
 msgid "Redo the undone action"
 msgstr "A visszavont mûvelet végrehajtása"
 
 #. Find
-#: libgnomeui/gnome-app-helper.c:182
+#: libgnomeui/gnome-app-helper.c:178
 msgid "_Find..."
 msgstr "_Keres..."
 
-#: libgnomeui/gnome-app-helper.c:182
+#: libgnomeui/gnome-app-helper.c:178
 msgid "Search for a string"
 msgstr "Egy szöveget keres"
 
 #. Find Again
-#: libgnomeui/gnome-app-helper.c:187
+#: libgnomeui/gnome-app-helper.c:183
 msgid "Find _Again"
 msgstr "T_ovább keres"
 
-#: libgnomeui/gnome-app-helper.c:188
+#: libgnomeui/gnome-app-helper.c:184
 msgid "Search again for the same string"
 msgstr "A megadott szöveget tovább keresi"
 
 #. Replace
-#: libgnomeui/gnome-app-helper.c:193
+#: libgnomeui/gnome-app-helper.c:189
 msgid "_Replace..."
 msgstr "K_icserél..."
 
-#: libgnomeui/gnome-app-helper.c:193
+#: libgnomeui/gnome-app-helper.c:189
 msgid "Replace a string"
 msgstr "Kicserél egy szövegrészletet egy másikra"
 
 #. Properties
-#: libgnomeui/gnome-app-helper.c:198
+#: libgnomeui/gnome-app-helper.c:194
 msgid "_Properties..."
 msgstr "_Tulajdonságok..."
 
-#: libgnomeui/gnome-app-helper.c:199
+#: libgnomeui/gnome-app-helper.c:195
 msgid "Modify the file's properties"
 msgstr "Tulajdonságok módosítása"
 
@@ -313,11 +281,11 @@ msgstr "Tulajdonságok módosítása"
 #. * The Settings menu
 #.
 #. Settings
-#: libgnomeui/gnome-app-helper.c:207
+#: libgnomeui/gnome-app-helper.c:203
 msgid "_Preferences..."
 msgstr "_Beállítások..."
 
-#: libgnomeui/gnome-app-helper.c:208
+#: libgnomeui/gnome-app-helper.c:204
 msgid "Configure the application"
 msgstr "A program beállításai"
 
@@ -326,607 +294,608 @@ msgstr "A program beállításai"
 #. * And the "Help" menu
 #.
 #. About
-#: libgnomeui/gnome-app-helper.c:217
-msgid "_About..."
-msgstr "_Névjegy..."
+#: libgnomeui/gnome-app-helper.c:213
+#, fuzzy
+msgid "_About"
+msgstr "Névjegy"
 
-#: libgnomeui/gnome-app-helper.c:218
+#: libgnomeui/gnome-app-helper.c:214
 msgid "About this application"
 msgstr "A program készítõirõl"
 
-#: libgnomeui/gnome-app-helper.c:221
+#: libgnomeui/gnome-app-helper.c:217
 msgid "_Select All"
 msgstr "Mi_ndent kijelöl"
 
-#: libgnomeui/gnome-app-helper.c:222
+#: libgnomeui/gnome-app-helper.c:218
 msgid "Select everything"
 msgstr "Mindent kijelöl"
 
 #.
 #. * Window menu
 #.
-#: libgnomeui/gnome-app-helper.c:230
+#: libgnomeui/gnome-app-helper.c:226
 msgid "Create New _Window"
 msgstr "Új ab_lak"
 
-#: libgnomeui/gnome-app-helper.c:231
+#: libgnomeui/gnome-app-helper.c:227
 msgid "Create a new window"
 msgstr "Egy új ablak nyitása"
 
-#: libgnomeui/gnome-app-helper.c:235
+#: libgnomeui/gnome-app-helper.c:231
 msgid "_Close This Window"
 msgstr "A_blak bezárása"
 
-#: libgnomeui/gnome-app-helper.c:236
+#: libgnomeui/gnome-app-helper.c:232
 msgid "Close the current window"
 msgstr "Bezárja az aktuális ablakot"
 
 #.
 #. * The "Game" menu
 #.
-#: libgnomeui/gnome-app-helper.c:244
+#: libgnomeui/gnome-app-helper.c:240
 msgid "_New game"
 msgstr "Ú_j játék"
 
-#: libgnomeui/gnome-app-helper.c:245
+#: libgnomeui/gnome-app-helper.c:241
 msgid "Start a new game"
 msgstr "Új játék indítása"
 
-#: libgnomeui/gnome-app-helper.c:249
+#: libgnomeui/gnome-app-helper.c:245
 msgid "_Pause game"
 msgstr "_Játék megállítása"
 
-#: libgnomeui/gnome-app-helper.c:250
+#: libgnomeui/gnome-app-helper.c:246
 msgid "Pause the game"
 msgstr "A játék megállítása (pause)"
 
-#: libgnomeui/gnome-app-helper.c:254
+#: libgnomeui/gnome-app-helper.c:250
 msgid "_Restart game"
 msgstr "Újra_kezdés"
 
-#: libgnomeui/gnome-app-helper.c:255
+#: libgnomeui/gnome-app-helper.c:251
 msgid "Restart the game"
 msgstr "A játék újrakezdése"
 
-#: libgnomeui/gnome-app-helper.c:259
+#: libgnomeui/gnome-app-helper.c:255
 msgid "_Undo move"
 msgstr "Lépés _visszavonása"
 
-#: libgnomeui/gnome-app-helper.c:260
+#: libgnomeui/gnome-app-helper.c:256
 msgid "Undo the last move"
 msgstr "Az utolsó lépés visszavonása"
 
-#: libgnomeui/gnome-app-helper.c:264
+#: libgnomeui/gnome-app-helper.c:260
 msgid "_Redo move"
 msgstr "Ú_jralép"
 
-#: libgnomeui/gnome-app-helper.c:265
+#: libgnomeui/gnome-app-helper.c:261
 msgid "Redo the undone move"
 msgstr "A visszavont lépés megtétele"
 
-#: libgnomeui/gnome-app-helper.c:269
+#: libgnomeui/gnome-app-helper.c:265
 msgid "_Hint"
 msgstr "_Tipp"
 
-#: libgnomeui/gnome-app-helper.c:270
+#: libgnomeui/gnome-app-helper.c:266
 msgid "Get a hint for your next move"
 msgstr "A játéktól tanács kérése"
 
 #. 30
-#: libgnomeui/gnome-app-helper.c:275
+#: libgnomeui/gnome-app-helper.c:271
 msgid "_Scores..."
 msgstr "_Pontszámok..."
 
-#: libgnomeui/gnome-app-helper.c:276
+#: libgnomeui/gnome-app-helper.c:272
 msgid "View the scores"
 msgstr "A pontszámok megtekintése"
 
-#: libgnomeui/gnome-app-helper.c:280
+#: libgnomeui/gnome-app-helper.c:276
 msgid "_End game"
 msgstr "Játék _vége"
 
-#: libgnomeui/gnome-app-helper.c:281
+#: libgnomeui/gnome-app-helper.c:277
 msgid "End the current game"
 msgstr "Az aktuális játék megszakítása"
 
-#: libgnomeui/gnome-app-util.c:93
+#: libgnomeui/gnome-app-util.c:99
 msgid " (press return)"
 msgstr " (nyomd meg az enter-t)"
 
-#: libgnomeui/gnome-app-util.c:136
+#: libgnomeui/gnome-app-util.c:142
 msgid "ERROR: "
 msgstr "HIBA: "
 
-#: libgnomeui/gnome-app-util.c:173
+#: libgnomeui/gnome-app-util.c:179
 msgid "Warning: "
 msgstr "Figyelmeztetés: "
 
-#: libgnomeui/gnome-app-util.c:310
+#: libgnomeui/gnome-app-util.c:316
 msgid "y"
 msgstr "i"
 
-#: libgnomeui/gnome-app-util.c:311
+#: libgnomeui/gnome-app-util.c:317
 msgid "yes"
 msgstr "igen"
 
-#: libgnomeui/gnome-app-util.c:314
+#: libgnomeui/gnome-app-util.c:320
 msgid "n"
 msgstr ""
 
-#: libgnomeui/gnome-app-util.c:315
+#: libgnomeui/gnome-app-util.c:321
 msgid "no"
 msgstr "nem"
 
-#: libgnomeui/gnome-app-util.c:354
+#: libgnomeui/gnome-app-util.c:360
 msgid " (yes or no)"
 msgstr " (igen vagy nem)"
 
-#: libgnomeui/gnome-app-util.c:355
+#: libgnomeui/gnome-app-util.c:361
 msgid "  - OK? (yes or no)"
 msgstr " - OK? (igen vagy nem)"
 
-#: libgnomeui/gnome-app-util.c:687
+#: libgnomeui/gnome-app-util.c:693
 msgid "Progress"
 msgstr "Végrehajtás"
 
-#: libgnomeui/gnome-calculator.c:917 libgnomeui/gnome-calculator.c:1061
+#: libgnomeui/gnome-calculator.c:982 libgnomeui/gnome-calculator.c:1132
 msgid "DEG"
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:919
+#: libgnomeui/gnome-calculator.c:984
 msgid "RAD"
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:921
+#: libgnomeui/gnome-calculator.c:986
 msgid "GRAD"
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1051
+#: libgnomeui/gnome-calculator.c:1122
 msgid "1/x"
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1052
+#: libgnomeui/gnome-calculator.c:1123
 msgid "x^2"
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1053
+#: libgnomeui/gnome-calculator.c:1124
 msgid "SQRT"
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1054
+#: libgnomeui/gnome-calculator.c:1125
 msgid "CE/C"
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1055
+#: libgnomeui/gnome-calculator.c:1126
 msgid "AC"
 msgstr ""
 
 #. inverse button
-#: libgnomeui/gnome-calculator.c:1058
+#: libgnomeui/gnome-calculator.c:1129
 msgid "sin"
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1059
+#: libgnomeui/gnome-calculator.c:1130
 msgid "cos"
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1060
+#: libgnomeui/gnome-calculator.c:1131
 msgid "tan"
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1063
+#: libgnomeui/gnome-calculator.c:1134
 msgid "e"
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1064
+#: libgnomeui/gnome-calculator.c:1135
 msgid "EE"
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1065
+#: libgnomeui/gnome-calculator.c:1136
 msgid "log"
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1066
+#: libgnomeui/gnome-calculator.c:1137
 msgid "ln"
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1067
+#: libgnomeui/gnome-calculator.c:1138
 msgid "x^y"
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1069
+#: libgnomeui/gnome-calculator.c:1140
 msgid "PI"
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1070
+#: libgnomeui/gnome-calculator.c:1141
 msgid "x!"
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1071
+#: libgnomeui/gnome-calculator.c:1142
 msgid "("
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1072
+#: libgnomeui/gnome-calculator.c:1143
 msgid ")"
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1073
+#: libgnomeui/gnome-calculator.c:1144
 msgid "/"
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1075
+#: libgnomeui/gnome-calculator.c:1146
 msgid "STO"
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1076
+#: libgnomeui/gnome-calculator.c:1147
 msgid "7"
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1077
+#: libgnomeui/gnome-calculator.c:1148
 msgid "8"
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1078
+#: libgnomeui/gnome-calculator.c:1149
 msgid "9"
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1079
+#: libgnomeui/gnome-calculator.c:1150
 msgid "*"
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1081
+#: libgnomeui/gnome-calculator.c:1152
 msgid "RCL"
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1082
+#: libgnomeui/gnome-calculator.c:1153
 msgid "4"
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1083
+#: libgnomeui/gnome-calculator.c:1154
 msgid "5"
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1084
+#: libgnomeui/gnome-calculator.c:1155
 msgid "6"
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1085
+#: libgnomeui/gnome-calculator.c:1156
 msgid "-"
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1087
+#: libgnomeui/gnome-calculator.c:1158
 msgid "SUM"
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1088
+#: libgnomeui/gnome-calculator.c:1159
 msgid "1"
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1089
+#: libgnomeui/gnome-calculator.c:1160
 msgid "2"
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1090
+#: libgnomeui/gnome-calculator.c:1161
 msgid "3"
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1091
+#: libgnomeui/gnome-calculator.c:1162
 msgid "+"
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1093
+#: libgnomeui/gnome-calculator.c:1164
 msgid "EXC"
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1094
+#: libgnomeui/gnome-calculator.c:1165
 msgid "0"
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1095
+#: libgnomeui/gnome-calculator.c:1166
 msgid "."
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1096
+#: libgnomeui/gnome-calculator.c:1167
 msgid "+/-"
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1097
+#: libgnomeui/gnome-calculator.c:1168
 msgid "="
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1186
+#: libgnomeui/gnome-calculator.c:1237
 msgid "INV"
 msgstr ""
 
-#: libgnomeui/gnome-client.c:828
+#: libgnomeui/gnome-client.c:846
 msgid "Specify session management ID"
 msgstr "Session-kezelõi azonosító megadása"
 
-#: libgnomeui/gnome-client.c:828 libgnorba/goad-browser.c:27
+#: libgnomeui/gnome-client.c:846
 msgid "ID"
 msgstr ""
 
-#: libgnomeui/gnome-client.c:830
+#: libgnomeui/gnome-client.c:849
 msgid "Specify prefix of saved configuration"
 msgstr "Az elmentett konfigurációnak adj meg egy elõtagot"
 
-#: libgnomeui/gnome-client.c:830
+#: libgnomeui/gnome-client.c:849
 msgid "PREFIX"
 msgstr ""
 
-#: libgnomeui/gnome-client.c:832
+#: libgnomeui/gnome-client.c:852
 msgid "Disable connection to session manager"
 msgstr "A feladatvezérlõvel való kapcsolódás tiltása"
 
-#. Register commandline options.
-#: libgnomeui/gnome-client.c:961
-msgid "Session management options"
+#: libgnomeui/gnome-client.c:864
+#, fuzzy
+msgid "Session management"
 msgstr "Feladatvezérlõ opciók"
 
-#: libgnomeui/gnome-client.c:2341
+#: libgnomeui/gnome-client.c:2330
 msgid "Cancel Logout"
 msgstr "Mégsem"
 
-#: libgnomeui/gnome-color-picker.c:314
+#: libgnomeui/gnome-color-picker.c:338
 msgid "Pick a color"
 msgstr "Válassz egy színt"
 
 #. Calendar label, only shown if the date editor has a time field
-#: libgnomeui/gnome-dateedit.c:454
+#: libgnomeui/gnome-dateedit.c:480
 msgid "Calendar"
 msgstr "Naptár"
 
-#: libgnomeui/gnome-dentry-edit.c:180
+#: libgnomeui/gnome-dentry-edit.c:183
 msgid "Name:"
 msgstr "Név:"
 
-#: libgnomeui/gnome-dentry-edit.c:193
+#: libgnomeui/gnome-dentry-edit.c:196
 msgid "Comment:"
 msgstr "Megjegyzés:"
 
-#: libgnomeui/gnome-dentry-edit.c:203
+#: libgnomeui/gnome-dentry-edit.c:206
 msgid "Command:"
 msgstr "Parancs:"
 
-#: libgnomeui/gnome-dentry-edit.c:213
+#: libgnomeui/gnome-dentry-edit.c:216
 msgid "Type:"
 msgstr "Típus:"
 
-#: libgnomeui/gnome-dentry-edit.c:229
+#: libgnomeui/gnome-dentry-edit.c:232
 msgid "Icon:"
 msgstr "Ikon:"
 
-#: libgnomeui/gnome-dentry-edit.c:239
+#: libgnomeui/gnome-dentry-edit.c:242
 msgid "Choose an icon"
 msgstr "Válassz egy ikont"
 
-#: libgnomeui/gnome-dentry-edit.c:252
+#: libgnomeui/gnome-dentry-edit.c:255
 msgid "Run in Terminal"
 msgstr "Terminálban fusson"
 
-#: libgnomeui/gnome-dentry-edit.c:363
+#: libgnomeui/gnome-dentry-edit.c:366
 msgid "Try this before using:"
 msgstr "Próbálja ezt mielõtt futtatja:"
 
-#: libgnomeui/gnome-dentry-edit.c:373
+#: libgnomeui/gnome-dentry-edit.c:376
 msgid "Documentation:"
 msgstr "Dokumentáció:"
 
-#: libgnomeui/gnome-dentry-edit.c:383
+#: libgnomeui/gnome-dentry-edit.c:386
 msgid "Name/Comment translations:"
 msgstr "Név/fordítási megjegyzések:"
 
-#: libgnomeui/gnome-dentry-edit.c:386
+#: libgnomeui/gnome-dentry-edit.c:389
 msgid "Language"
 msgstr "Nyelv"
 
-#: libgnomeui/gnome-dentry-edit.c:387
+#: libgnomeui/gnome-dentry-edit.c:390
 msgid "Name"
 msgstr "Név"
 
-#: libgnomeui/gnome-dentry-edit.c:388
+#: libgnomeui/gnome-dentry-edit.c:391
 msgid "Comment"
 msgstr "Megjegyzés"
 
-#: libgnomeui/gnome-dentry-edit.c:416
+#: libgnomeui/gnome-dentry-edit.c:419
 msgid "Add/Set"
 msgstr "Hozzáad/beállít"
 
-#: libgnomeui/gnome-dentry-edit.c:421 libgnomeui/gnome-stock.c:825
+#: libgnomeui/gnome-dentry-edit.c:424 libgnomeui/gnome-stock.c:644
 msgid "Remove"
 msgstr "Töröl"
 
-#: libgnomeui/gnome-dentry-edit.c:503
+#: libgnomeui/gnome-dentry-edit.c:506
 msgid "Basic"
 msgstr "Alap"
 
-#: libgnomeui/gnome-dentry-edit.c:507
+#: libgnomeui/gnome-dentry-edit.c:510
 msgid "Advanced"
 msgstr "Egyéb"
 
-#: libgnomeui/gnome-druid.c:129
+#: libgnomeui/gnome-druid.c:135
 msgid "Back"
 msgstr "Vissza"
 
-#: libgnomeui/gnome-druid.c:136
+#: libgnomeui/gnome-druid.c:143
 msgid "Finish"
 msgstr "Befejez"
 
-#: libgnomeui/gnome-file-entry.c:151
+#: libgnomeui/gnome-file-entry.c:175
 msgid "Select file"
 msgstr "Válassz egy fájlt"
 
 #. browse button ...
-#: libgnomeui/gnome-file-entry.c:280 libgnomeui/gnome-spell.c:617
-#: libgnomeui/gnome-spell.c:634 libgnomeui/gnome-spell.c:651
+#: libgnomeui/gnome-file-entry.c:304 libgnomeui/gnome-spell.c:620
+#: libgnomeui/gnome-spell.c:637 libgnomeui/gnome-spell.c:654
 msgid "Browse..."
 msgstr "Keresés..."
 
-#: libgnomeui/gnome-font-picker.c:160
+#: libgnomeui/gnome-font-picker.c:161
 msgid "Pick a Font"
 msgstr "Válassz egy betûtípust"
 
-#: libgnomeui/gnome-font-picker.c:706 libgnomeui/gnome-stock.c:845
+#: libgnomeui/gnome-font-picker.c:719 libgnomeui/gnome-stock.c:664
 msgid "Font"
 msgstr "Betûtípus"
 
-#: libgnomeui/gnome-icon-entry.c:111 libgnomeui/gnome-icon-entry.c:556
+#: libgnomeui/gnome-icon-entry.c:157 libgnomeui/gnome-icon-entry.c:612
 msgid "No Icon"
 msgstr ""
 "Nincs\n"
 " ikon"
 
-#: libgnomeui/gnome-icon-entry.c:274 libgnomeui/gnome-pixmap-entry.c:272
+#: libgnomeui/gnome-icon-entry.c:321 libgnomeui/gnome-pixmap-entry.c:296
 msgid "Can't find an hbox, using a normal file selection"
 msgstr "Nem találok hbox-ot, normális fájl kijelölés használata"
 
-#: libgnomeui/gnome-icon-entry.c:280 libgnomeui/gnome-pixmap-entry.c:278
+#: libgnomeui/gnome-icon-entry.c:327 libgnomeui/gnome-pixmap-entry.c:302
 msgid "Preview"
 msgstr "Elõnézet"
 
-#: libgnomeui/gnome-icon-sel.c:337
+#: libgnomeui/gnome-icon-sel.c:338
 msgid "Loading Icons..."
 msgstr "Ikonok töltõdnek..."
 
-#: libgnomeui/gnome-init.c:160
+#: libgnomeui/gnome-init.c:81
 msgid "Gdk debugging flags to set"
 msgstr "Gdk debug-olási flag-k beállítása"
 
-#: libgnomeui/gnome-init.c:160 libgnomeui/gnome-init.c:162
-#: libgnomeui/gnome-init.c:182 libgnomeui/gnome-init.c:184
+#: libgnomeui/gnome-init.c:81 libgnomeui/gnome-init.c:84
+#: libgnomeui/gnome-init.c:114 libgnomeui/gnome-init.c:117
 msgid "FLAGS"
 msgstr ""
 
-#: libgnomeui/gnome-init.c:162
+#: libgnomeui/gnome-init.c:84
 msgid "Gdk debugging flags to unset"
 msgstr "Gdk debug-olási flag-k kivétele"
 
-#: libgnomeui/gnome-init.c:164
+#: libgnomeui/gnome-init.c:87 libgnomeui/gnome-init.c:239
 msgid "X display to use"
 msgstr "Használandó X képernyõ"
 
-#: libgnomeui/gnome-init.c:164
+#: libgnomeui/gnome-init.c:87 libgnomeui/gnome-init.c:239
 msgid "DISPLAY"
 msgstr ""
 
-#: libgnomeui/gnome-init.c:166
+#: libgnomeui/gnome-init.c:90
 msgid "Make X calls synchronous"
 msgstr "X hívások szinkron üzemmódja"
 
-#: libgnomeui/gnome-init.c:168
+#: libgnomeui/gnome-init.c:93
 msgid "Don't use X shared memory extension"
 msgstr "Ne használj X shaded memory extension-t"
 
-#: libgnomeui/gnome-init.c:170
+#: libgnomeui/gnome-init.c:96
 msgid "Program name as used by the window manager"
 msgstr "Program neve, az ablakkezelõ használja"
 
-#: libgnomeui/gnome-init.c:170
+#: libgnomeui/gnome-init.c:96
 msgid "NAME"
 msgstr ""
 
-#: libgnomeui/gnome-init.c:172
+#: libgnomeui/gnome-init.c:99
 msgid "Program class as used by the window manager"
 msgstr "Program osztálya, az ablakkezelõ használja"
 
-#: libgnomeui/gnome-init.c:172
+#: libgnomeui/gnome-init.c:99
 msgid "CLASS"
 msgstr ""
 
-#: libgnomeui/gnome-init.c:174
+#: libgnomeui/gnome-init.c:102
 msgid "HOST"
 msgstr ""
 
-#: libgnomeui/gnome-init.c:176
+#: libgnomeui/gnome-init.c:105
 msgid "PORT"
 msgstr ""
 
-#: libgnomeui/gnome-init.c:178 libgnomeui/gnome-init.c:180
+#: libgnomeui/gnome-init.c:108 libgnomeui/gnome-init.c:111
 msgid "STYLE"
 msgstr ""
 
-#: libgnomeui/gnome-init.c:182
+#: libgnomeui/gnome-init.c:114
 msgid "Gtk+ debugging flags to set"
 msgstr "Bekapcsolt GTK+ hibakeresõ lehetõségek"
 
-#: libgnomeui/gnome-init.c:184
+#: libgnomeui/gnome-init.c:117
 msgid "Gtk+ debugging flags to unset"
 msgstr "Kikapcsolt GTK+ hibakeresõ lehetõségek"
 
-#: libgnomeui/gnome-init.c:186
+#: libgnomeui/gnome-init.c:120
 msgid "Make all warnings fatal"
 msgstr "Minden warning fatálissá tétele"
 
-#: libgnomeui/gnome-init.c:188
+#: libgnomeui/gnome-init.c:123
 msgid "Load an additional Gtk module"
 msgstr "Egy újabb gtk modul betöltése"
 
-#: libgnomeui/gnome-init.c:188
+#: libgnomeui/gnome-init.c:123
 msgid "MODULE"
 msgstr ""
 
 #. dialog display isn't working out
-#: libgnomeui/gnome-init.c:635
+#: libgnomeui/gnome-init.c:464
 msgid "Multiple segmentation faults occurred; can't display error dialog\n"
 msgstr ""
 
-#: libgnomeui/gnome-messagebox.c:111 libgnomeui/gnome-messagebox.c:240
+#: libgnomeui/gnome-messagebox.c:137
 msgid "Information"
 msgstr "Információ"
 
-#: libgnomeui/gnome-messagebox.c:120 libgnomeui/gnome-messagebox.c:249
+#: libgnomeui/gnome-messagebox.c:146
 msgid "Warning"
 msgstr "Figyelmeztetés"
 
-#: libgnomeui/gnome-messagebox.c:129 libgnomeui/gnome-messagebox.c:258
+#: libgnomeui/gnome-messagebox.c:155
 msgid "Error"
 msgstr "Hiba"
 
-#: libgnomeui/gnome-messagebox.c:138 libgnomeui/gnome-messagebox.c:267
+#: libgnomeui/gnome-messagebox.c:164
 msgid "Question"
 msgstr "Kérdés"
 
-#: libgnomeui/gnome-messagebox.c:147 libgnomeui/gnome-messagebox.c:276
+#: libgnomeui/gnome-messagebox.c:173
 msgid "Message"
 msgstr "Üzenet"
 
-#: libgnomeui/gnome-number-entry.c:151
+#: libgnomeui/gnome-number-entry.c:177
 msgid "Calculator"
 msgstr "Számológép"
 
-#: libgnomeui/gnome-number-entry.c:203
+#: libgnomeui/gnome-number-entry.c:233
 msgid "Calculator..."
 msgstr "Számológép..."
 
-#: libgnomeui/gnome-pixmap-entry.c:106 libgnomeui/gnome-pixmap-entry.c:387
+#: libgnomeui/gnome-pixmap-entry.c:128 libgnomeui/gnome-pixmap-entry.c:399
 msgid "No Image"
 msgstr "Nincs kép"
 
-#: libgnomeui/gnome-popup-help.c:51
+#: libgnomeui/gnome-popup-help.c:56
 msgid "_Help with this"
 msgstr "_Súgó errõl"
 
-#: libgnomeui/gnome-popup-help.c:57
+#: libgnomeui/gnome-popup-help.c:62
 msgid "Cu_t"
 msgstr "_Kivág"
 
-#: libgnomeui/gnome-property-entries.c:254
+#: libgnomeui/gnome-property-entries.c:258
 msgid "Select"
 msgstr "Kiválaszt"
 
-#: libgnomeui/gnome-scores.c:88
+#: libgnomeui/gnome-scores.c:112
 msgid "Top Ten"
 msgstr "Legjobb tíz"
 
-#: libgnomeui/gnome-scores.c:99
+#: libgnomeui/gnome-scores.c:123
 msgid "User"
 msgstr "Felhasználó"
 
-#: libgnomeui/gnome-scores.c:102
+#: libgnomeui/gnome-scores.c:126
 msgid "Score"
 msgstr "Pontszám"
 
-#: libgnomeui/gnome-scores.c:105
+#: libgnomeui/gnome-scores.c:129
 msgid "Date"
 msgstr "Dátum"
 
@@ -938,15 +907,15 @@ msgstr "Dátum"
 #. %d is day of month, %m is month number, %T full hour,
 #. %H hours, %M minutes, %S seconds
 #.
-#: libgnomeui/gnome-scores.c:131
+#: libgnomeui/gnome-scores.c:155
 msgid "%a %b %d %T %Y"
 msgstr ""
 
-#: libgnomeui/gnome-spell.c:196
+#: libgnomeui/gnome-spell.c:199
 msgid "Select dictionary"
 msgstr "Szótár kiválasztása"
 
-#: libgnomeui/gnome-spell.c:243
+#: libgnomeui/gnome-spell.c:246
 #, c-format
 msgid ""
 "The word `%s'\n"
@@ -957,31 +926,31 @@ msgstr ""
 "nincs a szótárban.\n"
 "Folytatod mégis?"
 
-#: libgnomeui/gnome-spell.c:247
+#: libgnomeui/gnome-spell.c:250
 msgid "Confirm"
 msgstr "Megerõsít"
 
-#: libgnomeui/gnome-spell.c:256 libgnomeui/gnome-stock.c:834
+#: libgnomeui/gnome-spell.c:259 libgnomeui/gnome-stock.c:653
 msgid "OK"
 msgstr "OK"
 
-#: libgnomeui/gnome-spell.c:263 libgnomeui/gnome-stock.c:836
+#: libgnomeui/gnome-spell.c:266 libgnomeui/gnome-stock.c:655
 msgid "Cancel"
 msgstr "Mégsem"
 
-#: libgnomeui/gnome-spell.c:525
+#: libgnomeui/gnome-spell.c:528
 msgid "Word:"
 msgstr "Szó:"
 
-#: libgnomeui/gnome-spell.c:542
+#: libgnomeui/gnome-spell.c:545
 msgid "Alternatives:"
 msgstr "Alternatívák:"
 
-#: libgnomeui/gnome-spell.c:561
+#: libgnomeui/gnome-spell.c:564
 msgid "Accept"
 msgstr "Elfogad"
 
-#: libgnomeui/gnome-spell.c:566
+#: libgnomeui/gnome-spell.c:569
 msgid ""
 "Accept the word for\n"
 "this session only"
@@ -989,11 +958,11 @@ msgstr ""
 "Csak erre az esetre\n"
 "fogadom el"
 
-#: libgnomeui/gnome-spell.c:568
+#: libgnomeui/gnome-spell.c:571
 msgid "Skip"
 msgstr "Mellõz"
 
-#: libgnomeui/gnome-spell.c:573
+#: libgnomeui/gnome-spell.c:576
 msgid ""
 "Ignore this word\n"
 "this time only"
@@ -1001,19 +970,19 @@ msgstr ""
 "Csak ebben az esetben\n"
 "tekintek el tõle"
 
-#: libgnomeui/gnome-spell.c:575
+#: libgnomeui/gnome-spell.c:578
 msgid "Replace"
 msgstr "Cserél"
 
-#: libgnomeui/gnome-spell.c:580
+#: libgnomeui/gnome-spell.c:583
 msgid "Replace the word"
 msgstr "A szó cserélése"
 
-#: libgnomeui/gnome-spell.c:582
+#: libgnomeui/gnome-spell.c:585
 msgid "Insert"
 msgstr "Beilleszt"
 
-#: libgnomeui/gnome-spell.c:587
+#: libgnomeui/gnome-spell.c:590
 msgid ""
 "Insert the word\n"
 "in your personal dictionary"
@@ -1021,11 +990,11 @@ msgstr ""
 "A szó beillesztése a\n"
 "saját szótáradba"
 
-#: libgnomeui/gnome-spell.c:589
+#: libgnomeui/gnome-spell.c:592
 msgid "Insert with case"
 msgstr "Kis-nagybetûvel beillesztés"
 
-#: libgnomeui/gnome-spell.c:595
+#: libgnomeui/gnome-spell.c:598
 msgid ""
 "Insert the word\n"
 "in your personal dictionary\n"
@@ -1037,143 +1006,143 @@ msgstr ""
 "(a kis és nagybetûk közötti\n"
 "különbség megtartásával)"
 
-#: libgnomeui/gnome-spell.c:610
+#: libgnomeui/gnome-spell.c:613
 msgid "Ispell command:"
 msgstr "Ispell parancs:"
 
-#: libgnomeui/gnome-spell.c:628
+#: libgnomeui/gnome-spell.c:631
 msgid "Main dictionary:"
 msgstr "Fõkönyvtár:"
 
-#: libgnomeui/gnome-spell.c:645
+#: libgnomeui/gnome-spell.c:648
 msgid "Personal dictionary:"
 msgstr "Saját könyvtár:"
 
-#: libgnomeui/gnome-spell.c:662
+#: libgnomeui/gnome-spell.c:665
 msgid "Valid chars in words:"
 msgstr "A szavakban helyes betûk:"
 
-#: libgnomeui/gnome-spell.c:673
+#: libgnomeui/gnome-spell.c:676
 msgid "Check words longer than:"
 msgstr "Ennél hosszabb szavak ellenõrzése:"
 
-#: libgnomeui/gnome-spell.c:684
+#: libgnomeui/gnome-spell.c:687
 msgid "Sort by correctness"
 msgstr "Helyesség alapján sorbarendez"
 
-#: libgnomeui/gnome-spell.c:692
+#: libgnomeui/gnome-spell.c:695
 msgid "Accept run-together words"
 msgstr "Együttfutó szavak elfogadása"
 
-#: libgnomeui/gnome-spell.c:702
+#: libgnomeui/gnome-spell.c:705
 msgid "Discard accepted words on kill"
 msgstr "Kilövésnél az elfogadott szavak elhagyása"
 
-#: libgnomeui/gnome-spell.c:710
+#: libgnomeui/gnome-spell.c:713
 msgid "Enable tooltips"
 msgstr "Hintszövegek engedélyezése"
 
-#: libgnomeui/gnome-spell.c:724
+#: libgnomeui/gnome-spell.c:727
 msgid "Kill ispell process"
 msgstr "Ispell folyamat kilövése"
 
-#: libgnomeui/gnome-spell.c:750
+#: libgnomeui/gnome-spell.c:753
 msgid "Spell"
 msgstr "Helyesírás"
 
-#: libgnomeui/gnome-spell.c:757
+#: libgnomeui/gnome-spell.c:760
 msgid "Configure"
 msgstr "Beállítás"
 
-#: libgnomeui/gnome-stock.c:822
+#: libgnomeui/gnome-stock.c:641
 msgid "Add"
 msgstr "Hozzáad"
 
-#: libgnomeui/gnome-stock.c:823
+#: libgnomeui/gnome-stock.c:642
 msgid "Clear"
 msgstr "Töröl"
 
-#: libgnomeui/gnome-stock.c:824
+#: libgnomeui/gnome-stock.c:643
 msgid "Select Color"
 msgstr "Válassz egy színt"
 
-#: libgnomeui/gnome-stock.c:826
+#: libgnomeui/gnome-stock.c:645
 msgid "Table Borders"
 msgstr "Táblázat keretek"
 
-#: libgnomeui/gnome-stock.c:827
+#: libgnomeui/gnome-stock.c:646
 msgid "Table Fill"
 msgstr "Táblázat feltöltése"
 
-#: libgnomeui/gnome-stock.c:828
+#: libgnomeui/gnome-stock.c:647
 msgid "Bulleted List"
 msgstr "Gombos felsorolás"
 
-#: libgnomeui/gnome-stock.c:829
+#: libgnomeui/gnome-stock.c:648
 msgid "Numbered List"
 msgstr "Számozott felsorolás"
 
-#: libgnomeui/gnome-stock.c:830
+#: libgnomeui/gnome-stock.c:649
 msgid "Indent"
 msgstr "Beilleszt"
 
-#: libgnomeui/gnome-stock.c:831
+#: libgnomeui/gnome-stock.c:650
 msgid "Un-Indent"
 msgstr "Kivesz"
 
-#: libgnomeui/gnome-stock.c:835
+#: libgnomeui/gnome-stock.c:654
 msgid "Apply"
 msgstr "Alkalmaz"
 
-#: libgnomeui/gnome-stock.c:837 libgnomeui/stock_demo.c:144
+#: libgnomeui/gnome-stock.c:656 libgnomeui/stock_demo.c:169
 msgid "Close"
 msgstr "Bezár"
 
-#: libgnomeui/gnome-stock.c:838
+#: libgnomeui/gnome-stock.c:657
 msgid "Yes"
 msgstr "Igen"
 
-#: libgnomeui/gnome-stock.c:839
+#: libgnomeui/gnome-stock.c:658
 msgid "No"
 msgstr "Nem"
 
-#: libgnomeui/gnome-stock.c:840 libgnomeui/stock_demo.c:290
+#: libgnomeui/gnome-stock.c:659 libgnomeui/stock_demo.c:315
 msgid "Help"
 msgstr "Súgó"
 
-#: libgnomeui/gnome-stock.c:841
+#: libgnomeui/gnome-stock.c:660
 msgid "Next"
 msgstr "Következõ"
 
-#: libgnomeui/gnome-stock.c:842
+#: libgnomeui/gnome-stock.c:661
 msgid "Prev"
 msgstr "Elõzõ"
 
-#: libgnomeui/gnome-stock.c:843
+#: libgnomeui/gnome-stock.c:662
 msgid "Up"
 msgstr "Fel"
 
-#: libgnomeui/gnome-stock.c:844
+#: libgnomeui/gnome-stock.c:663
 msgid "Down"
 msgstr "Le"
 
-#: libgnomeui/gnome-stock.c:1888
+#: libgnomeui/gnome-stock.c:1426
 msgid "Menu Accelerator Keys"
 msgstr "Menügyorsító billentyûk"
 
-#: libgnomeui/gnome-stock.c:1890
+#: libgnomeui/gnome-stock.c:1428
 msgid "Global"
 msgstr "Globális"
 
-#: libgnomeui/gnome-stock.c:1892
+#: libgnomeui/gnome-stock.c:1430
 msgid "Menu Item"
 msgstr "Menüelem"
 
-#: libgnomeui/gnome-stock.c:1893
+#: libgnomeui/gnome-stock.c:1431
 msgid "Accelerator"
 msgstr "Gyorsító"
 
-#: libgnomeui/gnome_segv.c:57
+#: libgnomeui/gnome_segv.c:81
 #, c-format
 msgid ""
 "The GNOME Session Manager (process %d) has crashed\n"
@@ -1188,7 +1157,7 @@ msgstr ""
 "befejezõdik.\n"
 "Az ablak bezárása elõtt ments el minden file-odat."
 
-#: libgnomeui/gnome_segv.c:62
+#: libgnomeui/gnome_segv.c:87
 #, c-format
 msgid ""
 "Application \"%s\" (process %d) has crashed\n"
@@ -1199,91 +1168,91 @@ msgstr ""
 "helyrehozhatatlan hiba miatt leállt.\n"
 "(%s)"
 
-#: libgnomeui/gnome_segv.c:70
+#: libgnomeui/gnome_segv.c:95
 msgid "Usage: gnome_segv appname signum\n"
 msgstr "Használata: gnome_segv alkalmazás_neve szignál_száma\n"
 
-#: libgnomeui/gnome_segv.c:87
+#: libgnomeui/gnome_segv.c:109
 msgid "Submit a bug report"
 msgstr "Hibajelentés elküldése"
 
-#: libgnomeui/gnome_segv.c:93
+#: libgnomeui/gnome_segv.c:115
 msgid "http://www.gnome.org/application_crashed.shtml"
 msgstr ""
 
-#: libgnomeui/gnome_segv.c:99
+#: libgnomeui/gnome_segv.c:121
 msgid "Please visit the GNOME Application Crash page for more information"
 msgstr "Látogass el a GNOME Alkalmazási Hibák oldalra további információkért"
 
-#: libgnomeui/stock_demo.c:112
+#: libgnomeui/stock_demo.c:137
 msgid "New..."
 msgstr "Új..."
 
-#: libgnomeui/stock_demo.c:120
+#: libgnomeui/stock_demo.c:145
 msgid "Open..."
 msgstr "Megnyit..."
 
-#: libgnomeui/stock_demo.c:128
+#: libgnomeui/stock_demo.c:153
 msgid "Save"
 msgstr "Ment"
 
-#: libgnomeui/stock_demo.c:136
+#: libgnomeui/stock_demo.c:161
 msgid "Save as..."
 msgstr "Ment mint..."
 
-#: libgnomeui/stock_demo.c:156
+#: libgnomeui/stock_demo.c:181
 msgid "Print..."
 msgstr "Nyomtat..."
 
-#: libgnomeui/stock_demo.c:164
+#: libgnomeui/stock_demo.c:189
 msgid "Setup Page..."
 msgstr "Beállító lap..."
 
-#: libgnomeui/stock_demo.c:173
+#: libgnomeui/stock_demo.c:198
 msgid "Quit"
 msgstr "Kilép"
 
-#: libgnomeui/stock_demo.c:184
+#: libgnomeui/stock_demo.c:209
 msgid "File"
 msgstr "Fájl"
 
-#: libgnomeui/stock_demo.c:191
+#: libgnomeui/stock_demo.c:216
 msgid "Undo"
 msgstr "Visszavon"
 
-#: libgnomeui/stock_demo.c:199
+#: libgnomeui/stock_demo.c:224
 msgid "Redo"
 msgstr "Újra"
 
-#: libgnomeui/stock_demo.c:208
+#: libgnomeui/stock_demo.c:233
 msgid "Delete"
 msgstr "Töröl"
 
-#: libgnomeui/stock_demo.c:213
+#: libgnomeui/stock_demo.c:238
 msgid "Cut"
 msgstr "Kivág"
 
-#: libgnomeui/stock_demo.c:221
+#: libgnomeui/stock_demo.c:246
 msgid "Copy"
 msgstr "Másol"
 
-#: libgnomeui/stock_demo.c:229
+#: libgnomeui/stock_demo.c:254
 msgid "Paste"
 msgstr "Beilleszt"
 
-#: libgnomeui/stock_demo.c:241
+#: libgnomeui/stock_demo.c:266
 msgid "Properties..."
 msgstr "Tulajdonságok..."
 
-#: libgnomeui/stock_demo.c:251
+#: libgnomeui/stock_demo.c:276
 msgid "Preferences..."
 msgstr "Beállítások..."
 
-#: libgnomeui/stock_demo.c:266
+#: libgnomeui/stock_demo.c:291
 msgid "Scores..."
 msgstr "Pontszámok..."
 
-#: libgnomeui/stock_demo.c:274
+#: libgnomeui/stock_demo.c:299
 msgid "Edit"
 msgstr "Szerkesztés"
 
@@ -1411,88 +1380,6 @@ msgstr ""
 "Egyszerû tesztalkalmazás a WIN_HINTS mûködésének kipróbálására.\n"
 "(és persze arra, hogy a gnome_win_hints_* függvényekben hibákat keressek :))"
 
-#: libgnorba/gnome-name-server.c:229
-#, c-format
-msgid "Creating '/GNOME' context %s %d"
-msgstr "/GNOME környezet létrehozása: %s %d"
-
-#: libgnorba/gnome-name-server.c:246
-#, c-format
-msgid "Creating '/GNOME/Servers' context %s %d"
-msgstr "/GNOME/Servers környezet létrehozása: %s %d"
-
-#: libgnorba/goad-browser.c:27
-msgid "GOAD ID of the server to activate"
-msgstr "Aktiválandó szerver GOAD azonosítója"
-
-#: libgnorba/goad-browser.c:28
-msgid "Repository ID of the server to activate"
-msgstr ""
-
-#: libgnorba/goad-browser.c:28
-msgid "REPO-ID"
-msgstr ""
-
-#: libgnorba/goad-browser.c:171
-msgid ""
-"I couldn't find any installed services.  Either you don't have\n"
-"any services installed or I don't know the path to find them.\n"
-"In either case, please check your GNOME installation."
-msgstr ""
-
-#: libgnorba/goad.c:1350
-msgid "(Internal use only) GOAD server ID to activate"
-msgstr "Aktiválandó GOAD szerver azonosítója (csak belsõ használatra)"
-
-#: libgnorba/loadshlib.c:11
-msgid "ID under which GOAD knows this server"
-msgstr ""
-
-#: libgnorba/loadshlib.c:11
-msgid "GOAD_ID"
-msgstr ""
-
-#: libgnorba/loadshlib.c:12
-msgid "Repository ID under which GOAD knows this server"
-msgstr ""
-
-#: libgnorba/loadshlib.c:12
-msgid "REPO_ID"
-msgstr ""
-
-#: libgnorba/orbitgtk.c:138
-#, c-format
-msgid "Failed to open CORBA cookie file (%s) for writing: %s\n"
-msgstr "A %s CORBA cookie file nem megnyitható (hibaüzenet: %s)\n"
-
-#: libgnorba/orbitgtk.c:145
-#, c-format
-msgid "Failed to write CORBA cookie file (%s): %s\n"
-msgstr "A %s CORBA cookie file nem írható (hibaüzenet: %s)\n"
-
-#: libgnorba/orbitgtk.c:171
-#, c-format
-msgid "Failed to write CORBA cookie to `%s': %s\n"
-msgstr "A `%s' CORBA cookie file nem írható (hibaüzenet: %s)\n"
-
-#: libgnorba/orbitgtk.c:181
-#, c-format
-msgid "Failed to open CORBA cookie file `%s': %s\n"
-msgstr "A `%s' CORBA cookie file nem megnyitható (hibaüzenet: %s)\n"
-
-#: libgnorba/orbitgtk.c:187
-#, c-format
-msgid "Failed to read CORBA cookie file `%s': %s\n"
-msgstr "A `%s' CORBA cookie file nem olvasható (hibaüzenet: %s)\n"
-
-#: libgnorba/orbitgtk.c:213
-msgid "Failed to obtain CORBA authentication cookie, exiting\n"
-msgstr ""
-
-#: libgnorba/orbitns.c:295
-msgid "Could not get name service!"
-msgstr "Nem tudok névkiszolgálóhoz csatlakozni!"
-
 #: support/error.c:109
 msgid "Unknown system error"
 msgstr "Nem felismerhetõ rendszerhiba"
@@ -1578,52 +1465,117 @@ msgstr "%s: a -W %s opció rossz\n"
 msgid "%s: option `-W %s' doesn't allow an argument\n"
 msgstr "%s: a -W %s opció nem engedi ezt a paramétert\n"
 
-#: support/popthelp.c:35
+#: support/popthelp.c:23
 msgid "Show this help message"
 msgstr "Mutasd ezt a súgó üzenetet"
 
-#: support/popthelp.c:36
+#: support/popthelp.c:24
 msgid "Display brief usage message"
 msgstr "Mutasd a használati útmutatót"
 
 #. Pixmap
-#: test-gnome/testgnome.c:792
+#: test-gnome/testgnome.c:814
 msgid "Default Pixmap"
 msgstr "Alapértelmezett kép"
 
-#: test-gnome/testgnome.c:800 test-gnome/testgnome.c:841
-#: test-gnome/testgnome.c:866
+#: test-gnome/testgnome.c:822 test-gnome/testgnome.c:863
+#: test-gnome/testgnome.c:888
 msgid "If you choose a font it will appear here"
 msgstr "A kiválasztott betûtípus itt jelenik meg"
 
 #. Font_Info
-#: test-gnome/testgnome.c:807
+#: test-gnome/testgnome.c:829
 msgid "Font Info"
 msgstr "Betûinformációk"
 
-#: test-gnome/testgnome.c:817
+#: test-gnome/testgnome.c:839
 msgid "Use Font in button with size"
 msgstr "A gombban ezzel a mérettel írj"
 
-#: test-gnome/testgnome.c:824
+#: test-gnome/testgnome.c:846
 msgid "Show font size"
 msgstr "Betûméret megjelenítése"
 
-#: test-gnome/testgnome.c:860
+#: test-gnome/testgnome.c:882
 msgid "This is an hbox with pixmap and text"
 msgstr "Ez egy GtkHBox, képpel és szöveggel"
 
-#: test-gnome/testgnome.c:1072
+#: test-gnome/testgnome.c:1094
 msgid "The user chose Yes/OK with data:\n"
 msgstr "A felhasználó az Igen/OK választ választotta; adat:\n"
 
-#: test-gnome/testgnome.c:1076
+#: test-gnome/testgnome.c:1098
 msgid "The user chose No/Cancel with data:\n"
 msgstr "A felhasználó a Nem/Mégsem választ választotta; adat:\n"
 
-#: test-gnome/testgnome.c:1087
+#: test-gnome/testgnome.c:1109
 msgid "Weird number in reply callback"
 msgstr "A szignálhoz valami fura szám tartozott adatként..."
+
+#: test-gnome/testgnome.c:1963
+msgid "Test GNOME"
+msgstr ""
+
+#~ msgid "Get config entry"
+#~ msgstr "Beállítás lekérdezése"
+
+#~ msgid "Set config entry"
+#~ msgstr "Beállítás"
+
+#~ msgid ""
+#~ "Error on option %s: %s.\n"
+#~ "Run '%s --help' to see a full list of available command line options.\n"
+#~ msgstr ""
+#~ "Hiba a %s opciónál: %s\n"
+#~ "Futtasd a '%s --help' parancsot a parancssori opciók megtudásához.\n"
+
+#~ msgid "Disable sound server usage"
+#~ msgstr "Hangok (ESD) tiltása"
+
+#~ msgid "Enable sound server usage"
+#~ msgstr "Hangok (ESD) engedélyezése"
+
+#~ msgid "Host:port on which the sound server to use is running"
+#~ msgstr "Szerver:port ahol az ESD (ESound Server) fut"
+
+#~ msgid "HOSTNAME:PORT"
+#~ msgstr "SZERVER:PORT"
+
+#~ msgid "GNOME Options"
+#~ msgstr "GNOME opciók"
+
+#~ msgid "_About..."
+#~ msgstr "_Névjegy..."
+
+#~ msgid "Creating '/GNOME' context %s %d"
+#~ msgstr "/GNOME környezet létrehozása: %s %d"
+
+#~ msgid "Creating '/GNOME/Servers' context %s %d"
+#~ msgstr "/GNOME/Servers környezet létrehozása: %s %d"
+
+#~ msgid "GOAD ID of the server to activate"
+#~ msgstr "Aktiválandó szerver GOAD azonosítója"
+
+#~ msgid "(Internal use only) GOAD server ID to activate"
+#~ msgstr "Aktiválandó GOAD szerver azonosítója (csak belsõ használatra)"
+
+#~ msgid "Failed to open CORBA cookie file (%s) for writing: %s\n"
+#~ msgstr "A %s CORBA cookie file nem megnyitható (hibaüzenet: %s)\n"
+
+#~ msgid "Failed to write CORBA cookie file (%s): %s\n"
+#~ msgstr "A %s CORBA cookie file nem írható (hibaüzenet: %s)\n"
+
+#~ msgid "Failed to write CORBA cookie to `%s': %s\n"
+#~ msgstr "A `%s' CORBA cookie file nem írható (hibaüzenet: %s)\n"
+
+#~ msgid "Failed to open CORBA cookie file `%s': %s\n"
+#~ msgstr "A `%s' CORBA cookie file nem megnyitható (hibaüzenet: %s)\n"
+
+#~ msgid "Failed to read CORBA cookie file `%s': %s\n"
+#~ msgstr "A `%s' CORBA cookie file nem olvasható (hibaüzenet: %s)\n"
+
+#~ msgid "Could not get name service!"
+#~ msgstr "Nem tudok névkiszolgálóhoz csatlakozni!"
 
 #~ msgid "Giving up on displaying error dialog"
 #~ msgstr "Nem próbálom többször a hibajelzõ ablak megjelenítését"

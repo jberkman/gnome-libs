@@ -12,8 +12,8 @@ Header files should be installed under $(includedir)/$(PACKAGE)/$(INTERFACE_VERS
 
 Header files for backwards compatibility should be installed under
 $(includedir)/$(PACKAGE)/$(INTERFACE_VERSION)/compat/$(PREVIOUS_INTERFACE_VERSION)/
-e.g. If providing backwards compat with interface version 1.0, 
-$(includedir)/$(PACKAGE)/$(INTERFACE_VERSION)/compat/1.0/
+e.g. If providing backwards compat with interface version 1, 
+$(includedir)/$(PACKAGE)/$(INTERFACE_VERSION)/compat/1/
 
 	Libraries:
 For libtool libraries, use -release $(INTERFACE_VERSION) in LDFLAGS.

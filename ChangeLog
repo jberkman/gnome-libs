@@ -1,5 +1,11 @@
 2000-02-21  Elliot Lee  <sopwith@redhat.com>
 
+	* Makefile.am: Install gnome.m4.
+	* configure.in, libgnome*/Makefile.am, zvt/Makefile.am, gnome-config.in,
+	devel-docs/package-versioning.txt: Interface version is now '2' not
+	'2.0'.
+	* libgnome/gnome-triggers.c, libgnome/libgnome.h: No gnome-sound.
+
 	* AUTHORS: Sort.
 	* HACKING, README, README.cvs-commits: Update.
 	* acinclude.m4: Remove the ESD stuff from here.

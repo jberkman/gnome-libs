@@ -16,7 +16,7 @@ fi
 
 # When this value is updated, {libgnome,libgnomeui}/Makefile.am also need updating to reflect the change,
 # since this value is hardcoded into the library names (I love you automake!)
-GNOME_INTERFACE_VERSION=2.0
+GNOME_INTERFACE_VERSION=2
 AC_SUBST(GNOME_INTERFACE_VERSION)
 
 AM_ACLOCAL_INCLUDE(gnome-data)
