@@ -246,6 +246,14 @@ gtk_xmhtml_new (void)
 	return GTK_WIDGET (html);
 }
 
+void
+gtk_xmhtml_destroy (GtkObject *object)
+{
+	GtkXmHTML *html = GTK_XMHTML (object);
+
+	DestroyPhaseZero (html);
+}
+
 static void
 gtk_xmhtml_class_init (GtkXmHTMLClass *class)
 {
@@ -351,6 +359,7 @@ gtk_xmhtml_class_init (GtkXmHTMLClass *class)
 				gtk_xmthml_marshall_2, GTK_TYPE_INT, 1, GTK_TYPE_POINTER);
 	gtk_object_class_add_signals (object_class, gtk_xmhtml_signals, GTK_XMHTML_LAST_SIGNAL);
 
+	object_class->destroy       = gtk_xmhtml_destroy;
 	widget_class->map           = gtk_xmhtml_map;
 /*	widget_class->unmap         = gtk_xmhtml_unmap; */
 	widget_class->draw          = gtk_xmhtml_draw;
