@@ -138,7 +138,7 @@ Dialogs
    - When creating dialog boxes, use a GnomeDialog widget, instead of
      a GtkWindow.
 
-   - Use the gtk_dialog_set_parent routine if possible, to "bind" your
+   - Use the gnome_dialog_set_parent routine if possible, to "bind" your
      dialog boxes to your main toplevel window (this allows window
      managers to hide all of your dialog box windows when minimizing
      your main window for example).
