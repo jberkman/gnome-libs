@@ -1172,6 +1172,11 @@ msgid ""
 "will exit.\n"
 "Please save all your files before closing this dialog."
 msgstr ""
+"De GNOME Sessiebeheerder (proces %d) is gecrashed\n"
+"door een fatale fout (%s).\n"
+"Als u dit dialoogvenster sluit, sluiten alle applicaties en zal uw "
+"sessie verlaten worden.\n"
+"Bewaar al uw bestanden voor u dit dialoogvenster sluit."
 
 #: libgnomeui/gnome_segv.c:55
 #, c-format
@@ -1381,13 +1386,12 @@ msgid "Copyright (C) 1998"
 msgstr "Copyright (C) 1998"
 
 #: libgnomeui/winhints_demo.c:413
-#, fuzzy
 msgid ""
 "Simple test app to check how the WIN_HINTS work.\n"
 "And to test the gnome_win_hints_* functions for errors. :)"
 msgstr ""
-"Eenvoudige test applicatie om na te gaan hoe de WIN_HINTS werkenen om de "
-"gnome_win_hints_* functies op fouten te testen. :)"
+"Eenvoudige test applicatie om na te gaan hoe de WIN_HINTS werken\n"
+"en om de gnome_win_hints_* functies op fouten te testen. :)"
 
 #: libgnorba/gnome-name-server.c:229
 #, c-format
@@ -1444,31 +1448,31 @@ msgstr "REPO_ID"
 #: libgnorba/orbitgtk.c:138
 #, c-format
 msgid "Failed to open CORBA cookie file (%s) for writing: %s\n"
-msgstr ""
+msgstr "Kon CORBA cookie bestand (%s) niet openen om te schrijven: %s\n"
 
 #: libgnorba/orbitgtk.c:145
 #, c-format
 msgid "Failed to write CORBA cookie file (%s): %s\n"
-msgstr ""
+msgstr "Kon naar CORBA cookie bestand (%s) niet schrijven: %s\n"
 
 #: libgnorba/orbitgtk.c:171
 #, c-format
 msgid "Failed to write CORBA cookie to `%s': %s\n"
-msgstr ""
+msgstr "Kon CORBA cookie niet naar `%s' schrijven : %s\n"
 
 #: libgnorba/orbitgtk.c:181
 #, c-format
 msgid "Failed to open CORBA cookie file `%s': %s\n"
-msgstr ""
+msgstr "Kon CORBA cookie bestand `%s' niet openen : %s\n"
 
 #: libgnorba/orbitgtk.c:187
 #, c-format
 msgid "Failed to read CORBA cookie file `%s': %s\n"
-msgstr ""
+msgstr "Kon CORBA cookie bestand `%s' niet lezen : %s\n"
 
 #: libgnorba/orbitgtk.c:213
 msgid "Failed to obtain CORBA authentication cookie, exiting\n"
-msgstr ""
+msgstr "Kon geen CORBA authenticatie cookie krijgen, stop ermee\n"
 
 #: libgnorba/orbitns.c:295
 msgid "Could not get name service!"
