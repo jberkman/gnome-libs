@@ -173,7 +173,7 @@ static void convert(char *real_file)
 			return;
 			}
 
-		fprintf(f, "* Imlib raw rgb data created by convertrgb %s */\n\n", CRGB_VERSION);
+		fprintf(f, "/* Imlib raw rgb data created by convertrgb %s */\n\n", CRGB_VERSION);
 
 		/* FIXME dimensions are broken here:
 		if (dimensions)
