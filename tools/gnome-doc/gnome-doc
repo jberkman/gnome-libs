@@ -555,7 +555,10 @@ foreach $file (@ARGV) {
 		print STDERR "WARNING($lineno): bad line: $_"; 
 	    }
 	} elsif ($state == 3) {	# scanning for function { (end of prototype)
-	    if (/([^\{]*)/) {
+	    if (m#\s*/\*\s+MACDOC\s*#io) {
+	      # do nothing
+	    }
+	    elsif (/([^\{]*)/) {
 		$prototype .= $1;
 	    }
 	    if (/\{/) {
