@@ -37,6 +37,9 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.7  1998/06/29 06:32:14  tromey
+* added gnome-config to .cvsignore
+*
 * Revision 1.6  1998/04/29 23:23:13  unammx
 * 1998-04-29  Miguel de Icaza  <miguel@nuclecu.unam.mx>
 *
@@ -310,7 +313,7 @@ _XmHTMLReadPNG(TWidget html, ImageBuffer *ib)
 
 	/* by now we already know this is a png */
 	ib->next = 8;
-#ifndef __alpha__
+#if 0
 	/* FIXME:  Upgrade my png instaed of this -- mig */
 	png_set_sig_bytes(png_ptr, 8);
 #endif
