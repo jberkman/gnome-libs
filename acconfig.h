@@ -7,3 +7,4 @@
 #undef PACKAGE
 #undef VERSION
 #undef HAVE_LIBSM
+#undef HAVE_LIBINTL_H
