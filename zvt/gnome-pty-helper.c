@@ -277,6 +277,8 @@ open_ptys (int utmp, int wtmp)
 	pty_info *p;
 	int result;
 	int size;
+	pid_t savedUid;
+	gid_t savedGid;
 	
 	term_name = ((char *)alloca (path_max())) + 1;
 
@@ -284,11 +286,15 @@ open_ptys (int utmp, int wtmp)
 		exit (1);
 	}
 	
+	savedUid = geteuid();
+	savedGid = getegid();
+
 	seteuid(pwent->pw_gid);
 	setegid(pwent->pw_gid);
 	status = openpty (&master_pty, &slave_pty, term_name, NULL, NULL);
-	setuid(getuid());
-	setgid(getgid());
+	setuid(savedUid);
+	setgid(savedGid);
+
 	if (status == -1){
 		result = 0;
 		write (STDIN_FILENO, &result, sizeof (result));
