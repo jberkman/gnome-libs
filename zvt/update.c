@@ -378,7 +378,7 @@ static int vt_scroll_update(struct _vtx *vx, struct vt_line *fn, int firstline, 
       d(printf("%p: line %d, was %d\n", nn, i, nn->line));
 
       if (nn==(struct vt_line *)vx->vt.scrollback.tailpred) {
-	d(printf("++ skipping to real lines at line %d\n", line));
+	d(printf("++ skipping to real lines at line %d\n", nn->line));
 	nn = (struct vt_line *)vx->vt.lines.head;
       } else {
 	d(printf("++ going to next line ...\n"));
@@ -404,7 +404,7 @@ static int vt_scroll_update(struct _vtx *vx, struct vt_line *fn, int firstline, 
 	vt_line_update(vx, nn, bl, i, force, 0, bl->width);
 
 	if (nn==(struct vt_line *)vx->vt.scrollback.tailpred) {
-	  d(printf("++ skipping to real lines at line %d\n", line));
+	  d(printf("++ skipping to real lines at line %d\n", nn->line));
 	  nn = (struct vt_line *)vx->vt.lines.head;
 	} else {
 	  d(printf("++ going to next line ...\n"));
@@ -434,7 +434,7 @@ static int vt_scroll_update(struct _vtx *vx, struct vt_line *fn, int firstline, 
 	d(printf("updating line %d\n", i));
 	vt_line_update(vx, nn, bl, i, force, 0, bl->width);
 	if (nn==(struct vt_line *)vx->vt.scrollback.tailpred) {
-	  d(printf("++ skipping to real lines at line %d\n", line));
+	  d(printf("++ skipping to real lines at line %d\n", nn->line));
 	  nn = (struct vt_line *)vx->vt.lines.head;
 	} else {
 	  d(printf("++ going to next line ...\n"));
@@ -842,6 +842,7 @@ void vt_set_wordclass(struct _vtx *vx, unsigned char *s)
 	vx->wordclass[i>>3] |= 1<<(i&7);
       }
   }
+  d( printf("wordclass: "); for(i=0;i<sizeof(vx->wordclass);i++) printf("%2.2x", vx->wordclass[i]); printf("\n") );
 }
 
 
@@ -909,11 +910,11 @@ void vt_fix_selection(struct _vtx *vx)
     if (ex==sx && ex<e->width && sy==ey)
       ex++;
 
-    if ((s->data[sx]&0xff)==0 || (s->data[sx]&0xff)==9) {
-      while ((sx>0) && ((s->data[sx]&0xff) == 0))
+    if ((s->data[sx]&VTATTR_DATAMASK)==0 || (s->data[sx]&VTATTR_DATAMASK)==9) {
+      while ((sx>0) && ((s->data[sx]&VTATTR_DATAMASK) == 0))
 	sx--;
       if (sx &&
-	  ((s->data[sx])&0xff)!=0x09) /* 'compress' tabs */
+	  ((s->data[sx])&VTATTR_DATAMASK)!=0x09) /* 'compress' tabs */
 	sx++;
     } else {
       while ((sx>0) &&
@@ -926,13 +927,13 @@ void vt_fix_selection(struct _vtx *vx)
 
     /* scan forward over word chars */
     /* special cases for tabs and 'blank' character select */
-    if ( !((ex >0) && ((e->data[ex-1]&0xff) != 0)) )
-      while ((ex<e->width) && ((e->data[ex]&0xff) == 0))
-	ex++;
+    if ( !((ex >0) && ((e->data[ex-1]&VTATTR_DATAMASK) != 0)) )
+      while ((ex<e->width) && ((e->data[ex]&VTATTR_DATAMASK) == 0))
+  	ex++;
     if ( !((ex >0) && (!vt_in_wordclass(vx, e->data[ex-1]))) )
-      while ((ex<e->width) && 
+        while ((ex<e->width) && 
 	     ( (vt_in_wordclass(vx, e->data[ex]))))
-	ex++;
+  	ex++;
 
     break;
   case VT_SELTYPE_CHAR:
@@ -942,17 +943,17 @@ void vt_fix_selection(struct _vtx *vx)
     if (ex==sx && ex<e->width && sy==ey)
       ex++;
 
-    if ((s->data[sx]&0xff)==0 || (s->data[sx]&0xff)==9) {
-      while ((sx>0) && ((s->data[sx]&0xff) == 0))
+    if ((s->data[sx]&VTATTR_DATAMASK)==0) {
+      while ((sx>0) && ((s->data[sx]&VTATTR_DATAMASK) == 0))
 	sx--;
       if (sx &&
-	  (( ((s->data[sx])&0xff)!=0x09))) /* 'compress' tabs */
+	  (( ((s->data[sx])&VTATTR_DATAMASK)!=0x09))) /* 'compress' tabs */
 	sx++;
     }
 
     /* special cases for tabs and 'blank' character select */
-    if ( !((ex >0) && ((e->data[ex-1]&0xff) != 0)) )
-      while ((ex<e->width) && ((e->data[ex]&0xff) == 0))
+    if ( !((ex >0) && ((e->data[ex-1]&VTATTR_DATAMASK) != 0)) )
+      while ((ex<e->width) && ((e->data[ex]&VTATTR_DATAMASK) == 0))
 	ex++;
   }
 
