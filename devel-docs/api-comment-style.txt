@@ -1,0 +1,54 @@
+
+
+I suggest we use the following to documenting API entry points in the
+GNOME libraries.  I have written a simple Perl script that can extract
+these comments into a file.  I will need to make my Perl script
+generate DocBook output.
+
+/**
+ * function_name:
+ * @par1:  description of parameter 1
+ * @par2:  description of parameter 2
+ *
+ * function description.  You can include references to parameters
+ * here like @par1 and their font will be set properly on the output.
+ * constants can be references with %constant as well to make their
+ * string descriptions use a font specification. 
+ * 
+ * return values: an integer.
+ */
+int
+function_name (int par1, char * par2)
+{
+}
+
+The important parts are:
+
+The first line of an API entry point documentation starts with /**
+like the Java documentation system (slash and two stars).  The comment
+is formatted with stars at the beginning of each line.  The second
+line is the function name, it might include an optional ':' for beautification
+purposes. 
+
+A number of keywords can be included in the function_name line, so far
+only the [constructor] string has a special meaning (it is used to
+list before any other API entry points in the generated output).  We
+can define more of those attributes in the future.
+
+Any line from that point on that matches the regular expression:
+
+	^ \* @[a-zA-Z0-9]:
+
+(for example: " * @par1: parameter one")
+
+Is taken to be the declaration of a function parameter.  We can
+extract the type of this parameter from the actual function definition. 
+
+After the parameters we have the function description.  If any line of
+the function description matches the regexp:
+
+	^ \* [Rr]eturn
+
+It is taken to be the description of the return value for the
+function.  
+
