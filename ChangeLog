@@ -1,3 +1,9 @@
+1998-05-19  Miguel de Icaza  <miguel@nuclecu.unam.mx>
+
+	* configure.in (GLIB_LIBS): use the correct glib depending on what
+	is installed.  Bug reported by Mark Galassi.  Thanks to Owen for
+	suggesting the proper approach to this. 
+
 1998-05-18  Miguel de Icaza  <miguel@nuclecu.unam.mx>
 
 	* libgnome/gnome-dentry.c (gnome_desktop_entry_free): Do not free

@@ -96,6 +96,9 @@ fi
 GNOMEUI_LIBS="-lgnomeui $GNOME_LIBS $GDK_IMLIB_LIBS $GTK_LIBS"
 GTKXMHTML_LIBS="-lgtkxmhtml $LIBGTKXMHTML_LIBS"
 
+AC_SUBST(GLIB_LIBS)
+GLIB_LIBS=`echo $GTK_LIBS | sed -e 's/.*-lglib/-lglib/' -e 's/ .*//'`
+
 dnl These definitions are expanded in make.
 GNOME_LIBDIR='-L$(libdir)'
 GNOME_INCLUDEDIR='-I$(includedir)'
