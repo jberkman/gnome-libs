@@ -36,6 +36,9 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.7  1997/12/28 17:45:51  unammx
+* Make it compile
+*
 * Revision 1.6  1997/12/27 20:58:18  unammx
 * More access functions to the widget internals.  I missed these
 * yesterday (ie, those that did not require SetValues validation
@@ -1058,6 +1061,8 @@ frameDoneCallback(XmHTMLWidget html, XmHTMLFrameWidget *frame,
 	TWidget widget)
 {
 	XmHTMLFrameCallbackStruct cbs;
+
+	CHECK_CALBACK(html, frame_callback, FRAME);
 
 	/* inform user that this frame is finished */
 	if(!html->html.frame_callback)
