@@ -160,7 +160,7 @@ struct _GtkTermClass
 };
 
 
-guint		gtk_term_get_type	(void);
+GtkType		gtk_term_get_type	(void);
 void		gtk_term_setup		(GtkTerm	*term,
 					 guint		width,
 					 guint		height,

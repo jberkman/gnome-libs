@@ -124,7 +124,7 @@ static	void	gtk_entry_selection_handler	(GtkWidget	*widget,
 /* --- static variables --- */
 
 static GtkWidgetClass	*parent_class = NULL;
-static gint		 term_signals[LAST_SIGNAL] = { 0 };
+static guint		 term_signals[LAST_SIGNAL] = { 0 };
 static gchar		 gtk_term_blank_char = ' ';
 static GtkTermAttrib	 gtk_term_blank_attrib = { FLAG_NONE, GTK_TERM_MAX_COLORS - 1, 0 };
 
@@ -136,10 +136,10 @@ static GtkTermAttrib	 gtk_term_blank_attrib = { FLAG_NONE, GTK_TERM_MAX_COLORS -
 
 /* --- functions --- */
 
-guint
+GtkType
 gtk_term_get_type ()
 {
-  static guint term_type = 0;
+  static GtkType term_type = 0;
   
   if (!term_type)
   {
