@@ -16,3 +16,4 @@
 #undef HAVE_LIBTIFF
 #undef HAVE_LIBZ
 #undef HAVE_LIBPNG
+#undef GNOME_ENABLE_DEBUG
