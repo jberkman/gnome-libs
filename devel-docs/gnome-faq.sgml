@@ -857,8 +857,9 @@
       packages in the proper orders.  There are some serious
       dependencies within the GNOME tree.  Here is my suggested order,
       you should compile and install each package before you move onto
-      the next.  On ld.so based systems (such as GNU/Linux), you should also
-      run <command>ldconfig</command> after each package.</para>
+      the next.  On ELF-based systems (such as GNU/Linux and FreeBSD),
+      you should also run <command>ldconfig</command> after each
+      package, just to be sure any new libraries are found.</para>
       <simplelist>
 	&gnomeorder;
       </simplelist>
@@ -918,7 +919,7 @@
       its derivatives (eg. ksh or bash), put all four commands on one
       line, separated by <userinput>&&</userinput>.  For
       example:</para><screen>
-<prompt>$</prompt> <userinput>./configure --prefix=/opt/gnome && make && make install && ldconfig</userinput></screen>
+<prompt>$</prompt> <userinput>./configure --prefix=/usr/local && make && make install && ldconfig</userinput></screen>
 	
       <para>The <userinput>&&</userinput> makes sure that the first
       command succeeded before going onto the next one.</para>
@@ -936,25 +937,41 @@
       directory.  Doing this makes it easier to uninstall in an
       emergency, easier to control who has access to GNOME, it lets
       you export the gnome directory to other systems, and so on. To
-      do this requires a little bit of preparation.  I'll walk through
-      the steps on a system that uses ld.so, where all users are to
-      have access to GNOME.  I'll be putting GNOME in the
-      <filename>/opt/gnome</filename> directory. Just replace
+      do this requires a little bit of preparation, and knowledge of
+      your system.  For this discussion, I'll be putting GNOME in the
+      <filename>/opt/gnome</filename> directory.  Just replace
       <filename>/opt/gnome</filename> with whatever other directory
       you want.</para>
 
       <para>The biggest issue are making sure the system can find the
       GNOME binaries in <filename>/opt/gnome/bin</filename>, the
       libraries in <filename>/opt/gnome/lib</filename>, and the man
-      files in <filename>/opt/gnome/man</filename>. First, create
-      those directories.  Then, add a line to
-      <filename>/etc/ld.so.conf</filename> saying
-      <userinput>/opt/gnome/lib</userinput>, and then run
-      <command>ldconfig</command>.  Next, insert a line into
-      <filename>/etc/profile</filename>, saying <userinput>export
-      PATH="$PATH:/opt/gnome/bin"</userinput>.  Lastly, insert a line
-      into <filename>/etc/man.config</filename>, saying
-      <userinput>MANPATH /opt/gnome/man</userinput>.</para>
+      files in <filename>/opt/gnome/man</filename>.</para>
+
+      <para>To tell the system to look into
+      <filename>/opt/gnome/bin</filename> to find the GNOME binaries,
+      just make sure it is included in the <envar>PATH</envar>
+      environment variable.  For example:
+      <userinput>PATH="/bin:/usr/bin:/opt/gnome/bin"</userinput>.</para>
+
+      <para>Then, you generally need to tell the loader where to find
+      the libraries.  On most commercial Unixes, you add
+      <filename>/opt/gnome/lib</filename> to the environment variable
+      <envar>LD_LIBRARY_PATH</envar>, in the same manner as
+      <envar>PATH</envar>, above.  On some systems, you use
+      <envar>LD_RUN_PATH</envar> instead.  On systems using ELF format
+      binaries, such as GNU/Linux or FreeBSD, you add the
+      library path to the file <filename>/etc/ld.so.conf</filename>,
+      and run <command>ldconfig</command>.  On statically linked
+      systems, you don't have to worry about any of the above, but buy
+      more hard drive space, you are sure to need it.  Consult your
+      system documentation if you are unsure how to tell the loader
+      which directories to search.</para>
+
+      <para>You also should tell man where to find man pages installed
+      by GNOME.  Simply insert a line into
+      <filename>/etc/man.config</filename>, saying <userinput>MANPATH
+      /opt/gnome/man</userinput>.</para>
 
       <para>The other issue is there are a couple of directories which
       GNOME will put things in, which would be better put elsewhere.
