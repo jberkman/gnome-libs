@@ -1,4 +1,4 @@
-SUBDIRS = ui-guide templates
+SUBDIRS = gnome gnomeui ui-guide templates 
 
 htmldir = $(prefix)/html
 html_DATA = gnome-dev-info.html
