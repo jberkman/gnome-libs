@@ -205,13 +205,13 @@ gnome_icon_selector_construct (GnomeIconSelector *iselector,
 
 		box = gtk_hbox_new (FALSE, 5);
 
-		sb = gtk_vscrollbar_new (NULL);
-		vadj = gtk_range_get_adjustment (GTK_RANGE(sb));
+		list = gnome_icon_list_new (ICON_SIZE+30, FALSE);
+		vadj = gtk_layout_get_vadjustment (GTK_LAYOUT (list));
+		gtk_widget_set_usize (list, 100, 300);
+
+		sb = gtk_vscrollbar_new (vadj);
 		gtk_box_pack_end (GTK_BOX(box), sb, FALSE, FALSE, 0);
 		gtk_widget_show (sb);
-
-		list = gnome_icon_list_new_flags (ICON_SIZE+30, vadj, FALSE);
-		gtk_widget_set_usize (list, 100, 300);
 
 		frame = gtk_frame_new (NULL);
 		gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_IN);
