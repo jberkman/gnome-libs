@@ -42,6 +42,11 @@ tmpl_sources =					\
 	tmpl/gnome-dentry-edit.sgml		\
 	tmpl/gnome-dialog-util.sgml		\
 	tmpl/gnome-dialog.sgml			\
+	tmpl/gnome-druid.sgml			\
+	tmpl/gnome-druid-page.sgml		\
+	tmpl/gnome-druid-page-start.sgml	\
+	tmpl/gnome-druid-page-standard.sgml	\
+	tmpl/gnome-druid-page-finish.sgml	\
 	tmpl/gnome-dns.sgml			\
 	tmpl/gnome-dock-band.sgml		\
 	tmpl/gnome-dock-item.sgml		\

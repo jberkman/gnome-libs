@@ -2,14 +2,13 @@
 GnomeDruid
 
 <!-- ##### SECTION Short_Description ##### -->
-  The top-level widget of the Druid system.
+  The top-level widget of the GNOME DRUID system.
 
 <!-- ##### SECTION Long_Description ##### -->
   <para>
-    The GNOME Druid is a system for assisting the user with installing a
+    The GNOME DRUID is a system for assisting the user with installing a
     service.  It is roughly equivilent in functionality to the
     "Wizards" available in windows.
-    Druids provide a frame
   </para>
   <para>
     There are two major parts of the druid, the #GnomeDruid widget,
@@ -23,9 +22,9 @@ GnomeDruid
     no reason why more couldn't be written.
   </para>
   <refsect2>
-    <title>Developing with the GnomeDruid</title>
+    <title>Creating a DRUID</title>
     <para>
-      GNOME Druids are fairly simple to program with.  One starts by
+      GNOME DRUIDs are fairly simple to program with.  One starts by
       creating a #GnomeDruid into which one puts all of your pages.
       This widget will handle the presentation of the #GnomeDruidPage
       widgets.
@@ -35,18 +34,30 @@ GnomeDruid
       are three implementations of these in libgnomeui.  They are the
       #GnomeDruidPageStart, the #GnomeDruidPageStandard, and the
       #GnomeDruidPageFinish.  The #GnomeDruidPageStandard acts as a
-      #GtkContainer, and is probably the most commonly used Druid
+      #GtkContainer, and is probably the most commonly used DRUID
       page.  More information on the specific properties of these
-      widgets can be found on their respective pages.  It is 
+      widgets can be found on their respective pages.
     </para>
     <para>
-      In order to appear in the 
+      In order to appear in the druid, you will need to add the pages to
+      it.  The druid itself keeps an internal list of all pages, and
+      using the gnome_druid_prepend_page(), gnome_druid_append_page(),
+      and gnome_druid_insert_page() will place them into it.  
+    </para>
+  </refsect>
+  <refsect2>
+    <title>Managing the control-flow in a DRUID</title>
+    <para>
+      The control-flow in a DRUID is managed at the #GnomeDruidPage
+      level, and is a little complex.  The signals available are "back",
+      "next", "finish", "cancel" and "prepare".  When any of the buttons
+      are pressed, the current page emits an appropriate signal.
     </para>
     <para>
       The #GnomeDruid emits the "Cancel" signal, which is emitted when
       the
     </para>
-  </refsect2>  
+  </refsect2>
 <!-- ##### SECTION See_Also ##### -->
   <para>
     #GnomeDruidPage, #GnomeDruidPageStart, #GnomeDruidPageStandard, #GnomeDruidPageFinish
@@ -58,7 +69,7 @@ GnomeDruid
 
 </para>
 
-@Returns: 
+@Returns:
 
 
 <!-- ##### FUNCTION gnome_druid_set_buttons_sensitive ##### -->
@@ -66,10 +77,10 @@ GnomeDruid
 
 </para>
 
-@druid: 
-@back_sensitive: 
-@next_sensitive: 
-@cancel_sensitive: 
+@druid:
+@back_sensitive:
+@next_sensitive:
+@cancel_sensitive:
 
 
 <!-- ##### FUNCTION gnome_druid_set_show_finish ##### -->
@@ -77,8 +88,8 @@ GnomeDruid
 
 </para>
 
-@druid: 
-@show_finish: 
+@druid:
+@show_finish:
 
 
 <!-- ##### FUNCTION gnome_druid_prepend_page ##### -->
@@ -86,8 +97,8 @@ GnomeDruid
 
 </para>
 
-@druid: 
-@page: 
+@druid:
+@page:
 
 
 <!-- ##### FUNCTION gnome_druid_insert_page ##### -->
@@ -95,9 +106,9 @@ GnomeDruid
 
 </para>
 
-@druid: 
-@back_page: 
-@page: 
+@druid:
+@back_page:
+@page:
 
 
 <!-- ##### FUNCTION gnome_druid_append_page ##### -->
@@ -105,8 +116,8 @@ GnomeDruid
 
 </para>
 
-@druid: 
-@page: 
+@druid:
+@page:
 
 
 <!-- ##### FUNCTION gnome_druid_set_page ##### -->
@@ -114,8 +125,8 @@ GnomeDruid
 
 </para>
 
-@druid: 
-@page: 
+@druid:
+@page:
 
 
 <!-- ##### SIGNAL GnomeDruid::cancel ##### -->
