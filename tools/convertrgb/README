@@ -1,0 +1,22 @@
+###################################################################*/
+##                        imlib raw rgb converter                ##*/
+##                                                               ##*/
+## This software falls under the GNU Public License. Please read ##*/
+##              the COPYING file for more information            ##*/
+###################################################################*/
+
+Image to Imlib raw rgb data Converter
+
+Command line params:
+
+   convertrgb [-e] [-o=fn|-a=fn] inputfile [inputfile] ...
+
+	-e, --efficient		Use smallest format possible to save space
+	-o=[fn]			Output to file named fn , default is .c extension
+				to replace extension of inputfile(FIXME, not implemented)
+	-a=[fn]              Like -o, but appends to file named fn (FIXME, not implemented)
+
+Right now the only output supprted is convertiong the input filename to a file ening
+with .c , for example logo.png is converted to logo.c
+
+
