@@ -1,0 +1,31 @@
+
+Suggestions for enhacning the user experience in your application:
+
+Try to use:
+
+   - GnomePropertyBox widgets for configuring things in your
+     application.  These will allow the user to use their prefered way
+     of configuring the application.
+
+   - When creating dialog boxes, use a GnomeDialog widget, instead of
+     a GtkWindow.
+
+   - Use the gtk_dialog_set_parent routine if possible, to "bind" your
+     dialog boxes to your main toplevel window (this allows window
+     managers to hide all of your dialog box windows when minimizing
+     your main window for example).
+
+   - Use the GnomeApp widget for your toplevel windows.
+
+   - Use the gnome-app-helper.h interface for creating menus and
+     toolbars.  If you use this, the task of creating Baboon-aware
+     applications will be reduced.
+
+   - Use GnomePixmap to load your images.
+
+   - GNOME uses Imlib, try to provide your images in PNG format.  Do
+     not care about the color usage, Imlib will dither to a nice
+     palette on low-end displays.
+
+Miguel.
+
