@@ -44,7 +44,8 @@ Only <structfield>vbox</structfield> should be accessed directly.
 
 <example>
   <title>Using GnomeDialog to implement yes/no/cancel</title>
-  <programlisting>
+
+<programlisting>
 #include <gnome.h>
 
 /*
@@ -57,7 +58,8 @@ Only <structfield>vbox</structfield> should be accessed directly.
  * window (so if you minimize the main window, this dialog also
  * gets minimized).
  */
-int yes_no (GtkWindow *main_window, char *title, char *message)
+int
+yes_no (GtkWindow *main_window, char *title, char *message)
 {
 	GtkWidget *dialog, *label;
 	int button;
@@ -106,7 +108,7 @@ main (int argc, char **argv)
        return 0;
 }
 
-  <programlisting>
+</programlisting>
 </example>
 
 <!-- ##### FUNCTION gnome_dialog_new ##### -->
