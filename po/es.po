@@ -3,7 +3,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-libs 1.1.0\n"
-"POT-Creation-Date: 2000-03-11 11:42+0100\n"
+"POT-Creation-Date: 2000-04-02 13:29+0200\n"
 "PO-Revision-Date: 1999-02-08 17:37+0100\n"
 "Last-Translator: Pablo Saratxaga <srtxg@chanae.alphanet.ch>\n"
 "Language-Team: \n"
@@ -14,7 +14,8 @@ msgstr ""
 #: libgnome/gnomelib-init.c:176 libgnome/gnomelib-init.c:190
 #, c-format
 msgid "Could not create per-user gnome configuration directory `%s': %s\n"
-msgstr "No pude crear el directorio de configuración de gnome por usuario «%s»: %s\n"
+msgstr ""
+"No pude crear el directorio de configuración de gnome por usuario «%s»: %s\n"
 
 #: libgnome/gnomelib-init.c:199
 #, c-format
@@ -22,7 +23,8 @@ msgid ""
 "Could not set mode 0700 on private per-user gnome configuration directory "
 "`%s': %s\n"
 msgstr ""
-"No pude definir a 0700 los permisos del directorio de configuración privado por usuario de gnome «%s»: %s\n"
+"No pude definir a 0700 los permisos del directorio de configuración privado "
+"por usuario de gnome «%s»: %s\n"
 
 #: libgnome/gnomelib-init.c:206
 #, c-format
@@ -860,11 +862,11 @@ msgstr "Pregunta"
 msgid "Message"
 msgstr "Mensaje"
 
-#: libgnomeui/gnome-number-entry.c:177
+#: libgnomeui/gnome-number-entry.c:200
 msgid "Calculator"
 msgstr "Calculadora"
 
-#: libgnomeui/gnome-number-entry.c:233
+#: libgnomeui/gnome-number-entry.c:256
 msgid "Calculator..."
 msgstr "Calculadora..."
 
@@ -1126,19 +1128,19 @@ msgstr "Arriba"
 msgid "Down"
 msgstr "Abajo"
 
-#: libgnomeui/gnome-stock.c:1426
+#: libgnomeui/gnome-stock.c:1421
 msgid "Menu Accelerator Keys"
 msgstr "Aceleradores de menú"
 
-#: libgnomeui/gnome-stock.c:1428
+#: libgnomeui/gnome-stock.c:1423
 msgid "Global"
 msgstr "Global"
 
-#: libgnomeui/gnome-stock.c:1430
+#: libgnomeui/gnome-stock.c:1425
 msgid "Menu Item"
 msgstr "Entrada de menú"
 
-#: libgnomeui/gnome-stock.c:1431
+#: libgnomeui/gnome-stock.c:1426
 msgid "Accelerator"
 msgstr "Acelerador"
 
@@ -1497,42 +1499,64 @@ msgstr "Número extraño en la respuesta"
 msgid "Test GNOME"
 msgstr "Prueba de GNOME"
 
-#~ msgid "Could not get name service!"
-#~ msgstr "¡Imposible obtener servicio de nombres!"
+#~ msgid "CONFIG-PATH"
+#~ msgstr "RUTA-CONFIG"
 
-#~ msgid "Failed to obtain CORBA authentication cookie, exiting\n"
-#~ msgstr "Falló la obtención del cookie de autentificación CORBA, saliendo\n"
+#~ msgid "Get config entry"
+#~ msgstr "Leer una entrada de configuración"
 
-#~ msgid "Failed to read CORBA cookie file `%s': %s\n"
-#~ msgstr "Falló la lectura del archivo de cookie CORNA '%s': %s\n"
+#~ msgid "get"
+#~ msgstr "leer"
 
-#~ msgid "Failed to open CORBA cookie file `%s': %s\n"
-#~ msgstr "Falló la apertura del archivo de cookie CORBA '%s': %s\n"
+#~ msgid "Set config entry"
+#~ msgstr "Definir una entrada de configuración"
 
-#~ msgid "Failed to write CORBA cookie to `%s': %s\n"
-#~ msgstr "Falló la escritura del archivo de cookie CORBA '%s': %s\n"
+#~ msgid "set"
+#~ msgstr "definir"
 
-#~ msgid "Failed to write CORBA cookie file (%s): %s\n"
-#~ msgstr "Falló del archivo de cookie CORBA (%s): %s\n"
+#~ msgid "GNOME Options"
+#~ msgstr "Opciones de GNOME"
 
-#~ msgid "Failed to open CORBA cookie file (%s) for writing: %s\n"
+#~ msgid "HOSTNAME:PORT"
+#~ msgstr "HOSTAL:PUERTO"
+
+#~ msgid "Host:port on which the sound server to use is running"
 #~ msgstr ""
-#~ "Falló la apertura del archivo de cookie CORBA (%s) para escribir: %s\n"
+#~ "Hostal:puerto en el cual está corriendo el servidor de sonido a usar"
 
-#~ msgid "Repository ID under which GOAD knows this server"
-#~ msgstr "ID de Repositorio bajo el cual GOAD conoce a este servidor"
+#~ msgid "Enable sound server usage"
+#~ msgstr "Activar el uso del servidor de sonido"
 
-#~ msgid "REPO_ID"
-#~ msgstr "REPO_ID"
+#~ msgid "Disable sound server usage"
+#~ msgstr "Desactivar el uso del servidor de sonido"
 
-#~ msgid "ID under which GOAD knows this server"
-#~ msgstr "ID bajo el cual GOAD conoce a este servidor"
+#~ msgid "Giving up on displaying error dialog"
+#~ msgstr "Me doy por vencido al tratar de desplegar el diálogo de error"
 
-#~ msgid "GOAD_ID"
-#~ msgstr "GOAD_ID"
+#~ msgid ""
+#~ "Error on option %s: %s.\n"
+#~ "Run '%s --help' to see a full list of available command line options.\n"
+#~ msgstr ""
+#~ "Error en la opción %s: %s.\n"
+#~ "Lance '%s --help' para ver la lista completa de las opciones disponibles.\n"
 
-#~ msgid "(Internal use only) GOAD server ID to activate"
-#~ msgstr "ID del servidor GOAD a activar (Uso Interno)"
+#~ msgid "_About..."
+#~ msgstr "_Acerca de..."
+
+#~ msgid "Creating '/GNOME' context %s %d"
+#~ msgstr "Creando contexto '/GNOME' %s %d"
+
+#~ msgid "Creating '/GNOME/Servers' context %s %d"
+#~ msgstr "Creando contexto '/GNOME/Servers' %s %d"
+
+#~ msgid "GOAD ID of the server to activate"
+#~ msgstr "GOAD ID del servidor a activar"
+
+#~ msgid "REPO-ID"
+#~ msgstr "ID-REPO"
+
+#~ msgid "Repository ID of the server to activate"
+#~ msgstr "ID de Repositorio del servidor a activar"
 
 #~ msgid ""
 #~ "I couldn't find any installed services.  Either you don't have\n"
@@ -1543,61 +1567,39 @@ msgstr "Prueba de GNOME"
 #~ "servicio instalado, o no conozco la ruta para encontrarlos.\n"
 #~ "En cualquier caso verifique la instalación de GNOME, por favor."
 
-#~ msgid "Repository ID of the server to activate"
-#~ msgstr "ID de Repositorio del servidor a activar"
+#~ msgid "(Internal use only) GOAD server ID to activate"
+#~ msgstr "ID del servidor GOAD a activar (Uso Interno)"
 
-#~ msgid "REPO-ID"
-#~ msgstr "ID-REPO"
+#~ msgid "GOAD_ID"
+#~ msgstr "GOAD_ID"
 
-#~ msgid "GOAD ID of the server to activate"
-#~ msgstr "GOAD ID del servidor a activar"
+#~ msgid "ID under which GOAD knows this server"
+#~ msgstr "ID bajo el cual GOAD conoce a este servidor"
 
-#~ msgid "Creating '/GNOME/Servers' context %s %d"
-#~ msgstr "Creando contexto '/GNOME/Servers' %s %d"
+#~ msgid "REPO_ID"
+#~ msgstr "REPO_ID"
 
-#~ msgid "Creating '/GNOME' context %s %d"
-#~ msgstr "Creando contexto '/GNOME' %s %d"
+#~ msgid "Repository ID under which GOAD knows this server"
+#~ msgstr "ID de Repositorio bajo el cual GOAD conoce a este servidor"
 
-#~ msgid "_About..."
-#~ msgstr "_Acerca de..."
-
-#~ msgid ""
-#~ "Error on option %s: %s.\n"
-#~ "Run '%s --help' to see a full list of available command line options.\n"
+#~ msgid "Failed to open CORBA cookie file (%s) for writing: %s\n"
 #~ msgstr ""
-#~ "Error en la opción %s: %s.\n"
-#~ "Lance '%s --help' para ver la lista completa de las opciones disponibles.\n"
+#~ "Falló la apertura del archivo de cookie CORBA (%s) para escribir: %s\n"
 
-#~ msgid "Giving up on displaying error dialog"
-#~ msgstr "Me doy por vencido al tratar de desplegar el diálogo de error"
+#~ msgid "Failed to write CORBA cookie file (%s): %s\n"
+#~ msgstr "Falló del archivo de cookie CORBA (%s): %s\n"
 
-#~ msgid "Disable sound server usage"
-#~ msgstr "Desactivar el uso del servidor de sonido"
+#~ msgid "Failed to write CORBA cookie to `%s': %s\n"
+#~ msgstr "Falló la escritura del archivo de cookie CORBA '%s': %s\n"
 
-#~ msgid "Enable sound server usage"
-#~ msgstr "Activar el uso del servidor de sonido"
+#~ msgid "Failed to open CORBA cookie file `%s': %s\n"
+#~ msgstr "Falló la apertura del archivo de cookie CORBA '%s': %s\n"
 
-#~ msgid "Host:port on which the sound server to use is running"
-#~ msgstr ""
-#~ "Hostal:puerto en el cual está corriendo el servidor de sonido a usar"
+#~ msgid "Failed to read CORBA cookie file `%s': %s\n"
+#~ msgstr "Falló la lectura del archivo de cookie CORNA '%s': %s\n"
 
-#~ msgid "HOSTNAME:PORT"
-#~ msgstr "HOSTAL:PUERTO"
+#~ msgid "Failed to obtain CORBA authentication cookie, exiting\n"
+#~ msgstr "Falló la obtención del cookie de autentificación CORBA, saliendo\n"
 
-#~ msgid "GNOME Options"
-#~ msgstr "Opciones de GNOME"
-
-#~ msgid "set"
-#~ msgstr "definir"
-
-#~ msgid "Set config entry"
-#~ msgstr "Definir una entrada de configuración"
-
-#~ msgid "get"
-#~ msgstr "leer"
-
-#~ msgid "Get config entry"
-#~ msgstr "Leer una entrada de configuración"
-
-#~ msgid "CONFIG-PATH"
-#~ msgstr "RUTA-CONFIG"
+#~ msgid "Could not get name service!"
+#~ msgstr "¡Imposible obtener servicio de nombres!"
