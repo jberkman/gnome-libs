@@ -1,3 +1,9 @@
+Mon Apr 20 23:38:55 1998  George Lebl  <jirka@5z.com>
+
+	* libgnome/gnome-config.c: made it check for the entire
+	  path first as a special case so that it doesn't end
+	  up walking though the entire path if it exists
+
 Mon Apr 20 22:41:44 1998  George Lebl  <jirka@5z.com>
 
 	* libgnome/gnome-config.c: new function check_path
