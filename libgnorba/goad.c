@@ -263,7 +263,6 @@ goad_server_activate_with_repo_id(GoadServer *server_list,
 	retval = goad_server_activate(&slist[i], flags | GOAD_ACTIVATE_NEW_ONLY);
 	g_message("goad_server_activate_with_repo_id: goad_server_activate with NEW_ONLY returned");
       }
-      g_warning("goad_server_activate: retval = %p", retval);
       if (retval != CORBA_OBJECT_NIL)
 	break;
     }
@@ -328,7 +327,7 @@ goad_server_activate(GoadServer *sinfo,
     nc[2].id = sinfo->id;
     nc[2].kind = "object";
 
-    g_warning("goad_server_activate: Testing if server '%s' is already running", sinfo->id);
+    g_message("goad_server_activate: Testing if server '%s' is already running", sinfo->id);
     
     retval = CosNaming_NamingContext_resolve(name_service, &nom, &ev);
 
@@ -385,7 +384,7 @@ goad_server_activate(GoadServer *sinfo,
     CosNaming_NamingContext_bind(name_service, &nom, retval, &ev);
     if (ev._major != CORBA_NO_EXCEPTION)
       {
-	g_warning("goad_server_activate: Registering server");
+	g_warning("goad_server_activate: Exception during server registration");
 	switch( ev._major )
 	  {
 	  case CORBA_SYSTEM_EXCEPTION:
@@ -444,8 +443,19 @@ goad_server_activate_shlib(GoadServer *sinfo,
 								 "RootPOA", ev);
 
   retval = plugin->plugin_object_list[i].activate(poa, &impl_ptr, ev);
-  g_return_val_if_fail(retval && ev->_major != CORBA_NO_EXCEPTION,
-		       CORBA_OBJECT_NIL);
+  if (ev->_major != CORBA_NO_EXCEPTION) {
+    g_warning("goad_server_activate_shlib: activation function raises exception");
+    switch( ev->_major ) {
+    case CORBA_SYSTEM_EXCEPTION:
+      g_warning("	sysex: %s.\n", CORBA_exception_id(ev));
+    case CORBA_USER_EXCEPTION:
+      g_warning( "usr	ex: %s.\n", CORBA_exception_id( ev ) );
+    default:
+      break;
+    }
+    return CORBA_OBJECT_NIL;
+  }
+  return retval;
 
 #if 0
   if(!(flags & GOAD_ACTIVATE_NO_NS_REGISTER)) {
@@ -458,8 +468,8 @@ goad_server_activate_shlib(GoadServer *sinfo,
 
     our_active_servers = g_slist_prepend(our_active_servers, local_server_info);
   }
-#endif
   return retval;
+#endif
 }
 
 
@@ -553,7 +563,7 @@ goad_server_activate_exe(GoadServer *sinfo,
       iorbuf[strlen(iorbuf)-1] = '\0';
     retval = CORBA_ORB_string_to_object(gnome_orbit_orb, iorbuf, ev);
     if (ev->_major != CORBA_NO_EXCEPTION) {
-      g_warning("goad_server_activate_e	xe: %s %d:", __FILE__, __LINE__);
+      g_warning("goad_server_activate_exe: %s %d:", __FILE__, __LINE__);
       switch( ev->_major ) {
       case CORBA_SYSTEM_EXCEPTION:
 	g_warning("syse	x: %s.\n", CORBA_exception_id(ev));
@@ -566,7 +576,6 @@ goad_server_activate_exe(GoadServer *sinfo,
     }
     fclose(iorfh);
     wait(&status);
-    g_message("goad_server_activate_exe: server running, everything okay");
   } else if(fork()) {
     _exit(0); /* de-zombifier process, just exit */
   } else {
@@ -585,6 +594,5 @@ goad_server_activate_exe(GoadServer *sinfo,
     _exit(1);
   }
 out:
-  g_message("goad_server_activate_exe: returning %p\n", retval);
   return retval;
 }

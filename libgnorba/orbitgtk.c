@@ -219,7 +219,7 @@ gnome_name_service_get(void)
 	name_service = CORBA_ORB_string_to_object(gnome_orbit_orb, ior, &ev);
     }
     if (!CORBA_Object_is_nil(name_service, &ev)) {
-      CosNaming_NameComponent nc = {"GNOME", "	subcontext"};
+      CosNaming_NameComponent nc = {"GNOME", "subcontext"};
       CosNaming_Name          nom = {0, 1, &nc, CORBA_FALSE};
       CORBA_Object            gnome_context;
       

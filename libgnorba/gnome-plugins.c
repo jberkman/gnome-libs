@@ -61,9 +61,13 @@ gnome_plugin_use(const char *plugin_id)
 
   g_return_val_if_fail(plugin_id, NULL);
 
-  rel_filename = g_copy_strings("CORBA/plugins", plugin_id);
-  abs_filename = gnome_libdir_file(rel_filename);
-  g_free(rel_filename);
+  if (*plugin_id != '/') {
+    rel_filename = g_copy_strings("CORBA/plugins/", plugin_id, 0);
+    abs_filename = gnome_libdir_file(rel_filename);
+    g_free(rel_filename);
+  } else {
+    abs_filename = g_strdup(plugin_id);
+  }
 
   gmod = g_module_open(abs_filename, G_MODULE_BIND_LAZY);
   g_free(abs_filename);

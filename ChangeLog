@@ -1,3 +1,16 @@
+1998-10-12  Michael Lausch  <mla@gams.at>
+
+	* libgnorba/goad.c: Changed g_warning to g_message for debugging
+	purpose. 
+	(goad_server_activate_shlib): Change error detection for the
+	activate function of a shlib type server.
+
+	* libgnorba/orbitgtk.c (gnome_name_service_get): Corrected type
+	for subcontext when probing for naming-server.
+
+	* libgnorba/gnome-plugins.c (gnome_plugin_use): If the plugin_id
+	starts with a '/' assume it's an absolute pathname already.
+
 1998-10-11  Federico Mena Quintero  <federico@nuclecu.unam.mx>
 
 	* configure.in: Added devel-docs/templates/Makefile to the list of
