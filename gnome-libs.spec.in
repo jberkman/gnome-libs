@@ -104,11 +104,15 @@ fi
 %{prefix}/share/locale/*/*/*
 %{prefix}/share/idl/*
 %{prefix}/share/pixmaps/*
-%config %{prefix}/share/gtkrc
+%config %{prefix}/share/gtkrc*
+%{prefix}/share/mime-info/gnome.mime
+%{prefix}/share/type-convert/type.convert
 %config %{prefix}/etc/*
 
 %files devel
 %defattr(-, root, root)
+
+%doc devel-docs
 
 %{prefix}/lib/lib*.so
 %{prefix}/lib/*.a
@@ -116,4 +120,4 @@ fi
 %{prefix}/lib/gnome-libs
 %{prefix}/include/*
 %{prefix}/share/aclocal/*
-
+%{prefix}/share/doc/*
