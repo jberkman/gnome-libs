@@ -35,6 +35,7 @@ static const gchar *authors[] = {
 	"Eckehard Berns",
 	"Havoc Pennington",
 	"Miguel de Icaza",
+	"Jonathan Blandford",
 	NULL
 };
 
@@ -229,91 +230,65 @@ create_color_picker (void)
 	gtk_widget_show (app);
 }
 
-static void guru_finish(GnomeGuru* guru, GtkWidget* destroyme)
+/*
+ * GnomeDruid
+ */
+
+/*
+ * The Druid's control flow looks something like this:
+ *
+ * page_start -> page_a -> page_b -> page_d -> page_f -> page_finish
+ *                      |          \                  /
+ *                      |            page_e -> page_g 
+ *                       \                  /  
+ *                         page_c ----------
+ */
+static void
+create_druid(void)
 {
-  gnome_ok_dialog("Guru successfully completed, emitted 'finished'");
-  gtk_widget_destroy(destroyme);
+  GtkWidget *window;
+  GtkWidget *druid;
+  gchar *fname;
+  GtkWidget *page_start, *page_finish;
+  GtkWidget *page_a, *page_b, *page_c, *page_d, *page_e, *page_f, *page_g;
+  GdkImlibImage *logo = NULL;
+  GdkImlibImage *watermark = NULL;
+
+  /* load the images */
+  fname = gnome_pixmap_file ("gnome-logo-icon.png");
+  if (fname)
+    logo = gdk_imlib_load_image (fname);
+  g_free (fname);
+
+  fname = gnome_pixmap_file ("gnome-logo-large.png");
+  if (fname)
+    watermark = gdk_imlib_load_image (fname);
+  g_free (fname);
+
+  /* The initial stuff */ 
+  window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+  druid = gnome_druid_new ();
+  page_start = gnome_druid_page_start_new_with_vals 
+    ("Beginning of the DRUID",
+     "This is a Sample DRUID\n\nIt will walk you through absolutely nothing. (-:",
+     logo,
+     watermark);
+
+  /* The middle druid pages. */
+  gtk_container_add (GTK_CONTAINER (window), druid);
+  gnome_druid_append_page (GNOME_DRUID (druid),
+			   GNOME_DRUID_PAGE (page_start));
+  gnome_druid_set_page (GNOME_DRUID (druid), GNOME_DRUID_PAGE (page_start));
+  gtk_widget_show_all (window);
 }
 
-static void guru_cancel(GnomeGuru* guru, GtkWidget* destroyme)
-{
-  gnome_ok_dialog("Guru cancelled");
-  gtk_widget_destroy(destroyme);
-}
-
+/*
+ * GnomeGuru
+ */
 static void
 create_guru(void)
 {
-  /* We want to test both in a dialog, and without a dialog. */
-  GtkWidget* guru;
-  GtkWidget* page;
-  GtkWidget* dialog;
-  GtkWidget* graphic;
-  GtkWidget* window;
-  gchar* pix;
-
-  pix = gnome_pixmap_file("gnome-logo-large.png");
-  graphic = gnome_pixmap_new_from_file_at_size(pix, 100, 300);
-  g_free(pix);
-
-  guru = gnome_guru_new("Test Gnome Guru (without dialog)",
-			graphic,
-			NULL);
-
-  window = create_newwin(TRUE, "testGNOME", "Gnome Guru Test Window");
-
-  gnome_app_set_contents(GNOME_APP(window), guru);
-
-  page = gtk_label_new("Page one");
-  gnome_guru_append_page(GNOME_GURU(guru), "First page", page);
-  page = gtk_label_new("Page two");
-  gnome_guru_append_page(GNOME_GURU(guru), "Second page", page);
-  page = gtk_label_new("Page three");
-  gnome_guru_append_page(GNOME_GURU(guru), "Third page", page);
-  page = gtk_label_new("Page four");
-  gnome_guru_append_page(GNOME_GURU(guru), "Fourth page", page);
-
-  gtk_signal_connect(GTK_OBJECT(guru), "finished",
-		     GTK_SIGNAL_FUNC(guru_finish),
-		     window);
-
-  gtk_signal_connect(GTK_OBJECT(guru), "cancelled",
-		     GTK_SIGNAL_FUNC(guru_cancel),
-		     window);
-
-  gtk_widget_show(guru);
-  gtk_widget_show(window);
-
-  dialog = gnome_dialog_new(_("Guru-in-a-dialog test"),
-			    NULL);
-
-  pix = gnome_pixmap_file("gnome-logo-large.png");
-  graphic = gnome_pixmap_new_from_file_at_size(pix, 100, 300);
-  g_free(pix);
-
-  guru = gnome_guru_new("Test Gnome Guru (without dialog)",
-			graphic,
-			GNOME_DIALOG(dialog));
-
-  page = gtk_label_new("Page one");
-  gnome_guru_append_page(GNOME_GURU(guru), "First page", page);
-  page = gtk_label_new("Page two");
-  gnome_guru_append_page(GNOME_GURU(guru), "Second page", page);
-  page = gtk_label_new("Page three");
-  gnome_guru_append_page(GNOME_GURU(guru), "Third page", page);
-  page = gtk_label_new("Page four");
-  gnome_guru_append_page(GNOME_GURU(guru), "Fourth page", page);
-
-  gtk_signal_connect(GTK_OBJECT(guru), "finished",
-		     GTK_SIGNAL_FUNC(guru_finish),
-		     dialog);
-
-  gtk_signal_connect(GTK_OBJECT(guru), "cancelled",
-		     GTK_SIGNAL_FUNC(guru_cancel),
-		     dialog);
-
-  gtk_widget_show(guru);
-  gtk_widget_show(dialog);
+  gnome_ok_dialog("The Guru widget is deprecated.  Use the Druid instead.");
 }
 
 /*
@@ -1767,6 +1742,7 @@ main (int argc, char *argv[])
 		  { "canvas", create_canvas },
 		  { "clock",	create_clock },
 		  { "color picker", create_color_picker },
+		  { "druid", create_druid },
 		  { "guru", create_guru },
 		  { "paper-sel", create_papersel },
 		  { "date edit", create_date_edit },

@@ -2,18 +2,55 @@
 GnomeDruid
 
 <!-- ##### SECTION Short_Description ##### -->
-
+  The top-level widget of the Druid system.
 
 <!-- ##### SECTION Long_Description ##### -->
-<para>
-
-</para>
-
-
+  <para>
+    The GNOME Druid is a system for assisting the user with installing a
+    service.  It is roughly equivilent in functionality to the
+    "Wizards" available in windows.
+    Druids provide a frame
+  </para>
+  <para>
+    There are two major parts of the druid, the #GnomeDruid widget,
+    and the set of #GnomeDruidPage widgets.  The #GnomeDruid widget is
+    the top level widget that interacts with the user.  It has a Next,
+    a Prev, and a Cancel button, as well as acts as a container.  It
+    is not a top-level widget, so it needs to be put in a #GtkWindow
+    in almost all cases.  The #GnomeDruidPage is a virtual widget,
+    from which all of the actual content of the page inherits from.
+    There are currently three of these available.  However, there is
+    no reason why more couldn't be written.
+  </para>
+  <refsect2>
+    <title>Developing with the GnomeDruid</title>
+    <para>
+      GNOME Druids are fairly simple to program with.  One starts by
+      creating a #GnomeDruid into which one puts all of your pages.
+      This widget will handle the presentation of the #GnomeDruidPage
+      widgets.
+    </para>
+    <para>
+      One then creates all appropriate #GnomeDruidPage widgets.  There
+      are three implementations of these in libgnomeui.  They are the
+      #GnomeDruidPageStart, the #GnomeDruidPageStandard, and the
+      #GnomeDruidPageFinish.  The #GnomeDruidPageStandard acts as a
+      #GtkContainer, and is probably the most commonly used Druid
+      page.  More information on the specific properties of these
+      widgets can be found on their respective pages.  It is 
+    </para>
+    <para>
+      In order to appear in the 
+    </para>
+    <para>
+      The #GnomeDruid emits the "Cancel" signal, which is emitted when
+      the
+    </para>
+  </refsect2>  
 <!-- ##### SECTION See_Also ##### -->
-<para>
-
-</para>
+  <para>
+    #GnomeDruidPage, #GnomeDruidPageStart, #GnomeDruidPageStandard, #GnomeDruidPageFinish
+  </para>
 
 
 <!-- ##### FUNCTION gnome_druid_new ##### -->
