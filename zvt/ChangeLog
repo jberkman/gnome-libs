@@ -1,3 +1,12 @@
+1999-06-20  Michael Zucchi  <mzucchi@denr.sa.gov.au>
+
+	* subshell-includes.h: Under Solaris at least, defining
+	_XOPEN_SOURCE means that the winsize stuff is NOT defined.  I've
+	added a __EXTENSIONS__ define so it does get defined.  Either that
+	or _XOPEN_SOURCE must be undefined.  Hopefully this is portable to
+	other unices ...
+	This fixes bug #1435.
+
 1999-06-19  Michael Zucchi  <mzucchi@zedzone.mmc.com.au>
 
 	* zvtterm.h: Removed unecessary include of X11.h and Xlib.h.

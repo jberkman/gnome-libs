@@ -4,6 +4,8 @@
 #include <stdio.h>      
 #include <fcntl.h>	/* for close-on-exec stuff	      */
 #define _XOPEN_SOURCE 1
+#define __EXTENSIONS__ 1	/* needed for winsize struct
+				   on Solaris (?) */
 
 #include <sys/types.h>
 #include <sys/time.h>
