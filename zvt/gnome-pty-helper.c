@@ -473,7 +473,7 @@ open_ptys (int utmp, int wtmp)
 	term.c_cc[VREPRINT] = 'R'-64;
 #endif
 #ifdef VDISCARD	
-	term.c_cc[VDISCARD] = 'U'-64;
+	term.c_cc[VDISCARD] = 'O'-64;
 #endif
 #ifdef VWERASE
 	term.c_cc[VWERASE] = 'W'-64;

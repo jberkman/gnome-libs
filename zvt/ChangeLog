@@ -1,3 +1,9 @@
+1999-10-20  Miguel de Icaza  <miguel@nuclecu.unam.mx>
+
+	* gnome-pty-helper.c (open_ptys): VDISCARD character is control-o,
+	not control-u, which is already used for VKILL.  Fixes problem
+	posted to gnome-list.
+
 1999-10-19  Michael Zucchi  <mzucchi@denr.sa.gov.au>
 
 	* vt.c (vt_lf): Make sure we dont linefeed off the end of the
