@@ -48,11 +48,13 @@
 <!entity wwwjimpick    "http://jimpick.com">
 <!entity wwwdebpack    "http://www.debian.org/~jim/debian-gtk-gnome/README">
 <!entity wwwrhqt       "http://charlotte.redhat.com/redhat/qtlicense.html">
-!entity wwwdebkde     "http://www.debian.org/News/1998/19981008">
+<!entity wwwdebkde     "http://www.debian.org/News/1998/19981008">
 <!entity wwwredbean    "http://www.red-bean.com/guile">
 <!entity wwwschemerpt  "http://www-swiss.ai.mit.edu/~jaffer/r5rs_toc.html">
 <!entity wwwfhs        "http://www.pathname.com/fhs/2.0/fhs-toc.html">
 <!entity wwwgtktheme   "http://gtk.themes.org">
+<!entity wwwlj         "http://www.linuxjournal.com">
+<!entity wwwicodes     "http://www.twics.com/~craig/writings/linux-nihongo/node93.html">
 <!entity ftpgnome      "ftp://ftp.gnome.org">
 <!entity ftpwgn        "ftp://gnomeftp.wgn.net/pub/gnome">
 <!entity ftpsnap       "ftp://ftp.jimpick.com/pub/gnome/snap">
@@ -137,8 +139,8 @@
 
 	<listitem>
 	  <para>The GNOME community is working hard on developing an
-	  object model called bonobo. Based on CORBA and similar to
-	  Microsoft's Object Linking and Embedding, v2 (OLE2), bonobo
+	  object model called Bonobo.  Based on CORBA and similar to
+	  Microsoft's Object Linking and Embedding, v2 (OLE2), Bonobo
 	  will allow programmers to export and/or import componentized
 	  resources. This, for example, would allow users to use
 	  whatever editor they like in their development environment,
@@ -1700,7 +1702,7 @@ WM=foo</screen>
     </sect1>
 
     <sect1 ID="CORBA">
-      <title>CORBA, ORBit and Bonobon</title>
+      <title>CORBA, ORBit and Bonobo</title>
 
       <para>Network Objects is GNOME's middle name.  This is how they
       work.</para>
@@ -2045,10 +2047,9 @@ WM=foo</screen>
 	  </listitem>
 
 	</itemizedlist>
-	<comment>Bonobo doesn't stand for anything
-	<para><firstterm>Bonobo</firstterm> stands for: Bonobo Allows
-	Bonobo Objects Over Networks.</para>
-	</comment>
+
+	<para>Bonobo doesn't stand for anything.  They are
+	Chimpanzees' less grouchy cousins.</para>
       </sect2>
     </sect1>
 
@@ -2088,6 +2089,8 @@ WM=foo</screen>
 	  <member>TOM</member>
 	  <member>Gwydion Dylan</member>
 	  <member>Ada95</member>
+	  <member>Pike</member>
+	  <member>Pascal (Free Pascal Compiler)</member>
 	</simplelist>
 
 	<para>If there are others, then please let us know about
@@ -2326,10 +2329,84 @@ WM=foo</screen>
 	find out more info on these topics?</title>
 
 	<para>Take a look at the GNU gettext package's online manual
-        at <ulink url="&wwwgettext;">&wwwgettext;</ulink>.</para>
+        at <ulink url="&wwwgettext;">&wwwgettext;</ulink>.  There also
+        is a very useful article from Linux Journal about
+        internationalization issues at <ulink
+        url="&wwwlj;/issue59/3286.html">
+        &wwwlj;/issue59/3286.html</ulink>.  Additionally, you may find
+        the I18N FAQ informative: <ulink
+        url="&wwwi18n;">&wwwi18n;</ulink>.</para>
+      </sect2>
 
-	<para>Additionally, you may find the I18N FAQ informative:
-        <ulink url="&wwwi18n;">&wwwi18n;</ulink>.</para>
+      <sect2>
+	<title>How do I change the language of my GNOME
+	programs?</title>
+
+	<para>To change the language that GNOME programs use, you just
+	need to set the environment variable <envar>LANG</envar> to
+	the desired ISO 639 language code.  From that point forward,
+	any new GNOME apps you run will try use that language.</para>
+
+	<para>Let's say you wanted to see GNOME in Spanish.  In the
+	Bourne Shell and its derivatives (such as Bash), you use
+	<command>set LANG="es"</command>.  If you were using the C
+	Shell (or tcsh), you would use <command>setenv LANG
+	"es"</command> instead.  These commands are generally put in
+	the <filename>.profile</filename> or
+	<filename>.login</filename> file, so that your environment
+	starts up the same way each time.</para>
+
+	<para>Some languages (such as English and Spanish) need to be
+	handled differently depending on where you are.  In these
+	cases you can extend the language code with an underscore
+	followed by a ISO 3166 country code.  So, if you want to
+	select British English you would use "en_GB"; for Mexican
+	Spanish you would use "es_MX".</para>
+
+	<para>Keep in mind that GNOME apps that are already running
+	won't change languages while you change the
+	<envar>LANG</envar> variable, you have to close the program
+	and reopen it for the new value to take effect.  Also note
+	that some languages are not offered by all applications.  You
+	might find some apps using the language you want, and others
+	using English.</para>
+
+	<para>You can find the list of all the ISO Language and
+	Country Codes at <ulink
+	url="&wwwicodes;">&wwwicodes;</ulink>.  Here's the list of the
+	codes currently supported by GNOME-core:</para>
+	<simplelist>
+	  <member>Catalan (ca)</member>
+	  <member>Czech (cs)</member>
+	  <member>Danish (da)</member>
+	  <member>German (de)</member>
+	  <member>English [USA] (en) [Yeah, life's not fair]</member>
+	  <member>English [Great Britain] (en_GB)</member>
+	  <member>Spanish [Spain] (es)</member>
+	  <member>Spanish [Dominican Republic] (es_DO)</member>
+	  <member>Spanish [Guatemala] (es_GT)</member>
+	  <member>Spanish [Honduras] (es_HN)</member>
+	  <member>Spanish [Mexico] (es_MX)</member>
+	  <member>Spanish [Panama] (es_PA)</member>
+	  <member>Spanish [Peru] (es_PE)</member>
+	  <member>Spanish [Sweden?] (es_SV) [Should be es_SE if its Sweden]</member>
+	  <member>Basque (eu)</member>
+	  <member>Finnish (fi)</member>
+	  <member>French (fr)</member>
+	  <member>Irish (ga)</member>
+	  <member>Hungarian (hu)</member>
+	  <member>Italian (it)</member>
+	  <member>Japanese (ja)</member>
+	  <member>Korean (ko)</member>
+	  <member>Dutch (nl)</member>
+	  <member>Norwegian (no)</member>
+	  <member>Polish (pl)</member>
+	  <member>Portuguese (pt)</member>
+	  <member>Russian (ru)</member>
+	  <member>Slovak (sk)</member>
+	  <member>Swedish (sv)</member>
+	  <member>Waloon (wa)</member>
+	</simplelist>
       </sect2>
     </sect1>
 
@@ -2340,7 +2417,7 @@ WM=foo</screen>
 	<title>What is Guile?</title>
 
 	<para>Guile is the GNU project's implementation of Scheme, a
-	Common Lisp dialect.  Find out more at <ulink
+	Lisp dialect.  Find out more at <ulink
 	url="&wwwguile;">&wwwguile;</ulink>.  There's also some
 	excellent information at <ulink url="&wwwredbean;">
 	&wwwredbean;</ulink></para>
