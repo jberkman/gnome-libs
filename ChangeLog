@@ -1,3 +1,9 @@
+Thu Feb 18 12:34:37 1999  Maciej Stachowiak  <mstachow@alum.mit.edu>
+
+	* libgnorba/Makefile.am (install-data-hook): Use `$(LN_S)' instead
+ 	of `ln -sf'; -f is unnecessary as the line above rm -f's the link
+	target, and `ln -sf' is not portable.
+
 Thu Feb 18 03:40:04 1999  Timur Bakeyev <mc@bat.ru>
 
 	* configure.in: Added checks for various utmp members (AC_CHECK_UTMP),
