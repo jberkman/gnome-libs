@@ -1,0 +1,1170 @@
+<!doctype book PUBLIC "-//Davenport//DTD DocBook V3.0//EN" [
+<!entity mailweb       "webmaster@gnome.org">
+<!entity mailfaq       "gnomefaq@gnu.org">
+<!entity mailrequest   "gnome-list-request@gnome.org">
+<!entity gnomedevelreq "gnome-devel-list-request@gnome.org">
+<!entity majorunam     "majordomo@nuclecu.unam.mx">
+<!entity gnomeguireq   "gnome-gui-list-request@gnome.org">
+<!entity mailbug       "submit@bugs.gnome.org">
+<!entity maildeb       "debian-gtk-gnome@lists.debian.org">
+<!entity wwwgtk        "http://www.gtk.org">
+<!entity wwwimlib      "http://www.labs.redhat.com/imlib">
+<!entity wwwgnome      "http://www.gnome.org">
+<!entity wwwgnomelist  "http://www.gnome.org/mailing-lists/index.shtml">
+<!entity wwwgnome10    "http://www.gnome.org/gnome-1.0">
+<!entity wwwgnomestart "http://www.gnome.org/start/getting.shtml">
+<!entity wwwgnomerh    "http://www.gnome.org/start/getting.shtml">
+<!entity wwwgnomedeb   "http://www.gnome.org/start/getting.shtml">
+<!entity wwwgnomecvs   "http://cvs.gnome.org">
+<!entity wwwgnomewicvs "http://www.gnome.org/devel/whatiscvs.shtml">
+<!entity wwwsorencvs   "http://www.cinternet.net/~soren/gnome/cvs.shtml">
+<!entity wwwgnomeftp   "http://www.gnome.org/ftpmirrors.shtml">
+<!entity wwwgnometour  "http://www.gnome.org/start/gnometour.shtml">
+<!entity wwwgnomefoo   "http://www.gnome.org/start/gnometour.shtml">
+<!entity wwwgnomeguide "http://www.gnome.org/users-guide">
+<!entity wwwgnomewmc   "http://www.gnome.org/devel/gnomewm/book1.html">
+<!entity wwwgnomemanif "http://www.gnome.org/about/manifesto.shtml">
+<!entity wwwgnomebug   "http://bugs.gnome.org">
+<!entity wwwgnomebugr  "http://bugs.gnome.org/Reporting.html">
+<!entity wwwsusebe     "http://gnome.linuxbe.org">
+<!entity wwwsusede     "http://www.tu-harburg.de/skf/Pub/ifmpc118.ifm.uni-hamburg.de/gnome.html">
+<!entity wwwbsdport    "http://www.freebsd.org/ports">
+<!entity wwwdocbook    "http://www.oasis-open.org/docbook">
+<!entity wwwdocbooktut "http://nis-www.lanl.gov/~rosalia/mydocs/docbook-intro.html">
+<!entity wwwtoddtheme  "http://www.mindspring.com/~tlewis/screen.jpg">
+<!entity wwwgettext    "http://www.gnu.org/manual/gettext/html_chapter/gettext_toc.html">
+<!entity wwwgimp       "http://www.gimp.org">
+<!entity wwwgimp32     "http://www.gimp.org/~tml/gimp/win32">
+<!entity wwwgnu        "http://www.gnu.org">
+<!entity wwwgnuphil    "http://www.gnu.org/philosophy">
+<!entity wwwgnufree    "http://www.gnu.org/philosophy/free-sw.html">
+<!entity wwwgnuaconf   "http://www.gnu.org/software/autoconf/autoconf.html">
+<!entity wwwgnuamake   "http://www.gnu.org/software/automake/automake.html">
+<!entity wwwgnulibtool "http://www.gnu.org/software/libtool/libtool.html">
+<!entity wwwgcc        "http://www.gnu.org/software/gcc/gcc.html">
+<!entity wwwguile      "http://www.gnu.org/software/guile/guile.html">
+<!entity wwwpng        "http://www.cdrom.com/pub/png">
+<!entity wwwftpmail    "http://www.csdl.tamu.edu/~cchung/cpsc689/ftpmail/ftpmtoc.html">
+<!entity wwwftpmlist   "http://www.cix.co.uk/~net-services/mrcool/stats.htm">
+<!entity wwwi18n       "http://www.vlsivie.tuwien.ac.at/mike/i18n.html">
+<!entity gwwwi18n      "http://www.gnome.org/i18n">
+<!entity wwwxdnd       "http://www.cco.caltech.edu/~jafl/xdnd/">
+<!entity wwwjimpick    "http://jimpick.com">
+<!entity wwwdebpack    "http://www.debian.org/~jim/debian-gtk-gnome/README">
+<!entity wwwrhqt       "http://charlotte.redhat.com/redhat/qtlicense.html">
+<!entity wwwdebkde     "http://www.debian.org/News/1998/19981008">
+<!entity wwwredbean    "http://www.red-bean.com/guile">
+<!entity wwwschemerpt  "http://www-swiss.ai.mit.edu/~jaffer/r5rs_toc.html">
+<!entity wwwfhs        "http://www.pathname.com/fhs/2.0/fhs-toc.html">
+<!entity wwwgtktheme   "http://gtk.themes.org">
+<!entity wwwlj         "http://www.linuxjournal.com">
+<!entity wwwicodes     "http://www.twics.com/~craig/writings/linux-nihongo/node93.html">
+<!entity wwwgui        "http://www.jcinteractive.com/gnome-ui/">
+<!entity ftpgnome      "ftp://ftp.gnome.org">
+<!entity ftpwgn        "ftp://gnomeftp.wgn.net/pub/gnome">
+<!entity ftpsnap       "ftp://ftp.jimpick.com/pub/gnome/snap">
+<!entity ftpdocware    "ftp://ftp.cygnus.com/pub/home/rosalia/docware">
+<!entity dcomcorba     "http://www.research.att.com/~ymwang/papers/HTML/DCOMnCORBA/S.html">
+<!entity schmidtcorba  "http://siesta.cs.wustl.edu/~schmidt/corba.html">
+]>
+<book>
+  <chapter id="Architecture">
+    <title>Architecture Components</title>
+
+    <para>This section discusses the various pieces of GNOME, and what
+    they do.</para>
+
+    <sect1 id="ArchLibraries">
+      <title>Libraries</title>
+      <sect2>
+	<title>Why do I need so many libraries
+	for GNOME?</title>
+
+	<para>GNOME requires the libraries it does for two big
+	reasons.  We wanted GNOME to have lots of useful features, and
+	we didn't want to write everything from scratch.  By using
+	common libraries for many of GNOME's features it allows GNOME
+	to work better and more consistently with other non-GNOME
+	applications.</para>
+      </sect2>
+    </sect1>
+
+    <sect1 ID="CORBA">
+      <title>CORBA, ORBit and Bonobo</title>
+
+      <para>Network Objects is GNOME's middle name.  This is how they
+      work.</para>
+
+      <sect2>
+	<title>What is CORBA?</title>
+
+	<para><ulink
+	url="http://www.omg.org/news/begin.htm">CORBA</ulink> is the
+	Common Object Request Broker Architecture.  From the Open
+	Management Group (OMG, the standards body which controls
+	CORBA) document <ulink
+	url="http://www.omg.org/about/wicorba.htm">What is
+	CORBA?</ulink> comes the following description:</para>
+
+        <blockquote>
+	  <para>The Common Object Request Broker Architecture (CORBA),
+	  is the Object Management Group's answer to the need for
+	  inter-operability among the rapidly proliferating number of
+	  hardware and software products available today. Simply
+	  stated, CORBA allows applications to communicate with one
+	  another no matter where they are located or who has designed
+	  them(...)</para>
+
+	  <para>The (ORB) is the middleware that establishes the
+	  client-server relationships between objects. Using an ORB, a
+	  client can transparently invoke a method on a server object,
+	  which can be on the same machine or across a network. The
+	  ORB intercepts the call and is responsible for finding an
+	  object that can implement the request, pass it the
+	  parameters, invoke its method, and return the results. The
+	  client does not have to be aware of where the object is
+	  located, its programming language, its operating system, or
+	  any other system aspects that are not part of an object's
+	  interface. In so doing, the ORB provides inter-operability
+	  between applications on different machines in heterogeneous
+	  distributed environments and seamlessly interconnects
+	  multiple object systems.</para>
+
+	  <para>In fielding typical client/server applications,
+	  developers use their own design or a recognized standard to
+	  define the protocol to be used between the devices. Protocol
+	  definition depends on the implementation language, network
+	  transport and a dozen other factors. ORBs simplify this
+	  process. With an ORB, the protocol is defined through the
+	  application interfaces via a single implementation
+	  language-independent specification, the IDL (Ed. Interface
+	  Description Language).  And ORBs provide flexibility. They
+	  let programmers choose the most appropriate operating
+	  system, execution environment and even programming language
+	  to use for each component of a system under
+	  construction. More importantly, they allow the integration
+	  of existing components. In an ORB-based solution, developers
+	  simply model the legacy component using the same IDL they
+	  use for creating new objects, then write "wrapper" code that
+	  translates between the standardized bus and the legacy
+	  interfaces.</para>
+	</blockquote>
+
+	<para>OK, enough of that stuff. Here's Todd's
+	explanation:</para>
+
+	<blockquote>
+	  <para>Do you remember RPC? You know, Remote Procedure Calls?
+	  Sun used them as the basis for NFS and NIS. Microsoft used
+	  the Distributed Computing Environment's RPC standard as the
+	  basis for DCOM.</para>
+
+	  <para>Well, a remote procedure call is really pretty
+	  simple. First, you define the procedure in some standard
+	  format. What is there to a procedure definition?  Well,
+	  you've got the name of the procedure, the arguments which go
+	  into it, and the results which come out of it. Then you
+	  produce the client side, which tells clients how to feed in
+	  arguments and get back results, and then you build the
+	  server side, which takes in arguments and gives back
+	  results.</para>
+
+	  <para>You can use this model to build pretty powerful
+	  systems. Just take the standard Unix file system interface,
+	  convert it to RPC, and bammo, you've got NFS. Note that as
+	  long as the inputs and outputs are thrown around in a
+	  standard way, the clients calling the procedure and the
+	  server servicing the procedure don't have to be written in
+	  the same language, running on the same machine, or even
+	  running on the same operating system or hardware. This is,
+	  truth be told, the killer feature of RPC.</para>
+
+	  <para>However, as procedural programming (C, Perl) has been
+	  superseded by object-oriented programming (Objective C,
+	  Java, C++), you really need something more the procedures in
+	  RPC. You need something which supports objects: creating
+	  objects, accessing object data, accessing object methods,
+	  destroying objects. This is where CORBA comes in: think of
+	  CORBA as next-generation RPC, just extended to support
+	  object-oriented programming. Instead of having under RPC the
+	  following:</para>
+
+	  <programlisting>void foo(int bar); void baz(){return(-1);}</programlisting>
+
+	  <para>you instead have under CORBA the following:</para>
+
+	  <programlisting>interface bubba{ void foo(in int bar); void baz() raises (InValidContext); } </programlisting>
+
+	  <para>The lesson of all of this? CORBA lets one program
+	  language-independent, location-transparent object-oriented
+	  interfaces between software components. It' s cool.</para>
+
+	</blockquote>
+      </sect2>
+
+      <sect2>
+	<title>What are some CORBA components?</title>
+
+	<para>I would like to include here definitions of some of the
+	more strange CORBA terminology, so that people can easily get
+	into the groove of what CORBA is and have a good
+	"beck-of-the-envelope" understanding of the components
+	involved.  Whenever I refer to a non-obvious CORBA term, I
+	intend to define it here.</para>
+	<itemizedlist>
+	  <listitem>
+	    <para><firstterm>Object Request Broker</firstterm> - (or
+	    ORB) an ORB is a piece of "middleware", as it's called,
+	    which sits between clients and servers and makes easy
+	    communication between them possible. The ORB is a
+	    conceptual entity, which sometimes takes the form of a
+	    shared library and sometimes takes the form of an external
+	    program.  the ORB is responsible for establishing and
+	    destroying sessions between clients and servers and
+	    marshaling, unmarshaling, and transporting messages
+	    between them during a session.</para>
+	  </listitem>
+	  <listitem>
+	    <para><firstterm>Object Adaptor</firstterm> - (or OA) an
+	    Object Adaptor provides the channel through which an
+	    object server (like the gnome panel) communicates with the
+	    Object Request Broker (ORBit).</para>
+	  </listitem>
+	  <listitem>
+	    <para><firstterm>GIOP/IIOP</firstterm> - CORBA takes all
+	    of these object-oriented language-isms and handles
+	    carrying them between object-oriented software components
+	    (marshaling, transporting, and demarshaling). If the two
+	    pieces of software are in different locations, then it
+	    will use the GIOP protocol to move information between
+	    them. IIOP is a specification of GIOP for the Internet
+	    protocol suite; theoretically you could run GIOP over
+	    something other than IP, in which case it would be called
+	    something else. I for one can't figure out why you would
+	    want to. 8^) If any version of GIOP other than IIOP ever
+	    became important, then I'm sure that ORBit would support
+	    it, too. (Think of IIOP as HTML to GIOP's SGML.)</para>
+	  </listitem>
+	</itemizedlist>
+      </sect2>
+
+      <sect2>
+	<title>What are CORBA Services?</title>
+
+	<para>Additionally, there are really two parts to CORBA. There
+	is the part which I've already described, which tells you how
+	to do objectified RPC, how to marshal arguments, how to write
+	IDL files, how GIOP works, etc. and then there are the "CORBA
+	Services". These are services built on top of the basic CORBA
+	infrastructure which make distributed object programming
+	easier.</para>
+
+	<para>Perhaps the most important of these is the naming
+	service. E.g., say that you were a program which for some
+	reason needed spell-checking services. One really neat thing
+	that you can do (if your CORBA implementation is nifty enough)
+	is to call up your ORB and say "Hey! I need spell-check
+	service. Go find it for me." The ORB then uses the naming
+	service to see what objects are registered which provide
+	spell-check service. It can then wake up the calling program
+	and say "You can find the spell- check service at
+	&num;867-5309." You then call up 867-5309 and, lo and behold,
+	there's a spell check service there. Now, that might be a
+	shared library which got mapped into your address space and
+	you are now doing straight function calls into it, or it might
+	be a community spell-check service in Mongolia offered as a
+	public service by the Mongolian FreeBSD users' group over the
+	internet via IIOP. You don't know and, except for maybe a
+	little lag induced by the round-trip to Mongolia, you really
+	don't care. Cool, non?</para>
+
+	<para>The naming service, then, allows objects to register
+	themselves for future use. There are other CORBA services,
+	including a transaction service, a security service, a time
+	service, a "relationship service", which might or might not be
+	what you think it is, and more. My copy of the CORBAservices
+	document from March 1997 lists 14 of them.</para>
+
+	<para>You can find a copy of the CORBAservices specification
+	at the OMG web page at <ulink
+	url="http://www.omg.org/corba/csindx.htm">http://www.omg.org/corba/csindx.htm</ulink>.
+	If you are interested in implementing any of them, then I'm
+	sure that the ORBit developers would love to talk to you.
+	(See <link linkend="ORBIT">ORBit</link>)</para>
+      </sect2>
+
+      <sect2>
+	<title>Which CORBA version does GNOME use?</title>
+
+	<para>Work is presently underway within the OMG to develop
+	version 3.0, but for now GNOME is using CORBA version 2.2,
+	which is the present standard. I have not heard what GNOME
+	will do when 3.0 comes out.</para>
+      </sect2>
+
+      <sect2>
+	<title>Where can I find out more about CORBA?</title>
+
+	<para>A good jumping-off page is Linas Vepstas's CORBA page at
+        <ulink url="http://linas.org/linux/corba.html">
+        http://linas.org/linux/corba.html</ulink>.</para>
+
+	<para>Since there seems to be a lot of interest in the
+	difference between CORBA and COM, I'll just mention this one
+	other paper: <ulink url="&dcomcorba;">&dcomcorba;</ulink>,
+	DCOM and CORBA Side by Side, Step by Step, and Layer by
+	Layer.</para>
+
+	<para>Finally, the TAO project at Washington University in
+	St. Louis has their own ORB, TAO. That group is led by
+	Dr. Douglas Schmidt. You can find a lot of good information on
+	his CORBA page: <ulink
+	url="&schmidtcorba;">&schmidtcorba;</ulink>.  Be sure to look
+	around at the ACE and TAO pages while you're there; they are
+	very good.</para>
+      </sect2>
+
+      <sect2>
+	<title>What role does CORBA play in GNOME?</title>
+
+	<para>CORBA enables the component architecture of GNOME. It
+	serves a role similar to that of COM/DCOM under win32.</para>
+      </sect2>
+
+      <sect2>
+	<title>What CORBA implementation is GNOME using?</title>
+
+	<para>In the beginning, the plan was to use <ulink
+	url="ftp://parcftp.parc.xerox.com/pub/ilu/ilu.html">
+	ILU</ulink>.  ILU had a number of benefits, foremost among
+	them that it supports several languages.  While ILU was (and
+	is) awfully neat, Xerox's attitude towards it was unclear, and
+	the licensing terms proved to be fatal: ILU is not free
+	software, and the GNOME team proved unable to get Xerox to
+	modify the license. The GNOME project won't adopt technology
+	which is not free software, and that was the end of
+	that.</para>
+
+	<para>The project then settled upon <ulink
+	url="http://diamant-atm.vsb.cs.uni-frankfurt.de/~mico/">
+	MICO</ulink>.  The main attractions of MICO are that it has an
+	Object Adaptor, it is IIOP-compliant, and it is licensed under
+	the terms of the GPL. However, it does not presently support
+	languages other than C++, and it used just an unbelievably
+	amount of memory.</para>
+
+	<para>Still dissatisfied, the GNOMErs began work on our own
+	ORB, called ORBit.</para>
+      </sect2>
+
+      <sect2 id="ORBit">
+	<title>What is ORBit?</title>
+
+	<para>ORBit is intended to be multilingual; ILU proves that
+	this is possible.  Right now it only supports C, but in the
+	future it will support other languages.  (Really, we mean it!
+	It is a very, very new project right now, which is the only
+	reason it is C only.) It also supports GIOP/IIOP, the OMG's
+	CORBA protocol which allows different ORBs to be able to talk
+	to each other.</para>
+
+	<para>Finally, ORBit is intended to be high performance. That
+	means low-memory and high-speed. Here, ORBit is taking a lot
+	of cues from <ulink
+	url="http://www.cs.utah.edu/projects/flux/flick/">
+	Flick</ulink>.  Elliot Lee, the instigator of the ORBit
+	project, thinks that he can, without violating the CORBA spec,
+	get the cost of a CORBA call darn close to that of a standard
+	library call, where a local implementation of the requested
+	service is available. We'll see.</para>
+      </sect2>
+
+      <sect2>
+	<title>Why has GNOME not made more use of CORBA?</title>
+
+	<para>The big reason is that MICO was just unworkable. it took
+	too much memory, it was C++ only, etc. ad naus. With the
+	recent release of the GNOME ORBit, we can start deploying
+	CORBA in GNOME.</para>
+      </sect2>
+
+      <sect2 id="Bonobo">
+	<title>How will CORBA be used in GNOME, or, what is
+	Bonobo?</title>
+
+	<para>(This section comes pretty much verbatim from Miguel de
+	Icaza, Chief of the GNOMErs.)</para>
+
+	<para>CORBA will be used in various contexts. A set of
+	interfaces and library routines called "Bonobo" are used to
+	simplify and integrate applications:</para>
+
+	<itemizedlist>
+	  <listitem>
+	    <para>Components: There are pre-packaged libraries/servers
+	    that do provide some functionality that can be used by any
+	    application like spelling servers, calendaring services
+	    and other non-GUI services.</para>
+	  </listitem>
+
+	  <listitem>
+	    <para>Application embedding and in-place activation:
+	    Bonobo is a set of interfaces for providing application
+	    embedding and in-place activation which are being defined.
+	    The Bonobo interfaces and interactions are modeled after
+	    the OLE2 and OpenDoc interfaces.</para>
+	  </listitem>
+
+	  <listitem>
+	    <para>GNOME Applications as service providers: GNOME
+	    applications will export their inner workings through
+	    CORBA to allow anyone to reuse their functionality.  This
+	    allows scripting of the GNOME desktop as any CORBA-aware
+	    application or scripting language can invoke methods in a
+	    GNOME server (for example, a script in Perl can control
+	    remotely invoke a spreadsheet to make a graph or to make a
+	    sales report). Some people call this "Automation".  Unlike
+	    the COM world, the use of CORBA makes this transparent to
+	    the implementor of a server.</para>
+	  </listitem>
+
+	  <listitem>
+	    <para>Reusable controls: Another set of Bonobo interfaces
+	    deal with reusable controls. This is similar to Sun's
+	    JavaBeans and Microsoft Active-X.</para>
+	  </listitem>
+
+	</itemizedlist>
+
+	<para>Bonobo doesn't stand for anything.  They are
+	Chimpanzees' less grouchy cousins.</para>
+      </sect2>
+    </sect1>
+
+    <sect1 id="Graphics">
+      <title>Graphics in GNOME</title>
+
+      <sect2 id="GTK">
+	<title>What is GTK+?</title>
+
+	<para>GTK+ is the Gimp Toolkit.  It was originally written as
+	part of the Gimp project, but it has grown into an excellent
+	general purpose widget set.  Find out more at <ulink
+	url="&wwwgtk;">&wwwgtk;</ulink></para>
+      </sect2>
+
+      <sect2>
+	<title>What role does GTK+ play in GNOME?</title>
+
+	<para>GTK+ is the interface which GNOME applications use to
+	interact with the user. It is similar to the role of Motif in
+	CDE, Qt in KDE or the-widget-set-which-has-no-name in
+	Win32.</para>
+      </sect2>
+
+      <sect2>
+	<title>What languages does GTK+ support?</title>
+
+	<para>You can write GTK+ programs in tons of languages! Your
+	humble FAQ author knows of the following bindings:</para>
+	<simplelist>
+	  <member>C (original)</member>
+	  <member>C++</member>
+	  <member>Objective C</member>
+	  <member>Python</member>
+	  <member>Perl 5</member>
+	  <member>Scheme (Guile)</member>
+	  <member>TOM</member>
+	  <member>Gwydion Dylan</member>
+	  <member>Ada95</member>
+	  <member>Pike</member>
+	  <member>Pascal (Free Pascal Compiler)</member>
+	</simplelist>
+
+	<para>If there are others, then please let us know about
+	them. (See <link linkend="ContactFAQ">Contact the FAQ
+	Maintainer</link>)</para>
+
+	<para>You are encouraged to add bindings to other languages
+	should the fancy strike you. N.b., that the Scheme bindings
+	already have a formalized representation of the API, so if you
+	want to start working on new bindings, then you might want to
+	start from here.</para>
+
+	<para>Having written that, I have to wonder if we can't
+	somehow use CORBA to cut this Gordian knot. If the ORBit
+	developers can get the cost of a local CORBA call down to that
+	of a normal shared-library call, then why not CORBify GTK and
+	work on adding bindings for new languages to ORBit? I know,
+	the conventional wisdom is that CORBA is too heavyweight for
+	high-volume stuff like X calls.  Hey, don't blame me for
+	throwing out crazy ideas: the reason I maintain the FAQ is
+	that I can't program!</para>
+      </sect2>
+
+      <sect2 id="Imlib">
+	<title>What is imlib?</title>
+
+	<para>Along with GTK, GNOME uses imlib, an image library for X
+	which supports multiple image formats transparently to the
+	programmer. Imlib can even use external converter programs
+	like ImageMagick or pmbplus to convert unknown image formats
+	to known formats, so if a converter exists for an image type,
+	you can almost certainly use that image type in your
+	application! Imlib also supports multiple bit-depths, from
+	24-bit down to 1-bit monochrome, again transparently to the
+	programmer, and does intelligent color map allocation and
+	automatic dithering to get the best possible performance out
+	of your display. Anyone who has ever tried to do this in their
+	X apps, or who has had to endure their screen flashing when
+	apps have to allocate a private color map, you will especially
+	like this feature.</para>
+
+	<para>You can find out more about imlib at <ulink
+        url="&wwwimlib;">&wwwimlib;</ulink>.</para>
+      </sect2>
+
+      <sect2 id="Themes">
+	<title>What's the deal with themes?</title>
+
+	<para>Themes let you change the look and feel of GTK+
+	applications without recompiling them.  With themes, you are
+	able to change the theme of all GTK+ apps on a given display
+	at the same time.</para>
+
+	<para>There are actually two parts of a theme in GTK+, the
+	engine and the configuration.  The engine is a specially
+	constructed shared library with instructions on the themes way
+	to draw the widgets (the controls of a window, like the
+	buttons, scrollbars and menus).  The configuration includes
+	information like fonts, colors, which engine to use, and
+	sometimes graphic images to incorporate into the theme.
+	Together, the two make the Theme, and give GTK+ its flexible
+	appearance.</para>
+
+	<para>To see some examples of what themed GTK+ apps look like,
+	take a look at: <ulink url="&wwwgtktheme;">
+	&wwwgtktheme;</ulink>.</para>
+      </sect2>
+
+      <sect2>
+	<title>How do I get themes working?</title>
+
+	<para>First, you need a recent version of GTK+, I recommend
+	version 1.2.6 at the moment, but 1.2.0 works fine as well.
+	You then get the themes you want.  A good selection of themes
+	is available in the gtk-engines module.  Even more are
+	available at <ulink url="&wwwgtktheme;">
+	&wwwgtktheme;</ulink>.</para>
+
+	<para>Many of the themes include an engine.  You need to
+	compile the engine, and install it.  In gtk-engines, this is
+	done the same way as any GNOME module.  The themes from the
+	website might have different instructions, check their
+	documentation.  Some of the themes on the website are merely
+	alternate configurations for another engine, many of them are
+	for the pixmap engine in gtk-engines.</para>
+
+	<para>Once the theme is installed, you can select them through
+	the GNOME Control Center, under Desktop->Theme Selector.  The
+	selector will allow you to choose between all the themes
+	installed on the fly, preview what the the theme will look
+	like, and in version 1.04 or later even let you select the
+	font.</para>
+
+	<comment> You can see what the FAQ author's themefied GTK apps
+        look like at: <ulink url="&wwwtoddtheme;">
+        &wwwtoddtheme;</ulink>. Commented out due to dead
+        link.</comment>
+      </sect2>
+
+      <sect2 id="OpenGL">
+	<title>What is OpenGL?</title>
+
+	<para>OpenGL is a 2D and 3D rendering API developed by Silicon
+	Graphics that has become a de facto industry standard.
+	Basically, it is a tool to take a viewpoint of 3D space, and
+	produce a 2D image of it suitable for drawing on a screen. To
+	quote SGI's FAQ:</para>
+
+	<blockquote>
+	  <para>OpenGL is a rendering only, vendor neutral API
+	  providing 2D and 3D graphics functions, including modeling,
+	  transformations, color, lighting, smooth shading, as well as
+	  advanced features like texture mapping, NURBS, fog, alpha
+	  blending and motion blur. OpenGL works in both immediate and
+	  retained (display list) graphics modes.</para>
+	</blockquote>
+
+	<para>GNOME uses an implementation of the OpenGL API called
+	Mesa.  Mesa is not OpenGL per se, since it is a Free Software
+	project that has not gone through the OpenGL trademark
+	licensing process, but it is a faithful representation of the
+	OpenGL API.  Mesa is not OpenGL(tm) in precisely the same way
+	that GNU/Linux and FreeBSD are not Unix(tm).</para>
+      </sect2>
+
+      <sect2 id="XDND">
+	<title>What about Drag and Drop support?</title>
+
+	<para>GNOME currently uses the Xde Drag and Drop protocol. XDE
+	is being replaced with an implementation of the X Windows
+	Drag-And-Drop Protocol to inter-operate with other toolkits.
+	Find out more at <ulink url="&wwwxdnd;">
+	&wwwxdnd;</ulink>.</para>
+      </sect2>
+    </sect1>
+
+    <sect1 id="SM">
+      <title>Session Management</title>
+
+      <sect2>
+	<title>What is session management?</title>
+
+	<para>Session Management is an extension to the X Window
+	system which allows applications to save and restore their
+	state. This allows users to have their desktop look like they
+	left it, rather than having a clean desktop every time they
+	re-enter the GNOMosphere.</para>
+      </sect2>
+
+      <sect2>
+	<title>How do I use session management in my GNOME
+	application?</title>
+
+	<para>Dr. Mike of RedHat has written a tutorial on this:
+	<ulink url="http://www.gnome.org/devel/start/sm.shtml">
+        http://www.gnome.org/devel/start/sm.shtml</ulink>.</para>
+      </sect2>
+    </sect1>
+
+    <sect1 id="Docbook">
+      <title>DocBook</title>
+      <sect2>
+	<title>What is DocBook?</title>
+
+	<para>DocBook is a SGML DTD (a set of tags for a text file)
+	that is very useful for writing documentation.  Most of the
+	GNOME documentation is written in DocBook.  To find out more,
+	look at Oasis's DocBook pages at <ulink
+	url="&wwwdocbook;">&wwwdocbook;</ulink>.  There is also a good
+	tutorial for DocBook at <ulink
+	url="&wwwdocbooktut;">&wwwdocbooktut;</ulink>.</para>
+
+	<para>The version of DocBook, and related tools, as used by
+	GNOME can be found at <ulink
+	url="&ftpdocware;">&ftpdocware;</ulink>.  Tarballs and binary
+	RPMs are both available there.</para>
+      </sect2>
+
+      <sect2 id="SGML">
+	<title>What is SGML?</title>
+
+	<para>To be filled in.</para>
+      </sect2>
+    </sect1>
+
+    <sect1 id="I18N">
+      <title>Internationalization & Localization (I18N & L10N)</title>
+      <sect2>
+	<title>What are Internationalization(I18N) and
+	Localization(L10N)?</title>
+
+	<para>From the GNU gettext info page:</para>
+
+	<para>By <firstterm>internationalization</firstterm>, one
+	refers to the operation by which a program, or a set of
+	programs turned into a package, is made aware and able to
+	support multiple languages. This is a generalization process,
+	by which the programs are untied from using only English
+	strings or other English specific habits, and connected to
+	generic ways of doing the same, instead. Program developers
+	may use various techniques to internationalize their programs,
+	some of them have been standardized. GNU gettext offers one of
+	these standards.</para>
+
+	<para>By <firstterm>localization</firstterm>, one means the
+	operation by which, in a set of programs already
+	internationalized, one gives the program all needed
+	information so that it can bend itself to handle its input and
+	output in a fashion which is correct for some native language
+	and cultural habits. This is a particularisation process, by
+	which generic methods already implemented in an
+	internationalized program are used in specific ways. The
+	programming environment puts several functions to the
+	programmers disposal which allow this runtime
+	configuration. The formal description of specific set of
+	cultural habits for some country, together with all associated
+	translations targeted to the same native language, is called
+	the locale for this language or country. Users achieve
+	localization of programs by setting proper values to special
+	environment variables, prior to executing those programs,
+	identifying which locale should be used.</para>
+      </sect2>
+
+      <sect2>
+	<title>What I8N and L10N API does GNOME use?</title>
+
+	<para>GNOME uses the Uniforum's internationalization
+	standard. This is the "standard" invented by Sun Microsystems
+	and adopted by the GNU project in their "gettext"
+	package. N.b., this is different from the competing X/Open
+	standard.</para>
+      </sect2>
+
+      <sect2>
+	<title>How do I program using I18N and L10N, or Where do I
+	find out more info on these topics?</title>
+
+	<para>Take a look at the GNU gettext package's online manual
+        at <ulink url="&wwwgettext;">&wwwgettext;</ulink>.  There also
+        is a very useful article from Linux Journal about
+        internationalization issues at <ulink
+        url="&wwwlj;/issue59/3286.html">
+        &wwwlj;/issue59/3286.html</ulink>.  Additionally, you may find
+        the I18N FAQ informative: <ulink
+        url="&wwwi18n;">&wwwi18n;</ulink>.</para>
+      </sect2>
+
+      <sect2>
+	<title>How do I change the language of my GNOME
+	programs?</title>
+
+	<para>To change the language that GNOME programs use, you just
+	need to set the environment variable <envar>LANG</envar> to
+	the desired ISO 639 language code.  From that point forward,
+	any new GNOME apps you run will try use that language.</para>
+
+	<para>Let's say you wanted to see GNOME in Spanish.  In the
+	Bourne Shell and its derivatives (such as Bash), you use
+	<command>set LANG="es"</command>.  If you were using the C
+	Shell (or tcsh), you would use <command>setenv LANG
+	"es"</command> instead.  These commands are generally put in
+	the <filename>.profile</filename> or
+	<filename>.login</filename> file, so that your environment
+	starts up the same way each time.</para>
+
+	<para>Some languages (such as English and Spanish) need to be
+	handled differently depending on where you are.  In these
+	cases you can extend the language code with an underscore
+	followed by a ISO 3166 country code.  So, if you want to
+	select British English you would use "en_GB"; for Mexican
+	Spanish you would use "es_MX".</para>
+
+	<para>Keep in mind that GNOME apps that are already running
+	won't change languages while you change the
+	<envar>LANG</envar> variable, you have to close the program
+	and reopen it for the new value to take effect.  Also note
+	that some languages are not offered by all applications.  You
+	might find some apps using the language you want, and others
+	using English.</para>
+
+	<para>You can find the list of all the ISO Language and
+	Country Codes at <ulink
+	url="&wwwicodes;">&wwwicodes;</ulink>.  Here's the list of the
+	codes currently supported by GNOME-core:</para>
+	<simplelist>
+	  <member>Catalan (ca)</member>
+	  <member>Czech (cs)</member>
+	  <member>Danish (da)</member>
+	  <member>German (de)</member>
+	  <member>English [USA] (en) [Yeah, life's not fair]</member>
+	  <member>English [Great Britain] (en_GB)</member>
+	  <member>Spanish [Spain] (es)</member>
+	  <member>Spanish [Dominican Republic] (es_DO)</member>
+	  <member>Spanish [Guatemala] (es_GT)</member>
+	  <member>Spanish [Honduras] (es_HN)</member>
+	  <member>Spanish [Mexico] (es_MX)</member>
+	  <member>Spanish [Panama] (es_PA)</member>
+	  <member>Spanish [Peru] (es_PE)</member>
+	  <member>Spanish [Sweden?] (es_SV) [Should be es_SE if its Sweden]</member>
+	  <member>Basque (eu)</member>
+	  <member>Finnish (fi)</member>
+	  <member>French (fr)</member>
+	  <member>Irish (ga)</member>
+	  <member>Hungarian (hu)</member>
+	  <member>Italian (it)</member>
+	  <member>Japanese (ja)</member>
+	  <member>Korean (ko)</member>
+	  <member>Dutch (nl)</member>
+	  <member>Norwegian (no)</member>
+	  <member>Polish (pl)</member>
+	  <member>Portuguese (pt)</member>
+	  <member>Russian (ru)</member>
+	  <member>Slovak (sk)</member>
+	  <member>Swedish (sv)</member>
+	  <member>Waloon (wa)</member>
+	</simplelist>
+      </sect2>
+    </sect1>
+
+    <sect1 id="Guile">
+      <title>Guile</title>
+
+      <sect2>
+	<title>What is Guile?</title>
+
+	<para>Guile is the GNU project's implementation of Scheme, a
+	Lisp dialect.  Find out more at <ulink
+	url="&wwwguile;">&wwwguile;</ulink>.  There's also some
+	excellent information at <ulink url="&wwwredbean;">
+	&wwwredbean;</ulink></para>
+
+	<para>The Guile docs are pretty good, but the Scheme standard
+	(the wonderfully, obscurely named R5RS) can be found at:
+	<ulink url="&wwwschemerpt;">&wwwschemerpt;</ulink>.</para>
+      </sect2>
+
+      <sect2>
+	<title>What role does Guile play in GNOME?</title>
+
+	<para>Guile is the scripting or "glue" language for the GNOME
+	project. From the original announcement:</para>
+
+	<blockquote>
+	  <para>We plan to use GTK/Scheme bindings for coding small
+	  utilities and applications. When these bindings are more
+	  mature, it should be possible to write complete applications
+	  in Scheme.</para>
+	</blockquote>
+      </sect2>
+    </sect1>
+  </chapter>
+
+  <chapter id="DevelopingGNOME">
+    <title>Developer Issues</title>
+
+    <sect1 id="WMCompliance">
+      <title>What does a window manager have to do to be
+      GNOME-compliant</title>
+
+      <para>There are three big things:</para>
+      <itemizedlist>
+	<listitem>
+	  <para>It must be fully ICCCM compliant, especially with
+	  proper X Session Management support.</para>
+	</listitem>
+	<listitem>
+	  <para>It must support MWM hints.</para>
+	</listitem>
+	<listitem>
+	  <para>It must support GNOME hints.</para>
+	</listitem>
+      </itemizedlist>
+      <para>For more detailed information, see the GNOME Window
+      Manager Compliance page at <ulink url="&wwwgnomewmc;">
+      &wwwgnomewmc;</ulink></para>
+    </sect1>
+
+    <sect1 id="Autoconf">
+      <title>What is Autoconf? What does it have to do with
+      GNOME?</title>
+
+      <para>Autoconf is a tool for producing shell scripts that
+      automatically configure source code to adapt to the system you
+      are using.  Autoconf is invaluable, since it makes the
+      development of such configure scripts drastically easier. GNOME
+      uses it alongside the related tool, Automake, which allows
+      Autoconf to produce custom Makefiles for your system.  Autoconf
+      uses m4 to operate.  M4 is a powerful (but arcane) macro
+      language used by many GNU utilities.  Most of the macros used to
+      generate these files are found in either
+      <filename>/usr/share/aclocal</filename> or the
+      <filename>macros</filename> subdirectory of the source tree.</para>
+
+      <para>If you are using the tarballs, Autoconf and Automake have
+      already been run for you, so you don't need them on your system.
+      If you use CVS, you won't get very far without having recent
+      versions of these tools.  You can find more information about
+      Autoconf at <ulink url="&wwwgnuaconf;"> &wwwgnuaconf;</ulink>,
+      and Automake at <ulink url="&wwwgnuamake;">
+      &wwwgnuamake;</ulink>.</para>
+
+      <para>Keep in mind, that <filename>configure</filename>,
+      <filename>config.h</filename>, <filename>Makefile</filename>,
+      and even <filename>Makefile.in</filename> are all constructed
+      files.  If you need to change them, you shouldn't patch them
+      directly, but rather modify the files used to create them:
+      <filename>configure.in</filename>,
+      <filename>config.h.in</filename>, and
+      <filename>Makefile.am</filename>.</para>
+    </sect1>
+
+    <sect1 id="Libtool">
+      <title>What is Libtool?  What does it have to do with
+      GNOME?</title>
+
+      <para>Libtool is an important portability utility.  It gives a
+      common interface to the mechanics of building, debugging and
+      maintaining static and dynamic libraries on most computer
+      systems in use.  It works in three phases, the
+      <command>libtoolize</command> command adds libtool support to a source
+      tree by adding the <command>ltconfig</command> script.  This
+      script, in turn, generates a system-specific script called
+      <command>libtool</command> in the source tree.  The
+      <command>libtool</command> script is the part that actually gets
+      all the work done.</para>
+
+      <para>Like Autoconf and Automake, if you are using CVS, you need
+      Libtool installed on your system.  If you use the tarballs,
+      <command>libtoolize</command> as already been run, and
+      <command>ltconfig</command> is self-contained, so you do not
+      need Libtool to be installed.  More information about libtool
+      can be found at <ulink url="&wwwgnulibtool;">
+      &wwwgnulibtool;</ulink></para>
+    </sect1>
+  </chapter>
+
+  <chapter id="GNOMEr">
+    <title>Becoming a GNOMEr</title>
+
+    <para>General information on getting more involved with the GNOME
+    Project.</para>
+
+    <sect1>
+      <title>How do I join the GNOME movement?</title>
+
+      <para>If you want to get seriously involved with GNOME, you really have to
+      join the gnome-list mailing list.  Check the list of mailing lists to see
+      what other lists interest you.  Also, make sure you read the GNOME
+      Manifesto at <ulink url="&wwwgnomemanif;">&wwwgnomemanif;</ulink> and the
+      articles on the GNU Project Philosophy at <ulink
+      url="&wwwgnuphil;">&wwwgnuphil;</ulink> to make sure you know what kind of
+      project you're getting involved in.  You don't have to agree with all of
+      the philosophy in order to contribute to GNOME, but at least respect that
+      some of us are committed to the ideas given in these documents.</para>
+
+      <para>Since GNOME is a software project, we obviously can always
+      use more programmers, but you don't have to be a programmer to
+      help out with GNOME.  We also can always use more people sending
+      in clear bug reports.  There is always more documentation to be
+      written.  If you speak more than one language, we can always use
+      translators, both of the documentation and of the labels,
+      buttons and menu entries within the applications.  People
+      willing to make binary packages for their system are quite
+      welcome, particularly if nobody else is making binaries yet for
+      that system.  People willing and able to mirror our WWW, FTP
+      and/or CVS servers are enthusiastically encouraged to do
+      so.</para>
+    </sect1>
+
+    <sect1>
+      <title>I am a programmer, and I want to help, what can I
+      do?</title>
+
+      <para>There are a number of projects being worked on, you might
+      want to check out the <filename>gnome-status</filename> CVS
+      module from the CVS to see a list of projects that people have
+      identified as needing work.</para>
+
+      <para>A good rule is that you can always improve the robustness
+      of code, improve the user interface, make the code simpler, make
+      the user interface better, make sure applications are properly
+      internationalized and localized. </para>
+    </sect1>
+
+    <sect1>
+      <title>How do I get the bleeding edge, CVS versions of
+      GNOME?</title>
+
+      <para>If you are developing for GNOME, or if you just want to
+      keep more up-to-date than the latest release, you should
+      consider using our CVS system.  There is the main CVS server,
+      which you need an account for, and a network of mirrors of the
+      server, which anyone can read from.  This network of mirrors is
+      collectively called Anonymous CVS, and they all can be accessed
+      at anoncvs.gnome.org (they are set up with round-robin DNS to
+      balance out the load).  If you are looking to contribute source
+      code to the GNOME project, you will eventually want an account
+      on the main CVS server, but get used to the Anonymous CVS system
+      first, so you are familiar with how GNOME makes use of
+      CVS.</para>
+
+      <para>Directions on how to access the Anonymous CVS system are at
+      <ulink url="&wwwgnomewicvs;">&wwwgnomewicvs;</ulink>.  There is also
+      a very useful guide at <ulink
+      url="&wwwsorencvs;">&wwwsorencvs;</ulink>.  The anonymous CVS
+      servers should be updating themselves </para>
+
+      <para>In order to use the CVS version, you need to have GNU
+      tools installed on your system.  You need at least GNU Autoconf,
+      Automake, Libtool and m4.  If your system doesn't include these,
+      you can get them from the GNU website at <ulink
+      url="&wwwgnu;">&wwwgnu;</ulink>.</para>
+    </sect1>
+
+    <sect1>
+      <title>I want bleeding edge GNOME, but I can't use CVS.  How do
+      I get it?</title>
+
+      <para>There are some occasions where CVS just isn't feasible.
+      Perhaps you want to make sure GNOME works using just the native
+      tools for your system instead of the GNU tools.  Perhaps you are
+      sitting on the other side of a firewall that blocks the CVS
+      port.  Whatever your reason, Jim Pick Software offers daily
+      snapshots of the CVS version, in tarball form, available via FTP
+      at <ulink url="&ftpsnap;">&ftpsnap;</ulink>.  The conversion to
+      tarball form bypasses the need for GNU tools as well.</para>
+    </sect1>
+
+    <sect1>
+      <title>How do I get an account to let me contribute to the CVS
+      version of GNOME?</title>
+
+      <para>If you plan on contributing code to the project, then you
+      will need an account on the CVS server. Miguel de Icaza (<ulink
+      url="mailto:miguel@nuclecu.unam.mx">
+      miguel@nuclecu.unam.mx</ulink>) determines who gets accounts on
+      the CVS server; if you would like one, then send him a message
+      detailing what code you plan on writing, along with with a
+      crypted password. You can get that by doing the
+      following:</para>
+
+      <para><userinput>perl -e 'print crypt ("YourPassword",
+      "salt");'</userinput></para>
+
+      <para>Where the "salt" string preferably should be a random
+      2-char string.</para>
+    </sect1>
+
+    <sect1>
+      <title>Why are directories sometimes missing when I update a
+      module from CVS?</title>
+
+      <para>CVS has an excellent feature with an annoying quirk about
+      it.  CVS allows a module to include other modules, a feature
+      which GNOME uses to better organize things and to reduce
+      duplication of code.  Unfortunately, the <command>cvs
+      update</command> command doesn't bother to check to see if any
+      new modules are included off of the main module.  If you think
+      there is a missing piece, use <command>cvs get</command>
+      instead, it will check for new included modules.  Don't worry,
+      as long as the source tree is there, it won't try to do a brand
+      new checkout, it will act the same as <command>cvs
+      update</command> as far as only downloading what is new or
+      updated.</para>
+    </sect1>
+
+    <sect1>
+      <title>I am not a programmer, how can I contribute?</title>
+      <para>
+        There are many ways to contribute to the GNOME effort if you
+        are a not a programmer.  You can help writing documentation
+        (contact the people at docs@gnome.org for this), you can
+        review the existing documentation and fix typos, format, and
+        make the documentation more clear or enhance the examples.
+      </para>
+      <para>
+  	If you are a non-english speaker and you understand english,
+  	you can also help with the translation effort.  This means
+  	translating application textual strings and documentation.  To
+  	work on this, please subscribe to the
+  	gnome-i18n@nuclecu.unam.mx mailing list.  To subscribe send a
+  	message to &majorunam; and in the body of the message put
+  	"subscribe gnome-i18n".  You can view the current status for
+  	our language translation effort in the <ulink
+  	url="&gwwwi18n;">&gwwwi18n;</ulink> web page.
+      </para>
+      <para>
+        If you have a good idea or a great concept on how to improve
+        the user interface experience in GNOME, please subscribe to
+        the <ulink
+        url="mailto:&gnomeguireq;">gnome-gui-list@gnome.org</ulink>.
+        The user interface team is lead by Jim Cape who maintains a
+        web page with the suggested improvements at <ulink
+        url="&wwwgui;">&wwwgui;</ulink>
+      </para>
+    </sect1>
+  </chapter>
+
+  <chapter id="FAQIssues">
+    <title>FAQ Issues</title>
+
+    <sect1>
+      <title>Where is the official copy of this FAQ?</title>
+
+      <para>The formal and official copy of this FAQ is kept in
+      DocBook (SGML) format on the CVS server at
+      <filename>cvs.gnome.org:/cvs/gnome</filename>, the file itself
+      is located in the <filename>gnome-libs</filename> module in the
+      file <filename>devel-docs/gnome-faq.sgml</filename>.  All other
+      versions are copies, ports, reformatings, etc.</para>
+    </sect1>
+
+    <sect1 id="ContactFAQ">
+      <title>How do I add a question and/or an answer to this
+      FAQ?</title>
+
+      <para>The easiest way is to email the FAQ maintainer, at <ulink
+      url="mailto:&mailfaq;">&mailfaq;</ulink>.  If the suggestion is
+      appropriate, we will edit your information, and incorporate it in
+      at the appropriate place.</para>
+
+      <para>If you have CVS access, you can modify the FAQ on your
+      own, but I would prefer if you limit direct modification to
+      quick fixes of glaring errors, rather than major changes or
+      additions.</para>
+    </sect1>
+  </chapter>
+
+  <chapter id="Credits">
+    <title>Credits</title>
+
+    <sect1 id="Copyright">
+      <title>Copyright and Disclaimer</title>
+
+      <para>This work is copyright 1998 by Todd Lewis, Gleef (David
+      Zoll) and Miguel de Icaza.  Parts of it are (C) Rasaki Bidem
+      Bolante Temidire. This documentation is free software; you can
+      redistribute it and/or modify it under the terms of the GNU
+      General Public License as published by the Free Software
+      Foundation; either version 2 of the License, or (at your option)
+      any later version.</para>
+
+      <para>This article is provided as is without any express or
+      implied warranties. While every effort has been taken to ensure
+      the accuracy of the information contained in this article, the
+      author/maintainer/contributors assume(s) no responsibility for
+      errors or omissions, or for damages resulting from the use of
+      the information contained herein.</para>
+    </sect1>
+
+    <sect1 id="Trademark">
+      <title>Trademarks and Naming Credits</title>
+
+      <para>Here are some of the less obvious trademarks used in this
+      document.</para>
+      <simplelist>
+	<member><firstterm>Linux</firstterm> is a trademark of Linus
+	Torvalds.</member> 
+
+	<member><firstterm>Debian</firstterm> is a trademark of
+	Software in the Public Interest</member>
+
+	<member><firstterm>Copyleft</firstterm> and <firstterm>Free
+	Software</firstterm> are not trademarks of anyone, but they
+	are important terms in the Free Software community, and for
+	the Free Software Foundation.</member>
+	
+	<member><firstterm>Open Source</firstterm> is a service mark
+	of either Software in the Public Interest or the Open Source
+	Initiative or Bruce Perens, nobody's quite sure.</member>
+	
+	<member><firstterm>Unix</firstterm>, and <firstterm>The X
+	Window System</firstterm> are trademarks of the Open
+	Group.</member>
+
+	<member><firstterm>OpenGL</firstterm> is a trademark of
+	Silicon Graphics, Inc.</member>
+
+	<member>All other trademarks are the property of their
+	respective owners.</member>
+      </simplelist>
+
+      <para>If there is a trademark here that needs to be listed
+      formally above, by all means let us know so it can be
+      added.</para>
+    </sect1>
+
+  </chapter>
+</book>
