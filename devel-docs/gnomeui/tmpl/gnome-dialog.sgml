@@ -3,21 +3,42 @@ GnomeDialog
 
 <!-- ##### SECTION Short_Description ##### -->
 
+Transient popup dialogs
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
+GnomeDialog gives dialogs a consistent look and feel, while making
+them more convenient to program. GnomeDialog makes it easy to use
+stock buttons, makes it easier to handle delete_event, and adds some
+cosmetic touches (such as a separator above the buttons, and a bevel
+around the edge of the window). 
 </para>
 
 <!-- ##### SECTION See_Also ##### -->
 <para>
-
+#GnomeAbout #GnomePropertyBox #GnomeMessageBox #GnomeScores
 </para>
 
 <!-- ##### STRUCT GnomeDialog ##### -->
 <para>
+struct _GnomeDialog
+{
+  GtkWindow window;
+  GtkWidget * vbox;
 
+  GtkWidget * action_area; /* A button box, not an hbox */
+
+  GList *buttons;
+  GtkAccelGroup * accelerators;
+
+  unsigned int click_closes : 1;
+  unsigned int just_hide : 1;
+
+  gpointer padding;
+};
 </para>
 
+<para>Only <structfield>vbox</structfield> should be accessed directly.
 
 <!-- ##### FUNCTION gnome_dialog_new ##### -->
 <para>
