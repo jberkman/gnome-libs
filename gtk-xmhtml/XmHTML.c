@@ -35,6 +35,16 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.3  1997/12/12 00:58:40  unammx
+* Most of the Motif dependant code is now splitted.
+*
+* There are some bits still remaining in XmHTML.c, but will be
+* soonish gone.
+*
+* As usual, it does not compile yet :-)
+*
+* Miguel
+*
 * Revision 1.2  1997/12/11 21:20:19  unammx
 * Step 2: more gtk/xmhtml code, still non-working - mig
 *
@@ -167,6 +177,9 @@ static char rcsId[]="$Header$";
 /* initial horizontal & vertical increment when a scrollbar is moved */
 #define HORIZONTAL_INCREMENT 12 /* average char width */
 #define VERTICAL_INCREMENT 18	/* average line height */
+
+static void XmHTML_Destroy(XmHTMLWidget html);
+static void XmHTML_Initialize (XmHTMLWidget html, char *html_source);
 
 #ifdef WITH_MOTIF
 #    include "XmHTML-motif.c"
@@ -652,249 +665,6 @@ GetScrollDim(XmHTMLWidget html, int *hsb_height, int *vsb_width)
 
 	*hsb_height = height;
 	*vsb_width  = width;
-}
-
-/*****
-* Name: 		CheckScrollBars
-* Return Type: 	void
-* Description: 	(re)configures scrollbars
-* In: 
-*	html:		HTML TWidget to configure
-* Returns:
-*	nothing.
-*****/
-static void
-CheckScrollBars(XmHTMLWidget html)
-{
-	int dx, dy, hsb_height, vsb_width, st;
-	Boolean hsb_on_top, vsb_on_left;
-	/* forced display of scrollbars: XmSTATIC or frames with scrolling = yes */
-	Boolean force_vsb = False, force_hsb = False;
-	Arg args[10];
-	Dimension argc = 0;
-
-	_XmHTMLDebug(1, ("XmHTML.c: CheckScrollBars, start\n"));
-
-	/* don't do a thing if we aren't managed yet */
-	if(!(XtIsManaged((TWidget)html)))
-		return;
-
-	/* Initial work area offset */
-	st = dx = dy = html->manager.shadow_thickness;
-	GetScrollDim(html, &hsb_height, &vsb_width);
-
- 	/* check if we need a vertical scrollbar */
-	if(html->html.formatted_height < html->core.height)
-	{
-		html->html.needs_vsb = False;
-		/* don't forget! */
-		html->html.scroll_y = 0;
-		XtUnmanageChild(html->html.vsb);
-	}
-	else
-		html->html.needs_vsb = True;
-
-	/* add a scrollbar if we must and it isn't already here */
-	if(!html->html.needs_vsb && html->html.sb_policy == XmSTATIC)
-	{
-		html->html.needs_vsb = True;
-		force_vsb = True;
-	}
-
-	/*
-	* check if we need a horizontal scrollbar. If we have a vertical
-	* scrollbar, we must add it's width or text might be lost.
-	*/
-	if(html->html.formatted_width < html->core.width -
-		(html->html.needs_vsb ? vsb_width : 0))	/* fix 04/27/97-01, kdh */
-	{
-		html->html.needs_hsb = False;
-		/* don't forget! */
-		html->html.scroll_x = 0;
-		XtUnmanageChild(html->html.hsb);
-	}
-	else
-		html->html.needs_hsb = True;
-
-	/* add a scrollbar if we must and it isn't already here */
-	if(!html->html.needs_hsb && html->html.sb_policy == XmSTATIC)
-	{
-		html->html.needs_hsb = True;
-		force_hsb = True;
-	}
-
-	/* if this is a frame, check what type of scrolling is requested */
-	if(html->html.is_frame)
-	{
-		if(html->html.scroll_type == FRAME_SCROLL_NONE)
-		{
-			html->html.needs_hsb = False;
-			html->html.needs_vsb = False;
-			html->html.scroll_x = 0;
-			html->html.scroll_y = 0;
-			XtUnmanageChild(html->html.hsb);
-			XtUnmanageChild(html->html.vsb);
-		}
-		else if(html->html.scroll_type == FRAME_SCROLL_YES)
-		{
-			html->html.needs_vsb = True;
-			html->html.needs_hsb = True;
-			force_vsb = True;
-			force_hsb = True;
-		}
-		/* else scrolling is auto, just proceed */
-	}
-
-	/* return if we don't need any scrollbars */
-	if(!html->html.needs_hsb && !html->html.needs_vsb)
-	{
-		_XmHTMLDebug(1, ("XmHTML.c: CheckScrollBars, end, no bars needed.\n"));
-		/* move work_area to it's correct position */
-		XtMoveWidget(html->html.work_area, dx, dy);
-		XtResizeWidget(html->html.work_area, html->core.width,
-			html->core.height, html->html.work_area->core.border_width);
-		return;
-	}
-
-	/* see if we have to put hsb on top */
-	hsb_on_top = (html->html.sb_placement == XmTOP_LEFT ||
-		html->html.sb_placement == XmTOP_RIGHT);
-	/* see if we have top put vsb on left */
-	vsb_on_left = (html->html.sb_placement == XmTOP_LEFT ||
-		html->html.sb_placement == XmBOTTOM_LEFT);
-
-	/* horizontal sb on top */
-	if(html->html.needs_hsb && hsb_on_top)
-		dy += hsb_height;
-
-	/* vertical sb on left */
-	if(html->html.needs_vsb && vsb_on_left)
-		dx += vsb_width;
-
-	/* move work_area to it's correct position */
-	XtMoveWidget(html->html.work_area, dx, dy);
-
-	/* See what space we have to reserve for the scrollbars */
-	if(html->html.needs_hsb && hsb_on_top == False)
-		dy += hsb_height;
-	if(html->html.needs_vsb && vsb_on_left == False)
-		dx += vsb_width;
-
-	XtResizeWidget(html->html.work_area, 
-		html->core.width - dx, html->core.height - dy, 
-		html->html.work_area->core.border_width);
-
-	if(html->html.needs_hsb == True)
-	{
-		int pinc;
-
-		_XmHTMLDebug(1, ("XmHTML.c: CheckScrollBars, setting hsb\n"));
-
-		/* Set hsb size; adjust x-position if we have a vsb */
-		dx = (html->html.needs_vsb ? vsb_width : 0);
-		XtResizeWidget(html->html.hsb,
-			html->core.width - dx - 2*st,
-			html->html.hsb->core.height,
-			html->html.hsb->core.border_width);
-
-		/* pageIncrement == sliderSize */
-		pinc = html->html.work_width - 2*(html->html.default_font ? 
-			html->html.default_font->xfont->max_bounds.width :
-			HORIZONTAL_INCREMENT);
-		/* sanity check */
-		if(pinc < 1)
-			pinc = HORIZONTAL_INCREMENT;
-
-		/* adjust horizontal scroll if necessary */
-		if(html->html.scroll_x > html->html.formatted_width - pinc)
-			html->html.scroll_x = html->html.formatted_width - pinc;
-		/* fix 01/23/97-02, kdh */
-
-		/*
-		* Adjust if a horizontal scrollbar has been forced
-		* (can only happen for frames with scrolling = yes)
-		*/
-		if(force_hsb && pinc > html->html.formatted_width)
-		{
-			pinc = html->html.formatted_width;
-			html->html.scroll_x = 0;
-		}
-
-		argc = 0;
-		XtSetArg(args[argc], XmNminimum, 0); argc++;
-		XtSetArg(args[argc], XmNmaximum, html->html.formatted_width); argc++;
-		XtSetArg(args[argc], XmNvalue, html->html.scroll_x); argc++;
-		XtSetArg(args[argc], XmNsliderSize, pinc); argc++;
-		XtSetArg(args[argc], XmNincrement, (html->html.default_font ? 
-			html->html.default_font->xfont->max_bounds.width :
-			HORIZONTAL_INCREMENT));
-		argc++;
-		XtSetArg(args[argc], XmNpageIncrement, pinc); argc++;
-		XtSetValues(html->html.hsb, args, argc);
-
-		/* adjust x-position if vsb is on left */
- 		dx = (html->html.needs_vsb && vsb_on_left ? vsb_width : 0);
-
-		/* place it */
-		if(hsb_on_top)
-			XtMoveWidget(html->html.hsb, dx, 0);
-		else
-			XtMoveWidget(html->html.hsb, dx, (html->core.height - hsb_height));
-	}
-	if(html->html.needs_vsb == True)
-	{
-		int pinc;
-		
-		_XmHTMLDebug(1, ("XmHTML.c: CheckScrollBars, setting vsb\n"));
-
-		/* Set vsb size; adjust y-position if we have a hsb */
-		dy = (html->html.needs_hsb ? hsb_height : 0);
-		XtResizeWidget(html->html.vsb, 
-			html->html.vsb->core.width,
-			html->core.height - dy - 2*st,
-			html->html.vsb->core.border_width);
-
-		/* pageIncrement == sliderSize */
-		pinc = html->html.work_height - 2*(html->html.default_font ? 
-			html->html.default_font->height : VERTICAL_INCREMENT);
-		/* sanity check */
-		if(pinc < 1)
-			pinc = VERTICAL_INCREMENT;
-
-		/* adjust vertical scroll if necessary */
-		if(html->html.scroll_y > html->html.formatted_height - pinc)
-			html->html.scroll_y = html->html.formatted_height - pinc;
-
-		/*
-		* Adjust if a vertical scrollbar has been forced
-		* (can only happen if scrollBarDisplayPolicy == XmSTATIC)
-		*/
-		if(force_vsb && pinc > html->html.formatted_height)
-		{
-			pinc = html->html.formatted_height;
-			html->html.scroll_y = 0;
-		}
-
-		argc = 0;
-		XtSetArg(args[argc], XmNminimum, 0); argc++;
-		XtSetArg(args[argc], XmNmaximum, html->html.formatted_height); argc++;
-		XtSetArg(args[argc], XmNvalue, html->html.scroll_y); argc++;
-		XtSetArg(args[argc], XmNsliderSize, pinc); argc++;
-		XtSetArg(args[argc], XmNincrement, (html->html.default_font ? 
-			html->html.default_font->height : VERTICAL_INCREMENT)); argc++;
-		XtSetArg(args[argc], XmNpageIncrement, pinc); argc++;
-		XtSetValues(html->html.vsb, args, argc);
-
-		/* adjust y-position if hsb is on top */
- 		dy = (html->html.needs_hsb && hsb_on_top ? hsb_height : 0);
-
-		/* place it */
-		if(vsb_on_left)
-			XtMoveWidget(html->html.vsb, 0, dy);
-		else
-			XtMoveWidget(html->html.vsb, (html->core.width - vsb_width), dy);
-	}
-	_XmHTMLDebug(1, ("XmHTML.c: CheckScrollBars, end\n"));
 }
 
 /*****
@@ -2435,38 +2205,6 @@ GetValues(TWidget w, ArgList args, Cardinal *num_args)
 }
 
 /*****
-* Name: 		GeometryManager
-* Return Type: 	XtGeometryResult
-* Description:	XmHTMLWidgetClass geometry_manager method
-* In: 
-*
-* Returns:
-*	Don't care. Just pass everything on.
-*****/
-static XtGeometryResult 
-GeometryManager(TWidget w, XtWidgetGeometry *request,
-	XtWidgetGeometry *geometry_return)
-{
-	_XmHTMLDebug(1, ("XmHTML.c: GeometryManager Start\n"));
-
-	if(request->request_mode & CWX)
-		geometry_return->x = request->x;
-	if(request->request_mode & CWY)
-		geometry_return->y = request->y;
-	if(request->request_mode & CWWidth)
-		geometry_return->width = request->width;
-	if(request->request_mode & CWHeight)
-		geometry_return->height = request->height;
-	if(request->request_mode & CWBorderWidth)
-		geometry_return->border_width = request->border_width;
-	geometry_return->request_mode = request->request_mode;
-
-	_XmHTMLDebug(1, ("XmHTML.c: GeometryManager End\n"));
-
-	return(XtGeometryYes);
-}
-
-/*****
 * Name: 		ResetWidget
 * Return Type: 	void
 * Description: 	resets all non-persistent resources to their defaults
@@ -2610,27 +2348,24 @@ FreeExpendableResources(XmHTMLWidget html, Boolean free_img)
 }
 
 /*****
-* Name: 		Destroy
+* Name: 		XmHTML_Destroy
 * Return Type: 	void
-* Description: 	XmHTMLWidgetClass destroy method. Frees up allocated resources.
+* Description: 	Frontend indepentent destroy routine.
 * In: 
 *	w:			TWidget to destroy
 * Returns:
 *	nothing
 *****/
 static void 
-Destroy(TWidget w)
+XmHTML_Destroy(XmHTMLWidget html)
 {
-	XmHTMLWidget html = XmHTML (w);
-
-	_XmHTMLDebug(1, ("XmHTML.c: Destroy Start\n"));
+	_XmHTMLDebug(1, ("XmHTML.c: XmHTML_Destroy Start\n"));
 
 	/* First kill any outstanding PLC's */
 	_XmHTMLKillPLCCycler(html);
 
 	/* Free list of parsed HTML elements */
-	html->html.elements = _XmHTMLparseHTML(html, html->html.elements, NULL,
-							NULL);
+	html->html.elements = _XmHTMLparseHTML(html, html->html.elements, NULL, NULL);
 
 	/* Free list of formatted HTML elements */
 	html->html.formatted = _XmHTMLformatObjects(html->html.formatted, 
@@ -2661,399 +2396,16 @@ Destroy(TWidget w)
 
 	/* free cursors */
 	if(html->html.anchor_cursor != None)
-		XFreeCursor(XtDisplay(w), html->html.anchor_cursor);
+		Toolkit_Free_Cursor (XtDisplay(w), html->html.anchor_cursor);
 
 	/* Free GC's */
 	if(html->html.gc)
-		XFreeGC(XtDisplay(html), html->html.gc);
+		Toolkit_GC_Free (XtDisplay(html), html->html.gc);
 	if(html->html.bg_gc)
-		XFreeGC(XtDisplay(html), html->html.bg_gc);
+		Toolkit_GC_Free (XtDisplay(html), html->html.bg_gc);
 
-	/* remove all callbacks */
-	XtRemoveAllCallbacks(w, XmNactivateCallback);
-	XtRemoveAllCallbacks(w, XmNarmCallback);
-	XtRemoveAllCallbacks(w, XmNanchorTrackCallback);
-	XtRemoveAllCallbacks(w, XmNframeCallback);
-	XtRemoveAllCallbacks(w, XmNformCallback);
-	XtRemoveAllCallbacks(w, XmNinputCallback);
-	XtRemoveAllCallbacks(w, XmNlinkCallback);
-	XtRemoveAllCallbacks(w, XmNmotionTrackCallback);
-	XtRemoveAllCallbacks(w, XmNimagemapCallback);
-	XtRemoveAllCallbacks(w, XmNdocumentCallback);
-	XtRemoveAllCallbacks(w, XmNfocusCallback);
-	XtRemoveAllCallbacks(w, XmNlosingFocusCallback);
-
-	/* invalidate this TWidget */
-	w = NULL;
-
-	_XmHTMLDebug(1, ("XmHTML.c: Destroy End\n"));
+	_XmHTMLDebug(1, ("XmHTML.c: XmHTML_Destroy End\n"));
 	return;
-}
-
-/*****
-* Name: 		HTMLProcessInput
-* Return Type: 	void
-* Description: 	handles keyboard input for the HTML TWidget.
-* In: 
-*	w:			XmHTMLWidget
-*	event:		ButtonEvent structure
-*	params:		additional args, unused
-*	num_params:	no of addition args, unused
-* Returns:
-*	nothing
-* Note:
-*	This routine calls any installed XmNinputCallback callback resources.
-*****/
-static void 
-HTMLProcessInput(TWidget w, XEvent *event, String *params, Cardinal *num_params)
-{
-	XmHTMLWidget html;
-	/*
-	* If this action proc is called directly from within application code,
-	* w is a html TWidget. In all other cases this action proc is called 
-	* for the translations installed on the work_area, and thus we need to
-	* use XtParent to get our html TWidget.
-	*/
-	if(XmIsHTML(w))
-		html = XmHTML (w);
-	else
-		html = XmHTML (XtParent(w));
-
-	/* pass down if callback is installed */
-	if(html->html.input_callback)
-	{
-		XmAnyCallbackStruct cbs;
-		cbs.reason = XmCR_INPUT;
-		cbs.event = event;
-		XtCallCallbackList((TWidget)html, html->html.input_callback,
-			&cbs);
-	}
-	_XmHTMLDebug(1, ("XmHTML.c: ProcessInput End\n"));
-}
-
-/*****
-* Name: 		HTMLPageUpOrLeft
-* Return Type: 	void
-* Description: 	keyboard navigation action routine
-* In: 
-*	w:			TWidget id; XmHTMLWidget id if called from within application
-*				code, work_area if handled by XmHTML itself;
-*	event:		key event;
-*	params:		0 for pageUp, 1 for pageLeft
-*	num_params:	always 1
-* Returns:
-*	nothing
-* Note:
-*	This routine also honors the repeatDelay resource.
-*****/
-static void
-HTMLPageUpOrLeft(TWidget w, XEvent *event, String *params, 
-		Cardinal *num_params)
-{
-	int which;
-	XmHTMLWidget html;
-	static Time prev_time = 0;
-
-	if(XmIsHTML(w))
-		html = XmHTML (w);
-	else
-		html = XmHTML (XtParent(w));
-
-	if(*num_params != 1 || !XtIsRealized(w))
-	{
-		if(*num_params != 1)
-			_XmHTMLWarning(__WFUNC__(w, "HTMLPageUpOrLeft"),
-				"page-up-or-left: invalid num_params. Must be exactly 1.");
-		return;
-	}
-
-	/* check repeat delay */
-	if(event->xkey.time - prev_time < html->html.repeat_delay)
-		return;
-	prev_time = event->xkey.time;
-
-	which = atoi(params[0]);
-
-	_XmHTMLDebug(1, ("XmHTML.c: HTMLPageUpOrLeft, which = %i\n", which));
-
-	if(which == 0 && XtIsManaged(html->html.vsb))
-		XtCallActionProc(html->html.vsb, "PageUpOrLeft", event, params, 1);
-	else if(which == 1 && XtIsManaged(html->html.hsb))
-		XtCallActionProc(html->html.hsb, "PageUpOrLeft", event, params, 1);
-}
-
-/*****
-* Name: 		HTMLDownOrRight
-* Return Type: 	void
-* Description: 	keyboard navigation action routine
-* In: 
-*	w:			TWidget id; XmHTMLWidget id if called from within application
-*				code, work_area if handled by XmHTML itself;
-*	event:		key event;
-*	params:		0 for pageDown, 1 for pageRight
-*	num_params:	always 1
-* Returns:
-*	nothing
-* Note:
-*	This routine also honors the repeatDelay resource.
-*****/
-static void
-HTMLPageDownOrRight(TWidget w, XEvent *event, String *params, 
-		Cardinal *num_params)
-{
-	int which;
-	XmHTMLWidget html;
-	static Time prev_time = 0;
-
-	if(XmIsHTML(w))
-		html = XmHTML (w);
-	else
-		html = XmHTML (XtParent(w));
-
-	if(*num_params != 1 || !XtIsRealized(w))
-	{
-		if(*num_params != 1)
-			_XmHTMLWarning(__WFUNC__(w, "HTMLPageDownOrRight"),
-				"page-down-or-right: invalid num_params. Must be exactly 1.");
-		return;
-	}
-
-	/* check repeat delay */
-	if(event->xkey.time - prev_time < html->html.repeat_delay)
-		return;
-	prev_time = event->xkey.time;
-
-	which = atoi(params[0]);
-
-	_XmHTMLDebug(1, ("XmHTML.c: HTMLPageDownOrRight, which = %i\n", which));
-
-	if(which == 0 && XtIsManaged(html->html.vsb))
-		XtCallActionProc(html->html.vsb, "PageDownOrRight", event, params, 1);
-	else if(which == 1 && XtIsManaged(html->html.hsb))
-		XtCallActionProc(html->html.hsb, "PageDownOrRight", event, params, 1);
-}
-
-/*****
-* Name: 		HTMLIncrementUpOrLeft
-* Return Type: 	void
-* Description: 	keyboard navigation action routine
-* In: 
-*	w:			TWidget id; XmHTMLWidget id if called from within application
-*				code, work_area if handled by XmHTML itself;
-*	event:		key event;
-*	params:		0 for IncrementUp, 1 for IncrementLeft
-*	num_params:	always 1
-* Returns:
-*	nothing
-* Note:
-*	This routine also honors the repeatDelay resource.
-*****/
-static void
-HTMLIncrementUpOrLeft(TWidget w, XEvent *event, String *params, 
-		Cardinal *num_params)
-{
-	int which;
-	XmHTMLWidget html;
-	static Time prev_time = 0;
-
-	if(XmIsHTML(w))
-		html = XmHTML (w);
-	else
-		html = XmHTML (XtParent(w));
-
-	if(*num_params != 1 || !XtIsRealized(w))
-	{
-		if(*num_params != 1)
-			_XmHTMLWarning(__WFUNC__(w, "HTMLIncrementUpOrLeft"),
-				"increment-up-or-left: invalid num_params. Must be exactly 1.");
-		return;
-	}
-
-	/* check repeat delay */
-	if(event->xkey.time - prev_time < html->html.repeat_delay)
-		return;
-	prev_time = event->xkey.time;
-
-	which = atoi(params[0]);
-
-	_XmHTMLDebug(1, ("XmHTML.c: HTMLIncrementUpOrLeft, which = %i\n", which));
-
-	if(which == 0 && XtIsManaged(html->html.vsb))
-		XtCallActionProc(html->html.vsb, "IncrementUpOrLeft", event,
-			params, 1);
-	else if(which == 1 && XtIsManaged(html->html.hsb))
-		XtCallActionProc(html->html.hsb, "IncrementUpOrLeft", event,
-			params, 1);
-}
-
-/*****
-* Name: 		HTMLIncrementDownOrRight
-* Return Type: 	void
-* Description: 	keyboard navigation action routine
-* In: 
-*	w:			TWidget id; XmHTMLWidget id if called from within application
-*				code, work_area if handled by XmHTML itself;
-*	event:		key event;
-*	params:		0 for IncrementDown, 1 for IncrementRight
-*	num_params:	always 1
-* Returns:
-*	nothing
-* Note:
-*	This routine also honors the repeatDelay resource.
-*****/
-static void
-HTMLIncrementDownOrRight(TWidget w, XEvent *event, String *params, 
-		Cardinal *num_params)
-{
-	int which;
-	XmHTMLWidget html;
-	static Time prev_time = 0;
-
-	if(XmIsHTML(w))
-		html = XmHTML (w);
-	else
-		html = XmHTML (XtParent(w));
-
-	if(*num_params != 1 || !XtIsRealized(w))
-	{
-		if(*num_params != 1)
-			_XmHTMLWarning(__WFUNC__(w, "HTMLIncrementDownOrRight"),
-				"increment-down-or-right: invalid num_params. Must be "
-				"exactly 1.");
-		return;
-	}
-
-	/* check repeat delay */
-	if(event->xkey.time - prev_time < html->html.repeat_delay)
-		return;
-	prev_time = event->xkey.time;
-
-	which = atoi(params[0]);
-
-	_XmHTMLDebug(1, ("XmHTML.c: HTMLIncrementDownOrRight, which = %i\n",
-		which));
-
-	if(which == 0 && XtIsManaged(html->html.vsb))
-		XtCallActionProc(html->html.vsb, "IncrementDownOrRight", event, 
-			params, 1);
-	else if(which == 1 && XtIsManaged(html->html.hsb))
-		XtCallActionProc(html->html.hsb, "IncrementDownOrRight", event, 
-			params, 1);
-}
-
-/*****
-* Name: 		HTMLTopOrBottom
-* Return Type: 	void
-* Description: 	keyboard navigation action routine
-* In: 
-*	w:			TWidget id; XmHTMLWidget id if called from within application
-*				code, work_area if handled by XmHTML itself;
-*	event:		key event;
-*	params:		0 for top, 1 for bottom
-*	num_params:	always 1
-* Returns:
-*	nothing
-* Note:
-*	no repeatDelay by this action routine, it only moves from top to bottom
-*	or vice-versa
-*****/
-static void
-HTMLTopOrBottom(TWidget w, XEvent *event, String *params, 
-		Cardinal *num_params)
-{
-	int which;
-	XmHTMLWidget html;
-
-	if(XmIsHTML(w))
-		html = XmHTML (w);
-	else
-		html = XmHTML (XtParent(w));
-
-	if(*num_params != 1 || !XtIsRealized(w))
-	{
-		if(*num_params != 1)
-			_XmHTMLWarning(__WFUNC__(w, "HTMLTopOrBottom"),
-				"top-or-bottom: invalid num_params. Must be exactly 1.");
-		return;
-	}
-	which = atoi(params[0]);
-
-	_XmHTMLDebug(1, ("XmHTML.c: HTMLTopOrBottom, which = %i\n", which));
-
-	if(which == 0 && XtIsManaged(html->html.vsb))
-	{
-		/* no move if already on top */
-		if(html->html.top_line == 0)
-			return;
-
-		html->html.top_line = 0;
-		_XmHTMLMoveToPos(html->html.vsb, html, 0);
-	}
-	else if(which == 1 && XtIsManaged(html->html.vsb))
-	{
-		int value;
-
-		/* no move if already on bottom */
-		if(html->html.top_line == html->html.nlines)
-			return;
-
-		html->html.top_line = html->html.nlines;
-		value = html->html.formatted_height;
-
-		/* fix 01/30/97-04, kdh */
-		AdjustVerticalScrollValue(html->html.vsb, value);
-
-		_XmHTMLMoveToPos(html->html.vsb, html, value);
-	}
-}
-
-static void
-HTMLTraverseCurrent(TWidget w, XEvent *event, String *params,
-	Cardinal *num_params)
-{
-	if(!XtIsRealized(w))
-		return;
-	_XmHTMLProcessTraversal(w, XmTRAVERSE_CURRENT);
-}
-
-static void
-HTMLTraverseNext(TWidget w, XEvent *event, String *params,
-	Cardinal *num_params)
-{
-	if(!XtIsRealized(w))
-		return;
-	_XmHTMLProcessTraversal(w, XmTRAVERSE_NEXT);
-}
-
-static void
-HTMLTraversePrev(TWidget w, XEvent *event, String *params,
-	Cardinal *num_params)
-{
-	if(!XtIsRealized(w))
-		return;
-
-	_XmHTMLProcessTraversal(w, XmTRAVERSE_PREV);
-}
-
-static void
-HTMLTraverseNextOrPrev(TWidget w, XEvent *event, String *params,
-	Cardinal *num_params)
-{
-	int which;
-
-	if(*num_params != 1 || !XtIsRealized(w))
-	{
-		if(*num_params != 1)
-			_XmHTMLWarning(__WFUNC__(w, "HTMLTraverseNextOrPrev"),
-				"traverse-next-or-prev: invalid num_params. Must be "
-				"exactly 1.");
-		return;
-	}
-	which = atoi(params[0]);
-	if(which == 0)
-		_XmHTMLProcessTraversal(w, XmTRAVERSE_NEXT_TAB_GROUP);
-	else
-		_XmHTMLProcessTraversal(w, XmTRAVERSE_PREV_TAB_GROUP);
 }
 
 /*****
@@ -3157,8 +2509,7 @@ GetImageAnchor(XmHTMLWidget html, int x, int y)
 						"server side imagemaps not supported yet.");
 					return(NULL);
 				}
-				if((imagemap = _XmHTMLGetImagemap(html,
-						image->map_url)) != NULL)
+				if((imagemap = _XmHTMLGetImagemap(html, image->map_url)) != NULL)
 				{
 					if((anchor = _XmHTMLGetAnchorFromMap(html, x, y, image, 
 						imagemap)) != NULL)
@@ -3195,8 +2546,7 @@ PaintAnchorUnSelected(XmHTMLWidget html)
 	start = html->html.current_anchor;
 
 	/* pick up the anchor end. An anchor ends when the raw worddata changes. */
-	for(end = start; end != NULL && end->object == start->object; 
-		end = end->next)
+	for (end = start; end != NULL && end->object == start->object; end = end->next)
 		end->anchor_state = ANCHOR_UNSELECTED;
 
 	_XmHTMLFullDebug(1, ("XmHTML.c: PaintAnchorUnselected, unselecting "
@@ -3230,8 +2580,7 @@ PaintAnchorSelected(XmHTMLWidget html, XmHTMLWord *anchor)
 	start = anchor->owner;
 
 	/* pick up anchor end. */
-	for(end = start; end != NULL && end->object == start->object; 
-		end = end->next)
+	for(end = start; end != NULL && end->object == start->object; end = end->next)
 		end->anchor_state = ANCHOR_SELECTED;
 
 	_XmHTMLFullDebug(1, ("XmHTML.c: PaintAnchorSelected, selecting anchor: "
@@ -3259,12 +2608,10 @@ LeaveAnchor(XmHTMLWidget html)
 	start = html->html.armed_anchor;
 
 	/* pick up the anchor end. */
-	for(end = start; end != NULL && end->object == start->object; 
-		end = end->next)
+	for(end = start; end != NULL && end->object == start->object; end = end->next)
 		end->anchor_state = ANCHOR_UNSELECTED;
 
-	_XmHTMLFullDebug(1, ("XmHTML.c: LeaveAnchor, leaving anchor: %s\n",
-		start->anchor->href));
+	_XmHTMLFullDebug(1, ("XmHTML.c: LeaveAnchor, leaving anchor: %s\n", start->anchor->href));
 
 	/* paint it */
 	_XmHTMLPaint(html, start, end);
@@ -3291,12 +2638,10 @@ EnterAnchor(XmHTMLWidget html, XmHTMLObjectTable *anchor)
 	start = html->html.armed_anchor = anchor;
 
 	/* pick up anchor end */
-	for(end = start; end != NULL && end->object == start->object; 
-		end = end->next)
+	for(end = start; end != NULL && end->object == start->object; end = end->next)
 		end->anchor_state = ANCHOR_INSELECT;
 
-	_XmHTMLFullDebug(1, ("XmHTML.c: EnterAnchor, entering anchor: %s\n",
-		start->anchor->href));
+	_XmHTMLFullDebug(1, ("XmHTML.c: EnterAnchor, entering anchor: %s\n", start->anchor->href));
 
 	/* paint it */
 	_XmHTMLPaint(html, start, end);
@@ -3966,7 +3311,7 @@ _XmHTMLGetAnchorByName(XmHTMLWidget html, String anchor)
 	for(i = 0 ; i < html->html.num_named_anchors; i++)
 	{
 		anchor_data = &(html->html.named_anchors[i]);
-		if(anchor_data->anchor && anchor_data->anchor->name && 
+		if(anchor_data->anchor && anchor_data->anchor->name &&  
 			strstr(anchor_data->anchor->name, chPtr))
 		{
 			_XmHTMLDebug(1, ("XmHTML.c: _XmHTMLGetAnchorByName End, "
@@ -4437,33 +3782,6 @@ XmHTMLGetTitle(TWidget w)
 }
 
 /*****
-* Name: 		XmCreateHTML
-* Return Type: 	TWidget
-* Description: 	creates a XmHTML TWidget
-* In: 
-*	parent:		TWidget to act as parent for this new XmHTMLWidget
-*	name:		name for the new TWidget
-*	arglist:	arguments for this new XmHTMLWidget
-*	argcount:	no of arguments
-* Returns:
-*	a newly created TWidget. This routine exits if parent is NULL or a subclass
-*	of XmGadget.
-*****/
-TWidget
-XmCreateHTML(TWidget parent, String name, ArgList arglist, Cardinal argcount)
-{
-	if(parent && !XmIsGadget(parent))
-		return(XtCreateWidget(name, xmHTMLWidgetClass, parent, 
-			arglist, argcount));
-
-	_XmHTMLError(__WFUNC__(NULL, "XmCreateHTML"), "XmHTML requires "
-		"a non-%s parent", parent ? "gadget" : "NULL");
-
-	/* keep compiler happy */
-	return(NULL);
-}
-
-/*****
 * Name: 		XmHTMLImageFreeAllImages
 * Return Type: 	void
 * Description: 	releases all allocated images and associated structures
@@ -4623,18 +3941,7 @@ XmHTMLRedisplay(TWidget w)
 	Layout(html);
 
 	if(html->html.gc != NULL)
-	{
-		ClearArea(html, 0, 0, html->core.width, html->core.height);
-
-		/* sync so the display is updated */
-		XSync(XtDisplay((TWidget)html), False);
-
-		XmUpdateDisplay((TWidget)html);
-		if(XtIsManaged(html->html.vsb))
-			XmUpdateDisplay(html->html.vsb);
-		if(XtIsManaged(html->html.hsb))
-			XmUpdateDisplay(html->html.hsb);
-	}
+		XmHTML_Frontend_Redisplay (html);
 }
 
 /*****
@@ -4693,6 +4000,7 @@ XmHTMLImageUpdate(TWidget w, XmImageInfo *image)
 		{
 			_XmHTMLDebug(1, ("XmHTML.c: XmHTMLImageUpdate, painting image "
 				"%s\n", image->url));
+			
 			/* clear the current image, don't generate an exposure */
 			XClearArea(XtDisplay(html->html.work_area), 
 				XtWindow(html->html.work_area), xs, ys,
@@ -4707,8 +4015,7 @@ XmHTMLImageUpdate(TWidget w, XmImageInfo *image)
 		/* if we've updated the body image, plug it in */
 		if(!is_body_image && html->html.body_image != NULL)
 		{
-			ClearArea(html, 0, 0, html->core.width, html->core.height);
-			XSync(XtDisplay((TWidget)html), True);
+			Toolkit_Widget_Force_Repaint (html);
 		}
 	}
 	return(XmIMAGE_OK);
@@ -4783,8 +4090,7 @@ XmHTMLImageReplace(TWidget w, XmImageInfo *image, XmImageInfo *new_image)
 		/* if we've replaced the body image, plug it in */
 		if(!is_body_image && html->html.body_image != NULL)
 		{
-			ClearArea(html, 0, 0, html->core.width, html->core.height);
-			XSync(XtDisplay((TWidget)html), True);
+			Toolkit_Widget_Force_Repaint (html);
 		}
 	}
 	return(XmIMAGE_OK); 
@@ -5053,7 +4359,7 @@ XmHTMLTextSetString(TWidget w, String text)
 
 	/* and clear the display, causing an Expose event */
 	if(html->html.gc != NULL)
-		ClearArea(html, 0, 0, html->core.width, html->core.height);
+		Toolkit_Widget_Repaint (html);
 
 	/* and start up the PLC cycler */
 	html->html.plc_suspended = False;

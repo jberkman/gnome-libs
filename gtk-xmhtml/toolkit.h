@@ -64,6 +64,8 @@ typedef XVisualInfo TVisualInfo;
 #define Toolkit_Screen_Width(w) gdk_screen_width ()
 #define Toolkit_Display(w) GDK_DISPLAY ()
 #define Toolkit_Free_Font(dpy,font) gdk_font_free ((font))
+#define Toolkit_Free_Cursor(dpy,cursor) gdk_cursor_destroy ((cursor));
+
 #define Toolkit_Widget_Name(w) "SomeWidget"
 #define Toolkit_Set_Font(dpy,gc,xfont) gdk_gc_set_font ((gc), (xfont))
 #define Toolkit_Set_Foreground(dpy,gc,fg) do{TColor m;m.pixel=(fg);gdk_gc_set_foreground((gc),&m);}while(0)
@@ -81,7 +83,8 @@ typedef XVisualInfo TVisualInfo;
 	gdk_window_copy_area ((dst),(gc),(dx),(dy),(src),(sx),(sy),(w),(h))
 #define Toolkit_Create_Pixmap(dpy,win,w,h,d) gdk_pixmap_new((win),(w),(h),(d))
 #define Toolkit_GC_Free(dpy,gc) gdk_gc_destroy(gc)
-
+#define Toolkit_Widget_Force_Repaint(w) gtk_widget_draw ((w), NULL)
+#define TOolkit_Widget_Repaint(w) gtk_widget_draw ((w), NULL)
 #define Toolkit_StyleGC_BottomShadow(w) (GTK_WIDGET(w))->style->dark_gc [GTK_STATE_NORMAL]
 #define Toolkit_StyleGC_TopShadow(w)    (GTK_WIDGET(w))->style->light_gc [GTK_STATE_NORMAL]
 #define Toolkit_StyleGC_Highlight(w)    (GTK_WIDGET(w))->style->bg_gc [GTK_STATE_PRELIGHT]
@@ -140,6 +143,11 @@ typedef XVisualInfo TVisualInfo;
      XCopyArea ((dpy),(src),(dst),(gc),(sx),(sy),(w),(h),(dx),(dy))
 #define Toolkit_Create_Pixmap(dpy,win,w,h,d) XCreatePixmap((dpy),(win),(w),(h),(d))
 #define Toolkit_GC_Free(dpy,gc) XFreeGC((dpy),(gc))
+#define Toolkit_Free_Cursor(dpy,cursor) XFreeCursor ((dpy), (cursor))
+#define Toolkit_Widget_Repaint(w) ClearArea((w), 0, 0, (w)->core.width, (w)->core.height)
+#define Toolkit_Widget_Force_Repaint(w) \
+	do { ClearArea((w), 0, 0, (w)->core.width, (w)->core.height); \
+	XSync(XtDisplay((TWidget)(w)), True); } while (0)
 
 #define Toolkit_StyleGC_BottomShadow(w) (w)->manager.bottom_shadow_GC
 #define Toolkit_StyleGC_TopShadow(w) (w)->manager.top_shadow_GC

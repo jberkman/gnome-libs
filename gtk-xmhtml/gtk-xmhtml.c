@@ -13,6 +13,8 @@ enum {
 	LAST_SIGNAL
 };
 
+static GtkContainer *parent_class = NULL;
+
 static gint gtk_xmhtml_signals [LAST_SIGNAL] = { 0, };
 
 /* prototypes for functions defined here */
@@ -49,6 +51,8 @@ gtk_xmhtml_class_init (GtkXmHTMLClass *class)
 		
 	object_class = (GtkObjectClass *) class;
 	widget_class = (GtkWidgetClass *) class;
+
+	parent_class = gtk_type_class (gtk_container_get_type ());
 	
 	gtk_xmhtml_signals [GTK_XMHTML_TEST_SIGNAL] = gtk_signal_new ("test-gtkxmhtml",
 			      GTK_RUN_FIRST,
@@ -217,10 +221,8 @@ html_work_area_callback (GtkWidget *widget, GdkEvent *event, void *d)
 		html->html.visibility = event->xvisibility.state;
 		return TRUE;
 
-	case XXX:
-		
-		
 	}
+	return FALSE;
 }
 
 /*****
@@ -245,26 +247,26 @@ CheckGC(XmHTMLWidget html)
 		return;
 
 	/* main gc */
-	if(html->html.gc == NULL)
-	{
-		XGCValues xgc;
+	if (html->html.gc == NULL){
+		TGC xgc;
 
-		xgc.function = GXcopy;
-		xgc.plane_mask = AllPlanes;
-		xgc.foreground = html->manager.foreground;
-		xgc.background = html->core.background_pixel;
-		html->html.gc = XCreateGC(dpy, XtWindow(html),
-			GCFunction | GCPlaneMask | GCForeground | GCBackground, &xgc);
-
-		_XmHTMLRecomputeColors(html);
+		xgc.function = GDK_COPY;
+		xgc.foreground = GTK_WIDGET(html)->style->fg[GTK_STATE_NORMAL];
+		xgc.background = GTK_WIDGET(html)->style->bg[GTK_STATE_NORMAL];
+		html->html.gc = gdk_gc_new_with_values (Toolkit_Widget_Window (html), &xgc,
+							GDK_GC_FOREGROUND | GDK_GC_BACKGROUND |
+							GDK_GC_FUNCTION);
+		fprintf (stderr, "FIXME: missing call to XmHTMLRecomputeColors\n");
+/*		_XmHTMLRecomputeColors(html); */
 
 		_XmHTMLDebug(1, ("XmHTML.c: CheckGC, gc created\n"));
 	}
 	/* background image gc */
 	if(html->html.body_images_enabled && html->html.bg_gc == NULL)
 	{
-		html->html.bg_gc = XCreateGC(dpy, XtWindow(html), 0, NULL);
-		XCopyGC(dpy, html->html.gc, 0xFFFF, html->html.bg_gc);
+		html->html.bg_gc = gdk_gc_new ();
+		fprintf (stderr, "Gdk-gc-copy should be implemnenbted\n");
+		/* XCopyGC(dpy, html->html.gc, 0xFFFF, html->html.bg_gc); */
 	}
 
 	_XmHTMLDebug(1, ("XmHTML.c: CheckGC End\n"));
@@ -303,28 +305,6 @@ CreateHTMLWidget(XmHTMLWidget html)
 			    "event",
 			    (GtkSignalFunc) html_work_area_callback, (gpointer) html);
 
-	/* we want to know when to handle GraphicsExpose events */
-	XtAddEventHandler((TWidget)html->html.work_area, VisibilityChangeMask, True,
-		(XtEventHandler)VisibilityHandler, (XtPointer)html);
-
-	XtAddEventHandler((TWidget)html, SubstructureNotifyMask, 
-		True, (XtEventHandler)Mapped, (XtPointer)html);
-
-	/* 
-	* For some reason, Motif fucks up the original action list, so we
-	* need to use a fallback copy instead.
-	* Crash happens in XrmStringToQuark().
-	*/
-	XtAppAddActions(XtWidgetToApplicationContext(html->html.work_area),
-		spareActions, XtNumber(spareActions));
-
-	/* add translations for the actions */
-	if(trans == NULL)
-		trans = XtParseTranslationTable(translations);
-	XtSetArg(args[0], XtNtranslations, trans);
-	XtSetValues(html->html.work_area, args, 1);
-
-	argc = 0;
 	XtManageChild(html->html.work_area);
 
 	if(html->html.vsb == NULL)
@@ -375,3 +355,62 @@ CreateHTMLWidget(XmHTMLWidget html)
 	return;
 }
 
+static void
+gtk_xmhtml_map (GtkWidget *widget)
+{
+	GtkWidget *scrollbar;
+	
+	if (GTK_OBJECT_CLASS (parent_class)->map)
+		(*GTK_OBJECT_CLASS (parent_class)->map)(widget);
+	
+	_XmHTMLDebug(1, ("XmHTML.c: Mapped start\n"));
+
+	_XmHTMLDebug(1, ("XmHTML.c: Mapped, work area dimensions: %ix%i\n",
+		html->html.work_width, html->html.work_height));
+
+	CheckGC (html);
+
+	scrollbar = html->html.vsb;
+	
+	html->html.work_heigh = widget->allocation.height;
+	html->html.work_width = widget->allocation.width - 
+		(html->html.margin_width + scrollbar.allocation.width);
+
+	_XmHTMLDebug(1, ("XmHTML.c: Mapped, new work area dimensions: %ix%i\n",
+			 html->html.work_width, html->html.work_height));
+
+	/* configure the scrollbars, will also resize work_area */
+	CheckScrollBars(html);
+
+	Layout(html);
+	
+	_XmHTMLDebug(1, ("XmHTML.c: Mapped end.\n"));
+}
+
+/*****
+* Name: 		CheckScrollBars
+* Return Type: 	void
+* Description: 	(re)configures scrollbars
+* In: 
+*	html:		HTML TWidget to configure
+* Returns:
+*	nothing.
+*****/
+static void
+CheckScrollBars(XmHTMLWidget *html)
+{
+	fprintf (stderr, "CheckScrollBars unimplemented\n");
+}
+
+static void
+XmHTML_Frontend_Redisplay (XmHTMLWidget html)
+{
+	GtkWidget *w = GTK_WIDGET (html);
+	
+	gdk_widget_draw (html, NULL);
+
+	if (GTK_WIDGET_MAPPED (html->html.vsb))
+		/* update_display html->html.vsb */;
+	if (GTK_WIDGET_MAPPED (html->html.hsb))
+		/* update_display html->html.hsb */
+}
