@@ -87,7 +87,7 @@ static void vt_line_update(struct _vtx *vx, struct vt_line *l, int line, int alw
        last-character (attributes) of the new line */
     newline = alloca(sizeof(*l)+bl->width*sizeof(bl->data[0]));
     memcpy(newline, l, sizeof(*l)+l->width*sizeof(l->data[0]));
-    c = l->data[l->width-1]&0xffff0000;
+    c = l->data[l->width-1]&VTATTR_MASK;
     for (i=l->width;i<bl->width;i++) {
       newline->data[i] = c;
     }
@@ -146,19 +146,19 @@ static void vt_line_update(struct _vtx *vx, struct vt_line *l, int line, int alw
   if (!always) {
     
     while (start<end) {
-      c = l->data[start]&0x7fffffff;
+      c = l->data[start];
       if (start>=sx && start<ex)
 	c ^= VTATTR_REVERSE;
-      if (c != (bl->data[start]&0x7fffffff))
+      if (c != bl->data[start])
 	break;
       start++;
     }
     
     while (end>start) {
-      c = l->data[end-1]&0x7fffffff;
+      c = l->data[end-1];
       if (end>=sx && end<ex)
 	c ^= VTATTR_REVERSE;
-      if (c != (bl->data[end-1]&0x7fffffff))
+      if (c != bl->data[end-1])
 	break;
       end--;
     }
@@ -169,13 +169,13 @@ static void vt_line_update(struct _vtx *vx, struct vt_line *l, int line, int alw
   vx->back_match=1;
   for(i=start;i<end;i++) {
     /* check for clear of the same background colour */
-    c = bl->data[i]&0x7fffffff;
-    ch = c & 0xffff;
+    c = bl->data[i];
+    ch = c & VTATTR_DATAMASK;
     if (i>=sx && i<ex)
       c ^= VTATTR_REVERSE;
     if ((ch!=0 && ch!=9 && ch!=' ')
-	|| ((c & (0x7c000000|VTATTR_BACKCOLOURM))
-	    != (l->data[i] & (0x7c000000|VTATTR_BACKCOLOURM)))) {
+	|| ((c & (VTATTR_MASK ^ VTATTR_FORECOLOURM))
+	    != (l->data[i] & (VTATTR_MASK ^ VTATTR_FORECOLOURM)))) {
       d(printf("bl->data[i] = %08x != %08x, c=%d (back now=%d not %d)\n", bl->data[i], l->data[i], c, (l->data[i]&VTATTR_BACKCOLOURM)>>VTATTR_BACKCOLOURB, (bl->data[i]&VTATTR_BACKCOLOURM)>>VTATTR_BACKCOLOURB));
       vx->back_match=0;
       break;
@@ -192,7 +192,7 @@ static void vt_line_update(struct _vtx *vx, struct vt_line *l, int line, int alw
   p = 0;
   for(i=start;i<end;i++) {
     /* map on 'selected' areas, and copy to screen buffer */
-    newattr = l->data[i] & 0x7fff0000;
+    newattr = l->data[i] & VTATTR_MASK;
     if (i>=sx && i<ex) {
       newattr ^= VTATTR_REVERSE;
       bl->data[i]=l->data[i]^VTATTR_REVERSE;
@@ -308,7 +308,7 @@ static void vt_scroll_update(struct _vtx *vx, int firstline, int count, int offs
   vt_scroll_area(vx->user_data, firstline, count, offset, fill);
 
   /* need to clear tn->bn lines.  Use attributes from first character of corresponding new line */
-  fill = nn->data[0] & 0xffff0000;
+  fill = nn->data[0] & VTATTR_MASK;
   do {
     d(printf("clearning line %d\n", tn->line));
     for(i=0;i<tn->width;i++) {
@@ -530,7 +530,7 @@ void vt_update(struct _vtx *vx, int update_state)
     while (nb) {
       printf("%d: ", wb->line);
       for (i=0;i<wb->width;i++) {
-	(printf("%c", (wb->data[i]&0xffff))); /*>=32?(wb->data[i]&0xffff):' '));*/
+	(printf("%c", (wb->data[i]&VTATTR_DATAMASK))); /*>=32?(wb->data[i]&0xffff):' '));*/
       }
       (printf("\n"));
       wb=nb;

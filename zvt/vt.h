@@ -46,16 +46,16 @@ struct vt_line {
   uint32 data[1];		/* the line data follows this structure */
 };
 
+/* note: bit 0x80000000 is free for another attribute */
 #define VTATTR_BOLD       0x40000000
 #define VTATTR_UNDERLINE  0x20000000
 #define VTATTR_BLINK      0x10000000
 #define VTATTR_REVERSE    0x08000000
 #define VTATTR_CONCEALED  0x04000000
-/*
-  #define VTATTR_FORE_SET   0x08000000
-  #define VTATTR_BACK_SET   0x10000000
-*/
-#define VTATTR_CHANGED    0x80000000
+
+/* all attributes mask, and no-attributes mask */
+#define VTATTR_MASK	  0xffff0000
+#define VTATTR_DATAMASK	  (~VTATTR_MASK)
 
 /* bitmasks for colour map information */
 #define VTATTR_FORECOLOURM 0x03e00000

@@ -91,7 +91,7 @@ vt_dump(struct vt_em *vt)
   (printf("dumping state of vt buffer:\n"));
   while (nn) {
     for (i=0;i<wn->width;i++) {
-      (printf("%c", wn->data[i]&0xffff));
+      (printf("%c", wn->data[i]&VTATTR_DATAMASK));
     }
     (printf("\n"));
     wn=nn;
@@ -519,24 +519,14 @@ static void vt_tab(struct vt_em *vt)
   d(printf("tab\n"));
 
   l = vt->this;
-  c=l->data[vt->cursorx]&0xff;
+  c=l->data[vt->cursorx]&VTATTR_DATAMASK;
   /* dont store tab over a space - will affect attributes */
   if (c==0) {
     l->data[vt->cursorx] = 9|vt->attr; /* store 'tab' if we can ... helps cut/paste */
   }
-  
-  /* expand data after tab to be 'empty', but dont change attributes */
-  nx = (vt->cursorx+8) & ~7;
-  for(i=vt->cursorx+1;i<nx;i++) {
-    if ( ((c=l->data[i]&0xff)==' ')) {
-      l->data[i] = (l->data[i]&0xffff0000);
-    } else {
-      break;
-    }
-  }
 
-  /*nx = (vt->cursorx+8) & ~7;*/
-  vt->cursorx = (vt->cursorx + 8) & 0xfff8;
+  /* move cursor to new tab position */
+  vt->cursorx = (vt->cursorx + 8) & (~7);
   if (vt->cursorx >= vt->width) {
     vt->cursorx = 0;
     vt_lf(vt);			/* goto next line */
@@ -1087,7 +1077,6 @@ vt_parse_vt (struct vt_em *vt, char *ptr, int length)
   register int c;
   register int state;
   register int mode;
-  int handled;
   struct vt_jump *modes = vtjumps;
   char *ptrend;
   void (*process)(struct vt_em *vt);	/* process function */
@@ -1107,8 +1096,6 @@ vt_parse_vt (struct vt_em *vt, char *ptr, int length)
     c=(*ptr++) & 0xff;		/* convert to unsigned byte */
     mode = modes[c & 0x7f].modes;
     process = modes[c & 0x7f].process;
-    do {
-      handled = 1;
       switch(state) {
       case 0:
 	if (mode & VT_LIT) {
@@ -1127,7 +1114,7 @@ vt_parse_vt (struct vt_em *vt, char *ptr, int length)
 	  }
 
 	  /* output character */
-	  vt->this->data[vt->cursorx] = ((vt->attr) & 0xffff0000) | c;
+	  vt->this->data[vt->cursorx] = ((vt->attr) & VTATTR_MASK) | c;
 	  vt->this->modcount++;
 	  d(printf("literal %c\n", c));
 	  vt->cursorx++;
@@ -1156,7 +1143,7 @@ vt_parse_vt (struct vt_em *vt, char *ptr, int length)
 	  vt->outptr = vt->argptr[0];
 	  vt->outend = vt->outptr+VTPARAM_ARGMAX*VTPARAM_MAXARGS-1;
 	} else if (mode & VT_EXA) {
-	  vt->args[0][0]=c;
+	  vt->args[0][0]=c & 0x7f;
 	  state = 5;
 	} else {
 	  state = 0;		/* dont understand input */
@@ -1207,18 +1194,10 @@ vt_parse_vt (struct vt_em *vt, char *ptr, int length)
 	break;
       case 5:			/* \E?x */
 	vt->args[0][1]=c;
-	if (vt->args[0][0] < 0x7f) {
-	  process = modes[vt->args[0][0]].process;
-	  if (process) {		/* check, if doesn't exist, then ignore and lose */
-	    process(vt);
-	  }
-	} else {
-	  handled = 0;
-	}
+	modes[vt->args[0][0]].process(vt);
 	state=0;
 	break;
       }
-    } while (!handled);
   }
   vt->state = state;
 }
@@ -1573,7 +1552,7 @@ void vt_resize(struct vt_em *vt, int width, int height, int pixwidth, int pixhei
 	memcpy(nn->data, wn->data, len*sizeof(nn->data[0]));
 	/* clear rest of screen (if it exists) with blanks of the
 	   same attributes as the last character */
-	c = nn->data[len-1]&0xffff0000;
+	c = nn->data[len-1]&VTATTR_MASK;
 	for(j=wn->width;j<nn->width;j++) {
 	  nn->data[j]=c;
 	}
@@ -1627,7 +1606,7 @@ void vt_resize(struct vt_em *vt, int width, int height, int pixwidth, int pixhei
 	wn->next->prev = wn;	/* re-link line into linked list */
 	wn->prev->next = wn;
 	if (wn->width)
-	  c = wn->data[wn->width-1]&0xffff0000;
+	  c = wn->data[wn->width-1]&VTATTR_MASK;
 	else
 	  c = vt->attr;
 	for(i=wn->width;i<width;i++) { /* if the line got bigger, fix it up */

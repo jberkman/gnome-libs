@@ -1,3 +1,30 @@
+1998-11-15  Michael Zucchi  <zucchi@zzedzone.fsi.com.au>
+
+	* zvtterm.c (zvt_term_selection_received): Always scroll to bottom
+	on non-empty paste.  This 'hides' a bug where the screen list can
+	get corrupt.  Not sure if its in the parser or the update code.
+
+	* vt.c (vt_dump): Replaced coded constant masks with defined
+	values.
+	(vt_parse_vt): Likewise.
+	(vt_resize): Likewise.
+	(vt_tab): Simplified processing.  Dont try and over-write anything
+	onscreen, unless its empty.
+	(vt_parse_vt): Remove 'handled' loop from interpreter.  It just
+	wasn't doing anything useful ...
+	(vt_parse_vt): Remove unecessary null-pointer check in state 5
+	case.  Also force character to 7 bits when interpreting it.
+
+	* update.c (vt_line_update): Replaced coded constant masks with
+	defined values.
+	(vt_scroll_update): Likewise.
+	(vt_update): Likewise.
+
+	* vt.h: Removed VTATTR_CHANGED flag.  This gives one extra
+	attribute bit.
+	(VTATTR_MASK): New mask - all attribute bits.
+	(VTATTR_DATAMASK): No attribute bits.
+
 1998-11-13  Miguel de Icaza  <miguel@nuclecu.unam.mx>
 
 	* subshell.c (sigchld_handler): Only call the previous signal
@@ -836,5 +863,4 @@ Thu Apr 30 23:19:07 1998  Tom Tromey  <tromey@cygnus.com>
 	(zvt_term_set_fonts): New function.  Sets fonts.
 	(zvt_term_set_font_name): New function, sets fonts by name.
 	(vt_draw_text): Added underline rendering support.
-
 
