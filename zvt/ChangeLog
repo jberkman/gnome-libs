@@ -1,3 +1,12 @@
+1998-11-10  Miguel de Icaza  <miguel@nuclecu.unam.mx>
+
+	* subshell.c (sigchld_handler): Chain signal handlers.
+	Use waitpid with WNOHANG set to check for any of our known
+	processes. 
+
+	* gnome-utmp.c (update_dbs): Clear the utmp structure, per Theo de
+	Raddt's recomendation.
+
 1998-11-10  Michael Zucchi  <zucchi@zzedzone.fsi.com.au>
 
 	* update.c (vt_scroll_update): Get the scroll fill colour from the

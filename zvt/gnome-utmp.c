@@ -104,6 +104,8 @@ update_dbs (char *login_name, char *display_name, char *term_name)
 	struct timeval tv;
 	char *pty = term_name;
 
+	memset (&ut, 0, sizeof (ut));
+	
 #ifdef _HAVE_UT_TYPE
 	ut.ut_type = USER_PROCESS;
 #endif

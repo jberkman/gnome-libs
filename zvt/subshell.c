@@ -24,6 +24,12 @@
 /* Pid of the helper SUID process */
 static pid_t helper_pid;
 
+/* Whether sigchld signal handler has been established yet */
+static int sigchld_inited = 0;
+
+/* Points to a possibly previously installed sigchld handler */
+static struct sigaction old_sigchld_handler;
+
 int helper_socket [2];
 
 /* List of all subshells we're watching */
@@ -69,22 +75,21 @@ sigchld_handler (int signo)
 	pid_t pid;
 	int status;
 
-	pid = wait (&status);
-
-	if (pid == helper_pid){
+	if (waitpid (helper_pid, &status, WNOHANG) == helper_pid){
 		helper_pid = 0;
 		return;
 	}
-	
-	child = children;
-	while (child && child->pid != pid) {
-		child = child->next;
+
+	for (child = children; child; child = child->next){
+		if (waitpid (child->pid, &status, WNOHANG) == child->pid){
+			child->pid = 0;
+			write (child->fd, "D", 1);
+			return;
+		}
 	}
-	
-	if (child) {
-		child->pid = 0;
-		write(child->fd, "D", 1);
-	}
+
+	/* No children of ours, chain */
+	(*old_sigchld_handler.sa_handler)(signo);
 }
 
 #ifdef HAVE_SENDMSG
@@ -250,11 +255,14 @@ zvt_init_subshell (struct vt_em *vt, char *pty_name, int log)
 		close (slave_pty);
 	}
 	
-	if (!children) {
-		memset(&sa, 0, sizeof(sa));
-		sa.sa_handler = sigchld_handler;
-		sigaction(SIGCHLD, &sa, NULL);
-	} 
+	if (!children){
+		if (!sigchld_inited){
+			memset(&sa, 0, sizeof(sa));
+			sa.sa_handler = sigchld_handler;
+			sigaction (SIGCHLD, &sa, &old_sigchld_handler);
+			sigchld_inited = 1;
+		}
+	}
 	
 	pipe(p);
 	vt->msgfd = p [0];
