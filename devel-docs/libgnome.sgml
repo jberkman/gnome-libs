@@ -71,7 +71,7 @@ char *myitem;
 gboolean is_default;
 
 myitem =
-gnome_config_get_string_with_default("/foo/blah=DefaultValue", &is_default);
+gnome_config_get_string_with_default("/foo/blah=DefaultValue", &amp;is_default);
 </programlisting>
 </sect3>
 <sect3><title>Parameters</title>
@@ -86,6 +86,7 @@ gnome_config_get_string_with_default("/foo/blah=DefaultValue", &is_default);
 the caller as to whether the return value is a default value or was
 retrieved from the config database for the specified 'path'.
 </para>
+</itemizedlist>
 </sect3>
 </sect2>
 <sect2 id="gnome-config-set">
@@ -112,14 +113,14 @@ gnome_config_set_vector("/foo/bar/baz", 3, values);
 </programlisting>
 </sect3>
 </sect2>
-</sect2 id="gnome-config-has-section">
+<sect2 id="gnome-config-has-section">
 <title>gnome_config_has_section - Checks whether a config section
 exists</title>
 <funcsynopsis><funcdef>gboolean
 <function>gnome_config_has_section</function></funcdef>
 <paramdef>const char *<parameter>path</parameter></paramdef>
 </funcsynopsis>
-<sect3><title><Description</title>
+<sect3><title>Description</title>
 <para>
 This routine returns TRUE if the specified section/item exists, xor
 FALSE if it does not.
@@ -215,13 +216,13 @@ GString *tmpstr;
 tmpstr = g_string_new(NULL);
 for(section_iter = gnome_config_init_iterator_sections("/foo");
     section_iter != NULL;
-    section_iter = gnome_config_iterator_next(section_iter, NULL, &section_name)) {
+    section_iter = gnome_config_iterator_next(section_iter, NULL, &amp;section_name)) {
     
     g_string_sprintf(tmpstr, "/foo/%s", section_name);
     
     for(item_iter = gnome_config_init_iterator(tmpstr->str);
         item_iter;
-        item_iter = gnome_config_iterator_next(item_iter, &key, &value)) {
+        item_iter = gnome_config_iterator_next(item_iter, &amp;key, &amp;value)) {
         g_print("Got key %s -> value %s in section %s of /foo\n",
                 key, value, section_name);
 
@@ -248,7 +249,7 @@ NULL.</para>
 the value for item iterators, or to the section name for section
 iterators.</para>
 </listitem>
-
+</itemizedlist>
 </sect2>
 </sect1>
 
@@ -356,7 +357,7 @@ Not descripted</para>
 </sect2>
 
 </sect1>
-<sect1 id="libgnome">
+<sect1>
   <title>libgnome</title>
 <sect2><title>Description</title>
 <para>
