@@ -32,9 +32,8 @@
 #define GNOME_ICON_SELECTOR_H
 
 
-#include <gtk/gtkvbox.h>
 #include <libgnome/gnome-defs.h>
-#include "gnome-selector.h"
+#include "gnome-file-selector.h"
 
 
 BEGIN_GNOME_DECLS
@@ -53,34 +52,36 @@ typedef struct _GnomeIconSelectorPrivate  GnomeIconSelectorPrivate;
 typedef struct _GnomeIconSelectorClass    GnomeIconSelectorClass;
 
 struct _GnomeIconSelector {
-	GnomeSelector selector;
-	
-	/*< private >*/
-	GnomeIconSelectorPrivate *_priv;
+        GnomeFileSelector selector;
+        
+        /*< private >*/
+        GnomeIconSelectorPrivate *_priv;
 };
 
 struct _GnomeIconSelectorClass {
-	GnomeSelectorClass parent_class;
+        GnomeFileSelectorClass parent_class;
 };
 
 
 guint        gnome_icon_selector_get_type     (void);
 
 GtkWidget   *gnome_icon_selector_new          (const gchar *history_id,
-					       const gchar *dialog_title);
+                                               const gchar *dialog_title);
 
 GtkWidget   *gnome_icon_selector_new_custom   (const gchar *history_id,
-					       const gchar *dialog_title,
-					       GtkWidget *selector_widget,
-					       GtkWidget *browse_dialog,
-					       guint32 flags);
+                                               const gchar *dialog_title,
+                                               GtkWidget *entry_widget,
+                                               GtkWidget *selector_widget,
+                                               GtkWidget *browse_dialog,
+                                               guint32 flags);
 
 void         gnome_icon_selector_construct    (GnomeIconSelector *iselector,
                                                const gchar *history_id,
-					       const gchar *dialog_title,
-					       GtkWidget *selector_widget,
-					       GtkWidget *browse_dialog,
-					       guint32 flags);
+                                               const gchar *dialog_title,
+                                               GtkWidget *entry_widget,
+                                               GtkWidget *selector_widget,
+                                               GtkWidget *browse_dialog,
+                                               guint32 flags);
 
 void         gnome_icon_selector_add_defaults (GnomeIconSelector *iselector);
 
