@@ -19,8 +19,8 @@
    menus instead of letting GnomeMDI build them from GnomeUIInfo
    templates
 */
-#define USE_TEMPLATES YES!
-/* #undef USE_TEMPLATES */
+/* #define USE_TEMPLATES YES! */
+#undef USE_TEMPLATES
 
 static int restarted = 0;
 
@@ -48,9 +48,7 @@ static void mode_book_cb(GtkWidget *w);
 static void mode_modal_cb(GtkWidget *w);
 static void inc_counter_cb(GtkWidget *w, gpointer user_data);
 
-#ifndef USE_TEMPLATES
 static void app_created_handler(GnomeMDI *, GnomeApp *);
-#endif
 
 static gchar         *my_child_get_config_string(GnomeMDIChild *, gpointer);
 static GnomeMDIChild *my_child_new_from_config (const gchar *);
@@ -128,6 +126,18 @@ GnomeUIInfo main_child_menu[] = {
 };
 #endif /* USE_TEMPLATES */
 
+static GnomeUIInfo toolbar_info[5] = {
+	{ GNOME_APP_UI_ITEM, "New", "Create a new file", NULL, NULL, NULL,
+      GNOME_APP_PIXMAP_STOCK, GNOME_STOCK_PIXMAP_NEW, 0, 0, NULL },
+    { GNOME_APP_UI_ITEM, "Open", "Open an existing file", NULL, NULL, NULL,
+      GNOME_APP_PIXMAP_STOCK, GNOME_STOCK_PIXMAP_OPEN, 0, 0, NULL },
+    { GNOME_APP_UI_ITEM, "Save", "Save the current file", NULL, NULL, NULL,
+      GNOME_APP_PIXMAP_STOCK, GNOME_STOCK_PIXMAP_SAVE, 0, 0, NULL },
+    { GNOME_APP_UI_ITEM, "Save as", "Save the current file with a new name", NULL, NULL, NULL,
+      GNOME_APP_PIXMAP_STOCK, GNOME_STOCK_PIXMAP_SAVE_AS, 0, 0, NULL },
+    GNOMEUIINFO_END
+};
+
 /*
  * create_view signal handler: creates any GtkWidget to be used as a view
  * of the child
@@ -137,7 +147,7 @@ static GtkWidget *my_child_create_view(GnomeMDIChild *child, gpointer data) {
 	gchar label[256];
 	gint counter;
 
-	sprintf(label, "Hello! Child %d reporting...",
+	sprintf(label, "Child %d",
 			GPOINTER_TO_INT (gtk_object_get_user_data(GTK_OBJECT(child))));
 
 	new_view = gtk_label_new(label);
@@ -196,6 +206,14 @@ static GList *my_child_create_menus(GnomeMDIChild *child, GtkWidget *view, gpoin
 	w = gtk_menu_item_new_with_label(_("Remove View"));
 	gtk_signal_connect(GTK_OBJECT(w), "activate",
 					   GTK_SIGNAL_FUNC(remove_view_cb), child);
+	gtk_widget_show(w);
+	gtk_menu_append(GTK_MENU(menu), w);
+	w = gtk_menu_item_new();
+	gtk_widget_show(w);
+	gtk_menu_append(GTK_MENU(menu), w);	
+	w = gtk_menu_item_new_with_label(_("Increase Counter"));
+	gtk_signal_connect(GTK_OBJECT(w), "activate",
+					   GTK_SIGNAL_FUNC(inc_counter_cb), child);
 	gtk_widget_show(w);
 	gtk_menu_append(GTK_MENU(menu), w);
 
@@ -313,6 +331,7 @@ static void inc_counter_cb(GtkWidget *w, gpointer user_data) {
 	GnomeMDIGenericChild *child = GNOME_MDI_GENERIC_CHILD(user_data);
 	gchar name[32];
 	gint counter;
+	GList *view;
 
 	counter = GPOINTER_TO_INT (gtk_object_get_user_data(GTK_OBJECT(child)));
 	counter++;
@@ -320,6 +339,13 @@ static void inc_counter_cb(GtkWidget *w, gpointer user_data) {
 
 	sprintf(name, "Child %d", counter);
 	gnome_mdi_child_set_name(GNOME_MDI_CHILD(child), name);
+
+	/* update views */
+	view = GNOME_MDI_CHILD(child)->views;
+	while(view) {
+		gtk_label_set(GTK_LABEL(view->data), name);
+		view = view->next;
+	}
 }
 
 static void mode_top_cb(GtkWidget *w) {
@@ -366,7 +392,7 @@ static gint remove_child_handler(GnomeMDI *mdi, GnomeMDIChild *child) {
 	sprintf(question, "Do you really want to remove child %d\n",
 			GPOINTER_TO_INT (gtk_object_get_user_data(GTK_OBJECT(child))));
 
-	gnome_app_question_modal(gnome_mdi_active_window(mdi), question,
+	gnome_app_question_modal(gnome_mdi_get_active_window(mdi), question,
 							 reply_handler, &reply);
 
 	/* I hope increasing main_level is the proper way to stop an app until
@@ -468,11 +494,19 @@ static GtkMenuBar *mdi_create_menus(GnomeMDI *mdi) {
 
 	return GTK_MENU_BAR(bar);
 }  
+#endif
 
 void app_created_handler(GnomeMDI *mdi, GnomeApp *app) {
+#ifndef USE_TEMPLATES
 	gnome_app_set_menus (app, mdi_create_menus(mdi));
-}
+
+	/* note that since the same ui info is used many times,
+	   the ->widget member is not valid. make a copy and
+	   gtk_object_set_data() it to the app to make it
+	   accessible by your code. */
+	gnome_app_create_toolbar (app, toolbar_info);
 #endif
+}
 
 int main(int argc, char **argv) {
 	GnomeClient *cloned;
@@ -503,6 +537,7 @@ int main(int argc, char **argv) {
 	   main_menu[] will remain intact */
 #ifdef USE_TEMPLATES
 	gnome_mdi_set_menubar_template(mdi, main_menu);
+	gnome_mdi_set_toolbar_template(mdi, toolbar_info);
 #endif
 
 	/* and document menu and document list paths (see gnome-app-helper menu
@@ -541,10 +576,8 @@ int main(int argc, char **argv) {
 					   GTK_SIGNAL_FUNC(cleanup_cb), NULL);
 	gtk_signal_connect(GTK_OBJECT(mdi), "remove_child",
 					   GTK_SIGNAL_FUNC(remove_child_handler), NULL);
-#ifndef USE_TEMPLATES
 	gtk_signal_connect(GTK_OBJECT(mdi), "app_created",
 					   GTK_SIGNAL_FUNC(app_created_handler), NULL);
-#endif
 	
 	/* we could also connect handlers to other signals, but since we're lazy, we won't ;) */
 
