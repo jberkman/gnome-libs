@@ -8,14 +8,14 @@
 
 #if !defined(__LIBGNORBA_COMPILATION) && defined(__ORBIT_IDL__)
 %{
-#pragma include_defs libgnomeui/gnome-corba-rexec.h
+#pragma include_defs "libgnomeui/gnome-corba-rexec.h"
 %}
 #pragma inhibit push
 #endif
 
 #if defined(__ORBIT_IDL__)
 %{
-#pragma include_defs liboaf/gnome-factory.h
+#pragma include_defs "liboaf/gnome-factory.h"
 %}
 #pragma inhibit push
 module GNOME {
