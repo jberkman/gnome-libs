@@ -97,6 +97,46 @@
       group starts with its origin in world position (0.0, 0.0).
     </para>
 
+    <para>
+      You will normally only need use this floating point, world
+      coordinate system.  The canvas also has a different coordinate
+      system which works in terms of pixel offsets.  This coordinate
+      system is used internally to control scrolling of the canvas.
+      You won't need to know about it unless you want to do scrolling
+      or create your own canvas item types.
+    </para>
+
+    <sect2 id="zooming-and-scale">
+
+      <title>Zooming and scale</title>
+
+      <para>
+	You can change the zoom factor of the canvas so that all the
+	objects in it will appear larger or smaller.  To control the
+	zoom factor, you specify the number of <emphasis>pixels per
+	unit</emphasis> that the canvas will use when converting world
+	coordinates to display coordinates.  The default is to use 1.0
+	pixels per unit, so an object that is 10 units wide will be
+	displayed as 10 pixels wide.  If you set the canvas to use 5
+	pixels per unit, that object will be displayed as 50 pixels wide.
+      </para>
+
+      <para>
+	Sometimes you may want some features of your drawing to have
+	the same displayed size regardless of the zoom factor of the
+	canvas.  For example, in a display of a graph composed of
+	vertices and edges, you may want the edges to keep the same
+	displayed width even if you zoom in closer to the graph.
+	Canvas items like lines and rectangles which support an
+	outline width parameter let you select whether the outline
+	width is specified in absolute pixels (which will keep the
+	same displayed size regardless of the zoom factor of the
+	canvas), or normal units (which will get scaled when the
+	zoom factor is changed).
+      </para>
+
+    </sect2>
+
   </sect1>
 
 </chapter>
