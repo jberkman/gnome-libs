@@ -5,8 +5,8 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: gnome-libs VERSION\n"
-"POT-Creation-Date: 1999-09-20 14:41-0500\n"
+"Project-Id-Version: gnome-libs 1.0.18\n"
+"POT-Creation-Date: 1999-09-21 12:37+0200\n"
 "PO-Revision-Date: 1998-03-28 20:08+0100\n"
 "Last-Translator: Vincent Renardias <vincent@ldsol.com>\n"
 "Language-Team: Gnome French Team <gnomefr@gnomefr.traduc.org>\n"
@@ -1173,6 +1173,12 @@ msgid ""
 "will exit.\n"
 "Please save all your files before closing this dialog."
 msgstr ""
+"Le Gestionnaire de Session GNOME (processus %s) a\n"
+"planté à la suite d'une erreur fatale (%s).\n"
+"Lorsque vous fermerez cette boîte de dialogue, toutes lesapplications seront "
+"fermées et votre session sera terminée.\n"
+"Enregistrez tous vos fichiers en cours avant de fermer cette\n"
+"boîte de dialogue."
 
 #: libgnomeui/gnome_segv.c:55
 #, c-format
@@ -1189,7 +1195,15 @@ msgstr ""
 msgid "Usage: gnome_segv appname signum\n"
 msgstr "Usage : gnome_segv nom-appli num-signal\n"
 
-#: libgnomeui/gnome_segv.c:73
+#. Before to change this link to something like
+#. * http://www.gnome.org/application_crashed.LL.shtml,
+#. * ask webmaster@redhat.com for a copy of the source shtml file, translate it,
+#. * and send it back to him.
+#: libgnomeui/gnome_segv.c:76
+msgid "http://www.gnome.org/application_crashed.shtml"
+msgstr "http://www.gnome.org/application_crashed.fr.shtml"
+
+#: libgnomeui/gnome_segv.c:77
 msgid "Please visit the GNOME Application Crash page for more information"
 msgstr "Visitez la page GNOME Application Crash pour plus d'informations"
 
@@ -1382,13 +1396,13 @@ msgid "Copyright (C) 1998"
 msgstr "Copyright (C) 1998"
 
 #: libgnomeui/winhints_demo.c:413
-#, fuzzy
 msgid ""
 "Simple test app to check how the WIN_HINTS work.\n"
 "And to test the gnome_win_hints_* functions for errors. :)"
 msgstr ""
 "Simple application de test pour controler comment les WIN_HINTS "
-"fonctionnent. Et pour tester les fonctions gnome_win_hints_*. :)"
+"fonctionnent.\n"
+"Et pour tester les fonctions gnome_win_hints_*. :)"
 
 #: libgnorba/gnome-name-server.c:229
 #, c-format
@@ -1446,30 +1460,31 @@ msgstr "REPO_ID"
 #, c-format
 msgid "Failed to open CORBA cookie file (%s) for writing: %s\n"
 msgstr ""
+"Impossible d'ouvrir de fichier de cookie CORBA (%s) pour écriture : %s\n"
 
 #: libgnorba/orbitgtk.c:145
 #, c-format
 msgid "Failed to write CORBA cookie file (%s): %s\n"
-msgstr ""
+msgstr "Impossible d'écrire dans le fichier de cookie CORBA (%s) : %s\n"
 
 #: libgnorba/orbitgtk.c:171
 #, c-format
 msgid "Failed to write CORBA cookie to `%s': %s\n"
-msgstr ""
+msgstr "Impossible d'écrire le cookie CORBA dans `%s' : %s\n"
 
 #: libgnorba/orbitgtk.c:181
 #, c-format
 msgid "Failed to open CORBA cookie file `%s': %s\n"
-msgstr ""
+msgstr "Impossible d'ouvrir de fichier de cookie CORBA `%s' : %s\n"
 
 #: libgnorba/orbitgtk.c:187
 #, c-format
 msgid "Failed to read CORBA cookie file `%s': %s\n"
-msgstr ""
+msgstr "Impossible de lire de fichier de cookie CORBA `%s' : %s\n"
 
 #: libgnorba/orbitgtk.c:213
 msgid "Failed to obtain CORBA authentication cookie, exiting\n"
-msgstr ""
+msgstr "Impossible d'obtenir le cookie d'authentification CORBA, abandon.\n"
 
 #: libgnorba/orbitns.c:295
 msgid "Could not get name service!"
