@@ -164,8 +164,8 @@ fi
 
 dnl Check for db stuff.
 DB_LIB=
-AC_CHECK_FUNCS(dbopen,,[
-  AC_CHECK_LIB(db, dbopen, DB_LIB="-ldl",[
+AC_CHECK_FUNC(dbopen,,[
+  AC_CHECK_LIB(db, dbopen, DB_LIB="-ldb",[
     AC_MSG_ERROR([Berkeley db library required for Gnome])])])
 AC_CHECK_HEADER(db.h, , [
   AC_MSG_ERROR([Berkeley db library required for Gnome])])
