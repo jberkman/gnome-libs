@@ -2003,6 +2003,7 @@ main (int argc, char *argv[])
 	for (i = 0; i < nbuttons; i++)
 	{
 		button = gtk_button_new_with_label (buttons[i].label);
+		gnome_widget_set_name (GTK_WIDGET (button), buttons[i].label);
 		if (buttons[i].func)
 			gtk_signal_connect (GTK_OBJECT (button),
 					    "clicked",

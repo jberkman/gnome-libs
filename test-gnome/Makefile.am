@@ -25,7 +25,8 @@ test_gnome_SOURCES =		\
 EXTRA_DIST = 		\
 	bomb.xpm	\
 	flower.png	\
-	toroid.png
+	toroid.png	\
+	widget-help-map.txt
 
 test_gnome_LDADD = \
 	$(top_builddir)/libgnomeui/libgnomeui-$(GNOME_INTERFACE_VERSION).la 	\

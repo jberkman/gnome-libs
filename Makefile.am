@@ -22,7 +22,7 @@ endif
 gnome_vfs_SUBDIRS=
 gconf_SUBDIRS=
 
-SUBDIRS = po intl support	\
+SUBDIRS = support	\
 	tools			\
 	images			\
 	libgnome		\
