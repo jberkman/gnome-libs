@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-libs 1.0.17\n"
-"POT-Creation-Date: 1999-10-06 21:34-0500\n"
+"POT-Creation-Date: 1999-10-17 12:31+0200\n"
 "PO-Revision-Date: 1999-09-28 21:42+0100\n"
 "Last-Translator: Richard Hult <rhult@hem2.passagen.se>\n"
 "Language-Team: Swedish <sv@li.org>\n"
@@ -42,25 +42,21 @@ msgstr ""
 "Felaktig flagga %s: %s.\n"
 "Kör '%s --help' för att se hela listan med giltiga kommandoradsflaggor.\n"
 
-#: libgnome/gnomelib-init.c:130
+#: libgnome/gnomelib-init.c:34
 msgid "Disable sound server usage"
 msgstr "Slå av användandet av ljudservern"
 
-#: libgnome/gnomelib-init.c:132
+#: libgnome/gnomelib-init.c:37
 msgid "Enable sound server usage"
 msgstr "Slå på användandet av ljudservern"
 
-#: libgnome/gnomelib-init.c:134
+#: libgnome/gnomelib-init.c:40
 msgid "Host:port on which the sound server to use is running"
 msgstr "Värd:port som ljudservern lyssnar på"
 
-#: libgnome/gnomelib-init.c:135
+#: libgnome/gnomelib-init.c:41
 msgid "HOSTNAME:PORT"
 msgstr "DATORNAMN:PORT"
-
-#: libgnome/gnomelib-init.c:144
-msgid "GNOME Options"
-msgstr "Alternativ för GNOME"
 
 #: libgnomeui/gnome-about.c:187
 msgid "Author:"
@@ -638,32 +634,31 @@ msgstr "="
 msgid "INV"
 msgstr "INV"
 
-#: libgnomeui/gnome-client.c:828
+#: libgnomeui/gnome-client.c:839
 msgid "Specify session management ID"
 msgstr "Specificera ID för sessionskontroll"
 
-#: libgnomeui/gnome-client.c:828 libgnorba/goad-browser.c:27
+#: libgnomeui/gnome-client.c:839 libgnorba/goad-browser.c:27
 msgid "ID"
 msgstr "ID"
 
-#: libgnomeui/gnome-client.c:830
+#: libgnomeui/gnome-client.c:842
 msgid "Specify prefix of saved configuration"
 msgstr "Ange prefix på den sparade konfigurationen"
 
-#: libgnomeui/gnome-client.c:830
+#: libgnomeui/gnome-client.c:842
 msgid "PREFIX"
 msgstr "PREFIX"
 
-#: libgnomeui/gnome-client.c:832
+#: libgnomeui/gnome-client.c:845
 msgid "Disable connection to session manager"
 msgstr "Stäng av koppling till sessionshanteraren"
 
-#. Register commandline options.
-#: libgnomeui/gnome-client.c:961
-msgid "Session management options"
-msgstr "Alternativ för sessionshanteraren"
+#: libgnomeui/gnome-client.c:857
+msgid "Session management"
+msgstr "Sessionshantering"
 
-#: libgnomeui/gnome-client.c:2341
+#: libgnomeui/gnome-client.c:2323
 msgid "Cancel Logout"
 msgstr "Avbryt utloggning"
 
@@ -672,7 +667,7 @@ msgid "Pick a color"
 msgstr "Välj en färg"
 
 #. Calendar label, only shown if the date editor has a time field
-#: libgnomeui/gnome-dateedit.c:454
+#: libgnomeui/gnome-dateedit.c:455
 msgid "Calendar"
 msgstr "Kalender"
 
@@ -786,85 +781,85 @@ msgstr "Förhandsgranskning"
 msgid "Loading Icons..."
 msgstr "Laddar ikoner..."
 
-#: libgnomeui/gnome-init.c:160
+#: libgnomeui/gnome-init.c:50
 msgid "Gdk debugging flags to set"
 msgstr "Felsökningsflaggor för Gdk som ska användas"
 
-#: libgnomeui/gnome-init.c:160 libgnomeui/gnome-init.c:162
-#: libgnomeui/gnome-init.c:182 libgnomeui/gnome-init.c:184
+#: libgnomeui/gnome-init.c:50 libgnomeui/gnome-init.c:53
+#: libgnomeui/gnome-init.c:83 libgnomeui/gnome-init.c:86
 msgid "FLAGS"
 msgstr "FLAGGOR"
 
-#: libgnomeui/gnome-init.c:162
+#: libgnomeui/gnome-init.c:53
 msgid "Gdk debugging flags to unset"
 msgstr "Felsökningsflaggor för Gdk som ej ska användas"
 
-#: libgnomeui/gnome-init.c:164
+#: libgnomeui/gnome-init.c:56
 msgid "X display to use"
 msgstr "X-display som skall användas"
 
-#: libgnomeui/gnome-init.c:164
+#: libgnomeui/gnome-init.c:56
 msgid "DISPLAY"
 msgstr "DISPLAY"
 
-#: libgnomeui/gnome-init.c:166
+#: libgnomeui/gnome-init.c:59
 msgid "Make X calls synchronous"
 msgstr "Använd synkrona X-anrop"
 
-#: libgnomeui/gnome-init.c:168
+#: libgnomeui/gnome-init.c:62
 msgid "Don't use X shared memory extension"
 msgstr "Använd inte X-tillägg för delat minne (shared memory extension)"
 
-#: libgnomeui/gnome-init.c:170
+#: libgnomeui/gnome-init.c:65
 msgid "Program name as used by the window manager"
 msgstr "Programnamn att använda, för fönsterhanterare"
 
-#: libgnomeui/gnome-init.c:170
+#: libgnomeui/gnome-init.c:65
 msgid "NAME"
 msgstr "NAMN"
 
-#: libgnomeui/gnome-init.c:172
+#: libgnomeui/gnome-init.c:68
 msgid "Program class as used by the window manager"
 msgstr "Programklass att använda, för fönsterhanterare"
 
-#: libgnomeui/gnome-init.c:172
+#: libgnomeui/gnome-init.c:68
 msgid "CLASS"
 msgstr "KLASS"
 
-#: libgnomeui/gnome-init.c:174
+#: libgnomeui/gnome-init.c:71
 msgid "HOST"
 msgstr "VÄRD"
 
-#: libgnomeui/gnome-init.c:176
+#: libgnomeui/gnome-init.c:74
 msgid "PORT"
 msgstr "PORT"
 
-#: libgnomeui/gnome-init.c:178 libgnomeui/gnome-init.c:180
+#: libgnomeui/gnome-init.c:77 libgnomeui/gnome-init.c:80
 msgid "STYLE"
 msgstr "STIL"
 
-#: libgnomeui/gnome-init.c:182
+#: libgnomeui/gnome-init.c:83
 msgid "Gtk+ debugging flags to set"
 msgstr "Felsökningsflaggor för Gtk+ som ska användas"
 
-#: libgnomeui/gnome-init.c:184
+#: libgnomeui/gnome-init.c:86
 msgid "Gtk+ debugging flags to unset"
 msgstr "Felsökningsflaggor för Gtk+ som ej ska användas"
 
-#: libgnomeui/gnome-init.c:186
+#: libgnomeui/gnome-init.c:89
 msgid "Make all warnings fatal"
 msgstr "Gör alla varningar dödliga"
 
-#: libgnomeui/gnome-init.c:188
+#: libgnomeui/gnome-init.c:92
 msgid "Load an additional Gtk module"
 msgstr "Ladda in en extra Gtk-modul"
 
-#: libgnomeui/gnome-init.c:188
+#: libgnomeui/gnome-init.c:92
 msgid "MODULE"
 msgstr "MODUL"
 
 #. dialog display isn't working out
-#: libgnomeui/gnome-init.c:635
+#: libgnomeui/gnome-init.c:426
 msgid "Multiple segmentation faults occurred; can't display error dialog\n"
 msgstr "Flera segmenteringsfel har inträffat; kan inte visa felmeddelande\n"
 
@@ -1203,7 +1198,7 @@ msgstr "Användning: gnome_segv programnamn signalnummer\n"
 
 #: libgnomeui/gnome_segv.c:87
 msgid "Submit a bug report"
-msgstr ""
+msgstr "Skicka in en buggrapport"
 
 #: libgnomeui/gnome_segv.c:93
 msgid "http://www.gnome.org/application_crashed.shtml"
@@ -1441,7 +1436,7 @@ msgstr ""
 "tjänster installerade, eller så är sökvägen till dem ogiltig.\n"
 "Kontrollera din GNOME-installation."
 
-#: libgnorba/goad.c:1350
+#: libgnorba/goad.c:1341
 msgid "(Internal use only) GOAD server ID to activate"
 msgstr "(Endast internt bruk) GOAD server-ID att aktivera"
 
@@ -1592,17 +1587,20 @@ msgstr "Visa typsnittsstorlek"
 msgid "This is an hbox with pixmap and text"
 msgstr "Detta är en hbox med en bild och text"
 
-#: test-gnome/testgnome.c:1072
+#: test-gnome/testgnome.c:1074
 msgid "The user chose Yes/OK with data:\n"
 msgstr "Användaren valde Ja/Ok med data:\n"
 
-#: test-gnome/testgnome.c:1076
+#: test-gnome/testgnome.c:1078
 msgid "The user chose No/Cancel with data:\n"
 msgstr "Användaren valde Nej/Avbryt med data:\n"
 
-#: test-gnome/testgnome.c:1087
+#: test-gnome/testgnome.c:1089
 msgid "Weird number in reply callback"
 msgstr "Konstigt nummer i svars-callbacken"
+
+#~ msgid "GNOME Options"
+#~ msgstr "Alternativ för GNOME"
 
 #~ msgid "Giving up on displaying error dialog"
 #~ msgstr "Ger upp, kan inte visa fel-dialogruta"
