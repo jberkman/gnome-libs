@@ -20,8 +20,8 @@ SUBDIRS = po intl support	\
 	images			\
 	libgnome		\
 	libart_lgpl		\
-	libgnomeui		\
 	gdk-pixbuf		\
+	libgnomeui		\
 	gtk-xmhtml		\
 	zvt			\
 	idl			\
