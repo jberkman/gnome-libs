@@ -31,4 +31,6 @@ EXTRA_DIST = $(TESTS)							\
 		tests/types.cvt expected/fileconvert.out		\
 	tests/skel.c expected/skel.out					\
 	tests/split.c expected/split.out				\
-	tests/trigs.c tests/trigs.in expected/trigs.out
+	tests/trigs.c tests/trigs.in expected/trigs.out			\
+	tests/metadata.c expected/metadata.out
+

@@ -54,11 +54,11 @@ for I in $TESTS; do
 	failed=yes
 	continue
     fi
-    rm -f test_$TEST
 
     if diff -q $srcdir/expected/$TEST.out results/$TEST.out; then
 	echo "PASS: $TEST" >&3
 	echo "PASS: $TEST"
+	rm -f test_$TEST
     else
 	echo "FAIL: $TEST" >&3
 	echo "FAIL: $TEST"
