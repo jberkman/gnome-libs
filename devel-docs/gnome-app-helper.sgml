@@ -51,17 +51,106 @@
     </para>
 
     <example>
-      <title>Submenu definitions</title>
+      <title>Creating a simple menu bar</title>
 
       <para>
-	First of all, we will define the three submenus that make up
-	the menu bar.
+	Here we define a simple menu bar for Edit-o-matic, our text
+	editing application.
       </para>
 
       <programlisting>
-    
+#include <gnome.h>
 
-    
+/* Definition of the File menu */
+
+static GnomeUIInfo file_menu[] = {
+	{ GNOME_APP_UI_ITEM, N_("_New document"), N_("Create a new blank document"), file_new_callback, NULL, NULL,
+	  GNOME_APP_PIXMAP_STOCK, GNOME_STOCK_MENU_NEW, 'n', GDK_CONTROL_MASK, NULL },
+	{ GNOME_APP_UI_ITEM, N_("_Open document..."), N_("Open an existing document"), file_open_callback, NULL, NULL,
+	  GNOME_APP_PIXMAP_STOCK, GNOME_STOCK_MENU_OPEN, 'o', GDK_CONTROL_MASK, NULL },
+	{ GNOME_APP_UI_ITEM, N_("_Save document"), N_("Save the current document"), file_save_callback, NULL, NULL,
+	  GNOME_APP_PIXMAP_STOCK, GNOME_STOCK_MENU_SAVE, 's', GDK_CONTROL_MASK, NULL },
+	{ GNOME_APP_UI_ITEM, N_("Save document _as..."), N_("Save the current document with a new name"),
+	  file_save_as_callback, NULL, NULL,
+	  GNOME_APP_PIXMAP_STOCK, GNOME_STOCK_MENU_SAVE_AS, 0, 0, NULL },
+
+	GNOMEUIINFO_SEPARATOR,
+
+	{ GNOME_APP_UI_ITEM, N_("_Print document..."), N_("Print the current document"), file_print_callback, NULL, NULL,
+	  GNOME_APP_PIXMAP_STOCK, GNOME_STOCK_MENU_NEW, 'p', GDK_CONTROL_MASK, NULL },
+
+	GNOMEUIINFO_SEPARATOR,
+
+	{ GNOME_APP_UI_ITEM, N_("_Close this document"), N_("Close the current document"), file_close_callback, NULL, NULL,
+	  GNOME_APP_PIXMAP_STOCK, GNOME_STOCK_MENU_NEW, 'w', GDK_CONTROL_MASK, NULL },
+	{ GNOME_APP_UI_ITEM, N_("E_xit"), N_("Exit the program"), file_exit_callback, NULL, NULL,
+	  GNOME_APP_PIXMAP_STOCK, GNOME_STOCK_MENU_NEW, 'q', GDK_CONTROL_MASK, NULL }
+
+	GNOMEUIINFO_END
+};
+
+/* Definition of the Edit menu */
+
+static GnomeUIInfo edit_menu[] = {
+	{ GNOME_APP_UI_ITEM, N_("_Undo"), N_("Undo the last operation"), edit_undo_callback, NULL, NULL,
+	  GNOME_APP_PIXMAP_STOCK, GNOME_STOCK_MENU_UNDO, 'z', GDK_CONTROL_MASK, NULL },
+
+	GNOMEUIINFO_SEPARATOR,
+
+	{ GNOME_APP_UI_ITEM, N_("Cu_t"), N_("Cut the selection to the clipboard"), edit_cut_callback, NULL, NULL,
+	  GNOME_APP_PIXMAP_STOCK, GNOME_STOCK_MENU_UNDO, 'x', GDK_CONTROL_MASK, NULL },
+	{ GNOME_APP_UI_ITEM, N_("_Copy"), N_("Copy the selection to the clipboard"), edit_copy_callback, NULL, NULL,
+	  GNOME_APP_PIXMAP_STOCK, GNOME_STOCK_MENU_UNDO, 'c', GDK_CONTROL_MASK, NULL },
+	{ GNOME_APP_UI_ITEM, N_("_Paste"), N_("Paste the contents from the clipboard"), edit_paste_callback, NULL, NULL,
+	  GNOME_APP_PIXMAP_STOCK, GNOME_STOCK_MENU_UNDO, 'v', GDK_CONTROL_MASK, NULL },
+
+	GNOMEUIINFO_END
+};
+
+/* Definition of the Help menu */
+
+static GnomeUIInfo help_menu[] = {
+	{ GNOME_APP_UI_ITEM, N_("_About Edit-o-matic"), N_("Information about Edit-o-matic"),
+	  help_about_callback, NULL, NULL,
+	  GNOME_APP_PIXMAP_STOCK, GNOME_STOCK_MENU_ABOUT, 0, 0, NULL },
+
+	GNOMEUIINFO_SEPARATOR,
+
+	GNOMEUIINFO_HELP ("edit-o-matic"),
+
+	GNOMEUIINFO_END
+};
+
+/* Definition of the main menu */
+
+static GnomeUIInfo main_menu[] = {
+	GNOMEUIINFO_SUBTREE (N_("_File"), file_menu),
+	GNOMEUIINFO_SUBTREE (N_("_Edit"), edit_menu),
+	GNOMEUIINFO_SUBTREE (N_("_Help"), help_menu),
+	GNOMEUIINFO_END
+};
+      </programlisting>
+
+    </example>
+
+    <para>
+      In the example above, you can see the most general form of
+      defining arrays of GnomeUIInfo structures to construct a menu
+      hierarchy.  Each structure in the array contains information
+      about the type of item to be created, its label, hint, and
+      pixmap, its associated callback, and keyboard accelerators.
+      The last item in GnomeUIInfo arrays marks termination of the
+      array.  Finally, the <symbol>main_menu</symbol> array ties all
+      the submenus together to form the main menu bar.
+    </para>
+
+    <para>
+      The following sections explain GnomeUIInfo structures in
+      detail.  You do not need to remember all the details to use
+      GnomeAppHelper; it also provides convenient macros to make
+      creating simple items easier, as we shall see.
+    </para>
+	
   </sect1>
 
   <sect1 id="GnomeUIInfo">
