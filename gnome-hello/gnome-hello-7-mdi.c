@@ -221,7 +221,7 @@ static GnomeMDIChild *my_child_new_from_config (const gchar *string) {
 										my_child_create_menus,
 #endif /* USE_TEMPLATES */
 										my_child_get_config_string,
-										NULL,
+										my_child_set_label,
 										(gpointer)c);
 
 #ifdef USE_TEMPLATES
@@ -293,7 +293,7 @@ static void add_cb(GtkWidget *w) {
 											my_child_create_menus,
 #endif /* USE_TEMPLATES */
 											my_child_get_config_string,
-											NULL,
+											my_child_set_label,
 											(gpointer)counter)) != NULL) {
 #ifdef USE_TEMPLATES
 		gnome_mdi_child_set_menu_template(GNOME_MDI_CHILD(child),
