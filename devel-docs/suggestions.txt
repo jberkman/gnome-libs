@@ -23,7 +23,9 @@ Menus:
      The first menu must always be the "File" menu, and it must always
      be called "_File", even if you application never touches a file.
      The main reason for this is that it is important for the menu
-     accelerators to be consistent.
+     accelerators to be consistent.  Your application is required to
+     have at the very least a "File" menu containing at the very least
+     "Exit".
 
      The New Window menu item should be a subtree if there are
      different types of new windows which can be spawned.
@@ -55,6 +57,11 @@ Menus:
 		Preferences
 
      It is ok if the only item in Settings is "Preferences".
+
+     Of course, if you have hundreds of toggles, use your best
+     judgement; only put the commonly-toggled ones in the Settings
+     menu, and use a nice Preferences dialog to contain the complete
+     set.
 
    - The 'Windows' menu should be used by MDI applications to contain
    a list of the document windows.  It should be structured like this:
@@ -101,6 +108,16 @@ Menus:
 
    - All menu text should be internationalized.  Use the N_() macro, e.g.
      N_("Open new mailbox")
+
+   - You may notice that most of these guidelines seem geared towards
+     "productivity" applications (editors, spreadsheets, ...).  If
+     you're writing a game, most of your menu items won't be
+     appropriate in these menus.  The solution is to create a "Game"
+     menu which contains the game-related menu items.  The contents of
+     the Game menu are as follows:
+
+	 New Game, Restart Game, SEPARATOR, Undo Move, Hint,
+	 SEPARATOR, Scores, Quit game
  
 Dialogs
 -------
