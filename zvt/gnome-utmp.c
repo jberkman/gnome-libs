@@ -153,7 +153,7 @@ update_utmp (UTMP *ut)
 	while ((ty = getttyent ()) != NULL)
 	{
 		++pos;
-		if (strncmp (ty->ty_name, ut->ut_line, sizeof (ut->ut_line)) == NULL)
+		if (strncmp (ty->ty_name, ut->ut_line, sizeof (ut->ut_line)) == 0)
 		{
 			lseek (fd, (off_t)(pos * sizeof(UTMP)), SEEK_SET);
 			write(fd, ut, sizeof(UTMP));
