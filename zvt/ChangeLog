@@ -1,3 +1,9 @@
+1998-07-05  Nuno Ferreira  <nmrf@rnl.ist.utl.pt>
+
+	* zvtterm.c (zvt_term_scroll): Check bounds when scrolling. You
+	could Shift-PageDown while already on the last line and then would
+	require 2 Shift-PageUp to start scrolling up again.
+
 1998-06-15  Michael Zucchi  <zucchi@zzedzone.box.net.au>
 
 	* update.c (vt_line_update): Was usually drawing 1 more character
