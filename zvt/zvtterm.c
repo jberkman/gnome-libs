@@ -1180,8 +1180,11 @@ zvt_term_key_press (GtkWidget *widget, GdkEventKey *event)
     break;
   default:
     if (event->length > 0) {
-      memcpy(buffer, event->string, event->length*sizeof(char));
-      p=buffer+event->length;
+      if (event->state & GDK_MOD1_MASK){
+	*p++ = '\033';
+      }
+      memcpy(p, event->string, event->length*sizeof(char));
+      p+= event->length;
     } else {
       /* FIXME: do something more intelligent with unknown keykodes */
       p+=sprintf(p, "[%x]", event->keyval);
