@@ -91,11 +91,14 @@
       <title>What does GNOME stand for?</title>
 
       <para>GNOME stands for "GNU Network Object Model
-      Environment". GNU stands for "GNU's Not Unix".</para>
+      Environment".  GNU stands for "GNU's Not Unix".</para>
     </sect1>
 
     <sect1>
       <title>What is GNOME?</title>
+
+      <para>GNOME is the GUI desktop of the <ulink url="&wwwgnu;">GNU
+      Project</ulink>.</para>
 	
       <para>To quote from the original announcement from
       comp.os.linux.announce, GNOME is intended to be "a free and
@@ -108,7 +111,8 @@
       environment. In this respect, it is approximately equivalent to
       CDE, Win32, NextStep, or KDE. The big difference is that, unlike
       any of the above-mentioned examples, every single component of
-      GNOME is Free software.</para>
+      GNOME is <ulink url="&wwwgnufree;">Free
+      Software</ulink>.</para>
 
       <para>For the project geographers out there, here are some of
       the higher mountains to be found in GNOME-land:</para>
@@ -202,7 +206,7 @@
 	  <para>GNOME will support 3D programming with OpenGL,
 	  allowing people to use 3-dimensional graphics right in their
 	  GNOME apps, whether they be scientific applications or
-	  games. GNOME uses Mesa, which is an open source
+	  games. GNOME uses Mesa, which is a free software
 	  implementation of the OpenGL standard. (See <link
 	  linkend="OPENGL">OpenGL</link>)</para>
 	</listitem>
@@ -283,9 +287,8 @@
     <sect1 id="WhyGNOME">
       <title>Why GNOME?</title>
 
-      <para>First, GNOME is a completely open source programming
-      environment, which makes it easy for people to write good
-      programs for GNOME systems.</para>
+      <para>First, the GNU operating system needs a desktop environment
+      that is 100% free software.  GNOME satisfies this need.</para>
 
       <para>The second goal, by way of the first goal, is that people
       who use free operating systems will have a nice user environment
@@ -320,7 +323,7 @@
 
       <para>At the time of GNOME's inception, KDE had serious
       licensing problems, which they are still trying to resolve. KDE
-      is based on a commercial library called Qt, which has a very
+      is based on a non-free library called Qt, which has a very
       liberal license, but it is not <ulink url="&wwwgnufree;">Free
       Software</ulink>.  TrollTech has promised to change the Qt
       license, but they have not yet done so.  In addition there were
@@ -367,7 +370,7 @@
       modern and functional Unix-like system. GNOME has been reported
       to work under the following:</para>
       <simplelist>
-	<member>Linux</member>
+	<member>GNU/Linux</member>
 	<member>BSD (FreeBSD, NetBSD and OpenBSD)</member>
 	<member>Solaris</member>
 	<member>IRIX</member>
@@ -465,13 +468,13 @@
       <para>Free Software is a matter of liberty, not price.  To
       understand the concept, think "Free Speech" not "Free Beer".
       The Free Software community is not at all against the concept of
-      selling your software, or programmers making a living.  We are
-      not against commercial software, we are against the concept of
+      selling copies of software, or programmers making a living.  We are
+      not against commercial software, we are against
       proprietary software.  For more information, check out the
       articles at <ulink url="&wwwgnuphil;">
       &wwwgnuphil;</ulink>.</para>
 
-      <para>In the GNOME project, we protect the users freedom by
+      <para>In the GNOME project, we protect the user's freedom by
       using the GNU General Public License (GPL) and the GNU Lesser
       General Public License (LGPL, formerly known as the GNU Library
       GPL).  These licenses are carefully designed with legal advice
@@ -524,12 +527,12 @@
       <title>What are the System Requirements for GNOME?</title>
 
       <para>Currently, you need a machine with Unix or a Unix-like
-      operating system installed (this includes GNU, Linux and FreeBSD),
-      with the X Window System (X11R5 or later).  You need at least
-      16MB of RAM, although I expect you'll be happier with 32MB or
-      more.  If you are just installing binaries, you need about 30MB
-      of disk space, count on needing at least 200MB of disk space if
-      you are compiling from source.</para>
+      operating system installed, with the X Window System (X11R5 or
+      later).  You need at least 16MB of RAM, although I expect you'll
+      be happier with 32MB or more.  If you are just installing
+      binaries, you need about 30MB of disk space, count on needing at
+      least 200MB of disk space if you are compiling from
+      source.</para>
     </sect1>
 
     <sect1>
@@ -816,8 +819,8 @@
 
       <para>In absence of a binary version, you're going to need to
 	use the tarballs.  If your system doesn't have a compiler, the
-	<ulink url="http://www.fsf.org">Free Software
-	Foundation</ulink> offers the GNU C Compiler (gcc) for Free on
+	<ulink url="http://www.gnu.org">GNU Project
+	</ulink> offers the GNU C Compiler (gcc) for Free on
 	pretty much every platform out there.  Go to <ulink
 	url="http://www.gnu.org/software/gcc/gcc.html">
 	http://www.gnu.org/software/gcc/gcc.html</ulink> for more
@@ -851,7 +854,7 @@
       packages in the proper orders.  There are some serious
       dependencies within the GNOME tree.  Here is my suggested order,
       you should compile and install each package before you move onto
-      the next.  On ld.so based systems (like Linux), you should also
+      the next.  On ld.so based systems (such as GNU/Linux), you should also
       run <command>ldconfig</command> after each package.</para>
       <simplelist>
 	&gnomeorder;
@@ -903,7 +906,7 @@
 
       <para>From here, it's pretty straightforward.  You type
       <command>make</command>, followed by <command>make
-      install</command>.  On most systems (including Linux), this
+      install</command>.  On most systems (including GNU/Linux), this
       should be followed by <command>ldconfig</command>.  If you're in
       a rush, you can sometimes skip <command>make</command>, since
       <command>make install</command> will usually make everything
@@ -1133,14 +1136,15 @@ exec gnome-wm</screen>
 
 	<para>Ideally, we need several pieces of information from
 	you. First, exactly what kind of system are you running on?
-	No, not everyone runs RedHat Linux/i386 here.  We need
-	processor type: Sparc, MIPS, i386 (this includes Pentiums,
-	AMD, Cyrix, etc), PPC, Alpha, ARM, 680x0, et al; we need
-	operating system: Linux, FreeBSD, HURD, OpenBSD, Solaris,
-	IRIX, CrayOS, OS/400, whatever.  Also include the version of
-	the operating system. For example, the machine I'm on right
-	now is a RedHat Linux/i386 Rawhide machine, a friend of mine
-	uses a Solaris Sparc 2.6 machine.</para>
+	No, not everyone runs the same operating system you are using.
+	We need processor type: Sparc, MIPS, i386 (this includes
+	Pentiums, AMD, Cyrix, etc), PPC, Alpha, ARM, 680x0, et al; we
+	need operating system: Linux distribution, FreeBSD, HURD,
+	OpenBSD, Solaris, IRIX, CrayOS, OS/400, whatever.  Also
+	include the version of the operating system. For example, the
+	machine I'm on right now is a GNU/Linux RedHat/i386 Rawhide
+	machine, a friend of mine uses a Solaris Sparc 2.6
+	machine.</para>
 
 	<para>Next, we need some relevant vital statistics of what is
 	on your system.  On a GNU/Linux system, the kernel and libc
@@ -1720,10 +1724,10 @@ WM=foo</screen>
 	there's a spell check service there. Now, that might be a
 	shared library which got mapped into your address space and
 	you are now doing straight function calls into it, or it might
-	be a community spell-check service in Myanmar offered as a
-	public service by the Myanmar FreeBSD users' group over the
+	be a community spell-check service in Burma offered as a
+	public service by the Burma FreeBSD users' group over the
 	internet via IIOP. You don't know and, except for maybe a
-	little lag induced by the round-trip to Myanmar, you really
+	little lag induced by the round-trip to Burma, you really
 	don't care. Cool, non?</para>
 
 	<para>The naming service, then, allows objects to register
@@ -1787,10 +1791,10 @@ WM=foo</screen>
 	ILU</ulink>.  ILU had a number of benefits, foremost among
 	them that it supports several languages.  While ILU was (and
 	is) awfully neat, Xerox's attitude towards it was unclear, and
-	the licensing terms proved to be fatal: ILU is not open
-	source, and the GNOME team proved unable to get Xerox to
+	the licensing terms proved to be fatal: ILU is not free software,
+	and the GNOME team proved unable to get Xerox to
 	modify the license. The GNOME project won't adopt technology
-	which is not open source, and that was the end of that.</para>
+	which is not free software, and that was the end of that.</para>
 
 	<para>The project then settled upon <ulink
 	url="http://diamant-atm.vsb.cs.uni-frankfurt.de/~mico/">
@@ -2460,6 +2464,24 @@ ls -l /opt/gnome/share/gtkrc
   <chapter id="Credits">
     <title>Credits</title>
 
+    <sect1 id="Copyright">
+      <title>Copyright and Disclaimer</title>
+
+      <para>This work is copyright 1998 by Todd Lewis and Gleef (David
+      Zoll).  This documentation is free software; you can
+      redistribute it and/or modify it under the terms of the GNU
+      General Public License as published by the Free Software
+      Foundation; either version 2 of the License, or (at your option)
+      any later version.</para>
+
+      <para>This article is provided as is without any express or
+      implied warranties. While every effort has been taken to ensure
+      the accuracy of the information contained in this article, the
+      author/maintainer/contributors assume(s) no responsibility for
+      errors or omissions, or for damages resulting from the use of
+      the information contained herein.</para>
+    </sect1>
+
     <sect1 id="Trademark">
       <title>Trademarks and Naming Credits</title>
 
@@ -2494,22 +2516,5 @@ ls -l /opt/gnome/share/gtkrc
       added.</para>
     </sect1>
 
-    <sect1 id="Copyright">
-      <title>Copyright and Disclaimer</title>
-
-      <para>This work is copyright 1998 by Todd Lewis and Gleef (David
-      Zoll).  This documentation is free software; you can
-      redistribute it and/or modify it under the terms of the GNU
-      General Public License as published by the Free Software
-      Foundation; either version 2 of the License, or (at your option)
-      any later version.</para>
-
-      <para>This article is provided as is without any express or
-      implied warranties. While every effort has been taken to ensure
-      the accuracy of the information contained in this article, the
-      author/maintainer/contributors assume(s) no responsibility for
-      errors or omissions, or for damages resulting from the use of
-      the information contained herein.</para>
-    </sect1>
   </chapter>
 </book>
