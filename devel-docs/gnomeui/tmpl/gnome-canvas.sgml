@@ -2,95 +2,100 @@
 GnomeCanvas
 
 <!-- ##### SECTION Short_Description ##### -->
-A generic engine for structured graphics.
-
-<!-- ##### SECTION Long_Description ##### -->
+  A generic engine for structured graphics.
+  
+  <!-- ##### SECTION Long_Description ##### -->
   <para>
     The GNOME canvas is an engine for displaying structured graphics
     and simplyfing the development of complex graphic-based
     applications.  
   </para>
-
-    <refsect2>
-      <title>Canvas Items</title>
-      <para>
-	The GNOME Canvas basic building block are the GNOME Canvas
-	Items (#GnomeCanvasItem): lines, rectangles, text, ellipses,
-	polylines, images and embedded widgets.  You can use any of
-	those directly in your application.
-      </para>
-
-      <para>
-	The CanvasItem system is designed to be extensible.
-	Applications can define their own #GnomeCanvasItem objects for
-	special purpose tasks.  For example, the GNOME Gnumeric
-	spreadsheet defines a number of special Canvas Items that are
-	specialized for the task of spreadsheets.
-      </para>
-
-      <para>
-	Specialized canvas items allows the developer to write
-	custom items that can adapt to its needs of speed,
-	scalability and gives the user the power to extend the
-	canvas. 
-      </para>
-      
-      <para>
-	Items on the canvas can be reconfigured by using the Gtk
-	argument system.  Users can reconfigure the parameters of
-	the canvas items and the changes on the parameters will be
-	reflected inmediately on the screen.
-      </para>
-    </refsect2>
-
-    <refsect2>
-      <title>Flicker free display</title>
-      <para>
-	The GNOME Canvas uses off-screen buffers to render the images
-	before transfering them to the screen.  Transfers can take
-	place at the command of the programmer (by explicitly
-	requesting a repait update) or done automatically by the
-	engine (during the idle look handler).
-      </para>
-    </refsect2>
-
-    <refsect2>
-      <title>Event dispatching</title> 
-      <para>Each 
-	GnomeCanvasItem can receive mouse events, keyboard events,
-	mouse-enter and mouse leave events.  In addition a canvas
-	item can grab the mouse (for example to implement reliable
-	dragging of objects).
-      </para>
-    </refsect2>
-
-    <refsect2>
-      <title>Canvas types</title>
-      <para>
-	The Canvas can be run in two different modes: X11 mode and Art
-	mode.  The mode is chosen at the creation time of the widget
-	by either calling gnome_canvas_new() or gnome_canvas_new_aa(),
-	the former creates an X11 canvas, while the later creates an
-	Art-based canvas.
-      </para>
-      
-      <para>
-	The X11 mode uses the X server to draw the items and it takes
-	advantage of the X server acceleration features for drawing on
-	the screen.  The only drawback is that the output quality and
-	the imaging model are restricted to the X11 quality and
-	imaging model.
-      </para>
-
-      <para>
-	The Art mode of the canvas has an advanced imaging model based
-	on LibArt and it allows any GnomeCanvasItem (with the
-	exception of the embedded widget item) to be rotated, scaled
-	and translated (this is done by means of applying an affine
-	transformation on the object).
-      </para>
-    </refsect2>
+  
+  <refsect2>
+    <title>Canvas Items</title>
+    <para>
+      The GNOME Canvas basic building block are the GNOME Canvas
+      Items (#GnomeCanvasItem): lines, rectangles, text, ellipses,
+      polylines, images and embedded widgets.  You can use any of
+      those directly in your application.
+    </para>
     
+    <para>
+      The CanvasItem system is designed to be extensible.
+      Applications can define their own #GnomeCanvasItem objects for
+      special purpose tasks.  For example, the GNOME Gnumeric
+      spreadsheet defines a number of special Canvas Items that are
+      specialized for the task of spreadsheets.
+    </para>
+    
+    <para>
+      Specialized canvas items allows the developer to write
+      custom items that can adapt to its needs of speed,
+      scalability and gives the user the power to extend the
+      canvas. 
+    </para>
+    
+    <para>
+      Items on the canvas can be reconfigured by using the Gtk
+      argument system.  Users can reconfigure the parameters of
+      the canvas items and the changes on the parameters will be
+      reflected inmediately on the screen.
+    </para>
+  </refsect2>
+  
+  <refsect2>
+    <title>Flicker free display</title>
+    <para>
+      The GNOME Canvas uses off-screen buffers to render the images
+      before transfering them to the screen.  Transfers can take
+      place at the command of the programmer (by explicitly
+      requesting a repait update) or done automatically by the
+      engine (during the idle look handler).
+    </para>
+  </refsect2>
+  
+  <refsect2>
+    <title>Event dispatching</title> 
+    <para>Each 
+      GnomeCanvasItem can receive mouse events, keyboard events,
+      mouse-enter and mouse leave events.  In addition a canvas
+      item can grab the mouse (for example to implement reliable
+      dragging of objects).
+    </para>
+  </refsect2>
+  
+  <refsect2>
+    <title>Canvas types</title>
+    <para>
+      The Canvas can be run in two different modes: X11 mode and Art
+      mode.  The mode is chosen at the creation time of the widget
+      by either calling gnome_canvas_new() or gnome_canvas_new_aa(),
+      the former creates an X11 canvas, while the later creates an
+      Art-based canvas.
+    </para>
+    
+    <para>
+      The X11 mode uses the X server to draw the items and it takes
+      advantage of the X server acceleration features for drawing on
+      the screen.  The only drawback is that the output quality and
+      the imaging model are restricted to the X11 quality and
+      imaging model.
+    </para>
+    
+    <para>
+      The Art mode of the canvas has an advanced imaging model based
+      on LibArt and it allows any GnomeCanvasItem (with the
+      exception of the embedded widget item) to be rotated, scaled
+      and translated (this is done by means of applying an affine
+      transformation on the object).
+    </para>
+  </refsect2>
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
 <!-- ##### SECTION See_Also ##### -->
   <para>
     #GnomeCanvasItem, #GnomeCanvasGroup, GnomeCanvasRE,
@@ -483,8 +488,7 @@ A generic engine for structured graphics.
 </para>
 
 @canvas: 
-@gc: 
-<!--
+@gc: <!--
 Local variables:
 mode: sgml
 sgml-parent-document: ("../gnomeui-docs.sgml" "book" "sect1" "")
