@@ -20,6 +20,13 @@ typedef struct {
 	char     *id;
 } ActiveServerInfo;
 
+
+typedef struct {
+	gchar*   cmd;
+	gchar**  argv;
+} ServerCmd;
+
+
 extern CORBA_ORB gnome_orbit_orb; /* In orbitgtk.c */
 
 static GSList *our_active_servers = NULL;
@@ -341,7 +348,7 @@ goad_server_activate(GoadServer *sinfo,
 	case CORBA_SYSTEM_EXCEPTION:
 	  g_warning("sysex: %s.\n", CORBA_exception_id(&ev));
 	case CORBA_USER_EXCEPTION:
-	  g_warning( "usr	ex: %s.\n", CORBA_exception_id( &ev ) );
+	  g_warning( "usrex: %s.\n", CORBA_exception_id( &ev ) );
 	default:
 	  break;
 	}
@@ -358,7 +365,22 @@ goad_server_activate(GoadServer *sinfo,
   
   switch(sinfo->type) {
   case GOAD_SERVER_SHLIB:
-    retval = goad_server_activate_shlib(sinfo, flags, &ev);
+    if (flags & GOAD_ACTIVATE_REMOTE) {
+      GoadServer fake_sinfo;
+      gchar cmdline[1024];
+      
+      fake_sinfo.type = GOAD_SERVER_EXE;
+      fake_sinfo.repo_id     = "loadshlib";
+      fake_sinfo.id          = "loadshlib";
+      fake_sinfo.description = "DLL Loader for GOAD";
+      g_snprintf(cmdline, sizeof(cmdline), "loadshlib -i %s -r %s %s",
+		 sinfo->id, sinfo->repo_id, sinfo->location_info);
+      fake_sinfo.location_info = cmdline;
+      g_message("Doing faked server activation");
+      retval = goad_server_activate_exe(&fake_sinfo, flags, &ev);
+    } else {
+      retval = goad_server_activate_shlib(sinfo, flags, &ev);
+    }
     break;
   case GOAD_SERVER_EXE:
     retval = goad_server_activate_exe(sinfo, flags, &ev);
@@ -367,8 +389,6 @@ goad_server_activate(GoadServer *sinfo,
     g_warning("Relay interface not yet defined (write an RFC :). Relay objects NYI");
     break;
   }
-  g_message("goad_server_activate: Server started\n");
-
 #if 0 
   /*
    * This goes _before_ "out:" - don't want to reregister
@@ -447,29 +467,24 @@ goad_server_activate_shlib(GoadServer *sinfo,
     g_warning("goad_server_activate_shlib: activation function raises exception");
     switch( ev->_major ) {
     case CORBA_SYSTEM_EXCEPTION:
-      g_warning("	sysex: %s.\n", CORBA_exception_id(ev));
+      g_warning("sysex: %s.\n", CORBA_exception_id(ev));
     case CORBA_USER_EXCEPTION:
-      g_warning( "usr	ex: %s.\n", CORBA_exception_id( ev ) );
+      g_warning( "usrex: %s.\n", CORBA_exception_id( ev ) );
     default:
       break;
     }
     return CORBA_OBJECT_NIL;
   }
+
+  local_server_info = g_new(ActiveServerInfo, 1);
+  local_server_info->impl_ptr = impl_ptr;
+  local_server_info->id = g_strdup(sinfo->id);
+  
+  if(!our_active_servers)
+    g_atexit(goad_servers_unregister_atexit);
+  
+  our_active_servers = g_slist_prepend(our_active_servers, local_server_info);
   return retval;
-
-#if 0
-  if(!(flags & GOAD_ACTIVATE_NO_NS_REGISTER)) {
-    local_server_info = g_new(ActiveServerInfo, 1);
-    local_server_info->impl_ptr = impl_ptr;
-    local_server_info->id = g_strdup(sinfo->id);
-
-    if(!our_active_servers)
-      g_atexit(goad_servers_unregister_atexit);
-
-    our_active_servers = g_slist_prepend(our_active_servers, local_server_info);
-  }
-  return retval;
-#endif
 }
 
 
@@ -518,6 +533,38 @@ goad_servers_unregister_atexit(void)
   CORBA_exception_free(&ev);
 }
 
+
+static ServerCmd*
+get_cmd(gchar* line)
+{
+  static ServerCmd retval;
+  gchar* ptr = line;
+  gint   argc = 1;
+  gchar* tok;
+  
+  retval.argv = (gchar**)malloc(sizeof(char*) * 2);
+  retval.argv[1] = 0;
+  line = ptr;
+  while (ptr&& isspace(*ptr))
+    ptr++;
+  if (!*ptr)
+    return 0;
+  retval.cmd = strtok(ptr, " \t");
+  retval.argv[0] = retval.cmd;
+  while (1)
+    {
+      tok = strtok(0, " \t");
+      if (!tok)
+	return &retval;
+      argc++;
+      retval.argv = (char**)realloc(retval.argv, argc+1 * sizeof(char*));
+      retval.argv[argc-1] = tok;
+      retval.argv[argc] = 0;
+    }
+}
+
+
+
 /**** goad_server_activate_exe
       Description: 
       Inputs: 'sinfo' - information on the program to be run.
@@ -554,7 +601,7 @@ goad_server_activate_exe(GoadServer *sinfo,
     iorfh = fdopen(iopipes[0], "r");
 
     while (fgets(iorbuf, sizeof(iorbuf), iorfh) && strncmp(iorbuf, "IOR:", 4))
-      ;
+      g_message("srv output: '%s'", iorbuf);
     if (strncmp(iorbuf, "IOR:", 4)) {
       retval = CORBA_OBJECT_NIL;
       goto out;
@@ -568,7 +615,7 @@ goad_server_activate_exe(GoadServer *sinfo,
       case CORBA_SYSTEM_EXCEPTION:
 	g_warning("syse	x: %s.\n", CORBA_exception_id(ev));
       case CORBA_USER_EXCEPTION:
-	g_warning("u	srex: %s.\n", CORBA_exception_id( ev ) );
+	g_warning("usrex: %s.\n", CORBA_exception_id( ev ) );
       default:
 	break;
       }
@@ -580,6 +627,7 @@ goad_server_activate_exe(GoadServer *sinfo,
     _exit(0); /* de-zombifier process, just exit */
   } else {
     struct sigaction sa;
+    ServerCmd* cmd;
     
     close(0);
     close(iopipes[0]);
@@ -587,10 +635,10 @@ goad_server_activate_exe(GoadServer *sinfo,
     dup2(iopipes[1], 2);
     
     setsid();
-
     sa.sa_handler = SIG_IGN;
     sigaction(SIGPIPE, &sa, 0);
-    execlp(sinfo->location_info, sinfo->location_info, NULL);
+    cmd = get_cmd(sinfo->location_info);
+    execvp(cmd->cmd, cmd->argv);
     _exit(1);
   }
 out:

@@ -1,3 +1,18 @@
+1998-10-13  Michael Lausch  <mla@gams.at>
+
+	* libgnorba/goad.c: Added structur to hold a command string and
+	it's argv vector, so CORBA servers can be called with cmdline
+	parameters. 
+	(goad_server_activate): If we found a shlib server, but the client 
+	requests an EXE server, Call the wrapper program to execute the
+	shared library server.
+	(goad_server_activate_shlib): Don't forget the register shared
+	library server deregistration.
+	(get_cmd): new function. parses a string into the command and the
+	argv. this one is a quick and dirty implementation.
+	(goad_server_activate_exe): Use execvp to execute the server, so
+	that the argv can be passed.
+
 1998-10-12  Michael Lausch  <mla@gams.at>
 
 	* libgnorba/goad.c: Changed g_warning to g_message for debugging

@@ -1,3 +1,5 @@
+bin_PROGRAMS = loadshlib
+
 lib_LTLIBRARIES = libgnorba.la
 
 LINK = $(LIBTOOL) --mode=link $(CC) $(CFLAGS) $(LDFLAGS) -o $@
@@ -30,5 +32,13 @@ libgnorba_la_LIBADD = $(ORBIT_LIBS) $(GLIB_LIBS) -lm
 
 $(name_IDL_SOURCES): $(top_srcdir)/idl/name-service.idl
 	orbit-idl $(top_srcdir)/idl/name-service.idl
+
+loadshlib_SOURCES = loadshlib.c
+
+loadshlib_LDADD = \
+	$(ORBIT_LIBS) \
+	$(GNOMEUI_LIBS) \
+	-lgnorba        \
+	$(INTLLIBS)
 
 CLEANFILES = $(name_IDL_SOURCES)
