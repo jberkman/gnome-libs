@@ -808,9 +808,7 @@ create_pixmap(void)
 	GdkImlibImage *pix;
 	GtkWidget *pixmap;
 	app = create_newwin(TRUE,"testGNOME","Pixmap");
-	pix = gdk_imlib_create_image_from_xpm_data((gchar **)bomb_xpm);
-	gdk_imlib_render (pix, pix->rgb_width, pix->rgb_height);
-	pixmap = gtk_pixmap_new(pix->pixmap,pix->shape_mask);
+	pixmap = gnome_pixmap_new_from_xpm_d (bomb_xpm);
 		
 	gnome_app_set_contents(GNOME_APP(app),pixmap);
 	gtk_widget_show(pixmap);
@@ -998,7 +996,7 @@ percent_cb(gpointer ignore)
 }
 
 static void
-cancel_cb(gpointer ignore)
+cancel_cb(gpointer ignore, GtkWidget *widget)
 {
   gnome_ok_dialog("Progress cancelled!");
 }
@@ -1021,7 +1019,7 @@ progress_timeout_cb(GtkWidget * b, GnomeApp * app)
   key = gnome_app_progress_timeout(app, "Progress!", 200,
 				   percent_cb,
 				   cancel_cb,
-				   NULL);
+				   dialog);
 
   gtk_signal_connect(GTK_OBJECT(dialog), "clicked", 
 		     GTK_SIGNAL_FUNC(stop_progress_cb), key);
