@@ -3,6 +3,7 @@
 	* gnome-pty-helper.c (sanity_checks): Figure out if file
 	descriptor 2 is valid, if not, then try using /dev/tty and
 	/dev/null as replacements.
+	(sanity_checks): Verify that descriptors 0 and 1 are valid. 
 
 1998-12-05  Havoc Pennington  <hp@pobox.com>
 

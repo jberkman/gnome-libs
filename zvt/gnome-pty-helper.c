@@ -322,7 +322,16 @@ sanity_checks (void)
 	int stderr_fd;
 	int i, open_max;
 	int flag;
-	
+
+	/*
+	 * Make sure stdin/stdout are open.  This is a requirement
+	 * for our program to work and closes potential security holes.
+	 */
+	if ((fcntl (0, F_GETFL, &flag) == EBADF) ||
+	    (fcntl (0, F_GETFL, &flag) == EBADF)){
+		exit (1);
+	}
+
 	/*
 	 * File descriptors 0 and 1 have been setup by the parent process
 	 * to be used for the protocol exchange and for transfering
