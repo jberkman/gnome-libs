@@ -26,3 +26,5 @@
 #undef HAVE_ORBIT
 #undef HAVE_GTKCAL
 #undef HAVE_LIBESD
+#undef PACKAGE
+#undef VERSION
