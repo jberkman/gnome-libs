@@ -1,5 +1,14 @@
 1999-09-09  Michael Zucchi  <mzucchi@denr.sa.gov.au>
 
+	* vt.c (vt_report_button): Propertly report the 2 different mouse
+	modes.  Only button presses, no qualifiers (X10 mode), and button
+	press/release + qualifiers (X11 mode?).  Fixes bug #1888.
+
+	* zvtterm.c (zvt_term_button_press): Indicates direction of button
+	press to vt_report_button().
+	(zvt_term_button_release): Indicates direction of button press to
+	vt_report_button().  Also now passes the button number.
+
 	* Makefile.am (gnome-pty-helper): Added manual build target for
 	gnome-pty-helper.  Because of some broken linkers we need to limit
 	what gets put on the link line (see bug #1246/#1576).

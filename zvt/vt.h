@@ -173,11 +173,14 @@ struct vt_em {
 #endif
 
 #define VTMODE_INSERT 0x00000001 /* insert mode active */
-#define VTMODE_SEND_MOUSE 0x00000002 /* send mouse clicks */
+
 #define VTMODE_WRAPOFF 0x04	/* wrap screenmode? (default = on) */
 #define VTMODE_APP_CURSOR 0x00000008 /* application cursor keys */
 #define VTMODE_RELATIVE 0x10	/* relative origin mode */
 #define VTMODE_APP_KEYPAD 0x20	/* application keypad on */
+#define VTMODE_SEND_MOUSE_PRESS 0x40 /* send mouse press */
+#define VTMODE_SEND_MOUSE_BOTH 0x80 /* send mouse press & release */
+#define VTMODE_SEND_MOUSE_MASK 0xc0 /* mask of options for mouse reports */
 
 #define VTMODE_ALTSCREEN 0x80000000 /* on alternate screen? */
 
@@ -196,7 +199,7 @@ void          vt_swap_buffers   (struct vt_em *vt);
 pid_t  	      vt_forkpty        (struct vt_em *vt, int do_uwtmp_log);
 int   	      vt_readchild      (struct vt_em *vt, char *buffer, int len);
 int   	      vt_writechild     (struct vt_em *vt, char *buffer, int len);
-int   	      vt_report_button  (struct vt_em *vt, int button, int qual,
+int   	      vt_report_button  (struct vt_em *vt, int down, int button, int qual,
 			         int x, int y);
 void  	      vt_scrollback_set (struct vt_em *vt, int lines);
 int   	      vt_killchild      (struct vt_em *vt, int signal);

@@ -1429,14 +1429,13 @@ zvt_term_button_press (GtkWidget      *widget,
 
   /* Shift is an overwrite key for the reporting of the buttons */
   if (!(event->state & GDK_SHIFT_MASK))
-    if (vt_report_button(&vx->vt, event->button, event->state, x, y)) 
+    if (vt_report_button(&vx->vt, 1, event->button, event->state, x, y)) 
       return FALSE;
 
   /* ignore all control-clicks' at this level */
-  if (event->state & GDK_CONTROL_MASK) 
-    {
-      return FALSE;
-    }
+  if (event->state & GDK_CONTROL_MASK) {
+    return FALSE;
+  }
     
   switch(event->button) {
   case 1:			/* left button */
@@ -1596,7 +1595,7 @@ zvt_term_button_release (GtkWidget      *widget,
   if (vx->selectiontype == VT_SELTYPE_NONE) {
     /* report mouse to terminal */
     if (!(event->state & GDK_SHIFT_MASK))
-      if (vt_report_button(&vx->vt, 0, event->state, x, y))
+      if (vt_report_button(&vx->vt, 0, event->button, event->state, x, y))
 	return FALSE;
     
     /* ignore all control-clicks' at this level */

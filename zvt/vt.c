@@ -1106,12 +1106,17 @@ vt_setmode(struct vt_em *vt, int on)
       case 47:
 	vt_set_screen(vt, on?1:0);
 	break;
+      case 9:			/* also for DEC private modes */
+	d(printf("sending mouse events\n"));
+	vt->mode &= VTMODE_SEND_MOUSE_MASK;
+	if (on)
+	  vt->mode |= VTMODE_SEND_MOUSE_PRESS;
+	break;
       case 1000:
 	d(printf("sending mouse events\n"));
+	vt->mode &= VTMODE_SEND_MOUSE_MASK;
 	if (on)
-	  vt->mode |= VTMODE_SEND_MOUSE;
-	else
-	  vt->mode &= ~VTMODE_SEND_MOUSE;
+	  vt->mode |= VTMODE_SEND_MOUSE_BOTH;
 	break;
       }
     }
@@ -2151,8 +2156,9 @@ void vt_resize(struct vt_em *vt, int width, int height, int pixwidth, int pixhei
 /**
  * vt_report_button:
  * @vt: An initialised &vt_em.
- * @button: Mouse button, from 1 to 3.  0 signifies button-up.
- * @qual: Button event qualifiers.  Currently unused.
+ * @down: Button is a button press.  Otherwise it is a release.
+ * @button: Mouse button, from 1 to 3.
+ * @qual: Button event qualifiers.  Bitmask - 1 = shift, 8 = meta, 4 = control.
  * @x: The horizontal character position of the mouse event.
  * @y: The vertical character position of the mouse event.
  *
@@ -2162,23 +2168,38 @@ void vt_resize(struct vt_em *vt, int width, int height, int pixwidth, int pixhei
  *
  * Return value: Returns %TRUE if the button event was sent.
  */
-int vt_report_button(struct vt_em *vt, int button, int qual, int x, int y)
+int vt_report_button(struct vt_em *vt, int down, int button, int qual, int x, int y)
 {
   char mouse_info[16];
+  int mode = vt->mode & VTMODE_SEND_MOUSE_MASK;
 
-  if ( (vt->mode & VTMODE_SEND_MOUSE) &&
-       (y>=0) /*&&
-		!(event->state & GDK_SHIFT_MASK)*/
-       ) {
-    g_snprintf(mouse_info, sizeof(mouse_info), "\033[M%c%c%c",
-	    ' ' + ((button - 1)&3) /*+ 
-				     ((event->state&GDK_SHIFT_MASK)?4:0) +
-				     ((event->state&GDK_MOD1_MASK)?8:0) +
-				     ((event->state&GDK_CONTROL_MASK)?16:0)*/,
-	    x+' '+1,
-	    y+' '+1);
-    vt_writechild(vt, mouse_info, strlen(mouse_info));
-    return 1;
+  if (y>=0) {
+    mouse_info[0]=0;
+    switch (mode) {
+    case VTMODE_SEND_MOUSE_PRESS: /* press only */
+      if (down)
+	g_snprintf(mouse_info, sizeof(mouse_info), "\033[M%c%c%c",
+		   ' ' + ((button - 1)&3),
+		   x+' '+1,
+		   y+' '+1);
+      break;
+    case VTMODE_SEND_MOUSE_BOTH:
+      g_snprintf(mouse_info, sizeof(mouse_info), "\033[M%c%c%c",
+		 (down?(' ' + ((button - 1)&3)):(' '+3)) | /* 0 = lmb, 1 = mid, 2 = rmb, 3 = up */
+		 ((qual&1)?4:0) | /* shift */
+		 ((qual&8)?8:0) | /* meta */
+		 ((qual&4)?16:0), /* control */
+		 x+' '+1,
+		 y+' '+1);
+      break;
+    default:
+      mouse_info[0] = 0;
+      break;
+    }
+    if (mouse_info[0]) {
+      vt_writechild(vt, mouse_info, strlen(mouse_info));
+      return 1;
+    }
   }
   return 0;
 }
