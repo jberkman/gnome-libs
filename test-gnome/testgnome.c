@@ -1666,6 +1666,22 @@ create_app_helper (GtkWidget *widget, gpointer data)
 	gtk_widget_show (app);
 }
 
+/*test for dentry edit*/
+static void
+create_dentry_edit(void)
+{
+	GtkWidget *app;
+	GtkWidget *edit;
+	GtkWidget *nbook;
+	
+	nbook = gtk_notebook_new();
+
+	app = create_newwin(TRUE,"testGNOME","DEntry Entry");
+	edit = gnome_dentry_edit_new_notebook(GTK_NOTEBOOK(nbook));
+	gnome_app_set_contents(GNOME_APP(app),nbook);
+	gtk_widget_show_all(app);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -1694,6 +1710,7 @@ main (int argc, char *argv[])
 		  { "icon list", create_icon_list }, 
 		  { "less", create_less },
 		  { "pixmap", create_pixmap },
+		  { "dentry edit", create_dentry_edit },
 		  { "(Reload preferences)", gnome_preferences_load },
 /*	{ "prop box", create_property_box }, */
 	  };
