@@ -219,12 +219,19 @@ zvt_term_destroy (GtkObject *object)
     (* GTK_OBJECT_CLASS (parent_class)->destroy) (object);
 }
 
+/* The first 16 values are the ansi colors, the last two are the default foreground
+ * and default background
+ */
 static gushort default_red[] = {0x0000,0xaaaa,0x0000,0xaaaa,0x0000,0xaaaa,0x0000,0xaaaa,
-				0x5555,0xffff,0x5555,0xffff,0x5555,0xffff,0x5555,0xffff};
+				0x5555,0xffff,0x5555,0xffff,0x5555,0xffff,0x5555,0xffff,
+                                0xaaaa, 0x0000};
 static gushort default_grn[] = {0x0000,0x0000,0xaaaa,0x5555,0x0000,0x0000,0xaaaa,0xaaaa,
-				0x5555,0x5555,0xffff,0xffff,0x5555,0x5555,0xffff,0xffff};
+				0x5555,0x5555,0xffff,0xffff,0x5555,0x5555,0xffff,0xffff,
+				0xaaaa, 0x0000};
+
 static gushort default_blu[] = {0x0000,0x0000,0x0000,0x0000,0xaaaa,0xaaaa,0xaaaa,0xaaaa,
-				0x5555,0x5555,0x5555,0x5555,0xffff,0xffff,0xffff,0xffff};
+				0x5555,0x5555,0x5555,0x5555,0xffff,0xffff,0xffff,0xffff,
+				0xaaaa, 0x0000};
 
 void
 zvt_term_set_color_scheme (ZvtTerm *term, gushort *red, gushort *grn, gushort *blu)
@@ -240,7 +247,7 @@ zvt_term_set_color_scheme (ZvtTerm *term, gushort *red, gushort *grn, gushort *b
   memset (term->colors, 0, sizeof (term->colors));
   nallocated = 0;
   gdk_color_context_get_pixels (term->color_ctx, red, grn, blu,
-				16, term->colors, &nallocated);
+				18, term->colors, &nallocated);
 }
 
 void
@@ -1351,7 +1358,7 @@ void vt_draw_text(void *user_data, int col, int row, char *text, int len, int at
   struct _vtx *vx;
   ZvtTerm *term;
   GtkWidget *widget;
-  int fore, back;
+  int fore, back, or;
   GdkColor pen;
   
   widget = user_data;
@@ -1363,20 +1370,22 @@ void vt_draw_text(void *user_data, int col, int row, char *text, int len, int at
 
   vx = term->vx;
 
-  /* leave this here until its verified no longer needed :)
-    fore = 7;
-  back = 0;
-  if (attr & VTATTR_FORE_SET)*/
-  fore = (attr & VTATTR_FORECOLOURM) >> VTATTR_FORECOLOURB;
-
-  /*if (attr & VTATTR_BACK_SET)*/
-  back = (attr & VTATTR_BACKCOLOURM) >> VTATTR_BACKCOLOURB;
-
+  back = 17;
+  fore = 16;
+  
   f=term->font;
   if (attr&VTATTR_BOLD) {
-    fore |= 8;
+      or = 8;
     f=term->font_bold;
-  }
+  } else
+      or = 0;
+  
+  if (attr & VTATTR_FORE_SET)
+	  fore = or | (attr & VTATTR_FORECOLOURM) >> VTATTR_FORECOLOURB;
+
+  if (attr & VTATTR_BACK_SET)
+	  back = (attr & VTATTR_BACKCOLOURM) >> VTATTR_BACKCOLOURB;
+
 
   if (attr & VTATTR_REVERSE){
     int tmp = fore;

@@ -68,7 +68,7 @@ extern "C" {
     GdkGC *fore_gc, *back_gc;	/* GCs for the foreground and background colors */
     int fore_last, back_last;	/* last colour for foreground/background gc's */
     GdkColorContext *color_ctx;	/* The color context in use, where we allocate our colors */
-    gulong colors [16];		/* Our colors, pixel values. */
+    gulong colors [18];		/* Our colors, pixel values. */
   };
 
   struct _ZvtTermClass
