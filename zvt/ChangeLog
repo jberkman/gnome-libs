@@ -1,5 +1,8 @@
 1998-11-09  Michael Zucchi  <zucchi@zzedzone.fsi.com.au>
 
+	* gnome-login-support.h: Include pty.h only if it exists, or
+	util.h if that exists (for OpenBSD).
+
 	* zvtterm.c: More slight doco updates/spelling fixes.
 
 1998-11-07  Michael Zucchi  <zucchi@zzedzone.fsi.com.au>
