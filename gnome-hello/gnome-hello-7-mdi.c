@@ -181,7 +181,7 @@ static GtkWidget *my_child_set_label(GnomeMDIChild *child,
 		/* old_label is a hbox we created once */
 		label = GTK_WIDGET(g_list_next(gtk_container_children(GTK_CONTAINER(old_label)))->data);
 		if(label)
-			gtk_label_set(GTK_LABEL(label), child->name);
+			gtk_label_set_text(GTK_LABEL(label), child->name);
 	}
 
 	return hbox;
@@ -343,7 +343,7 @@ static void inc_counter_cb(GtkWidget *w, gpointer user_data) {
 	/* update views */
 	view = GNOME_MDI_CHILD(child)->views;
 	while(view) {
-		gtk_label_set(GTK_LABEL(view->data), name);
+		gtk_label_set_text(GTK_LABEL(view->data), name);
 		view = view->next;
 	}
 }

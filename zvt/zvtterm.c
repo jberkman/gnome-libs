@@ -365,6 +365,7 @@ zvt_term_init (ZvtTerm *term)
   /* input handlers */
   term->input_id = -1;
   term->msg_id = -1;
+  term->timeout_id = -1;
 
   /* set bell and title callback  */
   term->vx->vt.ring_my_bell = zvt_term_bell;

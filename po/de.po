@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-libs VERSION\n"
-"POT-Creation-Date: 1998-12-14 09:28+0100\n"
+"POT-Creation-Date: 1998-12-16 02:52-0500\n"
 "PO-Revision-Date: 1998-02-20 17:05+0100\n"
 "Last-Translator: Carsten Schaar@fs-maphy.uni-hannover.de>\n"
 "Language-Team: Carsten Schaar@fs-maphy.uni-hannover.de>\n"
@@ -107,8 +107,7 @@ msgstr "Information zu GNOME hallo"
 msgid "Discard session"
 msgstr "Sitzung verwerfen"
 
-#: gnome-hello/gnome-hello-4-SM.c:89 libgnomeui/gnome-client.c:680
-#: libgnomeui/gnome-client.c:682
+#: gnome-hello/gnome-hello-4-SM.c:89 libgnomeui/gnome-client.c:745
 msgid "ID"
 msgstr ""
 
@@ -262,26 +261,6 @@ msgstr ""
 
 #: libgnomeui/gnome-app-util.c:676
 msgid "Progress"
-msgstr ""
-
-#: libgnomeui/gnome-app.c:414 libgnomeui/gnome-app.c:440
-msgid "Top"
-msgstr ""
-
-#: libgnomeui/gnome-app.c:415 libgnomeui/gnome-app.c:441
-msgid "Bottom"
-msgstr ""
-
-#: libgnomeui/gnome-app.c:442
-msgid "Left"
-msgstr ""
-
-#: libgnomeui/gnome-app.c:443
-msgid "Right"
-msgstr ""
-
-#: libgnomeui/gnome-app.c:444
-msgid "Configure toolbar"
 msgstr ""
 
 #: libgnomeui/gnome-calculator.c:932 libgnomeui/gnome-calculator.c:1087
@@ -453,26 +432,30 @@ msgstr ""
 msgid "INV"
 msgstr ""
 
-#: libgnomeui/gnome-client.c:680
+#: libgnomeui/gnome-client.c:745
 #, fuzzy
 msgid "Specify session management ID"
 msgstr "Sitzungsmanagementkennung"
 
-#: libgnomeui/gnome-client.c:682
-msgid "Specify ID of cloned client"
-msgstr "Identität des geclonten Klienten"
+#: libgnomeui/gnome-client.c:747
+msgid "Specify prefix of saved configuration"
+msgstr ""
 
-#: libgnomeui/gnome-client.c:684
+#: libgnomeui/gnome-client.c:747
+msgid "PREFIX"
+msgstr ""
+
+#: libgnomeui/gnome-client.c:749
 msgid "Disable connection to session manager"
 msgstr "Unterbreche Verbindung zum Sitzungsmanagmer"
 
 #. Register commandline options.
-#: libgnomeui/gnome-client.c:812
+#: libgnomeui/gnome-client.c:870
 #, fuzzy
 msgid "Session management options"
 msgstr "Sitzungsmanagmentoptionen"
 
-#: libgnomeui/gnome-client.c:2118
+#: libgnomeui/gnome-client.c:2143
 #, fuzzy
 msgid "Cancel Logout"
 msgstr "Abbruch"
@@ -533,7 +516,9 @@ msgstr "Fortgeschritten"
 msgid "Select file"
 msgstr "Dateiauswahl"
 
-#: libgnomeui/gnome-file-entry.c:219
+#. browse button ...
+#: libgnomeui/gnome-file-entry.c:219 libgnomeui/gnome-spell.c:607
+#: libgnomeui/gnome-spell.c:624 libgnomeui/gnome-spell.c:641
 msgid "Browse..."
 msgstr "Suchen..."
 
@@ -541,100 +526,100 @@ msgstr "Suchen..."
 msgid "Loading Icons..."
 msgstr "Lade Icons..."
 
-#: libgnomeui/gnome-init.c:177
+#: libgnomeui/gnome-init.c:176
 msgid "Gdk debugging flags to set"
 msgstr ""
 
-#: libgnomeui/gnome-init.c:177 libgnomeui/gnome-init.c:179
-#: libgnomeui/gnome-init.c:199 libgnomeui/gnome-init.c:201
+#: libgnomeui/gnome-init.c:176 libgnomeui/gnome-init.c:178
+#: libgnomeui/gnome-init.c:198 libgnomeui/gnome-init.c:200
 msgid "FLAGS"
 msgstr ""
 
-#: libgnomeui/gnome-init.c:179
+#: libgnomeui/gnome-init.c:178
 msgid "Gdk debugging flags to unset"
 msgstr ""
 
-#: libgnomeui/gnome-init.c:181
+#: libgnomeui/gnome-init.c:180
 msgid "X display to use"
 msgstr "Zu benutzendes X-Display"
 
-#: libgnomeui/gnome-init.c:181
+#: libgnomeui/gnome-init.c:180
 msgid "DISPLAY"
 msgstr "DISPLAY"
 
-#: libgnomeui/gnome-init.c:183
+#: libgnomeui/gnome-init.c:182
 msgid "Make X calls synchronous"
 msgstr "Mache die X Aufrufe syncron"
 
-#: libgnomeui/gnome-init.c:185
+#: libgnomeui/gnome-init.c:184
 msgid "Don't use X shared memory extension"
 msgstr "'X shared memory' Erweiterung nicht benutzen"
 
-#: libgnomeui/gnome-init.c:187
+#: libgnomeui/gnome-init.c:186
 msgid "Program name as used by the window manager"
 msgstr "Programmname wie vom Fenstermanager benutzt"
 
-#: libgnomeui/gnome-init.c:187
+#: libgnomeui/gnome-init.c:186
 msgid "NAME"
 msgstr "NAME"
 
-#: libgnomeui/gnome-init.c:189
+#: libgnomeui/gnome-init.c:188
 msgid "Program class as used by the window manager"
 msgstr "Programmklasse wie vom Fenstermanager benutzt"
 
-#: libgnomeui/gnome-init.c:189
+#: libgnomeui/gnome-init.c:188
 msgid "CLASS"
 msgstr "KLASSE"
 
-#: libgnomeui/gnome-init.c:191
+#: libgnomeui/gnome-init.c:190
 msgid "HOST"
 msgstr "RECHNER"
 
-#: libgnomeui/gnome-init.c:193
+#: libgnomeui/gnome-init.c:192
 msgid "PORT"
 msgstr ""
 
-#: libgnomeui/gnome-init.c:195 libgnomeui/gnome-init.c:197
+#: libgnomeui/gnome-init.c:194 libgnomeui/gnome-init.c:196
 msgid "STYLE"
 msgstr "STIL"
 
-#: libgnomeui/gnome-init.c:199
+#: libgnomeui/gnome-init.c:198
 msgid "Gtk+ debugging flags to set"
 msgstr ""
 
-#: libgnomeui/gnome-init.c:201
+#: libgnomeui/gnome-init.c:200
 msgid "Gtk+ debugging flags to unset"
 msgstr ""
 
-#: libgnomeui/gnome-init.c:203
+#: libgnomeui/gnome-init.c:202
 msgid "Make all warnings fatal"
 msgstr "Mache alle Warnungen fatal"
 
-#: libgnomeui/gnome-init.c:205
+#: libgnomeui/gnome-init.c:204
 msgid "Load an additional Gtk module"
 msgstr "Lade ein zusätzliches Gtk module"
 
-#: libgnomeui/gnome-init.c:205
+#: libgnomeui/gnome-init.c:204
 msgid "MODULE"
 msgstr ""
 
-#: libgnomeui/gnome-messagebox.c:99
+#: libgnomeui/gnome-messagebox.c:99 libgnomeui/gnome-messagebox.c:206
 msgid "Information"
 msgstr "Information"
 
-#: libgnomeui/gnome-messagebox.c:108
+#: libgnomeui/gnome-messagebox.c:108 libgnomeui/gnome-messagebox.c:215
 msgid "Warning"
 msgstr "Warnung"
 
-#: libgnomeui/gnome-messagebox.c:117
+#: libgnomeui/gnome-messagebox.c:117 libgnomeui/gnome-messagebox.c:224
 msgid "Error"
 msgstr "Fehler"
 
-#: libgnomeui/gnome-messagebox.c:126
+#: libgnomeui/gnome-messagebox.c:126 libgnomeui/gnome-messagebox.c:233
 msgid "Question"
 msgstr "Frage"
 
-#: libgnomeui/gnome-messagebox.c:135
+#: libgnomeui/gnome-messagebox.c:135 libgnomeui/gnome-messagebox.c:242
 msgid "Message"
 msgstr "Mitteilung"
 
@@ -662,17 +647,141 @@ msgstr "Punkte"
 msgid "Date"
 msgstr "Datum"
 
-#: libgnomeui/gnome-stock.c:769
+#: libgnomeui/gnome-spell.c:186
+msgid "Select dictionary"
+msgstr ""
+
+#: libgnomeui/gnome-spell.c:233
+#, c-format
+msgid ""
+"The word `%s'\n"
+"is not in the dictionary.\n"
+"Proceed anyway?"
+msgstr ""
+
+#: libgnomeui/gnome-spell.c:237
+msgid "Confirm"
+msgstr ""
+
+#: libgnomeui/gnome-spell.c:246 libgnomeui/gnome-stock.c:769
 msgid "OK"
 msgstr "OK"
+
+#: libgnomeui/gnome-spell.c:253 libgnomeui/gnome-stock.c:771
+msgid "Cancel"
+msgstr "Abbruch"
+
+#: libgnomeui/gnome-spell.c:515
+msgid "Word:"
+msgstr ""
+
+#: libgnomeui/gnome-spell.c:532
+msgid "Alternatives:"
+msgstr ""
+
+#: libgnomeui/gnome-spell.c:551
+msgid "Accept"
+msgstr ""
+
+#: libgnomeui/gnome-spell.c:556
+msgid ""
+"Accept the word for\n"
+"this session only"
+msgstr ""
+
+#: libgnomeui/gnome-spell.c:558
+msgid "Skip"
+msgstr ""
+
+#: libgnomeui/gnome-spell.c:563
+msgid ""
+"Ignore this word\n"
+"this time only"
+msgstr ""
+
+#: libgnomeui/gnome-spell.c:565
+msgid "Replace"
+msgstr ""
+
+#: libgnomeui/gnome-spell.c:570
+msgid "Replace the word"
+msgstr ""
+
+#: libgnomeui/gnome-spell.c:572
+#, fuzzy
+msgid "Insert"
+msgstr "Benutzer"
+
+#: libgnomeui/gnome-spell.c:577
+msgid ""
+"Insert the word\n"
+"in your personal dictionary"
+msgstr ""
+
+#: libgnomeui/gnome-spell.c:579
+msgid "Insert with case"
+msgstr ""
+
+#: libgnomeui/gnome-spell.c:585
+msgid ""
+"Insert the word\n"
+"in your personal dictionary\n"
+"(if mixed-case preserve\n"
+"case-sensitivity)"
+msgstr ""
+
+#: libgnomeui/gnome-spell.c:600
+#, fuzzy
+msgid "Ispell command:"
+msgstr "Kommando:"
+
+#: libgnomeui/gnome-spell.c:618
+msgid "Main dictionary:"
+msgstr ""
+
+#: libgnomeui/gnome-spell.c:635
+msgid "Personal dictionary:"
+msgstr ""
+
+#: libgnomeui/gnome-spell.c:652
+msgid "Valid chars in words:"
+msgstr ""
+
+#: libgnomeui/gnome-spell.c:663
+msgid "Check words longer than:"
+msgstr ""
+
+#: libgnomeui/gnome-spell.c:674
+msgid "Sort by correctness"
+msgstr ""
+
+#: libgnomeui/gnome-spell.c:682
+msgid "Accept run-together words"
+msgstr ""
+
+#: libgnomeui/gnome-spell.c:692
+msgid "Discard accepted words on kill"
+msgstr ""
+
+#: libgnomeui/gnome-spell.c:700
+msgid "Enable tooltips"
+msgstr ""
+
+#: libgnomeui/gnome-spell.c:714
+msgid "Kill ispell process"
+msgstr ""
+
+#: libgnomeui/gnome-spell.c:740
+msgid "Spell"
+msgstr ""
+
+#: libgnomeui/gnome-spell.c:747
+msgid "Configure"
+msgstr ""
 
 #: libgnomeui/gnome-stock.c:770
 msgid "Apply"
 msgstr "Übernehmen"
-
-#: libgnomeui/gnome-stock.c:771
-msgid "Cancel"
-msgstr "Abbruch"
 
 #: libgnomeui/gnome-stock.c:772 libgnomeui/stock_demo.c:144
 msgid "Close"
@@ -1001,7 +1110,8 @@ msgstr " Nein "
 
 #: libvfs/mcfs.c:177
 msgid " The remote server is running on strange port. Giving up.\n"
-msgstr " Der entfernte Server läuft auf einem merkwürdigem Port. Ich gebe auf. \n"
+msgstr ""
+" Der entfernte Server läuft auf einem merkwürdigem Port. Ich gebe auf. \n"
 
 #: libvfs/mcfs.c:189
 msgid " MCFS Password required "
@@ -1044,44 +1154,9 @@ msgstr ""
 "%s\n"
 "sieht nicht wie ein tar Archiv aus."
 
-#: libvfs/vfs.c:1675
+#: libvfs/vfs.c:1706
 msgid "Password:"
 msgstr "Passwort:"
-
-#: support/argp-parse.c:95
-msgid "Give this help list"
-msgstr "Zeigt diese Hilfe"
-
-#: support/argp-parse.c:96
-msgid "Give a short usage message"
-msgstr "Gibt eine Kurzanleitung aus"
-
-#: support/argp-parse.c:97
-msgid "Set the program name"
-msgstr "Setzt den Programmnamen"
-
-#: support/argp-parse.c:99
-msgid "Hang for SECS seconds (default 3600)"
-msgstr "Wartet SECS Sekunden (standardmäßig 3600)"
-
-#: support/argp-parse.c:156
-msgid "Print program version"
-msgstr "Gibt die Programmversion aus"
-
-#: support/argp-parse.c:172
-msgid "(PROGRAM ERROR) No version known!?"
-msgstr "(PROGRAMM FEHLER) Version unbekannt!?"
-
-# , c-format
-# , c-format
-#: support/argp-parse.c:646
-#, c-format
-msgid "%s: Too many arguments\n"
-msgstr "%s: Zu viele Argumente\n"
-
-#: support/argp-parse.c:785
-msgid "(PROGRAM ERROR) Option should have been recognized!?"
-msgstr "(PROGRAMM FEHLER) Option sollte erkannt worden sein!?"
 
 #: support/error.c:109
 msgid "Unknown system error"
@@ -1210,3 +1285,32 @@ msgstr "The Nutzer wählte Nein/Abbrechen mit Daten:\n"
 #: test-gnome/testgnome.c:935
 msgid "Weird number in reply callback"
 msgstr "Merkwürdige Nummer in Antwort"
+
+#~ msgid "Specify ID of cloned client"
+#~ msgstr "Identität des geclonten Klienten"
+
+#~ msgid "Give this help list"
+#~ msgstr "Zeigt diese Hilfe"
+
+#~ msgid "Give a short usage message"
+#~ msgstr "Gibt eine Kurzanleitung aus"
+
+#~ msgid "Set the program name"
+#~ msgstr "Setzt den Programmnamen"
+
+#~ msgid "Hang for SECS seconds (default 3600)"
+#~ msgstr "Wartet SECS Sekunden (standardmäßig 3600)"
+
+#~ msgid "Print program version"
+#~ msgstr "Gibt die Programmversion aus"
+
+#~ msgid "(PROGRAM ERROR) No version known!?"
+#~ msgstr "(PROGRAMM FEHLER) Version unbekannt!?"
+
+# , c-format
+# , c-format
+#~ msgid "%s: Too many arguments\n"
+#~ msgstr "%s: Zu viele Argumente\n"
+
+#~ msgid "(PROGRAM ERROR) Option should have been recognized!?"
+#~ msgstr "(PROGRAMM FEHLER) Option sollte erkannt worden sein!?"

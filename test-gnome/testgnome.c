@@ -494,13 +494,13 @@ file_entry_update_files(GtkWidget *w, GnomeFileEntry *fentry)
 	
 	p = gnome_file_entry_get_full_path(fentry,FALSE);
 	pp = g_strconcat("File name: ",p,NULL);
-	gtk_label_set(l1,pp);
+	gtk_label_set_text(l1,pp);
 	g_free(pp);
 	if(p) g_free(p);
 
 	p = gnome_file_entry_get_full_path(fentry,TRUE);
 	pp = g_strconcat("File name(if exists only): ",p,NULL);
-	gtk_label_set(l2,pp);
+	gtk_label_set_text(l2,pp);
 	g_free(pp);
 	if(p) g_free(p);
 }
@@ -639,7 +639,7 @@ static void cfp_ck_ShowSize(GtkWidget *widget,GnomeFontPicker *gfp)
 static void cfp_set_font(GnomeFontPicker *gfp, gchar *font_name, GtkLabel *label)
 {
     g_print("Font name: %s\n",font_name);
-    gtk_label_set(label,font_name);
+    gtk_label_set_text(label,font_name);
 }
 
 

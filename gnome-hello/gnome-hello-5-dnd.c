@@ -160,7 +160,7 @@ drop_cb (GtkWidget *widget,
   if (GTK_IS_BUTTON(widget) &&
       GTK_IS_LABEL(GTK_BUTTON(widget)->child)) {
 	  g_print ("Numbytes: %d\n", selection_data->length);
-	  gtk_label_set(GTK_LABEL(GTK_BUTTON(widget)->child),
+	  gtk_label_set_text(GTK_LABEL(GTK_BUTTON(widget)->child),
 			selection_data->data);
 	  /* We could also handle drops of images here by creating
 	     a pixmap inside the button - the sky is the limit */
