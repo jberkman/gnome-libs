@@ -39,6 +39,7 @@ tmpl_sources =				\
 gnome_docdir = $(HTML_DIR)
 gnome_doc_DATA = 			\
 	gnome.html			\
+	gnome-decl.txt			\
 	gnome-sections.txt
 
 EXTRA_DIST = $(gnome_doc_DATA)
