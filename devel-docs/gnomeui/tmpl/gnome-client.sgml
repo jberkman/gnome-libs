@@ -1,0 +1,440 @@
+<!-- ##### SECTION Title ##### -->
+GnomeClient
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### STRUCT GnomeClient ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### ENUM GnomeClientFlags ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### MACRO GNOME_CLIENT_CONNECTED ##### -->
+<para>
+
+</para>
+
+@obj: 
+
+
+<!-- ##### ENUM GnomeInteractStyle ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### ENUM GnomeDialogType ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### ENUM GnomeSaveStyle ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### ENUM GnomeRestartStyle ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### ENUM GnomeClientState ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### USER_FUNCTION GnomeInteractFunction ##### -->
+<para>
+
+</para>
+
+@client: 
+@key: 
+@dialog_type: 
+@data: 
+
+
+<!-- ##### FUNCTION gnome_client_disable_master_connection ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION gnome_master_client ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION gnome_cloned_client ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION gnome_client_new ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION gnome_client_new_without_connection ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION gnome_client_connect ##### -->
+<para>
+
+</para>
+
+@client: 
+
+
+<!-- ##### FUNCTION gnome_client_disconnect ##### -->
+<para>
+
+</para>
+
+@client: 
+
+
+<!-- ##### FUNCTION gnome_client_set_id ##### -->
+<para>
+
+</para>
+
+@client: 
+@client_id: 
+
+
+<!-- ##### FUNCTION gnome_client_get_id ##### -->
+<para>
+
+</para>
+
+@client: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gnome_client_get_previous_id ##### -->
+<para>
+
+</para>
+
+@client: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gnome_client_get_config_prefix ##### -->
+<para>
+
+</para>
+
+@client: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gnome_client_get_global_config_prefix ##### -->
+<para>
+
+</para>
+
+@client: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gnome_client_set_global_config_prefix ##### -->
+<para>
+
+</para>
+
+@client: 
+@prefix: 
+
+
+<!-- ##### FUNCTION gnome_client_get_flags ##### -->
+<para>
+
+</para>
+
+@client: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gnome_client_set_restart_style ##### -->
+<para>
+
+</para>
+
+@client: 
+@style: 
+
+
+<!-- ##### FUNCTION gnome_client_set_restart_command ##### -->
+<para>
+
+</para>
+
+@client: 
+@argc: 
+@argv: 
+
+
+<!-- ##### FUNCTION gnome_client_add_static_arg ##### -->
+<para>
+
+</para>
+
+@client: 
+@Varargs: 
+
+
+<!-- ##### FUNCTION gnome_client_set_discard_command ##### -->
+<para>
+
+</para>
+
+@client: 
+@argc: 
+@argv: 
+
+
+<!-- ##### FUNCTION gnome_client_set_resign_command ##### -->
+<para>
+
+</para>
+
+@client: 
+@argc: 
+@argv: 
+
+
+<!-- ##### FUNCTION gnome_client_set_shutdown_command ##### -->
+<para>
+
+</para>
+
+@client: 
+@argc: 
+@argv: 
+
+
+<!-- ##### FUNCTION gnome_client_set_current_directory ##### -->
+<para>
+
+</para>
+
+@client: 
+@dir: 
+
+
+<!-- ##### FUNCTION gnome_client_set_environment ##### -->
+<para>
+
+</para>
+
+@client: 
+@name: 
+@value: 
+
+
+<!-- ##### FUNCTION gnome_client_set_clone_command ##### -->
+<para>
+
+</para>
+
+@client: 
+@argc: 
+@argv: 
+
+
+<!-- ##### FUNCTION gnome_client_set_process_id ##### -->
+<para>
+
+</para>
+
+@client: 
+@pid: 
+
+
+<!-- ##### FUNCTION gnome_client_set_program ##### -->
+<para>
+
+</para>
+
+@client: 
+@program: 
+
+
+<!-- ##### FUNCTION gnome_client_set_user_id ##### -->
+<para>
+
+</para>
+
+@client: 
+@user_id: 
+
+
+<!-- ##### FUNCTION gnome_client_request_phase_2 ##### -->
+<para>
+
+</para>
+
+@client: 
+
+
+<!-- ##### FUNCTION gnome_client_save_any_dialog ##### -->
+<para>
+
+</para>
+
+@client: 
+@dialog: 
+
+
+<!-- ##### FUNCTION gnome_client_save_error_dialog ##### -->
+<para>
+
+</para>
+
+@client: 
+@dialog: 
+
+
+<!-- ##### FUNCTION gnome_client_request_interaction ##### -->
+<para>
+
+</para>
+
+@client: 
+@dialog: 
+@func: 
+@client_data: 
+
+
+<!-- ##### FUNCTION gnome_client_request_interaction_interp ##### -->
+<para>
+
+</para>
+
+@client: 
+@dialog: 
+@func: 
+@data: 
+@destroy: 
+
+
+<!-- ##### FUNCTION gnome_interaction_key_return ##### -->
+<para>
+
+</para>
+
+@key: 
+@cancel_shutdown: 
+
+
+<!-- ##### FUNCTION gnome_client_request_save ##### -->
+<para>
+
+</para>
+
+@client: 
+@save_style: 
+@shutdown: 
+@interact_style: 
+@fast: 
+@global: 
+
+
+<!-- ##### FUNCTION gnome_client_flush ##### -->
+<para>
+
+</para>
+
+@client: 
+
+
+<!-- ##### FUNCTION gnome_client_init ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### SIGNAL GnomeClient::save-yourself ##### -->
+<para>
+
+</para>
+
+@client: the object which received the signal.
+@arg1: 
+@arg2: 
+@arg3: 
+@arg4: 
+@arg5: 
+@Returns: 
+
+<!-- ##### SIGNAL GnomeClient::die ##### -->
+<para>
+
+</para>
+
+@client: the object which received the signal.
+
+<!-- ##### SIGNAL GnomeClient::save-complete ##### -->
+<para>
+
+</para>
+
+@client: the object which received the signal.
+
+<!-- ##### SIGNAL GnomeClient::shutdown-cancelled ##### -->
+<para>
+
+</para>
+
+@client: the object which received the signal.
+
+<!-- ##### SIGNAL GnomeClient::connect ##### -->
+<para>
+
+</para>
+
+@client: the object which received the signal.
+@arg1: 
+
+<!-- ##### SIGNAL GnomeClient::disconnect ##### -->
+<para>
+
+</para>
+
+@client: the object which received the signal.
+

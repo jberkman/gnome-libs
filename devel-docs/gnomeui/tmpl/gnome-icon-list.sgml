@@ -1,0 +1,363 @@
+<!-- ##### SECTION Title ##### -->
+GnomeIconList
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### STRUCT GnomeIconList ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### MACRO GNOME_ICON_LIST_IS_EDITABLE ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO GNOME_ICON_LIST_STATIC_TEXT ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### ENUM GnomeIconListMode ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### FUNCTION gnome_icon_list_new ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION gnome_icon_list_new_flags ##### -->
+<para>
+
+</para>
+
+@icon_width: 
+@adj: 
+@flags: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gnome_icon_list_construct ##### -->
+<para>
+
+</para>
+
+@gil: 
+@icon_width: 
+@adj: 
+@flags: 
+
+
+<!-- ##### FUNCTION gnome_icon_list_set_hadjustment ##### -->
+<para>
+
+</para>
+
+@gil: 
+@hadj: 
+
+
+<!-- ##### FUNCTION gnome_icon_list_set_vadjustment ##### -->
+<para>
+
+</para>
+
+@gil: 
+@vadj: 
+
+
+<!-- ##### FUNCTION gnome_icon_list_freeze ##### -->
+<para>
+
+</para>
+
+@ilist: 
+
+
+<!-- ##### FUNCTION gnome_icon_list_thaw ##### -->
+<para>
+
+</para>
+
+@ilist: 
+
+
+<!-- ##### FUNCTION gnome_icon_list_insert ##### -->
+<para>
+
+</para>
+
+@ilist: 
+@pos: 
+@icon_filename: 
+@text: 
+
+
+<!-- ##### FUNCTION gnome_icon_list_insert_imlib ##### -->
+<para>
+
+</para>
+
+@gil: 
+@pos: 
+@im: 
+@text: 
+
+
+<!-- ##### FUNCTION gnome_icon_list_append ##### -->
+<para>
+
+</para>
+
+@ilist: 
+@icon_filename: 
+@text: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gnome_icon_list_append_imlib ##### -->
+<para>
+
+</para>
+
+@ilist: 
+@im: 
+@text: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gnome_icon_list_clear ##### -->
+<para>
+
+</para>
+
+@ilist: 
+
+
+<!-- ##### FUNCTION gnome_icon_list_remove ##### -->
+<para>
+
+</para>
+
+@ilist: 
+@pos: 
+
+
+<!-- ##### FUNCTION gnome_icon_list_set_selection_mode ##### -->
+<para>
+
+</para>
+
+@ilist: 
+@mode: 
+
+
+<!-- ##### FUNCTION gnome_icon_list_select_icon ##### -->
+<para>
+
+</para>
+
+@ilist: 
+@pos: 
+
+
+<!-- ##### FUNCTION gnome_icon_list_unselect_icon ##### -->
+<para>
+
+</para>
+
+@ilist: 
+@pos: 
+
+
+<!-- ##### FUNCTION gnome_icon_list_unselect_all ##### -->
+<para>
+
+</para>
+
+@ilist: 
+@event: 
+@keep: 
+
+
+<!-- ##### FUNCTION gnome_icon_list_set_icon_width ##### -->
+<para>
+
+</para>
+
+@gil: 
+@w: 
+
+
+<!-- ##### FUNCTION gnome_icon_list_set_row_spacing ##### -->
+<para>
+
+</para>
+
+@ilist: 
+@spacing: 
+
+
+<!-- ##### FUNCTION gnome_icon_list_set_col_spacing ##### -->
+<para>
+
+</para>
+
+@ilist: 
+@spacing: 
+
+
+<!-- ##### FUNCTION gnome_icon_list_set_text_spacing ##### -->
+<para>
+
+</para>
+
+@ilist: 
+@spacing: 
+
+
+<!-- ##### FUNCTION gnome_icon_list_set_icon_border ##### -->
+<para>
+
+</para>
+
+@ilist: 
+@spacing: 
+
+
+<!-- ##### FUNCTION gnome_icon_list_set_separators ##### -->
+<para>
+
+</para>
+
+@ilist: 
+@separators: 
+
+
+<!-- ##### FUNCTION gnome_icon_list_set_icon_data ##### -->
+<para>
+
+</para>
+
+@ilist: 
+@pos: 
+@data: 
+
+
+<!-- ##### FUNCTION gnome_icon_list_set_icon_data_full ##### -->
+<para>
+
+</para>
+
+@ilist: 
+@pos: 
+@data: 
+@destroy: 
+
+
+<!-- ##### FUNCTION gnome_icon_list_find_icon_from_data ##### -->
+<para>
+
+</para>
+
+@ilist: 
+@data: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gnome_icon_list_get_icon_data ##### -->
+<para>
+
+</para>
+
+@ilist: 
+@pos: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gnome_icon_list_moveto ##### -->
+<para>
+
+</para>
+
+@ilist: 
+@pos: 
+@yalign: 
+
+
+<!-- ##### FUNCTION gnome_icon_list_icon_is_visible ##### -->
+<para>
+
+</para>
+
+@ilist: 
+@pos: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gnome_icon_list_get_icon_at ##### -->
+<para>
+
+</para>
+
+@ilist: 
+@x: 
+@y: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gnome_icon_list_get_items_per_line ##### -->
+<para>
+
+</para>
+
+@gil: 
+@Returns: 
+
+
+<!-- ##### SIGNAL GnomeIconList::select-icon ##### -->
+<para>
+
+</para>
+
+@iconlist: the object which received the signal.
+@arg1: 
+@event: 
+
+<!-- ##### SIGNAL GnomeIconList::unselect-icon ##### -->
+<para>
+
+</para>
+
+@iconlist: the object which received the signal.
+@arg1: 
+@event: 
+
+<!-- ##### SIGNAL GnomeIconList::text-changed ##### -->
+<para>
+
+</para>
+
+@iconlist: the object which received the signal.
+@arg1: 
+@arg2: 
+@Returns: 
+

@@ -1,0 +1,195 @@
+<!-- ##### SECTION Title ##### -->
+GnomeDockItem
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### STRUCT GnomeDockItem ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### ENUM GnomeDockItemBehavior ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### MACRO GNOME_DOCK_ITEM_NOT_LOCKED ##### -->
+<para>
+
+</para>
+
+@x: 
+
+
+<!-- ##### FUNCTION gnome_dock_item_new ##### -->
+<para>
+
+</para>
+
+@name: 
+@behavior: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gnome_dock_item_get_child ##### -->
+<para>
+
+</para>
+
+@dock_item: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gnome_dock_item_get_name ##### -->
+<para>
+
+</para>
+
+@dock_item: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gnome_dock_item_set_shadow_type ##### -->
+<para>
+
+</para>
+
+@dock_item: 
+@type: 
+
+
+<!-- ##### FUNCTION gnome_dock_item_get_shadow_type ##### -->
+<para>
+
+</para>
+
+@dock_item: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gnome_dock_item_set_orientation ##### -->
+<para>
+
+</para>
+
+@dock_item: 
+@orientation: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gnome_dock_item_get_orientation ##### -->
+<para>
+
+</para>
+
+@dock_item: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gnome_dock_item_get_behavior ##### -->
+<para>
+
+</para>
+
+@dock_item: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gnome_dock_item_detach ##### -->
+<para>
+
+</para>
+
+@item: 
+@x: 
+@y: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gnome_dock_item_attach ##### -->
+<para>
+
+</para>
+
+@item: 
+@parent: 
+@x: 
+@y: 
+
+
+<!-- ##### FUNCTION gnome_dock_item_grab_pointer ##### -->
+<para>
+
+</para>
+
+@item: 
+
+
+<!-- ##### FUNCTION gnome_dock_item_drag_floating ##### -->
+<para>
+
+</para>
+
+@item: 
+@x: 
+@y: 
+
+
+<!-- ##### FUNCTION gnome_dock_item_handle_size_request ##### -->
+<para>
+
+</para>
+
+@item: 
+@requisition: 
+
+
+<!-- ##### FUNCTION gnome_dock_item_get_floating_position ##### -->
+<para>
+
+</para>
+
+@item: 
+@x: 
+@y: 
+
+
+<!-- ##### SIGNAL GnomeDockItem::dock-drag-begin ##### -->
+<para>
+
+</para>
+
+@dockitem: the object which received the signal.
+
+<!-- ##### SIGNAL GnomeDockItem::dock-drag-end ##### -->
+<para>
+
+</para>
+
+@dockitem: the object which received the signal.
+
+<!-- ##### SIGNAL GnomeDockItem::dock-drag-motion ##### -->
+<para>
+
+</para>
+
+@dockitem: the object which received the signal.
+@arg1: 
+@arg2: 
+
+<!-- ##### SIGNAL GnomeDockItem::dock-detach ##### -->
+<para>
+
+</para>
+
+@dockitem: the object which received the signal.
+

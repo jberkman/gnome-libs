@@ -1,0 +1,125 @@
+<!-- ##### SECTION Title ##### -->
+GnomeDock
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### STRUCT GnomeDock ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### ENUM GnomeDockPlacement ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### FUNCTION gnome_dock_new ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION gnome_dock_allow_floating_items ##### -->
+<para>
+
+</para>
+
+@dock: 
+@enable: 
+
+
+<!-- ##### FUNCTION gnome_dock_add_item ##### -->
+<para>
+
+</para>
+
+@dock: 
+@item: 
+@placement: 
+@band_num: 
+@position: 
+@offset: 
+@in_new_band: 
+
+
+<!-- ##### FUNCTION gnome_dock_add_floating_item ##### -->
+<para>
+
+</para>
+
+@dock: 
+@widget: 
+@x: 
+@y: 
+@orientation: 
+
+
+<!-- ##### FUNCTION gnome_dock_set_client_area ##### -->
+<para>
+
+</para>
+
+@dock: 
+@widget: 
+
+
+<!-- ##### FUNCTION gnome_dock_get_client_area ##### -->
+<para>
+
+</para>
+
+@dock: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gnome_dock_get_item_by_name ##### -->
+<para>
+
+</para>
+
+@dock: 
+@name: 
+@placement_return: 
+@num_band_return: 
+@band_position_return: 
+@offset_return: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gnome_dock_get_layout ##### -->
+<para>
+
+</para>
+
+@dock: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gnome_dock_add_from_layout ##### -->
+<para>
+
+</para>
+
+@dock: 
+@layout: 
+@Returns: 
+
+
+<!-- ##### SIGNAL GnomeDock::layout-changed ##### -->
+<para>
+
+</para>
+
+@dock: the object which received the signal.
+

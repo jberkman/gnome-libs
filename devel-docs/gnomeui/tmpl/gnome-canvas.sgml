@@ -1,0 +1,259 @@
+<!-- ##### SECTION Title ##### -->
+GnomeCanvas
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### STRUCT GnomeCanvas ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### MACRO GNOME_CANVAS_EPSILON ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO GNOME_CANVAS_COLOR ##### -->
+<para>
+
+</para>
+
+@r: 
+@g: 
+@b: 
+
+
+<!-- ##### MACRO GNOME_CANVAS_COLOR_A ##### -->
+<para>
+
+</para>
+
+@r: 
+@g: 
+@b: 
+@a: 
+
+
+<!-- ##### STRUCT GnomeCanvasBuf ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### FUNCTION gnome_canvas_new ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION gnome_canvas_new_aa ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION gnome_canvas_root ##### -->
+<para>
+
+</para>
+
+@canvas: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gnome_canvas_set_scroll_region ##### -->
+<para>
+
+</para>
+
+@canvas: 
+@x1: 
+@y1: 
+@x2: 
+@y2: 
+
+
+<!-- ##### FUNCTION gnome_canvas_get_scroll_region ##### -->
+<para>
+
+</para>
+
+@canvas: 
+@x1: 
+@y1: 
+@x2: 
+@y2: 
+
+
+<!-- ##### FUNCTION gnome_canvas_set_pixels_per_unit ##### -->
+<para>
+
+</para>
+
+@canvas: 
+@n: 
+
+
+<!-- ##### FUNCTION gnome_canvas_scroll_to ##### -->
+<para>
+
+</para>
+
+@canvas: 
+@cx: 
+@cy: 
+
+
+<!-- ##### FUNCTION gnome_canvas_get_scroll_offsets ##### -->
+<para>
+
+</para>
+
+@canvas: 
+@cx: 
+@cy: 
+
+
+<!-- ##### FUNCTION gnome_canvas_update_now ##### -->
+<para>
+
+</para>
+
+@canvas: 
+
+
+<!-- ##### FUNCTION gnome_canvas_get_item_at ##### -->
+<para>
+
+</para>
+
+@canvas: 
+@x: 
+@y: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gnome_canvas_request_redraw_uta ##### -->
+<para>
+
+</para>
+
+@canvas: 
+@uta: 
+
+
+<!-- ##### FUNCTION gnome_canvas_request_redraw ##### -->
+<para>
+
+</para>
+
+@canvas: 
+@x1: 
+@y1: 
+@x2: 
+@y2: 
+
+
+<!-- ##### FUNCTION gnome_canvas_w2c_affine ##### -->
+<para>
+
+</para>
+
+@canvas: 
+@affine: 
+
+
+<!-- ##### FUNCTION gnome_canvas_w2c ##### -->
+<para>
+
+</para>
+
+@canvas: 
+@wx: 
+@wy: 
+@cx: 
+@cy: 
+
+
+<!-- ##### FUNCTION gnome_canvas_w2c_d ##### -->
+<para>
+
+</para>
+
+@canvas: 
+@wx: 
+@wy: 
+@cx: 
+@cy: 
+
+
+<!-- ##### FUNCTION gnome_canvas_c2w ##### -->
+<para>
+
+</para>
+
+@canvas: 
+@cx: 
+@cy: 
+@wx: 
+@wy: 
+
+
+<!-- ##### FUNCTION gnome_canvas_window_to_world ##### -->
+<para>
+
+</para>
+
+@canvas: 
+@winx: 
+@winy: 
+@worldx: 
+@worldy: 
+
+
+<!-- ##### FUNCTION gnome_canvas_world_to_window ##### -->
+<para>
+
+</para>
+
+@canvas: 
+@worldx: 
+@worldy: 
+@winx: 
+@winy: 
+
+
+<!-- ##### FUNCTION gnome_canvas_get_color ##### -->
+<para>
+
+</para>
+
+@canvas: 
+@spec: 
+@color: 
+@Returns: 
+
+
+<!-- ##### FUNCTION gnome_canvas_set_stipple_origin ##### -->
+<para>
+
+</para>
+
+@canvas: 
+@gc: 
+
+
