@@ -1,4 +1,4 @@
-#if !defined(__LIBGNORBA_COMPILATION) && defined(__ORBIT_IDL__NOWAY)
+#if !defined(__LIBGNORBA_COMPILATION) && defined(__ORBIT_IDL__)
 %{
 #pragma include_defs libgnorba/GnomeObject.h
   %}
@@ -24,6 +24,6 @@ module GNOME {
   };
 };
 
-#if !defined(__LIBGNORBA_COMPILATION) && defined(__ORBIT_IDL__NOWAY)
+#if !defined(__LIBGNORBA_COMPILATION) && defined(__ORBIT_IDL__)
 #pragma inhibit pop
 #endif
