@@ -506,7 +506,6 @@ add_file_handler (GnomeSelector *selector, const gchar *uri, gint position,
     g_return_if_fail (position >= -1);
     g_return_if_fail (uri != NULL);
     g_return_if_fail (async_handle != NULL);
-    g_assert (GNOME_IS_SELECTOR (async_handle->selector));
 
     iselector = GNOME_ICON_SELECTOR (selector);
 
@@ -621,8 +620,7 @@ add_defaults_async_cb (GnomeSelector *selector,
 		       const char *uri, GError *error,
 		       gboolean success, gpointer user_data)
 {
-    g_message (G_STRLOC ": %d - `%s' - %p - %d", success, uri,
-	       async_handle, async_handle->refcount);
+    g_message (G_STRLOC ": %d - `%s' - %p", success, uri, async_handle);
 }
 
 /**
