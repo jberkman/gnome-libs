@@ -1,10 +1,9 @@
 <!doctype book PUBLIC "-//Davenport//DTD DocBook V3.0//EN" [
-  <!ENTITY about SYSTEM "about.sgml">
   <!ENTITY fundamentals SYSTEM "fundamentals.sgml">
   <!ENTITY components SYSTEM "components.sgml">
   <!ENTITY develinfo SYSTEM "develinfo.sgml">
+  <!ENTITY references SYSTEM "references.sgml">
 ]>
-<!-- Marked up by Martin Wahlén <mva@sbbs.se> -->
 <book id="ui-guide">
 
   <bookinfo>
@@ -27,14 +26,67 @@
 	</authorblurb>
       </author>
 
+      <author>
+        <firstname>J&ouml;rg</firstname>
+        <surname>Rathlev</surname>
+        <authorblurb>
+          <simpara><email>joerg@jrsoftware.de</email></simpara>
+        </authorblurb>
+      </author>
+
+      <author>
+        <firstname>Martin</firstname>
+        <surname>Wahlen</surname>
+        <authorblurb>
+          <simpara><email>mva@sbbs.de</email></simpara>
+        </authorblurb>
+      </author>
+
     </authorgroup>
 
+    <abstract>
+
+      <title>About this book</title>
+
+      <para>
+        This book contains the user interface guidelines that developers
+        should follow when writing applications for the GNU Network
+        Object Model Environment (GNOME).
+      </para>
+
+      <para>
+        One of the main goals of the GNOME project is to provide a
+        consistent graphical user interface for applications.  Users can
+        benefit greatly from a uniform and consistent look-and-feel
+        among applications.  When a group of programs share the same
+        philosophy about the user interface, users can just learn the
+        interface to one of those programs and apply their knowledge on
+        the rest of them, without having to re-learn different user
+        interface conventions for each program.
+      </para>
+
+      <para>
+        This document describes the philosophy of the GNOME user
+        interface and contains ways in which developers may access the
+        standard user interface elements of GNOME.  Wherever possible,
+        it contains source code examples that can be used to implement
+        this functionality.  It also provides examples of how not to
+        design user interfaces for GNOME applications; these appear with
+        an explanation regarding why these examples are "bad design" and
+        how to correct them.
+      </para>
+
+    </abstract>
+
     <copyright>
-      <year>1998</year>
+      <year>1998, 1999</year>
       <holder>The GNOME Project</holder>
     </copyright>
 
     <legalnotice>
+
+      <title>Legal Notice</title>
+
       <para>
 	This documentation is free software; you can redistribute
 	it and/or modify it under the terms of the GNU General Public
@@ -47,7 +99,7 @@
 	This program is distributed in the hope that it will be
 	useful, but WITHOUT ANY WARRANTY; without even the implied
 	warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
-	PURPOSE.  See the GNU General Public License for more
+	PURPOSE. See the GNU General Public License for more
 	details.
       </para>
 
@@ -62,14 +114,41 @@
 	For more details see the file COPYING in the source
 	distribution of GNOME.
       </para>
+
     </legalnotice>
     
   </bookinfo>
 
   <toc></toc>
 
-  <!-- About this book -->
-  &about;
+  <!-- Here's a first draft of how the future structure of this
+       document might look like:
+
+       PART I - Introduction
+          (Who should read this book, what's in the book, how to
+          apply the guidelines etc.)
+
+       PART II - Fundamentals
+          (Principles, Accessibility, Internationalization,
+          Network Computing, Input Methods)
+
+       PART III - User Interface Components
+          (Overview, Windows, Menus, Controls)
+
+       PART IV - Interface Design
+          (Color, Fonts, Layout, Images, Icons etc.)
+
+       PART V - Implementation
+          (Integrating with the system, code examples)
+
+       PART VI - Appendixes
+          (Summaries, Checklist, Localized Terms, Joining the
+          GNOME Developers, GPL)
+
+       Glossary
+       Bibliography
+       Index
+  -->
 
   <!-- Fundamentals of the GNOME user interface -->
   &fundamentals;
@@ -80,36 +159,7 @@
   <!-- General development information -->
   &develinfo;
 
-<!-- There is a Bibliography tag but I am not sure how to use it -->
-<appendix id="references">
-<title>References</title>
-<orderedlist>
-<listitem>
-<para>
-Apple Computer, Macintosh Human Interface Guidelines.
-Addison-Wesley, 1992.  (Also available as
-http://developer.apple.com/techpubs/mac/HIGuidelines/HIGuidelines-2.html).
-</para>
-<listitem>
-<para>
-GNU Network Object Model Environment, http://www.gnome.org
-</para>
-<listitem>
-<para>
-The GNOME Manifesto, http://www.gnome.org/about/manifesto.shtml
-</para>
-<listitem>
-<para>
-Interface Hall of Fame, http://www.iarchitect.com/mfame.htm
-</para>
-<listitem>
-<para>
-Interface Hall of Shame, http://www.iarchitect.com/mshame.htm
-</para>
-<listitem>
-<para>
-Tom Vogt, Rogue GNOME Style Guide, http://home.onestop.net/arena/rsg.txt
-</para>
-</orderedlist>
-</appendix>
+  <!-- Bibilography -->
+  &references;
+
 </book>
