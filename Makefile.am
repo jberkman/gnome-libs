@@ -22,7 +22,7 @@ SUBDIRS = po intl support macros \
 	tools \
 	libart_lgpl \
 	libgnome libgnomeui gtk-xmhtml $(gnome_hello) zvt \
-	libgnorba idl $(test_gnome) devel-docs
+	libgnorba idl $(test_gnome) devel-docs gnome-data
 
 include_HEADERS = gnome.h
 
