@@ -538,9 +538,6 @@ int main(int argc, char **argv) {
 					   GTK_SIGNAL_FUNC(remove_child_handler), NULL);
 	/* we could also connect handlers to other signals, but since we're lazy, we won't ;) */
 
-	/* open the initial toplevel window */
-	gnome_mdi_open_toplevel(mdi);
-
 	/* Restore MDI session. */
 
 	if (restarted) {
@@ -552,6 +549,9 @@ int main(int argc, char **argv) {
 
 		gnome_config_pop_prefix ();
 	}
+	else
+		/* open the initial toplevel window */
+		gnome_mdi_open_toplevel(mdi);
 
 	/* and here we go... */
 	gtk_main();
