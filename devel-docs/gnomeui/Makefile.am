@@ -104,47 +104,60 @@ gnomeui_doc_DATA =				\
 EXTRA_DIST = $(gnomeui_doc_DATA)
 
 gnomeui.html: html/book1.html
-	cp $(srcdir)/html/book1.html gnomeui.html
+	-cd $(srcdir) && cp html/book1.html gnomeui.html
 
 html/book1.html: sgml/gnomeui-doc.bottom
-	make html
+	$(MAKE) html
 
 sgml/gnomeui-doc.bottom: $(tmpl_sources)
-	make sgml
+	$(MAKE) sgml
 
 scan:
-	-CFLAGS=$(CFLAGS) LDFLAGS=$(LDFLAGS) gtkdoc-scanobj --module=$(DOC_MODULE)
-	gtkdoc-scan --module=$(DOC_MODULE) --source-dir=$(DOC_SOURCE_DIR)
+	-(cd $(srcdir) \
+	&& env CFLAGS=$(CFLAGS) LDFLAGS=$(LDFLAGS) \
+		 gtkdoc-scanobj --module=$(DOC_MODULE) \
+	&& gtkdoc-scan --module=$(DOC_MODULE) --source-dir=$(DOC_SOURCE_DIR) )
 
 templates: scan
-	gtkdoc-mktmpl --module=$(DOC_MODULE)
+	cd $(srcdir) && gtkdoc-mktmpl --module=$(DOC_MODULE)
 
 sgml:
-	gtkdoc-mkdb --module=$(DOC_MODULE) --source-dir=$(DOC_SOURCE_DIR)
+	cd $(srcdir) \
+	&& gtkdoc-mkdb --module=$(DOC_MODULE) --source-dir=$(DOC_SOURCE_DIR)
 
 html:
-	if ! test -d html ; then mkdir html ; fi
-	-cd html && gtkdoc-mkhtml $(DOC_MODULE) ../$(DOC_MAIN_SGML_FILE)
+	test -d $(srcdir)/html || mkdir $(srcdir)/html
+	-cd $(srcdir)/html && gtkdoc-mkhtml $(DOC_MODULE) ../$(DOC_MAIN_SGML_FILE)
 
 clean-local:
 	rm -f *~ *.bak *.hierarchy *.signals *-unused.txt
 
 maintainer-clean-local: clean
-	rm -rf sgml html $(DOC_MODULE)-decl-list.txt $(DOC_MODULE)-decl.txt 
+	cd $(srcdir) && rm -rf sgml html $(DOC_MODULE)-decl-list.txt $(DOC_MODULE)-decl.txt 
 
 install-data-local: 
-	install -d -m 0755 $(TARGET_DIR)
-	-install -m 0644 html/*.html $(TARGET_DIR)
-	-install -m 0644 html/index.sgml $(TARGET_DIR)
-	-gtkdoc-fixxref --module=$(DOC_MODULE) --html-dir=$(HTML_DIR)
+	$(mkinstalldirs) $(TARGET_DIR)
+	(installfiles=`echo $(srcdir)/*.html`; \
+	if test "$$installfiles" = '$(srcdir)/*.html'; \
+	then echo '-- Nothing to install' ; \
+	else \
+	  for i in $$installfiles; do \
+	    echo '-- Installing '$$i ; \
+	    $(INSTALL_DATA) $$i $(TARGET_DIR); \
+	  done; \
+	  echo '-- Installing $(srcdir)/html/index.sgml' ; \
+	  $(INSTALL_DATA) $(srcdir)/html/index.sgml $(TARGET_DIR); \
+	  echo '-- Fixing Crossreferences' ; \
+	  gtkdoc-fixxref --module=$(DOC_MODULE) --html-dir=$(HTML_DIR); \
+	fi)
 
 dist-hook:
 	mkdir $(distdir)/html
 	mkdir $(distdir)/sgml
 	mkdir $(distdir)/tmpl
-	-cp html/*.html html/*.css $(distdir)/html
-	-cp tmpl/*.sgml $(distdir)/tmpl
-	-cp sgml/*.sgml $(distdir)/sgml
-	-cp sgml/*.bottom sgml/*.top $(distdir)/sgml
+	-cp $(srcdir)/html/*.html $(srcdir)/html/*.css $(distdir)/html
+	-cp $(srcdir)/tmpl/*.sgml $(distdir)/tmpl
+	-cp $(srcdir)/sgml/*.sgml $(distdir)/sgml
+	-cp $(srcdir)/sgml/*.bottom $(srcdir)/sgml/*.top $(distdir)/sgml
 
 .PHONY : html sgml templates scan
