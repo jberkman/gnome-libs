@@ -1,3 +1,11 @@
+1998-02-14  Carsten Schaar  <nhadcasc@fs-maphy.uni-hannover.de>
+
+	* gnome-hello-4-SM.c (parse_args): Changed to use new SM support.
+	(save_state): Changed to use new SM support
+	(connect): New function. This function is called after gnome-hello
+ 	connects to a session manager.
+	(restart_session): Replaced with 'connect'.
+
 1998-02-13  Raja R Harinath  <harinath@cs.umn.edu>
 
 	* Makefile.am (LDADD): Use $(LIBGNOME_LIBS) too.  Should fix some
