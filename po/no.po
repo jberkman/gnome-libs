@@ -1,12 +1,12 @@
 # Norwegian (bokmål dialect) translation of the gnome-libs module.
 # Copyright (C) 1998 Free Software Foundation, Inc.
-# Kjartan Maraas <kmaraas@fib.hl.no>, 1998.
+# Kjartan Maraas <kmaraas@fib.hl.no>, 1998, 1999.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: gnome-libs 0.99\n"
-"POT-Creation-Date: 1998-12-16 02:52-0500\n"
-"PO-Revision-Date: 1998-12-14 21:55+0100\n"
+"Project-Id-Version: gnome-libs 0.99.1\n"
+"POT-Creation-Date: 1999-01-03 00:47+0100\n"
+"PO-Revision-Date: 1999-01-03 00:50+0100\n"
 "Last-Translator: Kjartan Maraas <kmaraas@fib.hl.no>\n"
 "Language-Team: Norwegian <no@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -15,13 +15,13 @@ msgstr ""
 
 #: gnome-hello/gnome-hello-2-i18n.c:36
 #: gnome-hello/gnome-hello-3-parse-args.c:36
-#: gnome-hello/gnome-hello-4-SM.c:218 gnome-hello/gnome-hello.c:122
+#: gnome-hello/gnome-hello-4-SM.c:174 gnome-hello/gnome-hello.c:122
 msgid "Hello GNOME\n"
 msgstr "Hello GNOME\n"
 
 #: gnome-hello/gnome-hello-2-i18n.c:59
 #: gnome-hello/gnome-hello-3-parse-args.c:59
-#: gnome-hello/gnome-hello-4-SM.c:241 gnome-hello/gnome-hello.c:145
+#: gnome-hello/gnome-hello-4-SM.c:197 gnome-hello/gnome-hello.c:145
 msgid "The Hello World Gnomified"
 msgstr "Hello World Gnomifisert"
 
@@ -34,7 +34,7 @@ msgstr "(C) 1998 the Free Software Foundation"
 #. another comments
 #: gnome-hello/gnome-hello-2-i18n.c:64
 #: gnome-hello/gnome-hello-3-parse-args.c:64
-#: gnome-hello/gnome-hello-4-SM.c:246 gnome-hello/gnome-hello.c:150
+#: gnome-hello/gnome-hello-4-SM.c:202 gnome-hello/gnome-hello.c:150
 msgid "GNOME is a civilized software system so we've a \"hello world\" program"
 msgstr ""
 "GNOME er et sivilisert programvaresystem så vi har et \"hello world\" program"
@@ -46,7 +46,7 @@ msgstr "Om GnomeHello..."
 
 #: gnome-hello/gnome-hello-2-i18n.c:78
 #: gnome-hello/gnome-hello-3-parse-args.c:78 gnome-hello/gnome-hello-4-SM.c:53
-#: gnome-hello/gnome-hello-7-mdi.c:433
+#: gnome-hello/gnome-hello-7-mdi.c:429
 msgid "Exit"
 msgstr "Avslutt"
 
@@ -54,14 +54,14 @@ msgstr "Avslutt"
 #. insertion routines for details)
 #: gnome-hello/gnome-hello-2-i18n.c:84
 #: gnome-hello/gnome-hello-3-parse-args.c:84 gnome-hello/gnome-hello-4-SM.c:77
-#: gnome-hello/gnome-hello-7-mdi.c:439 gnome-hello/gnome-hello-7-mdi.c:545
+#: gnome-hello/gnome-hello-7-mdi.c:435 gnome-hello/gnome-hello-7-mdi.c:536
 #: libgnomeui/stock_demo.c:184
 msgid "File"
 msgstr "Fil"
 
 #: gnome-hello/gnome-hello-2-i18n.c:85
 #: gnome-hello/gnome-hello-3-parse-args.c:85 gnome-hello/gnome-hello-4-SM.c:78
-#: gnome-hello/gnome-hello-7-mdi.c:488 libgnomeui/gnome-stock.c:775
+#: gnome-hello/gnome-hello-7-mdi.c:484 libgnomeui/gnome-stock.c:776
 #: libgnomeui/stock_demo.c:290
 msgid "Help"
 msgstr "Hjelp"
@@ -72,7 +72,7 @@ msgstr "Hjelp"
 #.
 #: gnome-hello/gnome-hello-2-i18n.c:124
 #: gnome-hello/gnome-hello-3-parse-args.c:137
-#: gnome-hello/gnome-hello-4-SM.c:183
+#: gnome-hello/gnome-hello-4-SM.c:139
 msgid "Hello World Gnomified"
 msgstr "Hello World Gnomifisert"
 
@@ -82,7 +82,7 @@ msgstr "Hello World Gnomifisert"
 #.
 #: gnome-hello/gnome-hello-2-i18n.c:136
 #: gnome-hello/gnome-hello-3-parse-args.c:149
-#: gnome-hello/gnome-hello-4-SM.c:199 gnome-hello/gnome-hello.c:103
+#: gnome-hello/gnome-hello-4-SM.c:155 gnome-hello/gnome-hello.c:103
 msgid "Hello GNOME"
 msgstr "Hello GNOME"
 
@@ -90,7 +90,7 @@ msgstr "Hello GNOME"
 msgid "Exit GNOME hello"
 msgstr "Avslutt GNOME hello"
 
-#: gnome-hello/gnome-hello-4-SM.c:65 gnome-hello/gnome-hello-7-mdi.c:482
+#: gnome-hello/gnome-hello-4-SM.c:65 gnome-hello/gnome-hello-7-mdi.c:478
 msgid "About..."
 msgstr "Om..."
 
@@ -98,59 +98,51 @@ msgstr "Om..."
 msgid "Info about GNOME hello"
 msgstr "Informasjon om GNOME hello"
 
-#: gnome-hello/gnome-hello-4-SM.c:89 gnome-hello/gnome-hello-7-mdi.c:30
-msgid "Discard session"
-msgstr "Avbryt sesjon"
-
-#: gnome-hello/gnome-hello-4-SM.c:89 libgnomeui/gnome-client.c:745
-msgid "ID"
-msgstr "ID"
-
-#: gnome-hello/gnome-hello-7-mdi.c:201
+#: gnome-hello/gnome-hello-7-mdi.c:197
 msgid "Add View"
 msgstr "Legg til visning"
 
-#: gnome-hello/gnome-hello-7-mdi.c:206
+#: gnome-hello/gnome-hello-7-mdi.c:202
 msgid "Remove View"
 msgstr "Fjern visning"
 
-#: gnome-hello/gnome-hello-7-mdi.c:214
+#: gnome-hello/gnome-hello-7-mdi.c:210
 msgid "Increase Counter"
 msgstr "Øk teller"
 
-#: gnome-hello/gnome-hello-7-mdi.c:220
+#: gnome-hello/gnome-hello-7-mdi.c:216
 msgid "Child"
 msgstr "Barn"
 
-#: gnome-hello/gnome-hello-7-mdi.c:417
+#: gnome-hello/gnome-hello-7-mdi.c:413
 msgid "Add Child"
 msgstr "Legg til barn"
 
-#: gnome-hello/gnome-hello-7-mdi.c:423
+#: gnome-hello/gnome-hello-7-mdi.c:419
 msgid "Remove Child"
 msgstr "Fjern barn"
 
-#: gnome-hello/gnome-hello-7-mdi.c:446
+#: gnome-hello/gnome-hello-7-mdi.c:442
 msgid "Children"
 msgstr "Barn"
 
-#: gnome-hello/gnome-hello-7-mdi.c:455
+#: gnome-hello/gnome-hello-7-mdi.c:451
 msgid "Notebook"
 msgstr "Notisblokk"
 
-#: gnome-hello/gnome-hello-7-mdi.c:461
+#: gnome-hello/gnome-hello-7-mdi.c:457
 msgid "Toplevel"
 msgstr "Toppnivå"
 
-#: gnome-hello/gnome-hello-7-mdi.c:467
+#: gnome-hello/gnome-hello-7-mdi.c:463
 msgid "Modal"
 msgstr "Modulær"
 
-#: gnome-hello/gnome-hello-7-mdi.c:473
+#: gnome-hello/gnome-hello-7-mdi.c:469
 msgid "MDI Mode"
 msgstr "MDI modus"
 
-#: gnome-hello/gnome-hello-7-mdi.c:546
+#: gnome-hello/gnome-hello-7-mdi.c:537
 msgid "Children/"
 msgstr "Barn/"
 
@@ -199,6 +191,26 @@ msgstr "Gnome Hello %s.\n"
 msgid "Options error\n"
 msgstr "Feil flagg\n"
 
+#: libgnome/gconfigger.c:32
+msgid "get"
+msgstr "hent"
+
+#: libgnome/gconfigger.c:32
+msgid "Get config entry"
+msgstr "Hent konfigurasjonsoppføring"
+
+#: libgnome/gconfigger.c:32 libgnome/gconfigger.c:33
+msgid "CONFIG-PATH"
+msgstr "KONFIGURASJONS-STI"
+
+#: libgnome/gconfigger.c:33
+msgid "set"
+msgstr "sett"
+
+#: libgnome/gconfigger.c:33
+msgid "Set config entry"
+msgstr "Sett konfigurasjonsoppføring"
+
 #: libgnome/gnome-popt.c:75
 #, c-format
 msgid ""
@@ -208,6 +220,26 @@ msgstr ""
 "Feil ved flagg %s: %s.\n"
 "Kjør '%s --help' for å få en full liste med tilgjengelige "
 "kommandolinjeflagg.\n"
+
+#: libgnome/gnomelib-init.c:113
+msgid "Disable sound server usage"
+msgstr "Slå av bruk av lydtjener"
+
+#: libgnome/gnomelib-init.c:115
+msgid "Enable sound server usage"
+msgstr "Slå på bruk av lydtjener"
+
+#: libgnome/gnomelib-init.c:117
+msgid "Host:port on which the sound server to use is running"
+msgstr "Vert:port hvor lydtjeneren som skal brukes kjører"
+
+#: libgnome/gnomelib-init.c:118
+msgid "HOSTNAME:PORT"
+msgstr "VERTNAVN:PORT"
+
+#: libgnome/gnomelib-init.c:126
+msgid "GNOME Options"
+msgstr "GNOME Alternativer"
 
 #: libgnomeui/gnome-about.c:186
 msgid "Author:"
@@ -221,7 +253,7 @@ msgstr "Forfattere:"
 msgid "Authors: "
 msgstr "Forfattere: "
 
-#: libgnomeui/gnome-about.c:564 libgnomeui/stock_demo.c:282
+#: libgnomeui/gnome-about.c:563 libgnomeui/stock_demo.c:282
 #: libgnomeui/winhints_demo.c:257
 msgid "About"
 msgstr "Om"
@@ -266,197 +298,201 @@ msgstr "  - OK? (ja eller nei)"
 msgid "Progress"
 msgstr "Fremgang"
 
-#: libgnomeui/gnome-calculator.c:932 libgnomeui/gnome-calculator.c:1087
+#: libgnomeui/gnome-calculator.c:940 libgnomeui/gnome-calculator.c:1097
 msgid "DEG"
 msgstr "DEG"
 
-#: libgnomeui/gnome-calculator.c:934
+#: libgnomeui/gnome-calculator.c:942
 msgid "RAD"
 msgstr "RAD"
 
-#: libgnomeui/gnome-calculator.c:936
+#: libgnomeui/gnome-calculator.c:944
 msgid "GRAD"
 msgstr "GRAD"
 
-#: libgnomeui/gnome-calculator.c:1077
+#: libgnomeui/gnome-calculator.c:1087
 msgid "1/x"
 msgstr "1/x"
 
-#: libgnomeui/gnome-calculator.c:1078
+#: libgnomeui/gnome-calculator.c:1088
 msgid "x^2"
 msgstr "x^2"
 
-#: libgnomeui/gnome-calculator.c:1079
+#: libgnomeui/gnome-calculator.c:1089
 msgid "SQRT"
 msgstr "SQRT"
 
-#: libgnomeui/gnome-calculator.c:1080
+#: libgnomeui/gnome-calculator.c:1090
 msgid "CE/C"
 msgstr "CE/C"
 
-#: libgnomeui/gnome-calculator.c:1081
+#: libgnomeui/gnome-calculator.c:1091
 msgid "AC"
 msgstr "AC"
 
 #. inverse button
-#: libgnomeui/gnome-calculator.c:1084
+#: libgnomeui/gnome-calculator.c:1094
 msgid "sin"
 msgstr "sin"
 
-#: libgnomeui/gnome-calculator.c:1085
+#: libgnomeui/gnome-calculator.c:1095
 msgid "cos"
 msgstr "cos"
 
-#: libgnomeui/gnome-calculator.c:1086
+#: libgnomeui/gnome-calculator.c:1096
 msgid "tan"
 msgstr "tan"
 
-#: libgnomeui/gnome-calculator.c:1089
+#: libgnomeui/gnome-calculator.c:1099
 msgid "e"
 msgstr "e"
 
-#: libgnomeui/gnome-calculator.c:1090
+#: libgnomeui/gnome-calculator.c:1100
 msgid "EE"
 msgstr "EE"
 
-#: libgnomeui/gnome-calculator.c:1091
+#: libgnomeui/gnome-calculator.c:1101
 msgid "log"
 msgstr "log"
 
-#: libgnomeui/gnome-calculator.c:1092
+#: libgnomeui/gnome-calculator.c:1102
 msgid "ln"
 msgstr "ln"
 
-#: libgnomeui/gnome-calculator.c:1093
+#: libgnomeui/gnome-calculator.c:1103
 msgid "x^y"
 msgstr "x^y"
 
-#: libgnomeui/gnome-calculator.c:1095
+#: libgnomeui/gnome-calculator.c:1105
 msgid "PI"
 msgstr "PI"
 
-#: libgnomeui/gnome-calculator.c:1096
+#: libgnomeui/gnome-calculator.c:1106
 msgid "x!"
 msgstr "x!"
 
-#: libgnomeui/gnome-calculator.c:1097
+#: libgnomeui/gnome-calculator.c:1107
 msgid "("
 msgstr "("
 
-#: libgnomeui/gnome-calculator.c:1098
+#: libgnomeui/gnome-calculator.c:1108
 msgid ")"
 msgstr ")"
 
-#: libgnomeui/gnome-calculator.c:1099
+#: libgnomeui/gnome-calculator.c:1109
 msgid "/"
 msgstr "/"
 
-#: libgnomeui/gnome-calculator.c:1101
+#: libgnomeui/gnome-calculator.c:1111
 msgid "STO"
 msgstr "STO"
 
-#: libgnomeui/gnome-calculator.c:1102
+#: libgnomeui/gnome-calculator.c:1112
 msgid "7"
 msgstr "7"
 
-#: libgnomeui/gnome-calculator.c:1103
+#: libgnomeui/gnome-calculator.c:1113
 msgid "8"
 msgstr "8"
 
-#: libgnomeui/gnome-calculator.c:1104
+#: libgnomeui/gnome-calculator.c:1114
 msgid "9"
 msgstr "9"
 
-#: libgnomeui/gnome-calculator.c:1105
+#: libgnomeui/gnome-calculator.c:1115
 msgid "*"
 msgstr "*"
 
-#: libgnomeui/gnome-calculator.c:1107
+#: libgnomeui/gnome-calculator.c:1117
 msgid "RCL"
 msgstr "RCL"
 
-#: libgnomeui/gnome-calculator.c:1108
+#: libgnomeui/gnome-calculator.c:1118
 msgid "4"
 msgstr "4"
 
-#: libgnomeui/gnome-calculator.c:1109
+#: libgnomeui/gnome-calculator.c:1119
 msgid "5"
 msgstr "5"
 
-#: libgnomeui/gnome-calculator.c:1110
+#: libgnomeui/gnome-calculator.c:1120
 msgid "6"
 msgstr "6"
 
-#: libgnomeui/gnome-calculator.c:1111
+#: libgnomeui/gnome-calculator.c:1121
 msgid "-"
 msgstr "-"
 
-#: libgnomeui/gnome-calculator.c:1113
+#: libgnomeui/gnome-calculator.c:1123
 msgid "SUM"
 msgstr "SUM"
 
-#: libgnomeui/gnome-calculator.c:1114
+#: libgnomeui/gnome-calculator.c:1124
 msgid "1"
 msgstr "1"
 
-#: libgnomeui/gnome-calculator.c:1115
+#: libgnomeui/gnome-calculator.c:1125
 msgid "2"
 msgstr "2"
 
-#: libgnomeui/gnome-calculator.c:1116
+#: libgnomeui/gnome-calculator.c:1126
 msgid "3"
 msgstr "3"
 
-#: libgnomeui/gnome-calculator.c:1117
+#: libgnomeui/gnome-calculator.c:1127
 msgid "+"
 msgstr "+"
 
-#: libgnomeui/gnome-calculator.c:1119
+#: libgnomeui/gnome-calculator.c:1129
 msgid "EXC"
 msgstr "EXC"
 
-#: libgnomeui/gnome-calculator.c:1120
+#: libgnomeui/gnome-calculator.c:1130
 msgid "0"
 msgstr "0"
 
-#: libgnomeui/gnome-calculator.c:1121
+#: libgnomeui/gnome-calculator.c:1131
 msgid "."
 msgstr "."
 
-#: libgnomeui/gnome-calculator.c:1122
+#: libgnomeui/gnome-calculator.c:1132
 msgid "+/-"
 msgstr "+/-"
 
-#: libgnomeui/gnome-calculator.c:1123
+#: libgnomeui/gnome-calculator.c:1133
 msgid "="
 msgstr "="
 
-#: libgnomeui/gnome-calculator.c:1192
+#: libgnomeui/gnome-calculator.c:1202
 msgid "INV"
 msgstr "INV"
 
-#: libgnomeui/gnome-client.c:745
+#: libgnomeui/gnome-client.c:750
 msgid "Specify session management ID"
 msgstr "Spesifiser ID for sesjonskontroll"
 
-#: libgnomeui/gnome-client.c:747
+#: libgnomeui/gnome-client.c:750 libgnorba/goad-browser.c:23
+msgid "ID"
+msgstr "ID"
+
+#: libgnomeui/gnome-client.c:752
 msgid "Specify prefix of saved configuration"
 msgstr "Spesifiser prefiks for lagret konfigurasjon"
 
-#: libgnomeui/gnome-client.c:747
+#: libgnomeui/gnome-client.c:752
 msgid "PREFIX"
 msgstr "PREFIKS"
 
-#: libgnomeui/gnome-client.c:749
+#: libgnomeui/gnome-client.c:754
 msgid "Disable connection to session manager"
 msgstr "Fjern forbindelse til sesjonsbehandler"
 
 #. Register commandline options.
-#: libgnomeui/gnome-client.c:870
+#: libgnomeui/gnome-client.c:875
 msgid "Session management options"
 msgstr "Alternativer for sesjonskontroll"
 
-#: libgnomeui/gnome-client.c:2143
+#: libgnomeui/gnome-client.c:2133
 msgid "Cancel Logout"
 msgstr "Avbryt utlogging"
 
@@ -521,7 +557,27 @@ msgstr "Velg fil"
 msgid "Browse..."
 msgstr "Se på..."
 
-#: libgnomeui/gnome-icon-sel.c:307
+#: libgnomeui/gnome-font-picker.c:159
+msgid "Pick a Font"
+msgstr "Velg en skrifttype"
+
+#: libgnomeui/gnome-font-picker.c:542 libgnomeui/gnome-stock.c:781
+msgid "Font"
+msgstr "Skrifttype"
+
+#: libgnomeui/gnome-icon-entry.c:87 libgnomeui/gnome-icon-entry.c:346
+msgid "No Icon"
+msgstr "Ikke noe ikon"
+
+#: libgnomeui/gnome-icon-entry.c:199 libgnomeui/gnome-pixmap-entry.c:176
+msgid "Can't find an hbox, using a normal file selection"
+msgstr "Kan ikke finne en hboks, bruker vanlig filvalg"
+
+#: libgnomeui/gnome-icon-entry.c:205 libgnomeui/gnome-pixmap-entry.c:182
+msgid "Preview"
+msgstr "Forhåndsvisning"
+
+#: libgnomeui/gnome-icon-sel.c:310
 msgid "Loading Icons..."
 msgstr "Laster ikoner..."
 
@@ -630,6 +686,30 @@ msgstr "Kalkulator"
 msgid "Calculator..."
 msgstr "Kalkulator..."
 
+#: libgnomeui/gnome-pixmap-entry.c:79 libgnomeui/gnome-pixmap-entry.c:217
+msgid "No Image"
+msgstr "Ikke noe bile"
+
+#: libgnomeui/gnome-popup-help.c:51
+msgid "_Help with this"
+msgstr "Hjelp om dette"
+
+#: libgnomeui/gnome-popup-help.c:57
+msgid "Cu_t"
+msgstr "Klipp"
+
+#: libgnomeui/gnome-popup-help.c:59
+msgid "_Copy"
+msgstr "Kopier"
+
+#: libgnomeui/gnome-popup-help.c:61
+msgid "_Paste"
+msgstr "Lim inn"
+
+#: libgnomeui/gnome-property-entries.c:249
+msgid "Select"
+msgstr "Velg"
+
 #: libgnomeui/gnome-scores.c:76
 msgid "Top Ten"
 msgstr "Topp ti"
@@ -648,7 +728,7 @@ msgstr "Dato"
 
 #: libgnomeui/gnome-spell.c:186
 msgid "Select dictionary"
-msgstr ""
+msgstr "Velg ordbok"
 
 #: libgnomeui/gnome-spell.c:233
 #, c-format
@@ -657,39 +737,43 @@ msgid ""
 "is not in the dictionary.\n"
 "Proceed anyway?"
 msgstr ""
+"Ordet `%s'\n"
+"finnes ikke i ordboken.\n"
+"Fortsett likevel?"
 
 #: libgnomeui/gnome-spell.c:237
 msgid "Confirm"
-msgstr ""
+msgstr "Bekreft"
 
-#: libgnomeui/gnome-spell.c:246 libgnomeui/gnome-stock.c:769
+#: libgnomeui/gnome-spell.c:246 libgnomeui/gnome-stock.c:770
 msgid "OK"
 msgstr "OK"
 
-#: libgnomeui/gnome-spell.c:253 libgnomeui/gnome-stock.c:771
+#: libgnomeui/gnome-spell.c:253 libgnomeui/gnome-stock.c:772
 msgid "Cancel"
 msgstr "Avbryt"
 
 #: libgnomeui/gnome-spell.c:515
 msgid "Word:"
-msgstr ""
+msgstr "Ord:"
 
 #: libgnomeui/gnome-spell.c:532
 msgid "Alternatives:"
-msgstr ""
+msgstr "Alternativer:"
 
 #: libgnomeui/gnome-spell.c:551
 msgid "Accept"
-msgstr ""
+msgstr "Godta"
 
 #: libgnomeui/gnome-spell.c:556
 msgid ""
 "Accept the word for\n"
 "this session only"
 msgstr ""
+"Godta ordet kun for\n"
+"denne sesjonen"
 
 #: libgnomeui/gnome-spell.c:558
-#, fuzzy
 msgid "Skip"
 msgstr "Hopp over"
 
@@ -698,29 +782,32 @@ msgid ""
 "Ignore this word\n"
 "this time only"
 msgstr ""
+"Ignorer dette ordet\n"
+"kun denne gangen"
 
 #: libgnomeui/gnome-spell.c:565
 msgid "Replace"
-msgstr ""
+msgstr "Erstatt"
 
 #: libgnomeui/gnome-spell.c:570
 msgid "Replace the word"
-msgstr ""
+msgstr "Erstatt ordet"
 
 #: libgnomeui/gnome-spell.c:572
-#, fuzzy
 msgid "Insert"
-msgstr "Bruker"
+msgstr "Sett inn"
 
 #: libgnomeui/gnome-spell.c:577
 msgid ""
 "Insert the word\n"
 "in your personal dictionary"
 msgstr ""
+"Legg ordet til\n"
+"i din personlige ordbok"
 
 #: libgnomeui/gnome-spell.c:579
 msgid "Insert with case"
-msgstr ""
+msgstr "Sett inn og ta hensyn til store/små bokstaver"
 
 #: libgnomeui/gnome-spell.c:585
 msgid ""
@@ -729,109 +816,108 @@ msgid ""
 "(if mixed-case preserve\n"
 "case-sensitivity)"
 msgstr ""
+"Legg ordet til\n"
+"i din personlige ordbok\n"
+"(hvis det består av både store\n"
+"og små bokstaver,behold disse)"
 
 #: libgnomeui/gnome-spell.c:600
-#, fuzzy
 msgid "Ispell command:"
-msgstr "Kommando:"
+msgstr "Ispell-kommando:"
 
 #: libgnomeui/gnome-spell.c:618
 msgid "Main dictionary:"
-msgstr ""
+msgstr "Hovedordbok:"
 
 #: libgnomeui/gnome-spell.c:635
 msgid "Personal dictionary:"
-msgstr ""
+msgstr "Personlig ordbok:"
 
 #: libgnomeui/gnome-spell.c:652
 msgid "Valid chars in words:"
-msgstr ""
+msgstr "Gyldige tegn i ord:"
 
 #: libgnomeui/gnome-spell.c:663
 msgid "Check words longer than:"
-msgstr ""
+msgstr "Sjekk ord som er lengre enn:"
 
 #: libgnomeui/gnome-spell.c:674
 msgid "Sort by correctness"
-msgstr ""
+msgstr "Sorter etter riktighet"
 
 #: libgnomeui/gnome-spell.c:682
 msgid "Accept run-together words"
-msgstr ""
+msgstr "Godta sammenslåtte ord"
 
 #: libgnomeui/gnome-spell.c:692
 msgid "Discard accepted words on kill"
-msgstr ""
+msgstr "Forkast or som er godtatt ved kill"
 
 #: libgnomeui/gnome-spell.c:700
 msgid "Enable tooltips"
-msgstr ""
+msgstr "Slå på verktøystips"
 
 #: libgnomeui/gnome-spell.c:714
 msgid "Kill ispell process"
-msgstr ""
+msgstr "Drep ispell-prosessen"
 
 #: libgnomeui/gnome-spell.c:740
 msgid "Spell"
-msgstr ""
+msgstr "Stav"
 
 #: libgnomeui/gnome-spell.c:747
 msgid "Configure"
-msgstr ""
+msgstr "Konfigurer"
 
-#: libgnomeui/gnome-stock.c:770
+#: libgnomeui/gnome-stock.c:771
 msgid "Apply"
 msgstr "Bruk"
 
-#: libgnomeui/gnome-stock.c:772 libgnomeui/stock_demo.c:144
+#: libgnomeui/gnome-stock.c:773 libgnomeui/stock_demo.c:144
 msgid "Close"
 msgstr "Lukk"
 
-#: libgnomeui/gnome-stock.c:773
+#: libgnomeui/gnome-stock.c:774
 msgid "Yes"
 msgstr "Ja"
 
-#: libgnomeui/gnome-stock.c:774
+#: libgnomeui/gnome-stock.c:775
 msgid "No"
 msgstr "Nei"
 
-#: libgnomeui/gnome-stock.c:776
+#: libgnomeui/gnome-stock.c:777
 msgid "Next"
 msgstr "Neste"
 
-#: libgnomeui/gnome-stock.c:777
+#: libgnomeui/gnome-stock.c:778
 msgid "Prev"
 msgstr "Forrige"
 
-#: libgnomeui/gnome-stock.c:778
+#: libgnomeui/gnome-stock.c:779
 msgid "Up"
 msgstr "Opp"
 
-#: libgnomeui/gnome-stock.c:779
+#: libgnomeui/gnome-stock.c:780
 msgid "Down"
 msgstr "Ned"
 
-#: libgnomeui/gnome-stock.c:780
-msgid "Font"
-msgstr "Skrifttype"
-
-#: libgnomeui/gnome-stock.c:1787
+#: libgnomeui/gnome-stock.c:1789
 msgid "Menu Accelerator Keys"
 msgstr "Taster for meny-akselleratorer"
 
-#: libgnomeui/gnome-stock.c:1789
+#: libgnomeui/gnome-stock.c:1791
 msgid "Global"
 msgstr "Global"
 
-#: libgnomeui/gnome-stock.c:1791
+#: libgnomeui/gnome-stock.c:1793
 msgid "Menu Item"
 msgstr "Menyvalg"
 
-#: libgnomeui/gnome-stock.c:1792
+#: libgnomeui/gnome-stock.c:1794
 msgid "Accelerator"
 msgstr "Aksellerator"
 
-#: libgnomeui/gnome_segv.c:60
+#: libgnomeui/gnome_segv.c:68
 msgid ""
 "No, and ignore\n"
 "future SIGSEGV's"
@@ -841,7 +927,7 @@ msgstr ""
 
 # , c-format
 # , c-format
-#: libgnomeui/gnome_segv.c:71
+#: libgnomeui/gnome_segv.c:79
 #, c-format
 msgid ""
 "Application \"%s\" has a bug.\n"
@@ -1048,6 +1134,72 @@ msgstr ""
 "Enkel testapplikasjon for å sjekke hvordan WIN_HINTS virker, og for å teste "
 "gnome_win_hints_*-funksjonene for feil. :)"
 
+#: libgnorba/gnome-name-server.c:175
+#, c-format
+msgid "Creating '/GNOME' context %s %d"
+msgstr "Oppretter '/GNOME' kontekst %s %d"
+
+#: libgnorba/gnome-name-server.c:192
+#, c-format
+msgid "Creating '/GNOME/Servers' context %s %d"
+msgstr "Oppretter 'GNOME/Servers' kontekst %s %d"
+
+#: libgnorba/goad-browser.c:23
+msgid "GOAD ID of the server to activate"
+msgstr "GOAD-ID til tjeneren som skal aktiveres"
+
+#: libgnorba/goad-browser.c:24
+msgid "Repository ID of the server to activate"
+msgstr ""
+
+#: libgnorba/goad-browser.c:24
+msgid "REPO-ID"
+msgstr ""
+
+#: libgnorba/goad.c:1123
+msgid "(Internal use only) GOAD server ID to activate"
+msgstr "(Kun for intern bruk) GOAD-tjener ID som skal aktiveres"
+
+#: libgnorba/loadshlib.c:18
+msgid "ID under which GOAD knows this server"
+msgstr ""
+
+#: libgnorba/loadshlib.c:18
+msgid "GOAD_ID"
+msgstr ""
+
+#: libgnorba/loadshlib.c:19
+msgid "Repository ID under which GOAD knows this server"
+msgstr ""
+
+#: libgnorba/loadshlib.c:19
+msgid "REPO_ID"
+msgstr ""
+
+#: libgnorba/orbitgtk.c:133
+msgid "Can not write to the cookie file"
+msgstr "Kan ikke skrive til cookie-filen"
+
+#: libgnorba/orbitgtk.c:135
+msgid "Unknown error while writing cookie file"
+msgstr "Ukjent feil under skriving til cookie-filen"
+
+#: libgnorba/orbitgtk.c:146
+msgid "Could not open the cookie file"
+msgstr "Kunne ikke åpne cookie-filen"
+
+#: libgnorba/orbitgtk.c:154
+msgid "Can not read the cookie file\n"
+msgstr "Kan ikke lese cookie-filen\n"
+
+#: libgnorba/orbitgtk.c:156
+msgid "While reading the cookie file\n"
+msgstr "Under lesing av cookie-filen\n"
+
+#: libgnorba/orbitns.c:254
+msgid "Could not get name service!"
+msgstr "Fikk ikke kontakt med navnetjenesten!"
+
 #: libvfs/extfs.c:274
 #, c-format
 msgid ""
@@ -1060,6 +1212,14 @@ msgstr ""
 #: libvfs/extfs.c:306 libvfs/extfs.c:326
 msgid "Inconsistent extfs archive"
 msgstr "Inkonsistent extfs-arkiv"
+
+#: libvfs/fish.c:226
+msgid " Error "
+msgstr " Feil "
+
+#: libvfs/fish.c:226
+msgid "Sorry, we can not do password authenticated connections for now."
+msgstr "Beklager, vi støtter ikke passordautentiserte forbindelser ennå."
 
 #: libvfs/ftpfs.c:461
 #, c-format
@@ -1120,7 +1280,7 @@ msgstr " Ugyldig passord "
 msgid " Too many open connections "
 msgstr " For mange åpne forbindelser "
 
-#: libvfs/tar.c:90 libvfs/tar.c:107
+#: libvfs/tar.c:83 libvfs/tar.c:100
 #, c-format
 msgid ""
 "Couldn't open tar archive\n"
@@ -1129,16 +1289,16 @@ msgstr ""
 "Kunne ikke åpne tar-arkiv\n"
 "%s"
 
-#: libvfs/tar.c:277
+#: libvfs/tar.c:272
 msgid "Unexpected EOF on archive file"
 msgstr "Uventet EOF på arkivfilen"
 
-#: libvfs/tar.c:332 libvfs/tar.c:339
+#: libvfs/tar.c:327 libvfs/tar.c:334
 msgid "Inconsistent tar archive"
 msgstr "Ukonsistent tar-arkiv"
 
 #. Error on first record
-#: libvfs/tar.c:398
+#: libvfs/tar.c:393
 #, c-format
 msgid ""
 "Hmm,...\n"
@@ -1238,6 +1398,14 @@ msgstr "%s: flagget `-W %s' er flertydig\n"
 msgid "%s: option `-W %s' doesn't allow an argument\n"
 msgstr "%s: flagget `-W %s' tillater ikke argumenter\n"
 
+#: support/popthelp.c:35
+msgid "Show this help message"
+msgstr "Vis denne hjelpteksten"
+
+#: support/popthelp.c:36
+msgid "Display brief usage message"
+msgstr "Gi en kort bruksbeskrivelse"
+
 #: test-gnome/testgnome.c:290
 msgid "Guru-in-a-dialog test"
 msgstr "Guru-i-en-dialog test"
@@ -1281,28 +1449,3 @@ msgstr "Brukeren valgte Nei/Avbryt med data:\n"
 msgid "Weird number in reply callback"
 msgstr "Rart nummer i tilbakeringingssvaret"
 
-#~ msgid "Give this help list"
-#~ msgstr "Vis denne hjelpelisten"
-
-#~ msgid "Give a short usage message"
-#~ msgstr "Gi en kort bruksbeskrivelse"
-
-#~ msgid "Set the program name"
-#~ msgstr "Sett programnavnet"
-
-#~ msgid "Hang for SECS seconds (default 3600)"
-#~ msgstr "Heng i SEK sekunder (forvalgt 3600)"
-
-#~ msgid "Print program version"
-#~ msgstr "Skriv ut programversjonen"
-
-#~ msgid "(PROGRAM ERROR) No version known!?"
-#~ msgstr "(PROGRAM-FEIL) Versjon ikke kjent!?"
-
-# , c-format
-# , c-format
-#~ msgid "%s: Too many arguments\n"
-#~ msgstr "%s: For mange argumenter\n"
-
-#~ msgid "(PROGRAM ERROR) Option should have been recognized!?"
-#~ msgstr "(PROGRAM-FEIL) Flagget skulle blitt gjenkjent!?"
