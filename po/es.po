@@ -1,9 +1,9 @@
 msgid ""
 msgstr ""
-"Date: 1998-10-01 13:01:00+0200\n"
-"Project-Id-Version: gnome-libs 0.20\n"
+"Date: 1998-10-17 13:01:00+0200\n"
+"Project-Id-Version: gnome-libs 0.30\n"
 "POT-Creation-Date: 1998-04-20 20:15:47-0500\n"
-"PO-Revision-Date: 1998-10-08 13:01:00+0200\n"
+"PO-Revision-Date: 1998-10-17 13:01:00+0200\n"
 "From: Miguel de Icaza,computo,622-4680 <miguel@metropolis.nuclecu.unam.mx>\n"
 "Last-Translator: Pablo Saratxaga <srtxg@chanae.alphanet.ch>\n"
 "Language-Team: \n"
@@ -13,52 +13,56 @@ msgstr ""
 "Xgettext-Options: --default-domain=gnome-libs --directory=.. --add-comments --keyword=_ --keyword=N_ --files-from=./POTFILES.in\n"
 "Files: libgnomeui/gnome-about.c libgnomeui/gnome-file-entry.c libgnomeui/gnome-messagebox.c libgnomeui/gnome-init.c libgnomeui/gnome-client.c libgnomeui/gnome_segv.c libgnomeui/gnome-calculator.c support/argp-parse.c support/argp-help.c libgnomeui/gnome-scores.c libgnomeui/gnome-stock.c gnome-hello/gnome-hello-2-i18n.c gnome-hello/gnome-hello-3-parse-args.c gnome-hello/gnome-hello-4-SM.c\n"
 
-#: gnome-hello/gnome-hello-2-i18n.c:34 gnome-hello/gnome-hello-3-parse-args.c:42 gnome-hello/gnome-hello-4-SM.c:232 gnome-hello/gnome-hello.c:122
+#: gnome-hello/gnome-hello-2-i18n.c:36 gnome-hello/gnome-hello-3-parse-args.c:44 gnome-hello/gnome-hello-4-SM.c:232 gnome-hello/gnome-hello.c:122
 msgid "Hello GNOME\n"
 msgstr "Hola GNOME\n"
 
-#: gnome-hello/gnome-hello-2-i18n.c:57 gnome-hello/gnome-hello-3-parse-args.c:65 gnome-hello/gnome-hello-4-SM.c:255 gnome-hello/gnome-hello.c:145
+#: gnome-hello/gnome-hello-2-i18n.c:59 gnome-hello/gnome-hello-3-parse-args.c:67 gnome-hello/gnome-hello-4-SM.c:255 gnome-hello/gnome-hello.c:145
 msgid "The Hello World Gnomified"
 msgstr "Hola Mundo Gnomificado"
 
-#. copyright notice
-#: gnome-hello/gnome-hello-2-i18n.c:59 gnome-hello/gnome-hello-3-parse-args.c:67
+#: gnome-hello/gnome-hello-2-i18n.c:61 gnome-hello/gnome-hello-3-parse-args.c:69
 msgid "(C) 1998 the Free Software Foundation"
 msgstr "© 1998 Free Software Foundation"
 
 #. another comments
-#: gnome-hello/gnome-hello-2-i18n.c:62 gnome-hello/gnome-hello-3-parse-args.c:70 gnome-hello/gnome-hello-4-SM.c:260 gnome-hello/gnome-hello.c:150
+#: gnome-hello/gnome-hello-2-i18n.c:64 gnome-hello/gnome-hello-3-parse-args.c:72 gnome-hello/gnome-hello-4-SM.c:260 gnome-hello/gnome-hello.c:150
 msgid "GNOME is a civilized software system so we've a \"hello world\" program"
 msgstr "GNOME es un sistema de programas civilizado, así que tenemos un programa \"hola mundo\""
 
-#: gnome-hello/gnome-hello-2-i18n.c:71 gnome-hello/gnome-hello-3-parse-args.c:79
+#: gnome-hello/gnome-hello-2-i18n.c:73 gnome-hello/gnome-hello-3-parse-args.c:81
 msgid "About GnomeHello..."
 msgstr "Acerca de GnomeHello..."
 
 # msgid "Run silently"
 # msgstr "Correr silenciosamente"
-#: gnome-hello/gnome-hello-2-i18n.c:76 gnome-hello/gnome-hello-3-parse-args.c:84 gnome-hello/gnome-hello-4-SM.c:54 gnome-hello/gnome-hello-7-mdi.c:356
+#: gnome-hello/gnome-hello-2-i18n.c:78 gnome-hello/gnome-hello-3-parse-args.c:86 gnome-hello/gnome-hello-4-SM.c:54 gnome-hello/gnome-hello-7-mdi.c:356
 msgid "Exit"
 msgstr "Salir"
 
-#. The menu definitions: File/Exit and Help/About are mandatory
-#: gnome-hello/gnome-hello-2-i18n.c:82 gnome-hello/gnome-hello-3-parse-args.c:90 gnome-hello/gnome-hello-4-SM.c:78 gnome-hello/gnome-hello-7-mdi.c:362 gnome-hello/gnome-hello-7-mdi.c:437 libgnomeui/stock_demo.c:184
+#. and document menu and document list paths (see gnome-app-helper menu
+#. insertion routines for details)
+#: gnome-hello/gnome-hello-2-i18n.c:84 gnome-hello/gnome-hello-3-parse-args.c:92 gnome-hello/gnome-hello-4-SM.c:78 gnome-hello/gnome-hello-7-mdi.c:362 gnome-hello/gnome-hello-7-mdi.c:437 libgnomeui/stock_demo.c:184
 msgid "File"
 msgstr "Archivo"
 
-#: gnome-hello/gnome-hello-2-i18n.c:83 gnome-hello/gnome-hello-3-parse-args.c:91 gnome-hello/gnome-hello-4-SM.c:79 gnome-hello/gnome-hello-7-mdi.c:404 libgnomeui/gnome-stock.c:776 libgnomeui/stock_demo.c:290
+#: gnome-hello/gnome-hello-2-i18n.c:85 gnome-hello/gnome-hello-3-parse-args.c:93 gnome-hello/gnome-hello-4-SM.c:79 gnome-hello/gnome-hello-7-mdi.c:404 libgnomeui/gnome-stock.c:776 libgnomeui/stock_demo.c:290
 msgid "Help"
 msgstr "Ayuda"
 
-#. Make the main window and binds the delete event so you can close
-#. the program from your WM
-#: gnome-hello/gnome-hello-2-i18n.c:124 gnome-hello/gnome-hello-3-parse-args.c:167 gnome-hello/gnome-hello-4-SM.c:197
+#.
+#. * Make the main window and binds the delete event so you can close
+#. * the program from your WM
+#.
+#: gnome-hello/gnome-hello-2-i18n.c:126 gnome-hello/gnome-hello-3-parse-args.c:169 gnome-hello/gnome-hello-4-SM.c:197
 msgid "Hello World Gnomified"
 msgstr "Hola Mundo -- Gnomificado"
 
-#. We make a button, bind the 'clicked' signal to hello and setting it
-#. to be the content of the main window
-#: gnome-hello/gnome-hello-2-i18n.c:136 gnome-hello/gnome-hello-3-parse-args.c:179 gnome-hello/gnome-hello-4-SM.c:213 gnome-hello/gnome-hello.c:103
+#.
+#. * We make a button, bind the 'clicked' signal to hello and setting it
+#. * to be the content of the main window
+#.
+#: gnome-hello/gnome-hello-2-i18n.c:138 gnome-hello/gnome-hello-3-parse-args.c:181 gnome-hello/gnome-hello-4-SM.c:213 gnome-hello/gnome-hello.c:103
 msgid "Hello GNOME"
 msgstr "Hola GNOME"
 
@@ -173,7 +177,7 @@ msgstr ""
 "\n"
 "Opciones genéricas"
 
-#: libgnome/lib_date.c:73 libgnome/lib_date.c:79 libgnomeui/gnome-messagebox.c:107
+#: libgnome/lib_date.c:73 libgnome/lib_date.c:79 libgnomeui/gnome-messagebox.c:117
 msgid "Error"
 msgstr "Error"
 
@@ -265,7 +269,7 @@ msgstr "Autores:"
 msgid "Authors: "
 msgstr "Autores: "
 
-#: libgnomeui/gnome-about.c:575 libgnomeui/stock_demo.c:282 libgnomeui/winhints_demo.c:245
+#: libgnomeui/gnome-about.c:575 libgnomeui/stock_demo.c:282 libgnomeui/winhints_demo.c:258
 msgid "About"
 msgstr "Acerca"
 
@@ -514,7 +518,7 @@ msgstr "Desactivar connexión al gestor de sesiones"
 msgid "Pick a color"
 msgstr "Elija un color"
 
-#: libgnomeui/gnome-dateedit.c:393
+#: libgnomeui/gnome-dateedit.c:395
 msgid "Calendar"
 msgstr "Calendario"
 
@@ -588,7 +592,7 @@ msgstr "Buscar..."
 msgid "Loading Icons..."
 msgstr "Cargando íconos..."
 
-#: libgnomeui/gnome-init.c:48
+#: libgnomeui/gnome-init.c:49
 msgid ""
 "\n"
 "Gtk+ toolkit options"
@@ -596,95 +600,95 @@ msgstr ""
 "\n"
 "Opciones del toolkit Gtk+"
 
-#: libgnomeui/gnome-init.c:49 libgnomeui/gnome-init.c:50 libgnomeui/gnome-init.c:60 libgnomeui/gnome-init.c:61
+#: libgnomeui/gnome-init.c:50 libgnomeui/gnome-init.c:51 libgnomeui/gnome-init.c:61 libgnomeui/gnome-init.c:62
 msgid "FLAGS"
 msgstr "FLAGS"
 
-#: libgnomeui/gnome-init.c:49
+#: libgnomeui/gnome-init.c:50
 msgid "Gdk debuging flags to set"
 msgstr "Flags de epuración de Gdk activados"
 
-#: libgnomeui/gnome-init.c:50
+#: libgnomeui/gnome-init.c:51
 msgid "Gdk debuging flags to unset"
 msgstr "Flags de epuración de Gdk desactivados"
 
-#: libgnomeui/gnome-init.c:51
+#: libgnomeui/gnome-init.c:52
 msgid "DISPLAY"
 msgstr "DISPLAY"
 
-#: libgnomeui/gnome-init.c:51
+#: libgnomeui/gnome-init.c:52
 msgid "X display to use"
 msgstr "Pantalla X donde se despliega"
 
-#: libgnomeui/gnome-init.c:53
+#: libgnomeui/gnome-init.c:54
 msgid "Don't use X shared memory extension"
 msgstr "No puedo emplear la extensión de memoria compartida de X"
 
-#: libgnomeui/gnome-init.c:54
+#: libgnomeui/gnome-init.c:55
 msgid "NAME"
 msgstr "NOMBRE"
 
-#: libgnomeui/gnome-init.c:54
+#: libgnomeui/gnome-init.c:55
 msgid "Program name as used by the window manager"
 msgstr "Nombre del programa usado por el gestor de ventanas"
 
-#: libgnomeui/gnome-init.c:55
+#: libgnomeui/gnome-init.c:56
 msgid "CLASS"
 msgstr "CLASE"
 
-#: libgnomeui/gnome-init.c:55
+#: libgnomeui/gnome-init.c:56
 msgid "Program class as used by the window manager"
 msgstr "Clase del programa usada por el gestor de ventanas"
 
-#: libgnomeui/gnome-init.c:56
+#: libgnomeui/gnome-init.c:57
 msgid "HOST"
 msgstr "NODO"
 
-#: libgnomeui/gnome-init.c:56 libgnomeui/gnome-init.c:57 libgnomeui/gnome-init.c:58 libgnomeui/gnome-init.c:59
+#: libgnomeui/gnome-init.c:57 libgnomeui/gnome-init.c:58 libgnomeui/gnome-init.c:59 libgnomeui/gnome-init.c:60
 msgid "FIXME"
 msgstr "ARREGLAR"
 
-#: libgnomeui/gnome-init.c:57
+#: libgnomeui/gnome-init.c:58
 msgid "PORT"
 msgstr "PUERTO"
 
-#: libgnomeui/gnome-init.c:58 libgnomeui/gnome-init.c:59
+#: libgnomeui/gnome-init.c:59 libgnomeui/gnome-init.c:60
 msgid "STYLE"
 msgstr "ESTILO"
 
-#: libgnomeui/gnome-init.c:60
+#: libgnomeui/gnome-init.c:61
 msgid "Gtk+ debuging flags to set"
 msgstr "Flags de epuración de Gtk+ activados"
 
-#: libgnomeui/gnome-init.c:61
+#: libgnomeui/gnome-init.c:62
 msgid "Gtk+ debuging flags to unset"
 msgstr "Flags de epuración de Gtk+ desactivados"
 
-#: libgnomeui/gnome-init.c:62
+#: libgnomeui/gnome-init.c:63
 msgid "Make all warnings fatal"
 msgstr "Transformar las advertencias en fallos fatales"
 
-#: libgnomeui/gnome-init.c:63
+#: libgnomeui/gnome-init.c:64
 msgid "MODULE"
 msgstr "MÓDULO"
 
-#: libgnomeui/gnome-init.c:63
+#: libgnomeui/gnome-init.c:64
 msgid "Load additional Gtk modules"
 msgstr "Cargar módulos Gtk adicionales"
 
-#: libgnomeui/gnome-messagebox.c:95
+#: libgnomeui/gnome-messagebox.c:99
 msgid "Information"
 msgstr "Información"
 
-#: libgnomeui/gnome-messagebox.c:101
+#: libgnomeui/gnome-messagebox.c:108
 msgid "Warning"
 msgstr "Advertencia"
 
-#: libgnomeui/gnome-messagebox.c:113
+#: libgnomeui/gnome-messagebox.c:126
 msgid "Question"
 msgstr "Pregunta"
 
-#: libgnomeui/gnome-messagebox.c:119
+#: libgnomeui/gnome-messagebox.c:135
 msgid "Message"
 msgstr "Mensaje"
 
@@ -744,19 +748,27 @@ msgstr "Próximo"
 msgid "Prev"
 msgstr "Anterior"
 
-#: libgnomeui/gnome-stock.c:1707
+#: libgnomeui/gnome-stock.c:779
+msgid "Up"
+msgstr "Arriba"
+
+#: libgnomeui/gnome-stock.c:780
+msgid "Down"
+msgstr "Abajo"
+
+#: libgnomeui/gnome-stock.c:1802
 msgid "Menu Accelerator Keys"
 msgstr "Aceleradores del menú"
 
-#: libgnomeui/gnome-stock.c:1709
+#: libgnomeui/gnome-stock.c:1804
 msgid "Global"
 msgstr "Global"
 
-#: libgnomeui/gnome-stock.c:1711
+#: libgnomeui/gnome-stock.c:1806
 msgid "Menu Item"
 msgstr "Entrada del menú"
 
-#: libgnomeui/gnome-stock.c:1712
+#: libgnomeui/gnome-stock.c:1807
 msgid "Accelerator"
 msgstr "Acelerador"
 
@@ -878,115 +890,123 @@ msgstr "Puntuación..."
 msgid "Edit"
 msgstr "Editar"
 
-#: libgnomeui/winhints_demo.c:47
+#: libgnomeui/winhints_demo.c:48
 msgid "wmhints-test"
 msgstr "wmhints-test"
 
-#: libgnomeui/winhints_demo.c:47
+#: libgnomeui/winhints_demo.c:48
 msgid "winhints-test"
 msgstr "winhints-test"
 
-#: libgnomeui/winhints_demo.c:68
+#: libgnomeui/winhints_demo.c:73
 msgid "Layer:"
 msgstr "Capa:"
 
-#: libgnomeui/winhints_demo.c:91
+#: libgnomeui/winhints_demo.c:96
 msgid "Above Dock"
 msgstr "Sobre el Dock"
 
-#: libgnomeui/winhints_demo.c:95
+#: libgnomeui/winhints_demo.c:100
 msgid "Dock"
 msgstr "Dock"
 
-#: libgnomeui/winhints_demo.c:99
+#: libgnomeui/winhints_demo.c:104
 msgid "On Top"
 msgstr "Encima"
 
-#: libgnomeui/winhints_demo.c:103
+#: libgnomeui/winhints_demo.c:108
 msgid "Normal"
 msgstr "Normal"
 
-#: libgnomeui/winhints_demo.c:107
+#: libgnomeui/winhints_demo.c:112
 msgid "Below"
 msgstr "Debajo"
 
-#: libgnomeui/winhints_demo.c:111
+#: libgnomeui/winhints_demo.c:116
 msgid "Desktop"
 msgstr "Escritorio"
 
-#: libgnomeui/winhints_demo.c:119
+#: libgnomeui/winhints_demo.c:124
 msgid "Set Layer"
 msgstr "Definir Capa"
 
-#: libgnomeui/winhints_demo.c:126
+#: libgnomeui/winhints_demo.c:131
 msgid "Workspaces:"
 msgstr "Espacios de trabajo:"
 
-#: libgnomeui/winhints_demo.c:148
-msgid "Occupy all workspaces"
-msgstr "Ocupar todos los espacios de trabajo"
+#: libgnomeui/winhints_demo.c:153
+msgid "Sticky"
+msgstr ""
 
-#: libgnomeui/winhints_demo.c:152
+#: libgnomeui/winhints_demo.c:157
 msgid "Set Workspace"
 msgstr "Definir espacio de trabajo"
 
-#: libgnomeui/winhints_demo.c:162
+#: libgnomeui/winhints_demo.c:167
 msgid "State Toggles:"
 msgstr "Interruptores de estado:"
 
-#: libgnomeui/winhints_demo.c:172
+#: libgnomeui/winhints_demo.c:177
 msgid "Minimized"
 msgstr "Minimizado"
 
-#: libgnomeui/winhints_demo.c:176
+#: libgnomeui/winhints_demo.c:181
 msgid "Maximized Vertical"
 msgstr "Maximizado verticalmente"
 
-#: libgnomeui/winhints_demo.c:180
+#: libgnomeui/winhints_demo.c:185
 msgid "Maximized Horizontal"
 msgstr "Maximizado horizontalmente"
 
-#: libgnomeui/winhints_demo.c:184
+#: libgnomeui/winhints_demo.c:189
 msgid "Hidden"
 msgstr "Escondido"
 
-#: libgnomeui/winhints_demo.c:188
-msgid "Roll-Up"
-msgstr "Enrollar"
+#: libgnomeui/winhints_demo.c:193
+msgid "Shaded"
+msgstr "Ombreado"
 
-#: libgnomeui/winhints_demo.c:192
+#: libgnomeui/winhints_demo.c:197
+msgid "Fixed Position"
+msgstr "Posición fija"
+
+#: libgnomeui/winhints_demo.c:201
+msgid "Ignore on Arrange"
+msgstr "Ignorar al ordenar"
+
+#: libgnomeui/winhints_demo.c:205
 msgid "Set State"
 msgstr "Definir estado"
 
-#: libgnomeui/winhints_demo.c:198
+#: libgnomeui/winhints_demo.c:211
 msgid "Skip Toggles:"
 msgstr "Saltear Interruptores"
 
-#: libgnomeui/winhints_demo.c:208
+#: libgnomeui/winhints_demo.c:221
 msgid "Skip Focus"
 msgstr "Saltear Focus"
 
-#: libgnomeui/winhints_demo.c:212
+#: libgnomeui/winhints_demo.c:225
 msgid "Skip Window Menu"
 msgstr "Saltear Menú de la ventana"
 
-#: libgnomeui/winhints_demo.c:216
+#: libgnomeui/winhints_demo.c:229
 msgid "Skip Taskbar / WinList"
 msgstr "Saltear Taskbar / WinList"
 
-#: libgnomeui/winhints_demo.c:220
+#: libgnomeui/winhints_demo.c:233
 msgid "Set Skip"
 msgstr "Definir salteo"
 
-#: libgnomeui/winhints_demo.c:403
+#: libgnomeui/winhints_demo.c:413
 msgid "WIN_HINTS Test"
 msgstr "Test WIN_HINTS"
 
-#: libgnomeui/winhints_demo.c:404
+#: libgnomeui/winhints_demo.c:414
 msgid "Copyright (C)1998"
 msgstr "Copyright ©1998"
 
-#: libgnomeui/winhints_demo.c:406
+#: libgnomeui/winhints_demo.c:416
 msgid "Simple test app to check how the WIN_HINTS work. And to test the gnome_win_hints_* functions for errors. :)"
 msgstr "Simple programa de test para verificar el funcionamiento de los mensajes WIN_HINTS. Y para ayudar a encontrar errores en las funciones gnome_win_hints_*. :)"
 
@@ -1074,14 +1094,14 @@ msgstr "%s: la opción `-W %s' es ambigua\n"
 msgid "%s: option `-W %s' doesn't allow an argument\n"
 msgstr "%s: la opción `-W %s' no accepta un argumento\n"
 
-#: test-gnome/testgnome.c:653
+#: test-gnome/testgnome.c:670
 msgid "The user chose Yes/OK with data:\n"
 msgstr "El usuario eligió Sí/OK con los datos:\n"
 
-#: test-gnome/testgnome.c:657
+#: test-gnome/testgnome.c:674
 msgid "The user chose No/Cancel with data:\n"
 msgstr "El usuario eligió No/Anular con los datos:\n"
 
-#: test-gnome/testgnome.c:668
+#: test-gnome/testgnome.c:685
 msgid "Weird number in reply callback"
 msgstr "Número raro en la respuesta"
