@@ -1,4 +1,4 @@
-dnl aclocal.m4 generated automatically by aclocal 1.2d
+dnl aclocal.m4 generated automatically by aclocal 1.2c
 
 dnl Copyright (C) 1994, 1995, 1996, 1997 Free Software Foundation, Inc.
 dnl This Makefile.in is free software; the Free Software Foundation
@@ -55,8 +55,8 @@ fi
 ifelse([$3],,
 AC_DEFINE_UNQUOTED(PACKAGE, "$PACKAGE")
 AC_DEFINE_UNQUOTED(VERSION, "$VERSION"))
-AC_REQUIRE([AM_SANITY_CHECK])
-AC_REQUIRE([AC_ARG_PROGRAM])
+AM_SANITY_CHECK
+AC_ARG_PROGRAM
 dnl FIXME This is truly gross.
 missing_dir=`cd $ac_aux_dir && pwd`
 AM_MISSING_PROG(ACLOCAL, aclocal, $missing_dir)
@@ -64,7 +64,7 @@ AM_MISSING_PROG(AUTOCONF, autoconf, $missing_dir)
 AM_MISSING_PROG(AUTOMAKE, automake, $missing_dir)
 AM_MISSING_PROG(AUTOHEADER, autoheader, $missing_dir)
 AM_MISSING_PROG(MAKEINFO, makeinfo, $missing_dir)
-AC_REQUIRE([AC_PROG_MAKE_SET])])
+AC_PROG_MAKE_SET])
 
 
 # serial 1
@@ -95,17 +95,6 @@ if (
       # -L didn't work.
       set X `ls -t $srcdir/configure conftestfile`
    fi
-   if test "[$]*" != "X $srcdir/configure conftestfile" \
-      && test "[$]*" != "X conftestfile $srcdir/configure"; then
-
-      # If neither matched, then we have a broken ls.  This can happen
-      # if, for instance, CONFIG_SHELL is bash and it inherits a
-      # broken ls alias from the environment.  This has actually
-      # happened.  Such a system could not be considered "sane".
-      AC_MSG_ERROR([ls -t appears to fail.  Make sure there is not a broken
-alias in your environment])
-   fi
-
    test "[$]2" = conftestfile
    )
 then
@@ -158,7 +147,7 @@ AC_DEFUN(AM_MAINTAINER_MODE,
 )
 
 
-# serial 18 AM_PROG_LIBTOOL
+# serial 12 AM_PROG_LIBTOOL
 AC_DEFUN(AM_PROG_LIBTOOL,
 [AC_REQUIRE([AC_CANONICAL_HOST])
 AC_REQUIRE([AC_PROG_RANLIB])
@@ -168,18 +157,17 @@ AC_REQUIRE([AM_PROG_NM])
 AC_REQUIRE([AC_PROG_LN_S])
 
 # Always use our own libtool.
-LIBTOOL='$(SHELL) $(top_builddir)/libtool'
+LIBTOOL='$(top_builddir)/libtool'
 AC_SUBST(LIBTOOL)
 
 dnl Allow the --disable-shared flag to stop us from building shared libs.
 AC_ARG_ENABLE(shared,
 [  --enable-shared         build shared libraries [default=yes]],
 [if test "$enableval" = no; then
-  libtool_enable_shared=no
+  enable_shared=no
 else
-  libtool_enable_shared=yes
+  enable_shared=yes
 fi])
-test -n "$libtool_enable_shared" && enable_shared="$libtool_enable_shared"
 libtool_shared=
 test "$enable_shared" = no && libtool_shared=" --disable-shared"
 
@@ -187,11 +175,10 @@ dnl Allow the --disable-static flag to stop us from building static libs.
 AC_ARG_ENABLE(static,
 [  --enable-static         build static libraries [default=yes]],
 [if test "$enableval" = no; then
-  libtool_enable_static=no
+  enable_static=no
 else
-  libtool_enable_static=yes
+  enable_static=yes
 fi])
-test -n "$libtool_enable_static" && enable_static="$libtool_enable_static"
 libtool_static=
 test "$enable_static" = no && libtool_static=" --disable-static"
 
@@ -205,28 +192,12 @@ test "$ac_cv_prog_gnu_ld" = yes && libtool_flags="$libtool_flags --with-gnu-ld"
 [case "$host" in
 *-*-irix6*)
   ac_save_CFLAGS="$CFLAGS"
-  flag_passed=no
-  for f in -32 -64 -n32 ABI -cckr -mips1 -mips2 -mips3 -mips4; do
-    case "$f" in
-    ABI)
-      test -n "$SGI_ABI" && flag_passed=yes
-      if test "$flag_passed" = no && test "$ac_cv_prog_gcc" = yes; then
-	# Choose the ABI flag according to GCC's specs.
-	if $CC -dumpspecs 2>&1 | sed '/^\*link:$/,/^$/!d' | egrep -e '[ 	]-32' >/dev/null; then
-	  LD="${LD-ld} -32"
-	else
-	  LD="${LD-ld} -n32"
-	fi
-      fi
-      ;;
-
-    *)
-      if echo " $CC $CFLAGS " | egrep -e "[ 	]$f[	 ]" > /dev/null; then
-	flag_passed=yes
-	LD="${LD-ld} $f"
-      fi
-      ;;
-    esac
+  # -n32 always needs to be added to the linker when using GCC.
+  test "$ac_cv_prog_gcc" = yes && CFLAGS="$CFLAGS -n32"
+  for f in '-32' '-64' '-cckr' '-n32' '-mips1' '-mips2' '-mips3' '-mips4'; do
+    if echo " $CC $CFLAGS " | egrep -e "[ 	]$f[	 ]" > /dev/null; then
+      LD="${LD-ld} $f"
+    fi
   done
   CFLAGS="$ac_save_CFLAGS"
   ;;
@@ -258,9 +229,7 @@ if test "$ac_cv_prog_gcc" = yes; then
   ac_prog=`($CC -print-prog-name=ld) 2>&5`
   case "$ac_prog" in
   # Accept absolute paths.
-  /*)
-    test -z "$LD" && LD="$ac_prog"
-    ;;
+  /*) ;;
   "")
     # If it fails, then pretend we aren't using GCC.
     ac_prog=ld
@@ -276,7 +245,12 @@ else
   AC_MSG_CHECKING([for non-GNU ld])
 fi
 AC_CACHE_VAL(ac_cv_path_LD,
-[if test -z "$LD"; then
+[LD=${LD-$ac_prog}
+case "$LD" in
+  /*)
+  ac_cv_path_LD="$LD" # Let the user override the test with a path.
+  ;;
+  *)
   IFS="${IFS= 	}"; ac_save_ifs="$IFS"; IFS="${IFS}:"
   for ac_dir in $PATH; do
     test -z "$ac_dir" && ac_dir=.
@@ -293,9 +267,8 @@ AC_CACHE_VAL(ac_cv_path_LD,
     fi
   done
   IFS="$ac_save_ifs"
-else
-  ac_cv_path_LD="$LD" # Let the user override the test with a path.
-fi])
+  ;;
+esac])
 LD="$ac_cv_path_LD"
 if test -n "$LD"; then
   AC_MSG_RESULT($LD)
@@ -327,15 +300,13 @@ AC_CACHE_VAL(ac_cv_path_NM,
   ;;
 *)
   IFS="${IFS= 	}"; ac_save_ifs="$IFS"; IFS="${IFS}:"
-  for ac_dir in /usr/ucb /usr/ccs/bin $PATH /bin; do
+  for ac_dir in /usr/ucb:$PATH:/bin; do
     test -z "$ac_dir" && dir=.
     if test -f $ac_dir/nm; then
       # Check to see if the nm accepts a BSD-compat flag.
-      # Adding the `sed 1!d' prevents false positives on HP-UX, which says:
-      #   nm: unknown option "B" ignored
-      if ($ac_dir/nm -B /dev/null 2>&1 | sed '1!d'; exit 0) | egrep /dev/null >/dev/null; then
+      if ($ac_dir/nm -B /dev/null 2>&1; exit 0) | grep /dev/null >/dev/null; then
         ac_cv_path_NM="$ac_dir/nm -B"
-      elif ($ac_dir/nm -p /dev/null 2>&1 | sed '1!d'; exit 0) | egrep /dev/null >/dev/null; then
+      elif ($ac_dir/nm -p /dev/null 2>&1; exit 0) | grep /dev/null >/dev/null; then
         ac_cv_path_NM="$ac_dir/nm -p"
       else
         ac_cv_path_NM="$ac_dir/nm"
