@@ -1,5 +1,14 @@
 1999-04-02  Michael Zucchi  <zucchi@zzedzone.fsi.com.au>
 
+	* zvtterm.c (zvt_term_set_fonts_internal): Query the XFontStruct
+	for the real font width, rather than picking 'width("M")' - might
+	fix the bold artifacts problem.
+	(zvt_term_set_fonts_internal): If no bold font is supplied, leave
+	it NULL.
+	(zvt_term_set_fonts): Allow a bold font to be null.
+	(vt_draw_text): If there is no bold font set, then use
+	over-striking to acheive the same result.
+
 	* subshell.h (zvt_shutdown_subshell, zvt_close_msgfd): Fixed
 	header entries/removed for changes.
 

@@ -1093,42 +1093,39 @@ zvt_term_set_scrollback (ZvtTerm *term, int lines)
 
 /* Load a set of fonts into the terminal.
  * These fonts should be the same size, otherwise it could get messy ...
+ * if font_bold is NULL, then the font is emboldened manually (overstrike)
  */
 static void
 zvt_term_set_fonts_internal(ZvtTerm *term, GdkFont *font, GdkFont *font_bold)
 {
+  XFontStruct *xfont;
+
+  /* ignore no-font setting */
+  if (font==NULL)
+    return;
+
+  /* this is to get the real font width */
+  xfont = (XFontStruct *)GDK_FONT_XFONT(font);
+  term->charwidth = xfont->max_bounds.width;
+  term->charheight = font->ascent + font->descent;
+
   /* set up a size pending request so that no matter
    * what the queue resize will resize the widget to
    * have the same grid size
    */
-  if (!term->set_grid_size_pending)
-    {
-      term->set_grid_size_pending = TRUE;
-      term->grid_width = term->vx->vt.width;
-      term->grid_height = term->vx->vt.height;
-    }
+  if (!term->set_grid_size_pending) {
+    term->set_grid_size_pending = TRUE;
+    term->grid_width = term->vx->vt.width;
+    term->grid_height = term->vx->vt.height;
+  }
 
-  if (font) 
-    {
-      if (term->font)
-	{
-	  gdk_font_unref (term->font);
-	}
-      term->font = font;
-    }
+  if (term->font)
+    gdk_font_unref (term->font);
+  term->font = font;
 
-  if (font_bold)
-    {
-      if (term->font_bold)
-	{
-	  gdk_font_unref (term->font_bold);
-	}
-      term->font_bold = font_bold;
-    }
-
-  /* re-size window */
-  term->charwidth = gdk_string_width (term->font, "M");
-  term->charheight = term->font->ascent + term->font->descent;
+  if (term->font_bold)
+    gdk_font_unref (term->font_bold);
+  term->font_bold = font_bold;
 
   gtk_widget_queue_resize (GTK_WIDGET (term));
 }
@@ -1137,7 +1134,8 @@ zvt_term_set_fonts_internal(ZvtTerm *term, GdkFont *font, GdkFont *font_bold)
  * zvt_term_set_fonts:
  * @term: A &ZvtTerm widget.
  * @font: Font used for regular text.
- * @font_bold: Font used for bold text.
+ * @font_bold: Font used for bold text.  May be null, in which case the bold
+ * font is rendered by over-striking.
  *
  * Load a set of fonts into the terminal.
  * 
@@ -1149,7 +1147,6 @@ zvt_term_set_fonts (ZvtTerm *term, GdkFont *font, GdkFont *font_bold)
   g_return_if_fail (term != NULL);
   g_return_if_fail (ZVT_IS_TERM (term));
   g_return_if_fail (font != NULL);
-  g_return_if_fail (font_bold != NULL);
 
   zvt_term_set_fonts_internal (term, font, font_bold);
 
@@ -1226,8 +1223,7 @@ zvt_term_set_font_name (ZvtTerm *term, char *name)
   else
     {
       font = gdk_font_load (name);
-      font_bold = gdk_font_load (name);
-      zvt_term_set_fonts_internal (term, font, font_bold);
+      zvt_term_set_fonts_internal (term, font, 0);
     }
 
   g_string_free (newname, TRUE);
@@ -2351,31 +2347,31 @@ vt_draw_text(void *user_data, int col, int row, char *text, int len, int attr)
   int fore, back, or;
   GdkColor pen;
   GdkGC *fgc, *bgc;
-  
+  int overstrike=0;
+
   widget = user_data;
 
   g_return_if_fail (widget != NULL);
   g_return_if_fail (ZVT_IS_TERM (widget));
 
   if (!GTK_WIDGET_DRAWABLE (widget))
-    {
-      return;
-    }
+    return;
 
   term = ZVT_TERM (widget);
 
   vx = term->vx;
 
-  if (attr & VTATTR_BOLD) 
-    {
-      or = 8;
-      f = term->font_bold;
-    } 
-  else 
-    {
-      or = 0;
+  if (attr & VTATTR_BOLD)  {
+    or = 8;
+    f = term->font_bold;
+    if (f==NULL) {
       f = term->font;
+      overstrike = 1;
     }
+  } else  {
+    or = 0;
+    f = term->font;
+  }
 
   fore = (attr & VTATTR_FORECOLOURM) >> VTATTR_FORECOLOURB;
   back = (attr & VTATTR_BACKCOLOURM) >> VTATTR_BACKCOLOURB;
@@ -2387,32 +2383,29 @@ vt_draw_text(void *user_data, int col, int row, char *text, int len, int attr)
   fgc = term->fore_gc;
   bgc = term->back_gc;
 
-  if (term->back_last != back)
-    {
-      pen.pixel = term->colors [back];
-      gdk_gc_set_foreground (bgc, &pen);
-      term->back_last = back;
-    }
+  if (term->back_last != back) {
+    pen.pixel = term->colors [back];
+    gdk_gc_set_foreground (bgc, &pen);
+    term->back_last = back;
+  }
   
-  if (term->fore_last != fore)
-    {
-      pen.pixel = term->colors [fore];
-      gdk_gc_set_foreground (fgc, &pen);
-      term->fore_last = fore;
-    }
+  if (term->fore_last != fore) {
+    pen.pixel = term->colors [fore];
+    gdk_gc_set_foreground (fgc, &pen);
+    term->fore_last = fore;
+  }
 
   /* for reverse, swap gc's */
-  if (attr & VTATTR_REVERSE)
-    {
-      GdkGC *tmp = fgc;
-      int tmp2 = fore;
-      
-      fgc = bgc;
-      bgc = tmp;
-      
-      fore = back;
-      back = tmp2;
-    }
+  if (attr & VTATTR_REVERSE) {
+    GdkGC *tmp = fgc;
+    int tmp2 = fore;
+    
+    fgc = bgc;
+    bgc = tmp;
+    
+    fore = back;
+    back = tmp2;
+  }
 
   /* optimise: dont 'clear' background if not in 
    * expose, and background colour == window colour
@@ -2452,11 +2445,15 @@ vt_draw_text(void *user_data, int col, int row, char *text, int len, int attr)
       d(printf("txt = '%.*s'\n", len, text));
     }
   
-  gdk_draw_text(
-      term->term_window, f, fgc,
-      col * term->charwidth,
-      row * term->charheight + term->font->ascent,
-      text, len);
+  gdk_draw_text(term->term_window, f, fgc, col * term->charwidth,
+		row * term->charheight + term->font->ascent,
+		text, len);
+
+  if (overstrike)
+    gdk_draw_text(term->term_window, f, fgc, (col * term->charwidth) + 1,
+		  row * term->charheight + term->font->ascent,
+		  text, len);
+  
 
   /* check for underline */
   if (attr&VTATTR_UNDERLINE)
