@@ -1,10 +1,10 @@
 Index: configure.in
 ===================================================================
 RCS file: /cvs/gnome/gnome-vfs/configure.in,v
-retrieving revision 1.66
-diff -u -u -r1.66 configure.in
---- configure.in	2000/08/31 11:21:39	1.66
-+++ configure.in	2000/08/31 11:47:23
+retrieving revision 1.68
+diff -u -u -r1.68 configure.in
+--- configure.in	2000/08/31 13:41:58	1.68
++++ configure.in	2000/08/31 13:44:01
 @@ -11,7 +11,7 @@
  AM_PROG_LIBTOOL
  
@@ -14,7 +14,7 @@ diff -u -u -r1.66 configure.in
  AC_DEFINE_UNQUOTED(GNOME_PLATFORM_VERSION, $GNOME_PLATFORM_VERSION)
  AM_CONDITIONAL(PLATFORM_GNOME_2, test $GNOME_PLATFORM_VERSION -ge 1095000)
  
-@@ -66,9 +66,9 @@
+@@ -68,9 +68,9 @@
  	      [  --with-default-backend=(corba|pthread)		    ],
  	      default_backend="$withval")
  
