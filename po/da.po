@@ -4,26 +4,206 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: gnome-libs-0.99.5\n"
-"POT-Creation-Date: 1999-08-30 15:26-0500\n"
-"PO-Revision-Date: 1998-05-04 12:00+0100\n"
-"Last-Translator: Kenneth Christiansen <kenth@writeme.com>\n"
-"Language-Team: Danish <none yet>\n"
+"Project-Id-Version: gnome-libs-1.0.14\n"
+"POT-Creation-Date: 1999-08-19 17:36-0400\n"
+"PO-Revision-Date: 1999-08-23 23:07+0100\n"
+"Last-Translator: Birger Langkjer <birger.langkjer@image.dk>\n"
+"Language-Team: Danish <dltp@lists.wiktor.dk>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=iso-8859-1\n"
 "Content-Transfer-Encoding: 8-bit\n"
 
+#: gnome-hello/gnome-hello-2-i18n.c:36
+#: gnome-hello/gnome-hello-3-parse-args.c:36
+#: gnome-hello/gnome-hello-4-SM.c:173 gnome-hello/gnome-hello.c:122
+msgid "Hello GNOME\n"
+msgstr "Hello GNOME\n"
+
+#: gnome-hello/gnome-hello-2-i18n.c:59
+#: gnome-hello/gnome-hello-3-parse-args.c:59
+#: gnome-hello/gnome-hello-4-SM.c:196 gnome-hello/gnome-hello.c:145
+msgid "The Hello World Gnomified"
+msgstr "Gnomificeret Hello world"
+
+#. copyright notice
+#: gnome-hello/gnome-hello-2-i18n.c:61
+#: gnome-hello/gnome-hello-3-parse-args.c:61
+msgid "(C) 1998 the Free Software Foundation"
+msgstr ""
+
+#. another comments
+#: gnome-hello/gnome-hello-2-i18n.c:64
+#: gnome-hello/gnome-hello-3-parse-args.c:64
+#: gnome-hello/gnome-hello-4-SM.c:201 gnome-hello/gnome-hello.c:150
+msgid "GNOME is a civilized software system so we've a \"hello world\" program"
+msgstr ""
+"GNOME er et civiliseret softwaresystem, så vi har et \"hello world\" program"
+
+#: gnome-hello/gnome-hello-2-i18n.c:73
+#: gnome-hello/gnome-hello-3-parse-args.c:73
+msgid "About GnomeHello..."
+msgstr "Om GnomeHello..."
+
+#: gnome-hello/gnome-hello-2-i18n.c:78
+#: gnome-hello/gnome-hello-3-parse-args.c:78 gnome-hello/gnome-hello-4-SM.c:52
+#: gnome-hello/gnome-hello-7-mdi.c:428
+msgid "Exit"
+msgstr "Afslut"
+
+#. and document menu and document list paths (see gnome-app-helper menu
+#. insertion routines for details)
+#: gnome-hello/gnome-hello-2-i18n.c:84
+#: gnome-hello/gnome-hello-3-parse-args.c:84 gnome-hello/gnome-hello-4-SM.c:76
+#: gnome-hello/gnome-hello-7-mdi.c:434 gnome-hello/gnome-hello-7-mdi.c:535
+#: libgnomeui/stock_demo.c:184
+msgid "File"
+msgstr "Filer"
+
+#: gnome-hello/gnome-hello-2-i18n.c:85
+#: gnome-hello/gnome-hello-3-parse-args.c:85 gnome-hello/gnome-hello-4-SM.c:77
+#: gnome-hello/gnome-hello-7-mdi.c:483 libgnomeui/gnome-stock.c:840
+#: libgnomeui/stock_demo.c:290
+msgid "Help"
+msgstr "Hjælp"
+
+#.
+#. * Make the main window and binds the delete event so you can close
+#. * the program from your WM
+#.
+#: gnome-hello/gnome-hello-2-i18n.c:124
+#: gnome-hello/gnome-hello-3-parse-args.c:136
+#: gnome-hello/gnome-hello-4-SM.c:138
+msgid "Hello World Gnomified"
+msgstr "Hello World gnomificeret"
+
+#.
+#. * We make a button, bind the 'clicked' signal to hello and setting it
+#. * to be the content of the main window
+#.
+#: gnome-hello/gnome-hello-2-i18n.c:136
+#: gnome-hello/gnome-hello-3-parse-args.c:148
+#: gnome-hello/gnome-hello-4-SM.c:154 gnome-hello/gnome-hello.c:103
+msgid "Hello GNOME"
+msgstr "Hello GNOME"
+
+#: gnome-hello/gnome-hello-4-SM.c:52
+msgid "Exit GNOME hello"
+msgstr "Afslut GNOME hello"
+
+#: gnome-hello/gnome-hello-4-SM.c:64 gnome-hello/gnome-hello-7-mdi.c:477
+msgid "About..."
+msgstr "Om..."
+
+#: gnome-hello/gnome-hello-4-SM.c:64
+msgid "Info about GNOME hello"
+msgstr "Information om GNOME hello"
+
+#: gnome-hello/gnome-hello-7-mdi.c:196
+msgid "Add View"
+msgstr "Tilføj visning"
+
+#: gnome-hello/gnome-hello-7-mdi.c:201
+msgid "Remove View"
+msgstr "Fjern visning"
+
+#: gnome-hello/gnome-hello-7-mdi.c:209
+msgid "Increase Counter"
+msgstr "Forøg tæller"
+
+#: gnome-hello/gnome-hello-7-mdi.c:215
+msgid "Child"
+msgstr "Barn"
+
+#: gnome-hello/gnome-hello-7-mdi.c:412
+msgid "Add Child"
+msgstr "Tilføj barn"
+
+#: gnome-hello/gnome-hello-7-mdi.c:418
+msgid "Remove Child"
+msgstr "Fjern barn"
+
+#: gnome-hello/gnome-hello-7-mdi.c:441
+msgid "Children"
+msgstr "Børn"
+
+#: gnome-hello/gnome-hello-7-mdi.c:450
+msgid "Notebook"
+msgstr "Notesblok"
+
+#: gnome-hello/gnome-hello-7-mdi.c:456
+msgid "Toplevel"
+msgstr "Toplevel"
+
+#: gnome-hello/gnome-hello-7-mdi.c:462
+msgid "Modal"
+msgstr "Modulær"
+
+#: gnome-hello/gnome-hello-7-mdi.c:468
+msgid "MDI Mode"
+msgstr "MDI Mode"
+
+#: gnome-hello/gnome-hello-7-mdi.c:536
+msgid "Children/"
+msgstr "Børn/"
+
+#: gnome-hello/gnome-hello.c:40
+msgid "File/Exit"
+msgstr "Filer/Afslut"
+
+#: gnome-hello/gnome-hello.c:40
+msgid "<control>E"
+msgstr "<control>E"
+
+#. The '...' end indicate that the options open a dialog
+#: gnome-hello/gnome-hello.c:42
+msgid "Help/About..."
+msgstr "Hjælp/Om..."
+
+#: gnome-hello/gnome-hello.c:42
+msgid "<control>A"
+msgstr "<control>A"
+
+# , c-format
+#: gnome-hello/gnome-hello.c:208
+#, c-format
+msgid ""
+"%s: A gnomified 'Hello World' program\n"
+"\n"
+"Usage: %s [--help] [--version]\n"
+"\n"
+"Options:\n"
+"        --help     display this help and exit\n"
+"        --version  output version information and exit\n"
+msgstr ""
+"%s: Et gnomificeret 'Hello World' program\n"
+"\n"
+"Brug: %s [--help] [--version]\n"
+"\n"
+"Optioner:\n"
+"        --help     vis denne hjælpetekst og afslut\n"
+"        --version  vis versionsinformation og afslut\n"
+
+# , c-format
+#: gnome-hello/gnome-hello.c:217
+#, c-format
+msgid "Gnome Hello %s.\n"
+msgstr "Gnome Hello %s.\n"
+
+#: gnome-hello/gnome-hello.c:231
+msgid "Options error\n"
+msgstr "Fejl i option\n"
+
 #: libgnome/gconfigger.c:32
 msgid "get"
-msgstr "få"
+msgstr "skaf"
 
 #: libgnome/gconfigger.c:32
 msgid "Get config entry"
-msgstr ""
+msgstr "Skaf config-element"
 
 #: libgnome/gconfigger.c:32 libgnome/gconfigger.c:33
 msgid "CONFIG-PATH"
-msgstr ""
+msgstr "CONFIG-STI"
 
 #: libgnome/gconfigger.c:33
 msgid "set"
@@ -31,7 +211,7 @@ msgstr "indstil"
 
 #: libgnome/gconfigger.c:33
 msgid "Set config entry"
-msgstr ""
+msgstr "Indstil config-element"
 
 #: libgnome/gnome-popt.c:90
 #, c-format
@@ -39,26 +219,28 @@ msgid ""
 "Error on option %s: %s.\n"
 "Run '%s --help' to see a full list of available command line options.\n"
 msgstr ""
+"Fejl i option %s: %s.\n"
+"Kør '%s --help' for at se en liste over mulige kommandolinie optioner.\n"
 
-#: libgnome/gnomelib-init.c:130
+#: libgnome/gnomelib-init.c:124
 msgid "Disable sound server usage"
-msgstr ""
+msgstr "Deaktiver brug af lydserver"
 
-#: libgnome/gnomelib-init.c:132
+#: libgnome/gnomelib-init.c:126
 msgid "Enable sound server usage"
-msgstr ""
+msgstr "Aktiver brug af lydserver"
 
-#: libgnome/gnomelib-init.c:134
+#: libgnome/gnomelib-init.c:128
 msgid "Host:port on which the sound server to use is running"
-msgstr ""
+msgstr "Vært:port som den anvendte lydserver kører på"
 
-#: libgnome/gnomelib-init.c:135
+#: libgnome/gnomelib-init.c:129
 msgid "HOSTNAME:PORT"
-msgstr "HOSTNAVN:PORT"
+msgstr "VÆRTSNAVN:PORT"
 
-#: libgnome/gnomelib-init.c:144
+#: libgnome/gnomelib-init.c:137
 msgid "GNOME Options"
-msgstr "GNOME indstillinger"
+msgstr "GNOME optioner"
 
 #: libgnomeui/gnome-about.c:187
 msgid "Author:"
@@ -75,15 +257,15 @@ msgstr "Forfattere:"
 #: libgnomeui/gnome-about.c:590 libgnomeui/stock_demo.c:282
 #: libgnomeui/winhints_demo.c:256
 msgid "About"
-msgstr "Om..."
+msgstr "Om"
 
 #: libgnomeui/gnome-app-helper.c:78
 msgid "_File"
-msgstr "_Fil"
+msgstr "_Filer"
 
 #: libgnomeui/gnome-app-helper.c:79
 msgid "_File/"
-msgstr "_Fil/"
+msgstr "_Filer/"
 
 #: libgnomeui/gnome-app-helper.c:80
 msgid "_Edit"
@@ -99,25 +281,23 @@ msgstr "_Visning"
 
 #: libgnomeui/gnome-app-helper.c:83
 msgid "_View/"
-msgstr "_Vis/"
+msgstr "_Visning/"
 
 #: libgnomeui/gnome-app-helper.c:84
 msgid "_Settings"
-msgstr "Indstillinger"
+msgstr "Op_sætning"
 
 #: libgnomeui/gnome-app-helper.c:85
 msgid "_Settings/"
-msgstr ""
+msgstr "Op_sætning/"
 
 #: libgnomeui/gnome-app-helper.c:86
-#, fuzzy
 msgid "_New"
-msgstr "_Visning"
+msgstr "_Ny"
 
 #: libgnomeui/gnome-app-helper.c:87
-#, fuzzy
 msgid "_New/"
-msgstr "_Vis/"
+msgstr "_Ny/"
 
 #: libgnomeui/gnome-app-helper.c:88
 msgid "Fi_les"
@@ -129,7 +309,7 @@ msgstr "Fi_ler/"
 
 #: libgnomeui/gnome-app-helper.c:90
 msgid "_Windows"
-msgstr "_Vindue"
+msgstr "_Vinduer"
 
 #: libgnomeui/gnome-app-helper.c:91
 msgid "_Game"
@@ -141,16 +321,16 @@ msgstr "_Hjælp"
 
 #: libgnomeui/gnome-app-helper.c:93
 msgid "_Windows/"
-msgstr "_Vindue/"
+msgstr "_Vinduer/"
 
 #. Open
 #: libgnomeui/gnome-app-helper.c:105
 msgid "_Open..."
-msgstr "Åben..."
+msgstr "Åbn..."
 
 #: libgnomeui/gnome-app-helper.c:105
 msgid "Open a file"
-msgstr "Åben en fil"
+msgstr "Åbn en fil"
 
 #. Save
 #: libgnomeui/gnome-app-helper.c:110
@@ -168,43 +348,43 @@ msgstr "Gem som..."
 
 #: libgnomeui/gnome-app-helper.c:116
 msgid "Save the current file with a different name"
-msgstr ""
+msgstr "Gem den aktuelle fil under et andet navn"
 
 #. Revert
 #: libgnomeui/gnome-app-helper.c:121
 msgid "_Revert"
-msgstr "Forkast"
+msgstr "Fo_rkast"
 
 #: libgnomeui/gnome-app-helper.c:122
 msgid "Revert to a saved version of the file"
-msgstr ""
+msgstr "Gå tilbage til den sidste gemte version af filen"
 
 #. Print
 #: libgnomeui/gnome-app-helper.c:127
 msgid "_Print"
-msgstr "Udskriv"
+msgstr "_Udskriv"
 
 #: libgnomeui/gnome-app-helper.c:127
 msgid "Print the current file"
-msgstr ""
+msgstr "Udskriv den aktuelle fil"
 
 #. Print Setup
 #: libgnomeui/gnome-app-helper.c:132
 msgid "Print S_etup..."
-msgstr "Udskrifts indstillinger..."
+msgstr "Udskriftsindstillinger..."
 
 #: libgnomeui/gnome-app-helper.c:133
 msgid "Setup the page settings for your current printer"
-msgstr ""
+msgstr "Indstil sideopsætning for din aktive printer"
 
 #. Close
 #: libgnomeui/gnome-app-helper.c:138
 msgid "_Close"
-msgstr "Luk"
+msgstr "_Luk"
 
 #: libgnomeui/gnome-app-helper.c:138
 msgid "Close the current file"
-msgstr ""
+msgstr "Luk den aktuelle fil"
 
 #. Exit
 #: libgnomeui/gnome-app-helper.c:143
@@ -225,7 +405,7 @@ msgstr "Klip"
 
 #: libgnomeui/gnome-app-helper.c:151
 msgid "Cut the selection"
-msgstr ""
+msgstr "Klip det markerede"
 
 #. 10
 #. Copy
@@ -235,7 +415,7 @@ msgstr "Kopier"
 
 #: libgnomeui/gnome-app-helper.c:157
 msgid "Copy the selection"
-msgstr "Kopier det valgte"
+msgstr "Kopier det markerede"
 
 #. Paste
 #: libgnomeui/gnome-app-helper.c:162 libgnomeui/gnome-popup-help.c:61
@@ -253,7 +433,7 @@ msgstr "Ryd"
 
 #: libgnomeui/gnome-app-helper.c:167
 msgid "Clear the selection"
-msgstr "Ryd det valgte"
+msgstr "Ryd det markerede"
 
 #. Undo
 #: libgnomeui/gnome-app-helper.c:172
@@ -262,7 +442,7 @@ msgstr "Fortryd"
 
 #: libgnomeui/gnome-app-helper.c:172
 msgid "Undo the last action"
-msgstr "Fortryd sidste aktion"
+msgstr "Fortryd sidste handling"
 
 #. Redo
 #: libgnomeui/gnome-app-helper.c:177
@@ -271,7 +451,7 @@ msgstr "Gentag"
 
 #: libgnomeui/gnome-app-helper.c:177
 msgid "Redo the undone action"
-msgstr "Gentag sidste fortrudte aktion"
+msgstr "Gentag sidste fortrudte handling"
 
 #. Find
 #: libgnomeui/gnome-app-helper.c:182
@@ -280,7 +460,7 @@ msgstr "_Find..."
 
 #: libgnomeui/gnome-app-helper.c:182
 msgid "Search for a string"
-msgstr "Søg for en streng"
+msgstr "Søg efter en tekststreng"
 
 #. Find Again
 #: libgnomeui/gnome-app-helper.c:187
@@ -289,25 +469,25 @@ msgstr "Find igen"
 
 #: libgnomeui/gnome-app-helper.c:188
 msgid "Search again for the same string"
-msgstr "Søg igen efter samme streng"
+msgstr "Gentag søgning efter samme tekststreng"
 
 #. Replace
 #: libgnomeui/gnome-app-helper.c:193
 msgid "_Replace..."
-msgstr "Erstat"
+msgstr "E_rstat..."
 
 #: libgnomeui/gnome-app-helper.c:193
 msgid "Replace a string"
-msgstr ""
+msgstr "Erstat en tekststreng"
 
 #. Properties
 #: libgnomeui/gnome-app-helper.c:198
 msgid "_Properties..."
-msgstr "Indstillinger..."
+msgstr "Egenskaber..."
 
 #: libgnomeui/gnome-app-helper.c:199
 msgid "Modify the file's properties"
-msgstr ""
+msgstr "Modificer filens egenskaber"
 
 #.
 #. * The Settings menu
@@ -315,11 +495,11 @@ msgstr ""
 #. Settings
 #: libgnomeui/gnome-app-helper.c:207
 msgid "_Preferences..."
-msgstr "_Præferancer..."
+msgstr "_Indstillinger..."
 
 #: libgnomeui/gnome-app-helper.c:208
 msgid "Configure the application"
-msgstr "Configurer applikationen"
+msgstr "Indstil applikationen"
 
 #. 20
 #.
@@ -336,7 +516,7 @@ msgstr "Om denne applikation"
 
 #: libgnomeui/gnome-app-helper.c:221
 msgid "_Select All"
-msgstr "Vælg alle"
+msgstr "Vælg _alle"
 
 #: libgnomeui/gnome-app-helper.c:222
 msgid "Select everything"
@@ -347,19 +527,19 @@ msgstr "Vælg alt"
 #.
 #: libgnomeui/gnome-app-helper.c:230
 msgid "Create New _Window"
-msgstr "Ny vindue"
+msgstr "Opret nyt _Vindue"
 
 #: libgnomeui/gnome-app-helper.c:231
 msgid "Create a new window"
-msgstr "Opret en ny vindue"
+msgstr "Opret et ny vindue"
 
 #: libgnomeui/gnome-app-helper.c:235
 msgid "_Close This Window"
-msgstr "Luk vindue"
+msgstr "_Luk dette vindue"
 
 #: libgnomeui/gnome-app-helper.c:236
 msgid "Close the current window"
-msgstr "Luk den aktuelle vindue"
+msgstr "Luk det aktuelle vindue"
 
 #.
 #. * The "Game" menu
@@ -374,35 +554,35 @@ msgstr "Start et nyt spil"
 
 #: libgnomeui/gnome-app-helper.c:249
 msgid "_Pause game"
-msgstr "_Pause spil"
+msgstr "_Pause"
 
 #: libgnomeui/gnome-app-helper.c:250
 msgid "Pause the game"
-msgstr "Pause spillet"
+msgstr "Sæt spillet på pause"
 
 #: libgnomeui/gnome-app-helper.c:254
 msgid "_Restart game"
-msgstr "Gensta_rt spillet"
+msgstr "Sta_rt forfra"
 
 #: libgnomeui/gnome-app-helper.c:255
 msgid "Restart the game"
-msgstr "Genstart spillet"
+msgstr "Start spillet forfra"
 
 #: libgnomeui/gnome-app-helper.c:259
 msgid "_Undo move"
-msgstr "Fortryd flyt"
+msgstr "Fortryd træk"
 
 #: libgnomeui/gnome-app-helper.c:260
 msgid "Undo the last move"
-msgstr ""
+msgstr "Gør det sidste træk om"
 
 #: libgnomeui/gnome-app-helper.c:264
 msgid "_Redo move"
-msgstr ""
+msgstr "Gentag træk"
 
 #: libgnomeui/gnome-app-helper.c:265
 msgid "Redo the undone move"
-msgstr ""
+msgstr "Gentag det fortrudte træk"
 
 #: libgnomeui/gnome-app-helper.c:269
 msgid "_Hint"
@@ -410,12 +590,12 @@ msgstr "Tip"
 
 #: libgnomeui/gnome-app-helper.c:270
 msgid "Get a hint for your next move"
-msgstr ""
+msgstr "Få et tip til dit næste træk"
 
 #. 30
 #: libgnomeui/gnome-app-helper.c:275
 msgid "_Scores..."
-msgstr "_Scores..."
+msgstr "_Stilling..."
 
 #: libgnomeui/gnome-app-helper.c:276
 msgid "View the scores"
@@ -439,7 +619,7 @@ msgstr "FEJL: "
 
 #: libgnomeui/gnome-app-util.c:173
 msgid "Warning: "
-msgstr "Advarsel"
+msgstr "Advarsel: "
 
 #: libgnomeui/gnome-app-util.c:310
 msgid "y"
@@ -447,7 +627,7 @@ msgstr "j"
 
 #: libgnomeui/gnome-app-util.c:311
 msgid "yes"
-msgstr "Ja"
+msgstr "ja"
 
 #: libgnomeui/gnome-app-util.c:314
 msgid "n"
@@ -467,7 +647,7 @@ msgstr "  - OK? (ja eller nej)"
 
 #: libgnomeui/gnome-app-util.c:687
 msgid "Progress"
-msgstr "Udvikling"
+msgstr "Fremgang"
 
 #: libgnomeui/gnome-calculator.c:917 libgnomeui/gnome-calculator.c:1061
 msgid "DEG"
@@ -640,7 +820,7 @@ msgstr "INV"
 
 #: libgnomeui/gnome-client.c:828
 msgid "Specify session management ID"
-msgstr "Specifiser id for sessionskontrol"
+msgstr "Specificer id for sessionskontrol"
 
 #: libgnomeui/gnome-client.c:828 libgnorba/goad-browser.c:27
 msgid "ID"
@@ -652,7 +832,7 @@ msgstr ""
 
 #: libgnomeui/gnome-client.c:830
 msgid "PREFIX"
-msgstr "PREFIX"
+msgstr "PRÆFIKS"
 
 #: libgnomeui/gnome-client.c:832
 msgid "Disable connection to session manager"
@@ -660,9 +840,8 @@ msgstr ""
 
 #. Register commandline options.
 #: libgnomeui/gnome-client.c:961
-#, fuzzy
 msgid "Session management options"
-msgstr "Specifiser id for sessionskontrol"
+msgstr "Indstillinger for sessionskontrol"
 
 #: libgnomeui/gnome-client.c:2341
 msgid "Cancel Logout"
@@ -677,75 +856,47 @@ msgstr "Vælg en farve"
 msgid "Calendar"
 msgstr "Kalender"
 
-#: libgnomeui/gnome-dentry-edit.c:180
+#: libgnomeui/gnome-dentry-edit.c:170
 msgid "Name:"
 msgstr "Navn:"
 
-#: libgnomeui/gnome-dentry-edit.c:193
+#: libgnomeui/gnome-dentry-edit.c:183
 msgid "Comment:"
-msgstr "Beskrivelse:"
+msgstr "Kommentar:"
 
-#: libgnomeui/gnome-dentry-edit.c:203
+#: libgnomeui/gnome-dentry-edit.c:193
 msgid "Command:"
 msgstr "Kommando:"
 
-#: libgnomeui/gnome-dentry-edit.c:213
+#: libgnomeui/gnome-dentry-edit.c:203
 msgid "Type:"
 msgstr "Type:"
 
-#: libgnomeui/gnome-dentry-edit.c:229
-#, fuzzy
+#: libgnomeui/gnome-dentry-edit.c:219
 msgid "Icon:"
-msgstr "Ingen ikon"
+msgstr "Ikon:"
 
-#: libgnomeui/gnome-dentry-edit.c:239
+#: libgnomeui/gnome-dentry-edit.c:229
 msgid "Choose an icon"
-msgstr "Vælg ikon"
+msgstr "Vælg en ikon"
 
-#: libgnomeui/gnome-dentry-edit.c:252
+#: libgnomeui/gnome-dentry-edit.c:242
 msgid "Run in Terminal"
 msgstr "Kør i terminal"
 
-#: libgnomeui/gnome-dentry-edit.c:363
+#: libgnomeui/gnome-dentry-edit.c:255
 msgid "Try this before using:"
 msgstr "Prøv dette før brug:"
 
-#: libgnomeui/gnome-dentry-edit.c:373
+#: libgnomeui/gnome-dentry-edit.c:265
 msgid "Documentation:"
 msgstr "Dokumentation:"
 
-#: libgnomeui/gnome-dentry-edit.c:383
-msgid "Name/Comment translations:"
-msgstr ""
-
-#: libgnomeui/gnome-dentry-edit.c:386
-msgid "Language"
-msgstr ""
-
-#: libgnomeui/gnome-dentry-edit.c:387
-#, fuzzy
-msgid "Name"
-msgstr "Navn:"
-
-#: libgnomeui/gnome-dentry-edit.c:388
-#, fuzzy
-msgid "Comment"
-msgstr "Beskrivelse:"
-
-#: libgnomeui/gnome-dentry-edit.c:416
-#, fuzzy
-msgid "Add/Set"
-msgstr "Tilføj"
-
-#: libgnomeui/gnome-dentry-edit.c:421 libgnomeui/gnome-stock.c:825
-msgid "Remove"
-msgstr "Fjern"
-
-#: libgnomeui/gnome-dentry-edit.c:503
+#: libgnomeui/gnome-dentry-edit.c:351
 msgid "Basic"
-msgstr "Basis"
+msgstr "Basal"
 
-#: libgnomeui/gnome-dentry-edit.c:507
+#: libgnomeui/gnome-dentry-edit.c:355
 msgid "Advanced"
 msgstr "Advanceret"
 
@@ -769,101 +920,96 @@ msgstr "Skrifttype"
 
 #: libgnomeui/gnome-icon-entry.c:111 libgnomeui/gnome-icon-entry.c:556
 msgid "No Icon"
-msgstr "Ingen ikon"
+msgstr "Ikon"
 
 #: libgnomeui/gnome-icon-entry.c:274 libgnomeui/gnome-pixmap-entry.c:272
 msgid "Can't find an hbox, using a normal file selection"
-msgstr ""
+msgstr "Kan ikke finde en hbox, bruger normal filvælger"
 
 #: libgnomeui/gnome-icon-entry.c:280 libgnomeui/gnome-pixmap-entry.c:278
 msgid "Preview"
-msgstr ""
+msgstr "Forhåndsvis"
 
-#: libgnomeui/gnome-icon-sel.c:337
+#: libgnomeui/gnome-icon-sel.c:326
 msgid "Loading Icons..."
 msgstr "Henter ikoner..."
 
-#: libgnomeui/gnome-init.c:157
+#: libgnomeui/gnome-init.c:153
 msgid "Gdk debugging flags to set"
 msgstr ""
 
-#: libgnomeui/gnome-init.c:157 libgnomeui/gnome-init.c:159
-#: libgnomeui/gnome-init.c:179 libgnomeui/gnome-init.c:181
+#: libgnomeui/gnome-init.c:153 libgnomeui/gnome-init.c:155
+#: libgnomeui/gnome-init.c:175 libgnomeui/gnome-init.c:177
 msgid "FLAGS"
 msgstr "FLAGS"
 
-#: libgnomeui/gnome-init.c:159
+#: libgnomeui/gnome-init.c:155
 msgid "Gdk debugging flags to unset"
 msgstr ""
 
-#: libgnomeui/gnome-init.c:161
+#: libgnomeui/gnome-init.c:157
 msgid "X display to use"
 msgstr "X-display som skal bruges"
 
-#: libgnomeui/gnome-init.c:161
+#: libgnomeui/gnome-init.c:157
 msgid "DISPLAY"
-msgstr "DISPLAY"
+msgstr "SKÆRM"
 
-#: libgnomeui/gnome-init.c:163
+#: libgnomeui/gnome-init.c:159
 msgid "Make X calls synchronous"
-msgstr ""
+msgstr "Gør X-kald synkrone"
 
-#: libgnomeui/gnome-init.c:165
+#: libgnomeui/gnome-init.c:161
 msgid "Don't use X shared memory extension"
 msgstr "Brug ikke X-udvidelse for delt hukommelse"
 
-#: libgnomeui/gnome-init.c:167
+#: libgnomeui/gnome-init.c:163
 msgid "Program name as used by the window manager"
-msgstr ""
+msgstr "Programnavn som brugt af windowmanageren"
 
-#: libgnomeui/gnome-init.c:167
+#: libgnomeui/gnome-init.c:163
 msgid "NAME"
 msgstr "NAVN"
 
-#: libgnomeui/gnome-init.c:169
+#: libgnomeui/gnome-init.c:165
 msgid "Program class as used by the window manager"
-msgstr ""
+msgstr "Programklasse som brugt af windowmanageren"
 
-#: libgnomeui/gnome-init.c:169
+#: libgnomeui/gnome-init.c:165
 msgid "CLASS"
 msgstr "KLASSE"
 
-#: libgnomeui/gnome-init.c:171
+#: libgnomeui/gnome-init.c:167
 msgid "HOST"
 msgstr "VÆRT"
 
-#: libgnomeui/gnome-init.c:173
+#: libgnomeui/gnome-init.c:169
 msgid "PORT"
 msgstr ""
 
-#: libgnomeui/gnome-init.c:175 libgnomeui/gnome-init.c:177
+#: libgnomeui/gnome-init.c:171 libgnomeui/gnome-init.c:173
 msgid "STYLE"
 msgstr "STIL"
 
-#: libgnomeui/gnome-init.c:179
+#: libgnomeui/gnome-init.c:175
 msgid "Gtk+ debugging flags to set"
 msgstr ""
 
-#: libgnomeui/gnome-init.c:181
+#: libgnomeui/gnome-init.c:177
 msgid "Gtk+ debugging flags to unset"
 msgstr ""
 
-#: libgnomeui/gnome-init.c:183
+#: libgnomeui/gnome-init.c:179
 msgid "Make all warnings fatal"
-msgstr ""
+msgstr "Gør alle advarsler fatale"
 
-#: libgnomeui/gnome-init.c:185
+#: libgnomeui/gnome-init.c:181
 msgid "Load an additional Gtk module"
-msgstr ""
+msgstr "Indlæs et ekstra Gtk modul"
 
-#: libgnomeui/gnome-init.c:185
+#: libgnomeui/gnome-init.c:181
 msgid "MODULE"
-msgstr ""
-
-#. dialog display isn't working out
-#: libgnomeui/gnome-init.c:606
-msgid "Giving up on displaying error dialog"
-msgstr ""
+msgstr "MODUL"
 
 #: libgnomeui/gnome-messagebox.c:111 libgnomeui/gnome-messagebox.c:240
 msgid "Information"
@@ -895,7 +1041,7 @@ msgstr "Lommeregner..."
 
 #: libgnomeui/gnome-pixmap-entry.c:106 libgnomeui/gnome-pixmap-entry.c:387
 msgid "No Image"
-msgstr "Ingen billede"
+msgstr "Intet billede"
 
 #: libgnomeui/gnome-popup-help.c:51
 msgid "_Help with this"
@@ -909,19 +1055,19 @@ msgstr "Klip"
 msgid "Select"
 msgstr "Vælg"
 
-#: libgnomeui/gnome-scores.c:88
+#: libgnomeui/gnome-scores.c:76
 msgid "Top Ten"
-msgstr "Stilling (Top 10)"
+msgstr "Top 10"
 
-#: libgnomeui/gnome-scores.c:99
+#: libgnomeui/gnome-scores.c:87
 msgid "User"
 msgstr "Bruger"
 
-#: libgnomeui/gnome-scores.c:102
+#: libgnomeui/gnome-scores.c:90
 msgid "Score"
 msgstr "Stilling"
 
-#: libgnomeui/gnome-scores.c:105
+#: libgnomeui/gnome-scores.c:93
 msgid "Date"
 msgstr "Dato"
 
@@ -933,7 +1079,7 @@ msgstr "Dato"
 #. %d is day of month, %m is month number, %T full hour,
 #. %H hours, %M minutes, %S seconds
 #.
-#: libgnomeui/gnome-scores.c:131
+#: libgnomeui/gnome-scores.c:119
 msgid "%a %b %d %T %Y"
 msgstr ""
 
@@ -948,6 +1094,9 @@ msgid ""
 "is not in the dictionary.\n"
 "Proceed anyway?"
 msgstr ""
+"Ordet '%s'\n"
+"findes ikke i ordbogen.\n"
+"Fortsæt alligevel?"
 
 #: libgnomeui/gnome-spell.c:247
 msgid "Confirm"
@@ -971,23 +1120,27 @@ msgstr "Alternativer:"
 
 #: libgnomeui/gnome-spell.c:561
 msgid "Accept"
-msgstr "Acceptere"
+msgstr "Accepter"
 
 #: libgnomeui/gnome-spell.c:566
 msgid ""
 "Accept the word for\n"
 "this session only"
 msgstr ""
+"Godkend ordet for\n"
+"denne gang kun"
 
 #: libgnomeui/gnome-spell.c:568
 msgid "Skip"
-msgstr "Skip"
+msgstr "Spring over"
 
 #: libgnomeui/gnome-spell.c:573
 msgid ""
 "Ignore this word\n"
 "this time only"
 msgstr ""
+"Ignorer ordet for\n"
+"denne gang kun"
 
 #: libgnomeui/gnome-spell.c:575
 msgid "Replace"
@@ -1006,10 +1159,12 @@ msgid ""
 "Insert the word\n"
 "in your personal dictionary"
 msgstr ""
+"Indsæt ordet\n"
+"i din personlige ordbog"
 
 #: libgnomeui/gnome-spell.c:589
 msgid "Insert with case"
-msgstr ""
+msgstr "Indsæt med casus"
 
 #: libgnomeui/gnome-spell.c:595
 msgid ""
@@ -1018,54 +1173,58 @@ msgid ""
 "(if mixed-case preserve\n"
 "case-sensitivity)"
 msgstr ""
+"Indsæt ordet\n"
+"i din personlige ordbog\n"
+"(hvis der er både store og\n"
+"små bogstaver skal de bevares)"
 
 #: libgnomeui/gnome-spell.c:610
 msgid "Ispell command:"
-msgstr "Ispell kommando:"
+msgstr "Ispell-kommando:"
 
 #: libgnomeui/gnome-spell.c:628
 msgid "Main dictionary:"
-msgstr "Hoved ordbog"
+msgstr "Hovedordbog"
 
 #: libgnomeui/gnome-spell.c:645
 msgid "Personal dictionary:"
-msgstr ""
+msgstr "Personlig ordbog:"
 
 #: libgnomeui/gnome-spell.c:662
 msgid "Valid chars in words:"
-msgstr ""
+msgstr "Gyldige tegn i ord:"
 
 #: libgnomeui/gnome-spell.c:673
 msgid "Check words longer than:"
-msgstr ""
+msgstr "Check ord længere end:"
 
 #: libgnomeui/gnome-spell.c:684
 msgid "Sort by correctness"
-msgstr ""
+msgstr "Sorter efter korrekthed"
 
 #: libgnomeui/gnome-spell.c:692
 msgid "Accept run-together words"
-msgstr ""
+msgstr "Godkend sammensatte ord"
 
 #: libgnomeui/gnome-spell.c:702
 msgid "Discard accepted words on kill"
-msgstr ""
+msgstr "Smid godkendte ord væk ved drab"
 
 #: libgnomeui/gnome-spell.c:710
 msgid "Enable tooltips"
-msgstr ""
+msgstr "Slå værktøjstips til"
 
 #: libgnomeui/gnome-spell.c:724
 msgid "Kill ispell process"
-msgstr ""
+msgstr "Dræb ispell-proces"
 
 #: libgnomeui/gnome-spell.c:750
 msgid "Spell"
-msgstr "Stav"
+msgstr "Stavning"
 
 #: libgnomeui/gnome-spell.c:757
 msgid "Configure"
-msgstr "Konfigurer"
+msgstr "Indstil"
 
 #: libgnomeui/gnome-stock.c:822
 msgid "Add"
@@ -1079,6 +1238,10 @@ msgstr "Ryd"
 msgid "Select Color"
 msgstr "Vælg farve"
 
+#: libgnomeui/gnome-stock.c:825
+msgid "Remove"
+msgstr "Fjern"
+
 #: libgnomeui/gnome-stock.c:826
 msgid "Table Borders"
 msgstr ""
@@ -1089,20 +1252,19 @@ msgstr ""
 
 #: libgnomeui/gnome-stock.c:828
 msgid "Bulleted List"
-msgstr ""
+msgstr "Punktliste"
 
 #: libgnomeui/gnome-stock.c:829
 msgid "Numbered List"
-msgstr ""
+msgstr "Nummereret liste"
 
 #: libgnomeui/gnome-stock.c:830
-#, fuzzy
 msgid "Indent"
-msgstr "Bruger"
+msgstr "Indryk"
 
 #: libgnomeui/gnome-stock.c:831
 msgid "Un-Indent"
-msgstr ""
+msgstr "Af-indryk"
 
 #: libgnomeui/gnome-stock.c:835
 msgid "Apply"
@@ -1120,17 +1282,13 @@ msgstr "Ja"
 msgid "No"
 msgstr "Nej"
 
-#: libgnomeui/gnome-stock.c:840 libgnomeui/stock_demo.c:290
-msgid "Help"
-msgstr "Hjælp"
-
 #: libgnomeui/gnome-stock.c:841
 msgid "Next"
 msgstr "Næste"
 
 #: libgnomeui/gnome-stock.c:842
 msgid "Prev"
-msgstr "forrige"
+msgstr "Forrige"
 
 #: libgnomeui/gnome-stock.c:843
 msgid "Up"
@@ -1142,7 +1300,7 @@ msgstr "Ned"
 
 #: libgnomeui/gnome-stock.c:1888
 msgid "Menu Accelerator Keys"
-msgstr "Menu-accellerator taster"
+msgstr "Menu-genvejstaster"
 
 #: libgnomeui/gnome-stock.c:1890
 msgid "Global"
@@ -1150,27 +1308,22 @@ msgstr "Global"
 
 #: libgnomeui/gnome-stock.c:1892
 msgid "Menu Item"
-msgstr "Menuvalg"
+msgstr "Menupunkt"
 
 #: libgnomeui/gnome-stock.c:1893
 msgid "Accelerator"
-msgstr "Accellerator"
+msgstr "Accelerator"
 
-#: libgnomeui/gnome_segv.c:44
+#: libgnomeui/gnome_segv.c:43
 #, c-format
 msgid ""
-"Application \"%s\" (process %d) has crashed\n"
-"due to a fatal error.\n"
-"(%s)"
+"Application \"%s\" (process %d) has crashed due to a bug in the software.\n"
+"(%s)\n"
+"For more information, see http://www.gnome.org/application_crashed.shtml"
 msgstr ""
-
-#: libgnomeui/gnome_segv.c:49
-msgid "Usage: gnome_segv appname signum\n"
-msgstr ""
-
-#: libgnomeui/gnome_segv.c:61
-msgid "Please visit the GNOME Application Crash page for more information"
-msgstr ""
+"Applikationen \"%s\" (proces %d) er gået ned pga. en fejl i softwaren.\n"
+"(%s)\n"
+"For mere information, se http://www.gnome.org/application_crashed.shtml"
 
 #: libgnomeui/stock_demo.c:112
 msgid "New..."
@@ -1178,7 +1331,7 @@ msgstr "Ny..."
 
 #: libgnomeui/stock_demo.c:120
 msgid "Open..."
-msgstr "Åben..."
+msgstr "Åbn..."
 
 #: libgnomeui/stock_demo.c:128
 msgid "Save"
@@ -1190,19 +1343,15 @@ msgstr "Gem som..."
 
 #: libgnomeui/stock_demo.c:156
 msgid "Print..."
-msgstr "Print..."
+msgstr "Udskriv..."
 
 #: libgnomeui/stock_demo.c:164
 msgid "Setup Page..."
-msgstr "Indstil side..."
+msgstr "Sideopsætning..."
 
 #: libgnomeui/stock_demo.c:173
 msgid "Quit"
 msgstr "Afslut"
-
-#: libgnomeui/stock_demo.c:184
-msgid "File"
-msgstr "Fil"
 
 #: libgnomeui/stock_demo.c:191
 msgid "Undo"
@@ -1230,11 +1379,11 @@ msgstr "Indsæt"
 
 #: libgnomeui/stock_demo.c:241
 msgid "Properties..."
-msgstr "Indstillinger..."
+msgstr "Egenskaber..."
 
 #: libgnomeui/stock_demo.c:251
 msgid "Preferences..."
-msgstr "Præferancer..."
+msgstr "Indstillinger..."
 
 #: libgnomeui/stock_demo.c:266
 msgid "Scores..."
@@ -1254,19 +1403,19 @@ msgstr ""
 
 #: libgnomeui/winhints_demo.c:71
 msgid "Layer:"
-msgstr ""
+msgstr "Lag:"
 
 #: libgnomeui/winhints_demo.c:94
 msgid "Above Dock"
-msgstr ""
+msgstr "Over Dock"
 
 #: libgnomeui/winhints_demo.c:98
 msgid "Dock"
-msgstr ""
+msgstr "Dock"
 
 #: libgnomeui/winhints_demo.c:102
 msgid "On Top"
-msgstr ""
+msgstr "Ovenpå"
 
 #: libgnomeui/winhints_demo.c:106
 msgid "Normal"
@@ -1274,19 +1423,19 @@ msgstr "Normal"
 
 #: libgnomeui/winhints_demo.c:110
 msgid "Below"
-msgstr ""
+msgstr "Under"
 
 #: libgnomeui/winhints_demo.c:114
 msgid "Desktop"
-msgstr ""
+msgstr "Skrivebord"
 
 #: libgnomeui/winhints_demo.c:122
 msgid "Set Layer"
-msgstr ""
+msgstr "Sæt lag"
 
 #: libgnomeui/winhints_demo.c:129
 msgid "Workspaces:"
-msgstr ""
+msgstr "Arbejdsborde:"
 
 #: libgnomeui/winhints_demo.c:151
 msgid "Sticky"
@@ -1294,7 +1443,7 @@ msgstr ""
 
 #: libgnomeui/winhints_demo.c:155
 msgid "Set Workspace"
-msgstr ""
+msgstr "Sæt arbejdsbord"
 
 #: libgnomeui/winhints_demo.c:165
 msgid "State Toggles:"
@@ -1302,35 +1451,35 @@ msgstr ""
 
 #: libgnomeui/winhints_demo.c:175
 msgid "Minimized"
-msgstr ""
+msgstr "Minimeret"
 
 #: libgnomeui/winhints_demo.c:179
 msgid "Maximized Vertical"
-msgstr ""
+msgstr "Maksimeret vertikalt"
 
 #: libgnomeui/winhints_demo.c:183
 msgid "Maximized Horizontal"
-msgstr ""
+msgstr "Maksimeret horisontalt"
 
 #: libgnomeui/winhints_demo.c:187
 msgid "Hidden"
-msgstr ""
+msgstr "Skjult"
 
 #: libgnomeui/winhints_demo.c:191
 msgid "Shaded"
-msgstr ""
+msgstr "Skygget"
 
 #: libgnomeui/winhints_demo.c:195
 msgid "Fixed Position"
-msgstr ""
+msgstr "Fast placering"
 
 #: libgnomeui/winhints_demo.c:199
 msgid "Ignore on Arrange"
-msgstr ""
+msgstr "Udelad ved arranger"
 
 #: libgnomeui/winhints_demo.c:203
 msgid "Set State"
-msgstr ""
+msgstr "Sæt status"
 
 #: libgnomeui/winhints_demo.c:209
 msgid "Skip Toggles:"
@@ -1338,44 +1487,43 @@ msgstr ""
 
 #: libgnomeui/winhints_demo.c:219
 msgid "Skip Focus"
-msgstr ""
+msgstr "Må ikke få fokus"
 
 #: libgnomeui/winhints_demo.c:223
 msgid "Skip Window Menu"
-msgstr ""
+msgstr "Udelad i vinduesmenu"
 
 #: libgnomeui/winhints_demo.c:227
 msgid "Skip Taskbar / WinList"
-msgstr ""
+msgstr "Udelad i Opgavelinie / Winliste"
 
 #: libgnomeui/winhints_demo.c:231
 msgid "Set Skip"
-msgstr ""
+msgstr "Sæt skip"
 
 #: libgnomeui/winhints_demo.c:410
 msgid "WIN_HINTS Test"
 msgstr ""
 
 #: libgnomeui/winhints_demo.c:411
-#, fuzzy
-msgid "Copyright (C) 1998"
+msgid "Copyright (C)1998"
 msgstr "Copyright (C)1998"
 
 #: libgnomeui/winhints_demo.c:413
 msgid ""
-"Simple test app to check how the WIN_HINTS work.  And to test the "
+"Simple test app to check how the WIN_HINTS work. And to test the "
 "gnome_win_hints_* functions for errors. :)"
 msgstr ""
 
 #: libgnorba/gnome-name-server.c:229
 #, c-format
 msgid "Creating '/GNOME' context %s %d"
-msgstr ""
+msgstr "Opretter '/GNOME' kontekst %s %d"
 
 #: libgnorba/gnome-name-server.c:246
 #, c-format
 msgid "Creating '/GNOME/Servers' context %s %d"
-msgstr ""
+msgstr "Opret '/GNOME/Servers' kontekst %s %d"
 
 #: libgnorba/goad-browser.c:27
 msgid "GOAD ID of the server to activate"
@@ -1396,7 +1544,7 @@ msgid ""
 "In either case, please check your GNOME installation."
 msgstr ""
 
-#: libgnorba/goad.c:1321
+#: libgnorba/goad.c:1294
 msgid "(Internal use only) GOAD server ID to activate"
 msgstr ""
 
@@ -1422,113 +1570,112 @@ msgstr ""
 
 #: support/error.c:109
 msgid "Unknown system error"
-msgstr "Ukendt system fejl"
+msgstr "Ukendt systemfejl"
 
 # , c-format
 #: support/getopt.c:669
 #, c-format
 msgid "%s: option `%s' is ambiguous\n"
-msgstr ""
+msgstr "%s: option '%s' er tvetydig\n"
 
 # , c-format
 #: support/getopt.c:693
 #, c-format
 msgid "%s: option `--%s' doesn't allow an argument\n"
-msgstr ""
+msgstr "%s: option '--%s' tillader ikke et argument\n"
 
 # , c-format
 #: support/getopt.c:698
 #, c-format
 msgid "%s: option `%c%s' doesn't allow an argument\n"
-msgstr ""
+msgstr "%s: option '%c%s' tillader ikke et argument\n"
 
-# , fuzzy, c-format
+# , c-format
 #: support/getopt.c:715 support/getopt.c:888
 #, c-format
 msgid "%s: option `%s' requires an argument\n"
-msgstr "%s: For mange argumenter\n"
+msgstr "%s: option '%s' behøver et argument\n"
 
 # , c-format
 #. --option
 #: support/getopt.c:744
 #, c-format
 msgid "%s: unrecognized option `--%s'\n"
-msgstr ""
+msgstr "%s: ukendt option '--%s'\n"
 
 # , c-format
 #. +option or -option
 #: support/getopt.c:748
 #, c-format
 msgid "%s: unrecognized option `%c%s'\n"
-msgstr ""
+msgstr "%s: ukendt option '%c%s'\n"
 
 # , c-format
 #. 1003.2 specifies the format of this message.
 #: support/getopt.c:774
 #, c-format
 msgid "%s: illegal option -- %c\n"
-msgstr ""
+msgstr "%s: ulovlig option -- %c\n"
 
 # , c-format
 #: support/getopt.c:777
 #, c-format
 msgid "%s: invalid option -- %c\n"
-msgstr ""
+msgstr "%s: ugyldig option -- %c\n"
 
-# , fuzzy, c-format
+# , c-format
 #. 1003.2 specifies the format of this message.
 #: support/getopt.c:807 support/getopt.c:937
 #, c-format
 msgid "%s: option requires an argument -- %c\n"
-msgstr "%s: For mange argumenter\n"
+msgstr "%s: option behøver et argument -- %c\n"
 
 # , c-format
 #: support/getopt.c:854
 #, c-format
 msgid "%s: option `-W %s' is ambiguous\n"
-msgstr ""
+msgstr "%s: optionen '-W %s' er tvetydig\n"
 
 # , c-format
 #: support/getopt.c:872
 #, c-format
 msgid "%s: option `-W %s' doesn't allow an argument\n"
-msgstr ""
+msgstr "%s: optionen '-W %s' tillader ikke et argument\n"
 
 #: support/popthelp.c:35
 msgid "Show this help message"
-msgstr ""
+msgstr "Vis denne hjælpetekst"
 
 #: support/popthelp.c:36
-#, fuzzy
 msgid "Display brief usage message"
 msgstr "Giv en kort brugsbeskrivelse"
 
 #. Pixmap
 #: test-gnome/testgnome.c:792
 msgid "Default Pixmap"
-msgstr ""
+msgstr "Standard pixmap"
 
 #: test-gnome/testgnome.c:800 test-gnome/testgnome.c:841
 #: test-gnome/testgnome.c:866
 msgid "If you choose a font it will appear here"
-msgstr ""
+msgstr "Hvis du vælger en skrifttype vises den her"
 
 #. Font_Info
 #: test-gnome/testgnome.c:807
 msgid "Font Info"
-msgstr ""
+msgstr "Skrifttypeinfo"
 
 #: test-gnome/testgnome.c:817
 msgid "Use Font in button with size"
-msgstr ""
+msgstr "Brug skrifttype i knap med størrelse"
 
 #: test-gnome/testgnome.c:824
 msgid "Show font size"
-msgstr ""
+msgstr "Vis skrifttypestørrelse"
 
 #: test-gnome/testgnome.c:860
 msgid "This is an hbox with pixmap and text"
-msgstr ""
+msgstr "Dette er en hbox med pixmap og tekst"
 
 #: test-gnome/testgnome.c:1072
 msgid "The user chose Yes/OK with data:\n"
@@ -1536,98 +1683,17 @@ msgstr "Brugeren valgte Ja/OK med data:\n"
 
 #: test-gnome/testgnome.c:1076
 msgid "The user chose No/Cancel with data:\n"
-msgstr "Brugerne valgte Nej/Annuller med data:\n"
+msgstr "Brugeren valgte Nej/Annuller med data:\n"
 
 #: test-gnome/testgnome.c:1087
 msgid "Weird number in reply callback"
-msgstr ""
+msgstr "Mærkeligt nummer i reply callback"
 
-#~ msgid "Hello GNOME\n"
-#~ msgstr "Hello GNOME\n"
+#~ msgid "Really log out?"
+#~ msgstr "Vil du logge ud?"
 
-#~ msgid "The Hello World Gnomified"
-#~ msgstr "Gnomifiseret Hello world"
-
-#~ msgid ""
-#~ "GNOME is a civilized software system so we've a \"hello world\" program"
-#~ msgstr ""
-#~ "GNOME er et civiliseret software system så vi har et \"hello world\" program"
-
-#~ msgid "About GnomeHello..."
-#~ msgstr "Om GnomeHello"
-
-#~ msgid "Exit"
-#~ msgstr "Afslut"
-
-#~ msgid "Hello World Gnomified"
-#~ msgstr "Hello World gnomifiseret"
-
-#~ msgid "Hello GNOME"
-#~ msgstr "Hello GNOME"
-
-#~ msgid "Exit GNOME hello"
-#~ msgstr "Afslut GNOME hello"
-
-#~ msgid "About..."
-#~ msgstr "Om..."
-
-#~ msgid "Info about GNOME hello"
-#~ msgstr "Information om GNOME hello"
-
-#~ msgid "Add View"
-#~ msgstr "Tilføj visning"
-
-#~ msgid "Remove View"
-#~ msgstr "Fjern visning"
-
-#~ msgid "Increase Counter"
-#~ msgstr "Øg tæller"
-
-#~ msgid "Child"
-#~ msgstr "Barn"
-
-#~ msgid "Add Child"
-#~ msgstr "Tilføj barn"
-
-#~ msgid "Remove Child"
-#~ msgstr "Fjern barn"
-
-#~ msgid "Children"
-#~ msgstr "Børn"
-
-#~ msgid "Notebook"
-#~ msgstr "Notesblok"
-
-#~ msgid "Toplevel"
-#~ msgstr "Toplevel"
-
-#~ msgid "Modal"
-#~ msgstr "Modal"
-
-#~ msgid "MDI Mode"
-#~ msgstr "MDI Mode"
-
-#~ msgid "Children/"
-#~ msgstr "Børn/"
-
-#~ msgid "File/Exit"
-#~ msgstr "Fil/Afslut"
-
-#~ msgid "<control>E"
-#~ msgstr "<control>E"
-
-#~ msgid "Help/About..."
-#~ msgstr "Hjælp/Om..."
-
-#~ msgid "<control>A"
-#~ msgstr "<control>A"
-
-# , c-format
-#~ msgid "Gnome Hello %s.\n"
-#~ msgstr "Gnome Hello %s.\n"
-
-#~ msgid "Options error\n"
-#~ msgstr "Indstillings fejl\n"
+#~ msgid "Ask next time"
+#~ msgstr "Spørg næste gang"
 
 #~ msgid ""
 #~ "No, and ignore\n"
