@@ -791,7 +791,7 @@ create_icon_list(void)
 	gtk_widget_show (sw);
 
 	iconlist = gnome_icon_list_new (80, NULL, TRUE);
-	gtk_container_add (GTK_CONTAINER (sw), iconlist);
+	gtk_scrolled_window_add_with_viewport (GTK_SCROLLED_WINDOW (sw), iconlist);
 	
 	GTK_WIDGET_SET_FLAGS(iconlist, GTK_CAN_FOCUS);
 	pix = gdk_imlib_create_image_from_xpm_data((gchar **)bomb_xpm);
@@ -1216,7 +1216,7 @@ create_app_util(void)
   gtk_container_set_focus_vadjustment (GTK_CONTAINER (vbox),
 				       gtk_scrolled_window_get_vadjustment (GTK_SCROLLED_WINDOW(sw)));
 
-  gtk_container_add(GTK_CONTAINER(sw), GTK_WIDGET(vbox));
+  gtk_scrolled_window_add_with_viewport(GTK_SCROLLED_WINDOW(sw), GTK_WIDGET(vbox));
 
   gnome_app_set_contents(app, sw);
 
@@ -1709,7 +1709,7 @@ main (int argc, char *argv[])
 	gtk_widget_show (scrolled_window);
 	box2 = gtk_vbox_new (FALSE, 0);
 	gtk_container_border_width (GTK_CONTAINER (box2), 10);
-	gtk_container_add (GTK_CONTAINER (scrolled_window), box2);
+	gtk_scrolled_window_add_with_viewport (GTK_SCROLLED_WINDOW (scrolled_window), box2);
 	gtk_container_set_focus_vadjustment (GTK_CONTAINER (box2),gtk_scrolled_window_get_vadjustment (GTK_SCROLLED_WINDOW(scrolled_window)));
 	gtk_widget_show (box2);
 	for (i = 0; i < nbuttons; i++)

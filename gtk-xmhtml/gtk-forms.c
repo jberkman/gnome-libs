@@ -837,7 +837,7 @@ _XmHTMLFormAddSelect(XmHTMLWidget html, String attributes)
 		scrolled_win = gtk_scrolled_window_new (NULL, NULL);
 		gtk_widget_set_usize (scrolled_win, 80, 80);
 		list = gtk_list_new ();
-		gtk_container_add (GTK_CONTAINER (scrolled_win), list);
+		gtk_scrolled_window_add_with_viewport (GTK_SCROLLED_WINDOW (scrolled_win), list);
 		gtk_widget_show (list);
 		gtk_object_set_user_data (GTK_OBJECT (scrolled_win), list);
 		
