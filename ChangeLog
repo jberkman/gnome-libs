@@ -1,3 +1,13 @@
+1998-02-12  Raja R Harinath  <harinath@cs.umn.edu>
+
+	* configure.in (GNOME_LIBDIR,GNOME_INCLUDEDIR): New configuration
+	variables used in `gnomeConf.sh'.
+	* gnomeConf.sh.in (GNOME_LIBDIR,GNOME_INCLUDEDIR): Moved here from
+	the `install-data-local' rule.
+
+	* Makefile.am (SUBDIRS): Add `support'.
+	(install-data-local): Remove.
+
 1998-02-10  Raja R Harinath  <harinath@cs.umn.edu>
 
 	* HACKING: Added a note about `aclocal' and the `macros' subdir. 

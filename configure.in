@@ -22,6 +22,7 @@ AC_HEADER_STDC
 AC_ARG_PROGRAM
 AM_PROG_LIBTOOL
 GNOME_X_CHECKS
+GNOME_SUPPORT_CHECKS
 
 AC_SUBST(CFLAGS)
 AC_SUBST(CPPFLAGS)
@@ -57,18 +58,22 @@ dnl
 dnl The libgnomeui specific checks
 dnl
 
-LIBGNOME_LIBS="$INTLLIBS $DL_LIB"
+LIBGNOME_LIBS="$DL_LIB"
 GNOME_LIBS="-lgnome $LIBGNOME_LIBS"
 
-LIBGNOMEUI_LIBS="$GNOME_LIBS $GTK_LIBS $X_LIBS $x_libs"
-GNOMEUI_LIBS="-lgnomeui $LIBGNOMEUI_LIBS"
+LIBGNOMEUI_LIBS="$LIBGNOME_LIBS $GTK_LIBS $X_LIBS $x_libs"
+GNOMEUI_LIBS="-lgnomeui $GNOME_LIBS $GTK_LIBS $X_LIBS $x_libs"
 
 LIBGTKXMHTML_LIBS="$GTK_LIBS $XPM_LIBS $JPEG_LIBS $PNG_LIBS $Z_LIBS $X_LIBS $x_libs"
 GTKXMHTML_LIBS="-lgtkxmhtml $LIBGTKXMHTML_LIBS"
 
+GNOME_LIBDIR=`eval echo \`echo $libdir\``
+GNOME_INCLUDEDIR=`eval echo \`echo $includedir\``
 AC_SUBST(GNOME_LIBS)
 AC_SUBST(GNOMEUI_LIBS)
 AC_SUBST(GTKXMHTML_LIBS)
+AC_SUBST(GNOME_LIBDIR)
+AC_SUBST(GNOME_INCLUDEDIR)
 
 AC_SUBST(LIBGNOME_LIBS)
 AC_SUBST(LIBGNOMEUI_LIBS)
@@ -103,5 +108,5 @@ libgnome/Makefile
 libgnomeui/Makefile
 test-suite/Makefile
 gnome-hello/Makefile
-version.h
-stamp.h],[sed -e "/POTFILES =/r po/POTFILES" po/Makefile.in > po/Makefile])
+support/Makefile
+version.h],[sed -e "/POTFILES =/r po/POTFILES" po/Makefile.in > po/Makefile])
