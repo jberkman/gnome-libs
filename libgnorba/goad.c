@@ -365,7 +365,7 @@ goad_server_list_read(const char *filename,
 		       newval.server_id);
     else
       g_string_sprintf(dummy, "%s/location_info",
-		       newval.description);
+		       newval.server_id);
     newval.location_info = gnome_config_get_string(dummy->str);
     g_array_append_val(servinfo, newval);
   }
@@ -1186,7 +1186,7 @@ goad_server_register(CORBA_Object name_server,
     return 0;
 
   if (!kind)
-    kind = "server";
+    kind = "object";
   
   nc[2].id   = (char *)name;
   nc[2].kind = (char *)kind;
