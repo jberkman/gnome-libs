@@ -1,0 +1,63 @@
+
+The Module maintainer for gnome-libs is:
+	Miguel de Icaza (miguel@kernel.org)
+
+At the current time, any person with write access to the GNOME
+repository, can make changes to gnome-libs.  This is a good thing, in
+that it encourages many people to work on GTK+, and progress can be
+made quickly. However, gnome-libs is a fairly large and complicated
+package that many other things depend on, so to avoid unnecessary
+breakage, we would like to ask people commiting to GTK+ to follow a
+few rules:
+
+0) Ask first. If your changes are major, or could possibly break existing
+   code, you should always ask. If your change is minor and you have
+   been working on gnome-libs for a while it probably is not necessary
+   to ask. But when in doubt, ask. Even if your change is correct,
+   somebody may know a better way to do things.
+
+   If you are making changes to GTK+, you should be subscribed
+   to gnome-devel-list@gnome.org. (Subscription address:  
+   gnome-devel-list-request@gnome.org.) This is a good place to ask
+   about intended changes. 
+
+   If you just want to make a trivial change, and do not want to
+   subscribe, you can also mail gnome-hackers@nuclecu.unam.mx. Or,
+   alternatively, you can look in the ChangeLog for somebody who has
+   been making changes to the file you want to change and email them.
+
+   #gnome on byxnet (irc.gimp.org, irc2.gimp.org, irc3.gimp.org,
+   irc.germany.gimp.org...)s also a good place to find GTK+ and GNOME
+   developers to discuss changes with, however, email to
+   gnome-devel-list is the most certain and preferred method.
+
+1) Ask _first_.
+
+2) There must be a ChangeLog for every commit. (If you discover that
+   you only committed half the files you meant to and need to fix that
+   up, or something, you do not need a new ChangeLog entry. But in general,
+   ChangeLog entries are mandatory.) Changes with out ChangeLog entries
+   will be reverted.
+
+3) There _must_ be a ChangeLog for every commit.
+
+Notes:
+
+* If you are going to be changing many files in an experimental fashion,
+  it probably is a good idea to create a separate branch for your changes.
+
+* The ChangeLog entries should preferrably match in date format
+  with the existing entries. You can set how emacs does this
+  by using customize mode:
+
+  - M-x customize
+
+Miguel de Icaza 
+March 10, 1999.
+
+[ Based on the text from Owen Taylor for GTK+ ]
+
+
+
+
+
