@@ -5,9 +5,7 @@ LINK     = $(LIBTOOL) --mode=link $(CC) $(CFLAGS) $(LDFLAGS) $(X_LIBS) -o $@
 INCLUDE_always = -I$(includedir) $(X_CFLAGS)
 GNOMELIBS = \
 	$(srcdir)/../../libgnomeui/libgnomeui.la \
-	$(srcdir)/../../libgnome/libgnome.la \
-	-lintl -ldl
-
+	$(srcdir)/../../libgnome/libgnome.la
 
 
 if	BUILD_LIBGEMVT
