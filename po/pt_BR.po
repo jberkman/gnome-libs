@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-libs 1.0.16\n"
-"POT-Creation-Date: 1999-09-28 09:50-0500\n"
-"PO-Revision-Date: \n"
+"POT-Creation-Date: 1999-09-29 14:09-0300\n"
+"PO-Revision-Date: 1999-09-29 16:10-03:00\n"
 "Last-Translator: Alexandre Hautequest <hquest@fesppr.br>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -745,6 +745,16 @@ msgstr "Básico"
 msgid "Advanced"
 msgstr "Avançado"
 
+<<<<<<< pt_BR.po
+#: libgnomeui/gnome-druid.c:129
+msgid "Back"
+msgstr "Voltar"
+
+#: libgnomeui/gnome-druid.c:136
+msgid "Finish"
+msgstr "Finalizar"
+
+=======
 #: libgnomeui/gnome-druid.c:129
 #, fuzzy
 msgid "Back"
@@ -754,6 +764,7 @@ msgstr "Básico"
 msgid "Finish"
 msgstr ""
 
+>>>>>>> 1.10
 #: libgnomeui/gnome-file-entry.c:151
 msgid "Select file"
 msgstr "Selecione um arquivo"
@@ -868,8 +879,14 @@ msgstr "MÓDULO"
 
 #. dialog display isn't working out
 #: libgnomeui/gnome-init.c:635
+<<<<<<< pt_BR.po
 msgid "Multiple segmentation faults occurred; can't display error dialog\n"
 msgstr ""
+"Falhas de segmentação múltiplas ocorreram; não pude exibir diálogo de erros\n"
+=======
+msgid "Multiple segmentation faults occurred; can't display error dialog\n"
+msgstr ""
+>>>>>>> 1.10
 
 #: libgnomeui/gnome-messagebox.c:111 libgnomeui/gnome-messagebox.c:240
 msgid "Information"
@@ -1183,6 +1200,11 @@ msgid ""
 "will exit.\n"
 "Please save all your files before closing this dialog."
 msgstr ""
+"O Gerenciador de Sessão GNOME (processo %d) explodiu\n"
+"devido a um erro fatal (%s).\n"
+"Quando você fechar este diálogo, todas as aplicações irão fechar e sua sessão \n"
+"irá terminar.\n"
+"Por favor grave todos os seus arquivos antes de fechar este diálogo."
 
 #: libgnomeui/gnome_segv.c:55
 #, c-format
@@ -1203,7 +1225,7 @@ msgstr "Utilização: gnome_segv aplicação sinal\n"
 #. * translate the plain text, and send the file to webmaster@gnome.org.
 #: libgnomeui/gnome_segv.c:74
 msgid "http://www.gnome.org/application_crashed.shtml"
-msgstr ""
+msgstr "http://www.gnome.org/application_chashed.shtml"
 
 #: libgnomeui/gnome_segv.c:75
 msgid "Please visit the GNOME Application Crash page for more information"
