@@ -5,8 +5,10 @@
 #include <libgnorba/name-service.h>
 #include <gnome.h>
 
-/* Almost the same as gnome_init, except it initializes ORBit for use
-   with gtk+ too */
+/* 
+ * Almost the same as gnome_init, except it initializes ORBit for use
+ * with gtk+ too 
+ */
 CORBA_ORB gnome_CORBA_init(char *app_id,
 			   struct argp *app_parser,
 			   int *argc, char **argv,
