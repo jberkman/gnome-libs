@@ -1410,8 +1410,10 @@ GetScrollDim(XmHTMLWidget html, int *hsb_height, int *vsb_width)
 			       "TWidget (%i).\n    Reset to 15.", height,
 			       GTK_WIDGET(html)->allocation.height);
 		height = 15;
+		/*
 		fprintf (stderr, "Die boy boy die\n");
 		exit (1);
+		*/
 	}
 	
 	if(html->html.vsb){
