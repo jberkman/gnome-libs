@@ -101,7 +101,7 @@ static Pixmap     get_pixmap_prop (Window the_window, char *prop_id);
 static GdkPixmap *load_pixmap_back (char *file, int shaded);
 static GdkPixmap *create_shaded_pixmap (Pixmap p, int x, int y, int w, int h);
 static void       draw_back_pixmap (GtkWidget *widget, int nx, int ny, int nw, int nh);
-static gint       safe_strcmp(gchar *a, gchar *b)
+static gint       safe_strcmp(gchar *a, gchar *b);
 #endif /* ZVT_NO_TRANSPARENT */
 
 
