@@ -6,7 +6,7 @@ LINK = $(LIBTOOL) --mode=link $(CC) $(CFLAGS) $(LDFLAGS) -o $@
 
 libgnorbaincludedir = $(includedir)/libgnorba
 
-INCLUDES = -I.. -I$(srcdir)/.. -I$(includedir) $(SUPPORTINCS) \
+INCLUDES = -I.. -I$(srcdir)/.. $(SUPPORTINCS) -I$(includedir) \
         $(GNOME_INCLUDES)  \
 	$(ORBIT_CFLAGS) \
 	$(GLIB_INCLUDES) \

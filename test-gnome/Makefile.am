@@ -1,7 +1,8 @@
 ## Process this file with automake to produce Makefile.in
 
-INCLUDES = -I.. -I$(srcdir)/.. -I$(includedir) $(GDK_IMLIB_CFLAGS) $(SUPPORTINCS) \
+INCLUDES = -I.. -I$(srcdir)/.. $(SUPPORTINCS) \
 	-I$(top_srcdir)/intl -I$(top_builddir)/intl \
+	-I$(includedir) $(GDK_IMLIB_CFLAGS) \
 	-DGNOMELOCALEDIR=\""$(datadir)/locale"\" \
 	-DLOCALEDIR=\"$(datadir)/locale\"
 
