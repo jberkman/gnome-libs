@@ -2,11 +2,23 @@
 GnomeMDIGenericChild
 
 <!-- ##### SECTION Short_Description ##### -->
-
+A generic <type>GnomeMDI</type> child
 
 <!-- ##### SECTION Long_Description ##### -->
-<para>
+<para><type>GnomeMDIGenericChild</type> is a subclass of
+<type>GnomeMDIChild</type> that allows setting of functions
+for creating views, document-specific menus, notebook labels
+and producing configuration string on a per-instance rather
+than on per-class basis. Thus the programmer does not have
+to subclass <type>GnomeMDIChild</type> but can use
+<type>GnomeMDIGenericChild</type> class directly.
+</para>
 
+<para>Only the view creating function is mandatory. It has to be set
+with gnome_mdi_generic_child_set_view_creator() or
+gnome_mdi_generic_child_set_view_creator_full(). The default implementation
+of notebook label creation is provided by <type>GnomeMDIChild</type> class
+and the document menus and configuration string are optional.
 </para>
 
 <!-- ##### STRUCT GnomeMDIGenericChild ##### -->

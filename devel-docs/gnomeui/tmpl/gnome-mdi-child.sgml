@@ -2,11 +2,33 @@
 GnomeMDIChild
 
 <!-- ##### SECTION Short_Description ##### -->
-
+An abstract MDI child class
 
 <!-- ##### SECTION Long_Description ##### -->
-<para>
+<para><type>GnomeMDIChild</type> is an abstract class for <type>GnomeMDI</type>
+children. In order to use it, you have to either derive a new class from it
+and set the proper virtual functions in its parent
+<type>GnomeMDIChildClass</type> structure or use the
+<type>MDIGenericChild</type> that allows to specify the relevant functions on a
+per-instance rather than on per-class basis.
+</para>
 
+<para>Each instance of GnomeMDIChild class defines a name for the child and
+possibly a menu template for document-specific menus that will be merged with
+the global MDI menus.
+</para> 
+
+<para>The <type>GnomeMDIChild</type> class defines four virtual functions
+that may be used by the MDI: create_view should be defined for each subclass
+and should return a pointer to a GtkWidget representing a new view of the
+document. create_menus should return a GList of menu items and can be used
+instead of the menu template. get_config_string should return a string that
+represents the state of the child and will be used in automatic session
+saving and restoring. The last virtual function, set_label, should return
+a pointer to a GtkWidget that will be used as notebook and menu item label
+for this child. <type>GnomeMDIChild</type> class provides the default
+implementation of set_label while create_view function must be defined for
+each subclass; create_menus and get_config_string may be left undefined.
 </para>
 
 <!-- ##### STRUCT GnomeMDIChild ##### -->
