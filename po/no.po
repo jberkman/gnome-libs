@@ -5,7 +5,7 @@
 # , fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: gnome-libs-0.13\n"
+"Project-Id-Version: gnome-libs VERSION\n"
 "POT-Creation-Date: 1998-10-01 22:28+0200\n"
 "PO-Revision-Date: 1998-05-04 12:00+0100\n"
 "Last-Translator: Kjartan Maraas <kmaraas@fib.hl.no>\n"
@@ -113,11 +113,11 @@ msgstr "Avbryt sesjon"
 
 #: gnome-hello/gnome-hello-7-mdi.c:180
 msgid "Add View"
-msgstr ""
+msgstr "Legg til ???"
 
 #: gnome-hello/gnome-hello-7-mdi.c:185
 msgid "Remove View"
-msgstr ""
+msgstr "Fjern ???"
 
 #: gnome-hello/gnome-hello-7-mdi.c:191
 msgid "Child"
@@ -157,7 +157,7 @@ msgstr "Fil/Avslutt"
 
 #: gnome-hello/gnome-hello.c:40
 msgid "<control>E"
-msgstr "<control>E"
+msgstr "<ctrl>E"
 
 #. The '...' end indicate that the options open a dialog
 #: gnome-hello/gnome-hello.c:42
@@ -166,7 +166,7 @@ msgstr "Hjelp/Om..."
 
 #: gnome-hello/gnome-hello.c:42
 msgid "<control>A"
-msgstr "<control>A"
+msgstr "<ctrl>A"
 
 #: gnome-hello/gnome-hello.c:208
 #, c-format
@@ -895,7 +895,7 @@ msgstr "Egenskaper..."
 
 #: libgnomeui/stock_demo.c:251
 msgid "Preferences..."
-msgstr "Preferanser..."
+msgstr "Innstillinger..."
 
 # , fuzzy
 #: libgnomeui/stock_demo.c:266
@@ -948,11 +948,11 @@ msgstr "Sett lag"
 
 #: libgnomeui/winhints_demo.c:127
 msgid "Workspaces:"
-msgstr "Arbeidsplass:"
+msgstr "Arbeidsområde:"
 
 #: libgnomeui/winhints_demo.c:149
 msgid "Occupy all workspaces"
-msgstr "Okkuper alle arbeidsplasser"
+msgstr "Okkuper alle arbeidsområder"
 
 #: libgnomeui/winhints_demo.c:153
 msgid "Set Workspace"
@@ -960,7 +960,7 @@ msgstr "Sett arbeidsplass"
 
 #: libgnomeui/winhints_demo.c:163
 msgid "State Toggles:"
-msgstr "Statusvelger:"
+msgstr "Tilstandsvelger:"
 
 #: libgnomeui/winhints_demo.c:173
 msgid "Minimized"
@@ -1004,7 +1004,7 @@ msgstr "Hopp over oppgavelinje / vindusliste"
 
 #: libgnomeui/winhints_demo.c:221
 msgid "Set Skip"
-msgstr ""
+msgstr "Hopp over"
 
 #: libgnomeui/winhints_demo.c:404
 msgid "WIN_HINTS Test"
@@ -1066,28 +1066,28 @@ msgstr "Ukjent systemfeil"
 #: support/getopt.c:669
 #, c-format
 msgid "%s: option `%s' is ambiguous\n"
-msgstr "%s: valget `%s' er ????\n"
+msgstr "%s: flagget `%s' er ????\n"
 
 # , c-format
 # , c-format
 #: support/getopt.c:693
 #, c-format
 msgid "%s: option `--%s' doesn't allow an argument\n"
-msgstr "%s: valget `--%s' tillater ikke argumenter\n"
+msgstr "%s: flagget `--%s' tillater ikke argumenter\n"
 
 # , c-format
 # , c-format
 #: support/getopt.c:698
 #, c-format
 msgid "%s: option `%c%s' doesn't allow an argument\n"
-msgstr "%s: valget `%c%s' tillater ikke argumenter\n"
+msgstr "%s: flagget `%c%s' tillater ikke argumenter\n"
 
 # , fuzzy, c-format
 # , c-format
 #: support/getopt.c:715 support/getopt.c:888
 #, c-format
 msgid "%s: option `%s' requires an argument\n"
-msgstr "%s: For mange argumenter\n"
+msgstr "%s: flagget `%s' krever et argument\n"
 
 # , c-format
 # , c-format
@@ -1095,7 +1095,7 @@ msgstr "%s: For mange argumenter\n"
 #: support/getopt.c:744
 #, c-format
 msgid "%s: unrecognized option `--%s'\n"
-msgstr "%s: ukjent valg `--%s'\n"
+msgstr "%s: ukjent flagg `--%s'\n"
 
 # , c-format
 # , c-format
@@ -1103,7 +1103,7 @@ msgstr "%s: ukjent valg `--%s'\n"
 #: support/getopt.c:748
 #, c-format
 msgid "%s: unrecognized option `%c%s'\n"
-msgstr "%s: ukjent valg `%c%s'\n"
+msgstr "%s: ukjent flagg `%c%s'\n"
 
 # , c-format
 # , c-format
@@ -1111,14 +1111,14 @@ msgstr "%s: ukjent valg `%c%s'\n"
 #: support/getopt.c:774
 #, c-format
 msgid "%s: illegal option -- %c\n"
-msgstr "%s: ugyldig valg -- %c\n"
+msgstr "%s: ugyldig flagg -- %c\n"
 
 # , c-format
 # , c-format
 #: support/getopt.c:777
 #, c-format
 msgid "%s: invalid option -- %c\n"
-msgstr "%s: ugyldig valg -- %c\n"
+msgstr "%s: ugyldig flagg -- %c\n"
 
 # , fuzzy, c-format
 # , c-format
@@ -1126,21 +1126,21 @@ msgstr "%s: ugyldig valg -- %c\n"
 #: support/getopt.c:807 support/getopt.c:937
 #, c-format
 msgid "%s: option requires an argument -- %c\n"
-msgstr "%s: For mange argumenter\n"
+msgstr "%s: flagget krever et argument -- %c\n"
 
 # , c-format
 # , c-format
 #: support/getopt.c:854
 #, c-format
 msgid "%s: option `-W %s' is ambiguous\n"
-msgstr "%s: valget `-W %s' er ???\n"
+msgstr "%s: flagget `-W %s' er ???\n"
 
 # , c-format
 # , c-format
 #: support/getopt.c:872
 #, c-format
 msgid "%s: option `-W %s' doesn't allow an argument\n"
-msgstr "%s: valget `-W %s' tillater ikke argumenter\n"
+msgstr "%s: flagget `-W %s' tillater ikke argumenter\n"
 
 #: test-gnome/testgnome.c:670
 msgid "The user chose Yes/OK with data:\n"
@@ -1152,4 +1152,4 @@ msgstr "Brukeren valgte Nei/Avbryt med data:\n"
 
 #: test-gnome/testgnome.c:685
 msgid "Weird number in reply callback"
-msgstr "Snålt nummer i svar ???"
+msgstr "Snålt nummer i svar tilbakeringingssvaret"
