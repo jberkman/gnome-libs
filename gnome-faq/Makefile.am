@@ -47,6 +47,12 @@ gnome-faq.html: gnome-faq/index.html
 gnome-faq/index.html: gnome-faq.sgml
 	-(cd $(srcdir); db2html gnome-faq.sgml) > /dev/null
 
+install-data-local: gnome-faq.html
+	-for file in $(srcdir)/gnome-faq/*.html $(srcdir)/gnome-faq/*.css; do \
+          basefile=`echo $$file | sed -e 's,^.*/,,'`; \
+          $(INSTALL_DATA) $$file $(DESTDIR)$(htmldir)/$$basefile; \
+        done
+
 dist-hook:
 	tar cvf - gnome-faq | (cd $(distdir); tar xf -)
 
