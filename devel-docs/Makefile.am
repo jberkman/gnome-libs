@@ -55,6 +55,7 @@ EXTRA_DIST = \
 	gnome-dev-info.sgml		\
 	gnome-app-helper.sgml		\
 	gnome-message-utils.sgml	\
+	gnome-faq.sgml			\
 	x-concepts.sgml			\
 	libgnorba.sgml			\
 	gnome-mdi.sgml			\
