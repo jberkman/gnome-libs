@@ -270,10 +270,6 @@ AC_CHECK_FUNCS(strdup)
 AC_CHECK_HEADERS(utime.h)
 AC_FUNC_MMAP
 AC_CHECK_TYPE(umode_t, int)
-GNOME_VFS_CHECKS
-GNOME_UNDELFS_CHECKS
-AC_SUBST(EXT2FS_UNDEL_LIBS)
-AM_CONDITIONAL(UNDELFS, test "$ext2fs_undel" = yes)
 
 dnl
 dnl Check for db stuff (gnome-metadata)
