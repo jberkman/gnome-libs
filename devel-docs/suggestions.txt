@@ -11,6 +11,8 @@ Menus:
      GNOMEUIINFO_MENU_NEW_ITEM(label,cb,data)
      you should put the label in the form of N_("_New Document"),
      replacing Document with whatever new thing you are adding
+     Print should do an immediate printing, Print Setup will take
+     care of all the setup
 
    - For some standard toplevel menus (File, Edit,Help,etc),
      you should use the macros GNOMEUIINFO_*_MENU(tree)
@@ -22,15 +24,16 @@ Menus:
    - The prescribed order of standard menu items in the "File" menu is
      the following:
      New, Open, Save, Save As, Revert, separator, Print, Print Setup,
-     separator, Close, Exit
+     separator, Preferences, separator, Close, Exit
 
    - The prescribed order of standard menu items in the "Edit" menu is
-     the following:  Undo, Redo, separator, Cut, Copy, Paste, Clear
+     the following:
+     Undo, Redo, separator, Cut, Copy, Paste, Clear, separator, Properties
 
-   - For help menu, you should add the
+   - For help menu, you should have this:
      GNOMEUIINFO_HELP(app_name),
-     first, and after that add the
-     GNOMEUIINFO_MENU_ABOUT_ITEM(cb, data)
+     GNOMEUIINFO_MENU_ABOUT_ITEM(cb, data),
+     GNOMEUIINFO_END
      
 
 Dialogs
