@@ -1,3 +1,13 @@
+Sun Jul 12 23:01:56 1998  Havoc Pennington  <hp@pobox.com>
+
+	* testgnome.c (create_app_util): Added a test for the 
+	GnomeAppBar, gnome-app-util, and gnome-dialog-util (they're 
+	all interrelated, so it's just one test window). This is also
+	a decent demo for what these functions do (or don't).
+
+	Also added a "Reload preferences" button to load preferences
+	and observe the effect on the gnome libraries.
+
 1998-07-08  Federico Mena Quintero  <federico@nuclecu.unam.mx>
 
 	* canvas.c (scroll): Added buttons to scroll the canvas.  When I

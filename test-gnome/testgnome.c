@@ -207,13 +207,10 @@ void toggle_boolean(GtkWidget * toggle, gboolean * setme)
   *setme = !current;
 }
 
-void block_until_clicked(GtkWidget *ignore)
+void block_until_clicked(GtkWidget *dialog)
 {
   gint button;
-  GtkWidget *dlg_modal;
-  dlg_modal = gnome_dialog_new("Test run_modal", "OK", "Cancel", NULL);
-  button = gnome_dialog_run_modal(GNOME_DIALOG(dlg_modal));
-  gtk_widget_destroy(GTK_WIDGET(dlg_modal));
+  button = gnome_dialog_run(GNOME_DIALOG(dialog));
   g_print("Modal run ended, button %d clicked\n", button);
 }
 
@@ -240,7 +237,7 @@ void create_test_dialog (GtkWidget * ignored, gboolean * settings)
 					  GNOME_STOCK_BUTTON_CANCEL, NULL ));
   
   entry = gtk_entry_new();
-  button = gtk_button_new_with_label("Block until clicked");
+  button = gtk_button_new_with_label("gnome_dialog_run");
   
   gtk_signal_connect(GTK_OBJECT(button), "clicked", 
 		     GTK_SIGNAL_FUNC(block_until_clicked), 
@@ -477,6 +474,451 @@ void create_property_box()
    gtk_widget_show_all(propbox); */
 }
 
+/* gnome-app-util */
+
+void
+make_entry_hbox(GtkBox * box,
+		gchar * buttontext, gchar * entrydefault, 
+		GtkSignalFunc callback, gpointer entrydata)
+{
+  GtkWidget * hbox;
+  GtkWidget * entry;
+  GtkWidget * button;
+
+  hbox = gtk_hbox_new(TRUE, GNOME_PAD);
+  entry = gtk_entry_new();
+  gtk_entry_set_text(GTK_ENTRY(entry), entrydefault);
+  gtk_object_set_user_data(GTK_OBJECT(entry), entrydata);
+  gtk_box_pack_end(GTK_BOX(hbox), entry, TRUE, TRUE, GNOME_PAD);
+  button = gtk_button_new_with_label(buttontext);
+  gtk_box_pack_start(GTK_BOX(hbox), button, TRUE, TRUE, GNOME_PAD);
+  gtk_signal_connect(GTK_OBJECT(button), "clicked", 
+		     callback, entry);
+
+  gtk_box_pack_start(box, hbox, TRUE, TRUE, GNOME_PAD);
+}
+
+void
+make_button_hbox(GtkBox * box, gchar * buttontext,
+		 GtkSignalFunc callback, gpointer data)
+{
+  GtkWidget * hbox;
+  GtkWidget * entry;
+  GtkWidget * button;
+
+  hbox = gtk_hbox_new(TRUE, GNOME_PAD);
+  button = gtk_button_new_with_label(buttontext);
+  gtk_box_pack_start(GTK_BOX(hbox), button, TRUE, TRUE, GNOME_PAD);
+  gtk_signal_connect(GTK_OBJECT(button), "clicked", 
+		     callback, data);
+
+  gtk_box_pack_start(box, hbox, TRUE, TRUE, GNOME_PAD);
+}
+
+void
+message_cb(GtkWidget * button, GtkEntry * e)
+{
+  GnomeApp * app = gtk_object_get_user_data(GTK_OBJECT(e));
+  gnome_app_message(app, gtk_entry_get_text(e));
+}
+
+void 
+flash_cb(GtkWidget * b, GtkEntry * e)
+{
+  GnomeApp * app = gtk_object_get_user_data(GTK_OBJECT(e));
+  gnome_app_flash(app, gtk_entry_get_text(e));
+}
+
+void 
+error_cb(GtkWidget * b, GtkEntry * e)
+{
+  GnomeApp * app = gtk_object_get_user_data(GTK_OBJECT(e));
+  gnome_app_error(app, gtk_entry_get_text(e));
+}
+
+void 
+warning_cb(GtkWidget * b, GtkEntry * e)
+{
+  GnomeApp * app = gtk_object_get_user_data(GTK_OBJECT(e));
+  gnome_app_warning(app, gtk_entry_get_text(e));
+}
+
+void
+reply_cb(gint reply, gpointer thedata)
+{
+  gchar * data = (gchar *)thedata;
+  gchar * s = NULL;
+  if (reply == GNOME_YES) {
+    s = g_copy_strings(_("The user chose Yes/OK with data:\n"),
+		       data, NULL);
+  }
+  else if (reply == GNOME_NO) {
+    s = g_copy_strings(_("The user chose No/Cancel with data:\n"),
+		       data, NULL);
+  }
+
+  if (s) {
+    g_print(s);
+    g_print("\n");
+    gnome_ok_dialog(s); 
+    g_free(s);
+  }
+  else {
+    gnome_error_dialog(_("Weird number in reply callback"));
+  }
+}
+
+static gchar * data_string = "A test data string";
+
+void
+question_cb(GtkWidget * b, GtkEntry * e)
+{
+  GnomeApp * app = gtk_object_get_user_data(GTK_OBJECT(e));
+  gnome_app_question(app, gtk_entry_get_text(e),
+		     reply_cb, data_string);
+}
+
+void
+question_modal_cb(GtkWidget * b, GtkEntry * e)
+{
+  GnomeApp * app = gtk_object_get_user_data(GTK_OBJECT(e));
+  gnome_app_question_modal(app, gtk_entry_get_text(e),
+			   reply_cb, data_string);
+}
+ 
+void
+ok_cancel_cb(GtkWidget * b, GtkEntry * e)
+{
+  GnomeApp * app = gtk_object_get_user_data(GTK_OBJECT(e));
+  gnome_app_ok_cancel(app, gtk_entry_get_text(e),
+		      reply_cb, data_string);
+}
+
+void
+ok_cancel_modal_cb(GtkWidget * b, GtkEntry * e)
+{
+  GnomeApp * app = gtk_object_get_user_data(GTK_OBJECT(e));
+  gnome_app_ok_cancel_modal(app, gtk_entry_get_text(e),
+			    reply_cb, data_string);
+}
+
+
+static void
+string_cb(gchar * string, gpointer data)
+{
+  gchar * s = g_copy_strings("Got string \"", string, "\" and data \"",
+			     data, "\"", NULL);
+  g_free(string);
+  g_print(s);
+  g_print("\n");
+  gnome_ok_dialog(s);
+  g_free(s);
+}
+
+void
+request_string_cb(GtkWidget * b, GtkEntry * e)
+{
+  GnomeApp * app = gtk_object_get_user_data(GTK_OBJECT(e));
+  gnome_app_request_string(app, gtk_entry_get_text(e),
+			   string_cb, data_string);
+}
+
+gdouble 
+percent_cb(gpointer ignore) 
+{
+  static gdouble progress = 0.0;
+  progress += 0.05;
+  if (progress > 1.0) progress = 0.0;
+  return progress;
+}
+
+void
+cancel_cb(gpointer ignore)
+{
+  gnome_ok_dialog("Progress cancelled!");
+}
+
+void 
+stop_progress_cb(GnomeDialog * d, gint button, GnomeAppProgressKey key)
+{
+  gnome_app_progress_done(key);
+}
+
+void
+progress_timeout_cb(GtkWidget * b, GnomeApp * app)
+{
+  GtkWidget * dialog;
+  GnomeAppProgressKey key;
+
+  dialog = gnome_dialog_new("Progress Timeout Test", "Stop test", NULL);
+  gnome_dialog_set_close(GNOME_DIALOG(dialog), TRUE);
+
+  key = gnome_app_progress_timeout(app, "Progress!", 200,
+				   percent_cb,
+				   cancel_cb,
+				   NULL);
+
+  gtk_signal_connect(GTK_OBJECT(dialog), "clicked", 
+		     GTK_SIGNAL_FUNC(stop_progress_cb), key);
+  gtk_signal_connect_object(GTK_OBJECT(app), "destroy",
+			    GTK_SIGNAL_FUNC(gnome_dialog_close), 
+			    GTK_OBJECT(dialog));
+
+  gtk_widget_show(dialog);
+}
+
+void
+bar_push_cb(GtkWidget * b, GtkEntry * e)
+{
+  GnomeApp * app = gtk_object_get_user_data(GTK_OBJECT(e));
+  gnome_appbar_push(GNOME_APPBAR(app->statusbar), 
+		    gtk_entry_get_text(e));
+}
+
+void
+bar_set_status_cb(GtkWidget * b, GtkEntry * e)
+{
+  GnomeApp * app = gtk_object_get_user_data(GTK_OBJECT(e));
+  gnome_appbar_set_status(GNOME_APPBAR(app->statusbar), 
+			  gtk_entry_get_text(e));
+}
+
+void
+bar_set_default_cb(GtkWidget * b, GtkEntry * e)
+{
+  GnomeApp * app = gtk_object_get_user_data(GTK_OBJECT(e));
+  gnome_appbar_set_default(GNOME_APPBAR(app->statusbar), 
+			   gtk_entry_get_text(e));
+}
+
+void
+bar_set_prompt_cb(GtkWidget * b, GtkEntry * e)
+{
+  GnomeApp * app = gtk_object_get_user_data(GTK_OBJECT(e));
+  gnome_appbar_set_prompt(GNOME_APPBAR(app->statusbar), 
+			  gtk_entry_get_text(e), FALSE);
+}
+
+void
+bar_set_prompt_modal_cb(GtkWidget * b, GtkEntry * e)
+{
+  GnomeApp * app = gtk_object_get_user_data(GTK_OBJECT(e));
+  gnome_appbar_set_prompt(GNOME_APPBAR(app->statusbar), 
+			  gtk_entry_get_text(e), TRUE);
+}
+
+void
+bar_pop_cb(GtkWidget * b, GnomeApp * app)
+{
+  gnome_appbar_pop(GNOME_APPBAR(app->statusbar));
+}
+
+void
+bar_clear_stack_cb(GtkWidget * b, GnomeApp * app)
+{
+  gnome_appbar_clear_stack(GNOME_APPBAR(app->statusbar));
+}
+
+void
+bar_refresh_cb(GtkWidget * b, GnomeApp * app)
+{
+  gnome_appbar_refresh(GNOME_APPBAR(app->statusbar));
+}
+
+void
+bar_clear_prompt_cb(GtkWidget * b, GnomeApp * app)
+{
+  gnome_appbar_clear_prompt(GNOME_APPBAR(app->statusbar));
+}
+
+void
+bar_progress_cb(GtkWidget * b, GtkSpinButton * sb)
+{
+  GnomeApp * app = gtk_object_get_user_data(GTK_OBJECT(sb));
+  gdouble value = gtk_spin_button_get_value_as_float(sb);
+
+  gnome_appbar_set_progress(GNOME_APPBAR(app->statusbar), value);
+}
+
+void
+dialog_ok_cb(GtkWidget * b, GtkEntry * e)
+{
+  gnome_ok_dialog (gtk_entry_get_text(e));
+}
+
+void
+dialog_error_cb(GtkWidget * b, GtkEntry * e)
+{
+  gnome_error_dialog (gtk_entry_get_text(e));
+}
+
+void
+dialog_warning_cb(GtkWidget * b, GtkEntry * e)
+{
+  gnome_warning_dialog (gtk_entry_get_text(e));
+}
+
+void
+dialog_question_cb(GtkWidget * b, GtkEntry * e)
+{
+  gnome_question_dialog (gtk_entry_get_text(e),
+			 reply_cb, data_string);
+}
+
+
+void
+dialog_question_modal_cb(GtkWidget * b, GtkEntry * e)
+{
+  gnome_question_dialog_modal (gtk_entry_get_text(e),
+			       reply_cb, data_string);
+}
+
+void
+dialog_ok_cancel_cb(GtkWidget * b, GtkEntry * e)
+{
+  gnome_ok_cancel_dialog (gtk_entry_get_text(e),
+			  reply_cb, data_string);
+}
+
+void
+dialog_ok_cancel_modal_cb(GtkWidget * b, GtkEntry * e)
+{
+  gnome_ok_cancel_dialog_modal (gtk_entry_get_text(e),
+				reply_cb, data_string);
+}
+
+void
+dialog_request_string_cb(GtkWidget * b, GtkEntry * e)
+{
+  gnome_request_string_dialog (gtk_entry_get_text(e),
+			       string_cb, data_string);
+}
+
+void
+dialog_request_password_cb(GtkWidget * b, GtkEntry * e)
+{
+  gnome_request_password_dialog (gtk_entry_get_text(e),
+				 string_cb, data_string);
+}
+
+void create_app_util()
+{
+  GnomeApp * app;
+  GnomeAppBar * bar;
+  GtkBox * vbox;
+  GtkWidget * label;
+  GtkWidget * sw;
+
+  GtkWidget * hbox, * entry, * button;
+  GtkAdjustment * adj;
+
+  app = 
+    GNOME_APP(gnome_app_new("testGNOME", 
+			    "gnome-app-util/gnome-appbar/gnome-dialog-util test"));
+
+  bar = GNOME_APPBAR(gnome_appbar_new(TRUE, TRUE, GNOME_PREFERENCES_USER));
+  gnome_app_set_statusbar(app, GTK_WIDGET(bar));
+
+  vbox = GTK_BOX(gtk_vbox_new(TRUE, GNOME_PAD));
+  sw   = gtk_scrolled_window_new(NULL, NULL);
+
+  gtk_container_set_focus_vadjustment (GTK_CONTAINER (vbox),
+				       gtk_scrolled_window_get_vadjustment (GTK_SCROLLED_WINDOW(sw)));
+
+  gtk_container_add(GTK_CONTAINER(sw), GTK_WIDGET(vbox));
+
+  gnome_app_set_contents(app, sw);
+
+  label = gtk_label_new("App Util Functions");
+  gtk_box_pack_start(vbox, label, TRUE, TRUE, GNOME_PAD);
+
+  label = gtk_label_new("Note: these functions should change behavior\n"
+			"according to user preferences for (non)interactive\n"
+			"appbar vs. dialogs.");
+  gtk_box_pack_start(vbox, label, TRUE, TRUE, GNOME_PAD);
+
+  make_entry_hbox(vbox, "Message", "This is a message", 
+		  GTK_SIGNAL_FUNC(message_cb), app);
+  make_entry_hbox(vbox, "Flash", "Should disappear shortly", 
+		  GTK_SIGNAL_FUNC(flash_cb), app);
+  make_entry_hbox(vbox, "Error", "an error", 
+		  GTK_SIGNAL_FUNC(error_cb), app);
+  make_entry_hbox(vbox, "Warning", "Warning!",
+		  GTK_SIGNAL_FUNC(warning_cb), app);
+  make_entry_hbox(vbox, "Question", "Is this a question?",
+		  GTK_SIGNAL_FUNC(question_cb), app);
+  make_entry_hbox(vbox, "Modal Question", "This should be a modal question",
+		  GTK_SIGNAL_FUNC(question_modal_cb), app);
+  make_entry_hbox(vbox, "OK-Cancel", "An OK-Cancel",
+		  GTK_SIGNAL_FUNC(ok_cancel_cb), app);
+  make_entry_hbox(vbox, "Modal OK-Cancel", "Modal OK-Cancel",
+		  GTK_SIGNAL_FUNC(ok_cancel_modal_cb), app);
+  make_entry_hbox(vbox, "Request string", "Enter a string:",
+		  GTK_SIGNAL_FUNC(request_string_cb), app);
+  make_button_hbox(vbox, "Timeout Progress", 
+		   GTK_SIGNAL_FUNC(progress_timeout_cb), app);
+
+  label = gtk_label_new("App Bar Functions");
+  gtk_box_pack_start(vbox, label, TRUE, TRUE, GNOME_PAD);
+  
+  make_entry_hbox(vbox, "AppBar push", "This text was pushed",
+		  GTK_SIGNAL_FUNC(bar_push_cb), app);
+  make_entry_hbox(vbox, "AppBar set status", "This is a status",
+		  GTK_SIGNAL_FUNC(bar_set_status_cb), app);
+  make_entry_hbox(vbox, "AppBar set default", "Default text",
+		  GTK_SIGNAL_FUNC(bar_set_default_cb), app);
+  make_entry_hbox(vbox, "AppBar set prompt", "a prompt",
+		  GTK_SIGNAL_FUNC(bar_set_prompt_cb), app);
+  make_entry_hbox(vbox, "AppBar set modal prompt", "a modal prompt",
+		  GTK_SIGNAL_FUNC(bar_set_prompt_modal_cb), app);
+
+  make_button_hbox(vbox, "AppBar pop", 
+		   GTK_SIGNAL_FUNC(bar_pop_cb), app);
+  make_button_hbox(vbox, "AppBar clear stack", 
+		   GTK_SIGNAL_FUNC(bar_clear_stack_cb), app);
+  make_button_hbox(vbox, "AppBar refresh", 
+		   GTK_SIGNAL_FUNC(bar_refresh_cb), app);  
+  make_button_hbox(vbox, "AppBar clear prompt", 
+		   GTK_SIGNAL_FUNC(bar_clear_prompt_cb), app);
+
+  adj = GTK_ADJUSTMENT(gtk_adjustment_new(0.5, 0.0, 1.0, 0.01, 0.05, 0.05));
+  entry = gtk_spin_button_new(adj, 0.5, 3);
+  gtk_object_set_user_data(GTK_OBJECT(entry), app);
+  hbox = gtk_hbox_new(TRUE, GNOME_PAD);
+  button = gtk_button_new_with_label("AppBar set progress");
+  gtk_box_pack_start(GTK_BOX(hbox), button, TRUE, TRUE, GNOME_PAD);
+  gtk_box_pack_end(GTK_BOX(hbox), entry, TRUE, TRUE, GNOME_PAD);
+  gtk_box_pack_start(vbox, hbox, TRUE, TRUE, GNOME_PAD);
+  gtk_signal_connect(GTK_OBJECT(button), "clicked", 
+		     GTK_SIGNAL_FUNC(bar_progress_cb), entry);
+
+  label = gtk_label_new("Dialog Util Functions");
+  gtk_box_pack_start(vbox, label, TRUE, TRUE, GNOME_PAD);
+
+  make_entry_hbox(vbox, "OK dialog", "Hi, is this OK?",
+		  GTK_SIGNAL_FUNC(dialog_ok_cb), app);
+  make_entry_hbox(vbox, "Error dialog", "An error! An error!",
+		  GTK_SIGNAL_FUNC(dialog_error_cb), app);
+  make_entry_hbox(vbox, "Warning dialog", "I'm warning you...", 
+		  GTK_SIGNAL_FUNC(dialog_warning_cb), app);
+  make_entry_hbox(vbox, "OK-Cancel dialog", "OK or should I cancel?",
+		  GTK_SIGNAL_FUNC(dialog_ok_cancel_cb), app);
+  make_entry_hbox(vbox, "Modal OK-Cancel dialog", "Modally OK",
+		  GTK_SIGNAL_FUNC(dialog_ok_cancel_modal_cb), app);
+  make_entry_hbox(vbox, "Question dialog", "Are you sure?",
+		  GTK_SIGNAL_FUNC(dialog_question_cb), app);
+  make_entry_hbox(vbox, "Modal question dialog", "Modal - are you sure?",
+		  GTK_SIGNAL_FUNC(dialog_question_modal_cb), app);
+  make_entry_hbox(vbox, "Request string dialog", "Enter a string",
+		  GTK_SIGNAL_FUNC(dialog_request_string_cb), app);
+  make_entry_hbox(vbox, "Request password dialog", "Enter password",
+		  GTK_SIGNAL_FUNC(dialog_request_password_cb), app);
+
+  gtk_widget_set_usize(GTK_WIDGET(app), 640, 480);
+
+  gtk_widget_show_all(GTK_WIDGET(app));
+}
+
 int main (int argc, char *argv[])
 {
 	struct {
@@ -484,6 +926,7 @@ int main (int argc, char *argv[])
 		void (*func) ();
 	} buttons[] =
 	  {
+		  { "app-util/appbar/dialog-util", create_app_util },
 		  { "calendar", create_calendar },
 		  { "calculator", create_calc },
 #ifdef GTK_HAVE_ACCEL_GROUP
@@ -496,10 +939,11 @@ int main (int argc, char *argv[])
 		  { "file entry", create_file_entry },
 		  { "number entry", create_number_entry },
 		  { "font sel", create_font_sel },
-	{ "icon list", create_icon_list }, 
+		  { "icon list", create_icon_list }, 
 		  { "lamp", create_lamp },
 		  { "less", create_less },
 		  { "pixmap", create_pixmap },
+		  { "(Reload preferences)", gnome_preferences_load },
 /*	{ "prop box", create_property_box }, */
 	  };
 	int nbuttons = sizeof (buttons) / sizeof (buttons[0]);
