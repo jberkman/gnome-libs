@@ -65,9 +65,30 @@
 	</para>
       </sect1>
 
-    <sect1 id="thistut">
-      <title>This tutorial.</title>
+    <sect1 id="thisdoc">
+      <title>This document.</title>
       <para>
+        <emphasis>WARNING</emphasis>: this tutorial is in really early stages.
+        So it's almost empty and hasn't been checked. Uglier, GNOME is in early
+        stages too, so it's APIs are changing very frequently and the info here
+        is probably inaccurate. When this document and the code disagree, the
+        code wins. :-)
+        </para>
+      <para>
+        I'm a new GNOME developer and i've had some trouble finding info about
+        how to do some things (and the people on the list were being a bit
+        annoyed with my questions.) So i'm trying to do it easy for you,
+        the developers that come after me.
+        </para>
+      <para>
+        This document is intended to be not only a tutorial, but a reference
+        too. I hope it growing to be the ultimate guide to the GNOME internals.
+        I would like including here the architecture notes that now are in
+        the website and the style guide.
+        </para>
+      <para>
+        If you add some functionality/widget to libgnome or libgnomeui please
+        document it here so it doesn't get outdated.
         </para>
       </sect1>
 
@@ -83,43 +104,112 @@
     <sect1 id="proglang">
       <title>Programming languages that can be used in GNOME.</title>
       <para>
+        GNOME is intendeed to support any languages. But you need to have
+        GTK+ and GNOME bindings for your particular language. Our prefereed
+        languages are C and scheme (using guile.) There are bindings too
+        for Objective C. There are GTK bindings for C++ (Gtk--) and for
+        Perl, but afaik there aren't very good and still there aren't bindings
+        for gnome stuff for these languages.
         </para>
       </sect1>
 
     <sect1 id="start">
       <title>How to start hacking GNOME.</title>
       <para>
+        Read the README and HACKING files to know how to download the latest
+        gnome from CVS.
 	</para>
+      <para>
+        You will need know the Gtk+ toolkit. If you don't know it read the
+        <ulink URL="http://www.levien.com/~slow/gtk/">Gtk+ Tutorial</ulink>.
+        </para>
+      <para>
+        When you've made your changes you need to make a diff... The best
+        way to do it is:
+        <literallayout>
+        <prompt>$ </prompt><userinput>cvs diff -u > diffs</userinput>
+        </literallayout>
+        [FIXME: Does it work with anonimous CVS?]
+        After it send the diffs file to <email>gnome-list@gnome.org</email>.
+	In a short time someone of the core hackers will answer you and he
+	is going to be your "GNOME godfather". Then, and until you have a
+	CVS account send your patches to him.
+        [FIXME: What think, you GNOME core hackers, about the godfather idea?]
+        </para>
       </sect1>
 
     <sect1 id="what">
       <title>What to hack.</title>
       <para>
+        If you want to dirt your hands with GNOME, i've some advice for you:
 	</para>
+      <itemizedlist>
+        <listitem>Start simple. Do little things and familiarize yourself with
+          GNOME. You'll have time to do great things after.
+        <listitem>Read the TODO. You'll find some interesting things to work in.
+        </itemizedlist>
       </sect1>
 
     <sect1 id="CVS">
       <title>Obtaining a CVS account.</title>
       <para>
+        When you was working in the GNOME during a while it's time for getting
+        a CVS account, so you can submit your patches directly. Just ask
+        your "godfather" for it.
 	</para>
       </sect1>
 
     <sect1 id="altpol">
       <title>Policy on hacking another people's code.</title>
       <para>
+        If you're going to do a little fixes, go and do it. But if you
+        plan to do changes to some API or rewriting some code please tell
+        it to the author. (i've learned it by the hard way and the gnome-score
+        stuff is broken yet because my error :-( )
 	</para>
       </sect1>
 
     <sect1 id="addAUTH">
       <title>When adding yourself to AUTHORS file.</title>
       <para>
+        We know it. You're working in the GNOME to impress girls saying them:
+        "Hey, I'm a GNOME developer" :-), so you're wanting to add yourself to
+        the AUTHORS file as quickly as you can...
 	</para>
+      <para>
+        To know when you can add yourself only think :-), if you've only
+        fixed some typos don't do it. If you've added a great bunch of
+        (good) code, then do it.
+        </para>
+      <para>
+        (<emphasis>Very personal opinion:</emphasis>) I suggest you don't 
+        adding yourself to the root AUTHORS file. I think you should
+        wait some of the core hackers recognize your work and add you.
+        (i believe it would be very much more satisfying to know that the
+        "real" hackers value your work, probably this belief is why i amn't
+        there yet... :-) )
+        </para>
       </sect1>
 
     <sect1 id="codstd">
       <title>Coding Standards.</title>
       <para>
+        Err, i'm waiting answers to some questions that i've posted to
+        gnome-hackers... But here are some tips.
 	</para>
+      <itemizedlist>
+        <listitem> When you change things, edit the ChangeLog, so the 
+          other people can know what you've did.
+        <listitem> When you're writing code that should be written better add
+          FIXME comments so it's easy to recognize.
+        <listitem> Document your programs.
+        <listitem> If you do changes to the APIs documented here or add new 
+          please update the documentation.
+        <listitem> Add translations for your native tongue. We would like
+          have a full internationalized GNOME. (so if you know more than
+          one language do translations for all them) (we would like all
+          the idioms, from francais to old greek :-) )
+        </itemizedlist>
       </sect1>
 
     </chapter>
@@ -139,44 +229,117 @@
 	standards, as well as a fun and useless little program.
 	</para>
       <para>
-	Similarly, gnome-hello is documented (you are reading it now) in the
-	manner typical of GNOME applications. 
+	Similarly, gnome-hello is documented in the manner typical of GNOME 
+	applications. 
         </para>
 
       <sect1 id="parsing">
       	<title>Parsing parameters.</title>
       	<para>
+      	  Well, Carsten and Tom are talking about standarizing it, so i'll
+      	  wait a bit their definitions.
       	  <para>
 	</sect1>
 	
       <sect1 id="i18n">
       	<title>Internationalization.</title>
       	<para>
-      	  <para>
+	  Internationalization (i18n for short) is very easy with GNOME. We
+	  use GNU gettext. You need to initialize it with: 
+	  <literal>textdomain (PACKAGE);</literal> in your main function. 
+	  After it you only need to add a _() to all the strings that need 
+	  translation.
+      	  </para>
+      	<para>
+      	  You will need add your file to po/POTFILES.in. Then you can do
+      	  <literal>make gnome.pot;make update-po</literal>, edit the .po file
+      	  corresponding to you tongue and do <literal>make install</literal>.
+      	  Now try your program... Wow! It's speaking in Spanish/Finnish/Latin...
+      	  </para>
+      	<para>
+      	  <emphasis>Warning</emphasis>: _() is a macro for the gettext. So
+      	  it won't work when initializing arrays of strings or structs. Then
+      	  you need use the N_() macro around the strings and when you use
+      	  them do the _() stuff (see the <literal>create_menu</literal> function
+      	  for an example.) If you want know more about it read the info
+      	  documentation of GNU gettext.
+      	  [FIXME: is my explanation correct? I haven't read a C book in the
+      	  last 5 years so i don't remember when you can't call functions
+      	  in init's]
+      	  </para>
 	</sect1>
 	
       <sect1 id="prepareapp">
-      	<title>Making the application's main window.</title>
+      	<title>Making the application's main window and menuses.</title>
       	<para>
-      	  <para>
+      	  See now the prepare_app function. We first make the window calling
+	  <literal>gnome_app_new</literal> and connect the signal 
+	  <literal>delete_event</literal> to the callback 
+	  <literal>quit_cb</literal>, so the user can close the app via the WM:
+	  </para>
+      	<para>
+	  <literallayout>
+	    app = gnome_app_new ("hello", "Hello World Gnomified");
+	    gtk_widget_realize (app);
+	    gtk_signal_connect (GTK_OBJECT (app), "delete_event",
+	                      GTK_SIGNAL_FUNC (quit_cb),
+	                      NULL);
+	    </literallayout>
+	  </para>
+      	<para>
+      	  Forgot the <literal>if(restarted)</literal> block, we'll see it in
+      	  the <xref linkend="sessmng">.
+	  </para>
+      	<para>
+      	  Now we create the menu bar and set it to be the menubar of the app
+      	  with <literal>gnome_app_set_contents</literal>.
+	  </para>
+      	<para>
+	  <literallayout>
+	    mf = create_menu ();
+	    gnome_app_set_menus ( GNOME_APP (app), GTK_MENU_BAR (mf->widget));
+	    </literallayout>
+	  </para>
+      	<para>
+      	  If you've read the Gtk+ Tutorial (and, if you haven't read it,
+      	  <ulink URL="http://www.levien.com/~slow/gtk/">go and do it</ulink>) 
+      	  the rest of prepare_app will sound you familiar. 
+	  </para>
 	</sect1>
 	
-      <sect1 id="menuopt">
-      	<title>Mandatory menu options.</title>
+      <sect1 id="menuses">
+      	<title>Setting up menuses.</title>
       	<para>
-      	  <para>
+      	  The gnome-hello is using GtkMenuFactory. If you don't know it,
+      	  please read the menus chapter on the <ulink 
+      	  URL="http://www.levien.com/~slow/gtk/">Gtk+ Tutorial</ulink>.
+      	  (but i amn't sure that we're going to continue using GMF or will
+      	  merge to gnome_app_create_menus) [FIXME: what should we do?]
+      	  </para>
+      	<para>
+      	  The menu options present in gnome-hello are only the mandatory: 
+      	  <guimenuitem>File/Exit</guimenuitem>, that is implemented with
+      	  a call to <literal>gtk_main_quit</literal>, and
+      	  <guimenuitem>Help/About...</guimenuitem> that uses the 
+      	  gnome-about widget (see <xref linkend="gnome-about">) written
+      	  by Cesar <email>miquel@df.uba.ar</email>.
+      	  </para>
 	</sect1>
 	
       <sect1 id="sessmng">
       	<title>Session Management.</title>
       	<para>
-      	  <para>
+      	  Err, Tom and Carsten are redefining it so i'll wait their
+      	  conclusions.
+      	  </para>
 	</sect1>
 
       <sect1 id="doc">
       	<title>Documentation.</title>
       	<para>
-      	  <para>
+      	  I think that Mark would like writting this section... [FIXME: Mark,
+      	  do you want do it?]
+      	  </para>
 	</sect1>
 	
     </chapter>
@@ -195,72 +358,107 @@
         This chapter is intended to be a reference to the libgnome.
         </para>
       <sect1 id="gnome-config">
-        <title>gnome-config</title>
+        <title>gnome-config - Configuration helper routines.</title>
         <para>
+          <emphasis>Author</emphasis>: Miguel de Icaza.
+          </para>
+        <para>
+          OK, i was able to document gnome-config, but it's going a major
+          redesign, so i'll wait.
           </para>
         </sect1>
       <sect1 id="gnome-dentry">
-        <title>gnome-dentry</title>
+        <title>gnome-dentry - Support for manipulating .desktop files.</title>
+        <para>
+          <emphasis>Authors</emphasis>: Miguel de Icaza, Federico Mena.
+          </para>
         <para>
           </para>
         </sect1>
       <sect1 id="gnome-dl">
-        <title>gnome-dl</title>
+        <title>gnome-dl - Dynamic loading for gnome.</title>
+        <para>
+          <emphasis>Author</emphasis>: Chris Toshok.
+          </para>
         <para>
           </para>
         </sect1>
       <sect1 id="gnome-dns">
-        <title>gnome-dns</title>
+        <title>gnome-dns - Asynchronic DNS routines.</title>
+        <para>
+          <emphasis>Author</emphasis>: Ian Main.
+          </para>
         <para>
           </para>
         </sect1>
       <sect1 id="gnome-fileconvert">
-        <title>gnome-fileconvert</title>
+        <title>gnome-fileconvert - </title>
+        <para>
+          <emphasis>Author</emphasis>: Who knows?
+          </para>
         <para>
           </para>
         </sect1>
       <sect1 id="gnome-history">
-        <title>gnome-history</title>
+        <title>gnome-history - "Recently used" routines.</title>
+        <para>
+          <emphasis>Author</emphasis>: Elliot Lee.
+          </para>
         <para>
           </para>
         </sect1>
       <sect1 id="gnome-hook">
-        <title>gnome-hook</title>
+        <title>gnome-hook - Hook management routines.</title>
+        <para>
+          <emphasis>Authors</emphasis>: Miguel de Icaza, Janne Kukonlehto, 
+            Dugan Porter, Jakub Jelinek.
+          </para>
         <para>
           </para>
         </sect1>
       <sect1 id="gnome-mime">
-        <title>gnome-mime</title>
+        <title>gnome-mime - MIME management code.</title>
+        <para>
+          <emphasis>Author</emphasis>: Paolo Molaro.
+          </para>
         <para>
           </para>
         </sect1>
       <sect1 id="gnome-score">
-        <title>gnome-score</title>
+        <title>gnome-score - "Top Ten" routines</title>
         <para>
+          <emphasis>Authors</emphasis>: Elliot Lee, Horacio Peña.
+          </para>
+        <warning> It's broken now. </warning>
+        <para>
+          
           </para>
         </sect1>
       <sect1 id="gnome-string">
-        <title>gnome-string</title>
+        <title>gnome-string - </title>
+        <para>
+          <emphasis>Author</emphasis>: Who knows?
+          </para>
         <para>
           </para>
         </sect1>
       <sect1 id="gnome-triggers">
-        <title>gnome-triggers</title>
+        <title>gnome-triggers - </title>
+        <para>
+          <emphasis>Author</emphasis>: Elliot Lee.
+          </para>
         <para>
           </para>
         </sect1>
       <sect1 id="gnome-util">
-        <title>gnome-util</title>
+        <title>gnome-util - </title>
         <para>
+          <emphasis>Author</emphasis>: Who knows?
           </para>
-        </sect1>
-      <sect1 id="gnomelib-init">
-        <title>gnomelib-init</title>
         <para>
           </para>
         </sect1>
     </chapter>
-
 
   <chapter id="libgnomeui">
     <title>GNOME User Interface library.</title>
@@ -269,110 +467,145 @@
         </para>
 
       <sect1 id="gnome-about">
-        <title>gnome-about</title>
+        <title>gnome-about - About widget.</title>
+        <para>
+          <emphasis>Author</emphasis>: Cesar Miquel.
+          </para>
         <para>
           </para>
         </sect1>
 
       <sect1 id="gnome-actionarea">
-        <title>gnome-actionarea</title>
+        <title>gnome-actionarea - </title>
+        <para>
+          <emphasis>Author</emphasis>: Spencer Kimball, Peter Mattis.
+          </para>
         <para>
           </para>
         </sect1>
 
       <sect1 id="gnome-app-helper">
-        <title>gnome-app-helper</title>
+        <title>gnome-app-helper - Routines to make menus and toolbars.</title>
+        <para>
+          <emphasis>Author</emphasis>: Elliot Lee.
+          </para>
         <para>
           </para>
         </sect1>
 
       <sect1 id="gnome-app">
-        <title>gnome-app</title>
+        <title>gnome-app - GnomeApp widget.</title>
+        <para>
+          <emphasis>Author</emphasis>: Elliot Lee.
+          </para>
         <para>
           </para>
         </sect1>
 
       <sect1 id="gnome-color-selector">
-        <title>gnome-color-selector</title>
+        <title>gnome-color-selector - Color selector in one button.</title>
+        <para>
+          <emphasis>Author</emphasis>: Federico Mena.
+          </para>
         <para>
           </para>
         </sect1>
 
       <sect1 id="gnome-colors">
-        <title>gnome-colors</title>
+        <title>gnome-colors - GNOME color management.</title>
+        <para>
+          <emphasis>Author</emphasis>: Based on GIMP.
+          </para>
         <para>
           </para>
         </sect1>
 
       <sect1 id="gnome-font-selector">
-        <title>gnome-font-selector</title>
+        <title>gnome-font-selector - Font Selector widget.</title>
+        <para>
+          <emphasis>Author</emphasis>: Elliot Lee.
+          </para>
         <para>
           </para>
         </sect1>
 
       <sect1 id="gnome-ice">
-        <title>gnome-ice</title>
+        <title>gnome-ice - Interface between ICE and Gtk+.</title>
         <para>
+          <emphasis>Author</emphasis>: Tom Tromey.
           </para>
-        </sect1>
-
-      <sect1 id="gnome-init">
-        <title>gnome-init</title>
         <para>
           </para>
         </sect1>
 
       <sect1 id="gnome-messagebox">
-        <title>gnome-messagebox</title>
+        <title>gnome-messagebox - Message Box widget.</title>
+        <para>
+          <emphasis>Author</emphasis>: Jay Painter.
+          </para>
         <para>
           </para>
         </sect1>
 
       <sect1 id="gnome-pixmap">
-        <title>gnome-pixmap</title>
+        <title>gnome-pixmap - </title>
+        <para>
+          <emphasis>Authors</emphasis>: Miguel de Icaza, Federico Mena.
+          </para>
         <para>
           </para>
         </sect1>
 
       <sect1 id="gnome-properties">
-        <title>gnome-properties</title>
+        <title>gnome-properties - </title>
+        <para>
+          <emphasis>Author</emphasis>: Who knows?
+          </para>
         <para>
           </para>
         </sect1>
 
       <sect1 id="gnome-scores">
-        <title>gnome-scores</title>
+        <title>gnome-scores - "High Scores" widget.</title>
+        <para>
+          <emphasis>Author</emphasis>: Horacio Peña.
+          </para>
         <para>
           </para>
         </sect1>
 
       <sect1 id="gnome-session">
-        <title>gnome-session</title>
+        <title>gnome-session - Session Management</title>
         <para>
+          <emphasis>Author</emphasis>: Tom Tromey.
+          </para>
+        <para>
+          [FIXME: Should be in libgnome, IMHO]
           </para>
         </sect1>
 
       <sect1 id="gnome-stock">
-        <title>gnome-stock</title>
+        <title>gnome-stock - default icons for toolbars, menu pixmaps, etc.</title>
+        <para>
+          <emphasis>Author</emphasis>: Who knows?
+          </para>
         <para>
           </para>
         </sect1>
 
       <sect1 id="gtk-clock">
-        <title>gtk-clock</title>
+        <title>gtk-clock - Clock widget.</title>
+        <para>
+          <emphasis>Author</emphasis>: Szekeres István.
+          </para>
         <para>
           </para>
         </sect1>
 
       <sect1 id="gtk-ted">
-        <title>gtk-ted</title>
+        <title>gtk-ted - Minimal GUI editor Gtk container widget.</title>
         <para>
-          </para>
-        </sect1>
-
-      <sect1 id="ted-demo">
-        <title>ted_demo</title>
-        <para>
+          <emphasis>Author</emphasis>: Miguel de Icaza.
           </para>
         </sect1>
 
