@@ -158,7 +158,7 @@ static void convert(char *real_file)
 		{
 		sprintf(cmd, "convert %s rgba:-", real_file);
 
-		sf = popen(cmd, "rb");
+		sf = popen(cmd, "r");
 		if (!sf) return;
 
 		if (append)
