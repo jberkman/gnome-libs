@@ -301,6 +301,8 @@ main (int argc, char *argv [])
 	
 	sigemptyset (&empty_mask);
 
+	chdir ("/");
+
 	CORBA_exception_init (&ev);
 	display = XOpenDisplay (getenv ("DISPLAY"));
 	g_return_val_if_fail (display, 1);

@@ -216,12 +216,12 @@ name_server_by_forking (CORBA_Environment *ev)
 	} else {
 		/* Child of a child. We run the naming service */
 		struct sigaction sa;
-		struct rlimit rl;
-		int    i;
-		
-		getrlimit(RLIMIT_NOFILE, &rl);
-		i = rl.rlim_cur;
-		
+		int i, open_max;
+
+		open_max = sysconf(_SC_OPEN_MAX);
+		for (i = 3; i < open_max; i++)
+			fcntl(i, F_SETFD, 1);
+
 		sa.sa_handler = SIG_IGN;
 		sigaction(SIGPIPE, &sa, 0);
 		close(0);

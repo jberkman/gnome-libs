@@ -1,3 +1,10 @@
+1999-04-23  Andrew T. Veliath  <andrewtv@usa.net>
+
+	* libgnorba/gnome-name-server.c (main): Change to root directory.
+
+	* libgnorba/orbitns.c (name_server_by_forking): Set close-on-exec
+	flag for any open file descriptors.
+
 1999-04-15  Matthias Warkus  <mawa@iname.com>
 
 	* gnome-bug.in: Hacked it so it recognises SuSE systems and
