@@ -210,12 +210,14 @@ dnl Check for popt library
 dnl
 AC_CHECK_LIB(popt, poptGetInvocationName,[POPT_LIB=-lpopt
 	AC_DEFINE(USE_POPT)
-], AC_MSG_ERROR([*** popt >= 1.2.1 is not installed - please install first ***]))
+],
+[AC_MSG_ERROR([*** popt >= 1.2.1 is not installed - please install first ***])
+exit 1],-L$prefix)
 
 dnl
 dnl Check for audiofile library
 dnl
-AC_CHECK_LIB(audiofile, afOpenFile, {AUDIOFILE_LIB=-laudiofile
+AC_CHECK_LIB(audiofile, afOpenFile, [AUDIOFILE_LIB=-laudiofile
 	AC_DEFINE(HAVE_LIBAUDIOFILE)
 ],,[$ESD_LIBS])
 
