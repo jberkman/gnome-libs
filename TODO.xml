@@ -33,6 +33,18 @@
       <contact>gnome-devel-list &lt;gnome-devel-list@gnome.org&gt;</contact>
     </entry>
 
+    <entry size="medium" status="80%" target="2.0">
+      <title>Check destroy/finalize functions</title>
+      <description>
+	<p>
+	  With the new GTK+ 2.0 all _destory() functions may be run
+	  multiple times.  We need to check all of them and make sure we
+	  don't free things twice.
+	</p>
+      </description>
+      <contact>Martin Baulig &lt;baulig@suse.de&gt;</contact>
+    </entry>
+
     <entry size="medium" status="90%" target="2.0">
       <title>Private pointers/Private members</title>
       <description>
