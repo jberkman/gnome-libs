@@ -1,0 +1,118 @@
+<!doctype chapter PUBLIC "-//Davenport//DTD DocBook V3.0//EN" [
+]>
+
+<chapter id="GnomeCanvas">
+
+  <title>GnomeCanvas widget</title>
+
+  <authorgroup>
+    <author>
+      <firstname>Federico</firstname>
+      <surname>Mena Quintero</surname>
+      <affiliation>
+	<address><email>federico@nuclecu.unam.mx</email></address>
+      </affiliation>
+    </author>
+  </authorgroup>
+
+  <sect1 id="introduction">
+
+    <title>Introduction</title>
+
+    <para>
+      The GnomeCanvas widget is a high-level engine for creating
+      structured graphics.  A canvas displays a collection of items,
+      which can be things like lines, rectangles, ellipses, and text.
+      Items have attributes associated to them that you can change, like
+      fill color, position, and size.  Items may be moved and re-stacked
+      in the canvas, and organized in hierarchical groups of items.
+      You can receive mouse and keyboard events from the items and
+      perform actions on them based on these events.
+    </para>
+
+    <para>
+      The canvas is useful for when you want to create interactive
+      graphics displays which would be hard or cumbersome to implement
+      with raw calls to Gdk, or when writing a custom widget for Gtk
+      is inconvenient.
+    </para>
+
+  </sect1>
+
+  <sect1 id="organization-of-items">
+
+    <title>Organization of items</title>
+
+    <para>
+      Items in the canvas are organized in a tree hierarchy.  Items
+      can be groups (nodes in the tree), or terminal items (leaves in
+      the tree).  Groups can contain any number of children, which can
+      be terminal items or other groups.  Thus, items can be nested to
+      an arbitrary depth inside a canvas.
+    </para>
+
+    <para>
+      A canvas has a single root group.  For simple drawings, it is
+      likely that you will want to put all your items directly inside
+      this group.  For more complex drawings, it may be convenient to
+      use a hierarchical structure and make of nested canvas groups.
+    </para>
+
+    <para>
+      For example, consider a circuit editor.  You could define groups
+      that contain the items that are necessary to draw a logic gate.
+      Then you could define groups for different components.  A group
+      representing an adder would contain several logic gates and some
+      wires.  You would then group some adders with other components
+      to form a more complex circuit.
+    </para>
+
+  </sect1>
+
+  <sect1 id="coordinates">
+
+    <title>Coordinates</title>
+
+    <para>
+      The canvas uses a world coordinate system with coordinates
+      specified as floating point numbers.  World coordinates mean
+      that units can represent whatever is most convenient to you:
+      meters, pixels, parsecs, etc.
+    </para>
+
+    <para>
+      Coordinates are calculated from the origin of the canvas, which
+      has coordinates (0.0, 0.0).  Positive X coordinates go to the
+      right of the origin, and positive Y coordinates go
+      <emphasis>below</emphasis> the origin, like in the rest of the X
+      Window System &mdash this is a feature, not a bug.
+    </para>
+
+    <para>
+      Coordinates of items are calculated with respect to their parent
+      group.  When a group is moved, its children's logical
+      coordinates do not change, although their physical position
+      will.  A group stores a single pair of coordinates which define
+      its origin relative to its parent group.  The canvas's root
+      group starts with its origin in world position (0.0, 0.0).
+    </para>
+
+  </sect1>
+
+</chapter>
+
+<!-- Keep this comment at the end of the file
+Local variables:
+mode: sgml
+sgml-omittag:t
+sgml-shorttag:t
+sgml-minimize-attributes:nil
+sgml-always-quote-attributes:t
+sgml-indent-step:2
+sgml-indent-data:t
+sgml-parent-document:("gnome-dev-info.sgml" "book" "sect1" "")
+sgml-exposed-tags:nil
+sgml-local-catalogs:nil
+sgml-local-ecat-files:nil
+End:
+-->
