@@ -1082,7 +1082,9 @@ goad_server_register(CORBA_Object name_server,
 
   CORBA_exception_free(ev);
 
-  if(!did_print_ior && goad_activation_id) {
+  if(!did_print_ior
+     && goad_activation_id
+     && !strcmp(goad_activation_id, name)) {
     CORBA_char *strior;
     FILE *iorout;
     struct sigaction oldaction, myaction;
