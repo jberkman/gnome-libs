@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 1999-01-21 00:56+0100\n"
+"POT-Creation-Date: 1999-01-25 06:18-0500\n"
 "PO-Revision-Date: 1999-01-22 3:18 EST\n"
 "Last-Translator: Sergey Panov <sipan@mit.edu>\n"
 "Language-Team: Russian <ru@li.org>\n"
@@ -65,7 +65,7 @@ msgstr "Файл"
 #: gnome-hello/gnome-hello-7-mdi.c:484 libgnomeui/gnome-stock.c:786
 #: libgnomeui/stock_demo.c:290
 msgid "Help"
-msgstr "Помощь"
+msgstr "Справка"
 
 #.
 #. * Make the main window and binds the delete event so you can close
@@ -194,11 +194,11 @@ msgstr "Ошибка в ключах\n"
 
 #: libgnome/gconfigger.c:32
 msgid "get"
-msgstr ""
+msgstr "взять"
 
 #: libgnome/gconfigger.c:32
 msgid "Get config entry"
-msgstr ""
+msgstr "Взять элемент настройки"
 
 #: libgnome/gconfigger.c:32 libgnome/gconfigger.c:33
 msgid "CONFIG-PATH"
@@ -206,11 +206,11 @@ msgstr ""
 
 #: libgnome/gconfigger.c:33
 msgid "set"
-msgstr ""
+msgstr "установить"
 
 #: libgnome/gconfigger.c:33
 msgid "Set config entry"
-msgstr ""
+msgstr "Установить элемент настройки"
 
 #: libgnome/gnome-popt.c:92
 #, c-format
@@ -231,7 +231,7 @@ msgstr "Разблокиросать сервер звука"
 
 #: libgnome/gnomelib-init.c:119
 msgid "Host:port on which the sound server to use is running"
-msgstr ""
+msgstr "Host:port сервера звука"
 
 #: libgnome/gnomelib-init.c:120
 msgid "HOSTNAME:PORT"
@@ -261,7 +261,7 @@ msgstr "О программе"
 #. Open
 #: libgnomeui/gnome-app-helper.c:65
 msgid "_Open..."
-msgstr "_Открыть..."
+msgstr "Открыть..."
 
 #: libgnomeui/gnome-app-helper.c:65
 msgid "Open a file"
@@ -319,7 +319,7 @@ msgstr "Закрыть"
 
 #: libgnomeui/gnome-app-helper.c:98
 msgid "Close the current file"
-msgstr "Закрыть рабочий файл"
+msgstr "Закрыть текущий файл"
 
 #. Exit
 #: libgnomeui/gnome-app-helper.c:103
@@ -346,7 +346,7 @@ msgstr "Вырезать выбранное"
 #. Copy
 #: libgnomeui/gnome-app-helper.c:117 libgnomeui/gnome-popup-help.c:59
 msgid "_Copy"
-msgstr "Скопировать"
+msgstr "Копировать"
 
 #: libgnomeui/gnome-app-helper.c:117
 msgid "Copy the selection"
@@ -364,11 +364,11 @@ msgstr "Вставить содержание clipboard"
 #. Clear
 #: libgnomeui/gnome-app-helper.c:127
 msgid "C_lear"
-msgstr ""
+msgstr "Очистить"
 
 #: libgnomeui/gnome-app-helper.c:127
 msgid "Clear the selection"
-msgstr ""
+msgstr "Удалить выделенное"
 
 #. Undo
 #: libgnomeui/gnome-app-helper.c:132
@@ -386,7 +386,7 @@ msgstr "Отмена отката"
 
 #: libgnomeui/gnome-app-helper.c:137
 msgid "Redo the undone action"
-msgstr "Отмена отката"
+msgstr "Восстановить последний шаг"
 
 #. Find
 #: libgnomeui/gnome-app-helper.c:142
@@ -430,11 +430,11 @@ msgstr "Изменить свойства файла"
 #. Settings
 #: libgnomeui/gnome-app-helper.c:167
 msgid "_Preferences..."
-msgstr "Настройки..."
+msgstr "Настройка..."
 
 #: libgnomeui/gnome-app-helper.c:168
 msgid "Configure the application"
-msgstr "Настроить прнложение"
+msgstr "Настроить приложение"
 
 #. 20
 #.
@@ -451,11 +451,11 @@ msgstr "Об этой программе"
 
 #: libgnomeui/gnome-app-helper.c:181
 msgid "_Select All"
-msgstr "Выбрать всё"
+msgstr "Выделить всё"
 
 #: libgnomeui/gnome-app-helper.c:182
 msgid "Select everything"
-msgstr "Выбрать всё содержание"
+msgstr "Выделить всё содержание"
 
 #.
 #. * Window menu
@@ -778,7 +778,7 @@ msgstr "Отменить соединение с диспетчером сессий"
 msgid "Session management options"
 msgstr "Ключи диспетчера сессий"
 
-#: libgnomeui/gnome-client.c:2223
+#: libgnomeui/gnome-client.c:2229
 msgid "Cancel Logout"
 msgstr "Отменить окончание работы"
 
@@ -835,7 +835,7 @@ msgstr "Дополнительные"
 
 #: libgnomeui/gnome-file-entry.c:144
 msgid "Select file"
-msgstr "Выберите файл"
+msgstr "Выбрать файл"
 
 #. browse button ...
 #: libgnomeui/gnome-file-entry.c:242 libgnomeui/gnome-spell.c:607
@@ -845,7 +845,7 @@ msgstr "Обзор..."
 
 #: libgnomeui/gnome-font-picker.c:159
 msgid "Pick a Font"
-msgstr "Выберите шкифт"
+msgstr "Выберите шрифт"
 
 #: libgnomeui/gnome-font-picker.c:542 libgnomeui/gnome-stock.c:791
 msgid "Font"
@@ -869,7 +869,7 @@ msgstr "Загружаются пиктограммы..."
 
 #: libgnomeui/gnome-init.c:131
 msgid "Gdk debugging flags to set"
-msgstr ""
+msgstr "отладочные флаги Gdk,  которые нужно включить"
 
 #: libgnomeui/gnome-init.c:131 libgnomeui/gnome-init.c:133
 #: libgnomeui/gnome-init.c:153 libgnomeui/gnome-init.c:155
@@ -878,11 +878,11 @@ msgstr ""
 
 #: libgnomeui/gnome-init.c:133
 msgid "Gdk debugging flags to unset"
-msgstr ""
+msgstr "отладочные флаги Gdk, которые нужно выключить"
 
 #: libgnomeui/gnome-init.c:135
 msgid "X display to use"
-msgstr ""
+msgstr "Икс дисплэй"
 
 #: libgnomeui/gnome-init.c:135
 msgid "DISPLAY"
@@ -890,7 +890,7 @@ msgstr ""
 
 #: libgnomeui/gnome-init.c:137
 msgid "Make X calls synchronous"
-msgstr ""
+msgstr "Превратить Икс вызовы в синхронные"
 
 #: libgnomeui/gnome-init.c:139
 msgid "Don't use X shared memory extension"
@@ -898,7 +898,7 @@ msgstr ""
 
 #: libgnomeui/gnome-init.c:141
 msgid "Program name as used by the window manager"
-msgstr ""
+msgstr "Имя программы для использования диспетчером окон"
 
 #: libgnomeui/gnome-init.c:141
 msgid "NAME"
@@ -906,7 +906,7 @@ msgstr ""
 
 #: libgnomeui/gnome-init.c:143
 msgid "Program class as used by the window manager"
-msgstr ""
+msgstr "Класс программы для использования диспетчером окон"
 
 #: libgnomeui/gnome-init.c:143
 msgid "CLASS"
@@ -926,15 +926,15 @@ msgstr ""
 
 #: libgnomeui/gnome-init.c:153
 msgid "Gtk+ debugging flags to set"
-msgstr ""
+msgstr "отладочные флаги Gtk+, которые нужно включить"
 
 #: libgnomeui/gnome-init.c:155
 msgid "Gtk+ debugging flags to unset"
-msgstr ""
+msgstr "отладочные флаги Gtk+, которые нужно выключить"
 
 #: libgnomeui/gnome-init.c:157
 msgid "Make all warnings fatal"
-msgstr ""
+msgstr "Сделать все предупреждения смертельными"
 
 #: libgnomeui/gnome-init.c:159
 msgid "Load an additional Gtk module"
@@ -978,7 +978,7 @@ msgstr ""
 
 #: libgnomeui/gnome-popup-help.c:51
 msgid "_Help with this"
-msgstr ""
+msgstr "Справка о"
 
 #: libgnomeui/gnome-popup-help.c:57
 msgid "Cu_t"
@@ -1094,6 +1094,9 @@ msgid ""
 "(if mixed-case preserve\n"
 "case-sensitivity)"
 msgstr ""
+"Поместить слово\n"
+"в ваш личный словарь\n"
+"учитывая регистр"
 
 #: libgnomeui/gnome-spell.c:600
 msgid "Ispell command:"
@@ -1109,11 +1112,11 @@ msgstr "Личный словарь:"
 
 #: libgnomeui/gnome-spell.c:652
 msgid "Valid chars in words:"
-msgstr ""
+msgstr "Разрешённые в словах буквы:"
 
 #: libgnomeui/gnome-spell.c:663
 msgid "Check words longer than:"
-msgstr ""
+msgstr "Проверять слова длиннее чем:"
 
 #: libgnomeui/gnome-spell.c:674
 msgid "Sort by correctness"
@@ -1129,15 +1132,15 @@ msgstr ""
 
 #: libgnomeui/gnome-spell.c:700
 msgid "Enable tooltips"
-msgstr ""
+msgstr "Включить подсказки"
 
 #: libgnomeui/gnome-spell.c:714
 msgid "Kill ispell process"
-msgstr ""
+msgstr "Убить ispell процесс"
 
 #: libgnomeui/gnome-spell.c:740
 msgid "Spell"
-msgstr ""
+msgstr "Написание"
 
 #: libgnomeui/gnome-spell.c:747
 msgid "Configure"
@@ -1145,11 +1148,11 @@ msgstr "Настройть"
 
 #: libgnomeui/gnome-stock.c:768
 msgid "Add"
-msgstr ""
+msgstr "Добавить"
 
 #: libgnomeui/gnome-stock.c:769
 msgid "Clear"
-msgstr ""
+msgstr "Очистить"
 
 #: libgnomeui/gnome-stock.c:770
 msgid "Select Color"
@@ -1161,11 +1164,11 @@ msgstr "Удалить"
 
 #: libgnomeui/gnome-stock.c:772
 msgid "Table Borders"
-msgstr ""
+msgstr "Границы таблицы"
 
 #: libgnomeui/gnome-stock.c:773
 msgid "Table Fill"
-msgstr ""
+msgstr "Зполнениe таблицы".
 
 #: libgnomeui/gnome-stock.c:774
 msgid "Bulleted List"
@@ -1312,7 +1315,7 @@ msgstr "Свойства..."
 
 #: libgnomeui/stock_demo.c:251
 msgid "Preferences..."
-msgstr "Предпочтения..."
+msgstr "Настройка..."
 
 #: libgnomeui/stock_demo.c:266
 msgid "Scores..."
@@ -1444,12 +1447,12 @@ msgid ""
 "gnome_win_hints_* functions for errors. :)"
 msgstr ""
 
-#: libgnorba/gnome-name-server.c:199
+#: libgnorba/gnome-name-server.c:200
 #, c-format
 msgid "Creating '/GNOME' context %s %d"
 msgstr ""
 
-#: libgnorba/gnome-name-server.c:216
+#: libgnorba/gnome-name-server.c:217
 #, c-format
 msgid "Creating '/GNOME/Servers' context %s %d"
 msgstr ""
@@ -1466,7 +1469,7 @@ msgstr ""
 msgid "REPO-ID"
 msgstr ""
 
-#: libgnorba/goad-browser.c:170
+#: libgnorba/goad-browser.c:171
 msgid ""
 "I couldn't find any installed services.  Either you don't have\n"
 "any services installed or I don't know the path to find them.\n"
