@@ -6,7 +6,7 @@ diff -ru fribidi-0.1.12.orig/Makefile.am fribidi-0.1.12/Makefile.am
  
  bin_SCRIPTS = fribidi-config
 +
-+pkgconfigdir = $(libexecdir)/pkgconfig
++pkgconfigdir = $(libdir)/pkgconfig
 +pkgconfig_DATA = fribidi.pc
 +
 diff -ru fribidi-0.1.12.orig/Makefile.in fribidi-0.1.12/Makefile.in
@@ -26,7 +26,7 @@ diff -ru fribidi-0.1.12.orig/Makefile.in fribidi-0.1.12/Makefile.in
  
  bin_SCRIPTS = fribidi-config
 +
-+pkgconfigdir = $(libexecdir)/pkgconfig
++pkgconfigdir = $(libdir)/pkgconfig
 +pkgconfig_DATA = fribidi.pc
  ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
  mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
@@ -703,19 +703,19 @@ diff -ru fribidi-0.1.12.orig/configure.in fribidi-0.1.12/configure.in
  *fribidi-config*)chmod +x fribidi-config;;
  esac])
 --- fribidi-0.1.12.orig/fribidi.pc.in	Fri Sep 29 22:49:00 2000
-+++ fribidi-0.1.12/fribidi.pc.in	Fri Sep 29 21:10:03 2000
++++ fribidi-0.1.12/fribidi.pc.in	Sat Sep 30 04:15:48 2000
 @@ -0,0 +1,14 @@
 +prefix=@prefix@
 +exec_prefix=@exec_prefix@
 +libdir=@libdir@
 +includedir=@includedir@
 +
-+VERSION="@VERSION@"
-+REQUIRES="glib-2.0"
-+CFLAGS="$CFLAGS"
-+LIBS_PATH="-L${libdir} $LIBS_PATH"
-+LIBS_LINK_SELF="-lfribidi $LIBS_LINK_SELF"
-+LIBS_LINK_SYSTEM="$LIBS_LINK_SYSTEM"
 +
++Name: fribidi
++Description: Free Implementation of the Unicode BiDi algorithm.
++Version: @VERSION@
++Requires: glib-2.0
++Libs: -L${libdir} -lfribidi
++Cflags: -I${includedir}
 +
 +

@@ -1,10 +1,46 @@
+Index: .cvsignore
+===================================================================
+RCS file: /cvs/gnome/gnome-vfs/.cvsignore,v
+retrieving revision 1.4
+diff -u -u -r1.4 .cvsignore
+--- .cvsignore	2000/08/31 11:32:38	1.4
++++ .cvsignore	2000/09/30 02:34:34
+@@ -28,3 +28,4 @@
+ vfscorbaConf.sh
+ vfspthreadConf.sh
+ gnome-vfs-config
++gnomevfs-2.0.pc
+Index: Makefile.am
+===================================================================
+RCS file: /cvs/gnome/gnome-vfs/Makefile.am,v
+retrieving revision 1.15
+diff -u -u -r1.15 Makefile.am
+--- Makefile.am	2000/09/05 14:20:32	1.15
++++ Makefile.am	2000/09/30 02:34:34
+@@ -37,7 +37,8 @@
+ 	vfsConf.sh.in				\
+ 	vfscorbaConf.sh.in			\
+ 	vfspthreadConf.sh.in			\
+-	gnome-vfs-config.in
++	gnome-vfs-config.in			\
++	gnomevfs-2.0.pc
+ 
+ bin_SCRIPTS = $(top_builddir)/gnome-vfs-config
+ 
+@@ -88,4 +89,6 @@
+ 	  && mv gnome-vfs-config.tmp gnome-vfs-config && \
+ 		chmod 755 gnome-vfs-config
+ 
++pkgconfigdir = $(libdir)/pkgconfig
++pkgconfig_DATA = gnomevfs-2.0.pc
+ 
 Index: configure.in
 ===================================================================
 RCS file: /cvs/gnome/gnome-vfs/configure.in,v
-retrieving revision 1.68
-diff -u -u -r1.68 configure.in
---- configure.in	2000/08/31 13:41:58	1.68
-+++ configure.in	2000/08/31 13:44:01
+retrieving revision 1.73
+diff -u -u -r1.73 configure.in
+--- configure.in	2000/09/29 05:05:16	1.73
++++ configure.in	2000/09/30 02:34:35
 @@ -11,7 +11,7 @@
  AM_PROG_LIBTOOL
  
@@ -26,3 +62,30 @@ diff -u -u -r1.68 configure.in
  *** is always available from ftp://ftp.gtk.org/.]),
      gmodule gthread)
  
+@@ -426,6 +426,7 @@
+ test/Makefile
+ test/gnome-file-selection/Makefile
+ test/vfs-run
++gnomevfs-2.0.pc
+ ])
+ 
+ chmod u+x test/vfs-run
+Index: gnomevfs-2.0.pc.in
+===================================================================
+RCS file: gnomevfs-2.0.pc.in
+diff -N gnomevfs-2.0.pc.in
+--- /dev/null	Tue May  5 16:32:27 1998
++++ gnomevfs-2.0.pc.in	Fri Sep 29 22:34:35 2000
+@@ -0,0 +1,12 @@
++prefix=/gnome/head/INSTALL
++exec_prefix=${prefix}
++libdir=${exec_prefix}/lib
++includedir=${prefix}/include
++
++
++Name: gnome-vfs
++Description: The GNOME virtual file-system libraries
++Version: @VERSION@
++Requires: oaf-2.0,gthread-2.0,gmodule-2.0
++Libs: -L${libdir} -lgnomevfs
++Cflags: -I${includedir} -I${libdir}/vfs/include

@@ -1,37 +1,37 @@
 Index: .cvsignore
 ===================================================================
 RCS file: /cvs/gnome/ORBit/.cvsignore,v
-retrieving revision 1.6
-diff -u -u -r1.6 .cvsignore
---- .cvsignore	1999/06/21 23:03:42	1.6
-+++ .cvsignore	2000/09/29 21:52:11
-@@ -20,3 +20,4 @@
+retrieving revision 1.6.4.1
+diff -u -u -r1.6.4.1 .cvsignore
+--- .cvsignore	2000/09/29 23:34:02	1.6.4.1
++++ .cvsignore	2000/09/30 02:21:26
+@@ -20,4 +20,4 @@
  install-sh
  mkinstalldirs
  ORBit.spec
+-ORBit.pc
 +ORBit-2.0.pc
 Index: Makefile.am
 ===================================================================
 RCS file: /cvs/gnome/ORBit/Makefile.am,v
-retrieving revision 1.13.4.1
-diff -u -u -r1.13.4.1 Makefile.am
---- Makefile.am	2000/02/21 18:39:51	1.13.4.1
-+++ Makefile.am	2000/09/29 21:52:11
+retrieving revision 1.13.4.3
+diff -u -u -r1.13.4.3 Makefile.am
+--- Makefile.am	2000/09/30 02:09:43	1.13.4.3
++++ Makefile.am	2000/09/30 02:21:26
 @@ -4,7 +4,7 @@
  
  bin_SCRIPTS=orbit-config
  
--EXTRA_DIST=ORBit.spec.in ORBit.m4
-+EXTRA_DIST=ORBit.spec.in ORBit.m4 ORBit-2.0.pc
+-EXTRA_DIST=ORBit.spec.in ORBit.m4 ORBit.pc.in
++EXTRA_DIST=ORBit.spec.in ORBit.m4 ORBit-2.0.pc.in
  
  dist-hook: ORBit.spec
  	mkdir $(distdir)/docs
-@@ -16,3 +16,7 @@
- 
- m4datadir=$(datadir)/aclocal
+@@ -18,4 +18,5 @@
  m4data_DATA=ORBit.m4
-+
-+pkgconfigdir = $(libexecdir)/pkgconfig
+ 
+ pkgconfigdir = $(libdir)/pkgconfig
+-pkgconfig_DATA= ORBit.pc
 +pkgconfig_DATA = ORBit-2.0.pc
 +
 Index: ORBit-2.0.pc.in
@@ -39,29 +39,27 @@ Index: ORBit-2.0.pc.in
 RCS file: ORBit-2.0.pc.in
 diff -N ORBit-2.0.pc.in
 --- /dev/null	Tue May  5 16:32:27 1998
-+++ ORBit-2.0.pc.in	Fri Sep 29 17:52:11 2000
-@@ -0,0 +1,14 @@
++++ ORBit-2.0.pc.in	Fri Sep 29 22:21:26 2000
+@@ -0,0 +1,12 @@
 +prefix=@prefix@
 +exec_prefix=@exec_prefix@
 +libdir=@libdir@
 +includedir=@includedir@
 +
-+VERSION="@VERSION@"
-+REQUIRES="glib-2.0"
-+CFLAGS="-I${includedir} $CFLAGS"
-+LIBS_PATH="-L${libdir} $LIBS_PATH"
-+LIBS_LINK_SELF="-lORBit -lIIOP -lORBitutil $LIBS_LINK_SELF"
-+LIBS_LINK_SYSTEM="@LIBS@ -lm $LIBS_LINK_SYSTEM"
 +
-+#Name: ORBit
-+#Description: High-performance CORBA Object Request Broker.
++Name: ORBit
++Description: High-performance CORBA Object Request Broker.
++Version: @VERSION@
++Requires: glib-2.0
++Libs: -L${libdir} -lORBit -lIIOP -lORBitutil @LIBS@ -lm
++Cflags: -I${includedir}
 Index: configure.in
 ===================================================================
 RCS file: /cvs/gnome/ORBit/configure.in,v
-retrieving revision 1.98.4.5
-diff -u -u -r1.98.4.5 configure.in
---- configure.in	2000/09/24 19:16:42	1.98.4.5
-+++ configure.in	2000/09/29 21:52:12
+retrieving revision 1.98.4.6
+diff -u -u -r1.98.4.6 configure.in
+--- configure.in	2000/09/29 23:34:02	1.98.4.6
++++ configure.in	2000/09/30 02:21:27
 @@ -99,7 +99,7 @@
  dnl Checks for libraries.
  
@@ -71,10 +69,11 @@ diff -u -u -r1.98.4.5 configure.in
  AC_MSG_ERROR([
  *** GLIB 1.2.1 or better is required. The latest version of GLIB
  *** is always available from ftp://ftp.gtk.org/.]))
-@@ -347,4 +347,5 @@
+@@ -347,5 +347,5 @@
  test/Makefile
  test/idl/Makefile
  test/test-poa/Makefile
+-ORBit.pc
 +ORBit-2.0.pc
  ORBit.spec)
 Index: orbit-config.in
@@ -83,7 +82,7 @@ RCS file: /cvs/gnome/ORBit/orbit-config.in,v
 retrieving revision 1.7
 diff -u -u -r1.7 orbit-config.in
 --- orbit-config.in	1999/10/08 04:49:07	1.7
-+++ orbit-config.in	2000/09/29 21:52:12
++++ orbit-config.in	2000/09/30 02:21:27
 @@ -87,8 +87,8 @@
         	;;
  
@@ -98,46 +97,46 @@ diff -u -u -r1.7 orbit-config.in
 Index: libIDL/.cvsignore
 ===================================================================
 RCS file: /cvs/gnome/libIDL/.cvsignore,v
-retrieving revision 1.8
-diff -u -u -r1.8 .cvsignore
---- libIDL/.cvsignore	1999/07/17 18:16:14	1.8
-+++ libIDL/.cvsignore	2000/09/29 21:52:12
-@@ -28,3 +28,4 @@
+retrieving revision 1.8.4.1
+diff -u -u -r1.8.4.1 .cvsignore
+--- libIDL/.cvsignore	2000/09/29 23:35:50	1.8.4.1
++++ libIDL/.cvsignore	2000/09/30 02:21:27
+@@ -28,4 +28,4 @@
  libIDL.m4
  Makefile.msc
  libIDL.spec
+-libIDL.pc
 +libIDL-2.0.pc
 Index: libIDL/Makefile.am
 ===================================================================
 RCS file: /cvs/gnome/libIDL/Makefile.am,v
-retrieving revision 1.65.4.1
-diff -u -u -r1.65.4.1 Makefile.am
---- libIDL/Makefile.am	2000/02/21 18:39:52	1.65.4.1
-+++ libIDL/Makefile.am	2000/09/29 21:52:12
-@@ -32,7 +32,8 @@
- EXTRA_DIST		= BUGS parser.y lexer.l \
+retrieving revision 1.65.4.3
+diff -u -u -r1.65.4.3 Makefile.am
+--- libIDL/Makefile.am	2000/09/30 02:09:43	1.65.4.3
++++ libIDL/Makefile.am	2000/09/30 02:21:27
+@@ -33,7 +33,7 @@
  			  Makefile.msc README.win32 \
  			  libIDL.def libIDLConf.sh.in \
--			  stamp-parser lexer.c parser.c parser.h
-+			  stamp-parser lexer.c parser.c parser.h \
+ 			  stamp-parser lexer.c parser.c parser.h \
+-			  libIDL.pc.in
 +			  libIDL-2.0.pc.in
  
  info_TEXINFOS		= libIDL.texi
  pkginclude_HEADERS	= IDL.h
-@@ -70,3 +71,6 @@
- 		-e 's?\@VERSION\@?$(VERSION)?g' \
- 		< $(srcdir)/libIDLConf.sh.in > libIDLConf.tmp \
+@@ -73,5 +73,5 @@
  		&& mv libIDLConf.tmp libIDLConf.sh
-+
-+pkgconfigdir = $(libexecdir)/pkgconfig
+ 
+ pkgconfigdir = $(libdir)/pkgconfig
+-pkgconfig_DATA= libIDL.pc
 +pkgconfig_DATA = libIDL-2.0.pc
+ 
 Index: libIDL/configure.in
 ===================================================================
 RCS file: /cvs/gnome/libIDL/configure.in,v
-retrieving revision 1.54
-diff -u -u -r1.54 configure.in
---- libIDL/configure.in	1999/10/01 21:58:10	1.54
-+++ libIDL/configure.in	2000/09/29 21:52:12
+retrieving revision 1.54.4.1
+diff -u -u -r1.54.4.1 configure.in
+--- libIDL/configure.in	2000/09/29 23:35:50	1.54.4.1
++++ libIDL/configure.in	2000/09/30 02:21:27
 @@ -82,7 +82,7 @@
  AC_CHECK_PROG(HAVE_GLIB_CONFIG, glib-config, yes, no)
  
@@ -147,9 +146,9 @@ diff -u -u -r1.54 configure.in
  
  AC_STDC_HEADERS
  AC_CHECK_HEADERS(stddef.h)
-@@ -104,6 +104,7 @@
- libIDL.m4
+@@ -105,6 +105,7 @@
  libIDL.spec
+ libIDL.pc
  IDL.h.new
 +libIDL-2.0.pc
  ],[
@@ -160,19 +159,17 @@ Index: libIDL/libIDL-2.0.pc.in
 RCS file: libIDL-2.0.pc.in
 diff -N libIDL-2.0.pc.in
 --- /dev/null	Tue May  5 16:32:27 1998
-+++ libIDL-2.0.pc.in	Fri Sep 29 17:52:12 2000
-@@ -0,0 +1,14 @@
++++ libIDL-2.0.pc.in	Fri Sep 29 22:21:27 2000
+@@ -0,0 +1,12 @@
 +prefix=@prefix@
 +exec_prefix=@exec_prefix@
 +libdir=@libdir@
 +includedir=@includedir@
 +
-+VERSION="@VERSION@"
-+REQUIRES="glib-2.0"
-+CFLAGS="-I${includedir} $CFLAGS"
-+LIBS_PATH="-L${libdir} $LIBS_PATH"
-+LIBS_LINK_SELF="-lIDL $LIBS_LINK_SELF"
-+LIBS_LINK_SYSTEM="$LIBS_LINK_SYSTEM"
 +
-+#Name: libIDL
-+#Description: IDL parsing library
++Name: libIDL
++Description: IDL parsing library
++Version: @VERSION@
++Requires: glib-2.0
++Libs: -L${libdir} -lIDL
++Cflags: -I${includedir}
