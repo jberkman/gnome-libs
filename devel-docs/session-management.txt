@@ -1,0 +1,156 @@
+From owner-gnome-hackers@athena.nuclecu.unam.mx  Sat Jan 23 10:10:34 1999
+X-Authentication-Warning: athena.nuclecu.unam.mx: majordom set sender to owner-gnome-hackers using -f
+Date: Sat, 23 Jan 1999 15:50:12 GMT
+From: Felix Bellaby <felix@pooh.u-net.com>
+To: gnome-hackers@nuclecu.unam.mx
+Subject: Re: gnome-session race conditions
+Sender: owner-gnome-hackers@nuclecu.unam.mx
+
+Hi all,
+
+I think that I have the runlevel start up code working in 
+the gnome-session in cvs. This means that the gnome start 
+up can now be controled in much more detail.
+
+However, esd and gnome-name-server must be made session
+aware before we see substantial benefits. At the moment
+esd sometimes fails to start up and gnome apps appearing 
+to be waiting for a long periods before registering.
+
+I can try to implement session awareness in these servers
+if that is ok with the authors. The logical approach in
+these cases would seem to be to make them into clients
+which start up in the earliest run level and have a
+restart style of RestartImmediately so that gnome-session
+ensures they are always available (acting like init).
+
+This approach remains compatible with starting them up
+from the gnome-libs when necessary (e.g. when gnome-session
+is not being used or has been misconfigured). Providing the
+servers set their Priority and RestartStyleHint properly
+they will automatically fix a misconfigured gnome-session.
+
+There are subsiduary changes to gnome-core/smproxy and 
+libgnomeui (gnome-client) which you will need to rebuild
+to get everything working.
+
+There is a new function in gnome-client.c which allows 
+gnome-apps to set their priority (for the next restart):
+
+void gnome_client_set_priority (GnomeClient *client, 
+                                guint priority);
+
+This just calls SmcSetProperties to set a SmCARD8 property
+with the name "Priority" to a value between 0 and 99. The
+priority is not stored in the GnomeClient object. I have not
+patched anyone's code to use this but it does work.
+
+I intend to implement user control over the priorities using
+a GUI on the session manager side so there should be no reason
+for apps to do anything with this priority beyond setting its
+value to whatever they feel is a reasonable default. Apps
+which wish to run at priority 50 (i.e. almost everything)
+need not use this function at all.
+
+gnome-session currently prints a log of which apps are
+starting and registering out to stderr. When gnome-session 
+has to register the client under a different id than it had 
+in the previous session then it prints out that is "Cloning" 
+the client to help you keep track.
+
+gnome-session normally goes onto the next runlevel when
+all the clients in the preceeding levels have either registered
+or failed to register within 30 seconds. This 30000ms delay
+may be altered using the --purge-delay option to gnome-session.
+Setting it to 0 makes gnome-session wait forever and gives
+you the tightest control over start up order (at the expense
+of a possible freeze waiting for a broken client).
+
+The easiest approach to trying this code out is to delete 
+your ~/.gnome/session and force gnome-session to use the new 
+default.session. Starting X up with a single gnome-terminal
+(NOT an xterm) and calling gnome-session from the command 
+line makes things clearer. 
+
+The format of the default.session file has altered to match 
+the ~/.gnome/session file. This increases its complexity 
+but is unavoidable. Each client in the new default.session 
+typically needs three lines: e.g.
+
+0,Priority=40
+0,id=default0
+0,RestartCommand=panel --sm-client-id default0
+
+The Priority= property gives the runlevel (0 is the highest 
+priority). This property is carried through to subsequent 
+restarts. gnome-session currently assigns a priority of
+50 to all clients that join the session without being
+restarted (i.e. start ups from the panel, xterm, etc.).
+These clients must set their priority for themselves.
+
+I intend to make gnome-session a bit more intelligent
+in this respect by making it remember the runlevels 
+that have been assigned to particular apps in other 
+sessions and apply them as the defaults instead.
+
+The id= property tells gnome-session which client id will be
+used by the client to register. The ids used for session aware
+clients in the default.session file can be almost anything 
+providing they are all distinct (see below re "ghost" ids).
+This allows you to copy a ~/.gnome/session over to the 
+default.session file (stripping out user specific options). 
+
+The ids in the default.sesion file are NOT inherited by the 
+running clients. Your app should not be concerning itself with
+the id which is been assigned to it in any case as the protocol
+makes no ABSOLUTE gaurantees about the value that it will take
+(i.e. it is preserved 99% of the time but not always). I will
+alter the panel to reflect this shortly.
+
+The RestartCommand= property gives the startup command and 
+MUST incorporate the option needed to tell the client to 
+register with the string in the id property. For gnome apps 
+this means  appending the "--sm-client-id" option. No option 
+name is specified by the protocol and many are used...
+
+I have passed 2 options to the (unknown) WM in default.in since 
+E uses "-smid" and all the others that I know use "-clientId". 
+
+Does anyone know of any other names used for this option by WMs 
+or of any WMs which complain about being fed options which they 
+do not recognise ? If so patch up gsm/default.in. (:
+
+The default.session and ~/.gnome/session files can also include 
+clients which are NOT session aware. These are distinguished 
+from the session aware clients by having ids that begin with 
+the word "ghost", indicating to gnome-session that there is 
+no point waiting for these apps to register: e.g.
+
+8,id=ghost0
+8,RestartCommand=fetchmail
+
+This app would be started up with the Priority=50 session 
+aware clients. gnome-session will then remember to start
+the app up again at the next restart of this session.
+
+These changes mean that the "session-properties" GUI no 
+longer works (because the [preloads] section has been
+replaced with the "ghost" apps and gnome-session now
+holds this data internally - overwriting any changes 
+to the config section for the current session). This
+fixes a known bug: the preloads should be session 
+specific.
+
+I will have a look at how hard it will be to integrate
+the session-properties GUI (or better) into gnome-session 
+and edit the live data. This might be able to go into
+gnome-1.0.
+
+My testing suggested that the gnome_execute_async
+functions are NOT returning the pids of the children
+that are being started. Is this a known problem ?
+I have not looked at it in any detail. (:
+
+Felix
+
+
