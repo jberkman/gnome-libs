@@ -1,7 +1,7 @@
 ##
 ## This Makefile.am is used both in gnome-libs and gnome-docu.
-## There is a `INSIDE_GNOME_LIBS' automake conditional which is true in
-## gnome-libs and false in gnome-docu.
+## There is a `INSIDE_GNOME_DOCU' automake conditional which is true in
+## gnome-docu and false in gnome-libs.
 ##
 ## April 10,
 ## Martin Baulig
@@ -10,23 +10,7 @@
 EXTRA_DIST	= gnome-faq.sgml
 SUFFIXES	= .tar.gz .sgml
 
-if INSIDE_GNOME_LIBS
-
-# Make rules for the `gnome-libs' module
-
-htmldir = $(prefix)/html
-html_DATA = gnome-faq.html
-
-gnome-faq.html: gnome-faq/index.html
-	-cp $(srcdir)/gnome-faq/index.html gnome-faq.html
-
-gnome-faq/index.html: gnome-faq.sgml
-	-(cd $(srcdir); db2html gnome-faq.sgml) > /dev/null
-
-dist-hook:
-	tar cvf - gnome-faq | (cd $(distdir); tar xf -)
-
-else
+if INSIDE_GNOME_DOCU
 
 # Make rules for the `gnome-docu' module
 
@@ -49,5 +33,21 @@ distclean-local:
 
 install-data-local:
 	$(MAKE) install-data-do-local
+
+else
+
+# Make rules for the `gnome-libs' module
+
+htmldir = $(prefix)/html
+html_DATA = gnome-faq.html
+
+gnome-faq.html: gnome-faq/index.html
+	-cp $(srcdir)/gnome-faq/index.html gnome-faq.html
+
+gnome-faq/index.html: gnome-faq.sgml
+	-(cd $(srcdir); db2html gnome-faq.sgml) > /dev/null
+
+dist-hook:
+	tar cvf - gnome-faq | (cd $(distdir); tar xf -)
 
 endif
