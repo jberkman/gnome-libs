@@ -1,3 +1,15 @@
+1998-05-19  Miguel de Icaza  <miguel@nuclecu.unam.mx>
+
+	* libgnome/gnome-dentry.c (gnome_desktop_entry_launch_with_args):
+	New function.  Allows to launch a dentry with optional extra
+	arguments.  In the future we should probably scan ->exec vector
+	for ocurrences of '%f' and relpace that with the argumnets.  For
+	now, we just appendm them.
+
+	* libgnome/gnome-config.c (_gnome_config_get_vector_with_default):
+	Set the entire argvp array to NULL.  
+	Count correctly the number of arguments.
+
 1998-05-19  Raja R Harinath  <harinath@cs.umn.edu>
 
 	* acconfig.h (HAVE_SYS_ERRLIST): New tag.
