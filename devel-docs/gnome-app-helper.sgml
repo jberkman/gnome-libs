@@ -7,32 +7,39 @@
 
   <!-- Author: Federico Mena Quintero <federico@nuclecu.unam.mx> -->
 
-  <para>
-    The GnomeAppHelper module lets you easily create menus and tool
-    bars for your application.  Instead of having to create all the
-    required widgets by hand, GnomeAppHelper lets you simply create an
-    array of definitions for the items you want in your menu or tool
-    bar.  You can then call functions that will turn this array into
-    all the required widgets automatically.  The widgets will have all
-    the keyboard accelerators and shortcuts set up correctly for you.
-  </para>
-
-  <para>
-    In addition to creating normal menu and tool bar items,
-    GnomeAppHelper lets you quickly create toggle items that work like
-    check boxes, radio items, and lists of help menu entries.
-  </para>
-
-  <para>
-    You should use GnomeAppHelper when you want to create menu bars,
-    toolbars, or pop-up menus in your application.  GnomeAppHelper
-    makes use of the stock icon mechanism to give these widgets a
-    consistent look.
-  </para>
-
   <sect1 id="introduction">
 
-    <title>Introduction to GnomeAppHelper</title>
+    <title>Introduction</title>
+
+    <para>
+      The GnomeAppHelper module lets you easily create menus and tool
+      bars for your application.  Instead of having to create all the
+      required widgets by hand, GnomeAppHelper lets you simply create
+      an array of definitions for the items you want in your menu or
+      tool bar.  You can then call functions that will turn this array
+      into all the required widgets automatically.  The widgets will
+      have all the keyboard accelerators and shortcuts set up
+      correctly for you.
+    </para>
+
+    <para>
+      In addition to creating normal menu and tool bar items,
+      GnomeAppHelper lets you quickly create toggle items that work
+      like check boxes, radio items, and lists of help menu entries.
+    </para>
+
+    <para>
+      You should use GnomeAppHelper when you want to create menu bars,
+      toolbars, or pop-up menus in your application.  GnomeAppHelper
+      makes use of the stock icon mechanism to give these widgets a
+      consistent look.
+    </para>
+
+  </sect1>
+
+  <sect1 id="a-quick-example">
+
+    <title>A quick example of using GnomeAppHelper</title>
 
     <para>
       This section presents a simple example of creating a menu bar
@@ -674,8 +681,7 @@ typedef struct {
 
 	  <para>
 	    The value in this field is a bit mask composed of the
-	    values in the <structname>GdkModifierType</structname>
-	    enumeration.
+	    values in the <type>GdkModifierType</type> enumeration.
 	  </para>
 	</glossdef>
       </glossentry>
@@ -721,7 +727,6 @@ typedef struct {
     <para>
       The following macros are available:
     </para>
-    
 
   </sect1>
 

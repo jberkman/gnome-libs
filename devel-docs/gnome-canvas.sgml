@@ -3,29 +3,21 @@
 
 <chapter id="GnomeCanvas">
 
-  <title>GnomeCanvas widget</title>
+  <title>The <type>GnomeCanvas</type> widget</title>
 
-  <authorgroup>
-    <author>
-      <firstname>Federico</firstname>
-      <surname>Mena Quintero</surname>
-      <affiliation>
-	<address><email>federico@nuclecu.unam.mx</email></address>
-      </affiliation>
-    </author>
-  </authorgroup>
+  <!-- Author: Federico Mena Quintero <federico@nuclecu.unam.mx> -->
 
   <sect1 id="introduction">
 
     <title>Introduction</title>
 
     <para>
-      The GnomeCanvas widget is a high-level engine for creating
-      structured graphics.  A canvas displays a collection of items,
-      which can be things like lines, rectangles, ellipses, and text.
-      Items have attributes associated to them that you can change, like
-      fill color, position, and size.  Items may be moved and re-stacked
-      in the canvas, and organized in hierarchical groups of items.
+      The <type>GnomeCanvas</type> widget is a high-level engine for
+      creating structured graphics.  A canvas displays a collection of
+      items, which can be lines, rectangles, ellipses, and text.
+      Items have attributes associated to them that you can change,
+      like fill color, position, and size.  Items may be moved and
+      re-stacked in the canvas, and organized in hierarchical groups.
       You can receive mouse and keyboard events from the items and
       perform actions on them based on these events.
     </para>
@@ -35,6 +27,21 @@
       graphics displays which would be hard or cumbersome to implement
       with raw calls to Gdk, or when writing a custom widget for Gtk
       is inconvenient.
+    </para>
+
+    <para>
+      The canvas is also useful to create displays of graphs,
+      diagrams, and many other types of structured drawings.  It can
+      even be used as a general display engine &mdash; for example,
+      the Gnumeric spreadsheet uses the GnomeCanvas widget as its
+      display engine.
+    </para>
+
+    <para>
+      If the predefined canvas item types do not suit your needs, you
+      can easily write new item types.  These can be primitive items,
+      which paint their own displays, or composite items, which are
+      built on top of canvas item groups.
     </para>
 
   </sect1>
@@ -55,7 +62,7 @@
       A canvas has a single root group.  For simple drawings, it is
       likely that you will want to put all your items directly inside
       this group.  For more complex drawings, it may be convenient to
-      use a hierarchical structure and make of nested canvas groups.
+      use a hierarchical structure of nested canvas groups.
     </para>
 
     <para>
@@ -66,6 +73,41 @@
       wires.  You would then group some adders with other components
       to form a more complex circuit.
     </para>
+
+    <sect2 id="stacking-order">
+
+      <title>Stacking order</title>
+
+      <para>
+	The items you put inside groups are stacked on top of each
+	other, and items nearer the top of the stack obscure the items
+	below them.  When an item is created, it is put on top of all
+	the items in its parent group.
+      </para>
+
+      <para>
+	The canvas provides several functions to let you change the
+	stacking order of items inside groups.  You can move items to
+	the top or bottom of their parent group, or raise or lower
+	them by an arbitrary number of positions.
+      </para>
+
+    </sect2>
+
+    <sect2 id="behavior-and-events">
+
+      <title>Behavior and events</title>
+
+      <para>
+	The canvas does <emphasis>not</emphasis> have any predefined
+	behavior for items.  You can define the behavior of items by
+	explicitly operating on them (change the color if item Foo when
+	the user selects a menu item), or by defining actions that
+	should take place when items receive events (let the user drag
+	items with the mouse).
+      </para>
+
+    </sect2>
 
   </sect1>
 
@@ -85,16 +127,23 @@
       has coordinates (0.0, 0.0).  Positive X coordinates go to the
       right of the origin, and positive Y coordinates go
       <emphasis>below</emphasis> the origin, like in the rest of the X
-      Window System &mdash this is a feature, not a bug.
+      Window System.
     </para>
 
     <para>
       Coordinates of items are calculated with respect to their parent
       group.  When a group is moved, its children's logical
       coordinates do not change, although their physical position
-      will.  A group stores a single pair of coordinates which define
+      does.  A group stores a single pair of coordinates which define
       its origin relative to its parent group.  The canvas's root
       group starts with its origin in world position (0.0, 0.0).
+    </para>
+
+    <para>
+      For example, let's say you have a toplevel group at (5.0, 3.0).
+      If you insert an item in it with coordinates (2.0, 1.0), the
+      item will appear to be at coordinates (7.0, 4.0).  Coordinates
+      of items are always relative to their parent group.
     </para>
 
     <para>
@@ -103,7 +152,8 @@
       system which works in terms of pixel offsets.  This coordinate
       system is used internally to control scrolling of the canvas.
       You won't need to know about it unless you want to do scrolling
-      or create your own canvas item types.
+      or create your own canvas item types.  We will discuss this
+      coordinate system later.
     </para>
 
     <sect2 id="zooming-and-scale">
@@ -118,7 +168,8 @@
 	coordinates to display coordinates.  The default is to use 1.0
 	pixels per unit, so an object that is 10 units wide will be
 	displayed as 10 pixels wide.  If you set the canvas to use 5
-	pixels per unit, that object will be displayed as 50 pixels wide.
+	pixels per unit, that object will be displayed as 50 pixels
+	wide.
       </para>
 
       <para>
@@ -131,11 +182,26 @@
 	outline width parameter let you select whether the outline
 	width is specified in absolute pixels (which will keep the
 	same displayed size regardless of the zoom factor of the
-	canvas), or normal units (which will get scaled when the
-	zoom factor is changed).
+	canvas), or normal units (which will get scaled when the zoom
+	factor is changed).
       </para>
 
     </sect2>
+
+  </sect1>
+
+  <sect1 id="object-arguments">
+
+    <title>Attributes and object arguments</title>
+
+    <para>
+      The canvas makes extensive use of the Gtk object argument system
+      &mdash; all the items' attributes are configured and queried
+      through it.  You only need to have only a minimal knowledge of
+      how the argument system works, so do not worry if you do not
+      want to learn all the details.  Here we will explain everything
+      you need to know.
+    </para>
 
   </sect1>
 
