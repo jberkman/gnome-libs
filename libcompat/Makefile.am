@@ -47,7 +47,8 @@ libgnomeui_1_compat_2_a_SOURCES =\
 	gnome-properties.c		\
 	gnome-property-entries.c	\
 	gnome-font-selector.c		\
-	gnome-file-entry.c
+	gnome-file-entry.c		\
+	gnome-pixmap-entry.c
 
 # This probably won't work right
 #	gnome-canvas-image.c
@@ -68,7 +69,8 @@ libgnomeui10compatinclude_HEADERS = \
 	gnome-properties.h		\
 	gnome-property-entries.h	\
 	gnome-font-selector.h		\
-	gnome-file-entry.h
+	gnome-file-entry.h		\
+	gnome-pixmap-entry.h
 
 # This probably won't work right
 #	gnome-canvas-image.h
