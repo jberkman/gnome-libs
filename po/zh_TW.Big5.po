@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-libs 0.99.7\n"
-"POT-Creation-Date: 1999-02-07 22:07-0500\n"
+"POT-Creation-Date: 1999-07-19 15:58-0500\n"
 "PO-Revision-Date: 1999-02-20 22:30+0800\n"
 "Last-Translator: Pofeng Lee <pofeng.lee@ms7.url.com.tw> \n"
 "Language-Team: Chinese <zh@li.org>\n"
@@ -24,6 +24,7 @@ msgstr "GNOME 您好\n"
 msgid "The Hello World Gnomified"
 msgstr "The Hello World Gnomified"
 
+#. copyright notice
 #: gnome-hello/gnome-hello-2-i18n.c:61
 #: gnome-hello/gnome-hello-3-parse-args.c:61
 msgid "(C) 1998 the Free Software Foundation"
@@ -34,7 +35,8 @@ msgstr "(C) 1998 the Free Software Foundation"
 #: gnome-hello/gnome-hello-3-parse-args.c:64
 #: gnome-hello/gnome-hello-4-SM.c:202 gnome-hello/gnome-hello.c:150
 msgid "GNOME is a civilized software system so we've a \"hello world\" program"
-msgstr "GNOME is a civilized software system so we've a \"hello world\" program"
+msgstr ""
+"GNOME is a civilized software system so we've a \"hello world\" program"
 
 #: gnome-hello/gnome-hello-2-i18n.c:73
 #: gnome-hello/gnome-hello-3-parse-args.c:73
@@ -58,7 +60,7 @@ msgstr "檔案"
 
 #: gnome-hello/gnome-hello-2-i18n.c:85
 #: gnome-hello/gnome-hello-3-parse-args.c:85 gnome-hello/gnome-hello-4-SM.c:78
-#: gnome-hello/gnome-hello-7-mdi.c:484 libgnomeui/gnome-stock.c:787
+#: gnome-hello/gnome-hello-7-mdi.c:484 libgnomeui/gnome-stock.c:833
 #: libgnomeui/stock_demo.c:290
 msgid "Help"
 msgstr "說明"
@@ -161,6 +163,7 @@ msgid "<control>A"
 msgstr "<control>A"
 
 #: gnome-hello/gnome-hello.c:208
+#, c-format
 msgid ""
 "%s: A gnomified 'Hello World' program\n"
 "\n"
@@ -179,6 +182,7 @@ msgstr ""
 "        --version  顯示版本資訊後離開\n"
 
 #: gnome-hello/gnome-hello.c:217
+#, c-format
 msgid "Gnome Hello %s.\n"
 msgstr "Gnome 您好 %s.\n"
 
@@ -207,6 +211,7 @@ msgid "Set config entry"
 msgstr "設定項目"
 
 #: libgnome/gnome-popt.c:90
+#, c-format
 msgid ""
 "Error on option %s: %s.\n"
 "Run '%s --help' to see a full list of available command line options.\n"
@@ -234,19 +239,19 @@ msgstr "主機名稱:埠號"
 msgid "GNOME Options"
 msgstr "GNOME 選項"
 
-#: libgnomeui/gnome-about.c:188
+#: libgnomeui/gnome-about.c:187
 msgid "Author:"
 msgstr "作者:"
 
-#: libgnomeui/gnome-about.c:190 libgnomeui/gnome-about.c:192
+#: libgnomeui/gnome-about.c:189 libgnomeui/gnome-about.c:191
 msgid "Authors:"
 msgstr "作者群:"
 
-#: libgnomeui/gnome-about.c:354
+#: libgnomeui/gnome-about.c:353
 msgid "Authors: "
 msgstr "作者群:"
 
-#: libgnomeui/gnome-about.c:596 libgnomeui/stock_demo.c:282
+#: libgnomeui/gnome-about.c:591 libgnomeui/stock_demo.c:282
 #: libgnomeui/winhints_demo.c:257
 msgid "About"
 msgstr "關於本程式"
@@ -333,6 +338,7 @@ msgstr "儲存檔案(_S)"
 msgid "Save the current file"
 msgstr "儲存目前的檔案"
 
+#. Save As
 #: libgnomeui/gnome-app-helper.c:115
 msgid "Save _As..."
 msgstr "另存新檔(_A)"
@@ -341,6 +347,7 @@ msgstr "另存新檔(_A)"
 msgid "Save the current file with a different name"
 msgstr "將目前的檔案存成新的名字"
 
+#. Revert
 #: libgnomeui/gnome-app-helper.c:121
 msgid "_Revert"
 msgstr "回復 (_R)"
@@ -349,6 +356,7 @@ msgstr "回復 (_R)"
 msgid "Revert to a saved version of the file"
 msgstr "回復此檔案到先前存檔過的版本"
 
+#. Print
 #: libgnomeui/gnome-app-helper.c:127
 msgid "_Print"
 msgstr "列印(_P)"
@@ -384,6 +392,9 @@ msgstr "結束(_X)"
 msgid "Exit the program"
 msgstr "結束程式"
 
+#.
+#. * The "Edit" menu
+#.
 #. Cut
 #: libgnomeui/gnome-app-helper.c:151
 msgid "C_ut"
@@ -393,6 +404,7 @@ msgstr "剪下(_U)"
 msgid "Cut the selection"
 msgstr "剪下選擇區"
 
+#. 10
 #. Copy
 #: libgnomeui/gnome-app-helper.c:157 libgnomeui/gnome-popup-help.c:59
 msgid "_Copy"
@@ -402,6 +414,7 @@ msgstr "複製(_C)"
 msgid "Copy the selection"
 msgstr "複製選擇區"
 
+#. Paste
 #: libgnomeui/gnome-app-helper.c:162 libgnomeui/gnome-popup-help.c:61
 msgid "_Paste"
 msgstr "貼上(_P)"
@@ -428,6 +441,7 @@ msgstr "復原(_U)動作"
 msgid "Undo the last action"
 msgstr "復原最後的動作"
 
+#. Redo
 #: libgnomeui/gnome-app-helper.c:177
 msgid "_Redo"
 msgstr "重覆(_R)動作"
@@ -463,6 +477,7 @@ msgstr "取代(_R)"
 msgid "Replace a string"
 msgstr "取代特定字串"
 
+#. Properties
 #: libgnomeui/gnome-app-helper.c:198
 msgid "_Properties..."
 msgstr "屬性(_P)"
@@ -471,6 +486,9 @@ msgstr "屬性(_P)"
 msgid "Modify the file's properties"
 msgstr "更改檔案屬性"
 
+#.
+#. * The Settings menu
+#.
 #. Settings
 #: libgnomeui/gnome-app-helper.c:207
 msgid "_Preferences..."
@@ -480,6 +498,11 @@ msgstr "設定偏好(_P)"
 msgid "Configure the application"
 msgstr "改變目前應用程式的設定"
 
+#. 20
+#.
+#. * And the "Help" menu
+#.
+#. About
 #: libgnomeui/gnome-app-helper.c:217
 msgid "_About..."
 msgstr "關於(_A)..."
@@ -566,6 +589,7 @@ msgstr "提示(_H)"
 msgid "Get a hint for your next move"
 msgstr "取得下一步的提示"
 
+#. 30
 #: libgnomeui/gnome-app-helper.c:275
 msgid "_Scores..."
 msgstr "分數(_S)..."
@@ -622,172 +646,172 @@ msgstr " - 確定嗎? (是或否)"
 msgid "Progress"
 msgstr "進行"
 
-#: libgnomeui/gnome-calculator.c:941 libgnomeui/gnome-calculator.c:1098
+#: libgnomeui/gnome-calculator.c:917 libgnomeui/gnome-calculator.c:1061
 msgid "DEG"
 msgstr "DEG"
 
-#: libgnomeui/gnome-calculator.c:943
+#: libgnomeui/gnome-calculator.c:919
 msgid "RAD"
 msgstr "RAD"
 
-#: libgnomeui/gnome-calculator.c:945
+#: libgnomeui/gnome-calculator.c:921
 msgid "GRAD"
 msgstr "GRAD"
 
-#: libgnomeui/gnome-calculator.c:1088
+#: libgnomeui/gnome-calculator.c:1051
 msgid "1/x"
 msgstr "1/x"
 
-#: libgnomeui/gnome-calculator.c:1089
+#: libgnomeui/gnome-calculator.c:1052
 msgid "x^2"
 msgstr "x^2"
 
-#: libgnomeui/gnome-calculator.c:1090
+#: libgnomeui/gnome-calculator.c:1053
 msgid "SQRT"
 msgstr "SQRT"
 
-#: libgnomeui/gnome-calculator.c:1091
+#: libgnomeui/gnome-calculator.c:1054
 msgid "CE/C"
 msgstr "CE/C"
 
-#: libgnomeui/gnome-calculator.c:1092
+#: libgnomeui/gnome-calculator.c:1055
 msgid "AC"
 msgstr "AC"
 
 #. inverse button
-#: libgnomeui/gnome-calculator.c:1095
+#: libgnomeui/gnome-calculator.c:1058
 msgid "sin"
 msgstr "sin"
 
-#: libgnomeui/gnome-calculator.c:1096
+#: libgnomeui/gnome-calculator.c:1059
 msgid "cos"
 msgstr "cos"
 
-#: libgnomeui/gnome-calculator.c:1097
+#: libgnomeui/gnome-calculator.c:1060
 msgid "tan"
 msgstr "tan"
 
-#: libgnomeui/gnome-calculator.c:1100
+#: libgnomeui/gnome-calculator.c:1063
 msgid "e"
 msgstr "e"
 
-#: libgnomeui/gnome-calculator.c:1101
+#: libgnomeui/gnome-calculator.c:1064
 msgid "EE"
 msgstr "EE"
 
-#: libgnomeui/gnome-calculator.c:1102
+#: libgnomeui/gnome-calculator.c:1065
 msgid "log"
 msgstr "log"
 
-#: libgnomeui/gnome-calculator.c:1103
+#: libgnomeui/gnome-calculator.c:1066
 msgid "ln"
 msgstr "ln"
 
-#: libgnomeui/gnome-calculator.c:1104
+#: libgnomeui/gnome-calculator.c:1067
 msgid "x^y"
 msgstr "x^y"
 
-#: libgnomeui/gnome-calculator.c:1106
+#: libgnomeui/gnome-calculator.c:1069
 msgid "PI"
 msgstr "PI"
 
-#: libgnomeui/gnome-calculator.c:1107
+#: libgnomeui/gnome-calculator.c:1070
 msgid "x!"
 msgstr "x!"
 
-#: libgnomeui/gnome-calculator.c:1108
+#: libgnomeui/gnome-calculator.c:1071
 msgid "("
 msgstr "("
 
-#: libgnomeui/gnome-calculator.c:1109
+#: libgnomeui/gnome-calculator.c:1072
 msgid ")"
 msgstr ")"
 
-#: libgnomeui/gnome-calculator.c:1110
+#: libgnomeui/gnome-calculator.c:1073
 msgid "/"
 msgstr "/"
 
-#: libgnomeui/gnome-calculator.c:1112
+#: libgnomeui/gnome-calculator.c:1075
 msgid "STO"
 msgstr "STO"
 
-#: libgnomeui/gnome-calculator.c:1113
+#: libgnomeui/gnome-calculator.c:1076
 msgid "7"
 msgstr "7"
 
-#: libgnomeui/gnome-calculator.c:1114
+#: libgnomeui/gnome-calculator.c:1077
 msgid "8"
 msgstr "8"
 
-#: libgnomeui/gnome-calculator.c:1115
+#: libgnomeui/gnome-calculator.c:1078
 msgid "9"
 msgstr "9"
 
-#: libgnomeui/gnome-calculator.c:1116
+#: libgnomeui/gnome-calculator.c:1079
 msgid "*"
 msgstr "*"
 
-#: libgnomeui/gnome-calculator.c:1118
+#: libgnomeui/gnome-calculator.c:1081
 msgid "RCL"
 msgstr "RCL"
 
-#: libgnomeui/gnome-calculator.c:1119
+#: libgnomeui/gnome-calculator.c:1082
 msgid "4"
 msgstr "4"
 
-#: libgnomeui/gnome-calculator.c:1120
+#: libgnomeui/gnome-calculator.c:1083
 msgid "5"
 msgstr "5"
 
-#: libgnomeui/gnome-calculator.c:1121
+#: libgnomeui/gnome-calculator.c:1084
 msgid "6"
 msgstr "6"
 
-#: libgnomeui/gnome-calculator.c:1122
+#: libgnomeui/gnome-calculator.c:1085
 msgid "-"
 msgstr "-"
 
-#: libgnomeui/gnome-calculator.c:1124
+#: libgnomeui/gnome-calculator.c:1087
 msgid "SUM"
 msgstr "SUM"
 
-#: libgnomeui/gnome-calculator.c:1125
+#: libgnomeui/gnome-calculator.c:1088
 msgid "1"
 msgstr "1"
 
-#: libgnomeui/gnome-calculator.c:1126
+#: libgnomeui/gnome-calculator.c:1089
 msgid "2"
 msgstr "2"
 
-#: libgnomeui/gnome-calculator.c:1127
+#: libgnomeui/gnome-calculator.c:1090
 msgid "3"
 msgstr "3"
 
-#: libgnomeui/gnome-calculator.c:1128
+#: libgnomeui/gnome-calculator.c:1091
 msgid "+"
 msgstr "+"
 
-#: libgnomeui/gnome-calculator.c:1130
+#: libgnomeui/gnome-calculator.c:1093
 msgid "EXC"
 msgstr "EXC"
 
-#: libgnomeui/gnome-calculator.c:1131
+#: libgnomeui/gnome-calculator.c:1094
 msgid "0"
 msgstr "0"
 
-#: libgnomeui/gnome-calculator.c:1132
+#: libgnomeui/gnome-calculator.c:1095
 msgid "."
 msgstr "."
 
-#: libgnomeui/gnome-calculator.c:1133
+#: libgnomeui/gnome-calculator.c:1096
 msgid "+/-"
 msgstr "+/-"
 
-#: libgnomeui/gnome-calculator.c:1134
+#: libgnomeui/gnome-calculator.c:1097
 msgid "="
 msgstr "="
 
-#: libgnomeui/gnome-calculator.c:1223
+#: libgnomeui/gnome-calculator.c:1186
 msgid "INV"
 msgstr "INV"
 
@@ -811,19 +835,20 @@ msgstr "字首"
 msgid "Disable connection to session manager"
 msgstr "不連結到作業階段管理程式"
 
-#: libgnomeui/gnome-client.c:964
+#. Register commandline options.
+#: libgnomeui/gnome-client.c:965
 msgid "Session management options"
 msgstr "作業階段管理用的選項"
 
-#: libgnomeui/gnome-client.c:2255
+#: libgnomeui/gnome-client.c:2348
 msgid "Cancel Logout"
 msgstr "取消登出"
 
-#: libgnomeui/gnome-client.c:2497
+#: libgnomeui/gnome-client.c:2615
 msgid "Really log out?"
 msgstr "確定要登出？"
 
-#: libgnomeui/gnome-client.c:2506
+#: libgnomeui/gnome-client.c:2624
 msgid "Ask next time"
 msgstr "下次也要詢問"
 
@@ -831,6 +856,7 @@ msgstr "下次也要詢問"
 msgid "Pick a color"
 msgstr "選擇顏色"
 
+#. Calendar label, only shown if the date editor has a time field
 #: libgnomeui/gnome-dateedit.c:452
 msgid "Calendar"
 msgstr "日曆"
@@ -871,11 +897,11 @@ msgstr "先試這一個:"
 msgid "Documentation:"
 msgstr "文件:"
 
-#: libgnomeui/gnome-dentry-edit.c:331
+#: libgnomeui/gnome-dentry-edit.c:351
 msgid "Basic"
 msgstr "基本"
 
-#: libgnomeui/gnome-dentry-edit.c:335
+#: libgnomeui/gnome-dentry-edit.c:355
 msgid "Advanced"
 msgstr "進階"
 
@@ -893,7 +919,7 @@ msgstr "瀏覽..."
 msgid "Pick a Font"
 msgstr "選擇字型"
 
-#: libgnomeui/gnome-font-picker.c:705 libgnomeui/gnome-stock.c:792
+#: libgnomeui/gnome-font-picker.c:705 libgnomeui/gnome-stock.c:838
 msgid "Font"
 msgstr "字型"
 
@@ -1010,11 +1036,11 @@ msgstr "問題"
 msgid "Message"
 msgstr "訊息"
 
-#: libgnomeui/gnome-number-entry.c:143
+#: libgnomeui/gnome-number-entry.c:151
 msgid "Calculator"
 msgstr "計算機"
 
-#: libgnomeui/gnome-number-entry.c:195
+#: libgnomeui/gnome-number-entry.c:203
 msgid "Calculator..."
 msgstr "計算機..."
 
@@ -1055,6 +1081,7 @@ msgid "Select dictionary"
 msgstr "選擇字典"
 
 #: libgnomeui/gnome-spell.c:243
+#, c-format
 msgid ""
 "The word `%s'\n"
 "is not in the dictionary.\n"
@@ -1068,11 +1095,11 @@ msgstr ""
 msgid "Confirm"
 msgstr "確定"
 
-#: libgnomeui/gnome-spell.c:256 libgnomeui/gnome-stock.c:781
+#: libgnomeui/gnome-spell.c:256 libgnomeui/gnome-stock.c:827
 msgid "OK"
 msgstr "確定"
 
-#: libgnomeui/gnome-spell.c:263 libgnomeui/gnome-stock.c:783
+#: libgnomeui/gnome-spell.c:263 libgnomeui/gnome-stock.c:829
 msgid "Cancel"
 msgstr "取消"
 
@@ -1192,115 +1219,101 @@ msgstr "拼法"
 msgid "Configure"
 msgstr "設定"
 
-#: libgnomeui/gnome-stock.c:769
+#: libgnomeui/gnome-stock.c:815
 msgid "Add"
 msgstr "增加"
 
-#: libgnomeui/gnome-stock.c:770
+#: libgnomeui/gnome-stock.c:816
 msgid "Clear"
 msgstr "清除"
 
-#: libgnomeui/gnome-stock.c:771
+#: libgnomeui/gnome-stock.c:817
 msgid "Select Color"
 msgstr "選擇顏色"
 
-#: libgnomeui/gnome-stock.c:772
+#: libgnomeui/gnome-stock.c:818
 msgid "Remove"
 msgstr "移除"
 
-#: libgnomeui/gnome-stock.c:773
+#: libgnomeui/gnome-stock.c:819
 msgid "Table Borders"
 msgstr "表格邊框"
 
-#: libgnomeui/gnome-stock.c:774
+#: libgnomeui/gnome-stock.c:820
 msgid "Table Fill"
 msgstr "表格填滿"
 
-#: libgnomeui/gnome-stock.c:775
+#: libgnomeui/gnome-stock.c:821
 msgid "Bulleted List"
 msgstr "符號列表"
 
-#: libgnomeui/gnome-stock.c:776
+#: libgnomeui/gnome-stock.c:822
 msgid "Numbered List"
 msgstr "編號列表"
 
-#: libgnomeui/gnome-stock.c:777
+#: libgnomeui/gnome-stock.c:823
 msgid "Indent"
 msgstr "縮排"
 
-#: libgnomeui/gnome-stock.c:778
+#: libgnomeui/gnome-stock.c:824
 msgid "Un-Indent"
 msgstr "去除縮排"
 
-#: libgnomeui/gnome-stock.c:782
+#: libgnomeui/gnome-stock.c:828
 msgid "Apply"
 msgstr "套用"
 
-#: libgnomeui/gnome-stock.c:784 libgnomeui/stock_demo.c:144
+#: libgnomeui/gnome-stock.c:830 libgnomeui/stock_demo.c:144
 msgid "Close"
 msgstr "關閉"
 
-#: libgnomeui/gnome-stock.c:785
+#: libgnomeui/gnome-stock.c:831
 msgid "Yes"
 msgstr "是"
 
-#: libgnomeui/gnome-stock.c:786
+#: libgnomeui/gnome-stock.c:832
 msgid "No"
 msgstr "否"
 
-#: libgnomeui/gnome-stock.c:788
+#: libgnomeui/gnome-stock.c:834
 msgid "Next"
 msgstr "下個"
 
-#: libgnomeui/gnome-stock.c:789
+#: libgnomeui/gnome-stock.c:835
 msgid "Prev"
 msgstr "前個"
 
-#: libgnomeui/gnome-stock.c:790
+#: libgnomeui/gnome-stock.c:836
 msgid "Up"
 msgstr "上"
 
-#: libgnomeui/gnome-stock.c:791
+#: libgnomeui/gnome-stock.c:837
 msgid "Down"
 msgstr "下"
 
-#: libgnomeui/gnome-stock.c:1814
+#: libgnomeui/gnome-stock.c:1881
 msgid "Menu Accelerator Keys"
 msgstr "選單快速鍵"
 
-#: libgnomeui/gnome-stock.c:1816
+#: libgnomeui/gnome-stock.c:1883
 msgid "Global"
 msgstr "全域"
 
-#: libgnomeui/gnome-stock.c:1818
+#: libgnomeui/gnome-stock.c:1885
 msgid "Menu Item"
 msgstr "選單項目"
 
-#: libgnomeui/gnome-stock.c:1819
+#: libgnomeui/gnome-stock.c:1886
 msgid "Accelerator"
 msgstr "加速"
 
-#: libgnomeui/gnome_segv.c:68
+#: libgnomeui/gnome_segv.c:43
+#, c-format
 msgid ""
-"No, and ignore\n"
-"future SIGSEGV's"
+"Application \"%s\" (process %d) has crashed due to a bug in the software.\n"
+"(%s)\n"
+"For more information, see http://www.gnome.org/application_crashed.shtml"
 msgstr ""
-"不, 並且忽略往後\n"
-"遇到的 SIGSEGV 信號"
-
-#: libgnomeui/gnome_segv.c:79
-msgid ""
-"Application \"%s\" has a bug.\n"
-"SIGSEGV received at PC %#lx in PID %d.\n"
-"\n"
-"\n"
-"Do you want to exit this program?"
-msgstr ""
-"應用程式 \"%s\" 有臭蟲。\n"
-"收到 SIGSEGV 信號 (PC %#lx, PID %d)。\n"
-"\n"
-"\n"
-"您要結束這個程式嗎？"
 
 #: libgnomeui/stock_demo.c:112
 msgid "New..."
@@ -1490,13 +1503,16 @@ msgstr "Copyright (C)1998"
 msgid ""
 "Simple test app to check how the WIN_HINTS work. And to test the "
 "gnome_win_hints_* functions for errors. :)"
-msgstr "關于 WIN_HINTS 工作情形的簡單測試程式，並測試 gnome_win_hints_* 函式的錯誤 :)"
+msgstr ""
+"關于 WIN_HINTS 工作情形的簡單測試程式，並測試 gnome_win_hints_* 函式的錯誤 :)"
 
-#: libgnorba/gnome-name-server.c:230
+#: libgnorba/gnome-name-server.c:229
+#, c-format
 msgid "Creating '/GNOME' context %s %d"
 msgstr "建立 '/GNOME' 文本 %s %d"
 
-#: libgnorba/gnome-name-server.c:247
+#: libgnorba/gnome-name-server.c:246
+#, c-format
 msgid "Creating '/GNOME/Servers' context %s %d"
 msgstr "建立 '/GNOME/Servers' 文本 %s %d"
 
@@ -1522,27 +1538,27 @@ msgstr ""
 "安裝這些程式，或程式路徑不正確，請檢查\n"
 "您 GNOME 套件是否安裝妥善。"
 
-#: libgnorba/goad.c:1283
+#: libgnorba/goad.c:1279
 msgid "(Internal use only) GOAD server ID to activate"
 msgstr "(僅供內部使用) GOAD 此伺服程式的代號為活化"
 
-#: libgnorba/loadshlib.c:18
+#: libgnorba/loadshlib.c:11
 msgid "ID under which GOAD knows this server"
 msgstr "ID under which GOAD knows this server"
 
-#: libgnorba/loadshlib.c:18
+#: libgnorba/loadshlib.c:11
 msgid "GOAD_ID"
 msgstr "GOAD_ID"
 
-#: libgnorba/loadshlib.c:19
+#: libgnorba/loadshlib.c:12
 msgid "Repository ID under which GOAD knows this server"
 msgstr "Repository ID under which GOAD knows this server"
 
-#: libgnorba/loadshlib.c:19
+#: libgnorba/loadshlib.c:12
 msgid "REPO_ID"
 msgstr "REPO_ID"
 
-#: libgnorba/orbitns.c:296
+#: libgnorba/orbitns.c:295
 msgid "Could not get name service!"
 msgstr "無法取得命名服務!"
 
@@ -1551,50 +1567,61 @@ msgid "Unknown system error"
 msgstr "未知的系統錯誤"
 
 #: support/getopt.c:669
+#, c-format
 msgid "%s: option `%s' is ambiguous\n"
 msgstr "%s: 選項 `%s' 意義不明\n"
 
-#. --option
 #: support/getopt.c:693
+#, c-format
 msgid "%s: option `--%s' doesn't allow an argument\n"
 msgstr "%s: 選項 `--%s' 不允許\有任何參數\n"
 
 #: support/getopt.c:698
+#, c-format
 msgid "%s: option `%c%s' doesn't allow an argument\n"
 msgstr "%s: 選項 `%c%s' 不允許\有任何參數\n"
 
 #: support/getopt.c:715 support/getopt.c:888
+#, c-format
 msgid "%s: option `%s' requires an argument\n"
 msgstr "%s: 選項 `%s' 需要有一個參數\n"
 
 #. --option
 #: support/getopt.c:744
+#, c-format
 msgid "%s: unrecognized option `--%s'\n"
 msgstr "%s: 未知的選項 `--%s'\n"
 
+#. +option or -option
 #: support/getopt.c:748
+#, c-format
 msgid "%s: unrecognized option `%c%s'\n"
 msgstr "%s: 未知的選項 `%c%s'\n"
 
 #. 1003.2 specifies the format of this message.
 #: support/getopt.c:774
+#, c-format
 msgid "%s: illegal option -- %c\n"
 msgstr "%s: 不合法的選項 -- %c\n"
 
 #: support/getopt.c:777
+#, c-format
 msgid "%s: invalid option -- %c\n"
 msgstr "%s: 無效的選項 -- %c\n"
 
 #. 1003.2 specifies the format of this message.
 #: support/getopt.c:807 support/getopt.c:937
+#, c-format
 msgid "%s: option requires an argument -- %c\n"
 msgstr "%s: 此選項需要有一個參數 -- %c\n"
 
 #: support/getopt.c:854
+#, c-format
 msgid "%s: option `-W %s' is ambiguous\n"
 msgstr "%s: 選項 `-W %s' 的意義不明\n"
 
 #: support/getopt.c:872
+#, c-format
 msgid "%s: option `-W %s' doesn't allow an argument\n"
 msgstr "%s: 選項 `-W %s' 不允許\有參數存在\n"
 
@@ -1606,45 +1633,64 @@ msgstr "顯示此一說明訊息"
 msgid "Display brief usage message"
 msgstr "顯示簡短的使用說明"
 
-#: test-gnome/testgnome.c:287
-msgid "Guru-in-a-dialog test"
-msgstr "Guru-in-a-dialog 測試"
-
 #. Pixmap
-#: test-gnome/testgnome.c:664
+#: test-gnome/testgnome.c:792
 msgid "Default Pixmap"
 msgstr "預設的圖形"
 
-#: test-gnome/testgnome.c:672 test-gnome/testgnome.c:713
-#: test-gnome/testgnome.c:738
+#: test-gnome/testgnome.c:800 test-gnome/testgnome.c:841
+#: test-gnome/testgnome.c:866
 msgid "If you choose a font it will appear here"
 msgstr "顯示您選取的字型 (font)"
 
 #. Font_Info
-#: test-gnome/testgnome.c:679
+#: test-gnome/testgnome.c:807
 msgid "Font Info"
 msgstr "字型資訊"
 
-#: test-gnome/testgnome.c:689
+#: test-gnome/testgnome.c:817
 msgid "Use Font in button with size"
 msgstr "在按鈕中使用的字型大小"
 
-#: test-gnome/testgnome.c:696
+#: test-gnome/testgnome.c:824
 msgid "Show font size"
 msgstr "顯示字型大小"
 
-#: test-gnome/testgnome.c:732
+#: test-gnome/testgnome.c:860
 msgid "This is an hbox with pixmap and text"
 msgstr "這是一個有圖形有文字的 box"
 
-#: test-gnome/testgnome.c:915
+#: test-gnome/testgnome.c:1070
 msgid "The user chose Yes/OK with data:\n"
 msgstr "使用者選擇 Yes/OK 的資料:\n"
 
-#: test-gnome/testgnome.c:919
+#: test-gnome/testgnome.c:1074
 msgid "The user chose No/Cancel with data:\n"
 msgstr "使用者選擇 No/Cancel 的資料:\n"
 
-#: test-gnome/testgnome.c:930
+#: test-gnome/testgnome.c:1085
 msgid "Weird number in reply callback"
 msgstr "Weird number in reply callback"
+
+#~ msgid ""
+#~ "No, and ignore\n"
+#~ "future SIGSEGV's"
+#~ msgstr ""
+#~ "不, 並且忽略往後\n"
+#~ "遇到的 SIGSEGV 信號"
+
+#~ msgid ""
+#~ "Application \"%s\" has a bug.\n"
+#~ "SIGSEGV received at PC %#lx in PID %d.\n"
+#~ "\n"
+#~ "\n"
+#~ "Do you want to exit this program?"
+#~ msgstr ""
+#~ "應用程式 \"%s\" 有臭蟲。\n"
+#~ "收到 SIGSEGV 信號 (PC %#lx, PID %d)。\n"
+#~ "\n"
+#~ "\n"
+#~ "您要結束這個程式嗎？"
+
+#~ msgid "Guru-in-a-dialog test"
+#~ msgstr "Guru-in-a-dialog 測試"

@@ -49,7 +49,7 @@ sgml:
 	&& gtkdoc-mkdb --module=$(DOC_MODULE) --source-dir=$(DOC_SOURCE_DIR)
 
 html:
-	test -d $(srcdir)/html || mkdir $(srcdir)/html
+	-test -d $(srcdir)/html || mkdir $(srcdir)/html
 	-cd $(srcdir)/html && gtkdoc-mkhtml $(DOC_MODULE) ../gnorba-docs.sgml
 	-cd $(srcdir)/html && perl -pi -e 's,libgnorba\.html,index.html,gi' *.html
 
@@ -76,9 +76,9 @@ install-data-local:
 	fi)
 
 dist-hook:
-	mkdir $(distdir)/html
-	mkdir $(distdir)/sgml
-	mkdir $(distdir)/tmpl
+	-mkdir $(distdir)/html
+	-mkdir $(distdir)/sgml
+	-mkdir $(distdir)/tmpl
 	-cp $(srcdir)/html/*.html $(srcdir)/html/*.css $(distdir)/html
 	-cp $(srcdir)/tmpl/*.sgml $(distdir)/tmpl
 	-cp $(srcdir)/sgml/*.sgml $(distdir)/sgml

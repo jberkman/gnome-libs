@@ -11,7 +11,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-libs 1.0.11\n"
-"POT-Creation-Date: 1999-06-22 13:06-0500\n"
+"POT-Creation-Date: 1999-07-19 15:58-0500\n"
 "PO-Revision-Date: 1999-03-18 23:11+0100\n"
 "Last-Translator: Lorint Hendschel <LorintHendschel@skynet.be>\n"
 "Language-Team: walon <linux-wa@chanae.alphanet.ch>\n"
@@ -68,7 +68,7 @@ msgstr "Fitchî"
 
 #: gnome-hello/gnome-hello-2-i18n.c:85
 #: gnome-hello/gnome-hello-3-parse-args.c:85 gnome-hello/gnome-hello-4-SM.c:78
-#: gnome-hello/gnome-hello-7-mdi.c:484 libgnomeui/gnome-stock.c:787
+#: gnome-hello/gnome-hello-7-mdi.c:484 libgnomeui/gnome-stock.c:833
 #: libgnomeui/stock_demo.c:290
 msgid "Help"
 msgstr "Aide"
@@ -154,21 +154,21 @@ msgid "Children/"
 msgstr "Èfants/"
 
 #: gnome-hello/gnome-hello.c:40
-msgid "<control>E"
-msgstr "<control>E"
-
-#: gnome-hello/gnome-hello.c:40
 msgid "File/Exit"
 msgstr "Fitchî/Moussî foû"
 
-#: gnome-hello/gnome-hello.c:42
-msgid "<control>A"
-msgstr "<control>A"
+#: gnome-hello/gnome-hello.c:40
+msgid "<control>E"
+msgstr "<control>E"
 
 #. The '...' end indicate that the options open a dialog
 #: gnome-hello/gnome-hello.c:42
 msgid "Help/About..."
 msgstr "Aide/Å dfait..."
+
+#: gnome-hello/gnome-hello.c:42
+msgid "<control>A"
+msgstr "<control>A"
 
 #: gnome-hello/gnome-hello.c:208
 #, c-format
@@ -198,25 +198,25 @@ msgstr "Bondjoû Gnome %s.\n"
 msgid "Options error\n"
 msgstr "Aroke avou les tchûzes\n"
 
-#: libgnome/gconfigger.c:32 libgnome/gconfigger.c:33
-msgid "CONFIG-PATH"
-msgstr "TCHIMIN-APONT"
+#: libgnome/gconfigger.c:32
+msgid "get"
+msgstr "rapexhî"
 
 #: libgnome/gconfigger.c:32
 msgid "Get config entry"
 msgstr "Rapexhî l' intreye d' apontiaedje"
 
-#: libgnome/gconfigger.c:32
-msgid "get"
-msgstr "rapexhî"
-
-#: libgnome/gconfigger.c:33
-msgid "Set config entry"
-msgstr "Mete l' intreye d' apontiaedje"
+#: libgnome/gconfigger.c:32 libgnome/gconfigger.c:33
+msgid "CONFIG-PATH"
+msgstr "TCHIMIN-APONT"
 
 #: libgnome/gconfigger.c:33
 msgid "set"
 msgstr "Mete"
+
+#: libgnome/gconfigger.c:33
+msgid "Set config entry"
+msgstr "Mete l' intreye d' apontiaedje"
 
 #: libgnome/gnome-popt.c:90
 #, c-format
@@ -247,19 +247,19 @@ msgstr "LODJEU:PORT"
 msgid "GNOME Options"
 msgstr "Tchûzes di GNOME"
 
-#: libgnomeui/gnome-about.c:188
+#: libgnomeui/gnome-about.c:187
 msgid "Author:"
 msgstr "Auteur:"
 
-#: libgnomeui/gnome-about.c:190 libgnomeui/gnome-about.c:192
+#: libgnomeui/gnome-about.c:189 libgnomeui/gnome-about.c:191
 msgid "Authors:"
 msgstr "Auteurs:"
 
-#: libgnomeui/gnome-about.c:354
+#: libgnomeui/gnome-about.c:353
 msgid "Authors: "
 msgstr "Auteurs: "
 
-#: libgnomeui/gnome-about.c:596 libgnomeui/stock_demo.c:282
+#: libgnomeui/gnome-about.c:591 libgnomeui/stock_demo.c:282
 #: libgnomeui/winhints_demo.c:257
 msgid "About"
 msgstr "Å dfait"
@@ -328,23 +328,23 @@ msgstr "_Aide"
 msgid "_Windows/"
 msgstr "_Purneas/"
 
-#: libgnomeui/gnome-app-helper.c:105
-msgid "Open a file"
-msgstr "Drovi on fitchî"
-
 #. Open
 #: libgnomeui/gnome-app-helper.c:105
 msgid "_Open..."
 msgstr "_Drovi..."
 
-#: libgnomeui/gnome-app-helper.c:110
-msgid "Save the current file"
-msgstr "Schaper li fitchî do moumint"
+#: libgnomeui/gnome-app-helper.c:105
+msgid "Open a file"
+msgstr "Drovi on fitchî"
 
 #. Save
 #: libgnomeui/gnome-app-helper.c:110
 msgid "_Save"
 msgstr "_Schaper"
+
+#: libgnomeui/gnome-app-helper.c:110
+msgid "Save the current file"
+msgstr "Schaper li fitchî do moumint"
 
 #. Save As
 #: libgnomeui/gnome-app-helper.c:115
@@ -364,14 +364,14 @@ msgstr "_Rivni èn erî"
 msgid "Revert to a saved version of the file"
 msgstr "Rivni a ene modeye dedja schapeye do fitchî"
 
-#: libgnomeui/gnome-app-helper.c:127
-msgid "Print the current file"
-msgstr "Rexhe li fitchî do moumint"
-
 #. Print
 #: libgnomeui/gnome-app-helper.c:127
 msgid "_Print"
 msgstr "_Rexhe"
+
+#: libgnomeui/gnome-app-helper.c:127
+msgid "Print the current file"
+msgstr "Rexhe li fitchî do moumint"
 
 #. Print Setup
 #: libgnomeui/gnome-app-helper.c:132
@@ -382,14 +382,14 @@ msgstr "A_pontiaedje del Scrirece..."
 msgid "Setup the page settings for your current printer"
 msgstr "Apontyî li pådje po vosse sicrîrece do moumint"
 
-#: libgnomeui/gnome-app-helper.c:138
-msgid "Close the current file"
-msgstr "Cloyu ci fitchî chal"
-
 #. Close
 #: libgnomeui/gnome-app-helper.c:138
 msgid "_Close"
 msgstr "_Cloyu"
+
+#: libgnomeui/gnome-app-helper.c:138
+msgid "Close the current file"
+msgstr "Cloyu ci fitchî chal"
 
 #. Exit
 #: libgnomeui/gnome-app-helper.c:143
@@ -412,24 +412,24 @@ msgstr "Cô_per"
 msgid "Cut the selection"
 msgstr "Côper li tchûze"
 
-#: libgnomeui/gnome-app-helper.c:157
-msgid "Copy the selection"
-msgstr "Copyî li tchûze"
-
 #. 10
 #. Copy
 #: libgnomeui/gnome-app-helper.c:157 libgnomeui/gnome-popup-help.c:59
 msgid "_Copy"
 msgstr "_Copyî"
 
-#: libgnomeui/gnome-app-helper.c:162
-msgid "Paste the clipboard"
-msgstr "Aclapler çu k' i gn a è tchapea emacralé"
+#: libgnomeui/gnome-app-helper.c:157
+msgid "Copy the selection"
+msgstr "Copyî li tchûze"
 
 #. Paste
 #: libgnomeui/gnome-app-helper.c:162 libgnomeui/gnome-popup-help.c:61
 msgid "_Paste"
 msgstr "C_laper"
+
+#: libgnomeui/gnome-app-helper.c:162
+msgid "Paste the clipboard"
+msgstr "Aclapler çu k' i gn a è tchapea emacralé"
 
 #. Clear
 #: libgnomeui/gnome-app-helper.c:167
@@ -440,32 +440,32 @@ msgstr "_Netyî"
 msgid "Clear the selection"
 msgstr "Netyî li tchûze"
 
-#: libgnomeui/gnome-app-helper.c:172
-msgid "Undo the last action"
-msgstr "Disfé li dierinne bouye"
-
 #. Undo
 #: libgnomeui/gnome-app-helper.c:172
 msgid "_Undo"
 msgstr "_Disfé"
 
-#: libgnomeui/gnome-app-helper.c:177
-msgid "Redo the undone action"
-msgstr "Rifé l' ovraedje disfé"
+#: libgnomeui/gnome-app-helper.c:172
+msgid "Undo the last action"
+msgstr "Disfé li dierinne bouye"
 
 #. Redo
 #: libgnomeui/gnome-app-helper.c:177
 msgid "_Redo"
 msgstr "_Rifé"
 
-#: libgnomeui/gnome-app-helper.c:182
-msgid "Search for a string"
-msgstr "Cwerî ene tchinne"
+#: libgnomeui/gnome-app-helper.c:177
+msgid "Redo the undone action"
+msgstr "Rifé l' ovraedje disfé"
 
 #. Find
 #: libgnomeui/gnome-app-helper.c:182
 msgid "_Find..."
 msgstr "_Trover..."
+
+#: libgnomeui/gnome-app-helper.c:182
+msgid "Search for a string"
+msgstr "Cwerî ene tchinne"
 
 #. Find Again
 #: libgnomeui/gnome-app-helper.c:187
@@ -476,14 +476,14 @@ msgstr "Trover eco on _Côp..."
 msgid "Search again for the same string"
 msgstr "Cwerî co on côp li minme tchinne"
 
-#: libgnomeui/gnome-app-helper.c:193
-msgid "Replace a string"
-msgstr "Mete ene tchinne el plaece d' ene ôte"
-
 #. Replace
 #: libgnomeui/gnome-app-helper.c:193
 msgid "_Replace..."
 msgstr "_Mete el plaece..."
+
+#: libgnomeui/gnome-app-helper.c:193
+msgid "Replace a string"
+msgstr "Mete ene tchinne el plaece d' ene ôte"
 
 #. Properties
 #: libgnomeui/gnome-app-helper.c:198
@@ -654,209 +654,209 @@ msgstr " - I va? (oyi ou neni)"
 msgid "Progress"
 msgstr "Avançmint"
 
-#: libgnomeui/gnome-calculator.c:941 libgnomeui/gnome-calculator.c:1098
+#: libgnomeui/gnome-calculator.c:917 libgnomeui/gnome-calculator.c:1061
 msgid "DEG"
 msgstr "DEG"
 
-#: libgnomeui/gnome-calculator.c:943
+#: libgnomeui/gnome-calculator.c:919
 msgid "RAD"
 msgstr "RAD"
 
-#: libgnomeui/gnome-calculator.c:945
+#: libgnomeui/gnome-calculator.c:921
 msgid "GRAD"
 msgstr "GRAD"
 
-#: libgnomeui/gnome-calculator.c:1088
+#: libgnomeui/gnome-calculator.c:1051
 msgid "1/x"
 msgstr "1/x"
 
-#: libgnomeui/gnome-calculator.c:1089
+#: libgnomeui/gnome-calculator.c:1052
 msgid "x^2"
 msgstr "x^2"
 
-#: libgnomeui/gnome-calculator.c:1090
+#: libgnomeui/gnome-calculator.c:1053
 msgid "SQRT"
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1091
+#: libgnomeui/gnome-calculator.c:1054
 msgid "CE/C"
 msgstr "Netyî"
 
-#: libgnomeui/gnome-calculator.c:1092
+#: libgnomeui/gnome-calculator.c:1055
 msgid "AC"
 msgstr "Vûdî"
 
 #. inverse button
-#: libgnomeui/gnome-calculator.c:1095
+#: libgnomeui/gnome-calculator.c:1058
 msgid "sin"
 msgstr "sin"
 
-#: libgnomeui/gnome-calculator.c:1096
+#: libgnomeui/gnome-calculator.c:1059
 msgid "cos"
 msgstr "cos"
 
-#: libgnomeui/gnome-calculator.c:1097
+#: libgnomeui/gnome-calculator.c:1060
 msgid "tan"
 msgstr "tan"
 
-#: libgnomeui/gnome-calculator.c:1100
+#: libgnomeui/gnome-calculator.c:1063
 msgid "e"
 msgstr "e"
 
-#: libgnomeui/gnome-calculator.c:1101
+#: libgnomeui/gnome-calculator.c:1064
 msgid "EE"
 msgstr "EE"
 
-#: libgnomeui/gnome-calculator.c:1102
+#: libgnomeui/gnome-calculator.c:1065
 msgid "log"
 msgstr "log"
 
-#: libgnomeui/gnome-calculator.c:1103
+#: libgnomeui/gnome-calculator.c:1066
 msgid "ln"
 msgstr "ln"
 
-#: libgnomeui/gnome-calculator.c:1104
+#: libgnomeui/gnome-calculator.c:1067
 msgid "x^y"
 msgstr "x^y"
 
-#: libgnomeui/gnome-calculator.c:1106
+#: libgnomeui/gnome-calculator.c:1069
 msgid "PI"
 msgstr "PI"
 
-#: libgnomeui/gnome-calculator.c:1107
+#: libgnomeui/gnome-calculator.c:1070
 msgid "x!"
 msgstr "x!"
 
-#: libgnomeui/gnome-calculator.c:1108
+#: libgnomeui/gnome-calculator.c:1071
 msgid "("
 msgstr "("
 
-#: libgnomeui/gnome-calculator.c:1109
+#: libgnomeui/gnome-calculator.c:1072
 msgid ")"
 msgstr ")"
 
-#: libgnomeui/gnome-calculator.c:1110
+#: libgnomeui/gnome-calculator.c:1073
 msgid "/"
 msgstr "÷"
 
-#: libgnomeui/gnome-calculator.c:1112
+#: libgnomeui/gnome-calculator.c:1075
 msgid "STO"
 msgstr "MEM"
 
-#: libgnomeui/gnome-calculator.c:1113
+#: libgnomeui/gnome-calculator.c:1076
 msgid "7"
 msgstr "7"
 
-#: libgnomeui/gnome-calculator.c:1114
+#: libgnomeui/gnome-calculator.c:1077
 msgid "8"
 msgstr "8"
 
-#: libgnomeui/gnome-calculator.c:1115
+#: libgnomeui/gnome-calculator.c:1078
 msgid "9"
 msgstr "9"
 
-#: libgnomeui/gnome-calculator.c:1116
+#: libgnomeui/gnome-calculator.c:1079
 msgid "*"
 msgstr "×"
 
-#: libgnomeui/gnome-calculator.c:1118
+#: libgnomeui/gnome-calculator.c:1081
 msgid "RCL"
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1119
+#: libgnomeui/gnome-calculator.c:1082
 msgid "4"
 msgstr "4"
 
-#: libgnomeui/gnome-calculator.c:1120
+#: libgnomeui/gnome-calculator.c:1083
 msgid "5"
 msgstr "5"
 
-#: libgnomeui/gnome-calculator.c:1121
+#: libgnomeui/gnome-calculator.c:1084
 msgid "6"
 msgstr "6"
 
-#: libgnomeui/gnome-calculator.c:1122
+#: libgnomeui/gnome-calculator.c:1085
 msgid "-"
 msgstr "-"
 
-#: libgnomeui/gnome-calculator.c:1124
+#: libgnomeui/gnome-calculator.c:1087
 msgid "SUM"
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1125
+#: libgnomeui/gnome-calculator.c:1088
 msgid "1"
 msgstr "1"
 
-#: libgnomeui/gnome-calculator.c:1126
+#: libgnomeui/gnome-calculator.c:1089
 msgid "2"
 msgstr "2"
 
-#: libgnomeui/gnome-calculator.c:1127
+#: libgnomeui/gnome-calculator.c:1090
 msgid "3"
 msgstr "3"
 
-#: libgnomeui/gnome-calculator.c:1128
+#: libgnomeui/gnome-calculator.c:1091
 msgid "+"
 msgstr "+"
 
-#: libgnomeui/gnome-calculator.c:1130
+#: libgnomeui/gnome-calculator.c:1093
 msgid "EXC"
 msgstr ""
 
-#: libgnomeui/gnome-calculator.c:1131
+#: libgnomeui/gnome-calculator.c:1094
 msgid "0"
 msgstr "0"
 
-#: libgnomeui/gnome-calculator.c:1132
+#: libgnomeui/gnome-calculator.c:1095
 msgid "."
 msgstr ","
 
-#: libgnomeui/gnome-calculator.c:1133
+#: libgnomeui/gnome-calculator.c:1096
 msgid "+/-"
 msgstr "+/-"
 
-#: libgnomeui/gnome-calculator.c:1134
+#: libgnomeui/gnome-calculator.c:1097
 msgid "="
 msgstr "="
 
-#: libgnomeui/gnome-calculator.c:1223
+#: libgnomeui/gnome-calculator.c:1186
 msgid "INV"
 msgstr "INV"
-
-#: libgnomeui/gnome-client.c:832 libgnorba/goad-browser.c:27
-msgid "ID"
-msgstr "ID"
 
 #: libgnomeui/gnome-client.c:832
 msgid "Specify session management ID"
 msgstr "Dîre l' ID pol manaedjmint del session"
 
-#: libgnomeui/gnome-client.c:834
-msgid "PREFIX"
-msgstr "BETCHETE"
+#: libgnomeui/gnome-client.c:832 libgnorba/goad-browser.c:27
+msgid "ID"
+msgstr "ID"
 
 #: libgnomeui/gnome-client.c:834
 msgid "Specify prefix of saved configuration"
 msgstr "Dîre li betchete di l' apontiaedje schapé"
+
+#: libgnomeui/gnome-client.c:834
+msgid "PREFIX"
+msgstr "BETCHETE"
 
 #: libgnomeui/gnome-client.c:836
 msgid "Disable connection to session manager"
 msgstr "Esocter l' adjondaedje å manaedjeu di sessions"
 
 #. Register commandline options.
-#: libgnomeui/gnome-client.c:964
+#: libgnomeui/gnome-client.c:965
 msgid "Session management options"
 msgstr "Tchûzes pol manaedjmint des sessions"
 
-#: libgnomeui/gnome-client.c:2255
+#: libgnomeui/gnome-client.c:2348
 msgid "Cancel Logout"
 msgstr "Rinoncî a moussî foû"
 
-#: libgnomeui/gnome-client.c:2497
+#: libgnomeui/gnome-client.c:2615
 msgid "Really log out?"
 msgstr "Voloz-ve moussî foû po do bon?"
 
-#: libgnomeui/gnome-client.c:2506
+#: libgnomeui/gnome-client.c:2624
 msgid "Ask next time"
 msgstr "Dimander çoula li feye ki vént"
 
@@ -905,11 +905,11 @@ msgstr "Sayîz çouci dvant:"
 msgid "Documentation:"
 msgstr "Documintåcion:"
 
-#: libgnomeui/gnome-dentry-edit.c:331
+#: libgnomeui/gnome-dentry-edit.c:351
 msgid "Basic"
 msgstr "Po les apurdisses"
 
-#: libgnomeui/gnome-dentry-edit.c:335
+#: libgnomeui/gnome-dentry-edit.c:355
 msgid "Advanced"
 msgstr "Po les spepieus"
 
@@ -927,7 +927,7 @@ msgstr "Foyter..."
 msgid "Pick a Font"
 msgstr "Tchwezi one Fonte"
 
-#: libgnomeui/gnome-font-picker.c:705 libgnomeui/gnome-stock.c:792
+#: libgnomeui/gnome-font-picker.c:705 libgnomeui/gnome-stock.c:838
 msgid "Font"
 msgstr "Fonte"
 
@@ -947,26 +947,26 @@ msgstr "Vey divant"
 msgid "Loading Icons..."
 msgstr "Dji tchedje les imådjetes..."
 
+#: libgnomeui/gnome-init.c:153
+msgid "Gdk debugging flags to set"
+msgstr "Drapeas di disbugaedje di Gdk a mete"
+
 #: libgnomeui/gnome-init.c:153 libgnomeui/gnome-init.c:155
 #: libgnomeui/gnome-init.c:175 libgnomeui/gnome-init.c:177
 msgid "FLAGS"
 msgstr "DRAPEAS"
-
-#: libgnomeui/gnome-init.c:153
-msgid "Gdk debugging flags to set"
-msgstr "Drapeas di disbugaedje di Gdk a mete"
 
 #: libgnomeui/gnome-init.c:155
 msgid "Gdk debugging flags to unset"
 msgstr "Drapeas di disbugaedje di Gdk a dismete"
 
 #: libgnomeui/gnome-init.c:157
-msgid "DISPLAY"
-msgstr "HÅYNAEDJE"
-
-#: libgnomeui/gnome-init.c:157
 msgid "X display to use"
 msgstr "Håynaedje X a eployî"
+
+#: libgnomeui/gnome-init.c:157
+msgid "DISPLAY"
+msgstr "HÅYNAEDJE"
 
 #: libgnomeui/gnome-init.c:159
 msgid "Make X calls synchronous"
@@ -977,20 +977,20 @@ msgid "Don't use X shared memory extension"
 msgstr "Ni nén eployî li stinduwe pårteye memwere di X"
 
 #: libgnomeui/gnome-init.c:163
-msgid "NAME"
-msgstr "NO"
-
-#: libgnomeui/gnome-init.c:163
 msgid "Program name as used by the window manager"
 msgstr "No do programe tel ki li manaedjeu di purnea s' endè sievrè"
 
-#: libgnomeui/gnome-init.c:165
-msgid "CLASS"
-msgstr "CLASSE"
+#: libgnomeui/gnome-init.c:163
+msgid "NAME"
+msgstr "NO"
 
 #: libgnomeui/gnome-init.c:165
 msgid "Program class as used by the window manager"
 msgstr "Classe do programe tel ki li manaedjeu di purnea s' endè sievrè"
+
+#: libgnomeui/gnome-init.c:165
+msgid "CLASS"
+msgstr "CLASSE"
 
 #: libgnomeui/gnome-init.c:167
 msgid "HOST"
@@ -1044,11 +1044,11 @@ msgstr "Kesse"
 msgid "Message"
 msgstr "Messaedje"
 
-#: libgnomeui/gnome-number-entry.c:143
+#: libgnomeui/gnome-number-entry.c:151
 msgid "Calculator"
 msgstr "Carculete"
 
-#: libgnomeui/gnome-number-entry.c:195
+#: libgnomeui/gnome-number-entry.c:203
 msgid "Calculator..."
 msgstr "Carculete..."
 
@@ -1103,11 +1103,11 @@ msgstr ""
 msgid "Confirm"
 msgstr "Acertinez"
 
-#: libgnomeui/gnome-spell.c:256 libgnomeui/gnome-stock.c:781
+#: libgnomeui/gnome-spell.c:256 libgnomeui/gnome-stock.c:827
 msgid "OK"
 msgstr "I Va"
 
-#: libgnomeui/gnome-spell.c:263 libgnomeui/gnome-stock.c:783
+#: libgnomeui/gnome-spell.c:263 libgnomeui/gnome-stock.c:829
 msgid "Cancel"
 msgstr "Rinoncî"
 
@@ -1224,115 +1224,101 @@ msgstr "Waitî li scrîjhaedje"
 msgid "Configure"
 msgstr "Apontyî"
 
-#: libgnomeui/gnome-stock.c:769
+#: libgnomeui/gnome-stock.c:815
 msgid "Add"
 msgstr "Radjouter"
 
-#: libgnomeui/gnome-stock.c:770
+#: libgnomeui/gnome-stock.c:816
 msgid "Clear"
 msgstr "Netyî"
 
-#: libgnomeui/gnome-stock.c:771
+#: libgnomeui/gnome-stock.c:817
 msgid "Select Color"
 msgstr "Tchwezi ene coleur"
 
-#: libgnomeui/gnome-stock.c:772
+#: libgnomeui/gnome-stock.c:818
 msgid "Remove"
 msgstr "Bodjî"
 
-#: libgnomeui/gnome-stock.c:773
+#: libgnomeui/gnome-stock.c:819
 msgid "Table Borders"
 msgstr "Boirds del tåve"
 
-#: libgnomeui/gnome-stock.c:774
+#: libgnomeui/gnome-stock.c:820
 msgid "Table Fill"
 msgstr "Rimplixhaedje del tåve"
 
-#: libgnomeui/gnome-stock.c:775
+#: libgnomeui/gnome-stock.c:821
 msgid "Bulleted List"
 msgstr "Djîveye avou des ponts"
 
-#: libgnomeui/gnome-stock.c:776
+#: libgnomeui/gnome-stock.c:822
 msgid "Numbered List"
 msgstr "Djîveye avou des limerôs"
 
-#: libgnomeui/gnome-stock.c:777
+#: libgnomeui/gnome-stock.c:823
 msgid "Indent"
 msgstr "Ritrait"
 
-#: libgnomeui/gnome-stock.c:778
+#: libgnomeui/gnome-stock.c:824
 msgid "Un-Indent"
 msgstr "Disfé li Ritrait"
 
-#: libgnomeui/gnome-stock.c:782
+#: libgnomeui/gnome-stock.c:828
 msgid "Apply"
 msgstr "Mete èn oûve"
 
-#: libgnomeui/gnome-stock.c:784 libgnomeui/stock_demo.c:144
+#: libgnomeui/gnome-stock.c:830 libgnomeui/stock_demo.c:144
 msgid "Close"
 msgstr "Cloyu"
 
-#: libgnomeui/gnome-stock.c:785
+#: libgnomeui/gnome-stock.c:831
 msgid "Yes"
 msgstr "Oyi"
 
-#: libgnomeui/gnome-stock.c:786
+#: libgnomeui/gnome-stock.c:832
 msgid "No"
 msgstr "Neni"
 
-#: libgnomeui/gnome-stock.c:788
+#: libgnomeui/gnome-stock.c:834
 msgid "Next"
 msgstr "Shûvant"
 
-#: libgnomeui/gnome-stock.c:789
+#: libgnomeui/gnome-stock.c:835
 msgid "Prev"
 msgstr "Divant"
 
-#: libgnomeui/gnome-stock.c:790
+#: libgnomeui/gnome-stock.c:836
 msgid "Up"
 msgstr "Copete"
 
-#: libgnomeui/gnome-stock.c:791
+#: libgnomeui/gnome-stock.c:837
 msgid "Down"
 msgstr "Bas"
 
-#: libgnomeui/gnome-stock.c:1814
+#: libgnomeui/gnome-stock.c:1881
 msgid "Menu Accelerator Keys"
 msgstr "Tapes po fé pus rade ene bouye è menu"
 
-#: libgnomeui/gnome-stock.c:1816
+#: libgnomeui/gnome-stock.c:1883
 msgid "Global"
 msgstr "Globå"
 
-#: libgnomeui/gnome-stock.c:1818
+#: libgnomeui/gnome-stock.c:1885
 msgid "Menu Item"
 msgstr "Elemint è menu"
 
-#: libgnomeui/gnome-stock.c:1819
+#: libgnomeui/gnome-stock.c:1886
 msgid "Accelerator"
 msgstr "Rascoûrti"
 
-#: libgnomeui/gnome_segv.c:68
-msgid ""
-"No, and ignore\n"
-"future SIGSEGV's"
-msgstr ""
-"Neni. Å dzeu do martchî, nos pasrans\n"
-"hute des SIGSEV a vni"
-
-#: libgnomeui/gnome_segv.c:79
+#: libgnomeui/gnome_segv.c:43
 #, c-format
 msgid ""
-"Application \"%s\" has a bug.\n"
-"SIGSEGV received at PC %#lx in PID %d.\n"
-"\n"
-"\n"
-"Do you want to exit this program?"
+"Application \"%s\" (process %d) has crashed due to a bug in the software.\n"
+"(%s)\n"
+"For more information, see http://www.gnome.org/application_crashed.shtml"
 msgstr ""
-"Li programe \"%s\" a on bug.\n"
-"Dj' a rshû on  SIGSEV a PC %#lx è PID %d.\n"
-"\n"
-"Voloz-ve moussî foû do programe?"
 
 #: libgnomeui/stock_demo.c:112
 msgid "New..."
@@ -1403,11 +1389,11 @@ msgid "Edit"
 msgstr "Candjî"
 
 #: libgnomeui/winhints_demo.c:47
-msgid "winhints-test"
+msgid "wmhints-test"
 msgstr "saye des winhints"
 
 #: libgnomeui/winhints_demo.c:47
-msgid "wmhints-test"
+msgid "winhints-test"
 msgstr "saye des winhints"
 
 #: libgnomeui/winhints_demo.c:72
@@ -1530,12 +1516,12 @@ msgstr ""
 "Simpe programe po sayî cmint-ce ki les WIN_HINTS rotèt. Mins eto po sayî les "
 "foncsions gnome_win_hints èt vey s' i gn a des arokes :)"
 
-#: libgnorba/gnome-name-server.c:230
+#: libgnorba/gnome-name-server.c:229
 #, c-format
 msgid "Creating '/GNOME' context %s %d"
 msgstr "Dji fwai on cotoû '/Gnome' %s %d"
 
-#: libgnorba/gnome-name-server.c:247
+#: libgnorba/gnome-name-server.c:246
 #, c-format
 msgid "Creating '/GNOME/Servers' context %s %d"
 msgstr "Dji fwai on cotoû '/Gnome/Servers' %s %d"
@@ -1545,12 +1531,12 @@ msgid "GOAD ID of the server to activate"
 msgstr "GOAD ID do sierveu a mete èn alaedje"
 
 #: libgnorba/goad-browser.c:28
-msgid "REPO-ID"
-msgstr "REPO-ID"
-
-#: libgnorba/goad-browser.c:28
 msgid "Repository ID of the server to activate"
 msgstr "Repository ID do sierveu a mete èn alaedje"
+
+#: libgnorba/goad-browser.c:28
+msgid "REPO-ID"
+msgstr "REPO-ID"
 
 #: libgnorba/goad-browser.c:171
 msgid ""
@@ -1562,27 +1548,27 @@ msgstr ""
 "nou siervice d' astalé ou ki dji n' conoxhe nén li tchmin po les trover.\n"
 "Dins tos les cas, vos dvoz waitî si Gnome e-st astalé comufåt."
 
-#: libgnorba/goad.c:1283
+#: libgnorba/goad.c:1279
 msgid "(Internal use only) GOAD server ID to activate"
 msgstr "(Divintrinnmint seulmint) ID do sierveu GOAD a mete èn alaedje"
 
-#: libgnorba/loadshlib.c:18
-msgid "GOAD_ID"
-msgstr "GOAD_ID"
-
-#: libgnorba/loadshlib.c:18
+#: libgnorba/loadshlib.c:11
 msgid "ID under which GOAD knows this server"
 msgstr "ID ki GOAD conoxhe ci sierveu ci"
 
-#: libgnorba/loadshlib.c:19
-msgid "REPO_ID"
-msgstr "REPO_ID"
+#: libgnorba/loadshlib.c:11
+msgid "GOAD_ID"
+msgstr "GOAD_ID"
 
-#: libgnorba/loadshlib.c:19
+#: libgnorba/loadshlib.c:12
 msgid "Repository ID under which GOAD knows this server"
 msgstr "Repository ID ki li GOAD conoxhe ci sierveu"
 
-#: libgnorba/orbitns.c:296
+#: libgnorba/loadshlib.c:12
+msgid "REPO_ID"
+msgstr "REPO_ID"
+
+#: libgnorba/orbitns.c:295
 msgid "Could not get name service!"
 msgstr "Dji n' a nén parvinu a rapexhî li no do siervice!"
 
@@ -1657,45 +1643,63 @@ msgstr "Mostrer ci messaedje d' aidance"
 msgid "Display brief usage message"
 msgstr "Mostrer on court messaedje d' ûzaedje"
 
-#: test-gnome/testgnome.c:287
-msgid "Guru-in-a-dialog test"
-msgstr "Saye Guru-in-a-dialog"
-
 #. Pixmap
-#: test-gnome/testgnome.c:664
+#: test-gnome/testgnome.c:792
 msgid "Default Pixmap"
 msgstr "Pixmap tchwezi por vos"
 
-#: test-gnome/testgnome.c:672 test-gnome/testgnome.c:713
-#: test-gnome/testgnome.c:738
+#: test-gnome/testgnome.c:800 test-gnome/testgnome.c:841
+#: test-gnome/testgnome.c:866
 msgid "If you choose a font it will appear here"
 msgstr "Si vos tchwezixhoz ene fonte, elle aparetrè droci"
 
 #. Font_Info
-#: test-gnome/testgnome.c:679
+#: test-gnome/testgnome.c:807
 msgid "Font Info"
 msgstr "Informåcions sol fonte"
 
-#: test-gnome/testgnome.c:689
+#: test-gnome/testgnome.c:817
 msgid "Use Font in button with size"
 msgstr "Eployî li fonte è boton avou li grandeu"
 
-#: test-gnome/testgnome.c:696
+#: test-gnome/testgnome.c:824
 msgid "Show font size"
 msgstr "Mostrer li grandeu del fonte"
 
-#: test-gnome/testgnome.c:732
+#: test-gnome/testgnome.c:860
 msgid "This is an hbox with pixmap and text"
 msgstr "Çouci, c' e-st èn hbox avou on pixmap èt do scrît"
 
-#: test-gnome/testgnome.c:915
+#: test-gnome/testgnome.c:1070
 msgid "The user chose Yes/OK with data:\n"
 msgstr "L' ûzeu tchwezi Oyi/I va avou les doneyes:\n"
 
-#: test-gnome/testgnome.c:919
+#: test-gnome/testgnome.c:1074
 msgid "The user chose No/Cancel with data:\n"
 msgstr "L' ûzeu tchwezi Neni/Rinoncî avou les doneyes:\n"
 
-#: test-gnome/testgnome.c:930
+#: test-gnome/testgnome.c:1085
 msgid "Weird number in reply callback"
 msgstr "Drole di nombe el response å callback"
+
+#~ msgid ""
+#~ "No, and ignore\n"
+#~ "future SIGSEGV's"
+#~ msgstr ""
+#~ "Neni. Å dzeu do martchî, nos pasrans\n"
+#~ "hute des SIGSEV a vni"
+
+#~ msgid ""
+#~ "Application \"%s\" has a bug.\n"
+#~ "SIGSEGV received at PC %#lx in PID %d.\n"
+#~ "\n"
+#~ "\n"
+#~ "Do you want to exit this program?"
+#~ msgstr ""
+#~ "Li programe \"%s\" a on bug.\n"
+#~ "Dj' a rshû on  SIGSEV a PC %#lx è PID %d.\n"
+#~ "\n"
+#~ "Voloz-ve moussî foû do programe?"
+
+#~ msgid "Guru-in-a-dialog test"
+#~ msgstr "Saye Guru-in-a-dialog"
