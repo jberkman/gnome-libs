@@ -1,3 +1,10 @@
+1998-07-28  Federico Mena Quintero  <federico@nuclecu.unam.mx>
+
+	* canvas.c (free_imlib_image): New function to free the imlib
+	images once we are done.
+	(setup_images): More tests for image items.
+	(setup_lines): Spiffy test for line items.
+
 1998-07-24  Federico Mena Quintero  <federico@nuclecu.unam.mx>
 
 	* canvas.c (create_canvas): Split the item creation into separate
