@@ -34,7 +34,8 @@ typedef void *TPointer;
 
 typedef GdkFont     TFontStruct;
 typedef GdkCursor   *TCursor;
-typedef GdkVisual   *TVisual;
+typedef GdkVisual   TVisual;
+typedef GdkImage    TImage;
 typedef GdkColormap *TColormap;
 typedef GdkPixmap   *TPixmap;
 typedef GdkWindow   *TWindow;
@@ -54,6 +55,9 @@ typedef XVisualInfo TVisualInfo;
 #define TCapButt        GDK_CAP_BUTT
 #define TJoinBevel      GDK_JOIN_BEVEL
 #define TJoinRound      GDK_JOIN_ROUND
+
+#define TLSBFirst GDK_LSB_FIRST
+#define TMSBFIRST GDK_MSB_FIRST
 
 #define XtCallCallbackList(a,b,c) fprintf (stderr, "Warning callback being invoked\n");
 #define Toolkit_Is_Realized(w) GTK_WIDGET_REALIZED(w)
@@ -83,9 +87,12 @@ typedef XVisualInfo TVisualInfo;
 #define Toolkit_Copy_Area(dpy,src,dst,gc,sx,sy,w,h,dx,dy) \
 	gdk_window_copy_area ((dst),(gc),(dx),(dy),(src),(sx),(sy),(w),(h))
 #define Toolkit_Create_Pixmap(dpy,win,w,h,d) gdk_pixmap_new((win),(w),(h),(d))
+#define Toolkit_Create_Image(d,v,depth,form,off,data,w,h,bp,bpl) \
+		gdk_image_new(type, (vis), (w), (h))
 #define Toolkit_GC_Free(dpy,gc) gdk_gc_destroy(gc)
 #define Toolkit_Widget_Repaint(w)  gtk_widget_draw (GTK_WIDGET (w), NULL)
-#define Toolkit_Widget_Force_Repaint(w) gtk_widget_draw (GTK_WIDGET (w), NULL)
+#define Toolkit_Flush(d,de) gdk_flush ()
+#define Toolkit_Widget_Force_Repaint(w) do {gtk_widget_draw (GTK_WIDGET (w), NULL);gdk_flush();}while (0)
 #define TOolkit_Widget_Repaint(w) gtk_widget_draw (GTK_WIDGET (w), NULL)
 #define Toolkit_StyleGC_BottomShadow(w) (GTK_WIDGET(w))->style->dark_gc [GTK_STATE_NORMAL]
 #define Toolkit_StyleGC_TopShadow(w)    (GTK_WIDGET(w))->style->light_gc [GTK_STATE_NORMAL]
@@ -97,17 +104,37 @@ typedef XVisualInfo TVisualInfo;
 #define Toolkit_Clear_Area(d,w,xs,ys,wi,h) gdk_window_clear_area ((w),(xs),(ys),(wi),(h));
 #define Toolkit_Widget_Destroy(w) gtk_widget_destroy (w)
 #define Toolkit_CreateHTML(w,n,as,ac) gtk_xmhtml_new ("")
-		
+#define Toolkit_Widget_Colormap(w) gtk_widget_get_colormap (GTK_WIDGET (w))
+#define Toolkit_Parse_Color(dpy,cm,c,d) gdk_color_parse (c, d)
+#define Toolkit_Alloc_Color(dpy,cm,c) gdk_color_alloc (cm,c)
+#define Toolkit_Get_Visual(w, dest) dest = gtk_widget_get_visual (w)
+#define Toolkit_Image_Destroy(i) gdk_image_destroy(i)
+#define Toolkit_Image_Data(i) (i->mem)
+#define Toolkit_Image_Bytes_Per_Line(i) (i->bpl)
+#define Toolkit_Image_Bits_Per_Pixel(i) (i->bpp)
+
+#define XCCCreate(w,v,c)   gdk_color_context_new (v, c)
+#define XCCFree(c)         gdk_color_context_free (c)
+#define XCCGetNumColors(c) gdk_color_context_get_num_colors (c)
+#define XCCGetDepth(c)     gdk_color_context_get_depth (c)
+#define XCCGetParentVisual(w) gtk_widget_get_visual(w)
+#define XCCGetPixels(cc,r,g,b,n,co,a) gdk_color_context_get_pixels (cc,r,g,b,n,co,a)
+#define XCCGetPixelsIncremental(cc,r,g,b,n,u,co,na) \
+		do{gdk_color_context_get_pixels_incremental (cc,r,g,b,n,u,co,na);}while (0)
+#define XCCAddPalette(c,p,n) gdk_color_context_add_palette (c,p,n)
+#define XCCInitDither(cc) gdk_color_context_init_dither (cc)
 #else
 
 #define TNone        None
 #define TPointer     XtPointer
 #define TColor       XColor
+#define TColormap    Colormap
 #define TPixmap      Pixmap
 #define TWindow      Window
 #define TXImage      XImage
 #define TIdleKeep    False
 #define TIdleRemove  True
+#define TVisual      Visual
 #define TNullTimeout None
 #define TEvent       XEvent
 #define TCallbackList XtCallbackList
@@ -124,6 +151,9 @@ typedef XVisualInfo TVisualInfo;
 #define TCapButt        CapButt        
 #define TJoinBevel      JoinBevel      
 #define TJoinRound      JoinRound
+
+#define TLSBFirst LSBFirst
+#define TMSBFIRST MSBFirst
 
 #define Toolkit_Is_Realized(w) XtIsRealized ((Widget) w)
 #define Toolkit_Widget_Window(x) XtWindow((x))
@@ -151,13 +181,15 @@ typedef XVisualInfo TVisualInfo;
 #define Toolkit_Copy_Area(dpy,src,dst,gc,sx,sy,w,h,dx,dy) \
      XCopyArea ((dpy),(src),(dst),(gc),(sx),(sy),(w),(h),(dx),(dy))
 #define Toolkit_Create_Pixmap(dpy,win,w,h,d) XCreatePixmap((dpy),(win),(w),(h),(d))
+#define Toolkit_Create_Image(d,v,depth,form,off,data,w,h,bp,bpl) \
+	     XCreateImage ((d),(v),(depth),(form),(off),(data),(w),(h),(bp),(bpl))
 #define Toolkit_GC_Free(dpy,gc) XFreeGC((dpy),(gc))
 #define Toolkit_Free_Cursor(dpy,cursor) XFreeCursor ((dpy), (cursor))
 #define Toolkit_Widget_Repaint(w) ClearArea((w), 0, 0, (w)->core.width, (w)->core.height)
 #define Toolkit_Widget_Force_Repaint(w) \
 	do { ClearArea((w), 0, 0, (w)->core.width, (w)->core.height); \
 	XSync(XtDisplay((TWidget)(w)), True); } while (0)
-
+#define Toolkit_Flush(d,de) XSync (d,de)
 #define Toolkit_StyleGC_BottomShadow(w) (w)->manager.bottom_shadow_GC
 #define Toolkit_StyleGC_TopShadow(w) (w)->manager.top_shadow_GC
 #define Toolkit_StyleGC_Highlight(w) (w)->manager.highlight_GC
@@ -165,10 +197,18 @@ typedef XVisualInfo TVisualInfo;
 #define Toolkit_Widget_Dim(h) ((h)->core)
 #define Toolkit_Screen_Height(w) HeightOfScreen(w)
 #define Toolkit_Widget_Is_Realized(w) XtIsRealized (w)
-#define Toolkit_Clear_Area (d,w,xs,ys,w,h) XClearArea ((d),(w),(xs),(ys),(w),(h), False);
+#define Toolkit_Clear_Area(d,w,xs,ys,w,h) XClearArea ((d),(w),(xs),(ys),(w),(h), False);
 #define Toolkit_Widget_Destroy(w) XtDestroyWidget (w)
 #define Toolkit_CreateHTML(w,n,as,ac) XmCreateHTML(w,n,as,ac)
-	     
+#define Toolkit_Widget_Colormap(w) (w)->core.colormap
+#define Toolkit_Parse_Color(dpy,cm,c,d) XParseColor((dpy),(cm),(c),(d))
+#define Toolkit_Alloc_Color(dpy,cm,c) do{(c)->flags=DoRed|DoGreen|DoBlue;XAllocColor (dpy,cm,c)}while (0)
+#define Toolkit_Get_Visual(w, dest) XtVaGetValues((w),XmNvisual, &dest, NULL)
+#define Toolkit_Image_Destroy(i) XDestroyImage(i)
+#define Toolkit_Image_Data(i) (i->data)
+#define Toolkit_Image_Bytes_Per_Line(i) (i->bytes_per_line)
+#define Toolkit_Image_Bits_Per_Pixel(i) (i->bits_per_pixel)
+
 #define	TALIGNMENT_END       XmALIGNMENT_END 
 #define TALIGNMENT_CENTER    XmALIGNMENT_CENTER
 #define TALIGNMENT_BEGINNING XmALIGNMENT_BEGINNING

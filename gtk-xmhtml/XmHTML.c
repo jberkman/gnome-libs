@@ -35,6 +35,16 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.7  1997/12/17 04:40:27  unammx
+* Your daily XmHTML code is here.  It almost links.  Only the
+* images.c file is left to port.  Once this is ported we are all
+* set to start debugging this baby.
+*
+* btw, Dickscrape is a Motif based web browser that is entirely
+* based on this widget, I just tested it today, very impressive.
+*
+* Miguel.
+*
 * Revision 1.6  1997/12/16 00:34:47  unammx
 * More progress on the XmHTML work.  This time, I did frames.c, not
 * as nice as I would like it to be.
@@ -859,7 +869,7 @@ PaintBackground(XmHTMLWidget html, int x, int y, int width, int height)
 
 	XChangeGC(dpy, html->html.bg_gc, valuemask, &values);
 #else
-	gdk_gc_fill (html->html.bg_gc, GDK_TILED);
+	gdk_gc_set_fill (html->html.bg_gc, GDK_TILED);
 	gdk_gc_set_tile (html->html.bg_gc, html->html.body_image->pixmap);
 	gdk_gc_set_ts_origin (html->html.bg_gc, tsx, tsy);
 #endif
@@ -1532,7 +1542,7 @@ CheckMaxColorSetting(XmHTMLWidget html)
 	/* check for an XCC */
 	if(html->html.xcc == NULL)
 		_XmHTMLCheckXCC(html);
-
+	
 	/* get maximum allowable colors */
 	max_colors = XCCGetNumColors(html->html.xcc);
 
@@ -2351,9 +2361,7 @@ XmHTMLImageUpdate(TWidget w, XmImageInfo *image)
 					    xs, ys, temp->width, temp->height);
 			/* put up the new image */
 			_XmHTMLPaint(html, temp, temp->next);
-#ifdef WITH_MOTIF
-			XSync(XtDisplay((TWidget)html), True);
-#endif
+			Toolkit_Flush (Toolkit_Display((TWidget)html), True);
 		}
 	}
 	else
@@ -2428,9 +2436,7 @@ XmHTMLImageReplace(TWidget w, XmImageInfo *image, XmImageInfo *new_image)
 				temp->width, temp->height);
 			/* put up the new image */
 			_XmHTMLPaint(html, temp, temp->next);
-#ifdef WITH_MOTIF
-			XSync(XtDisplay((TWidget)html), True);
-#endif
+			Toolkit_Flush(Toolkit_Display ((TWidget)html), True);
 		}
 	}
 	else

@@ -35,6 +35,16 @@
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.2  1997/12/17 04:40:28  unammx
+* Your daily XmHTML code is here.  It almost links.  Only the
+* images.c file is left to port.  Once this is ported we are all
+* set to start debugging this baby.
+*
+* btw, Dickscrape is a Motif based web browser that is entirely
+* based on this widget, I just tested it today, very impressive.
+*
+* Miguel.
+*
 * Revision 1.1  1997/11/28 03:38:56  gnomecvs
 * Work in progress port of XmHTML;  No, it does not compile, don't even try -mig
 *
@@ -125,7 +135,11 @@
 * XCC is an opaque object defined in XCCP.h
 *****/
 #ifdef _LIBRARY
-# include "XCC.h"		/* XColorContext definitions and protos */
+# ifdef WITH_MOTIF
+#  include "XCC.h"		/* XColorContext definitions and protos */
+# else
+typedef void *XCC;
+# endif
 # ifdef _ZCONF_H
 #  ifndef BYTE_ALREADY_TYPEDEFED
 #   define BYTE_ALREADY_TYPEDEFED

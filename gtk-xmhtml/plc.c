@@ -38,6 +38,16 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.2  1997/12/17 04:40:29  unammx
+* Your daily XmHTML code is here.  It almost links.  Only the
+* images.c file is left to port.  Once this is ported we are all
+* set to start debugging this baby.
+*
+* btw, Dickscrape is a Motif based web browser that is entirely
+* based on this widget, I just tested it today, very impressive.
+*
+* Miguel.
+*
 * Revision 1.1  1997/11/28 03:38:58  gnomecvs
 * Work in progress port of XmHTML;  No, it does not compile, don't even try -mig
 *
@@ -76,7 +86,9 @@ static char rcsId[]="$Header$";
 
 #include "XmHTMLP.h"
 #include "XmHTMLfuncs.h"
-#include "XCCP.h"
+#ifdef WITH_MOTIF
+#   include "XCCP.h"
+#endif
 #include "plc.h"
 
 /*** External Function Prototype Declarations ***/
@@ -1252,7 +1264,11 @@ _PLC_IMG_Transfer(PLC *plc)
 	int width, height, lo, hi;
 	int col_cnt;	/* no of colors in image, accumulated */
 	int npixels;	/* no of allocated pixel values, accumulated */
+#ifdef WITH_MOTIF
 	Boolean pixels[MAX_IMAGE_COLORS];
+#else
+	int pixels [MAX_IMAGE_COLORS];
+#endif
 	register int i;
 	Byte *ptr, *data;
 	int ypos, nlines;
@@ -1373,7 +1389,7 @@ _PLC_IMG_Transfer(PLC *plc)
 		/* allocate pixmaps */
 #ifdef __GTK__
 		if ((any_image->pixmap = gdk_pixmap_new(win, image->width, image->height,
-							html->html.xcc->visualInfo->depth)) == NULL)
+							gdk_color_context_get_depth (html->html.xcc))) == NULL)
 #else
 		if((any_image->pixmap = XCreatePixmap(dpy, win, image->width,
 			image->height, html->html.xcc->visualInfo->depth)) == None)

@@ -478,3 +478,54 @@ GetScrollDim(XmHTMLWidget html, int *hsb_height, int *vsb_width)
 	*vsb_width  = width;
 }
 
+void
+_XmHTMLCheckXCC(XmHTMLWidget html)
+{
+	GtkWidget *htmlw = GTK_WIDGET (html);
+	
+	_XmHTMLDebug(1, ("XmHTML.c: _XmHTMLCheckXCC Start\n"));
+	/*
+	* CheckXCC is called each time an image is loaded, so it's quite
+	* usefull if we have a GC around by the time the TWidget is being
+	* mapped to the display.
+	* Our SubstructureNotify event handler can fail in some cases leading to
+	* a situation where we don't have a GC when images are about to be
+	* rendered (especially background images can cause a problem, they
+	* are at the top of the text).
+	*/
+	CheckGC (html);
+
+	/*
+	* Create an XCC. 
+	* XmHTML never decides whether or not to use a private or standard
+	* colormap. A private colormap can be supplied by setting it on the
+	* TWidget's parent, we know how to deal with that.
+	*/
+	if(!html->html.xcc)
+	{
+		TVisual *visual = NULL;
+		TColormap cmap;
+
+		_XmHTMLDebug(1, ("XmHTML.c: _XmHTMLCheckXCC: creating an XCC\n"));
+
+		cmap   = gtk_widget_get_colormap (htmlw);
+		visual = gtk_widget_get_visual (htmlw);
+
+		/* walk TWidget tree or get default visual */
+		if(visual == NULL){
+			/* visual = XCCGetParentVisual((TWidget)html);*/
+			fprintf (stderr, "%s: should not happen\n", __FUNCTION__);
+			exit (1);
+		}
+		/* create an xcc for this TWidget */
+		html->html.xcc = XCCCreate((TWidget)html, visual, cmap);
+	}
+	
+	_XmHTMLDebug(1, ("XmHTML.c: _XmHTMLCheckXCC End\n"));
+}
+
+static void
+autoSizeWidget (XmHTMLWidget html)
+{
+	fprintf (stderr, "Autosize widget called\n");
+}
