@@ -1,5 +1,10 @@
 Wed Jul 22 16:47:14 1998  Tom Tromey  <tromey@cygnus.com>
 
+	* libgnome/gnome-config.c (_gnome_config_get_int_with_default):
+	Used wrong sense in previous change.  Duh.
+	(_gnome_config_get_float_with_default): Likewise.
+	(_gnome_config_get_bool_with_default): Likewise.
+
 	* libgnome/gnome-config.c (_gnome_config_get_int_with_default): It
 	isn't an error if the key is not found.
 	(_gnome_config_get_float_with_default): Likewise.
