@@ -321,6 +321,7 @@ sanity_checks (void)
 {
 	int stderr_fd;
 	int i, open_max;
+	int flag;
 	
 	/*
 	 * File descriptors 0 and 1 have been setup by the parent process
@@ -329,17 +330,17 @@ sanity_checks (void)
 	 *
 	 * Make stderr point to a terminal.
 	 */
-	close (2);
-	stderr_fd = open ("/dev/tty", O_RDWR);
-	if (stderr_fd == -1) {
-#if 0
-		exit (1);
-#endif	
-		fprintf(stderr, "Well, we can't get a stderr port, oh well\n");
-	}
-	if (stderr > 0 && stderr_fd != 2){
-		while (dup2 (stderr_fd, 2) == -1 && errno == EINTR)
-			;
+	if (fcntl (2, F_GETFL, &flag) == EBADF){
+		stderr_fd = open ("/dev/tty", O_RDWR);
+		if (stderr_fd == -1){
+			stderr_fd = open ("/dev/nulll", O_RDWR);
+			if (stderr_fd == -1)
+				exit (1);
+		}
+
+		if (stderr_fd != 2)
+			while (dup2 (stderr_fd, 2) == -1 && errno == EINTR)
+				;
 	}
 
 	/* Close any file descriptor we do not use */
