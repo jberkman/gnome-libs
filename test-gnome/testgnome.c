@@ -481,8 +481,6 @@ create_icon_list(void)
 	
 	app = create_newwin(TRUE,"testGNOME","Icon List");
 
-	gtk_widget_push_visual (gdk_imlib_get_visual ());
-	gtk_widget_push_colormap (gdk_imlib_get_colormap ());
 	iconlist = gnome_icon_list_new (80, NULL, TRUE);
 	hbox = gtk_hbox_new (0, 0);
 	scroll = gtk_vscrollbar_new (GNOME_ICON_LIST (iconlist)->adj);
@@ -508,8 +506,6 @@ create_icon_list(void)
 	gtk_widget_set_usize (iconlist, 200, 200);
 	gtk_widget_show(iconlist);
 	gtk_widget_show(app);
-	gtk_widget_pop_visual ();
-	gtk_widget_pop_colormap ();
 }
 
 
