@@ -531,8 +531,7 @@ CheckGC(XmHTMLWidget html)
 	if(html->html.body_images_enabled && html->html.bg_gc == NULL)
 	{
 		html->html.bg_gc = gdk_gc_new (GTK_WIDGET (html)->window);
-		fprintf (stderr, "Gdk-gc-copy should be implemnenbted\n");
-		/* XCopyGC(dpy, html->html.gc, 0xFFFF, html->html.bg_gc); */
+		gdk_gc_copy (html->html.gc, html->html.bg_gc);
 	}
 
 	_XmHTMLDebug(1, ("XmHTML.c: CheckGC End\n"));
@@ -544,7 +543,11 @@ gtk_xmhtml_expose_event (GtkWidget *widget, GdkEvent *event, gpointer closure)
 	GtkXmHTML *html = closure;
 	GdkEventExpose *e = (GdkEventExpose *) event;
 	
+	if (html->html.formatted == NULL || html->html.nframes)
+		return FALSE;
 
+	/* FIXME: The code in the Motif port does event coalescing */
+	
 	Refresh(html, e->area.x, e->area.y, e->area.width, e->area.height);
 	return FALSE;
 }
@@ -952,7 +955,7 @@ CheckScrollBars(XmHTMLWidget html)
 {
 	XmHTMLfont *f = html->html.default_font ? html->html.default_font : NULL;
 	XFontStruct *xf;
-	int dx, dy, hsb_height, vsb_width, st, nx, ny;
+	int dx, dy, hsb_height, vsb_width, st, nx, ny, sx, sy;
 	int hsb_on_top, vsb_on_left;
 	/* forced display of scrollbars: XmSTATIC or frames with scrolling = yes */
 	int force_vsb = FALSE, force_hsb = FALSE;
@@ -967,6 +970,8 @@ CheckScrollBars(XmHTMLWidget html)
 
 	/* Initial work area offset */
 	st = dx = dy = 0;
+	sx = Toolkit_Widget_Dim (html).x;
+	sy = Toolkit_Widget_Dim (html).y;
 	GetScrollDim (html, &hsb_height, &vsb_width);
 
 	/* 1. Vertical scrollbar */
@@ -1028,7 +1033,7 @@ CheckScrollBars(XmHTMLWidget html)
 	{
 		_XmHTMLDebug(1, ("XmHTML.c: CheckScrollBars, end, no bars needed.\n"));
 
-		gtk_xmhtml_set_geometry (html->html.work_area, dx, dy,
+		gtk_xmhtml_set_geometry (html->html.work_area, sx+dx, sy+dy,
 					 Toolkit_Widget_Dim (html).width,
 					 Toolkit_Widget_Dim (html).height);
 		return;
@@ -1055,7 +1060,7 @@ CheckScrollBars(XmHTMLWidget html)
 	if(html->html.needs_vsb && vsb_on_left == FALSE)
 		dx += vsb_width;
 
-	gtk_xmhtml_set_geometry (html->html.work_area, nx, ny,
+	gtk_xmhtml_set_geometry (html->html.work_area, sx+nx, sy+ny,
 			      Toolkit_Widget_Dim (html).width - dx,
 			      Toolkit_Widget_Dim (html).height - dy);
 
@@ -1104,8 +1109,8 @@ CheckScrollBars(XmHTMLWidget html)
  		dx = (html->html.needs_vsb && vsb_on_left ? vsb_width : 0);
 
 		/* place it */
-		gtk_xmhtml_set_geometry (html->html.hsb, dx,
-					 hsb_on_top ? 0 : Toolkit_Widget_Dim(html).height - hsb_height,
+		gtk_xmhtml_set_geometry (html->html.hsb, sx+dx,
+					 sy+ (hsb_on_top ? 0 : Toolkit_Widget_Dim(html).height - hsb_height),
 					 sb_width, sb_height);
 		gtk_widget_show (html->html.hsb);
 	}
@@ -1154,9 +1159,9 @@ CheckScrollBars(XmHTMLWidget html)
 		/* adjust y-position if hsb is on top */
  		dy = (html->html.needs_hsb && hsb_on_top ? hsb_height : 0);
 
-		gtk_xmhtml_set_geometry (html->html.vsb,
-					 vsb_on_left ? 0 : Toolkit_Widget_Dim(html).width - vsb_width,
-					 dy, sb_width, sb_height);
+		gtk_xmhtml_set_geometry (html->html.vsb, sx + 
+					 (vsb_on_left ? 0 : Toolkit_Widget_Dim(html).width - vsb_width),
+					 sy, sb_width, sb_height);
 		gtk_widget_show (html->html.vsb);
 	}
 	_XmHTMLDebug(1, ("XmHTML.c: CheckScrollBars, end\n"));

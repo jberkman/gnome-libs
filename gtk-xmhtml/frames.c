@@ -36,6 +36,15 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.11  1997/12/31 05:20:55  unammx
+* Frames work.  Resizing a window still does not propagate to child
+* frames, will fix that next.
+*
+* Elliot: check how the frames are loaded, you need to attach to the
+* frame signal and load the contents when the widget asks for them.
+*
+* Miguel.
+*
 * Revision 1.10  1997/12/30 03:32:52  unammx
 * More work on getting the frames working, still some bits are missing - Miguel
 *
@@ -1293,11 +1302,13 @@ _XmHTMLFrameCreateCallback(XmHTMLWidget html, XmHTMLFrameWidget *frame)
 				 frame->y,
 				 frame->width - frame->border,
 				 frame->height - frame->border);
+	gtk_widget_show (widget);
+	gtk_xmhtml_manage (GTK_CONTAINER (html), widget);
 	gtk_xmhtml_set_geometry (widget,
 				 frame->x,
 				 frame->y,
 				 frame->width - frame->border,
-				 frame->height - frame->border);	
+				 frame->height - frame->border);
 /* GtkFIXME: I am not handling borders yet */
 				 
 #endif
@@ -1309,9 +1320,6 @@ _XmHTMLFrameCreateCallback(XmHTMLWidget html, XmHTMLFrameWidget *frame)
 #ifdef WITH_MOTIF
 	/* manage it */
 	XtManageChild(widget);
-#else
-	gtk_widget_show (widget);
-	gtk_xmhtml_manage (GTK_CONTAINER (html), widget);
 #endif
 	return(widget);
 }

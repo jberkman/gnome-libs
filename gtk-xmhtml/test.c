@@ -24,7 +24,12 @@ char *test_string2 =
 
 char *test_string =
 "<html><head><title>h</title></head>"
-"<body>Item: %s<p>Frame: %s<p></body></html>";
+"<body>Item: %s<p>Frame: %s<p>"
+"We want all the people in the world to use free software, because"
+"free software is a very nice way of sharing code and learning new"
+"things you had never thought of before"
+"</body>"
+"</html>";
 
 void
 click (GtkWidget *widget, gpointer data)
@@ -102,7 +107,6 @@ main (int argc, char *argv [])
 	gtk_signal_connect (GTK_OBJECT(html), "activate", (GtkSignalFunc) click, html);
 	gtk_signal_connect (GTK_OBJECT(html), "frame", (GtkSignalFunc) frame, html);
 
-	gtk_widget_set_usize (GTK_WIDGET(window), 400, 400);
 	gtk_xmhtml_source (GTK_XMHTML (html), file_contents->str);
 	gtk_widget_show (html);
 	gtk_container_add (GTK_CONTAINER (window), html);
