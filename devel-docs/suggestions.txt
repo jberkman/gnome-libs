@@ -200,3 +200,16 @@ Session management
 ------------------
 
    - Make your application support session management.
+
+Top Level Windows
+-----------------
+
+   - Make sure you call gtk_window_set_wmclass() on ALL top-level GtkWindows
+     you create. The first string is the name, the second the class. Please
+     ensure you have the class as something like the name of the app, and
+     the name being the type of window it is - like ``filename_dialogue''
+     or ``main_window'' etc.
+     
+     Ensure you make calls like:
+     gtk_window_set_wmclass(GTK_WINDOW(window), ``file_open_dialogue'', 
+                            ``my_ap_name'');
