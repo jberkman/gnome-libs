@@ -1,3 +1,11 @@
+1998-07-13  Federico Mena Quintero  <federico@nuclecu.unam.mx>
+
+	* canvas.c (piece_event): 
+	(create_primitives): 
+	(create_fifteen): Removed the "SomeGtkType::" prefixes for
+	arguments now that Gtk supports direct argument lookups.  The code
+	is actually nice right now :-)
+
 Sun Jul 12 23:01:56 1998  Havoc Pennington  <hp@pobox.com>
 
 	* testgnome.c (create_app_util): Added a test for the 
