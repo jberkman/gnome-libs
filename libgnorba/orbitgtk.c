@@ -124,7 +124,7 @@ gnome_get_name_service(void)
       close(iopipes[0]);
       dup2(iopipes[1], 1);
       dup2(iopipes[1], 2);
-      execlp("orbit-naming-server", "orbit-naming-server", NULL);
+      execlp("gnome-naming-server", "gnome-naming-server", NULL);
       _exit(1);
     }
   }

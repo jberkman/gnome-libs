@@ -21,7 +21,8 @@ libgnorba_la_SOURCES = \
 	orbitgtk.c
 
 libgnorbainclude_HEADERS = \
-	name-service.h
+	name-service.h \
+	gnorba.h
 
 libgnorba_la_LDFLAGS = -version-info 26:0:26 -rpath $(libdir)
 libgnorba_la_LIBADD = $(ORBIT_LIBS) $(GLIB_LIBS) -lm
