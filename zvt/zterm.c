@@ -114,7 +114,7 @@ gint main (gint argc, gchar *argv[])
       execvp(argv[cmdindex], &argv[cmdindex]);
     } else {
 				/* get shell from passwd */
-      pw = getpwuid(getpid());
+      pw = getpwuid(getuid());
       if (pw) {
 	execl(pw->pw_shell, rindex(pw->pw_shell, '/'), 0);
       } else {
