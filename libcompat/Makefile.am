@@ -3,7 +3,7 @@
 LIB_VERSION=0:0:0
 LIB_VERSION_NUM=0.0.0
 
-lib_LIBRARIES = libgnomeui-1-compat-2.a
+lib_LIBRARIES = libgnomeui-1-compat-2.a libgnome-1-compat-2.a
 
 #
 # Install location for header files
@@ -60,3 +60,17 @@ libgnomeui10compatinclude_HEADERS = \
 # This probably won't work right
 #	gnome-canvas-image.h
 
+libgnome10compatincludedir = $(includedir)/gnome/$(GNOME_INTERFACE_VERSION)/compat/1/libgnome
+
+libgnome_1_compat_2_a_SOURCES = \
+	gnome10-compat.c	\
+	gnome-help.c		\
+	gnome-dentry.c		\
+	gnome-popt.c
+
+libgnome10compatinclude_HEADERS=\
+	libgnome-compat-1.0.h	\
+	gnome10-compat.h	\
+	gnome-help.h		\
+	gnome-dentry.h		\
+	gnome-popt.h
