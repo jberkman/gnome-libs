@@ -8,6 +8,7 @@
 #include "convertrgb.h"
 
 static int efficient;
+static int dimensions;
 static int append;
 static char *file_for_output;
 static char *suffix;
@@ -116,12 +117,15 @@ static void convert(char *file)
 
 	fprintf(f, "/* Imlib raw rgb data file created by convertrgb */\n\n");
 
-	fprintf(f, "static const int %s_width  = %d;\n", data_var, w);
-	fprintf(f, "static const int %s_height = %d;\n", data_var, h);
-	if (t)
-		fprintf(f, "static const GdkImlibColor %s_alpha  = { 255, 0, 255, 0 };\n", data_var);
-	else
-		fprintf(f, "static const GdkImlibColor %s_alpha  = { -1, -1, -1, 0 };\n", data_var);
+	if (dimensions)
+		{
+		fprintf(f, "static const int %s_width  = %d;\n", data_var, w);
+		fprintf(f, "static const int %s_height = %d;\n", data_var, h);
+		if (t)
+			fprintf(f, "static const GdkImlibColor %s_alpha  = { 255, 0, 255, 0 };\n", data_var);
+		else
+			fprintf(f, "static const GdkImlibColor %s_alpha  = { -1, -1, -1, 0 };\n", data_var);
+		}
 
 	fprintf(f, "static const char %s[] = {\n", data_var);
 
@@ -166,6 +170,7 @@ static void convert(char *file)
 int main (int argc, char *argv[])
 {
 	efficient = 0;
+	dimensions = 1;
 	append = 0;
 	file_for_output = NULL;
 	suffix = NULL;
@@ -179,6 +184,8 @@ int main (int argc, char *argv[])
 			char *file = argv[i];
 			if (strcmp(file, "--efficient") == 0 || strcmp(file, "-e") == 0)
 				efficient = 1;
+			else if (strcmp(file, "--nodim") == 0 || strcmp(file, "-n") == 0)
+				dimensions = 0;
 			else if (strncmp(file, "-o", 2) == 0)
 				{
 				if (append || file_for_output || suffix)
@@ -275,6 +282,7 @@ int main (int argc, char *argv[])
 		printf ("Command line params:\n\n");
 		printf ("      convertrgb [-e] [-o=fn|-a=fn|-s=sn] [-v=vn] inputfile [inputfile] ...\n\n");
 		printf ("   -e, --efficient      Use smallest format possible to save space\n");
+		printf ("   -n, --nodim          Suppress output of dimensions and transparency\n");
 		printf ("   -o=[fn]              Output to file named fn , default is .c extension\n");
 		printf ("                          to replace extension of inputfile\n");
 		printf ("   -a=[fn]              Like -o, but appends to file named fn\n");
