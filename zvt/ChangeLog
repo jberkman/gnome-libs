@@ -1,5 +1,24 @@
 1999-08-02  Miguel de Icaza  <miguel@nuclecu.unam.mx>
 
+	* subshell.c (zvt_shutdown_subshell): Fix the problem Elliot is
+	experimenting.  Basically the code now allowed for two different
+	paths: one was the process natural death, and the other was an
+	explicit kill from the parent.
+
+	I think that the explicit kill is not required as closing all the
+	file descriptors should provide EOFs in good quantity to the child
+	process.  *Unless* There is a file descriptor leak.  If there is
+	an FD leak we should plug that instead of doing a kill SIGHUP the
+	child process.
+
+	I have kept this patch semantically correct with the previous
+	version on CVS but implemented correctly.  But we should really
+	investigate this rather than putting a kill signal here.
+
+	So basically, we now keep track of whether the process has died or
+	not, and if so, the exit status of the process (to return this
+	value from the zvt_shutdown_subshell routine.
+
 	* gnome-utmp.c (write_login_record): Remove warning about unused
 	vaiable. 
 

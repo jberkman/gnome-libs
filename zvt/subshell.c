@@ -48,6 +48,8 @@ typedef struct {
 	pid_t pid;
 	int fd;
 	int listen_fd;
+	int exit_status;	/* waitpid return value */
+	gboolean dead;		/* if the process is already dead  */
 } child_info_t;
 
 /*
@@ -70,6 +72,8 @@ sigchld_handler (int signo)
 		child_info_t *child = l->data;
 		
 		if (waitpid (child->pid, &status, WNOHANG) == child->pid){
+			child->exit_status = status;
+			child->dead = 1;
 			write (child->fd, "D", 1);
 			return;
 		}
@@ -309,10 +313,12 @@ zvt_init_subshell (struct vt_em *vt, char *pty_name, int log)
 
 		vt->msgfd = p [0];
 		
-		child = g_malloc(sizeof(child_info_t));
+		child = g_new (child_info_t, 1);
 		child->pid = vt->childpid;
 		child->fd = p[1];
 		child->listen_fd = p [0];
+		child->dead = 0;
+		child->exit_status = 0;
 		children = g_slist_prepend (children, child);
 		
 		/* We could have received the SIGCHLD signal for the subshell 
@@ -382,13 +388,19 @@ zvt_shutdown_subshell (struct vt_em *vt)
 		child_info_t *child = l->data;
 
 		if (child->pid == vt->childpid){
+			int status;
+			
+			if (!child->dead){
+				/* make sure the child has quit! */
+				kill (vt->childpid, SIGHUP);
+				waitpid (vt->childpid, &child->exit_status, 0);
+			}
+			
+			status = child->exit_status;
 			close (child->fd);
 			g_free (child);
 			children = g_slist_remove (children, l->data);
 
-			/* make sure the child has quit! */
-			kill(vt->childpid, SIGHUP);
-			waitpid(vt->childpid, &status, 0);
 			return WEXITSTATUS(status);
 		}
 	}
