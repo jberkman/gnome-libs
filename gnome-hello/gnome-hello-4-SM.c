@@ -32,9 +32,17 @@ void prepare_app();
 void parse_args (int argc, char *argv[]);
 GtkMenuFactory *create_menu ();
 
-static int save_state (gpointer client_data, GnomeSaveStyle save_style,
-           int is_shutdown, GnomeInteractStyle interact_style, int is_fast);
-void restart_session (gchar *id);
+static int save_state (GnomeClient        *client,
+		       gint                phase,
+		       GnomeRestartStyle   save_style,
+		       gint                shutdown,
+		       GnomeInteractStyle  interact_style,
+		       gint                fast,
+		       gpointer            client_data);
+static void connect   (GnomeClient *client, 
+		       gint         was_restarted, 
+		       gpointer     client_data);
+
 void discard_session (gchar *id);
 
 GtkWidget *app;
@@ -189,6 +197,7 @@ create_menu ()
 void
 parse_args (int argc, char *argv[])
 {
+  GnomeClient *client;
   gint ch;
 
   struct option options[] = {
@@ -196,7 +205,7 @@ parse_args (int argc, char *argv[])
 	{ "help",		no_argument,            NULL,   'h'     },
 	{ "version",	 	no_argument,            NULL,   'v'     },
 	/* Session Management stuff */
-	{ "restart-session",	required_argument,      NULL,   'S'     },
+	{ "sm-client-id",	required_argument,      NULL,   'S'     },
 	{ "discard-session",	required_argument,      NULL,   'D'     },
 
 	{ NULL, 0, NULL, 0 }
@@ -228,8 +237,11 @@ parse_args (int argc, char *argv[])
         exit(0);
         break;
       case 'S':
+	/* This option is only a dummy. It is evaluated from the
+	   'gnome_client_new_without_connection' call.
+
         id = g_strdup (optarg);
-        restart_session (id);
+        restart_session (id); */
         break;
       case 'D':
         id = g_strdup (optarg);
@@ -245,15 +257,15 @@ parse_args (int argc, char *argv[])
   }
 
   /* SM stuff */
-  session_id = gnome_session_init (
-  	/* callback to save the state and parameter for it */
-  	save_state, argv[0], 
-  	/* callback to die and parameter for it */
-    	NULL, NULL,
-	/* id from the previous session if restarted, NULL otherwise */
-       	id);
-  /* set the program name */
-  gnome_session_set_program (argv[0]);
+  client = gnome_client_new_without_connection (argc, argv);
+  
+  gtk_signal_connect (GTK_OBJECT (client), "save_yourself",
+		      GTK_SIGNAL_FUNC (save_state), (gpointer) argv[0]);
+  gtk_signal_connect (GTK_OBJECT (client), "connect",
+		      GTK_SIGNAL_FUNC (connect), NULL);
+
+  gnome_client_connect (client);
+
   g_free(id);
 
   return;
@@ -262,14 +274,21 @@ parse_args (int argc, char *argv[])
 /* Session management */
 
 static int
-save_state (gpointer client_data, GnomeSaveStyle save_style,
-	int is_shutdown, GnomeInteractStyle interact_style,
-	int is_fast)
+save_state (GnomeClient        *client,
+	    gint                phase,
+	    GnomeRestartStyle   save_style,
+	    gint                shutdown,
+	    GnomeInteractStyle  interact_style,
+	    gint                fast,
+	    gpointer            client_data)
 {
+  gchar *session_id;
   gchar *sess;
   gchar *buf;
   gchar *argv[3];
   gint x, y, w, h;
+
+  session_id= gnome_client_get_id (client);
 
   /* The only state that gnome-hello has is the window geometry. 
      Get it. */
@@ -300,40 +319,44 @@ save_state (gpointer client_data, GnomeSaveStyle save_style,
      to restart/discard the session that we've just saved and call
      the gnome_session_set_*_command to tell the session manager it. */
   argv[0] = (char*) client_data;
-  argv[1] = "--restart-session";
-  argv[2] = session_id;
-  gnome_session_set_restart_command (3, argv);
-
   argv[1] = "--discard-session";
-  gnome_session_set_discard_command (3, argv);
+  argv[2] = session_id;
+  gnome_client_set_discard_command (client, 3, argv);
 
-  return(1);
+  return TRUE;
 }
 
-/* restart_session: reads the state of the previous session. Sets os_* 
-   (prepare_app uses them) */
+/* Connected to session manager. If restarted from a former session:
+   reads the state of the previous session. Sets os_* (prepare_app
+   uses them) */
 void
-restart_session (gchar *id)
+connect (GnomeClient *client, gint was_restarted, gpointer client_data)
 {
-  gchar *sess;
-  gchar *buf;
-
-  restarted = 1;
-  
-  sess = g_copy_strings ("/gnome-hello/Saved-Session-", id, NULL);
-
-  buf = g_copy_strings ( sess, "/x", NULL);
-  os_x = gnome_config_get_int (buf);
-  g_free(buf);
-  buf = g_copy_strings ( sess, "/y", NULL);
-  os_y = gnome_config_get_int (buf);
-  g_free(buf);
-  buf = g_copy_strings ( sess, "/w", NULL);
-  os_w = gnome_config_get_int (buf);
-  g_free(buf);
-  buf = g_copy_strings ( sess, "/h", NULL);
-  os_h = gnome_config_get_int (buf);
-  g_free(buf);
+  if (was_restarted)
+    {
+      gchar *session_id;
+      gchar *sess;
+      gchar *buf;
+      
+      restarted = 1;
+      
+      session_id= gnome_client_get_id (client);
+      
+      sess = g_copy_strings ("/gnome-hello/Saved-Session-", session_id, NULL);
+      
+      buf = g_copy_strings ( sess, "/x", NULL);
+      os_x = gnome_config_get_int (buf);
+      g_free(buf);
+      buf = g_copy_strings ( sess, "/y", NULL);
+      os_y = gnome_config_get_int (buf);
+      g_free(buf);
+      buf = g_copy_strings ( sess, "/w", NULL);
+      os_w = gnome_config_get_int (buf);
+      g_free(buf);
+      buf = g_copy_strings ( sess, "/h", NULL);
+      os_h = gnome_config_get_int (buf);
+      g_free(buf);
+    }
 
   return;
 }
