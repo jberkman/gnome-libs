@@ -91,8 +91,16 @@
 	  <para><email>gleef@capital.net</email></para>
 	</authorblurb>
       </author>
+      <author>
+        <firstname>Julian</firstname>
+	<othername>"X-ViRGE"</othername>
+	<surname>Missig</surname>
+	<authorblurb>
+	  <para><email>julian@linuxpower.org</email></para>
+	</authorblurb>
+      </author>
     </authorgroup>
-    <date>March 1, 1999</date>
+    <date>17 October, 1999</date>
     <abstract>
       <para>This is the FAQ for GNOME, the GNU Network Object Model
       Environment.</para>
@@ -129,7 +137,9 @@
       environment. In this respect, it is approximately equivalent to
       CDE, Win32, NextStep, or KDE. The big difference is that, unlike
       any of the above-mentioned examples, every single component of
-      GNOME is <ulink url="&wwwgnufree;">Free Software</ulink>.</para>
+      GNOME is <ulink url="&wwwgnufree;">Free Software</ulink>. Not 
+      only that, but GNOME is extremely customizable compared to most 
+      desktop environments.</para>
 
       <para>For the project geographers out there, here are some of
       the higher mountains to be found in GNOME-land:</para>
@@ -390,9 +400,11 @@
       GNOME.  Top of the list is a difference in widget set.  We find
       GTK+ to be nicer, more customizable, more friendly to
       development in various programming languages, and more flexible
-      than Qt; others may disagree.  In all, the projects are
-      different enough so that both should be able to coexist and even
-      collaborate.</para>
+      than Qt; others may disagree.  Also near the top of the list is 
+      the fact that GNOME is not tied to any single window manager. You
+      don't have to use Enlightenment, you can use any GNOME-compliant
+      window manager. In all, the projects are different enough so that 
+      both should be able to coexist and even collaborate.</para>
 
       <para>GNUStep is another desktop environment that has a lot of
       good things going for it.  One issue with GNUStep are that they
@@ -443,7 +455,7 @@
       <title>What is a window manager, and what does it have to do with
       GNOME?</title>
 
-      <para>A window manager is a program within the X Windows
+      <para>A window manager is a program within the X Window System
       environment which controls the placement and appearance of
       windows on the screen.  Look at an xterm or something.  The box
       of terminal text is the actual xterm, the border, title bar,
@@ -455,9 +467,9 @@
       work well with all of them.  There are a few GNOME features
       (such as session management, and the GNOME pager), that won't
       work with all of them.  For best results, go with a
-      GNOME-compliant window manager.  The two most compliant are
-      currently Enlightenment and IceWM, with FVWM, SCWM, Window
-      Maker, AfterStep and QVWM putting finishing touches on
+      GNOME-compliant window manager.  The most compliant are
+      currently Enlightenment, Sawmill, Window Maker, and IceWM, with 
+      FVWM, SCWM, AfterStep and QVWM putting finishing touches on
       GNOME-compliance as we speak.</para>
     </sect1>
 
@@ -643,7 +655,7 @@
 
       <para>Some of the bells and whistles require a GNOME-compliant
       window manager to work.  Currently these are Enlightenment,
-      IceWM, and Window Maker.  In addition both FVWM and SCWM are
+      IceWM, Sawmill, and Window Maker.  In addition both FVWM and SCWM are
       putting the finishing touches on their GNOME support.  GNOME
       does not include a window manager, and will work well with any
       window manager, these just give you a few extras.</para>
@@ -793,7 +805,7 @@
     </sect1>
 
     <sect1 id="GettingSuSE">
-      <title>I'm running S.u.S.E. Linux, how do I get RPM packages?</title>
+      <title>I'm running SuSE Linux, how do I get RPM packages?</title>
  
       <para>There is an excellent GNOME for SuSE page at
       <ulink url="&wwwsusebe;">&wwwsusebe;</ulink>(Belgium) and
@@ -2059,7 +2071,7 @@ WM=foo</screen>
 	<para>The big reason is that MICO was just unworkable. it took
 	too much memory, it was C++ only, etc. ad naus. With the
 	recent release of the GNOME ORBit, we can start deploying
-	CORBA in the GNOME.</para>
+	CORBA in GNOME.</para>
       </sect2>
 
       <sect2 id="Bonobo">
@@ -2225,7 +2237,7 @@ WM=foo</screen>
 	<title>How do I get themes working?</title>
 
 	<para>First, you need a recent version of GTK+, I recommend
-	version 1.2.1 at the moment, but 1.2.0 works fine as well.
+	version 1.2.6 at the moment, but 1.2.0 works fine as well.
 	You then get the themes you want.  A good selection of themes
 	is available in the gtk-engines module.  Even more are
 	available at <ulink url="&wwwgtktheme;">
