@@ -64,9 +64,9 @@ create_date_edit (void)
 	GtkWidget *win;
 	time_t curtime = time(NULL);
 
-	datedit = gnome_date_edit_new(curtime,1,1);
-	win = create_newwin(TRUE,"testGNOME","Date Edit");
-	gnome_app_set_contents(GNOME_APP(win),datedit);
+	datedit = H_(gnome_date_edit_new(curtime,1,1), "date_edit");
+	win = H_(create_newwin(TRUE,"testGNOME","Date Edit"), "date_edit_win");
+	gnome_app_set_contents(GNOME_APP(win), datedit);
 	gtk_widget_show(datedit);
 	gtk_widget_show(win);
 }
