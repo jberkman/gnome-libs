@@ -121,7 +121,7 @@ $JPEG_LIBS $Z_LIBS -lm), $JPEG_LIBS $Z_LIBS -lm), -lm)
 dnl Test for libgif
 AC_CHECK_LIB(gif, DGifOpenFileName,
   AC_CHECK_HEADER(gif_lib.h,
-    GIF_LIBS="-lgif"; AC_DEFINE(HAVE_LIBGIF)))
+    GIF_LIBS="-lgif"; AC_DEFINE(HAVE_LIBGIF)),,$GTK_LIBS)
 
 dnl Test for libpng
 AC_CHECK_LIB(png, png_read_info,
