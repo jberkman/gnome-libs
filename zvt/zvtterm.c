@@ -40,6 +40,7 @@
 #include <gtk/gtksignal.h>
 #include <gtk/gtkselection.h>
 #include <gtk/gtkwindow.h>
+#include <gtk/gtkbindings.h>
 
 #include "zvtterm.h"
 
@@ -101,6 +102,8 @@ static int vt_cursor_state(void *user_data, int state);
 static void zvt_term_writemore (gpointer data, gint fd, GdkInputCondition condition);
 static void zvt_term_updated(ZvtTerm *term, int mode);
 static void clone_col(unsigned short **dest, unsigned short *from);
+static void zvt_term_copy_clipboard (ZvtTerm *term);
+static void zvt_term_paste_clipboard (ZvtTerm *term);
 
 /* callbacks from update layer */
 void vt_draw_text(void *user_data, struct vt_line *line, int row, int col, int len, int attr);
@@ -133,6 +136,9 @@ enum
   CHILD_DIED,
   TITLE_CHANGED,
   GOT_OUTPUT,
+  COPY_CLIPBOARD,
+  PASTE_CLIPBOARD,
+  SCROLL,
   LAST_SIGNAL
 };
 static guint term_signals[LAST_SIGNAL] = { 0 };
@@ -172,6 +178,7 @@ zvt_term_class_init (ZvtTermClass *class)
   GtkObjectClass *object_class;
   GtkWidgetClass *widget_class;
   ZvtTermClass *term_class;
+  GtkBindingSet  *binding_set;
 
   object_class = (GtkObjectClass*) class;
   widget_class = (GtkWidgetClass*) class;
@@ -196,6 +203,7 @@ zvt_term_class_init (ZvtTermClass *class)
                     GTK_TYPE_NONE, 2,
 		    GTK_TYPE_INT,
 		    GTK_TYPE_STRING);
+  
   term_signals[GOT_OUTPUT] =
       gtk_signal_new ("got_output",
 		      GTK_RUN_FIRST,
@@ -205,6 +213,32 @@ zvt_term_class_init (ZvtTermClass *class)
 		      GTK_TYPE_NONE, 2,
 		      GTK_TYPE_STRING,
 		      GTK_TYPE_INT);
+      
+  term_signals[COPY_CLIPBOARD] = 
+      gtk_signal_new ("copy_clipboard",
+		    GTK_RUN_LAST | GTK_RUN_ACTION,
+		    GTK_CLASS_TYPE (object_class),
+		    GTK_SIGNAL_OFFSET (ZvtTermClass, copy_clipboard),
+		    gtk_marshal_NONE__NONE,
+		    GTK_TYPE_NONE, 0);
+
+    term_signals[PASTE_CLIPBOARD] =
+    gtk_signal_new ("paste_clipboard",
+		    GTK_RUN_LAST | GTK_RUN_ACTION,
+		    GTK_CLASS_TYPE (object_class),
+		    GTK_SIGNAL_OFFSET (ZvtTermClass, paste_clipboard),
+		    gtk_marshal_NONE__NONE,
+		    GTK_TYPE_NONE, 0);
+
+    term_signals[SCROLL] =
+    gtk_signal_new ("scroll",
+		    GTK_RUN_LAST | GTK_RUN_ACTION,
+		    GTK_CLASS_TYPE (object_class),
+		    GTK_SIGNAL_OFFSET (ZvtTermClass,scroll),
+		    gtk_marshal_NONE__INT,
+		    GTK_TYPE_NONE, 1, 
+		    GTK_TYPE_INT);
+
 
   gtk_object_class_add_signals (object_class, term_signals, LAST_SIGNAL);
 
@@ -232,6 +266,19 @@ zvt_term_class_init (ZvtTermClass *class)
   term_class->child_died = zvt_term_child_died;
   term_class->title_changed = zvt_term_title_changed;
   term_class->got_output = NULL;
+  term_class->copy_clipboard = zvt_term_copy_clipboard;
+  term_class->paste_clipboard = zvt_term_paste_clipboard;
+  term_class->scroll = zvt_term_scroll;
+
+  /* Setup default key bindings */
+  binding_set = gtk_binding_set_by_class(term_class);
+#if defined(sparc) || defined(__sparc__)  
+  gtk_binding_entry_add_signal(binding_set,GDK_F16,0,"copy-clipboard",0);
+  gtk_binding_entry_add_signal(binding_set,GDK_F20,0,"copy-clipboard",0);
+  gtk_binding_entry_add_signal(binding_set,GDK_F18,0,"paste-clipboard",0);
+  gtk_binding_entry_add_signal(binding_set,GDK_Page_Up,0,"scroll",1,GTK_TYPE_INT,-1);
+  gtk_binding_entry_add_signal(binding_set,GDK_Page_Down,0,"scroll",1,GTK_TYPE_INT,1);
+#endif
 }
 
 
@@ -334,6 +381,13 @@ zvt_term_init (ZvtTerm *term)
       GDK_SELECTION_PRIMARY,
       GDK_SELECTION_TYPE_STRING, 
       0);
+  
+    gtk_selection_add_target (
+      GTK_WIDGET (term),
+      gdk_atom_intern("CLIPBOARD",FALSE),
+      GDK_SELECTION_TYPE_STRING,
+      1);
+  
 #ifdef ZVT_UTF
   gtk_selection_add_target (
       GTK_WIDGET (term),
@@ -1919,7 +1973,6 @@ zvt_term_selection_clear (GtkWidget *widget, GdkEventSelection *event)
   vx = term->vx;
 
   vtx_unrender_selection(vx);
-  vt_clear_selection(vx);
   return TRUE;
 }
 
@@ -2409,6 +2462,11 @@ zvt_term_key_press (GtkWidget *widget, GdkEventKey *event)
   
   d(printf("keyval = %04x state = %x\n", event->keyval, event->state));
   handled = TRUE;
+
+  if(!gtk_bindings_activate(GTK_OBJECT(widget),
+ 					 event->keyval,
+ 					 event->state)){
+  
   switch (event->keyval) {
   case GDK_BackSpace:
     if (event->state & GDK_MOD1_MASK)
@@ -2606,6 +2664,7 @@ zvt_term_key_press (GtkWidget *widget, GdkEventKey *event)
     vt_writechild(&vx->vt, buffer, (p-buffer));
     if (term->scroll_on_keystroke) zvt_term_scroll (term, 0);
   }
+  }
 
   return handled;
 }
@@ -2629,6 +2688,30 @@ zvt_term_title_changed (ZvtTerm *term, VTTITLE_TYPE type, char *str)
 
   /* perhaps we should do something here? */
 }
+
+static void 
+zvt_term_copy_clipboard (ZvtTerm *term)
+{
+  if(term->vx->selection_size != 0){	
+	  if(gtk_selection_owner_set (GTK_WIDGET(term),
+	     gdk_atom_intern ("CLIPBOARD", FALSE),
+	     GDK_CURRENT_TIME)){
+ 	    d(printf("ownership claim succeded\n"));
+	  }else{
+ 	    d(printf("owbership claim failed\n"));
+ 	  }
+  }
+}
+
+static void 
+zvt_term_paste_clipboard (ZvtTerm *term)
+{
+ gtk_selection_convert (GTK_WIDGET (term),
+			gdk_atom_intern ("CLIPBOARD", FALSE),
+			GDK_SELECTION_TYPE_STRING,
+			GDK_CURRENT_TIME);
+}
+
 
 /**
  * zvt_term_match_add:

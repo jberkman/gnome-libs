@@ -139,6 +139,10 @@ struct _ZvtTermClass
   void (* title_changed) (ZvtTerm *term, VTTITLE_TYPE type, char *newtitle);
   void (* got_output) (ZvtTerm*);
   void (* match_clicked) (ZvtTerm *term, GdkEventButton *event, char *match, void *data);
+  /* Bindings actions */
+  void (* copy_clipboard)  (ZvtTerm *term);
+  void (* paste_clipboard) (ZvtTerm *term);
+  void (* scroll)	   (ZvtTerm *term,int n);
 };
 
 typedef enum {
