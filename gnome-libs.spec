@@ -89,6 +89,7 @@ fi
 %{prefix}/bin/*
 %{prefix}/share/pixmaps/*
 %config %{prefix}/share/gtkrc
+%config %{prefix}/etc/paper.config
 
 %files devel
 %defattr(-, root, root)
