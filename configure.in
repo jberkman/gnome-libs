@@ -331,6 +331,7 @@ dnl
 AM_PATH_ORBIT(0.5.1, , AC_MSG_ERROR([You must have ORBit installed.]))
 
 AM_PATH_OAF(0.1.0, , AC_MSG_ERROR([You must have OAF installed.]))
+AM_PATH_GCONF(0.1.0, , AC_MSG_ERROR([You must have GConf installed.]))
 
 dnl
 dnl This is needed for the gnome-moz-remote program.  It doesn't use GDK,
