@@ -1,3 +1,11 @@
+1998-05-12  Michael Zucchi  <zucchi@zzedzone.box.net.au>
+
+	* zvtterm.c (zvt_term_selection_clear): Added call to
+	gtk_selection_clear() to let gtk know the selection has been
+	cleared.
+	(zvt_term_button_release): Changed to use event->time rather than
+	GDK_CURRENT_TIME in selection owner set.
+
 1998-05-10  Michael Zucchi  <zucchi@zzedzone.box.net.au>
 
 	* zvtterm.c (zvt_term_set_font_name): Removed "loading xxx font"

@@ -828,7 +828,7 @@ zvt_term_button_release (GtkWidget      *widget,
 
     gtk_selection_owner_set (widget,
 			     GDK_SELECTION_PRIMARY,
-			     GDK_CURRENT_TIME);
+			     event->time);
   }
 
   return FALSE;
@@ -893,6 +893,11 @@ zvt_term_selection_clear (GtkWidget *widget, GdkEventSelection *event)
   g_return_val_if_fail (ZVT_IS_TERM (widget), FALSE);
   g_return_val_if_fail (event != NULL, FALSE);
 
+  /* Let the selection handling code know that the selection
+   * has been changed, since we've overriden the default handler */
+  if (!gtk_selection_clear (widget, event))
+    return FALSE;
+
   term = ZVT_TERM (widget);
   vx = term->vx;
 
@@ -942,7 +947,7 @@ zvt_term_selection_received (GtkWidget *widget, GtkSelectionData *selection_data
   term = ZVT_TERM (widget);
   vx = term->vx;
 
-  (printf("got selection from system\n"));
+  d(printf("got selection from system\n"));
 
   /* **** IMPORTANT **** Check to see if retrieval succeeded  */
   if (selection_data->length < 0)
