@@ -2,29 +2,19 @@
 GnomeMDIGenericChild
 
 <!-- ##### SECTION Short_Description ##### -->
-A generic <type>GnomeMDI</type> child
+
 
 <!-- ##### SECTION Long_Description ##### -->
-  <para>
-    <type>GnomeMDIGenericChild</type> is a subclass of <type>GnomeMDIChild</type>
-    that allows for defining of GnomeMDIChild's virtual functions on a per-instance
-    rather than on per-class basis. Thus the programmer does not have to subclass
-    <type>GnomeMDIChild</type> but can use <type>GnomeMDIGenericChild</type> class
-    directly.
-  </para>
-  
-  <para>
-    Only the view creating function is mandatory. It has to be set with
-    gnome_mdi_generic_child_set_view_creator() or
-    gnome_mdi_generic_child_set_view_creator_full(). A simple default implementation
-    of notebook label creation is provided by <type>GnomeMDIChild</type> class. The
-    other two functions are optional.
-  </para>
+<para>
+
+</para>
+
 
 <!-- ##### SECTION See_Also ##### -->
 <para>
 
 </para>
+
 
 <!-- ##### STRUCT GnomeMDIGenericChild ##### -->
 <para>
@@ -126,11 +116,6 @@ A generic <type>GnomeMDI</type> child
 @func: 
 @marshal: 
 @data: 
-@notify: <!--
-Local variables:
-mode: sgml
-sgml-parent-document: ("../gnomeui-docs.sgml" "book" "sect1" "")
-End:
--->
+@notify: 
 
 

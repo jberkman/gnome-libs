@@ -2,61 +2,19 @@
 GnomeMDI
 
 <!-- ##### SECTION Short_Description ##### -->
-GNOME Multiple Document Interface
+
 
 <!-- ##### SECTION Long_Description ##### -->
-  <para>
-    The <type>GnomeMDI</type> object lets the application manage a
-    number of documents and displays their views in a configurable
-    fashion.
-  </para>
-  
-  <para>
-    Once an instance of <type>GnomeMDI</type> has been created, you
-    can add documents to it using gnome_mdi_add_child() and add views
-    of these documents with gnome_mdi_add_view() routine. GnomeMDI
-    also provides means to create global menus and toolbar that apply
-    for each document and for merging document-specific menus with the
-    global ones. MDI automatically creates a menu containing a list of
-    all open documents. The global menus and toolbar can be created
-    using a template GnomeUIInfo structure or with a handler for
-    app_created signal which allows for customization of all
-    <type>GnomeApp</type> widgets that <type>GnomeMDI</type> creates.
-  </para>
+<para>
 
-  <para>
-    The views are displayed in one of three modes that can be set using
-    gnome_mdi_set_mode() function:
-    <itemizedlist> 
-      <listitem><para>
-	  %GNOME_MDI_NOTEBOOK mode displays each view in a notebook page. The user can create
-	  any number of notebooks, each within its toplevel <type>GnomeApp</type> and drag
-	  pages from one to another, thus distributing the views between them in any
-	  desired manner.
-	</para></listitem>
-      <listitem><para>
-	  %GNOME_MDI_TOPLEVEL mode displays each view in its own toplevel window.
-	</para></listitem>
-      <listitem><para>
-	  %GNOME_MDI_MODAL mode displays only a single view of a document.
-	</para></listitem>
-      <listitem><para>
-	  %GNOME_MDI_DEFAULT uses the mode that can be configured on a per-user
-	  basis via the GNOME control center.
-	</para></listitem>
-    </itemizedlist>
-  </para>
-  
-  <para>
-    <type>GnomeMDI</type> can automatically save and restore its state and the state
-    of its children and layout, which is particularly useful to simplify implementation
-    of session managment.
-  </para>
+</para>
+
 
 <!-- ##### SECTION See_Also ##### -->
 <para>
 
 </para>
+
 
 <!-- ##### STRUCT GnomeMDI ##### -->
 <para>
@@ -381,10 +339,5 @@ GNOME Multiple Document Interface
 </para>
 
 @mdi: the object which received the signal.
-@arg1: <!--
-Local variables:
-mode: sgml
-sgml-parent-document: ("../gnomeui-docs.sgml" "book" "sect1" "")
-End:
--->
+@arg1: 
 

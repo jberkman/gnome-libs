@@ -2,36 +2,19 @@
 GnomeApp
 
 <!-- ##### SECTION Short_Description ##### -->
-The toplevel GNOME container
+
 
 <!-- ##### SECTION Long_Description ##### -->
+<para>
 
-<para>Toplevel GNOME applications would normally use one
-<type>GnomeApp</type> widget as their toplevel window.  You can create
-as many <type>GnomeApp</type> widgets as you want, for example, some
-people use one GnomeApp per document their application loads.</para>
+</para>
 
-<para>Once you have created one instance of this widget, you would add
-your main application view information to this window by using
-gnome_app_set_contents() routine.</para>
-
-<para> The <type>GnomeApp</type> has support for including a menubar
-one or more toolbars and a statusbar for your application, it also
-takes care of intalling the accelerators for you when used in
-conjuction with the gnome-app-helper routines.  The toolbars are
-inserted into <type>GnomeDock</type> widgets.</para>
-
-<para>The <filename>gnome-app-helper</filename> module provides
-various helper routines to simplify the configuration of your menus
-and toolbars, but you can create those yourself and use the
-gnome_app_set_menus(), gnome_app_add_toolbar(),
-gnome_app_set_toolbar(), gnome_app_add_dock_item(),
-and gnome_app_add_docked().</para>
 
 <!-- ##### SECTION See_Also ##### -->
 <para>
 
 </para>
+
 
 <!-- ##### STRUCT GnomeApp ##### -->
 <para>
