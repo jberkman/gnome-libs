@@ -1,3 +1,10 @@
+1999-01-14  Miguel de Icaza  <miguel@nuclecu.unam.mx>
+
+	* libgnome/gnome-config.c: TProfile now has a last_checked field
+	that registers when was the last time we statted the file.  This
+	avoid us making expensive system calls while loading a bunch of
+	values from GnomeConfig.
+
 Thu Jan 14 23:03:47 PST 1999 Manish Singh <yosh@gimp.org>
 
 	* tools/convertrgb/Makefile.am: don't install convertrgb
