@@ -141,6 +141,15 @@ converted - the history_id and the file browser or calculator window
 title respectively. In the case of \fIE\fP, only one more \fIgchar *\fP
 is converted: the history_id.
 .TP
+\fI%D\fP
+Date edit widget. Causes two va_arg conversions of type \fIgdouble *\fP
+and type \fIgint\fP. The first represents the time in seconds since Jan
+1 1970 and is used to initialise the widget as well as to store the
+result - it is cast internally to \fBtime_t\fP. The second is the
+options flag and is the inclusive \fBOR\fP of one or more of
+\fBGNOME_DATE_EDIT_SHOW_TIME\fP, \fBGNOME_DATE_EDIT_24_HR\fP, and
+\fBGNOME_DATE_EDIT_WEEK_STARTS_ON_MONDAY\fP.
+.TP
 \fI%B\fP
 Button with label. One va_arg conversion of type \fIchar *\fP, dictating
 the button label. If this is NULL, then gtk_button_new is called instead
@@ -413,13 +422,25 @@ terminates. This prevents this.
 .I GTK_CAULDRON_GRAB
 Causes a grab on the dialog - that is, no other widgets in the
 application will work until the dialog exits.
+.TP
+.I GTK_CAULDRON_PARENT
+Window managers sometimes allow specification of a parent window so that
+the behaviour of the dialog and some other top level window are associated.
+Gtk allows you to set the parent of the dialog. If you want to enable this,
+use this flag and add in an extra parent argument after the options. The new
+protype becomes:
+.br
+.sp
+\fB\fIgchar *\fPgtk_dialog_cauldron (\fIgchar * title\fP, \fIglong options\fP,
+\fIGtkWidget * parent\fP, \fIconst gchar * format\fP,\fI...\fP)\fP
+.br
 .PP
 .SH USAGE FROM WITHIN PYTHON
 This example should be self explanatary. Note that as in C the results
 are assigned only if the 'r' option in the button is present, otherwise,
 the default values of the widgets are returned regardless of changes
 made by the user. This functionality is available with the \fBpygnome\fP
-and \fBpygtk\fP package.
+and \fBpygtk\fP packages.
 .PP
 .nf
 s = [""]
