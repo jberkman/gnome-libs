@@ -289,7 +289,7 @@ open_ptys (int utmp, int wtmp)
 	savedUid = geteuid();
 	savedGid = getegid();
 
-	seteuid(pwent->pw_gid);
+	seteuid(pwent->pw_uid);
 	setegid(pwent->pw_gid);
 	status = openpty (&master_pty, &slave_pty, term_name, NULL, NULL);
 	setuid(savedUid);
