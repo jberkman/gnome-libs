@@ -24,6 +24,8 @@
 #include <time.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <gdk_imlib.h>
+
 #include "testgnome.h"
 #include "bomb.xpm"
 
@@ -351,19 +353,26 @@ void create_font_sel()
 	gtk_widget_show(fontsel);
 }
 
-/* Icon lists seem too complicated to implement right now. FIXME 
 void create_icon_list()
 {
 GtkWidget *app;
 GtkWidget *iconlist;
-
+GdkImlibImage *pix;
 app = create_newwin(TRUE,"testGNOME","Icon List");
+
 iconlist = gnome_icon_list_new();
+
+pix = gdk_imlib_create_image_from_xpm_data((gchar **)bomb_xpm);
+gdk_imlib_render (pix, pix->rgb_width, pix->rgb_height);
+
+gnome_icon_list_append_imlib(GNOME_ICON_LIST(iconlist), pix, "Foo");
+gnome_icon_list_append_imlib(GNOME_ICON_LIST(iconlist), pix, "Bar");
+gnome_icon_list_append_imlib(GNOME_ICON_LIST(iconlist), pix, "LaLa");
+
 gnome_app_set_contents(GNOME_APP(app),iconlist);
 gtk_widget_show(iconlist);
 gtk_widget_show(app);
 }
-*/
 
 
 static void
@@ -430,10 +439,13 @@ void create_less()
 void create_pixmap()
 {
 	GtkWidget *app;
+	GdkImlibImage *pix;
 	GtkWidget *pixmap;
-
 	app = create_newwin(TRUE,"testGNOME","Pixmap");
-	pixmap = gnome_pixmap_new_from_xpm_d(bomb);
+	pix = gdk_imlib_create_image_from_xpm_data((gchar **)bomb_xpm);
+	gdk_imlib_render (pix, pix->rgb_width, pix->rgb_height);
+	pixmap = gtk_pixmap_new(pix->pixmap,pix->shape_mask);
+		
 	gnome_app_set_contents(GNOME_APP(app),pixmap);
 	gtk_widget_show(pixmap);
 	gtk_widget_show(app);
@@ -481,7 +493,7 @@ int main (int argc, char *argv[])
 		  { "file entry", create_file_entry },
 		  { "number entry", create_number_entry },
 		  { "font sel", create_font_sel },
-/*	{ "icon list", create_icon_list }, */
+	{ "icon list", create_icon_list }, 
 		  { "lamp", create_lamp },
 		  { "less", create_less },
 		  { "pixmap", create_pixmap },
