@@ -1,3 +1,11 @@
+1999-11-23  Elliot Lee  <sopwith@redhat.com>
+
+	* libgnomeui/gnome-stock-ids.[ch],libgnomeui/gnome-init.[ch],libgnome/gnomelib-init*.[ch]:
+ 	  Uniquify the strings to save some memory.
+	* test-gnome/*.c: Make it build.
+	* configure.in: No imlib!
+	* libgnomeui/libgnomeui.h: Include gnome-druid-page-edge.h, not -start.h
+
 1999-11-22  Jonathan Blandford  <jrb@redhat.com>
 
 	* Merged in the gdk-pixbuf branch.  It breaks a lot of things.

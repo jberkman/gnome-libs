@@ -340,21 +340,11 @@ dnl
 AC_PATH_X
 AC_PATH_XTRA
 
-AM_PATH_GDK_IMLIB(1.9, [define_imlib_1_9=true],[
-    AM_PATH_GDK_IMLIB(1.8,[
-	    LIBGNOMEUI_LIBS="$LIBGNOMEUI_LIBS $PNG_LIBS"
-	],[AC_MSG_ERROR([*** IMLIB 1.8 not installed - please install first ***])])])
-
-
-dnl if test x$define_imlib_1_9 = xtrue; then
-dnl     AC_DEFINE(HAVE_IMLIB_1_9)
-dnl fi
-
 dnl
 dnl These are for building the appropriate lib*
 dnl
 LIBGNOME_LIBS="$DB_LIB $GLIB_LIBS $DL_LIB"
-LIBGNOMEUI_LIBS="$LIBGNOME_LIBS $OAF_LIBS $GDK_IMLIB_LIBS $GTK_LIBS"
+LIBGNOMEUI_LIBS="$LIBGNOME_LIBS $OAF_LIBS $GTK_LIBS"
 LIBGTKXMHTML_LIBS="$XPM_LIBS $JPEG_LIBS $PNG_LIBS $Z_LIBS $GTK_LIBS"
 SUPPORTINCS='-DNEED_GNOMESUPPORT_H -I$(top_builddir)/support -I$(top_srcdir)/support'
 

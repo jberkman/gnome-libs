@@ -24,7 +24,6 @@
 #include <time.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include <gdk_imlib.h>
 
 #include "testgnome.h"
 #include "bomb.xpm"
@@ -238,7 +237,6 @@ create_color_picker (void)
  * GnomeDruid
  */
 
-
 typedef struct druid_data
 {
 	GtkWidget *radio_button; /* if set, goto A, else goto b */
@@ -301,8 +299,7 @@ create_druid(void)
   gchar *fname;
   GtkWidget *page_start, *page_finish;
   GtkWidget *page_a, *page_b, *page_c, *page_d, *page_e, *page_f, *page_g;
-  GdkImlibImage *logo = NULL;
-  GdkImlibImage *watermark = NULL;
+  GdkPixbuf *logo = NULL;
   GtkWidget *check_a, *check_b;
   GSList *radio_group;
   druid_data *data;
@@ -310,27 +307,19 @@ create_druid(void)
   /* load the images */
   fname = gnome_pixmap_file ("gnome-logo-icon.png");
   if (fname)
-    logo = gdk_imlib_load_image (fname);
+    logo = gdk_pixbuf_new_from_file(fname);
   g_free (fname);
-
-#if 0
-  /* We really need a better image for this.  For now, it'll do */
-  fname = gnome_pixmap_file ("gnome-logo-large.png");
-  if (fname)
-    watermark = gdk_imlib_load_image (fname);
-  g_free (fname);
-#endif
 
   /* The initial stuff */
   window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
   druid = gnome_druid_new ();
 
   /* The druid pages. */
-  page_start = gnome_druid_page_start_new_with_vals
-    ("Beginning of the DRUID",
+  page_start = gnome_druid_page_edge_new_with_vals
+    (GNOME_EDGE_START, "Beginning of the DRUID",
      "This is a Sample DRUID\nIt will walk you through absolutely nothing. (-:\n\nIt would be nice to have a watermark on the left.",
      logo,
-     watermark);
+     NULL);
   page_a = gnome_druid_page_standard_new_with_vals ("Page A", logo);
   page_b = gnome_druid_page_standard_new_with_vals ("Page B", logo);
   page_c = gnome_druid_page_standard_new_with_vals ("Page C", logo);
@@ -338,11 +327,11 @@ create_druid(void)
   page_e = gnome_druid_page_standard_new_with_vals ("Page E", logo);
   page_f = gnome_druid_page_standard_new_with_vals ("Page F", logo);
   page_g = gnome_druid_page_standard_new_with_vals ("Page G", logo);
-  page_finish = gnome_druid_page_finish_new_with_vals
-    ("End of the DRUID",
+  page_finish = gnome_druid_page_edge_new_with_vals
+    (GNOME_EDGE_FINISH, "End of the DRUID",
      "I hope you found this demo informative.  You would\nnormally put a message here letting someone know\nthat they'd successfully installed something.",
      logo,
-     watermark);
+     NULL);
 
   /* set each one up. */
   /* page_a */
@@ -575,8 +564,8 @@ create_dialog(void)
   hbox = gtk_hbox_new(FALSE, GNOME_PAD);
   gnome_app_set_contents(GNOME_APP(app),vbox);
 
-  toggle = gtk_hscale_new(gtk_adjustment_new(0, 0, 100, 1, 1, 10));
-  gtk_container_add(vbox, toggle);
+  toggle = gtk_hscale_new(GTK_ADJUSTMENT(gtk_adjustment_new(0, 0, 100, 1, 1, 10)));
+  gtk_container_add(GTK_CONTAINER(vbox), toggle);
   gnome_widget_add_help(toggle, "Boobah woobahb!");
 
   gtk_box_pack_start(GTK_BOX(vbox), hbox, TRUE, TRUE, GNOME_PAD);
@@ -711,6 +700,7 @@ create_pixmap_entry(void)
 	gtk_widget_show(app);
 }
 
+#if 0
 static void
 create_icon_entry(void)
 {
@@ -723,6 +713,7 @@ create_icon_entry(void)
 	gtk_widget_show(entry);
 	gtk_widget_show(app);
 }
+#endif
 
 static void
 create_number_entry(void)
@@ -883,6 +874,7 @@ create_font_picker (void)
 
 }
 
+#ifdef HAVE_ICON_LIST
 static void
 select_icon (GnomeIconList *gil, gint n, GdkEvent *event, gpointer data)
 {
@@ -952,7 +944,7 @@ create_icon_list(void)
 	gtk_widget_show (iconlist);
 	gtk_widget_show(app);
 }
-
+#endif
 
 static void
 create_less(void)
@@ -1830,6 +1822,7 @@ create_app_helper (GtkWidget *widget, gpointer data)
 }
 
 /*test for dentry edit*/
+#if 0
 static void
 create_dentry_edit(void)
 {
@@ -1844,6 +1837,7 @@ create_dentry_edit(void)
 	gnome_app_set_contents(GNOME_APP(app),nbook);
 	gtk_widget_show_all(app);
 }
+#endif
 
 static void
 href_cb(GtkObject *button)
@@ -1921,13 +1915,19 @@ main (int argc, char *argv[])
 		  { "dialog", create_dialog },
 		  { "file entry", create_file_entry },
                   { "pixmap entry", create_pixmap_entry },
+#ifdef HAVE_ICON_LIST
                   { "icon entry", create_icon_entry },
+#endif
                   { "number entry", create_number_entry },
                   { "font picker", create_font_picker },
+#ifdef HAVE_ICON_LIST
 		  { "icon list", create_icon_list },
+#endif
 		  { "less", create_less },
 		  { "pixmap", create_pixmap },
+#if 0
 		  { "dentry edit", create_dentry_edit },
+#endif
 		  { "href", create_href },
 #ifndef GNOME_EXCLUDE_DEPRECATED
 		  { "(Reload preferences)", gnome_preferences_load },
