@@ -1,3 +1,10 @@
+Tue Feb 10 18:02:19 1998  Miguel de Icaza  <miguel@nuclecu.unam.mx>
+
+	* XmHTMLP.h: Debugging fields on the structure are always
+	included, no matter if DEBUG was defined or not.  Otherwise
+	applications linked with XmHTML would required to use the same
+	defines that were used originally. 
+
 Mon Feb  9 16:49:00 1998  Miguel de Icaza  <miguel@nuclecu.unam.mx>
 
 	* toolkit.h (CHECK_CALLBACK), gtk-xmhtml.c: Get rid of the copy of

@@ -35,6 +35,14 @@
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.9  1998/02/11 00:02:29  unammx
+* Tue Feb 10 18:02:19 1998  Miguel de Icaza  <miguel@nuclecu.unam.mx>
+*
+* 	* XmHTMLP.h: Debugging fields on the structure are always
+* 	included, no matter if DEBUG was defined or not.  Otherwise
+* 	applications linked with XmHTML would required to use the same
+* 	defines that were used originally.
+*
 * Revision 1.8  1998/01/07 01:45:36  unammx
 * Gtk/XmHTML is ready to be used by the Gnome hackers now!
 * Weeeeeee!
@@ -1045,14 +1053,12 @@ typedef struct _XmHTMLPart {
 										 */
 	int					visibility;		/* visibility state of work_area */
 
-#ifdef DEBUG
 	Boolean				debug_disable_warnings;	/* warning msg blocking flag */
 	Boolean				debug_full_output;	/* allow output from FullDebug */
 	Boolean				debug_save_clipmasks; /* save clipmasks as bitmaps */
 	Boolean				debug_no_loopcount;	/* ignore loop_count in anims */
 	String				debug_prefix;		/* debug file prefix */
 	String				debug_levels;		/* debug levels to enable */
-#endif
 
 	unsigned char pad[64];				/* reserved for future use */
 
