@@ -36,6 +36,7 @@
 #include <sys/types.h>
 #include <sys/time.h>
 #include <sys/resource.h>
+#include <sys/stat.h>
 #include <limits.h>
 #include <unistd.h>
 #include <string.h>
@@ -50,6 +51,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <utmp.h>
+#include <grp.h>
 #include "gnome-pty.h"
 #include "gnome-login-support.h"
 
@@ -280,6 +282,7 @@ open_ptys (int utmp, int wtmp)
 	int size;
 	pid_t savedUid;
 	gid_t savedGid;
+	struct group *group_info;
 	
 	term_name = ((char *)alloca (path_max())) + 1;
 
@@ -305,6 +308,18 @@ open_ptys (int utmp, int wtmp)
 		result = 0;
 		write (STDIN_FILENO, &result, sizeof (result));
 		return 0;
+	}
+
+	group_info = getgrnam ("tty");
+	
+	if (group_info){
+		fchown (slave_pty, getuid (), group_info->gr_gid);
+		fchmod (slave_pty, S_IRUSR | S_IWUSR | S_IWGRP);
+	}
+	else
+	{
+		fchown (slave_pty, getuid (), -1);
+		fchmod (slave_pty, S_IRUSR | S_IWUSR | S_IWGRP);
 	}
 
 	p = pty_add (utmp, wtmp, master_pty, slave_pty, term_name);

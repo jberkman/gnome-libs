@@ -1,3 +1,10 @@
+1999-06-10  Michael Zucchi  <mzucchi@zedzone.mmc.com.au>
+
+	* gnome-pty-helper.c (open_ptys): Use fchown()/fchmod() to set the
+	slave pty's ownership/permissions after openpty() returns.  IMHO
+	this is fixing a non-existant bug, but who am I to argue?
+	(): Also include sys/stat.h, for S_* defines.
+
 1999-06-02  Michael Zucchi  <mzucchi@zedzone.mmc.com.au>
 
 	* zvtterm.c (zvt_term_draw): Use a forced fill to draw the
