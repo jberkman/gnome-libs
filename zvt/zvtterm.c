@@ -1555,7 +1555,7 @@ void vt_draw_text(void *user_data, int col, int row, char *text, int len, int at
 		       col*term->charwidth, row*term->charheight,
 		       len*term->charwidth, term->charheight);
   } else {
-    (printf("not clearing background in_expose = %d, back_match=%d\n", term->in_expose, vx->back_match));
+    d(printf("not clearing background in_expose = %d, back_match=%d\n", term->in_expose, vx->back_match));
     d(printf("txt = '%.*s'\n", len, text));
   }
 

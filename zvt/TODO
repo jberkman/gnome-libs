@@ -3,22 +3,12 @@ Todo items.
 
 No real order here, but the magic selections seems neat to play with.
 
-- Optimise scroll-back buffer scrolling
- - Speed up viewing of the scrollback buffer.
-
-- Proper attribute support.
- - Colour support (less important in my books, but some people ...)
-
 - Magic selection
  - some sort of regex pattern maching scheme to recognise matches
    near the selection point.
  - some sort of classing engine to map matches to functions.
  - merge into the selection code as a selection type.
  - maybe use the dingus stuff, or maybe not ...
-
-- Selections
- - Render selections properly if new selections or if refreshed/
-   scrolled selections.  This has mostly been done.
 
 - Capture.  To file, or to pipe.
  - Screen dump/print?
@@ -31,10 +21,6 @@ No real order here, but the magic selections seems neat to play with.
  - operations menu
   - send signals, etc.
  - fonts
-
-- VT/Xterm emulation
- - such as report terminal type
- - some more rigourous testing
 
 - XTerm title setting escape sequence.  Partly done.  Read in,
   just not processed.
