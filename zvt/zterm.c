@@ -68,7 +68,7 @@ title_changed_event (ZvtTerm *term, VTTITLE_TYPE type, char *newtitle)
   }
 }
 
-static void
+static int
 button_press_event (ZvtTerm *term, GdkEventButton *e)
 {
   int x,y;
