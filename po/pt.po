@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-libs 1.0.8\n"
-"POT-Creation-Date: 1999-08-30 15:26-0500\n"
+"POT-Creation-Date: 1999-08-31 13:26+0200\n"
 "PO-Revision-Date: 1999-06-13 23:08+01:00\n"
 "Last-Translator: Nuno Ferreira <nmrf@rnl.ist.utl.pt>\n"
 "Language-Team: Portuguese <pt@li.org>\n"
@@ -9,25 +9,25 @@ msgstr ""
 "Content-Type: text/plain; charset=iso-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: libgnome/gconfigger.c:32
-msgid "get"
-msgstr "ler"
+#: libgnome/gconfigger.c:32 libgnome/gconfigger.c:33
+msgid "CONFIG-PATH"
+msgstr "PATH-DA-CONFIGURAÇÃO"
 
 #: libgnome/gconfigger.c:32
 msgid "Get config entry"
 msgstr "Lê entrada da configuração"
 
-#: libgnome/gconfigger.c:32 libgnome/gconfigger.c:33
-msgid "CONFIG-PATH"
-msgstr "PATH-DA-CONFIGURAÇÃO"
-
-#: libgnome/gconfigger.c:33
-msgid "set"
-msgstr "atribuir"
+#: libgnome/gconfigger.c:32
+msgid "get"
+msgstr "ler"
 
 #: libgnome/gconfigger.c:33
 msgid "Set config entry"
 msgstr "Atribui valor a entrada de configuração"
+
+#: libgnome/gconfigger.c:33
+msgid "set"
+msgstr "atribuir"
 
 #: libgnome/gnome-popt.c:90
 #, c-format
@@ -140,23 +140,23 @@ msgstr "_Ajuda"
 msgid "_Windows/"
 msgstr "_Janelas/"
 
+#: libgnomeui/gnome-app-helper.c:105
+msgid "Open a file"
+msgstr "Abre um ficheiro"
+
 #. Open
 #: libgnomeui/gnome-app-helper.c:105
 msgid "_Open..."
 msgstr "_Abrir..."
 
-#: libgnomeui/gnome-app-helper.c:105
-msgid "Open a file"
-msgstr "Abre um ficheiro"
+#: libgnomeui/gnome-app-helper.c:110
+msgid "Save the current file"
+msgstr "Grava o ficheiro corrente"
 
 #. Save
 #: libgnomeui/gnome-app-helper.c:110
 msgid "_Save"
 msgstr "_Gravar"
-
-#: libgnomeui/gnome-app-helper.c:110
-msgid "Save the current file"
-msgstr "Grava o ficheiro corrente"
 
 #. Save As
 #: libgnomeui/gnome-app-helper.c:115
@@ -176,14 +176,14 @@ msgstr "_Reverter"
 msgid "Revert to a saved version of the file"
 msgstr "Reverte o ficheiro para a versão gravada"
 
+#: libgnomeui/gnome-app-helper.c:127
+msgid "Print the current file"
+msgstr "Imprime o ficheiro corrente"
+
 #. Print
 #: libgnomeui/gnome-app-helper.c:127
 msgid "_Print"
 msgstr "_Imprimir..."
-
-#: libgnomeui/gnome-app-helper.c:127
-msgid "Print the current file"
-msgstr "Imprime o ficheiro corrente"
 
 #. Print Setup
 #: libgnomeui/gnome-app-helper.c:132
@@ -194,14 +194,14 @@ msgstr "Configurar I_mpressão..."
 msgid "Setup the page settings for your current printer"
 msgstr "Configura os parâmetros de impressão para a impressora corrente"
 
+#: libgnomeui/gnome-app-helper.c:138
+msgid "Close the current file"
+msgstr "Fecha o ficheiro corrente"
+
 #. Close
 #: libgnomeui/gnome-app-helper.c:138
 msgid "_Close"
 msgstr "_Fechar"
-
-#: libgnomeui/gnome-app-helper.c:138
-msgid "Close the current file"
-msgstr "Fecha o ficheiro corrente"
 
 #. Exit
 #: libgnomeui/gnome-app-helper.c:143
@@ -224,24 +224,24 @@ msgstr "C_ortar"
 msgid "Cut the selection"
 msgstr "Corta a selecção"
 
+#: libgnomeui/gnome-app-helper.c:157
+msgid "Copy the selection"
+msgstr "Copia a selecção"
+
 #. 10
 #. Copy
 #: libgnomeui/gnome-app-helper.c:157 libgnomeui/gnome-popup-help.c:59
 msgid "_Copy"
 msgstr "_Copiar"
 
-#: libgnomeui/gnome-app-helper.c:157
-msgid "Copy the selection"
-msgstr "Copia a selecção"
+#: libgnomeui/gnome-app-helper.c:162
+msgid "Paste the clipboard"
+msgstr "Cola a selecção do \"clipboard\""
 
 #. Paste
 #: libgnomeui/gnome-app-helper.c:162 libgnomeui/gnome-popup-help.c:61
 msgid "_Paste"
 msgstr "Co_lar"
-
-#: libgnomeui/gnome-app-helper.c:162
-msgid "Paste the clipboard"
-msgstr "Cola a selecção do \"clipboard\""
 
 #. Clear
 #: libgnomeui/gnome-app-helper.c:167
@@ -252,32 +252,32 @@ msgstr "L_impar"
 msgid "Clear the selection"
 msgstr "Limpa a selecção"
 
+#: libgnomeui/gnome-app-helper.c:172
+msgid "Undo the last action"
+msgstr "Desfaz a última acção"
+
 #. Undo
 #: libgnomeui/gnome-app-helper.c:172
 msgid "_Undo"
 msgstr "_Desfazer"
 
-#: libgnomeui/gnome-app-helper.c:172
-msgid "Undo the last action"
-msgstr "Desfaz a última acção"
+#: libgnomeui/gnome-app-helper.c:177
+msgid "Redo the undone action"
+msgstr "Refaz a acção desfeita"
 
 #. Redo
 #: libgnomeui/gnome-app-helper.c:177
 msgid "_Redo"
 msgstr "_Refazer"
 
-#: libgnomeui/gnome-app-helper.c:177
-msgid "Redo the undone action"
-msgstr "Refaz a acção desfeita"
+#: libgnomeui/gnome-app-helper.c:182
+msgid "Search for a string"
+msgstr "Procura uma expressão"
 
 #. Find
 #: libgnomeui/gnome-app-helper.c:182
 msgid "_Find..."
 msgstr "_Procurar..."
-
-#: libgnomeui/gnome-app-helper.c:182
-msgid "Search for a string"
-msgstr "Procura uma expressão"
 
 #. Find Again
 #: libgnomeui/gnome-app-helper.c:187
@@ -288,14 +288,14 @@ msgstr "Procurar _Novamente"
 msgid "Search again for the same string"
 msgstr "Procura novamente a expressão anterior"
 
+#: libgnomeui/gnome-app-helper.c:193
+msgid "Replace a string"
+msgstr "Substitui um expressão"
+
 #. Replace
 #: libgnomeui/gnome-app-helper.c:193
 msgid "_Replace..."
 msgstr "_Substituir..."
-
-#: libgnomeui/gnome-app-helper.c:193
-msgid "Replace a string"
-msgstr "Substitui um expressão"
 
 #. Properties
 #: libgnomeui/gnome-app-helper.c:198
@@ -635,21 +635,21 @@ msgstr "="
 msgid "INV"
 msgstr "INV"
 
-#: libgnomeui/gnome-client.c:828
-msgid "Specify session management ID"
-msgstr "Especifique o identificador da sessão"
-
 #: libgnomeui/gnome-client.c:828 libgnorba/goad-browser.c:27
 msgid "ID"
 msgstr "ID"
 
-#: libgnomeui/gnome-client.c:830
-msgid "Specify prefix of saved configuration"
-msgstr "Especifica prefixo da configuração gravada"
+#: libgnomeui/gnome-client.c:828
+msgid "Specify session management ID"
+msgstr "Especifique o identificador da sessão"
 
 #: libgnomeui/gnome-client.c:830
 msgid "PREFIX"
 msgstr "PREFIXO"
+
+#: libgnomeui/gnome-client.c:830
+msgid "Specify prefix of saved configuration"
+msgstr "Especifica prefixo da configuração gravada"
 
 #: libgnomeui/gnome-client.c:832
 msgid "Disable connection to session manager"
@@ -744,12 +744,12 @@ msgstr "Básico"
 msgid "Advanced"
 msgstr "Avançado"
 
-#: libgnomeui/gnome-file-entry.c:148
+#: libgnomeui/gnome-file-entry.c:151
 msgid "Select file"
 msgstr "Seleccione ficheiro"
 
 #. browse button ...
-#: libgnomeui/gnome-file-entry.c:277 libgnomeui/gnome-spell.c:617
+#: libgnomeui/gnome-file-entry.c:280 libgnomeui/gnome-spell.c:617
 #: libgnomeui/gnome-spell.c:634 libgnomeui/gnome-spell.c:651
 msgid "Browse..."
 msgstr "Procurar..."
@@ -778,26 +778,26 @@ msgstr "Prever"
 msgid "Loading Icons..."
 msgstr "A carregar ícones..."
 
-#: libgnomeui/gnome-init.c:157
-msgid "Gdk debugging flags to set"
-msgstr "Opções de debug do Gdk a activar"
-
 #: libgnomeui/gnome-init.c:157 libgnomeui/gnome-init.c:159
 #: libgnomeui/gnome-init.c:179 libgnomeui/gnome-init.c:181
 msgid "FLAGS"
 msgstr "OPÇÕES"
+
+#: libgnomeui/gnome-init.c:157
+msgid "Gdk debugging flags to set"
+msgstr "Opções de debug do Gdk a activar"
 
 #: libgnomeui/gnome-init.c:159
 msgid "Gdk debugging flags to unset"
 msgstr "Opções de debug do Gdk a desactivar"
 
 #: libgnomeui/gnome-init.c:161
-msgid "X display to use"
-msgstr "Display X a usar"
-
-#: libgnomeui/gnome-init.c:161
 msgid "DISPLAY"
 msgstr "DISPLAY"
+
+#: libgnomeui/gnome-init.c:161
+msgid "X display to use"
+msgstr "Display X a usar"
 
 #: libgnomeui/gnome-init.c:163
 msgid "Make X calls synchronous"
@@ -808,20 +808,20 @@ msgid "Don't use X shared memory extension"
 msgstr "Não usar extensão de memória partilhada do X"
 
 #: libgnomeui/gnome-init.c:167
-msgid "Program name as used by the window manager"
-msgstr "Nome do programa igual ao usado pelo gestor de janelas"
-
-#: libgnomeui/gnome-init.c:167
 msgid "NAME"
 msgstr "NOME"
 
-#: libgnomeui/gnome-init.c:169
-msgid "Program class as used by the window manager"
-msgstr "Classe do programa igual à usada pelo gestor de janelas"
+#: libgnomeui/gnome-init.c:167
+msgid "Program name as used by the window manager"
+msgstr "Nome do programa igual ao usado pelo gestor de janelas"
 
 #: libgnomeui/gnome-init.c:169
 msgid "CLASS"
 msgstr "CLASSE"
+
+#: libgnomeui/gnome-init.c:169
+msgid "Program class as used by the window manager"
+msgstr "Classe do programa igual à usada pelo gestor de janelas"
 
 #: libgnomeui/gnome-init.c:171
 msgid "HOST"
@@ -1252,12 +1252,12 @@ msgid "Edit"
 msgstr "Editar"
 
 #: libgnomeui/winhints_demo.c:46
-msgid "wmhints-test"
-msgstr "wmhints-test"
-
-#: libgnomeui/winhints_demo.c:46
 msgid "winhints-test"
 msgstr "winhints-test"
+
+#: libgnomeui/winhints_demo.c:46
+msgid "wmhints-test"
+msgstr "wmhints-test"
 
 #: libgnomeui/winhints_demo.c:71
 msgid "Layer:"
@@ -1389,12 +1389,12 @@ msgid "GOAD ID of the server to activate"
 msgstr "ID GOAD do servidor a activar"
 
 #: libgnorba/goad-browser.c:28
-msgid "Repository ID of the server to activate"
-msgstr "ID de Repositório do servidor a activar"
-
-#: libgnorba/goad-browser.c:28
 msgid "REPO-ID"
 msgstr "ID-REPO"
+
+#: libgnorba/goad-browser.c:28
+msgid "Repository ID of the server to activate"
+msgstr "ID de Repositório do servidor a activar"
 
 #: libgnorba/goad-browser.c:171
 msgid ""
@@ -1411,20 +1411,20 @@ msgid "(Internal use only) GOAD server ID to activate"
 msgstr "(Só para uso interno) ID do servidor GOAD a activar"
 
 #: libgnorba/loadshlib.c:11
-msgid "ID under which GOAD knows this server"
-msgstr "ID pelo qual o GOAD conhece este servidor"
-
-#: libgnorba/loadshlib.c:11
 msgid "GOAD_ID"
 msgstr "ID_GOAD"
 
-#: libgnorba/loadshlib.c:12
-msgid "Repository ID under which GOAD knows this server"
-msgstr "ID de Repositório pelo qual o GOAD conhece este servidor"
+#: libgnorba/loadshlib.c:11
+msgid "ID under which GOAD knows this server"
+msgstr "ID pelo qual o GOAD conhece este servidor"
 
 #: libgnorba/loadshlib.c:12
 msgid "REPO_ID"
 msgstr "ID_REPO"
+
+#: libgnorba/loadshlib.c:12
+msgid "Repository ID under which GOAD knows this server"
+msgstr "ID de Repositório pelo qual o GOAD conhece este servidor"
 
 #: libgnorba/orbitns.c:295
 msgid "Could not get name service!"
@@ -1562,83 +1562,42 @@ msgstr "O utilizador escolheu Não/Cancelar com os dados:\n"
 msgid "Weird number in reply callback"
 msgstr "Número estranho na resposta"
 
-#~ msgid "Hello GNOME\n"
-#~ msgstr "Olá GNOME\n"
+#~ msgid "Guru-in-a-dialog test"
+#~ msgstr "Teste ao guru-in-a-dialog"
 
-#~ msgid "The Hello World Gnomified"
-#~ msgstr "O Hello World Gnomificado"
-
-#~ msgid "(C) 1998 the Free Software Foundation"
-#~ msgstr "(C) 1998 the Free Software Foundation"
+# , c-format
+# , c-format
+#~ msgid ""
+#~ "Application \"%s\" has a bug.\n"
+#~ "SIGSEGV received at PC %#lx in PID %d.\n"
+#~ "\n"
+#~ "\n"
+#~ "Do you want to exit this program?"
+#~ msgstr ""
+#~ "A aplicação \"%s\" tem um bug.\n"
+#~ "O sinal SIGSEGV foi recebido com PC=%#lx no processo PID=%d.\n"
+#~ "\n"
+#~ "\n"
+#~ "Deseja sair deste programa?"
 
 #~ msgid ""
-#~ "GNOME is a civilized software system so we've a \"hello world\" program"
+#~ "No, and ignore\n"
+#~ "future SIGSEGV's"
 #~ msgstr ""
-#~ "GNOME é um conjunto de programas civilizado por isso temos um programa "
-#~ "\"hello world\""
+#~ "Não, e ignorar\n"
+#~ "futuros sinais SIGSEGV"
 
-#~ msgid "About GnomeHello..."
-#~ msgstr "Acerca de GnomeHello..."
+#~ msgid "Ask next time"
+#~ msgstr "Perguntar da próxima vez"
 
-#~ msgid "Exit"
-#~ msgstr "Sair"
+#~ msgid "Really log out?"
+#~ msgstr "Terminar sessão?"
 
-#~ msgid "Hello World Gnomified"
-#~ msgstr "Hello World Gnomificado"
+#~ msgid "Options error\n"
+#~ msgstr "Erro das opções\n"
 
-#~ msgid "Hello GNOME"
-#~ msgstr "Olá GNOME"
-
-#~ msgid "Exit GNOME hello"
-#~ msgstr "Sair do olá GNOME"
-
-#~ msgid "About..."
-#~ msgstr "Acerca de..."
-
-#~ msgid "Info about GNOME hello"
-#~ msgstr "Informação acerca do olá GNOME"
-
-#~ msgid "Add View"
-#~ msgstr "Adicionar vista"
-
-#~ msgid "Remove View"
-#~ msgstr "Remover vista"
-
-#~ msgid "Increase Counter"
-#~ msgstr "Incrementar Contador"
-
-#~ msgid "Child"
-#~ msgstr "Filho"
-
-#~ msgid "Add Child"
-#~ msgstr "Adicionar filho"
-
-#~ msgid "Remove Child"
-#~ msgstr "Remover filho"
-
-#~ msgid "Children"
-#~ msgstr "Filhos"
-
-#~ msgid "Modal"
-#~ msgstr "Modal"
-
-#~ msgid "MDI Mode"
-#~ msgstr "Modo MDI"
-
-#~ msgid "Children/"
-#~ msgstr "Filhos/"
-
-#~ msgid "File/Exit"
-#~ msgstr "Ficheiro/Sair"
-
-#~ msgid "<control>E"
-#~ msgstr "<control>E"
-
-#~ msgid "Help/About..."
-#~ msgstr "Ajuda/Acerca de..."
-
-#~ msgid "<control>A"
-#~ msgstr "<control>A"
+#~ msgid "Gnome Hello %s.\n"
+#~ msgstr "Olá Gnome %s.\n"
 
 #~ msgid ""
 #~ "%s: A gnomified 'Hello World' program\n"
@@ -1657,39 +1616,80 @@ msgstr "Número estranho na resposta"
 #~ "        --help     mostra esta ajuda e sai\n"
 #~ "        --version  mostra informação sobre a versão e sai\n"
 
-#~ msgid "Gnome Hello %s.\n"
-#~ msgstr "Olá Gnome %s.\n"
+#~ msgid "<control>A"
+#~ msgstr "<control>A"
 
-#~ msgid "Options error\n"
-#~ msgstr "Erro das opções\n"
+#~ msgid "Help/About..."
+#~ msgstr "Ajuda/Acerca de..."
 
-#~ msgid "Really log out?"
-#~ msgstr "Terminar sessão?"
+#~ msgid "<control>E"
+#~ msgstr "<control>E"
 
-#~ msgid "Ask next time"
-#~ msgstr "Perguntar da próxima vez"
+#~ msgid "File/Exit"
+#~ msgstr "Ficheiro/Sair"
+
+#~ msgid "Children/"
+#~ msgstr "Filhos/"
+
+#~ msgid "MDI Mode"
+#~ msgstr "Modo MDI"
+
+#~ msgid "Modal"
+#~ msgstr "Modal"
+
+#~ msgid "Children"
+#~ msgstr "Filhos"
+
+#~ msgid "Remove Child"
+#~ msgstr "Remover filho"
+
+#~ msgid "Add Child"
+#~ msgstr "Adicionar filho"
+
+#~ msgid "Child"
+#~ msgstr "Filho"
+
+#~ msgid "Increase Counter"
+#~ msgstr "Incrementar Contador"
+
+#~ msgid "Remove View"
+#~ msgstr "Remover vista"
+
+#~ msgid "Add View"
+#~ msgstr "Adicionar vista"
+
+#~ msgid "Info about GNOME hello"
+#~ msgstr "Informação acerca do olá GNOME"
+
+#~ msgid "About..."
+#~ msgstr "Acerca de..."
+
+#~ msgid "Exit GNOME hello"
+#~ msgstr "Sair do olá GNOME"
+
+#~ msgid "Hello GNOME"
+#~ msgstr "Olá GNOME"
+
+#~ msgid "Hello World Gnomified"
+#~ msgstr "Hello World Gnomificado"
+
+#~ msgid "Exit"
+#~ msgstr "Sair"
+
+#~ msgid "About GnomeHello..."
+#~ msgstr "Acerca de GnomeHello..."
 
 #~ msgid ""
-#~ "No, and ignore\n"
-#~ "future SIGSEGV's"
+#~ "GNOME is a civilized software system so we've a \"hello world\" program"
 #~ msgstr ""
-#~ "Não, e ignorar\n"
-#~ "futuros sinais SIGSEGV"
+#~ "GNOME é um conjunto de programas civilizado por isso temos um programa "
+#~ "\"hello world\""
 
-# , c-format
-# , c-format
-#~ msgid ""
-#~ "Application \"%s\" has a bug.\n"
-#~ "SIGSEGV received at PC %#lx in PID %d.\n"
-#~ "\n"
-#~ "\n"
-#~ "Do you want to exit this program?"
-#~ msgstr ""
-#~ "A aplicação \"%s\" tem um bug.\n"
-#~ "O sinal SIGSEGV foi recebido com PC=%#lx no processo PID=%d.\n"
-#~ "\n"
-#~ "\n"
-#~ "Deseja sair deste programa?"
+#~ msgid "(C) 1998 the Free Software Foundation"
+#~ msgstr "(C) 1998 the Free Software Foundation"
 
-#~ msgid "Guru-in-a-dialog test"
-#~ msgstr "Teste ao guru-in-a-dialog"
+#~ msgid "The Hello World Gnomified"
+#~ msgstr "O Hello World Gnomificado"
+
+#~ msgid "Hello GNOME\n"
+#~ msgstr "Olá GNOME\n"

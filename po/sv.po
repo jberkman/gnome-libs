@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-libs 1.0.12\n"
-"POT-Creation-Date: 1999-08-30 15:26-0500\n"
+"POT-Creation-Date: 1999-08-31 13:26+0200\n"
 "PO-Revision-Date: 1999-08-07 11:18+0200\n"
 "Last-Translator: Richard Hult <rhult@hem2.passagen.se>\n"
 "Language-Team: Swedish <sv@li.org>\n"
@@ -13,25 +13,25 @@ msgstr ""
 "Content-Type: text/plain; charset=iso-8859-1\n"
 "Content-Transfer-Encoding: 8-bit\n"
 
-#: libgnome/gconfigger.c:32
-msgid "get"
-msgstr "hämta"
+#: libgnome/gconfigger.c:32 libgnome/gconfigger.c:33
+msgid "CONFIG-PATH"
+msgstr "KONFIGURATIONS-SÖKVÄG"
 
 #: libgnome/gconfigger.c:32
 msgid "Get config entry"
 msgstr "Hämta konfiguration"
 
-#: libgnome/gconfigger.c:32 libgnome/gconfigger.c:33
-msgid "CONFIG-PATH"
-msgstr "KONFIGURATIONS-SÖKVÄG"
-
-#: libgnome/gconfigger.c:33
-msgid "set"
-msgstr "sätt"
+#: libgnome/gconfigger.c:32
+msgid "get"
+msgstr "hämta"
 
 #: libgnome/gconfigger.c:33
 msgid "Set config entry"
 msgstr "Sätt konfiguration"
+
+#: libgnome/gconfigger.c:33
+msgid "set"
+msgstr "sätt"
 
 #: libgnome/gnome-popt.c:90
 #, c-format
@@ -143,23 +143,23 @@ msgstr "_Hjälp"
 msgid "_Windows/"
 msgstr "F_önster/"
 
+#: libgnomeui/gnome-app-helper.c:105
+msgid "Open a file"
+msgstr "Öppna en fil"
+
 #. Open
 #: libgnomeui/gnome-app-helper.c:105
 msgid "_Open..."
 msgstr "_Öppna..."
 
-#: libgnomeui/gnome-app-helper.c:105
-msgid "Open a file"
-msgstr "Öppna en fil"
+#: libgnomeui/gnome-app-helper.c:110
+msgid "Save the current file"
+msgstr "Spara nuvarande fil"
 
 #. Save
 #: libgnomeui/gnome-app-helper.c:110
 msgid "_Save"
 msgstr "S_para"
-
-#: libgnomeui/gnome-app-helper.c:110
-msgid "Save the current file"
-msgstr "Spara nuvarande fil"
 
 #. Save As
 #: libgnomeui/gnome-app-helper.c:115
@@ -179,14 +179,14 @@ msgstr "_Återgå"
 msgid "Revert to a saved version of the file"
 msgstr "Återgå till tidigare sparad version av filen"
 
+#: libgnomeui/gnome-app-helper.c:127
+msgid "Print the current file"
+msgstr "Skriv ut nuvarande fil"
+
 #. Print
 #: libgnomeui/gnome-app-helper.c:127
 msgid "_Print"
 msgstr "Skriv _ut"
-
-#: libgnomeui/gnome-app-helper.c:127
-msgid "Print the current file"
-msgstr "Skriv ut nuvarande fil"
 
 #. Print Setup
 #: libgnomeui/gnome-app-helper.c:132
@@ -197,14 +197,14 @@ msgstr "Sk_rivarinställningar..."
 msgid "Setup the page settings for your current printer"
 msgstr "Ställ in sidinställningar för nuvarande skrivare"
 
+#: libgnomeui/gnome-app-helper.c:138
+msgid "Close the current file"
+msgstr "Stäng nuvarande fil"
+
 #. Close
 #: libgnomeui/gnome-app-helper.c:138
 msgid "_Close"
 msgstr "_Stäng"
-
-#: libgnomeui/gnome-app-helper.c:138
-msgid "Close the current file"
-msgstr "Stäng nuvarande fil"
 
 #. Exit
 #: libgnomeui/gnome-app-helper.c:143
@@ -227,24 +227,24 @@ msgstr "_Klipp ut"
 msgid "Cut the selection"
 msgstr "Klipp ut markeringen"
 
+#: libgnomeui/gnome-app-helper.c:157
+msgid "Copy the selection"
+msgstr "Kopiera markeringen"
+
 #. 10
 #. Copy
 #: libgnomeui/gnome-app-helper.c:157 libgnomeui/gnome-popup-help.c:59
 msgid "_Copy"
 msgstr "K_opiera"
 
-#: libgnomeui/gnome-app-helper.c:157
-msgid "Copy the selection"
-msgstr "Kopiera markeringen"
+#: libgnomeui/gnome-app-helper.c:162
+msgid "Paste the clipboard"
+msgstr "Klistra in från urklippet"
 
 #. Paste
 #: libgnomeui/gnome-app-helper.c:162 libgnomeui/gnome-popup-help.c:61
 msgid "_Paste"
 msgstr "Kl_istra in"
-
-#: libgnomeui/gnome-app-helper.c:162
-msgid "Paste the clipboard"
-msgstr "Klistra in från urklippet"
 
 #. Clear
 #: libgnomeui/gnome-app-helper.c:167
@@ -255,32 +255,32 @@ msgstr "_Rensa"
 msgid "Clear the selection"
 msgstr "Rensa markeringen"
 
+#: libgnomeui/gnome-app-helper.c:172
+msgid "Undo the last action"
+msgstr "Ångra senaste händelse"
+
 #. Undo
 #: libgnomeui/gnome-app-helper.c:172
 msgid "_Undo"
 msgstr "_Ångra"
 
-#: libgnomeui/gnome-app-helper.c:172
-msgid "Undo the last action"
-msgstr "Ångra senaste händelse"
+#: libgnomeui/gnome-app-helper.c:177
+msgid "Redo the undone action"
+msgstr "Gör om senaste ångring"
 
 #. Redo
 #: libgnomeui/gnome-app-helper.c:177
 msgid "_Redo"
 msgstr "Gör o_m"
 
-#: libgnomeui/gnome-app-helper.c:177
-msgid "Redo the undone action"
-msgstr "Gör om senaste ångring"
+#: libgnomeui/gnome-app-helper.c:182
+msgid "Search for a string"
+msgstr "Sök efter en sträng"
 
 #. Find
 #: libgnomeui/gnome-app-helper.c:182
 msgid "_Find..."
 msgstr "_Sök..."
-
-#: libgnomeui/gnome-app-helper.c:182
-msgid "Search for a string"
-msgstr "Sök efter en sträng"
 
 #. Find Again
 #: libgnomeui/gnome-app-helper.c:187
@@ -291,14 +291,14 @@ msgstr "Sök _igen"
 msgid "Search again for the same string"
 msgstr "Sök igen efter samma sträng"
 
+#: libgnomeui/gnome-app-helper.c:193
+msgid "Replace a string"
+msgstr "Ersätt en sträng"
+
 #. Replace
 #: libgnomeui/gnome-app-helper.c:193
 msgid "_Replace..."
 msgstr "_Ersätt..."
-
-#: libgnomeui/gnome-app-helper.c:193
-msgid "Replace a string"
-msgstr "Ersätt en sträng"
 
 #. Properties
 #: libgnomeui/gnome-app-helper.c:198
@@ -638,21 +638,21 @@ msgstr "="
 msgid "INV"
 msgstr "INV"
 
-#: libgnomeui/gnome-client.c:828
-msgid "Specify session management ID"
-msgstr "Specificera ID för sessionskontroll"
-
 #: libgnomeui/gnome-client.c:828 libgnorba/goad-browser.c:27
 msgid "ID"
 msgstr "ID"
 
-#: libgnomeui/gnome-client.c:830
-msgid "Specify prefix of saved configuration"
-msgstr "Ange prefix på den sparade konfigurationen"
+#: libgnomeui/gnome-client.c:828
+msgid "Specify session management ID"
+msgstr "Specificera ID för sessionskontroll"
 
 #: libgnomeui/gnome-client.c:830
 msgid "PREFIX"
 msgstr "PREFIX"
+
+#: libgnomeui/gnome-client.c:830
+msgid "Specify prefix of saved configuration"
+msgstr "Ange prefix på den sparade konfigurationen"
 
 #: libgnomeui/gnome-client.c:832
 msgid "Disable connection to session manager"
@@ -747,12 +747,12 @@ msgstr "Grundläggande"
 msgid "Advanced"
 msgstr "Avancerad"
 
-#: libgnomeui/gnome-file-entry.c:148
+#: libgnomeui/gnome-file-entry.c:151
 msgid "Select file"
 msgstr "Välj fil"
 
 #. browse button ...
-#: libgnomeui/gnome-file-entry.c:277 libgnomeui/gnome-spell.c:617
+#: libgnomeui/gnome-file-entry.c:280 libgnomeui/gnome-spell.c:617
 #: libgnomeui/gnome-spell.c:634 libgnomeui/gnome-spell.c:651
 msgid "Browse..."
 msgstr "Bläddra..."
@@ -781,26 +781,26 @@ msgstr "Förhandsgranskning"
 msgid "Loading Icons..."
 msgstr "Laddar ikoner..."
 
-#: libgnomeui/gnome-init.c:157
-msgid "Gdk debugging flags to set"
-msgstr "Felsökningsflaggor för Gdk som ska användas"
-
 #: libgnomeui/gnome-init.c:157 libgnomeui/gnome-init.c:159
 #: libgnomeui/gnome-init.c:179 libgnomeui/gnome-init.c:181
 msgid "FLAGS"
 msgstr "FLAGGOR"
+
+#: libgnomeui/gnome-init.c:157
+msgid "Gdk debugging flags to set"
+msgstr "Felsökningsflaggor för Gdk som ska användas"
 
 #: libgnomeui/gnome-init.c:159
 msgid "Gdk debugging flags to unset"
 msgstr "Felsökningsflaggor för Gdk som ej ska användas"
 
 #: libgnomeui/gnome-init.c:161
-msgid "X display to use"
-msgstr "X-display som skall användas"
-
-#: libgnomeui/gnome-init.c:161
 msgid "DISPLAY"
 msgstr "DISPLAY"
+
+#: libgnomeui/gnome-init.c:161
+msgid "X display to use"
+msgstr "X-display som skall användas"
 
 #: libgnomeui/gnome-init.c:163
 msgid "Make X calls synchronous"
@@ -811,20 +811,20 @@ msgid "Don't use X shared memory extension"
 msgstr "Använd inte X-tillägg för delat minne (shared memory extension)"
 
 #: libgnomeui/gnome-init.c:167
-msgid "Program name as used by the window manager"
-msgstr "Programnamn att använda, för fönsterhanterare"
-
-#: libgnomeui/gnome-init.c:167
 msgid "NAME"
 msgstr "NAMN"
 
-#: libgnomeui/gnome-init.c:169
-msgid "Program class as used by the window manager"
-msgstr "Programklass att använda, för fönsterhanterare"
+#: libgnomeui/gnome-init.c:167
+msgid "Program name as used by the window manager"
+msgstr "Programnamn att använda, för fönsterhanterare"
 
 #: libgnomeui/gnome-init.c:169
 msgid "CLASS"
 msgstr "KLASS"
+
+#: libgnomeui/gnome-init.c:169
+msgid "Program class as used by the window manager"
+msgstr "Programklass att använda, för fönsterhanterare"
 
 #: libgnomeui/gnome-init.c:171
 msgid "HOST"
@@ -1255,12 +1255,12 @@ msgid "Edit"
 msgstr "Redigera"
 
 #: libgnomeui/winhints_demo.c:46
-msgid "wmhints-test"
-msgstr "wmhints-test"
-
-#: libgnomeui/winhints_demo.c:46
 msgid "winhints-test"
 msgstr "winhints-test"
+
+#: libgnomeui/winhints_demo.c:46
+msgid "wmhints-test"
+msgstr "wmhints-test"
 
 #: libgnomeui/winhints_demo.c:71
 msgid "Layer:"
@@ -1395,12 +1395,12 @@ msgid "GOAD ID of the server to activate"
 msgstr "GOAD ID till den server som ska aktiveras"
 
 #: libgnorba/goad-browser.c:28
-msgid "Repository ID of the server to activate"
-msgstr "Repository ID till den server som ska aktiveras"
-
-#: libgnorba/goad-browser.c:28
 msgid "REPO-ID"
 msgstr "REPO-ID"
+
+#: libgnorba/goad-browser.c:28
+msgid "Repository ID of the server to activate"
+msgstr "Repository ID till den server som ska aktiveras"
 
 #: libgnorba/goad-browser.c:171
 msgid ""
@@ -1417,20 +1417,20 @@ msgid "(Internal use only) GOAD server ID to activate"
 msgstr "(Endast internt bruk) GOAD server ID att aktivera"
 
 #: libgnorba/loadshlib.c:11
-msgid "ID under which GOAD knows this server"
-msgstr "GOAD ID för den här servern"
-
-#: libgnorba/loadshlib.c:11
 msgid "GOAD_ID"
 msgstr "GOAD_ID"
 
-#: libgnorba/loadshlib.c:12
-msgid "Repository ID under which GOAD knows this server"
-msgstr "Den här serverns Repository ID"
+#: libgnorba/loadshlib.c:11
+msgid "ID under which GOAD knows this server"
+msgstr "GOAD ID för den här servern"
 
 #: libgnorba/loadshlib.c:12
 msgid "REPO_ID"
 msgstr "REPO_ID"
+
+#: libgnorba/loadshlib.c:12
+msgid "Repository ID under which GOAD knows this server"
+msgstr "Den här serverns Repository ID"
 
 #: libgnorba/orbitns.c:295
 msgid "Could not get name service!"
@@ -1546,89 +1546,20 @@ msgstr "Användaren valde Nej/Avbryt med data:\n"
 msgid "Weird number in reply callback"
 msgstr "Konstigt nummer i svars-callbacken"
 
-#~ msgid "Hello GNOME\n"
-#~ msgstr "Hej GNOME\n"
-
-#~ msgid "The Hello World Gnomified"
-#~ msgstr "GNOMEifierad Hej Värld"
-
-#~ msgid "(C) 1998 the Free Software Foundation"
-#~ msgstr "(C) 1998 the Free Software Foundation"
-
 #~ msgid ""
-#~ "GNOME is a civilized software system so we've a \"hello world\" program"
+#~ "Application \"%s\" (process %d) has crashed due to a bug in the software.\n"
+#~ "(%s)\n"
+#~ "For more information, see http://www.gnome.org/application_crashed.shtml"
 #~ msgstr ""
-#~ "GNOME är ett civiliserat programvarusystem så vi har ett \"Hej världen\" "
-#~ "program"
+#~ "Applikationen \"%s\" (process %d) har kraschat pga en bugg i mjukvaran.\n"
+#~ "(%s)\n"
+#~ "För mer information, se http://www.gnome.org/application_crashed.shtml"
 
-#~ msgid "About GnomeHello..."
-#~ msgstr "Om GnomeHej..."
+#~ msgid "Options error\n"
+#~ msgstr "Fel på flaggor\n"
 
-#~ msgid "Exit"
-#~ msgstr "Avsluta"
-
-#~ msgid "Hello World Gnomified"
-#~ msgstr "GNOMEifierad Hej Värld"
-
-#~ msgid "Hello GNOME"
-#~ msgstr "Hej GNOME"
-
-#~ msgid "Exit GNOME hello"
-#~ msgstr "Avsluta hej GNOME"
-
-#~ msgid "About..."
-#~ msgstr "Om..."
-
-#~ msgid "Info about GNOME hello"
-#~ msgstr "Information om hej GNOME"
-
-#~ msgid "Add View"
-#~ msgstr "Lägg till vy"
-
-#~ msgid "Remove View"
-#~ msgstr "Ta bort vy"
-
-#~ msgid "Increase Counter"
-#~ msgstr "Öka räknare"
-
-#~ msgid "Child"
-#~ msgstr "Barn"
-
-#~ msgid "Add Child"
-#~ msgstr "Lägg till barn"
-
-#~ msgid "Remove Child"
-#~ msgstr "Ta bort barn"
-
-#~ msgid "Children"
-#~ msgstr "Barn"
-
-#~ msgid "Notebook"
-#~ msgstr "Anteckningsblock"
-
-#~ msgid "Toplevel"
-#~ msgstr "Toppnivå"
-
-#~ msgid "Modal"
-#~ msgstr "Modal"
-
-#~ msgid "MDI Mode"
-#~ msgstr "MDI-läge"
-
-#~ msgid "Children/"
-#~ msgstr "Barn/"
-
-#~ msgid "File/Exit"
-#~ msgstr "Fil/Avsluta"
-
-#~ msgid "<control>E"
-#~ msgstr "<ctrl>E"
-
-#~ msgid "Help/About..."
-#~ msgstr "Hjälp/Om..."
-
-#~ msgid "<control>A"
-#~ msgstr "<ctrl>A"
+#~ msgid "Gnome Hello %s.\n"
+#~ msgstr "Gnome Hej %s.\n"
 
 #~ msgid ""
 #~ "%s: A gnomified 'Hello World' program\n"
@@ -1647,17 +1578,86 @@ msgstr "Konstigt nummer i svars-callbacken"
 #~ "        --help     visar denna hjälp och avslutar\n"
 #~ "        --version  skriver ut versionsinformation och avslutar\n"
 
-#~ msgid "Gnome Hello %s.\n"
-#~ msgstr "Gnome Hej %s.\n"
+#~ msgid "<control>A"
+#~ msgstr "<ctrl>A"
 
-#~ msgid "Options error\n"
-#~ msgstr "Fel på flaggor\n"
+#~ msgid "Help/About..."
+#~ msgstr "Hjälp/Om..."
+
+#~ msgid "<control>E"
+#~ msgstr "<ctrl>E"
+
+#~ msgid "File/Exit"
+#~ msgstr "Fil/Avsluta"
+
+#~ msgid "Children/"
+#~ msgstr "Barn/"
+
+#~ msgid "MDI Mode"
+#~ msgstr "MDI-läge"
+
+#~ msgid "Modal"
+#~ msgstr "Modal"
+
+#~ msgid "Toplevel"
+#~ msgstr "Toppnivå"
+
+#~ msgid "Notebook"
+#~ msgstr "Anteckningsblock"
+
+#~ msgid "Children"
+#~ msgstr "Barn"
+
+#~ msgid "Remove Child"
+#~ msgstr "Ta bort barn"
+
+#~ msgid "Add Child"
+#~ msgstr "Lägg till barn"
+
+#~ msgid "Child"
+#~ msgstr "Barn"
+
+#~ msgid "Increase Counter"
+#~ msgstr "Öka räknare"
+
+#~ msgid "Remove View"
+#~ msgstr "Ta bort vy"
+
+#~ msgid "Add View"
+#~ msgstr "Lägg till vy"
+
+#~ msgid "Info about GNOME hello"
+#~ msgstr "Information om hej GNOME"
+
+#~ msgid "About..."
+#~ msgstr "Om..."
+
+#~ msgid "Exit GNOME hello"
+#~ msgstr "Avsluta hej GNOME"
+
+#~ msgid "Hello GNOME"
+#~ msgstr "Hej GNOME"
+
+#~ msgid "Hello World Gnomified"
+#~ msgstr "GNOMEifierad Hej Värld"
+
+#~ msgid "Exit"
+#~ msgstr "Avsluta"
+
+#~ msgid "About GnomeHello..."
+#~ msgstr "Om GnomeHej..."
 
 #~ msgid ""
-#~ "Application \"%s\" (process %d) has crashed due to a bug in the software.\n"
-#~ "(%s)\n"
-#~ "For more information, see http://www.gnome.org/application_crashed.shtml"
+#~ "GNOME is a civilized software system so we've a \"hello world\" program"
 #~ msgstr ""
-#~ "Applikationen \"%s\" (process %d) har kraschat pga en bugg i mjukvaran.\n"
-#~ "(%s)\n"
-#~ "För mer information, se http://www.gnome.org/application_crashed.shtml"
+#~ "GNOME är ett civiliserat programvarusystem så vi har ett \"Hej världen\" "
+#~ "program"
+
+#~ msgid "(C) 1998 the Free Software Foundation"
+#~ msgstr "(C) 1998 the Free Software Foundation"
+
+#~ msgid "The Hello World Gnomified"
+#~ msgstr "GNOMEifierad Hej Värld"
+
+#~ msgid "Hello GNOME\n"
+#~ msgstr "Hej GNOME\n"
