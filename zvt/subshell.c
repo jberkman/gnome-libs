@@ -64,7 +64,7 @@ zvt_close_msgfd (pid_t childpid)
 		prev->next = child->next;
 	
 	close (child->fd);
-	free (child);
+	g_free (child);
 }
 
 /*
@@ -131,7 +131,7 @@ receive_fd (int helper_fd)
 	msg.msg_name     = NULL;
 	msg.msg_namelen  = 0;
 
-	if (cmptr == NULL && (cmptr = malloc (CONTROLLEN)) == NULL)
+	if (cmptr == NULL && (cmptr = g_malloc (CONTROLLEN)) == NULL)
 		return -1;
 	msg.msg_control = cmptr;
 	msg.msg_controllen = CONTROLLEN;
@@ -296,7 +296,7 @@ zvt_init_subshell (struct vt_em *vt, char *pty_name, int log)
 	pipe(p);
 	vt->msgfd = p [0];
 	
-	child = malloc(sizeof(*child));
+	child = g_malloc(sizeof(*child));
 	child->next = children;
 	child->pid = vt->childpid;
 	child->fd = p[1];

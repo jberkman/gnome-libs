@@ -14,8 +14,6 @@ libzvt_la_SOURCES =					\
 	gnome-login-support.h				\
 	gnome-login-support.c				\
 	lists.c						\
-	memory.c					\
-	memory.h					\
 	subshell.h					\
 	subshell.c					\
 	subshell-includes.h				\

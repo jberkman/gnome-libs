@@ -30,18 +30,18 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
-#include <sys/types.h>
-#include <sys/stat.h>
 #include <fcntl.h>
 #include <unistd.h>
-#ifdef HAVE_ALLOCA_H
-#include <alloca.h>
-#endif
+#include <sys/types.h>
+#include <sys/stat.h>
+
+#include <glib.h>
 
 #include "lists.h"
-#include "memory.h"
 #include "vt.h"
 #include "vtx.h"
+
+
 
 #define d(x)
 
@@ -63,6 +63,10 @@ static void vt_line_update(struct _vtx *vx, struct vt_line *l, int line, int alw
   int ch;
   struct vt_line *bl;
   int sx, ex;			/* start/end selection */
+  struct vt_line *newline;
+
+  newline = NULL;  
+  runbuffer = NULL;
 
   d(printf("updating line %d: ", line));
   d(fwrite(l->data, l->width, 1, stdout));
@@ -79,18 +83,21 @@ static void vt_line_update(struct _vtx *vx, struct vt_line *l, int line, int alw
   g_return_if_fail (bl->next != NULL);
 
   if (bl->width > l->width) {
-    struct vt_line *newline;
-
     d(printf("line size mismatch %d != %d\n", bl->width, l->width));
 
     /* create a new temp line, and set it to a clear
-       last-character (attributes) of the new line */
-    newline = alloca(sizeof(*l)+bl->width*sizeof(bl->data[0]));
-    memcpy(newline, l, sizeof(*l)+l->width*sizeof(l->data[0]));
-    c = l->data[l->width-1]&VTATTR_MASK;
-    for (i=l->width;i<bl->width;i++) {
+     * last-character (attributes) of the new line 
+     */
+    newline = g_malloc(sizeof(struct vt_line) + (bl->width * sizeof(uint32)));
+
+    memcpy(newline, l, sizeof(struct vt_line) + (l->width * sizeof(uint32)));
+
+    c = l->data[l->width-1] & VTATTR_MASK;
+
+    for (i = l->width ; i < bl->width ;i++) {
       newline->data[i] = c;
     }
+
     /* over-write the 'l' pointer */
     l = newline;
   }
@@ -99,11 +106,12 @@ static void vt_line_update(struct _vtx *vx, struct vt_line *l, int line, int alw
   if (end>l->width) {
     end = l->width;
   }
+
   if (start>=end) {
-    return;
+    goto cleanup;
   }
 
-  runbuffer = alloca(vx->vt.width * sizeof(char));
+  runbuffer = g_malloc(vx->vt.width * sizeof(char));
 
   /* work out if selections are being rendered */
   if (vx->selected &&
@@ -231,7 +239,13 @@ static void vt_line_update(struct _vtx *vx, struct vt_line *l, int line, int alw
   }
   l->modcount = 0;
   bl->line = line;
+
+ cleanup:
+  g_free(newline);
+  g_free(runbuffer);
 }
+
+
 
 int vt_get_attr_at (struct _vtx *vx, int col, int row)
 {
@@ -263,7 +277,7 @@ static void vt_scroll_update(struct _vtx *vx, int firstline, int count, int offs
 
 
   /* find start/end of scroll area */
-  if (offset>0) {
+  if (offset > 0) {
     /* grab n lines at bottom of scroll area, and move them to above it */
     tn = (struct vt_line *)vt_list_index(&vx->vt.lines_back, firstline);
     nn = (struct vt_line *)vt_list_index(&vx->vt.lines, firstline);
@@ -276,6 +290,11 @@ static void vt_scroll_update(struct _vtx *vx, int firstline, int count, int offs
     bn = (struct vt_line *)vt_list_index(&vx->vt.lines_back, firstline+count-1);
     dn = (struct vt_line *)vt_list_index(&vx->vt.lines_back, firstline+offset);
   }
+
+  if (!tn || !nn || !bn || !dn)
+    {
+      g_error("vt_scroll_update tn=%p nn=%p bn=%p dn=%p\n", tn, nn, bn, dn);
+    }
 
   /*    
     0->dn->4->tn->1->2->bn->5
@@ -303,16 +322,19 @@ static void vt_scroll_update(struct _vtx *vx, int firstline, int count, int offs
   });
 
   /* find out what colour the new lines is - make it match (use
-     first character as a guess), and perform the visual scroll */
+   * first character as a guess), and perform the visual scroll 
+   */
   fill = (nn->data[0] & VTATTR_BACKCOLOURM) >> VTATTR_BACKCOLOURB;
   vt_scroll_area(vx->vt.user_data, firstline, count, offset, fill);
 
-  /* need to clear tn->bn lines.  Use attributes from first character of corresponding new line */
+  /* need to clear tn->bn lines.  Use attributes from first 
+   * character of corresponding new line 
+   */
   fill = nn->data[0] & VTATTR_MASK;
   do {
     d(printf("clearning line %d\n", tn->line));
-    for(i=0;i<tn->width;i++) {
-      tn->data[i]=fill;
+    for (i = 0; i < tn->width; i++) {
+      tn->data[i] = fill;
     }
   } while ((tn!=bn) && (tn=tn->next));
 }
@@ -340,19 +362,23 @@ void vt_update(struct _vtx *vx, int update_state)
 
   d(printf("updating screen\n"));
 
+  wn = NULL;
+  nn = NULL;
+  fn = NULL;
+
   old_state = vt_cursor_state(vx->vt.user_data, 0);
 
   /* find first line of visible screen, take into account scrollback */
   offset = vx->vt.scrollbackoffset;
   if (offset<0) {
     wn = (struct vt_line *)vt_list_index(&vx->vt.scrollback, offset);
-    if (wn==0) {
+    if (!wn) {
       /* check for error condition */
       printf("LINE UNDERFLOW!\n");
       wn = (struct vt_line *)vx->vt.scrollback.head;
     }
   } else {
-    wn=(struct vt_line *)vx->vt.lines.head;
+    wn = (struct vt_line *)vx->vt.lines.head;
   }
   
   d({
@@ -825,9 +851,9 @@ char *vt_select_block(struct _vtx *vx, int sx, int sy, int ex, int ey, int *len)
   }
 
   /* makes a rough assumption about the buffer size needed */
-  if ( (data = malloc((ey-sy+1)*(vx->vt.width+20))) == 0 ) {
+  if ( (data = g_malloc((ey-sy+1)*(vx->vt.width+20))) == 0 ) {
     *len = 0;
-    printf("ERROR: Cannot malloc selection buffer\n");
+    printf("ERROR: Cannot g_malloc selection buffer\n");
     return 0;
   }
 
@@ -888,7 +914,7 @@ char *vt_select_block(struct _vtx *vx, int sx, int sy, int ex, int ey, int *len)
 char *vt_get_selection(struct _vtx *vx, int *len)
 {
   if (vx->selection_data)
-    free(vx->selection_data);
+    g_free(vx->selection_data);
 
   vx->selection_data = vt_select_block(vx, vx->selstartx, vx->selstarty,
 				      vx->selendx, vx->selendy, len);
@@ -900,7 +926,7 @@ char *vt_get_selection(struct _vtx *vx, int *len)
 void vt_clear_selection(struct _vtx *vx)
 {
   if (vx->selection_data) {
-    free(vx->selection_data);
+    g_free(vx->selection_data);
     vx->selection_data = 0;
     vx->selection_size = 0;
   }
@@ -997,7 +1023,7 @@ struct _vtx *vtx_new(void *user_data)
 {
   struct _vtx *vx;
 
-  vx = calloc(1, sizeof(*vx));
+  vx = g_malloc0(sizeof(*vx));
 
   /* initial settings */
   vt_init(&vx->vt, 80,24);
@@ -1022,7 +1048,7 @@ void vtx_destroy(struct _vtx *vx)
   if (vx) {
     vt_destroy(&vx->vt);
     if (vx->selection_data)
-      free(vx->selection_data);
-    free(vx);
+      g_free(vx->selection_data);
+    g_free(vx);
   }
 }

@@ -121,7 +121,6 @@ struct vt_em {
 
   /* scroll back stuff */
   struct vt_list scrollback;	/* double linked list of scrollback lines */
-  struct vt_list mem_list;	/* memory list for scrollback buffer */
   int scrollbacklines;		/* total scroll back lines */
   int scrollbackoffset;		/* viewing offset */
   int scrollbackold;		/* old scrollback offset */

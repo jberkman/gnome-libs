@@ -179,12 +179,6 @@ void           zvk_term_set_adjustment         (ZvtTerm      *dial,
                                                 GtkAdjustment *adjustment);
 #endif
 
-  void          zvt_term_set_shadow_type           (ZvtTerm       *term,
-						    GtkShadowType  type);
-  
-  /* returns an bitmask of the capabilities compiled into ZvtTerm */
-  guint32	zvt_term_get_capabilities	   (ZvtTerm	  *term);
-
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */

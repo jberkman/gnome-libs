@@ -1501,15 +1501,17 @@ zvt_term_scrollbar_moved (GtkAdjustment *adj, GtkWidget *widget)
   term = ZVT_TERM (widget);
 
   line = term->vx->vt.scrollbacklines - (int)adj->value;
-  if (line<0)			/* needed for floating point errors in slider code */
-    line=0;
 
-  d(printf("scrollbar moved to: %f\n\n", adj->value);
-  printf("scroll offset is %d\n", line));
+  /* needed for floating point errors in slider code */
+  if (line < 0)
+    line = 0;
 
   term->vx->vt.scrollbackoffset = -line;
 
-  vt_update (term->vx, UPDATE_SCROLLBACK); /* will redraw if scrollbar moved */
+  d(printf("scrollbar moved to: %f\n\n", adj->value);
+
+  /* will redraw if scrollbar moved */
+  vt_update (term->vx, UPDATE_SCROLLBACK);
 }
 
 

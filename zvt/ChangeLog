@@ -1,6 +1,14 @@
-Wed Dec 16 16:52:53 1998  Owen Taylor  <otaylor@redhat.com>
+1998-12-30  Jay Painter <jpaint@serv.net>
 
-	* zvtterm.c (zvt_term_init): Initialize timeout_id to -1.
+	* memory.[ch]: removed!  replaced with glib g_malloc, g_free
+	and friends; this is for code clarty and to also fix a nasty
+	bug that tried to free un-allocated memory when you resized
+	while scrolled up.
+
+	* vt.c, update.c: g_memory stuff all the way; removed all calls
+	to alloca; 
+
+	* zvtterm.c: just some formatting changes here and there
 
 1998-12-29  Jay Painter <jpaint@serv.net>
 
