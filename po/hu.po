@@ -63,7 +63,7 @@ msgstr "Fálj"
 #: gnome-hello/gnome-hello-7-mdi.c:484 libgnomeui/gnome-stock.c:786
 #: libgnomeui/stock_demo.c:290
 msgid "Help"
-msgstr ""
+msgstr "Súgó"
 
 #.
 #. * Make the main window and binds the delete event so you can close
@@ -212,15 +212,15 @@ msgstr ""
 
 #: libgnome/gnomelib-init.c:117
 msgid "Disable sound server usage"
-msgstr ""
+msgstr "Hangok (ESD) tiltása"
 
 #: libgnome/gnomelib-init.c:119
 msgid "Enable sound server usage"
-msgstr ""
+msgstr "Hangok (ESD) engedélyezése"
 
 #: libgnome/gnomelib-init.c:121
 msgid "Host:port on which the sound server to use is running"
-msgstr ""
+msgstr "Szerver:port ahol az ESD (ESound Server) fut"
 
 #: libgnome/gnomelib-init.c:122
 msgid "HOSTNAME:PORT"
@@ -228,7 +228,7 @@ msgstr ""
 
 #: libgnome/gnomelib-init.c:130
 msgid "GNOME Options"
-msgstr ""
+msgstr "GNOME opciók"
 
 #: libgnomeui/gnome-about.c:186
 msgid "Author:"
@@ -297,10 +297,9 @@ msgstr "_Játék"
 
 #: libgnomeui/gnome-app-helper.c:89
 msgid "_Help"
-msgstr ""
+msgstr "_Súgó"
 
 #: libgnomeui/gnome-app-helper.c:90
-#, fuzzy
 msgid "_Windows/"
 msgstr "_Ablakok/"
 
@@ -531,7 +530,7 @@ msgstr "Ú_j játék"
 
 #: libgnomeui/gnome-app-helper.c:242
 msgid "Start a new game"
-msgstr ""
+msgstr "Új játék indítása"
 
 #: libgnomeui/gnome-app-helper.c:246
 msgid "_Pause game"
@@ -809,7 +808,7 @@ msgstr ""
 
 #: libgnomeui/gnome-client.c:814
 msgid "Specify prefix of saved configuration"
-msgstr ""
+msgstr "Az elmentett konfigurációnak adj meg egy elõtagot"
 
 #: libgnomeui/gnome-client.c:814
 msgid "PREFIX"
@@ -855,7 +854,7 @@ msgstr "Tipus:"
 
 #: libgnomeui/gnome-dentry-edit.c:219
 msgid "Icon:"
-msgstr ""
+msgstr "Ikon:"
 
 #: libgnomeui/gnome-dentry-edit.c:229
 msgid "Choose an icon"
@@ -875,7 +874,7 @@ msgstr "Dokumentáció:"
 
 #: libgnomeui/gnome-dentry-edit.c:331
 msgid "Basic"
-msgstr ""
+msgstr "Alap"
 
 #: libgnomeui/gnome-dentry-edit.c:335
 msgid "Advanced"
@@ -901,7 +900,7 @@ msgstr "Betûtipus"
 
 #: libgnomeui/gnome-icon-entry.c:90 libgnomeui/gnome-icon-entry.c:430
 msgid "No Icon"
-msgstr ""
+msgstr "Nincs ikon"
 
 #: libgnomeui/gnome-icon-entry.c:228 libgnomeui/gnome-pixmap-entry.c:201
 msgid "Can't find an hbox, using a normal file selection"
@@ -1002,7 +1001,7 @@ msgstr "Figyelmeztetés"
 
 #: libgnomeui/gnome-messagebox.c:128 libgnomeui/gnome-messagebox.c:247
 msgid "Error"
-msgstr ""
+msgstr "Hiba"
 
 #: libgnomeui/gnome-messagebox.c:137 libgnomeui/gnome-messagebox.c:256
 msgid "Question"
@@ -1022,11 +1021,11 @@ msgstr "Számológép..."
 
 #: libgnomeui/gnome-pixmap-entry.c:80 libgnomeui/gnome-pixmap-entry.c:277
 msgid "No Image"
-msgstr ""
+msgstr "Nincs kép"
 
 #: libgnomeui/gnome-popup-help.c:51
 msgid "_Help with this"
-msgstr ""
+msgstr "_Súgó errõl"
 
 #: libgnomeui/gnome-popup-help.c:57
 msgid "Cu_t"
@@ -1038,7 +1037,7 @@ msgstr "Kiválaszt"
 
 #: libgnomeui/gnome-scores.c:76
 msgid "Top Ten"
-msgstr ""
+msgstr "Legjobb tíz"
 
 #: libgnomeui/gnome-scores.c:87
 msgid "User"
@@ -1054,7 +1053,7 @@ msgstr "Dátum"
 
 #: libgnomeui/gnome-spell.c:196
 msgid "Select dictionary"
-msgstr ""
+msgstr "Szótár kiválasztása"
 
 #: libgnomeui/gnome-spell.c:243
 #, c-format
@@ -1063,10 +1062,13 @@ msgid ""
 "is not in the dictionary.\n"
 "Proceed anyway?"
 msgstr ""
+"Ilyen szó: `%s'\n"
+"nincs a szótárban.\n"
+"Folytatod mégis?"
 
 #: libgnomeui/gnome-spell.c:247
 msgid "Confirm"
-msgstr ""
+msgstr "Megerõsít"
 
 #: libgnomeui/gnome-spell.c:256 libgnomeui/gnome-stock.c:780
 msgid "OK"
@@ -1078,39 +1080,43 @@ msgstr "Mégsem"
 
 #: libgnomeui/gnome-spell.c:525
 msgid "Word:"
-msgstr ""
+msgstr "Szó:"
 
 #: libgnomeui/gnome-spell.c:542
 msgid "Alternatives:"
-msgstr ""
+msgstr "Alternatívák:"
 
 #: libgnomeui/gnome-spell.c:561
 msgid "Accept"
-msgstr ""
+msgstr "Elfogad"
 
 #: libgnomeui/gnome-spell.c:566
 msgid ""
 "Accept the word for\n"
 "this session only"
 msgstr ""
+"Csak erre az esetre\n"
+"fogadom el"
 
 #: libgnomeui/gnome-spell.c:568
 msgid "Skip"
-msgstr ""
+msgstr "Mellõz"
 
 #: libgnomeui/gnome-spell.c:573
 msgid ""
 "Ignore this word\n"
 "this time only"
 msgstr ""
+"Csak ebben az esetben\n"
+"tekintek el tõle"
 
 #: libgnomeui/gnome-spell.c:575
 msgid "Replace"
-msgstr ""
+msgstr "Cserél"
 
 #: libgnomeui/gnome-spell.c:580
 msgid "Replace the word"
-msgstr ""
+msgstr "A szó cserélése"
 
 #: libgnomeui/gnome-spell.c:582
 msgid "Insert"
@@ -1126,7 +1132,7 @@ msgstr ""
 
 #: libgnomeui/gnome-spell.c:589
 msgid "Insert with case"
-msgstr ""
+msgstr "Kis-nagybetûvel beillesztés"
 
 #: libgnomeui/gnome-spell.c:595
 msgid ""
@@ -1135,51 +1141,54 @@ msgid ""
 "(if mixed-case preserve\n"
 "case-sensitivity)"
 msgstr ""
+"A szó saját szótáradba\n"
+"való felvétele\n"
+"(a kis és nagybetûk közötti\n"
+"külömbség megtartásával)"
 
 #: libgnomeui/gnome-spell.c:610
-#, fuzzy
 msgid "Ispell command:"
-msgstr "Parancs:"
+msgstr "Ispell parancs:"
 
 #: libgnomeui/gnome-spell.c:628
 msgid "Main dictionary:"
-msgstr ""
+msgstr "Fõkönyvtár:"
 
 #: libgnomeui/gnome-spell.c:645
 msgid "Personal dictionary:"
-msgstr ""
+msgstr "Saját könyvtár:"
 
 #: libgnomeui/gnome-spell.c:662
 msgid "Valid chars in words:"
-msgstr ""
+msgstr "A szavakban helyes betûk:"
 
 #: libgnomeui/gnome-spell.c:673
 msgid "Check words longer than:"
-msgstr ""
+msgstr "Ennél hosszabb szavak ellenõrzése:"
 
 #: libgnomeui/gnome-spell.c:684
 msgid "Sort by correctness"
-msgstr ""
+msgstr "Helyesség alapján sorbarendez"
 
 #: libgnomeui/gnome-spell.c:692
 msgid "Accept run-together words"
-msgstr ""
+msgstr "Együttfutó szavak elfogadása"
 
 #: libgnomeui/gnome-spell.c:702
 msgid "Discard accepted words on kill"
-msgstr ""
+msgstr "Kilövésnél az elfogadott szavak elhagyása"
 
 #: libgnomeui/gnome-spell.c:710
 msgid "Enable tooltips"
-msgstr ""
+msgstr "Hintszövegek engedélyezése"
 
 #: libgnomeui/gnome-spell.c:724
 msgid "Kill ispell process"
-msgstr ""
+msgstr "Ispell folyamat kilövése"
 
 #: libgnomeui/gnome-spell.c:750
 msgid "Spell"
-msgstr ""
+msgstr "Helyesírás"
 
 #: libgnomeui/gnome-spell.c:757
 msgid "Configure"
@@ -1278,17 +1287,19 @@ msgid ""
 "No, and ignore\n"
 "future SIGSEGV's"
 msgstr ""
+"Nem, és ezután\n"
+"ne reagálj's"
 
 # , c-format
 # , c-format
 #: libgnomeui/gnome_segv.c:79
 #, c-format
 msgid ""
-"Application \"%s\" has a bug.\n"
-"SIGSEGV received at PC %#lx in PID %d.\n"
+"A \"%s\" alkalmazásban hiba van.\n"
+"SIGSEGV jött, PC %#lx, PID %d.\n"
 "\n"
 "\n"
-"Do you want to exit this program?"
+"Ki akarsz lépni a programból?"
 msgstr ""
 
 #: libgnomeui/stock_demo.c:112
@@ -1369,11 +1380,11 @@ msgstr ""
 
 #: libgnomeui/winhints_demo.c:72
 msgid "Layer:"
-msgstr ""
+msgstr "Réteg:"
 
 #: libgnomeui/winhints_demo.c:95
 msgid "Above Dock"
-msgstr ""
+msgstr "Dock fölött"
 
 #: libgnomeui/winhints_demo.c:99
 msgid "Dock"
@@ -1381,91 +1392,91 @@ msgstr ""
 
 #: libgnomeui/winhints_demo.c:103
 msgid "On Top"
-msgstr ""
+msgstr "A csúcson"
 
 #: libgnomeui/winhints_demo.c:107
 msgid "Normal"
-msgstr ""
+msgstr "Normális"
 
 #: libgnomeui/winhints_demo.c:111
 msgid "Below"
-msgstr ""
+msgstr "Alul"
 
 #: libgnomeui/winhints_demo.c:115
 msgid "Desktop"
-msgstr ""
+msgstr "A lapon"
 
 #: libgnomeui/winhints_demo.c:123
 msgid "Set Layer"
-msgstr ""
+msgstr "Réteg beállítása"
 
 #: libgnomeui/winhints_demo.c:130
 msgid "Workspaces:"
-msgstr ""
+msgstr "Munkalapok:"
 
 #: libgnomeui/winhints_demo.c:152
 msgid "Sticky"
-msgstr ""
+msgstr "Átlátszóság"
 
 #: libgnomeui/winhints_demo.c:156
 msgid "Set Workspace"
-msgstr ""
+msgstr "Munkalap beállítása"
 
 #: libgnomeui/winhints_demo.c:166
 msgid "State Toggles:"
-msgstr ""
+msgstr "Állapot kapcsolók:"
 
 #: libgnomeui/winhints_demo.c:176
 msgid "Minimized"
-msgstr ""
+msgstr "Minimalizált"
 
 #: libgnomeui/winhints_demo.c:180
 msgid "Maximized Vertical"
-msgstr ""
+msgstr "Függõlegesen maximalizált"
 
 #: libgnomeui/winhints_demo.c:184
 msgid "Maximized Horizontal"
-msgstr ""
+msgstr "Vizszintesen maximalizált"
 
 #: libgnomeui/winhints_demo.c:188
 msgid "Hidden"
-msgstr ""
+msgstr "Rejtett"
 
 #: libgnomeui/winhints_demo.c:192
 msgid "Shaded"
-msgstr ""
+msgstr "Elmosott"
 
 #: libgnomeui/winhints_demo.c:196
 msgid "Fixed Position"
-msgstr ""
+msgstr "Fix pozícióban"
 
 #: libgnomeui/winhints_demo.c:200
 msgid "Ignore on Arrange"
-msgstr ""
+msgstr "Érkezéskor figyelmen kívül"
 
 #: libgnomeui/winhints_demo.c:204
 msgid "Set State"
-msgstr ""
+msgstr "Állapot beállítása"
 
 #: libgnomeui/winhints_demo.c:210
 msgid "Skip Toggles:"
-msgstr ""
+msgstr "Kihagyás kapcsolók:"
 
 #: libgnomeui/winhints_demo.c:220
 msgid "Skip Focus"
-msgstr ""
+msgstr "Kihagyás fókuszból"
 
 #: libgnomeui/winhints_demo.c:224
 msgid "Skip Window Menu"
-msgstr ""
+msgstr "Ablakmenübõl kihagyás"
 
 #: libgnomeui/winhints_demo.c:228
 msgid "Skip Taskbar / WinList"
-msgstr ""
+msgstr "Taszklistáról lehagyás"
 
 #: libgnomeui/winhints_demo.c:232
 msgid "Set Skip"
-msgstr ""
+msgstr "Beállításból kihagyás"
 
 #: libgnomeui/winhints_demo.c:412
 msgid "WIN_HINTS Test"
