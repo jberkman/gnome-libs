@@ -1,26 +1,15 @@
 Umh, this was a long day today, but the beast finally compiles.
 
-So, what do you need in order to compile gnome-libs's HEAD ?
-
-First of all, some compilation things:
-
-* you need the latest version of gnome-common
-* there's a GNOME2_DIR environment variable which you
-  can use when you just want to have your HEAD stuff in
-  another prefix.
-
-  For instance, I have all my stuff in /gnome/unstable/INSTALL
-  and just glib 1.3.x, gtk+ 1.3.x and gnome-libs HEAD in
-  /gnome/head/INSTALL.
-
-  In this case you can set GNOME2_DIR=/gnome/head/INSTALL
-
-Let's start (in order of compilation):
+To compile gnome-libs HEAD you need the following packages:
 
 * glib 1.3.x (HEAD)
 
 * GTK+ 1.3.x (HEAD) which itself requires
     pango and fribidi - see www.pango.org for details.
+
+* pkgconfig from http://pkgconfig.sourceforge.net/ - the latest CVS version.
+
+* gnome-common (HEAD) - use the --enable-platform-gnome-2 configure argument
 
 * ORBit linked against glib 1.3.x.
   (apply the ORBit-glib-2.0.patch to it and use the
