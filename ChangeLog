@@ -1,3 +1,12 @@
+Sun Mar 15 15:24:41 1998  Owen Taylor  <owt1@cornell.edu>
+
+	* Makefile.am configure.in gnomeConf.sh.in: 
+	Add GTK_CFLAGS to GNOME_INCLUDEDIR, and GTK_LIBS to the
+	approriate *LIBS variables.
+
+	* libgnome/Makefile.am libgnomeui/Makefile.am: 
+	Added GTK_CFLAGS to INCLUDES
+
 Tue Mar 10 11:58:38 1998  Tom Tromey  <tromey@cygnus.com>
 
 	* libgnome/gnome-parse.h: Just look for <argp.h>.

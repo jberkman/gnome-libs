@@ -1,5 +1,5 @@
-LINK     = $(LIBTOOL) --mode=link $(CC) $(CFLAGS) $(LDFLAGS) $(X_LIBS) -o $@
-INCLUDE_always = -I$(includedir) $(X_CFLAGS)
+LINK     = $(LIBTOOL) --mode=link $(CC) $(CFLAGS) $(LDFLAGS) $(GTK_LIBS) -o $@
+INCLUDE_always = -I$(includedir) $(GTK_CFLAGS)
 
 INCLUDES = -I.. -I$(srcdir)/../.. $(INCLUDE_always)
 

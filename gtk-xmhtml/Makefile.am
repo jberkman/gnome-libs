@@ -2,7 +2,8 @@
 
 libgtkxmhtmlincludedir = $(includedir)/gtk-xmhtml
 
-INCLUDES = -I.. -I$(srcdir)/.. -I$(includedir) -DWITH_GTK -DDEBUG -DGNOME_LIB
+INCLUDES = -I.. -I$(srcdir)/.. -I$(includedir) @GTK_CFLAGS@ \
+           -DWITH_GTK -DDEBUG -DGNOME_LIB
 
 lib_LTLIBRARIES = libgtkxmhtml.la
 
