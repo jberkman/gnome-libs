@@ -315,7 +315,7 @@ zvt_init_subshell (struct vt_em *vt, char *pty_name, int log)
 		return -1;
 	}
 	
-	vt->childfd = master_pty;
+	vt->keyfd = vt->childfd = master_pty;
 
 	return vt->childpid;
 }

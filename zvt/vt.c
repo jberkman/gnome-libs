@@ -1370,6 +1370,7 @@ vt_init(struct vt_em *vt, int width, int height)
 
   vt->childfd = -1;
   vt->childpid = -1;
+  vt->keyfd = -1;
 
   for (i=0;i<VTPARAM_MAXARGS;i++) {
     vt->args[i]=&vt->args_mem[i*VTPARAM_ARGMAX];
@@ -1445,7 +1446,7 @@ vt_forkpty (struct vt_em *vt, int do_uwtmp_log)
 int
 vt_writechild(struct vt_em *vt, char *buffer, int len)
 {
-  return write(vt->childfd, buffer, len);
+  return write(vt->keyfd, buffer, len);
 }
 
 /**
@@ -1508,6 +1509,7 @@ vt_closepty(struct vt_em *vt)
 	  ret = close(vt->childfd);
 	  zvt_close_msgfd(vt->childpid);
 	  vt->msgfd = vt->childfd = -1;
+	  if (vt->keyfd != vt->childfd) close(vt->keyfd);
   } else
 	  ret = 0;
   return ret;

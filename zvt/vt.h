@@ -85,7 +85,9 @@ struct vt_em {
   int scrollbottom;		/* line after which scrolling occurs */
 
   pid_t childpid;		/* child process id */
-  int childfd;			/* child file descriptor (for read/write) */
+  int childfd;			/* child pty file descriptor (read/write) */
+  int keyfd;  			/* keystrokes get written hear (normally the
+				   same as childfd */
   void *pty_tag;		/* Tag used to talk to the gnome-pty-helper */
   int msgfd;			/* "it's dead" messages come through here */
 

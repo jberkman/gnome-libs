@@ -1,3 +1,10 @@
+1999-59-15  Erik Troan  <ewt@redhat.com>
+
+	* subshell.c, vt.h, vt.c: Use a separate keyfd for relaying
+	keystrokes. Normally this is identical to childfd, but this
+	allows the applications to abitrarily filter keystrokes before
+	they get to the application.
+
 1999-01-12  Miguel de Icaza  <miguel@nuclecu.unam.mx>
 
 	* gnome-pty-helper.c: Only define _XOPEN_SOURCE in IRIX>
