@@ -13,8 +13,6 @@ configured at the widget creation time).</para>
 <para>You can control the type of selection mode you desire by using
 the gnome_icon_list_set_selection_mode() function.</para>
 
-
-
 <!-- ##### STRUCT GnomeIconList ##### -->
 <para>
 
@@ -46,6 +44,9 @@ the gnome_icon_list_set_selection_mode() function.</para>
 
 </para>
 
+@icon_width: 
+@adj: 
+@is_editable: 
 @Returns: 
 
 
@@ -94,6 +95,8 @@ the gnome_icon_list_set_selection_mode() function.</para>
 
 </para>
 
+@gil: 
+<!-- # Unused Parameters # -->
 @ilist: 
 
 
@@ -102,6 +105,8 @@ the gnome_icon_list_set_selection_mode() function.</para>
 
 </para>
 
+@gil: 
+<!-- # Unused Parameters # -->
 @ilist: 
 
 
@@ -110,10 +115,12 @@ the gnome_icon_list_set_selection_mode() function.</para>
 
 </para>
 
-@ilist: 
+@gil: 
 @pos: 
 @icon_filename: 
 @text: 
+<!-- # Unused Parameters # -->
+@ilist: 
 
 
 <!-- ##### FUNCTION gnome_icon_list_insert_imlib ##### -->
@@ -132,10 +139,12 @@ the gnome_icon_list_set_selection_mode() function.</para>
 
 </para>
 
-@ilist: 
+@gil: 
 @icon_filename: 
 @text: 
 @Returns: 
+<!-- # Unused Parameters # -->
+@ilist: 
 
 
 <!-- ##### FUNCTION gnome_icon_list_append_imlib ##### -->
@@ -143,10 +152,12 @@ the gnome_icon_list_set_selection_mode() function.</para>
 
 </para>
 
-@ilist: 
+@gil: 
 @im: 
 @text: 
 @Returns: 
+<!-- # Unused Parameters # -->
+@ilist: 
 
 
 <!-- ##### FUNCTION gnome_icon_list_clear ##### -->
@@ -154,6 +165,8 @@ the gnome_icon_list_set_selection_mode() function.</para>
 
 </para>
 
+@gil: 
+<!-- # Unused Parameters # -->
 @ilist: 
 
 
@@ -162,8 +175,10 @@ the gnome_icon_list_set_selection_mode() function.</para>
 
 </para>
 
-@ilist: 
+@gil: 
 @pos: 
+<!-- # Unused Parameters # -->
+@ilist: 
 
 
 <!-- ##### FUNCTION gnome_icon_list_set_selection_mode ##### -->
@@ -171,8 +186,10 @@ the gnome_icon_list_set_selection_mode() function.</para>
 
 </para>
 
-@ilist: 
+@gil: 
 @mode: 
+<!-- # Unused Parameters # -->
+@ilist: 
 
 
 <!-- ##### FUNCTION gnome_icon_list_select_icon ##### -->
@@ -180,6 +197,9 @@ the gnome_icon_list_set_selection_mode() function.</para>
 
 </para>
 
+@gil: 
+@idx: 
+<!-- # Unused Parameters # -->
 @ilist: 
 @pos: 
 
@@ -189,8 +209,10 @@ the gnome_icon_list_set_selection_mode() function.</para>
 
 </para>
 
-@ilist: 
+@gil: 
 @pos: 
+<!-- # Unused Parameters # -->
+@ilist: 
 
 
 <!-- ##### FUNCTION gnome_icon_list_unselect_all ##### -->
@@ -198,9 +220,12 @@ the gnome_icon_list_set_selection_mode() function.</para>
 
 </para>
 
-@ilist: 
+@gil: 
 @event: 
 @keep: 
+@Returns: 
+<!-- # Unused Parameters # -->
+@ilist: 
 
 
 <!-- ##### FUNCTION gnome_icon_list_set_icon_width ##### -->
@@ -217,6 +242,9 @@ the gnome_icon_list_set_selection_mode() function.</para>
 
 </para>
 
+@gil: 
+@pixels: 
+<!-- # Unused Parameters # -->
 @ilist: 
 @spacing: 
 
@@ -226,6 +254,9 @@ the gnome_icon_list_set_selection_mode() function.</para>
 
 </para>
 
+@gil: 
+@pixels: 
+<!-- # Unused Parameters # -->
 @ilist: 
 @spacing: 
 
@@ -235,6 +266,9 @@ the gnome_icon_list_set_selection_mode() function.</para>
 
 </para>
 
+@gil: 
+@pixels: 
+<!-- # Unused Parameters # -->
 @ilist: 
 @spacing: 
 
@@ -244,6 +278,9 @@ the gnome_icon_list_set_selection_mode() function.</para>
 
 </para>
 
+@gil: 
+@pixels: 
+<!-- # Unused Parameters # -->
 @ilist: 
 @spacing: 
 
@@ -253,6 +290,9 @@ the gnome_icon_list_set_selection_mode() function.</para>
 
 </para>
 
+@gil: 
+@sep: 
+<!-- # Unused Parameters # -->
 @ilist: 
 @separators: 
 
@@ -262,9 +302,11 @@ the gnome_icon_list_set_selection_mode() function.</para>
 
 </para>
 
-@ilist: 
+@gil: 
 @pos: 
 @data: 
+<!-- # Unused Parameters # -->
+@ilist: 
 
 
 <!-- ##### FUNCTION gnome_icon_list_set_icon_data_full ##### -->
@@ -272,10 +314,12 @@ the gnome_icon_list_set_selection_mode() function.</para>
 
 </para>
 
-@ilist: 
+@gil: 
 @pos: 
 @data: 
 @destroy: 
+<!-- # Unused Parameters # -->
+@ilist: 
 
 
 <!-- ##### FUNCTION gnome_icon_list_find_icon_from_data ##### -->
@@ -283,9 +327,11 @@ the gnome_icon_list_set_selection_mode() function.</para>
 
 </para>
 
-@ilist: 
+@gil: 
 @data: 
 @Returns: 
+<!-- # Unused Parameters # -->
+@ilist: 
 
 
 <!-- ##### FUNCTION gnome_icon_list_get_icon_data ##### -->
@@ -293,9 +339,11 @@ the gnome_icon_list_set_selection_mode() function.</para>
 
 </para>
 
-@ilist: 
+@gil: 
 @pos: 
 @Returns: 
+<!-- # Unused Parameters # -->
+@ilist: 
 
 
 <!-- ##### FUNCTION gnome_icon_list_moveto ##### -->
@@ -303,9 +351,11 @@ the gnome_icon_list_set_selection_mode() function.</para>
 
 </para>
 
-@ilist: 
+@gil: 
 @pos: 
 @yalign: 
+<!-- # Unused Parameters # -->
+@ilist: 
 
 
 <!-- ##### FUNCTION gnome_icon_list_icon_is_visible ##### -->
@@ -313,9 +363,11 @@ the gnome_icon_list_set_selection_mode() function.</para>
 
 </para>
 
-@ilist: 
+@gil: 
 @pos: 
 @Returns: 
+<!-- # Unused Parameters # -->
+@ilist: 
 
 
 <!-- ##### FUNCTION gnome_icon_list_get_icon_at ##### -->
@@ -323,10 +375,12 @@ the gnome_icon_list_set_selection_mode() function.</para>
 
 </para>
 
-@ilist: 
+@gil: 
 @x: 
 @y: 
 @Returns: 
+<!-- # Unused Parameters # -->
+@ilist: 
 
 
 <!-- ##### FUNCTION gnome_icon_list_get_items_per_line ##### -->
@@ -376,7 +430,9 @@ accepted, the text is reset to its previous value.
 </para>
 
 @iconlist: the object which received the signal.
-@num: Icon index whose text changed.
+@arg1: 
 @arg2: The text entered by the user.
 @Returns: Whether the change is accepted or not.
+<!-- # Unused Parameters # -->
+@num: Icon index whose text changed.
 
