@@ -1,12 +1,13 @@
 1998-12-09  Michael Lausch  <mla@gams.at>
 
-        * libgnome/gnome-metadata.c (maybe_scan_app_dir): don't free the
+        * corrected CVS trioubles with gnome-regex and gnome-metadata
+	
+	* libgnome/gnome-metadata.c (maybe_scan_app_dir): don't free the
         list pointer if it's NULL.
 
         * libgnome/gnome-regex.c (gnome_regex_cache_set_size): fence post 
         error corrected.
-        (gnome_regex_cache_compile): fence post error corrected.
- 
+
 1998-12-08  Herbert Valerio Riedel  <hvr@hvrlab.ml.org>
 
 	* libgnorba/orbitgtk.c (orb_remove_connection): added proper cast
