@@ -118,8 +118,11 @@ Menus:
 
 	 New Game, Restart Game, SEPARATOR, Undo Move, Hint,
 	 SEPARATOR, Scores, Quit game
+
+     Quit game should just end the current game -- it shouldn't close
+     the application.  That's the job of File/Exit.
  
-Dialogs
+Dialogs 
 -------
 
    - GnomePropertyBox widgets for configuring things in your
