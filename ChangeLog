@@ -1,3 +1,11 @@
+Tue Oct  5 02:28:30 1999  Owen Taylor  <otaylor@redhat.com>
+
+	* gnome-i18n.c (read_aliases): Fix a memory leak by not
+	overwriting old entries in the alias hash table.
+
+	* gnome-dentry.c (gnome_desktop_entry_save): Fix a mem-leak
+	when saving desktop entries with comments.
+	
 1999-09-29  Rodrigo Stulzer Lopes <rodrigo@conectiva.com.br>
 
 	* po/pt_BR.po:  added translations.
