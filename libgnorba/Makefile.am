@@ -109,6 +109,9 @@ gnome_name_service_LDADD = 				\
 	libgnorbagtk.la					\
 	-lname-server					\
 	$(ORBIT_LIBS) 					\
+        $(top_builddir)/libgnome/libgnome.la		\
+        $(LIBGNOMEUI_LIBS) $(LIBGNOME_LIBS)		\
+	$(LIBSUPPORT)					\
 	$(X_LIBS) -lX11					\
 	$(INTLLIBS)
 

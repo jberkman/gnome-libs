@@ -1336,6 +1336,11 @@ goad_server_activation_id(void)
   return goad_activation_id;
 }
 
+struct poptOption goad_popt_options[] = {
+  {"activate-goad-server", '\0', POPT_ARG_STRING, &goad_activation_id, 0,
+   N_("(Internal use only) GOAD server ID to activate"), "GOAD_ID"},
+  {NULL, '\0', 0, NULL, 0}
+};
 /**
  * goad_register_arguments:
  *
@@ -1345,11 +1350,7 @@ goad_server_activation_id(void)
 void
 goad_register_arguments(void)
 {
-	static const struct poptOption options[] = {
-		{"activate-goad-server", '\0', POPT_ARG_STRING, &goad_activation_id, 0,
-		 N_("(Internal use only) GOAD server ID to activate"), "GOAD_ID"},
-		{NULL, '\0', 0, NULL, 0}
-	};
-	
-	gnomelib_register_popt_table(options, "Gnome Object Activation Directory");
+#if 0
+	gnomelib_register_popt_table(goad_popt_options, "Gnome Object Activation Directory");
+#endif
 }

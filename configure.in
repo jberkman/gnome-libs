@@ -31,6 +31,15 @@ GNOME_X_CHECKS
 
 GNOME_SUPPORT_CHECKS
 
+AC_FUNC_ALLOCA
+if test $ac_cv_header_alloca_h = yes; then
+	GNOME_HAVE_ALLOCA_H=1
+else
+	GNOME_HAVE_ALLOCA_H=0
+fi
+
+AC_SUBST(GNOME_HAVE_ALLOCA_H)
+
 
 dnl Evil stuff to extract GLIB stuff from gtk-config output
 dnl (we want to make sure it matches with the gtk we're using)
@@ -269,7 +278,7 @@ AC_CHECK_HEADERS(utime.h)
 AC_FUNC_MMAP
 AC_CHECK_TYPE(umode_t, int)
 
-AC_ARG_ENABLE(prefer-db1, [  --enable-prefer-db1     Prefer Berkeley DB 1.x] [default=no]],[prefer_db1="$enableval"],[prefer_db1=no])
+AC_ARG_ENABLE(prefer-db1, [  --enable-prefer-db1     Prefer Berkeley DB 1.x [default=no]],[prefer_db1="$enableval"],[prefer_db1=no])
 dnl
 dnl Check for db stuff (gnome-metadata)
 dnl
@@ -428,6 +437,7 @@ images/Makefile
 gtk-xmhtml/Makefile
 idl/Makefile
 libgnome/Makefile
+libgnome/gnome-portability.h
 libgnomeui/Makefile
 libgnomeui/pixmaps/Makefile
 libgnorba/Makefile
@@ -452,13 +462,34 @@ support/Makefile
 tools/Makefile
 tools/convertrgb/Makefile
 tools/gnome-doc/Makefile
-macros/Makefile])
+macros/Makefile],[case "$CONFIG_FILES" in
+*gnome-config*)chmod +x gnome-config;;
+esac
 
-echo " 
-
-	Warning: you have just compiled the gnome-libs-devel branch,
-	if you wanted to compile the stable gnome-libs, you need
-	to get gnome-libs-1-0 branch from the CVS or a gnome-libs-1.0.xx 
-	tar package
-"
+echo ""
+echo " *** IMPORTANT *** "
+echo ""
+echo "This is a development version of gnome-libs.  You should be using a stable"
+echo "version, which is available at ftp://ftp.gnome.org/pub/GNOME/sources/gnome-libs/"
+echo "The version you just configured is meant for developers of gnome-libs only:"
+echo ""
+echo "  * You should not base ANY software on this version of gnome-libs."
+echo ""
+echo "Distributions should *NOT* ship a development package of this gnome-libs."
+echo "Do not ship the headers and do not ship the gnome-config script. These"
+echo "things will conflict with the stable 1.0 series.  Package only enough"
+echo "to satisfy the requirements of some other package.  Package only the"
+echo "library itself.  Doing otherwise will do no favors to the community."
+echo ""
+echo "If you install this version of gnome-libs, we strongly recommend that you"
+echo "install it in a different prefix than gnome-libs 1.0.  Use --prefix as an"
+echo "argument to configure to do this.  Otherwise, you will not be able to"
+echo "do development with gnome-libs 1.0 any longer."
+echo ""
+echo " *** You should be using gnome-libs 1.0 instead. ***"
+echo ""
+echo "If you are using this source tree from CVS, please run:"
+echo "	cvs update -r gnome-libs-1-0"
+echo "now."
+])
 

@@ -12,8 +12,50 @@
 #include <gtk/gtk.h>
 #include "gnorba.h"
 
-extern void goad_register_arguments(void);
+#include "libgnome/gnomelib-init2.h"
+
+extern struct poptOptions goad_popt_options[];
+extern GnomeModuleInfo gnorba_module_info, gtk_module_info;
+
+static void gnorbaui_pre_args_parse(GnomeProgram *app, GnomeModuleInfo *mod_info);
+static void gnorbaui_post_args_parse(GnomeProgram *app, GnomeModuleInfo *mod_info);
 extern void _gnome_gnorba_cookie_setup(Display *disp, Window rootwin);
+
+static GnomeModuleRequirement gnorbaui_requirements[] = {
+  {VERSION, &gnorba_module_info},
+  {NULL, &gtk_module_info},
+  {NULL, NULL}
+};
+
+GnomeModuleInfo gnorbaui_module_info = {
+  "gnorbaui", VERSION, "Gnorba/GUI",
+  gnorbaui_requirements,
+  gnorbaui_pre_args_parse,
+  gnorbaui_post_args_parse,
+  goad_popt_options
+};
+
+static void
+gnorbaui_pre_args_parse(GnomeProgram *app, GnomeModuleInfo *mod_info)
+{
+  /* Set default values */
+  gnome_program_attributes_set(app,
+			  GNORBA_PARAM_SERVER_FUNC, FALSE,
+			  GNORBA_PARAM_USE_COOKIES, TRUE,
+			  GNORBA_PARAM_HIGH_PRIORITY, FALSE,
+			  GNORBA_PARAM_USE_X11, TRUE,
+			  NULL);
+}
+
+static void
+gnorbaui_post_args_parse(GnomeProgram *app, GnomeModuleInfo *mod_info)
+{
+  gboolean server_func = FALSE;
+
+  gnome_program_attributes_get(app, 
+			  GNORBA_PARAM_SERVER_FUNC, &server_func,
+			  NULL);
+}
 
 /**
  * gnome_CORBA_init:

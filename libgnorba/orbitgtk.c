@@ -24,7 +24,7 @@ static char *_gnorba_get_cookie_reliably(const char *setme);
 void         _gnome_gnorba_cookie_setup(Display *disp, Window rootwin);
 extern void goad_register_arguments(void);
 
-int _gnorba_corba_prio;
+static int _gnorba_corba_prio;
 
 #ifndef ORBIT_USES_GLIB_MAIN_LOOP
 
@@ -275,6 +275,56 @@ _gnome_gnorba_cookie_setup(Display *disp, Window rootwin)
   }
 }
 
+static void gnorba_pre_args_parse(GnomeProgram *app, GnomeModuleInfo *mod_info);
+static void gnorba_post_args_parse(GnomeProgram *app, GnomeModuleInfo *mod_info);
+
+GnomeModuleInfo gnorba_module_info = {
+  "gnorba", VERSION, "Gnorba",
+  NULL,
+  gnorba_pre_args_parse,
+  gnorba_post_args_parse,
+  NULL /* XXX todo - handle ORBit cmdline options */
+};
+
+static void
+gnorba_pre_args_parse(GnomeProgram *app, GnomeModuleInfo *mod_info)
+{
+#ifndef ORBIT_USES_GLIB_MAIN_LOOP
+  IIOPAddConnectionHandler = orb_add_connection;
+  IIOPRemoveConnectionHandler = orb_remove_connection;
+#endif /* !ORBIT_USES_GLIB_MAIN_LOOP */
+}
+
+static void
+gnorba_post_args_parse(GnomeProgram *app, GnomeModuleInfo *mod_info)
+{
+  gboolean corba_high_prio = FALSE, use_cookies = TRUE, use_x11 = FALSE;
+  char *fake_argv[] = {"boohoo", NULL};
+  CORBA_Environment ev;
+
+  gnome_program_attributes_get(app,
+			  GNORBA_PARAM_HIGH_PRIORITY, &corba_high_prio,
+			  GNORBA_PARAM_USE_COOKIES, &use_cookies,
+			  GNORBA_PARAM_USE_X11, &use_x11,
+			  NULL);
+
+  if (corba_high_prio)
+    _gnorba_corba_prio = G_PRIORITY_DEFAULT;
+  else
+    _gnorba_corba_prio = G_PRIORITY_LOW;
+
+  CORBA_exception_init(&ev);
+  _gnorba_gnome_orbit_orb = CORBA_ORB_init(1, fake_argv, "orbit-local-orb", &ev);
+  CORBA_exception_free(&ev);
+
+  if(use_cookies) {
+    if(use_x11) /* Bad hack for now, will fix later */
+      _gnome_gnorba_cookie_setup(GDK_DISPLAY(), GDK_ROOT_WINDOW());
+    else
+      _gnorba_cookie_setup(NULL);
+  }
+}
+
 /**
  * gnorba_CORBA_init:
  * @argc: argc pointer from the application
@@ -305,10 +355,10 @@ gnorba_CORBA_init(int *argc, char **argv,
 #endif /* !ORBIT_USES_GLIB_MAIN_LOOP */
 
 	if (flags & GNORBA_INIT_CORBA_PRIO_HIGH)
-		_gnorba_corba_prio = G_PRIORITY_DEFAULT;
+	  _gnorba_corba_prio = G_PRIORITY_DEFAULT;
 	else
-		_gnorba_corba_prio = G_PRIORITY_LOW;
-	
+	  _gnorba_corba_prio = G_PRIORITY_LOW;
+
 	_gnorba_gnome_orbit_orb = retval = CORBA_ORB_init(argc, argv, "orbit-local-orb", ev);
 	
 	if(!(flags & GNORBA_INIT_DISABLE_COOKIES))

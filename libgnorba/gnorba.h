@@ -13,6 +13,19 @@ typedef enum {
   GNORBA_INIT_DISABLE_COOKIES = 1 << 1,
   GNORBA_INIT_CORBA_PRIO_HIGH = 1 << 2
 } GnorbaInitFlags;
+
+#define GNORBA_PARAM_SERVER_FUNC "B:libgnorba/server_func"
+#define GNORBA_PARAM_USE_COOKIES "B:libgnorba/use_cookies"
+#define GNORBA_PARAM_HIGH_PRIORITY "B:libgnorba/high_priority"
+#define GNORBA_PARAM_USE_X11 "B:libgnorba/use_x11" /* internal use */
+
+extern GnomeModuleInfo gnorba_module_info, gnorbaui_module_info;
+
+/* GUI apps */
+#define GNORBAUI_INIT GNOME_PARAM_MODULE,&gnorbaui_module_info
+/* Non-GUI apps */
+#define GNORBA_INIT GNOME_PARAM_MODULE,&gnorba_module_info
+
 /* 
  * Almost the same as gnome_init, except it initializes ORBit for use
  * with gtk+ too 

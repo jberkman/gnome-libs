@@ -947,6 +947,7 @@ create_icon_list(void)
 static void
 create_less(void)
 {
+#ifndef GNOME_EXCLUDE_DEPRECATED
 	GtkWidget *app;
 	GtkWidget *less;
 
@@ -957,6 +958,7 @@ create_less(void)
 	gtk_widget_show(less);
 	gtk_widget_show(app);
 	gnome_less_show_command(GNOME_LESS(less),"fortune");
+#endif
 }
 
 static void
@@ -1138,9 +1140,11 @@ string_cb(gchar * string, gpointer data)
 static void
 request_string_cb(GtkWidget * b, GtkEntry * e)
 {
+#ifndef GNOME_EXCLUDE_DEPRECATED
   GnomeApp * app = gtk_object_get_user_data(GTK_OBJECT(e));
   gnome_app_request_string(app, gtk_entry_get_text(e),
 			   string_cb, data_string);
+#endif
 }
 
 static gdouble
@@ -1309,15 +1313,19 @@ dialog_ok_cancel_modal_cb(GtkWidget * b, GtkEntry * e)
 static void
 dialog_request_string_cb(GtkWidget * b, GtkEntry * e)
 {
+#ifndef GNOME_EXCLUDE_DEPRECATED
   gnome_request_string_dialog (gtk_entry_get_text(e),
 			       string_cb, data_string);
+#endif
 }
 
 static void
 dialog_request_password_cb(GtkWidget * b, GtkEntry * e)
 {
+#ifndef GNOME_EXCLUDE_DEPRECATED
   gnome_request_password_dialog (gtk_entry_get_text(e),
 				 string_cb, data_string);
+#endif
 }
 
 static void
@@ -1911,7 +1919,9 @@ main (int argc, char *argv[])
 		  { "pixmap", create_pixmap },
 		  { "dentry edit", create_dentry_edit },
 		  { "href", create_href },
+#ifndef GNOME_EXCLUDE_DEPRECATED
 		  { "(Reload preferences)", gnome_preferences_load },
+#endif
 		  { "prop box", create_property_box },
 	  };
 	int nbuttons = sizeof (buttons) / sizeof (buttons[0]);
@@ -1922,7 +1932,7 @@ main (int argc, char *argv[])
 	GtkWidget *scrolled_window;
 	int i;
 
-	gnome_init ("testGNOME", VERSION, argc, argv);
+	gnome_program_init ("testGNOME", VERSION, argc, argv, GNOMEUI_INIT, NULL);
 
 	app = create_newwin(FALSE,"testGNOME", "testGNOME");
 	gtk_widget_set_usize (app, 200,300);
