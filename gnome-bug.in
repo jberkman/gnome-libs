@@ -84,11 +84,12 @@ fi
 
 #
 
+[ -z "$TMPDIR" ] && TMPDIR=$HOME
 [ -z "$TMPDIR" ] && TMPDIR=/tmp
 
-TEMP=$TMPDIR/p$$
-BAD=$TMPDIR/pbad$$
-REF=$TMPDIR/pf$$
+TEMP=$TMPDIR/.p$$
+BAD=$TMPDIR/.pbad$$
+REF=$TMPDIR/.pf$$
 
 if [ -z "$LOGNAME" -a -n "$USER" ]; then
   LOGNAME=$USER
