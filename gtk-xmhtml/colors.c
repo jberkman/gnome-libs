@@ -35,6 +35,9 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.9  1998/01/15 01:40:58  unammx
+* Comment fixes - Federico
+*
 * Revision 1.8  1998/01/15 01:34:03  unammx
 * Wed Jan 14 19:28:01 1998  Federico Mena  <federico@bananoid.nuclecu.unam.mx>
 *
@@ -712,6 +715,11 @@ my_get_colors(GdkColormap *colormap, gulong background, gulong *top, gulong *bot
 	GdkColor ctop, cbottom, chighlight;
 
 	/* I think this should use a ColorContext instead of allocating colors itself... - Federico */
+
+	/* FIXME: The colors that are allocated here are never freed.
+	 * I think we can save the pixel values in static variables so that we
+	 * can call gdk_colors_free() on the next invocation of the function.
+	 */
 
 	cbackground.pixel = background;
 	my_x_query_colors(colormap, &cbackground, 1);
