@@ -26,5 +26,5 @@ libgnorbainclude_HEADERS = \
 libgnorba_la_LDFLAGS = -version-info 26:0:26 -rpath $(libdir)
 libgnorba_la_LIBADD = $(ORBIT_LIBS) $(GLIB_LIBS) -lm
 
-$(name_IDL_SOURCES): $(srcdir)/name-service.idl
-	orbit-idl $(srcdir)/name-service.idl
+$(name_IDL_SOURCES): $(top_srcdir)/idl/name-service.idl
+	orbit-idl $(top_srcdir)/idl/name-service.idl
