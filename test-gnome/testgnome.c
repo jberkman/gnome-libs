@@ -179,7 +179,7 @@ create_color_picker (void)
 	app = create_newwin (TRUE, "testGNOME", "Color Picker");
 
 	table = gtk_table_new (3, 3, FALSE);
-	gtk_container_border_width (GTK_CONTAINER (table), GNOME_PAD_SMALL);
+	gtk_container_set_border_width (GTK_CONTAINER (table), GNOME_PAD_SMALL);
 	gtk_table_set_row_spacings (GTK_TABLE (table), GNOME_PAD_SMALL);
 	gtk_table_set_col_spacings (GTK_TABLE (table), GNOME_PAD_SMALL);
 	gnome_app_set_contents (GNOME_APP (app), table);
@@ -657,7 +657,7 @@ create_font_picker (void)
 
 
         vbox=gtk_vbox_new(FALSE,5);
-        gtk_container_border_width(GTK_CONTAINER(vbox),5);
+        gtk_container_set_border_width(GTK_CONTAINER(vbox),5);
         gnome_app_set_contents(GNOME_APP(app),vbox);
 
         /* Pixmap */
@@ -667,7 +667,7 @@ create_font_picker (void)
         gtk_container_add(GTK_CONTAINER(frPixmap),vbox1);
         /* GnomeFontPicker with pixmap */
         fontpicker1 = gnome_font_picker_new();
-        gtk_container_border_width(GTK_CONTAINER(fontpicker1),5);
+        gtk_container_set_border_width(GTK_CONTAINER(fontpicker1),5);
         gtk_box_pack_start(GTK_BOX(vbox1),fontpicker1,TRUE,TRUE,0);
         lbPixmap=gtk_label_new(_("If you choose a font it will appear here"));
         gtk_box_pack_start(GTK_BOX(vbox1),lbPixmap,TRUE,TRUE,5);
@@ -679,7 +679,7 @@ create_font_picker (void)
         frFontInfo=gtk_frame_new(_("Font Info"));
         gtk_box_pack_start(GTK_BOX(vbox),frFontInfo,TRUE,TRUE,0);
         vbox2=gtk_vbox_new(FALSE,FALSE);
-        gtk_container_border_width(GTK_CONTAINER(vbox2),5);        
+        gtk_container_set_border_width(GTK_CONTAINER(vbox2),5);        
         gtk_container_add(GTK_CONTAINER(frFontInfo),vbox2);
         
         /* GnomeFontPicker with fontinfo */
@@ -732,7 +732,7 @@ create_font_picker (void)
         gtk_box_pack_start(GTK_BOX(hbox3),gtk_label_new(_("This is an hbox with pixmap and text")),
             FALSE,FALSE,5);
         gnome_font_picker_uw_set_widget(GNOME_FONT_PICKER(fontpicker3),hbox3);
-        gtk_container_border_width(GTK_CONTAINER(fontpicker3),5);
+        gtk_container_set_border_width(GTK_CONTAINER(fontpicker3),5);
         gtk_box_pack_start(GTK_BOX(vbox3),fontpicker3,TRUE,TRUE,0);
 
         lbUser=gtk_label_new(_("If you choose a font it will appear here"));
@@ -1583,7 +1583,7 @@ create_app_helper (GtkWidget *widget, gpointer data)
         gnome_app_install_appbar_menu_hints(GNOME_APPBAR(bar), helper_main_menu);
 
 	vbox = gtk_vbox_new (FALSE, GNOME_PAD_SMALL);
-	gtk_container_border_width (GTK_CONTAINER (vbox), GNOME_PAD_SMALL);
+	gtk_container_set_border_width (GTK_CONTAINER (vbox), GNOME_PAD_SMALL);
 
 	/* Shared popup menu */
 
@@ -1594,7 +1594,7 @@ create_app_helper (GtkWidget *widget, gpointer data)
 	gtk_widget_show (frame);
 
 	vbox2 = gtk_vbox_new (FALSE, GNOME_PAD_SMALL);
-	gtk_container_border_width (GTK_CONTAINER (vbox2), GNOME_PAD_SMALL);
+	gtk_container_set_border_width (GTK_CONTAINER (vbox2), GNOME_PAD_SMALL);
 	gtk_container_add (GTK_CONTAINER (frame), vbox2);
 	gtk_widget_show (vbox2);
 
@@ -1774,7 +1774,7 @@ main (int argc, char *argv[])
 	gnome_app_set_contents(GNOME_APP(app),box1);
 	gtk_widget_show (box1);
 	scrolled_window = gtk_scrolled_window_new (NULL, NULL);
-	gtk_container_border_width (GTK_CONTAINER (scrolled_window), 10);
+	gtk_container_set_border_width (GTK_CONTAINER (scrolled_window), 10);
 	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolled_window),
 					GTK_POLICY_AUTOMATIC,
 					GTK_POLICY_AUTOMATIC);
@@ -1783,7 +1783,7 @@ main (int argc, char *argv[])
 	gtk_box_pack_start (GTK_BOX (box1), scrolled_window, TRUE, TRUE, 0);
 	gtk_widget_show (scrolled_window);
 	box2 = gtk_vbox_new (FALSE, 0);
-	gtk_container_border_width (GTK_CONTAINER (box2), 10);
+	gtk_container_set_border_width (GTK_CONTAINER (box2), 10);
 	gtk_scrolled_window_add_with_viewport (GTK_SCROLLED_WINDOW (scrolled_window), box2);
 	gtk_container_set_focus_vadjustment (GTK_CONTAINER (box2),gtk_scrolled_window_get_vadjustment (GTK_SCROLLED_WINDOW(scrolled_window)));
 	gtk_widget_show (box2);

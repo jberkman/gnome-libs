@@ -275,7 +275,7 @@ int main (int argc, char *argv[])
 					}
 				if (strlen(file) > 3)
 					{
-					file_for_output = strdup(file + 3);
+					file_for_output = g_strdup (file + 3);
 					}
 				else
 					{
@@ -293,7 +293,7 @@ int main (int argc, char *argv[])
 				if (strlen(file) > 3)
 					{
 					append = 1;
-					file_for_output = strdup(file + 3);
+					file_for_output = g_strdup (file + 3);
 					}
 				else
 					{
@@ -311,7 +311,7 @@ int main (int argc, char *argv[])
 				if (strlen(file) > 3)
 					{
 					append = 1;
-					suffix = strdup(file + 3);
+					suffix = g_strdup (file + 3);
 					}
 				else
 					{
@@ -328,7 +328,7 @@ int main (int argc, char *argv[])
 					}
 				if (strlen(file) > 3)
 					{
-					variable_name = strdup(file + 3);
+					variable_name = g_strdup (file + 3);
 					}
 				else
 					{
@@ -341,12 +341,12 @@ int main (int argc, char *argv[])
 				convert(file);
 				if (file_for_output && !append)
 					{
-					free(file_for_output);
+					g_free(file_for_output);
 					file_for_output = NULL;
 					}
 				if (variable_name)
 					{
-					free(variable_name);
+					g_free(variable_name);
 					variable_name = NULL;
 					}
 				}

@@ -13,6 +13,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <sys/stat.h>
+#include <glib.h>
 
 #ifdef HAVE_LIBPNG
 #include <png.h>
