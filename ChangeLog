@@ -6,6 +6,19 @@
 
 	* configure.in (AC_OUTPUT): Generate macros/Makefile too.
 
+1998-02-12  Federico Mena Quintero  <federico@nuclecu.unam.mx>
+
+	* libgnomeui/gnome-app.c (gnome_app_configure_positions): Fixed
+	bug where it would sigsegv if the app had a toolbar but no menubar.
+	(gnome_app_new): Removed unused variable prefix.
+	Removed unused prototype for gnome_app_rightclick_event.
+	(gnome_app_rightclick_menubar): Removed unused variable i.
+	(gnome_app_rightclick_toolbar): Likewise.
+	(gnome_app_set_menus): Fixed uninitialized variable warnings.
+	(gnome_app_rightclick_menubar): gtk_menu_popup time parameter set
+	to event->time.  This makes the popup timer work correctly.
+	(gnome_app_rightclick_toolbar): Likewise.
+
 1998-02-12  Raja R Harinath  <harinath@cs.umn.edu>
 
 	* configure.in (GNOME_LIBDIR,GNOME_INCLUDEDIR): New configuration
