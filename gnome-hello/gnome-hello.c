@@ -86,7 +86,6 @@ prepare_app(int argc, char *argv[])
                       NULL);
 
   if (restarted) {
-    g_print ("Restarted from %d, %d, %d, %d\n", os_x, os_y, os_w, os_h);
     gtk_widget_set_uposition (app, os_x, os_y);
     gtk_widget_set_usize     (app, os_w, os_h);
     }
@@ -146,7 +145,7 @@ about_cb (GtkWidget *widget, void *data)
                         "(C) 1998 the Free Software Foundation",
                         authors,
                         /* another comments */
-                        _("GNOME is a civilized software system\n"
+                        _("GNOME is a civilized software system "
 			  "so we've a \"hello world\" program"),
                         NULL);
   gtk_widget_show (about);
@@ -205,11 +204,11 @@ parse_args (int argc, char *argv[])
       case 'h':
         g_print ( 
       	  _("%s: A gnomified 'Hello World' program\n\n"
-      	    "Usage: hello [--help] [--version]\n\n"
+      	    "Usage: %s [--help] [--version]\n\n"
       	    "Options:\n"
       	    "        --help     display this help and exit\n"
       	    "        --version  output version information and exit\n"),
-      	    argv[0]);
+      	    argv[0], argv[0]);
         exit(0);
         break;
       case 'v':

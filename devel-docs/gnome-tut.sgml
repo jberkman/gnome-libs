@@ -1,1 +1,380 @@
-<!-- I'm going to start writing a gnome tutorial when i learn DocBook. -->
+<!doctype book PUBLIC "-//Davenport//DTD DocBook V3.0//EN" [
+]>
+<book>
+  <bookinfo>
+    <title>Gnome Dev's Tutorial..</title>
+    <authorgroup>
+      <author>
+	<firstname>Horacio</firstname>
+	<surname>Peña</surname>
+	<affiliation>
+	  <address>
+	    <email>horape@compendium.com.ar</email>
+	  </address>
+	</affiliation>
+      </author>
+    </authorgroup>
+    <!-- <version>last modified: <date></version> -->
+    <copyright>
+      <year>1998</year>
+      <holder>The GNOME Project - Horacio J. Peña (n.)</holder>
+    </copyright>
+    <legalnotice>
+      <para>This documentation is free software; you can redistribute
+	it and/or modify it under the terms of the GNU General Public
+	License as published by the Free Software Foundation; either
+	version 2 of the License, or (at your option) any later
+	version.</para>
+
+      <para>This program is distributed in the hope that it will be
+	useful, but WITHOUT ANY WARRANTY; without even the implied
+	warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+	PURPOSE.  See the GNU General Public License for more
+	details.</para>
+
+      <para>You should have received a copy of the GNU General Public
+	License along with this program; if not, write to the Free
+	Software Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+	MA 02111-1307 USA</para>
+
+      <para>For more details see the file COPYING in the source
+	distribution of GNOME.</para>
+    </legalnotice>
+  </bookinfo>
+
+  <toc></toc>
+
+  <chapter id="intro">
+    <title>Introduction..</title>
+    <sect1 id="feedback">
+      <title>Feedback..</title>
+      <para>Well, my native tongue is spanish, so you're probably going
+        to find a lot of gramatic and spelling errors. Please tell me
+        about them.</para>
+      </sect1>
+
+    <sect1 id="whatis">
+      <title>What is GNOME..</title>
+      <para>
+	GNOME stands for GNU Network Object Model Environment. The GNOME
+	project intends to build a complete, user-friendly desktop based
+	entirely on free software. GNOME is part of the GNU project. The
+	desktop will consist of small utilities and larger applications which
+	share a consistent look and feel. GNOME uses GTK as the GUI toolkit
+	for all GNOME-compliant applications.
+	</para>
+      </sect1>
+
+    <sect1 id="thistut">
+      <title>This tutorial.</title>
+      <para>
+        </para>
+      </sect1>
+
+    </chapter>
+
+  <chapter id="nontech">
+    <title>Non (very) technical issues.</title>
+    <para>
+      This chapter will discuse issues ranging from how to obtain a CVS account
+      to indenting standards.
+      </para>
+
+    <sect1 id="proglang">
+      <title>Programming languages that can be used in GNOME.</title>
+      <para>
+        </para>
+      </sect1>
+
+    <sect1 id="start">
+      <title>How to start hacking GNOME.</title>
+      <para>
+	</para>
+      </sect1>
+
+    <sect1 id="what">
+      <title>What to hack.</title>
+      <para>
+	</para>
+      </sect1>
+
+    <sect1 id="CVS">
+      <title>Obtaining a CVS account.</title>
+      <para>
+	</para>
+      </sect1>
+
+    <sect1 id="altpol">
+      <title>Policy on hacking another people's code.</title>
+      <para>
+	</para>
+      </sect1>
+
+    <sect1 id="addAUTH">
+      <title>When adding yourself to AUTHORS file.</title>
+      <para>
+	</para>
+      </sect1>
+
+    <sect1 id="codstd">
+      <title>Coding Standards.</title>
+      <para>
+	</para>
+      </sect1>
+
+    </chapter>
+
+  <chapter id="gello">
+    <title>GNOME Hello! revised.</title>
+      <para>
+	From the gnome-hello manual:
+	</para>
+      <para>
+	gnome-hello is a GNOME application which contains all the essential
+	and common features of GNOME programs, such as initialization, event
+	loops, configuration file parsing, internationalization and so forth.
+	</para>
+      <para>	
+	gnome-hello is intended to be an example of the GNOME coding
+	standards, as well as a fun and useless little program.
+	</para>
+      <para>
+	Similarly, gnome-hello is documented (you are reading it now) in the
+	manner typical of GNOME applications. 
+        </para>
+
+      <sect1 id="parsing">
+      	<title>Parsing parameters.</title>
+      	<para>
+      	  <para>
+	</sect1>
+	
+      <sect1 id="i18n">
+      	<title>Internationalization.</title>
+      	<para>
+      	  <para>
+	</sect1>
+	
+      <sect1 id="prepareapp">
+      	<title>Making the application's main window.</title>
+      	<para>
+      	  <para>
+	</sect1>
+	
+      <sect1 id="menuopt">
+      	<title>Mandatory menu options.</title>
+      	<para>
+      	  <para>
+	</sect1>
+	
+      <sect1 id="sessmng">
+      	<title>Session Management.</title>
+      	<para>
+      	  <para>
+	</sect1>
+
+      <sect1 id="doc">
+      	<title>Documentation.</title>
+      	<para>
+      	  <para>
+	</sect1>
+	
+    </chapter>
+
+  <chapter id="arch">
+    <title>Architecture notes.</title>
+      <para>
+        [FIXME: I think that we could include here the notes that now are in
+        the website.]
+        </para>
+    </chapter>
+
+  <chapter id="libgnome">
+    <title>GNOME library.</title>
+      <para>
+        This chapter is intended to be a reference to the libgnome.
+        </para>
+      <sect1 id="gnome-config">
+        <title>gnome-config</title>
+        <para>
+          </para>
+        </sect1>
+      <sect1 id="gnome-dentry">
+        <title>gnome-dentry</title>
+        <para>
+          </para>
+        </sect1>
+      <sect1 id="gnome-dl">
+        <title>gnome-dl</title>
+        <para>
+          </para>
+        </sect1>
+      <sect1 id="gnome-dns">
+        <title>gnome-dns</title>
+        <para>
+          </para>
+        </sect1>
+      <sect1 id="gnome-fileconvert">
+        <title>gnome-fileconvert</title>
+        <para>
+          </para>
+        </sect1>
+      <sect1 id="gnome-history">
+        <title>gnome-history</title>
+        <para>
+          </para>
+        </sect1>
+      <sect1 id="gnome-hook">
+        <title>gnome-hook</title>
+        <para>
+          </para>
+        </sect1>
+      <sect1 id="gnome-mime">
+        <title>gnome-mime</title>
+        <para>
+          </para>
+        </sect1>
+      <sect1 id="gnome-score">
+        <title>gnome-score</title>
+        <para>
+          </para>
+        </sect1>
+      <sect1 id="gnome-string">
+        <title>gnome-string</title>
+        <para>
+          </para>
+        </sect1>
+      <sect1 id="gnome-triggers">
+        <title>gnome-triggers</title>
+        <para>
+          </para>
+        </sect1>
+      <sect1 id="gnome-util">
+        <title>gnome-util</title>
+        <para>
+          </para>
+        </sect1>
+      <sect1 id="gnomelib-init">
+        <title>gnomelib-init</title>
+        <para>
+          </para>
+        </sect1>
+    </chapter>
+
+
+  <chapter id="libgnomeui">
+    <title>GNOME User Interface library.</title>
+      <para>
+        This chapter is intended to be a reference to the libgnomeui.
+        </para>
+
+      <sect1 id="gnome-about">
+        <title>gnome-about</title>
+        <para>
+          </para>
+        </sect1>
+
+      <sect1 id="gnome-actionarea">
+        <title>gnome-actionarea</title>
+        <para>
+          </para>
+        </sect1>
+
+      <sect1 id="gnome-app-helper">
+        <title>gnome-app-helper</title>
+        <para>
+          </para>
+        </sect1>
+
+      <sect1 id="gnome-app">
+        <title>gnome-app</title>
+        <para>
+          </para>
+        </sect1>
+
+      <sect1 id="gnome-color-selector">
+        <title>gnome-color-selector</title>
+        <para>
+          </para>
+        </sect1>
+
+      <sect1 id="gnome-colors">
+        <title>gnome-colors</title>
+        <para>
+          </para>
+        </sect1>
+
+      <sect1 id="gnome-font-selector">
+        <title>gnome-font-selector</title>
+        <para>
+          </para>
+        </sect1>
+
+      <sect1 id="gnome-ice">
+        <title>gnome-ice</title>
+        <para>
+          </para>
+        </sect1>
+
+      <sect1 id="gnome-init">
+        <title>gnome-init</title>
+        <para>
+          </para>
+        </sect1>
+
+      <sect1 id="gnome-messagebox">
+        <title>gnome-messagebox</title>
+        <para>
+          </para>
+        </sect1>
+
+      <sect1 id="gnome-pixmap">
+        <title>gnome-pixmap</title>
+        <para>
+          </para>
+        </sect1>
+
+      <sect1 id="gnome-properties">
+        <title>gnome-properties</title>
+        <para>
+          </para>
+        </sect1>
+
+      <sect1 id="gnome-scores">
+        <title>gnome-scores</title>
+        <para>
+          </para>
+        </sect1>
+
+      <sect1 id="gnome-session">
+        <title>gnome-session</title>
+        <para>
+          </para>
+        </sect1>
+
+      <sect1 id="gnome-stock">
+        <title>gnome-stock</title>
+        <para>
+          </para>
+        </sect1>
+
+      <sect1 id="gtk-clock">
+        <title>gtk-clock</title>
+        <para>
+          </para>
+        </sect1>
+
+      <sect1 id="gtk-ted">
+        <title>gtk-ted</title>
+        <para>
+          </para>
+        </sect1>
+
+      <sect1 id="ted_demo">
+        <title>ted_demo</title>
+        <para>
+          </para>
+        </sect1>
+
+    </chapter>
+</book>
