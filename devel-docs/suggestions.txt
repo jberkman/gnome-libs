@@ -7,13 +7,13 @@ Menus:
 
    - The order of the toplevel menus should be: 
 
-	  File, <any mdi child menus>, Edit, View, Game, CUSTOM MENUS,
+	  File, <any MDI child menus>, Edit, View, Game, CUSTOM MENUS,
 	  Settings, Windows, Help
 
      The Help menu should not be right-justified.
 
      CUSTOM MENUS is where you should put your application-specific
-     top-level menus, such as gnumeric's "Insert" menu.  These are all
+     top-level menus, such as Gnumeric's "Insert" menu.  These are all
      optional except File and Help.
 
    - The prescribed order of standard menu items in the "File" menu is
@@ -58,10 +58,10 @@ Menus:
 		Configuration dialog menu items
 		Preferences
 
-     It is ok if the only item in Settings is "Preferences".
+     It is OK if the only item in Settings is "Preferences".
 
      Of course, if you have hundreds of toggles, use your best
-     judgement; only put the commonly-toggled ones in the Settings
+     judgment; only put the commonly-toggled ones in the Settings
      menu, and use a nice Preferences dialog to contain the complete
      set.
 
@@ -81,7 +81,7 @@ Menus:
 
      Where LABEL is the the text which appears in the menu for this
      menu item.  You should put LABEL in the form of N_("_New
-     Document"), or whatever's appropriate for your application.  TIP
+     Document"), or whatever is appropriate for your application.  TIP
      should be the description of this menu item's function,
      e.g. N_("Create a new document").
 
@@ -99,11 +99,14 @@ Menus:
 
    - Use the GnomeAppBar in your application, and provide hints for
      all of your menu items, including submenus.  See balsa and
-     gnumeric for examples.
+     Gnumeric for examples.
 
-   - In general, if your menu item pops up a dialog which will request
-   the user for information, it should end with "...".  For example,
-   "Print setup..." but "Print".
+   - Ellipsis ("...") should be used on menu items that require the
+     application to prompt the user for extra information before the
+     command can execute.  "Save as..." is one of these because the
+     application needs to ask the user for the filename.  "About" is
+     not because the command *is* to pop up an about box, and it does
+     not need to prompt for information before doing that.
 
    - Your menu hints should not have a trailing period.  They should be
      phrased like commands, e.g. "Open a new file".  Do NOT phrase them
@@ -128,8 +131,8 @@ Menus:
 Dialogs 
 -------
 
-   - GnomePropertyBox widgets for configuring things in your
-     application.  These will allow the user to use their prefered way
+   - Use GnomePropertyBox widgets for configuring things in your
+     application.  These will allow the user to use their preferred way
      of configuring the application.
 
    - If you only want to ask the user a question from a set of
@@ -144,7 +147,7 @@ Dialogs
      your main window for example).
 
    - For file-input entry widgets, use the GnomeFileEntry widget, this
-     will provde a browse selector (and in the future it will use the
+     will provide a browse selector (and in the future it will use the
      enhanced file open dialog box).
 
    - When you require an entry for typing in an icon name, use the
@@ -154,7 +157,16 @@ Dialogs
      GnomeEntry widget (this will provide automatic history for you).
 
    - Use the GnomeAbout dialog.  Be sure to include an email address
-     for reporting bugs and the copyright notice.
+     for reporting bugs and the copyright notice.  About dialogs
+     should:
+	
+	1. Not be modal.
+
+	2. Allow one and only one instance of the dialog to be open at
+	   a time.
+
+	3. If the user selects the About command while a previous
+           about box is open, then it should be gdk_window_raise()d.
 
 General Widget Use
 ------------------
@@ -167,15 +179,15 @@ General Widget Use
 
    - Use GnomePixmap to load your images.
 
-   - Try to use consistant spacing and padding everywhere.
-     libgnomeui/gnome-uidefs.h has some preset values to use.
+   - Try to use consistent spacing and padding everywhere.
+     libgnomeui/gnome-uidefs.h has some preset values you should use.
 
 Miscellaneous
 -------------
 
-   - GNOME uses Imlib, try to provide your images in PNG format.  Do
-     not care about the color usage, Imlib will dither to a nice
-
+   - GNOME uses Imlib, so try to provide your images in PNG format.
+     You do not need to care about the color usage, Imlib will dither
+     to a nice palette if necessary.
 
 Internationalization
 --------------------
@@ -184,9 +196,7 @@ Internationalization
      static initializers to allow your application messages to be
      localized.
 
-
 Session management
 ------------------
 
-   - If possible, make your application support session management.
-
+   - Make your application support session management.
