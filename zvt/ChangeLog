@@ -1,5 +1,13 @@
 1999-05-18  Michael Zucchi  <zucchi@zzedzone.mmc.com.au>
 
+	* vt.c (vt_insert_lines): range check upper limit.
+	(vt_delete_lines): Ditto.
+	(vt_scroll_down): Ditto.
+	(vt_scroll_up): Ditto.
+	(vt_scrollback_add): Fixed more indenting.
+	(vt_parse_vt): Force all arguments to be unsigned values (assumes
+	2's complement storage).
+
 	* zvtterm.c (zvt_term_scroll): More indenting repair.
 	(zvt_term_set_font_name): Ditto (etc for everything else i spot).
 	Please use K&R style indenting if you make changes!

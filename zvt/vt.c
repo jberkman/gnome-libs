@@ -229,31 +229,26 @@ vt_scrollback_add(struct vt_em *vt, struct vt_line *wn)
   ln->line = -1;
   
   /* limit the total number of lines in scrollback */
-  if (vt->scrollbacklines >= vt->scrollbackmax) 
-    {
-      /* remove the top of list line */
-      ln = (struct vt_line *)vt_list_remhead(&vt->scrollback);
-      g_free(ln);
-
-      /* need to track changes to this, even if they're not 'real' */
-      if (vt->scrollbackoffset)
-	{
-	  vt->scrollbackold--;
-	  if ((-vt->scrollbackoffset) < vt->scrollbackmax)
-	    vt->scrollbackoffset--;
-	}
-    } 
-  else 
-    {
-      vt->scrollbacklines++;
-
-      /* we've effectively moved the 'old' scrollback position */
-      if (vt->scrollbackoffset)
-	{
-	  vt->scrollbackold--;
-	  vt->scrollbackoffset--;
-	}
+  if (vt->scrollbacklines >= vt->scrollbackmax) {
+    /* remove the top of list line */
+    ln = (struct vt_line *)vt_list_remhead(&vt->scrollback);
+    g_free(ln);
+    
+    /* need to track changes to this, even if they're not 'real' */
+    if (vt->scrollbackoffset) {
+      vt->scrollbackold--;
+      if ((-vt->scrollbackoffset) < vt->scrollbackmax)
+	vt->scrollbackoffset--;
     }
+  } else {
+    vt->scrollbacklines++;
+    
+    /* we've effectively moved the 'old' scrollback position */
+    if (vt->scrollbackoffset) {
+      vt->scrollbackold--;
+      vt->scrollbackoffset--;
+    }
+  }
 }
 
 
@@ -276,6 +271,9 @@ vt_scroll_up(struct vt_em *vt, int count)
 	   count, vt->scrolltop, vt->scrollbottom));
 
   blank = vt->attr & VTATTR_CLEARMASK;
+
+  if (count>vt->height)
+    count=vt->height;
 
   while (count>0) {
     /* first, find the line to remove */
@@ -333,6 +331,9 @@ vt_scroll_down(struct vt_em *vt, int count)
 	   count, vt->scrolltop, vt->scrollbottom));
 
   /* FIXME: do this properly */
+
+  if (count>vt->height)
+    count=vt->height;
 
   while(count>0) {
 
@@ -439,6 +440,9 @@ void vt_insert_lines(struct vt_em *vt, int count)
 
   /* FIXME: Do this properly */
 
+  if (count>vt->height)
+    count=vt->height;
+
   while(count>0) {
     /* first, find the line to remove */
     wn=(struct vt_line *)vt_list_index(&vt->lines, vt->scrollbottom);
@@ -475,6 +479,10 @@ void vt_delete_lines(struct vt_em *vt, int count)
 
   d(printf("vt_delete_lines(%d)\n", count));
   /* FIXME: do this properly */
+
+  /* range check! */
+  if (count>vt->height)
+    count=vt->height;
 
   while (count>0) {
     /* first, find the line to remove */
@@ -1508,7 +1516,7 @@ vt_parse_vt (struct vt_em *vt, char *ptr, int length)
 	  vt->arg.num.intarg = vt->arg.num.intarg*10+(c-'0');
 	} else if ((mode & VT_EXB) || c==';' || c==':') {	/* looking for 'arg;arg;...' */
 	  if (vt->argcnt < VTPARAM_INTARGS) {
-	    vt->arg.num.intargs[vt->argcnt] = vt->arg.num.intarg;
+	    vt->arg.num.intargs[vt->argcnt] = vt->arg.num.intarg & 0x7fffffff;
 	    vt->argcnt++;
 	    vt->arg.num.intarg = 0;
 	  }
