@@ -1052,9 +1052,9 @@ out:
 /**
  * goad_server_register:
  * @name_server: points to a running name_server
- * @server: the server we wnat to register.
- * @name:
- * @kind:
+ * @server: the server object we want to register.
+ * @name: The GOAD id of the server that is being registered
+ * @kind: "server" for now.
  * @ev: CORBA_Environment to return errors
  *
  * Registers @server in the @name_server with @name.
@@ -1116,13 +1116,11 @@ goad_server_register(CORBA_Object name_server,
 
   old_server = CosNaming_NamingContext_resolve(name_server, &nom, ev);
 
-  if(ev->_major == CORBA_NO_EXCEPTION) {
+  if(ev->_major == CORBA_NO_EXCEPTION
+     || (ev->_major == CORBA_USER_EXCEPTION
+	 && strcmp(CORBA_exception_id(ev),
+		   ex_CosNaming_NamingContext_NotFound))) {
     CORBA_Object_release(old_server, ev);
-    CosNaming_NamingContext_unbind(name_server, &nom, ev);
-    g_return_val_if_fail(ev->_major == CORBA_NO_EXCEPTION, -3);
-  } else if (ev->_major != CORBA_USER_EXCEPTION 
-	     || strcmp(CORBA_exception_id(ev),
-		       ex_CosNaming_NamingContext_NotFound)) {
 
     if(orig_ns == CORBA_OBJECT_NIL)
       CORBA_Object_release(name_server, ev);
