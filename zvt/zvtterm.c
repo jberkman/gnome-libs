@@ -1998,19 +1998,19 @@ zvt_term_key_press (GtkWidget *widget, GdkEventKey *event)
 
   case GDK_KP_F1:
   case GDK_F1:
-    p+=sprintf (p, "\033[11~");
+    p+=sprintf (p, "\033OP");
     break;
   case GDK_KP_F2:
   case GDK_F2:
-    p+=sprintf (p, "\033[12~");
+    p+=sprintf (p, "\033OQ");
     break;
   case GDK_KP_F3:
   case GDK_F3:
-    p+=sprintf (p, "\033[13~");
+    p+=sprintf (p, "\033OR");
     break;
   case GDK_KP_F4:
   case GDK_F4:
-    p+=sprintf (p, "\033[14~");
+    p+=sprintf (p, "\033OS");
     break;
   case GDK_F5:
     p+=sprintf (p, "\033[15~");

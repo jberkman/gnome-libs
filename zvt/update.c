@@ -245,6 +245,14 @@ static void vt_line_update(struct _vtx *vx, struct vt_line *l, int line, int alw
       bl->data[i] = l->data[i];
     }
 
+    /* hide rendering of text (make forground=background)*/
+    if (newattr & VTATTR_CONCEALED) {
+      if (newattr & VTATTR_REVERSE)
+	newattr = (newattr&~VTATTR_BACKCOLOURM)|((newattr&VTATTR_FORECOLOURM)>>(VTATTR_FORECOLOURB-VTATTR_BACKCOLOURB));
+      else
+	newattr = (newattr&~VTATTR_FORECOLOURM)|((newattr&VTATTR_BACKCOLOURM)<<(VTATTR_FORECOLOURB-VTATTR_BACKCOLOURB));
+    }
+
     if (run == 0) {
       runstart = i;
       p = vx->runbuffer;

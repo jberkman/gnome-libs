@@ -193,7 +193,7 @@ main (gint argc, gchar *argv[])
   gtk_widget_show (hbox);
 
   /* create terminal */
-  term = zvt_term_new_with_size(80,25);
+  term = zvt_term_new_with_size(80,24);
   zvt_term_set_font_name(ZVT_TERM (term), FONT);
   zvt_term_set_blink (ZVT_TERM (term), TRUE);
   zvt_term_set_bell (ZVT_TERM (term), TRUE);

@@ -40,6 +40,7 @@ typedef unsigned int uint32;
 /* defines for VT argument processing, also used for textual arguments */
 #define VTPARAM_MAXARGS   5	/* maximum number of arguments */
 #define VTPARAM_ARGMAX   20	/* number of characters in each arg maximum */
+#define VTPARAM_INTARGS  20	/* maximum args for integers, should be less than MAXARGS*ARGMAX bytes! */
 
 struct vt_line {
   struct vt_line *next;		/* next 'vt' line */
@@ -112,11 +113,22 @@ struct vt_em {
 
   uint32 mode;			/* vt modes.  see below */
 
-  unsigned char *args[VTPARAM_MAXARGS];	/* run-time emulation arguments */
-  char args_mem[VTPARAM_MAXARGS*VTPARAM_ARGMAX];
-  unsigned char **argptr;
-  char *outptr;
-  char *outend;
+  /* most of this snot isn't needed anymore, its here for backward compatability */
+  /* remove the _dummy values at next major release number */
+  union {
+    struct {
+      unsigned char *args_dummy[VTPARAM_MAXARGS]; /* run-time emulation arguments */
+      char args_mem[VTPARAM_MAXARGS*VTPARAM_ARGMAX];
+      unsigned char **argptr_dummy;
+      char *outptr;
+      char *outend_dummy;
+    } txt;
+    struct {
+      unsigned int intargs[VTPARAM_INTARGS];
+      unsigned int intarg;
+    } num;
+  } arg;
+
   int argcnt;
 
   int state;			/* current parse state */
@@ -145,6 +157,7 @@ struct vt_em {
 #define VTMODE_WRAPOFF 0x04	/* wrap screenmode? (default = on) */
 #define VTMODE_APP_CURSOR 0x00000008 /* application cursor keys */
 #define VTMODE_RELATIVE 0x10	/* relative origin mode */
+#define VTMODE_APP_KEYPAD 0x20	/* application keypad on */
 
 #define VTMODE_ALTSCREEN 0x80000000 /* on alternate screen? */
 

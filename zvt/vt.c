@@ -357,7 +357,7 @@ void
 vt_insert_chars(struct vt_em *vt, int count)
 {
   int i, j;
-  struct vt_line *l;		/* FIXME: kludge */
+  struct vt_line *l;
 
   d(printf("vt_insert_chars(%d)\n", count));
   l=vt->this_line;
@@ -377,6 +377,7 @@ vt_insert_chars(struct vt_em *vt, int count)
   l->modcount+=count;
 }
 
+/* if this accesses more than this_line and cursorx, change vt_scroll_left */
 void
 vt_delete_chars(struct vt_em *vt, int count)
 {
@@ -402,6 +403,18 @@ vt_delete_chars(struct vt_em *vt, int count)
     l->data[i] = blank;
   }
   l->modcount+=count;
+}
+
+/* erase characters */
+void
+vt_erase_chars(struct vt_em *vt, int count)
+{
+  struct vt_line *l;
+  int i;
+
+  l = vt->this_line;
+  for (i = vt->cursorx+count;i<l->width;i++)
+    l->data[i] = vt->attr & VTATTR_CLEARMASK;
 }
 
 void vt_insert_lines(struct vt_em *vt, int count)
@@ -617,6 +630,13 @@ static void vt_tab(struct vt_em *vt)
   }
 }
 
+/* go to previous tab */
+static void vt_backtab(struct vt_em *vt)
+{
+  if (vt->cursorx)
+    vt->cursorx = (vt->cursorx-1) & (~7);
+}
+
 static void vt_backspace(struct vt_em *vt)
 {
   d(printf("bs \n"));
@@ -639,43 +659,113 @@ static void vt_alt_end(struct vt_em *vt)
   vt->remaptable = vt->G[0];		/* no character remapping */
 }
 
+/* just reverse scroll */
+static void vt_scroll_reverse(struct vt_em *vt)
+{
+  d(printf("reverse scroll line(s)\n"));
+  vt_scroll_down(vt, vt->arg.num.intargs[0]?vt->arg.num.intargs[0]:1);
+}
+
+/* just forward scroll */
+static void vt_scroll_forward(struct vt_em *vt)
+{
+  d(printf("forward scroll line(s)\n"));
+  vt_scroll_up(vt, vt->arg.num.intargs[0]?vt->arg.num.intargs[0]:1);
+}
+
+/* insert 'count' columns from 'startx' */
+static void vt_insert_columns(struct vt_em *vt, int startx, int count)
+{
+  struct vt_line *l, *oldthis;
+  int i, oldx;
+
+  oldthis = vt->this_line;
+  oldx = vt->cursorx;
+  vt->cursorx = startx;
+  l = (struct vt_line *)vt->lines.head;
+  while (l->next) {
+    vt->this_line = l;
+    vt_insert_chars(vt, count);
+    l = l->next;
+  }
+  vt->this_line = oldthis;
+  vt->cursorx = oldx;
+}
+
+static void vt_delete_columns(struct vt_em *vt, int startx, int count)
+{
+  struct vt_line *l, *oldthis;
+  int i, oldx;
+
+  oldthis = vt->this_line;
+  oldx = vt->cursorx;
+  vt->cursorx = startx;
+  l = (struct vt_line *)vt->lines.head;
+  while (l->next) {
+    vt->this_line = l;
+    vt_delete_chars(vt, count);
+    l = l->next;
+  }
+  vt->this_line = oldthis;
+  vt->cursorx = oldx;
+}
+
+/* insert column */
+static void vt_decic(struct vt_em *vt)
+{
+  if (vt->cursorx<vt->width)
+    vt_insert_columns(vt, vt->cursorx, vt->arg.num.intargs[0]?vt->arg.num.intargs[0]:1);
+}
+
+/* delete column */
+static void vt_decdc(struct vt_em *vt)
+{
+  if (vt->cursorx<vt->width)
+    vt_delete_columns(vt, vt->cursorx, vt->arg.num.intargs[0]?vt->arg.num.intargs[0]:1);
+}
+
+/* scroll right */
+static void vt_scroll_right(struct vt_em *vt)
+{
+  vt_insert_columns(vt, 0, vt->arg.num.intargs[0]?vt->arg.num.intargs[0]:1);
+}
+
+/* scroll left */
+static void vt_scroll_left(struct vt_em *vt)
+{
+  vt_delete_columns(vt, 0, vt->arg.num.intargs[0]?vt->arg.num.intargs[0]:1);
+}
+
 /* line editing */
 static void vt_insert_char(struct vt_em *vt)
 {
-  d(printf("insert char(s)\n"));
-  if (vt->argcnt==0) {
-    vt_insert_chars(vt, 1);		/* insert single char */
-  } else if (vt->argcnt==1) {
-    vt_insert_chars(vt, atoi(vt->args[0]));/* insert multiple characters */
-  } else {
-    d(printf("insert characters got >1 parameters\n"));
+  switch (vt->state) {
+  case 7:
+    vt_scroll_left(vt);
+    break;
+  default:
+    d(printf("insert char(s)\n"));
+    vt_insert_chars(vt, vt->arg.num.intargs[0]?vt->arg.num.intargs[0]:1);
   }
 }
 
 static void vt_delete_char(struct vt_em *vt)
 {
   d(printf("delete char(s)\n"));
-  if (vt->argcnt==0) {
-    vt_delete_chars(vt, 1);		/* insert single char */
-  } else if (vt->argcnt==1) {
-    vt_delete_chars(vt, atoi(vt->args[0]));/* insert multiple characters */
-  } else {
-    d(printf("delete characters got %d parameters\n", vt->argcnt));
-  }
+  vt_delete_chars(vt, vt->arg.num.intargs[0]?vt->arg.num.intargs[0]:1);
+}
+
+static void
+vt_erase_char(struct vt_em *vt)
+{
+  vt_erase_chars(vt, vt->arg.num.intargs[0]?vt->arg.num.intargs[0]:1);
 }
 
 /* insert lines and scroll down */
 static void
 vt_insert_line(struct vt_em *vt)
 {
-  d(printf("insert line(s)\n"));
-  if (vt->argcnt==0) {
-    vt_insert_lines(vt, 1);		/* insert single char */
-  } else if (vt->argcnt==1) {
-    vt_insert_lines(vt, atoi(vt->args[0]));/* insert multiple characters */
-  } else {
-    d(printf("insert lines got >1 parameters\n"));
-  }
+  vt_insert_lines(vt, vt->arg.num.intargs[0]?vt->arg.num.intargs[0]:1);
 }
 
 /* delete lines and scroll up */
@@ -684,19 +774,17 @@ vt_delete_line(struct vt_em *vt)
 {
   d(printf("vt_delete_line\n"));
 
-  if (vt->state == 1) {
+  switch (vt->state) {
+  case 1:
     if (vt->cursory > vt->scrolltop) {	/* reverse line feed, not delete */
       d(printf("vt_delete_line: should we try to scroll up?\n"));
       vt->cursory--;
     } else {
       vt_scroll_down(vt, 1);
     }
-  } else if (vt->argcnt==0) {
-    vt_delete_lines(vt, 1);	/* delete single line */
-  } else if (vt->argcnt==1) {
-    vt_delete_lines(vt, atoi(vt->args[0]));/* delete multiple characters */
-  } else {
-    d(printf("vt_delete_line: delete characters got >1 parameters\n"));
+    break;
+  default:
+    vt_delete_lines(vt, vt->arg.num.intargs[0]?vt->arg.num.intargs[0]:1);
   }
 
   vt->this_line = (struct vt_line *)vt_list_index(&vt->lines, vt->cursory);
@@ -706,14 +794,9 @@ vt_delete_line(struct vt_em *vt)
 static void
 vt_cleareos(struct vt_em *vt)
 {
-  int arg=0;
-
   d(printf("clear screen/end of screen\n"));
 
-  if (vt->argcnt)
-    arg = atoi(vt->args[0]);
-
-  switch(arg) {
+  switch(vt->arg.num.intargs[0]) {
   case 0:			/* clear here to end of screen */
     vt_clear_line_portion(vt, vt->cursorx, vt->this_line->width);
     vt_clear_lines(vt, vt->cursory+1, vt->height);
@@ -732,16 +815,18 @@ static void
 vt_clear_lineportion(struct vt_em *vt)
 {
   d(printf("Clear part of line\n"));
-  if (vt->argcnt>1) {
-    /* eat the command */
-  } else if (vt->argcnt==0 || *vt->args[0] == '0') {
+  switch (vt->arg.num.intargs[0]) {
+  case 0:
     vt_clear_line_portion(vt, vt->cursorx, vt->this_line->width);
-  } else if (*vt->args[0] == '1') {
+    break;
+  case 1:
     vt_clear_line_portion(vt, 0, vt->cursorx + 1);
-  } else if (*vt->args[0] == '2') {
+    break;
+  case 2:
     vt_clear_line_portion(vt, 0, vt->this_line->width);
+    break;
   }
-  /* eat bad parameters */
+  /* ignore bad parameters */
 }
 
 
@@ -782,30 +867,36 @@ vt_restore_cursor(struct vt_em *vt)
 static void
 vt_up(struct vt_em *vt)
 {
-  int count=1;
+  int count;
 
   d(printf("\n----------------------\n cursor up\n"));
-  if (vt->argcnt==1)
-    count=atoi(vt->args[0]);
 
-  d(printf("cursor up %d, from %d\n", count, vt->cursory));
+  switch (vt->state) {
+  case 7:			/* scroll left instead! */
+    vt_scroll_right(vt);
+    break;
+  default:
+    count = vt->arg.num.intargs[0]?vt->arg.num.intargs[0]:1;
 
-  vt->cursory-=count;
-  if (vt->cursory<vt->scrolltop) {
-    vt->cursory=vt->scrolltop;
+    d(printf("cursor up %d, from %d\n", count, vt->cursory));
+    
+    vt->cursory-=count;
+    if (vt->cursory<vt->scrolltop) {
+      vt->cursory=vt->scrolltop;
+    }
+    
+    vt->this_line = (struct vt_line *)vt_list_index(&vt->lines, vt->cursory);
   }
-
-  vt->this_line = (struct vt_line *)vt_list_index(&vt->lines, vt->cursory);
 }
 
 static void
 vt_down(struct vt_em *vt)
 {
-  int count=1;
+  int count;
 
   d(printf("cursor down\n"));
-  if (vt->argcnt==1)
-    count=atoi(vt->args[0]);
+
+  count = vt->arg.num.intargs[0]?vt->arg.num.intargs[0]:1;
 
   vt->cursory+=count;
   if (vt->cursory>vt->scrollbottom)
@@ -817,14 +908,13 @@ vt_down(struct vt_em *vt)
 static void
 vt_right(struct vt_em *vt)
 {
-  int count=1;
+  int count;
 
-  if (vt->argcnt==1)
-    count=atoi(vt->args[0]);
+  count = vt->arg.num.intargs[0]?vt->arg.num.intargs[0]:1;
 
   d(printf("cursor right(%d)\n", count));
 
-  vt->cursorx+=count?count:1;
+  vt->cursorx+=count;
   if (vt->cursorx>=vt->width)	/* wrapping? end of line? */
     vt->cursorx=vt->width-1;
 }
@@ -836,18 +926,19 @@ vt_right(struct vt_em *vt)
 static void
 vt_left(struct vt_em *vt)
 {
-  int count=1;
+  int count;
 
-  if (vt->state==1) {		/* line feed, not left */
+  switch (vt->state) {
+    case 1:			/* line feed, not left */
     d(printf("vt_left: no, linefeed instead!\n"));
     vt_lf(vt);
-  } else {
-    if (vt->argcnt==1)
-      count=atoi(vt->args[0]);
-
+    break;
+  default:
+    count = vt->arg.num.intargs[0]?vt->arg.num.intargs[0]:1;
+    
     d(printf("cursor left(%d)\n", count));
     
-    vt->cursorx-=count?count:1;
+    vt->cursorx-=count;
     if (vt->cursorx < 0)
       vt->cursorx=0;
   }
@@ -891,22 +982,11 @@ vt_goto(struct vt_em *vt)
   int x,y;
 
   d(printf("goto position\n"));
-  if (vt->argcnt==0) {
+  y = vt->arg.num.intargs[0]?vt->arg.num.intargs[0]-1:0;
+  if (vt->argcnt>1)
+    x = vt->arg.num.intargs[1]?vt->arg.num.intargs[1]-1:0;
+  else
     x=0;
-    y=0;
-    /*vt->this_line = vt->first;*/
-  } else if (vt->argcnt==1) {
-    y = atoi(vt->args[0])-1;
-    x=0;
-    /*vt->this_line = vt_list_index(&vt->first, vt->cursory);*/
-  } else if (vt->argcnt==2) {
-    y = atoi(vt->args[0])-1;
-    x = atoi(vt->args[1])-1;
-    /*vt->this_line = vt_list_index(&vt->first, vt->cursory);*/
-  } else {
-    d(printf("position had too many parameters\n"));
-    return;
-  }
 
   if (vt->mode & VTMODE_RELATIVE)
     y+=vt->scrolltop;
@@ -914,92 +994,100 @@ vt_goto(struct vt_em *vt)
   vt_gotoxy(vt, x, y);
 }
 
+/* goto a specific y location */
+static void
+vt_gotoabsy(struct vt_em *vt)
+{
+  vt_gotoxy(vt, vt->cursorx, vt->arg.num.intargs[0]?vt->arg.num.intargs[0]-1:0);
+}
+
+static void
+vt_gotoabsx(struct vt_em *vt)
+{
+  vt_gotoxy(vt, vt->arg.num.intargs[0]?vt->arg.num.intargs[0]-1:0, vt->cursory);
+}
+
 /* various mode stuff */
 static void
-vt_modeh(struct vt_em *vt)
+vt_setmode(struct vt_em *vt, int on)
 {
+  int i;
+
   d(printf("mode h set\n"));
-  if (vt->argcnt==1) {
-    switch(*(vt->args[0])) {
-    case '4':
-      d(printf("begin insert mode\n"));
-      vt->mode |= VTMODE_INSERT;
+  for (i=0;i<vt->argcnt;i++) {
+    switch (vt->state) {
+    case 2:
+      switch (vt->arg.num.intargs[i]) {
+      case 4:
+	d(printf("insert mode\n"));
+	if (on)
+	  vt->mode |= VTMODE_INSERT;
+	else
+	  vt->mode &= ~VTMODE_INSERT;
+	break;
+      }
       break;
-    case '?':
-      switch(atoi(vt->args[0]+1)) {
+    case 6:
+      switch(vt->arg.num.intargs[i]) {
       case 1:			/* turn on application cursor keys */
-	vt->mode |= VTMODE_APP_CURSOR;
+	if (on)
+	  vt->mode |= VTMODE_APP_CURSOR;
+	else
+	  vt->mode &= ~VTMODE_APP_CURSOR;
 	break;
       case 6:
-	vt->mode |= VTMODE_RELATIVE;
-	vt_gotoxy(vt, vt->scrolltop, 0);
+	if (on) {
+	  vt->mode |= VTMODE_RELATIVE;
+	  vt_gotoxy(vt, vt->scrolltop, 0);
+	} else {
+	  vt->mode &= ~VTMODE_RELATIVE;
+	  vt_gotoxy(vt, 0, 0);
+	}
 	break;
       case 7:
-	vt->mode &= ~VTMODE_WRAPOFF;
+	if (on)
+	  vt->mode &= ~VTMODE_WRAPOFF;
+	else
+	  vt->mode |= VTMODE_WRAPOFF;
+	break;
+      case 25:			/* cursor invisible/normal */
 	break;
       case 47:
-	vt_set_screen(vt, 1);
+	vt_set_screen(vt, on?1:0);
 	break;
       case 1000:
 	d(printf("sending mouse events\n"));
-	vt->mode |= VTMODE_SEND_MOUSE;
+	if (on)
+	  vt->mode |= VTMODE_SEND_MOUSE;
+	else
+	  vt->mode &= ~VTMODE_SEND_MOUSE;
 	break;
       }
     }
-  } else {
-    d(printf("Unknown args to mode h\n"));
   }
 }
 
+static void
+vt_modeh(struct vt_em *vt)
+{
+  vt_setmode(vt, 1);
+}
 
 static void
 vt_model(struct vt_em *vt)
 {
-  d(printf("mode l set\n"));
-  if (vt->argcnt==1) {
-    switch(*(vt->args[0])) {
-    case '4':
-      d(printf("end insert mode\n"));
-      vt->mode &= ~VTMODE_INSERT;
-      break;
-    case '?':
-      switch(atoi(vt->args[0]+1)) {
-      case 1:
-	vt->mode &= ~VTMODE_APP_CURSOR;
-	break;
-      case 6:
-	vt->mode &= ~VTMODE_RELATIVE;
-	vt_gotoxy(vt, 0, 0);
-	break;
-      case 7:
-	vt->mode |= VTMODE_WRAPOFF;
-	break;
-      case 47:
-	vt_set_screen(vt, 0);
-	break;
-      case 1000:
-	vt->mode &= ~VTMODE_SEND_MOUSE;
-	break;
-      }
-    }
-  } else {
-    d(printf("Unknown args to mode l\n"));
-  }
+  vt_setmode(vt, 0);
 }
 
 static void
 vt_modek(struct vt_em *vt)
 {
   d(printf("mode k set\n"));
-  if (vt->argcnt==1) {
-    switch(*(vt->args[0])) {
-    case '3':
-      d(printf("clear tabs\n"));
-      /* FIXME: do it */
-      break;
-    }
-  } else {
-    d(printf("Unknown args to mode k\n"));
+  switch(vt->arg.num.intargs[0]) {
+  case 3:
+    d(printf("clear tabs\n"));
+    /* FIXME: do it */
+    break;
   }
 }
 
@@ -1012,34 +1100,43 @@ vt_mode(struct vt_em *vt)
 			   VTATTR_UNDERLINE, VTATTR_BLINK, 0,
 			   VTATTR_REVERSE, VTATTR_CONCEALED};
 
-  d(printf("draw mode called\n"));
-  if (vt->argcnt==0) {
-    vt->attr=VTATTR_CLEAR;	/* clear all attributes */
-  } else {
-    for (j = 0; j < vt->argcnt; j++) {
-	i = atoi(vt->args[j]);
-	if (i==0) {
-	  vt->attr=VTATTR_CLEAR;
-	} else if (i<9) {
-	  vt->attr |= mode_map[i];	/* add a mode */
-	} else if (i>=20 && i <=28) {
-	  if (i==22) i=21;	/* 22 resets bold, not 21 */
-	  vt->attr &= ~mode_map[i-20]; /* remove a mode */
-	} else if (i>=30 && i <=37) {
-	  vt->attr = (vt->attr & ~VTATTR_FORECOLOURM) | ((i-30) << VTATTR_FORECOLOURB);
-	} else if (i==39) {
-	  vt->attr = (vt->attr & ~VTATTR_FORECOLOURM) | ((VTATTR_CLEAR) & VTATTR_FORECOLOURM);
-	} else if (i>=40 && i <=47) {
-	  vt->attr = (vt->attr & ~VTATTR_BACKCOLOURM) | ((i-40) << VTATTR_BACKCOLOURB);
-	} else if (i==49) {
-	  vt->attr = (vt->attr & ~VTATTR_BACKCOLOURM) | ((VTATTR_CLEAR) & VTATTR_BACKCOLOURM);
-	} else if (i>=90 && i <=97) {
-	  vt->attr = (vt->attr & ~VTATTR_FORECOLOURM) | ((i-90 + 8) << VTATTR_FORECOLOURB);
-	} else if (i>=100 && i <=107) {
-	  vt->attr = (vt->attr & ~VTATTR_BACKCOLOURM) | ((i-100 + 8) << VTATTR_BACKCOLOURB);
-	}
-      }
+  for (j = 0; j < vt->argcnt; j++) {
+    i = vt->arg.num.intargs[j];
+    if (i==0 || i==27) {
+      vt->attr=VTATTR_CLEAR;
+    } else if (i<9) {
+      vt->attr |= mode_map[i];	/* add a mode */
+    } else if (i>=20 && i <=28) {
+      if (i==22) i=21;	/* 22 resets bold, not 21 */
+      vt->attr &= ~mode_map[i-20]; /* remove a mode */
+    } else if (i>=30 && i <=37) {
+      vt->attr = (vt->attr & ~VTATTR_FORECOLOURM) | ((i-30) << VTATTR_FORECOLOURB);
+    } else if (i==39) {
+      vt->attr = (vt->attr & ~VTATTR_FORECOLOURM) | ((VTATTR_CLEAR) & VTATTR_FORECOLOURM);
+    } else if (i>=40 && i <=47) {
+      vt->attr = (vt->attr & ~VTATTR_BACKCOLOURM) | ((i-40) << VTATTR_BACKCOLOURB);
+    } else if (i==49) {
+      vt->attr = (vt->attr & ~VTATTR_BACKCOLOURM) | ((VTATTR_CLEAR) & VTATTR_BACKCOLOURM);
+    } else if (i>=90 && i <=97) {
+      vt->attr = (vt->attr & ~VTATTR_FORECOLOURM) | ((i-90 + 8) << VTATTR_FORECOLOURB);
+    } else if (i>=100 && i <=107) {
+      vt->attr = (vt->attr & ~VTATTR_BACKCOLOURM) | ((i-100 + 8) << VTATTR_BACKCOLOURB);
+    }
   }
+}
+
+static void
+vt_keypadon(struct vt_em *vt)
+{
+  /* appl. keypad 'on' */
+  vt->mode |= VTMODE_APP_KEYPAD;
+}
+
+static void
+vt_keypadoff(struct vt_em *vt)
+{
+  /* appl. keypad 'off' */
+  vt->mode &= ~VTMODE_APP_KEYPAD;
 }
 
 /*
@@ -1051,9 +1148,9 @@ vt_gx_set(struct vt_em *vt)
   int index;
   unsigned char *table;
 
-  index = vt->args[0][0]-'(';
+  index = vt->arg.num.intargs[0]-'(';
   if (index<=3 && index>=0) {
-    switch (vt->args[0][1]) {
+    switch (vt->arg.num.intargs[1]) {
     case '0':
       table = vt_remap_dec;
       break;
@@ -1079,44 +1176,50 @@ vt_dsr(struct vt_em *vt)
 {
   char status[16];
 
-  if (vt->argcnt==1) {
-    switch(*(vt->args[0])) {
-    case '5':			/* report 'ok' status */
-      g_snprintf(status, sizeof(status), "\033[0n");
-      break;
-    case '6':			/* report cursor position */
-      g_snprintf(status, sizeof(status), "\033[%d;%dR",
-      		 vt->cursory+1, vt->cursorx+1);
-      break;
-    default:
-      status[0]=0;
-    }
-    vt_writechild(vt, status, strlen(status));
+  switch(vt->arg.num.intargs[0]) {
+  case 5:			/* report 'ok' status */
+    g_snprintf(status, sizeof(status), "\033[0n");
+    break;
+  case 6:			/* report cursor position */
+    g_snprintf(status, sizeof(status), "\033[%d;%dR",
+	       vt->cursory+1, vt->cursorx+1);
+    break;
+  default:
+    status[0]=0;
   }
+  vt_writechild(vt, status, strlen(status));
 }
 
 static void
 vt_scroll(struct vt_em *vt)
 {
-  if (vt->argcnt==0) {
-    vt->scrolltop = 0;
-    vt->scrollbottom = vt->height-1;
-  } else if (vt->argcnt==1) {
-    vt->scrolltop = atoi(vt->args[0])-1;
-    vt->scrollbottom = vt->height-1;
-  } else if (vt->argcnt ==2) {
-    vt->scrolltop = atoi(vt->args[0])-1;
-    vt->scrollbottom = atoi(vt->args[1])-1;
+  switch (vt->state) {
+  case 2:
+    vt->scrolltop = vt->arg.num.intargs[0]?vt->arg.num.intargs[0]-1:0;
+    if (vt->argcnt>1)
+      vt->scrollbottom = vt->arg.num.intargs[1]?vt->arg.num.intargs[1]-1:0;
+    else
+      vt->scrollbottom = vt->height-1;
+    
+    if (vt->scrollbottom >= vt->height)
+      vt->scrollbottom = vt->height-1;
+    if (vt->scrolltop > vt->scrollbottom)
+      vt->scrolltop = vt->scrollbottom;
+    
+    d(printf("vt_scroll: vt->scrolltop=%d vt->scrollbottom=%d\n",
+	    vt->scrolltop, vt->scrollbottom));
+    
+    vt_gotoxy(vt, 0, vt->scrolltop);
+    break;
   }
-  if (vt->scrolltop < 0)
-    vt->scrolltop = 0;
-  if (vt->scrollbottom >= vt->height)
-    vt->scrollbottom = vt->height-1;
+}
 
-  d(printf("vt_scroll: vt->scrolltop=%d vt->scrollbottom=%d\n",
-	   vt->scrolltop, vt->scrollbottom));
-
-  vt_gotoxy(vt, 0, vt->scrolltop);
+/* for '\E#x' double-height/width, etc modes.
+   Not implemented. */
+static void
+vt_deccharmode (struct vt_em *vt)
+{
+  /* do nothing!*/
 }
 
 /*
@@ -1129,23 +1232,26 @@ vt_reset(struct vt_em *vt)
 #define DEVICE_ATTRIBUTES "\033?61;"
 
   if (vt->state == 2) {
-    /* report device attributes */
+    /* report device attributes - FIXME: this needs to be checked */
     vt_writechild(vt, DEVICE_ATTRIBUTES, sizeof(DEVICE_ATTRIBUTES));
   } else {
     vt_reset_terminal(vt, 0);
   }
 }
 
-/* function keys */
+/* function keys - does nothing */
 static void
 vt_func(struct vt_em *vt)
 {
   int i;
 
-  d(printf("function keys\n"));
-  if (vt->argcnt==1) {
-    i=atoi(vt->args[0]);
-    switch (i) {
+  switch (vt->state) {
+  case 9:			/* delete columns */
+    vt_decdc(vt);
+    break;
+  default:
+    d(printf("function keys\n"));
+    switch (vt->arg.num.intargs[0]) {
     case 2:
       d(printf("insert pressed\n"));
       break;
@@ -1178,11 +1284,11 @@ vt_set_text(struct vt_em *vt)
   int i;
 
   if (vt->change_my_name) {
-    p = strchr(vt->argptr[0], ';');
+    p = strchr(vt->arg.txt.args_mem, ';');
     if (p) {
       *p=0;
       p++;
-      i = atoi(vt->argptr[0]);
+      i = atoi(vt->arg.txt.args_mem);
       switch(i) {
       case 0:
 	i = VTTITLE_WINDOWICON;
@@ -1214,7 +1320,7 @@ struct vt_jump {
 #define VT_EXB 0x04		/* escape [ sequence */
 #define VT_EXO 0x08		/* escape O sequence */
 #define VT_ESC 0x10		/* escape "x" sequence */
-#define VT_ARG 0x20		/* character is a possible argument to function */
+#define VT_ARG 0x20		/* character is a possible argument to function (only digits!) */
 #define VT_EXA 0x40		/* escape x "x" sequence */
 
 #define VT_EBL (VT_EXB|VT_LIT)	/* escape [ or literal */
@@ -1230,30 +1336,30 @@ struct vt_jump vtjumps[] = {
   {0,0}, {0,0}, {0,0}, {0,0},	/* 14: ^T ^W */
   {0,0}, {0,0}, {0,0}, {0,0},	/* 18: ^X ^[ */
   {0,0}, {0,0}, {0,0}, {0,0},	/* 1c: ^\ ^] ^^ ^_  */
-  {0,VT_LIT}, {0,VT_LIT}, {0,VT_LIT}, {0,VT_LIT},	/*  !"# */
+  {0,VT_LIT}, {0,VT_LIT}, {0,VT_LIT}, {vt_deccharmode,VT_LIT|VT_EXA},	/*  !"# */
   {0,VT_LIT}, {0,VT_LIT}, {0,VT_LIT}, {0,VT_LIT},	/* $%&' */
   {vt_gx_set,VT_LIT|VT_EXA}, {vt_gx_set,VT_LIT|VT_EXA}, {vt_gx_set,VT_LIT|VT_EXA}, {vt_gx_set,VT_LIT|VT_EXA},	/* ()*+ */
   {0,VT_LIT}, {0,VT_LIT}, {0,VT_LIT}, {0,VT_LIT},	/* ,-./ */
   {0,VT_LIT|VT_ARG}, {0,VT_LIT|VT_ARG}, {0,VT_LIT|VT_ARG}, {0,VT_LIT|VT_ARG},	/* 0123 */
   {0,VT_LIT|VT_ARG}, {0,VT_LIT|VT_ARG}, {0,VT_LIT|VT_ARG}, {vt_save_cursor,VT_EXL|VT_ARG},	/* 4567 */
   {vt_restore_cursor,VT_EXL|VT_ARG}, {0,VT_LIT|VT_ARG}, {0,VT_LIT}, {0,VT_LIT},	/* 89:; */
-  {0,VT_LIT}, {0,VT_LIT}, {0,VT_LIT}, {0,VT_LIT|VT_ARG},	/* <=>? */
+  {0,VT_LIT}, {vt_keypadon,VT_EXL}, {vt_keypadoff,VT_EXL}, {0,VT_LIT},	/* <=>? */
   {vt_insert_char,VT_EBL}, {vt_up,VT_BOL}, {vt_down,VT_BOL}, {vt_right,VT_BOL},	/* @ABC */
-  {vt_left,VT_BOL|VT_ESC}, {vt_nl,VT_EXL}, {0,VT_LIT}, {0,VT_LIT},	/* DEFG */
+  {vt_left,VT_BOL|VT_ESC}, {vt_nl,VT_EXL}, {0,VT_LIT}, {vt_gotoabsx,VT_EBL},	/* DEFG */
   {vt_goto,VT_EBL}, {0,VT_LIT}, {vt_cleareos,VT_EBL}, {vt_clear_lineportion,VT_EBL},	/* HIJK */
   {vt_insert_line,VT_EBL}, {vt_delete_line,VT_EBL|VT_ESC}, {0,VT_LIT}, {0,VT_LIT},	/* LMNO */
-  {vt_delete_char,VT_EBL}, {0,VT_LIT}, {0,VT_LIT}, {0,VT_LIT},	/* PQRS */
-  {0,VT_LIT}, {0,VT_LIT}, {0,VT_LIT}, {0,VT_LIT},	/* TUVW */
-  {0,VT_LIT}, {0,VT_LIT}, {0,VT_LIT}, {0,VT_LIT},	/* XYZ[ */
-  {0,VT_LIT}, {0,VT_LIT}, {0,VT_LIT}, {0,VT_LIT},	/* \]^_ */
+  {vt_delete_char,VT_EBL}, {0,VT_LIT}, {0,VT_LIT}, {vt_scroll_forward,VT_EBL},	/* PQRS */
+  {vt_scroll_reverse,VT_EBL}, {0,VT_LIT}, {0,VT_LIT}, {0,VT_LIT},	/* TUVW */
+  {vt_erase_char,VT_EBL}, {0,VT_LIT}, {vt_backtab,VT_EBL}, {0,VT_LIT},	/* XYZ[ */
+  {0,VT_LIT}, {0,VT_LIT}, {vt_scroll_reverse,VT_EBL}, {0,VT_LIT},	/* \]^_ */
   {0,VT_LIT}, {0,VT_LIT}, {0,VT_LIT}, {vt_reset,VT_EXL|VT_EXB},	/* `abc */
-  {0,VT_LIT}, {0,VT_LIT}, {vt_goto,VT_EBL}, {0,VT_LIT},	/* defg */
+  {vt_gotoabsy,VT_EBL}, {0,VT_LIT}, {vt_goto,VT_EBL}, {0,VT_LIT},	/* defg */
   {vt_modeh,VT_EBL}, {0,VT_LIT}, {0,VT_LIT}, {vt_modek,VT_EBL},	/* hijk */
   {vt_model,VT_EBL}, {vt_mode,VT_EBL}, {vt_dsr,VT_EBL}, {0,VT_LIT},	/* lmno */
-  {0,VT_LIT}, {0,VT_LIT}, {vt_scroll,VT_EBL}, {0,VT_LIT},	/* pqrs */
+  {vt_reset,VT_EBL}, {0,VT_LIT}, {vt_scroll,VT_EBL}, {0,VT_LIT},	/* pqrs */
   {0,VT_LIT}, {0,VT_LIT}, {0,VT_LIT}, {0,VT_LIT},	/* tuvw */
   {0,VT_LIT}, {0,VT_LIT}, {0,VT_LIT}, {0,VT_LIT},	/* xyz{ */
-  {0,VT_LIT}, {0,VT_LIT}, {vt_func,VT_EBL}, {0,VT_LIT},	/* |}~? */
+  {0,VT_LIT}, {vt_decic,VT_EBL}, {vt_func,VT_EBL}, {0,VT_LIT},	/* |}~? */
 };
 
 /**
@@ -1282,7 +1388,11 @@ vt_parse_vt (struct vt_em *vt, char *ptr, int length)
    *   2: '[' escape mode (keep finding numbers until a command code found)
    *   3: 'O' escape mode.  switch on next character.
    *   4: ']' escape mode.  swallows until following bell (or newline).
-   *   needs a little work on '[' mode (with parameter grabbing)
+   *   5: '\Exy' sequence.
+   *   6: '\E[?nn;...y' escape sequence.
+   *   7: '\E[.... X' escape sequence.
+   *   8: '\E[!X' escape sequence.
+   *   9: '\E[....'X' escape sequence.
    *
    *   DO NOT CHANGE THESE STATES!  Some callbacks rely on them.
    */
@@ -1297,6 +1407,8 @@ vt_parse_vt (struct vt_em *vt, char *ptr, int length)
     process = modes[c & 0x7f].process;
 
     vt->state = state;		/* so callbacks know their state */
+
+    d(printf("state %d: %d $%02x '%c'\n",state, vt->argcnt, c, isprint(c)?c:'.'));
 
     switch (state) {
 
@@ -1326,7 +1438,6 @@ vt_parse_vt (struct vt_em *vt, char *ptr, int length)
 	  /* d(printf("literal %c\n", c)); */
 	  vt->cursorx++;
 	} else if (mode & VT_CON) {
-	  vt->argcnt=0;
 	  process(vt);
 	} else if (c==27) {
 	  state=1;
@@ -1339,22 +1450,20 @@ vt_parse_vt (struct vt_em *vt, char *ptr, int length)
       case 1:
 	if (mode & VT_ESC) {	/* got a \Ex sequence */
 	  vt->argcnt = 0;
+	  vt->arg.num.intargs[0] = 0;
 	  process(vt);
 	  state=0;
 	} else if (c=='[') {
-	  vt->argptr = vt->args;	/* initialise output arg pointers */
-	  vt->outptr = vt->argptr[0];
-	  vt->outend = vt->outptr+VTPARAM_ARGMAX;
+	  vt->arg.num.intarg = 0;
+	  vt->argcnt = 0;
 	  state = 2;
 	} else if (c=='O') {
 	  state = 3;
 	} else if (c==']') {	/* set text parameters, read parameters */
 	  state = 4;
-	  vt->argptr = vt->args;
-	  vt->outptr = vt->argptr[0];
-	  vt->outend = vt->outptr+VTPARAM_ARGMAX*VTPARAM_MAXARGS-1;
+	  vt->arg.txt.outptr = vt->arg.txt.args_mem;
 	} else if (mode & VT_EXA) {
-	  vt->args[0][0]=c & 0x7f;
+	  vt->arg.num.intargs[0] = c & 0x7f;
 	  state = 5;
 	} else {
 	  state = 0;		/* dont understand input */
@@ -1363,30 +1472,37 @@ vt_parse_vt (struct vt_em *vt, char *ptr, int length)
 
 
       case 2:
-	d(printf("state 2: %d '%c'\n",vt->argcnt, c));
+	if (c=='?') {
+	  state = 6;
+	  continue;
+	} else if (c=='!') {
+	  state = 8;
+	  continue;
+	}
+	/* note -> falls through */
+      case 6:
+      case 7:
+      case 8:
+      case 9:
 	if (mode & VT_ARG) {
-	  if (vt->argptr < &vt->args[VTPARAM_MAXARGS]
-	      && vt->outptr<vt->outend) /* truncate excessive args */
-	    *(vt->outptr)++=c;
-	} else if (c==';' || c==':') {	/* looking for 'arg;arg;...' */
-	  if (vt->argptr < &vt->args[VTPARAM_MAXARGS]) { /* goto next argument */
-	    *(vt->outptr)=0;
-	    vt->argptr++;
-	    vt->outptr = vt->argptr[0];
-	    vt->outend = vt->outptr+VTPARAM_ARGMAX;
+	  /* accumulate subtotal */
+	  vt->arg.num.intarg = vt->arg.num.intarg*10+(c-'0');
+	} else if ((mode & VT_EXB) || c==';' || c==':') {	/* looking for 'arg;arg;...' */
+	  if (vt->argcnt < VTPARAM_INTARGS) {
+	    vt->arg.num.intargs[vt->argcnt] = vt->arg.num.intarg;
+	    vt->argcnt++;
+	    vt->arg.num.intarg = 0;
 	  }
-	  /* others are ignored */
-	} else if (mode & VT_EXB) {
-	  if (vt->outptr!=(char *) vt->argptr[0])
-	    vt->argptr++;
-	  *(vt->outptr)=0;
-	  vt->argcnt = (vt->argptr-vt->args);
-	  process(vt);
-	  state=0;
+	  if (mode & VT_EXB) {
+	    process(vt);
+	    state=0;
+	  }
 	} else if (mode & VT_CON) {
-	  d(printf("control'%c'\n", c));
-	  vt->argcnt=0;
 	  process(vt);
+	} else if (c==' ') {	/* this expects the next char == VT_EXB.  close enough! */
+	  state = 7;		/* any other chars should be numbers anyway */
+	} else if (c=='\'') {
+	  state = 9;
 	} else {
 	  d(printf("unknown option '%c'\n", c));
 	  state=0;		/* unexpected escape sequence - ignore */
@@ -1397,7 +1513,7 @@ vt_parse_vt (struct vt_em *vt, char *ptr, int length)
 	/* \EOx */
       case 3:
 	if (mode & VT_EXO) {
-	  vt->argcnt=0;
+	  vt->arg.num.intargs[0] = 0;
 	  process(vt);
 	}	/* ignore otherwise */
 	state=0;
@@ -1408,24 +1524,24 @@ vt_parse_vt (struct vt_em *vt, char *ptr, int length)
       case 4:
 	if (c==0x07) {
 	  /* handle output */
-	  *(vt->outptr)=0;
+	  *(vt->arg.txt.outptr)=0;
 	  vt_set_text(vt);
-	  d(printf("received text mode: %s\n", vt->argptr[0]));
+	  d(printf("received text mode: %s\n", vt->arg.txt.args_mem));
 	  state = 0;
 	} else if (c==0x0a) {
 	  state = 0;		/* abort command */
 	} else {
-	  if (vt->outptr<vt->outend) /* truncate excessive args */
-	    *(vt->outptr)++=c;
+	  if (vt->arg.txt.outptr<(vt->arg.txt.args_mem+VTPARAM_MAXARGS*VTPARAM_ARGMAX-2)) /* truncate excessive args */
+	    *(vt->arg.txt.outptr)++=c;
 	}
 	break;
 
 
 	/* \E?x */
       case 5:
-	vt->args[0][1]=c;
+	vt->arg.num.intargs[1]=c;
 	vt->argcnt=0;
-	modes[vt->args[0][0]].process(vt);
+	modes[vt->arg.num.intargs[0]].process(vt);
 	state=0;
 	break;
       }
@@ -1510,10 +1626,6 @@ vt_init(struct vt_em *vt, int width, int height)
   vt->childfd = -1;
   vt->childpid = -1;
   vt->keyfd = -1;
-
-  for (i=0;i<VTPARAM_MAXARGS;i++) {
-    vt->args[i]=&vt->args_mem[i*VTPARAM_ARGMAX];
-  }
 
   vt->this_line = (struct vt_line *)vt->lines.head;
 

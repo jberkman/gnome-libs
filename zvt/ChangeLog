@@ -1,3 +1,70 @@
+1999-03-30  Michael Zucchi  <zucchi@zzedzone.fsi.com.au>
+
+	* vt.c (vt_keypadon): Set VTMODE_APP_KEYPAD in vt->mode.
+	(vt_keypadoff): Clear " .
+	(vt_scroll): Only set scroll region on state 2.
+
+	* vt.h (VTMODE_APP_KEYPAD): New flag to signal application keypad
+	on.  Doesn't do anything yet.
+
+	* vt.c (vt_gotoabsy): \E[nd -> goto n-1 y position absolute.
+	(vt_gotoabsx): \E[nG -> goto n-1 x position absolute.
+	(vt_erase_char): Callback function - erase characters.
+	(vt_erase_chars): Implement erase n characters.
+
+1999-03-30  Michael Zucchi  <mzucchi@denr.sa.gov.au>
+
+	* vt.c (vt_mode): Reset terminal attributes on '\E[27m'.
+	(vt_parse_vt): Add new state 8 for '\E[!x' sequence.  Added
+	'\E[!p' terminal reset.
+	(vt_deccharmode): Add dumy callback for dec character mode stuff
+	(wide/tall chars, etc).  '\E#n' sequences.
+	(vt_jumps[]): Added '\E[nT' pan up.
+	(vt_parse_vt): Added state 9, '\E[n'X' sequence.
+
+	* vt.h: Added integer argument array.  Its a union with the text
+	argument space.  The old redundant text argument variables are
+	still present, appended with _dummy - to be removed next major
+	release.
+
+	* vt.c (vt_scroll_reverse): New function, implements reverse
+	scroll sequence '\E[n^'.  For ISO-6429 (ECMA-48) standard.
+	(vt_scroll_left): Scroll window left.
+	(vt_scroll_right): Scroll window right.
+	(vt_scroll_forward): Forward scroll - '\E[nS'.
+	(vt_up): Implements scroll window right '\En A' for state==7.
+	(vt_insert_char): Implements scroll window left '\E[n @' for state==7.
+
+	* update.c (vt_line_update): Implemented VTATTR_CONCEALED -
+	concealed text.
+
+	* zterm.c (main): Default size = 24 lines.
+
+	* vt.c (vt_init): No longer setup vt->args pointers.
+	(vt_insert_char): Changed to binary args in arg.num.intargs[]
+	(vt_delete_char): Ditto.
+	(vt_insert_line): Ditto.
+	(vt_delete_line): Ditto, and check state in switch.
+	(vt_cleareos): Ditto.
+	(vt_clear_lineportion): Ditto.
+	(vt_goto): Ditto.
+	(vt_modeh): Ditto.  Also handle mulitple arguments.
+	(vt_model): Ditto.  Also handle multiple arguments.
+	(vt_modek): Ditto.
+	(vt_mode): Ditto.
+	(vt_gx_set): Ditto.
+	(vt_dsr): Ditto.
+	(vt_scroll): Ditto.  Also check that scrolltop<scrollbottom.
+	(vt_func): Ditto!
+	(vt_set_text): Changed to use string arguments union.
+	(vt_parse_vt): A number of changes.  Added extra state '6', to
+	handle \E[?nnn;nn;nY sequence.  All numerical arguments are now
+	decoded as they are encountered.  Should be faster, and allows
+	more arguments to functions (upto 20).  All control codes no
+	longer reset vt->argcnt.  '\E]...' uses the arg.txt.args_mem area
+	to store its strings.  '\EOx' sets intargs[0]=0 before calling
+	callbacks.
+
 1999-03-28 Luca Lizzeri <ll@niche.it>
 
 	* gnome-pty.c (write_login_record): Fixed a typo with extra ")".
