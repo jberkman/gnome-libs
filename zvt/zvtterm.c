@@ -98,6 +98,7 @@ static Pixmap     get_pixmap_prop (Window the_window, char *prop_id);
 static GdkPixmap *load_pixmap_back (char *file, int shaded);
 static GdkPixmap *create_shaded_pixmap (Pixmap p, int x, int y, int w, int h);
 static void       draw_back_pixmap (GtkWidget *widget, int nx, int ny, int nw, int nh);
+static gint       safe_strcmp(gchar *a, gchar *b)
 #endif /* ZVT_NO_TRANSPARENT */
 
 
@@ -109,17 +110,17 @@ static void       draw_back_pixmap (GtkWidget *widget, int nx, int ny, int nw, i
 static gushort default_red[] = 
 {0x0000,0xaaaa,0x0000,0xaaaa,0x0000,0xaaaa,0x0000,0xaaaa,
  0x5555,0xffff,0x5555,0xffff,0x5555,0xffff,0x5555,0xffff,
- 0xaaaa, 0x0000};
+ 0x0000, 0xffff};
 
 static gushort default_grn[] = 
 {0x0000,0x0000,0xaaaa,0x5555,0x0000,0x0000,0xaaaa,0xaaaa,
  0x5555,0x5555,0xffff,0xffff,0x5555,0x5555,0xffff,0xffff,
- 0xaaaa, 0x0000};
+ 0x0000, 0xffff};
 
 static gushort default_blu[] = 
 {0x0000,0x0000,0x0000,0x0000,0xaaaa,0xaaaa,0xaaaa,0xaaaa,
  0x5555,0x5555,0x5555,0x5555,0xffff,0xffff,0xffff,0xffff,
- 0xaaaa, 0x0000};
+ 0x0000, 0xffff};
 
 
 /* GTK signals */
@@ -915,7 +916,6 @@ zvt_term_show_pointer (ZvtTerm *term)
     }
 }
 
-
 /**
  * zvt_term_show_pointer:
  * @term: A &ZvtTerm widget.
@@ -934,7 +934,6 @@ zvt_term_hide_pointer (ZvtTerm *term)
       term->cursor_current = term->cursor_dot;
     }
 }
-
 
 /**
  * zvt_term_set_scrollback:
@@ -996,7 +995,6 @@ zvt_term_set_fonts_internal(ZvtTerm *term, GdkFont *font, GdkFont *font_bold)
   gtk_widget_queue_resize (GTK_WIDGET (term));
 }
 
-
 /**
  * zvt_term_set_fonts:
  * @term: A &ZvtTerm widget.
@@ -1020,7 +1018,6 @@ zvt_term_set_fonts (ZvtTerm *term, GdkFont *font, GdkFont *font_bold)
   gdk_font_ref (font);
   gdk_font_ref (font_bold);
 }
-
 
 /**
  * zvt_term_set_font_name:
@@ -1109,16 +1106,16 @@ static void
 zvt_term_fix_scrollbar (ZvtTerm *term)
 {
   GTK_ADJUSTMENT(term->adjustment)->upper = 
-    term->vx->vt.scrollbacklines + term->vx->vt.height-1;
+    term->vx->vt.scrollbacklines + term->vx->vt.height - 1;
 
   GTK_ADJUSTMENT(term->adjustment)->value = 
     term->vx->vt.scrollbackoffset + term->vx->vt.scrollbacklines;
 
   GTK_ADJUSTMENT(term->adjustment)->page_increment = 
-    term->vx->vt.height-1;
+    term->vx->vt.height - 1;
 
   GTK_ADJUSTMENT(term->adjustment)->page_size =
-    term->vx->vt.height-1;
+    term->vx->vt.height - 1;
 
   gtk_signal_emit_by_name (GTK_OBJECT (term->adjustment), "changed");
 }
@@ -1161,9 +1158,10 @@ zvt_term_button_press (GtkWidget      *widget,
       return FALSE;
 
   /* ignore all control-clicks' at this level */
-  if (event->state & GDK_CONTROL_MASK) {
-    return FALSE;
-  }
+  if (event->state & GDK_CONTROL_MASK) 
+    {
+      return FALSE;
+    }
     
   switch(event->button) {
   case 1:			/* left button */
@@ -1433,7 +1431,8 @@ zvt_term_selection_get (GtkWidget        *widget,
 /* receive a selection */
 /* Signal handler called when the selections owner returns the data */
 static void
-zvt_term_selection_received (GtkWidget *widget, GtkSelectionData *selection_data, guint time)
+zvt_term_selection_received (GtkWidget *widget, GtkSelectionData *selection_data, 
+			     guint time)
 {
   struct _vtx *vx;
   ZvtTerm *term;
@@ -1484,7 +1483,6 @@ zvt_term_cursor_blink(gpointer data)
 
   term = ZVT_TERM (widget);
 
-  d(printf("Cursor blinked\n"));
   term->cursor_blink_state ^= 1;
   vt_cursor_state(data, term->cursor_blink_state);
 
@@ -1821,10 +1819,7 @@ zvt_term_key_press (GtkWidget *widget, GdkEventKey *event)
   return handled;
 }
 
-
-/*
- * dummy default signal handler
- */
+/* dummy default signal handler */
 static void
 zvt_term_child_died (ZvtTerm *term)
 {
@@ -1833,9 +1828,8 @@ zvt_term_child_died (ZvtTerm *term)
 
   /* perhaps we should do something here? */
 }
-/*
- * dummy default signal handler for title_changed
- */
+
+/* dummy default signal handler for title_changed */
 static void
 zvt_term_title_changed (ZvtTerm *term, VTTITLE_TYPE type, char *str)
 {
@@ -1845,9 +1839,7 @@ zvt_term_title_changed (ZvtTerm *term, VTTITLE_TYPE type, char *str)
   /* perhaps we should do something here? */
 }
 
-/*
-  raise the title_changed signal
-*/
+/* raise the title_changed signal */
 static void
 zvt_term_title_changed_raise (void *user_data, VTTITLE_TYPE type, char *str)
 {
@@ -1990,7 +1982,6 @@ zvt_term_feed (ZvtTerm *term, char *text, int len)
   zvt_term_fix_scrollbar (term);
 }
 
-
 static void
 zvt_term_readmsg (gpointer data, gint fd, GdkInputCondition condition)
 {
@@ -2010,23 +2001,6 @@ zvt_term_readmsg (gpointer data, gint fd, GdkInputCondition condition)
   /* signal application FIXME: include error/non error code */
   gtk_signal_emit (GTK_OBJECT(term), term_signals[CHILD_DIED]);
 }
-
-
-#ifndef ZVT_NO_TRANSPARENT
-/*** FOR TRANSPARENT TERMINAL SUPPORT ***/
-
-static int
-safe_strcmp(char *a, char *b)
-{
-  if(!a && !b)
-    return 0;
-
-  if(a && b)
-    return strcmp(a,b);
-
-  return 1;
-}
-#endif
 
 /**
  * zvt_term_set_background:
@@ -2049,7 +2023,7 @@ zvt_term_set_background (ZvtTerm *terminal, char *pixmap_file,
      transparent == terminal->transparent)
     return;
   
-  if(terminal->background.pix)
+  if (terminal->background.pix)
     {
       gdk_pixmap_unref(terminal->background.pix);
       terminal->background.pix = NULL;
@@ -2057,10 +2031,10 @@ zvt_term_set_background (ZvtTerm *terminal, char *pixmap_file,
 
   terminal->transparent = transparent;
   terminal->shaded = shaded;
-  g_free(terminal->pixmap_filename);
+  g_free (terminal->pixmap_filename);
   
   if(pixmap_file)
-    terminal->pixmap_filename = g_strdup(pixmap_file);
+    terminal->pixmap_filename = g_strdup (pixmap_file);
   else
     terminal->pixmap_filename = NULL;
 
@@ -2087,12 +2061,14 @@ vt_cursor_state(void *user_data, int state)
   old_state = term->cursor_on;
 
   /* only call vt_draw_cursor if the state has changed */
-  if (old_state ^ state) {
-    if (GTK_WIDGET_DRAWABLE (widget)){
-      vt_draw_cursor(term->vx, state);
-      term->cursor_on = state;
+  if (old_state ^ state)
+    {
+      if (GTK_WIDGET_DRAWABLE (widget))
+	{
+	  vt_draw_cursor(term->vx, state);
+	  term->cursor_on = state;
+	}
     }
-  }
   return old_state;
 }
 
@@ -2116,47 +2092,53 @@ vt_draw_text(void *user_data, int col, int row, char *text, int len, int attr)
 
   vx = term->vx;
 
-  if (attr&VTATTR_BOLD) {
-    or = 8;
-    f=term->font_bold;
-  } else {
-    or = 0;
-    f=term->font;
-  }
+  if (attr & VTATTR_BOLD) 
+    {
+      or = 8;
+      f = term->font_bold;
+    } 
+  else 
+    {
+      or = 0;
+      f = term->font;
+    }
 
   fore = (attr & VTATTR_FORECOLOURM) >> VTATTR_FORECOLOURB;
   back = (attr & VTATTR_BACKCOLOURM) >> VTATTR_BACKCOLOURB;
 
-  if (fore<8)
-    fore|=or;
+  if (fore < 8)
+    fore |= or;
 
   /* set the right colour in the appropriate gc */
   fgc = term->fore_gc;
   bgc = term->back_gc;
 
-  if (term->back_last != back){
-    pen.pixel = term->colors [back];
-    gdk_gc_set_foreground (bgc, &pen);
-    term->back_last = back;
-  }
+  if (term->back_last != back)
+    {
+      pen.pixel = term->colors [back];
+      gdk_gc_set_foreground (bgc, &pen);
+      term->back_last = back;
+    }
   
-  if (term->fore_last != fore){
-    pen.pixel = term->colors [fore];
-    gdk_gc_set_foreground (fgc, &pen);
-    term->fore_last = fore;
-  }
+  if (term->fore_last != fore)
+    {
+      pen.pixel = term->colors [fore];
+      gdk_gc_set_foreground (fgc, &pen);
+      term->fore_last = fore;
+    }
 
   /* for reverse, swap gc's */
-  if (attr & VTATTR_REVERSE){
-    GdkGC *tmp = fgc;
-    int tmp2 = fore;
-
-    fgc = bgc;
-    bgc = tmp;
-
-    fore = back;
-    back = tmp2;
-  }
+  if (attr & VTATTR_REVERSE)
+    {
+      GdkGC *tmp = fgc;
+      int tmp2 = fore;
+      
+      fgc = bgc;
+      bgc = tmp;
+      
+      fore = back;
+      back = tmp2;
+    }
 
   /* optimise: dont 'clear' background if not in 
    * expose, and background colour == window colour
@@ -2464,21 +2446,13 @@ zvt_term_get_buffer(ZvtTerm *term, int *len, int type, int sx, int sy, int ex, i
   return data;
 }
 
-
-
-
 /******************************/
 /**** TRANSPARENT TERMINAL ****/
-
-
 
 #ifndef ZVT_NO_TRANSPARENT
 
 /* kind of stolen from Eterm and needs heavy cleanup */
-
 static Window desktop_window = None;
-
-
 
 static Window
 get_desktop_window (Window the_window)
@@ -2566,7 +2540,6 @@ get_desktop_window (Window the_window)
   return (desktop_window = None);
 }
 
-
 static Pixmap
 get_pixmap_prop (Window the_window, char *prop_id)
 {
@@ -2633,21 +2606,23 @@ create_shaded_pixmap (Pixmap p, int x, int y, int w, int h)
   GdkImlibImage *iim;
   GdkWindowPrivate pw;
   
-  if(p == None)
+  if (p == None)
     return NULL;
   
-  pw.xwindow = (Window)p;
-  iim = gdk_imlib_create_image_from_drawable((GdkPixmap*)&pw,NULL,
-					     x,y,w,h);
+  pw.xwindow = (Window) p;
+  iim = gdk_imlib_create_image_from_drawable(
+	    (GdkPixmap*) &pw, NULL, x, y, w, h);
+
   if(!iim)
     return NULL;
-  mod.contrast=256;
-  mod.brightness=190;
-  mod.gamma=256;
-  gdk_imlib_set_image_modifier(iim,&mod);
-  gdk_imlib_render(iim, iim->rgb_width,iim->rgb_height);
-  pix = gdk_imlib_move_image(iim);
-  gdk_imlib_destroy_image(iim);
+
+  mod.contrast = 256;
+  mod.brightness = 190;
+  mod.gamma = 256;
+  gdk_imlib_set_image_modifier (iim, &mod);
+  gdk_imlib_render (iim, iim->rgb_width, iim->rgb_height);
+  pix = gdk_imlib_move_image (iim);
+  gdk_imlib_destroy_image (iim);
   
   return pix;
 }
@@ -2732,7 +2707,7 @@ draw_back_pixmap (GtkWidget *widget, int nx, int ny, int nw, int nh)
 	      gdk_pixmap_unref(term->background.pix);
 	    }
 	  
-	  term->background.pix = create_shaded_pixmap (p, x,y,width,height);
+	  term->background.pix = create_shaded_pixmap (p, x, y, width, height);
 	  term->background.x = x;
 	  term->background.y = y;
 	  term->background.w = width;
@@ -2758,6 +2733,18 @@ draw_back_pixmap (GtkWidget *widget, int nx, int ny, int nw, int nh)
 		 nw,nh,
 		 nx,ny);
     }
+}
+
+static gint
+safe_strcmp(gchar *a, gchar *b)
+{
+  if (!a && !b)
+    return 0;
+
+  if (a && b)
+    return strcmp(a,b);
+
+  return 1;
 }
 
 #endif /* ZVT_NO_TRANSPARENT */

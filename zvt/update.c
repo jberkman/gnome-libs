@@ -82,19 +82,20 @@ static void vt_line_update(struct _vtx *vx, struct vt_line *l, int line, int alw
   g_return_if_fail (bl != NULL);
   g_return_if_fail (bl->next != NULL);
 
+
+  /* if the old line was longer ... */ 
   if (bl->width > l->width) {
     d(printf("line size mismatch %d != %d\n", bl->width, l->width));
 
     /* create a new temp line, and set it to a clear
      * last-character (attributes) of the new line 
      */
-    newline = g_malloc(sizeof(struct vt_line) + (bl->width * sizeof(uint32)));
-
+    newline = g_malloc(VT_LINE_SIZE(bl->width));
     memcpy(newline, l, sizeof(struct vt_line) + (l->width * sizeof(uint32)));
 
     c = l->data[l->width-1] & VTATTR_MASK;
 
-    for (i = l->width ; i < bl->width ;i++) {
+    for (i = l->width ; i < bl->width; i++) {
       newline->data[i] = c;
     }
 
@@ -102,16 +103,25 @@ static void vt_line_update(struct _vtx *vx, struct vt_line *l, int line, int alw
     l = newline;
   }
 
+  /* if the old line was shorter... */
+  if (bl->width < l->width) {
+    d(printf("line size mismatch %d != %d\n", bl->width, l->width));
+
+    newline = g_malloc(VT_LINE_SIZE(bl->width));
+    memcpy(newline, l, sizeof(struct vt_line) + (bl->width * sizeof(uint32)));
+    newline->width = bl->width;
+
+    l = newline;
+  }
+
   /* check range conditions */
-  if (end>l->width) {
+  if (end > l->width) {
     end = l->width;
   }
 
-  if (start>=end) {
+  if (start >= end) {
     goto cleanup;
   }
-
-  runbuffer = g_malloc(vx->vt.width * sizeof(char));
 
   /* work out if selections are being rendered */
   if (vx->selected &&
@@ -152,63 +162,88 @@ static void vt_line_update(struct _vtx *vx, struct vt_line *l, int line, int alw
 
   /* work out the minimum range of change */
   if (!always) {
+
     
-    while (start<end) {
+    while (start < end) {
       c = l->data[start];
-      if (start>=sx && start<ex)
+
+      if (start >= sx && start < ex)
 	c ^= VTATTR_REVERSE;
+
       if (c != bl->data[start])
 	break;
+
       start++;
     }
     
-    while (end>start) {
+    while (end > start) {
       c = l->data[end-1];
-      if (end>=sx && end<ex)
+
+      if (end >= sx && end < ex)
 	c ^= VTATTR_REVERSE;
+
       if (c != bl->data[end-1])
 	break;
+
       end--;
     }
   }  /* else, update everything */
 
+
   /* see if on-screen is all background ... */
   /* (this is messy, and probably slow?) */
-  vx->back_match=1;
-  for(i=start;i<end;i++) {
+  vx->back_match = 1;
+  for(i = start; i < end; i++) {
+
     /* check for clear of the same background colour */
     c = bl->data[i];
+
     ch = c & VTATTR_DATAMASK;
-    if (i>=sx && i<ex)
+    if (i >= sx && i < ex)
       c ^= VTATTR_REVERSE;
-    if ((ch!=0 && ch!=9 && ch!=' ')
-	|| ((c & (VTATTR_MASK ^ VTATTR_FORECOLOURM))
-	    != (l->data[i] & (VTATTR_MASK ^ VTATTR_FORECOLOURM)))) {
-      d(printf("bl->data[i] = %08x != %08x, c=%d (back now=%d not %d)\n", bl->data[i], l->data[i], c, (l->data[i]&VTATTR_BACKCOLOURM)>>VTATTR_BACKCOLOURB, (bl->data[i]&VTATTR_BACKCOLOURM)>>VTATTR_BACKCOLOURB));
-      vx->back_match=0;
+
+    if ((ch != 0 && ch != 9 && ch != ' ') ||
+	((c & (VTATTR_MASK^VTATTR_FORECOLOURM)) != 
+	 (l->data[i] & (VTATTR_MASK^VTATTR_FORECOLOURM)))) {
+
+#if 0
+      d(printf("bl->data[i] = %08x != %08x, c=%d (back now=%d not %d)\n", 
+	       bl->data[i], l->data[i], c, 
+	       (l->data[i]&VTATTR_BACKCOLOURM)>>VTATTR_BACKCOLOURB, 
+	       (bl->data[i]&VTATTR_BACKCOLOURM)>>VTATTR_BACKCOLOURB));
+#endif
+      vx->back_match = 0;
       break;
     } else {
-      d(printf("bl->data[i] == %08x != %08x, c=%08x (back now=%d not %d)\n", bl->data[i], l->data[i], c, (l->data[i]&VTATTR_BACKCOLOURM)>>VTATTR_BACKCOLOURB, (bl->data[i]&VTATTR_BACKCOLOURM)>>VTATTR_BACKCOLOURB));
+#if 0
+      d(printf("bl->data[i] == %08x == %08x, c=%08x back=%d\n",
+	       bl->data[i], l->data[i], c,
+	       (l->data[i]&VTATTR_BACKCOLOURM)>>VTATTR_BACKCOLOURB);
+#endif
     }
   }
 
   d(printf("actually (%d-%d)?\n", start, end));
 
-  run=0;
-  attr=0;
+  run = 0;
+  attr = 0;
   runstart = 0;
-  p = 0;
-  for(i=start;i<end;i++) {
+  p = NULL;
+  
+  runbuffer = g_malloc(vx->vt.width * sizeof(char));
+
+  for(i = start; i < end; i++) {
     /* map on 'selected' areas, and copy to screen buffer */
     newattr = l->data[i] & VTATTR_MASK;
-    if (i>=sx && i<ex) {
+
+    if (i >= sx && i < ex) {
       newattr ^= VTATTR_REVERSE;
-      bl->data[i]=l->data[i]^VTATTR_REVERSE;
+      bl->data[i] = l->data[i] ^ VTATTR_REVERSE;
     } else {
-      bl->data[i]=l->data[i];
+      bl->data[i] = l->data[i];
     }
 
-    if (run==0) {
+    if (run == 0) {
       runstart = i;
       p = runbuffer;
       attr = newattr;
@@ -219,18 +254,21 @@ static void vt_line_update(struct _vtx *vx, struct vt_line *l, int line, int alw
 	vt_draw_text(vx->vt.user_data, runstart, line, runbuffer, run, attr);
 	runstart = i;
 	p = runbuffer;
-	run=0;
+	run = 0;
 	attr = newattr;
       }
     }
+
     c = l->data[i] & 0xff;
     /* FIXME: this is needed for alternate charsets
-       will need to do something else to mark empty-space and tabs? */
-    if ((c==0) || (c==9))
-      c=' ';
-    *p++=c;
+     * will need to do something else to mark empty-space and tabs?
+     */
+    if ((c == 0) || (c == 9))
+      c = ' ';
+    *p++ = c;
     run++;
   }
+
   if (run) {
     d(printf("found a run of %d characters from %d: '", run, runstart));
     d(fwrite(runbuffer, run, 1, stdout));

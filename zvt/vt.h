@@ -32,14 +32,12 @@ extern "C" {
 #define UPDATE_REFRESH    0x01	/* just refersh all */
 #define UPDATE_SCROLLBACK 0x02	/* if in scrollback mode, make sure everything is redrawn */
 
-
-typedef unsigned int uint32;	/* 32 bit unsigned int */
-/* perhaps should be a bitfield ? */
+/* 32 bit unsigned int */
+typedef unsigned int uint32;
 
 /* defines for VT argument processing, also used for textual arguments */
 #define VTPARAM_MAXARGS   5	/* maximum number of arguments */
 #define VTPARAM_ARGMAX   20	/* number of characters in each arg maximum */
-
 
 struct vt_line {
   struct vt_line *next;		/* next 'vt' line */
@@ -49,6 +47,9 @@ struct vt_line {
   int modcount;			/* how many modifications since last update */
   uint32 data[1];		/* the line data follows this structure */
 };
+
+/* macro for computing the size of vt_line structures */
+#define VT_LINE_SIZE(width) (sizeof(struct vt_line) + (sizeof(uint32) * (width)))
 
 /* type of title to set with callback */
 typedef enum {

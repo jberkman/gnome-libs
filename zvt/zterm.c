@@ -23,7 +23,6 @@
 #  define _GNU_SOURCE 1
 #endif
 
-#include <gtk/gtk.h>
 #include <stdio.h>
 #include <unistd.h>
 #include <fcntl.h>
@@ -31,30 +30,69 @@
 #include <sys/types.h>
 #include <unistd.h>
 #include <errno.h>
-#include <gdk/gdkkeysyms.h>
 #include <string.h>
 #include <pwd.h>
 #include <stdlib.h>
 
+#include <gtk/gtk.h>
+#include <gdk/gdkx.h>
+#include <gdk/gdkprivate.h>
+#include <gdk/gdkkeysyms.h>
+
 #include "zvtterm.h"
 
-GtkWindow *window;
+GtkWidget *window = NULL;
 
-static void child_died_event(ZvtTerm *term)
+static void
+child_died_event (ZvtTerm *term)
 {
   exit(0);
 }
 
-static void title_changed_event(ZvtTerm *term, VTTITLE_TYPE type, char *newtitle)
+static void
+title_changed_event (ZvtTerm *term, VTTITLE_TYPE type, char *newtitle)
 {
-  switch(type) {
-  case VTTITLE_WINDOW:
-  case VTTITLE_WINDOWICON:
-    gtk_window_set_title(window, newtitle);
-    break;
-  default:
-    break;
-  }
+  switch(type) 
+    {
+    case VTTITLE_WINDOW:
+    case VTTITLE_WINDOWICON:
+      gtk_window_set_title (GTK_WINDOW (window), newtitle);
+      break;
+    default:
+      break;
+    }
+}
+
+static void
+size_allocate (GtkWidget *widget)
+{
+  ZvtTerm *term;
+  XSizeHints sizehints;
+  
+  g_assert (widget != NULL);
+  term = ZVT_TERM (widget);
+  
+  sizehints.base_width = 
+    (GTK_WIDGET (window)->allocation.width) +
+    (GTK_WIDGET (term)->style->klass->xthickness * 2) -
+    (GTK_WIDGET (term)->allocation.width);
+  
+  sizehints.base_height =
+    (GTK_WIDGET (window)->allocation.height) +
+    (GTK_WIDGET (term)->style->klass->ythickness * 2) -
+    (GTK_WIDGET (term)->allocation.height);
+  
+  sizehints.width_inc = term->charwidth;
+  sizehints.height_inc = term->charheight;
+  sizehints.min_width = sizehints.base_width + sizehints.width_inc;
+  sizehints.min_height = sizehints.base_height + sizehints.height_inc;
+  
+  sizehints.flags = (PBaseSize|PMinSize|PResizeInc);
+  
+  XSetWMNormalHints (GDK_DISPLAY(),
+		     GDK_WINDOW_XWINDOW (GTK_WIDGET (window)->window),
+		     &sizehints);
+  gdk_flush ();
 }
 
 /*
@@ -62,16 +100,19 @@ static void title_changed_event(ZvtTerm *term, VTTITLE_TYPE type, char *newtitle
 
   Does setup, initialises windows, forks child.
 */
-gint main (gint argc, gchar *argv[])
+gint 
+main (gint argc, gchar *argv[])
 {
   int c;
   int cmdindex;
   int login_shell = 0;
   int scrollbacklines;
   struct passwd *pw;
-  ZvtTerm *term;
-  GtkWidget *table;
+
+  GtkWidget *term;
+  GtkWidget *hbox;
   GtkWidget *scrollbar;
+
 
   gtk_init(&argc, &argv);
 
@@ -93,43 +134,56 @@ gint main (gint argc, gchar *argv[])
   }
 
   /* Create widgets and set options */
-  window = GTK_WINDOW(gtk_window_new (GTK_WINDOW_TOPLEVEL));
-  gtk_window_set_title (GTK_WINDOW(window), "ZTerm");
-  gtk_window_set_policy (GTK_WINDOW(window), FALSE, TRUE, TRUE);
-  table = gtk_table_new (1, 2, FALSE);
+  window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+  gtk_window_set_title (GTK_WINDOW (window), "ZTerm");
+  gtk_widget_realize (window);
 
-  term = ZVT_TERM(zvt_term_new ());
+  /* create hbox */
+  hbox = gtk_hbox_new (FALSE, 0);
+  gtk_box_set_spacing (GTK_BOX (hbox), 2);
+  gtk_container_border_width (GTK_CONTAINER (hbox), 2);
+  gtk_container_add (GTK_CONTAINER (window), hbox);
+  gtk_widget_show (hbox);
 
-  zvt_term_set_scrollback(term, scrollbacklines);
-  zvt_term_set_font_name(term, "-misc-fixed-medium-r-normal--20-200-75-75-c-100-iso8859-1");
+  /* create terminal */
+  term = zvt_term_new ();
+  gtk_box_pack_start (GTK_BOX (hbox), term, 1, 1, 0);
+  zvt_term_set_size(ZVT_TERM (term), 80, 25);
+  zvt_term_set_scrollback(ZVT_TERM (term), scrollbacklines);
+  zvt_term_set_font_name(ZVT_TERM (term), 
+      "-misc-fixed-medium-r-normal--12-200-75-75-c-100-iso8859-1");
 
-  gtk_signal_connect (GTK_OBJECT (term), "child_died",
-                      (GtkSignalFunc) child_died_event, NULL);
+  gtk_signal_connect (
+      GTK_OBJECT (term),
+      "child_died",
+      GTK_SIGNAL_FUNC (child_died_event),
+      NULL);
 
-  gtk_signal_connect (GTK_OBJECT (term), "title_changed",
-                      (GtkSignalFunc) title_changed_event, NULL);
+  gtk_signal_connect (
+      GTK_OBJECT (term),
+      "title_changed",
+      GTK_SIGNAL_FUNC (title_changed_event),
+      NULL);
+  
+  gtk_signal_connect_after (
+      GTK_OBJECT (term),
+      "size_allocate",
+      GTK_SIGNAL_FUNC (size_allocate),
+      term);
 
-  scrollbar = gtk_vscrollbar_new (GTK_ADJUSTMENT (term->adjustment));
+  gtk_widget_show (term);
+
+  /* scrollbar */
+  scrollbar = gtk_vscrollbar_new (GTK_ADJUSTMENT (ZVT_TERM (term)->adjustment));
   GTK_WIDGET_UNSET_FLAGS (scrollbar, GTK_CAN_FOCUS);
-
-  /* layout the widgets */
-  gtk_container_add (GTK_CONTAINER (window), table);
-  gtk_table_attach (GTK_TABLE (table), scrollbar, 0, 1, 0, 1,
-		    GTK_FILL, GTK_EXPAND | GTK_SHRINK | GTK_FILL, 0, 0);
-
-  gtk_table_attach (GTK_TABLE (table), GTK_WIDGET(term), 1, 2, 0, 1,
-		    GTK_EXPAND | GTK_SHRINK | GTK_FILL,
-		    GTK_EXPAND | GTK_SHRINK | GTK_FILL, 0, 0);
-
-
-  gtk_widget_show (GTK_WIDGET(term));
+  gtk_box_pack_start (GTK_BOX (hbox), scrollbar, FALSE, TRUE, 0);
   gtk_widget_show (scrollbar);
-  gtk_widget_show (table);
-  gtk_widget_show (GTK_WIDGET(window));
 
-  gdk_window_set_hints (((GtkWidget *)window)->window, 0, 0, 50, 50, 0, 0, GDK_HINT_MIN_SIZE);
+  /* show them all! */
+  gtk_widget_show (window);
 
-  switch (zvt_term_forkpty(term, TRUE)) {
+
+  switch (zvt_term_forkpty(ZVT_TERM (term), TRUE)) {
   case -1:
     perror("ERROR: unable to fork:");
     exit(1);

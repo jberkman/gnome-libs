@@ -42,9 +42,6 @@
 #include "subshell.h"
 
 
-#define DOUBLE_BUFFER		/* use back buffer to represent screen
-				   FIXME: THIS MUST BE DEFINED */
-
 /* define to 'x' to enable copius debug of this module */
 #define d(x)
 
@@ -62,7 +59,11 @@ void vt_delete_lines(struct vt_em *vt, int count);
 void vt_clear_lines(struct vt_em *vt, int top, int count);
 void vt_clear_line_portion(struct vt_em *vt, int start_col, int end_col);
 
+static void vt_resize_lines(struct vt_line *wm, int width, uint32 default_attr);
+
+
 static unsigned char vt_remap_dec[256];
+
 
 #ifdef DEBUG
 static void
@@ -209,7 +210,7 @@ vt_scrollback_add(struct vt_em *vt, struct vt_line *wn)
   struct vt_line *ln;
 
   /* create a new scroll-back line */
-  ln = g_malloc(sizeof(struct vt_line) + (sizeof(uint32) * wn->width));
+  ln = g_malloc(VT_LINE_SIZE(wn->width));
   ln->next = NULL;
   ln->prev = NULL;
   ln->width = wn->width;
@@ -221,25 +222,31 @@ vt_scrollback_add(struct vt_em *vt, struct vt_line *wn)
   ln->line = ln->prev->line + 1;
   
   /* limit the total number of lines in scrollback */
-  if (vt->scrollbacklines >= vt->scrollbackmax) {
-    /* remove the top of list line */
-    ln = (struct vt_line *)vt_list_remhead(&vt->scrollback);
-    g_free(ln);
+  if (vt->scrollbacklines >= vt->scrollbackmax) 
+    {
+      /* remove the top of list line */
+      ln = (struct vt_line *)vt_list_remhead(&vt->scrollback);
+      g_free(ln);
 
-    /* need to track changes to this, even if they're not 'real' */
-    if (vt->scrollbackoffset) {
-      vt->scrollbackold--;
-      if ((-vt->scrollbackoffset) < vt->scrollbackmax)
-	vt->scrollbackoffset--;
+      /* need to track changes to this, even if they're not 'real' */
+      if (vt->scrollbackoffset)
+	{
+	  vt->scrollbackold--;
+	  if ((-vt->scrollbackoffset) < vt->scrollbackmax)
+	    vt->scrollbackoffset--;
+	}
+    } 
+  else 
+    {
+      vt->scrollbacklines++;
+
+      /* we've effectively moved the 'old' scrollback position */
+      if (vt->scrollbackoffset)
+	{
+	  vt->scrollbackold--;
+	  vt->scrollbackoffset--;
+	}
     }
-  } else {
-    vt->scrollbacklines++;
-    /* we've effectively moved the 'old' scrollback position */
-    if (vt->scrollbackoffset) {
-      vt->scrollbackold--;
-      vt->scrollbackoffset--;
-    }
-  }
 }
 
 
@@ -258,7 +265,8 @@ vt_scroll_up(struct vt_em *vt, int count)
   int i;
   int blank;
 
-  d(printf("vt_scroll_up(%d) (top = %d bottom=%d)\n", count, vt->scrolltop, vt->scrollbottom));
+  d(printf("vt_scroll_up count=%d top=%d bottom=%d\n", 
+	   count, vt->scrolltop, vt->scrollbottom));
 
   blank = vt->attr;
 
@@ -311,7 +319,9 @@ vt_scroll_down(struct vt_em *vt, int count)
   struct vt_line *wn, *nn;
   int i;
 
-  d(printf("vt_scroll_down(%d) (top = %d bottom=%d)\n", count, vt->scrolltop, vt->scrollbottom));
+  d(printf("vt_scroll_down count=%d top=%d bottom=%d\n",
+	   count, vt->scrolltop, vt->scrollbottom));
+
   /* FIXME: do this properly */
 
   while(count>0) {
@@ -1275,7 +1285,7 @@ struct vt_line *vt_newline(struct vt_em *vt)
   int i;
   struct vt_line *l;
 
-  l = g_malloc(sizeof(struct vt_line) + (sizeof(uint32) * vt->width));
+  l = g_malloc(VT_LINE_SIZE(vt->width));
   l->prev = NULL;
   l->next = NULL;
   l->width = vt->width;
@@ -1308,11 +1318,8 @@ vt_init(struct vt_em *vt, int width, int height)
   int i;
 
   vt_list_new(&vt->lines);
-#ifdef DOUBLE_BUFFER
   vt_list_new(&vt->lines_back);
-#endif
   vt_list_new(&vt->scrollback);
-
   vt_list_new(&vt->lines_alt);
 
   vt->width = width;
@@ -1326,11 +1333,11 @@ vt_init(struct vt_em *vt, int width, int height)
     vl = vt_newline(vt);
     vl->line = i;
     vt_list_addtail(&vt->lines, (struct vt_listnode *)vl);
-#ifdef DOUBLE_BUFFER
+
     vl = vt_newline(vt);
     vl->line = i;
     vt_list_addtail(&vt->lines_back, (struct vt_listnode *)vl);
-#endif
+
     vl = vt_newline(vt);
     vl->line = i;
     vt_list_addtail(&vt->lines_alt, (struct vt_listnode *)vl);
@@ -1525,6 +1532,67 @@ vt_destroy(struct vt_em *vt)
   /* done */
 }
 
+
+static void
+vt_resize_lines(struct vt_line *wn, int width, uint32 default_attr)
+{
+  int i;
+  uint32 c;
+  struct vt_line *nn;
+
+  nn = wn->next;  
+  while (nn) {
+    d(printf("wn->line=%d wn->width=%d width=%d\n", wn->line, wn->width, width));
+    
+    /* terminal width grew */
+    if (wn->width < width)
+      {
+	/* get the attribute of the last charactor for fill */
+	if (wn->width > 0)
+	  {
+	    c = wn->data[wn->width-1] & VTATTR_MASK;
+	  }
+	else
+	  {
+	    c = default_attr;
+	  }
+
+	/* resize the line */
+	wn = g_realloc(wn, VT_LINE_SIZE(width));
+	
+	/* re-link line into linked list */
+	wn->next->prev = wn;
+	wn->prev->next = wn;
+	
+	/* if the line got bigger, fix it up */
+	for (i = wn->width; i < width; i++) 
+	  {
+	    wn->data[i] = c;
+	    wn->modcount++;
+	    }
+	
+	wn->width = width;
+      }
+    
+    /* terminal shrunk */
+    if (wn->width > width) 
+      {
+	/* resize the line */
+	wn = g_realloc(wn, VT_LINE_SIZE(width));
+	
+	/* re-link line into linked list */
+	wn->next->prev = wn;
+	wn->prev->next = wn;
+	
+	wn->width = width;
+      }
+    
+    wn = nn;
+    nn = nn->next;
+  }
+}
+
+
 /**
  * vt_resize:
  * @vt: An initalised &vt_em.
@@ -1560,23 +1628,24 @@ void vt_resize(struct vt_em *vt, int width, int height, int pixwidth, int pixhei
     d(printf("removing %d lines to smaller window\n", count));
 
     while (count > 0) {
+
       if ( (wn = (struct vt_line *)vt_list_remhead(&vt->lines)) ) {
-	printf("removing line wn->line=%d\n", wn->line);
 	if ((vt->mode & VTMODE_ALTSCREEN)==0)
 	  vt_scrollback_add(vt, wn); /* add it to scrollback buffer */
 	g_free(wn);
       }
+
       /* and for 'alternate' screen */
       if ( (wn = (struct vt_line *)vt_list_remhead(&vt->lines_alt)) ) {
 	if ((vt->mode & VTMODE_ALTSCREEN)!=0)
 	  vt_scrollback_add(vt, wn); /* add it to scrollback buffer */
 	g_free(wn);
       }
-#ifdef DOUBLE_BUFFER
+
       /* repeat for backbuffer */
       if ( (wn = (struct vt_line *)vt_list_remhead(&vt->lines_back)) )
 	g_free(wn);
-#endif
+
       count--;
     }
 
@@ -1626,20 +1695,18 @@ void vt_resize(struct vt_em *vt, int width, int height, int pixwidth, int pixhei
 	  nn->data[j]=c;
 	}
 	g_free(wn);
+
 	vt_list_addhead(&vt->lines, (struct vt_listnode *)nn);
 	vt_list_addhead(&vt->lines_alt, (struct vt_listnode *)vt_newline(vt));
-#ifdef DOUBLE_BUFFER
 	vt_list_addhead(&vt->lines_back, (struct vt_listnode *)vt_newline(vt));
-#endif
+
 	vt->scrollbacklines--;	/* since we just nuked one */
 	vt->cursory++;		/* fix up cursor */
       } else {
 	d(printf("adding line to bottom of screen\n"));
 	/* otherwise just add blank lines to the bottom */
 	vt_list_addtail(&vt->lines, (struct vt_listnode *)vt_newline(vt));
-#ifdef DOUBLE_BUFFER
 	vt_list_addtail(&vt->lines_back, (struct vt_listnode *)vt_newline(vt));
-#endif
 	vt_list_addtail(&vt->lines_alt, (struct vt_listnode *)vt_newline(vt));
       } /* if scrollbacklines */
     }
@@ -1656,48 +1723,9 @@ void vt_resize(struct vt_em *vt, int width, int height, int pixwidth, int pixhei
   /* now, scan all lines visible, and make them the right width
    * for all 3 'buffers', onscreen, offscreen and alternate
    */
-  wn = (struct vt_line *)vt->lines.head;
-
-#ifdef DOUBLE_BUFFER
-  for (pass = 0; pass < 3; pass++) {
-#endif /* DOUBLE_BUFFER */
-
-    nn = wn->next;
-    while (nn) {
-     d(printf("wn->line=%d wn->width=%d width=%d\n", wn->line, wn->width, width));
-
-      if (wn->width != width) {
-	wn = g_realloc(wn, sizeof(struct vt_line) + (sizeof(uint32)*width));
-
-	/* re-link line into linked list */
-	wn->next->prev = wn;
-	wn->prev->next = wn;
-
-	if (wn->width > 0)
-	  c = wn->data[wn->width-1] & VTATTR_MASK;
-	else
-	  c = vt->attr;
-
-	/* if the line got bigger, fix it up */
-	for (i = wn->width; i < width; i++) {
-	  wn->data[i] = c;
-	  wn->modcount++;
-	}
-
-	wn->width = width;
-      }
-
-      wn = nn;
-      nn = nn->next;
-    }
-
-#ifdef DOUBLE_BUFFER
-    if (pass == 0)
-      wn = (struct vt_line *)vt->lines_back.head;
-    else if (pass == 1)
-      wn = (struct vt_line *)vt->lines_alt.head;
-  }
-#endif
+  vt_resize_lines((struct vt_line *) vt->lines.head, width, vt->attr);
+  vt_resize_lines((struct vt_line *) vt->lines_back.head, width, vt->attr);
+  vt_resize_lines((struct vt_line *) vt->lines_alt.head, width, vt->attr);
 
   /* re-fix 'this line' pointer */
   vt->this_line = (struct vt_line *) vt_list_index(&vt->lines, vt->cursory);
