@@ -23,6 +23,72 @@ GoadServer *servlist = goad_server_list_get();
 goad_server_list_free(servlist);
 </programlisting></sect3>
 </sect2>
+<sect2 id="goad-server-activate">
+<title>goad_server_activate - get a specified server</title>
+<funcsynopsis><funcdef>CORBA_Object <function>goad_server_activate</function></funcdef>
+<paramdef>GoadServer *<parameter>sinfo</parameter></paramdef>
+<paramdef>GoadActivationFlags <parameter>flags</parameter></paramdef>
+</funcsynopsis>
+<sect3><title>Description</title>
+<para>
+When passed the address of a GoadServer structure (one retrieved from
+<function>goad_server_list_get</function>), this function will try to
+either connect to an existing server for the object, or start a new one up.
+</para>
+</sect3>
+<sect3><title>Usage</title>
+<programlisting>
+GoadServer *servlist, *chosen = NULL;
+CORBA_Object dothings;
+int i;
+servlist = goad_server_list_get();
+for(i = 0; servlist[i].repo_id; i++) {
+    if(!strcmp(servlist[i].id, "gnumeric")) {
+	    chosen = &servlist[i];
+	    break;
+    }
+}
+dothings = goad_server_activate(chosen, GOAD_ACTIVATE_SHLIB|GOAD_NO_NS_REGISTER);
+</programlisting>
+</sect3>
+<sect3><title>Parameters</title>
+<itemizedlist>
+<listitem><para>GoadServer *<parameter>sinfo</parameter></para>
+<para>A structure holding information on the server to be started.</para>
+</listitem>
+<listitem><para>GoadActivationFlags <parameter>flags</parameter></para>
+<para>Flags indicating how the application wishes to have the server started.
+Possible values (ANDed together) include:
+<itemizedlist>
+<listitem><para>GOAD_ACTIVATE_SHLIB</para>
+<para>If a new server needs to be created, the application would prefer
+that it be loaded from a shared library into the application's address space.
+</para>
+</listitem>
+<listitem><para>GOAD_ACTIVATE_REMOTE</para>
+<para>If a new server needs to be created, the application would prefer
+that it be started by running a separate program.
+</para></listitem>
+<listitem><para>GOAD_ACTIVATE_EXISTING_ONLY</para>
+<para>
+Do not start a new server for the specified activation - only check if an existing one is running.
+</para></listitem>
+<listitem><para>GOAD_ACTIVATE_NEW_ONLY</para>
+<para>
+Do not check if an existing server is running for the specified activation - only
+start a new one.
+</para></listitem>
+<listitem><para>GOAD_ACTIVATE_NO_NS_REGISTER</para>
+<para>
+Do not register the newly started server with the naming service (only valid
+if the server happens to be activated as a shared library).
+</para></listitem>
+</itemizedlist>
+</para>
+</listitem>
+</itemizedlist>
+</sect3>
+</sect2>
 </sect1>
 <sect1 id="orbitgtk">
 <title>ORBit-Gtk</title>
