@@ -19,19 +19,8 @@ noinst_PROGRAMS =  \
 	gnome-hello-4-SM		\
 	gnome-hello-5-dnd
 
-htmldir = $(prefix)/html
-html_DATA = gnome-hello.html
-
-gnome-hello.html: gnome-hello.sgml
-	-db2html $<
-
-gnome-hello.dvi: gnome-hello.sgml
-	-db2dvi $<
-
-gnome-hello.ps: gnome-hello.dvi
-	-dvips -o $@ $<
-
 # automake does not yet dig .sgml files, so for now the DocBook
 # files must be extra_dist.  Also, distribute the `.html' file
 # so that people without DocBook can still use the docs.
-EXTRA_DIST = gnome-hello.sgml gnome-hello.html
+EXTRA_DIST = gnome-hello.sgml
+
