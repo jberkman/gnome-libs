@@ -28,7 +28,10 @@
  */
 #include <config.h>
 #include <sys/types.h>
+#include <sys/time.h>
+#include <sys/resource.h>
 #include <unistd.h>
+#include <signal.h>
 #include <fcntl.h>
 #include <termios.h>
 #include <errno.h>
@@ -288,13 +291,27 @@ close_pty_pair (void *tag)
 	}
 }
 
-int
-main (int argc, char *argv [])
+#define MB (1024*1024)
+
+struct {
+	int limit;
+	int value;
+} sensible_limits [] = {
+	{ RLIMIT_CPU,    120 },
+	{ RLIMIT_FSIZE,  16 * MB },
+	{ RLIMIT_DATA,   16 * MB },
+	{ RLIMIT_STACK,  16 * MB },
+	{ RLIMIT_AS,     16 * MB },
+	{ RLIMIT_NOFILE, 30 },
+	{ RLIMIT_NPROC,  50 },
+	{ -1, -1 }
+};
+
+static void
+sanity_checks (void)
 {
-	int res;
-	void *tag;
-	GnomePtyOps op;
 	int stderr_fd;
+	int i, open_max;
 	
 	/*
 	 * File descriptors 0 and 1 have been setup by the parent process
@@ -312,6 +329,50 @@ main (int argc, char *argv [])
 		while (dup2 (stderr_fd, 2) == -1 && errno == EINTR)
 			;
 	}
+
+	/* Close any file descriptor we do not use */
+	open_max = sysconf (_SC_OPEN_MAX);
+	for (i = 3; i < open_max; i++){
+		close (i);
+	}
+
+	/* Check sensible resource limits */
+	for (i = 0; i < sensible_limits [i].value != -1; i++){
+		struct rlimit rlim;
+		
+		if (getrlimit (sensible_limits [i].limit, &rlim) != 0){
+			perror ("getrlimit");
+			exit (1);
+		}
+
+		if (rlim.rlim_cur != RLIM_INFINITY &&
+		    rlim.rlim_cur < sensible_limits [i].value){
+			fprintf (stderr, "Living environment not ok\n");
+			exit (1);
+		}
+	}
+
+	/* Make sure SIGIO is SIG_IGN */
+	{
+		struct sigaction sa;
+
+		sa.sa_handler = SIG_IGN;
+		sigemptyset (&sa.sa_mask);
+		sa.sa_flags = 0;
+		
+		sigaction (SIGIO, &sa, NULL);
+	}
+}
+	
+int
+main (int argc, char *argv [])
+{
+	int res;
+	void *tag;
+	GnomePtyOps op;
+
+	sanity_checks ();
+
 	pwent = getpwuid (getuid ());
 	if (pwent)
 		login_name = pwent->pw_name;

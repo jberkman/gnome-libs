@@ -1,6 +1,13 @@
 1998-11-26  Miguel de Icaza  <miguel@nuclecu.unam.mx>
 
-	* gnome-pty-helper.c (main): Check for open return value.  Thanks
+	* zvtterm.c (zvt_term_title_changed_raise): Fix prototype.
+
+	* gnome-pty-helper.c (sanity_checks): New routine takes care of
+	making sure environment is sane for running a suid program.
+	Thanks to Pavel Kankovsky for providing sample code for resource
+	checks and signal checks.
+	
+	(main): Check for open return value.  Thanks
 	to Pavel Kankovsky again for pointing this out.
 
 1998-11-26  Jeff Garzik  <jgarzik@pobox.com>

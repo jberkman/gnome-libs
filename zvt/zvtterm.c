@@ -77,7 +77,7 @@ static void zvt_term_selection_get (GtkWidget *widget, GtkSelectionData *selecti
 
 static void zvt_term_child_died(ZvtTerm *term);
 static void zvt_term_title_changed(ZvtTerm *term, VTTITLE_TYPE type, char *str);
-static void zvt_term_title_changed_raise(ZvtTerm *term, VTTITLE_TYPE type, char *str);
+static void zvt_term_title_changed_raise(void *user_data, VTTITLE_TYPE type, char *str);
 
 static gint zvt_term_cursor_blink(gpointer data);
 static void zvt_term_scrollbar_moved (GtkAdjustment *adj, GtkWidget *widget);
@@ -1925,8 +1925,10 @@ static void zvt_term_title_changed(ZvtTerm *term, VTTITLE_TYPE type, char *str)
 /*
   raise the title_changed signal
 */
-static void zvt_term_title_changed_raise(ZvtTerm *term, VTTITLE_TYPE type, char *str)
+static void zvt_term_title_changed_raise(void *user_data, VTTITLE_TYPE type, char *str)
 {
+  ZvtTerm *term = user_data;
+  
   g_return_if_fail (term != NULL);
   g_return_if_fail (ZVT_IS_TERM (term));
 
