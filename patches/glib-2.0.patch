@@ -1,20 +1,11 @@
-? glib-config-2.0
-? libglib-1.3.la
-? glib-2.0.pc
-? gobject-2.0.pc
-? gmodule-2.0.pc
-? gthread-2.0.pc
-? gmodule/libgmodule-1.3.la
-? gobject/libgobject-1.3.la
-? tests/gio-test
 Index: Makefile.am
 ===================================================================
 RCS file: /cvs/gnome/glib/Makefile.am,v
-retrieving revision 1.52
-diff -u -u -r1.52 Makefile.am
---- Makefile.am	2000/07/31 17:13:55	1.52
-+++ Makefile.am	2000/08/31 14:57:39
-@@ -74,7 +74,8 @@
+retrieving revision 1.53
+diff -u -u -r1.53 Makefile.am
+--- Makefile.am	2000/09/11 03:03:18	1.53
++++ Makefile.am	2000/09/25 12:32:23
+@@ -75,7 +75,8 @@
  	gunichartables.h	\
  	gunidecomp.h		\
  	gunidecomp.c		\
@@ -29,8 +20,8 @@ Index: gi18n.c
 RCS file: gi18n.c
 diff -N gi18n.c
 --- /dev/null	Tue May  5 16:32:27 1998
-+++ gi18n.c	Thu Aug 31 10:57:39 2000
-@@ -0,0 +1,326 @@
++++ gi18n.c	Mon Sep 25 08:32:24 2000
+@@ -0,0 +1,330 @@
 +/*
 + * Copyright (C) 1997, 1998, 1999, 2000 Free Software Foundation
 + * All rights reserved.
@@ -64,7 +55,7 @@ diff -N gi18n.c
 +#include "glib.h"
 +
 +static GHashTable *alias_table = NULL;
-+static GHashTable *category_table= NULL;
++static GHashTable *category_table = NULL;
 +
 +/*read an alias file for the locales*/
 +static void
@@ -72,35 +63,45 @@ diff -N gi18n.c
 +{
 +  FILE *fp;
 +  char buf[256];
++
 +  if (!alias_table)
 +    alias_table = g_hash_table_new (g_str_hash, g_str_equal);
 +  fp = fopen (file,"r");
 +  if (!fp)
 +    return;
-+  while (fgets (buf,256,fp))
++  while (fgets (buf, 256, fp))
 +    {
-+      char *p;
-+      g_strstrip(buf);
-+      if (buf[0]=='#' || buf[0]=='\0')
++      char *p, *q, *r;
++
++      g_strstrip (buf);
++      if ((buf[0] == '#') || (buf[0] == '\0'))
 +        continue;
-+      p = strtok (buf,"\t ");
-+      if (!p)
++      for (p = buf, q = NULL; *p; p++)
++	if ((*p == '\t') || (*p == ' ')) {
++	  *p = '\0'; q = p;
++	  break;
++	}
++      if (!q)
 +	continue;
-+      p = strtok (NULL,"\t ");
-+      if(!p)
++      for (p = q, r = NULL; *p; p++)
++	if ((*p == '\t') || (*p == ' ')) {
++	  *p = '\0'; r = p;
++	  break;
++	}
++      if(!r)
 +	continue;
 +      if (!g_hash_table_lookup (alias_table, buf))
-+	g_hash_table_insert (alias_table, g_strdup(buf), g_strdup(p));
++	g_hash_table_insert (alias_table, g_strdup (buf), g_strdup (r));
 +    }
 +  fclose (fp);
 +}
 +
-+/*return the un-aliased language as a newly allocated string*/
 +static char *
 +unalias_lang (char *lang)
 +{
 +  char *p;
 +  int i;
++
 +  if (!alias_table)
 +    {
 +      read_aliases ("/usr/share/locale/locale.alias");
@@ -109,7 +110,7 @@ diff -N gi18n.c
 +      read_aliases ("/usr/openwin/lib/locale/locale.alias");
 +    }
 +  i = 0;
-+  while ((p=g_hash_table_lookup(alias_table,lang)) && strcmp(p, lang))
++  while ((p = g_hash_table_lookup (alias_table, lang)) && (strcmp (p, lang) != 0))
 +    {
 +      lang = p;
 +      if (i++ == 30)
@@ -165,9 +166,7 @@ diff -N gi18n.c
 +  if (dot_pos)
 +    {
 +      mask |= COMPONENT_CODESET;
-+      *codeset = g_new (gchar, 1 + at_pos - dot_pos);
-+      strncpy (*codeset, dot_pos, at_pos - dot_pos);
-+      (*codeset)[at_pos - dot_pos] = '\0';
++      *codeset = g_strndup (dot_pos, at_pos - dot_pos);
 +    }
 +  else
 +    dot_pos = at_pos;
@@ -175,16 +174,12 @@ diff -N gi18n.c
 +  if (uscore_pos)
 +    {
 +      mask |= COMPONENT_TERRITORY;
-+      *territory = g_new (gchar, 1 + dot_pos - uscore_pos);
-+      strncpy (*territory, uscore_pos, dot_pos - uscore_pos);
-+      (*territory)[dot_pos - uscore_pos] = '\0';
++      *territory = g_strndup (uscore_pos, dot_pos - uscore_pos);
 +    }
 +  else
 +    uscore_pos = dot_pos;
 +
-+  *language = g_new (gchar, 1 + uscore_pos - locale);
-+  strncpy (*language, locale, uscore_pos - locale);
-+  (*language)[uscore_pos - locale] = '\0';
++  *language = g_strndup (locale, uscore_pos - locale);
 +
 +  return mask;
 +}
@@ -221,14 +216,14 @@ diff -N gi18n.c
 +  /* Iterate through all possible combinations, from least attractive
 +   * to most attractive.
 +   */
-+  for (i=0; i<=mask; i++)
++  for (i = 0; i <= mask; i++)
 +    if ((i & ~mask) == 0)
 +      {
-+	gchar *val = g_strconcat(language,
-+				 (i & COMPONENT_TERRITORY) ? territory : "",
-+				 (i & COMPONENT_CODESET) ? codeset : "",
-+				 (i & COMPONENT_MODIFIER) ? modifier : "",
-+				 NULL);
++	gchar *val = g_strconcat (language,
++				  (i & COMPONENT_TERRITORY) ? territory : "",
++				  (i & COMPONENT_CODESET) ? codeset : "",
++				  (i & COMPONENT_MODIFIER) ? modifier : "",
++				  NULL);
 +	retval = g_list_prepend (retval, val);
 +      }
 +
@@ -254,7 +249,7 @@ diff -N gi18n.c
 +  /* The highest priority value is the `LANGUAGE' environment
 +     variable.  This is a GNU extension.  */
 +  retval = g_getenv ("LANGUAGE");
-+  if (retval != NULL && retval[0] != '\0')
++  if ((retval != NULL) && (retval[0] != '\0'))
 +    return retval;
 +
 +  /* `LANGUAGE' is not set.  So we have to proceed with the POSIX
@@ -263,17 +258,17 @@ diff -N gi18n.c
 +
 +  /* Setting of LC_ALL overwrites all other.  */
 +  retval = g_getenv ("LC_ALL");  
-+  if (retval != NULL && retval[0] != '\0')
++  if ((retval != NULL) && (retval[0] != '\0'))
 +    return retval;
 +
 +  /* Next comes the name of the desired category.  */
 +  retval = g_getenv (categoryname);
-+  if (retval != NULL && retval[0] != '\0')
++  if ((retval != NULL) && (retval[0] != '\0'))
 +    return retval;
 +
 +  /* Last possibility is the LANG environment variable.  */
 +  retval = g_getenv ("LANG");
-+  if (retval != NULL && retval[0] != '\0')
++  if ((retval != NULL) && (retval[0] != '\0'))
 +    return retval;
 +
 +  return NULL;
@@ -289,60 +284,60 @@ diff -N gi18n.c
 + * is appended to the list if it does not already appear (other routines depend on this behaviour).
 + * If @category_name is %NULL, then LC_ALL is assumed.
 + * 
-+ * Return value: the list of languages, this list should not be freed as it is owned by gnome-i18n
++ * Return value: a copy of the list of languages.
 + **/
-+const GList *
++GList *
 +g_i18n_get_language_list (const gchar *category_name)
 +{
 +  GList *list;
 +
 +  if (!category_name)
-+    category_name= "LC_ALL";
++    category_name = "LC_ALL";
 +
 +  if (category_table)
 +    {
-+      list= g_hash_table_lookup (category_table, (const gpointer) category_name);
++      list = g_hash_table_lookup (category_table, (const gpointer) category_name);
 +    }
 +  else
 +    {
-+      category_table= g_hash_table_new (g_str_hash, g_str_equal);
-+      list= NULL;
++      category_table = g_hash_table_new (g_str_hash, g_str_equal);
++      list = NULL;
 +    }
 +
 +  if (!list)
 +    {
-+      gint c_locale_defined= FALSE;
++      gint c_locale_defined = FALSE;
 +  
 +      const gchar *category_value;
 +      gchar *category_memory, *orig_category_memory;
 +
 +      category_value = g_i18n_guess_category_value (category_name);
-+      if (! category_value)
++      if (!category_value)
 +	category_value = "C";
 +      orig_category_memory = category_memory =
 +	g_malloc (strlen (category_value)+1);
 +      
 +      while (category_value[0] != '\0')
 +	{
-+	  while (category_value[0] != '\0' && category_value[0] == ':')
++	  while ((category_value[0] != '\0') && (category_value[0] == ':'))
 +	    ++category_value;
 +	  
 +	  if (category_value[0] != '\0')
 +	    {
-+	      char *cp= category_memory;
++	      char *cp = category_memory;
 +	      
-+	      while (category_value[0] != '\0' && category_value[0] != ':')
-+		*category_memory++= *category_value++;
++	      while ((category_value[0] != '\0') && (category_value[0] != ':'))
++		*category_memory++ = *category_value++;
 +	      
-+	      category_memory[0]= '\0'; 
++	      category_memory[0] = '\0'; 
 +	      category_memory++;
 +	      
-+	      cp = unalias_lang(cp);
++	      cp = unalias_lang (cp);
 +	      
 +	      if (strcmp (cp, "C") == 0)
-+		c_locale_defined= TRUE;
++		c_locale_defined = TRUE;
 +	      
-+	      list= g_list_concat (list, compute_locale_variants (cp));
++	      list = g_list_concat (list, compute_locale_variants (cp));
 +	    }
 +	}
 +
@@ -353,22 +348,22 @@ diff -N gi18n.c
 +
 +      g_hash_table_insert (category_table, (gpointer) category_name, list);
 +    }
-+  
-+  return list;
++
++  return g_list_reverse (g_list_copy (list));
 +}
 +
 Index: gunicode.h
 ===================================================================
 RCS file: /cvs/gnome/glib/gunicode.h,v
-retrieving revision 1.6
-diff -u -u -r1.6 gunicode.h
---- gunicode.h	2000/08/25 22:45:45	1.6
-+++ gunicode.h	2000/08/31 14:57:40
-@@ -185,6 +185,9 @@
- gint      g_unichar_to_utf8 (gunichar    c,
- 			     char       *outbuf);
+retrieving revision 1.8
+diff -u -u -r1.8 gunicode.h
+--- gunicode.h	2000/09/11 00:09:31	1.8
++++ gunicode.h	2000/09/25 12:32:24
+@@ -193,6 +193,9 @@
+                           gint          len,
+                           const gchar **end);
  
-+const GList * g_i18n_get_language_list    (const gchar *category_name);
++GList *   g_i18n_get_language_list (const gchar *category_name);
 +const gchar * g_i18n_guess_category_value (const gchar *categoryname);
 +
  #ifdef __cplusplus
