@@ -160,7 +160,9 @@ write_logout_record (void *data, int utmp, int wtmp)
 
 	strncpy (put.ut_line, ut->ut_line, sizeof (put.ut_line));
 
-#if defined(HAVE_UT_UT_TIME)
+#if defined(HAVE_UT_UT_TV)
+	gettimeofday ((struct timeval*) &put.ut_tv, NULL);
+#elif defined(HAVE_UT_UT_TIME)
 	time (&put.ut_time);
 #endif
 
