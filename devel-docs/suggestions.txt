@@ -1,11 +1,21 @@
 
 Suggestions for enhancing the user experience in your application:
 
-Try to use:
+Menus:
+------
 
    - For standard menu items (Save, Save As, Close, Quit, etc), use
      the macros defined in gnome-app-helper.h, e.g.
      GNOMEUIINFO_MENU_EXIT_ITEM(cb, data)
+
+   - The prescribed order of standard menu items in the "File" menu is
+     the following:  New, Open, Save, Save As, Print, Close, Exit
+
+   - The prescribed order of standard menu items in the "Edit" menu is
+     the following:  Cut, Copy, Paste
+
+Dialogs
+-------
 
    - GnomePropertyBox widgets for configuring things in your
      application.  These will allow the user to use their prefered way
@@ -22,6 +32,19 @@ Try to use:
      managers to hide all of your dialog box windows when minimizing
      your main window for example).
 
+   - For file-input entry widgets, use the GnomeFileEntry widget, this
+     will provde a browse selector (and in the future it will use the
+     enhanced file open dialog box).
+
+   - When you require an entry for typing in an icon name, use the
+     GnomeIconEntry widget. 
+
+   - For text-input that might benefit from a history, use the
+     GnomeEntry widget (this will provide automatic history for you).
+
+General Widget Use
+------------------
+
    - Use the GnomeApp widget for your toplevel windows.
 
    - Use the gnome-app-helper.h interface for creating menus and
@@ -30,23 +53,12 @@ Try to use:
 
    - Use GnomePixmap to load your images.
 
-   - GNOME uses Imlib, try to provide your images in PNG format.  Do
-     not care about the color usage, Imlib will dither to a nice
-     palette on low-end displays.
-
-   - For text-input that might benefit from a history, use the
-     GnomeEntry widget (this will provide automatic history for you).
-
-   - For file-input entry widgets, use the GnomeFileEntry widget, this
-     will provde a browse selector (and in the future it will use the
-     enhanced file open dialog box).
-
-   - When you require an entry for typing in an icon name, use the
-     GnomeIconEntry widget. 
-
    - Try to use consistant spacing and padding everywhere.
      libgnomeui/gnome-uidefs.h has some preset values to use.
-   
 
-Miguel.
+Miscellaneous
+-------------
+
+   - GNOME uses Imlib, try to provide your images in PNG format.  Do
+     not care about the color usage, Imlib will dither to a nice
 
