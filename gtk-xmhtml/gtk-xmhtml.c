@@ -396,11 +396,9 @@ gint
 work_area_expose (GtkWidget *widget, GdkEvent *event, gpointer closure)
 {
 	GtkXmHTML *html = closure;
-
-/* 	fprintf (stderr, "->Expose %d %d!\n", widget->allocation.width, widget->allocation.height);*/
-
-	Refresh(html, 0, 0, widget->allocation.width, widget->allocation.height);
-/*	fprintf (stderr, "<-Expose!\n"); */
+	GdkEventExpose *e = (GdkEventExpose *) event;
+	
+	Refresh(html, e->area.x, e->area.y, e->area.width, e->area.height);
 	return FALSE;
 }
 
@@ -480,31 +478,6 @@ CreateHTMLWidget(XmHTMLWidget html)
 				    (GtkSignalFunc) vertical_scroll, html);
 	}
 
-#if 0
-	/* Catch vertical scrollbar movement */
-	XtAddCallback(html->html.vsb, XmNvalueChangedCallback,
-		(XtCallbackProc)ScrollCB, (XtPointer)html);
-	XtAddCallback(html->html.vsb, XmNdragCallback,
-		(XtCallbackProc)ScrollCB, (XtPointer)html);
-
-	if(html->html.hsb == NULL)
-	{
-		argc = 0;
-		XtSetArg(args[argc], XmNorientation, XmHORIZONTAL); argc++;
-		XtSetArg(args[argc], XmNrepeatDelay, html->html.repeat_delay); argc++;
-		/* make them a little bit more responsive */
-		XtSetArg(args[argc], XmNinitialDelay, 100); argc++;
-		html->html.hsb = XtCreateWidget("horizontalScrollBar", 
-			xmScrollBarWidgetClass, (TWidget)html, args, argc);
-	}
-	XtManageChild(html->html.hsb);
-	/* Catch horizontal scrollbar movement */
-	XtAddCallback(html->html.hsb, XmNvalueChangedCallback,
-		(XtCallbackProc)ScrollCB, (XtPointer)html);
-	XtAddCallback(html->html.hsb, XmNdragCallback,
-		(XtCallbackProc)ScrollCB, (XtPointer)html);
-
-#endif
 	/* 
 	* subtract margin_width once to minimize number of calcs in
 	* the paint routines: every thing rendered starts at an x position
