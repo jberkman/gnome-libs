@@ -1,3 +1,9 @@
+/* needed for sigaction under 'gcc -ansi -pedantic' on GNU/Linux */
+#ifndef _POSIX_SOURCE
+#define _POSIX_SOURCE 1
+#endif
+#include <sys/types.h>
+
 #include <unistd.h>
 #include <stdlib.h>
 #include <string.h>
@@ -6,7 +12,6 @@
 #include <ctype.h>
 #include <pwd.h>
 #include <signal.h>
-#include <sys/types.h>
 #include <sys/stat.h>
 #include <sys/file.h>
 #include <sys/resource.h>

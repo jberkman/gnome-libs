@@ -26,6 +26,13 @@
  * for the Midnight Commander.
  */
 #include <config.h>
+
+/* needed for sigaction under 'gcc -ansi -pedantic' on GNU/Linux */
+#ifndef _POSIX_SOURCE
+#define _POSIX_SOURCE 1
+#endif
+#include <sys/types.h>
+
 #include <gnome.h>
 #include <stdio.h>
 #include <stdlib.h>

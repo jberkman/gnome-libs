@@ -5,6 +5,13 @@
  *   Elliot Lee (sopwith@cuc.edu)
  */
 #include <config.h>
+
+/* needed for sigaction under 'gcc -ansi -pedantic' on GNU/Linux */
+#ifndef _POSIX_SOURCE
+#define _POSIX_SOURCE 1
+#endif
+#include <sys/types.h>
+
 #include "gnorba.h"
 #include <gmodule.h>
 #include <stdio.h>
