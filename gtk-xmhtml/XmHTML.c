@@ -35,6 +35,11 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.26  1998/11/29 00:06:34  unammx
+* 1998-11-28  Ronald de Man <deman@win.tue.nl>
+*
+* 	* XmHTML.c (_XmHTMLMoveToPos): Fix to the repaint.
+*
 * Revision 1.25  1998/05/09 17:05:20  kmaraas
 * 1998-05-09  Kjartan Maraas  <kmaraas@fib.hl.no>
 *
@@ -2857,8 +2862,9 @@ _XmHTMLMoveToPos(TWidget w, XmHTMLWidget html, int value)
 			html->html.scroll_y = value;
 
 			/* save new paint engine start */
-			html->html.paint_start = html->html.paint_end;
-
+/*			html->html.paint_start = html->html.paint_end; */
+			html->html.paint_end = html->html.paint_start;
+			
 			/* small increment */
 			if(inc < html->html.work_height)
 			{
