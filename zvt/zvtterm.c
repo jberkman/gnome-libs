@@ -2391,7 +2391,6 @@ zvt_term_get_capabilities (ZvtTerm *term)
   guint32 out = 0;
 
   /* pixmap and transparency support */
-  out |= ZVT_TERM_PIXMAP_SUPPORT;
   if (gdk_imlib_get_visual () == gtk_widget_get_default_visual ())
     out |= ZVT_TERM_PIXMAP_SUPPORT;
 
