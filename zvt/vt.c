@@ -58,7 +58,7 @@ void vt_delete_chars(struct vt_em *vt, int count);
 void vt_insert_lines(struct vt_em *vt, int count);
 void vt_delete_lines(struct vt_em *vt, int count);
 void vt_clear_lines(struct vt_em *vt, int top, int count);
-void vt_clear_eol(struct vt_em *vt);
+void vt_clear_line_portion(struct vt_em *vt, int start_col, int end_col);
 
 static unsigned char vt_remap_dec[256];
 
@@ -416,15 +416,15 @@ void vt_clear_lines(struct vt_em *vt, int top, int count)
   }
 }
 
-void vt_clear_eol(struct vt_em *vt)
+void vt_clear_line_portion(struct vt_em *vt, int start_col, int end_col)
 {
   struct vt_line *this;
   int i;
 
-  d(printf("vt_clear_eol()\n"));
+  d(printf("vt_clear_line_portion()\n"));
 
   this = vt->this;
-  for(i=vt->cursorx;i<this->width;i++) {
+  for(i=start_col;i<end_col;i++) {
     this->data[i] = vt->attr | VTATTR_CHANGED;
   }
   this->modcount+=(this->width-vt->cursorx);
@@ -577,16 +577,25 @@ static void vt_delete_line(struct vt_em *vt)
 static void vt_cleareos(struct vt_em *vt)
 {
   d(printf("clear screen/end of screen\n"));
-  vt_clear_eol(vt);
+  vt_clear_line_portion(vt, vt->cursorx, vt->this->width);
   if (vt->cursory<vt->height) {
     vt_clear_lines(vt, vt->cursory+1, vt->height);
   }
 }
 
-static void vt_cleareol(struct vt_em *vt)
+static void vt_clear_lineportion(struct vt_em *vt)
 {
-  d(printf("Clear end of line\n"));
-  vt_clear_eol(vt);
+  d(printf("Clear part of line\n"));
+  if (vt->argcnt>1) {
+    /* eat the command */
+  } else if (vt->argcnt==0 && *vt->args[0] == '0') {
+    vt_clear_line_portion(vt, vt->cursorx, vt->this->width);
+  } else if (*vt->args[0] == '1') {
+    vt_clear_line_portion(vt, 0, vt->cursorx + 1);
+  } else if (*vt->args[0] == '2') {
+    vt_clear_line_portion(vt, 0, vt->this->width);
+  }
+  /* eat bad parameters */
 }
 
 
@@ -959,7 +968,7 @@ struct vt_jump vtjumps[] = {
   {0,VT_LIT}, {0,VT_LIT}, {0,VT_LIT}, {0,VT_LIT|VT_ARG},	/* <=>? */
   {vt_insert_char,VT_EBL}, {vt_up,VT_BOL}, {vt_down,VT_BOL}, {vt_right,VT_BOL},	/* @ABC */
   {vt_left,VT_BOL}, {0,VT_LIT}, {0,VT_LIT}, {0,VT_LIT},	/* DEFG */
-  {vt_goto,VT_EBL}, {0,VT_LIT}, {vt_cleareos,VT_EBL}, {vt_cleareol,VT_EBL},	/* HIJK */
+  {vt_goto,VT_EBL}, {0,VT_LIT}, {vt_cleareos,VT_EBL}, {vt_clear_lineportion,VT_EBL},	/* HIJK */
   {vt_insert_line,VT_EBL}, {vt_delete_line,VT_EBL|VT_ESC}, {0,VT_LIT}, {0,VT_LIT},	/* LMNO */
   {vt_delete_char,VT_EBL}, {0,VT_LIT}, {0,VT_LIT}, {0,VT_LIT},	/* PQRS */
   {0,VT_LIT}, {0,VT_LIT}, {0,VT_LIT}, {0,VT_LIT},	/* TUVW */
@@ -1059,7 +1068,7 @@ void parse_vt(struct vt_em *vt, char *ptr, int length)
 	if (mode & VT_ARG) {
 	  if (vt->outptr<vt->outend) /* truncate excessive args */
 	    *(vt->outptr)++=c;
-	} else if (c==';') {	/* looking for 'arg;arg;...' */
+	} else if (c==';' || c==':') {	/* looking for 'arg;arg;...' */
 	  if (vt->argcnt<VTPARAM_MAXARGS) { /* goto next argument */
 	    *(vt->outptr)=0;
 	    vt->argptr++;
