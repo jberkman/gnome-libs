@@ -1,3 +1,9 @@
+1998-09-18  Raja R Harinath  <harinath@cs.umn.edu>
+
+	* libgnorba/orbitgtk.c (get_exclusive_lock): Replace `flock' with
+	`fcntl' lock.
+	(release_lock): Likewise.
+
 1998-09-18  Federico Mena Quintero  <federico@nuclecu.unam.mx>
 
 	* configure.in: Removed generation of list of canvas files.
@@ -13,8 +19,8 @@ Fri Sep 18 15:01:28 1998  John Ellis  <johne@bellatlantic.net>
 
 1998-09-18  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
 
-	* libgnome/gnome-metadata.c: include gnomesupport.h in order to
-	use alphasort
+	* libgnome/gnome-metadata.c: Include gnomesupport.h in order to
+	use alphasort.
 
 1998-09-18  Miguel de Icaza  <miguel@nuclecu.unam.mx>
 

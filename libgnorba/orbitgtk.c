@@ -66,18 +66,29 @@ gnome_ORBit_request_validate(CORBA_unsigned_long request_id,
 static void
 get_exclusive_lock (int fd)
 {
-	flock (fd, LOCK_EX);
+  /* flock (fd, LOCK_EX); */
+  struct flock lbuf;
+  lbuf.l_type = F_WRLCK;
+  lbuf.l_whence = SEEK_SET;
+  lbuf.l_start = lbuf.l_len = 0L; /* Lock the whole file.  */
+  fcntl (fd, F_SETLKW, &lbuf);
+
 }
 
 static void
 release_lock (int fd)
 {
-	flock (fd, LOCK_UN);
+  /* flock (fd, LOCK_UN); */
+  struct flock lbuf;
+  lbuf.l_type = F_UNLCK;
+  lbuf.l_whence = SEEK_SET;
+  lbuf.l_start = lbuf.l_len = 0L; /* Unlock the whole file.  */
+  fcntl (fd, F_SETLKW, &lbuf);
 }
 
 /*
- * We assume that if we could get this far, then /tmp/orbit-$username is secured
- * (because of CORBA_ORB_init).
+ * We assume that if we could get this far, then /tmp/orbit-$username is
+ * secured (because of CORBA_ORB_init).
  */
 static char *
 get_cookie_reliably (void)
