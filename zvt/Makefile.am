@@ -6,6 +6,7 @@ libzvtincludedir = $(includedir)/zvt
 
 INCLUDES = -I.. -I$(srcdir)/.. $(SUPPORTINCS)		\
 	-I$(top_srcdir)/intl -I$(top_builddir)/intl	\
+	-I$(top_srcdir)/gdk-pixbuf                      \
 	-I$(includedir) $(GTK_CFLAGS)  			\
 	-DGNOMESBINDIR=\""$(sbindir)"\"
 
@@ -54,7 +55,10 @@ zterm_LDADD	= 			\
 	libzvt.la			\
 	$(UTIL_LIBS)			\
 	$(GTK_LIBS) 			\
-	-lgdk_pixbuf -lart_lgpl -lgnomeui -lgnome	\
+	$(top_builddir)/gdk-pixbuf/gdk-pixbuf/libgdk_pixbuf.la \
+	$(top_builddir)/libart_lgpl/libart_lgpl.la \
+	$(top_builddir)/libgnomeui/libgnomeui.la \
+	$(top_builddir)/libgnome/libgnome.la	\
 	$(INTLLIBS)
 
 test_utmp_SOURCES =			\
