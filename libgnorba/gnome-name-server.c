@@ -257,6 +257,11 @@ main (int argc, char *argv [])
 	gboolean v;
 	GIOChannel *channel;
 
+	if(getenv("GNOME_NAME_SERVER_DEBUG")) {
+		volatile int spinme = 1;
+		while(spinme);
+	}
+
 	/* Logs */
 	openlog ("gnome-name-server", LOG_NDELAY | LOG_PID, LOG_DAEMON);
 	syslog (LOG_INFO, "starting");

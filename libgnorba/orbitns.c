@@ -10,6 +10,8 @@
 #include <signal.h>
 #include <sys/stat.h>
 #include <sys/file.h>
+#include <sys/types.h>
+#include <sys/wait.h>
 #include <sys/resource.h>
 #include <fcntl.h>
 #include <gdk/gdkx.h>
@@ -117,6 +119,39 @@ error:
 	return NULL;
 }
 
+typedef struct {
+  GMainLoop *mloop;
+  char iorbuf[2048];
+  char *do_srv_output;
+  FILE *fh;
+} EXEActivateInfo;
+
+/* copied from goad.c */
+static gboolean
+handle_exepipe(GIOChannel      *source,
+	       GIOCondition     condition,
+	       EXEActivateInfo *data)
+{
+  gboolean retval = TRUE;
+
+  *data->iorbuf = '\0';
+  if(!(condition & G_IO_IN)
+     || !fgets(data->iorbuf, sizeof(data->iorbuf), data->fh)) {
+    retval = FALSE;
+  }
+
+  if(retval && !strncmp(data->iorbuf, "IOR:", 4))
+    retval = FALSE;
+
+  if(data->do_srv_output)
+    g_message("srv output: '%s' (cond", data->iorbuf);
+
+  if(!retval)
+    g_main_quit(data->mloop);
+
+  return retval;
+}
+
 static CORBA_Object
 name_server_by_forking (CORBA_Environment *ev)
 {
@@ -142,30 +177,38 @@ name_server_by_forking (CORBA_Environment *ev)
 		FILE *iorfh;
 		char *ret;
 		int status;
+		EXEActivateInfo ai;
+		guint watchid;
+		GIOChannel *gioc;
 
 		/* Parent */
 		waitpid(pid, &status, 0); /* de-zombify */
 
 		close(iopipes[1]);
 		
-		iorfh = fdopen(iopipes[0], "r");
-		
-		while ((ret = fgets(iorbuf, sizeof(iorbuf), iorfh)) != NULL) {
-			if (strncmp(iorbuf, "IOR:", 4) == 0) {
-				break;
-			}
-		}
+		ai.fh = iorfh = fdopen(iopipes[0], "r");
 
-		if (!ret)
-			return name_service;
-		
-		fclose(iorfh);
+		ai.do_srv_output = getenv("GOAD_DEBUG_EXERUN");
+
+		ai.mloop = g_main_new(FALSE);
+		gioc = g_io_channel_unix_new(iopipes[0]);
+		watchid = g_io_add_watch(gioc, G_IO_IN|G_IO_HUP|G_IO_NVAL|G_IO_ERR,
+					 (GIOFunc)&handle_exepipe, &ai);
+		g_io_channel_unref(gioc);
+		g_main_run(ai.mloop);
+		g_main_destroy(ai.mloop);
+
+		g_strstrip(ai.iorbuf);
+		if (strncmp(ai.iorbuf, "IOR:", 4))
+		  goto out;
 		
 		/* strip newline if it's there */
 		if (iorbuf[strlen(iorbuf)-1] == '\n')
 			iorbuf[strlen(iorbuf)-1] = '\0';
 		
 		name_service = CORBA_ORB_string_to_object((CORBA_ORB)_gnorba_gnome_orbit_orb, iorbuf, ev);
+	out:
+		fclose(iorfh);
 
 	} else if (fork ()) {
 		/* de-zombifier process, just exit */
@@ -185,11 +228,6 @@ name_server_by_forking (CORBA_Environment *ev)
 		close(iopipes[0]);
 		dup2(iopipes[1], 1);
 		dup2(iopipes[1], 2);
-		/* close all file descriptors */
-		while (i > 2) {
-			close(i);
-			i--;
-		}
 		
 		setsid();
 		
@@ -204,7 +242,7 @@ name_server_by_forking (CORBA_Environment *ev)
  * gnome_name_service_get:
  *
  * This routine returns an object reference to the name server
- * for this user/session pair.    This launches the name server if
+ * for this user/session pair. This launches the name server if
  * it is the first application running it.
  *
  * Returns: an object reference to the name service.
@@ -230,29 +268,31 @@ gnome_name_service_get(void)
 	 * at the same time, so the name_server_by_forking might
 	 * fail.
 	 */
-	for (attempts = 0; attempts < 3; attempts++){
+	for (attempts = 0; CORBA_Object_is_nil(name_service, &ev) && attempts < 3; attempts++) {
+
 		ior = get_name_server_ior_from_root_window ();
+
 		if (ior) {
 			name_service = CORBA_ORB_string_to_object(_gnorba_gnome_orbit_orb, ior, &ev);
 			g_free (ior);
 
-			if (!CORBA_Object_is_nil (name_service, &ev)){
-				retval = CORBA_Object_duplicate (name_service, &ev);
-				CORBA_exception_free (&ev);
-				return retval;
-			}
+			if (!CORBA_Object_is_nil (name_service, &ev))
+				goto out;
 		}
 
 		name_service = name_server_by_forking (&ev);
-		if (!CORBA_Object_is_nil (name_service, &ev)){
-			retval = CORBA_Object_duplicate(name_service, &ev);
-			CORBA_exception_free(&ev);
-			return retval;
-		}
+		if (!CORBA_Object_is_nil (name_service, &ev))
+			goto out;
 	}
-	
-	g_warning(_("Could not get name service!"));
-	
-	return name_service;
+
+	if(CORBA_Object_is_nil(name_service, &ev))
+		g_warning(_("Could not get name service!"));
+
+out:
+	retval = CORBA_Object_duplicate(name_service, &ev);
+
+	CORBA_exception_free(&ev);
+
+	return retval;
 }
 

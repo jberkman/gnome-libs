@@ -1002,8 +1002,6 @@ goad_server_activate_exe(GoadServer *sinfo,
       retval = CORBA_OBJECT_NIL;
       goto out;
     }
-    if (ai.iorbuf[strlen(ai.iorbuf)-1] == '\n')
-      ai.iorbuf[strlen(ai.iorbuf)-1] = '\0';
     retval = CORBA_ORB_string_to_object(_gnorba_gnome_orbit_orb,
 					ai.iorbuf, ev);
 
