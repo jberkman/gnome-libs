@@ -1,3 +1,4 @@
+rename gtk_menu_position_func
 
 configure:
 *	HAVE_TERMCAP_LINUX
@@ -13,7 +14,7 @@ GtkTty:
 *	implement leds change and report function...
 
 GtkTerm:
-*	area copying relys on expose events, but they appear asyncronous
+*	area copying relies on expose events, but they appear asyncronous
 	ex.: move GtkTerm have a line out of the screen an do ls / -R
 *	support block_refresh via dirty-marks on characters (one way) [implemented]
 *	implement backing store (supposdly *better* way, best: both)

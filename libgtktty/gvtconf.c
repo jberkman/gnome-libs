@@ -58,6 +58,12 @@ static struct option	long_options[] = {
   { "no-show-events",     no_argument,          NULL,   ARG_IGNORE	},
   { "no-xshm",            no_argument,          NULL,   ARG_IGNORE	},
   { "debug-level",        required_argument,    NULL,   ARG_IGNORE	},
+  { "name",		  required_argument,    NULL,   ARG_IGNORE	},
+  { "class",		  required_argument,    NULL,   ARG_IGNORE	},
+  { "gxid_host",	  required_argument,    NULL,   ARG_IGNORE	},
+  { "gxid_port",	  required_argument,    NULL,   ARG_IGNORE	},
+  { "xim-preedit",	  required_argument,    NULL,   ARG_IGNORE	},
+  { "xim-status",	  required_argument,    NULL,   ARG_IGNORE	},
   { NULL, 0, NULL, 0 }
 };
 

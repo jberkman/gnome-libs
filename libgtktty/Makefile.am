@@ -71,7 +71,9 @@ EXTRA_DIST = \
 	$(libgemvt_h_files_extra) \
 	$(libgemvt_c_files) \
 	$(libgemvt_c_files_extra) \
-	getopt.h getopt.c getopt1.c \
+	getopt.h \
+	getopt.c \
+	getopt1.c \
 	gemvt.xpm \
 	gem-r.xpm \
 	gem-g.xpm \

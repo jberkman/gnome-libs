@@ -1,10 +1,13 @@
+Thu Feb  5 04:49:22 1998  Tim Janik  <timj@gimp.org>
+
+	* gvtmain.c: do proper widget shutdown if the application is finished.
+
+	* full support gdk arguments.
+
 Tue Feb  3 23:58:07 EST 1998 Nathan Bryant <bryant@cs.usm.maine.edu>
+
 	* configure.in: simplistic check for bindtextdomain in -lintl
 	* Makefile.am: added $(INTLLIBS) to gemvt_LDADD
-
-1998-02-01  Raja R Harinath  <harinath@cs.umn.edu>
-
-	* gtkterm.c: Include <stdio.h> for `printf'.
 
 Fri Jan 30 11:26:23 EST 1998 Nathan Bryant <bryant@cs.usm.maine.edu>
 

@@ -15,7 +15,6 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
-
 #include	"config.h"
 #include	"gtktty.h"
 #include	"gtkled.h"
@@ -89,6 +88,7 @@ static	void	gtk_menu_position_func	(GtkMenu	*menu,
 					 gpointer	user_data);
 static void	gvt_menu_adjust		(GtkMenu	*menu);
 static	void	gvt_menus_setup		(void);
+static	void	gvt_menus_shutdown	(void);
 
 
 
@@ -112,8 +112,8 @@ static GvtColorEntry	color_table[] =
   { NULL, NULL, NULL, NULL,	0xd0d0d0, 0xd0d0d0, 0x888888, 0xffffff }, /* white */
 };
 static GtkMenu		*menu_1 = NULL;
-static GtkMenu		*menu_2;
-static GtkMenu		*menu_3;
+static GtkMenu		*menu_2 = NULL;
+static GtkMenu		*menu_3 = NULL;
 static GtkTty		*menu_tty;
 static gint		menu_pos_x, menu_pos_y;
 static GvtConfig	config =
@@ -310,7 +310,8 @@ main	(int	argc,
   gtk_main ();
 
   gtk_widget_destroy (window);
-  
+  gvt_menus_shutdown ();
+
   /* exit program
    */
   return 0;
@@ -784,12 +785,16 @@ gvt_menu_adjust (GtkMenu *menu)
 static void
 gvt_menus_setup (void)
 {
+  GtkWidget *menu;
+
   if (!menu_1)
   {
     GtkWidget *item;
-    GtkWidget *menu;
 
-    menu = gtk_menu_new ();
+    menu = gtk_widget_new (gtk_menu_get_type (),
+			   "GtkObject::signal::destroy", gtk_widget_destroyed, &menu_1,
+			   NULL);
+    menu_1 = GTK_MENU (menu);
     item = gtk_menu_item_new_with_label ("Main Options");
     gtk_widget_set_sensitive (item, FALSE);
     gtk_widget_show (item);
@@ -866,13 +871,32 @@ gvt_menus_setup (void)
 		       NULL);
     gtk_widget_show (item);
     gtk_menu_append (GTK_MENU (menu), item);
+  }
 
-    menu_1 = GTK_MENU (menu);
-    
-    menu = gtk_menu_new ();
+  if (!menu_2)
+  {
+    menu = gtk_widget_new (gtk_menu_get_type (),
+			   "GtkObject::signal::destroy", gtk_widget_destroyed, &menu_2,
+			   NULL);
     menu_2 = GTK_MENU (menu);
+  }
 
-    menu = gtk_menu_new ();
+  if (!menu_3)
+  {
+    menu = gtk_widget_new (gtk_menu_get_type (),
+			   "GtkObject::signal::destroy", gtk_widget_destroyed, &menu_3,
+			   NULL);
     menu_3 = GTK_MENU (menu);
   }
+}
+
+static void
+gvt_menus_shutdown (void)
+{
+  if (menu_1)
+    gtk_object_sink (GTK_OBJECT (menu_1));
+  if (menu_2)
+    gtk_object_sink (GTK_OBJECT (menu_2));
+  if (menu_3)
+    gtk_object_sink (GTK_OBJECT (menu_3));
 }

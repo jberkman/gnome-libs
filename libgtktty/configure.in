@@ -14,7 +14,7 @@ LIBGEMVT_VERSION="$LIBGEMVT_MAJOR.$LIBGEMVT_REVISION.$LIBGEMVT_AGE"
 VERSION="$GEMVT_MAJOR.$GEMVT_REVISION.$GEMVT_PATCHLEVEL"
 AM_INIT_AUTOMAKE(gemvt, [$VERSION])
 
-dnl Support program name conversion.
+dnl Support porgram name conversion.
 AC_ARG_PROGRAM
 
 dnl Disable automatic maintainer mode.
@@ -70,11 +70,11 @@ AC_DEFUN(AC_GEMVT_REQUIREMENTS,
 		X_LIBS="$X_LIBS -lgtk -lgdk -lglib $x_libs -lm",
 		[AC_MSG_ERROR(Can not link with gtk/gdk/glib)],
 		-lgdk -lglib $x_libs -lm)
-
+	
 	LDFLAGS="$saved_ldflags"
 	AC_CHECK_LIB(intl, bindtextdomain, INTLLIBS="-lintl", ,)
 	AC_SUBST(INTLLIBS)
-	
+
 	dnl Check for functions.
 	AC_CHECK_FUNC(putenv,,[AC_MSG_ERROR(Can not set environment variables)])
 
@@ -181,6 +181,8 @@ MC_IF_VAR_EQ(GCC, yes,
 	MC_ADD_TO_VAR(CFLAGS, -frerun-cse-after-loop, -frerun-cse-after-loop)
 	MC_ADD_TO_VAR(CFLAGS, -freg-struct-return, -freg-struct-return)
 	MC_ADD_TO_VAR(CFLAGS, -fnonnull-objects, -fnonnull-objects)
+	dnl use of -pipe breaks most gcc setups that aren't using GNU binutils
+	dnl MC_ADD_TO_VAR(CFLAGS, -pipe, -pipe)
 	dnl -funroll-loops gives problems with -O and templates (see Rep-CppBug_1.C)
 	dnl MC_ADD_TO_VAR(CFLAGS, -funroll-loops, -funroll-loops)
 	dnl MC_ADD_TO_VAR(CFLAGS, -fhandle-signatures, -fhandle-signatures)
@@ -219,7 +221,7 @@ AC_DEFINE_UNQUOTED(LIBGEMVT_AGE, $LIBGEMVT_AGE)
 AC_DEFINE_UNQUOTED(LIBGEMVT_VERSION, "$LIBGEMVT_VERSION")
 
 dnl Check for Gnome target
-AC_MSG_CHECKING(for target GNOME (wether to build libgemvt))
+AC_MSG_CHECKING(for GNOMEfication)
 MC_IF_VAR_EQ(gnome_cv_use_gnome, yes,
 	AC_DEFINE(HAVE_GNOME)
 	AC_MSG_RESULT(yes)
