@@ -303,10 +303,10 @@ gtk_term_init (GtkTerm *term)
   
   for (i = 0; i < GTK_TERM_MAX_COLORS; i++)
   {
-    term->back[i] = NULL;
-    term->fore[i] = NULL;
-    term->fore_dim[i] = NULL;
-    term->fore_bold[i] = NULL;
+    term->back[i] = 0;
+    term->fore[i] = 0;
+    term->fore_dim[i] = 0;
+    term->fore_bold[i] = 0;
   }
 
   term->font_normal = NULL;
@@ -529,10 +529,10 @@ gtk_term_setup (GtkTerm	      *term,
   
   for (i = 0; i < GTK_TERM_MAX_COLORS; i++)
   {
-    term->back[i] = &gtk_widget_get_style (GTK_WIDGET (term))->black;
-    term->fore[i] = &gtk_widget_get_style (GTK_WIDGET (term))->white;
-    term->fore_dim[i] = &gtk_widget_get_style (GTK_WIDGET (term))->mid[GTK_STATE_NORMAL];
-    term->fore_bold[i] = &gtk_widget_get_style (GTK_WIDGET (term))->white;
+    term->back[i] = gtk_widget_get_style (GTK_WIDGET (term))->black.pixel;
+    term->fore[i] = gtk_widget_get_style (GTK_WIDGET (term))->white.pixel;
+    term->fore_dim[i] = gtk_widget_get_style (GTK_WIDGET (term))->mid[GTK_STATE_NORMAL].pixel;
+    term->fore_bold[i] = gtk_widget_get_style (GTK_WIDGET (term))->white.pixel;
   }
   
   term->char_buffer = g_new (gchar*, term->max_term_height);
@@ -556,6 +556,7 @@ gtk_term_realize (GtkWidget *widget)
   GtkTermClass *class;
   GdkWindowAttr attributes;
   gint attributes_mask;
+  GdkColor color = { 0, 0, 0, 0 };
   
   g_return_if_fail (widget != NULL);
   g_return_if_fail (GTK_IS_TERM (widget));
@@ -610,7 +611,8 @@ gtk_term_realize (GtkWidget *widget)
   
   term->text_area = gdk_window_new (term->view_port, &attributes, attributes_mask);
   gdk_window_set_user_data (term->text_area, term);
-  gdk_window_set_background (term->text_area, term->back[term->inverted ? GTK_TERM_MAX_COLORS - 1 : 0]);
+  color.pixel = term->back[term->inverted ? GTK_TERM_MAX_COLORS - 1 : 0];
+  gdk_window_set_background (term->text_area, &color);
   gdk_window_show (term->text_area);
   term->scroll_offset = 0;
   
@@ -1389,30 +1391,34 @@ gtk_term_insert_lines (GtkTerm	*term,
 
 void
 gtk_term_set_color (GtkTerm	   *term,
-		    guint	   index,
-		    GdkColor	   *back,
-		    GdkColor	   *fore,
-		    GdkColor	   *fore_dim,
-		    GdkColor	   *fore_bold)
+		    guint	    index,
+		    gulong	    back,
+		    gulong	    fore,
+		    gulong	    fore_dim,
+		    gulong	    fore_bold)
 {
+  GdkColor color = { 0, 0, 0, 0 };
+  
   g_return_if_fail (term != NULL);
   g_return_if_fail (GTK_IS_TERM (term));
   g_return_if_fail (index < GTK_TERM_MAX_COLORS);
-  g_return_if_fail (back != NULL);
-  g_return_if_fail (fore != NULL);
-  
-  if (!fore_dim)
+
+  /*
+    if (!fore_dim)
     fore_dim = fore;
-  if (!fore_bold)
+    if (!fore_bold)
     fore_bold = fore;
-  
+    */
+    
   term->back[index] = back;
   term->fore[index] = fore;
   term->fore_dim[index] = fore_dim;
   term->fore_bold[index] = fore_bold;
 
+  color.pixel = term->back[term->inverted ? GTK_TERM_MAX_COLORS - 1 : 0];
+
   if (index == 0 && term->text_area)
-    gdk_window_set_background (term->text_area, term->back[term->inverted ? GTK_TERM_MAX_COLORS - 1 : 0]);
+    gdk_window_set_background (term->text_area, &color);
 
   if (GTK_WIDGET_DRAWABLE (term))
     gtk_term_update_area (term, NULL);
@@ -1891,7 +1897,12 @@ gtk_term_invert (GtkTerm	      *term)
   */
     
   if (term->text_area)
-    gdk_window_set_background (term->text_area, term->back[term->inverted ? GTK_TERM_MAX_COLORS - 1 : 0]);
+    {
+      GdkColor color = { 0, 0, 0, 0 };
+
+      color.pixel = term->back[term->inverted ? GTK_TERM_MAX_COLORS - 1 : 0];
+      gdk_window_set_background (term->text_area, &color);
+    }
 
   if (GTK_WIDGET_DRAWABLE (term))
     gtk_term_update_area (term, NULL);

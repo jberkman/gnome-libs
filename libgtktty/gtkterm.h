@@ -113,10 +113,10 @@ struct	_GtkTerm
   guchar	*sel_buffer;
   guchar	sel_len;
   
-  GdkColor	*back[GTK_TERM_MAX_COLORS];
-  GdkColor	*fore[GTK_TERM_MAX_COLORS];
-  GdkColor	*fore_dim[GTK_TERM_MAX_COLORS];
-  GdkColor	*fore_bold[GTK_TERM_MAX_COLORS];
+  gulong	back[GTK_TERM_MAX_COLORS];
+  gulong	fore[GTK_TERM_MAX_COLORS];
+  gulong	fore_dim[GTK_TERM_MAX_COLORS];
+  gulong	fore_bold[GTK_TERM_MAX_COLORS];
   
   /* mode appearance
    */
@@ -184,10 +184,10 @@ void		gtk_term_set_fonts	(GtkTerm	*term,
 					 gboolean	colors_reversed);
 void		gtk_term_set_color	(GtkTerm	*term,
 					 guint		index,
-					 GdkColor	*back,
-					 GdkColor	*fore,
-					 GdkColor	*fore_dim,
-					 GdkColor	*fore_bold);
+					 gulong		back,
+					 gulong		fore,
+					 gulong		fore_dim,
+					 gulong		fore_bold);
 
 
 void		gtk_term_select_color	(GtkTerm	*term,

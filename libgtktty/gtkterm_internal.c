@@ -672,16 +672,17 @@ gtk_term_draw_line_seg (GtkTerm	      *term,
 {
   guint len;
   GdkFont *font;
-  GdkColor *fore;
-  GdkColor *back;
+  gulong fore;
+  gulong back;
+  GdkColor color = { 0, 0, 0, 0 };
   
   len = last_char - first_char + 1;
   
   back = term->back[attrib->i_back];
   if (attrib->flags & FLAG_SELECTION)
   {
-    fore = & GTK_WIDGET (term)->style->fg[GTK_STATE_SELECTED];
-    back = & GTK_WIDGET (term)->style->bg[GTK_STATE_SELECTED];
+    fore = GTK_WIDGET (term)->style->fg[GTK_STATE_SELECTED].pixel;
+    back = GTK_WIDGET (term)->style->bg[GTK_STATE_SELECTED].pixel;
   }
   else if (attrib->flags & FLAG_BOLD)
     fore = term->fore_bold[attrib->i_fore];
@@ -691,13 +692,13 @@ gtk_term_draw_line_seg (GtkTerm	      *term,
     fore = term->fore[attrib->i_fore];
   
   if (((attrib->flags & FLAG_REVERSE) != 0) != term->inverted)
-  {
-    GdkColor *tmp;
-    
-    tmp = fore;
-    fore = back;
-    back = tmp;
-  }
+    {
+      gulong pixel;
+      
+      pixel = fore;
+      fore = back;
+      back = pixel;
+    }
   
   if (attrib->flags & FLAG_DIM)
     font = term->font_dim;
@@ -709,8 +710,9 @@ gtk_term_draw_line_seg (GtkTerm	      *term,
     font = term->font_reverse;
   else
     font = term->font_normal;
-  
-  gdk_gc_set_foreground (term->text_gc, back);
+
+  color.pixel = back;
+  gdk_gc_set_foreground (term->text_gc, &color);
   
   gdk_draw_rectangle (term->text_area,
 		      term->text_gc,
@@ -719,8 +721,9 @@ gtk_term_draw_line_seg (GtkTerm	      *term,
 		      term->char_height * line,
 		      term->char_width * len,
 		      term->char_height);
-  
-  gdk_gc_set_foreground (term->text_gc, fore);
+
+  color.pixel = fore;
+  gdk_gc_set_foreground (term->text_gc, &color);
   
   gdk_draw_text (term->text_area,
 		 font,

@@ -1,3 +1,13 @@
+Wed Feb 25 14:42:30 1998  Tim Janik  <timj@gimp.org>
+
+	* libgtktty version 0.4, version bump because of API change.
+
+	* gtkterm.h:
+	* gtkterm.c:
+	* gtkterm_internal.c:
+	changed color code to use pixel values only, since gemvt supports
+	GdkColorContext now.
+
 Sun Feb 15 23:17:13 1998  Tim Janik  <timj@gimp.org>
 
 	* libgtktty version 0.3
