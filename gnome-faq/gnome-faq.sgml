@@ -29,13 +29,14 @@
 <!entity wwwdocbook    "http://www.oasis-open.org/docbook">
 <!entity wwwdocbooktut "http://nis-www.lanl.gov/~rosalia/mydocs/docbook-intro.html">
 <!entity wwwtoddtheme  "http://www.mindspring.com/~tlewis/screen.jpg">
-<!entity wwwgettext    "http://www.gnu.org/manual/gettext/html_chapter/gettext_toc.html">
+<!entity wwwgettext    "http://gnu.org/manual/gettext/html_chapter/gettext_toc.html">
 <!entity wwwgnu        "http://gnu.org">
 <!entity wwwgnuphil    "http://gnu.org/philosophy">
 <!entity wwwgnufree    "http://gnu.org/philosophy/free-sw.html">
 <!entity wwwgnuaconf   "http://gnu.org/software/autoconf/autoconf.html">
 <!entity wwwgnuamake   "http://gnu.org/software/automake/automake.html">
 <!entity wwwgnulibtool "http://gnu.org/software/libtool/libtool.html">
+<!entity wwwgcc        "http://gnu.org/software/gcc/gcc.html">
 <!entity wwwftpmail    "http://www.csdl.tamu.edu/~cchung/cpsc689/ftpmail/ftpmtoc.html">
 <!entity wwwftpmlist   "http://www.cix.co.uk/~net-services/mrcool/stats.htm">
 <!entity wwwi18n       "http://www.vlsivie.tuwien.ac.at/mike/i18n.html">
@@ -111,8 +112,7 @@
       environment. In this respect, it is approximately equivalent to
       CDE, Win32, NextStep, or KDE. The big difference is that, unlike
       any of the above-mentioned examples, every single component of
-      GNOME is <ulink url="&wwwgnufree;">Free
-      Software</ulink>.</para>
+      GNOME is <ulink url="&wwwgnufree;">Free Software</ulink>.</para>
 
       <para>For the project geographers out there, here are some of
       the higher mountains to be found in GNOME-land:</para>
@@ -413,7 +413,7 @@
       (such as session management, and the GNOME pager), that won't
       work with all of them.  For best results, go with a
       GNOME-compliant window manager.  The two most compliant are
-      currently Enlightenment and IceWM, with FVWM, SCWM, WindowMaker
+      currently Enlightenment and IceWM, with FVWM, SCWM, Window Maker
       and QVWM putting finishing touches on GNOME-compliance as we
       speak.</para>
     </sect1>
@@ -600,7 +600,7 @@
 
       <para>Some of the bells and whistles require a GNOME-compliant
       window manager to work.  Currently these are Enlightenment,
-      IceWM, and WindowMaker.  In addition both FVWM and SCWM are
+      IceWM, and Window Maker.  In addition both FVWM and SCWM are
       putting the finishing touches on their GNOME support.  GNOME
       does not include a window manager, and will work well with any
       window manager, these just give you a few extras.</para>
@@ -811,20 +811,18 @@
       other Unix or Unix-like system, can I get binary
       packages?</title>
 
-      <para>There used to be binary packages for Solaris that
-	someone made, but the packages seem to have disappeared (it
-	was an old version of GNOME anyway).  If a good set of
-	binary packages for any of these systems becomes available, we
-	can probably put them on the FTP site.</para>
+      <para>There used to be binary packages for Solaris that someone
+      made, but the packages seem to have disappeared (it was an old
+      version of GNOME anyway).  If a good set of binary packages for
+      any of these systems becomes available, we can probably put them
+      on the FTP site.</para>
 
       <para>In absence of a binary version, you're going to need to
-	use the tarballs.  If your system doesn't have a compiler, the
-	<ulink url="http://www.gnu.org">GNU Project
-	</ulink> offers the GNU C Compiler (gcc) for Free on
-	pretty much every platform out there.  Go to <ulink
-	url="http://www.gnu.org/software/gcc/gcc.html">
-	http://www.gnu.org/software/gcc/gcc.html</ulink> for more
-	information.</para>
+      use the tarballs.  If your system doesn't have a compiler, the
+      <ulink url="&wwwgnu;">GNU Project </ulink> offers the GNU C
+      Compiler (gcc) for Free on pretty much every platform out there.
+      Go to <ulink url="&wwwgcc;">&wwwgcc;</ulink> for more
+      information.</para>
     </sect1>
 
     <sect1 id="GettingWindows">
@@ -1433,6 +1431,36 @@ Program received signal SIGINT, Interrupt.
 	found by the linker, and if you run into problems elsewhere
 	because of the renaming, you can just rename it back.</para>
       </sect2>
+
+      <sect2>
+	<title>What is <computeroutput>AC_TRY_RUN</computeroutput>,
+	and why is my machine warning me about it?</title>
+
+	<para>Sometimes, when running aclocal, autogen.sh or make, you
+	will get lines looking like: <computeroutput>configure.in:171:
+	warning: AC_TRY_RUN called without default to allow cross
+	compiling</computeroutput>.  This is nothing to be alarmed
+	about, you can safely ignore it (unless you are cross
+	compiling).</para>
+
+	<para>If you're still curious, a cross compiler is a compiler
+	based on one platform that you can use to create code to run
+	on a different platform.  For example, some people have a
+	version of GCC installed on GNU/Linux boxes with Intel
+	processors which makes binaries for SGI boxes with MIPS
+	processors.  This would be a cross compiler.</para>
+
+	<para>The AC_TRY_RUN macro is called to attempt to compile and
+	run a code fragment.  It is used to test to see whether a
+	particular piece of code is likely to work on your machine or
+	not, and adjust the configuration accordingly.  If you are
+	cross-compiling, however, you can't run the code fragment,
+	since it's on a different machine than the one you are on.
+	The AC_TRY_RUN macro includes a parameter to tell it what to
+	do in this case, but we haven't tested cross-compiling GNOME
+	yet, so it would be premature to configure this value.
+	Because the value is absent, it gives the warning.</para>
+      </sect2>
     </sect1>
 
     <sect1 id="RuntimeHelp">
@@ -1791,10 +1819,11 @@ WM=foo</screen>
 	ILU</ulink>.  ILU had a number of benefits, foremost among
 	them that it supports several languages.  While ILU was (and
 	is) awfully neat, Xerox's attitude towards it was unclear, and
-	the licensing terms proved to be fatal: ILU is not free software,
-	and the GNOME team proved unable to get Xerox to
+	the licensing terms proved to be fatal: ILU is not free
+	software, and the GNOME team proved unable to get Xerox to
 	modify the license. The GNOME project won't adopt technology
-	which is not free software, and that was the end of that.</para>
+	which is not free software, and that was the end of
+	that.</para>
 
 	<para>The project then settled upon <ulink
 	url="http://diamant-atm.vsb.cs.uni-frankfurt.de/~mico/">
@@ -2202,8 +2231,8 @@ ls -l /opt/gnome/share/gtkrc
 	url="http://www.gnu.org/software/guile/guile.html">
 	http://www.gnu.org/software/guile/guile.html</ulink>.  There's
 	also some excellent information at <ulink
-	url="http://www.red-bean.com/guile/">
-	url="http://www.red-bean.com/guile/</ulink></para>
+	url="http://www.red-bean.com/guile">
+	url="http://www.red-bean.com/guile</ulink></para>
 
 	<para>The Guile docs are pretty good, but the Scheme standard
 	(the wonderfully, obscurely named R5RS) can be found at:
