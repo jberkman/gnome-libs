@@ -1118,7 +1118,7 @@ GnomeAppBar * appbar
 <FUNCTION>
 <NAME>gnome_appbar_set_progress</NAME>
 <RETURNS>void 	</RETURNS>
-GnomeAppBar * appbar,gfloat percentage
+GnomeAppBar *appbar,gfloat percentage
 </FUNCTION>
 <FUNCTION>
 <NAME>gnome_appbar_get_progress</NAME>
@@ -1826,7 +1826,7 @@ GnomeCanvasItem *item, guint nargs, GtkArg *args
 <FUNCTION>
 <NAME>gnome_canvas_item_set_valist</NAME>
 <RETURNS>void  </RETURNS>
-GnomeCanvasItem *item,const gchar *first_arg_name, va_list var_args
+GnomeCanvasItem *item,const gchar *first_arg_name, va_list args
 </FUNCTION>
 <FUNCTION>
 <NAME>gnome_canvas_item_move</NAME>
@@ -2182,6 +2182,11 @@ GnomeCanvas *canvas,double worldx, double worldy, double *winx, double *winy
 <NAME>gnome_canvas_get_color</NAME>
 <RETURNS>int  </RETURNS>
 GnomeCanvas *canvas, char *spec, GdkColor *color
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_canvas_get_color_pixel</NAME>
+<RETURNS>gulong  </RETURNS>
+GnomeCanvas *canvas,guint        rgba
 </FUNCTION>
 <FUNCTION>
 <NAME>gnome_canvas_set_stipple_origin</NAME>
@@ -7320,7 +7325,7 @@ GnomeAnimator *animator,gint num
 <FUNCTION>
 <NAME>gnome_animator_goto_frame</NAME>
 <RETURNS>void  </RETURNS>
-GnomeAnimator *animator,guint num_frame
+GnomeAnimator *animator,guint frame_number
 </FUNCTION>
 <FUNCTION>
 <NAME>gnome_animator_get_current_frame_number</NAME>
@@ -8587,6 +8592,40 @@ struct GnomeCanvasPolygon {
 <RETURNS>GtkType  </RETURNS>
 void
 </FUNCTION>
+<STRUCT>
+<NAME>GnomeIconTextInfoRow</NAME>
+typedef struct {
+	char *text;
+	int width;
+	GdkWChar *text_wc;	/* text in wide characters */
+	int text_length;	/* number of characters */
+} GnomeIconTextInfoRow;
+</STRUCT>
+<STRUCT>
+<NAME>GnomeIconTextInfo</NAME>
+typedef struct {
+	GList *rows;
+	GdkFont *font;
+	int width;
+	int height;
+	int baseline_skip;
+} GnomeIconTextInfo;
+</STRUCT>
+<FUNCTION>
+<NAME>gnome_icon_layout_text</NAME>
+<RETURNS>GnomeIconTextInfo  *</RETURNS>
+GdkFont *font, char *text,char *separators, int max_width,int confine
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_icon_paint_text</NAME>
+<RETURNS>void  </RETURNS>
+GnomeIconTextInfo *ti,GdkDrawable *drawable, GdkGC *gc,int x, int y,GtkJustification just
+</FUNCTION>
+<FUNCTION>
+<NAME>gnome_icon_text_info_free</NAME>
+<RETURNS>void  </RETURNS>
+GnomeIconTextInfo *ti
+</FUNCTION>
 <MACRO>
 <NAME>GNOME_DOCK_BAND</NAME>
 #define GNOME_DOCK_BAND(obj) \
@@ -8991,38 +9030,6 @@ GnomeDock *dock
 <NAME>gnome_dock_add_from_layout</NAME>
 <RETURNS>gboolean  </RETURNS>
 GnomeDock *dock,GnomeDockLayout *layout
-</FUNCTION>
-<STRUCT>
-<NAME>GnomeIconTextInfoRow</NAME>
-typedef struct {
-	char *text;
-	int width;
-} GnomeIconTextInfoRow;
-</STRUCT>
-<STRUCT>
-<NAME>GnomeIconTextInfo</NAME>
-typedef struct {
-	GList *rows;
-	GdkFont *font;
-	int width;
-	int height;
-	int baseline_skip;
-} GnomeIconTextInfo;
-</STRUCT>
-<FUNCTION>
-<NAME>gnome_icon_layout_text</NAME>
-<RETURNS>GnomeIconTextInfo  *</RETURNS>
-GdkFont *font, char *text,char *separators, int max_width,int confine
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_icon_paint_text</NAME>
-<RETURNS>void  </RETURNS>
-GnomeIconTextInfo *ti,GdkDrawable *drawable, GdkGC *gc,int x, int y,GtkJustification just
-</FUNCTION>
-<FUNCTION>
-<NAME>gnome_icon_text_info_free</NAME>
-<RETURNS>void  </RETURNS>
-GnomeIconTextInfo *ti
 </FUNCTION>
 <MACRO>
 <NAME>gnome_widget_add_help</NAME>

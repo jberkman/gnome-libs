@@ -15,7 +15,6 @@ animations in the GTK+ event loop.
 
 </para>
 
-
 <!-- ##### STRUCT GnomeAnimator ##### -->
 <para>
 
@@ -60,6 +59,7 @@ GnomeAnimator object.
 		sequence is completed, the playback direction is reversed.
 		</para></listitem>
 </itemizedlist>
+
 
 <!-- ##### STRUCT GnomeAnimatorFrame ##### -->
 <para>
@@ -314,9 +314,9 @@ number of frames, no action is taken.
 </para>
 
 @animator: The animator widget to be updated.
-@num_frame: Frame number to be made current.
-<!-- # Unused Parameters # -->
 @frame_number: 
+<!-- # Unused Parameters # -->
+@num_frame: Frame number to be made current.
 
 
 <!-- ##### FUNCTION gnome_animator_get_current_frame_number ##### -->
@@ -324,7 +324,7 @@ number of frames, no action is taken.
 Determine the current frame number of the animator widget.
 </para>
 
-@animator: The animator widget to be queried. 
+@animator: The animator widget to be queried.
 @Returns: Current frame number.
 
 
@@ -335,7 +335,6 @@ Obtain the current status from the animator widget.
 
 @animator: Animator widget to be queried. Possible return values include
 %GNOME_ANIMATOR_STATUS_STOPPED or %GNOME_ANIMATOR_STATUS_RUNNING.
-
 @Returns: &GnomeAnimatorStatus status constant.
 
 
@@ -357,3 +356,5 @@ Obtain the current playback speed.
 
 @animator: Animator widget to be queried.
 @Returns: @double indicating the playback speed.
+
+
