@@ -28,6 +28,9 @@
  */
 #include <config.h>
 
+/* Use this to pull SCM_RIGHTS definition on IRIX */
+#define _XOPEN_SOURCE
+
 #include <sys/types.h>
 #include <sys/time.h>
 #include <sys/resource.h>
@@ -240,14 +243,28 @@ pty_add (int master_fd, int slave_fd, char *line)
 }
 
 static int
+path_max (void)
+{
+#ifdef _PC_PATH_MAX
+	return pathconf ("/", _PC_PATH_MAX);
+#else
+#ifdef PATH_MAX
+	return PATH_MAX;
+#else
+	return 1024;
+#endif
+}
+
+static int
 open_ptys (int update_db)
 {
 	char *term_name;
 	int status, master_pty, slave_pty;
 	pty_info *p;
 	int result;
-
-	term_name = ((char *)alloca (PATH_MAX)) + 1;
+	int size;
+	
+	term_name = ((char *)alloca (path_max())) + 1;
 	
 	status = openpty (&master_pty, &slave_pty, term_name, NULL, NULL);
 	if (status == -1){

@@ -3,6 +3,12 @@
 
 #include <stdio.h>      
 #include <fcntl.h>	/* for close-on-exec stuff	      */
+#define _XOPEN_SOURCE
+
+#include <sys/types.h>
+#include <sys/resource.h>
+#include <limits.h>
+#include <fcntl.h>
 #include <sys/signal.h> 
 #include <stdlib.h>	/* For errno, putenv, etc.	      */
 #include <errno.h>	/* For errno on SunOS systems	      */
@@ -48,6 +54,19 @@
 #endif /* SCO_FLAVOR */
 
 #include <sys/socket.h>
+
+/* For PATH_MAX on FreeBSD. */
+#ifdef HAVE_SYS_SYSLIMITS_H
+#include <sys/syslimits.h>
+#endif
+
+#ifdef HAVE_SENDMSG
+#include <sys/socket.h>
+#include <sys/uio.h>
+
+#ifdef HAVE_SYS_UN_H /* Linux libc5 */
+#include <sys/un.h>
+#endif
 
 #include "gnome-login-support.h"
 #include "vt.h"

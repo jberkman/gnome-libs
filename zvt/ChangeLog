@@ -1,3 +1,13 @@
+1999-01-09  Miguel de Icaza  <miguel@nuclecu.unam.mx>
+
+	* subshell-includes.h: Provide the same header files as the
+	gnome-pty-helper to address the compilation problems on AIX. 
+
+	* gnome-login-support.c: Use termios.h, not sys/termios.h
+
+	* gnome-pty-helper.c (path_max): PATH_MAX support for various
+	fashions of operating systems
+
 1999-01-07  Miguel de Icaza  <miguel@nuclecu.unam.mx>
 
 	* subshell.c: Removed the defines that make gcc -ansi -pedantic

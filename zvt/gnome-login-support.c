@@ -15,7 +15,7 @@
 #include <fcntl.h>
 #include <string.h>
 #include <sys/ioctl.h>
-#include <sys/termios.h>
+#include <termios.h>
 #include <stdlib.h>
 #include <sys/stat.h>
 #include <errno.h>
