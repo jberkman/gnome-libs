@@ -379,7 +379,8 @@ void vt_delete_lines(struct vt_em *vt, int count)
     
     /* clear it */
     for (i=0;i<wn->width;i++) {
-      if ((wn->data[i]&0xff) && ((wn->data[i] & 0xff) != ' ')) {
+      if ((wn->data[i]&0xff) && (((wn->data[i] & 0xff) != ' ') || 
+		((wn->data[i] & (0x7ffff)) != vt->attr))) {
 	wn->data[i] = vt->attr|VTATTR_CHANGED; /* FIXME: include attributes */
       }
     }
