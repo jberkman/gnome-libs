@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in.
 
-built_SUBDIRS = libgnome libgnomeui gtk-xmhtml gnome-hello libgtktty zvt
+built_SUBDIRS = libgnome libgnomeui gtk-xmhtml gnome-hello libgtktty zvt test-gnome
 
 SUBDIRS = po intl support macros $(built_SUBDIRS) 
 

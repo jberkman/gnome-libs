@@ -129,6 +129,7 @@ libgnomeui/pixmaps/Makefile
 zvt/Makefile
 test-suite/Makefile
 gnome-hello/Makefile
+test-gnome/Makefile
 devel-docs/Makefile
 support/Makefile
 macros/Makefile],[sed -e "/POTFILES =/r po/POTFILES" po/Makefile.in > po/Makefile])
