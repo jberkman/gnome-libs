@@ -76,12 +76,12 @@ running ones.
 <!-- ##### STRUCT GoadServer ##### -->
 <para>
 <itemizedlist>
-<listitem><para>'type' - The GoadServerType of this implementation being listed</para></listitem>
+<listitem><para>'type' - The GoadServerType of the implementation being listed</para></listitem>
 <listitem><para>'flags' - The bitwise OR of all the GoadActivationFlags that are enforced for this GoadServer</para></listitem>
 <listitem><para>'repo_id' - An array of strings giving all the interfaces supported by this implementation</para></listitem>
 <listitem><para>'server_id' - The GOAD ID of this implementation. A GOAD ID is a unique global identifier of a particular object implementation.</para></listitem>
-<listitem><para>'description' - A human-readable description of this object, if application </para></listitem>
-<listitem><para>'location_info' - Information on how to activate the object. Meaning varies depending on the 'type'. </para></listitem>
+<listitem><para>'description' - A human-readable description of this object, if applicable</para></listitem>
+<listitem><para>'location_info' - Information on how to activate the object. The meaning varies depending on the 'type'</para></listitem>
 </itemizedlist>
 </para>
 

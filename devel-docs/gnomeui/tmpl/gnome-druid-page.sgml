@@ -2,13 +2,13 @@
 GnomeDruidPage
 
 <!-- ##### SECTION Short_Description ##### -->
-  A virtual widget defining the druid page.
+A virtual widget defining the druid page.
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-  This widget is a virtual widget to define the interface to a druid
-  page.  It's descendants are placed in #GnomeDruid, and comprise of the
-  actual material in the widget.
+This widget is a virtual widget to define the interface to a druid
+page.  It's descendants are placed in #GnomeDruid, and comprise of the
+actual material in the widget.
 </para>
 
 
@@ -63,7 +63,7 @@ GnomeDruidPage
 
 <!-- ##### SIGNAL GnomeDruidPage::next ##### -->
 <para>
-This signal is emitted by the druid when the next button is pressed.  It
+This signal is emitted by the druid when the "next" button is pressed.  It
 is overridden by the application when it wants to go to a different
 page.  If the signal returns TRUE, then it has handled the control-flow,
 and the druid will not change the page.
@@ -84,7 +84,7 @@ them an opportunity to prepare the page before it is realized.
 
 <!-- ##### SIGNAL GnomeDruidPage::back ##### -->
 <para>
-This signal is emitted by the druid when the back button is pressed.  It
+This signal is emitted by the druid when the "back" button is pressed.  It
 is overridden by the application when it wants to go to a different
 page.  If the signal returns TRUE, then it has handled the control-flow,
 and the druid will not change the page.
@@ -106,8 +106,8 @@ It should finish setting up whatever the druid is doing, and quit.
 <!-- ##### SIGNAL GnomeDruidPage::cancel ##### -->
 <para>
 This signal is sent when the "cancel" button is pressed on the druid.
-It should put up a dialog if needed to confirm the users exit.  If it
-does intend on quitting, it should return FALSE, which will cause @arg1
+It should put up a dialog, if needed, to confirm the users' exit.  If it
+does intend to quit, it should return FALSE, which will cause @arg1
 to emit it's "cancel" signal.  If it returns TRUE, it is assumed that
 the DRUID does not want to quit, and it will keep running.  This return
 value should be used with some caution.

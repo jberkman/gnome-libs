@@ -7,7 +7,7 @@ GnomeCanvas
 <!-- ##### SECTION Long_Description ##### -->
   <para>
     The GNOME canvas is an engine for displaying structured graphics
-    and simplyfing the development of complex graphic-based
+    and simplifying the development of complex graphic-based
     applications.  
   </para>
   
@@ -47,7 +47,7 @@ GnomeCanvas
     <title>Flicker free display</title>
     <para>
       The GNOME Canvas uses off-screen buffers to render the images
-      before transfering them to the screen.  Transfers can take
+      before transferring them to the screen.  Transfers can take
       place at the command of the programmer (by explicitly
       requesting a repaint update) or done automatically by the
       engine (during the idle look handler).
@@ -154,7 +154,7 @@ GnomeCanvas
     <structfield>rect</structfield> rectangle.  The
     <structfield>is_bg</structfield> and
     <structfield>is_buf</structfield> fields are flags that items can
-    use to implement rendering optimizations, and they ar used in
+    use to implement rendering optimizations, and they are used in
     conjunction with the <structfield>bg_color</structfield> field.
   </para>
 
