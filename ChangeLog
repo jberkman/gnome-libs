@@ -1,3 +1,13 @@
+1998-06-28  Raja R Harinath  <harinath@cs.umn.edu>
+
+	New, improved, gnome-config script. (Not related to
+	libgnome/gnome-config.[ch]).
+	* Makefile.am (gnome-config): Move generation to ...
+	* configure.in (AC_SUBST): ... here.
+	(GNOME_LIBDIR,GNOME_INCLUDEDIR): Use ${..}, not $(..) for variable
+	substitution. 
+	* gnome-config.in: Rehaul.
+
 1998-06-26  Nuno Ferreira  <nmrf@rnl.ist.utl.pt>
 
 	* configure.in (ALL_LINGUAS): Added Poruguese translation.

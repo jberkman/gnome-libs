@@ -1,96 +1,144 @@
 #!/bin/sh
 
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+
+bindir=@bindir@
+sbindir=@sbindir@
+libexecdir=@libexecdir@
+datadir=@datadir@
+sysconfdir=@sysconfdir@
+sharedstatedir=@sharedstatedir@
+localstatedir=@localstatedir@
+libdir=@libdir@
+infodir=@infodir@
+mandir=@mandir@
+includedir=@includedir@
+
+pkgdatadir=${datadir}/@PACKAGE@
+pkglibdir=${libdir}/@PACKAGE@
+pkgincludedir=${includedir}/@PACKAGE@
+
 usage()
 {
-   echo "Usage: gnome-config [--version] [--libs] [--cflags] [--LIBRARY] [--list-libraries]"
-   exit 1
+    cat <<EOF
+Usage: gnome-config [OPTION] [LIBRARY]...
+
+  --libs	print library linking information
+  --cflags	print pre-processor and compiler flags
+  --help	display this help and exit
+  --version	output gnome version information
+
+Known values for LIBRARY are:
+
+    glib
+    gnome
+    gnomeui
+    gtk
+    gtkxmhtml	(only --libs)
+    zvt		(only --libs)
+
+If LIBRARY is none of these,
+    
+    ${libdir}/<LIBRARY>Conf.sh
+
+is looked in for the necessary information. 
+EOF
+
+    exit $1
 }
 
 if test $# -eq 0; then
-    usage
+    usage 1
 fi
 
 cflags=false
 libs=false
 
 while test $# -gt 0; do
-  case "$1" in
-  -*=*) optarg=`echo "$1" | sed 's/[-_a-zA-Z0-9]*=//'` ;;
-  *) optarg= ;;
-  esac
+    case "$1" in
+    -*=*) optarg=`echo "$1" | sed 's/[-_a-zA-Z0-9]*=//'` ;;
+    *) optarg= ;;
+    esac
 
-  case $1 in
-     --version)
-       	echo $GNOME_VERSION
+    case $1 in
+    --version)
+	echo $GNOME_VERSION
        	;;
-     --help)
-	usage
+    --help)
+	usage 0
 	;;
-     --cflags)
+    --cflags)
        	cflags=true
        	;;
-     --libs)
+    --libs)
        	libs=true
        	;;
-     --gnome)
-       	the_libs="-L@prefix@/lib @need_gnome_support@ $the_libs"
-  	the_flags="@GNOME_INCLUDEDIR@ @GTK_CFLAGS@ $the_flags"
+    --*)
+	usage 1
 	;;
-     --gnomeui)
-	the_libs="-L@prefix@/lib @need_gnome_support@ $the_libs"
-	the_flags="@GNOME_INCLUDEDIR@ @GTK_CFLAGS@"
+    glib)
+	the_libs="$the_libs `glib-config --libs`"
+	the_flags="$the_flags `glib-config --cflags`"
 	;;
-     --gtkxmhtml)
-	the_libs="-L@prefix@/lib @GTKXMHTML_LIBS@ $the_libs"
+    gtk)
+	the_libs="$the_libs `gtk-config --libs`"
+	the_flags="$the_flags `gtk-config --cflags`"
 	;;
-     --zvt)
-	the_libs="-L@prefix@ @ZVT_LIBS@ $the_libs"
+    gnome)
+       	the_libs="$the_libs @GNOME_LIBDIR@ @GNOME_LIBS@"
+  	the_flags="$the_flags @GNOME_INCLUDEDIR@ @GTK_CFLAGS@"
 	;;
-     --*)
-	libname=`echo $1 | sed 's/--//'`
-	if test -f @prefix@/lib/${libname}Conf.sh; then
-		. @prefix@/lib/${libname}Conf.sh
-		up_name=`echo $libname | tr a-z A-Z`
-		lib_name="${up_name}_LIB"
-		flags_name="${up_name}_FLAGS"
-		cmd="$`echo $lib_name`"
-		the_libs="`eval echo $cmd` $the_libs"
-		the_flags="`eval echo $cmd` $the_flags"
+    gnomeui)
+	the_libs="$the_libs @GNOME_LIBDIR@ @GNOMEUI_LIBS@"
+	the_flags="$the_flags @GNOME_INCLUDEDIR@ @GTK_CFLAGS@"
+	;;
+    gtkxmhtml)
+	the_libs="$the_libs @GNOME_LIBDIR@ @GTKXMHTML_LIBS@"
+	;;
+    zvt)
+	the_libs="@GNOME_LIBDIR@ @ZVT_LIBS@ $the_libs"
+	;;
+    *)
+	cnf_sh=${libdir}/${1}Conf.sh
+	if test -f ${cnf_sh}; then
+	    . ${cnf_sh}
+	    up_name=`echo $1 | tr a-z A-Z`
+	    cnf_libdir=\$${up_name}_LIBDIR
+	    cnf_libs=\$${up_name}_LIBS
+	    cnf_flags=\$${up_name}_INCLUDEDIR
+	    the_libs="$the_libs `eval echo $cnf_libdir` `eval echo $cnf_libs`"
+	    the_flags="$the_flags `eval echo $cnf_flags`"
+	else
+	    echo Unknown library \`$1\' 1>&2
 	fi
 	;;
-  esac
-  shift
+    esac
+    shift
 done
 
-if $cflags;
-then
+if $cflags; then
 	all_flags="$the_flags"
 fi
 
-if $libs;
-then
-	all_flags="$the_libs $all_flags"
+if $libs; then
+	all_flags="$all_flags $the_libs"
 fi
 
 if test "x$all_flags" = "x "; then
    exit 1
 fi
 
-set `echo $all_flags`
-count=$#
-
 #
 # Straight out any possible duplicates
 #
-while test $count -gt 0; do
-	cmd="\$$count"
-	val=`eval "echo $cmd"`
-	if echo $result | grep -- $val; then
-	    echo encontrado
-	else
-	    result="$val $result"
-	fi >& /dev/null
-	count=`expr $count - 1`
+for i in $all_flags; do
+    case " $result " in
+    *\ $i\ *) ;;
+    *) result="$result $i";;
+    esac
 done
+
 echo $result
+
 exit 0

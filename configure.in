@@ -171,11 +171,11 @@ ZVT_LIBS="-lzvt $GTK_LIBS"
 AC_SUBST(GLIB_LIBS)
 GLIB_LIBS=`echo $GTK_LIBS | sed -e 's/.*-lglib/-lglib/' -e 's/ .*//'`
 
-dnl These definitions are expanded in make.
-GNOME_LIBDIR='-L$(libdir)'
-GNOME_INCLUDEDIR='-I$(includedir)'
+dnl These definitions are expanded in make and gnome-config
+GNOME_LIBDIR='-L${libdir}'
+GNOME_INCLUDEDIR='-I${includedir}'
 if test "$need_gnome_support" = yes; then
-   GNOME_INCLUDEDIR="$GNOME_INCLUDEDIR -DNEED_GNOMESUPPORT_H -I\$(pkglibdir)/include"
+   GNOME_INCLUDEDIR="$GNOME_INCLUDEDIR -DNEED_GNOMESUPPORT_H -I\${pkglibdir}/include"
 fi
 AC_SUBST(GTK_LIBS)
 AC_SUBST(GNOME_LIBS)
@@ -198,6 +198,7 @@ AC_OUTPUT([
 Makefile
 po/Makefile.in
 intl/Makefile
+gnome-config
 gtk-xmhtml/Makefile
 libgnome/Makefile
 libgnomeui/Makefile
