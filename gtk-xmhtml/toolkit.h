@@ -25,6 +25,7 @@ enum {
 #define TIdleRemove  FALSE
 #define TNullTimeout 0
 #define TIntervalId  int
+#define TEvent       GdkEvent
 
 typedef void *TPointer;
 
@@ -79,6 +80,7 @@ typedef XVisualInfo TVisualInfo;
 #define Toolkit_Copy_Area(dpy,src,dst,gc,sx,sy,w,h,dx,dy) \
 	gdk_window_copy_area ((dst),(gc),(dx),(dy),(src),(sx),(sy),(w),(h))
 #define Toolkit_Create_Pixmap(dpy,win,w,h,d) gdk_pixmap_new((win),(w),(h),(d))
+#define Toolkit_GC_Free(dpy,gc) gdk_gc_destroy(gc)
 
 #define Toolkit_StyleGC_BottomShadow(w) (GTK_WIDGET(w))->style->dark_gc [GTK_STATE_NORMAL]
 #define Toolkit_StyleGC_TopShadow(w)    (GTK_WIDGET(w))->style->light_gc [GTK_STATE_NORMAL]
@@ -95,6 +97,7 @@ typedef XVisualInfo TVisualInfo;
 #define TIdleKeep    False
 #define TIdleRemove  True
 #define TNullTimeout None
+#define TEvent       XEvent
 #define TCallbackList XtCallbackList
 #define TIntervalId  XtIntervalId
 #define TAppContext  XtAppContext
@@ -136,6 +139,7 @@ typedef XVisualInfo TVisualInfo;
 #define Toolkit_Copy_Area(dpy,src,dst,gc,sx,sy,w,h,dx,dy) \
      XCopyArea ((dpy),(src),(dst),(gc),(sx),(sy),(w),(h),(dx),(dy))
 #define Toolkit_Create_Pixmap(dpy,win,w,h,d) XCreatePixmap((dpy),(win),(w),(h),(d))
+#define Toolkit_GC_Free(dpy,gc) XFreeGC((dpy),(gc))
 
 #define Toolkit_StyleGC_BottomShadow(w) (w)->manager.bottom_shadow_GC
 #define Toolkit_StyleGC_TopShadow(w) (w)->manager.top_shadow_GC

@@ -35,8 +35,8 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
-* Revision 1.1  1997/11/28 03:38:55  gnomecvs
-* Work in progress port of XmHTML;  No, it does not compile, don't even try -mig
+* Revision 1.2  1997/12/11 21:20:19  unammx
+* Step 2: more gtk/xmhtml code, still non-working - mig
 *
 * Revision 1.17  1997/10/26 23:49:18  newt
 * Bugfixes 10/22/97-01, 10/26/97-01
@@ -169,437 +169,34 @@ static char rcsId[]="$Header$";
 #define VERTICAL_INCREMENT 18	/* average line height */
 
 #ifdef WITH_MOTIF
-/* Static resources */
-#include "resources.h"
+#    include "XmHTML-motif.c"
+#else
+#    include "XmHTML-gtk.c"
 #endif
 	
-/*** Private Function Prototype Declarations ****/
-/***
-* Private functions 
-***/
-static void CreateAnchorCursor(XmHTMLWidget html);
-static void CreateHTMLWidget(XmHTMLWidget html);
-static void Layout(XmHTMLWidget html);
-static void CheckScrollBars(XmHTMLWidget html);
-static void PaintAnchorSelected(XmHTMLWidget html, XmHTMLWord *anchor);
-static void PaintAnchorUnSelected(XmHTMLWidget html);
-static void CheckAnchorUnderlining(XmHTMLWidget html, XmHTMLWidget req);
-static void CheckAlignment(XmHTMLWidget html, XmHTMLWidget req);
-static void ScrollCB(Widget w, TPointer arg1, TPointer arg2);
-static void GetScrollDim(XmHTMLWidget html, int *hsb_height, int *vsb_width);
-static void SetCurrentLineNumber(XmHTMLWidget html, int y_pos);
-static XmHTMLWord *GetAnchor(XmHTMLWidget html, int x, int y);
-static XmHTMLAnchor *GetImageAnchor(XmHTMLWidget html, int x, int y);
-static XmHTMLObjectTableElement _XmHTMLGetLineObject(XmHTMLWidget html, 
-	int y_pos);
-static void PaintBackground(XmHTMLWidget html, int x, int y, int width, 
-	int height);
-static void CheckGC(XmHTMLWidget html);
-static void FreeExpendableResources(XmHTMLWidget html, Boolean free_img);
-static void ResetWidget(XmHTMLWidget html, Boolean free_img);
-static void Refresh(XmHTMLWidget html, int x, int y, int width, int height);
-static void ClearArea(XmHTMLWidget html, int x, int y, int width, int height);
-static XmHTMLImage *OnImage(XmHTMLWidget html, int x, int y);
-static int VerticalPosToLine(XmHTMLWidget html, int y);
-static void ScrollToLine(XmHTMLWidget html, int line);
-static void CheckMaxColorSetting(XmHTMLWidget html);
-static void CheckPLCIntervals(XmHTMLWidget html);
-static void FormScroll(XmHTMLWidget html);
-
-/* manage scrollbars if necessary */
-#define SetScrollBars(HTML) { \
-	if((HTML)->html.needs_hsb && !XtIsManaged((HTML)->html.hsb)) \
-		XtManageChild(html->html.hsb); \
-	if((HTML)->html.needs_vsb && !XtIsManaged((HTML)->html.vsb)) \
-		XtManageChild((html)->html.vsb); \
-}
-
-/* check slider value and adjust if necessary */
-#define AdjustVerticalScrollValue(VSB, VAL) { \
-	int max = 0, size = 0; \
-	XtVaGetValues(VSB, \
-		XmNmaximum, &max, \
-		XmNsliderSize, &size, \
-		NULL); \
-	if(VAL > (max - size)) \
-		VAL = (max - size); \
-}
-
-/***
-* Class methods
-***/
-/* Primary ClassInitialize method */
-static void ClassInitialize(void);
-
-/* class initialize method */
-static void Initialize(Widget request, Widget init, ArgList args,
-	Cardinal *num_args);
-
-/* class resize method */
-static void Resize(Widget w);
-
-/* class expose method */
-static void Redisplay(Widget w, XEvent *event, Region region);
-
-/* Expose event handler for the work area */
-static void DrawRedisplay(Widget w, XmHTMLWidget html, XEvent *event);
-
-/* VisibilityNotify event handler for the work area */
-static void VisibilityHandler(Widget w, XmHTMLWidget html, XEvent *event);
-
-/* MapNotify action routine for the work area */
-static void Mapped(Widget w, XmHTMLWidget html, XEvent *event); 
-
-/* class set_values method */
-static Boolean SetValues(Widget current, Widget request, Widget set,
-	ArgList args, Cardinal *num_args);
-
-/* class get_values_hook method */
-static void GetValues(Widget w, ArgList args, Cardinal *num_args);
-
-/* class geometry_manager method */
-static XtGeometryResult GeometryManager(Widget w, XtWidgetGeometry *request,
-	XtWidgetGeometry *geometry_return);
-
-/* class destroy method */
-static void Destroy(Widget w);
-
-/* Action routines */
-static void	ExtendStart(Widget w, XEvent *event, String *params, 
-		Cardinal *num_params);
-static void	ExtendAdjust(Widget w, XEvent *event, String *params, 
-		Cardinal *num_params);
-static void	ExtendEnd(Widget w, XEvent *event, String *params, 
-		Cardinal *num_params);
-static void TrackMotion(Widget w, XEvent *event, String *params, 
-		Cardinal *num_params);
-static void HTMLProcessInput(Widget w, XEvent *event, String *params, 
-		Cardinal *num_params);
-static void HTMLPageUpOrLeft(Widget w, XEvent *event, String *params, 
-		Cardinal *num_params);
-static void HTMLPageDownOrRight(Widget w, XEvent *event, String *params, 
-		Cardinal *num_params);
-static void HTMLIncrementUpOrLeft(Widget w, XEvent *event, String *params, 
-		Cardinal *num_params);
-static void HTMLIncrementDownOrRight(Widget w, XEvent *event, String *params, 
-		Cardinal *num_params);
-static void HTMLTopOrBottom(Widget w, XEvent *event, String *params, 
-		Cardinal *num_params);
-static void HTMLTraverseCurrent(Widget w, XEvent *event, String *params,
-		Cardinal *num_params);
-static void HTMLTraverseNext(Widget w, XEvent *event, String *params,
-		Cardinal *num_params);
-static void HTMLTraversePrev(Widget w, XEvent *event, String *params,
-		Cardinal *num_params);
-static void HTMLTraverseNextOrPrev(Widget w, XEvent *event, String *params,
-		Cardinal *num_params);
-
-/*** Private Variable Declarations ***/
-static XmRepTypeId underline_repid, sb_policy_repid;
-static XmRepTypeId sb_placement_repid, string_repid;
-static XmRepTypeId enable_repid, conv_repid;
-
 /*****
-* default translations
-* Order of key translations is important: placing c <Key>osfPageUp after
-* <key>osfPageUp will mask of the Ctrl key.
-* XmHTML explicitly masks off all key modifiers it does not need for a
-* certain action. This allows application programmers to use the same keys
-* with modifiers for their own purposes and prevents that these key sequences
-* are handled by these specific XmHTML action routines.
-* This looks ugly, since it's a static block of text it doesn't take up that
-* much data space.
-*****/
-static char translations[] = 
-"Ctrl <Key>osfPageUp: page-up-or-left(1)\n\
-Ctrl <Key>osfPageDown: page-down-or-right(1)\n\
-Ctrl <Key>osfBeginLine: top-or-bottom(0)\n\
-Ctrl <Key>osfEndLine: top-or-bottom(1)\n\
-~Shift ~Meta ~Alt <Btn1Down>: extend-start() ManagerGadgetArm()\n\
-~Shift ~Meta ~Alt <Btn1Motion>: extend-adjust() ManagerGadgetButtonMotion()\n\
-~Shift ~Meta ~Alt <Btn1Up>: extend-end(PRIMARY, CUT_BUFFER0) ManagerGadgetActivate() traverse-current()\n\
-~Shift ~Meta ~Alt <Btn2Down>:extend-start()\n\
-~Shift ~Meta ~Alt <Btn2Motion>: extend-adjust()\n\
-~Shift ~Meta ~Alt <Btn2Up>: extend-end(PRIMARY, CUT_BUFFER0)\n\
-~Shift ~Meta ~Alt <Key>osfPageUp: page-up-or-left(0)\n\
-~Shift ~Meta ~Alt <Key>osfPageDown: page-down-or-right(0)\n\
-~Shift ~Meta ~Alt <Key>osfUp: increment-up-or-left(0)\n\
-~Shift ~Meta ~Alt <Key>osfLeft: increment-up-or-left(1)\n\
-~Shift ~Meta ~Alt <Key>osfDown: increment-down-or-right(0)\n\
-~Shift ~Meta ~Alt <Key>osfRight: increment-down-or-right(1)\n\
-<Key>osfHelp: ManagerGadgetHelp()\n\
-Shift Ctrl <Key>Tab: ManagerGadgetPrevTabGroup()\n\
-Ctrl <Key>Tab: ManagerGadgetNextTabGroup()\n\
-<Key>Tab: traverse-next()\n\
-<Motion>: track-motion()\n\
-<Leave>: track-motion()\n\
-<FocusIn>: track-motion()\n\
-<FocusOut>: track-motion()\n\
-<Expose>: track-motion()\n\
-<KeyDown>: process-html-input()\n\
-<KeyUp>: process-html-input()";
-
-/* Action routines provided by XmHTML */
-static XtActionsRec actions[] = 
-{
-	{"extend-start",            (XtActionProc)ExtendStart},
-	{"extend-adjust",           (XtActionProc)ExtendAdjust},
-	{"extend-end",              (XtActionProc)ExtendEnd},
-	{"page-up-or-left",         (XtActionProc)HTMLPageUpOrLeft},
-	{"page-down-or-right",      (XtActionProc)HTMLPageDownOrRight},
-	{"increment-up-or-left",    (XtActionProc)HTMLIncrementUpOrLeft},
-	{"increment-down-or-right", (XtActionProc)HTMLIncrementDownOrRight},
-	{"top-or-bottom",           (XtActionProc)HTMLTopOrBottom},
-	{"track-motion",            (XtActionProc)TrackMotion},
-	{"process-html-input",      (XtActionProc)HTMLProcessInput},
-	{"traverse-current",        (XtActionProc)HTMLTraverseCurrent},
-	{"traverse-next",           (XtActionProc)HTMLTraverseNext},
-	{"traverse-prev",           (XtActionProc)HTMLTraversePrev},
-	{"traverse-next-or-prev",   (XtActionProc)HTMLTraverseNextOrPrev}
-};
-
-/* 
-* copy of original list. Motif destroys the original list and therefore
-* XmHTML crashes when we try to use the above list again.
-*/
-static XtActionsRec spareActions[] = 
-{
-	{"extend-start",            (XtActionProc)ExtendStart},
-	{"extend-adjust",           (XtActionProc)ExtendAdjust},
-	{"extend-end",              (XtActionProc)ExtendEnd},
-	{"page-up-or-left",         (XtActionProc)HTMLPageUpOrLeft},
-	{"page-down-or-right",      (XtActionProc)HTMLPageDownOrRight},
-	{"increment-up-or-left",    (XtActionProc)HTMLIncrementUpOrLeft},
-	{"increment-down-or-right", (XtActionProc)HTMLIncrementDownOrRight},
-	{"top-or-bottom",           (XtActionProc)HTMLTopOrBottom},
-	{"track-motion",            (XtActionProc)TrackMotion},
-	{"process-html-input",      (XtActionProc)HTMLProcessInput},
-	{"traverse-current",        (XtActionProc)HTMLTraverseCurrent},
-	{"traverse-next",           (XtActionProc)HTMLTraverseNext},
-	{"traverse-prev",           (XtActionProc)HTMLTraversePrev},
-	{"traverse-next-or-prev",   (XtActionProc)HTMLTraverseNextOrPrev}
-};
-
-/****
-* Define the CompositeClassExtension record so we can accept objects.
-****/
-static CompositeClassExtensionRec htmlCompositeExtension = {
-	NULL,									/* next_extension */
-	NULLQUARK,								/* record_type */
-	XtCompositeExtensionVersion,			/* version */
-	sizeof(CompositeClassExtensionRec),		/* record_size */
-	True									/* accept_objects */
-#if XtSpecificationRelease >= 6
-	, False									/* allows_change_managed_set */
-#endif
-};
-
-/****
-* Define the widget class record.
-****/
-XmHTMLClassRec xmHTMLClassRec = {
-											/* core class fields	*/
-{
-	(WidgetClass) &xmManagerClassRec,		/* superclass			*/
-	"XmHTML",								/* class_name			*/
-	sizeof(XmHTMLRec),						/* widget_size			*/
-	ClassInitialize,						/* class_initialize	 	*/
-	NULL,									/* class_part_init		*/
-	FALSE,									/* class_inited		 	*/
-	(XtInitProc)Initialize,					/* initialize		 	*/
-	NULL,									/* initialize_hook		*/
-	XtInheritRealize,						/* realize				*/
-	actions,								/* actions				*/
-	XtNumber(actions),						/* num_actions			*/
-	resources,								/* resources			*/
-	XtNumber(resources),					/* num_resources		*/
-	NULLQUARK,								/* xrm_class			*/
-	TRUE,									/* compress_motion		*/
-	XtExposeCompressMaximal,				/* compress_exposure	*/
-	TRUE,									/* compress_enterleave 	*/
-	FALSE,									/* visible_interest	 	*/
-	Destroy,								/* destroy				*/
-	(XtWidgetProc)Resize,					/* resize			 	*/
-	(XtExposeProc)Redisplay,				/* expose			 	*/
-	(XtSetValuesFunc)SetValues,				/* set_values		 	*/
-	NULL,									/* set_values_hook		*/
-	XtInheritSetValuesAlmost,				/* set_values_almost	*/
-	GetValues,								/* get_values_hook		*/
-	XtInheritAcceptFocus,					/* accept_focus		 	*/
-	XtVersion,								/* version				*/
-	NULL,									/* callback_private	 	*/
-	translations,							/* tm_table			 	*/
-	XtInheritQueryGeometry,					/* query_geometry	 	*/
-	XtInheritDisplayAccelerator,			/* display_accelerator	*/
-	NULL									/* extension			*/
-},
-											/* composite_class fields */
-{
-	GeometryManager, 						/* geometry_manager	 	*/
-	NULL,									/* change_managed	 	*/
-	XtInheritInsertChild,					/* insert_child		 	*/
-	XtInheritDeleteChild,					/* delete_child			*/
-	(XtPointer)&htmlCompositeExtension		/* extension			*/
-},
-											/* constraint_class fields */
-{
-	NULL,									/* resource list		*/	 
-	0,										/* num resources		*/	 
-	0,										/* constraint size		*/	 
-	NULL,									/* init proc			*/	 
-	NULL,									/* destroy proc			*/	 
-	NULL,									/* set values proc		*/	 
-	NULL									/* extension			*/
-},
-											/* manager_class fields */
-{
-	XtInheritTranslations,					/* translations			*/
-	NULL,									/* syn_resources		*/
-	0,										/* num_syn_resources 	*/
-	NULL,									/* syn_cont_resources	*/
-	0,										/* num_syn_cont_resources*/
-	XmInheritParentProcess,					/* parent_process		*/
-	NULL									/* extension 			*/	
-},
-											/* html_class fields */	 
-{	
-	0										/* none					*/
-}	
-};
-
-/* Establish the widget class name as an externally accessible symbol. */
-WidgetClass xmHTMLWidgetClass = (WidgetClass) &xmHTMLClassRec;
-
-static void
-TestRepId(XmRepTypeId id, String name)
-{
-	if(id == XmREP_TYPE_INVALID)
- 		_XmHTMLWarning(__WFUNC__(NULL, "TestRepId"), "Representation "
-			"type resource convertor %s not found/installed.\n"
-			"    Please contact ripley@xs4all.nl", name);
-}
-
-/*****
-* Name:			ClassInitialize
-* Return Type:	void
-* Description:	Called by Intrinsics the first time a widget of this class
-*				is instantiated
-* In:
-*	nothing
-* Returns:
-*	nothing
-*****/
-static void
-ClassInitialize(void)
-{
-	static char *enable_models[] = {"automatic", "always", "never"};
-	static char *conv_models[] = {"quick", "best", "fast", "slow", "disabled"};
-	static char *line_styles[] = {"no_line", "single_line", "double_line",
-								"single_dashed_line", "double_dashed_line"};
-
-	/* Get appropriate representation type convertor id's */
-
-	/* ScrollBar converters. */
-	sb_policy_repid = XmRepTypeGetId(XmCScrollBarDisplayPolicy);
-	TestRepId(sb_policy_repid, XmCScrollBarDisplayPolicy);
-
-	sb_placement_repid = XmRepTypeGetId(XmCScrollBarPlacement);
-	TestRepId(sb_placement_repid, XmCScrollBarPlacement);
-
-	/* string direction converter */
-	string_repid = XmRepTypeGetId(XmCAlignment);
-	TestRepId(string_repid, XmCAlignment);
-
-	/* XmCEnableMode resource class converter */
-	XmRepTypeRegister(XmCEnableMode, enable_models, NULL, 3);
-	enable_repid = XmRepTypeGetId(XmCEnableMode);
-	TestRepId(enable_repid, XmCEnableMode);
-
-	/* XmCConversionMode resource class converter */
-	XmRepTypeRegister(XmCConversionMode, conv_models, NULL, 5);
-	conv_repid = XmRepTypeGetId(XmCConversionMode);
-	TestRepId(conv_repid, XmCConversionMode);
-
-	/* XmCAnchorUnderlineType resource class converter */
-	XmRepTypeRegister(XmCAnchorUnderlineType, line_styles, NULL, 5);
-	underline_repid = XmRepTypeGetId(XmCAnchorUnderlineType);
-	TestRepId(underline_repid, XmCAnchorUnderlineType);
-}
-
-/*****
-* Name: 		Initialize
+* Name: 		XmHTML_Initialize
 * Return Type: 	void
-* Description: 	Called when the widget is instantiated
+* Description: 	Called when the TWidget is instantiated
 * In: 
-*	request:	widget with resource values set as requested by the argument
-*				list, resource database and widget defaults
-*	init:		same widget with values as modified by superclass initialize()
-*				methods
-*	args:		argument list passed to XtCreateWidget
-*	num_args:	number of entries in the argument list
+*	html:	        Widget
+*       html_source:    html source code.
 * Returns:
 *	nothing, but init is updated with checked/updated resource values.	
 *****/
 static void
-Initialize(Widget request, Widget init, ArgList args, Cardinal *num_args)
+XmHTML_Initialize (XmHTMLWidget html, char *html_source)
 {
-	XmHTMLWidget html = XmHTML (init);
-	XmHTMLWidget req  = XmHTML (request);
-
 	/* Initialize the global HTMLpart */
-
-	/* select debug levels */
-	_XmHTMLSelectDebugLevels(req->html.debug_levels);
-	_XmHTMLSetFullDebug(req->html.debug_full_output);
-
-#ifdef DEBUG
-	if(req->html.debug_disable_warnings)
-		debug_disable_warnings = True;
-	else
-		debug_disable_warnings = False;
-#endif
-
 	_XmHTMLDebug(1, ("XmHTML.c: Initialize Start\n"));
 
-	/* private widget resources */
+	/* private TWidget resources */
 	html->html.needs_vsb    = False;
 	html->html.needs_hsb    = False;
 	html->html.scroll_x     = 0;
 	html->html.scroll_y     = 0;
 
 	CheckAnchorUnderlining(html, html);
-
-	/* ScrollBarDisplayPolicy */
-	if(!XmRepTypeValidValue(sb_policy_repid, html->html.sb_policy, 
-		(Widget)html))
-		html->html.sb_policy = XmAS_NEEDED;
-	else if(html->html.sb_policy == XmSTATIC)
-		html->html.needs_vsb = True;
-
-	/* ScrollBarPlacement */
-	if(!XmRepTypeValidValue(sb_placement_repid, html->html.sb_placement, 
-		(Widget)html))
-		html->html.sb_placement = XmBOTTOM_RIGHT;
-
-	/* perfectColors */
-	if(!XmRepTypeValidValue(enable_repid, html->html.perfect_colors,
-		(Widget)html))
-		html->html.perfect_colors = XmAUTOMATIC;
-
-	/* AlphaChannelProcessing */
-	if(!XmRepTypeValidValue(enable_repid, html->html.alpha_processing,
-		(Widget)html))
-		html->html.alpha_processing = XmALWAYS;
-
-	/* ImageRGBConversion */
-	if(!XmRepTypeValidValue(conv_repid, html->html.rgb_conv_mode,
-		(Widget)html) || html->html.rgb_conv_mode == XmDISABLED)
-		html->html.rgb_conv_mode = XmBEST;
-
-	/* ImageMapToPalette */
-	if(!XmRepTypeValidValue(conv_repid, html->html.map_to_palette,
-		(Widget)html))
-		html->html.map_to_palette = XmDISABLED;
 
 	/* repeat delay. Must be positive */
 	if(html->html.repeat_delay < 1)
@@ -762,18 +359,17 @@ Initialize(Widget request, Widget init, ArgList args, Cardinal *num_args)
 			2*html->html.margin_height;
 
 	/*****
-	* Now create all private widgets: drawing area and scrollbars.
-	* We couldn't do this until we knew for sure the widget dimensions were
+	* Now create all private TWidgets: drawing area and scrollbars.
+	* We couldn't do this until we knew for sure the TWidget dimensions were
 	* set; creation of the work_area uses them.
 	*****/
 	CreateHTMLWidget(html);
 
 	/* Parse the raw HTML text */
-	if(req->html.value)
+	if(html_source)
 	{
-		html->html.source   = strdup(req->html.value);
-		html->html.elements = _XmHTMLparseHTML(req, NULL, req->html.value,
-								html);
+		html->html.source   = strdup(html_source);
+		html->html.elements = _XmHTMLparseHTML(req, NULL, html_source, html);
 
 		/* check for frames */
 		html->html.nframes = _XmHTMLCheckForFrames(html, html->html.elements);
@@ -813,48 +409,6 @@ Initialize(Widget request, Widget init, ArgList args, Cardinal *num_args)
 	_XmHTMLDebug(1, ("XmHTML.c: Initialize End.\n"));
 }
 
-/*****
-* Name: 		CreateAnchorCursor
-* Return Type: 	void
-* Description: 	creates the built-in anchor cursor
-* In: 
-*	html:		XmHTMLWidget for which to create a cursor
-* Returns:
-*	nothing.
-*****/
-static void 
-CreateAnchorCursor(XmHTMLWidget html)
-{
-	_XmHTMLDebug(1, ("XmHTML.c: CreateAnchorCursor Start\n"));
-
-	if(html->html.anchor_cursor == None)
-	{
-		Pixmap shape, mask;
-		XColor white_def, black_def;
-		Window window = XtWindow((Widget)html);
-		Display *display = XtDisplay((Widget)html);
-		Screen *screen = XtScreen((Widget)html);
-
-		if(!window)
-			window = RootWindowOfScreen(screen);
-
-		shape = XCreatePixmapFromBitmapData(display, window,
-			fingers_bits, fingers_width, fingers_height, 1, 0, 1);
-
-		mask = XCreatePixmapFromBitmapData(display, window,
-			fingers_m_bits, fingers_m_width, fingers_m_height, 1, 0, 1);
-
-		(void)XParseColor(display, html->core.colormap, "white", 
-			&white_def);
-
-		(void)XParseColor(display, html->core.colormap, "black", 
-			&black_def);
-
-		html->html.anchor_cursor = XCreatePixmapCursor(display, shape, mask, 
-			&white_def, &black_def, fingers_x_hot, fingers_y_hot);
-	}
-	_XmHTMLDebug(1, ("XmHTML.c: CreateAnchorCursor End\n"));
-}
 
 /*****
 * Name: 		_XmHTMLGetLineObject
@@ -971,551 +525,6 @@ SetCurrentLineNumber(XmHTMLWidget html, int y_pos)
 		html->html.top_line));
 }
 
-/*****
-* Name:			OverrideExposure
-* Return Type: 	void
-* Description: 	expose event filter when HTML form widgets are being scrolled.
-* In: 
-*	w:			unused;
-*	client_..:	unused;
-*	event:		XEvent info;
-*	continu..:	flag to tell X whether or not to propagate this event; 
-* Returns:
-*	nothing.
-* Note:
-*	this routine is only activated when XmHTML is moving widgets on it's own
-*	display area. It filters out any Exposure events that are generated by
-*	moving these widgets around.
-*****/
-static void
-OverrideExposure(Widget w, XtPointer client_data, XEvent *event,
-	Boolean *continue_to_dispatch)
-{
-	if(event->xany.type == Expose || event->xany.type == GraphicsExpose)
-	{
-		_XmHTMLDebug(1, ("XmHTML.c: OverrideExposure, ignoring %s event\n",
-			(event->xany.type == Expose ? "Expose" : "GraphicsExpose"))); 
-		*continue_to_dispatch = False;
-	}
-#ifdef DEBUG
-	else
-		_XmHTMLDebug(1, ("XmHTML.c: OverrideExposure, wrong event %i\n",
-			(int)(event->xany.type)));
-#endif
-}
-
-/*****
-* Name: 		FormScroll
-* Return Type: 	void
-* Description: 	scrolls all widgets of all forms in the current document.
-* In: 
-*	html:		XmHTML widget id
-* Returns:
-*	nothing.
-*****/
-static void
-FormScroll(XmHTMLWidget html)
-{
-	int x, y, xs, ys;
-	XmHTMLFormData *form;
-	XmHTMLForm *entry;
-	Boolean did_anything = False;
-
-	_XmHTMLDebug(1, ("XmHTML.c: FormScroll, Start\n"));
-
-	/*****
-	* To prevent the X exposure handling from going haywire, we simply
-	* override *any* exposure events generated by moving the widgets 
-	* around.
-	*****/
-	XtInsertEventHandler(html->html.work_area, ExposureMask, True,
-		(XtEventHandler)OverrideExposure, NULL, XtListHead);
-
-	for(form = html->html.form_data; form != NULL; form = form->next)
-	{
-		for(entry = form->components; entry != NULL; entry = entry->next)
-		{
-			if(entry->w)
-			{
-				/* save current widget position */
-				x = entry->x;
-				y = entry->y;
-
-				/* compute new widget position */
-				xs = entry->data->x - html->html.scroll_x;
-				ys = entry->data->y - html->html.scroll_y;
-
-				/* check if we need to show this widget */
-				if(xs + entry->width > 0 && xs < html->html.work_width &&
-					ys + entry->height > 0 && ys < html->html.work_height)
-				{
-					_XmHTMLDebug(1, ("XmHTML.c: FormScroll, moving "
-						"widget %s to %ix%i\n", entry->name, xs, ys));
-
-					/* save new widget position */
-					entry->x = xs;
-					entry->y = ys;
-
-					/* and move to it */
-					XtMoveWidget(entry->w, xs, ys);
-
-					/* show it */
-					if(!entry->mapped)
-					{
-						XtSetMappedWhenManaged(entry->w, True);
-						entry->mapped = True;
-					}
-
-					/* restore background at previously obscured position */
-					Refresh(html, x, y, entry->width, entry->height);
-
-					did_anything = True;
-				}
-				else
-				{
-					/* hide by unmapping it */
-					if(entry->mapped)
-					{
-						_XmHTMLDebug(1, ("XmHTML.c: FormScroll, hiding "
-							"widget %s\n", entry->name));
-
-						XtSetMappedWhenManaged(entry->w, False);
-						entry->mapped = False;
-
-						/* restore background at previously obscured position */
-						Refresh(html, x, y, entry->width, entry->height);
-
-						did_anything = True;
-					}
-				}
-			}
-		}
-	}
-	/* only do this if we actually did something */
-	if(did_anything)
-	{
-		XSync(XtDisplay((Widget)html), False);
-		XmUpdateDisplay((Widget)html);
-	}
-
-	XtRemoveEventHandler(html->html.work_area, ExposureMask, True,
-		(XtEventHandler)OverrideExposure, NULL);
-
-	_XmHTMLDebug(1, ("XmHTML.c: FormScroll, End\n"));
-}
-
-/*****
-* Name: 		ClearArea
-* Return Type: 	void
-* Description: 	XClearArea wrapper. Does form component updating as well.
-* In: 
-*	html:		XmHTMLWidget id;
-*	x,y:		upper left corner of region to be updated;
-*	width:		width of region;
-*	height:		height of region;
-* Returns:
-*
-*****/
-static void
-ClearArea(XmHTMLWidget html, int x, int y, int width, int height)
-{
-	Display *dpy = XtDisplay(html->html.work_area);
-	Window win = XtWindow(html->html.work_area);
-
-	_XmHTMLDebug(1, ("XmHTML.c: ClearArea Start, x: %i, y: %i, width: %i "
-		"height: %i.\n", x, y, width, height));
-
-	/* first scroll form widgets if we have them */
-	if(html->html.form_data)
-	{
-		FormScroll(html);
-		XClearArea(dpy, win, x, y, width, height, False);
-		Refresh(html, x, y, width, height);
-	}
-	else
-		XClearArea(dpy, win, x, y, width, height, True);
-
-	_XmHTMLDebug(1, ("XmHTML.c: ClearArea End.\n"));
-}
-
-
-/*****
-* Name: 		_XmHTMLMoveToPos
-* Return Type: 	void
-* Description: 	scroll the working area with the given value
-* In: 
-*	w:			originator
-*	html:		XmHTMLWidget
-*	value:		position to scroll to
-* Returns:
-*	nothing
-*****/
-void
-_XmHTMLMoveToPos(Widget w, XmHTMLWidget html, int value)
-{
-	int inc, x, y, width, height;
-	Display *dpy = XtDisplay(html->html.work_area);
-	Window win = XtWindow(html->html.work_area);
-	GC gc = html->html.gc;
-	int vsb_width = 0, hsb_height = 0;
-
-	/* sanity check */
-	if(value < 0)
-		return;
-
-	/* default exposure region */
-	x = y = 0;
-	width = html->core.width;
-	height = html->core.height;
-
-	/* 
-	* need to adjust slider position since we may not be called from
-	* the scrollbar callback handler.
-	*/
-	XtVaSetValues(w, XmNvalue, value, NULL);
-
-	/* vertical scrolling */
-	if(w == html->html.vsb)
-	{
-		/* 
-		* clicking on the slider causes activation of the scrollbar
-		* callbacks. Since there is no real movement, just return.
-		* Not doing this will cause an entire redraw of the window.
-		*/
-		if(value == html->html.scroll_y)
-			return;		/* fix 01/20/97-01 kdh */
-
-		/* save line number */
-		SetCurrentLineNumber(html, value);
-
-		/* moving down (text moving up) */
-		if(value > html->html.scroll_y)
-		{
-			inc = value - html->html.scroll_y;
-
-			/* save new value */
-			html->html.scroll_y = value;
-
-			/* save new paint engine start */
-			html->html.paint_start = html->html.paint_end;
-
-			/* small increment */
-			if(inc < html->html.work_height)
-			{
-				/*****
-				* See if we have a hsb. If we have one, we need to add
-				* the height of the hsb to the region requiring updating.
-				*****/
-				if(html->html.needs_hsb)
-#ifdef NO_XLIB_ILLEGAL_ACCESS
-					GetScrollDim(html, &hsb_height, &vsb_width);
-#else
-					hsb_height = html->html.hsb->core.height;
-#endif
-				/* copy visible part upward */
-				XCopyArea(dpy, win, win, gc, 0, inc,
-					html->html.work_width + html->html.margin_width, 
-					html->html.work_height - inc - hsb_height, 0, 0);
-
-				/* clear area below */
-				x = 0;
-				y = html->html.work_height - inc - hsb_height;
-				width = html->core.width;
-				height = inc + hsb_height;
-			}
-			/* large increment, use default area */
-		}
-		/* moving up (text moving down) */
-		else
-		{
-			inc = html->html.scroll_y - value;
-
-			/* save new value */
-			html->html.scroll_y = value;
-
-			/* small increment */
-			if(inc < html->html.work_height)
-			{
-				/* copy area down */
-				XCopyArea(dpy, win, win, gc, 0, 0, 
-					html->html.work_width + html->html.margin_width, 
-					html->html.work_height - inc, 0, inc);
-
-				/* save paint engine end */
-				html->html.paint_end = html->html.paint_start;
-
-				/* clear area above */
-				x = y = 0;
-				width = html->core.width;
-				height = inc;
-			}
-			/* large increment, use default area */
-		}
-	}
-	/* horizontal scrolling */
-	else if(w == html->html.hsb)
-	{
-		/* 
-		* clicking on the slider causes activation of the scrollbar
-		* callbacks. Since there is no real movement, just return.
-		* Not doing this will cause an entire redraw of the window.
-		*/
-		if(value == html->html.scroll_x)
-			return;		/* fix 01/20/97-01 kdh */
-
-		/* moving right (text moving left) */
-		if (value > html->html.scroll_x)
-		{
-			inc = value - html->html.scroll_x;
-
-			/* save new value */
-			html->html.scroll_x = value;
-
-			/* small increment */
-			if(inc < html->html.work_width)
-			{
-				/*
-				* See if we have a vsb. If we have, no additional offset
-				* required, otherwise we also have to clear the space that
-				* has been reserved for it.
-				*/
-				if(!html->html.needs_vsb)
-#ifdef NO_XLIB_ILLEGAL_ACCESS
-					GetScrollDim(html, &hsb_height, &vsb_width);
-#else
-					vsb_width = html->html.vsb->core.width;
-#endif
-
-				/* copy area to the left */
-				XCopyArea(dpy, win, win, gc, inc, 0, 
-					html->html.work_width - inc, html->html.work_height, 0, 0);
-
-				/* clear area on right */
-				x = html->html.work_width - inc;
-				y = 0;
-				width = inc + html->html.margin_width + vsb_width;
-				height = html->html.work_height;
-			}
-			/* large increment, use default area */
-		}
-		/* moving left (text moving right) */
-		else 
-		{
-			inc = html->html.scroll_x - value;
-
-			/* save new value */
-			html->html.scroll_x = value;
-
-			/* small increment */
-			if(inc < html->html.work_width)
-			{
-				if(!html->html.needs_vsb)
-#ifdef NO_XLIB_ILLEGAL_ACCESS
-					GetScrollDim(html, &hsb_height, &vsb_width);
-#else
-					vsb_width = html->html.vsb->core.width;
-#endif
-
-				/* copy area to the right */
-				/* fix 01/24/97-01, kdh */
-				XCopyArea(dpy, win, win, gc, 0, 0, 
-					html->html.work_width - inc + html->html.margin_width +
-					vsb_width, html->html.work_height, inc, 0); 
-
-				/* clear area on left */
-				x = y = 0;
-				width = inc;
-				height = html->html.work_height;
-			}
-			/* large increment, use default area */
-		}
-	}
-	else
-	{
-		_XmHTMLWarning(__WFUNC__(html, "_XmHTMLMoveToPos"), 
-			"Internal Error: unknown scrollbar!");
-		return;
-	}
-
-	/* update display */
-	ClearArea(html, x, y, width, height);
-}
-
-/*****
-* Name: 		ScrollCB
-* Return Type: 	void
-* Description: 	callback procedure for scrollbar movement
-* In: 
-*	w:			originator
-*	arg1:		client_data, in this case a XmHTMLWidget
-*	arg2:		event specific callback structure.
-* Returns:
-*	nothing
-*****/
-static void
-ScrollCB(Widget w, XtPointer arg1, XtPointer arg2)
-{
-	XmScrollBarCallbackStruct *cbs = (XmScrollBarCallbackStruct *)arg2;
-
-	_XmHTMLDebug(1, ("XmHTML.c: ScrollCB, calling _XmHTMLMoveToPos\n"));
-	_XmHTMLMoveToPos(w, XmHTML(arg1), cbs->value);
-}
-
-/*****
-* Name: 		CreateHTMLWidget
-* Return Type: 	void
-* Description: 	creates the HTML widget
-*				The actual area we use to draw into is a drawingAreaWidget.
-* In: 
-*	html:		widget to be created.
-* Returns:
-*	nothing
-*****/
-static void
-CreateHTMLWidget(XmHTMLWidget html)
-{
-	Arg args[15];
-	Dimension argc = 0;
-	int vsb_width, hsb_height;
-	static XtTranslations trans = NULL;
-
-	_XmHTMLDebug(1, ("XmHTML.c: CreateHTMLWidget Start\n"));
-
-	/* Check if user provided a work area */
-	if(html->html.work_area == NULL)
-	{
-		html->html.work_area = XtVaCreateWidget("workWindow",
-			xmDrawingAreaWidgetClass, (Widget)html,
-			XmNwidth, html->core.width,
-			XmNheight, html->core.height,
-			NULL);
-	}
-	/* catch all exposure events on the render window */
-	XtAddEventHandler((Widget)html->html.work_area, ExposureMask, True,
-		(XtEventHandler)DrawRedisplay, (XtPointer)html);
-
-	/* we want to know when to handle GraphicsExpose events */
-	XtAddEventHandler((Widget)html->html.work_area, VisibilityChangeMask, True,
-		(XtEventHandler)VisibilityHandler, (XtPointer)html);
-
-	XtAddEventHandler((Widget)html, SubstructureNotifyMask, 
-		True, (XtEventHandler)Mapped, (XtPointer)html);
-
-	/* 
-	* For some reason, Motif fucks up the original action list, so we
-	* need to use a fallback copy instead.
-	* Crash happens in XrmStringToQuark().
-	*/
-	XtAppAddActions(XtWidgetToApplicationContext(html->html.work_area),
-		spareActions, XtNumber(spareActions));
-
-	/* add translations for the actions */
-	if(trans == NULL)
-		trans = XtParseTranslationTable(translations);
-	XtSetArg(args[0], XtNtranslations, trans);
-	XtSetValues(html->html.work_area, args, 1);
-
-	argc = 0;
-	XtManageChild(html->html.work_area);
-
-	if(html->html.vsb == NULL)
-	{
-		argc = 0;
-		XtSetArg(args[argc], XmNorientation, XmVERTICAL); argc++;
-		XtSetArg(args[argc], XmNrepeatDelay, html->html.repeat_delay); argc++;
-		/* make them a little bit more responsive */
-		XtSetArg(args[argc], XmNinitialDelay, 100); argc++;
-		html->html.vsb = XtCreateWidget("verticalScrollBar", 
-			xmScrollBarWidgetClass, (Widget)html, args, argc);
-	}
-	XtManageChild(html->html.vsb);
-	/* Catch vertical scrollbar movement */
-	XtAddCallback(html->html.vsb, XmNvalueChangedCallback,
-		(XtCallbackProc)ScrollCB, (XtPointer)html);
-	XtAddCallback(html->html.vsb, XmNdragCallback,
-		(XtCallbackProc)ScrollCB, (XtPointer)html);
-
-	if(html->html.hsb == NULL)
-	{
-		argc = 0;
-		XtSetArg(args[argc], XmNorientation, XmHORIZONTAL); argc++;
-		XtSetArg(args[argc], XmNrepeatDelay, html->html.repeat_delay); argc++;
-		/* make them a little bit more responsive */
-		XtSetArg(args[argc], XmNinitialDelay, 100); argc++;
-		html->html.hsb = XtCreateWidget("horizontalScrollBar", 
-			xmScrollBarWidgetClass, (Widget)html, args, argc);
-	}
-	XtManageChild(html->html.hsb);
-	/* Catch horizontal scrollbar movement */
-	XtAddCallback(html->html.hsb, XmNvalueChangedCallback,
-		(XtCallbackProc)ScrollCB, (XtPointer)html);
-	XtAddCallback(html->html.hsb, XmNdragCallback,
-		(XtCallbackProc)ScrollCB, (XtPointer)html);
-
-	/* 
-	* subtract margin_width once to minimize number of calcs in
-	* the paint routines: every thing rendered starts at an x position
-	* of margin_width.
-	*/
-	GetScrollDim(html, &hsb_height, &vsb_width);
-
-	html->html.work_width = html->core.width-html->html.margin_width-vsb_width;
-	html->html.work_height= html->core.height;
-
-	_XmHTMLDebug(1, ("XmHTML.c: CreateHTMLWidget End\n"));
-	return;
-}
-
-/*****
-* Name: 		CheckGC
-* Return Type: 	void
-* Description: 	creates a Graphics Context to be used for rendering
-* In: 
-*	html:		XmHTMLWidget
-* Returns:
-*	nothing, but a GC is created and stored in the widget's internal data
-*	structure. If background images are allowed, a seperate GC is created
-*	which is used in PaintBackground to do tiling of the background with an
-*	image.
-*****/
-static void
-CheckGC(XmHTMLWidget html)
-{
-	Display *dpy;
-
-	_XmHTMLDebug(1, ("XmHTML.c: CheckGC Start\n"));
-
-	/* sanity check */
-	if(!XtIsRealized((Widget)html))
-		return;
-
-	dpy = XtDisplay((Widget)html);
-
-	/* main gc */
-	if(html->html.gc == NULL)
-	{
-		XGCValues xgc;
-
-		xgc.function = GXcopy;
-		xgc.plane_mask = AllPlanes;
-		xgc.foreground = html->manager.foreground;
-		xgc.background = html->core.background_pixel;
-		html->html.gc = XCreateGC(dpy, XtWindow(html),
-			GCFunction | GCPlaneMask | GCForeground | GCBackground, &xgc);
-
-		_XmHTMLRecomputeColors(html);
-
-		_XmHTMLDebug(1, ("XmHTML.c: CheckGC, gc created\n"));
-	}
-	/* background image gc */
-	if(html->html.body_images_enabled && html->html.bg_gc == NULL)
-	{
-		html->html.bg_gc = XCreateGC(dpy, XtWindow(html), 0, NULL);
-		XCopyGC(dpy, html->html.gc, 0xFFFF, html->html.bg_gc);
-	}
-
-	_XmHTMLDebug(1, ("XmHTML.c: CheckGC End\n"));
-}
 
 /*****
 * Name: 		_XmHTMLCheckXCC
@@ -1534,7 +543,7 @@ _XmHTMLCheckXCC(XmHTMLWidget html)
 
 	/*
 	* CheckXCC is called each time an image is loaded, so it's quite
-	* usefull if we have a GC around by the time the widget is being
+	* usefull if we have a GC around by the time the TWidget is being
 	* mapped to the display.
 	* Our SubstructureNotify event handler can fail in some cases leading to
 	* a situation where we don't have a GC when images are about to be
@@ -1547,7 +556,7 @@ _XmHTMLCheckXCC(XmHTMLWidget html)
 	* Create an XCC. 
 	* XmHTML never decides whether or not to use a private or standard
 	* colormap. A private colormap can be supplied by setting it on the
-	* widget's parent, we know how to deal with that.
+	* TWidget's parent, we know how to deal with that.
 	*/
 	if(!html->html.xcc)
 	{
@@ -1557,15 +566,15 @@ _XmHTMLCheckXCC(XmHTMLWidget html)
 		_XmHTMLDebug(1, ("XmHTML.c: _XmHTMLCheckXCC: creating an XCC\n"));
 
 		/* get a visual */
-		XtVaGetValues((Widget)html, 
+		XtVaGetValues((TWidget)html, 
 			XmNvisual, &visual,
 			NULL);
-		/* walk widget tree or get default visual */
+		/* walk TWidget tree or get default visual */
 		if(visual == NULL)
-			visual = XCCGetParentVisual((Widget)html);
+			visual = XCCGetParentVisual((TWidget)html);
 
-		/* create an xcc for this widget */
-		html->html.xcc = XCCCreate((Widget)html, visual, cmap);
+		/* create an xcc for this TWidget */
+		html->html.xcc = XCCCreate((TWidget)html, visual, cmap);
 	}
 	_XmHTMLDebug(1, ("XmHTML.c: _XmHTMLCheckXCC End\n"));
 }
@@ -1600,9 +609,9 @@ GetScrollDim(XmHTMLWidget html, int *hsb_height, int *vsb_width)
 #endif
 
 		/*
-		* Sanity check if the scrollbar dimensions exceed the widget dimensions
+		* Sanity check if the scrollbar dimensions exceed the TWidget dimensions
 		* Not doing this would lead to X Protocol errors whenever text is set
-		* into the widget: the size of the workArea will be less than or equal
+		* into the TWidget: the size of the workArea will be less than or equal
 		* to zero when scrollbars are required.
 		* We need always need to do this check since it's possible that some
 		* user has been playing with the dimensions of the scrollbars.
@@ -1611,7 +620,7 @@ GetScrollDim(XmHTMLWidget html, int *hsb_height, int *vsb_width)
 		{
 			_XmHTMLWarning(__WFUNC__(html->html.hsb, "GetScrollDim"),
 				"Height of horizontal scrollbar (%i) exceeds height of parent "
-				"widget (%i).\n    Reset to 15.", height, html->core.height);
+				"TWidget (%i).\n    Reset to 15.", height, html->core.height);
 			height = 15;
 			XtSetArg(args[0], XmNheight, height);
 			XtSetValues(html->html.hsb, args, 1);
@@ -1631,7 +640,7 @@ GetScrollDim(XmHTMLWidget html, int *hsb_height, int *vsb_width)
 		{
 			_XmHTMLWarning(__WFUNC__(html->html.vsb, "GetScrollDim"),
 				"Width of vertical scrollbar (%i) exceeds width of parent "
-				"widget (%i).\n    Reset to 15.", width, html->core.width);
+				"TWidget (%i).\n    Reset to 15.", width, html->core.width);
 			width  = 15;
 			XtSetArg(args[0], XmNwidth, width);
 			XtSetValues(html->html.vsb, args, 1);
@@ -1650,7 +659,7 @@ GetScrollDim(XmHTMLWidget html, int *hsb_height, int *vsb_width)
 * Return Type: 	void
 * Description: 	(re)configures scrollbars
 * In: 
-*	html:		HTML widget to configure
+*	html:		HTML TWidget to configure
 * Returns:
 *	nothing.
 *****/
@@ -1667,7 +676,7 @@ CheckScrollBars(XmHTMLWidget html)
 	_XmHTMLDebug(1, ("XmHTML.c: CheckScrollBars, start\n"));
 
 	/* don't do a thing if we aren't managed yet */
-	if(!(XtIsManaged((Widget)html)))
+	if(!(XtIsManaged((TWidget)html)))
 		return;
 
 	/* Initial work area offset */
@@ -1889,90 +898,9 @@ CheckScrollBars(XmHTMLWidget html)
 }
 
 /*****
-* Name: 		Mapped
-* Return Type: 	void
-* Description: 	event handler for CreateNotify events.
-* In: 
-*	w:			owner of this eventhandler 
-*	html:		client data, XmHTMLWidget to which w belongs
-*	event:		CreateNotify event data
-* Returns:
-*	nothing
-* Note:
-*	We want to be notified when the window gets created. Motif seems to block
-*	the CreateNotify event, so we work with the MapNotify event. This is
-*	required to get the text rendered correctly when it has been
-*	set inside the Xt[Va]Create[Managed]Widget and before XtRealizeWidget
-*	has been called: we do not have a window yet and thus no valid gc. Bad 
-*	things happen otherwise.
-*****/
-/*ARGSUSED*/
-static void
-Mapped(Widget w, XmHTMLWidget html, XEvent *event)
-{
-	/* wrong event, just return */
-	if(event->type != MapNotify)
-		return;
-
-	_XmHTMLDebug(1, ("XmHTML.c: Mapped start\n"));
-
-	_XmHTMLDebug(1, ("XmHTML.c: Mapped, work area dimensions: %ix%i\n",
-		html->html.work_width, html->html.work_height));
-
-	CheckGC(html);
-
-	/* save new height */
-	html->html.work_height = html->core.height;
-	/* and width as well, fix 10/26/97-01, kdh */
-	html->html.work_width = html->core.width - html->html.margin_width -
-							html->html.vsb->core.width;
-
-	_XmHTMLDebug(1, ("XmHTML.c: Mapped, new work area dimensions: %ix%i\n",
-		html->html.work_width, html->html.work_height));
-
-	/* configure the scrollbars, will also resize work_area */
-	CheckScrollBars(html);
-
-	Layout(html);
-
-	/* no longer needed now, so remove it */ 
-	XtRemoveEventHandler(w, SubstructureNotifyMask, True,
-		(XtEventHandler)Mapped, (XtPointer)html); 	
-
-	_XmHTMLDebug(1, ("XmHTML.c: Mapped end.\n"));
-}
-
-/*****
-* Name:			VisibilityHandler
-* Return Type: 	void
-* Description: 	VisibilityChangeMask event handler. Used to store the
-*				visibility state of the work_area so we know when to
-*				serve or ignore GraphicsExpose requests.
-* In: 
-*	w:			owner of this eventhandler 
-*	html:		client data, XmHTMLWidget to which w belongs
-*	event:		VisibilityNotify event data
-* Returns:
-*	nothing, but sets the visibility field in the widget's instance structure.
-*****/
-/*ARGSUSED*/
-static void
-VisibilityHandler(Widget w, XmHTMLWidget html, XEvent *event)
-{
-	if(event->type != VisibilityNotify)
-		return;
-
-	_XmHTMLDebug(1, ("XmHTML.c: VisibilityHandler start\n"));
-
-	html->html.visibility = event->xvisibility.state;
-
-	_XmHTMLDebug(1, ("XmHTML.c: VisibilityHandler end\n"));
-}
-
-/*****
 * Name: 		autoSizeWidget
 * Return Type: 	void
-* Description: 	computes XmHTML's widget dimensions if we have to autosize
+* Description: 	computes XmHTML's TWidget dimensions if we have to autosize
 *				in either direction.
 * In: 
 *	html:		XmHTMLWidget id
@@ -1994,13 +922,13 @@ autoSizeWidget(XmHTMLWidget html)
 	/* get dimensions of the scrollbars */
 	GetScrollDim(html, &hsb_height, &vsb_width);
 
-	/* maximum allowable widget height: 80% of screen height */
-	max_h = (int)(0.8*HeightOfScreen(XtScreen((Widget)html)));
+	/* maximum allowable TWidget height: 80% of screen height */
+	max_h = (int)(0.8*HeightOfScreen(XtScreen((TWidget)html)));
 
-	/* make a guess at the initial widget width */
+	/* make a guess at the initial TWidget width */
 	max_w = _XmHTMLGetMaxLineLength(html) + 2*html->html.margin_width;
 
-	/* save original widget dimensions in case our resize request is denied */
+	/* save original TWidget dimensions in case our resize request is denied */
 	core_w = html->core.width;
 	core_h = html->core.height;
 
@@ -2013,7 +941,7 @@ autoSizeWidget(XmHTMLWidget html)
 	* width and height required to make all text visible.
 	* If we succeed, we don't require any scrollbars to be present.
 	* This does complicate things considerably.
-	* The dimensions of the work area are given by the widget dimensions
+	* The dimensions of the work area are given by the TWidget dimensions
 	* minus possible margins and possible scrollbars.
 	*/
 	h_reserved = html->html.margin_height + hsb_height;
@@ -2092,21 +1020,21 @@ autoSizeWidget(XmHTMLWidget html)
 			has_vsb ? "yes" : "no", has_hsb ? "yes" : "no"));
 
 		/* make the resize request and check return value */
-		switch(XtMakeResizeRequest((Widget)html, new_w, new_h,
+		switch(XtMakeResizeRequest((TWidget)html, new_w, new_h,
 			&width_return, &height_return))
 		{
 			case XtGeometryAlmost:
 				/*
 				* partially granted. Set the returned width and height
-				* as the new widget dimensions and recompute the
-				* widget layout. The next time the resizeRequest is made
+				* as the new TWidget dimensions and recompute the
+				* TWidget layout. The next time the resizeRequest is made
 				* it *will* be granted.
 				*/
 				width = (int)width_return;
 				height= (int)height_return;
 				break;
 			case XtGeometryNo:
-				/* revert to original widget dimensions */
+				/* revert to original TWidget dimensions */
 				new_h = core_h;
 				new_w = core_w;
 				granted = False;
@@ -2138,7 +1066,7 @@ autoSizeWidget(XmHTMLWidget html)
 
 	/*
 	* If a vertical scrollbar is present, CheckScrollBars will add a horizontal
-	* scrollbar if the formatted_width + vsb_width exceeds the widget width.
+	* scrollbar if the formatted_width + vsb_width exceeds the TWidget width.
 	* To make sure a horizontal scrollbar does not appear when one is not
 	* needed, we need to adjust the formatted width accordingly.
 	*/
@@ -2147,8 +1075,8 @@ autoSizeWidget(XmHTMLWidget html)
 
 	/* 
 	* If our resize request was denied we need to recompute the text
-	* layout using the original widget dimensions. The previous layout is
-	* invalid since it used guessed widget dimensions instead of the previous
+	* layout using the original TWidget dimensions. The previous layout is
+	* invalid since it used guessed TWidget dimensions instead of the previous
 	* dimensions and thus it will look bad if we don't recompute it.
 	*/
 	if(!granted)
@@ -2172,7 +1100,7 @@ autoSizeWidget(XmHTMLWidget html)
 *				computes text layout and configures the scrollbars.
 *				Also does handles image recreation.
 * In: 
-*	html:		widget to layout
+*	html:		TWidget to layout
 * Returns:
 *	nothing
 *****/
@@ -2215,12 +1143,12 @@ Layout(XmHTMLWidget html)
 * Return Type: 	void
 * Description: 	xmHTMLWidgetClass resize method.
 * In: 
-*	w:			resized widget.
+*	w:			resized TWidget.
 * Returns:
 *	nothing
 *****/
 static void 
-Resize(Widget w)
+Resize(TWidget w)
 {
 	Boolean do_expose;
 	XmHTMLWidget html = XmHTML(w);
@@ -2233,7 +1161,7 @@ Resize(Widget w)
 	/* No needless resizing */
 	if(!XtIsRealized(w))
 	{
-		_XmHTMLDebug(1, ("XmHTML.c: Resize end, widget not realized.\n"));
+		_XmHTMLDebug(1, ("XmHTML.c: Resize end, TWidget not realized.\n"));
 		return;
 	}
 
@@ -2259,7 +1187,7 @@ Resize(Widget w)
 
 	/*
 	* Check if we have to do layout and generate an expose event.
-	* When the widget shrinks, X does not generate an expose event. 
+	* When the TWidget shrinks, X does not generate an expose event. 
 	* We want to recompute layout and generate an expose event when the 
 	* width changes.
 	* When the height increases, we only want to generate a partial
@@ -2643,7 +1571,7 @@ Refresh(XmHTMLWidget html, int x, int y, int width, int height)
 *	htmlRec to determine what should be painted exactly.
 *****/
 static void
-DrawRedisplay(Widget w, XmHTMLWidget html, XEvent *event)
+DrawRedisplay(TWidget w, XmHTMLWidget html, XEvent *event)
 {
 	/* 
 	* must use int for y-positions. The Position and Dimension typedefs
@@ -2769,14 +1697,14 @@ DrawRedisplay(Widget w, XmHTMLWidget html, XEvent *event)
 * Return Type: 	void
 * Description: 	xmHTMLWidgetClass expose method.
 * In: 
-*	w:			widget to expose
+*	w:			TWidget to expose
 *	event:		description of event that triggered an expose
 *	region:		region to display.
 * Returns:
 *	nothing
 *****/
 static void 
-Redisplay(Widget w, XEvent *event, Region region)
+Redisplay(TWidget w, XEvent *event, Region region)
 {
 	_XmHTMLDebug(1, ("XmHTML.c: Redisplay Start\n"));
 
@@ -2792,10 +1720,10 @@ Redisplay(Widget w, XEvent *event, Region region)
 * Return Type: 	Boolean
 * Description: 	xmHTMLWidgetClass SetValues method.
 * In: 
-*	current:	copy of widget before any set_values methods are called
-*	request:	copy of widget after resources have changed but before any
+*	current:	copy of TWidget before any set_values methods are called
+*	request:	copy of TWidget after resources have changed but before any
 *				set_values methods are called
-*	set:		widget with resources set and as modified by any superclass
+*	set:		TWidget with resources set and as modified by any superclass
 *				methods that have called XtSetValues()
 *	args:		argument list passed to XtSetValues, done by programmer
 *	num_args:	no of args 
@@ -2803,7 +1731,7 @@ Redisplay(Widget w, XEvent *event, Region region)
 *	True if a changed resource requires a redisplay, False otherwise.
 *****/
 static Boolean 
-SetValues(Widget current, Widget request, Widget set,
+SetValues(TWidget current, TWidget request, TWidget set,
 	ArgList args, Cardinal *num_args)
 {
 	XmHTMLWidget w_curr = XmHTML (current);
@@ -2837,7 +1765,7 @@ SetValues(Widget current, Widget request, Widget set,
 
 	/*****
 	* We always use a copy of the HTML source text that is set into
-	* the widget to prevent a crash when the user has freed it before we
+	* the TWidget to prevent a crash when the user has freed it before we
 	* had a chance of parsing it, and we ensure new text will get set
 	* properly.
 	*
@@ -3378,7 +2306,7 @@ SetValues(Widget current, Widget request, Widget set,
 		if(!w_new->html.anchor_display_cursor || !w_new->html.anchor_cursor)
 		{
 			if(w_curr->html.anchor_cursor != None)
-				XFreeCursor(XtDisplay((Widget)w_curr),
+				XFreeCursor(XtDisplay((TWidget)w_curr),
 					w_curr->html.anchor_cursor);
 			w_new->html.anchor_cursor = None;
 		}
@@ -3482,7 +2410,7 @@ SetValues(Widget current, Widget request, Widget set,
 *	nothing
 *****/
 static void 
-GetValues(Widget w, ArgList args, Cardinal *num_args)
+GetValues(TWidget w, ArgList args, Cardinal *num_args)
 {
 	register int i;
 
@@ -3516,7 +2444,7 @@ GetValues(Widget w, ArgList args, Cardinal *num_args)
 *	Don't care. Just pass everything on.
 *****/
 static XtGeometryResult 
-GeometryManager(Widget w, XtWidgetGeometry *request,
+GeometryManager(TWidget w, XtWidgetGeometry *request,
 	XtWidgetGeometry *geometry_return)
 {
 	_XmHTMLDebug(1, ("XmHTML.c: GeometryManager Start\n"));
@@ -3545,7 +2473,7 @@ GeometryManager(Widget w, XtWidgetGeometry *request,
 * In: 
 *	html:		XmHTMLWidget id
 *	free_img:	true when images should be freed. This will only be True
-*				when the widget has received a new source.
+*				when the TWidget has received a new source.
 * Returns:
 *	nothing
 *****/
@@ -3608,11 +2536,11 @@ ResetWidget(XmHTMLWidget html, Boolean free_img)
 /*****
 * Name: 		FreeExpendableResources
 * Return Type: 	void
-* Description: 	frees all non-persistent resources of a Widget
+* Description: 	frees all non-persistent resources of a TWidget
 * In: 
 *	html:		XmHTMLWidget id
 *	free_img:	true when images should be freed. This will only be True
-*				when the widget has received a new source.
+*				when the TWidget has received a new source.
 * Returns:
 *	nothing
 *****/
@@ -3640,7 +2568,7 @@ FreeExpendableResources(XmHTMLWidget html, Boolean free_img)
 	if(free_img)
 	{
 		/* Free all images (also clears xcc & alpha channel stuff) */
-		XmHTMLImageFreeAllImages((Widget)html);
+		XmHTMLImageFreeAllImages((TWidget)html);
 
 		/* must reset body_image as well since it also has been freed */
 		html->html.body_image          = (XmHTMLImage*)NULL;
@@ -3686,12 +2614,12 @@ FreeExpendableResources(XmHTMLWidget html, Boolean free_img)
 * Return Type: 	void
 * Description: 	XmHTMLWidgetClass destroy method. Frees up allocated resources.
 * In: 
-*	w:			widget to destroy
+*	w:			TWidget to destroy
 * Returns:
 *	nothing
 *****/
 static void 
-Destroy(Widget w)
+Destroy(TWidget w)
 {
 	XmHTMLWidget html = XmHTML (w);
 
@@ -3728,7 +2656,7 @@ Destroy(Widget w)
 	if(html->html.nframes)
 		_XmHTMLDestroyFrames(html, html->html.nframes);
 
-	/* free all fonts for this widget's instance */
+	/* free all fonts for this TWidget's instance */
 	_XmHTMLUnloadFonts(html);
 
 	/* free cursors */
@@ -3755,7 +2683,7 @@ Destroy(Widget w)
 	XtRemoveAllCallbacks(w, XmNfocusCallback);
 	XtRemoveAllCallbacks(w, XmNlosingFocusCallback);
 
-	/* invalidate this widget */
+	/* invalidate this TWidget */
 	w = NULL;
 
 	_XmHTMLDebug(1, ("XmHTML.c: Destroy End\n"));
@@ -3765,7 +2693,7 @@ Destroy(Widget w)
 /*****
 * Name: 		HTMLProcessInput
 * Return Type: 	void
-* Description: 	handles keyboard input for the HTML widget.
+* Description: 	handles keyboard input for the HTML TWidget.
 * In: 
 *	w:			XmHTMLWidget
 *	event:		ButtonEvent structure
@@ -3777,14 +2705,14 @@ Destroy(Widget w)
 *	This routine calls any installed XmNinputCallback callback resources.
 *****/
 static void 
-HTMLProcessInput(Widget w, XEvent *event, String *params, Cardinal *num_params)
+HTMLProcessInput(TWidget w, XEvent *event, String *params, Cardinal *num_params)
 {
 	XmHTMLWidget html;
 	/*
 	* If this action proc is called directly from within application code,
-	* w is a html widget. In all other cases this action proc is called 
+	* w is a html TWidget. In all other cases this action proc is called 
 	* for the translations installed on the work_area, and thus we need to
-	* use XtParent to get our html widget.
+	* use XtParent to get our html TWidget.
 	*/
 	if(XmIsHTML(w))
 		html = XmHTML (w);
@@ -3797,7 +2725,7 @@ HTMLProcessInput(Widget w, XEvent *event, String *params, Cardinal *num_params)
 		XmAnyCallbackStruct cbs;
 		cbs.reason = XmCR_INPUT;
 		cbs.event = event;
-		XtCallCallbackList((Widget)html, html->html.input_callback,
+		XtCallCallbackList((TWidget)html, html->html.input_callback,
 			&cbs);
 	}
 	_XmHTMLDebug(1, ("XmHTML.c: ProcessInput End\n"));
@@ -3808,7 +2736,7 @@ HTMLProcessInput(Widget w, XEvent *event, String *params, Cardinal *num_params)
 * Return Type: 	void
 * Description: 	keyboard navigation action routine
 * In: 
-*	w:			widget id; XmHTMLWidget id if called from within application
+*	w:			TWidget id; XmHTMLWidget id if called from within application
 *				code, work_area if handled by XmHTML itself;
 *	event:		key event;
 *	params:		0 for pageUp, 1 for pageLeft
@@ -3819,7 +2747,7 @@ HTMLProcessInput(Widget w, XEvent *event, String *params, Cardinal *num_params)
 *	This routine also honors the repeatDelay resource.
 *****/
 static void
-HTMLPageUpOrLeft(Widget w, XEvent *event, String *params, 
+HTMLPageUpOrLeft(TWidget w, XEvent *event, String *params, 
 		Cardinal *num_params)
 {
 	int which;
@@ -3859,7 +2787,7 @@ HTMLPageUpOrLeft(Widget w, XEvent *event, String *params,
 * Return Type: 	void
 * Description: 	keyboard navigation action routine
 * In: 
-*	w:			widget id; XmHTMLWidget id if called from within application
+*	w:			TWidget id; XmHTMLWidget id if called from within application
 *				code, work_area if handled by XmHTML itself;
 *	event:		key event;
 *	params:		0 for pageDown, 1 for pageRight
@@ -3870,7 +2798,7 @@ HTMLPageUpOrLeft(Widget w, XEvent *event, String *params,
 *	This routine also honors the repeatDelay resource.
 *****/
 static void
-HTMLPageDownOrRight(Widget w, XEvent *event, String *params, 
+HTMLPageDownOrRight(TWidget w, XEvent *event, String *params, 
 		Cardinal *num_params)
 {
 	int which;
@@ -3910,7 +2838,7 @@ HTMLPageDownOrRight(Widget w, XEvent *event, String *params,
 * Return Type: 	void
 * Description: 	keyboard navigation action routine
 * In: 
-*	w:			widget id; XmHTMLWidget id if called from within application
+*	w:			TWidget id; XmHTMLWidget id if called from within application
 *				code, work_area if handled by XmHTML itself;
 *	event:		key event;
 *	params:		0 for IncrementUp, 1 for IncrementLeft
@@ -3921,7 +2849,7 @@ HTMLPageDownOrRight(Widget w, XEvent *event, String *params,
 *	This routine also honors the repeatDelay resource.
 *****/
 static void
-HTMLIncrementUpOrLeft(Widget w, XEvent *event, String *params, 
+HTMLIncrementUpOrLeft(TWidget w, XEvent *event, String *params, 
 		Cardinal *num_params)
 {
 	int which;
@@ -3963,7 +2891,7 @@ HTMLIncrementUpOrLeft(Widget w, XEvent *event, String *params,
 * Return Type: 	void
 * Description: 	keyboard navigation action routine
 * In: 
-*	w:			widget id; XmHTMLWidget id if called from within application
+*	w:			TWidget id; XmHTMLWidget id if called from within application
 *				code, work_area if handled by XmHTML itself;
 *	event:		key event;
 *	params:		0 for IncrementDown, 1 for IncrementRight
@@ -3974,7 +2902,7 @@ HTMLIncrementUpOrLeft(Widget w, XEvent *event, String *params,
 *	This routine also honors the repeatDelay resource.
 *****/
 static void
-HTMLIncrementDownOrRight(Widget w, XEvent *event, String *params, 
+HTMLIncrementDownOrRight(TWidget w, XEvent *event, String *params, 
 		Cardinal *num_params)
 {
 	int which;
@@ -4018,7 +2946,7 @@ HTMLIncrementDownOrRight(Widget w, XEvent *event, String *params,
 * Return Type: 	void
 * Description: 	keyboard navigation action routine
 * In: 
-*	w:			widget id; XmHTMLWidget id if called from within application
+*	w:			TWidget id; XmHTMLWidget id if called from within application
 *				code, work_area if handled by XmHTML itself;
 *	event:		key event;
 *	params:		0 for top, 1 for bottom
@@ -4030,7 +2958,7 @@ HTMLIncrementDownOrRight(Widget w, XEvent *event, String *params,
 *	or vice-versa
 *****/
 static void
-HTMLTopOrBottom(Widget w, XEvent *event, String *params, 
+HTMLTopOrBottom(TWidget w, XEvent *event, String *params, 
 		Cardinal *num_params)
 {
 	int which;
@@ -4080,7 +3008,7 @@ HTMLTopOrBottom(Widget w, XEvent *event, String *params,
 }
 
 static void
-HTMLTraverseCurrent(Widget w, XEvent *event, String *params,
+HTMLTraverseCurrent(TWidget w, XEvent *event, String *params,
 	Cardinal *num_params)
 {
 	if(!XtIsRealized(w))
@@ -4089,7 +3017,7 @@ HTMLTraverseCurrent(Widget w, XEvent *event, String *params,
 }
 
 static void
-HTMLTraverseNext(Widget w, XEvent *event, String *params,
+HTMLTraverseNext(TWidget w, XEvent *event, String *params,
 	Cardinal *num_params)
 {
 	if(!XtIsRealized(w))
@@ -4098,7 +3026,7 @@ HTMLTraverseNext(Widget w, XEvent *event, String *params,
 }
 
 static void
-HTMLTraversePrev(Widget w, XEvent *event, String *params,
+HTMLTraversePrev(TWidget w, XEvent *event, String *params,
 	Cardinal *num_params)
 {
 	if(!XtIsRealized(w))
@@ -4108,7 +3036,7 @@ HTMLTraversePrev(Widget w, XEvent *event, String *params,
 }
 
 static void
-HTMLTraverseNextOrPrev(Widget w, XEvent *event, String *params,
+HTMLTraverseNextOrPrev(TWidget w, XEvent *event, String *params,
 	Cardinal *num_params)
 {
 	int which;
@@ -4134,7 +3062,7 @@ HTMLTraverseNextOrPrev(Widget w, XEvent *event, String *params,
 * Description: 	determines if the given x and y positions are within the
 *				bounding rectangle of an anchor.
 * In: 
-*	w:			HTML widget to check
+*	w:			HTML TWidget to check
 *	x,y:		position to validate
 * Returns:
 *	A ptr. to the anchor data or NULL.
@@ -4178,7 +3106,7 @@ GetAnchor(XmHTMLWidget html, int x, int y)
 * Description: 	determines if the given x and y positions lie upon an image
 *				that has an imagemap
 * In: 
-*	html:		HTML widget to check
+*	html:		HTML TWidget to check
 *	x,y:		position to validate
 * Returns:
 *	A ptr. to the anchor data or NULL.
@@ -4255,7 +3183,7 @@ GetImageAnchor(XmHTMLWidget html, int x, int y)
 * Description:  paints the currently active anchor in an unactivated state.
 *				_XmHTMLPaint will do the proper rendering.
 * In: 
-*	w:			HTML widget of which to unset the current anchor
+*	w:			HTML TWidget of which to unset the current anchor
 * Returns:
 *	nothing.
 *****/
@@ -4287,7 +3215,7 @@ PaintAnchorUnSelected(XmHTMLWidget html)
 * Description:  paints the current active in an activated state.
 *				_XmHTMLPaint will do the proper rendering.
 * In: 
-*	html:		HTML widget of which to set the current anchor
+*	html:		HTML TWidget of which to set the current anchor
 * Returns:
 *	nothing.
 *****/
@@ -4318,7 +3246,7 @@ PaintAnchorSelected(XmHTMLWidget html, XmHTMLWord *anchor)
 * Return Type: 	void
 * Description:  remove anchor highlighting.
 * In: 
-*	html:		HTML widget of which to set the current anchor
+*	html:		HTML TWidget of which to set the current anchor
 * Returns:
 *	nothing.
 *****/
@@ -4423,7 +3351,7 @@ OnImage(XmHTMLWidget html, int x, int y)
 *	nothing.
 *****/
 static void	
-ExtendStart(Widget w, XEvent *event, String *params, Cardinal *num_params)
+ExtendStart(TWidget w, XEvent *event, String *params, Cardinal *num_params)
 {
 	/* need to use XtParent since we only get button events from work_area */
 	XmHTMLWidget html = XmHTML (XtParent (w));
@@ -4496,7 +3424,7 @@ ExtendStart(Widget w, XEvent *event, String *params, Cardinal *num_params)
 		cbs.reason = XmCR_ARM;
 		cbs.event = event;
 
-		XtCallCallbackList((Widget)html, html->html.arm_callback, &cbs);
+		XtCallCallbackList((TWidget)html, html->html.arm_callback, &cbs);
 	}
 	_XmHTMLFullDebug(1, ("XmHTML.c: ExtendStart End\n"));
 
@@ -4514,7 +3442,7 @@ ExtendStart(Widget w, XEvent *event, String *params, Cardinal *num_params)
 *	nothing.
 *****/
 static void	
-ExtendAdjust(Widget w, XEvent *event, String *params, Cardinal *num_params)
+ExtendAdjust(TWidget w, XEvent *event, String *params, Cardinal *num_params)
 {
 	XmHTMLWidget html;
 
@@ -4546,7 +3474,7 @@ ExtendAdjust(Widget w, XEvent *event, String *params, Cardinal *num_params)
 *	nothing
 *****/
 static void	
-ExtendEnd(Widget w, XEvent *event, String *params, Cardinal *num_params)
+ExtendEnd(TWidget w, XEvent *event, String *params, Cardinal *num_params)
 {
 	/* need to use XtParent since we only get button events from work_area */
 	XmHTMLWidget html = XmHTML (XtParent (w));
@@ -4636,7 +3564,7 @@ ExtendEnd(Widget w, XEvent *event, String *params, Cardinal *num_params)
 *	nothing
 *****/
 static void 
-TrackMotion(Widget w, XEvent *event, String *params, Cardinal *num_params)
+TrackMotion(TWidget w, XEvent *event, String *params, Cardinal *num_params)
 {
 	/* need to use XtParent since we only get motion events from work_area */
 	XmHTMLWidget html = XmHTML (XtParent (w));
@@ -4662,7 +3590,7 @@ TrackMotion(Widget w, XEvent *event, String *params, Cardinal *num_params)
 		{
 			cbs.reason = XmCR_HTML_MOTIONTRACK;
 			cbs.event = event;
-			XtCallCallbackList((Widget)html, html->html.motion_track_callback,
+			XtCallCallbackList((TWidget)html, html->html.motion_track_callback,
 				&cbs);
 		}
 		x = motion->x;
@@ -4679,7 +3607,7 @@ TrackMotion(Widget w, XEvent *event, String *params, Cardinal *num_params)
 		{
 			cbs.reason = XmCR_FOCUS;
 			cbs.event = event;
-			XtCallCallbackList((Widget)html, html->html.focus_callback,
+			XtCallCallbackList((TWidget)html, html->html.focus_callback,
 				&cbs);
 			XUndefineCursor(XtDisplay(w), XtWindow(w));
 			return;
@@ -4704,7 +3632,7 @@ TrackMotion(Widget w, XEvent *event, String *params, Cardinal *num_params)
 			{
 				cbs.reason = XmCR_LOSING_FOCUS;
 				cbs.event = event;
-				XtCallCallbackList((Widget)html,
+				XtCallCallbackList((TWidget)html,
 					html->html.losing_focus_callback, &cbs);
 			}
 			return;
@@ -4765,8 +3693,8 @@ TrackMotion(Widget w, XEvent *event, String *params, Cardinal *num_params)
 * Return Type: 	void
 * Description: 	validate anchor underlining enumeration values.
 * In: 
-*	html:		target widget
-*	req:		requester widget
+*	html:		target TWidget
+*	req:		requester TWidget
 * Returns:
 *	nothing.
 *****/
@@ -4775,7 +3703,7 @@ CheckAnchorUnderlining(XmHTMLWidget html, XmHTMLWidget req)
 {
 	/* Anchor Underlining values */
 	if(!XmRepTypeValidValue(underline_repid, req->html.anchor_underline_type, 
-		(Widget)html))
+		(TWidget)html))
 		html->html.anchor_underline_type = XmSINGLE_LINE;
 	else
 		html->html.anchor_underline_type = req->html.anchor_underline_type;
@@ -4803,7 +3731,7 @@ CheckAnchorUnderlining(XmHTMLWidget html, XmHTMLWidget req)
 
 	/* Visited Anchor Underlining values */
 	if(!XmRepTypeValidValue(underline_repid, 
-		req->html.anchor_visited_underline_type, (Widget)html))
+		req->html.anchor_visited_underline_type, (TWidget)html))
 		html->html.anchor_visited_underline_type = XmSINGLE_LINE;
 	else
 		html->html.anchor_visited_underline_type = 
@@ -4832,7 +3760,7 @@ CheckAnchorUnderlining(XmHTMLWidget html, XmHTMLWidget req)
 
 	/* Target Anchor Underlining values */
 	if(!XmRepTypeValidValue(underline_repid, 
-		html->html.anchor_target_underline_type, (Widget)html))
+		html->html.anchor_target_underline_type, (TWidget)html))
 		req->html.anchor_target_underline_type = XmSINGLE_DASHED_LINE;
 	else
 		html->html.anchor_target_underline_type = 
@@ -4865,8 +3793,8 @@ CheckAnchorUnderlining(XmHTMLWidget html, XmHTMLWidget req)
 * Return Type: 	void
 * Description: 	checks and sets the alignment resources
 * In: 
-*	html:		target widget
-*	req:		requestor widget
+*	html:		target TWidget
+*	req:		requestor TWidget
 * Returns:
 *	nothing.
 *****/
@@ -4885,7 +3813,7 @@ CheckAlignment(XmHTMLWidget html, XmHTMLWidget req)
 			html->html.default_halign = XmHALIGN_LEFT;
 
 		/* verify alignment */
-		if(XmRepTypeValidValue(string_repid, req->html.alignment, (Widget)html))
+		if(XmRepTypeValidValue(string_repid, req->html.alignment, (TWidget)html))
 		{
 			if(html->html.alignment == XmALIGNMENT_BEGINNING)
 				html->html.default_halign = XmHALIGN_LEFT;
@@ -5139,7 +4067,7 @@ VerticalPosToLine(XmHTMLWidget html, int y)
 /*****
 * Name: 		ScrollToLine
 * Return Type: 	void
-* Description: 	scrolls the widget to the given line number.
+* Description: 	scrolls the TWidget to the given line number.
 * In: 
 *	html:		XmHTMLWidget id
 *	line:		line number to scroll to.
@@ -5239,7 +4167,7 @@ ScrollToLine(XmHTMLWidget html, int line)
 *	the id upon success, -1 if not found.
 *****/
 int
-XmHTMLAnchorGetId(Widget w, String anchor)
+XmHTMLAnchorGetId(TWidget w, String anchor)
 {
 	XmHTMLObjectTableElement anchor_data = NULL;
 
@@ -5267,7 +4195,7 @@ XmHTMLAnchorGetId(Widget w, String anchor)
 *	nothing.
 *****/
 void
-XmHTMLAnchorScrollToId(Widget w, int anchor_id)
+XmHTMLAnchorScrollToId(TWidget w, int anchor_id)
 {
 	XmHTMLWidget html;
 	XmHTMLObjectTableElement anchor_data = NULL;	
@@ -5314,7 +4242,7 @@ XmHTMLAnchorScrollToId(Widget w, int anchor_id)
 *	nothing.
 *****/
 void
-XmHTMLAnchorScrollToName(Widget w, String anchor)
+XmHTMLAnchorScrollToName(TWidget w, String anchor)
 {
 	XmHTMLWidget html;
 	XmHTMLObjectTableElement anchor_data = NULL;
@@ -5351,15 +4279,15 @@ XmHTMLAnchorScrollToName(Widget w, String anchor)
 /*****
 * Name: 		XmHTMLTextScrollToLine
 * Return Type: 	void
-* Description: 	scrolls the widget to the given line number.
+* Description: 	scrolls the TWidget to the given line number.
 * In: 
-*	w:			widget to scroll
+*	w:			TWidget to scroll
 *	line:		line number to scroll to.
 * Returns:
 *	nothing.
 *****/
 void
-XmHTMLTextScrollToLine(Widget w, int line)
+XmHTMLTextScrollToLine(TWidget w, int line)
 {
 	/* sanity check */
 	if(!w || !XmIsHTML(w))
@@ -5386,7 +4314,7 @@ XmHTMLTextScrollToLine(Widget w, int line)
 *	or there wasn't a current document.
 *****/
 String
-XmHTMLTextGetSource(Widget w)
+XmHTMLTextGetSource(TWidget w)
 {
 	if(!w || !XmIsHTML(w))
 	{
@@ -5411,13 +4339,13 @@ XmHTMLTextGetSource(Widget w)
 *	failure.
 * Note:
 *	The return value from this function must be freed by the caller.
-*	Typical use of this function is to set this buffer into the widget when
+*	Typical use of this function is to set this buffer into the TWidget when
 *	the parser failed to verify the document as it might well be that a next
 *	parser pass on the original document does produce a HTML3.2 conforming
 *	and verified document.
 *****/
 String
-XmHTMLTextGetString(Widget w)
+XmHTMLTextGetString(TWidget w)
 {
 	if(!w || !XmIsHTML(w))
 	{
@@ -5453,7 +4381,7 @@ XmHTMLGetVersion(void)
 *	value of the title upon success, NULL on failure.
 *****/
 String 
-XmHTMLGetTitle(Widget w)
+XmHTMLGetTitle(TWidget w)
 {
 	XmHTMLWidget html;
 	XmHTMLObject *tmp;
@@ -5510,19 +4438,19 @@ XmHTMLGetTitle(Widget w)
 
 /*****
 * Name: 		XmCreateHTML
-* Return Type: 	Widget
-* Description: 	creates a XmHTML widget
+* Return Type: 	TWidget
+* Description: 	creates a XmHTML TWidget
 * In: 
-*	parent:		widget to act as parent for this new XmHTMLWidget
-*	name:		name for the new widget
+*	parent:		TWidget to act as parent for this new XmHTMLWidget
+*	name:		name for the new TWidget
 *	arglist:	arguments for this new XmHTMLWidget
 *	argcount:	no of arguments
 * Returns:
-*	a newly created widget. This routine exits if parent is NULL or a subclass
+*	a newly created TWidget. This routine exits if parent is NULL or a subclass
 *	of XmGadget.
 *****/
-Widget
-XmCreateHTML(Widget parent, String name, ArgList arglist, Cardinal argcount)
+TWidget
+XmCreateHTML(TWidget parent, String name, ArgList arglist, Cardinal argcount)
 {
 	if(parent && !XmIsGadget(parent))
 		return(XtCreateWidget(name, xmHTMLWidgetClass, parent, 
@@ -5545,7 +4473,7 @@ XmCreateHTML(Widget parent, String name, ArgList arglist, Cardinal argcount)
 *	nothing
 *****/
 void 
-XmHTMLImageFreeAllImages(Widget w)
+XmHTMLImageFreeAllImages(TWidget w)
 {
 	XmHTMLImage *image, *image_list;
 	Display *dpy;
@@ -5591,15 +4519,15 @@ XmHTMLImageFreeAllImages(Widget w)
 /*****
 * Name: 		XmHTMLImageAddImageMap
 * Return Type: 	void
-* Description: 	add the given imagemap to a HTML widget
+* Description: 	add the given imagemap to a HTML TWidget
 * In: 
-*	w:			widget
+*	w:			TWidget
 *	image_map:	raw html data containing the imagemap to parse.
 * Returns:
 *	nothing
 *****/
 void
-XmHTMLImageAddImageMap(Widget w, String image_map)
+XmHTMLImageAddImageMap(TWidget w, String image_map)
 {
 	XmHTMLWidget html;
 	XmHTMLObject *parsed_map, *temp;
@@ -5670,7 +4598,7 @@ XmHTMLImageAddImageMap(Widget w, String image_map)
 * Description: 	forces a layout recomputation of the currently loaded document
 *				and triggers a redisplay.
 * In: 
-*	w:			Widget for which to redo layout computation.
+*	w:			TWidget for which to redo layout computation.
 * Returns:
 *	nothing
 * Note:
@@ -5678,7 +4606,7 @@ XmHTMLImageAddImageMap(Widget w, String image_map)
 *	and/or replacing routines.
 *****/
 void
-XmHTMLRedisplay(Widget w)
+XmHTMLRedisplay(TWidget w)
 {
 	XmHTMLWidget html;
 
@@ -5699,9 +4627,9 @@ XmHTMLRedisplay(Widget w)
 		ClearArea(html, 0, 0, html->core.width, html->core.height);
 
 		/* sync so the display is updated */
-		XSync(XtDisplay((Widget)html), False);
+		XSync(XtDisplay((TWidget)html), False);
 
-		XmUpdateDisplay((Widget)html);
+		XmUpdateDisplay((TWidget)html);
 		if(XtIsManaged(html->html.vsb))
 			XmUpdateDisplay(html->html.vsb);
 		if(XtIsManaged(html->html.hsb))
@@ -5722,7 +4650,7 @@ XmHTMLRedisplay(Widget w)
 *	document layout, XmIMAGE_OK if not and some other value upon error.
 *****/
 XmImageStatus
-XmHTMLImageUpdate(Widget w, XmImageInfo *image)
+XmHTMLImageUpdate(TWidget w, XmImageInfo *image)
 {
 	XmHTMLWidget html;
 	XmHTMLObjectTableElement temp;
@@ -5771,7 +4699,7 @@ XmHTMLImageUpdate(Widget w, XmImageInfo *image)
 				temp->width, temp->height, False);
 			/* put up the new image */
 			_XmHTMLPaint(html, temp, temp->next);
-			XSync(XtDisplay((Widget)html), True);
+			XSync(XtDisplay((TWidget)html), True);
 		}
 	}
 	else
@@ -5780,7 +4708,7 @@ XmHTMLImageUpdate(Widget w, XmImageInfo *image)
 		if(!is_body_image && html->html.body_image != NULL)
 		{
 			ClearArea(html, 0, 0, html->core.width, html->core.height);
-			XSync(XtDisplay((Widget)html), True);
+			XSync(XtDisplay((TWidget)html), True);
 		}
 	}
 	return(XmIMAGE_OK);
@@ -5799,7 +4727,7 @@ XmHTMLImageUpdate(Widget w, XmImageInfo *image)
 *	document layout, XmIMAGE_OK if not and some other value upon error.
 *****/
 XmImageStatus
-XmHTMLImageReplace(Widget w, XmImageInfo *image, XmImageInfo *new_image)
+XmHTMLImageReplace(TWidget w, XmImageInfo *image, XmImageInfo *new_image)
 {
 	XmHTMLWidget html;
 	XmHTMLObjectTableElement temp;
@@ -5847,7 +4775,7 @@ XmHTMLImageReplace(Widget w, XmImageInfo *image, XmImageInfo *new_image)
 				temp->width, temp->height, False);
 			/* put up the new image */
 			_XmHTMLPaint(html, temp, temp->next);
-			XSync(XtDisplay((Widget)html), True);
+			XSync(XtDisplay((TWidget)html), True);
 		}
 	}
 	else
@@ -5856,7 +4784,7 @@ XmHTMLImageReplace(Widget w, XmImageInfo *image, XmImageInfo *new_image)
 		if(!is_body_image && html->html.body_image != NULL)
 		{
 			ClearArea(html, 0, 0, html->core.width, html->core.height);
-			XSync(XtDisplay((Widget)html), True);
+			XSync(XtDisplay((TWidget)html), True);
 		}
 	}
 	return(XmIMAGE_OK); 
@@ -5872,7 +4800,7 @@ XmHTMLImageReplace(Widget w, XmImageInfo *image, XmImageInfo *new_image)
 *	nothing
 *****/
 void
-XmHTMLImageFreeImageInfo(Widget w, XmImageInfo *info)
+XmHTMLImageFreeImageInfo(TWidget w, XmImageInfo *info)
 {
 	static String func = "XmHTMLImageFreeImageInfo";
 
@@ -5971,16 +4899,16 @@ XmHTMLImageGZFSupported(void)
 
 /*****
 * Name: 		XmHTMLFrameGetChild
-* Return Type: 	Widget
-* Description: 	returns the Widget id of a frame child given it's name.
+* Return Type: 	TWidget
+* Description: 	returns the TWidget id of a frame child given it's name.
 * In: 
 *	w:			XmHTMLWidget
 *	name:		name of frame to locate.
 * Returns:
-*	If found, the widget id of the requested frame, NULL otherwise. 
+*	If found, the TWidget id of the requested frame, NULL otherwise. 
 *****/
-Widget
-XmHTMLFrameGetChild(Widget w, String name)
+TWidget
+XmHTMLFrameGetChild(TWidget w, String name)
 {
 	XmHTMLWidget html;
 	int i;
@@ -6008,7 +4936,7 @@ XmHTMLFrameGetChild(Widget w, String name)
 /*****
 * Name: 		XmHTMLTextSetString
 * Return Type: 	void
-* Description: 	sets the given text into the given HTML widget
+* Description: 	sets the given text into the given HTML TWidget
 * In: 
 *	w:			XmHTMLWidget in question
 *	value:		text to set
@@ -6016,7 +4944,7 @@ XmHTMLFrameGetChild(Widget w, String name)
 *	clears any previous text and sets the new text.
 *****/
 void
-XmHTMLTextSetString(Widget w, String text)
+XmHTMLTextSetString(TWidget w, String text)
 {
 	XmHTMLWidget html;
 	Boolean had_hsb, had_vsb;
@@ -6148,7 +5076,7 @@ XmHTMLTextSetString(Widget w, String text)
 *	The return value, nor one of its members may be freed by the caller.
 *****/
 XmHTMLInfoPtr
-XmHTMLXYToInfo(Widget w, int x, int y)
+XmHTMLXYToInfo(TWidget w, int x, int y)
 {
 	static XmHTMLInfoStructure cbs;
 	static XmHTMLImage *image;
@@ -6301,7 +5229,7 @@ XmHTMLXYToInfo(Widget w, int x, int y)
 *	a string which needs to be freed by the caller.
 *****/
 String
-XmHTMLTextGetFormatted(Widget w, unsigned char papertype,
+XmHTMLTextGetFormatted(TWidget w, unsigned char papertype,
 	XmHTMLPaperSize *paperdef, unsigned char type, unsigned char PSoptions)
 {
 	XmHTMLWidget html;
@@ -6335,7 +5263,7 @@ XmHTMLTextGetFormatted(Widget w, unsigned char papertype,
 		return(NULL);
 	}
 
-	/* widget ptr */
+	/* TWidget ptr */
 	html = XmHTML (w);
 
 #if 0

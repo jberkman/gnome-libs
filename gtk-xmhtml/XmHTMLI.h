@@ -40,6 +40,9 @@
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.2  1997/12/11 21:20:21  unammx
+* Step 2: more gtk/xmhtml code, still non-working - mig
+*
 * Revision 1.1  1997/11/28 03:38:55  gnomecvs
 * Work in progress port of XmHTML;  No, it does not compile, don't even try -mig
 *
@@ -108,11 +111,11 @@ extern String _XmHTMLTextGetString(XmHTMLObject *objects);
 extern void _XmHTMLLinkCallback(XmHTMLWidget html);
 
 /* XmNanchorTrackCallback driver */
-extern void _XmHTMLTrackCallback(XmHTMLWidget html, XEvent *event, 
+extern void _XmHTMLTrackCallback(XmHTMLWidget html, TEvent *event, 
 	XmHTMLAnchor *anchor);
 
 /* XmNactivateCallback driver */
-extern void _XmHTMLActivateCallback(XmHTMLWidget html, XEvent *event, 
+extern void _XmHTMLActivateCallback(XmHTMLWidget html, TEvent *event, 
 	XmHTMLAnchor *anchor);
 
 /* XmNdocumentCallback driver */
@@ -184,7 +187,7 @@ extern void _XmHTMLFormSelectClose(XmHTMLWidget html, XmHTMLForm *entry);
 extern void _XmHTMLFreeForm(XmHTMLWidget html, XmHTMLFormData *form);
 
 /* collect and submit form data */
-extern void _XmHTMLFormActivate(XmHTMLWidget html, XEvent *event,
+extern void _XmHTMLFormActivate(XmHTMLWidget html, TEvent *event,
 	XmHTMLForm *entry);
 
 /* reset given form data */

@@ -36,6 +36,9 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.2  1997/12/11 21:20:21  unammx
+* Step 2: more gtk/xmhtml code, still non-working - mig
+*
 * Revision 1.1  1997/11/28 03:38:56  gnomecvs
 * Work in progress port of XmHTML;  No, it does not compile, don't even try -mig
 *
@@ -1806,10 +1809,14 @@ ParseBodyTags(XmHTMLWidget html, XmHTMLObject *data)
 					html->html.body_fg_save);
 			free(chPtr);
 
-			/* also set as foreground for the entire TWidget */
-			/* FEDERICO:
-			   html->manager.foreground = html->html.body_fg;
-			   */
+#ifdef WITH_MOTIF
+			html->manager.foreground = html->html.body_fg;
+#else
+			/* FEDERICO */
+			GTK_WIDGET(html)->style->fg[GTK_STATE_NORMAL].pixel = html->html.body_fg;
+			/* XXX: do we have to set it for all the states? */
+			/* XXX: why does it not set the gc foreground as well? */
+#endif
 		}
 
 		if(doit && (chPtr = _XmHTMLTagGetValue(data->attributes, "bgcolor")))
@@ -1826,11 +1833,14 @@ ParseBodyTags(XmHTMLWidget html, XmHTMLObject *data)
 					html->html.body_bg_save);
 
 				/* also set as background for the entire TWidget */
-#if 0
-				FEDERICO
+#ifdef WITH_MOTIF
 				html->core.background_pixel = html->html.body_bg;
 				XtVaSetValues(html->html.work_area,
 					XmNbackground, html->html.body_bg, NULL);
+#else
+				/* FEDERICO */
+				GTK_WIDGET(html)->style->bg[GTK_STATE_NORMAL].pixel = html->html.body_bg;
+				/* FIXME: set the background resource equivalent */
 #endif
 				/* get new values for top, bottom & highlight */
 				_XmHTMLRecomputeColors(html);
@@ -1876,8 +1886,7 @@ ParseBodyTags(XmHTMLWidget html, XmHTMLObject *data)
 		if(doit == False)
 		{
 			/* first check if we changed the background color */
-#if 0
-			FEDERICo
+#ifdef WITH_MOTIF
 			if(html->core.background_pixel != html->html.body_bg_save)
 			{
 				html->html.body_fg          = html->html.body_fg_save;
@@ -1890,15 +1899,31 @@ ParseBodyTags(XmHTMLWidget html, XmHTMLObject *data)
 				/* restore values for top, bottom & highlight */
 				_XmHTMLRecomputeColors(html);
 			}
+#else
+			/* FEDERICO */
+
+			/* XXX: I don't know whether this is correct at all */
+
+			if (GTK_WIDGET(html)->style->bg[GTK_STATE_NORMAL].pixel != html->html.body_bg_save)
+			{
+				html->html.body_fg = html->html.body_fg_save;
+				html->html.body_bg = html->html.body_bg_save;
+				GTK_WIDGET(html)->style.fg[GTK_STATE_NORMAL].pixel = html->html.body_fg;
+				GTK_WIDGET(html)->style.bg[GTK_STATE_NORMAL].pixel = html->html.body_bg;
+				/* XXX: set the background resource equivalent */
+			}
+					
 #endif
 			html->html.body_fg            = html->html.body_fg_save;
 			html->html.body_bg            = html->html.body_bg_save;
 			html->html.anchor_fg          = html->html.anchor_fg_save;
 			html->html.anchor_visited_fg  = html->html.anchor_visited_fg_save;
 			html->html.anchor_activated_fg=html->html.anchor_activated_fg_save;
-#if 0
-			FEDERICO
+#ifdef WITH_MOTIF
 			html->manager.foreground      = html->html.body_fg;
+#else
+			/* FEDERICO */
+			GTK_WIDGET(html)->style->fg[GTK_STAT_NORMAL].pixel = html->html.body_fg;
 #endif
 			bg_color_set = False;
 		}

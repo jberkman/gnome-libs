@@ -37,6 +37,9 @@
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.2  1997/12/11 21:20:19  unammx
+* Step 2: more gtk/xmhtml code, still non-working - mig
+*
 * Revision 1.1  1997/11/28 03:38:53  gnomecvs
 * Work in progress port of XmHTML;  No, it does not compile, don't even try -mig
 *
@@ -850,7 +853,7 @@ typedef struct{
 *****/
 typedef struct _XmHTMLAnchorCallbackStruct{
 	int reason;				/* the reason the callback was called		*/
-	XEvent *event;			/* event structure that triggered callback	*/
+	TEvent *event;			/* event structure that triggered callback	*/
 	URLType url_type;		/* type of url referenced					*/
 	Cardinal line;			/* line number of the selected anchor		*/
 	String href;			/* pointer to the anchor value				*/
@@ -869,7 +872,7 @@ typedef struct _XmHTMLAnchorCallbackStruct{
 typedef struct
 {
 	int reason;					/* the reason the callback was called		*/
-	XEvent *event;				/* always NULL for XmNdocumentCallback		*/
+	TEvent *event;				/* always NULL for XmNdocumentCallback		*/
 	Boolean html32;				/* True if document was HTML 3.2 conforming	*/
 	Boolean verified;			/* True if document has been verified		*/
 	Boolean balanced;			/* True if parser tree is balanced			*/
@@ -897,7 +900,7 @@ typedef struct
 typedef struct
 {
 	int reason;				/* the reason the callback was called		*/
-	XEvent *event;			/* event structure that triggered callback	*/
+	TEvent *event;			/* event structure that triggered callback	*/
 	String action;			/* URL or cgi-bin destination				*/
 	String enctype;			/* form encoding							*/
 	int method;				/* Form Method, GET (0) or POST (1)			*/
@@ -920,7 +923,7 @@ typedef struct
 typedef struct
 {
 	int reason;			/* the reason the callback was called		*/
-	XEvent *event;		/* event structure that triggered callback	*/
+	TEvent *event;		/* event structure that triggered callback	*/
 	String src;			/* requested document						*/
 	String name;		/* frame name								*/
 	TWidget html;		/* XmHTML widget id							*/
@@ -945,7 +948,7 @@ typedef struct
 typedef struct
 {
 	int reason;			/* the reason the callback was called				*/
-	XEvent *event;		/* event structure that triggered callback			*/
+	TEvent *event;		/* event structure that triggered callback			*/
 	int x,y;			/* position relative to the upper-left image corner	*/
 	String image_name;	/* name of referenced image, value of src attribute	*/
 	String map_name;	/* name of imagemap to fetch						*/
@@ -958,7 +961,7 @@ typedef struct
 *****/
 typedef struct{
 	int reason;					/* the reason the callback was called		*/
-	XEvent *event;				/* event structure that triggered callback	*/
+	TEvent *event;				/* event structure that triggered callback	*/
 	int num_link;				/* number of LINK info to process			*/
 	XmHTMLLinkDataPtr link;		/* array of LINK info to process			*/
 }XmHTMLLinkCallbackStruct, *XmHTMLLinkPtr;
@@ -968,7 +971,7 @@ typedef struct{
 *****/
 typedef struct{
 	int reason;				/* the reason the callback was called		*/
-	XEvent *event;			/* always NULL for XmNmodifyVerifyCallback	*/
+	TEvent *event;			/* always NULL for XmNmodifyVerifyCallback	*/
 	Boolean doit;			/* unused									*/
 	int action;				/* type of modification, HTML_REMOVE/INSERT	*/
 	Cardinal line;			/* current line number in input text		*/
@@ -982,7 +985,7 @@ typedef struct{
 *****/
 typedef struct{
 	int reason;					/* the reason the callback was called	*/
-	XEvent *event;				/* always NULL for XmNparserCallback	*/
+	TEvent *event;				/* always NULL for XmNparserCallback	*/
 	int errnum;					/* total error count uptil now			*/
 	Cardinal line;				/* line number where error was detected	*/
 	int start_pos;				/* absolute index where error starts	*/

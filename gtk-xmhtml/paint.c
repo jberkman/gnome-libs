@@ -35,6 +35,9 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.2  1997/12/11 21:20:23  unammx
+* Step 2: more gtk/xmhtml code, still non-working - mig
+*
 * Revision 1.1  1997/11/28 03:38:58  gnomecvs
 * Work in progress port of XmHTML;  No, it does not compile, don't even try -mig
 *
@@ -2737,16 +2740,17 @@ DrawFrame(XmHTMLWidget html, XmHTMLImage *image, int xs, int ys)
 			/* copy it */
 			tmpGC = XCreateGC(dpy, prev_state, 0, 0);
 			XSetFunction(dpy, tmpGC, GXcopy);
-			XCopyArea(dpy, image->pixmap, prev_state, tmpGC, fx, fy, width,
-				height, 0, 0);
+#else
+			tmpGC = gdk_gc_new(prev_state);
+			gdk_gc_set_function(tmpGC, GDK_COPY);
+#endif
+			Toolkit_Copy_Area(dpy, image->pixmap, prev_state, tmpGC, fx, fy, width, height, 0, 0);
 
 			/* and save it */
 			image->frames[idx].prev_state = prev_state;
 
 			/* free and destroy */
-			XFreeGC(dpy, tmpGC);
-			/* 		FEDERICO: MIRA ESTO. */
-#endif
+			Toolkit_GC_Free(dpy, tmpGC);
 		}
 		if(image->frames[idx].clip)
 		{
