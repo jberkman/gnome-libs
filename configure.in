@@ -182,6 +182,11 @@ if test x$ac_cv_header_db_185_h = xno && test x$ac_cv_header_db_h = xno; then
   AC_MSG_ERROR([Berkeley db library required for Gnome])
 fi
 
+dnl This is needed for the gnome-moz-remote program.  It doesn't use GDK,
+dnl since some of the code in it was written before GDK existed.
+AC_PATH_X
+AC_PATH_XTRA
+
 AM_PATH_GDK_IMLIB(1.8, ,
         AC_MSG_ERROR([*** IMLIB 1.8 not installed - please install first ***]))
 
