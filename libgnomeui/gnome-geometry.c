@@ -32,17 +32,27 @@ gnome_parse_geometry (char *geometry, int *xpos, int *ypos, int *width, int *hei
 {
 	int value;
 	int substract;
+
+	g_return_val_if_fail (geometry != NULL, 0);
+	g_return_val_if_fail (xpos != NULL, 0);
+	g_return_val_if_fail (ypos != NULL, 0);
+	g_return_val_if_fail (width != NULL, 0);
+	g_return_val_if_fail (height != NULL, 0);
 	
 	*xpos = *ypos = *width = *height = -1;
 
 	if (!geometry)
 		return 0;
 
+	if (*geometry == '=')
+		geometry++;
+	if (!*geometry)
+		return 0;
 	if (isdigit (*geometry))
 		*width = get_number (&geometry);
 	if (!*geometry)
 		return 1;
-	if (*geometry == 'x'){
+	if (*geometry == 'x' || *geometry == 'X'){
 		geometry++;
 		*height = get_number (&geometry);
 	}
