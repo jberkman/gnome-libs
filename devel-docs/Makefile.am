@@ -1,4 +1,4 @@
-SUBDIRS = gnome gnomeui zvt templates ui-guide
+SUBDIRS = gnome gnomeui zvt templates ui-guide gnorba
 
 htmldir = $(prefix)/html
 html_DATA = gnome-dev-info.html
