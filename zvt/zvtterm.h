@@ -203,19 +203,9 @@ void         zvt_term_set_shadow_type           (ZvtTerm       *term,
 void         zvt_term_set_size                  (ZvtTerm       *term,
 						 guint          width,
 						 guint          height);
-
   
 /* returns an bitmask of the capabilities compiled into ZvtTerm */
 guint32	     zvt_term_get_capabilities	        (ZvtTerm       *term);
-
-
-
-
-#if 0
-GtkAdjustment* zvt_term_get_adjustment         (ZvtTerm      *terminal);
-void           zvk_term_set_adjustment         (ZvtTerm      *dial,
-                                                GtkAdjustment *adjustment);
-#endif
 
 #ifdef __cplusplus
 }

@@ -1,3 +1,15 @@
+1999-06-17  Michael Zucchi  <mzucchi@zedzone.mmc.com.au>
+
+	* zvtterm.c (zvt_term_draw): When we are asked to draw, make sure
+	the background fill colour is still right (themes can change them!
+	the cads!)
+	(zvt_term_draw): Go back to drawing clearing the whole area before
+	rendering, if we are using a pixmap (otherwise a bit of border can
+	be left).
+
+	* zvtterm.h: Removed the zvt_term_get/set_adjusetment() ifdef'd
+	out functions, so they dont confuse developers.
+
 1999-06-14  Michael Zucchi  <mzucchi@zedzone.mmc.com.au>
 
 	* update.c (vt_expand_line): Range check start value.

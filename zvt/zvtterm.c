@@ -950,6 +950,13 @@ zvt_term_draw (GtkWidget *widget, GdkRectangle *area)
 
   if (GTK_WIDGET_DRAWABLE (widget)) {
     d( printf("zvt_term_draw is drawable\n") );
+
+    /* make sure we've got the right background, incase some stupid style changed it */
+    if (term->transparent==0 && term->pixmap_filename==0) {
+      GdkColor c;
+      c.pixel = term->colors [17];
+      gdk_window_set_background (GTK_WIDGET (term)->window, &c);
+    }
     
     term->in_expose = 1;
     
@@ -958,9 +965,14 @@ zvt_term_draw (GtkWidget *widget, GdkRectangle *area)
     /* always load the background */
     load_background(term);
 
-    if (term->transparent || term->pixmap_filename)
+    if(term->transparent || term->pixmap_filename) {
+      gdk_draw_rectangle (widget->window,
+			  term->back_gc, 1,
+			  0, 0,
+			  widget->allocation.width,
+			  widget->allocation.height);
       fill = -1;
-    else
+    }  else
       fill=17;
 
     /* assume the screen is filled with background? */
@@ -1027,7 +1039,7 @@ zvt_term_expose (GtkWidget      *widget,
 		    (event->area.y + event->area.height) / term->charheight+1);
 
     term->in_expose = 0;
-    
+
     if (term->shadow_type != GTK_SHADOW_NONE)
       gtk_draw_shadow (widget->style, widget->window,
 		       GTK_STATE_NORMAL, term->shadow_type, 0, 0, 
