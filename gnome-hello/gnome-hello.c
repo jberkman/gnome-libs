@@ -61,12 +61,6 @@ main(int argc, char *argv[])
   /* Initialize the i18n stuff */
   textdomain (PACKAGE);
 
-  /* For internationalization, bindtextdomain() and textdomain() are needed.
-     bindtextdomain() specifies where the needed message catalog files can be
-     found.  textdomain selects the domain.  */
-  bindtextdomain(PACKAGE, LOCALEDIR); 
-  textdomain(PACKAGE); 
-  
   /* prepare_app() makes all the gtk calls necessary to set up a
      minimal Gnome application; It's based on the hello world example
      from the Gtk+ tutorial */
