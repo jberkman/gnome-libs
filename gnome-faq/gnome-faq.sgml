@@ -56,7 +56,7 @@
   <bookinfo>
     <title>GNOME Frequently Asked Questions</title>
     <titleabbrev>GNOME-FAQ</titleabbrev>
-    <edition>v1.0.0b</edition>
+    <edition>v1.0.5a</edition>
     <authorgroup>
       <author>
 	<firstname>Todd</firstname>
@@ -495,10 +495,10 @@
 
       <para>The short answer is yes.  The GPL and LGPL used for GNOME
       are explicitly listed as examples for the "Open Source"
-      definition.  We try to avoid using the term Open Source to
-      describe GNOME, however, since not only does the term
-      deliberately hide the freedom inherent in Free Software, but the
-      term is being used for software which is not Free.</para>
+      definition.  However, we try to avoid using the term Open Source
+      to describe GNOME, since not only does the term deliberately
+      hide the freedom inherent in Free Software, but the term is
+      being used for software which is not Free.</para>
 
       <para>The term was developed to try to bring Free Software to
       businesses who didn't want to hear about Freedom.  Personally, I
@@ -1752,10 +1752,10 @@ WM=foo</screen>
 	there's a spell check service there. Now, that might be a
 	shared library which got mapped into your address space and
 	you are now doing straight function calls into it, or it might
-	be a community spell-check service in Burma offered as a
-	public service by the Burma FreeBSD users' group over the
+	be a community spell-check service in Mongolia offered as a
+	public service by the Mongolian FreeBSD users' group over the
 	internet via IIOP. You don't know and, except for maybe a
-	little lag induced by the round-trip to Burma, you really
+	little lag induced by the round-trip to Mongolia, you really
 	don't care. Cool, non?</para>
 
 	<para>The naming service, then, allows objects to register
@@ -1770,7 +1770,7 @@ WM=foo</screen>
 	url="http://www.omg.org/corba/csindx.htm">http://www.omg.org/corba/csindx.htm</ulink>.
 	If you are interested in implementing any of them, then I'm
 	sure that the ORBit developers would love to talk to you.
-	(See Section <link linkend="ORBIT">ORBIT</link>)</para>
+	(See Section <link linkend="ORBIT">ORBit</link>)</para>
       </sect2>
 
       <sect2>
@@ -2097,7 +2097,27 @@ ls -l /opt/gnome/share/gtkrc
       <sect2 id="OpenGL">
 	<title>What is OpenGL?</title>
 
-	<para>To be filled in.</para>
+	<para>OpenGL is a 2D and 3D rendering API developed by Silicon
+	Graphics that has become a de facto industry standard.
+	Basically, it is a tool to take a viewpoint of 3D space, and
+	produce a 2D image of it suitable for drawing on a screen. To
+	quote SGI's FAQ:</para>
+
+	<blockquote>
+	  <para>OpenGL is a rendering only, vendor neutral API
+	  providing 2D and 3D graphics functions, including modeling,
+	  transformations, color, lighting, smooth shading, as well as
+	  advanced features like texture mapping, NURBS, fog, alpha
+	  blending and motion blur. OpenGL works in both immediate and
+	  retained (display list) graphics modes.</para>
+	</blockquote>
+
+	<para>GNOME uses an implementation of the OpenGL API called
+	Mesa.  Mesa is not OpenGL per se, since it is a Free Software
+	project that has not gone through the OpenGL trademark
+	licensing process, but it is a faithful representation of the
+	OpenGL API.  Mesa is not OpenGL(tm) in precisely the same way
+	that GNU/Linux and FreeBSD are not Unix(tm).</para>
       </sect2>
 
       <sect2 id="XDND">
@@ -2535,6 +2555,9 @@ ls -l /opt/gnome/share/gtkrc
 	<member><firstterm>Unix</firstterm>, and <firstterm>The X
 	Window System</firstterm> are trademarks of the Open
 	Group.</member>
+
+	<member><firstterm>OpenGL</firstterm> is a trademark of
+	Silicon Graphics, Inc.</member>
 
 	<member>All other trademarks are the property of their
 	respective owners.</member>
