@@ -1,3 +1,14 @@
+1998-10-14  Martin Baulig  <martin@home-of-linux.org>
+
+	* libgnome/gnome-config.c (parse_path): Spent some hours debugging
+	this, should now be working. Especially fixed some problems with
+	absolute filenames. Look at the comments in the file for details.
+
+	* libgnorba/goad.c (goad_server_list_read): Since `parse_path' is
+	now working, removed some ugly hacks here - use the filename with
+	a slash appended to it in the call to gnome_config_push_prefix and
+	just use `key/value' in the calls to gnome_config_get_string.
+
 1998-10-14  Christopher Blizzard  <blizzard@appliedtheory.com>
 
 	* libgnorba/loadshlib.c (Exception): Use g_warning, not gwarning
