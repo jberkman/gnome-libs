@@ -1,3 +1,5 @@
+#include <stdio.h>
+
 /*
  * Gtk/XmHTML widget port.
  *
@@ -268,7 +270,10 @@ gtk_xmhtml_class_init (GtkXmHTMLClass *class)
 	GtkObjectClass    *object_class;
 	GtkWidgetClass    *widget_class;
 	GtkContainerClass *container_class;
-		
+	extern FILE *__rsd_debug_file;
+
+	__rsd_debug_file = stdout;
+
 	object_class    = (GtkObjectClass *) class;
 	widget_class    = (GtkWidgetClass *) class;
 	container_class = (GtkContainerClass *) class;

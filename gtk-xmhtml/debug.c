@@ -35,6 +35,14 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.4  1998/12/03 06:29:09  sopwith
+* gtk-xmhtml: fix something bacchus pointed out (initialization of global
+* variables from non-constant values).
+*
+* libgnome/gnome-exec.c: redo gnome_execute_async_with_env() to fix
+* 		       Tom's bugs so far - he will probably want to
+* 		       double-check it though.
+*
 * Revision 1.3  1998/02/12 03:08:34  unammx
 * Merge to Koen's XmHTML 1.1.2 + following fixes:
 *
@@ -117,7 +125,7 @@ static char rcsId[]="$Header$";
 /*** Public Variable Declarations ***/
 int xmhtml_debug_levels_defined[MAX_DEBUG_LEVELS];
 int xmhtml_debug_full;
-FILE *__rsd_debug_file = stdout;
+FILE *__rsd_debug_file = NULL;
 int debug_disable_warnings = 0;
 
 /*** Private Datatype Declarations ****/
