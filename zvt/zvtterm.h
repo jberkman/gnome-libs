@@ -50,6 +50,8 @@ extern "C" {
     unsigned int cursor_blink_state:1;	/* cursor blink state */
     unsigned int blink_enabled:1;        /* Set to on if we do blinking */
     unsigned int in_expose:1;	/* updating from within expose events */
+    unsigned int scroll_on_keystroke:1;
+    unsigned int scroll_on_output:1;
 
     int charwidth;		/* size of characters */
     int charheight;
@@ -102,6 +104,8 @@ extern "C" {
   void          zvt_term_show_pointer           (ZvtTerm *term);
 
   void          zvt_term_set_blink              (ZvtTerm *term, int state);
+  void          zvt_term_set_scroll_on_keystroke(ZvtTerm *term, int state);
+  void          zvt_term_set_scroll_on_output   (ZvtTerm *term, int state);
   void          zvt_term_set_color_scheme       (ZvtTerm *term, gushort *red, gushort *grn, gushort *blu);
   void          zvt_term_set_default_color_scheme (ZvtTerm *term);
 	

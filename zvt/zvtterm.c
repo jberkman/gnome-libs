@@ -154,6 +154,8 @@ zvt_term_init (ZvtTerm *term)
   term->cursor_on = 0;
   term->cursor_filled = 1;
   term->cursor_blink_state = 0;
+  term->scroll_on_keystroke = 0;
+  term->scroll_on_output = 0;
   term->blink_enabled = 1;
   term->ic = NULL;
   term->in_expose = 0;
@@ -193,6 +195,18 @@ zvt_term_set_blink (ZvtTerm *term, int state)
     term->timeout_id = gtk_timeout_add (500, zvt_term_cursor_blink, term);
     term->blink_enabled = 1;
   }
+}
+
+void 
+zvt_term_set_scroll_on_keystroke(ZvtTerm *term, int state)
+{
+  term->scroll_on_keystroke = (state != 0);
+}
+
+void 
+zvt_term_set_scroll_on_output   (ZvtTerm *term, int state)
+{
+  term->scroll_on_output = (state != 0);
 }
 
 GtkWidget*
@@ -1112,7 +1126,12 @@ zvt_term_scroll (ZvtTerm *term, int n)
 {
 	gfloat new_value;
 	
-	new_value = term->adjustment->value + (n * term->adjustment->page_size);
+	if (n)
+		new_value = term->adjustment->value + (n * term->adjustment->page_size);
+	else if (new_value == (term->adjustment->upper - term->adjustment->page_size))
+		return;
+	else
+		new_value = term->adjustment->upper - term->adjustment->page_size;
 
 	term->vx->vt.scrollbackold = -1;
 	gtk_adjustment_set_value (term->adjustment,
@@ -1298,8 +1317,10 @@ zvt_term_key_press (GtkWidget *widget, GdkEventKey *event)
       }
       d(printf ("[%s,%d,%d]\n", event->string, event->length, handled));
   }
-  if (handled && p>buffer)
+  if (handled && p>buffer) {
     vt_writechild(&vx->vt, buffer, (p-buffer));
+    if (term->scroll_on_keystroke) zvt_term_scroll (term, 0);
+  }
 
   return handled;
 }
@@ -1370,6 +1391,9 @@ static void zvt_term_readdata(gpointer data, gint fd, GdkInputCondition conditio
   /* *always* turn the cursor back on */
   vt_cursor_state (term, 1);
   
+  /* fix scroll bar */
+  if (term->scroll_on_output) zvt_term_scroll (term, 0);
+
   /* flush all X events - this is really necessary to stop X queuing up
      lots of screen updates and reducing interactivity on a busy terminal */
   gdk_flush();
@@ -1377,7 +1401,6 @@ static void zvt_term_readdata(gpointer data, gint fd, GdkInputCondition conditio
   /* read failed? oh well, that's life -- we handle dead children via
      SIGCHLD */
 
-  /* fix scroll bar */
   zvt_term_fix_scrollbar(term);
 
 }
