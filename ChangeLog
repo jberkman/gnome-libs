@@ -1,3 +1,11 @@
+1998-09-13  Raja R Harinath  <harinath@cs.umn.edu>
+
+	* configure.in: Look for `db_185.h' compatibility header.
+
+	* libgnome/gnome-dump.c: Include <db_185.h> if present,
+	instead of <db.h>.
+	* libgnome/gnome-metadata.c: Likewise.
+
 Thu Sep 10 01:59:25 1998  Tom Tromey  <tromey@cygnus.com>
 
 	* configure.in: Use AC_CHECK_FUNC (not AC_CHECK_FUNCS) to look for

@@ -166,9 +166,16 @@ dnl Check for db stuff.
 DB_LIB=
 AC_CHECK_FUNC(dbopen,,[
   AC_CHECK_LIB(db, dbopen, DB_LIB="-ldb",[
-    AC_MSG_ERROR([Berkeley db library required for Gnome])])])
-AC_CHECK_HEADER(db.h, , [
-  AC_MSG_ERROR([Berkeley db library required for Gnome])])
+    AC_CHECK_LIB(db, db_open, [
+      AC_MSG_ERROR([Your db library is missing db 1.85 compatibility mode])], [
+      AC_MSG_ERROR([Berkeley db library required for Gnome])])])])
+
+dnl the SleepyCat db2 library has a compatibility header for db 1.85.
+AC_CHECK_HEADERS(db_185.h db.h)
+
+if test x$ac_cv_header_db_185_h = xno && test x$ac_cv_header_db_h = xno; then
+  AC_MSG_ERROR([Berkeley db library required for Gnome])
+fi
 
 AM_PATH_GDK_IMLIB(1.8, ,
         AC_MSG_ERROR([*** IMLIB 1.8 not installed - please install first ***]))
