@@ -249,6 +249,7 @@ zvt_term_realize (GtkWidget *widget)
   attributes.window_type = GDK_WINDOW_CHILD;
   attributes.event_mask = gtk_widget_get_events (widget) | 
     GDK_EXPOSURE_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_MOTION_MASK |
+    GDK_POINTER_MOTION_MASK |
     GDK_BUTTON_RELEASE_MASK | GDK_KEY_PRESS_MASK;
   attributes.visual = gtk_widget_get_visual (widget);
   attributes.colormap = gtk_widget_get_colormap (widget);
