@@ -12,7 +12,7 @@ else
 test_gnome =
 endif
 
-SUBDIRS = po intl support macros \
+SUBDIRS = po intl support \
 	tools \
 	images \
 	libart_lgpl \
@@ -44,9 +44,9 @@ confexec_DATA=gnomeConf.sh
 
 ## to automatically rebuild aclocal.m4 if any of the macros in
 ## `macros/' change
-@MAINT@include macros/macros.dep
-@MAINT@macros/macros.dep: macros/Makefile.am
-@MAINT@	cd macros && $(MAKE) macros.dep
+#@MAINT@include macros/macros.dep
+#@MAINT@macros/macros.dep: macros/Makefile.am
+#@MAINT@	cd macros && $(MAKE) macros.dep
 
 ## We create gnomeConf.sh here and not from configure because we want
 ## to get the paths expanded correctly.  Macros like srcdir are given

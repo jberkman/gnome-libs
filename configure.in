@@ -9,7 +9,7 @@ AC_CANONICAL_SYSTEM
 
 AM_INIT_AUTOMAKE(gnome-libs, 1.1.0)
 
-AM_ACLOCAL_INCLUDE(macros)
+AM_ACLOCAL_INCLUDE(gnome-data)
 
 AC_CONFIG_SUBDIRS(gnome-faq)
 
@@ -489,7 +489,7 @@ tools/Makefile
 tools/convertrgb/Makefile
 tools/gnome-doc/Makefile
 $LCLINTRC_OUT
-macros/Makefile],[case "$CONFIG_FILES" in
+],[case "$CONFIG_FILES" in
 *gnome-config*)chmod +x gnome-config;;
 esac
 
