@@ -11,23 +11,18 @@
 
 1998-10-14  Martin Baulig  <martin@home-of-linux.org>
 
-	* libgnome/gnome-config.c (parse_path): If the pushed config prefix
-	does not already end with a slash, we need to insert one when
-	constructing the resulting absolute pathname.
-
-	* libgnorba/goad.c (goad_server_list_read): Do not append a slash
- 	to the filename in call to gnome_config_push_prefix.
-
-1998-10-14  Martin Baulig  <martin@home-of-linux.org>
+	When using absolute config paths that start with an equal sign, we
+	now use `/section/key' instead of `=/section/key' like with relative
+	filenames. This means applications no longer need to distinguish
+	between absolute and relative pathnames.
 
 	* libgnome/gnome-config.c (parse_path): Spent some hours debugging
 	this, should now be working. Especially fixed some problems with
 	absolute filenames. Look at the comments in the file for details.
 
 	* libgnorba/goad.c (goad_server_list_read): Since `parse_path' is
-	now working, removed some ugly hacks here - use the filename with
-	a slash appended to it in the call to gnome_config_push_prefix and
-	just use `key/value' in the calls to gnome_config_get_string.
+	now working, removed some ugly hacks here which used `=/section/key'
+	for absolute config paths instead of `/section/key'.
 
 1998-10-14  Christopher Blizzard  <blizzard@appliedtheory.com>
 
