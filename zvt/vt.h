@@ -86,7 +86,7 @@ struct vt_em {
 
   pid_t childpid;		/* child process id */
   int childfd;			/* child pty file descriptor (read/write) */
-  int keyfd;  			/* keystrokes get written hear (normally the
+  int keyfd;  			/* keystrokes get written here (normally the
 				   same as childfd */
   void *pty_tag;		/* Tag used to talk to the gnome-pty-helper */
   int msgfd;			/* "it's dead" messages come through here */
