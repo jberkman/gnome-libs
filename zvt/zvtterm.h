@@ -26,6 +26,7 @@
 #include <gtk/gtkadjustment.h>
 #include <gtk/gtkwidget.h>
 #include <zvt/vtx.h>
+#include <zvt/background.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -169,6 +170,9 @@ struct _zvtprivate
   int paste_id;			/* for the paste write handler */
 
   GdkCursor *cursor_hand;	/* hand cursor */
+
+  struct zvt_background *background; /* background settings */
+  GdkPixmap *background_pixmap;	/* actual pixmap used to pre-draw background */
 };
 
 /* *** DO NOT USE THIS IN APPS! *** */
