@@ -2,13 +2,17 @@
 gnome-icon-text
 
 <!-- ##### SECTION Short_Description ##### -->
-
+Text wrapping functions.
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
+This module implements a generic and simple text wrapping and drawing
+interface.</para>
 
-</para>
-
+<para>The gnome_icon_layout_text() function can be used to layout a
+piece of text given a number of constraints.  The
+gnome_icon_paint_text() routine is a simple routine that will render a
+piece of text that has been layed out by gnome_icon_layout_text().  </para>
 
 <!-- ##### STRUCT GnomeIconTextInfoRow ##### -->
 <para>

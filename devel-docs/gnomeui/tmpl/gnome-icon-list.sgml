@@ -2,12 +2,17 @@
 GnomeIconList
 
 <!-- ##### SECTION Short_Description ##### -->
-
+An icon list of widgets, with optional caption editing.
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
+The GNOME icon list widget can hold a number of icons with captions.
+You can make the icon captions in the icon list be editable (this is
+configured at the widget creation time).</para>
 
-</para>
+<para>You can control the type of selection mode you desire by using
+the gnome_icon_list_set_selection_mode() function.</para>
+
 
 
 <!-- ##### STRUCT GnomeIconList ##### -->
@@ -335,7 +340,10 @@ GnomeIconList
 
 <!-- ##### SIGNAL GnomeIconList::select-icon ##### -->
 <para>
-
+This signal is emited when an icon becomes selected.  If the event
+argument point to NULL the icon was selected programatically with the
+gnome_icon_list_select_icon() function.  Otherwise it points to the
+<type>GdkEvent</type> that made this icon selected. 
 </para>
 
 @iconlist: the object which received the signal.
@@ -344,7 +352,11 @@ GnomeIconList
 
 <!-- ##### SIGNAL GnomeIconList::unselect-icon ##### -->
 <para>
-
+This signal is emited when an icon becomes unselected (this signal is
+only emited if the icon had been previously selected).  If the event
+argument point to NULL the icon was selected programatically with the
+gnome_icon_list_unselect_icon() function.  Otherwise it points to the
+<type>GdkEvent</type> that made this icon selected. 
 </para>
 
 @iconlist: the object which received the signal.
@@ -353,11 +365,18 @@ GnomeIconList
 
 <!-- ##### SIGNAL GnomeIconList::text-changed ##### -->
 <para>
+The <emphasis>text_changed</emphasis> signal is emited on editable
+icon list widgets if the user has changed the caption of an icon 
+</para>
 
+<para>
+The return value indicates whether the name change is accepted (for
+example, if renaming a file succeeds or not).  If the change is not
+accepted, the text is reset to its previous value.
 </para>
 
 @iconlist: the object which received the signal.
-@arg1: 
-@arg2: 
-@Returns: 
+@num: Icon index whose text changed.
+@arg2: The text entered by the user.
+@Returns: Whether the change is accepted or not.
 

@@ -2,13 +2,15 @@
 GnomeIconTextItem
 
 <!-- ##### SECTION Short_Description ##### -->
-
+Editable text canvas-item for icons. 
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
+Provides a specialized canvas item for displaying icon captions which
+can be interactively changed by the user.</para>
 
-</para>
-
+<para>This Canvas item is used by the <type>GnomeIconList</type> and
+by the desktop icons provided by the GNOME file manager.</type>
 
 <!-- ##### STRUCT GnomeIconTextItem ##### -->
 <para>
@@ -70,50 +72,63 @@ GnomeIconTextItem
 
 <!-- ##### SIGNAL GnomeIconTextItem::text-changed ##### -->
 <para>
+This signal is emited when the text has been changed by the user.  The
+signal handler should return %FALSE if it does not accept the changes
+made to the text (for example, if it was unable to change the actual
+backing store name that this text represents).</para>
 
+<para>
+If the signal handler returns %FALSE, then the text is reset to its
+previous value. 
 </para>
 
 @icontextitem: the object which received the signal.
-@Returns: 
+@Returns: %TRUE if the change is accepted, %FALSE otherwise.
 
 <!-- ##### SIGNAL GnomeIconTextItem::height-changed ##### -->
 <para>
-
+This signals is emited when the height of this item has changed (due
+to the user changing the name).
 </para>
 
 @icontextitem: the object which received the signal.
 
 <!-- ##### SIGNAL GnomeIconTextItem::width-changed ##### -->
 <para>
-
+This signals is emited when the width of this item has changed (due
+to the user changing the name).
 </para>
 
 @icontextitem: the object which received the signal.
 
 <!-- ##### SIGNAL GnomeIconTextItem::editing-started ##### -->
 <para>
-
+This signals is emited when the user has started editing the text on
+the item.
 </para>
 
 @icontextitem: the object which received the signal.
 
 <!-- ##### SIGNAL GnomeIconTextItem::editing-stopped ##### -->
 <para>
-
+This signals is emited when the user has stopped editing the text on
+the item.
 </para>
 
 @icontextitem: the object which received the signal.
 
 <!-- ##### SIGNAL GnomeIconTextItem::selection-started ##### -->
 <para>
-
+This signals is emited when the user has started selecting a region of
+the text.
 </para>
 
 @icontextitem: the object which received the signal.
 
 <!-- ##### SIGNAL GnomeIconTextItem::selection-stopped ##### -->
 <para>
-
+This signals is emited when the user has stopped selecting a region of
+the text.
 </para>
 
 @icontextitem: the object which received the signal.
