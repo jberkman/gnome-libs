@@ -334,32 +334,40 @@
       functionality.</para>
 
       <para>At the time of GNOME's inception, KDE had serious
-      licensing problems, which they are still trying to resolve. KDE
-      is based on a non-free library called Qt, which has a very
-      liberal license, but it is not <ulink url="&wwwgnufree;">Free
-      Software</ulink>.  TrollTech has promised to change the Qt
-      license, but they have not yet done so.  In addition there were
-      compatibility problems between KDE's license and Qt's. Rather
-      than dwell on this issue, you can read <ulink
-      url="&wwwrhqt;">RedHat's position on Qt</ulink> and <ulink
-      url="&wwwdebkde;">Debian's position on KDE</ulink>.  The GNOME
-      people like the KDE people, and we consider this an unfortunate
-      situation that is in the process of being fixed.  Hopefully,
-      this will cease to be an issue soon, and GNOME and KDE can
-      compete friendlily on technical merit and design.</para>
+      licensing problems, which they are still trying to resolve.
+      First, KDE is based on a library called Qt, which was originally
+      non-free.  However TrollTech's recent release of Qt version 2.0
+      uses the QPL, so it qualifies as Free Software.  KDE Development
+      releases are based on the QPL'ed versions of Qt.</para>
 
-      <para>This matter has been hashed out time and time again on the
-      gnome-list mailing list.  Asking this question on gnome-list is
-      discouraged behavior. If you want to go somewhere and start a
-      flame war on this topic, then please do it somewhere far far away
-      where we don't have to listen to you.</para>
+      <para>The other issue is that originally, KDE programs were
+      released under the GPL.  The GPL was designed to encourage more
+      GNU software, so it doesn't work well when linked to software
+      under other licenses.  This incompatibility doesn't prevent
+      anyone from using KDE, but it does make it troublesome to
+      distribute.  For more details, you can read <ulink
+      url="&wwwdebkde;">Debian's position on KDE</ulink>.  KDE is in
+      the process of changing their licenses over to the Artistic
+      license, which avoids the problem.  However, changing licenses
+      on a large project with many authors like KDE is a long and
+      difficult process, so it will take them a while.</para>
+
+      <para>The GNOME people like the KDE people, and we consider this
+      an unfortunate situation that is in the process of being fixed.
+      Hopefully, this will cease to be an issue soon, and GNOME and
+      KDE can compete friendlily on technical merit and design.  This
+      matter has been hashed out time and time again on the gnome-list
+      mailing list.  Asking this question on gnome-list is discouraged
+      behavior. If you want to go somewhere and start a flame war on
+      this topic, then please do it somewhere far far away where we
+      don't have to listen to you.</para>
 
       <para>There are significant design differences between KDE and
       GNOME.  Top of the list is a difference in widget set.  We find
       GTK+ to be nicer, more customizable, more friendly to
-      development in various languages, and more flexible than Qt;
-      others may disagree.  In all, the projects are different enough
-      so that both should be able to coexist and even
+      development in various programming languages, and more flexible
+      than Qt; others may disagree.  In all, the projects are
+      different enough so that both should be able to coexist and even
       collaborate.</para>
 
       <para>GNUStep is another desktop environment that has a lot of
