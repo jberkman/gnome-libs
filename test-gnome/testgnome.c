@@ -1068,7 +1068,7 @@ static GnomeUIInfo helper_edit_menu[] = {
 	{ GNOME_APP_UI_ITEM, "_Copy", "Copy the selection to the clipboard", item_activated, "edit/copy", NULL,
 	  GNOME_APP_PIXMAP_STOCK, GNOME_STOCK_MENU_COPY, 'c', GDK_CONTROL_MASK, NULL },
 	{ GNOME_APP_UI_ITEM, "_Paste", "Paste the contents of the clipboard", item_activated, "edit/paste", NULL,
-	  GNOME_APP_PIXMAP_STOCK, GNOME_STOCK_MENU_CUT, 'v', GDK_CONTROL_MASK, NULL },
+	  GNOME_APP_PIXMAP_STOCK, GNOME_STOCK_MENU_PASTE, 'v', GDK_CONTROL_MASK, NULL },
 	GNOMEUIINFO_END
 };
 
@@ -1109,9 +1109,54 @@ static GnomeUIInfo helper_main_menu[] = {
 	  GNOME_APP_PIXMAP_NONE, NULL, 0, 0, NULL },
 	{ GNOME_APP_UI_SUBTREE, "_Style", "Style settings", helper_style_menu, NULL, NULL,
 	  GNOME_APP_PIXMAP_NONE, NULL, 0, 0, NULL },
-	GNOMEUIINFO_SEPARATOR,
 	{ GNOME_APP_UI_SUBTREE, "_Help", "Help on the program", helper_help_menu, NULL, NULL,
 	  GNOME_APP_PIXMAP_NONE, NULL, 0, 0, NULL },
+	GNOMEUIINFO_END
+};
+
+/* Toolbar definition for the GnomeAppHelper test */
+
+static GnomeUIInfo helper_toolbar_radio_items[] = {
+	{ GNOME_APP_UI_ITEM, "Red", "Set red color", item_activated, "toolbar/red", NULL,
+	  GNOME_APP_PIXMAP_STOCK, GNOME_STOCK_PIXMAP_BOOK_RED, 0, 0, NULL },
+	{ GNOME_APP_UI_ITEM, "Green", "Set green color", item_activated, "toolbar/green", NULL,
+	  GNOME_APP_PIXMAP_STOCK, GNOME_STOCK_PIXMAP_BOOK_GREEN, 0, 0, NULL },
+	{ GNOME_APP_UI_ITEM, "Blue", "Set blue color", item_activated, "toolbar/blue", NULL,
+	  GNOME_APP_PIXMAP_STOCK, GNOME_STOCK_PIXMAP_BOOK_BLUE, 0, 0, NULL },
+	{ GNOME_APP_UI_ITEM, "Yellow", "Set yellow color", item_activated, "toolbar/yellow", NULL,
+	  GNOME_APP_PIXMAP_STOCK, GNOME_STOCK_PIXMAP_BOOK_YELLOW, 0, 0, NULL },
+	GNOMEUIINFO_END
+};
+
+static GnomeUIInfo helper_toolbar[] = {
+	{ GNOME_APP_UI_ITEM, "New", "Create a new file", item_activated, "toolbar/new", NULL,
+	  GNOME_APP_PIXMAP_STOCK, GNOME_STOCK_PIXMAP_NEW, 0, 0, NULL },
+	{ GNOME_APP_UI_ITEM, "Open", "Open an existing file", item_activated, "toolbar/open", NULL,
+	  GNOME_APP_PIXMAP_STOCK, GNOME_STOCK_PIXMAP_OPEN, 0, 0, NULL },
+	{ GNOME_APP_UI_ITEM, "Save", "Save the current file", item_activated, "toolbar/save", NULL,
+	  GNOME_APP_PIXMAP_STOCK, GNOME_STOCK_PIXMAP_SAVE, 0, 0, NULL },
+	{ GNOME_APP_UI_ITEM, "Print", "Print the current file", item_activated, "toolbar/print", NULL,
+	  GNOME_APP_PIXMAP_STOCK, GNOME_STOCK_PIXMAP_PRINT, 0, 0, NULL },
+
+	GNOMEUIINFO_SEPARATOR,
+
+	{ GNOME_APP_UI_ITEM, "Undo", "Undo the last operation", item_activated, "toolbar/undo", NULL,
+	  GNOME_APP_PIXMAP_STOCK, GNOME_STOCK_PIXMAP_UNDO, 0, 0, NULL },
+	{ GNOME_APP_UI_ITEM, "Redo", "Redo the last undo-ed operation", item_activated, "toolbar/redo", NULL,
+	  GNOME_APP_PIXMAP_STOCK, GNOME_STOCK_PIXMAP_REDO, 0, 0, NULL },
+
+	GNOMEUIINFO_SEPARATOR,
+
+	{ GNOME_APP_UI_ITEM, "Cut", "Cut the selection to the clipboard", item_activated, "toolbar/cut", NULL,
+	  GNOME_APP_PIXMAP_STOCK, GNOME_STOCK_PIXMAP_CUT, 0, 0, NULL },
+	{ GNOME_APP_UI_ITEM, "Copy", "Copy the selection to the clipboard", item_activated, "toolbar/copy", NULL,
+	  GNOME_APP_PIXMAP_STOCK, GNOME_STOCK_PIXMAP_COPY, 0, 0, NULL },
+	{ GNOME_APP_UI_ITEM, "Paste", "Paste the contents of the clipboard", item_activated, "toolbar/paste", NULL,
+	  GNOME_APP_PIXMAP_STOCK, GNOME_STOCK_PIXMAP_PASTE, 0, 0, NULL },
+
+	GNOMEUIINFO_SEPARATOR,
+
+	GNOMEUIINFO_RADIOLIST (helper_toolbar_radio_items),
 	GNOMEUIINFO_END
 };
 
@@ -1123,6 +1168,7 @@ create_app_helper (GtkWidget *widget, gpointer data)
 
 	app = gnome_app_new ("testGNOME", "GnomeAppHelper test");
 	gnome_app_create_menus (GNOME_APP (app), helper_main_menu);
+	gnome_app_create_toolbar (GNOME_APP (app), helper_toolbar);
 	gtk_widget_show (app);
 }
 
