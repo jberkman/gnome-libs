@@ -1,3 +1,15 @@
+1999-01-11  Miguel de Icaza  <miguel@nuclecu.unam.mx>
+
+	* libgnome/gnomelib-init.c (gnomelib_init): Improved
+	gnome_user_home_dir handling.  Instead of using the HOME setting
+	only, it will try to use getpwnam ("USER") or getpwuid (getuid ())
+	if getenv (HOME) fails.
+
+1999-01-08  Miguel de Icaza  <miguel@nuclecu.unam.mx>
+
+	* libgnome/gnome-triggers.c (gnome_trigger_do_mediaplay): Removed
+	the warning.
+
 1999-01-10  Jeff Garzik  <jgarzik@pobox.com>
 
 	* libgnome/gnome-util.[ch], libgnome/gnome-dentry.[ch]:
