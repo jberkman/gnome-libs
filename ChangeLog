@@ -1,3 +1,8 @@
+Sat Jan 09 13:43:01 1999  Manish Vachharajani <mvachhar@vger.rutgers.edu>
+
+	* libgnome/gnome-exec.c: make all the gnome_exec functions close
+	all but the 0, 1, and 2 file descriptors
+	
 Sat Jan 09 01:28:21 1999  George Lebl  <jirka@5z.com>
 
 	* libgnome/gnome-config.c: fixed sync_file, it didn't work quite right always
