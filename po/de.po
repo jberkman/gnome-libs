@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-libs VERSION\n"
-"POT-Creation-Date: 1998-08-01 16:36-0500\n"
+"POT-Creation-Date: 1998-08-06 13:45-0500\n"
 "PO-Revision-Date: 1998-02-20 17:05+0100\n"
 "Last-Translator: Carsten Schaar@fs-maphy.uni-hannover.de>\n"
 "Language-Team: Carsten Schaar@fs-maphy.uni-hannover.de>\n"
@@ -14,47 +14,63 @@ msgstr ""
 "Content-Type: text/plain; charset=iso-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: gnome-hello/gnome-hello-2-i18n.c:31 gnome-hello/gnome-hello-3-parse-args.c:33 gnome-hello/gnome-hello.c:40
+#: gnome-hello/gnome-hello-2-i18n.c:31
+#: gnome-hello/gnome-hello-3-parse-args.c:33
 msgid "File/Exit"
 msgstr "Datei/Beenden"
 
-#: gnome-hello/gnome-hello-2-i18n.c:31 gnome-hello/gnome-hello-3-parse-args.c:33 gnome-hello/gnome-hello.c:40
+#: gnome-hello/gnome-hello-2-i18n.c:31
+#: gnome-hello/gnome-hello-3-parse-args.c:33
 msgid "<control>E"
 msgstr "<control>E"
 
 #. The '...' end indicate that the options open a dialog
-#: gnome-hello/gnome-hello-2-i18n.c:33 gnome-hello/gnome-hello-3-parse-args.c:35 gnome-hello/gnome-hello.c:42
+#: gnome-hello/gnome-hello-2-i18n.c:33
+#: gnome-hello/gnome-hello-3-parse-args.c:35
 msgid "Help/About..."
-msgstr "Hilfe/\334ber..."
+msgstr "Hilfe/Über..."
 
-#: gnome-hello/gnome-hello-2-i18n.c:33 gnome-hello/gnome-hello-3-parse-args.c:35 gnome-hello/gnome-hello.c:42
+#: gnome-hello/gnome-hello-2-i18n.c:33
+#: gnome-hello/gnome-hello-3-parse-args.c:35
 msgid "<control>A"
 msgstr "<control>A"
 
 #. Make the main window and binds the delete event so you can close
 #. the program from your WM
-#: gnome-hello/gnome-hello-2-i18n.c:69 gnome-hello/gnome-hello-3-parse-args.c:99 gnome-hello/gnome-hello-4-SM.c:197
+#: gnome-hello/gnome-hello-2-i18n.c:69
+#: gnome-hello/gnome-hello-3-parse-args.c:99
+#: gnome-hello/gnome-hello-4-SM.c:197
 msgid "Hello World Gnomified"
 msgstr "\"Hallo Welt\" gnomifiziert"
 
 #. We make a button, bind the 'clicked' signal to hello and setting it
 #. to be the content of the main window
-#: gnome-hello/gnome-hello-2-i18n.c:83 gnome-hello/gnome-hello-3-parse-args.c:113 gnome-hello/gnome-hello-4-SM.c:213 gnome-hello/gnome-hello.c:103
+#: gnome-hello/gnome-hello-2-i18n.c:83
+#: gnome-hello/gnome-hello-3-parse-args.c:113
+#: gnome-hello/gnome-hello-4-SM.c:213
 msgid "Hello GNOME"
 msgstr "Hallo GNOME"
 
-#: gnome-hello/gnome-hello-2-i18n.c:102 gnome-hello/gnome-hello-3-parse-args.c:132 gnome-hello/gnome-hello-4-SM.c:232 gnome-hello/gnome-hello.c:122
+#: gnome-hello/gnome-hello-2-i18n.c:102
+#: gnome-hello/gnome-hello-3-parse-args.c:132
+#: gnome-hello/gnome-hello-4-SM.c:232
 msgid "Hello GNOME\n"
 msgstr "Hallo GNOME\n"
 
-#: gnome-hello/gnome-hello-2-i18n.c:125 gnome-hello/gnome-hello-3-parse-args.c:155 gnome-hello/gnome-hello-4-SM.c:255 gnome-hello/gnome-hello.c:145
+#: gnome-hello/gnome-hello-2-i18n.c:125
+#: gnome-hello/gnome-hello-3-parse-args.c:155
+#: gnome-hello/gnome-hello-4-SM.c:255
 msgid "The Hello World Gnomified"
 msgstr "\"Hallo Welt\" gnomifiziert"
 
 #. another comments
-#: gnome-hello/gnome-hello-2-i18n.c:130 gnome-hello/gnome-hello-3-parse-args.c:160 gnome-hello/gnome-hello-4-SM.c:260 gnome-hello/gnome-hello.c:150
+#: gnome-hello/gnome-hello-2-i18n.c:130
+#: gnome-hello/gnome-hello-3-parse-args.c:160
+#: gnome-hello/gnome-hello-4-SM.c:260
 msgid "GNOME is a civilized software system so we've a \"hello world\" program"
-msgstr "GNOME ist ein modernes Softwaresystem, deshalb gibt es ein \"Hallo Welt\" Programm"
+msgstr ""
+"GNOME ist ein modernes Softwaresystem, deshalb gibt es ein \"Hallo Welt\" "
+"Programm"
 
 #: gnome-hello/gnome-hello-3-parse-args.c:43
 msgid "Run silently"
@@ -72,7 +88,7 @@ msgstr ""
 # , fuzzy
 #: gnome-hello/gnome-hello-4-SM.c:66 gnome-hello/gnome-hello-7-mdi.c:398
 msgid "About..."
-msgstr "\334ber"
+msgstr "Über"
 
 #: gnome-hello/gnome-hello-4-SM.c:66
 msgid "Info about GNOME hello"
@@ -81,15 +97,18 @@ msgstr ""
 # , fuzzy
 #. and document menu and document list paths (see gnome-app-helper menu
 #. insertion routines for details)
-#: gnome-hello/gnome-hello-4-SM.c:78 gnome-hello/gnome-hello-7-mdi.c:362 gnome-hello/gnome-hello-7-mdi.c:437 libgnomeui/stock_demo.c:212
+#: gnome-hello/gnome-hello-4-SM.c:78 gnome-hello/gnome-hello-7-mdi.c:362
+#: gnome-hello/gnome-hello-7-mdi.c:437 libgnomeui/stock_demo.c:212
 msgid "File"
 msgstr "Datei/Beenden"
 
-#: gnome-hello/gnome-hello-4-SM.c:79 gnome-hello/gnome-hello-7-mdi.c:404 libgnomeui/gnome-stock.c:474 libgnomeui/gnome-stock.c:475 libgnomeui/gnome-stock.c:476 libgnomeui/stock_demo.c:342
+#: gnome-hello/gnome-hello-4-SM.c:79 gnome-hello/gnome-hello-7-mdi.c:404
+#: libgnomeui/gnome-stock.c:474 libgnomeui/stock_demo.c:342
 msgid "Help"
 msgstr "Hilfe"
 
-#: gnome-hello/gnome-hello-4-SM.c:91 libgnomeui/gnome-client.c:171 libgnomeui/gnome-client.c:173
+#: gnome-hello/gnome-hello-4-SM.c:91 libgnomeui/gnome-client.c:171
+#: libgnomeui/gnome-client.c:173
 msgid "ID"
 msgstr ""
 
@@ -137,27 +156,6 @@ msgstr ""
 msgid "Children/"
 msgstr ""
 
-# , c-format
-#: gnome-hello/gnome-hello.c:208
-msgid ""
-"%s: A gnomified 'Hello World' program\n"
-"\n"
-"Usage: %s [--help] [--version]\n"
-"\n"
-"Options:\n"
-"        --help     display this help and exit\n"
-"        --version  output version information and exit\n"
-msgstr ""
-
-# , c-format
-#: gnome-hello/gnome-hello.c:217
-msgid "Gnome Hello %s.\n"
-msgstr ""
-
-#: gnome-hello/gnome-hello.c:231
-msgid "Options error\n"
-msgstr ""
-
 #: libgnome/gnome-parse.c:44
 msgid ""
 "\n"
@@ -178,7 +176,7 @@ msgstr "Autoren: "
 
 #: libgnomeui/gnome-about.c:567 libgnomeui/stock_demo.c:331
 msgid "About"
-msgstr "\334ber"
+msgstr "Über"
 
 #: libgnomeui/gnome-app-util.c:86
 msgid " (press return)"
@@ -274,6 +272,7 @@ msgstr ""
 msgid "AC"
 msgstr ""
 
+#. inverse button
 #: libgnomeui/gnome-calculator.c:1065
 msgid "sin"
 msgstr ""
@@ -423,9 +422,12 @@ msgid "Disable connection to session manager"
 msgstr ""
 
 # , fuzzy
+#. Only add the label if all the children are to be shown.  Otherwise
+#. * things look too wide; in that case just show the arrow.
+#.
 #: libgnomeui/gnome-dateedit.c:393
 msgid "Calendar"
-msgstr "L\366schen"
+msgstr "Löschen"
 
 #: libgnomeui/gnome-dentry-edit.c:164
 msgid "Name:"
@@ -514,7 +516,9 @@ msgstr "'X shared memory' Erweiterung nicht benutzen"
 msgid "NAME"
 msgstr "NAME"
 
-#: libgnomeui/gnome-init.c:54 libgnomeui/gnome-init.c:55 libgnomeui/gnome-init.c:56 libgnomeui/gnome-init.c:57 libgnomeui/gnome-init.c:58 libgnomeui/gnome-init.c:59
+#: libgnomeui/gnome-init.c:54 libgnomeui/gnome-init.c:55
+#: libgnomeui/gnome-init.c:56 libgnomeui/gnome-init.c:57
+#: libgnomeui/gnome-init.c:58 libgnomeui/gnome-init.c:59
 msgid "FIXME"
 msgstr ""
 
@@ -584,7 +588,7 @@ msgstr "OK"
 
 #: libgnomeui/gnome-stock.c:469
 msgid "Apply"
-msgstr "\334bernehmen"
+msgstr "Übernehmen"
 
 #: libgnomeui/gnome-stock.c:470
 msgid "Cancel"
@@ -592,7 +596,7 @@ msgstr "Abbruch"
 
 #: libgnomeui/gnome-stock.c:471 libgnomeui/stock_demo.c:163
 msgid "Close"
-msgstr "Schlie\337en"
+msgstr "Schließen"
 
 #: libgnomeui/gnome-stock.c:472
 msgid "Yes"
@@ -602,9 +606,17 @@ msgstr "Ja"
 msgid "No"
 msgstr "Nein"
 
+#: libgnomeui/gnome-stock.c:475
+msgid "Next"
+msgstr ""
+
+#: libgnomeui/gnome-stock.c:476
+msgid "Prev"
+msgstr ""
+
 #: libgnomeui/gnome-stock.c:1394
 msgid "Menu Accelerator Keys"
-msgstr "Tastaturk\374rzel f\374r Men\374s"
+msgstr "Tastaturkürzel für Menüs"
 
 #: libgnomeui/gnome-stock.c:1396
 msgid "Global"
@@ -612,11 +624,11 @@ msgstr "Global"
 
 #: libgnomeui/gnome-stock.c:1398
 msgid "Menu Item"
-msgstr "Men\374eintrag"
+msgstr "Menüeintrag"
 
 #: libgnomeui/gnome-stock.c:1399
 msgid "Accelerator"
-msgstr "Tastaturk\374rzel"
+msgstr "Tastaturkürzel"
 
 #: libgnomeui/gnome_segv.c:58
 msgid ""
@@ -628,6 +640,7 @@ msgstr ""
 
 # , c-format
 #: libgnomeui/gnome_segv.c:68
+#, c-format
 msgid ""
 "Application \"%s\" has a bug.\n"
 "SIGSEGV received at PC %#lx in PID %d.\n"
@@ -711,6 +724,104 @@ msgstr "Punkte"
 msgid "Edit"
 msgstr ""
 
+#: libvfs/extfs.c:268
+#, c-format
+msgid ""
+"Couldn't open %s archive\n"
+"%s"
+msgstr ""
+
+#: libvfs/extfs.c:300 libvfs/extfs.c:320
+msgid "Inconsistent extfs archive"
+msgstr ""
+
+#: libvfs/ftpfs.c:602
+#, c-format
+msgid " Could not set source routing (%s)"
+msgstr ""
+
+#: libvfs/ftpfs.c:2782 libvfs/ftpfs.c:2797
+msgid ""
+"~/.netrc file has not correct mode.\n"
+"Remove password or correct mode."
+msgstr ""
+
+#: libvfs/mcfs.c:156
+msgid " MCFS "
+msgstr ""
+
+#: libvfs/mcfs.c:156
+msgid " The server does not support this version "
+msgstr ""
+
+# , fuzzy
+#: libvfs/mcfs.c:172
+#, fuzzy
+msgid " Warning "
+msgstr "Warnung"
+
+#: libvfs/mcfs.c:173
+msgid ""
+" The remote server is not running on a system port \n"
+" you need a password to log in, but the information may \n"
+" not be safe on the remote side.  Continue? \n"
+msgstr ""
+
+#: libvfs/mcfs.c:176
+#, fuzzy
+msgid " Yes "
+msgstr "Ja"
+
+#: libvfs/mcfs.c:176
+#, fuzzy
+msgid " No "
+msgstr "Nein"
+
+#: libvfs/mcfs.c:178
+msgid " The remote server is running on strange port. Giving up.\n"
+msgstr ""
+
+#: libvfs/mcfs.c:190
+msgid " MCFS Password required "
+msgstr ""
+
+#: libvfs/mcfs.c:204
+msgid " Invalid password "
+msgstr ""
+
+#: libvfs/mcfs.c:270
+msgid " Too many open connections "
+msgstr ""
+
+#: libvfs/tar.c:578
+msgid "Unexpected EOF on archive file"
+msgstr ""
+
+#: libvfs/tar.c:632 libvfs/tar.c:653
+msgid "Inconsistent tar archive"
+msgstr ""
+
+#. Open for reading
+#: libvfs/tar.c:753
+#, c-format
+msgid ""
+"Couldn't open tar archive\n"
+"%s"
+msgstr ""
+
+#. Error on first record
+#: libvfs/tar.c:772
+#, c-format
+msgid ""
+"Hmm,...\n"
+"%s\n"
+"doesn't look like a tar archive."
+msgstr ""
+
+#: libvfs/vfs.c:1538
+msgid "Password:"
+msgstr ""
+
 #: support/argp-parse.c:90
 msgid "Give this help list"
 msgstr "Zeigt diese Hilfe"
@@ -725,7 +836,7 @@ msgstr "Setzt den Programmnamen"
 
 #: support/argp-parse.c:94
 msgid "Hang for SECS seconds (default 3600)"
-msgstr "Wartet SECS Sekunden (standardm\344\337ig 3600)"
+msgstr "Wartet SECS Sekunden (standardmäßig 3600)"
 
 #: support/argp-parse.c:151
 msgid "Print program version"
@@ -737,6 +848,7 @@ msgstr "(PROGRAMM FEHLER) Version unbekannt!?"
 
 # , c-format
 #: support/argp-parse.c:641
+#, c-format
 msgid "%s: Too many arguments\n"
 msgstr "%s: Zu viele Argumente\n"
 
@@ -750,60 +862,71 @@ msgstr ""
 
 # , c-format
 #: support/getopt.c:669
+#, c-format
 msgid "%s: option `%s' is ambiguous\n"
 msgstr ""
 
 # , c-format
-#. --option
 #: support/getopt.c:693
+#, c-format
 msgid "%s: option `--%s' doesn't allow an argument\n"
 msgstr ""
 
 # , c-format
 #: support/getopt.c:698
+#, c-format
 msgid "%s: option `%c%s' doesn't allow an argument\n"
 msgstr ""
 
 # , fuzzy, c-format
 #: support/getopt.c:715 support/getopt.c:888
+#, c-format
 msgid "%s: option `%s' requires an argument\n"
 msgstr "%s: Zu viele Argumente\n"
 
 # , c-format
 #. --option
 #: support/getopt.c:744
+#, c-format
 msgid "%s: unrecognized option `--%s'\n"
 msgstr ""
 
 # , c-format
+#. +option or -option
 #: support/getopt.c:748
+#, c-format
 msgid "%s: unrecognized option `%c%s'\n"
 msgstr ""
 
 # , c-format
 #. 1003.2 specifies the format of this message.
 #: support/getopt.c:774
+#, c-format
 msgid "%s: illegal option -- %c\n"
 msgstr ""
 
 # , c-format
 #: support/getopt.c:777
+#, c-format
 msgid "%s: invalid option -- %c\n"
 msgstr ""
 
 # , fuzzy, c-format
 #. 1003.2 specifies the format of this message.
 #: support/getopt.c:807 support/getopt.c:937
+#, c-format
 msgid "%s: option requires an argument -- %c\n"
 msgstr "%s: Zu viele Argumente\n"
 
 # , c-format
 #: support/getopt.c:854
+#, c-format
 msgid "%s: option `-W %s' is ambiguous\n"
 msgstr ""
 
 # , c-format
 #: support/getopt.c:872
+#, c-format
 msgid "%s: option `-W %s' doesn't allow an argument\n"
 msgstr ""
 
