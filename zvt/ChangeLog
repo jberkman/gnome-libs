@@ -1,3 +1,10 @@
+1999-05-15  Michael Zucchi  <zucchi@zzedzone.mmc.com.au>
+
+	* update.c (vt_line_update): Because some mental fonts use every
+	pixel position we need to clear the next character pos after a
+	bold font.  Just render this last blank character always to make
+	sure.
+
 1999-05-10  Michael Zucchi  <zucchi@zzedzone.mmc.com.au>
 
 	* zvtterm.c (zvt_term_destroy): Patch to clean up the timeout

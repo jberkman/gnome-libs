@@ -186,6 +186,14 @@ static void vt_line_update(struct _vtx *vx, struct vt_line *l, int line, int alw
 
       end--;
     }
+
+    /* always update the end if its a space ... */
+    if (end<l->width
+	&& ( (ch = l->data[end]&VTATTR_DATAMASK)==0
+	     || ch==9
+	     || ch==' '))
+      end++;
+
   }  /* else, update everything */
 
 
