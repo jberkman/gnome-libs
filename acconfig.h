@@ -32,3 +32,4 @@
 #undef HAVE_OPENPTY
 #undef HAVE_PTY_H
 #undef HAVE_UTIL_H
+#undef HAVE_SENDMSG

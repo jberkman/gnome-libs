@@ -101,7 +101,19 @@ dnl
 dnl gnome-pty-support checks
 dnl
 AC_CHECK_HEADERS(utmpx.h pty.h libutil.h)
-AC_CHECK_FUNCS(grantpt sendmsg login utmpxname utmpname setutent)
+AC_CHECK_FUNCS(grantpt login utmpxname utmpname setutent)
+AC_MSG_CHECKING([for Unix98 sendmsg])
+AC_TRY_LINK([
+#include <sys/types.h>
+#include <sys/socket.h>],[
+struct msghdr hdr;
+hdr.msg_control = NULL;
+hdr.msg_controllen = 0;
+sendmsg (0, &hdr, 0);
+],[
+AC_DEFINE(HAVE_SENDMSG)
+AC_MSG_RESULT(yes)],[AC_MSG_RESULT(no)])
+
 oLIBS="$LIBS"
 LIBS="$LIBS -lutil"
 AC_CHECK_FUNC(openpty, [
