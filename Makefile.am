@@ -12,6 +12,13 @@ else
 test_gnome =
 endif
 
+if COMPILE_GNOME_COMPAT
+libcompat_SUBDIRS = libcompat
+else
+libcompat_SUBDIRS =
+endif
+
+
 gnome_vfs_SUBDIRS=
 gconf_SUBDIRS=
 
@@ -20,6 +27,7 @@ SUBDIRS = po intl support	\
 	images			\
 	libgnome		\
 	libgnomeui		\
+	$(libcompat_SUBDIRS)	\
 	zvt			\
 	idl			\
 	$(gconf_SUBDIRS)	\
