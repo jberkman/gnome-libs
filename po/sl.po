@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-libs 1.2.4\n"
-"POT-Creation-Date: 2001-02-17 15:40+0100\n"
+"POT-Creation-Date: 2001-03-02 00:32+0100\n"
 "PO-Revision-Date: 2000-07-28 13:59+0200\n"
 "Last-Translator: Andraz Tori <andraz.tori1@guest.arnes.si>\n"
 "Language-Team: Slovenian <sl@li.org>\n"
@@ -115,14 +115,6 @@ msgstr "Dinamièni moduli, ki naj se nalo¾ijo"
 msgid "MODULE1,MODULE2,..."
 msgstr "MODUL1,MODUL2,..."
 
-#: libgnomeui/gnome-appbar.c:682
-msgid ""
-"gnome_appbar_set_progress deprecated, use "
-"gnome_appbar_set_progress_percentage"
-msgstr ""
-"gnome_appbar_set_progress ni za¾eljen, uporabite "
-"gnome_appbar_set_progress_percentage"
-
 #: libcompat/gnome-dentry-edit.c:184 libgnomeui/gnome-ditem-edit.c:210
 msgid "Name:"
 msgstr "Ime:"
@@ -185,52 +177,52 @@ msgstr "Ukaz za spuste URLjev:"
 msgid "Drop one URL at a time only."
 msgstr "Spusti le en URL na enkrat."
 
-#: libcompat/gnome-dentry-edit.c:367 libgnomeui/gnome-ditem-edit.c:490
+#: libcompat/gnome-dentry-edit.c:367 libgnomeui/gnome-ditem-edit.c:487
 msgid "Try this before using:"
 msgstr "Poizkusi pred uporabo:"
 
-#: libcompat/gnome-dentry-edit.c:377 libgnomeui/gnome-ditem-edit.c:500
+#: libcompat/gnome-dentry-edit.c:377 libgnomeui/gnome-ditem-edit.c:497
 msgid "Documentation:"
 msgstr "Dokumentacija:"
 
-#: libgnomeui/gnome-ditem-edit.c:510
+#: libgnomeui/gnome-ditem-edit.c:507
 msgid "Window titles to wait for (comma separated):"
 msgstr "Nazivi oken na katera se èaka (loèeno z vejico):"
 
-#: libcompat/gnome-dentry-edit.c:387 libgnomeui/gnome-ditem-edit.c:520
+#: libcompat/gnome-dentry-edit.c:387 libgnomeui/gnome-ditem-edit.c:517
 msgid "Name/Comment translations:"
 msgstr "Prevod imena in komentarja:"
 
-#: libcompat/gnome-dentry-edit.c:390 libgnomeui/gnome-ditem-edit.c:523
+#: libcompat/gnome-dentry-edit.c:390 libgnomeui/gnome-ditem-edit.c:520
 msgid "Language"
 msgstr "Jezik"
 
-#: libcompat/gnome-dentry-edit.c:391 libgnomeui/gnome-ditem-edit.c:524
+#: libcompat/gnome-dentry-edit.c:391 libgnomeui/gnome-ditem-edit.c:521
 msgid "Name"
 msgstr "Ime"
 
-#: libcompat/gnome-dentry-edit.c:392 libgnomeui/gnome-ditem-edit.c:525
+#: libcompat/gnome-dentry-edit.c:392 libgnomeui/gnome-ditem-edit.c:522
 msgid "Comment"
 msgstr "Komentar"
 
-#: libcompat/gnome-dentry-edit.c:420 libgnomeui/gnome-ditem-edit.c:553
+#: libcompat/gnome-dentry-edit.c:420 libgnomeui/gnome-ditem-edit.c:550
 msgid "Add/Set"
 msgstr "Dodaj/nastavi"
 
-#: libcompat/gnome-dentry-edit.c:425 libgnomeui/gnome-ditem-edit.c:558
-#: libgnomeui/gnome-stock.c:709
+#: libcompat/gnome-dentry-edit.c:425 libgnomeui/gnome-ditem-edit.c:555
+#: libgnomeui/gnome-stock.c:566
 msgid "Remove"
 msgstr "Odstrani"
 
-#: libcompat/gnome-dentry-edit.c:507 libgnomeui/gnome-ditem-edit.c:705
+#: libcompat/gnome-dentry-edit.c:507 libgnomeui/gnome-ditem-edit.c:702
 msgid "Basic"
 msgstr "Osnovno"
 
-#: libgnomeui/gnome-ditem-edit.c:709
+#: libgnomeui/gnome-ditem-edit.c:706
 msgid "Drag and Drop"
 msgstr "Povleci in spusti"
 
-#: libcompat/gnome-dentry-edit.c:511 libgnomeui/gnome-ditem-edit.c:713
+#: libcompat/gnome-dentry-edit.c:511 libgnomeui/gnome-ditem-edit.c:710
 msgid "Advanced"
 msgstr "Napredno"
 
@@ -259,11 +251,11 @@ msgstr "Lokacija:"
 msgid "Save As Type:"
 msgstr "Shrani kot tip:"
 
-#: libgnomeui/gnome-gconf.c:581
+#: libgnomeui/gnome-gconf.c:476
 msgid "GNOME GConf Support"
 msgstr "GNOME GConf Podpora"
 
-#: libgnomeui/gnome-gconf.c:621
+#: libgnomeui/gnome-gconf.c:516
 #, c-format
 msgid ""
 "You attempted to change an aspect of your configuration that your system "
@@ -276,7 +268,7 @@ msgstr ""
 "izbranih nastavitev morda ne bodo upo¹tevane ali pa ob naslednjem zagonu te "
 "aplikacije ne bodo obnovljene (%s)."
 
-#: libgnomeui/gnome-gconf.c:624
+#: libgnomeui/gnome-gconf.c:519
 #, c-format
 msgid ""
 "An error occurred while loading or saving configuration information for %s. "
@@ -285,7 +277,7 @@ msgstr ""
 "Med nalaganjem ali shranjevanjem podatkov za %s se je zgodila napaka. Mo¾no "
 "je, da nekatere nastavitve ne bodo delovale pravilno."
 
-#: libgnomeui/gnome-gconf.c:646
+#: libgnomeui/gnome-gconf.c:541
 #, c-format
 msgid "GConf error details: %s\n"
 msgstr "GConf podrobnosti napake: %s\n"
@@ -345,7 +337,7 @@ msgid "The toplevel widget"
 msgstr "Najvi¹ji gradnik"
 
 #: demos/stock_demo.c:315 libgnomeui/gnome-helpsys.c:219
-#: libgnomeui/gnome-stock.c:724
+#: libgnomeui/gnome-stock.c:581
 msgid "Help"
 msgstr "Pomoè"
 
@@ -353,20 +345,20 @@ msgstr "Pomoè"
 msgid "Show help for a specific region of the application"
 msgstr "Ka¾i pomoè za doloèen del programa"
 
-#: libgnomeui/gnome-helpsys.c:224
+#: libgnomeui/gnome-helpsys.c:225
 msgid "Style"
 msgstr "Slog"
 
-#: libgnomeui/gnome-helpsys.c:225
+#: libgnomeui/gnome-helpsys.c:226
 msgid "Change the way help is displayed"
 msgstr "Spremeni naèin prikazovanja pomoèi"
 
-#: libgnomeui/gnome-helpsys.c:926 libgnomeui/gnome-helpsys.c:1020
+#: libgnomeui/gnome-helpsys.c:928 libgnomeui/gnome-helpsys.c:1022
 msgid "No help is available for the selected portion of the application."
 msgstr "Za izbran del programa pomoè ni na voljo."
 
 #. FIXME: properly handle the error!
-#: libgnomeui/gnome-helpsys.c:1190
+#: libgnomeui/gnome-helpsys.c:1192
 #, c-format
 msgid "Cought GnomeURL error: %s"
 msgstr "Ujel sem GnomeURL napako: %s"
@@ -391,7 +383,7 @@ msgstr "Besedilo na gumbu"
 msgid "End World Hunger"
 msgstr "Konèaj svetovno lakoto"
 
-#: libgnomeui/gnome-about.c:1169 libgnomeui/gnome-href.c:395
+#: libgnomeui/gnome-about.c:1169 libgnomeui/gnome-href.c:399
 msgid ""
 "Error occured while trying to launch the URL handler.\n"
 "Please check the settings in the Control Center if they are correct."
@@ -519,17 +511,17 @@ msgid "Unknown"
 msgstr "Neznan"
 
 #. browse button ...
-#: libcompat/gnome-spell.c:620 libcompat/gnome-spell.c:637
-#: libcompat/gnome-spell.c:654 libgnomeui/gnome-file-entry.c:445
-#: libgnomeui/gnome-selector.c:859
+#: libcompat/gnome-file-entry.c:445 libcompat/gnome-spell.c:620
+#: libcompat/gnome-spell.c:637 libcompat/gnome-spell.c:654
+#: libgnomeui/gnome-selector.c:1040
 msgid "Browse..."
 msgstr "Brskaj..."
 
-#: libgnomeui/gnome-selector.c:869
+#: libgnomeui/gnome-selector.c:1051
 msgid "Default..."
 msgstr "Privzeto..."
 
-#: libgnomeui/gnome-selector.c:879
+#: libgnomeui/gnome-selector.c:1062
 msgid "Clear..."
 msgstr "Poèisti..."
 
@@ -976,175 +968,6 @@ msgstr "App ID"
 msgid "The application ID string"
 msgstr "ID niz aplikacije"
 
-#: libgnomeui/gnome-calculator.c:431 libgnomeui/gnome-calculator.c:1074
-msgid "DEG"
-msgstr "Stopinje"
-
-#: libgnomeui/gnome-calculator.c:433
-msgid "RAD"
-msgstr "Radiani"
-
-#: libgnomeui/gnome-calculator.c:435
-msgid "GRAD"
-msgstr "Gradiani"
-
-#: libgnomeui/gnome-calculator.c:1064
-msgid "1/x"
-msgstr "1/x"
-
-#: libgnomeui/gnome-calculator.c:1065
-msgid "x^2"
-msgstr "x^2"
-
-#: libgnomeui/gnome-calculator.c:1066
-msgid "SQRT"
-msgstr "KOREN"
-
-#: libgnomeui/gnome-calculator.c:1067
-msgid "CE/C"
-msgstr "CE/C"
-
-#: libgnomeui/gnome-calculator.c:1068
-msgid "AC"
-msgstr "AC"
-
-#. inverse button
-#: libgnomeui/gnome-calculator.c:1071
-msgid "sin"
-msgstr "sin"
-
-#: libgnomeui/gnome-calculator.c:1072
-msgid "cos"
-msgstr "cos"
-
-#: libgnomeui/gnome-calculator.c:1073
-msgid "tan"
-msgstr "tan"
-
-#: libgnomeui/gnome-calculator.c:1076
-msgid "e"
-msgstr "e"
-
-#: libgnomeui/gnome-calculator.c:1077
-msgid "EE"
-msgstr "EE"
-
-#: libgnomeui/gnome-calculator.c:1078
-msgid "log"
-msgstr "log"
-
-#: libgnomeui/gnome-calculator.c:1079
-msgid "ln"
-msgstr "ln"
-
-#: libgnomeui/gnome-calculator.c:1080
-msgid "x^y"
-msgstr "x^y"
-
-#: libgnomeui/gnome-calculator.c:1082
-msgid "PI"
-msgstr "PI"
-
-#: libgnomeui/gnome-calculator.c:1083
-msgid "x!"
-msgstr "x!"
-
-#: libgnomeui/gnome-calculator.c:1084
-msgid "("
-msgstr "("
-
-#: libgnomeui/gnome-calculator.c:1085
-msgid ")"
-msgstr ")"
-
-#: libgnomeui/gnome-calculator.c:1086
-msgid "/"
-msgstr "/"
-
-#: libgnomeui/gnome-calculator.c:1088
-msgid "STO"
-msgstr "STO"
-
-#: libgnomeui/gnome-calculator.c:1089
-msgid "7"
-msgstr "7"
-
-#: libgnomeui/gnome-calculator.c:1090
-msgid "8"
-msgstr "8"
-
-#: libgnomeui/gnome-calculator.c:1091
-msgid "9"
-msgstr "9"
-
-#: libgnomeui/gnome-calculator.c:1092
-msgid "*"
-msgstr "*"
-
-#: libgnomeui/gnome-calculator.c:1094
-msgid "RCL"
-msgstr "RCL"
-
-#: libgnomeui/gnome-calculator.c:1095
-msgid "4"
-msgstr "4"
-
-#: libgnomeui/gnome-calculator.c:1096
-msgid "5"
-msgstr "5"
-
-#: libgnomeui/gnome-calculator.c:1097
-msgid "6"
-msgstr "6"
-
-#: libgnomeui/gnome-calculator.c:1098
-msgid "-"
-msgstr "-"
-
-#: libgnomeui/gnome-calculator.c:1100
-msgid "SUM"
-msgstr "SUM"
-
-#: libgnomeui/gnome-calculator.c:1101
-msgid "1"
-msgstr "1"
-
-#: libgnomeui/gnome-calculator.c:1102
-msgid "2"
-msgstr "2"
-
-#: libgnomeui/gnome-calculator.c:1103
-msgid "3"
-msgstr "3"
-
-#: libgnomeui/gnome-calculator.c:1104
-msgid "+"
-msgstr "4"
-
-#: libgnomeui/gnome-calculator.c:1106
-msgid "EXC"
-msgstr "EXC"
-
-#: libgnomeui/gnome-calculator.c:1107
-msgid "0"
-msgstr "0"
-
-#: libgnomeui/gnome-calculator.c:1108
-msgid "."
-msgstr "."
-
-#: libgnomeui/gnome-calculator.c:1109
-msgid "+/-"
-msgstr "+/-"
-
-#: libgnomeui/gnome-calculator.c:1110
-msgid "="
-msgstr "="
-
-#: libgnomeui/gnome-calculator.c:1321
-msgid "INV"
-msgstr "INV"
-
 #: libgnomeui/gnome-client.c:836
 msgid "Specify session management ID"
 msgstr "Doloèi ID seje"
@@ -1169,7 +992,7 @@ msgstr "Izkljuèi povezavo z upravljalnikom seje"
 msgid "Session management"
 msgstr "Upravljanje seje"
 
-#: libgnomeui/gnome-client.c:2341
+#: libgnomeui/gnome-client.c:2340
 msgid "Cancel Logout"
 msgstr "Preklièi odjavo"
 
@@ -1226,7 +1049,7 @@ msgstr "Zaèetni èas"
 msgid "Calendar"
 msgstr "Koledar"
 
-#: libgnomeui/gnome-dateedit.c:845
+#: libgnomeui/gnome-dateedit.c:847
 msgid "gnome_date_edit_get_date deprecated, use gnome_date_edit_get_time"
 msgstr ""
 "gnome_date_edit_get_date ni za¾eljen, uporabite gnome_date_edit_get_time"
@@ -1239,15 +1062,12 @@ msgstr "Nazaj"
 msgid "Finish"
 msgstr "Konèaj"
 
-#: libgnomeui/gnome-file-entry.c:314
-msgid "Select file"
-msgstr "Izberi datoteko"
-
-#: libgnomeui/gnome-font-picker.c:856 libgnomeui/gnome-stock.c:729
+#: libgnomeui/gnome-font-picker.c:856 libgnomeui/gnome-stock.c:586
 msgid "Font"
 msgstr "Pisava"
 
-#: libgnomeui/gnome-icon-entry.c:231 libgnomeui/gnome-icon-entry.c:540
+#: libgnomeui/gnome-icon-entry.c:351 libgnomeui/gnome-icon-entry.c:720
+#: libgnomeui/gnome-icon-entry.c:737
 msgid "No Icon"
 msgstr "Brez"
 
@@ -1278,11 +1098,11 @@ msgstr "ZASTAVICE"
 msgid "Gdk debugging flags to unset"
 msgstr "Gdk razhro¹èevalne zastavice, ki naj ne bodo nastavljene"
 
-#: libgnomeui/gnome-init.c:87 libgnomeui/gnome-init.c:239
+#: libgnomeui/gnome-init.c:87 libgnomeui/gnome-init.c:241
 msgid "X display to use"
 msgstr "X zaslon za uporabo"
 
-#: libgnomeui/gnome-init.c:87 libgnomeui/gnome-init.c:239
+#: libgnomeui/gnome-init.c:87 libgnomeui/gnome-init.c:241
 msgid "DISPLAY"
 msgstr "ZASLON"
 
@@ -1343,21 +1163,21 @@ msgid "MODULE"
 msgstr "MODUL"
 
 #. dialog display isn't working out
-#: libgnomeui/gnome-init.c:471
+#: libgnomeui/gnome-init.c:473
 msgid "Multiple segmentation faults occurred; can't display error dialog\n"
 msgstr ""
 "Pojavilo se je veè segmentacijskih napak: ne morem pokazati dialoga za "
 "napako\n"
 
-#: libgnomeui/gnome-init.c:634
+#: libgnomeui/gnome-init.c:636
 msgid "GTK options"
 msgstr "Mo¾nosti GTK"
 
-#: libgnomeui/gnome-init.c:635
+#: libgnomeui/gnome-init.c:637
 msgid "GNOME GUI options"
 msgstr "Mo¾nosti GNOME grafiènega vmesnika"
 
-#: libgnomeui/gnome-init.c:786
+#: libgnomeui/gnome-init.c:788
 #, c-format
 msgid "%s options"
 msgstr "Mo¾nosti %s"
@@ -1381,26 +1201,6 @@ msgstr "Vpra¹anje"
 #: libgnomeui/gnome-messagebox.c:215
 msgid "Message"
 msgstr "Sporoèilo"
-
-#: libgnomeui/gnome-number-entry.c:217
-msgid "Calculator"
-msgstr "Kalkulator"
-
-#: libgnomeui/gnome-number-entry.c:275
-msgid "Calculator..."
-msgstr "Kalkulator..."
-
-#: libgnomeui/gnome-pixmap-entry.c:257 libgnomeui/gnome-pixmap-entry.c:564
-msgid "No Image"
-msgstr "Ni slike"
-
-#: libgnomeui/gnome-pixmap-entry.c:460
-msgid "Can't find an hbox, using a normal file selection"
-msgstr "Ne najdem hbox-a, uporabljam obièajno izbiranje datotek"
-
-#: libgnomeui/gnome-pixmap-entry.c:466
-msgid "Preview"
-msgstr "Predogled"
 
 #: libgnomeui/gnome-popup-help.c:57
 msgid "_Help with this"
@@ -1441,95 +1241,95 @@ msgstr "%a %d %b %T %Y"
 msgid "-freefont-garamond-*-*-*-*-30-170-*-*-*-*-*-*,*-r-*"
 msgstr "-freefont-garamond-*-*-*-*-30-170-*-*-*-*-iso8859-2,*-r-*"
 
-#: libgnomeui/gnome-stock.c:706
+#: libgnomeui/gnome-stock.c:563
 msgid "Add"
 msgstr "Dodaj"
 
-#: libgnomeui/gnome-stock.c:707
+#: libgnomeui/gnome-stock.c:564
 msgid "Clear"
 msgstr "Poèisti"
 
-#: libgnomeui/gnome-stock.c:708
+#: libgnomeui/gnome-stock.c:565
 msgid "Select Color"
 msgstr "Izberi barvo"
 
-#: libgnomeui/gnome-stock.c:710
+#: libgnomeui/gnome-stock.c:567
 msgid "Table Borders"
 msgstr "Robovi tabele"
 
-#: libgnomeui/gnome-stock.c:711
+#: libgnomeui/gnome-stock.c:568
 msgid "Table Fill"
 msgstr "Polnjenje tabele"
 
-#: libgnomeui/gnome-stock.c:712
+#: libgnomeui/gnome-stock.c:569
 msgid "Bulleted List"
 msgstr "Neo¹tevilèen seznam"
 
-#: libgnomeui/gnome-stock.c:713
+#: libgnomeui/gnome-stock.c:570
 msgid "Numbered List"
 msgstr "O¹tevilèen seznam"
 
-#: libgnomeui/gnome-stock.c:714
+#: libgnomeui/gnome-stock.c:571
 msgid "Indent"
 msgstr "Zamakni"
 
-#: libgnomeui/gnome-stock.c:715
+#: libgnomeui/gnome-stock.c:572
 msgid "Un-Indent"
 msgstr "Razveljavi zamik"
 
-#: libcompat/gnome-spell.c:259 libgnomeui/gnome-stock.c:718
+#: libcompat/gnome-spell.c:259 libgnomeui/gnome-stock.c:575
 msgid "OK"
 msgstr "V redu"
 
-#: libgnomeui/gnome-stock.c:719
+#: libgnomeui/gnome-stock.c:576
 msgid "Apply"
 msgstr "Uporabi"
 
-#: libcompat/gnome-spell.c:266 libgnomeui/gnome-stock.c:720
+#: libcompat/gnome-spell.c:266 libgnomeui/gnome-stock.c:577
 msgid "Cancel"
 msgstr "Preklièi"
 
-#: demos/stock_demo.c:169 libgnomeui/gnome-stock.c:721
+#: demos/stock_demo.c:169 libgnomeui/gnome-stock.c:578
 msgid "Close"
 msgstr "Zapri"
 
-#: libgnomeui/gnome-stock.c:722
+#: libgnomeui/gnome-stock.c:579
 msgid "Yes"
 msgstr "Da"
 
-#: libgnomeui/gnome-stock.c:723
+#: libgnomeui/gnome-stock.c:580
 msgid "No"
 msgstr "Ne"
 
-#: libgnomeui/gnome-stock.c:725
+#: libgnomeui/gnome-stock.c:582
 msgid "Next"
 msgstr "Naprej"
 
-#: libgnomeui/gnome-stock.c:726
+#: libgnomeui/gnome-stock.c:583
 msgid "Prev"
 msgstr "Nazaj"
 
-#: libgnomeui/gnome-stock.c:727
+#: libgnomeui/gnome-stock.c:584
 msgid "Up"
 msgstr "Gor"
 
-#: libgnomeui/gnome-stock.c:728
+#: libgnomeui/gnome-stock.c:585
 msgid "Down"
 msgstr "Dol"
 
-#: libgnomeui/gnome-stock.c:1492
+#: libgnomeui/gnome-stock.c:1354
 msgid "Menu Accelerator Keys"
 msgstr "Pospe¹evalne tipke menuja"
 
-#: libgnomeui/gnome-stock.c:1494
+#: libgnomeui/gnome-stock.c:1356
 msgid "Global"
 msgstr "Globalno"
 
-#: libgnomeui/gnome-stock.c:1496
+#: libgnomeui/gnome-stock.c:1358
 msgid "Menu Item"
 msgstr "Predmet menuja"
 
-#: libgnomeui/gnome-stock.c:1497
+#: libgnomeui/gnome-stock.c:1359
 msgid "Accelerator"
 msgstr "Pospe¹evalnik"
 
@@ -1576,50 +1376,219 @@ msgstr "http://www.gnome.org/application_crashed.shtml"
 
 #: libgnomeui/gnome_segv.c:141
 msgid "Please visit the GNOME Application Crash page for more information"
-msgstr "Za veè informacij prosimo obi¹èite stran GNOME Sesutje Programov"
+msgstr "Za veè informacij prosimo obi¹èite stran Sesutje programov GNOME"
 
 #. Pixmap
-#: test-gnome/testgnome.c:830
+#: test-gnome/testgnome.c:713
 msgid "Default Pixmap"
 msgstr "Privzeta slika"
 
-#: test-gnome/testgnome.c:838 test-gnome/testgnome.c:879
-#: test-gnome/testgnome.c:904
+#: test-gnome/testgnome.c:721 test-gnome/testgnome.c:762
+#: test-gnome/testgnome.c:787
 msgid "If you choose a font it will appear here"
 msgstr "Èe izberete pisavo se bo pokazala tu"
 
 #. Font_Info
-#: test-gnome/testgnome.c:845
+#: test-gnome/testgnome.c:728
 msgid "Font Info"
 msgstr "Podatki o pisavi"
 
-#: test-gnome/testgnome.c:855
+#: test-gnome/testgnome.c:738
 msgid "Use Font in button with size"
 msgstr "Uporabi Pisavo z velikostjo v gumbu"
 
-#: test-gnome/testgnome.c:862
+#: test-gnome/testgnome.c:745
 msgid "Show font size"
 msgstr "Ka¾i velikost pisave"
 
-#: test-gnome/testgnome.c:898
+#: test-gnome/testgnome.c:781
 msgid "This is an hbox with pixmap and text"
 msgstr "To je hbox s sliko in besedilom"
 
-#: test-gnome/testgnome.c:1110
+#: test-gnome/testgnome.c:993
 msgid "The user chose Yes/OK with data:\n"
 msgstr "Uporabnik izbere Da/V redu nad podatki:\n"
 
-#: test-gnome/testgnome.c:1114
+#: test-gnome/testgnome.c:997
 msgid "The user chose No/Cancel with data:\n"
 msgstr "Uporabnik izbere Ne/Preklièi nad podatki:\n"
 
-#: test-gnome/testgnome.c:1125
+#: test-gnome/testgnome.c:1008
 msgid "Weird number in reply callback"
 msgstr "Èudna ¹tevilka v povratnem klicu"
 
-#: test-gnome/testgnome.c:1981
+#: test-gnome/testgnome.c:1860
 msgid "Test GNOME"
 msgstr "Preizkusi GNOME"
+
+#: libcompat/gnome-calculator.c:431 libcompat/gnome-calculator.c:1074
+msgid "DEG"
+msgstr "Stopinje"
+
+#: libcompat/gnome-calculator.c:433
+msgid "RAD"
+msgstr "Radiani"
+
+#: libcompat/gnome-calculator.c:435
+msgid "GRAD"
+msgstr "Gradiani"
+
+#: libcompat/gnome-calculator.c:1064
+msgid "1/x"
+msgstr "1/x"
+
+#: libcompat/gnome-calculator.c:1065
+msgid "x^2"
+msgstr "x^2"
+
+#: libcompat/gnome-calculator.c:1066
+msgid "SQRT"
+msgstr "KOREN"
+
+#: libcompat/gnome-calculator.c:1067
+msgid "CE/C"
+msgstr "CE/C"
+
+#: libcompat/gnome-calculator.c:1068
+msgid "AC"
+msgstr "AC"
+
+#. inverse button
+#: libcompat/gnome-calculator.c:1071
+msgid "sin"
+msgstr "sin"
+
+#: libcompat/gnome-calculator.c:1072
+msgid "cos"
+msgstr "cos"
+
+#: libcompat/gnome-calculator.c:1073
+msgid "tan"
+msgstr "tan"
+
+#: libcompat/gnome-calculator.c:1076
+msgid "e"
+msgstr "e"
+
+#: libcompat/gnome-calculator.c:1077
+msgid "EE"
+msgstr "EE"
+
+#: libcompat/gnome-calculator.c:1078
+msgid "log"
+msgstr "log"
+
+#: libcompat/gnome-calculator.c:1079
+msgid "ln"
+msgstr "ln"
+
+#: libcompat/gnome-calculator.c:1080
+msgid "x^y"
+msgstr "x^y"
+
+#: libcompat/gnome-calculator.c:1082
+msgid "PI"
+msgstr "PI"
+
+#: libcompat/gnome-calculator.c:1083
+msgid "x!"
+msgstr "x!"
+
+#: libcompat/gnome-calculator.c:1084
+msgid "("
+msgstr "("
+
+#: libcompat/gnome-calculator.c:1085
+msgid ")"
+msgstr ")"
+
+#: libcompat/gnome-calculator.c:1086
+msgid "/"
+msgstr "/"
+
+#: libcompat/gnome-calculator.c:1088
+msgid "STO"
+msgstr "STO"
+
+#: libcompat/gnome-calculator.c:1089
+msgid "7"
+msgstr "7"
+
+#: libcompat/gnome-calculator.c:1090
+msgid "8"
+msgstr "8"
+
+#: libcompat/gnome-calculator.c:1091
+msgid "9"
+msgstr "9"
+
+#: libcompat/gnome-calculator.c:1092
+msgid "*"
+msgstr "*"
+
+#: libcompat/gnome-calculator.c:1094
+msgid "RCL"
+msgstr "RCL"
+
+#: libcompat/gnome-calculator.c:1095
+msgid "4"
+msgstr "4"
+
+#: libcompat/gnome-calculator.c:1096
+msgid "5"
+msgstr "5"
+
+#: libcompat/gnome-calculator.c:1097
+msgid "6"
+msgstr "6"
+
+#: libcompat/gnome-calculator.c:1098
+msgid "-"
+msgstr "-"
+
+#: libcompat/gnome-calculator.c:1100
+msgid "SUM"
+msgstr "SUM"
+
+#: libcompat/gnome-calculator.c:1101
+msgid "1"
+msgstr "1"
+
+#: libcompat/gnome-calculator.c:1102
+msgid "2"
+msgstr "2"
+
+#: libcompat/gnome-calculator.c:1103
+msgid "3"
+msgstr "3"
+
+#: libcompat/gnome-calculator.c:1104
+msgid "+"
+msgstr "4"
+
+#: libcompat/gnome-calculator.c:1106
+msgid "EXC"
+msgstr "EXC"
+
+#: libcompat/gnome-calculator.c:1107
+msgid "0"
+msgstr "0"
+
+#: libcompat/gnome-calculator.c:1108
+msgid "."
+msgstr "."
+
+#: libcompat/gnome-calculator.c:1109
+msgid "+/-"
+msgstr "+/-"
+
+#: libcompat/gnome-calculator.c:1110
+msgid "="
+msgstr "="
+
+#: libcompat/gnome-calculator.c:1321
+msgid "INV"
+msgstr "INV"
 
 #: libcompat/gnome-druid-page-finish.c:261
 msgid "-adobe-helvetica-bold-r-normal-*-*-180-*-*-p-*-*-*"
@@ -1628,6 +1597,30 @@ msgstr "-adobe-helvetica-bold-r-normal-*-*-180-*-*-p-*-iso8859-2"
 #: libcompat/gnome-druid-page-finish.c:269
 msgid "-adobe-helvetica-medium-r-normal-*-*-120-*-*-p-*-*-*"
 msgstr "-adobe-helvetica-medium-r-normal-*-*-120-*-*-p-*-iso8859-2"
+
+#: libcompat/gnome-file-entry.c:314
+msgid "Select file"
+msgstr "Izberi datoteko"
+
+#: libcompat/gnome-number-entry.c:217
+msgid "Calculator"
+msgstr "Kalkulator"
+
+#: libcompat/gnome-number-entry.c:275
+msgid "Calculator..."
+msgstr "Kalkulator..."
+
+#: libcompat/gnome-pixmap-entry.c:257 libcompat/gnome-pixmap-entry.c:564
+msgid "No Image"
+msgstr "Ni slike"
+
+#: libcompat/gnome-pixmap-entry.c:460
+msgid "Can't find an hbox, using a normal file selection"
+msgstr "Ne najdem hbox-a, uporabljam obièajno izbiranje datotek"
+
+#: libcompat/gnome-pixmap-entry.c:466
+msgid "Preview"
+msgstr "Predogled"
 
 #: libcompat/gnome-property-entries.c:258
 msgid "Select"
@@ -1979,6 +1972,13 @@ msgid ""
 msgstr ""
 "Enostavna preizkusna aplikacija, ki preveri kako delujejo WIN_HINTS.\n"
 "Dodaj preizku¹anje gnome_win_hints_* funkcij za napake. :)"
+
+#~ msgid ""
+#~ "gnome_appbar_set_progress deprecated, use "
+#~ "gnome_appbar_set_progress_percentage"
+#~ msgstr ""
+#~ "gnome_appbar_set_progress ni za¾eljen, uporabite "
+#~ "gnome_appbar_set_progress_percentage"
 
 #~ msgid "Unknown system error"
 #~ msgstr "Neznana sistemska napaka"
