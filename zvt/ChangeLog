@@ -1,3 +1,8 @@
+1999-11-02  Miguel de Icaza  <miguel@gnu.org>
+
+	* gnome-pty-helper.c (open_ptys): Use cfsetispeed and cfsetospeed
+	for setting the line speed instead.
+	
 1999-11-02  Michael K. Johnson <johnsonm@redhat.com
 
 	* gnome-pty-helper.c (open_ptys): set speeds in POSIX-compliant manner.
