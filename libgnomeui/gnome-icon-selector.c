@@ -660,3 +660,29 @@ update_file_list_handler (GnomeSelector *gs)
 	 * is done. */
 	gtk_object_set_user_data (GTK_OBJECT(gis), NULL);
 }
+
+
+/**
+ * gnome_icon_selector_add_defaults:
+ * @gis: GnomeIconSelector to work with
+ *
+ * Description: Adds the default pixmap directory into the selector
+ * widget.
+ *
+ * Returns:
+ **/
+void
+gnome_icon_selector_add_defaults (GnomeIconSelector *iselector)
+{
+	gchar *pixmap_dir;
+
+	g_return_if_fail (iselector != NULL);
+	g_return_if_fail (GNOME_IS_ICON_SELECTOR (iselector));
+
+	pixmap_dir = gnome_unconditional_datadir_file ("pixmaps");
+  
+	gnome_selector_append_directory (GNOME_SELECTOR (iselector),
+					 pixmap_dir);
+
+	g_free (pixmap_dir);
+}
