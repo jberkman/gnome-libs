@@ -11,7 +11,7 @@
   </para>
 
   <sect2 id="gnome-mdi-new">
-    <title>gnome_mdi_new - create new GnomeMDI object</title>
+    <title>gnome_mdi_new - create a new GnomeMDI object</title>
     <funcsynopsis>
       <funcdef>GtkObject *<function>gnome_mdi_new</function></funcdef>
       <paramdef>gchar *<parameter>appname</parameter></paramdef>
@@ -293,7 +293,7 @@
           </para>
         </listitem>
         <listitem>
-          <para>GnomeUIInfo *<parameter>path</parameter>
+          <para>gchar *<parameter>path</parameter>
           </para>
           <para>A menu path (see <function>gnome_app_find_menu_pos</function> for details
           on menu paths) describing the position where the child menus should be inserted.
@@ -333,11 +333,194 @@
           </para>
         </listitem>
         <listitem>
-          <para>GnomeUIInfo *<parameter>path</parameter>
+          <para>gchar *<parameter>path</parameter>
           </para>
           <para>A menu path (see <function>gnome_app_find_menu_pos</function> for details
             on menu paths) describing the position where the menu items with names of
             children will be inserted.
+          </para>
+        </listitem>
+      </itemizedlist>
+    </sect3>
+  </sect2>
+
+  <sect2 id="gnome-mdi-add-view">
+    <title>gnome_mdi_add_view - adds a new view to the MDI</title>
+    <funcsynopsis>
+      <funcdef>gint <function>gnome_mdi_add_view</function></funcdef>
+      <paramdef>GnomeMDI *<parameter>mdi</parameter></paramdef>
+      <paramdef>GnomeMDIChild *<parameter>child</parameter></paramdef>
+    </funcsynopsis>
+    <sect3><title>Description</title>
+      <para>Creates a new view of the <parameter>child</parameter> and adds it to the MDI.
+        GnomeMDIChild <parameter>child</parameter> has to be added to the MDI with a call
+        to <function>gnome_mdi_add_child</function> before its views are added to the MDI.
+      </para>
+      <para>
+        An "add_view" signal is emitted to the MDI after the view has been created, but
+        before it is shown and added to the MDI, with a pointer to the created view as its
+        parameter. The view is added to the MDI only if the signal handler (if it exists)
+        returns TRUE. If the handler returns FALSE, the created view is destroyed and not
+        added to the MDI.
+      </para>
+      <para>The function returns TRUE if the view has been added and FALSE otherwise.
+      </para>
+    </sect3>
+    <sect3><title>Usage</title>
+      <programlisting>
+	gnome_mdi_add_view(mdi, child);
+      </programlisting>
+    </sect3>
+    <sect3><title>Parameters</title>
+      <itemizedlist>
+        <listitem>
+          <para>GnomeMDI *<parameter>mdi</parameter>
+          </para>
+          <para>A pointer to the MDI object.
+          </para>
+        </listitem>
+        <listitem>
+          <para>GnomeMDIChild *<parameter>child</parameter>
+          </para>
+          <para>The child, a view of which is to be added to the MDI.
+          </para>
+        </listitem>
+      </itemizedlist>
+    </sect3>
+  </sect2>
+
+  <sect2 id="gnome-mdi-add-toplevel-view">
+    <title>gnome_mdi_add_toplevel_view - adds a new view to the MDI in a new toplevel window</title>
+    <funcsynopsis>
+      <funcdef>gint <function>gnome_mdi_add_view</function></funcdef>
+      <paramdef>GnomeMDI *<parameter>mdi</parameter></paramdef>
+      <paramdef>GnomeMDIChild *<parameter>child</parameter></paramdef>
+    </funcsynopsis>
+    <sect3><title>Description</title>
+      <para>Creates a new view of the <parameter>child</parameter> and adds it to the MDI; it behaves the same
+        way as <function>gnome_mdi_add_view</function> in <symbol>GNOME_MDI_MODAL</symbol> and
+        <symbol>GNOME_MDI_TOPLEVEL</symbol> modes, but opens in <symbol>GNOME_MDI_NOTEBOOK</symbol> mode, the view
+        is added in a new toplevel window unless the active one has no views in it.
+      </para>
+    </sect3>
+    <sect3><title>Usage</title>
+      <programlisting>
+	gnome_mdi_add_toplevel_view(mdi, child);
+      </programlisting>
+    </sect3>
+    <sect3><title>Parameters</title>
+      <itemizedlist>
+        <listitem>
+          <para>GnomeMDI *<parameter>mdi</parameter>
+          </para>
+          <para>A pointer to the MDI object.
+          </para>
+        </listitem>
+        <listitem>
+          <para>GnomeMDIChild *<parameter>child</parameter>
+          </para>
+          <para>The child, a view of which is to be added to the MDI.
+          </para>
+        </listitem>
+      </itemizedlist>
+    </sect3>
+  </sect2>
+
+  <sect2 id="gnome-mdi-remove-view">
+    <title>gnome_mdi_remove_view - removes an existing view from the MDI</title>
+    <funcsynopsis>
+      <funcdef>gint <function>gnome_mdi_remove_view</function></funcdef>
+      <paramdef>GnomeMDI *<parameter>mdi</parameter></paramdef>
+      <paramdef>GtkWidget *<parameter>view</parameter></paramdef>
+    </funcsynopsis>
+    <sect3><title>Description</title>
+      <para>Removes a view from the MDI.
+      </para>
+      <para>A "remove_view" signal is emitted to the MDI before actually removing view.
+        The view is removed only if the signal handler (if it exists) returns TRUE.
+      </para>
+      <para>The function returns TRUE if the view has been removed and FALSE otherwise.
+      </para>
+    </sect3>
+    <sect3><title>Usage</title>
+      <programlisting>
+	gnome_mdi_remove_view(mdi, view);
+      </programlisting>
+    </sect3>
+    <sect3><title>Parameters</title>
+      <itemizedlist>
+        <listitem>
+          <para>GnomeMDI *<parameter>mdi</parameter>
+          </para>
+          <para>A pointer to the MDI object.
+          </para>
+        </listitem>
+        <listitem>
+          <para>GtkWidget *<parameter>view</parameter>
+          </para>
+          <para>The view to remove.
+          </para>
+        </listitem>
+      </itemizedlist>
+    </sect3>
+  </sect2>
+
+  <sect2 id="gnome-mdi-active-view">
+    <title>gnome_mdi_active_view - returns a pointer to the last active view</title>
+    <funcsynopsis>
+      <funcdef>GtkWidget *<function>gnome_mdi_active_view</function></funcdef>
+      <paramdef>GnomeMDI *<parameter>mdi</parameter></paramdef>
+    </funcsynopsis>
+    <sect3><title>Description</title>
+      <para>Returns a pointer to the last active view (ie: the view that has last had the focus) or
+        NULL if there is none.
+      </para>
+    </sect3>
+    <sect3><title>Usage</title>
+      <programlisting>
+	gnome_mdi_active_view(mdi);
+      </programlisting>
+    </sect3>
+    <sect3><title>Parameters</title>
+      <itemizedlist>
+        <listitem>
+          <para>GnomeMDI *<parameter>mdi</parameter>
+          </para>
+          <para>A pointer to the MDI object.
+          </para>
+        </listitem>
+      </itemizedlist>
+    </sect3>
+  </sect2>
+
+  <sect2 id="gnome-mdi-set-active-view">
+    <title>gnome_mdi_set_active_view - sets the active view</title>
+    <funcsynopsis>
+      <funcdef>void <function>gnome_mdi_set_active_view</function></funcdef>
+      <paramdef>GnomeMDI *<parameter>mdi</parameter></paramdef>
+      <paramdef>GtkWidget *<parameter>view</parameter></paramdef>
+    </funcsynopsis>
+    <sect3><title>Description</title>
+      <para>Sets the active view to <parameter>view</parameter>.
+      </para>
+    </sect3>
+    <sect3><title>Usage</title>
+      <programlisting>
+	gnome_mdi_set_active_view(mdi, view);
+      </programlisting>
+    </sect3>
+    <sect3><title>Parameters</title>
+      <itemizedlist>
+        <listitem>
+          <para>GnomeMDI *<parameter>mdi</parameter>
+          </para>
+          <para>A pointer to the MDI object.
+          </para>
+        </listitem>
+        <listitem>
+          <para>GtkWidget *<parameter>view</parameter>
+          </para>
+          <para>The active-to-be view, already added to the MDI.
           </para>
         </listitem>
       </itemizedlist>
