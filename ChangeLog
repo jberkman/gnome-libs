@@ -1,3 +1,9 @@
+1998-12-08  Tom Tromey  <tromey@cygnus.com>
+
+	* libgnome/gnome-metadata.c (get_worker): Make sure to call
+	gnome_mime_type_or_default when looking for `type'.  Check mime
+	type after application-installed information.
+
 1998-12-08  Christopher Blizzard  <blizzard@appliedtheory.com>
 
 	* libgnorba/Makefile.am (libgnorba_la_SOURCES): Change the
