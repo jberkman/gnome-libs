@@ -1,11 +1,11 @@
 # gnome-libs Slovak translation
-# Copyright (C) 2000 Free Software Foundation, Inc.
-# Bobo Rajec <mailto:bobo@bspc.sk>, 2000.
+# Copyright (C) 2000-2001 Free Software Foundation, Inc.
+# Bobo Rajec <mailto:bobo@bspc.sk>, 2000-2001.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-libs 1.95\n"
-"POT-Creation-Date: 2001-02-19 13:08+0100\n"
+"POT-Creation-Date: 2001-03-30 15:40+0200\n"
 "PO-Revision-Date: 2001-01-24 11:57CET\n"
 "Last-Translator: Stanislav Visnovsky <visnovsky@nenya.ms.mff.cuni.cz>\n"
 "Language-Team: Slovak <sk-i18n@rak.isternet.sk>\n"
@@ -75,56 +75,52 @@ msgstr "Zavrie aktuálne okno."
 msgid "Print the X window ID of the utilized window."
 msgstr "Vytlaèí ID X daného okna."
 
-#: libgnome/gnome-url.c:117
+#: libgnome/gnome-url.c:124
 #, c-format
 msgid "Error parsing '%s' (empty result)"
 msgstr "Chyba pri èítaní '%s' (prázdny výsledok)"
 
-#: libgnome/gnome-url.c:133
+#: libgnome/gnome-url.c:140
 #, c-format
 msgid "Mozilla not found as '%s'"
 msgstr "Mozilla nebola nájdená ako '%s'"
 
-#: libgnome/gnome-url.c:291 libgnome/gnome-url.c:295
+#: libgnome/gnome-url.c:298 libgnome/gnome-url.c:302
 #, c-format
 msgid "Cannot open a pipe: %s"
 msgstr "Nemô¾em otvori» rúru:%s"
 
-#: libgnome/gnome-url.c:305 libgnome/gnome-url.c:363
+#: libgnome/gnome-url.c:312 libgnome/gnome-url.c:370
 #, c-format
 msgid "Cannot parse handler template: %s"
 msgstr "Nemô¾em preèíta» ¹ablónu obsluhy: %s"
 
-#: libgnome/gnome-url.c:315 libgnome/gnome-url.c:319 libgnome/gnome-url.c:368
-#: libgnome/gnome-url.c:372
+#: libgnome/gnome-url.c:322 libgnome/gnome-url.c:326 libgnome/gnome-url.c:375
+#: libgnome/gnome-url.c:379
 #, c-format
 msgid "Cannot execute command '%s'!"
 msgstr "Nepodarilo sa vykona» príkaz '%s'!"
 
-#: libgnome/gnome-url.c:351
+#: libgnome/gnome-url.c:358
 #, c-format
 msgid "Command '%s' did not return an ID!"
 msgstr "Príkaz '%s' nevrátil ID!"
 
-#: libgnome/gnomelib-init2.c:1203
+#: libgnome/gnome-program.c:1149
 msgid "Help options"
 msgstr "Mo¾nosti Pomocníka"
 
-#: libgnome/gnomelib-init2.c:1228
+#: libgnome/gnome-program.c:1154
+msgid "Application options"
+msgstr "Mo¾nosti aplikácie"
+
+#: libgnome/gnome-program.c:1170
 msgid "Dynamic modules to load"
 msgstr "Naèíta» dynamické moduly"
 
-#: libgnome/gnomelib-init2.c:1229
+#: libgnome/gnome-program.c:1171
 msgid "MODULE1,MODULE2,..."
 msgstr "MODUL1,MODUL2,..."
-
-#: libgnomeui/gnome-appbar.c:682
-msgid ""
-"gnome_appbar_set_progress deprecated, use "
-"gnome_appbar_set_progress_percentage"
-msgstr ""
-"gnome_appbar_set_progress nie je podporovaný, pou¾ite "
-"gnome_appbar_set_progress_percentage"
 
 #: libcompat/gnome-dentry-edit.c:184 libgnomeui/gnome-ditem-edit.c:210
 msgid "Name:"
@@ -188,52 +184,52 @@ msgstr "Príkaz pri pustení URL:"
 msgid "Drop one URL at a time only."
 msgstr "Pú¹»a» po jednom URL."
 
-#: libcompat/gnome-dentry-edit.c:367 libgnomeui/gnome-ditem-edit.c:490
+#: libcompat/gnome-dentry-edit.c:367 libgnomeui/gnome-ditem-edit.c:487
 msgid "Try this before using:"
 msgstr "Pred pou¾itím skúsi»:"
 
-#: libcompat/gnome-dentry-edit.c:377 libgnomeui/gnome-ditem-edit.c:500
+#: libcompat/gnome-dentry-edit.c:377 libgnomeui/gnome-ditem-edit.c:497
 msgid "Documentation:"
 msgstr "Dokumentácia:"
 
-#: libgnomeui/gnome-ditem-edit.c:510
+#: libgnomeui/gnome-ditem-edit.c:507
 msgid "Window titles to wait for (comma separated):"
 msgstr "Titulky okien, na ktoré sa má èaka» (oddelené èiarkami):"
 
-#: libcompat/gnome-dentry-edit.c:387 libgnomeui/gnome-ditem-edit.c:520
+#: libcompat/gnome-dentry-edit.c:387 libgnomeui/gnome-ditem-edit.c:517
 msgid "Name/Comment translations:"
 msgstr "Preklady mena/komentára:"
 
-#: libcompat/gnome-dentry-edit.c:390 libgnomeui/gnome-ditem-edit.c:523
+#: libcompat/gnome-dentry-edit.c:390 libgnomeui/gnome-ditem-edit.c:520
 msgid "Language"
 msgstr "Jazyk"
 
-#: libcompat/gnome-dentry-edit.c:391 libgnomeui/gnome-ditem-edit.c:524
+#: libcompat/gnome-dentry-edit.c:391 libgnomeui/gnome-ditem-edit.c:521
 msgid "Name"
 msgstr "Meno"
 
-#: libcompat/gnome-dentry-edit.c:392 libgnomeui/gnome-ditem-edit.c:525
+#: libcompat/gnome-dentry-edit.c:392 libgnomeui/gnome-ditem-edit.c:522
 msgid "Comment"
 msgstr "Komentár"
 
-#: libcompat/gnome-dentry-edit.c:420 libgnomeui/gnome-ditem-edit.c:553
+#: libcompat/gnome-dentry-edit.c:420 libgnomeui/gnome-ditem-edit.c:550
 msgid "Add/Set"
 msgstr "Prida»/Nastavi»"
 
-#: libcompat/gnome-dentry-edit.c:425 libgnomeui/gnome-ditem-edit.c:558
-#: libgnomeui/gnome-stock.c:709
+#: libcompat/gnome-dentry-edit.c:425 libgnomeui/gnome-ditem-edit.c:555
+#: libgnomeui/gnome-stock.c:566
 msgid "Remove"
 msgstr "Odstráni»"
 
-#: libcompat/gnome-dentry-edit.c:507 libgnomeui/gnome-ditem-edit.c:705
+#: libcompat/gnome-dentry-edit.c:507 libgnomeui/gnome-ditem-edit.c:702
 msgid "Basic"
 msgstr "Základné"
 
-#: libgnomeui/gnome-ditem-edit.c:709
+#: libgnomeui/gnome-ditem-edit.c:706
 msgid "Drag and Drop"
 msgstr "«ahaj a pus»"
 
-#: libcompat/gnome-dentry-edit.c:511 libgnomeui/gnome-ditem-edit.c:713
+#: libcompat/gnome-dentry-edit.c:511 libgnomeui/gnome-ditem-edit.c:710
 msgid "Advanced"
 msgstr "Pokroèilé"
 
@@ -262,11 +258,11 @@ msgstr "Umiestnenie:"
 msgid "Save As Type:"
 msgstr "Ulo¾i» ako typ:"
 
-#: libgnomeui/gnome-gconf.c:581
+#: libgnomeui/gnome-gconf.c:476
 msgid "GNOME GConf Support"
 msgstr "Podpora GNOME GConf"
 
-#: libgnomeui/gnome-gconf.c:621
+#: libgnomeui/gnome-gconf.c:516
 #, c-format
 msgid ""
 "You attempted to change an aspect of your configuration that your system "
@@ -279,7 +275,7 @@ msgstr ""
 "nebudú akceptované, alebo sa ich zmena nezachová do ïal¹ieho spustenia "
 "aplikácie (%s)."
 
-#: libgnomeui/gnome-gconf.c:624
+#: libgnomeui/gnome-gconf.c:519
 #, c-format
 msgid ""
 "An error occurred while loading or saving configuration information for %s. "
@@ -288,113 +284,112 @@ msgstr ""
 "Nastala chyba pri naèítavaní alebo ukladaní informácie o nastavení pre %s. "
 "Niektoré Va¹e nastavenia nemusia správne fungova»."
 
-#: libgnomeui/gnome-gconf.c:646
+#: libgnomeui/gnome-gconf.c:541
 #, c-format
 msgid "GConf error details: %s\n"
 msgstr "Detaily chyby od GConf: %s\n"
 
-#: libgnomeui/gnome-helpsys.c:117
+#: libgnomeui/gnome-helpsys.c:115
 msgid "_Popup"
 msgstr "_Popup"
 
-#: libgnomeui/gnome-helpsys.c:118
+#: libgnomeui/gnome-helpsys.c:116
 msgid "Show help in temporary popup windows"
 msgstr "Zobrazova» pomocníka v doèasných popup oknách"
 
-#: libgnomeui/gnome-helpsys.c:120
+#: libgnomeui/gnome-helpsys.c:118
 msgid "_Embedded"
 msgstr "_Vlo¾ené"
 
-#: libgnomeui/gnome-helpsys.c:121
+#: libgnomeui/gnome-helpsys.c:119
 msgid "Show help inside the application window"
 msgstr "Zobrazova» pomocníka v okne aplikácie"
 
-#: libgnomeui/gnome-helpsys.c:123
+#: libgnomeui/gnome-helpsys.c:121
 msgid "_Browser"
 msgstr "_Prehliadaè"
 
-#: libgnomeui/gnome-helpsys.c:124
+#: libgnomeui/gnome-helpsys.c:122
 msgid "Show help in a help browser window"
 msgstr "Zobrazova» pomocníka v okno prehliadaèa pomocníka"
 
-#: libgnomeui/gnome-helpsys.c:172
+#: libgnomeui/gnome-helpsys.c:170
 msgid "App style"
 msgstr "©týl aplikácie"
 
-#: libgnomeui/gnome-helpsys.c:173
+#: libgnomeui/gnome-helpsys.c:171
 msgid "The style of GnomeHelpView"
 msgstr "©týl GnomeHelpView"
 
-#: libgnomeui/gnome-helpsys.c:182
+#: libgnomeui/gnome-helpsys.c:180
 msgid "App style priority"
 msgstr "Priorita ¹týlu aplikácie"
 
-#: libgnomeui/gnome-helpsys.c:183
+#: libgnomeui/gnome-helpsys.c:181
 msgid "The priority of style of GnomeHelpView"
 msgstr "Prioritu ¹týlu GnomeHelpView"
 
 #. orientation
-#: libgnomeui/gnome-helpsys.c:192 libgnomeui/gnome-helpsys.c:193
+#: libgnomeui/gnome-helpsys.c:190 libgnomeui/gnome-helpsys.c:191
 #: libgnomeui/gnome-paper-selector.c:191
 msgid "Orientation"
 msgstr "Orientácia"
 
-#: libgnomeui/gnome-helpsys.c:202
+#: libgnomeui/gnome-helpsys.c:200
 msgid "Toplevel"
 msgstr "Najvy¹¹í"
 
-#: libgnomeui/gnome-helpsys.c:203
+#: libgnomeui/gnome-helpsys.c:201
 msgid "The toplevel widget"
 msgstr "Najvy¹¹í prvok rozhrania"
 
-#: demos/stock_demo.c:315 libgnomeui/gnome-helpsys.c:219
-#: libgnomeui/gnome-stock.c:724
+#: libgnomeui/gnome-helpsys.c:217 libgnomeui/gnome-stock.c:581
 msgid "Help"
 msgstr "Pomocník"
 
-#: libgnomeui/gnome-helpsys.c:220
+#: libgnomeui/gnome-helpsys.c:218
 msgid "Show help for a specific region of the application"
 msgstr "Zobrazi» pomocníka pre ¹pecifickú èas» aplikácie"
 
-#: libgnomeui/gnome-helpsys.c:224
+#: libgnomeui/gnome-helpsys.c:223
 msgid "Style"
 msgstr "©týl"
 
-#: libgnomeui/gnome-helpsys.c:225
+#: libgnomeui/gnome-helpsys.c:224
 msgid "Change the way help is displayed"
 msgstr "Zmena spôsobu zobrazovania pomocníka"
 
-#: libgnomeui/gnome-helpsys.c:926 libgnomeui/gnome-helpsys.c:1020
+#: libgnomeui/gnome-helpsys.c:924 libgnomeui/gnome-helpsys.c:1018
 msgid "No help is available for the selected portion of the application."
 msgstr "Pre vybranú èas» aplikácie nie je k dispozícii pomocník."
 
 #. FIXME: properly handle the error!
-#: libgnomeui/gnome-helpsys.c:1190
+#: libgnomeui/gnome-helpsys.c:1188
 #, c-format
 msgid "Cought GnomeURL error: %s"
 msgstr "Zachytená chyba GnomeURL: %s"
 
-#: libgnomeui/gnome-href.c:114
+#: libgnomeui/gnome-href.c:112
 msgid "URL"
 msgstr "URL"
 
-#: libgnomeui/gnome-href.c:115
+#: libgnomeui/gnome-href.c:113
 msgid "The URL that GnomeHRef activates"
 msgstr "URL, ktoré GnomeHRef aktivuje"
 
-#: libgnomeui/gnome-href.c:122
+#: libgnomeui/gnome-href.c:120
 msgid "Text"
 msgstr "Text"
 
-#: libgnomeui/gnome-href.c:123
+#: libgnomeui/gnome-href.c:121
 msgid "The text on the button"
 msgstr "Text na tlaèidle"
 
-#: libgnomeui/gnome-href.c:124
+#: libgnomeui/gnome-href.c:122
 msgid "End World Hunger"
 msgstr "Ukonèi» hlad vo svete"
 
-#: libgnomeui/gnome-about.c:1169 libgnomeui/gnome-href.c:395
+#: libgnomeui/gnome-about.c:1169 libgnomeui/gnome-href.c:397
 msgid ""
 "Error occured while trying to launch the URL handler.\n"
 "Please check the settings in the Control Center if they are correct."
@@ -504,35 +499,35 @@ msgstr "Prehµadne usporiada» ikony"
 msgid "Autoarrange icons"
 msgstr "Automaticky usporiadáva» ikony"
 
-#: libgnomeui/gnome-recently-used.c:113
+#: libgnomeui/gnome-recently-used.c:111
 msgid "App Specific"
 msgstr "©pecifické pre aplikáciu"
 
-#: libgnomeui/gnome-recently-used.c:114
+#: libgnomeui/gnome-recently-used.c:112
 msgid "Is this list application specific"
 msgstr "Je tento zoznam ¹pecifický pre aplikáciu"
 
-#: libgnomeui/gnome-recently-used.c:897
+#: libgnomeui/gnome-recently-used.c:893
 #, c-format
 msgid "bad GnomeRecentDocument attribute: %s\n"
 msgstr "neplatný atribút GnomeRecentDocument: %s\n"
 
-#: libgnomeui/gnome-recently-used.c:1127
+#: libgnomeui/gnome-recently-used.c:1123
 msgid "Unknown"
 msgstr "Neznámy"
 
 #. browse button ...
-#: libcompat/gnome-spell.c:620 libcompat/gnome-spell.c:637
-#: libcompat/gnome-spell.c:654 libgnomeui/gnome-file-entry.c:445
-#: libgnomeui/gnome-selector.c:859
+#: libcompat/gnome-file-entry.c:445 libcompat/gnome-spell.c:620
+#: libcompat/gnome-spell.c:637 libcompat/gnome-spell.c:654
+#: libgnomeui/gnome-selector.c:1037
 msgid "Browse..."
 msgstr "Prechádza»..."
 
-#: libgnomeui/gnome-selector.c:869
+#: libgnomeui/gnome-selector.c:1048
 msgid "Default..."
 msgstr "©tandardný..."
 
-#: libgnomeui/gnome-selector.c:879
+#: libgnomeui/gnome-selector.c:1059
 msgid "Clear..."
 msgstr "Vymaza»..."
 
@@ -544,14 +539,14 @@ msgstr "Meno pou¾ívateµa:"
 msgid "Password:"
 msgstr "Heslo:"
 
-#: libgnome/gnomelib-init.c:200 libgnome/gnomelib-init.c:214
+#: libgnome/gnomelib-init.c:158 libgnome/gnomelib-init.c:172
 #, c-format
 msgid "Could not create per-user gnome configuration directory `%s': %s\n"
 msgstr ""
 "Nepodarilo sa vytvori» pou¾ívateµský prieèinok `%s' pre nastavenie GNOME: "
 "%s\n"
 
-#: libgnome/gnomelib-init.c:223
+#: libgnome/gnomelib-init.c:181
 #, c-format
 msgid ""
 "Could not set mode 0700 on private per-user gnome configuration directory "
@@ -560,7 +555,7 @@ msgstr ""
 "Nepodarilo sa nastavi» prístupové práva 0700 na pou¾ívateµskom prieèinku "
 "`%s' pre nastavenie GNOME: %s\n"
 
-#: libgnome/gnomelib-init.c:230
+#: libgnome/gnomelib-init.c:188
 #, c-format
 msgid "Could not create gnome accelerators directory `%s': %s\n"
 msgstr ""
@@ -578,7 +573,6 @@ msgstr "Autori:"
 msgid "Authors: "
 msgstr "Autori: "
 
-#: demos/stock_demo.c:307 demos/winhints_demo.c:256
 #: libgnomeui/gnome-about.c:1075
 msgid "About"
 msgstr "O aplikácii"
@@ -973,182 +967,13 @@ msgstr " - OK? (áno alebo nie)"
 msgid "Progress"
 msgstr "Postup"
 
-#: libgnomeui/gnome-app.c:151
+#: libgnomeui/gnome-app.c:149
 msgid "App ID"
 msgstr "ID aplikácie"
 
-#: libgnomeui/gnome-app.c:152
+#: libgnomeui/gnome-app.c:150
 msgid "The application ID string"
 msgstr "Identifikaèný re»azec aplikácie"
-
-#: libgnomeui/gnome-calculator.c:431 libgnomeui/gnome-calculator.c:1074
-msgid "DEG"
-msgstr "DEG"
-
-#: libgnomeui/gnome-calculator.c:433
-msgid "RAD"
-msgstr "RAD"
-
-#: libgnomeui/gnome-calculator.c:435
-msgid "GRAD"
-msgstr "GRAD"
-
-#: libgnomeui/gnome-calculator.c:1064
-msgid "1/x"
-msgstr "1/x"
-
-#: libgnomeui/gnome-calculator.c:1065
-msgid "x^2"
-msgstr "x^2"
-
-#: libgnomeui/gnome-calculator.c:1066
-msgid "SQRT"
-msgstr "SQRT"
-
-#: libgnomeui/gnome-calculator.c:1067
-msgid "CE/C"
-msgstr "CE/C"
-
-#: libgnomeui/gnome-calculator.c:1068
-msgid "AC"
-msgstr "AC"
-
-#. inverse button
-#: libgnomeui/gnome-calculator.c:1071
-msgid "sin"
-msgstr "sin"
-
-#: libgnomeui/gnome-calculator.c:1072
-msgid "cos"
-msgstr "cos"
-
-#: libgnomeui/gnome-calculator.c:1073
-msgid "tan"
-msgstr "tan"
-
-#: libgnomeui/gnome-calculator.c:1076
-msgid "e"
-msgstr "e"
-
-#: libgnomeui/gnome-calculator.c:1077
-msgid "EE"
-msgstr "EE"
-
-#: libgnomeui/gnome-calculator.c:1078
-msgid "log"
-msgstr "log"
-
-#: libgnomeui/gnome-calculator.c:1079
-msgid "ln"
-msgstr "ln"
-
-#: libgnomeui/gnome-calculator.c:1080
-msgid "x^y"
-msgstr "x^y"
-
-#: libgnomeui/gnome-calculator.c:1082
-msgid "PI"
-msgstr "PI"
-
-#: libgnomeui/gnome-calculator.c:1083
-msgid "x!"
-msgstr "x!"
-
-#: libgnomeui/gnome-calculator.c:1084
-msgid "("
-msgstr "("
-
-#: libgnomeui/gnome-calculator.c:1085
-msgid ")"
-msgstr ")"
-
-#: libgnomeui/gnome-calculator.c:1086
-msgid "/"
-msgstr "/"
-
-#: libgnomeui/gnome-calculator.c:1088
-msgid "STO"
-msgstr "STO"
-
-#: libgnomeui/gnome-calculator.c:1089
-msgid "7"
-msgstr "7"
-
-#: libgnomeui/gnome-calculator.c:1090
-msgid "8"
-msgstr "8"
-
-#: libgnomeui/gnome-calculator.c:1091
-msgid "9"
-msgstr "9"
-
-#: libgnomeui/gnome-calculator.c:1092
-msgid "*"
-msgstr "*"
-
-#: libgnomeui/gnome-calculator.c:1094
-msgid "RCL"
-msgstr "RCL"
-
-#: libgnomeui/gnome-calculator.c:1095
-msgid "4"
-msgstr "4"
-
-#: libgnomeui/gnome-calculator.c:1096
-msgid "5"
-msgstr "5"
-
-#: libgnomeui/gnome-calculator.c:1097
-msgid "6"
-msgstr "6"
-
-#: libgnomeui/gnome-calculator.c:1098
-msgid "-"
-msgstr "-"
-
-#: libgnomeui/gnome-calculator.c:1100
-msgid "SUM"
-msgstr "SUM"
-
-#: libgnomeui/gnome-calculator.c:1101
-msgid "1"
-msgstr "1"
-
-#: libgnomeui/gnome-calculator.c:1102
-msgid "2"
-msgstr "2"
-
-#: libgnomeui/gnome-calculator.c:1103
-msgid "3"
-msgstr "3"
-
-#: libgnomeui/gnome-calculator.c:1104
-msgid "+"
-msgstr "+"
-
-#: libgnomeui/gnome-calculator.c:1106
-msgid "EXC"
-msgstr "EXC"
-
-#: libgnomeui/gnome-calculator.c:1107
-msgid "0"
-msgstr "0"
-
-#: libgnomeui/gnome-calculator.c:1108
-msgid "."
-msgstr "."
-
-#: libgnomeui/gnome-calculator.c:1109
-msgid "+/-"
-msgstr "+/-"
-
-#: libgnomeui/gnome-calculator.c:1110
-msgid "="
-msgstr "="
-
-#: libgnomeui/gnome-calculator.c:1321
-msgid "INV"
-msgstr "INV"
 
 #: libgnomeui/gnome-client.c:836
 msgid "Specify session management ID"
@@ -1174,64 +999,64 @@ msgstr "Zakáza» pripojenie na správcu sedenia"
 msgid "Session management"
 msgstr "Správa sedenia"
 
-#: libgnomeui/gnome-client.c:2341
+#: libgnomeui/gnome-client.c:2345
 msgid "Cancel Logout"
 msgstr "Zru¹i» odhlásenie"
 
-#: libgnomeui/gnome-color-picker.c:423
+#: libgnomeui/gnome-color-picker.c:421
 msgid "Received invalid color data\n"
 msgstr "Prijaté neplatné dáta farby\n"
 
-#: libgnomeui/gnome-color-picker.c:487
+#: libgnomeui/gnome-color-picker.c:485
 msgid "Pick a color"
 msgstr "Vyberte farbu"
 
-#: libgnomeui/gnome-dateedit.c:361
+#: libgnomeui/gnome-dateedit.c:359
 msgid "Time"
 msgstr "Èas"
 
-#: libgnomeui/gnome-dateedit.c:362
+#: libgnomeui/gnome-dateedit.c:360
 msgid "The time currentlyselected"
 msgstr "Aktuálne vybraný èas"
 
-#: libgnomeui/gnome-dateedit.c:373
+#: libgnomeui/gnome-dateedit.c:371
 msgid "DateEdit Flags"
 msgstr "Mo¾nosti DateEdit"
 
-#: libgnomeui/gnome-dateedit.c:374
+#: libgnomeui/gnome-dateedit.c:372
 msgid "Flags for how DateEdit looks"
 msgstr "Mo¾nosti vzhµadu DateEdit"
 
-#: libgnomeui/gnome-dateedit.c:383
+#: libgnomeui/gnome-dateedit.c:381
 msgid "Lower Hour"
 msgstr "Zní¾i» hodinu"
 
-#: libgnomeui/gnome-dateedit.c:384
+#: libgnomeui/gnome-dateedit.c:382
 msgid "Lower hour in the time popup selector"
 msgstr "Zní¾i hodinu vo výbere èasu"
 
-#: libgnomeui/gnome-dateedit.c:394
+#: libgnomeui/gnome-dateedit.c:392
 msgid "Upper Hour"
 msgstr "Zvý¹i» hodinu"
 
-#: libgnomeui/gnome-dateedit.c:395
+#: libgnomeui/gnome-dateedit.c:393
 msgid "Upper hour in the time popup selector"
 msgstr "Zvý¹i hodinu vo výbere èasu"
 
-#: libgnomeui/gnome-dateedit.c:405
+#: libgnomeui/gnome-dateedit.c:403
 msgid "Initial Time"
 msgstr "Poèiatoèný èas"
 
-#: libgnomeui/gnome-dateedit.c:406
+#: libgnomeui/gnome-dateedit.c:404
 msgid "The initial time"
 msgstr "Poèiatoèný èas"
 
 #. Calendar label, only shown if the date editor has a time field
-#: libgnomeui/gnome-dateedit.c:651
+#: libgnomeui/gnome-dateedit.c:647
 msgid "Calendar"
 msgstr "Kalendár"
 
-#: libgnomeui/gnome-dateedit.c:845
+#: libgnomeui/gnome-dateedit.c:843
 msgid "gnome_date_edit_get_date deprecated, use gnome_date_edit_get_time"
 msgstr ""
 "gnome_date_edit_get_date nie je podporovaný, pou¾ite gnome_date_edit_get_time"
@@ -1244,125 +1069,108 @@ msgstr "Dozadu"
 msgid "Finish"
 msgstr "Dokonèi»"
 
-#: libgnomeui/gnome-file-entry.c:314
-msgid "Select file"
-msgstr "Vyberte súbor"
-
-#: libgnomeui/gnome-font-picker.c:856 libgnomeui/gnome-stock.c:729
+#: libgnomeui/gnome-font-picker.c:856 libgnomeui/gnome-stock.c:586
 msgid "Font"
 msgstr "Písmo"
 
-#: libgnomeui/gnome-icon-entry.c:231 libgnomeui/gnome-icon-entry.c:540
+#: libgnomeui/gnome-icon-entry.c:348 libgnomeui/gnome-icon-entry.c:717
+#: libgnomeui/gnome-icon-entry.c:734
 msgid "No Icon"
 msgstr "Bez ikony"
 
-#: libgnomeui/gnome-icon-sel.c:280
-#, c-format
-msgid "GnomeIconSelection: '%s' does not exist or is not a directory"
-msgstr "GnomeIconSelection: '%s' neexistuje, alebo to nie je prieèinok"
-
-#: libgnomeui/gnome-icon-sel.c:288
-#, c-format
-msgid "GnomeIconSelection: couldn't open directory '%s'"
-msgstr "GnomeIconSelection: nepodarilo sa otvori» prieèinok '%s'"
-
-#: libgnomeui/gnome-icon-sel.c:361
-msgid "Loading Icons..."
-msgstr "Naèítavam ikony..."
-
-#: libgnomeui/gnome-init.c:81
+#: libgnomeui/gnome-init.c:84
 msgid "Gdk debugging flags to set"
 msgstr "Ktoré odlaïovacie príznaky Gdk nastavi»"
 
-#: libgnomeui/gnome-init.c:81 libgnomeui/gnome-init.c:84
-#: libgnomeui/gnome-init.c:114 libgnomeui/gnome-init.c:117
+#: libgnomeui/gnome-init.c:84 libgnomeui/gnome-init.c:87
+#: libgnomeui/gnome-init.c:117 libgnomeui/gnome-init.c:120
 msgid "FLAGS"
 msgstr "PRÍZNAKY"
 
-#: libgnomeui/gnome-init.c:84
+#: libgnomeui/gnome-init.c:87
 msgid "Gdk debugging flags to unset"
 msgstr "Ktoré odlaïovacie príznaky Gdk zru¹i»"
 
-#: libgnomeui/gnome-init.c:87 libgnomeui/gnome-init.c:239
+#: libgnomeui/gnome-init.c:90 libgnomeui/gnome-init.c:254
 msgid "X display to use"
 msgstr "Ktorý X displej pou¾i»"
 
-#: libgnomeui/gnome-init.c:87 libgnomeui/gnome-init.c:239
+#: libgnomeui/gnome-init.c:90 libgnomeui/gnome-init.c:254
 msgid "DISPLAY"
 msgstr "DISPLEJ"
 
-#: libgnomeui/gnome-init.c:90
+#: libgnomeui/gnome-init.c:93
 msgid "Make X calls synchronous"
 msgstr "Vola» X funkcie synchrónne"
 
-#: libgnomeui/gnome-init.c:93
+#: libgnomeui/gnome-init.c:96
 msgid "Don't use X shared memory extension"
 msgstr "Nepou¾íva» roz¹írenie X pre zdieµanú pamä»"
 
-#: libgnomeui/gnome-init.c:96
+#: libgnomeui/gnome-init.c:99
 msgid "Program name as used by the window manager"
 msgstr "Meno programu pre pou¾itie správcom okien"
 
-#: libgnomeui/gnome-init.c:96
+#: libgnomeui/gnome-init.c:99
 msgid "NAME"
 msgstr "NAME"
 
-#: libgnomeui/gnome-init.c:99
+#: libgnomeui/gnome-init.c:102
 msgid "Program class as used by the window manager"
 msgstr "Trieda programu pre pou¾itie správcom okien"
 
-#: libgnomeui/gnome-init.c:99
+#: libgnomeui/gnome-init.c:102
 msgid "CLASS"
 msgstr "TRIEDA"
 
-#: libgnomeui/gnome-init.c:102
+#: libgnomeui/gnome-init.c:105
 msgid "HOST"
 msgstr "HOSTITE¥"
 
-#: libgnomeui/gnome-init.c:105
+#: libgnomeui/gnome-init.c:108
 msgid "PORT"
 msgstr "PORT"
 
-#: libgnomeui/gnome-init.c:108 libgnomeui/gnome-init.c:111
+#: libgnomeui/gnome-init.c:111 libgnomeui/gnome-init.c:114
 msgid "STYLE"
 msgstr "©TÝL"
 
-#: libgnomeui/gnome-init.c:114
+#: libgnomeui/gnome-init.c:117
 msgid "Gtk+ debugging flags to set"
 msgstr "Ktoré odlaïovacie príznaky Gtk+ nastavi»"
 
-#: libgnomeui/gnome-init.c:117
+#: libgnomeui/gnome-init.c:120
 msgid "Gtk+ debugging flags to unset"
 msgstr "Ktoré odlaïovacie príznaky Gtk+ zakáza»"
 
-#: libgnomeui/gnome-init.c:120
+#: libgnomeui/gnome-init.c:123
 msgid "Make all warnings fatal"
 msgstr "V¹etky varovania poklada» za neopraviteµné chyby"
 
-#: libgnomeui/gnome-init.c:123
+#: libgnomeui/gnome-init.c:126
 msgid "Load an additional Gtk module"
 msgstr "Naèíta» dodatoèný Gtk modul"
 
-#: libgnomeui/gnome-init.c:123
+#: libgnomeui/gnome-init.c:126
 msgid "MODULE"
 msgstr "MODULE"
 
 #. dialog display isn't working out
-#: libgnomeui/gnome-init.c:471
+#: libgnomeui/gnome-init.c:498
 msgid "Multiple segmentation faults occurred; can't display error dialog\n"
 msgstr ""
 "Vyskytlo sa niekoµko poru¹ení ochrany pamäti, nie je mo¾né zobrazi» chybový "
 "dialóg\n"
 
-#: libgnomeui/gnome-init.c:634
+#: libgnomeui/gnome-init.c:669
 msgid "GTK options"
 msgstr "Mo¾nosti GTK"
 
-#: libgnomeui/gnome-init.c:635
+#: libgnomeui/gnome-init.c:670
 msgid "GNOME GUI options"
 msgstr "Mo¾nosti GNOME GUI"
 
-#: libgnomeui/gnome-init.c:786
+#: libgnomeui/gnome-init.c:821
 #, c-format
 msgid "%s options"
 msgstr "%s mo¾ností"
@@ -1386,26 +1194,6 @@ msgstr "Otázka"
 #: libgnomeui/gnome-messagebox.c:215
 msgid "Message"
 msgstr "Správa"
-
-#: libgnomeui/gnome-number-entry.c:217
-msgid "Calculator"
-msgstr "Kalkulaèka"
-
-#: libgnomeui/gnome-number-entry.c:275
-msgid "Calculator..."
-msgstr "Kalkulaèka..."
-
-#: libgnomeui/gnome-pixmap-entry.c:257 libgnomeui/gnome-pixmap-entry.c:564
-msgid "No Image"
-msgstr "Bez obrázku"
-
-#: libgnomeui/gnome-pixmap-entry.c:460
-msgid "Can't find an hbox, using a normal file selection"
-msgstr "Nemô¾em nájs» hbox, pou¾ijem normálny výber súboru"
-
-#: libgnomeui/gnome-pixmap-entry.c:466
-msgid "Preview"
-msgstr "Náhµad"
 
 #: libgnomeui/gnome-popup-help.c:57
 msgid "_Help with this"
@@ -1446,95 +1234,95 @@ msgstr "%a %b %d %T %Y"
 msgid "-freefont-garamond-*-*-*-*-30-170-*-*-*-*-*-*,*-r-*"
 msgstr "-freefont-garamond-*-*-*-*-30-170-*-*-*-*-*-*,*-r-*"
 
-#: libgnomeui/gnome-stock.c:706
+#: libgnomeui/gnome-stock.c:563
 msgid "Add"
 msgstr "Prida»"
 
-#: libgnomeui/gnome-stock.c:707
+#: libgnomeui/gnome-stock.c:564
 msgid "Clear"
 msgstr "Vymaza»"
 
-#: libgnomeui/gnome-stock.c:708
+#: libgnomeui/gnome-stock.c:565
 msgid "Select Color"
 msgstr "Vyberte farbu"
 
-#: libgnomeui/gnome-stock.c:710
+#: libgnomeui/gnome-stock.c:567
 msgid "Table Borders"
 msgstr "Okraje tabuµky"
 
-#: libgnomeui/gnome-stock.c:711
+#: libgnomeui/gnome-stock.c:568
 msgid "Table Fill"
 msgstr "Výplò tabuµky"
 
-#: libgnomeui/gnome-stock.c:712
+#: libgnomeui/gnome-stock.c:569
 msgid "Bulleted List"
 msgstr "Zoznam s odrá¾kami"
 
-#: libgnomeui/gnome-stock.c:713
+#: libgnomeui/gnome-stock.c:570
 msgid "Numbered List"
 msgstr "Èíslovaný zoznam"
 
-#: libgnomeui/gnome-stock.c:714
+#: libgnomeui/gnome-stock.c:571
 msgid "Indent"
 msgstr "Odsadenie"
 
-#: libgnomeui/gnome-stock.c:715
+#: libgnomeui/gnome-stock.c:572
 msgid "Un-Indent"
 msgstr "Zru¹i» odsadenie"
 
-#: libcompat/gnome-spell.c:259 libgnomeui/gnome-stock.c:718
+#: libcompat/gnome-spell.c:259 libgnomeui/gnome-stock.c:575
 msgid "OK"
 msgstr "OK"
 
-#: libgnomeui/gnome-stock.c:719
+#: libgnomeui/gnome-stock.c:576
 msgid "Apply"
 msgstr "Pou¾i»"
 
-#: libcompat/gnome-spell.c:266 libgnomeui/gnome-stock.c:720
+#: libcompat/gnome-spell.c:266 libgnomeui/gnome-stock.c:577
 msgid "Cancel"
 msgstr "Zru¹i»"
 
-#: demos/stock_demo.c:169 libgnomeui/gnome-stock.c:721
+#: libgnomeui/gnome-stock.c:578
 msgid "Close"
 msgstr "Zavrie»"
 
-#: libgnomeui/gnome-stock.c:722
+#: libgnomeui/gnome-stock.c:579
 msgid "Yes"
 msgstr "Áno"
 
-#: libgnomeui/gnome-stock.c:723
+#: libgnomeui/gnome-stock.c:580
 msgid "No"
 msgstr "Nie"
 
-#: libgnomeui/gnome-stock.c:725
+#: libgnomeui/gnome-stock.c:582
 msgid "Next"
 msgstr "Nasledujúci"
 
-#: libgnomeui/gnome-stock.c:726
+#: libgnomeui/gnome-stock.c:583
 msgid "Prev"
 msgstr "Predchádzajúci"
 
-#: libgnomeui/gnome-stock.c:727
+#: libgnomeui/gnome-stock.c:584
 msgid "Up"
 msgstr "Hore"
 
-#: libgnomeui/gnome-stock.c:728
+#: libgnomeui/gnome-stock.c:585
 msgid "Down"
 msgstr "Dolu"
 
-#: libgnomeui/gnome-stock.c:1492
+#: libgnomeui/gnome-stock.c:1354
 msgid "Menu Accelerator Keys"
 msgstr "Klávesové skratky v menu"
 
-#: libgnomeui/gnome-stock.c:1494
+#: libgnomeui/gnome-stock.c:1356
 msgid "Global"
 msgstr "Globálne"
 
-#: libgnomeui/gnome-stock.c:1496
+#: libgnomeui/gnome-stock.c:1358
 msgid "Menu Item"
 msgstr "Polo¾ka menu"
 
-#: libgnomeui/gnome-stock.c:1497
+#: libgnomeui/gnome-stock.c:1359
 msgid "Accelerator"
 msgstr "Klávesová skratka"
 
@@ -1586,47 +1374,216 @@ msgstr ""
 "Prosím, nav¹tívte stránku GNOME Application Crash pre ïal¹ie informácie"
 
 #. Pixmap
-#: test-gnome/testgnome.c:830
+#: test-gnome/testgnome.c:715
 msgid "Default Pixmap"
 msgstr "©tandardná pixmapa"
 
-#: test-gnome/testgnome.c:838 test-gnome/testgnome.c:879
-#: test-gnome/testgnome.c:904
+#: test-gnome/testgnome.c:723 test-gnome/testgnome.c:764
+#: test-gnome/testgnome.c:789
 msgid "If you choose a font it will appear here"
 msgstr "Ak si zvolíte písmo, objaví sa tu"
 
 #. Font_Info
-#: test-gnome/testgnome.c:845
+#: test-gnome/testgnome.c:730
 msgid "Font Info"
 msgstr "Informácie o písme"
 
-#: test-gnome/testgnome.c:855
+#: test-gnome/testgnome.c:740
 msgid "Use Font in button with size"
 msgstr "Pou¾i» písmo v tlaèidle s veµkos»ou"
 
-#: test-gnome/testgnome.c:862
+#: test-gnome/testgnome.c:747
 msgid "Show font size"
 msgstr "Zobrazi» veµkos» písma"
 
-#: test-gnome/testgnome.c:898
+#: test-gnome/testgnome.c:783
 msgid "This is an hbox with pixmap and text"
 msgstr "Toto je hbox s pixmapou a textom"
 
-#: test-gnome/testgnome.c:1110
+#: test-gnome/testgnome.c:995
 msgid "The user chose Yes/OK with data:\n"
 msgstr "Pou¾ívateµ zvolil Áno/OK s dátami:\n"
 
-#: test-gnome/testgnome.c:1114
+#: test-gnome/testgnome.c:999
 msgid "The user chose No/Cancel with data:\n"
 msgstr "Pou¾ívateµ zvolil Nie/Zru¹i» s dátami:\n"
 
-#: test-gnome/testgnome.c:1125
+#: test-gnome/testgnome.c:1010
 msgid "Weird number in reply callback"
 msgstr "Divné èíslo v spätnom volaní s odpoveïou"
 
-#: test-gnome/testgnome.c:1981
+#: test-gnome/testgnome.c:1862
 msgid "Test GNOME"
 msgstr "Test GNOME"
+
+#: libcompat/gnome-calculator.c:431 libcompat/gnome-calculator.c:1074
+msgid "DEG"
+msgstr "DEG"
+
+#: libcompat/gnome-calculator.c:433
+msgid "RAD"
+msgstr "RAD"
+
+#: libcompat/gnome-calculator.c:435
+msgid "GRAD"
+msgstr "GRAD"
+
+#: libcompat/gnome-calculator.c:1064
+msgid "1/x"
+msgstr "1/x"
+
+#: libcompat/gnome-calculator.c:1065
+msgid "x^2"
+msgstr "x^2"
+
+#: libcompat/gnome-calculator.c:1066
+msgid "SQRT"
+msgstr "SQRT"
+
+#: libcompat/gnome-calculator.c:1067
+msgid "CE/C"
+msgstr "CE/C"
+
+#: libcompat/gnome-calculator.c:1068
+msgid "AC"
+msgstr "AC"
+
+#. inverse button
+#: libcompat/gnome-calculator.c:1071
+msgid "sin"
+msgstr "sin"
+
+#: libcompat/gnome-calculator.c:1072
+msgid "cos"
+msgstr "cos"
+
+#: libcompat/gnome-calculator.c:1073
+msgid "tan"
+msgstr "tan"
+
+#: libcompat/gnome-calculator.c:1076
+msgid "e"
+msgstr "e"
+
+#: libcompat/gnome-calculator.c:1077
+msgid "EE"
+msgstr "EE"
+
+#: libcompat/gnome-calculator.c:1078
+msgid "log"
+msgstr "log"
+
+#: libcompat/gnome-calculator.c:1079
+msgid "ln"
+msgstr "ln"
+
+#: libcompat/gnome-calculator.c:1080
+msgid "x^y"
+msgstr "x^y"
+
+#: libcompat/gnome-calculator.c:1082
+msgid "PI"
+msgstr "PI"
+
+#: libcompat/gnome-calculator.c:1083
+msgid "x!"
+msgstr "x!"
+
+#: libcompat/gnome-calculator.c:1084
+msgid "("
+msgstr "("
+
+#: libcompat/gnome-calculator.c:1085
+msgid ")"
+msgstr ")"
+
+#: libcompat/gnome-calculator.c:1086
+msgid "/"
+msgstr "/"
+
+#: libcompat/gnome-calculator.c:1088
+msgid "STO"
+msgstr "STO"
+
+#: libcompat/gnome-calculator.c:1089
+msgid "7"
+msgstr "7"
+
+#: libcompat/gnome-calculator.c:1090
+msgid "8"
+msgstr "8"
+
+#: libcompat/gnome-calculator.c:1091
+msgid "9"
+msgstr "9"
+
+#: libcompat/gnome-calculator.c:1092
+msgid "*"
+msgstr "*"
+
+#: libcompat/gnome-calculator.c:1094
+msgid "RCL"
+msgstr "RCL"
+
+#: libcompat/gnome-calculator.c:1095
+msgid "4"
+msgstr "4"
+
+#: libcompat/gnome-calculator.c:1096
+msgid "5"
+msgstr "5"
+
+#: libcompat/gnome-calculator.c:1097
+msgid "6"
+msgstr "6"
+
+#: libcompat/gnome-calculator.c:1098
+msgid "-"
+msgstr "-"
+
+#: libcompat/gnome-calculator.c:1100
+msgid "SUM"
+msgstr "SUM"
+
+#: libcompat/gnome-calculator.c:1101
+msgid "1"
+msgstr "1"
+
+#: libcompat/gnome-calculator.c:1102
+msgid "2"
+msgstr "2"
+
+#: libcompat/gnome-calculator.c:1103
+msgid "3"
+msgstr "3"
+
+#: libcompat/gnome-calculator.c:1104
+msgid "+"
+msgstr "+"
+
+#: libcompat/gnome-calculator.c:1106
+msgid "EXC"
+msgstr "EXC"
+
+#: libcompat/gnome-calculator.c:1107
+msgid "0"
+msgstr "0"
+
+#: libcompat/gnome-calculator.c:1108
+msgid "."
+msgstr "."
+
+#: libcompat/gnome-calculator.c:1109
+msgid "+/-"
+msgstr "+/-"
+
+#: libcompat/gnome-calculator.c:1110
+msgid "="
+msgstr "="
+
+#: libcompat/gnome-calculator.c:1321
+msgid "INV"
+msgstr "INV"
 
 #: libcompat/gnome-druid-page-finish.c:261
 msgid "-adobe-helvetica-bold-r-normal-*-*-180-*-*-p-*-*-*"
@@ -1635,6 +1592,44 @@ msgstr "-adobe-helvetica-bold-r-normal-*-*-180-*-*-p-*-*-*"
 #: libcompat/gnome-druid-page-finish.c:269
 msgid "-adobe-helvetica-medium-r-normal-*-*-120-*-*-p-*-*-*"
 msgstr "-adobe-helvetica-medium-r-normal-*-*-120-*-*-p-*-*-*"
+
+#: libcompat/gnome-file-entry.c:314
+msgid "Select file"
+msgstr "Vyberte súbor"
+
+#: libcompat/gnome-icon-sel.c:280
+#, c-format
+msgid "GnomeIconSelection: '%s' does not exist or is not a directory"
+msgstr "GnomeIconSelection: '%s' neexistuje, alebo to nie je prieèinok"
+
+#: libcompat/gnome-icon-sel.c:288
+#, c-format
+msgid "GnomeIconSelection: couldn't open directory '%s'"
+msgstr "GnomeIconSelection: nepodarilo sa otvori» prieèinok '%s'"
+
+#: libcompat/gnome-icon-sel.c:361
+msgid "Loading Icons..."
+msgstr "Naèítavam ikony..."
+
+#: libcompat/gnome-number-entry.c:217
+msgid "Calculator"
+msgstr "Kalkulaèka"
+
+#: libcompat/gnome-number-entry.c:275
+msgid "Calculator..."
+msgstr "Kalkulaèka..."
+
+#: libcompat/gnome-pixmap-entry.c:257 libcompat/gnome-pixmap-entry.c:564
+msgid "No Image"
+msgstr "Bez obrázku"
+
+#: libcompat/gnome-pixmap-entry.c:460
+msgid "Can't find an hbox, using a normal file selection"
+msgstr "Nemô¾em nájs» hbox, pou¾ijem normálny výber súboru"
+
+#: libcompat/gnome-pixmap-entry.c:466
+msgid "Preview"
+msgstr "Náhµad"
 
 #: libcompat/gnome-property-entries.c:258
 msgid "Select"
@@ -1772,214 +1767,169 @@ msgstr "Pravopis"
 msgid "Configure"
 msgstr "Nastavi»"
 
-#: demos/mdi_demo.c:116
-msgid "Child Item 1"
-msgstr "Potomok 1"
+#~ msgid ""
+#~ "gnome_appbar_set_progress deprecated, use "
+#~ "gnome_appbar_set_progress_percentage"
+#~ msgstr ""
+#~ "gnome_appbar_set_progress nie je podporovaný, pou¾ite "
+#~ "gnome_appbar_set_progress_percentage"
 
-#: demos/mdi_demo.c:117
-msgid "Hint for item 1"
-msgstr "Rada pre potomka 1"
+#~ msgid "Child Item 1"
+#~ msgstr "Potomok 1"
 
-#: demos/mdi_demo.c:119
-msgid "Child Item 2"
-msgstr "Potomok 2"
+#~ msgid "Hint for item 1"
+#~ msgstr "Rada pre potomka 1"
 
-#: demos/mdi_demo.c:120
-msgid "Hint for item 2"
-msgstr "Rada pre potomka 2"
+#~ msgid "Child Item 2"
+#~ msgstr "Potomok 2"
 
-#: demos/stock_demo.c:137
-msgid "New..."
-msgstr "Nový..."
+#~ msgid "Hint for item 2"
+#~ msgstr "Rada pre potomka 2"
 
-#: demos/stock_demo.c:145
-msgid "Open..."
-msgstr "Otvori»..."
+#~ msgid "New..."
+#~ msgstr "Nový..."
 
-#: demos/stock_demo.c:153
-msgid "Save"
-msgstr "Ulo¾i»"
+#~ msgid "Open..."
+#~ msgstr "Otvori»..."
 
-#: demos/stock_demo.c:161
-msgid "Save as..."
-msgstr "Ulo¾i» ako..."
+#~ msgid "Save"
+#~ msgstr "Ulo¾i»"
 
-#: demos/stock_demo.c:181
-msgid "Print..."
-msgstr "Tlaèi»..."
+#~ msgid "Save as..."
+#~ msgstr "Ulo¾i» ako..."
 
-#: demos/stock_demo.c:189
-msgid "Setup Page..."
-msgstr "Nastavenie stránky..."
+#~ msgid "Print..."
+#~ msgstr "Tlaèi»..."
 
-#: demos/stock_demo.c:198
-msgid "Quit"
-msgstr "Koniec"
+#~ msgid "Setup Page..."
+#~ msgstr "Nastavenie stránky..."
 
-#: demos/stock_demo.c:209
-msgid "File"
-msgstr "Súbor"
+#~ msgid "Quit"
+#~ msgstr "Koniec"
 
-#: demos/stock_demo.c:216
-msgid "Undo"
-msgstr "Spä»"
+#~ msgid "File"
+#~ msgstr "Súbor"
 
-#: demos/stock_demo.c:224
-msgid "Redo"
-msgstr "Opakova» vrátené"
+#~ msgid "Undo"
+#~ msgstr "Spä»"
 
-#: demos/stock_demo.c:233
-msgid "Delete"
-msgstr "Vymaza»"
+#~ msgid "Redo"
+#~ msgstr "Opakova» vrátené"
 
-#: demos/stock_demo.c:238
-msgid "Cut"
-msgstr "Vystrihnú»"
+#~ msgid "Delete"
+#~ msgstr "Vymaza»"
 
-#: demos/stock_demo.c:246
-msgid "Copy"
-msgstr "Kopírova»"
+#~ msgid "Cut"
+#~ msgstr "Vystrihnú»"
 
-#: demos/stock_demo.c:254
-msgid "Paste"
-msgstr "Vlo¾i»"
+#~ msgid "Copy"
+#~ msgstr "Kopírova»"
 
-#: demos/stock_demo.c:266
-msgid "Properties..."
-msgstr "Vlastnosti..."
+#~ msgid "Paste"
+#~ msgstr "Vlo¾i»"
 
-#: demos/stock_demo.c:276
-msgid "Preferences..."
-msgstr "Mo¾nosti..."
+#~ msgid "Properties..."
+#~ msgstr "Vlastnosti..."
 
-#: demos/stock_demo.c:291
-msgid "Scores..."
-msgstr "Skóre..."
+#~ msgid "Preferences..."
+#~ msgstr "Mo¾nosti..."
 
-#: demos/stock_demo.c:299
-msgid "Edit"
-msgstr "Upravi»"
+#~ msgid "Scores..."
+#~ msgstr "Skóre..."
 
-#: demos/winhints_demo.c:46
-msgid "wmhints-test"
-msgstr "wmhints-test"
+#~ msgid "Edit"
+#~ msgstr "Upravi»"
 
-#: demos/winhints_demo.c:46
-msgid "winhints-test"
-msgstr "winhints-test"
+#~ msgid "wmhints-test"
+#~ msgstr "wmhints-test"
 
-#: demos/winhints_demo.c:71
-msgid "Layer:"
-msgstr "Vrstva:"
+#~ msgid "winhints-test"
+#~ msgstr "winhints-test"
 
-#: demos/winhints_demo.c:94
-msgid "Above Dock"
-msgstr "Nad Dock"
+#~ msgid "Layer:"
+#~ msgstr "Vrstva:"
 
-#: demos/winhints_demo.c:98
-msgid "Dock"
-msgstr "Dock"
+#~ msgid "Above Dock"
+#~ msgstr "Nad Dock"
 
-#: demos/winhints_demo.c:102
-msgid "On Top"
-msgstr "V¾dy navrchu"
+#~ msgid "Dock"
+#~ msgstr "Dock"
 
-#: demos/winhints_demo.c:106
-msgid "Normal"
-msgstr "Normálne"
+#~ msgid "On Top"
+#~ msgstr "V¾dy navrchu"
 
-#: demos/winhints_demo.c:110
-msgid "Below"
-msgstr "Pod"
+#~ msgid "Normal"
+#~ msgstr "Normálne"
 
-#: demos/winhints_demo.c:114
-msgid "Desktop"
-msgstr "Desktop"
+#~ msgid "Below"
+#~ msgstr "Pod"
 
-#: demos/winhints_demo.c:122
-msgid "Set Layer"
-msgstr "Nastavi» vrstvu"
+#~ msgid "Desktop"
+#~ msgstr "Desktop"
 
-#: demos/winhints_demo.c:129
-msgid "Workspaces:"
-msgstr "Pracovné plochy:"
+#~ msgid "Set Layer"
+#~ msgstr "Nastavi» vrstvu"
 
-#: demos/winhints_demo.c:151
-msgid "Sticky"
-msgstr "Lepivý"
+#~ msgid "Workspaces:"
+#~ msgstr "Pracovné plochy:"
 
-#: demos/winhints_demo.c:155
-msgid "Set Workspace"
-msgstr "Nastavi» pracovnú plochu"
+#~ msgid "Sticky"
+#~ msgstr "Lepivý"
 
-#: demos/winhints_demo.c:165
-msgid "State Toggles:"
-msgstr "Prepínaèe stavu:"
+#~ msgid "Set Workspace"
+#~ msgstr "Nastavi» pracovnú plochu"
 
-#: demos/winhints_demo.c:175
-msgid "Minimized"
-msgstr "Minimalizované"
+#~ msgid "State Toggles:"
+#~ msgstr "Prepínaèe stavu:"
 
-#: demos/winhints_demo.c:179
-msgid "Maximized Vertical"
-msgstr "Maximalizované vertikálne"
+#~ msgid "Minimized"
+#~ msgstr "Minimalizované"
 
-#: demos/winhints_demo.c:183
-msgid "Maximized Horizontal"
-msgstr "Maximalizované horizontálne"
+#~ msgid "Maximized Vertical"
+#~ msgstr "Maximalizované vertikálne"
 
-#: demos/winhints_demo.c:187
-msgid "Hidden"
-msgstr "Skryté"
+#~ msgid "Maximized Horizontal"
+#~ msgstr "Maximalizované horizontálne"
 
-#: demos/winhints_demo.c:191
-msgid "Shaded"
-msgstr "Zatienené"
+#~ msgid "Hidden"
+#~ msgstr "Skryté"
 
-#: demos/winhints_demo.c:195
-msgid "Fixed Position"
-msgstr "Pevná pozícia"
+#~ msgid "Shaded"
+#~ msgstr "Zatienené"
 
-#: demos/winhints_demo.c:199
-msgid "Ignore on Arrange"
-msgstr "Ignorova» pri usporiadaní"
+#~ msgid "Fixed Position"
+#~ msgstr "Pevná pozícia"
 
-#: demos/winhints_demo.c:203
-msgid "Set State"
-msgstr "Nastavi» stav"
+#~ msgid "Ignore on Arrange"
+#~ msgstr "Ignorova» pri usporiadaní"
 
-#: demos/winhints_demo.c:209
-msgid "Skip Toggles:"
-msgstr "Preskoèi» prepínaèe:"
+#~ msgid "Set State"
+#~ msgstr "Nastavi» stav"
 
-#: demos/winhints_demo.c:219
-msgid "Skip Focus"
-msgstr "Preskoèi» fokus"
+#~ msgid "Skip Toggles:"
+#~ msgstr "Preskoèi» prepínaèe:"
 
-#: demos/winhints_demo.c:223
-msgid "Skip Window Menu"
-msgstr "Preskoèi» menu okna"
+#~ msgid "Skip Focus"
+#~ msgstr "Preskoèi» fokus"
 
-#: demos/winhints_demo.c:227
-msgid "Skip Taskbar / WinList"
-msgstr "Preskoèi» Taskbar / Zoznam okien"
+#~ msgid "Skip Window Menu"
+#~ msgstr "Preskoèi» menu okna"
 
-#: demos/winhints_demo.c:231
-msgid "Set Skip"
-msgstr "Nastavi» preskakovanie"
+#~ msgid "Skip Taskbar / WinList"
+#~ msgstr "Preskoèi» Taskbar / Zoznam okien"
 
-#: demos/winhints_demo.c:410
-msgid "WIN_HINTS Test"
-msgstr "WIN_HINTS Test"
+#~ msgid "Set Skip"
+#~ msgstr "Nastavi» preskakovanie"
 
-#: demos/winhints_demo.c:411
-msgid "Copyright (C) 1998"
-msgstr "Copyright (C) 1998"
+#~ msgid "WIN_HINTS Test"
+#~ msgstr "WIN_HINTS Test"
 
-#: demos/winhints_demo.c:413
-msgid ""
-"Simple test app to check how the WIN_HINTS work.\n"
-"And to test the gnome_win_hints_* functions for errors. :)"
-msgstr ""
-"Jednoduchá testovacia aplikácie pre overenie, ako funguje WIN_HINTS.\n"
-"A na testovanie funkcie gnome_win_hints_* na chyby. :)"
+#~ msgid "Copyright (C) 1998"
+#~ msgstr "Copyright (C) 1998"
+
+#~ msgid ""
+#~ "Simple test app to check how the WIN_HINTS work.\n"
+#~ "And to test the gnome_win_hints_* functions for errors. :)"
+#~ msgstr ""
+#~ "Jednoduchá testovacia aplikácie pre overenie, ako funguje WIN_HINTS.\n"
+#~ "A na testovanie funkcie gnome_win_hints_* na chyby. :)"
