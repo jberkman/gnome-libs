@@ -40,7 +40,7 @@ release:
 ## Put `exec' in the name because this should be installed by
 ## `install-exec', not `install-data'.
 confexecdir=$(libdir)
-confexec_DATA = gnomeConf.sh
+confexec_DATA=gnomeConf.sh
 
 ## to automatically rebuild aclocal.m4 if any of the macros in
 ## `macros/' change
@@ -63,3 +63,5 @@ gnomeConf.sh: gnomeConf.sh.in Makefile
 	    -e 's^\@need_gnome_support\@^$(need_gnome_support)^g' \
 	      < $(srcdir)/gnomeConf.sh.in > gnomeConf.tmp \
 	  && mv gnomeConf.tmp gnomeConf.sh
+
+CLEANFILES=gnomeConf.sh
