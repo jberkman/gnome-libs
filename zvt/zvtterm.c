@@ -1942,6 +1942,11 @@ zvt_term_scroll (ZvtTerm *term, int n)
 /*
  * Keyboard input callback
  */
+
+/* remapping table for function keys 5-20 */
+static unsigned char f5_f20_remap[] =
+   {15,17,18,19,20,21,23,24,25,26,28,29,31,32,33,34};
+
 static gint
 zvt_term_key_press (GtkWidget *widget, GdkEventKey *event)
 {
@@ -2055,41 +2060,16 @@ zvt_term_key_press (GtkWidget *widget, GdkEventKey *event)
   case GDK_F4:
     p+=sprintf (p, "\033OS");
     break;
-  case GDK_F5:
-    p+=sprintf (p, "\033[15~");
-    break;
-  case GDK_F6:
-    p+=sprintf (p, "\033[17~");
-    break;
-  case GDK_F7:
-    p+=sprintf (p, "\033[18~");
-    break;
-  case GDK_F8:
-    p+=sprintf (p, "\033[19~");
-    break;
-  case GDK_F9:
-    p+=sprintf (p, "\033[20~");
-    break;
-  case GDK_F10:
-    p+=sprintf (p, "\033[21~");
-    break;
-  case GDK_F11:
-    p+=sprintf (p, "\033[23~");
-    break;
-  case GDK_F12:
-    p+=sprintf (p, "\033[24~");
+  case GDK_F5:  case GDK_F6:  case GDK_F7:  case GDK_F8:
+  case GDK_F9:  case GDK_F10:  case GDK_F11:  case GDK_F12:
+  case GDK_F13:  case GDK_F14:  case GDK_F15:  case GDK_F16:
+  case GDK_F17:  case GDK_F18:  case GDK_F19:  case GDK_F20:
+    p+=sprintf (p, "\033[%d~", f5_f20_remap[event->keyval-GDK_F5]);
     break;
 
-  case GDK_KP_0:
-  case GDK_KP_1:
-  case GDK_KP_2:
-  case GDK_KP_3:
-  case GDK_KP_4:
-  case GDK_KP_5:
-  case GDK_KP_6:
-  case GDK_KP_7:
-  case GDK_KP_8:
-  case GDK_KP_9:
+  case GDK_KP_0:  case GDK_KP_1:  case GDK_KP_2:  case GDK_KP_3:
+  case GDK_KP_4:  case GDK_KP_5:  case GDK_KP_6:  case GDK_KP_7:
+  case GDK_KP_8:  case GDK_KP_9:
     if (appl_keypad) {
       p+=sprintf (p, "\033O%c", 'p' + (event->keyval - GDK_KP_0));
     } else {
