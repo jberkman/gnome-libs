@@ -7,6 +7,8 @@
 #include <config.h>
 #include "gnorba.h"
 #include <dirent.h>
+#include <sys/resource.h>
+#include <signal.h>
 
 #define SERVER_LISTING_PATH "/CORBA/Servers"
 
@@ -54,7 +56,7 @@ goad_server_list_get(void)
     struct dirent *dent;
 
     while((dent = readdir(dirh))) {
-      g_string_sprintf(tmpstr, "=" GNOMESYSCONFDIR "/CORBA/servers/" "%s/",
+      g_string_sprintf(tmpstr, "=" GNOMESYSCONFDIR "/CORBA/servers/" "%s",
 		       dent->d_name);
 		       
       goad_server_list_read(tmpstr->str, servinfo, tmpstr);
@@ -105,18 +107,21 @@ goad_server_list_read(const char *filename,
   gpointer iter;
   char *typename;
   GoadServer newval;
+  GString*   dummy;
 
+  dummy = g_string_new("");
+  
   gnome_config_push_prefix(filename);
   iter = gnome_config_init_iterator_sections(filename);
 
   while((iter = gnome_config_iterator_next(iter, &newval.id, NULL))) {
     if (*filename == '=')
-      g_string_sprintf(tmpstr, "=%s/=type",
+      g_string_sprintf(dummy, "=%s/=type",
 		       newval.id);
     else
-      g_string_sprintf(tmpstr, "%s/type",
+      g_string_sprintf(dummy, "%s/type",
 		       newval.id);
-    typename = gnome_config_get_string(tmpstr->str);
+    typename = gnome_config_get_string(dummy->str);
     newval.type = goad_server_typename_to_type(typename);
     g_free(typename);
     if(!newval.type) {
@@ -126,29 +131,28 @@ goad_server_list_read(const char *filename,
     }
 
     if (*filename == '=')
-      g_string_sprintf(tmpstr, "=%s/=repo_id",
+      g_string_sprintf(dummy, "=%s/=repo_id",
 		       newval.id);
     else
-      g_string_sprintf(tmpstr, "%s/repo_id",
+      g_string_sprintf(dummy, "%s/repo_id",
 		       newval.id);
-    newval.repo_id = gnome_config_get_string(tmpstr->str);
-    
-    if (*filename == '=')
-      g_string_sprintf(tmpstr, "=%s/=description",
-		       newval.description);
-    else
-      g_string_sprintf(tmpstr, "%s/description",
-		       newval.description);
-    newval.description = gnome_config_get_string(tmpstr->str);
+    newval.repo_id = gnome_config_get_string(dummy->str);
 
     if (*filename == '=')
-      g_string_sprintf(tmpstr, "=%s/=location_info",
+      g_string_sprintf(dummy, "=%s/=description",
+		       newval.description);
+    else
+      g_string_sprintf(dummy, "%s/description",
+		       newval.description);
+    newval.description = gnome_config_get_string(dummy->str);
+
+    if (*filename == '=')
+      g_string_sprintf(dummy, "=%s/=location_info",
 		       newval.id);
     else
-      g_string_sprintf(tmpstr, "%s/location_info",
+      g_string_sprintf(dummy, "%s/location_info",
 		       newval.description);
-    newval.location_info = gnome_config_get_string(tmpstr->str);
-    
+    newval.location_info = gnome_config_get_string(dummy->str);
     g_array_append_val(servinfo, newval);
   }
   gnome_config_pop_prefix();
@@ -219,7 +223,7 @@ goad_server_activate_with_repo_id(GoadServer *server_list,
     slist = server_list;
   else
     slist = goad_server_list_get();
-
+  
   /* (unvalidated assumption) If we need to only activate existing objects, then
      we don't want to bother checking activation methods, because
      we won't be activating anything. :)
@@ -288,10 +292,11 @@ goad_server_activate(GoadServer *sinfo,
 {
   CORBA_Object retval = CORBA_OBJECT_NIL;
   CORBA_Environment ev;
+
   CosNaming_NameComponent nc[3] = {{"GNOME", "subcontext"},
 				   {"Servers", "subcontext"}};
   CosNaming_Name nom = {0, 3, nc, CORBA_FALSE};
-
+  
   g_return_val_if_fail(sinfo, CORBA_OBJECT_NIL);
   /* make sure they passed in a sane 'flags' */
   g_return_val_if_fail(!((flags & GOAD_ACTIVATE_SHLIB)
@@ -312,13 +317,13 @@ goad_server_activate(GoadServer *sinfo,
     nc[2].kind = "object";
 
     retval = CosNaming_NamingContext_resolve(name_service, &nom, &ev);
-
+    g_warning("Looking if server is registered with orbit-naming-server\n");
+    
     if(ev._major != CORBA_NO_EXCEPTION)
       {
 	g_warning("goad_server_activate: %s:%d", __FILE__, __LINE__);
 	switch( ev._major )
 	  {
-	    
 	  case CORBA_SYSTEM_EXCEPTION:
 	    g_warning(" sysex: :  %s.\n", CORBA_exception_id(&ev));
 	  case CORBA_USER_EXCEPTION:
@@ -326,30 +331,16 @@ goad_server_activate(GoadServer *sinfo,
 	  default:
 	    break;
 	  }
-	
 	retval = CORBA_OBJECT_NIL;
       }
 
     ev._major = CORBA_NO_EXCEPTION;
     CORBA_Object_release(name_service, &ev);
-
-    if(ev._major != CORBA_NO_EXCEPTION)
+    if (ev._major != CORBA_NO_EXCEPTION)
       {
-	g_warning("goad_server_activate: %s:%d", __FILE__, __LINE__);
-	switch( ev._major )
-	  {
-	    
-	  case CORBA_SYSTEM_EXCEPTION:
-	    g_warning(" sysex: :  %s.\n", CORBA_exception_id(&ev));
-	  case CORBA_USER_EXCEPTION:
-	    g_warning(" usrex: %s.\n", CORBA_exception_id(&ev ) );
-	  default:
-	    break;
-	  }
-	
 	retval = CORBA_OBJECT_NIL;
       }
-
+    
     if(!CORBA_Object_is_nil(retval, &ev))
       goto out;
   }
@@ -374,23 +365,31 @@ goad_server_activate(GoadServer *sinfo,
      && !(flags & GOAD_ACTIVATE_NO_NS_REGISTER)) {
     /* Register this object with the name service */
     CORBA_Object name_service;
+    int found  = 0;
     
     name_service = gnome_name_service_get();
     nc[2].id = sinfo->id;
     nc[2].kind = "object";
-    CosNaming_NamingContext_bind(name_service, &nom, retval, &ev);
-    if (ev._major != CORBA_NO_EXCEPTION)
+    
+    while (!found)
       {
-	g_warning("goad_server_activate: %s %d:", __FILE__, __LINE__);
-	switch( ev._major )
+	retval = CosNaming_NamingContext_resolve(name_service, &nom, &ev);
+	if (ev._major != CORBA_NO_EXCEPTION)
 	  {
-	  case CORBA_SYSTEM_EXCEPTION:
-	    g_warning("sysex: %s.\n", CORBA_exception_id(&ev));
-	  case CORBA_USER_EXCEPTION:
-	    g_warning( "usrex: %s.\n", CORBA_exception_id( &ev ) );
-	  default:
-	    break;
+	    g_warning("goad_server_activate: %s %d:", __FILE__, __LINE__);
+	    switch( ev._major )
+	      {
+	      case CORBA_SYSTEM_EXCEPTION:
+		g_warning("sysex: %s.\n", CORBA_exception_id(&ev));
+	      case CORBA_USER_EXCEPTION:
+		g_warning( "usr	ex: %s.\n", CORBA_exception_id( &ev ) );
+	      default:
+		break;
+	      }
+	    sleep(1);
 	  }
+	else
+	  found = 1;
       }
     CORBA_Object_release(name_service, &ev);
   }
@@ -515,69 +514,31 @@ goad_servers_unregister_atexit(void)
       Outputs: 'retval' - an objref to the newly-started server.
       Pre-conditions: Assumes sinfo->type == GOAD_SERVER_EXE
 
-      Description: Runs the program specified in 'sinfo', and
-                   reads an IOR string from the stdout of the program.
-		   Uses CORBA_ORB_string_to_object to turn the string
-		   into an object reference.
+      Description: Calls setsid to daemonize the server. Expects the server
+		   to register itself with the nameing
+		   service. Ignores SIGPIPE in the child, so that the
+		   server doesn't die if it writes to a closed fd.
  */
+
 static CORBA_Object
 goad_server_activate_exe(GoadServer *sinfo,
 			 GoadActivationFlags flags,
 			 CORBA_Environment *ev)
 {
   CORBA_Object retval;
-  int iopipes[2];
-  char iorbuf[2048];
-
   /* fork & get the ior from stdout */
-  pipe(iopipes);
 
   if(fork()) {
-    FILE *iorfh;
-
-    /* Parent */
-    close(iopipes[1]);
-
-    iorfh = fdopen(iopipes[0], "r");
-
-    iorbuf[0] = '\0';
-    while(fgets(iorbuf, sizeof(iorbuf), iorfh) && strncmp(iorbuf, "IOR:", 4))
-      {
-	/* Just read lines until we get what we're looking for */ ;
-      }
-    
-    if(strncmp(iorbuf, "IOR:", 4)) {
-      retval = CORBA_OBJECT_NIL;
-      goto out;
-    }
-    
-    fclose(iorfh);
-    if (iorbuf[strlen(iorbuf)-1] == '\n')
-      iorbuf[strlen(iorbuf)-1] = '\0';
-    ev->_major = CORBA_NO_EXCEPTION;
-    retval = CORBA_ORB_string_to_object(gnome_orbit_orb, iorbuf, ev);
-    if (ev->_major != CORBA_NO_EXCEPTION)
-      {
-	g_warning("goad_server_activate_exe: %s %d:", __FILE__, __LINE__);
-	switch( ev->_major )
-	  {
-	  case CORBA_SYSTEM_EXCEPTION:
-	    g_warning("sysex: %s.\n", CORBA_exception_id(ev));
-	  case CORBA_USER_EXCEPTION:
-	    g_warning("usrex: %s.\n", CORBA_exception_id( ev ) );
-	  default:
-	    break;
-	  }
-	retval = CORBA_OBJECT_NIL;
-      }
+    int status;
+    wait(&status);
   } else if(fork()) {
     _exit(0); /* de-zombifier process, just exit */
   } else {
-    /* Child of a child. We run the naming service */
-    close(0);
-    close(iopipes[0]);
-    dup2(iopipes[1], 1);
-    dup2(iopipes[1], 2);
+    struct sigaction sa;
+    
+    sa.sa_handler = SIG_IGN;
+    sigaction(SIGPIPE, &sa, 0);
+    setsid();
     execlp(sinfo->location_info, sinfo->location_info, NULL);
     _exit(1);
   }

@@ -5,9 +5,11 @@
 #include <limits.h>
 #include <ctype.h>
 #include <pwd.h>
+#include <signal.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <sys/file.h>
+#include <sys/resource.h>
 #include <fcntl.h>
 #include <gdk/gdkx.h>
 #include <gtk/gtk.h>
@@ -347,11 +349,28 @@ gnome_name_service_get(void)
       _exit(0); /* de-zombifier process, just exit */
     } else {
       /* Child of a child. We run the naming service */
+      struct sigaction sa;
+      struct rlimit rl;
+      int    i;
+      
+      getrlimit(RLIMIT_NOFILE, &rl);
+      i = rl.rlim_cur;
+      
+      sa.sa_handler = SIG_IGN;
+      sigaction(SIGPIPE, &sa, 0);
       close(0);
       close(iopipes[0]);
       dup2(iopipes[1], 1);
       dup2(iopipes[1], 2);
+      /* close all file descriptors */
+      while (i > 2)
+	{
+	  close(i);
+	  i--;
+	}
+      
       setsid();
+      
       execlp("orbit-naming-server", "orbit-naming-server", NULL);
       _exit(1);
     }
