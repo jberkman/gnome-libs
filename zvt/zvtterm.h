@@ -158,7 +158,7 @@ void         zvt_term_set_color_scheme         (ZvtTerm *term,
 						gushort *blu);
 void         zvt_term_set_default_color_scheme (ZvtTerm *term);
 void         zvt_term_set_del_key_swap         (ZvtTerm *term, int state);
-void	     zvt_term_set_wordclass	       (ZvtTerm *term, unsigned char *class);
+void	     zvt_term_set_wordclass	       (ZvtTerm *term, unsigned char *klass);
 
 /* transparency stuff, it's left in even if we don't compile
  * transparency/backround pixmaps, if we don't, it will just be ignored,
