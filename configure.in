@@ -300,6 +300,12 @@ GNOME_PKGCONFIG_CHECK_MODULES(LIBART, libart-2.0:2.1.0)
 AC_SUBST(LIBART_CFLAGS)
 AC_SUBST(LIBART_LIBS)
 
+dnl
+dnl Pango check
+dnl
+GNOME_PKGCONFIG_CHECK_MODULES(PANGO, pango:0.13 pangoft2:0.13)
+AC_SUBST(PANGO_CFLAGS)
+AC_SUBST(PANGO_LIBS)
 
 dnl
 dnl This is needed for the gnome-moz-remote program.  It doesn't use GDK,
