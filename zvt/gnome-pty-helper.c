@@ -45,6 +45,11 @@
 #include "gnome-pty.h"
 #include "gnome-login-support.h"
 
+/* For PATH_MAX on FreeBSD. */
+#ifdef HAVE_SYS_SYSLIMITS_H
+#include <sys/syslimits.h>
+#endif
+
 static struct passwd *pwent;
 static char login_name_buffer [48];
 static char *login_name, *display_name;
@@ -301,7 +306,9 @@ struct {
 	{ RLIMIT_FSIZE,  1 * MB },
 	{ RLIMIT_DATA,   1 * MB },
 	{ RLIMIT_STACK,  1  * MB },
+#ifdef RLIMIT_AS
 	{ RLIMIT_AS,     1 * MB },
+#endif
 	{ RLIMIT_NOFILE, 10 },
 #ifdef RLIMIT_NPROC
 	{ RLIMIT_NPROC,  5 },
