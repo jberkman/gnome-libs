@@ -42,7 +42,7 @@ module Desktop {
 		Object open_existing (in string path) raises (NotFound);
 	};
 
-	interface TextViewer : GNOME::object {
+	interface TextViewer : GNOME::GObject {
 		exception SaveError {};
 		exception OutOfRange {};
 		exception NotFound {};
