@@ -29,15 +29,19 @@ libzvtinclude_HEADERS =		\
 	vtx.h			\
 	zvtterm.h
 
-gnome_pty_helper_SOURCES = 	\
-	gnome-pty.h		\
-	gnome-pty-helper.c	\
-	gnome-login-support.c	\
-	gnome-utmp.c		\
-	gnome-login-support.h
+#gnome_pty_helper_SOURCES = 	\
+#	gnome-pty.h		\
+#	gnome-pty-helper.c	\
+#	gnome-login-support.c	\
+#	gnome-utmp.c		\
+#	gnome-login-support.h
 
-gnome_pty_helper_LDADD =	\
-	$(UTIL_LIBS)
+#gnome_pty_helper_LDADD =	\
+#	$(UTIL_LIBS)
+
+# We really dont want $(LIBS) linked in with this
+gnome-pty-helper: gnome-pty-helper.o gnome-login-support.o gnome-utmp.o
+	$(CC) -o $@ $^ $(UTIL_LIBS)
 
 EXTRA_DIST = TODO BUGS README 
 

@@ -1,3 +1,9 @@
+1999-09-09  Michael Zucchi  <mzucchi@denr.sa.gov.au>
+
+	* Makefile.am (gnome-pty-helper): Added manual build target for
+	gnome-pty-helper.  Because of some broken linkers we need to limit
+	what gets put on the link line (see bug #1246/#1576).
+
 1999-08-26  Michael Zucchi  <mzucchi@denr.sa.gov.au>
 
 	* zvtterm.h (struct _zvtprivate): Added new parameters for
