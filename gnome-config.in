@@ -42,6 +42,7 @@ Install directories gnome-libs was configured to
 Known values for LIBRARY are:
 
     glib	(calls glib-config)
+    idl         (to be used with orbit-idl)
     gnome
     gnomeui
     gnorba
@@ -135,6 +136,9 @@ while test $# -gt 0; do
         the_libs="$the_libs @GNOME_LIBDIR@ -lgnorba @ORBIT_LIBS@"
 	the_flags="$the_flags @GNOME_INCLUDEDIR@ @ORBIT_CFLAGS@"
         ;;
+    idl)
+        the_flags="@GNOME_INCLUDEDIR@/idl"
+	;;
     zvt)
 	the_libs="$the_libs @GNOME_LIBDIR@ @ZVT_LIBS@"
 	;;
