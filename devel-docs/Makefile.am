@@ -34,7 +34,8 @@ libgnome.sgml:
 # files must be extra_dist.  Also, distribute the `.html' file
 # so that people without DocBook can still use the docs.
 EXTRA_DIST = \
-	gnome-canvs.sgml	\
+	gnome-app-helper.sgml	\
+	gnome-canvas.sgml	\
 	gnome-dev-info.html	\
 	gnome-dev-info.sgml	\
 	libgnomeui.sgml		\

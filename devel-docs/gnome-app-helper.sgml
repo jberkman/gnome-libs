@@ -1,0 +1,413 @@
+<!doctype chapter PUBLIC "-//Davenport//DTD DocBook V3.0//EN" [
+]>
+
+<chapter id="GnomeAppHelper">
+
+  <title>Automatic menu and toolbar creation with GnomeAppHelper</title>
+
+  <authorgroup>
+    <author>
+      <firstname>Federico</firstname>
+      <surname>Mena Quintero</surname>
+      <affiliation>
+	<address><email>federico@nuclecu.unam.mx</email></address>
+      </affiliation>
+    </author>
+  </authorgroup>
+
+  <para>
+    The GnomeAppHelper module lets you easily create menus and tool
+    bars for your application.  Instead of having to create all the
+    required widgets by hand, GnomeAppHelper lets you simply create an
+    array of definitions for the items you want in your menu or tool
+    bar.  You can then call functions that will turn this array into
+    all the required widgets automatically.  The widgets will have all
+    the keyboard accelerators and shortcuts set up correctly for you.
+  </para>
+
+  <para>
+    In addition to creating normal menu and tool bar items,
+    GnomeAppHelper lets you quickly create toggle items that work like
+    check boxes, radio items, and lists of help menu entries.
+  </para>
+
+  <para>
+    You should use GnomeAppHelper when you want to create menu bars,
+    toolbars, or pop-up menus in your application.  GnomeAppHelper
+    makes use of the stock icon mechanism to give these widgets a
+    consistent look.
+  </para>
+
+  <sect1 id="GnomeUIInfo">
+
+    <title>The <structname>GnomeUIInfo</structname> structure</title>
+
+    <para>
+      GnomeAppHelper uses arrays of
+      <structname>GnomeUIInfo</structname> structures to define the
+      items that compose a menu bar or toolbar.  Each item contains an
+      optional icon and a text label.  Each item has a callback
+      function attached to it that gets invoked when the item is
+      activated.  Also, items may have a hotkey defined for them.
+      Items may have a check-box or be grouped inside a radio group.
+      Also, menu items may specify a subtree which they spawn.
+    </para>
+
+    <para>
+      The <structname>GnomeUIInfo</structname> structure is defined as
+      follows:
+
+      <programlisting role="C">
+typedef struct {
+	GnomeUIInfoType <structfield>type</structfield> ;
+	gchar *<structfield>label</structfield>;
+	gchar *<structfield>hint</structfield>;
+	gpointer <structfield>moreinfo</structfield>;
+	gpointer <structfield>user_data</structfield>;
+	gpointer <structfield>unused_data</structfield>;
+	GnomeUIPixmapType <structfield>pixmap_type</structfield>;
+	gpointer <structfield>pixmap_info</structfield>;
+	guint <structfield>accelerator_key</structfield>;
+	GdkModifierType <structfield>ac_mods</structfield>;
+	GtkWidget *<structfield>widget</structfield>;
+} <structname>GnomeUIInfo</structname>;
+      </programlisting>
+    </para>
+
+    <glosslist>
+      <glossentry>
+	<glossterm><structfield>type</structfield></glossterm>
+	<glossdef>
+	  <para>
+	    This field is used to specify the type of item that should
+	    be created.  The rest of the fields in the structure
+	    define the item's attributes.  The
+	    <structfield>type</structfield> field can have the
+	    following values:
+	  </para>
+
+	  <glosslist>
+	    <glossentry>
+	      <glossterm><symbol>GNOME_APP_UI_ITEM</symbol></glossterm>
+	      <glossdef>
+		<para>
+		  This indicates that a normal item should be created.
+		</para>
+	      </glossdef>
+	    </glossentry>
+
+	    <glossentry>
+	      <glossterm><symbol>GNOME_APP_UI_TOGGLEITEM</symbol></glossterm>
+	      <glossdef>
+		<para>
+		  This indicates that a a toggle item should be
+		  created.  By default it starts in the inactive
+		  state.
+		</para>
+	      </glossdef>
+	    </glossentry>
+
+	    <glossentry>
+	      <glossterm><symbol>GNOME_APP_UI_RADIOITEMS</symbol></glossterm>
+	      <glossdef>
+		<para>
+		  This indicates that a group of radio items should be
+		  created.  The <structfield>moreinfo</structfield>
+		  field must point to an array of items that will be
+		  created as the radio items in the group.  By default
+		  the first item will be the active item in the radio
+		  group.
+		</para>
+	      </glossdef>
+	    </glossentry>
+
+	    <glossentry>
+	      <glossterm><symbol>GNOME_APP_UI_SUBTREE</symbol></glossterm>
+	      <glossdef>
+		<para>
+		  This indicates that the created item should have a
+		  submenu attached to it.  The
+		  <structfield>moreinfo</structfield> field must point
+		  to an array of items that will be put in the
+		  submenu.  This item type is not supported in
+		  toolbars.
+		</para>
+	      </glossdef>
+	    </glossentry>
+
+	    <glossentry>
+	      <glossterm><symbol>GNOME_APP_UI_SEPARATOR</symbol></glossterm>
+	      <glossdef>
+		<para>
+		  This indicates that a separator should be created.
+		  For menus this is a separator line, and for toolbars
+		  it is a blank space.
+		</para>
+	      </glossdef>
+	    </glossentry>
+
+	    <glossentry>
+	      <glossterm><symbol>GNOME_APP_UI_HELP</symbol></glossterm>
+	      <glossdef>
+		<para>
+		  This indicates that help entries should be created.
+		  The <structfield>moreinfo</structfield> field should
+		  point to a string with the application's ID string.
+		  See below for additional information.
+		</para>
+	      </glossdef>
+	    </glossentry>
+
+	    <glossentry>
+	      <glossterm><symbol>GNOME_APP_UI_JUSTIFY_RIGHT</symbol></glossterm>
+	      <glossdef>
+		<para>
+		  This indicates that all subsequent items should be
+		  aligned on the right side of the menu they are on.
+		  This only works for menus and only makes sense for
+		  menu bars.
+		</para>
+	      </glossdef>
+	    </glossentry>
+
+	    <glossentry>
+	      <glossterm><symbol>GNOME_APP_UI_BUILDER_DATA</symbol></glossterm>
+	      <glossdef>
+		<para>
+		  This is intended for language bindings and GUI
+		  builders &em; it is not needed for normal programs.
+		  It specifies that all subsequent items should use a
+		  different GnomeUIBuilderData structure from the one
+		  that was in use then the item was inserted.  The
+		  <structfield>moreinfo</structfield> field should
+		  point to the desired GnomeUIBuilderData structure.
+		</para>
+	      </glossdef>
+	    </glossentry>
+
+	    <glossentry>
+	      <glossterm><symbol>GNOME_APP_UI_ENDOFINFO</symbol></glossterm>
+	      <glossdef>
+		<para>
+		  This is used to indicate the end of an array of
+		  items.  It is very important to include an element
+		  of this type as the last entry in
+		  <structname>GnomeUIInfo</structname> arrays.
+		</para>
+	      </glossdef>
+	    </glossentry>
+
+	  </glosslist>
+
+	  <para>
+	    The other fields in the <structname>GnomeUIInfo</structname>
+	    structure are used to specify the attributes of the item
+	    being defined.
+	  </para>
+
+	</glossdef>
+      </glossentry>
+
+      <glossentry>
+	<glossterm><structfield>label</structfield></glossterm>
+	<glossdef>
+	  <para>
+	    This field is used to specify the text label for the item
+	    being created.  The un-translated version of the label
+	    should be specified; GnomeAppHelper does the translation
+	    itself.
+	  </para>
+
+	  <para>
+	    For menu items it is desirable to have an underlined
+	    letter in the label, so that the user knows that he can
+	    press that letter on the keyboard and activate the
+	    corresponding menu item.  To specify an underlined letter,
+	    put an underscore (_) before it in the label's string.
+	    Examples are, "_File", "_Edit", and "_Copy".
+	  </para>
+	</glossdef>
+      </glossentry>
+
+      <glossentry>
+	<glossterm><structfield>hint</structfield></glossterm>
+	<glossdef>
+	  <para>
+	    This field specifies an optional string that should be
+	    used for the tooltip in toolbar items or for the status
+	    bar hint in menu items.  The un-translated version of the
+	    hint should be specified.  If no hint string is desired,
+	    specify NULL.
+	</glossdef>
+      </glossentry>
+
+      <glossentry>
+	<glossterm><structfield>moreinfo</structfield></glossterm>
+	<glossdef>
+	  <para>
+	    This field is used to specify different things according
+	    to the type of item that is being defined.
+	  </para>
+
+	  <itemizedlist>
+	    <listitem>
+	      <para>
+		For normal items (<symbol>GNOME_APP_UI_ITEM</symbol>),
+		toggle items
+		(<symbol>GNOME_APP_UI_TOGGLEITEM</symbol>), or items
+		inside a radio group, this field should point to the
+		function that should be called when the item is
+		activated.  The general prototype of this function is
+		as follows:
+
+		<funcsynopsis>
+		  <funcdef>void <function>callback</function></funcdef>
+		  <paramdef>GtkWidget *<parameter>item</parameter></paramdef>
+		  <paramdef>gpointer <parameter>user_data</parameter></paramdef>
+		</funcsynopsis>
+
+		The <parameter>item</parameter> argument is the menu item
+		or button in the toolbar that was selected, and the
+		<parameter>>user_data</parameter> argument is the normal
+		callback's user data.
+	      </para>
+	    </listitem>
+
+	    <listitem>
+	      <para>
+		For submenus (subtrees, type
+		<symbol>GNOME_APP_UI_SUBTREE</symbol>), this field
+		should point to another array of
+		<structname>GnomeUIInfo</structname> structures.  This
+		array defines the subtree.
+	      </para>
+	    </listitem>
+
+	    <listitem>
+	      <para>
+		For items of type
+		<symbol>GNOME_APP_UI_RADIOITEMS</symbol>, this field
+		should point to an array of
+		<structname>GnomeUIInfo</structname> structures which
+		defines the items that are to be put in the radio
+		group.  Within this array, only items of type
+		<symbol>GNOME_APP_UI_ITEM</symbol> and
+		<symbol>GNOME_APP_UI_BUILDER_DATA</symbol> are
+		supported.
+	      </para>
+	    </listitem>
+
+	    <listitem>
+	      <para>
+		For items of type <symbol>GNOME_APP_UI_HELP</symbol>,
+		this item should point to a string that is the
+		application's ID name.  GnomeAppHelper will look for
+		the topic.dat file in the help directory defined by
+		the application's ID string, read it, and include the
+		appropriate help topics in the menu.  This type is not
+		valid for toolbars.
+	      </para>
+	    </listitem>
+
+	    <listitem>
+	      <para>
+		For items of type
+		<symbol>GNOME_APP_UI_BUILDER_DATA</symbol>, this field
+		should point to a
+		<structname>GnomeUIBuilderData</structname>
+		structure.  The information in this structure will be
+		used for all subsequent items in the array.  This is
+		normally only needed by language bindings and GUI
+		builders.
+	      </para>
+	    </listitem>
+
+	    <listitem>
+	      <para>
+		For all other item types, this field is ignored.  You
+		should set it to NULL, however, for compatibility with
+		future extensions to GnomeAppHelper.
+	      </para>
+	    </listitem>
+	  </itemizedlist>
+
+	</glossdef>
+      </glossentry>
+
+      <glossentry>
+	<glossterm><structfield>user_data</structfield></glossterm>
+	<glossdef>
+	  
+	</glossdef>
+      </glossentry>
+
+      <glossentry>
+	<glossterm><structfield>unused_data</structfield></glossterm>
+	<glossdef>
+	  
+	</glossdef>
+      </glossentry>
+
+      <glossentry>
+	<glossterm><structfield>pixmap_type</structfield></glossterm>
+	<glossdef>
+	  
+	</glossdef>
+      </glossentry>
+
+      <glossentry>
+	<glossterm><structfield>pixmap_info</structfield></glossterm>
+	<glossdef>
+	  
+	</glossdef>
+      </glossentry>
+
+      <glossentry>
+	<glossterm><structfield>accelerator_key</structfield></glossterm>
+	<glossdef>
+	  
+	</glossdef>
+      </glossentry>
+
+      <glossentry>
+	<glossterm><structfield>ac_mods</structfield></glossterm>
+	<glossdef>
+	  
+	</glossdef>
+      </glossentry>
+
+      <glossentry>
+	<glossterm><structfield>widget</structfield></glossterm>
+	<glossdef>
+	  
+	</glossdef>
+      </glossentry>
+
+    </glosslist>
+
+
+
+
+  </sect1>
+  
+    
+
+    
+
+</chapter>
+
+<!-- Keep this comment at the end of the file
+Local variables:
+mode: sgml
+sgml-omittag:t
+sgml-shorttag:t
+sgml-minimize-attributes:nil
+sgml-always-quote-attributes:t
+sgml-indent-step:2
+sgml-indent-data:t
+sgml-parent-document:("gnome-dev-info.sgml" "book" "sect1" "")
+sgml-exposed-tags:nil
+sgml-local-catalogs:nil
+sgml-local-ecat-files:nil
+End:
+-->
