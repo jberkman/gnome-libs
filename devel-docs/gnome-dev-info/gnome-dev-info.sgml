@@ -142,9 +142,12 @@
         If you want to dirt your hands with GNOME, i've some advice for you:
 	</para>
       <itemizedlist>
-        <listitem>Start simple. Do little things and familiarize yourself with
-          GNOME. You'll have time to do great things after.
-        <listitem>Read the TODO. You'll find some interesting things to work in.
+        <listitem><para>Start simple. Do little things and familiarize yourself 
+          with GNOME. You'll have time to do great things after.</para>
+          </listitem>
+        <listitem><para>Read the TODO. You'll find some interesting things to 
+          work in.</para>
+          </listitem>
         </itemizedlist>
       </sect1>
 
@@ -193,62 +196,232 @@
       <title>Coding Standards.</title>
       <para>
       <itemizedlist>
-        <listitem> Code that goes into Gnome uses the Linux kernel coding 
+        <listitem><para> Code that goes into Gnome uses the Linux kernel coding 
           style (which is basically the GNU coding style but indentation is 
           8 spaces, and braces are on the same line as the statements that 
-          open the block).
-        <listitem> Please, please, please, be in the 80 columns...
-        <listitem> When you change things, edit the ChangeLog, so the 
-          other people can know what you've did.
-        <listitem> When you're writing code that should be written better add
-          FIXME comments so it's easy to recognize.
-        <listitem> Document your programs.
-        <listitem> If you do changes to the APIs documented here or add new 
-          please update the documentation.
-        <listitem> Add translations for your native tongue. We would like
+          open the block).</para>
+        <listitem><para> Please, please, please, be in the 80 columns...</para>
+          </listitem>
+        <listitem><para> When you change things, edit the ChangeLog, so the 
+          other people can know what you've did.</para></listitem>
+        <listitem><para> When you're writing code that should be written better
+          add FIXME comments so it's easy to recognize.</para></listitem>
+        <listitem><para> Document your programs.</para></listitem>
+        <listitem><para> If you do changes to the APIs documented here or add
+          new please update the documentation.</para></listitem>
+        <listitem><para> Add translations for your native tongue. We would like
           have a full internationalized GNOME. (so if you know more than
           one language do translations for all them) (we would like all
-          the idioms, from francais to old greek :-) )
+          the idioms, from francais to old greek :-) )</para></listitem>
         </itemizedlist>
       </sect1>
 
     </chapter>
 
-  <chapter id="gello">
-    <title>GNOME Hello! revised.</title>
+  <chapter id="tutorial">
+    <title>GNOME Developer's Tutorial.</title>
       <para>
 	From the gnome-hello manual:
 	</para>
+        <para>
+	  gnome-hello is a GNOME application which contains all the essential
+	  and common features of GNOME programs, such as initialization, event
+	  loops, configuration file parsing, internationalization and so forth.
+	  </para>
+        <para>	
+	  gnome-hello is intended to be an example of the GNOME coding
+	  standards, as well as a fun and useless little program.
+	  </para>
       <para>
-	gnome-hello is a GNOME application which contains all the essential
-	and common features of GNOME programs, such as initialization, event
-	loops, configuration file parsing, internationalization and so forth.
-	</para>
-      <para>	
-	gnome-hello is intended to be an example of the GNOME coding
-	standards, as well as a fun and useless little program.
-	</para>
-      <para>
-	Similarly, gnome-hello is documented in the manner typical of GNOME 
-	applications. 
+        In this chapter we're going to use it to explain the basics features 
+        that a application must have to be considered gnome-complaint.
         </para>
 
-      <sect1 id="parsing">
-      	<title>Parsing parameters.</title>
+      <sect1 id="tut-basics">
+      	<title>Starting with GNOME</title>
+	<screenshot>
+	  <screeninfo>A basic GNOME App: a window with only a button
+	    </screeninfo>
+	  <graphic fileref="gnome-hello-0-basic.jpg"></graphic>
+	  </screenshot>
       	<para>
-      	  Well, Carsten and Tom are talking about standarizing it, so i'll
-      	  wait a bit their definitions.
-      	  <para>
+      	  We'll start with a very basic application. It's only a window
+      	  with a button that, when clicked close the window and prints
+      	  "Hello GNOME". The code source for it is in <filename>
+      	  programs/gnome-hello/gnome-hello-0-basic.c</filename>. [FIXME:
+      	  Should i include the full code here?]
+      	  </para>
+	<programlisting>
+	  #include &lt;config.h&gt;
+	  #include &lt;gnome.h&gt;
+	  </programlisting>
+	<para>
+	  All the programs have to include <filename>gnome.h</filename>, that 
+	  gives all you need to use the Gtk+ and GNOME libraries.
+	  </para>
+	<programlisting>
+	int
+	main(int argc, char *argv[])
+	{
+	</programlisting>
+        <para><function>gnome_init</function> is always called at the beginning 
+          of a program. It takes care of initializing both Gtk and GNOME.
+          </para>
+	<programlisting>
+	  gnome_init (&amp;argc, &amp;argv);
+	</programlisting>
+	<para>Then we call <function>prepare_app</function> that do the real 
+	  work and <function>gtk_main</function> to enter into the main 
+	  processing loop.
+	  </para>
+	<programlisting>
+	  prepare_app ();
+
+ 	  gtk_main ();
+
+	  return 0;
+	}
+	</programlisting>
+	<para>Let's now go to the <function>prepare_app</function> code...
+	  </para>
+        <programlisting>
+	void
+	prepare_app()
+	{
+	  GtkWidget *button;
+	</programlisting>
+      	<para>We first make the main window calling
+	  <function>gnome_app_new</function> and connect the signal 
+	  <function>delete_event</function> to the callback 
+	  <function>quit_cb</function>, so the user can close the app via the 
+	  WM:
+	  </para>
+	<programlisting>
+	  app = gnome_app_new ("hello", "Hello World Gnomified");
+	  gtk_widget_realize (app);
+	  gtk_signal_connect (GTK_OBJECT (app), "delete_event",
+	                      GTK_SIGNAL_FUNC (quit_cb), NULL);
+        </programlisting>
+	<para>Then, we create a button and set it to be the content of the main
+	  window.
+	  </para>
+	<programlisting>
+	  button = gtk_button_new_with_label ("Hello GNOME");
+	  gtk_signal_connect (GTK_OBJECT (button), "clicked",
+	                     GTK_SIGNAL_FUNC (hello_cb), NULL);
+	  gtk_container_border_width (GTK_CONTAINER (button), 60);
+	  gnome_app_set_contents ( GNOME_APP (app), button);
+        </programlisting>
+	<para>Finally, we show the widgets. It could be done in any order,
+	  but we display at last the main window so the whole window
+	  will popup at once rather than seeing the window pop up, and 
+	  then the button form inside of it.
+	  </para>
+	<programlisting>
+	  gtk_widget_show (button);
+ 	  gtk_widget_show (app);
+	}
+	</programlisting>
+	<para>The callbacks (<function>hello_cb</function> for the button and 
+	  <function>quit_cb</function> for <literal>delete_event</literal>)
+	  are very simple. They just call <function>gtk_main_quit</function> 
+	  to exit.
+	  </para>
+	<programlisting>
+	void
+	hello_cb (GtkWidget *widget, void *data)
+	{
+  	  g_print ("Hello GNOME\n");
+	  gtk_main_quit ();
+	  return;
+	}
+
+	void
+	quit_cb (GtkWidget *widget, void *data)
+	{
+	  gtk_main_quit ();
+	  return;
+	}
+	</programlisting>
 	</sect1>
 	
-      <sect1 id="i18n">
+      <sect1 id="tut-menus">
+      	<title>Adding menus</title>
+	<screenshot>
+	  <graphic fileref="gnome-hello-1-menus.jpg"></graphic>
+	  </screenshot>
+      	<para>
+      	  From the <citetitle>GNOME Style Guide</citetitle>
+      	  </para>
+      	<para>
+      	  <literallayout>
+Menus and MenuBars
+        Menubars should be present in every App.
+            All apps should have a "Help" entry in the Menubar.
+            All menu items need at least one item.
+            An about Menu should be available in under the Help Menu and
+            should open a small dialog telling at least app name, author,
+            version, and date.
+            A "File" menu should be in every app, and contain at least
+            quit.
+            Menu items that open dialogs should indicate it with an "..."
+            Menu items that lead to submenus should indicate it with an
+            arrow. The Help Menu should be right justified in the
+            Menubar.
+	    </literallayout>
+	  </para>
+      	<para>
+          At the time of the writing of this draft gnome-hello uses the 
+          GtkMenuFactory way of creating menus. It's going to be replaced
+          by the gnome-app-helper in a little time. (when the gnome_app_*
+          have support for i18n, accelerators and rigth-justified menus). Until
+          then isn't going to be an explanation about "how" do the menus.
+      	  </para>
+      	<para>
+      	  The menu options present in gnome-hello are only the mandatory: 
+          <guimenuitem>File/Exit</guimenuitem>, that uses the same quit_cb
+          that we've seen in the previous section, and
+      	  <guimenuitem>Help/About...</guimenuitem> that uses the 
+      	  gnome-about widget (see <xref linkend="gnome-about">) written
+      	  by Cesar <email>miquel@df.uba.ar</email>.
+      	  </para>
+      	<programlisting>
+void
+about_cb (GtkWidget *widget, void *data)
+{
+  GtkWidget *about;
+  gchar *authors[] = {
+/* Here should be your names */
+          "Mark Galassi",
+          "Horacio J. Peña",
+          NULL
+          };
+
+  about = gnome_about_new ( "The Hello World Gnomified", VERSION,
+                        /* copyrigth notice */
+                        "(C) 1998 the Free Software Foundation",
+                        authors,
+                        /* another comments */
+                        "GNOME is a civilized software system "
+                          "so we've a \"hello world\" program",
+                        NULL);
+  gtk_widget_show (about);
+
+  return;
+}
+      	  </programlisting>
+	</sect1>
+
+      <sect1 id="tut-i18n">
       	<title>Internationalization.</title>
+	<screenshot>
+	  <graphic fileref="gnome-hello-2-i18n.jpg"></graphic>
+	  </screenshot>
       	<para>
 	  Internationalization (i18n for short) is very easy with GNOME. We
-	  use GNU gettext. You need to initialize it with: 
-	  <literal>textdomain (PACKAGE);</literal> in your main function. 
-	  After it you only need to add a _() to all the strings that need 
-	  translation.
+	  use GNU gettext. You need to initialize it with a call to 
+	  <function>textdomain</function> in your main function. 
+	  After it a _() to all the strings that need translation. 
       	  </para>
       	<para>
       	  You will need add your file to po/POTFILES.in. Then you can do
@@ -257,76 +430,26 @@
       	  Now try your program... Wow! It's speaking in Spanish/Finnish/Latin...
       	  </para>
       	<para>
-      	  <emphasis>Warning</emphasis>: _() is a macro for the gettext. So
-      	  it won't work when initializing arrays of strings or structs. Then
+      	  <emphasis>Warning</emphasis>: _() is a macro for the function gettext.
+      	  So it won't work when initializing arrays of strings or structs. Then
       	  you need use the N_() macro around the strings and when you use
-      	  them do the _() stuff (see the <literal>create_menu</literal> function
-      	  for an example.) If you want know more about it read the info
+      	  them do the _() stuff. If you want know more about it read the info
       	  documentation of GNU gettext.
       	  [FIXME: is my explanation correct? I haven't read a C book in the
-      	  last 5 years so i don't remember when you can't call functions
+      	  last 5 years so i don't remember when/why you can't call functions
       	  in init's]
       	  </para>
 	</sect1>
 	
-      <sect1 id="prepareapp">
-      	<title>Making the application's main window and menuses.</title>
+      <sect1 id="tut-parsing">
+      	<title>Parsing parameters.</title>
       	<para>
-      	  See now the prepare_app function. We first make the window calling
-	  <literal>gnome_app_new</literal> and connect the signal 
-	  <literal>delete_event</literal> to the callback 
-	  <literal>quit_cb</literal>, so the user can close the app via the WM:
-	  </para>
-      	<para>
-	  <literallayout>
-	    app = gnome_app_new ("hello", "Hello World Gnomified");
-	    gtk_widget_realize (app);
-	    gtk_signal_connect (GTK_OBJECT (app), "delete_event",
-	                      GTK_SIGNAL_FUNC (quit_cb),
-	                      NULL);
-	    </literallayout>
-	  </para>
-      	<para>
-      	  Forgot the <literal>if(restarted)</literal> block, we'll see it in
-      	  the <xref linkend="sessmng">.
-	  </para>
-      	<para>
-      	  Now we create the menu bar and set it to be the menubar of the app
-      	  with <literal>gnome_app_set_contents</literal>.
-	  </para>
-      	<para>
-	  <literallayout>
-	    mf = create_menu ();
-	    gnome_app_set_menus ( GNOME_APP (app), GTK_MENU_BAR (mf->widget));
-	    </literallayout>
-	  </para>
-      	<para>
-      	  If you've read the Gtk+ Tutorial (and, if you haven't read it,
-      	  <ulink URL="http://www.levien.com/~slow/gtk/">go and do it</ulink>) 
-      	  the rest of prepare_app will sound you familiar. 
-	  </para>
+      	  Well, Carsten and Tom are talking about standarizing it, so i'll
+      	  wait a bit their definitions.
+      	  <para>
 	</sect1>
 	
-      <sect1 id="menuses">
-      	<title>Setting up menuses.</title>
-      	<para>
-      	  The gnome-hello is using GtkMenuFactory. If you don't know it,
-      	  please read the menus chapter on the <ulink 
-      	  URL="http://www.levien.com/~slow/gtk/">Gtk+ Tutorial</ulink>.
-      	  (but i amn't sure that we're going to continue using GMF or will
-      	  merge to gnome_app_create_menus) [FIXME: what should we do?]
-      	  </para>
-      	<para>
-      	  The menu options present in gnome-hello are only the mandatory: 
-      	  <guimenuitem>File/Exit</guimenuitem>, that is implemented with
-      	  a call to <literal>gtk_main_quit</literal>, and
-      	  <guimenuitem>Help/About...</guimenuitem> that uses the 
-      	  gnome-about widget (see <xref linkend="gnome-about">) written
-      	  by Cesar <email>miquel@df.uba.ar</email>.
-      	  </para>
-	</sect1>
-	
-      <sect1 id="sessmng">
+      <sect1 id="tut-SM">
       	<title>Session Management.</title>
       	<para>
       	  Err, Tom and Carsten are redefining it so i'll wait their
@@ -334,8 +457,8 @@
       	  </para>
 	</sect1>
 
-      <sect1 id="doc">
-      	<title>Documentation.</title>
+      <sect1 id="tut-doc">
+      	<title>Help and documentation.</title>
       	<para>
       	  I think that Mark would like writting this section... [FIXME: Mark,
       	  do you want do it?]
@@ -429,9 +552,8 @@
         <para>
           <emphasis>Authors</emphasis>: Elliot Lee, Horacio Peña.
           </para>
-        <warning> It's broken now. </warning>
+        <warning><para> It's broken now.</para></warning>
         <para>
-          
           </para>
         </sect1>
       <sect1 id="gnome-string">

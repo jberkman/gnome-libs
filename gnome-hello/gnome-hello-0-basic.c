@@ -43,7 +43,6 @@ void
 prepare_app()
 {
   GtkWidget *button;
-  GtkMenuFactory *mf;
 
   /* Make the main window and binds the delete event so you can close
      the program from your WM */
@@ -83,29 +82,5 @@ void
 quit_cb (GtkWidget *widget, void *data)
 {
   gtk_main_quit ();
-  return;
-}
-
-void
-about_cb (GtkWidget *widget, void *data)
-{
-  GtkWidget *about;
-  gchar *authors[] = {
-/* Here should be your names */
-	  "Mark Galassi",
-	  "Horacio J. Peña",
-          NULL
-          };
-
-  about = gnome_about_new ( "The Hello World Gnomified", VERSION,
-        		/* copyrigth notice */
-                        "(C) 1998 the Free Software Foundation",
-                        authors,
-                        /* another comments */
-                        "GNOME is a civilized software system "
-			  "so we've a \"hello world\" program",
-                        NULL);
-  gtk_widget_show (about);
-
   return;
 }

@@ -87,7 +87,7 @@ prepare_app()
 
   /* Make the main window and binds the delete event so you can close
      the program from your WM */
-  app = gnome_app_new ("hello", "Hello World Gnomified");
+  app = gnome_app_new ("hello", _("Hello World Gnomified") );
   gtk_widget_realize (app);
   gtk_signal_connect (GTK_OBJECT (app), "delete_event",
                       GTK_SIGNAL_FUNC (quit_cb),
