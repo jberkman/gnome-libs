@@ -2,15 +2,8 @@
 #include <gnome.h>
 #include "libgnorba/gnorba.h"
 
-typedef struct {
-	gpointer impl_ptr;
-	char     *server_id;
-} ActiveServerInfo;
-
-static gchar*           shlib = 0;
 static gchar*           id = NULL;
 static gchar*           rid = NULL;
-static ActiveServerInfo local_server_info;
 static CORBA_ORB        orb;
 
 
@@ -20,27 +13,10 @@ static const struct poptOption options[] = {
   {NULL, '\0', 0, NULL, 0}
 };
 
-static
-void Exception( CORBA_Environment* ev )
-{
-  switch( ev->_major )
-    {
-    case CORBA_SYSTEM_EXCEPTION:
-      g_warning("CORBA system exception %s.\n", CORBA_exception_id(ev));
-      exit ( 1 );
-    case CORBA_USER_EXCEPTION:
-      g_warning("CORBA user exception: %s.\n", CORBA_exception_id( ev ) );
-      exit ( 1 );
-    default:
-      break;
-    }
-}
-
 int
 main(int argc, char* argv[])
 {
   CORBA_Environment  ev;
-  CORBA_Object       retval;
   poptContext ctx;
   char **args;
 

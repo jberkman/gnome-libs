@@ -152,7 +152,6 @@ _gnorba_get_cookie_reliably (const char *setme)
 
     if(fd >= 0) {
       unsigned int i;
-      int v;
 
       get_exclusive_lock (fd);
       srandom (time (NULL));
@@ -219,7 +218,7 @@ _gnorba_cookie_setup(const char *setme)
 void
 _gnome_gnorba_cookie_setup(Display *disp, Window rootwin)
 {
-  int len, ret_fmt;
+  int ret_fmt;
   Atom prop, ret_type;
   unsigned long ret_nitems, ret_bytes_after;
   unsigned char *ret_prop;
@@ -274,7 +273,6 @@ gnorba_CORBA_init(int *argc, char **argv,
 		  CORBA_Environment *ev)
 {
 	CORBA_ORB retval;
-	gchar *cookie;
 
 #ifndef ORBIT_USES_GLIB_MAIN_LOOP
 	IIOPAddConnectionHandler = orb_add_connection;
@@ -283,10 +281,8 @@ gnorba_CORBA_init(int *argc, char **argv,
 
 	_gnorba_gnome_orbit_orb = retval = CORBA_ORB_init(argc, argv, "orbit-local-orb", ev);
 	
-	if(!(flags & GNORBA_INIT_DISABLE_COOKIES)) {
-	  char *cookie = _gnorba_cookie_setup(NULL);
-	  g_free (cookie);
-	}
+	if(!(flags & GNORBA_INIT_DISABLE_COOKIES))
+	  _gnorba_cookie_setup(NULL);
 	
 	return retval;
 }

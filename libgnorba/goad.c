@@ -35,11 +35,6 @@
 #define SERVER_LISTING_PATH "/CORBA/servers"
 
 typedef struct {
-	gchar*   cmd;
-	gchar**  argv;
-} ServerCmd;
-
-typedef struct {
   int refcount;
   char *filename;
   GModule *loaded;
@@ -75,7 +70,6 @@ static CORBA_Object goad_server_activate_factory(GoadServer *sinfo,
 						 const char **params,
 						 CORBA_Environment *ev,
 						 GoadServerList *slist);
-static void goad_servers_unregister_atexit(void);
 void goad_register_arguments(void);
 
 static int string_array_len(const char **array)
@@ -112,7 +106,6 @@ GoadServerList *
 goad_server_list_get(void)
 {
   GArray *servinfo;
-  GoadServer *retval;
   GString *tmpstr;
   GString *usersrvpath;
   DIR *dirh;
@@ -286,7 +279,7 @@ goad_server_list_read(const char *filename,
 {
   gpointer iter;
   char *typename;
-  GoadServer newval, *nvptr;
+  GoadServer newval;
   GString*   dummy;
 
   dummy = g_string_new("");
@@ -730,7 +723,6 @@ goad_server_activate_shlib(GoadServer *sinfo,
     ptr = line + strlen("dependency_libs='") + 1;
     /* ptr now is on the '-' of the first lib */ 
     while (1) {
-      gchar*  libpath;
       gchar*  libstart;
       gchar   libname[128];
       ptr += 2;
@@ -761,7 +753,9 @@ normal_loading:
   }
 #endif
 
-  local_plugin_info = g_hash_table_lookup(living_by_filename, sinfo->location_info);
+  if(living_by_filename)
+    local_plugin_info = g_hash_table_lookup(living_by_filename, sinfo->location_info);
+
   if(local_plugin_info)
     gmod = local_plugin_info->loaded;
   else {
@@ -769,7 +763,9 @@ normal_loading:
     if(!gmod && *sinfo->location_info != '/') {
       char *ctmp;
       ctmp = gnome_libdir_file(sinfo->location_info);
-      local_plugin_info = g_hash_table_lookup(living_by_filename, ctmp);
+      if(living_by_filename)
+	local_plugin_info = g_hash_table_lookup(living_by_filename, ctmp);
+
       if(local_plugin_info) {
 	g_free(ctmp);
 	gmod = local_plugin_info->loaded;
@@ -883,10 +879,10 @@ gnome_plugin_unuse(gpointer impl_ptr)
 
     if(gtk_main_level() <= api->mainloop_level_load) {
       api->unload_is_quit = FALSE;
-      api->unload_id = gtk_idle_add_priority(G_PRIORITY_LOW, gnome_plugin_unload, api);
+      api->unload_id = gtk_idle_add_priority(G_PRIORITY_LOW, (GtkFunction)gnome_plugin_unload, api);
     } else {
       api->unload_is_quit = TRUE;
-      api->unload_id = gtk_quit_add(api->mainloop_level_load + 1, gnome_plugin_unload, api);
+      api->unload_id = gtk_quit_add(api->mainloop_level_load + 1, (GtkFunction)gnome_plugin_unload, api);
     }
   }
 }
@@ -906,7 +902,7 @@ goad_server_activate_factory(GoadServer *sinfo,
   factory_obj = goad_server_activate_with_id(slist, sinfo->location_info,
 					     flags & ~(GOAD_ACTIVATE_ASYNC|GOAD_ACTIVATE_NEW_ONLY), NULL);
 
-  dout = getenv("GOAD_DEBUG_EXERUN");
+  dout = getenv("GOAD_DEBUG_EXERUN")?1:0;
 
   if(factory_obj == CORBA_OBJECT_NIL) {
     if(dout)
@@ -1007,7 +1003,6 @@ goad_server_activate_exe(GoadServer *sinfo,
   if(childpid) {
     int     status;
     FILE*   iorfh;
-    char *do_srv_output;
     EXEActivateInfo ai;
     guint watchid;
     GIOChannel *gioc;
@@ -1048,7 +1043,7 @@ goad_server_activate_exe(GoadServer *sinfo,
   } else if(fork()) {
     _exit(0); /* de-zombifier process, just exit */
   } else {
-    char **args, **real_args;
+    char **args;
     int i;
     struct sigaction sa;
 
@@ -1117,7 +1112,6 @@ goad_server_register(CORBA_Object name_server,
     CORBA_char *strior;
     FILE *iorout;
     struct sigaction oldaction, myaction;
-    int fl;
 
     iorout = fdopen(GOAD_MAGIC_FD, "a");
     if(iorout) {

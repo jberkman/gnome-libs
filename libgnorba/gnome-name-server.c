@@ -90,7 +90,6 @@ setup_atomically_name_server_ior (CORBA_char *ior)
 	int format;
 	Window *proxy_data;
 	Window proxy, proxy_xid;
-	guint32 old_warnings;
 	unsigned long nitems, after;
 	Window rootwin;
 	

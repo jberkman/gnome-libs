@@ -174,7 +174,6 @@ name_server_by_forking (CORBA_Environment *ev)
 	
 	if (pid) {
 		FILE *iorfh;
-		char *ret;
 		int status;
 		EXEActivateInfo ai;
 		guint watchid;
