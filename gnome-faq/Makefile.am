@@ -39,19 +39,29 @@ else
 # Make rules for the `gnome-libs' module
 
 htmldir = $(prefix)/html
-html_DATA = gnome-faq.html
+#html_DATA = gnome-faq.html
 
-gnome-faq.html: gnome-faq/index.html
-	-cp $(srcdir)/gnome-faq/index.html gnome-faq.html
+all-local: gnome-faq/book1.html
 
-gnome-faq/index.html: gnome-faq.sgml
+gnome-faq/book1.html: gnome-faq.sgml
 	-(cd $(srcdir); db2html gnome-faq.sgml) > /dev/null
 
-install-data-local: gnome-faq.html
-	-for file in $(srcdir)/gnome-faq/*.html $(srcdir)/gnome-faq/*.css; do \
-          basefile=`echo $$file | sed -e 's,^.*/,,'`; \
-          $(INSTALL_DATA) $$file $(DESTDIR)$(htmldir)/$$basefile; \
-        done
+install-data-local: gnome-faq/book1.html
+	$(mkinstalldirs) $(DESTDIR)$(htmldir)
+	installfiles=`echo $(srcdir)/gnome-faq/*.html`;			\
+	if test "$$installfiles" != '$(srcdir)/gnome-faq/*.html'; then	\
+	  for file in $$installfiles; do				\
+            basefile=`echo $$file | sed -e 's,^.*/,,'`;			\
+            $(INSTALL_DATA) $$file $(DESTDIR)$(htmldir)/$$basefile;	\
+          done;								\
+	else :; fi
+	installfiles=`echo $(srcdir)/gnome-faq/*.css`;			\
+	if test "$$installfiles" != '$(srcdir)/gnome-faq/*.css'; then	\
+	  for file in $$installfiles; do				\
+            basefile=`echo $$file | sed -e 's,^.*/,,'`;			\
+            $(INSTALL_DATA) $$file $(DESTDIR)$(htmldir)/$$basefile;	\
+          done;								\
+	else :; fi
 
 dist-hook:
 	tar cvf - gnome-faq | (cd $(distdir); tar xf -)
