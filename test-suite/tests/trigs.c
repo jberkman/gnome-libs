@@ -27,7 +27,6 @@ int main(int argc, char *argv[])
 	gnomelib_init("trigs", "0.0");
 	fn = g_strconcat(getenv("srcdir"), "/tests/trigs.in", NULL);
 	gnome_triggers_init();
-	gnome_triggers_readfile(fn);
 	gnome_triggers_add_trigger(&trig, "test", "one", NULL);
 	gnome_triggers_do("Test of direct hit", "warning", "test", "one", NULL);
 	fflush(stdout);
