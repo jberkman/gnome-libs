@@ -328,7 +328,7 @@ dnl ORBit check
 dnl
 AM_PATH_ORBIT(0.5.1, , AC_MSG_ERROR([You must have ORBit installed.]))
 
-AM_PATH_OAF(0.1, , AC_MSG_ERROR([You must have OAF installed.]))
+AM_PATH_OAF(0.1.0, , AC_MSG_ERROR([You must have OAF installed.]))
 
 dnl
 dnl This is needed for the gnome-moz-remote program.  It doesn't use GDK,
@@ -383,18 +383,18 @@ AC_ARG_ENABLE(gnome-compat, [  --enable-gnome-compat     compile the compatabili
 AM_CONDITIONAL(COMPILE_GNOME_COMPAT, test x$compile_gnome_compat = xyes)
 
 
-dnl hack to let people use lclint
-if test -f $srcdir/.lclintrc.in; then
-	LCLINTRC_OUT=.lclintrc
-	LINT_TOP_BUILDDIR=`pwd`
-	LINT_TOP_SRCDIR=`pwd`/$srcdir
-	AC_SUBST(LINT_TOP_BUILDDIR)
-	AC_SUBST(LINT_TOP_SRCDIR)
-	ln -sf `pwd`/.lclintrc $srcdir/.lclintrc
-	mkdir -p $srcdir/libgnome $srcdir/libgnomeui
-	ln -sf `pwd`/.lclintrc $srcdir/libgnome/.lclintrc
-	ln -sf `pwd`/.lclintrc $srcdir/libgnomeui/.lclintrc
-fi
+dnl (now unused) hack to let people use lclint
+dnl if test -f $srcdir/.lclintrc.in; then
+dnl 	LCLINTRC_OUT=.lclintrc
+dnl 	LINT_TOP_BUILDDIR=`pwd`
+dnl 	LINT_TOP_SRCDIR=`pwd`/$srcdir
+dnl 	AC_SUBST(LINT_TOP_BUILDDIR)
+dnl 	AC_SUBST(LINT_TOP_SRCDIR)
+dnl 	ln -sf `pwd`/.lclintrc $srcdir/.lclintrc
+dnl 	mkdir -p $srcdir/libgnome $srcdir/libgnomeui
+dnl 	ln -sf `pwd`/.lclintrc $srcdir/libgnome/.lclintrc
+dnl 	ln -sf `pwd`/.lclintrc $srcdir/libgnomeui/.lclintrc
+dnl fi
 
 dnl
 dnl LibART_LGPL
@@ -484,7 +484,6 @@ tools/Makefile
 tools/convertrgb/Makefile
 tools/gnome-doc/Makefile
 liboafgnome/Makefile
-$LCLINTRC_OUT
 ],[case "$CONFIG_FILES" in
 *gnome-config*)chmod +x gnome-config;;
 esac
