@@ -114,6 +114,7 @@ drag_cb (GtkWidget *widget, GdkEventDragRequest *event)
 {
   char *html_data = "<HTML><HEAD><TITLE>Hi there</TITLE></HEAD><BODY>I am the HTML drag data.</BODY></HTML>";
   char *ascii_data = "Hi there - I am the ASCII drag data.";
+  char *url_data = "file1\0file2\0file3";
 
   g_print("drag_cb\n");
   if(!strcmp(event->data_type, "text/html"))
@@ -125,6 +126,10 @@ drag_cb (GtkWidget *widget, GdkEventDragRequest *event)
     {
       gtk_widget_dnd_data_set(widget, event, ascii_data,
 			      strlen(ascii_data) + 1);
+    } else if (!strcmp (event->data_type, "url:ALL"))
+    {
+      gtk_widget_dnd_data_set (widget, event, url_data, 
+			      strlen(url_data) + 1);
     }
 }
 
@@ -151,6 +156,7 @@ drop_cb(GtkWidget *widget, GdkEventDropDataAvailable *event)
     {
       if(!strcmp(event->data_type, "text/plain"))
 	{
+	  printf ("Numbytes: %d\n", event->data_numbytes);
 	  gtk_label_set(GTK_LABEL(GTK_BUTTON(widget)->child), event->data);
 	}
       /* We could also handle drops of images here by creating
