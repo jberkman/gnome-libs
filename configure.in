@@ -31,10 +31,21 @@ GNOME_X_CHECKS
 
 GNOME_SUPPORT_CHECKS
 
-AM_PATH_GLIB(,,[
-  dnl As a last ditch, try this
-  GLIB_LIBS=`echo $GTK_LIBS | sed -e 's/.*-lglib/-lglib/' -e 's/ .*//'`
-  AC_MSG_WARN(GLIB not installed, or glib-config not in path)])
+
+dnl Evil stuff to extract GLIB stuff from gtk-config output
+dnl (we want to make sure it matches with the gtk we're using)
+
+changequote(,)dnl
+GLIB_CFLAGS=`echo $GTK_CFLAGS | sed 's/^.*\(-I[^ ]*glib[^ ]*  *-I[^ ]*\).*$/\1/'`
+GLIB_LDFLAGS=`echo $GTK_LIBS | sed -e 's/^.*-lgdk[^ ]* *\(-L[^ ]*\).*$/\1/' -e 's/^.* -lgdk[^ ]* .*$//'`
+if test -z "$GLIB_LDFLAGS" ; then
+  GLIB_LDFLAGS=`echo $GTK_LIBS | sed -e 's/\(-L[^ ]*\) .*$/\1/' -e 's/^.*\(-L[^ ]*\)$/\1/'`
+fi 
+GLIB_LIBS="$GLIB_LDFLAGS `echo $GTK_LIBS | sed 's/^.*\(-lglib[^ ]*\).*$/\1/'`"
+changequote([,])dnl
+
+AC_SUBST(GLIB_CFLAGS)
+AC_SUBST(GLIB_LIBS)
 
 dnl Utility conditional
 AM_CONDITIONAL(FALSE, test x = y)
