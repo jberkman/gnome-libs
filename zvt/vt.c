@@ -1728,7 +1728,7 @@ vt_resize_lines(struct vt_line *wn, int width, uint32 default_attr)
  */
 void vt_resize(struct vt_em *vt, int width, int height, int pixwidth, int pixheight)
 {
-  int i, count, pass, old_width, remove_bottom;
+  int i, count, pass, old_width;
   uint32 c;
   struct vt_line *wn, *nn;
 
@@ -1746,7 +1746,6 @@ void vt_resize(struct vt_em *vt, int width, int height, int pixwidth, int pixhei
   if (height < vt->height) {
 
     count = vt->height - height;
-    remove_bottom = 0;
 
     d(printf("removing %d lines to smaller window\n", count));
 
@@ -1756,13 +1755,7 @@ void vt_resize(struct vt_em *vt, int width, int height, int pixwidth, int pixhei
        * switch to a mode where we just dispose of the lines at the bottom
        * of the terminal
        */
-      if ((struct vt_line *)vt->lines.head == vt->this_line ||
-	  (struct vt_line *)vt->lines_alt.head == vt->this_line)
-	{
-	  remove_bottom = 1;
-	}
-
-      if (remove_bottom)
+      if (vt->cursory==0)
 	{
 	  if ( (wn = (struct vt_line *)vt_list_remtail(&vt->lines)) ) {
 	    g_free(wn);
@@ -1795,6 +1788,8 @@ void vt_resize(struct vt_em *vt, int width, int height, int pixwidth, int pixhei
 	  /* repeat for backbuffer */
 	  if ( (wn = (struct vt_line *)vt_list_remhead(&vt->lines_back)) )
 	    g_free(wn);
+
+	  vt->cursory--;
 	}
 
       count--;

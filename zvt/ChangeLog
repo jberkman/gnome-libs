@@ -1,3 +1,9 @@
+1999-02-21  Michael Zucchi  <zucchi@zzedzone.mmc.com.au>
+
+	* vt.c (vt_resize): If we remove lines from the top of the buffer,
+	then make sure we also move the cursor up (but not beyond the top
+	of the screen).
+
 1999-02-18  Michael Zucchi  <mzucchi@denr.sa.gov.au>
 
 	* vt.c (vt_scroll_up): Apply CLEARMASK to blank character (and
