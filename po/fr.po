@@ -7,8 +7,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-libs 1.95.0\n"
-"POT-Creation-Date: 2001-02-09 16:49+0100\n"
-"PO-Revision-Date: 2001-02-09 16:48+0100\n"
+"POT-Creation-Date: 2001-02-20 12:07+0100\n"
+"PO-Revision-Date: 2001-02-20 12:25+0100\n"
 "Last-Translator: Christophe Merlet (RedFox) <redfox@eikonex.org>\n"
 "Language-Team: Gnome French Team <gnomefr@gnomefr.traduc.org>\n"
 "MIME-Version: 1.0\n"
@@ -28,11 +28,11 @@ msgstr "Tentative de lancer une non-application"
 
 #: libgnome/gnome-ditem.c:1029
 msgid "Trying to execute an item with no 'Exec'"
-msgstr ""
+msgstr "Essaye d'exécuter un élément sans « Exec »"
 
 #: libgnome/gnome-ditem.c:1081 libgnome/gnome-ditem.c:1174
 msgid "No exec field for this drop"
-msgstr ""
+msgstr "Aucun champ exec pour ce lacher"
 
 #: libgnome/gnome-ditem.c:1112
 msgid "Nothing to replace with a file in the exec string"
@@ -45,6 +45,7 @@ msgstr "Il n'y a aucun argument à remplacer avec les fichiers déposés"
 #: libgnome/gnome-ditem.c:1325
 msgid "Dropped URLs on an app that can only take files"
 msgstr ""
+"URLs lachées sur une applications qui ne peut accepter que des fichiers"
 
 #: libgnome/gnome-moz-remote2.c:111
 msgid "Specify X display to use."
@@ -77,7 +78,7 @@ msgstr "Affiche l'ID de la fenêtre X de la fenêtre utilisée."
 #: libgnome/gnome-url.c:117
 #, c-format
 msgid "Error parsing '%s' (empty result)"
-msgstr ""
+msgstr "Erreur d'analyse de « %s » (résultat vide)"
 
 #: libgnome/gnome-url.c:133
 #, c-format
@@ -92,7 +93,7 @@ msgstr "Ne peut ouvrir un tube : %s"
 #: libgnome/gnome-url.c:305 libgnome/gnome-url.c:363
 #, c-format
 msgid "Cannot parse handler template: %s"
-msgstr ""
+msgstr "ne peut analyser le modèle du gestionnaire : %s"
 
 #: libgnome/gnome-url.c:315 libgnome/gnome-url.c:319 libgnome/gnome-url.c:368
 #: libgnome/gnome-url.c:372
@@ -104,6 +105,10 @@ msgstr "Ne peut exécuter la commande « %s » !"
 #, c-format
 msgid "Command '%s' did not return an ID!"
 msgstr "La commande « %s » n'a pas retourné d'ID !"
+
+#: libgnome/gnomelib-init2.c:1203
+msgid "Help options"
+msgstr "Options d'aide"
 
 #: libgnome/gnomelib-init2.c:1228
 msgid "Dynamic modules to load"
@@ -139,7 +144,7 @@ msgstr "Type :"
 
 #: libcompat/gnome-dentry-edit.c:233 libgnomeui/gnome-ditem-edit.c:260
 msgid "Icon:"
-msgstr "Icone :"
+msgstr "Icône :"
 
 #: libcompat/gnome-dentry-edit.c:243 libgnomeui/gnome-ditem-edit.c:270
 msgid "Choose an icon"
@@ -162,6 +167,11 @@ msgid ""
 "multiple files or URLs as arguments after its command name check the box "
 "above."
 msgstr ""
+"Dans la commande suivante vous devriez utiliser %s dans le point où\n"
+"le nom de fichier/URL devrait être substitué.  Si vous laissez le champ\n"
+"vide, les déposés ne seront pas accepté.  Si cette application peut\n"
+"accepter plusieurs fichiers ou URLs comme arguments aprés son nom de\n"
+"commande, cochez la boite ci-dessus."
 
 #: libgnomeui/gnome-ditem-edit.c:342
 msgid "Command for file drops:"
@@ -189,11 +199,11 @@ msgstr "Documentation :"
 
 #: libgnomeui/gnome-ditem-edit.c:510
 msgid "Window titles to wait for (comma separated):"
-msgstr ""
+msgstr "Titres de fenêtres à attendre (séparé par des virgules) :"
 
 #: libcompat/gnome-dentry-edit.c:387 libgnomeui/gnome-ditem-edit.c:520
 msgid "Name/Comment translations:"
-msgstr "Traduction Nom/Commentaire :"
+msgstr "Traductions nom/commentaire :"
 
 #: libcompat/gnome-dentry-edit.c:390 libgnomeui/gnome-ditem-edit.c:523
 msgid "Language"
@@ -222,7 +232,7 @@ msgstr "Basique"
 
 #: libgnomeui/gnome-ditem-edit.c:709
 msgid "Drag and Drop"
-msgstr ""
+msgstr "Glisser et Déposer"
 
 #: libcompat/gnome-dentry-edit.c:511 libgnomeui/gnome-ditem-edit.c:713
 msgid "Advanced"
@@ -265,6 +275,11 @@ msgid ""
 "of the settings you have selected may not take effect, or may not be "
 "restored next time you use this application (%s)."
 msgstr ""
+"Vous avez essayé de modifier un aspect de votre configuration que votre "
+"administrateur système ou le vendeur du système d'exploitation ne vous "
+"permet pas de changer. Quelques uns des réglages que vous avez sélectionnés "
+"ne prendront pas effet, ou ne seront pas restoré la prochaine fois que vous "
+"utiliserez cette application (%s)."
 
 #: libgnomeui/gnome-gconf.c:624
 #, c-format
@@ -272,6 +287,9 @@ msgid ""
 "An error occurred while loading or saving configuration information for %s. "
 "Some of your configuration settings may not work properly."
 msgstr ""
+"Une erreur est survenue durand le chargement ou l'enregistrement des "
+"informations de configuration de %s.  Quelques paramètres de votre "
+"configuration pourront ne pas fonctionner correctement."
 
 #: libgnomeui/gnome-gconf.c:646
 #, c-format
@@ -280,15 +298,15 @@ msgstr "Détails de l'erreur GConf : %s\n"
 
 #: libgnomeui/gnome-helpsys.c:117
 msgid "_Popup"
-msgstr ""
+msgstr "_Popup"
 
 #: libgnomeui/gnome-helpsys.c:118
 msgid "Show help in temporary popup windows"
-msgstr ""
+msgstr "Afficher l'aide dans une fenêtre surgissante temporaire"
 
 #: libgnomeui/gnome-helpsys.c:120
 msgid "_Embedded"
-msgstr ""
+msgstr "_Encapsulé"
 
 #: libgnomeui/gnome-helpsys.c:121
 msgid "Show help inside the application window"
@@ -304,19 +322,19 @@ msgstr "Afficher l'aide dans une fenêtre de navigation d'aide"
 
 #: libgnomeui/gnome-helpsys.c:172
 msgid "App style"
-msgstr ""
+msgstr "Style d'application"
 
 #: libgnomeui/gnome-helpsys.c:173
 msgid "The style of GnomeHelpView"
-msgstr ""
+msgstr "Le style de GnomeHelpView"
 
 #: libgnomeui/gnome-helpsys.c:182
 msgid "App style priority"
-msgstr ""
+msgstr "Priorité du style d'application"
 
 #: libgnomeui/gnome-helpsys.c:183
 msgid "The priority of style of GnomeHelpView"
-msgstr ""
+msgstr "La priorité du style de GnomeHelpView"
 
 #. orientation
 #: libgnomeui/gnome-helpsys.c:192 libgnomeui/gnome-helpsys.c:193
@@ -326,11 +344,11 @@ msgstr "Orientation :"
 
 #: libgnomeui/gnome-helpsys.c:202
 msgid "Toplevel"
-msgstr ""
+msgstr "1er niveau"
 
 #: libgnomeui/gnome-helpsys.c:203
 msgid "The toplevel widget"
-msgstr ""
+msgstr "Le widget de haut niveau"
 
 #: demos/stock_demo.c:315 libgnomeui/gnome-helpsys.c:219
 #: libgnomeui/gnome-stock.c:724
@@ -339,7 +357,7 @@ msgstr "Aide"
 
 #: libgnomeui/gnome-helpsys.c:220
 msgid "Show help for a specific region of the application"
-msgstr ""
+msgstr "Affiche l'aide pour une région particulière de l'application"
 
 #: libgnomeui/gnome-helpsys.c:224
 msgid "Style"
@@ -347,7 +365,7 @@ msgstr "Style"
 
 #: libgnomeui/gnome-helpsys.c:225
 msgid "Change the way help is displayed"
-msgstr ""
+msgstr "Change la manière dont l'aide est affiché"
 
 #: libgnomeui/gnome-helpsys.c:926 libgnomeui/gnome-helpsys.c:1020
 msgid "No help is available for the selected portion of the application."
@@ -358,7 +376,7 @@ msgstr ""
 #: libgnomeui/gnome-helpsys.c:1190
 #, c-format
 msgid "Cought GnomeURL error: %s"
-msgstr ""
+msgstr "Erreur GnomeURL : %s"
 
 #: libgnomeui/gnome-href.c:114
 msgid "URL"
@@ -366,7 +384,7 @@ msgstr "URL"
 
 #: libgnomeui/gnome-href.c:115
 msgid "The URL that GnomeHRef activates"
-msgstr ""
+msgstr "L'URL que GnomeHref active"
 
 #: libgnomeui/gnome-href.c:122
 msgid "Text"
@@ -378,13 +396,17 @@ msgstr "Le texte du bouton"
 
 #: libgnomeui/gnome-href.c:124
 msgid "End World Hunger"
-msgstr ""
+msgstr "End World Hunger"
 
 #: libgnomeui/gnome-about.c:1169 libgnomeui/gnome-href.c:395
 msgid ""
 "Error occured while trying to launch the URL handler.\n"
 "Please check the settings in the Control Center if they are correct."
 msgstr ""
+"Une erreur est survenue durand la tentative de lancement du gestionnaire "
+"d'URL.\n"
+"veuillez vérifier les réglages dans le Centre de controle si ils sont "
+"correct."
 
 #. paper size
 #: libgnomeui/gnome-paper-selector.c:159
@@ -423,7 +445,7 @@ msgstr "Droite :"
 #. Scaling
 #: libgnomeui/gnome-paper-selector.c:306
 msgid "Scaling"
-msgstr ""
+msgstr "Échelle"
 
 #: libgnomeui/gnome-paper-selector.c:321
 msgid "Fit to Page"
@@ -432,7 +454,7 @@ msgstr "Ajuster à la page"
 #: libgnomeui/gnome-paper-selector.c:810
 #, c-format
 msgid "%0.3g%s x %0.3g%s"
-msgstr ""
+msgstr "%0.3g%s x %0.3g%s"
 
 #: libgnomeui/gnome-paper-selector.c:1040
 msgid "Page Setup"
@@ -474,11 +496,11 @@ msgstr "Orientation de l'icône"
 
 #: libgnomeui/gnome-pouch.c:810
 msgid "Tile children"
-msgstr ""
+msgstr "Aligner les fils"
 
 #: libgnomeui/gnome-pouch.c:811
 msgid "Cascade children"
-msgstr ""
+msgstr "Cascader les fils"
 
 #: libgnomeui/gnome-pouch.c:813
 msgid "Arrange icons"
@@ -490,7 +512,7 @@ msgstr "Arrangement automatique des icônes"
 
 #: libgnomeui/gnome-recently-used.c:113
 msgid "App Specific"
-msgstr ""
+msgstr "Spécifique à l'application"
 
 #: libgnomeui/gnome-recently-used.c:114
 msgid "Is this list application specific"
@@ -499,7 +521,7 @@ msgstr "Si cette liste d'applications est spécifique"
 #: libgnomeui/gnome-recently-used.c:897
 #, c-format
 msgid "bad GnomeRecentDocument attribute: %s\n"
-msgstr ""
+msgstr "mauvais attribut GnomeRecentDocument : %s\n"
 
 #: libgnomeui/gnome-recently-used.c:1127
 msgid "Unknown"
@@ -532,6 +554,7 @@ msgstr "Mot de passe :"
 #, c-format
 msgid "Could not create per-user gnome configuration directory `%s': %s\n"
 msgstr ""
+"Ne peut créer un répertoire de configuration par utilisateur « %s » : %s\n"
 
 #: libgnome/gnomelib-init.c:223
 #, c-format
@@ -539,11 +562,13 @@ msgid ""
 "Could not set mode 0700 on private per-user gnome configuration directory "
 "`%s': %s\n"
 msgstr ""
+"Ne peut définir le mode à 0700 sur le répertoire de configuration privé par "
+"utilisateur « %s » : %s\n"
 
 #: libgnome/gnomelib-init.c:230
 #, c-format
 msgid "Could not create gnome accelerators directory `%s': %s\n"
-msgstr ""
+msgstr "Ne peut créer le répertoire d'accélérateurs gnome « %s » : %s\n"
 
 #: libgnomeui/gnome-about.c:331
 msgid "Author:"
@@ -1159,7 +1184,7 @@ msgstr "Annuler la demande de fin de session"
 
 #: libgnomeui/gnome-color-picker.c:423
 msgid "Received invalid color data\n"
-msgstr ""
+msgstr "Donnée de couleur invalide reçue\n"
 
 #: libgnomeui/gnome-color-picker.c:487
 msgid "Pick a color"
@@ -1167,43 +1192,43 @@ msgstr "Choisissez une couleur"
 
 #: libgnomeui/gnome-dateedit.c:361
 msgid "Time"
-msgstr ""
+msgstr "heure"
 
 #: libgnomeui/gnome-dateedit.c:362
 msgid "The time currentlyselected"
-msgstr ""
+msgstr "L'heure actuellement sélectionné"
 
 #: libgnomeui/gnome-dateedit.c:373
 msgid "DateEdit Flags"
-msgstr ""
+msgstr "Drapeaux DateEdit"
 
 #: libgnomeui/gnome-dateedit.c:374
 msgid "Flags for how DateEdit looks"
-msgstr ""
+msgstr "Drapeaux indiquant comment apparait DateEdit"
 
 #: libgnomeui/gnome-dateedit.c:383
 msgid "Lower Hour"
-msgstr ""
+msgstr "Heure basse"
 
 #: libgnomeui/gnome-dateedit.c:384
 msgid "Lower hour in the time popup selector"
-msgstr ""
+msgstr "Heure fractionnée dans le popup de sélection d'heure"
 
 #: libgnomeui/gnome-dateedit.c:394
 msgid "Upper Hour"
-msgstr ""
+msgstr "Heure haute"
 
 #: libgnomeui/gnome-dateedit.c:395
 msgid "Upper hour in the time popup selector"
-msgstr ""
+msgstr "Haure haute dans le popup de sélection d'heure"
 
 #: libgnomeui/gnome-dateedit.c:405
 msgid "Initial Time"
-msgstr ""
+msgstr "Date initiale"
 
 #: libgnomeui/gnome-dateedit.c:406
 msgid "The initial time"
-msgstr ""
+msgstr "La date initiale"
 
 #. Calendar label, only shown if the date editor has a time field
 #: libgnomeui/gnome-dateedit.c:651
@@ -1213,6 +1238,7 @@ msgstr "Calendrier"
 #: libgnomeui/gnome-dateedit.c:845
 msgid "gnome_date_edit_get_date deprecated, use gnome_date_edit_get_time"
 msgstr ""
+"gnome_date_edit_get_date déconseillé, utiliser gnome_date_edit_get_time"
 
 #: libgnomeui/gnome-druid.c:125
 msgid "Back"
@@ -1239,12 +1265,12 @@ msgstr ""
 #: libgnomeui/gnome-icon-sel.c:280
 #, c-format
 msgid "GnomeIconSelection: '%s' does not exist or is not a directory"
-msgstr ""
+msgstr "GnomeIconSelection : « %s » n'existe pas ou n'est pas un répertoire"
 
 #: libgnomeui/gnome-icon-sel.c:288
 #, c-format
 msgid "GnomeIconSelection: couldn't open directory '%s'"
-msgstr ""
+msgstr "GnomeIconSelection : ne peut ouvrir le répertoire « %s »"
 
 #: libgnomeui/gnome-icon-sel.c:361
 msgid "Loading Icons..."
@@ -1756,19 +1782,19 @@ msgstr "Configurer"
 
 #: demos/mdi_demo.c:116
 msgid "Child Item 1"
-msgstr ""
+msgstr "Élément fils 1"
 
 #: demos/mdi_demo.c:117
 msgid "Hint for item 1"
-msgstr ""
+msgstr "Astuce pour l'élément 1"
 
 #: demos/mdi_demo.c:119
 msgid "Child Item 2"
-msgstr ""
+msgstr "Élément fils 2"
 
 #: demos/mdi_demo.c:120
 msgid "Hint for item 2"
-msgstr ""
+msgstr "Astuce pour l'élément fils"
 
 #: demos/stock_demo.c:137
 msgid "New..."
