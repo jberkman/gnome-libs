@@ -1,13 +1,14 @@
 # Swedish translation of the gnome-libs module.
 # Copyright (C) 1998-1999 Free Software Foundation, Inc.
 # Martin Wahlen <mva@sbbs.se>, 1998-1999.
+# Andreas Hyden <a.hyden@cyberpoint.se>, 2000.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-libs 1.0.17\n"
-"POT-Creation-Date: 2000-04-03 14:12+0200\n"
+"POT-Creation-Date: 2000-05-10 19:10+0200\n"
 "PO-Revision-Date: 1999-09-28 21:42+0100\n"
-"Last-Translator: Richard Hult <rhult@hem2.passagen.se>\n"
+"Last-Translator: Andreas Hyden <a.hyden@cyberpoint.se>\n"
 "Language-Team: Swedish <sv@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=iso-8859-1\n"
@@ -48,6 +49,14 @@ msgstr "Författare: "
 #: libgnomeui/winhints_demo.c:256
 msgid "About"
 msgstr "Om"
+
+#: libgnomeui/gnome-about.c:1128
+msgid ""
+"Error occured while trying to launch the URL handler.\n"
+"Please check the settings in the Control Center if they are correct."
+msgstr ""
+"Fel uppstod vid körning av URL-handlaren.\n"
+"Vänligen kolla inställningarna i kontrollpanelen om de är korrekta."
 
 #: libgnomeui/gnome-app-helper.c:74
 msgid "_File"
@@ -297,9 +306,8 @@ msgstr "Ställ in programmet"
 #.
 #. About
 #: libgnomeui/gnome-app-helper.c:213
-#, fuzzy
 msgid "_About"
-msgstr "Om"
+msgstr "_Om"
 
 #: libgnomeui/gnome-app-helper.c:214
 msgid "About this application"
@@ -440,172 +448,172 @@ msgstr "  - OK? (ja eller nej)"
 msgid "Progress"
 msgstr "Händelseförlopp"
 
-#: libgnomeui/gnome-calculator.c:982 libgnomeui/gnome-calculator.c:1132
+#: libgnomeui/gnome-calculator.c:443 libgnomeui/gnome-calculator.c:1088
 msgid "DEG"
 msgstr "DEG"
 
-#: libgnomeui/gnome-calculator.c:984
+#: libgnomeui/gnome-calculator.c:445
 msgid "RAD"
 msgstr "RAD"
 
-#: libgnomeui/gnome-calculator.c:986
+#: libgnomeui/gnome-calculator.c:447
 msgid "GRAD"
 msgstr "GRAD"
 
-#: libgnomeui/gnome-calculator.c:1122
+#: libgnomeui/gnome-calculator.c:1078
 msgid "1/x"
 msgstr "1/x"
 
-#: libgnomeui/gnome-calculator.c:1123
+#: libgnomeui/gnome-calculator.c:1079
 msgid "x^2"
 msgstr "x^2"
 
-#: libgnomeui/gnome-calculator.c:1124
+#: libgnomeui/gnome-calculator.c:1080
 msgid "SQRT"
 msgstr "SQRT"
 
-#: libgnomeui/gnome-calculator.c:1125
+#: libgnomeui/gnome-calculator.c:1081
 msgid "CE/C"
 msgstr "CE/C"
 
-#: libgnomeui/gnome-calculator.c:1126
+#: libgnomeui/gnome-calculator.c:1082
 msgid "AC"
 msgstr "AC"
 
 #. inverse button
-#: libgnomeui/gnome-calculator.c:1129
+#: libgnomeui/gnome-calculator.c:1085
 msgid "sin"
 msgstr "sin"
 
-#: libgnomeui/gnome-calculator.c:1130
+#: libgnomeui/gnome-calculator.c:1086
 msgid "cos"
 msgstr "cos"
 
-#: libgnomeui/gnome-calculator.c:1131
+#: libgnomeui/gnome-calculator.c:1087
 msgid "tan"
 msgstr "tan"
 
-#: libgnomeui/gnome-calculator.c:1134
+#: libgnomeui/gnome-calculator.c:1090
 msgid "e"
 msgstr "e"
 
-#: libgnomeui/gnome-calculator.c:1135
+#: libgnomeui/gnome-calculator.c:1091
 msgid "EE"
 msgstr "EE"
 
-#: libgnomeui/gnome-calculator.c:1136
+#: libgnomeui/gnome-calculator.c:1092
 msgid "log"
 msgstr "log"
 
-#: libgnomeui/gnome-calculator.c:1137
+#: libgnomeui/gnome-calculator.c:1093
 msgid "ln"
 msgstr "ln"
 
-#: libgnomeui/gnome-calculator.c:1138
+#: libgnomeui/gnome-calculator.c:1094
 msgid "x^y"
 msgstr "x^y"
 
-#: libgnomeui/gnome-calculator.c:1140
+#: libgnomeui/gnome-calculator.c:1096
 msgid "PI"
 msgstr "PI"
 
-#: libgnomeui/gnome-calculator.c:1141
+#: libgnomeui/gnome-calculator.c:1097
 msgid "x!"
 msgstr "x!"
 
-#: libgnomeui/gnome-calculator.c:1142
+#: libgnomeui/gnome-calculator.c:1098
 msgid "("
 msgstr "("
 
-#: libgnomeui/gnome-calculator.c:1143
+#: libgnomeui/gnome-calculator.c:1099
 msgid ")"
 msgstr ")"
 
-#: libgnomeui/gnome-calculator.c:1144
+#: libgnomeui/gnome-calculator.c:1100
 msgid "/"
 msgstr "/"
 
-#: libgnomeui/gnome-calculator.c:1146
+#: libgnomeui/gnome-calculator.c:1102
 msgid "STO"
 msgstr "STO"
 
-#: libgnomeui/gnome-calculator.c:1147
+#: libgnomeui/gnome-calculator.c:1103
 msgid "7"
 msgstr "7"
 
-#: libgnomeui/gnome-calculator.c:1148
+#: libgnomeui/gnome-calculator.c:1104
 msgid "8"
 msgstr "8"
 
-#: libgnomeui/gnome-calculator.c:1149
+#: libgnomeui/gnome-calculator.c:1105
 msgid "9"
 msgstr "9"
 
-#: libgnomeui/gnome-calculator.c:1150
+#: libgnomeui/gnome-calculator.c:1106
 msgid "*"
 msgstr "*"
 
-#: libgnomeui/gnome-calculator.c:1152
+#: libgnomeui/gnome-calculator.c:1108
 msgid "RCL"
 msgstr "RCL"
 
-#: libgnomeui/gnome-calculator.c:1153
+#: libgnomeui/gnome-calculator.c:1109
 msgid "4"
 msgstr "4"
 
-#: libgnomeui/gnome-calculator.c:1154
+#: libgnomeui/gnome-calculator.c:1110
 msgid "5"
 msgstr "5"
 
-#: libgnomeui/gnome-calculator.c:1155
+#: libgnomeui/gnome-calculator.c:1111
 msgid "6"
 msgstr "6"
 
-#: libgnomeui/gnome-calculator.c:1156
+#: libgnomeui/gnome-calculator.c:1112
 msgid "-"
 msgstr "-"
 
-#: libgnomeui/gnome-calculator.c:1158
+#: libgnomeui/gnome-calculator.c:1114
 msgid "SUM"
 msgstr "SUM"
 
-#: libgnomeui/gnome-calculator.c:1159
+#: libgnomeui/gnome-calculator.c:1115
 msgid "1"
 msgstr "1"
 
-#: libgnomeui/gnome-calculator.c:1160
+#: libgnomeui/gnome-calculator.c:1116
 msgid "2"
 msgstr "2"
 
-#: libgnomeui/gnome-calculator.c:1161
+#: libgnomeui/gnome-calculator.c:1117
 msgid "3"
 msgstr "3"
 
-#: libgnomeui/gnome-calculator.c:1162
+#: libgnomeui/gnome-calculator.c:1118
 msgid "+"
 msgstr "+"
 
-#: libgnomeui/gnome-calculator.c:1164
+#: libgnomeui/gnome-calculator.c:1120
 msgid "EXC"
 msgstr "EXC"
 
-#: libgnomeui/gnome-calculator.c:1165
+#: libgnomeui/gnome-calculator.c:1121
 msgid "0"
 msgstr "0"
 
-#: libgnomeui/gnome-calculator.c:1166
+#: libgnomeui/gnome-calculator.c:1122
 msgid "."
 msgstr "."
 
-#: libgnomeui/gnome-calculator.c:1167
+#: libgnomeui/gnome-calculator.c:1123
 msgid "+/-"
 msgstr "+/-"
 
-#: libgnomeui/gnome-calculator.c:1168
+#: libgnomeui/gnome-calculator.c:1124
 msgid "="
 msgstr "="
 
-#: libgnomeui/gnome-calculator.c:1237
+#: libgnomeui/gnome-calculator.c:1330
 msgid "INV"
 msgstr "INV"
 
@@ -702,7 +710,7 @@ msgstr "Kommentar"
 msgid "Add/Set"
 msgstr "Lägg till/ändra"
 
-#: libgnomeui/gnome-dentry-edit.c:424 libgnomeui/gnome-stock.c:644
+#: libgnomeui/gnome-dentry-edit.c:424 libgnomeui/gnome-stock.c:645
 msgid "Remove"
 msgstr "Ta bort"
 
@@ -722,12 +730,12 @@ msgstr "Bakåt"
 msgid "Finish"
 msgstr "Slutför"
 
-#: libgnomeui/gnome-file-entry.c:175
+#: libgnomeui/gnome-file-entry.c:298
 msgid "Select file"
 msgstr "Välj fil"
 
 #. browse button ...
-#: libgnomeui/gnome-file-entry.c:304 libgnomeui/gnome-spell.c:620
+#: libgnomeui/gnome-file-entry.c:427 libgnomeui/gnome-spell.c:620
 #: libgnomeui/gnome-spell.c:637 libgnomeui/gnome-spell.c:654
 msgid "Browse..."
 msgstr "Bläddra..."
@@ -736,7 +744,7 @@ msgstr "Bläddra..."
 msgid "Pick a Font"
 msgstr "Välj ett typsnitt"
 
-#: libgnomeui/gnome-font-picker.c:719 libgnomeui/gnome-stock.c:664
+#: libgnomeui/gnome-font-picker.c:719 libgnomeui/gnome-stock.c:665
 msgid "Font"
 msgstr "Typsnitt"
 
@@ -753,9 +761,8 @@ msgid "Preview"
 msgstr "Förhandsgranskning"
 
 #: libgnomeui/gnome-icon-entry.c:791
-#, fuzzy
 msgid "Browse"
-msgstr "Bläddra..."
+msgstr "Bläddra"
 
 #: libgnomeui/gnome-icon-sel.c:338
 msgid "Loading Icons..."
@@ -915,6 +922,10 @@ msgstr "Datum"
 msgid "%a %b %d %T %Y"
 msgstr "%a %b %d %T %Y"
 
+#: libgnomeui/gnome-scores.c:319
+msgid "-freefont-garamond-*-*-*-*-30-170-*-*-*-*-*-*"
+msgstr "-freefont-garamond-*-*-*-*-30-170-*-*-*-*-*-*"
+
 #: libgnomeui/gnome-spell.c:199
 msgid "Select dictionary"
 msgstr "Välj ordlista"
@@ -934,11 +945,11 @@ msgstr ""
 msgid "Confirm"
 msgstr "Bekräfta"
 
-#: libgnomeui/gnome-spell.c:259 libgnomeui/gnome-stock.c:653
+#: libgnomeui/gnome-spell.c:259 libgnomeui/gnome-stock.c:654
 msgid "OK"
 msgstr "OK"
 
-#: libgnomeui/gnome-spell.c:266 libgnomeui/gnome-stock.c:655
+#: libgnomeui/gnome-spell.c:266 libgnomeui/gnome-stock.c:656
 msgid "Cancel"
 msgstr "Avbryt"
 
@@ -1058,91 +1069,91 @@ msgstr "Stava"
 msgid "Configure"
 msgstr "Konfigurera"
 
-#: libgnomeui/gnome-stock.c:641
+#: libgnomeui/gnome-stock.c:642
 msgid "Add"
 msgstr "Lägg till"
 
-#: libgnomeui/gnome-stock.c:642
+#: libgnomeui/gnome-stock.c:643
 msgid "Clear"
 msgstr "Rensa"
 
-#: libgnomeui/gnome-stock.c:643
+#: libgnomeui/gnome-stock.c:644
 msgid "Select Color"
 msgstr "Välj färg"
 
-#: libgnomeui/gnome-stock.c:645
+#: libgnomeui/gnome-stock.c:646
 msgid "Table Borders"
 msgstr "Tabellkanter"
 
-#: libgnomeui/gnome-stock.c:646
+#: libgnomeui/gnome-stock.c:647
 msgid "Table Fill"
 msgstr "Fyll tabell"
 
-#: libgnomeui/gnome-stock.c:647
+#: libgnomeui/gnome-stock.c:648
 msgid "Bulleted List"
 msgstr "Onumrerad lista"
 
-#: libgnomeui/gnome-stock.c:648
+#: libgnomeui/gnome-stock.c:649
 msgid "Numbered List"
 msgstr "Numrerad lista"
 
-#: libgnomeui/gnome-stock.c:649
+#: libgnomeui/gnome-stock.c:650
 msgid "Indent"
 msgstr "Gör indrag"
 
-#: libgnomeui/gnome-stock.c:650
+#: libgnomeui/gnome-stock.c:651
 msgid "Un-Indent"
 msgstr "Ta bort indrag"
 
-#: libgnomeui/gnome-stock.c:654
+#: libgnomeui/gnome-stock.c:655
 msgid "Apply"
 msgstr "Använd"
 
-#: libgnomeui/gnome-stock.c:656 libgnomeui/stock_demo.c:169
+#: libgnomeui/gnome-stock.c:657 libgnomeui/stock_demo.c:169
 msgid "Close"
 msgstr "Stäng"
 
-#: libgnomeui/gnome-stock.c:657
+#: libgnomeui/gnome-stock.c:658
 msgid "Yes"
 msgstr "Ja"
 
-#: libgnomeui/gnome-stock.c:658
+#: libgnomeui/gnome-stock.c:659
 msgid "No"
 msgstr "Nej"
 
-#: libgnomeui/gnome-stock.c:659 libgnomeui/stock_demo.c:315
+#: libgnomeui/gnome-stock.c:660 libgnomeui/stock_demo.c:315
 msgid "Help"
 msgstr "Hjälp"
 
-#: libgnomeui/gnome-stock.c:660
+#: libgnomeui/gnome-stock.c:661
 msgid "Next"
 msgstr "Nästa"
 
-#: libgnomeui/gnome-stock.c:661
+#: libgnomeui/gnome-stock.c:662
 msgid "Prev"
 msgstr "Föreg"
 
-#: libgnomeui/gnome-stock.c:662
+#: libgnomeui/gnome-stock.c:663
 msgid "Up"
 msgstr "Upp"
 
-#: libgnomeui/gnome-stock.c:663
+#: libgnomeui/gnome-stock.c:664
 msgid "Down"
 msgstr "Ner"
 
-#: libgnomeui/gnome-stock.c:1421
+#: libgnomeui/gnome-stock.c:1423
 msgid "Menu Accelerator Keys"
 msgstr "Menysnabbtangenter"
 
-#: libgnomeui/gnome-stock.c:1423
+#: libgnomeui/gnome-stock.c:1425
 msgid "Global"
 msgstr "Global"
 
-#: libgnomeui/gnome-stock.c:1425
+#: libgnomeui/gnome-stock.c:1427
 msgid "Menu Item"
 msgstr "Menyval"
 
-#: libgnomeui/gnome-stock.c:1426
+#: libgnomeui/gnome-stock.c:1428
 msgid "Accelerator"
 msgstr "Snabbtangent"
 
