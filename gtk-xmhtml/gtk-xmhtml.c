@@ -33,7 +33,7 @@ static GtkContainer *parent_class = NULL;
 /* prototypes for functions defined here */
 static void gtk_xmhtml_realize (GtkWidget *widget);
 static void gtk_xmhtml_unrealize (GtkWidget *widget);
-static void gtk_xmhtml_foreach (GtkContainer *we, GtkCallback callback, gpointer callback_data);
+static void gtk_xmhtml_forall (GtkContainer *we, gboolean include_internals, GtkCallback callback, gpointer callback_data);
 static void gtk_xmhtml_map (GtkWidget *widget);
 static void gtk_xmhtml_draw (GtkWidget *widget, GdkRectangle *area);
 static gint gtk_xmhtml_expose (GtkWidget *widget, GdkEventExpose *event);
@@ -378,7 +378,7 @@ gtk_xmhtml_class_init (GtkXmHTMLClass *class)
 	
 	container_class->add = gtk_xmhtml_add;
 	container_class->remove = gtk_xmhtml_remove;
-	container_class->foreach = gtk_xmhtml_foreach;
+	container_class->forall = gtk_xmhtml_forall;
 }
 
 static void
@@ -1046,7 +1046,7 @@ gtk_xmhtml_remove (GtkContainer *container, GtkWidget *widget)
 }
 
 static void
-gtk_xmhtml_foreach (GtkContainer *container, GtkCallback callback, gpointer callback_data)
+gtk_xmhtml_forall (GtkContainer *container, gboolean include_internals, GtkCallback callback, gpointer callback_data)
 {
 	GtkXmHTML *html;
 	
@@ -1056,13 +1056,16 @@ gtk_xmhtml_foreach (GtkContainer *container, GtkCallback callback, gpointer call
 
 	html = (GtkXmHTML *) container;
 
-	/* First the scrollbars */
-	(*callback)(html->html.vsb, callback_data);
-	(*callback)(html->html.hsb, callback_data);
-
-	/* The drawing area */
-	(*callback)(html->html.work_area, callback_data);
-
+	if (include_internals)
+	  {
+	    /* First the scrollbars */
+	    (*callback)(html->html.vsb, callback_data);
+	    (*callback)(html->html.hsb, callback_data);
+	    
+	    /* The drawing area */
+	    (*callback)(html->html.work_area, callback_data);
+	  }
+	
 	/* Any childs */
 	g_list_foreach (html->children, (GFunc) callback, callback_data);
 }
