@@ -3,11 +3,14 @@
 # Martin Wahlen <mva@sbbs.se>, 1998-1999.
 # Andreas Hyden <a.hyden@cyberpoint.se>, 2000.
 # Christian Rose <menthos@menthos.com>, 2000.
+# Martin Norbäck <d95mback@dtek.chalmers.se>, 2001.
+#
+# $Id: sv.po,v 1.70 2001/02/09 13:44:56 mback Exp $
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-libs\n"
-"POT-Creation-Date: 2000-10-08 17:22+0200\n"
+"POT-Creation-Date: 2001-02-09 14:41+0100\n"
 "PO-Revision-Date: 2000-10-08 17:21+0200\n"
 "Last-Translator: Christian Rose <menthos@menthos.com>\n"
 "Language-Team: Swedish <sv@li.org>\n"
@@ -15,34 +18,34 @@ msgstr ""
 "Content-Type: text/plain; charset=iso-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: libgnome/gnome-ditem.c:563 libgnome/gnome-ditem.c:921
+#: libgnome/gnome-ditem.c:565 libgnome/gnome-ditem.c:923
 #, c-format
 msgid "Unknown desktop file format %d"
 msgstr "Okänt skrivbordsfilsformat %d"
 
 #. we are not an application so just exit
 #. with an error
-#: libgnome/gnome-ditem.c:910 libgnome/gnome-ditem.c:917
+#: libgnome/gnome-ditem.c:912 libgnome/gnome-ditem.c:919
 msgid "Attempting to launch a non-application"
 msgstr "Försöker starta något som inte är ett program"
 
-#: libgnome/gnome-ditem.c:1027
+#: libgnome/gnome-ditem.c:1029
 msgid "Trying to execute an item with no 'Exec'"
 msgstr "Försöker köra ett objekt utan något \"Exec\""
 
-#: libgnome/gnome-ditem.c:1079 libgnome/gnome-ditem.c:1172
+#: libgnome/gnome-ditem.c:1081 libgnome/gnome-ditem.c:1174
 msgid "No exec field for this drop"
 msgstr "Detta släpp har inget exec-fält"
 
-#: libgnome/gnome-ditem.c:1110
+#: libgnome/gnome-ditem.c:1112
 msgid "Nothing to replace with a file in the exec string"
 msgstr "Inget att ersätta med en fil i exec-strängen"
 
-#: libgnome/gnome-ditem.c:1223
+#: libgnome/gnome-ditem.c:1225
 msgid "There was no argument to replace with dropped files"
 msgstr "Det fanns inget argument som kunde ersättas med släppta filer"
 
-#: libgnome/gnome-ditem.c:1323
+#: libgnome/gnome-ditem.c:1325
 msgid "Dropped URLs on an app that can only take files"
 msgstr "Släppte URL:er på ett program som bara kan ta filer"
 
@@ -105,15 +108,15 @@ msgstr "Kan inte köra kommandot \"%s\"!"
 msgid "Command '%s' did not return an ID!"
 msgstr "Kommandot \"%s\" returnerade inte ett ID!"
 
-#: libgnome/gnomelib-init2.c:1227
+#: libgnome/gnomelib-init2.c:1228
 msgid "Dynamic modules to load"
 msgstr "Dynamiska moduler som ska laddas"
 
-#: libgnome/gnomelib-init2.c:1228
+#: libgnome/gnomelib-init2.c:1229
 msgid "MODULE1,MODULE2,..."
 msgstr "MODUL1,MODUL2,..."
 
-#: libgnomeui/gnome-appbar.c:689
+#: libgnomeui/gnome-appbar.c:682
 msgid ""
 "gnome_appbar_set_progress deprecated, use "
 "gnome_appbar_set_progress_percentage"
@@ -121,39 +124,39 @@ msgstr ""
 "gnome_appbar_set_progress föråldrat, använd "
 "gnome_appbar_set_progress_percentage"
 
-#: libcompat/gnome-dentry-edit.c:184 libgnomeui/gnome-ditem-edit.c:213
+#: libcompat/gnome-dentry-edit.c:184 libgnomeui/gnome-ditem-edit.c:210
 msgid "Name:"
 msgstr "Namn:"
 
-#: libcompat/gnome-dentry-edit.c:197 libgnomeui/gnome-ditem-edit.c:226
+#: libcompat/gnome-dentry-edit.c:197 libgnomeui/gnome-ditem-edit.c:223
 msgid "Comment:"
 msgstr "Kommentar:"
 
-#: libcompat/gnome-dentry-edit.c:207 libgnomeui/gnome-ditem-edit.c:236
+#: libcompat/gnome-dentry-edit.c:207 libgnomeui/gnome-ditem-edit.c:233
 msgid "Command:"
 msgstr "Kommando:"
 
-#: libcompat/gnome-dentry-edit.c:217 libgnomeui/gnome-ditem-edit.c:246
+#: libcompat/gnome-dentry-edit.c:217 libgnomeui/gnome-ditem-edit.c:243
 msgid "Type:"
 msgstr "Typ:"
 
-#: libcompat/gnome-dentry-edit.c:233 libgnomeui/gnome-ditem-edit.c:263
+#: libcompat/gnome-dentry-edit.c:233 libgnomeui/gnome-ditem-edit.c:260
 msgid "Icon:"
 msgstr "Ikon:"
 
-#: libcompat/gnome-dentry-edit.c:243 libgnomeui/gnome-ditem-edit.c:273
+#: libcompat/gnome-dentry-edit.c:243 libgnomeui/gnome-ditem-edit.c:270
 msgid "Choose an icon"
 msgstr "Välj en ikon"
 
-#: libcompat/gnome-dentry-edit.c:256 libgnomeui/gnome-ditem-edit.c:285
+#: libcompat/gnome-dentry-edit.c:256 libgnomeui/gnome-ditem-edit.c:282
 msgid "Run in Terminal"
 msgstr "Kör i terminal"
 
-#: libgnomeui/gnome-ditem-edit.c:311
+#: libgnomeui/gnome-ditem-edit.c:308
 msgid "Simple drag and drop"
 msgstr "Enkel dra-och-släpp"
 
-#: libgnomeui/gnome-ditem-edit.c:333
+#: libgnomeui/gnome-ditem-edit.c:330
 #, c-format
 msgid ""
 "In the following commands you should use %s in the spot where the\n"
@@ -168,68 +171,68 @@ msgstr ""
 "flera filer eller URL:er som argument efter dess kommando-\n"
 "namn kan du kryssa i rutan ovan."
 
-#: libgnomeui/gnome-ditem-edit.c:345
+#: libgnomeui/gnome-ditem-edit.c:342
 msgid "Command for file drops:"
 msgstr "Kommando för filsläpp:"
 
-#: libgnomeui/gnome-ditem-edit.c:355
+#: libgnomeui/gnome-ditem-edit.c:352
 msgid "Drop one file at a time only."
 msgstr "Släpp endast en fil i taget."
 
-#: libgnomeui/gnome-ditem-edit.c:367
+#: libgnomeui/gnome-ditem-edit.c:364
 msgid "Command for URL drops:"
 msgstr "Kommando för URL-släpp:"
 
-#: libgnomeui/gnome-ditem-edit.c:377
+#: libgnomeui/gnome-ditem-edit.c:374
 msgid "Drop one URL at a time only."
 msgstr "Släpp endast en URL i taget."
 
-#: libcompat/gnome-dentry-edit.c:367 libgnomeui/gnome-ditem-edit.c:493
+#: libcompat/gnome-dentry-edit.c:367 libgnomeui/gnome-ditem-edit.c:490
 msgid "Try this before using:"
 msgstr "Försök detta innan användning:"
 
-#: libcompat/gnome-dentry-edit.c:377 libgnomeui/gnome-ditem-edit.c:503
+#: libcompat/gnome-dentry-edit.c:377 libgnomeui/gnome-ditem-edit.c:500
 msgid "Documentation:"
 msgstr "Dokumentation:"
 
-#: libgnomeui/gnome-ditem-edit.c:513
+#: libgnomeui/gnome-ditem-edit.c:510
 msgid "Window titles to wait for (comma separated):"
 msgstr "Fönstertitlar som ska väntas på (kommaseparerad):"
 
-#: libcompat/gnome-dentry-edit.c:387 libgnomeui/gnome-ditem-edit.c:523
+#: libcompat/gnome-dentry-edit.c:387 libgnomeui/gnome-ditem-edit.c:520
 msgid "Name/Comment translations:"
 msgstr "Översättningar av namn/kommentar:"
 
-#: libcompat/gnome-dentry-edit.c:390 libgnomeui/gnome-ditem-edit.c:526
+#: libcompat/gnome-dentry-edit.c:390 libgnomeui/gnome-ditem-edit.c:523
 msgid "Language"
 msgstr "Språk"
 
-#: libcompat/gnome-dentry-edit.c:391 libgnomeui/gnome-ditem-edit.c:527
+#: libcompat/gnome-dentry-edit.c:391 libgnomeui/gnome-ditem-edit.c:524
 msgid "Name"
 msgstr "Namn"
 
-#: libcompat/gnome-dentry-edit.c:392 libgnomeui/gnome-ditem-edit.c:528
+#: libcompat/gnome-dentry-edit.c:392 libgnomeui/gnome-ditem-edit.c:525
 msgid "Comment"
 msgstr "Kommentar"
 
-#: libcompat/gnome-dentry-edit.c:420 libgnomeui/gnome-ditem-edit.c:556
+#: libcompat/gnome-dentry-edit.c:420 libgnomeui/gnome-ditem-edit.c:553
 msgid "Add/Set"
 msgstr "Lägg till/ändra"
 
-#: libcompat/gnome-dentry-edit.c:425 libgnomeui/gnome-ditem-edit.c:561
+#: libcompat/gnome-dentry-edit.c:425 libgnomeui/gnome-ditem-edit.c:558
 #: libgnomeui/gnome-stock.c:709
 msgid "Remove"
 msgstr "Ta bort"
 
-#: libcompat/gnome-dentry-edit.c:507 libgnomeui/gnome-ditem-edit.c:708
+#: libcompat/gnome-dentry-edit.c:507 libgnomeui/gnome-ditem-edit.c:705
 msgid "Basic"
 msgstr "Grundläggande"
 
-#: libgnomeui/gnome-ditem-edit.c:712
+#: libgnomeui/gnome-ditem-edit.c:709
 msgid "Drag and Drop"
 msgstr "Dra och släpp"
 
-#: libcompat/gnome-dentry-edit.c:511 libgnomeui/gnome-ditem-edit.c:716
+#: libcompat/gnome-dentry-edit.c:511 libgnomeui/gnome-ditem-edit.c:713
 msgid "Advanced"
 msgstr "Avancerad"
 
@@ -246,19 +249,19 @@ msgstr "-adobe-helvetica-bold-r-normal-*-*-180-*-*-p-*-*-*,*-r-*"
 msgid "-adobe-helvetica-medium-r-normal-*-*-120-*-*-p-*-*-*,*-r-*"
 msgstr "-adobe-helvetica-medium-r-normal-*-*-120-*-*-p-*-*-*,*-r-*"
 
-#: libgnomeui/gnome-file-saver.c:191
+#: libgnomeui/gnome-file-saver.c:192
 msgid "File Name:"
 msgstr "Filnamn:"
 
-#: libgnomeui/gnome-file-saver.c:199
+#: libgnomeui/gnome-file-saver.c:200
 msgid "Location:"
 msgstr "Plats:"
 
-#: libgnomeui/gnome-file-saver.c:207
+#: libgnomeui/gnome-file-saver.c:208
 msgid "Save As Type:"
 msgstr "Spara som typen:"
 
-#: libgnomeui/gnome-gconf.c:577
+#: libgnomeui/gnome-gconf.c:581
 msgid "GNOME GConf Support"
 msgstr "Stöd för Gconf i GNOME"
 
@@ -285,7 +288,7 @@ msgstr ""
 "för %s. Några av dina konfigurationsinställningar kommer kanske inte att "
 "fungera korrekt."
 
-#: libgnomeui/gnome-gconf.c:651
+#: libgnomeui/gnome-gconf.c:646
 #, c-format
 msgid "GConf error details: %s\n"
 msgstr "Detaljer över GConf-fel: %s\n"
@@ -332,7 +335,7 @@ msgstr "Prioriteten av stilerna på GnomeHelpView"
 
 #. orientation
 #: libgnomeui/gnome-helpsys.c:192 libgnomeui/gnome-helpsys.c:193
-#: libgnomeui/gnome-paper-selector.c:192
+#: libgnomeui/gnome-paper-selector.c:191
 msgid "Orientation"
 msgstr "Orientering"
 
@@ -344,8 +347,8 @@ msgstr "Överst"
 msgid "The toplevel widget"
 msgstr "Den översta widgeten"
 
-#: libgnomeui/gnome-helpsys.c:219 libgnomeui/gnome-stock.c:724
-#: libgnomeui/stock_demo.c:315
+#: demos/stock_demo.c:315 libgnomeui/gnome-helpsys.c:219
+#: libgnomeui/gnome-stock.c:724
 msgid "Help"
 msgstr "Hjälp"
 
@@ -391,7 +394,7 @@ msgstr "Texten på knappen"
 msgid "End World Hunger"
 msgstr "Få slut på världshungern"
 
-#: libgnomeui/gnome-about.c:1160 libgnomeui/gnome-href.c:395
+#: libgnomeui/gnome-about.c:1169 libgnomeui/gnome-href.c:395
 msgid ""
 "Error occured while trying to launch the URL handler.\n"
 "Please check the settings in the Control Center if they are correct."
@@ -400,154 +403,138 @@ msgstr ""
 "Var vänlig och kontrollera att inställningarna i kontrollpanelen är korrekta."
 
 #. paper size
-#: libgnomeui/gnome-paper-selector.c:160
+#: libgnomeui/gnome-paper-selector.c:159
 msgid "Paper Size"
 msgstr "Pappersstorlek"
 
-#: libgnomeui/gnome-paper-selector.c:214
+#: libgnomeui/gnome-paper-selector.c:213
 msgid "Portrait"
 msgstr "Stående"
 
-#: libgnomeui/gnome-paper-selector.c:234
+#: libgnomeui/gnome-paper-selector.c:233
 msgid "Landscape"
 msgstr "Liggande"
 
 #. margins
-#: libgnomeui/gnome-paper-selector.c:242
+#: libgnomeui/gnome-paper-selector.c:241
 msgid "Margins"
 msgstr "Marginaler"
 
-#: libgnomeui/gnome-paper-selector.c:254
+#: libgnomeui/gnome-paper-selector.c:253
 msgid "Top:"
 msgstr "Överkant:"
 
-#: libgnomeui/gnome-paper-selector.c:267
+#: libgnomeui/gnome-paper-selector.c:266
 msgid "Bottom:"
 msgstr "Nederkant:"
 
-#: libgnomeui/gnome-paper-selector.c:280
+#: libgnomeui/gnome-paper-selector.c:279
 msgid "Left:"
 msgstr "Vänsterkant:"
 
-#: libgnomeui/gnome-paper-selector.c:293
+#: libgnomeui/gnome-paper-selector.c:292
 msgid "Right:"
 msgstr "Högerkant:"
 
 #. Scaling
-#: libgnomeui/gnome-paper-selector.c:307
+#: libgnomeui/gnome-paper-selector.c:306
 msgid "Scaling"
 msgstr "Skalning"
 
-#: libgnomeui/gnome-paper-selector.c:322
+#: libgnomeui/gnome-paper-selector.c:321
 msgid "Fit to Page"
 msgstr "Anpassa till sidan"
 
-#: libgnomeui/gnome-paper-selector.c:811
+#: libgnomeui/gnome-paper-selector.c:810
 #, c-format
 msgid "%0.3g%s x %0.3g%s"
 msgstr "%0.3g%s × %0.3g%s"
 
-#: libgnomeui/gnome-paper-selector.c:1041
+#: libgnomeui/gnome-paper-selector.c:1040
 msgid "Page Setup"
 msgstr "Pappersinställningar"
 
 #. to be kept in sync with GtkCornerType enumeration
-#: libgnomeui/gnome-pouch.c:796
+#: libgnomeui/gnome-pouch.c:782
 msgid "Top left"
 msgstr "Övre vänster"
 
-#: libgnomeui/gnome-pouch.c:797
+#: libgnomeui/gnome-pouch.c:783
 msgid "Bottom left"
 msgstr "Nedre vänster"
 
-#: libgnomeui/gnome-pouch.c:798
+#: libgnomeui/gnome-pouch.c:784
 msgid "Top right"
 msgstr "Övre höger"
 
-#: libgnomeui/gnome-pouch.c:799
+#: libgnomeui/gnome-pouch.c:785
 msgid "Bottom right"
 msgstr "Nedre höger"
 
 #. to be kept in sync with GtkOrientation enumeration
-#: libgnomeui/gnome-pouch.c:810
+#: libgnomeui/gnome-pouch.c:796
 msgid "Horizontal"
 msgstr "Vågrät"
 
-#: libgnomeui/gnome-pouch.c:811
+#: libgnomeui/gnome-pouch.c:797
 msgid "Vertical"
 msgstr "Lodrät"
 
-#: libgnomeui/gnome-pouch.c:821
+#: libgnomeui/gnome-pouch.c:807
 msgid "Icon position"
 msgstr "Ikonposition"
 
-#: libgnomeui/gnome-pouch.c:822
+#: libgnomeui/gnome-pouch.c:808
 msgid "Icon orientation"
 msgstr "Ikonorientering"
 
-#: libgnomeui/gnome-pouch.c:824
+#: libgnomeui/gnome-pouch.c:810
 msgid "Tile children"
 msgstr "Plattlägg barn"
 
-#: libgnomeui/gnome-pouch.c:825
+#: libgnomeui/gnome-pouch.c:811
 msgid "Cascade children"
 msgstr "Kaskadlägg barn"
 
-#: libgnomeui/gnome-pouch.c:827
+#: libgnomeui/gnome-pouch.c:813
 msgid "Arrange icons"
 msgstr "Arrangera ikoner"
 
-#: libgnomeui/gnome-pouch.c:828
+#: libgnomeui/gnome-pouch.c:814
 msgid "Autoarrange icons"
 msgstr "Arrangera ikoner automatiskt"
 
-#: libgnomeui/gnome-recently-used.c:115
+#: libgnomeui/gnome-recently-used.c:113
 msgid "App Specific"
 msgstr "Programspecifikt"
 
-#: libgnomeui/gnome-recently-used.c:116
+#: libgnomeui/gnome-recently-used.c:114
 msgid "Is this list application specific"
 msgstr "Är den här listan programspecifik"
 
-#: libgnomeui/gnome-recently-used.c:898
+#: libgnomeui/gnome-recently-used.c:897
 #, c-format
 msgid "bad GnomeRecentDocument attribute: %s\n"
 msgstr "felaktigt GnomeRecentDocument-attribut: %s\n"
 
-#: libgnomeui/gnome-recently-used.c:1128
+#: libgnomeui/gnome-recently-used.c:1127
 msgid "Unknown"
 msgstr "Okänd"
 
 #. browse button ...
 #: libcompat/gnome-spell.c:620 libcompat/gnome-spell.c:637
-#: libcompat/gnome-spell.c:654 libgnomeui/gnome-file-entry.c:446
-#: libgnomeui/gnome-selector.c:863
+#: libcompat/gnome-spell.c:654 libgnomeui/gnome-file-entry.c:445
+#: libgnomeui/gnome-selector.c:859
 msgid "Browse..."
 msgstr "Bläddra..."
 
-#: libgnomeui/gnome-selector.c:873
+#: libgnomeui/gnome-selector.c:869
 msgid "Default..."
 msgstr "Standard..."
 
-#: libgnomeui/gnome-selector.c:883
+#: libgnomeui/gnome-selector.c:879
 msgid "Clear..."
 msgstr "Töm..."
-
-#: libgnomeui/mdi_demo.c:116
-msgid "Child Item 1"
-msgstr "Barnobjekt 1"
-
-#: libgnomeui/mdi_demo.c:117
-msgid "Hint for item 1"
-msgstr "Tips för objekt 1"
-
-#: libgnomeui/mdi_demo.c:119
-msgid "Child Item 2"
-msgstr "Barnobjekt 2"
-
-#: libgnomeui/mdi_demo.c:120
-msgid "Hint for item 2"
-msgstr "Tips för objekt 2"
 
 #: libgnomeui/oafgnome.c:242
 msgid "Username:"
@@ -557,13 +544,13 @@ msgstr "Användarnamn:"
 msgid "Password:"
 msgstr "Lösenord:"
 
-#: libgnome/gnomelib-init.c:191 libgnome/gnomelib-init.c:205
+#: libgnome/gnomelib-init.c:200 libgnome/gnomelib-init.c:214
 #, c-format
 msgid "Could not create per-user gnome configuration directory `%s': %s\n"
 msgstr ""
 "Kunde inte skapa användarspecifik gnome-konfigurationskatalog \"%s\": %s\n"
 
-#: libgnome/gnomelib-init.c:214
+#: libgnome/gnomelib-init.c:223
 #, c-format
 msgid ""
 "Could not set mode 0700 on private per-user gnome configuration directory "
@@ -572,7 +559,7 @@ msgstr ""
 "Kunde inte ändra rättigheterna till 0700 på den användarspecifika "
 "gnome-konfigurationskatalogen \"%s\": %s\n"
 
-#: libgnome/gnomelib-init.c:221
+#: libgnome/gnomelib-init.c:230
 #, c-format
 msgid "Could not create gnome accelerators directory `%s': %s\n"
 msgstr "Kunde inte skapa katalogen \"%s\" för kortkommandon i gnome: %s\n"
@@ -589,144 +576,144 @@ msgstr "Författare:"
 msgid "Authors: "
 msgstr "Författare: "
 
-#: libgnomeui/gnome-about.c:1066 libgnomeui/stock_demo.c:307
-#: libgnomeui/winhints_demo.c:256
+#: demos/stock_demo.c:307 demos/winhints_demo.c:256
+#: libgnomeui/gnome-about.c:1075
 msgid "About"
 msgstr "Om"
 
-#: libgnomeui/gnome-app-helper.c:73
+#: libgnomeui/gnome-app-helper.c:82
 msgid "_File"
 msgstr "_Arkiv"
 
-#: libgnomeui/gnome-app-helper.c:74
+#: libgnomeui/gnome-app-helper.c:83
 msgid "_File/"
 msgstr "_Arkiv/"
 
-#: libgnomeui/gnome-app-helper.c:75
+#: libgnomeui/gnome-app-helper.c:84
 msgid "_Edit"
 msgstr "_Redigera"
 
-#: libgnomeui/gnome-app-helper.c:76
+#: libgnomeui/gnome-app-helper.c:85
 msgid "_Edit/"
 msgstr "_Redigera"
 
-#: libgnomeui/gnome-app-helper.c:77
+#: libgnomeui/gnome-app-helper.c:86
 msgid "_View"
 msgstr "Vi_sa"
 
-#: libgnomeui/gnome-app-helper.c:78
+#: libgnomeui/gnome-app-helper.c:87
 msgid "_View/"
 msgstr "Vi_sa/"
 
-#: libgnomeui/gnome-app-helper.c:79
+#: libgnomeui/gnome-app-helper.c:88
 msgid "_Settings"
 msgstr "Alternati_v"
 
-#: libgnomeui/gnome-app-helper.c:80
+#: libgnomeui/gnome-app-helper.c:89
 msgid "_Settings/"
 msgstr "Alternati_v/"
 
-#: libgnomeui/gnome-app-helper.c:81
+#: libgnomeui/gnome-app-helper.c:90
 msgid "_New"
 msgstr "_Ny"
 
-#: libgnomeui/gnome-app-helper.c:82
+#: libgnomeui/gnome-app-helper.c:91
 msgid "_New/"
 msgstr "_Ny/"
 
-#: libgnomeui/gnome-app-helper.c:83
+#: libgnomeui/gnome-app-helper.c:92
 msgid "Fi_les"
 msgstr "_Filer"
 
-#: libgnomeui/gnome-app-helper.c:84
+#: libgnomeui/gnome-app-helper.c:93
 msgid "Fi_les/"
 msgstr "_Filer/"
 
-#: libgnomeui/gnome-app-helper.c:85
+#: libgnomeui/gnome-app-helper.c:94
 msgid "_Windows"
 msgstr "F_önster"
 
-#: libgnomeui/gnome-app-helper.c:86
+#: libgnomeui/gnome-app-helper.c:95
 msgid "_Game"
 msgstr "_Spel"
 
-#: libgnomeui/gnome-app-helper.c:87
+#: libgnomeui/gnome-app-helper.c:96
 msgid "_Help"
 msgstr "_Hjälp"
 
-#: libgnomeui/gnome-app-helper.c:88
+#: libgnomeui/gnome-app-helper.c:97
 msgid "_Windows/"
 msgstr "F_önster/"
 
 #. Open
-#: libgnomeui/gnome-app-helper.c:100
+#: libgnomeui/gnome-app-helper.c:109
 msgid "_Open..."
 msgstr "_Öppna..."
 
-#: libgnomeui/gnome-app-helper.c:100
+#: libgnomeui/gnome-app-helper.c:109
 msgid "Open a file"
 msgstr "Öppna en fil"
 
 #. Save
-#: libgnomeui/gnome-app-helper.c:105
+#: libgnomeui/gnome-app-helper.c:114
 msgid "_Save"
 msgstr "S_para"
 
-#: libgnomeui/gnome-app-helper.c:105
+#: libgnomeui/gnome-app-helper.c:114
 msgid "Save the current file"
 msgstr "Spara aktuell fil"
 
 #. Save As
-#: libgnomeui/gnome-app-helper.c:110
+#: libgnomeui/gnome-app-helper.c:119
 msgid "Save _As..."
 msgstr "Spara so_m..."
 
-#: libgnomeui/gnome-app-helper.c:111
+#: libgnomeui/gnome-app-helper.c:120
 msgid "Save the current file with a different name"
 msgstr "Spara aktuell fil under ett annat namn"
 
 #. Revert
-#: libgnomeui/gnome-app-helper.c:116
+#: libgnomeui/gnome-app-helper.c:125
 msgid "_Revert"
 msgstr "_Återgå"
 
-#: libgnomeui/gnome-app-helper.c:117
+#: libgnomeui/gnome-app-helper.c:126
 msgid "Revert to a saved version of the file"
 msgstr "Återgå till en tidigare sparad version av filen"
 
 #. Print
-#: libgnomeui/gnome-app-helper.c:122
+#: libgnomeui/gnome-app-helper.c:131
 msgid "_Print"
 msgstr "Skriv _ut"
 
-#: libgnomeui/gnome-app-helper.c:122
+#: libgnomeui/gnome-app-helper.c:131
 msgid "Print the current file"
 msgstr "Skriv ut aktuell fil"
 
 #. Print Setup
-#: libgnomeui/gnome-app-helper.c:127
+#: libgnomeui/gnome-app-helper.c:136
 msgid "Print S_etup..."
 msgstr "Sk_rivarinställningar..."
 
-#: libgnomeui/gnome-app-helper.c:128
+#: libgnomeui/gnome-app-helper.c:137
 msgid "Setup the page settings for your current printer"
 msgstr "Ställ in sidinställningar för din nuvarande skrivare"
 
 #. Close
-#: libgnomeui/gnome-app-helper.c:133
+#: libgnomeui/gnome-app-helper.c:142
 msgid "_Close"
 msgstr "_Stäng"
 
-#: libgnomeui/gnome-app-helper.c:133
+#: libgnomeui/gnome-app-helper.c:142
 msgid "Close the current file"
 msgstr "Stäng aktuella fil"
 
 #. Exit
-#: libgnomeui/gnome-app-helper.c:138
+#: libgnomeui/gnome-app-helper.c:147
 msgid "E_xit"
 msgstr "_Avsluta"
 
-#: libgnomeui/gnome-app-helper.c:138
+#: libgnomeui/gnome-app-helper.c:147
 msgid "Exit the program"
 msgstr "Avsluta programmet"
 
@@ -734,93 +721,93 @@ msgstr "Avsluta programmet"
 #. * The "Edit" menu
 #.
 #. Cut
-#: libgnomeui/gnome-app-helper.c:146
+#: libgnomeui/gnome-app-helper.c:155
 msgid "C_ut"
 msgstr "_Klipp ut"
 
-#: libgnomeui/gnome-app-helper.c:146
+#: libgnomeui/gnome-app-helper.c:155
 msgid "Cut the selection"
 msgstr "Klipp ut markeringen"
 
 #. 10
 #. Copy
-#: libgnomeui/gnome-app-helper.c:152 libgnomeui/gnome-popup-help.c:65
+#: libgnomeui/gnome-app-helper.c:161 libgnomeui/gnome-popup-help.c:65
 msgid "_Copy"
 msgstr "K_opiera"
 
-#: libgnomeui/gnome-app-helper.c:152
+#: libgnomeui/gnome-app-helper.c:161
 msgid "Copy the selection"
 msgstr "Kopiera markeringen"
 
 #. Paste
-#: libgnomeui/gnome-app-helper.c:157 libgnomeui/gnome-popup-help.c:67
+#: libgnomeui/gnome-app-helper.c:166 libgnomeui/gnome-popup-help.c:67
 msgid "_Paste"
 msgstr "Kl_istra in"
 
-#: libgnomeui/gnome-app-helper.c:157
+#: libgnomeui/gnome-app-helper.c:166
 msgid "Paste the clipboard"
 msgstr "Klistra in från urklipp"
 
 #. Clear
-#: libgnomeui/gnome-app-helper.c:162
+#: libgnomeui/gnome-app-helper.c:171
 msgid "C_lear"
 msgstr "_Töm"
 
-#: libgnomeui/gnome-app-helper.c:162
+#: libgnomeui/gnome-app-helper.c:171
 msgid "Clear the selection"
 msgstr "Töm markeringen"
 
 #. Undo
-#: libgnomeui/gnome-app-helper.c:167
+#: libgnomeui/gnome-app-helper.c:176
 msgid "_Undo"
 msgstr "_Ångra"
 
-#: libgnomeui/gnome-app-helper.c:167
+#: libgnomeui/gnome-app-helper.c:176
 msgid "Undo the last action"
 msgstr "Ångra den senaste åtgärden"
 
 #. Redo
-#: libgnomeui/gnome-app-helper.c:172
+#: libgnomeui/gnome-app-helper.c:181
 msgid "_Redo"
 msgstr "Gör o_m"
 
-#: libgnomeui/gnome-app-helper.c:172
+#: libgnomeui/gnome-app-helper.c:181
 msgid "Redo the undone action"
 msgstr "Gör om den ångrade åtgärden"
 
 #. Find
-#: libgnomeui/gnome-app-helper.c:177
+#: libgnomeui/gnome-app-helper.c:186
 msgid "_Find..."
 msgstr "_Sök..."
 
-#: libgnomeui/gnome-app-helper.c:177
+#: libgnomeui/gnome-app-helper.c:186
 msgid "Search for a string"
 msgstr "Sök efter en sträng"
 
 #. Find Again
-#: libgnomeui/gnome-app-helper.c:182
+#: libgnomeui/gnome-app-helper.c:191
 msgid "Find _Again"
 msgstr "Sök _igen"
 
-#: libgnomeui/gnome-app-helper.c:183
+#: libgnomeui/gnome-app-helper.c:192
 msgid "Search again for the same string"
 msgstr "Sök igen efter samma sträng"
 
 #. Replace
-#: libgnomeui/gnome-app-helper.c:188
+#: libgnomeui/gnome-app-helper.c:197
 msgid "_Replace..."
 msgstr "_Ersätt..."
 
-#: libgnomeui/gnome-app-helper.c:188
+#: libgnomeui/gnome-app-helper.c:197
 msgid "Replace a string"
 msgstr "Ersätt en sträng"
 
 #. Properties
-#: libgnomeui/gnome-app-helper.c:193
+#: libgnomeui/gnome-app-helper.c:202
 msgid "_Properties..."
 msgstr "_Egenskaper..."
 
-#: libgnomeui/gnome-app-helper.c:194
+#: libgnomeui/gnome-app-helper.c:203
 msgid "Modify the file's properties"
 msgstr "Modifiera filens egenskaper"
 
@@ -828,11 +815,11 @@ msgstr "Modifiera filens egenskaper"
 #. * The Settings menu
 #.
 #. Settings
-#: libgnomeui/gnome-app-helper.c:202
+#: libgnomeui/gnome-app-helper.c:211
 msgid "_Preferences..."
 msgstr "_Inställningar..."
 
-#: libgnomeui/gnome-app-helper.c:203
+#: libgnomeui/gnome-app-helper.c:212
 msgid "Configure the application"
 msgstr "Konfigurera programmet"
 
@@ -841,106 +828,106 @@ msgstr "Konfigurera programmet"
 #. * And the "Help" menu
 #.
 #. About
-#: libgnomeui/gnome-app-helper.c:212
+#: libgnomeui/gnome-app-helper.c:221
 msgid "_About"
 msgstr "_Om"
 
-#: libgnomeui/gnome-app-helper.c:213
+#: libgnomeui/gnome-app-helper.c:222
 msgid "About this application"
 msgstr "Om detta program"
 
-#: libgnomeui/gnome-app-helper.c:216
+#: libgnomeui/gnome-app-helper.c:225
 msgid "_Select All"
 msgstr "Markera _allt"
 
-#: libgnomeui/gnome-app-helper.c:217
+#: libgnomeui/gnome-app-helper.c:226
 msgid "Select everything"
 msgstr "Markera allting"
 
 #.
 #. * Window menu
 #.
-#: libgnomeui/gnome-app-helper.c:225
+#: libgnomeui/gnome-app-helper.c:234
 msgid "Create New _Window"
 msgstr "Nytt _fönster"
 
-#: libgnomeui/gnome-app-helper.c:226
+#: libgnomeui/gnome-app-helper.c:235
 msgid "Create a new window"
 msgstr "Skapa ett nytt fönster"
 
-#: libgnomeui/gnome-app-helper.c:230
+#: libgnomeui/gnome-app-helper.c:239
 msgid "_Close This Window"
 msgstr "_Stäng fönster"
 
-#: libgnomeui/gnome-app-helper.c:231
+#: libgnomeui/gnome-app-helper.c:240
 msgid "Close the current window"
 msgstr "Stäng aktuellt fönster"
 
 #.
 #. * The "Game" menu
 #.
-#: libgnomeui/gnome-app-helper.c:239
+#: libgnomeui/gnome-app-helper.c:248
 msgid "_New game"
 msgstr "_Nytt spel"
 
-#: libgnomeui/gnome-app-helper.c:240
+#: libgnomeui/gnome-app-helper.c:249
 msgid "Start a new game"
 msgstr "Starta ett nytt spel"
 
-#: libgnomeui/gnome-app-helper.c:244
+#: libgnomeui/gnome-app-helper.c:253
 msgid "_Pause game"
 msgstr "_Pause"
 
-#: libgnomeui/gnome-app-helper.c:245
+#: libgnomeui/gnome-app-helper.c:254
 msgid "Pause the game"
 msgstr "Pausa spelet"
 
-#: libgnomeui/gnome-app-helper.c:249
+#: libgnomeui/gnome-app-helper.c:258
 msgid "_Restart game"
 msgstr "Starta _om"
 
-#: libgnomeui/gnome-app-helper.c:250
+#: libgnomeui/gnome-app-helper.c:259
 msgid "Restart the game"
 msgstr "Starta om spelet"
 
-#: libgnomeui/gnome-app-helper.c:254
+#: libgnomeui/gnome-app-helper.c:263
 msgid "_Undo move"
 msgstr "_Ångra drag"
 
-#: libgnomeui/gnome-app-helper.c:255
+#: libgnomeui/gnome-app-helper.c:264
 msgid "Undo the last move"
 msgstr "Ångra det senaste draget"
 
-#: libgnomeui/gnome-app-helper.c:259
+#: libgnomeui/gnome-app-helper.c:268
 msgid "_Redo move"
 msgstr "Gör _om drag"
 
-#: libgnomeui/gnome-app-helper.c:260
+#: libgnomeui/gnome-app-helper.c:269
 msgid "Redo the undone move"
 msgstr "Gör om draget som ångrades"
 
-#: libgnomeui/gnome-app-helper.c:264
+#: libgnomeui/gnome-app-helper.c:273
 msgid "_Hint"
 msgstr "_Tips"
 
-#: libgnomeui/gnome-app-helper.c:265
+#: libgnomeui/gnome-app-helper.c:274
 msgid "Get a hint for your next move"
 msgstr "Ge ett tips för nästa drag"
 
 #. 30
-#: libgnomeui/gnome-app-helper.c:270
+#: libgnomeui/gnome-app-helper.c:279
 msgid "_Scores..."
 msgstr "_Poäng..."
 
-#: libgnomeui/gnome-app-helper.c:271
+#: libgnomeui/gnome-app-helper.c:280
 msgid "View the scores"
 msgstr "Visa poängen"
 
-#: libgnomeui/gnome-app-helper.c:275
+#: libgnomeui/gnome-app-helper.c:284
 msgid "_End game"
 msgstr "_Avsluta spelet"
 
-#: libgnomeui/gnome-app-helper.c:276
+#: libgnomeui/gnome-app-helper.c:285
 msgid "End the current game"
 msgstr "Avsluta aktuellt spel"
 
@@ -992,208 +979,208 @@ msgstr "Program-ID"
 msgid "The application ID string"
 msgstr "Programmets ID-sträng"
 
-#: libgnomeui/gnome-calculator.c:446 libgnomeui/gnome-calculator.c:1089
+#: libgnomeui/gnome-calculator.c:431 libgnomeui/gnome-calculator.c:1074
 msgid "DEG"
 msgstr "DEG"
 
-#: libgnomeui/gnome-calculator.c:448
+#: libgnomeui/gnome-calculator.c:433
 msgid "RAD"
 msgstr "RAD"
 
-#: libgnomeui/gnome-calculator.c:450
+#: libgnomeui/gnome-calculator.c:435
 msgid "GRAD"
 msgstr "GRAD"
 
-#: libgnomeui/gnome-calculator.c:1079
+#: libgnomeui/gnome-calculator.c:1064
 msgid "1/x"
 msgstr "1/x"
 
-#: libgnomeui/gnome-calculator.c:1080
+#: libgnomeui/gnome-calculator.c:1065
 msgid "x^2"
 msgstr "x^2"
 
-#: libgnomeui/gnome-calculator.c:1081
+#: libgnomeui/gnome-calculator.c:1066
 msgid "SQRT"
 msgstr "SQRT"
 
-#: libgnomeui/gnome-calculator.c:1082
+#: libgnomeui/gnome-calculator.c:1067
 msgid "CE/C"
 msgstr "CE/C"
 
-#: libgnomeui/gnome-calculator.c:1083
+#: libgnomeui/gnome-calculator.c:1068
 msgid "AC"
 msgstr "AC"
 
 #. inverse button
-#: libgnomeui/gnome-calculator.c:1086
+#: libgnomeui/gnome-calculator.c:1071
 msgid "sin"
 msgstr "sin"
 
-#: libgnomeui/gnome-calculator.c:1087
+#: libgnomeui/gnome-calculator.c:1072
 msgid "cos"
 msgstr "cos"
 
-#: libgnomeui/gnome-calculator.c:1088
+#: libgnomeui/gnome-calculator.c:1073
 msgid "tan"
 msgstr "tan"
 
-#: libgnomeui/gnome-calculator.c:1091
+#: libgnomeui/gnome-calculator.c:1076
 msgid "e"
 msgstr "e"
 
-#: libgnomeui/gnome-calculator.c:1092
+#: libgnomeui/gnome-calculator.c:1077
 msgid "EE"
 msgstr "EE"
 
-#: libgnomeui/gnome-calculator.c:1093
+#: libgnomeui/gnome-calculator.c:1078
 msgid "log"
 msgstr "log"
 
-#: libgnomeui/gnome-calculator.c:1094
+#: libgnomeui/gnome-calculator.c:1079
 msgid "ln"
 msgstr "ln"
 
-#: libgnomeui/gnome-calculator.c:1095
+#: libgnomeui/gnome-calculator.c:1080
 msgid "x^y"
 msgstr "x^y"
 
-#: libgnomeui/gnome-calculator.c:1097
+#: libgnomeui/gnome-calculator.c:1082
 msgid "PI"
 msgstr "PI"
 
-#: libgnomeui/gnome-calculator.c:1098
+#: libgnomeui/gnome-calculator.c:1083
 msgid "x!"
 msgstr "x!"
 
-#: libgnomeui/gnome-calculator.c:1099
+#: libgnomeui/gnome-calculator.c:1084
 msgid "("
 msgstr "("
 
-#: libgnomeui/gnome-calculator.c:1100
+#: libgnomeui/gnome-calculator.c:1085
 msgid ")"
 msgstr ")"
 
-#: libgnomeui/gnome-calculator.c:1101
+#: libgnomeui/gnome-calculator.c:1086
 msgid "/"
 msgstr "/"
 
-#: libgnomeui/gnome-calculator.c:1103
+#: libgnomeui/gnome-calculator.c:1088
 msgid "STO"
 msgstr "STO"
 
-#: libgnomeui/gnome-calculator.c:1104
+#: libgnomeui/gnome-calculator.c:1089
 msgid "7"
 msgstr "7"
 
-#: libgnomeui/gnome-calculator.c:1105
+#: libgnomeui/gnome-calculator.c:1090
 msgid "8"
 msgstr "8"
 
-#: libgnomeui/gnome-calculator.c:1106
+#: libgnomeui/gnome-calculator.c:1091
 msgid "9"
 msgstr "9"
 
-#: libgnomeui/gnome-calculator.c:1107
+#: libgnomeui/gnome-calculator.c:1092
 msgid "*"
 msgstr "*"
 
-#: libgnomeui/gnome-calculator.c:1109
+#: libgnomeui/gnome-calculator.c:1094
 msgid "RCL"
 msgstr "RCL"
 
-#: libgnomeui/gnome-calculator.c:1110
+#: libgnomeui/gnome-calculator.c:1095
 msgid "4"
 msgstr "4"
 
-#: libgnomeui/gnome-calculator.c:1111
+#: libgnomeui/gnome-calculator.c:1096
 msgid "5"
 msgstr "5"
 
-#: libgnomeui/gnome-calculator.c:1112
+#: libgnomeui/gnome-calculator.c:1097
 msgid "6"
 msgstr "6"
 
-#: libgnomeui/gnome-calculator.c:1113
+#: libgnomeui/gnome-calculator.c:1098
 msgid "-"
 msgstr "-"
 
-#: libgnomeui/gnome-calculator.c:1115
+#: libgnomeui/gnome-calculator.c:1100
 msgid "SUM"
 msgstr "SUM"
 
-#: libgnomeui/gnome-calculator.c:1116
+#: libgnomeui/gnome-calculator.c:1101
 msgid "1"
 msgstr "1"
 
-#: libgnomeui/gnome-calculator.c:1117
+#: libgnomeui/gnome-calculator.c:1102
 msgid "2"
 msgstr "2"
 
-#: libgnomeui/gnome-calculator.c:1118
+#: libgnomeui/gnome-calculator.c:1103
 msgid "3"
 msgstr "3"
 
-#: libgnomeui/gnome-calculator.c:1119
+#: libgnomeui/gnome-calculator.c:1104
 msgid "+"
 msgstr "+"
 
-#: libgnomeui/gnome-calculator.c:1121
+#: libgnomeui/gnome-calculator.c:1106
 msgid "EXC"
 msgstr "EXC"
 
-#: libgnomeui/gnome-calculator.c:1122
+#: libgnomeui/gnome-calculator.c:1107
 msgid "0"
 msgstr "0"
 
-#: libgnomeui/gnome-calculator.c:1123
+#: libgnomeui/gnome-calculator.c:1108
 msgid "."
 msgstr "."
 
-#: libgnomeui/gnome-calculator.c:1124
+#: libgnomeui/gnome-calculator.c:1109
 msgid "+/-"
 msgstr "+/-"
 
-#: libgnomeui/gnome-calculator.c:1125
+#: libgnomeui/gnome-calculator.c:1110
 msgid "="
 msgstr "="
 
-#: libgnomeui/gnome-calculator.c:1331
+#: libgnomeui/gnome-calculator.c:1321
 msgid "INV"
 msgstr "INV"
 
-#: libgnomeui/gnome-client.c:846
+#: libgnomeui/gnome-client.c:836
 msgid "Specify session management ID"
 msgstr "Ange ID för sessionskontroll"
 
-#: libgnomeui/gnome-client.c:846
+#: libgnomeui/gnome-client.c:836
 msgid "ID"
 msgstr "ID"
 
-#: libgnomeui/gnome-client.c:849
+#: libgnomeui/gnome-client.c:839
 msgid "Specify prefix of saved configuration"
 msgstr "Ange prefix på den sparade konfigurationen"
 
-#: libgnomeui/gnome-client.c:849
+#: libgnomeui/gnome-client.c:839
 msgid "PREFIX"
 msgstr "PREFIX"
 
-#: libgnomeui/gnome-client.c:852
+#: libgnomeui/gnome-client.c:842
 msgid "Disable connection to session manager"
 msgstr "Stäng av koppling till sessionshanteraren"
 
-#: libgnomeui/gnome-client.c:864
+#: libgnomeui/gnome-client.c:854
 msgid "Session management"
 msgstr "Sessionshantering"
 
-#: libgnomeui/gnome-client.c:2351
+#: libgnomeui/gnome-client.c:2341
 msgid "Cancel Logout"
 msgstr "Avbryt utloggning"
 
-#: libgnomeui/gnome-color-picker.c:413
+#: libgnomeui/gnome-color-picker.c:423
 msgid "Received invalid color data\n"
 msgstr "Mottog ogiltig färgdata\n"
 
-#: libgnomeui/gnome-color-picker.c:477
+#: libgnomeui/gnome-color-picker.c:487
 msgid "Pick a color"
 msgstr "Välj en färg"
 
@@ -1238,46 +1225,45 @@ msgid "The initial time"
 msgstr "Starttiden"
 
 #. Calendar label, only shown if the date editor has a time field
-#: libgnomeui/gnome-dateedit.c:654
+#: libgnomeui/gnome-dateedit.c:651
 msgid "Calendar"
 msgstr "Kalender"
 
-#: libgnomeui/gnome-dateedit.c:848
+#: libgnomeui/gnome-dateedit.c:845
 msgid "gnome_date_edit_get_date deprecated, use gnome_date_edit_get_time"
 msgstr "gnome_date_edit_get_date är föråldrat, använd gnome_date_edit_get_time"
 
-#: libgnomeui/gnome-druid.c:129
+#: libgnomeui/gnome-druid.c:125
 msgid "Back"
 msgstr "Bakåt"
 
-#: libgnomeui/gnome-druid.c:137
+#: libgnomeui/gnome-druid.c:133
 msgid "Finish"
 msgstr "Slutför"
 
-#: libgnomeui/gnome-file-entry.c:315
+#: libgnomeui/gnome-file-entry.c:314
 msgid "Select file"
 msgstr "Välj fil"
 
-#: libgnomeui/gnome-font-picker.c:877 libgnomeui/gnome-stock.c:729
+#: libgnomeui/gnome-font-picker.c:856 libgnomeui/gnome-stock.c:729
 msgid "Font"
 msgstr "Typsnitt"
 
-#: libgnomeui/gnome-icon-entry.c:198 libgnomeui/gnome-icon-entry.c:252
-#: libgnomeui/gnome-icon-entry.c:462
+#: libgnomeui/gnome-icon-entry.c:231 libgnomeui/gnome-icon-entry.c:540
 msgid "No Icon"
 msgstr "Ingen ikon"
 
-#: libgnomeui/gnome-icon-sel.c:279
+#: libgnomeui/gnome-icon-sel.c:280
 #, c-format
 msgid "GnomeIconSelection: '%s' does not exist or is not a directory"
 msgstr "GnomeIconSelection: \"%s\" finns inte eller är ingen katalog"
 
-#: libgnomeui/gnome-icon-sel.c:287
+#: libgnomeui/gnome-icon-sel.c:288
 #, c-format
 msgid "GnomeIconSelection: couldn't open directory '%s'"
 msgstr "GnomeIconSelection: kunde inte öppna katalogen \"%s\""
 
-#: libgnomeui/gnome-icon-sel.c:360
+#: libgnomeui/gnome-icon-sel.c:361
 msgid "Loading Icons..."
 msgstr "Laddar ikoner..."
 
@@ -1359,27 +1345,40 @@ msgid "MODULE"
 msgstr "MODUL"
 
 #. dialog display isn't working out
-#: libgnomeui/gnome-init.c:464
+#: libgnomeui/gnome-init.c:471
 msgid "Multiple segmentation faults occurred; can't display error dialog\n"
 msgstr "Flera segmenteringsfel har inträffat; kan inte visa felmeddelande\n"
 
-#: libgnomeui/gnome-messagebox.c:172
+#: libgnomeui/gnome-init.c:634
+msgid "GTK options"
+msgstr "GTK-alternativ"
+
+#: libgnomeui/gnome-init.c:635
+msgid "GNOME GUI options"
+msgstr "GNOME GUI-alternativ"
+
+#: libgnomeui/gnome-init.c:786
+#, c-format
+msgid "%s options"
+msgstr "%s-alternativ"
+
+#: libgnomeui/gnome-messagebox.c:179
 msgid "Information"
 msgstr "Information"
 
-#: libgnomeui/gnome-messagebox.c:181
+#: libgnomeui/gnome-messagebox.c:188
 msgid "Warning"
 msgstr "Varning"
 
-#: libgnomeui/gnome-messagebox.c:190
+#: libgnomeui/gnome-messagebox.c:197
 msgid "Error"
 msgstr "Fel"
 
-#: libgnomeui/gnome-messagebox.c:199
+#: libgnomeui/gnome-messagebox.c:206
 msgid "Question"
 msgstr "Fråga"
 
-#: libgnomeui/gnome-messagebox.c:208
+#: libgnomeui/gnome-messagebox.c:215
 msgid "Message"
 msgstr "Meddelande"
 
@@ -1391,15 +1390,15 @@ msgstr "Kalkylator"
 msgid "Calculator..."
 msgstr "Kalkylator..."
 
-#: libgnomeui/gnome-pixmap-entry.c:256 libgnomeui/gnome-pixmap-entry.c:563
+#: libgnomeui/gnome-pixmap-entry.c:257 libgnomeui/gnome-pixmap-entry.c:564
 msgid "No Image"
 msgstr "Ingen bild"
 
-#: libgnomeui/gnome-pixmap-entry.c:459
+#: libgnomeui/gnome-pixmap-entry.c:460
 msgid "Can't find an hbox, using a normal file selection"
 msgstr "Kan inte hitta en hbox, använder normal filväljare"
 
-#: libgnomeui/gnome-pixmap-entry.c:465
+#: libgnomeui/gnome-pixmap-entry.c:466
 msgid "Preview"
 msgstr "Förhandsgranska"
 
@@ -1490,7 +1489,7 @@ msgstr "Använd"
 msgid "Cancel"
 msgstr "Avbryt"
 
-#: libgnomeui/gnome-stock.c:721 libgnomeui/stock_demo.c:169
+#: demos/stock_demo.c:169 libgnomeui/gnome-stock.c:721
 msgid "Close"
 msgstr "Stäng"
 
@@ -1579,273 +1578,6 @@ msgstr "http://www.gnome.org/application_crashed.shtml"
 #: libgnomeui/gnome_segv.c:141
 msgid "Please visit the GNOME Application Crash page for more information"
 msgstr "Besök GNOMEs programkraschsida för mer information"
-
-#: libgnomeui/stock_demo.c:137
-msgid "New..."
-msgstr "Ny..."
-
-#: libgnomeui/stock_demo.c:145
-msgid "Open..."
-msgstr "Öppna..."
-
-#: libgnomeui/stock_demo.c:153
-msgid "Save"
-msgstr "Spara"
-
-#: libgnomeui/stock_demo.c:161
-msgid "Save as..."
-msgstr "Spara som..."
-
-#: libgnomeui/stock_demo.c:181
-msgid "Print..."
-msgstr "Skriv ut..."
-
-#: libgnomeui/stock_demo.c:189
-msgid "Setup Page..."
-msgstr "Inställningssida..."
-
-#: libgnomeui/stock_demo.c:198
-msgid "Quit"
-msgstr "Avsluta"
-
-#: libgnomeui/stock_demo.c:209
-msgid "File"
-msgstr "Arkiv"
-
-#: libgnomeui/stock_demo.c:216
-msgid "Undo"
-msgstr "Ångra"
-
-#: libgnomeui/stock_demo.c:224
-msgid "Redo"
-msgstr "Gör om"
-
-#: libgnomeui/stock_demo.c:233
-msgid "Delete"
-msgstr "Ta bort"
-
-#: libgnomeui/stock_demo.c:238
-msgid "Cut"
-msgstr "Klipp ut"
-
-#: libgnomeui/stock_demo.c:246
-msgid "Copy"
-msgstr "Kopiera"
-
-#: libgnomeui/stock_demo.c:254
-msgid "Paste"
-msgstr "Klistra in"
-
-#: libgnomeui/stock_demo.c:266
-msgid "Properties..."
-msgstr "Egenskaper..."
-
-#: libgnomeui/stock_demo.c:276
-msgid "Preferences..."
-msgstr "Inställningar..."
-
-#: libgnomeui/stock_demo.c:291
-msgid "Scores..."
-msgstr "Poäng..."
-
-#: libgnomeui/stock_demo.c:299
-msgid "Edit"
-msgstr "Redigera"
-
-#: libgnomeui/winhints_demo.c:46
-msgid "wmhints-test"
-msgstr "wmhints-test"
-
-#: libgnomeui/winhints_demo.c:46
-msgid "winhints-test"
-msgstr "winhints-test"
-
-#: libgnomeui/winhints_demo.c:71
-msgid "Layer:"
-msgstr "Lager:"
-
-#: libgnomeui/winhints_demo.c:94
-msgid "Above Dock"
-msgstr "Över dockan"
-
-#: libgnomeui/winhints_demo.c:98
-msgid "Dock"
-msgstr "Docka"
-
-#: libgnomeui/winhints_demo.c:102
-msgid "On Top"
-msgstr "På toppen"
-
-#: libgnomeui/winhints_demo.c:106
-msgid "Normal"
-msgstr "Normalt"
-
-#: libgnomeui/winhints_demo.c:110
-msgid "Below"
-msgstr "Under"
-
-#: libgnomeui/winhints_demo.c:114
-msgid "Desktop"
-msgstr "Skrivbordet"
-
-#: libgnomeui/winhints_demo.c:122
-msgid "Set Layer"
-msgstr "Sätt lager"
-
-#: libgnomeui/winhints_demo.c:129
-msgid "Workspaces:"
-msgstr "Arbetsytor:"
-
-#: libgnomeui/winhints_demo.c:151
-msgid "Sticky"
-msgstr "Klistrig"
-
-#: libgnomeui/winhints_demo.c:155
-msgid "Set Workspace"
-msgstr "Sätt arbetsyta"
-
-#: libgnomeui/winhints_demo.c:165
-msgid "State Toggles:"
-msgstr "Tillståndsväxlar:"
-
-#: libgnomeui/winhints_demo.c:175
-msgid "Minimized"
-msgstr "Minimerad"
-
-#: libgnomeui/winhints_demo.c:179
-msgid "Maximized Vertical"
-msgstr "Maximerad lodrätt"
-
-#: libgnomeui/winhints_demo.c:183
-msgid "Maximized Horizontal"
-msgstr "Maximerad vågrätt"
-
-#: libgnomeui/winhints_demo.c:187
-msgid "Hidden"
-msgstr "Gömd"
-
-#: libgnomeui/winhints_demo.c:191
-msgid "Shaded"
-msgstr "Ihoprullad"
-
-#: libgnomeui/winhints_demo.c:195
-msgid "Fixed Position"
-msgstr "Fix position"
-
-#: libgnomeui/winhints_demo.c:199
-msgid "Ignore on Arrange"
-msgstr "Ignorera vid städning"
-
-#: libgnomeui/winhints_demo.c:203
-msgid "Set State"
-msgstr "Sätt tillstånd"
-
-#: libgnomeui/winhints_demo.c:209
-msgid "Skip Toggles:"
-msgstr "Hoppa över växlare:"
-
-#: libgnomeui/winhints_demo.c:219
-msgid "Skip Focus"
-msgstr "Hoppa över fokus"
-
-#: libgnomeui/winhints_demo.c:223
-msgid "Skip Window Menu"
-msgstr "Hoppa över fönstermeny"
-
-#: libgnomeui/winhints_demo.c:227
-msgid "Skip Taskbar / WinList"
-msgstr "Hoppa över aktivitetslist/fönsterlista"
-
-#: libgnomeui/winhints_demo.c:231
-msgid "Set Skip"
-msgstr "Välj vad som ska hoppas över"
-
-#: libgnomeui/winhints_demo.c:410
-msgid "WIN_HINTS Test"
-msgstr "WIN_HINTS-test"
-
-#: libgnomeui/winhints_demo.c:411
-msgid "Copyright (C) 1998"
-msgstr "Copyright © 1998"
-
-#: libgnomeui/winhints_demo.c:413
-msgid ""
-"Simple test app to check how the WIN_HINTS work.\n"
-"And to test the gnome_win_hints_* functions for errors. :)"
-msgstr ""
-"Enkelt testprogram för att kontrollera hur WIN_HINTS fungerar,\n"
-"och leta efter fel i gnome_win_hints_*-funktionerna. :)"
-
-#: support/error.c:109
-msgid "Unknown system error"
-msgstr "Okänt systemfel"
-
-#: support/getopt.c:669
-#, c-format
-msgid "%s: option `%s' is ambiguous\n"
-msgstr "%s: flaggan \"%s\" är flertydig\n"
-
-#: support/getopt.c:693
-#, c-format
-msgid "%s: option `--%s' doesn't allow an argument\n"
-msgstr "%s: flaggan \"--%s\" tillåter inget argument\n"
-
-#: support/getopt.c:698
-#, c-format
-msgid "%s: option `%c%s' doesn't allow an argument\n"
-msgstr "%s: flaggan \"%c%s\" tillåter inget argument\n"
-
-#: support/getopt.c:715 support/getopt.c:888
-#, c-format
-msgid "%s: option `%s' requires an argument\n"
-msgstr "%s: flaggan \"%s\" kräver ett argument\n"
-
-#. --option
-#: support/getopt.c:744
-#, c-format
-msgid "%s: unrecognized option `--%s'\n"
-msgstr "%s: okänd flagga \"--%s\"\n"
-
-#. +option or -option
-#: support/getopt.c:748
-#, c-format
-msgid "%s: unrecognized option `%c%s'\n"
-msgstr "%s: okänd flagga \"%c%s\"\n"
-
-#. 1003.2 specifies the format of this message.
-#: support/getopt.c:774
-#, c-format
-msgid "%s: illegal option -- %c\n"
-msgstr "%s: illegal flagga -- %c\n"
-
-#: support/getopt.c:777
-#, c-format
-msgid "%s: invalid option -- %c\n"
-msgstr "%s: ogiltig flagga -- %c\n"
-
-#. 1003.2 specifies the format of this message.
-#: support/getopt.c:807 support/getopt.c:937
-#, c-format
-msgid "%s: option requires an argument -- %c\n"
-msgstr "%s: flaggan kräver ett argument -- %c\n"
-
-#: support/getopt.c:854
-#, c-format
-msgid "%s: option `-W %s' is ambiguous\n"
-msgstr "%s: flaggan \"-W %s\" är flertydig\n"
-
-#: support/getopt.c:872
-#, c-format
-msgid "%s: option `-W %s' doesn't allow an argument\n"
-msgstr "%s: flaggan \"-W %s\" tillåter inget argument\n"
-
-#: support/popthelp.c:23
-msgid "Show this help message"
-msgstr "Visa denna hjälptext"
-
-#: support/popthelp.c:24
-msgid "Display brief usage message"
-msgstr "Visa en kort hjälptext"
 
 #. Pixmap
 #: test-gnome/testgnome.c:830
@@ -2036,3 +1768,257 @@ msgstr "Stava"
 #: libcompat/gnome-spell.c:760
 msgid "Configure"
 msgstr "Konfigurera"
+
+#: demos/mdi_demo.c:116
+msgid "Child Item 1"
+msgstr "Barnobjekt 1"
+
+#: demos/mdi_demo.c:117
+msgid "Hint for item 1"
+msgstr "Tips för objekt 1"
+
+#: demos/mdi_demo.c:119
+msgid "Child Item 2"
+msgstr "Barnobjekt 2"
+
+#: demos/mdi_demo.c:120
+msgid "Hint for item 2"
+msgstr "Tips för objekt 2"
+
+#: demos/stock_demo.c:137
+msgid "New..."
+msgstr "Ny..."
+
+#: demos/stock_demo.c:145
+msgid "Open..."
+msgstr "Öppna..."
+
+#: demos/stock_demo.c:153
+msgid "Save"
+msgstr "Spara"
+
+#: demos/stock_demo.c:161
+msgid "Save as..."
+msgstr "Spara som..."
+
+#: demos/stock_demo.c:181
+msgid "Print..."
+msgstr "Skriv ut..."
+
+#: demos/stock_demo.c:189
+msgid "Setup Page..."
+msgstr "Inställningssida..."
+
+#: demos/stock_demo.c:198
+msgid "Quit"
+msgstr "Avsluta"
+
+#: demos/stock_demo.c:209
+msgid "File"
+msgstr "Arkiv"
+
+#: demos/stock_demo.c:216
+msgid "Undo"
+msgstr "Ångra"
+
+#: demos/stock_demo.c:224
+msgid "Redo"
+msgstr "Gör om"
+
+#: demos/stock_demo.c:233
+msgid "Delete"
+msgstr "Ta bort"
+
+#: demos/stock_demo.c:238
+msgid "Cut"
+msgstr "Klipp ut"
+
+#: demos/stock_demo.c:246
+msgid "Copy"
+msgstr "Kopiera"
+
+#: demos/stock_demo.c:254
+msgid "Paste"
+msgstr "Klistra in"
+
+#: demos/stock_demo.c:266
+msgid "Properties..."
+msgstr "Egenskaper..."
+
+#: demos/stock_demo.c:276
+msgid "Preferences..."
+msgstr "Inställningar..."
+
+#: demos/stock_demo.c:291
+msgid "Scores..."
+msgstr "Poäng..."
+
+#: demos/stock_demo.c:299
+msgid "Edit"
+msgstr "Redigera"
+
+#: demos/winhints_demo.c:46
+msgid "wmhints-test"
+msgstr "wmhints-test"
+
+#: demos/winhints_demo.c:46
+msgid "winhints-test"
+msgstr "winhints-test"
+
+#: demos/winhints_demo.c:71
+msgid "Layer:"
+msgstr "Lager:"
+
+#: demos/winhints_demo.c:94
+msgid "Above Dock"
+msgstr "Över dockan"
+
+#: demos/winhints_demo.c:98
+msgid "Dock"
+msgstr "Docka"
+
+#: demos/winhints_demo.c:102
+msgid "On Top"
+msgstr "På toppen"
+
+#: demos/winhints_demo.c:106
+msgid "Normal"
+msgstr "Normalt"
+
+#: demos/winhints_demo.c:110
+msgid "Below"
+msgstr "Under"
+
+#: demos/winhints_demo.c:114
+msgid "Desktop"
+msgstr "Skrivbordet"
+
+#: demos/winhints_demo.c:122
+msgid "Set Layer"
+msgstr "Sätt lager"
+
+#: demos/winhints_demo.c:129
+msgid "Workspaces:"
+msgstr "Arbetsytor:"
+
+#: demos/winhints_demo.c:151
+msgid "Sticky"
+msgstr "Klistrig"
+
+#: demos/winhints_demo.c:155
+msgid "Set Workspace"
+msgstr "Sätt arbetsyta"
+
+#: demos/winhints_demo.c:165
+msgid "State Toggles:"
+msgstr "Tillståndsväxlar:"
+
+#: demos/winhints_demo.c:175
+msgid "Minimized"
+msgstr "Minimerad"
+
+#: demos/winhints_demo.c:179
+msgid "Maximized Vertical"
+msgstr "Maximerad lodrätt"
+
+#: demos/winhints_demo.c:183
+msgid "Maximized Horizontal"
+msgstr "Maximerad vågrätt"
+
+#: demos/winhints_demo.c:187
+msgid "Hidden"
+msgstr "Gömd"
+
+#: demos/winhints_demo.c:191
+msgid "Shaded"
+msgstr "Ihoprullad"
+
+#: demos/winhints_demo.c:195
+msgid "Fixed Position"
+msgstr "Fix position"
+
+#: demos/winhints_demo.c:199
+msgid "Ignore on Arrange"
+msgstr "Ignorera vid städning"
+
+#: demos/winhints_demo.c:203
+msgid "Set State"
+msgstr "Sätt tillstånd"
+
+#: demos/winhints_demo.c:209
+msgid "Skip Toggles:"
+msgstr "Hoppa över växlare:"
+
+#: demos/winhints_demo.c:219
+msgid "Skip Focus"
+msgstr "Hoppa över fokus"
+
+#: demos/winhints_demo.c:223
+msgid "Skip Window Menu"
+msgstr "Hoppa över fönstermeny"
+
+#: demos/winhints_demo.c:227
+msgid "Skip Taskbar / WinList"
+msgstr "Hoppa över aktivitetslist/fönsterlista"
+
+#: demos/winhints_demo.c:231
+msgid "Set Skip"
+msgstr "Välj vad som ska hoppas över"
+
+#: demos/winhints_demo.c:410
+msgid "WIN_HINTS Test"
+msgstr "WIN_HINTS-test"
+
+#: demos/winhints_demo.c:411
+msgid "Copyright (C) 1998"
+msgstr "Copyright © 1998"
+
+#: demos/winhints_demo.c:413
+msgid ""
+"Simple test app to check how the WIN_HINTS work.\n"
+"And to test the gnome_win_hints_* functions for errors. :)"
+msgstr ""
+"Enkelt testprogram för att kontrollera hur WIN_HINTS fungerar,\n"
+"och leta efter fel i gnome_win_hints_*-funktionerna. :)"
+
+#~ msgid "Unknown system error"
+#~ msgstr "Okänt systemfel"
+
+#~ msgid "%s: option `%s' is ambiguous\n"
+#~ msgstr "%s: flaggan \"%s\" är flertydig\n"
+
+#~ msgid "%s: option `--%s' doesn't allow an argument\n"
+#~ msgstr "%s: flaggan \"--%s\" tillåter inget argument\n"
+
+#~ msgid "%s: option `%c%s' doesn't allow an argument\n"
+#~ msgstr "%s: flaggan \"%c%s\" tillåter inget argument\n"
+
+#~ msgid "%s: option `%s' requires an argument\n"
+#~ msgstr "%s: flaggan \"%s\" kräver ett argument\n"
+
+#~ msgid "%s: unrecognized option `--%s'\n"
+#~ msgstr "%s: okänd flagga \"--%s\"\n"
+
+#~ msgid "%s: unrecognized option `%c%s'\n"
+#~ msgstr "%s: okänd flagga \"%c%s\"\n"
+
+#~ msgid "%s: illegal option -- %c\n"
+#~ msgstr "%s: illegal flagga -- %c\n"
+
+#~ msgid "%s: invalid option -- %c\n"
+#~ msgstr "%s: ogiltig flagga -- %c\n"
+
+#~ msgid "%s: option requires an argument -- %c\n"
+#~ msgstr "%s: flaggan kräver ett argument -- %c\n"
+
+#~ msgid "%s: option `-W %s' is ambiguous\n"
+#~ msgstr "%s: flaggan \"-W %s\" är flertydig\n"
+
+#~ msgid "%s: option `-W %s' doesn't allow an argument\n"
+#~ msgstr "%s: flaggan \"-W %s\" tillåter inget argument\n"
+
+#~ msgid "Show this help message"
+#~ msgstr "Visa denna hjälptext"
+
+#~ msgid "Display brief usage message"
+#~ msgstr "Visa en kort hjälptext"
