@@ -295,6 +295,22 @@ zvt_init_subshell (struct vt_em *vt, char *pty_name, int log)
 	{
 		close (master_pty);
 		login_tty (slave_pty);
+
+		/*
+		 * Reset the child signal handlers
+		 */
+		signal (SIGINT,  SIG_DFL);
+		signal (SIGQUIT, SIG_DFL);
+		signal (SIGCHLD, SIG_DFL);
+
+		/*
+		 * These should be turned off.  Login does turn them off
+		 * If the user shells supports these, they will be turned
+		 * back on
+		 */
+		signal (SIGTSTP, SIG_IGN);
+		signal (SIGTTIN, SIG_IGN);
+		signal (SIGTTOU, SIG_IGN);
 	} else {
 		close (slave_pty);
 
@@ -320,21 +336,6 @@ zvt_init_subshell (struct vt_em *vt, char *pty_name, int log)
 		
 		vt->keyfd = vt->childfd = master_pty;
 
-		/*
-		 * Reset the child signal handlers
-		 */
-		signal (SIGINT,  SIG_DFL);
-		signal (SIGQUIT, SIG_DFL);
-		signal (SIGCHLD, SIG_DFL);
-
-		/*
-		 * These should be turned off.  Login does turn them off
-		 * If the user shells supports these, they will be turned
-		 * back on
-		 */
-		signal (SIGTSTP, SIG_IGN);
-		signal (SIGTTIN, SIG_IGN);
-		signal (SIGTTOU, SIG_IGN);
 	}
 	
 	return vt->childpid;

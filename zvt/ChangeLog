@@ -1,6 +1,7 @@
 1999-02-24  Miguel de Icaza  <miguel@nuclecu.unam.mx>
 
-	* subshell.c (zvt_init_subshell): Reset the child signal handlers
+	* subshell.c (zvt_init_subshell): Put the stuff on the right branch.
+	* (zvt_init_subshell): Reset the child signal handlers
 	to SIG_DFL and the job-control signals to SIG_IGN (to let subshell
 	set those up by itself).
 
