@@ -26,13 +26,16 @@ void prepare_app();
 void parse_args (int argc, char *argv[]);
 GtkMenuFactory *create_menu ();
 
-static int save_state      (GnomeClient        *client,
-			    gint                phase,
-			    GnomeRestartStyle   save_style,
-			    gint                shutdown,
-			    GnomeInteractStyle  interact_style,
-			    gint                fast,
-			    gpointer            client_data);
+static gint save_state      (GnomeClient        *client,
+			     gint                phase,
+			     GnomeRestartStyle   save_style,
+			     gint                shutdown,
+			     GnomeInteractStyle  interact_style,
+			     gint                fast,
+			     gpointer            client_data);
+
+static gint die             (GnomeClient        *client,
+			     gpointer            client_data);
 
 GtkWidget *app;
 
@@ -45,10 +48,36 @@ int os_x = 0,
     os_h = 0;
 
 /* The menu definitions: File/Exit and Help/About are mandatory */
-GtkMenuEntry hello_menu [] = {
-  { N_("File/Exit"),	 N_("<control>E"), (GtkMenuCallback) quit_cb,  NULL },
-	/* The '...' end indicate that the options open a dialog */
-  { N_("Help/About..."), N_("<control>A"), (GtkMenuCallback) about_cb, NULL },
+static GnomeUIInfo file_menu[]= {
+  { 
+    GNOME_APP_UI_ITEM,
+    N_("Exit"), N_("Exit GNOME hello"),
+    quit_cb, NULL, NULL,
+    GNOME_APP_PIXMAP_STOCK, GNOME_STOCK_MENU_QUIT,
+    'Q', GDK_CONTROL_MASK, NULL
+  },
+  GNOMEUIINFO_END
+};
+
+static GnomeUIInfo help_menu[]=
+{
+  {
+    GNOME_APP_UI_ITEM,
+    N_("About..."), N_("Info about GNOME hello"),
+    about_cb, NULL, NULL,
+    GNOME_APP_PIXMAP_STOCK, GNOME_STOCK_MENU_ABOUT,
+    0, (GdkModifierType)0, NULL
+  }, 
+  GNOMEUIINFO_SEPARATOR,
+  GNOMEUIINFO_HELP("hello"),
+  GNOMEUIINFO_END
+};
+
+static GnomeUIInfo main_menu[]= 
+{
+  GNOMEUIINFO_SUBTREE(N_("File"), file_menu),
+  GNOMEUIINFO_SUBTREE(N_("Help"), help_menu),
+  GNOMEUIINFO_END
 };
 
 
@@ -100,26 +129,35 @@ main(int argc, char *argv[])
 	      0, NULL);
 
   /* Get the master client, that was hopefully connected to the
-     session manager int the 'gnome_init' call.  */
+     session manager int the 'gnome_init' call.  All communication to
+     the session manager will be done with this master client.  */
   client= gnome_master_client ();
   
   /* Arrange to be told when something interesting happens.  */
   gtk_signal_connect (GTK_OBJECT (client), "save_yourself",
 		      GTK_SIGNAL_FUNC (save_state), (gpointer) argv[0]);
+  gtk_signal_connect (GTK_OBJECT (client), "die",
+		      GTK_SIGNAL_FUNC (die), NULL);
 
   if (GNOME_CLIENT_CONNECTED (client))
     {
       /* Get the client, that may hold the configuration for this
-         program.  */
+         program.  This client may be NULL.  That meens, that this
+         client has not been restarted.  I.e. 'gnome_cloned_client' is
+         only non NULL, if this application was called with the
+         '--sm-client-id' or the '-sm-cloned-id' command line option,
+         but this is something, the gnome libraries and the session
+         manager take care for you.  */
       GnomeClient *cloned= gnome_cloned_client ();
 
       if (cloned)
 	{
+	  /* If cloned is non NULL, we have been restarted.  */
 	  restarted= 1;
 
 	  /* We restore information that was stored once before.  Note,
              that we use the cloned client here, because it may be
-             that we are a clone of another client, which had another
+             that we are a clone of another client, which has another
              client id than we have.  */
 	  gnome_config_push_prefix (gnome_client_get_config_prefix (cloned));
 	  
@@ -130,6 +168,10 @@ main(int argc, char *argv[])
 	  
 	  gnome_config_pop_prefix ();
 	}
+      /* We could even use 'gnome_client_get_config_prefix' is cloned
+	 is NULL.  In this case, we would get "/gnome-hello-4-SM/" as
+	 config prefix.  This is usefull, if the gnome-hello-4-SM
+	 config file holds some default values for our application.  */
     }
 
   if (! just_exit)
@@ -149,7 +191,6 @@ void
 prepare_app()
 {
   GtkWidget *button;
-  GtkMenuFactory *mf;
 
   /* Make the main window and binds the delete event so you can close
      the program from your WM */
@@ -165,10 +206,7 @@ prepare_app()
   }
 
   /* Now that we've the main window we'll make the menues */
-  /* I'm using GtkMenuFactory, i've asked to the gnome-list if i should
-     use gnome_app_create_menu instead and i'm waiting the answer */
-  mf = create_menu ();
-  gnome_app_set_menus ( GNOME_APP (app), GTK_MENU_BAR (mf->widget));
+  gnome_app_create_menus (GNOME_APP (app), main_menu);
 
   /* We make a button, bind the 'clicked' signal to hello and setting it
      to be the content of the main window */
@@ -227,37 +265,18 @@ about_cb (GtkWidget *widget, void *data)
   return;
 }
 
-/* Menu creation */
-
-#define ELEMENTS(x) (sizeof (x) / sizeof (x [0]))
-
-GtkMenuFactory *
-create_menu () 
-{
-  GtkMenuFactory *subfactory;
-  int i;
-
-  /* Internationalization */
-  for (i = 0; i < ELEMENTS(hello_menu); i++)
-    hello_menu[i].path = _(hello_menu[i].path);
-
-  subfactory = gtk_menu_factory_new  (GTK_MENU_FACTORY_MENU_BAR);
-  gtk_menu_factory_add_entries (subfactory, hello_menu, ELEMENTS(hello_menu));
-
-  return subfactory;
-}
-
 static error_t
 parse_an_arg (int key, char *arg, struct argp_state *state)
 {
   if (key == DISCARD_KEY)
     {
-      /* This discards the saved information about this client.  */
+      /* This should discard the saved information about this client.
+         Unfortunatlly is doesn't do so, yet.  */
       gnome_config_clean_file (arg);
       gnome_config_sync ();
 
-      /* We really need not to connect, because we just exit after the
-         gnome_init call.  */
+      /* We really do not need to connect to the session manager in
+         this case, because we'll just exit after the gnome_init call.  */
       gnome_client_disable_master_connection ();
 
       just_exit = 1;
@@ -270,7 +289,7 @@ parse_an_arg (int key, char *arg, struct argp_state *state)
 
 /* Session management */
 
-static int
+static gint
 save_state (GnomeClient        *client,
 	    gint                phase,
 	    GnomeRestartStyle   save_style,
@@ -316,4 +335,17 @@ save_state (GnomeClient        *client,
   gnome_client_set_restart_command (client, 1, argv);
 
   return TRUE;
+}
+
+
+static gint
+die (GnomeClient        *client,
+     gpointer            client_data)
+{
+  /* Just exit in a friendly way.  We don't need to save any state
+     here, because the session manager should have sent us a
+     save_yourself-message before.  */
+  gtk_exit (0);
+
+  return FALSE;
 }
