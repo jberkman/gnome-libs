@@ -88,8 +88,8 @@ gb_create_main_window(CORBA_ORB orb, CORBA_Environment *ev)
 
   gtk_window_set_policy(GTK_WINDOW(mainwin), TRUE, TRUE, TRUE);
 
-  gdk_imlib_load_file_to_pixmap("yes.xpm", &pm_active, &pm_active_mask);
-  gdk_imlib_load_file_to_pixmap("no.xpm", &pm_inactive, &pm_inactive_mask);
+  gdk_imlib_load_file_to_pixmap(gnome_pixmap_file("yes.xpm"), &pm_active, &pm_active_mask);
+  gdk_imlib_load_file_to_pixmap(gnome_pixmap_file("no.xpm"), &pm_inactive, &pm_inactive_mask);
 
   gtk_widget_push_visual(gdk_imlib_get_visual());
   gtk_widget_push_colormap(gdk_imlib_get_colormap());
@@ -99,7 +99,13 @@ gb_create_main_window(CORBA_ORB orb, CORBA_Environment *ev)
   gtk_widget_pop_colormap();
   gtk_widget_pop_visual();
 
-  gnome_app_set_contents(GNOME_APP(mainwin), clist);
+  wtmp = gtk_scrolled_window_new(NULL, NULL);
+  gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(wtmp),
+				 GTK_POLICY_AUTOMATIC,
+				 GTK_POLICY_AUTOMATIC);
+  gtk_container_add(GTK_CONTAINER(wtmp), clist);
+
+  gnome_app_set_contents(GNOME_APP(mainwin), wtmp);
 
   gtk_widget_show_all(mainwin);
 
@@ -199,7 +205,7 @@ gb_is_server_active_p(CORBA_Object ns, GoadServer *s, CORBA_Environment *ev)
   gboolean retval;
 
   nc[2].id = s->server_id;
-  nc[2].kind = "object";
+  nc[2].kind = "server";
 
   otmp = CosNaming_NamingContext_resolve(ns, &nom, ev);
 
@@ -241,7 +247,7 @@ gb_activate_server(GtkWidget *w, GtkCList *clist)
     gtk_statusbar_push(GTK_STATUSBAR(GNOME_APP(mainwin)->statusbar), status_ctx, iorstr);
     g_print("%s\n", iorstr);
     CORBA_free(iorstr);
-    gb_create_server_list(clist, &ev);
+    gb_create_server_list(NULL, clist);
   }
 
   CORBA_exception_free(&ev);

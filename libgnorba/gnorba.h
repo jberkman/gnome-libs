@@ -15,13 +15,13 @@ typedef enum {
  * Almost the same as gnome_init, except it initializes ORBit for use
  * with gtk+ too 
  */
-CORBA_ORB gnome_CORBA_init          (char *app_id,
-				     char *app_version,
+CORBA_ORB gnome_CORBA_init          (const char *app_id,
+				     const char *app_version,
 				     int *argc, char **argv,
 				     GnorbaInitFlags gnorba_flags,
 				     CORBA_Environment *ev);
-CORBA_ORB gnome_CORBA_init_with_popt_table(char *app_id,
-					   char *app_version,
+CORBA_ORB gnome_CORBA_init_with_popt_table(const char *app_id,
+					   const char *app_version,
 					   int *argc, char **argv,
 					   const struct poptOption *options,
 					   int popt_flags,

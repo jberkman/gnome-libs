@@ -46,3 +46,6 @@ goad_browser_LDADD = \
         $(LIBGNOME_LIBS) $(LIBGNOMEUI_LIBS)		\
 	$(top_builddir)/libgnorba/libgnorba.la		\
 	$(INTLLIBS)
+
+gbpixmapdir = $(datadir)/pixmaps
+gbpixmap_DATA = yes.xpm no.xpm

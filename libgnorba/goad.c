@@ -673,7 +673,8 @@ goad_server_activate_exe(GoadServer *sinfo,
   } else if(fork()) {
     _exit(0); /* de-zombifier process, just exit */
   } else {
-    char **args;
+    char **args, **real_args;
+    int i;
     struct sigaction sa;
 
     close(0);
@@ -685,6 +686,13 @@ goad_server_activate_exe(GoadServer *sinfo,
     sa.sa_handler = SIG_IGN;
     sigaction(SIGPIPE, &sa, 0);
     args = g_strsplit(sinfo->location_info, " ", -1);
+    for(i = 0; args[i]; i++) /**/ ;
+
+    args = g_realloc(args, sizeof(char *) * (i+3));
+    args[i] = "--activate-goad-server";
+    args[i+1] = sinfo->server_id;
+    args[i+2] = NULL;
+
     execvp(args[0], args);
     _exit(1);
   }
