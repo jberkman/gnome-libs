@@ -44,6 +44,13 @@ dnl
 gnome_cv_use_gnome=yes
 
 GNOME_X_CHECKS
+if test "$USE_DEVGTK" = true; then
+   GNOME_CANVAS_SRC="gnome-canvas.c gnome-canvas-rect-ellipse.c"
+   GNOME_CANVAS_HED="gnome-cancas.h gnome-canvas-rect-ellipse.h"
+fi
+AC_SUBST(GNOME_CANVAS_SRC)
+AC_SUBST(GNOME_CANVAS_HED)
+
 GNOME_SUPPORT_CHECKS
 
 AC_ARG_ENABLE(debug, [  --enable-debug turn on debugging [default=no]],AC_DEFINE(GNOME_ENABLE_DEBUG),)
