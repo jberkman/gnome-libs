@@ -84,6 +84,70 @@ void vt_dump(struct vt_em *vt)
  Update functions
 */
 
+/*
+  set the screen, either
+    screen=0 for main screen
+          =1 for alternate screen
+*/
+
+static void vt_set_screen(struct vt_em *vt, int screen)
+{
+  struct vt_line *lh, *lt, *ah, *at;
+  int line;
+
+  d(printf("vt_set_screen(%d) called\n", screen));
+
+  if (((vt->mode&VTMODE_ALTSCREEN)?1:0) ^ screen) {
+
+    d(printf("vt_set_screen swapping buffers ... from %d\n", (vt->mode&VTMODE_ALTSCREEN)?1:0));
+
+    /* need to swap 2 list headers.
+       tricky bit is catering for all the back pointers? */
+    lh = (struct vt_line *)vt->lines.head;
+    lt = (struct vt_line *)vt->lines.tailpred;
+
+    ah = (struct vt_line *)vt->lines_alt.head;
+    at = (struct vt_line *)vt->lines_alt.tailpred;    
+
+    /* set new head/tail pointers */
+    vt->lines.head = (struct vt_listnode *)ah;
+    vt->lines.tailpred = (struct vt_listnode *)at;
+
+    vt->lines_alt.head = (struct vt_listnode *)lh;
+    vt->lines_alt.tailpred = (struct vt_listnode *)lt;
+
+    /* and link back links */
+    ah->prev = (struct vt_line *)&vt->lines.head;
+    at->next = (struct vt_line *)&vt->lines.tail;
+
+    lh->prev = (struct vt_line *)&vt->lines_alt.head;
+    lt->next = (struct vt_line *)&vt->lines_alt.tail;
+
+    /* and mark all lines as changed/but un-moved */
+    at = ah->next;
+    line=0;
+    while (at) {
+      ah->modcount=ah->width;
+      ah->line = line++;
+      ah = at;
+      at = at->next;
+    }
+
+    d({
+      ah = &vt->lines.head;
+      lh = &vt->lines_alt.head;
+      while (ah) {
+	printf("%p: %p %p   %p: %p %p\n", ah, ah->next, ah->prev, lh, lh->next, lh->prev);
+	ah = ah->next;
+	lh = lh->next;
+      }
+    });
+
+    vt->this = (struct vt_line *)vt_list_index(&vt->lines, vt->cursory);
+    vt->mode = (vt->mode&~VTMODE_ALTSCREEN) | (screen?VTMODE_ALTSCREEN:0);
+  }
+}  
+
 #ifdef SCROLLBACK_BUFFER
 
 /*
@@ -115,6 +179,8 @@ void vt_scrollback_add(struct vt_em *vt, struct vt_line *wn)
 {
   struct vt_line *ln;
 
+  d(printf("vt_scrollback_add()\n"));
+
   /* create a new scroll-back line */
   ln = vt_mem_get(&vt->mem_list, sizeof(struct vt_line) + sizeof(uint32)*wn->width);/* always allocates 1 more 'char' */
   ln->width = wn->width;
@@ -143,27 +209,26 @@ void vt_scroll_up(struct vt_em *vt, int count)
   int blank;
 
   d(printf("vt_scroll_up(%d) (top = %d bottom=%d)\n", count, vt->scrolltop, vt->scrollbottom));
-  /* FIXME: do this properly */
 
   blank = vt->attr;
 
   while (count>0) {
     /* first, find the line to remove */
     wn=(struct vt_line *)vt_list_index(&vt->lines, vt->scrolltop);
+
+    d(if(!wn) printf("ERROR: could not find line %d\n", vt->scrolltop));
+
     vt_list_remove((struct vt_listnode *)wn);
 
 #ifdef SCROLLBACK_BUFFER
-    if (vt->scrolltop==0) {
+    if ((vt->scrolltop==0) && ((vt->mode&VTMODE_ALTSCREEN)==0)) {
       vt_scrollback_add(vt, wn);
     }
 #endif /* SCROLLBACK_BUFFER */
 
     for (i=0;i<wn->width;i++)
-	/*if (wn->data[i] != blank)*/
       wn->data[i] = vt->attr|VTATTR_CHANGED;
 
-    /* FIXME: this sometimes makes it do too much work, but if it
-       isn't done this way, it seems to cause problems */
     if (wn->line == -1) {
       wn->modcount = wn->width;	/* make sure a wrap-scrolled line isn't marked clean */
     } else {
@@ -177,6 +242,8 @@ void vt_scroll_up(struct vt_em *vt, int count)
 
     count--;
   }
+
+  d(printf("vt_scroll_up() done\n"));
 }
 
 /* reverse scroll */
@@ -551,6 +618,7 @@ static void vt_restore_cursor(struct vt_em *vt)
     vt->cursory = vt->height-1;
 
   vt->this = (struct vt_line *)vt_list_index(&vt->lines, vt->cursory);
+  d(printf("found line %d, %p\n", vt->cursory, vt->this));
 }
 
 /* cursor movement */
@@ -657,6 +725,9 @@ static void vt_modeh(struct vt_em *vt)
       case 1:			/* turn on application cursor keys */
 	vt->mode |= VTMODE_APP_CURSOR;
 	break;
+      case 47:
+	vt_set_screen(vt, 1);
+	break;
       case 1000:
 	d(printf("sending mouse events\n"));
 	vt->mode |= VTMODE_SEND_MOUSE;
@@ -681,6 +752,9 @@ static void vt_model(struct vt_em *vt)
       switch(atoi(vt->args[0]+1)) {
       case 1:
 	vt->mode &= ~VTMODE_APP_CURSOR;
+	break;
+      case 47:
+	vt_set_screen(vt, 0);
 	break;
       case 1000:
 	vt->mode &= ~VTMODE_SEND_MOUSE;
@@ -788,6 +862,7 @@ static void vt_reset(struct vt_em *vt)
   vt->this = (struct vt_line *)vt->lines.head;
   vt->attr=VTATTR_CLEAR;	/* reset attributes */
   vt->remaptable = 0;		/* no character remapping */
+  vt_set_screen(vt, 0);
   vt->mode = 0;
   vt_cleareos(vt);
 }
@@ -1015,6 +1090,8 @@ struct vt_line *vt_newline(struct vt_em *vt)
 
 /*
   Setup a new VT terminal
+
+  FIXME: check allocations
 */
 struct vt_em *vt_init(struct vt_em *vt, int width, int height)
 {
@@ -1026,6 +1103,8 @@ struct vt_em *vt_init(struct vt_em *vt, int width, int height)
   vt_list_new(&vt->lines_back);
 #endif
   vt_list_new(&vt->scrollback);
+
+  vt_list_new(&vt->lines_alt);
 
   vt->width = width;
   vt->height = height;
@@ -1043,6 +1122,9 @@ struct vt_em *vt_init(struct vt_em *vt, int width, int height)
     vl->line = i;
     vt_list_addtail(&vt->lines_back, (struct vt_listnode *)vl);
 #endif
+    vl = vt_newline(vt);
+    vl->line = i;
+    vt_list_addtail(&vt->lines_alt, (struct vt_listnode *)vl);
   }
   vt->cursorx=0;
   vt->cursory=0;
@@ -1156,6 +1238,16 @@ void vt_destroy(struct vt_em *vt)
     free(wn);
   }
 
+  /* and all alternate lines */
+  while ( (wn = (struct vt_line *)vt_list_remhead(&vt->lines_alt)) ) {
+    free(wn);
+  }
+
+  /* and all back lines */
+  while ( (wn = (struct vt_line *)vt_list_remhead(&vt->lines_back)) ) {
+    free(wn);
+  }
+
   /* done */
 }
 
@@ -1184,23 +1276,25 @@ void vt_resize(struct vt_em *vt, int width, int height, int pixwidth, int pixhei
 
   /* if we just got smaller, discard unused lines (from top of window - move to scrollback) */
   if (height< vt->height) {
-    wn = (struct vt_line *)vt->lines.head;
-    nn = wn->next;
     count = (vt->height-height);
     d(printf("removing %d lines to smaller window\n", count));
-    while (nn && count>0) {
-      vt_list_remove((struct vt_listnode *)wn); /* remove this line */
-      vt_scrollback_add(vt, wn); /* add it to scrollback buffer */
-      free(wn);			/* and free it */
-
+    while (count>0) {
+      if ( (wn = (struct vt_line *)vt_list_remhead(&vt->lines)) ) {
+	if ((vt->mode & VTMODE_ALTSCREEN)==0)
+	  vt_scrollback_add(vt, wn); /* add it to scrollback buffer */
+	free(wn);
+      }
+      /* and for 'alternate' screen */
+      if ( (wn = (struct vt_line *)vt_list_remhead(&vt->lines_alt)) ) {
+	if ((vt->mode & VTMODE_ALTSCREEN)!=0)
+	  vt_scrollback_add(vt, wn); /* add it to scrollback buffer */
+	free(wn);
+      }
 #ifdef DOUBLE_BUFFER
       /* repeat for backbuffer */
       if ( (wn = (struct vt_line *)vt_list_remhead(&vt->lines_back)) )
 	free(wn);
 #endif
-
-      wn = nn;
-      nn = nn->next;
       count--;
     }
 
@@ -1227,6 +1321,7 @@ void vt_resize(struct vt_em *vt, int width, int height, int pixwidth, int pixhei
 #ifdef DOUBLE_BUFFER
       vt_list_addtail(&vt->lines_back, (struct vt_listnode *)vt_newline(vt));
 #endif
+      vt_list_addtail(&vt->lines_alt, (struct vt_listnode *)vt_newline(vt));
     }
   } /* otherwise width may have changed? */
 
@@ -1238,12 +1333,10 @@ void vt_resize(struct vt_em *vt, int width, int height, int pixwidth, int pixhei
   }
 
   /* now, scan all lines visible, and make them the right width */
-  /* this funny for construct does first the front buffer, and then the
-     back buffer */
+  /* for all 3 'buffers', onscreen, offscreen and alternate */
 #ifdef DOUBLE_BUFFER
   for(pass=0, wn = (struct vt_line *)vt->lines.head;
-      pass<2;
-      wn = (struct vt_line *)vt->lines_back.head, pass++) {
+      pass<3;pass++) {
 #else
     wn = (struct vt_line *)vt->lines.head;
 #endif
@@ -1268,6 +1361,10 @@ void vt_resize(struct vt_em *vt, int width, int height, int pixwidth, int pixhei
       nn = nn->next;
     }
 #ifdef DOUBLE_BUFFER
+    if (pass==0)
+      wn = (struct vt_line *)vt->lines_back.head;
+    else if (pass==1)
+      wn = (struct vt_line *)vt->lines_alt.head;
   }
 #endif
 
@@ -1276,7 +1373,7 @@ void vt_resize(struct vt_em *vt, int width, int height, int pixwidth, int pixhei
 
   resize_subshell(vt->childfd, width, height, pixwidth, pixheight);
 
-  d(printf("resized to %d,%d\n", vt->width, vt->height));
+  d(printf("resized to %d,%d, this = %p\n", vt->width, vt->height, vt->this));
 }
 
 /*

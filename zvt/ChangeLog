@@ -1,3 +1,19 @@
+1998-05-04  Michael Zucchi  <zucchi@zzedzone.box.net.au>
+
+	* subshell.c (pty_open_master): Removed warnings.
+
+	* vt.c (vt_model): Added case 47 - alternate screen off.
+	(vt_modeh): Added case 47 - alternate screen on.
+	(vt_set_screen): New function.  Sets the current screen.
+	(vt_resize): Added code to handle resize of alternate screen too.
+	(vt_scroll_up): Only add to scrollback if we are on the primary
+	screen.
+	(vt_reset): Resets screen to primary.
+	(vt_destroy): Added cleanup for alternate screen and image buffer.
+
+	* vt.h (VTMODE_ALTSCREEN): New definition.  Covers alternate
+	screen switching.
+
 1998-05-03  Miguel de Icaza  <miguel@nuclecu.unam.mx>
 
 	* zterm.c (main): Allow window to be shrinked when the font

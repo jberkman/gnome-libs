@@ -241,6 +241,16 @@ void vt_scroll_update(struct _vtx *vx, int firstline, struct vt_line *fn, int co
 
   vt_scroll_area(vx->user_data, firstline, count, offset);
 
+  d({
+    printf("before:\n");
+    dn = &vx->vt.lines_back.head;
+    while(dn) {
+      printf("node %p:  n: %p  p:%p\n", dn, dn->next, dn->prev);
+      dn = dn->next;
+    }
+  });
+
+
   /* find start/end of scroll area */
   if (offset>0) {
     /* grab n lines at bottom of scroll area, and move them to above it */
@@ -274,6 +284,15 @@ void vt_scroll_update(struct _vtx *vx, int firstline, struct vt_line *fn, int co
   dn->prev->next = tn;
   bn->next = dn;
   dn->prev = bn;
+
+  d({
+    printf("After\n");
+    dn = &vx->vt.lines_back.head;
+    while(dn) {
+      printf("node %p:  n: %p  p:%p\n", dn, dn->next, dn->prev);
+      dn = dn->next;
+    }
+  });
 
   /* need to clear tn->bn lines */
   /* FIXME: maybe if we didn't 'clear' this, and we dont 'clear' the screen after
@@ -575,8 +594,6 @@ void vt_update(struct _vtx *vx, int update_state)
     }
   }
 #endif
-
-  d(vt_dump(&vx.vt));
 
   vt_cursor_state(vx->user_data, old_state);
 }

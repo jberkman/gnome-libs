@@ -139,8 +139,6 @@ int init_subshell (int *master, char *pty_name)
 
     if (subshell_pid == 0)  /* We are in the child process */
     {
-	char *init_file = NULL;
-	
 	setsid ();  /* Get a fresh terminal session */
 
 	/* {{{ Open the slave side of the pty: again */
@@ -401,11 +399,12 @@ static int pty_open_master (char *pty_name)
 	    pty_name [9] = *ptr2;
 
 	    /* Try to open master */
-	    if ((pty_master = open (pty_name, O_RDWR)) == -1)
+	    if ((pty_master = open (pty_name, O_RDWR)) == -1) {
 		if (errno == ENOENT)  /* Different from EIO */
 		    return -1;	      /* Out of pty devices */
 		else
 		    continue;	      /* Try next pty device */
+	    }
 	    pty_name [5] = 't';	      /* Change "pty" to "tty" */
 	    if (access (pty_name, 6)){
 		close (pty_master);

@@ -99,6 +99,7 @@ struct vt_em {
 
   struct vt_list lines;		/* double linked list of lines */
   struct vt_list lines_back;	/* 'last rendered' buffer.  used to optimise updates */
+  struct vt_list lines_alt;	/* alternate screen */
 
   /* scroll back stuff */
   struct vt_list scrollback;	/* double linked list of scrollback lines */
@@ -114,6 +115,8 @@ struct vt_em {
 #define VTMODE_INSERT 0x00000001 /* insert mode active */
 #define VTMODE_SEND_MOUSE 0x00000002 /* send mouse clicks */
 #define VTMODE_APP_CURSOR 0x00000008 /* application cursor keys */
+
+#define VTMODE_ALTSCREEN 0x80000000 /* on alternate screen? */
 
 struct vt_em *vt_init(struct vt_em *vt, int width, int height);
 void vt_destroy(struct vt_em *vt);

@@ -33,5 +33,5 @@ zterm_SOURCES	= zterm.c
 zterm_LDADD	= 	\
 	$(top_builddir)/zvt/libzvt.la	\
 	$(GTK_LIBS) \
-	@LIBSUPPORT@ $(INTLLIBS) $(UTIL_LIB)
+	@LIBSUPPORT@ $(INTLLIBS)
 
