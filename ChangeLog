@@ -1,3 +1,8 @@
+1998-11-23  Federico Mena Quintero  <federico@nuclecu.unam.mx>
+
+	* libgnome/gnome-metadata.c (try_app_regexs): Patch from Tom
+	Tromey to do a foreach() on the hash table only if it exists.
+
 1998-11-23  Christopher Blizzard  <blizzard@appliedtheory.com>
 
 	* libgnome/gconfigger.c: Include <libgnomeP.h> not <gnome.h>.
