@@ -2177,6 +2177,11 @@ vt_draw_text(void *user_data, int col, int row, char *text, int len, int attr)
   g_return_if_fail (widget != NULL);
   g_return_if_fail (ZVT_IS_TERM (widget));
 
+  if (!GTK_WIDGET_DRAWABLE (widget))
+    {
+      return;
+    }
+
   term = ZVT_TERM (widget);
 
   vx = term->vx;
@@ -2300,7 +2305,12 @@ vt_scroll_area(void *user_data, int firstrow, int count, int offset, int fill)
   
   g_return_if_fail (widget != NULL);
   g_return_if_fail (ZVT_IS_TERM (widget));
-  
+
+  if (!GTK_WIDGET_DRAWABLE (widget))
+    {
+      return;
+    }
+
   term = ZVT_TERM (widget);
 
   if(term->transparent || term->pixmap_filename)
@@ -2739,6 +2749,11 @@ draw_back_pixmap (GtkWidget *widget, int nx, int ny, int nw, int nh)
 
   g_return_if_fail (widget != NULL);
   g_return_if_fail (ZVT_IS_TERM (widget));
+
+  if (!GTK_WIDGET_DRAWABLE (widget))
+    {
+      return;
+    }
 
   term = ZVT_TERM (widget);
   bgc = term->back_gc;
