@@ -114,7 +114,7 @@ static GnomeUIInfo main_menu[] = {
 GtkWidget *
 create_newwin(gboolean normal, gchar *appname, gchar *title)
 {
-	GtkWidget *app, *w;
+	GtkWidget *app;
 
 	app = gnome_app_new (appname,title);
 
@@ -1728,7 +1728,7 @@ item_event (GnomeCanvasItem *item, GdkEvent *event, gpointer data)
 	if (!((event->type == GDK_BUTTON_PRESS) && (event->button.button == 3)))
 		return FALSE;
 
-	gnome_popup_menu_do_popup (GTK_WIDGET (data), NULL, NULL, (GdkEventButton *) event, item);
+	gnome_popup_menu_do_popup (GTK_WIDGET (data), NULL, NULL, (GdkEventButton *) event, item, data);
 
 	return TRUE;
 }

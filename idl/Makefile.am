@@ -7,8 +7,7 @@ idl_DATA = \
 	desktop-editor.idl	\
 	desktop-textviewer.idl	\
 	gnome-unknown.idl	\
-	GnomeObject.idl
+	GnomeObject.idl		\
+	HistoryDB.idl
 
 EXTRA_DIST = $(idl_DATA)
-
-

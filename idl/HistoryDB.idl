@@ -1,0 +1,45 @@
+#ifndef __GNOME_HISTORYDB_IDL__
+#define __GNOME_HISTORYDB_IDL__ 1
+
+#if !defined(__LIBOAFGNOME_COMPILATION) && defined(__ORBIT_IDL__)
+%{
+#pragma include_defs liboafgnome/HistoryDB.h
+%}
+#pragma inhibit push
+#endif
+
+#if defined(__LIBOAFGNOME_COMPILATION)
+
+#undef __LIBOAFGNOME_COMPILATION
+#include "gnome-unknown.idl"
+#define __LIBOAFGNOME_COMPILATION
+
+#else
+
+#include "gnome-unknown.idl"
+
+/* XXX fixme - This doesn't handle going back and then forward to a different page. */
+module GNOME {
+  interface HistoryDB : Unknown {
+    typedef long long Timestamp;
+    struct Record {
+      string url;
+      string context;
+      long access_count;
+      Timestamp last_access; /* timestamp */
+    };
+    typedef sequence<Record> RecordList;
+    enum { SORT_LAST_ACCESS, SORT_ACCESS_COUNT } RecordSortType;
+
+    void add_access(in string url, in string context);
+    readonly attribute Timestamp last_update;
+
+    RecordList list_accesses(in string context_regex, in long max_records, in RecordSortType rst);
+  };
+};
+
+#if !defined(__LIBOAFGNOME_COMPILATION) && defined(__ORBIT_IDL__)
+#pragma inhibit pop
+#endif
+
+#endif

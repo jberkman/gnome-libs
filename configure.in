@@ -46,13 +46,17 @@ AC_SUBST(GNOME_HAVE_ALLOCA_H)
 dnl Evil stuff to extract GLIB stuff from gtk-config output
 dnl (we want to make sure it matches with the gtk we're using)
 
+#GLIB_CFLAGS=`echo $GTK_CFLAGS | sed 's/^.*\(-I[^ ]*glib[^ ]*  *-I[^ ]*\).*$/\1/'`
+#GLIB_LIBS="$GLIB_LDFLAGS `echo $GTK_LIBS | sed 's/^.*\(-lglib[^ ]*\).*$/\1/'`"
+AM_PATH_GLIB(1.2.0,,
+AC_MSG_ERROR([
+*** GLIB 1.2.0 or better is required. The latest version of GLIB
+*** is always available from ftp://ftp.gtk.org/.]), gmodule)
 changequote(,)dnl
-GLIB_CFLAGS=`echo $GTK_CFLAGS | sed 's/^.*\(-I[^ ]*glib[^ ]*  *-I[^ ]*\).*$/\1/'`
-GLIB_LDFLAGS=`echo $GTK_LIBS | sed -e 's/^.*-lgdk[^ ]* *\(-L[^ ]*\).*$/\1/' -e 's/^.* -lgdk[^ ]* .*$//'`
+GLIB_LDFLAGS=`echo $GLIB_LIBS | sed -e 's/^.*-lgdk[^ ]* *\(-L[^ ]*\).*$/\1/' -e 's/^.* -lgdk[^ ]* .*$//'`
 if test -z "$GLIB_LDFLAGS" ; then
-  GLIB_LDFLAGS=`echo $GTK_LIBS | sed -e 's/\(-L[^ ]*\) .*$/\1/' -e 's/^.*\(-L[^ ]*\)$/\1/'`
+  GLIB_LDFLAGS=`echo $GLIB_LIBS | sed -e 's/\(-L[^ ]*\) .*$/\1/' -e 's/^.*\(-L[^ ]*\)$/\1/'`
 fi 
-GLIB_LIBS="$GLIB_LDFLAGS `echo $GTK_LIBS | sed 's/^.*\(-lglib[^ ]*\).*$/\1/'`"
 changequote([,])dnl
 
 AC_SUBST(GLIB_CFLAGS)
