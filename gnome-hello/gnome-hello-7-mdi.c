@@ -22,20 +22,16 @@
 /* #define USE_TEMPLATES YES! */
 #undef USE_TEMPLATES
 
-static int restarted = 0;
+static gboolean restarted= FALSE;
 
-static char *just_exit=NULL;
 static struct poptOption prog_options[] = 
 {
-	{"discard-session", '\0', POPT_ARG_STRING, &just_exit, 0, N_("Discard session"), "ID"},
 	POPT_AUTOHELP
 	{NULL, '\0', 0, NULL, 0}
 };
 
 static int save_state (GnomeClient *, gint, GnomeRestartStyle, gint,
 					   GnomeInteractStyle, gint, gpointer);
-
-static void discard_session (gchar *);
 
 static void add_cb(GtkWidget *w);
 static void remove_cb(GtkWidget *w);
@@ -509,7 +505,7 @@ void app_created_handler(GnomeMDI *mdi, GnomeApp *app) {
 }
 
 int main(int argc, char **argv) {
-	GnomeClient *cloned;
+
 	gboolean restart_ok = FALSE;
 
 	/* gnome_init() is always called at the beginning of a program.  it
@@ -524,13 +520,8 @@ int main(int argc, char **argv) {
 	client = gnome_master_client ();
 
 	gtk_signal_connect (GTK_OBJECT (client), "save_yourself",
-						GTK_SIGNAL_FUNC (save_state), NULL);
+						GTK_SIGNAL_FUNC (save_state), argv[0]);
 
-	if (just_exit) {
-		discard_session(just_exit);
-		return 0;
-	}
-  
 	mdi = GNOME_MDI(gnome_mdi_new("gnome-hello-7-mdi", "GNOME MDI Hello"));
 
 	/* set up MDI menus: note that GnomeMDI will copy this struct for its own use, so
@@ -546,30 +537,14 @@ int main(int argc, char **argv) {
 	gnome_mdi_set_child_list_path(mdi, _("Children/"));
   
 	if (GNOME_CLIENT_CONNECTED (client)) {
-		/* Get the client, that may hold the configuration for this
-		 * program.  This client may be NULL.  That meens, that this
-		 * client has not been restarted.  I.e. 'gnome_cloned_client'
-		 * is only non NULL, if this application was called with the
-		 * '--sm-client-id' or the '-sm-cloned-id' command line option,
-		 * but this is something, the gnome libraries and the session
-		 * manager take care for you.
-		 */
-    
-		cloned = gnome_cloned_client ();
-    
-		if (cloned) {
-			/* If cloned is non NULL, we have been restarted. */
-			restarted = 1;
-		}
+		gnome_config_push_prefix (gnome_client_get_config_prefix (client));
+		
+		restarted= gnome_config_get_bool ("General/restarted=0");
+		
+		gnome_config_pop_prefix ();
 	} else {
-		/* We could even use 'gnome_client_get_config_prefix' if
-		 * cloned is NULL. In this case, we would get "/gtop/" as
-		 * config prefix. This is useful, if the gtop config file
-		 * holds some default values for our application.
-		 */
-    
-		cloned = NULL;
-	}
+		restarted= FALSE;
+	}	
 	
 	/* connect signals */
 	gtk_signal_connect(GTK_OBJECT(mdi), "destroy",
@@ -584,8 +559,7 @@ int main(int argc, char **argv) {
 	/* Restore MDI session. */
 
 	if (restarted) {
-		gnome_config_push_prefix
-			(gnome_client_get_config_prefix (cloned));
+		gnome_config_push_prefix (gnome_client_get_config_prefix (client));
 
 		restart_ok = gnome_mdi_restore_state
 			(mdi, "MDI Session", my_child_new_from_config);
@@ -611,15 +585,15 @@ static int save_state (GnomeClient        *client,
 					   GnomeInteractStyle  interact_style,
 					   gint                fast,
 					   gpointer            client_data) {
-	gchar *session_id;
-	gchar *argv[3];
-  
-	session_id = gnome_client_get_id (client);
+	gchar *prefix= gnome_client_get_config_prefix (client);
+	gchar *argv[]= { "rm", "-r", NULL };
   
 	/* Save the state using gnome-config stuff. */
-	gnome_config_push_prefix (gnome_client_get_config_prefix (client));
+	gnome_config_push_prefix (prefix);
   
 	gnome_mdi_save_state (mdi, "MDI Session");
+	
+	gnome_config_set_bool ("General/restarted", TRUE);
   
 	gnome_config_pop_prefix();
 	gnome_config_sync();
@@ -627,27 +601,16 @@ static int save_state (GnomeClient        *client,
 	/* Here is the real SM code. We set the argv to the parameters needed
 	   to restart/discard the session that we've just saved and call
 	   the gnome_session_set_*_command to tell the session manager it. */
-	argv[0] = (char*) client_data;
-	argv[1] = "--discard-session";
-	argv[2] = gnome_client_get_config_prefix (client);
+	argv[2]= gnome_config_get_real_path (prefix);
 	gnome_client_set_discard_command (client, 3, argv);
 
 	/* Set commands to clone and restart this application.  Note that we
 	   use the same values for both -- the session management code will
 	   automatically add whatever magic option is required to set the
 	   session id on startup.  */
+	argv[0]= (gchar*) client_data;
 	gnome_client_set_clone_command (client, 1, argv);
 	gnome_client_set_restart_command (client, 1, argv);
 	
 	return TRUE;
-}
-
-static void discard_session (gchar *arg) {
-	/* This discards the saved information about this client.  */
-	gnome_config_clean_file (arg);
-	gnome_config_sync ();
-  
-	/* We really need not connect, because we just exit after the
-	   gnome_init call.  */
-	gnome_client_disable_master_connection ();
 }

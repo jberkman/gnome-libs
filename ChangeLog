@@ -22,6 +22,45 @@
 	* replaced all occurences of gtk_label_set() with
 	gtk_label_set_text() 
 
+Sun Dec 27 22:13:53 1998  George Lebl  <jirka@5z.com>
+
+	* libgnome/gnome-config.c: prefix_list should be initialized to
+	  NULL, fix memory leak with remove_link, also during drop
+	  file, free the profile if we can
+
+	* libgnorba/goad.c: (goad_server_list_read) fix memory leak by
+	  freeing the dummy GString, and drop the config file that we read
+	  to conserve memory
+
+1998-12-25  Jeff Garzik  <jgarzik@pobox.com>
+
+	* configure.in:
+	removed 'ru' from ALL_LINGUAS, so that make distcheck works again
+
+1998-12-17  Miguel de Icaza  <miguel@nuclecu.unam.mx>
+
+	* libgnome/gnome-metadata.c (gnome_metadata_list): Database was
+	not auto-initialized on gnome_metadta_list
+
+1998-12-17  Christopher Blizzard  <blizzard@appliedtheory.com>
+
+	* libgnorba/goad-browser.c (gb_create_server_list): If the browser
+ 	can't find any installed services ( gnome-core isn't installed -
+ 	it could happen ) pop up a pleasant dialog saying that it's a good
+ 	idea to check your installation and, more importantly, don't
+ 	crash.  Also, before refreshing the services list make sure that
+ 	the servlist and the servlist->list aren't null.
+
+1998-12-17  Ettore Perazzoli  <ettore@comm2000.it>
+
+	* libgnorba/goad-browser.c (gb_create_main_window): Show the main
+	window *after* setting up the dock.
+
+1998-12-16  Sven Neumanns  <sven@gimp.org>
+
+	* replaced all occurences of gtk_label_set() with
+	gtk_label_set_text() 
+
 1998-12-15  Martin Baulig  <martin@home-of-linux.org>
 
 	* configure.in: Use AM_GNOME_GETTEXT from the macros directory.

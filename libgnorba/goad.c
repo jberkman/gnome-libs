@@ -321,6 +321,14 @@ goad_server_list_read(const char *filename,
     g_array_append_val(servinfo, newval);
   }
   gnome_config_pop_prefix();
+  /*forget the config information about this file, otherwise we
+    take up gobs of memory*/
+  if (*filename == '=')
+	  g_string_sprintf(dummy, "%s=", filename);
+  else
+	  g_string_assign(dummy,filename);
+  gnome_config_drop_file(dummy->str);
+  g_string_free(dummy,TRUE);
 }
 
 /**** goad_server_list_free
@@ -342,14 +350,16 @@ goad_server_list_free (GoadServerList *server_list)
 
   sl = server_list->list;
 
-  for(i = 0; sl[i].repo_id; i++) {
-    g_strfreev(sl[i].repo_id);
-    g_free(sl[i].server_id);
-    g_free(sl[i].description);
-    g_free(sl[i].location_info);
-  }
+  if(sl) {
+    for(i = 0; sl[i].repo_id; i++) {
+      g_strfreev(sl[i].repo_id);
+      g_free(sl[i].server_id);
+      g_free(sl[i].description);
+      g_free(sl[i].location_info);
+    }
 
-  g_free(sl);
+    g_free(sl);
+  }
 
   g_free(server_list);
 }
@@ -389,7 +399,12 @@ goad_server_activate_with_id(GoadServerList *server_list,
   else
     my_servlist = goad_server_list_get();
 
+  g_return_val_if_fail(my_servlist, CORBA_OBJECT_NIL);
+
   slist = my_servlist->list;
+
+  if(!slist)
+    goto errout;
 
   for(i = 0; slist[i].repo_id; i++) {
     if(!strcmp(slist[i].server_id, server_id))
@@ -399,6 +414,7 @@ goad_server_activate_with_id(GoadServerList *server_list,
   if(slist[i].repo_id)
     retval = real_goad_server_activate(&slist[i], flags, params, my_servlist);
 
+ errout:
   if(!server_list)
     goad_server_list_free(my_servlist);
 
@@ -447,7 +463,10 @@ goad_server_activate_with_repo_id(GoadServerList *server_list,
   else
     my_slist = goad_server_list_get();
 
+  g_return_val_if_fail(my_slist, retval);
   slist = my_slist->list;
+
+  if(!slist) goto errout;
   
   /* (unvalidated assumption) If we need to only activate existing objects, then
      we don't want to bother checking activation methods, because
@@ -476,8 +495,8 @@ goad_server_activate_with_repo_id(GoadServerList *server_list,
 	
       /* entry matched */
       if(passnum == PASS_CHECK_EXISTING) {
-	retval = goad_server_activate(&slist[i], flags | GOAD_ACTIVATE_EXISTING_ONLY,
-				      params);
+	retval = real_goad_server_activate(&slist[i], flags | GOAD_ACTIVATE_EXISTING_ONLY,
+				      params, my_slist);
       }
       else {
 	retval = real_goad_server_activate(&slist[i], flags | GOAD_ACTIVATE_NEW_ONLY,
@@ -501,6 +520,7 @@ goad_server_activate_with_repo_id(GoadServerList *server_list,
       break;
   }
 
+ errout:
   if(!server_list)
     goad_server_list_free(my_slist);
 
@@ -1005,19 +1025,26 @@ goad_server_register(CORBA_Object name_server,
 
   old_server = CosNaming_NamingContext_resolve(name_server, &nom, ev);
 
-  if (ev->_major != CORBA_USER_EXCEPTION ||
-      strcmp(CORBA_exception_id(ev),ex_CosNaming_NamingContext_NotFound)) {
+  if(ev->_major == CORBA_NO_EXCEPTION) {
+    CORBA_Object_release(old_server, ev);
+    CosNaming_NamingContext_unbind(name_server, &nom, ev);
+    g_return_val_if_fail(ev->_major == CORBA_NO_EXCEPTION, CORBA_OBJECT_NIL);
+  } else if (ev->_major != CORBA_USER_EXCEPTION 
+	     || strcmp(CORBA_exception_id(ev),
+		       ex_CosNaming_NamingContext_NotFound)) {
 
     if(orig_ns == CORBA_OBJECT_NIL)
       CORBA_Object_release(name_server, ev);
 
-    CORBA_Object_release(old_server, ev);
     return -2;
   }
+
+  CORBA_exception_free(ev);
 
   CosNaming_NamingContext_bind(name_server, &nom, server, ev);
 
   if (ev->_major != CORBA_NO_EXCEPTION) {
+
     if(orig_ns == CORBA_OBJECT_NIL)
       CORBA_Object_release(name_server, ev);
 

@@ -46,6 +46,9 @@ int main(int argc, char *argv[])
     obj = goad_server_activate_with_id(NULL, activate_id, 0, NULL);
   } else if(activate_repo_id) {
     obj = goad_server_activate_with_repo_id(NULL, activate_repo_id, 0, NULL);
+  } else if(!strcmp(g_basename(argv[0]), "new-object")) {
+    if(argc < 2) { g_print("Usage: new-object <repo ID>\n"); return 1; }
+    obj = goad_server_activate_with_repo_id(NULL, argv[1], 0, NULL);
   } else {
     /* setup then main loop */
 
@@ -256,7 +259,7 @@ gb_activate_server(GtkWidget *w, GtkCList *clist)
   if(!CORBA_Object_is_nil(obj, &ev)) {
     iorstr = CORBA_ORB_object_to_string(orb, obj, &ev);
     gtk_statusbar_pop(GTK_STATUSBAR(GNOME_APP(mainwin)->statusbar), status_ctx);
-    gtk_statusbar_push(GTK_STATUSBAR(GNOME_APP(mainwin)->statusbar), status_ctx, iorstr);
+    gtk_statusbar_push(GTK_STATUSBAR(GNOME_APP(mainwin)->statusbar), status_ctx, "Server activated.");
     g_print("%s\n", iorstr);
     CORBA_free(iorstr);
     gb_create_server_list(NULL, clist);

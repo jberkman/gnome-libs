@@ -86,4 +86,5 @@ gnome_name_service_LDADD = 				\
 gbpixmapdir = $(datadir)/pixmaps
 gbpixmap_DATA = yes.xpm no.xpm
 
-
+install-data-hook:
+	ln -sf goad-browser $(bindir)/new-object

@@ -38,7 +38,7 @@ static gint die             (GnomeClient        *client,
 
 GtkWidget *app;
 
-int restarted = 0;
+static gboolean restarted= FALSE;
 /* Old Session state (it shouldn't be global variables, but i couldn't find
    a simple better way) */
 int os_x = 0,
@@ -80,16 +80,6 @@ static GnomeUIInfo main_menu[]=
 };
 
 
-/* True if parsing determined that all the work is already done.  */
-
-char *just_exit = NULL;
-
-struct poptOption prog_options[] = {
-  {"discard-session", 'd', POPT_ARG_STRING, &just_exit, 0,
-   N_("Discard session"), N_("ID")},
-  {NULL, '\0', 0, NULL, 0}
-};
-
 int
 main(int argc, char *argv[])
 {
@@ -99,20 +89,7 @@ main(int argc, char *argv[])
   bindtextdomain (PACKAGE, GNOMELOCALEDIR);
   textdomain (PACKAGE);
 
-  gnome_init_with_popt_table("gnome-hello-4-SM", VERSION,
-			     argc, argv, prog_options, 0, NULL);
-
-  if(just_exit) {
-    /* This should discard the saved information about this client.
-       Unfortunatlly is doesn't do so, yet.  */
-    gnome_config_clean_file (just_exit);
-    gnome_config_sync ();
-    
-    /* We really do not need to connect to the session manager in
-       this case, because we'll just exit after the gnome_init call.  */
-    gnome_client_disable_master_connection ();
-  }
-
+  gnome_init ("gnome-hello-4-SM", VERSION, argc, argv);
 
   /* Get the master client, that was hopefully connected to the
      session manager int the 'gnome_init' call.  All communication to
@@ -127,48 +104,27 @@ main(int argc, char *argv[])
 
   if (GNOME_CLIENT_CONNECTED (client))
     {
-      /* Get the client, that may hold the configuration for this
-         program.  This client may be NULL.  That meens, that this
-         client has not been restarted.  I.e. 'gnome_cloned_client' is
-         only non NULL, if this application was called with the
-         '--sm-client-id' or the '-sm-cloned-id' command line option,
-         but this is something, the gnome libraries and the session
-         manager take care for you.  */
-      GnomeClient *cloned= gnome_cloned_client ();
-
-      if (cloned)
-	{
-	  /* If cloned is non NULL, we have been restarted.  */
-	  restarted= 1;
-
-	  /* We restore information that was stored once before.  Note,
-             that we use the cloned client here, because it may be
-             that we are a clone of another client, which has another
-             client id than we have.  */
-	  gnome_config_push_prefix (gnome_client_get_config_prefix (cloned));
-	  
-	  os_x = gnome_config_get_int ("Geometry/x");
-	  os_y = gnome_config_get_int ("Geometry/y");
-	  os_w = gnome_config_get_int ("Geometry/w");
-	  os_h = gnome_config_get_int ("Geometry/h");
-	  
-	  gnome_config_pop_prefix ();
-	}
-      /* We could even use 'gnome_client_get_config_prefix' is cloned
-	 is NULL.  In this case, we would get "/gnome-hello-4-SM/" as
-	 config prefix.  This is usefull, if the gnome-hello-4-SM
-	 config file holds some default values for our application.  */
+      gnome_config_push_prefix (gnome_client_get_config_prefix (client));
+      
+      os_x     = gnome_config_get_int  ("Geometry/x");
+      os_y     = gnome_config_get_int  ("Geometry/y");
+      os_w     = gnome_config_get_int  ("Geometry/w");
+      os_h     = gnome_config_get_int  ("Geometry/h");
+      restarted= gnome_config_get_bool ("General/restarted=0");
+      
+      gnome_config_pop_prefix ();
     }
-
-  if (! just_exit)
+  else
     {
-      /* prepare_app() makes all the gtk calls necessary to set up a
-	 minimal Gnome application; It's based on the hello world
-	 example from the Gtk+ tutorial */
-      prepare_app ();
-
-      gtk_main ();
+      restarted= FALSE;
     }
+  
+  /* prepare_app() makes all the gtk calls necessary to set up a
+     minimal Gnome application; It's based on the hello world
+     example from the Gtk+ tutorial */
+  prepare_app ();
+  
+  gtk_main ();
 
   return 0;
 }
@@ -262,23 +218,22 @@ save_state (GnomeClient        *client,
 	    gint                fast,
 	    gpointer            client_data)
 {
-  gchar *session_id;
-  gchar *argv[3];
+  gchar *prefix= gnome_client_get_config_prefix (client);
+  gchar *argv[]= { "rm", "-r", NULL };
   gint x, y, w, h;
-
-  session_id= gnome_client_get_id (client);
 
   /* The only state that gnome-hello has is the window geometry. 
      Get it. */
   gdk_window_get_geometry (app->window, &x, &y, &w, &h, NULL);
 
   /* Save the state using gnome-config stuff. */
-  gnome_config_push_prefix (gnome_client_get_config_prefix (client));
+  gnome_config_push_prefix (prefix);
   
   gnome_config_set_int ("Geometry/x", x);
   gnome_config_set_int ("Geometry/y", y);
   gnome_config_set_int ("Geometry/w", w);
   gnome_config_set_int ("Geometry/h", h);
+  gnome_config_set_bool ("General/restarted", TRUE);
 
   gnome_config_pop_prefix ();
   gnome_config_sync();
@@ -286,15 +241,14 @@ save_state (GnomeClient        *client,
   /* Here is the real SM code. We set the argv to the parameters needed
      to restart/discard the session that we've just saved and call
      the gnome_session_set_*_command to tell the session manager it. */
-  argv[0] = (char*) client_data;
-  argv[1] = "--discard-session";
-  argv[2] = gnome_client_get_config_prefix (client);
+  argv[2]= gnome_config_get_real_path (prefix);
   gnome_client_set_discard_command (client, 3, argv);
 
   /* Set commands to clone and restart this application.  Note that we
      use the same values for both -- the session management code will
      automatically add whatever magic option is required to set the
      session id on startup.  */
+  argv[0]= (gchar*) client_data;
   gnome_client_set_clone_command (client, 1, argv);
   gnome_client_set_restart_command (client, 1, argv);
 

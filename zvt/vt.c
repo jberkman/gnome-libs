@@ -540,7 +540,12 @@ static void vt_tab(struct vt_em *vt)
   c=l->data[vt->cursorx]&VTATTR_DATAMASK;
   /* dont store tab over a space - will affect attributes */
   if (c==0) {
-    l->data[vt->cursorx] = 9|vt->attr; /* store 'tab' if we can ... helps cut/paste */
+    /*
+     * Note that we do not store the attribute for the
+     * tab, as it should behave transparently from the attribute
+     * point of view
+     */
+    l->data[vt->cursorx] = 9;
   }
 
   /* move cursor to new tab position */
