@@ -1,3 +1,11 @@
+Sun Oct 18 02:08:20 1998  Owen Taylor  <otaylor@gtk.org>
+
+	* libgnome/libgnome.h: Add in gnome-mime.h, since 
+	gnome_uri_list_* is (temporarily?) there.
+
+	* libgnome/gnome-mime.[ch]: Added functions to decompose
+	data of the type text/uri-list.
+
 1998-10-18  James Henstridge  <james@daa.com.au>
 
 	* gnome-libs.spec (%files section): Added %{prefix}/share/gtkrc
