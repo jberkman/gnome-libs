@@ -67,23 +67,7 @@ struct _GnomeIconSelectorClass {
 guint        gnome_icon_selector_get_type     (void) G_GNUC_CONST;
 
 GtkWidget   *gnome_icon_selector_new          (const gchar *history_id,
-                                               const gchar *dialog_title,
-					       guint32 flags);
-
-GtkWidget   *gnome_icon_selector_new_custom   (const gchar *history_id,
-                                               const gchar *dialog_title,
-                                               GtkWidget *entry_widget,
-                                               GtkWidget *selector_widget,
-                                               GtkWidget *browse_dialog,
-                                               guint32 flags);
-
-void         gnome_icon_selector_construct    (GnomeIconSelector *iselector,
-                                               const gchar *history_id,
-                                               const gchar *dialog_title,
-                                               GtkWidget *entry_widget,
-                                               GtkWidget *selector_widget,
-                                               GtkWidget *browse_dialog,
-                                               guint32 flags);
+                                               const gchar *dialog_title);
 
 void         gnome_icon_selector_add_defaults (GnomeIconSelector *iselector);
 

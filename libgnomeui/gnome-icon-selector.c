@@ -95,6 +95,13 @@ static void      add_file_handler           (GnomeSelector            *selector,
                                              gint                      position,
 					     guint                     list_id,
                                              GnomeSelectorAsyncHandle *async_handle);
+static void      do_construct_handler       (GnomeSelector            *selector);
+
+static GObject*
+gnome_icon_selector_constructor (GType                  type,
+				 guint                  n_construct_properties,
+				 GObjectConstructParam *construct_properties);
+
 
 
 static GnomeFileSelectorClass *parent_class;
@@ -141,6 +148,8 @@ gnome_icon_selector_class_init (GnomeIconSelectorClass *class)
     object_class->destroy = gnome_icon_selector_destroy;
     gobject_class->finalize = gnome_icon_selector_finalize;
 
+    gobject_class->constructor = gnome_icon_selector_constructor;
+
     selector_class->clear = clear_handler;
     selector_class->freeze = freeze_handler;
     selector_class->thaw = thaw_handler;
@@ -149,6 +158,8 @@ gnome_icon_selector_class_init (GnomeIconSelectorClass *class)
     selector_class->get_selection = get_selection_handler;
 
     selector_class->add_file = add_file_handler;
+
+    selector_class->do_construct = do_construct_handler;
 }
 
 static void
@@ -187,42 +198,35 @@ iselector_directory_filter_func (const GnomeVFSFileInfo *info, gpointer data)
 	return TRUE;
 }
 
-
-/**
- * gnome_icon_selector_construct:
- * @iselector: Pointer to GnomeIconSelector object.
- * @history_id: If not %NULL, the text id under which history data is stored
- *
- * Constructs a #GnomeIconSelector object, for language bindings or subclassing
- * use #gnome_icon_selector_new from C
- *
- * Returns: 
- */
-void
-gnome_icon_selector_construct (GnomeIconSelector *iselector,
-			       const gchar *history_id,
-			       const gchar *dialog_title,
-			       GtkWidget *entry_widget,
-			       GtkWidget *selector_widget,
-			       GtkWidget *browse_dialog,
-			       guint32 flags)
+static gboolean
+get_value_boolean (GnomeIconSelector *iselector, const gchar *prop_name)
 {
+    GValue value = { 0, };
+    gboolean retval;
+
+    g_value_init (&value, G_TYPE_BOOLEAN);
+    g_object_get_property (G_OBJECT (iselector), prop_name, &value);
+    retval = g_value_get_boolean (&value);
+    g_value_unset (&value);
+
+    return retval;
+}
+
+static void
+do_construct_handler (GnomeSelector *selector)
+{
+    GnomeIconSelector *iselector;
     GnomeVFSDirectoryFilter *filter;
 
-    g_return_if_fail (iselector != NULL);
-    g_return_if_fail (GNOME_IS_ICON_SELECTOR (iselector));
+    g_return_if_fail (selector != NULL);
+    g_return_if_fail (GNOME_IS_FILE_SELECTOR (selector));
 
-    /* Create the default selector widget if requested. */
-    if (flags & GNOME_SELECTOR_DEFAULT_SELECTOR_WIDGET) {
+    iselector = GNOME_ICON_SELECTOR (selector);
+
+    if (get_value_boolean (iselector, "use_default_selector_widget")) {
 	GtkWidget *box, *sb, *frame, *list;
 	GtkAdjustment *vadj;
-
-	if (selector_widget != NULL) {
-	    g_warning (G_STRLOC ": It makes no sense to use "
-		       "GNOME_SELECTOR_DEFAULT_SELECTOR_WIDGET "
-		       "and pass a `selector_widget' as well.");
-	    return;
-	}
+	GValue value = { 0, };
 
 	box = gtk_hbox_new (FALSE, 5);
 
@@ -256,13 +260,13 @@ gnome_icon_selector_construct (GnomeIconSelector *iselector,
 	
 	gtk_widget_show_all (box);
 
-	selector_widget = box;
+	g_value_init (&value, GTK_TYPE_WIDGET);
+	g_value_set_object (&value, G_OBJECT (box));
+	g_object_set_property (G_OBJECT (iselector), "selector_widget", &value);
+	g_value_unset (&value);
     }
 
-    gnome_file_selector_construct (GNOME_FILE_SELECTOR (iselector),
-				   history_id, dialog_title,
-				   entry_widget, selector_widget,
-				   browse_dialog, flags);
+    GNOME_CALL_PARENT_HANDLER (GNOME_SELECTOR_CLASS, do_construct, (selector));
 
     filter = gnome_vfs_directory_filter_new_custom
 	(iselector_directory_filter_func,
@@ -273,6 +277,25 @@ gnome_icon_selector_construct (GnomeIconSelector *iselector,
 
     gnome_file_selector_set_filter (GNOME_FILE_SELECTOR (iselector), filter);
 }
+
+static GObject*
+gnome_icon_selector_constructor (GType                  type,
+				 guint                  n_construct_properties,
+				 GObjectConstructParam *construct_properties)
+{
+    GObject *object = G_OBJECT_CLASS (parent_class)->constructor (type,
+								  n_construct_properties,
+								  construct_properties);
+    GnomeIconSelector *iselector = GNOME_ICON_SELECTOR (object);
+
+    g_message (G_STRLOC ": %d - %d", type, GNOME_TYPE_ICON_SELECTOR);
+
+    if (type == GNOME_TYPE_ICON_SELECTOR)
+	gnome_selector_do_construct (GNOME_SELECTOR (iselector));
+
+    return object;
+}
+
 
 /**
  * gnome_icon_selector_new
@@ -286,47 +309,23 @@ gnome_icon_selector_construct (GnomeIconSelector *iselector,
  */
 GtkWidget *
 gnome_icon_selector_new (const gchar *history_id,
-			 const gchar *dialog_title,
-			 guint32 flags)
+			 const gchar *dialog_title)
 {
     GnomeIconSelector *iselector;
 
-    g_return_val_if_fail ((flags & ~GNOME_SELECTOR_USER_FLAGS) == 0, NULL);
-
-    iselector = gtk_type_new (gnome_icon_selector_get_type ());
-
-    flags |= GNOME_SELECTOR_DEFAULT_ENTRY_WIDGET |
-	GNOME_SELECTOR_DEFAULT_SELECTOR_WIDGET |
-	GNOME_SELECTOR_DEFAULT_BROWSE_DIALOG |
-	GNOME_SELECTOR_WANT_BROWSE_BUTTON |
-	GNOME_SELECTOR_WANT_DEFAULT_BUTTON |
-	GNOME_SELECTOR_WANT_CLEAR_BUTTON;
-
-    gnome_icon_selector_construct (iselector, history_id, dialog_title,
-				   NULL, NULL, NULL, flags);
+    iselector = g_object_new (gnome_icon_selector_get_type (),
+			      "use_default_entry_widget", TRUE,
+			      "use_default_selector_widget", TRUE,
+			      "use_default_browse_dialog", TRUE,
+			      "want_browse_button", TRUE,
+			      "want_clear_button", TRUE,
+			      "want_default_button", TRUE,
+			      "history_id", history_id,
+			      "dialog_title", dialog_title,
+			       NULL);
 
     return GTK_WIDGET (iselector);
 }
-
-GtkWidget *
-gnome_icon_selector_new_custom (const gchar *history_id,
-				const gchar *dialog_title,
-				GtkWidget *entry_widget,
-				GtkWidget *selector_widget,
-				GtkWidget *browse_dialog,
-				guint32 flags)
-{
-    GnomeIconSelector *iselector;
-
-    iselector = gtk_type_new (gnome_icon_selector_get_type ());
-
-    gnome_icon_selector_construct (iselector, history_id, dialog_title,
-				   entry_widget, selector_widget,
-				   browse_dialog, flags);
-
-    return GTK_WIDGET (iselector);
-}
-
 
 static void
 gnome_icon_selector_destroy (GtkObject *object)
