@@ -399,6 +399,42 @@
 		</glossdef>
 	      </glossentry>
 
+	      <glossentry>
+	        <glossterm><symbol>GNOME_APP_UI_ITEM_CONFIGURABLE</symbol></glossterm>
+		<glossdef>
+		  <para>
+		    This is used to indicate that the values for this
+		    menu item should be loaded from a configuration
+		    file.  A description of the format for the
+		    configuration file is given in <xref
+		    linkend="gnome-app-helper-keybindings-config">.
+		    These should probably not be used manually.  Each
+		    possible configurable item has a matching
+		    convenience macro (see <xref
+		    linkend="gnome-app-helper-convenience-macros">).
+		  </para>
+
+		  <para>
+		    However, for completeness, a description of the
+		    programmatic use of this type is given.  When
+		    using this item, most of the data is ignored.  The
+		    exceptions are three fold.  Firstly, the
+		    <structfield>moreinfo</structfield> and
+		    <structfield>data</structfield> fields are treated
+		    exactly as in a
+		    GNOME_APP_UI_ITEM
+		    <structname>GnomeUIInfo</structname> array
+		    element.  Secondly, the
+		    <structfield>accelerator_key</structfield> field
+		    is an integer cast from an element of the
+		    GNOMEUIInfoConfigurableTypes
+		    enum describing which configurable menu item this
+		    represents.  Finally, if accelerator_key is 0,
+		    i.e. GNOME_APP_CONFIGURABLE_ITEM_NEW, then label
+		    and hint are both used verbatim.
+		  </para>
+		</glossdef>
+	      </glossentry>
 	    </glosslist>
 
 	    <para>
@@ -741,6 +777,82 @@
 	The following macros are available:
       </para>
 
+    </sect1>
+
+    <sect1 id="gnome-app-helper-keybindings-config">
+      <title>Format information for the configuration of keybindings
+      for standard mens</title>
+
+      <para>
+        The information about keybindings is stored using
+        gnome-config.  It's stored in the section "/Gnome/Menus".
+        Each keybinding is two key/value pairs.  We'll assume that the
+        menu item is new.  The idea extends.  The first key pair, in
+        this case, is Menu-new-accelerator-key.  The value is an
+        integer (I believe from gtk+/gdk/gdkkeysyms.h) describing
+        which key corresponds to this menu item.  The second key is
+        Menu-new-ac-mods.  This value is another integer, describing
+        which set of modifiers corresponds to this menu item.  This
+        value is a logical or of values in GdkModifierType in
+        gtk+/gdk/gdktypes.h.
+      </para>
+
+      <para>
+        If building the configuration by hand, you need to edit
+        ~/.gnome/Gnome.  You need to add a section headed by [Menus].
+        It should contain two lines for each menu item.  Again suppose
+        that you're configuring the menu item new.  The first line of
+        the pair should read "Menu-new-accelerator-key=&lt;number>"
+        where &lt;number> is an integer from gtk+/gdk/gdkkeysyms.h.
+        Usually this means that it's an ASCII value describing which
+        key corresponds to this menu item.  The second line should
+        read "Menu-new-ac-mods=&lt;number>" where &lt;number> is a logical or
+        of values from GdkModifierType in gtk+/gdk/gdktypes.h.
+        Usually, this means to start with 0.  If you want shift to be
+        part of the keybinding, add 1.  If you want control to be part
+        of the keybinding add 4.  If you want alt to be part of the
+        keybinding, add 8.  The result is the value substituted for
+        &lt;number> in the second line of the pair.
+	
+      </para>
+
+      <para>
+        The list of possible menu items is as follows.
+        <itemizedlist>
+          <listitem><para>new</para></listitem>
+	  <listitem><para>open</para></listitem>
+	  <listitem><para>save</para></listitem>
+	  <listitem><para>save-as</para></listitem>
+	  <listitem><para>revert</para></listitem>
+	  <listitem><para>print</para></listitem>
+	  <listitem><para>print-setup</para></listitem>
+	  <listitem><para>close</para></listitem>
+	  <listitem><para>exit</para></listitem>
+	  <listitem><para>cut</para></listitem>
+	  <listitem><para>copy</para></listitem>
+	  <listitem><para>paste</para></listitem>
+	  <listitem><para>clear</para></listitem>
+	  <listitem><para>undo</para></listitem>
+	  <listitem><para>redo</para></listitem>
+	  <listitem><para>find</para></listitem>
+	  <listitem><para>find-again</para></listitem>
+	  <listitem><para>replace</para></listitem>
+	  <listitem><para>properties</para></listitem>
+	  <listitem><para>preferences</para></listitem>
+	  <listitem><para>about</para></listitem>
+	  <listitem><para>select-all</para></listitem>
+	  <listitem><para>new-window</para></listitem>
+	  <listitem><para>close-window</para></listitem>
+	  <listitem><para>new-game</para></listitem>
+	  <listitem><para>pause-game</para></listitem>
+	  <listitem><para>restart-game</para></listitem>
+	  <listitem><para>undo-move</para></listitem>
+	  <listitem><para>redo-move</para></listitem>
+	  <listitem><para>hint</para></listitem>
+	  <listitem><para>scores</para></listitem>
+	  <listitem><para>end-game</para></listitem>
+	</itemizedlist>
+      </para>
     </sect1>
 
     <sect1 id="gnome-app-helper-functions">
