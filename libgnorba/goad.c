@@ -23,9 +23,12 @@
 
 #define GOAD_MAGIC_FD 123
 
-#define SHLIB_DEPENDENCIES 1
+#ifdef HAVE_DLFCN_H
+#    define SHLIB_DEPENDENCIES 1
+#endif
+
 #ifdef SHLIB_DEPENDENCIES
-#include <dlfcn.h>
+#    include <dlfcn.h>
 #endif
 #include <ctype.h>
 

@@ -170,9 +170,11 @@ AC_CHECK_LIB(util, openpty,
     ])
 
 AC_CHECK_FUNCS(grantpt utmpxname utmpname getutmpx getutent getttyent)
-AC_CHECK_FUNCS(updwtmpx updwtmp fcntl flock strrchr)
+AC_CHECK_FUNCS(updwtmpx updwtmp fcntl flock strrchr seteuid)
 
 AC_CHECK_HEADER(stropts.h, AC_DEFINE(HAVE_STROPTS_H))
+AC_CHECK_HEADER(dlfcn.h, AC_DEFINE(HAVE_DLFCN_H))
+
 dnl And workaround for a Autoconf 2.4 bug:
 if test x$ac_cv_func_grantpt = xyes; then
     :

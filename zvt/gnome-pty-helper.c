@@ -160,6 +160,7 @@ static int
 init_msg_pass ()
 {
 	/* nothing */
+	return 0;
 }
 
 int
@@ -289,8 +290,13 @@ open_ptys (int utmp, int wtmp)
 	savedUid = geteuid();
 	savedGid = getegid();
 
-	seteuid(pwent->pw_uid);
-	setegid(pwent->pw_gid);
+#ifdef HAVE_SETEUID
+	seteuid (pwent->pw_uid);
+	setegid (pwent->pw_gid);
+#else
+	setuid (pwent->pw_uid);
+	setgid (pwent->pw_gid);
+#endif
 	status = openpty (&master_pty, &slave_pty, term_name, NULL, NULL);
 	setuid(savedUid);
 	setgid(savedGid);

@@ -40,6 +40,29 @@
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.6  1999/04/08 19:32:52  unammx
+* 1999-04-08  Miguel de Icaza  <miguel@nuclecu.unam.mx>
+*
+* 	* configure.in (LIBS): Test for existance of dlfcn.h header.  Make
+* 	libgnorba/goad.c only use shared lib deps if the system has
+* 	dlfcn.h.
+*
+* 	I am suprised that nobody ever fixed this.
+*
+* 	Add a test for seteuid, it is not available on HP-UX.
+*
+* 	* libgnorba/goad.c: Do include dlfcn.h only if available on this
+* 	system
+*
+* 1999-04-08  Miguel de Icaza  <miguel@nuclecu.unam.mx>
+*
+* 	* XmHTMLI.h: Always use full prototypes.  Fixes compilation on
+* 	solaris-2.6
+*
+* 1999-04-08  Miguel de Icaza  <miguel@nuclecu.unam.mx>
+*
+* 	* gnome-pty-helper.c (init_msg_pass): Return a value.
+*
 * Revision 1.5  1997/12/29 22:16:22  unammx
 * This version does:
 *
@@ -987,17 +1010,13 @@ extern void _XmHTMLFreeEventDatabase(XmHTMLWidget old, XmHTMLWidget html);
 	 __LINE__, FUNC
 
 extern void __XmHTMLWarning(
-#if NeedVarargsPrototypes
 	TWidget w, String module, int line, String routine,
 	String fmt, ...
-#endif
 );
 
 extern void __XmHTMLError(
-#if NeedVarargsPrototypes
 	TWidget w, String module, int line, String routine, 
 	String fmt, ...
-#endif
 );
 
 extern void __XmHTMLBadParent(TWidget w, String src_file, int line, String func);
@@ -1009,15 +1028,11 @@ extern void __XmHTMLBadParent(TWidget w, String src_file, int line, String func)
 #define __WFUNC__(WIDGET_ID, FUNC)	(TWidget)WIDGET_ID
 
 extern void __XmHTMLWarning(
-#if NeedVarargsPrototypes
 	TWidget w, String fmt, ...
-#endif
 );
 
 extern void __XmHTMLError(
-#if NeedVarargsPrototypes
 	TWidget w, String fmt, ...
-#endif
 );
 
 extern void __XmHTMLBadParent(TWidget w, String func);

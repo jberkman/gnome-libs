@@ -1,3 +1,16 @@
+1999-04-08  Miguel de Icaza  <miguel@nuclecu.unam.mx>
+
+	* configure.in (LIBS): Test for existance of dlfcn.h header.  Make
+	libgnorba/goad.c only use shared lib deps if the system has
+	dlfcn.h.
+
+	I am suprised that nobody ever fixed this.
+
+	Add a test for seteuid, it is not available on HP-UX.
+
+	* libgnorba/goad.c: Do include dlfcn.h only if available on this
+	system
+	
 1999-04-07  Federico Mena Quintero  <federico@nuclecu.unam.mx>
 
 	* NEWS: Added the announcements for gnome-libs-1.0.4 and 1.0.5.
