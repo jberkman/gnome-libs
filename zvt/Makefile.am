@@ -4,13 +4,11 @@ noinst_PROGRAMS  = zterm test-utmp
 
 libzvtincludedir = $(includedir)/zvt
 
-INCLUDES = -I.. -I$(srcdir)/.. 				\
-	-I$(includedir) 				\
-	$(SUPPORTINCS) 					\
-        $(GTK_CFLAGS)  					\
+INCLUDES = -I.. -I$(srcdir)/.. $(SUPPORTINCS)		\
+	-I$(top_srcdir)/intl -I$(top_builddir)/intl	\
+	-I$(includedir) $(GTK_CFLAGS)  			\
 	$(GDK_IMLIB_CFLAGS)				\
-	-DGNOMESBINDIR=\""$(sbindir)"\" 		\
-	-I$(top_srcdir)/intl -I$(top_builddir)/intl
+	-DGNOMESBINDIR=\""$(sbindir)"\"
 
 libzvt_la_SOURCES =					\
 	gnome-login-support.h				\
