@@ -29,7 +29,9 @@
 #include <config.h>
 
 /* Use this to pull SCM_RIGHTS definition on IRIX */
-#define _XOPEN_SOURCE
+#if defined(irix) || defined (__irix__) || defined(sgi) || defined (__sgi__)
+#    define _XOPEN_SOURCE
+#endif
 
 #include <sys/types.h>
 #include <sys/time.h>
@@ -381,7 +383,7 @@ sanity_checks (void)
 	if (fcntl (2, F_GETFL, &flag) == EBADF){
 		stderr_fd = open ("/dev/tty", O_RDWR);
 		if (stderr_fd == -1){
-			stderr_fd = open ("/dev/nulll", O_RDWR);
+			stderr_fd = open ("/dev/null", O_RDWR);
 			if (stderr_fd == -1)
 				exit (1);
 		}
