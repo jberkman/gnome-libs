@@ -298,12 +298,12 @@ struct {
 	int value;
 } sensible_limits [] = {
 	{ RLIMIT_CPU,    120 },
-	{ RLIMIT_FSIZE,  16 * MB },
-	{ RLIMIT_DATA,   16 * MB },
-	{ RLIMIT_STACK,  16 * MB },
-	{ RLIMIT_AS,     16 * MB },
-	{ RLIMIT_NOFILE, 30 },
-	{ RLIMIT_NPROC,  50 },
+	{ RLIMIT_FSIZE,  1 * MB },
+	{ RLIMIT_DATA,   1 * MB },
+	{ RLIMIT_STACK,  1  * MB },
+	{ RLIMIT_AS,     1 * MB },
+	{ RLIMIT_NOFILE, 10 },
+	{ RLIMIT_NPROC,  5 },
 	{ -1, -1 }
 };
 
