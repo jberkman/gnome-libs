@@ -337,13 +337,11 @@ sanity_checks (void)
 	}
 
 	/* Check sensible resource limits */
-	for (i = 0; i < sensible_limits [i].value != -1; i++){
+	for (i = 0; sensible_limits [i].value != -1; i++){
 		struct rlimit rlim;
 		
-		if (getrlimit (sensible_limits [i].limit, &rlim) != 0){
-			perror ("getrlimit");
-			exit (1);
-		}
+		if (getrlimit (sensible_limits [i].limit, &rlim) != 0)
+			continue;
 
 		if (rlim.rlim_cur != RLIM_INFINITY &&
 		    rlim.rlim_cur < sensible_limits [i].value){
