@@ -47,12 +47,6 @@ like panel, will not run properly.))
 AC_CHECK_FUNCS(dlerror,,)
 AC_SUBST(DL_LIB)
 
-UTIL_LIB=""
-AC_CHECK_FUNCS(forkpty, AC_DEFINE(HAVE_FORKPTY),
-[AC_CHECK_LIB(util, forkpty, [AC_DEFINE(HAVE_FORKPTY)
-                              UTIL_LIB='-lutil'])])
-AC_SUBST(UTIL_LIB)
-
 AC_CHECK_FUNCS(strerror gethostbyname setfsgid)
 NSL_LIBS=""
 if test $ac_cv_func_gethostbyname = no; then
