@@ -1,3 +1,9 @@
+1998-07-29  Raja R Harinath  <harinath@cs.umn.edu>
+
+	* acinclude.m4: Include definition of `AM_PATH_GLIB' for people
+	who haven't installed glib 1.1.x.  This is a temporary measure, as
+	long as `gnome-libs' claims to support gtk+ 1.0.x.
+
 Wed Jul 22 16:47:14 1998  Tom Tromey  <tromey@cygnus.com>
 
 	* libgnome/gnome-config.c (_gnome_config_get_int_with_default):
