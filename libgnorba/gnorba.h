@@ -16,7 +16,7 @@ CORBA_ORB gnome_CORBA_init          (char *app_id,
 				     unsigned int flags,
 				     int *arg_index,
 				     CORBA_Environment *ev);
-CORBA_Object gnome_get_name_service (void);
+CORBA_Object gnome_name_service_get(void);
 
 /**** gnome-plugins module ****/
 typedef struct {
@@ -45,19 +45,22 @@ const GnomePlugin *gnome_plugin_use (const char *plugin_id);
 
 /**** goad module ****/
 typedef enum {
-	GOAD_SERVER_SHLIB,
-	GOAD_SERVER_EXE,
-	GOAD_SERVER_RELAY
+	GOAD_SERVER_SHLIB = 1,
+	GOAD_SERVER_EXE = 2,
+	GOAD_SERVER_RELAY = 3
 } GoadServerType;
 
 typedef struct {
 	GoadServerType type;
-	const char     *repo_id;
-	const char     *id;
-	const char     *description;
+	char     *repo_id;
+	char     *id;
+	char     *description;
 	
-        /* executable/shlib path, relayer IOR, whatever */
-	const char     *location_info; 
+        /*
+	 * Executable/shlib path, relayer IOR, whatever.
+	 * This field may disappear at any time. You have been warned ;-)
+	 */
+	char     *location_info;
 } GoadServer;
 
 typedef enum {
@@ -67,24 +70,35 @@ typedef enum {
 
 	/* these two are mutually exclusive */
 	GOAD_ACTIVATE_EXISTING_ONLY = 1 << 2, /* Only do lookup in name
-					       * service for currently running
-					       * version.
-					       */
-	GOAD_ACTIVATE_NEW_ONLY = 1 << 3       /* No lookup in name service. */
+						 service for currently running
+						 version. */
+	GOAD_ACTIVATE_NEW_ONLY = 1 << 3,      /* No lookup in name service. */
+
+	GOAD_ACTIVATE_NO_NS_REGISTER = 1 << 4 /* DON'T register this new
+						 server with the name service */
 } GoadActivationFlags;
 
 /*
  * goad_servers_list:
  *
  * Return value:
- *   an array of GoadServers, the last element is a NULL
+ *   An array of GoadServers. The repo_id in the last array element is NULL
  */
-const GoadServer *goad_servers_list                 (void);
+GoadServer *      goad_server_list_get              (void);
+void              goad_server_list_free             (GoadServer *server_list);
+
+/* Passing GOAD_ACTIVATE_{REMOTE,SHLIB} flags to this routine doesn't make sense,
+   since the activation info is already specified in 'sinfo'. */
 CORBA_Object      goad_server_activate              (GoadServer *sinfo,
 						     GoadActivationFlags flags);
 
-/* Picks the first one on the list that meets criteria */
-CORBA_Object      goad_server_activate_with_repo_id (const char *repo_id,
+/*
+ * Picks the first one on the list that meets criteria.
+ * You can pass in a NULL 'server_list' if you wish, and
+ * this routine will call goad_server_list_get() internally.
+ */
+CORBA_Object      goad_server_activate_with_repo_id (GoadServer *server_list,
+						     const char *repo_id,
 						     GoadActivationFlags flags);
 
 #endif

@@ -175,7 +175,7 @@ gnome_CORBA_init(char *app_id,
 
 /* This routine bootstraps CORBA connectivity for a GNOME desktop session... */
 CORBA_Object
-gnome_get_name_service(void)
+gnome_name_service_get(void)
 {
   static CORBA_Object name_service = CORBA_OBJECT_NIL;
   CORBA_Object retval = NULL;
