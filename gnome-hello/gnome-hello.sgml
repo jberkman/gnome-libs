@@ -1,4 +1,4 @@
-<!doctype chapter PUBLIC "-//Davenport//DTD DocBook V3.0//EN" [
+<!DOCTYPE chapter PUBLIC "-//Davenport//DTD DocBook V3.0//EN" [
   <!ENTITY GNOME "GNOME">
   <!ENTITY GNOME-FULL "GNU Network Object Model Environment">
 ]>
@@ -7,12 +7,17 @@
   <title>GNOME's Hello World program</title>
   <para>
     GNOME, like all other civilized software systems, comes with a
-    <emphasis>hello, world</emphasis> &mdash; type of program.</para>
+    <emphasis>hello, world</emphasis> &mdash; type of program.  In
+    fact, it has several!</para>
   <para>
-    <application>gnome-hello</application> is a &GNOME; application which
-    contains all the essential and common features of GNOME programs,
-    such as initialization, event loops, configuration file parsing,
-    internationalization and so forth.</para>
+    <application>gnome-hello</application> is a set of &GNOME;
+    applications which contain all the essential and common features
+    of GNOME programs, such as initialization, event loops,
+    configuration file parsing, internationalization and so forth.
+    Since there are many aspects of a &GNOME; application, we have
+    written <application>gnome-hello</application> in six stages.
+    Each stage is a little program introduces you to the next level of
+    &GNOME; awareness.</para>
   <para>
     <application>gnome-hello</application> is intended to be an example of the
     GNOME coding standards, as well as a fun and useless little
@@ -25,17 +30,42 @@
   <sect1>
     <title>Invoking <application>gnome-hello</application></title>
     <para>
-      You can invoke <application>gnome-hello</application> from the shell by
-      typing:</para>
+      Here is a list of the various
+      <application>gnome-hello</application> programs and how they
+      might be invoked:</para>
+      <literallayout><prompt>$ </prompt><userinput>gnome-hello-0-basic</userinput></literallayout>
+      <para>invokes <command>gnome-hello-0-basic</command> which just
+	creates a single button; pressing that button quits the
+	program</para>
+      <literallayout><prompt>$ </prompt><userinput>gnome-hello-1-menus</userinput></literallayout>
+      <para>invokes gnome-hello-1-menus which introduces a basic
+	&GNOME; menu, using the correct &GNOME; menu API</para>
+      <literallayout><prompt>$ </prompt><userinput>gnome-hello-2-i18n</userinput></literallayout>
+      <literallayout><prompt>$ </prompt><userinput>gnome-hello-3-parse-args</userinput></literallayout>
+      <literallayout><prompt>$ </prompt><userinput>gnome-hello-4-SM</userinput></literallayout>
+      <literallayout><prompt>$ </prompt><userinput>gnome-hello-5-dnd</userinput></literallayout>
+
     <example>
-      <title>Invoking <application>gnome-hello</application></title>
-      <literallayout><prompt>$ </prompt><userinput>gnome-hello</userinput></literallayout>
+      <title>Using &GNOME;'s internationalization</title>
+      <para>&GNOME; has had internationalization (sometimes called
+	<acronym>i18n</acronym> support from the earliest phases of
+	development.  To get a &GNOME; program to give you messages in
+	your favourite language, simply set your
+	<envar>LANGUAGE</envar> environment variable to the two letter
+	code for that language.</para>
+      <para>For example, the <command>gnome-hello-2-i18n</command>
+	command invokes the <application>gnome-hello</application>
+	variant which includes support for internationalization. If
+	you want to see this program (or any GNOME application)
+	display its menus and other information in
+	<emphasis>Italian</emphasis>, you could type (for Bourne shell
+	or bash):</para>
+      <literallayout><prompt>$ </prompt><userinput>LANGUAGE=it</userinput></literallayout>
+      <literallayout><prompt>$ </prompt><userinput>export LANGUAGE</userinput></literallayout>
+      <literallayout><prompt>$ </prompt><userinput>gnome-hello-2-i18n</userinput></literallayout>
     </example>
-    <para>
-      Or you can invoke <application>gnome-hello</application> from the
-      &GNOME; panel via the menu.  [FIXME: this is a good place to
-      play around with documenting the panel GUI.]</para>
   </sect1>
+
   <sect1>
     <title>The <application>gnome-hello</application> screen</title>
     <para>&GNOME; applications have a few requirements, all documented
@@ -43,13 +73,55 @@
 	URL="http://www.gnome.org/devel/writing.shtml">this
 	location</ulink>).</para>
     <sect2>
-      <title>The menu bar</title> <para>The menu bar for a GNOME
-	application must always contain at least
-	<guimenu>File</guimenu> and <guimenu>Help</guimenu> menus.
-	The <guimenu>File</guimenu> menu must have at least a
+      <title>The menu bar</title>
+      <para>The menu bar for a GNOME application must always contain
+	at least <guimenu>File</guimenu> and <guimenu>Help</guimenu>
+	menus. The <guimenu>File</guimenu> menu must have at least a
 	<guimenuitem>Quit</guimenuitem> item, and the
 	<guimenu>Help</guimenu> menu should have at least an
 	<guimenuitem>About ...</guimenuitem> item.</para>
+      <para>
+	The <command>gnome-hello-1-menus</command> program has the
+	minimal menu arrangement as can be seen in <xref
+	  linkend="fig-gnome-hello-1-main-screen"> and the more detailed
+	figures.</para>
+      <figure id="fig-gnome-hello-1-main-screen">
+	<title>Screen shot of <command>gnome-hello-1-menus</command></title>
+	<graphic fileref="gnome-hello-1-main-screen"></graphic>
+      </figure>
+      <figure id="fig-gnome-hello-1-file-menu">
+	<title>Screen shot of <command>gnome-hello-1-menus</command></title>
+	<graphic fileref="gnome-hello-1-file-menu"></graphic>
+      </figure>
+      <figure id="fig-gnome-hello-1-help-menu">
+	<title>Screen shot of <command>gnome-hello-1-menus</command></title>
+	<graphic fileref="gnome-hello-1-help-menu"></graphic>
+      </figure>
+      <figure id="fig-gnome-hello-1-about-dialog">
+	<title>Screen shot of <command>gnome-hello-1-menus</command></title>
+	<graphic fileref="gnome-hello-1-about-dialog"></graphic>
+      </figure>
+      <!-- now experiment with graphics callouts -->
+      <!--
+<GRAPHICCO>
+<AREASPEC UNITS="CALSPAIR">
+<AREA ID="co123" LABEL="1" COORDS="100,100 200,200">
+<AREA ID="co124" LABEL="2" COORDS="210,210 300,300">
+</AREASPEC>
+<GRAPHIC FILEREF="gnome-hello-1-about-dialog.gif"
+	  FORMAT="GIF"></GRAPHIC>
+<CALLOUTLIST>
+<TITLE>Comments on the Picture Above</TITLE>
+<CALLOUT AREAREFS="co123">
+<PARA>A bit too high up and left</PARA>
+</CALLOUT>
+<CALLOUT AREAREFS="co124">
+<PARA>This is the most interesting part of the diagram.
+</PARA>
+</CALLOUT>
+</CALLOUTLIST>
+</GRAPHICCO>
+      -->
     </sect2>
   </sect1>
 </chapter>

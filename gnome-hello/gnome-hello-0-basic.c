@@ -48,7 +48,7 @@ prepare_app()
 {
   GtkWidget *button;
 
-  /* Make the main window and binds the delete event so you can close
+  /* Makes the main window and binds the delete event so you can close
      the program from your WM */
   app = gnome_app_new ("hello", "Hello World Gnomified");
   gtk_widget_realize (app);
