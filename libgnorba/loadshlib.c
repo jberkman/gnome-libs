@@ -58,8 +58,8 @@ main(int argc, char* argv[])
 
   args = poptGetArgs(ctx);
 
-  CORBA_Object_release(goad_server_activate_with_id(NULL, args[0],
-						    GOAD_ACTIVATE_SHLIB, NULL), &ev);
+  goad_server_activate_with_id(NULL, id,
+			       GOAD_ACTIVATE_SHLIB, NULL);
 
   gtk_main();
 
