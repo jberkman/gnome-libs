@@ -24,7 +24,7 @@ noinst_PROGRAMS =  \
 # automake does not yet dig .sgml files, so for now the DocBook files
 # must be extra_dist.  Also, in the future we should distribute the
 # HTML files so that people without DocBook can still use the docs.
-EXTRA_DIST = gnome-hello.sgml
+EXTRA_DIST = gnome-hello.sgml gnome-hello.c
 GNOME_HELLO_GIFS=gnome-hello-1-main-screen.gif gnome-hello-1-file-menu.gif \
 	gnome-hello-1-help-menu.gif gnome-hello-1-about-dialog.gif
 
