@@ -1,3 +1,8 @@
+1998-11-23  Christopher Blizzard  <blizzard@appliedtheory.com>
+
+	* libgnome/gconfigger.c: Include <libgnomeP.h> not <gnome.h>.
+  	This should take care of the circular dependency problems.
+
 1998-11-20  James Henstridge  <james@daa.com.au>
 
         * gnome-libs.spec: added %{prefix}/etc/paper.config to the %files
