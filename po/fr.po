@@ -1,12 +1,12 @@
 # gnome-libs fr.po
-# Copyright (C) 1998 Free Software Foundation, Inc.
-# Vincent Renardias <vincent@ldsol.com>, 1998, 1999.
+# Copyright (C) 1998, 1999, 2000 Free Software Foundation, Inc.
+# Vincent Renardias <vincent@ldsol.com>, 1998, 1999, 2000.
 # Thibaut Cousin <Thibaut.Cousin@clermont.in2p3.fr>, 1999.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-libs 1.0.18\n"
-"POT-Creation-Date: 2000-02-21 18:12-0500\n"
+"POT-Creation-Date: 2000-02-26 17:45+0100\n"
 "PO-Revision-Date: 1998-03-28 20:08+0100\n"
 "Last-Translator: Vincent Renardias <vincent@ldsol.com>\n"
 "Language-Team: Gnome French Team <gnomefr@gnomefr.traduc.org>\n"
@@ -17,33 +17,33 @@ msgstr ""
 #: libgnome/gnomelib-init.c:176 libgnome/gnomelib-init.c:190
 #, c-format
 msgid "Could not create per-user gnome configuration directory `%s': %s\n"
-msgstr ""
+msgstr "Impossible de créer le répertoire de configuration GNOME `%s' : %s\n"
 
 #: libgnome/gnomelib-init.c:199
 #, c-format
 msgid ""
 "Could not set mode 0700 on private per-user gnome configuration directory "
 "`%s': %s\n"
-msgstr ""
+msgstr "Impossible de mettre les permissions 0700 sur le répertoire de configuration `%s' : %s\n"
 
 #: libgnome/gnomelib-init.c:206
 #, c-format
 msgid "Could not create gnome accelerators directory `%s': %s\n"
-msgstr ""
+msgstr "Impossible de créer le répertoires de raccourcis clavier `%s': %s\n"
 
-#: libgnomeui/gnome-about.c:320
+#: libgnomeui/gnome-about.c:332
 msgid "Author:"
 msgstr "Auteur :"
 
-#: libgnomeui/gnome-about.c:323 libgnomeui/gnome-about.c:325
+#: libgnomeui/gnome-about.c:335 libgnomeui/gnome-about.c:337
 msgid "Authors:"
 msgstr "Auteurs :"
 
-#: libgnomeui/gnome-about.c:630
+#: libgnomeui/gnome-about.c:643
 msgid "Authors: "
 msgstr "Auteurs : "
 
-#: libgnomeui/gnome-about.c:971 libgnomeui/stock_demo.c:307
+#: libgnomeui/gnome-about.c:1020 libgnomeui/stock_demo.c:307
 #: libgnomeui/winhints_demo.c:256
 msgid "About"
 msgstr "A propos"
@@ -738,17 +738,21 @@ msgstr "Choisissez une police"
 msgid "Font"
 msgstr "Police"
 
-#: libgnomeui/gnome-icon-entry.c:157 libgnomeui/gnome-icon-entry.c:612
+#: libgnomeui/gnome-icon-entry.c:273 libgnomeui/gnome-icon-entry.c:773
 msgid "No Icon"
 msgstr "Pas d'icône"
 
-#: libgnomeui/gnome-icon-entry.c:321 libgnomeui/gnome-pixmap-entry.c:296
+#: libgnomeui/gnome-icon-entry.c:447 libgnomeui/gnome-pixmap-entry.c:296
 msgid "Can't find an hbox, using a normal file selection"
 msgstr "hbox non trouvée, utilisation d'une sélection de fichier normale"
 
-#: libgnomeui/gnome-icon-entry.c:327 libgnomeui/gnome-pixmap-entry.c:302
+#: libgnomeui/gnome-icon-entry.c:453 libgnomeui/gnome-pixmap-entry.c:302
 msgid "Preview"
 msgstr "Prévisualisation"
+
+#: libgnomeui/gnome-icon-entry.c:794
+msgid "Browse"
+msgstr "Parcourir"
 
 #: libgnomeui/gnome-icon-sel.c:338
 msgid "Loading Icons..."
@@ -1512,7 +1516,7 @@ msgstr "Nombre bizarre dans le callback de réponse"
 
 #: test-gnome/testgnome.c:1963
 msgid "Test GNOME"
-msgstr ""
+msgstr "Test de GNOME"
 
 #~ msgid "get"
 #~ msgstr "Récupérer"
