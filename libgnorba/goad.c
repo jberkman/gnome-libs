@@ -776,7 +776,7 @@ goad_server_activate_factory(GoadServer *sinfo,
   GNOME_stringlist sl;
 
   factory_obj = goad_server_activate_with_id(slist, sinfo->location_info,
-					     0, NULL);
+					     flags, NULL);
 
   if(factory_obj == CORBA_OBJECT_NIL)
     return CORBA_OBJECT_NIL;
