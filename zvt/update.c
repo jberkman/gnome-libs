@@ -167,10 +167,10 @@ static void vt_line_update(struct _vtx *vx, struct vt_line *l, int line, int alw
   p = 0;
   for(i=start;i<end;i++) {
     /* map on 'selected' areas, and copy to screen buffer */
-    newattr = l->data[i] & 0x7fff000;
+    newattr = l->data[i] & 0x7fff0000;
     if (i>=sx && i<ex) {
       newattr ^= VTATTR_REVERSE;
-      bl->data[i]=l->data[i]|VTATTR_REVERSE;
+      bl->data[i]=l->data[i]^VTATTR_REVERSE;
     } else {
       bl->data[i]=l->data[i];
     }

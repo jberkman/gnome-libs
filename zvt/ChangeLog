@@ -1,3 +1,10 @@
+1998-10-19  Michael Zucchi  <zucchi@zzedzone.fsi.com.au>
+
+	* update.c (vt_line_update): Toggle, not OR reverse bit, for
+	rendering selected areas.
+	(vt_line_update): Typo in bitmask was stripping most attributes
+	from each character (7fff000->7fff0000).
+
 Sun Oct 18 19:03:47 1998  Owen Taylor  <otaylor@gtk.org>
 
 	* zvtterm.c: Changes to match the new GTK+ selection
