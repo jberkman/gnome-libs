@@ -52,6 +52,7 @@
 /* default font */
 #define DEFAULT_FONT "-misc-fixed-medium-r-semicondensed--13-120-75-75-c-60-iso8859-1"
 
+#define PADDING 2
 
 /* forward declararations */
 static void zvt_term_init (ZvtTerm *term);
@@ -230,7 +231,7 @@ zvt_term_init (ZvtTerm *term)
   term->vx->vt.ring_my_bell = zvt_term_bell;
   term->vx->vt.change_my_name = zvt_term_title_changed_raise;
 
-  term->shadow_type = GTK_SHADOW_IN;
+  term->shadow_type = GTK_SHADOW_NONE;
   term->term_window = NULL;
   term->cursor_bar = NULL;
   term->cursor_dot = NULL;
@@ -459,6 +460,8 @@ zvt_term_set_color_scheme (ZvtTerm *term, gushort *red, gushort *grn, gushort *b
 				term->colors, &nallocated);
   c.pixel = term->colors [17];
   gdk_window_set_background (term->term_window, &c);
+  gdk_window_set_background (GTK_WIDGET (term)->window, &c);
+  gdk_window_clear (GTK_WIDGET (term)->window);
 }
 
 /**
@@ -523,9 +526,9 @@ zvt_term_realize (GtkWidget *widget)
   gtk_style_set_background (widget->style, widget->window, GTK_STATE_NORMAL);
 
   /* terminal window */
-  attributes.x = widget->style->klass->xthickness;
+  attributes.x = widget->style->klass->xthickness + PADDING;
   attributes.y = widget->style->klass->ythickness;
-  attributes.width = widget->allocation.width - (2 * widget->style->klass->xthickness);
+  attributes.width = widget->allocation.width - (2 * widget->style->klass->xthickness) - PADDING;
   attributes.height = widget->allocation.height - (2 * widget->style->klass->ythickness);
   attributes.event_mask = gtk_widget_get_events (widget) |
     GDK_EXPOSURE_MASK | 
@@ -769,7 +772,7 @@ zvt_term_size_request (GtkWidget      *widget,
     }
 
   requisition->width = (grid_width * term->charwidth) + 
-    (widget->style->klass->xthickness * 2);
+    (widget->style->klass->xthickness * 2) + PADDING;
   requisition->height = (grid_height * term->charheight) + 
     (widget->style->klass->ythickness * 2);
 
@@ -806,11 +809,11 @@ zvt_term_size_allocate (GtkWidget     *widget,
 			      allocation->width,
 			      allocation->height);
 
-      term_width = allocation->width - (2 * widget->style->klass->xthickness);
+      term_width = allocation->width - (2 * widget->style->klass->xthickness) - PADDING;
       term_height = allocation->height - (2 * widget->style->klass->ythickness);
 
       gdk_window_move_resize (term->term_window,
-			      widget->style->klass->xthickness,
+			      widget->style->klass->xthickness + PADDING,
 			      widget->style->klass->ythickness,
 			      term_width,
 			      term_height);
@@ -858,11 +861,12 @@ zvt_term_draw (GtkWidget *widget, GdkRectangle *area)
       term->in_expose = 1;
 
       /* draw shadow/border */
-      gtk_draw_shadow (
-          widget->style, widget->window,
-	  GTK_STATE_NORMAL, term->shadow_type, 0, 0, 
-	  widget->allocation.width,
-	  widget->allocation.height);
+      if (term->shadow_type != GTK_SHADOW_NONE)
+	      gtk_draw_shadow (
+		      widget->style, widget->window,
+		      GTK_STATE_NORMAL, term->shadow_type, 0, 0, 
+		      widget->allocation.width,
+		      widget->allocation.height);
 
       gdk_window_get_size (term->term_window, &width, &height);
 
@@ -903,7 +907,7 @@ zvt_term_expose (GtkWidget      *widget,
       /* FIXME: may update 1 more line/char than needed */
       term->in_expose = 1;
 
-      if (event->window == widget->window)
+      if (event->window == widget->window && term->shadow_type != GTK_SHADOW_NONE)
 	gtk_draw_shadow (
 	    widget->style, widget->window,
 	    GTK_STATE_NORMAL, term->shadow_type, 0, 0, 
@@ -2259,7 +2263,7 @@ vt_scroll_area(void *user_data, int firstrow, int count, int offset, int fill)
   /* FIXME: check args */
   d(printf("scrolling %d rows from %d, by %d lines\n", count,firstrow,offset));
 
-  width = widget->allocation.width - (2 * widget->style->klass->xthickness);
+  width = widget->allocation.width - (2 * widget->style->klass->xthickness) - PADDING;
   height = widget->allocation.height - (2 * widget->style->klass->ythickness);
 
   /* "scroll" area */

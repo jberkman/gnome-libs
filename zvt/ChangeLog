@@ -1,3 +1,9 @@
+1999-02-04  Miguel de Icaza  <miguel@nuclecu.unam.mx>
+
+	* zvtterm.c (zvt_term_init): Set shadow to none.  We should kill
+	this code, as it broke my hack to add the extra padding to make
+	the terminals readable.
+
 1999-01-22  Miguel de Icaza  <miguel@nuclecu.unam.mx>
 
 	* subshell-includes.h (_XOPEN_SOURCE): Define as 1, not as nothing.
