@@ -969,18 +969,18 @@ create_icon_list(void)
 static void
 create_less(void)
 {
-#ifndef GNOME_EXCLUDE_DEPRECATED
 	GtkWidget *app;
 	GtkWidget *less;
 
 	app = create_newwin(TRUE,"testGNOME","Less");
-	less = gnome_less_new();
-	gnome_app_set_contents(GNOME_APP(app),less);
-	gnome_less_set_fixed_font(GNOME_LESS(less), TRUE);
+	less = gnome_less_new_fixed_font(80);
+	gnome_app_set_contents(GNOME_APP(app), less);
 	gtk_widget_show(less);
 	gtk_widget_show(app);
-	gnome_less_show_command(GNOME_LESS(less),"fortune");
-#endif
+	/*gnome_less_show_string(GNOME_LESS(less), "FOO BAR");*/
+	gnome_less_show_command(GNOME_LESS(less),"fortune 2>&1");
+	/*gnome_less_append_string(GNOME_LESS(less), "foo");
+	gnome_less_append_string(GNOME_LESS(less), "bar");*/
 }
 
 static void
