@@ -59,7 +59,6 @@ zterm_LDADD	= 			\
 	libzvt-$(GNOME_INTERFACE_VERSION).la \
 	$(UTIL_LIBS)			\
 	$(GTK_LIBS) 			\
-	$(GDK_PIXBUF_LIBS)		\
 	$(LIBART_LIBS)			\
 	$(top_builddir)/libgnomeui/libgnomeui-$(GNOME_INTERFACE_VERSION).la \
 	$(top_builddir)/libgnome/libgnome-$(GNOME_INTERFACE_VERSION).la	\
