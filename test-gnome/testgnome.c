@@ -1457,6 +1457,16 @@ insert_blue (GtkWidget *widget, gpointer data)
 
 /* Shared popup menu definition for the GnomeAppHelper test */
 
+static GnomeUIInfo helper_shared_popup_dup[] = {
+	{ GNOME_APP_UI_ITEM, "Insert a _red book", NULL, insert_red, NULL, NULL,
+	  GNOME_APP_PIXMAP_STOCK, GNOME_STOCK_MENU_BOOK_RED, 0, 0, NULL },
+	{ GNOME_APP_UI_ITEM, "Insert a _green book", NULL, insert_green, NULL, NULL,
+	  GNOME_APP_PIXMAP_STOCK, GNOME_STOCK_MENU_BOOK_GREEN, 0, 0, NULL },
+	{ GNOME_APP_UI_ITEM, "Insert a _blue book", NULL, insert_blue, NULL, NULL,
+	  GNOME_APP_PIXMAP_STOCK, GNOME_STOCK_MENU_BOOK_BLUE, 0, 0, NULL },
+	GNOMEUIINFO_END
+};
+
 static GnomeUIInfo helper_shared_popup[] = {
 	{ GNOME_APP_UI_ITEM, "Insert a _red book", NULL, insert_red, NULL, NULL,
 	  GNOME_APP_PIXMAP_STOCK, GNOME_STOCK_MENU_BOOK_RED, 0, 0, NULL },
@@ -1464,6 +1474,7 @@ static GnomeUIInfo helper_shared_popup[] = {
 	  GNOME_APP_PIXMAP_STOCK, GNOME_STOCK_MENU_BOOK_GREEN, 0, 0, NULL },
 	{ GNOME_APP_UI_ITEM, "Insert a _blue book", NULL, insert_blue, NULL, NULL,
 	  GNOME_APP_PIXMAP_STOCK, GNOME_STOCK_MENU_BOOK_BLUE, 0, 0, NULL },
+        GNOMEUIINFO_SUBTREE("Subtree", helper_shared_popup_dup),
 	GNOMEUIINFO_END
 };
 
@@ -1507,6 +1518,17 @@ set_yellow (GtkWidget *widget, gpointer data)
 
 /* Explicit popup menu definition for the GnomeAppHelper test */
 
+
+static GnomeUIInfo helper_explicit_popup_dup[] = {
+	{ GNOME_APP_UI_ITEM, "Set color to _cyan", NULL, set_cyan, NULL, NULL,
+	  GNOME_APP_PIXMAP_NONE, NULL, 0, 0, NULL },
+	{ GNOME_APP_UI_ITEM, "Set color to _magenta", NULL, set_magenta, NULL, NULL,
+	  GNOME_APP_PIXMAP_NONE, NULL, 0, 0, NULL },
+	{ GNOME_APP_UI_ITEM, "Set color to _yellow", NULL, set_yellow, NULL, NULL,
+	  GNOME_APP_PIXMAP_NONE, NULL, 0, 0, NULL },
+	GNOMEUIINFO_END
+};
+
 static GnomeUIInfo helper_explicit_popup[] = {
 	{ GNOME_APP_UI_ITEM, "Set color to _cyan", NULL, set_cyan, NULL, NULL,
 	  GNOME_APP_PIXMAP_NONE, NULL, 0, 0, NULL },
@@ -1514,6 +1536,7 @@ static GnomeUIInfo helper_explicit_popup[] = {
 	  GNOME_APP_PIXMAP_NONE, NULL, 0, 0, NULL },
 	{ GNOME_APP_UI_ITEM, "Set color to _yellow", NULL, set_yellow, NULL, NULL,
 	  GNOME_APP_PIXMAP_NONE, NULL, 0, 0, NULL },
+        GNOMEUIINFO_SUBTREE("Subtree", helper_explicit_popup_dup),
 	GNOMEUIINFO_END
 };
 
