@@ -135,6 +135,15 @@ get_cookie_reliably (void)
 	return g_strdup (random_string);
 }
 
+/*** gnome_CORBA_init
+     Description: Sets up the ORBit connection add/remove function pointers
+                  to our routines, which inform the gtk main loop about
+		  the CORBA connection fd's.
+
+		  Calls gnome_init and CORBA_ORB_init with the specified params.
+
+		  Sets up a cookie for requests.
+ */
 CORBA_ORB
 gnome_CORBA_init(char *app_id,
 		 struct argp *app_parser,
