@@ -35,6 +35,9 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.5  1997/12/14 23:20:59  unammx
+* it compiles.  Now we need to make it link and work -mig
+*
 * Revision 1.4  1997/12/13 01:49:11  unammx
 * your daily dose of ported XmHTML code, non functional as usual -mig
 *
@@ -182,7 +185,10 @@ static char rcsId[]="$Header$";
 #define VERTICAL_INCREMENT 18	/* average line height */
 
 static void XmHTML_Destroy(XmHTMLWidget html);
-static void XmHTML_Initialize (XmHTMLWidget html, char *html_source);
+static void XmHTML_Initialize (XmHTMLWidget html, XmHTMLWidget init, char *html_source);
+static void Layout(XmHTMLWidget html);
+static void CheckMaxColorSetting(XmHTMLWidget html);
+static void CheckPLCIntervals(XmHTMLWidget html);
 
 #ifdef WITH_MOTIF
 #    include "XmHTML-motif.c"
@@ -196,12 +202,13 @@ static void XmHTML_Initialize (XmHTMLWidget html, char *html_source);
 * Description: 	Called when the TWidget is instantiated
 * In: 
 *	html:	        Widget
+*       init:           Optionally the original widget (Motifish support)
 *       html_source:    html source code.
 * Returns:
 *	nothing, but init is updated with checked/updated resource values.	
 *****/
 static void
-XmHTML_Initialize (XmHTMLWidget html, char *html_source)
+XmHTML_Initialize (XmHTMLWidget html, XmHTMLWidget init, char *html_source)
 {
 	/* Initialize the global HTMLpart */
 	_XmHTMLDebug(1, ("XmHTML.c: Initialize Start\n"));
@@ -217,7 +224,7 @@ XmHTML_Initialize (XmHTMLWidget html, char *html_source)
 	/* repeat delay. Must be positive */
 	if(html->html.repeat_delay < 1)
 	{
-		_XmHTMLWarning(__WFUNC__(init, "Initialize"),
+		_XmHTMLWarning(__WFUNC__(html, "Initialize"),
 			"The specified value for XmNrepeatDelay (%i) is too small.\n"
 			"    Reset to 25", html->html.repeat_delay);
 		html->html.repeat_delay = 25;
@@ -248,12 +255,17 @@ XmHTML_Initialize (XmHTMLWidget html, char *html_source)
 	html->html.paint_y           = 0;
 	html->html.paint_width       = 0;
 	html->html.paint_height      = 0;
+#ifdef WITH_MOTIF
 	html->html.body_fg           = html->manager.foreground;
 	html->html.body_bg           = html->core.background_pixel;
+#else
+	html->html.body_fg           = GTK_WIDGET(html)->style->fg [GTK_STATE_NORMAL].pixel;
+	html->html.body_bg           = GTK_WIDGET(html)->style->bg [GTK_STATE_NORMAL].pixel;
+#endif
 	html->html.images            = (XmHTMLImage*)NULL;
 	html->html.image_maps        = (XmHTMLImageMap*)NULL;
 	html->html.xcc               = (XCC)NULL;
-	html->html.bg_gc             = (GC)NULL;
+	html->html.bg_gc             = (TGC)NULL;
 	html->html.form_data         = (XmHTMLFormData*)NULL;
 	html->html.delayed_creation  = False;	/* no delayed image creation */
 
@@ -304,7 +316,7 @@ XmHTML_Initialize (XmHTMLWidget html, char *html_source)
 	html->html.num_plcs      = 0;
 	html->html.plc_proc_id   = None;
 	html->html.plc_suspended = True;
-	html->html.plc_gc        = (GC)NULL;
+	html->html.plc_gc        = (TGC)NULL;
 
 	/* initial mimetype */
 	if(!(strcasecmp(html->html.mime_type, "text/html")))
@@ -330,7 +342,7 @@ XmHTML_Initialize (XmHTMLWidget html, char *html_source)
 	CheckPLCIntervals(html);
 
 	/* Misc. resources */
-	html->html.gc = (GC)NULL;
+	html->html.gc = (TGC)NULL;
 
 	/* set maximum amount of colors for this display (also creates the XCC) */
 	CheckMaxColorSetting(html);
@@ -352,26 +364,30 @@ XmHTML_Initialize (XmHTMLWidget html, char *html_source)
 	* height of a single line. We need to do this check since the Core
 	* initialize() method doesn't do it.
 	*****/
-	if(html->core.width <= 0)
+#ifdef WITH_MOTIF
+#   define XF(font) (font)
+#else
+#   define XF(font) ((XFontStruct *)((GdkFontPrivate *)font))
+#endif
+	if(Toolkit_Widget_Dim (html).width <= 0)
 	{
 		unsigned long value = 0;
-		if(!(XGetFontProperty(html->html.default_font->xfont, XA_QUAD_WIDTH,
-			&value)))
+		if(!(XGetFontProperty(XF (html->html.default_font->xfont), XA_QUAD_WIDTH, &value)))
 		{
 			XCharStruct ch;
 			int dir, ascent, descent;
-			XTextExtents(html->html.default_font->xfont, "m", 1, &dir, &ascent,
+			XTextExtents(XF (html->html.default_font->xfont), "m", 1, &dir, &ascent, 
 				&descent, &ch);
 			value = (Cardinal)ch.width;
 			/* sanity for non-ISO fonts */
 			if(value <= 0)
 				value = 16;
 		}
-		html->core.width = (Dimension)(20*(Dimension)value +
-			2*html->html.margin_width);
+		Toolkit_Widget_Dim (html).width = (Dimension)(20*(Dimension)value +
+							      2*html->html.margin_width);
 	}
-	if(html->core.height <= 0)
-		html->core.height = html->html.default_font->lineheight +
+	if(Toolkit_Widget_Dim (html).height <= 0)
+		Toolkit_Widget_Dim (html).height = html->html.default_font->lineheight +
 			2*html->html.margin_height;
 
 	/*****
@@ -385,7 +401,7 @@ XmHTML_Initialize (XmHTMLWidget html, char *html_source)
 	if(html_source)
 	{
 		html->html.source   = strdup(html_source);
-		html->html.elements = _XmHTMLparseHTML(req, NULL, html_source, html);
+		html->html.elements = _XmHTMLparseHTML(html, NULL, html_source, html);
 
 		/* check for frames */
 		html->html.nframes = _XmHTMLCheckForFrames(html, html->html.elements);
@@ -543,330 +559,6 @@ SetCurrentLineNumber(XmHTMLWidget html, int y_pos)
 
 
 /*****
-* Name: 		_XmHTMLCheckXCC
-* Return Type: 	void
-* Description: 	creates an XCC for the given XmHTMLWidget if one hasn't been
-*				allocated yet.
-* In: 
-*	html:		XmHTMLWidget id;
-* Returns:
-*	nothing
-*****/
-void
-_XmHTMLCheckXCC(XmHTMLWidget html)
-{
-	_XmHTMLDebug(1, ("XmHTML.c: _XmHTMLCheckXCC Start\n"));
-
-	/*
-	* CheckXCC is called each time an image is loaded, so it's quite
-	* usefull if we have a GC around by the time the TWidget is being
-	* mapped to the display.
-	* Our SubstructureNotify event handler can fail in some cases leading to
-	* a situation where we don't have a GC when images are about to be
-	* rendered (especially background images can cause a problem, they
-	* are at the top of the text).
-	*/
-	CheckGC(html);
-
-	/*
-	* Create an XCC. 
-	* XmHTML never decides whether or not to use a private or standard
-	* colormap. A private colormap can be supplied by setting it on the
-	* TWidget's parent, we know how to deal with that.
-	*/
-	if(!html->html.xcc)
-	{
-		Visual *visual = NULL;
-		Colormap cmap  = html->core.colormap;
-
-		_XmHTMLDebug(1, ("XmHTML.c: _XmHTMLCheckXCC: creating an XCC\n"));
-
-		/* get a visual */
-		XtVaGetValues((TWidget)html, 
-			XmNvisual, &visual,
-			NULL);
-		/* walk TWidget tree or get default visual */
-		if(visual == NULL)
-			visual = XCCGetParentVisual((TWidget)html);
-
-		/* create an xcc for this TWidget */
-		html->html.xcc = XCCCreate((TWidget)html, visual, cmap);
-	}
-	_XmHTMLDebug(1, ("XmHTML.c: _XmHTMLCheckXCC End\n"));
-}
-
-/*****
-* Name: 		GetScrollDim
-* Return Type: 	void
-* Description: 	retrieves width & height of the scrollbars
-* In: 
-*	html:		XmHTMLWidget for which to retrieve these values
-*	hsb_height: thickness of horizontal scrollbar, filled upon return
-*	vsb_width:	thickness of vertical scrollbar, filled upon return
-* Returns:
-*	nothing
-* Note:
-*	I had a nicely working caching version of this routine under Linux & 
-*	Motif 2.0.1, but under HPUX with 1.2.0 this never worked. This does.
-*****/
-static void
-GetScrollDim(XmHTMLWidget html, int *hsb_height, int *vsb_width)
-{
-	Arg args[1];
-	Dimension height = 0, width = 0;
-
-	if(html->html.hsb)
-	{
-#ifdef NO_XLIB_ILLEGAL_ACCESS
-		XtSetArg(args[0], XmNheight, &height);
-		XtGetValues(html->html.hsb, args, 1);
-#else
-		height = html->html.hsb->core.height;
-#endif
-
-		/*
-		* Sanity check if the scrollbar dimensions exceed the TWidget dimensions
-		* Not doing this would lead to X Protocol errors whenever text is set
-		* into the TWidget: the size of the workArea will be less than or equal
-		* to zero when scrollbars are required.
-		* We need always need to do this check since it's possible that some
-		* user has been playing with the dimensions of the scrollbars.
-		*/
-		if(height >= html->core.height)
-		{
-			_XmHTMLWarning(__WFUNC__(html->html.hsb, "GetScrollDim"),
-				"Height of horizontal scrollbar (%i) exceeds height of parent "
-				"TWidget (%i).\n    Reset to 15.", height, html->core.height);
-			height = 15;
-			XtSetArg(args[0], XmNheight, height);
-			XtSetValues(html->html.hsb, args, 1);
-		}
-	}
-
-	if(html->html.vsb)
-	{
-#ifdef NO_XLIB_ILLEGAL_ACCESS
-		XtSetArg(args[0], XmNwidth, &width);
-		XtGetValues(html->html.vsb, args, 1);
-#else
-		width = html->html.vsb->core.width;
-#endif
-
-		if(width >= html->core.width)
-		{
-			_XmHTMLWarning(__WFUNC__(html->html.vsb, "GetScrollDim"),
-				"Width of vertical scrollbar (%i) exceeds width of parent "
-				"TWidget (%i).\n    Reset to 15.", width, html->core.width);
-			width  = 15;
-			XtSetArg(args[0], XmNwidth, width);
-			XtSetValues(html->html.vsb, args, 1);
-		}
-	}
-
-	_XmHTMLDebug(1, ("XmHTML.c: GetScrollDim; height = %i, width = %i\n",
-		height, width));
-
-	*hsb_height = height;
-	*vsb_width  = width;
-}
-
-/*****
-* Name: 		autoSizeWidget
-* Return Type: 	void
-* Description: 	computes XmHTML's TWidget dimensions if we have to autosize
-*				in either direction.
-* In: 
-*	html:		XmHTMLWidget id
-* Returns:
-*	nothing.
-* Note:
-*	This routine is fairly complicated due to the fact that the dimensions
-*	of the work area are partly determined by the presence of possible
-*	scrollbars.
-*****/
-static void
-autoSizeWidget(XmHTMLWidget html)
-{
-	int max_w, max_h, width, height, core_w, core_h;
-	int hsb_height = 0, vsb_width = 0, h_reserved, w_reserved;
-	Boolean done = False, granted = False, has_vsb = False, has_hsb = False;
-	Dimension new_h, new_w, width_return, height_return;
-
-	/* get dimensions of the scrollbars */
-	GetScrollDim(html, &hsb_height, &vsb_width);
-
-	/* maximum allowable TWidget height: 80% of screen height */
-	max_h = (int)(0.8*HeightOfScreen(XtScreen((TWidget)html)));
-
-	/* make a guess at the initial TWidget width */
-	max_w = _XmHTMLGetMaxLineLength(html) + 2*html->html.margin_width;
-
-	/* save original TWidget dimensions in case our resize request is denied */
-	core_w = html->core.width;
-	core_h = html->core.height;
-
-	/* set initial dimensions */
-	height = (core_h > max_h ? max_h : core_h);
-	width  = max_w;
-
-	/*
-	* Since we are making geometry requests, we need to compute the total
-	* width and height required to make all text visible.
-	* If we succeed, we don't require any scrollbars to be present.
-	* This does complicate things considerably.
-	* The dimensions of the work area are given by the TWidget dimensions
-	* minus possible margins and possible scrollbars.
-	*/
-	h_reserved = html->html.margin_height + hsb_height;
-	w_reserved = html->html.margin_width  + vsb_width;
-
-	do
-	{
-		/* work_width *always* includes room for a vertical scrollbar */
-		html->html.work_width = width - w_reserved;
-
-		/* Check if we need to add a vertical scrollbar. */
-		if(height - h_reserved > max_h)
-			has_vsb = True;
-		else /* no vertical scrollbar needed */
-			has_vsb = False;
-	
-		_XmHTMLDebug(1, ("XmHTML.c: autoSizeWidget, initial dimension: "
-			"%ix%i. has_vsb: %s\n", width, height,
-			has_vsb ? "yes" : "no"));
-
-		/* Compute new screen layout. */
-		_XmHTMLComputeLayout(html);
-
-		/*
-		* We have made a pass on the document, so we know now the formatted 
-		* dimensions. If the formatted width exceeds the maximum allowable
-		* width, we need to add a horizontal scrollbar, and if the formatted
-		* height exceeds the maximum allowable height we need to add a
-		* vertical scrollbar. Order of these checks is important: if a vertical
-		* scrollbar is present, the width of the vertical scrollbar must be
-		* added as well.
-		* formatted_height includes the vertical margin twice.
-		* formatted_width includes the horizontal margin once.
-		*/
-
-		/* higher than available height, need a vertical scrollbar */
-		if(html->html.formatted_height > max_h)
-		{
-			has_vsb    = True;
-			height     = max_h;
-		}
-		else
-		{
-			has_vsb    = False;
-			height     = html->html.formatted_height;
-		}
-
-		/* wider than available width, need a horizontal scrollbar */
-		if(html->html.formatted_width + html->html.margin_width > max_w)
-		{
-			has_hsb    = True;
-			width      = max_w;
-		}
-		else
-		{
-			has_hsb    = False;
-			width      = html->html.formatted_width + html->html.margin_width;
-		}
-
-		/* add width of vertical scrollbar if we are to have one */
-		if(has_vsb)
-			width += vsb_width;
-
-		/*
-		* With the above checks we *know* width and height are positive
-		* integers smaller than 2^16 (max value of an unsigned short), so we
-		* don't have to check for a possible wraparound of the new dimensions.
-		*/
-		new_h = (Dimension)height;
-		new_w = (Dimension)width;
-		width_return  = 0;
-		height_return = 0;
-
-		_XmHTMLDebug(1, ("XmHTML.c: autoSizeWidget, geometry request with "
-			"dimensions: %hix%hi. has_vsb = %s, has_hsb = %s\n", new_w, new_h,
-			has_vsb ? "yes" : "no", has_hsb ? "yes" : "no"));
-
-		/* make the resize request and check return value */
-		switch(XtMakeResizeRequest((TWidget)html, new_w, new_h,
-			&width_return, &height_return))
-		{
-			case XtGeometryAlmost:
-				/*
-				* partially granted. Set the returned width and height
-				* as the new TWidget dimensions and recompute the
-				* TWidget layout. The next time the resizeRequest is made
-				* it *will* be granted.
-				*/
-				width = (int)width_return;
-				height= (int)height_return;
-				break;
-			case XtGeometryNo:
-				/* revert to original TWidget dimensions */
-				new_h = core_h;
-				new_w = core_w;
-				granted = False;
-				done    = True;
-				break;
-			case XtGeometryYes:
-				/* Resize request was granted. */
-				granted = True;
-				done    = True;
-				break;
-			default:	/* not reached, XtGeometryDone is never returned */
-				done = True;
-				break;
-		}
-	}
-	while(!done);
-
-	html->core.width  = new_w;
-	html->core.height = html->html.work_height = new_h;
-	/* work_width *always* includes room for a vertical scrollbar */
-	html->html.work_width = new_w - w_reserved;
-
-	/* Make sure scrollbars don't appear when they are not needed. */
-	if(!has_hsb && granted)
-		html->html.formatted_height = new_h - html->html.margin_height -
-			hsb_height - 1;
-	if(!has_vsb && granted)
-		html->html.formatted_width = new_w - 1;
-
-	/*
-	* If a vertical scrollbar is present, CheckScrollBars will add a horizontal
-	* scrollbar if the formatted_width + vsb_width exceeds the TWidget width.
-	* To make sure a horizontal scrollbar does not appear when one is not
-	* needed, we need to adjust the formatted width accordingly.
-	*/
-	if(has_vsb && granted)
-		html->html.formatted_width -= vsb_width; 
-
-	/* 
-	* If our resize request was denied we need to recompute the text
-	* layout using the original TWidget dimensions. The previous layout is
-	* invalid since it used guessed TWidget dimensions instead of the previous
-	* dimensions and thus it will look bad if we don't recompute it.
-	*/
-	if(!granted)
-		_XmHTMLComputeLayout(html);
-
-	_XmHTMLDebug(1, ("XmHTML.c: autoSizeWidget, results:\n"
-		"\tRequest granted: %s\n"
-		"\tcore height = %i, core width = %i, work_width = %i\n"
-		"\tformatted_width = %i, formatted_height = %i.\n"
-		"\thas_vsb = %s, has_hsb = %s\n",
-		granted ? "yes" : "no",
-		html->core.height, html->core.width, html->html.work_width,
-		html->html.formatted_width, html->html.formatted_height,
-		has_vsb ? "yes" : "no", has_hsb ? "yes" : "no"));
-}
-
-/*****
 * Name: 		Layout
 * Return Type: 	void
 * Description: 	main layout algorithm. 
@@ -927,12 +619,12 @@ Resize(TWidget w)
 	XmHTMLWidget html = XmHTML(w);
 	int foo, vsb_width;
 	Display *dpy;
-	Window win;
+	TWindow win;
 
 	_XmHTMLDebug(1, ("XmHTML.c: Resize Start\n"));
 
 	/* No needless resizing */
-	if(!XtIsRealized(w))
+	if(!Toolkit_Widget_Is_Realized(w))
 	{
 		_XmHTMLDebug(1, ("XmHTML.c: Resize end, TWidget not realized.\n"));
 		return;
@@ -947,16 +639,16 @@ Resize(TWidget w)
 	GetScrollDim(html, &foo, &vsb_width);
 
 	/* No change in size, return */
-	if((html->core.height == html->html.work_height) && 
-		(html->core.width == (html->html.work_width + html->html.margin_width +
+	if((Toolkit_Widget_Dim (html).height == html->html.work_height) && 
+	   (Toolkit_Widget_Dim (html).width == (html->html.work_width + html->html.margin_width +
 			vsb_width)))
 	{
 		_XmHTMLDebug(1, ("XmHTML.c: Resize End, no change in size\n"));
 		return;
 	}
 
-	dpy = XtDisplay(html->html.work_area); 
-	win = XtWindow(html->html.work_area);
+	dpy = Toolkit_Display (html->html.work_area); 
+	win = Toolkit_Widget_Window (html->html.work_area);
 
 	/*
 	* Check if we have to do layout and generate an expose event.
@@ -966,11 +658,11 @@ Resize(TWidget w)
 	* When the height increases, we only want to generate a partial
 	* exposure (this gets handled in Redisplay).
 	*/
-	do_expose = (html->core.width != (html->html.work_width + 
+	do_expose = (Toolkit_Widget_Dim (html).width != (html->html.work_width + 
 		html->html.margin_width + vsb_width));
 
 	_XmHTMLDebug(1, ("XmHTML.c: Resize, new window dimensions: %ix%i.\n",
-		html->core.width - html->html.margin_width, html->html.work_height));
+		Toolkit_Widget_Dim (html).width - html->html.margin_width, html->html.work_height));
 	_XmHTMLDebug(1, ("XmHTML.c: Resize, generating expose event : %s.\n",
 		(do_expose ? "yes" : "no")));
 
@@ -983,15 +675,15 @@ Resize(TWidget w)
 		* the paint routines: every thing rendered starts at an x position
 		* of margin_width.
 		*/
-		html->html.work_width = html->core.width - html->html.margin_width - 
+		html->html.work_width = Toolkit_Widget_Dim (html).width - html->html.margin_width - 
 			vsb_width;
-		html->html.work_height= html->core.height;
+		html->html.work_height= Toolkit_Widget_Dim (html).height;
 
 		/* Recompute layout */
 		Layout(html);
 
 		/* Clear current text area and generate an expose event */
-		ClearArea(html, 0, 0, html->core.width, html->core.height);
+		Toolkit_Widget_Repaint (html);
 	}
 	/* change in height */
 	else
@@ -1005,7 +697,7 @@ Resize(TWidget w)
 		*/
 
 		/* Window has been stretched */
-		if(html->html.work_height < html->core.height)
+		if(html->html.work_height < Toolkit_Widget_Dim (html).height)
 		{
 			/* 
 			* formatted_height has some formatting offsets in it. Need
@@ -1018,11 +710,11 @@ Resize(TWidget w)
 			* in the new window height, remove the scrollbars by resetting
 			* the vertical scrollbar position.
 			*/
-			if(html->core.height > max)
+			if(Toolkit_Widget_Dim (html).height > max)
 				html->html.scroll_y = 0;
 
 			/* save new height */
-			html->html.work_height = html->core.height;
+			html->html.work_height = Toolkit_Widget_Dim (html).height;
 
 			/* reset scrollbars (this will also resize the work_area) */
 			CheckScrollBars(html);
@@ -1031,7 +723,7 @@ Resize(TWidget w)
 			* just clear the entire area. Will generate a double exposure
 			* but everything will be painted as it should.
 			*/
-			ClearArea(html, 0, 0, html->core.width, html->core.height);
+			Toolkit_Widget_Repaint (html);
 		}
 		/* window has been shrunk */
 		else
@@ -1040,7 +732,7 @@ Resize(TWidget w)
 			int y; 
 
 			/* get new y maximum */
-			y = html->html.scroll_y + html->core.height;
+			y = html->html.scroll_y + Toolkit_Widget_Dim (html).height;
 
 			/* Starting point is end of previous stream */
 			start = (html->html.paint_end == NULL ? html->html.formatted:
@@ -1053,7 +745,7 @@ Resize(TWidget w)
 			html->html.paint_end = end;
 
 			/* save new height */
-			html->html.work_height = html->core.height;
+			html->html.work_height = Toolkit_Widget_Dim (html).height;
 
 			/* reset scrollbars (this will also resize the work_area) */
 			CheckScrollBars(html);
@@ -1147,8 +839,9 @@ PaintBackground(XmHTMLWidget html, int x, int y, int width, int height)
 	_XmHTMLDebug(1, ("XmHTML.c: PaintBackground, computed vertical tile "
 		"origin  : %i (y = %i)\n", tsy, y));
 
-	dpy = XtDisplay(html->html.work_area);
+	dpy = Toolkit_Display (html->html.work_area);
 
+#if WITH_MOTIF
 	valuemask = GCTile | GCFillStyle | GCTileStipXOrigin | GCTileStipYOrigin;
 	values.fill_style = FillTiled;
 	values.tile = html->html.body_image->pixmap;
@@ -1156,10 +849,15 @@ PaintBackground(XmHTMLWidget html, int x, int y, int width, int height)
 	values.ts_y_origin = tsy;
 
 	XChangeGC(dpy, html->html.bg_gc, valuemask, &values);
-
+#else
+	gdk_gc_fill (html->html.bg_gc, GDK_TILED);
+	gdk_gc_set_tile (html->html.bg_gc, html->html.body_image->pixmap);
+	gdk_gc_set_ts_origin (html->html.bg_gc, tsx, tsy);
+#endif
+	
 	/* a plain fillrect will redraw the background portion */
-	XFillRectangle(dpy, XtWindow(html->html.work_area), html->html.bg_gc, 
-		x, y, width, height);
+	Toolkit_Fill_Rectangle(dpy, Toolkit_Widget_Window(html->html.work_area),
+			       html->html.bg_gc, x, y, width, height);
 
 	_XmHTMLDebug(1, ("XmHTML.c: PaintBackground end\n"));
 }
@@ -1210,11 +908,11 @@ Refresh(XmHTMLWidget html, int x, int y, int width, int height)
 	_XmHTMLDebug(1, ("XmHTML.c: Refresh, initial y1: %i, y2: %i\n", y1, y2));
 
 	/* add vertical scroll and core offsets */
-	y1 += html->html.scroll_y - html->core.y;
-	y2 += html->html.scroll_y + html->core.y;
+	y1 += html->html.scroll_y - Toolkit_Widget_Dim (html).y;
+	y2 += html->html.scroll_y + Toolkit_Widget_Dim (html).y;
 
 	_XmHTMLDebug(1, ("XmHTML.c: Refresh, using y1: %i, y2: %i (scroll_y = %i, "
-		"core.y = %i)\n", y1, y2, html->html.scroll_y, html->core.y));
+		"core.y = %i)\n", y1, y2, html->html.scroll_y, Toolkit_Widget_Dim (html).y));
 
 	/*
 	* If the offset of the top of the exposed region is higher than
@@ -1291,8 +989,8 @@ Refresh(XmHTMLWidget html, int x, int y, int width, int height)
 	html->html.paint_end = end;
 
 	/* Set horizontal painting positions */
-	html->html.paint_x = x1 + html->html.scroll_x - html->core.x;
-	html->html.paint_width = x2 + html->html.scroll_x + html->core.x;
+	html->html.paint_x = x1 + html->html.scroll_x - Toolkit_Widget_Dim (html).x;
+	html->html.paint_width = x2 + html->html.scroll_x + Toolkit_Widget_Dim (html).x;
 
 	/* Set vertical painting positions */
 	html->html.paint_y = y1;
@@ -1324,887 +1022,6 @@ Refresh(XmHTMLWidget html, int x, int y, int width, int height)
 
 	/* display scrollbars */
 	SetScrollBars(html);
-}
-
-/*****
-* Name: 		DrawRedisplay
-* Return Type: 	void
-* Description: 	Eventhandler for exposure events on the work_area
-* In: 
-*	w:			owner of this eventhandler 
-*	html:		client data, XmHTMLWidget to which w belongs
-*	event:		expose event data.
-* Returns:
-*	nothing
-* Note:
-*	This routine makes a rough guess on which ObjectTable elements
-*	should be used as vertical start and end points for the paint engine.
-*	Finetuning is done by the DrawText routine in paint.c, which uses
-*	the paint_x, paint_y, paint_width and paint_height fields in the
-*	htmlRec to determine what should be painted exactly.
-*****/
-static void
-DrawRedisplay(TWidget w, XmHTMLWidget html, XEvent *event)
-{
-	/* 
-	* must use int for y-positions. The Position and Dimension typedefs
-	* are shorts, which may produce bad results if the scrolled position
-	* exceeds the size of a short
-	*/
-	int y1, y2, height, x1, x2, width;
-	XEvent expose;
-
-	_XmHTMLDebug(1, ("XmHTML.c: DrawRedisplay Start\n"));
-
-	/*****
-	* No needless exposures. Kick out graphics exposures, I don't know
-	* who invented these, sure as hell don't know what to do with them...
-	*
-	* Update August 26: I do know now what to do with these suckers:
-	* they are generated whenever a XCopyArea or XCopyPlane request couldn't
-	* be completed 'cause the destination area is (partially) obscured.
-	* This happens when some other window is placed over our display area.
-	* So when we get a GraphicsExpose event, we check our visibility state
-	* and only draw something when we are partially obscured: when we are
-	* fully visibile we won't get any GraphicsExpose events, and when we
-	* are fully obscured we won't even get Expose Events.
-	* The reason behind all of this are the images & anchor drawing: sometimes
-	* they overlap an already painted area, and drawing will then generate
-	* a GraphicsExpose, which in turn will trigger a redisplay of these anchors
-	* and then it starts all over again. Ergo: bad screen flickering. And we
-	* DO NOT want this.
-	*****/
-	if(((event->xany.type != Expose) && (event->xany.type != GraphicsExpose))
-		|| html->html.formatted == NULL || html->html.nframes)
-	{
-		/* display scrollbars if we are in a frame */
-		if(html->html.is_frame)
-			SetScrollBars(html);
-		_XmHTMLDebug(1, ("XmHTML.c: DrawRedisplay End: wrong event "
-			"(%i).\n", event->xany.type));
-		return;
-	}
-	if(event->xany.type == GraphicsExpose &&
-		html->html.visibility != VisibilityPartiallyObscured)
-	{
-		_XmHTMLDebug(1, ("XmHTML.c: DrawRedisplay End: bad GraphicsExpose, "
-			"window not partially obscured.\n"));
-		return;
-	}
-
-	x1 = event->xexpose.x;
-	y1 = event->xexpose.y;
-	width = event->xexpose.width;
-	height = event->xexpose.height;
-	x2 = x1 + width;
-
-	_XmHTMLDebug(1, ("XmHTML.c: DrawRedisplay, y-position of region: %i, "
-		"height of region: %i\n", y1, height));
-
-	_XmHTMLDebug(1, ("XmHTML.c: DrawRedisplay, event type: %s\n",
-		event->xany.type == Expose ? "Expose" : "GraphicsExpose"));
-
-	_XmHTMLDebug(1, ("XmHTML.c: DrawRedisplay %i Expose events waiting.\n",
-		event->xexpose.count));
-
-	/*
-	* coalesce multiple expose events into one.
-	*/
-	while((XCheckWindowEvent(XtDisplay(w), XtWindow(w), ExposureMask, 
-			&expose)) == True)
-	{
-		int dx, dy, dh, dw;
-
-		if(expose.xany.type == NoExpose ||
-			(event->xany.type == GraphicsExpose &&
-			html->html.visibility != VisibilityPartiallyObscured))
-			continue;
-
-		dx = expose.xexpose.x;
-		dy = expose.xexpose.y;
-		dw = expose.xexpose.width;
-		dh = expose.xexpose.height;
-
-		_XmHTMLDebug(1, ("XmHTML.c: DrawRedisplay, next event, geometry of "
-			"exposed region: %ix%i:%i,%i\n", dx, dy, dw, dh));
-
-		/* right side of region */
-		x2 = x1 + width;
-
-		/* leftmost x-position of exposure region */
-		if(x1 > dx)
-			x1 = dx;
-
-		/* rightmost x-position of exposure region */
-		if(x2 < (dx + dw))
-			x2 = dx + dw;
-
-		/* width of exposure region */
-		width = x2 - x1;
-
-		/* bottom of region */
-		y2 = y1 + height;
-
-		/* topmost y-position of exposure region */
-		if(y1 > dy)
-			y1 = dy;
-
-		/* bottommost y-position of exposure region */
-		if(y2 < (dy + dh))
-			y2 = dy + dh;
-
-		/* height of exposure region */
-		height = y2 - y1;
-	}
-
-	_XmHTMLDebug(1, ("XmHTML.c: DrawRedisplay, total region geometry: "
-		"%ix%i:%i,%i.\n", x1, y1, width, height));
-
-	Refresh(html, x1, y1, width, height);
-
-	_XmHTMLDebug(1, ("XmHTML.c: DrawRedisplay End\n"));
-}
-
-/*****
-* Name: 		Redisplay
-* Return Type: 	void
-* Description: 	xmHTMLWidgetClass expose method.
-* In: 
-*	w:			TWidget to expose
-*	event:		description of event that triggered an expose
-*	region:		region to display.
-* Returns:
-*	nothing
-*****/
-static void 
-Redisplay(TWidget w, XEvent *event, Region region)
-{
-	_XmHTMLDebug(1, ("XmHTML.c: Redisplay Start\n"));
-
-	/* Pass exposure events down to the children */
-	_XmRedisplayGadgets(w, (XEvent*)event, region);
-
-	_XmHTMLDebug(1, ("XmHTML.c: Redisplay End\n"));
-	return;
-}
-
-/*****
-* Name: 		SetValues
-* Return Type: 	Boolean
-* Description: 	xmHTMLWidgetClass SetValues method.
-* In: 
-*	current:	copy of TWidget before any set_values methods are called
-*	request:	copy of TWidget after resources have changed but before any
-*				set_values methods are called
-*	set:		TWidget with resources set and as modified by any superclass
-*				methods that have called XtSetValues()
-*	args:		argument list passed to XtSetValues, done by programmer
-*	num_args:	no of args 
-* Returns:
-*	True if a changed resource requires a redisplay, False otherwise.
-*****/
-static Boolean 
-SetValues(TWidget current, TWidget request, TWidget set,
-	ArgList args, Cardinal *num_args)
-{
-	XmHTMLWidget w_curr = XmHTML (current);
-	XmHTMLWidget w_req  = XmHTML (request);
-	XmHTMLWidget w_new  = XmHTML (set);
-
-	Boolean redraw = False, parse = False;
-	Boolean need_reformat = False;
-	Boolean need_layout = False;
-	Boolean free_images = False;
-
-	/* fix 06/17/97-01, aj */
-	int i;	
-	int valueReq = False;
-
-	_XmHTMLDebug(1, ("XmHTML.c: SetValues Start\n"));
-
-#ifdef DEBUG
-	if(w_req->html.debug_levels != w_curr->html.debug_levels)
-	{
-		_XmHTMLSelectDebugLevels(w_req->html.debug_levels);
-		w_new->html.debug_levels = w_req->html.debug_levels;
-	}
-	_XmHTMLSetFullDebug(w_req->html.debug_full_output);
-
-	if(w_req->html.debug_disable_warnings)
-		debug_disable_warnings = True;
-	else
-		debug_disable_warnings = False;
-#endif
-
-	/*****
-	* We always use a copy of the HTML source text that is set into
-	* the TWidget to prevent a crash when the user has freed it before we
-	* had a chance of parsing it, and we ensure new text will get set
-	* properly.
-	*
-	* fix 06/17/97-01, aj
-	* Patch to fix clearing if doing setvalues without XmNvalue  
-	* Determine if we have a set value request and only check new source
-	* if it has been supplied explicitly.
-	*
-	* Addition 10/10/97, kdh: changing the palette at run-time is *never*
-	* allowed.
-	*****/
-	for(i=0; i<*num_args; i++)
-	{
-		if(!strcmp(XmNvalue, args[i].name))
-			valueReq = True;
-
-		/* changing the palette ain't allowed. */
-		if(!strcmp(XmNimagePalette, args[i].name))
-		{
-			_XmHTMLWarning(__WFUNC__(w_curr, "SetValues"),
-				"Attempt to modify read-only resource %s denied.",
-				XmNimagePalette);
-			return(False);
-		}
-	}
-
-	/* we have a new source request */
-	if(valueReq)
-	{
-		/* we had a previous source */
-		if(w_curr->html.source)
-		{
-			/* new text has been supplied */
-			if(w_req->html.value)
-			{
-				/* see if it differs */
-				if(strcmp(w_req->html.value, w_curr->html.source))
-				{
-					parse = True;	/* it does */
-
-					/* free previous source text */
-					free(w_curr->html.source);
-
-					/* copy new source text */
-					w_new->html.source = strdup(w_req->html.value);
-				}
-				else
-					parse = False;	/* it doesn't */
-			}
-			else	/* have to clear current text */
-			{
-				parse = True;
-
-				/* free previous source text */
-				free(w_curr->html.source);
-
-				/* reset to NULL */
-				w_new->html.source = NULL;
-			}
-		}
-		else	/* we didn't have any source */
-		{
-			if(w_req->html.value)
-			{
-				/* new text */
-				parse = True;
-
-				/* copy new source text */
-				w_new->html.source = strdup(w_req->html.value);
-			}
-			else
-				parse = False;	/* still empty */
-		}
-	}
-
-	/*****
-	* Whoa!! String direction changed!!! All text will be reversed
-	* and default alignment changes to the other margin as well.
-	* Needs full reformat as this changes things profoundly...
-	* This requires a full reparsing of the document data as string reversal
-	* is done at the lowest possible level: in the parser.
-	*****/
-	if(w_req->html.string_direction != w_curr->html.string_direction)
-	{
-		parse = True;
-
-		/* check for alignment */
-		CheckAlignment(w_new, w_req);
-	}
-
-	if(parse)
-	{
-		_XmHTMLDebug(1, ("XmHTML.c: SetValues, parsing new text\n"));
-
-		/* new text has been set, kill of any existing PLC's */
-		_XmHTMLKillPLCCycler(w_curr);
-
-		/* destroy any form data */
-		_XmHTMLFreeForm(w_curr, w_curr->html.form_data);
-		w_new->html.form_data = (XmHTMLFormData*)NULL;
-
-		/* Parse the raw HTML text */
-		w_new->html.elements = _XmHTMLparseHTML(w_req, w_curr->html.elements, 
-							w_req->html.value, w_new);
-
-		/* reset topline */
-		w_new->html.top_line = 0;
-
-		/* keep current frame setting and check if new frames are allowed */
-		w_new->html.is_frame = w_curr->html.is_frame;
-		w_new->html.nframes = _XmHTMLCheckForFrames(w_new,
-							w_new->html.elements);
-
-		/* Trigger link callback */
-		if(w_new->html.link_callback)
-			_XmHTMLLinkCallback(w_new);
-
-		/* needs layout, a redraw and current images must be freed */
-		need_reformat = True;
-		redraw      = True;
-		free_images = True;
-
-		_XmHTMLDebug(1, ("XmHTML.c: SetValues, done parsing\n"));
-	}
-
-	if((w_req->html.enable_outlining != w_curr->html.enable_outlining) ||
-		(w_req->html.alignment != w_curr->html.alignment))
-	{
-		/* Needs full reformat, default alignment is a text property */
-		CheckAlignment(w_new, w_req);
-		need_reformat = True;
-	}
-
-	/*****
-	* see if fonts have changed. The bloody problem with resources of type
-	* String is that it's very well possible that a user is using some
-	* static space to store these things. In these cases, the simple
-	* comparisons are bound to be True every time, even though the content
-	* might have changed (which we won't see cause it's all in static user
-	* space!!), so to catch changes to this type of resources, we *MUST*
-	* scan the array of provided args to check if it's specified. Sigh.
-	*****/
-	valueReq = False;
-	for(i = 0; i < *num_args; i++)
-	{
-		if(!strcmp(XmNcharset, args[i].name) ||
-			!strcmp(XmNfontFamily, args[i].name) ||
-			!strcmp(XmNfontFamilyFixed, args[i].name) ||
-			!strcmp(XmNfontSizeFixedList, args[i].name) ||
-			!strcmp(XmNfontSizeList, args[i].name))
-			valueReq = True;
-	}
-	if(valueReq ||
-		w_req->html.font_sizes        != w_curr->html.font_sizes       ||
-		w_req->html.font_family       != w_curr->html.font_family      ||
-		w_req->html.font_sizes_fixed  != w_curr->html.font_sizes_fixed ||
-		w_req->html.font_family_fixed != w_curr->html.font_family_fixed||
-		w_req->html.charset           != w_curr->html.charset)
-	{
-		/* reset font cache */
-		w_new->html.default_font = _XmHTMLSelectFontCache(w_new, True);
-		need_reformat = True;
-	}
-
-	/*
-	* Body colors. Original body colors are restored when body colors are
-	* disabled.
-	*/
-	if(w_req->html.body_colors_enabled != w_curr->html.body_colors_enabled)
-	{
-		/* restore original body colors */
-		if(!w_req->html.body_colors_enabled)
-		{
-			w_new->html.body_fg             = w_req->html.body_fg_save;
-			w_new->html.body_bg             = w_req->html.body_bg_save;
-			w_new->html.anchor_fg           = w_req->html.anchor_fg_save;
-			w_new->html.anchor_visited_fg   =
-				w_req->html.anchor_visited_fg_save;
-			w_new->html.anchor_activated_fg =
-				w_req->html.anchor_activated_fg_save;
-		}
-		need_reformat = True;
-	}
-
-	/* 
-	* Colors. For now we redo the layout since all colors are stored
-	* in the ObjectTable data.
-	* Not that effective, perhaps use multiple GC's, but thats a lot of
-	* resource consuming going on then...
-	*/
-	if( (w_req->manager.foreground       != w_curr->manager.foreground)      ||
-		(w_req->core.background_pixel    != w_curr->core.background_pixel)   ||
-		(w_req->html.anchor_fg           != w_curr->html.anchor_fg)          ||
-		(w_req->html.anchor_target_fg    != w_curr->html.anchor_target_fg)   ||
-		(w_req->html.anchor_visited_fg   != w_curr->html.anchor_visited_fg)  ||
-		(w_req->html.anchor_activated_fg != w_curr->html.anchor_activated_fg)||
-		(w_req->html.anchor_activated_bg != w_curr->html.anchor_activated_bg))
-	{
-		/* back and foreground pixels */
-		w_new->manager.foreground       = w_req->manager.foreground;
-		w_new->core.background_pixel    = w_req->core.background_pixel;
-		w_new->html.body_fg             = w_new->manager.foreground;
-		w_new->html.body_bg             = w_new->core.background_pixel;
-		w_new->html.anchor_fg           = w_req->html.anchor_fg;
-		w_new->html.anchor_target_fg    = w_req->html.anchor_target_fg;
-		w_new->html.anchor_visited_fg   = w_req->html.anchor_visited_fg;
-		w_new->html.anchor_activated_fg = w_req->html.anchor_activated_fg;
-		w_new->html.anchor_activated_bg = w_req->html.anchor_activated_bg;
-
-		/* save as new default colors */
-		w_new->html.body_fg_save             = w_new->html.body_fg;
-		w_new->html.body_bg_save             = w_new->html.body_bg;
-		w_new->html.anchor_fg_save           = w_new->html.anchor_fg;
-		w_new->html.anchor_target_fg_save    = w_new->html.anchor_target_fg;
-		w_new->html.anchor_visited_fg_save   = w_new->html.anchor_visited_fg;
-		w_new->html.anchor_activated_fg_save = w_new->html.anchor_activated_fg;
-		w_new->html.anchor_activated_bg_save = w_new->html.anchor_activated_bg;
-
-		/* set appropriate background color */
-		XtVaSetValues(w_new->html.work_area, 
-			XmNbackground, w_new->html.body_bg, NULL);
-
-		/* get new values for top, bottom & highlight colors */
-		_XmHTMLRecomputeColors(w_new);
-		need_reformat = True;
-	}
-
-	/*
-	* anchor highlighting, must invalidate any current selection
-	* No need to do a redraw if the highlightcolor changes: since the
-	* SetValues method is chained, Manager's SetValues takes care of that.
-	*/
-	if(w_req->html.highlight_on_enter != w_curr->html.highlight_on_enter)
-		w_new->html.armed_anchor = (XmHTMLObjectTable*)NULL;
-
-	/* 
-	* anchor underlining. Also needs a full layout computation as
-	* underlining data is stored in the ObjectTable data
-	*/
-	if( (w_req->html.anchor_underline_type         != 
-			w_curr->html.anchor_underline_type)         ||
-		(w_req->html.anchor_visited_underline_type != 
-			w_curr->html.anchor_visited_underline_type) ||
-		(w_req->html.anchor_target_underline_type  != 
-			w_curr->html.anchor_target_underline_type))
-	{
-		CheckAnchorUnderlining(w_new, w_req);
-		need_reformat = True;
-	}
-	else
-	{
-		/*
-		* Support for color & font attributes. Needs a redo of the layout
-		* if changed. We only need to check for this if the above test 
-		* failed as that will also trigger a redo of the layout.
-		*/
-		if(w_req->html.allow_color_switching !=
-				w_curr->html.allow_color_switching ||
-			w_req->html.allow_font_switching !=
-				w_curr->html.allow_font_switching)
-		need_reformat = True;
-	}
-
-	/*
-	* on-the-fly enable/disable of dithering.
-	*/
-	if(w_req->html.map_to_palette != w_curr->html.map_to_palette)
-	{
-		/* from on to off or off to on */
-		if(w_curr->html.map_to_palette == XmDISABLED ||
-			w_req->html.map_to_palette == XmDISABLED)
-		{
-			/* free current stuff */
-			XCCFree(w_curr->html.xcc);
-
-			/* and create a new one */
-			w_new->html.xcc = NULL;
-			_XmHTMLCheckXCC(w_new);
-
-			/* add palette if necessary */
-			if(w_req->html.map_to_palette != XmDISABLED)
-				_XmHTMLAddPalette(w_new);
-		}
-		else
-		{
-			/* fast & best methods require precomputed error matrices */
-			if(w_req->html.map_to_palette == XmBEST ||
-				w_req->html.map_to_palette == XmFAST)
-			{
-				XCCInitDither(w_new->html.xcc);
-			}
-			else
-				XCCFreeDither(w_new->html.xcc);
-		}
-		/* and in *all* cases we need a full reformat */
-		need_reformat = True;
-	}
-
-	/*
-	* maximum amount of allowable image colors. Needs a full redo
-	* of the layout if the current doc has got images with more colors
-	* than allowed or it has images which have been dithered to fit
-	* the previous setting.
-	*/
-	if((w_req->html.max_image_colors != w_curr->html.max_image_colors))
-	{
-		CheckMaxColorSetting(w_new);
-
-		/*
-		* check if we have any images with more colors than allowed or
-		* we had images that were dithered. If so we need to redo the layout
-		*/
-		if(!need_reformat)
-		{
-			XmHTMLImage *image;
-			int prev_max = w_curr->html.max_image_colors;
-			int new_max  = w_req->html.max_image_colors;
-
-			for(image = w_new->html.images; image != NULL && !free_images;
-				image = image->next)
-			{
-				/* ImageInfo is still available. Compare against it */
-				if(!ImageInfoFreed(image))
-				{
-					/*
-					* redo image composition if any of the following
-					* conditions is True:
-					* - current image has more colors than allowed;
-					* - current image has less colors than allowed but the
-					*	original image had more colors than allowed previously.
-					*/
-					if(image->html_image->ncolors > new_max ||
-						(image->html_image->scolors < new_max &&
-						image->html_image->scolors > prev_max))
-						free_images = True;
-				}
-				/* info no longer available. Check against allocated colors */
-				else
-					if(image->npixels > new_max)
-						free_images = True;
-			}
-			/* need to redo the layout if we are to redo the images */
-			need_reformat = free_images;
-		}
-	}
-
-	/* Are images enabled? */
-	if(w_req->html.images_enabled != w_curr->html.images_enabled)
-	{
-		/*****
-		* we always need to free the images if this changes. A full
-		* layout recomputation will load all images.
-		*****/
-		free_images = True;
-		need_reformat = True;
-	}
-
-	/* PLC timing intervals */
-	if(w_req->html.plc_min_delay != w_curr->html.plc_min_delay  ||
-		w_req->html.plc_max_delay != w_curr->html.plc_max_delay ||
-		w_req->html.plc_delay != w_curr->html.plc_def_delay)
-		CheckPLCIntervals(w_new);
-
-	/*****
-	* Now format the list of parsed objects.
-	* Don't do a bloody thing if we are already in layout as this will
-	* cause unnecessary reloading and screen flickering.
-	*****/
-	if(need_reformat && !w_curr->html.in_layout)
-	{
-		_XmHTMLDebug(1, ("XmHTML.c: SetValues, need layout\n"));
-
-		/*****
-		* It the current document makes heavy use of images we first need
-		* to clear it. Not doing this would cause a shift in the colors of 
-		* the current document (as they are being released) which does not 
-		* look nice. Therefore first clear the entire display* area *before* 
-		* freeing anything at all.
-		*****/
-		if(w_new->html.gc != NULL)
-		{
-			XClearArea(XtDisplay(w_new->html.work_area), 
-				XtWindow(w_new->html.work_area), 0, 0, 
-				w_new->core.width, w_new->core.height, False);
-		}
-
-		/* destroy any form data */
-		_XmHTMLFreeForm(w_curr, w_curr->html.form_data);
-		w_new->html.form_data = (XmHTMLFormData*)NULL;
-
-		/* Free all non-persistent resources */
-		FreeExpendableResources(w_curr, free_images);
-
-		/* reset some important vars */
-		ResetWidget(w_new, free_images);
-
-		/* reset background color */
-		XtVaSetValues(w_new->html.work_area, 
-			XmNbackground, w_new->html.body_bg, NULL);
-
-		/* get new values for top, bottom & highlight */
-		_XmHTMLRecomputeColors(w_new);
-
-		/* go and format the parsed HTML data */
-		if(!_XmHTMLCreateFrames(w_curr, w_new))
-		{
-			w_new->html.frames = NULL;
-			w_new->html.nframes = 0;
-			/* keep current frame setting */
-			w_new->html.is_frame = w_curr->html.is_frame;
-		}
-
-		w_new->html.formatted = _XmHTMLformatObjects(w_curr->html.formatted,
-				w_curr->html.anchor_data, w_new);
-
-		/* and check for possible external imagemaps */
-		_XmHTMLCheckImagemaps(w_new);
-
-		_XmHTMLDebug(1, ("XmHTML.c: SetValues, computing new layout.\n"));
-
-		/* compute new screen layout */
-		Layout(w_new);
-
-		_XmHTMLDebug(1, ("XmHTML.c: SetValues, done with layout.\n"));
-
-		/* if new text has been set, fire up the PLCCycler */
-		if(parse)
-		{
-			w_new->html.plc_suspended = False;
-			_XmHTMLPLCCycler((XtPointer)w_new , NULL);
-		}
-		free_images = False;
-		redraw = True;
-		need_layout = False;
-	}
-	/*****
-	* Default background image changed. We don't need to do this when a
-	* layout recomputation was required as it will have been taken care
-	* of already.
-	*****/
-	else if
-		(w_req->html.body_images_enabled != w_curr->html.body_images_enabled ||
-		 w_req->html.def_body_image_url  != w_curr->html.def_body_image_url)
-	{
-
-		/* check if body images display status is changed */
-		if(w_req->html.body_images_enabled != w_curr->html.body_images_enabled)
-		{
-			if(!free_images && w_curr->html.body_image)
-				w_curr->html.body_image->options |= IMG_ORPHANED;
-			w_new->html.body_image = NULL;
-		}
-
-		/* a new body image has been specified, check it */
-		if(w_req->html.def_body_image_url != w_curr->html.def_body_image_url)
-		{
-			/* do we have a new image? */
-			if(w_req->html.def_body_image_url)
-			{
-				/* yes we do */
-				w_new->html.def_body_image_url =
-					strdup(w_req->html.def_body_image_url);
-			}
-			else /* no we don't */
-				w_new->html.def_body_image_url = NULL;
-
-			/* did we have a previous image? */
-			if(w_curr->html.def_body_image_url)
-			{
-				/* we did, free it */
-				free(w_curr->html.def_body_image_url);
-
-				/* make it an orphan */
-				if(!free_images && w_curr->html.body_image)
-					w_curr->html.body_image->options |= IMG_ORPHANED;
-			}
-		}
-
-		/*
-		* only load background image if image support is enabled and if
-		* we are instructed to show a background image.
-		*/
-		if(w_req->html.images_enabled && w_req->html.body_images_enabled)
-		{
-			/* current document has a background image of it's own. */
-			if(w_new->html.body_image_url)
-				_XmHTMLLoadBodyImage(w_new, w_new->html.body_image_url);
-			/*
-			* Only load the default background image if the doc didn't have
-			* it's colors changed.
-			*/
-			else if(w_new->html.def_body_image_url &&
-				w_new->html.body_fg   == w_new->html.body_fg_save &&
-				w_new->html.body_bg   == w_new->html.body_bg_save &&
-				w_new->html.anchor_fg == w_new->html.anchor_fg_save &&
-				w_new->html.anchor_visited_fg   ==
-					w_new->html.anchor_visited_fg_save &&
-				w_new->html.anchor_activated_fg ==
-					w_new->html.anchor_activated_fg_save)
-				_XmHTMLLoadBodyImage(w_new, w_new->html.def_body_image_url);
-		}
-		/*****
-		* When a body image is present it is very likely that a highlight
-		* color based upon the current background actually makes an anchor
-		* invisible when highlighting is selected. Therefore we base the
-		* highlight color on the activated anchor background when we have a 
-		* body image, and on the document background when no body image is
-		* present.
-		*****/
-		if(w_new->html.body_image)
-			_XmHTMLRecomputeHighlightColor(w_new,
-				w_new->html.anchor_activated_fg);
-		else
-			_XmHTMLRecomputeHighlightColor(w_new, w_new->html.body_bg);
-
-		/* only redraw if the new body image differs from the old one */
-		if(w_new->html.body_image != w_curr->html.body_image)
-		{
-			/* set alpha channel processing if not yet done */
-			free_images = !parse && !need_reformat;
-			redraw = True;
-		}
-	}
-
-	/* anchor button state */
-	if((w_req->html.anchor_buttons != w_curr->html.anchor_buttons))
-		redraw = True;
-
-	/*****
-	* cursor state changes. Note that we always free the current cursor,
-	* even if it's created by the user.
-	*****/
-	if((w_req->html.anchor_cursor != w_curr->html.anchor_cursor)  ||
-		(w_req->html.anchor_display_cursor !=
-			w_curr->html.anchor_display_cursor))
-	{
-		/* set cursor to None if we don't have to use or have a cursor */
-		if(!w_new->html.anchor_display_cursor || !w_new->html.anchor_cursor)
-		{
-			if(w_curr->html.anchor_cursor != None)
-				XFreeCursor(XtDisplay((TWidget)w_curr),
-					w_curr->html.anchor_cursor);
-			w_new->html.anchor_cursor = None;
-		}
-		/* no redraw required */
-	}
-
-	/*
-	* Scroll to the requested line or restore previous line if it has been
-	* messed up as the result of a resource change requiring a recompuation
-	* of the layout. 
-	*/
-	if(w_req->html.top_line != w_curr->html.top_line)
-	{
-		ScrollToLine(w_new, w_req->html.top_line);
-		redraw = True;
-	}
-	else if(need_reformat && !parse &&
-			w_new->html.top_line != w_curr->html.top_line)
-	{
-		ScrollToLine(w_new, w_curr->html.top_line);
-		redraw = True;
-	}
-
-	/* check and set scrolling delay */
-	if(w_req->html.repeat_delay != w_curr->html.repeat_delay)
-	{
-		if(w_new->html.vsb && XtIsManaged(w_new->html.vsb))
-			XtVaSetValues(w_new->html.vsb, 
-				XmNrepeatDelay, w_new->html.repeat_delay, NULL);
-		if(w_new->html.hsb && XtIsManaged(w_new->html.hsb))
-			XtVaSetValues(w_new->html.hsb, 
-				XmNrepeatDelay, w_new->html.repeat_delay, NULL);
-	}
-	/* see if we have to restart the animations if they were frozen */
-	if(!w_req->html.freeze_animations && w_curr->html.freeze_animations)
-		_XmHTMLRestartAnimations(w_new);
-
-	/* do we still need pointer tracking? */
-	if(!w_new->html.anchor_track_callback  &&
-		!w_new->html.anchor_cursor         &&
-		!w_new->html.highlight_on_enter    &&
-		!w_new->html.motion_track_callback &&
-		!w_new->html.focus_callback        &&
-		!w_new->html.losing_focus_callback)
-		w_new->html.need_tracking = False;
-	else
-		w_new->html.need_tracking = True;
-
-	/* only recompute new layout if we haven't done so already */
-	if(need_layout && !w_curr->html.in_layout && !need_reformat)
-	{
-		Layout(w_new);
-		redraw = True;
-	}
-
-	if(redraw)
-	{
-		/*
-		* If free_images is still set when we get here, check if some
-		* images need their delayed_creation bit set.
-		*/
-		if(free_images)
-		{
-			XmHTMLImage *img;
-			for(img = w_new->html.images; img != NULL; img = img->next)
-			{
-				if(!ImageInfoFreed(img) &&
-					ImageInfoDelayedCreation(img->html_image))
-				{
-					img->options |= IMG_DELAYED_CREATION;
-					w_new->html.delayed_creation = True;
-				}
-			}
-			if(w_new->html.delayed_creation)
-				_XmHTMLImageCheckDelayedCreation(w_new);
-		}
-
-		_XmHTMLDebug(1, ("XmHTML.c: SetValues, calling ClearArea.\n"));
-		/*****
-		* To make sure the new text is displayed, we need to clear
-		* the current contents and generate an expose event to render
-		* the new text.
-		* We can only do this when we have been realized. If we don't have
-		* a gc, it means we haven't been realized yet. (fix 01/26/97-01, kdh)
-		*****/
-		if(w_new->html.gc != NULL)
-			ClearArea(w_new, 0, 0, w_new->core.width, w_new->core.height);
-	}
-	_XmHTMLDebug(1, ("XmHTML.c: SetValues End\n"));
-
-	return(redraw);
-}
-
-/*****
-* Name: 		GetValues
-* Return Type: 	void
-* Description: 	XmHTMLWidgetClass get_values_hook method.
-* In: 
-*
-* Returns:
-*	nothing
-*****/
-static void 
-GetValues(TWidget w, ArgList args, Cardinal *num_args)
-{
-	register int i;
-
-	_XmHTMLDebug(1, ("XmHTML.c: GetValues Start\n"));
-
-	for(i = 0; i < *num_args; i++)
-	{
-		_XmHTMLDebug(1, ("XmHTML.c: GetValues, requested for %s.\n",
-			args[i].name));
-
-		/*
-		* We return a pointer to the source text instead of letting X do it
-		* since the user might have freed the original text by now.
-		*/
-		if(!(strcmp(args[i].name, XmNvalue)))
-		{
-			*((char**)args[i].value) = XmHTMLTextGetSource(w);
-		}
-	}
-	_XmHTMLDebug(1, ("XmHTML.c: GetValues End\n"));
-	return;
 }
 
 /*****
@@ -2686,491 +1503,6 @@ OnImage(XmHTMLWidget html, int x, int y)
 	}
 	_XmHTMLDebug(1, ("XmHTML.c: OnImage, no match found\n"));
 	return(NULL);
-}
-
-/*****
-* Name: 		ExtendStart
-* Return Type: 	void
-* Description: 	buttonPress action routine. Initializes a selection when
-*				not over an anchor, else paints the anchor as being selected.
-* In: 
-*
-* Returns:
-*	nothing.
-*****/
-static void	
-ExtendStart(TWidget w, XEvent *event, String *params, Cardinal *num_params)
-{
-	/* need to use XtParent since we only get button events from work_area */
-	XmHTMLWidget html = XmHTML (XtParent (w));
-	XButtonPressedEvent *pressed= (XButtonPressedEvent*)event;
-	XmHTMLAnchor *anchor = NULL;
-	XmHTMLWord *anchor_word = NULL;
-	int x,y;
-
-	/* no needless lingering in this routine */
-	if(XtClass(XtParent(w)) != xmHTMLWidgetClass)
-		return;
-
-	/* we don't do a thing with events generated by button3 */
-	if(pressed->button == Button3 && html->html.arm_callback == NULL)
-		return;
-
-	_XmHTMLFullDebug(1, ("XmHTML.c: ExtendStart Start\n"));
-
-	/* Could be we still have a cursor around. Unset it */
-	XUndefineCursor(XtDisplay(w), XtWindow(w));
-
-	/* Get coordinates of button event and add core offsets */
-	x = pressed->x;
-	y = pressed->y;
-
-	/*
-	* First check if we have an active anchor: user might be dragging his
-	* mouse around when he has selected an anchor. If so, invalidate the
-	* current selection.
-	*/
-	if(html->html.current_anchor != NULL)
-		PaintAnchorUnSelected(html);
-
-	/* try to get current anchor element */
-	if(pressed->button != Button3 &&
-		(((anchor_word = GetAnchor(html, x, y)) != NULL) ||
-		((anchor = GetImageAnchor(html, x, y)) != NULL)))
-	{
-		/*****
-		* User has selected an anchor. Get the text for this anchor.
-		* Note: if anchor is NULL it means the user was over a real anchor
-		* (regular anchor, anchored image or a form image button) and
-		* anchor_word is non-NULL (this object the referenced URL). If it
-		* is non-NULL the mouse was over an imagemap, in which case we
-		* may not show visual feedback to the user.
-		* I admit, the names of the variables is rather confusing.
-		******/
-		if(anchor == NULL)
-		{
-			/* real anchor data */
-			anchor = anchor_word->owner->anchor;
-			PaintAnchorSelected(html, anchor_word);
-		}
-
-		html->html.selected = anchor;
-
-		_XmHTMLFullDebug(1, ("XmHTML.c: ExtendStart, anchor selected is %s\n",
-			anchor->href));
-	}
-
-	/* remember pointer position and time */
-	html->html.press_x = pressed->x;
-	html->html.press_y = pressed->y;
-	html->html.pressed_time = pressed->time;
-
-	if(anchor_word == NULL && anchor == NULL && html->html.arm_callback)
-	{
-		XmAnyCallbackStruct cbs;
-
-		cbs.reason = XmCR_ARM;
-		cbs.event = event;
-
-		XtCallCallbackList((TWidget)html, html->html.arm_callback, &cbs);
-	}
-	_XmHTMLFullDebug(1, ("XmHTML.c: ExtendStart End\n"));
-
-	return;
-}
-
-/*****
-* Name: 		ExtendAdjust
-* Return Type: 	void
-* Description: 	buttondrag action routine. Adjusts the selection initiated
-*				by ExtendStart.
-* In: 
-*
-* Returns:
-*	nothing.
-*****/
-static void	
-ExtendAdjust(TWidget w, XEvent *event, String *params, Cardinal *num_params)
-{
-	XmHTMLWidget html;
-
-	/* need to use XtParent since we only get motion events from work_area */
-	if(XtClass(XtParent(w)) != xmHTMLWidgetClass)
-		return;
-
-	html = XmHTML (XtParent (w));
-
-	_XmHTMLFullDebug(1, ("XmHTML.c: ExtendAdjust Start\n"));
-
-	_XmHTMLFullDebug(1, ("XmHTML.c: ExtendAdjust End\n"));
-
-	return;
-}
-
-/*****
-* Name: 		ExtendEnd
-* Return Type: 	void
-* Description: 	buttonrelease tracking action routine. Terminates the selection
-*				initiated by ExtendStart. When over an anchor, paints the 
-*				anchor as being deselected. XmNactivateCallback  or
-*				XmNarmCallback callback resources are only called if the
-*				buttonpress and release occur within a certain time limit 
-*				(MAX_RELEASE_TIME, defined in the header of this file.
-* In: 
-*
-* Returns:
-*	nothing
-*****/
-static void	
-ExtendEnd(TWidget w, XEvent *event, String *params, Cardinal *num_params)
-{
-	/* need to use XtParent since we only get button events from work_area */
-	XmHTMLWidget html = XmHTML (XtParent (w));
-	XButtonReleasedEvent *release = (XButtonReleasedEvent*)event;
-	XmHTMLAnchor *anchor = NULL;
-	XmHTMLWord *anchor_word = NULL;
-	int x,y;
-
-	/* no needless lingering in this routine */
-	if(XtClass(XtParent(w)) != xmHTMLWidgetClass)
-		return;
-
-	/* we don't do a thing with events generated by button3 */
-	if(release->button == Button3)
-		return;
-
-	/*
-	* First check if we have an active anchor: user might be dragging his
-	* mouse around when he has selected an anchor. If so, invalidate the
-	* current selection.
-	*/
-	if(html->html.current_anchor != NULL)
-		PaintAnchorUnSelected(html);
-
-	_XmHTMLFullDebug(1, ("XmHTML.c: ExtendEnd Start\n"));
-
-	/* Get coordinates of button event */
-	x = release->x;
-	y = release->y;
-
-	/* try to get current anchor element */
-	if(((anchor_word = GetAnchor(html, x, y)) != NULL) ||
-		((anchor = GetImageAnchor(html, x, y)) != NULL))
-	{
-		/* 
-		* OK, release took place over an anchor, see if it falls within the 
-		* allowable time limit and we are still over the anchor selected by
-		* ExtendStart.
-		*/
-		if(anchor == NULL)
-			anchor = anchor_word->owner->anchor;
-
-		_XmHTMLFullDebug(1, ("XmHTML.c: ExtendEnd, anchor selected is %s\n",
-			anchor->href));
-		/* 
-		* if we had a selected anchor and it's equal to the current anchor
-		* and the button was released in time, trigger the activation callback.
-		*/
-		if(html->html.selected != NULL && anchor == html->html.selected &&
-			(release->time - html->html.pressed_time) < MAX_RELEASE_TIME)
-		{
-			if(anchor->url_type == ANCHOR_FORM_IMAGE)
-				_XmHTMLFormActivate(html, event, anchor_word->form);
-			else if(html->html.activate_callback)
-			{
-				/* trigger activation callback */
-				_XmHTMLActivateCallback(html, event, anchor);
-
-				_XmHTMLFullDebug(1, ("XmHTML.c: ExtendEnd End\n"));
-			}
-			return;
-		}
-	}
-
-	if(html->html.current_anchor != NULL)
-	{
-		/* unset current anchor */
-		PaintAnchorUnSelected(html);
-	}
-	_XmHTMLFullDebug(1, ("XmHTML.c: ExtendEnd End\n"));
-
-	return;
-}
-
-/*****
-* Name: 		TrackMotion
-* Return Type: 	void
-* Description: 	mouse tracker; calls XmNanchorTrackCallback if 
-*				entering/leaving an anchor.
-*				Also calls XmNmotionTrackCallback when installed.
-* In: 
-*	w:			XmHTMLWidget
-*	event:		MotionEvent structure
-*	params:		additional args, unused
-*	num_parmas:	no of additional args, unused
-* Returns:
-*	nothing
-*****/
-static void 
-TrackMotion(TWidget w, XEvent *event, String *params, Cardinal *num_params)
-{
-	/* need to use XtParent since we only get motion events from work_area */
-	XmHTMLWidget html = XmHTML (XtParent (w));
-	XMotionEvent *motion = (XMotionEvent*)event;
-	XmHTMLAnchor *anchor = NULL;
-	XmHTMLWord *anchor_word = NULL;
-	int x = 0, y = 0;
-	XmAnyCallbackStruct cbs;
-
-	/* no needless lingering in this routine */
-	if(XtClass(XtParent(w)) != xmHTMLWidgetClass)
-		return;
-
-	/* ignore if we don't have to make any more feedback to the user */
-	if(!html->html.need_tracking)
-		return;
-
-	/* save x and y position, we need it to get anchor data */
-	if(event->xany.type == MotionNotify)
-	{
-		/* pass down to motion tracker callback if installed */
-		if(html->html.motion_track_callback)
-		{
-			cbs.reason = XmCR_HTML_MOTIONTRACK;
-			cbs.event = event;
-			XtCallCallbackList((TWidget)html, html->html.motion_track_callback,
-				&cbs);
-		}
-		x = motion->x;
-		y = motion->y;
-	}
-	/*
-	* Since we are setting a cursor in here, we must make sure we remove it 
-	* when we no longer have any reason to use it.
-	*/
-	else
-	{
-		/* gaining focus */
-		if(event->type == FocusIn && html->html.focus_callback)
-		{
-			cbs.reason = XmCR_FOCUS;
-			cbs.event = event;
-			XtCallCallbackList((TWidget)html, html->html.focus_callback,
-				&cbs);
-			XUndefineCursor(XtDisplay(w), XtWindow(w));
-			return;
-		}
-		if(event->type==LeaveNotify||event->type==FocusOut)
-		{
-			/* invalidate current selection if there is one */
-			if(html->html.anchor_track_callback && 
-				html->html.anchor_current_cursor_element)
-				_XmHTMLTrackCallback(html, event, NULL);
-
-			/* loses focus, remove anchor highlight */
-			if(html->html.highlight_on_enter && html->html.armed_anchor)
-				LeaveAnchor(html);
-
-			html->html.armed_anchor = NULL;
-			html->html.anchor_current_cursor_element = NULL;
-			XUndefineCursor(XtDisplay(w), XtWindow(w));
-
-			/* final step: call focusOut callback */
-			if(event->type == FocusOut && html->html.losing_focus_callback)
-			{
-				cbs.reason = XmCR_LOSING_FOCUS;
-				cbs.event = event;
-				XtCallCallbackList((TWidget)html,
-					html->html.losing_focus_callback, &cbs);
-			}
-			return;
-		}
-		/* uninteresting event, throw away */
-		else
-			return;
-	}
-
-	/* try to get current anchor element (if any) */
-	if(((anchor_word = GetAnchor(html, x, y)) == NULL) &&
-		((anchor = GetImageAnchor(html, x, y)) == NULL))
-	{
-		/* invalidate current selection if there is one */
-		if(html->html.anchor_track_callback && 
-			html->html.anchor_current_cursor_element)
-			_XmHTMLTrackCallback(html, event, NULL);
-
-		if(html->html.highlight_on_enter && html->html.armed_anchor)
-			LeaveAnchor(html);
-
-		html->html.armed_anchor = NULL;
-		html->html.anchor_current_cursor_element = NULL;
-		XUndefineCursor(XtDisplay(w), XtWindow(w));
-		return;
-	}
-
-	if(anchor == NULL)
-		anchor = anchor_word->owner->anchor;
-
-	/* Trigger callback and set cursor if we are entering a new element */
-	if(anchor != html->html.anchor_current_cursor_element) 
-	{
-		/* remove highlight of previous anchor */
-		if(html->html.highlight_on_enter)
-		{
-			/* unarm previous selection */
-			if(html->html.armed_anchor )
-				LeaveAnchor(html);
-			/* highlight new selection */
-			if(anchor_word)
-				EnterAnchor(html, anchor_word->owner);
-		}
-
-		html->html.anchor_current_cursor_element = anchor;
-		_XmHTMLTrackCallback(html, event, anchor);
-		XDefineCursor(XtDisplay(w), XtWindow(w), html->html.anchor_cursor);
-		return;
-	}
-	/* we are already on the correct anchor, just return */
-	_XmHTMLFullDebug(1, ("XmHTML.c: TrackMotion End, over current anchor\n"));
-
-	return;
-}
-
-/*****
-* Name: 		CheckAnchorUnderlining
-* Return Type: 	void
-* Description: 	validate anchor underlining enumeration values.
-* In: 
-*	html:		target TWidget
-*	req:		requester TWidget
-* Returns:
-*	nothing.
-*****/
-static void
-CheckAnchorUnderlining(XmHTMLWidget html, XmHTMLWidget req)
-{
-	/* Anchor Underlining values */
-	if(!XmRepTypeValidValue(underline_repid, req->html.anchor_underline_type, 
-		(TWidget)html))
-		html->html.anchor_underline_type = XmSINGLE_LINE;
-	else
-		html->html.anchor_underline_type = req->html.anchor_underline_type;
-
-	/* Set corresponding private resources */
-	switch(html->html.anchor_underline_type)
-	{
-		case XmNO_LINE:
-			html->html.anchor_line = NO_LINE;
-			break;
-		case XmSINGLE_DASHED_LINE:
-			html->html.anchor_line = LINE_DASHED|LINE_UNDER|LINE_SINGLE;
-			break;
-		case XmDOUBLE_LINE:
-			html->html.anchor_line = LINE_SOLID|LINE_UNDER|LINE_DOUBLE;;
-			break;
-		case XmDOUBLE_DASHED_LINE:
-			html->html.anchor_line = LINE_DASHED|LINE_UNDER|LINE_DOUBLE;;
-			break;
-		case XmSINGLE_LINE:		/* default */
-		default:
-			html->html.anchor_line = LINE_SOLID | LINE_UNDER | LINE_SINGLE;
-			break;
-	}
-
-	/* Visited Anchor Underlining values */
-	if(!XmRepTypeValidValue(underline_repid, 
-		req->html.anchor_visited_underline_type, (TWidget)html))
-		html->html.anchor_visited_underline_type = XmSINGLE_LINE;
-	else
-		html->html.anchor_visited_underline_type = 
-			req->html.anchor_visited_underline_type;
-
-	/* Set corresponding private resources */
-	switch(html->html.anchor_visited_underline_type)
-	{
-		case XmNO_LINE:
-			html->html.anchor_visited_line = NO_LINE;
-			break;
-		case XmSINGLE_DASHED_LINE:
-			html->html.anchor_visited_line = LINE_DASHED|LINE_UNDER|LINE_SINGLE;
-			break;
-		case XmDOUBLE_LINE:
-			html->html.anchor_visited_line = LINE_SOLID|LINE_UNDER|LINE_DOUBLE;
-			break;
-		case XmDOUBLE_DASHED_LINE:
-			html->html.anchor_visited_line = LINE_DASHED|LINE_UNDER|LINE_DOUBLE;
-			break;
-		case XmSINGLE_LINE:		/* default */
-		default:
-			html->html.anchor_visited_line = LINE_SOLID|LINE_UNDER|LINE_SINGLE;
-			break;
-	}
-
-	/* Target Anchor Underlining values */
-	if(!XmRepTypeValidValue(underline_repid, 
-		html->html.anchor_target_underline_type, (TWidget)html))
-		req->html.anchor_target_underline_type = XmSINGLE_DASHED_LINE;
-	else
-		html->html.anchor_target_underline_type = 
-			req->html.anchor_target_underline_type;
-
-	/* Set corresponding private resources */
-	switch(html->html.anchor_target_underline_type)
-	{
-		case XmNO_LINE:
-			html->html.anchor_target_line = NO_LINE;
-			break;
-		case XmSINGLE_LINE:
-			html->html.anchor_target_line = LINE_DASHED|LINE_UNDER|LINE_SINGLE;
-			break;
-		case XmDOUBLE_LINE:
-			html->html.anchor_target_line = LINE_SOLID|LINE_UNDER|LINE_DOUBLE;
-			break;
-		case XmDOUBLE_DASHED_LINE:
-			html->html.anchor_target_line = LINE_DASHED|LINE_UNDER|LINE_DOUBLE;
-			break;
-		case XmSINGLE_DASHED_LINE:	/* default */
-		default:
-			html->html.anchor_target_line = LINE_DASHED|LINE_UNDER|LINE_SINGLE;
-			break;
-	}
-}
-
-/*****
-* Name: 		CheckAlignment
-* Return Type: 	void
-* Description: 	checks and sets the alignment resources
-* In: 
-*	html:		target TWidget
-*	req:		requestor TWidget
-* Returns:
-*	nothing.
-*****/
-static void
-CheckAlignment(XmHTMLWidget html, XmHTMLWidget req)
-{
-	/* Set default alignment */
-	if(req->html.enable_outlining)
-		html->html.default_halign = XmHALIGN_OUTLINE;
-	else
-	{
-		/* default alignment depends on string direction */
-		if(html->html.string_direction == XmSTRING_DIRECTION_R_TO_L)
-			html->html.default_halign = XmHALIGN_RIGHT;
-		else
-			html->html.default_halign = XmHALIGN_LEFT;
-
-		/* verify alignment */
-		if(XmRepTypeValidValue(string_repid, req->html.alignment, (TWidget)html))
-		{
-			if(html->html.alignment == XmALIGNMENT_BEGINNING)
-				html->html.default_halign = XmHALIGN_LEFT;
-			if(html->html.alignment == XmALIGNMENT_END)
-				html->html.default_halign = XmHALIGN_RIGHT;
-			else if(html->html.alignment == XmALIGNMENT_CENTER)
-				html->html.default_halign = XmHALIGN_CENTER;
-		}
-	}
 }
 
 /*****
@@ -3809,7 +2141,7 @@ XmHTMLImageFreeAllImages(TWidget w)
 
 	html = XmHTML (w);
  	image_list = html->html.images;
- 	dpy = XtDisplay(w);
+ 	dpy = Toolkit_Display(w);
 
 	while(image_list != NULL)
 	{
@@ -4003,14 +2335,16 @@ XmHTMLImageUpdate(TWidget w, XmImageInfo *image)
 		{
 			_XmHTMLDebug(1, ("XmHTML.c: XmHTMLImageUpdate, painting image "
 				"%s\n", image->url));
-			
+
 			/* clear the current image, don't generate an exposure */
-			XClearArea(XtDisplay(html->html.work_area), 
-				XtWindow(html->html.work_area), xs, ys,
-				temp->width, temp->height, False);
+			Toolkit_Clear_Area (XtDisplay(html->html.work_area), 
+					    Toolkit_Widget_Window(html->html.work_area),
+					    xs, ys, temp->width, temp->height);
 			/* put up the new image */
 			_XmHTMLPaint(html, temp, temp->next);
+#ifdef WITH_MOTIF
 			XSync(XtDisplay((TWidget)html), True);
+#endif
 		}
 	}
 	else
@@ -4080,12 +2414,14 @@ XmHTMLImageReplace(TWidget w, XmImageInfo *image, XmImageInfo *new_image)
 			_XmHTMLDebug(1, ("XmHTML.c: XmHTMLImageReplace, painting image "
 				"%s\n", image->url));
 			/* clear the current image, don't generate an exposure */
-			XClearArea(XtDisplay(html->html.work_area), 
-				XtWindow(html->html.work_area), xs, ys,
-				temp->width, temp->height, False);
+			Toolkit_Clear_Area(XtDisplay(html->html.work_area), 
+				Toolkit_Widget_Window(html->html.work_area), xs, ys,
+				temp->width, temp->height);
 			/* put up the new image */
 			_XmHTMLPaint(html, temp, temp->next);
+#ifdef WITH_MOTIF
 			XSync(XtDisplay((TWidget)html), True);
+#endif
 		}
 	}
 	else
@@ -4256,7 +2592,6 @@ void
 XmHTMLTextSetString(TWidget w, String text)
 {
 	XmHTMLWidget html;
-	Boolean had_hsb, had_vsb;
 
 	/* sanity check */
 	if(!w || !XmIsHTML(w))
@@ -4277,10 +2612,6 @@ XmHTMLTextSetString(TWidget w, String text)
 	if(text && html->html.source && !(strcmp(html->html.source, text)))
 		return;
 
-	/* check the current state of the scrollbars */
-	had_hsb = XtIsManaged(html->html.hsb);
-	had_vsb = XtIsManaged(html->html.vsb);
-
 	/* First kill any outstanding PLC's */
 	_XmHTMLKillPLCCycler(html);
 
@@ -4291,9 +2622,10 @@ XmHTMLTextSetString(TWidget w, String text)
 	/* clear the current display area. Prevents color flashing etc. */
 	if(html->html.gc != NULL)
 	{
-		XClearArea(XtDisplay(html->html.work_area), 
-			XtWindow(html->html.work_area), 0, 0, 
-			html->core.width, html->core.height, False);
+		Toolkit_Clear_Area (XtDisplay(html->html.work_area), 
+				    Toolkit_Widget_Window(html->html.work_area), 0, 0, 
+				    Toolkit_Widget_Dim (html).width,
+				    Toolkit_Widget_Dim (html).height);
 	}
 
 	/* clear current source */
@@ -4335,10 +2667,13 @@ XmHTMLTextSetString(TWidget w, String text)
 	/* check for frames */
 	html->html.nframes = _XmHTMLCheckForFrames(html, html->html.elements);
 
+#ifdef WITH_MOTIF
 	/* set appropriate background color */
 	XtVaSetValues(html->html.work_area, 
 		XmNbackground, html->html.body_bg, NULL);
-
+#else
+	fprintf (stderr, "SHOULD SET THE BACKGROUND COLOR\n");
+#endif
 	/* get new values for top, bottom & highlight */
 	_XmHTMLRecomputeColors(html);
 
@@ -4366,7 +2701,11 @@ XmHTMLTextSetString(TWidget w, String text)
 
 	/* and start up the PLC cycler */
 	html->html.plc_suspended = False;
+#ifdef WITH_MOTIF
 	_XmHTMLPLCCycler((XtPointer)html, None);
+#else
+	_XmHTMLPLCCycler((XtPointer)html);
+#endif
 }
 
 /*****

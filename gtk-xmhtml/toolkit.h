@@ -83,12 +83,16 @@ typedef XVisualInfo TVisualInfo;
 	gdk_window_copy_area ((dst),(gc),(dx),(dy),(src),(sx),(sy),(w),(h))
 #define Toolkit_Create_Pixmap(dpy,win,w,h,d) gdk_pixmap_new((win),(w),(h),(d))
 #define Toolkit_GC_Free(dpy,gc) gdk_gc_destroy(gc)
-#define Toolkit_Widget_Force_Repaint(w) gtk_widget_draw ((w), NULL)
-#define TOolkit_Widget_Repaint(w) gtk_widget_draw ((w), NULL)
+#define Toolkit_Widget_Force_Repaint(w) gtk_widget_draw (GTK_WIDGET (w), NULL)
+#define TOolkit_Widget_Repaint(w) gtk_widget_draw (GTK_WIDGET (w), NULL)
 #define Toolkit_StyleGC_BottomShadow(w) (GTK_WIDGET(w))->style->dark_gc [GTK_STATE_NORMAL]
 #define Toolkit_StyleGC_TopShadow(w)    (GTK_WIDGET(w))->style->light_gc [GTK_STATE_NORMAL]
 #define Toolkit_StyleGC_Highlight(w)    (GTK_WIDGET(w))->style->bg_gc [GTK_STATE_PRELIGHT]
 #define Toolkit_StyleColor_Highlight(w)    (GTK_WIDGET(w))->style->bg [GTK_STATE_PRELIGHT].pixel
+#define Toolkit_Widget_Dim(h) (GTK_WIDGET(h)->allocation)
+#define Toolkit_Screen_Height(w) gdk_screen_height ()
+#define Toolkit_Widget_Is_Realized(w) GTK_WIDGET_REALIZED (w)
+#define Toolkit_Clear_Area(d,w,xs,ys,wi,h) gdk_window_clear_area ((w),(xs),(ys),(wi),(h));
 #else
 
 #define TNone        None
@@ -153,7 +157,11 @@ typedef XVisualInfo TVisualInfo;
 #define Toolkit_StyleGC_TopShadow(w) (w)->manager.top_shadow_GC
 #define Toolkit_StyleGC_Highlight(w) (w)->manager.highlight_GC
 #define Toolkit_StyleColor_Highlight(w)    (w)->manager.highlight_color
-
+#define Toolkit_Widget_Dim(h) ((h)->core)
+#define Toolkit_Screen_Height(w) HeightOfScreen(w)
+#define Toolkit_Widget_Is_Realized(w) XtIsRealized (w)
+#define Toolkit_Clear_Area (d,w,xs,ys,w,h) XClearArea ((d),(w),(xs),(ys),(w),(h), False);
+	     
 #define	TALIGNMENT_END       XmALIGNMENT_END 
 #define TALIGNMENT_CENTER    XmALIGNMENT_CENTER
 #define TALIGNMENT_BEGINNING XmALIGNMENT_BEGINNING

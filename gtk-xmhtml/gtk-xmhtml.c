@@ -21,6 +21,9 @@ static gint gtk_xmhtml_signals [LAST_SIGNAL] = { 0, };
 static void gtk_xmhtml_map (GtkWidget *widget);
 guint gtk_xmhtml_get_type (void);
 
+static void CheckScrollBars(XmHTMLWidget html);
+static void GetScrollDim(XmHTMLWidget html, int *hsb_height, int *vsb_width);
+
 static void
 gtk_xmhtml_init (GtkXmHTML *html, char *html_source)
 {
@@ -39,7 +42,7 @@ gtk_xmhtml_new (char *html_source)
 	GtkXmHTML *html;
 	
 	html = gtk_type_new (gtk_xmhtml_get_type ());
-	XmHTML_Initialize (html, html_source);
+	XmHTML_Initialize (html, html, html_source);
 	return GTK_WIDGET (html);
 }
 
@@ -123,7 +126,7 @@ CreateAnchorCursor(XmHTMLWidget html)
 	colormap = gtk_widget_get_colormap (GTK_WIDGET (html));
 	gdk_color_white (colormap, &white);
 	gdk_color_black (colormap, &black);
-	html->html.anchor_cursor = gdk_cursor_new_from_pixmap (display, shape, mask,
+	html->html.anchor_cursor = gdk_cursor_new_from_pixmap (shape, mask,
 							       &white, &black,
 							       fingers_x_hot, fingers_y_hot);
 }
@@ -263,7 +266,7 @@ CheckGC(XmHTMLWidget html)
 	/* background image gc */
 	if(html->html.body_images_enabled && html->html.bg_gc == NULL)
 	{
-		html->html.bg_gc = gdk_gc_new ();
+		html->html.bg_gc = gdk_gc_new (GTK_WIDGET (html)->window);
 		fprintf (stderr, "Gdk-gc-copy should be implemnenbted\n");
 		/* XCopyGC(dpy, html->html.gc, 0xFFFF, html->html.bg_gc); */
 	}
@@ -284,6 +287,8 @@ CheckGC(XmHTMLWidget html)
 static void
 CreateHTMLWidget(XmHTMLWidget html)
 {
+	int vsb_width, hsb_height;
+
 	_XmHTMLDebug(1, ("XmHTML.c: CreateHTMLWidget Start\n"));
 
 	/* Check if user provided a work area */
@@ -292,8 +297,8 @@ CreateHTMLWidget(XmHTMLWidget html)
 		GtkWidget *draw_area;
 		draw_area = gtk_drawing_area_new ();
 		gtk_drawing_area_size (GTK_DRAWING_AREA (draw_area),
-				       GTK_WIDGET(html)->alignement.width,
-				       GTK_WIDGET(html)->alignement.height);
+				       GTK_WIDGET(html)->allocation.width,
+				       GTK_WIDGET(html)->allocation.height);
 	}
 	/* catch all exposure events on the render window */
 	gtk_widget_set_events (html->html.work_area,
@@ -304,6 +309,8 @@ CreateHTMLWidget(XmHTMLWidget html)
 			    "event",
 			    (GtkSignalFunc) html_work_area_callback, (gpointer) html);
 
+	fprintf (stderr, "XT MANAGE IS NOT PRESENT\n");
+#if 0
 	XtManageChild(html->html.work_area);
 
 	if(html->html.vsb == NULL)
@@ -340,6 +347,7 @@ CreateHTMLWidget(XmHTMLWidget html)
 	XtAddCallback(html->html.hsb, XmNdragCallback,
 		(XtCallbackProc)ScrollCB, (XtPointer)html);
 
+#endif
 	/* 
 	* subtract margin_width once to minimize number of calcs in
 	* the paint routines: every thing rendered starts at an x position
@@ -347,9 +355,9 @@ CreateHTMLWidget(XmHTMLWidget html)
 	*/
 	GetScrollDim(html, &hsb_height, &vsb_width);
 
-	html->html.work_width = html->core.width-html->html.margin_width-vsb_width;
-	html->html.work_height= html->core.height;
-
+	html->html.work_width = GTK_WIDGET (html)->allocation.width - html->html.margin_width-vsb_width;
+	html->html.work_height= GTK_WIDGET (html)->allocation.height;
+	
 	_XmHTMLDebug(1, ("XmHTML.c: CreateHTMLWidget End\n"));
 	return;
 }
@@ -358,9 +366,10 @@ static void
 gtk_xmhtml_map (GtkWidget *widget)
 {
 	GtkWidget *scrollbar;
+	GtkXmHTML *html = GTK_XMHTML (widget);
 	
-	if (GTK_OBJECT_CLASS (parent_class)->map)
-		(*GTK_OBJECT_CLASS (parent_class)->map)(widget);
+	if (GTK_WIDGET_CLASS (parent_class)->map)
+		(*GTK_WIDGET_CLASS (parent_class)->map)(widget);
 	
 	_XmHTMLDebug(1, ("XmHTML.c: Mapped start\n"));
 
@@ -371,15 +380,15 @@ gtk_xmhtml_map (GtkWidget *widget)
 
 	scrollbar = html->html.vsb;
 	
-	html->html.work_heigh = widget->allocation.height;
+	html->html.work_height = widget->allocation.height;
 	html->html.work_width = widget->allocation.width - 
-		(html->html.margin_width + scrollbar.allocation.width);
+		(html->html.margin_width + scrollbar->allocation.width);
 
 	_XmHTMLDebug(1, ("XmHTML.c: Mapped, new work area dimensions: %ix%i\n",
 			 html->html.work_width, html->html.work_height));
 
 	/* configure the scrollbars, will also resize work_area */
-	CheckScrollBars(html);
+	CheckScrollBars (html);
 
 	Layout(html);
 	
@@ -396,7 +405,7 @@ gtk_xmhtml_map (GtkWidget *widget)
 *	nothing.
 *****/
 static void
-CheckScrollBars(XmHTMLWidget *html)
+CheckScrollBars(XmHTMLWidget html)
 {
 	fprintf (stderr, "CheckScrollBars unimplemented\n");
 }
@@ -411,5 +420,63 @@ XmHTML_Frontend_Redisplay (XmHTMLWidget html)
 	if (GTK_WIDGET_MAPPED (html->html.vsb))
 		/* update_display html->html.vsb */;
 	if (GTK_WIDGET_MAPPED (html->html.hsb))
-		/* update_display html->html.hsb */
+		/* update_display html->html.hsb */;
 }
+
+/*****
+* Name: 		GetScrollDim
+* Return Type: 	void
+* Description: 	retrieves width & height of the scrollbars
+* In: 
+*	html:		XmHTMLWidget for which to retrieve these values
+*	hsb_height: thickness of horizontal scrollbar, filled upon return
+*	vsb_width:	thickness of vertical scrollbar, filled upon return
+* Returns:
+*	nothing
+*****/
+static void
+GetScrollDim(XmHTMLWidget html, int *hsb_height, int *vsb_width)
+{
+	int height = 0, width = 0;
+
+	if(html->html.hsb)
+		height = GTK_WIDGET (html->html.hsb)->allocation.height;
+	
+	/*
+	 * Sanity check if the scrollbar dimensions exceed the TWidget dimensions
+	 * Not doing this would lead to X Protocol errors whenever text is set
+	 * into the TWidget: the size of the workArea will be less than or equal
+	 * to zero when scrollbars are required.
+	 * We need always need to do this check since it's possible that some
+	 * user has been playing with the dimensions of the scrollbars.
+	 */
+	if(height >= GTK_WIDGET (html)->allocation.height){
+		_XmHTMLWarning(__WFUNC__(html->html.hsb, "GetScrollDim"),
+			       "Height of horizontal scrollbar (%i) exceeds height of parent "
+			       "TWidget (%i).\n    Reset to 15.", height,
+			       GTK_WIDGET(html)->allocation.height);
+		height = 15;
+		fprintf (stderr, "Die boy boy die\n");
+		exit (1);
+	}
+	
+	if(html->html.vsb){
+		width = GTK_WIDGET (html->html.vsb)->allocation.width;
+		if(width >= GTK_WIDGET (html)->allocation.width){
+			_XmHTMLWarning(__WFUNC__(html->html.vsb, "GetScrollDim"),
+				"Width of vertical scrollbar (%i) exceeds width of parent "
+				"TWidget (%i).\n    Reset to 15.", width,
+				       GTK_WIDGET (html)->allocation.width);
+			width  = 15;
+			fprintf (stderr, "Die vertical boy boy die!\n");
+			exit (1);
+		}
+	}
+
+	_XmHTMLDebug(1, ("XmHTML.c: GetScrollDim; height = %i, width = %i\n",
+		height, width));
+
+	*hsb_height = height;
+	*vsb_width  = width;
+}
+

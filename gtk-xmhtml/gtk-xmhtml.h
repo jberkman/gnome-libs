@@ -33,4 +33,6 @@ struct _GtkXmHTMLClass
 	void (* testsignal) (GtkXmHTML *xmhtml);
 };
 
+#define XmCR_ACTIVATE 0
+
 #endif
