@@ -65,7 +65,7 @@ prepare_app()
 	button = gtk_button_new_with_label ("Hello GNOME");
 	gtk_signal_connect (GTK_OBJECT (button), "clicked",
 			    GTK_SIGNAL_FUNC (hello_cb), NULL);
-	gtk_container_border_width (GTK_CONTAINER (button), 60);
+	gtk_container_set_border_width (GTK_CONTAINER (button), 60);
 
 	gnome_app_set_contents (GNOME_APP (app), button);
 	

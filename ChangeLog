@@ -1,3 +1,11 @@
+Sat Nov 28 21:18:54 EST 1998 Gregory McLean <gregm@comstar.net>
+
+	* gnome-hello/*.c : gtk_container_border_width -> 
+ 	gtk_container_set_border_width.
+	* test-gnome/*.c : gtk_container_border_width ->
+	gtk_container_set_border_width. (I thought gtkcompat.h was supposed
+	to deal with this? *sigh* ah well its fixed now)
+
 1998-11-27  Miguel de Icaza  <miguel@nuclecu.unam.mx>
 
 	* gnome-config.in (libs_l): Provide a way to report the location

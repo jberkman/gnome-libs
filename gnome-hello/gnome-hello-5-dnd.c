@@ -89,7 +89,7 @@ prepare_app(void)
 		       drag_types, sizeof(drag_types) / sizeof(drag_types[0]),
 		       GDK_ACTION_COPY);
 
-  gtk_container_border_width (GTK_CONTAINER (source), 60);
+  gtk_container_set_border_width (GTK_CONTAINER (source), 60);
 
   gtk_signal_connect (GTK_OBJECT (drop_target), "drag_data_received",
 		      GTK_SIGNAL_FUNC(drop_cb), NULL);
