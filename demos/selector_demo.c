@@ -178,8 +178,8 @@ main (int argc, char **argv)
 {
     GtkWidget *app;
     GtkWidget *vbox;
-    GtkWidget *frame1, *frame2, *frame3, *frame4;
-    GtkWidget *fselector, *entry, *ientry;
+    GtkWidget *frame1, *frame2, *frame3, *frame4, *frame5;
+    GtkWidget *fselector, *entry, *ientry, *pentry;
 
     gnome_program_init ("selector_demo", "1.0", argc, argv,
 			GNOMEUI_INIT, NULL);
@@ -216,6 +216,18 @@ main (int argc, char **argv)
     ientry = gnome_icon_entry_new ("test4", "San Francisco");
 
     gtk_container_add (GTK_CONTAINER (frame4), ientry);
+
+    frame5 = gtk_frame_new ("GnomePixmapEntry");
+
+    gtk_box_pack_start (GTK_BOX (vbox), frame5, FALSE, FALSE,
+			GNOME_PAD);
+
+    pentry = g_object_new (gnome_icon_entry_get_type (),
+			   "preview_x", 200, "preview_y", 200,
+			   "is_pixmap_entry", TRUE,
+			   NULL);
+
+    gtk_container_add (GTK_CONTAINER (frame5), pentry);
 
     frame2 = gtk_frame_new ("GnomeIconSelector");
 
