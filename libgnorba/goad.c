@@ -49,7 +49,8 @@ static const char *goad_activation_id = NULL;
 
 static void goad_server_list_read(const char *filename,
 				  GArray *servinfo,
-				  GString *tmpstr);
+				  GString *tmpstr,
+				  GoadServerList *newl);
 static GoadServerType goad_server_typename_to_type(const char *typename);
 static CORBA_Object real_goad_server_activate(GoadServer *sinfo,
 					      GoadActivationFlags flags,
@@ -110,9 +111,12 @@ goad_server_list_get(void)
   GString *usersrvpath;
   DIR *dirh;
   GoadServerList *newl;
+  GHashTable *by_goad_id;
 
   newl = g_new0(GoadServerList, 1);
   servinfo = g_array_new(TRUE, FALSE, sizeof(GoadServer));
+  by_goad_id = g_hash_table_new(g_str_hash, g_str_equal);
+  newl->by_goad_id = by_goad_id;
   tmpstr = g_string_new(NULL);
 
   /* User servers (preferred over system) */
@@ -128,7 +132,7 @@ goad_server_list_get(void)
 	    
 	    g_string_sprintf(tmpstr, "=%s/%s", usersrvpath->str, dent->d_name);
 	    
-	    goad_server_list_read(tmpstr->str, servinfo, tmpstr);
+	    goad_server_list_read(tmpstr->str, servinfo, tmpstr, newl);
     }
     closedir(dirh);
   }
@@ -146,12 +150,12 @@ goad_server_list_get(void)
       g_string_sprintf(tmpstr, "=" GNOMESYSCONFDIR SERVER_LISTING_PATH "/%s",
 		       dent->d_name);
 		       
-      goad_server_list_read(tmpstr->str, servinfo, tmpstr);
+      goad_server_list_read(tmpstr->str, servinfo, tmpstr, newl);
     }
     closedir(dirh);
   }
 
-  goad_server_list_read(SERVER_LISTING_PATH "/", servinfo, tmpstr);
+  goad_server_list_read(SERVER_LISTING_PATH "/", servinfo, tmpstr, newl);
 
   newl->list = (GoadServer *)servinfo->data;
   g_array_free(servinfo, FALSE);
@@ -258,11 +262,12 @@ goad_server_typename_to_type(const char *typename)
 static void
 goad_server_list_read(const char *filename,
 		      GArray *servinfo,
-		      GString *tmpstr)
+		      GString *tmpstr,
+		      GoadServerList *newl)
 {
   gpointer iter;
   char *typename;
-  GoadServer newval;
+  GoadServer newval, *nvptr;
   GString*   dummy;
 
   dummy = g_string_new("");
@@ -324,7 +329,10 @@ goad_server_list_read(const char *filename,
 		       newval.description);
     newval.location_info = gnome_config_get_string(dummy->str);
     g_array_append_val(servinfo, newval);
+    nvptr = &g_array_index(servinfo, GoadServer, servinfo->len - 1);
+    g_hash_table_insert(newl->by_goad_id, newval.server_id, nvptr);
   }
+
   gnome_config_pop_prefix();
   /*forget the config information about this file, otherwise we
     take up gobs of memory*/
@@ -364,6 +372,8 @@ goad_server_list_free (GoadServerList *server_list)
 
     g_free(sl);
   }
+
+  g_hash_table_destroy(server_list->by_goad_id);
 
   g_free(server_list);
 }
@@ -409,12 +419,9 @@ goad_server_activate_with_id (GoadServerList *server_list,
   if(!slist)
     goto errout;
 
-  for(i = 0; slist[i].repo_id; i++) {
-    if(!strcmp(slist[i].server_id, server_id))
-      break;
-  }
+  slist = g_hash_table_lookup(my_servlist->by_goad_id, server_id);
 
-  if(slist[i].repo_id)
+  if(slist)
     retval = real_goad_server_activate(&slist[i], flags, params, my_servlist);
 
  errout:
@@ -814,6 +821,7 @@ goad_server_unregister_atexit(ActiveServerInfo *ai, CORBA_Environment *ev)
 
   CORBA_Object_release(name_service, ev);
 }
+
 static void
 goad_servers_unregister_atexit(void)
 {

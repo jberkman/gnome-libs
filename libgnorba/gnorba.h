@@ -133,7 +133,8 @@ typedef struct {
 } GoadServer;
 
 typedef struct {
-  GoadServer *list; /* do a hash table */
+  GoadServer *list;
+  GHashTable *by_goad_id;
 } GoadServerList;
 
 /*
