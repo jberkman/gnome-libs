@@ -7,7 +7,7 @@ AM_CONFIG_HEADER(config.h)
 
 AC_CANONICAL_SYSTEM
 
-AM_INIT_AUTOMAKE(gnome-libs, 1.0.52)
+AM_INIT_AUTOMAKE(gnome-libs, 1.1.0)
 
 AM_ACLOCAL_INCLUDE(macros)
 
@@ -453,3 +453,12 @@ tools/Makefile
 tools/convertrgb/Makefile
 tools/gnome-doc/Makefile
 macros/Makefile])
+
+echo " 
+
+	Warning: you have just compiled the gnome-libs-devel branch,
+	if you wanted to compile the stable gnome-libs, you need
+	to get gnome-libs-1-0 branch from the CVS or a gnome-libs-1.0.xx 
+	tar package
+"
+
