@@ -7,7 +7,7 @@ AUTOMAKE_OPTIONS = 1.3
 bin_SCRIPTS = gnome-config gnome-bug
 
 if COMPILE_TEST_GNOME
-test_gnome = test-gnome test-suite
+test_gnome = demos test-gnome test-suite
 else
 test_gnome =
 endif
@@ -89,5 +89,5 @@ compatConf.sh: compatConf.sh.in Makefile
 CLEANFILES=gnomeConf.sh
 
 EXTRA_DIST =	HACKING gnomeConf.sh.in gnome-bug.in gnome-config.in \
-		gnome-libs.spec.in
+		gnome-libs.spec.in message-of-doom
 
