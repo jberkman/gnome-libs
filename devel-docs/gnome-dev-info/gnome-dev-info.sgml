@@ -169,9 +169,19 @@
       <title>Policy on hacking another people's code.</title>
       <para>
         If you're going to do a little fixes, go and do it. But if you
-        plan to do changes to some API or rewriting some code please tell
-        it to the author. (I've learned it by the hard way and the gnome-score
-        stuff is broken yet because my error :-( )
+        plan to do changes to some API or rewriting some code please
+        tell it to the author.  Modules on CVS have different levels
+        of maturity: some of the are being developed actively, other
+        are very stable and changes to it should usually go first
+        trough the module maintainer.  To help clarify this situation,
+        usually, there is a file called README.CVS included on every
+        module on CVS where the policy is detailed for the hacking you
+        can do to a module.
+	</para>
+
+	<para>
+	If in doubt, ask the gnome-hackers@nuclecu.unam.mx for
+	assistance. 
 	</para>
       </sect1>
 
@@ -201,25 +211,45 @@
       <title>Coding Standards.</title>
       <para>
       <itemizedlist>
+
         <listitem><para> Code that goes into Gnome uses the Linux kernel coding 
           style (which is basically the GNU coding style but indentation is 
           8 spaces, and braces are on the same line as the statements that 
-          open the block).</para>
-        <listitem><para> Please, please, please, be in the 80 columns...</para>
+          open the block).  Make yourself familiar with both coding
+          styles (the GNU coding style and the Linux kernel coding
+          style)</para>
+
+        <listitem><para>Try to make your code readable in 80 columns</para>
           </listitem>
+
         <listitem><para> When you change things, edit the ChangeLog, so the 
-          other people can know what you've did.</para></listitem>
+          other people can know what you've did.  The ChangeLog is an
+          important document, as it is shipped with the package and it
+          lets the end user and programmers not familar with the GNOME
+          way of things to know what has been the evolution of a
+          package.  It also allows people with no continuos network
+          access to find out what changes were done and by whom</para></listitem>
+
         <listitem><para> When you're writing code that should be written better
           add FIXME comments so it's easy to recognize.</para></listitem>
+
+	<listitem><para>Try to use defensive programming techniques:
+          the glib library provides various utility macros that help
+          you make your code more robust.  g_return_if_fail,
+          g_return_val_if_fail, g_warning, g_error and g_assert are
+          your friends.
+
         <listitem><para> Document your programs.</para></listitem>
+
         <listitem><para> If you do changes to the APIs documented here or add
           some new ones please update the documentation.</para></listitem>
+
         <listitem><para> Add translations for your native language. We would like
           have a full internationalized GNOME. (so if you know more than
           one language do translations for all them) (we would like all
           the idioms, from francais to old greek :-) )
-	[FIXME: Add a list of currently supported languages, and a list of wanted languages ?]
 	</para></listitem>
+
         </itemizedlist>
       </sect1>
 
