@@ -1,3 +1,10 @@
+Tue Feb 24 20:01:42 1998  Maciej Stachowiak  <mstachow@mit.edu>
+
+	* configure.in: Added checks for libraries that gdk_imlib depends
+ 	on, since libgnomeui now depends on libgdk_imlib. This is needed
+ 	for the libraries and demos (and probably other apps) to build
+ 	properly.
+
 1998-02-23  Federico Mena Quintero  <federico@nuclecu.unam.mx>
 
 	* gnome.h: Added #include <gdk_imlib.h>, as it is now required for
