@@ -24,12 +24,20 @@ gnorba_built = 						\
 	gnome-factory.h 				\
 	gnome-factory-skels.c 				\
 	gnome-factory-stubs.c 				\
-	gnome-factory-common.c
+	gnome-factory-common.c				\
+	GnomeObject.h					\
+	GnomeObject-skels.c				\
+	GnomeObject-stubs.c				\
+	GnomeObject-common.c
 
 ORBIT_IDL=orbit-idl
 
-$(gnorba_built): $(top_srcdir)/idl/gnome-factory.idl
-	$(ORBIT_IDL) $<
+IDL_FLAGS=-D__LIBGNORBA_COMPILATION
+
+$(gnorba_built): $(top_srcdir)/idl/gnome-factory.idl \
+	$(top_srcdir)/idl/GnomeObject.idl
+	$(ORBIT_IDL) $(IDL_FLAGS) $(top_srcdir)/idl/gnome-factory.idl
+	$(ORBIT_IDL) $(IDL_FLAGS) $(top_srcdir)/idl/GnomeObject.idl
 
 libgnorba_la_SOURCES = 					\
 	$(gnorba_built) 				\
@@ -44,7 +52,8 @@ libgnorbagtk_la_SOURCES = 				\
 
 libgnorbainclude_HEADERS = 				\
 	gnorba.h 					\
-	gnome-factory.h
+	gnome-factory.h					\
+	GnomeObject.h
 
 libgnorba_la_LDFLAGS = -version-info 28:4:1 -rpath $(libdir)
 libgnorba_la_LIBADD = $(ORBIT_LIBS) $(GLIB_LIBS) -lm

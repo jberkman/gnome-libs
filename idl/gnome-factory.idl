@@ -2,6 +2,14 @@
  * gnome-factory.idl: Basic object factory interface, based on CORBA
  * LifeCycle version
  */
+
+#ifndef __LIBGNORBA_COMPILATION
+%{
+#pragma include_defs libgnorba/gnome-factory.h
+%}
+#pragma inhibit push
+#endif
+
 module GNOME {
 	typedef sequence<string> stringlist;
 
@@ -13,3 +21,7 @@ module GNOME {
 			raises(CannotActivate);
 	};
 };
+
+#ifndef __LIBGNORBA_COMPILATION
+#pragma inhibit pop
+#endif

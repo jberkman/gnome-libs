@@ -1,3 +1,10 @@
+#ifndef __LIBGNORBA_COMPILATION
+%{
+#pragma include_defs libgnorba/Table.h
+%}
+#pragma inhibit push
+#endif
+
 module GNOME {
 
 	interface Table {
@@ -19,3 +26,7 @@ module GNOME {
 
 	};
 };
+
+#ifndef __LIBGNORBA_COMPILATION
+#pragma inhibit pop
+#endif

@@ -1,8 +1,29 @@
+#ifndef __LIBGNORBA_COMPILATION
+%{
+#pragma include_defs libgnorba/GnomeObject.h
+  %}
+#pragma inhibit push
+#endif
+
 module GNOME {
-	interface object {
-		oneway void ref ();
-		oneway void unref ();
-		Object query_interface (in string repoid);
-	};
+  interface object {
+    /**
+     * ref:
+     *
+     * increments the reference count
+     */
+    oneway void ref ();
+    /**
+     * unref:
+     * 
+     * decrements the reference count
+     */
+    oneway void unref ();
+
+    Object query_interface (in string repoid);
+  };
 };
 
+#ifndef __LIBGNORBA_COMPILATION
+#pragma inhibit pop
+#endif
