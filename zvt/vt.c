@@ -868,9 +868,11 @@ static void
 vt_restore_cursor(struct vt_em *vt)
 {
   d(printf("restore cursor\n"));
+
   vt->cursorx = vt->savex;
   vt->cursory = vt->savey;
   vt->mode = (vt->savemode & (VTMODE_INSERT | VTMODE_WRAPOFF | VTMODE_APP_CURSOR | VTMODE_RELATIVE));
+
   vt->attr = vt->saveattr;
   vt->remaptable = vt->saveremaptable;
 
@@ -1110,13 +1112,13 @@ vt_setmode(struct vt_em *vt, int on)
 	break;
       case 9:			/* also for DEC private modes */
 	d(printf("sending mouse events\n"));
-	vt->mode &= VTMODE_SEND_MOUSE_MASK;
+	vt->mode &= ~VTMODE_SEND_MOUSE_MASK;
 	if (on)
 	  vt->mode |= VTMODE_SEND_MOUSE_PRESS;
 	break;
       case 1000:
 	d(printf("sending mouse events\n"));
-	vt->mode &= VTMODE_SEND_MOUSE_MASK;
+	vt->mode &= ~VTMODE_SEND_MOUSE_MASK;
 	if (on)
 	  vt->mode |= VTMODE_SEND_MOUSE_BOTH;
 	break;
@@ -1363,6 +1365,9 @@ vt_set_text(struct vt_em *vt)
 	break;
       case 2:
 	i = VTTITLE_WINDOW;
+	break;
+      case 3:
+	i = VTTITLE_XPROPERTY;
 	break;
       case 46:			/* log file .. disabled */
       case 50:			/* set font .. disabled too */

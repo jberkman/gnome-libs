@@ -1,3 +1,15 @@
+1999-09-19  Michael Zucchi  <zucchi@zedzone.mmc.com.au>
+
+	* vt.c (vt_set_text): Return VTTITLE_XPROPERTY as a title type
+	when the mode number is 3.
+
+	* vt.h (VTTITLE_XPROPERTY): New title type, requests a setting of
+	an X property.
+
+	* vt.c (vt_setmode): #@$@#$@#$# when the send mouse was being set,
+	the mask was beign applied inverted, and blowing away all the
+	other mode bits.
+	
 1999-09-19  Michael Zucchi  <mzucchi@denr.sa.gov.au>
 
 	* zvtterm.c: Removed the zvt_term_match_clicked() prototype,

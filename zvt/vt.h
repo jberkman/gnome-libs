@@ -59,9 +59,10 @@ struct vt_line {
 
 /* type of title to set with callback */
 typedef enum {
-  VTTITLE_WINDOWICON=0,
-  VTTITLE_ICON,
-  VTTITLE_WINDOW
+  VTTITLE_WINDOWICON=0,		/* set both window title and icon name */
+  VTTITLE_ICON,			/* set icon name */
+  VTTITLE_WINDOW,		/* set window title */
+  VTTITLE_XPROPERTY		/* set X property */
 } VTTITLE_TYPE;
 
 /* note: bit 0x80000000 is free for another attribute */
