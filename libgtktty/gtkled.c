@@ -51,7 +51,8 @@ gtk_led_get_type ()
       sizeof (GtkLedClass),
       (GtkClassInitFunc) gtk_led_class_init,
       (GtkObjectInitFunc) gtk_led_init,
-      (GtkArgFunc) NULL,
+      (GtkArgSetFunc) NULL,
+      (GtkArgGetFunc) NULL
     };
     
     led_type = gtk_type_unique (gtk_misc_get_type (), &led_info);

@@ -135,7 +135,8 @@ gtk_tty_get_type ()
       sizeof (GtkTtyClass),
       (GtkClassInitFunc) gtk_tty_class_init,
       (GtkObjectInitFunc) gtk_tty_init,
-      (GtkArgFunc) NULL,
+      (GtkArgSetFunc) NULL,
+      (GtkArgGetFunc) NULL
     };
     
     tty_type = gtk_type_unique (gtk_term_get_type (), &tty_info);

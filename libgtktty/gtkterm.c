@@ -152,7 +152,8 @@ gtk_term_get_type ()
       sizeof (GtkTermClass),
       (GtkClassInitFunc) gtk_term_class_init,
       (GtkObjectInitFunc) gtk_term_init,
-      (GtkArgFunc) NULL,
+      (GtkArgSetFunc) NULL,
+      (GtkArgGetFunc) NULL
     };
     
     term_type = gtk_type_unique (gtk_widget_get_type (), &term_info);
