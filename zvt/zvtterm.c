@@ -91,6 +91,7 @@ static void zvt_term_readmsg (gpointer data, gint fd, GdkInputCondition conditio
 static void zvt_term_fix_scrollbar (ZvtTerm *term);
 static void vtx_unrender_selection (struct _vtx *vx);
 static void zvt_term_scroll (ZvtTerm *term, int n);
+static void zvt_term_scroll_by_lines (ZvtTerm *term, int n);
 
 
 /* transparent terminal prototypes */
@@ -1363,6 +1364,14 @@ zvt_term_button_press (GtkWidget      *widget,
 			NULL, NULL, 0);
       }
     break;
+
+  case 4:
+    zvt_term_scroll_by_lines (term, -12);
+    break;
+
+  case 5:
+    zvt_term_scroll_by_lines (term, 12);
+    break;
   }
   return FALSE;
 }
@@ -1390,6 +1399,11 @@ zvt_term_button_release (GtkWidget      *widget,
   x = x/term->charwidth;
   y = y/term->charheight + vx->vt.scrollbackoffset;
 
+  /* ignore wheel mice buttons (4 and 5) */
+  /* otherwise they affect the selection */
+  if (event->button == 4 || event->button == 5)
+    return FALSE;
+  
   /* report mouse to terminal */
   if (!(event->state & GDK_SHIFT_MASK))
     if (vt_report_button(&vx->vt, 0, event->state, x, y))
@@ -1433,6 +1447,21 @@ zvt_term_button_release (GtkWidget      *widget,
   }
 
   return FALSE;
+}
+
+static void
+zvt_term_scroll_by_lines (ZvtTerm *term, int n)
+{
+  gfloat new_value = 0;
+
+  if (n > 0)
+    new_value = MIN (term->adjustment->value + n, term->adjustment->upper - n);
+  else if (n < 0)
+    new_value = MAX (term->adjustment->value + n, term->adjustment->lower);
+  else
+    return;
+
+  gtk_adjustment_set_value (term->adjustment, new_value);
 }
 
 /*
