@@ -131,7 +131,7 @@ gint main (gint argc, gchar *argv[])
 	}
       } else {
 	if (pw) {
-	  execl(pw->pw_shell, rindex(pw->pw_shell, '/'), NULL);
+	  execl(pw->pw_shell, strrchr(pw->pw_shell, '/'), NULL);
 	} else {
 	  execl("/bin/bash", "bash", NULL);
 	}
