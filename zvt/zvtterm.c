@@ -153,6 +153,7 @@ zvt_term_init (ZvtTerm *term)
   term->cursor_filled = 1;
   term->cursor_blink_state = 0;
   term->blink_enabled = 1;
+  term->ic = NULL;
   
   /* input handler */
   term->input_id = -1;
@@ -214,6 +215,11 @@ zvt_term_destroy (GtkObject *object)
 
   zvt_term_closepty(term);
   vtx_destroy(term->vx);
+
+  if (term->ic) {
+    gdk_ic_destroy(term->ic);
+    term->ic = NULL;
+  }
 
   if (GTK_OBJECT_CLASS (parent_class)->destroy)
     (* GTK_OBJECT_CLASS (parent_class)->destroy) (object);
@@ -333,6 +339,16 @@ zvt_term_realize (GtkWidget *widget)
   term->back_last = -1;
   term->fore_last = -1;
 
+  /* input context */
+  if (gdk_im_ready() && !term->ic) {
+    GdkIMStyle style = GdkIMPreeditNothing | GdkIMStatusNothing;
+    /* FIXME: do we have any window yet? */
+    term->ic = gdk_ic_new(widget->window, widget->window, style, NULL);
+    if (!term->ic) {
+      g_warning("Can't create input context.");
+    }
+  }
+
   /* FIXME: not sure if this is right or not? */
   if (!GTK_WIDGET_HAS_FOCUS (widget))
     gtk_widget_grab_focus (widget);
@@ -371,6 +387,9 @@ static gint zvt_term_focus_in(GtkWidget *widget, GdkEventFocus *event)
   if (term->blink_enabled && term->timeout_id == -1)
     term->timeout_id = gtk_timeout_add(500, zvt_term_cursor_blink, term);
 
+  if (term->ic)
+    gdk_im_begin (term->ic, widget->window);
+
   return FALSE;
 }
 static gint zvt_term_focus_out(GtkWidget *widget, GdkEventFocus *event)
@@ -393,6 +412,9 @@ static gint zvt_term_focus_out(GtkWidget *widget, GdkEventFocus *event)
     gtk_timeout_remove(term->timeout_id);
     term->timeout_id = -1;
   }
+
+  if (term->ic)
+    gdk_im_end ();
 
   return FALSE;
 }
@@ -1449,7 +1471,9 @@ void vt_scroll_area(void *user_data, int firstrow, int count, int offset)
   int width,height;
   ZvtTerm *term;
   GtkWidget *widget;
+#if 0
   GdkEvent *event;
+#endif
 
   widget = user_data;
 
