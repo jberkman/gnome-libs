@@ -14,12 +14,17 @@ static int
 get_number (char **geometry)
 {
 	int value = 0;
-
+	int mult  = 1;
+	
+	if (**geometry == '-'){
+		mult = -1;
+		(*geometry)++;
+	}
 	while (**geometry && isdigit (**geometry)){
 		value = value * 10 + (**geometry - '0');
 		(*geometry)++;
 	}
-	return value;
+	return value * mult;
 }
 
 /*
