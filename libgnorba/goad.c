@@ -900,12 +900,18 @@ goad_server_activate_factory(GoadServer *sinfo,
 {
   CORBA_Object factory_obj, retval;
   GNOME_stringlist sl;
+  int dout;
 
   factory_obj = goad_server_activate_with_id(slist, sinfo->location_info,
 					     flags & ~(GOAD_ACTIVATE_ASYNC|GOAD_ACTIVATE_NEW_ONLY), NULL);
 
-  if(factory_obj == CORBA_OBJECT_NIL)
+  dout = getenv("GOAD_DEBUG_EXERUN");
+
+  if(factory_obj == CORBA_OBJECT_NIL) {
+    if(dout)
+      g_message("activate_with_id returned NIL");
     return CORBA_OBJECT_NIL;
+  }
 
   sl._length = string_array_len(params);
   sl._buffer = (char **)params;
@@ -914,8 +920,11 @@ goad_server_activate_factory(GoadServer *sinfo,
   retval = GNOME_GenericFactory_create_object(factory_obj,
 					      sinfo->server_id, &sl, ev);
 
-  if(ev->_major != CORBA_NO_EXCEPTION)
+  if(ev->_major != CORBA_NO_EXCEPTION) {
+    if(dout)
+      g_message("Got exception %s on create_object call", ev->_repo_id);
     retval = CORBA_OBJECT_NIL;
+  }
 
   CORBA_Object_release(factory_obj, ev);
 
@@ -946,7 +955,7 @@ handle_exepipe(GIOChannel      *source,
     retval = FALSE;
 
   if(data->do_srv_output)
-    g_message("srv output: '%s' (cond", data->iorbuf);
+    g_message("srv output[%d]: '%s'", retval, data->iorbuf);
 
   if(!retval)
     g_main_quit(data->mloop);
@@ -954,6 +963,16 @@ handle_exepipe(GIOChannel      *source,
   return retval;
 }
 
+
+static void print_exit_status(int status)
+{
+  if(WIFEXITED(status)) {
+    g_message("Exit status was %d", WEXITSTATUS(status));
+  }
+  if(WIFSIGNALED(status)) {
+    g_message("signal was %d", WTERMSIG(status));
+  }
+}
 
 /**
  * goad_server_activate_exe:
@@ -984,7 +1003,8 @@ goad_server_activate_exe(GoadServer *sinfo,
   pipe(iopipes);
   /* fork & get the ior from stdout */
 
-  if((childpid = fork())) {
+  childpid = fork();
+  if(childpid) {
     int     status;
     FILE*   iorfh;
     char *do_srv_output;
@@ -994,13 +1014,16 @@ goad_server_activate_exe(GoadServer *sinfo,
 
     waitpid(childpid, &status, 0); /* de-zombify */
 
+    ai.do_srv_output = getenv("GOAD_DEBUG_EXERUN");
+
+    if(ai.do_srv_output)
+      print_exit_status(status);
+
     close(iopipes[1]);
     ai.fh = iorfh = fdopen(iopipes[0], "r");
 
     if(flags & GOAD_ACTIVATE_ASYNC)
       goto no_wait;
-
-    ai.do_srv_output = getenv("GOAD_DEBUG_EXERUN");
 
     ai.mloop = g_main_new(FALSE);
     gioc = g_io_channel_unix_new(iopipes[0]);
@@ -1012,12 +1035,14 @@ goad_server_activate_exe(GoadServer *sinfo,
 
     g_strstrip(ai.iorbuf);
     if (strncmp(ai.iorbuf, "IOR:", 4)) {
+      if(ai.do_srv_output) g_message("string doesn't match IOR:");
       retval = CORBA_OBJECT_NIL;
       goto out;
     }
     retval = CORBA_ORB_string_to_object(_gnorba_gnome_orbit_orb,
 					ai.iorbuf, ev);
-
+    if(ai.do_srv_output)
+      g_message("Did string_to_object on %s", ai.iorbuf);
   no_wait:
     fclose(iorfh);
   } else if(fork()) {
@@ -1049,6 +1074,8 @@ goad_server_activate_exe(GoadServer *sinfo,
     _exit(1);
   }
 out:
+  if(getenv("GOAD_DEBUG_EXERUN"))
+    g_message("Retval on %s is %p", sinfo->server_id, retval);
   return retval;
 }
 

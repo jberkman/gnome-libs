@@ -144,7 +144,7 @@ handle_exepipe(GIOChannel      *source,
     retval = FALSE;
 
   if(data->do_srv_output)
-    g_message("srv output: '%s' (cond", data->iorbuf);
+    g_message("srv output: '%s'", data->iorbuf);
 
   if(!retval)
     g_main_quit(data->mloop);
