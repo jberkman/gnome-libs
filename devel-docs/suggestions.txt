@@ -7,12 +7,31 @@ Menus:
    - For standard menu items (Save, Save As, Close, Quit, etc), use
      the macros defined in gnome-app-helper.h, e.g.
      GNOMEUIINFO_MENU_EXIT_ITEM(cb, data)
+     except for New where the define is:
+     GNOMEUIINFO_MENU_NEW_ITEM(label,cb,data)
+     you should put the label in the form of N_("_New Document"),
+     replacing Document with whatever new thing you are adding
+
+   - For some standard toplevel menus (File, Edit,Help,etc),
+     you should use the macros GNOMEUIINFO_*_MENU(tree)
+
+   - The order of the toplevel menus should be:
+     File, <any mdi child menus>, Edit, View, Windows, Help
+     Help should NOT be right aligned
 
    - The prescribed order of standard menu items in the "File" menu is
-     the following:  New, Open, Save, Save As, Print, Close, Exit
+     the following:
+     New, Open, Save, Save As, Revert, separator, Print, Print Setup,
+     separator, Close, Exit
 
    - The prescribed order of standard menu items in the "Edit" menu is
-     the following:  Cut, Copy, Paste
+     the following:  Undo, Redo, separator, Cut, Copy, Paste, Clear
+
+   - For help menu, you should add the
+     GNOMEUIINFO_HELP(app_name),
+     first, and after that add the
+     GNOMEUIINFO_MENU_ABOUT_ITEM(cb, data)
+     
 
 Dialogs
 -------
