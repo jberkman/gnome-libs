@@ -302,7 +302,8 @@ zvt_init_subshell (struct vt_em *vt, char *pty_name, int log)
 		signal (SIGINT,  SIG_DFL);
 		signal (SIGQUIT, SIG_DFL);
 		signal (SIGCHLD, SIG_DFL);
-
+		signal (SIGPIPE, SIG_DFL);
+		
 		/*
 		 * These should be turned off.  Login does turn them off
 		 * If the user shells supports these, they will be turned
