@@ -537,12 +537,10 @@ static void vt_tab(struct vt_em *vt)
 
   /* dont store tab over a space - will affect attributes */
   if (c == 0) {
-    /*
-     * Note that we do not store the attribute for the
-     * tab, as it should behave transparently from the attribute
-     * point of view
+    /* We do not store the attribute as tabs are transparent
+     * with respect to attributes
      */
-    l->data[vt->cursorx] = 9;
+    l->data[vt->cursorx] = 9 | VTATTR_CLEAR;
   }
 
   /* move cursor to new tab position */
