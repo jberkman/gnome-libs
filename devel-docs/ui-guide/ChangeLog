@@ -1,3 +1,21 @@
+1998-08-25  Federico Mena Quintero  <federico@nuclecu.unam.mx>
+
+	* components.sgml: New file.  This comes from the old
+	ui-guide.txt file -- the UI Components section seems to have
+	disappeared when it was converted to SGML.
+
+	* ui-guide.sgml: Added the components.sgml file to the list of
+	entities.
+
+	* Makefile.am (EXTRA_DIST): Added the sgml files to EXTRA_DIST.
+
+	* about.sgml: 
+	* develinfo.sgml: 
+	* fundamentals.sgml: Added the sgml variables at the end of the
+	file to keep emacs happy.
+
+	* ui-guide.sgml: Fixes to the authors and copyright.
+
 1998-08-20  Martin Wahlen <mva@sbbs.se>
 
 	* ui-guide.sgml: Broke it into documents by chapter, rather

@@ -1,1 +1,6 @@
-EXTRA_DIST = ui-guide.txt ui-guide.sgml
+EXTRA_DIST = \
+	about.sgml		\
+	develinfo.sgml		\
+	fundamentals.sgml	\
+	ui-guide.sgml		\
+	ui-guide.txt
