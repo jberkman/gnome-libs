@@ -1,3 +1,11 @@
+Thu Jan  8 20:57:16 1998  Federico Mena  <federico@bananoid.nuclecu.unam.mx>
+
+	* images.c (_XmHTMLFillXImage): Created a my_gtk_image_new()
+	function that is just like the GDK_IMAGE_NORMAL part of the real
+	gdk_image_new(), but it also supports specification of the padding
+	and bytes_per_line parameters.  This fixes the non-working images
+	on 16bpp.  Let's see later about images with less than 8bpp...
+
 Wed Dec 24 12:05:31 1997  Miguel de Icaza  <miguel@nuclecu.unam.mx>
 
 	* XmHTML-motif.c, XmHTML.c, XmHTMLP.h, callbacks.c, forms.c,
