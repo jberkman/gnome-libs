@@ -1,3 +1,14 @@
+1998-04-12  Raja R Harinath  <harinath@cs.umn.edu>
+
+	Introduce `gnomesupport.h'.
+	* configure.in (SUPPORTINCS): Define NEED_GNOMESUPPORT_H if
+	`libgnomesupport' is built.
+	(GNOME_INCLUDEDIR): Likewise.  Also, use $(pkglibdir)/include
+	instead of $(includedir)/libgnomesupport.  (See support/ChangeLog.)
+
+	* gnome.h: Include `gnomesupport.h' if NEED_GNOMESUPPORT_H is
+	defined.  This should make `gnomesupport.h' pretty transparent.
+
 Mon Apr  6 00:05:34 1998  Havoc Pennington  <hp@pobox.com>
 
 	* libgnome/gnome-i18nP.h: new file

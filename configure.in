@@ -80,7 +80,7 @@ LIBSUPPORT=
 SUPPORTINCS=
 if test "$need_gnome_support" = yes; then
    LIBSUPPORT='$(top_builddir)/support/libgnomesupport.la'
-   SUPPORTINCS='-I$(top_srcdir)/support'
+   SUPPORTINCS='-DNEED_GNOMESUPPORT_H -I$(top_builddir)/support -I$(top_srcdir)/support'
 fi
 
 dnl These are for using lib*
@@ -96,7 +96,7 @@ dnl These definitions are expanded in make.
 GNOME_LIBDIR='-L$(libdir)'
 GNOME_INCLUDEDIR='-I$(includedir)'
 if test "$need_gnome_support" = yes; then
-   GNOME_INCLUDEDIR="$GNOME_INCLUDEDIR -I\$(includedir)/libgnomesupport"
+   GNOME_INCLUDEDIR="$GNOME_INCLUDEDIR -DNEED_GNOMESUPPORT_H -I\$(pkglibdir)/include"
 fi
 AC_SUBST(GNOME_LIBS)
 AC_SUBST(GNOMEUI_LIBS)
