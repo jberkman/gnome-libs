@@ -68,19 +68,19 @@ about_cb (GtkWidget *widget, void *data)
 }
 
 static GnomeUIInfo help_menu [] = {
-	GNOMEUIINFO_ITEM_STOCK (_("About GnomeHello..."), NULL, about_cb, GNOME_STOCK_MENU_ABOUT),
+	GNOMEUIINFO_ITEM_STOCK (N_("About GnomeHello..."), NULL, about_cb, GNOME_STOCK_MENU_ABOUT),
 	GNOMEUIINFO_END
 };
 
-static GnomeUIInfo gnome_cal_file_menu [] = {
-	GNOMEUIINFO_ITEM_STOCK (_("Exit"), NULL, quit_cb, GNOME_STOCK_MENU_EXIT),
+static GnomeUIInfo file_menu [] = {
+	GNOMEUIINFO_ITEM_STOCK (N_("Exit"), NULL, quit_cb, GNOME_STOCK_MENU_EXIT),
 	GNOMEUIINFO_END
 };
 	
 /* The menu definitions: File/Exit and Help/About are mandatory */
 static GnomeUIInfo main_menu [] = {
-	GNOMEUIINFO_SUBTREE (_("File"), &file_menu),
-	GNOMEUIINFO_SUBTREE (_("Help"), &help_menu),
+	GNOMEUIINFO_SUBTREE (N_("File"), &file_menu),
+	GNOMEUIINFO_SUBTREE (N_("Help"), &help_menu),
 	GNOMEUIINFO_END
 };
 

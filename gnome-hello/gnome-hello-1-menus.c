@@ -71,7 +71,7 @@ static GnomeUIInfo help_menu [] = {
 	GNOMEUIINFO_END
 };
 
-static GnomeUIInfo gnome_cal_file_menu [] = {
+static GnomeUIInfo file_menu [] = {
 	GNOMEUIINFO_ITEM_STOCK ("Exit", NULL, quit_cb, GNOME_STOCK_MENU_EXIT),
 	GNOMEUIINFO_END
 };
