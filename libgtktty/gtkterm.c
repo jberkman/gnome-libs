@@ -19,24 +19,25 @@
  * Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 #include <config.h>
-#include <string.h>
 #include "gtkterm.h"
 #include <gtk/gtkmain.h>
 #include <gtk/gtksignal.h>
 #include <gtk/gtkselection.h>
 #include <gdk/gdkkeysyms.h>
-#include <stdio.h>
+#include <string.h>
+
 
 
 /* --- limits & defaults --- */
 #define	BLINK_TIMEOUT			(333)
+#define	REFRESH_TIMEOUT			(25 * 0 /* FIXME ;) */)
 #define	MIN_WIDTH			(15)
 #define	MAX_WIDTH			(1024)
 #define	MIN_HEIGHT			(1)
 #define	MAX_HEIGHT			(1024)
 #define	UNDERLINE_THIKNESS		(1)
 #define	CURSOR_THIKNESS			(3)
-#define INNER_BORDER			(1)
+#define INNER_BORDER			(0)
 #define	DEFAULT_CURSOR_MODE		(GTK_CURSOR_UNDERLINE)
 #define	DEFAULT_CURSOR_BLINK		(TRUE)
 
@@ -56,20 +57,18 @@ enum
 enum
 {
   TEXT_RESIZE,
+  BELL,
   LAST_SIGNAL
 };
 
 
 /* --- prototypes --- */
 
-typedef	void	(*GtkTermSignal1)		(GtkObject	*object,
-						 gpointer	arg1,
-						 gpointer	arg2,
+typedef	void	(*GtkTermSignalTextResize)	(GtkObject	*object,
+						 gpointer	new_width_guint_p,
+						 gpointer	new_height_guint_p,
 						 gpointer	data);
-typedef	void	(*GtkTermSignal2)		(GtkObject	*object,
-						 gpointer	arg1,
-						 guint		arg2,
-						 gulong		arg3,
+typedef	gint	(*GtkTermSignalBell)		(GtkObject	*object,
 						 gpointer	data);
 typedef	void	(*GtkTermSignal3)		(GtkObject	*object,
 						 guint		arg1,
@@ -77,11 +76,11 @@ typedef	void	(*GtkTermSignal3)		(GtkObject	*object,
 						 gulong		arg3,
 						 gpointer	data);
 
-static	void	gtk_term_marshal_signal_1	(GtkObject	*object,
+static	void	gtk_term_marshal_text_resize	(GtkObject	*object,
 						 GtkSignalFunc	func,
 						 gpointer	func_data,
 						 GtkArg		*args);
-static	void	gtk_term_marshal_signal_2	(GtkObject	*object,
+static	void	gtk_term_marshal_bell		(GtkObject	*object,
 						 GtkSignalFunc	func,
 						 gpointer	func_data,
 						 GtkArg		*args);
@@ -93,6 +92,7 @@ static	void	gtk_term_marshal_signal_3	(GtkObject	*object,
 
 static	void	gtk_term_class_init		(GtkTermClass	*class);
 static	gint	gtk_term_class_timeout		(GtkTermClass	*class);
+static	gint	gtk_term_timeout		(GtkTerm	*term);
 static	void	gtk_term_init			(GtkTerm	*term);
 static	void	gtk_term_destroy		(GtkObject	*object);
 static	void	gtk_term_realize		(GtkWidget	*widget);
@@ -153,7 +153,7 @@ gtk_term_get_type ()
       (GtkClassInitFunc) gtk_term_class_init,
       (GtkObjectInitFunc) gtk_term_init,
       (GtkArgSetFunc) NULL,
-      (GtkArgGetFunc) NULL
+      (GtkArgGetFunc) NULL,
     };
     
     term_type = gtk_type_unique (gtk_widget_get_type (), &term_info);
@@ -178,10 +178,16 @@ gtk_term_class_init (GtkTermClass *class)
 				    GTK_RUN_LAST,
 				    object_class->type,
 				    GTK_SIGNAL_OFFSET (GtkTermClass, text_resize),
-				    gtk_term_marshal_signal_1,
+				    gtk_term_marshal_text_resize,
 				    GTK_TYPE_NONE, 2,
 				    GTK_TYPE_POINTER,
 				    GTK_TYPE_POINTER);
+  term_signals[1] = gtk_signal_new ("bell",
+				    GTK_RUN_LAST,
+				    object_class->type,
+				    GTK_SIGNAL_OFFSET (GtkTermClass, bell),
+				    gtk_term_marshal_bell,
+				    GTK_TYPE_INT, 0);
   
   gtk_object_class_add_signals (object_class, term_signals, LAST_SIGNAL);
   
@@ -204,6 +210,7 @@ gtk_term_class_init (GtkTermClass *class)
   class->term_widgets = NULL;
   class->blink_state = TRUE;
   class->text_resize = NULL;
+  class->bell = NULL;
 }
 
 static gint
@@ -262,6 +269,7 @@ gtk_term_init (GtkTerm *term)
   term->text_area = NULL;
   term->text_gc = NULL;
   term->refresh_blocked = FALSE;
+  term->inverted = FALSE;
   
   term->max_term_width = 0;
   term->max_term_height = 0;
@@ -270,7 +278,6 @@ gtk_term_init (GtkTerm *term)
   term->first_line = 0;
   term->first_used_line = 0;
   term->scroll_offset = 0;
-  term->term_inversed = FALSE;
   
   term->dim = FALSE;
   term->bold = FALSE;
@@ -301,50 +308,197 @@ gtk_term_init (GtkTerm *term)
     term->fore_dim[i] = NULL;
     term->fore_bold[i] = NULL;
   }
-  
-  term->font_normal = gdk_font_load ("-adobe-courier-medium-r-*-*-20-*-*-*-*-*-*-*");
-  term->overstrike_bold = FALSE;
-  term->font_bold = gdk_font_load ("-adobe-courier-bold-r-*-*-20-*-*-*-*-*-*-*-");
-  
-  if (!term->font_normal || !term->font_bold)
+
+  term->font_normal = NULL;
+  term->font_bold = NULL;
+  term->font_dim = NULL;
+  term->font_underline = NULL;
+  term->font_reverse = NULL;
+
+  /* try fonts in following order:
+   * -misc-fixed- size 20,
+   * -adobe-courier- (if we got this we can use medium/bold pair),
+   * -misc-fixed- any size,
+   * else complain ;)
+   */
+  term->font_normal = gdk_font_load ("-misc-fixed-*-*-*-*-20-*-*-*-*-*-*-*");
+  if (!term->font_normal)
   {
-    term->font_normal = gdk_font_load ("-misc-fixed-*-*-*-*-20-*-*-*-*-*-*-*");
+    term->font_normal = gdk_font_load ("-adobe-courier-medium-r-*-*-*-*-*-*-*-*-*-*-");
+    if (term->font_normal)
+      term->font_bold = gdk_font_load ("-adobe-courier-bold-r-*-*-*-*-*-*-*-*-*-*-");
+
+    /* now fall back to -misc-fixed- */
     if (!term->font_normal)
       term->font_normal = gdk_font_load ("-misc-fixed-*-*-*-*-*-*-*-*-*-*-*-*");
-    
-    if (!term->font_normal) {
+
+    if (!term->font_normal)
+    {
       g_warning ("GtkTerm: could not load default font `-misc-fixed-*'");
       term->font_normal = gtk_widget_get_default_style ()->font;
     }
-    
+  }
+  if (!term->font_bold)
+  {
     term->font_bold = term->font_normal;
+    gdk_font_ref (term->font_bold);
     term->overstrike_bold = TRUE;
   }
-  
+  else
+    term->overstrike_bold = FALSE;
   term->font_dim = term->font_normal;
+  gdk_font_ref (term->font_dim);
   term->font_underline = term->font_normal;
+  gdk_font_ref (term->font_underline);
   term->font_reverse = term->font_normal;
+  gdk_font_ref (term->font_reverse);
   term->draw_underline = TRUE;
   term->colors_reversed = TRUE;
   
+  term->char_height = FONT_HEIGHT (term->font_normal);
+  term->char_descent = term->font_normal->descent;
+  term->char_vorigin = term->char_height - term->char_descent;
+  term->char_width = 0;
   /* this is ugly, but we need the sizes for the character grid
    */
-  term->char_height = FONT_HEIGHT (term->font_normal);
-  term->char_vorigin = term->char_height - term->font_normal->descent;
-  term->char_width = 0;
   for (i = 0; i < 256; i++)
   {
-    guint width;
+    register guint width;
     
     width = gdk_char_width (term->font_normal, i);
-    if (width > term->char_width)
-      term->char_width = width;
+    term->char_width = MAX (term->char_width, width);
   }
   
   term->char_buffer = NULL;
   term->attrib_buffer = NULL;
+
+  term->flags_dirty = FALSE;
+  term->refresh_handler = 0;
 }
 
+void
+gtk_term_block_refresh (GtkTerm        *term)
+{
+  g_return_if_fail (term != NULL);
+  g_return_if_fail (GTK_IS_TERM (term));
+
+  term->refresh_blocked = TRUE;
+}
+
+static gint
+gtk_term_timeout (GtkTerm   *term)
+{
+  if (term->flags_dirty)
+    gtk_term_force_refresh (term);
+  
+  return TRUE;
+}
+
+void
+gtk_term_force_refresh (GtkTerm        *term)
+{
+  g_return_if_fail (term != NULL);
+  g_return_if_fail (GTK_IS_TERM (term));
+
+  if (GTK_WIDGET_DRAWABLE (term) && term->flags_dirty)
+  {
+    register guint y;
+    gboolean refresh_blocked_saved;
+    
+    refresh_blocked_saved = term->refresh_blocked;
+    term->refresh_blocked = FALSE;
+    
+    for (y = term->first_line; y < term->max_term_height; y++)
+    {
+      register guint x;
+      
+      for (x = 0; x < term->term_width; x++)
+      {
+	if (term->attrib_buffer[y][x].flags & FLAG_DIRTY)
+	{
+	  register guint first;
+	  
+	  first = x;
+	  do
+	  {
+	    x++;
+	  }
+	  while (x < term->term_width && term->attrib_buffer[y][x].flags & FLAG_DIRTY);
+	  
+	  gtk_term_update_line (term, y, first, x - 1);
+
+	  if (term->cur_y == y &&
+	      term->cur_x >= first &&
+	      term->cur_x <= x - 1)
+	    gtk_term_update_cursor (term);
+	}
+      }
+    }
+    term->refresh_blocked = refresh_blocked_saved;
+    term->flags_dirty = FALSE;
+  }
+}
+
+void
+gtk_term_unblock_refresh (GtkTerm        *term)
+{
+  g_return_if_fail (term != NULL);
+  g_return_if_fail (GTK_IS_TERM (term));
+
+  term->refresh_blocked = FALSE;
+
+  if (!REFRESH_TIMEOUT && term->flags_dirty)
+    gtk_term_force_refresh (term);
+}
+
+void
+gtk_term_set_fonts (GtkTerm        *term,
+		    GdkFont        *font_normal,
+		    GdkFont        *font_dim,
+		    GdkFont        *font_bold,
+		    gboolean       overstrike_bold,
+		    GdkFont        *font_underline,
+		    gboolean       draw_underline,
+		    GdkFont        *font_reverse,
+		    gboolean       colors_reversed)
+{
+  g_return_if_fail (term != NULL);
+  g_return_if_fail (GTK_IS_TERM (term));
+
+  if (font_normal)
+  {
+    gdk_font_ref (font_normal);
+    gdk_font_unref (term->font_normal);
+    term->font_normal = font_normal;
+  }
+  if (font_bold)
+  {
+    gdk_font_ref (font_bold);
+    gdk_font_unref (term->font_bold);
+    term->font_bold = font_bold;
+  }
+  if (font_dim)
+  {
+    gdk_font_ref (font_dim);
+    gdk_font_unref (term->font_dim);
+    term->font_dim = font_dim;
+  }
+  if (font_underline)
+  {
+    gdk_font_ref (font_underline);
+    gdk_font_unref (term->font_underline);
+    term->font_underline = font_underline;
+  }
+  if (font_reverse)
+  {
+    gdk_font_ref (font_reverse);
+    gdk_font_unref (term->font_reverse);
+    term->font_reverse = font_reverse;
+  }
+  term->overstrike_bold = overstrike_bold != FALSE;
+  term->draw_underline = draw_underline != FALSE;
+  term->colors_reversed = colors_reversed != FALSE;
+}
 
 void
 gtk_term_setup (GtkTerm	      *term,
@@ -432,7 +586,7 @@ gtk_term_realize (GtkWidget *widget)
 			    GDK_KEY_RELEASE_MASK);
   attributes_mask = GDK_WA_X | GDK_WA_Y | GDK_WA_VISUAL | GDK_WA_COLORMAP;
   
-  widget->window = gdk_window_new (widget->parent->window, &attributes, attributes_mask);
+  widget->window = gdk_window_new (gtk_widget_get_parent_window (widget), &attributes, attributes_mask);
   gdk_window_set_user_data (widget->window, term);
   widget->style = gtk_style_attach (widget->style, widget->window);
   gtk_style_set_background (widget->style, widget->window, GTK_STATE_NORMAL);
@@ -456,13 +610,17 @@ gtk_term_realize (GtkWidget *widget)
   
   term->text_area = gdk_window_new (term->view_port, &attributes, attributes_mask);
   gdk_window_set_user_data (term->text_area, term);
-  gdk_window_set_background (term->text_area, term->back[0]);
+  gdk_window_set_background (term->text_area, term->back[term->inverted ? GTK_TERM_MAX_COLORS - 1 : 0]);
   gdk_window_show (term->text_area);
   term->scroll_offset = 0;
   
   term->text_gc = gdk_gc_new (term->text_area);
   gdk_gc_set_exposures (term->text_gc, TRUE);
+  gdk_gc_set_exposures (term->text_gc, FALSE);
   gdk_gc_set_fill (term->text_gc, GDK_SOLID);
+
+  if (REFRESH_TIMEOUT)
+    term->refresh_handler = gtk_timeout_add (REFRESH_TIMEOUT, (GtkFunction) gtk_term_timeout, term);
   
   if (class->term_widgets == NULL)
     class->blink_handler = gtk_timeout_add (BLINK_TIMEOUT, (GtkFunction) gtk_term_class_timeout, class);
@@ -511,6 +669,9 @@ gtk_term_unrealize (GtkWidget *widget)
     gdk_gc_destroy (term->text_gc);
     term->text_gc = NULL;
   }
+
+  if (term->refresh_handler)
+    gtk_timeout_remove (term->refresh_handler);
   
   class->term_widgets = g_list_remove (class->term_widgets, term);
   if (class->term_widgets == NULL)
@@ -607,6 +768,8 @@ gtk_term_size_allocate (GtkWidget     *widget,
   gtk_term_reset (term);
   if (GTK_WIDGET_DRAWABLE (widget))
     gtk_term_update_cursor (term);
+
+  gtk_term_force_refresh (term);
 }
 
 gint
@@ -682,6 +845,7 @@ gtk_term_draw (GtkWidget    *widget,
   
   g_return_if_fail (widget != NULL);
   g_return_if_fail (GTK_IS_TERM (widget));
+  /* g_return_if_fail (area != NULL); hm, isn't this saver? */
   
   term = GTK_TERM (widget);
   
@@ -924,6 +1088,7 @@ gtk_term_focus_in (GtkWidget	 *widget,
   gtk_widget_draw_focus (widget);
   
   gtk_term_update_cursor (term);
+  gtk_term_force_refresh (term);
   
   return FALSE;
 }
@@ -944,6 +1109,7 @@ gtk_term_focus_out (GtkWidget	  *widget,
   gtk_widget_draw_focus (widget);
   
   gtk_term_update_cursor (term);
+  gtk_term_force_refresh (term);
   
   return FALSE;
 }
@@ -1077,14 +1243,14 @@ gtk_entry_selection_handler (GtkWidget		*widget,
 }
 
 static void
-gtk_term_marshal_signal_1 (GtkObject	  *object,
-			   GtkSignalFunc  func,
-			   gpointer	  func_data,
-			   GtkArg	  *args)
+gtk_term_marshal_text_resize (GtkObject	    *object,
+			      GtkSignalFunc func,
+			      gpointer	    func_data,
+			      GtkArg	    *args)
 {
-  GtkTermSignal1 rfunc;
+  GtkTermSignalTextResize rfunc;
   
-  rfunc = (GtkTermSignal1) func;
+  rfunc = (GtkTermSignalTextResize) func;
   
   (* rfunc) (object,
 	     GTK_VALUE_POINTER (args[0]),
@@ -1093,20 +1259,18 @@ gtk_term_marshal_signal_1 (GtkObject	  *object,
 }
 
 static void
-gtk_term_marshal_signal_2 (GtkObject	  *object,
-			   GtkSignalFunc  func,
-			   gpointer	  func_data,
-			   GtkArg	  *args)
+gtk_term_marshal_bell (GtkObject	*object,
+		       GtkSignalFunc	func,
+		       gpointer		func_data,
+		       GtkArg		*args)
 {
-  GtkTermSignal2 rfunc;
+  GtkTermSignalBell rfunc;
+  gint *return_val;
   
-  rfunc = (GtkTermSignal2) func;
+  rfunc = (GtkTermSignalBell) func;
+  return_val = GTK_RETLOC_BOOL (args[0]);
   
-  (* rfunc) (object,
-	     GTK_VALUE_STRING (args[0]),
-	     GTK_VALUE_UINT (args[1]),
-	     GTK_VALUE_ULONG (args[2]),
-	     func_data);
+  *return_val = (* rfunc) (object, func_data);
 }
 
 static void
@@ -1149,6 +1313,13 @@ gtk_term_destroy (GtkObject *object)
     g_free (term->attrib_buffer[i]);
     g_free (term->char_buffer[i]);
   }
+
+  gdk_font_unref (term->font_normal);
+  gdk_font_unref (term->font_dim);
+  gdk_font_unref (term->font_bold);
+  gdk_font_unref (term->font_underline);
+  gdk_font_unref (term->font_reverse);
+  
   
   g_free (term->attrib_buffer);
   term->attrib_buffer = NULL;
@@ -1203,8 +1374,9 @@ gtk_term_delete_lines (GtkTerm	*term,
   gtk_term_scroll_up (term, term->cur_y, term->first_line + term->bottom, n);
 }
 
-void gtk_term_insert_lines (GtkTerm	*term,
-			    guint	n)
+void
+gtk_term_insert_lines (GtkTerm	*term,
+		       guint	n)
 {
   g_return_if_fail (term != NULL);
   g_return_if_fail (GTK_IS_TERM (term));
@@ -1238,6 +1410,12 @@ gtk_term_set_color (GtkTerm	   *term,
   term->fore[index] = fore;
   term->fore_dim[index] = fore_dim;
   term->fore_bold[index] = fore_bold;
+
+  if (index == 0 && term->text_area)
+    gdk_window_set_background (term->text_area, term->back[term->inverted ? GTK_TERM_MAX_COLORS - 1 : 0]);
+
+  if (GTK_WIDGET_DRAWABLE (term))
+    gtk_term_update_area (term, NULL);
 }
 
 void
@@ -1617,9 +1795,13 @@ gtk_term_putc (GtkTerm	*term,
 void
 gtk_term_bell (GtkTerm	      *term)
 {
-  /* FIXME: invoke signal */
-  
-  gdk_beep ();
+  gint return_val;
+
+  return_val = TRUE;
+  gtk_signal_emit (GTK_OBJECT (term), term_signals[BELL], &return_val);
+
+  if (return_val)
+    gdk_beep ();
 }
 
 void
@@ -1642,6 +1824,8 @@ gtk_term_reset (GtkTerm *term)
   term->bottom = term->term_height - 1;
   
   gtk_term_save_cursor (term);
+
+  gtk_term_force_refresh (term);
 }
 
 void
@@ -1685,12 +1869,30 @@ gtk_term_set_reverse (GtkTerm	     *term,
 }
 
 void
-gtk_term_set_inversed (GtkTerm	      *term,
-		       gboolean	      term_inversed)
+gtk_term_invert (GtkTerm	      *term)
 {
   g_return_if_fail (term != NULL);
   g_return_if_fail (GTK_IS_TERM (term));
-  
-  term->term_inversed = term_inversed != FALSE;
-  /* FIXME: inverse screen */
+
+  term->inverted = ! term->inverted;
+
+  /*  for (i = 0; i < GTK_TERM_MAX_COLORS; i++)
+  {
+    GdkColor *tmp;
+
+    tmp = term->back[i];
+    term->back[i] = term->back[GTK_TERM_MAX_COLORS - 1];
+    term->back[GTK_TERM_MAX_COLORS - 1] = tmp;
+    
+    tmp = term->fore[i];
+    term->fore[i] = term->fore[GTK_TERM_MAX_COLORS - 1];
+    term->fore[GTK_TERM_MAX_COLORS - 1] = tmp;
+  }
+  */
+    
+  if (term->text_area)
+    gdk_window_set_background (term->text_area, term->back[term->inverted ? GTK_TERM_MAX_COLORS - 1 : 0]);
+
+  if (GTK_WIDGET_DRAWABLE (term))
+    gtk_term_update_area (term, NULL);
 }

@@ -1,5 +1,5 @@
 /*  GemVt - GNU Emulator of a Virtual Terminal
- *  Copyright (C) 1997	Tim Janik	<timj@psynet.net>
+ *  Copyright (C) 1997	Tim Janik
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -15,23 +15,21 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
-#define		__main_c__
 
+#include	"config.h"
 #include	"gtktty.h"
 #include	"gtkled.h"
-#include	"config.h"
+#include	"gvtgui.h"
+#include	"gvtconf.h"
 #include	"gemvt.xpm"
-#include	"gem-r.xpm"
-#include	"gem-g.xpm"
-#include	"gem-b.xpm"
 #include	<gtk/gtk.h>
 #include	<signal.h>
 #include	<unistd.h>
 #include	<string.h>
 
-#ifdef	GNOMIFY
+#ifdef	HAVE_GNOME
 #include	"gnome.h"
-#endif	GNOMIFY
+#endif	HAVE_GNOME
 
 
 /* --- typedefs --- */
@@ -47,17 +45,24 @@ typedef struct
   guint32	bold_val;
 } GvtColorEntry;
 
+enum
+{
+  GVT_VOIDLINE,
+  GVT_ONLINE,
+  GVT_OFFLINE
+};
+
 /* --- prototypes --- */
 static	RETSIGTYPE gvt_signal_handler	(int		sig_num);
-static	gint	gvt_tty_key_press	(GtkTty         *tty,
+static  gint    gvt_tty_key_press       (GtkTty         *tty,
 					 const gchar    *char_code,
 					 guint          length,
 					 guint          keyval,
 					 guint          key_state,
 					 gpointer       data);
+static gint	gvt_tty_button_press	(GtkWidget	*widget,
+					 GdkEventButton	*event);
 static	void	gvt_execute		(GtkWidget	*widget,
-					 gpointer	user_data);
-static	void	gvt_kill		(GtkButton	*button,
 					 gpointer	user_data);
 static	void	gvt_program_exec	(GtkTty		*tty,
 					 const gchar	*prg_name,
@@ -74,12 +79,12 @@ static	void	gvt_term_set_color_table(GtkTerm	*term,
 					 GvtColorEntry	*color_table,
 					 guint		len,
 					 guint		first);
-static
-GtkWidget*	gvt_gem_create		(GtkContainer	*parent,
-					 gchar		 col);
-static	void	gvt_gem_set_color	(GtkWidget	*gem,
-					 gchar		 col);
-static	void	gvt_gem_rotate		(GtkWidget	*gem);
+static	void	gtk_menu_position_func	(GtkMenu	*menu,
+					 gint		*x,
+					 gint		*y,
+					 gpointer	user_data);
+static void	gvt_menu_adjust		(GtkMenu	*menu);
+static	void	gvt_menus_setup		(void);
 
 
 
@@ -102,44 +107,57 @@ static GvtColorEntry	color_table[] =
   { NULL, NULL, NULL, NULL,	0x00d0d0, 0x00d0d0, 0x008888, 0x00ffff }, /* cyan */
   { NULL, NULL, NULL, NULL,	0xd0d0d0, 0xd0d0d0, 0x888888, 0xffffff }, /* white */
 };
-static GtkWidget	*status_label;
-static GtkWidget	*time_label;
-static GtkWidget	*signal_button;
-static gchar		*prg_name;
+static GtkMenu		*menu_1 = NULL;
+static GtkMenu		*menu_2;
+static GtkMenu		*menu_3;
+static GtkTty		*menu_tty;
+static gint		menu_pos_x, menu_pos_y;
+static GvtConfig	config =
+{
+  TRUE	/* have_status_bar */,
+  FALSE	/* prefix_dash */,
+  NULL	/* strings */,
+};
+
 
 /* --- main() --- */
 int
 main	(int	argc,
 	 char	*argv[])
 {
-  register gchar	*home_dir;
-  register gchar	*rc_file;
-  register guchar	*string;
-  register GtkWidget	*window;
-  register GtkWidget	*main_vbox;
-  register GtkWidget	*tty_vbox;
-  register GtkWidget	*tty_hbox;
-  register GtkWidget	*status_hbox;
-  register GtkWidget	*led_hbox;
-  GtkWidget		*led[8];
-  register GtkWidget	*label;
-  register GtkWidget	*tty;
-  register GtkWidget	*exec_hbox;
-  register GtkWidget	*entry;
-  register GtkWidget	*button;
-  register GtkWidget	*gem;
-  register guint	i;
+  gchar	*home_dir;
+  gchar	*rc_file;
+  guchar	*string;
+  GtkWidget	*window;
+  GtkWidget	*main_vbox;
+  GtkWidget	*tty_vbox;
+  GtkWidget	*status_hbox;
+  GtkWidget	*tty_hbox;
+  GtkWidget	*status_bar;
+  GtkWidget	*label;
+  GtkWidget	*tty;
+  GtkWidget	*exec_hbox;
+  GtkWidget	*entry;
+  guint	id;
+  gint		exit_status;
   
 
   prg_name = g_strdup (argv[0]);
   
+  /* parse arguments
+   */
+  exit_status = gvt_config_args (&config, stderr, argc, argv);
+  if (exit_status > -129)
+    return exit_status;
+
+  
   /* Gtk+/GNOME initialization
    */
-#ifdef	GNOMIFY
+#ifdef	HAVE_GNOME
   gnome_init(&argc, &argv);
-#else	/* !GNOMIFY */
+#else	/* !HAVE_GNOME */
   gtk_init (&argc, &argv);
-#endif	/* !GNOMIFY */
+#endif	/* !HAVE_GNOME */
 
   /* parse ~/.gtkrc, (this file also ommitted by the gnome_init stuff
    */
@@ -154,7 +172,8 @@ main	(int	argc,
   strcat (rc_file, "/.");
   strcat (rc_file, string);
 
-  printf("%s\n", rc_file);
+  /* printf("%s\n", rc_file);
+   */
   gtk_rc_parse (rc_file);
   g_free (rc_file);
   
@@ -172,15 +191,19 @@ main	(int	argc,
 
   /* parse ~/.<prgname>rc
    */
-  printf("%s\n", rc_file);
-  /* FIXME: invoke rc-parser here, this requires GScanner in GLib first ;( */
+  /* printf("%s\n", rc_file);
+   */
+  /* FIXME: invoke rc-parser here */
   g_free (rc_file);
 
   
   /* catch system signals
    */
   gvt_signal_handler (0);
-  
+
+
+  /* build gui
+   */
   window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
   gtk_window_set_title (GTK_WINDOW (window), "GemVt");
   gtk_window_set_policy (GTK_WINDOW (window),
@@ -188,47 +211,30 @@ main	(int	argc,
 			 TRUE,
 			 TRUE);
   gtk_signal_connect_object (GTK_OBJECT (window),
-			     "destroy",
+			     "delete_event",
 			     GTK_SIGNAL_FUNC (gtk_main_quit),
 			     NULL);
   
   main_vbox = gtk_vbox_new (FALSE, 5);
-  gtk_container_border_width (GTK_CONTAINER (main_vbox), 10);
+  gtk_container_border_width (GTK_CONTAINER (main_vbox), 2);
   gtk_container_add (GTK_CONTAINER (window), main_vbox);
   gtk_widget_show (main_vbox);
 
-  tty_hbox = gtk_hbox_new (FALSE, 5);
+  tty_hbox = gtk_hbox_new (FALSE, 0);
   gtk_container_border_width (GTK_CONTAINER (tty_hbox), 0);
   gtk_box_pack_start (GTK_BOX (main_vbox), tty_hbox, TRUE, TRUE, 0);
   gtk_widget_show (tty_hbox);
 
-  tty_vbox = gtk_vbox_new (FALSE, 5);
+  tty_vbox = gtk_vbox_new (FALSE, 0);
   gtk_container_border_width (GTK_CONTAINER (tty_vbox), 0);
   gtk_box_pack_start (GTK_BOX (tty_hbox), tty_vbox, FALSE, FALSE, 0);
   gtk_widget_show (tty_vbox);
   
-  status_hbox = gtk_hbox_new (FALSE, 5);
-  gtk_box_pack_start (GTK_BOX (tty_vbox), status_hbox, FALSE, FALSE, 0);
+  status_hbox = gtk_hbox_new (FALSE, 0);
+  gtk_container_border_width (GTK_CONTAINER (status_hbox), 0);
+  gtk_box_pack_start (GTK_BOX (tty_vbox), status_hbox, FALSE, TRUE, 0);
   gtk_widget_show (status_hbox);
 
-  status_label = gtk_label_new ("No Program");
-  gtk_box_pack_start (GTK_BOX (status_hbox), status_label, TRUE, TRUE, 10);
-  gtk_widget_show (status_label);
-  
-  time_label = gtk_label_new ("System: 0  User: 0");
-  gtk_box_pack_start (GTK_BOX (status_hbox), time_label, TRUE, TRUE, 10);
-  gtk_widget_show (time_label);
-  
-  led_hbox = gtk_hbox_new (FALSE, 5);
-  gtk_box_pack_start (GTK_BOX (status_hbox), led_hbox, FALSE, FALSE, 0);
-  gtk_widget_show (led_hbox);
-  for (i = 0; i < 8; i++)
-  {
-    led[i] = gtk_led_new ();
-    gtk_box_pack_start (GTK_BOX (led_hbox), led[i], TRUE, TRUE, 5);
-    gtk_widget_show (led[i]);
-  }
-  
   string =
     "Hi, this is GemVt bothering you ;)\n\r"
     "Enter `-bash' or something the like and\n\r"
@@ -236,15 +242,16 @@ main	(int	argc,
   
   tty = gtk_tty_new (80, 25, 99);
   gtk_tty_put_out (GTK_TTY (tty), string, strlen (string));
-  gtk_box_pack_start (GTK_BOX (tty_vbox), tty, TRUE, TRUE, 5);
-  for (i = 0; i < 8; i++)
-  {
-    gtk_tty_add_update_led (GTK_TTY (tty), GTK_LED(led[i]), 1 << i);
-  }
+  gtk_box_pack_start (GTK_BOX (tty_vbox), tty, TRUE, TRUE, 0);
   gtk_widget_show (tty);
+  id = gtk_signal_connect (GTK_OBJECT (tty),
+			   "key_press",
+			   GTK_SIGNAL_FUNC (gvt_tty_key_press),
+			   NULL);
+  gtk_object_set_data (GTK_OBJECT (tty), "key_press_hid", (gpointer) id);
   gtk_signal_connect (GTK_OBJECT (tty),
-		      "key_press",
-		      GTK_SIGNAL_FUNC (gvt_tty_key_press),
+		      "button_press_event",
+		      GTK_SIGNAL_FUNC (gvt_tty_button_press),
 		      NULL);
   gvt_term_set_color_table (GTK_TERM (tty),
 			    /* gdk_colormap_get_system (), */
@@ -252,6 +259,11 @@ main	(int	argc,
 			    color_table,
 			    sizeof (color_table) / sizeof (GvtColorEntry),
 			    0);
+  
+  status_bar = gvt_status_bar_new (status_hbox, GTK_TTY (tty));
+  if (config.have_status_bar)
+    gtk_widget_show (status_bar);
+  gtk_object_set_data (GTK_OBJECT (tty), "status-bar", status_bar);
   
   exec_hbox = gtk_hbox_new (FALSE, 5);
   gtk_box_pack_start (GTK_BOX (main_vbox), exec_hbox, FALSE, TRUE, 0);
@@ -277,44 +289,18 @@ main	(int	argc,
 		      "program_exit",
 		      GTK_SIGNAL_FUNC (gvt_program_exit),
 		      entry);
-
-  signal_button = gtk_button_new_with_label ("Send Signal - 1) TERM 2) KILL");
-  gtk_box_pack_start (GTK_BOX (exec_hbox), signal_button, FALSE, TRUE, 0);
-  gtk_widget_set_sensitive (signal_button, FALSE);
-  gtk_widget_show (signal_button);
-  gtk_signal_connect (GTK_OBJECT (signal_button),
-		      "clicked",
-		      GTK_SIGNAL_FUNC (gvt_kill),
-		      tty);
-
-  button = gtk_button_new ();
-  gtk_box_pack_start (GTK_BOX (exec_hbox), button, FALSE, TRUE, 5);
-  gtk_widget_show (button);
-  gem = gvt_gem_create (GTK_CONTAINER (button), 'r');
-  gtk_container_add (GTK_CONTAINER (button), gem);
-  gtk_signal_connect_object (GTK_OBJECT (button),
-			     "clicked",
-			     GTK_SIGNAL_FUNC (gvt_gem_rotate),
-			     (GtkObject*) gem);
-
-  button = gtk_button_new_with_label ("Close");
-  gtk_box_pack_start (GTK_BOX (main_vbox), button, FALSE, TRUE, 5);
-  gtk_widget_show (button);
-  gtk_signal_connect_object (GTK_OBJECT (button),
-			     "clicked",
-			     GTK_SIGNAL_FUNC (gtk_widget_destroy),
-			     (GtkObject*) window);
-  gtk_signal_connect_object (GTK_OBJECT (window),
-			     "delete_event",
-			     GTK_SIGNAL_FUNC (gtk_button_clicked),
-			     GTK_OBJECT (button));
+  gtk_widget_grab_focus (GTK_WIDGET (entry));
   
   gtk_widget_show (window);
-  
-  
+
+  gvt_menus_setup ();
+
+
   /* gtk's main loop
    */
   gtk_main ();
+
+  gtk_widget_destroy (window);
   
   /* exit program
    */
@@ -346,7 +332,8 @@ gvt_signal_handler (int	sig_num)
   signal (SIGPIPE,	gvt_signal_handler);
   /* signal (SIGTERM,	gvt_signal_handler); */
   
-  if (sig_num > 0) {
+  if (sig_num > 0)
+   {
     fprintf (stderr, "%s: (pid: %d) caught signal: `%s'\n",
 	     prg_name,
 	     getpid (),
@@ -451,209 +438,6 @@ gvt_execute (GtkWidget	    *widget,
   }
 }
 
-static gint
-gvt_tty_key_press (GtkTty         *tty,
-		   const gchar    *char_code,
-		   guint          length,
-		   guint          keyval,
-		   guint          key_state,
-		   gpointer       data)
-{
-  /* returning TRUE means let GtkTty handle the keypress
-   * if we return FALSE we have to do a gtk_tty_put_in (tty, char_code, length)
-   * ourselves.
-   * for the moment we just put out '*'s if someone presses a key but there is
-   * nochild...
-   */
-					
-  if (tty->pid != 0)
-    return FALSE;
-  else
-  {
-    /* we check the length of the original code to make sure
-     * we don't react on shift and stuff...
-     */
-    if (keyval < 127)
-      gtk_tty_put_in (tty, char_code, length);
-    
-    return TRUE;
-  }
-}
-
-GtkWidget*
-gvt_gem_create (GtkContainer *parent,
-		gchar	     col)
-{
-  GtkWidget	*vbox;
-  GtkWidget	*pixmap;
-  GdkPixmap	*xpm_map;
-  GdkBitmap	*bit_map;
-
-  g_assert (parent != NULL);
-  g_assert (GTK_IS_CONTAINER (parent));
-
-  vbox = gtk_vbox_new (FALSE, 0);
-  gtk_container_add (parent, vbox);
-  gtk_widget_show (vbox);
-  gtk_object_set_data (GTK_OBJECT (vbox), "active-gem", NULL);
-
-  bit_map = NULL;
-  xpm_map = gdk_pixmap_create_from_xpm_d (vbox->window,
-					  &bit_map,
-					  &gtk_widget_get_style (vbox)->bg[GTK_STATE_NORMAL],
-					  gem_r_xpm);
-  pixmap = gtk_pixmap_new (xpm_map, bit_map);
-  gtk_box_pack_start (GTK_BOX (vbox), pixmap, FALSE, FALSE, 0);
-  gtk_object_set_data (GTK_OBJECT (pixmap), "gem-color", "red");
-  gtk_object_set_data (GTK_OBJECT (vbox), "red-gem", pixmap);
-
-  bit_map = NULL;
-  xpm_map = gdk_pixmap_create_from_xpm_d (vbox->window,
-					  &bit_map,
-					  &gtk_widget_get_style (vbox)->bg[GTK_STATE_NORMAL],
-					  gem_g_xpm);
-  pixmap = gtk_pixmap_new (xpm_map, bit_map);
-  gtk_box_pack_start (GTK_BOX (vbox), pixmap, FALSE, FALSE, 0);
-  gtk_object_set_data (GTK_OBJECT (pixmap), "gem-color", "green");
-  gtk_object_set_data (GTK_OBJECT (vbox), "green-gem", pixmap);
-
-  bit_map = NULL;
-  xpm_map = gdk_pixmap_create_from_xpm_d (vbox->window,
-					  &bit_map,
-					  &gtk_widget_get_style (vbox)->bg[GTK_STATE_NORMAL],
-					  gem_b_xpm);
-  pixmap = gtk_pixmap_new (xpm_map, bit_map);
-  gtk_box_pack_start (GTK_BOX (vbox), pixmap, FALSE, FALSE, 0);
-  gtk_object_set_data (GTK_OBJECT (pixmap), "gem-color", "blue");
-  gtk_object_set_data (GTK_OBJECT (vbox), "blue-gem", pixmap);
-
-  gvt_gem_set_color (vbox, col);
-
-  return vbox;
-}
-
-static void
-gvt_gem_set_color (GtkWidget      *gem,
-		   gchar	   col)
-{
-  GtkObject	*object;
-  GtkWidget	*pixmap;
-  GtkWidget	*new_pixmap;
-
-  g_assert (gem != NULL);
-  g_assert (GTK_IS_OBJECT (gem));
-
-  object = GTK_OBJECT (gem);
-
-  pixmap = gtk_object_get_data (object, "active-gem");
-
-  switch (col)
-  {
-  case  'r':
-    new_pixmap = gtk_object_get_data (object, "red-gem");
-    break;
-
-  case  'g':
-    new_pixmap = gtk_object_get_data (object, "green-gem");
-    break;
-
-  case  'b':
-    new_pixmap = gtk_object_get_data (object, "blue-gem");
-    break;
-
-  default:
-    new_pixmap = NULL;
-  }
-
-  if (pixmap)
-  {
-    gtk_container_block_resize (GTK_CONTAINER (pixmap->parent));
-    gtk_widget_hide (pixmap);
-  }
-
-  gtk_object_set_data (object, "active-gem", new_pixmap);
-  if (new_pixmap)
-    gtk_widget_show (new_pixmap);
-
-  if (pixmap)
-    gtk_container_unblock_resize (GTK_CONTAINER (pixmap->parent));
-}
-
-static void
-gvt_gem_rotate (GtkWidget      *gem)
-{
-  GtkObject	*object;
-  GtkWidget	*pixmap;
-  gchar		*old_col;
-  gchar		col;
-
-  g_assert (gem != NULL);
-  g_assert (GTK_IS_OBJECT (gem));
-
-  object = GTK_OBJECT (gem);
-
-  pixmap = gtk_object_get_data (object, "active-gem");
-
-  if (pixmap)
-  {
-    g_assert (GTK_IS_OBJECT (pixmap));
-
-    old_col = gtk_object_get_data (GTK_OBJECT (pixmap), "gem-color");
-  }
-  else
-    old_col = NULL;
-
-  if (!old_col)
-    old_col = "red";
-
-  switch (old_col[0])
-  {
-  default:
-  case  'r':
-    col = 'g';
-    break;
-
-  case  'g':
-    col = 'b';
-    break;
-
-  case  'b':
-    col = 'r';
-    break;
-  }
-
-  gvt_gem_set_color (gem, col);
-}
-
-static void
-gvt_kill (GtkButton	 *button,
-	  gpointer	 user_data)
-{
-  GtkTty *tty;
-  static guint	 pid = 0;
-
-  g_return_if_fail (user_data != NULL);
-  g_return_if_fail (GTK_IS_TTY (user_data));
-
-  tty = user_data;
-
-  if (tty->pid)
-  {
-    if (pid == tty->pid)
-    {
-      kill (pid, SIGKILL);
-      pid = 0;
-    }
-    else
-    {
-      pid = tty->pid;
-      kill (pid, SIGTERM);
-    }
-  }
-  else
-    pid = 0;
-}
-
 static void
 gvt_program_exec (GtkTty	 *tty,
 		  const gchar	 *prg_name,
@@ -661,9 +445,9 @@ gvt_program_exec (GtkTty	 *tty,
 		  gchar * const	 envp[],
 		  gpointer	 user_data)
 {
+  GtkWidget *status_bar;
   GtkEntry *entry;
-  gchar *string;
-  gchar *text = "Executing `%s'...";
+  register guint id;
 
   g_return_if_fail (tty != NULL);
   g_return_if_fail (GTK_IS_TTY (tty));
@@ -671,15 +455,19 @@ gvt_program_exec (GtkTty	 *tty,
   g_return_if_fail (GTK_IS_ENTRY (user_data));
 
   entry = GTK_ENTRY (user_data);
+  status_bar = gtk_object_get_data (GTK_OBJECT (tty), "status-bar");
+  g_assert (status_bar != NULL);
 
-  gtk_widget_set_sensitive (signal_button, TRUE);
+  id = (gint) gtk_object_get_data (GTK_OBJECT (tty), "key_press_hid");
+  if (id)
+  {
+    gtk_signal_disconnect (GTK_OBJECT (tty), id);
+    gtk_object_set_data (GTK_OBJECT (tty), "key_press_hid", (gpointer) 0);
+  }
 
-  string = g_new (gchar, strlen (text) + strlen (prg_name) + 1);
-  sprintf (string, text, prg_name);
-  gtk_label_set (GTK_LABEL (status_label), string);
-  g_free (string);
+  gtk_object_set_data (GTK_OBJECT (tty), "program", (gpointer) prg_name);
 
-  gtk_label_set (GTK_LABEL (time_label), "System: 0  User: 0");
+  gvt_status_bar_update (status_bar);
 
   if (GTK_WIDGET_HAS_FOCUS (entry))
     gtk_widget_grab_focus (GTK_WIDGET (tty));
@@ -693,6 +481,8 @@ gvt_program_exit (GtkTty	 *tty,
 		  gpointer	 user_data)
 {
   GtkEntry *entry;
+  GtkWidget *status_bar;
+  register guint id;
 
   g_return_if_fail (tty != NULL);
   g_return_if_fail (GTK_IS_TTY (tty));
@@ -700,48 +490,21 @@ gvt_program_exit (GtkTty	 *tty,
   g_return_if_fail (GTK_IS_ENTRY (user_data));
 
   entry = GTK_ENTRY (user_data);
+  status_bar = gtk_object_get_data (GTK_OBJECT (tty), "status-bar");
+  g_assert (status_bar != NULL);
 
-  gtk_widget_set_sensitive (signal_button, FALSE);
+  id = (gint) gtk_object_get_data (GTK_OBJECT (tty), "key_press_hid");
+  g_assert (id == 0);
+  id = gtk_signal_connect (GTK_OBJECT (tty),
+			   "key_press",
+			   GTK_SIGNAL_FUNC (gvt_tty_key_press),
+			   NULL);
+  gtk_object_set_data (GTK_OBJECT (tty), "key_press_hid", (gpointer) id);
 
-  if (exit_signal)
-  {
-    gchar *text = "Program `%s' got %s";
-    gchar *string;
+  gvt_status_bar_update (status_bar);
 
-    string = g_new (gchar, strlen (text) + strlen (prg_name) + strlen (g_strsignal (exit_signal)) + 1);
-    sprintf (string, text, prg_name, g_strsignal (exit_signal));
-    gtk_label_set (GTK_LABEL (status_label), string);
-    g_free (string);
-  }
-  else
-  {
-    gchar *text = "Program `%s' exited with status %+d";
-    gchar *string;
-    
-    string = g_new (gchar, strlen (text) + strlen (prg_name) + 10 + 1);
-    sprintf (string, text, prg_name, exit_status);
-    gtk_label_set (GTK_LABEL (status_label), string);
-    g_free (string);
-  }
+  gtk_object_set_data (GTK_OBJECT (tty), "program", NULL);
 
-  if (1)
-  {
-    gchar string[256];
-    gchar sys_time[64];
-    gchar user_time[64];
-    guint i;
-
-    sprintf (sys_time, "%f", tty->sys_sec + tty->sys_usec/1000000.0);
-    for (i = strlen (sys_time) - 1; sys_time[i] == '0'; i--)
-      sys_time[i] = 0;
-    sprintf (user_time, "%f", tty->user_sec + tty->user_usec/1000000.0);
-    for (i = strlen (user_time) - 1; user_time[i] == '0'; i--)
-      user_time[i] = 0;
-
-    sprintf (string, "System: %s  User: %s", sys_time, user_time);
-    gtk_label_set (GTK_LABEL (time_label), string);
-  }
-  
   if (GTK_WIDGET_HAS_FOCUS (tty))
     gtk_widget_grab_focus (GTK_WIDGET (entry));
 }
@@ -862,5 +625,245 @@ gvt_term_set_color_table (GtkTerm       *term,
 			color_table[i].fore_col,
 			dim,
 			bold);
+  }
+}
+
+static gint
+gvt_tty_key_press (GtkTty         *tty,
+		   const gchar    *char_code,
+		   guint          length,
+		   guint          keyval,
+		   guint          key_state,
+		   gpointer       data)
+{
+  GtkWidget *status_bar;
+  register guint id;
+
+  /* return wether we handled the key press:
+   * FALSE) let GtkTty handle the keypress,
+   * TRUE)  we do something like gtk_tty_put_in (tty, char_code, length) on
+   *        our own.
+   */
+
+  status_bar = gtk_object_get_data (GTK_OBJECT (tty), "status-bar");
+
+  gvt_status_bar_update (status_bar);
+
+  id = (gint) gtk_object_get_data (GTK_OBJECT (tty), "key_press_hid");
+  if (id)
+  {
+    gtk_signal_disconnect (GTK_OBJECT (tty), id);
+    gtk_object_set_data (GTK_OBJECT (tty), "key_press_hid", (gpointer) 0);
+  }
+
+  return FALSE;
+}
+
+static gint
+gvt_tty_button_press (GtkWidget      *widget,
+		      GdkEventButton *event)
+{
+  GtkTty *tty;
+
+  /* 1) return wether we handled the event
+   * 2) if we handled it we need to prevent gtktty region selection,
+   *    therefor we stop the emission of the signal
+   */
+
+  tty = GTK_TTY (widget);
+
+  if ((event->state & (GDK_SHIFT_MASK |
+		      GDK_LOCK_MASK |
+		      GDK_CONTROL_MASK |
+		      GDK_MOD1_MASK)) ==
+      GDK_CONTROL_MASK)
+  {
+    switch (event->button)
+    {
+    case  1:
+      gtk_signal_emit_stop_by_name (GTK_OBJECT (widget), "button_press_event");
+      gdk_window_get_pointer (NULL, &menu_pos_x, &menu_pos_y, NULL);
+      menu_tty = tty;
+      gvt_menu_adjust (menu_1);
+      gtk_menu_popup (menu_1,
+		      NULL, NULL,
+		      gtk_menu_position_func, NULL,
+		      1, event->time);
+      
+      return TRUE;
+    }
+  }
+
+  return FALSE;
+}
+
+static void
+gtk_menu_position_func (GtkMenu        *menu,
+			gint           *x,
+			gint           *y,
+			gpointer       user_data)
+{
+  *x = menu_pos_x;
+  *y = menu_pos_y;
+}
+
+static void
+gvt_menu_toggle_status_bar (GtkWidget *widget,
+			    gpointer  data)
+{
+  GtkWidget *status_bar;
+
+  status_bar = gtk_object_get_data (GTK_OBJECT (menu_tty), "status-bar");
+  g_assert (status_bar != NULL);
+
+  if (GTK_WIDGET_VISIBLE (status_bar))
+    gtk_widget_hide (status_bar);
+  else
+    gtk_widget_show (status_bar);
+}
+
+static void
+gvt_menu_tty_redraw (GtkWidget *widget,
+		     gpointer  data)
+{
+  gtk_widget_draw (GTK_WIDGET (menu_tty), NULL);
+}
+
+static void
+gvt_menu_send_signal (GtkWidget *widget,
+		      gpointer  data)
+{
+  g_assert (menu_tty != NULL);
+  g_assert (menu_tty->pid > 0);
+
+  kill (menu_tty->pid, (gint) data);
+}
+
+
+static void
+gvt_menu_adjust (GtkMenu *menu)
+{
+  GList *list, *free_list;
+
+  g_assert (menu != NULL);
+
+  list = free_list = gtk_container_children (GTK_CONTAINER (menu));
+
+  while (list)
+  {
+    gint ac;
+
+    ac = (gint) gtk_object_get_data (GTK_OBJECT (list->data), "activate");
+
+    switch (ac)
+    {
+    case  GVT_ONLINE:
+      gtk_widget_set_sensitive (GTK_WIDGET (list->data), menu_tty->pid > 0);
+      break;
+
+    case  GVT_OFFLINE:
+      gtk_widget_set_sensitive (GTK_WIDGET (list->data), menu_tty->pid == 0);
+      break;
+    }
+
+    list = list->next;
+  }
+
+  g_list_free (free_list);
+}
+
+static void
+gvt_menus_setup (void)
+{
+  if (!menu_1)
+  {
+    GtkWidget *item;
+    GtkWidget *menu;
+
+    menu = gtk_menu_new ();
+    item = gtk_menu_item_new_with_label ("Main Options");
+    gtk_widget_set_sensitive (item, FALSE);
+    gtk_widget_show (item);
+    gtk_menu_append (GTK_MENU (menu), item);
+    item = gtk_menu_item_new ();
+    gtk_widget_set_sensitive (item, FALSE);
+    gtk_widget_show (item);
+    gtk_menu_append (GTK_MENU (menu), item);
+    item = gtk_menu_item_new_with_label ("Redraw");
+    gtk_signal_connect(GTK_OBJECT (item), "activate",
+		       GTK_SIGNAL_FUNC (gvt_menu_tty_redraw),
+		       NULL);
+    gtk_widget_show (item);
+    gtk_menu_append (GTK_MENU (menu), item);
+    item = gtk_menu_item_new_with_label ("Toggle Status Bar");
+    gtk_signal_connect(GTK_OBJECT (item), "activate",
+		       GTK_SIGNAL_FUNC (gvt_menu_toggle_status_bar),
+		       NULL);
+    gtk_widget_show (item);
+    gtk_menu_append (GTK_MENU (menu), item);
+    item = gtk_menu_item_new ();
+    gtk_widget_set_sensitive (item, FALSE);
+    gtk_widget_show (item);
+    gtk_menu_append (GTK_MENU (menu), item);
+    item = gtk_menu_item_new_with_label ("SIGSTOP");
+    gtk_object_set_data (GTK_OBJECT (item), "activate", (gpointer) GVT_ONLINE);
+    gtk_signal_connect(GTK_OBJECT (item), "activate",
+		       GTK_SIGNAL_FUNC (gvt_menu_send_signal),
+		       (gpointer) SIGSTOP);
+    gtk_widget_show (item);
+    gtk_menu_append (GTK_MENU (menu), item);
+    item = gtk_menu_item_new_with_label ("SIGCONT");
+    gtk_object_set_data (GTK_OBJECT (item), "activate", (gpointer) GVT_ONLINE);
+    gtk_signal_connect(GTK_OBJECT (item), "activate",
+		       GTK_SIGNAL_FUNC (gvt_menu_send_signal),
+		       (gpointer) SIGCONT);
+    gtk_widget_show (item);
+    gtk_menu_append (GTK_MENU (menu), item);
+    item = gtk_menu_item_new_with_label ("SIGINT");
+    gtk_object_set_data (GTK_OBJECT (item), "activate", (gpointer) GVT_ONLINE);
+    gtk_signal_connect(GTK_OBJECT (item), "activate",
+		       GTK_SIGNAL_FUNC (gvt_menu_send_signal),
+		       (gpointer) SIGINT);
+    gtk_widget_show (item);
+    gtk_menu_append (GTK_MENU (menu), item);
+    item = gtk_menu_item_new_with_label ("SIGHUP");
+    gtk_object_set_data (GTK_OBJECT (item), "activate", (gpointer) GVT_ONLINE);
+    gtk_signal_connect(GTK_OBJECT (item), "activate",
+		       GTK_SIGNAL_FUNC (gvt_menu_send_signal),
+		       (gpointer) SIGHUP);
+    gtk_widget_show (item);
+    gtk_menu_append (GTK_MENU (menu), item);
+    item = gtk_menu_item_new_with_label ("SIGTERM");
+    gtk_object_set_data (GTK_OBJECT (item), "activate", (gpointer) GVT_ONLINE);
+    gtk_signal_connect(GTK_OBJECT (item), "activate",
+		       GTK_SIGNAL_FUNC (gvt_menu_send_signal),
+		       (gpointer) SIGTERM);
+    gtk_widget_show (item);
+    gtk_menu_append (GTK_MENU (menu), item);
+    item = gtk_menu_item_new_with_label ("SIGKILL");
+    gtk_object_set_data (GTK_OBJECT (item), "activate", (gpointer) GVT_ONLINE);
+    gtk_signal_connect(GTK_OBJECT (item), "activate",
+		       GTK_SIGNAL_FUNC (gvt_menu_send_signal),
+		       (gpointer) SIGKILL);
+    gtk_widget_show (item);
+    gtk_menu_append (GTK_MENU (menu), item);
+    item = gtk_menu_item_new ();
+    gtk_widget_set_sensitive (item, FALSE);
+    gtk_widget_show (item);
+    gtk_menu_append (GTK_MENU (menu), item);
+    item = gtk_menu_item_new_with_label ("Quit");
+    gtk_signal_connect(GTK_OBJECT (item), "activate",
+		       GTK_SIGNAL_FUNC (gtk_main_quit),
+		       NULL);
+    gtk_widget_show (item);
+    gtk_menu_append (GTK_MENU (menu), item);
+
+    menu_1 = GTK_MENU (menu);
+    
+    menu = gtk_menu_new ();
+    menu_2 = GTK_MENU (menu);
+
+    menu = gtk_menu_new ();
+    menu_3 = GTK_MENU (menu);
   }
 }

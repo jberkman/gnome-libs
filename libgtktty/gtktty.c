@@ -33,7 +33,7 @@
 
 
 /* --- limits --- */
-#define	INPUT_BUFFER_LEN	(8192)
+#define	INPUT_BUFFER_LEN	(8192 * 4)
 #define	MAX_SCROLL_BACK		(999)
 
 /* --- typedefs --- */
@@ -136,7 +136,7 @@ gtk_tty_get_type ()
       (GtkClassInitFunc) gtk_tty_class_init,
       (GtkObjectInitFunc) gtk_tty_init,
       (GtkArgSetFunc) NULL,
-      (GtkArgGetFunc) NULL
+      (GtkArgGetFunc) NULL,
     };
     
     tty_type = gtk_type_unique (gtk_term_get_type (), &tty_info);
@@ -197,6 +197,13 @@ gtk_tty_class_init (GtkTtyClass *class)
   term_class->text_resize = gtk_tty_text_resize;
   
   class->os_hintp = gtk_tty_os_get_hintp ();
+
+#ifdef	HAVE_WAIT4
+  class->meassure_time = TRUE;
+#else	/* !HAVE_WAIT4 */
+  class->meassure_time = FALSE;
+#endif	/* !HAVE_WAIT4 */
+
   class->key_press = NULL;
   class->program_exec = NULL;
   class->program_exit = NULL;
@@ -246,7 +253,7 @@ gtk_tty_new (guint width,
   scrollback = MIN (scrollback, MAX_SCROLL_BACK);
   gtk_term_setup (GTK_TERM (tty), width, height, width, scrollback);
 
-  list = gtk_vtemu_get_types ();
+  list = gtk_vtemu_create_type_list ();
   tty->vtemu = gtk_vtemu_new (GTK_TERM (tty), list->data);
   g_list_free (list);
   
@@ -682,9 +689,9 @@ gtk_tty_key_release_event (GtkWidget	  *widget,
 }
 
 static void
-gtk_tty_text_resize		(GtkTerm	*term,
-				 guint		*new_width,
-				 guint		*new_height)
+gtk_tty_text_resize (GtkTerm	*term,
+		     guint		*new_width,
+		     guint		*new_height)
 {
   GtkTty *tty;
   
@@ -859,34 +866,56 @@ gtk_tty_input_func (gpointer		data,
   GtkTty	*tty;
   gint		len;
   gchar		buffer[INPUT_BUFFER_LEN];
+  guint		c;
   
   g_return_if_fail (data != NULL);
   g_return_if_fail (GTK_IS_TTY (data));
   
   tty = data;
-  
-  len = read (tty->pty_fd, buffer, INPUT_BUFFER_LEN);
-  
-  if (len > 0)
-    gtk_tty_put_out (tty, buffer, len);
-  else if (len < 0)
+
+  c = 0;
+  do
   {
-    /* we assume the child died....
-     */
+    len = read (tty->pty_fd, buffer, INPUT_BUFFER_LEN);
     
-    gdk_input_remove (tty->input_tag);
-    tty->input_tag = 0;
-    
-    gtk_tty_os_wait (tty);
-    
-    gtk_signal_emit (GTK_OBJECT (tty),
-		     tty_signals[PROGRAM_EXIT],
-		     tty->prg_name,
-		     tty->exit_status,
-		     tty->exit_signal);
+    if (len > 0)
+    {
+      gtk_tty_put_out (tty, buffer, len);
+      /* gtk_term_force_refresh (GTK_TERM (tty)); */
+    }
+    c++;
   }
-  else
-    g_warning ("hum, zero characters to read on input ready for read?");
+  while (len > 0 && c < 3);
+  
+  if (len < 0)
+  {
+
+#ifdef	EAGAIN
+    if (errno != EAGAIN)
+    {
+#endif	/* EAGAIN */
+
+      /* we assume the child died....
+       */
+      
+      gdk_input_remove (tty->input_tag);
+      tty->input_tag = 0;
+      
+      gtk_tty_os_wait (tty);
+      
+      gtk_signal_emit (GTK_OBJECT (tty),
+		       tty_signals[PROGRAM_EXIT],
+		       tty->prg_name,
+		       tty->exit_status,
+		       tty->exit_signal);
+#ifdef	EAGAIN
+    }
+#endif	/* EAGAIN */
+
+  }
+  /*  else
+   *    g_warning ("hum, zero characters to read on input ready for read?");
+   */
 }
 
 void

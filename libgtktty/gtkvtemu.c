@@ -1,7 +1,7 @@
 /* GTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
- * gtkvtemu: virtual terminal emulation for GtkTerm
+ * gtkvtemu: virtual terminal emulation for GtkTty
  * Copyright (C) 1997 Tim Janik
  *
  * This library is free software; you can redistribute it and/or
@@ -19,41 +19,18 @@
  * Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 #include <config.h>
-#include "gtkvtemu.h"
+#include "gtkvtemui.h"
 
 
 
-typedef	struct	_GtkVtEmuTermEntry	GtkVtEmuTermEntry;
-
-typedef	enum
-{
-  GTK_VTEMU_ID_FIRST,
-  GTK_VTEMU_ID_LINUX,
-  GTK_VTEMU_ID_XTERM,
-  GTK_VTEMU_ID_LAST
-} GtkVtEmuInternalId;
-
-struct	_GtkVtEmuTermEntry
-{
-  GtkVtEmuInternalId	internal_id;
-  guint			vtemu_struct_size;
-  GtkVtEmuInputFunc	*input_func;
-  GtkVtEmuResetFunc	*reset_func;
-  gchar			**terminal_types;
-};
-
-
-/* --- VT102/VT100/LINUX --- */
-#include "gtkvt102.c"
-/* amongst the function implementations,
- * this defines gtk_vt102_entry of GtkVtEmuTermEntry
- */
+/* --- terminal emulations --- */
+#include "gtkvt102.h"
 
 
 /* --- VT Emulation list --- */
 static	GtkVtEmuTermEntry	*gtk_vtemu_entries[] =
 {
-  &gtk_vt102_entry,
+  &gtk_vt102_entry	/* vt102 / vt100 / linux */,
 };
 static	guint	gtk_vtemu_n_entries = sizeof (gtk_vtemu_entries) / sizeof (GtkVtEmuTermEntry*);
 
@@ -62,54 +39,64 @@ static	guint	gtk_vtemu_n_entries = sizeof (gtk_vtemu_entries) / sizeof (GtkVtEmu
 
 /* --- functions --- */
 GList*
-gtk_vtemu_get_types (void)
+gtk_vtemu_create_type_list (void)
 {
   guint i;
   GList *list;
   
   list = NULL;
-  for (i = 0; i < gtk_vtemu_n_entries; i++)
+  i = gtk_vtemu_n_entries;
+  do
   {
     GtkVtEmuTermEntry *entry;
     guint n;
-    
+
+    i--;
     entry = gtk_vtemu_entries[i];
-    for (n = 0; entry->terminal_types[n]; n++)
+    n = entry->n_terminal_types;
+    do
+    {
+      n--;
       list = g_list_prepend (list, entry->terminal_types[n]);
+    }
+    while (n > 0);
   }
+  while (i > 0);
   
-  list = g_list_reverse (list);
+  /*  list = g_list_reverse (list); */
   
   return list;
 }
 
 GtkVtEmu*
-gtk_vtemu_new (GtkTerm	*term,
-	       gchar	*terminal_type)
+gtk_vtemu_new (GtkTerm		*term,
+	       const gchar	*terminal_type)
 {
   GtkVtEmuTermEntry *entry;
   GtkVtEmu *vtemu;
-  guint nth_type = 0;
+  guint alias_index = 0;
   guint i;
   
   g_return_val_if_fail (term != NULL, NULL);
   g_return_val_if_fail (GTK_IS_TERM (term), NULL);
   g_return_val_if_fail (terminal_type != NULL, NULL);
-  
+
   entry = NULL;
-  for (i = 0; i < gtk_vtemu_n_entries && !entry; i++)
+  for (i = 0; i < gtk_vtemu_n_entries; i++)
   {
-    for (nth_type = 0; gtk_vtemu_entries[i]->terminal_types[nth_type]; nth_type++)
-      if (g_string_equal (gtk_vtemu_entries[i]->terminal_types[nth_type], terminal_type))
+    for (alias_index = 0; alias_index < gtk_vtemu_entries[i]->n_terminal_types; alias_index++)
+      if (g_str_equal (gtk_vtemu_entries[i]->terminal_types[alias_index], (gpointer) terminal_type))
       {
 	entry = gtk_vtemu_entries[i];
 	break;
       }
+    if (entry)
+      break;
   }
   
   if (!entry)
   {
-    g_warning ("Could not resolve terminal type `%s'", terminal_type);
+    g_warning ("Failed to lookup terminal type `%s'", terminal_type);
     return NULL;
   }
   
@@ -120,8 +107,10 @@ gtk_vtemu_new (GtkTerm	*term,
   
   vtemu->term = term;
   vtemu->internal_id = entry->internal_id;
-  vtemu->terminal_type = entry->terminal_types[nth_type];
-  vtemu->terminal_aliases = NULL;
+  vtemu->internal_index = i;
+  vtemu->terminal_aliases = entry->terminal_types;
+  vtemu->n_terminal_aliases = entry->n_terminal_types;
+  vtemu->terminal_type = vtemu->terminal_aliases[alias_index];
   vtemu->led_states = 0;
   vtemu->led_override = FALSE;
   vtemu->cur_x = 0;
@@ -131,8 +120,7 @@ gtk_vtemu_new (GtkTerm	*term,
   vtemu->insert_mode = FALSE;
   vtemu->lf_plus_cr = FALSE;
   vtemu->need_wrap = FALSE;
-  vtemu->input_func = entry->input_func;
-  vtemu->reset_func = entry->reset_func;
+  vtemu->term_inverted = FALSE;
   vtemu->reporter = NULL;
   vtemu->reporter_data = NULL;
   
@@ -151,16 +139,16 @@ gtk_vtemu_input (GtkVtEmu	*vtemu,
   g_return_val_if_fail (vtemu != NULL, 0);
   g_return_val_if_fail (vtemu->internal_id > GTK_VTEMU_ID_FIRST, 0);
   g_return_val_if_fail (vtemu->internal_id < GTK_VTEMU_ID_LAST, 0);
-  g_return_val_if_fail (vtemu->input_func != NULL, 0);
+  g_return_val_if_fail (vtemu->internal_index < gtk_vtemu_n_entries, 0);
   
-  return_val = (*vtemu->input_func) (vtemu, buffer, count);
+  return_val = (* gtk_vtemu_entries[vtemu->internal_index]->input_func) (vtemu, buffer, count);
   
   return return_val;
 }
 
 void
 gtk_vtemu_report (GtkVtEmu		 *vtemu,
-		  guchar		 *buffer,
+		  const guchar		 *buffer,
 		  guint			 count)
 {
   g_return_if_fail (vtemu != NULL);
@@ -191,9 +179,20 @@ gtk_vtemu_reset (GtkVtEmu		*vtemu,
   g_return_if_fail (vtemu != NULL);
   g_return_if_fail (vtemu->internal_id > GTK_VTEMU_ID_FIRST);
   g_return_if_fail (vtemu->internal_id < GTK_VTEMU_ID_LAST);
-  g_return_if_fail (vtemu->reset_func != NULL);
+  g_return_if_fail (vtemu->internal_index < gtk_vtemu_n_entries);
   
-  (*vtemu->reset_func) (vtemu, blank_screen != FALSE);
+  (* gtk_vtemu_entries[vtemu->internal_index]->reset_func) (vtemu, blank_screen != FALSE);
+}
+
+void
+gtk_vtemu_invert (GtkVtEmu               *vtemu)
+{
+  g_return_if_fail (vtemu != NULL);
+  g_return_if_fail (vtemu->internal_id > GTK_VTEMU_ID_FIRST);
+  g_return_if_fail (vtemu->internal_id < GTK_VTEMU_ID_LAST);
+
+  vtemu->term_inverted = ! vtemu->term_inverted;
+  gtk_term_invert (vtemu->term);
 }
 
 void

@@ -20,6 +20,8 @@
  */
 #include <stdio.h>
 #include <string.h>
+#include "gtkvt102.h"
+#include "config.h"
 
 
 /* --- limits --- */
@@ -58,6 +60,7 @@ struct	_GtkVt102Emu
   GtkVtEmu		pub;
   
   GtkVt102EscStates	state;
+  gboolean		toggle_meta;
   gboolean		disp_ctrl;
   guint32		display_bitmap;
   guint32		display_bitmap_restricted;
@@ -65,17 +68,13 @@ struct	_GtkVt102Emu
   gboolean		relative_origin;
   GtkCursorMode		cursor_mode;
   gboolean		cursor_blinking;
+  gchar			*charset_table;
   gulong		tab_stop[5];
   guint			n_params;
   gulong		param[GTKVT102_MAX_PARAMS];
 };
 
 /* --- prototypes --- */
-static	void	gtk_vt102_reset		(GtkVtEmu	*base_emu,
-					 gboolean	blank_screen);
-static	guint	gtk_vt102_input		(GtkVtEmu	*base_emu,
-					 const guchar	*buffer,
-					 guint		count);
 static	void	gtk_vt102_lf		(GtkVtEmu	*base_emu);
 static	void	gtk_vt102_reverse_lf	(GtkVtEmu	*base_emu);
 static	void	gtk_vt102_cr		(GtkVtEmu	*base_emu);
@@ -102,7 +101,6 @@ static	gchar	*gtk_vt102_types[] =
   "linux",
   "linux-m",
 #endif	/* !HAVE_TERMCAP_LINUX */
-  NULL,
 };
 GtkVtEmuTermEntry	gtk_vt102_entry =
 {
@@ -111,12 +109,17 @@ GtkVtEmuTermEntry	gtk_vt102_entry =
   gtk_vt102_input,
   gtk_vt102_reset,
   gtk_vt102_types,
+  sizeof (gtk_vt102_types) / sizeof (gtk_vt102_types[0]),
 };
+
+
+/* --- charset/font conversion tables --- */
+#include	"gtkvt102c2f.c"
 
 
 /* --- functions --- */
 
-static void
+void
 gtk_vt102_reset (GtkVtEmu	*base_emu,
 		 gboolean	blank_screen)
 {
@@ -133,8 +136,12 @@ gtk_vt102_reset (GtkVtEmu	*base_emu,
   base_emu->insert_mode = FALSE;
   base_emu->lf_plus_cr = FALSE;
   base_emu->need_wrap = FALSE;
+
+  if (base_emu->term_inverted)
+    gtk_vtemu_invert (base_emu);
   
   vtemu->state = GTKVT102_ESC_Normal;
+  vtemu->toggle_meta = FALSE;
   vtemu->disp_ctrl = FALSE;
   /* the control char display bitmap (and the restricted one)
    * are taken from the linux console
@@ -172,6 +179,7 @@ gtk_vt102_reset (GtkVtEmu	*base_emu,
   vtemu->relative_origin = FALSE;
   vtemu->cursor_mode = base_emu->dfl_cursor_mode;
   vtemu->cursor_blinking = base_emu->dfl_cursor_blinking;
+  vtemu->charset_table = NULL;
   vtemu->tab_stop[0] = 0x01010100;
   vtemu->tab_stop[1] = 0x01010101;
   vtemu->tab_stop[2] = 0x01010101;
@@ -187,7 +195,7 @@ gtk_vt102_reset (GtkVtEmu	*base_emu,
     gtk_term_clear (base_emu->term, TRUE, TRUE);
 }
 
-static guint
+guint
 gtk_vt102_input (GtkVtEmu	*base_emu,
 		 const guchar	*buffer,
 		 guint		count)
@@ -206,10 +214,12 @@ gtk_vt102_input (GtkVtEmu	*base_emu,
   vtemu = (GtkVt102Emu*) base_emu;
   
   term = base_emu->term;
-  
+
   /*
    * printf("buffer_count: %d\n", count);
    */
+  
+  gtk_term_block_refresh (term);
   
   gtk_term_set_cursor_mode (term, GTK_CURSOR_INVISIBLE, vtemu->cursor_blinking);
   
@@ -251,7 +261,13 @@ gtk_vt102_input (GtkVtEmu	*base_emu,
       }
       
       gtk_term_set_scroll_offset (term, 0);
+      if (vtemu->charset_table)	/* FIXME charset conversion */
+      {
+	ch = vtemu->charset_table[vtemu->toggle_meta ? ch | 0x80 : ch];
+      }
+
       base_emu->need_wrap = gtk_term_putc (term, ch, base_emu->insert_mode);
+
       gtk_term_get_cursor (term, &base_emu->cur_x, &base_emu->cur_y);
       
       continue;
@@ -298,11 +314,12 @@ gtk_vt102_input (GtkVtEmu	*base_emu,
       continue;
       
     case  14: /* shift out */
-      /* FIXME: charset */
+      vtemu->charset_table = c2f_vt102_any; /* FIXME */
+      vtemu->charset_table = c2f_vt102_misc;
       continue;
       
     case  15: /* shift in */
-      /* FIXME: charset */
+      vtemu->charset_table = NULL;
       continue;
       
     case  24: /* cancel */
@@ -715,6 +732,8 @@ gtk_vt102_input (GtkVtEmu	*base_emu,
   }
   
   gtk_term_set_cursor_mode (term, vtemu->cursor_mode, vtemu->cursor_blinking);
+
+  gtk_term_unblock_refresh (term);
   
   return n_processed;
 }
@@ -892,10 +911,8 @@ gtk_vt102_set_mode (GtkVtEmu		*base_emu,
 	
       case  5:
 	/* Inverted screen on/off */
-	if (base_emu->term->term_inversed != on_off)
-	{
-	  gtk_term_set_inversed (base_emu->term, on_off);
-	}
+	if (base_emu->term_inverted != on_off)
+	  gtk_vtemu_invert (base_emu);
 	break;
 	
       case  6:
@@ -943,6 +960,12 @@ gtk_vt102_set_mode (GtkVtEmu		*base_emu,
 	base_emu->insert_mode = on_off;
 	break;
 	
+      case  5: /* stolen from dec_priv_mode FEATURE */
+	/* Inverted screen on/off */
+	if (base_emu->term_inverted != on_off)
+	  gtk_vtemu_invert (base_emu);
+	break;
+
       case  20:
 	/* Lf, Enter == CrLf/Lf */
 	if (on_off)
@@ -1000,17 +1023,25 @@ gtk_vt102_set_term_mode (GtkVtEmu	*base_emu)
       
     case  10:
       /* FIXME: charset_G0/charset_G1 */
+      vtemu->charset_table = NULL;
       vtemu->disp_ctrl = FALSE;
+      vtemu->toggle_meta = FALSE;
       break;
       
     case  11:
       /* FIXME: charset_G0/charset_G1 */
+      vtemu->charset_table = c2f_linux_any; /* FIXME */
+      vtemu->charset_table = c2f_linux_misc;
       vtemu->disp_ctrl = TRUE;
+      vtemu->toggle_meta = FALSE;
       break;
       
     case  12:
       /* FIXME: charset_G0/charset_G1 */
+      vtemu->charset_table = c2f_linux_any; /* FIXME */
+      vtemu->charset_table = c2f_linux_misc;
       vtemu->disp_ctrl = TRUE;
+      vtemu->toggle_meta = TRUE;
       break;
       
     case  21:

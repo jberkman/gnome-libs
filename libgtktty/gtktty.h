@@ -108,6 +108,8 @@ struct _GtkTtyClass
   GtkTermClass	parent_class;
   
   gpointer	os_hintp;
+
+  guint		meassure_time : 1;
   
   gint (* key_press)	(GtkTty		*tty,
 			 const gchar	*char_code,

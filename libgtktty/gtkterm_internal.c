@@ -31,7 +31,7 @@
 					  (a1).i_back == (a2).i_back	)
 
 #define	SEL_CHECK_RANGE(term)		\
-{									      \
+G_STMT_START{								      \
   guint tmp;								      \
   if ((term)->sel_e_y < (term)->sel_b_y)				      \
   {									      \
@@ -46,9 +46,10 @@
     tmp = (term)->sel_b_x; (term)->sel_b_x = (term)->sel_e_x;		      \
     (term)->sel_e_x = tmp;						      \
   }									      \
-}
+}G_STMT_END
+
 #define	SEL_MAKE_VOID(term)		\
-{									      \
+G_STMT_START{								      \
   if (term->sel_valid)							      \
   {									      \
     term->sel_valid = FALSE;						      \
@@ -61,29 +62,51 @@
 			       term->sel_b_x,				      \
 			       term->sel_b_y);				      \
   }									      \
-}
+}G_STMT_END
 
-#define	NEW_INPUT(term)		{\
-  SEL_MAKE_VOID (term);\
-}
+#define	NEW_INPUT(term)		\
+G_STMT_START{								      \
+  SEL_MAKE_VOID (term);							      \
+}G_STMT_END
 
-#define	CURSOR_OFF(term)		{\
-  if (GTK_WIDGET_DRAWABLE ((term)))\
-    gtk_term_update_char ((term), (term)->cur_x, (term)->cur_y);\
-}
+#define	CURSOR_OFF(term)	\
+G_STMT_START{								      \
+  if (GTK_WIDGET_DRAWABLE ((term)))					      \
+    gtk_term_update_char ((term), (term)->cur_x, (term)->cur_y);	      \
+}G_STMT_END
 
-#define	CURSOR_ON(term)			{\
+#define	CURSOR_ON(term)		\
+G_STMT_START{									  \
   if ((term)->cursor_mode != GTK_CURSOR_INVISIBLE && GTK_WIDGET_DRAWABLE ((term)))\
-    gtk_term_update_cursor ((term));\
-}
+    gtk_term_update_cursor ((term));						  \
+}G_STMT_END
 
 
 #define	XY_2_I(mul_base,x,y)		( (guint) ( ((guint) (y)) * ((guint) (mul_base)) + ((guint) (x)) ) )
 #define	I_2_Y(mul_base,i)		( (guint) ( ((guint) (i)) / ((guint) (mul_base)) ) )
 #define	I_2_X(mul_base,i,y)		( (guint) ( ((guint) (i)) - ((guint) (y)) * ((guint) (mul_base)) ) )
 
-#define	gtk_term_draw_char(t,x,y,a)	(gtk_term_draw_line_seg ((t), (y), (x), (x), (a)))
-#define	gtk_term_update_char(t,x,y)	(gtk_term_draw_char ((t), (x), (y), &(t)->attrib_buffer[(y)][(x)]))
+#define	gtk_term_draw_char(t,x,y,a)	G_STMT_START{ gtk_term_draw_line_seg ((t), (y), (x), (x), (a)); }G_STMT_END
+#define	gtk_term_update_char(t,x,y)	\
+G_STMT_START{									\
+  if ((t)->refresh_blocked)							\
+  {										\
+    (t)->attrib_buffer[(y)][(x)].flags |= FLAG_DIRTY;				\
+    (t)->flags_dirty = TRUE;							\
+  }										\
+  else										\
+    gtk_term_draw_char ((t), (x), (y), &(t)->attrib_buffer[(y)][(x)]);		\
+}G_STMT_END
+#define	gtk_term_update_cursor(t)	\
+G_STMT_START{									\
+  if ((t)->refresh_blocked)							\
+  {										\
+    (t)->attrib_buffer[(t)->cur_y][(t)->cur_x].flags |= FLAG_DIRTY;		\
+    (t)->flags_dirty = TRUE;							\
+  }										\
+  else										\
+    gtk_term_draw_cursor ((t));							\
+}G_STMT_END
 
 
 static	gboolean gtk_term_update_new_sel	(GtkTerm	*term,
@@ -95,7 +118,7 @@ static	gboolean gtk_term_update_new_sel	(GtkTerm	*term,
 						 const guint	new_y);
 static	void	gtk_term_line_init		(GtkTerm	*term,
 						 guint		line);
-static	void	gtk_term_update_cursor		(GtkTerm	*term);
+static	void	gtk_term_draw_cursor		(GtkTerm	*term);
 static	void	gtk_term_update_area		(GtkTerm	*term,
 						 GdkRectangle	*area);
 static	void	gtk_term_update_line		(GtkTerm	*term,
@@ -107,7 +130,7 @@ static	void	gtk_term_draw_line_seg		(GtkTerm	*term,
 						 guint		first_char,
 						 guint		last_char,
 						 GtkTermAttrib	*attrib);
-static	void	gtk_term_update_region		(GtkTerm	*term,
+static	void	gtk_term_update_from_to		(GtkTerm	*term,
 						 guint		b_x,
 						 guint		b_y,
 						 guint		e_x,
@@ -258,7 +281,7 @@ gtk_term_update_new_sel (GtkTerm     *term,
     e_y = I_2_Y (term->term_width, i_clear2);
     e_x = I_2_X (term->term_width, i_clear2, e_y);
     
-    gtk_term_update_region (term, b_x, b_y, e_x, e_y);
+    gtk_term_update_from_to (term, b_x, b_y, e_x, e_y);
   }
   
   /* mark FLAG_SELECTION
@@ -287,9 +310,11 @@ gtk_term_update_new_sel (GtkTerm     *term,
       e_y = I_2_Y (term->term_width, i_mark2);
       e_x = I_2_X (term->term_width, i_mark2, e_y);
       
-      gtk_term_update_region (term, b_x, b_y, e_x, e_y);
+      gtk_term_update_from_to (term, b_x, b_y, e_x, e_y);
     }
   }
+
+  gtk_term_force_refresh (term);
   
   return backwards;
 }
@@ -313,6 +338,149 @@ gtk_term_line_init (GtkTerm *term,
 }
 
 static void
+gtk_term_scroll_up (GtkTerm	*term,
+		    guint	first_line,
+		    guint	last_line,
+		    guint	n_lines)
+{
+  gchar	**char_buffer;
+  GtkTermAttrib ** attrib_buffer;
+  guint i;
+  gboolean refresh_blocked_saved;
+  
+  if (GTK_WIDGET_DRAWABLE (term))
+    gtk_term_force_refresh (term);
+
+  refresh_blocked_saved = term->refresh_blocked;
+  term->refresh_blocked = FALSE;
+  CURSOR_OFF (term);
+  
+  if (first_line == term->first_line)
+    first_line = 0;
+  
+  if (term->first_used_line > first_line)
+  {
+    if (term->first_used_line > n_lines)
+      term->first_used_line -= n_lines;
+    else
+      term->first_used_line = first_line;
+  }
+  
+  char_buffer = g_new (gchar*, n_lines);
+  attrib_buffer = g_new (GtkTermAttrib*, n_lines);
+  
+  for (i = 0; i < n_lines; i++)
+  {
+    char_buffer[i] = term->char_buffer[first_line + i];
+    attrib_buffer[i] = term->attrib_buffer[first_line + i];
+  }
+  
+  for (i = first_line; i <= last_line - n_lines; i++)
+  {
+    term->char_buffer[i] = term->char_buffer[i + n_lines];
+    term->attrib_buffer[i] = term->attrib_buffer[i + n_lines];
+  }
+  
+  for (i = 0; i < n_lines; i++)
+  {
+    term->char_buffer[last_line - i] = char_buffer[i];
+    term->attrib_buffer[last_line - i] = attrib_buffer[i];
+    
+    gtk_term_line_init (term, last_line - i);
+  }
+  
+  g_free (char_buffer);
+  g_free (attrib_buffer);
+  
+  if (GTK_WIDGET_DRAWABLE (term))
+  {
+    gdk_window_copy_area (term->text_area,
+			  term->text_gc,
+			  0,
+			  first_line * term->char_height,
+			  NULL,
+			  0,
+			  (first_line + n_lines) * term->char_height,
+			  term->term_width * term->char_width,
+			  (1 + last_line - first_line - n_lines) * term->char_height);
+    gdk_window_clear_area (term->text_area,
+			   0,
+			   (1 + last_line - n_lines) * term->char_height,
+			   term->term_width * term->char_width,
+			   n_lines * term->char_height);
+    CURSOR_ON (term);
+  }
+
+  term->refresh_blocked = refresh_blocked_saved;
+}
+
+static void
+gtk_term_scroll_down (GtkTerm	*term,
+		      guint	first_line,
+		      guint	last_line,
+		      guint	n_lines)
+{
+  gchar	**char_buffer;
+  GtkTermAttrib ** attrib_buffer;
+  guint i;
+  gboolean refresh_blocked_saved;
+  
+  if (GTK_WIDGET_DRAWABLE (term))
+    gtk_term_force_refresh (term);
+
+  refresh_blocked_saved = term->refresh_blocked;
+  term->refresh_blocked = FALSE;
+  CURSOR_OFF (term);
+  
+  char_buffer = g_new (gchar*, n_lines);
+  attrib_buffer = g_new (GtkTermAttrib*, n_lines);
+  
+  for (i = 0; i < n_lines; i++)
+  {
+    char_buffer[i] = term->char_buffer[last_line - i];
+    attrib_buffer[i] = term->attrib_buffer[last_line - i];
+  }
+  
+  for (i = last_line; i >= first_line + n_lines; i--)
+  {
+    term->char_buffer[i] = term->char_buffer[i - n_lines];
+    term->attrib_buffer[i] = term->attrib_buffer[i - n_lines];
+  }
+  
+  for (i = 0; i < n_lines; i++)
+  {
+    term->char_buffer[first_line + i] = char_buffer[i];
+    term->attrib_buffer[first_line + i] = attrib_buffer[i];
+    
+    gtk_term_line_init (term, first_line + i);
+  }
+  
+  g_free (char_buffer);
+  g_free (attrib_buffer);
+  
+  if (GTK_WIDGET_DRAWABLE (term))
+  {
+    gdk_window_copy_area (term->text_area,
+			  term->text_gc,
+			  0,
+			  (first_line + n_lines) * term->char_height,
+			  NULL,
+			  0,
+			  first_line * term->char_height,
+			  term->term_width * term->char_width,
+			  (1 + last_line - first_line - n_lines) * term->char_height);
+    gdk_window_clear_area (term->text_area,
+			   0,
+			   first_line * term->char_height,
+			   term->term_width * term->char_width,
+			   n_lines * term->char_height);
+    CURSOR_ON (term);
+  }
+
+  term->refresh_blocked = refresh_blocked_saved;
+}
+
+static void
 gtk_term_update_area (GtkTerm	 *term,
 		      GdkRectangle *area)
 {
@@ -321,10 +489,12 @@ gtk_term_update_area (GtkTerm	 *term,
   guint first_line, last_line;
   guint first_char, last_char;
   guint i;
+  gboolean      refresh_blocked_saved;
+  
   
   g_return_if_fail (term != NULL);
   g_return_if_fail (GTK_IS_TERM (term));
-  
+
   gdk_window_get_size (term->text_area, &width, &height);
   
   if (!area)
@@ -373,21 +543,30 @@ gtk_term_update_area (GtkTerm	 *term,
   g_return_if_fail (first_char < term->max_term_width);
   g_return_if_fail (last_char < term->max_term_width);
   
+  refresh_blocked_saved = term->refresh_blocked;
+  term->refresh_blocked = FALSE;
+  
   for (i = first_line; i <= last_line; i++)
   {
     gtk_term_update_line (term, i, first_char, last_char);
   }
+  /*  if (term->cur_y >= first_line &&
+      term->cur_y <= last_line &&
+      term->cur_x >= first_char &&
+      term->cur_x <= last_char) FIXME */
   if (term->cur_y == CLAMP (term->cur_y - term->first_line, first_line, last_line) &&
       term->cur_x == CLAMP (term->cur_x, first_char, last_char))
     gtk_term_update_cursor (term);
+  
+  term->refresh_blocked = refresh_blocked_saved;
 }
 
 static void
-gtk_term_update_region (GtkTerm *term,
-			guint	b_x,
-			guint	b_y,
-			guint	e_x,
-			guint	e_y)
+gtk_term_update_from_to (GtkTerm *term,
+			 guint	b_x,
+			 guint	b_y,
+			 guint	e_x,
+			 guint	e_y)
 {
   while (b_y <= e_y)
   {
@@ -405,7 +584,7 @@ gtk_term_update_region (GtkTerm *term,
 }
 
 static void
-gtk_term_update_cursor (GtkTerm *term)
+gtk_term_draw_cursor (GtkTerm *term)
 {
   GtkTermAttrib attrib;
   gboolean colors_reversed_saved;
@@ -439,7 +618,7 @@ gtk_term_update_cursor (GtkTerm *term)
 			term->char_width * term->cur_x,
 			term->char_height * term->cur_y + term->char_vorigin,
 			term->char_width,
-			CURSOR_THIKNESS);
+			MIN (CURSOR_THIKNESS, term->char_descent));
 }
 
 static void
@@ -448,24 +627,39 @@ gtk_term_update_line (GtkTerm *term,
 		      guint    first_char,
 		      guint    last_char)
 {
-  guint len, i;
-  
-  len = last_char - first_char + 1;
-  
-  i = first_char;
-  while (i <= last_char) {
-    GtkTermAttrib *attrib;
-    guint first;
-    
-    first = i;
-    
-    attrib = &term->attrib_buffer[line][first];
-    
-    while (i < last_char && ATTRIB_EQ(term->attrib_buffer[line][i + 1], *attrib))
-      i++;
-    
-    gtk_term_draw_line_seg (term, line, first, i, attrib);
-    i++;
+  register guint i;
+
+  if (term->refresh_blocked)
+  {
+    for (i = first_char; i <= last_char; i++)
+      term->attrib_buffer[line][i].flags |= FLAG_DIRTY;
+    term->flags_dirty = TRUE;
+  }
+  else
+  {
+    i = first_char;
+    while (i <= last_char)
+    {
+      GtkTermAttrib *attrib;
+      guint first;
+      
+      first = i;
+      
+      term->attrib_buffer[line][first].flags &= ~FLAG_DIRTY;
+      attrib = &term->attrib_buffer[line][first];
+      
+      do
+      {
+	i++;
+	if (i <= last_char)
+	  term->attrib_buffer[line][i].flags &= ~FLAG_DIRTY;
+	else
+	  break;
+      }
+      while (ATTRIB_EQ(term->attrib_buffer[line][i], *attrib));
+      
+      gtk_term_draw_line_seg (term, line, first, i - 1, attrib);
+    }
   }
 }
 
@@ -496,7 +690,7 @@ gtk_term_draw_line_seg (GtkTerm	      *term,
   else
     fore = term->fore[attrib->i_fore];
   
-  if (attrib->flags & FLAG_REVERSE)
+  if (((attrib->flags & FLAG_REVERSE) != 0) != term->inverted)
   {
     GdkColor *tmp;
     
@@ -553,131 +747,4 @@ gtk_term_draw_line_seg (GtkTerm	      *term,
 		   term->char_height * line + term->char_vorigin,
 		   &term->char_buffer[line][first_char],
 		   len);
-}
-
-static void
-gtk_term_scroll_up (GtkTerm	*term,
-		    guint	first_line,
-		    guint	last_line,
-		    guint	n_lines)
-{
-  gchar	**char_buffer;
-  GtkTermAttrib ** attrib_buffer;
-  guint i;
-  
-  if (first_line == term->first_line)
-    first_line = 0;
-  
-  if (term->first_used_line > first_line)
-  {
-    if (term->first_used_line > n_lines)
-      term->first_used_line -= n_lines;
-    else
-      term->first_used_line = first_line;
-  }
-  
-  char_buffer = g_new (gchar*, n_lines);
-  attrib_buffer = g_new (GtkTermAttrib*, n_lines);
-  
-  for (i = 0; i < n_lines; i++)
-  {
-    char_buffer[i] = term->char_buffer[first_line + i];
-    attrib_buffer[i] = term->attrib_buffer[first_line + i];
-  }
-  
-  CURSOR_OFF (term);
-  
-  for (i = first_line; i <= last_line - n_lines; i++)
-  {
-    term->char_buffer[i] = term->char_buffer[i + n_lines];
-    term->attrib_buffer[i] = term->attrib_buffer[i + n_lines];
-  }
-  
-  for (i = 0; i < n_lines; i++)
-  {
-    term->char_buffer[last_line - i] = char_buffer[i];
-    term->attrib_buffer[last_line - i] = attrib_buffer[i];
-    
-    gtk_term_line_init (term, last_line - i);
-  }
-  
-  g_free (char_buffer);
-  g_free (attrib_buffer);
-  
-  if (GTK_WIDGET_DRAWABLE (term))
-  {
-    gdk_window_copy_area (term->text_area,
-			  term->text_gc,
-			  0,
-			  first_line * term->char_height,
-			  NULL,
-			  0,
-			  (first_line + n_lines) * term->char_height,
-			  term->term_width * term->char_width,
-			  (1 + last_line - first_line - n_lines) * term->char_height);
-    gdk_window_clear_area (term->text_area,
-			   0,
-			   (1 + last_line - n_lines) * term->char_height,
-			   term->term_width * term->char_width,
-			   n_lines * term->char_height);
-    CURSOR_ON (term);
-  }
-}
-
-static void
-gtk_term_scroll_down (GtkTerm	*term,
-		      guint	first_line,
-		      guint	last_line,
-		      guint	n_lines)
-{
-  gchar	**char_buffer;
-  GtkTermAttrib ** attrib_buffer;
-  guint i;
-  
-  char_buffer = g_new (gchar*, n_lines);
-  attrib_buffer = g_new (GtkTermAttrib*, n_lines);
-  
-  for (i = 0; i < n_lines; i++)
-  {
-    char_buffer[i] = term->char_buffer[last_line - i];
-    attrib_buffer[i] = term->attrib_buffer[last_line - i];
-  }
-  
-  CURSOR_OFF (term);
-  
-  for (i = last_line; i >= first_line + n_lines; i--)
-  {
-    term->char_buffer[i] = term->char_buffer[i - n_lines];
-    term->attrib_buffer[i] = term->attrib_buffer[i - n_lines];
-  }
-  
-  for (i = 0; i < n_lines; i++)
-  {
-    term->char_buffer[first_line + i] = char_buffer[i];
-    term->attrib_buffer[first_line + i] = attrib_buffer[i];
-    
-    gtk_term_line_init (term, first_line + i);
-  }
-  
-  g_free (char_buffer);
-  g_free (attrib_buffer);
-  
-  if (GTK_WIDGET_DRAWABLE (term))
-  {
-    gdk_window_copy_area (term->text_area,
-			  term->text_gc,
-			  0,
-			  (first_line + n_lines) * term->char_height,
-			  NULL,
-			  0,
-			  first_line * term->char_height,
-			  term->term_width * term->char_width,
-			  (1 + last_line - first_line - n_lines) * term->char_height);
-    gdk_window_clear_area (term->text_area,
-			   0,
-			   first_line * term->char_height,
-			   term->term_width * term->char_width,
-			   n_lines * term->char_height);
-    CURSOR_ON (term);
-  }
 }

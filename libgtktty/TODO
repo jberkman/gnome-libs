@@ -6,18 +6,16 @@ GtkVtEmu:
 *	have gtk_vtemu_set_cursor or the like...
 
 GtkTty:
-*	block refresh while only drawing characters
 *	implement keymap
-*	implement different charsets G0/G1 stuff
-*	need graphical characters (are fonts editable???)
+*	implement different charsets G0/G1 stuff (nearly done)
 *	make '\e' adding on <ALT> keys configurable...
-*	for /dev/pty?? check the corresponding /dev/tty?? also
 *	save the keystates within the class
 *	implement leds change and report function...
 
 GtkTerm:
 *	area copying relys on expose events, but they appear asyncronous
 	ex.: move GtkTerm have a line out of the screen an do ls / -R
-*	support block_refresh via dirty-marks on characters (one way)
+*	support block_refresh via dirty-marks on characters (one way) [implemented]
 *	implement backing store (supposdly *better* way, best: both)
 *	f*ckin finish selection handling
+*	prevent NoExpose events from being generated

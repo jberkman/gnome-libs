@@ -5,7 +5,7 @@ AC_INIT(acconfig.h)
 AM_CONFIG_HEADER(config.h)
 GEMVT_MAJOR=0
 GEMVT_REVISION=2
-GEMVT_PATCHLEVEL=0
+GEMVT_PATCHLEVEL=3
 GEMVT_VERSION="$GEMVT_MAJOR.$GEMVT_REVISION.$GEMVT_PATCHLEVEL"
 LIBGEMVT_MAJOR=$GEMVT_MAJOR
 LIBGEMVT_REVISION=$GEMVT_REVISION
@@ -35,34 +35,6 @@ AC_ARG_ENABLE(pedantic-ansi,
 dnl Default case:
 enable_pedantic_ansi=no)
   
-dnl Setup macros for stuff used over and over again.
-dnl MC_IF_VAR_EQ(environment-variable, value [, equals-action] [, else-action])
-AC_DEFUN(MC_IF_VAR_EQ,[
-	case "$[$1]" in
-	"[$2]"[)]
-		[$3]
-		;;
-	*[)]
-		[$4]
-		;;
-	esac
-])
-dnl MC_STR_CONTAINS(src-string, sub-string [, contains-action] [, else-action])
-AC_DEFUN(MC_STR_CONTAINS,[
-	case "[$1]" in
-	*"[$2]"*[)]
-		[$3]
-		;;
-	*[)]
-		[$4]
-		;;
-	esac
-])
-dnl MC_ADD_TO_VAR(environment-variable, check-string, add-string)
-AC_DEFUN(MC_ADD_TO_VAR,[
-	MC_STR_CONTAINS($[$1], [$2], [$1]="$[$1]", [$1]="$[$1] [$3]")
-])
-
 dnl Define package requirements.
 AC_DEFUN(AC_GEMVT_REQUIREMENTS,
 [
@@ -217,9 +189,9 @@ AM_PROG_LIBTOOL
 dnl Check for package requirements.
 AC_PATH_X
 AC_PATH_XTRA
-if eval "test is_$no_x = is_yes"; then
-	AC_MSG_ERROR(The X Window System is required)
-fi
+MC_IF_VAR_EQ($no_x, yes,
+	AC_MSG_ERROR(This package requires the X Window System)
+)
 AC_GEMVT_REQUIREMENTS
 AC_GTKLED_REQUIREMENTS
 AC_GTKTERM_REQUIREMENTS
@@ -238,7 +210,7 @@ AC_DEFINE_UNQUOTED(LIBGEMVT_VERSION, "$LIBGEMVT_VERSION")
 dnl Check for Gnome target
 AC_MSG_CHECKING(for target GNOME (wether to build libgemvt))
 MC_IF_VAR_EQ(USE_GNOME, yes,
-	AC_DEFINE(GNOMIFY)
+	AC_DEFINE(HAVE_GNOME)
 	AC_MSG_RESULT(yes)
 ,
 	AC_MSG_RESULT(no)
@@ -251,9 +223,6 @@ MC_IF_VAR_EQ(USE_GNOME, yes,
 	GEMVT_LDADD=""
 )
 AM_CONDITIONAL(BUILD_LIBGEMVT, test do_$USE_GNOME = do_yes)
-
-dnl Test for -lintl, I hope this works
-nb_GNU_GETTEXT
 
 dnl Automake @VARIABLE@ exports.
 AC_SUBST(CFLAGS)

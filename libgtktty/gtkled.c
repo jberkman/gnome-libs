@@ -23,7 +23,7 @@
 
 #define	LED_WIDTH	(11)
 #define	LED_HEIGHT	(7)
-
+#define	BOTTOM_SPACE	(2)
 
 static void gtk_led_class_init	 (GtkLedClass	 *klass);
 static void gtk_led_init	 (GtkLed	 *led);
@@ -52,7 +52,7 @@ gtk_led_get_type ()
       (GtkClassInitFunc) gtk_led_class_init,
       (GtkObjectInitFunc) gtk_led_init,
       (GtkArgSetFunc) NULL,
-      (GtkArgGetFunc) NULL
+      (GtkArgGetFunc) NULL,
     };
     
     led_type = gtk_type_unique (gtk_misc_get_type (), &led_info);
@@ -82,6 +82,10 @@ gtk_led_class_init (GtkLedClass *class)
 void
 gtk_led_init (GtkLed *led)
 {
+  GtkMisc *misc;
+  
+  misc = GTK_MISC (led);
+
   GTK_WIDGET_SET_FLAGS (led, GTK_NO_WINDOW);
   
   led->is_on = FALSE;
@@ -160,7 +164,7 @@ gtk_led_size_request (GtkWidget	     *widget,
   led = GTK_LED (widget);
   
   requisition->width = LED_WIDTH + led->misc.xpad * 2;
-  requisition->height = LED_HEIGHT + led->misc.ypad * 2;
+  requisition->height = LED_HEIGHT + led->misc.ypad * 2 + BOTTOM_SPACE;
 }
 
 static gint
@@ -187,7 +191,7 @@ gtk_led_expose (GtkWidget      *widget,
       x = widget->allocation.x + misc->xpad +
 	  (widget->allocation.width - widget->requisition.width) * misc->xalign + 0.5;
       y = widget->allocation.y + misc->ypad + LED_HEIGHT +
-	  (widget->allocation.height - widget->requisition.height) * misc->xalign + 0.5;
+	  (widget->allocation.height - widget->requisition.height) * misc->xalign + 0.5 - BOTTOM_SPACE;
 
       gtk_draw_shadow (widget->style, widget->window,
 		       GTK_STATE_NORMAL, GTK_SHADOW_IN,

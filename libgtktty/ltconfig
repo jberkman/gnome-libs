@@ -776,8 +776,7 @@ else
     hardcode_libdir_flag_spec='-L$libdir'
     hardcode_minus_L=yes
     allow_undefined_flag=unsupported
-    archive_cmds='echo "LIBRARY $libname INITINSTANCE" > $objdir/$libname.def;echo "DESCRIPTION \"$libname\"" >> $objdir/$libname.def;echo DATA >> $objdir/$libname.def;echo " SINGLE NONSHARED" >> $objdir/$libname.def;echo EXPORTS >> $objdir/$libname.def;e
-mxexp$libobjs >> $objdir/$libname.def;$CC -Zdll -Zcrtdll -o $lib$libobjs $objdir/$libname.def'
+    archive_cmds='echo "LIBRARY $libname INITINSTANCE" > $objdir/$libname.def;echo "DESCRIPTION \"$libname\"" >> $objdir/$libname.def;echo DATA >> $objdir/$libname.def;echo " SINGLE NONSHARED" >> $objdir/$libname.def;echo EXPORTS >> $objdir/$libname.def;emxexp$libobjs >> $objdir/$libname.def;$CC -Zdll -Zcrtdll -o $lib$libobjs $objdir/$libname.def'
     old_archive_from_new_cmds='emximp -o $objdir/$libname.a $objdir/$libname.def'
     ;;
 
@@ -1190,15 +1189,15 @@ test "$enable_shared" = yes || enable_static=yes
 echo "checking whether to build static libraries... $enable_static" 1>&6
 
 echo $ac_n "checking for objdir... $ac_c" 1>&6
-rm -f _libs 2>/dev/null
-mkdir _libs 2>/dev/null
-if test -d _libs; then
-  objdir=_libs
+rm -f .libs 2>/dev/null
+mkdir .libs 2>/dev/null
+if test -d .libs; then
+  objdir=.libs
 else
   # MS-DOS does not allow filenames that begin with a dot.
   objdir=_libs
 fi
-rmdir _libs 2>/dev/null
+rmdir .libs 2>/dev/null
 echo "$ac_t$objdir" 1>&6
 
 # Now quote all the things that may contain metacharacters.

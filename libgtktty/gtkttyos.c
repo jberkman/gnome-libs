@@ -26,9 +26,10 @@
 #include <sys/stat.h>
 #include <sys/resource.h>
 #include <unistd.h>
-#ifdef __FreeBSD__
-# include <sys/ioctl_compat.h>
-#endif
+
+#ifdef	__FreeBSD__
+#  include <sys/ioctl_compat.h>
+#endif	/* __FreeBSD__ */
 
 #if HAVE_SYS_WAIT_H
 # include <sys/wait.h>
@@ -69,15 +70,18 @@ gtk_tty_os_get_hintp (void)
     g_warning ("tcgetattr(stdin,) failed: %s", g_strerror (errno));
     
     osdat->tty_termios.c_iflag = BRKINT | ICRNL | IMAXBEL;
-    osdat->tty_termios.c_oflag =
-      CREAD | OPOST | ONLCR |
-      NL0  | CR0 | TAB0 | BS0 |
-#     ifdef VT0  /* FreeBSD doesn't have it? */
-      VT0 |
-#     endif
-      FF0;
+
+    osdat->tty_termios.c_oflag = CREAD | OPOST | ONLCR | NL0  | CR0 | TAB0 | BS0 | FF0;
+#ifdef	VT0
+    /* FreeBSD doesn't have it?
+     */
+    osdat->tty_termios.c_oflag |= VT0;
+#endif	/* VT0 */
+
     osdat->tty_termios.c_cflag = CS8;
+
     osdat->tty_termios.c_lflag = ISIG | ICANON | IEXTEN | ECHO | ECHOE | ECHOK | ECHOCTL | ECHOKE;
+
     osdat->tty_termios.c_cc[VERASE] = '\b';
     osdat->tty_termios.c_cc[VKILL] = '\025';
   }
@@ -118,7 +122,7 @@ gtk_tty_os_open_pty (GtkTty *tty)
     {
       *s2 = *suf_2;
       
-      tty->pty_fd = open (pty_name, O_RDWR);
+      tty->pty_fd = open (pty_name, O_RDWR | O_NONBLOCK);
       if (tty->pty_fd >= 0)
       {
 	gint tty_fd;

@@ -1,3 +1,40 @@
+Wed Jan 21 04:16:53 1998  Tim Janik  <timj@psynet.net>
+
+	* gvtgui.h:
+	* gvtgui.c: new files to help out with the GUI creation.
+	* gvtconf.h:
+	* gvtconf.c: new files for config parsing.
+
+Sun Jan 18 18:21:48 1998  Tim Janik  <timj@psynet.net>
+
+	* misc fixes to work with new versions of gtk+.
+	  affects GtkArg{Set|Get}Func, gtk_widget_get_parent_window() and
+	  some else stuff...
+
+Mon Jan 12 03:35:59 1998  Tim Janik  <timj@psynet.net>
+
+	* gtkttyos.c: Added a couple of ifdefs so it would build
+ 	under freebsd (done by seth).
+
+Sat Jan 10 17:04:16 1998  Tim Janik  <timj@psynet.net>
+
+	* gtkvtemu.h: 
+	* gtkvtemu.c (gtk_vtemu_invert): new function to implement
+ 	gtk_term_invert() on a vtemu basis.
+
+	* gtkterm.c (GtkTermSignalBell): signal invokation implemented.
+
+Fri Jan  9 08:22:00 1998  Tim Janik  <timj@psynet.net>
+
+	want some good news? here they go:
+	* gtkterm.h: 
+	* gtkterm.c: with the implementation of  gtk_term_block_refresh(),
+	gtk_term_unblock_refresh() and gtk_term_force_refresh() we got major
+	speed improvements.
+
+	* gtkvt102.c: accelerated terminal performance a few hundred percent
+	by using gtk_term_block_refresh/gtk_term_unblock_refresh.
+
 Fri Jan  2 15:18:45 1998  Federico Mena  <federico@bananoid.nuclecu.unam.mx>
 
 	* gtkvt102.c: Added #include <string.h>

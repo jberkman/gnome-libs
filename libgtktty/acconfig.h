@@ -12,7 +12,7 @@
 
 /* build for the GNOME desktop project ?
  */
-#undef	GNOMIFY
+#undef	HAVE_GNOME
 
 #undef	PACKAGE
 #undef	GEMVT_MAJOR
@@ -24,3 +24,10 @@
 #undef	LIBGEMVT_AGE
 #undef	LIBGEMVT_VERSION
 #undef	VERSION
+
+@BOTTOM@
+
+/* general defines
+ */
+#define	PRGNAME		"GemVT"
+#define	PRGNAME_LONG 	PRGNAME " - GNU Emulator of a Virtual Terminal"

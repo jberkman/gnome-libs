@@ -65,6 +65,7 @@ struct	_GtkTerm
   GdkWindow	*text_area;
   GdkGC		*text_gc;
   gboolean	refresh_blocked;
+  gboolean	inverted;
   
   /* term dimensions in character
    */
@@ -75,7 +76,6 @@ struct	_GtkTerm
   guint		first_line;
   guint		first_used_line;
   gint		scroll_offset;
-  gboolean	term_inversed;
   
   /* current text mode
    */
@@ -134,11 +134,15 @@ struct	_GtkTerm
   guint		char_width;
   guint		char_height;
   guint		char_vorigin;
+  guint		char_descent;
   
   /* screen buffer
    */
   gchar		**char_buffer;
   GtkTermAttrib	**attrib_buffer;
+
+  gboolean	flags_dirty;
+  gint		refresh_handler;
 };
 
 struct _GtkTermClass
@@ -152,6 +156,7 @@ struct _GtkTermClass
   void (* text_resize)		(GtkTerm	*term,
 				 guint		*new_width,
 				 guint		*new_height);
+  gint	(* bell)		(GtkTerm	*term);
 };
 
 
@@ -165,6 +170,9 @@ gint		gtk_term_set_scroll_offset (GtkTerm	*term,
 					    gint	offset);
 
 /* --- terminal actions --- */
+void		gtk_term_block_refresh	(GtkTerm	*term);
+void		gtk_term_force_refresh	(GtkTerm	*term);
+void		gtk_term_unblock_refresh(GtkTerm	*term);
 void		gtk_term_set_fonts	(GtkTerm	*term,
 					 GdkFont	*font_normal,
 					 GdkFont	*font_dim,
@@ -174,8 +182,6 @@ void		gtk_term_set_fonts	(GtkTerm	*term,
 					 gboolean	draw_underline,
 					 GdkFont	*font_reverse,
 					 gboolean	colors_reversed);
-void		gtk_term_block_refresh	(GtkTerm	*term);
-void		gtk_term_unblock_refresh(GtkTerm	*term);
 void		gtk_term_set_color	(GtkTerm	*term,
 					 guint		index,
 					 GdkColor	*back,
@@ -195,8 +201,7 @@ void		gtk_term_set_underline	(GtkTerm	*term,
 					 gboolean	underline);
 void		gtk_term_set_reverse	(GtkTerm	*term,
 					 gboolean	reverse);
-void		gtk_term_set_inversed	(GtkTerm	*term,
-					 gboolean	term_inversed);
+void		gtk_term_invert		(GtkTerm	*term);
 
 /* termcap facility: AL
  * the line under cursor moves downwards n times, empty ones are inserted
@@ -254,6 +259,9 @@ void		gtk_term_restore_cursor	(GtkTerm	*term);
 void		gtk_term_set_scroll_reg	(GtkTerm	*term,
 					 guint		top,
 					 guint		bottom);
+void		gtk_term_get_cursor	(GtkTerm	*term,
+					 guint		*x,
+					 guint		*y);
 void		gtk_term_reset		(GtkTerm	*term);
 void		gtk_term_get_size	(GtkTerm	*term,
 					 guint		*width,

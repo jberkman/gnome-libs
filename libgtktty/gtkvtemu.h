@@ -1,7 +1,7 @@
 /* GTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
- * gtkvtemu: virtual terminal emulation for GtkTerm
+ * gtkvtemu: virtual terminal emulation for GtkTty
  * Copyright (C) 1997 Tim Janik
  *
  * This library is free software; you can redistribute it and/or
@@ -32,17 +32,11 @@ extern "C" {
 
 
 
-typedef	struct	_GtkVtEmu	GtkVtEmu;
-
-typedef guint	(GtkVtEmuInputFunc)	(GtkVtEmu	*vtemu,
-					 const guchar	*buffer,
-					 guint		count);
-typedef void	(GtkVtEmuResetFunc)	(GtkVtEmu	*vtemu,
-					 gboolean	blank_screen);
-typedef	void	(GtkVtEmuReporter)	(GtkVtEmu	*vtemu,
-					 guchar		*buffer,
-					 guint		count,
-					 gpointer	user_data);
+typedef	struct	_GtkVtEmu		GtkVtEmu;
+typedef void    (GtkVtEmuReporter)      (GtkVtEmu       *vtemu,
+					 const guchar   *buffer,
+					 guint          count,
+					 gpointer       user_data);
 
 
 struct	_GtkVtEmu
@@ -50,9 +44,11 @@ struct	_GtkVtEmu
   GtkTerm		*term;
   
   guint			internal_id;
+  guint			internal_index;
   
   gchar			*terminal_type;
-  GList			*terminal_aliases;
+  gchar			**terminal_aliases;
+  guint			n_terminal_aliases;
   
   guint32		led_states;
   gboolean		led_override;
@@ -63,29 +59,29 @@ struct	_GtkVtEmu
   gboolean		insert_mode;
   gboolean		lf_plus_cr;
   gboolean		need_wrap;
-  
-  GtkVtEmuInputFunc	*input_func;
-  GtkVtEmuResetFunc	*reset_func;
+  gboolean		term_inverted;
   
   GtkVtEmuReporter	*reporter;
   gpointer		reporter_data;
 };
 
 
-GList*		gtk_vtemu_get_types	(void);
+GList*		gtk_vtemu_create_type_list	(void);
+
 GtkVtEmu*	gtk_vtemu_new		(GtkTerm		*term,
-					 gchar			*terminal_type);
+					 const gchar		*terminal_type);
 guint		gtk_vtemu_input		(GtkVtEmu		*vtemu,
 					 const guchar		*buffer,
 					 guint			count);
 void		gtk_vtemu_report	(GtkVtEmu		*vtemu,
-					 guchar			*buffer,
+					 const guchar		*buffer,
 					 guint			count);
 void		gtk_vtemu_set_reporter	(GtkVtEmu		*vtemu,
 					 GtkVtEmuReporter	*callback,
 					 gpointer		user_data);
 void		gtk_vtemu_reset		(GtkVtEmu		*vtemu,
 					 gboolean		blank_screen);
+void		gtk_vtemu_invert	(GtkVtEmu		*vtemu);
 void		gtk_vtemu_destroy	(GtkVtEmu		*vtemu);
 
 
