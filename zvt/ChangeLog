@@ -1,3 +1,10 @@
+1999-03-17  Michael Zucchi  <mzucchi@denr.sa.gov.au>
+
+	* zvtterm.c (zvt_term_closepty): Make sure we raise a "child_died"
+	when the child is being terminated (and it existed).  SIGCHLD just
+	wont raise it, because after this point it no longer exists (in
+	the 'children' list, see subshell.c).
+
 1999-03-16  Michael Zucchi  <mzucchi@denr.sa.gov.au>
 
 	* zvtterm.c (zvt_term_key_press): Changed all cursor keys to send
