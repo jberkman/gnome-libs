@@ -84,5 +84,6 @@ do
     automake --gnu; autoheader; autoconf)
 done
 
-echo running $srcdir/configure
-$srcdir/configure "$@" && echo Now type \`make\' to compile the Gnome Libraries
+echo running $srcdir/configure --enable-maintainer-mode "$@"
+$srcdir/configure --enable-maintainer-mode "$@" \
+&& echo Now type \`make\' to compile the Gnome Libraries
