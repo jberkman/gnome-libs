@@ -88,6 +88,7 @@ fi
 %{prefix}/lib/lib*.so.*
 %{prefix}/bin/*
 %{prefix}/share/pixmaps/*
+%config %{prefix}/share/gtkrc
 
 %files devel
 %defattr(-, root, root)
