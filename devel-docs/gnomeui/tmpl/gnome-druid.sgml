@@ -24,19 +24,20 @@ GnomeDruid
   <refsect2>
     <title>Creating a DRUID</title>
     <para>
-      GNOME DRUIDs are fairly simple to program with.  One starts by
+      GNOME DRUIDs are fairly simple to program with.  You start by
       creating a #GnomeDruid into which one puts all of your pages.
       This widget will handle the presentation of the #GnomeDruidPage
       widgets.
     </para>
     <para>
-      One then creates all appropriate #GnomeDruidPage widgets.  There
-      are three implementations of these in libgnomeui.  They are the
+      You then create all appropriate #GnomeDruidPage widgets.  There
+      are three implementations of these in libgnomeui, although there's
+      no reason why you couldn't right a custom one.  They are the
       #GnomeDruidPageStart, the #GnomeDruidPageStandard, and the
       #GnomeDruidPageFinish.  The #GnomeDruidPageStandard acts as a
-      #GtkContainer, and is probably the most commonly used DRUID
-      page.  More information on the specific properties of these
-      widgets can be found on their respective pages.
+      #GtkContainer, and is probably the most commonly used DRUID page.
+      More information on the specific properties of these widgets can
+      be found on their respective pages.
     </para>
     <para>
       In order to appear in the druid, you will need to add the pages to
@@ -51,9 +52,16 @@ GnomeDruid
       The control-flow in a DRUID is managed at the #GnomeDruidPage
       level, and is a little complex.  The signals available are "back",
       "next", "finish", "cancel" and "prepare", and all but the last are
-      triggered when any of their respective buttons are pressed.  The
-      current page will emit the appropriate signal in this case.  It is
-      up to the DRUID author to trap this signal in the 
+      triggered when their respective buttons are pressed.  In the
+      absence of anything connected to these signals, the druid will
+      cycle through the pages in the order of the internal list.  
+    </para>
+    <para>
+      If the DRUID The current page will emit the appropriate signal in this case.
+      It is up to the DRUID author to trap this signal when necessary.
+      Most druids that have a non-linear flow of pages will want to call
+      gnome_druid_set_page() with the next page.  In addition, they will
+      want to
     </para>
     <para>
       
