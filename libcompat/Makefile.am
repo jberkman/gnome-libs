@@ -45,10 +45,8 @@ libgnomeui_1_compat_2_a_SOURCES =\
 	gnome-druid-page-finish.c	\
 	gnome-procbar.c			\
 	gnome-properties.c		\
-	gnome-property-entries.c
-
-#FIXME: need to move this
-#	gnome-font-selector.c
+	gnome-property-entries.c	\
+	gnome-font-selector.c
 
 # This probably won't work right
 #	gnome-canvas-image.c
@@ -67,7 +65,8 @@ libgnomeui10compatinclude_HEADERS = \
 	gnome-druid-page-finish.h	\
 	gnome-procbar.h			\
 	gnome-properties.h		\
-	gnome-property-entries.h
+	gnome-property-entries.h	\
+	gnome-font-selector.h
 
 # This probably won't work right
 #	gnome-canvas-image.h
@@ -78,11 +77,13 @@ libgnome_1_compat_2_a_SOURCES = \
 	gnome10-compat.c	\
 	gnome-help.c		\
 	gnome-dentry.c		\
-	gnome-popt.c
+	gnome-popt.c		\
+	gnome-history.c
 
 libgnome10compatinclude_HEADERS=\
 	libgnome-compat-1.0.h	\
 	gnome10-compat.h	\
 	gnome-help.h		\
 	gnome-dentry.h		\
-	gnome-popt.h
+	gnome-popt.h		\
+	gnome-history.h
