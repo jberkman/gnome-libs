@@ -1,3 +1,9 @@
+1998-07-07  Federico Mena Quintero  <federico@nuclecu.unam.mx>
+
+	* canvas.c (zoom_changed): Added a scale to change the zoom
+	factor.  This exposes several bugs in the canvas, which I will be
+	fixing shortly.
+
 1998-07-06  Federico Mena Quintero  <federico@nuclecu.unam.mx>
 
 	* canvas.c (scramble): Don't flush the X queue now that
