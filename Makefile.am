@@ -31,12 +31,13 @@ SUBDIRS = po intl support	\
 	gnome-faq
 
 if COMPILE_TEST_GNOME
-compat_headers = gnome10compat.h
+compat_headers = gnome-compat-1.0.h
 else
 compat_headers =
 endif
 
-include_HEADERS = gnome.h $(compat_headers)
+gnomeincludedir=$(includedir)/gnome/$(GNOME_INTERFACE_VERSION)
+gnomeinclude_HEADERS = gnome.h $(compat_headers)
 
 EXTRA_DIST =	HACKING gnomeConf.sh.in gnome-bug.in gnome-config.in \
 		gnome-libs.spec.in
@@ -49,7 +50,7 @@ release:
 
 ## Put `exec' in the name because this should be installed by
 ## `install-exec', not `install-data'.
-confexecdir=$(libdir)
+confexecdir=$(datadir)/gnome/conf/$(GNOME_INTERFACE_VERSION)
 confexec_DATA=gnomeConf.sh
 
 ## to automatically rebuild aclocal.m4 if any of the macros in
@@ -70,6 +71,7 @@ gnomeConf.sh: gnomeConf.sh.in Makefile
 	    -e 's^\@GNOMEUI_LIBS\@^$(GNOMEUI_LIBS)^g' \
 	    -e 's^\@GTKXMHTML_LIBS\@^$(GTKXMHTML_LIBS)^g' \
             -e 's^\@GTK_CFLAGS\@^$(GTK_CFLAGS)^g' \
+	    -e 's^\@ZVT_LIBS\@^$(ZVT_LIBS)^g' \
 	    -e 's^\@need_gnome_support\@^$(need_gnome_support)^g' \
 	      < $(srcdir)/gnomeConf.sh.in > gnomeConf.tmp \
 	  && mv gnomeConf.tmp gnomeConf.sh

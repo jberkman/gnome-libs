@@ -1,5 +1,5 @@
 sbin_PROGRAMS    = gnome-pty-helper
-lib_LTLIBRARIES  = libzvt.la
+lib_LTLIBRARIES  = libzvt-2.0.la
 noinst_PROGRAMS  = zterm test-utmp
 
 libzvtincludedir = $(includedir)/zvt
@@ -10,7 +10,7 @@ INCLUDES = -I.. -I$(srcdir)/.. $(SUPPORTINCS)		\
 	-I$(includedir) $(GTK_CFLAGS)  			\
 	-DGNOMESBINDIR=\""$(sbindir)"\"
 
-libzvt_la_SOURCES =		\
+libzvt_2_0_la_SOURCES =		\
 	gnome-login-support.h	\
 	gnome-login-support.c	\
 	lists.c			\
@@ -22,7 +22,7 @@ libzvt_la_SOURCES =		\
 	background.c		\
 	zvtterm.c
 
-libzvt_la_LDFLAGS = -version-info 5:0:0 -rpath $(libdir)
+libzvt_la_LDFLAGS = -version-info 0:0:0
 
 libzvtinclude_HEADERS =		\
 	lists.h			\
@@ -52,13 +52,13 @@ EXTRA_DIST = TODO BUGS README	\
 zterm_SOURCES	= zterm.c
 
 zterm_LDADD	= 			\
-	libzvt.la			\
+	libzvt-$(GNOME_INTERFACE_VERSION).la \
 	$(UTIL_LIBS)			\
 	$(GTK_LIBS) 			\
 	$(top_builddir)/gdk-pixbuf/gdk-pixbuf/libgdk_pixbuf.la \
 	$(top_builddir)/libart_lgpl/libart_lgpl.la \
-	$(top_builddir)/libgnomeui/libgnomeui.la \
-	$(top_builddir)/libgnome/libgnome.la	\
+	$(top_builddir)/libgnomeui/libgnomeui-$(GNOME_INTERFACE_VERSION).la \
+	$(top_builddir)/libgnome/libgnome-$(GNOME_INTERFACE_VERSION).la	\
 	$(INTLLIBS)
 
 test_utmp_SOURCES =			\
