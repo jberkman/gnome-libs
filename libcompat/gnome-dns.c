@@ -27,7 +27,7 @@
 #include <signal.h>
 #include <string.h>
 
-#include "gnome-defs.h"
+#include "libgnome/gnome-defs.h"
 #include "gnome-dns.h"
 
 #undef VERBOSE

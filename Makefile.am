@@ -10,3 +10,6 @@ EXTRA_DIST = HACKING
 
 release:
 	$(MAKE) disk distdir=$(PACKAGE)$(VERSION)
+
+libdir = $(prefix)/lib
+lib_DATA = gnomeConf.sh
