@@ -1,3 +1,23 @@
+1998-12-07  Miguel de Icaza  <miguel@nuclecu.unam.mx>
+
+	* libgnome/gnome-regex.c (DEFAULT_SIZE): Make the cache larger. 
+	(gnome_regex_cache_compile): Fix test.  
+
+1998-12-02  Miguel de Icaza  <miguel@nuclecu.unam.mx>
+
+	* gnome-config.in (libs_l): Fix for the "idl" gnome-config
+	target. 
+	
+1998-11-05  Miguel de Icaza  <miguel@nuclecu.unam.mx>
+
+	* libgnorba/goad.c: Include ctype.h
+
+Nov 26, 1998 Elliot Lee
+	
+	. libgnome/gnome-mime.c: read gnomedatadir/mime.types as well
+	. In general, move data files not associated with any specific
+	  directory into a 'gnome-data' directory.
+	
 1998-12-07  James Henstridge  <james@daa.com.au>
 
 	* libgnome/gnome-url.c: Documented this module.
@@ -32,7 +52,7 @@
 	Ready for removal of intl/ + changes for gettext 0.10.35.
 	* acinclude.m4: Remove AM_GNU_GETTEXT and related macros.
 	* configure.in (AC_OUTPUT): Remove 'sed .. POTFILES' expression.
-	
+
 Tue Dec  1 02:43:15 PST 1998 Manish Singh <yosh@gimp.org>
 
 	* configure.in
@@ -44,6 +64,7 @@ Tue Dec  1 02:22:27 EST 1998 Nick Fetchak <nuke@bayside.net>
 	* libgnomeui/gnome-client.c: removed a g_free() of a pointer to
 	a getpwuid(). (this shouldn't point to static memory, but trying
 	to free it causes consistant segfaults on my system)
+
 
 1998-11-29  Justin Maurer  <justin@openprojects.net>
 
@@ -64,10 +85,11 @@ Sat Nov 28 21:18:54 EST 1998 Gregory McLean <gregm@comstar.net>
 	for the gnome-libs-installed IDL files (flag --idl).
 
 Nov 26, 1998  Elliot Lee  <sopwith@redhat.com>
-
+	
 	* libgnome/gnome-mime.c: read gnomedatadir/mime.types as well
 	In general, move data files not associated with any specific
 	directory into a 'gnome-data' directory.
+
 
 1998-11-26  Miguel de Icaza  <miguel@nuclecu.unam.mx>
 
