@@ -114,6 +114,9 @@ AC_SUBST(gnomelocaledir)
 
 AC_CHECK_LIB(m, main)
 
+AC_CHECK_LIB(popt, poptGetContext,, [AC_MSG_ERROR(The popt library is required to build gnome-libs. You can download the latest version from ftp://ftp.redhat.com/pub/redhat/code/popt/)
+])
+
 AC_CHECK_HEADERS(dlfcn.h dl.h utmp.h locale.h)
 
 DL_LIB=
