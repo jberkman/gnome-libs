@@ -34,8 +34,8 @@ Message box display routines
       int ret;
       
       error_dialog = gnome_message_box_new (
-              GNOME_MESSAGE_BOX_ERROR,
               "Wrong password",
+              GNOME_MESSAGE_BOX_ERROR,
               "Retry", "Ignore",
               NULL);
       ret = gnome_dialog_run (GNOME_DIALOG (error_dialog));
@@ -62,8 +62,8 @@ Message box display routines
       int ret;
       
       yes_no_dialog = gnome_message_box_new (
-              GNOME_MESSAGE_BOX_QUESTION,
               "Do you want to make a chocolate cake?",
+              GNOME_MESSAGE_BOX_QUESTION,
               GNOME_STOCK_BUTTON_YES,
               GNOME_STOCK_BUTTON_NO,
               NULL);
