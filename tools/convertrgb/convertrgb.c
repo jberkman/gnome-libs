@@ -8,6 +8,10 @@
 #include "convertrgb.h"
 
 static int efficient;
+static int append;
+static char *file_for_output;
+static char *suffix;
+static char *variable_name;
 
 static int is_file(char *s)
 {
@@ -23,6 +27,7 @@ static void convert(char *file)
 {
 	FILE *f, *sf;
 	char outfile[4096];
+	char data_var[4096];
 	char *ptr;
 	int x, y;
 	int col = 0;
@@ -31,10 +36,43 @@ static void convert(char *file)
 
 	t = 0;
 
+
+	if (file_for_output)
+		{
+		strcpy(outfile, file_for_output);
+		}
+	else
+		{
+		strcpy (outfile, file);
+		ptr = outfile + strlen(outfile);
+		while (ptr > &outfile[0] && ptr[0] != '.') ptr--;
+		ptr[0] = '\0';
+		if (suffix)
+			strcpy (ptr, suffix);
+		else
+			strcpy (ptr, ".c");
+		}
+
+	if (variable_name)
+		strcpy(data_var, variable_name);
+	else
+		{
+		strcpy(data_var, file);
+		ptr = data_var + strlen(data_var);
+		while (ptr > &data_var[0] && ptr[0] != '.') ptr--;
+		strcpy (ptr, "_rgb");
+		}
+
+	if (strcmp(file, outfile) == 0)
+		{
+		printf("Input and output files cannot be the same!\n");
+		return;
+		}
+
 	sf = fopen(file, "rb");
 	if (!sf) return;
 
-	if (isxpm(file))
+	if (isxpm(file) && 0) /* imlib needs display to load xpms, so use convert */
 		d = _LoadXPM(NULL, file, &w, &h, &t);
 #ifdef HAVE_LIBPNG
 	else if (ispng(file))
@@ -64,13 +102,10 @@ static void convert(char *file)
 	fclose (sf);
 	if (!d) return;
 
-	strcpy (outfile, file);
-	ptr = outfile + strlen(outfile);
-	while (ptr > &outfile[0] && ptr[0] != '.') ptr--;
-	ptr[0] = '\0';
-	strcpy (ptr, ".c");
-
-	f = fopen(outfile,"w");
+	if (append)
+		f = fopen(outfile,"a");
+	else
+		f = fopen(outfile,"w");
 	
 	if (!f)
 		{
@@ -81,15 +116,14 @@ static void convert(char *file)
 
 	fprintf(f, "/* Imlib raw rgb data file created by convertrgb */\n\n");
 
-	strcpy (ptr, "_rgb");
-	fprintf(f, "static const int %s_width  = %d;\n", outfile, w);
-	fprintf(f, "static const int %s_height = %d;\n", outfile, h);
+	fprintf(f, "static const int %s_width  = %d;\n", data_var, w);
+	fprintf(f, "static const int %s_height = %d;\n", data_var, h);
 	if (t)
-		fprintf(f, "static const GdkImlibColor %s_alpha  = { 255, 0, 255, 0 };\n", outfile);
+		fprintf(f, "static const GdkImlibColor %s_alpha  = { 255, 0, 255, 0 };\n", data_var);
 	else
-		fprintf(f, "static const GdkImlibColor %s_alpha  = { -1, -1, -1, 0 };\n", outfile);
+		fprintf(f, "static const GdkImlibColor %s_alpha  = { -1, -1, -1, 0 };\n", data_var);
 
-	fprintf(f, "static const char %s[] = {\n", outfile);
+	fprintf(f, "static const char %s[] = {\n", data_var);
 
 	for (y=0;y < h; y++)
 		for (x=0;x < w; x++)
@@ -132,6 +166,10 @@ static void convert(char *file)
 int main (int argc, char *argv[])
 {
 	efficient = 0;
+	append = 0;
+	file_for_output = NULL;
+	suffix = NULL;
+	variable_name = NULL;
 
 	if (argc > 1)
 		{
@@ -141,8 +179,90 @@ int main (int argc, char *argv[])
 			char *file = argv[i];
 			if (strcmp(file, "--efficient") == 0 || strcmp(file, "-e") == 0)
 				efficient = 1;
+			else if (strncmp(file, "-o", 2) == 0)
+				{
+				if (append || file_for_output || suffix)
+					{
+					printf("Cannot Specify multiple output methods of -a, -o, or -s\n");
+					return 1;
+					}
+				if (strlen(file) > 3)
+					{
+					file_for_output = strdup(file + 3);
+					}
+				else
+					{
+					printf("No output file specified for -o option\n");
+					return 1;
+					}
+				}
+			else if (strncmp(file, "-a", 2) == 0)
+				{
+				if (append || file_for_output || suffix)
+					{
+					printf("Cannot Specify multiple output methods of -a, -o, or -s\n");
+					return 1;
+					}
+				if (strlen(file) > 3)
+					{
+					append = 1;
+					file_for_output = strdup(file + 3);
+					}
+				else
+					{
+					printf("No output file specified for -a option\n");
+					return 1;
+					}
+				}
+			else if (strncmp(file, "-s", 2) == 0)
+				{
+				if (append || file_for_output || suffix)
+					{
+					printf("Cannot Specify multiple output methods of -a, -o, or -s\n");
+					return 1;
+					}
+				if (strlen(file) > 3)
+					{
+					append = 1;
+					suffix = strdup(file + 3);
+					}
+				else
+					{
+					printf("No suffix specified for -s option\n");
+					return 1;
+					}
+				}
+			else if (strncmp(file, "-v", 2) == 0)
+				{
+				if (variable_name)
+					{
+					printf("Cannot -v more than once before each input file\n");
+					return 1;
+					}
+				if (strlen(file) > 3)
+					{
+					variable_name = strdup(file + 3);
+					}
+				else
+					{
+					printf("No name specified for -v option\n");
+					return 1;
+					}
+				}
 			else if (is_file(file))
+				{
 				convert(file);
+				if (file_for_output && !append)
+					{
+					free(file_for_output);
+					file_for_output = NULL;
+					}
+				if (variable_name)
+					{
+					free(variable_name);
+					variable_name = NULL;
+					}
+				}
 			else
 				printf("Error, file not found: %s\n", file);
 			i++;
@@ -150,15 +270,20 @@ int main (int argc, char *argv[])
 		}
 	else
 		{
-		printf ("Image to Imlib raw rgb data Converter                 Version 0.1.0\n");
+		printf ("Image to Imlib raw rgb data Converter                 Version 0.1.2\n");
 		printf ("This program is released under the terms of the GNU public license.\n");
 		printf ("Command line params:\n\n");
-		printf ("         convertrgb [-e] [-o=fn|-a=fn] inputfile [inputfile] ...\n\n");
+		printf ("      convertrgb [-e] [-o=fn|-a=fn|-s=sn] [-v=vn] inputfile [inputfile] ...\n\n");
 		printf ("   -e, --efficient      Use smallest format possible to save space\n");
 		printf ("   -o=[fn]              Output to file named fn , default is .c extension\n");
-		printf ("                          to replace extension of inputfile(FIXME)\n");
-		printf ("   -a=[fn]              Like -o, but appends to file named fn (FIXME)\n");
+		printf ("                          to replace extension of inputfile\n");
+		printf ("   -a=[fn]              Like -o, but appends to file named fn\n");
+		printf ("   -s=[sn]              Suffix for output filename\n");
+		printf ("                        (eg: 'convertrgb -s=.rgb logo.png'sets output file\n");
+		printf ("                         to 'logo.rgb')\n");
+		printf ("   -v=[vn]              The variable name to use for the next image.\n");
 		}
+
 	return 0;
 }
 

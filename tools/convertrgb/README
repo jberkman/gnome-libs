@@ -5,18 +5,19 @@
 ##              the COPYING file for more information            ##*/
 ###################################################################*/
 
-Image to Imlib raw rgb data Converter
+Sorry, but for now this is just a copy of the output with no options.
 
 Command line params:
 
-   convertrgb [-e] [-o=fn|-a=fn] inputfile [inputfile] ...
+      convertrgb [-e] [-o=fn|-a=fn|-s=sn] [-v=vn] inputfile [inputfile] ...
 
-	-e, --efficient		Use smallest format possible to save space
-	-o=[fn]			Output to file named fn , default is .c extension
-				to replace extension of inputfile(FIXME, not implemented)
-	-a=[fn]              Like -o, but appends to file named fn (FIXME, not implemented)
-
-Right now the only output supprted is convertiong the input filename to a file ening
-with .c , for example logo.png is converted to logo.c
+   -e, --efficient      Use smallest format possible to save space
+   -o=[fn]              Output to file named fn , default is .c extension
+                          to replace extension of inputfile
+   -a=[fn]              Like -o, but appends to file named fn
+   -s=[sn]              Suffix for output filename
+                        (eg: 'convertrgb -s=.rgb logo.png'sets output file
+                         to 'logo.rgb')
+   -v=[vn]              The variable name to use for the next image.
 
 
