@@ -303,7 +303,9 @@ struct {
 	{ RLIMIT_STACK,  1  * MB },
 	{ RLIMIT_AS,     1 * MB },
 	{ RLIMIT_NOFILE, 10 },
+#ifdef RLIMIT_NPROC
 	{ RLIMIT_NPROC,  5 },
+#endif
 	{ -1, -1 }
 };
 
