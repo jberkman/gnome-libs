@@ -261,20 +261,14 @@ goad_server_activate_with_repo_id(GoadServer *server_list,
 	
       /* entry matched */
       if(passnum == PASS_CHECK_EXISTING) {
-	g_message("goad_server_activate_with_repo_id: Calling goad_server_activate:  passnum %d", passnum);
 	retval = goad_server_activate(&slist[i], flags | GOAD_ACTIVATE_EXISTING_ONLY);
-	g_message("goad_server_activate_with_repo_id: goad_server_activate with EXISTING_ONLY returned");
       }
       else {
-	g_message("goad_server_activate_with_repo_id: Calling goad_server_activate:  passnum %d", passnum);
 	retval = goad_server_activate(&slist[i], flags | GOAD_ACTIVATE_NEW_ONLY);
-	g_message("goad_server_activate_with_repo_id: goad_server_activate with NEW_ONLY returned");
       }
       if (retval != CORBA_OBJECT_NIL)
 	break;
     }
-    g_message("goad_server_activate: repo_id list finished");
-    
     /* If we got something, out of here.	
        If we were asked to check existing servers and we are done that,	
        out of here.	
@@ -333,11 +327,7 @@ goad_server_activate(GoadServer *sinfo,
 
     nc[2].id = sinfo->id;
     nc[2].kind = "object";
-
-    g_message("goad_server_activate: Testing if server '%s' is already running", sinfo->id);
-    
     retval = CosNaming_NamingContext_resolve(name_service, &nom, &ev);
-
     if (ev._major == CORBA_USER_EXCEPTION
 	&& strcmp(CORBA_exception_id(&ev), ex_CosNaming_NamingContext_NotFound) == 0) {
       retval = CORBA_OBJECT_NIL;
@@ -376,7 +366,6 @@ goad_server_activate(GoadServer *sinfo,
       g_snprintf(cmdline, sizeof(cmdline), "loadshlib -i %s -r %s %s",
 		 sinfo->id, sinfo->repo_id, sinfo->location_info);
       fake_sinfo.location_info = cmdline;
-      g_message("Doing faked server activation");
       retval = goad_server_activate_exe(&fake_sinfo, flags, &ev);
     } else {
       retval = goad_server_activate_shlib(sinfo, flags, &ev);
@@ -400,7 +389,6 @@ goad_server_activate(GoadServer *sinfo,
     name_service = gnome_name_service_get();
     nc[2].id = sinfo->id;
     nc[2].kind = "object";
-    g_message("goad_server_activate: Registering server with orbit-naming-server");
     CosNaming_NamingContext_bind(name_service, &nom, retval, &ev);
     if (ev._major != CORBA_NO_EXCEPTION)
       {
@@ -601,7 +589,11 @@ goad_server_activate_exe(GoadServer *sinfo,
     iorfh = fdopen(iopipes[0], "r");
 
     while (fgets(iorbuf, sizeof(iorbuf), iorfh) && strncmp(iorbuf, "IOR:", 4))
-      g_message("srv output: '%s'", iorbuf);
+#if 0
+      g_message("srv output: '%s'", iorbuf)
+#else
+	;
+#endif
     if (strncmp(iorbuf, "IOR:", 4)) {
       retval = CORBA_OBJECT_NIL;
       goto out;

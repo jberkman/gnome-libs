@@ -53,12 +53,10 @@ void Exception( CORBA_Environment* ev )
   switch( ev->_major )
     {
     case CORBA_SYSTEM_EXCEPTION:
-      g_log("loadshlib", G_LOG_LEVEL_ERROR, "CORBA system exception %s.\n",
-	       CORBA_exception_id(ev));
+      gwarning("CORBA system exception %s.\n", CORBA_exception_id(ev));
       exit ( 1 );
     case CORBA_USER_EXCEPTION:
-      g_log("loadshlib", G_LOG_LEVEL_ERROR, "CORBA user exception: %s.\n",
-	       CORBA_exception_id( ev ) );
+      gwarning("CORBA user exception: %s.\n", CORBA_exception_id( ev ) );
       exit ( 1 );
     default:
       break;

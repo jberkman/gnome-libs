@@ -235,7 +235,6 @@ gnome_name_service_get(void)
 	  Maybe we should use the same trick here, as we are using in the name server code
 	  to detect dead servers
 	*/
-	g_warning("X Property CORBA_NAMING_SERVER is invalid: perhaps the orbit-name-server died");
       } else if (ev._major != CORBA_NO_EXCEPTION) {
 	/*
 	  An error occured. Inform the user, and start a fresh name server.
@@ -400,9 +399,9 @@ gnome_register_corba_server(CORBA_Object name_server, CORBA_Object server,
   if (ev->_major != CORBA_NO_EXCEPTION) {
     switch( ev->_major ) {
     case CORBA_SYSTEM_EXCEPTION:
-      g_warning("s	ysex: %s.\n", CORBA_exception_id(ev));
+      g_warning("sysex: %s.\n", CORBA_exception_id(ev));
     case CORBA_USER_EXCEPTION:
-      g_warning( "usr	ex: %s.\n", CORBA_exception_id(ev));
+      g_warning( "usrex: %s.\n", CORBA_exception_id(ev));
     default:
       break;
     }
@@ -415,7 +414,7 @@ gnome_register_corba_server(CORBA_Object name_server, CORBA_Object server,
       case CORBA_SYSTEM_EXCEPTION:
 	g_warning("sysex: %s.\n", CORBA_exception_id(ev));
       case CORBA_USER_EXCEPTION:
-	g_warning( "usr		ex: %s.\n", CORBA_exception_id(ev));
+	g_warning( "usrex: %s.\n", CORBA_exception_id(ev));
       default:
 	break;
       }
@@ -428,9 +427,9 @@ gnome_register_corba_server(CORBA_Object name_server, CORBA_Object server,
   if (ev->_major != CORBA_NO_EXCEPTION) {
     switch( ev->_major ) {
     case CORBA_SYSTEM_EXCEPTION:
-      g_warning("s	ysex: %s.\n", CORBA_exception_id(ev));
+      g_warning("sysex: %s.\n", CORBA_exception_id(ev));
     case CORBA_USER_EXCEPTION:
-      g_warning( "usr	ex: %s.\n", CORBA_exception_id(ev));
+      g_warning( "usrex: %s.\n", CORBA_exception_id(ev));
     default:
       break;
     }
