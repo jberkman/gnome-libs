@@ -1,5 +1,14 @@
 Fri May 22 18:24:09 1998  Tom Tromey  <tromey@cygnus.com>
 
+	Some -Wall fixes:
+	* libgnome/lib_date.c: Include <stdio.h> for sprintf.
+	* libgnome/gnome-triggers.c (gnome_triggers_add_trigger): Removed
+	unused variable.
+	(gnome_triggers_do): Likewise.
+	* libgnome/gnome-dentry.c (gnome_desktop_entry_launch_with_args):
+	Removed unused variable.
+	* libgnome/gnome-config.c: Declare strndup if required.
+
 	* libgnome/gnome-dentry.c (gnome_desktop_entry_launch_with_args):
 	Use `SHELL -c' to execute command.
 
