@@ -24,14 +24,117 @@ guint gtk_xmhtml_get_type (void);
 static void CheckScrollBars(XmHTMLWidget html);
 static void GetScrollDim(XmHTMLWidget html, int *hsb_height, int *vsb_width);
 
+static Pixel
+pixel_color (char *color_name)
+{
+	GdkColor c;
+	
+	gdk_color_parse (color_name, &c);
+	return c.pixel;
+}
+
+/* These are initialized in the Motif sources with the resources */
+gtk_xmhtml_resource_init (GtkXmHTML *html)
+{
+	/* The strings */
+	html->html.mime_type             = g_strdup ("text/html");
+	html->html.charset               = g_strdup ("iso8859-1");
+	html->html.font_family           = g_strdup ("adobe-times-normal-*");
+	html->html.font_family_fixed     = g_strdup ("adobe-courier-normal-*");
+	html->html.font_sizes            = g_strdup ("14,8,24,18,14,12,10,8");
+	html->html.font_sizes_fixed      = g_strdup ("12,8");
+	html->html.zCmd                  = g_strdup ("gunzip");
+				         
+	html->html.needs_vsb       	 = FALSE;
+	html->html.needs_hsb       	 = FALSE;
+	html->html.scroll_x        	 = 0;
+	html->html.scroll_y        	 = 0;
+	html->html.alignment             = TALIGNMENT_BEGINNING;
+	html->html.anchor_cursor         = NULL;
+	html->html.anchor_display_cursor = TRUE;
+	html->html.anchor_buttons        = TRUE;
+	
+	html->html.anchor_fg             = pixel_color ("blue1");
+	html->html.anchor_visited_fg     = pixel_color ("red");
+	html->html.anchor_target_fg      = pixel_color ("blue1");
+	html->html.anchor_activated_fg   = pixel_color ("red");
+	html->html.anchor_activated_bg   = pixel_color ("white");
+	
+	html->html.highlight_on_enter    = TRUE;
+	html->html.anchor_underline_type = LINE_SOLID | LINE_UNDER | LINE_SINGLE;
+	html->html.anchor_target_underline_type = LINE_DASHED | LINE_UNDER | LINE_SINGLE;
+	html->html.anchor_visited_underline_type = LINE_SOLID | LINE_UNDER | LINE_SINGLE;
+	
+	html->html.anchor_visited_proc   = NULL;
+	html->html.image_proc            = NULL;
+	html->html.gif_proc              = NULL;
+	html->html.anchor_track_callback = NULL;
+	html->html.activate_callback     = NULL;
+	html->html.arm_callback          = NULL;
+	html->html.frame_callback        = NULL;
+	html->html.form_callback         = NULL;
+	html->html.focus_callback        = NULL;
+	html->html.losing_focus_callback = NULL;
+	html->html.link_callback         = NULL;
+	html->html.input_callback        = NULL;
+	html->html.motion_track_callback = NULL;
+	html->html.imagemap_callback     = NULL;
+	html->html.document_callback     = NULL;
+	
+	html->html.hsb                   = NULL;
+	html->html.vsb                   = NULL;
+
+	html->html.images_enabled        = TRUE;
+	html->html.max_image_colors      = 0;
+	html->html.screen_gamma          = 2.2;
+	html->html.get_data              = NULL;
+	html->html.end_data              = NULL;
+	html->html.plc_delay             = PLC_DEFAULT_DELAY;
+	html->html.plc_min_delay         = PLC_MIN_DELAY;
+	html->html.plc_max_delay         = PLC_MAX_DELAY;
+	html->html.perfect_colors        = 0; /* XmAUTOMATIC; */
+	html->html.resize_height         = FALSE;
+	html->html.resize_width          = FALSE;
+	html->html.sb_policy             = GTK_POLICY_AUTOMATIC;
+	html->html.sb_placement          = 0; /* FIXME */
+	html->html.margin_height         = DEFAULT_MARGIN;
+	html->html.margin_width          = DEFAULT_MARGIN;
+	html->html.string_direction      = TSTRING_DIRECTION_L_TO_R;
+	html->html.strict_checking       = FALSE;
+	html->html.enable_outlining      = FALSE;
+	html->html.top_line              = 0;
+	html->html.value                 = NULL;
+	html->html.work_area             = NULL;
+	html->html.bad_html_warnings     = TRUE;
+	html->html.body_colors_enabled   = TRUE;
+	html->html.body_images_enabled   = TRUE;
+	html->html.allow_color_switching = TRUE;
+	html->html.allow_font_switching  = TRUE;
+	html->html.allow_form_coloring   = TRUE;
+	html->html.imagemap_fg           = pixel_color ("White");
+	html->html.imagemap_draw         = FALSE;
+	html->html.repeat_delay          = 25;
+	html->html.freeze_animations     = FALSE;
+	html->html.map_to_palette        = XmDISABLED;
+	html->html.palette               = NULL;
+	html->html.def_body_image_url    = NULL;
+	html->html.alpha_processing      = XmALWAYS;
+	html->html.rgb_conv_mode         = XmBEST;
+#ifdef DEBUG
+	html->html.debug_disable_warnings= FALSE;
+	html->html.debug_full_output     = FALSE;
+	html->html.debug_save_clipmasks  = FALSE;
+	html->html.debug_prefix          = NULL;
+	html->html.debug_no_loopcount    = FALSE;
+	html->html.debug_levels          = NULL;
+#endif
+}
+
 static void
 gtk_xmhtml_init (GtkXmHTML *html, char *html_source)
 {
-	/* private TWidget resources */
-	html->html.needs_vsb    = False;
-	html->html.needs_hsb    = False;
-	html->html.scroll_x     = 0;
-	html->html.scroll_y     = 0;
+	gtk_xmhtml_resource_init (html);
+	XmHTML_Initialize (html, html, html_source);
 }
 
 GtkWidget *
@@ -40,7 +143,6 @@ gtk_xmhtml_new (char *html_source)
 	GtkXmHTML *html;
 	
 	html = gtk_type_new (gtk_xmhtml_get_type ());
-	XmHTML_Initialize (html, html, html_source);
 	return GTK_WIDGET (html);
 }
 
@@ -83,7 +185,7 @@ gtk_xmhtml_get_type (void)
 			(GtkArgFunc) NULL
 		};
 
-		gtk_xmhtml_type = gtk_type_unique (gtk_xmhtml_get_type (), &gtk_xmhtml_info);
+		gtk_xmhtml_type = gtk_type_unique (gtk_container_get_type (), &gtk_xmhtml_info);
 	}
 	return gtk_xmhtml_type;
 }

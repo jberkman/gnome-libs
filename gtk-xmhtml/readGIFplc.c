@@ -36,6 +36,15 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.2  1997/12/18 01:36:15  unammx
+* Ok, final hacks for the day.  Now we setup the default values
+* for the XmHTML widget properly.
+*
+* I am starting a merge of some parts of this code with Ripley
+* next week.
+*
+* Miguel.
+*
 * Revision 1.1  1997/12/18 00:40:43  unammx
 * .
 *
@@ -139,7 +148,7 @@ _PLC_GIF_Init(PLC *plc)
 	* was available).
 	*/
 	if(gif->cmap == NULL)
-		gif->cmap = (XColor*)calloc(gif->cmapsize, sizeof(XColor));
+		gif->cmap = (TColor*)calloc(gif->cmapsize, sizeof(TColor));
 
 	/* image is initially fully opaque */
 	gif->transparency = XmNONE;
@@ -232,7 +241,7 @@ _PLC_GIF_Init(PLC *plc)
 			free(gif->cmap);
 
 		gif->cmapsize = gif->ncolors;
-		gif->cmap = (XColor*)calloc(gif->cmapsize, sizeof(XColor));
+		gif->cmap = (TColor*)calloc(gif->cmapsize, sizeof(TColor));
 
 		if(!(ReadColormap(plc, gif)))
 		{

@@ -15,7 +15,9 @@ HTMLOBJS = XmHTML.o gtk-error.o frames.o parse.o StringUtil.o fonts.o paint.o \
 	readBitmap.o readGIF.o LZWStream.o readGIFplc.o colors.o images.o quantize.o
 
 test: test.o
-	gcc -o xtest test.o $(HTMLOBJS)  -lXpm -lgtk -lgdk -lglib -lX11 -L/usr/X11R6/lib -lm
+	gcc -g -o xtest test.o $(HTMLOBJS)  -lXpm -lgtk -lgdk -lglib -lX11 -L/usr/X11R6/lib -lm
 
 test.o: test.c
-	gcc -c test.c -I.
+	gcc -c test.c -I. -g
+
+XmHTML.o: XmHTML.c gtk-xmhtml.c XmHTML.h
