@@ -115,7 +115,7 @@ $blankline_text = "";
 
 
 sub usage {
-    print "Usage: $0 [ -docbook | -html | -text | -man ]\n";
+    print "Usage: $0 [ -v ] [ -docbook | -html | -text | -man ]\n";
     print "         [ -function funcname [ -function funcname ...] ]\n";
     print "         c source file(s) > outputfile\n";
     exit 1;
@@ -126,6 +126,7 @@ if ($#ARGV==-1) {
     usage();
 }
 
+$verbose = 0;
 $output_mode = "man";
 %highlights = %highlights_man;
 $blankline = $blankline_man;
@@ -155,7 +156,9 @@ while ($ARGV[0] =~ m/^-(.*)/) {
 	$function_only = 1;
 	$function = shift @ARGV;
 	$function_table{$function} = 1;
-    } elsif ($cmd eq "-h") {
+    } elsif ($cmd eq "-v") {
+	$verbose = 1;
+    } elsif (($cmd eq "-h") || ($cmd eq "--help")) {
 	usage();
     }
 }
@@ -221,7 +224,7 @@ sub output_highlight {
 # output in html
 sub output_html {
     my %args = %{$_[0]};
-    my $parameter, $section;
+    my ($parameter, $section);
     my $count;
     print "<h2>Function</h2>\n";
 
@@ -259,7 +262,7 @@ sub output_html {
 # output in sgml DocBook
 sub output_sgml {
     my %args = %{$_[0]};
-    my $parameter, $section;
+    my ($parameter, $section);
     my $count;
 
     print "<refentry>\n";
@@ -331,7 +334,7 @@ sub output_sgml {
 # output in man
 sub output_man {
     my %args = %{$_[0]};
-    my $parameter, $section;
+    my ($parameter, $section);
     my $count;
 
     print ".TH \"$args{'module'}\" \"$args{'function'}\" \"25 May 1998\" \"API Manual\" GNOME\n";
@@ -366,7 +369,7 @@ sub output_man {
 # output in text
 sub output_text {
     my %args = %{$_[0]};
-    my $parameter, $section;
+    my ($parameter, $section);
 
     print "Function = ".$args{'function'}."\n";
     print "  return type: ".$args{'functiontype'}."\n\n";
@@ -417,9 +420,9 @@ sub dump_function {
 #	    print STDERR " -> @args\n";
 	    $param = pop @args;
 #	    print STDERR " -> @args\n";
-	    if ($param =~ m/^\*(.*)/) {
-		$param = $1;
-		push @args, "*";
+	    if ($param =~ m/^(\*+)(.*)/) {
+		$param = $2;
+		push @args, $1;
 	    }
 	    $type = join " ", @args;
 
