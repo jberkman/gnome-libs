@@ -383,11 +383,12 @@ no_gnome_vfs=""
 if test "$GNOME_VFS_CONFIG" = "no" ; then
   no_gnome_vfs=yes
 else
-  VFS_CFLAGS=`$GNOME_VFS_CONFIG --cflags`
-  VFS_LIBS=`$GNOME_VFS_CONFIG --libs`
-  VFS_VERSION=`gnome-vfs-config --version | sed -e "s/gnome-vfs-//" -e 's/cvs$//' | \
+  GNOME_VFS_CFLAGS=`$GNOME_VFS_CONFIG --cflags`
+  GNOME_VFS_LIBS=`$GNOME_VFS_CONFIG --libs`
+  GNOME_VFS_VERSION=`gnome-vfs-config --version | sed -e "s/gnome-vfs-//" -e 's/cvs$//'`
+  gnome_vfs_vers=`gnome-vfs-config --version | sed -e "s/gnome-vfs-//" -e 's/cvs$//' | \
       awk 'BEGIN { FS = "."; } { print $1 * 1000 + $2;}'`
-  if test "$VFS_VERSION" -lt $min_gnome_vfs_version; then
+  if test "$gnome_vfs_vers" -lt $min_gnome_vfs_version; then
     no_gnome_vfs=yes
   fi
 fi
@@ -395,15 +396,16 @@ if test x$no_gnome_vfs = xyes ; then
   AC_MSG_RESULT(not found)
   AC_MSG_ERROR(gnome-vfs >= 0.30 is required for gnome-libs)
 else
-  AC_MSG_RESULT(found)
+  AC_MSG_RESULT($GNOME_VFS_VERSION)
 fi
-AC_SUBST(VFS_CFLAGS)
-AC_SUBST(VFS_LIBS)
+AC_SUBST(GNOME_VFS_CFLAGS)
+AC_SUBST(GNOME_VFS_LIBS)
+AC_SUBST(GNOME_VFS_VERSION)
 
 dnl
 dnl These are for building the appropriate lib*
 dnl
-LIBGNOME_LIBS="$DB_LIB $GLIB_LIBS $DL_LIB -lpopt"
+LIBGNOME_LIBS="$DB_LIB $GLIB_LIBS $DL_LIB $GNOME_VFS_LIBS -lpopt"
 LIBGNOMEUI_LIBS="$LIBGNOME_LIBS $GTK_LIBS $OAF_LIBS"
 LIBGTKXMHTML_LIBS="$XPM_LIBS $JPEG_LIBS $PNG_LIBS $Z_LIBS $GTK_LIBS"
 SUPPORTINCS='-DNEED_GNOMESUPPORT_H -I$(top_builddir)/support -I$(top_srcdir)/support'
