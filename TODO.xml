@@ -139,17 +139,14 @@
       <contact>gnome-devel-list &lt;gnome-devel-list@gnome.org&gt;</contact>
     </entry>
 
-    <entry size="medium" status="0%" target="2.0">
-      <title>PixmapEntry and FileEntry from GnomeEntry</title>
+    <entry size="medium" status="5%" target="2.0">
+      <title>GnomeSelector</title>
       <description>
 	<p>
-	  It may be possible to somehow derive these.  The problem is that
-	  GtkCombo derives from an HBox.  One way to do this is to make GnomeEntry
-	  derive from a container widget or somehow override the size_allocate/size_request
-	  methods (though that would not be clean(tm)).
+	  Finish my GnomeSelector stuff.
 	</p>
       </description>
-      <contact>George &lt;jirka@5z.com&gt;</contact>
+      <contact>Martin Baulig &lt;baulig@suse.de&gt;</contact>
     </entry>
 
     <entry size="big" status="0%" target="2.0">
@@ -162,6 +159,18 @@
 	</p>
       </description>
       <contact>gnome-devel-list &lt;gnome-devel-list@gnome.org&gt;</contact>
+    </entry>
+
+    <entry size="big" status="0%" target="2.0">
+      <title>Integrate libglade</title>
+      <description>
+	<p>
+	  Find out whether it is possible to use libglade in some way
+	  in libgnomeui so that we can create dialogs like for instance
+	  the Gnome{File,Icon,Pixmap}Selector with it.
+	</p>
+      </description>
+      <contact>Martin Baulig &lt;baulig@suse.de&gt;</contact>
     </entry>
 
     <entry size="medium" status="0%" target="2.0">
@@ -182,6 +191,9 @@
            The file entry needs to support "exec entry" mode where browse actions are
 	   appended on the end of the entry (see the panel run box) and "multiple file"
 	   mode where multiple files can be chosen.
+	</p>
+	<p>
+	   (This'll now also be done in GnomeSelector. Contact Martin about it).
 	</p>
       </description>
       <contact>George &lt;jirka@5z.com&gt;</contact>
