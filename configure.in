@@ -254,4 +254,6 @@ test-gnome/Makefile
 devel-docs/Makefile
 devel-docs/ui-guide/Makefile
 support/Makefile
+tools/Makefile
+tools/convertrgb/Makefile
 macros/Makefile],[sed -e "/POTFILES =/r po/POTFILES" po/Makefile.in > po/Makefile])
