@@ -25,12 +25,13 @@ read the file COPYING for more information.
 The Gnome desktop environment depends on a couple of extra packages
 for working properly:
 
-	- GNU gettext:
+	- GNU gettext 0.10.35
 
 	   ftp://prep.ai.mit.edu/pub/gnu
 
 	   Note: This is not required if you pass --with-included-gettext
-	   flat to configure
+	   flat to configure.
+
 
 	- Docbook packages (for building the documentation only)
 
@@ -40,11 +41,11 @@ for working properly:
 	
 	  http://niw-www.lanl.gov/~rosalia/mydocs/docbook-intro.html
 
-	- Gtk+ 1.1.latest
+	- Gtk+ 1.2.xx
 
 	   ftp://ftp.gimp.org/pub/gtk/
 
-	- Graphics libraries: png, xpm, tiff, gif.
+	- Graphics libraries: libpng, libxpm, libtiff, libgif or libungif
 
 	- DB 1.85, or DB 2.x with 1.86 compatibility enabled
 
@@ -53,6 +54,10 @@ for working properly:
 	- Imlib
 
 	  ftp://ftp.gnome.org/pub/GNOME/sources/latest/imlib
+
+	- ORBit 0.4.xxx
+
+	  ftp://ftp.gnome.org/pub/GNOME/sources/ORBit
 
 * Reporting bugs
 
