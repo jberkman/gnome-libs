@@ -1,0 +1,20 @@
+dnl
+dnl Configure script for the Gnome FAQ
+dnl
+
+AC_INIT(gnome-faq.sgml)
+
+AC_CANONICAL_SYSTEM
+
+AM_INIT_AUTOMAKE(gnome-faq, 1.1.0)
+
+AM_MAINTAINER_MODE
+
+AM_CONDITIONAL(INSIDE_GNOME_DOCU, false)
+
+dnl
+dnl List of files to create
+dnl
+AC_OUTPUT([
+Makefile
+])
