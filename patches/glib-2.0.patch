@@ -13,7 +13,7 @@ RCS file: /cvs/gnome/glib/Makefile.am,v
 retrieving revision 1.52
 diff -u -u -r1.52 Makefile.am
 --- Makefile.am	2000/07/31 17:13:55	1.52
-+++ Makefile.am	2000/08/30 19:44:38
++++ Makefile.am	2000/08/31 14:57:39
 @@ -74,7 +74,8 @@
  	gunichartables.h	\
  	gunidecomp.h		\
@@ -29,7 +29,7 @@ Index: gi18n.c
 RCS file: gi18n.c
 diff -N gi18n.c
 --- /dev/null	Tue May  5 16:32:27 1998
-+++ gi18n.c	Wed Aug 30 15:44:39 2000
++++ gi18n.c	Thu Aug 31 10:57:39 2000
 @@ -0,0 +1,326 @@
 +/*
 + * Copyright (C) 1997, 1998, 1999, 2000 Free Software Foundation
@@ -246,8 +246,8 @@ diff -N gi18n.c
 +/* The following is (partly) taken from the gettext package.
 +   Copyright (C) 1995, 1996, 1997, 1998 Free Software Foundation, Inc.  */
 +
-+static const gchar *
-+guess_category_value (const gchar *categoryname)
++const gchar *
++g_i18n_guess_category_value (const gchar *categoryname)
 +{
 +  const gchar *retval;
 +
@@ -316,7 +316,7 @@ diff -N gi18n.c
 +      const gchar *category_value;
 +      gchar *category_memory, *orig_category_memory;
 +
-+      category_value = guess_category_value (category_name);
++      category_value = g_i18n_guess_category_value (category_name);
 +      if (! category_value)
 +	category_value = "C";
 +      orig_category_memory = category_memory =
@@ -363,12 +363,13 @@ RCS file: /cvs/gnome/glib/gunicode.h,v
 retrieving revision 1.6
 diff -u -u -r1.6 gunicode.h
 --- gunicode.h	2000/08/25 22:45:45	1.6
-+++ gunicode.h	2000/08/30 19:44:39
-@@ -185,6 +185,8 @@
++++ gunicode.h	2000/08/31 14:57:40
+@@ -185,6 +185,9 @@
  gint      g_unichar_to_utf8 (gunichar    c,
  			     char       *outbuf);
  
-+const GList * g_i18n_get_language_list (const gchar *category_name);
++const GList * g_i18n_get_language_list    (const gchar *category_name);
++const gchar * g_i18n_guess_category_value (const gchar *categoryname);
 +
  #ifdef __cplusplus
  }
