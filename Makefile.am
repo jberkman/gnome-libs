@@ -11,8 +11,10 @@ EXTRA_DIST = HACKING
 release:
 	$(MAKE) dist distdir=$(PACKAGE)$(VERSION)
 
-confdir=$(libdir)
-conf_DATA = gnomeConf.sh
+## Put `exec' in the name because this should be installed by
+## `install-exec', not `install-data'.
+confexecdir=$(libdir)
+confexec_DATA = gnomeConf.sh
 
 ## to automatically rebuild aclocal.m4 if any of the macros in
 ## `macros/' change
