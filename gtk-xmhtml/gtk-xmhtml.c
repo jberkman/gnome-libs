@@ -608,7 +608,7 @@ CheckGC(XmHTMLWidget html)
 							GDK_GC_FOREGROUND | GDK_GC_BACKGROUND |
 							GDK_GC_FUNCTION);
 		fprintf (stderr, "FIXME: missing call to XmHTMLRecomputeColors\n");
-/*		_XmHTMLRecomputeColors(html); */
+		_XmHTMLRecomputeColors(html);
 
 		_XmHTMLDebug(1, ("XmHTML.c: CheckGC, gc created\n"));
 	}
@@ -1510,12 +1510,7 @@ gtk_xmhtml_sync_reformat (GtkXmHTML *html)
 	/* reset some important vars */
 	ResetWidget(html, html->free_images_needed);
 
-#if 0
-	/* FIXME: I dont support this yet :-( */
-		/* reset background color */
-	XtVaSetValues(w_new->html.work_area, 
-		      XmNbackground, w_new->html.body_bg, NULL);
-#endif
+	gtk_xmhtml_set_background_internal (html);
 
 	/* get new values for top, bottom & highlight */
 	_XmHTMLRecomputeColors(html);
@@ -1651,6 +1646,37 @@ gtk_xmhtml_source (GtkXmHTML *html, char *html_source)
 	html->html.value = html->html.source;
 	html->parse_needed = parse;
 	gtk_xmhtml_try_sync (html);
+}
+
+void
+gtk_xmhtml_set_foreground_internal (GtkXmHTML *html)
+{
+	GtkWidget *widget;
+
+	/* FIXME: I'm not sure if this is the correct way to change the foreground of the widget.
+	 * Should we do this on the widget->style, or on the html->html.work_area->style?
+	 */
+
+	widget = GTK_WIDGET(html);
+
+	widget->style->fg[GTK_STATE_NORMAL].pixel = html->html.body_fg;
+	/* gtk_widget_queue_draw(widget); */
+}
+
+void
+gtk_xmhtml_set_background_internal (GtkXmHTML *html)
+{
+	GtkWidget *widget;
+
+	/* FIXME: I'm not sure if this is the correct way to change the background of the widget.
+	 * Should we do this on the widget->style, or on the html->html.work_area->style?
+	 */
+
+	widget = GTK_WIDGET(html);
+
+	widget->style->bg[GTK_STATE_NORMAL].pixel = html->html.body_bg;
+	gtk_style_set_background(widget->style, html->html.work_area->window, GTK_STATE_NORMAL);
+	gtk_widget_queue_draw(widget);
 }
 
 void

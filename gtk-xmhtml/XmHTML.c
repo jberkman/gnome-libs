@@ -35,6 +35,12 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.17  1998/01/09 06:10:22  unammx
+* Fixed (?) background colors of the HTML widget.  I'm not 100% sure I did it
+* the right way, but it seems to work.
+*
+* - Federico
+*
 * Revision 1.16  1998/01/07 01:45:35  unammx
 * Gtk/XmHTML is ready to be used by the Gnome hackers now!
 * Weeeeeee!
@@ -2370,7 +2376,7 @@ XmHTMLTextSetString(TWidget w, String text)
 	XtVaSetValues(html->html.work_area, 
 		XmNbackground, html->html.body_bg, NULL);
 #else
-	fprintf (stderr, "SHOULD SET THE BACKGROUND COLOR\n");
+	gtk_xmhtml_set_background_internal (html);
 #endif
 	/* get new values for top, bottom & highlight */
 	_XmHTMLRecomputeColors(html);

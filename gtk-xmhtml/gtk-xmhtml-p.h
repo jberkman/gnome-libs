@@ -30,3 +30,7 @@ enum {
 };
 #define  GTK_XMHTML_LIBRARY
 #include "gtk-xmhtml.h"
+/*
+void gtk_xmhtml_set_foreground_internal (GtkXmHTML *html);
+void gtk_xmhtml_set_background_internal (GtkXmHTML *html);
+*/

@@ -615,13 +615,11 @@ _XmHTMLFormAddTextArea(XmHTMLWidget html, String attributes, String text)
 	entry->size      = cols;
 	entry->maxlength = rows;
 
-	/* FIXME: use document colors if allowed 
-	 *  if(html->html.allow_form_coloring)
-	 *  {
-	 *      XtSetArg(args[argc], XmNbackground, html->html.body_bg); argc++;
-	 *      XtSetArg(args[argc], XmNforeground, html->html.body_fg); argc++;
-	 * }
-	 */
+	if(html->html.allow_form_coloring) {
+		gtk_xmhtml_set_foreground_internal (html);
+		gtk_xmhtml_set_background_internal (html);
+	}
+
 	textw = gtk_text_new (NULL, NULL);
  	gtk_container_add (GTK_CONTAINER (html), textw);
 	

@@ -36,6 +36,12 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.7  1998/01/09 06:10:23  unammx
+* Fixed (?) background colors of the HTML widget.  I'm not 100% sure I did it
+* the right way, but it seems to work.
+*
+* - Federico
+*
 * Revision 1.6  1997/12/29 22:16:25  unammx
 * This version does:
 *
@@ -1673,10 +1679,7 @@ ParseBodyTags(XmHTMLWidget html, XmHTMLObject *data)
 #ifdef WITH_MOTIF
 			html->manager.foreground = html->html.body_fg;
 #else
-			/* FEDERICO */
-			GTK_WIDGET(html)->style->fg[GTK_STATE_NORMAL].pixel = html->html.body_fg;
-			/* XXX: do we have to set it for all the states? */
-			/* XXX: why does it not set the gc foreground as well? */
+			gtk_xmhtml_set_foreground_internal (html);
 #endif
 		}
 
@@ -1699,9 +1702,7 @@ ParseBodyTags(XmHTMLWidget html, XmHTMLObject *data)
 				XtVaSetValues(html->html.work_area,
 					XmNbackground, html->html.body_bg, NULL);
 #else
-				/* FEDERICO */
-				GTK_WIDGET(html)->style->bg[GTK_STATE_NORMAL].pixel = html->html.body_bg;
-				/* FIXME: set the background resource equivalent */
+				gtk_xmhtml_set_background_internal (html);
 #endif
 				/* get new values for top, bottom & highlight */
 				_XmHTMLRecomputeColors(html);
@@ -1761,17 +1762,13 @@ ParseBodyTags(XmHTMLWidget html, XmHTMLObject *data)
 				_XmHTMLRecomputeColors(html);
 			}
 #else
-			/* FEDERICO */
-
-			/* XXX: I don't know whether this is correct at all */
-
 			if (GTK_WIDGET(html)->style->bg[GTK_STATE_NORMAL].pixel != html->html.body_bg_save)
 			{
 				html->html.body_fg = html->html.body_fg_save;
 				html->html.body_bg = html->html.body_bg_save;
-				GTK_WIDGET(html)->style->fg[GTK_STATE_NORMAL].pixel = html->html.body_fg;
-				GTK_WIDGET(html)->style->bg[GTK_STATE_NORMAL].pixel = html->html.body_bg;
-				/* XXX: set the background resource equivalent */
+				gtk_xmhtml_set_foreground_internal (html);
+				gtk_xmhtml_set_background_internal (html);
+				_XmHTMLRecomputeColors(html);
 			}
 					
 #endif
@@ -1783,8 +1780,7 @@ ParseBodyTags(XmHTMLWidget html, XmHTMLObject *data)
 #ifdef WITH_MOTIF
 			html->manager.foreground      = html->html.body_fg;
 #else
-			/* FEDERICO */
-			GTK_WIDGET(html)->style->fg[GTK_STATE_NORMAL].pixel = html->html.body_fg;
+			gtk_xmhtml_set_foreground_internal (html);
 #endif
 			bg_color_set = False;
 		}
