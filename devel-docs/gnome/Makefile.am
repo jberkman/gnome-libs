@@ -45,7 +45,7 @@ gnome_doc_DATA = 			\
 EXTRA_DIST = $(gnome_doc_DATA)
 
 gnome.html: html/book1.html
-	cp html/book1.html gnome.html
+	cp $(srcdir)/html/book1.html gnome.html
 
 html/book1.html: sgml/libgnome.sgml
 	make html

@@ -104,7 +104,7 @@ gnomeui_doc_DATA =				\
 EXTRA_DIST = $(gnomeui_doc_DATA)
 
 gnomeui.html: html/book1.html
-	cp html/book1.html gnomeui.html
+	cp $(srcdir)/html/book1.html gnomeui.html
 
 html/book1.html: sgml/gnomeui-doc.bottom
 	make html
