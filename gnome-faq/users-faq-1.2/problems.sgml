@@ -221,15 +221,33 @@
     </question>
     <answer>
      <para>
-       This refers to an option when compiling a Linux kernel. The 2.0
-       series do not have it on. The 2.2 series does. If you have recompiled
-       your kernel yourself, check you did enable the Unix98 ptys option in
-       the process. If you haven't touched your kernel, it is possible that
-       you are trying to install binaries for a newer version of your
-       distribution on an old machine. This won't work. If you have 
-       Red Hat 5.2, for example, you need to find rpms for that and not
-       to try to install rpms for 6.2. This applies similarly to SuSE.
+       Two possible answers here, both applicable to Linux. 
      </para>
+     <itemizedlist>
+      <listitem>
+       <para>
+         It is (remotely) possible that you are trying to install 
+         binaries for a newer version of your distribution on an old 
+         machine, where "old" means "running a 2.0 Linux kernel and 
+         a similarly old glibc". This won't work. If you have Red Hat 
+         5.2, for example, you need to find or build rpms for that and 
+         not to try to install rpms for 6.2. This applies similarly to 
+         SuSE.
+       </para>
+      </listitem>
+      <listitem>
+       <para>
+         It is more likely to be problems with the permissions of the
+         files which involve ptys. In particular, check the permissions
+         of <filename>/dev/ptmx</filename>. They <emphasis>should</emphasis>
+         be 666 (or crw-rw-rw when you do <command>ls -l /dev/ptmx</command>).
+         If they aren't, change it with 
+         <command>chmod 666 /dev/ptmx</command> (as root). You will find
+         more about this in
+         <filename>/usr/src/linux/Documentation/general/Changes</filename>.
+       </para>
+      </listitem>
+     </itemizedlist>
     </answer>
    </qandaentry>
 

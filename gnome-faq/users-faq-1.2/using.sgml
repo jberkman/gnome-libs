@@ -181,10 +181,11 @@
       a middle-click on your two-button mouse, try "chording": click both
       buttons simultaneously. This should work. If it does not, you may
       have to edit your XF86Config file (make a backup copy of it first!)
-      to ensure there is are uncommented lines which say "Emulate3Buttons" 
-      and "Emulate3Timeout 50". If there is a hash (<keycap>#</keycap>) 
-      symbol at the start of either line, remove it. (This what
-      uncommenting means.) You will need to restart X for this to take effect.
+      to ensure there are uncommented lines which say "Emulate3Buttons" 
+      and "Emulate3Timeout 50". A commented line has a hash (<keycap>#</keycap>) 
+      symbol at the start of either line. To uncomment the line, remove the
+      hash sign from the start of the line. You will need to restart X for 
+      this to take effect.
     </para>
    </answer>
   </qandaentry>
@@ -273,7 +274,7 @@
    </answer>
   </qandaentry>  
 
-  <qandaentry id="rh61-bug">
+  <qandaentry id="changing-wms">
    <question>
     <para>
       I can't change window manager from <application>Enlightenment</application>
@@ -283,7 +284,10 @@
    </question>
    <answer>
     <para>
-      It's a bug. Upgrade to Red Hat Linux 6.2.
+      It's a bug. You can generally manage it by changing to something else
+      first and then changing again, or by experimenting with the 
+      <guilabel>Try</guilabel> and <guilabel>OK</guilabel> buttons. Different
+      people report success with different combinations of those. 
     </para>
    </answer>
   </qandaentry>
