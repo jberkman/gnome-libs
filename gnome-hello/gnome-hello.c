@@ -49,7 +49,7 @@ main(int argc, char *argv[])
 {
   /* gnome_init() is always called at the beginning of a program.  it
      takes care of initializing both Gtk and GNOME */
-  gnome_init (&argc, &argv);
+  gnome_init ("gnome-hello", &argc, &argv);
 
   /* Now we parse the arguments (i would prefer having a first parsing
      before the gnome_init so we could do the --version, --help and

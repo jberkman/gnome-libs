@@ -38,7 +38,7 @@ main(int argc, char *argv[])
 {
   /* gnome_init() is always called at the beginning of a program.  it
      takes care of initializing both Gtk and GNOME */
-  gnome_init (&argc, &argv);
+  gnome_init ("gnome-hello-2-i18n", &argc, &argv);
 
   /* Initialize the i18n stuff */
   bindtextdomain (PACKAGE, GNOMELOCALEDIR);

@@ -30,7 +30,7 @@ main(int argc, char *argv[])
 {
   /* gnome_init() is always called at the beginning of a program.  it
      takes care of initializing both Gtk and GNOME */
-  gnome_init (&argc, &argv);
+  gnome_init ("gnome-hello-5-dnd", &argc, &argv);
 
   /* prepare_app() makes all the gtk calls necessary to set up a
      minimal Gnome application; It's based on the hello world example
