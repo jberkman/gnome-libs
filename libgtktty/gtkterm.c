@@ -912,7 +912,7 @@ gtk_term_button_press (GtkWidget      *widget,
       break;
       
     case GDK_2BUTTON_PRESS:
-      printf ("FIXME: need a word selection\n");
+      g_print ("FIXME: need a word selection\n");
       break;
       
     case GDK_3BUTTON_PRESS:
