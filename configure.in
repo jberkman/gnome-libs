@@ -152,6 +152,30 @@ dnl
 AC_CHECK_HEADERS(sys/select.h sys/time.h sys/un.h paths.h sys/syslimits.h sys/fsuid.h)
 
 dnl
+dnl check for -D_SOCKADDR_LEN, which is required on Tru64 UNIX
+dnl
+AC_MSG_CHECKING([for sa_len in struct sockaddr])
+AC_TRY_COMPILE(
+    [#include <sys/socket.h>],
+    [struct sockaddr s; s.sa_len;],
+    [sa_len_ok=yes],
+    [sa_len_ok=no])
+AC_MSG_RESULT($sa_len_ok)
+if test x$sa_len_ok = xno; then
+    AC_MSG_CHECKING([for sa_len with -D_SOCKADDR_LEN])
+    xCPPFLAGS="$CPPFLAGS"
+    CPPFLAGS="$CPPFLAGS -D_SOCKADDR_LEN"
+    AC_TRY_COMPILE(
+	[#include <sys/socket.h>],
+	[struct sockaddr s; s.sa_len;],
+	[AC_DEFINE(_SOCKADDR_LEN)
+	 sa_len_ok=yes],
+	[sa_len_ok=no])
+    CPPFLAGS="$xCPPFLAGS"
+fi
+AC_MSG_RESULT($sa_len_ok)
+
+dnl
 dnl gnome-pty-support checks
 dnl
 

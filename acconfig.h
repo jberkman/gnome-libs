@@ -55,3 +55,6 @@
 #undef KDE_MINI_ICONDIR
 
 #undef PREFER_DB1
+
+/* define if needed to include sa_len member in struct sockaddr */
+#undef _SOCKADDR_LEN
