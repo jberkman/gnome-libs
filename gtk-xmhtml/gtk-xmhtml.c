@@ -391,6 +391,7 @@ gtk_xmhtml_size_request (GtkWidget *widget, GtkRequisition *requisition)
 {
 	GtkXmHTML *html = GTK_XMHTML (widget);
 	int extra_width, extra_height;
+	GtkRequisition child_requisition;
 	
 	g_return_if_fail (widget != NULL);
 	g_return_if_fail (requisition != NULL);
@@ -399,23 +400,23 @@ gtk_xmhtml_size_request (GtkWidget *widget, GtkRequisition *requisition)
 	requisition->height = 0;
 
 	if (GTK_WIDGET_VISIBLE (html->html.work_area)){
-		gtk_widget_size_request (html->html.work_area, &widget->requisition);
+		gtk_widget_size_request (html->html.work_area, &child_requisition);
 
-		requisition->width  += widget->requisition.width;
-		requisition->height += widget->requisition.height;
+		requisition->width  += child_requisition.width;
+		requisition->height += child_requisition.height;
 	}
 
 	extra_width = extra_height = 0;
 
 	/* Horizontal scroll bar */
-	gtk_widget_size_request (html->html.hsb, &html->html.hsb->requisition);
-	requisition->width = MAX (requisition->width, html->html.hsb->requisition.width);
-	extra_height = SCROLLBAR_SPACING + html->html.hsb->requisition.height;
+	gtk_widget_size_request (html->html.hsb, &child_requisition);
+	requisition->width = MAX (requisition->width, child_requisition.width);
+	extra_height = SCROLLBAR_SPACING + child_requisition.height;
 		
 	/* Vertical scrollbarl */
-	gtk_widget_size_request (html->html.vsb, &html->html.vsb->requisition);
-	requisition->height = MAX (requisition->height, html->html.vsb->requisition.height);
-	extra_width = SCROLLBAR_SPACING + html->html.vsb->requisition.width;
+	gtk_widget_size_request (html->html.vsb, &child_requisition);
+	requisition->height = MAX (requisition->height, child_requisition.height);
+	extra_width = SCROLLBAR_SPACING + child_requisition.width;
 
 	requisition->width  += GTK_CONTAINER (widget)->border_width * 2 + extra_width;
 	requisition->height += GTK_CONTAINER (widget)->border_width * 2 + extra_height;
@@ -1271,6 +1272,7 @@ CheckScrollBars(XmHTMLWidget html)
 	{
 		int pinc;
 		int sb_width, sb_height;
+		GtkRequisition child_requisition;
 		
 		_XmHTMLDebug(1, ("XmHTML.c: CheckScrollBars, setting hsb\n"));
 
@@ -1278,7 +1280,8 @@ CheckScrollBars(XmHTMLWidget html)
 		dx = (html->html.needs_vsb ? vsb_width : 0);
 		
 		sb_width  = Toolkit_Widget_Dim (html).width - dx - 2*st;
-		sb_height = html->html.hsb->requisition.height;
+		gtk_widget_get_child_requisition (html->html.hsb, &child_requisition);
+		sb_height = child_requisition.height;
 
 		/* pageIncrement == sliderSize */
 		pinc = html->html.work_width - 2*(f ? xf->max_bounds.width : XmHTML_HORIZONTAL_SCROLL_INCREMENT);
@@ -1321,12 +1324,14 @@ CheckScrollBars(XmHTMLWidget html)
 	{
 		int pinc;
 		int sb_width, sb_height;
+		GtkRequisition child_requisition;
 		
 		_XmHTMLDebug(1, ("XmHTML.c: CheckScrollBars, setting vsb\n"));
 
 		/* Set vsb size; adjust y-position if we have a hsb */
 		dy = (html->html.needs_hsb ? hsb_height : 0);
-		sb_width  = html->html.vsb->requisition.width;
+		gtk_widget_get_child_requisition (html->html.vsb, &child_requisition);
+		sb_width  = child_requisition.width;
 		sb_height = Toolkit_Widget_Dim (html).height - dy - 2*st;
 
 		/* pageIncrement == sliderSize */
@@ -1397,9 +1402,12 @@ static void
 GetScrollDim(XmHTMLWidget html, int *hsb_height, int *vsb_width)
 {
 	int height = 0, width = 0;
+	GtkRequisition child_requisition;
 
-	if(html->html.hsb)
-		height = GTK_WIDGET (html->html.hsb)->requisition.height;
+	if(html->html.hsb) {
+		gtk_widget_get_child_requisition (html->html.hsb, &child_requisition);
+		height = child_requisition.height;
+	}
 	
 	/*
 	 * Sanity check if the scrollbar dimensions exceed the TWidget dimensions
@@ -1422,7 +1430,8 @@ GetScrollDim(XmHTMLWidget html, int *hsb_height, int *vsb_width)
 	}
 	
 	if(html->html.vsb){
-		width = GTK_WIDGET (html->html.vsb)->requisition.width;
+		gtk_widget_get_child_requisition (html->html.vsb, &child_requisition);
+		width = child_requisition.width;
 		if(width >= GTK_WIDGET (html)->allocation.width){
 			_XmHTMLWarning(__WFUNC__(html->html.vsb, "GetScrollDim"),
 				"Width of vertical scrollbar (%i) exceeds width of parent "
