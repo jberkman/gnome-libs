@@ -1,3 +1,8 @@
+1999-11-22  Jonathan Blandford  <jrb@redhat.com>
+
+	* Merged in the gdk-pixbuf branch.  It breaks a lot of things.
+	There are a few areas that need some playing with.
+
 1999-11-15  Elliot Lee  <sopwith@redhat.com>
 
 	* configure.in: Use AM_PATH_GLIB instead of playing with $GTK_LIBS etc.
@@ -12,6 +17,17 @@
 1999-11-09  Elliot Lee  <sopwith@redhat.com>
 
 	* liboafgnome/: REALLY builds now.
+
+
+1999-11-05  Havoc Pennington  <hp@pobox.com>
+
+	* configure.in (LIBGNOMEUI_LIBS): Remove GDK_IMLIB_CFLAGS
+	(GNOMEUI_LIBS): Remove GDK_IMLIB_LIBS
+
+1999-11-04  Havoc Pennington  <hp@pobox.com>
+
+	* configure.in (PNG_LIBS): AC_SUBST(PNG_LIBS)
+
 
 1999-11-01  Jacob Berkman  <jberkman@andrew.cmu.edu>
 
@@ -40,7 +56,6 @@
 1999-10-11  Martin Baulig  <martin@home-of-linux.org>
 
 	* configure.in (AC_CONFIG_SUBDIRS): Moved `gnome-faq' here.
-
 1999-10-07  Elliot Lee  <sopwith@redhat.com>
 
 	* configure.in: Add support for g_alloca portability stuff. Fix

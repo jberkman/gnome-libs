@@ -34,7 +34,6 @@
 #undef HAVE_LOGIN_TTY
 #undef HAVE_SENDMSG
 #undef NEED_DECLARATION_SCANDIR
-#undef HAVE_IMLIB_1_9
 
 /* We define macro, which expands to utmpx or utmp when available */
 #undef UTMP

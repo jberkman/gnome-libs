@@ -9,7 +9,7 @@ convertrgb_SOURCES = \
 	loadpng.c
 
 convertrgb_LDADD = \
-	$(LIBGTKXMHTML_LIBS) @GLIB_LIBS@
+	$(PNG_LIBS) @GLIB_LIBS@
 
 EXTRA_DIST = README
 

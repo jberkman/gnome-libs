@@ -19,6 +19,7 @@ SUBDIRS = po intl support	\
 	tools			\
 	images			\
 	libgnome		\
+	gdk-pixbuf		\
 	libart_lgpl		\
 	libgnomeui		\
 	gtk-xmhtml		\

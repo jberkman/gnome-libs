@@ -204,7 +204,7 @@ fi
 dnl
 dnl Image handling libraries
 dnl
-Z_LIBS= JPEG_LIBS= PNG_LIBS= TIFF_LIBS= GIF_LIBS= GDK_IMLIB_LIBS=
+Z_LIBS= JPEG_LIBS= PNG_LIBS= TIFF_LIBS= GIF_LIBS= 
 
 dnl Test for libz
 AC_CHECK_LIB(z, inflate,
@@ -281,6 +281,8 @@ if test "$png_ok" = yes; then
   fi
 fi
 
+AC_SUBST(PNG_LIBS)
+
 dnl Tests to support libvfs.
 AC_CHECK_FUNCS(strdup)
 AC_CHECK_HEADERS(utime.h)
@@ -343,9 +345,9 @@ AM_PATH_GDK_IMLIB(1.9, [define_imlib_1_9=true],[
 	],[AC_MSG_ERROR([*** IMLIB 1.8 not installed - please install first ***])])])
 
 
-if test x$define_imlib_1_9 = xtrue; then
-    AC_DEFINE(HAVE_IMLIB_1_9)
-fi
+dnl if test x$define_imlib_1_9 = xtrue; then
+dnl     AC_DEFINE(HAVE_IMLIB_1_9)
+dnl fi
 
 dnl
 dnl These are for building the appropriate lib*
@@ -357,8 +359,10 @@ SUPPORTINCS='-DNEED_GNOMESUPPORT_H -I$(top_builddir)/support -I$(top_srcdir)/sup
 
 dnl These are for using lib*
 ART_LIBS="-lart_lgpl"
+
 GNOME_LIBS="-lgnome $LIBGNOME_LIBS"
-GNOMEUI_LIBS="-lgnomeui $OAF_LIBS $ORBIT_LIBS $ART_LIBS $GDK_IMLIB_LIBS $GTK_LIBS $GNOME_LIBS"
+GNOMEUI_LIBS="-lgnomeui $OAF_LIBS $ORBIT_LIBS $ART_LIBS $GTK_LIBS $GNOME_LIBS"
+
 GTKXMHTML_LIBS="-lgtkxmhtml $LIBGTKXMHTML_LIBS"
 ZVT_LIBS="-lzvt $UTIL_LIBS $GTK_LIBS"
 
@@ -397,9 +401,9 @@ dnl 	ln -sf `pwd`/.lclintrc $srcdir/libgnomeui/.lclintrc
 dnl fi
 
 dnl
-dnl LibART_LGPL
+dnl Separate libraries shipped with gnome-libs
 dnl
-AC_CONFIG_SUBDIRS(libart_lgpl)
+AC_CONFIG_SUBDIRS(libart_lgpl gdk-pixbuf)
 
 dnl
 dnl OAF

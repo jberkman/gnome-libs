@@ -102,16 +102,18 @@ static void convert(char *real_file)
 			return;
 			}
 
-		fprintf(f, "/* Imlib raw rgb data file created by convertrgb */\n\n");
+		fprintf(f, "/* Raw rgb data file created by convertrgb */\n\n");
 
+                dimensions = 1;
+                
 		if (dimensions)
 			{
 			fprintf(f, "static const int %s_width  = %d;\n", data_var, w);
 			fprintf(f, "static const int %s_height = %d;\n", data_var, h);
 			if (t)
-				fprintf(f, "static const GdkImlibColor %s_alpha  = { 255, 0, 255, 0 };\n", data_var);
+				fprintf(f, "static const int %s_has_alpha  = 1;\n", data_var);
 			else
-				fprintf(f, "static const GdkImlibColor %s_alpha  = { -1, -1, -1, 0 };\n", data_var);
+                                fprintf(f, "static const int %s_has_alpha  = 0;\n", data_var);
 			}
 
 		fprintf(f, "static const unsigned char %s[] = {\n", data_var);
@@ -119,19 +121,37 @@ static void convert(char *real_file)
 		for (y=0;y < h; y++)
 			for (x=0;x < w; x++)
 				{
-				unsigned int r, g, b;
+				unsigned int r, g, b, a;
 				int l;
-				l = (( y * w) + x ) * 3;
+
+                                if (t)
+                                  l = (( y * w) + x ) * 4;
+                                else
+                                  l = (( y * w) + x ) * 3;
+                                
 				r = d[l];
 				l++;
 				g = d[l];
 				l++;
 				b = d[l];
-				if (!efficient)
-					fprintf(f, "0x%.2x, 0x%.2x, 0x%.2x", r, g, b);
-				else
-					fprintf(f, "%d,%d,%d", r, g, b);
-				col++;
+                                if (t) {
+                                        l++;
+                                        a = d[l];
+                                }
+
+                                if (t) {
+                                        if (!efficient)
+                                                fprintf(f, "0x%.2x, 0x%.2x, 0x%.2x, 0x%.2x", r, g, b, a);
+                                        else
+                                                fprintf(f, "%d,%d,%d,%d", r, g, b,a);
+                                } else {
+                                        if (!efficient)
+                                                fprintf(f, "0x%.2x, 0x%.2x, 0x%.2x", r, g, b);
+                                        else
+                                                fprintf(f, "%d,%d,%d", r, g, b);
+                                }
+                                
+                                col++;
 				if (y != h -1 || x != w - 1)
 					fprintf(f, ",");
 				if (col > 3)
@@ -156,6 +176,10 @@ static void convert(char *real_file)
 		}
 	else
 		{
+
+                  g_warning("This is not going to work; convertrgb now requires libpng, though it should be easy to patch to work without it.");
+                  exit(1);
+                  
 		sprintf(cmd, "convert %s rgba:-", real_file);
 
 		sf = popen(cmd, "r");
