@@ -116,6 +116,85 @@ error:
 	return NULL;
 }
 
+static CORBA_Object
+name_server_by_forking (CORBA_Environment *ev)
+{
+	CORBA_Object name_service = CORBA_OBJECT_NIL;
+	int iopipes[2];
+	char iorbuf[2048];
+	pid_t pid;
+	
+	/*
+	 * Since we're pretty sure no name server is running,
+	 * we start it ourself and tell the (GNOME session)
+	 * world about it
+	 */
+	
+	/* fork & get the ior from orbit-name-service stdout */
+	pipe(iopipes);
+
+	pid = fork ();
+	if (pid == -1)
+		return name_service;
+	
+	if (pid) {
+		FILE *iorfh;
+		char *ret;
+		
+		/* Parent */
+		close(iopipes[1]);
+		
+		iorfh = fdopen(iopipes[0], "r");
+		
+		while ((ret = fgets(iorbuf, sizeof(iorbuf), iorfh)) != NULL){
+			if (strncmp(iorbuf, "IOR:", 4) == 0){
+				break;
+			}
+		}
+
+		if (!ret)
+			return name_service;
+		
+		fclose(iorfh);
+		
+		/* strip newline if it's there */
+		if (iorbuf[strlen(iorbuf)-1] == '\n')
+			iorbuf[strlen(iorbuf)-1] = '\0';
+		
+		name_service = CORBA_ORB_string_to_object(gnome_orbit_orb, iorbuf, &ev);
+	} else if (fork ()) {
+		/* de-zombifier process, just exit */
+		_exit(0);
+	} else {
+		/* Child of a child. We run the naming service */
+		struct sigaction sa;
+		struct rlimit rl;
+		int    i;
+		
+		getrlimit(RLIMIT_NOFILE, &rl);
+		i = rl.rlim_cur;
+		
+		sa.sa_handler = SIG_IGN;
+		sigaction(SIGPIPE, &sa, 0);
+		close(0);
+		close(iopipes[0]);
+		dup2(iopipes[1], 1);
+		dup2(iopipes[1], 2);
+		/* close all file descriptors */
+		while (i > 2) {
+			close(i);
+			i--;
+		}
+		
+		setsid();
+		
+		execlp("gnome-name-service", "gnome-name-service", NULL);
+		_exit(1);
+	}
+
+	return name_service;
+}
+
 /**
  * gnome_name_service_get:
  *
@@ -130,99 +209,45 @@ CORBA_Object
 gnome_name_service_get(void)
 {
 	static CORBA_Object name_service = CORBA_OBJECT_NIL;
-	CORBA_Object retval = NULL;
-	char *ior;
-	GdkAtom propname, proptype;
+	CORBA_Object retval = CORBA_OBJECT_NIL;
 	CORBA_Environment ev;
+	char *ior;
+	int attempts;
 	
 	g_return_val_if_fail(gnome_orbit_orb, CORBA_OBJECT_NIL);
 	
 	CORBA_exception_init(&ev);
-	
-	ior = get_name_server_ior_from_root_window ();
-	
-	if (ior) {
-		name_service = CORBA_ORB_string_to_object(gnome_orbit_orb, ior, &ev);
-		g_free (ior);
-		goto out;
-	}
-	
-	if (CORBA_Object_is_nil(name_service, &ev)){
-		int iopipes[2];
-		char iorbuf[2048];
-		
-		/*
-		 * Since we're pretty sure no name server is running,
-		 * we start it ourself and tell the (GNOME session)
-		 * world about it
-		 */
 
-		/* fork & get the ior from orbit-name-service stdout */
-		pipe(iopipes);
+	/*
+	 * Actually, only 2 attempts would be enough
+	 *
+	 * We need this as 2 gnome-name-servers might be started
+	 * at the same time, so the name_server_by_forking might
+	 * fail.
+	 */
+	for (attempts = 0; attempts < 3; attempts++){
+		ior = get_name_server_ior_from_root_window ();
+		if (ior) {
+			name_service = CORBA_ORB_string_to_object(gnome_orbit_orb, ior, &ev);
+			g_free (ior);
 
-		if(fork()) {
-			FILE *iorfh;
-			
-			/* Parent */
-			close(iopipes[1]);
-			
-			iorfh = fdopen(iopipes[0], "r");
-			
-			while(fgets(iorbuf, sizeof(iorbuf), iorfh) && strncmp(iorbuf, "IOR:", 4))
-				/* Just read lines until we get what we're looking for */ ;
-			
-			if(strncmp(iorbuf, "IOR:", 4)) {
-				name_service = CORBA_OBJECT_NIL;
-				goto out;
+			if (!CORBA_Object_is_nil (name_service, &ev)){
+				retval = CORBA_Object_duplicate (name_service, &ev);
+				CORBA_exception_free (&ev);
+				return retval;
 			}
-			
-			fclose(iorfh);
-			/* strip newline if it's there */
-			if (iorbuf[strlen(iorbuf)-1] == '\n')
-				iorbuf[strlen(iorbuf)-1] = '\0';
-			
-			name_service = CORBA_ORB_string_to_object(gnome_orbit_orb, iorbuf, &ev);
-			if (name_service != CORBA_OBJECT_NIL)
-				goto out;
-			
-		} else if (fork ()) {
-			 /* de-zombifier process, just exit */
-			_exit(0);
-		} else {
-			/* Child of a child. We run the naming service */
-			struct sigaction sa;
-			struct rlimit rl;
-			int    i;
-			
-			getrlimit(RLIMIT_NOFILE, &rl);
-			i = rl.rlim_cur;
-			
-			sa.sa_handler = SIG_IGN;
-			sigaction(SIGPIPE, &sa, 0);
-			close(0);
-			close(iopipes[0]);
-			dup2(iopipes[1], 1);
-			dup2(iopipes[1], 2);
-			/* close all file descriptors */
-			while (i > 2) {
-				close(i);
-				i--;
-			}
-			
-			setsid();
-			
-			execlp("gnome-name-service", "gnome-name-service", NULL);
-			_exit(1);
+		}
+
+		name_service = name_server_by_forking (&ev);
+		if (!CORBA_Object_is_nil (name_service, &ev)){
+			retval = CORBA_Object_duplicate(name_service, &ev);
+			CORBA_exception_free(&ev);
+			return retval;
 		}
 	}
-
- out:
-	if(!CORBA_Object_is_nil(name_service, &ev))
-		retval = CORBA_Object_duplicate(name_service, &ev);
-	else
-		g_warning(_("Could not get name service!"));
 	
-	CORBA_exception_free(&ev);
-	return retval;
+	g_warning(_("Could not get name service!"));
+	
+	return name_service;
 }
 
