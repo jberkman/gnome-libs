@@ -1620,7 +1620,7 @@ create_app_helper (GtkWidget *widget, gpointer data)
 	gtk_widget_show (frame);
 
 	w = gnome_canvas_new ();
-	gnome_canvas_set_size (GNOME_CANVAS (w), 200, 100);
+	gtk_widget_set_usize ((w), 200, 100);
 	gnome_canvas_set_scroll_region (GNOME_CANVAS (w), 0.0, 0.0, 200.0, 100.0);
 	gtk_container_add (GTK_CONTAINER (frame), w);
 	gtk_widget_show (w);

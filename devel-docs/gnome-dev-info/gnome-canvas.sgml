@@ -309,7 +309,7 @@ main (int argc, char **argv)
 	GtkWidget *hbox;
 	GtkWidget *button;
 
-	gnome_init ("canvas-example", NULL, argc, argv, 0, NULL);
+	gnome_init ("canvas-example", "1.0", argc, argv);
 
 	/* Create the main window and the main vbox */
 
@@ -327,7 +327,7 @@ main (int argc, char **argv)
 	gtk_widget_show (frame);
 
 	canvas = gnome_canvas_new ();
-	gnome_canvas_set_size (GNOME_CANVAS (canvas), CANVAS_SIZE, CANVAS_SIZE);
+	gtk_widget_set_usize (canvas, CANVAS_SIZE, CANVAS_SIZE);
 	gnome_canvas_set_scroll_region (GNOME_CANVAS (canvas), 0.0, 0.0, CANVAS_SIZE, CANVAS_SIZE);
 
 	gtk_container_add (GTK_CONTAINER (frame), canvas);
@@ -395,7 +395,7 @@ delete_event (GtkWidget *widget, GdkEvent *event, gpointer data)
 	  <function>gnome_canvas_new()</function> function.  Then we
 	  set the starting size of the canvas window and the extents
 	  of the scrolling region using the
-	  <function>gnome_canvas_set_size()</function> and
+	  <function>gtk_widget_set_usize()</function> and
 	  <function>gnome_canvas_set_scroll_region()</function>
 	  functions, respectively.  We will discuss the meaning of the
 	  scrolling region later; for now, we just set it to go from
