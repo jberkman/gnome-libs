@@ -35,6 +35,10 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.7  1998/01/06 02:56:35  unammx
+* Fixed bogus call to gtk_timeout_add() that caused animated images to be
+* repainted incorrectly - Federico
+*
 * Revision 1.6  1997/12/29 22:16:32  unammx
 * This version does:
 *
@@ -1322,7 +1326,7 @@ nextframe:
 	image->proc_id = XtAppAddTimeOut(image->context, 
 		image->frames[idx].timeout, TimerCB, image);
 #else
-	gtk_timeout_add (image->frames [idx].timeout, TimerCB, image);
+	image->proc_id = gtk_timeout_add (image->frames [idx].timeout, TimerCB, image);
 #endif
 	_XmHTMLDebug(16, ("paint.c: DrawFrame end\n"));
 }
