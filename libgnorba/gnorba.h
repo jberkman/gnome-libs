@@ -4,6 +4,7 @@
 #include <orb/orbit.h>
 #include <ORBitservices/CosNaming.h>
 #include <gnome.h>
+#include <libgnorba/gnome-factory.h>
 
 /**** orbitgtk module ****/
 
