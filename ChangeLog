@@ -13,14 +13,14 @@ Nov 26, 1998  Elliot Lee  <sopwith@redhat.com>
 
 1998-11-26  Jeff Garzik  <jgarzik@pobox.com>
 
-        * gnome-config.c, gnome-moz-remote.c:
-        Replaced sprintf calls with g_snprintf.
-        Updated a couple hardcoded length values to instead of sizeof().
+	* gnome-config.c, gnome-moz-remote.c:
+	Replaced sprintf calls with g_snprintf.
+	Updated a couple hardcoded length values to instead of sizeof().
 
 Thu Nov 26 02:48:07 1998  George Lebl  <jirka@5z.com>
 
-        * gnome-util.c: replace g_file_exists with g_file_test which can
-          test for more things
+	* gnome-util.c: replace g_file_exists with g_file_test which can
+	test for more things
 
 1998-11-25  Raja R Harinath  <harinath@cs.umn.edu>
 
@@ -63,8 +63,8 @@ Thu Nov 26 02:48:07 1998  George Lebl  <jirka@5z.com>
 
 1998-11-20  James Henstridge  <james@daa.com.au>
 
-        * gnome-libs.spec: added %{prefix}/etc/paper.config to the %files
-        section.
+	* gnome-libs.spec: added %{prefix}/etc/paper.config to the %files
+	section.
 
 Thu Nov 19 19:07:45 1998  Jeff Garzik <jgarzik@pobox.com>
 
