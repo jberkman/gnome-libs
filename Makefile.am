@@ -25,7 +25,7 @@ include_HEADERS = gnome.h
 EXTRA_DIST =	HACKING gnomeConf.sh.in gnome-bug.in gnome-config.in \
 		gnome-libs.spec.in
 
-dist-hook:
+dist-hook: gnome-libs.spec
 	cp gnome-libs.spec $(distdir)
 
 release:
