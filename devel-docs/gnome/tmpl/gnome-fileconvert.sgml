@@ -17,6 +17,23 @@ directory, any files in that directory whose extension is
 <filename>.convert</filename> is loaded as well as the per-user
 <filename>~/.gnome/type.convert</filename> file.</para>
 
+    <para>The file format used to define a filter is very
+    simple:
+
+      <example>
+	<title>Sample MIME type file conversion definition</title>
+	<programlisting>
+image/gif image/x-portable-pixmap giftopnm
+	</programlisting>
+
+	This sample file conversion file defines a conversion rule
+	from the image/gif MIME type to the image/x-portable-pixmap
+	MIME type.  The program used for the conversion is
+	<filename>giftopnm</filename>.  This program should do the
+	specified MIME type conversion by reading its standard input
+	and writing the results on the standard output.
+    </para>
+
 <!-- ##### FUNCTION gnome_file_convert_fd ##### -->
 <para>
 
