@@ -705,7 +705,7 @@ normal_loading:
     g_free(ctmp);
   }
 
-  g_return_val_if_fail(plugin, CORBA_OBJECT_NIL);
+  g_return_val_if_fail(gmod, CORBA_OBJECT_NIL);
   g_module_make_resident(gmod);
   g_return_val_if_fail(g_module_symbol(gmod, "GNOME_Plugin_info", &plugin),
 		       CORBA_OBJECT_NIL);
