@@ -234,7 +234,14 @@ static void vt_line_update(struct _vtx *vx, struct vt_line *l, int line, int alw
   l->modcount = 0;
 }
 
+int vt_get_attr_at (struct _vtx *vx, int col, int row)
+{
+  struct vt_line *line;
   
+  line = (struct vt_line *) vt_list_index (&vx->vt.lines_back, row);
+  return line->data [col];
+}
+
 /*
   scroll/update a section of lines
   from firstline (fn), scroll count lines 'offset' lines

@@ -84,23 +84,24 @@ struct _vtx {
 void vt_draw_text_select(struct _vtx *vx, int col, int row, char *text, int len, int attr);
 
 /* from update.c */
-char *vt_get_selection(struct _vtx *vx, int *len);
-void vt_clear_selection(struct _vtx *vx);
-void vt_fix_selection(struct _vtx *vx);
-void vt_draw_selection(struct _vtx *vx);
-void vt_update_rect(struct _vtx *vx, int sx, int sy, int ex, int ey);
-void vt_update(struct _vtx *vt, int state);
-void vt_draw_cursor(struct _vtx *vx, int state);
-
-struct _vtx *vtx_new(void *user_data);
-void vtx_destroy(struct _vtx *vx);
-void vtx_set_fontsize(struct _vtx *vx, int width, int height);
-
-/* defined by caller */
-void vt_draw_text(void *user_data, int col, int row, char *text, int len, int attr);
-void vt_scroll_area(void *user_data, int firstrow, int count, int offset);
-int vt_cursor_state(void *user_data, int state);
-void vt_hightlight_block(void *user_data, int col, int row, int width, int height);
+char *vt_get_selection   (struct _vtx *vx, int *len);
+void vt_clear_selection  (struct _vtx *vx);
+void vt_fix_selection    (struct _vtx *vx);
+void vt_draw_selection   (struct _vtx *vx);
+void vt_update_rect      (struct _vtx *vx, int sx, int sy, int ex, int ey);
+void vt_update           (struct _vtx *vt, int state);
+void vt_draw_cursor      (struct _vtx *vx, int state);
+			 
+struct _vtx *vtx_new     (void *user_data);
+void vtx_destroy         (struct _vtx *vx);
+void vtx_set_fontsize    (struct _vtx *vx, int width, int height);
+			 
+/* defined by caller */	 
+void vt_draw_text        (void *user_data, int col, int row, char *text, int len, int attr);
+void vt_scroll_area      (void *user_data, int firstrow, int count, int offset);
+int  vt_cursor_state     (void *user_data, int state);
+void vt_hightlight_block (void *user_data, int col, int row, int width, int height);
+int  vt_get_attr_at      (struct _vtx *vx, int col, int row);
 
 #endif
 
