@@ -442,7 +442,7 @@ int main(int argc, char **argv) {
   /* we could also connect handlers to other signals, but since we're lazy, we won't ;) */
 
   /* set MDI mode */
-  gnome_mdi_set_mode(mdi, GNOME_MDI_NOTEBOOK);
+  gnome_mdi_set_mode(mdi, GNOME_MDI_DEFAULT_MODE);
 
   /* and here we go... */
   gtk_main();
