@@ -4,7 +4,7 @@ RCS file: /cvs/gnome/gconf/.cvsignore,v
 retrieving revision 1.6
 diff -u -u -p -r1.6 .cvsignore
 --- .cvsignore	2000/08/29 21:16:59	1.6
-+++ .cvsignore	2000/10/15 21:53:39
++++ .cvsignore	2000/11/22 13:44:15
 @@ -18,5 +18,7 @@ ABOUT-NLS
  intl
  config.h.in
@@ -19,7 +19,7 @@ RCS file: /cvs/gnome/gconf/Makefile.am,v
 retrieving revision 1.19
 diff -u -u -p -r1.19 Makefile.am
 --- Makefile.am	2000/10/03 19:14:23	1.19
-+++ Makefile.am	2000/10/15 21:53:39
++++ Makefile.am	2000/11/22 13:44:15
 @@ -2,7 +2,8 @@
  SUBDIRS = gconf backends wrappers po doc examples standard-schemas
  DIST_SUBDIRS=tests $(SUBDIRS)
@@ -40,26 +40,212 @@ diff -u -u -p -r1.19 Makefile.am
  
  install-schemas:
  	(cd standard-schemas && $(MAKE) $(AM_MAKEFLAGS) install-schemas)
+Index: autogen.sh
+===================================================================
+RCS file: /cvs/gnome/gconf/autogen.sh,v
+retrieving revision 1.5
+diff -u -u -p -r1.5 autogen.sh
+--- autogen.sh	1999/11/19 17:38:12	1.5
++++ autogen.sh	2000/11/22 13:44:15
+@@ -4,132 +4,11 @@
+ srcdir=`dirname $0`
+ test -z "$srcdir" && srcdir=.
+ 
+-ORIGDIR=`pwd`
+-cd $srcdir
+ PROJECT=GConf
+-TEST_TYPE=-f
+-FILE=gconf/gconf.h
+ 
+-DIE=0
+-
+-(autoconf --version) < /dev/null > /dev/null 2>&1 || {
+-	echo
+-	echo "You must have autoconf installed to compile $PROJECT."
+-	echo "Download the appropriate package for your distribution,"
+-	echo "or get the source tarball at ftp://ftp.gnu.org/pub/gnu/"
+-	DIE=1
+-}
+-
+-(automake --version) < /dev/null > /dev/null 2>&1 || {
+-	echo
+-	echo "You must have automake installed to compile $PROJECT."
+-	echo "Get ftp://sourceware.cygnus.com/pub/automake/automake-1.4.tar.gz"
+-	echo "(or a newer version if it is available)"
+-	DIE=1
+-}
+-
+-(grep "^AM_PROG_LIBTOOL" configure.in >/dev/null) && {
+-  (libtool --version) < /dev/null > /dev/null 2>&1 || {
+-    echo
+-    echo "**Error**: You must have \`libtool' installed to compile $PROJECT."
+-    echo "Get ftp://ftp.gnu.org/pub/gnu/libtool-1.2d.tar.gz"
+-    echo "(or a newer version if it is available)"
+-    DIE=1
+-  }
+-}
+-
+-grep "^AM_GNU_GETTEXT" configure.in >/dev/null && {
+-  grep "sed.*POTFILES" $srcdir/configure.in >/dev/null || \
+-  (gettext --version) < /dev/null > /dev/null 2>&1 || {
+-    echo
+-    echo "**Error**: You must have \`gettext' installed to compile $PROJECT."
+-    echo "Get ftp://alpha.gnu.org/gnu/gettext-0.10.35.tar.gz"
+-    echo "(or a newer version if it is available)"
+-    DIE=1
+-  }
+-}
+-
+-if test "$DIE" -eq 1; then
+-	exit 1
+-fi
+-
+-test $TEST_TYPE $FILE || {
++(test -f gconf/gconf.h) || {
+ 	echo "You must run this script in the top-level $PROJECT directory"
+ 	exit 1
+ }
+-
+-if test -z "$*"; then
+-	echo "I am going to run ./configure with no arguments - if you wish "
+-        echo "to pass any to it, please specify them on the $0 command line."
+-fi
+-
+-case $CC in
+-*xlc | *xlc\ * | *lcc | *lcc\ *) am_opt=--include-deps;;
+-esac
+-
+-for coin in `find . -name configure.in -print`
+-do 
+-  dr=`dirname $coin`
+-  if test -f $dr/NO-AUTO-GEN; then
+-    echo skipping $dr -- flagged as no auto-gen
+-  else
+-    echo processing $dr
+-    macrodirs=`sed -n -e 's,AM_ACLOCAL_INCLUDE(\(.*\)),\1,gp' < $coin`
+-    ( cd $dr
+-      aclocalinclude="$ACLOCAL_FLAGS"
+-      for k in $macrodirs; do
+-  	if test -d $k; then
+-          aclocalinclude="$aclocalinclude -I $k"
+-  	##else 
+-	##  echo "**Warning**: No such directory \`$k'.  Ignored."
+-        fi
+-      done
+-      if grep "^AM_GNU_GETTEXT" configure.in >/dev/null; then
+-	if grep "sed.*POTFILES" configure.in >/dev/null; then
+-	  : do nothing -- we still have an old unmodified configure.in
+-	else
+-	  echo "Creating $dr/aclocal.m4 ..."
+-	  test -r $dr/aclocal.m4 || touch $dr/aclocal.m4
+-	  echo "Running gettextize...  Ignore non-fatal messages."
+-	  echo "no" | gettextize --force --copy
+-	  echo "Making $dr/aclocal.m4 writable ..."
+-	  test -r $dr/aclocal.m4 && chmod u+w $dr/aclocal.m4
+-        fi
+-      fi
+-      if grep "^AM_GNOME_GETTEXT" configure.in >/dev/null; then
+-	echo "Creating $dr/aclocal.m4 ..."
+-	test -r $dr/aclocal.m4 || touch $dr/aclocal.m4
+-	echo "Running gettextize...  Ignore non-fatal messages."
+-	echo "no" | gettextize --force --copy
+-	echo "Making $dr/aclocal.m4 writable ..."
+-	test -r $dr/aclocal.m4 && chmod u+w $dr/aclocal.m4
+-      fi
+-      if grep "^AM_PROG_LIBTOOL" configure.in >/dev/null; then
+-	echo "Running libtoolize..."
+-	libtoolize --force --copy
+-      fi
+-      echo "Running aclocal $aclocalinclude ..."
+-      aclocal $aclocalinclude
+-      if grep "^AM_CONFIG_HEADER" configure.in >/dev/null; then
+-	echo "Running autoheader..."
+-	autoheader
+-      fi
+-      echo "Running automake --gnu $am_opt ..."
+-      automake --add-missing --gnu $am_opt
+-      echo "Running autoconf ..."
+-      autoconf
+-    )
+-  fi
+-done
+-
+-conf_flags="--enable-maintainer-mode --enable-compile-warnings" #--enable-iso-c
+-
+-cd "$ORIGDIR"
+ 
+-if test x$NOCONFIGURE = x; then
+-  echo Running $srcdir/configure $conf_flags "$@" ...
+-  $srcdir/configure $conf_flags "$@" \
+-  && echo Now type \`make\' to compile $PROJECT  || exit 1
+-else
+-  echo Skipping configure process.
+-fi
++USE_GNOME2_MACROS=1 . gnome-autogen.sh
 Index: configure.in
 ===================================================================
 RCS file: /cvs/gnome/gconf/configure.in,v
-retrieving revision 1.61
-diff -u -u -p -r1.61 configure.in
---- configure.in	2000/10/08 19:06:11	1.61
-+++ configure.in	2000/10/15 21:53:39
-@@ -137,9 +137,9 @@ if test "x$docs_only" = "xyes"; then
+retrieving revision 1.63
+diff -u -u -p -r1.63 configure.in
+--- configure.in	2000/10/31 19:15:39	1.63
++++ configure.in	2000/11/22 13:44:16
+@@ -137,24 +137,32 @@ if test "x$docs_only" = "xyes"; then
          AC_FYI("Only building documentation")
  else
  
 -AM_PATH_GLIB(1.2.0,,AC_MSG_ERROR(glib not found or too old),gmodule)
-+AM_PATH_GLIB_2_0(1.3.0,,AC_MSG_ERROR(glib not found or too old),gmodule)
- AM_PATH_OAF(0.2.0,,AC_MSG_ERROR([OAF not found or too old]))
+-AM_PATH_OAF(0.2.0,,AC_MSG_ERROR([OAF not found or too old]))
 -AM_PATH_GTK(1.2.0,,HAVE_GTK=no)
-+AM_PATH_GTK_2_0(1.3.0,,HAVE_GTK=no)
++GNOME_COMMON_INIT
++GNOME_PLATFORM_GNOME_2(no)
  
- AM_CONDITIONAL(GTK, test x$HAVE_GTK != xno)
+-AM_CONDITIONAL(GTK, test x$HAVE_GTK != xno)
+-
+-AC_PATH_PROG(XML_CONFIG,xml-config,no)
+-if test x$XML_CONFIG = xno; then
+-  AC_MSG_ERROR(Couldn't find xml-config need to install libxml)
+-fi
+-XML_LIBS=`$XML_CONFIG --libs`
+-XML_CFLAGS=`$XML_CONFIG --cflags`
+-if test "x$XML_LIBS" = x; then
+-  AC_MSG_ERROR(Failed to get link flags for libxml)
+-fi
++if test $platform_gnome_2 = yes ; then
++  GNOME_PKGCONFIG_CHECK_MODULES(GLIB, gmodule-2.0:1.3.1)
++  GNOME_PKGCONFIG_CHECK_MODULES(OAF, oaf-2.0)
++  GNOME_PKGCONFIG_CHECK_OPTIONAL_MODULES(GTK, gtk+-2.0:1.3.1)
++  GNOME_PKGCONFIG_CHECK_MODULES(XML, libxml-2.0:2.2.8)
++else
++  GNOME_PKGCONFIG_CHECK_MODULES(GLIB, gmodule:1.2.6)
++  GNOME_PKGCONFIG_CHECK_MODULES(OAF, oaf:0.2.0)
++  GNOME_PKGCONFIG_CHECK_OPTIONAL_MODULES(GTK, gtk+:1.2.6)
++  GNOME_PKGCONFIG_CHECK_MODULES(XML, libxml:1.8.0)
++fi
++AC_SUBST(GLIB_LIBS)
++AC_SUBST(GLIB_CFLAGS)
++AC_SUBST(OAF_LIBS)
++AC_SUBST(OAF_CFLAGS)
++AC_SUBST(GTK_LIBS)
++AC_SUBST(GTK_CFLAGS)
+ AC_SUBST(XML_LIBS)
+ AC_SUBST(XML_CFLAGS)
  
-@@ -244,6 +244,8 @@ doc/gconf/Makefile
++AM_CONDITIONAL(GTK, test x$HAVE_GTK != xno)
++
++
+ BDB_LIBS=
+ BDB_CFLAGS=
+ 
+@@ -212,7 +220,7 @@ fi # docs_only
+ 
+ ALL_LINGUAS="ca cs da de el fi fr ga ja ko nl no pt_BR ru sv tr uk"
+ 
+-AM_GCONF_GNU_GETTEXT
++AM_GNOME2_GETTEXT
+ 
+ # AM_GNU_GETTEXT above substs $DATADIRNAME
+ # this is the directory where the *.{mo,gmo} files are installed
+@@ -244,6 +252,8 @@ doc/gconf/Makefile
  examples/Makefile
  tests/Makefile
  standard-schemas/Makefile
@@ -73,7 +259,7 @@ Index: gconf-2.0.pc.in
 RCS file: gconf-2.0.pc.in
 diff -N gconf-2.0.pc.in
 --- /dev/null	Tue May  5 16:32:27 1998
-+++ gconf-2.0.pc.in	Sun Oct 15 17:53:39 2000
++++ gconf-2.0.pc.in	Wed Nov 22 08:44:16 2000
 @@ -0,0 +1,12 @@
 +prefix=/gnome/head/INSTALL
 +exec_prefix=${prefix}
@@ -92,7 +278,7 @@ Index: gconfgtk-2.0.pc.in
 RCS file: gconfgtk-2.0.pc.in
 diff -N gconfgtk-2.0.pc.in
 --- /dev/null	Tue May  5 16:32:27 1998
-+++ gconfgtk-2.0.pc.in	Sun Oct 15 17:53:39 2000
++++ gconfgtk-2.0.pc.in	Wed Nov 22 08:44:16 2000
 @@ -0,0 +1,12 @@
 +prefix=/gnome/head/INSTALL
 +exec_prefix=${prefix}
@@ -106,13 +292,528 @@ diff -N gconfgtk-2.0.pc.in
 +Requires: gconf-2.0,gtk+-2.0
 +Libs: -lgconf-gtk-@MAJOR_VERSION@
 +Cflags: 
+Index: backends/gthreadpool.c
+===================================================================
+RCS file: gthreadpool.c
+diff -N gthreadpool.c
+--- /tmp/cvsxriX1k	Wed Nov 22 08:44:20 2000
++++ /dev/null	Tue May  5 16:32:27 1998
+@@ -1,435 +0,0 @@
+-/* GConf
+- * Copyright (C) 1999, 2000 Red Hat Inc.
+- *
+- * This library is free software; you can redistribute it and/or
+- * modify it under the terms of the GNU Library General Public
+- * License as published by the Free Software Foundation; either
+- * version 2 of the License, or (at your option) any later version.
+- *
+- * This library is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+- * Library General Public License for more details.
+- *
+- * You should have received a copy of the GNU Library General Public
+- * License along with this library; if not, write to the
+- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+- * Boston, MA 02111-1307, USA.
+- */
+-
+-
+-#include "gthreadpool.h"
+-#include <pthread.h>
+-
+-typedef struct _Task Task;
+-
+-struct _Task {
+-  GWorkerFunc work_func;
+-  GWorkFinishedNotifyFunc notify_func;
+-  gpointer data;
+-  gpointer result;
+-}
+-
+-typedef struct _GThreadPoolPrivate GThreadPoolPrivate;
+-
+-typedef struct _WorkerThread WorkerThread;
+-
+-struct _WorkerThread {
+-  Task* task;
+-  pthread_t thread;
+-  GThreadPoolPrivate* pool;
+-  gboolean destroyed;
+-};
+-
+-struct _GThreadPoolPrivate {
+-  guint max_threads;
+-  guint thread_count;
+-  GSList* threads;
+-
+-  pthread_mutex_t worker_mutex;
+-  pthread_cond_t worker_cond;
+-  pthread_cond_t empty_incoming_cond;
+-  guint incoming_task_count;
+-  GSList* incoming_tasks;
+-  guint busy_task_count;
+-  GSList* busy_tasks;
+-  guint finished_task_count;
+-  GSList* finished_tasks;
+-
+-  guint notify_pipe_io_watcher_id;
+-  int notify_pipe[2];
+-  GIOChannel* notify_channel;
+-}
+-
+-static void*
+-do_worker_thread(void* _wt)
+-{
+-  WorkerThread* wt = (WorkerThread*)_wt;
+-
+-  while (TRUE)
+-    {
+-      /* Wait until there are incoming tasks or we should
+-         exit */
+-      pthread_mutex_lock(&(wt->pool->worker_mutex));
+-
+-      while (wt->pool->incoming_task_count == 0 &&
+-             (!wt->destroyed))
+-        {
+-          pthread_cond_wait(&(wt->pool->worker_cond),
+-                            &(wt->pool->worker_mutex));
+-        }
+-
+-      /* Exit if requested */
+-      if (wt->destroyed)
+-        {
+-          pthread_mutex_unlock(&(wt->pool->worker_mutex));
+-          pthread_exit(NULL);
+-          return NULL; /* not reached */
+-        }
+-
+-      /* Otherwise, take the first incoming task */
+-      
+-      g_assert(wt->pool->incoming_task_count > 0);
+-
+-      wt->pool->incoming_task_count -= 1;
+-      wt->task = wt->pool->incoming_tasks->data;
+-      wt->pool->incoming_tasks = g_slist_remove(wt->pool->incoming_tasks,
+-                                                wt->task);
+-
+-      g_assert(wt->task != NULL);
+-
+-      wt->pool->busy_task_count += 1;
+-      wt->pool->busy_tasks = g_slist_prepend(wt->pool->busy_tasks,
+-                                             wt->task);
+-
+-      pthread_mutex_unlock(&(wt->pool->worker_mutex));
+-
+-      /* Perform the task; we release the lock,
+-       * so other threads can get started or stopped, and also
+-       * so conceivably the task can add more tasks to the pool
+-       * (however that sounds like it could be a bad idea...)
+-       */
+-      
+-      wt->task->result = (*wt->task->work_func)(wt->task->data);
+-
+-      /* Move the task onto the finished list */
+-      
+-      pthread_mutex_lock(&(wt->pool->worker_mutex));
+-
+-      g_assert(wt->pool->busy_task_count > 0);
+-      
+-      wt->pool->busy_task_count -= 1;
+-      wt->pool->busy_tasks = g_slist_remove(wt->pool->busy_tasks,
+-                                            wt->task);
+-
+-      wt->pool->finished_task_count += 1;
+-      wt->pool->finished_tasks = g_slist_prepend(wt->pool->finished_tasks,
+-                                                 wt->task);
+-
+-      /* Forget about our task */
+-      wt->task = NULL;
+-
+-      /* Notify the glib main loop (via an input handler on this pipe)
+-       * that there are finished tasks
+-       */
+-
+-    try_again:
+-      if (write(wt->pool->notify_pipe[1], "g", 1) < 0)
+-        {
+-          if (errno == EINTR)
+-            goto try_again;
+-          else
+-            g_warning("Write failure with pipe notification: %s", strerror(errno)); /* shouldn't happen */
+-        }
+-      
+-      /* Notify main thread (g_thread_pool_destroy()) if
+-       * we emptied the queue
+-       */
+-
+-      if (wt->pool->incoming_task_count == 0)
+-        pthread_cond_signal(&(wt->pool->empty_incoming_cond));
+-      
+-      pthread_mutex_unlock(&(wt->pool->worker_mutex));
+-
+-      /* Continue forever */
+-    }
+-}
+-
+-/* These should be called from the main thread */
+-
+-static WorkerThread*
+-worker_thread_new(void)
+-{
+-  int rtn;
+-  WorkerThread* wt;
+-
+-  wt = g_new0(WorkerThread, 1);
+-
+-  wt->task = NULL;
+-  wt->destroyed = FALSE;
+-  
+-  rtn = pthread_create(&wt->thread, NULL, do_worker_thread, wt);
+-
+-  if (rtn != 0)
+-    {
+-      fprintf(stderr, "Failed to create thread: %s\n", strerror(rtn));
+-      g_free(wt);
+-      return NULL;
+-    }
+-
+-  return wt;
+-}
+-
+-static void
+-worker_thread_destroy(WorkerThread* wt)
+-{
+-  pthread_join(wt->thread, NULL);
+-  g_free(wt);
+-}
+-
+-/* note that this function doesn't do locking */
+-static void
+-g_thread_pool_notify(GThreadPool* pool)
+-{
+-  GThreadPoolPrivate* priv = (GThreadPoolPrivate*)pool;
+-  GSList* tmp;
+-  
+-  tmp = priv->finished_tasks;
+-  while (tmp != NULL)
+-    {
+-      Task* task = tmp->data;
+-
+-      (*task->notify_func)(task->result);
+-
+-      g_free(task);
+-      
+-      tmp = g_slist_next(tmp);
+-    }
+-
+-  g_slist_free(priv->finished_tasks);
+-  priv->finished_task_count = 0;
+-  priv->finished_tasks = NULL;
+-}
+-
+-gboolean
+-notify_callback (GIOChannel *source,
+-                 GIOCondition condition,
+-                 gpointer data)
+-{
+-  GThreadPoolPrivate* priv = data;
+-  guint count;
+-  gchar* buf;
+-  
+-  pthread_mutex_lock(&(wt->pool->worker_mutex));
+-
+-  count = priv->finished_task_count;
+-
+-  if (count == 0)
+-    {
+-      g_warning("Strange, we got a notify callback with no finished tasks");
+-      pthread_mutex_unlock(&(wt->pool->worker_mutex));
+-      return;
+-    }
+-  
+-  g_thread_pool_notify((GThreadPool*)priv);
+-
+-  g_assert(priv->finished_task_count == 0 &&
+-           priv->finished_tasks == NULL);
+-
+-  /* read notify bytes from the pipe */
+-
+-  buf = g_malloc(count);
+- again:
+-  if (read(priv->notify_pipe[0], buf, count) < 0)
+-    {
+-      if (errno == EINTR)
+-        goto again;
+-      else
+-        {
+-          /* shouldn't happen */
+-          g_warning("Read failed from notify pipe: %s", strerror(errno));
+-        }
+-    }
+-  /* discard the bytes */
+-  g_free(buf);
+-  
+-  pthread_mutex_unlock(&(wt->pool->worker_mutex));
+-}
+-
+-GThreadPool*
+-g_thread_pool_new      (guint max_threads)
+-{
+-  GThreadPoolPrivate* priv;
+-  int ret;
+-
+-  g_return_val_if_fail(max_threads > 0, NULL);
+-  
+-  priv = g_new0(GThreadPoolPrivate, 1);
+-
+-  priv->max_threads = max_threads;
+-
+-  if (pipe(priv->notify_pipe) < 0)
+-    {
+-      g_free(priv);
+-      return NULL;
+-    }
+-  
+-  ret = pthread_cond_init(&(priv->worker_cond));
+-  if (ret != 0)
+-    {
+-      fprintf(stderr, "Failed to init pthread_cond: %s",
+-              strerror(ret));
+-      exit(1);
+-    }
+-
+-  ret = pthread_cond_init(&(priv->empty_incoming_cond));
+-  if (ret != 0)
+-    {
+-      fprintf(stderr, "Failed to init pthread_cond: %s",
+-              strerror(ret));
+-      exit(1);
+-    }
+-  
+-  ret = pthread_mutex_init(&(priv->worker_mutex));
+-  if (ret != 0)
+-    {
+-      fprintf(stderr, "Failed to init pthread_mutex: %s",
+-              strerror(ret));
+-      exit(1);
+-    }
+-
+-  priv->notify_channel = g_io_channel_unix_new(priv->notify_pipe[0]);
+-  
+-  priv->notify_pipe_io_watcher_id = g_io_add_watch(priv->notify_channel,
+-                                                   G_IO_IN,
+-                                                   notify_callback,
+-                                                   priv);
+-  
+-  return (GThreadPool*)priv;
+-}
+-
+-void
+-g_thread_pool_destroy  (GThreadPool* pool)
+-{
+-  GThreadPoolPrivate* priv = (GThreadPoolPrivate*)pool;
+-  GSList* tmp;
+-  
+-  pthread_mutex_lock(&(priv->worker_mutex));
+-
+-  /* Remove the notify event source */
+-  g_source_remove(priv->work_notify_source_id);
+-
+-  /* close the pipe */
+-  close(priv->notify_pipe[0]);
+-  close(priv->notify_pipe[1]);
+-  
+-  /* Clear the queue */
+-  while (priv->incoming_task_count != 0)
+-    {
+-      g_assert(priv->thread_count > 0);
+-
+-      pthread_cond_wait(&(priv->empty_incoming_cond),
+-                        &(priv->worker_mutex));
+-    }
+-
+-  g_assert(priv->incoming_task_count == 0);
+-
+-  /* Now do notification if any tasks were just finished */
+-
+-  g_thread_pool_notify(pool);
+-  
+-  /* Mark all worker threads destroyed */
+-
+-  tmp = priv->threads;
+-  while (tmp != NULL)
+-    {
+-      WorkerThread* wt = tmp->data;
+-
+-      g_assert(wt->task == NULL);
+-      
+-      wt->destroyed = TRUE;
+-
+-      tmp = g_slist_next(tmp);
+-    }
+-
+-  /* Wake up all threads so they notice they are destroyed and exit */
+-  pthread_cond_broadcast(&(priv->worker_cond));
+-  pthread_mutex_unlock(&(priv->worker_mutex));
+-  
+-  /* Now delete all the threads */
+-  tmp = priv->threads;
+-  while (tmp != NULL)
+-    {
+-      WorkerThread* wt = tmp->data;
+-
+-      worker_thread_destroy(wt);
+-      
+-      tmp = g_slist_next(tmp);
+-    }
+-
+-  g_slist_free(priv->threads);
+-  priv->threads = NULL;
+-  priv->thread_count = 0;
+-
+-  g_free(priv);
+-}
+-
+-void
+-g_thread_pool_finish_all   (GThreadPool* pool)
+-{
+-  GThreadPoolPrivate* priv = (GThreadPoolPrivate*)pool;
+-  
+-  pthread_mutex_lock(&(priv->worker_mutex));
+-  
+-  /* Clear the queue */
+-  while (priv->incoming_task_count != 0)
+-    {
+-      g_assert(priv->thread_count > 0);
+-
+-      pthread_cond_wait(&(priv->empty_incoming_cond),
+-                        &(priv->worker_mutex));
+-    }
+-
+-  g_assert(priv->incoming_task_count == 0);
+-
+-  pthread_mutex_unlock(&(priv->worker_mutex));
+-}
+-
+-void
+-g_thread_pool_do_work  (GThreadPool* pool,
+-                        GWorkerFunc work_func,
+-                        gpointer data)
+-{
+-  GThreadPoolPrivate* priv = (GThreadPoolPrivate*)pool;
+-  Task* task;
+-
+-  task = g_new0(Task, 1);
+-
+-  task->work_func = work_func;
+-  task->notify_func = notify_func;
+-  task->data = data;
+-
+-  pthread_mutex_lock(&(priv->worker_mutex));
+-
+-  priv->incoming_task_count += 1;
+-  priv->incoming_tasks = g_slist_prepend(priv->incoming_tasks,
+-                                         task);
+-
+-  if ((priv->thread_count < priv->max_threads) && 
+-      ((priv->busy_task_count + priv->incoming_task_count) > priv->thread_count))
+-    {
+-      /* Add another worker thread */
+-      WorkerThread* wt = worker_thread_new();
+-
+-      priv->threads = g_slist_prepend(priv->threads, wt);
+-      priv->thread_count += 1;
+-    }
+-
+-  /* Wake up one of the waiting threads */
+-  pthread_cond_signal(&(priv->worker_cond));
+-  
+-  pthread_mutex_unlock(&(priv->worker_mutex));
+-}
+-
+-
+-
+Index: backends/gthreadpool.h
+===================================================================
+RCS file: gthreadpool.h
+diff -N gthreadpool.h
+--- /tmp/cvsSZmSeQ	Wed Nov 22 08:44:20 2000
++++ /dev/null	Tue May  5 16:32:27 1998
+@@ -1,66 +0,0 @@
+-/* GConf
+- * Copyright (C) 1999, 2000 Red Hat Inc.
+- *
+- * This library is free software; you can redistribute it and/or
+- * modify it under the terms of the GNU Library General Public
+- * License as published by the Free Software Foundation; either
+- * version 2 of the License, or (at your option) any later version.
+- *
+- * This library is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+- * Library General Public License for more details.
+- *
+- * You should have received a copy of the GNU Library General Public
+- * License along with this library; if not, write to the
+- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+- * Boston, MA 02111-1307, USA.
+- */
+-
+-#ifndef GCONF_GTHREADPOOL_H
+-#define GCONF_GTHREADPOOL_H
+-
+-#include <glib.h>
+-/*
+-  #ifdef __cplusplus
+-  extern "C" {
+-  #endif
+-*/
+-
+-typedef struct _GThreadPool GThreadPool;
+-
+-struct _GThreadPool {
+-  gpointer dummy;
+-}
+-
+-/* this can return NULL on failure and sets errno */
+-GThreadPool* g_thread_pool_new          (guint max_threads);
+-/* block until all tasks are finished, then return. */
+-void         g_thread_pool_finish_all   (GThreadPool* pool);
+-void         g_thread_pool_destroy      (GThreadPool* pool);
+-
+-typedef gpointer (*GWorkerFunc)             (gpointer data);
+-typedef void     (*GWorkFinishedNotifyFunc) (gpointer result);
+-
+-/* Your work func should obviously be thread safe :-) */
+-/* The return value of the worker func invocation is passed to the
+- * GWorkFinishedNotifyFunc to tell you there are results.
+- * GWorkFinishedNotifyFunc is a called from a glib main loop source,
+- * so you need to be using the glib main loop to use GThreadPool
+- */
+-   
+-void         g_thread_pool_do_work  (GThreadPool* pool,
+-                                     GWorkerFunc work_func,
+-                                     GWorkFinishedNotifyFunc notify_func,
+-                                     gpointer data);
+-
+-/*
+-  #ifdef __cplusplus
+-  }
+-  #endif
+-*/
+-
+-#endif
+-
+-
+-
 Index: gconf/Makefile.am
 ===================================================================
 RCS file: /cvs/gnome/gconf/gconf/Makefile.am,v
 retrieving revision 1.52
 diff -u -u -p -r1.52 Makefile.am
 --- gconf/Makefile.am	2000/09/11 21:58:47	1.52
-+++ gconf/Makefile.am	2000/10/15 21:53:39
++++ gconf/Makefile.am	2000/11/22 13:44:16
 @@ -31,7 +31,6 @@ gconfincludedir = $(includedir)/gconf/$(
  gconfinclude_HEADERS =     \
  	gconf.h            \
@@ -136,7 +837,7 @@ RCS file: /cvs/gnome/gconf/gconf/gconf-database.h,v
 retrieving revision 1.6
 diff -u -u -p -r1.6 gconf-database.h
 --- gconf/gconf-database.h	2000/10/08 19:51:32	1.6
-+++ gconf/gconf-database.h	2000/10/15 21:53:39
++++ gconf/gconf-database.h	2000/11/22 13:44:16
 @@ -31,7 +31,6 @@ extern "C" {
  #include "gconf-listeners.h"
  #include "gconf-sources.h"
@@ -151,7 +852,7 @@ RCS file: /cvs/gnome/gconf/gconf/gconf-error.h,v
 retrieving revision 1.15
 diff -u -u -p -r1.15 gconf-error.h
 --- gconf/gconf-error.h	2000/10/07 01:31:18	1.15
-+++ gconf/gconf-error.h	2000/10/15 21:53:40
++++ gconf/gconf-error.h	2000/11/22 13:44:16
 @@ -22,8 +22,6 @@
  
  #include <glib.h>
@@ -164,10 +865,10 @@ diff -u -u -p -r1.15 gconf-error.h
 Index: gconf/gconfd.c
 ===================================================================
 RCS file: /cvs/gnome/gconf/gconf/gconfd.c,v
-retrieving revision 1.94
-diff -u -u -p -r1.94 gconfd.c
---- gconf/gconfd.c	2000/10/08 19:51:32	1.94
-+++ gconf/gconfd.c	2000/10/15 21:53:42
+retrieving revision 1.95
+diff -u -u -p -r1.95 gconfd.c
+--- gconf/gconfd.c	2000/11/05 18:09:48	1.95
++++ gconf/gconfd.c	2000/11/22 13:44:18
 @@ -32,7 +32,6 @@
  #include "gconf-listeners.h"
  #include "gconf-locale.h"
@@ -182,7 +883,7 @@ RCS file: /cvs/gnome/gconf/po/Makefile.in.in,v
 retrieving revision 1.5
 diff -u -u -p -r1.5 Makefile.in.in
 --- po/Makefile.in.in	2000/09/15 04:30:24	1.5
-+++ po/Makefile.in.in	2000/10/15 21:53:43
++++ po/Makefile.in.in	2000/11/22 13:44:18
 @@ -62,7 +62,7 @@ INSTOBJEXT = @INSTOBJEXT@
  	$(COMPILE) $<
  
@@ -243,10 +944,10 @@ diff -u -u -p -r1.5 Makefile.in.in
 Index: wrappers/gtk/gconf-client.c
 ===================================================================
 RCS file: /cvs/gnome/gconf/wrappers/gtk/gconf-client.c,v
-retrieving revision 1.36
-diff -u -u -p -r1.36 gconf-client.c
---- wrappers/gtk/gconf-client.c	2000/10/08 18:03:53	1.36
-+++ wrappers/gtk/gconf-client.c	2000/10/15 21:53:45
+retrieving revision 1.38
+diff -u -u -p -r1.38 gconf-client.c
+--- wrappers/gtk/gconf-client.c	2000/10/26 02:03:03	1.38
++++ wrappers/gtk/gconf-client.c	2000/11/22 13:44:20
 @@ -110,7 +110,8 @@ static void gconf_client_class_init (GCo
  static void gconf_client_init       (GConfClient      *client);
  static void gconf_client_real_unreturned_error (GConfClient* client, GError* error);
@@ -257,7 +958,7 @@ diff -u -u -p -r1.36 gconf-client.c
  
  static void gconf_client_cache                 (GConfClient* client,
                                                  const gchar* key,
-@@ -161,15 +162,17 @@ static void
+@@ -169,15 +170,17 @@ static void
  gconf_client_class_init (GConfClientClass *class)
  {
    GtkObjectClass *object_class;
@@ -276,7 +977,7 @@ diff -u -u -p -r1.36 gconf-client.c
                      GTK_SIGNAL_OFFSET (GConfClientClass, value_changed),
                      gtk_marshal_NONE__POINTER_POINTER,
                      GTK_TYPE_NONE, 2, GTK_TYPE_POINTER, GTK_TYPE_POINTER);
-@@ -177,7 +180,7 @@ gconf_client_class_init (GConfClientClas
+@@ -185,7 +188,7 @@ gconf_client_class_init (GConfClientClas
    client_signals[UNRETURNED_ERROR] =
      gtk_signal_new ("unreturned_error",
                      GTK_RUN_LAST,
@@ -285,7 +986,7 @@ diff -u -u -p -r1.36 gconf-client.c
                      GTK_SIGNAL_OFFSET (GConfClientClass, unreturned_error),
                      gtk_marshal_NONE__POINTER,
                      GTK_TYPE_NONE, 1, GTK_TYPE_POINTER);
-@@ -185,7 +188,7 @@ gconf_client_class_init (GConfClientClas
+@@ -193,7 +196,7 @@ gconf_client_class_init (GConfClientClas
    client_signals[ERROR] =
      gtk_signal_new ("error",
                      GTK_RUN_LAST,
@@ -294,7 +995,7 @@ diff -u -u -p -r1.36 gconf-client.c
                      GTK_SIGNAL_OFFSET (GConfClientClass, error),
                      gtk_marshal_NONE__POINTER,
                      GTK_TYPE_NONE, 1, GTK_TYPE_POINTER);
-@@ -195,8 +198,9 @@ gconf_client_class_init (GConfClientClas
+@@ -203,8 +206,9 @@ gconf_client_class_init (GConfClientClas
    class->value_changed    = NULL;
    class->unreturned_error = gconf_client_real_unreturned_error;
    class->error            = gconf_client_real_error;
@@ -306,7 +1007,7 @@ diff -u -u -p -r1.36 gconf-client.c
  }
  
  static void
-@@ -228,7 +232,7 @@ destroy_dir_foreach_remove(gpointer key,
+@@ -236,7 +240,7 @@ destroy_dir_foreach_remove(gpointer key,
  }
  
  static void
@@ -315,7 +1016,7 @@ diff -u -u -p -r1.36 gconf-client.c
  {
    GConfClient* client = GCONF_CLIENT(object);
  
-@@ -237,6 +241,15 @@ gconf_client_finalize (GtkObject* object
+@@ -245,6 +249,15 @@ gconf_client_finalize (GtkObject* object
    
    gconf_client_clear_cache(client);
    
@@ -331,7 +1032,7 @@ diff -u -u -p -r1.36 gconf-client.c
    if (client->listeners != NULL)
      {
        gconf_listeners_free(client->listeners);
-@@ -257,8 +270,8 @@ gconf_client_finalize (GtkObject* object
+@@ -265,8 +278,8 @@ gconf_client_finalize (GtkObject* object
        client->engine = NULL;
      }
  
