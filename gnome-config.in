@@ -25,6 +25,8 @@ usage()
 Usage: gnome-config [OPTION]... [LIBRARY]...
 
   --libs	print library linking information
+  --libs-only-L	only print the -L/-R part of --libs
+  --libs-only-l only print the -l part of --libs
   --cflags	print pre-processor and compiler flags
   --help	display this help and exit
   --version	output gnome version information
@@ -53,7 +55,8 @@ if test $# -eq 0; then
 fi
 
 cflags=false
-libs=false
+libs_L=false
+libs_l=false
 
 while test $# -gt 0; do
     case "$1" in
@@ -73,8 +76,15 @@ while test $# -gt 0; do
        	cflags=true
        	;;
     --libs)
-       	libs=true
+       	libs_L=true
+	libs_l=true
        	;;
+    --libs-only-L)
+	libs_L=true
+	;;
+    --libs-only-l)
+	libs_l=true
+	;;
     --*)
 	usage 1
 	;;
@@ -122,7 +132,7 @@ if $cflags; then
     all_flags="$the_flags"
 fi
 
-if $libs; then
+if $libs_L || $libs_l; then
     all_flags="$all_flags $the_libs"
 fi
 
@@ -133,11 +143,19 @@ fi
 # Straight out any possible duplicates, but be careful to
 # get `-lfoo -lbar -lbaz' for `-lfoo -lbaz -lbar -lbaz'
 other_flags=
+lib_L_flags=
 rev_libs=
 for i in $all_flags; do
     case "$i" in
     # a library, save it for later, in reverse order
     -l*) rev_libs="$i $rev_libs" ;;
+    -L*|-R*)
+	if $libs_L; then
+	    case " $lib_L_flags " in
+	    *\ $i\ *) ;;			# already there
+	    *) lib_L_flags="$lib_L_flags $i" ;;	# add it to output
+	    esac 
+	fi;;
     *)
 	case " $other_flags " in
 	*\ $i\ *) ;;				# already there
@@ -147,13 +165,15 @@ for i in $all_flags; do
 done
 
 ord_libs=
-for i in $rev_libs; do
-    case " $ord_libs " in
-    *\ $i\ *) ;;			# already there
-    *) ord_libs="$i $ord_libs" ;;	# add it to output in reverse order
-    esac
-done
+if $libs_l; then
+    for i in $rev_libs; do
+	case " $ord_libs " in
+	*\ $i\ *) ;;			# already there
+	*) ord_libs="$i $ord_libs" ;;	# add it to output in reverse order
+	esac
+    done
+fi
 
-echo $other_flags $ord_libs
+echo $other_flags $lib_L_flags $ord_libs
 
 exit 0

@@ -1,9 +1,16 @@
+1998-08-02  Raja R Harinath  <harinath@cs.umn.edu>
+
+	* gnome-config.in: Added new options `--libs-only-L' and
+	`--libs-only-l'.
+
 Sat Aug  1 16:45:59 EDT 1998  Stuart Parmenter <pavlov@innerx.net>
-	* libgnomeui/gnome-mdi.c
+	
+	* libgnomeui/gnome-mdi.c:
 	added #ifdef GNOME_ENABLE_DEBUG's around the 2 g_message() calls
 
 Sat Aug  1 15:53:14 EDT 1998  Stuart Parmenter <pavlov@innerx.net>
-	* gtk-xmhtml/gtk-xmhtml.c
+	
+	* gtk-xmhtml/gtk-xmhtml.c:
 	Commented out the "Die boy boy die" line and exit line so that Balsa
 	wouldn't exit if this was called.
 
