@@ -37,12 +37,9 @@ for more information.
 
 * Licensing
 
-The GNOME libraries (libgnome, libgnomeui, gtk-xmhtml and libgtktty) are
-released under the terms of the LGPL license, read the file COPYING.LIB
-for more information. 
-
-The zvt library is released under the terms of the GNU GPL, read the file
-COPYING for more information.
+   The GNOME libraries (libgnome, libgnomeui, gtk-xmhtml, zvt, vfs)
+are released under the terms of the LGPL license, read the file
+COPYING.LIB for more information.
 
 The rest of the code is released under the terms of the GPL license,
 read the file COPYING for more information. 
@@ -59,18 +56,19 @@ for working properly:
 	   Note: This is not required if you pass --with-included-gettext
 	   flat to configure
 
-	- Gtk+ 1.0 
+	- Gtk+ 1.1.latest
 
 	   ftp://ftp.gimp.org/pub/gtk/
 
-	- libXpm.
+	- Graphics libraries: png, xpm, tiff, gif.
 
 	- DB 1.85, or DB 2.x with 1.86 compatibility enabled
 
 	  http://www.sleepycat.com/
 
-Optional libraries that might be used during compile:
+	- Imlib
 
-	- JPEG, PNG and zlib are optionally used by the HTML display
-	  engine.  If found the engine will support those image formats.
+	  ftp://ftp.gnome.org/pub/GNOME/sources/latest/imlib
+
+
 
