@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in
 
-INCLUDES = -I.. -I$(srcdir)/.. $(SUPPORTINCS) \
+INCLUDES = -I$(top_srcdir)/gdk-pixbuf -I.. -I$(srcdir)/.. $(SUPPORTINCS) \
 	-I$(top_srcdir)/intl -I$(top_builddir)/intl \
 	-I$(includedir) \
 	-DGNOMELOCALEDIR=\""$(gnomelocaledir)"\" \
