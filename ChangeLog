@@ -1,3 +1,24 @@
+1998-10-09  Michael Lausch  <mla@gams.at>
+
+	* libgnorba/goad.c (goad_server_list_get): change the key strings
+	for the resource reading stuff.
+	(goad_server_list_read): use second temp string, otherwise this
+	doesn't work. Consider it a workaround, because i'm not sure if
+	the bug isn't in the config functions.
+	(goad_server_activate): Becuase now the server register themself
+	with the naming server, loop until the name got registered and
+	make lookups if the object is already available. <comment> All
+	Gnome servers should accept a flag which tell them which name to
+	use, e.g.: --ns-name=help-browser
+	(goad_server_activate_exe): The actual server execution function
+	gets very simple with this cahnges. Just ignore SIGPIPE and
+	execute the server. It is now the task of the server to register
+	with the orbit-nameing-server
+
+	* libgnorba/orbitgtk.c (gnome_name_service_get): Close all
+	unneeded filedescriptors and ignore SIGPIPE before starting the
+	orbit-naming-server daemon.
+
 1998-10-09  James Henstridge  <james@daa.com.au>
 
 	* libgnome/Makefile.am:  Checked in the changes to the Makefile

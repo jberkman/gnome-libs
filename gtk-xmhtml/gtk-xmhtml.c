@@ -2251,3 +2251,50 @@ gtk_signal_handler_pending (GtkObject *object, gint signal_type, gboolean may_be
 	return 1;
 }
 #endif
+
+void
+Toolkit_Draw_Shadows(XmHTMLWidget html, GC* top_shadow, GC* bottom_shadow,
+		     gint xs, gint ys, gint w, gint h, gint shadow_thick, gint shadow_type)
+{
+	switch (shadow_type)
+	  {
+	  case XmSHADOW_IN:
+	    gtk_draw_shadow(GTK_WIDGET(html)->style, GTK_WIDGET(html)->window,
+			    GTK_STATE_NORMAL, GTK_SHADOW_IN,
+			    xs, ys,
+			    w, h);
+	    break;
+	  case XmSHADOW_OUT:
+	    gtk_draw_shadow(GTK_WIDGET(html)->style, GTK_WIDGET(html)->window,
+			    GTK_STATE_NORMAL, GTK_SHADOW_OUT,
+			    xs, ys,
+			    w, h);
+	    break;
+	  default:
+	    break;
+	    ;
+	  }
+}
+
+void
+_XmHTMLRecomputeShadowColors(XmHTMLWidget html, Pixel base) 
+{
+	/* 
+	* We can only compute the colors when we have a GC. If we don't
+	* have a GC, the widget is not yet realized. Use managers defaults
+	* then.
+	*/
+#if 0
+	if(html->html.gc != NULL)
+	{
+		Pixel top = None, bottom = None;
+		Arg args[2];
+
+		XmGetColors(XtScreen((Widget)html), html->core.colormap,
+			base, NULL, &top, &bottom, NULL);
+		XtSetArg(args[0], XmNtopShadowColor, top);
+		XtSetArg(args[1], XmNbottomShadowColor, bottom);
+		XtSetValues((Widget)html, args, 2);
+	}
+#endif
+}

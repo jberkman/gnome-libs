@@ -155,6 +155,10 @@ void gtk_xmhtml_set_mime_type                     (GtkXmHTML *html, char *mime_t
 void gtk_xmhtml_set_alpha_processing              (GtkXmHTML *html, int flag);
 void gtk_xmhtml_set_rgb_conv_mode                 (GtkXmHTML *html, int val);
 
+void Toolkit_Draw_Shadows(XmHTMLWidget w, GC* top_shadow, GC* bottom_shadow,
+			  gint xs, gint ys, gint xe, gint ye, gint xxx, gint shadow_type);
+
+
 /* These ones are used internally: */
 void  gtk_xmhtml_set_geometry (GtkWidget *widget, int x, int y, int width, int height);
 guint gtk_xmhtml_get_type (void);

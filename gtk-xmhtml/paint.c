@@ -35,6 +35,9 @@ static char rcsId[]="$Header$";
 /*****
 * ChangeLog 
 * $Log$
+* Revision 1.9  1998/10/09 21:34:30  mila
+*  ChangeLog
+*
 * Revision 1.8  1998/02/12 03:09:38  unammx
 * Merge to Koen's XmHTML 1.1.2 + following fixes:
 *
@@ -1581,7 +1584,11 @@ DrawRule(XmHTMLWidget html, XmHTMLObjectTableElement data)
 	xs = data->x - html->html.scroll_x;
 
 	/* vertical offset */
+#if 0
 	dy = (int)(0.75*(html->html.default_font->height));
+#else
+	dy = 0;
+#endif	
 	ys = data->y - html->html.scroll_y;
 
 	if(data->height)
@@ -1590,8 +1597,43 @@ DrawRule(XmHTMLWidget html, XmHTMLObjectTableElement data)
 		{
 			gc = html->html.gc;
 			Toolkit_Set_Line_Attributes(dpy, gc, 1, TLineSolid, TCapButt, TJoinBevel);
+			Toolkit_Set_Foreground(dpy, gc, data->fg);
+			Toolkit_Fill_Rectangle(dpy, win, gc, xs, ys + dy, data->width, data->height);
 		}
+		else
+		{
+			if (data->fg != html->html.body_fg)
+				_XmHTMLRecomputeShadowColors(html, data->fg);
+			Toolkit_Draw_Shadows(html,Toolkit_StyleGC_TopShadow(html),
+					     Toolkit_StyleGC_BottomShadow(html), xs, ys+dy,
+					     data->width, data->height, 1, XmSHADOW_IN);
+			if (data->fg != html->html.body_fg)
+				_XmHTMLRecomputeShadowColors(html, html->html.body_bg);
+		}
+
 	}
+	else
+		if(data->y_offset) /* noshade */
+		{
+			gc = html->html.gc;
+			Toolkit_Set_Line_Attributes(tka->dpy, gc, 1, TLineSolid, TCapButt, TJoinBevel);
+			Toolkit_Set_Foreground(dpy, gc, data->fg);
+			Toolkit_Draw_Line(dpy, win, gc, xs, ys + dy,
+					xs + data->width, ys + dy);
+			Toolkit_Draw_Line(dpy, win, gc, xs, ys + dy + 1,
+					xs + data->width, ys + dy + 1);
+		}
+		else
+		{
+			if(data->fg != html->html.body_fg)
+				_XmHTMLRecomputeShadowColors(html, data->fg);
+			
+			Toolkit_Draw_Shadows(html, Toolkit_StyleGC_TopShadow(html),
+					     Toolkit_StyleGC_BottomShadow(html), xs, ys + dy,
+					     data->width, 2, 1, XmSHADOW_IN);
+			if(data->fg != html->html.body_fg)
+				_XmHTMLRecomputeShadowColors(html, html->html.body_bg);
+		}
 }
 
 static void

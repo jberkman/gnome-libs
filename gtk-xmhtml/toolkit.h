@@ -169,6 +169,8 @@ extern void wrap_gdk_cc_get_pixels (int              incremental,
 #define XCCGetIndexFromPalette(cc,r,g,b,f) gdk_color_context_get_index_from_palette(cc,r,g,b,f)
 #define XCCFreeDither(cc) gdk_color_context_free_dither (cc)
 typedef GdkColorContextDither XCCDither;
+#define XmSHADOW_IN       1
+#define XmSHADOW_OUT      2
 
 #else /* motif */
 
