@@ -23,10 +23,18 @@
 
 #include <config.h>
 
-#include <gnome.h>
+#include <glib.h>
+
+#include "libgnome/gnome-defs.h"
+#include "libgnome/gnome-i18nP.h"
+
+#include "libgnomeui/gnome-uidefs.h"
+#include "libgnomeui/gnome-canvas.h"
+#include "libgnomeui/gnome-canvas-text.h"
+#include "libgnomeui/gnome-canvas-rect-ellipse.h"
 #include "gnome-druid-page-start.h"
-#include "gnome-canvas-pixbuf.h"
-#include "gnome-druid.h"
+#include "libgnomeui/gnome-canvas-pixbuf.h"
+#include "libgnomeui/gnome-druid.h"
 
 struct _GnomeDruidPageStartPrivate
 {
@@ -106,7 +114,7 @@ gnome_druid_page_start_class_init (GnomeDruidPageStartClass *klass)
 static void
 gnome_druid_page_start_init (GnomeDruidPageStart *druid_page_start)
 {
-	druid_pages_start->_priv = g_new0(GnomeDruidPageStartPrivate, 1);
+	druid_page_start->_priv = g_new0(GnomeDruidPageStartPrivate, 1);
 
 	/* initialize the color values */
 	druid_page_start->background_color.red = 6400; /* midnight blue */
@@ -268,7 +276,6 @@ gnome_druid_page_start_construct (GnomeDruidPageStart *druid_page_start)
 				       gnome_canvas_text_get_type (),
 				       "text", druid_page_start->title,
 				       "fill_color_rgba", fill_color,
-				       "font", _("-adobe-helvetica-bold-r-normal-*-*-180-*-*-p-*-*-*"),
 				       "fontset", _("-adobe-helvetica-bold-r-normal-*-*-180-*-*-p-*-*-*,*-r-*"),
 				       NULL);
 
@@ -278,7 +285,6 @@ gnome_druid_page_start_construct (GnomeDruidPageStart *druid_page_start)
 				       gnome_canvas_text_get_type (),
 				       "text", druid_page_start->text,
 				       "justification", GTK_JUSTIFY_LEFT,
-				       "font", _("-adobe-helvetica-medium-r-normal-*-*-120-*-*-p-*-*-*"),
 				       "fontset", _("-adobe-helvetica-medium-r-normal-*-*-120-*-*-p-*-*-*,*-r-*"),
 				       "fill_color_rgba", fill_color,
 				       NULL);

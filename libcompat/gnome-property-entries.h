@@ -28,7 +28,7 @@
 #ifndef __GNOME_PROPERTY_ENTRIES_H__
 #define __GNOME_PROPERTY_ENTRIES_H__
 
-#include <libgnomeui/gnome-properties.h>
+#include <libcompat/gnome-properties.h>
 
 BEGIN_GNOME_DECLS
 

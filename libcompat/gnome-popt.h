@@ -27,7 +27,7 @@
 #define __GNOME_POPT_H__ 1
 
 
-#include "gnome-defs.h"
+#include "libgnome/gnome-defs.h"
 
 BEGIN_GNOME_DECLS
 

@@ -24,7 +24,6 @@
 #define __GNOME_DRUID_PAGE_FINISH_H__
 
 #include <gtk/gtk.h>
-#include <gdk_imlib.h>
 #include "gnome-canvas.h"
 #include "gnome-druid-page.h"
 
@@ -54,8 +53,8 @@ struct _GnomeDruidPageFinish
 
 	gchar *title;
 	gchar *text;
-	GdkImlibImage *logo_image;
-	GdkImlibImage *watermark_image;
+	GdkPixbuf *logo_image;
+	GdkPixbuf *watermark_image;
 
 	/*< private >*/
 	GnomeDruidPageFinishPrivate *_priv;
@@ -70,8 +69,8 @@ GtkType    gnome_druid_page_finish_get_type    (void);
 GtkWidget *gnome_druid_page_finish_new         (void);
 GtkWidget *gnome_druid_page_finish_new_with_vals(const gchar *title,
 					       const gchar* text,
-					       GdkImlibImage *logo,
-					       GdkImlibImage *watermark);
+					       GdkPixbuf *logo,
+					       GdkPixbuf *watermark);
 void gnome_druid_page_finish_set_bg_color      (GnomeDruidPageFinish *druid_page_finish,
 					       GdkColor *color);
 void gnome_druid_page_finish_set_textbox_color (GnomeDruidPageFinish *druid_page_finish,
@@ -87,9 +86,9 @@ void gnome_druid_page_finish_set_text          (GnomeDruidPageFinish *druid_page
 void gnome_druid_page_finish_set_title         (GnomeDruidPageFinish *druid_page_finish,
 					       const gchar *title);
 void gnome_druid_page_finish_set_logo          (GnomeDruidPageFinish *druid_page_finish,
-					       GdkImlibImage *logo_image);
+					       GdkPixbuf *logo_image);
 void gnome_druid_page_finish_set_watermark     (GnomeDruidPageFinish *druid_page_finish,
-					       GdkImlibImage *watermark);
+					       GdkPixbuf *watermark);
 
 END_GNOME_DECLS
 

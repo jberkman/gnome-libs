@@ -23,9 +23,18 @@
 
 #include <config.h>
 
-#include <gnome.h>
+#include <glib.h>
+
+#include "libgnome/gnome-defs.h"
+#include "libgnome/gnome-i18nP.h"
+
+#include "libgnomeui/gnome-uidefs.h"
+#include "libgnomeui/gnome-canvas.h"
+#include "libgnomeui/gnome-canvas-text.h"
+#include "libgnomeui/gnome-canvas-rect-ellipse.h"
 #include "gnome-druid-page-finish.h"
-#include "gnome-druid.h"
+#include "libgnomeui/gnome-canvas-pixbuf.h"
+#include "libgnomeui/gnome-druid.h"
 
 struct _GnomeDruidPageFinishPrivate
 {
@@ -138,6 +147,14 @@ gnome_druid_page_finish_destroy(GtkObject *object)
 {
 	/* remember, destroy can be run multiple times! */
 
+	if (GNOME_DRUID_PAGE_FINISH (object)->logo_image)
+		gdk_pixbuf_unref (GNOME_DRUID_PAGE_FINISH (object)->logo_image);
+	GNOME_DRUID_PAGE_FINISH (object)->logo_image = NULL;
+
+	if (GNOME_DRUID_PAGE_FINISH (object)->watermark_image)
+		gdk_pixbuf_unref (GNOME_DRUID_PAGE_FINISH (object)->watermark_image);
+	GNOME_DRUID_PAGE_FINISH (object)->watermark_image = NULL;
+
 	if(GTK_OBJECT_CLASS(parent_class)->destroy)
 		(* GTK_OBJECT_CLASS(parent_class)->destroy)(object);
 }
@@ -162,8 +179,8 @@ gnome_druid_page_finish_configure_size (GnomeDruidPageFinish *druid_page_finish,
 	gfloat watermark_ypos = LOGO_WIDTH + GNOME_PAD * 2.0;
 
 	if (druid_page_finish->watermark_image) {
-		watermark_width = druid_page_finish->watermark_image->rgb_width;
-		watermark_height = druid_page_finish->watermark_image->rgb_height;
+		watermark_width = gdk_pixbuf_get_width (druid_page_finish->watermark_image);
+		watermark_height = gdk_pixbuf_get_width (druid_page_finish->watermark_image);
 		watermark_ypos = (gfloat) height - watermark_height;
 		if (watermark_width < 1)
 			watermark_width = 1.0;
@@ -229,14 +246,14 @@ gnome_druid_page_finish_construct (GnomeDruidPageFinish *druid_page_finish)
 				       gnome_canvas_rect_get_type (), NULL);
 	druid_page_finish->_priv->logo_item =
 		gnome_canvas_item_new (gnome_canvas_root (GNOME_CANVAS (druid_page_finish->_priv->canvas)),
-				       gnome_canvas_image_get_type (), NULL);
+				       gnome_canvas_pixbuf_get_type (), NULL);
 	if (druid_page_finish->logo_image != NULL)
 		gnome_canvas_item_set (druid_page_finish->_priv->logo_item,
-				       "image", druid_page_finish->logo_image, NULL);
+				       "pixbuf", druid_page_finish->logo_image, NULL);
 	druid_page_finish->_priv->watermark_item =
 		gnome_canvas_item_new (gnome_canvas_root (GNOME_CANVAS (druid_page_finish->_priv->canvas)),
-				       gnome_canvas_image_get_type (),
-				       "image", druid_page_finish->watermark_image, NULL);
+				       gnome_canvas_pixbuf_get_type (),
+				       "pixbuf", druid_page_finish->watermark_image, NULL);
 	druid_page_finish->_priv->title_item =
 		gnome_canvas_item_new (gnome_canvas_root (GNOME_CANVAS (druid_page_finish->_priv->canvas)),
 				       gnome_canvas_text_get_type (), 
@@ -287,7 +304,7 @@ static void
 gnome_druid_page_finish_realize (GtkWidget *widget)
 {
 	GnomeDruidPageFinish *druid_page_finish;
-	GdkColormap *cmap = gdk_imlib_get_colormap ();
+	GdkColormap *cmap = gdk_rgb_get_cmap ();
 
 	druid_page_finish = GNOME_DRUID_PAGE_FINISH (widget);
 	gdk_colormap_alloc_color (cmap, &druid_page_finish->background_color, FALSE, TRUE);
@@ -328,12 +345,14 @@ gnome_druid_page_finish_new (void)
 	return retval;
 }
 GtkWidget *
-gnome_druid_page_finish_new_with_vals (const gchar *title, const gchar* text, GdkImlibImage *logo, GdkImlibImage *watermark)
+gnome_druid_page_finish_new_with_vals (const gchar *title, const gchar* text, GdkPixbuf *logo, GdkPixbuf *watermark)
 {
 	GtkWidget *retval = GTK_WIDGET (gtk_type_new (gnome_druid_page_finish_get_type ()));
 	GNOME_DRUID_PAGE_FINISH (retval)->title = g_strdup (title);
 	GNOME_DRUID_PAGE_FINISH (retval)->text = g_strdup (text);
 	GNOME_DRUID_PAGE_FINISH (retval)->logo_image = logo;
+	if (logo)
+		gdk_pixbuf_ref (logo);
 	GNOME_DRUID_PAGE_FINISH (retval)->watermark_image = watermark;
 	gnome_druid_page_finish_construct (GNOME_DRUID_PAGE_FINISH (retval));
 	return retval;
@@ -346,7 +365,7 @@ gnome_druid_page_finish_set_bg_color      (GnomeDruidPageFinish *druid_page_fini
 	g_return_if_fail (GNOME_IS_DRUID_PAGE_FINISH (druid_page_finish));
 
 	if (GTK_WIDGET_REALIZED (druid_page_finish)) {
-		GdkColormap *cmap = gdk_imlib_get_colormap ();
+		GdkColormap *cmap = gdk_rgb_get_cmap ();
 
 		gdk_colormap_free_colors (cmap, &druid_page_finish->background_color, 1);
 	}
@@ -355,7 +374,7 @@ gnome_druid_page_finish_set_bg_color      (GnomeDruidPageFinish *druid_page_fini
 	druid_page_finish->background_color.blue = color->blue;
 
 	if (GTK_WIDGET_REALIZED (druid_page_finish)) {
-		GdkColormap *cmap = gdk_imlib_get_colormap ();
+		GdkColormap *cmap = gdk_rgb_get_cmap ();
 		gdk_colormap_alloc_color (cmap, &druid_page_finish->background_color, FALSE, TRUE);
 		gnome_canvas_item_set (druid_page_finish->_priv->textbox_item,
 				       "outline_color_gdk", &druid_page_finish->background_color,
@@ -373,7 +392,7 @@ gnome_druid_page_finish_set_textbox_color (GnomeDruidPageFinish *druid_page_fini
 	g_return_if_fail (GNOME_IS_DRUID_PAGE_FINISH (druid_page_finish));
 
 	if (GTK_WIDGET_REALIZED (druid_page_finish)) {
-		GdkColormap *cmap = gdk_imlib_get_colormap ();
+		GdkColormap *cmap = gdk_rgb_get_cmap ();
 
 		gdk_colormap_free_colors (cmap, &druid_page_finish->textbox_color, 1);
 	}
@@ -382,7 +401,7 @@ gnome_druid_page_finish_set_textbox_color (GnomeDruidPageFinish *druid_page_fini
 	druid_page_finish->textbox_color.blue = color->blue;
 
 	if (GTK_WIDGET_REALIZED (druid_page_finish)) {
-		GdkColormap *cmap = gdk_imlib_get_colormap ();
+		GdkColormap *cmap = gdk_rgb_get_cmap ();
 		gdk_colormap_alloc_color (cmap, &druid_page_finish->textbox_color, FALSE, TRUE);
 		gnome_canvas_item_set (druid_page_finish->_priv->textbox_item,
 				       "fill_color_gdk", &druid_page_finish->textbox_color,
@@ -397,7 +416,7 @@ gnome_druid_page_finish_set_logo_bg_color (GnomeDruidPageFinish *druid_page_fini
 	g_return_if_fail (GNOME_IS_DRUID_PAGE_FINISH (druid_page_finish));
 
 	if (GTK_WIDGET_REALIZED (druid_page_finish)) {
-		GdkColormap *cmap = gdk_imlib_get_colormap ();
+		GdkColormap *cmap = gdk_rgb_get_cmap ();
 
 		gdk_colormap_free_colors (cmap, &druid_page_finish->logo_background_color, 1);
 	}
@@ -406,7 +425,7 @@ gnome_druid_page_finish_set_logo_bg_color (GnomeDruidPageFinish *druid_page_fini
 	druid_page_finish->logo_background_color.blue = color->blue;
 
 	if (GTK_WIDGET_REALIZED (druid_page_finish)) {
-		GdkColormap *cmap = gdk_imlib_get_colormap ();
+		GdkColormap *cmap = gdk_rgb_get_cmap ();
 		gdk_colormap_alloc_color (cmap, &druid_page_finish->logo_background_color, FALSE, TRUE);
 		gnome_canvas_item_set (druid_page_finish->_priv->logoframe_item,
 				       "fill_color_gdk", &druid_page_finish->logo_background_color,
@@ -421,7 +440,7 @@ gnome_druid_page_finish_set_title_color   (GnomeDruidPageFinish *druid_page_fini
 	g_return_if_fail (GNOME_IS_DRUID_PAGE_FINISH (druid_page_finish));
 
 	if (GTK_WIDGET_REALIZED (druid_page_finish)) {
-		GdkColormap *cmap = gdk_imlib_get_colormap ();
+		GdkColormap *cmap = gdk_rgb_get_cmap ();
 
 		gdk_colormap_free_colors (cmap, &druid_page_finish->title_color, 1);
 	}
@@ -430,7 +449,7 @@ gnome_druid_page_finish_set_title_color   (GnomeDruidPageFinish *druid_page_fini
 	druid_page_finish->title_color.blue = color->blue;
 
 	if (GTK_WIDGET_REALIZED (druid_page_finish)) {
-		GdkColormap *cmap = gdk_imlib_get_colormap ();
+		GdkColormap *cmap = gdk_rgb_get_cmap ();
 		gdk_colormap_alloc_color (cmap, &druid_page_finish->title_color, FALSE, TRUE);
 		gnome_canvas_item_set (druid_page_finish->_priv->title_item,
 				       "fill_color_gdk", &druid_page_finish->title_color,
@@ -446,7 +465,7 @@ gnome_druid_page_finish_set_text_color    (GnomeDruidPageFinish *druid_page_fini
 	g_return_if_fail (GNOME_IS_DRUID_PAGE_FINISH (druid_page_finish));
 
 	if (GTK_WIDGET_REALIZED (druid_page_finish)) {
-		GdkColormap *cmap = gdk_imlib_get_colormap ();
+		GdkColormap *cmap = gdk_rgb_get_cmap ();
 
 		gdk_colormap_free_colors (cmap, &druid_page_finish->text_color, 1);
 	}
@@ -455,7 +474,7 @@ gnome_druid_page_finish_set_text_color    (GnomeDruidPageFinish *druid_page_fini
 	druid_page_finish->text_color.blue = color->blue;
 
 	if (GTK_WIDGET_REALIZED (druid_page_finish)) {
-		GdkColormap *cmap = gdk_imlib_get_colormap ();
+		GdkColormap *cmap = gdk_rgb_get_cmap ();
 		gdk_colormap_alloc_color (cmap, &druid_page_finish->text_color, FALSE, TRUE);
 		gnome_canvas_item_set (druid_page_finish->_priv->text_item,
 				       "fill_color_gdk", &druid_page_finish->text_color,
@@ -491,23 +510,29 @@ gnome_druid_page_finish_set_title         (GnomeDruidPageFinish *druid_page_fini
 }
 void
 gnome_druid_page_finish_set_logo          (GnomeDruidPageFinish *druid_page_finish,
-					  GdkImlibImage *logo_image)
+					  GdkPixbuf *logo_image)
 {
 	g_return_if_fail (druid_page_finish != NULL);
 	g_return_if_fail (GNOME_IS_DRUID_PAGE_FINISH (druid_page_finish));
 
 	druid_page_finish->logo_image = logo_image;
+	if (logo_image)
+		gdk_pixbuf_ref(logo_image);
 	gnome_canvas_item_set (druid_page_finish->_priv->logo_item,
-			       "image", druid_page_finish->logo_image, NULL);
+			       "pixbuf", druid_page_finish->logo_image,
+			       NULL);
 }
 void
 gnome_druid_page_finish_set_watermark     (GnomeDruidPageFinish *druid_page_finish,
-					  GdkImlibImage *watermark)
+					  GdkPixbuf *watermark)
 {
 	g_return_if_fail (druid_page_finish != NULL);
 	g_return_if_fail (GNOME_IS_DRUID_PAGE_FINISH (druid_page_finish));
 
 	druid_page_finish->watermark_image = watermark;
+	if (watermark)
+		gdk_pixbuf_ref(watermark);
 	gnome_canvas_item_set (druid_page_finish->_priv->watermark_item,
-			       "image", druid_page_finish->watermark_image, NULL);
+			       "pixbuf", druid_page_finish->watermark_image,
+			       NULL);
 }

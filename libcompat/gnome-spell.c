@@ -774,7 +774,7 @@ gnome_spell_destroy (GtkObject* s) {
 
 	if ( spell->tooltips )
 		gtk_object_unref(GTK_OBJECT(spell->tooltips));
-	pell->tooltips = NULL;
+	spell->tooltips = NULL;
 	/* FIXME: sigchld handler */
 	if ( spell->rispell )
 		fclose(spell->rispell);
@@ -802,7 +802,7 @@ gnome_spell_destroy (GtkObject* s) {
 	}
 
 	if(GTK_OBJECT_CLASS(parent_class)->destroy)
-		(* GTK_OBJECT_CLASS(parent_class)->destroy) (object);
+		(* GTK_OBJECT_CLASS(parent_class)->destroy) (s);
 }
 
 /**
@@ -844,13 +844,13 @@ gnome_spell_class_init(GnomeSpellClass* klass) {
 
 	spell_signals[FOUND_WORD] = gtk_signal_new ("found_word",
 		GTK_RUN_FIRST|GTK_RUN_NO_RECURSE,
-		object_class->type,
+		GTK_OBJECT_TYPE (object_class),
 		GTK_SIGNAL_OFFSET(GnomeSpellClass, found_word),
 		gnome_spell_marshaller, GTK_TYPE_NONE, 1, GTK_TYPE_POINTER);
 
 	spell_signals[HANDLED_WORD] = gtk_signal_new ("handled_word",
 		GTK_RUN_FIRST|GTK_RUN_NO_RECURSE,
-		object_class->type,
+		GTK_OBJECT_TYPE (object_class),
 		GTK_SIGNAL_OFFSET(GnomeSpellClass, handled_word),
 		gnome_spell_marshaller, GTK_TYPE_NONE, 1, GTK_TYPE_POINTER);
 

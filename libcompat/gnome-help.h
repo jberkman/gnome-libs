@@ -27,7 +27,7 @@
 #define __GNOME_HELP_H__ 1
 
 #include <glib.h>
-#include "gnome-defs.h"
+#include "libgnome/gnome-defs.h"
 
 BEGIN_GNOME_DECLS
 

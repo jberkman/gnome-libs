@@ -20,10 +20,10 @@
   @NOTATION@
  */
 
-#include "gnome-defs.h"
+#include "libgnome/gnome-defs.h"
 #include "gnome10-compat.h"
-#include "gnomelib-init2.h"
-#include "gnomelib-init.h"
+#include "libgnome/gnomelib-init2.h"
+#include "libgnome/gnomelib-init.h"
 
 void
 gnomelib_init (const char *app_id,

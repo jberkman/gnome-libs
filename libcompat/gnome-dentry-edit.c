@@ -76,8 +76,9 @@ gnome_dentry_edit_get_type (void)
 	sizeof (GnomeDEntryEditClass),
 	(GtkClassInitFunc) gnome_dentry_edit_class_init,
 	(GtkObjectInitFunc) gnome_dentry_edit_init,
-	(GtkArgSetFunc) NULL,
-	(GtkArgGetFunc) NULL,
+	NULL,
+	NULL,
+	NULL
       };
 
       dee_type = gtk_type_unique (gtk_object_get_type (), &dee_info);
@@ -101,7 +102,7 @@ gnome_dentry_edit_class_init (GnomeDEntryEditClass *klass)
   dentry_edit_signals[CHANGED] =
     gtk_signal_new ("changed",
 		    GTK_RUN_LAST,
-		    object_class->type,
+		    GTK_OBJECT_TYPE (object_class),
 		    GTK_SIGNAL_OFFSET (GnomeDEntryEditClass, changed),
 		    gtk_signal_default_marshaller,
 		    GTK_TYPE_NONE, 0);
@@ -109,7 +110,7 @@ gnome_dentry_edit_class_init (GnomeDEntryEditClass *klass)
   dentry_edit_signals[ICON_CHANGED] =
     gtk_signal_new ("icon_changed",
 		    GTK_RUN_LAST,
-		    object_class->type,
+		    GTK_OBJECT_TYPE (object_class),
 		    GTK_SIGNAL_OFFSET (GnomeDEntryEditClass, 
 				       icon_changed),
 		    gtk_signal_default_marshaller,
@@ -118,7 +119,7 @@ gnome_dentry_edit_class_init (GnomeDEntryEditClass *klass)
   dentry_edit_signals[NAME_CHANGED] =
     gtk_signal_new ("name_changed",
 		    GTK_RUN_LAST,
-		    object_class->type,
+		    GTK_OBJECT_TYPE (object_class),
 		    GTK_SIGNAL_OFFSET (GnomeDEntryEditClass, 
 				       name_changed),
 		    gtk_signal_default_marshaller,
@@ -297,7 +298,7 @@ translations_add(GtkWidget *button, GnomeDEntryEdit *dee)
   char *name;
   char *comment;
   char *text[3];
-  GList *language_list;
+  const GList *language_list;
   const char *curlang;
   GtkCList *cl = GTK_CLIST(dee->translations);
 

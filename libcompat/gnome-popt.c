@@ -33,8 +33,8 @@
 #include <glib.h>
 #include <sys/stat.h>
 #include <pwd.h>
-#include "gnome-defs.h"
-#include "gnomelib-init2.h"
+#include "libgnome/gnome-defs.h"
+#include "libgnome/gnomelib-init2.h"
 #include "gnome-popt.h"
 
 static GArray *opt_tables = NULL;
@@ -84,7 +84,6 @@ poptContext
 gnomelib_parse_args (int argc, char *argv[], int popt_flags)
 {
 	poptContext retval;
-	int nextopt;
 	struct poptOption end_opt;
 	char *base;
 

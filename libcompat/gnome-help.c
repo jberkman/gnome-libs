@@ -56,11 +56,11 @@ char *alloca ();
 #include <string.h>
 #include <sys/wait.h>
 
-#include "gnome-defs.h"
+#include "libgnome/gnome-defs.h"
 #include "gnome-help.h"
-#include "gnome-i18nP.h"
-#include "gnome-util.h"
-#include "gnome-url.h"
+#include "libgnome/gnome-i18nP.h"
+#include "libgnome/gnome-util.h"
+#include "libgnome/gnome-url.h"
 
 #define HELP_PROG "gnome-help-browser"
 
@@ -79,7 +79,7 @@ char *alloca ();
 gchar *
 gnome_help_file_find_file (const gchar *app, const gchar *path)
 {
-	GList *language_list;
+	const GList *language_list;
 	GString *buf;
 	
 	gchar *res= NULL;

@@ -33,7 +33,7 @@
 
 #include <gtk/gtk.h>
 #include "libgnome/gnome-defs.h"
-#include "libgnome/gnome-dentry.h"
+#include "libcompat/gnome-dentry.h"
 
 BEGIN_GNOME_DECLS
 

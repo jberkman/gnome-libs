@@ -37,11 +37,11 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include "gnome-defs.h"
-#include "gnome-util.h"
-#include "gnome-config.h"
+#include "libgnome/gnome-defs.h"
+#include "libgnome/gnome-util.h"
+#include "libgnome/gnome-config.h"
 #include "gnome-dentry.h"
-#include "gnome-exec.h"
+#include "libgnome/gnome-exec.h"
 
 /* g_free already checks if x is NULL */
 #define free_if_empty(x) g_free (x)

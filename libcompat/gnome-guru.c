@@ -194,9 +194,18 @@ gnome_guru_construct                 (GnomeGuru   * guru,
   if (dialog != NULL) {
     guru->has_dialog = TRUE;
 
+    /* FOO! Ultra evil code: */
     /* Don't copy this dialog code; it uses the internals of the widget,
        and is evil. */
-    guru->buttonbox = dialog->action_area;
+    {
+	    /*evil*/ GList *list = GTK_BOX (dialog->vbox)->children; /*evil*/
+	    /*evil*/ g_assert (list != NULL); /*evil*/
+	    /*evil*/ list = g_list_last(list); /*evil*/
+	    /*evil*/ g_assert (list->prev != NULL); /*evil*/
+	    /*evil*/ list = list->prev; /*evil*/
+	    /*evil*/ g_assert (GTK_IS_HBUTTON_BOX (list->data)); /*evil*/
+	    /*evil*/ guru->buttonbox = list->data; /*evil*/
+    }
 
     gnome_dialog_set_close(dialog, FALSE);
 
