@@ -1,3 +1,10 @@
+1999-01-02  Miguel de Icaza  <miguel@nuclecu.unam.mx>
+
+	* libgnome/gnome-mime-info.c (remove_this_key): Release the
+	correct pointer. 
+
+	* libgnome/gnome-metadata.c: Made this module use g_malloc/g_strdup/g_free.
+
 1999-01-02  Jeff Garzik  <jgarzik@pobox.com>
 
 	* libgnome/gnome-dump.c, libgnome/gnome-magic.c,
