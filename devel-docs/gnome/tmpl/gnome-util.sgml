@@ -142,7 +142,7 @@ string fashion.
 
 <!-- ##### MACRO g_copy_strings ##### -->
 <para>
-
+Deprecated. Use <function>g_strconcat()</function>.
 </para>
 
 
@@ -166,64 +166,36 @@ string fashion.
 @Returns: 
 
 
-<!-- ##### MACRO g_filename_index ##### -->
-<para>
-
-</para>
-
-@path: 
-
-
-<!-- ##### MACRO g_filename_pointer ##### -->
-<para>
-
-</para>
-
-
-
 <!-- ##### FUNCTION g_extension_pointer ##### -->
 <para>
-
 </para>
 
 @path: 
-@Returns: 
-
-
-<!-- ##### FUNCTION g_copy_vector ##### -->
-<para>
-
-</para>
-
-@vec: 
 @Returns: 
 
 
 <!-- ##### MACRO g_flatten_vector ##### -->
 <para>
-
+Deprecated. Use <function>g_strjoinv()</function>.
 </para>
 
 
 
 <!-- ##### MACRO gnome_util_user_home ##### -->
 <para>
-
+Deprecated. Use <function>g_get_home_dir()</function>.
 </para>
 
 
 
 <!-- ##### MACRO gnome_util_prepend_user_home ##### -->
 <para>
-
+Deprecated. Use <function>g_get_home_dir()</function> and <function>g_concat_dir_and_file()</function>.
 </para>
-
-@x: 
-
 
 <!-- ##### MACRO gnome_util_home_file ##### -->
 <para>
-
+Deprecated.
 </para>
 
 @afile: 
@@ -231,18 +203,15 @@ string fashion.
 
 <!-- ##### FUNCTION gnome_util_user_shell ##### -->
 <para>
-
+Get the user's shell.
 </para>
 
-@Returns: 
+@Returns: Name of user's shell.
 
 
 <!-- ##### FUNCTION g_is_image_filename ##### -->
 <para>
-
+Deprecated. Use gnome-mime stuff instead.
 </para>
-
-@path: 
-@Returns: 
 
 

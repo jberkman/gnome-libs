@@ -22,32 +22,26 @@ GnomeAppBar
 
 <!-- ##### MACRO GNOME_APPBAR_HAS_STATUS ##### -->
 <para>
-
+Returns whether the appbar contains a statusbar widget. For internal use. Don't use.
 </para>
 
-@appbar: 
+@appbar: appbar to check
 
 
 <!-- ##### MACRO GNOME_APPBAR_HAS_PROGRESS ##### -->
 <para>
-
+Returns whether the appbar has a progress widget. For internal use. Don't use.
 </para>
 
-@appbar: 
-
-
-<!-- ##### STRUCT GnomeAppBarMsg ##### -->
-<para>
-
-</para>
-
+@appbar: appbar to check
 
 <!-- ##### MACRO GNOME_APPBAR_INTERACTIVE ##### -->
 <para>
-
+Returns whether the appbar has a minibuffer-style interactive status display.
+For internal use. Don't use.
 </para>
 
-@ab: 
+@ab: appbar to check
 
 
 <!-- ##### FUNCTION gnome_appbar_new ##### -->
