@@ -6,6 +6,9 @@
 	- use the new GNOME_GTKDOC_CHECK and GNOME_ENABLE_DEBUG macros
 	- remove all checks for the image libraries including -lz since
 	they're now obsoleted by gdk-pixbuf.
+	- check for the make-inline-pixbuf tool which is installed from
+	GTK+ 2.0's gdk-pixbuf and AC_SUBST(MAKE_INLINE_PIXBUF) if found,
+	otherwise bail out.
 
 	* tools/convertdb: Disable this from being build.
 
