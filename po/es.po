@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-libs 0.99.2\n"
-"POT-Creation-Date: 1999-01-28 00:38-0600\n"
+"POT-Creation-Date: 1999-01-28 19:33-0600\n"
 "PO-Revision-Date: 1999-01-10 17:37+0100\n"
 "Last-Translator: Pablo Saratxaga <srtxg@chanae.alphanet.ch>\n"
 "Language-Team: \n"
@@ -207,11 +207,11 @@ msgstr ""
 
 #: libgnome/gconfigger.c:32
 msgid "Get config entry"
-msgstr ""
+msgstr "Extrae una entrada del archivo de configuración"
 
 #: libgnome/gconfigger.c:32 libgnome/gconfigger.c:33
 msgid "CONFIG-PATH"
-msgstr ""
+msgstr "RUTA-ARCHIVO"
 
 #: libgnome/gconfigger.c:33
 msgid "set"
@@ -219,9 +219,9 @@ msgstr ""
 
 #: libgnome/gconfigger.c:33
 msgid "Set config entry"
-msgstr ""
+msgstr "Graba un valor en el archivo de configuración"
 
-#: libgnome/gnome-popt.c:94
+#: libgnome/gnome-popt.c:90
 #, c-format
 msgid ""
 "Error on option %s: %s.\n"
@@ -230,23 +230,23 @@ msgstr ""
 "Error en la opción %s: %s.\n"
 "Lance '%s --help' para ver la lista completa de las opciones disponibles.\n"
 
-#: libgnome/gnomelib-init.c:115
+#: libgnome/gnomelib-init.c:117
 msgid "Disable sound server usage"
 msgstr "Desactivar el uso del servidor de sonido"
 
-#: libgnome/gnomelib-init.c:117
+#: libgnome/gnomelib-init.c:119
 msgid "Enable sound server usage"
 msgstr "Activar el uso del servidor de sonido"
 
-#: libgnome/gnomelib-init.c:119
+#: libgnome/gnomelib-init.c:121
 msgid "Host:port on which the sound server to use is running"
 msgstr "Hostal:puerto en el cual está corriendo el servidor de sonido a usar"
 
-#: libgnome/gnomelib-init.c:120
+#: libgnome/gnomelib-init.c:122
 msgid "HOSTNAME:PORT"
 msgstr "HOSTAL:PUERTO"
 
-#: libgnome/gnomelib-init.c:128
+#: libgnome/gnomelib-init.c:130
 msgid "GNOME Options"
 msgstr "Opciones de GNOME"
 
@@ -267,75 +267,141 @@ msgstr "Autores: "
 msgid "About"
 msgstr "Acerca"
 
-#. Open
+#: libgnomeui/gnome-app-helper.c:77
+msgid "_File"
+msgstr "_Archivo"
+
+#: libgnomeui/gnome-app-helper.c:78
+#, fuzzy
+msgid "_File/"
+msgstr "_Archivo"
+
+#: libgnomeui/gnome-app-helper.c:79
+#, fuzzy
+msgid "_Edit"
+msgstr "_Editar"
+
+#: libgnomeui/gnome-app-helper.c:80
+#, fuzzy
+msgid "_Edit/"
+msgstr "Editar/"
+
+#: libgnomeui/gnome-app-helper.c:81
+#, fuzzy
+msgid "_View"
+msgstr "Vista"
+
 #: libgnomeui/gnome-app-helper.c:82
+msgid "_View/"
+msgstr "_Vista/"
+
+#: libgnomeui/gnome-app-helper.c:83
+msgid "_Settings"
+msgstr "_Configuración"
+
+#: libgnomeui/gnome-app-helper.c:84
+msgid "_Settings/"
+msgstr "_Configuración/"
+
+#: libgnomeui/gnome-app-helper.c:85
+#, fuzzy
+msgid "File_s"
+msgstr "_Archivo"
+
+#: libgnomeui/gnome-app-helper.c:86
+#, fuzzy
+msgid "File_s/"
+msgstr "Archivo"
+
+#: libgnomeui/gnome-app-helper.c:87
+#, fuzzy
+msgid "_Windows"
+msgstr "_Ventanas"
+
+#: libgnomeui/gnome-app-helper.c:88
+#, fuzzy
+msgid "_Game"
+msgstr "Guardar"
+
+#: libgnomeui/gnome-app-helper.c:89
+#, fuzzy
+msgid "_Help"
+msgstr "A_yuda"
+
+#: libgnomeui/gnome-app-helper.c:90
+#, fuzzy
+msgid "_Windows/"
+msgstr "_Ventanas/"
+
+#. Open
+#: libgnomeui/gnome-app-helper.c:102
 msgid "_Open..."
 msgstr "_Abrir..."
 
-#: libgnomeui/gnome-app-helper.c:82
+#: libgnomeui/gnome-app-helper.c:102
 msgid "Open a file"
-msgstr ""
+msgstr "Abre un archivo"
 
 #. Save
-#: libgnomeui/gnome-app-helper.c:87
+#: libgnomeui/gnome-app-helper.c:107
 msgid "_Save"
 msgstr "_Guardar"
 
-#: libgnomeui/gnome-app-helper.c:87
+#: libgnomeui/gnome-app-helper.c:107
 msgid "Save the current file"
 msgstr "Guarda el archivo actual"
 
 #. Save As
-#: libgnomeui/gnome-app-helper.c:92
+#: libgnomeui/gnome-app-helper.c:112
 msgid "Save _As..."
 msgstr "Guardar _como..."
 
-#: libgnomeui/gnome-app-helper.c:93
+#: libgnomeui/gnome-app-helper.c:113
 msgid "Save the current file with a different name"
-msgstr ""
+msgstr "Guarda el documento actual con un nombre distinto"
 
 #. Revert
-#: libgnomeui/gnome-app-helper.c:98
+#: libgnomeui/gnome-app-helper.c:118
 msgid "_Revert"
-msgstr ""
+msgstr "_Deshace"
 
-#: libgnomeui/gnome-app-helper.c:99
+#: libgnomeui/gnome-app-helper.c:119
 msgid "Revert to a saved version of the file"
-msgstr ""
+msgstr "Revierte a la versión almacenada del archivo"
 
 #. Print
-#: libgnomeui/gnome-app-helper.c:104
+#: libgnomeui/gnome-app-helper.c:124
 msgid "_Print"
 msgstr "_Imprimir"
 
-#: libgnomeui/gnome-app-helper.c:104
+#: libgnomeui/gnome-app-helper.c:124
 msgid "Print the current file"
-msgstr ""
+msgstr "Imprime el archivo actual"
 
 #. Print Setup
-#: libgnomeui/gnome-app-helper.c:109
+#: libgnomeui/gnome-app-helper.c:129
 msgid "Print S_etup..."
 msgstr "Configurar la imprimsora..."
 
-#: libgnomeui/gnome-app-helper.c:110
+#: libgnomeui/gnome-app-helper.c:130
 msgid "Setup the page settings for your current printer"
 msgstr "Parámetros de la página para la impresora actual"
 
 #. Close
-#: libgnomeui/gnome-app-helper.c:115
+#: libgnomeui/gnome-app-helper.c:135
 msgid "_Close"
 msgstr "_Cerrar"
 
-#: libgnomeui/gnome-app-helper.c:115
+#: libgnomeui/gnome-app-helper.c:135
 msgid "Close the current file"
 msgstr "Cierra el archivo actual"
 
 #. Exit
-#: libgnomeui/gnome-app-helper.c:120
+#: libgnomeui/gnome-app-helper.c:140
 msgid "E_xit"
 msgstr "_Salir"
 
-#: libgnomeui/gnome-app-helper.c:120
+#: libgnomeui/gnome-app-helper.c:140
 msgid "Exit the program"
 msgstr "Salir del programa"
 
@@ -343,93 +409,93 @@ msgstr "Salir del programa"
 #. * The "Edit" menu
 #.
 #. Cut
-#: libgnomeui/gnome-app-helper.c:128
+#: libgnomeui/gnome-app-helper.c:148
 msgid "C_ut"
 msgstr "C_ortar"
 
-#: libgnomeui/gnome-app-helper.c:128
+#: libgnomeui/gnome-app-helper.c:148
 msgid "Cut the selection"
-msgstr ""
+msgstr "Corta la selección"
 
 #. 10
 #. Copy
-#: libgnomeui/gnome-app-helper.c:134 libgnomeui/gnome-popup-help.c:59
+#: libgnomeui/gnome-app-helper.c:154 libgnomeui/gnome-popup-help.c:59
 msgid "_Copy"
 msgstr "_Copiar"
 
-#: libgnomeui/gnome-app-helper.c:134
+#: libgnomeui/gnome-app-helper.c:154
 msgid "Copy the selection"
-msgstr ""
+msgstr "Copia la selección"
 
 #. Paste
-#: libgnomeui/gnome-app-helper.c:139 libgnomeui/gnome-popup-help.c:61
+#: libgnomeui/gnome-app-helper.c:159 libgnomeui/gnome-popup-help.c:61
 msgid "_Paste"
 msgstr "_Pegar"
 
-#: libgnomeui/gnome-app-helper.c:139
+#: libgnomeui/gnome-app-helper.c:159
 msgid "Paste the clipboard"
-msgstr ""
+msgstr "Pega en el portapapeles"
 
 #. Clear
-#: libgnomeui/gnome-app-helper.c:144
+#: libgnomeui/gnome-app-helper.c:164
 msgid "C_lear"
 msgstr "Borrar"
 
-#: libgnomeui/gnome-app-helper.c:144
+#: libgnomeui/gnome-app-helper.c:164
 msgid "Clear the selection"
 msgstr "Borrar la selección"
 
 #. Undo
-#: libgnomeui/gnome-app-helper.c:149
+#: libgnomeui/gnome-app-helper.c:169
 msgid "_Undo"
 msgstr "Revertir"
 
-#: libgnomeui/gnome-app-helper.c:149
+#: libgnomeui/gnome-app-helper.c:169
 msgid "Undo the last action"
 msgstr "Revertir la última acción"
 
 #. Redo
-#: libgnomeui/gnome-app-helper.c:154
+#: libgnomeui/gnome-app-helper.c:174
 msgid "_Redo"
 msgstr "Re-hacer"
 
-#: libgnomeui/gnome-app-helper.c:154
+#: libgnomeui/gnome-app-helper.c:174
 msgid "Redo the undone action"
 msgstr "Re-hace la acción revertida"
 
 #. Find
-#: libgnomeui/gnome-app-helper.c:159
+#: libgnomeui/gnome-app-helper.c:179
 msgid "_Find..."
 msgstr "_Buscar..."
 
-#: libgnomeui/gnome-app-helper.c:159
+#: libgnomeui/gnome-app-helper.c:179
 msgid "Search for a string"
 msgstr "Busca una frase"
 
 #. Find Again
-#: libgnomeui/gnome-app-helper.c:164
+#: libgnomeui/gnome-app-helper.c:184
 msgid "Find _Again"
 msgstr "Busca de nuevo"
 
-#: libgnomeui/gnome-app-helper.c:165
+#: libgnomeui/gnome-app-helper.c:185
 msgid "Search again for the same string"
 msgstr "Busca de nuevo la misma frase"
 
 #. Replace
-#: libgnomeui/gnome-app-helper.c:170
+#: libgnomeui/gnome-app-helper.c:190
 msgid "_Replace..."
 msgstr "_Remplazar"
 
-#: libgnomeui/gnome-app-helper.c:170
+#: libgnomeui/gnome-app-helper.c:190
 msgid "Replace a string"
 msgstr "Remplazar la palabra"
 
 #. Properties
-#: libgnomeui/gnome-app-helper.c:175
+#: libgnomeui/gnome-app-helper.c:195
 msgid "_Properties..."
 msgstr "_Propiedades..."
 
-#: libgnomeui/gnome-app-helper.c:176
+#: libgnomeui/gnome-app-helper.c:196
 msgid "Modify the file's properties"
 msgstr "Modifica las propiedades del archivo"
 
@@ -437,11 +503,11 @@ msgstr "Modifica las propiedades del archivo"
 #. * The Settings menu
 #.
 #. Settings
-#: libgnomeui/gnome-app-helper.c:184
+#: libgnomeui/gnome-app-helper.c:204
 msgid "_Preferences..."
 msgstr "_Preferencias..."
 
-#: libgnomeui/gnome-app-helper.c:185
+#: libgnomeui/gnome-app-helper.c:205
 msgid "Configure the application"
 msgstr "Configura la aplicación"
 
@@ -450,111 +516,111 @@ msgstr "Configura la aplicación"
 #. * And the "Help" menu
 #.
 #. About
-#: libgnomeui/gnome-app-helper.c:194
+#: libgnomeui/gnome-app-helper.c:214
 msgid "_About..."
 msgstr "_Acerca..."
 
-#: libgnomeui/gnome-app-helper.c:195
+#: libgnomeui/gnome-app-helper.c:215
 msgid "About this application"
 msgstr "Acerca de esta aplicación"
 
-#: libgnomeui/gnome-app-helper.c:198
+#: libgnomeui/gnome-app-helper.c:218
 msgid "_Select All"
 msgstr "_Selecciona todo"
 
-#: libgnomeui/gnome-app-helper.c:199
+#: libgnomeui/gnome-app-helper.c:219
 msgid "Select everything"
 msgstr "Selecciona todo"
 
 #.
 #. * Window menu
 #.
-#: libgnomeui/gnome-app-helper.c:207
+#: libgnomeui/gnome-app-helper.c:227
 msgid "_New Window..."
 msgstr "_Nueva ventana..."
 
-#: libgnomeui/gnome-app-helper.c:208
+#: libgnomeui/gnome-app-helper.c:228
 msgid "Create a new window"
 msgstr "Crea una nueva ventana"
 
-#: libgnomeui/gnome-app-helper.c:212
+#: libgnomeui/gnome-app-helper.c:232
 msgid "_Close Window..."
 msgstr "_Cerrar ventana..."
 
-#: libgnomeui/gnome-app-helper.c:213
+#: libgnomeui/gnome-app-helper.c:233
 msgid "Close the current window"
 msgstr "Cierra la ventana actual"
 
 #.
 #. * The "Game" menu
 #.
-#: libgnomeui/gnome-app-helper.c:221
+#: libgnomeui/gnome-app-helper.c:241
 msgid "_New game"
 msgstr "_Nuevo juego"
 
-#: libgnomeui/gnome-app-helper.c:222
+#: libgnomeui/gnome-app-helper.c:242
 msgid "Start a new game"
 msgstr "Inicia una nueva partida"
 
-#: libgnomeui/gnome-app-helper.c:226
+#: libgnomeui/gnome-app-helper.c:246
 msgid "_Pause game"
 msgstr "_Pausa el juego"
 
-#: libgnomeui/gnome-app-helper.c:227
+#: libgnomeui/gnome-app-helper.c:247
 msgid "Pause the game"
 msgstr "Pausa el juego"
 
-#: libgnomeui/gnome-app-helper.c:231
+#: libgnomeui/gnome-app-helper.c:251
 msgid "_Restart game"
 msgstr "_Reiniciar juego"
 
-#: libgnomeui/gnome-app-helper.c:232
+#: libgnomeui/gnome-app-helper.c:252
 #, fuzzy
 msgid "Restart the game"
 msgstr "Establece el nombre del programa"
 
-#: libgnomeui/gnome-app-helper.c:236
+#: libgnomeui/gnome-app-helper.c:256
 msgid "_Undo move"
 msgstr "Revertir movimiento"
 
-#: libgnomeui/gnome-app-helper.c:237
+#: libgnomeui/gnome-app-helper.c:257
 msgid "Undo the last move"
 msgstr "Revierte el último movimiento"
 
-#: libgnomeui/gnome-app-helper.c:241
+#: libgnomeui/gnome-app-helper.c:261
 msgid "_Redo move"
-msgstr ""
+msgstr "_Rehace el movimiento"
 
-#: libgnomeui/gnome-app-helper.c:242
+#: libgnomeui/gnome-app-helper.c:262
 msgid "Redo the undone move"
-msgstr ""
+msgstr "Rehace el movimiento que se revirtió"
 
-#: libgnomeui/gnome-app-helper.c:246
+#: libgnomeui/gnome-app-helper.c:266
 #, fuzzy
 msgid "_Hint"
 msgstr "_Salir"
 
-#: libgnomeui/gnome-app-helper.c:247
+#: libgnomeui/gnome-app-helper.c:267
 msgid "Get a hint for your next move"
-msgstr ""
+msgstr "Ayuda para el siguiente documento"
 
 #. 30
-#: libgnomeui/gnome-app-helper.c:252
+#: libgnomeui/gnome-app-helper.c:272
 #, fuzzy
 msgid "_Scores..."
 msgstr "_Puntuación..."
 
-#: libgnomeui/gnome-app-helper.c:253
+#: libgnomeui/gnome-app-helper.c:273
 msgid "View the scores"
-msgstr ""
+msgstr "Ver la tabla de puntuación"
 
-#: libgnomeui/gnome-app-helper.c:257
+#: libgnomeui/gnome-app-helper.c:277
 msgid "_End game"
-msgstr ""
+msgstr "_Finalizar juego"
 
-#: libgnomeui/gnome-app-helper.c:258
+#: libgnomeui/gnome-app-helper.c:278
 msgid "End the current game"
-msgstr ""
+msgstr "Termina el juego en progreso"
 
 #: libgnomeui/gnome-app-util.c:93
 msgid " (press return)"
@@ -1160,7 +1226,7 @@ msgstr "Configurar"
 
 #: libgnomeui/gnome-stock.c:768
 msgid "Add"
-msgstr ""
+msgstr "Añade"
 
 #: libgnomeui/gnome-stock.c:769
 #, fuzzy
@@ -1177,19 +1243,19 @@ msgstr "Borra"
 
 #: libgnomeui/gnome-stock.c:772
 msgid "Table Borders"
-msgstr ""
+msgstr "Bordes de la tabla"
 
 #: libgnomeui/gnome-stock.c:773
 msgid "Table Fill"
-msgstr ""
+msgstr "Llenar la tabla"
 
 #: libgnomeui/gnome-stock.c:774
 msgid "Bulleted List"
-msgstr ""
+msgstr "Lista con puntos"
 
 #: libgnomeui/gnome-stock.c:775
 msgid "Numbered List"
-msgstr ""
+msgstr "Lista numerada"
 
 #: libgnomeui/gnome-stock.c:776
 msgid "Indent"
@@ -1384,7 +1450,7 @@ msgstr "Espacios de trabajo:"
 
 #: libgnomeui/winhints_demo.c:152
 msgid "Sticky"
-msgstr ""
+msgstr "Pegajoso"
 
 #: libgnomeui/winhints_demo.c:156
 msgid "Set Workspace"
@@ -1656,60 +1722,8 @@ msgstr "Número raro en la respuesta"
 #~ msgid "_New"
 #~ msgstr "_Nuevo"
 
-#~ msgid "_File"
-#~ msgstr "_Archivo"
-
-#, fuzzy
-#~ msgid "_Edit"
-#~ msgstr "_Editar"
-
-#, fuzzy
-#~ msgid "_View"
-#~ msgstr "Vista"
-
-#~ msgid "_Settings"
-#~ msgstr "_Configuración"
-
-#, fuzzy
-#~ msgid "Fi_les"
-#~ msgstr "_Archivo"
-
-#, fuzzy
-#~ msgid "_Windows"
-#~ msgstr "_Ventanas"
-
-#, fuzzy
-#~ msgid "_Help"
-#~ msgstr "A_yuda"
-
-#, fuzzy
-#~ msgid "_Game"
-#~ msgstr "Guardar"
-
 #~ msgid "_New/"
 #~ msgstr "_Nuevo/"
-
-#, fuzzy
-#~ msgid "_File/"
-#~ msgstr "_Archivo"
-
-#, fuzzy
-#~ msgid "_Edit/"
-#~ msgstr "Editar/"
-
-#~ msgid "_View/"
-#~ msgstr "_Vista/"
-
-#~ msgid "_Settings/"
-#~ msgstr "_Configuración/"
-
-#, fuzzy
-#~ msgid "Fi_les/"
-#~ msgstr "Archivo"
-
-#, fuzzy
-#~ msgid "_Windows/"
-#~ msgstr "_Ventanas/"
 
 #, fuzzy
 #~ msgid "_Help/"
