@@ -1,0 +1,152 @@
+<sect1 id="goad">
+<title>GOAD (Gnome Object Activation Directory)</title>
+<sect2><title>Author(s)</title>
+<para>Elliot Lee &lt;sopwith@redhat.com&gt;</para>
+</sect2>
+<sect2><title>Description<title>
+<para>
+A set of routines for getting a listing of available CORBA object servers,
+and connecting to new or existing servers using specified parameters.
+</para>
+</sect2>
+<sect2 id="goad-server-list-get">
+<title>goad_server_list_get - get a listing of objects which we know how to bootstrap</title>
+<funcsynopsis><funcdef>GoadServer *<function>goad_server_list_get</function></funcdef>
+</funcsynopsis>
+<sect3><title>Description</title>
+<para>This function returns an array of GoadServer structures that list the objects that a program can use.</para>
+</sect3>
+<sect3><title>Usage</title>
+<programlisting>
+GoadServer *servlist = goad_server_list_get();
+/* use servlist */
+goad_server_list_free(servlist);
+</programlisting></sect3>
+</sect2>
+</sect1>
+<sect1 id="orbitgtk">
+<title>ORBit-Gtk</title>
+<sect2><title>Author(s)</title>
+<para>
+Elliot Lee &lt;sopwith@redhat.com&gt;
+</para>
+</sect2>
+<sect2><title>Description</title>
+<para>
+Routines for making ORBit work nicely with gtk, and
+starting/retrieving the name service object for a GNOME session.
+</para></sect2>
+<sect2 id="gnome-CORBA-init">
+<title>gnome_CORBA_init initialize ORBit and GNOME for use in a program.</title>
+<funcsynopsis><funcdef>CORBA_ORB <function>gnome_CORBA_init</function>
+</funcdef>
+<paramdef>char *<parameter>app_id</parameter></paramdef>
+<paramdef>struct argp *<parameter>app_parser</parameter></paramdef>
+<paramdef>int *<parameter>argc</parameter></paramdef>
+<paramdef>char **<parameter>argv</parameter></paramdef>
+<paramdef>unsigned int <parameter>flags </parameter></paramdef>
+<paramdef>int *<parameter>arg_index</parameter></paramdef>
+<paramdef>CORBA_Environment *<parameter>ev</parameter></paramdef>
+</funcsynopsis>
+<sect3><title>Description</title>
+<para>
+This routine initializes gnome (by calling
+<function>gnome_init</function>).  A few items are set up to allow
+ORBit and gtk to interact well, and finally it initializes ORBit and
+returns the CORBA_ORB reference to the new ORB.
+</para>
+</sect3>
+<sect3><title>Usage</title>
+<programlisting>
+int main(int argc, char *argv)
+{
+	CORBA_ORB my_orb;
+	CORBA_Environment ev;
+
+	CORBA_exception_init(&ev);
+	my_orb = gnome_CORBA_init("myapp", NULL, &argc, &argv, 0, NULL, &ev);
+	if(ev._major != CORBA_NO_EXCEPTION)
+	    exit(1); /* error initializing ORB */
+
+	/* insert killer app code here */
+}
+</programlisting>
+</sect3>
+<sect3><title>Parameters</title>
+<itemizedlist>
+<listitem>
+<para>char *<parameter>app_id</parameter></para>
+<para>An alphanumeric application ID string (the application's name is a good choice).</para>
+</listitem>
+<listitem>
+<para>struct argp *<parameter>app_parser</parameter></para>
+<para>See the (non-existent) argp docs for help.</para>
+</listitem>
+<listitem>
+<para>int *<parameter>argc</parameter></para>
+<para>A pointer to the number of arguments.</para>
+</listitem>
+<listitem>
+<para>char **<parameter>argv</parameter></para>
+<para>The array of argument strings.</para>
+</listitem>
+<listitem>
+<para>unsigned int <parameter>flags</parameter></para>
+<para>See the (non-existent) argp docs for help.</para>
+</listitem>
+<listitem>
+<para>int *<parameter>arg_index</parameter></para>
+<para>See the (non-existent) argp docs for help.</para>
+</listitem>
+<listitem>
+<para>CORBA_Environment *<parameter>ev</parameter></para>
+<para>Pointer to a CORBA exception information structure,
+to allow the ORB initialization functions to signal any errors that occur.</para>
+</listitem>
+</sect3>
+</sect2>
+<sect2 id="gnome-name-service-get">
+<title>gnome_name_service_get - retrieves an object reference to the root name service context for the current GNOME session</title>
+<funcsynopsis><funcdef>CORBA_Object
+<function>gnome_name_service_get</function></funcdef>
+</funcsynopsis>
+<sect3><title>Description</title>
+<para>This routine is used to get access to the top naming context for
+the current GNOME session. If a naming server is not running, one will be started.
+</para>
+<para>
+This function assumes that both gtk and ORBit have been initialized.
+</para>
+</sect3>
+<sect3><title>Usage</title>
+<programlist>
+CORBA_Object ns;
+
+ns = gnome_name_service_get();
+</programlist>
+</sect3>
+</sect2>
+</sect1>
+<sect1 id="gnome-plugins">
+<title>gnome-plugins</title>
+<para>
+This API is lying around because someone was nutty enough to write it,
+but most of it (except the two structure definitions, for plugin
+writers & users) is unneeded. Please don't use it for now.
+</para>
+</sect1>
+<!-- Keep this comment at the end of the file
+Local variables:
+mode: sgml
+sgml-omittag:t
+sgml-shorttag:t
+sgml-minimize-attributes:nil
+sgml-always-quote-attributes:t
+sgml-indent-step:2
+sgml-indent-data:t
+sgml-parent-document:("gnome-dev-info.sgml" "book" "sect1" "")
+sgml-exposed-tags:nil
+sgml-local-catalogs:nil
+sgml-local-ecat-files:nil
+End:
+-->
