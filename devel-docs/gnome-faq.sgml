@@ -108,7 +108,7 @@
       environment. In this respect, it is approximately equivalent to
       CDE, Win32, NextStep, or KDE. The big difference is that, unlike
       any of the above-mentioned examples, every single component of
-      GNOME is "Free" or "Open Source" software.</para>
+      GNOME is Free software.</para>
 
       <para>For the project geographers out there, here are some of
       the higher mountains to be found in GNOME-land:</para>
@@ -148,9 +148,8 @@
 	  the look and feel of all GTK+ apps on a machine while apps
 	  are running, which is just unbelievably cool; (3) and
 	  finally, GTK+ is licensed under the LGPL, meaning that it is
-	  completely open source(TM), or "free" software, just like
-	  the rest of GNOME. (See <link
-	  linkend="GTK">GTK+</link>)</para>
+	  completely Free Software, just like the rest of GNOME. (See
+	  <link linkend="GTK">GTK+</link>)</para>
 	</listitem>
 
 	<listitem>
@@ -418,6 +417,99 @@
       currently Enlightenment and IceWM, with FVWM, SCWM, WindowMaker
       and QVWM putting finishing touches on GNOME-compliance as we
       speak.</para>
+    </sect1>
+
+    <sect1 id="FreeSoftware">
+      <title>You've said that GNOME is Free Software.  What does Free
+      Software mean?</title>
+
+      <para>Most software licenses are designed to limit the users
+      freedom to use, examine, modify and distribute the software.  In
+      the GNOME project, and the Free Software community in general,
+      we believe that such restrictions are unethical, and we endeavor
+      to produce quality software that is free of such restrictions.
+      This is what we call Free Software.  Traditionally, it has
+      referred to software which allows three types of freedom:</para>
+
+      <itemizedlist>
+	<listitem>
+	  <para>The freedom to study how the program works and adapt
+	  it to your needs.</para>
+	</listitem>
+	<listitem>
+	  <para>The freedom to redistribute copies so you can share
+	  with your neighbor.</para>
+	</listitem>
+	<listitem>
+	  <para>The freedom to improve the program, and release your
+	  improvements to the public, so that the whole community
+	  benefits.</para>
+	</listitem>
+      </itemizedlist>
+
+      <para>More recently, a fourth freedom has started being
+      restricted by licenses, the freedom to use the software.  Since
+      software licenses are based on copyright law, and copyright law
+      only addresses distribution, not use, we assumed that freedom of
+      use goes without saying.  Suffice it to say that while freedom
+      of use is not part of the traditional definition of Free
+      Software, the concept does include that freedom.</para>
+
+      <note>
+	<comment>Note to translators, please translate the following
+	note, including all instances of the word "free" carefully,
+	except leave the <literal>free</literal> in English.</comment>
+
+	<para>If this paragraph is hard to understand in translation,
+	forgive me.  Unlike most languages, in English the word used
+	in both <quote>free beer</quote> and <quote>free
+	speech</quote> is <literal>free</literal>.  This causes some
+	confusion when discussing Free Software.</para>
+      </note>
+      <para>Free Software is a matter of liberty, not price.  To
+      understand the concept, think "Free Speech" not "Free Beer".
+      The Free Software community is not at all against the concept of
+      selling your software, or programmers making a living.  We are
+      not against commercial software, we are against the concept of
+      proprietary software.  For more information, check out the
+      articles at <ulink url="&wwwgnuphil;">
+      &wwwgnuphil;</ulink>.</para>
+
+      <para>In the GNOME project, we protect the users freedom by
+      using the GNU General Public License (GPL) and the GNU Lesser
+      General Public License (LGPL, formerly known as the GNU Library
+      GPL).  These licenses are carefully designed with legal advice
+      to produce a <quote>copyleft</quote>.  That is a copyrighted
+      work that guarantees that it will always be freely
+      redistributable.  This is by making sure that modifications and
+      derivative works are also covered under the GPL.</para>
+
+      <para>The main GNOME applications (and a few of the libraries)
+      are covered under the GPL.  Most of the core GNOME libraries use
+      the LGPL, to allow other free (and proprietary) software
+      licenses to be used when making GNOME software, while still
+      protecting the libraries from being restricted.</para>
+    </sect1>
+
+    <sect1 id="OpenSource">
+      <title>Is GNOME Open Source(tm) Software?</title>
+
+      <para>The short answer is yes.  The GPL and LGPL used for GNOME
+      are explicitly listed as examples for the "Open Source"
+      definition.  We try to avoid using the term Open Source to
+      describe GNOME, however, since not only does the term
+      deliberately hide the freedom inherent in Free Software, but the
+      term is being used for software which is not Free.</para>
+
+      <para>The term was developed to try to bring Free Software to
+      businesses who didn't want to hear about Freedom.  Personally, I
+      have found that most businesses like to hear about freedom.  The
+      freedom to customize their software to their needs, the freedom
+      to change software developers without changing their software,
+      the freedom to give copies of their software to their clients
+      and subcontractors, these are all freedoms that Free Software
+      offers, and proprietary software usually doesn't, that make
+      <emphasis>good business sense</emphasis>.</para>
     </sect1>
   </chapter>
 
@@ -2158,15 +2250,19 @@ ls -l /opt/gnome/share/gtkrc
 
 	<member><firstterm>Debian</firstterm> is a trademark of
 	Software in the Public Interest</member>
+
+	<member><firstterm>Copyleft</firstterm> and <firstterm>Free
+	Software</firstterm> are not trademarks of anyone, but they
+	are important terms in the Free Software community, and for
+	the Free Software Foundation.</member>
 	
 	<member><firstterm>Open Source</firstterm> is a service mark
 	of either Software in the Public Interest or the Open Source
-	Initiative, nobody's quite sure, but they work together anyway
-	so does it really matter?</member>
+	Initiative or Bruce Perens, nobody's quite sure.</member>
 	
 	<member><firstterm>Unix</firstterm>, and <firstterm>The X
 	Window System</firstterm> are trademarks of the Open
-	Group</member>
+	Group.</member>
 
 	<member>All other trademarks are the property of their
 	respective owners.</member>
