@@ -1,3 +1,26 @@
+Tue Jun 16 15:24:46 1998  Havoc Pennington  <hp@pobox.com>
+
+	* libgnome/gnome-util.h, gnome-util.c (gnome_dirrelative_file):
+	make char * args const.
+	(gnome_datadir_file, gnome_libdir_file, gnome_pixmap_file,
+	gnome_unconditional_pixmap_file, gnome_unconditional_libdir_file, 
+	gnome_unconditional_datadir_file): const char *
+	(g_filename_pointer): Return a pointer to the last part of a
+	path. Maybe this should replace g_filename_index.
+	(g_extension_pointer): Return a pointer to the filename extension.
+	(g_copy_vector): Copy char **. const isn't right, needs fixing.
+	(g_flatten_vector): Make a vector into a single string.
+	(g_is_image_filename): Determine if a filename's extension
+	suggests an image file.
+
+	* libgnome/gnome-dentry.h, gnome-dentry.c
+	(gnome_is_program_in_path): put const on the char * arg. Shouldn't
+	this function go in gnome-util?
+	(gnome_desktop_entry_load): const char *
+	(gnome_desktop_entry_load_flags): const char *
+	(gnome_desktop_entry_copy): copy the struct. I guess I didn't end
+	up using this, but here it is anyway.
+	
 Sun Jun 14 18:03:14 1998  Tom Tromey  <tromey@cygnus.com>
 
 	* libgnome/gnome-exec.c (gnome_execute_async): Removed redundant
