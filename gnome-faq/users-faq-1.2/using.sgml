@@ -74,8 +74,23 @@
         ones which have a lot more detail, background which is shaded in
         varying colours, or lots of pictures in them. Some of them can
         be very heavy on a slow machine because they are more complicated
-        to draw. Engine themes (non-pixmap) themes include, gtkstep (the
-        default), metal, notif, redmond95, thinice, clean and xenophelia.
+        to draw. Engine themes (non-pixmap) themes include: default, (the
+        default, yes :)), metal, notif, redmond95, thinice, clean and 
+        xenophelia. Guillermo S. Romero adds to this the following
+        observation: 
+        <quote>
+         Derived (aka take one of above and change colors, or combine 
+         two of above engines): Basic, Blue-and-Gray, CoolIce, Coolness, 
+         ForestGreen, Turismo, Scalpel, buffyEro (buffy engine), buffyIno 
+         (buffy engine), buffyMagic (buffy engine), buffyNess (buffy engine), 
+         buffyRio (buffy engine). So you have 18 acceptable themes in the
+         basic package.
+        </quote>
+        and gives more details of how to distinguish them and find ones
+        whose speed is acceptable to you in a 
+        <ulink type="http"
+        url="http://mail.gnome.org/archives/gnome-list/2000-September/msg00285.html">
+        post to gnome-list</ulink>.
       </para>
      </listitem>
      <listitem>
@@ -207,7 +222,11 @@
    <answer>
     <para>
       Yes, they do. You need to hold down the <keycap>Shift</keycap> key
-      as well for them to work, that's all.
+      as well for them to work, that's all. Devin Carraway adds, 
+      <quote>The unshifted version of these keys are frequently used by
+      programs such as mailreaders. <application>gnome-terminal</application>,
+      like <application>xterm</application> just tries to stay out of your
+      way</quote>.
     </para>
    </answer>
   </qandaentry>
@@ -251,7 +270,21 @@
     <para>
       As your normal user, open a gnome-terminal. Type <command>su -</command>
       and give the password. That is now a root shell where you can run
-      such commands by typing them at the command line.
+      such commands by typing them at the command line. You will not be able
+      to run graphical apps, though. If you are going to need graphical apps,
+      then use ssh. Install <application>openssh</application> and then you
+      can do <command>ssh localhost</command> and then <command>su -</command>.
+      You can then start graphical apps as root from that window and have
+      them displayed on your screen. 
+   </para>
+   <para>
+      If you don't have <application>openssh</application>, then consider 
+      getting it. The alternative way to do this is to allow any user to
+      write to your X session and then become root, and run graphical apps
+      as above. Allowing any user on the local machine to write to your
+      X session is not always a great idea. You would do it with 
+      <command>xhost +localhost</command> and then turn it off with 
+      <command>xhost -localhost</command>, but the ssh method is better.
     </para>
     <para>
       If you make a lot of use of this, you should consider installing
@@ -275,7 +308,7 @@
    </question>
    <answer>
     <para>
-      This question needs an answer.
+      This question needs an answer. Still. 
     </para>
    </answer>
   </qandaentry>  
@@ -284,16 +317,18 @@
    <question>
     <para>
       I can't change window manager from <application>Enlightenment</application>
-      to <application>WindowMaker</application> using the control-center in
-      Red Hat Linux 6.1.
+      to <application>WindowMaker</application> using the control-center. 
     </para>
    </question>
    <answer>
     <para>
-      It's a bug. You can generally manage it by changing to something else
+      It's a bug, yes. It's been reported under several distributions.
+      You can generally manage it by changing to something else
       first and then changing again, or by experimenting with the 
       <guilabel>Try</guilabel> and <guilabel>OK</guilabel> buttons. Different
-      people report success with different combinations of those. 
+      people report success with different combinations of those. The
+      control-center is undergoing a rewrite and with luck the new version
+      will improve on this. 
     </para>
    </answer>
   </qandaentry>
@@ -309,6 +344,30 @@
       Sorry. You can't do this currently. GMC will eventually be replaced
       by Nautilus, and so new features are not being added to GMC. Bug-fixes
       only.
+    </para>
+    <para>
+      Since I (Telsa) wrote that, some inventive folks on gnome-list
+      have come up with ways to do this. It is not, unfortunately, a
+      matter of being able to select something with the mouse; it 
+      requires editing configuration files by hand and then restarting
+      either GNOME or GMC. Some people won't want to get into this, but
+      if you want to try, have a look at these two suggestions:
+    </para>
+    <simplelist>
+     <member>
+       <ulink type="http"
+       url="http://mail.gnome.org/archives/gnome-list/2000-September/msg00188.html">
+       What changes to make to the file(s)</ulink> (It's not specified, but
+       the range you can change the numbers in is from 0.0 to 1.0.)
+     </member>
+     <member>
+       <ulink type="http"
+       url="http://mail.gnome.org/archives/gnome-list/2000-September/msg00192.html">
+       What to do with the file(s) them</ulink>
+     </member>
+    </simplelist>
+    <para>
+      Also check out the rest of that thread. 
     </para>
    </answer>
   </qandaentry>

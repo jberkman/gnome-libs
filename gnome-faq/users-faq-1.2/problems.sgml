@@ -246,6 +246,23 @@
     </answer>
    </qandaentry>
 
+   <qandaentry id="blank-icon-probs">
+    <question>
+     <para>
+       Some icons are displayed. Others aren't. This happens for some
+       users and not others on the same machine.
+     </para>
+    </question>
+    <answer>
+     <para>
+       It is possible that removing the <filename>metadata.db</filename>
+       file from your <filename class="directory">.gnome</filename>
+       directory may fix this. (But not guaranteed, alas. More definite
+       fixes wanted.)
+     </para>
+    </answer>
+   </qandaentry>   
+
    <qandaentry id="wandering-menu-bar">
     <question>
      <para>
@@ -294,9 +311,9 @@
     </question>
     <answer>   
      <para>      
-       This is an annoying bug that results from panels announcing they
-       exist, and dying in unusual ways that stop them saying they are
-       dying. The fix is to upgrade to a recent gnome-core. If this does
+       This is an old and annoying bug that results from panels announcing
+       they exist, and then dying in unusual ways that stop them saying they
+       are dying. The fix is to upgrade to a recent gnome-core. If this does
        not work, a quick and dirty fix is to delete your 
        <filename class=directory>~/.gnome/</filename> directory. This is
        a nasty hack which fixes only the symptoms and not the cause of the
@@ -354,8 +371,9 @@
        <literallayout>
 127.0.0.1	localhost	localhost.localdomain
        </literallayout>
-       If you have tried to put your machine's name into this line,
-       this may be the problem. <!-- FIXME: can someone confirm this? -->
+       Suggested solutions vary. Some people report success with adding
+       the machine name at the end of that line, separated by a tab. Others
+       find this doesn't help. 
      </para>
     </answer>
    </qandaentry>
@@ -372,7 +390,7 @@
        If you have an oldish package, it is worth checking the announcements
        for newer packages to see whether it's been fixed. If it hasn't been
        fixed or mentioned and you can't find it by searching the 
-       <ulink type="http" url="http://bugs.gnome.org">bug tracker</ulink>,
+       <ulink type="http" url="http://bugzilla.gnome.org">bug tracker</ulink>,
        then start off <application>bug-buddy</application> from the main menu
        with
        <menuchoice>
@@ -381,7 +399,7 @@
         <guimenuitem>Bug report tool</guimenuitem>
        </menuchoice> 
        or type <command>bug-buddy</command> at the command-line. Follow the
-       directions from there.
+       directions from there. 
      </para>
     </answer>
    </qandaentry>

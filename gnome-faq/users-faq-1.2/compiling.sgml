@@ -299,9 +299,9 @@
 
        <row>
         <entry>Solaris</entry>
+        <entry>/opt/gnome</entry>
         <entry></entry>
-        <entry></entry>
-        <entry>Anyone know?</entry>
+        <entry>Helix GNOME uses /opt/gnome/etc for sysconfdir</entry>
        </row>
       </tbody>
      </tgroup>
@@ -453,25 +453,28 @@
    </question>
    <answer>
     <para>
-      <application>db2html</application> is a script from a package
-      called <application>stylesheets</application> and is needed for
-      converting files from DocBook to HTML. As well as stylesheets,
-      you will also need the packages: sgml-common, jade and docbook.
-      If you want to produce .ps documentation you will also want
-      jadetex. The canonical source for these tools is the Cygnus (well,
-      technically they're now part of Red Hat) 
-      <ulink type="ftp" 
-      url="ftp://sourceware.cygnus.com:/pub/docbook-tools/">sourceware</ulink>
-      site, but they are increasingly being provided by the major Linux and
-      BSD distributions. Check your vendor's FTP site. GNOME uses 
-      DocBook a lot for documentation and you can find lots of information
-      about it on the 
-      <ulink type="http" url="http://www.gnome.org/gdp/">Gnome
+      <application>db2html</application> is a script which invokes 
+      <application>jade</application> or <application>openjade</application>.
+      The packaging of the DocBook tools varies with OS and distribution.
+      On Red Hat and some other distributions, it is found in the
+      <application>stylesheets</application> package. On other systems,
+      it may be part of a different DocBook-related package. The current
+      collection of packages is sgml-common, docbook, jade (or openjade)
+      and stylesheets (or cygnus-stylesheets). If you want to produce
+      PostScript documentation you will also want the jadetex package.
+      A new set of tools called docbook-utils is also in creation. The
+      canonical source for DocBook tools is the Cygnus 
+      <ulink type="http"
+      url="http://sources.redhat.com/docbook-tools/">docbook tools
+      website</ulink> and associated
+      <ulink type="ftp"
+      url="ftp://sourceware.cygnus.com/pub/docbook-tools/">ftp archive</ulink>,
+      both of which are now hosted by Red Hat; but the tools are increasingly 
+      being provided by the major Linux and BSD distributions. Check your 
+      vendor's FTP site. GNOME uses  DocBook a lot for documentation and 
+      you can find lots of information about it on the 
+      <ulink type="http" url="http://developer.gnome.org/projects/gdp/">Gnome
       Documentation Project</ulink> pages. 
-    </para>
-    <para>
-      This used to be a very common question but has not appeared for
-      a few months. Perhaps this question can be removed.
     </para>
    </answer>
   </qandaentry>
@@ -562,7 +565,35 @@
     </para>
    </answer>
   </qandaentry>
-   
+
+  <qandaentry id="berkeley-db-compat">
+   <question>
+   <!-- This Q and parts of A courtesy of Sven Wallman -->
+    <para>
+      gnome-libs won't compile on <systemitem class="osname">Solaris 
+      2.6</systemitem>. It fails with a complaint about 
+      <errorname>Berkeley DB lacking DB 1.85 compatibility</errorname>.
+    </para>
+   </question>
+   <answer>
+    <para>
+      <application>Berkeley DB</application> versions later than 2.7.7
+      (3 and up, basically) apparently break compatability with v1.85.
+      Either get 2.7.7 or have a look at the patch to 
+      <filename class="headerfile">db_185.h</filename> which is found on 
+      <ulink type="http" 
+      url="http://www.stahl.bau.tu-bs.de/~hildeb/postfix/docs/faq.html#db">
+      the postfix FAQ</ulink>. You will still need to tinker with
+      configuration scripts after applying this patch, though. 
+    </para>
+    <para>
+      Also check out Paul Barnfeather's <ulink type="http"
+      url="http://www.clanger9.demon.co.uk/computer/gnome/">Building GNOME
+      on Solaris</ulink> page for more Solaris hints.
+    </para>
+   </answer>
+  </qandaentry> 
+
   <qandaentry id="uninstalling">
    <question> 
     <para>                        
