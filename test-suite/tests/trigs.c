@@ -24,7 +24,7 @@ int main(int argc, char *argv[])
 	trig.u.function = sample_trigger_function;
 	trig.level = NULL;
 
-	gnomelib_init("trigs");
+	gnomelib_init("trigs", "0.0");
 	fn = g_copy_strings(getenv("srcdir"), "/tests/trigs.in", NULL);
 	gnome_triggers_init();
 	gnome_triggers_readfile(fn);

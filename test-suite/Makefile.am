@@ -1,8 +1,9 @@
 INCLUDES = 			\
 	-I../.. 		\
 	-I$(srcdir)/../.. 	\
+	$(SUPPORTINCS)		\
 	-I$(includedir)		\
-	@GTK_CFLAGS@ @SUPPORTINCS@
+	@GTK_CFLAGS@
 
 LDADD = $(top_builddir)/libgnomeui/libgnomeui.la \
 	$(top_builddir)/libgnome/libgnome.la \
