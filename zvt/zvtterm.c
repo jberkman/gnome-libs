@@ -312,7 +312,7 @@ zvt_term_set_blink (ZvtTerm *term, int state)
   g_return_if_fail (term != NULL);                     
   g_return_if_fail (ZVT_IS_TERM (term));
 
-  if (!(term->blink_enabled ^ state))
+  if (!(term->blink_enabled ^ (state?1:0)))
     return;
 
   if (term->blink_enabled)

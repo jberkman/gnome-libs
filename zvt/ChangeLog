@@ -1,3 +1,8 @@
+1999-02-09  Michael Zucchi  <zucchi@zzedzone.mmc.com.au>
+
+	* zvtterm.c (zvt_term_set_blink): Remap true state to 1, false to
+	0, so XOR test works.
+
 1999-02-07  Miguel de Icaza  <miguel@nuclecu.unam.mx>
 
 	* subshell.c 	(receive_fd): Remove the getmsg usage, this was really broken.
