@@ -1,3 +1,18 @@
+1999-01-21  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
+
+	* libgnome/Makefile.am (INCLUDES):
+	s%$(datadir)/locale%$(gnomelocaledir)%
+
+	* configure.in (gnomelocaledir): set to the place, where the
+	message catalogs go to.
+
+	* libgnome/gnome-util.h (gnome_util_user_home): Use
+	g_get_user_dir() from beloved GLIB instead of reding it from the
+	environment.
+
+	* libgnome/gnomelib-init.c (gnomelib_init): Use
+	gnome_util_user_home() instead of doing it `by hand'.
+
 1999-01-21  Havoc Pennington  <hp@pobox.com>
 
 	* libgnome/gnome-triggers.c (gnome_triggers_play_sound): Don't 

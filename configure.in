@@ -72,6 +72,10 @@ AC_ARG_ENABLE(debug, [  --enable-debug turn on debugging [default=no]],AC_DEFINE
 ALL_LINGUAS="ca cs da de es fi fr ga it ja ko no pt sv ru pl hu nl"
 
 AM_GNOME_GETTEXT
+# AM_GNOME_GETTEXT above substs $DATADIRNAME
+# this is the directory where the *.{mo,gmo} files are installed
+gnomelocaledir='${prefix}/${DATADIRNAME}/locale'
+AC_SUBST(gnomelocaledir)
 
 AC_CHECK_LIB(m, main)
 
