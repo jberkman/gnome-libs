@@ -1,3 +1,11 @@
+Mon May 03 20:14:49 1999  George Lebl  <jirka@5z.com>
+
+	* zvtterm.c: change the way we draw the background for transparent
+	  images so that it works with tiled images (we assume every
+	  background is tiled which is not always the case, this can
+	  probably be fixed if anyone feels the need to do that, this
+	  should work good enough for most people:)
+
 Mon May 03 20:04:10 1999  George Lebl  <jirka@5z.com>
 
 	* zvtterm.c: removed an #if 0 from the _draw method as it is

@@ -2950,17 +2950,38 @@ load_pixmap_back(char *file, int shaded)
 static GdkPixmap *
 create_shaded_pixmap (Pixmap p, int x, int y, int w, int h)
 {
-  GdkPixmap *pix;
+  GdkPixmap *pix,*pp,*tmp;
   GdkImlibColorModifier mod;
   GdkImlibImage *iim;
-  GdkWindowPrivate pw;
+  GdkGC *tgc;
+  int width,height,depth;
   
   if (p == None)
     return NULL;
-  
-  pw.xwindow = (Window) p;
-  iim = gdk_imlib_create_image_from_drawable(
-	    (GdkPixmap*) &pw, NULL, x, y, w, h);
+
+  pp = gdk_pixmap_foreign_new(p);
+  gdk_window_get_geometry(pp,NULL,NULL,&width,&height,&depth);
+  if (width<x+w || height<y+h)
+    {
+      tgc = gdk_gc_new(pp);
+      tmp = gdk_pixmap_new(pp,w,h,depth);
+
+      gdk_gc_set_tile (tgc, pp);
+      gdk_gc_set_fill (tgc, GDK_TILED);
+      gdk_gc_set_ts_origin(tgc, -x, -y);
+      gdk_draw_rectangle (tmp, tgc, TRUE, 0, 0, w, h);
+      gdk_gc_destroy(tgc);
+      
+      iim = gdk_imlib_create_image_from_drawable(tmp,
+						 NULL, 0, 0, w, h);
+      gdk_pixmap_unref(tmp);
+    }
+  else
+    iim = gdk_imlib_create_image_from_drawable(pp,
+					       NULL, x, y, w, h);
+  gdk_xid_table_remove (GDK_WINDOW_XWINDOW(pp));
+  g_dataset_destroy (pp);
+  g_free (pp);
 
   if(!iim)
     return NULL;
@@ -2975,7 +2996,6 @@ create_shaded_pixmap (Pixmap p, int x, int y, int w, int h)
   
   return pix;
 }
-
 
 static void
 draw_back_pixmap (GtkWidget *widget, int nx, int ny, int nw, int nh)
@@ -3077,15 +3097,19 @@ draw_back_pixmap (GtkWidget *widget, int nx, int ny, int nw, int nh)
     } 
   else 
     {
-      /*non-shaded is simple*/
+      GdkGC *gc;
+      GdkPixmap *pp;
 
-      XCopyArea (GDK_WINDOW_XDISPLAY(term->term_window),
-		 p,
-		 GDK_WINDOW_XWINDOW(term->term_window),
-		 GDK_GC_XGC(bgc),
-		 x+nx,y+ny,
-		 nw,nh,
-		 nx,ny);
+      /*non-shaded is simple*/
+      pp = gdk_pixmap_foreign_new(p);
+      gc = gdk_gc_new (term->term_window);
+      gdk_gc_set_tile (gc, pp);
+      gdk_gc_set_fill (gc, GDK_TILED);
+      gdk_gc_set_ts_origin(gc,-x,-y);
+      gdk_draw_rectangle (term->term_window, gc, TRUE, nx, ny, nw, nh);
+      gdk_xid_table_remove (GDK_WINDOW_XWINDOW(pp));
+      g_dataset_destroy (pp);
+      g_free (pp);
     }
 }
 
