@@ -1189,11 +1189,11 @@ zvt_term_set_font_name(ZvtTerm *term, char *name)
     }
   }
   if (rest) {
-    sprintf(outname, "%s-medium-r%s", newname, rest);
+    g_snprintf(outname, strlen(name) + 16, "%s-medium-r%s", newname, rest);
     d(printf("loading normal font %s\n", outname));
     font = gdk_font_load(outname);
 
-    sprintf(outname, "%s-bold-r%s", newname, rest);
+    g_snprintf(outname, strlen(name) + 16, "%s-bold-r%s", newname, rest);
     d(printf("loading bold font %s\n", outname));
     font_bold = gdk_font_load(outname);
 

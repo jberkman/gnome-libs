@@ -36,6 +36,8 @@
 #include <termios.h>
 #include <sys/ioctl.h>
 
+#include <glib.h>
+
 #include "lists.h"
 #include "memory.h"
 #include "vt.h"
@@ -940,10 +942,11 @@ vt_dsr(struct vt_em *vt)
   if (vt->argcnt==1) {
     switch(*(vt->args[0])) {
     case '5':			/* report 'ok' status */
-      sprintf(status, "\033[0n");
+      g_snprintf(status, sizeof(status), "\033[0n");
       break;
     case '6':			/* report cursor position */
-      sprintf(status, "\033[%d;%dR", vt->cursory+1, vt->cursorx+1);
+      g_snprintf(status, sizeof(status), "\033[%d;%dR",
+      		 vt->cursory+1, vt->cursorx+1);
       break;
     default:
       status[0]=0;
@@ -1716,7 +1719,7 @@ int vt_report_button(struct vt_em *vt, int button, int qual, int x, int y)
        (y>=0) /*&&
 		!(event->state & GDK_SHIFT_MASK)*/
        ) {
-    sprintf(mouse_info, "\033[M%c%c%c",
+    g_snprintf(mouse_info, sizeof(mouse_info), "\033[M%c%c%c",
 	    ' ' + ((button - 1)&3) /*+ 
 				     ((event->state&GDK_SHIFT_MASK)?4:0) +
 				     ((event->state&GDK_MOD1_MASK)?8:0) +

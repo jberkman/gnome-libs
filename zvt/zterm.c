@@ -140,7 +140,8 @@ gint main (gint argc, gchar *argv[])
       if (login_shell) {
 	if (pw) {
 	  chdir(pw->pw_dir);
-	  snprintf(basename, BUFSIZ, "-%s", rindex(pw->pw_shell, '/'));
+	  g_snprintf(basename, sizeof(basename), "-%s",
+	  	     rindex(pw->pw_shell, '/'));
 	  execl(pw->pw_shell, basename, NULL);
 	} else {
 	  execl("/bin/bash", "-bash", NULL);

@@ -1,3 +1,9 @@
+1998-11-26  Jeff Garzik  <jgarzik@pobox.com>
+
+	* vt.c, zterm.c, zvtterm.c:
+	Replaced sprintf calls with g_snprintf.
+	Updated a couple hardcoded length values to instead of sizeof().
+
 1998-11-24  Miguel de Icaza  <miguel@nuclecu.unam.mx>
 
 	The following changes have been implemented after the comments
