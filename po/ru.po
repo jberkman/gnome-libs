@@ -1,11 +1,12 @@
 # Copyright (C) 1998 Free Software Foundation, Inc.
 # Max Valianskiy <maxcom@vinchi.ru>, 1998,99
 # Sergey Panov <sipan@mit.edu>, 1999
+# Valek Filippov <frob@df.ru>? 2000, 2001
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-libs 1.2\n"
-"POT-Creation-Date: 2000-12-21 16:34+0300\n"
-"PO-Revision-Date: 2000-12-21 17:46+03:00\n"
+"POT-Creation-Date: 2001-02-19 14:49+0300\n"
+"PO-Revision-Date: 2001-02-19 15:02+03:00\n"
 "Last-Translator: Valek Filippov <frob@df.ru>\n"
 "Language-Team: Russian <ru@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -15,13 +16,16 @@ msgstr ""
 #: libgnome/gnome-ditem.c:565 libgnome/gnome-ditem.c:923
 #, c-format
 msgid "Unknown desktop file format %d"
-msgstr "Неизвестный формат файла рабочего стола %d"
+msgstr ""
+"Неизвестный формат файла рабочего стола %d"
 
 #. we are not an application so just exit
 #. with an error
 #: libgnome/gnome-ditem.c:912 libgnome/gnome-ditem.c:919
 msgid "Attempting to launch a non-application"
-msgstr "Попытка запустить файл не являющийся приложением"
+msgstr ""
+"Попытка запустить файл не являющийся "
+"приложением"
 
 #: libgnome/gnome-ditem.c:1029
 msgid "Trying to execute an item with no 'Exec'"
@@ -30,18 +34,25 @@ msgstr "Попытка выполнить элемент без 'Exec'"
 #: libgnome/gnome-ditem.c:1081 libgnome/gnome-ditem.c:1174
 msgid "No exec field for this drop"
 msgstr ""
+"Нет исполняемого поля для этой вставки"
 
 #: libgnome/gnome-ditem.c:1112
 msgid "Nothing to replace with a file in the exec string"
 msgstr ""
+"Нечего заменять на файл в строке "
+"исполнения"
 
 #: libgnome/gnome-ditem.c:1225
 msgid "There was no argument to replace with dropped files"
 msgstr ""
+"Не было аргумента для замены на "
+"вставляемые файлы"
 
 #: libgnome/gnome-ditem.c:1325
 msgid "Dropped URLs on an app that can only take files"
 msgstr ""
+"Только URL вставленные в приложение могут "
+"принимать файлы"
 
 #: libgnome/gnome-moz-remote2.c:111
 msgid "Specify X display to use."
@@ -49,7 +60,8 @@ msgstr "Указать используемый X-дисплей"
 
 #: libgnome/gnome-moz-remote2.c:112
 msgid "Put the X connection in synchronous mode."
-msgstr "Поместить X-соединение в синхронный режим."
+msgstr ""
+"Поместить X-соединение в синхронный режим."
 
 #: libgnome/gnome-moz-remote2.c:113
 msgid "Specify the X window ID of Netscape."
@@ -69,7 +81,9 @@ msgstr "Закрыть указанное окно."
 
 #: libgnome/gnome-moz-remote2.c:118
 msgid "Print the X window ID of the utilized window."
-msgstr "Печатать идентификатор XWindow в используемом окне."
+msgstr ""
+"Печатать идентификатор XWindow в "
+"используемом окне."
 
 #: libgnome/gnome-url.c:117
 #, c-format
@@ -89,7 +103,8 @@ msgstr "Невозможно открыть канал: %s"
 #: libgnome/gnome-url.c:305 libgnome/gnome-url.c:363
 #, c-format
 msgid "Cannot parse handler template: %s"
-msgstr "Невозможно разобрать шаблон заголовка: %s"
+msgstr ""
+"Невозможно разобрать шаблон заголовка: %s"
 
 #: libgnome/gnome-url.c:315 libgnome/gnome-url.c:319 libgnome/gnome-url.c:368
 #: libgnome/gnome-url.c:372
@@ -101,6 +116,10 @@ msgstr "Невозможно выполнить команду \"%s\"!"
 #, c-format
 msgid "Command '%s' did not return an ID!"
 msgstr "Команда \"%s\" не вернула идентификатор!"
+
+#: libgnome/gnomelib-init2.c:1203
+msgid "Help options"
+msgstr "Параметры справки"
 
 #: libgnome/gnomelib-init2.c:1228
 msgid "Dynamic modules to load"
@@ -114,7 +133,9 @@ msgstr "МОДУЛЬ1,МОДУЛЬ2,..."
 msgid ""
 "gnome_appbar_set_progress deprecated, use "
 "gnome_appbar_set_progress_percentage"
-msgstr "gnome_appbar_set_progress устарело, используйте gnome_appbar_set_progress_perceantage"
+msgstr ""
+"gnome_appbar_set_progress устарело, используйте "
+"gnome_appbar_set_progress_perceantage"
 
 #: libcompat/gnome-dentry-edit.c:184 libgnomeui/gnome-ditem-edit.c:210
 msgid "Name:"
@@ -157,6 +178,10 @@ msgid ""
 "multiple files or URLs as arguments after its command name check the box "
 "above."
 msgstr ""
+"В следующих команда вы можете использовать %s в том месте где должны быть\n"
+"подставлены название файла или URL. Если вы оставите это поле пустым,\n"
+"вставка не будет принята. Если это приложение может принимать несколько\n"
+"файлов или URL в качестве аргументов, после названия этой команды отметьте квадратик внизу."
 
 #: libgnomeui/gnome-ditem-edit.c:342
 msgid "Command for file drops:"
@@ -164,15 +189,15 @@ msgstr "Команда для вставки файлов:"
 
 #: libgnomeui/gnome-ditem-edit.c:352
 msgid "Drop one file at a time only."
-msgstr ""
+msgstr "Вставлять по одному файлу."
 
 #: libgnomeui/gnome-ditem-edit.c:364
 msgid "Command for URL drops:"
-msgstr ""
+msgstr "Команда для вставки URL:"
 
 #: libgnomeui/gnome-ditem-edit.c:374
 msgid "Drop one URL at a time only."
-msgstr ""
+msgstr "Вставлять по одному URL."
 
 #: libcompat/gnome-dentry-edit.c:367 libgnomeui/gnome-ditem-edit.c:490
 msgid "Try this before using:"
@@ -185,6 +210,8 @@ msgstr "Документация:"
 #: libgnomeui/gnome-ditem-edit.c:510
 msgid "Window titles to wait for (comma separated):"
 msgstr ""
+"Заголовки окон при ожидании (разделенные "
+"запятой):"
 
 #: libcompat/gnome-dentry-edit.c:387 libgnomeui/gnome-ditem-edit.c:520
 msgid "Name/Comment translations:"
@@ -259,14 +286,26 @@ msgid ""
 "administrator or operating system vendor does not allow you to change. Some "
 "of the settings you have selected may not take effect, or may not be "
 "restored next time you use this application (%s)."
-msgstr "Вы пытались изменить часть вашей конфигурации, которую ваш системный администратор или производитель операционной системы не позволяет вам изменять. Некоторые из выбранных вами установок не будут иметь эффекта или могут не восстановиться при следующем запуске этого приложения (%s)."
+msgstr ""
+"Вы пытались изменить часть вашей "
+"конфигурации, которую ваш системный "
+"администратор или производитель "
+"операционной системы не позволяет вам "
+"изменять. Некоторые из выбранных вами "
+"установок не будут иметь эффекта или "
+"могут не восстановиться при следующем "
+"запуске этого приложения (%s)."
 
 #: libgnomeui/gnome-gconf.c:624
 #, c-format
 msgid ""
 "An error occurred while loading or saving configuration information for %s. "
 "Some of your configuration settings may not work properly."
-msgstr "При загрузке или сохранении информации о настройках для %s возникла ошибка. Некоторые из ваших настроек могут оказаться работающими некорректно."
+msgstr ""
+"При загрузке или сохранении информации о "
+"настройках для %s возникла ошибка. "
+"Некоторые из ваших настроек могут "
+"оказаться работающими некорректно."
 
 #: libgnomeui/gnome-gconf.c:646
 #, c-format
@@ -279,7 +318,9 @@ msgstr "Всплывающее"
 
 #: libgnomeui/gnome-helpsys.c:118
 msgid "Show help in temporary popup windows"
-msgstr "Показывать справку во временных всплывающих окнах"
+msgstr ""
+"Показывать справку во временных "
+"всплывающих окнах"
 
 #: libgnomeui/gnome-helpsys.c:120
 msgid "_Embedded"
@@ -287,7 +328,9 @@ msgstr "Встроенное"
 
 #: libgnomeui/gnome-helpsys.c:121
 msgid "Show help inside the application window"
-msgstr "Показывать справку внутри окна приложения"
+msgstr ""
+"Показывать справку внутри окна "
+"приложения"
 
 #: libgnomeui/gnome-helpsys.c:123
 msgid "_Browser"
@@ -295,7 +338,9 @@ msgstr "Программа просмотра"
 
 #: libgnomeui/gnome-helpsys.c:124
 msgid "Show help in a help browser window"
-msgstr "Показывать справку в окне программы просмотра справки"
+msgstr ""
+"Показывать справку в окне программы "
+"просмотра справки"
 
 #: libgnomeui/gnome-helpsys.c:172
 msgid "App style"
@@ -334,7 +379,9 @@ msgstr "Справка"
 
 #: libgnomeui/gnome-helpsys.c:220
 msgid "Show help for a specific region of the application"
-msgstr "Показать справку для указанного участка приложения"
+msgstr ""
+"Показать справку для указанного участка "
+"приложения"
 
 #: libgnomeui/gnome-helpsys.c:224
 msgid "Style"
@@ -346,13 +393,15 @@ msgstr "Изменить способ отображения справки"
 
 #: libgnomeui/gnome-helpsys.c:926 libgnomeui/gnome-helpsys.c:1020
 msgid "No help is available for the selected portion of the application."
-msgstr "Справка для выбранного элемента приложения отсутствует."
+msgstr ""
+"Справка для выбранного элемента "
+"приложения отсутствует."
 
 #. FIXME: properly handle the error!
 #: libgnomeui/gnome-helpsys.c:1190
 #, c-format
 msgid "Cought GnomeURL error: %s"
-msgstr ""
+msgstr "Обнаружена ошибка GnomeURL: %s"
 
 #: libgnomeui/gnome-href.c:114
 msgid "URL"
@@ -360,7 +409,7 @@ msgstr "URL"
 
 #: libgnomeui/gnome-href.c:115
 msgid "The URL that GnomeHRef activates"
-msgstr ""
+msgstr "URL, который активирует GnomeRef"
 
 #: libgnomeui/gnome-href.c:122
 msgid "Text"
@@ -372,13 +421,17 @@ msgstr "Текст на кнопке"
 
 #: libgnomeui/gnome-href.c:124
 msgid "End World Hunger"
-msgstr ""
+msgstr "Конец Всемирного Голода"
 
 #: libgnomeui/gnome-about.c:1169 libgnomeui/gnome-href.c:395
 msgid ""
 "Error occured while trying to launch the URL handler.\n"
 "Please check the settings in the Control Center if they are correct."
 msgstr ""
+"При попытке запустить обработчик URL "
+"возникла ошибка.\n"
+"Проверьте корректность установок в "
+"Центре Управления."
 
 #. paper size
 #: libgnomeui/gnome-paper-selector.c:159
@@ -493,7 +546,7 @@ msgstr "Этот список зависит от приложения"
 #: libgnomeui/gnome-recently-used.c:897
 #, c-format
 msgid "bad GnomeRecentDocument attribute: %s\n"
-msgstr ""
+msgstr "плохой аттрибут GnomeRecentDocument: %s\n"
 
 #: libgnomeui/gnome-recently-used.c:1127
 msgid "Unknown"
@@ -502,15 +555,15 @@ msgstr "Неизвестно"
 #. browse button ...
 #: libcompat/gnome-spell.c:620 libcompat/gnome-spell.c:637
 #: libcompat/gnome-spell.c:654 libgnomeui/gnome-file-entry.c:445
-#: libgnomeui/gnome-selector.c:809
+#: libgnomeui/gnome-selector.c:859
 msgid "Browse..."
 msgstr "Просмотр..."
 
-#: libgnomeui/gnome-selector.c:819
+#: libgnomeui/gnome-selector.c:869
 msgid "Default..."
 msgstr "По умолчанию..."
 
-#: libgnomeui/gnome-selector.c:829
+#: libgnomeui/gnome-selector.c:879
 msgid "Clear..."
 msgstr "Очистить..."
 
@@ -525,19 +578,26 @@ msgstr "Пароль:"
 #: libgnome/gnomelib-init.c:200 libgnome/gnomelib-init.c:214
 #, c-format
 msgid "Could not create per-user gnome configuration directory `%s': %s\n"
-msgstr "Не удалось создать пользовательский каталог настроек GNOME \"%s\": %s\n"
+msgstr ""
+"Не удалось создать пользовательский "
+"каталог настроек GNOME \"%s\": %s\n"
 
 #: libgnome/gnomelib-init.c:223
 #, c-format
 msgid ""
 "Could not set mode 0700 on private per-user gnome configuration directory "
 "`%s': %s\n"
-msgstr "Не удалось установить режим 0700 для частного каталога настроек пользователя GNOME \"%s\": %s\n"
+msgstr ""
+"Не удалось установить режим 0700 для "
+"частного каталога настроек пользователя "
+"GNOME \"%s\": %s\n"
 
 #: libgnome/gnomelib-init.c:230
 #, c-format
 msgid "Could not create gnome accelerators directory `%s': %s\n"
-msgstr "Не удалось создать каталог ускорителей GNOME \"%s\": %s\n"
+msgstr ""
+"Не удалось создать каталог ускорителей "
+"GNOME \"%s\": %s\n"
 
 #: libgnomeui/gnome-about.c:331
 msgid "Author:"
@@ -645,7 +705,8 @@ msgstr "Сохранить как..."
 
 #: libgnomeui/gnome-app-helper.c:120
 msgid "Save the current file with a different name"
-msgstr "Сохранить рабочий файл под другим именем"
+msgstr ""
+"Сохранить рабочий файл под другим именем"
 
 #. Revert
 #: libgnomeui/gnome-app-helper.c:125
@@ -654,7 +715,8 @@ msgstr "Восстановить"
 
 #: libgnomeui/gnome-app-helper.c:126
 msgid "Revert to a saved version of the file"
-msgstr "Восстановить из сохраненной версии файла"
+msgstr ""
+"Восстановить из сохраненной версии файла"
 
 #. Print
 #: libgnomeui/gnome-app-helper.c:131
@@ -672,7 +734,9 @@ msgstr "Настройка печати..."
 
 #: libgnomeui/gnome-app-helper.c:137
 msgid "Setup the page settings for your current printer"
-msgstr "Установить параметры страницы для используемого принтера"
+msgstr ""
+"Установить параметры страницы для "
+"используемого принтера"
 
 #. Close
 #: libgnomeui/gnome-app-helper.c:142
@@ -1123,39 +1187,42 @@ msgstr "="
 msgid "INV"
 msgstr "INV"
 
-#: libgnomeui/gnome-client.c:828
+#: libgnomeui/gnome-client.c:836
 msgid "Specify session management ID"
 msgstr "Задать ID сессии"
 
-#: libgnomeui/gnome-client.c:828
+#: libgnomeui/gnome-client.c:836
 msgid "ID"
 msgstr "ID"
 
-#: libgnomeui/gnome-client.c:831
+#: libgnomeui/gnome-client.c:839
 msgid "Specify prefix of saved configuration"
-msgstr "Задать префикс сохраненной конфигурации"
+msgstr ""
+"Задать префикс сохраненной конфигурации"
 
-#: libgnomeui/gnome-client.c:831
+#: libgnomeui/gnome-client.c:839
 msgid "PREFIX"
 msgstr "PREFIX"
 
-#: libgnomeui/gnome-client.c:834
+#: libgnomeui/gnome-client.c:842
 msgid "Disable connection to session manager"
-msgstr "Отменить соединение с диспетчером сессий"
+msgstr ""
+"Отменить соединение с диспетчером сессий"
 
-#: libgnomeui/gnome-client.c:846
+#: libgnomeui/gnome-client.c:854
 msgid "Session management"
 msgstr "Управление сеансами"
 
-#: libgnomeui/gnome-client.c:2333
+#: libgnomeui/gnome-client.c:2341
 msgid "Cancel Logout"
 msgstr "Отменить окончание работы"
 
-#: libgnomeui/gnome-color-picker.c:402
+#: libgnomeui/gnome-color-picker.c:423
 msgid "Received invalid color data\n"
-msgstr "Получены недопустимые цветовые данные\n"
+msgstr ""
+"Получены недопустимые цветовые данные\n"
 
-#: libgnomeui/gnome-color-picker.c:466
+#: libgnomeui/gnome-color-picker.c:487
 msgid "Pick a color"
 msgstr "Выберите цвет"
 
@@ -1165,11 +1232,11 @@ msgstr "Время"
 
 #: libgnomeui/gnome-dateedit.c:362
 msgid "The time currentlyselected"
-msgstr ""
+msgstr "Текущее выбранное время"
 
 #: libgnomeui/gnome-dateedit.c:373
 msgid "DateEdit Flags"
-msgstr ""
+msgstr "Флаги правки даты"
 
 #: libgnomeui/gnome-dateedit.c:374
 msgid "Flags for how DateEdit looks"
@@ -1181,7 +1248,9 @@ msgstr "Нижний час"
 
 #: libgnomeui/gnome-dateedit.c:384
 msgid "Lower hour in the time popup selector"
-msgstr "Наименьший час во всплывающем селекторе времени"
+msgstr ""
+"Наименьший час во всплывающем селекторе "
+"времени"
 
 #: libgnomeui/gnome-dateedit.c:394
 msgid "Upper Hour"
@@ -1189,7 +1258,9 @@ msgstr "Верхний час"
 
 #: libgnomeui/gnome-dateedit.c:395
 msgid "Upper hour in the time popup selector"
-msgstr "Наибольший час во всплывающем селекторе времени"
+msgstr ""
+"Наибольший час во всплывающем селекторе "
+"времени"
 
 #: libgnomeui/gnome-dateedit.c:405
 msgid "Initial Time"
@@ -1206,7 +1277,9 @@ msgstr "Календарь"
 
 #: libgnomeui/gnome-dateedit.c:845
 msgid "gnome_date_edit_get_date deprecated, use gnome_date_edit_get_time"
-msgstr "gnome_date_edit_get_date устарело, используйте gnome_date_edit_get_time"
+msgstr ""
+"gnome_date_edit_get_date устарело, используйте "
+"gnome_date_edit_get_time"
 
 #: libgnomeui/gnome-druid.c:125
 msgid "Back"
@@ -1231,12 +1304,15 @@ msgstr "Нет"
 #: libgnomeui/gnome-icon-sel.c:280
 #, c-format
 msgid "GnomeIconSelection: '%s' does not exist or is not a directory"
-msgstr "GnomeIconSelection: \"%s\" не существует или не является каталогом"
+msgstr ""
+"GnomeIconSelection: \"%s\" не существует или не "
+"является каталогом"
 
 #: libgnomeui/gnome-icon-sel.c:288
 #, c-format
 msgid "GnomeIconSelection: couldn't open directory '%s'"
-msgstr "GnomeIconSelection: не удалось открыть каталог \"%s\""
+msgstr ""
+"GnomeIconSelection: не удалось открыть каталог \"%s\""
 
 #: libgnomeui/gnome-icon-sel.c:361
 msgid "Loading Icons..."
@@ -1244,7 +1320,9 @@ msgstr "Загружаются пиктограммы..."
 
 #: libgnomeui/gnome-init.c:81
 msgid "Gdk debugging flags to set"
-msgstr "отладочные флаги Gdk,  которые нужно включить"
+msgstr ""
+"отладочные флаги Gdk,  которые нужно "
+"включить"
 
 #: libgnomeui/gnome-init.c:81 libgnomeui/gnome-init.c:84
 #: libgnomeui/gnome-init.c:114 libgnomeui/gnome-init.c:117
@@ -1253,7 +1331,9 @@ msgstr "FLAGS"
 
 #: libgnomeui/gnome-init.c:84
 msgid "Gdk debugging flags to unset"
-msgstr "отладочные флаги Gdk, которые нужно выключить"
+msgstr ""
+"отладочные флаги Gdk, которые нужно "
+"выключить"
 
 #: libgnomeui/gnome-init.c:87 libgnomeui/gnome-init.c:239
 msgid "X display to use"
@@ -1269,11 +1349,15 @@ msgstr "Превратить X-вызовы в синхронные"
 
 #: libgnomeui/gnome-init.c:93
 msgid "Don't use X shared memory extension"
-msgstr "Не использовать shared memory расширение X-сервера"
+msgstr ""
+"Не использовать shared memory расширение "
+"X-сервера"
 
 #: libgnomeui/gnome-init.c:96
 msgid "Program name as used by the window manager"
-msgstr "Имя программы для использования диспетчером окон"
+msgstr ""
+"Имя программы для использования "
+"диспетчером окон"
 
 #: libgnomeui/gnome-init.c:96
 msgid "NAME"
@@ -1281,7 +1365,9 @@ msgstr "NAME"
 
 #: libgnomeui/gnome-init.c:99
 msgid "Program class as used by the window manager"
-msgstr "Класс программы для использования диспетчером окон"
+msgstr ""
+"Класс программы для использования "
+"диспетчером окон"
 
 #: libgnomeui/gnome-init.c:99
 msgid "CLASS"
@@ -1301,15 +1387,20 @@ msgstr "STYLE"
 
 #: libgnomeui/gnome-init.c:114
 msgid "Gtk+ debugging flags to set"
-msgstr "отладочные флаги Gtk+, которые нужно включить"
+msgstr ""
+"отладочные флаги Gtk+, которые нужно "
+"включить"
 
 #: libgnomeui/gnome-init.c:117
 msgid "Gtk+ debugging flags to unset"
-msgstr "отладочные флаги Gtk+, которые нужно выключить"
+msgstr ""
+"отладочные флаги Gtk+, которые нужно "
+"выключить"
 
 #: libgnomeui/gnome-init.c:120
 msgid "Make all warnings fatal"
-msgstr "Сделать все предупреждения смертельными"
+msgstr ""
+"Сделать все предупреждения смертельными"
 
 #: libgnomeui/gnome-init.c:123
 msgid "Load an additional Gtk module"
@@ -1323,7 +1414,21 @@ msgstr "MODULE"
 #: libgnomeui/gnome-init.c:471
 msgid "Multiple segmentation faults occurred; can't display error dialog\n"
 msgstr ""
-"Множественные системные ошибки; невозможно показать диалог с ошибками\n"
+"Множественные системные ошибки; "
+"невозможно показать диалог с ошибками\n"
+
+#: libgnomeui/gnome-init.c:634
+msgid "GTK options"
+msgstr "Параметры GTK"
+
+#: libgnomeui/gnome-init.c:635
+msgid "GNOME GUI options"
+msgstr "Параметры интерфейса GNOME"
+
+#: libgnomeui/gnome-init.c:786
+#, c-format
+msgid "%s options"
+msgstr "Параметры %s"
 
 #: libgnomeui/gnome-messagebox.c:179
 msgid "Information"
@@ -1359,7 +1464,9 @@ msgstr "Нет"
 
 #: libgnomeui/gnome-pixmap-entry.c:460
 msgid "Can't find an hbox, using a normal file selection"
-msgstr "hbox не найден, будет использован обычный выбор файлов"
+msgstr ""
+"hbox не найден, будет использован обычный "
+"выбор файлов"
 
 #: libgnomeui/gnome-pixmap-entry.c:466
 msgid "Preview"
@@ -1505,11 +1612,13 @@ msgid ""
 "will exit.\n"
 "Please save all your files before closing this dialog."
 msgstr ""
-"Диспетчер сеанса работы GNOME (процесс %d) рухнул\n"
+"Диспетчер сеанса работы GNOME (процесс %d) "
+"рухнул\n"
 "из за фатальной ошибки (%s).\n"
-"С закрытием этого диалога будут закрыты все приложения и закончен сеанс "
-"работы.\n"
-"Пожалуйста, сохраните ваши файлы до закрытия этого диалога."
+"С закрытием этого диалога будут закрыты "
+"все приложения и закончен сеанс работы.\n"
+"Пожалуйста, сохраните ваши файлы до "
+"закрытия этого диалога."
 
 #: libgnomeui/gnome_segv.c:95
 #, c-format
@@ -1541,8 +1650,9 @@ msgstr "http://www.gnome.org/application_crashed.shtml"
 #: libgnomeui/gnome_segv.c:141
 msgid "Please visit the GNOME Application Crash page for more information"
 msgstr ""
-"Посетите пожалуйста страницу \"GNOME Application Crash\" для получения более "
-"подробной информации"
+"Посетите пожалуйста страницу \"GNOME Application "
+"Crash\" для получения более подробной "
+"информации"
 
 #. Pixmap
 #: test-gnome/testgnome.c:830
@@ -1577,11 +1687,14 @@ msgstr "Пользователь выбрал Да/OK с данными:\n"
 
 #: test-gnome/testgnome.c:1114
 msgid "The user chose No/Cancel with data:\n"
-msgstr "Пользователь выбрал Нет/Отменить с данными:\n"
+msgstr ""
+"Пользователь выбрал Нет/Отменить с "
+"данными:\n"
 
 #: test-gnome/testgnome.c:1125
 msgid "Weird number in reply callback"
-msgstr "Странный номер в отклике обратного вызова"
+msgstr ""
+"Странный номер в отклике обратного вызова"
 
 #: test-gnome/testgnome.c:1981
 msgid "Test GNOME"
@@ -1715,7 +1828,9 @@ msgstr "Признавать склеенные слова"
 
 #: libcompat/gnome-spell.c:705
 msgid "Discard accepted words on kill"
-msgstr "Сбрасывать новые слова при аварийной остановке"
+msgstr ""
+"Сбрасывать новые слова при аварийной "
+"остановке"
 
 # libgnomeui/gnome-spell.c:710x
 #: libcompat/gnome-spell.c:713
@@ -1943,5 +2058,6 @@ msgid ""
 "Simple test app to check how the WIN_HINTS work.\n"
 "And to test the gnome_win_hints_* functions for errors. :)"
 msgstr ""
-"Простое проверочное приложение для проверки работы WIN_HINTS\n"
+"Простое проверочное приложение для "
+"проверки работы WIN_HINTS\n"
 "и для поиска ошибок в функциях gnome_win_hints_*."
