@@ -5,7 +5,7 @@ RCS file: /cvs/gnome/ORBit/.cvsignore,v
 retrieving revision 1.6.4.1
 diff -u -u -p -r1.6.4.1 .cvsignore
 --- .cvsignore	2000/09/29 23:34:02	1.6.4.1
-+++ .cvsignore	2000/11/22 12:07:17
++++ .cvsignore	2000/11/22 12:13:43
 @@ -20,4 +20,6 @@ missing
  install-sh
  mkinstalldirs
@@ -19,7 +19,7 @@ RCS file: /cvs/gnome/ORBit/Makefile.am,v
 retrieving revision 1.13.4.3
 diff -u -u -p -r1.13.4.3 Makefile.am
 --- Makefile.am	2000/09/30 02:09:43	1.13.4.3
-+++ Makefile.am	2000/11/22 12:07:17
++++ Makefile.am	2000/11/22 12:13:43
 @@ -4,7 +4,7 @@ SUBDIRS=popt libIDL src test
  
  bin_SCRIPTS=orbit-config
@@ -41,7 +41,7 @@ Index: ORBit-2.0.pc.in
 RCS file: ORBit-2.0.pc.in
 diff -N ORBit-2.0.pc.in
 --- /dev/null	Tue May  5 16:32:27 1998
-+++ ORBit-2.0.pc.in	Wed Nov 22 07:07:17 2000
++++ ORBit-2.0.pc.in	Wed Nov 22 07:13:43 2000
 @@ -0,0 +1,12 @@
 +prefix=@prefix@
 +exec_prefix=@exec_prefix@
@@ -61,7 +61,7 @@ RCS file: /cvs/gnome/ORBit/autogen.sh,v
 retrieving revision 1.26.4.1
 diff -u -u -p -r1.26.4.1 autogen.sh
 --- autogen.sh	2000/02/22 00:52:22	1.26.4.1
-+++ autogen.sh	2000/11/22 12:07:17
++++ autogen.sh	2000/11/22 12:13:44
 @@ -4,78 +4,11 @@
  srcdir=`dirname $0`
  test -z "$srcdir" && srcdir=.
@@ -149,9 +149,13 @@ RCS file: /cvs/gnome/ORBit/configure.in,v
 retrieving revision 1.98.4.6
 diff -u -u -p -r1.98.4.6 configure.in
 --- configure.in	2000/09/29 23:34:02	1.98.4.6
-+++ configure.in	2000/11/22 12:07:17
-@@ -98,16 +98,19 @@ AC_DEFINE_UNQUOTED(INDENT_COMMAND,"$INDE
++++ configure.in	2000/11/22 12:13:44
+@@ -96,18 +96,23 @@ done
+ AC_MSG_RESULT($INDENT_COMMAND)
+ AC_DEFINE_UNQUOTED(INDENT_COMMAND,"$INDENT_COMMAND")
  
++GNOME_COMMON_INIT
++
  dnl Checks for libraries.
  
 -# Make sure that we have glib>=1.1.16
@@ -178,7 +182,7 @@ diff -u -u -p -r1.98.4.6 configure.in
  
  AC_PROG_YACC
  AM_PROG_LEX
-@@ -347,5 +350,6 @@ src/daemons/interface_repository/Makefil
+@@ -347,5 +352,6 @@ src/daemons/interface_repository/Makefil
  test/Makefile
  test/idl/Makefile
  test/test-poa/Makefile
@@ -191,7 +195,7 @@ RCS file: /cvs/gnome/ORBit/orbit-config.in,v
 retrieving revision 1.7
 diff -u -u -p -r1.7 orbit-config.in
 --- orbit-config.in	1999/10/08 04:49:07	1.7
-+++ orbit-config.in	2000/11/22 12:07:17
++++ orbit-config.in	2000/11/22 12:13:44
 @@ -87,8 +87,8 @@ while test $# -gt 0; do
         	;;
  
@@ -209,7 +213,7 @@ RCS file: /cvs/gnome/libIDL/.cvsignore,v
 retrieving revision 1.8.4.1
 diff -u -u -p -r1.8.4.1 .cvsignore
 --- libIDL/.cvsignore	2000/09/29 23:35:50	1.8.4.1
-+++ libIDL/.cvsignore	2000/11/22 12:07:17
++++ libIDL/.cvsignore	2000/11/22 12:13:44
 @@ -29,3 +29,4 @@ libIDL.m4
  Makefile.msc
  libIDL.spec
@@ -221,7 +225,7 @@ RCS file: /cvs/gnome/libIDL/Makefile.am,v
 retrieving revision 1.65.4.3
 diff -u -u -p -r1.65.4.3 Makefile.am
 --- libIDL/Makefile.am	2000/09/30 02:09:43	1.65.4.3
-+++ libIDL/Makefile.am	2000/11/22 12:07:17
++++ libIDL/Makefile.am	2000/11/22 12:13:44
 @@ -33,7 +33,7 @@ EXTRA_DIST		= BUGS parser.y lexer.l \
  			  Makefile.msc README.win32 \
  			  libIDL.def libIDLConf.sh.in \
@@ -244,7 +248,7 @@ RCS file: /cvs/gnome/libIDL/configure.in,v
 retrieving revision 1.54.4.1
 diff -u -u -p -r1.54.4.1 configure.in
 --- libIDL/configure.in	2000/09/29 23:35:50	1.54.4.1
-+++ libIDL/configure.in	2000/11/22 12:07:18
++++ libIDL/configure.in	2000/11/22 12:13:44
 @@ -19,7 +19,6 @@ LIBIDL_MICRO_VERSION=8
  LIBIDL_INTERFACE_AGE=4
  LIBIDL_BINARY_AGE=8
@@ -285,7 +289,7 @@ Index: libIDL/libIDL-2.0.pc.in
 RCS file: libIDL-2.0.pc.in
 diff -N libIDL-2.0.pc.in
 --- /dev/null	Tue May  5 16:32:27 1998
-+++ libIDL-2.0.pc.in	Wed Nov 22 07:07:18 2000
++++ libIDL-2.0.pc.in	Wed Nov 22 07:13:44 2000
 @@ -0,0 +1,12 @@
 +prefix=@prefix@
 +exec_prefix=@exec_prefix@
