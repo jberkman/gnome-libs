@@ -76,8 +76,8 @@ function types are properly supported at the moment."
 		(goto-char c-argstart)
 		(while (re-search-forward "\\([A-Za-z_]*\\)[,)]" c-argend t)
 		  (setq c-arglist
-			(cons (buffer-substring (match-beginning 1) (match-end 1))
-			      c-arglist))))))
+			(append c-arglist
+				(list (buffer-substring (match-beginning 1) (match-end 1)))))))))
 
 	;; see if we already have a header here ...
 	(save-excursion
